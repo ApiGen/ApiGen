@@ -45,7 +45,10 @@ class Model extends NetteX\Object
 		$this->dir = realpath($dir);
 		$this->classes = array();
 		foreach ($robot->getIndexedClasses() as $name => $foo) {
-			$this->classes[$name] = new CustomClassReflection($name);
+			$class = new CustomClassReflection($name);
+			if (!$class->hasAnnotation('internal')) {
+				$this->classes[$name] = $class;
+			}
 		}
 
 		$robot->unregister();
