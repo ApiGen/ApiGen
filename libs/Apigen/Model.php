@@ -107,6 +107,48 @@ class Model extends NetteX\Object
 
 
 	/**
+	 * Returns list of direct subclasses.
+	 * @param  ReflectionClass
+	 * @return array or CustomClassReflection
+	 */
+	public function getDirectSubClasses($parent)
+	{
+		$parent = $parent->getName();
+		$res = array();
+		foreach ($this->classes as $class) {
+			if ($class->getParentClass() && $class->getParentClass()->getName() === $parent) {
+				$res[$class->getName()] = $class;
+			}
+		}
+		return $res;
+	}
+
+
+
+	/**
+	 * Returns list of direct subclasses.
+	 * @param  ReflectionClass
+	 * @return array or CustomClassReflection
+	 */
+	public function getDirectImplementers($interface)
+	{
+		if (!$interface->isInterface()) return array();
+		$interface = $interface->getName();
+		$res = array();
+		foreach ($this->classes as $class) {
+			if (array_key_exists($interface, class_implements($class->getName()))) {
+				if (!$class->getParentClass() || 
+					!array_key_exists($interface, class_implements($class->getParentClass()->getName()))) {
+					$res[$class->getName()] = $class;
+				}
+			}
+		}
+		return $res;
+	}
+
+
+
+	/**
 	 * Helpers for DocBlock extracting.
 	 * @param  string
 	 * @return string

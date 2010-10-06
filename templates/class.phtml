@@ -32,6 +32,16 @@
 			</dd>
 			{/foreach}
 		</dl>
+		
+		<div n:if="$subClasses">
+			<h4>Direct Known Subclasses</h4>
+			<a n:foreach="$subClasses as $item" href="{$item|classLink}">{$item->name|replaceNS:$namespace}{sep}, {/sep}</a>
+		</div>
+
+		<div n:if="$implementers">
+			<h4>Direct Known Implementers</h4>
+			<a n:foreach="$implementers as $item" href="{$item|classLink}">{$item->name|replaceNS:$namespace}{sep}, {/sep}</a>
+		</div>
 
 		<div class="classInfo">
 			{if $class->abstract || $class->final}<b>{if $class->abstract}Abstract{else}Final{/if} {if $class->interface}Interface{else}Class{/if}</b><br>{/if}

@@ -87,11 +87,14 @@ class Generator extends NetteX\Object
 
 			// generate class & interface files
 			foreach ($classes as $class) {
-				$tree = array($class);
-				while ($parent = $tree[0]->getParentClass()) {
-					array_unshift($tree, $parent);
+				$template->tree = array($class);
+				while ($parent = $template->tree[0]->getParentClass()) {
+					array_unshift($template->tree, $parent);
 				}
-				$template->tree = $tree;
+				$template->subClasses = $this->model->getDirectSubClasses($class);
+				uksort($template->subClasses, 'strcasecmp');
+				$template->implementers = $this->model->getDirectImplementers($class);
+				uksort($template->implementers, 'strcasecmp');
 				$template->class = $class;
 				$template->setFile($config['templates']['class'])->save($output . '/' . $this->formatClassLink($class));
 
