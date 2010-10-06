@@ -21,9 +21,17 @@ APIGen version 0.1
 ------------------
 ';
 
-if (!isset($_SERVER['argv'][1], $_SERVER['argv'][2])) { ?>
+$options = getopt('s:d:c:t:');
+
+if (!isset($options['s'], $options['d'])) { ?>
 Usage:
-	php runner.php <input directory> <output directory>
+	php apigen.php [options]
+
+Options:
+	-s <path>  Name of a source directory to parse. Required.
+	-d <path>  Folder where to save the generated documentation. Required.
+	-c <path>  Output config file.
+	-t ...     Title of generated documentation.
 
 <?php
 	die();
@@ -36,11 +44,10 @@ NetteX\Debug::enable();
 NetteX\Debug::timer();
 
 
-$input = $_SERVER['argv'][1];
-echo "Scanning folder $input\n";
 
+echo "Scanning folder $options[s]\n";
 $model = new Apigen\Model;
-$model->parse($input);
+$model->parse($options['s']);
 $count = count($model->getClasses());
 
 $model->expand();
@@ -50,14 +57,20 @@ echo "Found $count classes and $countD system classes\n";
 
 
 
-$output = $_SERVER['argv'][2];
-@mkdir($output);
-
 $neon = new NetteX\NeonParser;
-$config = $neon->parse(str_replace('%dir%', __DIR__, file_get_contents(__DIR__ . '/config.neon')));
+$config = str_replace('%dir%', __DIR__, file_get_contents(isset($options['c']) ? $options['c'] : __DIR__ . '/config.neon'));
+$config = $neon->parse($config);
+if (isset($options['t'])) {
+	$config['variables']['title'] = $options['t'];
+}
 
-echo "Generating documentation to folder $output\n";
+
+
+echo "Generating documentation to folder $options[d]\n";
+@mkdir($options['d']);
 $generator = new Apigen\Generator($model);
-$generator->generate($output, $config);
+$generator->generate($options['d'], $config);
+
+
 
 echo 'Done. Total time: ' . (int) NetteX\Debug::timer() . " seconds\n";
