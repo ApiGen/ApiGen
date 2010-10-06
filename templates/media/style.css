@@ -76,6 +76,10 @@ var {
 	color: #CA8A04;
 }
 
+var.method {
+	color: #DD2244;
+}
+
 pre {
 	margin: 0;
 }
@@ -243,21 +247,35 @@ dl.tree dd {
 	vertical-align: top;
 }
 
+.short p, .detailed p {
+	margin: .4em 0;
+}
 
-.detail {
+tr:hover td {
+	background: #F6F6F4;
+}
+
+tr .short {
+	display: block;
+}
+
+tr:hover .short {
+	display: none;
+}
+
+tr .detailed {
+	display: none;
+}
+
+tr:hover .detailed {
+	display: block;
+}
+
+.list {
 	border: 1px solid #ccc;
 	border-top: none;
 	margin: 0;
 	padding: 3px 1em;
-}
-
-.detail h3 {
-	font-size: 170%;
-	font-weight: normal;
-	margin: 15px 0;
-	padding: 0;
-	color: #DD2244;
-	background: none;
 }
 
 p.source {

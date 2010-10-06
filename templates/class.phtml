@@ -54,15 +54,14 @@
 			{/foreach}
 			{if !$class->internal}<b>Located at:</b> <a href="{$class|sourceLink}">{$class->fileName|replace:$fileRoot|replace:'\\','/'}</a><br>{/if}
 		</div>
-
-		<hr>
 	</div>
+
 
 	<div id="methodSummary" n:if="$class->ownMethods">
 		<table class="summary">
 		<caption>Method Summary</caption>
 		{foreach $class->ownMethods as $method}
-		<tr data-order="{$method->static ? 0 : 1} {$method->name}">
+		<tr data-order="{$method->static ? 0 : 1} {$method->name}" id="{$method->name}()">
 			<td align="right" width="1%"><code class="nowrap">
 				{if !$class->interface && $method->abstract}abstract{elseif $method->final}final{/if} {if $method->protected}protected{elseif $method->private}private{else}public{/if} {if $method->static}static{/if}
 				{foreach $template->getTypes($method) as $return}<a href="{$return->class|classLink}" n:tag-if="$return->class">{$return->name|replaceNS:$namespace}</a>{sep}|{/sep}{/foreach}
@@ -73,7 +72,7 @@
 			<td>
 			<p n:if="!$class->internal" class="source"><a href="{$method|sourceLink}">source</a></p>
 			<code class="nowrap">
-				<a href="#{$method->name}()"><b>{$method->name}</b></a>(
+				<var class="method">{$method->name}</var>(
 				{foreach $method->parameters as $parameter}
 					{if $parameter->array}array
 					{elseif $parameter->class}<a href="{$parameter->class|replace:"Class "|classLink}">{$parameter->class|replace:"Class "|replaceNS:$namespace}</a>
@@ -81,18 +80,60 @@
 					<var>{if $parameter->passedByReference}&amp; {/if}${$parameter->name}</var>{if $parameter->defaultValueAvailable} = {!$parameter->defaultValue|dump}{/if}{sep}, {/sep}
 				{/foreach}
 			)</code>
-			<br>{!$method->docComment|docline}
+
+			<div class="short">
+				<p>{!$method->docComment|docline}</p>
+			</div>
+
+			<div class="detailed">
+				{!$method->docComment|docblock}
+
+				{var $annotations = $method->annotations}
+
+				{if $method->parameters}
+					<h4>Parameters</h4>
+					<div class="smallList">
+					{foreach $method->parameters as $parameter}
+						<code>${$parameter->name}</code> {if isset($annotations['param'][$parameter->position])}{$annotations['param'][$parameter->position]}{/if}<br>
+					{/foreach}
+					</div>
+				{/if}
+
+				{if isset($annotations['return']) && $annotations['return'][0] !== 'void'}
+					<h4>Returns</h4>
+					<div class="smallList">{$annotations['return'][0]}</div>
+				{/if}
+
+
+				{if isset($annotations['throws'])}
+					<h4>Throws</h4>
+					<div class="smallList">
+					{foreach $annotations['throws'] as $item}
+						<a href="{$item|resolveType:$namespace|classLink}" n:tag-if="$template->resolveType($item, $namespace)">{$item}</a><br>
+					{/foreach}
+					</div>
+				{/if}
+
+				{try}
+				{var $prototype = $method->prototype}
+				{if $prototype->declaringClass->interface}
+					<h4>Implementation of</h4>
+					<div class="smallList"><code><a href="{$prototype|classLink}">{$prototype->declaringClass->name|replaceNS:$namespace}::{$prototype->name}</a></code></div>
+				{/if}
+				{/try}
+			</div>
 			</td>
 		</tr>
 		{/foreach}
 		</table>
 	</div>
 
+
 	{var $parent = $class}
 	{while $parent = $parent->parentClass}
 	{continueIf !$parent->ownMethods}
 	<h2>Methods Inherited From <a href="{$parent|classLink}#methodSummary">{$parent->name|replaceNS:$namespace}</a></h2>
-	<div class="detail"><code>
+	<div class="list"><code>
 		{foreach $parent->ownMethods as $method}<a href="{$method|classLink}">{$method->name}()</a>{sep}, {/sep}{/foreach}
 	</code></div>
 	{/while}
@@ -114,7 +155,7 @@
 	{while $parent = $parent->parentClass}
 	{continueIf !$parent->ownConstants}
 	<h2>Constants Inherited From <a href="{$parent|classLink}#constantSummary">{$parent->name|replaceNS:$namespace}</a></h2>
-	<div class="detail"><code>{foreach $parent->ownConstants as $name => $value}{$name}{sep}, {/sep}{/foreach}</code></div>
+	<div class="list"><code>{foreach $parent->ownConstants as $name => $value}{$name}{sep}, {/sep}{/foreach}</code></div>
 	{/while}
 
 
@@ -140,69 +181,8 @@
 	{while $parent = $parent->parentClass}
 	{continueIf !$parent->ownProperties}
 	<h2>Properties Inherited From <a href="{$parent|classLink}#propertySummary">{$parent->name|replaceNS:$namespace}</a></h2>
-	<div class="detail"><code>{foreach $parent->ownProperties as $property}${$property->name}{sep}, {/sep}{/foreach}</code></div>
+	<div class="list"><code>{foreach $parent->ownProperties as $property}${$property->name}{sep}, {/sep}{/foreach}</code></div>
 	{/while}
 
-
-	<div id="methodDetail" n:if="$class->ownMethods">
-		<h2>Method Detail</h2>
-
-		{foreach $class->ownMethods as $method}
-		<div class="detail" id="{$method->name}()">
-			<p n:if="!$class->internal" class="source"><a href="{$method|sourceLink}">source</a></p>
-
-			<h3>{$method->name}</h3>
-
-			<code class="nowrap">
-			{if !$class->interface && $method->abstract}abstract{elseif $method->final}final{/if} {if $method->protected}protected{elseif $method->private}private{else}public{/if} {if $method->static}static{/if}
-			{foreach $template->getTypes($method) as $return}<a href="{$return->class|classLink}" n:tag-if="$return->class">{$return->name|replaceNS:$namespace}</a>{sep}|{/sep}{/foreach}
-			{if $method->returnsReference()}&amp;{/if}
-			<b>{$method->name}</b>(
-			{foreach $method->parameters as $parameter}
-				{if $parameter->array}array
-				{elseif $parameter->class}<a href="{$parameter->class|replace:"Class "|classLink}">{$parameter->class|replace:"Class "|replaceNS:$namespace}</a>
-				{else}{foreach $template->getTypes($method, $parameter->position) as $item}<a href="{$item->class|classLink}" n:tag-if="$item->class">{$item->name|replaceNS:$namespace}</a>{sep}|{/sep}{/foreach}{/if}
-				<var>{if $parameter->passedByReference}&amp; {/if}${$parameter->name}</var>{if $parameter->defaultValueAvailable} = {!$parameter->defaultValue|dump}{/if}{sep}, {/sep}
-			{/foreach})
-			</code>
-
-			{!$method->docComment|docblock}
-
-			{var $annotations = $method->annotations}
-			{*
-			{if $method->parameters}
-				<h4>Parameters</h4>
-				<div class="smallList">
-				{foreach $method->parameters as $parameter}
-					<code>${$parameter->name}</code> {if isset($annotations['param'][$parameter->position])}{$annotations['param'][$parameter->position]}{/if}<br>
-				{/foreach}
-				</div>
-			{/if}
-
-			{if isset($annotations['return']) && $annotations['return'][0] !== 'void'}
-				<h4>Returns</h4>
-				<div class="smallList">{$annotations['return'][0]}</div>
-			{/if}
-			*}
-
-			{if isset($annotations['throws'])}
-				<h4>Throws</h4>
-				<div class="smallList">
-				{foreach $annotations['throws'] as $item}
-					<a href="{$item|resolveType:$namespace|classLink}" n:tag-if="$template->resolveType($item, $namespace)">{$item}</a><br>
-				{/foreach}
-				</div>
-			{/if}
-
-			{try}
-			{var $prototype = $method->prototype}
-			{if $prototype->declaringClass->interface}
-				<h4>Implementation of</h4>
-				<div class="smallList"><code><a href="{$prototype|classLink}">{$prototype->declaringClass->name|replaceNS:$namespace}::{$prototype->name}</a></code></div>
-			{/if}
-			{/try}
-		</div>
-		{/foreach}
-	</div>
 </div>
 {/block}
