@@ -221,7 +221,11 @@ class Generator extends NetteX\Object
 			$class = $element->getName();
 		} else {
 			$class = $element->getDeclaringClass()->getName();
-			$id = '#' . ($element instanceof \ReflectionProperty ? '$' : '') . $element->getName();
+			if ($element instanceof \ReflectionProperty) {
+				$id = '#$' . $element->getName();
+			} elseif ($element instanceof \ReflectionMethod) {
+				$id = '#' . $element->getName() . '()';
+			}
 		}
 		return preg_replace('#[^a-z0-9_]#i', '.', $class) . '.html' . $id;
 	}
@@ -237,7 +241,7 @@ class Generator extends NetteX\Object
 	{
 		$file = substr($element->getFileName(), strlen($this->model->getDirectory()) + 1);
 		$line = $withLine ? ($element->getStartLine() - substr_count($element->getDocComment(), "\n") - 1) : NULL;
-		return 'source-' . preg_replace('#[^a-z0-9_]#i', '.', $file) . '.html' . (isset($line) ? "#l$line" : '');
+		return 'source-' . preg_replace('#[^a-z0-9_]#i', '.', $file) . '.html' . (isset($line) ? "#L$line" : '');
 	}
 
 }

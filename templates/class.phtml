@@ -73,7 +73,7 @@
 			<td>
 			<p n:if="!$class->internal" class="source"><a href="{$method|sourceLink}">source</a></p>
 			<code class="nowrap">
-				<a href="#{$method->name}"><b>{$method->name}</b></a>(
+				<a href="#{$method->name}()"><b>{$method->name}</b></a>(
 				{foreach $method->parameters as $parameter}
 					{if $parameter->array}array
 					{elseif $parameter->class}<a href="{$parameter->class|replace:"Class "|classLink}">{$parameter->class|replace:"Class "|replaceNS:$namespace}</a>
@@ -102,7 +102,7 @@
 		<table class="summary">
 		<caption>Constant Summary</caption>
 		{foreach $class->ownConstants as $name => $value}
-		<tr data-order="{$name}">
+		<tr data-order="{$name}" id="${$name}">
 			<td align="right" width="1%"><code><b>{$name}</b></code></td>
 			<td><code>{!$value|dump}</code></td>
 		</tr>
@@ -122,7 +122,7 @@
 		<table class="summary">
 		<caption>Property Summary</caption>
 		{foreach $class->ownProperties as $property}
-		<tr data-order="{$property->name}">
+		<tr data-order="{$property->name}" id="${$property->name}">
 			<td align="right" width="1%"><code class="nowrap">
 				{if $property->protected}protected{elseif $property->private}private{/if} {if $property->static}static{/if}
 				{foreach $template->getTypes($property) as $return}<a href="{$return->class|classLink}" n:tag-if="$return->class">{$return->name|replaceNS:$namespace}</a>{sep}|{/sep}{/foreach}
@@ -148,7 +148,7 @@
 		<h2>Method Detail</h2>
 
 		{foreach $class->ownMethods as $method}
-		<div class="detail" id="{$method->name}">
+		<div class="detail" id="{$method->name}()">
 			<p n:if="!$class->internal" class="source"><a href="{$method|sourceLink}">source</a></p>
 
 			<h3>{$method->name}</h3>
