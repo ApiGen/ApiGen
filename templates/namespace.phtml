@@ -21,7 +21,7 @@
 	{continueIf $class->interface}
 	<tr>
 		<td width="20%"><a href="{$class|classLink}">{$class->shortName}</a></td>
-		<td>{$class->docComment|docline}</td>
+		<td>{!$class->docComment|docline}</td>
 	</tr>
 	{/foreach}
 	</table>
@@ -32,7 +32,7 @@
 	{continueIf !$class->interface}
 	<tr>
 		<td width="20%"><a href="{$class|classLink}">{$class->shortName}</a></td>
-		<td>{$class->docComment|docline}</td>
+		<td>{!$class->docComment|docline}</td>
 	</tr>
 	{/foreach}
 	</table>

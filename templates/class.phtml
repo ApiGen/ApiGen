@@ -71,7 +71,7 @@
 					<var>{if $parameter->passedByReference}&amp; {/if}${$parameter->name}</var>{if $parameter->defaultValueAvailable} = {!$parameter->defaultValue|dump}{/if}{sep}, {/sep}
 				{/foreach}
 			)</code>
-			<br>{$method->docComment|docline}
+			<br>{!$method->docComment|docline}
 			</td>
 		</tr>
 		{/foreach}
@@ -120,7 +120,7 @@
 
 			<td width="1%"><var>${$property->name}</var></td>
 			<td><pre>{!$class->defaultProperties[$property->name]|dump}</pre></td>
-			<td>{$property->docComment|docline}</td>
+			<td>{!$property->docComment|docline}</td>
 		</tr>
 		{/foreach}
 		</table>

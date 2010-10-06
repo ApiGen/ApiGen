@@ -143,14 +143,28 @@ class Generator extends NetteX\Object
 		$template->registerHelper('sourceLink', callback($this, 'formatSourceLink'));
 
 		// docblock
-		$template->registerHelper('docline', function($doc) {
+		$texy = new \Texy;
+		$texy->allowed['list/definition'] = FALSE;
+		$texy->registerBlockPattern( // highlight <code> ... </code>
+			function($parser, $matches, $name) use ($fshl) {
+				$content = $fshl->highlightString('PHP', $matches[1]);
+				$content = $parser->getTexy()->protect($content, \Texy::CONTENT_BLOCK);
+				$elPre = \TexyHtml::el('pre');
+				$elCode = $elPre->create('code', $content);
+				return $elPre;
+			},
+			'#^<code>\n(.+?)\n</code>$#ms', // block patterns must be multiline and line-anchored
+			'codeBlockSyntax'
+		);
+
+		$template->registerHelper('docline', function($doc) use ($texy) {
 			$doc = Model::extractDocBlock($doc);
-			$doc = preg_replace('#\n.*#s', '', $doc); // leave only first paragraph
-			return $doc;
+			$doc = preg_replace('#\n.*#s', '', $doc); // leave only first line
+			return $texy->processLine($doc);
 		});
 
-		$template->registerHelper('docblock', function($doc) {
-			return '<p>' . str_replace("\n\n", '</p><p>', Model::extractDocBlock($doc)) . '</p>';
+		$template->registerHelper('docblock', function($doc) use ($texy) {
+			return $texy->process(Model::extractDocBlock($doc));
 		});
 
 		// types
