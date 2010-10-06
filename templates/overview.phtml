@@ -1,0 +1,25 @@
+{layout @layout.phtml}
+
+{block #content}
+<div id="navigation">
+	<ul>
+		<li class="active">Overview</li>
+		<li>Namespace</li>
+		<li>Class</li>
+		<li><a href="elements.html">Elements</a></li>
+	</ul>
+</div>
+
+<div id="content">
+	<h1>{$title} Overview</h1>
+
+	<table class="summary">
+	<caption>Namespaces</caption>
+	{foreach $namespaces as $namespace}
+	<tr>
+		<td><a href="{$namespace|namespaceLink}">{$namespace ? $namespace : 'none'}</a></td>
+	</tr>
+	{/foreach}
+	</table>
+</div>
+{/block}

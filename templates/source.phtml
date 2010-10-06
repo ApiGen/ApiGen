@@ -1,0 +1,15 @@
+{layout @layout.phtml}
+{var $noindex => TRUE}
+
+{block #title}{$fileName}{/block}
+
+{block #content}
+<div id="navigation">
+	<ul>
+		<li><a href="overview.html" title="Summary of all namespaces">Overview</a></li>
+		<li><a href="elements.html">Elements</a></li>
+	</ul>
+</div>
+
+<pre><code>{!$source|replaceRE:'#<span class="count">(\s*(\d+):\s*)</span>#','<a href="#l$2" id="l$2" class="l">$1</a>'}</code></pre>
+{/block}
