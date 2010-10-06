@@ -6,14 +6,14 @@
 <div id="navigation">
 	<ul>
 		<li><a href="overview.html" title="Summary of all namespaces">Overview</a></li>
-		<li class="active">Namespace</li>
+		<li {ifset $namespace}class="active"{/if}>Namespace</li>
 		<li>Class</li>
 		<li><a href="elements.html">Elements</a></li>
 	</ul>
 </div>
 
 <div id="content">
-	<h1>Namespace {$namespace}</h1>
+	<h1>{ifset $namespace}{if $namespace}Namespace {$namespace}{else}No namespace{/if}{else}All Classes{/if}</h1>
 
 	<table class="summary">
 	<caption>Class summary</caption>
