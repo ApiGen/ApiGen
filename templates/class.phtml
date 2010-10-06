@@ -32,7 +32,7 @@
 			</dd>
 			{/foreach}
 		</dl>
-		
+
 		<div n:if="$subClasses">
 			<h4>Direct Known Subclasses</h4>
 			<a n:foreach="$subClasses as $item" href="{$item|classLink}">{$item->name|replaceNS:$namespace}{sep}, {/sep}</a>

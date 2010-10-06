@@ -1,7 +1,7 @@
 ﻿
      Fast Syntax HighLighter
   --------------------------------------------
-     
+
      <Core,FastCore,Brain>
 
             Juraj 'HVGE' Durech
@@ -23,9 +23,9 @@
             johno.jsmf.net
             www.fczbkk.com
             www.scintilla.org
-			
+
 	 <Contributors>
-	 
+
             Matěj 'Finwë' Humpál (SQL)
             drekin@gmail.com     (PYTHON)
 

@@ -18,3 +18,4 @@ templates:
 variables:
 	title: 'Nette Framework documentation'
 	baseUri: 'http://api.nette.org/2.0'
+	

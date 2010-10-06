@@ -137,7 +137,7 @@ class Model extends NetteX\Object
 		$res = array();
 		foreach ($this->classes as $class) {
 			if (array_key_exists($interface, class_implements($class->getName()))) {
-				if (!$class->getParentClass() || 
+				if (!$class->getParentClass() ||
 					!array_key_exists($interface, class_implements($class->getParentClass()->getName()))) {
 					$res[$class->getName()] = $class;
 				}

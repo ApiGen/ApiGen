@@ -68,7 +68,7 @@ class Generator extends NetteX\Object
 		foreach ($config['variables'] as $key => $value) {
 			$template->$key = $value;
 		}
-		
+
 		// generate summary files
 		$template->namespaces = array_keys($namespaces);
 		$template->classes = $allClasses;
