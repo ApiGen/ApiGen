@@ -230,6 +230,11 @@ dl.tree dd {
 	border-width: 1px 1px 0;
 }
 
+.summary caption.switchable {
+	background: #ECEDE5 url(sort.gif) no-repeat center right;
+	cursor: pointer;
+}
+
 .summary td {
 	border: 1px solid #ccc;
 	margin: 0;

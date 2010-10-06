@@ -17,9 +17,11 @@
 
 	<script type="text/javascript" src="media/jquery.min.js"></script>
 	<script type="text/javascript" src="media/jquery.autocomplete.js"></script>
+	<script type="text/javascript" src="media/jquery.sortElements.js"></script>
+	<script type="text/javascript" src="allclasses.js"></script>
+	<script type="text/javascript" src="media/main.js"></script>
 	<link rel="stylesheet" type="text/css" media="all" href="media/style.css?v={=date('YmdH')}">
 	<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
-	<script type="text/javascript" src="allclasses.js"></script>
 </head>
 
 <body>
@@ -56,18 +58,7 @@
 	<form action="http://www.google.com/cse" id="search" onsubmit="if(this.q.value.indexOf('more:')==-1)this.q.value+=' more:api'">
 		<input type="hidden" name="cx" value="011549293477758430224:vxofa9ufnhc"><input type="hidden" name="ie" value="UTF-8"><input type="text" name="q" class="text"><input type="submit" value="Search">
 	</form>
-	<script type="text/javascript">
-	$(function(){
-		$("#search input[type=text]").autocomplete(classes, {
-			matchContains: true,
-			scrollHeight: 200,
-			max: 20,
-			formatItem: function(row) { return row[0].replace(/^(.+\\)(.+)$/, '<small>$1</small>$2'); },
-			formatMatch: function(row) { return row[0]; }
-		});
-	});
-	</script>
-
+	
 	{include #content}
 	
 	<div id="footer">
