@@ -82,7 +82,7 @@
 			)</code>
 
 			<div class="short">
-				<p>{!$method->docComment|docline}</p>
+				{!$method->docComment|docline:false}
 			</div>
 
 			<div class="detailed">
@@ -90,7 +90,7 @@
 
 				{var $annotations = $method->annotations}
 
-				{if $method->parameters}
+				{if $method->parameters && isset($annotations['param'])}
 					<h4>Parameters</h4>
 					<div class="smallList">
 					{foreach $method->parameters as $parameter}
@@ -133,7 +133,7 @@
 	{while $parent = $parent->parentClass}
 	{continueIf !$parent->ownMethods}
 	<h2>Methods Inherited From <a href="{$parent|classLink}#methodSummary">{$parent->name|replaceNS:$namespace}</a></h2>
-	<div class="list"><code>
+	<div class="box"><code>
 		{foreach $parent->ownMethods as $method}<a href="{$method|classLink}">{$method->name}()</a>{sep}, {/sep}{/foreach}
 	</code></div>
 	{/while}
@@ -155,7 +155,7 @@
 	{while $parent = $parent->parentClass}
 	{continueIf !$parent->ownConstants}
 	<h2>Constants Inherited From <a href="{$parent|classLink}#constantSummary">{$parent->name|replaceNS:$namespace}</a></h2>
-	<div class="list"><code>{foreach $parent->ownConstants as $name => $value}{$name}{sep}, {/sep}{/foreach}</code></div>
+	<div class="box"><code>{foreach $parent->ownConstants as $name => $value}{$name}{sep}, {/sep}{/foreach}</code></div>
 	{/while}
 
 
@@ -181,7 +181,7 @@
 	{while $parent = $parent->parentClass}
 	{continueIf !$parent->ownProperties}
 	<h2>Properties Inherited From <a href="{$parent|classLink}#propertySummary">{$parent->name|replaceNS:$namespace}</a></h2>
-	<div class="list"><code>{foreach $parent->ownProperties as $property}${$property->name}{sep}, {/sep}{/foreach}</code></div>
+	<div class="box"><code>{foreach $parent->ownProperties as $property}<var>${$property->name}</var>{sep}, {/sep}{/foreach}</code></div>
 	{/while}
 
 </div>

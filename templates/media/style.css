@@ -24,6 +24,7 @@ h1 {
 }
 
 h2, caption {
+	border: 1px solid #ccc;
 	background: #ECEDE5;
 	font-weight: bold;
 	font-size: 1.2em;
@@ -226,11 +227,10 @@ dl.tree dd {
 	border-collapse:collapse;
 	font-size: 1em;
 	width: 100%;
-	margin: 1.2em 0;
+	margin: 1.2em 0 2.4em;
 }
 
 .summary caption {
-	border: 1px solid #ccc;
 	border-width: 1px 1px 0;
 }
 
@@ -271,11 +271,12 @@ tr:hover .detailed {
 	display: block;
 }
 
-.list {
+.box {
 	border: 1px solid #ccc;
 	border-top: none;
-	margin: 0;
+	margin-bottom: 2.4em;
 	padding: 3px 1em;
+	font-size: 95%;
 }
 
 p.source {

@@ -8,7 +8,7 @@ $(function(){
 		formatMatch: function(row) { return row[0]; }
 	});
 
-	$("table.summary tr").each(function(index) {
+	$("table.summary:has(tr[data-order]) tr").each(function(index) {
 		do { index = '0' + index; } while (index.length < 3);
 		$(this).attr('data-orig-order', index);
 	});

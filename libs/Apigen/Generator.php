@@ -160,10 +160,10 @@ class Generator extends NetteX\Object
 			'codeBlockSyntax'
 		);
 
-		$template->registerHelper('docline', function($doc) use ($texy) {
+		$template->registerHelper('docline', function($doc, $line = TRUE) use ($texy) {
 			$doc = Model::extractDocBlock($doc);
 			$doc = preg_replace('#\n.*#s', '', $doc); // leave only first line
-			return $texy->processLine($doc);
+			return $line ? $texy->processLine($doc) : $texy->process($doc);
 		});
 
 		$template->registerHelper('docblock', function($doc) use ($texy) {
