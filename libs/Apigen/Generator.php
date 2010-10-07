@@ -48,7 +48,7 @@ class Generator extends NetteX\Object
 		// copy resources
 		foreach ($config['resources'] as $source => $dest) {
 			foreach ($iterator = NetteX\Finder::findFiles('*')->from($source)->getIterator() as $foo) {
-				@mkdir("$output/$dest/" . $iterator->getSubPath(), TRUE);
+				@mkdir("$output/$dest/" . $iterator->getSubPath(), 0755, TRUE);
 				copy($iterator->getPathName(), "$output/$dest/" . $iterator->getSubPathName());
 			}
 		}
