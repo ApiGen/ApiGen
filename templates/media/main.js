@@ -22,4 +22,15 @@ $(function(){
 		return false;
 	}).addClass('switchable').attr('title', 'Switch between natural and alphabetical order');
 
+	var timeout;
+	$("tr:has(.detailed)").hover(function(){
+		clearTimeout(timeout);
+		var $tr = $(this);
+		timeout = setTimeout(function(){
+			$tr.find('.short').hide();
+			$tr.find('.detailed').show();
+		}, 500);
+	}, function(){
+		clearTimeout(timeout);
+	});
 });

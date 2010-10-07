@@ -80,7 +80,6 @@ var {
 var.method {
 	color: #DD2244;
 }
-
 pre {
 	margin: 0;
 }
@@ -255,20 +254,8 @@ tr:hover td {
 	background: #F6F6F4;
 }
 
-tr .short {
-	display: block;
-}
-
-tr:hover .short {
-	display: none;
-}
-
 tr .detailed {
 	display: none;
-}
-
-tr:hover .detailed {
-	display: block;
 }
 
 .box {
