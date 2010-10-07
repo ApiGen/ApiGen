@@ -42,7 +42,7 @@ class Generator extends NetteX\Object
 	public function generate($output, $config)
 	{
 		if (!is_dir($output)) {
-			throw new Exception("Directory $output doesn't exist.");
+			throw new \Exception("Directory $output doesn't exist.");
 		}
 
 		// copy resources
