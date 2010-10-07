@@ -28,19 +28,19 @@
 			<dd style="padding-left:{=($iterator->counter - 1) * 30}px">
 				<img src="media/inherit.gif" alt="extended by " n:if="$iterator->counter > 1">
 				<a href="{$item|classLink}" n:tag-if="!$iterator->last">{last}<b>{/last}{$item->name}{last}</b>{/last}</a>
-				{if $item->ownInterfaces} implements <a n:foreach="$item->ownInterfaces as $interface" href="{$interface|classLink}">{$interface->name|replaceNS:$namespace}{sep}, {/sep}</a>{/if}
+				{if $item->ownInterfaces} implements {foreach $item->ownInterfaces as $interface}<a href="{$interface|classLink}">{$interface->name|replaceNS:$namespace}</a>{sep}, {/sep}{/foreach}{/if}
 			</dd>
 			{/foreach}
 		</dl>
 
 		<div n:if="$subClasses">
 			<h4>Direct Known Subclasses</h4>
-			<a n:foreach="$subClasses as $item" href="{$item|classLink}">{$item->name|replaceNS:$namespace}{sep}, {/sep}</a>
+			{foreach $subClasses as $item}<a href="{$item|classLink}">{$item->name|replaceNS:$namespace}</a>{sep}, {/sep}{/foreach}
 		</div>
 
 		<div n:if="$implementers">
 			<h4>Direct Known Implementers</h4>
-			<a n:foreach="$implementers as $item" href="{$item|classLink}">{$item->name|replaceNS:$namespace}{sep}, {/sep}</a>
+			{foreach $implementers as $item}<a href="{$item|classLink}">{$item->name|replaceNS:$namespace}</a>{sep}, {/sep}{/foreach}
 		</div>
 
 		<div class="classInfo">
