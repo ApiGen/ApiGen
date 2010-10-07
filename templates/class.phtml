@@ -70,9 +70,9 @@
 			</td>
 
 			<td>
-			<p n:if="!$class->internal" class="source"><a href="{$method|sourceLink}">source</a></p>
+			<a class="anchor" href="#{$method->name}()">#</a>
 			<code class="nowrap">
-				<var class="method">{$method->name}</var>(
+				<a n:tag-if="!$class->internal" href="{$method|sourceLink}" title="go to source code"><b>{$method->name}</b></a>(
 				{foreach $method->parameters as $parameter}
 					{if $parameter->array}array
 					{elseif $parameter->class}<a href="{$parameter->class|replace:"Class "|classLink}">{$parameter->class|replace:"Class "|replaceNS:$namespace}</a>
@@ -143,9 +143,9 @@
 		<table class="summary">
 		<caption>Constant Summary</caption>
 		{foreach $class->ownConstants as $name => $value}
-		<tr data-order="{$name}" id="${$name}">
+		<tr data-order="{$name}" id="{$name}">
 			<td align="right" width="1%"><code><b>{$name}</b></code></td>
-			<td><code>{!$value|dump}</code></td>
+			<td><code>{!$value|dump}</code> <a href="#{$name}" class="anchor">#</a></td>
 		</tr>
 		{/foreach}
 		</table>
@@ -171,7 +171,7 @@
 
 			<td width="1%"><var>${$property->name}</var></td>
 			<td><pre>{!$class->defaultProperties[$property->name]|dump}</pre></td>
-			<td>{!$property->docComment|docline}</td>
+			<td>{!$property->docComment|docline} <a href="#${$property->name}" class="anchor">#</a></td>
 		</tr>
 		{/foreach}
 		</table>
