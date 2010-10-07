@@ -146,13 +146,13 @@ class Generator extends NetteX\Object
 		$template->registerHelper('sourceLink', callback($this, 'formatSourceLink'));
 
 		// docblock
-		$texy = new \Texy;
+		$texy = new \TexyX;
 		$texy->allowed['list/definition'] = FALSE;
 		$texy->registerBlockPattern( // highlight <code> ... </code>
 			function($parser, $matches, $name) use ($fshl) {
 				$content = $fshl->highlightString('PHP', $matches[1]);
-				$content = $parser->getTexy()->protect($content, \Texy::CONTENT_BLOCK);
-				$elPre = \TexyHtml::el('pre');
+				$content = $parser->getTexy()->protect($content, \TexyX::CONTENT_BLOCK);
+				$elPre = \TexyXHtml::el('pre');
 				$elCode = $elPre->create('code', $content);
 				return $elPre;
 			},
