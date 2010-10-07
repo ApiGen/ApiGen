@@ -239,9 +239,18 @@ class Generator extends NetteX\Object
 	 */
 	public function formatSourceLink($element, $withLine = TRUE)
 	{
-		$file = substr($element->getFileName(), strlen($this->model->getDirectory()) + 1);
-		$line = $withLine ? ($element->getStartLine() - substr_count($element->getDocComment(), "\n") - 1) : NULL;
-		return 'source-' . preg_replace('#[^a-z0-9_]#i', '.', $file) . '.html' . (isset($line) ? "#L$line" : '');
+		$class = $element instanceof \ReflectionClass ? $element : $element->getDeclaringClass();
+		if ($class->isInternal()) {
+			if ($element instanceof \ReflectionClass) {
+				return strtolower('http://php.net/manual/class.' . $class->getName() . '.php');
+			} else {
+				return strtolower('http://php.net/manual/' . $class->getName() . '.' . strtr(ltrim($element->getName(), '_'), '_', '-') . '.php');
+			}
+		} else {
+			$file = substr($element->getFileName(), strlen($this->model->getDirectory()) + 1);
+			$line = $withLine ? ($element->getStartLine() - substr_count($element->getDocComment(), "\n") - 1) : NULL;
+			return 'source-' . preg_replace('#[^a-z0-9_]#i', '.', $file) . '.html' . (isset($line) ? "#L$line" : '');
+		}
 	}
 
 }

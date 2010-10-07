@@ -52,7 +52,7 @@
 				<b>{$annotation|ucfirst}:</b> {$value}<br>
 				{/foreach}
 			{/foreach}
-			{if !$class->internal}<b>Located at:</b> <a href="{$class|sourceLink}">{$class->fileName|replace:$fileRoot|replace:'\\','/'}</a><br>{/if}
+			{if $class->internal}<b>Documented at</b> <a href="{$class|sourceLink}">php.net</a>{else}<b>Located at</b> <a href="{$class|sourceLink}">{$class->fileName|replace:$fileRoot|replace:'\\','/'}</a>{/if}<br>
 		</div>
 	</div>
 
@@ -72,7 +72,7 @@
 			<td>
 			<a class="anchor" href="#{$method->name}()">#</a>
 			<code class="nowrap">
-				<a n:tag-if="!$class->internal" href="{$method|sourceLink}" title="go to source code"><b>{$method->name}</b></a>(
+				<a href="{$method|sourceLink}" title="go to {$class->internal ? 'PHP documentation' : 'source code'}"><b>{$method->name}</b></a>(
 				{foreach $method->parameters as $parameter}
 					{if $parameter->array}array
 					{elseif $parameter->class}<a href="{$parameter->class|replace:"Class "|classLink}">{$parameter->class|replace:"Class "|replaceNS:$namespace}</a>
