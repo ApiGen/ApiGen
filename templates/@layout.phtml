@@ -31,7 +31,7 @@
 	<h3>Namespaces</h3>
 	<ul>
 	{foreach $namespaces as $item}
-		<li><a href="{$item|namespaceLink}" n:tag-if="$namespace !== $item">{$item ? $item : 'none'}</a></li>
+		<li><a href="{$item|namespaceLink}" {if $namespace === $item}class="active"{/if}>{$item ? $item : 'none'}</a></li>
 	{/foreach}
 	</ul>
 
@@ -40,7 +40,7 @@
 	<ul>
 	{foreach $classes as $item}
 	{continueIf $item->interface}
-		<li><a href="{$item|classLink}" n:tag-if="$class !== $item">{$item->shortName}</a></li>
+		<li><a href="{$item|classLink}" {if $class === $item}class="active"{/if}>{$item->shortName}</a></li>
 	{/foreach}
 	</ul>
 
@@ -49,7 +49,7 @@
 	<ul>
 	{foreach $classes as $item}
 	{continueIf !$item->interface}
-		<li><a href="{$item|classLink}" n:tag-if="$class !== $item">{$item->shortName}</a></li>
+		<li><a href="{$item|classLink}" {if $class === $item}class="active"{/if}>{$item->shortName}</a></li>
 	{/foreach}
 	</ul>
 </div>

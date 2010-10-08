@@ -8,7 +8,7 @@ body {
 	padding: .5em 1em;
 	background: white;
 	color: #333;
-	max-width: 970px;
+	max-width: 1300px;
 }
 
 h1, h2, h3, h4, caption {
@@ -96,6 +96,7 @@ pre {
 	margin: 0;
 	padding: 7px;
 	overflow: auto;
+	background: white;
 }
 
 #left ul {
@@ -104,22 +105,18 @@ pre {
 	margin: 0;
 }
 
+#left .active {
+	color: #333;
+	background: none;
+	font-weight: bold;
+}
 
 
 /**
  *	Right side
  */
 #right {
-	position: fixed;
-	top: 0;
-	bottom: 0;
-	left: 0;
-	right: 0;
-	margin: 0px 0px 0px 250px;
-	height: auto;
-	padding-right: 12px;
-	overflow: auto;
-	overflow-y: scroll;
+	margin-left: 250px;
 }
 
 
