@@ -18,12 +18,19 @@ $(function(){
 	// switches between natural and alphabetical order
 	$("table.summary:has(tr[data-order]) caption").click(function() {
 		this.sorted = !this.sorted;
+		expire = new Date();
+		expire.setTime(expire.getTime()+(365*24*60*60*1000));
+		document.cookie = 'methods-order=' + this.sorted + '; expire=' + expire.toUTCString();
 		var attr = this.sorted ? 'data-order' : 'data-orig-order';
 		$(this).closest("table").find('tr').sortElements(function(a, b) {
 			return $(a).attr(attr) > $(b).attr(attr) ? 1 : -1;
 		});
 		return false;
 	}).addClass('switchable').attr('title', 'Switch between natural and alphabetical order');
+
+	if (document.cookie.indexOf('methods-order=true') > -1) {
+		$("table.summary:has(tr[data-order]) caption").click();
+	}
 
 	// delayed hover efect on method summary
 	var timeout;
