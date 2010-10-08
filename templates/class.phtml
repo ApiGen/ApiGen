@@ -47,6 +47,7 @@
 			{if $class->abstract || $class->final}<b>{if $class->abstract}Abstract{else}Final{/if} {if $class->interface}Interface{else}Class{/if}</b><br>{/if}
 			{foreach $class->annotations as $annotation => $values}
 				{continueIf $annotation == 'property'}
+				{continueIf $annotation == 'property-read'}
 				{continueIf $annotation == 'method'}
 				{foreach $values as $value}
 				<b>{$annotation|ucfirst}:</b> {$value}<br>
