@@ -148,15 +148,13 @@ class Generator extends NetteX\Object
 		// docblock
 		$texy = new \TexyX;
 		$texy->allowed['list/definition'] = FALSE;
-		$texy->registerBlockPattern( // highlight <code> ... </code>
+		$texy->registerBlockPattern( // highlight <code>, <pre>
 			function($parser, $matches, $name) use ($fshl) {
-				$content = $fshl->highlightString('PHP', $matches[1]);
+				$content = $matches[1] === 'code' ? $fshl->highlightString('PHP', $matches[2]) : htmlSpecialChars($matches[2]);
 				$content = $parser->getTexy()->protect($content, \TexyX::CONTENT_BLOCK);
-				$elPre = \TexyXHtml::el('pre');
-				$elCode = $elPre->create('code', $content);
-				return $elPre;
+				return \TexyXHtml::el('pre', $content);
 			},
-			'#^<code>\n(.+?)\n</code>$#ms', // block patterns must be multiline and line-anchored
+			'#^<(code|pre)>\n(.+?)\n</\1>$#ms', // block patterns must be multiline and line-anchored
 			'codeBlockSyntax'
 		);
 
@@ -174,7 +172,8 @@ class Generator extends NetteX\Object
 		$model = $this->model;
 		$template->registerHelper('getTypes', function($element, $position = NULL) use ($model) {
 			$namespace = $element->getDeclaringClass()->getNamespaceName();
-			$s = $position === NULL ? $element->getAnnotation($element instanceof \ReflectionProperty ? 'var' : 'return') : @$element->annotations['param'][$position];
+			$s = $position === NULL ? $element->getAnnotation($element instanceof \ReflectionProperty ? 'var' : 'return')
+				: @$element->annotations['param'][$position];
 			if (is_object($s)) {
 				$s = get_class($s); // TODO
 			}
