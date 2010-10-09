@@ -48,8 +48,7 @@ class Generator extends NetteX\Object
 		// copy resources
 		foreach ($config['resources'] as $source => $dest) {
 			foreach ($iterator = NetteX\Finder::findFiles('*')->from($source)->getIterator() as $foo) {
-				@mkdir("$output/$dest/" . $iterator->getSubPath(), 0755, TRUE);
-				copy($iterator->getPathName(), "$output/$dest/" . $iterator->getSubPathName());
+				copy($iterator->getPathName(), self::forceDir("$output/$dest/" . $iterator->getSubPathName()));
 			}
 		}
 
@@ -73,7 +72,7 @@ class Generator extends NetteX\Object
 		$template->namespaces = array_keys($namespaces);
 		$template->classes = $allClasses;
 		foreach ($config['templates']['common'] as $dest => $source) {
-			$template->setFile($source)->save("$output/$dest");
+			$template->setFile($source)->save(self::forceDir("$output/$dest"));
 		}
 
 		$generatedFiles = array();
@@ -83,7 +82,7 @@ class Generator extends NetteX\Object
 			uksort($classes, 'strcasecmp');
 			$template->namespace = $namespace;
 			$template->classes = $classes;
-			$template->setFile($config['templates']['namespace'])->save($output . '/' . $this->formatNamespaceLink($namespace));
+			$template->setFile($config['templates']['namespace'])->save(self::forceDir($output . '/' . $this->formatNamespaceLink($namespace)));
 
 			// generate class & interface files
 			foreach ($classes as $class) {
@@ -96,14 +95,14 @@ class Generator extends NetteX\Object
 				$template->implementers = $this->model->getDirectImplementers($class);
 				uksort($template->implementers, 'strcasecmp');
 				$template->class = $class;
-				$template->setFile($config['templates']['class'])->save($output . '/' . $this->formatClassLink($class));
+				$template->setFile($config['templates']['class'])->save(self::forceDir($output . '/' . $this->formatClassLink($class)));
 
 				// generate source codes
 				if (!$class->isInternal() && !isset($generatedFiles[$class->getFileName()])) {
 					$file = $class->getFileName();
 					$template->source = $fshl->highlightString('PHP', file_get_contents($file));
 					$template->fileName = substr($file, strlen($this->model->getDirectory()) + 1);
-					$template->setFile($config['templates']['source'])->save($output . '/' . $this->formatSourceLink($class, FALSE));
+					$template->setFile($config['templates']['source'])->save(self::forceDir($output . '/' . $this->formatSourceLink($class, FALSE)));
 					$generatedFiles[$file] = TRUE;
 				}
 			}
@@ -250,6 +249,19 @@ class Generator extends NetteX\Object
 			$line = $withLine ? ($element->getStartLine() - substr_count($element->getDocComment(), "\n") - 1) : NULL;
 			return 'source-' . preg_replace('#[^a-z0-9_]#i', '.', $file) . '.html' . (isset($line) ? "#$line" : '');
 		}
+	}
+
+
+
+	/**
+	 * Ensures directory is created.
+	 * @param  string
+	 * @return string
+	 */
+	public static function forceDir($path)
+	{
+		@mkdir(dirname($path), 0755, TRUE);
+		return $path;
 	}
 
 }
