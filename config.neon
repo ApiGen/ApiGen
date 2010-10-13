@@ -13,6 +13,7 @@ templates:
             index.html: %dir%/templates/overview.phtml
             overview.html: %dir%/templates/overview.phtml
             sitemap.xml: %dir%/templates/sitemap.xml.phtml
+            combined.js: %dir%/templates/media/combined.js.phtml
 
 
 variables:
