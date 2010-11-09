@@ -76,7 +76,7 @@
 				<a href="{$method|sourceLink}" title="go to {$class->internal ? 'PHP documentation' : 'source code'}"><b>{$method->name}</b></a>(
 				{foreach $method->parameters as $parameter}
 					{if $parameter->array}array
-					{elseif $parameter->class}<a href="{$parameter->class|replace:"Class "|classLink}">{$parameter->class|replace:"Class "|replaceNS:$namespace}</a>
+					{elseif $parameter->className}<a href="{$parameter->className|classLink}">{$parameter->className|replaceNS:$namespace}</a>
 					{else}{foreach $template->getTypes($method, $parameter->position) as $item}<a href="{$item->class|classLink}" n:tag-if="$item->class">{$item->name|replaceNS:$namespace}</a>{sep}|{/sep}{/foreach}{/if}
 					<var>{if $parameter->passedByReference}&amp; {/if}${$parameter->name}</var>{if $parameter->defaultValueAvailable} = {!$parameter->defaultValue|dump}{/if}{sep}, {/sep}
 				{/foreach}
