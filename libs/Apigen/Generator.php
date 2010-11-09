@@ -56,7 +56,7 @@ class Generator extends NetteX\Object
 		$namespaces = array();
 		$allClasses = array();
 		foreach ($this->model->getClasses() as $class) {
-			$namespaces[$class->isInternal() ? 'internal' : $class->getNamespaceName()][$class->getShortName()] = $class;
+			$namespaces[$class->isInternal() ? 'PHP' : $class->getNamespaceName()][$class->getShortName()] = $class;
 			$allClasses[$class->getShortName()] = $class;
 		}
 		uksort($namespaces, 'strcasecmp');
