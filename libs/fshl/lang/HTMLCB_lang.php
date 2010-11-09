@@ -215,4 +215,3 @@ class HTMLCB_lang
 		$this->keywords=null;
 	}
 }
-?>

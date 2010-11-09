@@ -111,4 +111,3 @@ class HTMLonly_lang
 		$this->keywords=null;
 	}
 }
-?>

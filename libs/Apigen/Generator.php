@@ -183,9 +183,7 @@ class Generator extends NetteX\Object
 			}
 			return $res;
 		});
-		$template->registerHelper('resolveType', function($name, $namespace) use ($model) {
-			return $model->resolveType($name, $namespace);
-		});
+		$template->registerHelper('resolveType', callback($model, 'resolveType'));
 
 		return $template;
 	}

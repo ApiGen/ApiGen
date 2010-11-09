@@ -354,4 +354,3 @@ function getw10 (&$s, $i, $l) {
 }
 
 }
-?>

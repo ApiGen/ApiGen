@@ -87,5 +87,3 @@ class HTML_UTF8_output
 	}
 
 } //END class HTML_output
-
-?>

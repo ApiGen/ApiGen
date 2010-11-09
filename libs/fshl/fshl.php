@@ -522,4 +522,3 @@ class fshlParser
 	}
 
 } // END class fshlParser
-?>

@@ -264,4 +264,3 @@ function getw9 (&$s, $i, $l) {
 }
 
 }
-?>

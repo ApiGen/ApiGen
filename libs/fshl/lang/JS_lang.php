@@ -230,4 +230,3 @@ class JS_lang
 		);
 	}
 }
-?>

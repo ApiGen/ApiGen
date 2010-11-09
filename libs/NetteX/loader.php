@@ -1,7 +1,7 @@
 <?php //netteloader=NetteX\IComponent
 
 namespace {/**
- * NetteX Framework.
+ * NetteX Framework (version 2.0-dev 45c4669 released on 2010-11-09)
  *
  * Copyright (c) 2004, 2010 David Grudl (http://davidgrudl.com)
  *
@@ -50,7 +50,7 @@ IRouter{const
 ONE_WAY=1;const
 SECURED=2;function
 match(NetteX\Web\IHttpRequest$httpRequest);function
-constructUrl(PresenterRequest$appRequest,NetteX\Web\IHttpRequest$httpRequest);}}namespace NetteX{use
+constructUrl(PresenterRequest$appRequest,NetteX\Web\Uri$refUri);}}namespace NetteX{use
 NetteX;interface
 IFreezable{function
 freeze();function
@@ -165,7 +165,7 @@ redirect($url,$code=self::S302_FOUND);function
 setExpiration($seconds);function
 isSent();function
 getHeaders();function
-setCookie($name,$value,$expire,$path=NULL,$domain=NULL,$secure=NULL);function
+setCookie($name,$value,$expire,$path=NULL,$domain=NULL,$secure=NULL,$httpOnly=NULL);function
 deleteCookie($name,$path=NULL,$domain=NULL,$secure=NULL);}interface
 IUser{function
 login();function
@@ -217,12 +217,11 @@ class
 Framework{const
 NAME='NetteX Framework';const
 VERSION='2.0-dev';const
-REVISION='d0fc571 released on 2010-10-08';final
+REVISION='45c4669 released on 2010-11-09';public
+static$iAmUsingBadHost=FALSE;final
 function
 __construct(){throw
-new\LogicException("Cannot instantiate static class ".get_class($this));}static
-function
-promo(){echo'<a href="http://nette.org" title="NetteX Framework - The Most Innovative PHP Framework"><img ','src="http://files.nette.org/icons/nette-powered.gif" alt="Powered by NetteX Framework" width="80" height="15" /></a>';}}abstract
+new\LogicException("Cannot instantiate static class ".get_class($this));}}abstract
 class
 Object{static
 function
@@ -411,7 +410,7 @@ implements\ArrayAccess{public$onValidate;protected$currentGroup;protected$valid;
 setDefaults($values,$erase=FALSE){$form=$this->getForm(FALSE);if(!$form||!$form->isAnchored()||!$form->isSubmitted()){$this->setValues($values,$erase);}return$this;}function
 setValues($values,$erase=FALSE){if($values
 instanceof\Traversable){$values=iterator_to_array($values);}elseif(!is_array($values)){throw
-new\InvalidArgumentException("Values must be an array, ".gettype($values)." given.");}$cursor=&$values;$iterator=$this->getComponents(TRUE);foreach($iterator
+new\InvalidArgumentException("First parameter must be an array, ".gettype($values)." given.");}$cursor=&$values;$iterator=$this->getComponents(TRUE);foreach($iterator
 as$name=>$control){$sub=$iterator->getSubIterator();if(!isset($sub->cursor)){$sub->cursor=&$cursor;}if($control
 instanceof
 IFormControl){if((is_array($sub->cursor)||$sub->cursor
@@ -480,6 +479,7 @@ EQUAL=':equal';const
 IS_IN=':equal';const
 FILLED=':filled';const
 VALID=':valid';const
+PROTECTION='NetteX\Forms\HiddenField::validateEqual';const
 SUBMITTED=':submitted';const
 MIN_LENGTH=':minLength';const
 MAX_LENGTH=':maxLength';const
@@ -487,6 +487,7 @@ LENGTH=':length';const
 EMAIL=':email';const
 URL=':url';const
 REGEXP=':regexp';const
+PATTERN=':pattern';const
 INTEGER=':integer';const
 NUMERIC=':integer';const
 FLOAT=':float';const
@@ -513,7 +514,7 @@ setMethod($method){if($this->httpData!==NULL){throw
 new\XInvalidStateException(__METHOD__.'() must be called until the form is empty.');}$this->element->method=strtolower($method);return$this;}function
 getMethod(){return$this->element->method;}function
 addProtection($message=NULL,$timeout=NULL){$session=$this->getSession()->getNamespace('NetteX.Forms.Form/CSRF');$key="key$timeout";if(isset($session->$key)){$token=$session->$key;}else{$session->$key=$token=md5(uniqid('',TRUE));}$session->setExpiration($timeout,$key);$this[self::PROTECTOR_ID]=new
-HiddenField($token);$this[self::PROTECTOR_ID]->addRule(':equal',empty($message)?'Security token did not match. Possible CSRF attack.':$message,$token);}function
+HiddenField($token);$this[self::PROTECTOR_ID]->addRule(self::PROTECTION,$message,$token);}function
 addGroup($caption=NULL,$setAsCurrent=TRUE){$group=new
 FormGroup;$group->setOption('label',$caption);$group->setOption('visual',TRUE);if($setAsCurrent){$this->setCurrentGroup($group);}if(isset($this->groups[$caption])){return$this->groups[]=$group;}else{return$this->groups[$caption]=$group;}}function
 removeGroup($name){if(is_string($name)&&isset($this->groups[$name])){$group=$this->groups[$name];}elseif($name
@@ -578,23 +579,23 @@ receiveHttpData(){$presenter=$this->getPresenter();if(!$presenter->isSignalRecei
 NetteX\ArrayTools::mergeTree($request->getPost(),$request->getFiles());}else{return$request->getParams();}}function
 signalReceived($signal){if($signal==='submit'){$this->fireEvents();}else{throw
 new
-BadSignalException("There is no handler for signal '$signal' in {$this->reflection->name}.");}}}class
+BadSignalException("Missing handler for signal '$signal' in {$this->reflection->name}.");}}}class
 Application
 extends
 NetteX\Object{public
-static$maxLoop=20;public$catchExceptions;public$errorPresenter;public$onStartup;public$onShutdown;public$onRequest;public$onError;public$allowedMethods=array('GET','POST','HEAD','PUT','DELETE');private$requests=array();private$presenter;private$context;function
+static$maxLoop=20;public$catchExceptions;public$errorPresenter;public$onStartup;public$onShutdown;public$onRequest;public$onResponse;public$onError;public$allowedMethods=array('GET','POST','HEAD','PUT','DELETE');private$requests=array();private$presenter;private$context;function
 run(){$httpRequest=$this->getHttpRequest();$httpResponse=$this->getHttpResponse();$httpRequest->setEncoding('UTF-8');$session=$this->getSession();if(!$session->isStarted()&&$session->exists()){$session->start();}if($this->allowedMethods){$method=$httpRequest->getMethod();if(!in_array($method,$this->allowedMethods,TRUE)){$httpResponse->setCode(NetteX\Web\IHttpResponse::S501_NOT_IMPLEMENTED);$httpResponse->setHeader('Allow',implode(',',$this->allowedMethods));echo'<h1>Method '.htmlSpecialChars($method).' is not implemented</h1>';return;}}$request=NULL;$repeatedError=FALSE;do{try{if(count($this->requests)>self::$maxLoop){throw
 new
-ApplicationException('Too many loops detected in application life cycle.');}if(!$request){$this->onStartup($this);if($this->context->hasService('NetteX\\Application\\IRouter',TRUE)){$router=$this->getRouter();}else{$this->setRouter($router=$this->context->getService('defaultRouter'));}NetteX\Debug::addPanel(new
+ApplicationException('Too many loops detected in application life cycle.');}if(!$request){$this->onStartup($this);$router=$this->getRouter();NetteX\Debug::addPanel(new
 RoutingDebugger($router,$httpRequest));$request=$router->match($httpRequest);if(!($request
 instanceof
 PresenterRequest)){$request=NULL;throw
 new
 BadRequestException('No route for HTTP request.');}if(strcasecmp($request->getPresenterName(),$this->errorPresenter)===0){throw
 new
-BadRequestException('Invalid request.');}}$this->requests[]=$request;$this->onRequest($this,$request);$presenter=$request->getPresenterName();try{$class=$this->getPresenterLoader()->getPresenterClass($presenter);$request->setPresenterName($presenter);}catch(InvalidPresenterException$e){throw
+BadRequestException('Invalid request. Presenter is not achievable.');}}$this->requests[]=$request;$this->onRequest($this,$request);$presenter=$request->getPresenterName();try{$class=$this->getPresenterLoader()->getPresenterClass($presenter);$request->setPresenterName($presenter);}catch(InvalidPresenterException$e){throw
 new
-BadRequestException($e->getMessage(),404,$e);}$request->freeze();$this->presenter=new$class;$response=$this->presenter->run($request);if($response
+BadRequestException($e->getMessage(),404,$e);}$request->freeze();$this->presenter=new$class;$response=$this->presenter->run($request);$this->onResponse($this,$response);if($response
 instanceof
 ForwardingResponse){$request=$response->getRequest();continue;}elseif($response
 instanceof
@@ -604,7 +605,7 @@ instanceof
 BadRequestException?$e->getCode():500);}if(!$repeatedError&&$this->errorPresenter){$repeatedError=TRUE;if($this->presenter){try{$this->presenter->forward(":$this->errorPresenter:",array('exception'=>$e));}catch(AbortException$foo){$request=$this->presenter->getLastCreatedRequest();}}else{$request=new
 PresenterRequest($this->errorPresenter,PresenterRequest::FORWARD,array('exception'=>$e));}}else{if($e
 instanceof
-BadRequestException){$code=$e->getCode();}else{$code=500;NetteX\Debug::log($e);}echo"<!DOCTYPE html><meta name=robots content=noindex><meta name=generator content='NetteX Framework'>\n\n";echo"<style>body{color:#333;background:white;width:500px;margin:100px auto}h1{font:bold 47px/1.5 sans-serif;margin:.6em 0}p{font:21px/1.5 Georgia,serif;margin:1.5em 0}small{font-size:70%;color:gray}</style>\n\n";static$messages=array(0=>array('Oops...','Your browser sent a request that this server could not understand or process.'),403=>array('Access Denied','You do not have permission to view this page. Please try contact the web site administrator if you believe you should be able to view this page.'),404=>array('Page Not Found','The page you requested could not be found. It is possible that the address is incorrect, or that the page no longer exists. Please use a search engine to find what you are looking for.'),405=>array('Method Not Allowed','The requested method is not allowed for the URL.'),410=>array('Page Not Found','The page you requested has been taken off the site. We apologize for the inconvenience.'),500=>array('Server Error','We\'re sorry! The server encountered an internal error and was unable to complete your request. Please try again later.'));$message=isset($messages[$code])?$messages[$code]:$messages[0];echo"<title>$message[0]</title>\n\n<h1>$message[0]</h1>\n\n<p>$message[1]</p>\n\n";if($code)echo"<p><small>error $code</small></p>";break;}}}while(1);$this->onShutdown($this,isset($e)?$e:NULL);}final
+BadRequestException){$code=$e->getCode();}else{$code=500;NetteX\Debug::log($e,NetteX\Debug::ERROR);}echo"<!DOCTYPE html><meta name=robots content=noindex><meta name=generator content='NetteX Framework'>\n\n";echo"<style>body{color:#333;background:white;width:500px;margin:100px auto}h1{font:bold 47px/1.5 sans-serif;margin:.6em 0}p{font:21px/1.5 Georgia,serif;margin:1.5em 0}small{font-size:70%;color:gray}</style>\n\n";static$messages=array(0=>array('Oops...','Your browser sent a request that this server could not understand or process.'),403=>array('Access Denied','You do not have permission to view this page. Please try contact the web site administrator if you believe you should be able to view this page.'),404=>array('Page Not Found','The page you requested could not be found. It is possible that the address is incorrect, or that the page no longer exists. Please use a search engine to find what you are looking for.'),405=>array('Method Not Allowed','The requested method is not allowed for the URL.'),410=>array('Page Not Found','The page you requested has been taken off the site. We apologize for the inconvenience.'),500=>array('Server Error','We\'re sorry! The server encountered an internal error and was unable to complete your request. Please try again later.'));$message=isset($messages[$code])?$messages[$code]:$messages[0];echo"<title>$message[0]</title>\n\n<h1>$message[0]</h1>\n\n<p>$message[1]</p>\n\n";if($code)echo"<p><small>error $code</small></p>";break;}}}while(1);$this->onShutdown($this,isset($e)?$e:NULL);}final
 function
 getRequests(){return$this->requests;}final
 function
@@ -624,7 +625,7 @@ getHttpResponse(){return$this->context->getService('NetteX\\Web\\IHttpResponse')
 function
 getSession($namespace=NULL){$handler=$this->context->getService('NetteX\\Web\\Session');return$namespace===NULL?$handler:$handler->getNamespace($namespace);}function
 storeRequest($expiration='+ 10 minutes'){$session=$this->getSession('NetteX.Application/requests');do{$key=substr(md5(lcg_value()),0,4);}while(isset($session[$key]));$session[$key]=end($this->requests);$session->setExpiration($expiration,$key);return$key;}function
-restoreRequest($key){$session=$this->getSession('NetteX.Application/requests');if(isset($session[$key])){$request=clone$session[$key];unset($session[$key]);$request->setFlag(PresenterRequest::RESTORED,TRUE);$this->presenter->terminate(new
+restoreRequest($key){$session=$this->getSession('NetteX.Application/requests');if(isset($session[$key])){$request=clone$session[$key];unset($session[$key]);$request->setFlag(PresenterRequest::RESTORED,TRUE);$this->presenter->sendResponse(new
 ForwardingResponse($request));}}}abstract
 class
 PresenterComponent
@@ -660,7 +661,7 @@ getPersistentParams(){$rc=new
 NetteX\Reflection\ClassReflection(get_called_class());$params=array();foreach($rc->getProperties(\ReflectionProperty::IS_PUBLIC)as$rp){if(!$rp->isStatic()&&$rp->hasAnnotation('persistent')){$params[]=$rp->getName();}}return$params;}function
 signalReceived($signal){if(!$this->tryCall($this->formatSignalMethod($signal),$this->params)){throw
 new
-BadSignalException("There is no handler for signal '$signal' in {$this->reflection->name} class.");}}function
+BadSignalException("There is no handler for signal '$signal' in class {$this->reflection->name}.");}}function
 formatSignalMethod($signal){return$signal==NULL?NULL:'handle'.$signal;}function
 link($destination,$args=array()){if(!is_array($args)){$args=func_get_args();array_shift($args);}try{return$this->getPresenter()->createRequest($this,$destination,$args,'link');}catch(InvalidLinkException$e){return$this->getPresenter()->handleInvalidLink($e);}}function
 lazyLink($destination,$args=array()){if(!is_array($args)){$args=func_get_args();array_shift($args);}return
@@ -688,7 +689,7 @@ NetteX\Templates\ITemplate||$value===NULL)){$class=get_class($value);throw
 new\UnexpectedValueException("Object returned by {$this->reflection->name}::createTemplate() must be instance of NetteX\\Templates\\ITemplate, '$class' given.");}$this->template=$value;}return$this->template;}protected
 function
 createTemplate(){$template=new
-NetteX\Templates\FileTemplate;$presenter=$this->getPresenter(FALSE);$template->onPrepareFilters[]=callback($this,'templatePrepareFilters');$template->control=$this;$template->presenter=$presenter;$template->user=NetteX\Environment::getUser();$template->baseUri=NetteX\Environment::getVariable('baseUri',NULL);$template->basePath=rtrim($template->baseUri,'/');if($presenter!==NULL&&$presenter->hasFlashSession()){$id=$this->getParamId('flash');$template->flashes=$presenter->getFlashSession()->$id;}if(!isset($template->flashes)||!is_array($template->flashes)){$template->flashes=array();}$template->registerHelper('escape','NetteX\Templates\TemplateHelpers::escapeHtml');$template->registerHelper('escapeUrl','rawurlencode');$template->registerHelper('stripTags','strip_tags');$template->registerHelper('nl2br','nl2br');$template->registerHelper('substr','iconv_substr');$template->registerHelper('repeat','str_repeat');$template->registerHelper('replaceRE','NetteX\String::replace');$template->registerHelper('implode','implode');$template->registerHelper('number','number_format');$template->registerHelperLoader('NetteX\Templates\TemplateHelpers::loader');return$template;}function
+NetteX\Templates\FileTemplate;$presenter=$this->getPresenter(FALSE);$template->onPrepareFilters[]=callback($this,'templatePrepareFilters');$template->control=$this;$template->presenter=$presenter;$template->user=NetteX\Environment::getUser();$template->baseUri=rtrim(NetteX\Environment::getVariable('baseUri',NULL),'/');$template->basePath=preg_replace('#https?://[^/]+#A','',$template->baseUri);if($presenter!==NULL&&$presenter->hasFlashSession()){$id=$this->getParamId('flash');$template->flashes=$presenter->getFlashSession()->$id;}if(!isset($template->flashes)||!is_array($template->flashes)){$template->flashes=array();}$template->registerHelper('escape','NetteX\Templates\TemplateHelpers::escapeHtml');$template->registerHelper('escapeUrl','rawurlencode');$template->registerHelper('stripTags','strip_tags');$template->registerHelper('nl2br','nl2br');$template->registerHelper('substr','iconv_substr');$template->registerHelper('repeat','str_repeat');$template->registerHelper('replaceRE','NetteX\String::replace');$template->registerHelper('implode','implode');$template->registerHelper('number','number_format');$template->registerHelperLoader('NetteX\Templates\TemplateHelpers::loader');return$template;}function
 templatePrepareFilters($template){$template->registerFilter(new
 NetteX\Templates\LatteFilter);}function
 getWidget($name){return$this->getComponent($name);}function
@@ -755,7 +756,7 @@ getUniqueId(){return'';}function
 run(PresenterRequest$request){try{$this->request=$request;$this->payload=(object)NULL;$this->setParent($this->getParent(),$request->getPresenterName());$this->initGlobalParams();$this->startup();if(!$this->startupCheck){$class=$this->reflection->getMethod('startup')->getDeclaringClass()->getName();throw
 new\XInvalidStateException("Method $class::startup() or its descendant doesn't call parent::startup().");}$this->tryCall($this->formatActionMethod($this->getAction()),$this->params);if($this->autoCanonicalize){$this->canonicalize();}if($this->getHttpRequest()->isMethod('head')){$this->terminate();}$this->processSignal();$this->beforeRender();$this->tryCall($this->formatRenderMethod($this->getView()),$this->params);$this->afterRender();$this->saveGlobalState();if($this->isAjax()){$this->payload->state=$this->getGlobalState();}$this->sendTemplate();}catch(AbortException$e){}{if($this->isAjax())try{$hasPayload=(array)$this->payload;unset($hasPayload['state']);if($this->response
 instanceof
-RenderResponse&&($this->isControlInvalid()||$hasPayload)){NetteX\Templates\SnippetHelper::$outputAllowed=FALSE;$this->response->send();$this->sendPayload();}elseif(!$this->response&&$hasPayload){$this->sendPayload();}}catch(AbortException$e){}if($this->hasFlashSession()){$this->getFlashSession()->setExpiration($this->response
+RenderResponse&&($this->isControlInvalid()||$hasPayload)){$this->response->send();$this->sendPayload();}elseif(!$this->response&&$hasPayload){$this->sendPayload();}}catch(AbortException$e){}if($this->hasFlashSession()){$this->getFlashSession()->setExpiration($this->response
 instanceof
 RedirectingResponse?'+ 30 seconds':'+ 3 seconds');}$this->onShutdown($this,$this->response);$this->shutdown($this->response);return$this->response;}}protected
 function
@@ -798,7 +799,7 @@ as$file){if(is_file($file)){$template->setFile($file);break;}}if(!$template->get
 new
 BadRequestException("Page not found. Missing template '$file'.");}if($this->layout!==FALSE){$files=$this->formatLayoutTemplateFiles($this->getName(),$this->layout?$this->layout:'layout');foreach($files
 as$file){if(is_file($file)){$template->layout=$file;$template->_extends=$file;break;}}if(empty($template->layout)&&$this->layout!==NULL){$file=str_replace(Environment::getVariable('appDir'),"\xE2\x80\xA6",reset($files));throw
-new\XFileNotFoundException("Layout not found. Missing template '$file'.");}}}$this->terminate(new
+new\XFileNotFoundException("Layout not found. Missing template '$file'.");}}}$this->sendResponse(new
 RenderResponse($template));}function
 formatLayoutTemplateFiles($presenter,$layout){$appDir=Environment::getVariable('appDir');$path='/'.str_replace(':','Module/',$presenter);$pathP=substr_replace($path,'/templates',strrpos($path,'/'),0);$list=array("$appDir$pathP/@$layout.phtml","$appDir$pathP.@$layout.phtml");while(($path=substr($path,0,strrpos($path,'/')))!==FALSE){$list[]="$appDir$path/templates/@$layout.phtml";}return$list;}function
 formatTemplateFiles($presenter,$view){$appDir=Environment::getVariable('appDir');$path='/'.str_replace(':','Module/',$presenter);$pathP=substr_replace($path,'/templates',strrpos($path,'/'),0);$path=substr_replace($path,'/templates',strrpos($path,'/'));return
@@ -812,22 +813,23 @@ formatRenderMethod($view){return'render'.$view;}final
 function
 getPayload(){return$this->payload;}function
 isAjax(){if($this->ajaxMode===NULL){$this->ajaxMode=$this->getHttpRequest()->isAjax();}return$this->ajaxMode;}function
-sendPayload(){$this->terminate(new
+sendPayload(){$this->sendResponse(new
 JsonResponse($this->payload));}function
+sendResponse(IPresenterResponse$response){$this->response=$response;$this->terminate();}function
+terminate(){if(func_num_args()!==0){trigger_error(__METHOD__.' is not intended to send a PresenterResponse; use sendResponse() instead.',E_USER_WARNING);$this->sendResponse(func_get_arg(0));}throw
+new
+AbortException();}function
 forward($destination,$args=array()){if($destination
 instanceof
-PresenterRequest){$this->terminate(new
-ForwardingResponse($destination));}elseif(!is_array($args)){$args=func_get_args();array_shift($args);}$this->createRequest($this,$destination,$args,'forward');$this->terminate(new
+PresenterRequest){$this->sendResponse(new
+ForwardingResponse($destination));}elseif(!is_array($args)){$args=func_get_args();array_shift($args);}$this->createRequest($this,$destination,$args,'forward');$this->sendResponse(new
 ForwardingResponse($this->lastCreatedRequest));}function
-redirectUri($uri,$code=NULL){if($this->isAjax()){$this->payload->redirect=(string)$uri;$this->sendPayload();}elseif(!$code){$code=$this->getHttpRequest()->isMethod('post')?NetteX\Web\IHttpResponse::S303_POST_GET:NetteX\Web\IHttpResponse::S302_FOUND;}$this->terminate(new
+redirectUri($uri,$code=NULL){if($this->isAjax()){$this->payload->redirect=(string)$uri;$this->sendPayload();}elseif(!$code){$code=$this->getHttpRequest()->isMethod('post')?NetteX\Web\IHttpResponse::S303_POST_GET:NetteX\Web\IHttpResponse::S302_FOUND;}$this->sendResponse(new
 RedirectingResponse($uri,$code));}function
 backlink(){return$this->getAction(TRUE);}function
 getLastCreatedRequest(){return$this->lastCreatedRequest;}function
 getLastCreatedRequestFlag($flag){return!empty($this->lastCreatedRequestFlag[$flag]);}function
-terminate(IPresenterResponse$response=NULL){$this->response=$response;throw
-new
-AbortException();}function
-canonicalize(){if(!$this->isAjax()&&($this->request->isMethod('get')||$this->request->isMethod('head'))){$uri=$this->createRequest($this,$this->action,$this->getGlobalState()+$this->request->params,'redirectX');if($uri!==NULL&&!$this->getHttpRequest()->getUri()->isEqual($uri)){$this->terminate(new
+canonicalize(){if(!$this->isAjax()&&($this->request->isMethod('get')||$this->request->isMethod('head'))){$uri=$this->createRequest($this,$this->action,$this->getGlobalState()+$this->request->params,'redirectX');if($uri!==NULL&&!$this->getHttpRequest()->getUri()->isEqual($uri)){$this->sendResponse(new
 RedirectingResponse($uri,NetteX\Web\IHttpResponse::S301_MOVED_PERMANENTLY));}}}function
 lastModified($lastModified,$etag=NULL,$expire=NULL){if(!Environment::isProduction()){return;}if($expire!==NULL){$this->getHttpResponse()->setExpiration($expire);}if(!$this->getHttpContext()->isModified($lastModified,$etag)){$this->terminate();}}final
 protected
@@ -843,23 +845,23 @@ new
 InvalidLinkException("Missing presenter name in '$destination'.");}$presenter=substr($destination,1,$a-1);}else{$presenter=$this->getName();$b=strrpos($presenter,':');if($b===FALSE){$presenter=substr($destination,0,$a);}else{$presenter=substr($presenter,0,$b+1).substr($destination,0,$a);}}$presenterClass=$presenterLoader->getPresenterClass($presenter);}if(isset($signal)){$reflection=new
 PresenterComponentReflection(get_class($component));if($signal==='this'){$signal='';if(array_key_exists(0,$args)){throw
 new
-InvalidLinkException("Extra parameter for signal '{$reflection->name}:$signal!'.");}}elseif(strpos($signal,self::NAME_SEPARATOR)===FALSE){$method=$component->formatSignalMethod($signal);if(!$reflection->hasCallableMethod($method)){throw
+InvalidLinkException("Unable to pass parameters to 'this!' signal.");}}elseif(strpos($signal,self::NAME_SEPARATOR)===FALSE){$method=$component->formatSignalMethod($signal);if(!$reflection->hasCallableMethod($method)){throw
 new
-InvalidLinkException("Unknown signal '{$reflection->name}:$signal!'.");}if($args){self::argsToParams(get_class($component),$method,$args);}}if($args&&array_intersect_key($args,$reflection->getPersistentParams())){$component->saveState($args);}if($args&&$component!==$this){$prefix=$component->getUniqueId().self::NAME_SEPARATOR;foreach($args
+InvalidLinkException("Unknown signal '$signal', missing handler {$reflection->name}::$method()");}if($args){self::argsToParams(get_class($component),$method,$args);}}if($args&&array_intersect_key($args,$reflection->getPersistentParams())){$component->saveState($args);}if($args&&$component!==$this){$prefix=$component->getUniqueId().self::NAME_SEPARATOR;foreach($args
 as$key=>$val){unset($args[$key]);$args[$prefix.$key]=$val;}}}if(is_subclass_of($presenterClass,__CLASS__)){if($action===''){$action=$presenterClass::$defaultAction;}$current=($action==='*'||$action===$this->action)&&$presenterClass===get_class($this);$reflection=new
 PresenterComponentReflection($presenterClass);if($args||$destination==='this'){$method=$presenterClass::formatActionMethod($action);if(!$reflection->hasCallableMethod($method)){$method=$presenterClass::formatRenderMethod($action);if(!$reflection->hasCallableMethod($method)){$method=NULL;}}if($method===NULL){if(array_key_exists(0,$args)){throw
 new
-InvalidLinkException("Extra parameter for '$presenter:$action'.");}}elseif($destination==='this'){self::argsToParams($presenterClass,$method,$args,$this->params);}else{self::argsToParams($presenterClass,$method,$args);}}if($args&&array_intersect_key($args,$reflection->getPersistentParams())){$this->saveState($args,$reflection);}$globalState=$this->getGlobalState($destination==='this'?NULL:$presenterClass);if($current&&$args){$tmp=$globalState+$this->params;foreach($args
+InvalidLinkException("Unable to pass parameters to action '$presenter:$action', missing corresponding method.");}}elseif($destination==='this'){self::argsToParams($presenterClass,$method,$args,$this->params);}else{self::argsToParams($presenterClass,$method,$args);}}if($args&&array_intersect_key($args,$reflection->getPersistentParams())){$this->saveState($args,$reflection);}$globalState=$this->getGlobalState($destination==='this'?NULL:$presenterClass);if($current&&$args){$tmp=$globalState+$this->params;foreach($args
 as$key=>$val){if((string)$val!==(isset($tmp[$key])?(string)$tmp[$key]:'')){$current=FALSE;break;}}}$args+=$globalState;}$args[self::ACTION_KEY]=$action;if(!empty($signal)){$args[self::SIGNAL_KEY]=$component->getParamId($signal);$current=$current&&$args[self::SIGNAL_KEY]===$this->getParam(self::SIGNAL_KEY);}if(($mode==='redirect'||$mode==='forward')&&$this->hasFlashSession()){$args[self::FLASH_KEY]=$this->getParam(self::FLASH_KEY);}$this->lastCreatedRequest=new
-PresenterRequest($presenter,PresenterRequest::FORWARD,$args,array(),array());$this->lastCreatedRequestFlag=array('current'=>$current);if($mode==='forward')return;$uri=$router->constructUrl($this->lastCreatedRequest,$httpRequest);if($uri===NULL){unset($args[self::ACTION_KEY]);$params=urldecode(http_build_query($args,NULL,', '));throw
+PresenterRequest($presenter,PresenterRequest::FORWARD,$args,array(),array());$this->lastCreatedRequestFlag=array('current'=>$current);if($mode==='forward')return;$uri=$router->constructUrl($this->lastCreatedRequest,$httpRequest->getUri());if($uri===NULL){unset($args[self::ACTION_KEY]);$params=urldecode(http_build_query($args,NULL,', '));throw
 new
 InvalidLinkException("No route for $presenter:$action($params)");}if($mode==='link'&&$scheme===FALSE&&!$this->absoluteUrls){$hostUri=$httpRequest->getUri()->getHostUri();if(strncmp($uri,$hostUri,strlen($hostUri))===0){$uri=substr($uri,strlen($hostUri));}}return$uri.$fragment;}private
 static
 function
 argsToParams($class,$method,&$args,$supplemental=array()){static$cache;$params=&$cache[strtolower($class.':'.$method)];if($params===NULL){$params=NetteX\Reflection\MethodReflection::from($class,$method)->getDefaultParameters();}$i=0;foreach($params
-as$name=>$def){if(array_key_exists($i,$args)){$args[$name]=$args[$i];unset($args[$i]);$i++;}elseif(array_key_exists($name,$args)){}elseif(array_key_exists($name,$supplemental)){$args[$name]=$supplemental[$name];}else{continue;}if($def===NULL){if((string)$args[$name]==='')$args[$name]=NULL;}else{settype($args[$name],gettype($def));if($args[$name]===$def)$args[$name]=NULL;}}if(array_key_exists($i,$args)){throw
+as$name=>$def){if(array_key_exists($i,$args)){$args[$name]=$args[$i];unset($args[$i]);$i++;}elseif(array_key_exists($name,$args)){}elseif(array_key_exists($name,$supplemental)){$args[$name]=$supplemental[$name];}else{continue;}if($def===NULL){if((string)$args[$name]==='')$args[$name]=NULL;}else{settype($args[$name],gettype($def));if($args[$name]===$def)$args[$name]=NULL;}}if(array_key_exists($i,$args)){$method=NetteX\Reflection\MethodReflection::from($class,$method)->getName();throw
 new
-InvalidLinkException("Extra parameter for signal '$class:$method'.");}}protected
+InvalidLinkException("Passed more parameters than method $class::$method() expects.");}}protected
 function
 handleInvalidLink($e){if(self::$invalidLinkMode===NULL){self::$invalidLinkMode=Environment::isProduction()?self::INVALID_LINK_SILENT:self::INVALID_LINK_WARNING;}if(self::$invalidLinkMode===self::INVALID_LINK_SILENT){return'#';}elseif(self::$invalidLinkMode===self::INVALID_LINK_WARNING){return'error: '.$e->getMessage();}else{throw$e;}}static
 function
@@ -1089,7 +1091,7 @@ as$arg){$opt=preg_replace('#/|-+#A','',$arg);if($opt===$arg){if(isset($flag)||$f
 new\XInvalidStateException('Missing presenter & action in route definition.');}$presenter=$params[self::PRESENTER_KEY];if($a=strrpos($presenter,':')){$params[self::PRESENTER_KEY]=substr($presenter,$a+1);$presenter=substr($presenter,0,$a);}return
 new
 PresenterRequest($presenter,'CLI',$params);}function
-constructUrl(PresenterRequest$appRequest,NetteX\Web\IHttpRequest$httpRequest){return
+constructUrl(PresenterRequest$appRequest,NetteX\Web\Uri$refUri){return
 NULL;}function
 getDefaults(){return$this->defaults;}}}namespace NetteX{use
 NetteX;class
@@ -1115,11 +1117,11 @@ IRouter{private$cachedRoutes;function
 match(NetteX\Web\IHttpRequest$httpRequest){foreach($this
 as$route){$appRequest=$route->match($httpRequest);if($appRequest!==NULL){return$appRequest;}}return
 NULL;}function
-constructUrl(PresenterRequest$appRequest,NetteX\Web\IHttpRequest$httpRequest){if($this->cachedRoutes===NULL){$routes=array();$routes['*']=array();foreach($this
+constructUrl(PresenterRequest$appRequest,NetteX\Web\Uri$refUri){if($this->cachedRoutes===NULL){$routes=array();$routes['*']=array();foreach($this
 as$route){$presenter=$route
 instanceof
 Route?$route->getTargetPresenter():NULL;if($presenter===FALSE)continue;if(is_string($presenter)){$presenter=strtolower($presenter);if(!isset($routes[$presenter])){$routes[$presenter]=$routes['*'];}$routes[$presenter][]=$route;}else{foreach($routes
-as$id=>$foo){$routes[$id][]=$route;}}}$this->cachedRoutes=$routes;}$presenter=strtolower($appRequest->getPresenterName());if(!isset($this->cachedRoutes[$presenter]))$presenter='*';foreach($this->cachedRoutes[$presenter]as$route){$uri=$route->constructUrl($appRequest,$httpRequest);if($uri!==NULL){return$uri;}}return
+as$id=>$foo){$routes[$id][]=$route;}}}$this->cachedRoutes=$routes;}$presenter=strtolower($appRequest->getPresenterName());if(!isset($this->cachedRoutes[$presenter]))$presenter='*';foreach($this->cachedRoutes[$presenter]as$route){$uri=$route->constructUrl($appRequest,$refUri);if($uri!==NULL){return$uri;}}return
 NULL;}function
 offsetSet($index,$route){if(!($route
 instanceof
@@ -1159,12 +1161,12 @@ new\XInvalidStateException('Missing presenter in route definition.');}if(isset($
 new\XInvalidStateException('Missing module in route definition.');}$presenter=$params[self::MODULE_KEY].':'.$params[self::PRESENTER_KEY];unset($params[self::MODULE_KEY],$params[self::PRESENTER_KEY]);}else{$presenter=$params[self::PRESENTER_KEY];unset($params[self::PRESENTER_KEY]);}return
 new
 PresenterRequest($presenter,$httpRequest->getMethod(),$params,$httpRequest->getPost(),$httpRequest->getFiles(),array(PresenterRequest::SECURED=>$httpRequest->isSecured()));}function
-constructUrl(PresenterRequest$appRequest,NetteX\Web\IHttpRequest$httpRequest){if($this->flags&self::ONE_WAY){return
+constructUrl(PresenterRequest$appRequest,NetteX\Web\Uri$refUri){if($this->flags&self::ONE_WAY){return
 NULL;}$params=$appRequest->getParams();$metadata=$this->metadata;$presenter=$appRequest->getPresenterName();$params[self::PRESENTER_KEY]=$presenter;if(isset($metadata[self::MODULE_KEY])){$module=$metadata[self::MODULE_KEY];if(isset($module['fixity'])&&strncasecmp($presenter,$module[self::VALUE].':',strlen($module[self::VALUE])+1)===0){$a=strlen($module[self::VALUE]);}else{$a=strrpos($presenter,':');}if($a===FALSE){$params[self::MODULE_KEY]='';}else{$params[self::MODULE_KEY]=substr($presenter,0,$a);$params[self::PRESENTER_KEY]=substr($presenter,$a+1);}}foreach($metadata
 as$name=>$meta){if(!isset($params[$name]))continue;if(isset($meta['fixity'])){if(is_scalar($params[$name])&&strcasecmp($params[$name],$meta[self::VALUE])===0){unset($params[$name]);continue;}elseif($meta['fixity']===self::CONSTANT){return
 NULL;}}if(!is_scalar($params[$name])){}elseif(isset($meta['filterTable2'][$params[$name]])){$params[$name]=$meta['filterTable2'][$params[$name]];}elseif(isset($meta[self::FILTER_OUT])){$params[$name]=call_user_func($meta[self::FILTER_OUT],$params[$name]);}if(isset($meta[self::PATTERN])&&!preg_match($meta[self::PATTERN],rawurldecode($params[$name]))){return
 NULL;}}$sequence=$this->sequence;$brackets=array();$required=0;$uri='';$i=count($sequence)-1;do{$uri=$sequence[$i].$uri;if($i===0)break;$i--;$name=$sequence[$i];$i--;if($name===']'){$brackets[]=$uri;}elseif($name[0]==='['){$tmp=array_pop($brackets);if($required<count($brackets)+1){if($name!=='[!'){$uri=$tmp;}}else{$required=count($brackets);}}elseif($name[0]==='?'){continue;}elseif(isset($params[$name])&&$params[$name]!=''){$required=count($brackets);$uri=$params[$name].$uri;unset($params[$name]);}elseif(isset($metadata[$name]['fixity'])){$uri=$metadata[$name]['defOut'].$uri;}else{return
-NULL;}}while(TRUE);if($this->xlat){$params=self::renameKeys($params,$this->xlat);}$sep=ini_get('arg_separator.input');$query=http_build_query($params,'',$sep?$sep[0]:'&');if($query!='')$uri.='?'.$query;if($this->type===self::RELATIVE){$uri='//'.$httpRequest->getUri()->getAuthority().$httpRequest->getUri()->getBasePath().$uri;}elseif($this->type===self::PATH){$uri='//'.$httpRequest->getUri()->getAuthority().$uri;}if(strpos($uri,'//',2)!==FALSE){return
+NULL;}}while(TRUE);if($this->xlat){$params=self::renameKeys($params,$this->xlat);}$sep=ini_get('arg_separator.input');$query=http_build_query($params,'',$sep?$sep[0]:'&');if($query!='')$uri.='?'.$query;if($this->type===self::RELATIVE){$uri='//'.$refUri->getAuthority().$refUri->getBasePath().$uri;}elseif($this->type===self::PATH){$uri='//'.$refUri->getAuthority().$uri;}if(strpos($uri,'//',2)!==FALSE){return
 NULL;}$uri=($this->flags&self::SECURED?'https:':'http:').$uri;return$uri;}private
 function
 setMask($mask,array$metadata){$this->mask=$mask;if(substr($mask,0,2)==='//'){$this->type=self::HOST;}elseif(substr($mask,0,1)==='/'){$this->type=self::PATH;}else{$this->type=self::RELATIVE;}foreach($metadata
@@ -1213,13 +1215,14 @@ IRouter{const
 PRESENTER_KEY='presenter';const
 MODULE_KEY='module';private$module='';private$defaults;private$flags;function
 __construct($defaults=array(),$flags=0){if(is_string($defaults)){$a=strrpos($defaults,':');$defaults=array(self::PRESENTER_KEY=>substr($defaults,0,$a),'action'=>substr($defaults,$a+1));}if(isset($defaults[self::MODULE_KEY])){$this->module=$defaults[self::MODULE_KEY].':';unset($defaults[self::MODULE_KEY]);}$this->defaults=$defaults;$this->flags=$flags;}function
-match(NetteX\Web\IHttpRequest$httpRequest){$params=$httpRequest->getQuery();$params+=$this->defaults;if(!isset($params[self::PRESENTER_KEY])){throw
+match(NetteX\Web\IHttpRequest$httpRequest){if($httpRequest->getUri()->getPathInfo()!==''){return
+NULL;}$params=$httpRequest->getQuery();$params+=$this->defaults;if(!isset($params[self::PRESENTER_KEY])){throw
 new\XInvalidStateException('Missing presenter.');}$presenter=$this->module.$params[self::PRESENTER_KEY];unset($params[self::PRESENTER_KEY]);return
 new
 PresenterRequest($presenter,$httpRequest->getMethod(),$params,$httpRequest->getPost(),$httpRequest->getFiles(),array(PresenterRequest::SECURED=>$httpRequest->isSecured()));}function
-constructUrl(PresenterRequest$appRequest,NetteX\Web\IHttpRequest$httpRequest){$params=$appRequest->getParams();$presenter=$appRequest->getPresenterName();if(strncasecmp($presenter,$this->module,strlen($this->module))===0){$params[self::PRESENTER_KEY]=substr($presenter,strlen($this->module));}else{return
+constructUrl(PresenterRequest$appRequest,NetteX\Web\Uri$refUri){$params=$appRequest->getParams();$presenter=$appRequest->getPresenterName();if(strncasecmp($presenter,$this->module,strlen($this->module))===0){$params[self::PRESENTER_KEY]=substr($presenter,strlen($this->module));}else{return
 NULL;}foreach($this->defaults
-as$key=>$value){if(isset($params[$key])&&$params[$key]==$value){unset($params[$key]);}}$uri=$httpRequest->getUri();$uri=($this->flags&self::SECURED?'https://':'http://').$uri->getAuthority().$uri->getScriptPath();$sep=ini_get('arg_separator.input');$query=http_build_query($params,'',$sep?$sep[0]:'&');if($query!=''){$uri.='?'.$query;}return$uri;}function
+as$key=>$value){if(isset($params[$key])&&$params[$key]==$value){unset($params[$key]);}}$uri=($this->flags&self::SECURED?'https://':'http://').$refUri->getAuthority().$refUri->getPath();$sep=ini_get('arg_separator.input');$query=http_build_query($params,'',$sep?$sep[0]:'&');if($query!=''){$uri.='?'.$query;}return$uri;}function
 getDefaults(){return$this->defaults;}}}namespace NetteX{class
 DebugPanel
 extends
@@ -1354,6 +1357,7 @@ extends
 NetteX\Object
 implements\ArrayAccess{const
 PRIORITY='priority';const
+EXPIRATION='expire';const
 EXPIRE='expire';const
 SLIDING='sliding';const
 TAGS='tags';const
@@ -1364,12 +1368,12 @@ CALLBACKS='callbacks';const
 ALL='all';const
 NAMESPACE_SEPARATOR="\x00";private$storage;private$namespace;private$key;private$data;function
 __construct(ICacheStorage$storage,$namespace=NULL){$this->storage=$storage;$this->namespace=(string)$namespace;if(strpos($this->namespace,self::NAMESPACE_SEPARATOR)!==FALSE){throw
-new\InvalidArgumentException("Namespace name contains forbidden character.");}}function
+new\InvalidArgumentException("Namespace name contains forbidden NUL character.");}}function
 getStorage(){return$this->storage;}function
 getNamespace(){return$this->namespace;}function
 release(){$this->key=$this->data=NULL;}function
 save($key,$data,array$dp=NULL){if(!is_string($key)&&!is_int($key)){throw
-new\InvalidArgumentException("Cache key name must be string or integer, ".gettype($key)." given.");}$this->key=(string)$key;$key=$this->namespace.self::NAMESPACE_SEPARATOR.$key;if(isset($dp[Cache::EXPIRE])){$dp[Cache::EXPIRE]=NetteX\Tools::createDateTime($dp[Cache::EXPIRE])->format('U')-time();}if(isset($dp[self::FILES])){foreach((array)$dp[self::FILES]as$item){$dp[self::CALLBACKS][]=array(array(__CLASS__,'checkFile'),$item,@filemtime($item));}unset($dp[self::FILES]);}if(isset($dp[self::ITEMS])){$dp[self::ITEMS]=(array)$dp[self::ITEMS];foreach($dp[self::ITEMS]as$k=>$item){$dp[self::ITEMS][$k]=$this->namespace.self::NAMESPACE_SEPARATOR.$item;}}if(isset($dp[self::CONSTS])){foreach((array)$dp[self::CONSTS]as$item){$dp[self::CALLBACKS][]=array(array(__CLASS__,'checkConst'),$item,constant($item));}unset($dp[self::CONSTS]);}if($data
+new\InvalidArgumentException("Cache key name must be string or integer, ".gettype($key)." given.");}$this->key=(string)$key;$key=$this->namespace.self::NAMESPACE_SEPARATOR.$key;if(isset($dp[Cache::EXPIRATION])){$dp[Cache::EXPIRATION]=NetteX\Tools::createDateTime($dp[Cache::EXPIRATION])->format('U')-time();}if(isset($dp[self::FILES])){foreach((array)$dp[self::FILES]as$item){$dp[self::CALLBACKS][]=array(array(__CLASS__,'checkFile'),$item,@filemtime($item));}unset($dp[self::FILES]);}if(isset($dp[self::ITEMS])){$dp[self::ITEMS]=(array)$dp[self::ITEMS];foreach($dp[self::ITEMS]as$k=>$item){$dp[self::ITEMS][$k]=$this->namespace.self::NAMESPACE_SEPARATOR.$item;}}if(isset($dp[self::CONSTS])){foreach((array)$dp[self::CONSTS]as$item){$dp[self::CALLBACKS][]=array(array(__CLASS__,'checkConst'),$item,constant($item));}unset($dp[self::CONSTS]);}if($data
 instanceof
 NetteX\Callback||$data
 instanceof\Closure){NetteX\Tools::enterCriticalSection();$data=$data->__invoke();NetteX\Tools::leaveCriticalSection();}if(is_object($data)){$dp[self::CALLBACKS][]=array(array(__CLASS__,'checkSerializationVersion'),get_class($data),NetteX\Reflection\ClassReflection::from($data)->getAnnotation('serializationVersion'));}$this->data=$data;if($data===NULL){$this->storage->remove($key);}else{$this->storage->write($key,$data,(array)$dp);}return$data;}function
@@ -1417,14 +1421,14 @@ function
 reload(){if(($mtime=@filemtime($this->file))===FALSE){$mtime=0;}if($this->mtime<$mtime){fclose($this->handle);fclose($this->logHandle);$this->handle=$this->logHandle=NULL;$this->open();}$this->logMerge=$this->mergeLogFile($this->logHandle,$this->logMergeP,$this->logMerge);}private
 function
 open(){$this->handle=$this->logHandle=NULL;$this->mtime=$this->logMergeP=0;$this->sections=$this->logMerge=array();clearstatcache();if(($this->mtime=@filemtime($this->file))===FALSE){$this->mtime=0;}$tries=3;do{if(!$tries--){throw
-new\XInvalidStateException('Cannot open journal file '.$this->file.'.');}if(!($this->handle=@fopen($this->file,'rb'))){$this->handle=NULL;}else{list(,$magic,$sectionCount)=unpack('N2',fread($this->handle,2*self::INT32));if($magic!==self::MAGIC){fclose($this->handle);throw
-new\XInvalidStateException('Malformed journal file '.$this->file.'.');}for($i=0;$i<$sectionCount;++$i){list(,$name,$offset,$keyLength,$keyCount)=unpack('N4',fread($this->handle,4*self::INT32));$this->sections[$name]=(object)array('offset'=>$offset,'keyLength'=>$keyLength,'keyCount'=>$keyCount);}}clearstatcache();if(($mtime=@filemtime($this->file))===FALSE){$mtime=0;}}while($this->mtime<$mtime);if(!($this->logHandle=@fopen($logfile=$this->file.self::EXTLOG,'a+b'))){throw
-new\XInvalidStateException('Cannot open logfile '.$logfile.' for journal.');}$doMergeFirst=FALSE;$openNewLog=FALSE;$reopen=FALSE;if(flock($this->logHandle,LOCK_SH|LOCK_NB)){if(file_exists($logfile=$this->file.self::EXTLOGNEW)){if(($logmtime=@filemtime($this->file.self::EXTLOG))===FALSE){throw
-new\XInvalidStateException('Cannot determine mtime of logfile '.$this->file.self::EXTLOG.'.');}if($logmtime<$this->mtime){fclose($this->logHandle);if(!@rename($this->file.self::EXTLOGNEW,$this->file.self::EXTLOG)){clearstatcache();if(!file_exists($this->file.self::EXTLOGNEW)){$reopen=TRUE;}else{$openNewLog=TRUE;}}else{$reopen=TRUE;}}else{if(!$this->rebuild()){$doMergeFirst=TRUE;$openNewLog=TRUE;}}}}else{$doMergeFirst=TRUE;$openNewLog=TRUE;}if($reopen&&$openNewLog){throw
+new\XInvalidStateException("Cannot open journal file '$this->file'.");}if(!($this->handle=@fopen($this->file,'rb'))){$this->handle=NULL;}else{list(,$magic,$sectionCount)=unpack('N2',fread($this->handle,2*self::INT32));if($magic!==self::MAGIC){fclose($this->handle);throw
+new\XInvalidStateException("Malformed journal file '$this->file'.");}for($i=0;$i<$sectionCount;++$i){list(,$name,$offset,$keyLength,$keyCount)=unpack('N4',fread($this->handle,4*self::INT32));$this->sections[$name]=(object)array('offset'=>$offset,'keyLength'=>$keyLength,'keyCount'=>$keyCount);}}clearstatcache();if(($mtime=@filemtime($this->file))===FALSE){$mtime=0;}}while($this->mtime<$mtime);if(!($this->logHandle=@fopen($logfile=$this->file.self::EXTLOG,'a+b'))){throw
+new\XInvalidStateException("Cannot open logfile '$logfile' for journal.");}$doMergeFirst=FALSE;$openNewLog=FALSE;$reopen=FALSE;if(flock($this->logHandle,LOCK_SH|LOCK_NB)){if(file_exists($logfile=$this->file.self::EXTLOGNEW)){if(($logmtime=@filemtime($this->file.self::EXTLOG))===FALSE){throw
+new\XInvalidStateException("Cannot determine modification time of logfile '$this->file".self::EXTLOG."'.");}if($logmtime<$this->mtime){fclose($this->logHandle);if(!@rename($this->file.self::EXTLOGNEW,$this->file.self::EXTLOG)){clearstatcache();if(!file_exists($this->file.self::EXTLOGNEW)){$reopen=TRUE;}else{$openNewLog=TRUE;}}else{$reopen=TRUE;}}else{if(!$this->rebuild()){$doMergeFirst=TRUE;$openNewLog=TRUE;}}}}else{$doMergeFirst=TRUE;$openNewLog=TRUE;}if($reopen&&$openNewLog){throw
 new\LogicException('Something bad with algorithm.');}if($doMergeFirst){$this->logMerge=$this->mergeLogFile($this->logHandle,0);}if($reopen){fclose($this->logHandle);if(!($this->logHandle=@fopen($logfile=$this->file.self::EXTLOG,'a+b'))){throw
-new\XInvalidStateException('Cannot open logfile '.$logfile.'.');}if(!flock($this->logHandle,LOCK_SH)){throw
+new\XInvalidStateException("Cannot open logfile '$logfile'.");}if(!flock($this->logHandle,LOCK_SH)){throw
 new\XInvalidStateException('Cannot acquite shared lock on log.');}}if($openNewLog){fclose($this->logHandle);if(!($this->logHandle=@fopen($logfile=$this->file.self::EXTLOGNEW,'a+b'))){throw
-new\XInvalidStateException('Cannot open logfile '.$logfile.'.');}$this->isLogNew=TRUE;}$this->logMerge=$this->mergeLogFile($this->logHandle,0,$this->logMerge);$this->logMergeP=ftell($this->logHandle);if($this->logMergeP===0){if(!flock($this->logHandle,LOCK_EX)){throw
+new\XInvalidStateException("Cannot open logfile '$logfile'.");}$this->isLogNew=TRUE;}$this->logMerge=$this->mergeLogFile($this->logHandle,0,$this->logMerge);$this->logMergeP=ftell($this->logHandle);if($this->logMergeP===0){if(!flock($this->logHandle,LOCK_EX)){throw
 new\XInvalidStateException('Cannot acquite exclusive lock on log.');}$data=serialize(array());$data=pack('N',strlen($data)).$data;$written=fwrite($this->logHandle,$data);if($written===FALSE||$written!==strlen($data)){throw
 new\XInvalidStateException('Cannot write empty packet to log.');}if(!flock($this->logHandle,LOCK_SH)){throw
 new\XInvalidStateException('Cannot acquite shared lock on log.');}}}function
@@ -1452,8 +1456,8 @@ FALSE;}fseek($newhandle,$offset,SEEK_SET);reset($dataWrite);while(!empty($dataWr
 FALSE;}}else{if(!is_array($data)){throw
 new\LogicException('Something bad with algorithm, it has to be array.');}list($readOffset,$readLength)=$data;while(!empty($dataWrite)&&is_array(current($dataWrite))){list($nextReadOffset,$nextReadLength)=current($dataWrite);if($readOffset+$readLength!==$nextReadOffset){break;}$readLength+=$nextReadLength;array_shift($dataWrite);}fseek($this->handle,$readOffset,SEEK_SET);while(($readLength-=stream_copy_to_stream($this->handle,$newhandle,$readLength))>0);}}fflush($newhandle);fclose($newhandle);$newhandle=NULL;if($this->handle){fclose($this->handle);$this->handle=NULL;}if(!@rename($this->file.self::EXTNEW,$this->file)){flock($this->logHandle,LOCK_UN);return
 FALSE;}ftruncate($this->logHandle,4+strlen(serialize(array())));flock($this->logHandle,LOCK_UN);fclose($this->logHandle);if(!@rename($this->file.self::EXTLOGNEW,$this->file.self::EXTLOG)&&file_exists($this->file.self::EXTLOGNEW)){$this->isLogNew=TRUE;$logfile=$this->file.self::EXTLOGNEW;}else{$logfile=$this->file.self::EXTLOG;}if(!($this->logHandle=@fopen($logfile,'a+b'))){throw
-new\XInvalidStateException('Cannot reopen logfile '.$logfile.'.');}$this->logMerge=array();$this->logMergeP=0;if(!($this->handle=@fopen($this->file,'rb'))){throw
-new\XInvalidStateException('Cannot reopen file '.$this->file.'.');}clearstatcache();$this->mtime=(int)@filemtime($this->file);$this->sections=$newsections;return
+new\XInvalidStateException("Cannot reopen logfile '$logfile'.");}$this->logMerge=array();$this->logMergeP=0;if(!($this->handle=@fopen($this->file,'rb'))){throw
+new\XInvalidStateException("Cannot reopen file '$this->file'.");}clearstatcache();$this->mtime=(int)@filemtime($this->file);$this->sections=$newsections;return
 TRUE;}private
 function
 writeAll($handle,$data){$bytesLeft=strlen($data);while($bytesLeft>0){$written=fwrite($handle,substr($data,strlen($data)-$bytesLeft));if($written===FALSE){return
@@ -1515,7 +1519,7 @@ verify($meta){do{if(!empty($meta[self::META_DELTA])){if(filemtime($meta[self::FI
 2;}}return
 TRUE;}while(FALSE);$this->delete($meta[self::FILE],$meta[self::HANDLE]);return
 FALSE;}function
-write($key,$data,array$dp){$meta=array(self::META_TIME=>microtime());if(isset($dp[Cache::EXPIRE])){if(empty($dp[Cache::SLIDING])){$meta[self::META_EXPIRE]=$dp[Cache::EXPIRE]+time();}else{$meta[self::META_DELTA]=(int)$dp[Cache::EXPIRE];}}if(isset($dp[Cache::ITEMS])){foreach((array)$dp[Cache::ITEMS]as$item){$depFile=$this->getCacheFile($item);$m=$this->readMeta($depFile,LOCK_SH);$meta[self::META_ITEMS][$depFile]=$m[self::META_TIME];unset($m);}}if(isset($dp[Cache::CALLBACKS])){$meta[self::META_CALLBACKS]=$dp[Cache::CALLBACKS];}$cacheFile=$this->getCacheFile($key);if($this->useDirs&&!is_dir($dir=dirname($cacheFile))){umask(0000);if(!mkdir($dir,0777)){return;}}$handle=@fopen($cacheFile,'r+b');if(!$handle){$handle=fopen($cacheFile,'wb');if(!$handle){return;}}if(isset($dp[Cache::TAGS])||isset($dp[Cache::PRIORITY])){if(!$this->context){throw
+write($key,$data,array$dp){$meta=array(self::META_TIME=>microtime());if(isset($dp[Cache::EXPIRATION])){if(empty($dp[Cache::SLIDING])){$meta[self::META_EXPIRE]=$dp[Cache::EXPIRATION]+time();}else{$meta[self::META_DELTA]=(int)$dp[Cache::EXPIRATION];}}if(isset($dp[Cache::ITEMS])){foreach((array)$dp[Cache::ITEMS]as$item){$depFile=$this->getCacheFile($item);$m=$this->readMeta($depFile,LOCK_SH);$meta[self::META_ITEMS][$depFile]=$m[self::META_TIME];unset($m);}}if(isset($dp[Cache::CALLBACKS])){$meta[self::META_CALLBACKS]=$dp[Cache::CALLBACKS];}$cacheFile=$this->getCacheFile($key);if($this->useDirs&&!is_dir($dir=dirname($cacheFile))){umask(0000);if(!mkdir($dir,0777)){return;}}$handle=@fopen($cacheFile,'r+b');if(!$handle){$handle=fopen($cacheFile,'wb');if(!$handle){return;}}if(isset($dp[Cache::TAGS])||isset($dp[Cache::PRIORITY])){if(!$this->context){throw
 new\XInvalidStateException('CacheJournal has not been provided.');}$this->getJournal()->write($cacheFile,$dp);}flock($handle,LOCK_EX);ftruncate($handle,0);if(!is_string($data)){$data=serialize($data);$meta[self::META_SERIALIZED]=TRUE;}$head=serialize($meta).'?>';$head='<?php //netteCache[01]'.str_pad((string)strlen($head),6,'0',STR_PAD_LEFT).$head;$headLen=strlen($head);$dataLen=strlen($data);do{if(fwrite($handle,str_repeat("\x00",$headLen),$headLen)!==$headLen){break;}if(fwrite($handle,$data,$dataLen)!==$dataLen){break;}fseek($handle,0);if(fwrite($handle,$head,$headLen)!==$headLen){break;}fclose($handle);return
 TRUE;}while(FALSE);$this->delete($cacheFile,$handle);}function
 remove($key){$this->delete($this->getCacheFile($key));}function
@@ -1545,13 +1549,13 @@ function
 isAvailable(){return
 extension_loaded('memcache');}function
 __construct($host='localhost',$port=11211,$prefix='',NetteX\Context$context=NULL){if(!self::isAvailable()){throw
-new\XNotSupportedException("PHP extension 'memcache' is not loaded.");}$this->prefix=$prefix;$this->context=$context;$this->memcache=new\Memcache;NetteX\Debug::tryError();$this->memcache->connect($host,$port);if(NetteX\Debug::catchError($msg)){throw
-new\XInvalidStateException($msg);}}function
+new\XNotSupportedException("PHP extension 'memcache' is not loaded.");}$this->prefix=$prefix;$this->context=$context;$this->memcache=new\Memcache;NetteX\Debug::tryError();$this->memcache->connect($host,$port);if(NetteX\Debug::catchError($e)){throw
+new\XInvalidStateException($e->getMessage());}}function
 read($key){$key=$this->prefix.$key;$meta=$this->memcache->get($key);if(!$meta)return
 NULL;if(!empty($meta[self::META_CALLBACKS])&&!Cache::checkCallbacks($meta[self::META_CALLBACKS])){$this->memcache->delete($key,0);return
 NULL;}if(!empty($meta[self::META_DELTA])){$this->memcache->replace($key,$meta,0,$meta[self::META_DELTA]+time());}return$meta[self::META_DATA];}function
 write($key,$data,array$dp){if(isset($dp[Cache::ITEMS])){throw
-new\XNotSupportedException('Dependent items are not supported by MemcachedStorage.');}$meta=array(self::META_DATA=>$data);$expire=0;if(isset($dp[Cache::EXPIRE])){$expire=(int)$dp[Cache::EXPIRE];if(!empty($dp[Cache::SLIDING])){$meta[self::META_DELTA]=$expire;}}if(isset($dp[Cache::CALLBACKS])){$meta[self::META_CALLBACKS]=$dp[Cache::CALLBACKS];}if(isset($dp[Cache::TAGS])||isset($dp[Cache::PRIORITY])){if(!$this->context){throw
+new\XNotSupportedException('Dependent items are not supported by MemcachedStorage.');}$meta=array(self::META_DATA=>$data);$expire=0;if(isset($dp[Cache::EXPIRATION])){$expire=(int)$dp[Cache::EXPIRATION];if(!empty($dp[Cache::SLIDING])){$meta[self::META_DELTA]=$expire;}}if(isset($dp[Cache::CALLBACKS])){$meta[self::META_CALLBACKS]=$dp[Cache::CALLBACKS];}if(isset($dp[Cache::TAGS])||isset($dp[Cache::PRIORITY])){if(!$this->context){throw
 new\XInvalidStateException('CacheJournal has not been provided.');}$this->getJournal()->write($this->prefix.$key,$dp);}$this->memcache->set($this->prefix.$key,$meta,0,$expire);}function
 remove($key){$this->memcache->delete($this->prefix.$key,0);}function
 clean(array$conds){if(!empty($conds[Cache::ALL])){$this->memcache->flush();}elseif($this->context){foreach($this->getJournal()->clean($conds)as$entry){$this->memcache->delete($entry,0);}}}protected
@@ -1641,8 +1645,7 @@ __construct(){throw
 new\LogicException("Cannot instantiate static class ".get_class($this));}static
 function
 load($file,$section=NULL){if(!is_file($file)||!is_readable($file)){throw
-new\XFileNotFoundException("File '$file' is missing or is not readable.");}NetteX\Debug::tryError();$ini=parse_ini_file($file,TRUE);if(NetteX\Debug::catchError($msg)){throw
-new\Exception($msg);}$separator=trim(self::$sectionSeparator);$data=array();foreach($ini
+new\XFileNotFoundException("File '$file' is missing or is not readable.");}NetteX\Debug::tryError();$ini=parse_ini_file($file,TRUE);if(NetteX\Debug::catchError($e)){throw$e;}$separator=trim(self::$sectionSeparator);$data=array();foreach($ini
 as$secName=>$secData){if(is_array($secData)){if(substr($secName,-1)===self::$rawSection){$secName=substr($secName,0,-1);}elseif(self::$keySeparator){$tmp=array();foreach($secData
 as$key=>$val){$cursor=&$tmp;foreach(explode(self::$keySeparator,$key)as$part){if(!isset($cursor[$part])||is_array($cursor[$part])){$cursor=&$cursor[$part];}else{throw
 new\XInvalidStateException("Invalid key '$key' in section [$secName] in '$file'.");}}$cursor=$val;}$secData=$tmp;}$parts=$separator?explode($separator,strtr($secName,':',$separator)):array($secName);if(count($parts)>1){$parent=trim($parts[1]);$cursor=&$data;foreach(self::$keySeparator?explode(self::$keySeparator,$parent):array($parent)as$part){if(isset($cursor[$part])&&is_array($cursor[$part])){$cursor=&$cursor[$part];}else{throw
@@ -1686,7 +1689,8 @@ static$email;public
 static$mailer=array(__CLASS__,'defaultMailer');public
 static$emailSnooze=172800;public
 static$editor='editor://open/?file=%file&line=%line';private
-static$enabled=FALSE;public
+static$enabled=FALSE;private
+static$lastError=FALSE;public
 static$showBar=TRUE;private
 static$panels=array();private
 static$dumps;private
@@ -1717,28 +1721,32 @@ as$k=>&$v){$m='';if($k[0]==="\x00"){$m=$k[1]==='*'?' <span>protected</span>':' <
 function
 timer($name=NULL){static$time=array();$now=microtime(TRUE);$delta=isset($time[$name])?$now-$time[$name]:0;$time[$name]=$now;return$delta;}static
 function
-enable($mode=NULL,$logDirectory=NULL,$email=NULL){error_reporting(E_ALL|E_STRICT);if(is_bool($mode)){self::$productionMode=$mode;}elseif(is_string($mode)){$mode=preg_split('#[,\s]+#',$mode);}if(is_array($mode)){self::$productionMode=!isset($_SERVER['REMOTE_ADDR'])||!in_array($_SERVER['REMOTE_ADDR'],$mode,TRUE);}if(self::$productionMode===self::DETECT){if(class_exists('NetteX\Environment')){self::$productionMode=Environment::isProduction();}elseif(isset($_SERVER['SERVER_ADDR'])||isset($_SERVER['LOCAL_ADDR'])){$addr=isset($_SERVER['SERVER_ADDR'])?$_SERVER['SERVER_ADDR']:$_SERVER['LOCAL_ADDR'];$oct=explode('.',$addr);self::$productionMode=$addr!=='::1'&&(count($oct)!==4||($oct[0]!=='10'&&$oct[0]!=='127'&&($oct[0]!=='172'||$oct[1]<16||$oct[1]>31)&&($oct[0]!=='169'||$oct[1]!=='254')&&($oct[0]!=='192'||$oct[1]!=='168')));}else{self::$productionMode=!self::$consoleMode;}}if(self::$productionMode&&$logDirectory!==FALSE){if(is_string($logDirectory)){self::$logDirectory=$logDirectory;}else{self::$logDirectory=defined('APP_DIR')?APP_DIR.'/../log/':getcwd().'/log';}ini_set('error_log',self::$logDirectory.'/php_error.log');}if(function_exists('ini_set')){ini_set('display_errors',!self::$productionMode);ini_set('html_errors',FALSE);ini_set('log_errors',FALSE);}elseif(ini_get('display_errors')!=!self::$productionMode&&ini_get('display_errors')!==(self::$productionMode?'stderr':'stdout')){throw
+enable($mode=NULL,$logDirectory=NULL,$email=NULL){error_reporting(E_ALL|E_STRICT);if(is_bool($mode)){self::$productionMode=$mode;}elseif(is_string($mode)){$mode=preg_split('#[,\s]+#',"$mode 127.0.0.1 ::1");}if(is_array($mode)){self::$productionMode=!isset($_SERVER['REMOTE_ADDR'])||!in_array($_SERVER['REMOTE_ADDR'],$mode,TRUE);}if(self::$productionMode===self::DETECT){if(class_exists('NetteX\Environment')){self::$productionMode=Environment::isProduction();}elseif(isset($_SERVER['SERVER_ADDR'])||isset($_SERVER['LOCAL_ADDR'])){$addrs=array();if(isset($_SERVER['HTTP_X_FORWARDED_FOR'])){$addrs=preg_split('#,\s*#',$_SERVER['HTTP_X_FORWARDED_FOR']);}if(isset($_SERVER['REMOTE_ADDR'])){$addrs[]=$_SERVER['REMOTE_ADDR'];}$addrs[]=isset($_SERVER['SERVER_ADDR'])?$_SERVER['SERVER_ADDR']:$_SERVER['LOCAL_ADDR'];self::$productionMode=FALSE;foreach($addrs
+as$addr){$oct=explode('.',$addr);if($addr!=='::1'&&(count($oct)!==4||($oct[0]!=='10'&&$oct[0]!=='127'&&($oct[0]!=='172'||$oct[1]<16||$oct[1]>31)&&($oct[0]!=='169'||$oct[1]!=='254')&&($oct[0]!=='192'||$oct[1]!=='168')))){self::$productionMode=TRUE;break;}}}else{self::$productionMode=!self::$consoleMode;}}if(is_string($logDirectory)||$logDirectory===FALSE){self::$logDirectory=$logDirectory;}else{self::$logDirectory=defined('APP_DIR')?APP_DIR.'/../log':getcwd().'/log';}if(self::$logDirectory){ini_set('error_log',self::$logDirectory.'/php_error.log');}if(function_exists('ini_set')){ini_set('display_errors',!self::$productionMode);ini_set('html_errors',FALSE);ini_set('log_errors',FALSE);}elseif(ini_get('display_errors')!=!self::$productionMode&&ini_get('display_errors')!==(self::$productionMode?'stderr':'stdout')){throw
 new\XNotSupportedException('Function ini_set() must be enabled.');}if($email){if(!is_string($email)){throw
 new\InvalidArgumentException('E-mail address must be a string.');}self::$email=$email;}if(!defined('E_DEPRECATED')){define('E_DEPRECATED',8192);}if(!defined('E_USER_DEPRECATED')){define('E_USER_DEPRECATED',16384);}if(!self::$enabled){register_shutdown_function(array(__CLASS__,'_shutdownHandler'));set_exception_handler(array(__CLASS__,'_exceptionHandler'));set_error_handler(array(__CLASS__,'_errorHandler'));self::$enabled=TRUE;}}static
 function
 isEnabled(){return
 self::$enabled;}static
 function
-log($message,$priority=self::INFO){if(!self::$logDirectory){return;}if($message
+log($message,$priority=self::INFO){if(self::$logDirectory===FALSE){return;}elseif(!self::$logDirectory){throw
+new\XInvalidStateException('Logging directory is not specified in NetteX\Debug::$logDirectory.');}elseif(!is_dir(self::$logDirectory)){throw
+new\XDirectoryNotFoundException("Directory '".self::$logDirectory."' is not found or is not directory.");}if($message
 instanceof\Exception){$exception=$message;$message="PHP Fatal error: ".($message
-instanceof\XFatalErrorException?$exception->getMessage():"Uncaught exception ".get_class($exception)." with message '".$exception->getMessage()."'")." in ".$exception->getFile().":".$exception->getLine();}if(!is_dir(self::$logDirectory)){throw
-new\XDirectoryNotFoundException("Directory '".self::$logDirectory."' is not found or is not directory.");}error_log(@date('[Y-m-d H-i-s] ').trim($message).(self::$source?'  @  '.self::$source:'').PHP_EOL,3,self::$logDirectory.'/'.strtolower($priority).'.log');if(($priority===self::ERROR||$priority===self::CRITICAL)&&self::$email&&@filemtime(self::$logDirectory.'/email-sent')+self::$emailSnooze<time()&&@file_put_contents(self::$logDirectory.'/email-sent','sent')){call_user_func(self::$mailer,$message);}if(isset($exception)){$hash=md5($exception);foreach(new\DirectoryIterator(self::$logDirectory)as$entry){if(strpos($entry,$hash)){$skip=TRUE;break;}}if(empty($skip)&&$logHandle=@fopen(self::$logDirectory."/exception ".@date('Y-m-d H-i-s')." $hash.html",'w')){ob_start();ob_start(function($buffer)use($logHandle){fwrite($logHandle,$buffer);},1);self::paintBlueScreen($exception);ob_end_flush();ob_end_clean();fclose($logHandle);}}}static
+instanceof\XFatalErrorException?$exception->getMessage():"Uncaught exception ".get_class($exception)." with message '".$exception->getMessage()."'")." in ".$exception->getFile().":".$exception->getLine();}error_log(@date('[Y-m-d H-i-s] ').trim($message).(self::$source?'  @  '.self::$source:'').PHP_EOL,3,self::$logDirectory.'/'.strtolower($priority).'.log');if(($priority===self::ERROR||$priority===self::CRITICAL)&&self::$email&&@filemtime(self::$logDirectory.'/email-sent')+self::$emailSnooze<time()&&@file_put_contents(self::$logDirectory.'/email-sent','sent')){call_user_func(self::$mailer,$message);}if(isset($exception)){$hash=md5($exception);foreach(new\DirectoryIterator(self::$logDirectory)as$entry){if(strpos($entry,$hash)){$skip=TRUE;break;}}if(empty($skip)&&$logHandle=@fopen(self::$logDirectory."/exception ".@date('Y-m-d H-i-s')." $hash.html",'w')){ob_start();ob_start(function($buffer)use($logHandle){fwrite($logHandle,$buffer);},1);self::paintBlueScreen($exception);ob_end_flush();ob_end_clean();fclose($logHandle);}}}static
 function
 _shutdownHandler(){static$types=array(E_ERROR=>1,E_CORE_ERROR=>1,E_COMPILE_ERROR=>1,E_PARSE=>1);$error=error_get_last();if(isset($types[$error['type']])){self::_exceptionHandler(new\XFatalErrorException($error['message'],0,$error['type'],$error['file'],$error['line'],NULL));return;}if(self::$showBar&&!self::$productionMode&&!self::$ajaxDetected&&!self::$consoleMode&&(!preg_match('#^Content-Type: (?!text/html)#im',implode("\n",headers_list())))){self::paintDebugBar();}}static
 function
-_exceptionHandler(\Exception$exception){if(!headers_sent()){header('HTTP/1.1 500 Internal Server Error');}try{self::log($exception,self::ERROR);}catch(\Exception$e){echo'NetteX\Debug fatal error: ',get_class($e),': ',($e->getCode()?'#'.$e->getCode().' ':'').$e->getMessage(),"\n";exit;}$htmlMode=!self::$ajaxDetected&&!preg_match('#^Content-Type: (?!text/html)#im',implode("\n",headers_list()));if(self::$productionMode){if(self::$consoleMode){echo"ERROR: the server encountered an internal error and was unable to complete your request.\n";}elseif($htmlMode){echo"<!DOCTYPE html><meta name=robots content=noindex><meta name=generator content='NetteX Framework'>\n\n";echo"<style>body{color:#333;background:white;width:500px;margin:100px auto}h1{font:bold 47px/1.5 sans-serif;margin:.6em 0}p{font:21px/1.5 Georgia,serif;margin:1.5em 0}small{font-size:70%;color:gray}</style>\n\n";echo"<title>Server Error</title>\n\n<h1>Server Error</h1>\n\n<p>We're sorry! The server encountered an internal error and was unable to complete your request. Please try again later.</p>\n\n<p><small>error 500</small></p>";}}else{if(self::$consoleMode){echo"$exception\n";}elseif(self::$firebugDetected&&!headers_sent()&&!$htmlMode){self::fireLog($exception,self::ERROR);}elseif($htmlMode){self::paintBlueScreen($exception);}}foreach(self::$onFatalError
-as$handler){call_user_func($handler,$exception);}}static
+_exceptionHandler(\Exception$exception){if(!headers_sent()){header('HTTP/1.1 500 Internal Server Error');}$htmlMode=!self::$ajaxDetected&&!preg_match('#^Content-Type: (?!text/html)#im',implode("\n",headers_list()));try{if(self::$productionMode){self::log($exception,self::ERROR);if(self::$consoleMode){echo"ERROR: the server encountered an internal error and was unable to complete your request.\n";}elseif($htmlMode){echo"<!DOCTYPE html><meta name=robots content=noindex><meta name=generator content='NetteX Framework'>\n\n";echo"<style>body{color:#333;background:white;width:500px;margin:100px auto}h1{font:bold 47px/1.5 sans-serif;margin:.6em 0}p{font:21px/1.5 Georgia,serif;margin:1.5em 0}small{font-size:70%;color:gray}</style>\n\n";echo"<title>Server Error</title>\n\n<h1>Server Error</h1>\n\n<p>We're sorry! The server encountered an internal error and was unable to complete your request. Please try again later.</p>\n\n<p><small>error 500</small></p>";}}else{if(self::$consoleMode){echo"$exception\n";}elseif($htmlMode){self::paintBlueScreen($exception);}elseif(!self::fireLog($exception,self::ERROR)){self::log($exception);}}foreach(self::$onFatalError
+as$handler){call_user_func($handler,$exception);}}catch(\Exception$e){echo"\nNetteX\\Debug FATAL ERROR: thrown ",get_class($e),': ',$e->getMessage(),"\nwhile processing ",get_class($exception),': ',$exception->getMessage(),"\n";exit;}}static
 function
-_errorHandler($severity,$message,$file,$line,$context){if(self::$scream){error_reporting(E_ALL|E_STRICT);}if($severity===E_RECOVERABLE_ERROR||$severity===E_USER_ERROR){throw
+_errorHandler($severity,$message,$file,$line,$context){if(self::$lastError!==FALSE){self::$lastError=new\ErrorException($message,0,$severity,$file,$line);return
+NULL;}if(self::$scream){error_reporting(E_ALL|E_STRICT);}if($severity===E_RECOVERABLE_ERROR||$severity===E_USER_ERROR){throw
 new\XFatalErrorException($message,0,$severity,$file,$line,$context);}elseif(($severity&error_reporting())!==$severity){return
-FALSE;}elseif(self::$strictMode&&!self::$productionMode){self::_exceptionHandler(new\XFatalErrorException($message,0,$severity,$file,$line,$context));exit;}static$types=array(E_WARNING=>'Warning',E_COMPILE_WARNING=>'Warning',E_USER_WARNING=>'Warning',E_NOTICE=>'Notice',E_USER_NOTICE=>'Notice',E_STRICT=>'Strict standards',E_DEPRECATED=>'Deprecated',E_USER_DEPRECATED=>'Deprecated');$message='PHP '.(isset($types[$severity])?$types[$severity]:'Unknown error').": $message";if(self::$logDirectory){self::log("$message in $file:$line",self::ERROR);return
-NULL;}elseif(!self::$productionMode){if(self::$showBar){self::$errors[]="$message in $file:$line";}if(self::$firebugDetected&&!headers_sent()){self::fireLog(new\ErrorException($message,0,$severity,$file,$line),self::WARNING);}return
-self::$consoleMode||(!self::$showBar&&!self::$ajaxDetected)?FALSE:NULL;}return
+FALSE;}elseif(self::$strictMode&&!self::$productionMode){self::_exceptionHandler(new\XFatalErrorException($message,0,$severity,$file,$line,$context));exit;}static$types=array(E_WARNING=>'Warning',E_COMPILE_WARNING=>'Warning',E_USER_WARNING=>'Warning',E_NOTICE=>'Notice',E_USER_NOTICE=>'Notice',E_STRICT=>'Strict standards',E_DEPRECATED=>'Deprecated',E_USER_DEPRECATED=>'Deprecated');$message='PHP '.(isset($types[$severity])?$types[$severity]:'Unknown error').": $message";$count=&self::$errors["$message|$file|$line"];if($count++){return
+NULL;}elseif(self::$productionMode){self::log("$message in $file:$line",self::ERROR);return
+NULL;}else{$ok=self::fireLog(new\ErrorException($message,0,$severity,$file,$line),self::WARNING);return
+self::$consoleMode||(!self::$showBar&&!$ok)?FALSE:NULL;}return
 FALSE;}static
 function
 processException(\Exception$exception){trigger_error(__METHOD__.'() is deprecated; use '.__CLASS__.'::log($exception, Debug::ERROR) instead.',E_USER_WARNING);self::log($exception,self::ERROR);}static
@@ -1747,7 +1755,7 @@ toStringException(\Exception$exception){if(self::$enabled){self::_exceptionHandl
 function
 paintBlueScreen(\Exception$exception){if(class_exists('NetteX\Environment',FALSE)){$application=Environment::getContext()->hasService('NetteX\\Application\\Application',TRUE)?Environment::getContext()->getService('NetteX\\Application\\Application'):NULL;}if(!function_exists('NetteX\_netteDebugPrintCode')){function
 _netteDebugPrintCode($file,$line,$count=15){if(function_exists('ini_set')){ini_set('highlight.comment','#999; font-style: italic');ini_set('highlight.default','#000');ini_set('highlight.html','#06B');ini_set('highlight.keyword','#D24; font-weight: bold');ini_set('highlight.string','#080');}$start=max(1,$line-floor($count/2));$source=@file_get_contents($file);if(!$source)return;$source=explode("\n",highlight_string($source,TRUE));$spans=1;echo$source[0];$source=explode('<br />',$source[1]);array_unshift($source,NULL);$i=$start;while(--$i>=1){if(preg_match('#.*(</?span[^>]*>)#',$source[$i],$m)){if($m[1]!=='</span>'){$spans++;echo$m[1];}break;}}$source=array_slice($source,$start,$count,TRUE);end($source);$numWidth=strlen((string)key($source));foreach($source
-as$n=>$s){$spans+=substr_count($s,'<span')-substr_count($s,'</span');$s=str_replace(array("\r","\n"),array('',''),$s);if($n===$line){printf("<span class='highlight'>Line %{$numWidth}s:    %s\n</span>%s",$n,strip_tags($s),preg_replace('#[^>]*(<[^>]+>)[^<]*#','$1',$s));}else{printf("<span class='line'>Line %{$numWidth}s:</span>    %s\n",$n,$s);}}echo
+as$n=>$s){$spans+=substr_count($s,'<span')-substr_count($s,'</span');$s=str_replace(array("\r","\n"),array('',''),$s);preg_match_all('#<[^>]+>#',$s,$tags);if($n===$line){printf("<span class='highlight'>%{$numWidth}s:    %s\n</span>%s",$n,strip_tags($s),implode('',$tags[0]));}else{printf("<span class='line'>%{$numWidth}s:</span>    %s\n",$n,$s);}}echo
 str_repeat('</span>',$spans),'</code>';}function
 _netteDump($dump){return'<pre class="nette-dump">'.preg_replace_callback('#^( *)((?>[^(]{1,200}))\((\d+)\) <code>#m',function($m){return"$m[1]<a href='#' onclick='return !netteToggle(this)'>$m[2]($m[3]) ".(trim($m[1])||$m[3]<7?'<abbr>&#x25bc;</abbr> </a><code>':'<abbr>&#x25ba;</abbr> </a><code class="collapsed">');},$dump).'</pre>';}function
 _netteOpenPanel($name,$collapsed){static$id;$id++;?>
@@ -1774,10 +1782,11 @@ instanceof\XFatalErrorException&&isset($errorTypes[$exception->getSeverity()]))?
 htmlspecialchars($title)?></title><!-- <?php
 $ex=$exception;echo$ex->getMessage(),($ex->getCode()?' #'.$ex->getCode():'');while((method_exists($ex,'getPrevious')&&$ex=$ex->getPrevious())||(isset($ex->previous)&&$ex=$ex->previous))echo'; caused by ',get_class($ex),' ',$ex->getMessage(),($ex->getCode()?' #'.$ex->getCode():'');?> -->
 
-	<style type="text/css">body{margin:0 0 2em;padding:0}#netteBluescreen{font:9pt/1.5 Verdana,sans-serif;background:white;color:#333;position:absolute;left:0;top:0;width:100%;z-index:23178;text-align:left}#netteBluescreen *{font:inherit;color:inherit;background:transparent;border:none;margin:0;padding:0;text-align:inherit;text-indent:0}#netteBluescreen b{font-weight:bold}#netteBluescreen i{font-style:italic}#netteBluescreenIcon{position:absolute;right:.5em;top:.5em;z-index:23179;text-decoration:none;background:#CD1818;padding:3px}#netteBluescreenError{background:#CD1818;color:white;font-weight:bold;font-style:normal;display:block}#netteBluescreen h1{font:18pt/1.5 Verdana,sans-serif!important;text-shadow:1px 1px 0 rgba(0,0,0,.4);margin:.7em 0}#netteBluescreen h2{font:14pt/1.5 sans-serif!important;color:#888;margin:.6em 0}#netteBluescreen a{text-decoration:none;color:#328ADC;padding:2px 4px;margin:-2px -4px}#netteBluescreen a abbr{font-family:sans-serif;color:#BBB}#netteBluescreen h3{font:bold 10pt/1.5 Verdana,sans-serif!important;margin:1em 0;padding:0}#netteBluescreen p,#netteBluescreen pre{margin:.8em 0}#netteBluescreen pre,#netteBluescreen code,#netteBluescreen table{font:9pt/1.5 Consolas,monospace!important}#netteBluescreen pre,#netteBluescreen table{background:#FDF5CE;padding:.4em .7em;border:1px dotted silver;overflow:auto}#netteBluescreen table pre{padding:0;margin:0;border:none}#netteBluescreen pre.nette-dump span{color:#C22}#netteBluescreen pre.nette-dump a{color:#333}#netteBluescreen div.panel{padding:1px 2em}#netteBluescreen div.inner{background:#F4F3F1;padding:.1em 1em 1em;border-radius:8px;-moz-border-radius:8px;-webkit-border-radius:8px}#netteBluescreen table{border-collapse:collapse;width:100%}#netteBluescreen .outer{overflow:auto}#netteBluescreen td,#netteBluescreen th{vertical-align:top;text-align:left;padding:2px 6px;border:1px solid #e6dfbf}#netteBluescreen th{width:10%;font-weight:bold}#netteBluescreen tr:nth-child(2n),#netteBluescreen tr:nth-child(2n) pre{background-color:#F7F0CB}#netteBluescreen ol{margin:1em 0;padding-left:2.5em}#netteBluescreen ul{font:7pt/1.5 Verdana,sans-serif!important;padding:2em 4em;margin:1em 0 0;color:#777;background:#F6F5F3 url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFEAAAAjCAMAAADbuxbOAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAADBQTFRF/fz24d7Y7Onj5uLd9vPu3drUzMvG09LN39zW8e7o2NbQ3NnT29jS0M7J1tXQAAAApvmsFgAAABB0Uk5T////////////////////AOAjXRkAAAKlSURBVHja7FbbsqQgDAwENEgc//9vN+SCWDtbtXPmZR/Wc6o02mlC58LA9ckFAOszvMV8xNgyUjyXhojfMVKvRL0ZHavxXYy5JrmchMdzou8YlTClxajtK8ZGGpWRoBr1+gFjKfHkJPbizabLgzE3pH7Iu4K980xgFvlrVzMZoVBWhtvouCDdcTDmTgMCJdVxJ9MKO6XxnliM7hxi5lbj2ZVM4l8DqYyKoNLYcfqBB1/LpHYxEcfVG6ZpMDgyFUVWY/Q1sSYPpIdSAKWqLWL0XqWiMWc4hpH0OQOMOAgdycY4N9Sb7wWANQs3rsDSdLAYiuxi5siVfOhBWIrtH0G3kNaF/8Q4kCPE1kMucG/ZMUBUCOgiKJkPuWWTLGVgLGpwns1DraUayCtoBqERyaYtVsm85NActRooezvSLO/sKZP/nq8n4+xcyjNsRu8zW6KWpdb7wjiQd4WrtFZYFiKHENSmWp6xshh96c2RQ+c7Lt+qbijyEjHWUJ/pZsy8MGIUuzNiPySK2Gqoh6ZTRF6ko6q3nVTkaA//itIrDpW6l3SLo8juOmqMXkYknu5FdQxWbhCfKHEGDhxxyTVaXJF3ZjSl3jMksjSOOKmne9pI+mcG5QvaUJhI9HpkmRo2NpCrDJvsktRhRE2MM6F2n7dt4OaMUq8bCctk0+PoMRzL+1l5PZ2eyM/Owr86gf8z/tOM53lom5+nVcFuB+eJVzlXwAYy9TZ9s537tfqcsJWbEU4nBngZo6FfO9T9CdhfBtmk2dLiAy8uS4zwOpMx2HqYbTC+amNeAYTpsP4SIgvWfUBWXxn3CMHW3ffd7k3+YIkx7w0t/CVGvcPejoeOlzOWzeGbawOHqXQGUTMZRcfj4XPCgW9y/fuvVn8zD9P1QHzv80uAAQA0i3Jer7Jr7gAAAABJRU5ErkJggg==') 99% 10px no-repeat;border-top:1px solid #DDD}#netteBluescreen .highlight{background:#CD1818;color:white;font-weight:bold;font-style:normal;display:block;padding:0 .4em;margin:0 -.4em}#netteBluescreen .line{color:#9F9C7F;font-weight:normal;font-style:normal}#netteBluescreen a[href^=editor:]{color:inherit;border-bottom:1px dotted #328ADC}</style>
+	<style type="text/css" class="nette">body{margin:0 0 2em;padding:0}#netteBluescreen{font:9pt/1.5 Verdana,sans-serif;background:white;color:#333;position:absolute;left:0;top:0;width:100%;z-index:23178;text-align:left}#netteBluescreen *{font:inherit;color:inherit;background:transparent;border:none;margin:0;padding:0;text-align:inherit;text-indent:0}#netteBluescreen b{font-weight:bold}#netteBluescreen i{font-style:italic}#netteBluescreenIcon{position:absolute;right:.5em;top:.5em;z-index:23179;text-decoration:none;background:#CD1818;padding:3px}#netteBluescreenError{background:#CD1818;color:white;font:13pt/1.5 Verdana,sans-serif!important;display:block}#netteBluescreen h1{font-size:18pt;font-weight:normal;text-shadow:1px 1px 0 rgba(0,0,0,.4);margin:.7em 0}#netteBluescreen h2{font:14pt/1.5 sans-serif!important;color:#888;margin:.6em 0}#netteBluescreen a{text-decoration:none;color:#328ADC;padding:2px 4px;margin:-2px -4px}#netteBluescreen a abbr{font-family:sans-serif;color:#BBB}#netteBluescreen h3{font:bold 10pt/1.5 Verdana,sans-serif!important;margin:1em 0;padding:0}#netteBluescreen p,#netteBluescreen pre{margin:.8em 0}#netteBluescreen pre,#netteBluescreen code,#netteBluescreen table{font:9pt/1.5 Consolas,monospace!important}#netteBluescreen pre,#netteBluescreen table{background:#FDF5CE;padding:.4em .7em;border:1px dotted silver;overflow:auto}#netteBluescreen table pre{padding:0;margin:0;border:none}#netteBluescreen pre.nette-dump span{color:#C22}#netteBluescreen pre.nette-dump a{color:#333}#netteBluescreen div.panel{padding:1px 25px}#netteBluescreen div.inner{background:#F4F3F1;padding:.1em 1em 1em;border-radius:8px;-moz-border-radius:8px;-webkit-border-radius:8px}#netteBluescreen table{border-collapse:collapse;width:100%}#netteBluescreen .outer{overflow:auto}#netteBluescreen td,#netteBluescreen th{vertical-align:top;text-align:left;padding:2px 6px;border:1px solid #e6dfbf}#netteBluescreen th{width:10%;font-weight:bold}#netteBluescreen tr:nth-child(2n),#netteBluescreen tr:nth-child(2n) pre{background-color:#F7F0CB}#netteBluescreen ol{margin:1em 0;padding-left:2.5em}#netteBluescreen ul{font:7pt/1.5 Verdana,sans-serif!important;padding:2em 4em;margin:1em 0 0;color:#777;background:#F6F5F3 url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFEAAAAjCAMAAADbuxbOAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAADBQTFRF/fz24d7Y7Onj5uLd9vPu3drUzMvG09LN39zW8e7o2NbQ3NnT29jS0M7J1tXQAAAApvmsFgAAABB0Uk5T////////////////////AOAjXRkAAAKlSURBVHja7FbbsqQgDAwENEgc//9vN+SCWDtbtXPmZR/Wc6o02mlC58LA9ckFAOszvMV8xNgyUjyXhojfMVKvRL0ZHavxXYy5JrmchMdzou8YlTClxajtK8ZGGpWRoBr1+gFjKfHkJPbizabLgzE3pH7Iu4K980xgFvlrVzMZoVBWhtvouCDdcTDmTgMCJdVxJ9MKO6XxnliM7hxi5lbj2ZVM4l8DqYyKoNLYcfqBB1/LpHYxEcfVG6ZpMDgyFUVWY/Q1sSYPpIdSAKWqLWL0XqWiMWc4hpH0OQOMOAgdycY4N9Sb7wWANQs3rsDSdLAYiuxi5siVfOhBWIrtH0G3kNaF/8Q4kCPE1kMucG/ZMUBUCOgiKJkPuWWTLGVgLGpwns1DraUayCtoBqERyaYtVsm85NActRooezvSLO/sKZP/nq8n4+xcyjNsRu8zW6KWpdb7wjiQd4WrtFZYFiKHENSmWp6xshh96c2RQ+c7Lt+qbijyEjHWUJ/pZsy8MGIUuzNiPySK2Gqoh6ZTRF6ko6q3nVTkaA//itIrDpW6l3SLo8juOmqMXkYknu5FdQxWbhCfKHEGDhxxyTVaXJF3ZjSl3jMksjSOOKmne9pI+mcG5QvaUJhI9HpkmRo2NpCrDJvsktRhRE2MM6F2n7dt4OaMUq8bCctk0+PoMRzL+1l5PZ2eyM/Owr86gf8z/tOM53lom5+nVcFuB+eJVzlXwAYy9TZ9s537tfqcsJWbEU4nBngZo6FfO9T9CdhfBtmk2dLiAy8uS4zwOpMx2HqYbTC+amNeAYTpsP4SIgvWfUBWXxn3CMHW3ffd7k3+YIkx7w0t/CVGvcPejoeOlzOWzeGbawOHqXQGUTMZRcfj4XPCgW9y/fuvVn8zD9P1QHzv80uAAQA0i3Jer7Jr7gAAAABJRU5ErkJggg==') 99% 10px no-repeat;border-top:1px solid #DDD}#netteBluescreen .highlight{background:#CD1818;color:white;font-weight:bold;font-style:normal;display:block;padding:0 .4em;margin:0 -.4em}#netteBluescreen .line{color:#9F9C7F;font-weight:normal;font-style:normal}#netteBluescreen a[href^=editor\:]{color:inherit;border-bottom:1px dotted #328ADC}</style>
 
 
-	<script type="text/javascript">/*<![CDATA[*/document.write("<style> .collapsed { display: none; } </style>");function netteToggle(b,c){for(var e=b.getElementsByTagName("abbr")[0],a=c?document.getElementById(c):b.nextSibling;a.nodeType!==1;)a=a.nextSibling;var d=a.currentStyle?a.currentStyle.display=="none":getComputedStyle(a,null).display=="none";try{e.innerHTML=String.fromCharCode(d?9660:9658)}catch(f){}a.style.display=d?a.tagName.toLowerCase()==="code"?"inline":"block":"none";return true};/*]]>*/</script>
+	<script type="text/javascript">/*<![CDATA[*/function netteToggle(c,e){for(var b=c.getElementsByTagName("abbr")[0],a=e?document.getElementById(e):c.nextSibling;a.nodeType!==1;)a=a.nextSibling;var d=a.currentStyle?a.currentStyle.display=="none":getComputedStyle(a,null).display=="none";try{b.innerHTML=String.fromCharCode(d?9660:9658)}catch(f){}a.style.display=d?a.tagName.toLowerCase()==="code"?"inline":"block":"none";if(c.id==="netteBluescreenIcon"){b=0;for(a=document.styleSheets;b<a.length;b++)if((a[b].owningElement||a[b].ownerNode).className!==
+"nette")a[b].disabled=d?true:a[b].oldDisabled}return true};/*]]>*/</script>
 </head>
 
 
@@ -1806,8 +1815,8 @@ htmlspecialchars($exception->getMessage())?></p>
 					<h1><?php echo
 htmlspecialchars(get_class($ex)),($ex->getCode()?' #'.$ex->getCode():'')?></h1>
 
-					<p><?php echo
-htmlspecialchars($ex->getMessage())?></p>
+					<p><b><?php echo
+htmlspecialchars($ex->getMessage())?></b></p>
 				</div>
 			<?php endif?>
 
@@ -1816,7 +1825,7 @@ htmlspecialchars($ex->getMessage())?></p>
 as$key=>$row){if(isset($row['file'])&&strpos($row['file'],$expandPath)!==0){$expanded=$key;break;}}}?>
 			<?php if(is_file($ex->getFile())):?>
 			<?php _netteOpenPanel('Source file',$expanded!==NULL)?>
-				<p><b>File:</b> <?php if(self::$editor)echo'<a href="',htmlspecialchars(strtr(self::$editor,array('%file'=>urlencode($ex->getFile()),'%line'=>$ex->getLine()))),'">'?>
+				<p><b>File:</b> <?php if(self::$editor)echo'<a href="',htmlspecialchars(strtr(self::$editor,array('%file'=>rawurlencode($ex->getFile()),'%line'=>$ex->getLine()))),'">'?>
 				<?php echo
 htmlspecialchars($ex->getFile()),(self::$editor?'</a>':'')?> &nbsp; <b>Line:</b> <?php echo$ex->getLine()?></p>
 				<pre><?php _netteDebugPrintCode($ex->getFile(),$ex->getLine())?></pre>
@@ -1835,7 +1844,7 @@ as$key=>$row):?>
 
 					<?php if(isset($row['file'])&&is_file($row['file'])):?>
 						<?php echo
-self::$editor?'<a href="'.htmlspecialchars(strtr(self::$editor,array('%file'=>urlencode($row['file']),'%line'=>$row['line']))).'"':'<span';?> title="<?php echo
+self::$editor?'<a href="'.htmlspecialchars(strtr(self::$editor,array('%file'=>rawurlencode($row['file']),'%line'=>$row['line']))).'"':'<span';?> title="<?php echo
 htmlSpecialChars($row['file'])?>">
 						<?php echo
 htmlSpecialChars(basename(dirname($row['file']))),'/<b>',htmlSpecialChars(basename($row['file'])),'</b>',(self::$editor?'</a>':'</span>'),' (',$row['line'],')'?>
@@ -2024,7 +2033,8 @@ htmlSpecialChars(Framework::REVISION)?>)</i></li><?php endif?>
 	</div>
 </div>
 
-<script type="text/javascript">document.body.appendChild(document.getElementById("netteBluescreen"));document.onkeypress=function(a){a=a||window.event;if(a.keyCode==27)return document.getElementById("netteBluescreenIcon").onclick()};</script>
+<script type="text/javascript">/*<![CDATA[*/document.body.appendChild(document.getElementById("netteBluescreen"));document.onkeyup=function(a){a=a||window.event;if(a.keyCode==27)return document.getElementById("netteBluescreenIcon").onclick()};
+for(var i=0,styles=document.styleSheets;i<styles.length;i++)if((styles[i].owningElement||styles[i].ownerNode).className!=="nette"){styles[i].oldDisabled=styles[i].disabled;styles[i].disabled=true}else styles[i].addRule?styles[i].addRule(".collapsed","display: none"):styles[i].insertRule(".collapsed { display: none }",0);/*]]>*/</script>
 </body>
 </html><?php }static
 function
@@ -2039,9 +2049,9 @@ as$panel){$panels[]=array('id'=>preg_replace('#[^a-z0-9]+#i','-',$panel->getId()
 <?php ob_start()?>
 &nbsp;
 
-<style id="nette-debug-style">#nette-debug{display:none}body#nette-debug{margin:5px 5px 0;display:block}#nette-debug *{font:inherit;color:inherit;background:transparent;margin:0;padding:0;border:none;text-align:inherit;list-style:inherit}#nette-debug .nette-fixed-coords{position:fixed;_position:absolute;right:0;bottom:0}#nette-debug a{color:#125EAE;text-decoration:none}#nette-debug .nette-panel a{color:#125EAE;text-decoration:none}#nette-debug a:hover,#nette-debug a:active,#nette-debug a:focus{background-color:#125EAE;color:white}#nette-debug .nette-panel h2,#nette-debug .nette-panel h3,#nette-debug .nette-panel p{margin:.4em 0}#nette-debug .nette-panel table{border-collapse:collapse;background:#FDF5CE}#nette-debug .nette-panel tr:nth-child(2n) td{background:#F7F0CB}#nette-debug .nette-panel td,#nette-debug .nette-panel th{border:1px solid #E6DFBF;padding:2px 5px;vertical-align:top;text-align:left}#nette-debug .nette-panel th{background:#F4F3F1;color:#655E5E;font-size:90%;font-weight:bold}#nette-debug .nette-panel pre,#nette-debug .nette-panel code{font:9pt/1.5 Consolas,monospace}.nette-hidden{display:none}#nette-debug-bar{font:normal normal 12px/21px Tahoma,sans-serif;color:#333;border:1px solid #c9c9c9;background:#EDEAE0 url('data:image/png;base64,R0lGODlhAQAVALMAAOTh1/Px6eHe1fHv5e/s4vLw6Ofk2u3q4PPw6PPx6PDt5PLw5+Dd1OXi2Ojm3Orn3iH5BAAAAAAALAAAAAABABUAAAQPMISEyhpYkfOcaQAgCEwEADs=') repeat-x;position:relative;height:21px;_float:left;min-width:50px;white-space:nowrap;z-index:23181;opacity:.9;border-radius:3px;-moz-border-radius:3px;box-shadow:1px 1px 10px rgba(0,0,0,.15);-moz-box-shadow:1px 1px 10px rgba(0,0,0,.15);-webkit-box-shadow:1px 1px 10px rgba(0,0,0,.15)}#nette-debug-bar:hover{opacity:1}#nette-debug-bar ul{list-style:none none;margin-left:4px}#nette-debug-bar li{float:left}#nette-debug-bar img{vertical-align:middle;position:relative;top:-1px;margin-right:3px}#nette-debug-bar li a{color:#000;display:block;padding:0 4px}#nette-debug-bar li a:hover{color:black;background:#c3c1b8}#nette-debug-bar li .nette-warning{color:#D32B2B;font-weight:bold}#nette-debug-bar li div{padding:0 4px}#nette-debug-logo{background:url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC0AAAAPCAYAAABwfkanAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAABiFJREFUSMe1VglPlGcQ5i+1xjZNqxREtGq8ahCPWsVGvEDBA1BBRQFBDjkE5BYUzwpovRBUREBEBbl3OVaWPfj2vi82eTrvbFHamLRJ4yYTvm+u95mZZ96PoKAv+LOatXBYZ+Bx6uFy6DGnt1m0EOKwSmQzwmHTgX5B/1W+yM9GYJ02CX6/B/5ZF+w2A4x6FYGTYDVp4PdY2Tbrs5N+mnRa2Km4/wV6rhPzQQj5fDc1mJM5nd0iYdZtQWtrCxobGnDpUiledTynbuvg99mgUMhw924Trl2rR01NNSTNJE9iDpTV8innv4K2kZPLroPXbYLHZeSu2K1aeF0muJ2GvwGzmNSwU2E+svm8ZrgdBliMaha/34Vx+RAKCgpwpa4OdbW1UE/L2cc/68WtWzdRVlaG6uoqtD1/BA/pA1MIxLvtes7pc5vhoDOE/rOgbVSdf9aJWa8dBp0Kyg+jdLiTx2vQKWEyqGmcNkqg4iTC1+dzQatWkK+cJqPD7KyFaKEjvRuNjY24fLkGdXW1ePjwAeX4QHonDNI0A75+/RpqqqshH+6F2UAUMaupYXouykV0mp6SQ60coxgL8Z4aMg/4x675/V60v3jKB+Xl5WJibIC4KPEIS0qKqWv5GOh7BZ/HSIk9kA33o7y8DOfPZ6GQOipkXDZAHXKxr4ipqqpkKS6+iIrycgz2dyMnJxtVlZUsotNZWZmor79KBbvgpdjm5sfIzc1hv4L8fKJPDTfJZZc+gRYKr8sAEy2DcBRdEEk62ltx9uwZ5qNILoDU1l6mbrvx5EkzUlKSuTiR7PHjR3x4fv4FyIbeIic7G5WVFUyN+qtX+Lnt2SPcvn2LfURjhF7kE4WPDr+Bx+NEUVEhkpNPoImm5CSOl5aUIC3tLOMR59gtAY4HidGIzj14cB8ZGRkM8kJeHk6cOI4xWR8vSl5uLlJTT6O74xnT5lB8PM6cSYXVqILb5UBWZiYSExMYkE4zzjqX00QHG+h9AjPqMei0k3ywy2khMdNiq6BVCf04T6ekuBgJCUdRUVHOBQwPvkNSUiLjaGi4Q/5qFgYtHgTXRJdTT59GenoaA5gY64deq0Bc3EGuNj4+DnppEheLijhZRkY6SktLsGPHdi6irOwSFTRAgO04deokTSIFsbExuHfvLnFSx8DevelAfFwcA0lJTqZi5PDS9aci/sbE7Oe4wsICbtD27b/ye1NTI3FeSX4W2gdFALRD3A4eM44ePcKViuD79/8gnZP5Kg4+cCAW2dnnqUM2Lujw4UM4ePAA2ztfPsHIYA/sdOt43A50d7UFCjkUj+joXVBMDJDeDhcVk08cjd61C3v37uFYp8PKXX3X8xJRUTtw7FgSn3Xzxg10d7ZCqRjkM+02C7pettDNogqAFjzxuI3YHR2Nffv2coXy0V44HGZERm7kJNu2/cK8bW9rwbp1axnMnj27uUijQQOb1QyTcYZ3YMOGn/Hbzp1crAAvaDfY38O5hW3//n0ce+TIYWiUcub1xo0R2Lp1y8cYsUMWM125VhPe93Zj7do1vEPi26GfUdBFbhK8tGHrli1YsWwpgoOD0dXRQqAtXMCy8DBs3rwJoSGLsWrVclylBdoUGYlVK1dg9eqVCFsSSs8/4btvvmUwEnE0KTERISE/IiIiAsGLF2HhwgU8qbc97QgPX8qFr1mzGgu+/opzdL5o5l1aEhqC9evXYWlYKFYsD6e/YVj0w/dMGZVyBDMqeaDTRuKpkxYjIz2dOyeup6H3r2kkOuJ1H3N5Z1QUzp3LQF9vJ4xGLQYHXiM9LY0pEhsTg+PHj9HNcJu4OcL3uaQZY86LiZw8mcJTkmhBTUYJbU8fcoygobgWR4Z6iKtTPLE7d35HYkICT1dIZuY59HQ9412StBPQTMvw8Z6WaMNFxy3Gab4TeQT0M9IHwUT/G0i0MGIJ9CTiJjBIH+iQaQbC7+QnfEXiQL6xgF09TjETHCt8RbeMuil+D8RNsV1LHdQoZfR/iJJzCZuYmEE/Bd3MJNs/+0UURgFWJJ//aQ8k+CsxVTqnVytHObkQrUoG8T4/bs4u4ubbxLPwFzYNPc8HI2zijLm84l39Dx8hfwJenFezFBKKQwAAAABJRU5ErkJggg==') 0 50% no-repeat;min-width:45px;cursor:move}#nette-debug-logo span{display:none}#nette-debug-bar-bgl,#nette-debug-bar-bgx,#nette-debug-bar-bgr{position:absolute;z-index:-1;top:-7px;height:37px}#nette-debug .nette-panel{font:normal normal 12px/1.5 sans-serif;background:white;color:#333}#nette-debug h1{font:normal normal 23px/1.4 Tahoma,sans-serif;color:#575753;background:#EDEAE0;margin:-5px -5px 5px;padding:0 25px 5px 5px}#nette-debug .nette-mode-peek .nette-inner,#nette-debug .nette-mode-float .nette-inner{max-width:700px;max-height:500px;overflow:auto}#nette-debug .nette-panel .nette-icons{display:none}#nette-debug .nette-mode-peek{display:none;position:relative;z-index:23180;padding:5px;min-width:150px;min-height:50px;border:5px solid #EDEAE0;border-radius:5px;-moz-border-radius:5px}#nette-debug .nette-mode-peek h1{cursor:move}#nette-debug .nette-mode-float{position:relative;z-index:23179;padding:5px;min-width:150px;min-height:50px;border:5px solid #EDEAE0;border-radius:5px;-moz-border-radius:5px;opacity:.9;box-shadow:1px 1px 6px #666;-moz-box-shadow:1px 1px 6px rgba(0,0,0,.45);-webkit-box-shadow:1px 1px 6px #666}#nette-debug .nette-focused{z-index:23180;opacity:1}#nette-debug .nette-mode-float h1{cursor:move}#nette-debug .nette-mode-float .nette-icons{display:block;position:absolute;top:0;right:0;font-size:18px}#nette-debug .nette-icons a{color:#575753}#nette-debug .nette-icons a:hover{color:white}</style>
+<style id="nette-debug-style" class="nette">#nette-debug{display:none}body#nette-debug{margin:5px 5px 0;display:block}#nette-debug *{font:inherit;color:inherit;background:transparent;margin:0;padding:0;border:none;text-align:inherit;list-style:inherit}#nette-debug .nette-fixed-coords{position:fixed;_position:absolute;right:0;bottom:0}#nette-debug a{color:#125EAE;text-decoration:none}#nette-debug .nette-panel a{color:#125EAE;text-decoration:none}#nette-debug a:hover,#nette-debug a:active,#nette-debug a:focus{background-color:#125EAE;color:white}#nette-debug .nette-panel h2,#nette-debug .nette-panel h3,#nette-debug .nette-panel p{margin:.4em 0}#nette-debug .nette-panel table{border-collapse:collapse;background:#FDF5CE}#nette-debug .nette-panel tr:nth-child(2n) td{background:#F7F0CB}#nette-debug .nette-panel td,#nette-debug .nette-panel th{border:1px solid #E6DFBF;padding:2px 5px;vertical-align:top;text-align:left}#nette-debug .nette-panel th{background:#F4F3F1;color:#655E5E;font-size:90%;font-weight:bold}#nette-debug .nette-panel pre,#nette-debug .nette-panel code{font:9pt/1.5 Consolas,monospace}#nette-debug table .nette-right{text-align:right}.nette-hidden{display:none}#nette-debug-bar{font:normal normal 12px/21px Tahoma,sans-serif;color:#333;border:1px solid #c9c9c9;background:#EDEAE0 url('data:image/png;base64,R0lGODlhAQAVALMAAOTh1/Px6eHe1fHv5e/s4vLw6Ofk2u3q4PPw6PPx6PDt5PLw5+Dd1OXi2Ojm3Orn3iH5BAAAAAAALAAAAAABABUAAAQPMISEyhpYkfOcaQAgCEwEADs=') repeat-x bottom;position:relative;height:1.75em;min-height:21px;_float:left;min-width:50px;white-space:nowrap;z-index:23181;opacity:.9;border-radius:3px;-moz-border-radius:3px;box-shadow:1px 1px 10px rgba(0,0,0,.15);-moz-box-shadow:1px 1px 10px rgba(0,0,0,.15);-webkit-box-shadow:1px 1px 10px rgba(0,0,0,.15)}#nette-debug-bar:hover{opacity:1}#nette-debug-bar ul{list-style:none none;margin-left:4px}#nette-debug-bar li{float:left}#nette-debug-bar img{vertical-align:middle;position:relative;top:-1px;margin-right:3px}#nette-debug-bar li a{color:#000;display:block;padding:0 4px}#nette-debug-bar li a:hover{color:black;background:#c3c1b8}#nette-debug-bar li .nette-warning{color:#D32B2B;font-weight:bold}#nette-debug-bar li>span{padding:0 4px}#nette-debug-logo{background:url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC0AAAAPCAYAAABwfkanAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAABiFJREFUSMe1VglPlGcQ5i+1xjZNqxREtGq8ahCPWsVGvEDBA1BBRQFBDjkE5BYUzwpovRBUREBEBbl3OVaWPfj2vi82eTrvbFHamLRJ4yYTvm+u95mZZ96PoKAv+LOatXBYZ+Bx6uFy6DGnt1m0EOKwSmQzwmHTgX5B/1W+yM9GYJ02CX6/B/5ZF+w2A4x6FYGTYDVp4PdY2Tbrs5N+mnRa2Km4/wV6rhPzQQj5fDc1mJM5nd0iYdZtQWtrCxobGnDpUiledTynbuvg99mgUMhw924Trl2rR01NNSTNJE9iDpTV8innv4K2kZPLroPXbYLHZeSu2K1aeF0muJ2GvwGzmNSwU2E+svm8ZrgdBliMaha/34Vx+RAKCgpwpa4OdbW1UE/L2cc/68WtWzdRVlaG6uoqtD1/BA/pA1MIxLvtes7pc5vhoDOE/rOgbVSdf9aJWa8dBp0Kyg+jdLiTx2vQKWEyqGmcNkqg4iTC1+dzQatWkK+cJqPD7KyFaKEjvRuNjY24fLkGdXW1ePjwAeX4QHonDNI0A75+/RpqqqshH+6F2UAUMaupYXouykV0mp6SQ60coxgL8Z4aMg/4x675/V60v3jKB+Xl5WJibIC4KPEIS0qKqWv5GOh7BZ/HSIk9kA33o7y8DOfPZ6GQOipkXDZAHXKxr4ipqqpkKS6+iIrycgz2dyMnJxtVlZUsotNZWZmor79KBbvgpdjm5sfIzc1hv4L8fKJPDTfJZZc+gRYKr8sAEy2DcBRdEEk62ltx9uwZ5qNILoDU1l6mbrvx5EkzUlKSuTiR7PHjR3x4fv4FyIbeIic7G5WVFUyN+qtX+Lnt2SPcvn2LfURjhF7kE4WPDr+Bx+NEUVEhkpNPoImm5CSOl5aUIC3tLOMR59gtAY4HidGIzj14cB8ZGRkM8kJeHk6cOI4xWR8vSl5uLlJTT6O74xnT5lB8PM6cSYXVqILb5UBWZiYSExMYkE4zzjqX00QHG+h9AjPqMei0k3ywy2khMdNiq6BVCf04T6ekuBgJCUdRUVHOBQwPvkNSUiLjaGi4Q/5qFgYtHgTXRJdTT59GenoaA5gY64deq0Bc3EGuNj4+DnppEheLijhZRkY6SktLsGPHdi6irOwSFTRAgO04deokTSIFsbExuHfvLnFSx8DevelAfFwcA0lJTqZi5PDS9aci/sbE7Oe4wsICbtD27b/ye1NTI3FeSX4W2gdFALRD3A4eM44ePcKViuD79/8gnZP5Kg4+cCAW2dnnqUM2Lujw4UM4ePAA2ztfPsHIYA/sdOt43A50d7UFCjkUj+joXVBMDJDeDhcVk08cjd61C3v37uFYp8PKXX3X8xJRUTtw7FgSn3Xzxg10d7ZCqRjkM+02C7pettDNogqAFjzxuI3YHR2Nffv2coXy0V44HGZERm7kJNu2/cK8bW9rwbp1axnMnj27uUijQQOb1QyTcYZ3YMOGn/Hbzp1crAAvaDfY38O5hW3//n0ce+TIYWiUcub1xo0R2Lp1y8cYsUMWM125VhPe93Zj7do1vEPi26GfUdBFbhK8tGHrli1YsWwpgoOD0dXRQqAtXMCy8DBs3rwJoSGLsWrVclylBdoUGYlVK1dg9eqVCFsSSs8/4btvvmUwEnE0KTERISE/IiIiAsGLF2HhwgU8qbc97QgPX8qFr1mzGgu+/opzdL5o5l1aEhqC9evXYWlYKFYsD6e/YVj0w/dMGZVyBDMqeaDTRuKpkxYjIz2dOyeup6H3r2kkOuJ1H3N5Z1QUzp3LQF9vJ4xGLQYHXiM9LY0pEhsTg+PHj9HNcJu4OcL3uaQZY86LiZw8mcJTkmhBTUYJbU8fcoygobgWR4Z6iKtTPLE7d35HYkICT1dIZuY59HQ9412StBPQTMvw8Z6WaMNFxy3Gab4TeQT0M9IHwUT/G0i0MGIJ9CTiJjBIH+iQaQbC7+QnfEXiQL6xgF09TjETHCt8RbeMuil+D8RNsV1LHdQoZfR/iJJzCZuYmEE/Bd3MJNs/+0UURgFWJJ//aQ8k+CsxVTqnVytHObkQrUoG8T4/bs4u4ubbxLPwFzYNPc8HI2zijLm84l39Dx8hfwJenFezFBKKQwAAAABJRU5ErkJggg==') 0 50% no-repeat;min-width:45px;cursor:move}#nette-debug-logo span{display:none}#nette-debug-bar-bgl,#nette-debug-bar-bgx,#nette-debug-bar-bgr{position:absolute;z-index:-1;top:-7px;height:37px}#nette-debug .nette-panel{font:normal normal 12px/1.5 sans-serif;background:white;color:#333}#nette-debug h1{font:normal normal 23px/1.4 Tahoma,sans-serif;color:#575753;background:#EDEAE0;margin:-5px -5px 5px;padding:0 25px 5px 5px}#nette-debug .nette-mode-peek .nette-inner,#nette-debug .nette-mode-float .nette-inner{max-width:700px;max-height:500px;overflow:auto}#nette-debug .nette-panel .nette-icons{display:none}#nette-debug .nette-mode-peek{display:none;position:relative;z-index:23180;padding:5px;min-width:150px;min-height:50px;border:5px solid #EDEAE0;border-radius:5px;-moz-border-radius:5px}#nette-debug .nette-mode-peek h1{cursor:move}#nette-debug .nette-mode-float{position:relative;z-index:23179;padding:5px;min-width:150px;min-height:50px;border:5px solid #EDEAE0;border-radius:5px;-moz-border-radius:5px;opacity:.9;box-shadow:1px 1px 6px #666;-moz-box-shadow:1px 1px 6px rgba(0,0,0,.45);-webkit-box-shadow:1px 1px 6px #666}#nette-debug .nette-focused{z-index:23180;opacity:1}#nette-debug .nette-mode-float h1{cursor:move}#nette-debug .nette-mode-float .nette-icons{display:block;position:absolute;top:0;right:0;font-size:18px}#nette-debug .nette-icons a{color:#575753}#nette-debug .nette-icons a:hover{color:white}</style>
 
-<!--[if lt IE 8]><style>#nette-debug-bar img{display:none}#nette-debug-bar li{border-left:1px solid #DCD7C8;padding:0 3px}#nette-debug-logo span{background:#edeae0;display:inline}</style><![endif]-->
+<!--[if lt IE 8]><style class="nette">#nette-debug-bar img{display:none}#nette-debug-bar li{border-left:1px solid #DCD7C8;padding:0 3px}#nette-debug-logo span{background:#edeae0;display:inline}</style><![endif]-->
 
 
 <script id="nette-debug-script">/*<![CDATA[*/var NetteX=NetteX||{};
@@ -2050,10 +2060,11 @@ arguments)}}(b)}}},constructor:function(a){if(typeof a==="string")a=this._find(d
 "*");if(b[1]){for(var d=[],f=RegExp("(^|\\s)"+b[1]+"(\\s|$)"),i=0,k=c.length;i<k;i++)f.test(c[i].className)&&d.push(c[i]);return d}else return c}},dom:function(){return this[0]},each:function(a,b){for(var c=0,d;c<this.length;c++)if((d=a.apply(this[c],b||[]))!==void 0)return d;return this}});var h=NetteX.Q.factory,e=NetteX.Q.implement;e({bind:function(a,b){if(document.addEventListener&&(a==="mouseenter"||a==="mouseleave")){var c=b;a=a==="mouseenter"?"mouseover":"mouseout";b=function(g){for(var j=g.relatedTarget;j;j=
 j.parentNode)if(j===this)return;c.call(this,g)}}var d=e.data.call(this);d=d.events=d.events||{};if(!d[a]){var f=this,i=d[a]=[],k=e.bind.genericHandler=function(g){if(!g.target)g.target=g.srcElement;if(!g.preventDefault)g.preventDefault=function(){g.returnValue=false};if(!g.stopPropagation)g.stopPropagation=function(){g.cancelBubble=true};g.stopImmediatePropagation=function(){this.stopPropagation();j=i.length};for(var j=0;j<i.length;j++)i[j].call(f,g)};if(document.addEventListener)this.addEventListener(a,
 k,false);else document.attachEvent&&this.attachEvent("on"+a,k)}d[a].push(b)},addClass:function(a){this.className=this.className.replace(/^|\s+|$/g," ").replace(" "+a+" "," ")+" "+a},removeClass:function(a){this.className=this.className.replace(/^|\s+|$/g," ").replace(" "+a+" "," ")},hasClass:function(a){return this.className.replace(/^|\s+|$/g," ").indexOf(" "+a+" ")>-1},show:function(){var a=e.show.display=e.show.display||{},b=this.tagName;if(!a[b]){var c=document.body.appendChild(document.createElement(b));
-a[b]=e.css.call(c,"display")}this.style.display=a[b]},hide:function(){this.style.display="none"},css:function(a){return this.currentStyle?this.currentStyle[a]:window.getComputedStyle?document.defaultView.getComputedStyle(this,null).getPropertyValue(a):void 0},data:function(){return this.nette=this.nette||{}},_trav:function(a,b,c){for(b=b.split(".");a&&!(a.nodeType===1&&(!b[0]||a.tagName.toLowerCase()===b[0])&&(!b[1]||e.hasClass.call(a,b[1])));)a=a[c];return h(a)},closest:function(a){return e._trav(this,
-a,"parentNode")},prev:function(a){return e._trav(this.previousSibling,a,"previousSibling")},next:function(a){return e._trav(this.nextSibling,a,"nextSibling")},offset:function(a){for(var b=this,c=a?{left:-a.left||0,top:-a.top||0}:e.position.call(b);b=b.offsetParent;){c.left+=b.offsetLeft;c.top+=b.offsetTop}if(a)e.position.call(this,{left:-c.left,top:-c.top});else return c},position:function(a){if(a){this.nette&&this.nette.onmove&&this.nette.onmove.call(this,a);this.style.left=(a.left||0)+"px";this.style.top=
-(a.top||0)+"px"}else return{left:this.offsetLeft,top:this.offsetTop,width:this.offsetWidth,height:this.offsetHeight}},draggable:function(a){var b=h(this),c=document.documentElement,d;a=a||{};h(a.handle||this).bind("mousedown",function(f){f.preventDefault();f.stopPropagation();if(e.draggable.binded)return c.onmouseup(f);var i=b[0].offsetLeft-f.clientX,k=b[0].offsetTop-f.clientY;e.draggable.binded=true;d=false;c.onmousemove=function(g){g=g||event;if(!d){a.draggedClass&&b.addClass(a.draggedClass);a.start&&
-a.start(g,b);d=true}b.position({left:g.clientX+i,top:g.clientY+k});return false};c.onmouseup=function(g){if(d){a.draggedClass&&b.removeClass(a.draggedClass);a.stop&&a.stop(g||event,b)}e.draggable.binded=c.onmousemove=c.onmouseup=null;return false}}).bind("click",function(f){if(d){f.stopImmediatePropagation();preventClick=false}})}})})();
+a[b]=e.css.call(c,"display")}this.style.display=a[b]},hide:function(){this.style.display="none"},css:function(a){return this.currentStyle?this.currentStyle[a]:window.getComputedStyle?document.defaultView.getComputedStyle(this,null).getPropertyValue(a):void 0},data:function(){return this.nette=this.nette||{}},val:function(){if(!this.nodeName){for(var a=0,b=this.length;a<b;a++)if(this[a].checked)return this[a].value;return null}if(this.nodeName.toLowerCase()==="select"){a=this.selectedIndex;var c=this.options;
+if(a<0)return null;else if(this.type==="select-one")return c[a].value;a=0;var d=[];for(b=c.length;a<b;a++)c[a].selected&&d.push(c[a].value);return d}if(this.type==="checkbox")return this.checked;return this.value.replace(/^\s+|\s+$/g,"")},_trav:function(a,b,c){for(b=b.split(".");a&&!(a.nodeType===1&&(!b[0]||a.tagName.toLowerCase()===b[0])&&(!b[1]||e.hasClass.call(a,b[1])));)a=a[c];return h(a)},closest:function(a){return e._trav(this,a,"parentNode")},prev:function(a){return e._trav(this.previousSibling,
+a,"previousSibling")},next:function(a){return e._trav(this.nextSibling,a,"nextSibling")},offset:function(a){for(var b=this,c=a?{left:-a.left||0,top:-a.top||0}:e.position.call(b);b=b.offsetParent;){c.left+=b.offsetLeft;c.top+=b.offsetTop}if(a)e.position.call(this,{left:-c.left,top:-c.top});else return c},position:function(a){if(a){this.nette&&this.nette.onmove&&this.nette.onmove.call(this,a);this.style.left=(a.left||0)+"px";this.style.top=(a.top||0)+"px"}else return{left:this.offsetLeft,top:this.offsetTop,
+width:this.offsetWidth,height:this.offsetHeight}},draggable:function(a){var b=h(this),c=document.documentElement,d;a=a||{};h(a.handle||this).bind("mousedown",function(f){f.preventDefault();f.stopPropagation();if(e.draggable.binded)return c.onmouseup(f);var i=b[0].offsetLeft-f.clientX,k=b[0].offsetTop-f.clientY;e.draggable.binded=true;d=false;c.onmousemove=function(g){g=g||event;if(!d){a.draggedClass&&b.addClass(a.draggedClass);a.start&&a.start(g,b);d=true}b.position({left:g.clientX+i,top:g.clientY+
+k});return false};c.onmouseup=function(g){if(d){a.draggedClass&&b.removeClass(a.draggedClass);a.stop&&a.stop(g||event,b)}e.draggable.binded=c.onmousemove=c.onmouseup=null;return false}}).bind("click",function(f){if(d){f.stopImmediatePropagation();preventClick=false}})}})})();
 (function(){NetteX.Debug={};var h=NetteX.Q.factory,e=NetteX.Debug.Panel=NetteX.Class({Extends:NetteX.Q,Static:{PEEK:"nette-mode-peek",FLOAT:"nette-mode-float",WINDOW:"nette-mode-window",FOCUSED:"nette-focused",factory:function(a){return new e(a)},_toggle:function(a){var b=a.rel;b=b.charAt(0)==="#"?h(b):h(a)[b.charAt(0)==="<"?"prev":"next"](b.substring(1));if(b.css("display")==="none"){b.show();a.innerHTML=a.innerHTML.replace("\u25ba","\u25bc")}else{b.hide();a.innerHTML=a.innerHTML.replace("\u25bc","\u25ba")}}},
 constructor:function(a){NetteX.Q.call(this,"#nette-debug-panel-"+a.replace("nette-debug-panel-",""))},reposition:function(){if(this.hasClass(e.WINDOW))window.resizeBy(document.documentElement.scrollWidth-document.documentElement.clientWidth,document.documentElement.scrollHeight-document.documentElement.clientHeight);else{this.position(this.position());if(this.position().width)document.cookie=this.dom().id+"="+this.position().left+":"+this.position().top+"; path=/"}},focus:function(){if(this.hasClass(e.WINDOW))this.data().win.focus();
 else{clearTimeout(this.data().blurTimeout);this.addClass(e.FOCUSED).show()}},blur:function(){this.removeClass(e.FOCUSED);if(this.hasClass(e.PEEK)){var a=this;this.data().blurTimeout=setTimeout(function(){a.hide()},50)}},toFloat:function(){this.removeClass(e.WINDOW).removeClass(e.PEEK).addClass(e.FLOAT).show().reposition();return this},toPeek:function(){this.removeClass(e.WINDOW).removeClass(e.FLOAT).addClass(e.PEEK).hide();document.cookie=this.dom().id+"=; path=/"},toWindow:function(){var a=this,
@@ -2087,7 +2098,7 @@ as$id=>$panel):?>
 			<?php foreach($panels
 as$panel):if(!$panel['tab'])continue;?>
 			<li><?php if($panel['panel']):?><a href="#" rel="<?php echo$panel['id']?>"><?php echo
-trim($panel['tab'])?></a><?php else:echo'<div>',trim($panel['tab']),'</div>';endif?></li>
+trim($panel['tab'])?></a><?php else:echo'<span>',trim($panel['tab']),'</span>';endif?></li>
 			<?php endforeach?>
 			<li><a href="#" rel="close" title="close debug bar">&times;</a></li>
 		</ul>
@@ -2098,29 +2109,27 @@ trim($panel['tab'])?></a><?php else:echo'<div>',trim($panel['tab']),'</div>';end
 
 <div id="nette-debug"></div>
 
-<script>/*<![CDATA[*/NetteX_base64Decode=function(a){var f="",b=0,g,d,c,e;do{g="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/".indexOf(a.charAt(b++));d="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/".indexOf(a.charAt(b++));c="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/".indexOf(a.charAt(b++));e="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/".indexOf(a.charAt(b++));f+=String.fromCharCode(g<<2|d>>4)+(c===-1?"":String.fromCharCode((d&15)<<4|c>>
-2))+(e===-1?"":String.fromCharCode((c&3)<<6|e))}while(b<a.length);return decodeURIComponent(escape(f))};/*]]>*/</script>
-
 <script>
-window.onload = function(){
-	var debug = document.getElementById('nette-debug');
-	document.body.appendChild(debug);
-	debug.innerHTML = NetteX_base64Decode(<?php echo
-json_encode(base64_encode($output))?>);
-	for (var i = 0, scripts = debug.getElementsByTagName('script'); i < scripts.length; i++) eval(scripts[i].innerHTML);
-	(new NetteX.Debug.Bar).init();
-	NetteX.Q.factory(debug).show();
-};
+(function (onloadOrig) {
+	window.onload = function() {
+		if (typeof onloadOrig === 'function') onloadOrig();
+		var debug = document.getElementById('nette-debug');
+		document.body.appendChild(debug);
+		debug.innerHTML = <?php echo
+json_encode(@iconv('UTF-16','UTF-8//IGNORE',iconv('UTF-8','UTF-16//IGNORE',$output)))?>;
+		for (var i = 0, scripts = debug.getElementsByTagName('script'); i < scripts.length; i++) eval(scripts[i].innerHTML);
+		(new NetteX.Debug.Bar).init();
+		NetteX.Q.factory(debug).show();
+	};
+})(window.onload);
 </script>
 
 <!-- /NetteX Debug Bar -->
 <?php }static
 function
-tryError(){error_reporting(0);trigger_error('');}static
+tryError(){if(!self::$enabled&&self::$lastError===FALSE){set_error_handler(array(__CLASS__,'_errorHandler'));}self::$lastError=NULL;}static
 function
-catchError(&$message){error_reporting(E_ALL|E_STRICT);$error=error_get_last();if($error&&$error['message']!==''){$message=$error['message'];return
-TRUE;}else{$message=NULL;return
-FALSE;}}private
+catchError(&$error){if(!self::$enabled&&self::$lastError!==FALSE){restore_error_handler();}$error=self::$lastError;self::$lastError=FALSE;return(bool)$error;}private
 static
 function
 defaultMailer($message){$host=isset($_SERVER['HTTP_HOST'])?$_SERVER['HTTP_HOST']:(isset($_SERVER['SERVER_NAME'])?$_SERVER['SERVER_NAME']:'');$parts=str_replace(array("\r\n","\n"),array("\n",PHP_EOL),array('headers'=>"From: noreply@$host\nX-Mailer: NetteX Framework\n",'subject'=>"PHP: An error occurred on the server $host",'body'=>"[".@date('Y-m-d H:i:s')."] $message"));mail(self::$email,$parts['subject'],$parts['body'],$parts['headers']);}static
@@ -2128,14 +2137,14 @@ function
 addPanel(IDebugPanel$panel){self::$panels[]=$panel;}static
 function
 renderTab($id){switch($id){case'time':?>
-<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAJ6SURBVDjLjZO7T1NhGMY7Mji6uJgYt8bElTjof6CDg4sMSqIxJsRGB5F4TwQSIg1QKC0KWmkZEEsKtEcSxF5ohV5pKSicXqX3aqGn957z+PUEGopiGJ583/A+v3znvPkJAAjWR0VNJG0kGhKahCFhXcN3YBFfx8Kry6ym4xIzce88/fbWGY2k5WRb77UTTbWuYA9gDGg7EVmSIOF4g5T7HZKuMcSW5djWDyL0uRf0dCc8inYYxTcw9fAiCMBYB3gVj1z7gLhNTjKCqHkYP79KENC9Bq3uxrrqORzy+9D3tPAAccspVx1gWg0KbaZFbGllWFM+xrKkFQudV0CeDfJsjN4+C2nracjunoPq5VXIBrowMK4V1gG1LGyWdbZwCalsBYUyh2KFQzpXxVqkAGswD3+qBDpZwow9iYE5v26/VwfUQnnznyhvjguQYabIIpKpYD1ahI8UTT92MUSFuP5Z/9TBTgOgFrVjp3nakaG/0VmEfpX58pwzjUEquNk362s+PP8XYD/KpYTBHmRg9Wch0QX1R80dCZhYipudYQY2Auib8RmODVCa4hfUK4ngaiiLNFNFdKeCWWscXZMbWy9Unv9/gsIQU09a4pwvUeA3Uapy2C2wCKXL0DqTePLexbWPOv79E8f0UWrencZ2poxciUWZlKssB4bcHeE83NsFuMgpo2iIpMuNa1TNu4XjhggWvb+R2K3wZdLlAZl8Fd9jRb5sD+Xx0RJBx5gdom6VsMEFDyWF0WyCeSOFcDKPnRxZYTQL5Rc/nn1w4oFsBaIhC3r6FRh5erPRhYMyHdeFw4C6zkRhmijM7CnMu0AUZonCDCnRJBqSus5/ABD6Ba5CkQS8AAAAAElFTkSuQmCC"
+<span title="Execution time"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAJ6SURBVDjLjZO7T1NhGMY7Mji6uJgYt8bElTjof6CDg4sMSqIxJsRGB5F4TwQSIg1QKC0KWmkZEEsKtEcSxF5ohV5pKSicXqX3aqGn957z+PUEGopiGJ583/A+v3znvPkJAAjWR0VNJG0kGhKahCFhXcN3YBFfx8Kry6ym4xIzce88/fbWGY2k5WRb77UTTbWuYA9gDGg7EVmSIOF4g5T7HZKuMcSW5djWDyL0uRf0dCc8inYYxTcw9fAiCMBYB3gVj1z7gLhNTjKCqHkYP79KENC9Bq3uxrrqORzy+9D3tPAAccspVx1gWg0KbaZFbGllWFM+xrKkFQudV0CeDfJsjN4+C2nracjunoPq5VXIBrowMK4V1gG1LGyWdbZwCalsBYUyh2KFQzpXxVqkAGswD3+qBDpZwow9iYE5v26/VwfUQnnznyhvjguQYabIIpKpYD1ahI8UTT92MUSFuP5Z/9TBTgOgFrVjp3nakaG/0VmEfpX58pwzjUEquNk362s+PP8XYD/KpYTBHmRg9Wch0QX1R80dCZhYipudYQY2Auib8RmODVCa4hfUK4ngaiiLNFNFdKeCWWscXZMbWy9Unv9/gsIQU09a4pwvUeA3Uapy2C2wCKXL0DqTePLexbWPOv79E8f0UWrencZ2poxciUWZlKssB4bcHeE83NsFuMgpo2iIpMuNa1TNu4XjhggWvb+R2K3wZdLlAZl8Fd9jRb5sD+Xx0RJBx5gdom6VsMEFDyWF0WyCeSOFcDKPnRxZYTQL5Rc/nn1w4oFsBaIhC3r6FRh5erPRhYMyHdeFw4C6zkRhmijM7CnMu0AUZonCDCnRJBqSus5/ABD6Ba5CkQS8AAAAAElFTkSuQmCC"
 /><?php echo
-number_format((microtime(TRUE)-self::$time)*1000,1,'.',' ')?>ms
+number_format((microtime(TRUE)-self::$time)*1000,1,'.',' ')?>ms</span>
 <?php
 return;case'memory':?>
-<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAGvSURBVDjLpZO7alZREEbXiSdqJJDKYJNCkPBXYq12prHwBezSCpaidnY+graCYO0DpLRTQcR3EFLl8p+9525xgkRIJJApB2bN+gZmqCouU+NZzVef9isyUYeIRD0RTz482xouBBBNHi5u4JlkgUfx+evhxQ2aJRrJ/oFjUWysXeG45cUBy+aoJ90Sj0LGFY6anw2o1y/mK2ZS5pQ50+2XiBbdCvPk+mpw2OM/Bo92IJMhgiGCox+JeNEksIC11eLwvAhlzuAO37+BG9y9x3FTuiWTzhH61QFvdg5AdAZIB3Mw50AKsaRJYlGsX0tymTzf2y1TR9WwbogYY3ZhxR26gBmocrxMuhZNE435FtmSx1tP8QgiHEvj45d3jNlONouAKrjjzWaDv4CkmmNu/Pz9CzVh++Yd2rIz5tTnwdZmAzNymXT9F5AtMFeaTogJYkJfdsaaGpyO4E62pJ0yUCtKQFxo0hAT1JU2CWNOJ5vvP4AIcKeao17c2ljFE8SKEkVdWWxu42GYK9KE4c3O20pzSpyyoCx4v/6ECkCTCqccKorNxR5uSXgQnmQkw2Xf+Q+0iqQ9Ap64TwAAAABJRU5ErkJggg=="
+<span title="The peak of allocated memory"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAGvSURBVDjLpZO7alZREEbXiSdqJJDKYJNCkPBXYq12prHwBezSCpaidnY+graCYO0DpLRTQcR3EFLl8p+9525xgkRIJJApB2bN+gZmqCouU+NZzVef9isyUYeIRD0RTz482xouBBBNHi5u4JlkgUfx+evhxQ2aJRrJ/oFjUWysXeG45cUBy+aoJ90Sj0LGFY6anw2o1y/mK2ZS5pQ50+2XiBbdCvPk+mpw2OM/Bo92IJMhgiGCox+JeNEksIC11eLwvAhlzuAO37+BG9y9x3FTuiWTzhH61QFvdg5AdAZIB3Mw50AKsaRJYlGsX0tymTzf2y1TR9WwbogYY3ZhxR26gBmocrxMuhZNE435FtmSx1tP8QgiHEvj45d3jNlONouAKrjjzWaDv4CkmmNu/Pz9CzVh++Yd2rIz5tTnwdZmAzNymXT9F5AtMFeaTogJYkJfdsaaGpyO4E62pJ0yUCtKQFxo0hAT1JU2CWNOJ5vvP4AIcKeao17c2ljFE8SKEkVdWWxu42GYK9KE4c3O20pzSpyyoCx4v/6ECkCTCqccKorNxR5uSXgQnmQkw2Xf+Q+0iqQ9Ap64TwAAAABJRU5ErkJggg=="
 /><?php echo
-function_exists('memory_get_peak_usage')?number_format(memory_get_peak_usage()/1000,1,'.',' '):'n/a';?> kB
+function_exists('memory_get_peak_usage')?number_format(memory_get_peak_usage()/1000,1,'.',' '):'n/a';?> kB</span>
 <?php
 return;case'dumps':if(!Debug::$dumps)return;?>
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAIASURBVDjLpVPPaxNREJ6Vt01caH4oWk1T0ZKlGIo9RG+BUsEK4kEP/Q8qPXnpqRdPBf8A8Wahhx7FQ0GF9FJ6UksqwfTSBDGyB5HkkphC9tfb7jfbtyQQTx142byZ75v5ZnZWC4KALmICPy+2DkvKIX2f/POz83LxCL7nrz+WPNcll49DrhM9v7xdO9JW330DuXrrqkFSgig5iR2Cfv3t3gNxOnv5BwU+eZ5HuON5/PMPJZKJ+yKQfpW0S7TxdC6WJaWkyvff1LDaFRAeLZj05MHsiPTS6hua0PUqtwC5sHq9zv9RYWl+nu5cETcnJ1M0M5WlWq3GsX6/T+VymRzHDluZiGYAAsw0TQahV8uyyGq1qFgskm0bHIO/1+sx1rFtchJhArwEyIQ1Gg2WD2A6nWawHQJVDIWgIJfLhQowTIeE9D0mKAU8qPC0220afsWFQoH93W6X7yCDJ+DEBeBmsxnPIJVKxWQVUwry+XyUwBlKMKwA8jqdDhOVCqVAzQDVvXAXhOdGBFgymYwrGoZBmUyGjxCCdF0fSahaFdgoTHRxfTveMCXvWfkuE3Y+f40qhgT/nMitupzApdvT18bu+YeDQwY9Xl4aG9/d/URiMBhQq/dvZMeVghtT17lSZW9/rAKsvPa/r9Fc2dw+Pe0/xI6kM9mT5vtXy+Nw2kU/5zOGRpvuMIu0YAAAAABJRU5ErkJggg==" />variables
@@ -2143,7 +2152,7 @@ return;case'dumps':if(!Debug::$dumps)return;?>
 return;case'errors':if(!Debug::$errors)return;?>
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAIsSURBVDjLpVNLSJQBEP7+h6uu62vLVAJDW1KQTMrINQ1vPQzq1GOpa9EppGOHLh0kCEKL7JBEhVCHihAsESyJiE4FWShGRmauu7KYiv6Pma+DGoFrBQ7MzGFmPr5vmDFIYj1mr1WYfrHPovA9VVOqbC7e/1rS9ZlrAVDYHig5WB0oPtBI0TNrUiC5yhP9jeF4X8NPcWfopoY48XT39PjjXeF0vWkZqOjd7LJYrmGasHPCCJbHwhS9/F8M4s8baid764Xi0Ilfp5voorpJfn2wwx/r3l77TwZUvR+qajXVn8PnvocYfXYH6k2ioOaCpaIdf11ivDcayyiMVudsOYqFb60gARJYHG9DbqQFmSVNjaO3K2NpAeK90ZCqtgcrjkP9aUCXp0moetDFEeRXnYCKXhm+uTW0CkBFu4JlxzZkFlbASz4CQGQVBFeEwZm8geyiMuRVntzsL3oXV+YMkvjRsydC1U+lhwZsWXgHb+oWVAEzIwvzyVlk5igsi7DymmHlHsFQR50rjl+981Jy1Fw6Gu0ObTtnU+cgs28AKgDiy+Awpj5OACBAhZ/qh2HOo6i+NeA73jUAML4/qWux8mt6NjW1w599CS9xb0mSEqQBEDAtwqALUmBaG5FV3oYPnTHMjAwetlWksyByaukxQg2wQ9FlccaK/OXA3/uAEUDp3rNIDQ1ctSk6kHh1/jRFoaL4M4snEMeD73gQx4M4PsT1IZ5AfYH68tZY7zv/ApRMY9mnuVMvAAAAAElFTkSuQmCC"
 /><span class="nette-warning"><?php echo
-count(self::$errors)?> errors</span>
+array_sum(self::$errors)?> errors</span>
 <?php }}static
 function
 renderPanel($id){switch($id){case'dumps':if(!function_exists('NetteX\_netteDumpCb2')){function
@@ -2183,18 +2192,21 @@ return;case'errors':?>
 
 <div class="nette-inner">
 <table>
+<?php $i=0?>
 <?php foreach(self::$errors
-as$i=>$item):?>
+as$item=>$count):list($message,$file,$line)=explode('|',$item)?>
 <tr class="<?php echo$i++%
 2?'nette-alt':''?>">
-	<td><pre><?php echo$relative?str_replace($relative,"...",$item):$item?></pre></td>
+	<td class="nette-right"><?php echo$count?"$count\xC3\x97":''?></td>
+	<td><pre><?php echo
+htmlspecialchars($message),' in ',(self::$editor?'<a href="'.htmlspecialchars(strtr(self::$editor,array('%file'=>rawurlencode($file),'%line'=>$line))).'">':''),htmlspecialchars(($relative?str_replace($relative,"...",$file):$file)),':',$line,(self::$editor?'</a>':'')?></pre></td>
 </tr>
 <?php endforeach?>
 </table>
 </div><?php }}static
 function
-fireLog($message){if(self::$productionMode||headers_sent())return
-FALSE;static$payload=array('logs'=>array());$item=array('name'=>'PHP','level'=>'debug','order'=>count($payload['logs']),'time'=>str_pad(number_format((microtime(TRUE)-self::$time)*1000,1,'.',' '),8,'0',STR_PAD_LEFT).' ms','template'=>'','message'=>'','style'=>'background:#767ab6');$args=func_get_args();if(isset($args[0])&&is_string($args[0])){$item['template']=array_shift($args);}if(isset($args[0])&&$args[0]instanceof\Exception){$e=array_shift($args);$trace=$e->getTrace();if(isset($trace[0]['class'])&&$trace[0]['class']===__CLASS__&&($trace[0]['function']==='_shutdownHandler'||$trace[0]['function']==='_errorHandler')){unset($trace[0]);}$item['exc_info']=array($e->getMessage(),$e->getFile(),array());$item['exc_frames']=array();foreach($trace
+fireLog($message){if(self::$productionMode){return;}elseif(!self::$firebugDetected||headers_sent()){return
+FALSE;}static$payload=array('logs'=>array());$item=array('name'=>'PHP','level'=>'debug','order'=>count($payload['logs']),'time'=>str_pad(number_format((microtime(TRUE)-self::$time)*1000,1,'.',' '),8,'0',STR_PAD_LEFT).' ms','template'=>'','message'=>'','style'=>'background:#767ab6');$args=func_get_args();if(isset($args[0])&&is_string($args[0])){$item['template']=array_shift($args);}if(isset($args[0])&&$args[0]instanceof\Exception){$e=array_shift($args);$trace=$e->getTrace();if(isset($trace[0]['class'])&&$trace[0]['class']===__CLASS__&&($trace[0]['function']==='_shutdownHandler'||$trace[0]['function']==='_errorHandler')){unset($trace[0]);}$item['exc_info']=array($e->getMessage(),$e->getFile(),array());$item['exc_frames']=array();foreach($trace
 as$frame){$frame+=array('file'=>null,'line'=>null,'class'=>null,'type'=>null,'function'=>null,'object'=>null,'args'=>null);$item['exc_info'][2][]=array($frame['file'],$frame['line'],"$frame[class]$frame[type]$frame[function]",$frame['object']);$item['exc_frames'][]=$frame['args'];};$file=str_replace(dirname(dirname(dirname($e->getFile()))),"\xE2\x80\xA6",$e->getFile());$item['template']=($e
 instanceof\ErrorException?'':get_class($e).': ').$e->getMessage().($e->getCode()?' #'.$e->getCode():'').' in '.$file.':'.$e->getLine();array_unshift($trace,array('file'=>$e->getFile(),'line'=>$e->getLine()));}else{$trace=debug_backtrace();if(isset($trace[0]['class'])&&$trace[0]['class']===__CLASS__&&($trace[0]['function']==='_shutdownHandler'||$trace[0]['function']==='_errorHandler')){unset($trace[0]);}}if(isset($args[0])&&in_array($args[0],array(self::DEBUG,self::INFO,self::WARNING,self::ERROR,self::CRITICAL),TRUE)){$item['level']=array_shift($args);}$item['args']=$args;foreach($trace
 as$frame){if(isset($frame['file'])&&is_file($frame['file'])){$item['pathname']=$frame['file'];$item['lineno']=$frame['line'];break;}}$payload['logs'][]=$item;foreach(str_split(base64_encode(@json_encode($payload)),4990)as$k=>$v){header("FireLogger-de11e-$k:$v");}return
@@ -2211,7 +2223,10 @@ Object{public$defaultConfigFile='%appDir%/config.ini';public$defaultServices=arr
 detect($name){switch($name){case'environment':if($this->detect('console')){return
 Environment::CONSOLE;}else{return
 Environment::getMode('production')?Environment::PRODUCTION:Environment::DEVELOPMENT;}case'production':if(PHP_SAPI==='cli'){return
-FALSE;}elseif(isset($_SERVER['SERVER_ADDR'])||isset($_SERVER['LOCAL_ADDR'])){$addr=isset($_SERVER['SERVER_ADDR'])?$_SERVER['SERVER_ADDR']:$_SERVER['LOCAL_ADDR'];$oct=explode('.',$addr);return$addr!=='::1'&&(count($oct)!==4||($oct[0]!=='10'&&$oct[0]!=='127'&&($oct[0]!=='172'||$oct[1]<16||$oct[1]>31)&&($oct[0]!=='169'||$oct[1]!=='254')&&($oct[0]!=='192'||$oct[1]!=='168')));}else{return
+FALSE;}elseif(isset($_SERVER['SERVER_ADDR'])||isset($_SERVER['LOCAL_ADDR'])){$addrs=array();if(isset($_SERVER['HTTP_X_FORWARDED_FOR'])){$addrs=preg_split('#,\s*#',$_SERVER['HTTP_X_FORWARDED_FOR']);}if(isset($_SERVER['REMOTE_ADDR'])){$addrs[]=$_SERVER['REMOTE_ADDR'];}$addrs[]=isset($_SERVER['SERVER_ADDR'])?$_SERVER['SERVER_ADDR']:$_SERVER['LOCAL_ADDR'];foreach($addrs
+as$addr){$oct=explode('.',$addr);if($addr!=='::1'&&(count($oct)!==4||($oct[0]!=='10'&&$oct[0]!=='127'&&($oct[0]!=='172'||$oct[1]<16||$oct[1]>31)&&($oct[0]!=='169'||$oct[1]!=='254')&&($oct[0]!=='192'||$oct[1]!=='168')))){return
+TRUE;}}return
+FALSE;}else{return
 TRUE;}case'console':return
 PHP_SAPI==='cli';default:return
 NULL;}}function
@@ -2243,16 +2258,14 @@ createContext(){$context=new
 Context;foreach($this->defaultServices
 as$name=>$service){$context->addService($name,$service);}return$context;}static
 function
-createApplication(){if(Environment::getVariable('baseUri',NULL)===NULL){Environment::setVariable('baseUri',Environment::getHttpRequest()->getUri()->getBasePath());}$context=clone
-Environment::getContext();$context->addService('NetteX\\Application\\IRouter','NetteX\Application\MultiRouter');$context->addService('defaultRouter',function(){return
+createApplication(){if(Environment::getVariable('baseUri',NULL)===NULL){Environment::setVariable('baseUri',Environment::getHttpRequest()->getUri()->getBaseUri());}$context=clone
+Environment::getContext();$context->addService('NetteX\\Application\\IRouter','NetteX\Application\MultiRouter');if(!$context->hasService('NetteX\\Application\\IPresenterLoader')){$context->addService('NetteX\\Application\\IPresenterLoader',function(){return
 new
-NetteX\Application\SimpleRouter(array('presenter'=>'Default','action'=>'default'));});$context->addService('NetteX\\Application\\IPresenterLoader',function(){return
-new
-NetteX\Application\PresenterLoader(Environment::getVariable('appDir'));});$application=new
+NetteX\Application\PresenterLoader(Environment::getVariable('appDir'));});}$application=new
 NetteX\Application\Application;$application->setContext($context);$application->catchExceptions=Environment::isProduction();return$application;}static
 function
 createCacheStorage(){$context=new
-Context;$context->addService('NetteX\\Caching\\ICacheJournal',array(__CLASS__,'createCacheJournal'));$dir=Environment::getVariable('tempDir').'/cache';umask(0000);@mkdir($dir,0755);return
+Context;$context->addService('NetteX\\Caching\\ICacheJournal',array(__CLASS__,'createCacheJournal'));$dir=Environment::getVariable('tempDir').'/cache';umask(0000);@mkdir($dir,0777);return
 new
 NetteX\Caching\FileStorage($dir,$context);}static
 function
@@ -2284,7 +2297,7 @@ Configurator;}return
 self::$configurator;}static
 function
 setName($name){if(!isset(self::$vars['environment'])){self::setVariable('environment',$name,FALSE);}else{throw
-new\XInvalidStateException('Environment name has been already set.');}}static
+new\XInvalidStateException('Environment name has already been set.');}}static
 function
 getName(){$name=self::getVariable('environment',NULL);if($name===NULL){$name=self::getConfigurator()->detect('environment');self::setVariable('environment',$name,FALSE);}return$name;}static
 function
@@ -2389,11 +2402,12 @@ getTranslator(){if($this->translator===TRUE){return$this->getForm(FALSE)?$this->
 translate($s,$count=NULL){$translator=$this->getTranslator();return$translator===NULL||$s==NULL?$s:$translator->translate($s,$count);}function
 setValue($value){$this->value=$value;return$this;}function
 getValue(){return$this->value;}function
+isFilled(){return(string)$this->getValue()!=='';}function
 setDefaultValue($value){$form=$this->getForm(FALSE);if(!$form||!$form->isAnchored()||!$form->isSubmitted()){$this->setValue($value);}return$this;}function
 loadHttpData(){$path=explode('[',strtr(str_replace(array('[]',']'),'',$this->getHtmlName()),'.','_'));$this->setValue(NetteX\ArrayTools::get($this->getForm()->getHttpData(),$path));}function
 setDisabled($value=TRUE){$this->disabled=(bool)$value;return$this;}function
 isDisabled(){return$this->disabled;}function
-getControl(){$this->setOption('rendered',TRUE);$control=clone$this->control;$control->name=$this->getHtmlName();$control->disabled=$this->disabled;$control->id=$this->getHtmlId();$rules=self::exportRules($this->rules);$rules=substr(json_encode($rules),1,-1);$rules=preg_replace('#"([a-z0-9]+)":#i','$1:',$rules);$rules=preg_replace('#(?<!\\\\)"([^\\\\\',]*)"#i',"'$1'",$rules);$control->data['nette-rules']=$rules?$rules:NULL;return$control;}function
+getControl(){$this->setOption('rendered',TRUE);$control=clone$this->control;$control->name=$this->getHtmlName();$control->disabled=$this->disabled;$control->id=$this->getHtmlId();$control->required=$this->isRequired();$rules=self::exportRules($this->rules);$rules=substr(json_encode($rules),1,-1);$rules=preg_replace('#"([a-z0-9]+)":#i','$1:',$rules);$rules=preg_replace('#(?<!\\\\)"([^\\\\\',]*)"#i',"'$1'",$rules);$control->data('nette-rules',$rules?$rules:NULL);return$control;}function
 getLabel($caption=NULL){$label=clone$this->label;$label->for=$this->getHtmlId();if($caption!==NULL){$label->setText($this->translate($caption));}elseif($this->caption
 instanceof
 Html){$label->add($this->caption);}else{$label->setText($this->translate($this->caption));}return$label;}final
@@ -2401,18 +2415,18 @@ function
 getControlPrototype(){return$this->control;}final
 function
 getLabelPrototype(){return$this->label;}function
-setRendered($value=TRUE){$this->setOption('rendered',$value);return$this;}function
-isRendered(){return!empty($this->options['rendered']);}function
 addRule($operation,$message=NULL,$arg=NULL){$this->rules->addRule($operation,$message,$arg);return$this;}function
 addCondition($operation,$value=NULL){return$this->rules->addCondition($operation,$value);}function
 addConditionOn(IFormControl$control,$operation,$value=NULL){return$this->rules->addConditionOn($control,$operation,$value);}final
 function
 getRules(){return$this->rules;}final
 function
-setRequired($message=NULL){$this->rules->addRule(Form::FILLED,$message);return$this;}final
+setRequired($message=NULL){return$this->addRule(Form::FILLED,$message);}final
 function
-isRequired(){return!empty($this->options['required']);}function
-notifyRule(Rule$rule){if(is_string($rule->operation)&&strcasecmp($rule->operation,':filled')===0){$this->setOption('required',TRUE);}}private
+isRequired(){foreach($this->rules
+as$rule){if($rule->type===Rule::VALIDATOR&&!$rule->isNegative&&$rule->operation===Form::FILLED){return
+TRUE;}}return
+FALSE;}private
 static
 function
 exportRules($rules){$payload=array();foreach($rules
@@ -2429,7 +2443,7 @@ IFormControl?$item->value:$item)){return
 TRUE;}}}return
 FALSE;}static
 function
-validateFilled(IFormControl$control){return(string)$control->getValue()!=='';}static
+validateFilled(IFormControl$control){return$control->isFilled();}static
 function
 validateValid(IFormControl$control){return$control->rules->validate(TRUE);}function
 addError($message){if(!in_array($message,$this->errors,TRUE)){$this->errors[]=$message;}$this->getForm()->addError($message);}function
@@ -2464,11 +2478,10 @@ setValue($value){if(is_array($value)){$this->value=new
 HttpUploadedFile($value);}elseif($value
 instanceof
 HttpUploadedFile){$this->value=$value;}else{$this->value=new
-HttpUploadedFile(NULL);}return$this;}static
-function
-validateFilled(IFormControl$control){$file=$control->getValue();return$file
+HttpUploadedFile(NULL);}return$this;}function
+isFilled(){return$this->value
 instanceof
-HttpUploadedFile&&$file->isOK();}static
+HttpUploadedFile&&$this->value->isOK();}static
 function
 validateFileSize(FileUpload$control,$limit){$file=$control->getValue();return$file
 instanceof
@@ -2522,6 +2535,8 @@ getValue(){$allowed=$this->allowed;if($this->skipFirst){$allowed=array_slice($al
 is_scalar($this->value)&&isset($allowed[$this->value])?$this->value:NULL;}function
 getRawValue(){return
 is_scalar($this->value)?$this->value:NULL;}function
+isFilled(){$value=$this->getValue();return
+is_array($value)?count($value)>0:$value!==NULL;}function
 skipFirst($item=NULL){if(is_bool($item)){$this->skipFirst=$item;}else{$this->skipFirst=TRUE;if($item!==NULL){$this->items=array(''=>$item)+$this->items;$this->allowed=array(''=>'')+$this->allowed;}}return$this;}final
 function
 isFirstSkipped(){return$this->skipFirst;}final
@@ -2530,19 +2545,16 @@ areKeysUsed(){return$this->useKeys;}function
 setItems(array$items,$useKeys=TRUE){$this->items=$items;$this->allowed=array();$this->useKeys=(bool)$useKeys;foreach($items
 as$key=>$value){if(!is_array($value)){$value=array($key=>$value);}foreach($value
 as$key2=>$value2){if(!$this->useKeys){if(!is_scalar($value2)){throw
-new\InvalidArgumentException("All items must be scalars.");}$key2=$value2;}if(isset($this->allowed[$key2])){throw
+new\InvalidArgumentException("All items must be scalar.");}$key2=$value2;}if(isset($this->allowed[$key2])){throw
 new\InvalidArgumentException("Items contain duplication for key '$key2'.");}$this->allowed[$key2]=$value2;}}return$this;}final
 function
 getItems(){return$this->items;}function
 getSelectedItem(){if(!$this->useKeys){return$this->getValue();}else{$value=$this->getValue();return$value===NULL?NULL:$this->allowed[$value];}}function
-getControl(){$control=parent::getControl();if($this->skipFirst){reset($this->items);$control->data['nette-empty-value']=$this->useKeys?key($this->items):current($this->items);}$selected=$this->getValue();$selected=is_array($selected)?array_flip($selected):array($selected=>TRUE);$option=NetteX\Web\Html::el('option');foreach($this->items
+getControl(){$control=parent::getControl();if($this->skipFirst){reset($this->items);$control->data('nette-empty-value',$this->useKeys?key($this->items):current($this->items));}$selected=$this->getValue();$selected=is_array($selected)?array_flip($selected):array($selected=>TRUE);$option=NetteX\Web\Html::el('option');foreach($this->items
 as$key=>$value){if(!is_array($value)){$value=array($key=>$value);$dest=$control;}else{$dest=$control->create('optgroup')->label($key);}foreach($value
 as$key2=>$value2){if($value2
 instanceof
-NetteX\Web\Html){$dest->add((string)$value2->selected(isset($selected[$key2])));}else{$key2=$this->useKeys?$key2:$value2;$value2=$this->translate($value2);$dest->add((string)$option->value($key2===$value2?NULL:$key2)->selected(isset($selected[$key2]))->setText($value2));}}}return$control;}static
-function
-validateFilled(IFormControl$control){$value=$control->getValue();return
-is_array($value)?count($value)>0:$value!==NULL;}}class
+NetteX\Web\Html){$dest->add((string)$value2->selected(isset($selected[$key2])));}else{$key2=$this->useKeys?$key2:$value2;$value2=$this->translate($value2);$dest->add((string)$option->value($key2===$value2?NULL:$key2)->selected(isset($selected[$key2]))->setText($value2));}}}return$control;}}class
 MultiSelectBox
 extends
 SelectBox{function
@@ -2560,6 +2572,7 @@ FormControl{protected$separator;protected$container;protected$items=array();func
 __construct($label=NULL,array$items=NULL){parent::__construct($label);$this->control->type='radio';$this->container=Html::el();$this->separator=Html::el('br');if($items!==NULL)$this->setItems($items);}function
 getValue($raw=FALSE){return
 is_scalar($this->value)&&($raw||isset($this->items[$this->value]))?$this->value:NULL;}function
+isFilled(){return$this->getValue()!==NULL;}function
 setItems(array$items){$this->items=$items;return$this;}final
 function
 getItems(){return$this->items;}final
@@ -2571,10 +2584,8 @@ getControl($key=NULL){if($key===NULL){$container=clone$this->container;$separato
 NULL;}$control=parent::getControl();$id=$control->id;$counter=-1;$value=$this->value===NULL?NULL:(string)$this->getValue();$label=Html::el('label');foreach($this->items
 as$k=>$val){$counter++;if($key!==NULL&&$key!=$k)continue;$control->id=$label->for=$id.'-'.$counter;$control->checked=(string)$k===$value;$control->value=$k;if($val
 instanceof
-Html){$label->setHtml($val);}else{$label->setText($this->translate($val));}if($key!==NULL){return(string)$control.(string)$label;}$container->add((string)$control.(string)$label.$separator);unset($control->data['nette-rules']);}return$container;}function
-getLabel($caption=NULL){$label=parent::getLabel($caption);$label->for=NULL;return$label;}static
-function
-validateFilled(IFormControl$control){return$control->getValue()!==NULL;}}use
+Html){$label->setHtml($val);}else{$label->setText($this->translate($val));}if($key!==NULL){return(string)$control.(string)$label;}$container->add((string)$control.(string)$label.$separator);$control->data('nette-rules',NULL);}return$container;}function
+getLabel($caption=NULL){$label=parent::getLabel($caption);$label->for=NULL;return$label;}}use
 NetteX\String;abstract
 class
 TextBase
@@ -2587,9 +2598,9 @@ setEmptyValue($value){$this->emptyValue=(string)$value;return$this;}final
 function
 getEmptyValue(){return$this->emptyValue;}function
 addFilter($filter){$this->filters[]=callback($filter);return$this;}function
-getControl(){return
-parent::getControl()->data('nette-empty-value',$this->emptyValue===''?NULL:$this->translate($this->emptyValue));}function
-notifyRule(Rule$rule){if(is_string($rule->operation)&&!$rule->isNegative){if(strcasecmp($rule->operation,':float')===0){$this->addFilter(callback(__CLASS__,'filterFloat'));}elseif(strcasecmp($rule->operation,':length')===0){$this->control->maxlength=is_array($rule->arg)?$rule->arg[1]:$rule->arg;}elseif(strcasecmp($rule->operation,':maxLength')===0){$this->control->maxlength=$rule->arg;}}parent::notifyRule($rule);}static
+getControl(){$control=parent::getControl();foreach($this->getRules()as$rule){if($rule->type===Rule::VALIDATOR&&!$rule->isNegative&&($rule->operation===Form::LENGTH||$rule->operation===Form::MAX_LENGTH)){$control->maxlength=is_array($rule->arg)?$rule->arg[1]:$rule->arg;}}if($this->emptyValue!==''){$control->data('nette-empty-value',$this->translate($this->emptyValue));}return$control;}function
+addRule($operation,$message=NULL,$arg=NULL){if($operation===Form::FLOAT){$this->addFilter(callback(__CLASS__,'filterFloat'));}return
+parent::addRule($operation,$message,$arg);}static
 function
 validateMinLength(TextBase$control,$length){return
 String::length($control->getValue())>=$length;}static
@@ -2604,6 +2615,8 @@ function
 validateUrl(TextBase$control){$chars="a-z0-9\x80-\xFF";return(bool)String::match($control->getValue(),"#^(?:https?://|)(?:[$chars](?:[-$chars]{0,61}[$chars])?\\.)+[-$chars]{2,19}(/\S*)?$#i");}static
 function
 validateRegexp(TextBase$control,$regexp){return(bool)String::match($control->getValue(),$regexp);}static
+function
+validatePattern(TextBase$control,$pattern){return(bool)String::match($control->getValue(),"\x01^($pattern)$\x01u");}static
 function
 validateInteger(TextBase$control){return(bool)String::match($control->getValue(),'/^-?[0-9]+$/');}static
 function
@@ -2626,8 +2639,7 @@ sanitize($value){if($this->control->maxlength&&NetteX\String::length($value)>$th
 NetteX\String::trim(strtr($value,"\r\n",'  '));}function
 setType($type){$this->control->type=$type;return$this;}function
 setPasswordMode($mode=TRUE){$this->control->type=$mode?'password':'text';return$this;}function
-getControl(){$control=parent::getControl();if($this->control->type!=='password'){$control->value=$this->getValue()===''?$this->translate($this->emptyValue):$this->value;}return$control;}function
-notifyRule(Rule$rule){if(is_string($rule->operation)&&strcasecmp($rule->operation,':range')===0&&!$rule->isNegative&&$this->control->type!=='text'){list($this->control->min,$this->control->max)=$rule->arg;}parent::notifyRule($rule);}}class
+getControl(){$control=parent::getControl();foreach($this->getRules()as$rule){if($rule->isNegative||$rule->type!==Rule::VALIDATOR){}elseif($rule->operation===Form::RANGE&&$control->type!=='text'){list($control->min,$control->max)=$rule->arg;}elseif($rule->operation===Form::PATTERN){$control->pattern=$rule->arg;}}if($control->type!=='password'){$control->value=$this->getValue()===''?$this->translate($this->emptyValue):$this->value;}return$control;}}class
 FormGroup
 extends
 NetteX\Object{protected$controls;private$options=array();function
@@ -2654,7 +2666,7 @@ IFormRenderer{public$wrappers=array('form'=>array('container'=>NULL,'errors'=>TR
 render(Form$form,$mode=NULL){if($this->form!==$form){$this->form=$form;$this->init();}$s='';if(!$mode||$mode==='begin'){$s.=$this->renderBegin();}if((!$mode&&$this->getValue('form errors'))||$mode==='errors'){$s.=$this->renderErrors();}if(!$mode||$mode==='body'){$s.=$this->renderBody();}if(!$mode||$mode==='end'){$s.=$this->renderEnd();}return$s;}function
 setClientScript(){trigger_error(__METHOD__.'() is deprecated; use unobstructive JavaScript instead.',E_USER_WARNING);return$this;}protected
 function
-init(){$wrapper=&$this->wrappers['control'];foreach($this->form->getControls()as$control){if($control->getOption('required')&&isset($wrapper['.required'])){$control->getLabelPrototype()->class($wrapper['.required'],TRUE);}$el=$control->getControlPrototype();if($el->getName()==='input'&&isset($wrapper['.'.$el->type])){$el->class($wrapper['.'.$el->type],TRUE);}}}function
+init(){$wrapper=&$this->wrappers['control'];foreach($this->form->getControls()as$control){if($control->isRequired()&&isset($wrapper['.required'])){$control->getLabelPrototype()->class($wrapper['.required'],TRUE);}$el=$control->getControlPrototype();if($el->getName()==='input'&&isset($wrapper['.'.$el->type])){$el->class($wrapper['.'.$el->type],TRUE);}}}function
 renderBegin(){$this->counter=0;foreach($this->form->getControls()as$control){$control->setOption('rendered',FALSE);}if(strcasecmp($this->form->getMethod(),'get')===0){$el=clone$this->form->getElementPrototype();$uri=explode('?',(string)$el->action,2);$el->action=$uri[0];$s='';if(isset($uri[1])){foreach(preg_split('#[;&]#',$uri[1])as$param){$parts=explode('=',$param,2);$name=urldecode($parts[0]);if(!isset($this->form[$name])){$s.=Html::el('input',array('type'=>'hidden','name'=>$name,'value'=>urldecode($parts[1])));}}$s="\n\t".$this->getWrapper('hidden container')->setHtml($s);}return$el->startTag().$s;}else{return$this->form->getElementPrototype()->startTag();}}function
 renderEnd(){$s='';foreach($this->form->getControls()as$control){if($control
 instanceof
@@ -2680,7 +2692,7 @@ instanceof
 HiddenField||$control->getForm(FALSE)!==$this->form){}elseif($control
 instanceof
 Button){$buttons[]=$control;}else{if($buttons){$container->add($this->renderPairMulti($buttons));$buttons=NULL;}$container->add($this->renderPair($control));}}if($buttons){$container->add($this->renderPairMulti($buttons));}$s='';if(count($container)){$s.="\n".$container."\n";}return$s;}function
-renderPair(IFormControl$control){$pair=$this->getWrapper('pair container');$pair->add($this->renderLabel($control));$pair->add($this->renderControl($control));$pair->class($this->getValue($control->getOption('required')?'pair .required':'pair .optional'),TRUE);$pair->class($control->getOption('class'),TRUE);if(++$this->counter
+renderPair(IFormControl$control){$pair=$this->getWrapper('pair container');$pair->add($this->renderLabel($control));$pair->add($this->renderControl($control));$pair->class($this->getValue($control->isRequired()?'pair .required':'pair .optional'),TRUE);$pair->class($control->getOption('class'),TRUE);if(++$this->counter
 %
 2)$pair->class($this->getValue('pair .odd'),TRUE);$pair->id=$control->getOption('id');return$pair->render(0);}function
 renderPairMulti(array$controls){$s=array();foreach($controls
@@ -2692,14 +2704,14 @@ renderLabel(IFormControl$control){$head=$this->getWrapper('label container');if(
 instanceof
 Checkbox||$control
 instanceof
-Button){return$head->setHtml(($head->getName()==='td'||$head->getName()==='th')?'&nbsp;':'');}else{$label=$control->getLabel();$suffix=$this->getValue('label suffix').($control->getOption('required')?$this->getValue('label requiredsuffix'):'');if($label
+Button){return$head->setHtml(($head->getName()==='td'||$head->getName()==='th')?'&nbsp;':'');}else{$label=$control->getLabel();$suffix=$this->getValue('label suffix').($control->isRequired()?$this->getValue('label requiredsuffix'):'');if($label
 instanceof
 Html){$label->setHtml($label->getHtml().$suffix);$suffix='';}return$head->setHtml((string)$label.$suffix);}}function
 renderControl(IFormControl$control){$body=$this->getWrapper('control container');if($this->counter
 %
 2)$body->class($this->getValue('control .odd'),TRUE);$description=$control->getOption('description');if($description
 instanceof
-Html){$description=' '.$control->getOption('description');}elseif(is_string($description)){$description=' '.$this->getWrapper('control description')->setText($control->translate($description));}else{$description='';}if($control->getOption('required')){$description=$this->getValue('control requiredsuffix').$description;}if($this->getValue('control errors')){$description.=$this->renderErrors($control);}if($control
+Html){$description=' '.$control->getOption('description');}elseif(is_string($description)){$description=' '.$this->getWrapper('control description')->setText($control->translate($description));}else{$description='';}if($control->isRequired()){$description=$this->getValue('control requiredsuffix').$description;}if($this->getValue('control errors')){$description.=$this->renderErrors($control);}if($control
 instanceof
 Checkbox||$control
 instanceof
@@ -2723,10 +2735,10 @@ extends
 NetteX\Object
 implements\IteratorAggregate{const
 VALIDATE_PREFIX='validate';public
-static$defaultMessages=array();private$rules=array();private$parent;private$toggles=array();private$control;function
+static$defaultMessages=array(Form::PROTECTION=>'Security token did not match. Possible CSRF attack.');private$rules=array();private$parent;private$toggles=array();private$control;function
 __construct(IFormControl$control){$this->control=$control;}function
 addRule($operation,$message=NULL,$arg=NULL){$rule=new
-Rule;$rule->control=$this->control;$rule->operation=$operation;$this->adjustOperation($rule);$rule->arg=$arg;$rule->type=Rule::VALIDATOR;if($message===NULL&&is_string($rule->operation)&&isset(self::$defaultMessages[$rule->operation])){$rule->message=self::$defaultMessages[$rule->operation];}else{$rule->message=$message;}if($this->parent===NULL){$this->control->notifyRule($rule);}$this->rules[]=$rule;return$this;}function
+Rule;$rule->control=$this->control;$rule->operation=$operation;$this->adjustOperation($rule);$rule->arg=$arg;$rule->type=Rule::VALIDATOR;if($message===NULL&&is_string($rule->operation)&&isset(self::$defaultMessages[$rule->operation])){$rule->message=self::$defaultMessages[$rule->operation];}else{$rule->message=$message;}$this->rules[]=$rule;return$this;}function
 addCondition($operation,$arg=NULL){return$this->addConditionOn($this->control,$operation,$arg);}function
 addConditionOn(IFormControl$control,$operation,$arg=NULL){$rule=new
 Rule;$rule->control=$control;$rule->operation=$operation;$this->adjustOperation($rule);$rule->arg=$arg;$rule->type=Rule::CONDITION;$rule->subRules=new
@@ -2755,17 +2767,18 @@ getCallback($rule){$op=$rule->operation;if(is_string($op)&&strncmp($op,':',1)===
 callback(get_class($rule->control),self::VALIDATE_PREFIX.ltrim($op,':'));}else{return
 callback($op);}}static
 function
-formatMessage($rule,$withValue){$message=$rule->message;if($translator=$rule->control->getForm()->getTranslator()){$message=$translator->translate($message,is_int($rule->arg)?$rule->arg:NULL);}$message=vsprintf(preg_replace('#%(name|label|value)#','%$0',$message),(array)$rule->arg);$message=str_replace('%name',$rule->control->getName(),$message);$message=str_replace('%label',$rule->control->translate($rule->control->caption),$message);if($withValue&&strpos($message,'%value')!==FALSE){$message=str_replace('%value',$rule->control->getValue(),$message);}return$message;}}}namespace NetteX\Loaders{use
+formatMessage($rule,$withValue){$message=$rule->message;if(!isset($message)){$message=self::$defaultMessages[$rule->operation];}if($translator=$rule->control->getForm()->getTranslator()){$message=$translator->translate($message,is_int($rule->arg)?$rule->arg:NULL);}$message=vsprintf(preg_replace('#%(name|label|value)#','%$0',$message),(array)$rule->arg);$message=str_replace('%name',$rule->control->getName(),$message);$message=str_replace('%label',$rule->control->translate($rule->control->caption),$message);if($withValue&&strpos($message,'%value')!==FALSE){$message=str_replace('%value',$rule->control->getValue(),$message);}return$message;}}}namespace NetteX\Loaders{use
 NetteX;use
-NetteX\String;class
+NetteX\String;use
+NetteX\Caching\Cache;class
 RobotLoader
 extends
-AutoLoader{public$scanDirs;public$ignoreDirs='.*, *.old, *.bak, *.tmp, temp';public$acceptFiles='*.php, *.php5';public$autoRebuild=FALSE;private$list=array();private$files;private$rebuilt=FALSE;private$cacheStorage;function
+AutoLoader{public$scanDirs;public$ignoreDirs='.*, *.old, *.bak, *.tmp, temp';public$acceptFiles='*.php, *.php5';public$autoRebuild=TRUE;private$list=array();private$files;private$rebuilt=FALSE;private$cacheStorage;function
 __construct(){if(!extension_loaded('tokenizer')){throw
 new\Exception("PHP extension Tokenizer is not loaded.");}}function
 register(){$cache=$this->getCache();$key=$this->getKey();if(isset($cache[$key])){$this->list=$cache[$key];}else{$this->rebuild();}if(isset($this->list[strtolower(__CLASS__)])&&class_exists('NetteX\Loaders\NetteXLoader',FALSE)){NetteXLoader::getInstance()->unregister();}parent::register();}function
-tryLoad($type){$type=ltrim(strtolower($type),'\\');if(!isset($this->list[$type])||($this->list[$type]!==FALSE&&!is_file($this->list[$type][0]))){$this->list[$type]=FALSE;if($this->autoRebuild){if($this->rebuilt){$this->getCache()->save($this->getKey(),$this->list);}else{$this->rebuild();}}}if(!empty($this->list[$type])){LimitedScope::load($this->list[$type][0]);self::$count++;}}function
-rebuild(){$this->getCache()->save($this->getKey(),callback($this,'_rebuildCallback'));$this->rebuilt=TRUE;}function
+tryLoad($type){$type=ltrim(strtolower($type),'\\');if(isset($this->list[$type][0])&&!is_file($this->list[$type][0])){unset($this->list[$type]);}if(!isset($this->list[$type])){$trace=debug_backtrace();$initiator=&$trace[2]['function'];if($initiator==='class_exists'||$initiator==='interface_exists'){$this->list[$type]=FALSE;if($this->autoRebuild&&$this->rebuilt){$this->getCache()->save($this->getKey(),$this->list,array(Cache::CONSTS=>'NetteX\Framework::REVISION'));}}if($this->autoRebuild&&!$this->rebuilt){$this->rebuild();}}if(isset($this->list[$type][0])){LimitedScope::load($this->list[$type][0]);self::$count++;}}function
+rebuild(){$this->getCache()->save($this->getKey(),callback($this,'_rebuildCallback'),array(Cache::CONSTS=>'NetteX\Framework::REVISION'));$this->rebuilt=TRUE;}function
 _rebuildCallback(){foreach($this->list
 as$pair){if($pair)$this->files[$pair[0]]=$pair[1];}foreach(array_unique($this->scanDirs)as$dir){$this->scanDirectory($dir);}$this->files=NULL;return$this->list;}function
 getIndexedClasses(){$res=array();foreach($this->list
@@ -2774,7 +2787,7 @@ addDirectory($path){foreach((array)$path
 as$val){$real=realpath($val);if($real===FALSE){throw
 new\XDirectoryNotFoundException("Directory '$val' not found.");}$this->scanDirs[]=$real;}}private
 function
-addClass($class,$file,$time){$lClass=strtolower($class);if(!empty($this->list[$lClass])&&$this->list[$lClass][0]!==$file&&is_file($this->list[$lClass][0])){$e=new\XInvalidStateException("Ambiguous class '$class' resolution; defined in $file and in ".$this->list[$lClass][0].".");{throw$e;}}$this->list[$lClass]=array($file,$time,$class);}private
+addClass($class,$file,$time){$lClass=strtolower($class);if(isset($this->list[$lClass][0])&&$this->list[$lClass][0]!==$file&&is_file($this->list[$lClass][0])){$e=new\XInvalidStateException("Ambiguous class '$class' resolution; defined in $file and in ".$this->list[$lClass][0].".");{throw$e;}}$this->list[$lClass]=array($file,$time,$class);}private
 function
 scanDirectory($dir){if(is_dir($dir)){$disallow=array();$iterator=NetteX\Finder::findFiles(String::split($this->acceptFiles,'#[,\s]+#'))->filter(function($file)use(&$disallow){return!isset($disallow[$file->getPathname()]);})->from($dir)->exclude(String::split($this->ignoreDirs,'#[,\s]+#'))->filter($filter=function($dir)use(&$disallow){$path=$dir->getPathname();if(is_file("$path/netterobots.txt")){foreach(file("$path/netterobots.txt")as$s){if($matches=String::match($s,'#^disallow\\s*:\\s*(\\S+)#i')){$disallow[$path.str_replace('/',DIRECTORY_SEPARATOR,rtrim('/'.ltrim($matches[1],'/'),'/'))]=TRUE;}}}return!isset($disallow[$path]);});$filter(new\SplFileInfo($dir));}else{$iterator=new\ArrayIterator(array(new\SplFileInfo($dir)));}foreach($iterator
 as$entry){$path=$entry->getPathname();if(!isset($this->files[$path])||$this->files[$path]!==$entry->getMTime()){$this->scanScript($path);}}}private
@@ -2799,7 +2812,7 @@ function
 getCache(){if(!$this->cacheStorage){trigger_error('Missing cache storage.',E_USER_WARNING);$this->cacheStorage=new
 NetteX\Caching\DummyStorage;}return
 new
-NetteX\Caching\Cache($this->cacheStorage,'NetteX.RobotLoader');}protected
+Cache($this->cacheStorage,'NetteX.RobotLoader');}protected
 function
 getKey(){return
 md5("v2|$this->ignoreDirs|$this->acceptFiles|".implode('|',$this->scanDirs));}}}namespace NetteX\Mail{use
@@ -2818,7 +2831,7 @@ new\InvalidArgumentException("Header name must be non-empty alphanumeric string,
 as$email=>$name){if($name!==NULL&&!NetteX\String::checkEncoding($name)){throw
 new\InvalidArgumentException("Name is not valid UTF-8 string.");}if(!preg_match('#^[^@",\s]+@[^@",\s]+\.[a-z]{2,10}$#i',$email)){throw
 new\InvalidArgumentException("Email address '$email' is not valid.");}if(preg_match('#[\r\n]#',$name)){throw
-new\InvalidArgumentException("Name cannot contain the line separator.");}$tmp[$email]=$name;}}else{$value=(string)$value;if(!NetteX\String::checkEncoding($value)){throw
+new\InvalidArgumentException("Name must not contain line separator.");}$tmp[$email]=$name;}}else{$value=(string)$value;if(!NetteX\String::checkEncoding($value)){throw
 new\InvalidArgumentException("Header is not valid UTF-8 string.");}$this->headers[$name]=preg_replace('#[\r\n]+#',' ',$value);}return$this;}function
 getHeader($name){return
 isset($this->headers[$name])?$this->headers[$name]:NULL;}function
@@ -2841,7 +2854,7 @@ self::ENCODING_QUOTED_PRINTABLE:$output.=function_exists('quoted_printable_encod
 self::ENCODING_BASE64:$output.=rtrim(chunk_split(base64_encode($body),self::LINE_LENGTH,self::EOL));break;case
 self::ENCODING_7BIT:$body=preg_replace('#[\x80-\xFF]+#','',$body);case
 self::ENCODING_8BIT:$body=str_replace(array("\x00","\r"),'',$body);$body=str_replace("\n",self::EOL,$body);$output.=$body;break;default:throw
-new\XInvalidStateException('Unknown encoding');}}if($this->parts){if(substr($output,-strlen(self::EOL))!==self::EOL)$output.=self::EOL;foreach($this->parts
+new\XInvalidStateException('Unknown encoding.');}}if($this->parts){if(substr($output,-strlen(self::EOL))!==self::EOL)$output.=self::EOL;foreach($this->parts
 as$part){$output.='--'.$boundary.self::EOL.$part->generateMessage().self::EOL;}$output.='--'.$boundary.'--';}return$output;}private
 static
 function
@@ -2875,14 +2888,12 @@ setPriority($priority){$this->setHeader('X-Priority',(int)$priority);return$this
 getPriority(){return$this->getHeader('X-Priority');}function
 setHtmlBody($html,$basePath=NULL){$this->html=$html;$this->basePath=$basePath;return$this;}function
 getHtmlBody(){return$this->html;}function
-addEmbeddedFile($file,$content=NULL,$contentType=NULL){$part=new
-MailMimePart;$part->setBody($content===NULL?$this->readFile($file,$contentType):(string)$content);$part->setContentType($contentType?$contentType:'application/octet-stream');$part->setEncoding(self::ENCODING_BASE64);$part->setHeader('Content-Disposition','inline; filename="'.String::fixEncoding(basename($file)).'"');$part->setHeader('Content-ID','<'.md5(uniqid('',TRUE)).'>');return$this->inlines[$file]=$part;}function
-addAttachment($file,$content=NULL,$contentType=NULL){$part=new
-MailMimePart;$part->setBody($content===NULL?$this->readFile($file,$contentType):(string)$content);$part->setContentType($contentType?$contentType:'application/octet-stream');$part->setEncoding(self::ENCODING_BASE64);$part->setHeader('Content-Disposition','attachment; filename="'.String::fixEncoding(basename($file)).'"');return$this->attachments[]=$part;}private
+addEmbeddedFile($file,$content=NULL,$contentType=NULL){return$this->inlines[$file]=$this->createAttachment($file,$content,$contentType,'inline')->setHeader('Content-ID','<'.md5(uniqid('',TRUE)).'>');}function
+addAttachment($file,$content=NULL,$contentType=NULL){return$this->attachments[]=$this->createAttachment($file,$content,$contentType,'attachment');}private
 function
-readFile($file,&$contentType){if(!is_file($file)){throw
-new\XFileNotFoundException("File '$file' not found.");}if(!$contentType&&$info=getimagesize($file)){$contentType=$info['mime'];}return
-file_get_contents($file);}function
+createAttachment($file,$content,$contentType,$disposition){$part=new
+MailMimePart;if($content===NULL){if(!is_file($file)){throw
+new\XFileNotFoundException("File '$file' not found.");}if(!$contentType&&$info=getimagesize($file)){$contentType=$info['mime'];}$part->setBody(file_get_contents($file));}else{$part->setBody((string)$content);}$part->setContentType($contentType?$contentType:'application/octet-stream');$part->setEncoding(preg_match('#(multipart|message)/#A',$contentType)?self::ENCODING_8BIT:self::ENCODING_BASE64);$part->setHeader('Content-Disposition',$disposition.'; filename="'.String::fixEncoding(basename($file)).'"');return$part;}function
 send(){$this->getMailer()->send($this->build());}function
 setMailer(IMailer$mailer){$this->mailer=$mailer;return$this;}function
 getMailer(){if($this->mailer===NULL){$this->mailer=is_object(self::$defaultMailer)?self::$defaultMailer:new
@@ -2906,8 +2917,8 @@ extends
 NetteX\Object
 implements
 IMailer{function
-send(Mail$mail){$tmp=clone$mail;$tmp->setHeader('Subject',NULL);$tmp->setHeader('To',NULL);$parts=explode(Mail::EOL.Mail::EOL,$tmp->generateMessage(),2);NetteX\Debug::tryError();$res=mail(str_replace(Mail::EOL,PHP_EOL,$mail->getEncodedHeader('To')),str_replace(Mail::EOL,PHP_EOL,$mail->getEncodedHeader('Subject')),str_replace(Mail::EOL,PHP_EOL,$parts[1]),str_replace(Mail::EOL,PHP_EOL,$parts[0]));if(NetteX\Debug::catchError($msg)){throw
-new\XInvalidStateException($msg);}elseif(!$res){throw
+send(Mail$mail){$tmp=clone$mail;$tmp->setHeader('Subject',NULL);$tmp->setHeader('To',NULL);$parts=explode(Mail::EOL.Mail::EOL,$tmp->generateMessage(),2);NetteX\Debug::tryError();$res=mail(str_replace(Mail::EOL,PHP_EOL,$mail->getEncodedHeader('To')),str_replace(Mail::EOL,PHP_EOL,$mail->getEncodedHeader('Subject')),str_replace(Mail::EOL,PHP_EOL,$parts[1]),str_replace(Mail::EOL,PHP_EOL,$parts[0]));if(NetteX\Debug::catchError($e)){throw
+new\XInvalidStateException($e->getMessage());}elseif(!$res){throw
 new\XInvalidStateException('Unable to send email.');}}}class
 SmtpMailer
 extends
@@ -2922,7 +2933,7 @@ connect(){$this->connection=@fsockopen(($this->secure==='ssl'?'ssl://':'').$this
 new
 SmtpException($error,$errno);}stream_set_timeout($this->connection,$this->timeout,0);$this->read();$self=isset($_SERVER['SERVER_NAME'])?$_SERVER['SERVER_NAME']:'localhost';$this->write("EHLO $self");if((int)$this->read()!==250){$this->write("HELO $self",250);}if($this->secure==='tls'){$this->write('STARTTLS',220);if(!stream_socket_enable_crypto($this->connection,TRUE,STREAM_CRYPTO_METHOD_TLS_CLIENT)){throw
 new
-SmtpException('Unable to connect via TLS');}}if($this->username!=NULL&&$this->password!=NULL){$this->write('AUTH LOGIN',334);$this->write(base64_encode($this->username),334,'username');$this->write(base64_encode($this->password),235,'password');}}private
+SmtpException('Unable to connect via TLS.');}}if($this->username!=NULL&&$this->password!=NULL){$this->write('AUTH LOGIN',334);$this->write(base64_encode($this->username),334,'username');$this->write(base64_encode($this->password),235,'password');}}private
 function
 disconnect(){fclose($this->connection);$this->connection=NULL;}private
 function
@@ -3099,6 +3110,7 @@ extends\ReflectionParameter{private$function;function
 __construct($function,$parameter){parent::__construct($this->function=$function,$parameter);}function
 getClass(){return($ref=parent::getClass())?new
 ClassReflection($ref->getName()):NULL;}function
+getClassName(){return($tmp=NetteX\String::match($this,'#>\s+([a-z0-9_\\\\]+)#i'))?$tmp[1]:NULL;}function
 getDeclaringClass(){return($ref=parent::getDeclaringClass())?new
 ClassReflection($ref->getName()):NULL;}function
 getDeclaringFunction(){return
@@ -3322,24 +3334,25 @@ setFile($file){if(!is_file($file)){throw
 new\XFileNotFoundException("Missing template file '$file'.");}$this->file=$file;return$this;}function
 getFile(){return$this->file;}function
 render(){if($this->file==NULL){throw
-new\XInvalidStateException("Template file name was not specified.");}$this->__set('template',$this);$shortName=str_replace(Environment::getVariable('appDir',''),'',$this->file);$cache=new
-Cache($this->getCacheStorage(),'NetteX.FileTemplate');$key=trim(strtr($shortName,'\\/@','.._'),'.').'-'.md5($this->file);$cached=$content=$cache[$key];if($content===NULL){if(!$this->getFilters()){$this->onPrepareFilters($this);}if(!$this->getFilters()){LimitedScope::load($this->file,$this->getParams());return;}$content=$this->compile(file_get_contents($this->file),"file \xE2\x80\xA6$shortName");$cache->save($key,$content,array(Cache::FILES=>$this->file,Cache::EXPIRE=>self::$cacheExpire,Cache::CONSTS=>'NetteX\Framework::REVISION'));$cache->release();$cached=$cache[$key];}if($cached!==NULL&&self::$cacheStorage
+new\XInvalidStateException("Template file name was not specified.");}$this->__set('template',$this);$shortName=str_replace(dirname(dirname($this->file)),'',$this->file);$cache=new
+Cache($this->getCacheStorage(),'NetteX.FileTemplate');$key=trim(strtr($shortName,'\\/@','.._'),'.').'-'.md5($this->file);$cached=$content=$cache[$key];if($content===NULL){if(!$this->getFilters()){$this->onPrepareFilters($this);}if(!$this->getFilters()){LimitedScope::load($this->file,$this->getParams());return;}$content=$this->compile(file_get_contents($this->file),"file \xE2\x80\xA6$shortName");$cache->save($key,$content,array(Cache::FILES=>$this->file,Cache::EXPIRATION=>self::$cacheExpire,Cache::CONSTS=>'NetteX\Framework::REVISION'));$cache->release();$cached=$cache[$key];}if($cached!==NULL&&self::$cacheStorage
 instanceof
 TemplateCacheStorage){LimitedScope::load($cached['file'],$this->getParams());fclose($cached['handle']);}else{LimitedScope::evaluate($content,$this->getParams());}}static
 function
 setCacheStorage(NetteX\Caching\ICacheStorage$storage){self::$cacheStorage=$storage;}static
 function
-getCacheStorage(){if(self::$cacheStorage===NULL){$dir=Environment::getVariable('tempDir').'/cache';umask(0000);@mkdir($dir,0755);self::$cacheStorage=new
+getCacheStorage(){if(self::$cacheStorage===NULL){$dir=Environment::getVariable('tempDir').'/cache';umask(0000);@mkdir($dir,0777);self::$cacheStorage=new
 TemplateCacheStorage($dir);}return
 self::$cacheStorage;}}class
 CachingHelper
 extends
 NetteX\Object{private$frame;private$key;static
 function
-create($key,&$parents,$args=NULL){if($args){$key.=md5(serialize($args));}if($parents){end($parents)->frame[Cache::ITEMS][]=$key;}$cache=self::getCache();if(isset($cache[$key])){echo$cache[$key];return
+create($key,&$parents,$args=NULL){if($args){$key.=md5(serialize(array_intersect_key($args,range(0,count($args)))));if(array_key_exists('if',$args)&&!$args['if']){return$parents[]=new
+self;}}if($parents){end($parents)->frame[Cache::ITEMS][]=$key;}$cache=self::getCache();if(isset($cache[$key])){echo$cache[$key];return
 FALSE;}else{$obj=new
-self;$obj->key=$key;$obj->frame=array(Cache::TAGS=>isset($args['tags'])?$args['tags']:NULL,Cache::EXPIRE=>isset($args['expire'])?$args['expire']:'+ 7 days');ob_start();return$parents[]=$obj;}}function
-save(){$this->getCache()->save($this->key,ob_get_flush(),$this->frame);$this->key=$this->frame=NULL;}function
+self;$obj->key=$key;$obj->frame=array(Cache::TAGS=>isset($args['tags'])?$args['tags']:NULL,Cache::EXPIRATION=>isset($args['expire'])?$args['expire']:'+ 7 days');ob_start();return$parents[]=$obj;}}function
+save(){if($this->key!==NULL){$this->getCache()->save($this->key,ob_get_flush(),$this->frame);}$this->key=$this->frame=NULL;}function
 addFile($file){$this->frame[Cache::FILES][]=$file;}protected
 static
 function
@@ -3350,6 +3363,7 @@ NetteX\Tokenizer;class
 LatteFilter
 extends
 NetteX\Object{const
+RE_STRING='\'(?:\\\\.|[^\'\\\\])*\'|"(?:\\\\.|[^"\\\\])*"';const
 HTML_PREFIX='n:';private$handler;private$macroRe;private$input,$output;private$offset;private$quote;private$tags;public$context,$escape;const
 CONTEXT_TEXT='text';const
 CONTEXT_CDATA='cdata';const
@@ -3362,7 +3376,7 @@ getHandler(){if($this->handler===NULL){$this->handler=new
 LatteMacros;}return$this->handler;}function
 __invoke($s){if(!$this->macroRe){$this->setDelimiters('\\{(?![\\s\'"{}])','\\}');}$this->context=LatteFilter::CONTEXT_NONE;$this->escape='$template->escape';$this->getHandler()->initialize($this,$s);$s=$this->parse("\n".$s);$this->getHandler()->finalize($s);return$s;}private
 function
-parse($s){$this->input=&$s;$this->offset=0;$this->output='';$this->tags=array();$len=strlen($s);while($this->offset<$len){$matches=$this->{"context$this->context"}();if(!$matches){break;}elseif(!empty($matches['macro'])){list(,$macro,$value,$modifiers)=String::match($matches['macro'],'#^(/?[a-z0-9.:]+)?(.*?)(\\|[a-z](?:'.Tokenizer::RE_STRING.'|[^\'"]+)*)?$()#is');$code=$this->handler->macro($macro,trim($value),isset($modifiers)?$modifiers:'');if($code===NULL){throw
+parse($s){$this->input=&$s;$this->offset=0;$this->output='';$this->tags=array();$len=strlen($s);while($this->offset<$len){$matches=$this->{"context$this->context"}();if(!$matches){break;}elseif(!empty($matches['macro'])){$code=$this->handler->macro($matches['macro']);if($code===FALSE){throw
 new\XInvalidStateException("Unknown macro {{$matches['macro']}} on line $this->line.");}$nl=isset($matches['newline'])?"\n":'';if($nl&&$matches['indent']&&strncmp($code,'<?php echo ',11)){$this->output.="\n".$code;}else{$this->output.=$matches['indent'].$code.(substr($code,-2)==='?>'?$nl:'');}}else{$this->output.=$matches[0];}}foreach($this->tags
 as$tag){if(!$tag->isMacro&&!empty($tag->attrs)){throw
 new\XInvalidStateException("Missing end tag </$tag->name> for macro-attribute ".self::HTML_PREFIX.implode(' and '.self::HTML_PREFIX,array_keys($tag->attrs)).".");}}return$this->output.substr($this->input,$this->offset);}private
@@ -3382,8 +3396,8 @@ contextTag(){$matches=$this->match('~
 			(?P<end>\ ?/?>)(?P<tagnewline>[\ \t]*(?=\r|\n))?|  ##  end of HTML tag
 			'.$this->macroRe.'|          ##  curly tag
 			\s*(?P<attr>[^\s/>={]+)(?:\s*=\s*(?P<value>["\']|[^\s/>{]+))? ## begin of HTML attribute
-		~xsi');if(!$matches||!empty($matches['macro'])){}elseif(!empty($matches['end'])){$tag=end($this->tags);$isEmpty=!$tag->closing&&(strpos($matches['end'],'/')!==FALSE||isset(NetteX\Web\Html::$emptyElements[strtolower($tag->name)]));if($isEmpty){$matches[0]=(NetteX\Web\Html::$xhtml?' />':'>').(isset($matches['tagnewline'])?$matches['tagnewline']:'');}if($tag->isMacro||!empty($tag->attrs)){if($tag->isMacro){$code=$this->handler->tagMacro(substr($tag->name,strlen(self::HTML_PREFIX)),$tag->attrs,$tag->closing);if($code===NULL){throw
-new\XInvalidStateException("Unknown tag-macro <$tag->name> on line $this->line.");}if($isEmpty){$code.=$this->handler->tagMacro(substr($tag->name,strlen(self::HTML_PREFIX)),$tag->attrs,TRUE);}}else{$code=substr($this->output,$tag->pos).$matches[0].(isset($matches['tagnewline'])?"\n":'');$code=$this->handler->attrsMacro($code,$tag->attrs,$tag->closing);if($code===NULL){throw
+		~xsi');if(!$matches||!empty($matches['macro'])){}elseif(!empty($matches['end'])){$tag=end($this->tags);$isEmpty=!$tag->closing&&(strpos($matches['end'],'/')!==FALSE||isset(NetteX\Web\Html::$emptyElements[strtolower($tag->name)]));if($isEmpty){$matches[0]=(NetteX\Web\Html::$xhtml?' />':'>').(isset($matches['tagnewline'])?$matches['tagnewline']:'');}if($tag->isMacro||!empty($tag->attrs)){if($tag->isMacro){$code=$this->handler->tagMacro(substr($tag->name,strlen(self::HTML_PREFIX)),$tag->attrs,$tag->closing);if($code===FALSE){throw
+new\XInvalidStateException("Unknown tag-macro <$tag->name> on line $this->line.");}if($isEmpty){$code.=$this->handler->tagMacro(substr($tag->name,strlen(self::HTML_PREFIX)),$tag->attrs,TRUE);}}else{$code=substr($this->output,$tag->pos).$matches[0].(isset($matches['tagnewline'])?"\n":'');$code=$this->handler->attrsMacro($code,$tag->attrs,$tag->closing);if($code===FALSE){throw
 new\XInvalidStateException("Unknown macro-attribute ".self::HTML_PREFIX.implode(' or '.self::HTML_PREFIX,array_keys($tag->attrs))." on line $this->line.");}if($isEmpty){$code=$this->handler->attrsMacro($code,$tag->attrs,TRUE);}}$this->output=substr_replace($this->output,$code,$tag->pos);$matches[0]='';}if($isEmpty){$tag->closing=TRUE;}if(!$tag->closing&&(strcasecmp($tag->name,'script')===0||strcasecmp($tag->name,'style')===0)){$this->context=self::CONTEXT_CDATA;$this->escape=strcasecmp($tag->name,'style')?'NetteX\Templates\TemplateHelpers::escapeJs':'NetteX\Templates\TemplateHelpers::escapeCss';}else{$this->context=self::CONTEXT_TEXT;$this->escape='NetteX\Templates\TemplateHelpers::escapeHtml';if($tag->closing)array_pop($this->tags);}}else{$name=$matches['attr'];$value=isset($matches['value'])?$matches['value']:'';if($isSpecial=String::startsWith($name,self::HTML_PREFIX)){$name=substr($name,strlen(self::HTML_PREFIX));}$tag=end($this->tags);if($isSpecial||$tag->isMacro){if($value==='"'||$value==="'"){if($matches=$this->match('~(.*?)'.$value.'~xsi')){$value=$matches[1];}}$tag->attrs[$name]=$value;$matches[0]='';}elseif($value==='"'||$value==="'"){$this->context=self::CONTEXT_ATTRIBUTE;$this->quote=$value;$this->escape=strncasecmp($name,'on',2)?(strcasecmp($name,'style')?'NetteX\Templates\TemplateHelpers::escapeHtml':'NetteX\Templates\TemplateHelpers::escapeHtmlCss'):'NetteX\Templates\TemplateHelpers::escapeHtmlJs';}}return$matches;}private
 function
 contextAttribute(){$matches=$this->match('~
@@ -3407,7 +3421,7 @@ substr_count($this->input,"\n",0,$this->offset);}function
 setDelimiters($left,$right){$this->macroRe='
 			(?P<indent>\n[\ \t]*)?
 			'.$left.'
-				(?P<macro>(?:'.Tokenizer::RE_STRING.'|[^\'"]+?)*?)
+				(?P<macro>(?:'.self::RE_STRING.'|[^\'"]+?)*?)
 			'.$right.'
 			(?P<newline>[\ \t]*(?=\r|\n))?
 		';return$this;}static
@@ -3426,91 +3440,103 @@ LatteMacros::formatString($s);}}class
 LatteMacros
 extends
 NetteX\Object{public
-static$defaultMacros=array('syntax'=>'%:macroSyntax%','/syntax'=>'%:macroSyntax%','block'=>'<?php %:macroBlock% ?>','/block'=>'<?php %:macroBlockEnd% ?>','capture'=>'<?php %:macroCapture% ?>','/capture'=>'<?php %:macroCaptureEnd% ?>','snippet'=>'<?php %:macroSnippet% ?>','/snippet'=>'<?php %:macroSnippetEnd% ?>','cache'=>'<?php %:macroCache% ?>','/cache'=>'<?php array_pop($_l->g->caches)->save(); } ?>','if'=>'<?php if (%%): ?>','elseif'=>'<?php elseif (%%): ?>','else'=>'<?php else: ?>','/if'=>'<?php endif ?>','ifset'=>'<?php if (isset(%%)): ?>','/ifset'=>'<?php endif ?>','elseifset'=>'<?php elseif (isset(%%)): ?>','foreach'=>'<?php foreach (%:macroForeach%): ?>','/foreach'=>'<?php endforeach; array_pop($_l->its); $iterator = end($_l->its) ?>','for'=>'<?php for (%%): ?>','/for'=>'<?php endfor ?>','while'=>'<?php while (%%): ?>','/while'=>'<?php endwhile ?>','continueIf'=>'<?php if (%%) continue ?>','breakIf'=>'<?php if (%%) break ?>','first'=>'<?php if ($iterator->isFirst(%%)): ?>','/first'=>'<?php endif ?>','last'=>'<?php if ($iterator->isLast(%%)): ?>','/last'=>'<?php endif ?>','sep'=>'<?php if (!$iterator->isLast(%%)): ?>','/sep'=>'<?php endif ?>','include'=>'<?php %:macroInclude% ?>','extends'=>'<?php %:macroExtends% ?>','layout'=>'<?php %:macroExtends% ?>','plink'=>'<?php echo %:macroEscape%(%:macroPlink%) ?>','link'=>'<?php echo %:macroEscape%(%:macroLink%) ?>','ifCurrent'=>'<?php %:macroIfCurrent% ?>','widget'=>'<?php %:macroControl% ?>','control'=>'<?php %:macroControl% ?>','attr'=>'<?php echo NetteX\Web\Html::el(NULL)->%:macroAttr%attributes() ?>','contentType'=>'<?php %:macroContentType% ?>','status'=>'<?php NetteX\Environment::getHttpResponse()->setCode(%%) ?>','var'=>'<?php %:macroVar% ?>','assign'=>'<?php %:macroVar% ?>','default'=>'<?php %:macroDefault% ?>','dump'=>'<?php %:macroDump% ?>','debugbreak'=>'<?php %:macroDebugbreak% ?>','l'=>'{','r'=>'}','!_'=>'<?php echo %:macroTranslate% ?>','_'=>'<?php echo %:macroEscape%(%:macroTranslate%) ?>','!='=>'<?php echo %:macroModifiers% ?>','='=>'<?php echo %:macroEscape%(%:macroModifiers%) ?>','!$'=>'<?php echo %:macroDollar% ?>','$'=>'<?php echo %:macroEscape%(%:macroDollar%) ?>','?'=>'<?php %:macroModifiers% ?>');const
+static$defaultMacros=array('syntax'=>'%:macroSyntax%','/syntax'=>'%:macroSyntax%','block'=>'<?php %:macroBlock% ?>','/block'=>'<?php %:macroBlockEnd% ?>','capture'=>'<?php %:macroCapture% ?>','/capture'=>'<?php %:macroCaptureEnd% ?>','snippet'=>'<?php %:macroSnippet% ?>','/snippet'=>'<?php %:macroSnippetEnd% ?>','cache'=>'<?php %:macroCache% ?>','/cache'=>'<?php array_pop($_l->g->caches)->save(); } ?>','if'=>'<?php if (%%): ?>','elseif'=>'<?php elseif (%%): ?>','else'=>'<?php else: ?>','/if'=>'<?php endif ?>','ifset'=>'<?php if (isset(%%)): ?>','/ifset'=>'<?php endif ?>','elseifset'=>'<?php elseif (isset(%%)): ?>','foreach'=>'<?php foreach (%:macroForeach%): ?>','/foreach'=>'<?php endforeach; array_pop($_l->its); $iterator = end($_l->its) ?>','for'=>'<?php for (%%): ?>','/for'=>'<?php endfor ?>','while'=>'<?php while (%%): ?>','/while'=>'<?php endwhile ?>','continueIf'=>'<?php if (%%) continue ?>','breakIf'=>'<?php if (%%) break ?>','first'=>'<?php if ($iterator->isFirst(%%)): ?>','/first'=>'<?php endif ?>','last'=>'<?php if ($iterator->isLast(%%)): ?>','/last'=>'<?php endif ?>','sep'=>'<?php if (!$iterator->isLast(%%)): ?>','/sep'=>'<?php endif ?>','include'=>'<?php %:macroInclude% ?>','extends'=>'<?php %:macroExtends% ?>','layout'=>'<?php %:macroExtends% ?>','plink'=>'<?php echo %:escape%(%:macroPlink%) ?>','link'=>'<?php echo %:escape%(%:macroLink%) ?>','ifCurrent'=>'<?php %:macroIfCurrent% ?>','widget'=>'<?php %:macroControl% ?>','control'=>'<?php %:macroControl% ?>','@href'=>' href="<?php echo %:escape%(%:macroLink%) ?>"','@class'=>'<?php if ($_l->tmp = trim(implode(" ", array_unique(%:formatArray%)))) echo \' class="\' . %:escape%($_l->tmp) . \'"\' ?>','@attr'=>'<?php if (($_l->tmp = (string) (%%)) !== \'\') echo \' @@="\' . %:escape%($_l->tmp) . \'"\' ?>','attr'=>'<?php echo NetteX\Web\Html::el(NULL)->%:macroAttr%attributes() ?>','contentType'=>'<?php %:macroContentType% ?>','status'=>'<?php NetteX\Environment::getHttpResponse()->setCode(%%) ?>','var'=>'<?php %:macroVar% ?>','assign'=>'<?php %:macroVar% ?>','default'=>'<?php %:macroDefault% ?>','dump'=>'<?php %:macroDump% ?>','debugbreak'=>'<?php %:macroDebugbreak% ?>','l'=>'{','r'=>'}','!_'=>'<?php echo %:macroTranslate% ?>','_'=>'<?php echo %:escape%(%:macroTranslate%) ?>','!='=>'<?php echo %:macroModifiers% ?>','='=>'<?php echo %:escape%(%:macroModifiers%) ?>','!$'=>'<?php echo %:macroDollar% ?>','$'=>'<?php echo %:escape%(%:macroDollar%) ?>','?'=>'<?php %:macroModifiers% ?>');const
 RE_IDENTIFIER='[_a-zA-Z\x7F-\xFF][_a-zA-Z0-9\x7F-\xFF]*';const
-T_SYMBOL=-1;public$macros;private$filter;private$blocks=array();private$namedBlocks=array();private$extends;private$uniq;private$cacheCounter;private$oldSnippetMode=TRUE;const
+T_WHITESPACE=T_WHITESPACE;const
+T_COMMENT=T_COMMENT;const
+T_SYMBOL=-1;const
+T_NUMBER=-2;const
+T_VARIABLE=-3;public$macros;private$tokenizer;private$filter;private$blocks=array();private$namedBlocks=array();private$extends;private$uniq;private$cacheCounter;const
 BLOCK_NAMED=1;const
 BLOCK_CAPTURE=2;const
 BLOCK_ANONYMOUS=3;function
-__construct(){$this->macros=self::$defaultMacros;}function
-initialize($filter,&$s){$this->filter=$filter;$this->blocks=array();$this->namedBlocks=array();$this->extends=NULL;$this->uniq=substr(md5(uniqid('',TRUE)),0,10);$this->cacheCounter=0;$filter->context=LatteFilter::CONTEXT_TEXT;$filter->escape='NetteX\Templates\TemplateHelpers::escapeHtml';$s=String::replace($s,'#\\{\\*.*?\\*\\}[\r\n]*#s','');$s=String::replace($s,'#@(\\{[^}]+?\\})#s','<?php } ?>$1<?php if (NetteX\Templates\SnippetHelper::$outputAllowed) { ?>');}function
-finalize(&$s){if(count($this->blocks)===1){$s.=$this->macro('/block','','');}elseif($this->blocks){throw
-new\XInvalidStateException("There are some unclosed blocks.");}$s="<?php\nif (".'NetteX\Templates\SnippetHelper::$outputAllowed'.") {\n?>$s<?php\n}\n?>";if($this->namedBlocks||$this->extends){$s="<?php\n".'if ($_l->extends) { ob_start(); }'."\n".'elseif (isset($presenter, $control) && $presenter->isAjax()) { NetteX\Templates\LatteMacros::renderSnippets($control, $_l, get_defined_vars()); }'."\n".'?>'.$s."<?php\n".'if ($_l->extends) { ob_end_clean(); NetteX\Templates\LatteMacros::includeTemplate($_l->extends, get_defined_vars(), $template)->render(); }'."\n";}else{$s="<?php\n".'if (isset($presenter, $control) && $presenter->isAjax()) { NetteX\Templates\LatteMacros::renderSnippets($control, $_l, get_defined_vars()); }'."\n".'?>'.$s;}if($this->namedBlocks){$uniq=$this->uniq;foreach(array_reverse($this->namedBlocks,TRUE)as$name=>$foo){$code=&$this->namedBlocks[$name];$namere=preg_quote($name,'#');$s=String::replace($s,"#{block $namere} \?>(.*)<\?php {/block $namere}#sU",function($matches)use($name,&$code,$uniq){list(,$content)=$matches;$func='_lb'.substr(md5($uniq.$name),0,10).'_'.preg_replace('#[^a-z0-9_]#i','_',$name);$code="//\n// block $name\n//\n"."if (!function_exists(\$_l->blocks[".var_export($name,TRUE)."][] = '$func')) { "."function $func(\$_l, \$_args) { extract(\$_args)\n?>$content<?php\n}}";return'';});}$s="<?php\n\n".implode("\n\n\n",$this->namedBlocks)."\n\n//\n// end of blocks\n//\n?>".$s;}$s="<?php\n".'$_l = NetteX\Templates\LatteMacros::initRuntime($template, '.var_export($this->extends,TRUE).', '.var_export($this->uniq,TRUE).'); unset($_extends);'."\n?>".$s;}function
-macro($macro,$content,$modifiers){if($macro===''){$macro=substr($content,0,2);if(!isset($this->macros[$macro])){$macro=substr($content,0,1);if(!isset($this->macros[$macro])){return
-NULL;}}$content=substr($content,strlen($macro));}elseif(!isset($this->macros[$macro])){return
-NULL;}$This=$this;return
+__construct(){$this->macros=self::$defaultMacros;$this->tokenizer=new
+NetteX\Tokenizer(array(self::T_WHITESPACE=>'\s+',self::T_COMMENT=>'/\*.*?\*/',LatteFilter::RE_STRING,'true|false|null|and|or|xor|clone|new|instanceof|\([a-z]+\)',self::T_VARIABLE=>'\$[_a-z0-9\x7F-\xFF]+',self::T_NUMBER=>'[+-]?[0-9]+(?:\.[0-9]+)?(?:e[0-9]+)?',self::T_SYMBOL=>'[_a-z0-9\x7F-\xFF]+(?:-[_a-z0-9\x7F-\xFF]+)*','::|=>|[^"\']'),'i');}function
+initialize($filter,&$s){$this->filter=$filter;$this->blocks=array();$this->namedBlocks=array();$this->extends=NULL;$this->uniq=substr(md5(uniqid('',TRUE)),0,10);$this->cacheCounter=0;$filter->context=LatteFilter::CONTEXT_TEXT;$filter->escape='NetteX\Templates\TemplateHelpers::escapeHtml';$s=String::replace($s,'#\\{\\*.*?\\*\\}[\r\n]*#s','');}function
+finalize(&$s){if(count($this->blocks)===1){$s.=$this->macro('/block');}elseif($this->blocks){throw
+new\XInvalidStateException("There are unclosed blocks.");}if($this->namedBlocks||$this->extends){$s='<?php
+if ($_l->extends) {
+	ob_start();
+} elseif (isset($presenter, $control) && $presenter->isAjax()) {
+	return NetteX\Templates\LatteMacros::renderSnippets($control, $_l, get_defined_vars());
+}
+?>'.$s.'<?php
+if ($_l->extends) {
+	ob_end_clean();
+	NetteX\Templates\LatteMacros::includeTemplate($_l->extends, get_defined_vars(), $template)->render();
+}
+';}else{$s='<?php
+if (isset($presenter, $control) && $presenter->isAjax()) {
+	return NetteX\Templates\LatteMacros::renderSnippets($control, $_l, get_defined_vars());
+}
+?>'.$s;}if($this->namedBlocks){$uniq=$this->uniq;foreach(array_reverse($this->namedBlocks,TRUE)as$name=>$foo){$code=&$this->namedBlocks[$name];$namere=preg_quote($name,'#');$s=String::replace($s,"#{block $namere} \?>(.*)<\?php {/block $namere}#sU",function($matches)use($name,&$code,$uniq){list(,$content)=$matches;$func='_lb'.substr(md5($uniq.$name),0,10).'_'.preg_replace('#[^a-z0-9_]#i','_',$name);$code="//\n// block $name\n//\n"."if (!function_exists(\$_l->blocks[".var_export($name,TRUE)."][] = '$func')) { "."function $func(\$_l, \$_args) { extract(\$_args)\n?>$content<?php\n}}";return'';});}$s="<?php\n\n".implode("\n\n\n",$this->namedBlocks)."\n\n//\n// end of blocks\n//\n?>".$s;}$s="<?php\n".'$_l = NetteX\Templates\LatteMacros::initRuntime($template, '.var_export($this->extends,TRUE).', '.var_export($this->uniq,TRUE).'); unset($_extends);'."\n?>".$s;}function
+macro($macro,$content='',$modifiers=''){if(func_num_args()===1){list(,$macro,$content,$modifiers)=String::match($macro,'#^(/?[a-z0-9.:]+)?(.*?)(\\|[a-z](?:'.LatteFilter::RE_STRING.'|[^\'"]+)*)?$()#is');$content=trim($content);}if($macro===''){$macro=substr($content,0,2);if(!isset($this->macros[$macro])){$macro=substr($content,0,1);if(!isset($this->macros[$macro])){return
+FALSE;}}$content=substr($content,strlen($macro));}elseif(!isset($this->macros[$macro])){return
+FALSE;}$This=$this;return
 String::replace($this->macros[$macro],'#%(.*?)%#',function($m)use($This,$content,$modifiers){if($m[1]){return
-callback($m[1][0]===':'?array($This,substr($m[1],1)):$m[1])->invoke($content,$modifiers);}else{return$content;}});}function
+callback($m[1][0]===':'?array($This,substr($m[1],1)):$m[1])->invoke($content,$modifiers);}else{return$This->formatMacroArgs($content,'#');}});}function
 tagMacro($name,$attrs,$closing){$knownTags=array('include'=>'block','for'=>'each','block'=>'name','if'=>'cond','elseif'=>'cond');return$this->macro($closing?"/$name":$name,isset($knownTags[$name],$attrs[$knownTags[$name]])?$attrs[$knownTags[$name]]:preg_replace("#'([^\\'$]+)'#",'$1',substr(var_export($attrs,TRUE),8,-1)),isset($attrs['modifiers'])?$attrs['modifiers']:'');}function
-attrsMacro($code,$attrs,$closing){$left=$right='';foreach($this->macros
-as$name=>$foo){if(!isset($this->macros["/$name"])){continue;}$macro=$closing?"/$name":$name;if(isset($attrs[$name])){if($closing){$right.=$this->macro($macro,'','');}else{$left=$this->macro($macro,$attrs[$name],'').$left;}}$innerName="inner-$name";if(isset($attrs[$innerName])){if($closing){$left.=$this->macro($macro,'','');}else{$right=$this->macro($macro,$attrs[$innerName],'').$right;}}$tagName="tag-$name";if(isset($attrs[$tagName])){$left=$this->macro($name,$attrs[$tagName],'').$left;$right.=$this->macro("/$name",'','');}unset($attrs[$name],$attrs[$innerName],$attrs[$tagName]);}return$attrs?NULL:$left.$code.$right;}function
-macroDollar($var,$modifiers){return
-self::formatModifiers('$'.$var,$modifiers);}function
-macroTranslate($var,$modifiers){return
-self::formatModifiers($var,'|translate'.$modifiers);}function
+attrsMacro($code,$attrs,$closing){foreach($attrs
+as$name=>$content){if(substr($name,0,5)==='attr-'){if(!$closing){$pos=strrpos($code,'>');if($code[$pos-1]==='/')$pos--;$code=substr_replace($code,str_replace('@@',substr($name,5),$this->macro("@attr",$content)),$pos,0);}unset($attrs[$name]);}}$left=$right='';foreach($this->macros
+as$name=>$foo){if($name[0]==='@'){$name=substr($name,1);if(isset($attrs[$name])){if(!$closing){$pos=strrpos($code,'>');if($code[$pos-1]==='/')$pos--;$code=substr_replace($code,$this->macro("@$name",$attrs[$name]),$pos,0);}unset($attrs[$name]);}}if(!isset($this->macros["/$name"])){continue;}$macro=$closing?"/$name":$name;if(isset($attrs[$name])){if($closing){$right.=$this->macro($macro);}else{$left=$this->macro($macro,$attrs[$name]).$left;}}$innerName="inner-$name";if(isset($attrs[$innerName])){if($closing){$left.=$this->macro($macro);}else{$right=$this->macro($macro,$attrs[$innerName]).$right;}}$tagName="tag-$name";if(isset($attrs[$tagName])){$left=$this->macro($name,$attrs[$tagName]).$left;$right.=$this->macro("/$name");}unset($attrs[$name],$attrs[$innerName],$attrs[$tagName]);}return$attrs?FALSE:$left.$code.$right;}function
+macroDollar($var,$modifiers){return$this->formatModifiers($this->formatMacroArgs('$'.$var),$modifiers);}function
+macroTranslate($var,$modifiers){return$this->formatModifiers($this->formatMacroArgs($var),'|translate'.$modifiers);}function
 macroSyntax($var){switch($var){case'':case'latte':$this->filter->setDelimiters('\\{(?![\\s\'"{}])','\\}');break;case'double':$this->filter->setDelimiters('\\{\\{(?![\\s\'"{}])','\\}\\}');break;case'asp':$this->filter->setDelimiters('<%\s*','\s*%>');break;case'python':$this->filter->setDelimiters('\\{[{%]\s*','\s*[%}]\\}');break;case'off':$this->filter->setDelimiters('[^\x00-\xFF]','');break;default:throw
-new\XInvalidStateException("Unknown macro syntax '$var' on line {$this->filter->line}.");}}function
-macroInclude($content,$modifiers,$isDefinition=FALSE){$destination=self::fetchToken($content);$params=self::formatArray($content).($content?' + ':'');if($destination===NULL){throw
+new\XInvalidStateException("Unknown syntax '$var' on line {$this->filter->line}.");}}function
+macroInclude($content,$modifiers,$isDefinition=FALSE){$destination=$this->fetchToken($content);$params=$this->formatArray($content).($content?' + ':'');if($destination===NULL){throw
 new\XInvalidStateException("Missing destination in {include} on line {$this->filter->line}.");}elseif($destination[0]==='#'){$destination=ltrim($destination,'#');if(!String::match($destination,'#^'.self::RE_IDENTIFIER.'$#')){throw
 new\XInvalidStateException("Included block name must be alphanumeric string, '$destination' given on line {$this->filter->line}.");}$parent=$destination==='parent';if($destination==='parent'||$destination==='this'){$item=end($this->blocks);while($item&&$item[0]!==self::BLOCK_NAMED)$item=prev($this->blocks);if(!$item){throw
-new\XInvalidStateException("Cannot include $destination block outside of any block on line {$this->filter->line}.");}$destination=$item[1];}$name=var_export($destination,TRUE);$params.=$isDefinition?'get_defined_vars()':'$template->getParams()';$cmd=isset($this->namedBlocks[$destination])&&!$parent?"call_user_func(reset(\$_l->blocks[$name]), \$_l, $params)":'NetteX\Templates\LatteMacros::callBlock'.($parent?'Parent':'')."(\$_l, $name, $params)";return$modifiers?"ob_start(); $cmd; echo ".self::formatModifiers('ob_get_clean()',$modifiers):$cmd;}else{$destination=self::formatString($destination);$cmd='NetteX\Templates\LatteMacros::includeTemplate('.$destination.', '.$params.'$template->getParams(), $_l->templates['.var_export($this->uniq,TRUE).'])';return$modifiers?'echo '.self::formatModifiers($cmd.'->__toString(TRUE)',$modifiers):$cmd.'->render()';}}function
-macroExtends($content){$destination=self::fetchToken($content);if($destination===NULL){throw
+new\XInvalidStateException("Cannot include $destination block outside of any block on line {$this->filter->line}.");}$destination=$item[1];}$name=var_export($destination,TRUE);$params.=$isDefinition?'get_defined_vars()':'$template->getParams()';$cmd=isset($this->namedBlocks[$destination])&&!$parent?"call_user_func(reset(\$_l->blocks[$name]), \$_l, $params)":'NetteX\Templates\LatteMacros::callBlock'.($parent?'Parent':'')."(\$_l, $name, $params)";return$modifiers?"ob_start(); $cmd; echo ".$this->formatModifiers('ob_get_clean()',$modifiers):$cmd;}else{$destination=$this->formatString($destination);$cmd='NetteX\Templates\LatteMacros::includeTemplate('.$destination.', '.$params.'$template->getParams(), $_l->templates['.var_export($this->uniq,TRUE).'])';return$modifiers?'echo '.$this->formatModifiers($cmd.'->__toString(TRUE)',$modifiers):$cmd.'->render()';}}function
+macroExtends($content){$destination=$this->fetchToken($content);if($destination===NULL){throw
 new\XInvalidStateException("Missing destination in {extends} on line {$this->filter->line}.");}if(!empty($this->blocks)){throw
 new\XInvalidStateException("{extends} must be placed outside any block; on line {$this->filter->line}.");}if($this->extends!==NULL){throw
-new\XInvalidStateException("Multiple {extends} declarations are not allowed; on line {$this->filter->line}.");}$this->extends=$destination!=='none';return$this->extends?'$_l->extends = '.self::formatString($destination):'';}function
-macroBlock($content,$modifiers){$name=self::fetchToken($content);if($name===NULL){$this->blocks[]=array(self::BLOCK_ANONYMOUS,NULL,$modifiers);return$modifiers===''?'':'ob_start()';}else{$name=ltrim($name,'#');if(!String::match($name,'#^'.self::RE_IDENTIFIER.'$#')){throw
+new\XInvalidStateException("Multiple {extends} declarations are not allowed; on line {$this->filter->line}.");}$this->extends=$destination!=='none';return$this->extends?'$_l->extends = '.($destination==='auto'?'$layout':$this->formatString($destination)):'';}function
+macroBlock($content,$modifiers){$name=$this->fetchToken($content);if($name===NULL){$this->blocks[]=array(self::BLOCK_ANONYMOUS,NULL,$modifiers);return$modifiers===''?'':'ob_start()';}else{$name=ltrim($name,'#');if(!String::match($name,'#^'.self::RE_IDENTIFIER.'$#')){throw
 new\XInvalidStateException("Block name must be alphanumeric string, '$name' given on line {$this->filter->line}.");}elseif(isset($this->namedBlocks[$name])){throw
-new\XInvalidStateException("Cannot redeclare block '$name'; on line {$this->filter->line}.");}$top=empty($this->blocks);$this->namedBlocks[$name]=$name;$this->blocks[]=array(self::BLOCK_NAMED,$name,'');if($name[0]==='_'){$tag=self::fetchToken($content);$tag=trim($tag,'<>');$namePhp=var_export(substr($name,1),TRUE);if(!$tag)$tag='div';return"?><$tag id=\"<?php echo \$control->getSnippetId($namePhp) ?>\"><?php ".$this->macroInclude('#'.$name,$modifiers)." ?></$tag><?php {block $name}";}elseif(!$top){return$this->macroInclude('#'.$name,$modifiers,TRUE)."{block $name}";}elseif($this->extends){return"{block $name}";}else{return'if (!$_l->extends) { '.$this->macroInclude('#'.$name,$modifiers,TRUE)."; } {block $name}";}}}function
+new\XInvalidStateException("Cannot redeclare block '$name'; on line {$this->filter->line}.");}$top=empty($this->blocks);$this->namedBlocks[$name]=$name;$this->blocks[]=array(self::BLOCK_NAMED,$name,'');if($name[0]==='_'){$tag=$this->fetchToken($content);$tag=trim($tag,'<>');$namePhp=var_export(substr($name,1),TRUE);if(!$tag)$tag='div';return"?><$tag id=\"<?php echo \$control->getSnippetId($namePhp) ?>\"><?php ".$this->macroInclude('#'.$name,$modifiers)." ?></$tag><?php {block $name}";}elseif(!$top){return$this->macroInclude('#'.$name,$modifiers,TRUE)."{block $name}";}elseif($this->extends){return"{block $name}";}else{return'if (!$_l->extends) { '.$this->macroInclude('#'.$name,$modifiers,TRUE)."; } {block $name}";}}}function
 macroBlockEnd($content){list($type,$name,$modifiers)=array_pop($this->blocks);if($type===self::BLOCK_CAPTURE){$this->blocks[]=array($type,$name,$modifiers);return$this->macroCaptureEnd($content);}if(($type!==self::BLOCK_NAMED&&$type!==self::BLOCK_ANONYMOUS)||($content&&$content!==$name)){throw
-new\XInvalidStateException("Tag {/block $content} was not expected here on line {$this->filter->line}.");}elseif($type===self::BLOCK_NAMED){return"{/block $name}";}else{return$modifiers===''?'':'echo '.self::formatModifiers('ob_get_clean()',$modifiers);}}function
-macroSnippet($content){if(substr($content,0,1)===':'||!$this->oldSnippetMode){$this->oldSnippetMode=FALSE;return$this->macroBlock('_'.ltrim($content,':'),'');}$args=array('');if($snippet=self::fetchToken($content)){$args[]=self::formatString($snippet);}if($content){$args[]=self::formatString($content);}return'} if ($_l->foo = NetteX\Templates\SnippetHelper::create($control'.implode(', ',$args).')) { $_l->snippets[] = $_l->foo';}function
-macroSnippetEnd($content){if(!$this->oldSnippetMode){return$this->macroBlockEnd('','');}return'array_pop($_l->snippets)->finish(); } if (NetteX\Templates\SnippetHelper::$outputAllowed) {';}function
-macroCapture($content,$modifiers){$name=self::fetchToken($content);if(substr($name,0,1)!=='$'){throw
+new\XInvalidStateException("Tag {/block $content} was not expected here on line {$this->filter->line}.");}elseif($type===self::BLOCK_NAMED){return"{/block $name}";}else{return$modifiers===''?'':'echo '.$this->formatModifiers('ob_get_clean()',$modifiers);}}function
+macroSnippet($content){return$this->macroBlock('_'.$content,'');}function
+macroSnippetEnd($content){return$this->macroBlockEnd('','');}function
+macroCapture($content,$modifiers){$name=$this->fetchToken($content);if(substr($name,0,1)!=='$'){throw
 new\XInvalidStateException("Invalid capture block parameter '$name' on line {$this->filter->line}.");}$this->blocks[]=array(self::BLOCK_CAPTURE,$name,$modifiers);return'ob_start()';}function
 macroCaptureEnd($content){list($type,$name,$modifiers)=array_pop($this->blocks);if($type!==self::BLOCK_CAPTURE||($content&&$content!==$name)){throw
-new\XInvalidStateException("Tag {/capture $content} was not expected here on line {$this->filter->line}.");}return$name.'='.self::formatModifiers('ob_get_clean()',$modifiers);}function
-macroCache($content){return'if (NetteX\Templates\CachingHelper::create('.var_export($this->uniq.':'.$this->cacheCounter++,TRUE).', $_l->g->caches'.self::formatArray($content,', ').')) {';}function
-macroForeach($content){return'$iterator = $_l->its[] = new NetteX\SmartCachingIterator('.preg_replace('# +as +#i',') as ',$content,1);}function
+new\XInvalidStateException("Tag {/capture $content} was not expected here on line {$this->filter->line}.");}return$name.'='.$this->formatModifiers('ob_get_clean()',$modifiers);}function
+macroCache($content){return'if (NetteX\Templates\CachingHelper::create('.var_export($this->uniq.':'.$this->cacheCounter++,TRUE).', $_l->g->caches'.$this->formatArray($content,', ').')) {';}function
+macroForeach($content){return'$iterator = $_l->its[] = new NetteX\SmartCachingIterator('.preg_replace('# +as +#i',') as ',$this->formatMacroArgs($content),1);}function
 macroAttr($content){return
 String::replace($content.' ','#\)\s+#',')->');}function
 macroContentType($content){if(strpos($content,'html')!==FALSE){$this->filter->escape='NetteX\Templates\TemplateHelpers::escapeHtml';$this->filter->context=LatteFilter::CONTEXT_TEXT;}elseif(strpos($content,'xml')!==FALSE){$this->filter->escape='NetteX\Templates\TemplateHelpers::escapeXml';$this->filter->context=LatteFilter::CONTEXT_NONE;}elseif(strpos($content,'javascript')!==FALSE){$this->filter->escape='NetteX\Templates\TemplateHelpers::escapeJs';$this->filter->context=LatteFilter::CONTEXT_NONE;}elseif(strpos($content,'css')!==FALSE){$this->filter->escape='NetteX\Templates\TemplateHelpers::escapeCss';$this->filter->context=LatteFilter::CONTEXT_NONE;}elseif(strpos($content,'plain')!==FALSE){$this->filter->escape='';$this->filter->context=LatteFilter::CONTEXT_NONE;}else{$this->filter->escape='$template->escape';$this->filter->context=LatteFilter::CONTEXT_NONE;}return
 strpos($content,'/')?'NetteX\Environment::getHttpResponse()->setHeader("Content-Type", "'.$content.'")':'';}function
-macroDump($content){return'NetteX\Debug::barDump('.($content?'array('.var_export($content,TRUE)." => $content)":'get_defined_vars()').', "Template " . str_replace(NetteX\Environment::getVariable("appDir", ""), "\xE2\x80\xA6", $template->getFile()))';}function
+macroDump($content){return'NetteX\Debug::barDump('.($content?'array('.var_export($this->formatMacroArgs($content),TRUE)." => $content)":'get_defined_vars()').', "Template " . str_replace(dirname(dirname($template->getFile())), "\xE2\x80\xA6", $template->getFile()))';}function
 macroDebugbreak(){return'if (function_exists("debugbreak")) debugbreak(); elseif (function_exists("xdebug_break")) xdebug_break()';}function
-macroControl($content){$pair=self::fetchToken($content);if($pair===NULL){throw
-new\XInvalidStateException("Missing control name in {control} on line {$this->filter->line}.");}$pair=explode(':',$pair,2);$name=self::formatString($pair[0]);$method=isset($pair[1])?ucfirst($pair[1]):'';$method=String::match($method,'#^('.self::RE_IDENTIFIER.'|)$#')?"render$method":"{\"render$method\"}";$param=self::formatArray($content);if(strpos($content,'=>')===FALSE)$param=substr($param,6,-1);return($name[0]==='$'?"if (is_object($name)) {$name}->$method($param); else ":'')."\$control->getWidget($name)->$method($param)";}function
-macroLink($content,$modifiers){return
-self::formatModifiers('$control->link('.$this->formatLink($content).')',$modifiers);}function
-macroPlink($content,$modifiers){return
-self::formatModifiers('$presenter->link('.$this->formatLink($content).')',$modifiers);}function
+macroControl($content){$pair=$this->fetchToken($content);if($pair===NULL){throw
+new\XInvalidStateException("Missing control name in {control} on line {$this->filter->line}.");}$pair=explode(':',$pair,2);$name=$this->formatString($pair[0]);$method=isset($pair[1])?ucfirst($pair[1]):'';$method=String::match($method,'#^('.self::RE_IDENTIFIER.'|)$#')?"render$method":"{\"render$method\"}";$param=$this->formatArray($content);if(strpos($content,'=>')===FALSE)$param=substr($param,6,-1);return($name[0]==='$'?"if (is_object($name)) {$name}->$method($param); else ":'')."\$control->getWidget($name)->$method($param)";}function
+macroLink($content,$modifiers){return$this->formatModifiers('$control->link('.$this->formatLink($content).')',$modifiers);}function
+macroPlink($content,$modifiers){return$this->formatModifiers('$presenter->link('.$this->formatLink($content).')',$modifiers);}function
 macroIfCurrent($content){return($content?'try { $presenter->link('.$this->formatLink($content).'); } catch (NetteX\Application\InvalidLinkException $e) {}':'').'; if ($presenter->getLastCreatedRequestFlag("current")):';}private
 function
-formatLink($content){return
-self::formatString(self::fetchToken($content)).self::formatArray($content,', ');}function
-macroVar($content,$modifiers,$extract=FALSE){$tokenizer=new
-Tokenizer(array(Tokenizer::T_WHITESPACE=>'\s+',Tokenizer::RE_STRING,'true|false|null|and|or|xor|clone|new|instanceof',self::T_SYMBOL=>'\$?[0-9a-zA-Z_]+','=>|[^"\']'),'i');$out='';$quote=$var=TRUE;$depth=0;foreach($tokenizer->tokenize($content)as$n=>$token){list($token,$name)=$token;if($name===self::T_SYMBOL){if($var){if($extract){$token="'".($token[0]==='$'?substr($token,1):$token)."'";}else{$token=$token[0]==='$'?$token:'$'.$token;}}elseif($quote&&$token[0]!=='$'&&!is_numeric($token)&&in_array($tokenizer->nextToken($n),array(',','=>',')',NULL),TRUE)){$token="'$token'";}}elseif($token==='('){$depth++;}elseif($token===')'){$depth--;}elseif(($token==='='||$token==='=>')&&$depth===0){$token=$extract?'=>':'=';$var=FALSE;}elseif($token===','&&$depth===0){$token=$extract?',':';';$var=TRUE;}if($name!==Tokenizer::T_WHITESPACE){$quote=in_array($token,array('[',',','=','(','=>'));}$out.=$token;}return$out;}function
+formatLink($content){return$this->formatString($this->fetchToken($content)).$this->formatArray($content,', ');}function
+macroVar($content,$modifiers,$extract=FALSE){$out='';$var=TRUE;foreach($this->parseMacro($content)as$rec){list($token,$name,$depth)=$rec;if($var&&($name===self::T_SYMBOL||$name===self::T_VARIABLE)){if($extract){$token="'".trim($token,"'$")."'";}else{$token='$'.trim($token,"'$");}}elseif(($token==='='||$token==='=>')&&$depth===0){$token=$extract?'=>':'=';$var=FALSE;}elseif($token===','&&$depth===0){$token=$extract?',':';';$var=TRUE;}$out.=$token;}return$out;}function
 macroDefault($content){return'extract(array('.$this->macroVar($content,'',TRUE).'), EXTR_SKIP)';}function
-macroEscape($content){return$this->filter->escape;}function
-macroModifiers($content,$modifiers){return
-self::formatModifiers($content,$modifiers);}static
+macroModifiers($content,$modifiers){return$this->formatModifiers($this->formatMacroArgs($content),$modifiers);}function
+escape($content){return$this->filter->escape;}function
+formatModifiers($var,$modifiers){if(!$modifiers)return$var;$inside=FALSE;foreach($this->parseMacro(ltrim($modifiers,'|'))as$rec){list($token,$name)=$rec;if($name===self::T_WHITESPACE){$var=rtrim($var).' ';}elseif(!$inside){if($name===self::T_SYMBOL){$var="\$template->".trim($token,"'")."($var";$inside=TRUE;}else{throw
+new\XInvalidStateException("Modifier name must be alphanumeric string, '$token' given.");}}else{if($token===':'||$token===','){$var=$var.', ';}elseif($token==='|'){$var=$var.')';$inside=FALSE;}else{$var.=$token;}}}return$inside?"$var)":$var;}function
+fetchToken(&$s){if($matches=String::match($s,'#^((?>'.LatteFilter::RE_STRING.'|[^\'"\s,]+)+)\s*,?\s*(.*)$#')){$s=$matches[2];return$matches[1];}return
+NULL;}function
+formatMacroArgs($input){$out='';foreach($this->parseMacro($input)as$token){$out.=$token[0];}return$out;}function
+formatArray($input,$prefix=''){$tokens=$this->parseMacro($input);if(!$tokens){return'';}$out='';$expand=NULL;$tokens[]=NULL;foreach($tokens
+as$rec){list($token,$name,$depth)=$rec;if($token==='(expand)'&&$depth===0){$expand=TRUE;$token='),';}elseif($expand&&($token===','||$token===NULL)&&!$depth){$expand=FALSE;$token=', array(';}$out.=$token;}return$prefix.($expand===NULL?"array($out)":"array_merge(array($out))");}function
+formatString($s){static$keywords=array('true'=>1,'false'=>1,'null'=>1);return(is_numeric($s)||strspn($s,'\'"$')||isset($keywords[strtolower($s)]))?$s:'"'.$s.'"';}private
 function
-formatModifiers($var,$modifiers){if(!$modifiers)return$var;$tokenizer=new
-Tokenizer(array(Tokenizer::T_WHITESPACE=>'\s+',Tokenizer::RE_STRING,'true|false|null|and|or|xor|clone|new|instanceof','\$[_a-z0-9\x7F-\xFF]+',self::T_SYMBOL=>'[_a-z0-9\x7F-\xFF]+','[^"\']'),'i');$inside=FALSE;foreach($tokenizer->tokenize(ltrim($modifiers,'|'))as$n=>$token){list($token,$name)=$token;if($name===Tokenizer::T_WHITESPACE){$var=rtrim($var).' ';}elseif(!$inside){if($name===self::T_SYMBOL){$var="\$template->$token($var";$inside=TRUE;}else{throw
-new\XInvalidStateException("Modifier name must be alphanumeric string, '$token' given.");}}else{if($token===':'||$token===','){$var=$var.', ';}elseif($token==='|'){$var=$var.')';$inside=FALSE;}elseif($name===self::T_SYMBOL&&$quote&&!is_numeric($token)&&in_array($tokenizer->nextToken($n),array(',',':',')','|',NULL),TRUE)){$var.="'$token'";}else{$var.=$token;}}if($name!==Tokenizer::T_WHITESPACE){$quote=in_array($token,array('[',',','=','(',':'));}}return$inside?"$var)":$var;}static
-function
-fetchToken(&$s){if($matches=String::match($s,'#^((?>'.Tokenizer::RE_STRING.'|[^\'"\s,]+)+)\s*,?\s*(.*)$#')){$s=$matches[2];return$matches[1];}return
-NULL;}static
-function
-formatArray($input,$prefix=''){$tokenizer=new
-Tokenizer(array(Tokenizer::T_WHITESPACE=>'\s+',Tokenizer::T_COMMENT=>'/\*.*?\*/',Tokenizer::RE_STRING,'true|false|null|and|or|xor|clone|new|instanceof','\$[_a-z0-9\x7F-\xFF]+',self::T_SYMBOL=>'[_a-z0-9\x7F-\xFF]+','=>|[^"\']'),'i');$out='';$quote=TRUE;foreach($tokenizer->tokenize($input)as$n=>$token){list($token,$name)=$token;if($name===Tokenizer::T_COMMENT){continue;}elseif($name===self::T_SYMBOL&&$quote&&!is_numeric($token)&&in_array($tokenizer->nextToken($n),array(',','=>',')',NULL),TRUE)){$token="'$token'";}if($name!==Tokenizer::T_WHITESPACE){$quote=in_array($token,array('[',',','=','(','=>'));}$out.=$token;}return$out===''?'':$prefix."array($out)";}static
-function
-formatString($s){static$keywords=array('true'=>1,'false'=>1,'null'=>1);return(is_numeric($s)||strspn($s,'\'"$')||isset($keywords[strtolower($s)]))?$s:'"'.$s.'"';}static
+parseMacro($input){$this->tokenizer->tokenize($input);$this->tokenizer->tokens[]=NULL;$inTernary=$lastSymbol=$prev=NULL;$tokens=$arrays=array();$n=-1;while(++$n<count($this->tokenizer->tokens)){list($token,$name)=$current=$this->tokenizer->tokens[$n];$depth=count($arrays);if($name===self::T_COMMENT){continue;}elseif($name===self::T_WHITESPACE){$current[2]=$depth;$tokens[]=$current;continue;}elseif($name===self::T_SYMBOL&&in_array($prev[0],array(',','(','[','=','=>',':','?',NULL),TRUE)){$lastSymbol=count($tokens);}elseif(is_int($lastSymbol)&&in_array($token,array(',',')',']','=','=>',':','|',NULL),TRUE)){$tokens[$lastSymbol][0]="'".$tokens[$lastSymbol][0]."'";$lastSymbol=NULL;}else{$lastSymbol=NULL;}if($token==='?'){$inTernary=$depth;}elseif($token===':'){$inTernary=NULL;}elseif($inTernary===$depth&&($token===','||$token===')'||$token===']'||$token===NULL)){$tokens[]=array(':',NULL,$depth);$tokens[]=array('null',NULL,$depth);$inTernary=NULL;}if($token==='['){if($arrays[]=$prev[0]!==']'&&$prev[1]!==self::T_SYMBOL&&$prev[1]!==self::T_VARIABLE){$tokens[]=array('array',NULL,$depth);$current=array('(',NULL);}}elseif($token===']'){if(array_pop($arrays)===TRUE){$current=array(')',NULL);}}elseif($token==='('){$arrays[]='(';}elseif($token===')'){array_pop($arrays);}if($current){$current[2]=$depth;$tokens[]=$prev=$current;}}return$tokens;}static
 function
 callBlock($context,$name,$params){if(empty($context->blocks[$name])){throw
-new\XInvalidStateException("Call to undefined block '$name'.");}$block=reset($context->blocks[$name]);$block($context,$params);}static
+new\XInvalidStateException("Cannot include undefined block '$name'.");}$block=reset($context->blocks[$name]);$block($context,$params);}static
 function
 callBlockParent($context,$name,$params){if(empty($context->blocks[$name])||($block=next($context->blocks[$name]))===FALSE){throw
-new\XInvalidStateException("Call to undefined parent block '$name'.");}$block($context,$params);}static
+new\XInvalidStateException("Cannot include undefined parent block '$name'.");}$block($context,$params);}static
 function
 includeTemplate($destination,$params,$template){if($destination
 instanceof
@@ -3522,18 +3548,9 @@ function
 initRuntime($template,$extends,$realFile){$local=(object)NULL;if(isset($template->_l)){$local->blocks=&$template->_l->blocks;$local->templates=&$template->_l->templates;}$local->templates[$realFile]=$template;$local->extends=is_bool($extends)?$extends:(empty($template->_extends)?FALSE:$template->_extends);unset($template->_l,$template->_extends);if(!isset($template->_g)){$template->_g=(object)NULL;}$local->g=$template->_g;if(!empty($local->g->caches)){end($local->g->caches)->addFile($template->getFile());}return$local;}static
 function
 renderSnippets($control,$local,$params){$payload=$control->getPresenter()->getPayload();if(isset($local->blocks)){foreach($local->blocks
-as$name=>$function){if($name[0]!=='_'||!$control->isControlInvalid(substr($name,1)))continue;ob_start();$function=reset($function);$function($local,$params);$payload->snippets[$control->getSnippetId(substr($name,1))]=ob_get_clean();}}}}class
-SnippetHelper
-extends
-NetteX\Object{public
-static$outputAllowed=TRUE;private$id;private$tag;private$payload;private$level;static
-function
-create(NetteX\Application\Control$control,$name=NULL,$tag='div'){if(self::$outputAllowed){$obj=new
-self;$obj->tag=trim($tag,'<>');if($obj->tag)echo'<',$obj->tag,' id="',$control->getSnippetId($name),'">';return$obj;}elseif($control->isControlInvalid($name)){$obj=new
-self;$obj->id=$control->getSnippetId($name);$obj->payload=$control->getPresenter()->getPayload();ob_start();$obj->level=ob_get_level();self::$outputAllowed=TRUE;return$obj;}else{return
-FALSE;}}function
-finish(){if($this->tag!==NULL){if($this->tag)echo"</$this->tag>";}else{if($this->level!==ob_get_level()){throw
-new\XInvalidStateException("Snippet '$this->id' cannot be ended here.");}$this->payload->snippets[$this->id]=ob_get_clean();self::$outputAllowed=FALSE;}}}final
+as$name=>$function){if($name[0]!=='_'||!$control->isControlInvalid(substr($name,1)))continue;ob_start();$function=reset($function);$function($local,$params);$payload->snippets[$control->getSnippetId(substr($name,1))]=ob_get_clean();}}if($control
+instanceof
+NetteX\Application\Control){foreach($control->getComponents(FALSE,'NetteX\Application\Control')as$child){if($child->isControlInvalid()){$child->render();}}}}}final
 class
 TemplateFilters{final
 function
@@ -3556,7 +3573,8 @@ TemplateFilters::$texy->process($m[2]);});}}use
 NetteX\Forms\Form;use
 NetteX\Web\Html;final
 class
-TemplateHelpers{final
+TemplateHelpers{public
+static$dateFormat='%x';final
 function
 __construct(){throw
 new\LogicException("Cannot instantiate static class ".get_class($this));}static
@@ -3603,8 +3621,8 @@ function
 indent($s,$level=1,$chars="\t"){if($level>=1){$s=String::replace($s,'#<(textarea|pre).*?</\\1#si',function($m){return
 strtr($m[0]," \t\r\n","\x1F\x1E\x1D\x1A");});$s=String::indent($s,$level,$chars);$s=strtr($s,"\x1F\x1E\x1D\x1A"," \t\r\n");}return$s;}static
 function
-date($time,$format="%x"){if($time==NULL){return
-NULL;}$time=NetteX\Tools::createDateTime($time);return
+date($time,$format=NULL){if($time==NULL){return
+NULL;}if(!isset($format)){$format=self::$dateFormat;}$time=NetteX\Tools::createDateTime($time);return
 strpos($format,'%')===FALSE?$time->format($format):strftime($format,$time->format('U'));}static
 function
 bytes($bytes,$precision=2){$bytes=round($bytes);$units=array('B','kB','MB','GB','TB','PB');foreach($units
@@ -3658,7 +3676,7 @@ IContext{private$registry=array();private$factories=array();function
 addService($name,$service,$singleton=TRUE,array$options=NULL){$this->updating();if(!is_string($name)||$name===''){throw
 new\InvalidArgumentException("Service name must be a non-empty string, ".gettype($name)." given.");}$lower=strtolower($name);if(isset($this->registry[$lower])){throw
 new
-AmbiguousServiceException("Service named '$name' has been already registered.");}if(is_object($service)&&!($service
+AmbiguousServiceException("Service named '$name' has already been registered.");}if(is_object($service)&&!($service
 instanceof\Closure||$service
 instanceof
 Callback)){if(!$singleton||$options){throw
@@ -3680,11 +3698,7 @@ hasService($name,$created=FALSE){if(!is_string($name)||$name===''){throw
 new\InvalidArgumentException("Service name must be a non-empty string, ".gettype($name)." given.");}$lower=strtolower($name);return
 isset($this->registry[$lower])||(!$created&&isset($this->factories[$lower]));}}class
 AmbiguousServiceException
-extends\Exception{}}namespace {class
-XDateTime53
-extends
-DateTime{}}namespace NetteX{use
-NetteX;use
+extends\Exception{}use
 RecursiveIteratorIterator;class
 Finder
 extends
@@ -3703,7 +3717,7 @@ function
 select($masks,$type){$this->cursor=&$this->groups[];$pattern=self::buildPattern($masks);if($type||$pattern){$this->filter(function($file)use($type,$pattern){return(!$type||$file->$type())&&!$file->isDot()&&(!$pattern||preg_match($pattern,'/'.strtr($file->getSubPathName(),'\\','/')));});}return$this;}function
 in($path){if(!is_array($path)){$path=func_get_args();}$this->maxDepth=0;return$this->from($path);}function
 from($path){if($this->paths){throw
-new\XInvalidStateException('Directory to search is already specified.');}if(!is_array($path)){$path=func_get_args();}$this->paths=$path;$this->cursor=&$this->exclude;return$this;}function
+new\XInvalidStateException('Directory to search has already been specified.');}if(!is_array($path)){$path=func_get_args();}$this->paths=$path;$this->cursor=&$this->exclude;return$this;}function
 childFirst(){$this->order=RecursiveIteratorIterator::CHILD_FIRST;return$this;}private
 static
 function
@@ -3804,7 +3818,10 @@ calculateSize($srcWidth,$srcHeight,$newWidth,$newHeight,$flags=self::FIT){if(sub
 new\InvalidArgumentException('For stretching must be both width and height specified.');}if(($flags&self::ENLARGE)===0){$newWidth=round($srcWidth*min(1,$newWidth/$srcWidth));$newHeight=round($srcHeight*min(1,$newHeight/$srcHeight));}}else{if(empty($newWidth)&&empty($newHeight)){throw
 new\InvalidArgumentException('At least width or height must be specified.');}$scale=array();if($newWidth>0){$scale[]=$newWidth/$srcWidth;}if($newHeight>0){$scale[]=$newHeight/$srcHeight;}if($flags&self::FILL){$scale=array(max($scale));}if(($flags&self::ENLARGE)===0){$scale[]=1;}$scale=min($scale);$newWidth=round($srcWidth*$scale);$newHeight=round($srcHeight*$scale);}return
 array((int)$newWidth,(int)$newHeight);}function
-crop($left,$top,$width,$height){if(substr($left,-1)==='%'){$left=round(($this->getWidth()-$width)/100*$left);}if(substr($top,-1)==='%'){$top=round(($this->getHeight()-$height)/100*$top);}if($left<0){$width+=$left;$left=0;}if($top<0){$height+=$top;$top=0;}$width=min((int)$width,$this->getWidth()-$left);$height=min((int)$height,$this->getHeight()-$top);$newImage=self::fromBlank($width,$height,self::RGB(0,0,0,127))->getImageResource();imagecopy($newImage,$this->getImageResource(),0,0,$left,$top,$width,$height);$this->image=$newImage;return$this;}function
+crop($left,$top,$width,$height){list($left,$top,$width,$height)=self::calculateCutout($this->getWidth(),$this->getHeight(),$left,$top,$width,$height);$newImage=self::fromBlank($width,$height,self::RGB(0,0,0,127))->getImageResource();imagecopy($newImage,$this->getImageResource(),0,0,$left,$top,$width,$height);$this->image=$newImage;return$this;}static
+function
+calculateCutout($srcWidth,$srcHeight,$left,$top,$newWidth,$newHeight){if(substr($newWidth,-1)==='%'){$newWidth=round($srcWidth/100*$newWidth);}if(substr($newHeight,-1)==='%'){$newHeight=round($srcHeight/100*$newHeight);}if(substr($left,-1)==='%'){$left=round(($srcWidth-$newWidth)/100*$left);}if(substr($top,-1)==='%'){$top=round(($srcHeight-$newHeight)/100*$top);}if($left<0){$newWidth+=$left;$left=0;}if($top<0){$newHeight+=$top;$top=0;}$newWidth=min((int)$newWidth,$srcWidth-$left);$newHeight=min((int)$newHeight,$srcHeight-$top);return
+array($left,$top,$newWidth,$newHeight);}function
 sharpen(){imageconvolution($this->getImageResource(),array(array(-1,-1,-1),array(-1,24,-1),array(-1,-1,-1)),16,0);return$this;}function
 place(Image$image,$left=0,$top=0,$opacity=100){$opacity=max(0,min(100,(int)$opacity));if(substr($left,-1)==='%'){$left=round(($this->getWidth()-$image->getWidth())/100*$left);}if(substr($top,-1)==='%'){$top=round(($this->getHeight()-$image->getHeight())/100*$top);}if($opacity===100){imagecopy($this->getImageResource(),$image->getImageResource(),$left,$top,0,0,$image->getWidth(),$image->getHeight());}elseif($opacity<>0){imagecopymerge($this->getImageResource(),$image->getImageResource(),$left,$top,0,0,$image->getWidth(),$image->getHeight(),$opacity);}return$this;}function
 save($file=NULL,$quality=NULL,$type=NULL){if($type===NULL){switch(strtolower(pathinfo($file,PATHINFO_EXTENSION))){case'jpg':case'jpeg':$type=self::JPEG;break;case'png':$type=self::PNG;break;case'gif':$type=self::GIF;}}switch($type){case
@@ -3839,7 +3856,7 @@ parent::getImageResource();}function
 resize($width,$height,$flags=self::FIT){if($this->file===NULL){return
 parent::resize($width,$height,$flags);}$mirror='';if($width<0)$mirror.=' -flop';if($height<0)$mirror.=' -flip';list($newWidth,$newHeight)=self::calculateSize($this->getWidth(),$this->getHeight(),$width,$height,$flags);$this->execute("convert -resize {$newWidth}x{$newHeight}! {$mirror} -strip %input %output",self::PNG);return$this;}function
 crop($left,$top,$width,$height){if($this->file===NULL){return
-parent::crop($left,$top,$width,$height);}$left=max(0,(int)$left);$top=max(0,(int)$top);$width=min((int)$width,$this->getWidth()-$left);$height=min((int)$height,$this->getHeight()-$top);$this->execute("convert -crop {$width}x{$height}+{$left}+{$top} -strip %input %output",self::PNG);return$this;}function
+parent::crop($left,$top,$width,$height);}list($left,$top,$width,$height)=self::calculateCutout($this->getWidth(),$this->getHeight(),$left,$top,$width,$height);$this->execute("convert -crop {$width}x{$height}+{$left}+{$top} -strip %input %output",self::PNG);return$this;}function
 save($file=NULL,$quality=NULL,$type=NULL){if($this->file===NULL){return
 parent::save($file,$quality,$type);}$quality=$quality===NULL?'':'-quality '.max(0,min(100,(int)$quality));if($file===NULL){$this->execute("convert $quality -strip %input %output",$type===NULL?self::PNG:$type);readfile($this->file);}else{$this->execute("convert $quality -strip %input %output",(string)$file);}return
 TRUE;}private
@@ -3925,9 +3942,9 @@ function
 __construct(){throw
 new\LogicException("Cannot instantiate static class ".get_class($this));}static
 function
-encode($value){Debug::tryError();if(function_exists('ini_set')){$old=ini_set('display_errors',0);$json=json_encode($value);ini_set('display_errors',$old);}else{$json=json_encode($value);}if(Debug::catchError($message)){throw
+encode($value){Debug::tryError();if(function_exists('ini_set')){$old=ini_set('display_errors',0);$json=json_encode($value);ini_set('display_errors',$old);}else{$json=json_encode($value);}if(Debug::catchError($e)){throw
 new
-JsonException($message);}return$json;}static
+JsonException($e->getMessage());}return$json;}static
 function
 decode($json,$options=0){$json=(string)$json;$value=json_decode($json,(bool)($options&self::FORCE_ARRAY));if($value===NULL&&$json!==''&&strcasecmp($json,'null')){$error=PHP_VERSION_ID>=50300?json_last_error():0;throw
 new
@@ -4032,7 +4049,7 @@ strtr($s,"\x01\x02\x03\x04\x05",'`\'"^~');}static
 function
 webalize($s,$charlist=NULL,$lower=TRUE){$s=self::toAscii($s);if($lower)$s=strtolower($s);$s=preg_replace('#[^a-z0-9'.preg_quote($charlist,'#').']+#i','-',$s);$s=trim($s,'-');return$s;}static
 function
-truncate($s,$maxLen,$append="\xE2\x80\xA6"){if(self::length($s)>$maxLen){$maxLen=$maxLen-self::length($append);if($maxLen<1){return$append;}elseif($matches=self::match($s,'#^.{1,'.$maxLen.'}(?=[\s\x00-@\[-`{-~])#us')){return$matches[0].$append;}else{return
+truncate($s,$maxLen,$append="\xE2\x80\xA6"){if(self::length($s)>$maxLen){$maxLen=$maxLen-self::length($append);if($maxLen<1){return$append;}elseif($matches=self::match($s,'#^.{1,'.$maxLen.'}(?=[\s\x00-/:-@\[-`{-~])#us')){return$matches[0].$append;}else{return
 iconv_substr($s,0,$maxLen,'UTF-8').$append;}}return$s;}static
 function
 indent($s,$level=1,$chars="\t"){return$level<1?$s:self::replace($s,'#(?:^|[\r\n]+)(?=[^\r\n])#','$0'.str_repeat($chars,$level));}static
@@ -4068,31 +4085,28 @@ match($subject,$pattern,$flags=0,$offset=0){Debug::tryError();$res=preg_match($p
 function
 matchAll($subject,$pattern,$flags=0,$offset=0){Debug::tryError();$res=preg_match_all($pattern,$subject,$m,($flags&PREG_PATTERN_ORDER)?$flags:($flags|PREG_SET_ORDER),$offset);self::catchPregError($pattern);return$m;}static
 function
-replace($subject,$pattern,$replacement=NULL,$limit=-1){Debug::tryError();if(is_object($replacement)||is_array($replacement)){if(!is_callable($replacement,FALSE,$textual)){Debug::catchError($foo);throw
-new\XInvalidStateException("Callback '$textual' is not callable.");}$res=preg_replace_callback($pattern,$replacement,$subject,$limit);}elseif(is_array($pattern)){$res=preg_replace(array_keys($pattern),array_values($pattern),$subject,$limit);}else{$res=preg_replace($pattern,$replacement,$subject,$limit);}self::catchPregError($pattern);return$res;}static
-function
-catchPregError($pattern){if(Debug::catchError($message)){throw
+replace($subject,$pattern,$replacement=NULL,$limit=-1){Debug::tryError();if(is_object($replacement)||is_array($replacement)){if($replacement
+instanceof
+Callback){$replacement=$replacement->getNative();}if(!is_callable($replacement,FALSE,$textual)){Debug::catchError($foo);throw
+new\XInvalidStateException("Callback '$textual' is not callable.");}$res=preg_replace_callback($pattern,$replacement,$subject,$limit);if(Debug::catchError($e)){$trace=$e->getTrace();if(isset($trace[2]['class'])&&$trace[2]['class']===__CLASS__){throw
 new
-RegexpException("$message in pattern: $pattern");}elseif(preg_last_error()){static$messages=array(PREG_INTERNAL_ERROR=>'Internal error',PREG_BACKTRACK_LIMIT_ERROR=>'Backtrack limit was exhausted',PREG_RECURSION_LIMIT_ERROR=>'Recursion limit was exhausted',PREG_BAD_UTF8_ERROR=>'Malformed UTF-8 data',5=>'Offset didn\'t correspond to the begin of a valid UTF-8 code point');$code=preg_last_error();throw
+RegexpException($e->getMessage()." in pattern: $pattern");}}}elseif(is_array($pattern)){$res=preg_replace(array_keys($pattern),array_values($pattern),$subject,$limit);}else{$res=preg_replace($pattern,$replacement,$subject,$limit);}self::catchPregError($pattern);return$res;}static
+function
+catchPregError($pattern){if(Debug::catchError($e)){throw
+new
+RegexpException($e->getMessage()." in pattern: $pattern");}elseif(preg_last_error()){static$messages=array(PREG_INTERNAL_ERROR=>'Internal error',PREG_BACKTRACK_LIMIT_ERROR=>'Backtrack limit was exhausted',PREG_RECURSION_LIMIT_ERROR=>'Recursion limit was exhausted',PREG_BAD_UTF8_ERROR=>'Malformed UTF-8 data',5=>'Offset didn\'t correspond to the begin of a valid UTF-8 code point');$code=preg_last_error();throw
 new
 RegexpException((isset($messages[$code])?$messages[$code]:'Unknown error')." (pattern: $pattern)",$code);}}}class
 RegexpException
 extends\Exception{}class
 Tokenizer
 extends
-Object
-implements\IteratorAggregate{const
-RE_STRING='\'(?:\\\\.|[^\'\\\\])*\'|"(?:\\\\.|[^"\\\\])*"';const
-T_WHITESPACE=T_WHITESPACE;const
-T_COMMENT=T_COMMENT;private$input;public$tokens;private$re;private$names;function
+Object{private$input;public$tokens;private$re;private$names;function
 __construct(array$patterns,$flags=''){$this->re='~('.implode(')|(',$patterns).')~A'.$flags;$keys=array_keys($patterns);$this->names=$keys===range(0,count($patterns)-1)?FALSE:$keys;}function
 tokenize($input){$this->input=$input;if($this->names){$this->tokens=String::matchAll($input,$this->re);$len=0;foreach($this->tokens
 as&$match){$name=NULL;for($i=1;$i<count($this->names);$i++){if(!isset($match[$i])){break;}elseif($match[$i]!=NULL){$name=$this->names[$i-1];break;}}$match=array($match[0],$name);$len+=strlen($match[0]);}if($len!==strlen($input)){$errorOffset=$len;}}else{$this->tokens=String::split($input,$this->re,PREG_SPLIT_NO_EMPTY);if($this->tokens&&!String::match(end($this->tokens),$this->re)){$tmp=String::split($this->input,$this->re,PREG_SPLIT_NO_EMPTY|PREG_SPLIT_OFFSET_CAPTURE);list(,$errorOffset)=end($tmp);}}if(isset($errorOffset)){$line=$errorOffset?substr_count($this->input,"\n",0,$errorOffset)+1:1;$col=$errorOffset-strrpos(substr($this->input,0,$errorOffset),"\n")+1;$token=str_replace("\n",'\n',substr($input,$errorOffset,10));throw
 new
-TokenizerException("Unexpected '$token' on line $line, column $col.");}return$this;}function
-getIterator(){return
-new\ArrayIterator($this->tokens);}function
-nextToken($i){while(isset($this->tokens[++$i])){$name=$this->tokens[$i][1];if($name!==self::T_WHITESPACE&&$name!==self::T_COMMENT){return$this->tokens[$i][0];}}}function
+TokenizerException("Unexpected '$token' on line $line, column $col.");}return$this->tokens;}function
 getOffset($i){$tokens=String::split($this->input,$this->re,PREG_SPLIT_NO_EMPTY|PREG_SPLIT_OFFSET_CAPTURE);list(,$offset)=$tokens[$i];return
 array($offset,($offset?substr_count($this->input,"\n",0,$offset)+1:1),$offset-strrpos(substr($this->input,0,$offset),"\n"));}}class
 TokenizerException
@@ -4128,8 +4142,8 @@ new\XFileNotFoundException("File '$file' not found.");}$info=@getimagesize($file
 isset($type)&&preg_match('#^\S+/\S+$#',$type)?$type:'application/octet-stream';}static
 function
 enterCriticalSection(){if(self::$criticalSections){throw
-new\XInvalidStateException('Critical section has been already entered.');}$handle=fopen((defined('TEMP_DIR')?TEMP_DIR:__DIR__).'/criticalSection.lock','w');if(!$handle){throw
-new\XInvalidStateException('Unable initialize critical section.');}flock(self::$criticalSections=$handle,LOCK_EX);}static
+new\XInvalidStateException('Critical section has already been entered.');}$handle=fopen(NETTEX_DIR.'/lockfile','r')?:fopen(NETTEX_DIR.'/lockfile','w');if(!$handle){throw
+new\XInvalidStateException("Unable initialize critical section (missing file '".NETTEX_DIR."/lockfile').");}flock(self::$criticalSections=$handle,LOCK_EX);}static
 function
 leaveCriticalSection(){if(!self::$criticalSections){throw
 new\XInvalidStateException('Critical section has not been initialized.');}fclose(self::$criticalSections);self::$criticalSections=NULL;}}}namespace NetteX\Web{use
@@ -4157,7 +4171,7 @@ function
 __unset($name){unset($this->attrs[$name]);}final
 function
 __call($m,$args){$p=substr($m,0,3);if($p==='get'||$p==='set'||$p==='add'){$m=substr($m,3);$m[0]=$m[0]|"\x20";if($p==='get'){return
-isset($this->attrs[$m])?$this->attrs[$m]:NULL;}elseif($p==='add'){$args[]=TRUE;}}if(count($args)===0){}elseif(count($args)===1){$this->attrs[$m]=$args[0];}elseif($args[0]==NULL){$tmp=&$this->attrs[$m];}elseif(!isset($this->attrs[$m])||is_array($this->attrs[$m])){$this->attrs[$m][$args[0]]=$args[1];}else{$this->attrs[$m]=array($this->attrs[$m],$args[0]=>$args[1]);}return$this;}final
+isset($this->attrs[$m])?$this->attrs[$m]:NULL;}elseif($p==='add'){$args[]=TRUE;}}if(count($args)===0){}elseif(count($args)===1){$this->attrs[$m]=$args[0];}elseif((string)$args[0]===''){$tmp=&$this->attrs[$m];}elseif(!isset($this->attrs[$m])||is_array($this->attrs[$m])){$this->attrs[$m][$args[0]]=$args[1];}else{$this->attrs[$m]=array($this->attrs[$m],$args[0]=>$args[1]);}return$this;}final
 function
 href($path,$query=NULL){if($query){$query=http_build_query($query,NULL,'&');if($query!=='')$path.='?'.$query;}$this->attrs['href']=$path;return$this;}final
 function
@@ -4212,7 +4226,7 @@ function
 attributes(){if(!is_array($this->attrs)){return'';}$s='';foreach($this->attrs
 as$key=>$value){if($value===NULL||$value===FALSE)continue;if($value===TRUE){if(self::$xhtml)$s.=' '.$key.'="'.$key.'"';else$s.=' '.$key;continue;}elseif(is_array($value)){if($key==='data'){foreach($value
 as$k=>$v){if($v!==NULL&&$v!==FALSE){$s.=' data-'.$k.'="'.htmlspecialchars((string)$v).'"';}}continue;}$tmp=NULL;foreach($value
-as$k=>$v){if($v==NULL)continue;$tmp[]=is_string($k)?($v===TRUE?$k:$k.':'.$v):$v;}if($tmp===NULL)continue;$value=implode($key==='style'||!strncmp($key,'on',2)?';':' ',$tmp);}else{$value=(string)$value;}$s.=' '.$key.'="'.htmlspecialchars($value).'"';}$s=str_replace('@','&#64;',$s);return$s;}function
+as$k=>$v){if($v==NULL)continue;$tmp[]=$v===TRUE?$k:(is_string($k)?$k.':'.$v:$v);}if($tmp===NULL)continue;$value=implode($key==='style'||!strncmp($key,'on',2)?';':' ',$tmp);}else{$value=(string)$value;}$s.=' '.$key.'="'.htmlspecialchars($value).'"';}$s=str_replace('@','&#64;',$s);return$s;}function
 __clone(){foreach($this->children
 as$key=>$value){if(is_object($value)){$this->children[$key]=clone$value;}}}}class
 HttpContext
@@ -4243,8 +4257,8 @@ function
 getUriFilters(){return$this->uriFilter;}protected
 function
 detectUri(){$uri=$this->uri=new
-UriScript;$uri->scheme=$this->isSecured()?'https':'http';$uri->user=isset($_SERVER['PHP_AUTH_USER'])?$_SERVER['PHP_AUTH_USER']:'';$uri->password=isset($_SERVER['PHP_AUTH_PW'])?$_SERVER['PHP_AUTH_PW']:'';if(isset($_SERVER['HTTP_HOST'])){$pair=explode(':',$_SERVER['HTTP_HOST']);}elseif(isset($_SERVER['SERVER_NAME'])){$pair=explode(':',$_SERVER['SERVER_NAME']);}else{$pair=array('');}$uri->host=$pair[0];if(isset($pair[1])){$uri->port=(int)$pair[1];}elseif(isset($_SERVER['SERVER_PORT'])){$uri->port=(int)$_SERVER['SERVER_PORT'];}if(isset($_SERVER['REQUEST_URI'])){$requestUri=$_SERVER['REQUEST_URI'];}elseif(isset($_SERVER['ORIG_PATH_INFO'])){$requestUri=$_SERVER['ORIG_PATH_INFO'];if(isset($_SERVER['QUERY_STRING'])&&$_SERVER['QUERY_STRING']!=''){$requestUri.='?'.$_SERVER['QUERY_STRING'];}}else{$requestUri='';}$tmp=explode('?',$requestUri,2);$this->originalUri=new
-Uri($uri);$this->originalUri->path=$tmp[0];$this->originalUri->query=isset($tmp[1])?$tmp[1]:'';$this->originalUri->freeze();$requestUri=String::replace($requestUri,$this->uriFilter[0]);$tmp=explode('?',$requestUri,2);$uri->path=String::replace($tmp[0],$this->uriFilter[PHP_URL_PATH]);$uri->query=isset($tmp[1])?$tmp[1]:'';$uri->canonicalize();$uri->path=String::fixEncoding($uri->path);$filename=isset($_SERVER['SCRIPT_FILENAME'])?basename($_SERVER['SCRIPT_FILENAME']):NULL;$scriptPath='';if(isset($_SERVER['SCRIPT_NAME'])&&basename($_SERVER['SCRIPT_NAME'])===$filename){$scriptPath=rtrim($_SERVER['SCRIPT_NAME'],'/');}elseif(isset($_SERVER['PHP_SELF'])&&basename($_SERVER['PHP_SELF'])===$filename){$scriptPath=$_SERVER['PHP_SELF'];}elseif(isset($_SERVER['ORIG_SCRIPT_NAME'])&&basename($_SERVER['ORIG_SCRIPT_NAME'])===$filename){$scriptPath=$_SERVER['ORIG_SCRIPT_NAME'];}elseif(isset($_SERVER['PHP_SELF'],$_SERVER['SCRIPT_FILENAME'])){$path=$_SERVER['PHP_SELF'];$segs=explode('/',trim($_SERVER['SCRIPT_FILENAME'],'/'));$segs=array_reverse($segs);$index=0;$last=count($segs);do{$seg=$segs[$index];$scriptPath='/'.$seg.$scriptPath;$index++;}while(($last>$index)&&(FALSE!==($pos=strpos($path,$scriptPath)))&&(0!=$pos));}if(strncmp($uri->path,$scriptPath,strlen($scriptPath))===0){$uri->scriptPath=$scriptPath;}elseif(strncmp($uri->path,$scriptPath,strrpos($scriptPath,'/')+1)===0){$uri->scriptPath=substr($scriptPath,0,strrpos($scriptPath,'/')+1);}elseif(strpos($uri->path,basename($scriptPath))===FALSE){$uri->scriptPath='/';}elseif((strlen($uri->path)>=strlen($scriptPath))&&((FALSE!==($pos=strpos($uri->path,$scriptPath)))&&($pos!==0))){$uri->scriptPath=substr($uri->path,0,$pos+strlen($scriptPath));}else{$uri->scriptPath=$scriptPath;}$uri->freeze();}final
+UriScript;$uri->scheme=$this->isSecured()?'https':'http';$uri->user=isset($_SERVER['PHP_AUTH_USER'])?$_SERVER['PHP_AUTH_USER']:'';$uri->password=isset($_SERVER['PHP_AUTH_PW'])?$_SERVER['PHP_AUTH_PW']:'';if(isset($_SERVER['HTTP_HOST'])){$pair=explode(':',$_SERVER['HTTP_HOST']);}elseif(isset($_SERVER['SERVER_NAME'])){$pair=explode(':',$_SERVER['SERVER_NAME']);}else{$pair=array('');}$uri->host=preg_match('#^[-.a-z0-9]+$#',$pair[0])?$pair[0]:'';if(isset($pair[1])){$uri->port=(int)$pair[1];}elseif(isset($_SERVER['SERVER_PORT'])){$uri->port=(int)$_SERVER['SERVER_PORT'];}if(isset($_SERVER['REQUEST_URI'])){$requestUri=$_SERVER['REQUEST_URI'];}elseif(isset($_SERVER['ORIG_PATH_INFO'])){$requestUri=$_SERVER['ORIG_PATH_INFO'];if(isset($_SERVER['QUERY_STRING'])&&$_SERVER['QUERY_STRING']!=''){$requestUri.='?'.$_SERVER['QUERY_STRING'];}}else{$requestUri='';}$tmp=explode('?',$requestUri,2);$this->originalUri=new
+Uri($uri);$this->originalUri->path=$tmp[0];$this->originalUri->query=isset($tmp[1])?$tmp[1]:'';$this->originalUri->freeze();$requestUri=String::replace($requestUri,$this->uriFilter[0]);$tmp=explode('?',$requestUri,2);$uri->path=String::replace($tmp[0],$this->uriFilter[PHP_URL_PATH]);$uri->query=isset($tmp[1])?$tmp[1]:'';$uri->canonicalize();$uri->path=String::fixEncoding($uri->path);$uri->scriptPath='/';if(isset($_SERVER['SCRIPT_NAME'])){$script=$_SERVER['SCRIPT_NAME'];if(strncmp($uri->path.'/',$script.'/',strlen($script)+1)===0){$uri->scriptPath=$script;}elseif(strncmp($uri->path,$script,strrpos($script,'/')+1)===0){$uri->scriptPath=substr($script,0,strrpos($script,'/')+1);}}$uri->freeze();}final
 function
 getQuery($key=NULL,$default=NULL){if($this->query===NULL){$this->initialize();}if(func_num_args()===0){return$this->query;}elseif(isset($this->query[$key])){return$this->query[$key];}else{return$default;}}final
 function
@@ -4293,7 +4307,7 @@ extends
 NetteX\Object
 implements
 IHttpResponse{private
-static$fixIE=TRUE;public$cookieDomain='';public$cookiePath='/';public$cookieSecure=FALSE;private$code=self::S200_OK;function
+static$fixIE=TRUE;public$cookieDomain='';public$cookiePath='/';public$cookieSecure=FALSE;public$cookieHttpOnly=TRUE;private$code=self::S200_OK;function
 setCode($code){$code=(int)$code;static$allowed=array(200=>1,201=>1,202=>1,203=>1,204=>1,205=>1,206=>1,300=>1,301=>1,302=>1,303=>1,304=>1,307=>1,400=>1,401=>1,403=>1,404=>1,406=>1,408=>1,410=>1,412=>1,415=>1,416=>1,500=>1,501=>1,503=>1,505=>1);if(!isset($allowed[$code])){throw
 new\InvalidArgumentException("Bad HTTP response '$code'.");}elseif(headers_sent($file,$line)){throw
 new\XInvalidStateException("Cannot set HTTP code after HTTP headers have been sent".($file?" (output started at $file:$line).":"."));}else{$this->code=$code;$protocol=isset($_SERVER['SERVER_PROTOCOL'])?$_SERVER['SERVER_PROTOCOL']:'HTTP/1.1';header($protocol.' '.$code,TRUE,$code);}return$this;}function
@@ -4313,8 +4327,8 @@ getHeaders(){$headers=array();foreach(headers_list()as$header){$a=strpos($header
 function
 date($time=NULL){$time=NetteX\Tools::createDateTime($time);$time->setTimezone(new\DateTimeZone('GMT'));return$time->format('D, d M Y H:i:s \G\M\T');}function
 __destruct(){if(self::$fixIE){if(!isset($_SERVER['HTTP_USER_AGENT'])||strpos($_SERVER['HTTP_USER_AGENT'],'MSIE ')===FALSE)return;if(!in_array($this->code,array(400,403,404,405,406,408,409,410,500,501,505),TRUE))return;if($this->getHeader('Content-Type','text/html')!=='text/html')return;$s=" \t\r\n";for($i=2e3;$i;$i--)echo$s{rand(0,3)};self::$fixIE=FALSE;}}function
-setCookie($name,$value,$time,$path=NULL,$domain=NULL,$secure=NULL){if(headers_sent($file,$line)){throw
-new\XInvalidStateException("Cannot set cookie after HTTP headers have been sent".($file?" (output started at $file:$line).":"."));}setcookie($name,$value,$time?NetteX\Tools::createDateTime($time)->format('U'):0,$path===NULL?$this->cookiePath:(string)$path,$domain===NULL?$this->cookieDomain:(string)$domain,$secure===NULL?$this->cookieSecure:(bool)$secure,TRUE);return$this;}function
+setCookie($name,$value,$time,$path=NULL,$domain=NULL,$secure=NULL,$httpOnly=NULL){if(headers_sent($file,$line)){throw
+new\XInvalidStateException("Cannot set cookie after HTTP headers have been sent".($file?" (output started at $file:$line).":"."));}setcookie($name,$value,$time?NetteX\Tools::createDateTime($time)->format('U'):0,$path===NULL?$this->cookiePath:(string)$path,$domain===NULL?$this->cookieDomain:(string)$domain,$secure===NULL?$this->cookieSecure:(bool)$secure,$httpOnly===NULL?$this->cookieHttpOnly:(bool)$httpOnly);return$this;}function
 deleteCookie($name,$path=NULL,$domain=NULL,$secure=NULL){if(headers_sent($file,$line)){throw
 new\XInvalidStateException("Cannot delete cookie after HTTP headers have been sent".($file?" (output started at $file:$line).":"."));}setcookie($name,FALSE,254400000,$path===NULL?$this->cookiePath:(string)$path,$domain===NULL?$this->cookieDomain:(string)$domain,$secure===NULL?$this->cookieSecure:(bool)$secure,TRUE);}}class
 HttpUploadedFile
@@ -4334,15 +4348,16 @@ isImage(){return
 in_array($this->getContentType(),array('image/gif','image/png','image/jpeg'),TRUE);}function
 toImage(){return
 NetteX\Image::fromFile($this->tmpName);}function
-getImageSize(){return$this->isOk()?@getimagesize($this->tmpName):NULL;}}class
+getImageSize(){return$this->isOk()?@getimagesize($this->tmpName):NULL;}function
+getContents(){return$this->isOk()?file_get_contents($this->tmpName):NULL;}}class
 Session
 extends
 NetteX\Object{const
 DEFAULT_FILE_LIFETIME=10800;private$regenerationNeeded;private
 static$started;private$options=array('referer_check'=>'','use_cookies'=>1,'use_only_cookies'=>1,'use_trans_sid'=>0,'cookie_lifetime'=>0,'cookie_path'=>'/','cookie_domain'=>'','cookie_secure'=>FALSE,'cookie_httponly'=>TRUE,'gc_maxlifetime'=>self::DEFAULT_FILE_LIFETIME,'cache_limiter'=>NULL,'cache_expire'=>NULL,'hash_function'=>NULL,'hash_bits_per_character'=>NULL);function
 start(){if(self::$started){return;}elseif(self::$started===NULL&&defined('SID')){throw
-new\XInvalidStateException('A session had already been started by session.auto-start or session_start().');}try{$this->configure($this->options);}catch(\XNotSupportedException$e){}NetteX\Debug::tryError();session_start();if(NetteX\Debug::catchError($msg)){@session_write_close();throw
-new\XInvalidStateException($msg);}self::$started=TRUE;if($this->regenerationNeeded){session_regenerate_id(TRUE);$this->regenerationNeeded=FALSE;}unset($_SESSION['__NT'],$_SESSION['__NS'],$_SESSION['__NM']);$nf=&$_SESSION['__NF'];if(empty($nf)){$nf=array('C'=>0);}else{$nf['C']++;}$browserKey=$this->getHttpRequest()->getCookie('nette-browser');if(!$browserKey){$browserKey=(string)lcg_value();}$browserClosed=!isset($nf['B'])||$nf['B']!==$browserKey;$nf['B']=$browserKey;$this->sendCookie();if(isset($nf['META'])){$now=time();foreach($nf['META']as$namespace=>$metadata){if(is_array($metadata)){foreach($metadata
+new\XInvalidStateException('A session had already been started by session.auto-start or session_start().');}$this->configure($this->options);NetteX\Debug::tryError();session_start();if(NetteX\Debug::catchError($e)){@session_write_close();throw
+new\XInvalidStateException($e->getMessage());}self::$started=TRUE;if($this->regenerationNeeded){session_regenerate_id(TRUE);$this->regenerationNeeded=FALSE;}unset($_SESSION['__NT'],$_SESSION['__NS'],$_SESSION['__NM']);$nf=&$_SESSION['__NF'];if(empty($nf)){$nf=array('C'=>0);}else{$nf['C']++;}$browserKey=$this->getHttpRequest()->getCookie('nette-browser');if(!$browserKey){$browserKey=(string)lcg_value();}$browserClosed=!isset($nf['B'])||$nf['B']!==$browserKey;$nf['B']=$browserKey;$this->sendCookie();if(isset($nf['META'])){$now=time();foreach($nf['META']as$namespace=>$metadata){if(is_array($metadata)){foreach($metadata
 as$variable=>$value){if((!empty($value['B'])&&$browserClosed)||(!empty($value['T'])&&$now>$value['T'])||($variable!==''&&is_object($nf['DATA'][$namespace][$variable])&&(isset($value['V'])?$value['V']:NULL)!==NetteX\Reflection\ClassReflection::from($nf['DATA'][$namespace][$variable])->getAnnotation('serializationVersion'))){if($variable===''){unset($nf['META'][$namespace],$nf['DATA'][$namespace]);continue
 2;}unset($nf['META'][$namespace][$variable],$nf['DATA'][$namespace][$variable]);}}}}}register_shutdown_function(array($this,'clean'));}function
 isStarted(){return(bool)self::$started;}function
@@ -4372,7 +4387,7 @@ getOptions(){return$this->options;}private
 function
 configure(array$config){$special=array('cache_expire'=>1,'cache_limiter'=>1,'save_path'=>1,'name'=>1);foreach($config
 as$key=>$value){if(!strncmp($key,'session.',8)){$key=substr($key,8);}if($value===NULL){continue;}elseif(isset($special[$key])){if(self::$started){throw
-new\XInvalidStateException("Unable to set '$key' when session has been started.");}$key="session_$key";$key($value);}elseif(strncmp($key,'cookie_',7)===0){if(!isset($cookie)){$cookie=session_get_cookie_params();}$cookie[substr($key,7)]=$value;}elseif(!function_exists('ini_set')){if(ini_get($key)!=$value){throw
+new\XInvalidStateException("Unable to set '$key' when session has been started.");}$key="session_$key";$key($value);}elseif(strncmp($key,'cookie_',7)===0){if(!isset($cookie)){$cookie=session_get_cookie_params();}$cookie[substr($key,7)]=$value;}elseif(!function_exists('ini_set')){if(ini_get($key)!=$value&&!NetteX\Framework::$iAmUsingBadHost){throw
 new\XNotSupportedException('Required function ini_set() is disabled.');}}else{if(self::$started){throw
 new\XInvalidStateException("Unable to set '$key' when session has been started.");}ini_set("session.$key",$value);}}if(isset($cookie)){session_set_cookie_params($cookie['lifetime'],$cookie['path'],$cookie['domain'],$cookie['secure'],$cookie['httponly']);if(self::$started){$this->sendCookie();}}}function
 setExpiration($time){if(empty($time)){return$this->setOptions(array('gc_maxlifetime'=>self::DEFAULT_FILE_LIFETIME,'cookie_lifetime'=>0));}else{$time=NetteX\Tools::createDateTime($time)->format('U');return$this->setOptions(array('gc_maxlifetime'=>$time,'cookie_lifetime'=>$time));}}function
@@ -4416,7 +4431,7 @@ NetteX\FreezableObject{public
 static$defaultPorts=array('http'=>80,'https'=>443,'ftp'=>21,'news'=>119,'nntp'=>119);private$scheme='';private$user='';private$pass='';private$host='';private$port=NULL;private$path='';private$query='';private$fragment='';function
 __construct($uri=NULL){if(is_string($uri)){$parts=@parse_url($uri);if($parts===FALSE){throw
 new\InvalidArgumentException("Malformed or unsupported URI '$uri'.");}foreach($parts
-as$key=>$val){$this->$key=$val;}if(!$this->port&&isset(self::$defaultPorts[$this->scheme])){$this->port=self::$defaultPorts[$this->scheme];}}elseif($uri
+as$key=>$val){$this->$key=$val;}if(!$this->port&&isset(self::$defaultPorts[$this->scheme])){$this->port=self::$defaultPorts[$this->scheme];}if($this->path===''&&($this->scheme==='http'||$this->scheme==='https')){$this->path='/';}}elseif($uri
 instanceof
 self){foreach($this
 as$key=>$val){$this->$key=$uri->$key;}}}function
@@ -4440,6 +4455,9 @@ getFragment(){return$this->fragment;}function
 getAbsoluteUri(){return$this->scheme.'://'.$this->getAuthority().$this->path.($this->query===''?'':'?'.$this->query).($this->fragment===''?'':'#'.$this->fragment);}function
 getAuthority(){$authority=$this->host;if($this->port&&isset(self::$defaultPorts[$this->scheme])&&$this->port!==self::$defaultPorts[$this->scheme]){$authority.=':'.$this->port;}if($this->user!==''&&$this->scheme!=='http'&&$this->scheme!=='https'){$authority=$this->user.($this->pass===''?'':':'.$this->pass).'@'.$authority;}return$authority;}function
 getHostUri(){return$this->scheme.'://'.$this->getAuthority();}function
+getBasePath(){$pos=strrpos($this->path,'/');return$pos===FALSE?'':substr($this->path,0,$pos+1);}function
+getBaseUri(){return$this->scheme.'://'.$this->getAuthority().$this->getBasePath();}function
+getRelativeUri(){return(string)substr($this->getAbsoluteUri(),strlen($this->getBaseUri()));}function
 isEqual($uri){$part=self::unescape(strtok($uri,'?#'),'%/');if(strncmp($part,'//',2)===0){if($part!=='//'.$this->getAuthority().$this->path)return
 FALSE;}elseif(strncmp($part,'/',1)===0){if($part!==$this->path)return
 FALSE;}else{if($part!==$this->scheme.'://'.$this->getAuthority().$this->path)return
@@ -4450,12 +4468,10 @@ function
 unescape($s,$reserved='%;/?:@&=+$,'){preg_match_all('#(?<=%)[a-f0-9][a-f0-9]#i',$s,$matches,PREG_OFFSET_CAPTURE|PREG_SET_ORDER);foreach(array_reverse($matches)as$match){$ch=chr(hexdec($match[0][0]));if(strpos($reserved,$ch)===FALSE){$s=substr_replace($s,$ch,$match[0][1]-1,3);}}return$s;}}class
 UriScript
 extends
-Uri{private$scriptPath='';function
+Uri{private$scriptPath='/';function
 setScriptPath($value){$this->updating();$this->scriptPath=(string)$value;return$this;}function
 getScriptPath(){return$this->scriptPath;}function
-getBasePath(){return(string)substr($this->scriptPath,0,strrpos($this->scriptPath,'/')+1);}function
-getBaseUri(){return$this->scheme.'://'.$this->getAuthority().$this->getBasePath();}function
-getRelativeUri(){return(string)substr($this->path,strrpos($this->scriptPath,'/')+1);}function
+getBasePath(){$pos=strrpos($this->scriptPath,'/');return$pos===FALSE?'':substr($this->path,0,$pos+1);}function
 getPathInfo(){return(string)substr($this->path,strlen($this->scriptPath));}}use
 NetteX\Environment;use
 NetteX\Security\IAuthenticator;use

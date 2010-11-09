@@ -1625,4 +1625,3 @@ class PHP_lang
 		);
 	}
 }
-?>

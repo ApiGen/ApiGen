@@ -548,4 +548,3 @@ function getw4 (&$s, $i, $l) {
 
 
 } // END class fshlGenerator
-?>

@@ -253,4 +253,3 @@ class PHPCB_lang
 		);
 	}
 }
-?>

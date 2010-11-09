@@ -176,4 +176,3 @@ function getw6 (&$s, $i, $l) {
 }
 
 }
-?>

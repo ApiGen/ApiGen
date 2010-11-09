@@ -68,4 +68,3 @@ if(!defined('FSHL_WITH_TW_DEFINED'))
 	define ('P_QUIT_STATE',	'_QUIT');
 
 } //end if(!defined())
-?>

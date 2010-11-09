@@ -272,4 +272,3 @@ function getw8 (&$s, $i, $l) {
 }
 
 }
-?>

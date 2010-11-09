@@ -149,6 +149,3 @@ function get_fnc_source($fncname,$param=null)
 {
 	return fshlHelper::getFncSource($fncname,$param);
 }
-
-
-?>

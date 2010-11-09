@@ -398,4 +398,3 @@ function getw11 (&$s, $i, $l) {
 }
 
 }
-?>
