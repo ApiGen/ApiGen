@@ -147,6 +147,7 @@ class Generator extends NetteX\Object
 		// docblock
 		$texy = new \TexyX;
 		$texy->allowed['list/definition'] = FALSE;
+		$texy->allowed['phrase/em-alt'] = FALSE;
 		$texy->registerBlockPattern( // highlight <code>, <pre>
 			function($parser, $matches, $name) use ($fshl) {
 				$content = $matches[1] === 'code' ? $fshl->highlightString('PHP', $matches[2]) : htmlSpecialChars($matches[2]);
