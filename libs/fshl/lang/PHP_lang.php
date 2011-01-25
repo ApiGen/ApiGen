@@ -37,6 +37,7 @@
  *          fixed <?php when PHP is not embeded
  *  V1.28   PHP5 keywords added
  *  V1.29   Fixed bug where methods was highlighted as variables
+ *  V1.30   PHP 5.3 compatible
  */
 class PHP_lang
 {
