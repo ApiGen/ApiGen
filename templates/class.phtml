@@ -50,7 +50,7 @@
 				{continueIf $annotation == 'property-read'}
 				{continueIf $annotation == 'method'}
 				{foreach $values as $value}
-				<b>{$annotation|ucfirst}:</b> {$value}<br>
+				<b>{$annotation|ucfirst}:</b> {!$value|docline}<br>
 				{/foreach}
 			{/foreach}
 			{if $class->internal}<b>Documented at</b> <a href="{$class|sourceLink}">php.net</a>{else}<b>Located at</b> <a href="{$class|sourceLink}">{$class->fileName|replace:$fileRoot|replace:'\\','/'}</a>{/if}<br>
