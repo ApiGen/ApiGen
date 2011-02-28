@@ -14,6 +14,15 @@
 	<h1>{$title} Overview</h1>
 
 	<table class="summary">
+	<caption>Package</caption>
+	{foreach $packages as $package}
+	<tr>
+		<td><a href="{$package|packageLink}">{$package ? $package : 'none'}</a></td>
+	</tr>
+	{/foreach}
+	</table>
+
+	<table class="summary">
 	<caption>Namespaces</caption>
 	{foreach $namespaces as $namespace}
 	<tr>

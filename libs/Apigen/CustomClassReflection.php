@@ -21,18 +21,53 @@ use NetteX;
  */
 class CustomClassReflection extends NetteX\Reflection\ClassReflection
 {
+	/**
+	 * "No namespace" name.
+	 *
+	 * @var string
+	 */
+	const NAMESPACE_NONE = 'none';
+
+	/**
+	 * Namespace of internal PHP classes.
+	 *
+	 * @var string
+	 */
+	const NAMESPACE_INTERNAL = 'PHP';
+
+	/**
+	 * "No package" name.
+	 *
+	 * @var string
+	 */
+	const PACKAGE_NONE = 'none';
+
+	/**
+	 * Pakcage of internal PHP classes.
+	 *
+	 * @var string
+	 */
+	const PACKAGE_INTERNAL = 'PHP';
+
+
+
+	/**
+	 * Package name.
+	 *
+	 * @var string
+	 */
 	private $package = NULL;
 
 
 	/**
-	 * Returns namespace or package name.
+	 * Returns package name.
 	 * @return string
 	 */
-	public function getNamespaceName()
+	public function getPackageName()
 	{
 		if ($this->package === NULL) {
-			if ($this->inNamespace() || $this->isInternal()) {
-				$this->package = parent::getNamespaceName();
+			if ($this->isInternal()) {
+				$this->package = self::PACKAGE_INTERNAL;
 
 			} elseif ($this->hasAnnotation('package')) {
 				$this->package = $this->getAnnotation('package'); // found in class-level DocBlock
@@ -42,6 +77,23 @@ class CustomClassReflection extends NetteX\Reflection\ClassReflection
 			}
 		}
 		return $this->package;
+	}
+
+
+
+	/**
+	 * Returns namespace name.
+	 * @return string
+	 */
+	public function getNamespaceName()
+	{
+		if ($this->isInternal()) {
+			return self::NAMESPACE_INTERNAL;
+		} elseif (!$this->inNamespace()) {
+			return self::NAMESPACE_NONE;
+		} else {
+			return parent::getNamespaceName();
+		}
 	}
 
 

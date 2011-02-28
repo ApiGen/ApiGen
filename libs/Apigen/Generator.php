@@ -53,12 +53,15 @@ class Generator extends NetteX\Object
 		}
 
 		// categorize by namespaces
+		$packages = array();
 		$namespaces = array();
 		$allClasses = array();
 		foreach ($this->model->getClasses() as $class) {
-			$namespaces[$class->isInternal() ? 'PHP' : $class->getNamespaceName()][$class->getShortName()] = $class;
+			$packages[$class->getPackageName()][$class->getName()] = $class;
+			$namespaces[$class->getNamespaceName()][$class->getShortName()] = $class;
 			$allClasses[$class->getShortName()] = $class;
 		}
+		uksort($packages, 'strcasecmp');
 		uksort($namespaces, 'strcasecmp');
 		uksort($allClasses, 'strcasecmp');
 
@@ -70,6 +73,7 @@ class Generator extends NetteX\Object
 
 		// generate summary files
 		$template->namespaces = array_keys($namespaces);
+		$template->packages = array_keys($packages);
 		$template->classes = $allClasses;
 		foreach ($config['templates']['common'] as $dest => $source) {
 			$template->setFile($source)->save(self::forceDir("$output/$dest"));
@@ -77,34 +81,50 @@ class Generator extends NetteX\Object
 
 		$generatedFiles = array();
 		$fshl = new \fshlParser('HTML_UTF8', P_TAB_INDENT | P_LINE_COUNTER);
+
+		// generate namespace summary
+		$template->package = null;
 		foreach ($namespaces as $namespace => $classes) {
-			// generate namespace summary
 			uksort($classes, 'strcasecmp');
 			$template->namespace = $namespace;
 			$template->classes = $classes;
 			$template->setFile($config['templates']['namespace'])->save(self::forceDir($output . '/' . $this->formatNamespaceLink($namespace)));
+		}
 
-			// generate class & interface files
-			foreach ($classes as $class) {
-				$template->tree = array($class);
-				while ($parent = $template->tree[0]->getParentClass()) {
-					array_unshift($template->tree, $parent);
-				}
-				$template->subClasses = $this->model->getDirectSubClasses($class);
-				uksort($template->subClasses, 'strcasecmp');
-				$template->implementers = $this->model->getDirectImplementers($class);
-				uksort($template->implementers, 'strcasecmp');
-				$template->class = $class;
-				$template->setFile($config['templates']['class'])->save(self::forceDir($output . '/' . $this->formatClassLink($class)));
+		// generate package summary
+		$template->namespace = null;
+		foreach ($packages as $package => $classes) {
+			uksort($classes, 'strcasecmp');
+			$template->package = $package;
+			$template->classes = $classes;
+			$template->setFile($config['templates']['package'])->save(self::forceDir($output . '/' . $this->formatPackageLink($package)));
+		}
 
-				// generate source codes
-				if (!$class->isInternal() && !isset($generatedFiles[$class->getFileName()])) {
-					$file = $class->getFileName();
-					$template->source = $fshl->highlightString('PHP', file_get_contents($file));
-					$template->fileName = substr($file, strlen($this->model->getDirectory()) + 1);
-					$template->setFile($config['templates']['source'])->save(self::forceDir($output . '/' . $this->formatSourceLink($class, FALSE)));
-					$generatedFiles[$file] = TRUE;
-				}
+
+		// generate class & interface files
+		$template->classes = $allClasses;
+		foreach ($allClasses as $class) {
+			$template->package = $class->getPackageName();
+			$template->namespace = $class->getNamespaceName();
+
+			$template->tree = array($class);
+			while ($parent = $template->tree[0]->getParentClass()) {
+				array_unshift($template->tree, $parent);
+			}
+			$template->subClasses = $this->model->getDirectSubClasses($class);
+			uksort($template->subClasses, 'strcasecmp');
+			$template->implementers = $this->model->getDirectImplementers($class);
+			uksort($template->implementers, 'strcasecmp');
+			$template->class = $class;
+			$template->setFile($config['templates']['class'])->save(self::forceDir($output . '/' . $this->formatClassLink($class)));
+
+			// generate source codes
+			if (!$class->isInternal() && !isset($generatedFiles[$class->getFileName()])) {
+				$file = $class->getFileName();
+				$template->source = $fshl->highlightString('PHP', file_get_contents($file));
+				$template->fileName = substr($file, strlen($this->model->getDirectory()) + 1);
+				$template->setFile($config['templates']['source'])->save(self::forceDir($output . '/' . $this->formatSourceLink($class, FALSE)));
+				$generatedFiles[$file] = TRUE;
 			}
 		}
 	}
@@ -140,6 +160,7 @@ class Generator extends NetteX\Object
 		});
 
 		// links
+		$template->registerHelper('packageLink', callback($this, 'formatPackageLink'));
 		$template->registerHelper('namespaceLink', callback($this, 'formatNamespaceLink'));
 		$template->registerHelper('classLink', callback($this, 'formatClassLink'));
 		$template->registerHelper('sourceLink', callback($this, 'formatSourceLink'));
@@ -200,6 +221,19 @@ class Generator extends NetteX\Object
 	{
 		$namescape = $class instanceof \ReflectionClass ? $class->getNamespaceName() : $class;
 		return 'namespace-' . ($namescape ? preg_replace('#[^a-z0-9_]#i', '.', $namescape) : 'none') . '.html';
+	}
+
+
+
+	/**
+	 * Generates link to package summary file.
+	 * @param  string|ReflectionClass
+	 * @return string
+	 */
+	public function formatPackageLink($class)
+	{
+		$package = $class instanceof \ReflectionClass ? ($class instanceof CustomClassReflection ? $class->getPackageName() : ($class->isInternal() ? CustomClassReflection::PACKAGE_INTERNAL : CustomClassReflection::PACKAGE_NONE)) : $class;
+		return 'package-' . ($package ? preg_replace('#[^a-z0-9_]#i', '.', $package) : 'none') . '.html';
 	}
 
 
