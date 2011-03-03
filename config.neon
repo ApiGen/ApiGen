@@ -1,19 +1,19 @@
 resources:
-	%dir%/templates/default/media: media
+	%dir%/templates/%template%/media: media
 
 templates:
-	namespace: %dir%/templates/default/namespace.phtml
-	class: %dir%/templates/default/class.phtml
-	source: %dir%/templates/default/source.phtml
+	namespace: %dir%/templates/%template%/namespace.phtml
+	class: %dir%/templates/%template%/class.phtml
+	source: %dir%/templates/%template%/source.phtml
 
 	common:
-			allclasses.js: %dir%/templates/default/allclasses.js.phtml
-			allclasses.html: %dir%/templates/default/namespace.phtml
-			elements.html: %dir%/templates/default/elements.phtml
-			index.html: %dir%/templates/default/overview.phtml
-			overview.html: %dir%/templates/default/overview.phtml
-			sitemap.xml: %dir%/templates/default/sitemap.xml.phtml
-			media/combined.js: %dir%/templates/default/combined.js.phtml
+			allclasses.js: %dir%/templates/%template%/allclasses.js.phtml
+			allclasses.html: %dir%/templates/%template%/namespace.phtml
+			elements.html: %dir%/templates/%template%/elements.phtml
+			index.html: %dir%/templates/%template%/overview.phtml
+			overview.html: %dir%/templates/%template%/overview.phtml
+			sitemap.xml: %dir%/templates/%template%/sitemap.xml.phtml
+			media/combined.js: %dir%/templates/%template%/combined.js.phtml
 
 
 variables:

@@ -21,7 +21,7 @@ APIGen version 0.1
 ------------------
 ';
 
-$options = getopt('s:d:c:t:');
+$options = getopt('s:d:c:t:l:');
 
 if (!isset($options['s'], $options['d'])) { ?>
 Usage:
@@ -32,6 +32,7 @@ Options:
 	-d <path>  Folder where to save the generated documentation. Required.
 	-c <path>  Output config file.
 	-t ...     Title of generated documentation.
+	-l ...     Documentation template name
 
 <?php
 	die();
@@ -57,9 +58,15 @@ echo "Found $count classes and $countD system classes\n";
 
 
 
+$template = isset($options['l']) ? $options['l'] : 'default';
+echo "Using template $template\n";
+
+
+
 $neon = new NetteX\NeonParser;
 $configPath = isset($options['c']) ? $options['c'] : __DIR__ . '/config.neon';
-$config = str_replace('%dir%', dirname($configPath), file_get_contents($configPath));
+$config = file_get_contents($configPath);
+$config = strtr($config, array('%template%' => $template, '%dir%' => dirname($configPath)));
 $config = $neon->parse($config);
 if (isset($options['t'])) {
 	$config['variables']['title'] = $options['t'];
