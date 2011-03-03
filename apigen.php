@@ -58,7 +58,8 @@ echo "Found $count classes and $countD system classes\n";
 
 
 $neon = new NetteX\NeonParser;
-$config = str_replace('%dir%', __DIR__, file_get_contents(isset($options['c']) ? $options['c'] : __DIR__ . '/config.neon'));
+$configPath = isset($options['c']) ? $options['c'] : __DIR__ . '/config.neon';
+$config = str_replace('%dir%', dirname($configPath), file_get_contents($configPath));
 $config = $neon->parse($config);
 if (isset($options['t'])) {
 	$config['variables']['title'] = $options['t'];
