@@ -1,22 +1,21 @@
 resources:
-	%dir%/templates/media: media
+	%dir%/templates/default/media: media
 
 templates:
-	namespace: %dir%/templates/namespace.phtml
-	class: %dir%/templates/class.phtml
-	source: %dir%/templates/source.phtml
+	namespace: %dir%/templates/default/namespace.phtml
+	class: %dir%/templates/default/class.phtml
+	source: %dir%/templates/default/source.phtml
 
 	common:
-            allclasses.js: %dir%/templates/allclasses.js.phtml
-            allclasses.html: %dir%/templates/namespace.phtml
-            elements.html: %dir%/templates/elements.phtml
-            index.html: %dir%/templates/overview.phtml
-            overview.html: %dir%/templates/overview.phtml
-            sitemap.xml: %dir%/templates/sitemap.xml.phtml
-            media/combined.js: %dir%/templates/combined.js.phtml
+			allclasses.js: %dir%/templates/default/allclasses.js.phtml
+			allclasses.html: %dir%/templates/default/namespace.phtml
+			elements.html: %dir%/templates/default/elements.phtml
+			index.html: %dir%/templates/default/overview.phtml
+			overview.html: %dir%/templates/default/overview.phtml
+			sitemap.xml: %dir%/templates/default/sitemap.xml.phtml
+			media/combined.js: %dir%/templates/default/combined.js.phtml
 
 
 variables:
 	title: 'Nette Framework documentation'
 	baseUri: 'http://api.nette.org/2.0'
-	
