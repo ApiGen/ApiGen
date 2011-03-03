@@ -131,6 +131,7 @@ class Generator extends NetteX\Object
 		});
 		$template->registerHelper('replaceRE', 'NetteX\String::replace');
 		$template->registerHelper('replaceNS', function($name, $namespace) { // remove current namespace
+			$name = ltrim($name, '\\');
 			return (strpos($name, $namespace . '\\') === 0 && strpos($name, '\\', strlen($namespace) + 1) === FALSE)
 				? substr($name, strlen($namespace) + 1) : $name;
 		});
