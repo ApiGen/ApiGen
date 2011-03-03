@@ -32,23 +32,25 @@
 	{/foreach}
 	</ul>
 
+	{if $classes}
 	<h3>Classes</h3>
 
 	<ul>
 	{foreach $classes as $item}
-	{continueIf $item->interface}
 		<li><a href="{$item|classLink}" {if $class === $item}class="active"{/if}>{$item->shortName}</a></li>
 	{/foreach}
 	</ul>
+	{/if}
 
+	{if $interfaces}
 	<h3>Interfaces</h3>
 
 	<ul>
-	{foreach $classes as $item}
-	{continueIf !$item->interface}
+	{foreach $interfaces as $item}
 		<li><a href="{$item|classLink}" {if $class === $item}class="active"{/if}>{$item->shortName}</a></li>
 	{/foreach}
 	</ul>
+	{/if}
 </div>
 
 <div id="right">

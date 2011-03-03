@@ -15,26 +15,28 @@
 <div id="content">
 	<h1>{ifset $namespace}{if $namespace}Namespace {$namespace}{else}No namespace{/if}{else}All Classes{/if}</h1>
 
+	{if $classes}
 	<table class="summary">
 	<caption>Class summary</caption>
 	{foreach $classes as $class}
-	{continueIf $class->interface}
 	<tr>
 		<td width="20%"><a href="{$class|classLink}">{$class->shortName}</a></td>
 		<td>{!$class->docComment|docline}</td>
 	</tr>
 	{/foreach}
 	</table>
+	{/if}
 
+	{if $interfaces}
 	<table class="summary">
 	<caption>Interface summary</caption>
-	{foreach $classes as $class}
-	{continueIf !$class->interface}
+	{foreach $interfaces as $interface}
 	<tr>
-		<td width="20%"><a href="{$class|classLink}">{$class->shortName}</a></td>
-		<td>{!$class->docComment|docline}</td>
+		<td width="20%"><a href="{$interface|classLink}">{$interface->shortName}</a></td>
+		<td>{!$interface->docComment|docline}</td>
 	</tr>
 	{/foreach}
 	</table>
+	{/if}
 </div>
 {/block}

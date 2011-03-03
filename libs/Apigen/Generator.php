@@ -70,7 +70,12 @@ class Generator extends NetteX\Object
 
 		// generate summary files
 		$template->namespaces = array_keys($namespaces);
-		$template->classes = $allClasses;
+		$template->classes = array_filter($allClasses, function($class) {
+			return !$class->isInterface();
+		});
+		$template->interfaces = array_filter($allClasses, function($class) {
+			return $class->isInterface();
+		});
 		foreach ($config['templates']['common'] as $dest => $source) {
 			$template->setFile($source)->save(self::forceDir("$output/$dest"));
 		}
@@ -81,7 +86,12 @@ class Generator extends NetteX\Object
 			// generate namespace summary
 			uksort($classes, 'strcasecmp');
 			$template->namespace = $namespace;
-			$template->classes = $classes;
+			$template->classes = array_filter($classes, function($class) {
+				return !$class->isInterface();
+			});
+			$template->interfaces = array_filter($classes, function($class) {
+				return $class->isInterface();
+			});
 			$template->setFile($config['templates']['namespace'])->save(self::forceDir($output . '/' . $this->formatNamespaceLink($namespace)));
 
 			// generate class & interface files
