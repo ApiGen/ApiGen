@@ -1,0 +1,21 @@
+<table class="summary">
+<caption>Class summary</caption>
+{foreach $classes as $class}
+{continueIf $class->interface}
+<tr>
+	<td width="20%"><a href="{$class|classLink}">{$class->shortName}</a></td>
+	<td>{!$class->docComment|docline}</td>
+</tr>
+{/foreach}
+</table>
+
+<table class="summary">
+<caption>Interface summary</caption>
+{foreach $classes as $class}
+{continueIf !$class->interface}
+<tr>
+	<td width="20%"><a href="{$class|classLink}">{$class->shortName}</a></td>
+	<td>{!$class->docComment|docline}</td>
+</tr>
+{/foreach}
+</table>

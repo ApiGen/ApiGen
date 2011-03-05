@@ -15,26 +15,6 @@
 <div id="content">
 	<h1>{ifset $package}{if $package}Package {$package}{else}No package{/if}{else}All Classes{/if}</h1>
 
-	<table class="summary">
-	<caption>Class summary</caption>
-	{foreach $classes as $class}
-	{continueIf $class->interface}
-	<tr>
-		<td width="20%"><a href="{$class|classLink}">{$class->name}</a></td>
-		<td>{!$class->docComment|docline}</td>
-	</tr>
-	{/foreach}
-	</table>
-
-	<table class="summary">
-	<caption>Interface summary</caption>
-	{foreach $classes as $class}
-	{continueIf !$class->interface}
-	<tr>
-		<td width="20%"><a href="{$class|classLink}">{$class->name}</a></td>
-		<td>{!$class->docComment|docline}</td>
-	</tr>
-	{/foreach}
-	</table>
+	{include @classlist.phtml}
 </div>
 {/block}
