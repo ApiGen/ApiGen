@@ -26,21 +26,21 @@
 <div id="left">
 	<a href="allclasses.html">All Classes</a>
 
-	{if $packages}
 	<h3>Packages</h3>
 	<ul>
 	{foreach $packages as $item}
-		<li><a href="{$item|packageLink}" {if $package === $item}class="active"{/if}>{$item ? $item : 'none'}</a></li>
+		<li><a href="{$item|packageLink}" {if $package === $item}class="active"{/if}>{$item ? $item : 'None'}</a></li>
 	{/foreach}
 	</ul>
-	{/if}
 
+	{if $namespaces}
 	<h3>Namespaces</h3>
 	<ul>
 	{foreach $namespaces as $item}
-		<li><a href="{$item|namespaceLink}" {if $namespace === $item}class="active"{/if}>{$item ? $item : 'none'}</a></li>
+		<li><a href="{$item|namespaceLink}" {if $namespace === $item}class="active"{/if}>{$item ? $item : 'None'}</a></li>
 	{/foreach}
 	</ul>
+	{/if}
 
 	<h3>Classes</h3>
 
