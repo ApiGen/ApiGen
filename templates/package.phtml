@@ -20,7 +20,7 @@
 	{foreach $classes as $class}
 	{continueIf $class->interface}
 	<tr>
-		<td width="20%"><a href="{$class|classLink}">{$class->shortName}</a></td>
+		<td width="20%"><a href="{$class|classLink}">{$class->name}</a></td>
 		<td>{!$class->docComment|docline}</td>
 	</tr>
 	{/foreach}
@@ -31,7 +31,7 @@
 	{foreach $classes as $class}
 	{continueIf !$class->interface}
 	<tr>
-		<td width="20%"><a href="{$class|classLink}">{$class->shortName}</a></td>
+		<td width="20%"><a href="{$class|classLink}">{$class->name}</a></td>
 		<td>{!$class->docComment|docline}</td>
 	</tr>
 	{/foreach}
