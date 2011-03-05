@@ -22,20 +22,6 @@ use NetteX;
 class CustomClassReflection extends NetteX\Reflection\ClassReflection
 {
 	/**
-	 * "No namespace" name.
-	 *
-	 * @var string
-	 */
-	const NAMESPACE_NONE = 'none';
-
-	/**
-	 * Namespace of internal PHP classes.
-	 *
-	 * @var string
-	 */
-	const NAMESPACE_INTERNAL = 'PHP';
-
-	/**
 	 * "No package" name.
 	 *
 	 * @var string
@@ -77,23 +63,6 @@ class CustomClassReflection extends NetteX\Reflection\ClassReflection
 			}
 		}
 		return $this->package;
-	}
-
-
-
-	/**
-	 * Returns namespace name.
-	 * @return string
-	 */
-	public function getNamespaceName()
-	{
-		if ($this->isInternal()) {
-			return self::NAMESPACE_INTERNAL;
-		} elseif (!$this->inNamespace()) {
-			return self::NAMESPACE_NONE;
-		} else {
-			return parent::getNamespaceName();
-		}
 	}
 
 
