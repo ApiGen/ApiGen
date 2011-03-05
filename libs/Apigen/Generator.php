@@ -166,7 +166,7 @@ class Generator extends NetteX\Object
 
 		$template->registerHelper('docblock', function($doc) use ($texy) {
 			$doc = Model::extractDocBlock($doc);
-			$doc = preg_replace("#[^\n]\n#", '\0 ', $doc); // line breaks support
+			$doc = preg_replace('#([^\n])(\n)([^\n])#', '\1\2 \3', $doc); // line breaks support
 			return $texy->process($doc);
 		});
 
