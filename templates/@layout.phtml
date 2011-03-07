@@ -39,9 +39,9 @@
 
 	<ul>
 	{if $class && !$class->interface}
-		<li><a href="allclasses.html">All</a></li>
+		<li><a href="allclasses.html#classes">All</a></li>
 		{if $namespace}
-			<li><a href="{$namespace|namespaceLink}">All in namespace {$namespace}</a></li>
+			<li><a href="{$namespace|namespaceLink}#classes">All in namespace {$namespace}</a></li>
 		{/if}
 		<li><a href="{$class|classLink}" class="active">{$class->shortName}</a></li>
 	{else}
@@ -56,9 +56,9 @@
 
 	<ul>
 	{if $class && $class->interface}
-		<li><a href="allclasses.html">All</a></li>
+		<li><a href="allclasses.html#interfaces">All</a></li>
 		{if $namespace}
-			<li><a href="{$namespace|namespaceLink}">All in namespace {$namespace}</a></li>
+			<li><a href="{$namespace|namespaceLink}#interfaces">All in namespace {$namespace}</a></li>
 		{/if}
 		<li><a href="{$class|classLink}" class="active">{$class->shortName}</a></li>
 	{else}
