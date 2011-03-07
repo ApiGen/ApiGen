@@ -111,6 +111,9 @@ pre {
 	font-weight: bold;
 }
 
+#left .all {
+	font-style: italic;
+}
 
 /**
  *	Right side
