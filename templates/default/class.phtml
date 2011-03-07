@@ -100,21 +100,21 @@
 					<h4>Parameters</h4>
 					<div class="smallList">
 					{foreach $method->parameters as $parameter}
-						<code>${$parameter->name}</code> {if isset($annotations['param'][$parameter->position])}{$annotations['param'][$parameter->position]}{/if}<br>
+						<code>${$parameter->name}</code> {if isset($annotations['param'][$parameter->position])}{!$annotations['param'][$parameter->position]|doclabel:$namespace}{/if}<br>
 					{/foreach}
 					</div>
 				{/if}
 
-				{if isset($annotations['return']) && $annotations['return'][0] !== 'void' && preg_match('#\S+\s+\S+#', $annotations['return'][0])}
+				{if isset($annotations['return']) && $annotations['return'][0] !== 'void'}
 					<h4>Returns</h4>
-					<div class="smallList">{$annotations['return'][0]}</div>
+					<div class="smallList">{!$annotations['return'][0]|doclabel:$namespace}</div>
 				{/if}
 
 				{if isset($annotations['throws'])}
 					<h4>Throws</h4>
 					<div class="smallList">
 					{foreach $annotations['throws'] as $item}
-						<a href="{$item|resolveType:$namespace|classLink}" n:tag-if="$template->resolveType($item, $namespace)">{$item}</a><br>
+						{!$item|doclabel:$namespace}<br>
 					{/foreach}
 					</div>
 				{/if}

@@ -206,6 +206,24 @@ class Generator extends NetteX\Object
 		$template->registerHelper('classLink', callback($this, 'formatClassLink'));
 		$template->registerHelper('sourceLink', callback($this, 'formatSourceLink'));
 
+		// types
+		$model = $this->model;
+		$template->registerHelper('getTypes', function($element, $position = NULL) use ($model) {
+			$namespace = $element->getDeclaringClass()->getNamespaceName();
+			$s = $position === NULL ? $element->getAnnotation($element instanceof \ReflectionProperty ? 'var' : 'return')
+				: @$element->annotations['param'][$position];
+			if (is_object($s)) {
+				$s = get_class($s); // TODO
+			}
+			$s = preg_replace('#\s.*#', '', $s);
+			$res = array();
+			foreach (explode('|', $s) as $name) {
+				$res[] = (object) array('name' => $name, 'class' => $model->resolveType($name, $namespace));
+			}
+			return $res;
+		});
+		$template->registerHelper('resolveType', callback($model, 'resolveType'));
+
 		// docblock
 		$texy = new \TexyX;
 		$texy->allowedTags = \TexyX::NONE;
@@ -233,23 +251,17 @@ class Generator extends NetteX\Object
 			return $texy->process($doc);
 		});
 
-		// types
-		$model = $this->model;
-		$template->registerHelper('getTypes', function($element, $position = NULL) use ($model) {
-			$namespace = $element->getDeclaringClass()->getNamespaceName();
-			$s = $position === NULL ? $element->getAnnotation($element instanceof \ReflectionProperty ? 'var' : 'return')
-				: @$element->annotations['param'][$position];
-			if (is_object($s)) {
-				$s = get_class($s); // TODO
+		$template->registerHelper('doclabel', function($doc, $namespace) use ($template) {
+			@list($names, $label) = preg_split('#\s+#', $doc, 2);
+			$res = '';
+			foreach (explode('|', $names) as $name) {
+				$class = $template->resolveType($name, $namespace);
+				$name = $template->replaceNS($name, $namespace);
+				$res .= $class !== NULL ? sprintf('<a href="%s">%s</a>', $template->classLink($class), $template->escapeHtml($name)) : $template->escapeHtml($name);
+				$res .= '|';
 			}
-			$s = preg_replace('#\s.*#', '', $s);
-			$res = array();
-			foreach (explode('|', $s) as $name) {
-				$res[] = (object) array('name' => $name, 'class' => $model->resolveType($name, $namespace));
-			}
-			return $res;
+			return rtrim($res, '|') . ' ' . $template->escapeHtml($label);
 		});
-		$template->registerHelper('resolveType', callback($model, 'resolveType'));
 
 		return $template;
 	}
