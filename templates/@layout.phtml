@@ -28,7 +28,7 @@
 	<h3>Namespaces</h3>
 	<ul>
 	{if $namespace}
-		<li><a href="allclasses.html">All</a></li>
+		<li><a href="overview.html">All</a></li>
 	{/if}
 	{foreach $namespaces as $item}
 		<li><a href="{$item|namespaceLink}" {if $namespace === $item}class="active"{/if}>{$item ? $item : 'none'}</a></li>
