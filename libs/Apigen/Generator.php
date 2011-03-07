@@ -89,12 +89,16 @@ class Generator extends NetteX\Object
 		foreach ($namespaces as $namespace => $classes) {
 			uksort($classes, 'strcasecmp');
 			$template->namespace = $namespace;
+			$template->namespaces = array_filter(array_keys($namespaces), function($item) use($namespace) {
+				return strpos($item, $namespace) === 0 || strpos($namespace, $item) === 0;
+			});
 			$template->classes = $classes;
 			$template->setFile($config['templates']['namespace'])->save(self::forceDir($output . '/' . $this->formatNamespaceLink($namespace)));
 		}
 
 		// generate package summary
 		$template->namespace = null;
+		$template->namespaces = array_keys($namespaces);
 		foreach ($packages as $package => $classes) {
 			uksort($classes, 'strcasecmp');
 			$template->package = $package;
@@ -107,7 +111,14 @@ class Generator extends NetteX\Object
 		$template->classes = $allClasses;
 		foreach ($allClasses as $class) {
 			$template->package = $class->getPackageName();
-			$template->namespace = $class->getNamespaceName();
+			$template->namespace = $namespace = $class->getNamespaceName();
+			if ($namespace) {
+				$template->namespaces = array_filter(array_keys($namespaces), function($item) use($namespace) {
+					return strpos($item, $namespace) === 0 || strpos($namespace, $item) === 0;
+				});
+			} else {
+				$template->namespaces = array();
+			}
 
 			$template->tree = array($class);
 			while ($parent = $template->tree[0]->getParentClass()) {
