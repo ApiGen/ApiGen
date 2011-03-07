@@ -105,6 +105,10 @@ pre {
 	margin: 0;
 }
 
+#left li {
+	white-space: nowrap;
+}
+
 #left .active {
 	color: #333;
 	background: none;
