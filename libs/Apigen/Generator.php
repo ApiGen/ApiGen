@@ -94,6 +94,7 @@ class Generator extends NetteX\Object
 				while ($parent = $template->tree[0]->getParentClass()) {
 					array_unshift($template->tree, $parent);
 				}
+				$template->classes = array($class);
 				$template->subClasses = $this->model->getDirectSubClasses($class);
 				uksort($template->subClasses, 'strcasecmp');
 				$template->implementers = $this->model->getDirectImplementers($class);

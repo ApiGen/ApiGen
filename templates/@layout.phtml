@@ -38,12 +38,14 @@
 	<h3>Classes</h3>
 
 	<ul>
-	{if $class && !$class->interface}
+	{if $class}
 		<li><a href="allclasses.html#classes">All</a></li>
 		{if $namespace}
 			<li><a href="{$namespace|namespaceLink}#classes">All in namespace {$namespace}</a></li>
 		{/if}
-		<li><a href="{$class|classLink}" class="active">{$class->shortName}</a></li>
+		{if !$class->interface}
+			<li><a href="{$class|classLink}" class="active">{$class->shortName}</a></li>
+		{/if}
 	{else}
 		{foreach $classes as $item}
 		{continueIf $item->interface}
@@ -55,12 +57,14 @@
 	<h3>Interfaces</h3>
 
 	<ul>
-	{if $class && $class->interface}
+	{if $class}
 		<li><a href="allclasses.html#interfaces">All</a></li>
 		{if $namespace}
 			<li><a href="{$namespace|namespaceLink}#interfaces">All in namespace {$namespace}</a></li>
 		{/if}
-		<li><a href="{$class|classLink}" class="active">{$class->shortName}</a></li>
+		{if $class->interface}
+			<li><a href="{$class|classLink}" class="active">{$class->shortName}</a></li>
+		{/if}
 	{else}
 		{foreach $classes as $item}
 		{continueIf !$item->interface}
