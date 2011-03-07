@@ -49,4 +49,11 @@ $(function(){
 		$(this).find('.short').hide();
 		$(this).find('.detailed').show();
 	});
+
+	$('#main').splitter({
+		sizeLeft: true,
+		minLeft: 230,
+		minRight: 600,
+		anchorToWindow: true
+	}).resize();
 });

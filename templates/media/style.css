@@ -5,10 +5,9 @@
 body {
 	font: 13px/1.5 Verdana, "Geneva CE", lucida, sans-serif;
 	margin: 0;
-	padding: .5em 1em;
+	padding: 0;
 	background: white;
 	color: #333;
-	max-width: 1300px;
 }
 
 h1, h2, h3, h4, caption {
@@ -82,21 +81,31 @@ pre {
 }
 
 
+/**
+ * Splitter
+ */
+.vsplitbar {
+	width: 5px;
+	background: #1E5EB6 url('resize.png') left center no-repeat;
+}
+
+.vsplitbar.active {
+	opacity: .5;
+}
+
+
 
 /**
  * Left side
  */
-#left {
-	position: fixed;
-	top: 0;
-	bottom: 0;
-	left: 0;
-	height: auto;
-	width: 230px;
-	margin: 0;
-	padding: 7px;
+#leftWrapper {
 	overflow: auto;
 	background: white;
+	width: 250px;
+}
+
+#left {
+	padding: 10px;
 }
 
 #left ul {
@@ -115,8 +124,12 @@ pre {
 /**
  *	Right side
  */
+#rightWrapper {
+	overflow: auto;
+}
+
 #right {
-	margin-left: 250px;
+	max-width: 1000px;
 }
 
 
@@ -132,7 +145,7 @@ pre {
 
 #search input.text {
 	padding: 3px 5px;
-	width: 300px;
+	width: 200px;
 }
 
 #navigation {
@@ -185,7 +198,7 @@ pre {
 
 #content {
 	clear: both;
-	padding: 5px 0 0 5px;
+	padding: 5px 10px;
 	margin: 0;
 }
 
