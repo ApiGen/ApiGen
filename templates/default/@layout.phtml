@@ -30,7 +30,7 @@
 	<h3>Packages</h3>
 	<ul>
 	{if $package}
-		<li><a href="allclasses.html">All</a></li>
+		<li class="all"><a href="overview.html#packages">All</a></li>
 	{/if}
 	{foreach $packages as $item}
 		<li><a href="{$item|packageLink}" {if $package === $item}class="active"{/if}>{$item ? $item : 'None'}</a></li>
@@ -42,7 +42,7 @@
 	<h3>Namespaces</h3>
 	<ul>
 	{if $namespace}
-		<li><a href="allclasses.html">All</a></li>
+		<li class="all"><a href="overview.html#namespaces">All</a></li>
 	{/if}
 	{foreach $namespaces as $item}
 		<li><a href="{$item|namespaceLink}" {if $namespace === $item}class="active"{/if}>{$item ? $item : 'None'}</a></li>
@@ -53,41 +53,37 @@
 	<h3>Classes</h3>
 
 	<ul>
-	{if $class && !$class->interface}
-		<li><a href="allclasses.html">All</a></li>
+	{if $class}
+		<li class="all"><a href="allclasses.html#classes">All</a></li>
 		{if $package}
-			<li><a href="{$package|packageLink}">All in package {$package}</a></li>
+			<li class="all"><a href="{$package|packageLink}#classes">All in package {$package}</a></li>
 		{/if}
 		{if $namespace}
-			<li><a href="{$namespace|namespaceLink}">All in namespace {$namespace}</a></li>
+			<li class="all"><a href="{$namespace|namespaceLink}#classes">All in namespace {$namespace}</a></li>
 		{/if}
-		<li><a href="{$class|classLink}" class="active">{$class->shortName}</a></li>
-	{else}
-		{foreach $classes as $item}
-		{continueIf $item->interface}
-			<li><a href="{$item|classLink}">{if $namespace}{$item->shortName}{else}{$item->name}{/if}</a></li>
-		{/foreach}
 	{/if}
+	{foreach $classes as $item}
+		{continueIf $item->interface}
+		<li><a href="{$item|classLink}"{if $class === $item} class="active"{/if}>{if $namespace}{$item->shortName}{else}{$item->name}{/if}</a></li>
+	{/foreach}
 	</ul>
 
 	<h3>Interfaces</h3>
 
 	<ul>
-	{if $class && $class->interface}
-		<li><a href="allclasses.html">All</a></li>
+	{if $class}
+		<li class="all"><a href="allclasses.html#interfaces">All</a></li>
 		{if $package}
-			<li><a href="{$package|packageLink}">All in package {$package}</a></li>
+			<li class="all"><a href="{$package|packageLink}#interfaces">All in package {$package}</a></li>
 		{/if}
 		{if $namespace}
-			<li><a href="{$namespace|namespaceLink}">All in namespace {$namespace}</a></li>
+			<li class="all"><a href="{$namespace|namespaceLink}#interfaces">All in namespace {$namespace}</a></li>
 		{/if}
-		<li><a href="{$class|classLink}" class="active">{$class->shortName}</a></li>
-	{else}
-		{foreach $classes as $item}
-		{continueIf !$item->interface}
-			<li><a href="{$item|classLink}">{if $namespace}{$item->shortName}{else}{$item->name}{/if}</a></li>
-		{/foreach}
 	{/if}
+	{foreach $classes as $item}
+		{continueIf !$item->interface}
+		<li><a href="{$item|classLink}"{if $class === $item} class="active"{/if}>{if $namespace}{$item->shortName}{else}{$item->name}{/if}</a></li>
+	{/foreach}
 	</ul>
 </div>
 

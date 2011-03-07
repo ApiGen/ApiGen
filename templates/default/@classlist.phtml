@@ -1,4 +1,4 @@
-<table class="summary">
+<table class="summary" id="classes">
 <caption>Class summary</caption>
 {foreach $classes as $class}
 {continueIf $class->interface}
@@ -9,7 +9,7 @@
 {/foreach}
 </table>
 
-<table class="summary">
+<table class="summary" id="interfaces">
 <caption>Interface summary</caption>
 {foreach $classes as $class}
 {continueIf !$class->interface}
