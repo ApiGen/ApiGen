@@ -26,16 +26,24 @@
 <div id="left">
 	<a href="allclasses.html">All Classes</a>
 
+	{if $packages}
 	<h3>Packages</h3>
 	<ul>
+	{if $package}
+		<li class="all"><a href="overview.html#packages">All</a></li>
+	{/if}
 	{foreach $packages as $item}
 		<li><a href="{$item|packageLink}" {if $package === $item}class="active"{/if}>{$item ? $item : 'None'}</a></li>
 	{/foreach}
 	</ul>
+	{/if}
 
 	{if $namespaces}
 	<h3>Namespaces</h3>
 	<ul>
+	{if $namespace}
+		<li class="all"><a href="overview.html#namespaces">All</a></li>
+	{/if}
 	{foreach $namespaces as $item}
 		<li><a href="{$item|namespaceLink}" {if $namespace === $item}class="active"{/if}>{$item ? $item : 'None'}</a></li>
 	{/foreach}
@@ -45,18 +53,36 @@
 	<h3>Classes</h3>
 
 	<ul>
+	{if $class}
+		<li class="all"><a href="allclasses.html#classes">All</a></li>
+		{if $package}
+			<li class="all"><a href="{$package|packageLink}#classes">All in package {$package}</a></li>
+		{/if}
+		{if $namespace}
+			<li class="all"><a href="{$namespace|namespaceLink}#classes">All in namespace {$namespace}</a></li>
+		{/if}
+	{/if}
 	{foreach $classes as $item}
-	{continueIf $item->interface}
-		<li><a href="{$item|classLink}" {if $class === $item}class="active"{/if}>{if $namespace}{$item->shortName}{else}{$item->name}{/if}</a></li>
+		{continueIf $item->interface}
+		<li><a href="{$item|classLink}"{if $class === $item} class="active"{/if}>{if $namespace}{$item->shortName}{else}{$item->name}{/if}</a></li>
 	{/foreach}
 	</ul>
 
 	<h3>Interfaces</h3>
 
 	<ul>
+	{if $class}
+		<li class="all"><a href="allclasses.html#interfaces">All</a></li>
+		{if $package}
+			<li class="all"><a href="{$package|packageLink}#interfaces">All in package {$package}</a></li>
+		{/if}
+		{if $namespace}
+			<li class="all"><a href="{$namespace|namespaceLink}#interfaces">All in namespace {$namespace}</a></li>
+		{/if}
+	{/if}
 	{foreach $classes as $item}
-	{continueIf !$item->interface}
-		<li><a href="{$item|classLink}" {if $class === $item}class="active"{/if}>{if $namespace}{$item->shortName}{else}{$item->name}{/if}</a></li>
+		{continueIf !$item->interface}
+		<li><a href="{$item|classLink}"{if $class === $item} class="active"{/if}>{if $namespace}{$item->shortName}{else}{$item->name}{/if}</a></li>
 	{/foreach}
 	</ul>
 </div>
