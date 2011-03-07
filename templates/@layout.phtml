@@ -43,15 +43,11 @@
 		{if $namespace}
 			<li class="all"><a href="{$namespace|namespaceLink}#classes">All in namespace {$namespace}</a></li>
 		{/if}
-		{if !$class->interface}
-			<li><a href="{$class|classLink}" class="active">{$class->shortName}</a></li>
-		{/if}
-	{else}
-		{foreach $classes as $item}
-		{continueIf $item->interface}
-			<li><a href="{$item|classLink}">{$item->shortName}</a></li>
-		{/foreach}
 	{/if}
+	{foreach $classes as $item}
+		{continueIf $item->interface}
+		<li><a href="{$item|classLink}" {if $item === $class} class="active"{/if}>{$item->shortName}</a></li>
+	{/foreach}
 	</ul>
 
 	<h3>Interfaces</h3>
@@ -62,15 +58,11 @@
 		{if $namespace}
 			<li class="all"><a href="{$namespace|namespaceLink}#interfaces">All in namespace {$namespace}</a></li>
 		{/if}
-		{if $class->interface}
-			<li><a href="{$class|classLink}" class="active">{$class->shortName}</a></li>
-		{/if}
-	{else}
-		{foreach $classes as $item}
-		{continueIf !$item->interface}
-			<li><a href="{$item|classLink}">{$item->shortName}</a></li>
-		{/foreach}
 	{/if}
+	{foreach $classes as $item}
+		{continueIf !$item->interface}
+		<li><a href="{$item|classLink}" {if $item === $class} class="active"{/if}>{$item->shortName}</a></li>
+	{/foreach}
 	</ul>
 </div>
 
