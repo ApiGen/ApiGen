@@ -50,6 +50,7 @@
 	</ul>
 	{/if}
 
+	{if $classes}
 	<h3>Classes</h3>
 
 	<ul>
@@ -63,11 +64,12 @@
 		{/if}
 	{/if}
 	{foreach $classes as $item}
-		{continueIf $item->interface}
 		<li><a href="{$item|classLink}"{if $class === $item} class="active"{/if}>{if $namespace}{$item->shortName}{else}{$item->name}{/if}</a></li>
 	{/foreach}
 	</ul>
+	{/if}
 
+	{if $interfaces}
 	<h3>Interfaces</h3>
 
 	<ul>
@@ -80,11 +82,11 @@
 			<li class="all"><a href="{$namespace|namespaceLink}#interfaces">All in namespace {$namespace}</a></li>
 		{/if}
 	{/if}
-	{foreach $classes as $item}
-		{continueIf !$item->interface}
+	{foreach $interfaces as $item}
 		<li><a href="{$item|classLink}"{if $class === $item} class="active"{/if}>{if $namespace}{$item->shortName}{else}{$item->name}{/if}</a></li>
 	{/foreach}
 	</ul>
+	{/if}
 </div>
 
 <div id="right">

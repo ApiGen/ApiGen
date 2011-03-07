@@ -78,7 +78,12 @@ class Generator extends NetteX\Object
 		// generate summary files
 		$template->namespaces = array_keys($namespaces);
 		$template->packages = array_keys($packages);
-		$template->classes = $allClasses;
+		$template->classes = array_filter($allClasses, function($class) {
+			return !$class->isInterface();
+		});
+		$template->interfaces = array_filter($allClasses, function($class) {
+			return $class->isInterface();
+		});
 		foreach ($config['templates']['common'] as $dest => $source) {
 			$template->setFile($source)->save(self::forceDir("$output/$dest"));
 		}
@@ -98,7 +103,12 @@ class Generator extends NetteX\Object
 			$template->namespaces = array_filter(array_keys($namespaces), function($item) use($namespace) {
 				return strpos($item, $namespace) === 0 || strpos($namespace, $item) === 0;
 			});
-			$template->classes = $classes;
+			$template->classes = array_filter($classes, function($class) {
+				return !$class->isInterface();
+			});
+			$template->interfaces = array_filter($classes, function($class) {
+				return $class->isInterface();
+			});
 			$template->setFile($config['templates']['namespace'])->save(self::forceDir($output . '/' . $this->formatNamespaceLink($namespace)));
 		}
 
@@ -112,7 +122,12 @@ class Generator extends NetteX\Object
 			$template->package = $package;
 			$template->packages = array($package);
 			$template->namespaces = $pNamespaces;
-			$template->classes = $classes;
+			$template->classes = array_filter($classes, function($class) {
+				return !$class->isInterface();
+			});
+			$template->interfaces = array_filter($classes, function($class) {
+				return $class->isInterface();
+			});
 			$template->setFile($config['templates']['package'])->save(self::forceDir($output . '/' . $this->formatPackageLink($package)));
 		}
 
@@ -134,7 +149,8 @@ class Generator extends NetteX\Object
 			while ($parent = $template->tree[0]->getParentClass()) {
 				array_unshift($template->tree, $parent);
 			}
-			$template->classes = array($class);
+			$template->classes = $class->isInterface() ? array() : array($class);
+			$template->interfaces = $class->isInterface() ? array($class) : array();
 			$template->subClasses = $this->model->getDirectSubClasses($class);
 			uksort($template->subClasses, 'strcasecmp');
 			$template->implementers = $this->model->getDirectImplementers($class);
