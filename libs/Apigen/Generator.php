@@ -80,7 +80,11 @@ class Generator extends NetteX\Object
 		foreach ($namespaces as $namespace => $classes) {
 			// generate namespace summary
 			uksort($classes, 'strcasecmp');
+			$template->class = null;
 			$template->namespace = $namespace;
+			$template->namespaces = array_filter(array_keys($namespaces), function($item) use($namespace) {
+				return strpos($item, $namespace) === 0 || strpos($namespace, $item) === 0;
+			});
 			$template->classes = $classes;
 			$template->setFile($config['templates']['namespace'])->save(self::forceDir($output . '/' . $this->formatNamespaceLink($namespace)));
 
