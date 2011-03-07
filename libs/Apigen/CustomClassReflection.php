@@ -60,6 +60,9 @@ class CustomClassReflection extends NetteX\Reflection\ClassReflection
 
 			} elseif (preg_match('#\*\s+@package\s+(\S+)#', file_get_contents($this->getFileName()), $matches)) {
 				$this->package = $matches[1]; // found in page-level DocBlock
+
+			} else {
+				$this->package = '';
 			}
 		}
 		return $this->package;

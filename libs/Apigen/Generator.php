@@ -57,9 +57,11 @@ class Generator extends NetteX\Object
 		$namespaces = array();
 		$allClasses = array();
 		foreach ($this->model->getClasses() as $class) {
-			$packages[$class->getPackageName()][$class->getName()] = $class;
+			$packages[$class->getPackageName()]['classes'][$class->getName()] = $class;
 			if ($class->inNamespace()) {
-				$namespaces[$class->getNamespaceName()][$class->getShortName()] = $class;
+				$packages[$class->getPackageName()]['namespaces'][$class->getNamespaceName()] = true;
+				$namespaces[$class->getNamespaceName()]['classes'][$class->getShortName()] = $class;
+				$namespaces[$class->getNamespaceName()]['packages'][$class->getPackageName()] = true;
 			}
 			$allClasses[$class->getName()] = $class;
 		}
@@ -86,8 +88,12 @@ class Generator extends NetteX\Object
 
 		// generate namespace summary
 		$template->package = null;
-		foreach ($namespaces as $namespace => $classes) {
+		foreach ($namespaces as $namespace => $definition) {
+			$classes = isset($definition['classes']) ? $definition['classes'] : array();
 			uksort($classes, 'strcasecmp');
+			$nPackages = isset($definition['packages']) ? array_keys($definition['packages']) : array();
+			usort($nPackages, 'strcasecmp');
+			$template->packages = $nPackages;
 			$template->namespace = $namespace;
 			$template->namespaces = array_filter(array_keys($namespaces), function($item) use($namespace) {
 				return strpos($item, $namespace) === 0 || strpos($namespace, $item) === 0;
@@ -98,10 +104,14 @@ class Generator extends NetteX\Object
 
 		// generate package summary
 		$template->namespace = null;
-		$template->namespaces = array_keys($namespaces);
-		foreach ($packages as $package => $classes) {
+		foreach ($packages as $package => $definition) {
+			$classes = isset($definition['classes']) ? $definition['classes'] : array();
 			uksort($classes, 'strcasecmp');
+			$pNamespaces = isset($definition['namespaces']) ? array_keys($definition['namespaces']) : array();
+			usort($pNamespaces, 'strcasecmp');
 			$template->package = $package;
+			$template->packages = array($package);
+			$template->namespaces = $pNamespaces;
 			$template->classes = $classes;
 			$template->setFile($config['templates']['package'])->save(self::forceDir($output . '/' . $this->formatPackageLink($package)));
 		}
@@ -110,7 +120,7 @@ class Generator extends NetteX\Object
 		// generate class & interface files
 		$template->classes = $allClasses;
 		foreach ($allClasses as $class) {
-			$template->package = $class->getPackageName();
+			$template->package = $package = $class->getPackageName();
 			$template->namespace = $namespace = $class->getNamespaceName();
 			if ($namespace) {
 				$template->namespaces = array_filter(array_keys($namespaces), function($item) use($namespace) {
@@ -119,7 +129,7 @@ class Generator extends NetteX\Object
 			} else {
 				$template->namespaces = array();
 			}
-
+			$template->packages = $package ? array($package) : array();
 			$template->tree = array($class);
 			while ($parent = $template->tree[0]->getParentClass()) {
 				array_unshift($template->tree, $parent);
