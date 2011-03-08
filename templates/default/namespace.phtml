@@ -1,6 +1,6 @@
 {layout @layout.phtml}
 
-{block #title}Namespace {$namespace}{/block}
+{block #title}{if $namespace}Namespace {$namespace}{else}No namespace{/if}{/block}
 
 {block #content}
 <div id="navigation">

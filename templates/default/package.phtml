@@ -1,6 +1,6 @@
 {layout @layout.phtml}
 
-{block #title}Package {$package}{/block}
+{block #title}{ifset $package}{if $package}Package {$package}{else}No package{/if}{else}All Classes{/if}{/block}
 
 {block #content}
 <div id="navigation">
