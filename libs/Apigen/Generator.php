@@ -24,6 +24,8 @@ class Generator extends NetteX\Object
 	/** @var Model */
 	private $model;
 
+	/** @var Console_ProgressBar */
+	private $progressBar;
 
 
 	public function __construct(Model $model)
@@ -69,6 +71,18 @@ class Generator extends NetteX\Object
 		uksort($namespaces, 'strcasecmp');
 		uksort($allClasses, 'strcasecmp');
 
+		$this->prepareProgressBar(
+			count($allClasses)
+			+ count($namespaces)
+			+ count($config['templates']['common'])
+			+ array_reduce($allClasses, function($count, $class) {
+				if (!$class->isInternal()) {
+					$count++;
+				}
+				return $count;
+			}, 0)
+		);
+
 		$template = $this->createTemplate();
 		$template->fileRoot = $this->model->getDirectory();
 		foreach ($config['variables'] as $key => $value) {
@@ -86,6 +100,8 @@ class Generator extends NetteX\Object
 		});
 		foreach ($config['templates']['common'] as $dest => $source) {
 			$template->setFile($source)->save(self::forceDir("$output/$dest"));
+
+			$this->incrementProgressBar();
 		}
 
 		$generatedFiles = array();
@@ -110,6 +126,8 @@ class Generator extends NetteX\Object
 				return $class->isInterface();
 			});
 			$template->setFile($config['templates']['namespace'])->save(self::forceDir($output . '/' . $this->formatNamespaceLink($namespace)));
+
+			$this->incrementProgressBar();
 		}
 
 		// generate package summary
@@ -158,6 +176,8 @@ class Generator extends NetteX\Object
 			$template->class = $class;
 			$template->setFile($config['templates']['class'])->save(self::forceDir($output . '/' . $this->formatClassLink($class)));
 
+			$this->incrementProgressBar();
+
 			// generate source codes
 			if (!$class->isInternal() && !isset($generatedFiles[$class->getFileName()])) {
 				$file = $class->getFileName();
@@ -165,6 +185,8 @@ class Generator extends NetteX\Object
 				$template->fileName = substr($file, strlen($this->model->getDirectory()) + 1);
 				$template->setFile($config['templates']['source'])->save(self::forceDir($output . '/' . $this->formatSourceLink($class, FALSE)));
 				$generatedFiles[$file] = TRUE;
+
+				$this->incrementProgressBar();
 			}
 		}
 	}
@@ -338,6 +360,29 @@ class Generator extends NetteX\Object
 			$line = $withLine ? ($element->getStartLine() - substr_count($element->getDocComment(), "\n") - 1) : NULL;
 			return 'source-' . preg_replace('#[^a-z0-9_]#i', '.', $file) . '.html' . (isset($line) ? "#$line" : '');
 		}
+	}
+
+	/**
+	 * Prepares the progressbar.
+	 */
+	private function prepareProgressBar($maximum = 1)
+	{
+		$this->progressBar = new \Console_ProgressBar(
+			'[%bar%] %percent% EST %estimate%',
+			'=>',
+			' ',
+			80,
+			$maximum,
+			array('num_datapoints' => min(50, $maximum / 4))
+		);
+	}
+
+	/**
+	 * Increments the progressbar by one.
+	 */
+	protected function incrementProgressBar()
+	{
+		$this->progressBar->update($this->progressBar->getProgress() + 1);
 	}
 
 
