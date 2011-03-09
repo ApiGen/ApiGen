@@ -74,6 +74,7 @@ class Generator extends NetteX\Object
 		$this->prepareProgressBar(
 			count($allClasses)
 			+ count($namespaces)
+			+ count($packages)
 			+ count($config['templates']['common'])
 			+ array_reduce($allClasses, function($count, $class) {
 				if (!$class->isInternal()) {
@@ -147,6 +148,8 @@ class Generator extends NetteX\Object
 				return $class->isInterface();
 			});
 			$template->setFile($config['templates']['package'])->save(self::forceDir($output . '/' . $this->formatPackageLink($package)));
+
+			$this->incrementProgressBar();
 		}
 
 
