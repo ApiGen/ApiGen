@@ -65,14 +65,12 @@ class Generator extends NetteX\Object
 		uksort($allClasses, 'strcasecmp');
 
 		$this->prepareProgressBar(
-			count($namespaces)
+			count($allClasses)
+			+ count($namespaces)
 			+ count($config['templates']['common'])
-			+ array_reduce($namespaces, function($count, $classes) {
-				$count += count($classes);
-				foreach ($classes as $class) {
-					if (!$class->isInternal()) {
-						$count++;
-					}
+			+ array_reduce($allClasses, function($count, $class) {
+				if (!$class->isInternal()) {
+					$count++;
 				}
 				return $count;
 			}, 0)
