@@ -299,6 +299,21 @@ class Console_ProgressBar
 	}
 
 	/**
+	 * Returns the current progress.
+	 *
+	 * @return integer
+	 */
+	public function getProgress()
+	{
+		if (empty($this->rate_datapoints)) {
+			return 0;
+		}
+
+		$progress = end($this->rate_datapoints);
+		return $progress['value'];
+	}
+
+	/**
 	 * Prints the bar. Usually, you don't need this method, just use update()
 	 * which handles erasing the previously printed bar also. If you use a
 	 * custom protected function (for whatever reason) to erase the bar, use this method.
