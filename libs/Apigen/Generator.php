@@ -62,6 +62,17 @@ class Generator extends NetteX\Object
 		uksort($namespaces, 'strcasecmp');
 		uksort($allClasses, 'strcasecmp');
 
+		$p = new \Console_ProgressBar(
+			'[%bar%] %percent%',
+			'=>',
+			' ',
+			80,
+			count($namespaces) + count($config['templates']['common']) + array_reduce($namespaces, function($count, $classes) {
+				return $count + count($classes);
+			}, 0)
+		);
+		$progress = 0;
+
 		$template = $this->createTemplate();
 		$template->fileRoot = $this->model->getDirectory();
 		foreach ($config['variables'] as $key => $value) {
@@ -73,6 +84,8 @@ class Generator extends NetteX\Object
 		$template->classes = $allClasses;
 		foreach ($config['templates']['common'] as $dest => $source) {
 			$template->setFile($source)->save(self::forceDir("$output/$dest"));
+
+			$p->update(++$progress);
 		}
 
 		$generatedFiles = array();
@@ -83,6 +96,8 @@ class Generator extends NetteX\Object
 			$template->namespace = $namespace;
 			$template->classes = $classes;
 			$template->setFile($config['templates']['namespace'])->save(self::forceDir($output . '/' . $this->formatNamespaceLink($namespace)));
+
+			$p->update(++$progress);
 
 			// generate class & interface files
 			foreach ($classes as $class) {
@@ -96,6 +111,8 @@ class Generator extends NetteX\Object
 				uksort($template->implementers, 'strcasecmp');
 				$template->class = $class;
 				$template->setFile($config['templates']['class'])->save(self::forceDir($output . '/' . $this->formatClassLink($class)));
+
+				$p->update(++$progress);
 
 				// generate source codes
 				if (!$class->isInternal() && !isset($generatedFiles[$class->getFileName()])) {

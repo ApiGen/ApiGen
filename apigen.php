@@ -11,6 +11,7 @@
 
 require __DIR__ . '/libs/NetteX/loader.php';
 require __DIR__ . '/libs/fshl/fshl.php';
+require __DIR__ . '/libs/Console/ProgressBar.php';
 require __DIR__ . '/libs/texy/texy.min.php';
 require __DIR__ . '/libs/Apigen/CustomClassReflection.php';
 require __DIR__ . '/libs/Apigen/Model.php';
@@ -73,4 +74,4 @@ $generator->generate($options['d'], $config);
 
 
 
-echo 'Done. Total time: ' . (int) NetteX\Debug::timer() . " seconds\n";
+echo "\nDone. Total time: " . (int) NetteX\Debug::timer() . " seconds\n";
