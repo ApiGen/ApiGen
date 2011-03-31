@@ -63,7 +63,7 @@ class Model extends NetteX\Object
 	public function expand()
 	{
 		foreach ($this->classes as $name => $class) {
-			foreach (array_merge(class_parents($name), $class->getInterfaceNames()) as $parent) {
+			foreach (array_merge(class_parents($name),$class->getInterfaceNames(), $class->getTypeHintingClasses()) as $parent) {
 				if (!isset($this->classes[$parent])) {
 					$this->classes[$parent] = new CustomClassReflection($parent);
 				}
