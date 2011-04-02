@@ -16,9 +16,12 @@
 
 	<title>{$title} | {block title}{$title}{/block}</title>
 
-	<script type="text/javascript" src="media/combined.js"></script>
-	<script type="text/javascript" src="allclasses.js"></script>
-	<link rel="stylesheet" type="text/css" media="all" href="media/style.css?v={=date('YmdH')}">
+	{var combined_js => 'media/combined.js'}
+	<script type="text/javascript" src="{$combined_js|staticFile}"></script>
+	{var allclasses_js => 'allclasses.js'}
+	<script type="text/javascript" src="{$allclasses_js|staticFile}"></script>
+	{var style_css => 'media/style.css'}
+	<link rel="stylesheet" type="text/css" media="all" href="{$style_css|staticFile}}">
 	<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
 </head>
 
