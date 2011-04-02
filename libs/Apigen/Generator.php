@@ -24,6 +24,8 @@ class Generator extends NetteX\Object
 	/** @var Model */
 	private $model;
 
+	/** @var string */
+	private $outputDir;
 
 
 	public function __construct(Model $model)
@@ -44,6 +46,8 @@ class Generator extends NetteX\Object
 		if (!is_dir($output)) {
 			throw new \Exception("Directory $output doesn't exist.");
 		}
+
+		$this->outputDir = $output;
 
 		// copy resources
 		foreach ($config['resources'] as $source => $dest) {
@@ -185,6 +189,17 @@ class Generator extends NetteX\Object
 			return $res;
 		});
 		$template->registerHelper('resolveType', callback($model, 'resolveType'));
+
+		// static files versioning
+		$outputDir = $this->outputDir;
+		$template->registerHelper('staticFile', function($name, $line = null) use($outputDir) {
+			$filename = $outputDir . '/' . $name;
+			if (file_exists($filename)) {
+				$name .= '?' . sprintf('%u', crc32(file_get_contents($filename)));
+			}
+			return $name;
+		});
+
 
 		return $template;
 	}
