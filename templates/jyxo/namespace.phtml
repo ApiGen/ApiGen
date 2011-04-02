@@ -1,0 +1,20 @@
+{layout @layout.phtml}
+
+{block #title}{if $namespace}Namespace {$namespace}{else}No namespace{/if}{/block}
+
+{block #content}
+<div id="navigation">
+	<ul>
+		<li><a href="overview.html" title="Summary of all namespaces">Overview</a></li>
+		<li {ifset $namespace}class="active"{/if}>Namespace</li>
+		<li>Class</li>
+		<li><a href="elements.html">Elements</a></li>
+	</ul>
+</div>
+
+<div id="content">
+	<h1>{if $namespace}Namespace {$namespace}{else}No namespace{/if}</h1>
+
+	{include @classlist.phtml}
+</div>
+{/block}

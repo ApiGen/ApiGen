@@ -1,0 +1,363 @@
+/*!
+	(c) David Grudl, Martin Cohen, Jörn Zaefferer
+*/
+
+body {
+	font: 13px/1.5 Verdana, "Geneva CE", lucida, sans-serif;
+	margin: 0;
+	padding: 0;
+	background: white;
+	color: #333;
+}
+
+h1, h2, h3, h4, caption {
+	font-family: Trebuchet MS,"Geneva CE", lucida, sans-serif;
+	color: #053368;
+}
+
+h1 {
+	color: #1e5eb6;
+	font-size: 230%;
+	font-weight: normal;
+	margin: .3em 0;
+}
+
+h2, caption {
+	border: 1px solid #ccc;
+	background: #ECEDE5;
+	font-weight: bold;
+	font-size: 1.2em;
+	padding: 3px 5px;
+	text-align: left;
+	margin-bottom: 0;
+}
+
+h3 {
+	font-size: 1.6em;
+	font-weight: normal;
+	margin-bottom: 2px;
+}
+
+h4 {
+	font-size: 100%;
+	font-weight: bold;
+	padding: 0;
+	margin: 0;
+}
+
+a {
+	color: #006aeb;
+	padding: 3px 1px;
+	text-decoration: none;
+}
+
+a:hover, a:active, a:focus {
+	background-color: #006aeb;
+	text-decoration: none;
+	color: white;
+}
+
+p {
+	margin: .7em 0 1em;
+	padding: 0;
+}
+
+hr {
+	display: none;
+}
+
+var, code, pre {
+	font-family: monospace;
+}
+
+var {
+	font-weight: bold;
+	font-style: normal;
+	color: #CA8A04;
+}
+
+pre {
+	margin: 0;
+}
+
+
+/**
+ * Splitter
+ */
+.vsplitbar {
+	width: 5px;
+	background: #1E5EB6 url('resize.png') left center no-repeat;
+}
+
+.vsplitbar.active {
+	opacity: .5;
+}
+
+
+
+/**
+ * Left side
+ */
+#leftWrapper {
+	overflow: auto;
+	background: white;
+	width: 250px;
+}
+
+#left {
+	padding: 10px;
+}
+
+#left ul {
+	list-style: none;
+	padding: 0 0 0 3px;
+	margin: 0;
+}
+
+#left li {
+	white-space: nowrap;
+}
+
+#left .active {
+	color: #333;
+	background: none;
+	font-weight: bold;
+}
+
+#left .all {
+	font-style: italic;
+}
+
+/**
+ *	Right side
+ */
+#rightWrapper {
+	overflow: auto;
+}
+
+#right {
+	max-width: 1000px;
+}
+
+
+
+/**
+ *	Navigation
+ */
+#search {
+	display: inline;
+	float:right;
+	margin-top: 3px;
+}
+
+#search input.text {
+	padding: 3px 5px;
+	width: 200px;
+}
+
+#navigation {
+	margin: 0 3px 3px 3px;
+	padding: 3px 8px;
+	background-color: #F6F6F4;
+	height: 26px;
+}
+
+#navigation ul {
+	list-style: none;
+	margin: 2px 0 4px 2px;
+	padding: 0;
+	overflow: hidden;
+	float: left;
+}
+
+#navigation ul li {
+	display: inline;
+	margin: 2px 2px 2px 2px;
+	padding: 0 2px;
+	font-family: Arial, Verdana;
+	color: gray;
+}
+
+#navigation ul li a {
+	color: black;
+	font-weight: bold;
+}
+
+#navigation ul li a:hover, #navigation ul li a:active, #navigation ul li a:focus {
+	color: white;
+}
+
+#navigation ul li.active {
+	background: #053368;
+	color: white;
+	padding: 3px 1px;
+	font-weight: bold;
+}
+
+
+
+/**
+ * Content
+ */
+.nowrap {
+	white-space: nowrap;
+}
+
+#content {
+	clear: both;
+	padding: 5px 10px;
+	margin: 0;
+}
+
+.classDescription {
+	background: #ECEDE5;
+	padding: 1px 8px 1px 8px;
+	margin: 1.2em 0;
+}
+
+.classDescription pre {
+	margin: .5em 0;
+	padding: .6em;
+	background: #FCFCF7;
+}
+
+dl.tree {
+	margin: 1.2em 0;
+}
+
+dl.tree dd {
+	margin: 0;
+	padding: 0;
+}
+
+.classInfo {
+	margin: 1.2em 0;
+}
+
+
+.summary {
+	border: 1px solid #ccc;
+	border-collapse:collapse;
+	font-size: 1em;
+	width: 100%;
+	margin: 1.2em 0 2.4em;
+}
+
+.summary caption {
+	border-width: 1px 1px 0;
+}
+
+.summary caption.switchable {
+	background: #ECEDE5 url(sort.gif) no-repeat center right;
+	cursor: pointer;
+}
+
+.summary td {
+	border: 1px solid #ccc;
+	margin: 0;
+	padding: 3px 10px;
+	font-size: 1em;
+	vertical-align: top;
+}
+
+.short p, .detailed p {
+	margin: .4em 0;
+}
+
+tr:hover td {
+	background: #F6F6F4;
+}
+
+tr .detailed {
+	display: none;
+}
+
+.box {
+	border: 1px solid #ccc;
+	border-top: none;
+	margin-bottom: 2.4em;
+	padding: 3px 1em;
+	font-size: 95%;
+}
+
+.anchor {
+	float: right;
+	line-height: 1;
+	font-size: 85%;
+	margin: 0;
+}
+
+div.smallList {
+	padding:0 0 10px 25px;
+	margin:0;
+}
+
+
+
+#footer {
+	border-top: 1px solid #e9eeef;
+	clear: both;
+	color: #A7A7A7;
+	font-size: 8pt;
+	text-align: center;
+	padding: 20px 0 0;
+	margin: 3em 0 0;
+	height: 90px;
+	background: white url('footer.gif') no-repeat center top;
+}
+
+
+/**
+ * Source code
+ */
+.php-keyword1 { color: #e71818; font-weight: bold }
+.php-keyword2 { font-weight: bold }
+.php-var { color: #d59401; font-weight: bold }
+.php-num { color: #cd0673 }
+.php-quote { color: green }
+.php-vquote { color: #0F0; font-weight: bold }
+.php-comment { color: #929292 }
+
+.xlang { color: red; font-weight: bold }
+.l { color: silver; background-color: #FFF }
+
+
+
+/**
+ * Autocomplete
+ */
+.ac_results {
+	padding: 0px;
+	border: 1px solid black;
+	background-color: white;
+	overflow: hidden;
+	z-index: 99999;
+}
+
+.ac_results ul {
+	width: 100%;
+	list-style-position: outside;
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+.ac_results li {
+	margin: 0px;
+	padding: 2px 5px;
+	cursor: default;
+	display: block;
+	font: menu;
+	font-size: 12px;
+	line-height: 16px;
+	overflow: hidden;
+}
+
+.ac_odd {
+	background-color: #eee;
+}
+
+.ac_over {
+	background-color: #0A246A;
+	color: white;
+}

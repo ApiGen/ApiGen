@@ -1,0 +1,193 @@
+{layout @layout.phtml}
+
+{block #title}{if $class->interface}Interface{else}Class{/if} {$class->name}{/block}
+
+{block #content}
+<div id="navigation">
+	<ul>
+		<li><a href="overview.html" title="Summary of all namespaces">Overview</a></li>
+		<li n:if="$class->inNamespace()"><a href="{$class|namespaceLink}" title="Summary of {$class->namespaceName}">Namespace</a></li>
+		<li class="active">Class</li>
+		<li><a href="elements.html">Elements</a></li>
+	</ul>
+</div>
+
+<div id="content">
+	<div id="classSummary">
+		<p n:if="$class->internal">PHP – {$class->extension->name}</p>
+		<p n:if="$class->inNamespace()">namespace <a href="{$class|namespaceLink}">{$class->namespaceName}</a></p>
+
+		<h1>{if $class->interface}Interface{else}Class{/if} {$class->shortName}</h1>
+
+		<div class="classDescription" n:if="$class->docComment">
+		{!$class->docComment|docblock}
+		</div>
+
+		<dl class="tree" n:if="$class->parentClass || end($tree)->ownInterfaces">
+			{foreach $tree as $item}
+			<dd style="padding-left:{=($iterator->counter - 1) * 30}px">
+				<img src="media/inherit.gif" alt="extended by" n:if="$iterator->counter > 1">
+				<a href="{$item|classLink}" n:tag-if="!$iterator->last">{last}<b>{/last}{$item->name}{last}</b>{/last}</a>
+				{if $item->ownInterfaces} implements {foreach $item->ownInterfaces as $interface}<a href="{$interface|classLink}">{$interface->name|replaceNS:$namespace}</a>{sep}, {/sep}{/foreach}{/if}
+			</dd>
+			{/foreach}
+		</dl>
+
+		<div n:if="$subClasses">
+			<h4>Direct Known Subclasses</h4>
+			{foreach $subClasses as $item}<a href="{$item|classLink}">{$item->name|replaceNS:$namespace}</a>{sep}, {/sep}{/foreach}
+		</div>
+
+		<div n:if="$implementers">
+			<h4>Direct Known Implementers</h4>
+			{foreach $implementers as $item}<a href="{$item|classLink}">{$item->name|replaceNS:$namespace}</a>{sep}, {/sep}{/foreach}
+		</div>
+
+		<div class="classInfo">
+			{if $class->abstract || $class->final}<b>{if $class->abstract}Abstract{else}Final{/if} {if $class->interface}Interface{else}Class{/if}</b><br>{/if}
+			{foreach $class->annotations as $annotation => $values}
+				{continueIf $annotation == 'property'}
+				{continueIf $annotation == 'property-read'}
+				{continueIf $annotation == 'method'}
+				{foreach $values as $value}
+					<b>{$annotation|ucfirst}:</b>
+					{if $annotation == "package"}
+						<a href="{$class|packageLink}">{$value}</a><br>
+					{else}
+						{!$value|docline}<br>
+					{/if}
+				{/foreach}
+			{/foreach}
+			{if $class->internal}<b>Documented at</b> <a href="{$class|sourceLink}">php.net</a>{else}<b>Located at</b> <a href="{$class|sourceLink}">{$class->fileName|replace:$fileRoot|replace:'\\','/'}</a>{/if}<br>
+		</div>
+	</div>
+
+
+	<div id="methodSummary" n:if="$class->ownMethods">
+		<table class="summary">
+		<caption>Method Summary</caption>
+		{foreach $class->ownMethods as $method}
+		<tr data-order="{$method->static ? 0 : 1} {$method->name}" id="_{$method->name}">
+			<td align="right" width="1%"><code class="nowrap">
+				{if !$class->interface && $method->abstract}abstract{elseif $method->final}final{/if} {if $method->protected}protected{elseif $method->private}private{else}public{/if} {if $method->static}static{/if}
+				{foreach $template->getTypes($method) as $return}<a href="{$return->class|classLink}" n:tag-if="$return->class">{$return->name|replaceNS:$namespace}</a>{sep}|{/sep}{/foreach}
+				{if $method->returnsReference()}&amp;{/if}
+				</code>
+			</td>
+
+			<td>
+			<a class="anchor" href="#_{$method->name}">#</a>
+			<code class="nowrap">
+				<a href="{$method|sourceLink}" title="go to {$class->internal ? 'PHP documentation' : 'source code'}"><b>{$method->name}</b></a>(
+				{foreach $method->parameters as $parameter}
+					{if $parameter->array}array
+					{elseif $parameter->className}<a href="{$parameter->className|classLink}">{$parameter->className|replaceNS:$namespace}</a>
+					{else}{foreach $template->getTypes($method, $parameter->position) as $item}<a href="{$item->class|classLink}" n:tag-if="$item->class">{$item->name|replaceNS:$namespace}</a>{sep}|{/sep}{/foreach}{/if}
+					<var>{if $parameter->passedByReference}&amp; {/if}${$parameter->name}</var>{if $parameter->defaultValueAvailable} = {!$parameter->defaultValue|dump}{/if}{sep}, {/sep}
+				{/foreach}
+			)</code>
+
+			<div class="short">
+				{!$method->docComment|docline:false}
+			</div>
+
+			<div class="detailed">
+				{!$method->docComment|docblock}
+
+				{var $annotations = $method->annotations}
+
+				{if $method->parameters && isset($annotations['param'])}
+					<h4>Parameters</h4>
+					<div class="smallList">
+					{foreach $method->parameters as $parameter}
+						<code>${$parameter->name}</code> {if isset($annotations['param'][$parameter->position])}{!$annotations['param'][$parameter->position]|doclabel:$namespace}{/if}<br>
+					{/foreach}
+					</div>
+				{/if}
+
+				{if isset($annotations['return']) && $annotations['return'][0] !== 'void'}
+					<h4>Returns</h4>
+					<div class="smallList">{!$annotations['return'][0]|doclabel:$namespace}</div>
+				{/if}
+
+				{if isset($annotations['throws'])}
+					<h4>Throws</h4>
+					<div class="smallList">
+					{foreach $annotations['throws'] as $item}
+						{!$item|doclabel:$namespace}<br>
+					{/foreach}
+					</div>
+				{/if}
+
+				{try}
+				{var $prototype = $method->prototype}
+				{if $prototype->declaringClass->interface}
+					<h4>Implementation of</h4>
+					<div class="smallList"><code><a href="{$prototype|classLink}">{$prototype->declaringClass->name|replaceNS:$namespace}::{$prototype->name}</a></code></div>
+				{/if}
+				{/try}
+			</div>
+			</td>
+		</tr>
+		{/foreach}
+		</table>
+	</div>
+
+
+	{var $parent = $class}
+	{while $parent = $parent->parentClass}
+	{continueIf !$parent->ownMethods}
+	<h2>Methods Inherited From <a href="{$parent|classLink}#methodSummary">{$parent->name|replaceNS:$namespace}</a></h2>
+	<div class="box"><code>
+		{foreach $parent->ownMethods as $method}<a href="{$method|classLink}">{$method->name}()</a>{sep}, {/sep}{/foreach}
+	</code></div>
+	{/while}
+
+
+	<div id="constantSummary" n:if="$class->ownConstants">
+		<table class="summary">
+		<caption>Constant Summary</caption>
+		{foreach $class->ownConstants as $name => $value}
+		<tr data-order="{$name}" id="{$name}">
+			<td align="right" width="1%"><code><b>{$name}</b></code></td>
+			<td><code>{!$value|dump}</code> <a href="#{$name}" class="anchor">#</a></td>
+		</tr>
+		{/foreach}
+		</table>
+	</div>
+
+	{var $parent = $class}
+	{while $parent = $parent->parentClass}
+	{continueIf !$parent->ownConstants}
+	<h2>Constants Inherited From <a href="{$parent|classLink}#constantSummary">{$parent->name|replaceNS:$namespace}</a></h2>
+	<div class="box"><code>{foreach $parent->ownConstants as $name => $value}{$name}{sep}, {/sep}{/foreach}</code></div>
+	{/while}
+
+
+	<div id="propertySummary" n:if="$class->ownProperties">
+		<table class="summary">
+		<caption>Property Summary</caption>
+		{foreach $class->ownProperties as $property}
+		<tr data-order="{$property->name}" id="${$property->name}">
+			<td align="right" width="1%"><code class="nowrap">
+				{if $property->protected}protected{elseif $property->private}private{/if} {if $property->static}static{/if}
+				{foreach $template->getTypes($property) as $return}<a href="{$return->class|classLink}" n:tag-if="$return->class">{$return->name|replaceNS:$namespace}</a>{sep}|{/sep}{/foreach}
+			</code></td>
+
+			<td width="1%"><var>${$property->name}</var></td>
+			<td><pre>{!$class->defaultProperties[$property->name]|dump}</pre></td>
+			<td>{!$property->docComment|docline} <a href="#${$property->name}" class="anchor">#</a></td>
+		</tr>
+		{/foreach}
+		</table>
+	</div>
+
+	{var $parent = $class}
+	{while $parent = $parent->parentClass}
+	{continueIf !$parent->ownProperties}
+	<h2>Properties Inherited From <a href="{$parent|classLink}#propertySummary">{$parent->name|replaceNS:$namespace}</a></h2>
+	<div class="box"><code>{foreach $parent->ownProperties as $property}<var>${$property->name}</var>{sep}, {/sep}{/foreach}</code></div>
+	{/while}
+
+</div>
+{/block}
