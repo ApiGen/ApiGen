@@ -22,7 +22,7 @@ APIGen version 0.1
 ------------------
 ';
 
-$options = getopt('s:d:c:t:');
+$options = getopt('s:d:c:t:p');
 
 if (!isset($options['s'], $options['d'])) { ?>
 Usage:
@@ -33,6 +33,7 @@ Options:
 	-d <path>  Folder where to save the generated documentation. Required.
 	-c <path>  Output config file.
 	-t ...     Title of generated documentation.
+	-p         Display progressbar
 
 <?php
 	die();
@@ -64,6 +65,7 @@ $config = $neon->parse($config);
 if (isset($options['t'])) {
 	$config['variables']['title'] = $options['t'];
 }
+$config['settings']['progressbar'] = isset($options['p']);
 
 
 
