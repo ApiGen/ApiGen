@@ -278,7 +278,7 @@ class Generator extends NetteX\Object
 	private function prepareProgressBar($maximum = 1)
 	{
 		$this->progressBar = new \Console_ProgressBar(
-			'[%bar%] %percent% EST %estimate%',
+			'[%bar%] %percent%',
 			'=>',
 			' ',
 			80,
