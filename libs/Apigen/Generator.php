@@ -298,9 +298,14 @@ class Generator extends NetteX\Object
 		// static files versioning
 		$outputDir = $this->outputDir;
 		$template->registerHelper('staticFile', function($name, $line = null) use($outputDir) {
+			static $versions = array();
+
 			$filename = $outputDir . '/' . $name;
-			if (file_exists($filename)) {
-				$name .= '?' . sprintf('%u', crc32(file_get_contents($filename)));
+			if (!isset($versions[$filename]) && file_exists($filename)) {
+				$versions[$filename] = sprintf('%u', crc32(file_get_contents($filename)));
+			}
+			if (isset($versions[$filename])) {
+				$name .= '?' . $versions[$filename];
 			}
 			return $name;
 		});
