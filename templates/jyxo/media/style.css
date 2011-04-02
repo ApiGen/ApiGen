@@ -102,8 +102,16 @@ pre {
 }
 
 #left {
-	padding: 120px 10px 10px 10px;
-	background: url('logo.png') center 10px no-repeat;
+	padding: 10px;
+}
+
+#left #home_link {
+	display: block;
+	height: 100px;
+	width: 98px;
+	margin: 10px auto;
+	background: url('logo.png');
+	padding: 0;
 }
 
 #left ul {
@@ -239,6 +247,7 @@ dl.tree dd {
 	font-size: 1em;
 	width: 100%;
 	margin: 1.2em 0 2.4em;
+	background: #fff;
 }
 
 .summary caption {
@@ -293,15 +302,22 @@ div.smallList {
 
 
 #footer {
-	border-top: 1px solid #e9eeef;
 	clear: both;
 	color: #A7A7A7;
-	font-size: 8pt;
+	font-size: 7pt;
 	text-align: center;
-	padding: 20px 0 0;
-	margin: 3em 0 0;
-	height: 90px;
-	background: white url('footer.gif') no-repeat center top;
+	padding: 10px 0 10px 10px;
+	border-top: 1px solid #e9eeef;
+	height: 122px;
+	background: url('footer.png') no-repeat center top;
+}
+
+#footer a.gravatar:hover {
+	background: none;
+}
+
+#footer img {
+	border: 0;
 }
 
 
