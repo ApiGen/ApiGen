@@ -1,24 +1,22 @@
 /*!
-	(c) David Grudl, Martin Cohen, J�rn Zaefferer
+	(c) David Grudl, Martin Cohen, Jörn Zaefferer, Ondřej Nešpor
 */
 
 body {
 	font: 13px/1.5 Verdana, "Geneva CE", lucida, sans-serif;
 	margin: 0;
 	padding: 0;
-	background: white;
+	background: white url('logo-big.png') right bottom no-repeat;
 	color: #333;
 }
 
 h1, h2, h3, h4, caption {
 	font-family: Trebuchet MS,"Geneva CE", lucida, sans-serif;
-	color: #053368;
+	color: #333;
 }
 
 h1 {
-	color: #1e5eb6;
 	font-size: 230%;
-	font-weight: normal;
 	margin: .3em 0;
 }
 
@@ -46,13 +44,13 @@ h4 {
 }
 
 a {
-	color: #006aeb;
+	color: #009600;
 	padding: 3px 1px;
 	text-decoration: none;
 }
 
 a:hover, a:active, a:focus {
-	background-color: #006aeb;
+	background-color: #009600;
 	text-decoration: none;
 	color: white;
 }
@@ -86,7 +84,7 @@ pre {
  */
 .vsplitbar {
 	width: 5px;
-	background: #1E5EB6 url('resize.png') left center no-repeat;
+	background: #009600 url('resize.png') left center no-repeat;
 }
 
 .vsplitbar.active {
@@ -100,12 +98,12 @@ pre {
  */
 #leftWrapper {
 	overflow: auto;
-	background: white;
 	width: 250px;
 }
 
 #left {
-	padding: 10px;
+	padding: 120px 10px 10px 10px;
+	background: url('logo.png') center 10px no-repeat;
 }
 
 #left ul {
@@ -119,7 +117,7 @@ pre {
 }
 
 #left .active {
-	color: #333;
+	color: #000;
 	background: none;
 	font-weight: bold;
 }
@@ -188,9 +186,9 @@ pre {
 }
 
 #navigation ul li.active {
-	background: #053368;
+	background: #006300;
 	color: white;
-	padding: 3px 1px;
+	padding: 3px 5px;
 	font-weight: bold;
 }
 
@@ -358,6 +356,6 @@ div.smallList {
 }
 
 .ac_over {
-	background-color: #0A246A;
+	background-color: #006300;
 	color: white;
 }
