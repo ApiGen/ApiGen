@@ -1,0 +1,21 @@
+resources:
+	%dir%/templates/%template%/media: media
+
+templates:
+	namespace: %dir%/templates/%template%/namespace.phtml
+	package: %dir%/templates/%template%/package.phtml
+	class: %dir%/templates/%template%/class.phtml
+	source: %dir%/templates/%template%/source.phtml
+
+	common:
+			allclasses.js: %dir%/templates/%template%/allclasses.js.phtml
+			allclasses.html: %dir%/templates/%template%/package.phtml
+			index.html: %dir%/templates/%template%/overview.phtml
+			overview.html: %dir%/templates/%template%/overview.phtml
+			sitemap.xml: %dir%/templates/%template%/sitemap.xml.phtml
+			media/combined.js: %dir%/templates/%template%/combined.js.phtml
+
+
+variables:
+	title: 'Jyxo PHP Library'
+	baseUri: 'http://jyxo.github.com/php-no-namespace'
