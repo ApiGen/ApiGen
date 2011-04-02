@@ -22,7 +22,7 @@ APIGen version 0.1
 ------------------
 ';
 
-$options = getopt('s:d:c:t:l:w');
+$options = getopt('s:d:c:t:l:wp');
 
 if (!isset($options['s'], $options['d'])) { ?>
 Usage:
@@ -35,6 +35,7 @@ Options:
 	-t ...     Title of generated documentation.
 	-l ...     Documentation template name
 	-w         Wipe out the target directory first
+	-p         Display progressbar
 
 <?php
 	die();
@@ -73,6 +74,7 @@ $config = $neon->parse($config);
 if (isset($options['t'])) {
 	$config['variables']['title'] = $options['t'];
 }
+$config['settings']['progressbar'] = isset($options['p']);
 
 
 

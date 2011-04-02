@@ -76,18 +76,20 @@ class Generator extends NetteX\Object
 		uksort($namespaces, 'strcasecmp');
 		uksort($allClasses, 'strcasecmp');
 
-		$this->prepareProgressBar(
-			count($allClasses)
-			+ count($namespaces)
-			+ count($packages)
-			+ count($config['templates']['common'])
-			+ array_reduce($allClasses, function($count, $class) {
-				if (!$class->isInternal()) {
-					$count++;
-				}
-				return $count;
-			}, 0)
-		);
+		if ($config['settings']['progressbar']) {
+			$this->prepareProgressBar(
+				count($allClasses)
+				+ count($namespaces)
+				+ count($packages)
+				+ count($config['templates']['common'])
+				+ array_reduce($allClasses, function($count, $class) {
+					if (!$class->isInternal()) {
+						$count++;
+					}
+					return $count;
+				}, 0)
+			);
+		}
 
 		$template = $this->createTemplate();
 		$template->fileRoot = $this->model->getDirectory();
@@ -387,7 +389,7 @@ class Generator extends NetteX\Object
 	private function prepareProgressBar($maximum = 1)
 	{
 		$this->progressBar = new \Console_ProgressBar(
-			'[%bar%] %percent% EST %estimate%',
+			'[%bar%] %percent%',
 			'=>',
 			' ',
 			80,
@@ -401,7 +403,9 @@ class Generator extends NetteX\Object
 	 */
 	protected function incrementProgressBar()
 	{
-		$this->progressBar->update($this->progressBar->getProgress() + 1);
+		if (null !== $this->progressBar) {
+			$this->progressBar->update($this->progressBar->getProgress() + 1);
+		}
 	}
 
 
