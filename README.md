@@ -8,6 +8,8 @@ Changes from [Jaroslav Hanslík's](https://github.com/kukulich) [fork](https://g
 
 Being under rapid development, there are no "stable releases". Well, in fact... there are no "releases" at all :) You can always find the latest version in the master branch.
 
+The [Jyxo PHP Library](https://github.com/jyxo) (version [with namespaces](http://jyxo.github.com/php), [without](http://jyxo.github.com/php-no-namespace) API documentation is generated with the latest version.
+
 Currently there are following changes from the original APIGen:
 
 * Bugfix: Better .sh apigen script.
@@ -19,7 +21,8 @@ Currently there are following changes from the original APIGen:
 * Feature: Class/interface tables/headings displayed only if there are some.
 * Feature: Resizable sidebar.
 * Feature/Bugfix: Better page titles.
-* Feature: Progressbar while generating documentation.
+* Feature: Optional progressbar while generating documentation.
+* Feature: Better versioning of static files (stylesheets, …).
 * Bugfix: (Kukulich) Texy should not process HTML code in docblocks.
 * Bugfix: (Kukulich) Fixed highlighting of code and pre elements.
 * Bugfix: (Kukulich) Fixed FQNs handling.
