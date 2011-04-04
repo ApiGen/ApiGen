@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<url>
+	<loc>{$baseUri}/index.html</loc>
+</url>
+{foreach $packages as $package}
+<url>
+	<loc>{$baseUri}/{$package|packageLink}</loc>
+</url>
+{/foreach}
+{foreach $namespaces as $namespace}
+<url>
+	<loc>{$baseUri}/{$namespace|namespaceLink}</loc>
+</url>
+{/foreach}
+{foreach $classes as $class}
+<url>
+	<loc>{$baseUri}/{$class|classLink}</loc>
+</url>
+{/foreach}
+</urlset>

@@ -1,0 +1,48 @@
+{layout @layout.phtml}
+
+{block #title}Overview{/block}
+
+{block #content}
+<div id="navigation">
+	<ul>
+		<li class="active">Overview</li>
+		<li>Namespace</li>
+		<li>Package</li>
+		<li>Class</li>
+	</ul>
+</div>
+
+<div id="content">
+	<h1>{$title}</h1>
+
+	<p>A long time ago, in a galaxy far far away… there has been an IT company called Jyxo s.r.o. It has existed for several years and created and contributed to numerous projects.</p>
+	<p>To share fruits of work of individual project teams and to not re-invent the wheel over and over again, a collection of libraries has been created. It has been given the name "Jyxo PHP Library" and it has happily grown throughout the years.</p>
+	<p>In <a href="https://github.com/jyxo">our repositories</a> we will continuously publish various bits and pieces from this library. We will do our best to publish everything that would be useful to anyone from the outside world. A big part of the library will also be covered by PHPUnit tests.</p>
+	<p>Please read the license before using anything from this library.</p>
+	<p>The library is published in two versions:</p>
+	<ul>
+		<li><a href="https://github.com/jyxo/php">With namespaces</a> (<a href="https://github.com/jyxo/php/blob/master/license.txt">license</a>, <a href="http://jyxo.github.com/php/">documentation</a>).</li>
+		<li><a href="https://github.com/jyxo/php-no-namespace">Without namespaces</a> (<a href="https://github.com/jyxo/php-no-namespace/blob/master/license.txt">license</a>, <a href="http://jyxo.github.com/php-no-namespace/">documentation</a>).</li>
+	</ul>
+
+	<h3>Overview</h3>
+
+	<table class="summary" id="packages">
+	<caption>Packages</caption>
+	{foreach $packages as $package}
+	<tr>
+		<td><a href="{$package|packageLink}">{$package ? $package : 'none'}</a></td>
+	</tr>
+	{/foreach}
+	</table>
+
+	<table class="summary" id="namespaces">
+	<caption>Namespaces</caption>
+	{foreach $namespaces as $namespace}
+	<tr>
+		<td><a href="{$namespace|namespaceLink}">{$namespace ? $namespace : 'none'}</a></td>
+	</tr>
+	{/foreach}
+	</table>
+</div>
+{/block}
