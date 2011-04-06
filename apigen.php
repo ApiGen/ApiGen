@@ -22,7 +22,7 @@ APIGen version 0.1
 ------------------
 ';
 
-$options = getopt('s:d:c:t:l:wp');
+$options = getopt('s:d:c:t:l:wpb:');
 
 if (!isset($options['s'], $options['d'])) { ?>
 Usage:
@@ -36,6 +36,7 @@ Options:
 	-l ...     Documentation template name
 	-w         Wipe out the target directory first
 	-p         Display progressbar
+	-b <value> Documentation base URI
 
 <?php
 	die();
@@ -73,6 +74,9 @@ $config = strtr($config, array('%template%' => $template, '%dir%' => dirname($co
 $config = $neon->parse($config);
 if (isset($options['t'])) {
 	$config['variables']['title'] = $options['t'];
+}
+if (isset($options['b'])) {
+	$config['variables']['baseUri'] = $options['b'];
 }
 $config['settings']['progressbar'] = isset($options['p']);
 
