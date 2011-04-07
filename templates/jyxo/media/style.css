@@ -306,9 +306,9 @@ div.smallList {
 	color: #A7A7A7;
 	font-size: 7pt;
 	text-align: center;
-	padding: 10px 0 10px 10px;
+	padding: 10px;
 	border-top: 1px solid #e9eeef;
-	height: 122px;
+	height: 80px;
 	background: url('footer.png') no-repeat center top;
 }
 
