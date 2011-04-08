@@ -23,6 +23,7 @@ Currently there are following changes from the original APIGen:
 * Feature/Bugfix: Better page titles.
 * Feature: Optional progressbar while generating documentation.
 * Feature: Better versioning of static files (stylesheets, …).
+* Feature: Setting base URI via comman line (used in sitemaps).
 * Bugfix: (Kukulich) Texy should not process HTML code in docblocks.
 * Bugfix: (Kukulich) Fixed highlighting of code and pre elements.
 * Bugfix: (Kukulich) Fixed FQNs handling.
