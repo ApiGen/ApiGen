@@ -24,6 +24,9 @@ class Generator extends NetteX\Object
 	/** @var Model */
 	private $model;
 
+	/** @var array */
+	private $config;
+
 	/** @var Console_ProgressBar */
 	private $progressBar;
 
@@ -44,12 +47,13 @@ class Generator extends NetteX\Object
 	 * @param  array
 	 * @void
 	 */
-	public function generate($output, $config)
+	public function generate($output, array $config)
 	{
 		if (!is_dir($output)) {
 			throw new \Exception("Directory $output doesn't exist.");
 		}
 
+		$this->config = $config;
 		$this->outputDir = $output;
 
 		// copy resources
@@ -323,8 +327,12 @@ class Generator extends NetteX\Object
 	 */
 	public function formatNamespaceLink($class)
 	{
+		if (!isset($this->config['filenames']['namespace'])) {
+			throw new \Exception('Namespace output filename not defined.');
+		}
+
 		$namescape = $class instanceof \ReflectionClass ? $class->getNamespaceName() : $class;
-		return 'namespace-' . ($namescape ? preg_replace('#[^a-z0-9_]#i', '.', $namescape) : 'none') . '.html';
+		return sprintf($this->config['filenames']['namespace'], $namescape ? preg_replace('#[^a-z0-9_]#i', '.', $namescape) : 'none');
 	}
 
 
@@ -336,8 +344,12 @@ class Generator extends NetteX\Object
 	 */
 	public function formatPackageLink($class)
 	{
+		if (!isset($this->config['filenames']['package'])) {
+			throw new \Exception('Package output filename not defined.');
+		}
+
 		$package = $class instanceof \ReflectionClass ? ($class instanceof CustomClassReflection ? $class->getPackageName() : ($class->isInternal() ? CustomClassReflection::PACKAGE_INTERNAL : CustomClassReflection::PACKAGE_NONE)) : $class;
-		return 'package-' . ($package ? preg_replace('#[^a-z0-9_]#i', '.', $package) : 'none') . '.html';
+		return sprintf($this->config['filenames']['package'], $package ? preg_replace('#[^a-z0-9_]#i', '.', $package) : 'none');
 	}
 
 
@@ -349,6 +361,10 @@ class Generator extends NetteX\Object
 	 */
 	public function formatClassLink($element)
 	{
+		if (!isset($this->config['filenames']['class'])) {
+			throw new \Exception('Class output filename not defined.');
+		}
+
 		$id = '';
 		if (is_string($element)) {
 			$class = $element;
@@ -362,7 +378,8 @@ class Generator extends NetteX\Object
 				$id = '#_' . $element->getName();
 			}
 		}
-		return preg_replace('#[^a-z0-9_]#i', '.', $class) . '.html' . $id;
+
+		return sprintf($this->config['filenames']['class'], preg_replace('#[^a-z0-9_]#i', '.', $class)) . $id;
 	}
 
 
@@ -374,6 +391,10 @@ class Generator extends NetteX\Object
 	 */
 	public function formatSourceLink($element, $withLine = TRUE)
 	{
+		if (!isset($this->config['filenames']['source'])) {
+			throw new \Exception('Source output filename not defined.');
+		}
+
 		$class = $element instanceof \ReflectionClass ? $element : $element->getDeclaringClass();
 		if ($class->isInternal()) {
 			if ($element instanceof \ReflectionClass) {
@@ -384,7 +405,8 @@ class Generator extends NetteX\Object
 		} else {
 			$file = substr($element->getFileName(), strlen($this->model->getDirectory()) + 1);
 			$line = $withLine ? ($element->getStartLine() - substr_count($element->getDocComment(), "\n") - 1) : NULL;
-			return 'source-' . preg_replace('#[^a-z0-9_]#i', '.', $file) . '.html' . (isset($line) ? "#$line" : '');
+
+			return sprintf($this->config['filenames']['source'], preg_replace('#[^a-z0-9_]#i', '.', $file)) . (isset($line) ? "#$line" : '');
 		}
 	}
 

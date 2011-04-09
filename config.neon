@@ -16,6 +16,11 @@ templates:
 			sitemap.xml: %dir%/templates/%template%/sitemap.xml.phtml
 			media/combined.js: %dir%/templates/%template%/combined.js.phtml
 
+filenames:
+	class: %s.html
+	package: package-%s.html
+	namespace: namespace-%s.html
+	source: source-%s.html
 
 variables:
 	title: 'Nette Framework documentation'
