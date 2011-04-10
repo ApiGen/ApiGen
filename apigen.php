@@ -83,18 +83,17 @@ $config['settings']['progressbar'] = isset($options['p']);
 
 
 echo "Generating documentation to folder $options[d]\n";
+$generator = new Apigen\Generator($model);
 if (is_dir($options['d']) && isset($options['w'])) {
-	// Wipe out the target directory
-	foreach (NetteX\Finder::find('*')->from($options['d'])->childFirst() as $item) {
-		if ($item->isDir()) {
-			rmdir($item);
-		} elseif ($item->isFile()) {
-			unlink($item);
-		}
+	echo 'Wiping out target directory first';
+	if ($generator->wipeOutTarget($options['d'], $config)) {
+		echo ", ok\n";
+	} else {
+		echo ", error\n";
+		die();
 	}
 }
 @mkdir($options['d']);
-$generator = new Apigen\Generator($model);
 $generator->generate($options['d'], $config);
 
 
