@@ -42,9 +42,72 @@ class Generator extends NetteX\Object
 
 
 	/**
+	 * Wipes out the target directory.
+	 *
+	 * @param  string  target directory
+	 * @param  array  configuration
+	 * @return boolean
+	 */
+	public function wipeOutTarget($target, array $config)
+	{
+		// resources
+		foreach ($config['resources'] as $dir) {
+			$pathName = $target . '/' . $dir;
+			if (is_dir($pathName)) {
+				foreach (NetteX\Finder::find('*')->from($pathName)->childFirst() as $item) {
+					if ($item->isDir()) {
+						if (!@rmdir($item)) {
+							return false;
+						}
+					} elseif ($item->isFile()) {
+						if (!@unlink($item)) {
+							return false;
+						}
+					}
+				}
+				if (!@rmdir($pathName)) {
+					return false;
+				}
+			}
+		}
+
+		// common files
+		$filenames = array_keys($config['templates']['common']);
+		foreach (NetteX\Finder::findFiles($filenames)->from($target) as $item) {
+			if (!@unlink($item)) {
+				return false;
+			}
+		}
+
+		// output files
+		$masks = array_map(function($mask) {
+			return preg_replace('~%[^%]*?s~', '*', $mask);
+		}, $config['filenames']);
+		$filter = function($item) use($masks) {
+			foreach ($masks as $mask) {
+				if (fnmatch($mask, $item->getFilename())) {
+					return true;
+				}
+			}
+
+			return false;
+		};
+
+		foreach (NetteX\Finder::findFiles('*')->filter($filter)->from($target) as $item) {
+			if (!@unlink($item)) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+
+
+	/**
 	 * Generates API documentation.
 	 * @param  string  output directory
-	 * @param  array
+	 * @param  array configuration
 	 * @void
 	 */
 	public function generate($output, array $config)
