@@ -14,7 +14,7 @@ Currently there are following changes from the original APIGen:
 
 * Bugfix: Better .sh apigen script.
 * Feature: Support for multiple/custom templates.
-* Feature: The target directory can be optionally cleaned prior to generating.
+* Feature: The target directory can be optionally cleaned prior to generating (deleting only directories/files created by apigen).
 * Feature: Packages support for both namespaced and non-namespaced code.
 * Bugfix: Class list output.
 * Feature: Filtering namespaces/packages in sidebar when selecting a class/interface/package/namespace.
