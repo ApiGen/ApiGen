@@ -92,16 +92,17 @@ pre {
 	bottom: 0;
 	left: 0;
 	height: auto;
-	width: 230px;
+	width: 250px;
 	margin: 0;
 	padding: 7px;
 	overflow: auto;
 	background: white;
+	line-height: 1.6;
 }
 
 #left ul {
 	list-style: none;
-	padding: 0 0 0 3px;
+	padding: 0 0 0 0px;
 	margin: 0;
 }
 
@@ -109,18 +110,27 @@ pre {
 	white-space: nowrap;
 }
 
-#left .active {
+#left ul ul {
+	padding-left: 10px;
+}
+
+#left .active > a 	{
 	color: #333;
 	background: none;
 	font-weight: bold;
 }
+
+.collapsed {
+	display: none;
+}
+
 
 
 /**
  *	Right side
  */
 #right {
-	margin-left: 250px;
+	margin-left: 270px;
 }
 
 

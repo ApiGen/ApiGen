@@ -6,7 +6,7 @@
 <div id="navigation">
 	<ul>
 		<li><a href="overview.html" title="Summary of all namespaces">Overview</a></li>
-		<li {ifset $namespace}class="active"{/if}>Namespace</li>
+		<li n:class="isset($namespace) ? active">Namespace</li>
 		<li>Class</li>
 		<li><a href="elements.html">Elements</a></li>
 	</ul>

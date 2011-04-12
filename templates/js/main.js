@@ -49,4 +49,13 @@ $(function(){
 		$(this).find('.short').hide();
 		$(this).find('.detailed').show();
 	});
+
+	// hide deep namespaces
+	$('#left ul li:not(.active):not(:has(.active)) ul').addClass('collapsed');
+
+	$('#left > ul > li').hover(function(){
+		$('ul.collapsed', this).stop(true, true).delay(300).slideDown();
+	}, function(){
+		$('ul.collapsed', this).stop(true, true).slideUp('fast');
+	});
 });
