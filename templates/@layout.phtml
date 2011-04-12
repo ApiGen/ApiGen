@@ -33,11 +33,13 @@
 	{/foreach}
 	</ul>
 
+	<hr>
+
 	<h3>Classes</h3>
 
 	<ul>
 	{foreach $classes as $item}
-	{continueIf $item->interface}
+	{continueIf $item->interface || $item->isSubclassOf(Exception)}
 		<li n:class="$class === $item ? active"><a href="{$item|classLink}">{if $namespace}{$item->shortName}{else}{$item->name}{/if}</a></li>
 	{/foreach}
 	</ul>
@@ -47,6 +49,15 @@
 	<ul>
 	{foreach $classes as $item}
 	{continueIf !$item->interface}
+		<li n:class="$class === $item ? active"><a href="{$item|classLink}">{if $namespace}{$item->shortName}{else}{$item->name}{/if}</a></li>
+	{/foreach}
+	</ul>
+
+	<h3>Exceptions</h3>
+
+	<ul>
+	{foreach $classes as $item}
+	{continueIf !$item->isSubclassOf(Exception)}
 		<li n:class="$class === $item ? active"><a href="{$item|classLink}">{if $namespace}{$item->shortName}{else}{$item->name}{/if}</a></li>
 	{/foreach}
 	</ul>

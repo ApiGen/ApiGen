@@ -64,8 +64,12 @@ p {
 }
 
 hr {
-	display: none;
+	margin: 1em 0;
+	border: none;
+	border-top: 1px solid #CCC;
+	height: 0;
 }
+
 
 var, code, pre {
 	font-family: monospace;
