@@ -4,6 +4,7 @@
  * API Generator.
  *
  * Copyright (c) 2010 David Grudl (http://davidgrudl.com)
+ * Copyright (c) 2011 Ondřej Nešpor (http://andrewsville.cz)
  *
  * This source file is subject to the "Nette license", and/or
  * GPL license. For more information please see http://nette.org
@@ -12,43 +13,68 @@
 namespace Apigen;
 
 use NetteX;
-
+use Apigen\ClassEnvelope as CustomReflection;
+use TokenReflection\IReflectionClass as ReflectionClass, TokenReflection\IReflectionProperty as ReflectionProperty, TokenReflection\IReflectionMethod as ReflectionMethod;
 
 
 /**
- * Generates a HTML API documentation based on model.
- * @author     David Grudl
+ * Generates a HTML API documentation based on the model.
+ *
+ * @author David Grudl
+ * @author Ondřej Nešpor
  */
 class Generator extends NetteX\Object
 {
-	/** @var float */
+	/**
+	 * Library version.
+	 *
+	 * @var float
+	 */
 	const VERSION = 0.1;
 
-	/** @var Model */
+	/**
+	 * Model instance.
+	 *
+	 * @var Model
+	 */
 	private $model;
 
-	/** @var array */
+	/**
+	 * Configuration.
+	 *
+	 * @var array
+	 */
 	private $config;
 
-	/** @var Console_ProgressBar */
+	/**
+	 * Progressbar
+	 *
+	 * @var \Console_ProgressBar
+	 */
 	private $progressBar;
 
-	/** @var string */
+	/**
+	 * Output directory.
+	 *
+	 * @var string
+	 */
 	private $outputDir;
 
-
+	/**
+	 * Constructor.
+	 *
+	 * @param Model $model Generator model
+	 */
 	public function __construct(Model $model)
 	{
 		$this->model = $model;
 	}
 
-
-
 	/**
 	 * Wipes out the target directory.
 	 *
-	 * @param  string  target directory
-	 * @param  array  configuration
+	 * @param string target directory
+	 * @param array configuration
 	 * @return boolean
 	 */
 	public function wipeOutTarget($target, array $config)
@@ -105,13 +131,11 @@ class Generator extends NetteX\Object
 		return true;
 	}
 
-
-
 	/**
 	 * Generates API documentation.
-	 * @param  string  output directory
-	 * @param  array configuration
-	 * @void
+	 *
+	 * @param string output directory
+	 * @param array configuration
 	 */
 	public function generate($output, array $config)
 	{
@@ -152,8 +176,8 @@ class Generator extends NetteX\Object
 				+ count($namespaces)
 				+ count($packages)
 				+ count($config['templates']['common'])
-				+ array_reduce($allClasses, function($count, $class) {
-					if (!$class->isInternal()) {
+				+ array_reduce($allClasses, function($count, CustomReflection $class) {
+					if ($class->isUserDefined()) {
 						$count++;
 					}
 					return $count;
@@ -271,7 +295,7 @@ class Generator extends NetteX\Object
 			$this->incrementProgressBar();
 
 			// generate source codes
-			if (!$class->isInternal() && !isset($generatedFiles[$class->getFileName()])) {
+			if ($class->isUserDefined() && !isset($generatedFiles[$class->getFileName()])) {
 				$file = $class->getFileName();
 				$template->source = $fshl->highlightString('PHP', file_get_contents($file));
 				$template->fileName = substr($file, strlen($this->model->getDirectory()) + 1);
@@ -283,9 +307,11 @@ class Generator extends NetteX\Object
 		}
 	}
 
-
-
-	/** @return Nette\Templating\FileTemplate */
+	/**
+	 * Returns a template instance with required helpers prepared.
+	 *
+	 * @return \NetteX\Templates\FileTemplate
+	 */
 	private function createTemplate()
 	{
 		$template = new NetteX\Templating\FileTemplate;
@@ -324,15 +350,16 @@ class Generator extends NetteX\Object
 		$model = $this->model;
 		$template->registerHelper('getTypes', function($element, $position = NULL) use ($model) {
 			$namespace = $element->getDeclaringClass()->getNamespaceName();
-			$s = $position === NULL ? $element->getAnnotation($element instanceof \ReflectionProperty ? 'var' : 'return')
+			$s = $position === NULL ? $element->getAnnotation($element->hasAnnotation('var') ? 'var' : 'return')
 				: @$element->annotations['param'][$position];
 			if (is_object($s)) {
 				$s = get_class($s); // TODO
 			}
-			$s = preg_replace('#\s.*#', '', $s);
 			$res = array();
-			foreach (explode('|', $s) as $name) {
-				$res[] = (object) array('name' => $name, 'class' => $model->resolveType($name, $namespace));
+			foreach ((array) preg_replace('#\s.*#', '', $s) as $s) {
+				foreach (explode('|', $s) as $name) {
+					$res[] = (object) array('name' => $name, 'class' => $model->resolveType($name, $namespace));
+				}
 			}
 			return $res;
 		});
@@ -354,12 +381,16 @@ class Generator extends NetteX\Object
 		);
 
 		$template->registerHelper('docline', function($doc, $line = TRUE) use ($texy) {
+			// @todo
+			return '';
 			$doc = Model::extractDocBlock($doc);
 			$doc = preg_replace('#\n.*#s', '', $doc); // leave only first line
 			return $line ? $texy->processLine($doc) : $texy->process($doc);
 		});
 
 		$template->registerHelper('docblock', function($doc) use ($texy) {
+			// @todo
+			return '';
 			$doc = Model::extractDocBlock($doc);
 			$doc = preg_replace('#([^\n])(\n)([^\n])#', '\1\2 \3', $doc); // line breaks support
 			return $texy->process($doc);
@@ -396,11 +427,10 @@ class Generator extends NetteX\Object
 		return $template;
 	}
 
-
-
 	/**
-	 * Generates link to namespace summary file.
-	 * @param  string|ReflectionClass
+	 * Generates a link to a namespace summary file.
+	 *
+	 * @param  string|\Apigen\ClassEnvelope|IReflectionNamespace
 	 * @return string
 	 */
 	public function formatNamespaceLink($class)
@@ -409,15 +439,14 @@ class Generator extends NetteX\Object
 			throw new \Exception('Namespace output filename not defined.');
 		}
 
-		$namescape = $class instanceof \ReflectionClass ? $class->getNamespaceName() : $class;
+		$namescape = ($class instanceof CustomReflection) ? $class->getNamespaceName() : $class;
 		return sprintf($this->config['filenames']['namespace'], $namescape ? preg_replace('#[^a-z0-9_]#i', '.', $namescape) : 'None');
 	}
 
-
-
 	/**
-	 * Generates link to package summary file.
-	 * @param  string|ReflectionClass
+	 * Generates a link to a package summary file.
+	 *
+	 * @param  string|\Apigen\ClassEnvelope
 	 * @return string
 	 */
 	public function formatPackageLink($class)
@@ -426,15 +455,14 @@ class Generator extends NetteX\Object
 			throw new \Exception('Package output filename not defined.');
 		}
 
-		$package = $class instanceof \ReflectionClass ? ($class instanceof CustomClassReflection ? $class->getPackageName() : ($class->isInternal() ? CustomClassReflection::PACKAGE_INTERNAL : CustomClassReflection::PACKAGE_NONE)) : $class;
+		$package = ($class instanceof CustomReflection) ? $class->getPackageName() : $class;
 		return sprintf($this->config['filenames']['package'], $package ? preg_replace('#[^a-z0-9_]#i', '.', $package) : 'None');
 	}
 
-
-
 	/**
-	 * Generates link to class summary file.
-	 * @param  string|ReflectionClass|ReflectionMethod|ReflectionProperty
+	 * Generates a link to class summary file.
+	 *
+	 * @param  string|\Apigen\ClassEnvelope|IReflectionMethod|IReflectionProperty
 	 * @return string
 	 */
 	public function formatClassLink($element)
@@ -446,13 +474,13 @@ class Generator extends NetteX\Object
 		$id = '';
 		if (is_string($element)) {
 			$class = $element;
-		} elseif ($element instanceof \ReflectionClass) {
+		} elseif ($element instanceof CustomReflection) {
 			$class = $element->getName();
 		} else {
 			$class = $element->getDeclaringClass()->getName();
-			if ($element instanceof \ReflectionProperty) {
+			if ($element instanceof ReflectionProperty) {
 				$id = '#$' . $element->getName();
-			} elseif ($element instanceof \ReflectionMethod) {
+			} elseif ($element instanceof ReflectionMethod) {
 				$id = '#_' . $element->getName();
 			}
 		}
@@ -460,12 +488,11 @@ class Generator extends NetteX\Object
 		return sprintf($this->config['filenames']['class'], preg_replace('#[^a-z0-9_]#i', '.', $class)) . $id;
 	}
 
-
-
 	/**
-	 * Generates link to class source code file.
-	 * @param  ReflectionClass|ReflectionMethod
-	 * @return string
+	 * Generates a link to a class source code file.
+	 *
+	 * @param  \Apigen\ClassEnvelope|IReflectionMethod
+	 * @return string|null
 	 */
 	public function formatSourceLink($element, $withLine = TRUE)
 	{
@@ -473,16 +500,16 @@ class Generator extends NetteX\Object
 			throw new \Exception('Source output filename not defined.');
 		}
 
-		$class = $element instanceof \ReflectionClass ? $element : $element->getDeclaringClass();
+		$class = ($element instanceof CustomReflection) ? $element : $element->getDeclaringClass();
 		if ($class->isInternal()) {
-			if ($element instanceof \ReflectionClass) {
+			if ($element instanceof CustomReflection) {
 				return strtolower('http://php.net/manual/class.' . $class->getName() . '.php');
 			} else {
 				return strtolower('http://php.net/manual/' . $class->getName() . '.' . strtr(ltrim($element->getName(), '_'), '_', '-') . '.php');
 			}
-		} else {
+		} elseif ($class->isUserDefined()) {
 			$file = substr($element->getFileName(), strlen($this->model->getDirectory()) + 1);
-			$line = $withLine ? ($element->getStartLine() - substr_count($element->getDocComment(), "\n") - 1) : NULL;
+			$line = $withLine ? $element->getStartLine() : NULL;
 
 			return sprintf($this->config['filenames']['source'], preg_replace('#[^a-z0-9_]#i', '.', $file)) . (isset($line) ? "#$line" : '');
 		}
@@ -490,6 +517,8 @@ class Generator extends NetteX\Object
 
 	/**
 	 * Prepares the progressbar.
+	 *
+	 * @param $maximum Maximum progressbar value
 	 */
 	private function prepareProgressBar($maximum = 1)
 	{
@@ -512,11 +541,10 @@ class Generator extends NetteX\Object
 		}
 	}
 
-
-
 	/**
-	 * Ensures directory is created.
-	 * @param  string
+	 * Ensures a directory is created.
+	 *
+	 * @param string Directory path
 	 * @return string
 	 */
 	public static function forceDir($path)
@@ -524,5 +552,4 @@ class Generator extends NetteX\Object
 		@mkdir(dirname($path), 0755, TRUE);
 		return $path;
 	}
-
 }

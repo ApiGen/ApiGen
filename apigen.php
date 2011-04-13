@@ -16,7 +16,6 @@ require __DIR__ . '/libs/NetteX/nette.min.php';
 require __DIR__ . '/libs/fshl/fshl.php';
 require __DIR__ . '/libs/Console/ProgressBar.php';
 require __DIR__ . '/libs/texy/texy.min.php';
-require __DIR__ . '/libs/Apigen/CustomClassReflection.php';
 require __DIR__ . '/libs/Apigen/Model.php';
 require __DIR__ . '/libs/Apigen/Generator.php';
 
