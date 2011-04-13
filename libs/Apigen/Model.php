@@ -46,7 +46,7 @@ class Model extends NetteX\Object
 		$this->classes = array();
 		foreach ($robot->getIndexedClasses() as $name => $foo) {
 			$class = new CustomClassReflection($name);
-			if (!$class->hasAnnotation('internal')) {
+			if (!$class->hasAnnotation('internal') && !$class->hasAnnotation('deprecated')) {
 				$this->classes[$name] = $class;
 			}
 		}
