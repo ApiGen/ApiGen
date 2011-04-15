@@ -9,7 +9,10 @@
  * GPL license. For more information please see http://nette.org
  */
 
-require __DIR__ . '/libs/NetteX/loader.php';
+use NetteX\Diagnostics\Debugger;
+
+
+require __DIR__ . '/libs/NetteX/nettex.min.php';
 require __DIR__ . '/libs/fshl/fshl.php';
 require __DIR__ . '/libs/texy/texy.min.php';
 require __DIR__ . '/libs/Apigen/CustomClassReflection.php';
@@ -41,8 +44,8 @@ Options:
 
 
 date_default_timezone_set('Europe/Prague');
-NetteX\Debug::enable();
-NetteX\Debug::timer();
+Debugger::enable();
+Debugger::timer();
 
 if(isset($options['l'])) {
   $robot = new NetteX\Loaders\RobotLoader;
@@ -63,10 +66,9 @@ echo "Found $count classes and $countD system classes\n";
 
 
 
-$neon = new NetteX\NeonParser;
 $configPath = isset($options['c']) ? $options['c'] : __DIR__ . '/config.neon';
 $config = str_replace('%dir%', dirname($configPath), file_get_contents($configPath));
-$config = $neon->parse($config);
+$config = NetteX\Utils\Neon::decode($config);
 if (isset($options['t'])) {
 	$config['variables']['title'] = $options['t'];
 }
@@ -74,7 +76,7 @@ if (isset($options['t'])) {
 
 echo "Generating documentation to folder $options[d]\n";
 @mkdir($options['d']);
-foreach (NetteX\Finder::find('*')->from($options['d'])->childFirst() as $item) {
+foreach (NetteX\Utils\Finder::find('*')->from($options['d'])->childFirst() as $item) {
 	if ($item->isDir()) {
 		rmdir($item);
 	} elseif ($item->isFile()) {
@@ -86,4 +88,4 @@ $generator->generate($options['d'], $config);
 
 
 
-echo 'Done. Total time: ' . (int) NetteX\Debug::timer() . " seconds\n";
+echo 'Done. Total time: ' . (int) Debugger::timer() . " seconds\n";

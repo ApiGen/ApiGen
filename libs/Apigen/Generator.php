@@ -47,7 +47,7 @@ class Generator extends NetteX\Object
 
 		// copy resources
 		foreach ($config['resources'] as $source => $dest) {
-			foreach ($iterator = NetteX\Finder::findFiles('*')->from($source)->getIterator() as $foo) {
+			foreach ($iterator = NetteX\Utils\Finder::findFiles('*')->from($source)->getIterator() as $foo) {
 				copy($iterator->getPathName(), self::forceDir("$output/$dest/" . $iterator->getSubPathName()));
 			}
 		}
@@ -111,25 +111,25 @@ class Generator extends NetteX\Object
 
 
 
-	/** @return NetteX\Templates\FileTemplate */
+	/** @return Nette\Templating\FileTemplate */
 	private function createTemplate()
 	{
-		$template = new NetteX\Templates\FileTemplate;
-		$template->setCacheStorage(new NetteX\Caching\MemoryStorage);
+		$template = new NetteX\Templating\FileTemplate;
+		$template->setCacheStorage(new NetteX\Caching\Storages\MemoryStorage);
 
-		$latte = new NetteX\Templates\LatteFilter;
-		$latte->handler->macros['try'] = '<?php try { ?>';
-		$latte->handler->macros['/try'] = '<?php } catch (\Exception $e) {} ?>';
+		$latte = new NetteX\Latte\Engine;
+		$latte->parser->macros['try'] = '<?php try { ?>';
+		$latte->parser->macros['/try'] = '<?php } catch (\Exception $e) {} ?>';
 		$template->registerFilter($latte);
 
 		// common operations
-		$template->registerHelperLoader('NetteX\Templates\TemplateHelpers::loader');
+		$template->registerHelperLoader('NetteX\Templating\DefaultHelpers::loader');
 		$template->registerHelper('ucfirst', 'ucfirst');
 		$template->registerHelper('values', 'array_values');
 		$template->registerHelper('map', function($arr, $callback) {
 			return array_map(create_function('$value', $callback), $arr);
 		});
-		$template->registerHelper('replaceRE', 'NetteX\String::replace');
+		$template->registerHelper('replaceRE', 'NetteX\Utils\Strings::replace');
 		$template->registerHelper('replaceNS', function($name, $namespace) { // remove current namespace
 			$name = ltrim($name, '\\');
 			return (strpos($name, $namespace . '\\') === 0 && strpos($name, '\\', strlen($namespace) + 1) === FALSE)

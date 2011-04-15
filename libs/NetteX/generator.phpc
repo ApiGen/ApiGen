@@ -1,0 +1,8 @@
+<?php
+
+if (!is_file('nette.min.php')) {
+	die('Missing file nette.min.php');
+}
+$s = file_get_contents('nette.min.php');
+$s = preg_replace('#\bNette\b|NETTE|(?<![\w:>])callback(?=\()|(?<![\w:>])dump(?=\()#', '\0X', $s);
+file_put_contents('nettex.min.php', $s);

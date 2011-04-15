@@ -7,16 +7,15 @@ templates:
 	source: %dir%/templates/source.phtml
 
 	common:
-            allclasses.js: %dir%/templates/allclasses.js.phtml
-            allclasses.html: %dir%/templates/namespace.phtml
-            elements.html: %dir%/templates/elements.phtml
-            index.html: %dir%/templates/overview.phtml
-            overview.html: %dir%/templates/overview.phtml
-            sitemap.xml: %dir%/templates/sitemap.xml.phtml
-            media/combined.js: %dir%/templates/combined.js.phtml
+			allclasses.js: %dir%/templates/allclasses.js.phtml
+			allclasses.html: %dir%/templates/namespace.phtml
+			elements.html: %dir%/templates/elements.phtml
+			index.html: %dir%/templates/overview.phtml
+			overview.html: %dir%/templates/overview.phtml
+			sitemap.xml: %dir%/templates/sitemap.xml.phtml
+			media/combined.js: %dir%/templates/combined.js.phtml
 
 
 variables:
 	title: 'Nette Framework documentation'
 	baseUri: 'http://api.nette.org/2.0'
-	
