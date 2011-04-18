@@ -20,9 +20,10 @@ templates:
 			overview.html: %dir%/templates/overview.latte
 			sitemap.xml: %dir%/templates/sitemap.xml.latte
 			resources/combined.js: %dir%/templates/combined.js.latte
-
+			opensearch.xml: %dir%/templates/opensearch.xml.latte
 
 # Custom variables passed to each template
 variables:
-	title: 
-	baseUrl: 
+	title: API Documentation
+	baseUrl:
+	searchUrl:

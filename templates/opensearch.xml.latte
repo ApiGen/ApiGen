@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/" xmlns:moz="http://www.mozilla.org/2006/browser/search/">
+	<ShortName>{$title}</ShortName>
+	<Description>{$title}</Description>
+	<Url template="{$searchUrl}" type="text/html"/>
+	<Url template="{$baseUrl}/opensearch.xml" rel="self" type="application/opensearchdescription+xml"/>
+	<Image type="image/x-icon" width="16" height="16">{$baseUrl|replaceRE:'#(?<!/)/[^/].*#'}/favicon.ico</Image>
+	<moz:SearchForm>{$baseUrl}/</moz:SearchForm>
+</OpenSearchDescription>
