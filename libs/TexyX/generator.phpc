@@ -1,0 +1,8 @@
+<?php
+
+if (!is_file('texy.min.php')) {
+	die('Missing file texy.min.php');
+}
+$s = file_get_contents('texy.min.php');
+$s = preg_replace('#[^a-zA-Z0-9]Texy|TEXY#', '\0X', $s);
+file_put_contents('texyx.min.php', $s);
