@@ -19,7 +19,7 @@ use NetteX;
  * Smarter class/interface reflection.
  * @author     David Grudl
  */
-class CustomClassReflection extends NetteX\Reflection\ClassReflection
+class CustomClassReflection extends NetteX\Reflection\ClassType
 {
 	/**
 	 * "No package" name.

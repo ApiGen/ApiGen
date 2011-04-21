@@ -37,7 +37,7 @@ class Model extends NetteX\Object
 	public function parse($dir)
 	{
 		$robot = new NetteX\Loaders\RobotLoader;
-		$robot->setCacheStorage(new NetteX\Caching\MemoryStorage);
+		$robot->setCacheStorage(new NetteX\Caching\Storages\MemoryStorage);
 		$robot->addDirectory($dir);
 		$robot->register();
 
@@ -178,7 +178,7 @@ class Model extends NetteX\Object
 		$doc = trim($doc, '/*');
 		$doc = preg_replace('#^\s*\**\s*(@var \S+\s*|@.*)#ms', '', $doc); // remove annotations
 		$doc = preg_replace('#^\s*\** ?#m', '', $doc); // remove stars
-		return NetteX\String::normalize(trim($doc));
+		return NetteX\StringUtils::normalize(trim($doc));
 	}
 
 }

@@ -1,3 +1,3 @@
-Nette Framework 2.0 alpha
+Nette Framework 2.0 beta
 
 All classes are suffixed with "X"

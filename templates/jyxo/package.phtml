@@ -1,20 +1,20 @@
-{layout @layout.phtml}
+{layout '@layout.phtml'}
 
-{block #title}{ifset $package}{if $package}Package {$package}{else}No package{/if}{else}All Classes{/if}{/block}
+{block #title}{ifset $package}{if $package}Package {$package}{else}No package{/if}{else}All Classes{/ifset}{/block}
 
 {block #content}
 <div id="navigation">
 	<ul>
 		<li><a href="overview.html" title="Summary of all namespaces">Overview</a></li>
 		<li>Namespace</li>
-		<li {ifset $package}class="active"{/if}>Package</li>
+		<li {ifset $package}class="active"{/ifset}>Package</li>
 		<li>Class</li>
 	</ul>
 </div>
 
 <div id="content">
-	<h1>{ifset $package}{if $package}Package {$package}{else}No package{/if}{else}All Classes{/if}</h1>
+	<h1>{ifset $package}{if $package}Package {$package}{else}No package{/if}{else}All Classes{/ifset}</h1>
 
-	{include @classlist.phtml}
+	{include '@classlist.phtml'}
 </div>
 {/block}

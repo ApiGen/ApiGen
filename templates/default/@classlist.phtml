@@ -3,7 +3,7 @@
 <caption>Class summary</caption>
 {foreach $classes as $class}
 <tr>
-	<td width="20%"><a href="{$class|classLink}">{ifset $namespace}{$class->shortName}{else}{$class->name}{/if}</a></td>
+	<td width="20%"><a href="{$class|classLink}">{ifset $namespace}{$class->shortName}{else}{$class->name}{/ifset}</a></td>
 	<td>{!$class->docComment|docline}</td>
 </tr>
 {/foreach}
@@ -15,7 +15,7 @@
 <caption>Interface summary</caption>
 {foreach $interfaces as $interface}
 <tr>
-	<td width="20%"><a href="{$interface|classLink}">{ifset $namespace}{$interface->shortName}{else}{$interface->name}{/if}</a></td>
+	<td width="20%"><a href="{$interface|classLink}">{ifset $namespace}{$interface->shortName}{else}{$interface->name}{/ifset}</a></td>
 	<td>{!$interface->docComment|docline}</td>
 </tr>
 {/foreach}
