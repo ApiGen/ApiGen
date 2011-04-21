@@ -47,7 +47,6 @@ Options:
 
 
 
-date_default_timezone_set('Europe/Prague');
 Debugger::enable();
 Debugger::timer();
 
