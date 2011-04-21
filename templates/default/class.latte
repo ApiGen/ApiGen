@@ -1,4 +1,4 @@
-{layout '@layout.phtml'}
+{layout '@layout.latte'}
 
 {block #title}{if $class->interface}Interface{else}Class{/if} {$class->name}{/block}
 
@@ -6,9 +6,9 @@
 <div id="navigation">
 	<ul>
 		<li><a href="overview.html" title="Summary of all namespaces">Overview</a></li>
-		<li>{if $namespace}<a href="{$class|namespaceLink}" title="Summary of {$class->namespaceName}">Namespace</a>{else}Namespace{/if}</li>
-		<li>{if $package}<a href="{$package|packageLink}" title="Summary of {$package}">Package</a>{else}Package{/if}</li>
+		<li n:if="$class->inNamespace()"><a href="{$class|namespaceLink}" title="Summary of {$class->namespaceName}">Namespace</a></li>
 		<li class="active">Class</li>
+		<li><a href="elements.html">Elements</a></li>
 	</ul>
 </div>
 

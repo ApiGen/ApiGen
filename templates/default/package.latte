@@ -1,4 +1,4 @@
-{layout '@layout.phtml'}
+{layout '@layout.latte'}
 
 {block #title}{ifset $package}{if $package}Package {$package}{else}No package{/if}{else}All Classes{/ifset}{/block}
 
@@ -6,15 +6,15 @@
 <div id="navigation">
 	<ul>
 		<li><a href="overview.html" title="Summary of all namespaces">Overview</a></li>
-		<li>Namespace</li>
 		<li {ifset $package}class="active"{/ifset}>Package</li>
 		<li>Class</li>
+		<li><a href="elements.html">Elements</a></li>
 	</ul>
 </div>
 
 <div id="content">
 	<h1>{ifset $package}{if $package}Package {$package}{else}No package{/if}{else}All Classes{/ifset}</h1>
 
-	{include '@classlist.phtml'}
+	{include '@classlist.latte'}
 </div>
 {/block}

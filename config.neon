@@ -2,19 +2,19 @@ resources:
 	%dir%/templates/%template%/media: media
 
 templates:
-	namespace: %dir%/templates/%template%/namespace.phtml
-	package: %dir%/templates/%template%/package.phtml
-	class: %dir%/templates/%template%/class.phtml
-	source: %dir%/templates/%template%/source.phtml
+	namespace: %dir%/templates/%template%/namespace.latte
+	package: %dir%/templates/%template%/package.latte
+	class: %dir%/templates/%template%/class.latte
+	source: %dir%/templates/%template%/source.latte
 
 	common:
-		allclasses.js: %dir%/templates/%template%/allclasses.js.phtml
-		allclasses.html: %dir%/templates/%template%/package.phtml
-		elements.html: %dir%/templates/%template%/elements.phtml
-		index.html: %dir%/templates/%template%/overview.phtml
-		overview.html: %dir%/templates/%template%/overview.phtml
-		sitemap.xml: %dir%/templates/%template%/sitemap.xml.phtml
-		media/combined.js: %dir%/templates/%template%/combined.js.phtml
+		allclasses.js: %dir%/templates/%template%/allclasses.js.latte
+		allclasses.html: %dir%/templates/%template%/package.latte
+		elements.html: %dir%/templates/%template%/elements.latte
+		index.html: %dir%/templates/%template%/overview.latte
+		overview.html: %dir%/templates/%template%/overview.latte
+		sitemap.xml: %dir%/templates/%template%/sitemap.xml.latte
+		media/combined.js: %dir%/templates/%template%/combined.js.latte
 
 filenames:
 	class: %s.html

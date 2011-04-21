@@ -1,4 +1,4 @@
-{layout '@layout.phtml'}
+{layout '@layout.latte'}
 
 {block #title}{if $namespace}Namespace {$namespace}{else}No namespace{/if}{/block}
 
@@ -7,14 +7,14 @@
 	<ul>
 		<li><a href="overview.html" title="Summary of all namespaces">Overview</a></li>
 		<li {ifset $namespace}class="active"{/ifset}>Namespace</li>
+		<li>Package</li>
 		<li>Class</li>
-		<li><a href="elements.html">Elements</a></li>
 	</ul>
 </div>
 
 <div id="content">
 	<h1>{if $namespace}Namespace {$namespace}{else}No namespace{/if}</h1>
 
-	{include '@classlist.phtml'}
+	{include '@classlist.latte'}
 </div>
 {/block}
