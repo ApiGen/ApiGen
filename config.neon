@@ -10,7 +10,6 @@ templates:
 	common:
 		allclasses.js: %dir%/templates/%template%/allclasses.js.latte
 		allclasses.html: %dir%/templates/%template%/package.latte
-		elements.html: %dir%/templates/%template%/elements.latte
 		index.html: %dir%/templates/%template%/overview.latte
 		overview.html: %dir%/templates/%template%/overview.latte
 		sitemap.xml: %dir%/templates/%template%/sitemap.xml.latte
