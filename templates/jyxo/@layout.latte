@@ -92,6 +92,25 @@
 		{/foreach}
 		</ul>
 		{/if}
+
+		{if $exceptions}
+		<h3>Exceptions</h3>
+
+		<ul>
+		{if $class}
+			<li class="all"><a href="allclasses.html#exceptions">All</a></li>
+			{if $package}
+				<li class="all"><a href="{$package|packageLink}#exceptions">All in package {$package}</a></li>
+			{/if}
+			{if $namespace}
+				<li class="all"><a href="{$namespace|namespaceLink}#exceptions">All in namespace {$namespace}</a></li>
+			{/if}
+		{/if}
+		{foreach $exceptions as $item}
+			<li><a href="{$item|classLink}"{if $class === $item} class="active"{/if}>{if $namespace}{$item->shortName}{else}{$item->name}{/if}</a></li>
+		{/foreach}
+		</ul>
+		{/if}
 	</div>
 </div>
 <div id="rightWrapper">

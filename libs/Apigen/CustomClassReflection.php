@@ -121,4 +121,13 @@ class CustomClassReflection extends NetteX\Reflection\ClassType
 		return array_diff_assoc($this->getConstants(), $this->getParentClass() ? $this->getParentClass()->getConstants() : array());
 	}
 
+
+	/**
+	 * Returns if class is exception.
+	 * @return boolean
+	 */
+	public function isException()
+	{
+		return $this->isSubclassOf('Exception') || $this->getName() === 'Exception';
+	}
 }

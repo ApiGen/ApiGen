@@ -21,3 +21,15 @@
 {/foreach}
 </table>
 {/if}
+
+{if $exceptions}
+<table class="summary" id="exceptions">
+<caption>Exceptions summary</caption>
+{foreach $exceptions as $exception}
+<tr>
+	<td width="20%"><a href="{$exception|classLink}">{ifset $namespace}{$exception->shortName}{else}{$exception->name}{/ifset}</a></td>
+	<td>{!$exception->docComment|docline}</td>
+</tr>
+{/foreach}
+</table>
+{/if}
