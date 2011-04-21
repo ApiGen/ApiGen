@@ -14,7 +14,7 @@
 
 <div id="content">
 	<div id="classSummary">
-		<p n:if="$class->internal">PHP – {$class->extension->name}</p>
+		<p n:if="$class->internal">PHP – {$class->extension->name|ucfirst}</p>
 		<p n:if="$class->inNamespace()">namespace <a href="{$class|namespaceLink}">{$class->namespaceName}</a></p>
 
 		<h1>{if $class->interface}Interface{else}Class{/if} {$class->shortName}</h1>
