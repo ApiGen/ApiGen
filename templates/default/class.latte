@@ -5,8 +5,9 @@
 {block #content}
 <div id="navigation">
 	<ul>
-		<li><a href="overview.html" title="Summary of all namespaces">Overview</a></li>
-		<li n:if="$class->inNamespace()"><a href="{$class|namespaceLink}" title="Summary of {$class->namespaceName}">Namespace</a></li>
+		<li><a href="overview.html" title="Summary of all packages">Overview</a></li>
+		<li>{if $package}<a href="{$package|packageLink}" title="Summary of {$package}">Package</a>{else}Package{/if}</li>
+		<li>{if $namespace}<a href="{$class|namespaceLink}" title="Summary of {$class->namespaceName}">Namespace</a>{else}Namespace{/if}</li>
 		<li class="active">Class</li>
 	</ul>
 </div>

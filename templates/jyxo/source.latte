@@ -6,9 +6,9 @@
 {block #content}
 <div id="navigation">
 	<ul>
-		<li><a href="overview.html" title="Summary of all namespaces">Overview</a></li>
-		<li>{if $namespace}<a href="{$class|namespaceLink}" title="Summary of {$class->namespaceName}">Namespace</a>{else}Namespace{/if}</li>
+		<li><a href="overview.html" title="Summary of all packages">Overview</a></li>
 		<li>{if $package}<a href="{$package|packageLink}" title="Summary of {$package}">Package</a>{else}Package{/if}</li>
+		<li>{if $namespace}<a href="{$class|namespaceLink}" title="Summary of {$class->namespaceName}">Namespace</a>{else}Namespace{/if}</li>
 		<li><a href="{$class|classLink}" title="Summary of {$class}">Class</a></li>
 	</ul>
 </div>
