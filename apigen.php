@@ -21,7 +21,7 @@ require __DIR__ . '/libs/Apigen/Model.php';
 require __DIR__ . '/libs/Apigen/Generator.php';
 
 echo '
-APIGen version 0.1
+Apigen ' . Apigen\Generator::VERSION . '
 ------------------
 ';
 

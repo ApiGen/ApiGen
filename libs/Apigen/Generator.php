@@ -21,6 +21,9 @@ use NetteX;
  */
 class Generator extends NetteX\Object
 {
+	/** @var float */
+	const VERSION = 0.1;
+
 	/** @var Model */
 	private $model;
 
@@ -159,6 +162,7 @@ class Generator extends NetteX\Object
 		}
 
 		$template = $this->createTemplate();
+		$template->version = self::VERSION;
 		$template->fileRoot = $this->model->getDirectory();
 		foreach ($config['variables'] as $key => $value) {
 			$template->$key = $value;
