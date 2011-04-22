@@ -253,7 +253,7 @@ class Generator extends NetteX\Object
 			} else {
 				$template->namespaces = array();
 			}
-			$template->packages = $package ? array($package) : array();
+			$template->packages = array($package);
 			$template->tree = array($class);
 			while ($parent = $template->tree[0]->getParentClass()) {
 				array_unshift($template->tree, $parent);
