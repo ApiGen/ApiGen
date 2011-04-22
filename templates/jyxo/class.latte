@@ -20,7 +20,7 @@
 		<h1>{if $class->interface}Interface{else}Class{/if} {$class->shortName}</h1>
 
 		<div class="classDescription" n:if="$class->docComment">
-		{!$class->docComment|docblock}
+		{!$class|longDescription|docblock}
 		</div>
 
 		<dl class="tree" n:if="$class->parentClass || end($tree)->ownInterfaces">
@@ -58,7 +58,7 @@
 					{/if}
 				{/foreach}
 			{/foreach}
-			{if $class->internal}<b>Documented at</b> <a href="{$class|sourceLink}">php.net</a>{else}<b>Located at</b> <a href="{$class|sourceLink}">{$class->fileName|replace:$fileRoot|replace:'\\','/'}</a>{/if}<br>
+			{if $class->internal}<b>Documented at</b> <a href="{$class|sourceLink}">php.net</a>{elseif $class->userDefined}<b>Located at</b> <a href="{$class|sourceLink}">{$class->fileName|replace:$fileRoot|replace:'\\','/'}</a>{/if}<br>
 		</div>
 	</div>
 
@@ -83,16 +83,16 @@
 					{if $parameter->array}array
 					{elseif $parameter->className}<a href="{$parameter->className|classLink}">{$parameter->className|replaceNS:$namespace}</a>
 					{else}{foreach $template->getTypes($method, $parameter->position) as $item}<a href="{$item->class|classLink}" n:tag-if="$item->class">{$item->name|replaceNS:$namespace}</a>{sep}|{/sep}{/foreach}{/if}
-					<var>{if $parameter->passedByReference}&amp; {/if}${$parameter->name}</var>{if $parameter->defaultValueAvailable} = {!$parameter->defaultValue|dump}{/if}{sep}, {/sep}
+					<var>{if $parameter->passedByReference}&amp; {/if}${$parameter->name}</var>{if $parameter->defaultValueAvailable} = {!$parameter->defaultValueDefinition|highlightPHP}{/if}{sep}, {/sep}
 				{/foreach}
 			)</code>
 
 			<div class="short">
-				{!$method->docComment|docline:false}
+				{!$method|shortDescription|docblock}
 			</div>
 
 			<div class="detailed">
-				{!$method->docComment|docblock}
+				{!$method|longDescription|docblock}
 
 				{var $annotations = $method->annotations}
 
@@ -147,10 +147,10 @@
 	<div id="constantSummary" n:if="$class->ownConstants">
 		<table class="summary">
 		<caption>Constant Summary</caption>
-		{foreach $class->ownConstants as $name => $value}
+		{foreach $class->ownConstantReflections as $name => $constant}
 		<tr data-order="{$name}" id="{$name}">
 			<td align="right" width="1%"><code><b>{$name}</b></code></td>
-			<td><code>{!$value|dump}</code> <a href="#{$name}" class="anchor">#</a></td>
+			<td><code>{!$constant->valueDefinition|highlightPHP}</code> <a href="#{$name}" class="anchor">#</a></td>
 		</tr>
 		{/foreach}
 		</table>
@@ -175,8 +175,8 @@
 			</code></td>
 
 			<td width="1%"><var>${$property->name}</var></td>
-			<td><pre>{!$class->defaultProperties[$property->name]|dump}</pre></td>
-			<td>{!$property->docComment|docline} <a href="#${$property->name}" class="anchor">#</a></td>
+			<td><pre>{!$property->defaultValueDefinition|highlightPHP}</pre></td>
+			<td>{!$property|shortDescription|docline} <a href="#${$property->name}" class="anchor">#</a></td>
 		</tr>
 		{/foreach}
 		</table>

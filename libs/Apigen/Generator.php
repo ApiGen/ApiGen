@@ -15,6 +15,7 @@ namespace Apigen;
 use NetteX;
 use Apigen\ClassEnvelope as CustomReflection;
 use TokenReflection\IReflectionClass as ReflectionClass, TokenReflection\IReflectionProperty as ReflectionProperty, TokenReflection\IReflectionMethod as ReflectionMethod;
+use TokenReflection\ReflectionAnnotation;
 
 
 /**
@@ -335,9 +336,11 @@ class Generator extends NetteX\Object
 			return (strpos($name, $namespace . '\\') === 0 && strpos($name, '\\', strlen($namespace) + 1) === FALSE)
 				? substr($name, strlen($namespace) + 1) : $name;
 		});
+
+		// PHP source highlight
 		$fshl = new \fshlParser('HTML_UTF8');
-		$template->registerHelper('dump', function($val) use ($fshl) {
-			return $fshl->highlightString('PHP', var_export($val, TRUE));
+		$template->registerHelper('highlightPHP', function($source) use ($fshl) {
+			return $fshl->highlightString('PHP', (string) $source);
 		});
 
 		// links
@@ -364,6 +367,9 @@ class Generator extends NetteX\Object
 			return $res;
 		});
 		$template->registerHelper('resolveType', callback($model, 'resolveType'));
+		$template->registerHelper('getType', function($variable) {
+			return is_object($variable) ? get_class($variable) : gettype($variable);
+		});
 
 		// docblock
 		$texy = new \TexyX;
@@ -380,22 +386,13 @@ class Generator extends NetteX\Object
 			'codeBlockSyntax'
 		);
 
-		$template->registerHelper('docline', function($doc, $line = TRUE) use ($texy) {
-			// @todo
-			return '';
-			$doc = Model::extractDocBlock($doc);
-			$doc = preg_replace('#\n.*#s', '', $doc); // leave only first line
-			return $line ? $texy->processLine($doc) : $texy->process($doc);
+		// Documentation formatting
+		$template->registerHelper('docline', function($text) use ($texy) {
+			return $texy->processLine($text);
 		});
-
-		$template->registerHelper('docblock', function($doc) use ($texy) {
-			// @todo
-			return '';
-			$doc = Model::extractDocBlock($doc);
-			$doc = preg_replace('#([^\n])(\n)([^\n])#', '\1\2 \3', $doc); // line breaks support
-			return $texy->process($doc);
+		$template->registerHelper('docblock', function($text) use ($texy) {
+			return $texy->process(preg_replace('#([^\n])(\n)([^\n])#', '\1\2 \3', $text));
 		});
-
 		$template->registerHelper('doclabel', function($doc, $namespace) use ($template) {
 			@list($names, $label) = preg_split('#\s+#', $doc, 2);
 			$res = '';
@@ -406,6 +403,21 @@ class Generator extends NetteX\Object
 				$res .= '|';
 			}
 			return rtrim($res, '|') . ' ' . $template->escapeHtml($label);
+		});
+
+		// Docblock descriptions
+		$template->registerHelper('longDescription', function($element, $shortIfNone = false) {
+			$short = $element->getAnnotation(ReflectionAnnotation::SHORT_DESCRIPTION);
+			$long = $element->getAnnotation(ReflectionAnnotation::LONG_DESCRIPTION);
+
+			if ($long) {
+				$short .= "\n\n" . $long;
+			}
+
+			return $short;
+		});
+		$template->registerHelper('shortDescription', function($element) {
+			return $element->getAnnotation(ReflectionAnnotation::SHORT_DESCRIPTION);
 		});
 
 		// static files versioning
