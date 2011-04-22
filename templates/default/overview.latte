@@ -19,7 +19,7 @@
 	<caption>Packages</caption>
 	{foreach $packages as $package}
 	<tr>
-		<td><a href="{$package|packageLink}">{$package ? $package : 'none'}</a></td>
+		<td><a href="{$package|packageLink}">{$package ? $package : 'None'}</a></td>
 	</tr>
 	{/foreach}
 	</table>
@@ -28,7 +28,7 @@
 	<caption>Namespaces</caption>
 	{foreach $namespaces as $namespace}
 	<tr>
-		<td><a href="{$namespace|namespaceLink}">{$namespace ? $namespace : 'none'}</a></td>
+		<td><a href="{$namespace|namespaceLink}">{$namespace ? $namespace : 'None'}</a></td>
 	</tr>
 	{/foreach}
 	</table>

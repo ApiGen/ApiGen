@@ -410,7 +410,7 @@ class Generator extends NetteX\Object
 		}
 
 		$namescape = $class instanceof \ReflectionClass ? $class->getNamespaceName() : $class;
-		return sprintf($this->config['filenames']['namespace'], $namescape ? preg_replace('#[^a-z0-9_]#i', '.', $namescape) : 'none');
+		return sprintf($this->config['filenames']['namespace'], $namescape ? preg_replace('#[^a-z0-9_]#i', '.', $namescape) : 'None');
 	}
 
 
@@ -427,7 +427,7 @@ class Generator extends NetteX\Object
 		}
 
 		$package = $class instanceof \ReflectionClass ? ($class instanceof CustomClassReflection ? $class->getPackageName() : ($class->isInternal() ? CustomClassReflection::PACKAGE_INTERNAL : CustomClassReflection::PACKAGE_NONE)) : $class;
-		return sprintf($this->config['filenames']['package'], $package ? preg_replace('#[^a-z0-9_]#i', '.', $package) : 'none');
+		return sprintf($this->config['filenames']['package'], $package ? preg_replace('#[^a-z0-9_]#i', '.', $package) : 'None');
 	}
 
 

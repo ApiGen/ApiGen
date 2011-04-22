@@ -26,7 +26,7 @@ class CustomClassReflection extends NetteX\Reflection\ClassType
 	 *
 	 * @var string
 	 */
-	const PACKAGE_NONE = 'none';
+	const PACKAGE_NONE = 'None';
 
 	/**
 	 * Pakcage of internal PHP classes.
