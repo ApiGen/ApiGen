@@ -243,7 +243,7 @@ class fshlParser
 			$this->textpos += $length;
 			$this->text_position[1] += $length;
 			// TAB INDENT and LINE COUNTER
-			if($length && $word[1][$length-1]=="\n") {
+			if($word[1][$length-1]=="\n") {
 				$this->max_line_width = max($this->max_line_width, $this->text_position[1]);
 				$this->text_position[0]++;
 				$this->text_position[1] = 0;

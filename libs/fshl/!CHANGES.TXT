@@ -1,4 +1,4 @@
-Version 0.4.19
+﻿Version 0.4.19
 -------------------------------------------------------
 	+ (PY LANG) Fixed hexadecimal numbers 0X...
 
@@ -115,7 +115,7 @@ Version 0.4.11
 	+ (DEMO) Demo output cache
 
 	- (PARSER) &nbsp; parser flag is deprecated. You must use your own postprocess,
-	           or modify output module.
+			   or modify output module.
 
 
 Version 0.4.10 beta
@@ -138,20 +138,20 @@ Version 0.4.9 beta
 			   fshl.php parser.
 
 	+ (LANG PHP) Added '?>' break to  // comment state
-	             Added '#' comments
+				 Added '#' comments
 
 
 Version 0.4.8
 --------------------------------------------------------------------
 	+ (PARSER) Fixed transition to _QUIT state when was used
-	           in non-embeded grammars
+			   in non-embeded grammars
 
 	+ (PARSER) Fixed little bug in line counter padding
 
 	+ (PARSER) Fixed '&' replacement in output modules
 
 	+ (PARSER) Output appending was finally optimized, thanx to Johno
-	           for cooperation
+			   for cooperation
 
 	+ (LANG HTML HTMLonly) Added ENTITY state and .html-entity CSS class
 
@@ -190,7 +190,7 @@ Version 0.4.6
 	+ (PARSER) New SAFECHAR and !SAFECHAR group delimiters
 
 	+ (PARSER) FSHL_PATH can be defined outside FSHL (for better fshl
-	           integration in projects)
+			   integration in projects)
 
 	+ (LANG PHP) Fixed FUNCTION state, keywords problem temporary fixed
 
@@ -201,7 +201,7 @@ Version 0.4.5
 --------------------------------------------------------------------
 
 	+ (PARSER) Fixed MULHOLLANDDRIVE bug (try highlight <?php \ in older ver.)
-	           Thanx to Johno for bug report
+			   Thanx to Johno for bug report
 
 	+ (PARSER) Fixed keywords in non-out states
 
