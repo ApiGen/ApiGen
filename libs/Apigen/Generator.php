@@ -196,6 +196,7 @@ class Generator extends NetteX\Object
 			uksort($classes, 'strcasecmp');
 			$nPackages = isset($definition['packages']) ? array_keys($definition['packages']) : array();
 			usort($nPackages, 'strcasecmp');
+			$template->package = 1 === count($nPackages) ? $nPackages[0] : null;
 			$template->packages = $nPackages;
 			$template->namespace = $namespace;
 			$template->namespaces = array_filter(array_keys($namespaces), function($item) use($namespace) {
