@@ -15,6 +15,7 @@
 <div id="content">
 	<h1>{$title} Overview</h1>
 
+	{if $packages}
 	<table class="summary" id="packages">
 	<caption>Packages</caption>
 	{foreach $packages as $package}
@@ -23,7 +24,9 @@
 	</tr>
 	{/foreach}
 	</table>
+	{/if}
 
+	{if $namespaces}
 	<table class="summary" id="namespaces">
 	<caption>Namespaces</caption>
 	{foreach $namespaces as $namespace}
@@ -32,5 +35,6 @@
 	</tr>
 	{/foreach}
 	</table>
+	{/if}
 </div>
 {/block}
