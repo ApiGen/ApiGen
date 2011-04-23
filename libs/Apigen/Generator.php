@@ -498,8 +498,7 @@ class Generator extends NetteX\Object
 			'=>',
 			' ',
 			80,
-			$maximum,
-			array('num_datapoints' => min(50, $maximum / 4))
+			$maximum
 		);
 	}
 
