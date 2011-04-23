@@ -70,7 +70,7 @@ var, code, pre {
 	font-family: monospace;
 }
 
-var {
+var, var a {
 	font-weight: bold;
 	font-style: normal;
 	color: #CA8A04;
@@ -78,6 +78,10 @@ var {
 
 pre {
 	margin: 0;
+}
+
+.parentConstants a {
+	color: #000;
 }
 
 

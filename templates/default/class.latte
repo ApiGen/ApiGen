@@ -138,7 +138,7 @@
 	{while $parent = $parent->parentClass}
 	{continueIf !$parent->ownMethods}
 	<h2>Methods Inherited From <a href="{$parent|classLink}#methodSummary">{$parent->name|replaceNS:$namespace}</a></h2>
-	<div class="box"><code>
+	<div class="box parentMethods"><code>
 		{foreach $parent->ownMethods as $method}<a href="{$method|classLink}">{$method->name}()</a>{sep}, {/sep}{/foreach}
 	</code></div>
 	{/while}
@@ -160,7 +160,7 @@
 	{while $parent = $parent->parentClass}
 	{continueIf !$parent->ownConstants}
 	<h2>Constants Inherited From <a href="{$parent|classLink}#constantSummary">{$parent->name|replaceNS:$namespace}</a></h2>
-	<div class="box"><code>{foreach $parent->ownConstants as $name => $value}{$name}{sep}, {/sep}{/foreach}</code></div>
+	<div class="box parentConstants"><code>{foreach $parent->ownConstantReflections as $constant}<a href="{$constant|classLink}"><code>{$constant->name}</code></a>{sep}, {/sep}{/foreach}</code></div>
 	{/while}
 
 
@@ -186,7 +186,7 @@
 	{while $parent = $parent->parentClass}
 	{continueIf !$parent->ownProperties}
 	<h2>Properties Inherited From <a href="{$parent|classLink}#propertySummary">{$parent->name|replaceNS:$namespace}</a></h2>
-	<div class="box"><code>{foreach $parent->ownProperties as $property}<var>${$property->name}</var>{sep}, {/sep}{/foreach}</code></div>
+	<div class="box parentProperties"><code>{foreach $parent->ownProperties as $property}<var><a href="{$property|classLink}">${$property->name}</a></var>{sep}, {/sep}{/foreach}</code></div>
 	{/while}
 
 </div>

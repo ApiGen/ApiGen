@@ -14,7 +14,7 @@ namespace Apigen;
 
 use NetteX;
 use Apigen\ClassEnvelope as CustomReflection;
-use TokenReflection\IReflectionClass as ReflectionClass, TokenReflection\IReflectionProperty as ReflectionProperty, TokenReflection\IReflectionMethod as ReflectionMethod;
+use TokenReflection\IReflectionClass as ReflectionClass, TokenReflection\IReflectionProperty as ReflectionProperty, TokenReflection\IReflectionMethod as ReflectionMethod, TokenReflection\IReflectionConstant as ReflectionConstant;
 use TokenReflection\ReflectionAnnotation;
 
 
@@ -494,6 +494,8 @@ class Generator extends NetteX\Object
 				$id = '#$' . $element->getName();
 			} elseif ($element instanceof ReflectionMethod) {
 				$id = '#_' . $element->getName();
+			} elseif ($element instanceof ReflectionConstant) {
+				$id = '#' . $element->getName();
 			}
 		}
 
