@@ -1,32 +1,13 @@
-# APIGen
+# APIGen - TokenReflection version
 
-We have taken the original [David Grudl's](https://github.com/dg) [APIGen](https://github.com/nette/apigen) library and continuously modify it to suit our needs.
+This is an unstable development branch. Use it for testing only. Anything can change anytime :)
 
-Most changes are being sent via pull requests to the upstream. But not everything (some changes make sense only for us) and not at once (some changes depend on each other). Moreover we've decided to stop creating feature branches from upstream's master branch, because it makes merging into our master more and more painful. We will eventually create individual upstream-based branches just for pull requests.
+However this is the future of our Apigen fork - not relying on the internal reflection (and having to include and parse the processed files) but using the TokenReflection library (which will be released soon) and emulating the reflection interface using only the tokenized PHP source. This approach has a couple of disadvantages but a huge number of advantages. And some of them are pretty damn cool :)
 
-Changes from [Jaroslav Hanslík's](https://github.com/kukulich) [fork](https://github.com/kukulich/apigen) are also incorporated - in branches prefixed "kukulich".
+Stay tuned, play with it and let us know what you think. Any feedback will be appreciated.
 
-Being under rapid development, there are no "stable releases". Well, in fact... there are no "releases" at all :) You can always find the latest version in the master branch.
 
-The [Jyxo PHP Library](https://github.com/jyxo) (version [with namespaces](http://jyxo.github.com/php), [without](http://jyxo.github.com/php-no-namespace)) API documentation is generated with the latest version.
+A&K
 
-Currently there are following changes from the original APIGen:
 
-* Bugfix: Better .sh apigen script.
-* Feature: Support for multiple/custom templates.
-* Feature: The target directory can be optionally cleaned prior to generating (deleting only directories/files created by apigen).
-* Feature: Packages support for both namespaced and non-namespaced code.
-* Bugfix: Class list output.
-* Feature: Filtering namespaces/packages in sidebar when selecting a class/interface/package/namespace.
-* Feature: Class/interface tables/headings displayed only if there are some.
-* Feature: Resizable sidebar.
-* Feature/Bugfix: Better page titles.
-* Feature: Optional progressbar while generating documentation.
-* Feature: Better versioning of static files (stylesheets, …).
-* Feature: Setting base URI via comman line (used in sitemaps).
-* Bugfix: (Kukulich) Texy should not process HTML code in docblocks.
-* Bugfix: (Kukulich) Fixed highlighting of code and pre elements.
-* Bugfix: (Kukulich) Fixed FQNs handling.
-* Bugfix: (Kukulich) Support for line breaks in docblocks.
-* Feature: (Kukulich) Better parameter type output.
-* Feature: (Kukulich) Output of inherited internal classes/interfaces.
+Bottom line: When this branch gets merged into master, it will mean the end of our pull requests to the original library (btw, none of them was accepted yet, which is not very motivating anyway). After this step, there won't be much common in our fork and the original library (the parsing Model is completely different, there are different template helpers, there are many incompatible changes in templates, …).
