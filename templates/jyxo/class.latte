@@ -78,7 +78,7 @@
 			<td>
 			<a class="anchor" href="#_{$method->name}">#</a>
 			<code class="nowrap">
-				<a href="{$method|sourceLink}" title="go to {$class->internal ? 'PHP documentation' : 'source code'}"><b>{$method->name}</b></a>(
+				<a href="{$method|sourceLink}" title="Go to {$class->internal ? 'PHP documentation' : 'source code'}"><b>{$method->name}</b></a>(
 				{foreach $method->parameters as $parameter}
 					{if $parameter->array}array
 					{elseif $parameter->className}<a href="{$parameter->className|classLink}">{$parameter->className|replaceNS:$namespace}</a>
