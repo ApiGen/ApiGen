@@ -16,7 +16,7 @@ use NetteX;
 use Apigen\Reflection as ApiReflection;
 use TokenReflection\Broker, TokenReflection\Broker\Backend;
 use TokenReflection\IReflectionClass as ReflectionClass, TokenReflection\IReflectionProperty as ReflectionProperty, TokenReflection\IReflectionMethod as ReflectionMethod, TokenReflection\IReflectionConstant as ReflectionConstant;
-use TokenReflection\ReflectionAnnotation;
+use TokenReflection\ReflectionAnnotation, TokenReflection\Dummy\ReflectionClass as DummyClass;
 
 
 /**
@@ -139,6 +139,10 @@ class Generator extends NetteX\Object
 		foreach (array_merge($class->getParentClassNameList(), $class->getInterfaceNames()) as $parent) {
 			if (!isset($this->classes[$parent])) {
 				$parentClass = $class->getBroker()->getClass($parent);
+				if ($parentClass instanceof DummyClass) {
+					continue;
+				}
+
 				$this->classes[$parent] = new ApiReflection($parentClass);
 				$this->addParents($parentClass);
 			}
