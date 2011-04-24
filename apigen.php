@@ -16,7 +16,8 @@ require __DIR__ . '/libs/NetteX/nette.min.php';
 require __DIR__ . '/libs/fshl/fshl.php';
 require __DIR__ . '/libs/Console/ProgressBar.php';
 require __DIR__ . '/libs/texy/texy.min.php';
-require __DIR__ . '/libs/Apigen/Model.php';
+require __DIR__ . '/libs/TokenReflection/compressed.php';
+require __DIR__ . '/libs/Apigen/Reflection.php';
 require __DIR__ . '/libs/Apigen/Generator.php';
 
 echo '
@@ -52,14 +53,11 @@ Debugger::timer();
 
 
 echo "Scanning folder $options[s]\n";
-$model = new Apigen\Model;
-$model->parse($options['s']);
-$count = count($model->getClasses());
+$generator = new Apigen\Generator;
+$count = $generator->parse($options['s']);
+$countInternal = $generator->expand();
 
-$model->expand();
-$countD = count($model->getClasses()) - $count;
-
-echo "Found $count classes and $countD system classes\n";
+echo "Found $count classes and $countInternal internal classes\n";
 
 
 
@@ -83,7 +81,6 @@ $config['settings']['progressbar'] = isset($options['p']);
 
 
 echo "Generating documentation to folder $options[d]\n";
-$generator = new Apigen\Generator($model);
 if (is_dir($options['d']) && isset($options['w'])) {
 	echo 'Wiping out target directory first';
 	if ($generator->wipeOutTarget($options['d'], $config)) {

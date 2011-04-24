@@ -14,12 +14,13 @@ namespace Apigen;
 
 use NetteX;
 use Apigen\Reflection as ApiReflection;
+use TokenReflection\Broker, TokenReflection\Broker\Backend;
 use TokenReflection\IReflectionClass as ReflectionClass, TokenReflection\IReflectionProperty as ReflectionProperty, TokenReflection\IReflectionMethod as ReflectionMethod, TokenReflection\IReflectionConstant as ReflectionConstant;
 use TokenReflection\ReflectionAnnotation;
 
 
 /**
- * Generates a HTML API documentation based on the model.
+ * Generates a HTML API documentation.
  *
  * @author David Grudl
  * @author Ondřej Nešpor
@@ -32,13 +33,6 @@ class Generator extends NetteX\Object
 	 * @var string
 	 */
 	const VERSION = '2.0';
-
-	/**
-	 * Model instance.
-	 *
-	 * @var Model
-	 */
-	private $model;
 
 	/**
 	 * Configuration.
@@ -55,6 +49,13 @@ class Generator extends NetteX\Object
 	private $progressBar;
 
 	/**
+	 * Processed directory.
+	 *
+	 * @var string
+	 */
+	private $sourceDir;
+
+	/**
 	 * Output directory.
 	 *
 	 * @var string
@@ -62,13 +63,86 @@ class Generator extends NetteX\Object
 	private $outputDir;
 
 	/**
-	 * Constructor.
+	 * Array of reflection envelopes.
 	 *
-	 * @param Model $model Generator model
+	 * @var array
 	 */
-	public function __construct(Model $model)
+	private $classes = array();
+
+	/**
+	 * Scans and parses PHP files.
+	 *
+	 * @param string $dir Parsed directory
+	 * @return integer Number of parsed classes
+	 */
+	public function parse($dir)
 	{
-		$this->model = $model;
+		$this->sourceDir = realpath($dir);
+
+		$broker = new Broker(new Backend\Memory());
+		$broker->processDirectory($dir);
+		foreach ($broker->getClasses() as $name => $class) {
+			if (!$class->isInternal()) {
+				$this->classes[$name] = $class;
+			}
+		}
+
+		return count($this->classes);
+	}
+
+	/**
+	 * Expands the list of classes by internal classes and interfaces.
+	 *
+	 * @return integer Number of added classes
+	 */
+	public function expand()
+	{
+		$count = count($this->classes);
+
+		$declared = array_flip(array_merge(get_declared_classes(), get_declared_interfaces()));
+
+		foreach ($this->classes as $name => $class) {
+			$this->classes[$name] = new ApiReflection($class);
+			$this->addParents($class);
+
+			foreach ($class->getOwnMethods() as $method) {
+				foreach (array('param', 'return', 'throws') as $annotation) {
+					if (!$method->hasAnnotation($annotation)) {
+						continue;
+					}
+
+					foreach ((array) $method->getAnnotation($annotation) as $doc) {
+						$types = preg_replace('#\s.*#', '', $doc);
+						foreach (explode('|', $types) as $name) {
+							$name = ltrim($name, '\\');
+							if (!isset($this->classes[$name]) && isset($declared[$name])) {
+								$parameterClass = $class->getBroker()->getClass($name);
+								$this->classes[$name] = new ApiReflection($parameterClass);
+								$this->addParents($parameterClass);
+							}
+						}
+					}
+				}
+			}
+		}
+
+		return count($this->classes) - $count;
+	}
+
+	/**
+	 * Adds class' parents to processed classes.
+	 *
+	 * @param ReflectionClass $class Class reflection
+	 */
+	private function addParents(ReflectionClass $class)
+	{
+		foreach (array_merge($class->getParentClassNameList(), $class->getInterfaceNames()) as $parent) {
+			if (!isset($this->classes[$parent])) {
+				$parentClass = $class->getBroker()->getClass($parent);
+				$this->classes[$parent] = new ApiReflection($parentClass);
+				$this->addParents($parentClass);
+			}
+		}
 	}
 
 	/**
@@ -158,7 +232,7 @@ class Generator extends NetteX\Object
 		$packages = array();
 		$namespaces = array();
 		$allClasses = array();
-		foreach ($this->model->getClasses() as $class) {
+		foreach ($this->classes as $class) {
 			$packages[$class->getPackageName()]['classes'][$class->getName()] = $class;
 			if ($class->inNamespace()) {
 				$packages[$class->getPackageName()]['namespaces'][$class->getNamespaceName()] = true;
@@ -188,7 +262,7 @@ class Generator extends NetteX\Object
 
 		$template = $this->createTemplate();
 		$template->version = self::VERSION;
-		$template->fileRoot = $this->model->getDirectory();
+		$template->fileRoot = $this->sourceDir;
 		foreach ($config['variables'] as $key => $value) {
 			$template->$key = $value;
 		}
@@ -286,9 +360,9 @@ class Generator extends NetteX\Object
 			$template->classes = !$class->isInterface() && !$class->isException() ? array($class) : array();
 			$template->interfaces = $class->isInterface() && !$class->isException() ? array($class) : array();
 			$template->exceptions = $class->isException() ? array($class) : array();
-			$template->subClasses = $this->model->getDirectSubClasses($class);
+			$template->subClasses = $this->getDirectSubClasses($class);
 			uksort($template->subClasses, 'strcasecmp');
-			$template->implementers = $this->model->getDirectImplementers($class);
+			$template->implementers = $this->getDirectImplementers($class);
 			uksort($template->implementers, 'strcasecmp');
 			$template->class = $class;
 			$template->setFile($config['templates']['class'])->save(self::forceDir($output . '/' . $this->formatClassLink($class)));
@@ -299,7 +373,7 @@ class Generator extends NetteX\Object
 			if ($class->isUserDefined() && !isset($generatedFiles[$class->getFileName()])) {
 				$file = $class->getFileName();
 				$template->source = $fshl->highlightString('PHP', file_get_contents($file));
-				$template->fileName = substr($file, strlen($this->model->getDirectory()) + 1);
+				$template->fileName = substr($file, strlen($this->sourceDir) + 1);
 				$template->setFile($config['templates']['source'])->save(self::forceDir($output . '/' . $this->formatSourceLink($class, FALSE)));
 				$generatedFiles[$file] = TRUE;
 
@@ -350,8 +424,8 @@ class Generator extends NetteX\Object
 		$template->registerHelper('sourceLink', callback($this, 'formatSourceLink'));
 
 		// types
-		$model = $this->model;
-		$template->registerHelper('getTypes', function($element, $position = NULL) use ($model) {
+		$that = $this;
+		$template->registerHelper('getTypes', function($element, $position = NULL) use ($that) {
 			$namespace = $element->getDeclaringClass()->getNamespaceName();
 			$s = $position === NULL ? $element->getAnnotation($element->hasAnnotation('var') ? 'var' : 'return')
 				: @$element->annotations['param'][$position];
@@ -361,12 +435,12 @@ class Generator extends NetteX\Object
 			$res = array();
 			foreach (preg_replace('#\s.*#', '', $s) as $s) {
 				foreach (explode('|', $s) as $name) {
-					$res[] = (object) array('name' => $name, 'class' => $model->resolveType($name, $namespace));
+					$res[] = (object) array('name' => $name, 'class' => $that->resolveType($name, $namespace));
 				}
 			}
 			return $res;
 		});
-		$template->registerHelper('resolveType', callback($model, 'resolveType'));
+		$template->registerHelper('resolveType', callback($this, 'resolveType'));
 		$template->registerHelper('getType', function($variable) {
 			return is_object($variable) ? get_class($variable) : gettype($variable);
 		});
@@ -522,11 +596,71 @@ class Generator extends NetteX\Object
 				return strtolower('http://php.net/manual/' . $class->getName() . '.' . strtr(ltrim($element->getName(), '_'), '_', '-') . '.php');
 			}
 		} elseif ($class->isUserDefined()) {
-			$file = substr($element->getFileName(), strlen($this->model->getDirectory()) + 1);
+			$file = substr($element->getFileName(), strlen($this->sourceDir) + 1);
 			$line = $withLine ? $element->getStartLine() : NULL;
 
 			return sprintf($this->config['filenames']['source'], preg_replace('#[^a-z0-9_]#i', '.', $file)) . (isset($line) ? "#$line" : '');
 		}
+	}
+
+	/**
+	 * Returns a list of direct subclasses.
+	 *
+	 * @param Reflection Requested class
+	 * @return array
+	 */
+	private function getDirectSubClasses($parent)
+	{
+		$parent = $parent->getName();
+		$res = array();
+		foreach ($this->classes as $class) {
+			if ($class->getParentClass() && $class->getParentClass()->getName() === $parent) {
+				$res[$class->getName()] = $class;
+			}
+		}
+		return $res;
+	}
+
+	/**
+	 * Returns a list of direct implementers.
+	 *
+	 * @param \TokenReflection\IReflectionClass
+	 * @return array
+	 */
+	private function getDirectImplementers($interface)
+	{
+		if (!$interface->isInterface()) return array();
+
+		$interface = $interface->getName();
+		$res = array();
+		foreach ($this->classes as $class) {
+			if (!$class->implementsInterface($interface)) {
+				continue;
+			}
+
+			$parent = $class->getParentClass();
+			if (!$parent || !$parent->implementsInterface($interface)) {
+				$res[$class->getName()] = $class;
+			}
+		}
+
+		return $res;
+	}
+
+	/**
+	 * Tries to resolve type as class or interface name.
+	 *
+	 * @param string Data type description
+	 * @param string Namespace name
+	 * @return string
+	 */
+	public function resolveType($type, $namespace = NULL)
+	{
+		if (substr($type, 0, 1) === '\\') {
+			$namespace = '';
+			$type = substr($type, 1);
+		}
+		return isset($this->classes["$namespace\\$type"]) ? "$namespace\\$type" : (isset($this->classes[$type]) ? $type : NULL);
 	}
 
 	/**
