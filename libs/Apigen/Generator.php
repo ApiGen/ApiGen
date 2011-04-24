@@ -31,7 +31,7 @@ class Generator extends NetteX\Object
 	 *
 	 * @var float
 	 */
-	const VERSION = 0.1;
+	const VERSION = 2.0;
 
 	/**
 	 * Model instance.
