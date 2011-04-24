@@ -435,7 +435,7 @@ class Generator extends NetteX\Object
 		$template->registerHelper('getTypes', function($element, $position = NULL) use ($that) {
 			$namespace = $element->getDeclaringClass()->getNamespaceName();
 			$s = $position === NULL ? $element->getAnnotation($element->hasAnnotation('var') ? 'var' : 'return')
-				: @$element->annotations['param'][$position];
+				: (array) @$element->annotations['param'][$position];
 			if (is_object($s)) {
 				$s = get_class($s); // TODO
 			}
