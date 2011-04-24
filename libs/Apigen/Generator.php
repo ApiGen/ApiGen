@@ -359,7 +359,7 @@ class Generator extends NetteX\Object
 				$s = get_class($s); // TODO
 			}
 			$res = array();
-			foreach ((array) preg_replace('#\s.*#', '', $s) as $s) {
+			foreach (preg_replace('#\s.*#', '', $s) as $s) {
 				foreach (explode('|', $s) as $name) {
 					$res[] = (object) array('name' => $name, 'class' => $model->resolveType($name, $namespace));
 				}
