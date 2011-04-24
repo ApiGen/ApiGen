@@ -13,7 +13,7 @@
 namespace Apigen;
 
 use NetteX;
-use Apigen\ClassEnvelope as CustomReflection;
+use Apigen\Reflection as ApiReflection;
 use TokenReflection\IReflectionClass as ReflectionClass, TokenReflection\IReflectionProperty as ReflectionProperty, TokenReflection\IReflectionMethod as ReflectionMethod, TokenReflection\IReflectionConstant as ReflectionConstant;
 use TokenReflection\ReflectionAnnotation;
 
@@ -177,7 +177,7 @@ class Generator extends NetteX\Object
 				+ count($namespaces)
 				+ count($packages)
 				+ count($config['templates']['common'])
-				+ array_reduce($allClasses, function($count, CustomReflection $class) {
+				+ array_reduce($allClasses, function($count, ApiReflection $class) {
 					if ($class->isUserDefined()) {
 						$count++;
 					}
@@ -442,7 +442,7 @@ class Generator extends NetteX\Object
 	/**
 	 * Generates a link to a namespace summary file.
 	 *
-	 * @param  string|\Apigen\ClassEnvelope|IReflectionNamespace
+	 * @param  string|\Apigen\Reflection|IReflectionNamespace
 	 * @return string
 	 */
 	public function formatNamespaceLink($class)
@@ -451,14 +451,14 @@ class Generator extends NetteX\Object
 			throw new \Exception('Namespace output filename not defined.');
 		}
 
-		$namescape = ($class instanceof CustomReflection) ? $class->getNamespaceName() : $class;
+		$namescape = ($class instanceof ApiReflection) ? $class->getNamespaceName() : $class;
 		return sprintf($this->config['filenames']['namespace'], $namescape ? preg_replace('#[^a-z0-9_]#i', '.', $namescape) : 'None');
 	}
 
 	/**
 	 * Generates a link to a package summary file.
 	 *
-	 * @param  string|\Apigen\ClassEnvelope
+	 * @param  string|\Apigen\Reflection
 	 * @return string
 	 */
 	public function formatPackageLink($class)
@@ -467,14 +467,14 @@ class Generator extends NetteX\Object
 			throw new \Exception('Package output filename not defined.');
 		}
 
-		$package = ($class instanceof CustomReflection) ? $class->getPackageName() : $class;
+		$package = ($class instanceof ApiReflection) ? $class->getPackageName() : $class;
 		return sprintf($this->config['filenames']['package'], $package ? preg_replace('#[^a-z0-9_]#i', '.', $package) : 'None');
 	}
 
 	/**
 	 * Generates a link to class summary file.
 	 *
-	 * @param  string|\Apigen\ClassEnvelope|IReflectionMethod|IReflectionProperty
+	 * @param  string|\Apigen\Reflection|IReflectionMethod|IReflectionProperty
 	 * @return string
 	 */
 	public function formatClassLink($element)
@@ -486,7 +486,7 @@ class Generator extends NetteX\Object
 		$id = '';
 		if (is_string($element)) {
 			$class = $element;
-		} elseif ($element instanceof CustomReflection) {
+		} elseif ($element instanceof ApiReflection) {
 			$class = $element->getName();
 		} else {
 			$class = $element->getDeclaringClass()->getName();
@@ -505,7 +505,7 @@ class Generator extends NetteX\Object
 	/**
 	 * Generates a link to a class source code file.
 	 *
-	 * @param  \Apigen\ClassEnvelope|IReflectionMethod
+	 * @param  \Apigen\Reflection|IReflectionMethod
 	 * @return string|null
 	 */
 	public function formatSourceLink($element, $withLine = TRUE)
@@ -514,9 +514,9 @@ class Generator extends NetteX\Object
 			throw new \Exception('Source output filename not defined.');
 		}
 
-		$class = ($element instanceof CustomReflection) ? $element : $element->getDeclaringClass();
+		$class = ($element instanceof ApiReflection) ? $element : $element->getDeclaringClass();
 		if ($class->isInternal()) {
-			if ($element instanceof CustomReflection) {
+			if ($element instanceof ApiReflection) {
 				return strtolower('http://php.net/manual/class.' . $class->getName() . '.php');
 			} else {
 				return strtolower('http://php.net/manual/' . $class->getName() . '.' . strtr(ltrim($element->getName(), '_'), '_', '-') . '.php');

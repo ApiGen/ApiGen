@@ -3,12 +3,12 @@
 namespace Apigen;
 use NetteX;
 
-use Apigen\ClassEnvelope as CustomReflection;
+use Apigen\Reflection as ApiReflection;
 use TokenReflection\Broker, TokenReflection\Broker\Backend;
 use TokenReflection\IReflectionClass as ReflectionClass, TokenReflection\IReflectionProperty as ReflectionProperty, TokenReflection\IReflectionMethod as ReflectionMethod;
 
 require_once __DIR__ . '/../TokenReflection/compressed.php';
-require_once __DIR__ . '/ClassEnvelope.php';
+require_once __DIR__ . '/Reflection.php';
 
 /**
 * Scans and reflects classes/interfaces structure.
@@ -58,7 +58,7 @@ class Model extends NetteX\Object
 		$declared = array_flip(array_merge(get_declared_classes(), get_declared_interfaces()));
 
 		foreach ($this->classes as $name => $class) {
-			$this->classes[$name] = new CustomReflection($class);
+			$this->classes[$name] = new ApiReflection($class);
 			$this->addParents($class);
 
 			foreach ($class->getOwnMethods() as $method) {
@@ -73,7 +73,7 @@ class Model extends NetteX\Object
 							$name = ltrim($name, '\\');
 							if (!isset($this->classes[$name]) && isset($declared[$name])) {
 								$parameterClass = $class->getBroker()->getClass($name);
-								$this->classes[$name] = new CustomReflection($parameterClass);
+								$this->classes[$name] = new ApiReflection($parameterClass);
 								$this->addParents($parameterClass);
 							}
 						}
@@ -93,7 +93,7 @@ class Model extends NetteX\Object
 		foreach (array_merge($class->getParentClassNameList(), $class->getInterfaceNames()) as $parent) {
 			if (!isset($this->classes[$parent])) {
 				$parentClass = $class->getBroker()->getClass($parent);
-				$this->classes[$parent] = new CustomReflection($parentClass);
+				$this->classes[$parent] = new ApiReflection($parentClass);
 				$this->addParents($parentClass);
 			}
 		}
@@ -102,7 +102,7 @@ class Model extends NetteX\Object
 	/**
 	 * Returns a list of direct subclasses.
 	 *
-	 * @param ClassEnvelope Requested class
+	 * @param Reflection Requested class
 	 * @return array
 	 */
 	public function getDirectSubClasses($parent)

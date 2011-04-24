@@ -7,7 +7,7 @@ use TokenReflection\IReflectionClass, ReflectionMethod, ReflectionProperty;
 /**
  * Class reflection envelope.
  */
-class ClassEnvelope
+class Reflection
 {
 	/**
 	 * Class methods cache.
@@ -31,7 +31,7 @@ class ClassEnvelope
 	 * @param \TokenReflection\IReflectionClass $reflection Inspected class reflection
 	 */
 	public function __construct(IReflectionClass $reflection) {
-		if (empty(ClassEnvelope::$methods)) {
+		if (empty(self::$methods)) {
 			self::$methods = array_flip(get_class_methods($this));
 		}
 
@@ -109,7 +109,7 @@ class ClassEnvelope
 	public function getParentClasses()
 	{
 		return array_map(function($class) {
-			return new ClassEnvelope($class);
+			return new Reflection($class);
 		}, $this->reflection->getParentClasses());
 	}
 
@@ -121,7 +121,7 @@ class ClassEnvelope
 	public function getInterfaces()
 	{
 		return array_map(function($class) {
-			return new ClassEnvelope($class);
+			return new Reflection($class);
 		}, $this->reflection->getInterfaces());
 	}
 
@@ -133,7 +133,7 @@ class ClassEnvelope
 	public function getOwnInterfaces()
 	{
 		return array_map(function($class) {
-			return new ClassEnvelope($class);
+			return new Reflection($class);
 		}, $this->reflection->getOwnInterfaces(false));
 	}
 }
