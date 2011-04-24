@@ -56,4 +56,8 @@ $(function(){
 		minRight: 600,
 		anchorToWindow: true
 	}).resize();
+
+	if (window.location.hash && $('#right ' + window.location.hash).size()) {
+		$('#rightWrapper').scrollTop($('#rightWrapper ' + window.location.hash).offset().top);
+	}
 });
