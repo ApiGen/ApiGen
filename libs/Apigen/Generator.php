@@ -528,8 +528,8 @@ class Generator extends NetteX\Object
 			throw new \Exception('Namespace output filename not defined.');
 		}
 
-		$namescape = ($class instanceof ApiReflection) ? $class->getNamespaceName() : $class;
-		return sprintf($this->config['filenames']['namespace'], $namescape ? preg_replace('#[^a-z0-9_]#i', '.', $namescape) : 'None');
+		$namespace = ($class instanceof ApiReflection) ? $class->getNamespaceName() : $class;
+		return sprintf($this->config['filenames']['namespace'], $namespace ? preg_replace('#[^a-z0-9_]#i', '.', $namespace) : 'None');
 	}
 
 	/**
