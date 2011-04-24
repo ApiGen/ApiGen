@@ -29,9 +29,9 @@ class Generator extends NetteX\Object
 	/**
 	 * Library version.
 	 *
-	 * @var float
+	 * @var string
 	 */
-	const VERSION = 2.0;
+	const VERSION = '2.0';
 
 	/**
 	 * Model instance.
