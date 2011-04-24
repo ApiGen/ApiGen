@@ -597,7 +597,13 @@ class Generator extends NetteX\Object
 			}
 		} elseif ($class->isUserDefined()) {
 			$file = substr($element->getFileName(), strlen($this->sourceDir) + 1);
-			$line = $withLine ? $element->getStartLine() : NULL;
+			$line = null;
+			if ($withLine) {
+				$line = $element->getStartLine();
+				if ($doc = $element->getDocComment()) {
+					$line -= substr_count($doc, "\n") + 1;
+				}
+			}
 
 			return sprintf($this->config['filenames']['source'], preg_replace('#[^a-z0-9_]#i', '.', $file)) . (isset($line) ? "#$line" : '');
 		}
