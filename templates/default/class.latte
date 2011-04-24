@@ -123,7 +123,7 @@
 				{var $prototype = $method->prototype}
 				{if $prototype->declaringClass->interface}
 					<h4>Implementation of</h4>
-					<div class="smallList"><code><a href="{$prototype|classLink}">{$prototype->declaringClass->name|replaceNS:$namespace}::{$prototype->name}</a></code></div>
+					<div class="smallList"><code><a href="{$prototype|methodLink}">{$prototype->declaringClass->name|replaceNS:$namespace}::{$prototype->name}</a></code></div>
 				{/if}
 				{/try}
 			</div>
@@ -139,7 +139,7 @@
 	{continueIf !$parent->ownMethods}
 	<h2>Methods Inherited From <a href="{$parent|classLink}#methodSummary">{$parent->name|replaceNS:$namespace}</a></h2>
 	<div class="box parentMethods"><code>
-		{foreach $parent->ownMethods as $method}<a href="{$method|classLink}">{$method->name}()</a>{sep}, {/sep}{/foreach}
+		{foreach $parent->ownMethods as $method}<a href="{$method|methodLink}">{$method->name}()</a>{sep}, {/sep}{/foreach}
 	</code></div>
 	{/while}
 
@@ -170,7 +170,7 @@
 	{while $parent = $parent->parentClass}
 	{continueIf !$parent->ownConstants}
 	<h2>Constants Inherited From <a href="{$parent|classLink}#constantSummary">{$parent->name|replaceNS:$namespace}</a></h2>
-	<div class="box parentConstants"><code>{foreach $parent->ownConstantReflections as $constant}<a href="{$constant|classLink}"><code>{$constant->name}</code></a>{sep}, {/sep}{/foreach}</code></div>
+	<div class="box parentConstants"><code>{foreach $parent->ownConstantReflections as $constant}<a href="{$constant|constantLink}"><code>{$constant->name}</code></a>{sep}, {/sep}{/foreach}</code></div>
 	{/while}
 
 
@@ -196,7 +196,7 @@
 	{while $parent = $parent->parentClass}
 	{continueIf !$parent->ownProperties}
 	<h2>Properties Inherited From <a href="{$parent|classLink}#propertySummary">{$parent->name|replaceNS:$namespace}</a></h2>
-	<div class="box parentProperties"><code>{foreach $parent->ownProperties as $property}<var><a href="{$property|classLink}">${$property->name}</a></var>{sep}, {/sep}{/foreach}</code></div>
+	<div class="box parentProperties"><code>{foreach $parent->ownProperties as $property}<var><a href="{$property|propertyLink}">${$property->name}</a></var>{sep}, {/sep}{/foreach}</code></div>
 	{/while}
 
 </div>

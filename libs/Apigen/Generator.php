@@ -421,6 +421,9 @@ class Generator extends NetteX\Object
 		$template->registerHelper('packageLink', callback($this, 'formatPackageLink'));
 		$template->registerHelper('namespaceLink', callback($this, 'formatNamespaceLink'));
 		$template->registerHelper('classLink', callback($this, 'formatClassLink'));
+		$template->registerHelper('methodLink', callback($this, 'formatMethodLink'));
+		$template->registerHelper('propertyLink', callback($this, 'formatPropertyLink'));
+		$template->registerHelper('constantLink', callback($this, 'formatConstantLink'));
 		$template->registerHelper('sourceLink', callback($this, 'formatSourceLink'));
 
 		// types
@@ -548,32 +551,53 @@ class Generator extends NetteX\Object
 	/**
 	 * Generates a link to class summary file.
 	 *
-	 * @param  string|\Apigen\Reflection|IReflectionMethod|IReflectionProperty
+	 * @param  string|\Apigen\Reflection $class
 	 * @return string
 	 */
-	public function formatClassLink($element)
+	public function formatClassLink($class)
 	{
 		if (!isset($this->config['filenames']['class'])) {
 			throw new \Exception('Class output filename not defined.');
 		}
 
-		$id = '';
-		if (is_string($element)) {
-			$class = $element;
-		} elseif ($element instanceof ApiReflection) {
-			$class = $element->getName();
-		} else {
-			$class = $element->getDeclaringClass()->getName();
-			if ($element instanceof ReflectionProperty) {
-				$id = '#$' . $element->getName();
-			} elseif ($element instanceof ReflectionMethod) {
-				$id = '#_' . $element->getName();
-			} elseif ($element instanceof ReflectionConstant) {
-				$id = '#' . $element->getName();
-			}
+		if ($class instanceof ApiReflection) {
+			$class = $class->getName();
 		}
 
-		return sprintf($this->config['filenames']['class'], preg_replace('#[^a-z0-9_]#i', '.', $class)) . $id;
+		return sprintf($this->config['filenames']['class'], preg_replace('#[^a-z0-9_]#i', '.', $class));
+	}
+
+	/**
+	 * Generates a link to method in class summary file.
+	 *
+	 * @param IReflectionMethod $method
+	 * @return string
+	 */
+	public function formatMethodLink(ReflectionMethod $method)
+	{
+		return $this->formatClassLink($method->getDeclaringClassName()) . '#_' . $method->getName();
+	}
+
+	/**
+	 * Generates a link to property in class summary file.
+	 *
+	 * @param IReflectionProperty $property
+	 * @return string
+	 */
+	public function formatPropertyLink(ReflectionProperty $property)
+	{
+		return $this->formatClassLink($property->getDeclaringClassName()) . '#$' . $property->getName();
+	}
+
+	/**
+	 * Generates a link to constant in class summary file.
+	 *
+	 * @param IReflectionConstant $constant
+	 * @return string
+	 */
+	public function formatConstantLink(ReflectionConstant $constant)
+	{
+		return $this->formatClassLink($constant->getDeclaringClassName()) . '#' . $constant->getName();
 	}
 
 	/**
