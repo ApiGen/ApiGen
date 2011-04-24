@@ -149,8 +149,18 @@
 		<caption>Constant Summary</caption>
 		{foreach $class->ownConstantReflections as $name => $constant}
 		<tr data-order="{$name}" id="{$name}">
-			<td align="right" width="1%"><code><b>{$name}</b></code></td>
-			<td><code>{!$constant->valueDefinition|highlightPHP}</code> <a href="#{$name}" class="anchor">#</a></td>
+			<td align="right" width="1%"><code class="nowrap">
+				{if $constant->hasAnnotation('var')}
+					{foreach $constant->getAnnotation('var') as $type}
+						{$type}{sep}|{/sep}
+					{/foreach}
+				{elseif !$constant->tokenized}
+					{$constant->value|getType}
+				{/if}
+			</code></td>
+			<td width="1%"><code><b>{$name}</b></code></td>
+			<td><code>{!$constant->valueDefinition|highlightPHP}</code></td>
+			<td>{!$constant|shortDescription|docline} <a href="#{$name}" class="anchor">#</a></td>
 		</tr>
 		{/foreach}
 		</table>
