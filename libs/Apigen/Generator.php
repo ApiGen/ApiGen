@@ -607,10 +607,10 @@ class Generator extends NetteX\Object
 	/**
 	 * Generates a link to a class source code file.
 	 *
-	 * @param \Apigen\Reflection|IReflectionMethod $element
+	 * @param  \Apigen\Reflection|IReflectionMethod
 	 * @return string|null
 	 */
-	public function formatSourceLink($element)
+	public function formatSourceLink($element, $withLine = TRUE)
 	{
 		if (!isset($this->config['filenames']['source'])) {
 			throw new \Exception('Source output filename not defined.');
@@ -625,12 +625,15 @@ class Generator extends NetteX\Object
 			}
 		} elseif ($class->isUserDefined()) {
 			$file = substr($element->getFileName(), strlen($this->sourceDir) + 1);
-			$line = $element->getStartLine();
-			if ($doc = $element->getDocComment()) {
-				$line -= substr_count($doc, "\n") + 1;
+			$line = null;
+			if ($withLine) {
+				$line = $element->getStartLine();
+				if ($doc = $element->getDocComment()) {
+					$line -= substr_count($doc, "\n") + 1;
+				}
 			}
 
-			return sprintf($this->config['filenames']['source'], preg_replace('#[^a-z0-9_]#i', '.', $file)) . '#' . $line;
+			return sprintf($this->config['filenames']['source'], preg_replace('#[^a-z0-9_]#i', '.', $file)) . (isset($line) ? "#$line" : '');
 		}
 	}
 
