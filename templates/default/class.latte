@@ -182,7 +182,7 @@
 		{foreach $class->ownProperties as $property}
 		<tr data-order="{$property->name}" id="${$property->name}">
 			<td align="right" width="1%"><code class="nowrap">
-				{if $property->protected}protected{elseif $property->private}private{/if} {if $property->static}static{/if}
+				{if $property->protected}protected{elseif $property->private}private{else}public{/if} {if $property->static}static{/if}
 				{foreach $template->getTypes($property) as $return}<a href="{$return->class|classLink}" n:tag-if="$return->class">{$return->name|replaceNS:$namespace}</a>{sep}|{/sep}{/foreach}
 			</code></td>
 

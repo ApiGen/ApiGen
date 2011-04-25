@@ -4,7 +4,7 @@
  * API Generator.
  *
  * Copyright (c) 2010 David Grudl (http://davidgrudl.com)
- * Copyright (c) 2011 OndÅ™ej NeÅ¡por (http://andrewsville.cz)
+ * Copyright (c) 2011 Ondøej Nešpor (http://andrewsville.cz)
  *
  * This source file is subject to the "Nette license", and/or
  * GPL license. For more information please see http://nette.org
@@ -23,7 +23,7 @@ use TokenReflection\ReflectionAnnotation, TokenReflection\Dummy\ReflectionClass 
  * Generates a HTML API documentation.
  *
  * @author David Grudl
- * @author OndÅ™ej NeÅ¡por
+ * @author Ondøej Nešpor
  */
 class Generator extends NetteX\Object
 {
@@ -472,7 +472,11 @@ class Generator extends NetteX\Object
 			return $texy->processLine($text);
 		});
 		$template->registerHelper('docblock', function($text) use ($texy) {
-			return $texy->process(preg_replace('#([^\n])(\n)([^\n])#', '\1\2 \3', $text));
+			$text = preg_replace('#([^\n])(\n)([^\n])#', '\1\2 \3', $text);
+			$text = preg_replace_callback('#<(code|pre)>.+?</\1>#s', function($matches) {
+				return preg_replace('#([^\n])(\n) ([^\n])#', '\1\2\3', $matches[0]);
+			}, $text);
+			return $texy->process($text);
 		});
 		$template->registerHelper('doclabel', function($doc, $namespace) use ($template) {
 			@list($names, $label) = preg_split('#\s+#', $doc, 2);
