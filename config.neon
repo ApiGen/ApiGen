@@ -4,7 +4,7 @@ title: ''
 baseUri: ''
 template: default
 templateDir: ''
-wipeout: No
+wipeout: On
 progressbar: On
 
 resources:

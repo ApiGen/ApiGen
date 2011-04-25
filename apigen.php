@@ -37,7 +37,7 @@ $options = getopt('', array(
 	'template::',
 	'template-dir::',
 	'progressbar::',
-	'wipeout'
+	'wipeout::'
 ));
 
 if (isset($options['source'], $options['destination'])) {
@@ -70,7 +70,7 @@ Options:
 	--base-uri      <value> Documentation base URI
 	--template      <value> Documentation template name
 	--template-dir  <path>  Folder with templates
-	--wipeout               Wipe out the target directory first
+	--wipeout       On|Off  Wipe out the destination directory first, default On
 	--progressbar   On|Off  Display progressbar, default On
 
 <?php
@@ -85,7 +85,7 @@ if (empty($config['templateDir'])) {
 	$config['templateDir'] = __DIR__ . '/templates';
 }
 if (!isset($config['wipeout'])) {
-	$config['wipeout'] = false;
+	$config['wipeout'] = true;
 }
 if (!isset($config['progressbar'])) {
 	$config['progressbar'] = true;

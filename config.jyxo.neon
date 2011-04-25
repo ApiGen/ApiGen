@@ -4,7 +4,7 @@ title: 'Jyxo PHP Library'
 baseUri: 'http://jyxo.github.com/php'
 template: jyxo
 templateDir: ''
-wipeout: Yes
+wipeout: On
 progressbar: On
 
 resources:
