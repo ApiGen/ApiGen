@@ -35,14 +35,24 @@
 			{/foreach}
 		</dl>
 
-		<div n:if="$subClasses">
+		<div n:if="$directSubClasses">
 			<h4>Direct Known Subclasses</h4>
-			{foreach $subClasses as $item}<a href="{$item|classLink}">{$item->name|replaceNS:$namespace}</a>{sep}, {/sep}{/foreach}
+			{foreach $directSubClasses as $item}<a href="{$item|classLink}">{$item->name|replaceNS:$namespace}</a>{sep}, {/sep}{/foreach}
 		</div>
 
-		<div n:if="$implementers">
+		<div n:if="$indirectSubClasses">
+			<h4>Indirect Known Subclasses</h4>
+			{foreach $indirectSubClasses as $item}<a href="{$item|classLink}">{$item->name|replaceNS:$namespace}</a>{sep}, {/sep}{/foreach}
+		</div>
+
+		<div n:if="$directImplementers">
 			<h4>Direct Known Implementers</h4>
-			{foreach $implementers as $item}<a href="{$item|classLink}">{$item->name|replaceNS:$namespace}</a>{sep}, {/sep}{/foreach}
+			{foreach $directImplementers as $item}<a href="{$item|classLink}">{$item->name|replaceNS:$namespace}</a>{sep}, {/sep}{/foreach}
+		</div>
+
+		<div n:if="$indirectImplementers">
+			<h4>Indirect Known Implementers</h4>
+			{foreach $indirectImplementers as $item}<a href="{$item|classLink}">{$item->name|replaceNS:$namespace}</a>{sep}, {/sep}{/foreach}
 		</div>
 
 		<div class="classInfo">
