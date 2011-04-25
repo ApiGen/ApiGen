@@ -28,73 +28,100 @@ Apigen ' . Apigen\Generator::VERSION . '
 ------------------
 ';
 
-$options = getopt('s:d:c:t:l:wpb:');
+$options = getopt('', array(
+	'source::',
+	'destination::',
+	'config::',
+	'title::',
+	'base-uri::',
+	'template::',
+	'template-dir::',
+	'progressbar',
+	'wipeout'
+));
 
-if (!isset($options['s'], $options['d'])) { ?>
+if (isset($options['source'], $options['destination'])) {
+	$config = array();
+	foreach ($options as $key => $value) {
+		$key = preg_replace_callback('#-([a-z])#', function($matches) {
+			return ucfirst($matches[1]);
+		}, $key);
+		$config[$key] = $value;
+	}
+} elseif (isset($options['config'])) {
+	$config = NetteX\Utils\Neon::decode(file_get_contents($options['config']));
+} else { ?>
 Usage:
-	php apigen.php [options]
+	php apigen.php --source=<path> --destination=<path> [options]
+	php apigen.php --config=<path>
 
 Options:
-	-s <path>  Name of a source directory to parse. Required.
-	-d <path>  Folder where to save the generated documentation. Required.
-	-c <path>  Output config file.
-	-t ...     Title of generated documentation.
-	-l ...     Documentation template name
-	-w         Wipe out the target directory first
-	-p         Display progressbar
-	-b <value> Documentation base URI
+	--source        <path>  Name of a source directory to parse
+	--destination   <path>  Folder where to save the generated documentation
+	--config        <path>  Config file
+	--title         <value> Title of generated documentation
+	--base-uri      <value> Documentation base URI
+	--template      <value> Documentation template name
+	--template-dir  <path>  Folder with templates
+	--wipeout               Wipe out the target directory first
+	--progressbar           Display progressbar
 
 <?php
 	die();
 }
 
-
+// Default configuration
+if (empty($config['template'])) {
+	$config['template'] = 'default';
+}
+if (empty($config['templateDir'])) {
+	$config['templateDir'] = __DIR__ . '/templates';
+}
+if (!isset($config['wipeout'])) {
+	$config['wipeout'] = false;
+}
+if (!isset($config['progressbar'])) {
+	$config['progressbar'] = false;
+}
 
 Debugger::enable();
 Debugger::timer();
 
+$generator = new Apigen\Generator($config);
 
-
-echo "Scanning folder $options[s]\n";
-$generator = new Apigen\Generator;
-list($count, $countInternal) = $generator->parse($options['s']);
-
+// Scaning
+if (empty($config['source'])) {
+	echo "Source directory is not set.\n";
+	die();
+} elseif (!is_dir($config['source'])) {
+	echo "Source directory $config[source] doesn't exist.\n";
+	die();
+}
+echo "Scanning folder $config[source]\n";
+list($count, $countInternal) = $generator->parse();
 echo "Found $count classes and $countInternal internal classes\n";
 
 
-
-$template = isset($options['l']) ? $options['l'] : 'default';
-echo "Using template $template\n";
-
-
-
-$configPath = isset($options['c']) ? $options['c'] : __DIR__ . '/config.neon';
-$config = file_get_contents($configPath);
-$config = strtr($config, array('%template%' => $template, '%dir%' => dirname($configPath)));
-$config = NetteX\Utils\Neon::decode($config);
-if (isset($options['t'])) {
-	$config['variables']['title'] = $options['t'];
+// Generating
+if (empty($config['destination'])) {
+	echo "Destination directory is not set.\n";
+	die();
 }
-if (isset($options['b'])) {
-	$config['variables']['baseUri'] = $options['b'];
-}
-$config['settings']['progressbar'] = isset($options['p']);
-
-
-
-echo "Generating documentation to folder $options[d]\n";
-if (is_dir($options['d']) && isset($options['w'])) {
-	echo 'Wiping out target directory first';
-	if ($generator->wipeOutTarget($options['d'], $config)) {
+echo "Generating documentation to folder $config[destination]\n";
+if (is_dir($config['destination']) && $config['wipeout']) {
+	echo 'Wiping out destination directory first';
+	if ($generator->wipeOutDestination()) {
 		echo ", ok\n";
 	} else {
 		echo ", error\n";
 		die();
 	}
 }
-@mkdir($options['d']);
-$generator->generate($options['d'], $config);
 
+echo "Searching template in $config[templateDir]\n";
+echo "Using template $config[template]\n";
+
+$generator->generate();
 
 
 echo "\nDone. Total time: " . (int) Debugger::timer() . " seconds\n";

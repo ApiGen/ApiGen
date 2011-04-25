@@ -50,20 +50,6 @@ class Generator extends NetteX\Object
 	private $progressBar;
 
 	/**
-	 * Processed directory.
-	 *
-	 * @var string
-	 */
-	private $sourceDir;
-
-	/**
-	 * Output directory.
-	 *
-	 * @var string
-	 */
-	private $outputDir;
-
-	/**
 	 * Array of reflection envelopes.
 	 *
 	 * @var array
@@ -71,17 +57,24 @@ class Generator extends NetteX\Object
 	private $classes = array();
 
 	/**
+	 * Sets configuration.
+	 *
+	 * @param array $config
+	 */
+	public function __construct(array $config)
+	{
+		$this->config = $config;
+	}
+
+	/**
 	 * Scans and parses PHP files.
 	 *
-	 * @param string $dir Parsed directory
-	 * @return integer Number of parsed classes
+	 * @return array
 	 */
-	public function parse($dir)
+	public function parse()
 	{
-		$this->sourceDir = realpath($dir);
-
 		$broker = new Broker(new Backend());
-		$broker->processDirectory($dir);
+		$broker->processDirectory(realpath($this->config['source']));
 
 		$tokenized = $broker->getClasses(Backend::TOKENIZED_CLASSES);
 		$internal = $broker->getClasses(Backend::INTERNAL_CLASSES);
@@ -105,17 +98,15 @@ class Generator extends NetteX\Object
 	}
 
 	/**
-	 * Wipes out the target directory.
+	 * Wipes out the destination directory.
 	 *
-	 * @param string target directory
-	 * @param array configuration
 	 * @return boolean
 	 */
-	public function wipeOutTarget($target, array $config)
+	public function wipeOutDestination()
 	{
 		// resources
-		foreach ($config['resources'] as $dir) {
-			$pathName = $target . '/' . $dir;
+		foreach ($this->config['resources'] as $dir) {
+			$pathName = $this->config['destination'] . '/' . $dir;
 			if (is_dir($pathName)) {
 				foreach (NetteX\Utils\Finder::findFiles('*')->from($pathName)->childFirst() as $item) {
 					if ($item->isDir()) {
@@ -135,8 +126,8 @@ class Generator extends NetteX\Object
 		}
 
 		// common files
-		$filenames = array_keys($config['templates']['common']);
-		foreach (NetteX\Utils\Finder::findFiles($filenames)->from($target) as $item) {
+		$filenames = array_keys($this->config['templates']['common']);
+		foreach (NetteX\Utils\Finder::findFiles($filenames)->from($this->config['destination']) as $item) {
 			if (!@unlink($item)) {
 				return false;
 			}
@@ -145,7 +136,7 @@ class Generator extends NetteX\Object
 		// output files
 		$masks = array_map(function($mask) {
 			return preg_replace('~%[^%]*?s~', '*', $mask);
-		}, $config['filenames']);
+		}, $this->config['filenames']);
 		$filter = function($item) use($masks) {
 			foreach ($masks as $mask) {
 				if (fnmatch($mask, $item->getFilename())) {
@@ -156,7 +147,7 @@ class Generator extends NetteX\Object
 			return false;
 		};
 
-		foreach (NetteX\Utils\Finder::findFiles('*')->filter($filter)->from($target) as $item) {
+		foreach (NetteX\Utils\Finder::findFiles('*')->filter($filter)->from($this->config['destination']) as $item) {
 			if (!@unlink($item)) {
 				return false;
 			}
@@ -167,23 +158,21 @@ class Generator extends NetteX\Object
 
 	/**
 	 * Generates API documentation.
-	 *
-	 * @param string output directory
-	 * @param array configuration
 	 */
-	public function generate($output, array $config)
+	public function generate()
 	{
-		if (!is_dir($output)) {
-			throw new \Exception("Directory $output doesn't exist.");
+		@mkdir($this->config['destination']);
+		if (!is_dir($this->config['destination'])) {
+			throw new \Exception("Directory {$this->config['destination']} doesn't exist.");
 		}
 
-		$this->config = $config;
-		$this->outputDir = $output;
+		$destination = $this->config['destination'];
+		$templatePath = $this->config['templateDir'] . '/' . $this->config['template'];
 
 		// copy resources
-		foreach ($config['resources'] as $source => $dest) {
-			foreach ($iterator = NetteX\Utils\Finder::findFiles('*')->from($source)->getIterator() as $foo) {
-				copy($iterator->getPathName(), self::forceDir("$output/$dest/" . $iterator->getSubPathName()));
+		foreach ($this->config['resources'] as $source => $dest) {
+			foreach ($iterator = NetteX\Utils\Finder::findFiles('*')->from($templatePath . '/' . $source)->getIterator() as $foo) {
+				copy($iterator->getPathName(), self::forceDir("$destination/$dest/" . $iterator->getSubPathName()));
 			}
 		}
 
@@ -204,12 +193,12 @@ class Generator extends NetteX\Object
 		uksort($namespaces, 'strcasecmp');
 		uksort($allClasses, 'strcasecmp');
 
-		if ($config['settings']['progressbar']) {
+		if ($this->config['progressbar']) {
 			$this->prepareProgressBar(
 				count($allClasses)
 				+ count($namespaces)
 				+ count($packages)
-				+ count($config['templates']['common'])
+				+ count($this->config['templates']['common'])
 				+ array_reduce($allClasses, function($count, ApiReflection $class) {
 					if ($class->isUserDefined()) {
 						$count++;
@@ -221,8 +210,7 @@ class Generator extends NetteX\Object
 
 		$template = $this->createTemplate();
 		$template->version = self::VERSION;
-		$template->fileRoot = $this->sourceDir;
-		foreach ($config['variables'] as $key => $value) {
+		foreach ($this->config as $key => $value) {
 			$template->$key = $value;
 		}
 
@@ -238,8 +226,8 @@ class Generator extends NetteX\Object
 		$template->exceptions = array_filter($allClasses, function($class) {
 			return $class->isException();
 		});
-		foreach ($config['templates']['common'] as $dest => $source) {
-			$template->setFile($source)->save(self::forceDir("$output/$dest"));
+		foreach ($this->config['templates']['common'] as $dest => $source) {
+			$template->setFile($templatePath . '/' . $source)->save(self::forceDir("$destination/$dest"));
 
 			$this->incrementProgressBar();
 		}
@@ -269,7 +257,7 @@ class Generator extends NetteX\Object
 			$template->exceptions = array_filter($classes, function($class) {
 				return $class->isException();
 			});
-			$template->setFile($config['templates']['namespace'])->save(self::forceDir($output . '/' . $this->formatNamespaceLink($namespace)));
+			$template->setFile($templatePath . '/' . $this->config['templates']['namespace'])->save(self::forceDir($destination . '/' . $this->formatNamespaceLink($namespace)));
 
 			$this->incrementProgressBar();
 		}
@@ -293,7 +281,7 @@ class Generator extends NetteX\Object
 			$template->exceptions = array_filter($classes, function($class) {
 				return $class->isException();
 			});
-			$template->setFile($config['templates']['package'])->save(self::forceDir($output . '/' . $this->formatPackageLink($package)));
+			$template->setFile($templatePath . '/' . $this->config['templates']['package'])->save(self::forceDir($destination . '/' . $this->formatPackageLink($package)));
 
 			$this->incrementProgressBar();
 		}
@@ -331,7 +319,7 @@ class Generator extends NetteX\Object
 			uksort($template->indirectImplementers, 'strcasecmp');
 
 			$template->class = $class;
-			$template->setFile($config['templates']['class'])->save(self::forceDir($output . '/' . $this->formatClassLink($class)));
+			$template->setFile($templatePath . '/' . $this->config['templates']['class'])->save(self::forceDir($destination . '/' . $this->formatClassLink($class)));
 
 			$this->incrementProgressBar();
 
@@ -339,8 +327,8 @@ class Generator extends NetteX\Object
 			if ($class->isUserDefined() && !isset($generatedFiles[$class->getFileName()])) {
 				$file = $class->getFileName();
 				$template->source = $fshl->highlightString('PHP', file_get_contents($file));
-				$template->fileName = substr($file, strlen($this->sourceDir) + 1);
-				$template->setFile($config['templates']['source'])->save(self::forceDir($output . '/' . $this->formatSourceLink($class, FALSE)));
+				$template->fileName = substr($file, strlen($this->config['source']) + 1);
+				$template->setFile($templatePath . '/' . $this->config['templates']['source'])->save(self::forceDir($destination . '/' . $this->formatSourceLink($class, FALSE)));
 				$generatedFiles[$file] = TRUE;
 
 				$this->incrementProgressBar();
@@ -476,11 +464,11 @@ class Generator extends NetteX\Object
 		});
 
 		// static files versioning
-		$outputDir = $this->outputDir;
-		$template->registerHelper('staticFile', function($name, $line = null) use($outputDir) {
+		$destination = $this->config['destination'];
+		$template->registerHelper('staticFile', function($name, $line = null) use ($destination) {
 			static $versions = array();
 
-			$filename = $outputDir . '/' . $name;
+			$filename = $destination . '/' . $name;
 			if (!isset($versions[$filename]) && file_exists($filename)) {
 				$versions[$filename] = sprintf('%u', crc32(file_get_contents($filename)));
 			}
@@ -607,7 +595,7 @@ class Generator extends NetteX\Object
 				return sprintf('%s#%s.constants.%s', $classLink, $className, $elementName);
 			}
 		} elseif ($class->isUserDefined()) {
-			$file = substr($element->getFileName(), strlen($this->sourceDir) + 1);
+			$file = substr($element->getFileName(), strlen($this->config['source']) + 1);
 			$line = null;
 			if ($withLine) {
 				$line = $element->getStartLine();

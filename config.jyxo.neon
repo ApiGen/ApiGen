@@ -1,26 +1,31 @@
+source: ''
+destination: ''
+title: 'Jyxo PHP Library'
+baseUri: 'http://jyxo.github.com/php'
+template: jyxo
+templateDir: ''
+wipeout: Yes
+progressbar: Yes
+
 resources:
-	%dir%/templates/%template%/media: media
+	media: media
 
 templates:
-	namespace: %dir%/templates/%template%/namespace.latte
-	package: %dir%/templates/%template%/package.latte
-	class: %dir%/templates/%template%/class.latte
-	source: %dir%/templates/%template%/source.latte
+	namespace: namespace.latte
+	package: package.latte
+	class: class.latte
+	source: source.latte
 
 	common:
-		allclasses.js: %dir%/templates/%template%/allclasses.js.latte
-		allclasses.html: %dir%/templates/%template%/package.latte
-		index.html: %dir%/templates/%template%/overview.latte
-		overview.html: %dir%/templates/%template%/overview.latte
-		sitemap.xml: %dir%/templates/%template%/sitemap.xml.latte
-		media/combined.js: %dir%/templates/%template%/combined.js.latte
+		allclasses.js: allclasses.js.latte
+		allclasses.html: package.latte
+		index.html: overview.latte
+		overview.html: overview.latte
+		sitemap.xml: sitemap.xml.latte
+		media/combined.js: combined.js.latte
 
 filenames:
 	class: %s.html
 	package: package-%s.html
 	namespace: namespace-%s.html
 	source: source-%s.html
-
-variables:
-	title: 'Jyxo PHP Library'
-	baseUri: 'http://jyxo.github.com/php'
