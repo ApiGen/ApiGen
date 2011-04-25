@@ -4,7 +4,7 @@
  * API Generator.
  *
  * Copyright (c) 2010 David Grudl (http://davidgrudl.com)
- * Copyright (c) 2011 Ondøej Nešpor (http://andrewsville.cz)
+ * Copyright (c) 2011 OndÅ™ej NeÅ¡por (http://andrewsville.cz)
  *
  * This source file is subject to the "Nette license", and/or
  * GPL license. For more information please see http://nette.org
@@ -23,7 +23,7 @@ use TokenReflection\ReflectionAnnotation, TokenReflection\Dummy\ReflectionClass 
  * Generates a HTML API documentation.
  *
  * @author David Grudl
- * @author Ondøej Nešpor
+ * @author OndÅ™ej NeÅ¡por
  */
 class Generator extends NetteX\Object
 {
