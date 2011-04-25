@@ -362,6 +362,9 @@ class Generator extends NetteX\Object
 		$template->registerHelper('docblock', function($doc) use ($texy) {
 			$doc = Model::extractDocBlock($doc);
 			$doc = preg_replace('#([^\n])(\n)([^\n])#', '\1\2 \3', $doc); // line breaks support
+			$doc = preg_replace_callback('#<(code|pre)>.+?</\1>#s', function($matches) { // revert line breaks in <code>, <pre>
+				return preg_replace('#([^\n])(\n) ([^\n])#', '\1\2\3', $matches[0]);
+			}, $doc);
 			return $texy->process($doc);
 		});
 
