@@ -78,7 +78,7 @@ pre {
 	margin: 0;
 }
 
-.parentConstants a {
+#constantSummary a, .parentConstants a {
 	color: #000;
 }
 

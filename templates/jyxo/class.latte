@@ -160,7 +160,7 @@
 					{$constant->value|getType}
 				{/if}
 			</code></td>
-			<td width="1%"><code><b>{$name}</b></code></td>
+			<td width="1%"><code><a href="{$constant|sourceLink}" title="Go to {$class->internal ? 'PHP documentation' : 'source code'}"><b>{$name}</b></a></code></td>
 			<td><code>{!$constant->valueDefinition|highlightPHP}</code></td>
 			<td>{!$constant|shortDescription|docline} <a href="#{$name}" class="anchor">#</a></td>
 		</tr>
@@ -186,7 +186,7 @@
 				{foreach $template->getTypes($property) as $return}<a href="{$return->class|classLink}" n:tag-if="$return->class">{$return->name|replaceNS:$namespace}</a>{sep}|{/sep}{/foreach}
 			</code></td>
 
-			<td width="1%"><var>${$property->name}</var></td>
+			<td width="1%"><var><a href="{$property|sourceLink}" title="Go to {$class->internal ? 'PHP documentation' : 'source code'}">${$property->name}</a></var></td>
 			<td><pre>{!$property->defaultValueDefinition|highlightPHP}</pre></td>
 			<td>{!$property|shortDescription|docline} <a href="#${$property->name}" class="anchor">#</a></td>
 		</tr>

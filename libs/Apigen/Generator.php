@@ -607,8 +607,8 @@ class Generator extends NetteX\Object
 	/**
 	 * Generates a link to a class source code file.
 	 *
-	 * @param  \Apigen\Reflection|IReflectionMethod
-	 * @return string|null
+	 * @param \Apigen\Reflection|IReflectionMethod|IReflectionProperty|IReflectionConstant $element
+	 * @return string
 	 */
 	public function formatSourceLink($element, $withLine = TRUE)
 	{
@@ -616,12 +616,21 @@ class Generator extends NetteX\Object
 			throw new \Exception('Source output filename not defined.');
 		}
 
-		$class = ($element instanceof ApiReflection) ? $element : $element->getDeclaringClass();
+		$class = $element instanceof ApiReflection ? $element : $element->getDeclaringClass();
 		if ($class->isInternal()) {
+			static $manual = 'http://php.net/manual';
+			$className = strtolower($class->getName());
+			$classLink = sprintf('%s/class.%s.php', $manual, $className);
+			$elementName = strtolower(strtr(ltrim($element->getName(), '_'), '_', '-'));
+
 			if ($element instanceof ApiReflection) {
-				return strtolower('http://php.net/manual/class.' . $class->getName() . '.php');
-			} else {
-				return strtolower('http://php.net/manual/' . $class->getName() . '.' . strtr(ltrim($element->getName(), '_'), '_', '-') . '.php');
+				return $classLink;
+			} elseif ($element instanceof ReflectionMethod) {
+				return sprintf('%s/%s.%s.php', $manual, $className, $elementName);
+			} elseif ($element instanceof ReflectionProperty) {
+				return sprintf('%s#%s.props.%s', $classLink, $className, $elementName);
+			} elseif ($element instanceof ReflectionConstant) {
+				return sprintf('%s#%s.constants.%s', $classLink, $className, $elementName);
 			}
 		} elseif ($class->isUserDefined()) {
 			$file = substr($element->getFileName(), strlen($this->sourceDir) + 1);

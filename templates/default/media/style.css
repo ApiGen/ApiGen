@@ -1,5 +1,5 @@
 /*!
-	(c) David Grudl, Martin Cohen, Jörn Zaefferer
+	(c) David Grudl, Martin Cohen, JÃ¶rn Zaefferer
 */
 
 body {
@@ -80,7 +80,7 @@ pre {
 	margin: 0;
 }
 
-.parentConstants a {
+#constantSummary a, .parentConstants a {
 	color: #000;
 }
 
