@@ -433,19 +433,27 @@ class Generator extends NetteX\Object
 		// types
 		$that = $this;
 		$template->registerHelper('getTypes', function($element, $position = NULL) use ($that) {
-			$namespace = $element->getDeclaringClass()->getNamespaceName();
-			$s = $position === NULL ? $element->getAnnotation($element->hasAnnotation('var') ? 'var' : 'return')
-				: (array) @$element->annotations['param'][$position];
-			if (is_object($s)) {
-				$s = get_class($s); // TODO
+			$annotation = array();
+			if ($element instanceof ReflectionProperty) {
+				$annotation = $element->getAnnotation('var');
+				if (null === $annotation) {
+					$value = $element->getDefaultValue();
+					if (null !== $value) {
+						$annotation = gettype($value);
+					}
+				}
+			} elseif ($element instanceof ReflectionMethod) {
+				$annotation = $position === NULL ? $element->getAnnotation('return') : @$element->annotations['param'][$position];
 			}
-			$res = array();
-			foreach (preg_replace('#\s.*#', '', $s) as $s) {
+
+			$namespace = $element->getDeclaringClass()->getNamespaceName();
+			$types = array();
+			foreach (preg_replace('#\s.*#', '', (array) $annotation) as $s) {
 				foreach (explode('|', $s) as $name) {
-					$res[] = (object) array('name' => $name, 'class' => $that->resolveType($name, $namespace));
+					$types[] = (object) array('name' => $name, 'class' => $that->resolveType($name, $namespace));
 				}
 			}
-			return $res;
+			return $types;
 		});
 		$template->registerHelper('resolveType', callback($this, 'resolveType'));
 		$template->registerHelper('getType', function($variable) {
