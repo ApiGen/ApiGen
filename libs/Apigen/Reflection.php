@@ -1,7 +1,7 @@
 <?php
 
 namespace Apigen;
-
+use Apigen\Generator;
 use TokenReflection\IReflectionClass, ReflectionMethod, ReflectionProperty;
 
 /**
@@ -24,18 +24,27 @@ class Reflection
 	private $reflection;
 
 	/**
+	 * Apigen generator.
+	 *
+	 * @var \Apigen\Generator
+	 */
+	private $generator;
+
+	/**
 	 * Constructor.
 	 *
 	 * Sets the inspected class reflection.
 	 *
 	 * @param \TokenReflection\IReflectionClass $reflection Inspected class reflection
+	 * @param \Apigen\Generator $generator Apigen generator
 	 */
-	public function __construct(IReflectionClass $reflection) {
+	public function __construct(IReflectionClass $reflection, Generator $generator) {
 		if (empty(self::$methods)) {
 			self::$methods = array_flip(get_class_methods($this));
 		}
 
 		$this->reflection = $reflection;
+		$this->generator = $generator;
 	}
 
 	/**
@@ -97,8 +106,13 @@ class Reflection
 	 */
 	public function getParentClass()
 	{
-		$class = $this->reflection->getParentClass();
-		return $class ? new self($class) : $class;
+		$classes = $this->generator->getClasses();
+		if ($class = $this->reflection->getParentClassName()) {
+			return isset($classes[$class]) ? $classes[$class] : new Reflection($this->getParentClass());
+
+		}
+
+		return $class;
 	}
 
 	/**
@@ -108,8 +122,10 @@ class Reflection
 	 */
 	public function getParentClasses()
 	{
-		return array_map(function($class) {
-			return new Reflection($class);
+		$classes = $this->generator->getClasses();
+
+		return array_map(function($class) use($classes) {
+			return isset($classes[$class->getName()]) ? $classes[$class->getName()] : new Reflection($class);
 		}, $this->reflection->getParentClasses());
 	}
 
@@ -120,8 +136,10 @@ class Reflection
 	 */
 	public function getInterfaces()
 	{
-		return array_map(function($class) {
-			return new Reflection($class);
+		$classes = $this->generator->getClasses();
+
+		return array_map(function($class) use($classes) {
+			return isset($classes[$class->getName()]) ? $classes[$class->getName()] : new Reflection($class);
 		}, $this->reflection->getInterfaces());
 	}
 
@@ -132,8 +150,86 @@ class Reflection
 	 */
 	public function getOwnInterfaces()
 	{
-		return array_map(function($class) {
-			return new Reflection($class);
+		$classes = $this->generator->getClasses();
+
+		return array_map(function($class) use($classes) {
+			return isset($classes[$class->getName()]) ? $classes[$class->getName()] : new Reflection($class);
 		}, $this->reflection->getOwnInterfaces(false));
+	}
+
+	/**
+	 * Returns reflections of direct subclasses.
+	 *
+	 * @return array
+	 */
+	public function getDirectSubclasses()
+	{
+		$that = $this->name;
+		return array_filter($this->generator->getClasses(), function(Reflection $class) use($that) {
+			if (!$class->isSubclassOf($that)) {
+				return false;
+			}
+
+			return null === $class->getParentClassName() || !$class->getParentClass()->isSubClassOf($that);
+		});
+	}
+
+	/**
+	 * Returns reflections of indirect subclasses.
+	 *
+	 * @return array
+	 */
+	public function getIndirectSubclasses()
+	{
+		$that = $this->name;
+		return array_filter($this->generator->getClasses(), function(Reflection $class) use($that) {
+			if (!$class->isSubclassOf($that)) {
+				return false;
+			}
+
+			return null !== $class->getParentClassName() && $class->getParentClass()->isSubClassOf($that);
+		});
+	}
+
+	/**
+	 * Returns reflections of classes directly implementing this interface.
+	 *
+	 * @return array
+	 */
+	public function getDirectImplementers()
+	{
+		if (!$this->isInterface()) {
+			return array();
+		}
+
+		$that = $this->name;
+		return array_filter($this->generator->getClasses(), function(Reflection $class) use($that) {
+			if (!$class->implementsInterface($that)) {
+				return false;
+			}
+
+			return null === $class->getParentClassName() || !$class->getParentClass()->implementsInterface($that);
+		});
+	}
+
+	/**
+	 * Returns reflections of classes indirectly implementing this interface.
+	 *
+	 * @return array
+	 */
+	public function getIndirectImplementers()
+	{
+		if (!$this->isInterface()) {
+			return array();
+		}
+
+		$that = $this->name;
+		return array_filter($this->generator->getClasses(), function(Reflection $class) use($that) {
+			if (!$class->implementsInterface($that)) {
+				return false;
+			}
+
+			return null !== $class->getParentClassName() && $class->getParentClass()->implementsInterface($that);
+		});
 	}
 }

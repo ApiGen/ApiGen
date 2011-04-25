@@ -4,6 +4,8 @@
  * API Generator.
  *
  * Copyright (c) 2010 David Grudl (http://davidgrudl.com)
+ * Copyright (c) 2011 Ondřej Nešpor (http://andrewsville.cz)
+ * Copyright (c) 2011 Jaroslav Hanslík (http://kukulich.cz)
  *
  * This source file is subject to the "Nette license", and/or
  * GPL license. For more information please see http://nette.org
@@ -18,6 +20,7 @@ require __DIR__ . '/libs/Console/ProgressBar.php';
 require __DIR__ . '/libs/texy/texy.min.php';
 require __DIR__ . '/libs/TokenReflection/compressed.php';
 require __DIR__ . '/libs/Apigen/Reflection.php';
+require __DIR__ . '/libs/Apigen/Backend.php';
 require __DIR__ . '/libs/Apigen/Generator.php';
 
 echo '
@@ -54,8 +57,7 @@ Debugger::timer();
 
 echo "Scanning folder $options[s]\n";
 $generator = new Apigen\Generator;
-$count = $generator->parse($options['s']);
-$countInternal = $generator->expand();
+list($count, $countInternal) = $generator->parse($options['s']);
 
 echo "Found $count classes and $countInternal internal classes\n";
 

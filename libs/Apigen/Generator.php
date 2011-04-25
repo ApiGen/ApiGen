@@ -5,6 +5,7 @@
  *
  * Copyright (c) 2010 David Grudl (http://davidgrudl.com)
  * Copyright (c) 2011 Ondřej Nešpor (http://andrewsville.cz)
+ * Copyright (c) 2011 Jaroslav Hanslík (http://kukulich.cz)
  *
  * This source file is subject to the "Nette license", and/or
  * GPL license. For more information please see http://nette.org
@@ -14,7 +15,7 @@ namespace Apigen;
 
 use NetteX;
 use Apigen\Reflection as ApiReflection;
-use TokenReflection\Broker, TokenReflection\Broker\Backend;
+use TokenReflection\Broker, Apigen\Backend;
 use TokenReflection\IReflectionClass as ReflectionClass, TokenReflection\IReflectionProperty as ReflectionProperty, TokenReflection\IReflectionMethod as ReflectionMethod, TokenReflection\IReflectionConstant as ReflectionConstant;
 use TokenReflection\ReflectionAnnotation, TokenReflection\Dummy\ReflectionClass as DummyClass;
 
@@ -79,74 +80,28 @@ class Generator extends NetteX\Object
 	{
 		$this->sourceDir = realpath($dir);
 
-		$broker = new Broker(new Backend\Memory());
+		$broker = new Broker(new Backend());
 		$broker->processDirectory($dir);
-		foreach ($broker->getClasses() as $name => $class) {
-			if (!$class->isInternal()) {
-				$this->classes[$name] = $class;
-			}
-		}
 
-		return count($this->classes);
+		$tokenized = $broker->getClasses(Backend::TOKENIZED_CLASSES);
+		$internal = $broker->getClasses(Backend::INTERNAL_CLASSES);
+
+		$that = $this;
+		$this->classes = array_map(function(ReflectionClass $class) use($that) {
+			return new ApiReflection($class, $that);
+		}, array_merge($tokenized, $internal));
+
+		return array(count($tokenized), count($internal));
 	}
 
 	/**
-	 * Expands the list of classes by internal classes and interfaces.
+	 * Returns parsed class list.
 	 *
-	 * @return integer Number of added classes
+	 * @return array
 	 */
-	public function expand()
+	public function getClasses()
 	{
-		$count = count($this->classes);
-
-		$declared = array_flip(array_merge(get_declared_classes(), get_declared_interfaces()));
-
-		foreach ($this->classes as $name => $class) {
-			$this->classes[$name] = new ApiReflection($class);
-			$this->addParents($class);
-
-			foreach ($class->getOwnMethods() as $method) {
-				foreach (array('param', 'return', 'throws') as $annotation) {
-					if (!$method->hasAnnotation($annotation)) {
-						continue;
-					}
-
-					foreach ((array) $method->getAnnotation($annotation) as $doc) {
-						$types = preg_replace('#\s.*#', '', $doc);
-						foreach (explode('|', $types) as $name) {
-							$name = ltrim($name, '\\');
-							if (!isset($this->classes[$name]) && isset($declared[$name])) {
-								$parameterClass = $class->getBroker()->getClass($name);
-								$this->classes[$name] = new ApiReflection($parameterClass);
-								$this->addParents($parameterClass);
-							}
-						}
-					}
-				}
-			}
-		}
-
-		return count($this->classes) - $count;
-	}
-
-	/**
-	 * Adds class' parents to processed classes.
-	 *
-	 * @param ReflectionClass $class Class reflection
-	 */
-	private function addParents(ReflectionClass $class)
-	{
-		foreach (array_merge($class->getParentClassNameList(), $class->getInterfaceNames()) as $parent) {
-			if (!isset($this->classes[$parent])) {
-				$parentClass = $class->getBroker()->getClass($parent);
-				if ($parentClass instanceof DummyClass) {
-					continue;
-				}
-
-				$this->classes[$parent] = new ApiReflection($parentClass);
-				$this->addParents($parentClass);
-			}
-		}
+		return $this->classes;
 	}
 
 	/**
@@ -364,10 +319,17 @@ class Generator extends NetteX\Object
 			$template->classes = !$class->isInterface() && !$class->isException() ? array($class) : array();
 			$template->interfaces = $class->isInterface() && !$class->isException() ? array($class) : array();
 			$template->exceptions = $class->isException() ? array($class) : array();
-			$template->subClasses = $this->getDirectSubClasses($class);
-			uksort($template->subClasses, 'strcasecmp');
-			$template->implementers = $this->getDirectImplementers($class);
-			uksort($template->implementers, 'strcasecmp');
+
+			$template->directSubClasses = $class->getDirectSubClasses();
+			uksort($template->directSubClasses, 'strcasecmp');
+			$template->indirectSubClasses = $class->getIndirectSubClasses();
+			uksort($template->indirectSubClasses, 'strcasecmp');
+
+			$template->directImplementers = $class->getDirectImplementers();
+			uksort($template->directImplementers, 'strcasecmp');
+			$template->indirectImplementers = $class->getIndirectImplementers();
+			uksort($template->indirectImplementers, 'strcasecmp');
+
 			$template->class = $class;
 			$template->setFile($config['templates']['class'])->save(self::forceDir($output . '/' . $this->formatClassLink($class)));
 
@@ -656,50 +618,6 @@ class Generator extends NetteX\Object
 
 			return sprintf($this->config['filenames']['source'], preg_replace('#[^a-z0-9_]#i', '.', $file)) . (isset($line) ? "#$line" : '');
 		}
-	}
-
-	/**
-	 * Returns a list of direct subclasses.
-	 *
-	 * @param Reflection Requested class
-	 * @return array
-	 */
-	private function getDirectSubClasses($parent)
-	{
-		$parent = $parent->getName();
-		$res = array();
-		foreach ($this->classes as $class) {
-			if ($class->getParentClass() && $class->getParentClass()->getName() === $parent) {
-				$res[$class->getName()] = $class;
-			}
-		}
-		return $res;
-	}
-
-	/**
-	 * Returns a list of direct implementers.
-	 *
-	 * @param \TokenReflection\IReflectionClass
-	 * @return array
-	 */
-	private function getDirectImplementers($interface)
-	{
-		if (!$interface->isInterface()) return array();
-
-		$interface = $interface->getName();
-		$res = array();
-		foreach ($this->classes as $class) {
-			if (!$class->implementsInterface($interface)) {
-				continue;
-			}
-
-			$parent = $class->getParentClass();
-			if (!$parent || !$parent->implementsInterface($interface)) {
-				$res[$class->getName()] = $class;
-			}
-		}
-
-		return $res;
 	}
 
 	/**
