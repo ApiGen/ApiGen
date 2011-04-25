@@ -5,7 +5,7 @@ baseUri: 'http://jyxo.github.com/php'
 template: jyxo
 templateDir: ''
 wipeout: Yes
-progressbar: Yes
+progressbar: On
 
 resources:
 	media: media

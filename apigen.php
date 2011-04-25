@@ -36,7 +36,7 @@ $options = getopt('', array(
 	'base-uri::',
 	'template::',
 	'template-dir::',
-	'progressbar',
+	'progressbar::',
 	'wipeout'
 ));
 
@@ -46,6 +46,13 @@ if (isset($options['source'], $options['destination'])) {
 		$key = preg_replace_callback('#-([a-z])#', function($matches) {
 			return ucfirst($matches[1]);
 		}, $key);
+
+		if ('off' === strtolower($value)) {
+			$value = false;
+		} elseif ('on' === strtolower($value)) {
+			$value = true;
+		}
+
 		$config[$key] = $value;
 	}
 } elseif (isset($options['config'])) {
@@ -64,7 +71,7 @@ Options:
 	--template      <value> Documentation template name
 	--template-dir  <path>  Folder with templates
 	--wipeout               Wipe out the target directory first
-	--progressbar           Display progressbar
+	--progressbar   On|Off  Display progressbar, default On
 
 <?php
 	die();
@@ -81,7 +88,7 @@ if (!isset($config['wipeout'])) {
 	$config['wipeout'] = false;
 }
 if (!isset($config['progressbar'])) {
-	$config['progressbar'] = false;
+	$config['progressbar'] = true;
 }
 
 Debugger::enable();

@@ -5,7 +5,7 @@ baseUri: ''
 template: default
 templateDir: ''
 wipeout: No
-progressbar: No
+progressbar: On
 
 resources:
 	media: media
