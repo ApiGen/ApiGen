@@ -37,7 +37,7 @@
 	<ul>
 	{foreach $classes as $item}
 	{continueIf $item->interface}
-		<li><a href="{$item|classLink}" {if $class === $item}class="active"{/if}>{$item->shortName}</a></li>
+		<li><a href="{$item|classLink}" {if $class === $item}class="active"{/if}>{if $namespace}{$item->shortName}{else}{$item->name}{/if}</a></li>
 	{/foreach}
 	</ul>
 
@@ -46,7 +46,7 @@
 	<ul>
 	{foreach $classes as $item}
 	{continueIf !$item->interface}
-		<li><a href="{$item|classLink}" {if $class === $item}class="active"{/if}>{$item->shortName}</a></li>
+		<li><a href="{$item|classLink}" {if $class === $item}class="active"{/if}>{if $namespace}{$item->shortName}{else}{$item->name}{/if}</a></li>
 	{/foreach}
 	</ul>
 </div>
