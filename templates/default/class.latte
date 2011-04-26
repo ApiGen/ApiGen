@@ -60,7 +60,7 @@
 					{/if}
 				{/foreach}
 			{/foreach}
-			{if $class->internal}<b>Documented at</b> <a href="{$class|sourceLink}">php.net</a>{elseif $class->userDefined}<b>Located at</b> <a href="{$class|sourceLink}">{$class->fileName|replace:$source|replace:'\\','/'}</a>{/if}<br>
+			{if $class->internal}<b>Documented at</b> <a href="{$class|sourceLink}">php.net</a>{elseif $class->userDefined}<b>Located at</b> <a href="{$class|sourceLink}">{$fileName}</a>{/if}<br>
 		</div>
 	</div>
 
