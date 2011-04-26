@@ -420,15 +420,15 @@ class Generator extends NetteX\Object
 		});
 
 		// docblock
-		$texy = new \TexyX;
-		$texy->allowedTags = \TexyX::NONE;
+		$texy = new \Texy;
+		$texy->allowedTags = \Texy::NONE;
 		$texy->allowed['list/definition'] = FALSE;
 		$texy->allowed['phrase/em-alt'] = FALSE;
 		$texy->registerBlockPattern( // highlight <code>, <pre>
 			function($parser, $matches, $name) use ($fshl) {
 				$content = $matches[1] === 'code' ? $fshl->highlightString('PHP', $matches[2]) : htmlSpecialChars($matches[2]);
-				$content = $parser->getTexy()->protect($content, \TexyX::CONTENT_BLOCK);
-				return \TexyXHtml::el('pre', $content);
+				$content = $parser->getTexy()->protect($content, \Texy::CONTENT_BLOCK);
+				return \TexyHtml::el('pre', $content);
 			},
 			'#<(code|pre)>(.+?)</\1>#s',
 			'codeBlockSyntax'
