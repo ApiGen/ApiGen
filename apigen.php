@@ -78,6 +78,12 @@ Options:
 }
 
 // Default configuration
+if (!isset($config['title'])) {
+	$config['title'] = '';
+}
+if (!isset($config['baseUri'])) {
+	$config['baseUri'] = '';
+}
 if (empty($config['template'])) {
 	$config['template'] = 'default';
 }
