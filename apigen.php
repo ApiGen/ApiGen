@@ -41,6 +41,7 @@ $options = getopt('', array(
 	'base-uri:',
 	'template:',
 	'template-dir:',
+	'access-levels:',
 	'wipeout:',
 	'progressbar:'
 ));
@@ -59,6 +60,9 @@ if (isset($options['config'])) {
 		} elseif ('on' === strtolower($value)) {
 			$value = true;
 		}
+		if ('accessLevels' === $key) {
+			$value = array_fill_keys(explode(',', $value), true);
+		}
 
 		$config[$key] = $value;
 	}
@@ -75,6 +79,7 @@ Options:
 	--base-uri      <value> Documentation base URI
 	--template      <value> Documentation template name
 	--template-dir  <path>  Folder with templates
+	--access-levels <list>  Generate documetation for methods and properties with given access level, default public,protected
 	--wipeout       On|Off  Wipe out the destination directory first, default On
 	--progressbar   On|Off  Display progressbar, default On
 
@@ -89,6 +94,11 @@ $defaultConfig = array(
 	'baseuri' => '',
 	'template' => '',
 	'templateDir' => '',
+	'accessLevels' => array(
+		'public' => true,
+		'protected' => true,
+		'private' => false
+	),
 	'wipeout' => true,
 	'progressbar' => true
 );
@@ -104,6 +114,11 @@ if (empty($config['templateDir'])) {
 }
 foreach (array('source', 'destination', 'templateDir') as $key) {
 	$config[$key] = realpath($config[$key]);
+}
+foreach (array('public', 'protected', 'private') as $level) {
+	if (!isset($config['accessLevels'][$level])) {
+		$config['accessLevels'][$level] = false;
+	}
 }
 
 // Searching template

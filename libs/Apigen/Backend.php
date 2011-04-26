@@ -27,7 +27,7 @@ class Backend extends Memory
 
 		$allClasses = parent::parseClassLists();
 		foreach ($allClasses[self::TOKENIZED_CLASSES] as $name => $class) {
-			foreach ($class->getOwnMethods(ReflectionMethod::IS_PUBLIC | ReflectionMethod::IS_PROTECTED) as $method) {
+			foreach ($class->getOwnMethods() as $method) {
 				foreach (array('param', 'return', 'throws') as $annotation) {
 					if (!$method->hasAnnotation($annotation)) {
 						continue;

@@ -6,3 +6,8 @@ template: default
 templateDir: ''
 wipeout: On
 progressbar: On
+
+accessLevels:
+	public: Yes
+	protected: Yes
+	private: No

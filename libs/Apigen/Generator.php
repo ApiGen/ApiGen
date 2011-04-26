@@ -88,6 +88,20 @@ class Generator extends NetteX\Object
 	}
 
 	/**
+	 * Returns configuration.
+	 *
+	 * @param string $name
+	 * @return mixed
+	 */
+	public function getConfig($name = null)
+	{
+		if (null === $name) {
+			return $this->config;
+		}
+		return $this->config[$name];
+	}
+
+	/**
 	 * Returns parsed class list.
 	 *
 	 * @return array

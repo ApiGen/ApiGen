@@ -17,6 +17,20 @@ class Reflection
 	private static $methods = array();
 
 	/**
+	 * Access level for methods.
+	 *
+	 * @var integer
+	 */
+	private static $methodAccessLevels = 0;
+
+	/**
+	 * Access level for properties.
+	 *
+	 * @var integer
+	 */
+	private static $propertyAccessLevels = 0;
+
+	/**
 	 * Inspected class reflection.
 	 *
 	 * @var \TokenReflection\IReflectionClass
@@ -38,9 +52,17 @@ class Reflection
 	 * @param \TokenReflection\IReflectionClass $reflection Inspected class reflection
 	 * @param \Apigen\Generator $generator Apigen generator
 	 */
-	public function __construct(IReflectionClass $reflection, Generator $generator) {
+	public function __construct(IReflectionClass $reflection, Generator $generator)
+	{
 		if (empty(self::$methods)) {
 			self::$methods = array_flip(get_class_methods($this));
+		}
+
+		foreach ($generator->getConfig('accessLevels') as $level => $enabled) {
+			if ($enabled) {
+				self::$methodAccessLevels |= constant('ReflectionMethod::IS_' . strtoupper($level));
+				self::$propertyAccessLevels |= constant('ReflectionProperty::IS_' . strtoupper($level));
+			}
 		}
 
 		$this->reflection = $reflection;
@@ -86,7 +108,7 @@ class Reflection
 	 */
 	public function getOwnMethods()
 	{
-		return $this->reflection->getOwnMethods(ReflectionMethod::IS_PUBLIC | ReflectionMethod::IS_PROTECTED);
+		return $this->reflection->getOwnMethods(self::$methodAccessLevels);
 	}
 
 	/**
@@ -96,7 +118,7 @@ class Reflection
 	 */
 	public function getOwnProperties()
 	{
-		return $this->reflection->getOwnProperties(ReflectionProperty::IS_PUBLIC | ReflectionProperty::IS_PROTECTED);
+		return $this->reflection->getOwnProperties(self::$propertyAccessLevels);
 	}
 
 	/**
