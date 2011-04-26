@@ -3,8 +3,7 @@
  * @param  array  $namespaces
  * @param  array  $classes
  * @param  string $namespace
- * @param  Apigen\CustomClassReflection $class
- * @param  string $fileRoot
+ * @param  Apigen\Reflection $class
  *}
 {default $class = NULL, $namespace = NULL, package = NULL}
 <!DOCTYPE html>
@@ -14,7 +13,7 @@
 	<meta name="generator" content="Apigen {$version}">
 	<meta name="robots" content="noindex" n:ifset="$noindex">
 
-	<title>{$title} | {block title}{$title}{/block}</title>
+	<title>{if $title}{$title} | {/if}{block title}{$title}{/block}</title>
 
 	{var combined_js => 'media/combined.js'}
 	<script type="text/javascript" src="{$combined_js|staticFile}"></script>

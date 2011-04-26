@@ -23,78 +23,142 @@ require __DIR__ . '/libs/Apigen/Reflection.php';
 require __DIR__ . '/libs/Apigen/Backend.php';
 require __DIR__ . '/libs/Apigen/Generator.php';
 
+
+Debugger::enable();
+Debugger::timer();
+
+
 echo '
 Apigen ' . Apigen\Generator::VERSION . '
 ------------------
 ';
 
-$options = getopt('s:d:c:t:l:wpb:');
+$options = getopt('', array(
+	'config:',
+	'source:',
+	'destination:',
+	'title:',
+	'base-uri:',
+	'template:',
+	'template-dir:',
+	'wipeout:',
+	'progressbar:'
+));
 
-if (!isset($options['s'], $options['d'])) { ?>
+if (isset($options['config'])) {
+	$config = NetteX\Utils\Neon::decode(file_get_contents($options['config']));
+} elseif (isset($options['source'], $options['destination'])) {
+	$config = array();
+	foreach ($options as $key => $value) {
+		$key = preg_replace_callback('#-([a-z])#', function($matches) {
+			return ucfirst($matches[1]);
+		}, $key);
+
+		if ('off' === strtolower($value)) {
+			$value = false;
+		} elseif ('on' === strtolower($value)) {
+			$value = true;
+		}
+
+		$config[$key] = $value;
+	}
+} else { ?>
 Usage:
-	php apigen.php [options]
+	php apigen.php --config=<path>
+	php apigen.php --source=<path> --destination=<path> [options]
 
 Options:
-	-s <path>  Name of a source directory to parse. Required.
-	-d <path>  Folder where to save the generated documentation. Required.
-	-c <path>  Output config file.
-	-t ...     Title of generated documentation.
-	-l ...     Documentation template name
-	-w         Wipe out the target directory first
-	-p         Display progressbar
-	-b <value> Documentation base URI
+	--config        <path>  Config file
+	--source        <path>  Name of a source directory to parse
+	--destination   <path>  Folder where to save the generated documentation
+	--title         <value> Title of generated documentation
+	--base-uri      <value> Documentation base URI
+	--template      <value> Documentation template name
+	--template-dir  <path>  Folder with templates
+	--wipeout       On|Off  Wipe out the destination directory first, default On
+	--progressbar   On|Off  Display progressbar, default On
 
 <?php
 	die();
 }
 
 
+// Default configuration
+if (!isset($config['title'])) {
+	$config['title'] = '';
+}
+if (!isset($config['baseUri'])) {
+	$config['baseUri'] = '';
+}
+if (empty($config['template'])) {
+	$config['template'] = 'default';
+}
+if (empty($config['templateDir'])) {
+	$config['templateDir'] = __DIR__ . DIRECTORY_SEPARATOR  . 'templates';
+}
+if (!isset($config['wipeout'])) {
+	$config['wipeout'] = true;
+}
+if (!isset($config['progressbar'])) {
+	$config['progressbar'] = true;
+}
 
-Debugger::enable();
-Debugger::timer();
+// Searching template
+if (!is_dir($config['templateDir'])) {
+	echo "Template directory doesn't exist.\n";
+	die();
+}
+echo "Searching template in $config[templateDir]\n";
+
+$templatePath = $config['templateDir'] . DIRECTORY_SEPARATOR . $config['template'];
+if (!is_dir($templatePath)) {
+	echo "Template doesn't exist.\n";
+	die();
+}
+echo "Using template $config[template]\n";
+
+$templateConfigPath = $templatePath . DIRECTORY_SEPARATOR . 'config.neon';
+if (!is_file($templateConfigPath)) {
+	echo "Template config doesn't exist.\n";
+	die();
+}
+
+$config = array_merge($config, NetteX\Utils\Neon::decode(file_get_contents($templateConfigPath)));
 
 
+$generator = new Apigen\Generator($config);
 
-echo "Scanning folder $options[s]\n";
-$generator = new Apigen\Generator;
-list($count, $countInternal) = $generator->parse($options['s']);
-
+// Scaning
+if (empty($config['source'])) {
+	echo "Source directory is not set.\n";
+	die();
+} elseif (!is_dir($config['source'])) {
+	echo "Source directory $config[source] doesn't exist.\n";
+	die();
+}
+echo "Scanning folder $config[source]\n";
+list($count, $countInternal) = $generator->parse();
 echo "Found $count classes and $countInternal internal classes\n";
 
 
-
-$template = isset($options['l']) ? $options['l'] : 'default';
-echo "Using template $template\n";
-
-
-
-$configPath = isset($options['c']) ? $options['c'] : __DIR__ . '/config.neon';
-$config = file_get_contents($configPath);
-$config = strtr($config, array('%template%' => $template, '%dir%' => dirname($configPath)));
-$config = NetteX\Utils\Neon::decode($config);
-if (isset($options['t'])) {
-	$config['variables']['title'] = $options['t'];
+// Generating
+if (empty($config['destination'])) {
+	echo "Destination directory is not set.\n";
+	die();
 }
-if (isset($options['b'])) {
-	$config['variables']['baseUri'] = $options['b'];
-}
-$config['settings']['progressbar'] = isset($options['p']);
+echo "Generating documentation to folder $config[destination]\n";
 
-
-
-echo "Generating documentation to folder $options[d]\n";
-if (is_dir($options['d']) && isset($options['w'])) {
-	echo 'Wiping out target directory first';
-	if ($generator->wipeOutTarget($options['d'], $config)) {
+if ($config['wipeout'] && is_dir($config['destination'])) {
+	echo 'Wiping out destination directory first';
+	if ($generator->wipeOutDestination()) {
 		echo ", ok\n";
 	} else {
 		echo ", error\n";
 		die();
 	}
 }
-@mkdir($options['d']);
-$generator->generate($options['d'], $config);
 
+$generator->generate();
 
 
 echo "\nDone. Total time: " . (int) Debugger::timer() . " seconds\n";
