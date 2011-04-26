@@ -359,11 +359,6 @@ class Generator extends NetteX\Object
 			return array_map(create_function('$value', $callback), $arr);
 		});
 		$template->registerHelper('replaceRE', 'NetteX\StringUtils::replace');
-		$template->registerHelper('replaceNS', function($name, $namespace) { // remove current namespace
-			$name = ltrim($name, '\\');
-			return (strpos($name, $namespace . '\\') === 0 && strpos($name, '\\', strlen($namespace) + 1) === FALSE)
-				? substr($name, strlen($namespace) + 1) : $name;
-		});
 
 		// PHP source highlight
 		$fshl = new \fshlParser('HTML_UTF8');
@@ -441,8 +436,7 @@ class Generator extends NetteX\Object
 			$res = '';
 			foreach (explode('|', $names) as $name) {
 				$class = $template->resolveType($name, $namespace);
-				$name = $template->replaceNS($name, $namespace);
-				$res .= $class !== NULL ? sprintf('<a href="%s">%s</a>', $template->classLink($class), $template->escapeHtml($name)) : $template->escapeHtml($name);
+				$res .= $class !== NULL ? sprintf('<a href="%s">%s</a>', $template->classLink($class), $template->escapeHtml($class)) : $template->escapeHtml($name);
 				$res .= '|';
 			}
 			return rtrim($res, '|') . ' ' . $template->escapeHtml($label);

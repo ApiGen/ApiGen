@@ -29,7 +29,7 @@
 				<img src="media/inherit.gif" alt="extended by" n:if="$iterator->counter > 1">
 				{if $item->internal || $item->userDefined}
 				<a href="{$item|classLink}" n:tag-if="!$iterator->last">{last}<b>{/last}{$item->name}{last}</b>{/last}</a>
-				{if $item->ownInterfaces} implements {foreach $item->ownInterfaces as $interface}<a href="{$interface|classLink}">{$interface->name|replaceNS:$namespace}</a>{sep}, {/sep}{/foreach}{/if}
+				{if $item->ownInterfaces} implements {foreach $item->ownInterfaces as $interface}<a href="{$interface|classLink}">{$interface->name}</a>{sep}, {/sep}{/foreach}{/if}
 				{else}{$item->name}{/if}
 			</dd>
 			{/foreach}
@@ -37,22 +37,22 @@
 
 		<div n:if="$directSubClasses">
 			<h4>Direct Known Subclasses</h4>
-			{foreach $directSubClasses as $item}<a href="{$item|classLink}">{$item->name|replaceNS:$namespace}</a>{sep}, {/sep}{/foreach}
+			{foreach $directSubClasses as $item}<a href="{$item|classLink}">{$item->name}</a>{sep}, {/sep}{/foreach}
 		</div>
 
 		<div n:if="$indirectSubClasses">
 			<h4>Indirect Known Subclasses</h4>
-			{foreach $indirectSubClasses as $item}<a href="{$item|classLink}">{$item->name|replaceNS:$namespace}</a>{sep}, {/sep}{/foreach}
+			{foreach $indirectSubClasses as $item}<a href="{$item|classLink}">{$item->name}</a>{sep}, {/sep}{/foreach}
 		</div>
 
 		<div n:if="$directImplementers">
 			<h4>Direct Known Implementers</h4>
-			{foreach $directImplementers as $item}<a href="{$item|classLink}">{$item->name|replaceNS:$namespace}</a>{sep}, {/sep}{/foreach}
+			{foreach $directImplementers as $item}<a href="{$item|classLink}">{$item->name}</a>{sep}, {/sep}{/foreach}
 		</div>
 
 		<div n:if="$indirectImplementers">
 			<h4>Indirect Known Implementers</h4>
-			{foreach $indirectImplementers as $item}<a href="{$item|classLink}">{$item->name|replaceNS:$namespace}</a>{sep}, {/sep}{/foreach}
+			{foreach $indirectImplementers as $item}<a href="{$item|classLink}">{$item->name}</a>{sep}, {/sep}{/foreach}
 		</div>
 
 		<div class="classInfo">
@@ -82,7 +82,7 @@
 		<tr data-order="{$method->static ? 0 : 1} {$method->name}" id="_{$method->name}">
 			<td align="right" width="1%"><code class="nowrap">
 				{if !$class->interface && $method->abstract}abstract{elseif $method->final}final{/if} {if $method->protected}protected{elseif $method->private}private{else}public{/if} {if $method->static}static{/if}
-				{foreach $template->getTypes($method) as $return}<a href="{$return->class|classLink}" n:tag-if="$return->class">{$return->name|replaceNS:$namespace}</a>{sep}|{/sep}{/foreach}
+				{foreach $template->getTypes($method) as $return}<a href="{$return->class|classLink}" n:tag-if="$return->class">{$return->name}</a>{sep}|{/sep}{/foreach}
 				{if $method->returnsReference()}&amp;{/if}
 				</code>
 			</td>
@@ -93,8 +93,8 @@
 				<a href="{$method|sourceLink}" title="Go to {$class->internal ? 'PHP documentation' : 'source code'}"><b>{$method->name}</b></a>(
 				{foreach $method->parameters as $parameter}
 					{if $parameter->array}array
-					{elseif $parameter->className}<a href="{$parameter->className|classLink}">{$parameter->className|replaceNS:$namespace}</a>
-					{else}{foreach $template->getTypes($method, $parameter->position) as $item}<a href="{$item->class|classLink}" n:tag-if="$item->class">{$item->name|replaceNS:$namespace}</a>{sep}|{/sep}{/foreach}{/if}
+					{elseif $parameter->className}<a href="{$parameter->className|classLink}">{$parameter->className}</a>
+					{else}{foreach $template->getTypes($method, $parameter->position) as $item}<a href="{$item->class|classLink}" n:tag-if="$item->class">{$item->name}</a>{sep}|{/sep}{/foreach}{/if}
 					<var>{if $parameter->passedByReference}&amp; {/if}${$parameter->name}</var>{if $parameter->defaultValueAvailable} = {!$parameter->defaultValueDefinition|highlightPHP}{/if}{sep}, {/sep}
 				{/foreach}
 			)</code>
@@ -135,7 +135,7 @@
 				{var $prototype = $method->prototype}
 				{if $prototype->declaringClass->interface}
 					<h4>Implementation of</h4>
-					<div class="smallList"><code><a href="{$prototype|methodLink}">{$prototype->declaringClass->name|replaceNS:$namespace}::{$prototype->name}</a></code></div>
+					<div class="smallList"><code><a href="{$prototype|methodLink}">{$prototype->declaringClass->name}::{$prototype->name}</a></code></div>
 				{/if}
 				{/try}
 			</div>
@@ -147,7 +147,7 @@
 
 
 	{foreach $class->inheritedMethods as $parentName => $methods}
-	<h2>Methods Inherited From <a href="{$parentName|classLink}#methodSummary">{$parentName|replaceNS:$namespace}</a></h2>
+	<h2>Methods Inherited From <a href="{$parentName|classLink}#methodSummary">{$parentName}</a></h2>
 	<div class="box parentMethods"><code>
 		{foreach $methods as $method}<a href="{$method|methodLink}">{$method->name}()</a>{sep}, {/sep}{/foreach}
 	</code></div>
@@ -177,7 +177,7 @@
 	</div>
 
 	{foreach $class->inheritedConstants as $parentName => $constants}
-	<h2>Constants Inherited From <a href="{$parentName|classLink}#constantSummary">{$parentName|replaceNS:$namespace}</a></h2>
+	<h2>Constants Inherited From <a href="{$parentName|classLink}#constantSummary">{$parentName}</a></h2>
 	<div class="box parentConstants"><code>{foreach $constants as $constant}<a href="{$constant|constantLink}"><code>{$constant->name}</code></a>{sep}, {/sep}{/foreach}</code></div>
 	{/foreach}
 
@@ -189,7 +189,7 @@
 		<tr data-order="{$property->name}" id="${$property->name}">
 			<td align="right" width="1%"><code class="nowrap">
 				{if $property->protected}protected{elseif $property->private}private{else}public{/if} {if $property->static}static{/if}
-				{foreach $template->getTypes($property) as $return}<a href="{$return->class|classLink}" n:tag-if="$return->class">{$return->name|replaceNS:$namespace}</a>{sep}|{/sep}{/foreach}
+				{foreach $template->getTypes($property) as $return}<a href="{$return->class|classLink}" n:tag-if="$return->class">{$return->name}</a>{sep}|{/sep}{/foreach}
 			</code></td>
 
 			<td width="1%"><var><a href="{$property|sourceLink}" title="Go to {$class->internal ? 'PHP documentation' : 'source code'}">${$property->name}</a></var></td>
@@ -201,7 +201,7 @@
 	</div>
 
 	{foreach $class->inheritedProperties as $parentName => $properties}
-	<h2>Properties Inherited From <a href="{$parentName|classLink}#propertySummary">{$parentName|replaceNS:$namespace}</a></h2>
+	<h2>Properties Inherited From <a href="{$parentName|classLink}#propertySummary">{$parentName}</a></h2>
 	<div class="box parentProperties"><code>{foreach $properties as $property}<var><a href="{$property|propertyLink}">${$property->name}</a></var>{sep}, {/sep}{/foreach}</code></div>
 	{/foreach}
 
