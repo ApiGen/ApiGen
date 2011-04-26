@@ -154,7 +154,7 @@ class Generator extends NetteX\Object
 				$content = $parser->getTexy()->protect($content, \TexyX::CONTENT_BLOCK);
 				return \TexyXHtml::el('pre', $content);
 			},
-			'#^<(code|pre)>\n(.+?)\n</\1>$#ms', // block patterns must be multiline and line-anchored
+			'#<(code|pre)>(.+?)</\1>#s',
 			'codeBlockSyntax'
 		);
 
