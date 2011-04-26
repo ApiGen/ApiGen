@@ -21,7 +21,7 @@ APIGen version 0.1
 ------------------
 ';
 
-$options = getopt('s:d:c:t:');
+$options = getopt('s:d:c:t:l:');
 
 if (!isset($options['s'], $options['d'])) { ?>
 Usage:
@@ -31,6 +31,7 @@ Options:
 	-s <path>  Name of a source directory to parse. Required.
 	-d <path>  Folder where to save the generated documentation. Required.
 	-c <path>  Output config file.
+	-l <path>  Directory with libraries
 	-t ...     Title of generated documentation.
 
 <?php
@@ -43,7 +44,12 @@ date_default_timezone_set('Europe/Prague');
 NetteX\Debug::enable();
 NetteX\Debug::timer();
 
-
+if(isset($options['l'])) {
+  $robot = new NetteX\Loaders\RobotLoader;
+  $robot->setCacheStorage(new NetteX\Caching\MemoryStorage);
+  $robot->addDirectory($options['l']);
+  $robot->register();
+}
 
 echo "Scanning folder $options[s]\n";
 $model = new Apigen\Model;
