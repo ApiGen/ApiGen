@@ -86,7 +86,7 @@ Options:
 // Default configuration
 $defaultConfig = array(
 	'title' => '',
-	'baseuri' => '',
+	'baseUri' => '',
 	'template' => '',
 	'templateDir' => '',
 	'wipeout' => true,
