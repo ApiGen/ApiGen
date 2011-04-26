@@ -1,9 +1,12 @@
 #!/bin/bash
 
-if [ -f /etc/alternatives/php ] ; then
-	/etc/alternatives/php "apigen.php" $*
-elif [ -f /usr/bin/php ] ; then
-	/usr/bin/php "apigen.php" $*
-else
-	echo "PHP binary not found"
+PHP_BINARY="/usr/bin/php"
+if [ ! -f $PHP_BINARY ]; then
+	PHP_BINARY=$(which php)
+	if [ $? -ne 0 ]; then
+		echo "PHP binary not found"
+		exit 1
+	fi
 fi
+
+$PHP_BINARY "apigen.php" $*
