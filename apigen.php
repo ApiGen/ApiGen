@@ -27,11 +27,9 @@ require __DIR__ . '/libs/Apigen/Generator.php';
 Debugger::enable();
 Debugger::timer();
 
-
-echo '
-Apigen ' . Apigen\Generator::VERSION . '
-------------------
-';
+$name = sprintf('Apigen %s', Apigen\Generator::VERSION);
+echo $name . "\n";
+echo str_repeat('-', strlen($name)) . "\n";
 
 $options = getopt('', array(
 	'config:',
