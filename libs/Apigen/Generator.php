@@ -74,7 +74,7 @@ class Generator extends NetteX\Object
 	public function parse()
 	{
 		$broker = new Broker(new Backend());
-		$broker->processDirectory(realpath($this->config['source']));
+		$broker->processDirectory($this->config['source']);
 
 		$tokenized = $broker->getClasses(Backend::TOKENIZED_CLASSES);
 		$internal = $broker->getClasses(Backend::INTERNAL_CLASSES);

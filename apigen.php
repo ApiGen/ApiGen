@@ -102,6 +102,9 @@ if (empty($config['template'])) {
 if (empty($config['templateDir'])) {
 	$config['templateDir'] = __DIR__ . DIRECTORY_SEPARATOR  . 'templates';
 }
+foreach (array('source', 'destination', 'templateDir') as $key) {
+	$config[$key] = realpath($config[$key]);
+}
 
 // Searching template
 if (!is_dir($config['templateDir'])) {
