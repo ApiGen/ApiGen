@@ -22,6 +22,26 @@ use NetteX;
 class CustomClassReflection extends NetteX\Reflection\ClassReflection
 {
 	private $package = NULL;
+	
+	
+	public function getTypeHintingClasses()
+	{
+		$methods = $this->getMethods();
+		
+		// can not use $this->getConstructor() because of strange MethodReflection::import() error
+		array_push($methods, new \ReflectionMethod($this, '__construct'));
+		
+		$classes = array();
+		foreach ($methods as $method) {
+			foreach($method->getParameters() as $param) {
+				if ($class = $param->getClass()) {
+					$classes[] = $class->getName();
+				}
+			}
+		}
+		
+		return array_unique($classes);
+	}
 
 
 	/**
