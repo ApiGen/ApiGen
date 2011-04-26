@@ -34,18 +34,20 @@ Apigen ' . Apigen\Generator::VERSION . '
 ';
 
 $options = getopt('', array(
+	'config::',
 	'source::',
 	'destination::',
-	'config::',
 	'title::',
 	'base-uri::',
 	'template::',
 	'template-dir::',
-	'progressbar::',
-	'wipeout::'
+	'wipeout::',
+	'progressbar::'
 ));
 
-if (isset($options['source'], $options['destination'])) {
+if (isset($options['config'])) {
+	$config = NetteX\Utils\Neon::decode(file_get_contents($options['config']));
+} elseif (isset($options['source'], $options['destination'])) {
 	$config = array();
 	foreach ($options as $key => $value) {
 		$key = preg_replace_callback('#-([a-z])#', function($matches) {
@@ -60,17 +62,15 @@ if (isset($options['source'], $options['destination'])) {
 
 		$config[$key] = $value;
 	}
-} elseif (isset($options['config'])) {
-	$config = NetteX\Utils\Neon::decode(file_get_contents($options['config']));
 } else { ?>
 Usage:
-	php apigen.php --source=<path> --destination=<path> [options]
 	php apigen.php --config=<path>
+	php apigen.php --source=<path> --destination=<path> [options]
 
 Options:
+	--config        <path>  Config file
 	--source        <path>  Name of a source directory to parse
 	--destination   <path>  Folder where to save the generated documentation
-	--config        <path>  Config file
 	--title         <value> Title of generated documentation
 	--base-uri      <value> Documentation base URI
 	--template      <value> Documentation template name
