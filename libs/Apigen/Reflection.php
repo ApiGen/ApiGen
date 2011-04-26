@@ -232,4 +232,79 @@ class Reflection
 			return null !== $class->getParentClassName() && $class->getParentClass()->implementsInterface($that);
 		});
 	}
+
+	/**
+	 * Returns an array of inherited methods from parent classes grouped by the declaring class name.
+	 *
+	 * @return array
+	 */
+	public function getInheritedMethods()
+	{
+		$methods = array();
+		$allMethods = $this->getOwnMethods();
+
+		foreach ($this->getParentClasses() as $class) {
+			$inheritedMethods = array();
+			foreach ($class->getOwnMethods() as $name => $method) {
+				if (!isset($allMethods[$name]) && !$method->isPrivate()) {
+					$inheritedMethods[$name] = $method;
+					$allMethods[$name] = null;
+				}
+			}
+
+			if (!empty($inheritedMethods)) {
+				ksort($inheritedMethods);
+				$methods[$class->getName()] = $inheritedMethods;
+			}
+		}
+
+		return $methods;
+	}
+
+	/**
+	 * Returns an array of inherited properties from parent classes grouped by the declaring class name.
+	 *
+	 * @return array
+	 */
+	public function getInheritedProperties()
+	{
+		$properties = array();
+		$allProperties = $this->getOwnProperties();
+
+		foreach ($this->getParentClasses() as $class) {
+			$inheritedProperties = array();
+			foreach ($class->getOwnProperties() as $name => $property) {
+				if (!isset($allProperties[$name]) && !$property->isPrivate()) {
+					$inheritedProperties[$name] = $property;
+					$allProperties[$name] = null;
+				}
+			}
+
+			if (!empty($inheritedProperties)) {
+				ksort($inheritedProperties);
+				$properties[$class->getName()] = $inheritedProperties;
+			}
+		}
+
+		return $properties;
+	}
+
+	/**
+	 * Returns an array of inherited constants from parent classes grouped by the declaring class name.
+	 *
+	 * @return array
+	 */
+	public function getInheritedConstants()
+	{
+		return array_filter(
+			array_map(
+				function(Reflection $class) {
+					$reflections = $class->getConstantReflections();
+					ksort($reflections);
+					return $reflections;
+				},
+				$this->getParentClasses()
+			)
+		);
+	}
 }

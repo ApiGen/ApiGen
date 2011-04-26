@@ -146,14 +146,12 @@
 	</div>
 
 
-	{var $parent = $class}
-	{while $parent = $parent->parentClass}
-	{continueIf !$parent->ownMethods}
-	<h2>Methods Inherited From <a href="{$parent|classLink}#methodSummary">{$parent->name|replaceNS:$namespace}</a></h2>
+	{foreach $class->inheritedMethods as $parentName => $methods}
+	<h2>Methods Inherited From <a href="{$parentName|classLink}#methodSummary">{$parentName|replaceNS:$namespace}</a></h2>
 	<div class="box parentMethods"><code>
-		{foreach $parent->ownMethods as $method}<a href="{$method|methodLink}">{$method->name}()</a>{sep}, {/sep}{/foreach}
+		{foreach $methods as $method}<a href="{$method|methodLink}">{$method->name}()</a>{sep}, {/sep}{/foreach}
 	</code></div>
-	{/while}
+	{/foreach}
 
 
 	<div id="constantSummary" n:if="$class->ownConstants">
@@ -178,12 +176,10 @@
 		</table>
 	</div>
 
-	{var $parent = $class}
-	{while $parent = $parent->parentClass}
-	{continueIf !$parent->ownConstants}
-	<h2>Constants Inherited From <a href="{$parent|classLink}#constantSummary">{$parent->name|replaceNS:$namespace}</a></h2>
-	<div class="box parentConstants"><code>{foreach $parent->ownConstantReflections as $constant}<a href="{$constant|constantLink}"><code>{$constant->name}</code></a>{sep}, {/sep}{/foreach}</code></div>
-	{/while}
+	{foreach $class->inheritedConstants as $parentName => $constants}
+	<h2>Constants Inherited From <a href="{$parentName|classLink}#constantSummary">{$parentName|replaceNS:$namespace}</a></h2>
+	<div class="box parentConstants"><code>{foreach $constants as $constant}<a href="{$constant|constantLink}"><code>{$constant->name}</code></a>{sep}, {/sep}{/foreach}</code></div>
+	{/foreach}
 
 
 	<div id="propertySummary" n:if="$class->ownProperties">
@@ -204,12 +200,10 @@
 		</table>
 	</div>
 
-	{var $parent = $class}
-	{while $parent = $parent->parentClass}
-	{continueIf !$parent->ownProperties}
-	<h2>Properties Inherited From <a href="{$parent|classLink}#propertySummary">{$parent->name|replaceNS:$namespace}</a></h2>
-	<div class="box parentProperties"><code>{foreach $parent->ownProperties as $property}<var><a href="{$property|propertyLink}">${$property->name}</a></var>{sep}, {/sep}{/foreach}</code></div>
-	{/while}
+	{foreach $class->inheritedProperties as $parentName => $properties}
+	<h2>Properties Inherited From <a href="{$parentName|classLink}#propertySummary">{$parentName|replaceNS:$namespace}</a></h2>
+	<div class="box parentProperties"><code>{foreach $properties as $property}<var><a href="{$property|propertyLink}">${$property->name}</a></var>{sep}, {/sep}{/foreach}</code></div>
+	{/foreach}
 
 </div>
 {/block}
