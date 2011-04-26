@@ -74,7 +74,7 @@ class Generator extends NetteX\Object
 	public function parse()
 	{
 		$broker = new Broker(new Backend());
-		$broker->processDirectory(realpath($this->config['source']));
+		$broker->processDirectory($this->config['source']);
 
 		$tokenized = $broker->getClasses(Backend::TOKENIZED_CLASSES);
 		$internal = $broker->getClasses(Backend::INTERNAL_CLASSES);
@@ -318,6 +318,8 @@ class Generator extends NetteX\Object
 			$template->indirectImplementers = $class->getIndirectImplementers();
 			uksort($template->indirectImplementers, 'strcasecmp');
 
+			$file = $class->getFileName();
+			$template->fileName = str_replace('\\', '/', substr($file, strlen($this->config['source']) + 1));
 			$template->class = $class;
 			$template->setFile($templatePath . '/' . $this->config['templates']['class'])->save(self::forceDir($destination . '/' . $this->formatClassLink($class)));
 
@@ -325,9 +327,7 @@ class Generator extends NetteX\Object
 
 			// generate source codes
 			if ($class->isUserDefined() && !isset($generatedFiles[$class->getFileName()])) {
-				$file = $class->getFileName();
 				$template->source = $fshl->highlightString('PHP', file_get_contents($file));
-				$template->fileName = substr($file, strlen($this->config['source']) + 1);
 				$template->setFile($templatePath . '/' . $this->config['templates']['source'])->save(self::forceDir($destination . '/' . $this->formatSourceLink($class, FALSE)));
 				$generatedFiles[$file] = TRUE;
 

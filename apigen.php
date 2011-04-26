@@ -84,23 +84,26 @@ Options:
 
 
 // Default configuration
-if (!isset($config['title'])) {
-	$config['title'] = '';
-}
-if (!isset($config['baseUri'])) {
-	$config['baseUri'] = '';
-}
+$defaultConfig = array(
+	'title' => '',
+	'baseuri' => '',
+	'template' => '',
+	'templateDir' => '',
+	'wipeout' => true,
+	'progressbar' => true
+);
+
+$config = array_merge($defaultConfig, $config);
+
+// Fix configuration
 if (empty($config['template'])) {
 	$config['template'] = 'default';
 }
 if (empty($config['templateDir'])) {
 	$config['templateDir'] = __DIR__ . DIRECTORY_SEPARATOR  . 'templates';
 }
-if (!isset($config['wipeout'])) {
-	$config['wipeout'] = true;
-}
-if (!isset($config['progressbar'])) {
-	$config['progressbar'] = true;
+foreach (array('source', 'destination', 'templateDir') as $key) {
+	$config[$key] = realpath($config[$key]);
 }
 
 // Searching template
