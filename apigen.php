@@ -34,15 +34,15 @@ Apigen ' . Apigen\Generator::VERSION . '
 ';
 
 $options = getopt('', array(
-	'config::',
-	'source::',
-	'destination::',
-	'title::',
-	'base-uri::',
-	'template::',
-	'template-dir::',
-	'wipeout::',
-	'progressbar::'
+	'config:',
+	'source:',
+	'destination:',
+	'title:',
+	'base-uri:',
+	'template:',
+	'template-dir:',
+	'wipeout:',
+	'progressbar:'
 ));
 
 if (isset($options['config'])) {
