@@ -21,7 +21,7 @@ APIGen version 0.1
 ------------------
 ';
 
-$options = getopt('s:d:c:t:');
+$options = getopt('s:d:c:t:w');
 
 if (!isset($options['s'], $options['d'])) { ?>
 Usage:
@@ -32,6 +32,7 @@ Options:
 	-d <path>  Folder where to save the generated documentation. Required.
 	-c <path>  Output config file.
 	-t ...     Title of generated documentation.
+	-w         Wipe out the target directory first
 
 <?php
 	die();
@@ -67,6 +68,16 @@ if (isset($options['t'])) {
 
 
 echo "Generating documentation to folder $options[d]\n";
+if (is_dir($options['d']) && isset($options['w'])) {
+	// Wipe out the target directory
+	foreach (NetteX\Finder::find('*')->from($options['d'])->childFirst() as $item) {
+		if ($item->isDir()) {
+			rmdir($item);
+		} elseif ($item->isFile()) {
+			unlink($item);
+		}
+	}
+}
 @mkdir($options['d']);
 $generator = new Apigen\Generator($model);
 $generator->generate($options['d'], $config);
