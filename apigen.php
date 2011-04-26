@@ -23,6 +23,11 @@ require __DIR__ . '/libs/Apigen/Reflection.php';
 require __DIR__ . '/libs/Apigen/Backend.php';
 require __DIR__ . '/libs/Apigen/Generator.php';
 
+
+Debugger::enable();
+Debugger::timer();
+
+
 echo '
 Apigen ' . Apigen\Generator::VERSION . '
 ------------------
@@ -77,6 +82,7 @@ Options:
 	die();
 }
 
+
 // Default configuration
 if (!isset($config['title'])) {
 	$config['title'] = '';
@@ -88,7 +94,7 @@ if (empty($config['template'])) {
 	$config['template'] = 'default';
 }
 if (empty($config['templateDir'])) {
-	$config['templateDir'] = __DIR__ . '/templates';
+	$config['templateDir'] = __DIR__ . DIRECTORY_SEPARATOR  . 'templates';
 }
 if (!isset($config['wipeout'])) {
 	$config['wipeout'] = true;
@@ -97,8 +103,28 @@ if (!isset($config['progressbar'])) {
 	$config['progressbar'] = true;
 }
 
-Debugger::enable();
-Debugger::timer();
+// Searching template
+if (!is_dir($config['templateDir'])) {
+	echo "Template directory doesn't exist.\n";
+	die();
+}
+echo "Searching template in $config[templateDir]\n";
+
+$templatePath = $config['templateDir'] . DIRECTORY_SEPARATOR . $config['template'];
+if (!is_dir($templatePath)) {
+	echo "Template doesn't exist.\n";
+	die();
+}
+echo "Using template $config[template]\n";
+
+$templateConfigPath = $templatePath . DIRECTORY_SEPARATOR . 'config.neon';
+if (!is_file($templateConfigPath)) {
+	echo "Template config doesn't exist.\n";
+	die();
+}
+
+$config = array_merge($config, NetteX\Utils\Neon::decode(file_get_contents($templateConfigPath)));
+
 
 $generator = new Apigen\Generator($config);
 
@@ -121,7 +147,8 @@ if (empty($config['destination'])) {
 	die();
 }
 echo "Generating documentation to folder $config[destination]\n";
-if (is_dir($config['destination']) && $config['wipeout']) {
+
+if ($config['wipeout'] && is_dir($config['destination'])) {
 	echo 'Wiping out destination directory first';
 	if ($generator->wipeOutDestination()) {
 		echo ", ok\n";
@@ -130,9 +157,6 @@ if (is_dir($config['destination']) && $config['wipeout']) {
 		die();
 	}
 }
-
-echo "Searching template in $config[templateDir]\n";
-echo "Using template $config[template]\n";
 
 $generator->generate();
 

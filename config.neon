@@ -6,26 +6,3 @@ template: default
 templateDir: ''
 wipeout: On
 progressbar: On
-
-resources:
-	media: media
-
-templates:
-	namespace: namespace.latte
-	package: package.latte
-	class: class.latte
-	source: source.latte
-
-	common:
-		allclasses.js: allclasses.js.latte
-		allclasses.html: package.latte
-		index.html: overview.latte
-		overview.html: overview.latte
-		sitemap.xml: sitemap.xml.latte
-		media/combined.js: combined.js.latte
-
-filenames:
-	class: %s.html
-	package: package-%s.html
-	namespace: namespace-%s.html
-	source: source-%s.html
