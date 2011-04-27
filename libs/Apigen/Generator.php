@@ -190,14 +190,14 @@ class Generator extends NetteX\Object
 
 		$template->registerHelper('doclabel', function($doc, $namespace) use ($template) {
 			@list($names, $label) = preg_split('#\s+#', $doc, 2);
-			$res = '';
+			$res = array();
 			foreach (explode('|', $names) as $name) {
 				$class = $template->resolveType($name, $namespace);
 				$name = $template->replaceNS($name, $namespace);
-				$res .= $class !== NULL ? sprintf('<a href="%s">%s</a>', $template->classLink($class), $template->escapeHtml($name)) : $template->escapeHtml($name);
-				$res .= '|';
+				$res[] = $class ? sprintf('<a href="%s">%s</a>', $template->classLink($class), $template->escapeHtml($name))
+					: $template->escapeHtml($name);
 			}
-			return rtrim($res, '|') . ' ' . $template->escapeHtml($label);
+			return implode('|', $res) . ' ' . $template->escapeHtml($label);
 		});
 
 		return $template;

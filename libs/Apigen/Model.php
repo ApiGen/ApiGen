@@ -62,31 +62,31 @@ class Model extends NetteX\Object
 	 */
 	public function expand()
 	{
-		$declared = array_flip(array_merge(get_declared_classes(), get_declared_interfaces()));
-
+		$found = array();
 		foreach ($this->classes as $name => $class) {
-			foreach (array_merge(class_parents($name),$class->getInterfaceNames(), $class->getTypeHintingClasses()) as $parent) {
-				if (!isset($this->classes[$parent])) {
-					$this->classes[$parent] = new CustomClassReflection($parent);
-				}
-			}
+			$found = array_merge($found, array_values(class_parents($name)));
+			$found = array_merge($found, $class->getInterfaceNames());
 
 			foreach ($class->getOwnMethods() as $method) {
-				foreach (array('param', 'return', 'throws') as $annotation) {
-					if (!isset($method->annotations[$annotation])) {
-						continue;
+				foreach($method->getParameters() as $param) { // type hints
+					if ($tmp = $param->getClass()) {
+						$found[] = $tmp->getName();
 					}
+				}
 
-					foreach ($method->annotations[$annotation] as $doc) {
-						$types = preg_replace('#\s.*#', '', $doc);
-						foreach (explode('|', $types) as $name) {
-							$name = ltrim($name, '\\');
-							if (!isset($this->classes[$name]) && isset($declared[$name])) {
-								$this->classes[$name] = new CustomClassReflection($name);
-							}
+				foreach (array('param', 'return', 'throws') as $annotation) {
+				    if (isset($method->annotations[$annotation])) {
+						foreach ($method->annotations[$annotation] as $doc) {
+							$found = array_merge($found, explode('|', preg_replace('#\s.*#', '', $doc)));
 						}
 					}
 				}
+			}
+		}
+
+		foreach ($found as $name) {
+			if (!isset($this->classes[$name]) && (class_exists($name) || interface_exists($name))) {
+				$this->classes[ltrim($name, '\\')] = new CustomClassReflection($name);
 			}
 		}
 	}

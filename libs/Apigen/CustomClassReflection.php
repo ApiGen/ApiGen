@@ -24,26 +24,6 @@ class CustomClassReflection extends NetteX\Reflection\ClassType
 	private $package = NULL;
 
 
-	public function getTypeHintingClasses()
-	{
-		$methods = $this->getMethods();
-
-		// can not use $this->getConstructor() because of strange MethodReflection::import() error
-		array_push($methods, new \ReflectionMethod($this, '__construct'));
-
-		$classes = array();
-		foreach ($methods as $method) {
-			foreach($method->getParameters() as $param) {
-				if ($class = $param->getClass()) {
-					$classes[] = $class->getName();
-				}
-			}
-		}
-
-		return array_unique($classes);
-	}
-
-
 	/**
 	 * Returns namespace or package name.
 	 * @return string
@@ -116,6 +96,7 @@ class CustomClassReflection extends NetteX\Reflection\ClassType
 	{
 		return array_diff_assoc($this->getConstants(), $this->getParentClass() ? $this->getParentClass()->getConstants() : array());
 	}
+
 
 
 	/**
