@@ -25,4 +25,4 @@ templates:
 # Custom variables passed to each template
 variables:
 	title: 
-	baseUri: 
+	baseUrl: 
