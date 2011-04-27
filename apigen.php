@@ -67,8 +67,8 @@ if (isset($options['config'])) {
 	}
 } else { ?>
 Usage:
-	php apigen.php --config=<path>
-	php apigen.php --source=<path> --destination=<path> [options]
+	apigen --config=<path>
+	apigen --source=<path> --destination=<path> [options]
 
 Options:
 	--config        <path>  Config file
