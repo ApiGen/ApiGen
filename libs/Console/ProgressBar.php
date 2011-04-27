@@ -338,6 +338,10 @@ class Console_ProgressBar
 			$estimate
 		);
 
+		if ($current === $this->target_num) {
+			echo "\n";
+		}
+
 		return true;
 	}
 

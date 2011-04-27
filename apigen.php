@@ -180,4 +180,4 @@ if ($config['wipeout'] && is_dir($config['destination'])) {
 $generator->generate();
 
 
-echo "\nDone. Total time: " . (int) Debugger::timer() . " seconds\n";
+echo "Done. Total time: " . (int) Debugger::timer() . " seconds\n";

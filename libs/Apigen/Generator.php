@@ -74,7 +74,22 @@ class Generator extends NetteX\Object
 	public function parse()
 	{
 		$broker = new Broker(new Backend());
-		$broker->processDirectory($this->config['source']);
+
+		$files = array();
+		foreach (new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($this->config['source'])) as $entry) {
+			if ($entry->isFile() && 'php' === $entry->getExtension()) {
+				$files[] = $entry->getPathName();
+			}
+		}
+
+		if ($this->config['progressbar']) {
+			$this->prepareProgressBar(count($files));
+		}
+
+		foreach ($files as $file) {
+			$broker->processFile($file);
+			$this->incrementProgressBar();
+		}
 
 		$tokenized = $broker->getClasses(Backend::TOKENIZED_CLASSES);
 		$internal = $broker->getClasses(Backend::INTERNAL_CLASSES);
@@ -654,7 +669,7 @@ class Generator extends NetteX\Object
 	 */
 	protected function incrementProgressBar()
 	{
-		if (null !== $this->progressBar) {
+		if ($this->config['progressbar']) {
 			$this->progressBar->update($this->progressBar->getProgress() + 1);
 		}
 	}
