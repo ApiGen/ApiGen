@@ -18,7 +18,7 @@ require __DIR__ . '/libs/NetteX/nette.min.php';
 require __DIR__ . '/libs/fshl/fshl.php';
 require __DIR__ . '/libs/Console/ProgressBar.php';
 require __DIR__ . '/libs/texy/texy.min.php';
-require __DIR__ . '/libs/TokenReflection/compressed.php';
+require __DIR__ . '/libs/TokenReflection/tokenreflection.min.php';
 require __DIR__ . '/libs/Apigen/Reflection.php';
 require __DIR__ . '/libs/Apigen/Backend.php';
 require __DIR__ . '/libs/Apigen/Generator.php';
