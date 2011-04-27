@@ -118,6 +118,10 @@ pre {
 	padding: 0;
 }
 
+#left #home_link span {
+	display: none;
+}
+
 #left ul {
 	list-style: none;
 	padding: 0 0 0 3px;
