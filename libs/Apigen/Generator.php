@@ -434,6 +434,7 @@ class Generator extends NetteX\Object
 
 		// docblock
 		$texy = new \Texy;
+		$texy->mergeLines = FALSE;
 		$texy->allowedTags = \Texy::NONE;
 		$texy->allowed['list/definition'] = FALSE;
 		$texy->allowed['phrase/em-alt'] = FALSE;
@@ -452,10 +453,6 @@ class Generator extends NetteX\Object
 			return $texy->processLine($text);
 		});
 		$template->registerHelper('docblock', function($text) use ($texy) {
-			$text = preg_replace('#([^\n])(\n)([^\n])#', '\1\2 \3', $text);
-			$text = preg_replace_callback('#<(code|pre)>.+?</\1>#s', function($matches) {
-				return preg_replace('#([^\n])(\n) ([^\n])#', '\1\2\3', $matches[0]);
-			}, $text);
 			return $texy->process($text);
 		});
 		$template->registerHelper('doclabel', function($doc, $namespace) use ($template) {
