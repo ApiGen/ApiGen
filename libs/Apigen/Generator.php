@@ -605,6 +605,12 @@ class Generator extends NetteX\Object
 		$class = $element instanceof ApiReflection ? $element : $element->getDeclaringClass();
 		if ($class->isInternal()) {
 			static $manual = 'http://php.net/manual';
+			static $reservedClasses = array('stdClass', 'Closure', 'Directory');
+
+			if (in_array($class->getName(), $reservedClasses)) {
+				return $manual . '/reserved.classes.php';
+			}
+
 			$className = strtolower($class->getName());
 			$classLink = sprintf('%s/class.%s.php', $manual, $className);
 			$elementName = strtolower(strtr(ltrim($element->getName(), '_'), '_', '-'));
