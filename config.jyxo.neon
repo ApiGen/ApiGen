@@ -1,7 +1,7 @@
 source: ''
 destination: ''
 title: 'Jyxo PHP Library'
-baseUri: 'http://jyxo.github.com/php'
+baseUrl: 'http://jyxo.github.com/php'
 template: jyxo
 templateDir: ''
 wipeout: On

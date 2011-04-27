@@ -1,7 +1,7 @@
 source: ''
 destination: ''
 title: ''
-baseUri: ''
+baseUrl: ''
 template: default
 templateDir: ''
 wipeout: On

@@ -36,7 +36,7 @@ $options = getopt('', array(
 	'source:',
 	'destination:',
 	'title:',
-	'base-uri:',
+	'base-url:',
 	'template:',
 	'template-dir:',
 	'access-levels:',
@@ -74,7 +74,7 @@ Options:
 	--source        <path>  Name of a source directory to parse
 	--destination   <path>  Folder where to save the generated documentation
 	--title         <value> Title of generated documentation
-	--base-uri      <value> Documentation base URI
+	--base-url      <value> Documentation base URI
 	--template      <value> Documentation template name
 	--template-dir  <path>  Folder with templates
 	--access-levels <list>  Generate documetation for methods and properties with given access level, default public,protected
@@ -89,7 +89,7 @@ Options:
 // Default configuration
 $defaultConfig = array(
 	'title' => '',
-	'baseUri' => '',
+	'baseUrl' => '',
 	'template' => '',
 	'templateDir' => '',
 	'accessLevels' => array(
