@@ -15,13 +15,13 @@
 
 	<title>{if $title}{$title} | {/if}{block title}{$title}{/block}</title>
 
-	{var combined_js => 'media/combined.js'}
+	{var combined_js => 'resources/combined.js'}
 	<script type="text/javascript" src="{$combined_js|staticFile}"></script>
 	{var allclasses_js => 'allclasses.js'}
 	<script type="text/javascript" src="{$allclasses_js|staticFile}"></script>
-	{var style_css => 'media/style.css'}
+	{var style_css => 'resources/style.css'}
 	<link rel="stylesheet" type="text/css" media="all" href="{$style_css|staticFile}">
-	<link rel="shortcut icon" href="media/favicon.ico" type="image/x-icon">
+	<link rel="shortcut icon" href="resources/favicon.ico" type="image/x-icon">
 </head>
 
 <body>

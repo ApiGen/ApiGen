@@ -1,5 +1,5 @@
 resources:
-	media: media
+	resources: resources
 
 templates:
 	namespace: namespace.latte
@@ -12,7 +12,7 @@ templates:
 		allclasses.html: package.latte
 		index.html: overview.latte
 		sitemap.xml: sitemap.xml.latte
-		media/combined.js: combined.js.latte
+		resources/combined.js: combined.js.latte
 
 filenames:
 	class: %s.html
