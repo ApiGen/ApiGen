@@ -1,7 +1,7 @@
 <?php
 
 /**
- * API Generator.
+ * ApiGen - API Generator.
  *
  * Copyright (c) 2010 David Grudl (http://davidgrudl.com)
  *

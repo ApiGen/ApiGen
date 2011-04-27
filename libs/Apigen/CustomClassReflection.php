@@ -1,7 +1,7 @@
 <?php
 
 /**
- * API Generator.
+ * ApiGen - API Generator.
  *
  * Copyright (c) 2010 David Grudl (http://davidgrudl.com)
  *
@@ -22,15 +22,15 @@ use NetteX;
 class CustomClassReflection extends NetteX\Reflection\ClassType
 {
 	private $package = NULL;
-	
-	
+
+
 	public function getTypeHintingClasses()
 	{
 		$methods = $this->getMethods();
-		
+
 		// can not use $this->getConstructor() because of strange MethodReflection::import() error
 		array_push($methods, new \ReflectionMethod($this, '__construct'));
-		
+
 		$classes = array();
 		foreach ($methods as $method) {
 			foreach($method->getParameters() as $param) {
@@ -39,7 +39,7 @@ class CustomClassReflection extends NetteX\Reflection\ClassType
 				}
 			}
 		}
-		
+
 		return array_unique($classes);
 	}
 

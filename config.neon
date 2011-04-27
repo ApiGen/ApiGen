@@ -1,6 +1,12 @@
+# ApiGen default template configuration
+
+
+# These directories are copied to the destination folder
 resources:
 	%dir%/templates/media: media
 
+
+# Templates for each page
 templates:
 	namespace: %dir%/templates/namespace.latte
 	class: %dir%/templates/class.latte
@@ -16,6 +22,7 @@ templates:
 			media/combined.js: %dir%/templates/combined.js.latte
 
 
+# Custom variables passed to each template
 variables:
-	title: 'Nette Framework documentation'
-	baseUri: 'http://api.nette.org/2.0'
+	title: 
+	baseUri: 

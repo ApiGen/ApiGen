@@ -1,12 +1,13 @@
 <?php
 
 /**
- * API Generator.
+ * ApiGen - API Generator.
+ * http://apigen.org
  *
  * Copyright (c) 2010 David Grudl (http://davidgrudl.com)
  *
- * This source file is subject to the "Nette license", and/or
- * GPL license. For more information please see http://nette.org
+ * For the full copyright and license information, please view
+ * the file license.txt that was distributed with this source code.
  */
 
 use NetteX\Diagnostics\Debugger;
@@ -20,7 +21,7 @@ require __DIR__ . '/libs/Apigen/Model.php';
 require __DIR__ . '/libs/Apigen/Generator.php';
 
 echo '
-APIGen version 0.1
+ApiGen version 1.0
 ------------------
 ';
 
@@ -28,13 +29,13 @@ $options = getopt('s:d:c:t:l:');
 
 if (!isset($options['s'], $options['d'])) { ?>
 Usage:
-	php apigen.php [options]
+	apigen [options]
 
 Options:
 	-s <path>  Name of a source directory to parse. Required.
 	-d <path>  Folder where to save the generated documentation. Required.
 	-c <path>  Output config file.
-	-l <path>  Directory with libraries
+	-l <path>  Directory with additional libraries.
 	-t ...     Title of generated documentation.
 
 <?php
