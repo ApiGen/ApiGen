@@ -395,7 +395,7 @@ class Generator extends NetteX\Object
 			$annotation = array();
 			if ($element instanceof ReflectionProperty) {
 				$annotation = $element->getAnnotation('var');
-				if (null === $annotation) {
+				if (null === $annotation && !$element->isTokenized()) {
 					$value = $element->getDefaultValue();
 					if (null !== $value) {
 						$annotation = gettype($value);
@@ -409,7 +409,8 @@ class Generator extends NetteX\Object
 			$types = array();
 			foreach (preg_replace('#\s.*#', '', (array) $annotation) as $s) {
 				foreach (explode('|', $s) as $name) {
-					$types[] = (object) array('name' => $name, 'class' => $that->resolveType($name, $namespace));
+					$class = $that->resolveType($name, $namespace);
+					$types[] = (object) array('name' => $class ?: $name, 'class' => $class);
 				}
 			}
 			return $types;
