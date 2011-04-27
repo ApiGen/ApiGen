@@ -252,9 +252,13 @@ class Generator extends NetteX\Object
 		$class = $element instanceof \ReflectionClass ? $element : $element->getDeclaringClass();
 		if ($class->isInternal()) {
 			if ($element instanceof \ReflectionClass) {
-				return strtolower('http://php.net/manual/class.' . $class->getName() . '.php');
+				if (in_array($class->getName(), array('stdClass', 'Closure', 'Directory'))) {
+					return 'http://php.net/manual/reserved.classes.php';
+				} else {
+					return 'http://php.net/manual/class.' . strtolower($class->getName()) . '.php';
+				}
 			} else {
-				return strtolower('http://php.net/manual/' . $class->getName() . '.' . strtr(ltrim($element->getName(), '_'), '_', '-') . '.php');
+				return 'http://php.net/manual/' . strtolower($class->getName() . '.' . strtr(ltrim($element->getName(), '_'), '_', '-')) . '.php';
 			}
 		} else {
 			$file = substr($element->getFileName(), strlen($this->model->getDirectory()) + 1);
