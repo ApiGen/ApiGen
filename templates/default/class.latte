@@ -26,7 +26,7 @@
 		<dl class="tree" n:if="$class->parentClass || end($tree)->ownInterfaces">
 			{foreach $tree as $item}
 			<dd style="padding-left:{=($iterator->counter - 1) * 30}px">
-				<img src="resources/inherit.gif" alt="extended by" n:if="$iterator->counter > 1">
+				<img src="resources/inherit.gif" alt="Extended by" n:if="$iterator->counter > 1">
 				{if $item->internal || $item->userDefined}
 				<a href="{$item|classLink}" n:tag-if="!$iterator->last">{last}<b>{/last}{$item->name}{last}</b>{/last}</a>
 				{if $item->ownInterfaces} implements {foreach $item->ownInterfaces as $interface}<a href="{$interface|classLink}">{$interface->name}</a>{sep}, {/sep}{/foreach}{/if}
