@@ -2,6 +2,7 @@ source: ''
 destination: ''
 title: ''
 baseUrl: ''
+googleCse: ''
 template: default
 templateDir: ''
 wipeout: On

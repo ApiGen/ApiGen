@@ -38,6 +38,7 @@ $options = getopt('', array(
 	'destination:',
 	'title:',
 	'base-url:',
+	'google-cse:',
 	'template:',
 	'template-dir:',
 	'access-levels:',
@@ -76,6 +77,7 @@ Options:
 	--destination   <path>  Directory where to save the generated documentation
 	--title         <value> Title of generated documentation
 	--base-url      <value> Documentation base URI
+	--google-cse    <value> Google Custom Search ID
 	--template      <value> Documentation template name
 	--template-dir  <path>  Directory with templates
 	--access-levels <list>  Generate documetation for methods and properties with given access level, default public,protected
@@ -91,6 +93,7 @@ Options:
 $defaultConfig = array(
 	'title' => '',
 	'baseUrl' => '',
+	'googleCse' => '',
 	'template' => '',
 	'templateDir' => '',
 	'accessLevels' => array(

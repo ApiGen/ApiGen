@@ -114,9 +114,11 @@
 </div>
 <div id="rightWrapper">
 	<div id="right">
+		{if $googleCse}
 		<form action="http://www.google.com/cse" id="search" onsubmit="if(this.q.value.indexOf('more:')==-1)this.q.value+=' more:api'">
-			<input type="hidden" name="cx" value="011549293477758430224:vxofa9ufnhc"><input type="hidden" name="ie" value="UTF-8"><input type="text" name="q" class="text"><input type="submit" value="Search">
+			<input type="hidden" name="cx" value="{$googleCse}"><input type="hidden" name="ie" value="UTF-8"><input type="text" name="q" class="text"><input type="submit" value="Search">
 		</form>
+		{/if}
 
 		{include #content}
 
