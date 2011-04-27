@@ -1,7 +1,7 @@
 <?php
 
 /**
- * API Generator.
+ * ApiGen - API Generator.
  *
  * Copyright (c) 2010 David Grudl (http://davidgrudl.com)
  * Copyright (c) 2011 Ondřej Nešpor (http://andrewsville.cz)
@@ -27,7 +27,7 @@ require __DIR__ . '/libs/Apigen/Generator.php';
 Debugger::enable();
 Debugger::timer();
 
-$name = sprintf('Apigen %s', Apigen\Generator::VERSION);
+$name = sprintf('ApiGen %s', Apigen\Generator::VERSION);
 echo $name . "\n";
 echo str_repeat('-', strlen($name)) . "\n";
 
