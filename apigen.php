@@ -73,11 +73,11 @@ Usage:
 Options:
 	--config        <path>  Config file
 	--source        <path>  Name of a source directory to parse
-	--destination   <path>  Folder where to save the generated documentation
+	--destination   <path>  Directory where to save the generated documentation
 	--title         <value> Title of generated documentation
 	--base-url      <value> Documentation base URI
 	--template      <value> Documentation template name
-	--template-dir  <path>  Folder with templates
+	--template-dir  <path>  Directory with templates
 	--access-levels <list>  Generate documetation for methods and properties with given access level, default public,protected
 	--wipeout       On|Off  Wipe out the destination directory first, default On
 	--progressbar   On|Off  Display progressbar, default On
@@ -155,7 +155,7 @@ if (empty($config['source'])) {
 	echo "Source directory $config[source] doesn't exist.\n";
 	die();
 }
-echo "Scanning folder $config[source]\n";
+echo "Scanning directory $config[source]\n";
 list($count, $countInternal) = $generator->parse();
 echo "Found $count classes and $countInternal internal classes\n";
 
@@ -165,7 +165,7 @@ if (empty($config['destination'])) {
 	echo "Destination directory is not set.\n";
 	die();
 }
-echo "Generating documentation to folder $config[destination]\n";
+echo "Generating documentation to directory $config[destination]\n";
 
 if ($config['wipeout'] && is_dir($config['destination'])) {
 	echo 'Wiping out destination directory first';
