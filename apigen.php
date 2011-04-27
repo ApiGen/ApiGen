@@ -80,7 +80,7 @@ Options:
 	--template-dir  <path>  Directory with templates
 	--access-levels <list>  Generate documetation for methods and properties with given access level, default public,protected
 	--wipeout       On|Off  Wipe out the destination directory first, default On
-	--progressbar   On|Off  Display progressbar, default On
+	--progressbar   On|Off  Display progressbars, default On
 
 <?php
 	die();
