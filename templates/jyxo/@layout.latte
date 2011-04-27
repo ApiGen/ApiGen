@@ -22,6 +22,9 @@
 	{var style_css => 'resources/style.css'}
 	<link rel="stylesheet" type="text/css" media="all" href="{$style_css|staticFile}">
 	<link rel="shortcut icon" href="resources/favicon.ico" type="image/x-icon">
+	{if $googleCse}
+	<link rel="search" type="application/opensearchdescription+xml" title="{$title}" href="{$baseUrl}/opensearch.xml">
+	{/if}
 </head>
 
 <body>

@@ -12,6 +12,7 @@ templates:
 		allclasses.html: package.latte
 		index.html: overview.latte
 		sitemap.xml: sitemap.xml.latte
+		opensearch.xml: opensearch.xml.latte
 		resources/combined.js: combined.js.latte
 
 filenames:
