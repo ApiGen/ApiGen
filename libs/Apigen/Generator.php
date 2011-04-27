@@ -228,12 +228,9 @@ class Generator extends NetteX\Object
 				+ count($namespaces)
 				+ count($packages)
 				+ count($this->config['templates']['common'])
-				+ array_reduce($allClasses, function($count, ApiReflection $class) {
-					if ($class->isUserDefined()) {
-						$count++;
-					}
-					return $count;
-				}, 0)
+				+ count(array_filter(array_unique(array_map(function(ApiReflection $class) {
+					return $class->getFileName();
+				}, $allClasses))))
 			);
 		}
 
