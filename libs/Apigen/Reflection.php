@@ -58,10 +58,12 @@ class Reflection
 			self::$methods = array_flip(get_class_methods($this));
 		}
 
-		foreach ($generator->getConfig('accessLevels') as $level => $enabled) {
-			if ($enabled) {
-				self::$methodAccessLevels |= constant('ReflectionMethod::IS_' . strtoupper($level));
-				self::$propertyAccessLevels |= constant('ReflectionProperty::IS_' . strtoupper($level));
+		if (empty(self::$methodAccessLevels)) {
+			foreach ($generator->getConfig('accessLevels') as $level => $enabled) {
+				if ($enabled) {
+					self::$methodAccessLevels |= constant('ReflectionMethod::IS_' . strtoupper($level));
+					self::$propertyAccessLevels |= constant('ReflectionProperty::IS_' . strtoupper($level));
+				}
 			}
 		}
 
