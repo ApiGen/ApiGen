@@ -3,7 +3,7 @@
 
 # These directories are copied to the destination folder
 resources:
-	%dir%/templates/media: media
+	%dir%/templates/resources: resources
 
 
 # Templates for each page
@@ -19,7 +19,7 @@ templates:
 			index.html: %dir%/templates/overview.latte
 			overview.html: %dir%/templates/overview.latte
 			sitemap.xml: %dir%/templates/sitemap.xml.latte
-			media/combined.js: %dir%/templates/combined.js.latte
+			resources/combined.js: %dir%/templates/combined.js.latte
 
 
 # Custom variables passed to each template
