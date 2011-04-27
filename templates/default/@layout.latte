@@ -33,7 +33,7 @@
 		<h3>Packages</h3>
 		<ul>
 		{if $package}
-			<li class="all"><a href="overview.html#packages">All</a></li>
+			<li class="all"><a href="index.html#packages">All</a></li>
 		{/if}
 		{foreach $packages as $item}
 			<li><a href="{$item|packageLink}" {if $package === $item}class="active"{/if}>{$item ? $item : 'None'}</a></li>
@@ -45,7 +45,7 @@
 		<h3>Namespaces</h3>
 		<ul>
 		{if $namespace}
-			<li class="all"><a href="overview.html#namespaces">All</a></li>
+			<li class="all"><a href="index.html#namespaces">All</a></li>
 		{/if}
 		{foreach $namespaces as $item}
 			<li><a href="{$item|namespaceLink}" {if $namespace === $item}class="active"{/if}>{$item ? $item : 'None'}</a></li>
