@@ -165,6 +165,7 @@ class Generator extends NetteX\Object
 
 		// docblock
 		$texy = new \TexyX;
+		$texy->allowedTags = array_flip(array('b', 'i', 'em', 'kbd', 'var', 'p', 'ul', 'ol', 'li'));
 		$texy->allowed['list/definition'] = FALSE;
 		$texy->allowed['phrase/em-alt'] = FALSE;
 		$texy->registerBlockPattern( // highlight <code>, <pre>
