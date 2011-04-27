@@ -11,7 +11,8 @@
 
 namespace Apigen;
 
-use NetteX;
+use NetteX,
+	NetteX\Utils\Strings;
 
 
 
@@ -92,7 +93,10 @@ class Model extends NetteX\Object
 
 		foreach ($found as $name) {
 			if (!isset($this->classes[$name]) && (class_exists($name) || interface_exists($name))) {
-				$this->classes[ltrim($name, '\\')] = new CustomClassReflection($name);
+				$class = new CustomClassReflection($name);
+				if ($class->isInternal() || Strings::startsWith($class->getFileName(), $this->dir . DIRECTORY_SEPARATOR)) {
+					$this->classes[$class->getName()] = $class;
+				}
 			}
 		}
 	}
@@ -184,7 +188,7 @@ class Model extends NetteX\Object
 		$doc = trim($doc, '/*');
 		$doc = preg_replace('#^\s*\**\s*(@var \S+\s*|@.*)#ms', '', $doc); // remove annotations
 		$doc = preg_replace('#^\s*\** ?#m', '', $doc); // remove stars
-		return NetteX\Utils\Strings::normalize(trim($doc));
+		return Strings::normalize(trim($doc));
 	}
 
 }

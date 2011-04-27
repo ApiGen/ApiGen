@@ -48,7 +48,7 @@ date_default_timezone_set('Europe/Prague');
 Debugger::enable();
 Debugger::timer();
 
-if(isset($options['l'])) {
+if (isset($options['l'])) {
   $robot = new NetteX\Loaders\RobotLoader;
   $robot->setCacheStorage(new NetteX\Caching\MemoryStorage);
   $robot->addDirectory($options['l']);
