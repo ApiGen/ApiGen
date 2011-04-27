@@ -82,6 +82,12 @@ class Model extends NetteX\Object
 					}
 				}
 			}
+
+			foreach ($class->getOwnProperties() as $property) {
+			    if ($property->hasAnnotation('var')) {
+					$found = array_merge($found, explode('|', preg_replace('#\s.*#', '', $property->getAnnotation('var'))));
+				}
+			}
 		}
 
 		foreach ($found as $name) {
