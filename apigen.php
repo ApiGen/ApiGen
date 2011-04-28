@@ -151,7 +151,7 @@ try {
 	echo "Done. Total time: " . (int) Debugger::timer() . " seconds\n";
 
 } catch (Exception $e) {
-	echo $e->getMessage() . "\n\n";
+	echo "\n" . $e->getMessage() . "\n\n";
 ?>
 Usage:
 	apigen --config=<path>
