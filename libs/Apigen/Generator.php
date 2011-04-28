@@ -169,6 +169,8 @@ class Generator extends NetteX\Object
 		$texy->allowedTags = array_flip(array('b', 'i', 'em', 'kbd', 'var', 'p', 'ul', 'ol', 'li'));
 		$texy->allowed['list/definition'] = FALSE;
 		$texy->allowed['phrase/em-alt'] = FALSE;
+		$texy->allowed['longwords'] = FALSE;
+		
 		$texy->registerBlockPattern( // highlight <code>, <pre>
 			function($parser, $matches, $name) use ($fshl) {
 				$content = $matches[1] === 'code' ? $fshl->highlightString('PHP', $matches[2]) : htmlSpecialChars($matches[2]);
