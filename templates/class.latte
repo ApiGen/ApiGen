@@ -19,8 +19,8 @@
 
 		<h1>{if $class->interface}Interface{else}Class{/if} {$class->shortName}</h1>
 
-		<div class="classDescription" n:if="$class->docComment">
-		{!$class->docComment|docblock}
+		<div class="classDescription" n:if="$class->description">
+		{!$class->description|texy}
 		</div>
 
 		<dl class="tree" n:if="$class->parentClass || end($tree)->ownInterfaces">
@@ -46,11 +46,12 @@
 		<div class="classInfo">
 			{if $class->abstract || $class->final}<b>{if $class->abstract}Abstract{else}Final{/if} {if $class->interface}Interface{else}Class{/if}</b><br>{/if}
 			{foreach $class->annotations as $annotation => $values}
+				{continueIf $annotation == 'description'}
 				{continueIf $annotation == 'property'}
 				{continueIf $annotation == 'property-read'}
 				{continueIf $annotation == 'method'}
 				{foreach $values as $value}
-				<b>{$annotation|ucfirst}:</b> {!$value|docline}<br>
+				<b>{$annotation|ucfirst}:</b> {!$value|texyline}<br>
 				{/foreach}
 			{/foreach}
 			{if $class->internal}<b>Documented at</b> <a href="{$class|sourceLink}">php.net</a>{else}<b>Located at</b> <a href="{$class|sourceLink}">{$class->fileName|replace:$fileRoot|replace:'\\','/'}</a>{/if}<br>
@@ -83,11 +84,11 @@
 			)</code>
 
 			<div class="short">
-				{!$method->docComment|docline:false}
+				{!$method->description|texyline:false}
 			</div>
 
 			<div class="detailed">
-				{!$method->docComment|docblock}
+				{!$method->description|texy}
 
 				{var $annotations = $method->annotations}
 
@@ -171,7 +172,7 @@
 
 			<td width="1%"><var>${$property->name}</var></td>
 			<td><pre>{!$class->defaultProperties[$property->name]|dump}</pre></td>
-			<td>{!$property->docComment|docline} <a href="#${$property->name}" class="anchor">#</a></td>
+			<td>{!$property->description ?: preg_replace('#^\S+\s*#', '', $property->getAnnotation('var'))|texyline} <a href="#${$property->name}" class="anchor">#</a></td>
 		</tr>
 		{/foreach}
 		</table>

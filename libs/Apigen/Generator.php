@@ -181,15 +181,11 @@ class Generator extends NetteX\Object
 			'codeBlockSyntax'
 		);
 
-		$template->registerHelper('docline', function($doc, $line = TRUE) use ($texy) {
-			$doc = Model::extractDocBlock($doc);
-			$doc = preg_replace('#\n.*#s', '', $doc); // leave only first line
-			return $line ? $texy->processLine($doc) : $texy->process($doc);
+		$template->registerHelper('texyline', function($text, $block = TRUE) use ($texy) {
+			return $texy->process(preg_replace('#\n.*#s', '', $text), $block);
 		});
 
-		$template->registerHelper('docblock', function($doc) use ($texy) {
-			return $texy->process(Model::extractDocBlock($doc));
-		});
+		$template->registerHelper('texy', callbackX($texy, 'process'));
 
 		$template->registerHelper('doclabel', function($doc, $namespace) use ($template) {
 			@list($names, $label) = preg_split('#\s+#', $doc, 2);
@@ -200,7 +196,7 @@ class Generator extends NetteX\Object
 				$res[] = $class ? sprintf('<a href="%s">%s</a>', $template->classLink($class), $template->escapeHtml($name))
 					: $template->escapeHtml($name);
 			}
-			return implode('|', $res) . ' ' . $template->escapeHtml($label);
+			return implode('|', $res) . ' ' . $template->texyline($label);
 		});
 
 		return $template;

@@ -1,7 +1,7 @@
 <?php //netteloader=NetteX\Framework
 
 namespace {/**
- * NetteX Framework (version 2.0-dev released on 2011-04-26, http://nette.org)
+ * NetteX Framework (version 2.0-dev released on 2011-04-28, http://nette.org)
  *
  * Copyright (c) 2004, 2011 David Grudl (http://davidgrudl.com)
  *
@@ -1388,7 +1388,8 @@ hasAnnotation($name){$res=AnnotationsParser::getAll($this);return!empty($res[$na
 getAnnotation($name){$res=AnnotationsParser::getAll($this);return
 isset($res[$name])?end($res[$name]):NULL;}function
 getAnnotations(){return
-AnnotationsParser::getAll($this);}static
+AnnotationsParser::getAll($this);}function
+getDescription(){return$this->getAnnotation('description');}static
 function
 getReflection(){return
 new
@@ -1841,7 +1842,7 @@ isset(self::$config[$key])?self::$config[$key]:$default;}else{return
 self::$config;}}}final
 class
 Framework{const
-NAME='NetteX Framework',VERSION='2.0-dev',REVISION='8e8c99e released on 2011-04-26';public
+NAME='NetteX Framework',VERSION='2.0-dev',REVISION='dbc6502 released on 2011-04-28';public
 static$iAmUsingBadHost=FALSE;final
 function
 __construct(){throw
@@ -2165,7 +2166,7 @@ getPanel(){$this->disabled=TRUE;$s='';$h='htmlSpecialChars';foreach($this->queri
 as$i=>$query){list($sql,$params,$time,$rows,$connection,$source)=$query;$explain=NULL;if($this->explain&&preg_match('#\s*SELECT\s#iA',$sql)){try{$explain=$connection->queryArgs('EXPLAIN '.$sql,$params)->fetchAll();}catch(\PDOException$e){}}$s.='<tr><td>'.sprintf('%0.3f',$time*1000);if($explain){static$counter;$counter++;$s.="<br /><a href='#' class='nette-toggler' rel='#nette-DbConnectionPanel-row-$counter'>explain&nbsp;&#x25ba;</a>";}$s.='</td><td class="nette-DbConnectionPanel-sql">'.Connection::highlightSql(NetteX\Utils\Strings::truncate($sql,self::$maxLength));if($explain){$s.="<table id='nette-DbConnectionPanel-row-$counter' class='nette-collapsed'><tr>";foreach($explain[0]as$col=>$foo){$s.="<th>{$h($col)}</th>";}$s.="</tr>";foreach($explain
 as$row){$s.="<tr>";foreach($row
 as$col){$s.="<td>{$h($col)}</td>";}$s.="</tr>";}$s.="</table>";}if($source){list($file,$line)=$source;$s.=(Debugger::$editor?"<a href='{$h(NetteX\Diagnostics\Helpers::editorLink($file,$line))}'":'<span')." class='nette-DbConnectionPanel-source' title='{$h($file)}:$line'>"."{$h(basename(dirname($file)).'/'.basename($file))}:$line".(Debugger::$editor?'</a>':'</span>');}$s.='</td><td>';foreach($params
-as$param){$s.="{$h(NetteX\Utils\Strings::truncate($param,self::$maxLength))}<br>";}$s.='</td><td>'.$rows.'</td></tr>';}return
+as$param){$s.=Debugger::dump($param,TRUE);}$s.='</td><td>'.$rows.'</td></tr>';}return
 empty($this->queries)?'':'<style> #nette-debug td.nette-DbConnectionPanel-sql { background: white !important }
 			#nette-debug .nette-DbConnectionPanel-source { color: #BBB !important }
 			#nette-debug nette-DbConnectionPanel tr table { margin: 8px 0; max-height: 150px; overflow:auto } </style>
@@ -2293,7 +2294,7 @@ callbackX($m){$m=$m[0];if($m[0]==="'"||$m[0]==='"'){return$m;}elseif($m[0]==='?'
 isset($this->connection->substitutions[$s])?$this->connection->substitutions[$s]:$m;}}private
 function
 formatValue($value){if(is_string($value)){if(strlen($value)>20){$this->remaining[]=$value;return'?';}else{return$this->connection->quote($value);}}elseif(is_int($value)){return(string)$value;}elseif(is_float($value)){return
-rtrim(rtrim(number_format($value,10,'.',''),'0'),'.');}elseif(is_bool($value)){return$value?1:0;}elseif($value===NULL){return'NULL';}elseif(is_array($value)||$value
+rtrim(rtrim(number_format($value,10,'.',''),'0'),'.');}elseif(is_bool($value)){$this->remaining[]=$value;return'?';}elseif($value===NULL){return'NULL';}elseif(is_array($value)||$value
 instanceof\Traversable){$vx=$kx=array();if(isset($value[0])){foreach($value
 as$v){$vx[]=$this->formatValue($v);}return
 implode(', ',$vx);}elseif($this->arrayMode==='values'){$this->arrayMode='multi';foreach($value
@@ -4317,7 +4318,8 @@ class
 AnnotationsParser{const
 RE_STRING='\'(?:\\\\.|[^\'\\\\])*\'|"(?:\\\\.|[^"\\\\])*"';const
 RE_IDENTIFIER='[_a-zA-Z\x7F-\xFF][_a-zA-Z0-9\x7F-\xFF-]*';public
-static$useReflection;private
+static$useReflection;public
+static$inherited=array('description','param','return');private
 static$cache;private
 static$timestamps;final
 function
@@ -4329,18 +4331,17 @@ getAll(\Reflector$r){if($r
 instanceof\ReflectionClass){$type=$r->getName();$member='';}elseif($r
 instanceof\ReflectionMethod){$type=$r->getDeclaringClass()->getName();$member=$r->getName();}else{$type=$r->getDeclaringClass()->getName();$member='$'.$r->getName();}if(!self::$useReflection){$file=$r
 instanceof\ReflectionClass?$r->getFileName():$r->getDeclaringClass()->getFileName();if($file&&isset(self::$timestamps[$file])&&self::$timestamps[$file]!==filemtime($file)){unset(self::$cache[$type]);}unset(self::$timestamps[$file]);}if(isset(self::$cache[$type][$member])){return
-self::$cache[$type][$member];}if(self::$useReflection===NULL){self::$useReflection=(bool)ClassType::from(__CLASS__)->getDocComment();}if(self::$useReflection){return
-self::$cache[$type][$member]=self::parseComment($r->getDocComment());}else{if(self::$cache===NULL){self::$cache=(array)self::getCache()->offsetGet('list');self::$timestamps=isset(self::$cache['*'])?self::$cache['*']:array();}if(!isset(self::$cache[$type])&&$file){self::$cache['*'][$file]=filemtime($file);self::parseScript($file);self::getCache()->save('list',self::$cache);}if(isset(self::$cache[$type][$member])){return
-self::$cache[$type][$member];}else{return
-self::$cache[$type][$member]=array();}}}private
+self::$cache[$type][$member];}if(self::$useReflection===NULL){self::$useReflection=(bool)ClassType::from(__CLASS__)->getDocComment();}if(self::$useReflection){$annotations=self::parseComment($r->getDocComment());}else{if(self::$cache===NULL){self::$cache=(array)self::getCache()->offsetGet('list');self::$timestamps=isset(self::$cache['*'])?self::$cache['*']:array();}if(!isset(self::$cache[$type])&&$file){self::$cache['*'][$file]=filemtime($file);self::parseScript($file);self::getCache()->save('list',self::$cache);}if(isset(self::$cache[$type][$member])){$annotations=self::$cache[$type][$member];}else{$annotations=array();}}if($r
+instanceof\ReflectionMethod&&!$r->isPrivate()&&(!$r->isConstructor()||!empty($annotations['inheritdoc'][0]))){try{$inherited=self::getAll(new\ReflectionMethod(get_parent_class($type),$member));}catch(\ReflectionException$e){try{$inherited=self::getAll($r->getPrototype());}catch(\ReflectionException$e){$inherited=array();}}$annotations+=array_intersect_key($inherited,array_flip(self::$inherited));}return
+self::$cache[$type][$member]=$annotations;}private
 static
 function
-parseComment($comment){static$tokens=array('true'=>TRUE,'false'=>FALSE,'null'=>NULL,''=>TRUE);$matches=Strings::matchAll(trim($comment,'/*'),'~
-				(?<=\s)@('.self::RE_IDENTIFIER.')[ \t]*      ##  annotation
+parseComment($comment){static$tokens=array('true'=>TRUE,'false'=>FALSE,'null'=>NULL,''=>TRUE);$res=array();$comment=preg_replace('#^\s*\*\s?#ms','',trim($comment,'/*'));$parts=preg_split('#^\s*(?=@'.self::RE_IDENTIFIER.')#m',$comment,2);$description=trim($parts[0]);if($description!==''){$res['description']=array($description);}$matches=Strings::matchAll(isset($parts[1])?$parts[1]:'','~
+				(?<=\s|^)@('.self::RE_IDENTIFIER.')[ \t]*      ##  annotation
 				(
 					\((?>'.self::RE_STRING.'|[^\'")@]+)+\)|  ##  (value)
 					[^(@\r\n][^@\r\n]*|)                     ##  value
-			~xi');$res=array();foreach($matches
+			~xi');foreach($matches
 as$match){list(,$name,$value)=$match;if(substr($value,0,1)==='('){$items=array();$key='';$val=TRUE;$value[0]=',';while($m=Strings::match($value,'#\s*,\s*(?>('.self::RE_IDENTIFIER.')\s*=\s*)?('.self::RE_STRING.'|[^\'"),\s][^\'"),]*)#A')){$value=substr($value,strlen($m[0]));list(,$key,$val)=$m;if($val[0]==="'"||$val[0]==='"'){$val=substr($val,1,-1);}elseif(is_numeric($val)){$val=1*$val;}else{$lval=strtolower($val);$val=array_key_exists($lval,$tokens)?$tokens[$lval]:$val;}if($key===''){$items[]=$val;}else{$items[$key]=$val;}}$value=count($items)<2&&$key===''?$val:$items;}else{$value=trim($value);if(is_numeric($value)){$value=1*$value;}else{$lval=strtolower($value);$value=array_key_exists($lval,$tokens)?$tokens[$lval]:$value;}}$class=$name.'Annotation';if(class_exists($class)){$res[$name][]=new$class(is_array($value)?$value:array('value'=>$value));}else{$res[$name][]=is_array($value)?new\ArrayObject($value,\ArrayObject::ARRAY_AS_PROPS):$value;}}return$res;}private
 static
 function
@@ -4443,7 +4444,8 @@ hasAnnotation($name){$res=AnnotationsParser::getAll($this);return!empty($res[$na
 getAnnotation($name){$res=AnnotationsParser::getAll($this);return
 isset($res[$name])?end($res[$name]):NULL;}function
 getAnnotations(){return
-AnnotationsParser::getAll($this);}static
+AnnotationsParser::getAll($this);}function
+getDescription(){return$this->getAnnotation('description');}static
 function
 getReflection(){return
 new
@@ -4490,7 +4492,8 @@ hasAnnotation($name){$res=AnnotationsParser::getAll($this);return!empty($res[$na
 getAnnotation($name){$res=AnnotationsParser::getAll($this);return
 isset($res[$name])?end($res[$name]):NULL;}function
 getAnnotations(){return
-AnnotationsParser::getAll($this);}static
+AnnotationsParser::getAll($this);}function
+getDescription(){return$this->getAnnotation('description');}static
 function
 getReflection(){return
 new

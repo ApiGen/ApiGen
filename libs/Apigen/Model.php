@@ -176,19 +176,4 @@ class Model extends NetteX\Object
 		return $res;
 	}
 
-
-
-	/**
-	 * Helpers for DocBlock extracting.
-	 * @param  string
-	 * @return string
-	 */
-	public static function extractDocBlock($doc)
-	{
-		$doc = trim($doc, '/*');
-		$doc = preg_replace('#^\s*\**\s*(@var \S+\s*|@.*)#ms', '', $doc); // remove annotations
-		$doc = preg_replace('#^\s*\** ?#m', '', $doc); // remove stars
-		return Strings::normalize(trim($doc));
-	}
-
 }
