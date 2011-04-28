@@ -171,15 +171,14 @@ class Generator extends NetteX\Object
 
 		$model = $this->model;
 		$template->registerHelper('doclabel', function($doc, $namespace, $short = FALSE) use ($template, $model) {
-			@list($names, $label) = preg_split('#\s+#', $doc, 2);
 			$res = array();
-			foreach (explode('|', $names) as $name) {
+			foreach (Model::splitAnnotation($doc, $description) as $name) {
 				$class = $model->resolveType($name, $namespace);
 				$name = $template->replaceNS($name, $namespace);
 				$res[] = $class ? sprintf('<a href="%s">%s</a>', $template->classLink($class), $template->escapeHtml($name))
 					: $template->escapeHtml($name);
 			}
-			return implode('|', $res) . ($short ? '' : ' ' . $template->texyline($label));
+			return implode('|', $res) . ($short ? '' : ' ' . $template->texyline($description));
 		});
 
 		return $template;

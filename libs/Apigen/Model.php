@@ -78,16 +78,14 @@ class Model extends NetteX\Object
 				foreach (array('param', 'return', 'throws') as $annotation) {
 				    if (isset($method->annotations[$annotation])) {
 						foreach ($method->annotations[$annotation] as $doc) {
-							$found = array_merge($found, explode('|', preg_replace('#\s.*#', '', $doc)));
+							$found = array_merge($found, self::splitAnnotation($doc));
 						}
 					}
 				}
 			}
 
 			foreach ($class->getOwnProperties() as $property) {
-			    if ($property->hasAnnotation('var')) {
-					$found = array_merge($found, explode('|', preg_replace('#\s.*#', '', $property->getAnnotation('var'))));
-				}
+				$found = array_merge($found, self::splitAnnotation($property->getAnnotation('var')));
 			}
 		}
 
@@ -174,6 +172,18 @@ class Model extends NetteX\Object
 			}
 		}
 		return $res;
+	}
+
+
+
+	/**
+	 * Splits to type|type|type and description.
+	 * @return array
+	 */
+	public static function splitAnnotation($s, & $description = NULL)
+	{
+		list($types, $description) = preg_split('#\s+|$#', $s, 2);
+		return explode('|', $types);
 	}
 
 }
