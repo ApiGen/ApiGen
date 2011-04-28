@@ -436,7 +436,7 @@ class Generator extends Nette\Object
 			foreach (preg_replace('#\s.*#', '', (array) $annotation) as $s) {
 				foreach (explode('|', $s) as $name) {
 					$class = $that->resolveType($name, $namespace);
-					$types[] = (object) array('name' => $class ?: $name, 'class' => $class);
+					$types[] = (object) array('name' => $class ?: ltrim($name, '\\'), 'class' => $class);
 				}
 			}
 			return $types;
@@ -475,7 +475,7 @@ class Generator extends Nette\Object
 			$res = '';
 			foreach (explode('|', $names) as $name) {
 				$class = $template->resolveType($name, $namespace);
-				$res .= $class !== NULL ? sprintf('<a href="%s">%s</a>', $template->classLink($class), $template->escapeHtml($class)) : $template->escapeHtml($name);
+				$res .= $class !== NULL ? sprintf('<a href="%s">%s</a>', $template->classLink($class), $template->escapeHtml($class)) : $template->escapeHtml(ltrim($name, '\\'));
 				$res .= '|';
 			}
 			return rtrim($res, '|') . ' ' . $template->escapeHtml($label);
