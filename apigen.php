@@ -89,7 +89,7 @@ Options:
 }
 
 
-// Default configuration
+// Merge default configuration
 $defaultConfig = array(
 	'title' => '',
 	'baseUrl' => '',
@@ -100,7 +100,6 @@ $defaultConfig = array(
 	'wipeout' => true,
 	'progressbar' => true
 );
-
 $config = array_merge($defaultConfig, $config);
 
 // Fix configuration
@@ -119,32 +118,21 @@ $config['accessLevels'] = array_filter($config['accessLevels'], function($item) 
 	return in_array($item, array('public', 'protected', 'private'));
 });
 
-// Searching template
+// Check configuration
 if (!is_dir($config['templateDir'])) {
 	echo "Template directory doesn't exist.\n";
 	die();
 }
-echo "Searching template in $config[templateDir]\n";
-
 $templatePath = $config['templateDir'] . DIRECTORY_SEPARATOR . $config['template'];
 if (!is_dir($templatePath)) {
 	echo "Template doesn't exist.\n";
 	die();
 }
-echo "Using template $config[template]\n";
-
 $templateConfigPath = $templatePath . DIRECTORY_SEPARATOR . 'config.neon';
 if (!is_file($templateConfigPath)) {
 	echo "Template config doesn't exist.\n";
 	die();
 }
-
-$config = array_merge($config, NetteX\Utils\Neon::decode(file_get_contents($templateConfigPath)));
-
-
-$generator = new Apigen\Generator($config);
-
-// Scaning
 if (empty($config['source'])) {
 	echo "Source directory is not set.\n";
 	die();
@@ -152,18 +140,30 @@ if (empty($config['source'])) {
 	echo "Source directory $config[source] doesn't exist.\n";
 	die();
 }
-echo "Scanning directory $config[source]\n";
-list($count, $countInternal) = $generator->parse();
-echo "Found $count classes and $countInternal internal classes\n";
-
-
-// Generating
 if (empty($config['destination'])) {
 	echo "Destination directory is not set.\n";
 	die();
 }
-echo "Generating documentation to directory $config[destination]\n";
+if (empty($config['accessLevels'])) {
+	echo "No supported access level given.\n";
+	die();
+}
 
+// Merge template config
+$config = array_merge($config, NetteX\Utils\Neon::decode(file_get_contents($templateConfigPath)));
+
+// Start
+$generator = new Apigen\Generator($config);
+
+// Scan
+echo "Scanning directory $config[source]\n";
+list($count, $countInternal) = $generator->parse();
+echo "Found $count classes and $countInternal internal classes\n";
+
+// Generating
+echo "Searching template in $config[templateDir]\n";
+echo "Using template $config[template]\n";
+echo "Generating documentation to directory $config[destination]\n";
 if ($config['wipeout'] && is_dir($config['destination'])) {
 	echo 'Wiping out destination directory first';
 	if ($generator->wipeOutDestination()) {
@@ -173,13 +173,7 @@ if ($config['wipeout'] && is_dir($config['destination'])) {
 		die();
 	}
 }
-
-if (empty($config['accessLevels'])) {
-	echo "No supported access level given.\n";
-	die();
-}
-
 $generator->generate();
 
-
+// End
 echo "Done. Total time: " . (int) Debugger::timer() . " seconds\n";
