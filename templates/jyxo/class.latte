@@ -164,7 +164,7 @@
 					{foreach $constant->getAnnotation('var') as $type}
 						{$type}{sep}|{/sep}
 					{/foreach}
-				{elseif !$constant->tokenized}
+				{else}
 					{$constant->value|getType}
 				{/if}
 			</code></td>
