@@ -14,7 +14,7 @@
 namespace Apigen;
 
 use Apigen\Exception;
-use NetteX;
+use Nette;
 
 class Config implements \ArrayAccess, \IteratorAggregate
 {
@@ -61,7 +61,7 @@ class Config implements \ArrayAccess, \IteratorAggregate
 			->check();
 
 		// Merge template config
-		$this->config = array_merge($this->config, NetteX\Utils\Neon::decode(file_get_contents($this->getTemplateConfig())));
+		$this->config = array_merge($this->config, Nette\Utils\Neon::decode(file_get_contents($this->getTemplateConfig())));
 	}
 
 	/**
@@ -79,7 +79,7 @@ class Config implements \ArrayAccess, \IteratorAggregate
 				throw new Exception(sprintf('Config file %s doesn\'t exist', $this->options['config']), Exception::INVALID_CONFIG);
 			}
 
-			$this->config = array_merge($this->config, NetteX\Utils\Neon::decode(file_get_contents($this->options['config'])));
+			$this->config = array_merge($this->config, Nette\Utils\Neon::decode(file_get_contents($this->options['config'])));
 		} elseif (isset($this->options['source'], $this->options['destination'])) {
 			// Parse options
 			foreach ($this->options as $key => $value) {

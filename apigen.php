@@ -12,10 +12,10 @@
  * the file license.txt that was distributed with this source code.
  */
 
-use NetteX\Diagnostics\Debugger;
+use Nette\Diagnostics\Debugger;
 
 
-require __DIR__ . '/libs/NetteX/nette.min.php';
+require __DIR__ . '/libs/Nette/nette.min.php';
 require __DIR__ . '/libs/fshl/fshl.php';
 require __DIR__ . '/libs/Console/ProgressBar.php';
 require __DIR__ . '/libs/texy/texy.min.php';

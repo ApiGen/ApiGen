@@ -13,7 +13,7 @@
 
 namespace Apigen;
 
-use NetteX;
+use Nette;
 use Apigen\Reflection as ApiReflection, Apigen\Exception, Apigen\Config;
 use TokenReflection\Broker, Apigen\Backend;
 use TokenReflection\IReflectionClass as ReflectionClass, TokenReflection\IReflectionProperty as ReflectionProperty, TokenReflection\IReflectionMethod as ReflectionMethod, TokenReflection\IReflectionConstant as ReflectionConstant;
@@ -26,7 +26,7 @@ use TokenReflection\ReflectionAnnotation, TokenReflection\Dummy\ReflectionClass 
  * @author David Grudl
  * @author Ondřej Nešpor
  */
-class Generator extends NetteX\Object
+class Generator extends Nette\Object
 {
 	/**
 	 * Library version.
@@ -137,7 +137,7 @@ class Generator extends NetteX\Object
 		foreach ($this->config['resources'] as $dir) {
 			$pathName = $this->config['destination'] . '/' . $dir;
 			if (is_dir($pathName)) {
-				foreach (NetteX\Utils\Finder::findFiles('*')->from($pathName)->childFirst() as $item) {
+				foreach (Nette\Utils\Finder::findFiles('*')->from($pathName)->childFirst() as $item) {
 					if ($item->isDir()) {
 						if (!@rmdir($item)) {
 							return false;
@@ -156,7 +156,7 @@ class Generator extends NetteX\Object
 
 		// common files
 		$filenames = array_keys($this->config['templates']['common']);
-		foreach (NetteX\Utils\Finder::findFiles($filenames)->from($this->config['destination']) as $item) {
+		foreach (Nette\Utils\Finder::findFiles($filenames)->from($this->config['destination']) as $item) {
 			if (!@unlink($item)) {
 				return false;
 			}
@@ -176,7 +176,7 @@ class Generator extends NetteX\Object
 			return false;
 		};
 
-		foreach (NetteX\Utils\Finder::findFiles('*')->filter($filter)->from($this->config['destination']) as $item) {
+		foreach (Nette\Utils\Finder::findFiles('*')->filter($filter)->from($this->config['destination']) as $item) {
 			if (!@unlink($item)) {
 				return false;
 			}
@@ -200,7 +200,7 @@ class Generator extends NetteX\Object
 
 		// copy resources
 		foreach ($this->config['resources'] as $source => $dest) {
-			foreach ($iterator = NetteX\Utils\Finder::findFiles('*')->from($templatePath . '/' . $source)->getIterator() as $foo) {
+			foreach ($iterator = Nette\Utils\Finder::findFiles('*')->from($templatePath . '/' . $source)->getIterator() as $foo) {
 				copy($iterator->getPathName(), self::forceDir("$destination/$dest/" . $iterator->getSubPathName()));
 			}
 		}
@@ -365,26 +365,26 @@ class Generator extends NetteX\Object
 	/**
 	 * Returns a template instance with required helpers prepared.
 	 *
-	 * @return \NetteX\Templates\FileTemplate
+	 * @return \Nette\Templates\FileTemplate
 	 */
 	private function createTemplate()
 	{
-		$template = new NetteX\Templating\FileTemplate;
-		$template->setCacheStorage(new NetteX\Caching\Storages\MemoryStorage);
+		$template = new Nette\Templating\FileTemplate;
+		$template->setCacheStorage(new Nette\Caching\Storages\MemoryStorage);
 
-		$latte = new NetteX\Latte\Engine;
+		$latte = new Nette\Latte\Engine;
 		$latte->handler->macros['try'] = '<?php try { ?>';
 		$latte->handler->macros['/try'] = '<?php } catch (\Exception $e) {} ?>';
 		$template->registerFilter($latte);
 
 		// common operations
-		$template->registerHelperLoader('NetteX\Templating\DefaultHelpers::loader');
+		$template->registerHelperLoader('Nette\Templating\DefaultHelpers::loader');
 		$template->registerHelper('ucfirst', 'ucfirst');
 		$template->registerHelper('values', 'array_values');
 		$template->registerHelper('map', function($arr, $callback) {
 			return array_map(create_function('$value', $callback), $arr);
 		});
-		$template->registerHelper('replaceRE', 'NetteX\StringUtils::replace');
+		$template->registerHelper('replaceRE', 'Nette\StringUtils::replace');
 
 		// PHP source highlight
 		$fshl = new \fshlParser('HTML_UTF8');
