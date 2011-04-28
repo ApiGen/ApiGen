@@ -5,10 +5,6 @@ baseUrl: ''
 googleCse: ''
 template: default
 templateDir: ''
+accessLevels: [public, protected]
 wipeout: On
 progressbar: On
-
-accessLevels:
-	public: Yes
-	protected: Yes
-	private: No

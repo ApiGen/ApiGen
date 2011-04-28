@@ -5,10 +5,6 @@ baseUrl: 'http://jyxo.github.com/php'
 googleCse: '004718174178290363576:f23xklsezl8'
 template: jyxo
 templateDir: ''
+accessLevels: [public, protected]
 wipeout: On
 progressbar: On
-
-accessLevels:
-	public: Yes
-	protected: Yes
-	private: No

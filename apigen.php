@@ -61,7 +61,7 @@ if (isset($options['config'])) {
 			$value = true;
 		}
 		if ('accessLevels' === $key) {
-			$value = array_fill_keys(explode(',', $value), true);
+			$value = explode(',', $value);
 		}
 
 		$config[$key] = $value;
@@ -96,11 +96,7 @@ $defaultConfig = array(
 	'googleCse' => '',
 	'template' => '',
 	'templateDir' => '',
-	'accessLevels' => array(
-		'public' => true,
-		'protected' => true,
-		'private' => false
-	),
+	'accessLevels' => array('public', 'protected'),
 	'wipeout' => true,
 	'progressbar' => true
 );
@@ -119,11 +115,9 @@ foreach (array('source', 'destination', 'templateDir') as $key) {
 		$config[$key] = realpath($config[$key]);
 	}
 }
-foreach (array('public', 'protected', 'private') as $level) {
-	if (!isset($config['accessLevels'][$level])) {
-		$config['accessLevels'][$level] = false;
-	}
-}
+$config['accessLevels'] = array_filter($config['accessLevels'], function($item) {
+	return in_array($item, array('public', 'protected', 'private'));
+});
 
 // Searching template
 if (!is_dir($config['templateDir'])) {
@@ -178,6 +172,11 @@ if ($config['wipeout'] && is_dir($config['destination'])) {
 		echo ", error\n";
 		die();
 	}
+}
+
+if (empty($config['accessLevels'])) {
+	echo "No supported access level given.\n";
+	die();
 }
 
 $generator->generate();
