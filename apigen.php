@@ -56,7 +56,7 @@ try {
 	// Scan
 	echo "Scanning directory $config[source]\n";
 	list($count, $countInternal) = $generator->parse();
-	echo "Found $count classes and $countInternal internal classes\n";
+	echo "Found $count classes and other $countInternal used internal classes\n";
 
 	// Generating
 	echo "Searching template in $config[templateDir]\n";
@@ -80,8 +80,8 @@ try {
 	// Help only for invalid configuration
 	if ($e instanceof Apigen\Exception && Apigen\Exception::INVALID_CONFIG === $e->getCode()) { ?>
 Usage:
-	apigen --config=<path>
-	apigen --source=<path> --destination=<path> [options]
+	apigen --config <path>
+	apigen --source <path> --destination <path> [options]
 
 Options:
 	--config        <path>  Config file
@@ -97,6 +97,7 @@ Options:
 	--progressbar   On|Off  Display progressbars, default On
 
 Only source and destination directories are required - either set explicitly or using a config file.
+Configuration parameters passed via command line have precedence over parameters from a config file.
 <?php
 	}
 
