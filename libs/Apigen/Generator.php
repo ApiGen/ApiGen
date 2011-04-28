@@ -73,7 +73,7 @@ class Generator extends NetteX\Object
 	 */
 	public function parse()
 	{
-		$broker = new Broker(new Backend());
+		$broker = new Broker(new Backend(), false);
 
 		$files = array();
 		foreach (new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($this->config['source'])) as $entry) {
