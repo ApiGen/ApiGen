@@ -50,6 +50,13 @@ $(function(){
 		$(this).find('.detailed').show();
 	});
 
+	// hide deep namespaces
+	$('#left ul li ul li:not(.active):not(:has(.active)) ul').addClass('collapsed');
+	$('#left > ul > li > ul > li').hover(function() {
+		$('ul.collapsed', this).stop(true, true).delay(300).slideDown();
+	});
+
+	// splitter
 	$('#main').splitter({
 		sizeLeft: true,
 		minLeft: 230,

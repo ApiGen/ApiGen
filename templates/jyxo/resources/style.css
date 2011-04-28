@@ -124,15 +124,19 @@ pre {
 
 #left ul {
 	list-style: none;
-	padding: 0 0 0 3px;
+	padding: 0;
 	margin: 0;
+}
+
+#left ul ul {
+	padding-left: 10px;
 }
 
 #left li {
 	white-space: nowrap;
 }
 
-#left .active {
+#left .active > a {
 	color: #000;
 	background: none;
 	font-weight: bold;
@@ -140,6 +144,10 @@ pre {
 
 #left .all {
 	font-style: italic;
+}
+
+#left .collapsed {
+	display: none;
 }
 
 /**
