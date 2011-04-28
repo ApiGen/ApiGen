@@ -21,6 +21,7 @@ require __DIR__ . '/libs/Console/ProgressBar.php';
 require __DIR__ . '/libs/texy/texy.min.php';
 require __DIR__ . '/libs/TokenReflection/tokenreflection.min.php';
 require __DIR__ . '/libs/Apigen/Exception.php';
+require __DIR__ . '/libs/Apigen/Config.php';
 require __DIR__ . '/libs/Apigen/Reflection.php';
 require __DIR__ . '/libs/Apigen/Backend.php';
 require __DIR__ . '/libs/Apigen/Generator.php';
@@ -48,87 +49,8 @@ try {
 		'progressbar:'
 	));
 
-	if (isset($options['config'])) {
-		$config = NetteX\Utils\Neon::decode(file_get_contents($options['config']));
-	} elseif (isset($options['source'], $options['destination'])) {
-		$config = array();
-		foreach ($options as $key => $value) {
-			$key = preg_replace_callback('#-([a-z])#', function($matches) {
-				return ucfirst($matches[1]);
-			}, $key);
-
-			if ('off' === strtolower($value)) {
-				$value = false;
-			} elseif ('on' === strtolower($value)) {
-				$value = true;
-			}
-			if ('accessLevels' === $key) {
-				$value = explode(',', $value);
-			}
-
-			$config[$key] = $value;
-		}
-	} else {
-		throw new Exception('Invalid configuration');
-	}
-
-	// Merge default configuration
-	$defaultConfig = array(
-		'title' => '',
-		'baseUrl' => '',
-		'googleCse' => '',
-		'template' => '',
-		'templateDir' => '',
-		'accessLevels' => array('public', 'protected'),
-		'wipeout' => true,
-		'progressbar' => true
-	);
-	$config = array_merge($defaultConfig, $config);
-
-	// Fix configuration
-	if (empty($config['template'])) {
-		$config['template'] = 'default';
-	}
-	if (empty($config['templateDir'])) {
-		$config['templateDir'] = __DIR__ . DIRECTORY_SEPARATOR  . 'templates';
-	}
-	foreach (array('source', 'destination', 'templateDir') as $key) {
-		if (is_dir($config[$key])) {
-			$config[$key] = realpath($config[$key]);
-		}
-	}
-	$config['accessLevels'] = array_filter($config['accessLevels'], function($item) {
-		return in_array($item, array('public', 'protected', 'private'));
-	});
-
-	// Check configuration
-	if (!is_dir($config['templateDir'])) {
-		throw new Exception(sprintf('Template directory %s doesn\'t exist', $config['templateDir']));
-	}
-	$templatePath = $config['templateDir'] . DIRECTORY_SEPARATOR . $config['template'];
-	if (!is_dir($templatePath)) {
-		throw new Exception('Template doesn\'t exist');
-	}
-	$templateConfigPath = $templatePath . DIRECTORY_SEPARATOR . 'config.neon';
-	if (!is_file($templateConfigPath)) {
-		throw new Exception('Template config doesn\'t exist');
-	}
-	if (empty($config['source'])) {
-		throw new Exception('Source directory is not set');
-	} elseif (!is_dir($config['source'])) {
-		throw new Exception(sprintf('Source directory %s doesn\'t exist', $config['source']));
-	}
-	if (empty($config['destination'])) {
-		throw new Exception('Destination directory is not set');
-	}
-	if (empty($config['accessLevels'])) {
-		throw new Exception('No supported access level given');
-	}
-
-	// Merge template config
-	$config = array_merge($config, NetteX\Utils\Neon::decode(file_get_contents($templateConfigPath)));
-
 	// Start
+	$config = new Apigen\Config($options);
 	$generator = new Apigen\Generator($config);
 
 	// Scan
@@ -154,7 +76,9 @@ try {
 
 } catch (Exception $e) {
 	echo "\n" . $e->getMessage() . "\n\n";
-?>
+
+	// Help only for invalid configuration
+	if ($e instanceof Apigen\Exception && Apigen\Exception::INVALID_CONFIG === $e->getCode()) { ?>
 Usage:
 	apigen --config=<path>
 	apigen --source=<path> --destination=<path> [options]
@@ -174,5 +98,7 @@ Options:
 
 Only source and destination directories are required - either set explicitly or using a config file.
 <?php
+	}
+
 	die(1);
 }

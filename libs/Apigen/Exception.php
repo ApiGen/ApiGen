@@ -15,4 +15,10 @@ namespace Apigen;
 
 class Exception extends \Exception
 {
+	/**
+	 * Invalid configuration.
+	 *
+	 * @var integer
+	 */
+	const INVALID_CONFIG = 1;
 }

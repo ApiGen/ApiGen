@@ -14,7 +14,7 @@
 namespace Apigen;
 
 use NetteX;
-use Apigen\Reflection as ApiReflection, Apigen\Exception;
+use Apigen\Reflection as ApiReflection, Apigen\Exception, Apigen\Config;
 use TokenReflection\Broker, Apigen\Backend;
 use TokenReflection\IReflectionClass as ReflectionClass, TokenReflection\IReflectionProperty as ReflectionProperty, TokenReflection\IReflectionMethod as ReflectionMethod, TokenReflection\IReflectionConstant as ReflectionConstant;
 use TokenReflection\ReflectionAnnotation, TokenReflection\Dummy\ReflectionClass as DummyClass;
@@ -38,7 +38,7 @@ class Generator extends NetteX\Object
 	/**
 	 * Configuration.
 	 *
-	 * @var array
+	 * @var \Apigen\Config
 	 */
 	private $config;
 
@@ -61,7 +61,7 @@ class Generator extends NetteX\Object
 	 *
 	 * @param array $config
 	 */
-	public function __construct(array $config)
+	public function __construct(Config $config)
 	{
 		$this->config = $config;
 	}
@@ -192,7 +192,7 @@ class Generator extends NetteX\Object
 	{
 		@mkdir($this->config['destination']);
 		if (!is_dir($this->config['destination'])) {
-			throw new Exception("Directory {$this->config['destination']} doesn't exist.");
+			throw new Exception("Directory {$this->config['destination']} doesn't exist.", Exception::INVALID_CONFIG);
 		}
 
 		$destination = $this->config['destination'];
@@ -510,7 +510,7 @@ class Generator extends NetteX\Object
 	public function formatNamespaceLink($class)
 	{
 		if (!isset($this->config['filenames']['namespace'])) {
-			throw new Exception('Namespace output filename not defined.');
+			throw new Exception('Namespace output filename not defined.', Exception::INVALID_CONFIG);
 		}
 
 		$namespace = ($class instanceof ApiReflection) ? $class->getNamespaceName() : $class;
@@ -526,7 +526,7 @@ class Generator extends NetteX\Object
 	public function formatPackageLink($class)
 	{
 		if (!isset($this->config['filenames']['package'])) {
-			throw new Exception('Package output filename not defined.');
+			throw new Exception('Package output filename not defined.', Exception::INVALID_CONFIG);
 		}
 
 		$package = ($class instanceof ApiReflection) ? $class->getPackageName() : $class;
@@ -542,7 +542,7 @@ class Generator extends NetteX\Object
 	public function formatClassLink($class)
 	{
 		if (!isset($this->config['filenames']['class'])) {
-			throw new Exception('Class output filename not defined.');
+			throw new Exception('Class output filename not defined.', Exception::INVALID_CONFIG);
 		}
 
 		if ($class instanceof ApiReflection) {
@@ -594,7 +594,7 @@ class Generator extends NetteX\Object
 	public function formatSourceLink($element, $withLine = TRUE)
 	{
 		if (!isset($this->config['filenames']['source'])) {
-			throw new Exception('Source output filename not defined.');
+			throw new Exception('Source output filename not defined.', Exception::INVALID_CONFIG);
 		}
 
 		$class = $element instanceof ApiReflection ? $element : $element->getDeclaringClass();
