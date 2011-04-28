@@ -24,49 +24,135 @@ require __DIR__ . '/libs/Apigen/Reflection.php';
 require __DIR__ . '/libs/Apigen/Backend.php';
 require __DIR__ . '/libs/Apigen/Generator.php';
 
+try {
 
-Debugger::enable();
-Debugger::timer();
+	$name = sprintf('ApiGen %s', Apigen\Generator::VERSION);
+	echo $name . "\n";
+	echo str_repeat('-', strlen($name)) . "\n";
 
-$name = sprintf('ApiGen %s', Apigen\Generator::VERSION);
-echo $name . "\n";
-echo str_repeat('-', strlen($name)) . "\n";
+	Debugger::enable();
+	Debugger::timer();
 
-$options = getopt('', array(
-	'config:',
-	'source:',
-	'destination:',
-	'title:',
-	'base-url:',
-	'google-cse:',
-	'template:',
-	'template-dir:',
-	'access-levels:',
-	'wipeout:',
-	'progressbar:'
-));
+	$options = getopt('', array(
+		'config:',
+		'source:',
+		'destination:',
+		'title:',
+		'base-url:',
+		'google-cse:',
+		'template:',
+		'template-dir:',
+		'access-levels:',
+		'wipeout:',
+		'progressbar:'
+	));
 
-if (isset($options['config'])) {
-	$config = NetteX\Utils\Neon::decode(file_get_contents($options['config']));
-} elseif (isset($options['source'], $options['destination'])) {
-	$config = array();
-	foreach ($options as $key => $value) {
-		$key = preg_replace_callback('#-([a-z])#', function($matches) {
-			return ucfirst($matches[1]);
-		}, $key);
+	if (isset($options['config'])) {
+		$config = NetteX\Utils\Neon::decode(file_get_contents($options['config']));
+	} elseif (isset($options['source'], $options['destination'])) {
+		$config = array();
+		foreach ($options as $key => $value) {
+			$key = preg_replace_callback('#-([a-z])#', function($matches) {
+				return ucfirst($matches[1]);
+			}, $key);
 
-		if ('off' === strtolower($value)) {
-			$value = false;
-		} elseif ('on' === strtolower($value)) {
-			$value = true;
+			if ('off' === strtolower($value)) {
+				$value = false;
+			} elseif ('on' === strtolower($value)) {
+				$value = true;
+			}
+			if ('accessLevels' === $key) {
+				$value = explode(',', $value);
+			}
+
+			$config[$key] = $value;
 		}
-		if ('accessLevels' === $key) {
-			$value = explode(',', $value);
-		}
-
-		$config[$key] = $value;
+	} else {
+		throw new Exception('Invalid configuration');
 	}
-} else { ?>
+
+	// Merge default configuration
+	$defaultConfig = array(
+		'title' => '',
+		'baseUrl' => '',
+		'googleCse' => '',
+		'template' => '',
+		'templateDir' => '',
+		'accessLevels' => array('public', 'protected'),
+		'wipeout' => true,
+		'progressbar' => true
+	);
+	$config = array_merge($defaultConfig, $config);
+
+	// Fix configuration
+	if (empty($config['template'])) {
+		$config['template'] = 'default';
+	}
+	if (empty($config['templateDir'])) {
+		$config['templateDir'] = __DIR__ . DIRECTORY_SEPARATOR  . 'templates';
+	}
+	foreach (array('source', 'destination', 'templateDir') as $key) {
+		if (is_dir($config[$key])) {
+			$config[$key] = realpath($config[$key]);
+		}
+	}
+	$config['accessLevels'] = array_filter($config['accessLevels'], function($item) {
+		return in_array($item, array('public', 'protected', 'private'));
+	});
+
+	// Check configuration
+	if (!is_dir($config['templateDir'])) {
+		throw new Exception(sprintf('Template directory %s doesn\'t exist', $config['templateDir']));
+	}
+	$templatePath = $config['templateDir'] . DIRECTORY_SEPARATOR . $config['template'];
+	if (!is_dir($templatePath)) {
+		throw new Exception('Template doesn\'t exist');
+	}
+	$templateConfigPath = $templatePath . DIRECTORY_SEPARATOR . 'config.neon';
+	if (!is_file($templateConfigPath)) {
+		throw new Exception('Template config doesn\'t exist');
+	}
+	if (empty($config['source'])) {
+		throw new Exception('Source directory is not set');
+	} elseif (!is_dir($config['source'])) {
+		throw new Exception(sprintf('Source directory %s doesn\'t exist', $config['source']));
+	}
+	if (empty($config['destination'])) {
+		throw new Exception('Destination directory is not set');
+	}
+	if (empty($config['accessLevels'])) {
+		throw new Exception('No supported access level given');
+	}
+
+	// Merge template config
+	$config = array_merge($config, NetteX\Utils\Neon::decode(file_get_contents($templateConfigPath)));
+
+	// Start
+	$generator = new Apigen\Generator($config);
+
+	// Scan
+	echo "Scanning directory $config[source]\n";
+	list($count, $countInternal) = $generator->parse();
+	echo "Found $count classes and $countInternal internal classes\n";
+
+	// Generating
+	echo "Searching template in $config[templateDir]\n";
+	echo "Using template $config[template]\n";
+	echo "Generating documentation to directory $config[destination]\n";
+	if ($config['wipeout'] && is_dir($config['destination'])) {
+		echo "Wiping out destination directory first\n";
+		if (!$generator->wipeOutDestination()) {
+			throw new Exception('Cannot wipe out destination directory');
+		}
+	}
+	$generator->generate();
+
+	// End
+	echo "Done. Total time: " . (int) Debugger::timer() . " seconds\n";
+
+} catch (Exception $e) {
+	echo $e->getMessage() . "\n\n";
+?>
 Usage:
 	apigen --config=<path>
 	apigen --source=<path> --destination=<path> [options]
@@ -83,97 +169,6 @@ Options:
 	--access-levels <list>  Generate documetation for methods and properties with given access level, default public,protected
 	--wipeout       On|Off  Wipe out the destination directory first, default On
 	--progressbar   On|Off  Display progressbars, default On
-
 <?php
-	die();
+	die(1);
 }
-
-
-// Merge default configuration
-$defaultConfig = array(
-	'title' => '',
-	'baseUrl' => '',
-	'googleCse' => '',
-	'template' => '',
-	'templateDir' => '',
-	'accessLevels' => array('public', 'protected'),
-	'wipeout' => true,
-	'progressbar' => true
-);
-$config = array_merge($defaultConfig, $config);
-
-// Fix configuration
-if (empty($config['template'])) {
-	$config['template'] = 'default';
-}
-if (empty($config['templateDir'])) {
-	$config['templateDir'] = __DIR__ . DIRECTORY_SEPARATOR  . 'templates';
-}
-foreach (array('source', 'destination', 'templateDir') as $key) {
-	if (is_dir($config[$key])) {
-		$config[$key] = realpath($config[$key]);
-	}
-}
-$config['accessLevels'] = array_filter($config['accessLevels'], function($item) {
-	return in_array($item, array('public', 'protected', 'private'));
-});
-
-// Check configuration
-if (!is_dir($config['templateDir'])) {
-	echo "Template directory doesn't exist.\n";
-	die();
-}
-$templatePath = $config['templateDir'] . DIRECTORY_SEPARATOR . $config['template'];
-if (!is_dir($templatePath)) {
-	echo "Template doesn't exist.\n";
-	die();
-}
-$templateConfigPath = $templatePath . DIRECTORY_SEPARATOR . 'config.neon';
-if (!is_file($templateConfigPath)) {
-	echo "Template config doesn't exist.\n";
-	die();
-}
-if (empty($config['source'])) {
-	echo "Source directory is not set.\n";
-	die();
-} elseif (!is_dir($config['source'])) {
-	echo "Source directory $config[source] doesn't exist.\n";
-	die();
-}
-if (empty($config['destination'])) {
-	echo "Destination directory is not set.\n";
-	die();
-}
-if (empty($config['accessLevels'])) {
-	echo "No supported access level given.\n";
-	die();
-}
-
-// Merge template config
-$config = array_merge($config, NetteX\Utils\Neon::decode(file_get_contents($templateConfigPath)));
-
-// Start
-$generator = new Apigen\Generator($config);
-
-// Scan
-echo "Scanning directory $config[source]\n";
-list($count, $countInternal) = $generator->parse();
-echo "Found $count classes and $countInternal internal classes\n";
-
-// Generating
-echo "Searching template in $config[templateDir]\n";
-echo "Using template $config[template]\n";
-echo "Generating documentation to directory $config[destination]\n";
-if ($config['wipeout'] && is_dir($config['destination'])) {
-	echo 'Wiping out destination directory first';
-	if ($generator->wipeOutDestination()) {
-		echo ", ok\n";
-	} else {
-		echo ", error\n";
-		die();
-	}
-}
-$generator->generate();
-
-// End
-echo "Done. Total time: " . (int) Debugger::timer() . " seconds\n";
