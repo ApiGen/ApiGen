@@ -34,28 +34,21 @@ class Backend extends Memory
 					}
 
 					foreach ((array) $method->getAnnotation($annotation) as $doc) {
-						$types = preg_replace('#\s.*#', '', $doc);
-						foreach (explode('|', $types) as $name) {
-							$name = ltrim($name, '\\');
-
-							if (!isset($declared[$name]) || isset($allClasses[self::TOKENIZED_CLASSES][$name])  || isset($allClasses[self::INTERNAL_CLASSES][$name])) {
-								continue;
-							}
-
-							$parameterClass = $this->getBroker()->getClass($name);
-							if ($parameterClass->isTokenized()) {
-								throw new RuntimeException(sprintf('Error. Trying to add a tokenized class %s. It should be already in the class list.', $name));
-							} elseif ($parameterClass->isInternal()) {
-								$allClasses[self::INTERNAL_CLASSES][$name] = $parameterClass;
-								foreach (array_merge($parameterClass->getInterfaces(), $parameterClass->getParentClasses()) as $parentClass) {
-									if (!isset($allClasses[self::INTERNAL_CLASSES][$parentName = $parentClass->getName()])) {
-										$allClasses[self::INTERNAL_CLASSES][$parentName] = $parentClass;
-									}
-								}
-							} elseif (!$parameterClass->isUserDefined()) {
-								$allClasses[self::NONEXISTENT_CLASSES][$name] = $parameterClass;
-							}
+						foreach (explode('|', preg_replace('#\s.*#', '', $doc)) as $name) {
+							$allClasses = $this->addClass($declared, $allClasses, $name);
 						}
+					}
+				}
+			}
+
+			foreach ($class->getOwnProperties() as $property) {
+				if (!$property->hasAnnotation('var')) {
+					continue;
+				}
+
+				foreach ((array) $property->getAnnotation('var') as $doc) {
+					foreach (explode('|', preg_replace('#\s.*#', '', $doc)) as $name) {
+						$allClasses = $this->addClass($declared, $allClasses, $name);
 					}
 				}
 			}
@@ -64,4 +57,36 @@ class Backend extends Memory
 		return $allClasses;
 	}
 
+	/**
+	 * Add class to list of classes.
+	 *
+	 * @param array $declared
+	 * @param array $allClasses
+	 * @param string $name
+	 * @return array
+	 */
+	private function addClass(array $declared, array $allClasses, $name)
+	{
+		$name = ltrim($name, '\\');
+
+		if (!isset($declared[$name]) || isset($allClasses[self::TOKENIZED_CLASSES][$name])  || isset($allClasses[self::INTERNAL_CLASSES][$name])) {
+			return $allClasses;
+		}
+
+		$parameterClass = $this->getBroker()->getClass($name);
+		if ($parameterClass->isTokenized()) {
+			throw new RuntimeException(sprintf('Error. Trying to add a tokenized class %s. It should be already in the class list.', $name));
+		} elseif ($parameterClass->isInternal()) {
+			$allClasses[self::INTERNAL_CLASSES][$name] = $parameterClass;
+			foreach (array_merge($parameterClass->getInterfaces(), $parameterClass->getParentClasses()) as $parentClass) {
+				if (!isset($allClasses[self::INTERNAL_CLASSES][$parentName = $parentClass->getName()])) {
+					$allClasses[self::INTERNAL_CLASSES][$parentName] = $parentClass;
+				}
+			}
+		} elseif (!$parameterClass->isUserDefined()) {
+			$allClasses[self::NONEXISTENT_CLASSES][$name] = $parameterClass;
+		}
+
+		return $allClasses;
+	}
 }
