@@ -54,7 +54,11 @@ try {
 	$generator = new Apigen\Generator($config);
 
 	// Scan
-	echo "Scanning directory $config[source]\n";
+	if (is_array($config['source'])) {
+		echo "Scanning directories\n  " . implode("\n  ", $config['source']) . "\n";
+	} else {
+		echo "Scanning directory $config[source]\n";
+	}
 	list($count, $countInternal) = $generator->parse();
 	echo "Found $count classes and other $countInternal used internal classes\n";
 
@@ -85,7 +89,7 @@ Usage:
 
 Options:
 	--config        <path>  Config file
-	--source        <path>  Name of a source directory to parse
+	--source        <path>  Name of a source directory to parse (can be used multiple times to specify multiple directories)
 	--destination   <path>  Directory where to save the generated documentation
 	--title         <value> Title of generated documentation
 	--base-url      <value> Documentation base URI

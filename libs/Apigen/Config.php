@@ -87,17 +87,18 @@ class Config implements \ArrayAccess, \IteratorAggregate
 					return ucfirst($matches[1]);
 				}, $key);
 
-				if ('off' === strtolower($value)) {
-					$value = false;
-				} elseif ('on' === strtolower($value)) {
-					$value = true;
-				}
-				if ('accessLevels' === $key) {
-					$value = explode(',', $value);
-				}
-
 				$this->config[$key] = $value;
 			}
+
+			array_walk_recursive($this->config, function(&$value) {
+				$lvalue = strtolower($value);
+
+				if ('on' === $lvalue || 'yes' === $lvalue) {
+					$value = true;
+				} elseif ('off' === $lvalue || 'no' === $lvalue) {
+					$value = false;
+				}
+			});
 
 		} else {
 			throw new Exception('Missing required options', Exception::INVALID_CONFIG);
@@ -120,10 +121,25 @@ class Config implements \ArrayAccess, \IteratorAggregate
 		if (empty($this->config['templateDir'])) {
 			$this->config['templateDir'] = realpath(__DIR__ . '/../../templates');
 		}
-		foreach (array('source', 'destination', 'templateDir') as $key) {
+		$this->config['source'] = array_unique((array) $this->config['source']);
+		foreach ($this->config['source'] as $key => $source) {
+			if (is_dir($source)) {
+				$this->config['source'][$key] = realpath($source);
+			}
+		}
+		foreach (array('destination', 'templateDir') as $key) {
 			if (is_dir($this->config[$key])) {
 				$this->config[$key] = realpath($this->config[$key]);
 			}
+		}
+
+		$this->config['accessLevels'] = array_unique((array) $this->config['accessLevels']);
+		foreach ($this->config['accessLevels'] as $key => $levels) {
+			$levels = explode(',', $levels);
+			while (count($levels) > 1) {
+				array_push($this->config['accessLevels'], array_shift($levels));
+			}
+			$this->config['accessLevels'][$key] = array_shift($levels);
 		}
 		$this->config['accessLevels'] = array_filter($this->config['accessLevels'], function($item) {
 			return in_array($item, array('public', 'protected', 'private'));
@@ -142,11 +158,20 @@ class Config implements \ArrayAccess, \IteratorAggregate
 		}
 		if (empty($this->config['source'])) {
 			throw new Exception('Source directory is not set', Exception::INVALID_CONFIG);
-		} elseif (!is_dir($this->config['source'])) {
-			throw new Exception(sprintf('Source directory %s doesn\'t exist', $this->config['source']), Exception::INVALID_CONFIG);
-		}
-		if (empty($this->config['destination'])) {
-			throw new Exception('Destination directory is not set', Exception::INVALID_CONFIG);
+		} else {
+			foreach ($this->config['source'] as $source) {
+				if (!is_dir($source)) {
+					throw new Exception(sprintf('Source directory %s doesn\'t exist', $source), Exception::INVALID_CONFIG);
+				}
+			}
+
+			foreach ($this->config['source'] as $source) {
+				foreach ($this->config['source'] as $source2) {
+					if ($source !== $source2 && 0 === strpos($source, $source2)) {
+						throw new Exception(sprintf('Source directories %s and %s overlap', $source, $source2), Exception::INVALID_CONFIG);
+					}
+				}
+			}
 		}
 		if (empty($this->config['accessLevels'])) {
 			throw new Exception('No supported access level given', Exception::INVALID_CONFIG);

@@ -76,9 +76,11 @@ class Generator extends Nette\Object
 		$broker = new Broker(new Backend(), false);
 
 		$files = array();
-		foreach (new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($this->config['source'])) as $entry) {
-			if ($entry->isFile() && 'php' === $entry->getExtension()) {
-				$files[] = $entry->getPathName();
+		foreach ((array) $this->config['source'] as $source) {
+			foreach (new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($source)) as $entry) {
+				if ($entry->isFile() && 'php' === $entry->getExtension()) {
+					$files[] = $entry->getPathName();
+				}
 			}
 		}
 
@@ -344,8 +346,20 @@ class Generator extends Nette\Object
 			$template->indirectImplementers = $class->getIndirectImplementers();
 			uksort($template->indirectImplementers, 'strcasecmp');
 
-			$file = $class->getFileName();
-			$template->fileName = str_replace('\\', '/', substr($file, strlen($this->config['source']) + 1));
+			if ($class->isTokenized()) {
+				$template->fileName = null;
+				$file = $class->getFileName();
+				foreach ($this->config['source'] as $source) {
+					if (0 === strpos($file, $source)) {
+						$template->fileName = str_replace('\\', '/', substr($file, strlen($source) + 1));
+						break;
+					}
+				}
+				if (null === $template->fileName) {
+					throw new Exception(sprintf('Could not determine class %s relative path', $class->getName()));
+				}
+			}
+
 			$template->class = $class;
 			$template->setFile($templatePath . '/' . $this->config['templates']['class'])->save(self::forceDir($destination . '/' . $this->formatClassLink($class)));
 
@@ -619,8 +633,9 @@ class Generator extends Nette\Object
 			} elseif ($element instanceof ReflectionConstant) {
 				return sprintf('%s#%s.constants.%s', $classLink, $className, $elementName);
 			}
-		} elseif ($class->isUserDefined()) {
-			$file = substr($element->getFileName(), strlen($this->config['source']) + 1);
+		} elseif ($class->isTokenized()) {
+			$file = str_replace('\\', '/', $class->getName());
+
 			$line = null;
 			if ($withLine) {
 				$line = $element->getStartLine();
