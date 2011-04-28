@@ -39,6 +39,12 @@ class Backend extends Memory
 						}
 					}
 				}
+
+				foreach ($method->getParameters() as $param) {
+					if ($hint = $param->getClass()) {
+						$allClasses = $this->addClass($declared, $allClasses, $hint->getName());
+					}
+				}
 			}
 
 			foreach ($class->getOwnProperties() as $property) {
