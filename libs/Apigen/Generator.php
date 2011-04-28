@@ -145,24 +145,6 @@ class Generator extends NetteX\Object
 		$template->registerHelper('classLink', callbackX($this, 'formatClassLink'));
 		$template->registerHelper('sourceLink', callbackX($this, 'formatSourceLink'));
 
-		// types
-		$model = $this->model;
-		$template->registerHelper('getTypes', function($element, $position = NULL) use ($model) {
-			$namespace = $element->getDeclaringClass()->getNamespaceName();
-			$s = $position === NULL ? $element->getAnnotation($element instanceof \ReflectionProperty ? 'var' : 'return')
-				: @$element->annotations['param'][$position];
-			if (is_object($s)) {
-				$s = get_class($s); // TODO
-			}
-			$s = preg_replace('#\s.*#', '', $s);
-			$res = array();
-			foreach (explode('|', $s) as $name) {
-				$res[] = (object) array('name' => $name, 'class' => $model->resolveType($name, $namespace));
-			}
-			return $res;
-		});
-		$template->registerHelper('resolveType', callbackX($model, 'resolveType'));
-
 		// docblock
 		$texy = new \TexyX;
 		$texy->mergeLines = FALSE;
@@ -170,7 +152,7 @@ class Generator extends NetteX\Object
 		$texy->allowed['list/definition'] = FALSE;
 		$texy->allowed['phrase/em-alt'] = FALSE;
 		$texy->allowed['longwords'] = FALSE;
-		
+
 		$texy->registerBlockPattern( // highlight <code>, <pre>
 			function($parser, $matches, $name) use ($fshl) {
 				$content = $matches[1] === 'code' ? $fshl->highlightString('PHP', $matches[2]) : htmlSpecialChars($matches[2]);
@@ -187,16 +169,17 @@ class Generator extends NetteX\Object
 
 		$template->registerHelper('texy', callbackX($texy, 'process'));
 
-		$template->registerHelper('doclabel', function($doc, $namespace) use ($template) {
+		$model = $this->model;
+		$template->registerHelper('doclabel', function($doc, $namespace, $short = FALSE) use ($template, $model) {
 			@list($names, $label) = preg_split('#\s+#', $doc, 2);
 			$res = array();
 			foreach (explode('|', $names) as $name) {
-				$class = $template->resolveType($name, $namespace);
+				$class = $model->resolveType($name, $namespace);
 				$name = $template->replaceNS($name, $namespace);
 				$res[] = $class ? sprintf('<a href="%s">%s</a>', $template->classLink($class), $template->escapeHtml($name))
 					: $template->escapeHtml($name);
 			}
-			return implode('|', $res) . ' ' . $template->texyline($label);
+			return implode('|', $res) . ($short ? '' : ' ' . $template->texyline($label));
 		});
 
 		return $template;
