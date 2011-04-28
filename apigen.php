@@ -50,7 +50,7 @@ Debugger::timer();
 
 if (isset($options['l'])) {
   $robot = new NetteX\Loaders\RobotLoader;
-  $robot->setCacheStorage(new NetteX\Caching\MemoryStorage);
+  $robot->setCacheStorage(new NetteX\Caching\Storages\MemoryStorage);
   $robot->addDirectory($options['l']);
   $robot->register();
 }
