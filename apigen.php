@@ -138,17 +138,18 @@ try {
 	// Generating
 	echo "Searching template in $config[templateDir]\n";
 	echo "Using template $config[template]\n";
-	echo "Generating documentation to directory $config[destination]\n";
 	if ($config['wipeout'] && is_dir($config['destination'])) {
-		echo "Wiping out destination directory first\n";
+		echo "Wiping out destination directory\n";
 		if (!$generator->wipeOutDestination()) {
 			throw new Exception('Cannot wipe out destination directory');
 		}
 	}
+
+	echo "Generating documentation to directory $config[destination]\n";
 	$generator->generate();
 
 	// End
-	echo "Done. Total time: " . (int) Debugger::timer() . " seconds\n";
+	echo "Done. Total time: " . (int) Debugger::timer() . " seconds, used: " . round(memory_get_peak_usage(true) / 1024 / 1024) . " MB RAM\n";
 
 } catch (Exception $e) {
 	echo "\n" . $e->getMessage() . "\n\n";
@@ -169,6 +170,8 @@ Options:
 	--access-levels <list>  Generate documetation for methods and properties with given access level, default public,protected
 	--wipeout       On|Off  Wipe out the destination directory first, default On
 	--progressbar   On|Off  Display progressbars, default On
+
+Only source and destination directories are required - either set explicitly or using a config file.
 <?php
 	die(1);
 }
