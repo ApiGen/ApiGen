@@ -233,9 +233,7 @@ class Generator extends Nette\Object
 
 		$template = new Template($this);
 		$template->version = self::VERSION;
-		foreach ($this->config as $key => $value) {
-			$template->$key = $value;
-		}
+		$template->config = $this->config;
 
 		// generate summary files
 		$template->namespaces = array_keys($namespaces);

@@ -242,4 +242,24 @@ class Config implements \ArrayAccess, \IteratorAggregate
 	{
 		unset($this->config[$offset]);
 	}
+
+	public function __isset($name)
+	{
+		return $this->offsetExists($name);
+	}
+
+	public function __get($name)
+	{
+		return $this->offsetGet($name);
+	}
+
+	public function __set($name, $value)
+	{
+		$this->offsetSet($name, $value);
+	}
+
+	public function __unset($name)
+	{
+		$this->offsetUnset($name);
+	}
 }
