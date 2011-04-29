@@ -75,7 +75,7 @@ class Generator extends Nette\Object
 		$broker = new Broker(new Backend(), false);
 
 		$files = array();
-		foreach ($this->config['source'] as $source) {
+		foreach ($this->config->source as $source) {
 			foreach (new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($source)) as $entry) {
 				if ($entry->isFile() && preg_match('~\\.php$~i', $entry->getFilename())) {
 					$files[] = $entry->getPathName();
@@ -83,7 +83,7 @@ class Generator extends Nette\Object
 			}
 		}
 
-		if ($this->config['progressbar']) {
+		if ($this->config->progressbar) {
 			$this->prepareProgressBar(count($files));
 		}
 
@@ -131,8 +131,8 @@ class Generator extends Nette\Object
 	public function wipeOutDestination()
 	{
 		// resources
-		foreach ($this->config['resources'] as $dir) {
-			$pathName = $this->config['destination'] . '/' . $dir;
+		foreach ($this->config->resources as $dir) {
+			$pathName = $this->config->destination . '/' . $dir;
 			if (is_dir($pathName)) {
 				foreach (Nette\Utils\Finder::findFiles('*')->from($pathName)->childFirst() as $item) {
 					if ($item->isDir()) {
@@ -152,8 +152,8 @@ class Generator extends Nette\Object
 		}
 
 		// common files
-		$filenames = array_keys($this->config['templates']['common']);
-		foreach (Nette\Utils\Finder::findFiles($filenames)->from($this->config['destination']) as $item) {
+		$filenames = array_keys($this->config->templates['common']);
+		foreach (Nette\Utils\Finder::findFiles($filenames)->from($this->config->destination) as $item) {
 			if (!@unlink($item)) {
 				return false;
 			}
@@ -162,7 +162,7 @@ class Generator extends Nette\Object
 		// output files
 		$masks = array_map(function($mask) {
 			return preg_replace('~%[^%]*?s~', '*', $mask);
-		}, $this->config['filenames']);
+		}, $this->config->filenames);
 		$filter = function($item) use($masks) {
 			foreach ($masks as $mask) {
 				if (fnmatch($mask, $item->getFilename())) {
@@ -173,7 +173,7 @@ class Generator extends Nette\Object
 			return false;
 		};
 
-		foreach (Nette\Utils\Finder::findFiles('*')->filter($filter)->from($this->config['destination']) as $item) {
+		foreach (Nette\Utils\Finder::findFiles('*')->filter($filter)->from($this->config->destination) as $item) {
 			if (!@unlink($item)) {
 				return false;
 			}
@@ -187,16 +187,16 @@ class Generator extends Nette\Object
 	 */
 	public function generate()
 	{
-		@mkdir($this->config['destination']);
-		if (!is_dir($this->config['destination'])) {
-			throw new Exception("Directory {$this->config['destination']} doesn't exist.", Exception::INVALID_CONFIG);
+		@mkdir($this->config->destination);
+		if (!is_dir($this->config->destination)) {
+			throw new Exception("Directory {$this->config->destination} doesn't exist.", Exception::INVALID_CONFIG);
 		}
 
-		$destination = $this->config['destination'];
-		$templatePath = $this->config['templateDir'] . '/' . $this->config['template'];
+		$destination = $this->config->destination;
+		$templatePath = $this->config->templateDir . '/' . $this->config->template;
 
 		// copy resources
-		foreach ($this->config['resources'] as $source => $dest) {
+		foreach ($this->config->resources as $source => $dest) {
 			foreach ($iterator = Nette\Utils\Finder::findFiles('*')->from($templatePath . '/' . $source)->getIterator() as $foo) {
 				copy($iterator->getPathName(), $this->forceDir("$destination/$dest/" . $iterator->getSubPathName()));
 			}
@@ -219,12 +219,12 @@ class Generator extends Nette\Object
 		uksort($namespaces, 'strcasecmp');
 		uksort($allClasses, 'strcasecmp');
 
-		if ($this->config['progressbar']) {
+		if ($this->config->progressbar) {
 			$this->prepareProgressBar(
 				count($allClasses)
 				+ count($namespaces)
 				+ count($packages)
-				+ count($this->config['templates']['common'])
+				+ count($this->config->templates['common'])
 				+ count(array_filter(array_unique(array_map(function(ApiReflection $class) {
 					return $class->getFileName();
 				}, $allClasses))))
@@ -247,7 +247,7 @@ class Generator extends Nette\Object
 		$template->exceptions = array_filter($allClasses, function($class) {
 			return $class->isException();
 		});
-		foreach ($this->config['templates']['common'] as $dest => $source) {
+		foreach ($this->config->templates['common'] as $dest => $source) {
 			$template->setFile($templatePath . '/' . $source)->save($this->forceDir("$destination/$dest"));
 
 			$this->incrementProgressBar();
@@ -278,7 +278,7 @@ class Generator extends Nette\Object
 			$template->exceptions = array_filter($classes, function($class) {
 				return $class->isException();
 			});
-			$template->setFile($templatePath . '/' . $this->config['templates']['namespace'])->save($this->forceDir($destination . '/' . $this->getNamespaceLink($namespace)));
+			$template->setFile($templatePath . '/' . $this->config->templates['namespace'])->save($this->forceDir($destination . '/' . $this->getNamespaceLink($namespace)));
 
 			$this->incrementProgressBar();
 		}
@@ -302,7 +302,7 @@ class Generator extends Nette\Object
 			$template->exceptions = array_filter($classes, function($class) {
 				return $class->isException();
 			});
-			$template->setFile($templatePath . '/' . $this->config['templates']['package'])->save($this->forceDir($destination . '/' . $this->getPackageLink($package)));
+			$template->setFile($templatePath . '/' . $this->config->templates['package'])->save($this->forceDir($destination . '/' . $this->getPackageLink($package)));
 
 			$this->incrementProgressBar();
 		}
@@ -342,7 +342,7 @@ class Generator extends Nette\Object
 			if ($class->isTokenized()) {
 				$template->fileName = null;
 				$file = $class->getFileName();
-				foreach ($this->config['source'] as $source) {
+				foreach ($this->config->source as $source) {
 					if (0 === strpos($file, $source)) {
 						$template->fileName = str_replace('\\', '/', substr($file, strlen($source) + 1));
 						break;
@@ -354,14 +354,14 @@ class Generator extends Nette\Object
 			}
 
 			$template->class = $class;
-			$template->setFile($templatePath . '/' . $this->config['templates']['class'])->save($this->forceDir($destination . '/' . $this->getClassLink($class)));
+			$template->setFile($templatePath . '/' . $this->config->templates['class'])->save($this->forceDir($destination . '/' . $this->getClassLink($class)));
 
 			$this->incrementProgressBar();
 
 			// generate source codes
 			if ($class->isUserDefined() && !isset($generatedFiles[$class->getFileName()])) {
 				$template->source = $fshl->highlightString('PHP', file_get_contents($file));
-				$template->setFile($templatePath . '/' . $this->config['templates']['source'])->save($this->forceDir($destination . '/' . $this->getSourceLink($class, false)));
+				$template->setFile($templatePath . '/' . $this->config->templates['source'])->save($this->forceDir($destination . '/' . $this->getSourceLink($class, false)));
 				$generatedFiles[$file] = true;
 
 				$this->incrementProgressBar();
@@ -377,12 +377,12 @@ class Generator extends Nette\Object
 	 */
 	public function getNamespaceLink($class)
 	{
-		if (!isset($this->config['filenames']['namespace'])) {
+		if (!isset($this->config->filenames['namespace'])) {
 			throw new Exception('Namespace output filename not defined.', Exception::INVALID_CONFIG);
 		}
 
 		$namespace = ($class instanceof ApiReflection) ? $class->getNamespaceName() : $class;
-		return sprintf($this->config['filenames']['namespace'], $namespace ? preg_replace('#[^a-z0-9_]#i', '.', $namespace) : 'None');
+		return sprintf($this->config->filenames['namespace'], $namespace ? preg_replace('#[^a-z0-9_]#i', '.', $namespace) : 'None');
 	}
 
 	/**
@@ -393,12 +393,12 @@ class Generator extends Nette\Object
 	 */
 	public function getPackageLink($class)
 	{
-		if (!isset($this->config['filenames']['package'])) {
+		if (!isset($this->config->filenames['package'])) {
 			throw new Exception('Package output filename not defined.', Exception::INVALID_CONFIG);
 		}
 
 		$package = ($class instanceof ApiReflection) ? $class->getPackageName() : $class;
-		return sprintf($this->config['filenames']['package'], $package ? preg_replace('#[^a-z0-9_]#i', '.', $package) : 'None');
+		return sprintf($this->config->filenames['package'], $package ? preg_replace('#[^a-z0-9_]#i', '.', $package) : 'None');
 	}
 
 	/**
@@ -409,7 +409,7 @@ class Generator extends Nette\Object
 	 */
 	public function getClassLink($class)
 	{
-		if (!isset($this->config['filenames']['class'])) {
+		if (!isset($this->config->filenames['class'])) {
 			throw new Exception('Class output filename not defined.', Exception::INVALID_CONFIG);
 		}
 
@@ -417,7 +417,7 @@ class Generator extends Nette\Object
 			$class = $class->getName();
 		}
 
-		return sprintf($this->config['filenames']['class'], preg_replace('#[^a-z0-9_]#i', '.', $class));
+		return sprintf($this->config->filenames['class'], preg_replace('#[^a-z0-9_]#i', '.', $class));
 	}
 
 	/**
@@ -461,7 +461,7 @@ class Generator extends Nette\Object
 	 */
 	public function getSourceLink($element, $withLine = true)
 	{
-		if (!isset($this->config['filenames']['source'])) {
+		if (!isset($this->config->filenames['source'])) {
 			throw new Exception('Source output filename not defined.', Exception::INVALID_CONFIG);
 		}
 
@@ -498,7 +498,7 @@ class Generator extends Nette\Object
 				}
 			}
 
-			return sprintf($this->config['filenames']['source'], preg_replace('#[^a-z0-9_]#i', '.', $file)) . (isset($line) ? "#$line" : '');
+			return sprintf($this->config->filenames['source'], preg_replace('#[^a-z0-9_]#i', '.', $file)) . (isset($line) ? "#$line" : '');
 		}
 	}
 
@@ -523,7 +523,7 @@ class Generator extends Nette\Object
 	 */
 	private function incrementProgressBar()
 	{
-		if ($this->config['progressbar']) {
+		if ($this->config->progressbar) {
 			$this->progressBar->update($this->progressBar->getProgress() + 1);
 		}
 	}

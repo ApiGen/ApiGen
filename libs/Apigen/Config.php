@@ -16,7 +16,7 @@ namespace Apigen;
 use Apigen\Exception;
 use Nette;
 
-class Config implements \ArrayAccess, \IteratorAggregate
+class Config
 {
 	/**
 	 * Options.
@@ -190,76 +190,23 @@ class Config implements \ArrayAccess, \IteratorAggregate
 		return $this->config['templateDir'] . DIRECTORY_SEPARATOR . $this->config['template'] . DIRECTORY_SEPARATOR . 'config.neon';
 	}
 
-	/**
-	 * Returns an iterator over all items.
-	 *
-	 * @return \ArrayIterator
-	 */
-	public function getIterator()
-	{
-		return new \ArrayIterator($this->config);
-	}
-
-	/**
-	 * Implements \ArrayAccess::offsetExists.
-	 *
-	 * @param mixed $offset
-	 * @return boolean
-	 */
-	public function offsetExists($offset)
-	{
-		return isset($this->config[$offset]);
-	}
-
-	/**
-	 * Implements \ArrayAccess::offsetGet.
-	 *
-	 * @param mixed $offset
-	 * @return mixed
-	 */
-	public function offsetGet($offset)
-	{
-		return isset($this->config[$offset]) ? $this->config[$offset] : null;
-	}
-
-	/**
-	 * Implements \ArrayAccess::offsetSet.
-	 *
-	 * @param mixed $offset
-	 * @param mixed $value
-	 */
-	public function offsetSet($offset, $value)
-	{
-		$this->config[$offset] = $value;
-	}
-
-	/**
-	 * Implements \ArrayAccess::offsetUnset.
-	 *
-	 * @param mixed $offset
-	 */
-	public function offsetUnset($offset)
-	{
-		unset($this->config[$offset]);
-	}
-
 	public function __isset($name)
 	{
-		return $this->offsetExists($name);
+		return isset($this->config[$name]);
 	}
 
 	public function __get($name)
 	{
-		return $this->offsetGet($name);
+		return isset($this->config[$name]) ? $this->config[$name] : null;
 	}
 
 	public function __set($name, $value)
 	{
-		$this->offsetSet($name, $value);
+		$this->config[$name] = $value;
 	}
 
 	public function __unset($name)
 	{
-		$this->offsetUnset($name);
+		unset($this->config[$name]);
 	}
 }

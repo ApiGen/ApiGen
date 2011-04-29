@@ -55,25 +55,25 @@ try {
 	$generator = new Apigen\Generator($config);
 
 	// Scan
-	if (count($config['source']) > 1) {
-		printf("Scanning directories\n %s\n", implode("\n  ", $config['source']));
+	if (count($config->source) > 1) {
+		printf("Scanning directories\n %s\n", implode("\n  ", $config->source));
 	} else {
-		printf("Scanning directory %s\n", $config['source'][0]);
+		printf("Scanning directory %s\n", $config->source[0]);
 	}
 	list($count, $countInternal) = $generator->parse();
 	printf("Found %d classes and other %d used internal classes\n", $count, $countInternal);
 
 	// Generating
-	printf("Searching template in %s\n", $config['templateDir']);
-	printf("Using template %s\n", $config['template']);
-	if ($config['wipeout'] && is_dir($config['destination'])) {
+	printf("Searching template in %s\n", $config->templateDir);
+	printf("Using template %s\n", $config->template);
+	if ($config->wipeout && is_dir($config->destination)) {
 		echo "Wiping out destination directory\n";
 		if (!$generator->wipeOutDestination()) {
 			throw new Exception('Cannot wipe out destination directory');
 		}
 	}
 
-	printf("Generating documentation to directory %s\n", $config['destination']);
+	printf("Generating documentation to directory %s\n", $config->destination);
 	$generator->generate();
 
 	// End

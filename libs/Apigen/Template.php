@@ -143,7 +143,7 @@ class Template extends Nette\Templating\FileTemplate
 		});
 
 		// static files versioning
-		$destination = $this->generator->config['destination'];
+		$destination = $this->generator->config->destination;
 		$this->registerHelper('staticFile', function($name, $line = null) use ($destination) {
 			static $versions = array();
 
