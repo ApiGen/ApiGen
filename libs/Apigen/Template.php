@@ -133,13 +133,28 @@ class Template extends Nette\Templating\FileTemplate
 					return '<a href="' . $that->packageLink($value) . '">' . $that->escapeHtml($value) . '</a>';
 					break;
 				case 'see':
-					$link = $that->resolveClassLink($value, $parent);
-					if (null !== $link) {
-						return '<a href="' . $link . '">' . $that->escapeHtml($value) . '</a>';
+					$reflection = $that->resolveClassLink($value, $parent);
+					if ($reflection instanceof ApiReflection) {
+						$link = $that->classLink($reflection);
+						$value = $reflection->getName();
+					} elseif ($reflection instanceof ReflectionProperty) {
+						$link = $that->propertyLink($reflection);
+						$value = $reflection->getDeclaringClassName() . '::$' . $reflection->getName();
+					} elseif ($reflection instanceof ReflectionMethod) {
+						$link = $that->methodLink($reflection);
+						$value = $reflection->getDeclaringClassName() . '::' . $reflection->getName() . '()';
+					} elseif ($reflection instanceof ReflectionConstant) {
+						$link = $that->constantLink($reflection);
+						$value = $reflection->getDeclaringClassName() . '::' . $reflection->getName();
+					} else {
+						break;
 					}
-				default:
-					return $that->docline($value);
+
+					return '<a href="' . $link . '">' . $that->escapeHtml($value) . '</a>';
+					break;
 			}
+
+			return $that->docline($value);
 		});
 
 		// static files versioning
@@ -205,7 +220,7 @@ class Template extends Nette\Templating\FileTemplate
 	 *
 	 * @param string $link Link definition
 	 * @param \Apigen\Reflection $context Link context
-	 * @return string|null
+	 * @return \Apigen\Reflection|\TokenReflection\IReflection|null
 	 */
 	public function resolveClassLink($link, ApiReflection $context)
 	{
@@ -220,25 +235,24 @@ class Template extends Nette\Templating\FileTemplate
 				$context = $this->generator->classes[$className];
 			}
 		} elseif (null !== ($className = $this->resolveType($link, $context->getNamespaceName()))) {
-			// Class name
-			return $this->generator->getClassLink($this->generator->classes[$className]);
+			// Class
+			return $this->generator->classes[$className];
 		}
 
 		$properties = $context->getProperties();
 		if (isset($properties[$link]) || ('$' === $link{0} && $context->hasProperty(substr($link, 1)))) {
 			// Class property
-			return $this->generator->getPropertyLink($properties['$' === $link{0} ? substr($link, 1) : $link]);
+			return $properties['$' === $link{0} ? substr($link, 1) : $link];
 		}
 
 		$methods = $context->getMethods();
 		if (isset($methods[$link]) || ('()' === substr($link, -2) && $context->hasMethod(substr($link, 0, -2)))) {
-
-			// Class property
-			return $this->generator->getMethodLink($methods['()' === substr($link, -2) ? substr($link, 0, -2) : $link]);
+			// Class method
+			return $methods['()' === substr($link, -2) ? substr($link, 0, -2) : $link];
 		}
 
 		$constants = $context->getConstants();
 		// Class constant
-		return isset($constants[$link]) ? $this->generator->getConstantLink($constants[$link]) : null;
+		return isset($constants[$link]) ? $constants[$link] : null;
 	}
 }
