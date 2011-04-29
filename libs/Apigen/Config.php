@@ -41,11 +41,43 @@ class Config
 		'title' => '',
 		'baseUrl' => '',
 		'googleCse' => '',
-		'template' => '',
+		'template' => 'default',
 		'templateDir' => '',
 		'accessLevels' => array('public', 'protected'),
 		'wipeout' => true,
 		'progressbar' => true
+	);
+
+	/**
+	 * On/Off or Yes/No options.
+	 *
+	 * @var array
+	 */
+	private static $booleanOptions = array(
+		'wipeout',
+		'progressbar'
+	);
+
+	/**
+	 * Options with list of values.
+	 *
+	 * @var array
+	 */
+	private static $arrayOptions = array(
+		'source' => array(),
+		'accessLevels' => array('public', 'protected', 'private')
+	);
+
+	/**
+	 * File or directory path options.
+	 *
+	 * @var array
+	 */
+	private static $pathOptions = array(
+		'config',
+		'source',
+		'destination',
+		'templateDir'
 	);
 
 	/**
@@ -76,6 +108,7 @@ class Config
 		}
 
 		$this->config = self::$defaultConfig;
+		$this->config['templateDir'] = realpath(__DIR__ . '/../../templates');
 
 		// Config file
 		if (isset($this->options['config'])) {
@@ -87,23 +120,54 @@ class Config
 		}
 
 		// Parse options
-		foreach ($this->options as $key => $value) {
-			$key = preg_replace_callback('#-([a-z])#', function($matches) {
+		foreach ($this->options as $option => $value) {
+			$option = preg_replace_callback('#-([a-z])#', function($matches) {
 				return ucfirst($matches[1]);
-			}, $key);
+			}, $option);
 
-			$this->config[$key] = $value;
+			$this->config[$option] = $value;
 		}
 
-		array_walk_recursive($this->config, function(&$value) {
-			$lvalue = strtolower($value);
-
-			if ('on' === $lvalue || 'yes' === $lvalue) {
+		foreach (self::$booleanOptions as $option) {
+			$value = strtolower($this->config[$option]);
+			if ('on' === $value || 'yes' === $value) {
 				$value = true;
-			} elseif ('off' === $lvalue || 'no' === $lvalue) {
+			} elseif ('off' === $value || 'no' === $value) {
 				$value = false;
 			}
-		});
+			$this->config[$option] = (bool) $value;
+		}
+
+		foreach (self::$arrayOptions as $option => $possibleValues) {
+			$this->config[$option] = array_unique((array) $this->config[$option]);
+			foreach ($this->config[$option] as $key => $value) {
+				$value = explode(',', $value);
+				while (count($value) > 1) {
+					array_push($this->config[$option], array_shift($value));
+				}
+				$this->config[$option][$key] = array_shift($value);
+			}
+
+			if (!empty($possibleValues)) {
+				$this->config[$option] = array_filter($this->config[$option], function($value) use ($possibleValues) {
+					return in_array($value, $possibleValues);
+				});
+			}
+		}
+
+		foreach (self::$pathOptions as $option) {
+			if (is_array($this->config[$option])) {
+				array_walk($this->config[$option], function(&$value) {
+					if (file_exists($value)) {
+						$value = realpath($value);
+					}
+				});
+			} else {
+				if (file_exists($this->config[$option])) {
+					$this->config[$option] = realpath($this->config[$option]);
+				}
+			}
+		}
 
 		return $this;
 	}
@@ -115,38 +179,6 @@ class Config
 	 */
 	private function check()
 	{
-		// Fix
-		if (empty($this->config['template'])) {
-			$this->config['template'] = 'default';
-		}
-		if (empty($this->config['templateDir'])) {
-			$this->config['templateDir'] = realpath(__DIR__ . '/../../templates');
-		}
-		$this->config['source'] = array_unique((array) $this->config['source']);
-		foreach ($this->config['source'] as $key => $source) {
-			if (is_dir($source)) {
-				$this->config['source'][$key] = realpath($source);
-			}
-		}
-		foreach (array('destination', 'templateDir') as $key) {
-			if (is_dir($this->config[$key])) {
-				$this->config[$key] = realpath($this->config[$key]);
-			}
-		}
-
-		$this->config['accessLevels'] = array_unique((array) $this->config['accessLevels']);
-		foreach ($this->config['accessLevels'] as $key => $levels) {
-			$levels = explode(',', $levels);
-			while (count($levels) > 1) {
-				array_push($this->config['accessLevels'], array_shift($levels));
-			}
-			$this->config['accessLevels'][$key] = array_shift($levels);
-		}
-		$this->config['accessLevels'] = array_filter($this->config['accessLevels'], function($item) {
-			return in_array($item, array('public', 'protected', 'private'));
-		});
-
-		// Check
 		if (!is_dir($this->config['templateDir'])) {
 			throw new Exception(sprintf('Template directory %s doesn\'t exist', $this->config['templateDir']), Exception::INVALID_CONFIG);
 		}
@@ -157,23 +189,23 @@ class Config
 		if (!is_file($templateConfig)) {
 			throw new Exception('Template config doesn\'t exist', Exception::INVALID_CONFIG);
 		}
+
 		if (empty($this->config['source'])) {
 			throw new Exception('Source directory is not set', Exception::INVALID_CONFIG);
-		} else {
-			foreach ($this->config['source'] as $source) {
-				if (!is_dir($source)) {
-					throw new Exception(sprintf('Source directory %s doesn\'t exist', $source), Exception::INVALID_CONFIG);
-				}
+		}
+		foreach ($this->config['source'] as $source) {
+			if (!is_dir($source)) {
+				throw new Exception(sprintf('Source directory %s doesn\'t exist', $source), Exception::INVALID_CONFIG);
 			}
-
-			foreach ($this->config['source'] as $source) {
-				foreach ($this->config['source'] as $source2) {
-					if ($source !== $source2 && 0 === strpos($source, $source2)) {
-						throw new Exception(sprintf('Source directories %s and %s overlap', $source, $source2), Exception::INVALID_CONFIG);
-					}
+		}
+		foreach ($this->config['source'] as $source) {
+			foreach ($this->config['source'] as $source2) {
+				if ($source !== $source2 && 0 === strpos($source, $source2)) {
+					throw new Exception(sprintf('Source directories %s and %s overlap', $source, $source2), Exception::INVALID_CONFIG);
 				}
 			}
 		}
+
 		if (empty($this->config['accessLevels'])) {
 			throw new Exception('No supported access level given', Exception::INVALID_CONFIG);
 		}
