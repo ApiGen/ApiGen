@@ -63,11 +63,7 @@
 				{continueIf $annotation == 'method'}
 				{foreach $values as $value}
 					<b>{$annotation|ucfirst}:</b>
-					{if $annotation == "package"}
-						<a href="{$class|packageLink}">{$value}</a><br>
-					{else}
-						{!$value|docline}<br>
-					{/if}
+					{!$value|annotation:$annotation:$class}<br />
 				{/foreach}
 			{/foreach}
 			{if $class->internal}<b>Documented at</b> <a href="{$class|sourceLink}">php.net</a>{elseif $class->userDefined}<b>Located at</b> <a href="{$class|sourceLink}">{$fileName}</a>{/if}<br>

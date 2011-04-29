@@ -511,6 +511,21 @@ class Generator extends Nette\Object
 			return $name;
 		});
 
+		// individual annotations processing
+		$template->registerHelper('annotation', function($value, $name, ApiReflection $parent) use($that, $template) {
+			switch ($name) {
+				case 'package':
+					return '<a href="' . $template->packageLink($value) . '">' . $template->escapeHtml($value) . '</a>';
+					break;
+				case 'see':
+					$link = $that->resolveClassLink($value, $parent);
+					if (null !== $link) {
+						return '<a href="' . $link . '">' . $template->escapeHtml($value) . '</a>';
+					}
+				default:
+					return $template->docline($value);
+			}
+		});
 
 		return $template;
 	}
@@ -662,6 +677,48 @@ class Generator extends Nette\Object
 			$type = substr($type, 1);
 		}
 		return isset($this->classes["$namespace\\$type"]) ? "$namespace\\$type" : (isset($this->classes[$type]) ? $type : NULL);
+	}
+
+	/**
+	 * Tries to parse a link to a class/method/property and returns the appropriate link if successful.
+	 *
+	 * @param string $link Link definition
+	 * @param \Apigen\Reflection $context Link context
+	 * @return string|null
+	 */
+	public function resolveClassLink($link, ApiReflection $context)
+	{
+		if (($pos = strpos($link, '::')) || ($pos = strpos($link, '->'))) {
+			// Class::something or Class->something
+			$className = $this->resolveType(substr($link, 0, $pos), $context->getNamespaceName());
+			$link = substr($link, $pos + 2);
+
+			if (null === $className) {
+				return null;
+			} else {
+				$context = $this->classes[$className];
+			}
+		} elseif (null !== ($className = $this->resolveType($link, $context->getNamespaceName()))) {
+			// Class name
+			return $this->formatClassLink($this->classes[$className]);
+		}
+
+		$properties = $context->getProperties();
+		if (isset($properties[$link]) || ('$' === $link{0} && $context->hasProperty(substr($link, 1)))) {
+			// Class property
+			return $this->formatPropertyLink($properties['$' === $link{0} ? substr($link, 1) : $link]);
+		}
+
+		$methods = $context->getMethods();
+		if (isset($methods[$link]) || ('()' === substr($link, -2) && $context->hasMethod(substr($link, 0, -2)))) {
+
+			// Class property
+			return $this->formatMethodLink($methods['()' === substr($link, -2) ? substr($link, 0, -2) : $link]);
+		}
+
+		$constants = $context->getConstants();
+		// Class constant
+		return isset($constants[$link]) ? $this->formatConstantLink($constants[$link]) : null;
 	}
 
 	/**
