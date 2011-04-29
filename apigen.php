@@ -63,7 +63,7 @@ try {
 	}
 	if (count($config->exclude) > 1) {
 		printf("Excluding directories\n %s\n", implode("\n ", $config->exclude));
-	} else {
+	} elseif (!empty($config->exclude)) {
 		printf("Excluding directory %s\n", $config->exclude[0]);
 	}
 	list($count, $countInternal) = $generator->parse();
@@ -87,6 +87,8 @@ try {
 
 } catch (Exception $e) {
 	printf("\n%s\n\n", $e->getMessage());
+
+	echo $e->getTraceAsString();
 
 	// Help only for invalid configuration
 	if ($e instanceof Apigen\Exception && Apigen\Exception::INVALID_CONFIG === $e->getCode()) { ?>
