@@ -59,7 +59,7 @@ class Reflection
 		}
 
 		if (empty(self::$methodAccessLevels)) {
-			foreach ($generator->getConfig('accessLevels') as $level) {
+			foreach ($generator->config['accessLevels'] as $level) {
 				self::$methodAccessLevels |= constant('ReflectionMethod::IS_' . strtoupper($level));
 				self::$propertyAccessLevels |= constant('ReflectionProperty::IS_' . strtoupper($level));
 			}

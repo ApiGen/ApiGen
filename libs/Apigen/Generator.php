@@ -75,7 +75,7 @@ class Generator extends Nette\Object
 		$broker = new Broker(new Backend(), false);
 
 		$files = array();
-		foreach ((array) $this->config['source'] as $source) {
+		foreach ($this->config['source'] as $source) {
 			foreach (new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($source)) as $entry) {
 				if ($entry->isFile() && preg_match('~\\.php$~i', $entry->getFilename())) {
 					$files[] = $entry->getPathName();
@@ -106,15 +106,11 @@ class Generator extends Nette\Object
 	/**
 	 * Returns configuration.
 	 *
-	 * @param string $name
 	 * @return mixed
 	 */
-	public function getConfig($name = null)
+	public function getConfig()
 	{
-		if (null === $name) {
-			return $this->config;
-		}
-		return $this->config[$name];
+		return $this->config;
 	}
 
 	/**
@@ -202,7 +198,7 @@ class Generator extends Nette\Object
 		// copy resources
 		foreach ($this->config['resources'] as $source => $dest) {
 			foreach ($iterator = Nette\Utils\Finder::findFiles('*')->from($templatePath . '/' . $source)->getIterator() as $foo) {
-				copy($iterator->getPathName(), self::forceDir("$destination/$dest/" . $iterator->getSubPathName()));
+				copy($iterator->getPathName(), $this->forceDir("$destination/$dest/" . $iterator->getSubPathName()));
 			}
 		}
 
@@ -254,7 +250,7 @@ class Generator extends Nette\Object
 			return $class->isException();
 		});
 		foreach ($this->config['templates']['common'] as $dest => $source) {
-			$template->setFile($templatePath . '/' . $source)->save(self::forceDir("$destination/$dest"));
+			$template->setFile($templatePath . '/' . $source)->save($this->forceDir("$destination/$dest"));
 
 			$this->incrementProgressBar();
 		}
@@ -284,7 +280,7 @@ class Generator extends Nette\Object
 			$template->exceptions = array_filter($classes, function($class) {
 				return $class->isException();
 			});
-			$template->setFile($templatePath . '/' . $this->config['templates']['namespace'])->save(self::forceDir($destination . '/' . $this->getNamespaceLink($namespace)));
+			$template->setFile($templatePath . '/' . $this->config['templates']['namespace'])->save($this->forceDir($destination . '/' . $this->getNamespaceLink($namespace)));
 
 			$this->incrementProgressBar();
 		}
@@ -308,7 +304,7 @@ class Generator extends Nette\Object
 			$template->exceptions = array_filter($classes, function($class) {
 				return $class->isException();
 			});
-			$template->setFile($templatePath . '/' . $this->config['templates']['package'])->save(self::forceDir($destination . '/' . $this->getPackageLink($package)));
+			$template->setFile($templatePath . '/' . $this->config['templates']['package'])->save($this->forceDir($destination . '/' . $this->getPackageLink($package)));
 
 			$this->incrementProgressBar();
 		}
@@ -360,14 +356,14 @@ class Generator extends Nette\Object
 			}
 
 			$template->class = $class;
-			$template->setFile($templatePath . '/' . $this->config['templates']['class'])->save(self::forceDir($destination . '/' . $this->getClassLink($class)));
+			$template->setFile($templatePath . '/' . $this->config['templates']['class'])->save($this->forceDir($destination . '/' . $this->getClassLink($class)));
 
 			$this->incrementProgressBar();
 
 			// generate source codes
 			if ($class->isUserDefined() && !isset($generatedFiles[$class->getFileName()])) {
 				$template->source = $fshl->highlightString('PHP', file_get_contents($file));
-				$template->setFile($templatePath . '/' . $this->config['templates']['source'])->save(self::forceDir($destination . '/' . $this->getSourceLink($class, false)));
+				$template->setFile($templatePath . '/' . $this->config['templates']['source'])->save($this->forceDir($destination . '/' . $this->getSourceLink($class, false)));
 				$generatedFiles[$file] = true;
 
 				$this->incrementProgressBar();
@@ -527,7 +523,7 @@ class Generator extends Nette\Object
 	/**
 	 * Increments the progressbar by one.
 	 */
-	protected function incrementProgressBar()
+	private function incrementProgressBar()
 	{
 		if ($this->config['progressbar']) {
 			$this->progressBar->update($this->progressBar->getProgress() + 1);
@@ -540,7 +536,7 @@ class Generator extends Nette\Object
 	 * @param string Directory path
 	 * @return string
 	 */
-	public static function forceDir($path)
+	private function forceDir($path)
 	{
 		@mkdir(dirname($path), 0755, true);
 		return $path;

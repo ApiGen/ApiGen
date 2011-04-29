@@ -55,17 +55,17 @@ try {
 	$generator = new Apigen\Generator($config);
 
 	// Scan
-	if (is_array($config['source'])) {
-		echo "Scanning directories\n  " . implode("\n  ", $config['source']) . "\n";
+	if (count($config['source']) > 1) {
+		printf("Scanning directories\n %s\n", implode("\n  ", $config['source']));
 	} else {
-		echo "Scanning directory $config[source]\n";
+		printf("Scanning directory %s\n", $config['source'][0]);
 	}
 	list($count, $countInternal) = $generator->parse();
-	echo "Found $count classes and other $countInternal used internal classes\n";
+	printf("Found %d classes and other %d used internal classes\n", $count, $countInternal);
 
 	// Generating
-	echo "Searching template in $config[templateDir]\n";
-	echo "Using template $config[template]\n";
+	printf("Searching template in %s\n", $config['templateDir']);
+	printf("Using template %s\n", $config['template']);
 	if ($config['wipeout'] && is_dir($config['destination'])) {
 		echo "Wiping out destination directory\n";
 		if (!$generator->wipeOutDestination()) {
@@ -73,14 +73,14 @@ try {
 		}
 	}
 
-	echo "Generating documentation to directory $config[destination]\n";
+	printf("Generating documentation to directory %s\n", $config['destination']);
 	$generator->generate();
 
 	// End
-	echo "Done. Total time: " . (int) Debugger::timer() . " seconds, used: " . round(memory_get_peak_usage(true) / 1024 / 1024) . " MB RAM\n";
+	printf("Done. Total time: %d seconds, used: %d MB RAM\n", Debugger::timer(), round(memory_get_peak_usage(true) / 1024 / 1024));
 
 } catch (Exception $e) {
-	echo "\n" . $e->getMessage() . "\n\n";
+	printf("\n%s\n\n", $e->getMessage());
 
 	// Help only for invalid configuration
 	if ($e instanceof Apigen\Exception && Apigen\Exception::INVALID_CONFIG === $e->getCode()) { ?>
