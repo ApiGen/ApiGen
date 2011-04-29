@@ -368,8 +368,8 @@ class Generator extends Nette\Object
 			// generate source codes
 			if ($class->isUserDefined() && !isset($generatedFiles[$class->getFileName()])) {
 				$template->source = $fshl->highlightString('PHP', file_get_contents($file));
-				$template->setFile($templatePath . '/' . $this->config['templates']['source'])->save(self::forceDir($destination . '/' . $this->formatSourceLink($class, FALSE)));
-				$generatedFiles[$file] = TRUE;
+				$template->setFile($templatePath . '/' . $this->config['templates']['source'])->save(self::forceDir($destination . '/' . $this->formatSourceLink($class, false)));
+				$generatedFiles[$file] = true;
 
 				$this->incrementProgressBar();
 			}
@@ -417,7 +417,7 @@ class Generator extends Nette\Object
 
 		// types
 		$that = $this;
-		$template->registerHelper('getTypes', function($element, $position = NULL) use ($that) {
+		$template->registerHelper('getTypes', function($element, $position = null) use ($that) {
 			$annotation = array();
 			if ($element instanceof ReflectionProperty) {
 				$annotation = $element->getAnnotation('var');
@@ -428,7 +428,7 @@ class Generator extends Nette\Object
 					}
 				}
 			} elseif ($element instanceof ReflectionMethod) {
-				$annotation = $position === NULL ? $element->getAnnotation('return') : @$element->annotations['param'][$position];
+				$annotation = $position === null ? $element->getAnnotation('return') : @$element->annotations['param'][$position];
 			}
 
 			$namespace = $element->getDeclaringClass()->getNamespaceName();
@@ -448,11 +448,11 @@ class Generator extends Nette\Object
 
 		// docblock
 		$texy = new \Texy;
-		$texy->mergeLines = FALSE;
+		$texy->mergeLines = false;
 		$texy->allowedTags = \Texy::NONE;
-		$texy->allowed['list/definition'] = FALSE;
-		$texy->allowed['phrase/em-alt'] = FALSE;
-		$texy->allowed['longwords'] = FALSE;
+		$texy->allowed['list/definition'] = false;
+		$texy->allowed['phrase/em-alt'] = false;
+		$texy->allowed['longwords'] = false;
 		$texy->registerBlockPattern( // highlight <code>, <pre>
 			function($parser, $matches, $name) use ($fshl) {
 				$content = $matches[1] === 'code' ? $fshl->highlightString('PHP', $matches[2]) : htmlSpecialChars($matches[2]);
@@ -475,7 +475,7 @@ class Generator extends Nette\Object
 			$res = '';
 			foreach (explode('|', $names) as $name) {
 				$class = $template->resolveType($name, $namespace);
-				$res .= $class !== NULL ? sprintf('<a href="%s">%s</a>', $template->classLink($class), $template->escapeHtml($class)) : $template->escapeHtml(ltrim($name, '\\'));
+				$res .= $class !== null ? sprintf('<a href="%s">%s</a>', $template->classLink($class), $template->escapeHtml($class)) : $template->escapeHtml(ltrim($name, '\\'));
 				$res .= '|';
 			}
 			return rtrim($res, '|') . ' ' . $template->escapeHtml($label);
@@ -620,7 +620,7 @@ class Generator extends Nette\Object
 	 * @param \Apigen\Reflection|IReflectionMethod|IReflectionProperty|IReflectionConstant $element
 	 * @return string
 	 */
-	public function formatSourceLink($element, $withLine = TRUE)
+	public function formatSourceLink($element, $withLine = true)
 	{
 		if (!isset($this->config['filenames']['source'])) {
 			throw new Exception('Source output filename not defined.', Exception::INVALID_CONFIG);
@@ -670,13 +670,13 @@ class Generator extends Nette\Object
 	 * @param string Namespace name
 	 * @return string
 	 */
-	public function resolveType($type, $namespace = NULL)
+	public function resolveType($type, $namespace = null)
 	{
 		if (substr($type, 0, 1) === '\\') {
 			$namespace = '';
 			$type = substr($type, 1);
 		}
-		return isset($this->classes["$namespace\\$type"]) ? "$namespace\\$type" : (isset($this->classes[$type]) ? $type : NULL);
+		return isset($this->classes["$namespace\\$type"]) ? "$namespace\\$type" : (isset($this->classes[$type]) ? $type : null);
 	}
 
 	/**
@@ -755,7 +755,7 @@ class Generator extends Nette\Object
 	 */
 	public static function forceDir($path)
 	{
-		@mkdir(dirname($path), 0755, TRUE);
+		@mkdir(dirname($path), 0755, true);
 		return $path;
 	}
 }

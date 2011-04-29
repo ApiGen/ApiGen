@@ -188,13 +188,13 @@ class Reflection
 	 */
 	public function getDirectSubclasses()
 	{
-		$that = $this->name;
-		return array_filter($this->generator->getClasses(), function(Reflection $class) use($that) {
-			if (!$class->isSubclassOf($that)) {
+		$name = $this->name;
+		return array_filter($this->generator->getClasses(), function(Reflection $class) use($name) {
+			if (!$class->isSubclassOf($name)) {
 				return false;
 			}
 
-			return null === $class->getParentClassName() || !$class->getParentClass()->isSubClassOf($that);
+			return null === $class->getParentClassName() || !$class->getParentClass()->isSubClassOf($name);
 		});
 	}
 
@@ -205,13 +205,13 @@ class Reflection
 	 */
 	public function getIndirectSubclasses()
 	{
-		$that = $this->name;
-		return array_filter($this->generator->getClasses(), function(Reflection $class) use($that) {
-			if (!$class->isSubclassOf($that)) {
+		$name = $this->name;
+		return array_filter($this->generator->getClasses(), function(Reflection $class) use($name) {
+			if (!$class->isSubclassOf($name)) {
 				return false;
 			}
 
-			return null !== $class->getParentClassName() && $class->getParentClass()->isSubClassOf($that);
+			return null !== $class->getParentClassName() && $class->getParentClass()->isSubClassOf($name);
 		});
 	}
 
@@ -226,13 +226,13 @@ class Reflection
 			return array();
 		}
 
-		$that = $this->name;
-		return array_filter($this->generator->getClasses(), function(Reflection $class) use($that) {
-			if (!$class->implementsInterface($that)) {
+		$name = $this->name;
+		return array_filter($this->generator->getClasses(), function(Reflection $class) use($name) {
+			if (!$class->implementsInterface($name)) {
 				return false;
 			}
 
-			return null === $class->getParentClassName() || !$class->getParentClass()->implementsInterface($that);
+			return null === $class->getParentClassName() || !$class->getParentClass()->implementsInterface($name);
 		});
 	}
 
@@ -247,13 +247,13 @@ class Reflection
 			return array();
 		}
 
-		$that = $this->name;
-		return array_filter($this->generator->getClasses(), function(Reflection $class) use($that) {
-			if (!$class->implementsInterface($that)) {
+		$name = $this->name;
+		return array_filter($this->generator->getClasses(), function(Reflection $class) use($name) {
+			if (!$class->implementsInterface($name)) {
 				return false;
 			}
 
-			return null !== $class->getParentClassName() && $class->getParentClass()->implementsInterface($that);
+			return null !== $class->getParentClassName() && $class->getParentClass()->implementsInterface($name);
 		});
 	}
 
