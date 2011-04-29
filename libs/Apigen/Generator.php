@@ -324,6 +324,9 @@ class Generator extends Nette\Object
 			$template->tree = array($class);
 			while ($parent = $template->tree[0]->getParentClass()) {
 				array_unshift($template->tree, $parent);
+				if (!$parent->isTokenized() && !$parent->isInternal()) {
+					break;
+				}
 			}
 			$template->classes = !$class->isInterface() && !$class->isException() ? array($class) : array();
 			$template->interfaces = $class->isInterface() && !$class->isException() ? array($class) : array();
