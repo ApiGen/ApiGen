@@ -38,6 +38,10 @@ class Config
 	 * @var array
 	 */
 	private static $defaultConfig = array(
+		'config' => '',
+		'source' => '',
+		'destination' => '',
+		'exclude' => array(),
 		'title' => '',
 		'baseUrl' => '',
 		'googleCse' => '',
@@ -65,6 +69,7 @@ class Config
 	 */
 	private static $arrayOptions = array(
 		'source' => array(),
+		'exclude' => array(),
 		'accessLevels' => array('public', 'protected', 'private')
 	);
 
@@ -77,6 +82,7 @@ class Config
 		'config',
 		'source',
 		'destination',
+		'exclude',
 		'templateDir'
 	);
 

@@ -77,9 +77,19 @@ class Generator extends Nette\Object
 		$files = array();
 		foreach ($this->config->source as $source) {
 			foreach (new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($source)) as $entry) {
-				if ($entry->isFile() && preg_match('~\\.php$~i', $entry->getFilename())) {
-					$files[] = $entry->getPathName();
+				if (!$entry->isFile()) {
+					continue;
 				}
+				if (!preg_match('~\\.php$~i', $entry->getFilename())) {
+					continue;
+				}
+				foreach ($this->config->exclude as $exclude) {
+					if (0 === strpos($entry->getPathName(), $exclude . DIRECTORY_SEPARATOR)) {
+						continue 2;
+					}
+				}
+
+				$files[] = $entry->getPathName();
 			}
 		}
 

@@ -40,6 +40,7 @@ try {
 		'config:',
 		'source:',
 		'destination:',
+		'exclude:',
 		'title:',
 		'base-url:',
 		'google-cse:',
@@ -56,9 +57,14 @@ try {
 
 	// Scan
 	if (count($config->source) > 1) {
-		printf("Scanning directories\n %s\n", implode("\n  ", $config->source));
+		printf("Scanning directories\n %s\n", implode("\n ", $config->source));
 	} else {
 		printf("Scanning directory %s\n", $config->source[0]);
+	}
+	if (count($config->exclude) > 1) {
+		printf("Excluding directories\n %s\n", implode("\n ", $config->exclude));
+	} else {
+		printf("Excluding directory %s\n", $config->exclude[0]);
 	}
 	list($count, $countInternal) = $generator->parse();
 	printf("Found %d classes and other %d used internal classes\n", $count, $countInternal);
@@ -90,8 +96,9 @@ Usage:
 
 Options:
 	--config        <path>  Config file
-	--source        <path>  Name of a source directory to parse (can be used multiple times to specify multiple directories)
+	--source        <path>  Source directory to parse (can be used multiple times to specify multiple directories)
 	--destination   <path>  Directory where to save the generated documentation
+	--exclude       <path>  Exclude directory from parsing (can be used multiple times to specify multiple directories)
 	--title         <value> Title of generated documentation
 	--base-url      <value> Documentation base URI
 	--google-cse    <value> Google Custom Search ID

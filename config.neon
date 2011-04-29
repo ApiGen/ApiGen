@@ -1,5 +1,6 @@
 source: ''
 destination: ''
+exclude: ''
 title: ''
 baseUrl: ''
 googleCse: ''

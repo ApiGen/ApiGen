@@ -1,5 +1,6 @@
 source: ''
 destination: ''
+exclude: ''
 title: 'Jyxo PHP Library'
 baseUrl: 'http://jyxo.github.com/php'
 googleCse: '004718174178290363576:f23xklsezl8'
