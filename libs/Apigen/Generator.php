@@ -14,10 +14,9 @@
 namespace Apigen;
 
 use Nette;
-use Apigen\Reflection as ApiReflection, Apigen\Exception, Apigen\Config;
-use TokenReflection\Broker, Apigen\Backend;
+use Apigen\Reflection as ApiReflection, Apigen\Exception, Apigen\Config, Apigen\Template, Apigen\Backend;
+use TokenReflection\Broker;
 use TokenReflection\IReflectionClass as ReflectionClass, TokenReflection\IReflectionProperty as ReflectionProperty, TokenReflection\IReflectionMethod as ReflectionMethod, TokenReflection\IReflectionConstant as ReflectionConstant;
-use TokenReflection\ReflectionAnnotation, TokenReflection\Dummy\ReflectionClass as DummyClass;
 
 
 /**
@@ -236,7 +235,7 @@ class Generator extends Nette\Object
 			);
 		}
 
-		$template = $this->createTemplate();
+		$template = new Template($this);
 		$template->version = self::VERSION;
 		foreach ($this->config as $key => $value) {
 			$template->$key = $value;
@@ -285,7 +284,7 @@ class Generator extends Nette\Object
 			$template->exceptions = array_filter($classes, function($class) {
 				return $class->isException();
 			});
-			$template->setFile($templatePath . '/' . $this->config['templates']['namespace'])->save(self::forceDir($destination . '/' . $this->formatNamespaceLink($namespace)));
+			$template->setFile($templatePath . '/' . $this->config['templates']['namespace'])->save(self::forceDir($destination . '/' . $this->getNamespaceLink($namespace)));
 
 			$this->incrementProgressBar();
 		}
@@ -309,7 +308,7 @@ class Generator extends Nette\Object
 			$template->exceptions = array_filter($classes, function($class) {
 				return $class->isException();
 			});
-			$template->setFile($templatePath . '/' . $this->config['templates']['package'])->save(self::forceDir($destination . '/' . $this->formatPackageLink($package)));
+			$template->setFile($templatePath . '/' . $this->config['templates']['package'])->save(self::forceDir($destination . '/' . $this->getPackageLink($package)));
 
 			$this->incrementProgressBar();
 		}
@@ -361,14 +360,14 @@ class Generator extends Nette\Object
 			}
 
 			$template->class = $class;
-			$template->setFile($templatePath . '/' . $this->config['templates']['class'])->save(self::forceDir($destination . '/' . $this->formatClassLink($class)));
+			$template->setFile($templatePath . '/' . $this->config['templates']['class'])->save(self::forceDir($destination . '/' . $this->getClassLink($class)));
 
 			$this->incrementProgressBar();
 
 			// generate source codes
 			if ($class->isUserDefined() && !isset($generatedFiles[$class->getFileName()])) {
 				$template->source = $fshl->highlightString('PHP', file_get_contents($file));
-				$template->setFile($templatePath . '/' . $this->config['templates']['source'])->save(self::forceDir($destination . '/' . $this->formatSourceLink($class, false)));
+				$template->setFile($templatePath . '/' . $this->config['templates']['source'])->save(self::forceDir($destination . '/' . $this->getSourceLink($class, false)));
 				$generatedFiles[$file] = true;
 
 				$this->incrementProgressBar();
@@ -377,166 +376,12 @@ class Generator extends Nette\Object
 	}
 
 	/**
-	 * Returns a template instance with required helpers prepared.
-	 *
-	 * @return \Nette\Templates\FileTemplate
-	 */
-	private function createTemplate()
-	{
-		$template = new Nette\Templating\FileTemplate;
-		$template->setCacheStorage(new Nette\Caching\Storages\MemoryStorage);
-
-		$latte = new Nette\Latte\Engine;
-		$latte->handler->macros['try'] = '<?php try { ?>';
-		$latte->handler->macros['/try'] = '<?php } catch (\Exception $e) {} ?>';
-		$template->registerFilter($latte);
-
-		// common operations
-		$template->registerHelperLoader('Nette\Templating\DefaultHelpers::loader');
-		$template->registerHelper('ucfirst', 'ucfirst');
-		$template->registerHelper('values', 'array_values');
-		$template->registerHelper('map', function($arr, $callback) {
-			return array_map(create_function('$value', $callback), $arr);
-		});
-		$template->registerHelper('replaceRE', 'Nette\StringUtils::replace');
-
-		// PHP source highlight
-		$fshl = new \fshlParser('HTML_UTF8');
-		$template->registerHelper('highlightPHP', function($source) use ($fshl) {
-			return $fshl->highlightString('PHP', (string) $source);
-		});
-
-		// links
-		$template->registerHelper('packageLink', callback($this, 'formatPackageLink'));
-		$template->registerHelper('namespaceLink', callback($this, 'formatNamespaceLink'));
-		$template->registerHelper('classLink', callback($this, 'formatClassLink'));
-		$template->registerHelper('methodLink', callback($this, 'formatMethodLink'));
-		$template->registerHelper('propertyLink', callback($this, 'formatPropertyLink'));
-		$template->registerHelper('constantLink', callback($this, 'formatConstantLink'));
-		$template->registerHelper('sourceLink', callback($this, 'formatSourceLink'));
-
-		// types
-		$that = $this;
-		$template->registerHelper('getTypes', function($element, $position = null) use ($that) {
-			$annotation = array();
-			if ($element instanceof ReflectionProperty) {
-				$annotation = $element->getAnnotation('var');
-				if (null === $annotation && !$element->isTokenized()) {
-					$value = $element->getDefaultValue();
-					if (null !== $value) {
-						$annotation = gettype($value);
-					}
-				}
-			} elseif ($element instanceof ReflectionMethod) {
-				$annotation = $position === null ? $element->getAnnotation('return') : @$element->annotations['param'][$position];
-			}
-
-			$namespace = $element->getDeclaringClass()->getNamespaceName();
-			$types = array();
-			foreach (preg_replace('#\s.*#', '', (array) $annotation) as $s) {
-				foreach (explode('|', $s) as $name) {
-					$class = $that->resolveType($name, $namespace);
-					$types[] = (object) array('name' => $class ?: ltrim($name, '\\'), 'class' => $class);
-				}
-			}
-			return $types;
-		});
-		$template->registerHelper('resolveType', callback($this, 'resolveType'));
-		$template->registerHelper('getType', function($variable) {
-			return is_object($variable) ? get_class($variable) : gettype($variable);
-		});
-
-		// docblock
-		$texy = new \Texy;
-		$texy->mergeLines = false;
-		$texy->allowedTags = \Texy::NONE;
-		$texy->allowed['list/definition'] = false;
-		$texy->allowed['phrase/em-alt'] = false;
-		$texy->allowed['longwords'] = false;
-		$texy->registerBlockPattern( // highlight <code>, <pre>
-			function($parser, $matches, $name) use ($fshl) {
-				$content = $matches[1] === 'code' ? $fshl->highlightString('PHP', $matches[2]) : htmlSpecialChars($matches[2]);
-				$content = $parser->getTexy()->protect($content, \Texy::CONTENT_BLOCK);
-				return \TexyHtml::el('pre', $content);
-			},
-			'#<(code|pre)>(.+?)</\1>#s',
-			'codeBlockSyntax'
-		);
-
-		// Documentation formatting
-		$template->registerHelper('docline', function($text) use ($texy) {
-			return $texy->processLine($text);
-		});
-		$template->registerHelper('docblock', function($text) use ($texy) {
-			return $texy->process($text);
-		});
-		$template->registerHelper('doclabel', function($doc, $namespace) use ($template) {
-			@list($names, $label) = preg_split('#\s+#', $doc, 2);
-			$res = '';
-			foreach (explode('|', $names) as $name) {
-				$class = $template->resolveType($name, $namespace);
-				$res .= $class !== null ? sprintf('<a href="%s">%s</a>', $template->classLink($class), $template->escapeHtml($class)) : $template->escapeHtml(ltrim($name, '\\'));
-				$res .= '|';
-			}
-			return rtrim($res, '|') . ' ' . $template->escapeHtml($label);
-		});
-
-		// Docblock descriptions
-		$template->registerHelper('longDescription', function($element, $shortIfNone = false) {
-			$short = $element->getAnnotation(ReflectionAnnotation::SHORT_DESCRIPTION);
-			$long = $element->getAnnotation(ReflectionAnnotation::LONG_DESCRIPTION);
-
-			if ($long) {
-				$short .= "\n\n" . $long;
-			}
-
-			return $short;
-		});
-		$template->registerHelper('shortDescription', function($element) {
-			return $element->getAnnotation(ReflectionAnnotation::SHORT_DESCRIPTION);
-		});
-
-		// static files versioning
-		$destination = $this->config['destination'];
-		$template->registerHelper('staticFile', function($name, $line = null) use ($destination) {
-			static $versions = array();
-
-			$filename = $destination . '/' . $name;
-			if (!isset($versions[$filename]) && file_exists($filename)) {
-				$versions[$filename] = sprintf('%u', crc32(file_get_contents($filename)));
-			}
-			if (isset($versions[$filename])) {
-				$name .= '?' . $versions[$filename];
-			}
-			return $name;
-		});
-
-		// individual annotations processing
-		$template->registerHelper('annotation', function($value, $name, ApiReflection $parent) use($that, $template) {
-			switch ($name) {
-				case 'package':
-					return '<a href="' . $template->packageLink($value) . '">' . $template->escapeHtml($value) . '</a>';
-					break;
-				case 'see':
-					$link = $that->resolveClassLink($value, $parent);
-					if (null !== $link) {
-						return '<a href="' . $link . '">' . $template->escapeHtml($value) . '</a>';
-					}
-				default:
-					return $template->docline($value);
-			}
-		});
-
-		return $template;
-	}
-
-	/**
-	 * Generates a link to a namespace summary file.
+	 * Returns a link to a namespace summary file.
 	 *
 	 * @param  string|\Apigen\Reflection|IReflectionNamespace
 	 * @return string
 	 */
-	public function formatNamespaceLink($class)
+	public function getNamespaceLink($class)
 	{
 		if (!isset($this->config['filenames']['namespace'])) {
 			throw new Exception('Namespace output filename not defined.', Exception::INVALID_CONFIG);
@@ -547,12 +392,12 @@ class Generator extends Nette\Object
 	}
 
 	/**
-	 * Generates a link to a package summary file.
+	 * Returns a link to a package summary file.
 	 *
-	 * @param  string|\Apigen\Reflection
+	 * @param string|\Apigen\Reflection
 	 * @return string
 	 */
-	public function formatPackageLink($class)
+	public function getPackageLink($class)
 	{
 		if (!isset($this->config['filenames']['package'])) {
 			throw new Exception('Package output filename not defined.', Exception::INVALID_CONFIG);
@@ -563,12 +408,12 @@ class Generator extends Nette\Object
 	}
 
 	/**
-	 * Generates a link to class summary file.
+	 * Returns a link to class summary file.
 	 *
-	 * @param  string|\Apigen\Reflection $class
+	 * @param string|\Apigen\Reflection $class
 	 * @return string
 	 */
-	public function formatClassLink($class)
+	public function getClassLink($class)
 	{
 		if (!isset($this->config['filenames']['class'])) {
 			throw new Exception('Class output filename not defined.', Exception::INVALID_CONFIG);
@@ -582,45 +427,45 @@ class Generator extends Nette\Object
 	}
 
 	/**
-	 * Generates a link to method in class summary file.
+	 * Returns a link to method in class summary file.
 	 *
 	 * @param IReflectionMethod $method
 	 * @return string
 	 */
-	public function formatMethodLink(ReflectionMethod $method)
+	public function getMethodLink(ReflectionMethod $method)
 	{
-		return $this->formatClassLink($method->getDeclaringClassName()) . '#_' . $method->getName();
+		return $this->getClassLink($method->getDeclaringClassName()) . '#_' . $method->getName();
 	}
 
 	/**
-	 * Generates a link to property in class summary file.
+	 * Returns a link to property in class summary file.
 	 *
 	 * @param IReflectionProperty $property
 	 * @return string
 	 */
-	public function formatPropertyLink(ReflectionProperty $property)
+	public function getPropertyLink(ReflectionProperty $property)
 	{
-		return $this->formatClassLink($property->getDeclaringClassName()) . '#$' . $property->getName();
+		return $this->getClassLink($property->getDeclaringClassName()) . '#$' . $property->getName();
 	}
 
 	/**
-	 * Generates a link to constant in class summary file.
+	 * Returns a link to constant in class summary file.
 	 *
 	 * @param IReflectionConstant $constant
 	 * @return string
 	 */
-	public function formatConstantLink(ReflectionConstant $constant)
+	public function getConstantLink(ReflectionConstant $constant)
 	{
-		return $this->formatClassLink($constant->getDeclaringClassName()) . '#' . $constant->getName();
+		return $this->getClassLink($constant->getDeclaringClassName()) . '#' . $constant->getName();
 	}
 
 	/**
-	 * Generates a link to a class source code file.
+	 * Returns a link to a class source code file.
 	 *
 	 * @param \Apigen\Reflection|IReflectionMethod|IReflectionProperty|IReflectionConstant $element
 	 * @return string
 	 */
-	public function formatSourceLink($element, $withLine = true)
+	public function getSourceLink($element, $withLine = true)
 	{
 		if (!isset($this->config['filenames']['source'])) {
 			throw new Exception('Source output filename not defined.', Exception::INVALID_CONFIG);
@@ -661,64 +506,6 @@ class Generator extends Nette\Object
 
 			return sprintf($this->config['filenames']['source'], preg_replace('#[^a-z0-9_]#i', '.', $file)) . (isset($line) ? "#$line" : '');
 		}
-	}
-
-	/**
-	 * Tries to resolve type as class or interface name.
-	 *
-	 * @param string Data type description
-	 * @param string Namespace name
-	 * @return string
-	 */
-	public function resolveType($type, $namespace = null)
-	{
-		if (substr($type, 0, 1) === '\\') {
-			$namespace = '';
-			$type = substr($type, 1);
-		}
-		return isset($this->classes["$namespace\\$type"]) ? "$namespace\\$type" : (isset($this->classes[$type]) ? $type : null);
-	}
-
-	/**
-	 * Tries to parse a link to a class/method/property and returns the appropriate link if successful.
-	 *
-	 * @param string $link Link definition
-	 * @param \Apigen\Reflection $context Link context
-	 * @return string|null
-	 */
-	public function resolveClassLink($link, ApiReflection $context)
-	{
-		if (($pos = strpos($link, '::')) || ($pos = strpos($link, '->'))) {
-			// Class::something or Class->something
-			$className = $this->resolveType(substr($link, 0, $pos), $context->getNamespaceName());
-			$link = substr($link, $pos + 2);
-
-			if (null === $className) {
-				return null;
-			} else {
-				$context = $this->classes[$className];
-			}
-		} elseif (null !== ($className = $this->resolveType($link, $context->getNamespaceName()))) {
-			// Class name
-			return $this->formatClassLink($this->classes[$className]);
-		}
-
-		$properties = $context->getProperties();
-		if (isset($properties[$link]) || ('$' === $link{0} && $context->hasProperty(substr($link, 1)))) {
-			// Class property
-			return $this->formatPropertyLink($properties['$' === $link{0} ? substr($link, 1) : $link]);
-		}
-
-		$methods = $context->getMethods();
-		if (isset($methods[$link]) || ('()' === substr($link, -2) && $context->hasMethod(substr($link, 0, -2)))) {
-
-			// Class property
-			return $this->formatMethodLink($methods['()' === substr($link, -2) ? substr($link, 0, -2) : $link]);
-		}
-
-		$constants = $context->getConstants();
-		// Class constant
-		return isset($constants[$link]) ? $this->formatConstantLink($constants[$link]) : null;
 	}
 
 	/**

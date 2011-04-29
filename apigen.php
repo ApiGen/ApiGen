@@ -22,6 +22,7 @@ require __DIR__ . '/libs/texy/texy.min.php';
 require __DIR__ . '/libs/TokenReflection/tokenreflection.min.php';
 require __DIR__ . '/libs/Apigen/Exception.php';
 require __DIR__ . '/libs/Apigen/Config.php';
+require __DIR__ . '/libs/Apigen/Template.php';
 require __DIR__ . '/libs/Apigen/Reflection.php';
 require __DIR__ . '/libs/Apigen/Backend.php';
 require __DIR__ . '/libs/Apigen/Generator.php';
