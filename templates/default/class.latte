@@ -127,6 +127,15 @@
 					</div>
 				{/if}
 
+				{if isset($annotations['see'])}
+					<h4>References</h4>
+					<div class="smallList">
+					{foreach $annotations['see'] as $item}
+						{!$item|annotation:"see":$class}<br>
+					{/foreach}
+					</div>
+				{/if}
+
 				{try}
 				{var $prototype = $method->prototype}
 				{if $prototype->declaringClass->interface}
