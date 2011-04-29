@@ -85,7 +85,7 @@ try {
 	// Help only for invalid configuration
 	if ($e instanceof Apigen\Exception && Apigen\Exception::INVALID_CONFIG === $e->getCode()) { ?>
 Usage:
-	apigen --config <path>
+	apigen --config <path> [options]
 	apigen --source <path> --destination <path> [options]
 
 Options:

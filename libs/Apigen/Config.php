@@ -71,38 +71,39 @@ class Config
 	 */
 	private function parse()
 	{
+		if (!isset($this->options['config']) && !isset($this->options['source'], $this->options['destination'])) {
+			throw new Exception('Missing required options', Exception::INVALID_CONFIG);
+		}
+
 		$this->config = self::$defaultConfig;
 
+		// Config file
 		if (isset($this->options['config'])) {
-			// Config file
 			if (!is_file($this->options['config'])) {
 				throw new Exception(sprintf('Config file %s doesn\'t exist', $this->options['config']), Exception::INVALID_CONFIG);
 			}
 
 			$this->config = array_merge($this->config, Nette\Utils\Neon::decode(file_get_contents($this->options['config'])));
-		} elseif (isset($this->options['source'], $this->options['destination'])) {
-			// Parse options
-			foreach ($this->options as $key => $value) {
-				$key = preg_replace_callback('#-([a-z])#', function($matches) {
-					return ucfirst($matches[1]);
-				}, $key);
-
-				$this->config[$key] = $value;
-			}
-
-			array_walk_recursive($this->config, function(&$value) {
-				$lvalue = strtolower($value);
-
-				if ('on' === $lvalue || 'yes' === $lvalue) {
-					$value = true;
-				} elseif ('off' === $lvalue || 'no' === $lvalue) {
-					$value = false;
-				}
-			});
-
-		} else {
-			throw new Exception('Missing required options', Exception::INVALID_CONFIG);
 		}
+
+		// Parse options
+		foreach ($this->options as $key => $value) {
+			$key = preg_replace_callback('#-([a-z])#', function($matches) {
+				return ucfirst($matches[1]);
+			}, $key);
+
+			$this->config[$key] = $value;
+		}
+
+		array_walk_recursive($this->config, function(&$value) {
+			$lvalue = strtolower($value);
+
+			if ('on' === $lvalue || 'yes' === $lvalue) {
+				$value = true;
+			} elseif ('off' === $lvalue || 'no' === $lvalue) {
+				$value = false;
+			}
+		});
 
 		return $this;
 	}
