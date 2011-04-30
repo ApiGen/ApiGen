@@ -16,7 +16,7 @@ namespace Apigen;
 use Nette;
 use Apigen\Reflection as ApiReflection, Apigen\Generator;
 use TokenReflection\IReflectionClass as ReflectionClass, TokenReflection\IReflectionProperty as ReflectionProperty, TokenReflection\IReflectionMethod as ReflectionMethod, TokenReflection\IReflectionConstant as ReflectionConstant;
-use TokenReflection\ReflectionAnnotation;
+use TokenReflection\ReflectionAnnotation, TokenReflection\ReflectionBase;
 
 class Template extends Nette\Templating\FileTemplate
 {
@@ -227,32 +227,43 @@ class Template extends Nette\Templating\FileTemplate
 		if (($pos = strpos($link, '::')) || ($pos = strpos($link, '->'))) {
 			// Class::something or Class->something
 			$className = $this->resolveType(substr($link, 0, $pos), $context->getNamespaceName());
-			$link = substr($link, $pos + 2);
+
+			if (null === $className) {
+				$className = $this->resolveType(ReflectionBase::resolveClassFQN(substr($link, 0, $pos), $context->getNamespaceAliases(), $context->getNamespaceName()));
+			}
 
 			if (null === $className) {
 				return null;
 			} else {
 				$context = $this->generator->classes[$className];
 			}
-		} elseif (null !== ($className = $this->resolveType($link, $context->getNamespaceName()))) {
+
+			$link = substr($link, $pos + 2);
+		} elseif (null !== ($className = $this->resolveType(ReflectionBase::resolveClassFQN($link, $context->getNamespaceAliases(), $context->getNamespaceName()), $context->getNamespaceName()))
+			|| null !== ($className = $this->resolveType($link, $context->getNamespaceName()))) {
 			// Class
 			return $this->generator->classes[$className];
 		}
 
-		$properties = $context->getProperties();
-		if (isset($properties[$link]) || ('$' === $link{0} && $context->hasProperty(substr($link, 1)))) {
-			// Class property
-			return $properties['$' === $link{0} ? substr($link, 1) : $link];
+		// Class properties
+		if ($context->hasProperty($link)) {
+			return $context->getProperty($link);
+		} elseif ('$' === $link{0} && $context->hasProperty(substr($link, 1))) {
+			return $context->getProperty(substr($link, 1));
 		}
 
-		$methods = $context->getMethods();
-		if (isset($methods[$link]) || ('()' === substr($link, -2) && $context->hasMethod(substr($link, 0, -2)))) {
-			// Class method
-			return $methods['()' === substr($link, -2) ? substr($link, 0, -2) : $link];
+		// Class method
+		if ($context->hasMethod($link)) {
+			return $context->getMethod($link);
+		} elseif (('()' === substr($link, -2) && $context->hasMethod(substr($link, 0, -2)))) {
+			return $context->getMethod(substr($link, 0, -2));
 		}
 
-		$constants = $context->getConstants();
-		// Class constant
-		return isset($constants[$link]) ? $constants[$link] : null;
+		// Class constants
+		if ($context->hasConstant($link)) {
+			return $context->getConstantReflection($link);
+		}
+
+		return null;
 	}
 }
