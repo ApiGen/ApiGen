@@ -45,14 +45,22 @@ class Reflection
 	private $generator;
 
 	/**
+	 * Custom reflection data.
+	 *
+	 * @var array
+	 */
+	private $customData = array();
+
+	/**
 	 * Constructor.
 	 *
 	 * Sets the inspected class reflection.
 	 *
 	 * @param \TokenReflection\IReflectionClass $reflection Inspected class reflection
 	 * @param \Apigen\Generator $generator Apigen generator
+	 * @param array $customData Custom reflection data
 	 */
-	public function __construct(IReflectionClass $reflection, Generator $generator)
+	public function __construct(IReflectionClass $reflection, Generator $generator, array $customData = array())
 	{
 		if (empty(self::$methods)) {
 			self::$methods = array_flip(get_class_methods($this));
@@ -67,18 +75,24 @@ class Reflection
 
 		$this->reflection = $reflection;
 		$this->generator = $generator;
+		$this->customData = $customData;
 	}
 
 	/**
-	 * Magic __get method.
+	 * Retrieves a property or method value.
 	 *
-	 * First tries the envelope object's methods, than the inspected class reflection.
+	 * First tries the envelope object's property storage, then its methods
+	 * and finally the inspected class reflection.
 	 *
 	 * @param string $name Attribute name
 	 * @return mixed
 	 */
 	public function __get($name)
 	{
+		if (isset($this->customData[$name])) {
+			return $this->customData[$name];
+		}
+
 		$key = ucfirst($name);
 		if (isset(self::$methods['get' . $key])) {
 			return $this->{'get' . $key}();
@@ -87,6 +101,35 @@ class Reflection
 		} else {
 			return $this->reflection->__get($name);
 		}
+	}
+
+	/**
+	 * Checks if the given property exists.
+	 *
+	 * First tries the envelope object's property storage, then its methods
+	 * and finally the inspected class reflection.
+	 *
+	 * @param mixed $name Property name
+	 */
+	public function __isset($name)
+	{
+		if (isset($this->customData[$name])) {
+			return true;
+		}
+
+		$key = ucfirst($name);
+		return isset(self::$methods['get' . $key]) || isset(self::$methods['is' . $key]) || $this->reflection->__isset($name);
+	}
+
+	/**
+	 * Stores a value to the reflection custom values storage.
+	 *
+	 * @param mixed $name Property name
+	 * @param mixed $value Property value
+	 */
+	public function __set($name, $value)
+	{
+		$this->customData[$name] = $value;
 	}
 
 	/**
@@ -130,7 +173,7 @@ class Reflection
 	{
 		$classes = $this->generator->getClasses();
 		if ($class = $this->reflection->getParentClassName()) {
-			return isset($classes[$class]) ? $classes[$class] : new self($this->reflection->getParentClass(), $this->generator);
+			return isset($classes[$class]) ? $classes[$class] : new self($this->reflection->getParentClass(), $this->generator, array('library' => false));
 		}
 
 		return $class;
@@ -147,7 +190,7 @@ class Reflection
 		$generator = $this->generator;
 
 		return array_map(function($class) use ($classes, $generator) {
-			return isset($classes[$class->getName()]) ? $classes[$class->getName()] : new Reflection($class, $generator);
+			return isset($classes[$class->getName()]) ? $classes[$class->getName()] : new Reflection($class, $generator, array('library' => false));
 		}, $this->reflection->getParentClasses());
 	}
 
@@ -162,7 +205,7 @@ class Reflection
 		$generator = $this->generator;
 
 		return array_map(function($class) use ($classes, $generator) {
-			return isset($classes[$class->getName()]) ? $classes[$class->getName()] : new Reflection($class, $generator);
+			return isset($classes[$class->getName()]) ? $classes[$class->getName()] : new Reflection($class, $generator, array('library' => false));
 		}, $this->reflection->getInterfaces());
 	}
 
@@ -177,8 +220,8 @@ class Reflection
 		$generator = $this->generator;
 
 		return array_map(function($class) use ($classes, $generator) {
-			return isset($classes[$class->getName()]) ? $classes[$class->getName()] : new Reflection($class, $generator);
-		}, $this->reflection->getOwnInterfaces(false));
+			return isset($classes[$class->getName()]) ? $classes[$class->getName()] : new Reflection($class, $generator, array('library' => false));
+		}, $this->reflection->getOwnInterfaces());
 	}
 
 	/**
@@ -190,7 +233,7 @@ class Reflection
 	{
 		$name = $this->name;
 		return array_filter($this->generator->getClasses(), function(Reflection $class) use($name) {
-			if (!$class->isSubclassOf($name)) {
+			if ($class->library || !$class->isSubclassOf($name)) {
 				return false;
 			}
 
@@ -207,7 +250,7 @@ class Reflection
 	{
 		$name = $this->name;
 		return array_filter($this->generator->getClasses(), function(Reflection $class) use($name) {
-			if (!$class->isSubclassOf($name)) {
+			if ($class->library || !$class->isSubclassOf($name)) {
 				return false;
 			}
 
@@ -228,7 +271,7 @@ class Reflection
 
 		$name = $this->name;
 		return array_filter($this->generator->getClasses(), function(Reflection $class) use($name) {
-			if (!$class->implementsInterface($name)) {
+			if ($class->library || !$class->implementsInterface($name)) {
 				return false;
 			}
 
@@ -249,7 +292,7 @@ class Reflection
 
 		$name = $this->name;
 		return array_filter($this->generator->getClasses(), function(Reflection $class) use($name) {
-			if (!$class->implementsInterface($name)) {
+			if ($class->library || !$class->implementsInterface($name)) {
 				return false;
 			}
 
@@ -278,7 +321,10 @@ class Reflection
 
 			if (!empty($inheritedMethods)) {
 				ksort($inheritedMethods);
-				$methods[$class->getName()] = $inheritedMethods;
+				$methods[$class->getName()] = array(
+					'class' => $class,
+					'methods' => $inheritedMethods
+				);
 			}
 		}
 
@@ -306,7 +352,10 @@ class Reflection
 
 			if (!empty($inheritedProperties)) {
 				ksort($inheritedProperties);
-				$properties[$class->getName()] = $inheritedProperties;
+				$properties[$class->getName()] = array(
+					'class' => $class,
+					'properties' => $inheritedProperties
+				);
 			}
 		}
 
@@ -325,7 +374,10 @@ class Reflection
 				function(Reflection $class) {
 					$reflections = $class->getOwnConstantReflections();
 					ksort($reflections);
-					return $reflections;
+					return empty($reflections) ? null : array(
+						'class' => $class,
+						'constants' => $reflections
+					);
 				},
 				$this->getParentClasses()
 			)
