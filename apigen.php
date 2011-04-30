@@ -39,6 +39,7 @@ try {
 	$options = getopt('', array(
 		'config:',
 		'source:',
+		'library:',
 		'destination:',
 		'exclude:',
 		'title:',
@@ -62,6 +63,11 @@ try {
 		printf("Scanning directories\n %s\n", implode("\n ", $config->source));
 	} else {
 		printf("Scanning directory %s\n", $config->source[0]);
+	}
+	if (count($config->library) > 1) {
+		printf("With libraries\n %s\n", implode("\n ", $config->library));
+	} elseif (!empty($config->library)) {
+		printf("With library %s\n", $config->library[0]);
 	}
 	if (count($config->exclude) > 1) {
 		printf("Excluding directories\n %s\n", implode("\n ", $config->exclude));
@@ -108,6 +114,7 @@ Usage:
 Options:
 	--config        <path>  Config file
 	--source        <path>  Source directory to parse (can be used multiple times to specify multiple directories)
+	--library       <path>  Additional libraries directory to parse (can be used multiple times to specify multiple directories)
 	--destination   <path>  Directory where to save the generated documentation
 	--exclude       <path>  Exclude directory from parsing (can be used multiple times to specify multiple directories)
 	--title         <value> Title of generated documentation

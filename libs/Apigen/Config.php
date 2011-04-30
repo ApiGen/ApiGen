@@ -40,6 +40,7 @@ class Config
 	private static $defaultConfig = array(
 		'config' => '',
 		'source' => array(),
+		'library' => array(),
 		'destination' => '',
 		'exclude' => array(),
 		'title' => '',
@@ -61,6 +62,7 @@ class Config
 	private static $pathOptions = array(
 		'config',
 		'source',
+		'library',
 		'destination',
 		'exclude',
 		'templateDir'
@@ -202,6 +204,11 @@ class Config
 				if ($source !== $source2 && 0 === strpos($source, $source2)) {
 					throw new Exception(sprintf('Source directories %s and %s overlap', $source, $source2), Exception::INVALID_CONFIG);
 				}
+			}
+		}
+		foreach ($this->config['library'] as $library) {
+			if (!is_dir($library)) {
+				throw new Exception(sprintf('Library directory %s doesn\'t exist', $library), Exception::INVALID_CONFIG);
 			}
 		}
 
