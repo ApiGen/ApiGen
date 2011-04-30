@@ -83,7 +83,8 @@ class Template extends Nette\Templating\FileTemplate
 		$texy->allowed['list/definition'] = FALSE;
 		$texy->allowed['phrase/em-alt'] = FALSE;
 		$texy->allowed['longwords'] = FALSE;
-		$texy->registerBlockPattern( // highlight <code>, <pre>
+		// highlighting <code>, <pre>
+		$texy->registerBlockPattern(
 			function($parser, $matches, $name) use ($fshl) {
 				$content = $matches[1] === 'code' ? $fshl->highlightString('PHP', $matches[2]) : htmlSpecialChars($matches[2]);
 				$content = $parser->getTexy()->protect($content, \Texy::CONTENT_BLOCK);
@@ -91,6 +92,15 @@ class Template extends Nette\Templating\FileTemplate
 			},
 			'#<(code|pre)>(.+?)</\1>#s',
 			'codeBlockSyntax'
+		);
+		// {@link ...} resolving
+		$texy->registerLinePattern(
+			function($parser, $matches) use ($that) {
+				$link = $that->resolveClassLink($matches[1], $that->class);
+				return null === $link ? $matches[0] : $parser->getTexy()->protect($link, \Texy::CONTENT_BLOCK);
+			},
+			'~{@link\\s+([^}]+)}~',
+			'resolveLinks'
 		);
 
 		// Documentation formatting
@@ -133,28 +143,13 @@ class Template extends Nette\Templating\FileTemplate
 					return '<a href="' . $that->packageLink($value) . '">' . $that->escapeHtml($value) . '</a>';
 					break;
 				case 'see':
-					$reflection = $that->resolveClassLink($value, $parent);
-					if ($reflection instanceof ApiReflection) {
-						$link = $that->classLink($reflection);
-						$value = $reflection->getName();
-					} elseif ($reflection instanceof ReflectionProperty) {
-						$link = $that->propertyLink($reflection);
-						$value = $reflection->getDeclaringClassName() . '::$' . $reflection->getName();
-					} elseif ($reflection instanceof ReflectionMethod) {
-						$link = $that->methodLink($reflection);
-						$value = $reflection->getDeclaringClassName() . '::' . $reflection->getName() . '()';
-					} elseif ($reflection instanceof ReflectionConstant) {
-						$link = $that->constantLink($reflection);
-						$value = $reflection->getDeclaringClassName() . '::' . $reflection->getName();
-					} else {
-						break;
-					}
-
-					return '<a href="' . $link . '">' . $that->escapeHtml($value) . '</a>';
+					return $that->resolveClassLink($value, $parent) ?: $that->docline($value);
 					break;
+				default:
+					return $that->docline($value);
 			}
 
-			return $that->docline($value);
+
 		});
 
 		// static files versioning
@@ -242,28 +237,40 @@ class Template extends Nette\Templating\FileTemplate
 		} elseif (null !== ($className = $this->resolveType(ReflectionBase::resolveClassFQN($link, $context->getNamespaceAliases(), $context->getNamespaceName()), $context->getNamespaceName()))
 			|| null !== ($className = $this->resolveType($link, $context->getNamespaceName()))) {
 			// Class
-			return $this->generator->classes[$className];
+			return '<a href="' . $this->classLink($this->generator->classes[$className]) . '">' . $this->escapeHtml($className) . '</a>';
 		}
 
-		// Class properties
 		if ($context->hasProperty($link)) {
-			return $context->getProperty($link);
+			// Class property
+			$reflection = $context->getProperty($link);
 		} elseif ('$' === $link{0} && $context->hasProperty(substr($link, 1))) {
-			return $context->getProperty(substr($link, 1));
-		}
-
-		// Class method
-		if ($context->hasMethod($link)) {
-			return $context->getMethod($link);
+			// Class $property
+			$reflection = $context->getProperty(substr($link, 1));
+		} elseif ($context->hasMethod($link)) {
+			// Class method
+			$reflection = $context->getMethod($link);
 		} elseif (('()' === substr($link, -2) && $context->hasMethod(substr($link, 0, -2)))) {
-			return $context->getMethod(substr($link, 0, -2));
+			// Class method()
+			$reflection = $context->getMethod(substr($link, 0, -2));
+		} elseif ($context->hasConstant($link)) {
+			// Class constant
+			$reflection = $context->getConstantReflection($link);
+		} else {
+			return null;
 		}
 
-		// Class constants
-		if ($context->hasConstant($link)) {
-			return $context->getConstantReflection($link);
+		$value = $reflection->getDeclaringClassName();
+		if ($reflection instanceof ReflectionProperty) {
+			$link = $this->propertyLink($reflection);
+			$value .= '::$' . $reflection->getName();
+		} elseif ($reflection instanceof ReflectionMethod) {
+			$link = $this->methodLink($reflection);
+			$value .= '::' . $reflection->getName() . '()';
+		} elseif ($reflection instanceof ReflectionConstant) {
+			$link = $this->constantLink($reflection);
+			$value .= '::' . $reflection->getName();
 		}
 
-		return null;
+		return '<a href="' . $link . '">' . $this->escapeHtml($value) . '</a>';
 	}
 }
