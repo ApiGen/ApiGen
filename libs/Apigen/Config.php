@@ -14,7 +14,7 @@
 namespace Apigen;
 
 use Apigen\Exception;
-use Nette;
+use Nette\Utils\Neon;
 
 class Config
 {
@@ -39,7 +39,7 @@ class Config
 	 */
 	private static $defaultConfig = array(
 		'config' => '',
-		'source' => '',
+		'source' => array(),
 		'destination' => '',
 		'exclude' => array(),
 		'title' => '',
@@ -50,27 +50,6 @@ class Config
 		'accessLevels' => array('public', 'protected'),
 		'wipeout' => true,
 		'progressbar' => true
-	);
-
-	/**
-	 * On/Off or Yes/No options.
-	 *
-	 * @var array
-	 */
-	private static $booleanOptions = array(
-		'wipeout',
-		'progressbar'
-	);
-
-	/**
-	 * Options with list of values.
-	 *
-	 * @var array
-	 */
-	private static $arrayOptions = array(
-		'source' => array(),
-		'exclude' => array(),
-		'accessLevels' => array('public', 'protected', 'private')
 	);
 
 	/**
@@ -89,17 +68,18 @@ class Config
 	/**
 	 * Initializes configuration.
 	 *
-	 * @param array $options
+	 * @param array $options Configuration options from the command line
 	 */
 	public function __construct(array $options)
 	{
 		$this->options = $options;
 
-		$this->parse()
+		$this
+			->parse()
 			->check();
 
 		// Merge template config
-		$this->config = array_merge($this->config, Nette\Utils\Neon::decode(file_get_contents($this->getTemplateConfig())));
+		$this->config = array_merge($this->config, Neon::decode(file_get_contents($this->getTemplateConfig())));
 	}
 
 	/**
@@ -122,7 +102,7 @@ class Config
 				throw new Exception(sprintf('Config file %s doesn\'t exist', $this->options['config']), Exception::INVALID_CONFIG);
 			}
 
-			$this->config = array_merge($this->config, Nette\Utils\Neon::decode(file_get_contents($this->options['config'])));
+			$this->config = array_merge($this->config, Neon::decode(file_get_contents($this->options['config'])));
 		}
 
 		// Parse options
@@ -134,33 +114,36 @@ class Config
 			$this->config[$option] = $value;
 		}
 
-		foreach (self::$booleanOptions as $option) {
-			$value = strtolower($this->config[$option]);
-			if ('on' === $value || 'yes' === $value) {
-				$value = true;
-			} elseif ('off' === $value || 'no' === $value) {
-				$value = false;
-			}
-			$this->config[$option] = (bool) $value;
-		}
-
-		foreach (self::$arrayOptions as $option => $possibleValues) {
-			$this->config[$option] = array_unique((array) $this->config[$option]);
-			foreach ($this->config[$option] as $key => $value) {
-				$value = explode(',', $value);
-				while (count($value) > 1) {
-					array_push($this->config[$option], array_shift($value));
+		foreach (self::$defaultConfig as $option => $valueDefinition) {
+			if (is_bool($valueDefinition)) {
+				// Boolean option
+				$value = strtolower($this->config[$option]);
+				if ('on' === $value || 'yes' === $value) {
+					$value = true;
+				} elseif ('off' === $value || 'no' === $value) {
+					$value = false;
 				}
-				$this->config[$option][$key] = array_shift($value);
-			}
+				$this->config[$option] = (bool) $value;
+			} elseif (is_array($valueDefinition)) {
+				// Array option
+				$this->config[$option] = array_unique((array) $this->config[$option]);
+				foreach ($this->config[$option] as $key => $value) {
+					$value = explode(',', $value);
+					while (count($value) > 1) {
+						array_push($this->config[$option], array_shift($value));
+					}
+					$this->config[$option][$key] = array_shift($value);
+				}
 
-			if (!empty($possibleValues)) {
-				$this->config[$option] = array_filter($this->config[$option], function($value) use ($possibleValues) {
-					return in_array($value, $possibleValues);
-				});
+				if (!empty($valueDefinition)) {
+					$this->config[$option] = array_filter($this->config[$option], function($value) use ($valueDefinition) {
+						return in_array($value, $valueDefinition);
+					});
+				}
 			}
 		}
 
+		// Process options that specify a filesystem path
 		foreach (self::$pathOptions as $option) {
 			if (is_array($this->config[$option])) {
 				array_walk($this->config[$option], function(&$value) {
@@ -229,21 +212,44 @@ class Config
 		return $this->config['templateDir'] . DIRECTORY_SEPARATOR . $this->config['template'] . DIRECTORY_SEPARATOR . 'config.neon';
 	}
 
+	/**
+	 * Checks it a configuration option exists.
+	 *
+	 * @param string $name Option name
+	 * @return boolean
+	 */
 	public function __isset($name)
 	{
 		return isset($this->config[$name]);
 	}
 
+	/**
+	 * Returns a configuration option value.
+	 *
+	 * @param string $name Option name
+	 * @return mixed
+	 */
 	public function __get($name)
 	{
 		return isset($this->config[$name]) ? $this->config[$name] : null;
 	}
 
+	/**
+	 * Sets a configuration option.
+	 *
+	 * @param string $name Option name
+	 * @param mixed $value Option value
+	 */
 	public function __set($name, $value)
 	{
 		$this->config[$name] = $value;
 	}
 
+	/**
+	 * Deletes a configuration option.
+	 *
+	 * @param string $name Option name
+	 */
 	public function __unset($name)
 	{
 		unset($this->config[$name]);
