@@ -89,17 +89,17 @@ class Generator extends Nette\Object
 					}
 				}
 
-				$files[] = $entry->getPathName();
+				$files[$entry->getPathName()] = $entry->getSize();
 			}
 		}
 
 		if ($this->config->progressbar) {
-			$this->prepareProgressBar(count($files));
+			$this->prepareProgressBar(array_sum($files));
 		}
 
-		foreach ($files as $file) {
+		foreach ($files as $file => $size) {
 			$broker->processFile($file);
-			$this->incrementProgressBar();
+			$this->incrementProgressBar($size);
 		}
 
 		$tokenized = $broker->getClasses(Backend::TOKENIZED_CLASSES);
@@ -533,11 +533,13 @@ class Generator extends Nette\Object
 
 	/**
 	 * Increments the progressbar by one.
+	 *
+	 * @param integer $increment Progressbar increment
 	 */
-	private function incrementProgressBar()
+	private function incrementProgressBar($increment = 1)
 	{
 		if ($this->config->progressbar) {
-			$this->progressBar->update($this->progressBar->getProgress() + 1);
+			$this->progressBar->update($this->progressBar->getProgress() + $increment);
 		}
 	}
 
