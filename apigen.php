@@ -48,7 +48,8 @@ try {
 		'template-dir:',
 		'access-levels:',
 		'wipeout:',
-		'progressbar:'
+		'progressbar:',
+		'debug:'
 	));
 
 	// Start
@@ -86,9 +87,16 @@ try {
 	printf("Done. Total time: %d seconds, used: %d MB RAM\n", Debugger::timer(), round(memory_get_peak_usage(true) / 1024 / 1024));
 
 } catch (Exception $e) {
-	printf("\n%s\n\n", $e->getMessage());
+	if ($config->debug) {
+		do {
+			printf("\n%s", $e->getMessage());
+			$trace = $e->getTraceAsString();
+		} while ($e = $e->getPrevious());
 
-	echo $e->getTraceAsString();
+		printf("\n\n%s\n\n", $trace);
+	} else {
+		printf("\n%s\n\n", $e->getMessage());
+	}
 
 	// Help only for invalid configuration
 	if ($e instanceof Apigen\Exception && Apigen\Exception::INVALID_CONFIG === $e->getCode()) { ?>
@@ -109,6 +117,7 @@ Options:
 	--access-levels <list>  Generate documetation for methods and properties with given access level, default public,protected
 	--wipeout       On|Off  Wipe out the destination directory first, default On
 	--progressbar   On|Off  Display progressbars, default On
+	--debug         On|Off  Display additional information in case of an error, default Off
 
 Only source and destination directories are required - either set explicitly or using a config file.
 Configuration parameters passed via command line have precedence over parameters from a config file.
