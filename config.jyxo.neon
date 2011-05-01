@@ -7,6 +7,7 @@ googleCse: '004718174178290363576:f23xklsezl8'
 template: jyxo
 templateDir: ''
 accessLevels: [public, protected]
+deprecated: Yes
 wipeout: On
 progressbar: On
 debug: Yes

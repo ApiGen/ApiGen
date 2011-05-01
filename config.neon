@@ -7,6 +7,7 @@ googleCse: ''
 template: default
 templateDir: ''
 accessLevels: [public, protected]
+deprecated: No
 wipeout: On
 progressbar: On
 debug: No

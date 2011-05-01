@@ -49,6 +49,7 @@ class Config
 		'template' => 'default',
 		'templateDir' => '',
 		'accessLevels' => array('public', 'protected'),
+		'deprecated' => false,
 		'wipeout' => true,
 		'progressbar' => true,
 		'debug' => false

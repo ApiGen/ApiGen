@@ -151,7 +151,13 @@ class Reflection
 	 */
 	public function getOwnMethods()
 	{
-		return $this->reflection->getOwnMethods(self::$methodAccessLevels);
+		$methods = $this->reflection->getOwnMethods(self::$methodAccessLevels);
+		if (!$this->generator->config->deprecated) {
+			$methods = array_filter($methods, function($method) {
+				return !$method->isDeprecated();
+			});
+		}
+		return $methods;
 	}
 
 	/**
@@ -161,7 +167,29 @@ class Reflection
 	 */
 	public function getOwnProperties()
 	{
-		return $this->reflection->getOwnProperties(self::$propertyAccessLevels);
+		$properties = $this->reflection->getOwnProperties(self::$propertyAccessLevels);
+		if (!$this->generator->config->deprecated) {
+			$properties = array_filter($properties, function($property) {
+				return !$property->isDeprecated();
+			});
+		}
+		return $properties;
+	}
+
+	/**
+	 * Returns constants declared by inspected class.
+	 *
+	 * @return array
+	 */
+	public function getOwnConstantReflections()
+	{
+		$constants = $this->reflection->getOwnConstantReflections();
+		if (!$this->generator->config->deprecated) {
+			$constants = array_filter($constants, function($constant) {
+				return !$constant->isDeprecated();
+			});
+		}
+		return $constants;
 	}
 
 	/**

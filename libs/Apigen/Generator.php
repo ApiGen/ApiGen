@@ -120,7 +120,7 @@ class Generator extends Nette\Object
 		$generator = $this;
 		$library = $this->config->library;
 		$this->classes = array_map(function(ReflectionClass $class) use($generator, $library) {
-			$isLibrary = !$class->isInternal() && !$class->isTokenized();
+			$isLibrary = (!$class->isInternal() && !$class->isTokenized()) || (!$generator->config->deprecated && $class->isDeprecated());
 			if (!$isLibrary) {
 				foreach ($library as $path) {
 					if (0 === strpos($class->getFilename(), $path)) {

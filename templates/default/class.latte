@@ -17,7 +17,7 @@
 		<p n:if="$class->internal">PHP – {$class->extension->name|ucfirst}</p>
 		<p n:if="$class->inNamespace()">namespace <a href="{$class|namespaceLink}">{$class->namespaceName}</a></p>
 
-		<h1>{if $class->interface}Interface{else}Class{/if} {$class->shortName}</h1>
+		<h1>{if $class->deprecated}Deprecated {/if}{if $class->interface}Interface{else}Class{/if} {$class->shortName}</h1>
 
 		<div class="classDescription" n:if="$class->docComment">
 		{!$class|longDescription|docblock}
@@ -76,6 +76,7 @@
 		{foreach $class->ownMethods as $method}
 		<tr data-order="{$method->name}" id="_{$method->name}">
 			<td align="right" width="1%"><code class="nowrap">
+				{if $method->deprecated}deprecated{/if}
 				{if !$class->interface && $method->abstract}abstract{elseif $method->final}final{/if} {if $method->protected}protected{elseif $method->private}private{else}public{/if} {if $method->static}static{/if}
 				{foreach $template->getTypes($method) as $return}<a href="{$return->class|classLink}" n:tag-if="$return->class">{$return->name}</a>{sep}|{/sep}{/foreach}
 				{if $method->returnsReference()}&amp;{/if}
@@ -180,6 +181,7 @@
 		{foreach $class->ownConstantReflections as $name => $constant}
 		<tr data-order="{$name}" id="{$name}">
 			<td align="right" width="1%"><code class="nowrap">
+				{if $constant->deprecated}deprecated{/if}
 				{if $constant->hasAnnotation('var')}
 					{foreach $constant->getAnnotation('var') as $type}
 						{$type}{sep}|{/sep}
@@ -210,6 +212,7 @@
 		{foreach $class->ownProperties as $property}
 		<tr data-order="{$property->name}" id="${$property->name}">
 			<td align="right" width="1%"><code class="nowrap">
+				{if $property->deprecated}deprecated{/if}
 				{if $property->protected}protected{elseif $property->private}private{else}public{/if} {if $property->static}static{/if}
 				{foreach $template->getTypes($property) as $return}<a href="{$return->class|classLink}" n:tag-if="$return->class">{$return->name}</a>{sep}|{/sep}{/foreach}
 			</code></td>
