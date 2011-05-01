@@ -323,7 +323,7 @@ class Reflection
 		return array_filter(
 			array_map(
 				function(Reflection $class) {
-					$reflections = $class->getConstantReflections();
+					$reflections = $class->getOwnConstantReflections();
 					ksort($reflections);
 					return $reflections;
 				},
