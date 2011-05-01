@@ -225,6 +225,18 @@ class Generator extends Nette\Object
 			}
 			$allClasses[$class->getName()] = $class;
 		}
+
+		// add missing parent namespaces
+		foreach (array_keys($namespaces) as $name) {
+			$parent = '';
+			foreach (explode('\\', $name) as $part) {
+				$parent = ltrim($parent . '\\' . $part, '\\');
+				if (!isset($namespaces[$parent])) {
+					$namespaces[$parent] = array('classes' => array(), 'packages' => array());
+				}
+			}
+		}
+
 		uksort($packages, 'strcasecmp');
 		uksort($namespaces, 'strcasecmp');
 		uksort($allClasses, 'strcasecmp');

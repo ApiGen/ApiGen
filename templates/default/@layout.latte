@@ -55,7 +55,7 @@
 			{if substr_count($iterator->nextValue, '\\') > substr_count($item, '\\')}
 				<ul>
 			{elseif substr_count($iterator->nextValue, '\\') < substr_count($item, '\\')}
-				</ul></li>
+				{!=str_repeat('</ul></li>', substr_count($item, '\\') - substr_count($iterator->nextValue, '\\'))}
 			{else}
 				</li>
 			{/if}
