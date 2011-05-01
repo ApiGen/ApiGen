@@ -9,7 +9,7 @@ namespace {/**
  * the file license.txt that was distributed with this source code.
  */
 
-error_reporting(E_ALL|E_STRICT);@set_magic_quotes_runtime(FALSE);iconv_set_encoding('internal_encoding','UTF-8');extension_loaded('mbstring')&&mb_internal_encoding('UTF-8');@header('X-Powered-By: Nette Framework');define('NETTEX',TRUE);define('NETTEX_DIR',__DIR__);define('NETTEX_VERSION_ID',20000);define('NETTEX_PACKAGE','5.3');Nette\Utils\SafeStream::register();function
+error_reporting(E_ALL|E_STRICT);@set_magic_quotes_runtime(FALSE);iconv_set_encoding('internal_encoding','UTF-8');extension_loaded('mbstring')&&mb_internal_encoding('UTF-8');@header('X-Powered-By: Nette Framework');define('NETTE',TRUE);define('NETTE_DIR',__DIR__);define('NETTE_VERSION_ID',20000);define('NETTE_PACKAGE','5.3');Nette\Utils\SafeStream::register();function
 callback($callback,$m=NULL){return($m===NULL&&$callback
 instanceof
 Nette\Callback)?$callback:new
@@ -290,7 +290,7 @@ Helpers{static
 function
 renderBlueScreen(\Exception$exception){if(class_exists('Nette\Environment',FALSE)){$application=Nette\Environment::getContext()->hasService('Nette\\Application\\Application',TRUE)?Nette\Environment::getContext()->getService('Nette\\Application\\Application'):NULL;}static$errorTypes=array(E_ERROR=>'Fatal Error',E_USER_ERROR=>'User Error',E_RECOVERABLE_ERROR=>'Recoverable Error',E_CORE_ERROR=>'Core Error',E_COMPILE_ERROR=>'Compile Error',E_PARSE=>'Parse Error',E_WARNING=>'Warning',E_CORE_WARNING=>'Core Warning',E_COMPILE_WARNING=>'Compile Warning',E_USER_WARNING=>'User Warning',E_NOTICE=>'Notice',E_USER_NOTICE=>'User Notice',E_STRICT=>'Strict',E_DEPRECATED=>'Deprecated',E_USER_DEPRECATED=>'User Deprecated');$title=($exception
 instanceof
-Nette\FatalErrorException&&isset($errorTypes[$exception->getSeverity()]))?$errorTypes[$exception->getSeverity()]:get_class($exception);$expandPath=NETTEX_DIR.DIRECTORY_SEPARATOR;$counter=0;?><!-- "' --></script></style></pre></xmp></table>
+Nette\FatalErrorException&&isset($errorTypes[$exception->getSeverity()]))?$errorTypes[$exception->getSeverity()]:get_class($exception);$expandPath=NETTE_DIR.DIRECTORY_SEPARATOR;$counter=0;?><!-- "' --></script></style></pre></xmp></table>
 <!DOCTYPE html>
 <html>
 <head>
@@ -2732,7 +2732,7 @@ Nette\Object
 implements
 Nette\Diagnostics\IPanel{static
 public$maxLength=1000;public$totalTime=0;public$queries=array();public$name;public$explain=TRUE;public$disabled=FALSE;function
-logQuery(Nette\Database\Statement$result,array$params=NULL){if($this->disabled){return;}$source=NULL;foreach(debug_backtrace(FALSE)as$row){if(isset($row['file'])&&is_file($row['file'])&&strpos($row['file'],NETTEX_DIR.DIRECTORY_SEPARATOR)!==0){$source=array($row['file'],(int)$row['line']);break;}}$this->totalTime+=$result->time;$this->queries[]=array($result->queryString,$params,$result->time,$result->rowCount(),$result->getConnection(),$source);}function
+logQuery(Nette\Database\Statement$result,array$params=NULL){if($this->disabled){return;}$source=NULL;foreach(debug_backtrace(FALSE)as$row){if(isset($row['file'])&&is_file($row['file'])&&strpos($row['file'],NETTE_DIR.DIRECTORY_SEPARATOR)!==0){$source=array($row['file'],(int)$row['line']);break;}}$this->totalTime+=$result->time;$this->queries[]=array($result->queryString,$params,$result->time,$result->rowCount(),$result->getConnection(),$source);}function
 getId(){return'database';}function
 getTab(){return'<span title="Nette\\Database '.htmlSpecialChars($this->name).'">'.'<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAQAAAC1+jfqAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAEYSURBVBgZBcHPio5hGAfg6/2+R980k6wmJgsJ5U/ZOAqbSc2GnXOwUg7BESgLUeIQ1GSjLFnMwsKGGg1qxJRmPM97/1zXFAAAAEADdlfZzr26miup2svnelq7d2aYgt3rebl585wN6+K3I1/9fJe7O/uIePP2SypJkiRJ0vMhr55FLCA3zgIAOK9uQ4MS361ZOSX+OrTvkgINSjS/HIvhjxNNFGgQsbSmabohKDNoUGLohsls6BaiQIMSs2FYmnXdUsygQYmumy3Nhi6igwalDEOJEjPKP7CA2aFNK8Bkyy3fdNCg7r9/fW3jgpVJbDmy5+PB2IYp4MXFelQ7izPrhkPHB+P5/PjhD5gCgCenx+VR/dODEwD+A3T7nqbxwf1HAAAAAElFTkSuQmCC" />'.count($this->queries).' queries'.($this->totalTime?' / '.sprintf('%0.1f',$this->totalTime*1000).'ms':'').'</span>';}function
 getPanel(){$this->disabled=TRUE;$s='';$h='htmlSpecialChars';foreach($this->queries
@@ -4960,7 +4960,7 @@ Nette\StaticClassException;}static
 function
 enter(){if(self::$criticalSections){throw
 new
-Nette\InvalidStateException('Critical section has already been entered.');}$handle=substr(PHP_OS,0,3)==='WIN'?@fopen(NETTEX_DIR.'/lockfile','w'):@fopen(__FILE__,'r');if(!$handle){throw
+Nette\InvalidStateException('Critical section has already been entered.');}$handle=substr(PHP_OS,0,3)==='WIN'?@fopen(NETTE_DIR.'/lockfile','w'):@fopen(__FILE__,'r');if(!$handle){throw
 new
 Nette\InvalidStateException("Unable initialize critical section.");}flock(self::$criticalSections=$handle,LOCK_EX);}static
 function
