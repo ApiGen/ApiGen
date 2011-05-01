@@ -253,6 +253,11 @@ class Generator extends Nette\Object
 			);
 		}
 
+		// create tmp directory
+		$tmp = $this->config->destination . DIRECTORY_SEPARATOR . 'tmp';
+		@mkdir($tmp, 0755, true);
+
+		// prepare template
 		$template = new Template($this);
 		$template->version = self::VERSION;
 		$template->config = $this->config;
@@ -392,6 +397,9 @@ class Generator extends Nette\Object
 				$this->incrementProgressBar();
 			}
 		}
+
+		// delete tmp directory
+		$this->deleteDir($tmp);
 	}
 
 	/**
@@ -565,5 +573,31 @@ class Generator extends Nette\Object
 	{
 		@mkdir(dirname($path), 0755, true);
 		return $path;
+	}
+
+	/**
+	 * Deletes a directory.
+	 *
+	 * @param string $path Directory path
+	 * @return boolean
+	 */
+	private function deleteDir($path)
+	{
+		foreach (Nette\Utils\Finder::find('*')->from($path)->childFirst() as $item) {
+			if ($item->isDir()) {
+				if (!@rmdir($item)) {
+					return false;
+				}
+			} elseif ($item->isFile()) {
+				if (!@unlink($item)) {
+					return false;
+				}
+			}
+		}
+		if (@rmdir($path)) {
+			return false;
+		}
+
+		return true;
 	}
 }
