@@ -122,6 +122,11 @@ class Template extends Nette\Templating\FileTemplate
 				$res .= $class !== null ? sprintf('<a href="%s">%s</a>', $that->classLink($class), $that->escapeHtml($class)) : $that->escapeHtml(ltrim($name, '\\'));
 				$res .= '|';
 			}
+
+			if (null !== $parameter && preg_match('~^(\\$?' . $parameter->getName() . ')~i', $label, $matches)) {
+				$label = substr($label, strlen($matches[1]));
+			}
+
 			return rtrim($res, '|') . ' ' . $that->escapeHtml($label);
 		});
 
