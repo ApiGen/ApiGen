@@ -127,7 +127,7 @@ class Template extends Nette\Templating\FileTemplate
 				$label = substr($label, strlen($matches[1]));
 			}
 
-			return rtrim($res, '|') . ' ' . $that->escapeHtml($label);
+			return rtrim($res, '|') . (!empty($label) ? '<br />' . $that->escapeHtml($label) : '');
 		});
 
 		// Docblock descriptions
