@@ -29,7 +29,7 @@
 				<img src="resources/inherit.gif" alt="Extended by" n:if="$iterator->counter > 1">
 				{if $item->internal || $item->tokenized}
 				<a href="{$item|classLink}" n:tag-if="!$iterator->last">{last}<b>{/last}{$item->name}{last}</b>{/last}</a>
-				{if $item->ownInterfaces} implements {foreach $item->ownInterfaces as $interface}<a href="{$interface|classLink}">{$interface->name}</a>{sep}, {/sep}{/foreach}{/if}
+				{if $item->ownInterfaces} implements {foreach $item->ownInterfaces as $interface}<a href="{$interface|classLink}" n:tag-if="$interface->internal || $interface->tokenized">{$interface->name}</a>{sep}, {/sep}{/foreach}{/if}
 				{else}{$item->name}{/if}
 			</dd>
 			{/foreach}
