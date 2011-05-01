@@ -175,7 +175,7 @@
 	{/foreach}
 
 
-	<div id="constantSummary" n:if="$class->ownConstants">
+	<div id="constantSummary" n:if="$class->ownConstantReflections">
 		<table class="summary">
 		<caption>Constant Summary</caption>
 		{foreach $class->ownConstantReflections as $name => $constant}
@@ -186,7 +186,9 @@
 						{$type}{sep}|{/sep}
 					{/foreach}
 				{else}
+					{try}
 					{$constant->value|getType}
+					{/try}
 				{/if}
 			</code></td>
 			<td width="1%"><code><a href="{$constant|sourceLink}" title="Go to {$class->internal ? 'PHP documentation' : 'source code'}"><b>{$name}</b></a></code></td>
