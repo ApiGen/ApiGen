@@ -67,6 +67,15 @@ class Config
 	);
 
 	/**
+	 * Possible values for options with list of values.
+	 *
+	 * @var array
+	 */
+	private static $arrayOptionsValues = array(
+		'accessLevels' => array('public', 'protected', 'private')
+	);
+
+	/**
 	 * Initializes configuration.
 	 *
 	 * @param array $options Configuration options from the command line
@@ -136,9 +145,10 @@ class Config
 					$this->config[$option][$key] = array_shift($value);
 				}
 
-				if (!empty($valueDefinition)) {
-					$this->config[$option] = array_filter($this->config[$option], function($value) use ($valueDefinition) {
-						return in_array($value, $valueDefinition);
+				if (!empty(self::$arrayOptionsValues[$option])) {
+					$values = self::$arrayOptionsValues[$option];
+					$this->config[$option] = array_filter($this->config[$option], function($value) use ($values) {
+						return in_array($value, $values);
 					});
 				}
 			}
