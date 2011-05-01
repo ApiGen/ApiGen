@@ -54,6 +54,7 @@ try {
 
 	// Start
 	$config = new Apigen\Config($options);
+	$config->parse();
 	$generator = new Apigen\Generator($config);
 
 	// Scan
@@ -87,7 +88,7 @@ try {
 	printf("Done. Total time: %d seconds, used: %d MB RAM\n", Debugger::timer(), round(memory_get_peak_usage(true) / 1024 / 1024));
 
 } catch (Exception $e) {
-	if (isset($options['debug']) && 'yes' === strtolower($options['debug'])) {
+	if ($config->debug) {
 		do {
 			printf("\n%s", $e->getMessage());
 			$trace = $e->getTraceAsString();

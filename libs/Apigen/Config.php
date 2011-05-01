@@ -84,12 +84,8 @@ class Config
 	{
 		$this->options = $options;
 
-		$this
-			->parse()
-			->check();
-
-		// Merge template config
-		$this->config = array_merge($this->config, Neon::decode(file_get_contents($this->getTemplateConfig())));
+		$this->config = self::$defaultConfig;
+		$this->config['templateDir'] = realpath(__DIR__ . '/../../templates');
 	}
 
 	/**
@@ -97,14 +93,11 @@ class Config
 	 *
 	 * @return \Apigen\Config
 	 */
-	private function parse()
+	public function parse()
 	{
 		if (!isset($this->options['config']) && !isset($this->options['source'], $this->options['destination'])) {
 			throw new Exception('Missing required options', Exception::INVALID_CONFIG);
 		}
-
-		$this->config = self::$defaultConfig;
-		$this->config['templateDir'] = realpath(__DIR__ . '/../../templates');
 
 		// Config file
 		if (isset($this->options['config'])) {
@@ -168,6 +161,12 @@ class Config
 				}
 			}
 		}
+
+		// Check
+		$this->check();
+
+		// Merge template config
+		$this->config = array_merge($this->config, Neon::decode(file_get_contents($this->getTemplateConfig())));
 
 		return $this;
 	}
