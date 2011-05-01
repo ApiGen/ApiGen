@@ -144,20 +144,7 @@ class Generator extends Nette\Object
 		foreach ($this->config->resources as $dir) {
 			$pathName = $this->config->destination . '/' . $dir;
 			if (is_dir($pathName)) {
-				foreach (Nette\Utils\Finder::findFiles('*')->from($pathName)->childFirst() as $item) {
-					if ($item->isDir()) {
-						if (!@rmdir($item)) {
-							return false;
-						}
-					} elseif ($item->isFile()) {
-						if (!@unlink($item)) {
-							return false;
-						}
-					}
-				}
-				if (!@rmdir($pathName)) {
-					return false;
-				}
+				$this->deleteDir($pathName);
 			}
 		}
 
