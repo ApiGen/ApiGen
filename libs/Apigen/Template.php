@@ -122,7 +122,7 @@ class Template extends Nette\Templating\FileTemplate
 				}
 
 				$class = $that->resolveType($name, $namespace);
-				$res .= $class !== null ? sprintf('<a href="%s">%s</a>', $that->classLink($class), $that->escapeHtml($class)) : $that->escapeHtml(ltrim($name, '\\'));
+				$res .= $class !== null ? sprintf('<a href="%s">%s</a>', $that->classLink($class), $that->escapeHtml($class)) : $that->escapeHtml($that->resolveName($name));
 				$res .= '|';
 			}
 
@@ -200,10 +200,26 @@ class Template extends Nette\Templating\FileTemplate
 		foreach (preg_replace('#\s.*#', '', (array) $annotation) as $s) {
 			foreach (explode('|', $s) as $name) {
 				$class = $this->resolveType($name, $namespace);
-				$types[] = (object) array('name' => $class ?: ltrim($name, '\\'), 'class' => $class);
+				$types[] = (object) array('name' => $class ?: $this->resolveName($name), 'class' => $class);
 			}
 		}
 		return $types;
+	}
+
+	public function resolveName($name)
+	{
+		static $names = array(
+			'int' => 'integer',
+			'bool' => 'boolean',
+			'double' => 'float',
+			'void' => ''
+		);
+
+		$name = ltrim($name, '\\');
+		if (isset($names[$name])) {
+			return $names[$name];
+		}
+		return $name;
 	}
 
 	/**
