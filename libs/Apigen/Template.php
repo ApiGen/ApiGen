@@ -78,6 +78,9 @@ class Template extends Nette\Templating\FileTemplate
 
 		// docblock
 		$texy = new \Texy;
+		$linkModule = new \TexyLinkModule($texy);
+		$linkModule->shorten = FALSE;
+		$texy->linkModule = $linkModule;
 		$texy->mergeLines = FALSE;
 		$texy->allowedTags = \Texy::NONE;
 		$texy->allowed['list/definition'] = FALSE;
