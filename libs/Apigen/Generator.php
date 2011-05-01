@@ -75,7 +75,7 @@ class Generator extends Nette\Object
 		$broker = new Broker(new Backend(), false);
 
 		$files = array();
-		foreach ($this->config->source as $source) {
+		foreach (array_merge($this->config->source, $this->config->library) as $source) {
 			foreach (new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($source)) as $entry) {
 				if (!$entry->isFile()) {
 					continue;
@@ -105,9 +105,17 @@ class Generator extends Nette\Object
 		$tokenized = $broker->getClasses(Backend::TOKENIZED_CLASSES);
 		$internal = $broker->getClasses(Backend::INTERNAL_CLASSES);
 
-		$that = $this;
-		$this->classes = array_map(function(ReflectionClass $class) use($that) {
-			return new ApiReflection($class, $that);
+		$generator = $this;
+		$library = $this->config->library;
+		$this->classes = array_map(function(ReflectionClass $class) use($generator, $library) {
+			$reflection = new ApiReflection($class, $generator, array('library' => false));
+			foreach ($library as $path) {
+				if (0 === strpos($class->getFilename(), $path)) {
+					$reflection->library = true;
+					break;
+				}
+			}
+			return $reflection;
 		}, array_merge($tokenized, $internal));
 
 		return array(count($tokenized), count($internal));
@@ -204,13 +212,15 @@ class Generator extends Nette\Object
 		$namespaces = array();
 		$allClasses = array();
 		foreach ($this->classes as $class) {
-			$packages[$class->getPackageName()]['classes'][$class->getName()] = $class;
-			if ($class->inNamespace()) {
-				$packages[$class->getPackageName()]['namespaces'][$class->getNamespaceName()] = true;
-				$namespaces[$class->getNamespaceName()]['classes'][$class->getShortName()] = $class;
-				$namespaces[$class->getNamespaceName()]['packages'][$class->getPackageName()] = true;
+			if (!$class->library) {
+				$packages[$class->getPackageName()]['classes'][$class->getName()] = $class;
+				if ($class->inNamespace()) {
+					$packages[$class->getPackageName()]['namespaces'][$class->getNamespaceName()] = true;
+					$namespaces[$class->getNamespaceName()]['classes'][$class->getShortName()] = $class;
+					$namespaces[$class->getNamespaceName()]['packages'][$class->getPackageName()] = true;
+				}
+				$allClasses[$class->getName()] = $class;
 			}
-			$allClasses[$class->getName()] = $class;
 		}
 
 		// add missing parent namespaces
@@ -248,6 +258,9 @@ class Generator extends Nette\Object
 		$template = new Template($this);
 		$template->version = self::VERSION;
 		$template->config = $this->config;
+
+		// all classes
+		$template->allClasses = $allClasses;
 
 		// generate summary files
 		$template->namespaces = array_keys($namespaces);

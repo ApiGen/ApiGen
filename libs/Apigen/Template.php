@@ -235,7 +235,12 @@ class Template extends Nette\Templating\FileTemplate
 			$namespace = '';
 			$type = substr($type, 1);
 		}
-		return isset($this->generator->classes["$namespace\\$type"]) ? "$namespace\\$type" : (isset($this->generator->classes[$type]) ? $type : NULL);
+
+		$name = isset($this->generator->classes["$namespace\\$type"]) ? "$namespace\\$type" : (isset($this->generator->classes[$type]) ? $type : null);
+		if (null !== $name && $this->generator->classes[$name]->library) {
+			$name = null;
+	}
+		return $name;
 	}
 
 	/**
@@ -265,7 +270,12 @@ class Template extends Nette\Templating\FileTemplate
 		} elseif ((null !== $context && null !== ($className = $this->resolveType(ReflectionBase::resolveClassFQN($link, $context->getNamespaceAliases(), $context->getNamespaceName()), $context->getNamespaceName())))
 			|| null !== ($className = $this->resolveType($link, null !== $context ? $context->getNamespaceName() : null))) {
 			// Class
-			return '<a href="' . $this->classLink($this->generator->classes[$className]) . '">' . $this->escapeHtml($className) . '</a>';
+			$context = $this->generator->classes[$className];
+			return $context->library ? null : '<a href="' . $this->classLink($context) . '">' . $this->escapeHtml($className) . '</a>';
+		}
+
+		if ($context->library) {
+			return null;
 		}
 
 		if (null === $context) {
