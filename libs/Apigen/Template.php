@@ -15,7 +15,7 @@ namespace Apigen;
 
 use Nette;
 use Apigen\Reflection as ApiReflection, Apigen\Generator;
-use TokenReflection\IReflectionClass as ReflectionClass, TokenReflection\IReflectionProperty as ReflectionProperty, TokenReflection\IReflectionMethod as ReflectionMethod, TokenReflection\IReflectionConstant as ReflectionConstant;
+use TokenReflection\IReflectionClass as ReflectionClass, TokenReflection\IReflectionProperty as ReflectionProperty, TokenReflection\IReflectionMethod as ReflectionMethod, TokenReflection\IReflectionConstant as ReflectionConstant, TokenReflection\IReflectionParameter as ReflectionParameter;
 use TokenReflection\ReflectionAnnotation, TokenReflection\ReflectionBase;
 
 class Template extends Nette\Templating\FileTemplate
@@ -110,10 +110,14 @@ class Template extends Nette\Templating\FileTemplate
 		$this->registerHelper('docblock', function($text) use ($texy) {
 			return $texy->process($text);
 		});
-		$this->registerHelper('doclabel', function($doc, $namespace) use ($that) {
+		$this->registerHelper('doclabel', function($doc, $namespace, ReflectionParameter $parameter = null) use ($that) {
 			@list($names, $label) = preg_split('#\s+#', $doc, 2);
 			$res = '';
 			foreach (explode('|', $names) as $name) {
+				if (null !== $parameter && $name === $parameter->getOriginalClassName()) {
+					$name = $parameter->getClassName();
+				}
+
 				$class = $that->resolveType($name, $namespace);
 				$res .= $class !== null ? sprintf('<a href="%s">%s</a>', $that->classLink($class), $that->escapeHtml($class)) : $that->escapeHtml(ltrim($name, '\\'));
 				$res .= '|';
