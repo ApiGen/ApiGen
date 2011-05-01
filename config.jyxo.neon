@@ -9,3 +9,4 @@ templateDir: ''
 accessLevels: [public, protected]
 wipeout: On
 progressbar: On
+debug: Yes

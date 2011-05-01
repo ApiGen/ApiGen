@@ -87,7 +87,7 @@ try {
 	printf("Done. Total time: %d seconds, used: %d MB RAM\n", Debugger::timer(), round(memory_get_peak_usage(true) / 1024 / 1024));
 
 } catch (Exception $e) {
-	if ($config->debug) {
+	if (isset($options['debug']) && 'yes' === strtolower($options['debug'])) {
 		do {
 			printf("\n%s", $e->getMessage());
 			$trace = $e->getTraceAsString();
