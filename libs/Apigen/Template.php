@@ -229,11 +229,11 @@ class Template extends Nette\Templating\FileTemplate
 	 * @param \Apigen\Reflection $context Link context
 	 * @return \Apigen\Reflection|\TokenReflection\IReflection|null
 	 */
-	public function resolveClassLink($link, ApiReflection $context)
+	public function resolveClassLink($link, ApiReflection $context = null)
 	{
 		if (($pos = strpos($link, '::')) || ($pos = strpos($link, '->'))) {
 			// Class::something or Class->something
-			$className = $this->resolveType(substr($link, 0, $pos), $context->getNamespaceName());
+			$className = $this->resolveType(substr($link, 0, $pos), null !== $context ? $context->getNamespaceName() : null);
 
 			if (null === $className) {
 				$className = $this->resolveType(ReflectionBase::resolveClassFQN(substr($link, 0, $pos), $context->getNamespaceAliases(), $context->getNamespaceName()));
@@ -246,13 +246,15 @@ class Template extends Nette\Templating\FileTemplate
 			}
 
 			$link = substr($link, $pos + 2);
-		} elseif (null !== ($className = $this->resolveType(ReflectionBase::resolveClassFQN($link, $context->getNamespaceAliases(), $context->getNamespaceName()), $context->getNamespaceName()))
-			|| null !== ($className = $this->resolveType($link, $context->getNamespaceName()))) {
+		} elseif ((null !== $context && null !== ($className = $this->resolveType(ReflectionBase::resolveClassFQN($link, $context->getNamespaceAliases(), $context->getNamespaceName()), $context->getNamespaceName())))
+			|| null !== ($className = $this->resolveType($link, null !== $context ? $context->getNamespaceName() : null))) {
 			// Class
 			return '<a href="' . $this->classLink($this->generator->classes[$className]) . '">' . $this->escapeHtml($className) . '</a>';
 		}
 
-		if ($context->hasProperty($link)) {
+		if (null === $context) {
+			return null;
+		} elseif ($context->hasProperty($link)) {
 			// Class property
 			$reflection = $context->getProperty($link);
 		} elseif ('$' === $link{0} && $context->hasProperty(substr($link, 1))) {
