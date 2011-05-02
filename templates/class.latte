@@ -126,6 +126,19 @@
 			</td>
 		</tr>
 		{/foreach}
+
+		{foreach $class->magicMethods as $method}
+		<tr data-order="2 {$method->name}" id="_{$method->name}">
+			<td align="right" width="1%"><code class="nowrap">magic {!$method->return|doclabel:$namespace,TRUE}</code></td>
+
+			<td>
+			<a class="anchor" href="#_{$method->name}">#</a>
+			<code class="nowrap"><b>{$method->name}</b>(<var>{$method->parameters}</var>)</code>
+
+			<div class="short">{!$method->description|texyline:false}</div>
+			</td>
+		</tr>
+		{/foreach}
 		</table>
 	</div>
 
@@ -173,6 +186,18 @@
 			<td width="1%"><var>${$property->name}</var></td>
 			<td><pre>{!$class->defaultProperties[$property->name]|dump}</pre></td>
 			<td>{!$property->description ?: preg_replace('#^\S+\s*#', '', $property->getAnnotation('var'))|texyline} <a href="#${$property->name}" class="anchor">#</a></td>
+		</tr>
+		{/foreach}
+
+		{foreach $class->magicProperties as $property}
+		<tr data-order="{$property->name}" id="${$property->name}">
+			<td align="right" width="1%"><code class="nowrap">
+				magic {!$property->var|doclabel:$namespace,TRUE}
+			</code></td>
+
+			<td width="1%"><var>${$property->name}</var></td>
+			<td></td>
+			<td>{!$property->description|texyline} <a href="#${$property->name}" class="anchor">#</a></td>
 		</tr>
 		{/foreach}
 		</table>

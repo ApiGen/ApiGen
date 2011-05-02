@@ -100,6 +100,48 @@ class CustomClassReflection extends NetteX\Reflection\ClassType
 
 
 	/**
+	 * Returns methods declared by @method annotation.
+	 * @return array
+	 */
+	public function getMagicMethods()
+	{
+		$res = array();
+		foreach ($this->getAnnotations() as $name => $values) {
+			if ($name === 'method') {
+				foreach ($values as $value) {
+					if (preg_match('#^((?P<return>\S+)\s+)?(?P<name>\S+)\((?P<parameters>.*)\)\s*(?P<description>.*)$#', $value, $m)) {
+						$res[] = (object) $m;
+					}
+				}
+			}
+		}
+		return $res;
+	}
+
+
+
+	/**
+	 * Returns properties declared by @property annotation.
+	 * @return array
+	 */
+	public function getMagicProperties()
+	{
+		$res = array();
+		foreach ($this->getAnnotations() as $name => $values) {
+			if ($name === 'property' || $name === 'property-read' || $name === 'property-write') {
+				foreach ($values as $value) {
+					if (preg_match('#^((?P<var>\S+)\s+)?\$(?P<name>\S+)\s*(?P<description>.*)$#', $value, $m)) {
+						$res[] = (object) $m;
+					}
+				}
+			}
+		}
+		return $res;
+	}
+
+
+
+	/**
 	 * Is inspected class an exception?
 	 * @return bool
 	 */
