@@ -63,9 +63,9 @@
 		<table class="summary">
 		<caption>Method Summary</caption>
 		{foreach $class->ownMethods as $method}
-		<tr data-order="{$method->static ? 0 : 1} {$method->name}" id="_{$method->name}">
+		<tr data-order="{$method->static ? 0 : 1} {$method->name}" id="_{$method->name}" n:class="$method->hasAnnotation('deprecated') ? deprecated">
 			<td align="right" width="1%"><code class="nowrap">
-				{if !$class->interface && $method->abstract}abstract{elseif $method->final}final{/if} {if $method->protected}protected{elseif $method->private}private{else}public{/if} {if $method->static}static{/if}
+				{if $method->hasAnnotation('deprecated')}deprecated {/if}{if !$class->interface && $method->abstract}abstract{elseif $method->final}final{/if} {if $method->protected}protected{elseif $method->private}private{else}public{/if} {if $method->static}static{/if}
 				{!$method->getAnnotation('return')|doclabel:$namespace,TRUE}
 				{if $method->returnsReference()}&amp;{/if}
 				</code>
@@ -135,7 +135,7 @@
 	{continueIf !$parent->ownMethods}
 	<h2>Methods Inherited From <a href="{$parent|classLink}#methodSummary">{$parent->name|replaceNS:$namespace}</a></h2>
 	<div class="box"><code>
-		{foreach $parent->ownMethods as $method}<a href="{$method|classLink}">{$method->name}()</a>{sep}, {/sep}{/foreach}
+		{foreach $parent->ownMethods as $method}<a href="{$method|classLink}" n:class="$method->hasAnnotation('deprecated') ? deprecated">{$method->name}()</a>{sep}, {/sep}{/foreach}
 	</code></div>
 	{/while}
 
@@ -164,9 +164,9 @@
 		<table class="summary">
 		<caption>Property Summary</caption>
 		{foreach $class->ownProperties as $property}
-		<tr data-order="{$property->name}" id="${$property->name}">
+		<tr data-order="{$property->name}" id="${$property->name}" n:class="$property->hasAnnotation('deprecated') ? deprecated">
 			<td align="right" width="1%"><code class="nowrap">
-				{if $property->protected}protected{elseif $property->private}private{/if} {if $property->static}static{/if}
+				{if $property->hasAnnotation('deprecated')}deprecated {/if}{if $property->protected}protected{elseif $property->private}private{/if} {if $property->static}static{/if}
 				{!$property->getAnnotation('var')|doclabel:$namespace,TRUE}
 			</code></td>
 
@@ -182,7 +182,7 @@
 	{while $parent = $parent->parentClass}
 	{continueIf !$parent->ownProperties}
 	<h2>Properties Inherited From <a href="{$parent|classLink}#propertySummary">{$parent->name|replaceNS:$namespace}</a></h2>
-	<div class="box"><code>{foreach $parent->ownProperties as $property}<var>${$property->name}</var>{sep}, {/sep}{/foreach}</code></div>
+	<div class="box"><code>{foreach $parent->ownProperties as $property}<var n:class="$property->hasAnnotation('deprecated') ? deprecated">${$property->name}</var>{sep}, {/sep}{/foreach}</code></div>
 	{/while}
 
 </div>

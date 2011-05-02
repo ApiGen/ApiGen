@@ -290,6 +290,10 @@ div.smallList {
 	margin:0;
 }
 
+.deprecated {
+	opacity: .5;
+}
+
 
 
 #footer {
