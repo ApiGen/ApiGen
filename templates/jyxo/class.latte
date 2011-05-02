@@ -65,7 +65,7 @@
 				{continueIf $annotation == 'property-write'}
 				{continueIf $annotation == 'method'}
 				{foreach $values as $value}
-					<b>{$annotation|ucfirst}:</b>
+					<b>{$annotation|ucfirst}{if $value}:{/if}</b>
 					{!$value|annotation:$annotation:$class}<br />
 				{/foreach}
 			{/foreach}
