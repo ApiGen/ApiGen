@@ -70,9 +70,9 @@ try {
 		printf("With library %s\n", $config->library[0]);
 	}
 	if (count($config->exclude) > 1) {
-		printf("Excluding directories\n %s\n", implode("\n ", $config->exclude));
+		printf("Excluding\n %s\n", implode("\n ", $config->exclude));
 	} elseif (!empty($config->exclude)) {
-		printf("Excluding directory %s\n", $config->exclude[0]);
+		printf("Excluding %s\n", $config->exclude[0]);
 	}
 	list($count, $countInternal) = $generator->parse();
 	printf("Found %d classes and other %d used internal classes\n", $count, $countInternal);
@@ -116,7 +116,7 @@ Options:
 	--source        <path>  Source directory to parse (can be used multiple times to specify multiple directories)
 	--library       <path>  Additional libraries directory to parse (can be used multiple times to specify multiple directories)
 	--destination   <path>  Directory where to save the generated documentation
-	--exclude       <path>  Exclude directory from parsing (can be used multiple times to specify multiple directories)
+	--exclude       <path>  Exclude directory or file from parsing (can be used multiple times to specify multiple directories or files)
 	--title         <value> Title of generated documentation
 	--base-url      <value> Documentation base URI
 	--google-cse    <value> Google Custom Search ID

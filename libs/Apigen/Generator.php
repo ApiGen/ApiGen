@@ -84,7 +84,9 @@ class Generator extends Nette\Object
 					continue;
 				}
 				foreach ($this->config->exclude as $exclude) {
-					if (0 === strpos($entry->getPathName(), $exclude . DIRECTORY_SEPARATOR)) {
+					if (is_dir($exclude) && 0 === strpos($entry->getPathName(), $exclude . DIRECTORY_SEPARATOR)) {
+						continue 2;
+					} elseif ($exclude === $entry->getPathName()) {
 						continue 2;
 					}
 				}
