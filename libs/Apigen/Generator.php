@@ -246,9 +246,9 @@ class Generator extends Nette\Object
 				+ count($namespaces)
 				+ count($packages)
 				+ count($this->config->templates['common'])
-				+ count(array_filter(array_unique(array_map(function(ApiReflection $class) {
-					return $class->getFileName();
-				}, $allClasses))))
+				+ count(array_filter($allClasses, function(ApiReflection $class) {
+					return $class->isTokenized();
+				}))
 			);
 		}
 
@@ -385,10 +385,9 @@ class Generator extends Nette\Object
 			$this->incrementProgressBar();
 
 			// generate source codes
-			if ($class->isUserDefined() && !isset($generatedFiles[$class->getFileName()])) {
-				$template->source = $fshl->highlightString('PHP', file_get_contents($file));
+			if ($class->isTokenized()) {
+				$template->source = $fshl->highlightString('PHP', file_get_contents($class->getFileName()));
 				$template->setFile($templatePath . '/' . $this->config->templates['source'])->save($this->forceDir($destination . '/' . $this->getSourceLink($class, false)));
-				$generatedFiles[$file] = true;
 
 				$this->incrementProgressBar();
 			}
@@ -490,10 +489,6 @@ class Generator extends Nette\Object
 	 */
 	public function getSourceLink($element, $withLine = true)
 	{
-		if (!isset($this->config->filenames['source'])) {
-			throw new Exception('Source output filename not defined.', Exception::INVALID_CONFIG);
-		}
-
 		$class = $element instanceof ApiReflection ? $element : $element->getDeclaringClass();
 		if ($class->isInternal()) {
 			static $manual = 'http://php.net/manual';
