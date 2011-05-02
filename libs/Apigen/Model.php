@@ -69,9 +69,12 @@ class Model extends NetteX\Object
 			$found = array_merge($found, $class->getInterfaceNames());
 
 			foreach ($class->getOwnMethods() as $method) {
-				foreach($method->getParameters() as $param) { // type hints
-					if ($tmp = $param->getClass()) {
-						$found[] = $tmp->getName();
+				foreach ($method->getParameters() as $param) { // type hints
+					try {
+						if ($tmp = $param->getClass()) {
+							$found[] = $tmp->getName();
+						}
+					} catch (\ReflectionException $e) {
 					}
 				}
 
