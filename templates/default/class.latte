@@ -62,6 +62,7 @@
 			{foreach $class->annotations as $annotation => $values}
 				{continueIf $annotation == 'property'}
 				{continueIf $annotation == 'property-read'}
+				{continueIf $annotation == 'property-write'}
 				{continueIf $annotation == 'method'}
 				{foreach $values as $value}
 					<b>{$annotation|ucfirst}:</b>
