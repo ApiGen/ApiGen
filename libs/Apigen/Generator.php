@@ -104,6 +104,10 @@ class Generator extends Nette\Object
 			}
 		}
 
+		if (empty($files)) {
+			throw new Exception("No PHP files found.", Exception::INVALID_CONFIG);
+		}
+
 		if ($this->config->progressbar) {
 			$this->prepareProgressBar(array_sum($files));
 		}
