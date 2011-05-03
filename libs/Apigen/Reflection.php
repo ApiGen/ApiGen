@@ -172,8 +172,8 @@ class Reflection
 	public function getAnnotations()
 	{
 		$annotations = $this->reflection->getAnnotations();
-		// Unsupported annotations
-		foreach (array('property', 'property-read', 'property-write', 'method') as $annotation) {
+		// Unsupported or deprecated annotations
+		foreach (array('property', 'property-read', 'property-write', 'method', 'abstract', 'final', 'filesource') as $annotation) {
 			unset($annotations[$annotation]);
 		}
 		return $annotations;
