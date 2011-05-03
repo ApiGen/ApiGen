@@ -506,6 +506,10 @@ class Generator extends Nette\Object
 	 */
 	public function getSourceLink($element, $withLine = true)
 	{
+		if (!isset($this->config->filenames['source'])) {
+			throw new Exception('Source output filename not defined.', Exception::INVALID_CONFIG);
+		}
+
 		$class = $element instanceof ApiReflection ? $element : $element->getDeclaringClass();
 		if ($class->isInternal()) {
 			static $manual = 'http://php.net/manual';
