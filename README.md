@@ -1,8 +1,8 @@
-# APIGen - TokenReflection version
+# ApiGen - TokenReflection version
 
 This is an unstable development branch. Use it for testing only. Anything can change anytime :)
 
-However this is the future of our Apigen fork - not relying on the internal reflection (and having to include and parse the processed files) but using the TokenReflection library (which will be released soon) and emulating the reflection interface using only the tokenized PHP source. This approach has a couple of disadvantages but a huge number of advantages. And some of them are pretty damn cool :)
+However this is the future of our ApiGen fork - not relying on the internal reflection (and having to include and parse the processed files) but using the TokenReflection library (which will be released soon) and emulating the reflection interface using only the tokenized PHP source. This approach has a couple of disadvantages but a huge number of advantages. And some of them are pretty damn cool :)
 
 When this branch achieves certain level of stability (we have set ourselves some goals internally), we plan to ask several friends of ours to test it in real environment. And if those tests turn out OK, we will celebrate for a week or two, merge this branch to the master and continue development there.
 
