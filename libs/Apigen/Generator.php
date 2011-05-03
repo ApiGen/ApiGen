@@ -76,10 +76,19 @@ class Generator extends Nette\Object
 
 		$files = array();
 		foreach (array_merge($this->config->source, $this->config->library) as $source) {
-			foreach (new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($source)) as $entry) {
-				if (!$entry->isFile()) {
-					continue;
+			$entries = array();
+			if (is_dir($source)) {
+				foreach (new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($source)) as $entry) {
+					if (!$entry->isFile()) {
+						continue;
+					}
+					$entries[] = $entry;
 				}
+			} else {
+				$entries[] = new \SplFileInfo($source);
+			}
+
+			foreach ($entries as $entry) {
 				if (!preg_match('~\\.php$~i', $entry->getFilename())) {
 					continue;
 				}

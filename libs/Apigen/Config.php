@@ -192,17 +192,17 @@ class Config
 		}
 
 		if (empty($this->config['source'])) {
-			throw new Exception('Source directory is not set', Exception::INVALID_CONFIG);
+			throw new Exception('Source is not set', Exception::INVALID_CONFIG);
 		}
 		foreach ($this->config['source'] as $source) {
-			if (!is_dir($source)) {
-				throw new Exception(sprintf('Source directory %s doesn\'t exist', $source), Exception::INVALID_CONFIG);
+			if (!file_exists($source)) {
+				throw new Exception(sprintf('Source %s doesn\'t exist', $source), Exception::INVALID_CONFIG);
 			}
 		}
 		foreach ($this->config['source'] as $source) {
 			foreach ($this->config['source'] as $source2) {
 				if ($source !== $source2 && 0 === strpos($source, $source2)) {
-					throw new Exception(sprintf('Source directories %s and %s overlap', $source, $source2), Exception::INVALID_CONFIG);
+					throw new Exception(sprintf('Sources %s and %s overlap', $source, $source2), Exception::INVALID_CONFIG);
 				}
 			}
 		}

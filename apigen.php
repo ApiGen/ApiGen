@@ -60,9 +60,9 @@ try {
 
 	// Scan
 	if (count($config->source) > 1) {
-		printf("Scanning directories\n %s\n", implode("\n ", $config->source));
+		printf("Scanning\n %s\n", implode("\n ", $config->source));
 	} else {
-		printf("Scanning directory %s\n", $config->source[0]);
+		printf("Scanning %s\n", $config->source[0]);
 	}
 	if (count($config->library) > 1) {
 		printf("With libraries\n %s\n", implode("\n ", $config->library));
@@ -113,7 +113,7 @@ Usage:
 
 Options:
 	--config        <path>  Config file
-	--source        <path>  Source directory to parse (can be used multiple times to specify multiple directories)
+	--source        <path>  Source directory or file to parse (can be used multiple times to specify multiple directories or files)
 	--library       <path>  Additional libraries directory to parse (can be used multiple times to specify multiple directories)
 	--destination   <path>  Directory where to save the generated documentation
 	--exclude       <path>  Exclude directory or file from parsing (can be used multiple times to specify multiple directories or files)
