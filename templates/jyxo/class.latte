@@ -27,11 +27,11 @@
 			{foreach $tree as $item}
 			<dd style="padding-left:{=($iterator->counter - 1) * 30}px">
 				<img src="resources/inherit.gif" alt="Extended by" n:if="$iterator->counter > 1">
-				{if $item->internal || !$item->library}
+				{if $item->documented}
 				<a href="{$item|classLink}" n:tag-if="!$iterator->last">{last}<b>{/last}{$item->name}{last}</b>{/last}</a>
 				{else}{$item->name}{/if}
 				{if $item->ownInterfaces} implements {foreach $item->ownInterfaces as $interface}
-					<a href="{$interface|classLink}" n:tag-if="$interface->internal || !$interface->library">{$interface->name}</a>{sep}, {/sep}
+					<a href="{$interface|classLink}" n:tag-if="$interface->documented">{$interface->name}</a>{sep}, {/sep}
 				{/foreach}{/if}
 			</dd>
 			{/foreach}
@@ -39,22 +39,22 @@
 
 		<div n:if="$directSubClasses">
 			<h4>Direct Known Subclasses</h4>
-			{foreach $directSubClasses as $item}<a href="{$item|classLink}">{$item->name}</a>{sep}, {/sep}{/foreach}
+			{foreach $directSubClasses as $item}<a href="{$item|classLink}" n:tag-if="$item->documented">{$item->name}</a>{sep}, {/sep}{/foreach}
 		</div>
 
 		<div n:if="$indirectSubClasses">
 			<h4>Indirect Known Subclasses</h4>
-			{foreach $indirectSubClasses as $item}<a href="{$item|classLink}">{$item->name}</a>{sep}, {/sep}{/foreach}
+			{foreach $indirectSubClasses as $item}<a href="{$item|classLink}" n:tag-if="$item->documented">{$item->name}</a>{sep}, {/sep}{/foreach}
 		</div>
 
 		<div n:if="$directImplementers">
 			<h4>Direct Known Implementers</h4>
-			{foreach $directImplementers as $item}<a href="{$item|classLink}">{$item->name}</a>{sep}, {/sep}{/foreach}
+			{foreach $directImplementers as $item}<a href="{$item|classLink}" n:tag-if="$item->documented">{$item->name}</a>{sep}, {/sep}{/foreach}
 		</div>
 
 		<div n:if="$indirectImplementers">
 			<h4>Indirect Known Implementers</h4>
-			{foreach $indirectImplementers as $item}<a href="{$item|classLink}">{$item->name}</a>{sep}, {/sep}{/foreach}
+			{foreach $indirectImplementers as $item}<a href="{$item|classLink}" n:tag-if="$item->documented">{$item->name}</a>{sep}, {/sep}{/foreach}
 		</div>
 
 		<div class="classInfo">
@@ -65,7 +65,7 @@
 					{!$value|annotation:$annotation:$class}<br />
 				{/foreach}
 			{/foreach}
-			{if $class->internal}<b>Documented at</b> <a href="{$class|sourceLink}">php.net</a>{elseif $class->userDefined}<b>Located at</b> <a href="{$class|sourceLink}">{$fileName}</a>{/if}<br>
+			{if $class->internal}<b>Documented at</b> <a href="{$class|sourceLink}">php.net</a>{else}<b>Located at</b> <a href="{$class|sourceLink}">{$fileName}</a>{/if}<br>
 		</div>
 	</div>
 
@@ -89,7 +89,7 @@
 				<a href="{$method|sourceLink}" title="Go to {$class->internal ? 'PHP documentation' : 'source code'}"><b>{$method->name}</b></a>(
 				{foreach $method->parameters as $parameter}
 					{if $parameter->array}array
-					{elseif $parameter->className}<a href="{$parameter->className|classLink}" n:tag-if="isset($parameter->className) && ($parsedClassed[$parameter->className]->internal || !$parsedClassed[$parameter->className]->library)">{$parameter->className}</a>
+					{elseif $parameter->className}<a href="{$parameter->className|classLink}" n:tag-if="isset($parameter->className) && $parsedClassed[$parameter->className]->documented">{$parameter->className}</a>
 					{else}{foreach $template->getTypes($method, $parameter->position) as $item}<a href="{$item->class|classLink}" n:tag-if="$item->class">{$item->name}</a>{sep}|{/sep}{/foreach}{/if}
 					<var>{if $parameter->passedByReference}&amp; {/if}${$parameter->name}</var>{if $parameter->defaultValueAvailable} = {!$parameter->defaultValueDefinition|highlightPHP}{/if}{sep}, {/sep}
 				{/foreach}
@@ -168,9 +168,9 @@
 
 
 	{foreach $class->inheritedMethods as $parentName => $methods}
-	<h2>Methods Inherited From <a href="{$parentName|classLink}#methodSummary" n:tag-if="!$methods['class']->library">{$parentName}</a></h2>
+	<h2>Methods Inherited From <a href="{$parentName|classLink}#methodSummary" n:tag-if="$methods['class']->documented">{$parentName}</a></h2>
 	<div class="box parentMethods"><code>
-		{foreach $methods['methods'] as $method}<a href="{$method|methodLink}" n:tag-if="!$methods['class']->library">{$method->name}()</a>{sep}, {/sep}{/foreach}
+		{foreach $methods['methods'] as $method}<a href="{$method|methodLink}" n:tag-if="$methods['class']->documented">{$method->name}()</a>{sep}, {/sep}{/foreach}
 	</code></div>
 	{/foreach}
 
@@ -201,8 +201,8 @@
 	</div>
 
 	{foreach $class->inheritedConstants as $parentName => $constants}
-	<h2>Constants Inherited From <a href="{$parentName|classLink}#constantSummary" n:tag-if="!$constants['class']->library">{$parentName}</a></h2>
-	<div class="box parentConstants"><code>{foreach $constants['constants'] as $constant}<a href="{$constant|constantLink}" n:tag-if="!$constants['class']->library"><code>{$constant->name}</code></a>{sep}, {/sep}{/foreach}</code></div>
+	<h2>Constants Inherited From <a href="{$parentName|classLink}#constantSummary" n:tag-if="$constants['class']->documented">{$parentName}</a></h2>
+	<div class="box parentConstants"><code>{foreach $constants['constants'] as $constant}<a href="{$constant|constantLink}" n:tag-if="$constants['class']->documented"><code>{$constant->name}</code></a>{sep}, {/sep}{/foreach}</code></div>
 	{/foreach}
 
 
@@ -226,8 +226,8 @@
 	</div>
 
 	{foreach $class->inheritedProperties as $parentName => $properties}
-	<h2>Properties Inherited From <a href="{$parentName|classLink}#propertySummary" n:tag-if="!$properties['class']->library">{$parentName}</a></h2>
-	<div class="box parentProperties"><code>{foreach $properties['properties'] as $property}<var><a href="{$property|propertyLink}" n:tag-if="!$properties['class']->library">${$property->name}</a></var>{sep}, {/sep}{/foreach}</code></div>
+	<h2>Properties Inherited From <a href="{$parentName|classLink}#propertySummary" n:tag-if="$properties['class']->documented">{$parentName}</a></h2>
+	<div class="box parentProperties"><code>{foreach $properties['properties'] as $property}<var><a href="{$property|propertyLink}" n:tag-if="$properties['class']->documented">${$property->name}</a></var>{sep}, {/sep}{/foreach}</code></div>
 	{/foreach}
 
 </div>

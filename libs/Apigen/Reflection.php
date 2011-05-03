@@ -45,22 +45,14 @@ class Reflection
 	private $generator;
 
 	/**
-	 * Custom reflection data.
-	 *
-	 * @var array
-	 */
-	private $customData = array();
-
-	/**
 	 * Constructor.
 	 *
 	 * Sets the inspected class reflection.
 	 *
 	 * @param \TokenReflection\IReflectionClass $reflection Inspected class reflection
 	 * @param \Apigen\Generator $generator Apigen generator
-	 * @param array $customData Custom reflection data
 	 */
-	public function __construct(IReflectionClass $reflection, Generator $generator, array $customData = array())
+	public function __construct(IReflectionClass $reflection, Generator $generator)
 	{
 		if (empty(self::$methods)) {
 			self::$methods = array_flip(get_class_methods($this));
@@ -75,7 +67,6 @@ class Reflection
 
 		$this->reflection = $reflection;
 		$this->generator = $generator;
-		$this->customData = $customData;
 	}
 
 	/**
@@ -89,10 +80,6 @@ class Reflection
 	 */
 	public function __get($name)
 	{
-		if (isset($this->customData[$name])) {
-			return $this->customData[$name];
-		}
-
 		$key = ucfirst($name);
 		if (isset(self::$methods['get' . $key])) {
 			return $this->{'get' . $key}();
@@ -113,23 +100,8 @@ class Reflection
 	 */
 	public function __isset($name)
 	{
-		if (isset($this->customData[$name])) {
-			return true;
-		}
-
 		$key = ucfirst($name);
 		return isset(self::$methods['get' . $key]) || isset(self::$methods['is' . $key]) || $this->reflection->__isset($name);
-	}
-
-	/**
-	 * Stores a value to the reflection custom values storage.
-	 *
-	 * @param mixed $name Property name
-	 * @param mixed $value Property value
-	 */
-	public function __set($name, $value)
-	{
-		$this->customData[$name] = $value;
 	}
 
 	/**
@@ -223,7 +195,7 @@ class Reflection
 	/**
 	 * Returns a parent class reflection encapsulated by this class.
 	 *
-	 * @return \Apigen\TokenReflectionCustomClassReflection
+	 * @return \Apigen\Reflection
 	 */
 	public function getParentClass()
 	{
@@ -283,7 +255,7 @@ class Reflection
 	{
 		$name = $this->name;
 		return array_filter($this->generator->getClasses(), function(Reflection $class) use($name) {
-			if ($class->library || !$class->isSubclassOf($name)) {
+			if (!$class->isSubclassOf($name)) {
 				return false;
 			}
 
@@ -300,7 +272,7 @@ class Reflection
 	{
 		$name = $this->name;
 		return array_filter($this->generator->getClasses(), function(Reflection $class) use($name) {
-			if ($class->library || !$class->isSubclassOf($name)) {
+			if (!$class->isSubclassOf($name)) {
 				return false;
 			}
 
@@ -321,7 +293,7 @@ class Reflection
 
 		$name = $this->name;
 		return array_filter($this->generator->getClasses(), function(Reflection $class) use($name) {
-			if ($class->library || !$class->implementsInterface($name)) {
+			if (!$class->implementsInterface($name)) {
 				return false;
 			}
 
@@ -342,7 +314,7 @@ class Reflection
 
 		$name = $this->name;
 		return array_filter($this->generator->getClasses(), function(Reflection $class) use($name) {
-			if ($class->library || !$class->implementsInterface($name)) {
+			if (!$class->implementsInterface($name)) {
 				return false;
 			}
 
@@ -432,5 +404,33 @@ class Reflection
 				$this->getParentClasses()
 			)
 		);
+	}
+
+	/**
+	 * Returns if the class should be documented.
+	 *
+	 * @return boolean
+	 */
+	public function isDocumented()
+	{
+		if ($this->reflection->isInternal()) {
+			return true;
+		}
+
+		if (!$this->reflection->isTokenized()) {
+			return false;
+		}
+
+		if (!$this->generator->config->deprecated && $this->reflection->isDeprecated()) {
+			return false;
+		}
+
+		foreach ($this->generator->config->library as $path) {
+			if (0 === strpos($this->reflection->getFilename(), $path)) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 }

@@ -235,7 +235,7 @@ class Template extends Nette\Templating\FileTemplate
 		}
 
 		$name = isset($this->generator->classes["$namespace\\$type"]) ? "$namespace\\$type" : (isset($this->generator->classes[$type]) ? $type : null);
-		if (null !== $name && $this->generator->classes[$name]->library) {
+		if (null !== $name && !$this->generator->classes[$name]->isDocumented()) {
 			$name = null;
 	}
 		return $name;
@@ -269,14 +269,10 @@ class Template extends Nette\Templating\FileTemplate
 			|| null !== ($className = $this->resolveType($link, null !== $context ? $context->getNamespaceName() : null))) {
 			// Class
 			$context = $this->generator->classes[$className];
-			return $context->library ? null : '<a href="' . $this->classLink($context) . '">' . $this->escapeHtml($className) . '</a>';
+			return !$context->isDocumented() ? null : '<a href="' . $this->classLink($context) . '">' . $this->escapeHtml($className) . '</a>';
 		}
 
-		if ($context->library) {
-			return null;
-		}
-
-		if (null === $context) {
+		if (null === $context || !$context->isDocumented()) {
 			return null;
 		} elseif ($context->hasProperty($link)) {
 			// Class property

@@ -118,19 +118,8 @@ class Generator extends Nette\Object
 		}
 
 		$generator = $this;
-		$library = $this->config->library;
-		$this->classes = array_map(function(ReflectionClass $class) use($generator, $library) {
-			$isLibrary = (!$class->isInternal() && !$class->isTokenized()) || (!$generator->config->deprecated && $class->isDeprecated());
-			if (!$isLibrary) {
-				foreach ($library as $path) {
-					if (0 === strpos($class->getFilename(), $path)) {
-							$isLibrary = true;
-						break;
-					}
-				}
-			}
-
-			return new ApiReflection($class, $generator, array('library' => $isLibrary));
+		$this->classes = array_map(function(ReflectionClass $class) use ($generator) {
+			return new ApiReflection($class, $generator);
 		}, $broker->getClasses(Backend::TOKENIZED_CLASSES | Backend::INTERNAL_CLASSES | Backend::NONEXISTENT_CLASSES));
 
 		return array(
@@ -230,7 +219,7 @@ class Generator extends Nette\Object
 		$namespaces = array();
 		$allClasses = array();
 		foreach ($this->classes as $class) {
-			if ($class->isInternal() || !$class->library) {
+			if ($class->isDocumented()) {
 				$packages[$class->getPackageName()]['classes'][$class->getName()] = $class;
 				if ($class->inNamespace()) {
 					$packages[$class->getPackageName()]['namespaces'][$class->getNamespaceName()] = true;
