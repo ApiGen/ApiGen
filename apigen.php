@@ -40,8 +40,8 @@ try {
 		'config:',
 		'source:',
 		'destination:',
-		'skip-docs-path:',
-		'skip-docs-prefix:',
+		'skip-doc-path:',
+		'skip-doc-prefix:',
 		'exclude:',
 		'title:',
 		'base-url:',
@@ -119,8 +119,8 @@ Options:
 	--source           <path>  Source file or directory to parse (can be used multiple times)
 	--destination      <path>  Directory where to save the generated documentation
 	--exclude          <path>  Exclude file or directory from processing (can be used multiple times)
-	--skip-docs-path   <value> Don't generate documentation for classes from this file or directory (can be used multiple times)
-	--skip-docs-prefix <value> Don't generate documentation for classes with this name prefix (can be used multiple times)
+	--skip-doc-path   <value> Don't generate documentation for classes from this file or directory (can be used multiple times)
+	--skip-doc-prefix <value> Don't generate documentation for classes with this name prefix (can be used multiple times)
 	--title            <value> Title of generated documentation
 	--base-url         <value> Documentation base URI
 	--google-cse       <value> Google Custom Search ID

@@ -167,6 +167,10 @@ class Config
 			}
 		}
 
+		$this->config['skipDocPrefix'] = array_map(function($prefix) {
+			return ltrim($prefix, '\\');
+		}, $this->config['skipDocPrefix']);
+
 		// Check
 		$this->check();
 
@@ -209,10 +213,6 @@ class Config
 				}
 			}
 		}
-
-		$this->config['skipDocPrefix'] = array_map(function($prefix) {
-			return ltrim($prefix, '//');
-		}, $this->config['skipDocPrefix']);
 
 		if (empty($this->config['accessLevels'])) {
 			throw new Exception('No supported access level given', Exception::INVALID_CONFIG);

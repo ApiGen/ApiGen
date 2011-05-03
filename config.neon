@@ -1,6 +1,8 @@
 source: ''
 destination: ''
 exclude: ''
+skipDocPath: ''
+skipDocPrefix: ''
 title: ''
 baseUrl: ''
 googleCse: ''
