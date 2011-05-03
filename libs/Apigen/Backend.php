@@ -42,7 +42,7 @@ class Backend extends Memory
 
 				foreach ($method->getParameters() as $param) {
 					if ($hint = $param->getClass()) {
-						$allClasses = $this->addClass($declared, $allClasses, $hint->getName());
+						$allClasses = $this->addClass(array(), $allClasses, $hint->getName());
 					}
 				}
 			}
@@ -64,18 +64,18 @@ class Backend extends Memory
 	}
 
 	/**
-	 * Add class to list of classes.
+	 * Adds a class to list of classes.
 	 *
-	 * @param array $declared
-	 * @param array $allClasses
-	 * @param string $name
+	 * @param array $declared Array of declared classes (if empty, the class will be always added)
+	 * @param array $allClasses Array with all classes parsed so far
+	 * @param string $name Class name
 	 * @return array
 	 */
 	private function addClass(array $declared, array $allClasses, $name)
 	{
 		$name = ltrim($name, '\\');
 
-		if (!isset($declared[$name]) || isset($allClasses[self::TOKENIZED_CLASSES][$name])  || isset($allClasses[self::INTERNAL_CLASSES][$name])) {
+		if ((!empty($declared) && !isset($declared[$name])) || isset($allClasses[self::TOKENIZED_CLASSES][$name])  || isset($allClasses[self::INTERNAL_CLASSES][$name])) {
 			return $allClasses;
 		}
 
@@ -89,7 +89,7 @@ class Backend extends Memory
 					$allClasses[self::INTERNAL_CLASSES][$parentName] = $parentClass;
 				}
 			}
-		} elseif (!$parameterClass->isUserDefined()) {
+		} else {
 			$allClasses[self::NONEXISTENT_CLASSES][$name] = $parameterClass;
 		}
 

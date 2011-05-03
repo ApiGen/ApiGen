@@ -104,23 +104,26 @@ class Generator extends Nette\Object
 			$this->incrementProgressBar($size);
 		}
 
-		$tokenized = $broker->getClasses(Backend::TOKENIZED_CLASSES);
-		$internal = $broker->getClasses(Backend::INTERNAL_CLASSES);
-
 		$generator = $this;
 		$library = $this->config->library;
 		$this->classes = array_map(function(ReflectionClass $class) use($generator, $library) {
-			$reflection = new ApiReflection($class, $generator, array('library' => false));
-			foreach ($library as $path) {
-				if (0 === strpos($class->getFilename(), $path)) {
-					$reflection->library = true;
-					break;
+			$isLibrary = !$class->isInternal() && !$class->isTokenized();
+			if (!$isLibrary) {
+				foreach ($library as $path) {
+					if (0 === strpos($class->getFilename(), $path)) {
+							$isLibrary = true;
+						break;
+					}
 				}
 			}
-			return $reflection;
-		}, array_merge($tokenized, $internal));
 
-		return array(count($tokenized), count($internal));
+			return new ApiReflection($class, $generator, array('library' => $isLibrary));
+		}, $broker->getClasses(Backend::TOKENIZED_CLASSES | Backend::INTERNAL_CLASSES | Backend::NONEXISTENT_CLASSES));
+
+		return array(
+			count($broker->getClasses(Backend::TOKENIZED_CLASSES)),
+			count($broker->getClasses(Backend::INTERNAL_CLASSES))
+		);
 	}
 
 	/**
@@ -214,7 +217,7 @@ class Generator extends Nette\Object
 		$namespaces = array();
 		$allClasses = array();
 		foreach ($this->classes as $class) {
-			if (!$class->library) {
+			if ($class->isInternal() || !$class->library) {
 				$packages[$class->getPackageName()]['classes'][$class->getName()] = $class;
 				if ($class->inNamespace()) {
 					$packages[$class->getPackageName()]['namespaces'][$class->getNamespaceName()] = true;
@@ -263,7 +266,7 @@ class Generator extends Nette\Object
 		$template->config = $this->config;
 
 		// all classes
-		$template->allClasses = $allClasses;
+		$template->parsedClassed = $this->classes;;
 
 		// generate summary files
 		$template->namespaces = array_keys($namespaces);

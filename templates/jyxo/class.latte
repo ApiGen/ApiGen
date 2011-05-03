@@ -27,11 +27,11 @@
 			{foreach $tree as $item}
 			<dd style="padding-left:{=($iterator->counter - 1) * 30}px">
 				<img src="resources/inherit.gif" alt="Extended by" n:if="$iterator->counter > 1">
-				{if ($item->internal || $item->tokenized) && !$item->library}
+				{if $item->internal || !$item->library}
 				<a href="{$item|classLink}" n:tag-if="!$iterator->last">{last}<b>{/last}{$item->name}{last}</b>{/last}</a>
 				{else}{$item->name}{/if}
 				{if $item->ownInterfaces} implements {foreach $item->ownInterfaces as $interface}
-					<a href="{$interface|classLink}" n:tag-if="($interface->internal || $interface->tokenized) && !$interface->library">{$interface->name}</a>{sep}, {/sep}
+					<a href="{$interface|classLink}" n:tag-if="$interface->internal || !$interface->library">{$interface->name}</a>{sep}, {/sep}
 				{/foreach}{/if}
 			</dd>
 			{/foreach}
@@ -92,7 +92,7 @@
 				<a href="{$method|sourceLink}" title="Go to {$class->internal ? 'PHP documentation' : 'source code'}"><b>{$method->name}</b></a>(
 				{foreach $method->parameters as $parameter}
 					{if $parameter->array}array
-					{elseif $parameter->className}<a href="{$parameter->className|classLink}" n:tag-if="isset($allClasses[$parameter->className]) && !$allClasses[$parameter->className]->library">{$parameter->className}</a>
+					{elseif $parameter->className}<a href="{$parameter->className|classLink}" n:tag-if="$parsedClassed[$parameter->className]->internal || !$parsedClassed[$parameter->className]->library">{$parameter->className}</a>
 					{else}{foreach $template->getTypes($method, $parameter->position) as $item}<a href="{$item->class|classLink}" n:tag-if="$item->class">{$item->name}</a>{sep}|{/sep}{/foreach}{/if}
 					<var>{if $parameter->passedByReference}&amp; {/if}${$parameter->name}</var>{if $parameter->defaultValueAvailable} = {!$parameter->defaultValueDefinition|highlightPHP}{/if}{sep}, {/sep}
 				{/foreach}
