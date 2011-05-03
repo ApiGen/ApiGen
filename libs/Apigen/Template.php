@@ -153,6 +153,7 @@ class Template extends Nette\Templating\FileTemplate
 					return '<a href="' . $that->packageLink($value) . '">' . $that->escapeHtml($value) . '</a>';
 					break;
 				case 'see':
+				case 'uses':
 					return $that->resolveClassLink($value, $parent) ?: $that->docline($value);
 					break;
 				default:
