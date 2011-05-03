@@ -202,8 +202,7 @@ class Reflection
 	public function getParentClasses()
 	{
 		$classes = $this->generator->getClasses();
-		$generator = $this->generator;
-		return array_map(function($class) use ($classes, $generator) {
+		return array_map(function($class) use ($classes) {
 			return $classes[$class->getName()];
 		}, $this->reflection->getParentClasses());
 	}
@@ -216,8 +215,7 @@ class Reflection
 	public function getInterfaces()
 	{
 		$classes = $this->generator->getClasses();
-		$generator = $this->generator;
-		return array_map(function($class) use ($classes, $generator) {
+		return array_map(function($class) use ($classes) {
 			return $classes[$class->getName()];
 		}, $this->reflection->getInterfaces());
 	}
@@ -230,8 +228,7 @@ class Reflection
 	public function getOwnInterfaces()
 	{
 		$classes = $this->generator->getClasses();
-		$generator = $this->generator;
-		return array_map(function($class) use ($classes, $generator) {
+		return array_map(function($class) use ($classes) {
 			return $classes[$class->getName()];
 		}, $this->reflection->getOwnInterfaces());
 	}
