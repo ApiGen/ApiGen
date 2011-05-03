@@ -165,6 +165,21 @@ class Reflection
 	}
 
 	/**
+	 * Returns all supported annotations.
+	 *
+	 * @return array
+	 */
+	public function getAnnotations()
+	{
+		$annotations = $this->reflection->getAnnotations();
+		// Unsupported annotations
+		foreach (array('property', 'property-read', 'property-write', 'method') as $annotation) {
+			unset($annotations[$annotation]);
+		}
+		return $annotations;
+	}
+
+	/**
 	 * Returns a parent class reflection encapsulated by this class.
 	 *
 	 * @return \Apigen\TokenReflectionCustomClassReflection
