@@ -94,17 +94,17 @@ class Template extends Nette\Templating\FileTemplate
 			'#<(code|pre)>(.+?)</\1>#s',
 			'codeBlockSyntax'
 		);
-		// {@link ...} resolving
-		$texy->registerLinePattern(
-			function($parser, $matches) use ($that) {
-				$link = $that->resolveClassLink($matches[1], $that->class);
-				return null === $link ? $matches[0] : $parser->getTexy()->protect($link, \Texy::CONTENT_BLOCK);
-			},
-			'~{@link\\s+([^}]+)}~',
-			'resolveLinks'
-		);
 
 		// Documentation formatting
+		$this->registerHelper('resolveLinks', function($text, ApiReflection $class = null) use ($that) {
+			if (null === $class && !isset($that->class)) {
+				return $text;
+			}
+			$class = $class ?: $that->class;
+			return preg_replace_callback('~{@link\\s+([^}]+)}~', function ($matches) use ($class, $that) {
+				return $that->resolveClassLink($matches[1], $class) ?: $matches[0];
+			}, $text);
+		});
 		$this->registerHelper('docline', function($text) use ($texy) {
 			return $texy->processLine($text);
 		});

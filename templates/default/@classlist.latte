@@ -4,7 +4,7 @@
 {foreach $classes as $class}
 <tr>
 	<td class="nowrap" width="20%"><a href="{$class|classLink}">{ifset $namespace}{$class->shortName}{else}{$class->name}{/ifset}</a></td>
-	<td>{!$class|shortDescription|docline}</td>
+	<td>{!$class|shortDescription|docline|resolveLinks:$class}</td>
 </tr>
 {/foreach}
 </table>
@@ -16,7 +16,7 @@
 {foreach $interfaces as $interface}
 <tr>
 	<td class="nowrap" width="20%"><a href="{$interface|classLink}">{ifset $namespace}{$interface->shortName}{else}{$interface->name}{/ifset}</a></td>
-	<td>{!$interface|shortDescription|docline}</td>
+	<td>{!$interface|shortDescription|docline|resolveLinks:$class}</td>
 </tr>
 {/foreach}
 </table>
@@ -28,7 +28,7 @@
 {foreach $exceptions as $exception}
 <tr>
 	<td class="nowrap" width="20%"><a href="{$exception|classLink}">{ifset $namespace}{$exception->shortName}{else}{$exception->name}{/ifset}</a></td>
-	<td>{!$exception|shortDescription|docline}</td>
+	<td>{!$exception|shortDescription|docline|resolveLinks:$class}</td>
 </tr>
 {/foreach}
 </table>

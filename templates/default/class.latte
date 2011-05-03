@@ -20,7 +20,7 @@
 		<h1>{if $class->deprecated}Deprecated {/if}{if $class->interface}Interface{else}Class{/if} {$class->shortName}</h1>
 
 		<div class="classDescription" n:if="$class->docComment">
-		{!$class|longDescription|docblock}
+		{!$class|longDescription|docblock|resolveLinks}
 		</div>
 
 		<dl class="tree" n:if="$class->parentClass || end($tree)->ownInterfaces">
@@ -96,11 +96,11 @@
 			)</code>
 
 			<div class="short">
-				{!$method|shortDescription|docblock}
+				{!$method|shortDescription|docblock|resolveLinks}
 			</div>
 
 			<div class="detailed">
-				{!$method|longDescription|docblock}
+				{!$method|longDescription|docblock|resolveLinks}
 
 				{var $annotations = $method->annotations}
 
@@ -109,7 +109,7 @@
 					{if $annotations['deprecated']}
 					<div class="smallList">
 					{foreach $annotations['deprecated'] as $description}{if $description}
-					{!$description|docline}<br />
+					{!$description|docline|resolveLinks}<br />
 					{/if}{/foreach}
 					</div>
 					{/if}
@@ -194,7 +194,7 @@
 			</code></td>
 			<td width="1%"><code><a href="{$constant|sourceLink}" title="Go to {$class->internal ? 'PHP documentation' : 'source code'}"><b>{$name}</b></a></code></td>
 			<td><code>{!$constant->valueDefinition|replaceRE:'#^(?:[ ]{4}|\t)#m',''|highlightPHP}</code></td>
-			<td>{!$constant|shortDescription|docline} <a href="#{$name}" class="anchor">#</a></td>
+			<td>{!$constant|shortDescription|docline|resolveLinks} <a href="#{$name}" class="anchor">#</a></td>
 		</tr>
 		{/foreach}
 		</table>
@@ -219,7 +219,7 @@
 
 			<td width="1%"><var><a href="{$property|sourceLink}" title="Go to {$class->internal ? 'PHP documentation' : 'source code'}">${$property->name}</a></var></td>
 			<td><pre>{!$property->defaultValueDefinition|replaceRE:'#^(?:[ ]{4}|\t)#m',''|highlightPHP}</pre></td>
-			<td>{!$property|shortDescription|docline} <a href="#${$property->name}" class="anchor">#</a></td>
+			<td>{!$property|shortDescription|docline|resolveLinks} <a href="#${$property->name}" class="anchor">#</a></td>
 		</tr>
 		{/foreach}
 		</table>
