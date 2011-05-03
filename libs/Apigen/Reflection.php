@@ -426,7 +426,7 @@ class Reflection
 		}
 
 		foreach ($this->generator->config->library as $path) {
-			if (0 === strpos($this->reflection->getFilename(), $path . DIRECTORY_SEPARATOR)) {
+			if ($this->reflection->getFilename() === $path || 0 === strpos($this->reflection->getFilename(), $path . DIRECTORY_SEPARATOR)) {
 				return false;
 			}
 		}

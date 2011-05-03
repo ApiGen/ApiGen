@@ -115,7 +115,7 @@ Usage:
 Options:
 	--config        <path>  Config file
 	--source        <path>  Source directory or file to parse (can be used multiple times to specify multiple directories or files)
-	--library       <path>  Additional libraries directory to parse (can be used multiple times to specify multiple directories)
+	--library       <path>  Additional libraries directory or file to parse (can be used multiple times to specify multiple directories or files)
 	--destination   <path>  Directory where to save the generated documentation
 	--exclude       <path>  Exclude directory or file from parsing (can be used multiple times to specify multiple directories or files)
 	--title         <value> Title of generated documentation

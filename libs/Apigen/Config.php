@@ -209,8 +209,8 @@ class Config
 			}
 		}
 		foreach ($this->config['library'] as $library) {
-			if (!is_dir($library)) {
-				throw new Exception(sprintf('Library directory %s doesn\'t exist', $library), Exception::INVALID_CONFIG);
+			if (!file_exists($library)) {
+				throw new Exception(sprintf('Library %s doesn\'t exist', $library), Exception::INVALID_CONFIG);
 			}
 		}
 
