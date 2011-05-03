@@ -158,6 +158,7 @@ class Config
 						$value = realpath($value);
 					}
 				});
+				sort($this->config[$option]);
 			} else {
 				if (file_exists($this->config[$option])) {
 					$this->config[$option] = realpath($this->config[$option]);
