@@ -292,6 +292,10 @@ tr .detailed {
 	display: none;
 }
 
+.deprecated {
+	opacity: .5;
+}
+
 .box {
 	border: 1px solid #ccc;
 	border-top: none;

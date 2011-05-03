@@ -74,7 +74,7 @@
 		<table class="summary">
 		<caption>Method Summary</caption>
 		{foreach $class->ownMethods as $method}
-		<tr data-order="{$method->name}" id="_{$method->name}">
+		<tr data-order="{$method->name}" id="_{$method->name}" n:class="$method->deprecated ? deprecated">
 			<td align="right" width="1%"><code class="nowrap">
 				{if $method->deprecated}deprecated{/if}
 				{if !$class->interface && $method->abstract}abstract{elseif $method->final}final{/if} {if $method->protected}protected{elseif $method->private}private{else}public{/if} {if $method->static}static{/if}
@@ -170,7 +170,7 @@
 	{foreach $class->inheritedMethods as $parentName => $methods}
 	<h2>Methods Inherited From <a href="{$parentName|classLink}#methodSummary" n:tag-if="$methods['class']->documented">{$parentName}</a></h2>
 	<div class="box parentMethods"><code>
-		{foreach $methods['methods'] as $method}<a href="{$method|methodLink}" n:tag-if="$methods['class']->documented">{$method->name}()</a>{sep}, {/sep}{/foreach}
+		{foreach $methods['methods'] as $method}<a href="{$method|methodLink}" n:tag-if="$methods['class']->documented"><span n:class="$method->deprecated ? deprecated">{$method->name}()</span></a>{sep}, {/sep}{/foreach}
 	</code></div>
 	{/foreach}
 
@@ -179,7 +179,7 @@
 		<table class="summary">
 		<caption>Constant Summary</caption>
 		{foreach $class->ownConstantReflections as $name => $constant}
-		<tr data-order="{$name}" id="{$name}">
+		<tr data-order="{$name}" id="{$name}" n:class="$constant->deprecated ? deprecated">
 			<td align="right" width="1%"><code class="nowrap">
 				{if $constant->deprecated}deprecated{/if}
 				{if $constant->hasAnnotation('var')}
@@ -202,7 +202,7 @@
 
 	{foreach $class->inheritedConstants as $parentName => $constants}
 	<h2>Constants Inherited From <a href="{$parentName|classLink}#constantSummary" n:tag-if="$constants['class']->documented">{$parentName}</a></h2>
-	<div class="box parentConstants"><code>{foreach $constants['constants'] as $constant}<a href="{$constant|constantLink}" n:tag-if="$constants['class']->documented"><code>{$constant->name}</code></a>{sep}, {/sep}{/foreach}</code></div>
+	<div class="box parentConstants"><code>{foreach $constants['constants'] as $constant}<a href="{$constant|constantLink}" n:tag-if="$constants['class']->documented"><code n:class="$constant->deprecated ? deprecated">{$constant->name}</code></a>{sep}, {/sep}{/foreach}</code></div>
 	{/foreach}
 
 
@@ -210,7 +210,7 @@
 		<table class="summary">
 		<caption>Property Summary</caption>
 		{foreach $class->ownProperties as $property}
-		<tr data-order="{$property->name}" id="${$property->name}">
+		<tr data-order="{$property->name}" id="${$property->name}" n:class="$property->deprecated ? deprecated">
 			<td align="right" width="1%"><code class="nowrap">
 				{if $property->deprecated}deprecated{/if}
 				{if $property->protected}protected{elseif $property->private}private{else}public{/if} {if $property->static}static{/if}
@@ -227,7 +227,7 @@
 
 	{foreach $class->inheritedProperties as $parentName => $properties}
 	<h2>Properties Inherited From <a href="{$parentName|classLink}#propertySummary" n:tag-if="$properties['class']->documented">{$parentName}</a></h2>
-	<div class="box parentProperties"><code>{foreach $properties['properties'] as $property}<var><a href="{$property|propertyLink}" n:tag-if="$properties['class']->documented">${$property->name}</a></var>{sep}, {/sep}{/foreach}</code></div>
+	<div class="box parentProperties"><code>{foreach $properties['properties'] as $property}<var n:class="$property->deprecated ? deprecated"><a href="{$property|propertyLink}" n:tag-if="$properties['class']->documented">${$property->name}</a></var>{sep}, {/sep}{/foreach}</code></div>
 	{/foreach}
 
 </div>
