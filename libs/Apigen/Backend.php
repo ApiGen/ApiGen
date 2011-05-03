@@ -42,7 +42,7 @@ class Backend extends Memory
 
 				foreach ($method->getParameters() as $param) {
 					if ($hint = $param->getClass()) {
-						$allClasses = $this->addClass(array(), $allClasses, $hint->getName());
+						$allClasses = $this->addClass($declared, $allClasses, $hint->getName());
 					}
 				}
 			}
@@ -66,7 +66,7 @@ class Backend extends Memory
 	/**
 	 * Adds a class to list of classes.
 	 *
-	 * @param array $declared Array of declared classes (if empty, the class will be always added)
+	 * @param array $declared Array of declared classes
 	 * @param array $allClasses Array with all classes parsed so far
 	 * @param string $name Class name
 	 * @return array
@@ -75,7 +75,7 @@ class Backend extends Memory
 	{
 		$name = ltrim($name, '\\');
 
-		if ((!empty($declared) && !isset($declared[$name])) || isset($allClasses[self::TOKENIZED_CLASSES][$name])  || isset($allClasses[self::INTERNAL_CLASSES][$name])) {
+		if (!isset($declared[$name]) || isset($allClasses[self::TOKENIZED_CLASSES][$name])  || isset($allClasses[self::INTERNAL_CLASSES][$name])) {
 			return $allClasses;
 		}
 

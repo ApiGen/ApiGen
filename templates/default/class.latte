@@ -88,7 +88,7 @@
 				<a href="{$method|sourceLink}" title="Go to {$class->internal ? 'PHP documentation' : 'source code'}"><b>{$method->name}</b></a>(
 				{foreach $method->parameters as $parameter}
 					{if $parameter->array}array
-					{elseif $parameter->className}<a href="{$parameter->className|classLink}" n:tag-if="$parsedClassed[$parameter->className]->internal || !$parsedClassed[$parameter->className]->library">{$parameter->className}</a>
+					{elseif $parameter->className}<a href="{$parameter->className|classLink}" n:tag-if="isset($parameter->className) && ($parsedClassed[$parameter->className]->internal || !$parsedClassed[$parameter->className]->library)">{$parameter->className}</a>
 					{else}{foreach $template->getTypes($method, $parameter->position) as $item}<a href="{$item->class|classLink}" n:tag-if="$item->class">{$item->name}</a>{sep}|{/sep}{/foreach}{/if}
 					<var>{if $parameter->passedByReference}&amp; {/if}${$parameter->name}</var>{if $parameter->defaultValueAvailable} = {!$parameter->defaultValueDefinition|highlightPHP}{/if}{sep}, {/sep}
 				{/foreach}
