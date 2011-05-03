@@ -124,8 +124,8 @@ class Template extends Nette\Templating\FileTemplate
 				$res .= '|';
 			}
 
-			if (null !== $parameter && preg_match('~^(\\$?' . $parameter->getName() . ')~i', $label, $matches)) {
-				$label = substr($label, strlen($matches[1]));
+			if (null !== $parameter) {
+				$label = preg_replace('~^(\\$?' . $parameter->getName() . ')(\s+|$)~i', '\\2', $label, 1);
 			}
 
 			return rtrim($res, '|') . (!empty($label) ? '<br />' . $that->escapeHtml($label) : '');
