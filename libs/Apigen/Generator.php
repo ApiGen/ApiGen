@@ -387,7 +387,11 @@ class Generator extends Nette\Object
 
 			// generate source codes
 			if ($class->isTokenized()) {
-				$template->source = $fshl->highlightString('PHP', file_get_contents($class->getFileName()));
+				$source = file_get_contents($class->getFileName());
+				$source = str_replace("\r\n", "\n", $source);
+				$source = str_replace("\r", "\n", $source);
+
+				$template->source = $fshl->highlightString('PHP', $source);
 				$template->setFile($templatePath . '/' . $this->config->templates['source'])->save($this->forceDir($destination . '/' . $this->getSourceLink($class, false)));
 
 				$this->incrementProgressBar();
