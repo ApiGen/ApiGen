@@ -168,9 +168,9 @@
 
 
 	{foreach $class->inheritedMethods as $parentName => $methods}
-	<h2>Methods Inherited From <a href="{$parentName|classLink}#methodSummary" n:tag-if="$methods['class']->documented">{$parentName}</a></h2>
+	<h2>Methods Inherited From <a href="{$parentName|classLink}#methodSummary" n:tag-if="$template->resolveType($parentName)">{$parentName}</a></h2>
 	<div class="box parentMethods"><code>
-		{foreach $methods['methods'] as $method}<a href="{$method|methodLink}" n:tag-if="$methods['class']->documented"><span n:class="$method->deprecated ? deprecated">{$method->name}()</span></a>{sep}, {/sep}{/foreach}
+		{foreach $methods as $method}<a href="{$method|methodLink}" n:tag-if="$template->resolveType($parentName)"><span n:class="$method->deprecated ? deprecated">{$method->name}()</span></a>{sep}, {/sep}{/foreach}
 	</code></div>
 	{/foreach}
 
@@ -201,8 +201,8 @@
 	</div>
 
 	{foreach $class->inheritedConstants as $parentName => $constants}
-	<h2>Constants Inherited From <a href="{$parentName|classLink}#constantSummary" n:tag-if="$constants['class']->documented">{$parentName}</a></h2>
-	<div class="box parentConstants"><code>{foreach $constants['constants'] as $constant}<a href="{$constant|constantLink}" n:tag-if="$constants['class']->documented"><code n:class="$constant->deprecated ? deprecated">{$constant->name}</code></a>{sep}, {/sep}{/foreach}</code></div>
+	<h2>Constants Inherited From <a href="{$parentName|classLink}#constantSummary" n:tag-if="$template->resolveType($parentName)">{$parentName}</a></h2>
+	<div class="box parentConstants"><code>{foreach $constants as $constant}<a href="{$constant|constantLink}" n:tag-if="$template->resolveType($parentName)"><code n:class="$constant->deprecated ? deprecated">{$constant->name}</code></a>{sep}, {/sep}{/foreach}</code></div>
 	{/foreach}
 
 
@@ -226,8 +226,8 @@
 	</div>
 
 	{foreach $class->inheritedProperties as $parentName => $properties}
-	<h2>Properties Inherited From <a href="{$parentName|classLink}#propertySummary" n:tag-if="$properties['class']->documented">{$parentName}</a></h2>
-	<div class="box parentProperties"><code>{foreach $properties['properties'] as $property}<var n:class="$property->deprecated ? deprecated"><a href="{$property|propertyLink}" n:tag-if="$properties['class']->documented">${$property->name}</a></var>{sep}, {/sep}{/foreach}</code></div>
+	<h2>Properties Inherited From <a href="{$parentName|classLink}#propertySummary" n:tag-if="$template->resolveType($parentName)">{$parentName}</a></h2>
+	<div class="box parentProperties"><code>{foreach $properties as $property}<var n:class="$property->deprecated ? deprecated"><a href="{$property|propertyLink}" n:tag-if="$template->resolveType($parentName)">${$property->name}</a></var>{sep}, {/sep}{/foreach}</code></div>
 	{/foreach}
 
 </div>

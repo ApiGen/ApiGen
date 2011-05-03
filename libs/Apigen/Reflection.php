@@ -343,10 +343,7 @@ class Reflection
 
 			if (!empty($inheritedMethods)) {
 				ksort($inheritedMethods);
-				$methods[$class->getName()] = array(
-					'class' => $class,
-					'methods' => $inheritedMethods
-				);
+				$methods[$class->getName()] = $inheritedMethods;
 			}
 		}
 
@@ -374,10 +371,7 @@ class Reflection
 
 			if (!empty($inheritedProperties)) {
 				ksort($inheritedProperties);
-				$properties[$class->getName()] = array(
-					'class' => $class,
-					'properties' => $inheritedProperties
-				);
+				$properties[$class->getName()] = $inheritedProperties;
 			}
 		}
 
@@ -396,10 +390,7 @@ class Reflection
 				function(Reflection $class) {
 					$reflections = $class->getOwnConstantReflections();
 					ksort($reflections);
-					return empty($reflections) ? null : array(
-						'class' => $class,
-						'constants' => $reflections
-					);
+					return $reflections;
 				},
 				$this->getParentClasses()
 			)
