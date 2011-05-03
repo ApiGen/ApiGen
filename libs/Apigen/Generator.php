@@ -267,9 +267,6 @@ class Generator extends Nette\Object
 		$template->version = self::VERSION;
 		$template->config = $this->config;
 
-		// all classes
-		$template->parsedClassed = $this->classes;;
-
 		// generate summary files
 		$template->namespaces = array_keys($namespaces);
 		$template->packages = array_keys($packages);
