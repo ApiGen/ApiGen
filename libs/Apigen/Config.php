@@ -170,6 +170,7 @@ class Config
 		$this->config['skipDocPrefix'] = array_map(function($prefix) {
 			return ltrim($prefix, '\\');
 		}, $this->config['skipDocPrefix']);
+		sort($this->config['skipDocPrefix']);
 
 		// Check
 		$this->check();
