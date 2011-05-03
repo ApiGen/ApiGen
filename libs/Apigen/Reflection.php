@@ -425,8 +425,13 @@ class Reflection
 			return false;
 		}
 
-		foreach ($this->generator->config->library as $path) {
+		foreach ($this->generator->config->skipDocPath as $path) {
 			if ($this->reflection->getFilename() === $path || 0 === strpos($this->reflection->getFilename(), $path . DIRECTORY_SEPARATOR)) {
+				return false;
+			}
+		}
+		foreach ($this->generator->config->skipDocPrefix as $prefix) {
+			if (0 === strpos($this->reflection->getName(), $prefix)) {
 				return false;
 			}
 		}

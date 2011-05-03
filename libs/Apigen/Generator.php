@@ -75,7 +75,7 @@ class Generator extends Nette\Object
 		$broker = new Broker(new Backend(), false);
 
 		$files = array();
-		foreach (array_merge($this->config->source, $this->config->library) as $source) {
+		foreach ($this->config->source as $source) {
 			$entries = array();
 			if (is_dir($source)) {
 				foreach (new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($source)) as $entry) {

@@ -40,9 +40,10 @@ class Config
 	private static $defaultConfig = array(
 		'config' => '',
 		'source' => array(),
-		'library' => array(),
 		'destination' => '',
 		'exclude' => array(),
+		'skipDocPath' => array(),
+		'skipDocPrefix' => array(),
 		'title' => '',
 		'baseUrl' => '',
 		'googleCse' => '',
@@ -63,9 +64,9 @@ class Config
 	private static $pathOptions = array(
 		'config',
 		'source',
-		'library',
 		'destination',
 		'exclude',
+		'skipDocPath',
 		'templateDir'
 	);
 
@@ -208,11 +209,10 @@ class Config
 				}
 			}
 		}
-		foreach ($this->config['library'] as $library) {
-			if (!file_exists($library)) {
-				throw new Exception(sprintf('Library %s doesn\'t exist', $library), Exception::INVALID_CONFIG);
-			}
-		}
+
+		$this->config['skipDocPrefix'] = array_map(function($prefix) {
+			return ltrim($prefix, '//');
+		}, $this->config['skipDocPrefix']);
 
 		if (empty($this->config['accessLevels'])) {
 			throw new Exception('No supported access level given', Exception::INVALID_CONFIG);
