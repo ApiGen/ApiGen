@@ -36,8 +36,6 @@ class Template extends Nette\Templating\FileTemplate
 	{
 		$this->generator = $generator;
 
-		$this->setCacheStorage(new Nette\Templating\PhpFileStorage($this->generator->config->destination . DIRECTORY_SEPARATOR . 'tmp'));
-
 		$that = $this;
 
 		$latte = new Nette\Latte\Engine;

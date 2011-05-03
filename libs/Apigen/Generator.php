@@ -258,6 +258,7 @@ class Generator extends Nette\Object
 
 		// prepare template
 		$template = new Template($this);
+		$template->setCacheStorage(new Nette\Templating\PhpFileStorage($tmp));
 		$template->version = self::VERSION;
 		$template->config = $this->config;
 
