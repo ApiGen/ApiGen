@@ -45,6 +45,13 @@ class Reflection
 	private $generator;
 
 	/**
+	 * If the class should be documented.
+	 *
+	 * @var boolean
+	 */
+	private $isDocumented;
+
+	/**
 	 * Constructor.
 	 *
 	 * Sets the inspected class reflection.
@@ -200,11 +207,11 @@ class Reflection
 	public function getParentClass()
 	{
 		$classes = $this->generator->getClasses();
-		if ($class = $this->reflection->getParentClassName()) {
-			return $classes[$class];
+		if ($className = $this->reflection->getParentClassName()) {
+			return $classes[$className];
 		}
 
-		return $class;
+		return $className;
 	}
 
 	/**
@@ -251,7 +258,7 @@ class Reflection
 	 *
 	 * @return array
 	 */
-	public function getDirectSubclasses()
+	public function getDirectSubClasses()
 	{
 		$name = $this->name;
 		return array_filter($this->generator->getClasses(), function(Reflection $class) use($name) {
@@ -268,7 +275,7 @@ class Reflection
 	 *
 	 * @return array
 	 */
-	public function getIndirectSubclasses()
+	public function getIndirectSubClasses()
 	{
 		$name = $this->name;
 		return array_filter($this->generator->getClasses(), function(Reflection $class) use($name) {
@@ -404,29 +411,28 @@ class Reflection
 	 */
 	public function isDocumented()
 	{
-		if ($this->reflection->isInternal()) {
-			return true;
-		}
-
-		if (!$this->reflection->isTokenized()) {
-			return false;
-		}
-
-		if (!$this->generator->config->deprecated && $this->reflection->isDeprecated()) {
-			return false;
-		}
-
-		foreach ($this->generator->config->skipDocPath as $path) {
-			if ($this->reflection->getFilename() === $path || 0 === strpos($this->reflection->getFilename(), $path . DIRECTORY_SEPARATOR)) {
-				return false;
+		if (null === $this->isDocumented) {
+			if ($this->reflection->isInternal()) {
+				$this->isDocumented = true;
+			} elseif (!$this->reflection->isTokenized()) {
+				$this->isDocumented = false;
+			} elseif (!$this->generator->config->deprecated && $this->reflection->isDeprecated()) {
+				$this->isDocumented = false;
+			} elseif (empty($this->generator->config->skipDocPath) && empty($this->generator->config->skipDocPrefix)) {
+				$this->isDocumented = true;
+			} else {
+				foreach ($this->generator->config->skipDocPath as $path) {
+					if ($this->reflection->getFilename() === $path || 0 === strpos($this->reflection->getFilename(), $path . DIRECTORY_SEPARATOR)) {
+						$this->isDocumented = false;
+					}
+				}
+				foreach ($this->generator->config->skipDocPrefix as $prefix) {
+					if (0 === strpos($this->reflection->getName(), $prefix)) {
+						$this->isDocumented = false;
+					}
+				}
 			}
 		}
-		foreach ($this->generator->config->skipDocPrefix as $prefix) {
-			if (0 === strpos($this->reflection->getName(), $prefix)) {
-				return false;
-			}
-		}
-
-		return true;
+		return $this->isDocumented;
 	}
 }

@@ -23,14 +23,15 @@
 		{!$class|longDescription|docblock|resolveLinks}
 		</div>
 
-		<dl class="tree" n:if="$class->parentClass || end($tree)->ownInterfaces">
+		<dl class="tree" n:if="$class->parentClass || $class->ownInterfaces">
 			{foreach $tree as $item}
 			<dd style="padding-left:{=($iterator->counter - 1) * 30}px">
 				<img src="resources/inherit.gif" alt="Extended by" n:if="$iterator->counter > 1">
 				{if $item->documented}
 				<a href="{$item|classLink}" n:tag-if="!$iterator->last">{last}<b>{/last}{$item->name}{last}</b>{/last}</a>
 				{else}{$item->name}{/if}
-				{if $item->ownInterfaces} implements {foreach $item->ownInterfaces as $interface}
+				{var $itemOwnInterfaces = $item->ownInterfaces}
+				{if $itemOwnInterfaces} implements {foreach $itemOwnInterfaces as $interface}
 					<a href="{$interface|classLink}" n:tag-if="$interface->documented">{$interface->name}</a>{sep}, {/sep}
 				{/foreach}{/if}
 			</dd>
@@ -70,10 +71,10 @@
 	</div>
 
 
-	<div id="methodSummary" n:if="$class->ownMethods">
+	<div id="methodSummary" n:if="$ownMethods">
 		<table class="summary">
 		<caption>Method Summary</caption>
-		{foreach $class->ownMethods as $method}
+		{foreach $ownMethods as $method}
 		<tr data-order="{$method->name}" id="_{$method->name}" n:class="$method->deprecated ? deprecated">
 			<td align="right" width="1%"><code class="nowrap">
 				{if $method->deprecated}deprecated{/if}
@@ -104,7 +105,7 @@
 
 				{var $annotations = $method->annotations}
 
-				{if $method->deprecated || isset($annotations['deprecated'])}
+				{if $method->deprecated}
 					<h4>Deprecated</h4>
 					{if $annotations['deprecated']}
 					<div class="smallList">
@@ -175,10 +176,10 @@
 	{/foreach}
 
 
-	<div id="constantSummary" n:if="$class->ownConstantReflections">
+	<div id="constantSummary" n:if="$ownConstants">
 		<table class="summary">
 		<caption>Constant Summary</caption>
-		{foreach $class->ownConstantReflections as $name => $constant}
+		{foreach $ownConstants as $name => $constant}
 		<tr data-order="{$name}" id="{$name}" n:class="$constant->deprecated ? deprecated">
 			<td align="right" width="1%"><code class="nowrap">
 				{if $constant->deprecated}deprecated{/if}
@@ -206,10 +207,10 @@
 	{/foreach}
 
 
-	<div id="propertySummary" n:if="$class->ownProperties">
+	<div id="propertySummary" n:if="$ownProperties">
 		<table class="summary">
 		<caption>Property Summary</caption>
-		{foreach $class->ownProperties as $property}
+		{foreach $ownProperties as $property}
 		<tr data-order="{$property->name}" id="${$property->name}" n:class="$property->deprecated ? deprecated">
 			<td align="right" width="1%"><code class="nowrap">
 				{if $property->deprecated}deprecated{/if}

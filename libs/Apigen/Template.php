@@ -238,10 +238,11 @@ class Template extends Nette\Templating\FileTemplate
 			$className = substr($className, 1);
 		}
 
-		$name = isset($this->generator->classes["$namespace\\$className"]) ? "$namespace\\$className" : (isset($this->generator->classes[$className]) ? $className : null);
-		if (null !== $name && !$this->generator->classes[$name]->isDocumented()) {
+		$classes = $this->generator->getClasses();
+		$name = isset($classes["$namespace\\$className"]) ? "$namespace\\$className" : (isset($classes[$className]) ? $className : null);
+		if (null !== $name && !$classes[$name]->isDocumented()) {
 			$name = null;
-	}
+		}
 		return $name;
 	}
 

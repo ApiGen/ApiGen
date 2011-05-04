@@ -368,6 +368,10 @@ class Generator extends Nette\Object
 			$template->indirectImplementers = $class->getIndirectImplementers();
 			uksort($template->indirectImplementers, 'strcasecmp');
 
+			$template->ownMethods = $class->getOwnMethods();
+			$template->ownConstants = $class->getOwnConstantReflections();
+			$template->ownProperties = $class->getOwnProperties();
+
 			if ($class->isTokenized()) {
 				$template->fileName = null;
 				$file = $class->getFileName();
@@ -390,8 +394,7 @@ class Generator extends Nette\Object
 			// generate source codes
 			if ($class->isTokenized()) {
 				$source = file_get_contents($class->getFileName());
-				$source = str_replace("\r\n", "\n", $source);
-				$source = str_replace("\r", "\n", $source);
+				$source = str_replace(array("\r\n", "\r"), "\n", $source);
 
 				$template->source = $fshl->highlightString('PHP', $source);
 				$template->setFile($templatePath . '/' . $this->config->templates['source'])->save($this->forceDir($destination . '/' . $this->getSourceLink($class, false)));
