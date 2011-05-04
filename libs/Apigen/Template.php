@@ -211,7 +211,10 @@ class Template extends Nette\Templating\FileTemplate
 			'int' => 'integer',
 			'bool' => 'boolean',
 			'double' => 'float',
-			'void' => ''
+			'void' => '',
+			'FALSE' => 'false',
+			'TRUE' => 'true',
+			'NULL' => 'null'
 		);
 
 		$name = ltrim($name, '\\');
