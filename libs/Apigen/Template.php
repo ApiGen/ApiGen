@@ -57,6 +57,9 @@ class Template extends Nette\Templating\FileTemplate
 		$this->registerHelper('highlightPHP', function($source) use ($fshl) {
 			return $fshl->highlightString('PHP', (string) $source);
 		});
+		$this->registerHelper('highlightValue', function($definition) use ($that) {
+			return $that->highlightPHP(preg_replace('#^(?:[ ]{4}|\t)#m', '', $definition));
+		});
 
 		// links
 		$this->registerHelper('packageLink', callback($this->generator, 'getPackageLink'));
