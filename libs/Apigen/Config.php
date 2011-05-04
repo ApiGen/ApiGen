@@ -99,6 +99,14 @@ class Config
 	 */
 	public function parse()
 	{
+		// Compatibility
+		foreach (array('config', 'source', 'destination') as $option) {
+			if (isset($this->options[$option{0}]) && !isset($this->options[$option])) {
+				$this->options[$option] = $this->options[$option{0}];
+			}
+			unset($this->options[$option{0}]);
+		}
+
 		if (!isset($this->options['config']) && !isset($this->options['source'], $this->options['destination'])) {
 			throw new Exception('Missing required options', Exception::INVALID_CONFIG);
 		}
