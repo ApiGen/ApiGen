@@ -405,7 +405,7 @@ class Generator extends Nette\Object
 		}
 
 		// delete tmp directory
-		//$this->deleteDir($tmp);
+		$this->deleteDir($tmp);
 	}
 
 	/**
