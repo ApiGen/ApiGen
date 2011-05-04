@@ -292,6 +292,7 @@ class Generator extends Nette\Object
 		$fshl = new \fshlParser('HTML_UTF8', P_TAB_INDENT | P_LINE_COUNTER);
 
 		// generate namespace summary
+		$template->package = null;
 		foreach ($namespaces as $namespace => $definition) {
 			$classes = isset($definition['classes']) ? $definition['classes'] : array();
 			uksort($classes, 'strcasecmp');
@@ -318,6 +319,7 @@ class Generator extends Nette\Object
 		}
 
 		// generate package summary
+		$template->namespace = null;
 		foreach ($packages as $package => $definition) {
 			$classes = isset($definition['classes']) ? $definition['classes'] : array();
 			uksort($classes, 'strcasecmp');
