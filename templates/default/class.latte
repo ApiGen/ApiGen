@@ -194,7 +194,7 @@
 				{/if}
 			</code></td>
 			<td width="1%"><code><a href="{$constant|sourceLink}" title="Go to {$class->internal ? 'PHP documentation' : 'source code'}"><b>{$name}</b></a></code></td>
-			<td><code>{!$constant->valueDefinition|highlightValue}</code></td>
+			<td><a n:tag-if="$template->resolveConstant($constant->valueDefinition)" href="{$constant->valueDefinition|resolveConstant|constantLink}"><code>{!$constant->valueDefinition|highlightValue}</code></a></td>
 			<td>{!$constant|shortDescription|docline|resolveLinks} <a href="#{$name}" class="anchor">#</a></td>
 		</tr>
 		{/foreach}

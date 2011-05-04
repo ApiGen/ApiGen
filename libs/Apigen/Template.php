@@ -76,6 +76,7 @@ class Template extends Nette\Templating\FileTemplate
 			return is_object($variable) ? get_class($variable) : gettype($variable);
 		});
 		$this->registerHelper('resolveClass', callback($this, 'resolveClass'));
+		$this->registerHelper('resolveConstant', callback($this, 'resolveConstant'));
 
 		// docblock
 		$texy = new \Texy;
@@ -247,6 +248,25 @@ class Template extends Nette\Templating\FileTemplate
 			$name = null;
 		}
 		return $name;
+	}
+
+	public function resolveConstant($definition)
+	{
+		if (false === strpos($definition, '::')) {
+			return null;
+		}
+		list($className, $constantName) = explode('::', $definition);
+		$className = $this->resolveClass($className);
+		if (null === $className) {
+			return null;
+		}
+
+		try {
+			$classes = $this->generator->getClasses();
+			return $classes[$className]->getConstantReflection($constantName);
+		} catch (\Exception $e) {
+			return null;
+		}
 	}
 
 	/**
