@@ -36,24 +36,31 @@ $(function(){
 	var timeout;
 	$("tr:has(.detailed)").hover(function(){
 		clearTimeout(timeout);
-		var $tr = $(this);
+		var $this = $(this);
 		timeout = setTimeout(function(){
-			$tr.find('.short').hide();
-			$tr.find('.detailed').show();
+			$this.find('.short').hide();
+			$this.find('.detailed').show();
 		}, 500);
 	}, function(){
 		clearTimeout(timeout);
 
 	}).click(function(){ // immediate hover effect on method summary
 		clearTimeout(timeout);
-		$(this).find('.short').hide();
-		$(this).find('.detailed').show();
+		var $this = $(this);
+		$this.find('.short').hide();
+		$this.find('.detailed').show();
 	});
 
 	// hide deep namespaces
 	$('#left ul li ul li:not(.active):not(:has(.active)) ul').addClass('collapsed');
 	$('#left > ul > li > ul > li').hover(function() {
-		$('ul.collapsed', this).stop(true, true).delay(300).slideDown();
+		clearTimeout(timeout);
+		var $this = $(this);
+		timeout = setTimeout(function() {
+			$('ul.collapsed', $this).stop(true, true).slideDown();
+		}, 500);
+	}, function() {
+		clearTimeout(timeout);
 	});
 
 	// splitter
