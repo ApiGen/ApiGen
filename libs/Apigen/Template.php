@@ -69,10 +69,10 @@ class Template extends Nette\Templating\FileTemplate
 
 		// types
 		$this->registerHelper('getTypes', callback($this, 'getTypes'));
-		$this->registerHelper('getType', function($variable) {
+		$this->registerHelper('resolveType', function($variable) {
 			return is_object($variable) ? get_class($variable) : gettype($variable);
 		});
-		$this->registerHelper('resolveType', callback($this, 'resolveType'));
+		$this->registerHelper('resolveClass', callback($this, 'resolveClass'));
 
 		// docblock
 		$texy = new \Texy;
@@ -119,7 +119,7 @@ class Template extends Nette\Templating\FileTemplate
 					$name = $parameter->getClassName();
 				}
 
-				$class = $that->resolveType($name, $namespace);
+				$class = $that->resolveClass($name, $namespace);
 				$res .= $class !== null ? sprintf('<a href="%s">%s</a>', $that->classLink($class), $that->escapeHtml($class)) : $that->escapeHtml($that->resolveName($name));
 				$res .= '|';
 			}
@@ -198,7 +198,7 @@ class Template extends Nette\Templating\FileTemplate
 		$types = array();
 		foreach (preg_replace('#\s.*#', '', (array) $annotation) as $s) {
 			foreach (explode('|', $s) as $name) {
-				$class = $this->resolveType($name, $namespace);
+				$class = $this->resolveClass($name, $namespace);
 				$types[] = (object) array('name' => $class ?: $this->resolveName($name), 'class' => $class);
 			}
 		}
@@ -227,18 +227,18 @@ class Template extends Nette\Templating\FileTemplate
 	/**
 	 * Tries to resolve type as class or interface name.
 	 *
-	 * @param string Data type description
+	 * @param string Class name description
 	 * @param string Namespace name
 	 * @return string
 	 */
-	public function resolveType($type, $namespace = NULL)
+	public function resolveClass($className, $namespace = NULL)
 	{
-		if (substr($type, 0, 1) === '\\') {
+		if (substr($className, 0, 1) === '\\') {
 			$namespace = '';
-			$type = substr($type, 1);
+			$className = substr($className, 1);
 		}
 
-		$name = isset($this->generator->classes["$namespace\\$type"]) ? "$namespace\\$type" : (isset($this->generator->classes[$type]) ? $type : null);
+		$name = isset($this->generator->classes["$namespace\\$className"]) ? "$namespace\\$className" : (isset($this->generator->classes[$className]) ? $className : null);
 		if (null !== $name && !$this->generator->classes[$name]->isDocumented()) {
 			$name = null;
 	}
@@ -256,10 +256,10 @@ class Template extends Nette\Templating\FileTemplate
 	{
 		if (($pos = strpos($link, '::')) || ($pos = strpos($link, '->'))) {
 			// Class::something or Class->something
-			$className = $this->resolveType(substr($link, 0, $pos), null !== $context ? $context->getNamespaceName() : null);
+			$className = $this->resolveClass(substr($link, 0, $pos), null !== $context ? $context->getNamespaceName() : null);
 
 			if (null === $className) {
-				$className = $this->resolveType(ReflectionBase::resolveClassFQN(substr($link, 0, $pos), $context->getNamespaceAliases(), $context->getNamespaceName()));
+				$className = $this->resolveClass(ReflectionBase::resolveClassFQN(substr($link, 0, $pos), $context->getNamespaceAliases(), $context->getNamespaceName()));
 			}
 
 			if (null === $className) {
@@ -269,8 +269,8 @@ class Template extends Nette\Templating\FileTemplate
 			}
 
 			$link = substr($link, $pos + 2);
-		} elseif ((null !== $context && null !== ($className = $this->resolveType(ReflectionBase::resolveClassFQN($link, $context->getNamespaceAliases(), $context->getNamespaceName()), $context->getNamespaceName())))
-			|| null !== ($className = $this->resolveType($link, null !== $context ? $context->getNamespaceName() : null))) {
+		} elseif ((null !== $context && null !== ($className = $this->resolveClass(ReflectionBase::resolveClassFQN($link, $context->getNamespaceAliases(), $context->getNamespaceName()), $context->getNamespaceName())))
+			|| null !== ($className = $this->resolveClass($link, null !== $context ? $context->getNamespaceName() : null))) {
 			// Class
 			$context = $this->generator->classes[$className];
 			return !$context->isDocumented() ? null : '<a href="' . $this->classLink($context) . '">' . $this->escapeHtml($className) . '</a>';
