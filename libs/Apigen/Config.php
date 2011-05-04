@@ -149,6 +149,7 @@ class Config
 					}
 					$this->config[$option][$key] = array_shift($value);
 				}
+				$this->config[$option] = array_filter($this->config[$option]);
 
 				if (!empty(self::$arrayOptionsValues[$option])) {
 					$values = self::$arrayOptionsValues[$option];
@@ -196,17 +197,6 @@ class Config
 	 */
 	private function check()
 	{
-		if (!is_dir($this->config['templateDir'])) {
-			throw new Exception(sprintf('Template directory %s doesn\'t exist', $this->config['templateDir']), Exception::INVALID_CONFIG);
-		}
-		$templateConfig = $this->getTemplateConfig();
-		if (!is_dir(dirname($templateConfig))) {
-			throw new Exception('Template doesn\'t exist', Exception::INVALID_CONFIG);
-		}
-		if (!is_file($templateConfig)) {
-			throw new Exception('Template config doesn\'t exist', Exception::INVALID_CONFIG);
-		}
-
 		if (empty($this->config['source'])) {
 			throw new Exception('Source is not set', Exception::INVALID_CONFIG);
 		}
@@ -221,6 +211,27 @@ class Config
 					throw new Exception(sprintf('Sources %s and %s overlap', $source, $source2), Exception::INVALID_CONFIG);
 				}
 			}
+		}
+
+		if (empty($this->config['destination'])) {
+			throw new Exception('Destination is not set', Exception::INVALID_CONFIG);
+		}
+
+		if (empty($this->config['templateDir'])) {
+			throw new Exception('Template directory is not set', Exception::INVALID_CONFIG);
+		}
+		if (!is_dir($this->config['templateDir'])) {
+			throw new Exception(sprintf('Template directory %s doesn\'t exist', $this->config['templateDir']), Exception::INVALID_CONFIG);
+		}
+		if (empty($this->config['template'])) {
+			throw new Exception('Template is not set', Exception::INVALID_CONFIG);
+		}
+		$templateConfig = $this->getTemplateConfig();
+		if (!is_dir(dirname($templateConfig))) {
+			throw new Exception('Template doesn\'t exist', Exception::INVALID_CONFIG);
+		}
+		if (!is_file($templateConfig)) {
+			throw new Exception('Template config doesn\'t exist', Exception::INVALID_CONFIG);
 		}
 
 		if (empty($this->config['accessLevels'])) {
