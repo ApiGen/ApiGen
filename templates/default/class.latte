@@ -6,8 +6,8 @@
 <div id="navigation">
 	<ul>
 		<li><a href="index.html" title="Summary of all packages">Overview</a></li>
-		<li>{if $package}<a href="{$package|packageLink}" title="Summary of {$package}">Package</a>{else}Package{/if}</li>
-		<li>{if $namespace}<a href="{$class|namespaceLink}" title="Summary of {$class->namespaceName}">Namespace</a>{else}Namespace{/if}</li>
+		<li><a n:tag-if="$package" href="{$package|packageLink}" title="Summary of {$package}">Package</a></li>
+		<li><a n:tag-if="$namespace" href="{$class|namespaceLink}" title="Summary of {$class->namespaceName}">Namespace</a></li>
 		<li class="active">Class</li>
 	</ul>
 </div>
@@ -15,7 +15,7 @@
 <div id="content">
 	<div id="classSummary">
 		<p n:if="$class->internal">PHP – {$class->extension->name|ucfirst}</p>
-		<p n:if="$class->inNamespace()">namespace <a href="{$class|namespaceLink}">{$class->namespaceName}</a></p>
+		<p n:if="$class->inNamespace()">Namespace <a href="{$class|namespaceLink}">{$class->namespaceName}</a></p>
 
 		<h1>{if $class->deprecated}Deprecated {/if}{if $class->interface}Interface{else}Class{/if} {$class->shortName}</h1>
 
@@ -40,22 +40,30 @@
 
 		<div n:if="$directSubClasses">
 			<h4>Direct Known Subclasses</h4>
-			{foreach $directSubClasses as $item}<a href="{$item|classLink}" n:tag-if="$item->documented">{$item->name}</a>{sep}, {/sep}{/foreach}
+			{foreach $directSubClasses as $item}
+				<a href="{$item|classLink}" n:tag-if="$item->documented">{$item->name}</a>{sep}, {/sep}
+			{/foreach}
 		</div>
 
 		<div n:if="$indirectSubClasses">
 			<h4>Indirect Known Subclasses</h4>
-			{foreach $indirectSubClasses as $item}<a href="{$item|classLink}" n:tag-if="$item->documented">{$item->name}</a>{sep}, {/sep}{/foreach}
+			{foreach $indirectSubClasses as $item}
+				<a href="{$item|classLink}" n:tag-if="$item->documented">{$item->name}</a>{sep}, {/sep}
+			{/foreach}
 		</div>
 
 		<div n:if="$directImplementers">
 			<h4>Direct Known Implementers</h4>
-			{foreach $directImplementers as $item}<a href="{$item|classLink}" n:tag-if="$item->documented">{$item->name}</a>{sep}, {/sep}{/foreach}
+			{foreach $directImplementers as $item}
+				<a href="{$item|classLink}" n:tag-if="$item->documented">{$item->name}</a>{sep}, {/sep}
+			{/foreach}
 		</div>
 
 		<div n:if="$indirectImplementers">
 			<h4>Indirect Known Implementers</h4>
-			{foreach $indirectImplementers as $item}<a href="{$item|classLink}" n:tag-if="$item->documented">{$item->name}</a>{sep}, {/sep}{/foreach}
+			{foreach $indirectImplementers as $item}
+				<a href="{$item|classLink}" n:tag-if="$item->documented">{$item->name}</a>{sep}, {/sep}
+			{/foreach}
 		</div>
 
 		<div class="classInfo">
@@ -79,7 +87,9 @@
 			<td align="right" width="1%"><code class="nowrap">
 				{if $method->deprecated}deprecated{/if}
 				{if !$class->interface && $method->abstract}abstract{elseif $method->final}final{/if} {if $method->protected}protected{elseif $method->private}private{else}public{/if} {if $method->static}static{/if}
-				{foreach $template->getTypes($method) as $return}<a href="{$return->class|classLink}" n:tag-if="$return->class">{$return->name}</a>{sep}|{/sep}{/foreach}
+				{foreach $template->getTypes($method) as $return}
+					<a href="{$return->class|classLink}" n:tag-if="$return->class">{$return->name}</a>{sep}|{/sep}
+				{/foreach}
 				{if $method->returnsReference()}&amp;{/if}
 				</code>
 			</td>
@@ -91,7 +101,11 @@
 				{foreach $method->parameters as $parameter}
 					{if $parameter->array}array
 					{elseif $parameter->className}<a href="{$parameter->className|classLink}" n:tag-if="$template->resolveClass($parameter->className)">{$parameter->className}</a>
-					{else}{foreach $template->getTypes($method, $parameter->position) as $item}<a href="{$item->class|classLink}" n:tag-if="$item->class">{$item->name}</a>{sep}|{/sep}{/foreach}{/if}
+					{else}
+						{foreach $template->getTypes($method, $parameter->position) as $item}
+							<a href="{$item->class|classLink}" n:tag-if="$item->class">{$item->name}</a>{sep}|{/sep}
+						{/foreach}
+					{/if}
 					<var>{if $parameter->passedByReference}&amp; {/if}${$parameter->name}</var>{if $parameter->defaultValueAvailable} = {!$parameter->defaultValueDefinition|highlightPHP}{/if}{sep}, {/sep}
 				{/foreach}
 			)</code>
@@ -109,9 +123,11 @@
 					<h4>Deprecated</h4>
 					{if $annotations['deprecated']}
 					<div class="smallList">
-					{foreach $annotations['deprecated'] as $description}{if $description}
-					{!$description|docline|resolveLinks}<br />
-					{/if}{/foreach}
+					{foreach $annotations['deprecated'] as $description}
+						{if $description}
+							{!$description|docline|resolveLinks}<br />
+						{/if}
+					{/foreach}
 					</div>
 					{/if}
 				{/if}
@@ -171,7 +187,9 @@
 	{foreach $class->inheritedMethods as $parentName => $methods}
 	<h2>Methods Inherited From <a href="{$parentName|classLink}#methodSummary" n:tag-if="$template->resolveClass($parentName)">{$parentName}</a></h2>
 	<div class="box parentMethods"><code>
-		{foreach $methods as $method}<a href="{$method|methodLink}" n:tag-if="$template->resolveClass($parentName)"><span n:class="$method->deprecated ? deprecated">{$method->name}()</span></a>{sep}, {/sep}{/foreach}
+		{foreach $methods as $method}
+			<a href="{$method|methodLink}" n:tag-if="$template->resolveClass($parentName)"><span n:class="$method->deprecated ? deprecated">{$method->name}()</span></a>{sep}, {/sep}
+		{/foreach}
 	</code></div>
 	{/foreach}
 
@@ -203,7 +221,13 @@
 
 	{foreach $class->inheritedConstants as $parentName => $constants}
 	<h2>Constants Inherited From <a href="{$parentName|classLink}#constantSummary" n:tag-if="$template->resolveClass($parentName)">{$parentName}</a></h2>
-	<div class="box parentConstants"><code>{foreach $constants as $constant}<a href="{$constant|constantLink}" n:tag-if="$template->resolveClass($parentName)"><code n:class="$constant->deprecated ? deprecated">{$constant->name}</code></a>{sep}, {/sep}{/foreach}</code></div>
+	<div class="box parentConstants">
+		<code>
+			{foreach $constants as $constant}
+				<a href="{$constant|constantLink}" n:tag-if="$template->resolveClass($parentName)"><code n:class="$constant->deprecated ? deprecated">{$constant->name}</code></a>{sep}, {/sep}
+			{/foreach}
+		</code>
+	</div>
 	{/foreach}
 
 
@@ -215,7 +239,9 @@
 			<td align="right" width="1%"><code class="nowrap">
 				{if $property->deprecated}deprecated{/if}
 				{if $property->protected}protected{elseif $property->private}private{else}public{/if} {if $property->static}static{/if}
-				{foreach $template->getTypes($property) as $return}<a href="{$return->class|classLink}" n:tag-if="$return->class">{$return->name}</a>{sep}|{/sep}{/foreach}
+				{foreach $template->getTypes($property) as $return}
+					<a href="{$return->class|classLink}" n:tag-if="$return->class">{$return->name}</a>{sep}|{/sep}
+				{/foreach}
 			</code></td>
 
 			<td width="1%"><var><a href="{$property|sourceLink}" title="Go to {$class->internal ? 'PHP documentation' : 'source code'}">${$property->name}</a></var></td>
@@ -228,7 +254,13 @@
 
 	{foreach $class->inheritedProperties as $parentName => $properties}
 	<h2>Properties Inherited From <a href="{$parentName|classLink}#propertySummary" n:tag-if="$template->resolveClass($parentName)">{$parentName}</a></h2>
-	<div class="box parentProperties"><code>{foreach $properties as $property}<var n:class="$property->deprecated ? deprecated"><a href="{$property|propertyLink}" n:tag-if="$template->resolveClass($parentName)">${$property->name}</a></var>{sep}, {/sep}{/foreach}</code></div>
+	<div class="box parentProperties">
+		<code>
+			{foreach $properties as $property}
+				<var n:class="$property->deprecated ? deprecated"><a href="{$property|propertyLink}" n:tag-if="$template->resolveClass($parentName)">${$property->name}</a></var>{sep}, {/sep}
+			{/foreach}
+		</code>
+	</div>
 	{/foreach}
 
 </div>

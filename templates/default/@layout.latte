@@ -1,11 +1,3 @@
-{**
- * @param  array  $packages
- * @param  array  $namespaces
- * @param  array  $classes
- * @param  string $namespace
- * @param  Apigen\Reflection $class
- *}
-{default $class = NULL, $namespace = NULL, package = NULL}
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,9 +13,7 @@
 	<script type="text/javascript" src="{$allclasses_js|staticFile}"></script>
 	{var style_css => 'resources/style.css'}
 	<link rel="stylesheet" type="text/css" media="all" href="{$style_css|staticFile}">
-	{if $config->googleCse}
-	<link rel="search" type="application/opensearchdescription+xml" title="{$config->title}" href="{$config->baseUrl}/opensearch.xml">
-	{/if}
+	<link n:if="$config->googleCse" rel="search" type="application/opensearchdescription+xml" title="{$config->title}" href="{$config->baseUrl}/opensearch.xml">
 </head>
 
 <body>
@@ -35,47 +25,38 @@
 		{if $packages}
 		<h3>Packages</h3>
 		<ul>
-		{if $package}
-			<li class="all"><a href="index.html#packages">All</a></li>
-		{/if}
-		{foreach $packages as $item}
+			<li n:if="$package" class="all"><a href="index.html#packages">All</a></li>
+			{foreach $packages as $item}
 			<li n:class="$package === $item ? active"><a href="{$item|packageLink}">{$item ? $item : 'None'}</a></li>
-		{/foreach}
+			{/foreach}
 		</ul>
 		{/if}
 
 		{if $namespaces}
 		<h3>Namespaces</h3>
 		<ul>
-		{if $namespace}
-			<li class="all"><a href="index.html#namespaces">All</a></li>
-		{/if}
-		{foreach $namespaces as $item}
+			<li n:if="$namespace" class="all"><a href="index.html#namespaces">All</a></li>
+			{foreach $namespaces as $item}
 			<li n:class="$namespace === $item ? active"><a href="{$item|namespaceLink}">{$item ? $item : 'None'}</a>
-			{if substr_count($iterator->nextValue, '\\') > substr_count($item, '\\')}
-				<ul>
-			{elseif substr_count($iterator->nextValue, '\\') < substr_count($item, '\\')}
-				{!=str_repeat('</ul></li>', substr_count($item, '\\') - substr_count($iterator->nextValue, '\\'))}
-			{else}
-				</li>
-			{/if}
-		{/foreach}
-		{!=str_repeat('</ul></li>', substr_count($item, '\\'))}
+				{if substr_count($iterator->nextValue, '\\') > substr_count($item, '\\')}
+					<ul>
+				{elseif substr_count($iterator->nextValue, '\\') < substr_count($item, '\\')}
+					{!=str_repeat('</ul></li>', substr_count($item, '\\') - substr_count($iterator->nextValue, '\\'))}
+				{else}
+					</li>
+				{/if}
+			{/foreach}
+			{!=str_repeat('</ul></li>', substr_count($item, '\\'))}
 		</ul>
 		{/if}
 
 		{if $classes}
 		<h3>Classes</h3>
-
 		<ul>
 		{if $class}
 			<li class="all"><a href="allclasses.html#classes">All</a></li>
-			{if $package}
-				<li class="all"><a href="{$package|packageLink}#classes">All in package {$package}</a></li>
-			{/if}
-			{if $namespace}
-				<li class="all"><a href="{$namespace|namespaceLink}#classes">All in namespace {$namespace}</a></li>
-			{/if}
+			<li n:if="$package" class="all"><a href="{$package|packageLink}#classes">All in package {$package}</a></li>
+			<li n:if="$namespace" class="all"><a href="{$namespace|namespaceLink}#classes">All in namespace {$namespace}</a></li>
 		{/if}
 		{foreach $classes as $item}
 			<li n:class="$class === $item ? active"><a href="{$item|classLink}">{if $namespace}{$item->shortName}{else}{$item->name}{/if}</a></li>
@@ -85,16 +66,11 @@
 
 		{if $interfaces}
 		<h3>Interfaces</h3>
-
 		<ul>
 		{if $class}
 			<li class="all"><a href="allclasses.html#interfaces">All</a></li>
-			{if $package}
-				<li class="all"><a href="{$package|packageLink}#interfaces">All in package {$package}</a></li>
-			{/if}
-			{if $namespace}
-				<li class="all"><a href="{$namespace|namespaceLink}#interfaces">All in namespace {$namespace}</a></li>
-			{/if}
+			<li n:if="$package" class="all"><a href="{$package|packageLink}#interfaces">All in package {$package}</a></li>
+			<li n:if="$namespace" class="all"><a href="{$namespace|namespaceLink}#interfaces">All in namespace {$namespace}</a></li>
 		{/if}
 		{foreach $interfaces as $item}
 			<li n:class="$class === $item ? active"><a href="{$item|classLink}">{if $namespace}{$item->shortName}{else}{$item->name}{/if}</a></li>
@@ -104,16 +80,11 @@
 
 		{if $exceptions}
 		<h3>Exceptions</h3>
-
 		<ul>
 		{if $class}
 			<li class="all"><a href="allclasses.html#exceptions">All</a></li>
-			{if $package}
-				<li class="all"><a href="{$package|packageLink}#exceptions">All in package {$package}</a></li>
-			{/if}
-			{if $namespace}
-				<li class="all"><a href="{$namespace|namespaceLink}#exceptions">All in namespace {$namespace}</a></li>
-			{/if}
+			<li n:if="$package" class="all"><a href="{$package|packageLink}#exceptions">All in package {$package}</a></li>
+			<li n:if="$namespace" class="all"><a href="{$namespace|namespaceLink}#exceptions">All in namespace {$namespace}</a></li>
 		{/if}
 		{foreach $exceptions as $item}
 			<li n:class="$class === $item ? active"><a href="{$item|classLink}">{if $namespace}{$item->shortName}{else}{$item->name}{/if}</a></li>
@@ -124,11 +95,9 @@
 </div>
 <div id="rightWrapper">
 	<div id="right">
-		{if $config->googleCse}
-		<form action="http://www.google.com/cse" id="search" onsubmit="if(this.q.value.indexOf('more:')==-1)this.q.value+=' more:api'">
+		<form n:if="$config->googleCse" action="http://www.google.com/cse" id="search" onsubmit="if(this.q.value.indexOf('more:')==-1)this.q.value+=' more:api'">
 			<input type="hidden" name="cx" value="{$config->googleCse}"><input type="hidden" name="ie" value="UTF-8"><input type="text" name="q" class="text"><input type="submit" value="Search">
 		</form>
-		{/if}
 
 		{include #content}
 

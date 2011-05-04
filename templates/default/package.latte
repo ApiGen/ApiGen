@@ -1,19 +1,19 @@
 {layout '@layout.latte'}
 
-{block #title}{ifset $package}{if $package}Package {$package}{else}No package{/if}{else}All Classes{/ifset}{/block}
+{block #title}{if $package}{if $package != 'None'}Package {$package}{else}No package{/if}{else}All Classes{/if}{/block}
 
 {block #content}
 <div id="navigation">
 	<ul>
 		<li><a href="index.html" title="Summary of all packages">Overview</a></li>
-		<li{ifset $package} class="active"{/ifset}>Package</li>
+		<li n:class="$package ? active">Package</li>
 		<li>Namespace</li>
 		<li>Class</li>
 	</ul>
 </div>
 
 <div id="content">
-	<h1>{ifset $package}{if $package}Package {$package}{else}No package{/if}{else}All Classes{/ifset}</h1>
+	<h1>{if $package}{if $package != 'None'}Package {$package}{else}No package{/if}{else}All Classes{/if}</h1>
 
 	{include '@classlist.latte'}
 </div>

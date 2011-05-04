@@ -268,8 +268,11 @@ class Generator extends Nette\Object
 		$template->config = $this->config;
 
 		// generate summary files
+		$template->namespace = null;
 		$template->namespaces = array_keys($namespaces);
+		$template->package = null;
 		$template->packages = array_keys($packages);
+		$template->class = null;
 		$template->classes = array_filter($allClasses, function($class) {
 			return !$class->isInterface() && !$class->isException();
 		});
@@ -289,7 +292,6 @@ class Generator extends Nette\Object
 		$fshl = new \fshlParser('HTML_UTF8', P_TAB_INDENT | P_LINE_COUNTER);
 
 		// generate namespace summary
-		$template->package = null;
 		foreach ($namespaces as $namespace => $definition) {
 			$classes = isset($definition['classes']) ? $definition['classes'] : array();
 			uksort($classes, 'strcasecmp');
@@ -316,7 +318,6 @@ class Generator extends Nette\Object
 		}
 
 		// generate package summary
-		$template->namespace = null;
 		foreach ($packages as $package => $definition) {
 			$classes = isset($definition['classes']) ? $definition['classes'] : array();
 			uksort($classes, 'strcasecmp');
@@ -404,7 +405,7 @@ class Generator extends Nette\Object
 		}
 
 		// delete tmp directory
-		$this->deleteDir($tmp);
+		//$this->deleteDir($tmp);
 	}
 
 	/**

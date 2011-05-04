@@ -6,8 +6,8 @@
 <div id="navigation">
 	<ul>
 		<li><a href="index.html" title="Summary of all packages">Overview</a></li>
-		<li>{if $package}<a href="{$package|packageLink}" title="Summary of {$package}">Package</a>{else}Package{/if}</li>
-		<li{ifset $namespace} class="active"{/ifset}>Namespace</li>
+		<li><a n:tag-if="$package" href="{$package|packageLink}" title="Summary of {$package}">Package</a></li>
+		<li n:class="$namespace ? active">Namespace</li>
 		<li>Class</li>
 	</ul>
 </div>
