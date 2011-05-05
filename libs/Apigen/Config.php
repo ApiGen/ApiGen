@@ -350,16 +350,16 @@ Options:
 	--title            <value> Title of generated documentation
 	--base-url         <value> Documentation base URI
 	--google-cse       <value> Google Custom Search ID
-	--template         <value> Documentation template name
-	--template-dir     <path>  Directory with templates
-	--allowed-html     <list>  List of allowed HTML tags in documentation, default b,i,a,ul,ol,li,p,br,var,samp,kbd
-	--access-levels    <list>  Generate documetation for methods and properties with given access level, default public,protected
-	--deprecated       Yes|No  Generate documetation for deprecated classes, methods, properties and constants, default No
-	--code             Yes|No  Generate highlighted source code files, default Yes
-	--wipeout          Yes|No  Wipe out the destination directory first, default Yes
-	--quiet            Yes|No  Don't display scaning and generating messages, default No
-	--progressbar      On|Off  Display progressbars, default On
-	--debug            On|Off  Display additional information in case of an error, default Off
+	--template         <value> Template name, default "default"
+	--template-dir     <path>  Directory with templates, default "./templates"
+	--allowed-html     <list>  List of allowed HTML tags in documentation, default "b,i,a,ul,ol,li,p,br,var,samp,kbd"
+	--access-levels    <list>  Generate documetation for methods and properties with given access level, default "public,protected"
+	--deprecated       Yes|No  Generate documetation for deprecated classes, methods, properties and constants, default "No"
+	--code             Yes|No  Generate highlighted source code files, default "Yes"
+	--wipeout          Yes|No  Wipe out the destination directory first, default "Yes"
+	--quiet            Yes|No  Don't display scaning and generating messages, default "No"
+	--progressbar      On|Off  Display progressbars, default "On"
+	--debug            On|Off  Display additional information in case of an error, default "Off"
 	--help|-h                  Display this help
 
 Only source and destination directories are required - either set explicitly or using a config file.
