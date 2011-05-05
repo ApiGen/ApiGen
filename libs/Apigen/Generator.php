@@ -105,7 +105,7 @@ class Generator extends Nette\Object
 		}
 
 		if (empty($files)) {
-			throw new Exception("No PHP files found.", Exception::INVALID_CONFIG);
+			throw new Exception("No PHP files found.");
 		}
 
 		if ($this->config->progressbar) {
@@ -201,7 +201,7 @@ class Generator extends Nette\Object
 	{
 		@mkdir($this->config->destination);
 		if (!is_dir($this->config->destination)) {
-			throw new Exception("Directory {$this->config->destination} doesn't exist.", Exception::INVALID_CONFIG);
+			throw new Exception("Directory {$this->config->destination} doesn't exist.");
 		}
 
 		$destination = $this->config->destination;
@@ -414,6 +414,27 @@ class Generator extends Nette\Object
 	}
 
 	/**
+	 * Prints message if printing is enabled.
+	 */
+	public function output($message)
+	{
+		if (!$this->config->quiet) {
+			echo $message;
+		}
+	}
+
+	/**
+	 * Returns header.
+	 *
+	 * @return string
+	 */
+	public static function getHeader()
+	{
+		$name = sprintf('ApiGen %s', self::VERSION);
+		return $name . "\n" . str_repeat('-', strlen($name)) . "\n";
+	}
+
+	/**
 	 * Returns a link to a namespace summary file.
 	 *
 	 * @param  string|\Apigen\Reflection|IReflectionNamespace
@@ -421,10 +442,6 @@ class Generator extends Nette\Object
 	 */
 	public function getNamespaceLink($class)
 	{
-		if (!isset($this->config->filenames['namespace'])) {
-			throw new Exception('Namespace output filename not defined.', Exception::INVALID_CONFIG);
-		}
-
 		$namespace = ($class instanceof ApiReflection) ? $class->getNamespaceName() : $class;
 		return sprintf($this->config->filenames['namespace'], $namespace ? preg_replace('#[^a-z0-9_]#i', '.', $namespace) : 'None');
 	}
@@ -437,10 +454,6 @@ class Generator extends Nette\Object
 	 */
 	public function getPackageLink($class)
 	{
-		if (!isset($this->config->filenames['package'])) {
-			throw new Exception('Package output filename not defined.', Exception::INVALID_CONFIG);
-		}
-
 		$package = ($class instanceof ApiReflection) ? $class->getPackageName() : $class;
 		return sprintf($this->config->filenames['package'], $package ? preg_replace('#[^a-z0-9_]#i', '.', $package) : 'None');
 	}
@@ -453,10 +466,6 @@ class Generator extends Nette\Object
 	 */
 	public function getClassLink($class)
 	{
-		if (!isset($this->config->filenames['class'])) {
-			throw new Exception('Class output filename not defined.', Exception::INVALID_CONFIG);
-		}
-
 		if ($class instanceof ApiReflection) {
 			$class = $class->getName();
 		}
@@ -505,10 +514,6 @@ class Generator extends Nette\Object
 	 */
 	public function getSourceLink($element, $withLine = true)
 	{
-		if (!isset($this->config->filenames['source'])) {
-			throw new Exception('Source output filename not defined.', Exception::INVALID_CONFIG);
-		}
-
 		$class = $element instanceof ApiReflection ? $element : $element->getDeclaringClass();
 
 		$file = str_replace('\\', '/', $class->getName());

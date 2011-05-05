@@ -29,10 +29,6 @@ require __DIR__ . '/libs/Apigen/Generator.php';
 
 try {
 
-	$name = sprintf('ApiGen %s', Apigen\Generator::VERSION);
-	echo $name . "\n";
-	echo str_repeat('-', strlen($name)) . "\n";
-
 	Debugger::enable();
 	Debugger::timer();
 
@@ -53,6 +49,7 @@ try {
 		'deprecated:',
 		'code:',
 		'wipeout:',
+		'quiet:',
 		'progressbar:',
 		'debug:',
 		'help'
@@ -60,6 +57,7 @@ try {
 
 	// Help
 	if (isset($options['h']) || isset($options['help'])) {
+		echo Apigen\Generator::getHeader();
 		echo Apigen\Config::getHelp();
 		die();
 	}
@@ -67,45 +65,51 @@ try {
 	// Start
 	$config = new Apigen\Config($options);
 	$config->parse();
+
 	$generator = new Apigen\Generator($config);
+	$generator->output(Apigen\Generator::getHeader());
 
 	// Scan
 	if (count($config->source) > 1) {
-		printf("Scanning\n %s\n", implode("\n ", $config->source));
+		$generator->output(sprintf("Scanning\n %s\n", implode("\n ", $config->source)));
 	} else {
-		printf("Scanning %s\n", $config->source[0]);
+		$generator->output(sprintf("Scanning %s\n", $config->source[0]));
 	}
 	if (count($config->exclude) > 1) {
-		printf("Excluding\n %s\n", implode("\n ", $config->exclude));
+		$generator->output(sprintf("Excluding\n %s\n", implode("\n ", $config->exclude)));
 	} elseif (!empty($config->exclude)) {
-		printf("Excluding %s\n", $config->exclude[0]);
+		$generator->output(sprintf("Excluding %s\n", $config->exclude[0]));
 	}
 	list($count, $countInternal) = $generator->parse();
-	printf("Found %d classes and other %d used internal classes\n", $count, $countInternal);
+	$generator->output(sprintf("Found %d classes and other %d used internal classes\n", $count, $countInternal));
 
 	// Generating
-	printf("Searching template in %s\n", $config->templateDir);
-	printf("Using template %s\n", $config->template);
+	$generator->output(sprintf("Searching template in %s\n", $config->templateDir));
+	$generator->output(sprintf("Using template %s\n", $config->template));
 	if ($config->wipeout && is_dir($config->destination)) {
-		echo "Wiping out destination directory\n";
+		$generator->output("Wiping out destination directory\n");
 		if (!$generator->wipeOutDestination()) {
 			throw new Exception('Cannot wipe out destination directory');
 		}
 	}
 
-	printf("Generating documentation to directory %s\n", $config->destination);
+	$generator->output(sprintf("Generating documentation to directory %s\n", $config->destination));
 	$skipping = array_merge($config->skipDocPath, $config->skipDocPrefix);
 	if (count($skipping) > 1) {
-		printf("Will not generate documentation for\n %s\n", implode("\n ", $skipping));
+		$generator->output(sprintf("Will not generate documentation for\n %s\n", implode("\n ", $skipping)));
 	} elseif (!empty($skipping)) {
-		printf("Will not generate documentation for %s\n", $skipping[0]);
+		$generator->output(sprintf("Will not generate documentation for %s\n", $skipping[0]));
 	}
 	$generator->generate();
 
 	// End
-	printf("Done. Total time: %d seconds, used: %d MB RAM\n", Debugger::timer(), round(memory_get_peak_usage(true) / 1024 / 1024));
+	$generator->output(sprintf("Done. Total time: %d seconds, used: %d MB RAM\n", Debugger::timer(), round(memory_get_peak_usage(true) / 1024 / 1024)));
 
 } catch (Exception $e) {
+	if ($e instanceof Apigen\Exception && Apigen\Exception::INVALID_CONFIG === $e->getCode()) {
+		echo Apigen\Generator::getHeader();
+	}
+
 	if ($config->debug) {
 		do {
 			printf("\n%s", $e->getMessage());

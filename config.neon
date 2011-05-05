@@ -13,5 +13,6 @@ accessLevels: [public, protected]
 deprecated: No
 code: Yes
 wipeout: Yes
+quiet: No
 progressbar: On
 debug: Off

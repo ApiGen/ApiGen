@@ -54,6 +54,7 @@ class Config
 		'deprecated' => false,
 		'code' => true,
 		'wipeout' => true,
+		'quiet' => false,
 		'progressbar' => true,
 		'debug' => false
 	);
@@ -175,6 +176,10 @@ class Config
 		}, $this->config['skipDocPrefix']);
 		sort($this->config['skipDocPrefix']);
 
+		if ($this->config['quiet']) {
+			$this->config['progressbar'] = false;
+		}
+
 		// Check
 		$this->check();
 
@@ -238,6 +243,33 @@ class Config
 
 		if (empty($this->config['accessLevels'])) {
 			throw new Exception('No supported access level given', Exception::INVALID_CONFIG);
+		}
+
+		return $this;
+	}
+
+	/**
+	 * Checks template configuration.
+	 *
+	 * @return \Apigen\Config
+	 */
+	private function checkTemplate()
+	{
+		if (!isset($this->config->filenames)) {
+			throw new Exception('Output filename masks not defined.', Exception::INVALID_CONFIG);
+		}
+
+		if (!isset($this->config->filenames['namespace'])) {
+			throw new Exception('Namespace output filename not defined.', Exception::INVALID_CONFIG);
+		}
+		if (!isset($this->config->filenames['package'])) {
+			throw new Exception('Package output filename not defined.', Exception::INVALID_CONFIG);
+		}
+		if (!isset($this->config->filenames['class'])) {
+			throw new Exception('Class output filename not defined.', Exception::INVALID_CONFIG);
+		}
+		if (!isset($this->config->filenames['source'])) {
+			throw new Exception('Source output filename not defined.', Exception::INVALID_CONFIG);
 		}
 
 		return $this;
@@ -325,6 +357,7 @@ Options:
 	--deprecated       Yes|No  Generate documetation for deprecated classes, methods, properties and constants, default No
 	--code             Yes|No  Generate highlighted source code files, default Yes
 	--wipeout          Yes|No  Wipe out the destination directory first, default Yes
+	--quiet            Yes|No  Don't display scaning and generating messages, default No
 	--progressbar      On|Off  Display progressbars, default On
 	--debug            On|Off  Display additional information in case of an error, default Off
 	--help|-h                  Display this help
