@@ -10,6 +10,7 @@ template: default
 templateDir: ''
 accessLevels: [public, protected]
 deprecated: No
-wipeout: On
+code: Yes
+wipeout: Yes
 progressbar: On
-debug: No
+debug: Off

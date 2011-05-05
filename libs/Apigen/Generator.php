@@ -246,15 +246,18 @@ class Generator extends Nette\Object
 		uksort($allClasses, 'strcasecmp');
 
 		if ($this->config->progressbar) {
-			$this->prepareProgressBar(
-				count($allClasses)
+			$max = count($allClasses)
 				+ count($namespaces)
 				+ count($packages)
-				+ count($this->config->templates['common'])
-				+ count(array_filter($allClasses, function(ApiReflection $class) {
+				+ count($this->config->templates['common']);
+
+			if ($this->config->code) {
+				$max += count(array_filter($allClasses, function(ApiReflection $class) {
 					return $class->isTokenized();
-				}))
-			);
+				}));
+			}
+
+			$this->prepareProgressBar($max);
 		}
 
 		// create tmp directory
@@ -395,7 +398,7 @@ class Generator extends Nette\Object
 			$this->incrementProgressBar();
 
 			// generate source codes
-			if ($class->isTokenized()) {
+			if ($this->config->code && $class->isTokenized()) {
 				$source = file_get_contents($class->getFileName());
 				$source = str_replace(array("\r\n", "\r"), "\n", $source);
 

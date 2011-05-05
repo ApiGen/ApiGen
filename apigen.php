@@ -50,6 +50,7 @@ try {
 		'template-dir:',
 		'access-levels:',
 		'deprecated:',
+		'code:',
 		'wipeout:',
 		'progressbar:',
 		'debug:'
@@ -127,8 +128,9 @@ Options:
 	--template         <value> Documentation template name
 	--template-dir     <path>  Directory with templates
 	--access-levels    <list>  Generate documetation for methods and properties with given access level, default public,protected
-	--deprecated       On|Off  Generate documetation for deprecated classes, methods, properties and constants, default Off
-	--wipeout          On|Off  Wipe out the destination directory first, default On
+	--deprecated       Yes|No  Generate documetation for deprecated classes, methods, properties and constants, default No
+	--code             Yes|No  Generate highlighted source code files, default Yes
+	--wipeout          Yes|No  Wipe out the destination directory first, default Yes
 	--progressbar      On|Off  Display progressbars, default On
 	--debug            On|Off  Display additional information in case of an error, default Off
 
