@@ -109,16 +109,8 @@ class Config
 			unset($this->options[$option{0}]);
 		}
 
-		if (!isset($this->options['config']) && !isset($this->options['source'], $this->options['destination'])) {
-			throw new Exception('Missing required options', Exception::INVALID_CONFIG);
-		}
-
 		// Config file
-		if (isset($this->options['config'])) {
-			if (!is_file($this->options['config'])) {
-				throw new Exception(sprintf('Config file %s doesn\'t exist', $this->options['config']), Exception::INVALID_CONFIG);
-			}
-
+		if (isset($this->options['config']) && is_file($this->options['config'])) {
 			$this->config = array_merge($this->config, Neon::decode(file_get_contents($this->options['config'])));
 		}
 
@@ -199,6 +191,14 @@ class Config
 	 */
 	private function check()
 	{
+		if (!isset($this->options['config']) && !isset($this->options['source'], $this->options['destination'])) {
+			throw new Exception('Missing required options', Exception::INVALID_CONFIG);
+		}
+
+		if (isset($this->options['config']) && !is_file($this->options['config'])) {
+			throw new Exception(sprintf('Config file %s doesn\'t exist', $this->options['config']), Exception::INVALID_CONFIG);
+		}
+
 		if (empty($this->config['source'])) {
 			throw new Exception('Source is not set', Exception::INVALID_CONFIG);
 		}
