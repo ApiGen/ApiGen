@@ -206,8 +206,8 @@ class Reflection
 	 */
 	public function getParentClass()
 	{
-		$classes = $this->generator->getClasses();
 		if ($className = $this->reflection->getParentClassName()) {
+			$classes = $this->generator->getClasses();
 			return $classes[$className];
 		}
 
@@ -260,7 +260,7 @@ class Reflection
 	 */
 	public function getDirectSubClasses()
 	{
-		$name = $this->name;
+		$name = $this->reflection->getName();
 		return array_filter($this->generator->getClasses(), function(Reflection $class) use($name) {
 			if (!$class->isSubclassOf($name)) {
 				return false;
@@ -277,7 +277,7 @@ class Reflection
 	 */
 	public function getIndirectSubClasses()
 	{
-		$name = $this->name;
+		$name = $this->reflection->getName();
 		return array_filter($this->generator->getClasses(), function(Reflection $class) use($name) {
 			if (!$class->isSubclassOf($name)) {
 				return false;
@@ -298,7 +298,7 @@ class Reflection
 			return array();
 		}
 
-		$name = $this->name;
+		$name = $this->reflection->getName();
 		return array_filter($this->generator->getClasses(), function(Reflection $class) use($name) {
 			if (!$class->implementsInterface($name)) {
 				return false;
@@ -319,7 +319,7 @@ class Reflection
 			return array();
 		}
 
-		$name = $this->name;
+		$name = $this->reflection->getName();
 		return array_filter($this->generator->getClasses(), function(Reflection $class) use($name) {
 			if (!$class->implementsInterface($name)) {
 				return false;
