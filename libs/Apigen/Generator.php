@@ -495,7 +495,7 @@ class Generator extends Nette\Object
 	}
 
 	/**
-	 * Returns a link to a class source code file.
+	 * Returns a link to a element source code.
 	 *
 	 * @param \Apigen\Reflection|IReflectionMethod|IReflectionProperty|IReflectionConstant $element
 	 * @return string
@@ -507,39 +507,49 @@ class Generator extends Nette\Object
 		}
 
 		$class = $element instanceof ApiReflection ? $element : $element->getDeclaringClass();
-		if ($class->isInternal()) {
-			static $manual = 'http://php.net/manual';
-			static $reservedClasses = array('stdClass', 'Closure', 'Directory');
 
-			if (in_array($class->getName(), $reservedClasses)) {
-				return $manual . '/reserved.classes.php';
+		$file = str_replace('\\', '/', $class->getName());
+
+		$line = null;
+		if ($withLine) {
+			$line = $element->getStartLine();
+			if ($doc = $element->getDocComment()) {
+				$line -= substr_count($doc, "\n") + 1;
 			}
+		}
 
-			$className = strtolower($class->getName());
-			$classLink = sprintf('%s/class.%s.php', $manual, $className);
-			$elementName = strtolower(strtr(ltrim($element->getName(), '_'), '_', '-'));
+		return sprintf($this->config->filenames['source'], preg_replace('#[^a-z0-9_]#i', '.', $file)) . (isset($line) ? "#$line" : '');
+	}
 
-			if ($element instanceof ApiReflection) {
-				return $classLink;
-			} elseif ($element instanceof ReflectionMethod) {
-				return sprintf('%s/%s.%s.php', $manual, $className, $elementName);
-			} elseif ($element instanceof ReflectionProperty) {
-				return sprintf('%s#%s.props.%s', $classLink, $className, $elementName);
-			} elseif ($element instanceof ReflectionConstant) {
-				return sprintf('%s#%s.constants.%s', $classLink, $className, $elementName);
-			}
-		} elseif ($class->isTokenized()) {
-			$file = str_replace('\\', '/', $class->getName());
+	/**
+	 * Returns a link to a element documentation at php.net.
+	 *
+	 * @param \Apigen\Reflection|IReflectionMethod|IReflectionProperty|IReflectionConstant $element
+	 * @return string
+	 */
+	public function getManualLink($element)
+	{
+		static $manual = 'http://php.net/manual';
+		static $reservedClasses = array('stdClass', 'Closure', 'Directory');
 
-			$line = null;
-			if ($withLine) {
-				$line = $element->getStartLine();
-				if ($doc = $element->getDocComment()) {
-					$line -= substr_count($doc, "\n") + 1;
-				}
-			}
+		$class = $element instanceof ApiReflection ? $element : $element->getDeclaringClass();
 
-			return sprintf($this->config->filenames['source'], preg_replace('#[^a-z0-9_]#i', '.', $file)) . (isset($line) ? "#$line" : '');
+		if (in_array($class->getName(), $reservedClasses)) {
+			return $manual . '/reserved.classes.php';
+		}
+
+		$className = strtolower($class->getName());
+		$classLink = sprintf('%s/class.%s.php', $manual, $className);
+		$elementName = strtolower(strtr(ltrim($element->getName(), '_'), '_', '-'));
+
+		if ($element instanceof ApiReflection) {
+			return $classLink;
+		} elseif ($element instanceof ReflectionMethod) {
+			return sprintf('%s/%s.%s.php', $manual, $className, $elementName);
+		} elseif ($element instanceof ReflectionProperty) {
+			return sprintf('%s#%s.props.%s', $classLink, $className, $elementName);
+		} elseif ($element instanceof ReflectionConstant) {
+			return sprintf('%s#%s.constants.%s', $classLink, $className, $elementName);
 		}
 	}
 

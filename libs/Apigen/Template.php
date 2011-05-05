@@ -69,6 +69,7 @@ class Template extends Nette\Templating\FileTemplate
 		$this->registerHelper('propertyLink', callback($this->generator, 'getPropertyLink'));
 		$this->registerHelper('constantLink', callback($this->generator, 'getConstantLink'));
 		$this->registerHelper('sourceLink', callback($this->generator, 'getSourceLink'));
+		$this->registerHelper('manualLink', callback($this->generator, 'getManualLink'));
 
 		// types
 		$this->registerHelper('getTypes', callback($this, 'getTypes'));
