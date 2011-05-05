@@ -49,6 +49,7 @@ class Config
 		'googleCse' => '',
 		'template' => 'default',
 		'templateDir' => '',
+		'allowedHtml' => array('b', 'i', 'a', 'ul', 'ol', 'li', 'p', 'br', 'var', 'samp', 'kbd'),
 		'accessLevels' => array('public', 'protected'),
 		'deprecated' => false,
 		'code' => true,
@@ -319,6 +320,7 @@ Options:
 	--google-cse       <value> Google Custom Search ID
 	--template         <value> Documentation template name
 	--template-dir     <path>  Directory with templates
+	--allowed-html     <list>  List of allowed HTML tags in documentation, default b,i,a,ul,ol,li,p,br,var,samp,kbd
 	--access-levels    <list>  Generate documetation for methods and properties with given access level, default public,protected
 	--deprecated       Yes|No  Generate documetation for deprecated classes, methods, properties and constants, default No
 	--code             Yes|No  Generate highlighted source code files, default Yes

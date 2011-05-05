@@ -48,6 +48,7 @@ try {
 		'google-cse:',
 		'template:',
 		'template-dir:',
+		'allowed-html:',
 		'access-levels:',
 		'deprecated:',
 		'code:',

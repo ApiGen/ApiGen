@@ -8,6 +8,7 @@ baseUrl: ''
 googleCse: ''
 template: default
 templateDir: ''
+allowedHtml: [b, i, a, ul, ol, li, p, br, var, samp, kbd]
 accessLevels: [public, protected]
 deprecated: No
 code: Yes

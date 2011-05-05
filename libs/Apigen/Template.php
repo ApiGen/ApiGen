@@ -85,7 +85,7 @@ class Template extends Nette\Templating\FileTemplate
 		$linkModule->shorten = FALSE;
 		$texy->linkModule = $linkModule;
 		$texy->mergeLines = FALSE;
-		$texy->allowedTags = \Texy::NONE;
+		$texy->allowedTags = array_flip($this->generator->config->allowedHtml);
 		$texy->allowed['list/definition'] = FALSE;
 		$texy->allowed['phrase/em-alt'] = FALSE;
 		$texy->allowed['longwords'] = FALSE;
