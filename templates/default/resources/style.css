@@ -304,8 +304,15 @@ tr .detailed {
 	font-size: 95%;
 }
 
+.position {
+	position: relative;
+	padding-right: 1em;
+}
+
 .anchor {
-	float: right;
+	position: absolute;
+	top: 0;
+	right: 0;
 	line-height: 1;
 	font-size: 85%;
 	margin: 0;
