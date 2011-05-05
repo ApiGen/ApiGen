@@ -294,4 +294,49 @@ class Config
 	{
 		unset($this->config[$name]);
 	}
+
+	/**
+	 * Returns help.
+	 *
+	 * @return string
+	 */
+	public static function getHelp()
+	{
+		return <<<'HELP'
+Usage:
+	apigen --config <path> [options]
+	apigen --source <path> --destination <path> [options]
+
+Options:
+	--config|-c        <path>  Config file
+	--source|-s        <path>  Source file or directory to parse (can be used multiple times)
+	--destination|-d   <path>  Directory where to save the generated documentation
+	--exclude          <path>  Exclude file or directory from processing (can be used multiple times)
+	--skip-doc-path    <value> Don't generate documentation for classes from this file or directory (can be used multiple times)
+	--skip-doc-prefix  <value> Don't generate documentation for classes with this name prefix (can be used multiple times)
+	--title            <value> Title of generated documentation
+	--base-url         <value> Documentation base URI
+	--google-cse       <value> Google Custom Search ID
+	--template         <value> Documentation template name
+	--template-dir     <path>  Directory with templates
+	--access-levels    <list>  Generate documetation for methods and properties with given access level, default public,protected
+	--deprecated       Yes|No  Generate documetation for deprecated classes, methods, properties and constants, default No
+	--code             Yes|No  Generate highlighted source code files, default Yes
+	--wipeout          Yes|No  Wipe out the destination directory first, default Yes
+	--progressbar      On|Off  Display progressbars, default On
+	--debug            On|Off  Display additional information in case of an error, default Off
+	--help|-h                  Display this help
+
+Only source and destination directories are required - either set explicitly or using a config file.
+
+Files or directories specified by --exclude will not be processed at all.
+Classes from files within --skip-doc-path or with --skip-doc-prefix will be parsed but will not have
+their documentation generated. However if they have any child classes, the full class tree will be
+generated and their inherited methods, properties and constants will be displayed (but will not
+be clickable).
+
+Configuration parameters passed via command line have precedence over parameters from a config file.
+
+HELP;
+	}
 }
