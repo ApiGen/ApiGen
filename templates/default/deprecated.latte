@@ -68,7 +68,7 @@
 	<caption>Methods</caption>
 	{foreach $methods as $method}
 	<tr>
-		<td align="right" class="nowrap" width="1%"><a href="{$method->declaringClassName|classLink}">{$method->declaringClassName}</a></td>
+		<td class="right nowrap" width="1%"><a href="{$method->declaringClassName|classLink}">{$method->declaringClassName}</a></td>
 		<td width="1%"><code><a href="{$method|methodLink}"><b>{$method->name}()</b></a></code></td>
 		<td>{!$method|shortDescription|docline}
 			{if $method->hasAnnotation('deprecated')}
@@ -87,7 +87,7 @@
 	<caption>Constants</caption>
 	{foreach $constants as $constant}
 	<tr>
-		<td align="right" class="nowrap" width="1%"><a href="{$constant->declaringClassName|classLink}">{$constant->declaringClassName}</a></td>
+		<td class="right nowrap" width="1%"><a href="{$constant->declaringClassName|classLink}">{$constant->declaringClassName}</a></td>
 		<td width="1%"><code><a href="{$constant|constantLink}"><b>{$constant->name}</b></a></code></td>
 		<td>{!$constant|shortDescription|docline}
 			{foreach $constant->annotations['deprecated'] as $description}
@@ -104,7 +104,7 @@
 	<caption>Properties</caption>
 	{foreach $properties as $property}
 	<tr>
-		<td align="right" class="nowrap" width="1%"><a href="{$property->declaringClassName|classLink}">{$property->declaringClassName}</a></td>
+		<td class="right nowrap" width="1%"><a href="{$property->declaringClassName|classLink}">{$property->declaringClassName}</a></td>
 		<td width="1%"><var><a href="{$property|propertyLink}">${$property->name}</a></var></td>
 		<td>{!$property|shortDescription|docline}
 			{foreach $property->annotations['deprecated'] as $description}

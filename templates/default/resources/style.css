@@ -295,6 +295,9 @@ tr .detailed {
 .deprecated {
 	opacity: .5;
 }
+.right {
+	text-align: right;
+}
 
 .box {
 	border: 1px solid #ccc;
