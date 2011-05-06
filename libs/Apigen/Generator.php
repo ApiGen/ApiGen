@@ -278,7 +278,7 @@ class Generator extends Nette\Object
 			return !$class->isInterface() && !$class->isException();
 		});
 		$template->interfaces = array_filter($allClasses, function($class) {
-			return $class->isInterface() && !$class->isException();
+			return $class->isInterface();
 		});
 		$template->exceptions = array_filter($allClasses, function($class) {
 			return $class->isException();
