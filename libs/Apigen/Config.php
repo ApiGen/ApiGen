@@ -68,8 +68,6 @@ class Config
 		'config',
 		'source',
 		'destination',
-		'exclude',
-		'skipDocPath',
 		'templateDir'
 	);
 
@@ -169,6 +167,12 @@ class Config
 					$this->config[$option] = realpath($this->config[$option]);
 				}
 			}
+		}
+
+		foreach (array('exclude', 'skipDocPath') as $option) {
+			$this->config[$option] = array_map(function($mask) {
+				return str_replace(array('/', '\\'), DIRECTORY_SEPARATOR, $mask);
+			}, $this->config[$option]);
 		}
 
 		$this->config['skipDocPrefix'] = array_map(function($prefix) {
@@ -344,8 +348,8 @@ Options:
 	--config|-c        <path>  Config file
 	--source|-s        <path>  Source file or directory to parse (can be used multiple times)
 	--destination|-d   <path>  Directory where to save the generated documentation
-	--exclude          <path>  Exclude file or directory from processing (can be used multiple times)
-	--skip-doc-path    <value> Don't generate documentation for classes from this file or directory (can be used multiple times)
+	--exclude          <path>  Mask to exclude file or directory from processing (can be used multiple times)
+	--skip-doc-path    <value> Don't generate documentation for classes from file or directory with this mask (can be used multiple times)
 	--skip-doc-prefix  <value> Don't generate documentation for classes with this name prefix (can be used multiple times)
 	--title            <value> Title of generated documentation
 	--base-url         <value> Documentation base URI

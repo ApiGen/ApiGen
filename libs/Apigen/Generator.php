@@ -92,10 +92,8 @@ class Generator extends Nette\Object
 				if (!preg_match('~\\.php$~i', $entry->getFilename())) {
 					continue;
 				}
-				foreach ($this->config->exclude as $exclude) {
-					if (is_dir($exclude) && 0 === strpos($entry->getPathName(), $exclude . DIRECTORY_SEPARATOR)) {
-						continue 2;
-					} elseif ($exclude === $entry->getPathName()) {
+				foreach ($this->config->exclude as $mask) {
+					if (fnmatch($mask, $entry->getPathName(), FNM_NOESCAPE | FNM_PATHNAME)) {
 						continue 2;
 					}
 				}

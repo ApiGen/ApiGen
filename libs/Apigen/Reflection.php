@@ -420,8 +420,8 @@ class Reflection
 				$this->isDocumented = false;
 			} else {
 				$this->isDocumented = true;
-				foreach ($this->generator->config->skipDocPath as $path) {
-					if ($this->reflection->getFilename() === $path || 0 === strpos($this->reflection->getFilename(), $path . DIRECTORY_SEPARATOR)) {
+				foreach ($this->generator->config->skipDocPath as $mask) {
+					if (fnmatch($mask, $this->reflection->getFilename(), FNM_NOESCAPE | FNM_PATHNAME)) {
 						$this->isDocumented = false;
 					}
 				}
