@@ -294,6 +294,7 @@ class Generator extends Nette\Object
 		$fshl = new \fshlParser('HTML_UTF8', P_TAB_INDENT | P_LINE_COUNTER);
 
 		// generate namespace summary
+		$this->forceDir($destination . '/' . $this->config->filenames['namespace']);
 		$template->package = null;
 		foreach ($namespaces as $namespace => $definition) {
 			$classes = isset($definition['classes']) ? $definition['classes'] : array();
@@ -315,12 +316,13 @@ class Generator extends Nette\Object
 			$template->exceptions = array_filter($classes, function($class) {
 				return $class->isException();
 			});
-			$template->setFile($templatePath . '/' . $this->config->templates['namespace'])->save($this->forceDir($destination . '/' . $this->getNamespaceLink($namespace)));
+			$template->setFile($templatePath . '/' . $this->config->templates['namespace'])->save($destination . '/' . $this->getNamespaceLink($namespace));
 
 			$this->incrementProgressBar();
 		}
 
 		// generate package summary
+		$this->forceDir($destination . '/' . $this->config->filenames['package']);
 		$template->namespace = null;
 		foreach ($packages as $package => $definition) {
 			$classes = isset($definition['classes']) ? $definition['classes'] : array();
@@ -339,13 +341,15 @@ class Generator extends Nette\Object
 			$template->exceptions = array_filter($classes, function($class) {
 				return $class->isException();
 			});
-			$template->setFile($templatePath . '/' . $this->config->templates['package'])->save($this->forceDir($destination . '/' . $this->getPackageLink($package)));
+			$template->setFile($templatePath . '/' . $this->config->templates['package'])->save($destination . '/' . $this->getPackageLink($package));
 
 			$this->incrementProgressBar();
 		}
 
 
 		// generate class & interface files
+		$this->forceDir($destination . '/' . $this->config->filenames['class']);
+		$this->forceDir($destination . '/' . $this->config->filenames['source']);
 		$template->classes = $allClasses;
 		foreach ($allClasses as $class) {
 			$template->package = $package = $class->getPackageName();
@@ -392,7 +396,7 @@ class Generator extends Nette\Object
 			}
 
 			$template->class = $class;
-			$template->setFile($templatePath . '/' . $this->config->templates['class'])->save($this->forceDir($destination . '/' . $this->getClassLink($class)));
+			$template->setFile($templatePath . '/' . $this->config->templates['class'])->save($destination . '/' . $this->getClassLink($class));
 
 			$this->incrementProgressBar();
 
@@ -402,7 +406,7 @@ class Generator extends Nette\Object
 				$source = str_replace(array("\r\n", "\r"), "\n", $source);
 
 				$template->source = $fshl->highlightString('PHP', $source);
-				$template->setFile($templatePath . '/' . $this->config->templates['source'])->save($this->forceDir($destination . '/' . $this->getSourceLink($class, false)));
+				$template->setFile($templatePath . '/' . $this->config->templates['source'])->save($destination . '/' . $this->getSourceLink($class, false));
 
 				$this->incrementProgressBar();
 			}
