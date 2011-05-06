@@ -418,9 +418,8 @@ class Reflection
 				$this->isDocumented = false;
 			} elseif (!$this->generator->config->deprecated && $this->reflection->isDeprecated()) {
 				$this->isDocumented = false;
-			} elseif (empty($this->generator->config->skipDocPath) && empty($this->generator->config->skipDocPrefix)) {
-				$this->isDocumented = true;
 			} else {
+				$this->isDocumented = true;
 				foreach ($this->generator->config->skipDocPath as $path) {
 					if ($this->reflection->getFilename() === $path || 0 === strpos($this->reflection->getFilename(), $path . DIRECTORY_SEPARATOR)) {
 						$this->isDocumented = false;
