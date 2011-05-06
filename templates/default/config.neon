@@ -15,6 +15,11 @@ templates:
 		opensearch.xml: opensearch.xml.latte
 		resources/combined.js: combined.js.latte
 
+	optional:
+		deprecated:
+			filename: deprecated.html
+			template: deprecated.latte
+
 filenames:
 	class: %s.html
 	package: package-%s.html

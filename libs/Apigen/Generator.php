@@ -247,7 +247,8 @@ class Generator extends Nette\Object
 			$max = count($allClasses)
 				+ count($namespaces)
 				+ count($packages)
-				+ count($this->config->templates['common']);
+				+ count($this->config->templates['common'])
+				+ (int) $this->config->deprecated;
 
 			if ($this->config->code) {
 				$max += count(array_filter($allClasses, function(ApiReflection $class) {
@@ -405,6 +406,42 @@ class Generator extends Nette\Object
 
 				$this->incrementProgressBar();
 			}
+		}
+
+		// list of deprecated elements
+		if ($this->config->deprecated) {
+			$template->classes = array_filter($allClasses, function($class) {
+				return $class->isDeprecated() && !$class->isInterface() && !$class->isException();
+			});
+			$template->interfaces = array_filter($allClasses, function($class) {
+				return $class->isDeprecated() && $class->isInterface();
+			});
+			$template->exceptions = array_filter($allClasses, function($class) {
+				return $class->isDeprecated() && $class->isException();
+			});
+
+			$template->methods = array();
+			$template->constants = array();
+			$template->properties = array();
+			foreach ($allClasses as $class) {
+				if ($class->isDeprecated()) {
+					continue;
+				}
+
+				$template->methods += array_filter($class->getOwnMethods(), function($method) {
+					return $method->isDeprecated();
+				});
+				$template->constants += array_filter($class->getOwnConstantReflections(), function($constant) {
+					return $constant->isDeprecated();
+				});
+				$template->properties += array_filter($class->getOwnProperties(), function($property) {
+					return $property->isDeprecated();
+				});
+			}
+
+			$template->setFile($templatePath . '/' . $this->config->templates['optional']['deprecated']['template'])->save($this->forceDir($destination . '/' . $this->config->templates['optional']['deprecated']['filename']));
+
+			$this->incrementProgressBar();
 		}
 
 		// delete tmp directory
