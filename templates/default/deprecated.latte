@@ -22,10 +22,10 @@
 	{foreach $deprecatedClasses as $class}
 	<tr>
 		<td class="nowrap" width="1%"><a href="{$class|classLink}">{$class->name}</a></td>
-		<td>{!$class|shortDescription|docline|resolveLinks:$class}
+		<td>
 			{foreach $class->annotations['deprecated'] as $description}
 				{if $description}
-					<br>{!$description|docline|resolveLinks:$class}
+					{!$description|docline|resolveLinks:$class}<br>
 				{/if}
 			{/foreach}
 		</td>
@@ -38,10 +38,10 @@
 	{foreach $deprecatedInterfaces as $interface}
 	<tr>
 		<td class="nowrap" width="1%"><a href="{$interface|classLink}">{$interface->name}</a></td>
-		<td>{!$interface|shortDescription|docline|resolveLinks:$interface}
+		<td>
 			{foreach $interface->annotations['deprecated'] as $description}
 				{if $description}
-					<br>{!$description|docline|resolveLinks:$interface}
+					{!$description|docline|resolveLinks:$interface}<br>
 				{/if}
 			{/foreach}
 		</td>
@@ -54,10 +54,10 @@
 	{foreach $deprecatedExceptions as $exception}
 	<tr>
 		<td class="nowrap" width="1%"><a href="{$exception|classLink}">{$exception->name}</a></td>
-		<td>{!$exception|shortDescription|docline|resolveLinks:$exception}
+		<td>
 			{foreach $exception->annotations['deprecated'] as $description}
 				{if $description}
-					<br>{!$description|docline|resolveLinks:$exception}
+					{!$description|docline|resolveLinks:$exception}<br>
 				{/if}
 			{/foreach}
 		</td>
@@ -71,11 +71,11 @@
 	<tr>
 		<td class="right nowrap" width="1%"><a href="{$method->declaringClassName|classLink}">{$method->declaringClassName}</a></td>
 		<td width="1%"><code><a href="{$method|methodLink}"><b>{$method->name}()</b></a></code></td>
-		<td>{!$method|shortDescription|docline}
+		<td>
 			{if $method->hasAnnotation('deprecated')}
 			{foreach $method->annotations['deprecated'] as $description}
 				{if $description}
-					<br>{!$description|docline}
+					{!$description|docline}<br>
 				{/if}
 			{/foreach}
 			{/if}
@@ -90,10 +90,10 @@
 	<tr>
 		<td class="right nowrap" width="1%"><a href="{$constant->declaringClassName|classLink}">{$constant->declaringClassName}</a></td>
 		<td width="1%"><code><a href="{$constant|constantLink}"><b>{$constant->name}</b></a></code></td>
-		<td>{!$constant|shortDescription|docline}
+		<td>
 			{foreach $constant->annotations['deprecated'] as $description}
 				{if $description}
-					<br>{!$description|docline}
+					{!$description|docline}<br>
 				{/if}
 			{/foreach}
 		</td>
@@ -107,10 +107,10 @@
 	<tr>
 		<td class="right nowrap" width="1%"><a href="{$property->declaringClassName|classLink}">{$property->declaringClassName}</a></td>
 		<td width="1%"><var><a href="{$property|propertyLink}">${$property->name}</a></var></td>
-		<td>{!$property|shortDescription|docline}
+		<td>
 			{foreach $property->annotations['deprecated'] as $description}
 				{if $description}
-					<br>{!$description|docline}
+					{!$description|docline}<br>
 				{/if}
 			{/foreach}
 		</td>
