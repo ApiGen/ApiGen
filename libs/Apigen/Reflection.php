@@ -417,20 +417,21 @@ class Reflection
 	public function isDocumented()
 	{
 		if (null === $this->isDocumented) {
-			if ($this->reflection->isInternal()) {
+			$config = $this->generator->config;
+			if ($config->internal && $this->reflection->isInternal()) {
 				$this->isDocumented = true;
 			} elseif (!$this->reflection->isTokenized()) {
 				$this->isDocumented = false;
-			} elseif (!$this->generator->config->deprecated && $this->reflection->isDeprecated()) {
+			} elseif (!$config->deprecated && $this->reflection->isDeprecated()) {
 				$this->isDocumented = false;
 			} else {
 				$this->isDocumented = true;
-				foreach ($this->generator->config->skipDocPath as $mask) {
+				foreach ($config->skipDocPath as $mask) {
 					if (fnmatch($mask, $this->reflection->getFilename(), FNM_NOESCAPE | FNM_PATHNAME)) {
 						$this->isDocumented = false;
 					}
 				}
-				foreach ($this->generator->config->skipDocPrefix as $prefix) {
+				foreach ($config->skipDocPrefix as $prefix) {
 					if (0 === strpos($this->reflection->getName(), $prefix)) {
 						$this->isDocumented = false;
 					}

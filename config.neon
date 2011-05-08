@@ -10,6 +10,7 @@ template: default
 templateDir: ''
 allowedHtml: [b, i, a, ul, ol, li, p, br, var, samp, kbd]
 accessLevels: [public, protected]
+internal: Yes
 deprecated: No
 todo: No
 code: Yes

@@ -46,6 +46,7 @@ try {
 		'template-dir:',
 		'allowed-html:',
 		'access-levels:',
+		'internal:',
 		'deprecated:',
 		'todo:',
 		'code:',
