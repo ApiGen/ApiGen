@@ -70,7 +70,7 @@
 
 		<div class="classInfo">
 			{if $class->abstract || $class->final}<b>{if $class->abstract}Abstract{else}Final{/if} {if $class->interface}Interface{else}Class{/if}</b><br>{/if}
-			{foreach $template->annotationSort($class->annotations) as $annotation => $values}
+			{foreach $template->annotationSort($template->annotationFilter($class->annotations)) as $annotation => $values}
 				{foreach $values as $value}
 					<b>{$annotation|ucfirst}{if $value}:{/if}</b>
 					{!$value|annotation:$annotation:$class}<br />

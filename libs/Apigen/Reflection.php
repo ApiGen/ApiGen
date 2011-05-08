@@ -172,27 +172,6 @@ class Reflection
 	}
 
 	/**
-	 * Returns all supported and sorted annotations.
-	 *
-	 * @return array
-	 */
-	public function getAnnotations()
-	{
-		$annotations = $this->reflection->getAnnotations();
-		// Unsupported or deprecated annotations
-		foreach (array('property', 'property-read', 'property-write', 'method', 'abstract', 'final', 'filesource') as $annotation) {
-			unset($annotations[$annotation]);
-		}
-
-		// Show/hide todo
-		if (!$this->generator->config->todo) {
-			unset($annotations['todo']);
-		}
-
-		return $annotations;
-	}
-
-	/**
 	 * Returns a parent class reflection encapsulated by this class.
 	 *
 	 * @return \Apigen\Reflection

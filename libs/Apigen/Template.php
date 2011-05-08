@@ -167,6 +167,26 @@ class Template extends Nette\Templating\FileTemplate
 
 		});
 
+		$this->registerHelper('annotationFilter', function(array $annotations, array $filter = array()) use ($that) {
+			// Unsupported or deprecated annotations
+			static $unsupported = array('property', 'property-read', 'property-write', 'method', 'abstract', 'final', 'filesource');
+			foreach ($unsupported as $annotation) {
+				unset($annotations[$annotation]);
+			}
+
+			// Custom filter
+			foreach ($filter as $annotation) {
+				unset($annotations[$annotation]);
+			}
+
+			// Show/hide todo
+			if (!$that->generator->config->todo) {
+				unset($annotations['todo']);
+			}
+
+			return $annotations;
+		});
+
 		$this->registerHelper('annotationSort', function(array $annotations) {
 			uksort($annotations, function($a, $b) {
 				static $order = array(
