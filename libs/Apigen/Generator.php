@@ -169,6 +169,14 @@ class Generator extends Nette\Object
 			}
 		}
 
+		// optional files
+		foreach ($this->config->templates['optional'] as $optional) {
+			$file = $this->config->destination . '/' . $optional['filename'];
+			if (is_file($file) && !@unlink($file)) {
+				return false;
+			}
+		}
+
 		// output files
 		$masks = array_map(function($mask) {
 			return preg_replace('~%[^%]*?s~', '*', $mask);
@@ -258,8 +266,12 @@ class Generator extends Nette\Object
 				+ count($namespaces)
 				+ count($packages)
 				+ count($this->config->templates['common'])
-				+ (int) $this->config->deprecated
-				+ (int) $this->config->todo;
+				+ (int) $this->config->deprecated // list of deprecated elements
+				+ (int) $this->config->todo // list of tasks
+				+ (int) !empty($this->config->baseUrl) // sitemap
+				+ (int) (!empty($this->config->googleCse) && !empty($this->config->baseUrl)) // opensearch
+				+ (int) !empty($this->config->googleCse) // autocomplete
+			;
 
 			if ($this->config->code) {
 				$max += count(array_filter($allClasses, function(ApiReflection $class) {
@@ -295,8 +307,19 @@ class Generator extends Nette\Object
 			$this->incrementProgressBar();
 		}
 
-		$generatedFiles = array();
-		$fshl = new \fshlParser('HTML_UTF8', P_TAB_INDENT | P_LINE_COUNTER);
+		// optional files
+		if (!empty($this->config->baseUrl)) {
+			$template->setFile($templatePath . '/' . $this->config->templates['optional']['sitemap']['template'])->save($this->forceDir($destination . '/' . $this->config->templates['optional']['sitemap']['filename']));
+			$this->incrementProgressBar();
+		}
+		if (!empty($this->config->baseUrl) && !empty($this->config->googleCse)) {
+			$template->setFile($templatePath . '/' . $this->config->templates['optional']['opensearch']['template'])->save($this->forceDir($destination . '/' . $this->config->templates['optional']['opensearch']['filename']));
+			$this->incrementProgressBar();
+		}
+		if (!empty($this->config->googleCse)) {
+			$template->setFile($templatePath . '/' . $this->config->templates['optional']['autocomplete']['template'])->save($this->forceDir($destination . '/' . $this->config->templates['optional']['autocomplete']['filename']));
+			$this->incrementProgressBar();
+		}
 
 		// list of deprecated elements
 		if ($this->config->deprecated) {
@@ -421,6 +444,7 @@ class Generator extends Nette\Object
 
 
 		// generate class & interface files
+		$fshl = new \fshlParser('HTML_UTF8', P_TAB_INDENT | P_LINE_COUNTER);
 		$this->forceDir($destination . '/' . $this->config->filenames['class']);
 		$this->forceDir($destination . '/' . $this->config->filenames['source']);
 		$template->classes = $allClasses;

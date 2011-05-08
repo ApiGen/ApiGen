@@ -1,13 +1,16 @@
 $(function(){
 
 	// enables search autocompletion
-	$("#search input[type=text]").autocomplete(classes, {
-		matchContains: true,
-		scrollHeight: 200,
-		max: 20,
-		formatItem: function(row) { return row[0].replace(/^(.+\\)(.+)$/, '<small>$1</small>$2'); },
-		formatMatch: function(row) { return row[0]; }
-	});
+	var $search = $("#search input[type=text]");
+	if ($search.size()) {
+		$search.autocomplete(classes, {
+			matchContains: true,
+			scrollHeight: 200,
+			max: 20,
+			formatItem: function(row) { return row[0].replace(/^(.+\\)(.+)$/, '<small>$1</small>$2'); },
+			formatMatch: function(row) { return row[0]; }
+		});
+	}
 
 	// saves original order
 	$("table.summary:has(tr[data-order]) tr").each(function(index) {
