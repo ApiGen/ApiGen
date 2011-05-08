@@ -102,10 +102,9 @@ class Template extends Nette\Templating\FileTemplate
 
 		// Documentation formatting
 		$this->registerHelper('resolveLinks', function($text, ApiReflection $class = null) use ($that) {
-			if (null === $class && !isset($that->class)) {
+			if (null === $class) {
 				return $text;
 			}
-			$class = $class ?: $that->class;
 			return preg_replace_callback('~{@link\\s+([^}]+)}~', function ($matches) use ($class, $that) {
 				return $that->resolveClassLink($matches[1], $class) ?: $matches[0];
 			}, $text);

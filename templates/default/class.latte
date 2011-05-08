@@ -22,7 +22,7 @@
 		<h1>{if $class->deprecated}Deprecated {/if}{if $class->interface}Interface{else}Class{/if} {$class->shortName}</h1>
 
 		<div class="classDescription" n:if="$class->docComment">
-		{!$class|longDescription|docblock|resolveLinks}
+		{!$class|longDescription|docblock|resolveLinks:$class}
 		</div>
 
 		<dl class="tree" n:if="$class->parentClass || $class->ownInterfaces">
@@ -117,11 +117,11 @@
 			)</code>
 
 			<div class="short">
-				{!$method|shortDescription|docblock|resolveLinks}
+				{!$method|shortDescription|docblock|resolveLinks:$class}
 			</div>
 
 			<div class="detailed">
-				{!$method|longDescription|docblock|resolveLinks}
+				{!$method|longDescription|docblock|resolveLinks:$class}
 
 				{var $annotations = $method->annotations}
 
@@ -131,7 +131,7 @@
 					<div class="smallList">
 					{foreach $annotations['deprecated'] as $description}
 						{if $description}
-							{!$description|docline|resolveLinks}<br />
+							{!$description|docline|resolveLinks:$class}<br />
 						{/if}
 					{/foreach}
 					</div>
@@ -234,7 +234,7 @@
 				{/if}
 			</code></td>
 			<td><a n:tag-if="$template->resolveConstant($constant->valueDefinition)" href="{$constant->valueDefinition|resolveConstant|constantLink}"><code>{!$constant->valueDefinition|highlightValue}</code></a></td>
-			<td><div class="position">{!$constant|shortDescription|docline|resolveLinks} <a href="#{$name}" class="anchor">#</a></div></td>
+			<td><div class="position">{!$constant|shortDescription|docline|resolveLinks:$class} <a href="#{$name}" class="anchor">#</a></div></td>
 		</tr>
 		{/foreach}
 		</table>
@@ -273,7 +273,7 @@
 				{/if}
 			</var></td>
 			<td><pre>{!$property->defaultValueDefinition|highlightValue}</pre></td>
-			<td><div class="position">{!$property|shortDescription|docline|resolveLinks} <a href="#${$property->name}" class="anchor">#</a></div></td>
+			<td><div class="position">{!$property|shortDescription|docline|resolveLinks:$class} <a href="#${$property->name}" class="anchor">#</a></div></td>
 		</tr>
 		{/foreach}
 		</table>
