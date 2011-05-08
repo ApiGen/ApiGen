@@ -16,9 +16,9 @@
 <div id="content">
 	<h1>{$config->title} Deprecated</h1>
 
-	<table class="summary" id="classes" n:if="$classes">
+	<table class="summary" id="classes" n:if="$deprecatedClasses">
 	<caption>Classes</caption>
-	{foreach $classes as $class}
+	{foreach $deprecatedClasses as $class}
 	<tr>
 		<td class="nowrap" width="1%"><a href="{$class|classLink}">{$class->name}</a></td>
 		<td>{!$class|shortDescription|docline|resolveLinks:$class}
@@ -32,9 +32,9 @@
 	{/foreach}
 	</table>
 
-	<table class="summary" id="interfaces" n:if="$interfaces">
+	<table class="summary" id="interfaces" n:if="$deprecatedInterfaces">
 	<caption>Interfaces</caption>
-	{foreach $interfaces as $interface}
+	{foreach $deprecatedInterfaces as $interface}
 	<tr>
 		<td class="nowrap" width="1%"><a href="{$interface|classLink}">{$interface->name}</a></td>
 		<td>{!$interface|shortDescription|docline|resolveLinks:$interface}
@@ -48,9 +48,9 @@
 	{/foreach}
 	</table>
 
-	<table class="summary" id="exceptions" n:if="$exceptions">
+	<table class="summary" id="exceptions" n:if="$deprecatedExceptions">
 	<caption>Exceptions</caption>
-	{foreach $exceptions as $exception}
+	{foreach $deprecatedExceptions as $exception}
 	<tr>
 		<td class="nowrap" width="1%"><a href="{$exception|classLink}">{$exception->name}</a></td>
 		<td>{!$exception|shortDescription|docline|resolveLinks:$exception}
@@ -64,9 +64,9 @@
 	{/foreach}
 	</table>
 
-	<table class="summary" id="methods" n:if="$methods">
+	<table class="summary" id="methods" n:if="$deprecatedMethods">
 	<caption>Methods</caption>
-	{foreach $methods as $method}
+	{foreach $deprecatedMethods as $method}
 	<tr>
 		<td class="right nowrap" width="1%"><a href="{$method->declaringClassName|classLink}">{$method->declaringClassName}</a></td>
 		<td width="1%"><code><a href="{$method|methodLink}"><b>{$method->name}()</b></a></code></td>
@@ -83,9 +83,9 @@
 	{/foreach}
 	</table>
 
-	<table class="summary" id="constants" n:if="$constants">
+	<table class="summary" id="constants" n:if="$deprecatedConstants">
 	<caption>Constants</caption>
-	{foreach $constants as $constant}
+	{foreach $deprecatedConstants as $constant}
 	<tr>
 		<td class="right nowrap" width="1%"><a href="{$constant->declaringClassName|classLink}">{$constant->declaringClassName}</a></td>
 		<td width="1%"><code><a href="{$constant|constantLink}"><b>{$constant->name}</b></a></code></td>
@@ -100,9 +100,9 @@
 	{/foreach}
 	</table>
 
-	<table class="summary" id="properties" n:if="$properties">
+	<table class="summary" id="properties" n:if="$deprecatedProperties">
 	<caption>Properties</caption>
-	{foreach $properties as $property}
+	{foreach $deprecatedProperties as $property}
 	<tr>
 		<td class="right nowrap" width="1%"><a href="{$property->declaringClassName|classLink}">{$property->declaringClassName}</a></td>
 		<td width="1%"><var><a href="{$property|propertyLink}">${$property->name}</a></var></td>

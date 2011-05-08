@@ -243,6 +243,16 @@ class Generator extends Nette\Object
 		uksort($namespaces, 'strcasecmp');
 		uksort($allClasses, 'strcasecmp');
 
+		$classes = array_filter($allClasses, function($class) {
+			return !$class->isInterface() && !$class->isException();
+		});
+		$interfaces = array_filter($allClasses, function($class) {
+			return $class->isInterface();
+		});
+		$exceptions = array_filter($allClasses, function($class) {
+			return $class->isException();
+		});
+
 		if ($this->config->progressbar) {
 			$max = count($allClasses)
 				+ count($namespaces)
@@ -275,15 +285,9 @@ class Generator extends Nette\Object
 		$template->package = null;
 		$template->packages = array_keys($packages);
 		$template->class = null;
-		$template->classes = array_filter($allClasses, function($class) {
-			return !$class->isInterface() && !$class->isException();
-		});
-		$template->interfaces = array_filter($allClasses, function($class) {
-			return $class->isInterface();
-		});
-		$template->exceptions = array_filter($allClasses, function($class) {
-			return $class->isException();
-		});
+		$template->classes = $classes;
+		$template->interfaces = $interfaces;
+		$template->exceptions = $exceptions;
 		foreach ($this->config->templates['common'] as $dest => $source) {
 			$template->setFile($templatePath . '/' . $source)->save($this->forceDir("$destination/$dest"));
 
@@ -292,6 +296,42 @@ class Generator extends Nette\Object
 
 		$generatedFiles = array();
 		$fshl = new \fshlParser('HTML_UTF8', P_TAB_INDENT | P_LINE_COUNTER);
+
+		// list of deprecated elements
+		if ($this->config->deprecated) {
+			$template->deprecatedClasses = array_filter($classes, function($class) {
+				return $class->isDeprecated();
+			});
+			$template->deprecatedInterfaces = array_filter($interfaces, function($class) {
+				return $class->isDeprecated();
+			});
+			$template->deprecatedExceptions = array_filter($exceptions, function($class) {
+				return $class->isDeprecated();
+			});
+
+			$template->deprecatedMethods = array();
+			$template->deprecatedConstants = array();
+			$template->deprecatedProperties = array();
+			foreach ($allClasses as $class) {
+				if ($class->isDeprecated()) {
+					continue;
+				}
+
+				$template->deprecatedMethods += array_filter($class->getOwnMethods(), function($method) {
+					return $method->isDeprecated();
+				});
+				$template->deprecatedConstants += array_filter($class->getOwnConstantReflections(), function($constant) {
+					return $constant->isDeprecated();
+				});
+				$template->deprecatedProperties += array_filter($class->getOwnProperties(), function($property) {
+					return $property->isDeprecated();
+				});
+			}
+
+			$template->setFile($templatePath . '/' . $this->config->templates['optional']['deprecated']['template'])->save($this->forceDir($destination . '/' . $this->config->templates['optional']['deprecated']['filename']));
+
+			$this->incrementProgressBar();
+		}
 
 		// generate namespace summary
 		$this->forceDir($destination . '/' . $this->config->filenames['namespace']);
@@ -410,42 +450,6 @@ class Generator extends Nette\Object
 
 				$this->incrementProgressBar();
 			}
-		}
-
-		// list of deprecated elements
-		if ($this->config->deprecated) {
-			$template->classes = array_filter($allClasses, function($class) {
-				return $class->isDeprecated() && !$class->isInterface() && !$class->isException();
-			});
-			$template->interfaces = array_filter($allClasses, function($class) {
-				return $class->isDeprecated() && $class->isInterface();
-			});
-			$template->exceptions = array_filter($allClasses, function($class) {
-				return $class->isDeprecated() && $class->isException();
-			});
-
-			$template->methods = array();
-			$template->constants = array();
-			$template->properties = array();
-			foreach ($allClasses as $class) {
-				if ($class->isDeprecated()) {
-					continue;
-				}
-
-				$template->methods += array_filter($class->getOwnMethods(), function($method) {
-					return $method->isDeprecated();
-				});
-				$template->constants += array_filter($class->getOwnConstantReflections(), function($constant) {
-					return $constant->isDeprecated();
-				});
-				$template->properties += array_filter($class->getOwnProperties(), function($property) {
-					return $property->isDeprecated();
-				});
-			}
-
-			$template->setFile($templatePath . '/' . $this->config->templates['optional']['deprecated']['template'])->save($this->forceDir($destination . '/' . $this->config->templates['optional']['deprecated']['filename']));
-
-			$this->incrementProgressBar();
 		}
 
 		// delete tmp directory
