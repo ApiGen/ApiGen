@@ -40,13 +40,13 @@
 			<li n:class="$namespace === $item ? active"><a href="{$item|namespaceLink}">{$item ? $item : 'None'}</a>
 				{if substr_count($iterator->nextValue, '\\') > substr_count($item, '\\')}
 					<ul>
-				{elseif substr_count($iterator->nextValue, '\\') < substr_count($item, '\\')}
-					{!=str_repeat('</ul></li>', substr_count($item, '\\') - substr_count($iterator->nextValue, '\\'))}
 				{else}
 					</li>
+					{if substr_count($iterator->nextValue, '\\') < substr_count($item, '\\')}
+						{!=str_repeat('</ul></li>', substr_count($item, '\\') - substr_count($iterator->nextValue, '\\'))}
+					{/if}
 				{/if}
 			{/foreach}
-			{!=str_repeat('</ul></li>', substr_count($item, '\\'))}
 		</ul>
 		{/if}
 
