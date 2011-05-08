@@ -167,6 +167,20 @@ class Template extends Nette\Templating\FileTemplate
 
 		});
 
+		$this->registerHelper('annotationSort', function(array $annotations) {
+			uksort($annotations, function($a, $b) {
+				static $order = array(
+					'deprecated' => 0, 'category' => 1, 'package' => 2, 'subpackage' => 3, 'copyright' => 4,
+					'license' => 5, 'author' => 6, 'version' => 7, 'since' => 8, 'see' => 9, 'uses' => 10,
+					'link' => 11, 'example' => 12, 'tutorial' => 13, 'todo' => 14
+				);
+				$orderA = isset($order[$a]) ? $order[$a] : 99;
+				$orderB = isset($order[$b]) ? $order[$b] : 99;
+				return $orderA - $orderB;
+			});
+			return $annotations;
+		});
+
 		// static files versioning
 		$destination = $this->generator->config->destination;
 		$this->registerHelper('staticFile', function($name, $line = null) use ($destination) {
