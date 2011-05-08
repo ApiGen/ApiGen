@@ -226,8 +226,28 @@
 					<a n:tag-if="$config->code" href="{$constant|sourceLink}" title="Go to source code"><b>{$name}</b></a>
 				{/if}
 			</code></td>
-			<td><a n:tag-if="$template->resolveConstant($constant->valueDefinition)" href="{$constant->valueDefinition|resolveConstant|constantLink}"><code>{!$constant->valueDefinition|highlightValue}</code></a></td>
-			<td><div class="position">{!$constant|shortDescription|docline|resolveLinks:$class} <a href="#{$name}" class="anchor">#</a></div></td>
+			<td width="1%"><a n:tag-if="$template->resolveConstant($constant->valueDefinition)" href="{$constant->valueDefinition|resolveConstant|constantLink}"><code>{!$constant->valueDefinition|highlightValue}</code></a></td>
+			<td><div class="position">
+				<a href="#{$name}" class="anchor">#</a>
+				<div class="short">
+					{!$constant|shortDescription|docblock|resolveLinks:$class}
+				</div>
+
+				<div class="detailed">
+					{!$constant|longDescription|docblock|resolveLinks:$class}
+
+					{foreach $template->annotationSort($template->annotationFilter($constant->annotations, array('var'))) as $annotation => $descriptions}
+						<h4>{$annotation|ucfirst}</h4>
+						<div class="smallList">
+						{foreach $descriptions as $description}
+							{if $description}
+								{!$description|annotation:$annotation:$class}<br>
+							{/if}
+						{/foreach}
+						</div>
+					{/foreach}
+				</div>
+			</div></td>
 		</tr>
 		{/foreach}
 		</table>
