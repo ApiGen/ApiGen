@@ -167,7 +167,8 @@ class Template extends Nette\Templating\FileTemplate
 
 		});
 
-		$this->registerHelper('annotationFilter', function(array $annotations, array $filter = array()) use ($that) {
+		$todo = $this->generator->config->todo;
+		$this->registerHelper('annotationFilter', function(array $annotations, array $filter = array()) use ($todo) {
 			// Unsupported or deprecated annotations
 			static $unsupported = array('property', 'property-read', 'property-write', 'method', 'abstract', 'access', 'final', 'filesource', 'global', 'name', 'static', 'staticvar');
 			foreach ($unsupported as $annotation) {
@@ -180,7 +181,7 @@ class Template extends Nette\Templating\FileTemplate
 			}
 
 			// Show/hide todo
-			if (!$that->generator->config->todo) {
+			if (!$todo) {
 				unset($annotations['todo']);
 			}
 

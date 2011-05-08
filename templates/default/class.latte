@@ -131,7 +131,7 @@
 					<div class="smallList">
 					{foreach $annotations['deprecated'] as $description}
 						{if $description}
-							{!$description|docline|resolveLinks:$class}<br />
+							{!$description|annotation:$annotation:$class}<br>
 						{/if}
 					{/foreach}
 					</div>
@@ -166,23 +166,16 @@
 					</div>
 				{/if}
 
-				{if isset($annotations['see'])}
-					<h4>References</h4>
+				{foreach $template->annotationSort($template->annotationFilter($annotations, array('deprecated', 'param', 'return', 'throws'))) as $annotation => $descriptions}
+					<h4>{$annotation|ucfirst}</h4>
 					<div class="smallList">
-					{foreach $annotations['see'] as $item}
-						{!$item|annotation:"see":$class}<br>
+					{foreach $descriptions as $description}
+						{if $description}
+							{!$description|annotation:$annotation:$class}<br>
+						{/if}
 					{/foreach}
 					</div>
-				{/if}
-
-				{if $config->todo && isset($annotations['todo'])}
-					<h4>Todo</h4>
-					<div class="smallList">
-					{foreach $annotations['todo'] as $item}
-						{!$item|annotation:'todo':$class}<br>
-					{/foreach}
-					</div>
-				{/if}
+				{/foreach}
 
 				{try}
 				{var $prototype = $method->prototype}
