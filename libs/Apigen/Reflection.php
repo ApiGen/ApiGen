@@ -184,6 +184,11 @@ class Reflection
 			unset($annotations[$annotation]);
 		}
 
+		// Show/hide todo
+		if (!$this->generator->config->todo) {
+			unset($annotations['todo']);
+		}
+
 		// Sort
 		uksort($annotations, function($a, $b) {
 			static $order = array(
