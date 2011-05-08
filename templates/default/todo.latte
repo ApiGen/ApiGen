@@ -1,6 +1,6 @@
 {layout '@layout.latte'}
 
-{block #title}Deprecated{/block}
+{block #title}Todo{/block}
 
 {block #content}
 <div id="navigation">
@@ -9,23 +9,23 @@
 		<li>Package</li>
 		<li>Namespace</li>
 		<li>Class</li>
-		<li class="active">Deprecated</li>
-		<li n:if="$config->todo"><a href="todo.html" title="Todo list">Todo</a></li>
+		<li n:if="$config->deprecated"><a href="deprecated.html" title="List of deprecated elements">Deprecated</a></li>
+		<li class="active">Todo</li>
 	</ul>
 </div>
 
 <div id="content">
-	<h1>{$config->title} Deprecated</h1>
+	<h1>{$config->title} Todo</h1>
 
-	<table class="summary" id="classes" n:if="$deprecatedClasses">
+	<table class="summary" id="classes" n:if="$todoClasses">
 	<caption>Classes</caption>
-	{foreach $deprecatedClasses as $class}
+	{foreach $todoClasses as $class}
 	<tr>
 		<td class="nowrap" width="1%"><a href="{$class|classLink}">{$class->name}</a></td>
-		<td>{!$class|shortDescription|docline|resolveLinks:$class}
-			{foreach $class->annotations['deprecated'] as $description}
+		<td>
+			{foreach $class->annotations['todo'] as $description}
 				{if $description}
-					<br>{!$description|docline|resolveLinks:$class}
+					{!$description|docline|resolveLinks:$class}<br>
 				{/if}
 			{/foreach}
 		</td>
@@ -33,15 +33,15 @@
 	{/foreach}
 	</table>
 
-	<table class="summary" id="interfaces" n:if="$deprecatedInterfaces">
+	<table class="summary" id="interfaces" n:if="$todoInterfaces">
 	<caption>Interfaces</caption>
-	{foreach $deprecatedInterfaces as $interface}
+	{foreach $todoInterfaces as $interface}
 	<tr>
 		<td class="nowrap" width="1%"><a href="{$interface|classLink}">{$interface->name}</a></td>
-		<td>{!$interface|shortDescription|docline|resolveLinks:$interface}
-			{foreach $interface->annotations['deprecated'] as $description}
+		<td>
+			{foreach $interface->annotations['todo'] as $description}
 				{if $description}
-					<br>{!$description|docline|resolveLinks:$interface}
+					{!$description|docline|resolveLinks:$interface}<br>
 				{/if}
 			{/foreach}
 		</td>
@@ -49,15 +49,15 @@
 	{/foreach}
 	</table>
 
-	<table class="summary" id="exceptions" n:if="$deprecatedExceptions">
+	<table class="summary" id="exceptions" n:if="$todoExceptions">
 	<caption>Exceptions</caption>
-	{foreach $deprecatedExceptions as $exception}
+	{foreach $todoExceptions as $exception}
 	<tr>
 		<td class="nowrap" width="1%"><a href="{$exception|classLink}">{$exception->name}</a></td>
-		<td>{!$exception|shortDescription|docline|resolveLinks:$exception}
-			{foreach $exception->annotations['deprecated'] as $description}
+		<td>
+			{foreach $exception->annotations['todo'] as $description}
 				{if $description}
-					<br>{!$description|docline|resolveLinks:$exception}
+					{!$description|docline|resolveLinks:$exception}<br>
 				{/if}
 			{/foreach}
 		</td>
@@ -65,35 +65,33 @@
 	{/foreach}
 	</table>
 
-	<table class="summary" id="methods" n:if="$deprecatedMethods">
+	<table class="summary" id="methods" n:if="$todoMethods">
 	<caption>Methods</caption>
-	{foreach $deprecatedMethods as $method}
+	{foreach $todoMethods as $method}
 	<tr>
 		<td class="right nowrap" width="1%"><a href="{$method->declaringClassName|classLink}">{$method->declaringClassName}</a></td>
 		<td width="1%"><code><a href="{$method|methodLink}"><b>{$method->name}()</b></a></code></td>
-		<td>{!$method|shortDescription|docline}
-			{if $method->hasAnnotation('deprecated')}
-			{foreach $method->annotations['deprecated'] as $description}
+		<td>
+			{foreach $method->annotations['todo'] as $description}
 				{if $description}
-					<br>{!$description|docline}
+					{!$description|docline}<br>
 				{/if}
 			{/foreach}
-			{/if}
 		</td>
 	</tr>
 	{/foreach}
 	</table>
 
-	<table class="summary" id="constants" n:if="$deprecatedConstants">
+	<table class="summary" id="constants" n:if="$todoConstants">
 	<caption>Constants</caption>
-	{foreach $deprecatedConstants as $constant}
+	{foreach $todoConstants as $constant}
 	<tr>
 		<td class="right nowrap" width="1%"><a href="{$constant->declaringClassName|classLink}">{$constant->declaringClassName}</a></td>
 		<td width="1%"><code><a href="{$constant|constantLink}"><b>{$constant->name}</b></a></code></td>
-		<td>{!$constant|shortDescription|docline}
-			{foreach $constant->annotations['deprecated'] as $description}
+		<td>
+			{foreach $constant->annotations['todo'] as $description}
 				{if $description}
-					<br>{!$description|docline}
+					{!$description|docline}<br>
 				{/if}
 			{/foreach}
 		</td>
@@ -101,16 +99,16 @@
 	{/foreach}
 	</table>
 
-	<table class="summary" id="properties" n:if="$deprecatedProperties">
+	<table class="summary" id="properties" n:if="$todoProperties">
 	<caption>Properties</caption>
-	{foreach $deprecatedProperties as $property}
+	{foreach $todoProperties as $property}
 	<tr>
 		<td class="right nowrap" width="1%"><a href="{$property->declaringClassName|classLink}">{$property->declaringClassName}</a></td>
 		<td width="1%"><var><a href="{$property|propertyLink}">${$property->name}</a></var></td>
-		<td>{!$property|shortDescription|docline}
-			{foreach $property->annotations['deprecated'] as $description}
+		<td>
+			{foreach $property->annotations['todo'] as $description}
 				{if $description}
-					<br>{!$description|docline}
+					{!$description|docline}<br>
 				{/if}
 			{/foreach}
 		</td>

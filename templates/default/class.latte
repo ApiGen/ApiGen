@@ -10,6 +10,7 @@
 		<li><a n:tag-if="$namespace" href="{$class|namespaceLink}" title="Summary of {$class->namespaceName}">Namespace</a></li>
 		<li class="active">Class</li>
 		<li n:if="$config->deprecated"><a href="deprecated.html" title="List of deprecated elements">Deprecated</a></li>
+		<li n:if="$config->todo"><a href="todo.html" title="Todo list">Todo</a></li>
 	</ul>
 </div>
 
@@ -170,6 +171,15 @@
 					<div class="smallList">
 					{foreach $annotations['see'] as $item}
 						{!$item|annotation:"see":$class}<br>
+					{/foreach}
+					</div>
+				{/if}
+
+				{if $config->todo && isset($annotations['todo'])}
+					<h4>Todo</h4>
+					<div class="smallList">
+					{foreach $annotations['todo'] as $item}
+						{!$item|annotation:'todo':$class}<br>
 					{/foreach}
 					</div>
 				{/if}

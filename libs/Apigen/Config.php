@@ -52,6 +52,7 @@ class Config
 		'allowedHtml' => array('b', 'i', 'a', 'ul', 'ol', 'li', 'p', 'br', 'var', 'samp', 'kbd'),
 		'accessLevels' => array('public', 'protected'),
 		'deprecated' => false,
+		'todo' => false,
 		'code' => true,
 		'wipeout' => true,
 		'quiet' => false,
@@ -359,6 +360,7 @@ Options:
 	--allowed-html     <list>  List of allowed HTML tags in documentation, default "b,i,a,ul,ol,li,p,br,var,samp,kbd"
 	--access-levels    <list>  Generate documentation for methods and properties with given access level, default "public,protected"
 	--deprecated       Yes|No  Generate documentation for deprecated classes, methods, properties and constants, default "No"
+	--todo             Yes|No  Generate documentation of tasks, default "No"
 	--code             Yes|No  Generate highlighted source code files, default "Yes"
 	--wipeout          Yes|No  Wipe out the destination directory first, default "Yes"
 	--quiet            Yes|No  Don't display scaning and generating messages, default "No"

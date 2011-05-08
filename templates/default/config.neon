@@ -19,6 +19,9 @@ templates:
 		deprecated:
 			filename: deprecated.html
 			template: deprecated.latte
+		todo:
+			filename: todo.html
+			template: todo.latte
 
 filenames:
 	class: %s.html

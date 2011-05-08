@@ -11,6 +11,7 @@ templateDir: ''
 allowedHtml: [b, i, a, ul, ol, li, p, br, var, samp, kbd]
 accessLevels: [public, protected]
 deprecated: No
+todo: No
 code: Yes
 wipeout: Yes
 quiet: No

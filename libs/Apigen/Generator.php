@@ -258,7 +258,8 @@ class Generator extends Nette\Object
 				+ count($namespaces)
 				+ count($packages)
 				+ count($this->config->templates['common'])
-				+ (int) $this->config->deprecated;
+				+ (int) $this->config->deprecated
+				+ (int) $this->config->todo;
 
 			if ($this->config->code) {
 				$max += count(array_filter($allClasses, function(ApiReflection $class) {
@@ -329,6 +330,38 @@ class Generator extends Nette\Object
 			}
 
 			$template->setFile($templatePath . '/' . $this->config->templates['optional']['deprecated']['template'])->save($this->forceDir($destination . '/' . $this->config->templates['optional']['deprecated']['filename']));
+
+			$this->incrementProgressBar();
+		}
+
+		// list of tasks
+		if ($this->config->todo) {
+			$template->todoClasses = array_filter($classes, function($class) {
+				return $class->hasAnnotation('todo');
+			});
+			$template->todoInterfaces = array_filter($interfaces, function($class) {
+				return $class->hasAnnotation('todo');
+			});
+			$template->todoExceptions = array_filter($exceptions, function($class) {
+				return $class->hasAnnotation('todo');
+			});
+
+			$template->todoMethods = array();
+			$template->todoConstants = array();
+			$template->todoProperties = array();
+			foreach ($allClasses as $class) {
+				$template->todoMethods += array_filter($class->getOwnMethods(), function($method) {
+					return $method->hasAnnotation('todo');
+				});
+				$template->todoConstants += array_filter($class->getOwnConstantReflections(), function($constant) {
+					return $constant->hasAnnotation('todo');
+				});
+				$template->todoProperties += array_filter($class->getOwnProperties(), function($property) {
+					return $property->hasAnnotation('todo');
+				});
+			}
+
+			$template->setFile($templatePath . '/' . $this->config->templates['optional']['todo']['template'])->save($this->forceDir($destination . '/' . $this->config->templates['optional']['todo']['filename']));
 
 			$this->incrementProgressBar();
 		}

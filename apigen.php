@@ -47,6 +47,7 @@ try {
 		'allowed-html:',
 		'access-levels:',
 		'deprecated:',
+		'todo:',
 		'code:',
 		'wipeout:',
 		'quiet:',
