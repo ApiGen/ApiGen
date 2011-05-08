@@ -285,8 +285,29 @@
 					<a n:tag-if="$config->code" href="{$property|sourceLink}" title="Go to source code">${$property->name}</a>
 				{/if}
 			</var></td>
-			<td><pre>{!$property->defaultValueDefinition|highlightValue}</pre></td>
-			<td><div class="position">{!$property|shortDescription|docline|resolveLinks:$class} <a href="#${$property->name}" class="anchor">#</a></div></td>
+			<td width="1%"><pre>{!$property->defaultValueDefinition|highlightValue}</pre></td>
+			<td><div class="position">
+				<a href="#${$property->name}" class="anchor">#</a>
+
+				<div class="short">
+					{!$property|shortDescription|docline|resolveLinks:$class}
+				</div>
+
+				<div class="detailed">
+					{!$property|longDescription|docblock|resolveLinks:$class}
+
+					{foreach $template->annotationSort($template->annotationFilter($property->annotations, array('var'))) as $annotation => $descriptions}
+						<h4>{$annotation|ucfirst}</h4>
+						<div class="smallList">
+						{foreach $descriptions as $description}
+							{if $description}
+								{!$description|annotation:$annotation:$class}<br>
+							{/if}
+						{/foreach}
+						</div>
+					{/foreach}
+				</div>
+			</div></td>
 		</tr>
 		{/foreach}
 		</table>
