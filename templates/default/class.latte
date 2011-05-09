@@ -70,7 +70,7 @@
 
 		<div class="classInfo">
 			{if $class->abstract || $class->final}<b>{if $class->abstract}Abstract{else}Final{/if} {if $class->interface}Interface{else}Class{/if}</b><br>{/if}
-			{foreach $class->annotations as $annotation => $values}
+			{foreach $template->annotationSort($template->annotationFilter($class->annotations)) as $annotation => $values}
 				{foreach $values as $value}
 					<b>{$annotation|ucfirst}{if $value}:{/if}</b>
 					{!$value|annotation:$annotation:$class}<br />
@@ -131,7 +131,7 @@
 					<div class="smallList">
 					{foreach $annotations['deprecated'] as $description}
 						{if $description}
-							{!$description|docline|resolveLinks:$class}<br />
+							{!$description|annotation:$annotation:$class}<br>
 						{/if}
 					{/foreach}
 					</div>
@@ -166,23 +166,16 @@
 					</div>
 				{/if}
 
-				{if isset($annotations['see'])}
-					<h4>References</h4>
+				{foreach $template->annotationSort($template->annotationFilter($annotations, array('deprecated', 'param', 'return', 'throws'))) as $annotation => $descriptions}
+					<h4>{$annotation|ucfirst}</h4>
 					<div class="smallList">
-					{foreach $annotations['see'] as $item}
-						{!$item|annotation:"see":$class}<br>
+					{foreach $descriptions as $description}
+						{if $description}
+							{!$description|annotation:$annotation:$class}<br>
+						{/if}
 					{/foreach}
 					</div>
-				{/if}
-
-				{if $config->todo && isset($annotations['todo'])}
-					<h4>Todo</h4>
-					<div class="smallList">
-					{foreach $annotations['todo'] as $item}
-						{!$item|annotation:'todo':$class}<br>
-					{/foreach}
-					</div>
-				{/if}
+				{/foreach}
 
 				{try}
 				{var $prototype = $method->prototype}
@@ -233,8 +226,28 @@
 					<a n:tag-if="$config->code" href="{$constant|sourceLink}" title="Go to source code"><b>{$name}</b></a>
 				{/if}
 			</code></td>
-			<td><a n:tag-if="$template->resolveConstant($constant->valueDefinition)" href="{$constant->valueDefinition|resolveConstant|constantLink}"><code>{!$constant->valueDefinition|highlightValue}</code></a></td>
-			<td><div class="position">{!$constant|shortDescription|docline|resolveLinks:$class} <a href="#{$name}" class="anchor">#</a></div></td>
+			<td width="1%"><a n:tag-if="$template->resolveConstant($constant->valueDefinition)" href="{$constant->valueDefinition|resolveConstant|constantLink}"><code>{!$constant->valueDefinition|highlightValue}</code></a></td>
+			<td><div class="position">
+				<a href="#{$name}" class="anchor">#</a>
+				<div class="short">
+					{!$constant|shortDescription|docblock|resolveLinks:$class}
+				</div>
+
+				<div class="detailed">
+					{!$constant|longDescription|docblock|resolveLinks:$class}
+
+					{foreach $template->annotationSort($template->annotationFilter($constant->annotations, array('var'))) as $annotation => $descriptions}
+						<h4>{$annotation|ucfirst}</h4>
+						<div class="smallList">
+						{foreach $descriptions as $description}
+							{if $description}
+								{!$description|annotation:$annotation:$class}<br>
+							{/if}
+						{/foreach}
+						</div>
+					{/foreach}
+				</div>
+			</div></td>
 		</tr>
 		{/foreach}
 		</table>
@@ -272,8 +285,29 @@
 					<a n:tag-if="$config->code" href="{$property|sourceLink}" title="Go to source code">${$property->name}</a>
 				{/if}
 			</var></td>
-			<td><pre>{!$property->defaultValueDefinition|highlightValue}</pre></td>
-			<td><div class="position">{!$property|shortDescription|docline|resolveLinks:$class} <a href="#${$property->name}" class="anchor">#</a></div></td>
+			<td width="1%"><pre>{!$property->defaultValueDefinition|highlightValue}</pre></td>
+			<td><div class="position">
+				<a href="#${$property->name}" class="anchor">#</a>
+
+				<div class="short">
+					{!$property|shortDescription|docline|resolveLinks:$class}
+				</div>
+
+				<div class="detailed">
+					{!$property|longDescription|docblock|resolveLinks:$class}
+
+					{foreach $template->annotationSort($template->annotationFilter($property->annotations, array('var'))) as $annotation => $descriptions}
+						<h4>{$annotation|ucfirst}</h4>
+						<div class="smallList">
+						{foreach $descriptions as $description}
+							{if $description}
+								{!$description|annotation:$annotation:$class}<br>
+							{/if}
+						{/foreach}
+						</div>
+					{/foreach}
+				</div>
+			</div></td>
 		</tr>
 		{/foreach}
 		</table>

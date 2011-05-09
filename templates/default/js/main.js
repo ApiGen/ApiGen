@@ -35,7 +35,7 @@ $(function(){
 		$("table.summary:has(tr[data-order]) caption").click();
 	}
 
-	// delayed hover efect on method summary
+	// delayed hover efect on summary
 	var timeout;
 	$("tr:has(.detailed)").hover(function(){
 		clearTimeout(timeout);
@@ -47,7 +47,7 @@ $(function(){
 	}, function(){
 		clearTimeout(timeout);
 
-	}).click(function(){ // immediate hover effect on method summary
+	}).click(function(){ // immediate hover effect on summary
 		clearTimeout(timeout);
 		var $this = $(this);
 		$this.find('.short').hide();
