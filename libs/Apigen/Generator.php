@@ -361,6 +361,13 @@ class Generator extends Nette\Object
 				}
 
 				$template->setFile($templatePath . '/' . $templates['optional']['deprecated']['template'])->save($this->forceDir($destination . '/' . $templates['optional']['deprecated']['filename']));
+
+				unset($template->deprecatedClasses);
+				unset($template->deprecatedInterfaces);
+				unset($template->deprecatedExceptions);
+				unset($template->deprecatedMethods);
+				unset($template->deprecatedConstants);
+				unset($template->deprecatedProperties);
 			}
 
 			$this->incrementProgressBar();
@@ -395,6 +402,13 @@ class Generator extends Nette\Object
 				}
 
 				$template->setFile($templatePath . '/' . $templates['optional']['todo']['template'])->save($this->forceDir($destination . '/' . $templates['optional']['todo']['filename']));
+
+				unset($template->todoClasses);
+				unset($template->todoInterfaces);
+				unset($template->todoExceptions);
+				unset($template->todoMethods);
+				unset($template->todoConstants);
+				unset($template->todoProperties);
 			}
 
 			$this->incrementProgressBar();
