@@ -211,6 +211,7 @@ class Generator extends Nette\Object
 		}
 
 		$destination = $this->config->destination;
+		$templates = $this->config->templates;
 		$templatePath = $this->config->templateDir . '/' . $this->config->template;
 
 		// copy resources
@@ -265,7 +266,7 @@ class Generator extends Nette\Object
 			$max = count($allClasses)
 				+ count($namespaces)
 				+ count($packages)
-				+ count($this->config->templates['common'])
+				+ count($templates['common'])
 				+ (int) $this->config->deprecated // list of deprecated elements
 				+ (int) $this->config->todo // list of tasks
 				+ (int) !empty($this->config->baseUrl) // sitemap
@@ -283,7 +284,7 @@ class Generator extends Nette\Object
 		}
 
 		// create tmp directory
-		$tmp = $this->config->destination . DIRECTORY_SEPARATOR . 'tmp';
+		$tmp = $destination . DIRECTORY_SEPARATOR . 'tmp';
 		@mkdir($tmp, 0755, true);
 
 		// prepare template
@@ -301,7 +302,7 @@ class Generator extends Nette\Object
 		$template->classes = $classes;
 		$template->interfaces = $interfaces;
 		$template->exceptions = $exceptions;
-		foreach ($this->config->templates['common'] as $dest => $source) {
+		foreach ($templates['common'] as $dest => $source) {
 			$template->setFile($templatePath . '/' . $source)->save($this->forceDir("$destination/$dest"));
 
 			$this->incrementProgressBar();
@@ -309,27 +310,27 @@ class Generator extends Nette\Object
 
 		// optional files
 		if (!empty($this->config->baseUrl)) {
-			if (isset($this->config->templates['optional']['sitemap'])) {
-				$template->setFile($templatePath . '/' . $this->config->templates['optional']['sitemap']['template'])->save($this->forceDir($destination . '/' . $this->config->templates['optional']['sitemap']['filename']));
+			if (isset($templates['optional']['sitemap'])) {
+				$template->setFile($templatePath . '/' . $templates['optional']['sitemap']['template'])->save($this->forceDir($destination . '/' . $templates['optional']['sitemap']['filename']));
 			}
 			$this->incrementProgressBar();
 		}
 		if (!empty($this->config->baseUrl) && !empty($this->config->googleCse)) {
-			if (isset($this->config->templates['optional']['opensearch'])) {
-				$template->setFile($templatePath . '/' . $this->config->templates['optional']['opensearch']['template'])->save($this->forceDir($destination . '/' . $this->config->templates['optional']['opensearch']['filename']));
+			if (isset($templates['optional']['opensearch'])) {
+				$template->setFile($templatePath . '/' . $templates['optional']['opensearch']['template'])->save($this->forceDir($destination . '/' . $templates['optional']['opensearch']['filename']));
 			}
 			$this->incrementProgressBar();
 		}
 		if (!empty($this->config->googleCse)) {
-			if (isset($this->config->templates['optional']['autocomplete'])) {
-				$template->setFile($templatePath . '/' . $this->config->templates['optional']['autocomplete']['template'])->save($this->forceDir($destination . '/' . $this->config->templates['optional']['autocomplete']['filename']));
+			if (isset($templates['optional']['autocomplete'])) {
+				$template->setFile($templatePath . '/' . $templates['optional']['autocomplete']['template'])->save($this->forceDir($destination . '/' . $templates['optional']['autocomplete']['filename']));
 			}
 			$this->incrementProgressBar();
 		}
 
 		// list of deprecated elements
 		if ($this->config->deprecated) {
-			if (isset($this->config->templates['optional']['deprecated'])) {
+			if (isset($templates['optional']['deprecated'])) {
 				$template->deprecatedClasses = array_filter($classes, function($class) {
 					return $class->isDeprecated();
 				});
@@ -359,7 +360,7 @@ class Generator extends Nette\Object
 					});
 				}
 
-				$template->setFile($templatePath . '/' . $this->config->templates['optional']['deprecated']['template'])->save($this->forceDir($destination . '/' . $this->config->templates['optional']['deprecated']['filename']));
+				$template->setFile($templatePath . '/' . $templates['optional']['deprecated']['template'])->save($this->forceDir($destination . '/' . $templates['optional']['deprecated']['filename']));
 			}
 
 			$this->incrementProgressBar();
@@ -367,7 +368,7 @@ class Generator extends Nette\Object
 
 		// list of tasks
 		if ($this->config->todo) {
-			if (isset($this->config->templates['optional']['todo'])) {
+			if (isset($templates['optional']['todo'])) {
 				$template->todoClasses = array_filter($classes, function($class) {
 					return $class->hasAnnotation('todo');
 				});
@@ -393,14 +394,14 @@ class Generator extends Nette\Object
 					});
 				}
 
-				$template->setFile($templatePath . '/' . $this->config->templates['optional']['todo']['template'])->save($this->forceDir($destination . '/' . $this->config->templates['optional']['todo']['filename']));
+				$template->setFile($templatePath . '/' . $templates['optional']['todo']['template'])->save($this->forceDir($destination . '/' . $templates['optional']['todo']['filename']));
 			}
 
 			$this->incrementProgressBar();
 		}
 
 		// generate namespace summary
-		$this->forceDir($destination . '/' . $this->config->templates['main']['namespace']['filename']);
+		$this->forceDir($destination . '/' . $templates['main']['namespace']['filename']);
 		$template->package = null;
 		foreach ($namespaces as $namespace => $definition) {
 			$classes = isset($definition['classes']) ? $definition['classes'] : array();
@@ -422,13 +423,13 @@ class Generator extends Nette\Object
 			$template->exceptions = array_filter($classes, function($class) {
 				return $class->isException();
 			});
-			$template->setFile($templatePath . '/' . $this->config->templates['main']['namespace']['template'])->save($destination . '/' . $template->getNamespaceLink($namespace));
+			$template->setFile($templatePath . '/' . $templates['main']['namespace']['template'])->save($destination . '/' . $template->getNamespaceLink($namespace));
 
 			$this->incrementProgressBar();
 		}
 
 		// generate package summary
-		$this->forceDir($destination . '/' . $this->config->templates['main']['package']['filename']);
+		$this->forceDir($destination . '/' . $templates['main']['package']['filename']);
 		$template->namespace = null;
 		foreach ($packages as $package => $definition) {
 			$classes = isset($definition['classes']) ? $definition['classes'] : array();
@@ -447,7 +448,7 @@ class Generator extends Nette\Object
 			$template->exceptions = array_filter($classes, function($class) {
 				return $class->isException();
 			});
-			$template->setFile($templatePath . '/' . $this->config->templates['main']['package']['template'])->save($destination . '/' . $template->getPackageLink($package));
+			$template->setFile($templatePath . '/' . $templates['main']['package']['template'])->save($destination . '/' . $template->getPackageLink($package));
 
 			$this->incrementProgressBar();
 		}
@@ -455,8 +456,8 @@ class Generator extends Nette\Object
 
 		// generate class & interface files
 		$fshl = new \fshlParser('HTML_UTF8', P_TAB_INDENT | P_LINE_COUNTER);
-		$this->forceDir($destination . '/' . $this->config->templates['main']['class']['filename']);
-		$this->forceDir($destination . '/' . $this->config->templates['main']['source']['filename']);
+		$this->forceDir($destination . '/' . $templates['main']['class']['filename']);
+		$this->forceDir($destination . '/' . $templates['main']['source']['filename']);
 		$template->classes = $allClasses;
 		foreach ($allClasses as $class) {
 			$template->package = $package = $class->getPackageName();
@@ -503,7 +504,7 @@ class Generator extends Nette\Object
 			}
 
 			$template->class = $class;
-			$template->setFile($templatePath . '/' . $this->config->templates['main']['class']['template'])->save($destination . '/' . $template->getClassLink($class));
+			$template->setFile($templatePath . '/' . $templates['main']['class']['template'])->save($destination . '/' . $template->getClassLink($class));
 
 			$this->incrementProgressBar();
 
@@ -513,7 +514,7 @@ class Generator extends Nette\Object
 				$source = str_replace(array("\r\n", "\r"), "\n", $source);
 
 				$template->source = $fshl->highlightString('PHP', $source);
-				$template->setFile($templatePath . '/' . $this->config->templates['main']['source']['template'])->save($destination . '/' . $template->getSourceLink($class, false));
+				$template->setFile($templatePath . '/' . $templates['main']['source']['template'])->save($destination . '/' . $template->getSourceLink($class, false));
 
 				$this->incrementProgressBar();
 			}
