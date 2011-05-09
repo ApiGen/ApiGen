@@ -422,7 +422,7 @@ class Generator extends Nette\Object
 			$template->exceptions = array_filter($classes, function($class) {
 				return $class->isException();
 			});
-			$template->setFile($templatePath . '/' . $this->config->templates['main']['namespace']['template'])->save($destination . '/' . $this->getNamespaceLink($namespace));
+			$template->setFile($templatePath . '/' . $this->config->templates['main']['namespace']['template'])->save($destination . '/' . $template->getNamespaceLink($namespace));
 
 			$this->incrementProgressBar();
 		}
@@ -447,7 +447,7 @@ class Generator extends Nette\Object
 			$template->exceptions = array_filter($classes, function($class) {
 				return $class->isException();
 			});
-			$template->setFile($templatePath . '/' . $this->config->templates['main']['package']['template'])->save($destination . '/' . $this->getPackageLink($package));
+			$template->setFile($templatePath . '/' . $this->config->templates['main']['package']['template'])->save($destination . '/' . $template->getPackageLink($package));
 
 			$this->incrementProgressBar();
 		}
@@ -503,7 +503,7 @@ class Generator extends Nette\Object
 			}
 
 			$template->class = $class;
-			$template->setFile($templatePath . '/' . $this->config->templates['main']['class']['template'])->save($destination . '/' . $this->getClassLink($class));
+			$template->setFile($templatePath . '/' . $this->config->templates['main']['class']['template'])->save($destination . '/' . $template->getClassLink($class));
 
 			$this->incrementProgressBar();
 
@@ -513,7 +513,7 @@ class Generator extends Nette\Object
 				$source = str_replace(array("\r\n", "\r"), "\n", $source);
 
 				$template->source = $fshl->highlightString('PHP', $source);
-				$template->setFile($templatePath . '/' . $this->config->templates['main']['source']['template'])->save($destination . '/' . $this->getSourceLink($class, false));
+				$template->setFile($templatePath . '/' . $this->config->templates['main']['source']['template'])->save($destination . '/' . $template->getSourceLink($class, false));
 
 				$this->incrementProgressBar();
 			}
@@ -542,133 +542,6 @@ class Generator extends Nette\Object
 	{
 		$name = sprintf('ApiGen %s', self::VERSION);
 		return $name . "\n" . str_repeat('-', strlen($name)) . "\n";
-	}
-
-	/**
-	 * Returns a link to a namespace summary file.
-	 *
-	 * @param  string|\Apigen\Reflection|IReflectionNamespace
-	 * @return string
-	 */
-	public function getNamespaceLink($class)
-	{
-		$namespace = ($class instanceof ApiReflection) ? $class->getNamespaceName() : $class;
-		return sprintf($this->config->templates['main']['namespace']['filename'], $namespace ? preg_replace('#[^a-z0-9_]#i', '.', $namespace) : 'None');
-	}
-
-	/**
-	 * Returns a link to a package summary file.
-	 *
-	 * @param string|\Apigen\Reflection
-	 * @return string
-	 */
-	public function getPackageLink($class)
-	{
-		$package = ($class instanceof ApiReflection) ? $class->getPackageName() : $class;
-		return sprintf($this->config->templates['main']['package']['filename'], $package ? preg_replace('#[^a-z0-9_]#i', '.', $package) : 'None');
-	}
-
-	/**
-	 * Returns a link to class summary file.
-	 *
-	 * @param string|\Apigen\Reflection $class
-	 * @return string
-	 */
-	public function getClassLink($class)
-	{
-		if ($class instanceof ApiReflection) {
-			$class = $class->getName();
-		}
-
-		return sprintf($this->config->templates['main']['class']['filename'], preg_replace('#[^a-z0-9_]#i', '.', $class));
-	}
-
-	/**
-	 * Returns a link to method in class summary file.
-	 *
-	 * @param IReflectionMethod $method
-	 * @return string
-	 */
-	public function getMethodLink(ReflectionMethod $method)
-	{
-		return $this->getClassLink($method->getDeclaringClassName()) . '#_' . $method->getName();
-	}
-
-	/**
-	 * Returns a link to property in class summary file.
-	 *
-	 * @param IReflectionProperty $property
-	 * @return string
-	 */
-	public function getPropertyLink(ReflectionProperty $property)
-	{
-		return $this->getClassLink($property->getDeclaringClassName()) . '#$' . $property->getName();
-	}
-
-	/**
-	 * Returns a link to constant in class summary file.
-	 *
-	 * @param IReflectionConstant $constant
-	 * @return string
-	 */
-	public function getConstantLink(ReflectionConstant $constant)
-	{
-		return $this->getClassLink($constant->getDeclaringClassName()) . '#' . $constant->getName();
-	}
-
-	/**
-	 * Returns a link to a element source code.
-	 *
-	 * @param \Apigen\Reflection|IReflectionMethod|IReflectionProperty|IReflectionConstant $element
-	 * @return string
-	 */
-	public function getSourceLink($element, $withLine = true)
-	{
-		$class = $element instanceof ApiReflection ? $element : $element->getDeclaringClass();
-
-		$file = str_replace('\\', '/', $class->getName());
-
-		$line = null;
-		if ($withLine) {
-			$line = $element->getStartLine();
-			if ($doc = $element->getDocComment()) {
-				$line -= substr_count($doc, "\n") + 1;
-			}
-		}
-
-		return sprintf($this->config->templates['main']['source']['filename'], preg_replace('#[^a-z0-9_]#i', '.', $file)) . (isset($line) ? "#$line" : '');
-	}
-
-	/**
-	 * Returns a link to a element documentation at php.net.
-	 *
-	 * @param \Apigen\Reflection|IReflectionMethod|IReflectionProperty|IReflectionConstant $element
-	 * @return string
-	 */
-	public function getManualLink($element)
-	{
-		static $manual = 'http://php.net/manual';
-		static $reservedClasses = array('stdClass', 'Closure', 'Directory');
-
-		$class = $element instanceof ApiReflection ? $element : $element->getDeclaringClass();
-
-		if (in_array($class->getName(), $reservedClasses)) {
-			return $manual . '/reserved.classes.php';
-		}
-
-		$className = strtolower($class->getName());
-		$classLink = sprintf('%s/class.%s.php', $manual, $className);
-		$elementName = strtolower(strtr(ltrim($element->getName(), '_'), '_', '-'));
-
-		if ($element instanceof ApiReflection) {
-			return $classLink;
-		} elseif ($element instanceof ReflectionMethod) {
-			return sprintf('%s/%s.%s.php', $manual, $className, $elementName);
-		} elseif ($element instanceof ReflectionProperty) {
-			return sprintf('%s#%s.props.%s', $classLink, $className, $elementName);
-		} elseif ($element instanceof ReflectionConstant) {
-			return sprintf('%s#%s.constants.%s', $classLink, $className, $elementName);
-		}
 	}
 
 	/**
