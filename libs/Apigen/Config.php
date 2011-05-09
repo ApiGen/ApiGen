@@ -171,17 +171,20 @@ class Config
 			}
 		}
 
+		// Unify directory separators
 		foreach (array('exclude', 'skipDocPath') as $option) {
 			$this->config[$option] = array_map(function($mask) {
 				return str_replace(array('/', '\\'), DIRECTORY_SEPARATOR, $mask);
 			}, $this->config[$option]);
 		}
 
+		// Unify prefixes
 		$this->config['skipDocPrefix'] = array_map(function($prefix) {
 			return ltrim($prefix, '\\');
 		}, $this->config['skipDocPrefix']);
 		sort($this->config['skipDocPrefix']);
 
+		// No progressbar in quiet mode
 		if ($this->config['quiet']) {
 			$this->config['progressbar'] = false;
 		}
@@ -189,8 +192,15 @@ class Config
 		// Check
 		$this->check();
 
+		// Default template config
+		$this->config['resources'] = array();
+		$this->config['templates'] = array('common' => array(), 'optional' => array());
+
 		// Merge template config
-		$this->config = array_merge($this->config, Neon::decode(file_get_contents($this->getTemplateConfig())));
+		$this->config = array_merge_recursive($this->config, Neon::decode(file_get_contents($this->getTemplateConfig())));
+
+		// Check template
+		$this->checkTemplate();
 
 		return $this;
 	}
@@ -202,12 +212,8 @@ class Config
 	 */
 	private function check()
 	{
-		if (!isset($this->options['config']) && !isset($this->options['source'], $this->options['destination'])) {
-			throw new Exception('Missing required options', Exception::INVALID_CONFIG);
-		}
-
-		if (isset($this->options['config']) && !is_file($this->options['config'])) {
-			throw new Exception(sprintf('Config file %s doesn\'t exist', $this->options['config']), Exception::INVALID_CONFIG);
+		if (!empty($this->config['config']) && !is_file($this->config['config'])) {
+			throw new Exception(sprintf('Config file %s doesn\'t exist', $this->config['config']), Exception::INVALID_CONFIG);
 		}
 
 		if (empty($this->config['source'])) {
@@ -261,21 +267,22 @@ class Config
 	 */
 	private function checkTemplate()
 	{
-		if (!isset($this->config->filenames)) {
-			throw new Exception('Output filename masks not defined.', Exception::INVALID_CONFIG);
+		foreach (array('package', 'namespace', 'class', 'source') as $type) {
+			if (!isset($this->config['templates']['main'][$type]['filename'])) {
+				throw new Exception(sprintf('Filename for %s not defined', $type), Exception::INVALID_CONFIG);
+			}
+			if (!isset($this->config['templates']['main'][$type]['template'])) {
+				throw new Exception(sprintf('Template for %s not defined', $type), Exception::INVALID_CONFIG);
+			}
 		}
 
-		if (!isset($this->config->filenames['namespace'])) {
-			throw new Exception('Namespace output filename not defined.', Exception::INVALID_CONFIG);
-		}
-		if (!isset($this->config->filenames['package'])) {
-			throw new Exception('Package output filename not defined.', Exception::INVALID_CONFIG);
-		}
-		if (!isset($this->config->filenames['class'])) {
-			throw new Exception('Class output filename not defined.', Exception::INVALID_CONFIG);
-		}
-		if (!isset($this->config->filenames['source'])) {
-			throw new Exception('Source output filename not defined.', Exception::INVALID_CONFIG);
+		foreach ($this->config['templates']['optional'] as $type => $config) {
+			if (!isset($config['filename'])) {
+				throw new Exception(sprintf('Filename for %s not defined', $type), Exception::INVALID_CONFIG);
+			}
+			if (!isset($config['template'])) {
+				throw new Exception(sprintf('Template for %s not defined', $type), Exception::INVALID_CONFIG);
+			}
 		}
 
 		return $this;

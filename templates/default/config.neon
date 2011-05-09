@@ -2,15 +2,24 @@ resources:
 	resources: resources
 
 templates:
-	package: package.latte
-	namespace: namespace.latte
-	class: class.latte
-	source: source.latte
-
 	common:
 		index.html: overview.latte
 		allclasses.html: package.latte
 		resources/combined.js: combined.js.latte
+
+	main:
+		package:
+			filename: package-%s.html
+			template: package.latte
+		namespace:
+			filename: namespace-%s.html
+			template: namespace.latte
+		class:
+			filename: %s.html
+			template: class.latte
+		source:
+			filename: source-%s.html
+			template: source.latte
 
 	optional:
 		deprecated:
@@ -28,9 +37,3 @@ templates:
 		autocomplete:
 			filename: allclasses.js
 			template: allclasses.js.latte
-
-filenames:
-	package: package-%s.html
-	namespace: namespace-%s.html
-	class: %s.html
-	source: source-%s.html

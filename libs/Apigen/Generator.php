@@ -177,11 +177,11 @@ class Generator extends Nette\Object
 			}
 		}
 
-		// output files
-		$masks = array_map(function($mask) {
-			return preg_replace('~%[^%]*?s~', '*', $mask);
-		}, $this->config->filenames);
-		$filter = function($item) use($masks) {
+		// main files
+		$masks = array_map(function($config) {
+			return preg_replace('~%[^%]*?s~', '*', $config['filename']);
+		}, $this->config->templates['main']);
+		$filter = function($item) use ($masks) {
 			foreach ($masks as $mask) {
 				if (fnmatch($mask, $item->getFilename())) {
 					return true;
@@ -309,88 +309,98 @@ class Generator extends Nette\Object
 
 		// optional files
 		if (!empty($this->config->baseUrl)) {
-			$template->setFile($templatePath . '/' . $this->config->templates['optional']['sitemap']['template'])->save($this->forceDir($destination . '/' . $this->config->templates['optional']['sitemap']['filename']));
+			if (isset($this->config->templates['optional']['sitemap'])) {
+				$template->setFile($templatePath . '/' . $this->config->templates['optional']['sitemap']['template'])->save($this->forceDir($destination . '/' . $this->config->templates['optional']['sitemap']['filename']));
+			}
 			$this->incrementProgressBar();
 		}
 		if (!empty($this->config->baseUrl) && !empty($this->config->googleCse)) {
-			$template->setFile($templatePath . '/' . $this->config->templates['optional']['opensearch']['template'])->save($this->forceDir($destination . '/' . $this->config->templates['optional']['opensearch']['filename']));
+			if (isset($this->config->templates['optional']['opensearch'])) {
+				$template->setFile($templatePath . '/' . $this->config->templates['optional']['opensearch']['template'])->save($this->forceDir($destination . '/' . $this->config->templates['optional']['opensearch']['filename']));
+			}
 			$this->incrementProgressBar();
 		}
 		if (!empty($this->config->googleCse)) {
-			$template->setFile($templatePath . '/' . $this->config->templates['optional']['autocomplete']['template'])->save($this->forceDir($destination . '/' . $this->config->templates['optional']['autocomplete']['filename']));
+			if (isset($this->config->templates['optional']['autocomplete'])) {
+				$template->setFile($templatePath . '/' . $this->config->templates['optional']['autocomplete']['template'])->save($this->forceDir($destination . '/' . $this->config->templates['optional']['autocomplete']['filename']));
+			}
 			$this->incrementProgressBar();
 		}
 
 		// list of deprecated elements
 		if ($this->config->deprecated) {
-			$template->deprecatedClasses = array_filter($classes, function($class) {
-				return $class->isDeprecated();
-			});
-			$template->deprecatedInterfaces = array_filter($interfaces, function($class) {
-				return $class->isDeprecated();
-			});
-			$template->deprecatedExceptions = array_filter($exceptions, function($class) {
-				return $class->isDeprecated();
-			});
+			if (isset($this->config->templates['optional']['deprecated'])) {
+				$template->deprecatedClasses = array_filter($classes, function($class) {
+					return $class->isDeprecated();
+				});
+				$template->deprecatedInterfaces = array_filter($interfaces, function($class) {
+					return $class->isDeprecated();
+				});
+				$template->deprecatedExceptions = array_filter($exceptions, function($class) {
+					return $class->isDeprecated();
+				});
 
-			$template->deprecatedMethods = array();
-			$template->deprecatedConstants = array();
-			$template->deprecatedProperties = array();
-			foreach ($allClasses as $class) {
-				if ($class->isDeprecated()) {
-					continue;
+				$template->deprecatedMethods = array();
+				$template->deprecatedConstants = array();
+				$template->deprecatedProperties = array();
+				foreach ($allClasses as $class) {
+					if ($class->isDeprecated()) {
+						continue;
+					}
+
+					$template->deprecatedMethods += array_filter($class->getOwnMethods(), function($method) {
+						return $method->isDeprecated();
+					});
+					$template->deprecatedConstants += array_filter($class->getOwnConstantReflections(), function($constant) {
+						return $constant->isDeprecated();
+					});
+					$template->deprecatedProperties += array_filter($class->getOwnProperties(), function($property) {
+						return $property->isDeprecated();
+					});
 				}
 
-				$template->deprecatedMethods += array_filter($class->getOwnMethods(), function($method) {
-					return $method->isDeprecated();
-				});
-				$template->deprecatedConstants += array_filter($class->getOwnConstantReflections(), function($constant) {
-					return $constant->isDeprecated();
-				});
-				$template->deprecatedProperties += array_filter($class->getOwnProperties(), function($property) {
-					return $property->isDeprecated();
-				});
+				$template->setFile($templatePath . '/' . $this->config->templates['optional']['deprecated']['template'])->save($this->forceDir($destination . '/' . $this->config->templates['optional']['deprecated']['filename']));
 			}
-
-			$template->setFile($templatePath . '/' . $this->config->templates['optional']['deprecated']['template'])->save($this->forceDir($destination . '/' . $this->config->templates['optional']['deprecated']['filename']));
 
 			$this->incrementProgressBar();
 		}
 
 		// list of tasks
 		if ($this->config->todo) {
-			$template->todoClasses = array_filter($classes, function($class) {
-				return $class->hasAnnotation('todo');
-			});
-			$template->todoInterfaces = array_filter($interfaces, function($class) {
-				return $class->hasAnnotation('todo');
-			});
-			$template->todoExceptions = array_filter($exceptions, function($class) {
-				return $class->hasAnnotation('todo');
-			});
+			if (isset($this->config->templates['optional']['todo'])) {
+				$template->todoClasses = array_filter($classes, function($class) {
+					return $class->hasAnnotation('todo');
+				});
+				$template->todoInterfaces = array_filter($interfaces, function($class) {
+					return $class->hasAnnotation('todo');
+				});
+				$template->todoExceptions = array_filter($exceptions, function($class) {
+					return $class->hasAnnotation('todo');
+				});
 
-			$template->todoMethods = array();
-			$template->todoConstants = array();
-			$template->todoProperties = array();
-			foreach ($allClasses as $class) {
-				$template->todoMethods += array_filter($class->getOwnMethods(), function($method) {
-					return $method->hasAnnotation('todo');
-				});
-				$template->todoConstants += array_filter($class->getOwnConstantReflections(), function($constant) {
-					return $constant->hasAnnotation('todo');
-				});
-				$template->todoProperties += array_filter($class->getOwnProperties(), function($property) {
-					return $property->hasAnnotation('todo');
-				});
+				$template->todoMethods = array();
+				$template->todoConstants = array();
+				$template->todoProperties = array();
+				foreach ($allClasses as $class) {
+					$template->todoMethods += array_filter($class->getOwnMethods(), function($method) {
+						return $method->hasAnnotation('todo');
+					});
+					$template->todoConstants += array_filter($class->getOwnConstantReflections(), function($constant) {
+						return $constant->hasAnnotation('todo');
+					});
+					$template->todoProperties += array_filter($class->getOwnProperties(), function($property) {
+						return $property->hasAnnotation('todo');
+					});
+				}
+
+				$template->setFile($templatePath . '/' . $this->config->templates['optional']['todo']['template'])->save($this->forceDir($destination . '/' . $this->config->templates['optional']['todo']['filename']));
 			}
-
-			$template->setFile($templatePath . '/' . $this->config->templates['optional']['todo']['template'])->save($this->forceDir($destination . '/' . $this->config->templates['optional']['todo']['filename']));
 
 			$this->incrementProgressBar();
 		}
 
 		// generate namespace summary
-		$this->forceDir($destination . '/' . $this->config->filenames['namespace']);
+		$this->forceDir($destination . '/' . $this->config->templates['main']['namespace']['filename']);
 		$template->package = null;
 		foreach ($namespaces as $namespace => $definition) {
 			$classes = isset($definition['classes']) ? $definition['classes'] : array();
@@ -412,13 +422,13 @@ class Generator extends Nette\Object
 			$template->exceptions = array_filter($classes, function($class) {
 				return $class->isException();
 			});
-			$template->setFile($templatePath . '/' . $this->config->templates['namespace'])->save($destination . '/' . $this->getNamespaceLink($namespace));
+			$template->setFile($templatePath . '/' . $this->config->templates['main']['namespace']['template'])->save($destination . '/' . $this->getNamespaceLink($namespace));
 
 			$this->incrementProgressBar();
 		}
 
 		// generate package summary
-		$this->forceDir($destination . '/' . $this->config->filenames['package']);
+		$this->forceDir($destination . '/' . $this->config->templates['main']['package']['filename']);
 		$template->namespace = null;
 		foreach ($packages as $package => $definition) {
 			$classes = isset($definition['classes']) ? $definition['classes'] : array();
@@ -437,7 +447,7 @@ class Generator extends Nette\Object
 			$template->exceptions = array_filter($classes, function($class) {
 				return $class->isException();
 			});
-			$template->setFile($templatePath . '/' . $this->config->templates['package'])->save($destination . '/' . $this->getPackageLink($package));
+			$template->setFile($templatePath . '/' . $this->config->templates['main']['package']['template'])->save($destination . '/' . $this->getPackageLink($package));
 
 			$this->incrementProgressBar();
 		}
@@ -445,8 +455,8 @@ class Generator extends Nette\Object
 
 		// generate class & interface files
 		$fshl = new \fshlParser('HTML_UTF8', P_TAB_INDENT | P_LINE_COUNTER);
-		$this->forceDir($destination . '/' . $this->config->filenames['class']);
-		$this->forceDir($destination . '/' . $this->config->filenames['source']);
+		$this->forceDir($destination . '/' . $this->config->templates['main']['class']['filename']);
+		$this->forceDir($destination . '/' . $this->config->templates['main']['source']['filename']);
 		$template->classes = $allClasses;
 		foreach ($allClasses as $class) {
 			$template->package = $package = $class->getPackageName();
@@ -493,7 +503,7 @@ class Generator extends Nette\Object
 			}
 
 			$template->class = $class;
-			$template->setFile($templatePath . '/' . $this->config->templates['class'])->save($destination . '/' . $this->getClassLink($class));
+			$template->setFile($templatePath . '/' . $this->config->templates['main']['class']['template'])->save($destination . '/' . $this->getClassLink($class));
 
 			$this->incrementProgressBar();
 
@@ -503,7 +513,7 @@ class Generator extends Nette\Object
 				$source = str_replace(array("\r\n", "\r"), "\n", $source);
 
 				$template->source = $fshl->highlightString('PHP', $source);
-				$template->setFile($templatePath . '/' . $this->config->templates['source'])->save($destination . '/' . $this->getSourceLink($class, false));
+				$template->setFile($templatePath . '/' . $this->config->templates['main']['source']['template'])->save($destination . '/' . $this->getSourceLink($class, false));
 
 				$this->incrementProgressBar();
 			}
@@ -543,7 +553,7 @@ class Generator extends Nette\Object
 	public function getNamespaceLink($class)
 	{
 		$namespace = ($class instanceof ApiReflection) ? $class->getNamespaceName() : $class;
-		return sprintf($this->config->filenames['namespace'], $namespace ? preg_replace('#[^a-z0-9_]#i', '.', $namespace) : 'None');
+		return sprintf($this->config->templates['main']['namespace']['filename'], $namespace ? preg_replace('#[^a-z0-9_]#i', '.', $namespace) : 'None');
 	}
 
 	/**
@@ -555,7 +565,7 @@ class Generator extends Nette\Object
 	public function getPackageLink($class)
 	{
 		$package = ($class instanceof ApiReflection) ? $class->getPackageName() : $class;
-		return sprintf($this->config->filenames['package'], $package ? preg_replace('#[^a-z0-9_]#i', '.', $package) : 'None');
+		return sprintf($this->config->templates['main']['package']['filename'], $package ? preg_replace('#[^a-z0-9_]#i', '.', $package) : 'None');
 	}
 
 	/**
@@ -570,7 +580,7 @@ class Generator extends Nette\Object
 			$class = $class->getName();
 		}
 
-		return sprintf($this->config->filenames['class'], preg_replace('#[^a-z0-9_]#i', '.', $class));
+		return sprintf($this->config->templates['main']['class']['filename'], preg_replace('#[^a-z0-9_]#i', '.', $class));
 	}
 
 	/**
@@ -626,7 +636,7 @@ class Generator extends Nette\Object
 			}
 		}
 
-		return sprintf($this->config->filenames['source'], preg_replace('#[^a-z0-9_]#i', '.', $file)) . (isset($line) ? "#$line" : '');
+		return sprintf($this->config->templates['main']['source']['filename'], preg_replace('#[^a-z0-9_]#i', '.', $file)) . (isset($line) ? "#$line" : '');
 	}
 
 	/**
