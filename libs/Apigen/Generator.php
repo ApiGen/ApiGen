@@ -271,6 +271,7 @@ class Generator extends Nette\Object
 				+ (int) !empty($this->config->baseUrl) // sitemap
 				+ (int) (!empty($this->config->googleCse) && !empty($this->config->baseUrl)) // opensearch
 				+ (int) !empty($this->config->googleCse) // autocomplete
+				+ 1 // classes, iterators and exceptions tree
 			;
 
 			if ($this->config->code) {
@@ -398,6 +399,69 @@ class Generator extends Nette\Object
 
 			$this->incrementProgressBar();
 		}
+
+		// classes/interfaces/exceptions tree
+		$classTree = array();
+		$interfaceTree = array();
+		$exceptionTree = array();
+
+		$processed = array();
+		foreach ($this->classes as $className => $reflection) {
+			if (!$reflection->isDocumented() || isset($processed[$className])) {
+				continue;
+			}
+
+			if (null === $reflection->getParentClassName()) {
+				// No parent classes
+				if ($reflection->isInterface()) {
+					$t = &$interfaceTree;
+				} elseif ($reflection->isException()) {
+					$t = &$exceptionTree;
+				} else {
+					$t = &$classTree;
+				}
+			} else {
+				foreach (array_values(array_reverse($reflection->getParentClasses())) as $level => $parent) {
+					if (0 === $level) {
+						// The topmost parent decides about the reflection type
+						if ($parent->isInterface()) {
+							$t = &$interfaceTree;
+						} elseif ($parent->isException()) {
+							$t = &$exceptionTree;
+						} else {
+							$t = &$classTree;
+						}
+					}
+					$parentName = $parent->getName();
+
+					if (!isset($t[$parentName])) {
+						$t[$parentName] = array();
+						$processed[$parentName] = true;
+						ksort($t, SORT_STRING);
+					}
+
+					$t = &$t[$parentName];
+				}
+			}
+			$t[$className] = array();
+			ksort($t, SORT_STRING);
+			$processed[$className] = true;
+			unset($t);
+		}
+
+		$template->classTree = new Tree($classTree, $this->classes);
+		$template->interfaceTree = new Tree($interfaceTree, $this->classes);
+		$template->exceptionTree = new Tree($exceptionTree, $this->classes);
+
+		$template->setFile($templatePath . '/' . $this->config->templates['main']['tree']['template'])->save($this->forceDir($destination . '/' . $this->config->templates['main']['tree']['filename']));
+
+		unset($template->classTree);
+		unset($template->interfaceTree);
+		unset($template->exceptionTree);
+		unset($processed);
+
+		$this->incrementProgressBar();
+
 
 		// generate namespace summary
 		$this->forceDir($destination . '/' . $this->config->templates['main']['namespace']['filename']);
