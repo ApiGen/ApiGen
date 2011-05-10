@@ -20,6 +20,9 @@ templates:
 		source:
 			filename: source-%s.html
 			template: source.latte
+		tree:
+			filename: tree.html
+			template: tree.latte
 
 	optional:
 		deprecated:
