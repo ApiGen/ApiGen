@@ -340,6 +340,35 @@ div.smallList {
 	background: white url('footer.gif') no-repeat center top;
 }
 
+.classtree ul {
+	list-style: none;
+	background: white url('tree-vertical.png') left repeat-y;
+	padding: 0;
+	margin-left: 20px;
+}
+
+.classtree li {
+	margin: 0;
+	padding: 0;
+}
+
+.classtree div {
+	padding-left: 30px;
+	background: left center no-repeat;
+}
+
+.classtree div.notlast {
+	background-image: url('tree-hasnext.png');
+}
+
+.classtree div.last {
+	background-image: url('tree-last.png');
+}
+
+.classtree li.last {
+	background: white;
+}
+
 
 /**
  * Source code
