@@ -12,9 +12,6 @@
  * the file license.txt that was distributed with this source code.
  */
 
-use Nette\Diagnostics\Debugger;
-
-
 require __DIR__ . '/libs/Nette/nette.min.php';
 require __DIR__ . '/libs/fshl/fshl.php';
 require __DIR__ . '/libs/Console/ProgressBar.php';
@@ -29,8 +26,8 @@ require __DIR__ . '/libs/Apigen/Generator.php';
 
 try {
 
-	Debugger::enable();
-	Debugger::timer();
+	Nette\Diagnostics\Debugger::enable();
+	Nette\Diagnostics\Debugger::timer();
 
 	$options = getopt('c:s:d:h', array(
 		'config:',
@@ -105,7 +102,7 @@ try {
 	$generator->generate();
 
 	// End
-	$generator->output(sprintf("Done. Total time: %d seconds, used: %d MB RAM\n", Debugger::timer(), round(memory_get_peak_usage(true) / 1024 / 1024)));
+	$generator->output(sprintf("Done. Total time: %d seconds, used: %d MB RAM\n", Nette\Diagnostics\Debugger::timer(), round(memory_get_peak_usage(true) / 1024 / 1024)));
 
 } catch (Exception $e) {
 	if ($e instanceof Apigen\Exception && Apigen\Exception::INVALID_CONFIG === $e->getCode()) {

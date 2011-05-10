@@ -39,8 +39,8 @@ class Template extends Nette\Templating\FileTemplate
 		$that = $this;
 
 		$latte = new Nette\Latte\Engine;
-		$latte->handler->macros['try'] = '<?php try { ?>';
-		$latte->handler->macros['/try'] = '<?php } catch (\Exception $e) {} ?>';
+		$latte->parser->macros['try'] = '<?php try { ?>';
+		$latte->parser->macros['/try'] = '<?php } catch (\Exception $e) {} ?>';
 		$this->registerFilter($latte);
 
 		// common operations
@@ -50,7 +50,7 @@ class Template extends Nette\Templating\FileTemplate
 		$this->registerHelper('map', function($arr, $callback) {
 			return array_map(create_function('$value', $callback), $arr);
 		});
-		$this->registerHelper('replaceRE', 'Nette\StringUtils::replace');
+		$this->registerHelper('replaceRE', 'Nette\Utils\Strings::replace');
 
 		// PHP source highlight
 		$fshl = new \fshlParser('HTML_UTF8');
@@ -62,22 +62,22 @@ class Template extends Nette\Templating\FileTemplate
 		});
 
 		// links
-		$this->registerHelper('packageLink', callback($this, 'getPackageLink'));
-		$this->registerHelper('namespaceLink', callback($this, 'getNamespaceLink'));
-		$this->registerHelper('classLink', callback($this, 'getClassLink'));
-		$this->registerHelper('methodLink', callback($this, 'getMethodLink'));
-		$this->registerHelper('propertyLink', callback($this, 'getPropertyLink'));
-		$this->registerHelper('constantLink', callback($this, 'getConstantLink'));
-		$this->registerHelper('sourceLink', callback($this, 'getSourceLink'));
-		$this->registerHelper('manualLink', callback($this, 'getManualLink'));
+		$this->registerHelper('packageLink', new Nette\Callback($this, 'getPackageLink'));
+		$this->registerHelper('namespaceLink', new Nette\Callback($this, 'getNamespaceLink'));
+		$this->registerHelper('classLink', new Nette\Callback($this, 'getClassLink'));
+		$this->registerHelper('methodLink', new Nette\Callback($this, 'getMethodLink'));
+		$this->registerHelper('propertyLink', new Nette\Callback($this, 'getPropertyLink'));
+		$this->registerHelper('constantLink', new Nette\Callback($this, 'getConstantLink'));
+		$this->registerHelper('sourceLink', new Nette\Callback($this, 'getSourceLink'));
+		$this->registerHelper('manualLink', new Nette\Callback($this, 'getManualLink'));
 
 		// types
-		$this->registerHelper('getTypes', callback($this, 'getTypes'));
+		$this->registerHelper('getTypes', new Nette\Callback($this, 'getTypes'));
 		$this->registerHelper('resolveType', function($variable) {
 			return is_object($variable) ? get_class($variable) : gettype($variable);
 		});
-		$this->registerHelper('resolveClass', callback($this, 'resolveClass'));
-		$this->registerHelper('resolveConstant', callback($this, 'resolveConstant'));
+		$this->registerHelper('resolveClass', new Nette\Callback($this, 'resolveClass'));
+		$this->registerHelper('resolveConstant', new Nette\Callback($this, 'resolveConstant'));
 
 		// docblock
 		$texy = new \Texy;
