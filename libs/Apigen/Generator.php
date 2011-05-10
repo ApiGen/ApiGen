@@ -261,6 +261,9 @@ class Generator extends Nette\Object
 			return $class->isException();
 		});
 
+		$this->config->deprecated &= isset($this->config->templates['optional']['deprecated']);
+		$this->config->todo &= isset($this->config->templates['optional']['todo']);
+
 		if ($this->config->progressbar) {
 			$max = count($allClasses)
 				+ count($namespaces)
@@ -330,72 +333,68 @@ class Generator extends Nette\Object
 
 		// list of deprecated elements
 		if ($this->config->deprecated) {
-			if (isset($this->config->templates['optional']['deprecated'])) {
-				$template->deprecatedClasses = array_filter($classes, function($class) {
-					return $class->isDeprecated();
-				});
-				$template->deprecatedInterfaces = array_filter($interfaces, function($class) {
-					return $class->isDeprecated();
-				});
-				$template->deprecatedExceptions = array_filter($exceptions, function($class) {
-					return $class->isDeprecated();
-				});
+			$template->deprecatedClasses = array_filter($classes, function($class) {
+				return $class->isDeprecated();
+			});
+			$template->deprecatedInterfaces = array_filter($interfaces, function($class) {
+				return $class->isDeprecated();
+			});
+			$template->deprecatedExceptions = array_filter($exceptions, function($class) {
+				return $class->isDeprecated();
+			});
 
-				$template->deprecatedMethods = array();
-				$template->deprecatedConstants = array();
-				$template->deprecatedProperties = array();
-				foreach ($allClasses as $class) {
-					if ($class->isDeprecated()) {
-						continue;
-					}
-
-					$template->deprecatedMethods += array_filter($class->getOwnMethods(), function($method) {
-						return $method->isDeprecated();
-					});
-					$template->deprecatedConstants += array_filter($class->getOwnConstantReflections(), function($constant) {
-						return $constant->isDeprecated();
-					});
-					$template->deprecatedProperties += array_filter($class->getOwnProperties(), function($property) {
-						return $property->isDeprecated();
-					});
+			$template->deprecatedMethods = array();
+			$template->deprecatedConstants = array();
+			$template->deprecatedProperties = array();
+			foreach ($allClasses as $class) {
+				if ($class->isDeprecated()) {
+					continue;
 				}
 
-				$template->setFile($templatePath . '/' . $this->config->templates['optional']['deprecated']['template'])->save($this->forceDir($destination . '/' . $this->config->templates['optional']['deprecated']['filename']));
+				$template->deprecatedMethods += array_filter($class->getOwnMethods(), function($method) {
+					return $method->isDeprecated();
+				});
+				$template->deprecatedConstants += array_filter($class->getOwnConstantReflections(), function($constant) {
+					return $constant->isDeprecated();
+				});
+				$template->deprecatedProperties += array_filter($class->getOwnProperties(), function($property) {
+					return $property->isDeprecated();
+				});
 			}
+
+			$template->setFile($templatePath . '/' . $this->config->templates['optional']['deprecated']['template'])->save($this->forceDir($destination . '/' . $this->config->templates['optional']['deprecated']['filename']));
 
 			$this->incrementProgressBar();
 		}
 
 		// list of tasks
 		if ($this->config->todo) {
-			if (isset($this->config->templates['optional']['todo'])) {
-				$template->todoClasses = array_filter($classes, function($class) {
-					return $class->hasAnnotation('todo');
-				});
-				$template->todoInterfaces = array_filter($interfaces, function($class) {
-					return $class->hasAnnotation('todo');
-				});
-				$template->todoExceptions = array_filter($exceptions, function($class) {
-					return $class->hasAnnotation('todo');
-				});
+			$template->todoClasses = array_filter($classes, function($class) {
+				return $class->hasAnnotation('todo');
+			});
+			$template->todoInterfaces = array_filter($interfaces, function($class) {
+				return $class->hasAnnotation('todo');
+			});
+			$template->todoExceptions = array_filter($exceptions, function($class) {
+				return $class->hasAnnotation('todo');
+			});
 
-				$template->todoMethods = array();
-				$template->todoConstants = array();
-				$template->todoProperties = array();
-				foreach ($allClasses as $class) {
-					$template->todoMethods += array_filter($class->getOwnMethods(), function($method) {
-						return $method->hasAnnotation('todo');
-					});
-					$template->todoConstants += array_filter($class->getOwnConstantReflections(), function($constant) {
-						return $constant->hasAnnotation('todo');
-					});
-					$template->todoProperties += array_filter($class->getOwnProperties(), function($property) {
-						return $property->hasAnnotation('todo');
-					});
-				}
-
-				$template->setFile($templatePath . '/' . $this->config->templates['optional']['todo']['template'])->save($this->forceDir($destination . '/' . $this->config->templates['optional']['todo']['filename']));
+			$template->todoMethods = array();
+			$template->todoConstants = array();
+			$template->todoProperties = array();
+			foreach ($allClasses as $class) {
+				$template->todoMethods += array_filter($class->getOwnMethods(), function($method) {
+					return $method->hasAnnotation('todo');
+				});
+				$template->todoConstants += array_filter($class->getOwnConstantReflections(), function($constant) {
+					return $constant->hasAnnotation('todo');
+				});
+				$template->todoProperties += array_filter($class->getOwnProperties(), function($property) {
+					return $property->hasAnnotation('todo');
+				});
 			}
+
+			$template->setFile($templatePath . '/' . $this->config->templates['optional']['todo']['template'])->save($this->forceDir($destination . '/' . $this->config->templates['optional']['todo']['filename']));
 
 			$this->incrementProgressBar();
 		}

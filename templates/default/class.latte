@@ -9,6 +9,8 @@
 		<li><a n:tag-if="$package" href="{$package|packageLink}" title="Summary of {$package}">Package</a></li>
 		<li><a n:tag-if="$namespace" href="{$class|namespaceLink}" title="Summary of {$class->namespaceName}">Namespace</a></li>
 		<li class="active">Class</li>
+	</ul>
+	<ul>
 		<li><a href="tree.html" title="Tree view of classes, interfaces and exceptions">Tree</a></li>
 		<li n:if="$config->deprecated"><a href="deprecated.html" title="List of deprecated elements">Deprecated</a></li>
 		<li n:if="$config->todo"><a href="todo.html" title="Todo list">Todo</a></li>

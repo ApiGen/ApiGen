@@ -182,6 +182,12 @@ pre {
 	float: left;
 }
 
+#navigation ul + ul {
+	border-left: 1px solid black;
+	margin-left: 10px;
+	padding-left: 12px;
+}
+
 #navigation ul li {
 	display: inline;
 	margin: 2px 2px 2px 2px;
@@ -193,6 +199,7 @@ pre {
 #navigation ul li a {
 	color: black;
 	font-weight: bold;
+	padding: 3px;
 }
 
 #navigation ul li a:hover, #navigation ul li a:active, #navigation ul li a:focus {
@@ -202,7 +209,7 @@ pre {
 #navigation ul li.active {
 	background: #053368;
 	color: white;
-	padding: 3px 1px;
+	padding: 3px;
 	font-weight: bold;
 }
 
