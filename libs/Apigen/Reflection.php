@@ -396,11 +396,15 @@ class Reflection
 				foreach ($config->skipDocPath as $mask) {
 					if (fnmatch($mask, $this->reflection->getFilename(), FNM_NOESCAPE | FNM_PATHNAME)) {
 						$this->isDocumented = false;
+						break;
 					}
 				}
-				foreach ($config->skipDocPrefix as $prefix) {
-					if (0 === strpos($this->reflection->getName(), $prefix)) {
-						$this->isDocumented = false;
+				if (true === $this->isDocumented) {
+					foreach ($config->skipDocPrefix as $prefix) {
+						if (0 === strpos($this->reflection->getName(), $prefix)) {
+							$this->isDocumented = false;
+							break;
+						}
 					}
 				}
 			}
