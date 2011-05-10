@@ -51,7 +51,7 @@ class Generator extends Nette\Object
 	/**
 	 * Array of reflection envelopes.
 	 *
-	 * @var array
+	 * @var \ArrayObject
 	 */
 	private $classes = array();
 
@@ -115,10 +115,10 @@ class Generator extends Nette\Object
 			$this->incrementProgressBar($size);
 		}
 
-		$generator = $this;
-		$this->classes = array_map(function(ReflectionClass $class) use ($generator) {
-			return new ApiReflection($class, $generator);
-		}, $broker->getClasses(Backend::TOKENIZED_CLASSES | Backend::INTERNAL_CLASSES | Backend::NONEXISTENT_CLASSES));
+		$this->classes = new \ArrayObject();
+		foreach ($broker->getClasses(Backend::TOKENIZED_CLASSES | Backend::INTERNAL_CLASSES | Backend::NONEXISTENT_CLASSES) as $className => $class) {
+			$this->classes->offsetSet($className, new ApiReflection($class, $this));
+		}
 
 		return array(
 			count($broker->getClasses(Backend::TOKENIZED_CLASSES)),
@@ -139,7 +139,7 @@ class Generator extends Nette\Object
 	/**
 	 * Returns parsed class list.
 	 *
-	 * @return array
+	 * @return \ArrayObject
 	 */
 	public function getClasses()
 	{

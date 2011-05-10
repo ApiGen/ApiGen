@@ -21,11 +21,18 @@ use TokenReflection\ReflectionAnnotation, TokenReflection\ReflectionBase;
 class Template extends Nette\Templating\FileTemplate
 {
 	/**
-	 * Generator.
+	 * Config.
 	 *
-	 * @var \Apigen\Generator
+	 * @var \Apigen\Config
 	 */
-	private $generator;
+	private $config;
+
+	/**
+	 * List of classes.
+	 *
+	 * @var array
+	 */
+	private $classes;
 
 	/**
 	 * Creates template.
@@ -34,7 +41,8 @@ class Template extends Nette\Templating\FileTemplate
 	 */
 	public function __construct(Generator $generator)
 	{
-		$this->generator = $generator;
+		$this->config = $generator->getConfig();
+		$this->classes = $generator->getClasses();
 
 		$that = $this;
 
@@ -85,7 +93,7 @@ class Template extends Nette\Templating\FileTemplate
 		$linkModule->shorten = FALSE;
 		$texy->linkModule = $linkModule;
 		$texy->mergeLines = FALSE;
-		$texy->allowedTags = array_flip($this->generator->config->allowedHtml);
+		$texy->allowedTags = array_flip($this->config->allowedHtml);
 		$texy->allowed['list/definition'] = FALSE;
 		$texy->allowed['phrase/em-alt'] = FALSE;
 		$texy->allowed['longwords'] = FALSE;
@@ -167,7 +175,7 @@ class Template extends Nette\Templating\FileTemplate
 
 		});
 
-		$todo = $this->generator->config->todo;
+		$todo = $this->config->todo;
 		$this->registerHelper('annotationFilter', function(array $annotations, array $filter = array()) use ($todo) {
 			// Unsupported or deprecated annotations
 			static $unsupported = array('property', 'property-read', 'property-write', 'method', 'abstract', 'access', 'final', 'filesource', 'global', 'name', 'static', 'staticvar');
@@ -203,7 +211,7 @@ class Template extends Nette\Templating\FileTemplate
 		});
 
 		// static files versioning
-		$destination = $this->generator->config->destination;
+		$destination = $this->config->destination;
 		$this->registerHelper('staticFile', function($name, $line = null) use ($destination) {
 			static $versions = array();
 
@@ -227,7 +235,7 @@ class Template extends Nette\Templating\FileTemplate
 	public function getNamespaceLink($class)
 	{
 		$namespace = ($class instanceof ApiReflection) ? $class->getNamespaceName() : $class;
-		return sprintf($this->generator->config->templates['main']['namespace']['filename'], $namespace ? preg_replace('#[^a-z0-9_]#i', '.', $namespace) : 'None');
+		return sprintf($this->config->templates['main']['namespace']['filename'], $namespace ? preg_replace('#[^a-z0-9_]#i', '.', $namespace) : 'None');
 	}
 
 	/**
@@ -239,7 +247,7 @@ class Template extends Nette\Templating\FileTemplate
 	public function getPackageLink($class)
 	{
 		$package = ($class instanceof ApiReflection) ? $class->getPackageName() : $class;
-		return sprintf($this->generator->config->templates['main']['package']['filename'], $package ? preg_replace('#[^a-z0-9_]#i', '.', $package) : 'None');
+		return sprintf($this->config->templates['main']['package']['filename'], $package ? preg_replace('#[^a-z0-9_]#i', '.', $package) : 'None');
 	}
 
 	/**
@@ -254,7 +262,7 @@ class Template extends Nette\Templating\FileTemplate
 			$class = $class->getName();
 		}
 
-		return sprintf($this->generator->config->templates['main']['class']['filename'], preg_replace('#[^a-z0-9_]#i', '.', $class));
+		return sprintf($this->config->templates['main']['class']['filename'], preg_replace('#[^a-z0-9_]#i', '.', $class));
 	}
 
 	/**
@@ -310,7 +318,7 @@ class Template extends Nette\Templating\FileTemplate
 			}
 		}
 
-		return sprintf($this->generator->config->templates['main']['source']['filename'], preg_replace('#[^a-z0-9_]#i', '.', $file)) . (isset($line) ? "#$line" : '');
+		return sprintf($this->config->templates['main']['source']['filename'], preg_replace('#[^a-z0-9_]#i', '.', $file)) . (isset($line) ? "#$line" : '');
 	}
 
 	/**
@@ -404,9 +412,8 @@ class Template extends Nette\Templating\FileTemplate
 			$className = substr($className, 1);
 		}
 
-		$classes = $this->generator->getClasses();
-		$name = isset($classes["$namespace\\$className"]) ? "$namespace\\$className" : (isset($classes[$className]) ? $className : null);
-		if (null !== $name && !$classes[$name]->isDocumented()) {
+		$name = isset($this->classes["$namespace\\$className"]) ? "$namespace\\$className" : (isset($this->classes[$className]) ? $className : null);
+		if (null !== $name && !$this->classes[$name]->isDocumented()) {
 			$name = null;
 		}
 		return $name;
@@ -424,8 +431,7 @@ class Template extends Nette\Templating\FileTemplate
 		}
 
 		try {
-			$classes = $this->generator->getClasses();
-			return $classes[$className]->getConstantReflection($constantName);
+			return $this->classes[$className]->getConstantReflection($constantName);
 		} catch (\Exception $e) {
 			return null;
 		}
@@ -451,14 +457,14 @@ class Template extends Nette\Templating\FileTemplate
 			if (null === $className) {
 				return null;
 			} else {
-				$context = $this->generator->classes[$className];
+				$context = $this->classes[$className];
 			}
 
 			$link = substr($link, $pos + 2);
 		} elseif ((null !== $context && null !== ($className = $this->resolveClass(ReflectionBase::resolveClassFQN($link, $context->getNamespaceAliases(), $context->getNamespaceName()), $context->getNamespaceName())))
 			|| null !== ($className = $this->resolveClass($link, null !== $context ? $context->getNamespaceName() : null))) {
 			// Class
-			$context = $this->generator->classes[$className];
+			$context = $this->classes[$className];
 			return !$context->isDocumented() ? null : '<a href="' . $this->classLink($context) . '">' . $this->escapeHtml($className) . '</a>';
 		}
 
