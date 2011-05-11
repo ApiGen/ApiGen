@@ -277,7 +277,7 @@ class Generator extends Nette\Object
 				+ 1 // classes, iterators and exceptions tree
 			;
 
-			if ($this->config->code) {
+			if ($this->config->sourceCode) {
 				$max += count(array_filter($allClasses, function(ApiReflection $class) {
 					return $class->isTokenized();
 				}));
@@ -571,7 +571,7 @@ class Generator extends Nette\Object
 			$this->incrementProgressBar();
 
 			// generate source codes
-			if ($this->config->code && $class->isTokenized()) {
+			if ($this->config->sourceCode && $class->isTokenized()) {
 				$source = file_get_contents($class->getFileName());
 				$source = str_replace(array("\r\n", "\r"), "\n", $source);
 

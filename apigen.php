@@ -50,7 +50,7 @@ try {
 		'internal:',
 		'deprecated:',
 		'todo:',
-		'code:',
+		'source-code:',
 		'wipeout:',
 		'quiet:',
 		'progressbar:',
