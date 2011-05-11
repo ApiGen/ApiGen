@@ -349,7 +349,7 @@ div.smallList {
 
 .classtree ul {
 	list-style: none;
-	background: white url('tree-vertical.png') left repeat-y;
+	background: url('tree-vertical.gif') left repeat-y;
 	padding: 0;
 	margin-left: 20px;
 }
@@ -365,7 +365,7 @@ div.smallList {
 }
 
 .classtree div.notlast {
-	background-image: url('tree-hasnext.png');
+	background-image: url('tree-hasnext.gif');
 }
 
 .classtree div.last {
@@ -373,7 +373,7 @@ div.smallList {
 }
 
 .classtree li.last {
-	background: white;
+	background: url('tree-cleaner.gif') left repeat-y;
 }
 
 
