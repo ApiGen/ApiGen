@@ -52,11 +52,39 @@ class Reflection
 	private $reflection;
 
 	/**
-	 * If the class should be documented.
+	 * Cache for information if the class should be documented.
 	 *
 	 * @var boolean
 	 */
 	private $isDocumented;
+
+	/**
+	 * Cache for list of parent classes.
+	 *
+	 * @var array
+	 */
+	private $parentClasses;
+
+	/**
+	 * Cache for list of own methods.
+	 *
+	 * @var array
+	 */
+	private $ownMethods;
+
+	/**
+	 * Cache for list of own properties.
+	 *
+	 * @var array
+	 */
+	private $ownProperties;
+
+	/**
+	 * Cache for list of own constants.
+	 *
+	 * @var array
+	 */
+	private $ownConstants;
 
 	/**
 	 * Constructor.
@@ -137,13 +165,16 @@ class Reflection
 	 */
 	public function getOwnMethods()
 	{
-		$methods = $this->reflection->getOwnMethods(self::$methodAccessLevels);
-		if (!self::$config->deprecated) {
-			$methods = array_filter($methods, function($method) {
-				return !$method->isDeprecated();
-			});
+		if (null === $this->ownMethods) {
+			$this->ownMethods = $this->reflection->getOwnMethods(self::$methodAccessLevels);
+			if (!self::$config->deprecated) {
+				$this->ownMethods = array_filter($this->ownMethods, function($method) {
+					return !$method->isDeprecated();
+				});
+			}
 		}
-		return $methods;
+
+		return $this->ownMethods;
 	}
 
 	/**
@@ -153,13 +184,15 @@ class Reflection
 	 */
 	public function getOwnProperties()
 	{
-		$properties = $this->reflection->getOwnProperties(self::$propertyAccessLevels);
-		if (!self::$config->deprecated) {
-			$properties = array_filter($properties, function($property) {
-				return !$property->isDeprecated();
-			});
+		if (null === $this->ownProperties) {
+			$this->ownProperties = $this->reflection->getOwnProperties(self::$propertyAccessLevels);
+			if (!self::$config->deprecated) {
+				$this->ownProperties = array_filter($this->ownProperties, function($property) {
+					return !$property->isDeprecated();
+				});
+			}
 		}
-		return $properties;
+		return $this->ownProperties;
 	}
 
 	/**
@@ -169,13 +202,15 @@ class Reflection
 	 */
 	public function getOwnConstantReflections()
 	{
-		$constants = $this->reflection->getOwnConstantReflections();
-		if (!self::$config->deprecated) {
-			$constants = array_filter($constants, function($constant) {
-				return !$constant->isDeprecated();
-			});
+		if (null === $this->ownConstants) {
+			$this->ownConstants = $this->reflection->getOwnConstantReflections();
+			if (!self::$config->deprecated) {
+				$this->ownConstants = array_filter($this->ownConstants, function($constant) {
+					return !$constant->isDeprecated();
+				});
+			}
 		}
-		return $constants;
+		return $this->ownConstants;
 	}
 
 	/**
@@ -188,7 +223,6 @@ class Reflection
 		if ($className = $this->reflection->getParentClassName()) {
 			return self::$classes[$className];
 		}
-
 		return $className;
 	}
 
@@ -199,10 +233,13 @@ class Reflection
 	 */
 	public function getParentClasses()
 	{
-		$classes = self::$classes;
-		return array_map(function($class) use ($classes) {
-			return $classes[$class->getName()];
-		}, $this->reflection->getParentClasses());
+		if (null === $this->parentClasses) {
+			$classes = self::$classes;
+			$this->parentClasses = array_map(function($class) use ($classes) {
+				return $classes[$class->getName()];
+			}, $this->reflection->getParentClasses());
+		}
+		return $this->parentClasses;
 	}
 
 	/**
