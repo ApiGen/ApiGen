@@ -227,18 +227,22 @@ class Generator extends Nette\Object
 		$allClasses = array();
 		foreach ($this->classes as $class) {
 			if ($class->isDocumented()) {
-				$packages[$class->getPackageName()]['classes'][$class->getName()] = $class;
-				if ($class->inNamespace()) {
-					$packages[$class->getPackageName()]['namespaces'][$class->getNamespaceName()] = true;
-					$namespaces[$class->getNamespaceName()]['classes'][$class->getShortName()] = $class;
-					$namespaces[$class->getNamespaceName()]['packages'][$class->getPackageName()] = true;
+				$packageName = $class->getPackageName();
+				$namespaceName = (string) $class->getNamespaceName();
+				$className = $class->getName();
+
+				$packages[$packageName]['classes'][$className] = $class;
+				if ('' !== $namespaceName) {
+					$packages[$packageName]['namespaces'][$namespaceName] = true;
+					$namespaces[$namespaceName]['classes'][$class->getShortName()] = $class;
+					$namespaces[$namespaceName]['packages'][$packageName] = true;
 				}
-				$allClasses[$class->getName()] = $class;
+				$allClasses[$className] = $class;
 			}
 		}
 
 		// add missing parent namespaces
-		foreach (array_keys($namespaces) as $name) {
+		foreach ($namespaces as $name => $namespace) {
 			$parent = '';
 			foreach (explode('\\', $name) as $part) {
 				$parent = ltrim($parent . '\\' . $part, '\\');
@@ -292,8 +296,9 @@ class Generator extends Nette\Object
 		$template->config = $this->config;
 
 		// generate summary files
+		$namespaceNames = array_keys($namespaces);
 		$template->namespace = null;
-		$template->namespaces = array_keys($namespaces);
+		$template->namespaces = $namespaceNames;
 		$template->package = null;
 		$template->packages = array_keys($packages);
 		$template->class = null;
@@ -396,28 +401,6 @@ class Generator extends Nette\Object
 		unset($interfaces);
 		unset($exceptions);
 
-		// generate namespace summary
-		$this->forceDir($destination . '/' . $templates['main']['namespace']['filename']);
-		$template->package = null;
-		foreach ($namespaces as $namespace => $definition) {
-			$classes = isset($definition['classes']) ? $definition['classes'] : array();
-			uksort($classes, 'strcasecmp');
-			$nPackages = isset($definition['packages']) ? array_keys($definition['packages']) : array();
-			usort($nPackages, 'strcasecmp');
-			$template->package = 1 === count($nPackages) ? $nPackages[0] : null;
-			$template->packages = $nPackages;
-			$template->namespace = $namespace;
-			$template->namespaces = array_filter(array_keys($namespaces), function($item) use($namespace) {
-				return strpos($item, $namespace) === 0 || strpos($namespace, $item) === 0;
-			});
-			$template->classes = array_filter($classes, $classFilter);
-			$template->interfaces = array_filter($classes, $interfaceFilter);
-			$template->exceptions = array_filter($classes, $exceptionFilter);
-			$template->setFile($templatePath . '/' . $templates['main']['namespace']['template'])->save($destination . '/' . $template->getNamespaceLink($namespace));
-
-			$this->incrementProgressBar();
-		}
-
 		// generate package summary
 		$this->forceDir($destination . '/' . $templates['main']['package']['filename']);
 		$template->namespace = null;
@@ -436,6 +419,30 @@ class Generator extends Nette\Object
 
 			$this->incrementProgressBar();
 		}
+		unset($packages);
+
+		// generate namespace summary
+		$this->forceDir($destination . '/' . $templates['main']['namespace']['filename']);
+		$template->package = null;
+		foreach ($namespaces as $namespace => $definition) {
+			$classes = isset($definition['classes']) ? $definition['classes'] : array();
+			uksort($classes, 'strcasecmp');
+			$nPackages = isset($definition['packages']) ? array_keys($definition['packages']) : array();
+			usort($nPackages, 'strcasecmp');
+			$template->package = 1 === count($nPackages) ? $nPackages[0] : null;
+			$template->packages = $nPackages;
+			$template->namespace = $namespace;
+			$template->namespaces = array_filter($namespaceNames, function($item) use($namespace) {
+				return strpos($item, $namespace) === 0 || strpos($namespace, $item) === 0;
+			});
+			$template->classes = array_filter($classes, $classFilter);
+			$template->interfaces = array_filter($classes, $interfaceFilter);
+			$template->exceptions = array_filter($classes, $exceptionFilter);
+			$template->setFile($templatePath . '/' . $templates['main']['namespace']['template'])->save($destination . '/' . $template->getNamespaceLink($namespace));
+
+			$this->incrementProgressBar();
+		}
+		unset($namespaces);
 
 		unset($classFilter);
 		unset($interfaceFilter);
@@ -449,7 +456,7 @@ class Generator extends Nette\Object
 			$template->package = $package = $class->getPackageName();
 			$template->namespace = $namespace = $class->getNamespaceName();
 			if ($namespace) {
-				$template->namespaces = array_filter(array_keys($namespaces), function($item) use($namespace) {
+				$template->namespaces = array_filter($namespaceNames, function($item) use($namespace) {
 					return strpos($item, $namespace) === 0 || strpos($namespace, $item) === 0;
 				});
 			} else {
