@@ -101,14 +101,7 @@ class Template extends Nette\Templating\FileTemplate
 		);
 
 		// Documentation formatting
-		$this->registerHelper('resolveLinks', function($text, ApiReflection $class = null) use ($that) {
-			if (null === $class) {
-				return $text;
-			}
-			return preg_replace_callback('~{@link\\s+([^}]+)}~', function ($matches) use ($class, $that) {
-				return $that->resolveClassLink($matches[1], $class) ?: $matches[0];
-			}, $text);
-		});
+		$this->registerHelper('resolveLinks', callback($this, 'resolveLinks'));
 		$this->registerHelper('docline', function($text) use ($texy) {
 			return $texy->processLine($text);
 		});
@@ -155,11 +148,9 @@ class Template extends Nette\Templating\FileTemplate
 			switch ($name) {
 				case 'package':
 					return '<a href="' . $that->packageLink($value) . '">' . $that->escapeHtml($value) . '</a>';
-					break;
 				case 'see':
 				case 'uses':
 					return $that->resolveClassLink($value, $parent) ?: $that->docline($value);
-					break;
 				default:
 					return $that->docline($value);
 			}
@@ -429,6 +420,15 @@ class Template extends Nette\Templating\FileTemplate
 		} catch (\Exception $e) {
 			return null;
 		}
+	}
+
+	public function resolveLinks($text, $element)
+	{
+		$class = $element instanceof ApiReflection ? $element : $this->generator->classes[$element->getDeclaringClassName()];
+		$that = $this;
+		return preg_replace_callback('~{@link\\s+([^}]+)}~', function ($matches) use ($class, $that) {
+			return $that->resolveClassLink($matches[1], $class) ?: $matches[0];
+		}, $text);
 	}
 
 	/**
