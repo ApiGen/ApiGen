@@ -15,12 +15,14 @@ Besides, we have made following changes in our ApiGen.
 ### Changed behavior ###
 
 * There are different command line parameters (we will look at them later).
+* TR Apigen supports multiple/custom templates.
 * There are two fancy progressbars. One is displayed while parsing source codes, the other one while generating the actual documentation. So you do not have to stare at the command prompt not having an idea how long it will take to finish.
 * We can handle exceptions. So if something goes wrong, you will know what happened (and you can let us know ;)
 * TR ApiGen uses much less memory.
 
 ### Documentation changes ###
 
+* Better page titles.
 * A page with trees of classes, interfaces and exceptions.
 * A page with a list of deprecated elements.
 * A page with Todo tasks.
@@ -38,14 +40,20 @@ Besides, we have made following changes in our ApiGen.
 * No URL shortening.
 * Better visualization of nested namespaces.
 * No wrapping of class names.
+* Resizable left column.
+* Better static files (stylesheets, javascript) versioning.
+* Full sitemap with links to package and namespace pages.
+* Class and interface tables/headings are displayed only if required.
+* Package and namespace lists in the left column are filtered when selecting a package, namespace or class.
 * New version of jQuery.
+* New version of FSHL.
 
 ### Bugfixes ###
 * No fatal errors when a class is missing (this is a benefit of using the TokenReflection library).
 * Better FQN resolving in documentation.
 * Better values output of constants and properties (you see the actual definition - "\\n", not just a space).
 * Fixed email addresses in annotations (the original ApiGen cannot handle an email address next to the author name).
-* Displaying the "public" keyword for public properties
+* Displaying the "public" keyword for public properties.
 * Texy! downgraded to the stable 2.1 version (the 3.0-dev version causes PCRE internal errors sometimes).
 * Support for Mac and DOS line endings.
 
@@ -106,6 +114,7 @@ Template directory, default is the ApiGen template directory.
 List of allowed HTML tags in documentation separated by comma. Default value is "b,i,a,ul,ol,li,p,br,var,samp,kbd".
 
 ```--access-levels <list>```
+
 Access levels of methods and properties that should get their documentation parsed. Default value is "public,protected" (don't generate private class members).
 
 ```--internal <yes|no>```
@@ -145,6 +154,20 @@ Display additional information (exception trace) in case of an error, default is
 Display the list of possible options.
 
 Only ```--source``` and ```--destination``` parameters are required. You can provide them via command line or a configuration file.
+
+### Config files ###
+
+Instead of providing individual parameters via the command line, you can prepare a config file for later use. You can use all the above listed parameters (with one exception: the ```--config``` option) only without dashes and with an uppercase letter after each dash (so ```--access-level``` becomes ```accessLevel```).
+
+And then you can call apigen with a single parameter ```--config``` specifying the config file to load.
+
+```
+	apigen --config <path> [options]
+```
+
+Even when using a config file, you can still provide additional parameters via the command line. Such parameters will have precedence over parameters from the config file.
+
+Keep in mind, that any values in the config file will be **overwriten** by values from the command line. That means that providing the ```--source``` parameter values both in the config file and via the command line will not result in using all the provided values but only those from the command line.
 
 ### Example ###
 We are generating documentation for the Nella Framework. We want Nette and Doctrine to be parsed as well because we want their classes to appear in class trees, lists of parent classes and their members in lists of inherited properties, methods and constants. However we do not want to generate their full documentation along with highlighted source codes. And we do not want to process any "test" directories, because there might be classes that do not belong to the project actually.
