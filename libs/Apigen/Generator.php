@@ -431,6 +431,8 @@ class Generator extends Nette\Object
 			$this->incrementProgressBar();
 		}
 		unset($packages);
+		unset($pNamespaces);
+		unset($pClasses);
 
 		// generate namespace summary
 		$this->forceDir($destination . '/' . $templates['main']['namespace']['filename']);
@@ -454,6 +456,8 @@ class Generator extends Nette\Object
 			$this->incrementProgressBar();
 		}
 		unset($namespaces);
+		unset($nPackages);
+		unset($nClasses);
 
 		unset($classFilter);
 		unset($interfaceFilter);
