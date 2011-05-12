@@ -76,7 +76,7 @@
 			{foreach $template->annotationSort($template->annotationFilter($class->annotations)) as $annotation => $values}
 				{foreach $values as $value}
 					<b>{$annotation|ucfirst}{if $value}:{/if}</b>
-					{!$value|annotation:$annotation:$class}<br />
+					{!$value|annotation:$annotation:$class}<br>
 				{/foreach}
 			{/foreach}
 			{if $class->internal}<b>Documented at</b> <a href="{$class|manualLink}">php.net</a>{else}<b>Located at</b> <a n:tag-if="$config->sourceCode" href="{$class|sourceLink}">{$fileName}</a>{/if}<br>
@@ -84,92 +84,159 @@
 	</div>
 
 
-	<div id="methodSummary" n:if="$ownMethods">
-		<table class="summary">
-		<caption>Method Summary</caption>
-		{foreach $ownMethods as $method}
-		<tr data-order="{$method->name}" id="_{$method->name}" n:class="$method->deprecated ? deprecated">
-			<td class="right" width="1%"><code class="nowrap">
-				{if $method->deprecated}deprecated{/if}
-				{if !$class->interface && $method->abstract}abstract{elseif $method->final}final{/if} {if $method->protected}protected{elseif $method->private}private{else}public{/if} {if $method->static}static{/if}
-				{foreach $template->getTypes($method) as $return}
-					<a href="{$return->class|classLink}" n:tag-if="$return->class">{$return->name}</a>{sep}|{/sep}
-				{/foreach}
-				{if $method->returnsReference()}&amp;{/if}
-				</code>
-			</td>
+	<table class="summary" id="methods" n:if="$ownMethods">
+	<caption>Method Summary</caption>
+	{foreach $ownMethods as $method}
+	<tr data-order="{$method->name}" id="_{$method->name}" n:class="$method->deprecated ? deprecated">
+		<td class="right" width="1%"><code class="nowrap">
+			{if $method->deprecated}deprecated{/if}
+			{if !$class->interface && $method->abstract}abstract{elseif $method->final}final{/if} {if $method->protected}protected{elseif $method->private}private{else}public{/if} {if $method->static}static{/if}
+			{foreach $template->getTypes($method) as $return}
+				<a href="{$return->class|classLink}" n:tag-if="$return->class">{$return->name}</a>{sep}|{/sep}
+			{/foreach}
+			{if $method->returnsReference()}&amp;{/if}
+			</code>
+		</td>
 
-			<td><div class="position">
-			<a class="anchor" href="#_{$method->name}">#</a>
-			<code class="nowrap">
-				{if $class->internal}
-					<a href="{$method|manualLink}" title="Go to PHP documentation"><b>{$method->name}</b></a>(
+		<td><div class="position">
+		<a class="anchor" href="#_{$method->name}">#</a>
+		<code class="nowrap">
+			{if $class->internal}
+				<a href="{$method|manualLink}" title="Go to PHP documentation"><b>{$method->name}</b></a>(
+			{else}
+				<a n:tag-if="$config->sourceCode" href="{$method|sourceLink}" title="Go to source code"><b>{$method->name}</b></a>(
+			{/if}
+			{foreach $method->parameters as $parameter}
+				{if $parameter->array}array
+				{elseif $parameter->className}<a href="{$parameter->className|classLink}" n:tag-if="$template->resolveClass($parameter->className)">{$parameter->className}</a>
 				{else}
-					<a n:tag-if="$config->sourceCode" href="{$method|sourceLink}" title="Go to source code"><b>{$method->name}</b></a>(
+					{foreach $template->getTypes($method, $parameter->position) as $item}
+						<a href="{$item->class|classLink}" n:tag-if="$item->class">{$item->name}</a>{sep}|{/sep}
+					{/foreach}
 				{/if}
-				{foreach $method->parameters as $parameter}
-					{if $parameter->array}array
-					{elseif $parameter->className}<a href="{$parameter->className|classLink}" n:tag-if="$template->resolveClass($parameter->className)">{$parameter->className}</a>
-					{else}
-						{foreach $template->getTypes($method, $parameter->position) as $item}
-							<a href="{$item->class|classLink}" n:tag-if="$item->class">{$item->name}</a>{sep}|{/sep}
-						{/foreach}
-					{/if}
-					<var>{if $parameter->passedByReference}&amp; {/if}${$parameter->name}</var>{if $parameter->defaultValueAvailable} = {!$parameter->defaultValueDefinition|highlightPHP}{/if}{sep}, {/sep}
-				{/foreach}
-			)</code>
+				<var>{if $parameter->passedByReference}&amp; {/if}${$parameter->name}</var>{if $parameter->defaultValueAvailable} = {!$parameter->defaultValueDefinition|highlightPHP}{/if}{sep}, {/sep}
+			{/foreach}
+		)</code>
 
+		<div class="short">
+			{!$method|shortDescription|docblock|resolveLinks:$class}
+		</div>
+
+		<div class="detailed">
+			{!$method|longDescription|docblock|resolveLinks:$class}
+
+			{var $annotations = $method->annotations}
+
+			{if $method->deprecated}
+				<h4>Deprecated</h4>
+				{if $annotations['deprecated']}
+				<div class="smallList">
+				{foreach $annotations['deprecated'] as $description}
+					{if $description}
+						{!$description|annotation:$annotation:$class}<br>
+					{/if}
+				{/foreach}
+				</div>
+				{/if}
+			{/if}
+
+			{if $method->parameters && isset($annotations['param'])}
+				<h4>Parameters</h4>
+				<div class="smallList"><dl>
+				{foreach $method->parameters as $parameter}
+					<dt><code>${$parameter->name}</code></dt>
+					<dd>{if isset($annotations['param'][$parameter->position])}{!$annotations['param'][$parameter->position]|doclabel:$namespace:$parameter}{/if}</dd>
+				{/foreach}
+				</dl></div>
+			{/if}
+
+			{if isset($annotations['return']) && $annotations['return'][0] !== 'void'}
+				<h4>Returns</h4>
+				<div class="smallList">
+				{foreach $annotations['return'] as $return}
+					{!$return|doclabel:$namespace}<br>
+				{/foreach}
+				</div>
+			{/if}
+
+			{if isset($annotations['throws'])}
+				<h4>Throws</h4>
+				<div class="smallList">
+				{foreach $annotations['throws'] as $item}
+					{!$item|doclabel:$namespace}<br>
+				{/foreach}
+				</div>
+			{/if}
+
+			{foreach $template->annotationSort($template->annotationFilter($annotations, array('deprecated', 'param', 'return', 'throws'))) as $annotation => $descriptions}
+				<h4>{$annotation|ucfirst}</h4>
+				<div class="smallList">
+				{foreach $descriptions as $description}
+					{if $description}
+						{!$description|annotation:$annotation:$class}<br>
+					{/if}
+				{/foreach}
+				</div>
+			{/foreach}
+
+			{try}
+			{var $prototype = $method->prototype}
+			{if $prototype->declaringClass->interface}
+				<h4>Implementation of</h4>
+				<div class="smallList"><code><a href="{$prototype|methodLink}">{$prototype->declaringClass->name}::{$prototype->name}</a></code></div>
+			{/if}
+			{/try}
+		</div>
+		</div></td>
+	</tr>
+	{/foreach}
+	</table>
+
+
+	{foreach $class->inheritedMethods as $parentName => $methods}
+	<h2>Methods Inherited From <a href="{$parentName|classLink}#methods" n:tag-if="$template->resolveClass($parentName)">{$parentName}</a></h2>
+	<div class="box methods"><code>
+		{foreach $methods as $method}
+			<a href="{$method|methodLink}" n:tag-if="$template->resolveClass($parentName)"><span n:class="$method->deprecated ? deprecated">{$method->name}()</span></a>{sep}, {/sep}
+		{/foreach}
+	</code></div>
+	{/foreach}
+
+
+	<table class="summary" id="constants" n:if="$ownConstants">
+	<caption>Constant Summary</caption>
+	{foreach $ownConstants as $name => $constant}
+	<tr data-order="{$name}" id="{$name}" n:class="$constant->deprecated ? deprecated">
+		<td class="right" width="1%"><code class="nowrap">
+			{if $constant->deprecated}deprecated{/if}
+			{if $constant->hasAnnotation('var')}
+				{foreach $constant->getAnnotation('var') as $type}
+					{$type}{sep}|{/sep}
+				{/foreach}
+			{else}
+				{try}
+				{$constant->value|resolveType}
+				{/try}
+			{/if}
+		</code></td>
+		<td width="1%"><code>
+			{if $class->internal}
+				<a href="{$constant|manualLink}" title="Go to PHP documentation"><b>{$name}</b></a>
+			{else}
+				<a n:tag-if="$config->sourceCode" href="{$constant|sourceLink}" title="Go to source code"><b>{$name}</b></a>
+			{/if}
+		</code></td>
+		<td width="1%"><a n:tag-if="$template->resolveConstant($constant->valueDefinition)" href="{$constant->valueDefinition|resolveConstant|constantLink}"><code>{!$constant->valueDefinition|highlightValue}</code></a></td>
+		<td><div class="position">
+			<a href="#{$name}" class="anchor">#</a>
 			<div class="short">
-				{!$method|shortDescription|docblock|resolveLinks:$class}
+				{!$constant|shortDescription|docblock|resolveLinks:$class}
 			</div>
 
 			<div class="detailed">
-				{!$method|longDescription|docblock|resolveLinks:$class}
+				{!$constant|longDescription|docblock|resolveLinks:$class}
 
-				{var $annotations = $method->annotations}
-
-				{if $method->deprecated}
-					<h4>Deprecated</h4>
-					{if $annotations['deprecated']}
-					<div class="smallList">
-					{foreach $annotations['deprecated'] as $description}
-						{if $description}
-							{!$description|annotation:$annotation:$class}<br>
-						{/if}
-					{/foreach}
-					</div>
-					{/if}
-				{/if}
-
-				{if $method->parameters && isset($annotations['param'])}
-					<h4>Parameters</h4>
-					<div class="smallList"><dl>
-					{foreach $method->parameters as $parameter}
-						<dt><code>${$parameter->name}</code></dt>
-						<dd>{if isset($annotations['param'][$parameter->position])}{!$annotations['param'][$parameter->position]|doclabel:$namespace:$parameter}{/if}</dd>
-					{/foreach}
-					</dl></div>
-				{/if}
-
-				{if isset($annotations['return']) && $annotations['return'][0] !== 'void'}
-					<h4>Returns</h4>
-					<div class="smallList">
-					{foreach $annotations['return'] as $return}
-						{!$return|doclabel:$namespace}<br />
-					{/foreach}
-					</div>
-				{/if}
-
-				{if isset($annotations['throws'])}
-					<h4>Throws</h4>
-					<div class="smallList">
-					{foreach $annotations['throws'] as $item}
-						{!$item|doclabel:$namespace}<br />
-					{/foreach}
-					</div>
-				{/if}
-
-				{foreach $template->annotationSort($template->annotationFilter($annotations, array('deprecated', 'param', 'return', 'throws'))) as $annotation => $descriptions}
+				{foreach $template->annotationSort($template->annotationFilter($constant->annotations, array('var'))) as $annotation => $descriptions}
 					<h4>{$annotation|ucfirst}</h4>
 					<div class="smallList">
 					{foreach $descriptions as $description}
@@ -179,149 +246,76 @@
 					{/foreach}
 					</div>
 				{/foreach}
-
-				{try}
-				{var $prototype = $method->prototype}
-				{if $prototype->declaringClass->interface}
-					<h4>Implementation of</h4>
-					<div class="smallList"><code><a href="{$prototype|methodLink}">{$prototype->declaringClass->name}::{$prototype->name}</a></code></div>
-				{/if}
-				{/try}
 			</div>
-			</div></td>
-		</tr>
-		{/foreach}
-		</table>
-	</div>
-
-
-	{foreach $class->inheritedMethods as $parentName => $methods}
-	<h2>Methods Inherited From <a href="{$parentName|classLink}#methodSummary" n:tag-if="$template->resolveClass($parentName)">{$parentName}</a></h2>
-	<div class="box parentMethods"><code>
-		{foreach $methods as $method}
-			<a href="{$method|methodLink}" n:tag-if="$template->resolveClass($parentName)"><span n:class="$method->deprecated ? deprecated">{$method->name}()</span></a>{sep}, {/sep}
-		{/foreach}
-	</code></div>
+		</div></td>
+	</tr>
 	{/foreach}
-
-
-	<div id="constantSummary" n:if="$ownConstants">
-		<table class="summary">
-		<caption>Constant Summary</caption>
-		{foreach $ownConstants as $name => $constant}
-		<tr data-order="{$name}" id="{$name}" n:class="$constant->deprecated ? deprecated">
-			<td class="right" width="1%"><code class="nowrap">
-				{if $constant->deprecated}deprecated{/if}
-				{if $constant->hasAnnotation('var')}
-					{foreach $constant->getAnnotation('var') as $type}
-						{$type}{sep}|{/sep}
-					{/foreach}
-				{else}
-					{try}
-					{$constant->value|resolveType}
-					{/try}
-				{/if}
-			</code></td>
-			<td width="1%"><code>
-				{if $class->internal}
-					<a href="{$constant|manualLink}" title="Go to PHP documentation"><b>{$name}</b></a>
-				{else}
-					<a n:tag-if="$config->sourceCode" href="{$constant|sourceLink}" title="Go to source code"><b>{$name}</b></a>
-				{/if}
-			</code></td>
-			<td width="1%"><a n:tag-if="$template->resolveConstant($constant->valueDefinition)" href="{$constant->valueDefinition|resolveConstant|constantLink}"><code>{!$constant->valueDefinition|highlightValue}</code></a></td>
-			<td><div class="position">
-				<a href="#{$name}" class="anchor">#</a>
-				<div class="short">
-					{!$constant|shortDescription|docblock|resolveLinks:$class}
-				</div>
-
-				<div class="detailed">
-					{!$constant|longDescription|docblock|resolveLinks:$class}
-
-					{foreach $template->annotationSort($template->annotationFilter($constant->annotations, array('var'))) as $annotation => $descriptions}
-						<h4>{$annotation|ucfirst}</h4>
-						<div class="smallList">
-						{foreach $descriptions as $description}
-							{if $description}
-								{!$description|annotation:$annotation:$class}<br>
-							{/if}
-						{/foreach}
-						</div>
-					{/foreach}
-				</div>
-			</div></td>
-		</tr>
-		{/foreach}
-		</table>
-	</div>
+	</table>
 
 	{foreach $class->inheritedConstants as $parentName => $constants}
-	<h2>Constants Inherited From <a href="{$parentName|classLink}#constantSummary" n:tag-if="$template->resolveClass($parentName)">{$parentName}</a></h2>
-	<div class="box parentConstants">
+	<h2>Constants Inherited From <a href="{$parentName|classLink}#constants" n:tag-if="$template->resolveClass($parentName)">{$parentName}</a></h2>
+	<div class="box constants">
 		<code>
 			{foreach $constants as $constant}
-				<a href="{$constant|constantLink}" n:tag-if="$template->resolveClass($parentName)"><code n:class="$constant->deprecated ? deprecated">{$constant->name}</code></a>{sep}, {/sep}
+				<a href="{$constant|constantLink}" n:tag-if="$template->resolveClass($parentName)"><span n:class="$constant->deprecated ? deprecated">{$constant->name}</span></a>{sep}, {/sep}
 			{/foreach}
 		</code>
 	</div>
 	{/foreach}
 
 
-	<div id="propertySummary" n:if="$ownProperties">
-		<table class="summary">
-		<caption>Property Summary</caption>
-		{foreach $ownProperties as $property}
-		<tr data-order="{$property->name}" id="${$property->name}" n:class="$property->deprecated ? deprecated">
-			<td class="right" width="1%"><code class="nowrap">
-				{if $property->deprecated}deprecated{/if}
-				{if $property->protected}protected{elseif $property->private}private{else}public{/if} {if $property->static}static{/if}
-				{foreach $template->getTypes($property) as $return}
-					<a href="{$return->class|classLink}" n:tag-if="$return->class">{$return->name}</a>{sep}|{/sep}
-				{/foreach}
-			</code></td>
+	<table class="summary" id="properties" n:if="$ownProperties">
+	<caption>Property Summary</caption>
+	{foreach $ownProperties as $property}
+	<tr data-order="{$property->name}" id="${$property->name}" n:class="$property->deprecated ? deprecated">
+		<td class="right" width="1%"><code class="nowrap">
+			{if $property->deprecated}deprecated{/if}
+			{if $property->protected}protected{elseif $property->private}private{else}public{/if} {if $property->static}static{/if}
+			{foreach $template->getTypes($property) as $return}
+				<a href="{$return->class|classLink}" n:tag-if="$return->class">{$return->name}</a>{sep}|{/sep}
+			{/foreach}
+		</code></td>
 
-			<td width="1%"><var>
-				{if $class->internal}
-					<a href="{$property|manualLink}" title="Go to PHP documentation">${$property->name}</a>
-				{else}
-					<a n:tag-if="$config->sourceCode" href="{$property|sourceLink}" title="Go to source code">${$property->name}</a>
-				{/if}
-			</var></td>
-			<td width="1%"><pre>{!$property->defaultValueDefinition|highlightValue}</pre></td>
-			<td><div class="position">
-				<a href="#${$property->name}" class="anchor">#</a>
+		<td width="1%"><var>
+			{if $class->internal}
+				<a href="{$property|manualLink}" title="Go to PHP documentation">${$property->name}</a>
+			{else}
+				<a n:tag-if="$config->sourceCode" href="{$property|sourceLink}" title="Go to source code">${$property->name}</a>
+			{/if}
+		</var></td>
+		<td width="1%"><pre>{!$property->defaultValueDefinition|highlightValue}</pre></td>
+		<td><div class="position">
+			<a href="#${$property->name}" class="anchor">#</a>
 
-				<div class="short">
-					{!$property|shortDescription|docline|resolveLinks:$class}
-				</div>
+			<div class="short">
+				{!$property|shortDescription|docline|resolveLinks:$class}
+			</div>
 
-				<div class="detailed">
-					{!$property|longDescription|docblock|resolveLinks:$class}
+			<div class="detailed">
+				{!$property|longDescription|docblock|resolveLinks:$class}
 
-					{foreach $template->annotationSort($template->annotationFilter($property->annotations, array('var'))) as $annotation => $descriptions}
-						<h4>{$annotation|ucfirst}</h4>
-						<div class="smallList">
-						{foreach $descriptions as $description}
-							{if $description}
-								{!$description|annotation:$annotation:$class}<br>
-							{/if}
-						{/foreach}
-						</div>
+				{foreach $template->annotationSort($template->annotationFilter($property->annotations, array('var'))) as $annotation => $descriptions}
+					<h4>{$annotation|ucfirst}</h4>
+					<div class="smallList">
+					{foreach $descriptions as $description}
+						{if $description}
+							{!$description|annotation:$annotation:$class}<br>
+						{/if}
 					{/foreach}
-				</div>
-			</div></td>
-		</tr>
-		{/foreach}
-		</table>
-	</div>
+					</div>
+				{/foreach}
+			</div>
+		</div></td>
+	</tr>
+	{/foreach}
+	</table>
 
 	{foreach $class->inheritedProperties as $parentName => $properties}
-	<h2>Properties Inherited From <a href="{$parentName|classLink}#propertySummary" n:tag-if="$template->resolveClass($parentName)">{$parentName}</a></h2>
-	<div class="box parentProperties">
+	<h2>Properties Inherited From <a href="{$parentName|classLink}#properties" n:tag-if="$template->resolveClass($parentName)">{$parentName}</a></h2>
+	<div class="box properties">
 		<code>
 			{foreach $properties as $property}
-				<var n:class="$property->deprecated ? deprecated"><a href="{$property|propertyLink}" n:tag-if="$template->resolveClass($parentName)">${$property->name}</a></var>{sep}, {/sep}
+				<a href="{$property|propertyLink}" n:tag-if="$template->resolveClass($parentName)"><var n:class="$property->deprecated ? deprecated">${$property->name}</var></a>{sep}, {/sep}
 			{/foreach}
 		</code>
 	</div>
