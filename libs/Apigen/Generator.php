@@ -221,10 +221,12 @@ class Generator extends Nette\Object
 			}
 		}
 
-		// categorize by namespaces
+		// categorize by packages and namespaces
 		$packages = array();
 		$namespaces = array();
-		$allClasses = array();
+		$classes = array();
+		$interfaces = array();
+		$exceptions = array();
 		foreach ($this->classes as $class) {
 			if ($class->isDocumented()) {
 				$packageName = $class->getPackageName();
@@ -237,7 +239,14 @@ class Generator extends Nette\Object
 					$namespaces[$namespaceName]['classes'][$class->getShortName()] = $class;
 					$namespaces[$namespaceName]['packages'][$packageName] = true;
 				}
-				$allClasses[$className] = $class;
+
+				if ($class->isInterface()) {
+					$interfaces[$className] = $class;
+				} elseif ($class->isException()) {
+					$exceptions[$className] = $class;
+				} else {
+					$classes[$className] = $class;
+				}
 			}
 		}
 
@@ -254,20 +263,20 @@ class Generator extends Nette\Object
 
 		uksort($packages, 'strcasecmp');
 		uksort($namespaces, 'strcasecmp');
-		uksort($allClasses, 'strcasecmp');
+		uksort($classes, 'strcasecmp');
+		uksort($interfaces, 'strcasecmp');
+		uksort($exceptions, 'strcasecmp');
 
 		$classFilter = function($class) {return !$class->isInterface() && !$class->isException();};
 		$interfaceFilter = function($class) {return $class->isInterface();};
 		$exceptionFilter = function($class) {return $class->isException();};
 
-		$classes = array_filter($allClasses, $classFilter);
-		$interfaces = array_filter($allClasses, $interfaceFilter);
-		$exceptions = array_filter($allClasses, $exceptionFilter);
-
 		if ($this->config->progressbar) {
-			$max = count($allClasses)
+			$max = count($packages)
 				+ count($namespaces)
-				+ count($packages)
+				+ count($classes)
+				+ count($interfaces)
+				+ count($exceptions)
 				+ count($templates['common'])
 				+ (int) $this->config->deprecated // list of deprecated elements
 				+ (int) $this->config->todo // list of tasks
@@ -277,9 +286,11 @@ class Generator extends Nette\Object
 			;
 
 			if ($this->config->code) {
-				$max += count(array_filter($allClasses, function(ApiReflection $class) {
-					return $class->isTokenized();
-				}));
+				$tokenizedFilter = function(ApiReflection $class) {return $class->isTokenized();};
+				$max += count(array_filter($classes, $tokenizedFilter))
+					+ count(array_filter($interfaces, $tokenizedFilter))
+					+ count(array_filter($exceptions, $tokenizedFilter));
+				unset($tokenizedFilter);
 			}
 
 			$this->prepareProgressBar($max);
@@ -342,14 +353,16 @@ class Generator extends Nette\Object
 				$template->deprecatedMethods = array();
 				$template->deprecatedConstants = array();
 				$template->deprecatedProperties = array();
-				foreach ($allClasses as $class) {
-					if ($class->isDeprecated()) {
-						continue;
-					}
+				foreach (array('classes', 'interfaces', 'exceptions') as $type) {
+					foreach ($$type as $class) {
+						if ($class->isDeprecated()) {
+							continue;
+						}
 
-					$template->deprecatedMethods += array_filter($class->getOwnMethods(), $deprecatedFilter);
-					$template->deprecatedConstants += array_filter($class->getOwnConstantReflections(), $deprecatedFilter);
-					$template->deprecatedProperties += array_filter($class->getOwnProperties(), $deprecatedFilter);
+						$template->deprecatedMethods += array_filter($class->getOwnMethods(), $deprecatedFilter);
+						$template->deprecatedConstants += array_filter($class->getOwnConstantReflections(), $deprecatedFilter);
+						$template->deprecatedProperties += array_filter($class->getOwnProperties(), $deprecatedFilter);
+					}
 				}
 
 				$template->setFile($templatePath . '/' . $templates['optional']['deprecated']['template'])->save($this->forceDir($destination . '/' . $templates['optional']['deprecated']['filename']));
@@ -377,10 +390,12 @@ class Generator extends Nette\Object
 				$template->todoMethods = array();
 				$template->todoConstants = array();
 				$template->todoProperties = array();
-				foreach ($allClasses as $class) {
-					$template->todoMethods += array_filter($class->getOwnMethods(), $todoFilter);
-					$template->todoConstants += array_filter($class->getOwnConstantReflections(), $todoFilter);
-					$template->todoProperties += array_filter($class->getOwnProperties(), $todoFilter);
+				foreach (array('classes', 'interfaces', 'exceptions') as $type) {
+					foreach ($$type as $class) {
+						$template->todoMethods += array_filter($class->getOwnMethods(), $todoFilter);
+						$template->todoConstants += array_filter($class->getOwnConstantReflections(), $todoFilter);
+						$template->todoProperties += array_filter($class->getOwnProperties(), $todoFilter);
+					}
 				}
 
 				$template->setFile($templatePath . '/' . $templates['optional']['todo']['template'])->save($this->forceDir($destination . '/' . $templates['optional']['todo']['filename']));
@@ -397,24 +412,20 @@ class Generator extends Nette\Object
 			$this->incrementProgressBar();
 		}
 
-		unset($classes);
-		unset($interfaces);
-		unset($exceptions);
-
 		// generate package summary
 		$this->forceDir($destination . '/' . $templates['main']['package']['filename']);
 		$template->namespace = null;
 		foreach ($packages as $package => $definition) {
-			$classes = isset($definition['classes']) ? $definition['classes'] : array();
-			uksort($classes, 'strcasecmp');
+			$pClasses = isset($definition['classes']) ? $definition['classes'] : array();
+			uksort($pClasses, 'strcasecmp');
 			$pNamespaces = isset($definition['namespaces']) ? array_keys($definition['namespaces']) : array();
 			usort($pNamespaces, 'strcasecmp');
 			$template->package = $package;
 			$template->packages = array($package);
 			$template->namespaces = $pNamespaces;
-			$template->classes = array_filter($classes, $classFilter);
-			$template->interfaces = array_filter($classes, $interfaceFilter);
-			$template->exceptions = array_filter($classes, $exceptionFilter);
+			$template->classes = array_filter($pClasses, $classFilter);
+			$template->interfaces = array_filter($pClasses, $interfaceFilter);
+			$template->exceptions = array_filter($pClasses, $exceptionFilter);
 			$template->setFile($templatePath . '/' . $templates['main']['package']['template'])->save($destination . '/' . $template->getPackageLink($package));
 
 			$this->incrementProgressBar();
@@ -425,8 +436,8 @@ class Generator extends Nette\Object
 		$this->forceDir($destination . '/' . $templates['main']['namespace']['filename']);
 		$template->package = null;
 		foreach ($namespaces as $namespace => $definition) {
-			$classes = isset($definition['classes']) ? $definition['classes'] : array();
-			uksort($classes, 'strcasecmp');
+			$nClasses = isset($definition['classes']) ? $definition['classes'] : array();
+			uksort($nClasses, 'strcasecmp');
 			$nPackages = isset($definition['packages']) ? array_keys($definition['packages']) : array();
 			usort($nPackages, 'strcasecmp');
 			$template->package = 1 === count($nPackages) ? $nPackages[0] : null;
@@ -435,9 +446,9 @@ class Generator extends Nette\Object
 			$template->namespaces = array_filter($namespaceNames, function($item) use($namespace) {
 				return strpos($item, $namespace) === 0 || strpos($namespace, $item) === 0;
 			});
-			$template->classes = array_filter($classes, $classFilter);
-			$template->interfaces = array_filter($classes, $interfaceFilter);
-			$template->exceptions = array_filter($classes, $exceptionFilter);
+			$template->classes = array_filter($nClasses, $classFilter);
+			$template->interfaces = array_filter($nClasses, $interfaceFilter);
+			$template->exceptions = array_filter($nClasses, $exceptionFilter);
 			$template->setFile($templatePath . '/' . $templates['main']['namespace']['template'])->save($destination . '/' . $template->getNamespaceLink($namespace));
 
 			$this->incrementProgressBar();
@@ -452,65 +463,68 @@ class Generator extends Nette\Object
 		$fshl = new \fshlParser('HTML_UTF8', P_TAB_INDENT | P_LINE_COUNTER);
 		$this->forceDir($destination . '/' . $templates['main']['class']['filename']);
 		$this->forceDir($destination . '/' . $templates['main']['source']['filename']);
-		foreach ($allClasses as $class) {
-			$template->package = $package = $class->getPackageName();
-			$template->namespace = $namespace = $class->getNamespaceName();
-			if ($namespace) {
-				$template->namespaces = array_filter($namespaceNames, function($item) use($namespace) {
-					return strpos($item, $namespace) === 0 || strpos($namespace, $item) === 0;
-				});
-			} else {
-				$template->namespaces = array();
-			}
-			$template->packages = array($package);
-			$template->tree = array_merge(array_reverse($class->getParentClasses()), array($class));
-			$template->classes = !$class->isInterface() && !$class->isException() ? array($class) : array();
-			$template->interfaces = $class->isInterface() ? array($class) : array();
-			$template->exceptions = $class->isException() ? array($class) : array();
+		foreach (array('exceptions', 'interfaces', 'classes') as $type) {
+			foreach ($$type as $class) {
+				$template->package = $package = $class->getPackageName();
+				$template->namespace = $namespace = $class->getNamespaceName();
+				if ($namespace) {
+					$template->namespaces = array_filter($namespaceNames, function($item) use($namespace) {
+						return strpos($item, $namespace) === 0 || strpos($namespace, $item) === 0;
+					});
+				} else {
+					$template->namespaces = array();
+				}
+				$template->packages = array($package);
+				$template->tree = array_merge(array_reverse($class->getParentClasses()), array($class));
+				$template->classes = !$class->isInterface() && !$class->isException() ? array($class) : array();
+				$template->interfaces = $class->isInterface() ? array($class) : array();
+				$template->exceptions = $class->isException() ? array($class) : array();
 
-			$template->directSubClasses = $class->getDirectSubClasses();
-			uksort($template->directSubClasses, 'strcasecmp');
-			$template->indirectSubClasses = $class->getIndirectSubClasses();
-			uksort($template->indirectSubClasses, 'strcasecmp');
+				$template->directSubClasses = $class->getDirectSubClasses();
+				uksort($template->directSubClasses, 'strcasecmp');
+				$template->indirectSubClasses = $class->getIndirectSubClasses();
+				uksort($template->indirectSubClasses, 'strcasecmp');
 
-			$template->directImplementers = $class->getDirectImplementers();
-			uksort($template->directImplementers, 'strcasecmp');
-			$template->indirectImplementers = $class->getIndirectImplementers();
-			uksort($template->indirectImplementers, 'strcasecmp');
+				$template->directImplementers = $class->getDirectImplementers();
+				uksort($template->directImplementers, 'strcasecmp');
+				$template->indirectImplementers = $class->getIndirectImplementers();
+				uksort($template->indirectImplementers, 'strcasecmp');
 
-			$template->ownMethods = $class->getOwnMethods();
-			$template->ownConstants = $class->getOwnConstantReflections();
-			$template->ownProperties = $class->getOwnProperties();
+				$template->ownMethods = $class->getOwnMethods();
+				$template->ownConstants = $class->getOwnConstantReflections();
+				$template->ownProperties = $class->getOwnProperties();
 
-			if ($class->isTokenized()) {
-				$template->fileName = null;
-				$file = $class->getFileName();
-				foreach ($this->config->source as $source) {
-					if (0 === strpos($file, $source)) {
-						$template->fileName = str_replace('\\', '/', substr($file, strlen($source) + 1));
-						break;
+				if ($class->isTokenized()) {
+					$template->fileName = null;
+					$file = $class->getFileName();
+					foreach ($this->config->source as $source) {
+						if (0 === strpos($file, $source)) {
+							$template->fileName = str_replace('\\', '/', substr($file, strlen($source) + 1));
+							break;
+						}
+					}
+					if (null === $template->fileName) {
+						throw new Exception(sprintf('Could not determine class %s relative path', $class->getName()));
 					}
 				}
-				if (null === $template->fileName) {
-					throw new Exception(sprintf('Could not determine class %s relative path', $class->getName()));
-				}
-			}
 
-			$template->class = $class;
-			$template->setFile($templatePath . '/' . $templates['main']['class']['template'])->save($destination . '/' . $template->getClassLink($class));
-
-			$this->incrementProgressBar();
-
-			// generate source codes
-			if ($this->config->code && $class->isTokenized()) {
-				$source = file_get_contents($class->getFileName());
-				$source = str_replace(array("\r\n", "\r"), "\n", $source);
-
-				$template->source = $fshl->highlightString('PHP', $source);
-				$template->setFile($templatePath . '/' . $templates['main']['source']['template'])->save($destination . '/' . $template->getSourceLink($class, false));
+				$template->class = $class;
+				$template->setFile($templatePath . '/' . $templates['main']['class']['template'])->save($destination . '/' . $template->getClassLink($class));
 
 				$this->incrementProgressBar();
+
+				// generate source codes
+				if ($this->config->code && $class->isTokenized()) {
+					$source = file_get_contents($class->getFileName());
+					$source = str_replace(array("\r\n", "\r"), "\n", $source);
+
+					$template->source = $fshl->highlightString('PHP', $source);
+					$template->setFile($templatePath . '/' . $templates['main']['source']['template'])->save($destination . '/' . $template->getSourceLink($class, false));
+
+					$this->incrementProgressBar();
+				}
 			}
+			unset($$type);
 		}
 
 		// delete tmp directory
