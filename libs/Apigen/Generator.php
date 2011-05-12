@@ -414,6 +414,10 @@ class Generator extends Nette\Object
 			$this->incrementProgressBar();
 		}
 
+		unset($classes);
+		unset($interfaces);
+		unset($exceptions);
+
 		// generate namespace summary
 		$this->forceDir($destination . '/' . $templates['main']['namespace']['filename']);
 		$template->package = null;
@@ -432,7 +436,7 @@ class Generator extends Nette\Object
 				return !$class->isInterface() && !$class->isException();
 			});
 			$template->interfaces = array_filter($classes, function($class) {
-				return $class->isInterface() && !$class->isException();
+				return $class->isInterface();
 			});
 			$template->exceptions = array_filter($classes, function($class) {
 				return $class->isException();
@@ -457,7 +461,7 @@ class Generator extends Nette\Object
 				return !$class->isInterface() && !$class->isException();
 			});
 			$template->interfaces = array_filter($classes, function($class) {
-				return $class->isInterface() && !$class->isException();
+				return $class->isInterface();
 			});
 			$template->exceptions = array_filter($classes, function($class) {
 				return $class->isException();
@@ -472,7 +476,6 @@ class Generator extends Nette\Object
 		$fshl = new \fshlParser('HTML_UTF8', P_TAB_INDENT | P_LINE_COUNTER);
 		$this->forceDir($destination . '/' . $templates['main']['class']['filename']);
 		$this->forceDir($destination . '/' . $templates['main']['source']['filename']);
-		$template->classes = $allClasses;
 		foreach ($allClasses as $class) {
 			$template->package = $package = $class->getPackageName();
 			$template->namespace = $namespace = $class->getNamespaceName();
@@ -486,7 +489,7 @@ class Generator extends Nette\Object
 			$template->packages = array($package);
 			$template->tree = array_merge(array_reverse($class->getParentClasses()), array($class));
 			$template->classes = !$class->isInterface() && !$class->isException() ? array($class) : array();
-			$template->interfaces = $class->isInterface() && !$class->isException() ? array($class) : array();
+			$template->interfaces = $class->isInterface() ? array($class) : array();
 			$template->exceptions = $class->isException() ? array($class) : array();
 
 			$template->directSubClasses = $class->getDirectSubClasses();
