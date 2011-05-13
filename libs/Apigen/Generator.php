@@ -306,8 +306,8 @@ class Generator extends Nette\Object
 		$template->setCacheStorage(new Nette\Templating\PhpFileStorage($tmp));
 		$template->version = self::VERSION;
 		$template->config = $this->config;
-		$template->deprecated = $this->config->deprecated && isset($this->config->templates['optional']['deprecated']);
-		$template->todo = $this->config->todo && isset($this->config->templates['optional']['todo']);
+		$template->deprecated = $this->config->deprecated && isset($templates['optional']['deprecated']);
+		$template->todo = $this->config->todo && isset($templates['optional']['todo']);
 
 		// generate summary files
 		$namespaceNames = array_keys($namespaces);
@@ -415,28 +415,6 @@ class Generator extends Nette\Object
 			$this->incrementProgressBar();
 		}
 
-		// generate package summary
-		$this->forceDir($destination . '/' . $templates['main']['package']['filename']);
-		$template->namespace = null;
-		foreach ($packages as $package => $definition) {
-			$pClasses = isset($definition['classes']) ? $definition['classes'] : array();
-			uksort($pClasses, 'strcasecmp');
-			$pNamespaces = isset($definition['namespaces']) ? array_keys($definition['namespaces']) : array();
-			usort($pNamespaces, 'strcasecmp');
-			$template->package = $package;
-			$template->packages = array($package);
-			$template->namespaces = $pNamespaces;
-			$template->classes = array_filter($pClasses, $classFilter);
-			$template->interfaces = array_filter($pClasses, $interfaceFilter);
-			$template->exceptions = array_filter($pClasses, $exceptionFilter);
-			$template->setFile($templatePath . '/' . $templates['main']['package']['template'])->save($destination . '/' . $template->getPackageLink($package));
-
-			$this->incrementProgressBar();
-		}
-		unset($packages);
-		unset($pNamespaces);
-		unset($pClasses);
-
 		// classes/interfaces/exceptions tree
 		$classTree = array();
 		$interfaceTree = array();
@@ -490,7 +468,7 @@ class Generator extends Nette\Object
 		$template->interfaceTree = new Tree($interfaceTree, $this->classes);
 		$template->exceptionTree = new Tree($exceptionTree, $this->classes);
 
-		$template->setFile($templatePath . '/' . $this->config->templates['main']['tree']['template'])->save($this->forceDir($destination . '/' . $this->config->templates['main']['tree']['filename']));
+		$template->setFile($templatePath . '/' . $templates['main']['tree']['template'])->save($this->forceDir($destination . '/' . $templates['main']['tree']['filename']));
 
 		unset($template->classTree);
 		unset($template->interfaceTree);
@@ -499,6 +477,27 @@ class Generator extends Nette\Object
 
 		$this->incrementProgressBar();
 
+		// generate package summary
+		$this->forceDir($destination . '/' . $templates['main']['package']['filename']);
+		$template->namespace = null;
+		foreach ($packages as $package => $definition) {
+			$pClasses = isset($definition['classes']) ? $definition['classes'] : array();
+			uksort($pClasses, 'strcasecmp');
+			$pNamespaces = isset($definition['namespaces']) ? array_keys($definition['namespaces']) : array();
+			usort($pNamespaces, 'strcasecmp');
+			$template->package = $package;
+			$template->packages = array($package);
+			$template->namespaces = $pNamespaces;
+			$template->classes = array_filter($pClasses, $classFilter);
+			$template->interfaces = array_filter($pClasses, $interfaceFilter);
+			$template->exceptions = array_filter($pClasses, $exceptionFilter);
+			$template->setFile($templatePath . '/' . $templates['main']['package']['template'])->save($destination . '/' . $template->getPackageLink($package));
+
+			$this->incrementProgressBar();
+		}
+		unset($packages);
+		unset($pNamespaces);
+		unset($pClasses);
 
 		// generate namespace summary
 		$this->forceDir($destination . '/' . $templates['main']['namespace']['filename']);

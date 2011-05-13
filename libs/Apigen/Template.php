@@ -440,7 +440,7 @@ class Template extends Nette\Templating\FileTemplate
 	 */
 	public function resolveLinks($text, $element)
 	{
-		$class = $element instanceof ApiReflection ? $element : $this->generator->classes[$element->getDeclaringClassName()];
+		$class = $element instanceof ApiReflection ? $element : $this->classes[$element->getDeclaringClassName()];
 		$that = $this;
 		return preg_replace_callback('~{@link\\s+([^}]+)}~', function ($matches) use ($class, $that) {
 			return $that->resolveClassLink($matches[1], $class) ?: $matches[0];
