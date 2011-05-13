@@ -51,7 +51,7 @@ class Generator extends Nette\Object
 	/**
 	 * Array of reflection envelopes.
 	 *
-	 * @var array
+	 * @var \ArrayObject
 	 */
 	private $classes = array();
 
@@ -115,10 +115,10 @@ class Generator extends Nette\Object
 			$this->incrementProgressBar($size);
 		}
 
-		$generator = $this;
-		$this->classes = array_map(function(ReflectionClass $class) use ($generator) {
-			return new ApiReflection($class, $generator);
-		}, $broker->getClasses(Backend::TOKENIZED_CLASSES | Backend::INTERNAL_CLASSES | Backend::NONEXISTENT_CLASSES));
+		$this->classes = new \ArrayObject();
+		foreach ($broker->getClasses(Backend::TOKENIZED_CLASSES | Backend::INTERNAL_CLASSES | Backend::NONEXISTENT_CLASSES) as $className => $class) {
+			$this->classes->offsetSet($className, new ApiReflection($class, $this));
+		}
 
 		return array(
 			count($broker->getClasses(Backend::TOKENIZED_CLASSES)),
@@ -139,7 +139,7 @@ class Generator extends Nette\Object
 	/**
 	 * Returns parsed class list.
 	 *
-	 * @return array
+	 * @return \ArrayObject
 	 */
 	public function getClasses()
 	{
@@ -211,6 +211,7 @@ class Generator extends Nette\Object
 		}
 
 		$destination = $this->config->destination;
+		$templates = $this->config->templates;
 		$templatePath = $this->config->templateDir . '/' . $this->config->template;
 
 		// copy resources
@@ -220,24 +221,37 @@ class Generator extends Nette\Object
 			}
 		}
 
-		// categorize by namespaces
+		// categorize by packages and namespaces
 		$packages = array();
 		$namespaces = array();
-		$allClasses = array();
+		$classes = array();
+		$interfaces = array();
+		$exceptions = array();
 		foreach ($this->classes as $class) {
 			if ($class->isDocumented()) {
-				$packages[$class->getPackageName()]['classes'][$class->getName()] = $class;
-				if ($class->inNamespace()) {
-					$packages[$class->getPackageName()]['namespaces'][$class->getNamespaceName()] = true;
-					$namespaces[$class->getNamespaceName()]['classes'][$class->getShortName()] = $class;
-					$namespaces[$class->getNamespaceName()]['packages'][$class->getPackageName()] = true;
+				$packageName = $class->getPackageName();
+				$namespaceName = (string) $class->getNamespaceName();
+				$className = $class->getName();
+
+				$packages[$packageName]['classes'][$className] = $class;
+				if ('' !== $namespaceName) {
+					$packages[$packageName]['namespaces'][$namespaceName] = true;
+					$namespaces[$namespaceName]['classes'][$class->getShortName()] = $class;
+					$namespaces[$namespaceName]['packages'][$packageName] = true;
 				}
-				$allClasses[$class->getName()] = $class;
+
+				if ($class->isInterface()) {
+					$interfaces[$className] = $class;
+				} elseif ($class->isException()) {
+					$exceptions[$className] = $class;
+				} else {
+					$classes[$className] = $class;
+				}
 			}
 		}
 
 		// add missing parent namespaces
-		foreach (array_keys($namespaces) as $name) {
+		foreach ($namespaces as $name => $namespace) {
 			$parent = '';
 			foreach (explode('\\', $name) as $part) {
 				$parent = ltrim($parent . '\\' . $part, '\\');
@@ -249,23 +263,21 @@ class Generator extends Nette\Object
 
 		uksort($packages, 'strcasecmp');
 		uksort($namespaces, 'strcasecmp');
-		uksort($allClasses, 'strcasecmp');
+		uksort($classes, 'strcasecmp');
+		uksort($interfaces, 'strcasecmp');
+		uksort($exceptions, 'strcasecmp');
 
-		$classes = array_filter($allClasses, function($class) {
-			return !$class->isInterface() && !$class->isException();
-		});
-		$interfaces = array_filter($allClasses, function($class) {
-			return $class->isInterface();
-		});
-		$exceptions = array_filter($allClasses, function($class) {
-			return $class->isException();
-		});
+		$classFilter = function($class) {return !$class->isInterface() && !$class->isException();};
+		$interfaceFilter = function($class) {return $class->isInterface();};
+		$exceptionFilter = function($class) {return $class->isException();};
 
 		if ($this->config->progressbar) {
-			$max = count($allClasses)
+			$max = count($packages)
 				+ count($namespaces)
-				+ count($packages)
-				+ count($this->config->templates['common'])
+				+ count($classes)
+				+ count($interfaces)
+				+ count($exceptions)
+				+ count($templates['common'])
 				+ (int) $this->config->deprecated // list of deprecated elements
 				+ (int) $this->config->todo // list of tasks
 				+ (int) !empty($this->config->baseUrl) // sitemap
@@ -275,16 +287,18 @@ class Generator extends Nette\Object
 			;
 
 			if ($this->config->sourceCode) {
-				$max += count(array_filter($allClasses, function(ApiReflection $class) {
-					return $class->isTokenized();
-				}));
+				$tokenizedFilter = function(ApiReflection $class) {return $class->isTokenized();};
+				$max += count(array_filter($classes, $tokenizedFilter))
+					+ count(array_filter($interfaces, $tokenizedFilter))
+					+ count(array_filter($exceptions, $tokenizedFilter));
+				unset($tokenizedFilter);
 			}
 
 			$this->prepareProgressBar($max);
 		}
 
 		// create tmp directory
-		$tmp = $this->config->destination . DIRECTORY_SEPARATOR . 'tmp';
+		$tmp = $destination . DIRECTORY_SEPARATOR . 'tmp';
 		@mkdir($tmp, 0755, true);
 
 		// prepare template
@@ -296,15 +310,16 @@ class Generator extends Nette\Object
 		$template->todo = $this->config->todo && isset($this->config->templates['optional']['todo']);
 
 		// generate summary files
+		$namespaceNames = array_keys($namespaces);
 		$template->namespace = null;
-		$template->namespaces = array_keys($namespaces);
+		$template->namespaces = $namespaceNames;
 		$template->package = null;
 		$template->packages = array_keys($packages);
 		$template->class = null;
 		$template->classes = $classes;
 		$template->interfaces = $interfaces;
 		$template->exceptions = $exceptions;
-		foreach ($this->config->templates['common'] as $dest => $source) {
+		foreach ($templates['common'] as $dest => $source) {
 			$template->setFile($templatePath . '/' . $source)->save($this->forceDir("$destination/$dest"));
 
 			$this->incrementProgressBar();
@@ -312,57 +327,56 @@ class Generator extends Nette\Object
 
 		// optional files
 		if (!empty($this->config->baseUrl)) {
-			if (isset($this->config->templates['optional']['sitemap'])) {
-				$template->setFile($templatePath . '/' . $this->config->templates['optional']['sitemap']['template'])->save($this->forceDir($destination . '/' . $this->config->templates['optional']['sitemap']['filename']));
+			if (isset($templates['optional']['sitemap'])) {
+				$template->setFile($templatePath . '/' . $templates['optional']['sitemap']['template'])->save($this->forceDir($destination . '/' . $templates['optional']['sitemap']['filename']));
 			}
 			$this->incrementProgressBar();
 		}
 		if (!empty($this->config->baseUrl) && !empty($this->config->googleCse)) {
-			if (isset($this->config->templates['optional']['opensearch'])) {
-				$template->setFile($templatePath . '/' . $this->config->templates['optional']['opensearch']['template'])->save($this->forceDir($destination . '/' . $this->config->templates['optional']['opensearch']['filename']));
+			if (isset($templates['optional']['opensearch'])) {
+				$template->setFile($templatePath . '/' . $templates['optional']['opensearch']['template'])->save($this->forceDir($destination . '/' . $templates['optional']['opensearch']['filename']));
 			}
 			$this->incrementProgressBar();
 		}
 		if (!empty($this->config->googleCse)) {
-			if (isset($this->config->templates['optional']['autocomplete'])) {
-				$template->setFile($templatePath . '/' . $this->config->templates['optional']['autocomplete']['template'])->save($this->forceDir($destination . '/' . $this->config->templates['optional']['autocomplete']['filename']));
+			if (isset($templates['optional']['autocomplete'])) {
+				$template->setFile($templatePath . '/' . $templates['optional']['autocomplete']['template'])->save($this->forceDir($destination . '/' . $templates['optional']['autocomplete']['filename']));
 			}
 			$this->incrementProgressBar();
 		}
 
 		// list of deprecated elements
 		if ($this->config->deprecated) {
-			if (isset($this->config->templates['optional']['deprecated'])) {
-				$template->deprecatedClasses = array_filter($classes, function($class) {
-					return $class->isDeprecated();
-				});
-				$template->deprecatedInterfaces = array_filter($interfaces, function($class) {
-					return $class->isDeprecated();
-				});
-				$template->deprecatedExceptions = array_filter($exceptions, function($class) {
-					return $class->isDeprecated();
-				});
+			if (isset($templates['optional']['deprecated'])) {
+				$deprecatedFilter = function($element) {return $element->isDeprecated();};
+				$template->deprecatedClasses = array_filter($classes, $deprecatedFilter);
+				$template->deprecatedInterfaces = array_filter($interfaces, $deprecatedFilter);
+				$template->deprecatedExceptions = array_filter($exceptions, $deprecatedFilter);
 
 				$template->deprecatedMethods = array();
 				$template->deprecatedConstants = array();
 				$template->deprecatedProperties = array();
-				foreach ($allClasses as $class) {
-					if ($class->isDeprecated()) {
-						continue;
-					}
+				foreach (array('classes', 'interfaces', 'exceptions') as $type) {
+					foreach ($$type as $class) {
+						if ($class->isDeprecated()) {
+							continue;
+						}
 
-					$template->deprecatedMethods += array_filter($class->getOwnMethods(), function($method) {
-						return $method->isDeprecated();
-					});
-					$template->deprecatedConstants += array_filter($class->getOwnConstantReflections(), function($constant) {
-						return $constant->isDeprecated();
-					});
-					$template->deprecatedProperties += array_filter($class->getOwnProperties(), function($property) {
-						return $property->isDeprecated();
-					});
+						$template->deprecatedMethods += array_filter($class->getOwnMethods(), $deprecatedFilter);
+						$template->deprecatedConstants += array_filter($class->getOwnConstantReflections(), $deprecatedFilter);
+						$template->deprecatedProperties += array_filter($class->getOwnProperties(), $deprecatedFilter);
+					}
 				}
 
-				$template->setFile($templatePath . '/' . $this->config->templates['optional']['deprecated']['template'])->save($this->forceDir($destination . '/' . $this->config->templates['optional']['deprecated']['filename']));
+				$template->setFile($templatePath . '/' . $templates['optional']['deprecated']['template'])->save($this->forceDir($destination . '/' . $templates['optional']['deprecated']['filename']));
+
+				unset($deprecatedFilter);
+				unset($template->deprecatedClasses);
+				unset($template->deprecatedInterfaces);
+				unset($template->deprecatedExceptions);
+				unset($template->deprecatedMethods);
+				unset($template->deprecatedConstants);
+				unset($template->deprecatedProperties);
 			}
 
 			$this->incrementProgressBar();
@@ -370,37 +384,58 @@ class Generator extends Nette\Object
 
 		// list of tasks
 		if ($this->config->todo) {
-			if (isset($this->config->templates['optional']['todo'])) {
-				$template->todoClasses = array_filter($classes, function($class) {
-					return $class->hasAnnotation('todo');
-				});
-				$template->todoInterfaces = array_filter($interfaces, function($class) {
-					return $class->hasAnnotation('todo');
-				});
-				$template->todoExceptions = array_filter($exceptions, function($class) {
-					return $class->hasAnnotation('todo');
-				});
+			if (isset($templates['optional']['todo'])) {
+				$todoFilter = function($element) {return $element->hasAnnotation('todo');};
+				$template->todoClasses = array_filter($classes, $todoFilter);
+				$template->todoInterfaces = array_filter($interfaces, $todoFilter);
+				$template->todoExceptions = array_filter($exceptions, $todoFilter);
 
 				$template->todoMethods = array();
 				$template->todoConstants = array();
 				$template->todoProperties = array();
-				foreach ($allClasses as $class) {
-					$template->todoMethods += array_filter($class->getOwnMethods(), function($method) {
-						return $method->hasAnnotation('todo');
-					});
-					$template->todoConstants += array_filter($class->getOwnConstantReflections(), function($constant) {
-						return $constant->hasAnnotation('todo');
-					});
-					$template->todoProperties += array_filter($class->getOwnProperties(), function($property) {
-						return $property->hasAnnotation('todo');
-					});
+				foreach (array('classes', 'interfaces', 'exceptions') as $type) {
+					foreach ($$type as $class) {
+						$template->todoMethods += array_filter($class->getOwnMethods(), $todoFilter);
+						$template->todoConstants += array_filter($class->getOwnConstantReflections(), $todoFilter);
+						$template->todoProperties += array_filter($class->getOwnProperties(), $todoFilter);
+					}
 				}
 
-				$template->setFile($templatePath . '/' . $this->config->templates['optional']['todo']['template'])->save($this->forceDir($destination . '/' . $this->config->templates['optional']['todo']['filename']));
+				$template->setFile($templatePath . '/' . $templates['optional']['todo']['template'])->save($this->forceDir($destination . '/' . $templates['optional']['todo']['filename']));
+
+				unset($todoFilter);
+				unset($template->todoClasses);
+				unset($template->todoInterfaces);
+				unset($template->todoExceptions);
+				unset($template->todoMethods);
+				unset($template->todoConstants);
+				unset($template->todoProperties);
 			}
 
 			$this->incrementProgressBar();
 		}
+
+		// generate package summary
+		$this->forceDir($destination . '/' . $templates['main']['package']['filename']);
+		$template->namespace = null;
+		foreach ($packages as $package => $definition) {
+			$pClasses = isset($definition['classes']) ? $definition['classes'] : array();
+			uksort($pClasses, 'strcasecmp');
+			$pNamespaces = isset($definition['namespaces']) ? array_keys($definition['namespaces']) : array();
+			usort($pNamespaces, 'strcasecmp');
+			$template->package = $package;
+			$template->packages = array($package);
+			$template->namespaces = $pNamespaces;
+			$template->classes = array_filter($pClasses, $classFilter);
+			$template->interfaces = array_filter($pClasses, $interfaceFilter);
+			$template->exceptions = array_filter($pClasses, $exceptionFilter);
+			$template->setFile($templatePath . '/' . $templates['main']['package']['template'])->save($destination . '/' . $template->getPackageLink($package));
+
+			$this->incrementProgressBar();
+		}
+		unset($packages);
+		unset($pNamespaces);
+		unset($pClasses);
 
 		// classes/interfaces/exceptions tree
 		$classTree = array();
@@ -466,123 +501,100 @@ class Generator extends Nette\Object
 
 
 		// generate namespace summary
-		$this->forceDir($destination . '/' . $this->config->templates['main']['namespace']['filename']);
+		$this->forceDir($destination . '/' . $templates['main']['namespace']['filename']);
 		$template->package = null;
 		foreach ($namespaces as $namespace => $definition) {
-			$classes = isset($definition['classes']) ? $definition['classes'] : array();
-			uksort($classes, 'strcasecmp');
+			$nClasses = isset($definition['classes']) ? $definition['classes'] : array();
+			uksort($nClasses, 'strcasecmp');
 			$nPackages = isset($definition['packages']) ? array_keys($definition['packages']) : array();
 			usort($nPackages, 'strcasecmp');
 			$template->package = 1 === count($nPackages) ? $nPackages[0] : null;
 			$template->packages = $nPackages;
 			$template->namespace = $namespace;
-			$template->namespaces = array_filter(array_keys($namespaces), function($item) use($namespace) {
+			$template->namespaces = array_filter($namespaceNames, function($item) use($namespace) {
 				return strpos($item, $namespace) === 0 || strpos($namespace, $item) === 0;
 			});
-			$template->classes = array_filter($classes, function($class) {
-				return !$class->isInterface() && !$class->isException();
-			});
-			$template->interfaces = array_filter($classes, function($class) {
-				return $class->isInterface() && !$class->isException();
-			});
-			$template->exceptions = array_filter($classes, function($class) {
-				return $class->isException();
-			});
-			$template->setFile($templatePath . '/' . $this->config->templates['main']['namespace']['template'])->save($destination . '/' . $template->getNamespaceLink($namespace));
+			$template->classes = array_filter($nClasses, $classFilter);
+			$template->interfaces = array_filter($nClasses, $interfaceFilter);
+			$template->exceptions = array_filter($nClasses, $exceptionFilter);
+			$template->setFile($templatePath . '/' . $templates['main']['namespace']['template'])->save($destination . '/' . $template->getNamespaceLink($namespace));
 
 			$this->incrementProgressBar();
 		}
+		unset($namespaces);
+		unset($nPackages);
+		unset($nClasses);
 
-		// generate package summary
-		$this->forceDir($destination . '/' . $this->config->templates['main']['package']['filename']);
-		$template->namespace = null;
-		foreach ($packages as $package => $definition) {
-			$classes = isset($definition['classes']) ? $definition['classes'] : array();
-			uksort($classes, 'strcasecmp');
-			$pNamespaces = isset($definition['namespaces']) ? array_keys($definition['namespaces']) : array();
-			usort($pNamespaces, 'strcasecmp');
-			$template->package = $package;
-			$template->packages = array($package);
-			$template->namespaces = $pNamespaces;
-			$template->classes = array_filter($classes, function($class) {
-				return !$class->isInterface() && !$class->isException();
-			});
-			$template->interfaces = array_filter($classes, function($class) {
-				return $class->isInterface() && !$class->isException();
-			});
-			$template->exceptions = array_filter($classes, function($class) {
-				return $class->isException();
-			});
-			$template->setFile($templatePath . '/' . $this->config->templates['main']['package']['template'])->save($destination . '/' . $template->getPackageLink($package));
-
-			$this->incrementProgressBar();
-		}
-
+		unset($classFilter);
+		unset($interfaceFilter);
+		unset($exceptionFilter);
 
 		// generate class & interface files
 		$fshl = new \fshlParser('HTML_UTF8', P_TAB_INDENT | P_LINE_COUNTER);
-		$this->forceDir($destination . '/' . $this->config->templates['main']['class']['filename']);
-		$this->forceDir($destination . '/' . $this->config->templates['main']['source']['filename']);
-		$template->classes = $allClasses;
-		foreach ($allClasses as $class) {
-			$template->package = $package = $class->getPackageName();
-			$template->namespace = $namespace = $class->getNamespaceName();
-			if ($namespace) {
-				$template->namespaces = array_filter(array_keys($namespaces), function($item) use($namespace) {
-					return strpos($item, $namespace) === 0 || strpos($namespace, $item) === 0;
-				});
-			} else {
-				$template->namespaces = array();
-			}
-			$template->packages = array($package);
-			$template->tree = array_merge(array_reverse($class->getParentClasses()), array($class));
-			$template->classes = !$class->isInterface() && !$class->isException() ? array($class) : array();
-			$template->interfaces = $class->isInterface() && !$class->isException() ? array($class) : array();
-			$template->exceptions = $class->isException() ? array($class) : array();
+		$this->forceDir($destination . '/' . $templates['main']['class']['filename']);
+		$this->forceDir($destination . '/' . $templates['main']['source']['filename']);
+		foreach (array('exceptions', 'interfaces', 'classes') as $type) {
+			foreach ($$type as $class) {
+				$template->package = $package = $class->getPackageName();
+				$template->namespace = $namespace = $class->getNamespaceName();
+				if ($namespace) {
+					$template->namespaces = array_filter($namespaceNames, function($item) use($namespace) {
+						return strpos($item, $namespace) === 0 || strpos($namespace, $item) === 0;
+					});
+				} else {
+					$template->namespaces = array();
+				}
+				$template->packages = array($package);
+				$template->tree = array_merge(array_reverse($class->getParentClasses()), array($class));
+				$template->classes = !$class->isInterface() && !$class->isException() ? array($class) : array();
+				$template->interfaces = $class->isInterface() ? array($class) : array();
+				$template->exceptions = $class->isException() ? array($class) : array();
 
-			$template->directSubClasses = $class->getDirectSubClasses();
-			uksort($template->directSubClasses, 'strcasecmp');
-			$template->indirectSubClasses = $class->getIndirectSubClasses();
-			uksort($template->indirectSubClasses, 'strcasecmp');
+				$template->directSubClasses = $class->getDirectSubClasses();
+				uksort($template->directSubClasses, 'strcasecmp');
+				$template->indirectSubClasses = $class->getIndirectSubClasses();
+				uksort($template->indirectSubClasses, 'strcasecmp');
 
-			$template->directImplementers = $class->getDirectImplementers();
-			uksort($template->directImplementers, 'strcasecmp');
-			$template->indirectImplementers = $class->getIndirectImplementers();
-			uksort($template->indirectImplementers, 'strcasecmp');
+				$template->directImplementers = $class->getDirectImplementers();
+				uksort($template->directImplementers, 'strcasecmp');
+				$template->indirectImplementers = $class->getIndirectImplementers();
+				uksort($template->indirectImplementers, 'strcasecmp');
 
-			$template->ownMethods = $class->getOwnMethods();
-			$template->ownConstants = $class->getOwnConstantReflections();
-			$template->ownProperties = $class->getOwnProperties();
+				$template->ownMethods = $class->getOwnMethods();
+				$template->ownConstants = $class->getOwnConstantReflections();
+				$template->ownProperties = $class->getOwnProperties();
 
-			if ($class->isTokenized()) {
-				$template->fileName = null;
-				$file = $class->getFileName();
-				foreach ($this->config->source as $source) {
-					if (0 === strpos($file, $source)) {
-						$template->fileName = str_replace('\\', '/', substr($file, strlen($source) + 1));
-						break;
+				if ($class->isTokenized()) {
+					$template->fileName = null;
+					$file = $class->getFileName();
+					foreach ($this->config->source as $source) {
+						if (0 === strpos($file, $source)) {
+							$template->fileName = str_replace('\\', '/', substr($file, strlen($source) + 1));
+							break;
+						}
+					}
+					if (null === $template->fileName) {
+						throw new Exception(sprintf('Could not determine class %s relative path', $class->getName()));
 					}
 				}
-				if (null === $template->fileName) {
-					throw new Exception(sprintf('Could not determine class %s relative path', $class->getName()));
-				}
-			}
 
-			$template->class = $class;
-			$template->setFile($templatePath . '/' . $this->config->templates['main']['class']['template'])->save($destination . '/' . $template->getClassLink($class));
-
-			$this->incrementProgressBar();
-
-			// generate source codes
-			if ($this->config->sourceCode && $class->isTokenized()) {
-				$source = file_get_contents($class->getFileName());
-				$source = str_replace(array("\r\n", "\r"), "\n", $source);
-
-				$template->source = $fshl->highlightString('PHP', $source);
-				$template->setFile($templatePath . '/' . $this->config->templates['main']['source']['template'])->save($destination . '/' . $template->getSourceLink($class, false));
+				$template->class = $class;
+				$template->setFile($templatePath . '/' . $templates['main']['class']['template'])->save($destination . '/' . $template->getClassLink($class));
 
 				$this->incrementProgressBar();
+
+				// generate source codes
+				if ($this->config->sourceCode && $class->isTokenized()) {
+					$source = file_get_contents($class->getFileName());
+					$source = str_replace(array("\r\n", "\r"), "\n", $source);
+
+					$template->source = $fshl->highlightString('PHP', $source);
+					$template->setFile($templatePath . '/' . $templates['main']['source']['template'])->save($destination . '/' . $template->getSourceLink($class, false));
+
+					$this->incrementProgressBar();
+				}
 			}
+			unset($$type);
 		}
 
 		// delete tmp directory

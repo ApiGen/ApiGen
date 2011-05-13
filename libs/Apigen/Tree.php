@@ -35,17 +35,17 @@ class Tree extends RecursiveTreeIterator
 	/**
 	 * Reflections in the tree.
 	 *
-	 * @var array
+	 * @var \ArrayObject
 	 */
-	private $reflections = array();
+	private $reflections;
 
 	/**
 	 * Constructor.
 	 *
 	 * @param array $treePart Part of the tree
-	 * @param array $reflection Array of reflections in the tree part
+	 * @param \ArrayObject $reflection Array of reflections in the tree part
 	 */
-	public function __construct(array $treePart, array $reflections)
+	public function __construct(array $treePart, \ArrayObject $reflections)
 	{
 		parent::__construct(
 			new \RecursiveArrayIterator($treePart),
