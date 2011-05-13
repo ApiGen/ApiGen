@@ -109,7 +109,7 @@ class Template extends Nette\Templating\FileTemplate
 		);
 
 		// Documentation formatting
-		$this->registerHelper('resolveLinks', callback($this, 'resolveLinks'));
+		$this->registerHelper('resolveLinks', new Nette\Callback($this, 'resolveLinks'));
 		$this->registerHelper('docline', function($text) use ($texy) {
 			return $texy->processLine($text);
 		});
