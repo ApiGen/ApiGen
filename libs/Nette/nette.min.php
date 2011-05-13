@@ -699,6 +699,48 @@ namespace
 Nette\Utils{use
 Nette;final
 class
+Json{const
+FORCE_ARRAY=1;private
+static$messages=array(JSON_ERROR_DEPTH
+=>
+'The maximum stack depth has been exceeded',JSON_ERROR_STATE_MISMATCH
+=>
+'Syntax error, malformed JSON',JSON_ERROR_CTRL_CHAR
+=>
+'Unexpected control character found',JSON_ERROR_SYNTAX
+=>
+'Syntax error, malformed JSON',);final
+public
+function
+__construct(){throw
+new
+Nette\StaticClassException;}public
+static
+function
+encode($value){Nette\Diagnostics\Debugger::tryError();if(function_exists('ini_set')){$old=ini_set('display_errors',0);$json=json_encode($value);ini_set('display_errors',$old);}else{$json=json_encode($value);}if(Nette\Diagnostics\Debugger::catchError($e)){throw
+new
+JsonException($e->getMessage());}return$json;}public
+static
+function
+decode($json,$options=0){$json=(string)$json;$value=json_decode($json,(bool)($options&self::FORCE_ARRAY));if($value
+===
+NULL
+&&$json
+!==
+''
+&&strcasecmp($json,'null')){$error=PHP_VERSION_ID
+>=
+50300?json_last_error():0;throw
+new
+JsonException(isset(self::$messages[$error])?self::$messages[$error]:'Unknown error',$error);}return$value;}}class
+JsonException
+extends
+\Exception{}}
+
+namespace
+Nette\Utils{use
+Nette;final
+class
 LimitedScope{private
 static$vars;final
 public
