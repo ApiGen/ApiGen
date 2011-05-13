@@ -284,8 +284,8 @@ class Generator extends Nette\Object
 				+ count($interfaces)
 				+ count($exceptions)
 				+ count($templates['common'])
-				+ (int) $deprecated
-				+ (int) $todo
+				+ 7 * (int) $deprecated // generating splitted to 7 steps
+				+ 7 * (int) $todo // generating splitted to 7 steps
 				+ (int) $sitemap
 				+ (int) $opensearch
 				+ (int) $autocomplete
@@ -349,8 +349,11 @@ class Generator extends Nette\Object
 		if ($deprecated) {
 			$deprecatedFilter = function($element) {return $element->isDeprecated();};
 			$template->deprecatedClasses = array_filter($classes, $deprecatedFilter);
+			$this->incrementProgressBar();
 			$template->deprecatedInterfaces = array_filter($interfaces, $deprecatedFilter);
+			$this->incrementProgressBar();
 			$template->deprecatedExceptions = array_filter($exceptions, $deprecatedFilter);
+			$this->incrementProgressBar();
 
 			$template->deprecatedMethods = array();
 			$template->deprecatedConstants = array();
@@ -365,10 +368,12 @@ class Generator extends Nette\Object
 					$template->deprecatedConstants += array_filter($class->getOwnConstantReflections(), $deprecatedFilter);
 					$template->deprecatedProperties += array_filter($class->getOwnProperties(), $deprecatedFilter);
 				}
-
+				$this->incrementProgressBar();
 			}
 
 			$template->setFile($templatePath . '/' . $templates['optional']['deprecated']['template'])->save($this->forceDir($destination . '/' . $templates['optional']['deprecated']['filename']));
+
+			$this->incrementProgressBar();
 
 			unset($deprecatedFilter);
 			unset($template->deprecatedClasses);
@@ -377,16 +382,17 @@ class Generator extends Nette\Object
 			unset($template->deprecatedMethods);
 			unset($template->deprecatedConstants);
 			unset($template->deprecatedProperties);
-
-			$this->incrementProgressBar();
 		}
 
 		// list of tasks
 		if ($todo) {
 			$todoFilter = function($element) {return $element->hasAnnotation('todo');};
 			$template->todoClasses = array_filter($classes, $todoFilter);
+			$this->incrementProgressBar();
 			$template->todoInterfaces = array_filter($interfaces, $todoFilter);
+			$this->incrementProgressBar();
 			$template->todoExceptions = array_filter($exceptions, $todoFilter);
+			$this->incrementProgressBar();
 
 			$template->todoMethods = array();
 			$template->todoConstants = array();
@@ -397,10 +403,12 @@ class Generator extends Nette\Object
 					$template->todoConstants += array_filter($class->getOwnConstantReflections(), $todoFilter);
 					$template->todoProperties += array_filter($class->getOwnProperties(), $todoFilter);
 				}
-
+				$this->incrementProgressBar();
 			}
 
 			$template->setFile($templatePath . '/' . $templates['optional']['todo']['template'])->save($this->forceDir($destination . '/' . $templates['optional']['todo']['filename']));
+
+			$this->incrementProgressBar();
 
 			unset($todoFilter);
 			unset($template->todoClasses);
@@ -409,8 +417,6 @@ class Generator extends Nette\Object
 			unset($template->todoMethods);
 			unset($template->todoConstants);
 			unset($template->todoProperties);
-
-			$this->incrementProgressBar();
 		}
 
 		// classes/interfaces/exceptions tree
