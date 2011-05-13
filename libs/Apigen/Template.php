@@ -347,6 +347,13 @@ class Template extends Nette\Templating\FileTemplate
 		}
 	}
 
+	/**
+	 * Returns a list of resolved types from @param or @return tags.
+	 *
+	 * @param \TokenReflection\ReflectionMethod|\TokenReflection\ReflectionProperty $element Reflection instance
+	 * @param integer $position Parameter position
+	 * @return array
+	 */
 	public function getTypes($element, $position = NULL)
 	{
 		$annotation = array();
@@ -373,6 +380,12 @@ class Template extends Nette\Templating\FileTemplate
 		return $types;
 	}
 
+	/**
+	 * Resolves a parameter value definition (class name or parameter data type).
+	 *
+	 * @param string $name Parameter definition
+	 * @return string
+	 */
 	public function resolveName($name)
 	{
 		static $names = array(
@@ -413,6 +426,12 @@ class Template extends Nette\Templating\FileTemplate
 		return $name;
 	}
 
+	/**
+	 * Tries to resolve a constant using its name.
+	 *
+	 * @param string $definition Constant name (NAME or Class::NAME)
+	 * @return \TokenReflection\ReflectionConstant|null
+	 */
 	public function resolveConstant($definition)
 	{
 		if (false === strpos($definition, '::')) {
