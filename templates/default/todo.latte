@@ -9,7 +9,10 @@
 		<li>Package</li>
 		<li>Namespace</li>
 		<li>Class</li>
-		<li n:if="$config->deprecated"><a href="deprecated.html" title="List of deprecated elements">Deprecated</a></li>
+	</ul>
+	<ul>
+		<li><a href="tree.html" title="Tree view of classes, interfaces and exceptions">Tree</a></li>
+		<li n:if="$deprecated"><a href="deprecated.html" title="List of deprecated elements">Deprecated</a></li>
 		<li class="active">Todo</li>
 	</ul>
 </div>
@@ -74,7 +77,7 @@
 		<td>
 			{foreach $method->annotations['todo'] as $description}
 				{if $description}
-					{!$description|docline}<br>
+					{!$description|docline|resolveLinks:$method}<br>
 				{/if}
 			{/foreach}
 		</td>
@@ -91,7 +94,7 @@
 		<td>
 			{foreach $constant->annotations['todo'] as $description}
 				{if $description}
-					{!$description|docline}<br>
+					{!$description|docline|resolveLinks:$constant}<br>
 				{/if}
 			{/foreach}
 		</td>
@@ -108,7 +111,7 @@
 		<td>
 			{foreach $property->annotations['todo'] as $description}
 				{if $description}
-					{!$description|docline}<br>
+					{!$description|docline|resolveLinks:$property}<br>
 				{/if}
 			{/foreach}
 		</td>

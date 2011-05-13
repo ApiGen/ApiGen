@@ -54,7 +54,7 @@ class Config
 		'internal' => true,
 		'deprecated' => false,
 		'todo' => false,
-		'code' => true,
+		'sourceCode' => true,
 		'wipeout' => true,
 		'quiet' => false,
 		'progressbar' => true,
@@ -267,7 +267,7 @@ class Config
 	 */
 	private function checkTemplate()
 	{
-		foreach (array('package', 'namespace', 'class', 'source') as $type) {
+		foreach (array('package', 'namespace', 'class', 'source', 'tree') as $type) {
 			if (!isset($this->config['templates']['main'][$type]['filename'])) {
 				throw new Exception(sprintf('Filename for %s not defined', $type), Exception::INVALID_CONFIG);
 			}
@@ -370,7 +370,7 @@ Options:
 	--internal         Yes|No  Generate documentation for internal classes, default "Yes"
 	--deprecated       Yes|No  Generate documentation for deprecated classes, methods, properties and constants, default "No"
 	--todo             Yes|No  Generate documentation of tasks, default "No"
-	--code             Yes|No  Generate highlighted source code files, default "Yes"
+	--source-code      Yes|No  Generate highlighted source code files, default "Yes"
 	--wipeout          Yes|No  Wipe out the destination directory first, default "Yes"
 	--quiet            Yes|No  Don't display scaning and generating messages, default "No"
 	--progressbar      On|Off  Display progressbars, default "On"

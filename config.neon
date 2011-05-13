@@ -13,7 +13,7 @@ accessLevels: [public, protected]
 internal: Yes
 deprecated: No
 todo: No
-code: Yes
+sourceCode: Yes
 wipeout: Yes
 quiet: No
 progressbar: On

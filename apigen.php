@@ -23,6 +23,7 @@ require __DIR__ . '/libs/Apigen/Template.php';
 require __DIR__ . '/libs/Apigen/Reflection.php';
 require __DIR__ . '/libs/Apigen/Backend.php';
 require __DIR__ . '/libs/Apigen/Generator.php';
+require __DIR__ . '/libs/Apigen/Tree.php';
 
 try {
 
@@ -46,7 +47,7 @@ try {
 		'internal:',
 		'deprecated:',
 		'todo:',
-		'code:',
+		'source-code:',
 		'wipeout:',
 		'quiet:',
 		'progressbar:',
