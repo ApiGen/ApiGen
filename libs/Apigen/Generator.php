@@ -267,6 +267,12 @@ class Generator extends Nette\Object
 		uksort($interfaces, 'strcasecmp');
 		uksort($exceptions, 'strcasecmp');
 
+		$deprecated = $this->config->deprecated && isset($templates['optional']['deprecated']);
+		$todo = $this->config->todo && isset($templates['optional']['todo']);
+		$sitemap = !empty($this->config->baseUrl) && isset($templates['optional']['sitemap']);
+		$opensearch = !empty($this->config->googleCse) && !empty($this->config->baseUrl) && isset($templates['optional']['opensearch']);
+		$autocomplete = !empty($this->config->googleCse) && isset($templates['optional']['autocomplete']);
+
 		$classFilter = function($class) {return !$class->isInterface() && !$class->isException();};
 		$interfaceFilter = function($class) {return $class->isInterface();};
 		$exceptionFilter = function($class) {return $class->isException();};
@@ -278,11 +284,11 @@ class Generator extends Nette\Object
 				+ count($interfaces)
 				+ count($exceptions)
 				+ count($templates['common'])
-				+ (int) $this->config->deprecated // list of deprecated elements
-				+ (int) $this->config->todo // list of tasks
-				+ (int) !empty($this->config->baseUrl) // sitemap
-				+ (int) (!empty($this->config->googleCse) && !empty($this->config->baseUrl)) // opensearch
-				+ (int) !empty($this->config->googleCse) // autocomplete
+				+ (int) $deprecated
+				+ (int) $todo
+				+ (int) $sitemap
+				+ (int) $opensearch
+				+ (int) $autocomplete
 				+ 1 // classes, iterators and exceptions tree
 			;
 
@@ -306,8 +312,8 @@ class Generator extends Nette\Object
 		$template->setCacheStorage(new Nette\Templating\PhpFileStorage($tmp));
 		$template->version = self::VERSION;
 		$template->config = $this->config;
-		$template->deprecated = $this->config->deprecated && isset($templates['optional']['deprecated']);
-		$template->todo = $this->config->todo && isset($templates['optional']['todo']);
+		$template->deprecated = $deprecated;
+		$template->todo = $todo;
 
 		// generate summary files
 		$namespaceNames = array_keys($namespaces);
@@ -326,91 +332,83 @@ class Generator extends Nette\Object
 		}
 
 		// optional files
-		if (!empty($this->config->baseUrl)) {
-			if (isset($templates['optional']['sitemap'])) {
-				$template->setFile($templatePath . '/' . $templates['optional']['sitemap']['template'])->save($this->forceDir($destination . '/' . $templates['optional']['sitemap']['filename']));
-			}
+		if ($sitemap) {
+			$template->setFile($templatePath . '/' . $templates['optional']['sitemap']['template'])->save($this->forceDir($destination . '/' . $templates['optional']['sitemap']['filename']));
 			$this->incrementProgressBar();
 		}
-		if (!empty($this->config->baseUrl) && !empty($this->config->googleCse)) {
-			if (isset($templates['optional']['opensearch'])) {
-				$template->setFile($templatePath . '/' . $templates['optional']['opensearch']['template'])->save($this->forceDir($destination . '/' . $templates['optional']['opensearch']['filename']));
-			}
+		if ($opensearch) {
+			$template->setFile($templatePath . '/' . $templates['optional']['opensearch']['template'])->save($this->forceDir($destination . '/' . $templates['optional']['opensearch']['filename']));
 			$this->incrementProgressBar();
 		}
-		if (!empty($this->config->googleCse)) {
-			if (isset($templates['optional']['autocomplete'])) {
-				$template->setFile($templatePath . '/' . $templates['optional']['autocomplete']['template'])->save($this->forceDir($destination . '/' . $templates['optional']['autocomplete']['filename']));
-			}
+		if ($autocomplete) {
+			$template->setFile($templatePath . '/' . $templates['optional']['autocomplete']['template'])->save($this->forceDir($destination . '/' . $templates['optional']['autocomplete']['filename']));
 			$this->incrementProgressBar();
 		}
 
 		// list of deprecated elements
-		if ($this->config->deprecated) {
-			if (isset($templates['optional']['deprecated'])) {
-				$deprecatedFilter = function($element) {return $element->isDeprecated();};
-				$template->deprecatedClasses = array_filter($classes, $deprecatedFilter);
-				$template->deprecatedInterfaces = array_filter($interfaces, $deprecatedFilter);
-				$template->deprecatedExceptions = array_filter($exceptions, $deprecatedFilter);
+		if ($deprecated) {
+			$deprecatedFilter = function($element) {return $element->isDeprecated();};
+			$template->deprecatedClasses = array_filter($classes, $deprecatedFilter);
+			$template->deprecatedInterfaces = array_filter($interfaces, $deprecatedFilter);
+			$template->deprecatedExceptions = array_filter($exceptions, $deprecatedFilter);
 
-				$template->deprecatedMethods = array();
-				$template->deprecatedConstants = array();
-				$template->deprecatedProperties = array();
-				foreach (array('classes', 'interfaces', 'exceptions') as $type) {
-					foreach ($$type as $class) {
-						if ($class->isDeprecated()) {
-							continue;
-						}
-
-						$template->deprecatedMethods += array_filter($class->getOwnMethods(), $deprecatedFilter);
-						$template->deprecatedConstants += array_filter($class->getOwnConstantReflections(), $deprecatedFilter);
-						$template->deprecatedProperties += array_filter($class->getOwnProperties(), $deprecatedFilter);
+			$template->deprecatedMethods = array();
+			$template->deprecatedConstants = array();
+			$template->deprecatedProperties = array();
+			foreach (array('classes', 'interfaces', 'exceptions') as $type) {
+				foreach ($$type as $class) {
+					if ($class->isDeprecated()) {
+						continue;
 					}
+
+					$template->deprecatedMethods += array_filter($class->getOwnMethods(), $deprecatedFilter);
+					$template->deprecatedConstants += array_filter($class->getOwnConstantReflections(), $deprecatedFilter);
+					$template->deprecatedProperties += array_filter($class->getOwnProperties(), $deprecatedFilter);
 				}
 
-				$template->setFile($templatePath . '/' . $templates['optional']['deprecated']['template'])->save($this->forceDir($destination . '/' . $templates['optional']['deprecated']['filename']));
-
-				unset($deprecatedFilter);
-				unset($template->deprecatedClasses);
-				unset($template->deprecatedInterfaces);
-				unset($template->deprecatedExceptions);
-				unset($template->deprecatedMethods);
-				unset($template->deprecatedConstants);
-				unset($template->deprecatedProperties);
 			}
+
+			$template->setFile($templatePath . '/' . $templates['optional']['deprecated']['template'])->save($this->forceDir($destination . '/' . $templates['optional']['deprecated']['filename']));
+
+			unset($deprecatedFilter);
+			unset($template->deprecatedClasses);
+			unset($template->deprecatedInterfaces);
+			unset($template->deprecatedExceptions);
+			unset($template->deprecatedMethods);
+			unset($template->deprecatedConstants);
+			unset($template->deprecatedProperties);
 
 			$this->incrementProgressBar();
 		}
 
 		// list of tasks
-		if ($this->config->todo) {
-			if (isset($templates['optional']['todo'])) {
-				$todoFilter = function($element) {return $element->hasAnnotation('todo');};
-				$template->todoClasses = array_filter($classes, $todoFilter);
-				$template->todoInterfaces = array_filter($interfaces, $todoFilter);
-				$template->todoExceptions = array_filter($exceptions, $todoFilter);
+		if ($todo) {
+			$todoFilter = function($element) {return $element->hasAnnotation('todo');};
+			$template->todoClasses = array_filter($classes, $todoFilter);
+			$template->todoInterfaces = array_filter($interfaces, $todoFilter);
+			$template->todoExceptions = array_filter($exceptions, $todoFilter);
 
-				$template->todoMethods = array();
-				$template->todoConstants = array();
-				$template->todoProperties = array();
-				foreach (array('classes', 'interfaces', 'exceptions') as $type) {
-					foreach ($$type as $class) {
-						$template->todoMethods += array_filter($class->getOwnMethods(), $todoFilter);
-						$template->todoConstants += array_filter($class->getOwnConstantReflections(), $todoFilter);
-						$template->todoProperties += array_filter($class->getOwnProperties(), $todoFilter);
-					}
+			$template->todoMethods = array();
+			$template->todoConstants = array();
+			$template->todoProperties = array();
+			foreach (array('classes', 'interfaces', 'exceptions') as $type) {
+				foreach ($$type as $class) {
+					$template->todoMethods += array_filter($class->getOwnMethods(), $todoFilter);
+					$template->todoConstants += array_filter($class->getOwnConstantReflections(), $todoFilter);
+					$template->todoProperties += array_filter($class->getOwnProperties(), $todoFilter);
 				}
 
-				$template->setFile($templatePath . '/' . $templates['optional']['todo']['template'])->save($this->forceDir($destination . '/' . $templates['optional']['todo']['filename']));
-
-				unset($todoFilter);
-				unset($template->todoClasses);
-				unset($template->todoInterfaces);
-				unset($template->todoExceptions);
-				unset($template->todoMethods);
-				unset($template->todoConstants);
-				unset($template->todoProperties);
 			}
+
+			$template->setFile($templatePath . '/' . $templates['optional']['todo']['template'])->save($this->forceDir($destination . '/' . $templates['optional']['todo']['filename']));
+
+			unset($todoFilter);
+			unset($template->todoClasses);
+			unset($template->todoInterfaces);
+			unset($template->todoExceptions);
+			unset($template->todoMethods);
+			unset($template->todoConstants);
+			unset($template->todoProperties);
 
 			$this->incrementProgressBar();
 		}
