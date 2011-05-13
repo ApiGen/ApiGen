@@ -431,6 +431,13 @@ class Template extends Nette\Templating\FileTemplate
 		}
 	}
 
+	/**
+	 * Resolves links in documentation.
+	 *
+	 * @param string $text Processed documentation text
+	 * @param \Apigen\Reflection|\TokenReflection\IReflection $element Reflection object
+	 * @return string
+	 */
 	public function resolveLinks($text, $element)
 	{
 		$class = $element instanceof ApiReflection ? $element : $this->generator->classes[$element->getDeclaringClassName()];
