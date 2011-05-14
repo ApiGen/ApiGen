@@ -2,7 +2,6 @@
 
 /**
  * ApiGen - API Generator.
- * http://apigen.org
  *
  * Copyright (c) 2010 David Grudl (http://davidgrudl.com)
  * Copyright (c) 2011 Ondřej Nešpor (http://andrewsville.cz)
