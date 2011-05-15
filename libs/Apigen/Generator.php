@@ -17,7 +17,7 @@ use Nette;
 use Apigen\Reflection as ApiReflection, Apigen\Exception, Apigen\Config, Apigen\Template, Apigen\Backend;
 use TokenReflection\Broker;
 use TokenReflection\IReflectionClass as ReflectionClass, TokenReflection\IReflectionProperty as ReflectionProperty, TokenReflection\IReflectionMethod as ReflectionMethod, TokenReflection\IReflectionConstant as ReflectionConstant;
-
+use TokenReflection\ReflectionAnnotation;
 
 /**
  * Generates a HTML API documentation.
@@ -367,25 +367,46 @@ class Generator extends Nette\Object
 						continue;
 					}
 
-					if (empty($class->annotations)) {
-						$undocumented[$class->getName()][] = 'Missing documentation for the class.';
+					$annotations = $class->annotations;
+					if (empty($annotations)) {
+						$undocumented[$class->getName()][] = 'Missing documentation of the class.';
+					} elseif (!isset($annotations[ReflectionAnnotation::SHORT_DESCRIPTION])) {
+						$undocumented[$class->getName()][] = 'Missing description of the class.';
 					}
 
 					foreach ($class->getOwnMethods() as $method) {
-						if (empty($method->annotations)) {
-							$undocumented[$class->getName()][] = sprintf('Missing documentation for the method %s().', $method->getName());
+						$annotations = $method->annotations;
+						if (empty($annotations)) {
+							$undocumented[$class->getName()][] = sprintf('Missing documentation of the method %s().', $method->getName());
+							continue;
+						}
+
+						if (!isset($annotations[ReflectionAnnotation::SHORT_DESCRIPTION])) {
+							$undocumented[$class->getName()][] = sprintf('Missing description of the method %s().', $method->getName());
 						}
 					}
 
 					foreach ($class->getOwnConstants() as $constant) {
-						if (empty($constant->annotations)) {
-							$undocumented[$class->getName()][] = sprintf('Missing documentation for the constant %s.', $constant->getName());
+						$annotations = $constant->annotations;
+						if (empty($annotations)) {
+							$undocumented[$class->getName()][] = sprintf('Missing documentation of the constant %s.', $constant->getName());
+							continue;
+						}
+
+						if (!isset($annotations[ReflectionAnnotation::SHORT_DESCRIPTION])) {
+							$undocumented[$class->getName()][] = sprintf('Missing description of the constant %s.', $constant->getName());
 						}
 					}
 
 					foreach ($class->getOwnProperties() as $property) {
-						if (empty($property->annotations)) {
-							$undocumented[$class->getName()][] = sprintf('Missing documentation for the property $%s.', $property->getName());
+						$annotations = $property->annotations;
+						if (empty($annotations)) {
+							$undocumented[$class->getName()][] = sprintf('Missing documentation of the property $%s.', $property->getName());
+							continue;
+						}
+
+						if (!isset($annotations[ReflectionAnnotation::SHORT_DESCRIPTION])) {
+							$undocumented[$class->getName()][] = sprintf('Missing description of the property $%s.', $property->getName());
 						}
 					}
 				}
