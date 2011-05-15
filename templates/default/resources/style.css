@@ -138,6 +138,10 @@ pre {
 	font-weight: bold;
 }
 
+#left .active > a:hover {
+    background-color: #006aeb;
+}
+
 #left .all {
 	font-style: italic;
 }
