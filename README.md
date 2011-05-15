@@ -47,6 +47,7 @@ Besides, we have made following changes in our ApiGen.
 * Package and namespace lists in the left column are filtered when selecting a package, namespace or class.
 * New version of jQuery.
 * New version of FSHL.
+* Google Analytics support.
 
 ### Bugfixes ###
 * No fatal errors when a class is missing (this is a benefit of using the TokenReflection library).
