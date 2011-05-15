@@ -277,6 +277,7 @@ class Generator extends Nette\Object
 		uksort($interfaces, 'strcasecmp');
 		uksort($exceptions, 'strcasecmp');
 
+		$undocumented = !empty($this->config->undocumented);
 		$deprecated = $this->config->deprecated && isset($templates['optional']['deprecated']);
 		$todo = $this->config->todo && isset($templates['optional']['todo']);
 		$sitemap = !empty($this->config->baseUrl) && isset($templates['optional']['sitemap']);
@@ -294,6 +295,7 @@ class Generator extends Nette\Object
 				+ count($interfaces)
 				+ count($exceptions)
 				+ count($templates['common'])
+				+ 4 * (int) $undocumented // generating splitted to 4 steps
 				+ 7 * (int) $deprecated // generating splitted to 7 steps
 				+ 7 * (int) $todo // generating splitted to 7 steps
 				+ (int) $sitemap
@@ -352,6 +354,63 @@ class Generator extends Nette\Object
 		}
 		if ($autocomplete) {
 			$template->setFile($templatePath . '/' . $templates['optional']['autocomplete']['template'])->save($this->forceDir($destination . '/' . $templates['optional']['autocomplete']['filename']));
+			$this->incrementProgressBar();
+		}
+
+		// list of undocumented elements
+		if ($undocumented) {
+			$undocumented = array();
+			foreach (array('classes', 'interfaces', 'exceptions') as $type) {
+				foreach ($$type as $class) {
+					// Internal classes don't have documentation
+					if ($class->isInternal()) {
+						continue;
+					}
+
+					if (empty($class->annotations)) {
+						$undocumented[$class->getName()][] = 'Missing documentation for the class.';
+					}
+
+					foreach ($class->getOwnMethods() as $method) {
+						if (empty($method->annotations)) {
+							$undocumented[$class->getName()][] = sprintf('Missing documentation for the method %s().', $method->getName());
+						}
+					}
+
+					foreach ($class->getOwnConstants() as $constant) {
+						if (empty($constant->annotations)) {
+							$undocumented[$class->getName()][] = sprintf('Missing documentation for the constant %s.', $constant->getName());
+						}
+					}
+
+					foreach ($class->getOwnProperties() as $property) {
+						if (empty($property->annotations)) {
+							$undocumented[$class->getName()][] = sprintf('Missing documentation for the property $%s.', $property->getName());
+						}
+					}
+				}
+				$this->incrementProgressBar();
+			}
+			uksort($undocumented, 'strcasecmp');
+
+			if (!empty($undocumented)) {
+				$fp = @fopen($this->config->undocumented, 'w');
+				if (false === $fp) {
+					throw new Exception(sprintf('File %s doesn\'t exist.', $this->config->undocumented));
+				}
+
+				foreach ($undocumented as $className => $elements) {
+					fwrite($fp, sprintf("%s\n%s\n", $className, str_repeat('-', strlen($className))));
+					foreach ($elements as $elementName => $text) {
+						fwrite($fp, sprintf("\t%s\n", $text));
+					}
+					fwrite($fp, "\n");
+				}
+
+				fclose($fp);
+			}
+			unset($undocumented);
+
 			$this->incrementProgressBar();
 		}
 
