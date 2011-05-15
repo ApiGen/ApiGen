@@ -39,6 +39,7 @@ try {
 		'title:',
 		'base-url:',
 		'google-cse:',
+		'google-analytics:',
 		'template:',
 		'template-dir:',
 		'allowed-html:',

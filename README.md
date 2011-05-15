@@ -101,6 +101,10 @@ Documentation base URL used in the sitemap. Only needed if you plan to make your
 
 If you have a Google CSE ID, there will be a search field on the top of all pages leading to your customized search.
 
+```--google-analytics <value>```
+
+A Google Analytics tracking code. If provided, an ansynchronous tracking code will be placed into every generated page.
+
 ```--template <value>```
 
 Template name, default is "default" :)

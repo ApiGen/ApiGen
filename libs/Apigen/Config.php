@@ -47,6 +47,7 @@ class Config
 		'title' => '',
 		'baseUrl' => '',
 		'googleCse' => '',
+		'googleAnalytics' => '',
 		'template' => 'default',
 		'templateDir' => '',
 		'allowedHtml' => array('b', 'i', 'a', 'ul', 'ol', 'li', 'p', 'br', 'var', 'samp', 'kbd'),
@@ -257,6 +258,10 @@ class Config
 			throw new Exception('No supported access level given', Exception::INVALID_CONFIG);
 		}
 
+		if (!empty($this->config['googleAnalytics']) && !preg_match('~^UA\\-\\d+\\-\\d+$~', $this->config['googleAnalytics'])) {
+			throw new Exception('Invalid Google Analytics tracking code', Exception::INVALID_CONFIG);
+		}
+
 		return $this;
 	}
 
@@ -363,6 +368,7 @@ Options:
 	--title            <value> Title of generated documentation
 	--base-url         <value> Documentation base URI
 	--google-cse       <value> Google Custom Search ID
+	--google-analytics <value> Google Analytics tracking code
 	--template         <value> Template name, default "default"
 	--template-dir     <path>  Directory with templates, default "./templates"
 	--allowed-html     <list>  List of allowed HTML tags in documentation, default "b,i,a,ul,ol,li,p,br,var,samp,kbd"
