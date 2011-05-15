@@ -375,7 +375,7 @@ class Generator extends Nette\Object
 					}
 
 					$template->deprecatedMethods += array_filter($class->getOwnMethods(), $deprecatedFilter);
-					$template->deprecatedConstants += array_filter($class->getOwnConstantReflections(), $deprecatedFilter);
+					$template->deprecatedConstants += array_filter($class->getOwnConstants(), $deprecatedFilter);
 					$template->deprecatedProperties += array_filter($class->getOwnProperties(), $deprecatedFilter);
 				}
 				$this->incrementProgressBar();
@@ -410,7 +410,7 @@ class Generator extends Nette\Object
 			foreach (array('classes', 'interfaces', 'exceptions') as $type) {
 				foreach ($$type as $class) {
 					$template->todoMethods += array_filter($class->getOwnMethods(), $todoFilter);
-					$template->todoConstants += array_filter($class->getOwnConstantReflections(), $todoFilter);
+					$template->todoConstants += array_filter($class->getOwnConstants(), $todoFilter);
 					$template->todoProperties += array_filter($class->getOwnProperties(), $todoFilter);
 				}
 				$this->incrementProgressBar();
@@ -574,7 +574,7 @@ class Generator extends Nette\Object
 				uksort($template->indirectImplementers, 'strcasecmp');
 
 				$template->ownMethods = $class->getOwnMethods();
-				$template->ownConstants = $class->getOwnConstantReflections();
+				$template->ownConstants = $class->getOwnConstants();
 				$template->ownProperties = $class->getOwnProperties();
 
 				if ($class->isTokenized()) {

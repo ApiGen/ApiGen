@@ -200,7 +200,7 @@ class Reflection
 	 *
 	 * @return array
 	 */
-	public function getOwnConstantReflections()
+	public function getOwnConstants()
 	{
 		if (null === $this->ownConstants) {
 			$this->ownConstants = $this->reflection->getOwnConstantReflections();
