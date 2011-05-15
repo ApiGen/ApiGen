@@ -115,7 +115,7 @@ Template directory, default is the ApiGen template directory.
 
 ```--allowed-html <list>```
 
-List of allowed HTML tags in documentation separated by comma. Default value is "b,i,a,ul,ol,li,p,br,var,samp,kbd".
+List of allowed HTML tags in documentation separated by comma. Default value is "b,i,a,ul,ol,li,p,br,var,samp,kbd,tt".
 
 ```--access-levels <list>```
 

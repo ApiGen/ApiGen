@@ -50,7 +50,7 @@ class Config
 		'googleAnalytics' => '',
 		'template' => 'default',
 		'templateDir' => '',
-		'allowedHtml' => array('b', 'i', 'a', 'ul', 'ol', 'li', 'p', 'br', 'var', 'samp', 'kbd'),
+		'allowedHtml' => array('b', 'i', 'a', 'ul', 'ol', 'li', 'p', 'br', 'var', 'samp', 'kbd', 'tt'),
 		'accessLevels' => array('public', 'protected'),
 		'internal' => true,
 		'deprecated' => false,
@@ -371,7 +371,7 @@ Options:
 	--google-analytics <value> Google Analytics tracking code
 	--template         <value> Template name, default "default"
 	--template-dir     <path>  Directory with templates, default "./templates"
-	--allowed-html     <list>  List of allowed HTML tags in documentation, default "b,i,a,ul,ol,li,p,br,var,samp,kbd"
+	--allowed-html     <list>  List of allowed HTML tags in documentation, default "b,i,a,ul,ol,li,p,br,var,samp,kbd,tt"
 	--access-levels    <list>  Generate documentation for methods and properties with given access level, default "public,protected"
 	--internal         Yes|No  Generate documentation for internal classes, default "Yes"
 	--deprecated       Yes|No  Generate documentation for deprecated classes, methods, properties and constants, default "No"
