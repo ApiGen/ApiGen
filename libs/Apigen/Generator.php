@@ -154,10 +154,12 @@ class Generator extends Nette\Object
 	public function wipeOutDestination()
 	{
 		// resources
-		foreach ($this->config->resources as $dir) {
-			$pathName = $this->config->destination . '/' . $dir;
-			if (is_dir($pathName)) {
-				$this->deleteDir($pathName);
+		foreach ($this->config->resources as $resource) {
+			$path = $this->config->destination . '/' . $resource;
+			if (is_dir($path) && !$this->deleteDir($path)) {
+				return false;
+			} elseif (is_file($path) && !@unlink($path)) {
+				return false;
 			}
 		}
 
@@ -215,9 +217,17 @@ class Generator extends Nette\Object
 		$templatePath = $this->config->templateDir . '/' . $this->config->template;
 
 		// copy resources
-		foreach ($this->config->resources as $source => $dest) {
-			foreach ($iterator = Nette\Utils\Finder::findFiles('*')->from($templatePath . '/' . $source)->getIterator() as $foo) {
-				copy($iterator->getPathName(), $this->forceDir("$destination/$dest/" . $iterator->getSubPathName()));
+		foreach ($this->config->resources as $resourceSource => $resourceDestination) {
+			// File
+			$resourcePath = $templatePath . '/' . $resourceSource;
+			if (is_file($resourcePath)) {
+				copy($resourcePath, $this->forceDir("$destination/$resourceDestination"));
+				continue;
+			}
+
+			// Dir
+			foreach ($iterator = Nette\Utils\Finder::findFiles('*')->from($resourcePath)->getIterator() as $item) {
+				copy($item->getPathName(), $this->forceDir("$destination/$resourceDestination/" . $iterator->getSubPathName()));
 			}
 		}
 
