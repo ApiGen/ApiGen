@@ -684,7 +684,7 @@ class Generator extends Nette\Object
 				}
 			}
 		}
-		if (@rmdir($path)) {
+		if (!@rmdir($path)) {
 			return false;
 		}
 
