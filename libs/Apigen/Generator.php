@@ -277,11 +277,11 @@ class Generator extends Nette\Object
 		uksort($interfaces, 'strcasecmp');
 		uksort($exceptions, 'strcasecmp');
 
-		$deprecated = $this->config->deprecated && isset($templates['optional']['deprecated']);
-		$todo = $this->config->todo && isset($templates['optional']['todo']);
-		$sitemap = !empty($this->config->baseUrl) && isset($templates['optional']['sitemap']);
-		$opensearch = !empty($this->config->googleCse) && !empty($this->config->baseUrl) && isset($templates['optional']['opensearch']);
-		$autocomplete = !empty($this->config->googleCse) && isset($templates['optional']['autocomplete']);
+		$deprecatedEnabled = $this->config->deprecated && isset($templates['optional']['deprecated']);
+		$todoEnabled = $this->config->todo && isset($templates['optional']['todo']);
+		$sitemapEnabled = !empty($this->config->baseUrl) && isset($templates['optional']['sitemap']);
+		$opensearchEnabled = !empty($this->config->googleCse) && !empty($this->config->baseUrl) && isset($templates['optional']['opensearch']);
+		$autocompleteEnabled = !empty($this->config->googleCse) && isset($templates['optional']['autocomplete']);
 
 		$classFilter = function($class) {return !$class->isInterface() && !$class->isException();};
 		$interfaceFilter = function($class) {return $class->isInterface();};
@@ -294,11 +294,11 @@ class Generator extends Nette\Object
 				+ count($interfaces)
 				+ count($exceptions)
 				+ count($templates['common'])
-				+ 7 * (int) $deprecated // generating splitted to 7 steps
-				+ 7 * (int) $todo // generating splitted to 7 steps
-				+ (int) $sitemap
-				+ (int) $opensearch
-				+ (int) $autocomplete
+				+ 7 * (int) $deprecatedEnabled // generating splitted to 7 steps
+				+ 7 * (int) $todoEnabled // generating splitted to 7 steps
+				+ (int) $sitemapEnabled
+				+ (int) $opensearchEnabled
+				+ (int) $autocompleteEnabled
 				+ 1 // classes, iterators and exceptions tree
 			;
 
@@ -322,8 +322,8 @@ class Generator extends Nette\Object
 		$template->setCacheStorage(new Nette\Templating\PhpFileStorage($tmp));
 		$template->version = self::VERSION;
 		$template->config = $this->config;
-		$template->deprecated = $deprecated;
-		$template->todo = $todo;
+		$template->deprecated = $deprecatedEnabled;
+		$template->todo = $todoEnabled;
 
 		// generate summary files
 		$namespaceNames = array_keys($namespaces);
@@ -342,21 +342,21 @@ class Generator extends Nette\Object
 		}
 
 		// optional files
-		if ($sitemap) {
+		if ($sitemapEnabled) {
 			$template->setFile($templatePath . '/' . $templates['optional']['sitemap']['template'])->save($this->forceDir($destination . '/' . $templates['optional']['sitemap']['filename']));
 			$this->incrementProgressBar();
 		}
-		if ($opensearch) {
+		if ($opensearchEnabled) {
 			$template->setFile($templatePath . '/' . $templates['optional']['opensearch']['template'])->save($this->forceDir($destination . '/' . $templates['optional']['opensearch']['filename']));
 			$this->incrementProgressBar();
 		}
-		if ($autocomplete) {
+		if ($autocompleteEnabled) {
 			$template->setFile($templatePath . '/' . $templates['optional']['autocomplete']['template'])->save($this->forceDir($destination . '/' . $templates['optional']['autocomplete']['filename']));
 			$this->incrementProgressBar();
 		}
 
 		// list of deprecated elements
-		if ($deprecated) {
+		if ($deprecatedEnabled) {
 			$deprecatedFilter = function($element) {return $element->isDeprecated();};
 			$template->deprecatedClasses = array_filter($classes, $deprecatedFilter);
 			$this->incrementProgressBar();
@@ -395,7 +395,7 @@ class Generator extends Nette\Object
 		}
 
 		// list of tasks
-		if ($todo) {
+		if ($todoEnabled) {
 			$todoFilter = function($element) {return $element->hasAnnotation('todo');};
 			$template->todoClasses = array_filter($classes, $todoFilter);
 			$this->incrementProgressBar();
