@@ -16,7 +16,7 @@ namespace Apigen;
 use Nette;
 use Apigen\Reflection as ApiReflection, Apigen\Exception, Apigen\Config, Apigen\Template, Apigen\Backend;
 use TokenReflection\Broker;
-use TokenReflection\IReflectionClass as ReflectionClass, TokenReflection\IReflectionProperty as ReflectionProperty, TokenReflection\IReflectionMethod as ReflectionMethod, TokenReflection\IReflectionConstant as ReflectionConstant;
+use TokenReflection\IReflectionClass as ReflectionClass, TokenReflection\IReflectionProperty as ReflectionProperty, TokenReflection\IReflectionMethod as ReflectionMethod, TokenReflection\IReflectionConstant as ReflectionConstant, TokenReflection\IReflectionParameter as ReflectionParameter;
 use TokenReflection\ReflectionAnnotation;
 
 /**
@@ -277,7 +277,7 @@ class Generator extends Nette\Object
 		uksort($interfaces, 'strcasecmp');
 		uksort($exceptions, 'strcasecmp');
 
-		$undocumented = !empty($this->config->undocumented);
+		$undocumentedEnabled = !empty($this->config->undocumented);
 		$deprecated = $this->config->deprecated && isset($templates['optional']['deprecated']);
 		$todo = $this->config->todo && isset($templates['optional']['todo']);
 		$sitemap = !empty($this->config->baseUrl) && isset($templates['optional']['sitemap']);
@@ -295,7 +295,7 @@ class Generator extends Nette\Object
 				+ count($interfaces)
 				+ count($exceptions)
 				+ count($templates['common'])
-				+ 4 * (int) $undocumented // generating splitted to 4 steps
+				+ 4 * (int) $undocumentedEnabled // generating splitted to 4 steps
 				+ 7 * (int) $deprecated // generating splitted to 7 steps
 				+ 7 * (int) $todo // generating splitted to 7 steps
 				+ (int) $sitemap
@@ -358,68 +358,52 @@ class Generator extends Nette\Object
 		}
 
 		// list of undocumented elements
-		if ($undocumented) {
+		if ($undocumentedEnabled) {
+			$label = function($element) {
+				if ($element instanceof ApiReflection) {
+					return 'class';
+				} elseif ($element instanceof ReflectionMethod) {
+					return sprintf('method %s()', $element->getName());
+				} elseif ($element instanceof ReflectionConstant) {
+					return sprintf('constant %s', $element->getName());
+				} elseif ($element instanceof ReflectionProperty) {
+					return sprintf('property $%s', $element->getName());
+				} elseif ($element instanceof ReflectionParameter) {
+					return sprintf('parameter $%s', $element->getName());
+				} else {
+					return $element->getName();
+				}
+			};
+
 			$undocumented = array();
 			foreach (array('classes', 'interfaces', 'exceptions') as $type) {
 				foreach ($$type as $class) {
-					// Don't check internal classes (they don't have documentation)
-					// and library classes (someone else's problem :)
-					if ($class->isInternal() || !$class->isDocumented()) {
+					// Check only "documented" classes (except internal - no documentation)
+					if (!$class->isDocumented() || $class->isInternal()) {
 						continue;
 					}
 
-					$annotations = $class->annotations;
-					if (empty($annotations)) {
-						$undocumented[$class->getName()][] = 'Missing documentation of the class.';
-					} elseif (!isset($annotations[ReflectionAnnotation::SHORT_DESCRIPTION])) {
-						$undocumented[$class->getName()][] = 'Missing description of the class.';
-					}
+					foreach (array_merge(array($class), array_values($class->getOwnMethods()), array_values($class->getOwnConstants()), array_values($class->getOwnProperties())) as $element) {
+						$annotations = $element->getAnnotations();
 
-					foreach ($class->getOwnMethods() as $method) {
-						$annotations = $method->annotations;
+						// Documentation
 						if (empty($annotations)) {
-							$undocumented[$class->getName()][] = sprintf('Missing documentation of the method %s().', $method->getName());
+							$undocumented[$class->getName()][] = sprintf('Missing documentation of the %s.', $label($element));
 							continue;
 						}
 
+						// Description
 						if (!isset($annotations[ReflectionAnnotation::SHORT_DESCRIPTION])) {
-							$undocumented[$class->getName()][] = sprintf('Missing description of the method %s().', $method->getName());
-						}
-					}
-
-					foreach ($class->getOwnConstants() as $constant) {
-						$annotations = $constant->annotations;
-						if (empty($annotations)) {
-							$undocumented[$class->getName()][] = sprintf('Missing documentation of the constant %s.', $constant->getName());
-							continue;
+							$undocumented[$class->getName()][] = sprintf('Missing description of the %s.', $label($element));
 						}
 
-						if (!isset($annotations[ReflectionAnnotation::SHORT_DESCRIPTION])) {
-							$undocumented[$class->getName()][] = sprintf('Missing description of the constant %s.', $constant->getName());
-						}
-
-						if (!isset($annotations['var'])) {
-							$undocumented[$class->getName()][] = sprintf('Missing data type definition of the constant %s.', $constant->getName());
-						} elseif (empty($annotations['var'][0])) {
-							$undocumented[$class->getName()][] = sprintf('Invalid data type definition of the constant %s.', $constant->getName());
-						}
-					}
-
-					foreach ($class->getOwnProperties() as $property) {
-						$annotations = $property->annotations;
-						if (empty($annotations)) {
-							$undocumented[$class->getName()][] = sprintf('Missing documentation of the property $%s.', $property->getName());
-							continue;
-						}
-
-						if (!isset($annotations[ReflectionAnnotation::SHORT_DESCRIPTION])) {
-							$undocumented[$class->getName()][] = sprintf('Missing description of the property $%s.', $property->getName());
-						}
-
-						if (!isset($annotations['var'])) {
-							$undocumented[$class->getName()][] = sprintf('Missing data type definition of the property $%s.', $property->getName());
-						} elseif (!preg_match('~^[\w\\\\]+(?:\|[\w\\\\]+)*$~', $annotations['var'][0])) {
-							$undocumented[$class->getName()][] = sprintf('Invalid data "%s" type definition of the %s.', preg_replace('~\s+~', ' ', $annotations['var'][0]), $property->getName());
+						// Data type of constants & properties
+						if ($element instanceof ReflectionProperty || $element instanceof ReflectionConstant) {
+							if (!isset($annotations['var'])) {
+								$undocumented[$class->getName()][] = sprintf('Missing data type definition of the %s.', $label($element));
+							} elseif (!preg_match('~^[\w\\\\]+(?:\|[\w\\\\]+)*$~', $annotations['var'][0])) {
+								$undocumented[$class->getName()][] = sprintf('Invalid data type definition of the %s.', $label($element));
+							}
 						}
 					}
 				}
@@ -433,7 +417,7 @@ class Generator extends Nette\Object
 			}
 			foreach ($undocumented as $className => $elements) {
 				fwrite($fp, sprintf("%s\n%s\n", $className, str_repeat('-', strlen($className))));
-				foreach ($elements as $elementName => $text) {
+				foreach ($elements as $text) {
 					fwrite($fp, sprintf("\t%s\n", $text));
 				}
 				fwrite($fp, "\n");
