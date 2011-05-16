@@ -362,8 +362,9 @@ class Generator extends Nette\Object
 			$undocumented = array();
 			foreach (array('classes', 'interfaces', 'exceptions') as $type) {
 				foreach ($$type as $class) {
-					// Internal classes don't have documentation
-					if ($class->isInternal()) {
+					// Don't check internal classes (they don't have documentation)
+					// and library classes (someone else's problem :)
+					if ($class->isInternal() || !$class->isDocumented()) {
 						continue;
 					}
 
