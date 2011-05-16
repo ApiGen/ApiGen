@@ -397,6 +397,27 @@ class Generator extends Nette\Object
 							$undocumented[$class->getName()][] = sprintf('Missing description of the %s.', $label($element));
 						}
 
+						// Documentation of method parameters
+						if ($element instanceof ReflectionMethod) {
+							foreach ($element->getParameters() as $no => $parameter) {
+								if (!isset($annotations['param'][$no])) {
+									$undocumented[$class->getName()][] = sprintf('Missing documentation of the %s of the %s.', $label($parameter), $label($element));
+									continue;
+								}
+
+								if (!preg_match('~^[\w\\\\]+(?:\|[\w\\\\]+)*\s+\$' . $parameter->getName() . '(?:\s+.+)?$~s', $annotations['param'][$no])) {
+									$undocumented[$class->getName()][] = sprintf('Invalid documentation "%s" of the %s of the %s.', preg_replace('~\s+~', ' ', $annotations['param'][$no]), $label($parameter), $label($element));
+								}
+
+								unset($annotations['param'][$no]);
+							}
+							if (isset($annotations['param'])) {
+								foreach ($annotations['param'] as $annotation) {
+									$undocumented[$class->getName()][] = sprintf('Existing documentation "%s" of nonexistent parameter of the %s.', preg_replace('~\s+~', ' ', $annotation), $label($element));
+								}
+							}
+						}
+
 						// Data type of constants & properties
 						if ($element instanceof ReflectionProperty || $element instanceof ReflectionConstant) {
 							if (!isset($annotations['var'])) {
