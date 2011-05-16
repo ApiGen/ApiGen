@@ -208,8 +208,8 @@ class Generator extends Nette\Object
 	public function generate()
 	{
 		@mkdir($this->config->destination);
-		if (!is_dir($this->config->destination)) {
-			throw new Exception("Directory {$this->config->destination} doesn't exist.");
+		if (!is_dir($this->config->destination) || !is_writable($this->config->destination)) {
+			throw new Exception(sprintf('Directory %s isn\'t writable.', $this->config->destination));
 		}
 
 		$destination = $this->config->destination;
