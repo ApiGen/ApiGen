@@ -427,25 +427,22 @@ class Generator extends Nette\Object
 			}
 			uksort($undocumented, 'strcasecmp');
 
-			if (!empty($undocumented)) {
-				$fp = @fopen($this->config->undocumented, 'w');
-				if (false === $fp) {
-					throw new Exception(sprintf('File %s doesn\'t exist.', $this->config->undocumented));
-				}
-
-				foreach ($undocumented as $className => $elements) {
-					fwrite($fp, sprintf("%s\n%s\n", $className, str_repeat('-', strlen($className))));
-					foreach ($elements as $elementName => $text) {
-						fwrite($fp, sprintf("\t%s\n", $text));
-					}
-					fwrite($fp, "\n");
-				}
-
-				fclose($fp);
+			$fp = @fopen($this->config->undocumented, 'w');
+			if (false === $fp) {
+				throw new Exception(sprintf('File %s doesn\'t exist.', $this->config->undocumented));
 			}
-			unset($undocumented);
+			foreach ($undocumented as $className => $elements) {
+				fwrite($fp, sprintf("%s\n%s\n", $className, str_repeat('-', strlen($className))));
+				foreach ($elements as $elementName => $text) {
+					fwrite($fp, sprintf("\t%s\n", $text));
+				}
+				fwrite($fp, "\n");
+			}
+			fclose($fp);
 
 			$this->incrementProgressBar();
+
+			unset($undocumented);
 		}
 
 		// list of deprecated elements
