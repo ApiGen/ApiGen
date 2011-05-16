@@ -378,7 +378,7 @@ Options:
 	--deprecated       Yes|No  Generate documentation for deprecated classes, methods, properties and constants, default "No"
 	--todo             Yes|No  Generate documentation of tasks, default "No"
 	--source-code      Yes|No  Generate highlighted source code files, default "Yes"
-	--undocumented     <path>  File to save list of undocumented classes, methods, properties and constants
+	--undocumented     <path>  Save a list of undocumented classes, methods, properties and constants into a file
 	--wipeout          Yes|No  Wipe out the destination directory first, default "Yes"
 	--quiet            Yes|No  Don't display scaning and generating messages, default "No"
 	--progressbar      On|Off  Display progressbars, default "On"

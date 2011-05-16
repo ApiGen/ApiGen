@@ -48,6 +48,7 @@ Besides, we have made following changes in our ApiGen.
 * New version of jQuery.
 * New version of FSHL.
 * Google Analytics support.
+* List of undocumented elements.
 
 ### Bugfixes ###
 * No fatal errors when a class is missing (this is a benefit of using the TokenReflection library).
@@ -137,6 +138,11 @@ Generate a list of tasks, default is "No".
 ```--source-code <yes|no>```
 
 Generate highlighted source code for user defined classes, default is "Yes".
+
+```--undocumented <file>```
+
+Save a list of undocumented classes, methods, properties and constants into a file.
+
 
 ```--wipeout <yes|no>```
 
