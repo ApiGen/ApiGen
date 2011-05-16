@@ -413,7 +413,7 @@ class Generator extends Nette\Object
 
 			$fp = @fopen($this->config->undocumented, 'w');
 			if (false === $fp) {
-				throw new Exception(sprintf('File %s doesn\'t exist.', $this->config->undocumented));
+				throw new Exception(sprintf('File %s isn\'t writable.', $this->config->undocumented));
 			}
 			foreach ($undocumented as $className => $elements) {
 				fwrite($fp, sprintf("%s\n%s\n", $className, str_repeat('-', strlen($className))));
