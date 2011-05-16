@@ -257,7 +257,7 @@
 	<div class="box constants">
 		<code>
 			{foreach $constants as $constant}
-				<a href="{$constant|constantLink}" n:tag-if="$template->resolveClass($parentName)"><span n:class="$constant->deprecated ? deprecated">{$constant->name}</span></a>{sep}, {/sep}
+				<span n:class="$constant->deprecated ? deprecated"><a href="{$constant|constantLink}" n:tag-if="$template->resolveClass($parentName)">{$constant->name}</a></span>{sep}, {/sep}
 			{/foreach}
 		</code>
 	</div>
@@ -315,7 +315,7 @@
 	<div class="box properties">
 		<code>
 			{foreach $properties as $property}
-				<a href="{$property|propertyLink}" n:tag-if="$template->resolveClass($parentName)"><var n:class="$property->deprecated ? deprecated">${$property->name}</var></a>{sep}, {/sep}
+				<var n:class="$property->deprecated ? deprecated"><a href="{$property|propertyLink}" n:tag-if="$template->resolveClass($parentName)">${$property->name}</a></var>{sep}, {/sep}
 			{/foreach}
 		</code>
 	</div>
