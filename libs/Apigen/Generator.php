@@ -397,6 +397,12 @@ class Generator extends Nette\Object
 						if (!isset($annotations[ReflectionAnnotation::SHORT_DESCRIPTION])) {
 							$undocumented[$class->getName()][] = sprintf('Missing description of the constant %s.', $constant->getName());
 						}
+
+						if (!isset($annotations['var'])) {
+							$undocumented[$class->getName()][] = sprintf('Missing data type definition of the constant %s.', $constant->getName());
+						} elseif (empty($annotations['var'][0])) {
+							$undocumented[$class->getName()][] = sprintf('Invalid data type definition of the constant %s.', $constant->getName());
+						}
 					}
 
 					foreach ($class->getOwnProperties() as $property) {
@@ -408,6 +414,12 @@ class Generator extends Nette\Object
 
 						if (!isset($annotations[ReflectionAnnotation::SHORT_DESCRIPTION])) {
 							$undocumented[$class->getName()][] = sprintf('Missing description of the property $%s.', $property->getName());
+						}
+
+						if (!isset($annotations['var'])) {
+							$undocumented[$class->getName()][] = sprintf('Missing data type definition of the property $%s.', $property->getName());
+						} elseif (!preg_match('~^[\w\\\\]+(?:\|[\w\\\\]+)*$~', $annotations['var'][0])) {
+							$undocumented[$class->getName()][] = sprintf('Invalid data "%s" type definition of the %s.', preg_replace('~\s+~', ' ', $annotations['var'][0]), $property->getName());
 						}
 					}
 				}
