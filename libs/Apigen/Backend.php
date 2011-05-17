@@ -14,6 +14,15 @@
 namespace Apigen;
 use TokenReflection\Broker\Backend\Memory, RuntimeException, ReflectionMethod;
 
+/**
+ * Customized TokenReflection broker backend.
+ *
+ * Adds internal classes from @param, @var, @return, @throws annotations as well
+ * as parent classes to the overall class list.
+ *
+ * @author Ondřej Nešpor
+ * @author Jaroslav Hanslík
+ */
 class Backend extends Memory
 {
 	/**

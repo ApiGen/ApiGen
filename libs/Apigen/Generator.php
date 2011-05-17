@@ -22,8 +22,9 @@ use TokenReflection\IReflectionClass as ReflectionClass, TokenReflection\IReflec
 /**
  * Generates a HTML API documentation.
  *
- * @author David Grudl
+ * @author Jaroslav Hanslík
  * @author Ondřej Nešpor
+ * @author David Grudl
  */
 class Generator extends Nette\Object
 {
@@ -616,6 +617,8 @@ class Generator extends Nette\Object
 
 	/**
 	 * Prints message if printing is enabled.
+	 *
+	 * @param string $message Output message
 	 */
 	public function output($message)
 	{

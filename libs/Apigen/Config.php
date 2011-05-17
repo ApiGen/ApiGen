@@ -16,6 +16,12 @@ namespace Apigen;
 use Apigen\Exception;
 use Nette\Utils\Neon;
 
+/**
+ * Configuration processing class.
+ *
+ * @author Jaroslav Hanslík
+ * @author Ondřej Nešpor
+ */
 class Config
 {
 	/**

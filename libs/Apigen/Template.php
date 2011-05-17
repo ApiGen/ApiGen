@@ -18,6 +18,14 @@ use Apigen\Reflection as ApiReflection, Apigen\Generator;
 use TokenReflection\IReflectionClass as ReflectionClass, TokenReflection\IReflectionProperty as ReflectionProperty, TokenReflection\IReflectionMethod as ReflectionMethod, TokenReflection\IReflectionConstant as ReflectionConstant, TokenReflection\IReflectionParameter as ReflectionParameter;
 use TokenReflection\ReflectionAnnotation, TokenReflection\ReflectionBase;
 
+/**
+ * Customized ApiGen template class.
+ *
+ * Adds ApiGen helpers to the Nette\Templating\FileTemplate parent class.
+ *
+ * @author Jaroslav Hanslík
+ * @author Ondřej Nešpor
+ */
 class Template extends Nette\Templating\FileTemplate
 {
 	/**
@@ -223,7 +231,7 @@ class Template extends Nette\Templating\FileTemplate
 	/**
 	 * Returns a link to a namespace summary file.
 	 *
-	 * @param  string|\Apigen\Reflection|IReflectionNamespace
+	 * @param string|\Apigen\Reflection $class Class reflection or namespace name
 	 * @return string
 	 */
 	public function getNamespaceLink($class)
@@ -235,7 +243,7 @@ class Template extends Nette\Templating\FileTemplate
 	/**
 	 * Returns a link to a package summary file.
 	 *
-	 * @param string|\Apigen\Reflection
+	 * @param string|\Apigen\Reflection $class Class reflection or package name
 	 * @return string
 	 */
 	public function getPackageLink($class)
@@ -247,7 +255,7 @@ class Template extends Nette\Templating\FileTemplate
 	/**
 	 * Returns a link to class summary file.
 	 *
-	 * @param string|\Apigen\Reflection $class
+	 * @param string|\Apigen\Reflection $class Class reflection or name
 	 * @return string
 	 */
 	public function getClassLink($class)
@@ -262,7 +270,7 @@ class Template extends Nette\Templating\FileTemplate
 	/**
 	 * Returns a link to method in class summary file.
 	 *
-	 * @param IReflectionMethod $method
+	 * @param \TokenReflection\IReflectionMethod $method Method reflection
 	 * @return string
 	 */
 	public function getMethodLink(ReflectionMethod $method)
@@ -273,7 +281,7 @@ class Template extends Nette\Templating\FileTemplate
 	/**
 	 * Returns a link to property in class summary file.
 	 *
-	 * @param IReflectionProperty $property
+	 * @param \TokenReflection\IReflectionProperty $property Property reflection
 	 * @return string
 	 */
 	public function getPropertyLink(ReflectionProperty $property)
@@ -284,7 +292,7 @@ class Template extends Nette\Templating\FileTemplate
 	/**
 	 * Returns a link to constant in class summary file.
 	 *
-	 * @param IReflectionConstant $constant
+	 * @param \TokenReflection\IReflectionConstant $constant Constant reflection
 	 * @return string
 	 */
 	public function getConstantLink(ReflectionConstant $constant)
@@ -295,7 +303,8 @@ class Template extends Nette\Templating\FileTemplate
 	/**
 	 * Returns a link to a element source code.
 	 *
-	 * @param \Apigen\Reflection|IReflectionMethod|IReflectionProperty|IReflectionConstant $element
+	 * @param \Apigen\Reflection|\TokenReflection\IReflectionMethod|\TokenReflection\IReflectionProperty|\TokenReflection\IReflectionConstant $element Element reflection
+	 * @param boolean $withLine Include file line number into the link
 	 * @return string
 	 */
 	public function getSourceLink($element, $withLine = true)
@@ -318,7 +327,7 @@ class Template extends Nette\Templating\FileTemplate
 	/**
 	 * Returns a link to a element documentation at php.net.
 	 *
-	 * @param \Apigen\Reflection|IReflectionMethod|IReflectionProperty|IReflectionConstant $element
+	 * @param \Apigen\Reflection|ReflectionMethod|ReflectionProperty|ReflectionConstant $element Element reflection
 	 * @return string
 	 */
 	public function getManualLink($element)
@@ -350,7 +359,7 @@ class Template extends Nette\Templating\FileTemplate
 	/**
 	 * Returns a list of resolved types from @param or @return tags.
 	 *
-	 * @param \TokenReflection\ReflectionMethod|\TokenReflection\ReflectionProperty $element Reflection instance
+	 * @param \TokenReflection\ReflectionMethod|\TokenReflection\ReflectionProperty $element Element reflection
 	 * @param integer $position Parameter position
 	 * @return array
 	 */
@@ -408,8 +417,8 @@ class Template extends Nette\Templating\FileTemplate
 	/**
 	 * Tries to resolve type as class or interface name.
 	 *
-	 * @param string Class name description
-	 * @param string Namespace name
+	 * @param string $className Class name description
+	 * @param string $namespace Namespace name
 	 * @return string
 	 */
 	public function resolveClass($className, $namespace = NULL)

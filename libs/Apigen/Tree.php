@@ -14,7 +14,9 @@ namespace Apigen;
 use RecursiveTreeIterator;
 
 /**
- * Class tree.
+ * Customized recursive tree iterator.
+ *
+ * @author Ondřej Nešpor
  */
 class Tree extends RecursiveTreeIterator
 {
@@ -43,7 +45,7 @@ class Tree extends RecursiveTreeIterator
 	 * Constructor.
 	 *
 	 * @param array $treePart Part of the tree
-	 * @param \ArrayObject $reflection Array of reflections in the tree part
+	 * @param \ArrayObject $reflections Array of reflections in the tree part
 	 */
 	public function __construct(array $treePart, \ArrayObject $reflections)
 	{
