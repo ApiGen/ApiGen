@@ -456,9 +456,13 @@ class Generator extends Nette\Object
 						// Data type of constants & properties
 						if ($element instanceof ReflectionProperty || $element instanceof ReflectionConstant) {
 							if (!isset($annotations['var'])) {
-								$undocumented[$class->getName()][] = sprintf('Missing data type definition of the %s.', $label($element));
-							} elseif (!preg_match('~^[\w\\\\]+(?:\|[\w\\\\]+)*$~', $annotations['var'][0])) {
-								$undocumented[$class->getName()][] = sprintf('Invalid data type definition of the %s.', $label($element));
+								$undocumented[$class->getName()][] = sprintf('Missing documentation of the data type of the %s.', $label($element));
+							} elseif (!preg_match('~^[\w\\\\]+(?:\|[\w\\\\]+)*~', $annotations['var'][0])) {
+								$undocumented[$class->getName()][] = sprintf('Invalid documentation "%s" of the data type of the %s.', preg_replace('~\s+~', ' ', $annotations['var'][0]), $label($element));
+							}
+
+							if (isset($annotations['var'][1])) {
+								$undocumented[$class->getName()][] = sprintf('Duplicate documentation "%s" of the data type of the %s.', preg_replace('~\s+~', ' ', $annotations['var'][1]), $label($element));
 							}
 						}
 					}
