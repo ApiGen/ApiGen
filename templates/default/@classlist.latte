@@ -1,5 +1,5 @@
 <table class="summary" id="classes" n:if="$classes">
-<caption>Class summary</caption>
+<caption>Classes summary</caption>
 {foreach $classes as $class}
 <tr>
 	<td class="nowrap" width="20%"><a href="{$class|classLink}">{if $namespace}{$class->shortName}{else}{$class->name}{/if}</a></td>
@@ -9,7 +9,7 @@
 </table>
 
 <table class="summary" id="interfaces" n:if="$interfaces">
-<caption>Interface summary</caption>
+<caption>Interfaces summary</caption>
 {foreach $interfaces as $interface}
 <tr>
 	<td class="nowrap" width="20%"><a href="{$interface|classLink}">{if $namespace}{$interface->shortName}{else}{$interface->name}{/if}</a></td>

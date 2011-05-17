@@ -1,6 +1,7 @@
 {layout '@layout.latte'}
+{var $overview => true}
 
-{block #title}Overview{/block}
+{block #title}{$config->title ?: 'Overview'}{/block}
 
 {block #content}
 <div id="navigation">
@@ -18,22 +19,22 @@
 </div>
 
 <div id="content">
-	<h1>{$config->title} Overview</h1>
+	<h1>{include #title}</h1>
 
 	<table class="summary" id="packages" n:if="$packages">
-	<caption>Packages</caption>
+	<caption>Packages summary</caption>
 	{foreach $packages as $package}
 	<tr>
-		<td><a href="{$package|packageLink}">{$package ? $package : 'None'}</a></td>
+		<td><a href="{$package|packageLink}">{$package ?: 'None'}</a></td>
 	</tr>
 	{/foreach}
 	</table>
 
 	<table class="summary" id="namespaces" n:if="$namespaces">
-	<caption>Namespaces</caption>
+	<caption>Namespaces summary</caption>
 	{foreach $namespaces as $namespace}
 	<tr>
-		<td><a href="{$namespace|namespaceLink}">{$namespace ? $namespace : 'None'}</a></td>
+		<td><a href="{$namespace|namespaceLink}">{$namespace ?: 'None'}</a></td>
 	</tr>
 	{/foreach}
 	</table>

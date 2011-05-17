@@ -5,7 +5,7 @@
 	<meta name="generator" content="ApiGen {$version}">
 	<meta name="robots" content="noindex" n:ifset="$noindex">
 
-	<title>{if $config->title}{$config->title} | {/if}{block title}{$title}{/block}</title>
+	<title>{include #title}{if !isset($overview) && $config->title} | {$config->title}{/if}</title>
 
 	{var combined_js => 'resources/combined.js'}
 	<script type="text/javascript" src="{$combined_js|staticFile}"></script>
@@ -15,8 +15,7 @@
 	<link rel="stylesheet" type="text/css" media="all" href="{$style_css|staticFile}">
 	<link n:if="$config->googleCse" rel="search" type="application/opensearchdescription+xml" title="{$config->title}" href="{$config->baseUrl}/opensearch.xml">
 
-	{if $config->googleAnalytics}
-	<script type="text/javascript">
+	<script n:if="$config->googleAnalytics" type="text/javascript">
 		var _gaq = _gaq || [];
 		_gaq.push(['_setAccount', {$config->googleAnalytics}]);
 		_gaq.push(['_trackPageview']);
@@ -27,7 +26,6 @@
 			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 		})();
 	</script>
-	{/if}
 </head>
 
 <body>

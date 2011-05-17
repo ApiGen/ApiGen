@@ -18,10 +18,10 @@
 </div>
 
 <div id="content">
-	<h1>{$config->title} Todo</h1>
+	<h1>{include #title}</h1>
 
 	<table class="summary" id="classes" n:if="$todoClasses">
-	<caption>Classes</caption>
+	<caption>Classes summary</caption>
 	{foreach $todoClasses as $class}
 	<tr>
 		<td class="nowrap" width="1%"><a href="{$class|classLink}">{$class->name}</a></td>
@@ -37,7 +37,7 @@
 	</table>
 
 	<table class="summary" id="interfaces" n:if="$todoInterfaces">
-	<caption>Interfaces</caption>
+	<caption>Interfaces summary</caption>
 	{foreach $todoInterfaces as $interface}
 	<tr>
 		<td class="nowrap" width="1%"><a href="{$interface|classLink}">{$interface->name}</a></td>
@@ -53,7 +53,7 @@
 	</table>
 
 	<table class="summary" id="exceptions" n:if="$todoExceptions">
-	<caption>Exceptions</caption>
+	<caption>Exceptions summary</caption>
 	{foreach $todoExceptions as $exception}
 	<tr>
 		<td class="nowrap" width="1%"><a href="{$exception|classLink}">{$exception->name}</a></td>
@@ -69,7 +69,7 @@
 	</table>
 
 	<table class="summary" id="methods" n:if="$todoMethods">
-	<caption>Methods</caption>
+	<caption>Methods summary</caption>
 	{foreach $todoMethods as $method}
 	<tr>
 		<td class="right nowrap" width="1%"><a href="{$method->declaringClassName|classLink}">{$method->declaringClassName}</a></td>
@@ -86,7 +86,7 @@
 	</table>
 
 	<table class="summary" id="constants" n:if="$todoConstants">
-	<caption>Constants</caption>
+	<caption>Constants summary</caption>
 	{foreach $todoConstants as $constant}
 	<tr>
 		<td class="right nowrap" width="1%"><a href="{$constant->declaringClassName|classLink}">{$constant->declaringClassName}</a></td>
@@ -103,7 +103,7 @@
 	</table>
 
 	<table class="summary" id="properties" n:if="$todoProperties">
-	<caption>Properties</caption>
+	<caption>Properties summary</caption>
 	{foreach $todoProperties as $property}
 	<tr>
 		<td class="right nowrap" width="1%"><a href="{$property->declaringClassName|classLink}">{$property->declaringClassName}</a></td>

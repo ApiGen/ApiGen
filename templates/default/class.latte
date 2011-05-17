@@ -1,6 +1,6 @@
 {layout '@layout.latte'}
 
-{block #title}{if $class->interface}Interface{else}Class{/if} {$class->name}{/block}
+{block #title}{if $class->deprecated}Deprecated {/if}{if $class->interface}Interface{else}Class{/if} {$class->shortName}{/block}
 
 {block #content}
 <div id="navigation">
@@ -22,7 +22,7 @@
 		<p n:if="$class->internal">PHP – {$class->extension->name|ucfirst}</p>
 		<p n:if="$class->inNamespace()">Namespace <a href="{$class|namespaceLink}">{$class->namespaceName}</a></p>
 
-		<h1>{if $class->deprecated}Deprecated {/if}{if $class->interface}Interface{else}Class{/if} {$class->shortName}</h1>
+		<h1>{include #title}</h1>
 
 		<div class="classDescription" n:if="$class->docComment">
 		{!$class|longDescription|docblock|resolveLinks:$class}

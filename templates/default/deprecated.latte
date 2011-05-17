@@ -18,10 +18,10 @@
 </div>
 
 <div id="content">
-	<h1>{$config->title} Deprecated</h1>
+	<h1>{include #title}</h1>
 
 	<table class="summary" id="classes" n:if="$deprecatedClasses">
-	<caption>Classes</caption>
+	<caption>Classes summary</caption>
 	{foreach $deprecatedClasses as $class}
 	<tr>
 		<td class="nowrap" width="1%"><a href="{$class|classLink}">{$class->name}</a></td>
@@ -37,7 +37,7 @@
 	</table>
 
 	<table class="summary" id="interfaces" n:if="$deprecatedInterfaces">
-	<caption>Interfaces</caption>
+	<caption>Interfaces summary</caption>
 	{foreach $deprecatedInterfaces as $interface}
 	<tr>
 		<td class="nowrap" width="1%"><a href="{$interface|classLink}">{$interface->name}</a></td>
@@ -53,7 +53,7 @@
 	</table>
 
 	<table class="summary" id="exceptions" n:if="$deprecatedExceptions">
-	<caption>Exceptions</caption>
+	<caption>Exceptions summary</caption>
 	{foreach $deprecatedExceptions as $exception}
 	<tr>
 		<td class="nowrap" width="1%"><a href="{$exception|classLink}">{$exception->name}</a></td>
@@ -69,7 +69,7 @@
 	</table>
 
 	<table class="summary" id="methods" n:if="$deprecatedMethods">
-	<caption>Methods</caption>
+	<caption>Methods summary</caption>
 	{foreach $deprecatedMethods as $method}
 	<tr>
 		<td class="right nowrap" width="1%"><a href="{$method->declaringClassName|classLink}">{$method->declaringClassName}</a></td>
@@ -88,7 +88,7 @@
 	</table>
 
 	<table class="summary" id="constants" n:if="$deprecatedConstants">
-	<caption>Constants</caption>
+	<caption>Constants summary</caption>
 	{foreach $deprecatedConstants as $constant}
 	<tr>
 		<td class="right nowrap" width="1%"><a href="{$constant->declaringClassName|classLink}">{$constant->declaringClassName}</a></td>
@@ -105,7 +105,7 @@
 	</table>
 
 	<table class="summary" id="properties" n:if="$deprecatedProperties">
-	<caption>Properties</caption>
+	<caption>Properties summary</caption>
 	{foreach $deprecatedProperties as $property}
 	<tr>
 		<td class="right nowrap" width="1%"><a href="{$property->declaringClassName|classLink}">{$property->declaringClassName}</a></td>
