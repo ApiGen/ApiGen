@@ -453,6 +453,28 @@ class Generator extends Nette\Object
 								$undocumented[$class->getName()][] = sprintf('Duplicate documentation "%s" of the return value of the %s.', $normalize($annotations['return'][1]), $label($element));
 							}
 
+							// Throwing exceptions
+							$throw = false;
+							$tokens->seek($element->getStartPosition())
+								->find(T_FUNCTION);
+							while ($tokens->next() && $tokens->key() < $element->getEndPosition()) {
+								$type = $tokens->getType();
+								if (T_TRY === $type) {
+									// Skip try
+									$tokens->find('{')->findMatchingBracket();
+								} elseif (T_THROW === $type) {
+									$throw = true;
+									break;
+								}
+							}
+							if ($throw) {
+								if (!isset($annotations['throws'])) {
+									$undocumented[$class->getName()][] = sprintf('Missing documentation of throwing an exception in the %s.', $label($element));
+								} elseif (!preg_match('~^[\w\\\\]+(?:\|[\w\\\\]+)*~s', $annotations['throws'][0])) {
+									$undocumented[$class->getName()][] = sprintf('Invalid documentation "%s" of throwing an exception in the %s.', $normalize($annotations['throws'][0]), $label($element));
+								}
+							}
+
 							unset($tokens);
 						}
 
