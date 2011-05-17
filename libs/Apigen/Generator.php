@@ -72,7 +72,7 @@ class Generator extends Nette\Object
 	 */
 	public function parse()
 	{
-		$broker = new Broker(new Backend(), false);
+		$broker = new Broker(new Backend(), !empty($this->config->undocumented));
 
 		$files = array();
 		foreach ($this->config->source as $source) {
@@ -397,8 +397,9 @@ class Generator extends Nette\Object
 							$undocumented[$class->getName()][] = sprintf('Missing description of the %s.', $label($element));
 						}
 
-						// Documentation of method parameters
+						// Documentation of method
 						if ($element instanceof ReflectionMethod) {
+							// Parameters
 							foreach ($element->getParameters() as $no => $parameter) {
 								if (!isset($annotations['param'][$no])) {
 									$undocumented[$class->getName()][] = sprintf('Missing documentation of the %s of the %s.', $label($parameter), $label($element));
@@ -416,6 +417,40 @@ class Generator extends Nette\Object
 									$undocumented[$class->getName()][] = sprintf('Existing documentation "%s" of nonexistent parameter of the %s.', preg_replace('~\s+~', ' ', $annotation), $label($element));
 								}
 							}
+
+							$tokens = $element->getBroker()->getFileTokens($element->getFileName());
+
+							// Return values
+							$return = false;
+							$tokens->seek($element->getStartPosition())
+								->find(T_FUNCTION);
+							while ($tokens->next() && $tokens->key() < $element->getEndPosition()) {
+								$type = $tokens->getType();
+								if (T_FUNCTION === $type) {
+									// Skip annonymous functions
+									$tokens->find('{')->findMatchingBracket();
+								} elseif (T_RETURN === $type && !$tokens->skipWhitespaces()->is(';')) {
+									// Skip return without return value
+									$return = true;
+									break;
+								}
+							}
+							if ($return) {
+								if (!isset($annotations['return'])) {
+									$undocumented[$class->getName()][] = sprintf('Missing documentation of the return value of the %s.', $label($element));
+								} elseif (!preg_match('~^[\w\\\\]+(?:\|[\w\\\\]+)*(?:\s+.+)?$~s', $annotations['return'][0])) {
+									$undocumented[$class->getName()][] = sprintf('Invalid documentation "%s" of the return value of the %s.', preg_replace('~\s+~', ' ', $annotations['return'][0]), $label($element));
+								}
+							} else {
+								if (isset($annotations['return']) && 'void' !== $annotations['return'][0] && !$class->isInterface() && !$element->isAbstract()) {
+									$undocumented[$class->getName()][] = sprintf('Existing documentation "%s" of nonexistent return value of the %s.', preg_replace('~\s+~', ' ', $annotations['return'][0]), $label($element));
+								}
+							}
+							if (isset($annotations['return'][1])) {
+								$undocumented[$class->getName()][] = sprintf('Duplicate documentation "%s" of the return value of the %s.', preg_replace('~\s+~', ' ', $annotations['return'][1]), $label($element));
+							}
+
+							unset($tokens);
 						}
 
 						// Data type of constants & properties
