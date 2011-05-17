@@ -1,21 +1,45 @@
+# Source file or directory to parse
 source: ''
+# Directory where to save the generated documentation
 destination: ''
+# Mask to exclude file or directory from processing
 exclude: ''
+# Don't generate documentation for classes from file or directory with this mask
 skipDocPath: ''
+# Don't generate documentation for classes with this name prefix
 skipDocPrefix: ''
+
+# Title of generated documentation
 title: ''
+# Documentation base URL
 baseUrl: ''
+# Google Custom Search ID
 googleCse: ''
+# Google Analytics tracking code
 googleAnalytics: ''
+# Template name
 template: default
+# Directory with templates
 templateDir: ''
+# List of allowed HTML tags in documentation
 allowedHtml: [b, i, a, ul, ol, li, p, br, var, samp, kbd, tt]
+
+# Generate documentation for methods and properties with given access level
 accessLevels: [public, protected]
+# Generate documentation for internal classes
 internal: Yes
+# Generate documentation for deprecated classes, methods, properties and constants
 deprecated: No
+# Generate documentation of tasks
 todo: No
+# Generate highlighted source code files
 sourceCode: Yes
+
+# Wipe out the destination directory first
 wipeout: Yes
+# Don't display scaning and generating messages
 quiet: No
-progressbar: On
-debug: Off
+# Display progressbars
+progressbar: Yes
+# Display additional information in case of an error
+debug: No
