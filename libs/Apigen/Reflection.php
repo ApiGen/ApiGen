@@ -155,6 +155,7 @@ class Reflection
 	 * and finally the inspected class reflection.
 	 *
 	 * @param mixed $name Property name
+	 * @return boolean
 	 */
 	public function __isset($name)
 	{
