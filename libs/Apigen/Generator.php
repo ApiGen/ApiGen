@@ -241,7 +241,7 @@ class Generator extends Nette\Object
 		foreach ($this->classes as $class) {
 			if ($class->isDocumented()) {
 				$packageName = $class->getPackageName();
-				$namespaceName = (string) $class->getNamespaceName();
+				$namespaceName = $class->getNamespaceName();
 				$className = $class->getName();
 
 				$packages[$packageName]['classes'][$className] = $class;
