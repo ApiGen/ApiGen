@@ -374,6 +374,9 @@ class Generator extends Nette\Object
 					return $element->getName();
 				}
 			};
+			$normalize = function($string) {
+				return preg_replace('~\s+~', ' ', $string);
+			};
 
 			$undocumented = array();
 			foreach (array('classes', 'interfaces', 'exceptions') as $type) {
@@ -407,14 +410,14 @@ class Generator extends Nette\Object
 								}
 
 								if (!preg_match('~^[\w\\\\]+(?:\|[\w\\\\]+)*\s+\$' . $parameter->getName() . '(?:\s+.+)?$~s', $annotations['param'][$no])) {
-									$undocumented[$class->getName()][] = sprintf('Invalid documentation "%s" of the %s of the %s.', preg_replace('~\s+~', ' ', $annotations['param'][$no]), $label($parameter), $label($element));
+									$undocumented[$class->getName()][] = sprintf('Invalid documentation "%s" of the %s of the %s.', $normalize($annotations['param'][$no]), $label($parameter), $label($element));
 								}
 
 								unset($annotations['param'][$no]);
 							}
 							if (isset($annotations['param'])) {
 								foreach ($annotations['param'] as $annotation) {
-									$undocumented[$class->getName()][] = sprintf('Existing documentation "%s" of nonexistent parameter of the %s.', preg_replace('~\s+~', ' ', $annotation), $label($element));
+									$undocumented[$class->getName()][] = sprintf('Existing documentation "%s" of nonexistent parameter of the %s.', $normalize($annotation), $label($element));
 								}
 							}
 
@@ -438,16 +441,16 @@ class Generator extends Nette\Object
 							if ($return) {
 								if (!isset($annotations['return'])) {
 									$undocumented[$class->getName()][] = sprintf('Missing documentation of the return value of the %s.', $label($element));
-								} elseif (!preg_match('~^[\w\\\\]+(?:\|[\w\\\\]+)*(?:\s+.+)?$~s', $annotations['return'][0])) {
-									$undocumented[$class->getName()][] = sprintf('Invalid documentation "%s" of the return value of the %s.', preg_replace('~\s+~', ' ', $annotations['return'][0]), $label($element));
+								} elseif (!preg_match('~^[\w\\\\]+(?:\|[\w\\\\]+)*~s', $annotations['return'][0])) {
+									$undocumented[$class->getName()][] = sprintf('Invalid documentation "%s" of the return value of the %s.', $normalize($annotations['return'][0]), $label($element));
 								}
 							} else {
 								if (isset($annotations['return']) && 'void' !== $annotations['return'][0] && !$class->isInterface() && !$element->isAbstract()) {
-									$undocumented[$class->getName()][] = sprintf('Existing documentation "%s" of nonexistent return value of the %s.', preg_replace('~\s+~', ' ', $annotations['return'][0]), $label($element));
+									$undocumented[$class->getName()][] = sprintf('Existing documentation "%s" of nonexistent return value of the %s.', $normalize($annotations['return'][0]), $label($element));
 								}
 							}
 							if (isset($annotations['return'][1])) {
-								$undocumented[$class->getName()][] = sprintf('Duplicate documentation "%s" of the return value of the %s.', preg_replace('~\s+~', ' ', $annotations['return'][1]), $label($element));
+								$undocumented[$class->getName()][] = sprintf('Duplicate documentation "%s" of the return value of the %s.', $normalize($annotations['return'][1]), $label($element));
 							}
 
 							unset($tokens);
@@ -458,11 +461,11 @@ class Generator extends Nette\Object
 							if (!isset($annotations['var'])) {
 								$undocumented[$class->getName()][] = sprintf('Missing documentation of the data type of the %s.', $label($element));
 							} elseif (!preg_match('~^[\w\\\\]+(?:\|[\w\\\\]+)*~', $annotations['var'][0])) {
-								$undocumented[$class->getName()][] = sprintf('Invalid documentation "%s" of the data type of the %s.', preg_replace('~\s+~', ' ', $annotations['var'][0]), $label($element));
+								$undocumented[$class->getName()][] = sprintf('Invalid documentation "%s" of the data type of the %s.', $normalize($annotations['var'][0]), $label($element));
 							}
 
 							if (isset($annotations['var'][1])) {
-								$undocumented[$class->getName()][] = sprintf('Duplicate documentation "%s" of the data type of the %s.', preg_replace('~\s+~', ' ', $annotations['var'][1]), $label($element));
+								$undocumented[$class->getName()][] = sprintf('Duplicate documentation "%s" of the data type of the %s.', $normalize($annotations['var'][1]), $label($element));
 							}
 						}
 					}
