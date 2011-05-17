@@ -295,7 +295,7 @@ class Generator extends Nette\Object
 				+ count($interfaces)
 				+ count($exceptions)
 				+ count($templates['common'])
-				+ 4 * (int) $undocumentedEnabled // generating splitted to 4 steps
+				+ (int) $undocumentedEnabled
 				+ 7 * (int) $deprecated // generating splitted to 7 steps
 				+ 7 * (int) $todo // generating splitted to 7 steps
 				+ (int) $sitemap
@@ -463,7 +463,6 @@ class Generator extends Nette\Object
 						}
 					}
 				}
-				$this->incrementProgressBar();
 			}
 			uksort($undocumented, 'strcasecmp');
 
