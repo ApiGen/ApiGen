@@ -405,19 +405,19 @@ class Generator extends Nette\Object
 							// Parameters
 							foreach ($element->getParameters() as $no => $parameter) {
 								if (!isset($annotations['param'][$no])) {
-									$undocumented[$class->getName()][] = sprintf('Missing documentation of the %s of the %s.', $label($parameter), $label($element));
+									$undocumented[$class->getName()][] = sprintf('Missing documentation of %s of %s.', $label($parameter), $label($element));
 									continue;
 								}
 
 								if (!preg_match('~^[\w\\\\]+(?:\|[\w\\\\]+)*\s+\$' . $parameter->getName() . '(?:\s+.+)?$~s', $annotations['param'][$no])) {
-									$undocumented[$class->getName()][] = sprintf('Invalid documentation "%s" of the %s of the %s.', $normalize($annotations['param'][$no]), $label($parameter), $label($element));
+									$undocumented[$class->getName()][] = sprintf('Invalid documentation "%s" of %s of %s.', $normalize($annotations['param'][$no]), $label($parameter), $label($element));
 								}
 
 								unset($annotations['param'][$no]);
 							}
 							if (isset($annotations['param'])) {
 								foreach ($annotations['param'] as $annotation) {
-									$undocumented[$class->getName()][] = sprintf('Existing documentation "%s" of nonexistent parameter of the %s.', $normalize($annotation), $label($element));
+									$undocumented[$class->getName()][] = sprintf('Existing documentation "%s" of nonexistent parameter of %s.', $normalize($annotation), $label($element));
 								}
 							}
 
@@ -440,17 +440,17 @@ class Generator extends Nette\Object
 							}
 							if ($return) {
 								if (!isset($annotations['return'])) {
-									$undocumented[$class->getName()][] = sprintf('Missing documentation of the return value of the %s.', $label($element));
+									$undocumented[$class->getName()][] = sprintf('Missing documentation of return value of %s.', $label($element));
 								} elseif (!preg_match('~^[\w\\\\]+(?:\|[\w\\\\]+)*~s', $annotations['return'][0])) {
-									$undocumented[$class->getName()][] = sprintf('Invalid documentation "%s" of the return value of the %s.', $normalize($annotations['return'][0]), $label($element));
+									$undocumented[$class->getName()][] = sprintf('Invalid documentation "%s" of return value of %s.', $normalize($annotations['return'][0]), $label($element));
 								}
 							} else {
 								if (isset($annotations['return']) && 'void' !== $annotations['return'][0] && !$class->isInterface() && !$element->isAbstract()) {
-									$undocumented[$class->getName()][] = sprintf('Existing documentation "%s" of nonexistent return value of the %s.', $normalize($annotations['return'][0]), $label($element));
+									$undocumented[$class->getName()][] = sprintf('Existing documentation "%s" of nonexistent return value of %s.', $normalize($annotations['return'][0]), $label($element));
 								}
 							}
 							if (isset($annotations['return'][1])) {
-								$undocumented[$class->getName()][] = sprintf('Duplicate documentation "%s" of the return value of the %s.', $normalize($annotations['return'][1]), $label($element));
+								$undocumented[$class->getName()][] = sprintf('Duplicate documentation "%s" of return value of %s.', $normalize($annotations['return'][1]), $label($element));
 							}
 
 							// Throwing exceptions
@@ -469,9 +469,9 @@ class Generator extends Nette\Object
 							}
 							if ($throw) {
 								if (!isset($annotations['throws'])) {
-									$undocumented[$class->getName()][] = sprintf('Missing documentation of throwing an exception in the %s.', $label($element));
+									$undocumented[$class->getName()][] = sprintf('Missing documentation of throwing an exception in %s.', $label($element));
 								} elseif (!preg_match('~^[\w\\\\]+(?:\|[\w\\\\]+)*~s', $annotations['throws'][0])) {
-									$undocumented[$class->getName()][] = sprintf('Invalid documentation "%s" of throwing an exception in the %s.', $normalize($annotations['throws'][0]), $label($element));
+									$undocumented[$class->getName()][] = sprintf('Invalid documentation "%s" of throwing an exception in %s.', $normalize($annotations['throws'][0]), $label($element));
 								}
 							}
 
@@ -481,13 +481,13 @@ class Generator extends Nette\Object
 						// Data type of constants & properties
 						if ($element instanceof ReflectionProperty || $element instanceof ReflectionConstant) {
 							if (!isset($annotations['var'])) {
-								$undocumented[$class->getName()][] = sprintf('Missing documentation of the data type of the %s.', $label($element));
+								$undocumented[$class->getName()][] = sprintf('Missing documentation of the data type of %s.', $label($element));
 							} elseif (!preg_match('~^[\w\\\\]+(?:\|[\w\\\\]+)*~', $annotations['var'][0])) {
-								$undocumented[$class->getName()][] = sprintf('Invalid documentation "%s" of the data type of the %s.', $normalize($annotations['var'][0]), $label($element));
+								$undocumented[$class->getName()][] = sprintf('Invalid documentation "%s" of the data type of %s.', $normalize($annotations['var'][0]), $label($element));
 							}
 
 							if (isset($annotations['var'][1])) {
-								$undocumented[$class->getName()][] = sprintf('Duplicate documentation "%s" of the data type of the %s.', $normalize($annotations['var'][1]), $label($element));
+								$undocumented[$class->getName()][] = sprintf('Duplicate documentation "%s" of the data type of %s.', $normalize($annotations['var'][1]), $label($element));
 							}
 						}
 					}

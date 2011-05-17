@@ -141,8 +141,7 @@ Generate highlighted source code for user defined classes, default is "Yes".
 
 ```--undocumented <file>```
 
-Save a list of undocumented classes, methods, properties and constants into a file. Warning: Using this option requires more than twice as much memory.
-
+Save a list of undocumented classes, methods, properties and constants into a file. Warning: Using this option requires **a lot** more memory.
 
 ```--wipeout <yes|no>```
 
