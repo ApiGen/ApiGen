@@ -372,7 +372,7 @@ Options:
 	--skip-doc-path    <mask>      Don't generate documentation for classes from file or directory with this mask (can be used multiple times)
 	--skip-doc-prefix  <value>     Don't generate documentation for classes with this name prefix (can be used multiple times)
 	--title            <value>     Title of generated documentation
-	--base-url         <value>     Documentation base URI
+	--base-url         <value>     Documentation base URL
 	--google-cse       <value>     Google Custom Search ID
 	--google-analytics <value>     Google Analytics tracking code
 	--template         <value>     Template name, default "default"
