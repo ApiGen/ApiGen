@@ -33,7 +33,7 @@ class Generator extends Nette\Object
 	 *
 	 * @var string
 	 */
-	const VERSION = '2.0 beta';
+	const VERSION = '2.0 beta 2';
 
 	/**
 	 * Configuration.
