@@ -16,8 +16,8 @@ namespace Apigen;
 use Nette;
 use Apigen\Reflection as ApiReflection, Apigen\Exception, Apigen\Config, Apigen\Template, Apigen\Backend;
 use TokenReflection\Broker;
-use TokenReflection\IReflectionClass as ReflectionClass, TokenReflection\IReflectionProperty as ReflectionProperty, TokenReflection\IReflectionMethod as ReflectionMethod, TokenReflection\IReflectionConstant as ReflectionConstant;
-
+use TokenReflection\IReflectionClass as ReflectionClass, TokenReflection\IReflectionProperty as ReflectionProperty, TokenReflection\IReflectionMethod as ReflectionMethod, TokenReflection\IReflectionConstant as ReflectionConstant, TokenReflection\IReflectionParameter as ReflectionParameter;
+use TokenReflection\ReflectionAnnotation;
 
 /**
  * Generates a HTML API documentation.
@@ -73,7 +73,7 @@ class Generator extends Nette\Object
 	 */
 	public function parse()
 	{
-		$broker = new Broker(new Backend(), false);
+		$broker = new Broker(new Backend(), !empty($this->config->undocumented));
 
 		$files = array();
 		foreach ($this->config->source as $source) {
@@ -278,6 +278,7 @@ class Generator extends Nette\Object
 		uksort($interfaces, 'strcasecmp');
 		uksort($exceptions, 'strcasecmp');
 
+		$undocumentedEnabled = !empty($this->config->undocumented);
 		$deprecatedEnabled = $this->config->deprecated && isset($templates['optional']['deprecated']);
 		$todoEnabled = $this->config->todo && isset($templates['optional']['todo']);
 		$sitemapEnabled = !empty($this->config->baseUrl) && isset($templates['optional']['sitemap']);
@@ -295,6 +296,7 @@ class Generator extends Nette\Object
 				+ count($interfaces)
 				+ count($exceptions)
 				+ count($templates['common'])
+				+ (int) $undocumentedEnabled
 				+ (int) $deprecatedEnabled
 				+ (int) $todoEnabled
 				+ (int) $sitemapEnabled
@@ -354,6 +356,162 @@ class Generator extends Nette\Object
 		if ($autocompleteEnabled) {
 			$template->setFile($templatePath . '/' . $templates['optional']['autocomplete']['template'])->save($this->forceDir($destination . '/' . $templates['optional']['autocomplete']['filename']));
 			$this->incrementProgressBar();
+		}
+
+		// list of undocumented elements
+		if ($undocumentedEnabled) {
+			$label = function($element) {
+				if ($element instanceof ApiReflection) {
+					return 'class';
+				} elseif ($element instanceof ReflectionMethod) {
+					return sprintf('method %s()', $element->getName());
+				} elseif ($element instanceof ReflectionConstant) {
+					return sprintf('constant %s', $element->getName());
+				} elseif ($element instanceof ReflectionProperty) {
+					return sprintf('property $%s', $element->getName());
+				} elseif ($element instanceof ReflectionParameter) {
+					return sprintf('parameter $%s', $element->getName());
+				} else {
+					return $element->getName();
+				}
+			};
+			$normalize = function($string) {
+				return preg_replace('~\s+~', ' ', $string);
+			};
+
+			$undocumented = array();
+			foreach (array('classes', 'interfaces', 'exceptions') as $type) {
+				foreach ($$type as $class) {
+					// Check only "documented" classes (except internal - no documentation)
+					if (!$class->isDocumented() || $class->isInternal()) {
+						continue;
+					}
+
+					foreach (array_merge(array($class), array_values($class->getOwnMethods()), array_values($class->getOwnConstants()), array_values($class->getOwnProperties())) as $element) {
+						$annotations = $element->getAnnotations();
+
+						// Documentation
+						if (empty($annotations)) {
+							$undocumented[$class->getName()][] = sprintf('Missing documentation of the %s.', $label($element));
+							continue;
+						}
+
+						// Description
+						if (!isset($annotations[ReflectionAnnotation::SHORT_DESCRIPTION])) {
+							$undocumented[$class->getName()][] = sprintf('Missing description of the %s.', $label($element));
+						}
+
+						// Documentation of method
+						if ($element instanceof ReflectionMethod) {
+							// Parameters
+							foreach ($element->getParameters() as $no => $parameter) {
+								if (!isset($annotations['param'][$no])) {
+									$undocumented[$class->getName()][] = sprintf('Missing documentation of %s of %s.', $label($parameter), $label($element));
+									continue;
+								}
+
+								if (!preg_match('~^[\w\\\\]+(?:\|[\w\\\\]+)*\s+\$' . $parameter->getName() . '(?:\s+.+)?$~s', $annotations['param'][$no])) {
+									$undocumented[$class->getName()][] = sprintf('Invalid documentation "%s" of %s of %s.', $normalize($annotations['param'][$no]), $label($parameter), $label($element));
+								}
+
+								unset($annotations['param'][$no]);
+							}
+							if (isset($annotations['param'])) {
+								foreach ($annotations['param'] as $annotation) {
+									$undocumented[$class->getName()][] = sprintf('Existing documentation "%s" of nonexistent parameter of %s.', $normalize($annotation), $label($element));
+								}
+							}
+
+							$tokens = $element->getBroker()->getFileTokens($element->getFileName());
+
+							// Return values
+							$return = false;
+							$tokens->seek($element->getStartPosition())
+								->find(T_FUNCTION);
+							while ($tokens->next() && $tokens->key() < $element->getEndPosition()) {
+								$type = $tokens->getType();
+								if (T_FUNCTION === $type) {
+									// Skip annonymous functions
+									$tokens->find('{')->findMatchingBracket();
+								} elseif (T_RETURN === $type && !$tokens->skipWhitespaces()->is(';')) {
+									// Skip return without return value
+									$return = true;
+									break;
+								}
+							}
+							if ($return) {
+								if (!isset($annotations['return'])) {
+									$undocumented[$class->getName()][] = sprintf('Missing documentation of return value of %s.', $label($element));
+								} elseif (!preg_match('~^[\w\\\\]+(?:\|[\w\\\\]+)*~s', $annotations['return'][0])) {
+									$undocumented[$class->getName()][] = sprintf('Invalid documentation "%s" of return value of %s.', $normalize($annotations['return'][0]), $label($element));
+								}
+							} else {
+								if (isset($annotations['return']) && 'void' !== $annotations['return'][0] && !$class->isInterface() && !$element->isAbstract()) {
+									$undocumented[$class->getName()][] = sprintf('Existing documentation "%s" of nonexistent return value of %s.', $normalize($annotations['return'][0]), $label($element));
+								}
+							}
+							if (isset($annotations['return'][1])) {
+								$undocumented[$class->getName()][] = sprintf('Duplicate documentation "%s" of return value of %s.', $normalize($annotations['return'][1]), $label($element));
+							}
+
+							// Throwing exceptions
+							$throw = false;
+							$tokens->seek($element->getStartPosition())
+								->find(T_FUNCTION);
+							while ($tokens->next() && $tokens->key() < $element->getEndPosition()) {
+								$type = $tokens->getType();
+								if (T_TRY === $type) {
+									// Skip try
+									$tokens->find('{')->findMatchingBracket();
+								} elseif (T_THROW === $type) {
+									$throw = true;
+									break;
+								}
+							}
+							if ($throw) {
+								if (!isset($annotations['throws'])) {
+									$undocumented[$class->getName()][] = sprintf('Missing documentation of throwing an exception in %s.', $label($element));
+								} elseif (!preg_match('~^[\w\\\\]+(?:\|[\w\\\\]+)*~s', $annotations['throws'][0])) {
+									$undocumented[$class->getName()][] = sprintf('Invalid documentation "%s" of throwing an exception in %s.', $normalize($annotations['throws'][0]), $label($element));
+								}
+							}
+
+							unset($tokens);
+						}
+
+						// Data type of constants & properties
+						if ($element instanceof ReflectionProperty || $element instanceof ReflectionConstant) {
+							if (!isset($annotations['var'])) {
+								$undocumented[$class->getName()][] = sprintf('Missing documentation of the data type of %s.', $label($element));
+							} elseif (!preg_match('~^[\w\\\\]+(?:\|[\w\\\\]+)*~', $annotations['var'][0])) {
+								$undocumented[$class->getName()][] = sprintf('Invalid documentation "%s" of the data type of %s.', $normalize($annotations['var'][0]), $label($element));
+							}
+
+							if (isset($annotations['var'][1])) {
+								$undocumented[$class->getName()][] = sprintf('Duplicate documentation "%s" of the data type of %s.', $normalize($annotations['var'][1]), $label($element));
+							}
+						}
+					}
+				}
+			}
+			uksort($undocumented, 'strcasecmp');
+
+			$fp = @fopen($this->config->undocumented, 'w');
+			if (false === $fp) {
+				throw new Exception(sprintf('File %s isn\'t writable.', $this->config->undocumented));
+			}
+			foreach ($undocumented as $className => $elements) {
+				fwrite($fp, sprintf("%s\n%s\n", $className, str_repeat('-', strlen($className))));
+				foreach ($elements as $text) {
+					fwrite($fp, sprintf("\t%s\n", $text));
+				}
+				fwrite($fp, "\n");
+			}
+			fclose($fp);
+
+			$this->incrementProgressBar();
+
+			unset($undocumented);
 		}
 
 		// list of deprecated elements

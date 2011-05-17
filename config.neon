@@ -34,6 +34,8 @@ deprecated: No
 todo: No
 # Generate highlighted source code files
 sourceCode: Yes
+# Save a list of undocumented classes, methods, properties and constants into a file
+undocumented: ''
 
 # Wipe out the destination directory first
 wipeout: Yes

@@ -48,6 +48,7 @@ try {
 		'deprecated:',
 		'todo:',
 		'source-code:',
+		'undocumented:',
 		'wipeout:',
 		'quiet:',
 		'progressbar:',
