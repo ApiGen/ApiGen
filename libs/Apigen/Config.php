@@ -362,32 +362,32 @@ class Config
 		return <<<'HELP'
 Usage:
 	apigen --config <path> [options]
-	apigen --source <path> --destination <path> [options]
+	apigen --source <dir|file> --destination <dir> [options]
 
 Options:
-	--config|-c        <path>  Config file
-	--source|-s        <path>  Source file or directory to parse (can be used multiple times)
-	--destination|-d   <path>  Directory where to save the generated documentation
-	--exclude          <path>  Mask to exclude file or directory from processing (can be used multiple times)
-	--skip-doc-path    <value> Don't generate documentation for classes from file or directory with this mask (can be used multiple times)
-	--skip-doc-prefix  <value> Don't generate documentation for classes with this name prefix (can be used multiple times)
-	--title            <value> Title of generated documentation
-	--base-url         <value> Documentation base URI
-	--google-cse       <value> Google Custom Search ID
-	--google-analytics <value> Google Analytics tracking code
-	--template         <value> Template name, default "default"
-	--template-dir     <path>  Directory with templates, default "./templates"
-	--allowed-html     <list>  List of allowed HTML tags in documentation, default "b,i,a,ul,ol,li,p,br,var,samp,kbd,tt"
-	--access-levels    <list>  Generate documentation for methods and properties with given access level, default "public,protected"
-	--internal         Yes|No  Generate documentation for internal classes, default "Yes"
-	--deprecated       Yes|No  Generate documentation for deprecated classes, methods, properties and constants, default "No"
-	--todo             Yes|No  Generate documentation of tasks, default "No"
-	--source-code      Yes|No  Generate highlighted source code files, default "Yes"
-	--wipeout          Yes|No  Wipe out the destination directory first, default "Yes"
-	--quiet            Yes|No  Don't display scaning and generating messages, default "No"
-	--progressbar      On|Off  Display progressbars, default "On"
-	--debug            On|Off  Display additional information in case of an error, default "Off"
-	--help|-h                  Display this help
+	--config|-c        <file>      Config file
+	--source|-s        <dir|file>  Source file or directory to parse (can be used multiple times)
+	--destination|-d   <dir>       Directory where to save the generated documentation
+	--exclude          <mask>      Mask to exclude file or directory from processing (can be used multiple times)
+	--skip-doc-path    <mask>      Don't generate documentation for classes from file or directory with this mask (can be used multiple times)
+	--skip-doc-prefix  <value>     Don't generate documentation for classes with this name prefix (can be used multiple times)
+	--title            <value>     Title of generated documentation
+	--base-url         <value>     Documentation base URI
+	--google-cse       <value>     Google Custom Search ID
+	--google-analytics <value>     Google Analytics tracking code
+	--template         <value>     Template name, default "default"
+	--template-dir     <dir>       Directory with templates, default "./templates"
+	--allowed-html     <list>      List of allowed HTML tags in documentation, default "b,i,a,ul,ol,li,p,br,var,samp,kbd,tt"
+	--access-levels    <list>      Generate documentation for methods and properties with given access level, default "public,protected"
+	--internal         <yes|no>    Generate documentation for internal classes, default "yes"
+	--deprecated       <yes|no>    Generate documentation for deprecated classes, methods, properties and constants, default "no"
+	--todo             <yes|no>    Generate documentation of tasks, default "no"
+	--source-code      <yes|no>    Generate highlighted source code files, default "yes"
+	--wipeout          <yes|no>    Wipe out the destination directory first, default "yes"
+	--quiet            <yes|no>    Don't display scaning and generating messages, default "no"
+	--progressbar      <yes|no>    Display progressbars, default "yes"
+	--debug            <yes|no>    Display additional information in case of an error, default "no"
+	--help|-h                      Display this help
 
 Only source and destination directories are required - either set explicitly or using a config file.
 
