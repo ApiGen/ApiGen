@@ -1,0 +1,122 @@
+{layout '@layout.latte'}
+
+{block #title}Todo{/block}
+
+{block #content}
+<div id="navigation">
+	<ul>
+		<li><a href="index.html" title="Summary of all packages">Overview</a></li>
+		<li>Package</li>
+		<li>Namespace</li>
+		<li>Class</li>
+	</ul>
+	<ul>
+		<li><a href="tree.html" title="Tree view of classes, interfaces and exceptions">Tree</a></li>
+		<li n:if="$deprecated"><a href="deprecated.html" title="List of deprecated elements">Deprecated</a></li>
+		<li class="active">Todo</li>
+	</ul>
+</div>
+
+<div id="content">
+	<h1>{include #title}</h1>
+
+	<table class="summary" id="classes" n:if="$todoClasses">
+	<caption>Classes summary</caption>
+	{foreach $todoClasses as $class}
+	<tr>
+		<td class="nowrap" width="1%"><a href="{$class|classLink}">{$class->name}</a></td>
+		<td>
+			{foreach $class->annotations['todo'] as $description}
+				{if $description}
+					{!$description|docline|resolveLinks:$class}<br>
+				{/if}
+			{/foreach}
+		</td>
+	</tr>
+	{/foreach}
+	</table>
+
+	<table class="summary" id="interfaces" n:if="$todoInterfaces">
+	<caption>Interfaces summary</caption>
+	{foreach $todoInterfaces as $interface}
+	<tr>
+		<td class="nowrap" width="1%"><a href="{$interface|classLink}">{$interface->name}</a></td>
+		<td>
+			{foreach $interface->annotations['todo'] as $description}
+				{if $description}
+					{!$description|docline|resolveLinks:$interface}<br>
+				{/if}
+			{/foreach}
+		</td>
+	</tr>
+	{/foreach}
+	</table>
+
+	<table class="summary" id="exceptions" n:if="$todoExceptions">
+	<caption>Exceptions summary</caption>
+	{foreach $todoExceptions as $exception}
+	<tr>
+		<td class="nowrap" width="1%"><a href="{$exception|classLink}">{$exception->name}</a></td>
+		<td>
+			{foreach $exception->annotations['todo'] as $description}
+				{if $description}
+					{!$description|docline|resolveLinks:$exception}<br>
+				{/if}
+			{/foreach}
+		</td>
+	</tr>
+	{/foreach}
+	</table>
+
+	<table class="summary" id="methods" n:if="$todoMethods">
+	<caption>Methods summary</caption>
+	{foreach $todoMethods as $method}
+	<tr>
+		<td class="right nowrap" width="1%"><a href="{$method->declaringClassName|classLink}">{$method->declaringClassName}</a></td>
+		<td width="1%"><code><a href="{$method|methodLink}"><b>{$method->name}()</b></a></code></td>
+		<td>
+			{foreach $method->annotations['todo'] as $description}
+				{if $description}
+					{!$description|docline|resolveLinks:$method}<br>
+				{/if}
+			{/foreach}
+		</td>
+	</tr>
+	{/foreach}
+	</table>
+
+	<table class="summary" id="constants" n:if="$todoConstants">
+	<caption>Constants summary</caption>
+	{foreach $todoConstants as $constant}
+	<tr>
+		<td class="right nowrap" width="1%"><a href="{$constant->declaringClassName|classLink}">{$constant->declaringClassName}</a></td>
+		<td width="1%"><code><a href="{$constant|constantLink}"><b>{$constant->name}</b></a></code></td>
+		<td>
+			{foreach $constant->annotations['todo'] as $description}
+				{if $description}
+					{!$description|docline|resolveLinks:$constant}<br>
+				{/if}
+			{/foreach}
+		</td>
+	</tr>
+	{/foreach}
+	</table>
+
+	<table class="summary" id="properties" n:if="$todoProperties">
+	<caption>Properties summary</caption>
+	{foreach $todoProperties as $property}
+	<tr>
+		<td class="right nowrap" width="1%"><a href="{$property->declaringClassName|classLink}">{$property->declaringClassName}</a></td>
+		<td width="1%"><var><a href="{$property|propertyLink}">${$property->name}</a></var></td>
+		<td>
+			{foreach $property->annotations['todo'] as $description}
+				{if $description}
+					{!$description|docline|resolveLinks:$property}<br>
+				{/if}
+			{/foreach}
+		</td>
+	</tr>
+	{/foreach}
+	</table>
+</div>
+{/block}

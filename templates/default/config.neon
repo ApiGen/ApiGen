@@ -2,21 +2,41 @@ resources:
 	resources: resources
 
 templates:
-	namespace: namespace.latte
-	package: package.latte
-	class: class.latte
-	source: source.latte
-
 	common:
-		allclasses.js: allclasses.js.latte
-		allclasses.html: package.latte
 		index.html: overview.latte
-		sitemap.xml: sitemap.xml.latte
-		opensearch.xml: opensearch.xml.latte
+		allclasses.html: package.latte
 		resources/combined.js: combined.js.latte
 
-filenames:
-	class: %s.html
-	package: package-%s.html
-	namespace: namespace-%s.html
-	source: source-%s.html
+	main:
+		package:
+			filename: package-%s.html
+			template: package.latte
+		namespace:
+			filename: namespace-%s.html
+			template: namespace.latte
+		class:
+			filename: %s.html
+			template: class.latte
+		source:
+			filename: source-%s.html
+			template: source.latte
+		tree:
+			filename: tree.html
+			template: tree.latte
+
+	optional:
+		deprecated:
+			filename: deprecated.html
+			template: deprecated.latte
+		todo:
+			filename: todo.html
+			template: todo.latte
+		sitemap:
+			filename: sitemap.xml
+			template: sitemap.xml.latte
+		opensearch:
+			filename: opensearch.xml
+			template: opensearch.xml.latte
+		autocomplete:
+			filename: allclasses.js
+			template: allclasses.js.latte

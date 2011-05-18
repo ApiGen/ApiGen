@@ -1,17 +1,17 @@
 {layout '@layout.latte'}
 
-{block #title}{if $package}{if $package != 'None'}Package {$package}{else}No package{/if}{else}All Classes{/if}{/block}
+{block #title}Tree{/block}
 
 {block #content}
 <div id="navigation">
 	<ul>
 		<li><a href="index.html" title="Summary of all packages">Overview</a></li>
-		<li n:class="$package ? active">Package</li>
+		<li>Package</li>
 		<li>Namespace</li>
 		<li>Class</li>
 	</ul>
 	<ul>
-		<li><a href="tree.html" title="Tree view of classes, interfaces and exceptions">Tree</a></li>
+		<li class="active">Tree</li>
 		<li n:if="$deprecated"><a href="deprecated.html" title="List of deprecated elements">Deprecated</a></li>
 		<li n:if="$todo"><a href="todo.html" title="Todo list">Todo</a></li>
 	</ul>
@@ -20,6 +20,19 @@
 <div id="content">
 	<h1>{include #title}</h1>
 
-	{include '@classlist.latte'}
+	{if $classTree->valid()}
+		<h3>Classes</h3>
+		{include '@treeitem.latte', tree => $classTree}
+	{/if}
+
+	{if $interfaceTree->valid()}
+		<h3>Interfaces</h3>
+		{include '@treeitem.latte', tree => $interfaceTree}
+	{/if}
+
+	{if $exceptionTree->valid()}
+		<h3>Exceptions</h3>
+		{include '@treeitem.latte', tree => $exceptionTree}
+	{/if}
 </div>
 {/block}

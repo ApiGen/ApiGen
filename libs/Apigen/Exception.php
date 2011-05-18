@@ -13,6 +13,13 @@
 
 namespace Apigen;
 
+/**
+ * ApiGen exception.
+ *
+ * This is the topmost exception class. Exceptions of this class are caught in the apigen.php script.
+ *
+ * @author Jaroslav Hanslík
+ */
 class Exception extends \Exception
 {
 	/**

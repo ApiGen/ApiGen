@@ -1,17 +1,17 @@
 /*!
-	(c) David Grudl, Martin Cohen, Jörn Zaefferer
+	(c) David Grudl, Ondřej Nešpor, Jaroslav Hanslík, Martin Cohen, Jörn Zaefferer
 */
 
 body {
 	font: 13px/1.5 Verdana, "Geneva CE", lucida, sans-serif;
 	margin: 0;
 	padding: 0;
-	background: white;
-	color: #333;
+	background: #ffffff;
+	color: #333333;
 }
 
 h1, h2, h3, h4, caption {
-	font-family: Trebuchet MS,"Geneva CE", lucida, sans-serif;
+	font-family: Trebuchet MS, "Geneva CE", lucida, sans-serif;
 	color: #053368;
 }
 
@@ -24,7 +24,7 @@ h1 {
 
 h2, caption {
 	border: 1px solid #ccc;
-	background: #ECEDE5;
+	background: #ecede5;
 	font-weight: bold;
 	font-size: 1.2em;
 	padding: 3px 5px;
@@ -54,7 +54,7 @@ a {
 a:hover, a:active, a:focus {
 	background-color: #006aeb;
 	text-decoration: none;
-	color: white;
+	color: #ffffff !important;
 }
 
 p {
@@ -63,34 +63,40 @@ p {
 }
 
 hr {
-	display: none;
+	margin: 2em 0 1em;
+	border: none;
+	border-top: 1px solid #cccccc;
+	height: 0;
 }
 
 var, code, pre {
 	font-family: monospace;
 }
 
-var, var a {
+var {
 	font-weight: bold;
 	font-style: normal;
-	color: #CA8A04;
+	color: #ca8a04;
 }
 
 pre {
 	margin: 0;
 }
 
-#constantSummary a, .parentConstants a {
-	color: #000;
+#constants code a, .constants code a {
+	color: #000000;
 }
 
+#properties var a, .properties var a {
+	color: #ca8a04;
+}
 
 /**
  * Splitter
  */
 .vsplitbar {
 	width: 5px;
-	background: #1E5EB6 url('resize.png') left center no-repeat;
+	background: #1e5eb6 url('resize.png') left center no-repeat;
 }
 
 .vsplitbar.active {
@@ -104,8 +110,8 @@ pre {
  */
 #leftWrapper {
 	overflow: auto;
-	background: white;
-	width: 250px;
+	background: #ffffff;
+	width: 270px;
 }
 
 #left {
@@ -127,9 +133,13 @@ pre {
 }
 
 #left .active > a {
-	color: #333;
+	color: #333333;
 	background: none;
 	font-weight: bold;
+}
+
+#left .active > a:hover {
+    background-color: #006aeb;
 }
 
 #left .all {
@@ -158,7 +168,7 @@ pre {
  */
 #search {
 	display: inline;
-	float:right;
+	float: right;
 	margin-top: 3px;
 }
 
@@ -170,7 +180,7 @@ pre {
 #navigation {
 	margin: 0 3px 3px 3px;
 	padding: 3px 8px;
-	background-color: #F6F6F4;
+	background-color: #f6f6f4;
 	height: 26px;
 }
 
@@ -182,27 +192,34 @@ pre {
 	float: left;
 }
 
+#navigation ul + ul {
+	border-left: 1px solid #000000;
+	margin-left: 10px;
+	padding-left: 12px;
+}
+
 #navigation ul li {
 	display: inline;
-	margin: 2px 2px 2px 2px;
+	margin: 2px;
 	padding: 0 2px;
 	font-family: Arial, Verdana;
 	color: gray;
 }
 
 #navigation ul li a {
-	color: black;
+	color: #000000;
 	font-weight: bold;
+	padding: 3px;
 }
 
 #navigation ul li a:hover, #navigation ul li a:active, #navigation ul li a:focus {
-	color: white;
+	color: #ffffff;
 }
 
 #navigation ul li.active {
 	background: #053368;
-	color: white;
-	padding: 3px 1px;
+	color: #ffffff;
+	padding: 3px;
 	font-weight: bold;
 }
 
@@ -222,15 +239,15 @@ pre {
 }
 
 .classDescription {
-	background: #ECEDE5;
-	padding: 1px 8px 1px 8px;
+	background: #ecede5;
+	padding: 1px 8px;
 	margin: 1.2em 0;
 }
 
 .classDescription pre {
 	margin: .5em 0;
 	padding: .6em;
-	background: #FCFCF7;
+	background: #fcfcf7;
 }
 
 dl.tree {
@@ -248,7 +265,7 @@ dl.tree dd {
 
 
 .summary {
-	border: 1px solid #ccc;
+	border: 1px solid #cccccc;
 	border-collapse:collapse;
 	font-size: 1em;
 	width: 100%;
@@ -260,7 +277,7 @@ dl.tree dd {
 }
 
 .summary caption.switchable {
-	background: #ECEDE5 url(sort.gif) no-repeat center right;
+	background: #ecede5 url(sort.gif) no-repeat center right;
 	cursor: pointer;
 }
 
@@ -285,7 +302,7 @@ dl.tree dd {
 }
 
 tr:hover td {
-	background: #F6F6F4;
+	background: #f6f6f4;
 }
 
 tr .detailed {
@@ -295,9 +312,12 @@ tr .detailed {
 .deprecated {
 	opacity: .5;
 }
+.right {
+	text-align: right;
+}
 
 .box {
-	border: 1px solid #ccc;
+	border: 1px solid #cccccc;
 	border-top: none;
 	margin-bottom: 2.4em;
 	padding: 3px 1em;
@@ -316,6 +336,7 @@ tr .detailed {
 	line-height: 1;
 	font-size: 85%;
 	margin: 0;
+	color: #006aeb !important;
 }
 
 div.smallList {
@@ -328,13 +349,42 @@ div.smallList {
 #footer {
 	border-top: 1px solid #e9eeef;
 	clear: both;
-	color: #A7A7A7;
+	color: #a7a7a7;
 	font-size: 8pt;
 	text-align: center;
 	padding: 20px 0 0;
 	margin: 3em 0 0;
 	height: 90px;
-	background: white url('footer.gif') no-repeat center top;
+	background: #ffffff url('footer.gif') no-repeat center top;
+}
+
+.classtree ul {
+	list-style: none;
+	background: url('tree-vertical.gif') left repeat-y;
+	padding: 0;
+	margin-left: 20px;
+}
+
+.classtree li {
+	margin: 0;
+	padding: 0;
+}
+
+.classtree div {
+	padding-left: 30px;
+	background: left center no-repeat;
+}
+
+.classtree div.notlast {
+	background-image: url('tree-hasnext.gif');
+}
+
+.classtree div.last {
+	background-image: url('tree-last.png');
+}
+
+.classtree li.last {
+	background: url('tree-cleaner.gif') left repeat-y;
 }
 
 
@@ -350,7 +400,7 @@ div.smallList {
 .php-comment { color: #929292 }
 
 .xlang { color: red; font-weight: bold }
-.l { color: silver; background-color: #FFF }
+.l { color: silver; background-color: #ffffff }
 
 
 
@@ -359,8 +409,8 @@ div.smallList {
  */
 .ac_results {
 	padding: 0px;
-	border: 1px solid black;
-	background-color: white;
+	border: 1px solid #000000;
+	background-color: #ffffff;
 	overflow: hidden;
 	z-index: 99999;
 }
@@ -385,10 +435,10 @@ div.smallList {
 }
 
 .ac_odd {
-	background-color: #eee;
+	background-color: #eeeeee;
 }
 
 .ac_over {
-	background-color: #0A246A;
-	color: white;
+	background-color: #0a246a;
+	color: #ffffff;
 }

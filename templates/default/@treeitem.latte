@@ -1,0 +1,24 @@
+<div class="classtree">
+	<ul>
+		{var $level => -1}
+		{? foreach ($tree as $className => $reflection): }
+			{if $level === $tree->getDepth()}
+				</li>
+			{elseif $level > $tree->getDepth()}
+				{!=str_repeat('</ul></li>', $level - $tree->getDepth())}
+			{elseif -1 !== $level}
+				<ul>
+			{/if}
+
+			<li{if !$tree->hasSibling()} class="last"{/if}><div class="{if $tree->hasSibling()}not{/if}last"><a href="{$className|classLink}" n:tag-if="$reflection->documented">{$className}</a>
+			{var $interfaces = $reflection->ownInterfaces}
+			{if $interfaces} implements {foreach $interfaces as $interface}
+				<a href="{$interface|classLink}" n:tag-if="$interface->documented">{$interface->name}</a>{sep}, {/sep}
+			{/foreach}{/if}</div>
+
+			{var $level = $tree->getDepth()}
+		{? endforeach; }
+		</li>
+		{!=str_repeat('</ul></li>', $level)}
+	</ul>
+</div>

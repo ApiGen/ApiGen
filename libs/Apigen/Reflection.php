@@ -1,14 +1,44 @@
 <?php
 
+/**
+ * ApiGen - API Generator.
+ *
+ * Copyright (c) 2010 David Grudl (http://davidgrudl.com)
+ * Copyright (c) 2011 Ondřej Nešpor (http://andrewsville.cz)
+ * Copyright (c) 2011 Jaroslav Hanslík (http://kukulich.cz)
+ *
+ * This source file is subject to the "Nette license", and/or
+ * GPL license. For more information please see http://nette.org
+ */
+
 namespace Apigen;
 use Apigen\Generator;
 use TokenReflection\IReflectionClass, ReflectionMethod, ReflectionProperty;
 
 /**
  * Class reflection envelope.
+ *
+ * Alters TokenReflection\IReflectionClass functionality for ApiGen.
+ *
+ * @author Jaroslav Hanslík
+ * @author Ondřej Nešpor
  */
 class Reflection
 {
+	/**
+	 * Config.
+	 *
+	 * @var \Apigen\Config
+	 */
+	private static $config = null;
+
+	/**
+	 * List of classes.
+	 *
+	 * @var \ArrayObject
+	 */
+	private static $classes = array();
+
 	/**
 	 * Class methods cache.
 	 *
@@ -38,18 +68,39 @@ class Reflection
 	private $reflection;
 
 	/**
-	 * Apigen generator.
-	 *
-	 * @var \Apigen\Generator
-	 */
-	private $generator;
-
-	/**
-	 * If the class should be documented.
+	 * Cache for information if the class should be documented.
 	 *
 	 * @var boolean
 	 */
 	private $isDocumented;
+
+	/**
+	 * Cache for list of parent classes.
+	 *
+	 * @var array
+	 */
+	private $parentClasses;
+
+	/**
+	 * Cache for list of own methods.
+	 *
+	 * @var array
+	 */
+	private $ownMethods;
+
+	/**
+	 * Cache for list of own properties.
+	 *
+	 * @var array
+	 */
+	private $ownProperties;
+
+	/**
+	 * Cache for list of own constants.
+	 *
+	 * @var array
+	 */
+	private $ownConstants;
 
 	/**
 	 * Constructor.
@@ -61,19 +112,19 @@ class Reflection
 	 */
 	public function __construct(IReflectionClass $reflection, Generator $generator)
 	{
-		if (empty(self::$methods)) {
-			self::$methods = array_flip(get_class_methods($this));
-		}
+		if (null === self::$config) {
+			self::$config = $generator->getConfig();
+			self::$classes = $generator->getClasses();
 
-		if (empty(self::$methodAccessLevels)) {
-			foreach ($generator->config->accessLevels as $level) {
+			self::$methods = array_flip(get_class_methods($this));
+
+			foreach (self::$config->accessLevels as $level) {
 				self::$methodAccessLevels |= constant('ReflectionMethod::IS_' . strtoupper($level));
 				self::$propertyAccessLevels |= constant('ReflectionProperty::IS_' . strtoupper($level));
 			}
 		}
 
 		$this->reflection = $reflection;
-		$this->generator = $generator;
 	}
 
 	/**
@@ -104,6 +155,7 @@ class Reflection
 	 * and finally the inspected class reflection.
 	 *
 	 * @param mixed $name Property name
+	 * @return boolean
 	 */
 	public function __isset($name)
 	{
@@ -130,13 +182,16 @@ class Reflection
 	 */
 	public function getOwnMethods()
 	{
-		$methods = $this->reflection->getOwnMethods(self::$methodAccessLevels);
-		if (!$this->generator->config->deprecated) {
-			$methods = array_filter($methods, function($method) {
-				return !$method->isDeprecated();
-			});
+		if (null === $this->ownMethods) {
+			$this->ownMethods = $this->reflection->getOwnMethods(self::$methodAccessLevels);
+			if (!self::$config->deprecated) {
+				$this->ownMethods = array_filter($this->ownMethods, function($method) {
+					return !$method->isDeprecated();
+				});
+			}
 		}
-		return $methods;
+
+		return $this->ownMethods;
 	}
 
 	/**
@@ -146,13 +201,15 @@ class Reflection
 	 */
 	public function getOwnProperties()
 	{
-		$properties = $this->reflection->getOwnProperties(self::$propertyAccessLevels);
-		if (!$this->generator->config->deprecated) {
-			$properties = array_filter($properties, function($property) {
-				return !$property->isDeprecated();
-			});
+		if (null === $this->ownProperties) {
+			$this->ownProperties = $this->reflection->getOwnProperties(self::$propertyAccessLevels);
+			if (!self::$config->deprecated) {
+				$this->ownProperties = array_filter($this->ownProperties, function($property) {
+					return !$property->isDeprecated();
+				});
+			}
 		}
-		return $properties;
+		return $this->ownProperties;
 	}
 
 	/**
@@ -160,43 +217,17 @@ class Reflection
 	 *
 	 * @return array
 	 */
-	public function getOwnConstantReflections()
+	public function getOwnConstants()
 	{
-		$constants = $this->reflection->getOwnConstantReflections();
-		if (!$this->generator->config->deprecated) {
-			$constants = array_filter($constants, function($constant) {
-				return !$constant->isDeprecated();
-			});
+		if (null === $this->ownConstants) {
+			$this->ownConstants = $this->reflection->getOwnConstantReflections();
+			if (!self::$config->deprecated) {
+				$this->ownConstants = array_filter($this->ownConstants, function($constant) {
+					return !$constant->isDeprecated();
+				});
+			}
 		}
-		return $constants;
-	}
-
-	/**
-	 * Returns all supported and sorted annotations.
-	 *
-	 * @return array
-	 */
-	public function getAnnotations()
-	{
-		$annotations = $this->reflection->getAnnotations();
-		// Unsupported or deprecated annotations
-		foreach (array('property', 'property-read', 'property-write', 'method', 'abstract', 'final', 'filesource') as $annotation) {
-			unset($annotations[$annotation]);
-		}
-
-		// Sort
-		uksort($annotations, function($a, $b) {
-			static $order = array(
-				'deprecated' => 0, 'category' => 1, 'package' => 2, 'subpackage' => 3, 'copyright' => 4,
-				'license' => 5, 'author' => 6, 'version' => 7, 'since' => 8, 'see' => 9, 'uses' => 10,
-				'link' => 11, 'example' => 12, 'tutorial' => 13, 'todo' => 14
-			);
-			$orderA = isset($order[$a]) ? $order[$a] : 99;
-			$orderB = isset($order[$b]) ? $order[$b] : 99;
-			return $orderA - $orderB;
-		});
-
-		return $annotations;
+		return $this->ownConstants;
 	}
 
 	/**
@@ -207,10 +238,8 @@ class Reflection
 	public function getParentClass()
 	{
 		if ($className = $this->reflection->getParentClassName()) {
-			$classes = $this->generator->getClasses();
-			return $classes[$className];
+			return self::$classes[$className];
 		}
-
 		return $className;
 	}
 
@@ -221,10 +250,13 @@ class Reflection
 	 */
 	public function getParentClasses()
 	{
-		$classes = $this->generator->getClasses();
-		return array_map(function($class) use ($classes) {
-			return $classes[$class->getName()];
-		}, $this->reflection->getParentClasses());
+		if (null === $this->parentClasses) {
+			$classes = self::$classes;
+			$this->parentClasses = array_map(function($class) use ($classes) {
+				return $classes[$class->getName()];
+			}, $this->reflection->getParentClasses());
+		}
+		return $this->parentClasses;
 	}
 
 	/**
@@ -234,7 +266,7 @@ class Reflection
 	 */
 	public function getInterfaces()
 	{
-		$classes = $this->generator->getClasses();
+		$classes = self::$classes;
 		return array_map(function($class) use ($classes) {
 			return $classes[$class->getName()];
 		}, $this->reflection->getInterfaces());
@@ -247,7 +279,7 @@ class Reflection
 	 */
 	public function getOwnInterfaces()
 	{
-		$classes = $this->generator->getClasses();
+		$classes = self::$classes;
 		return array_map(function($class) use ($classes) {
 			return $classes[$class->getName()];
 		}, $this->reflection->getOwnInterfaces());
@@ -260,14 +292,17 @@ class Reflection
 	 */
 	public function getDirectSubClasses()
 	{
+		$subClasses = array();
 		$name = $this->reflection->getName();
-		return array_filter($this->generator->getClasses(), function(Reflection $class) use($name) {
+		foreach (self::$classes as $class) {
 			if (!$class->isSubclassOf($name)) {
-				return false;
+				continue;
 			}
-
-			return null === $class->getParentClassName() || !$class->getParentClass()->isSubClassOf($name);
-		});
+			if (null === $class->getParentClassName() || !$class->getParentClass()->isSubClassOf($name)) {
+				$subClasses[] = $class;
+			}
+		}
+		return $subClasses;
 	}
 
 	/**
@@ -277,14 +312,17 @@ class Reflection
 	 */
 	public function getIndirectSubClasses()
 	{
+		$subClasses = array();
 		$name = $this->reflection->getName();
-		return array_filter($this->generator->getClasses(), function(Reflection $class) use($name) {
+		foreach (self::$classes as $class) {
 			if (!$class->isSubclassOf($name)) {
-				return false;
+				continue;
 			}
-
-			return null !== $class->getParentClassName() && $class->getParentClass()->isSubClassOf($name);
-		});
+			if (null !== $class->getParentClassName() && $class->getParentClass()->isSubClassOf($name)) {
+				$subClasses[] = $class;
+			}
+		}
+		return $subClasses;
 	}
 
 	/**
@@ -298,14 +336,17 @@ class Reflection
 			return array();
 		}
 
+		$implementers = array();
 		$name = $this->reflection->getName();
-		return array_filter($this->generator->getClasses(), function(Reflection $class) use($name) {
+		foreach (self::$classes as $class) {
 			if (!$class->implementsInterface($name)) {
-				return false;
+				continue;
 			}
-
-			return null === $class->getParentClassName() || !$class->getParentClass()->implementsInterface($name);
-		});
+			if (null === $class->getParentClassName() || !$class->getParentClass()->implementsInterface($name)) {
+				$implementers[] = $class;
+			}
+		}
+		return $implementers;
 	}
 
 	/**
@@ -319,14 +360,17 @@ class Reflection
 			return array();
 		}
 
+		$implementers = array();
 		$name = $this->reflection->getName();
-		return array_filter($this->generator->getClasses(), function(Reflection $class) use($name) {
+		foreach (self::$classes as $class) {
 			if (!$class->implementsInterface($name)) {
-				return false;
+				continue;
 			}
-
-			return null !== $class->getParentClassName() && $class->getParentClass()->implementsInterface($name);
-		});
+			if (null !== $class->getParentClassName() && $class->getParentClass()->implementsInterface($name)) {
+				$implementers[] = $class;
+			}
+		}
+		return $implementers;
 	}
 
 	/**
@@ -412,23 +456,26 @@ class Reflection
 	public function isDocumented()
 	{
 		if (null === $this->isDocumented) {
-			if ($this->reflection->isInternal()) {
+			if (self::$config->internal && $this->reflection->isInternal()) {
 				$this->isDocumented = true;
 			} elseif (!$this->reflection->isTokenized()) {
 				$this->isDocumented = false;
-			} elseif (!$this->generator->config->deprecated && $this->reflection->isDeprecated()) {
+			} elseif (!self::$config->deprecated && $this->reflection->isDeprecated()) {
 				$this->isDocumented = false;
-			} elseif (empty($this->generator->config->skipDocPath) && empty($this->generator->config->skipDocPrefix)) {
-				$this->isDocumented = true;
 			} else {
-				foreach ($this->generator->config->skipDocPath as $path) {
-					if ($this->reflection->getFilename() === $path || 0 === strpos($this->reflection->getFilename(), $path . DIRECTORY_SEPARATOR)) {
+				$this->isDocumented = true;
+				foreach (self::$config->skipDocPath as $mask) {
+					if (fnmatch($mask, $this->reflection->getFilename(), FNM_NOESCAPE | FNM_PATHNAME)) {
 						$this->isDocumented = false;
+						break;
 					}
 				}
-				foreach ($this->generator->config->skipDocPrefix as $prefix) {
-					if (0 === strpos($this->reflection->getName(), $prefix)) {
-						$this->isDocumented = false;
+				if (true === $this->isDocumented) {
+					foreach (self::$config->skipDocPrefix as $prefix) {
+						if (0 === strpos($this->reflection->getName(), $prefix)) {
+							$this->isDocumented = false;
+							break;
+						}
 					}
 				}
 			}
