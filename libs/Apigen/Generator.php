@@ -154,7 +154,7 @@ class Generator extends Nette\Object
 	 */
 	public function wipeOutDestination()
 	{
-		// resources
+		// Resources
 		foreach ($this->config->resources as $resource) {
 			$path = $this->config->destination . '/' . $resource;
 			if (is_dir($path) && !$this->deleteDir($path)) {
@@ -164,7 +164,7 @@ class Generator extends Nette\Object
 			}
 		}
 
-		// common files
+		// Common files
 		$filenames = array_keys($this->config->templates['common']);
 		foreach (Nette\Utils\Finder::findFiles($filenames)->from($this->config->destination) as $item) {
 			if (!@unlink($item)) {
@@ -172,7 +172,7 @@ class Generator extends Nette\Object
 			}
 		}
 
-		// optional files
+		// Optional files
 		foreach ($this->config->templates['optional'] as $optional) {
 			$file = $this->config->destination . '/' . $optional['filename'];
 			if (is_file($file) && !@unlink($file)) {
@@ -180,7 +180,7 @@ class Generator extends Nette\Object
 			}
 		}
 
-		// main files
+		// Main files
 		$masks = array_map(function($config) {
 			return preg_replace('~%[^%]*?s~', '*', $config['filename']);
 		}, $this->config->templates['main']);
@@ -217,7 +217,7 @@ class Generator extends Nette\Object
 		$templates = $this->config->templates;
 		$templatePath = $this->config->templateDir . '/' . $this->config->template;
 
-		// copy resources
+		// Copy resources
 		foreach ($this->config->resources as $resourceSource => $resourceDestination) {
 			// File
 			$resourcePath = $templatePath . '/' . $resourceSource;
@@ -232,7 +232,7 @@ class Generator extends Nette\Object
 			}
 		}
 
-		// categorize by packages and namespaces
+		// Categorize by packages and namespaces
 		$packages = array();
 		$namespaces = array();
 		$classes = array();
@@ -261,7 +261,7 @@ class Generator extends Nette\Object
 			}
 		}
 
-		// add missing parent namespaces
+		// Add missing parent namespaces
 		foreach ($namespaces as $name => $namespace) {
 			$parent = '';
 			foreach (explode('\\', $name) as $part) {
@@ -302,7 +302,7 @@ class Generator extends Nette\Object
 				+ (int) $sitemapEnabled
 				+ (int) $opensearchEnabled
 				+ (int) $autocompleteEnabled
-				+ 1 // classes, iterators and exceptions tree
+				+ 1 // Classes, iterators and exceptions tree
 			;
 
 			if ($this->config->sourceCode) {
@@ -316,11 +316,11 @@ class Generator extends Nette\Object
 			$this->prepareProgressBar($max);
 		}
 
-		// create tmp directory
+		// Create tmp directory
 		$tmp = $destination . DIRECTORY_SEPARATOR . 'tmp';
 		@mkdir($tmp, 0755, true);
 
-		// prepare template
+		// Prepare template
 		$template = new Template($this);
 		$template->setCacheStorage(new Nette\Templating\PhpFileStorage($tmp));
 		$template->version = self::VERSION;
@@ -328,7 +328,7 @@ class Generator extends Nette\Object
 		$template->deprecated = $deprecatedEnabled;
 		$template->todo = $todoEnabled;
 
-		// generate summary files
+		// Generate summary files
 		$namespaceNames = array_keys($namespaces);
 		$template->namespace = null;
 		$template->namespaces = $namespaceNames;
@@ -344,7 +344,7 @@ class Generator extends Nette\Object
 			$this->incrementProgressBar();
 		}
 
-		// optional files
+		// Optional files
 		if ($sitemapEnabled) {
 			$template->setFile($templatePath . '/' . $templates['optional']['sitemap']['template'])->save($this->forceDir($destination . '/' . $templates['optional']['sitemap']['filename']));
 			$this->incrementProgressBar();
@@ -358,7 +358,7 @@ class Generator extends Nette\Object
 			$this->incrementProgressBar();
 		}
 
-		// list of undocumented elements
+		// List of undocumented elements
 		if ($undocumentedEnabled) {
 			$label = function($element) {
 				if ($element instanceof ApiReflection) {
@@ -509,7 +509,7 @@ class Generator extends Nette\Object
 			unset($undocumented);
 		}
 
-		// list of deprecated elements
+		// List of deprecated elements
 		if ($deprecatedEnabled) {
 			$deprecatedFilter = function($element) {return $element->isDeprecated();};
 			$template->deprecatedClasses = array_filter($classes, $deprecatedFilter);
@@ -544,7 +544,7 @@ class Generator extends Nette\Object
 			unset($template->deprecatedProperties);
 		}
 
-		// list of tasks
+		// List of tasks
 		if ($todoEnabled) {
 			$todoFilter = function($element) {return $element->hasAnnotation('todo');};
 			$template->todoClasses = array_filter($classes, $todoFilter);
@@ -575,7 +575,7 @@ class Generator extends Nette\Object
 			unset($template->todoProperties);
 		}
 
-		// classes/interfaces/exceptions tree
+		// Classes/interfaces/exceptions tree
 		$classTree = array();
 		$interfaceTree = array();
 		$exceptionTree = array();
@@ -637,7 +637,7 @@ class Generator extends Nette\Object
 
 		$this->incrementProgressBar();
 
-		// generate package summary
+		// Generate package summary
 		$this->forceDir($destination . '/' . $templates['main']['package']['filename']);
 		$template->namespace = null;
 		foreach ($packages as $package => $definition) {
@@ -659,7 +659,7 @@ class Generator extends Nette\Object
 		unset($pNamespaces);
 		unset($pClasses);
 
-		// generate namespace summary
+		// Generate namespace summary
 		$this->forceDir($destination . '/' . $templates['main']['namespace']['filename']);
 		$template->package = null;
 		foreach ($namespaces as $namespace => $definition) {
@@ -688,7 +688,7 @@ class Generator extends Nette\Object
 		unset($interfaceFilter);
 		unset($exceptionFilter);
 
-		// generate class & interface files
+		// Generate class & interface files
 		$fshl = new \fshlParser('HTML_UTF8', P_TAB_INDENT | P_LINE_COUNTER);
 		$this->forceDir($destination . '/' . $templates['main']['class']['filename']);
 		$this->forceDir($destination . '/' . $templates['main']['source']['filename']);
@@ -742,7 +742,7 @@ class Generator extends Nette\Object
 
 				$this->incrementProgressBar();
 
-				// generate source codes
+				// Generate source codes
 				if ($this->config->sourceCode && $class->isTokenized()) {
 					$source = file_get_contents($class->getFileName());
 					$source = str_replace(array("\r\n", "\r"), "\n", $source);
@@ -756,7 +756,7 @@ class Generator extends Nette\Object
 			unset($$type);
 		}
 
-		// delete tmp directory
+		// Delete tmp directory
 		$this->deleteDir($tmp);
 	}
 
