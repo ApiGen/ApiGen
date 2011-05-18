@@ -73,7 +73,7 @@ class Generator extends Nette\Object
 	 */
 	public function parse()
 	{
-		$broker = new Broker(new Backend(), !empty($this->config->undocumented));
+		$broker = new Broker(new Backend(), false);
 
 		$files = array();
 		foreach ($this->config->source as $source) {
@@ -387,6 +387,8 @@ class Generator extends Nette\Object
 						continue;
 					}
 
+					$tokens = $class->getBroker()->getFileTokens($class->getFileName());
+
 					foreach (array_merge(array($class), array_values($class->getOwnMethods()), array_values($class->getOwnConstants()), array_values($class->getOwnProperties())) as $element) {
 						$annotations = $element->getAnnotations();
 
@@ -421,8 +423,6 @@ class Generator extends Nette\Object
 									$undocumented[$class->getName()][] = sprintf('Existing documentation "%s" of nonexistent parameter of %s.', $normalize($annotation), $label($element));
 								}
 							}
-
-							$tokens = $element->getBroker()->getFileTokens($element->getFileName());
 
 							// Return values
 							$return = false;
@@ -475,8 +475,6 @@ class Generator extends Nette\Object
 									$undocumented[$class->getName()][] = sprintf('Invalid documentation "%s" of throwing an exception in %s.', $normalize($annotations['throws'][0]), $label($element));
 								}
 							}
-
-							unset($tokens);
 						}
 
 						// Data type of constants & properties
@@ -492,6 +490,7 @@ class Generator extends Nette\Object
 							}
 						}
 					}
+					unset($tokens);
 				}
 			}
 			uksort($undocumented, 'strcasecmp');
