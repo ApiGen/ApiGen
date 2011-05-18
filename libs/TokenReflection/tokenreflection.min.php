@@ -98,9 +98,7 @@ getFunction($functionName){$functionName=ltrim($functionName,'\\');if(isset($thi
 function
 getConstant($constantName){$constantName=ltrim($constantName,'\\');if(isset($this->cache[self::CACHE_CONSTANT][$constantName])){return$this->cache[self::CACHE_CONSTANT][$constantName];}if($constant=$this->backend->getConstant($constantName)){$this->cache[self::CACHE_CONSTANT][$constantName]=$constant;}return$constant;}public
 function
-getFileTokens($fileName){try{if(!$this->backend->getStoringTokenStreams()){throw
-new
-Exception\Runtime('Token streams storing is turned off.',Exception\Runtime::TOKEN_STREAM_STORING_TURNED_OFF);}return$this->backend->getFileTokens($fileName);}catch(Exception$e){throw
+getFileTokens($fileName){try{return$this->backend->getFileTokens($fileName);}catch(Exception$e){throw
 new
 Exception\Runtime(sprintf('Could not retrieve token stream for file %s.',$fileName),0,$e);}}public
 function
@@ -296,7 +294,7 @@ implode('',array_slice($this->contents,$start,null
 namespace
 TokenReflection\Broker\Backend{use
 TokenReflection;use
-TokenReflection\Exception,TokenReflection\Broker,TokenReflection\Php,TokenReflection\Dummy;class
+TokenReflection\Stream,TokenReflection\Exception,TokenReflection\Broker,TokenReflection\Php,TokenReflection\Dummy;class
 Memory
 implements
 Broker\Backend{private$namespaces=array();private$allClasses;private$tokenStreams=array();private$broker;private$storingTokenStreams;public
@@ -327,9 +325,12 @@ function
 isFileProcessed($fileName){return
 isset($this->tokenStreams[$fileName]);}public
 function
-getFileTokens($fileName){if(!$this->isFileProcessed($fileName)){throw
+getFileTokens($fileName){if($this->isFileProcessed($fileName)){return$this->tokenStreams[$fileName];}$contents=@file_get_contents($fileName);if(false
+===$contents){throw
 new
-Exception\Runtime(sprintf('The requested file %s was not processed.',$fileName),Exception\Runtime::DOES_NOT_EXIST);}return$this->tokenStreams[$fileName];}public
+Exception\Parse('File is not readable.',Exception\Parse::FILE_NOT_READABLE);}return
+new
+Stream(@token_get_all(str_replace(array("\r\n","\r"),"\n",$contents)),$fileName);}public
 function
 addFile(TokenReflection\ReflectionFile$file,$storeTokenStream=true){foreach($file->getNamespaces()as$fileNamespace){$namespaceName=$fileNamespace->getName();if(!isset($this->namespaces[$namespaceName])){$this->namespaces[$namespaceName]=new
 TokenReflection\ReflectionNamespace($namespaceName,$file->getBroker());}$this->namespaces[$namespaceName]->addFileNamespace($fileNamespace);}if($this->storingTokenStreams){$this->tokenStreams[$file->getName()]=$file->getTokenStream();}$this->allClasses=null;return$this;}public
