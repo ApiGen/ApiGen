@@ -120,6 +120,7 @@ class Generator extends Nette\Object
 		foreach ($broker->getClasses(Backend::TOKENIZED_CLASSES | Backend::INTERNAL_CLASSES | Backend::NONEXISTENT_CLASSES) as $className => $class) {
 			$this->classes->offsetSet($className, new ApiReflection($class, $this));
 		}
+		$this->classes->uksort('strcasecmp');
 
 		return array(
 			count($broker->getClasses(Backend::TOKENIZED_CLASSES)),
@@ -235,14 +236,14 @@ class Generator extends Nette\Object
 		// Categorize by packages and namespaces
 		$packages = array();
 		$namespaces = array();
+		$classTypes = array('classes', 'interfaces', 'exceptions');
 		$classes = array();
 		$interfaces = array();
 		$exceptions = array();
-		foreach ($this->classes as $class) {
+		foreach ($this->classes as $className => $class) {
 			if ($class->isDocumented()) {
 				$packageName = $class->getPackageName() ?: 'None';
 				$namespaceName = $class->getNamespaceName() ?: 'None';
-				$className = $class->getName();
 
 				$packages[$packageName]['namespaces'][$namespaceName] = true;
 				$namespaces[$namespaceName]['packages'][$packageName] = true;
@@ -263,17 +264,19 @@ class Generator extends Nette\Object
 			}
 		}
 
-		// Sort classes and namespaces
+		uksort($packages, 'strcasecmp');
 		foreach (array_keys($packages) as $packageName) {
-			foreach (array('classes', 'interfaces', 'exceptions') as $type) {
+			// Add missing class types
+			foreach ($classTypes as $type) {
 				if (!isset($packages[$packageName][$type])) {
 					$packages[$packageName][$type] = array();
 				}
-				uksort($packages[$packageName][$type], 'strcasecmp');
 			}
+			// Sort namespaces
 			uksort($packages[$packageName]['namespaces'], 'strcasecmp');
 		}
 
+		uksort($namespaces, 'strcasecmp');
 		foreach (array_keys($namespaces) as $namespaceName) {
 			// Add missing parent namespaces
 			$parent = '';
@@ -284,21 +287,15 @@ class Generator extends Nette\Object
 				}
 			}
 
-			// Sort classes and packages
-			foreach (array('classes', 'interfaces', 'exceptions') as $type) {
+			// Add missing class types
+			foreach ($classTypes as $type) {
 				if (!isset($namespaces[$namespaceName][$type])) {
 					$namespaces[$namespaceName][$type] = array();
 				}
-				uksort($namespaces[$namespaceName][$type], 'strcasecmp');
 			}
+			// Sort packages
 			uksort($namespaces[$namespaceName]['packages'], 'strcasecmp');
 		}
-
-		uksort($packages, 'strcasecmp');
-		uksort($namespaces, 'strcasecmp');
-		uksort($classes, 'strcasecmp');
-		uksort($interfaces, 'strcasecmp');
-		uksort($exceptions, 'strcasecmp');
 
 		$undocumentedEnabled = !empty($this->config->undocumented);
 		$deprecatedEnabled = $this->config->deprecated && isset($templates['optional']['deprecated']);
@@ -397,7 +394,7 @@ class Generator extends Nette\Object
 			};
 
 			$undocumented = array();
-			foreach (array('classes', 'interfaces', 'exceptions') as $type) {
+			foreach ($classTypes as $type) {
 				foreach ($$type as $class) {
 					// Check only "documented" classes (except internal - no documentation)
 					if (!$class->isDocumented() || $class->isInternal()) {
@@ -536,7 +533,7 @@ class Generator extends Nette\Object
 			$template->deprecatedMethods = array();
 			$template->deprecatedConstants = array();
 			$template->deprecatedProperties = array();
-			foreach (array('classes', 'interfaces', 'exceptions') as $type) {
+			foreach ($classTypes as $type) {
 				foreach ($$type as $class) {
 					if ($class->isDeprecated()) {
 						continue;
@@ -571,7 +568,7 @@ class Generator extends Nette\Object
 			$template->todoMethods = array();
 			$template->todoConstants = array();
 			$template->todoProperties = array();
-			foreach (array('classes', 'interfaces', 'exceptions') as $type) {
+			foreach ($classTypes as $type) {
 				foreach ($$type as $class) {
 					$template->todoMethods += array_filter($class->getOwnMethods(), $todoFilter);
 					$template->todoConstants += array_filter($class->getOwnConstants(), $todoFilter);
@@ -685,7 +682,7 @@ class Generator extends Nette\Object
 		$fshl = new \fshlParser('HTML_UTF8', P_TAB_INDENT | P_LINE_COUNTER);
 		$this->forceDir($destination . '/' . $templates['main']['class']['filename']);
 		$this->forceDir($destination . '/' . $templates['main']['source']['filename']);
-		foreach (array('exceptions', 'interfaces', 'classes') as $type) {
+		foreach ($classTypes as $type) {
 			foreach ($$type as $class) {
 				$template->package = $class->getPackageName() ?: 'None';
 				$template->namespace = $namespace = $class->getNamespaceName() ?: 'None';
