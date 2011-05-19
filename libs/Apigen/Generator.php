@@ -29,6 +29,13 @@ use TokenReflection\ReflectionAnnotation;
 class Generator extends Nette\Object
 {
 	/**
+	 * Library name.
+	 *
+	 * @var string
+	 */
+	const NAME = 'TR ApiGen';
+
+	/**
 	 * Library version.
 	 *
 	 * @var string
@@ -338,6 +345,7 @@ class Generator extends Nette\Object
 		// Prepare template
 		$template = new Template($this);
 		$template->setCacheStorage(new Nette\Templating\PhpFileStorage($tmp));
+		$template->generator = self::NAME;
 		$template->version = self::VERSION;
 		$template->config = $this->config;
 		$template->deprecated = $deprecatedEnabled;
@@ -762,7 +770,7 @@ class Generator extends Nette\Object
 	 */
 	public static function getHeader()
 	{
-		$name = sprintf('ApiGen %s', self::VERSION);
+		$name = sprintf('%s %s', self::NAME, self::VERSION);
 		return $name . "\n" . str_repeat('-', strlen($name)) . "\n";
 	}
 
