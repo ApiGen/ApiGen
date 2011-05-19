@@ -333,27 +333,6 @@ class Config
 	}
 
 	/**
-	 * Sets a configuration option.
-	 *
-	 * @param string $name Option name
-	 * @param mixed $value Option value
-	 */
-	public function __set($name, $value)
-	{
-		$this->config[$name] = $value;
-	}
-
-	/**
-	 * Deletes a configuration option.
-	 *
-	 * @param string $name Option name
-	 */
-	public function __unset($name)
-	{
-		unset($this->config[$name]);
-	}
-
-	/**
 	 * Returns help.
 	 *
 	 * @return string
