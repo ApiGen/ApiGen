@@ -339,7 +339,7 @@ class Reflection
 		$implementers = array();
 		$name = $this->reflection->getName();
 		foreach (self::$classes as $class) {
-			if (!$class->implementsInterface($name)) {
+			if ($class->isInterface() || !$class->implementsInterface($name)) {
 				continue;
 			}
 			if (null === $class->getParentClassName() || !$class->getParentClass()->implementsInterface($name)) {
@@ -363,7 +363,7 @@ class Reflection
 		$implementers = array();
 		$name = $this->reflection->getName();
 		foreach (self::$classes as $class) {
-			if (!$class->implementsInterface($name)) {
+			if ($class->isInterface() || !$class->implementsInterface($name)) {
 				continue;
 			}
 			if (null !== $class->getParentClassName() && $class->getParentClass()->implementsInterface($name)) {
