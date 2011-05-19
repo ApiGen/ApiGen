@@ -260,15 +260,25 @@ class Generator extends Nette\Object
 			}
 		}
 
-		// Add missing parent namespaces
-		foreach ($namespaces as $name => $namespace) {
+		// Sort classes and namespaces
+		foreach (array_keys($packages) as $packageName) {
+			uksort($packages[$packageName]['classes'], 'strcasecmp');
+			uksort($packages[$packageName]['namespaces'], 'strcasecmp');
+		}
+
+		foreach (array_keys($namespaces) as $namespaceName) {
+			// Add missing parent namespaces
 			$parent = '';
-			foreach (explode('\\', $name) as $part) {
+			foreach (explode('\\', $namespaceName) as $part) {
 				$parent = ltrim($parent . '\\' . $part, '\\');
 				if (!isset($namespaces[$parent])) {
 					$namespaces[$parent] = array('classes' => array(), 'packages' => array());
 				}
 			}
+
+			// Sort classes and packages
+			uksort($namespaces[$namespaceName]['classes'], 'strcasecmp');
+			uksort($namespaces[$namespaceName]['packages'], 'strcasecmp');
 		}
 
 		uksort($packages, 'strcasecmp');
@@ -638,8 +648,6 @@ class Generator extends Nette\Object
 		// Generate package summary
 		$this->forceDir($destination . '/' . $templates['main']['package']['filename']);
 		foreach ($packages as $packageName => $package) {
-			uksort($package['classes'], 'strcasecmp');
-
 			$template->package = $packageName;
 			$template->namespace = null;
 			$template->classes = array_filter($package['classes'], $classFilter);
@@ -654,9 +662,6 @@ class Generator extends Nette\Object
 		// Generate namespace summary
 		$this->forceDir($destination . '/' . $templates['main']['namespace']['filename']);
 		foreach ($namespaces as $namespaceName => $namespace) {
-			uksort($namespace['packages'], 'strcasecmp');
-			uksort($namespace['classes'], 'strcasecmp');
-
 			$template->package = 1 === count($namespace['packages']) ? reset($namespace['packages']) : null;
 			$template->namespace = $namespaceName;
 			$template->classes = array_filter($namespace['classes'], $classFilter);
@@ -673,11 +678,8 @@ class Generator extends Nette\Object
 		$this->forceDir($destination . '/' . $templates['main']['source']['filename']);
 		foreach (array('exceptions', 'interfaces', 'classes') as $type) {
 			foreach ($$type as $class) {
-				$namespace = $class->getNamespaceName() ?: 'None';
-				uksort($namespaces[$namespace]['classes'], 'strcasecmp');
-
 				$template->package = $class->getPackageName() ?: 'None';
-				$template->namespace = $namespace;
+				$template->namespace = $namespace = $class->getNamespaceName() ?: 'None';
 				$template->classes = array_filter($namespaces[$namespace]['classes'], $classFilter);
 				$template->interfaces = array_filter($namespaces[$namespace]['classes'], $interfaceFilter);
 				$template->exceptions = array_filter($namespaces[$namespace]['classes'], $exceptionFilter);
