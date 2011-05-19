@@ -246,10 +246,10 @@ class Template extends Nette\Templating\FileTemplate
 	 * @param string|\Apigen\Reflection $class Class reflection or package name
 	 * @return string
 	 */
-	public function getPackageLink($class)
+	public function getPackageLink($element)
 	{
-		$package = ($class instanceof ApiReflection) ? $class->getPackageName() : $class;
-		return sprintf($this->config->templates['main']['package']['filename'], $package ? preg_replace('#[^a-z0-9_]#i', '.', $package) : 'None');
+		$package = $element instanceof ApiReflection ? $element->getPackageName() ?: 'None' : $element;
+		return sprintf($this->config->templates['main']['package']['filename'], preg_replace('#[^a-z0-9_]#i', '.', $package));
 	}
 
 	/**

@@ -4,7 +4,6 @@ resources:
 templates:
 	common:
 		index.html: overview.latte
-		allclasses.html: package.latte
 		resources/combined.js: combined.js.latte
 
 	main:

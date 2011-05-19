@@ -1,6 +1,6 @@
 {layout '@layout.latte'}
 
-{block #title}{if $namespace}Namespace {$namespace}{else}No namespace{/if}{/block}
+{block #title}{if $namespace != 'None'}Namespace {$namespace}{else}No namespace{/if}{/block}
 
 {block #content}
 <div id="navigation">

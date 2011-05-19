@@ -139,11 +139,7 @@ pre {
 }
 
 #left .active > a:hover {
-    background-color: #006aeb;
-}
-
-#left .all {
-	font-style: italic;
+	background-color: #006aeb;
 }
 
 #left .collapsed {

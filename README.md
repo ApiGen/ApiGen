@@ -44,7 +44,6 @@ Besides, we have made following changes in our ApiGen.
 * Better static files (stylesheets, javascript) versioning.
 * Full sitemap with links to package and namespace pages.
 * Class and interface tables/headings are displayed only if required.
-* Package and namespace lists in the left column are filtered when selecting a package, namespace or class.
 * New version of jQuery.
 * New version of FSHL.
 * Google Analytics support.

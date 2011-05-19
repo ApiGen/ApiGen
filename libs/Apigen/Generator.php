@@ -240,16 +240,15 @@ class Generator extends Nette\Object
 		$exceptions = array();
 		foreach ($this->classes as $class) {
 			if ($class->isDocumented()) {
-				$packageName = $class->getPackageName();
-				$namespaceName = $class->getNamespaceName();
+				$packageName = $class->getPackageName() ?: 'None';
+				$namespaceName = $class->getNamespaceName() ?: 'None';
 				$className = $class->getName();
 
 				$packages[$packageName]['classes'][$className] = $class;
-				if ('' !== $namespaceName) {
-					$packages[$packageName]['namespaces'][$namespaceName] = true;
-					$namespaces[$namespaceName]['classes'][$class->getShortName()] = $class;
-					$namespaces[$namespaceName]['packages'][$packageName] = true;
-				}
+				$packages[$packageName]['namespaces'][$namespaceName] = true;
+
+				$namespaces[$namespaceName]['classes'][$class->getShortName()] = $class;
+				$namespaces[$namespaceName]['packages'][$packageName] = true;
 
 				if ($class->isInterface()) {
 					$interfaces[$className] = $class;
@@ -284,10 +283,6 @@ class Generator extends Nette\Object
 		$sitemapEnabled = !empty($this->config->baseUrl) && isset($templates['optional']['sitemap']);
 		$opensearchEnabled = !empty($this->config->googleCse) && !empty($this->config->baseUrl) && isset($templates['optional']['opensearch']);
 		$autocompleteEnabled = !empty($this->config->googleCse) && isset($templates['optional']['autocomplete']);
-
-		$classFilter = function($class) {return !$class->isInterface() && !$class->isException();};
-		$interfaceFilter = function($class) {return $class->isInterface();};
-		$exceptionFilter = function($class) {return $class->isException();};
 
 		if ($this->config->progressbar) {
 			$max = count($packages)
@@ -329,9 +324,8 @@ class Generator extends Nette\Object
 		$template->todo = $todoEnabled;
 
 		// Generate summary files
-		$namespaceNames = array_keys($namespaces);
 		$template->namespace = null;
-		$template->namespaces = $namespaceNames;
+		$template->namespaces = array_keys($namespaces);
 		$template->package = null;
 		$template->packages = array_keys($packages);
 		$template->class = null;
@@ -637,77 +631,58 @@ class Generator extends Nette\Object
 
 		$this->incrementProgressBar();
 
+		$classFilter = function($class) {return !$class->isInterface() && !$class->isException();};
+		$interfaceFilter = function($class) {return $class->isInterface();};
+		$exceptionFilter = function($class) {return $class->isException();};
+
 		// Generate package summary
 		$this->forceDir($destination . '/' . $templates['main']['package']['filename']);
-		$template->namespace = null;
-		foreach ($packages as $package => $definition) {
-			$pClasses = isset($definition['classes']) ? $definition['classes'] : array();
-			uksort($pClasses, 'strcasecmp');
-			$pNamespaces = isset($definition['namespaces']) ? array_keys($definition['namespaces']) : array();
-			usort($pNamespaces, 'strcasecmp');
-			$template->package = $package;
-			$template->packages = array($package);
-			$template->namespaces = $pNamespaces;
-			$template->classes = array_filter($pClasses, $classFilter);
-			$template->interfaces = array_filter($pClasses, $interfaceFilter);
-			$template->exceptions = array_filter($pClasses, $exceptionFilter);
-			$template->setFile($templatePath . '/' . $templates['main']['package']['template'])->save($destination . '/' . $template->getPackageLink($package));
+		foreach ($packages as $packageName => $package) {
+			uksort($package['classes'], 'strcasecmp');
+
+			$template->package = $packageName;
+			$template->namespace = null;
+			$template->classes = array_filter($package['classes'], $classFilter);
+			$template->interfaces = array_filter($package['classes'], $interfaceFilter);
+			$template->exceptions = array_filter($package['classes'], $exceptionFilter);
+			$template->setFile($templatePath . '/' . $templates['main']['package']['template'])->save($destination . '/' . $template->getPackageLink($packageName));
 
 			$this->incrementProgressBar();
 		}
 		unset($packages);
-		unset($pNamespaces);
-		unset($pClasses);
 
 		// Generate namespace summary
 		$this->forceDir($destination . '/' . $templates['main']['namespace']['filename']);
-		$template->package = null;
-		foreach ($namespaces as $namespace => $definition) {
-			$nClasses = isset($definition['classes']) ? $definition['classes'] : array();
-			uksort($nClasses, 'strcasecmp');
-			$nPackages = isset($definition['packages']) ? array_keys($definition['packages']) : array();
-			usort($nPackages, 'strcasecmp');
-			$template->package = 1 === count($nPackages) ? $nPackages[0] : null;
-			$template->packages = $nPackages;
-			$template->namespace = $namespace;
-			$template->namespaces = array_filter($namespaceNames, function($item) use($namespace) {
-				return strpos($item, $namespace) === 0 || strpos($namespace, $item) === 0;
-			});
-			$template->classes = array_filter($nClasses, $classFilter);
-			$template->interfaces = array_filter($nClasses, $interfaceFilter);
-			$template->exceptions = array_filter($nClasses, $exceptionFilter);
-			$template->setFile($templatePath . '/' . $templates['main']['namespace']['template'])->save($destination . '/' . $template->getNamespaceLink($namespace));
+		foreach ($namespaces as $namespaceName => $namespace) {
+			uksort($namespace['packages'], 'strcasecmp');
+			uksort($namespace['classes'], 'strcasecmp');
+
+			$template->package = 1 === count($namespace['packages']) ? reset($namespace['packages']) : null;
+			$template->namespace = $namespaceName;
+			$template->classes = array_filter($namespace['classes'], $classFilter);
+			$template->interfaces = array_filter($namespace['classes'], $interfaceFilter);
+			$template->exceptions = array_filter($namespace['classes'], $exceptionFilter);
+			$template->setFile($templatePath . '/' . $templates['main']['namespace']['template'])->save($destination . '/' . $template->getNamespaceLink($namespaceName));
 
 			$this->incrementProgressBar();
 		}
-		unset($namespaces);
-		unset($nPackages);
-		unset($nClasses);
 
-		unset($classFilter);
-		unset($interfaceFilter);
-		unset($exceptionFilter);
-
-		// Generate class & interface files
+		// Generate class & interface & exception files
 		$fshl = new \fshlParser('HTML_UTF8', P_TAB_INDENT | P_LINE_COUNTER);
 		$this->forceDir($destination . '/' . $templates['main']['class']['filename']);
 		$this->forceDir($destination . '/' . $templates['main']['source']['filename']);
 		foreach (array('exceptions', 'interfaces', 'classes') as $type) {
 			foreach ($$type as $class) {
-				$template->package = $package = $class->getPackageName();
-				$template->namespace = $namespace = $class->getNamespaceName();
-				if ($namespace) {
-					$template->namespaces = array_filter($namespaceNames, function($item) use($namespace) {
-						return strpos($item, $namespace) === 0 || strpos($namespace, $item) === 0;
-					});
-				} else {
-					$template->namespaces = array();
-				}
-				$template->packages = array($package);
+				$namespace = $class->getNamespaceName() ?: 'None';
+				uksort($namespaces[$namespace]['classes'], 'strcasecmp');
+
+				$template->package = $class->getPackageName() ?: 'None';
+				$template->namespace = $namespace;
+				$template->classes = array_filter($namespaces[$namespace]['classes'], $classFilter);
+				$template->interfaces = array_filter($namespaces[$namespace]['classes'], $interfaceFilter);
+				$template->exceptions = array_filter($namespaces[$namespace]['classes'], $exceptionFilter);
+
 				$template->tree = array_merge(array_reverse($class->getParentClasses()), array($class));
-				$template->classes = !$class->isInterface() && !$class->isException() ? array($class) : array();
-				$template->interfaces = $class->isInterface() ? array($class) : array();
-				$template->exceptions = $class->isException() ? array($class) : array();
 
 				$template->directSubClasses = $class->getDirectSubClasses();
 				uksort($template->directSubClasses, 'strcasecmp');
