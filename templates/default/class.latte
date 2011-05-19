@@ -91,9 +91,7 @@
 		<td class="right" width="1%"><code class="nowrap">
 			{if $method->deprecated}deprecated{/if}
 			{if !$class->interface && $method->abstract}abstract{elseif $method->final}final{/if} {if $method->protected}protected{elseif $method->private}private{else}public{/if} {if $method->static}static{/if}
-			{foreach $template->getTypes($method) as $return}
-				<a href="{$return->class|classLink}" n:tag-if="$return->class">{$return->name}</a>{sep}|{/sep}
-			{/foreach}
+			{foreach $template->getTypes($method) as $return}<a href="{$return->class|classLink}" n:tag-if="$return->class">{$return->name}</a>{sep}|{/sep}{/foreach}
 			{if $method->returnsReference()}&amp;{/if}
 			</code>
 		</td>
@@ -110,9 +108,7 @@
 				{if $parameter->array}array
 				{elseif $parameter->className}<a href="{$parameter->className|classLink}" n:tag-if="$template->resolveClass($parameter->className)">{$parameter->className}</a>
 				{else}
-					{foreach $template->getTypes($method, $parameter->position) as $item}
-						<a href="{$item->class|classLink}" n:tag-if="$item->class">{$item->name}</a>{sep}|{/sep}
-					{/foreach}
+					{foreach $template->getTypes($method, $parameter->position) as $item}<a href="{$item->class|classLink}" n:tag-if="$item->class">{$item->name}</a>{sep}|{/sep}{/foreach}
 				{/if}
 				<var>{if $parameter->passedByReference}&amp; {/if}${$parameter->name}</var>{if $parameter->defaultValueAvailable} = {!$parameter->defaultValueDefinition|highlightPHP}{/if}{sep}, {/sep}
 			{/foreach}
@@ -210,9 +206,7 @@
 		<td class="right" width="1%"><code class="nowrap">
 			{if $constant->deprecated}deprecated{/if}
 			{if $constant->hasAnnotation('var')}
-				{foreach $constant->getAnnotation('var') as $type}
-					{$type}{sep}|{/sep}
-				{/foreach}
+				{foreach $constant->getAnnotation('var') as $type}{$type}{sep}|{/sep}{/foreach}
 			{else}
 				{try}
 				{$constant->value|resolveType}
@@ -271,9 +265,7 @@
 		<td class="right" width="1%"><code class="nowrap">
 			{if $property->deprecated}deprecated{/if}
 			{if $property->protected}protected{elseif $property->private}private{else}public{/if} {if $property->static}static{/if}
-			{foreach $template->getTypes($property) as $return}
-				<a href="{$return->class|classLink}" n:tag-if="$return->class">{$return->name}</a>{sep}|{/sep}
-			{/foreach}
+			{foreach $template->getTypes($property) as $return}<a href="{$return->class|classLink}" n:tag-if="$return->class">{$return->name}</a>{sep}|{/sep}{/foreach}
 		</code></td>
 
 		<td width="1%"><var>
