@@ -244,25 +244,33 @@ class Generator extends Nette\Object
 				$namespaceName = $class->getNamespaceName() ?: 'None';
 				$className = $class->getName();
 
-				$packages[$packageName]['classes'][$className] = $class;
 				$packages[$packageName]['namespaces'][$namespaceName] = true;
-
-				$namespaces[$namespaceName]['classes'][$class->getShortName()] = $class;
 				$namespaces[$namespaceName]['packages'][$packageName] = true;
 
 				if ($class->isInterface()) {
 					$interfaces[$className] = $class;
+					$packages[$packageName]['interfaces'][$className] = $class;
+					$namespaces[$namespaceName]['interfaces'][$class->getShortName()] = $class;
 				} elseif ($class->isException()) {
 					$exceptions[$className] = $class;
+					$packages[$packageName]['exceptions'][$className] = $class;
+					$namespaces[$namespaceName]['exceptions'][$class->getShortName()] = $class;
 				} else {
 					$classes[$className] = $class;
+					$packages[$packageName]['classes'][$className] = $class;
+					$namespaces[$namespaceName]['classes'][$class->getShortName()] = $class;
 				}
 			}
 		}
 
 		// Sort classes and namespaces
 		foreach (array_keys($packages) as $packageName) {
-			uksort($packages[$packageName]['classes'], 'strcasecmp');
+			foreach (array('classes', 'interfaces', 'exceptions') as $type) {
+				if (!isset($packages[$packageName][$type])) {
+					$packages[$packageName][$type] = array();
+				}
+				uksort($packages[$packageName][$type], 'strcasecmp');
+			}
 			uksort($packages[$packageName]['namespaces'], 'strcasecmp');
 		}
 
@@ -272,12 +280,17 @@ class Generator extends Nette\Object
 			foreach (explode('\\', $namespaceName) as $part) {
 				$parent = ltrim($parent . '\\' . $part, '\\');
 				if (!isset($namespaces[$parent])) {
-					$namespaces[$parent] = array('classes' => array(), 'packages' => array());
+					$namespaces[$parent] = array('classes' => array(), 'interfaces' => array(), 'exceptions' => array(), 'packages' => array());
 				}
 			}
 
 			// Sort classes and packages
-			uksort($namespaces[$namespaceName]['classes'], 'strcasecmp');
+			foreach (array('classes', 'interfaces', 'exceptions') as $type) {
+				if (!isset($namespaces[$namespaceName][$type])) {
+					$namespaces[$namespaceName][$type] = array();
+				}
+				uksort($namespaces[$namespaceName][$type], 'strcasecmp');
+			}
 			uksort($namespaces[$namespaceName]['packages'], 'strcasecmp');
 		}
 
@@ -641,18 +654,14 @@ class Generator extends Nette\Object
 
 		$this->incrementProgressBar();
 
-		$classFilter = function($class) {return !$class->isInterface() && !$class->isException();};
-		$interfaceFilter = function($class) {return $class->isInterface();};
-		$exceptionFilter = function($class) {return $class->isException();};
-
 		// Generate package summary
 		$this->forceDir($destination . '/' . $templates['main']['package']['filename']);
 		foreach ($packages as $packageName => $package) {
 			$template->package = $packageName;
 			$template->namespace = null;
-			$template->classes = array_filter($package['classes'], $classFilter);
-			$template->interfaces = array_filter($package['classes'], $interfaceFilter);
-			$template->exceptions = array_filter($package['classes'], $exceptionFilter);
+			$template->classes = $package['classes'];
+			$template->interfaces = $package['interfaces'];
+			$template->exceptions = $package['exceptions'];
 			$template->setFile($templatePath . '/' . $templates['main']['package']['template'])->save($destination . '/' . $template->getPackageLink($packageName));
 
 			$this->incrementProgressBar();
@@ -664,9 +673,9 @@ class Generator extends Nette\Object
 		foreach ($namespaces as $namespaceName => $namespace) {
 			$template->package = 1 === count($namespace['packages']) ? reset($namespace['packages']) : null;
 			$template->namespace = $namespaceName;
-			$template->classes = array_filter($namespace['classes'], $classFilter);
-			$template->interfaces = array_filter($namespace['classes'], $interfaceFilter);
-			$template->exceptions = array_filter($namespace['classes'], $exceptionFilter);
+			$template->classes = $namespace['classes'];
+			$template->interfaces = $namespace['interfaces'];
+			$template->exceptions = $namespace['exceptions'];
 			$template->setFile($templatePath . '/' . $templates['main']['namespace']['template'])->save($destination . '/' . $template->getNamespaceLink($namespaceName));
 
 			$this->incrementProgressBar();
@@ -680,9 +689,9 @@ class Generator extends Nette\Object
 			foreach ($$type as $class) {
 				$template->package = $class->getPackageName() ?: 'None';
 				$template->namespace = $namespace = $class->getNamespaceName() ?: 'None';
-				$template->classes = array_filter($namespaces[$namespace]['classes'], $classFilter);
-				$template->interfaces = array_filter($namespaces[$namespace]['classes'], $interfaceFilter);
-				$template->exceptions = array_filter($namespaces[$namespace]['classes'], $exceptionFilter);
+				$template->classes = $namespaces[$namespace]['classes'];
+				$template->interfaces = $namespaces[$namespace]['interfaces'];
+				$template->exceptions = $namespaces[$namespace]['exceptions'];
 
 				$template->tree = array_merge(array_reverse($class->getParentClasses()), array($class));
 
