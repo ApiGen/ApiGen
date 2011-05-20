@@ -163,7 +163,9 @@ class Template extends Nette\Templating\FileTemplate
 		$this->registerHelper('annotation', function($value, $name, ApiReflection $parent) use ($that) {
 			switch ($name) {
 				case 'package':
-					return '<a href="' . $that->packageLink($value) . '">' . $that->escapeHtml($value) . '</a>';
+					return !$parent->inNamespace()
+						? '<a href="' . $that->packageLink($value) . '">' . $that->escapeHtml($value) . '</a>'
+						: $that->escapeHtml($value);
 				case 'see':
 				case 'uses':
 					return $that->resolveClassLink($value, $parent) ?: $that->docline($value);

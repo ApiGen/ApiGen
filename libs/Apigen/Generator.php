@@ -271,38 +271,47 @@ class Generator extends Nette\Object
 			}
 		}
 
-		foreach (array_keys($packages) as $packageName) {
-			// Add missing class types
-			foreach ($classTypes as $type) {
-				if (!isset($packages[$packageName][$type])) {
-					$packages[$packageName][$type] = array();
-				}
-			}
-			// Sort namespaces
-			uksort($packages[$packageName]['namespaces'], 'strcasecmp');
-		}
-		uksort($packages, 'strcasecmp');
+		// Select only packages or namespaces
+		$userPackages = count(array_diff(array_keys($packages), array('PHP', 'None')));
+		$userNamespaces = count(array_diff(array_keys($namespaces), array('PHP', 'None')));
+		if ($userNamespaces > 0 || 0 === $userPackages) {
+			$packages = array();
 
-		foreach (array_keys($namespaces) as $namespaceName) {
-			// Add missing parent namespaces
-			$parent = '';
-			foreach (explode('\\', $namespaceName) as $part) {
-				$parent = ltrim($parent . '\\' . $part, '\\');
-				if (!isset($namespaces[$parent])) {
-					$namespaces[$parent] = array('classes' => array(), 'interfaces' => array(), 'exceptions' => array(), 'packages' => array());
+			foreach (array_keys($namespaces) as $namespaceName) {
+				// Add missing parent namespaces
+				$parent = '';
+				foreach (explode('\\', $namespaceName) as $part) {
+					$parent = ltrim($parent . '\\' . $part, '\\');
+					if (!isset($namespaces[$parent])) {
+						$namespaces[$parent] = array('classes' => array(), 'interfaces' => array(), 'exceptions' => array(), 'packages' => array());
+					}
 				}
-			}
 
-			// Add missing class types
-			foreach ($classTypes as $type) {
-				if (!isset($namespaces[$namespaceName][$type])) {
-					$namespaces[$namespaceName][$type] = array();
+				// Add missing class types
+				foreach ($classTypes as $type) {
+					if (!isset($namespaces[$namespaceName][$type])) {
+						$namespaces[$namespaceName][$type] = array();
+					}
 				}
+				// Sort packages
+				uksort($namespaces[$namespaceName]['packages'], 'strcasecmp');
 			}
-			// Sort packages
-			uksort($namespaces[$namespaceName]['packages'], 'strcasecmp');
+			uksort($namespaces, 'strcasecmp');
+		} else {
+			$namespaces = array();
+
+			foreach (array_keys($packages) as $packageName) {
+				// Add missing class types
+				foreach ($classTypes as $type) {
+					if (!isset($packages[$packageName][$type])) {
+						$packages[$packageName][$type] = array();
+					}
+				}
+				// Sort namespaces
+				uksort($packages[$packageName]['namespaces'], 'strcasecmp');
+			}
+			uksort($packages, 'strcasecmp');
 		}
-		uksort($namespaces, 'strcasecmp');
 
 		$undocumentedEnabled = !empty($this->config->undocumented);
 		$deprecatedEnabled = $this->config->deprecated && isset($templates['optional']['deprecated']);
@@ -671,12 +680,11 @@ class Generator extends Nette\Object
 
 			$this->incrementProgressBar();
 		}
-		unset($packages);
 
 		// Generate namespace summary
 		$this->forceDir($destination . '/' . $templates['main']['namespace']['filename']);
 		foreach ($namespaces as $namespaceName => $namespace) {
-			$template->package = 1 === count($namespace['packages']) ? reset($namespace['packages']) : null;
+			$template->package = null;
 			$template->namespace = $namespaceName;
 			$template->classes = $namespace['classes'];
 			$template->interfaces = $namespace['interfaces'];
@@ -692,11 +700,19 @@ class Generator extends Nette\Object
 		$this->forceDir($destination . '/' . $templates['main']['source']['filename']);
 		foreach ($classTypes as $type) {
 			foreach ($$type as $class) {
-				$template->package = $class->isInternal() ? 'PHP' : $class->getPackageName() ?: 'None';
-				$template->namespace = $namespace = $class->isInternal() ? 'PHP' : $class->getNamespaceName() ?: 'None';
-				$template->classes = $namespaces[$namespace]['classes'];
-				$template->interfaces = $namespaces[$namespace]['interfaces'];
-				$template->exceptions = $namespaces[$namespace]['exceptions'];
+				if ($packages) {
+					$template->package = $package = $class->isInternal() ? 'PHP' : $class->getPackageName() ?: 'None';
+					$template->namespace = null;
+					$template->classes = $packages[$package]['classes'];
+					$template->interfaces = $packages[$package]['interfaces'];
+					$template->exceptions = $packages[$package]['exceptions'];
+				} else {
+					$template->package = null;
+					$template->namespace = $namespace = $class->isInternal() ? 'PHP' : $class->getNamespaceName() ?: 'None';
+					$template->classes = $namespaces[$namespace]['classes'];
+					$template->interfaces = $namespaces[$namespace]['interfaces'];
+					$template->exceptions = $namespaces[$namespace]['exceptions'];
+				}
 
 				$template->tree = array_merge(array_reverse($class->getParentClasses()), array($class));
 
