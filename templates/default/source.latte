@@ -6,15 +6,15 @@
 {block #content}
 <div id="navigation">
 	<ul>
-		<li><a href="index.html" title="Overview">Overview</a></li>
-		<li n:if="$packages"><a n:tag-if="$package" href="{$package|packageUrl}" title="Summary of {$package}">Package</a></li>
-		<li n:if="$namespaces"><a n:tag-if="$namespace" href="{$namespace|namespaceUrl}" title="Summary of {$namespace}">Namespace</a></li>
-		<li><a href="{$class|classUrl}" title="Summary of {$class->name}">Class</a></li>
+		<li><a href="index.html" title="Overview"><span>Overview</span></a></li>
+		<li n:if="$packages"><a n:tag-if="$package" href="{$package|packageUrl}" title="Summary of {$package}"><span>Package</span></a></li>
+		<li n:if="$namespaces"><a n:tag-if="$namespace" href="{$namespace|namespaceUrl}" title="Summary of {$namespace}"><span>Namespace</span></a></li>
+		<li><a href="{$class|classUrl}" title="Summary of {$class->name}"><span>Class</span></a></li>
 	</ul>
 	<ul>
-		<li><a href="tree.html" title="Tree view of classes, interfaces and exceptions">Tree</a></li>
-		<li n:if="$deprecated"><a href="deprecated.html" title="List of deprecated elements">Deprecated</a></li>
-		<li n:if="$todo"><a href="todo.html" title="Todo list">Todo</a></li>
+		<li><a href="tree.html" title="Tree view of classes, interfaces and exceptions"><span>Tree</span></a></li>
+		<li n:if="$deprecated"><a href="deprecated.html" title="List of deprecated elements"><span>Deprecated</span></a></li>
+		<li n:if="$todo"><a href="todo.html" title="Todo list"><span>Todo</span></a></li>
 	</ul>
 </div>
 

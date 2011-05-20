@@ -141,7 +141,7 @@ pre {
 	font-weight: bold;
 }
 
-#left .active > a:hover {
+#left .active > a:hover, #left .active > a:active, #left .active > a:focus {
 	background-color: #006aeb;
 }
 
@@ -166,9 +166,8 @@ pre {
  *	Navigation
  */
 #search {
-	display: inline;
 	float: right;
-	margin-top: 3px;
+	margin: 3px 8px;
 }
 
 #search input.text {
@@ -185,7 +184,7 @@ pre {
 
 #navigation ul {
 	list-style: none;
-	margin: 2px 0 4px 2px;
+	margin: 0 8px 4px 0px;
 	padding: 0;
 	overflow: hidden;
 	float: left;
@@ -193,36 +192,35 @@ pre {
 
 #navigation ul + ul {
 	border-left: 1px solid #000000;
-	margin-left: 10px;
-	padding-left: 12px;
+	padding-left: 8px;
 }
 
 #navigation ul li {
-	display: inline;
+	float: left;
 	margin: 2px;
-	padding: 0 2px;
+	padding: 0 3px;
 	font-family: Arial, Verdana;
-	color: gray;
+	color: #808080;
+}
+
+#navigation ul li.active {
+	background-color: #053368;
+	color: #ffffff;
+	font-weight: bold;
 }
 
 #navigation ul li a {
 	color: #000000;
 	font-weight: bold;
-	padding: 3px;
+	padding: 0;
 }
-
-#navigation ul li a:hover, #navigation ul li a:active, #navigation ul li a:focus {
-	color: #ffffff;
+#navigation ul li span {
+	float: left;
+	padding: 0 3px;
 }
-
-#navigation ul li.active {
-	background: #053368;
-	color: #ffffff;
-	padding: 3px;
-	font-weight: bold;
+#navigation ul li a:hover span, #navigation ul li a:active span, #navigation ul li a:focus span {
+	background-color: #006aeb;
 }
-
-
 
 /**
  * Content

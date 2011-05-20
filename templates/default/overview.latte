@@ -6,15 +6,15 @@
 {block #content}
 <div id="navigation">
 	<ul>
-		<li class="active">Overview</li>
-		<li n:if="$packages">Package</li>
-		<li n:if="$namespaces">Namespace</li>
-		<li>Class</li>
+		<li class="active"><span>Overview</span></li>
+		<li n:if="$packages"><span>Package</span></li>
+		<li n:if="$namespaces"><span>Namespace</span></li>
+		<li><span>Class</span></li>
 	</ul>
 	<ul>
-		<li><a href="tree.html" title="Tree view of classes, interfaces and exceptions">Tree</a></li>
-		<li n:if="$deprecated"><a href="deprecated.html" title="List of deprecated elements">Deprecated</a></li>
-		<li n:if="$todo"><a href="todo.html" title="Todo list">Todo</a></li>
+		<li><a href="tree.html" title="Tree view of classes, interfaces and exceptions"><span>Tree</span></a></li>
+		<li n:if="$deprecated"><a href="deprecated.html" title="List of deprecated elements"><span>Deprecated</span></a></li>
+		<li n:if="$todo"><a href="todo.html" title="Todo list"><span>Todo</span></a></li>
 	</ul>
 </div>
 
