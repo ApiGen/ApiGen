@@ -22,16 +22,6 @@ h1 {
 	margin: .3em 0;
 }
 
-h2, caption {
-	border: 1px solid #ccc;
-	background: #ecede5;
-	font-weight: bold;
-	font-size: 1.2em;
-	padding: 3px 5px;
-	text-align: left;
-	margin-bottom: 0;
-}
-
 h3 {
 	font-size: 1.6em;
 	font-weight: normal;
@@ -43,6 +33,16 @@ h4 {
 	font-weight: bold;
 	padding: 0;
 	margin: 0;
+}
+
+caption {
+	border: 1px solid #ccc;
+	background: #ecede5;
+	font-weight: bold;
+	font-size: 1.2em;
+	padding: 3px 5px;
+	text-align: left;
+	margin-bottom: 0;
 }
 
 a {

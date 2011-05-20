@@ -190,14 +190,17 @@
 
 
 	{foreach $class->inheritedMethods as $parentName => $methods}
-	<h2>Methods Inherited From <a href="{$parentName|classLink}#methods" n:tag-if="$template->resolveClass($parentName)">{$parentName}</a></h2>
-	<div class="box methods"><code>
+	<table class="summary methods">
+	<caption>Methods Inherited From <a href="{$parentName|classLink}#methods" n:tag-if="$template->resolveClass($parentName)">{$parentName}</a></caption>
+	<tr>
+		<td><code>
 		{foreach $methods as $method}
 			<a href="{$method|methodLink}" n:tag-if="$template->resolveClass($parentName)"><span n:class="$method->deprecated ? deprecated">{$method->name}()</span></a>{sep}, {/sep}
 		{/foreach}
-	</code></div>
+		</code></td>
+	</tr>
+	</table>
 	{/foreach}
-
 
 	<table class="summary" id="constants" n:if="$ownConstants">
 	<caption>Constant Summary</caption>
@@ -247,14 +250,16 @@
 	</table>
 
 	{foreach $class->inheritedConstants as $parentName => $constants}
-	<h2>Constants Inherited From <a href="{$parentName|classLink}#constants" n:tag-if="$template->resolveClass($parentName)">{$parentName}</a></h2>
-	<div class="box constants">
-		<code>
+	<table class="summary constants">
+	<caption>Constants Inherited From <a href="{$parentName|classLink}#constants" n:tag-if="$template->resolveClass($parentName)">{$parentName}</a></caption>
+	<tr>
+		<td><code>
 			{foreach $constants as $constant}
 				<span n:class="$constant->deprecated ? deprecated"><a href="{$constant|constantLink}" n:tag-if="$template->resolveClass($parentName)">{$constant->name}</a></span>{sep}, {/sep}
 			{/foreach}
-		</code>
-	</div>
+		</code></td>
+	</tr>
+	</table>
 	{/foreach}
 
 
@@ -303,14 +308,16 @@
 	</table>
 
 	{foreach $class->inheritedProperties as $parentName => $properties}
-	<h2>Properties Inherited From <a href="{$parentName|classLink}#properties" n:tag-if="$template->resolveClass($parentName)">{$parentName}</a></h2>
-	<div class="box properties">
-		<code>
+	<table class="summary properties">
+	<caption>Properties Inherited From <a href="{$parentName|classLink}#properties" n:tag-if="$template->resolveClass($parentName)">{$parentName}</a></caption>
+	<tr>
+		<td><code>
 			{foreach $properties as $property}
 				<var n:class="$property->deprecated ? deprecated"><a href="{$property|propertyLink}" n:tag-if="$template->resolveClass($parentName)">${$property->name}</a></var>{sep}, {/sep}
 			{/foreach}
-		</code>
-	</div>
+		</code></td>
+	</tr>
+	</table>
 	{/foreach}
 
 </div>
