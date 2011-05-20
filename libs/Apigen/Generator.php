@@ -249,8 +249,8 @@ class Generator extends Nette\Object
 		$exceptions = array();
 		foreach ($this->classes as $className => $class) {
 			if ($class->isDocumented()) {
-				$packageName = $class->getPackageName() ?: 'None';
-				$namespaceName = $class->getNamespaceName() ?: 'None';
+				$packageName = $class->isInternal() ? 'PHP' : $class->getPackageName() ?: 'None';
+				$namespaceName = $class->isInternal() ? 'PHP' : $class->getNamespaceName() ?: 'None';
 
 				$packages[$packageName]['namespaces'][$namespaceName] = true;
 				$namespaces[$namespaceName]['packages'][$packageName] = true;
@@ -692,8 +692,8 @@ class Generator extends Nette\Object
 		$this->forceDir($destination . '/' . $templates['main']['source']['filename']);
 		foreach ($classTypes as $type) {
 			foreach ($$type as $class) {
-				$template->package = $class->getPackageName() ?: 'None';
-				$template->namespace = $namespace = $class->getNamespaceName() ?: 'None';
+				$template->package = $class->isInternal() ? 'PHP' : $class->getPackageName() ?: 'None';
+				$template->namespace = $namespace = $class->isInternal() ? 'PHP' : $class->getNamespaceName() ?: 'None';
 				$template->classes = $namespaces[$namespace]['classes'];
 				$template->interfaces = $namespaces[$namespace]['interfaces'];
 				$template->exceptions = $namespaces[$namespace]['exceptions'];
