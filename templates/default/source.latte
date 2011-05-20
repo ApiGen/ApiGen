@@ -7,9 +7,9 @@
 <div id="navigation">
 	<ul>
 		<li><a href="index.html" title="Summary of all packages">Overview</a></li>
-		<li><a n:tag-if="$package" href="{$package|packageLink}" title="Summary of {$package}">Package</a></li>
-		<li><a n:tag-if="$namespace" href="{$class|namespaceLink}" title="Summary of {$class->namespaceName}">Namespace</a></li>
-		<li><a href="{$class|classLink}" title="Summary of {$class->name}">Class</a></li>
+		<li><a n:tag-if="$package" href="{$package|packageUrl}" title="Summary of {$package}">Package</a></li>
+		<li><a n:tag-if="$namespace" href="{$class|namespaceUrl}" title="Summary of {$class->namespaceName}">Namespace</a></li>
+		<li><a href="{$class|classUrl}" title="Summary of {$class->name}">Class</a></li>
 	</ul>
 	<ul>
 		<li><a href="tree.html" title="Tree view of classes, interfaces and exceptions">Tree</a></li>

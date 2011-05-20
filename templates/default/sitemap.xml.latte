@@ -5,17 +5,17 @@
 </url>
 {foreach $packages as $package}
 <url>
-	<loc>{$config->baseUrl}/{$package|packageLink}</loc>
+	<loc>{$config->baseUrl}/{$package|packageUrl}</loc>
 </url>
 {/foreach}
 {foreach $namespaces as $namespace}
 <url>
-	<loc>{$config->baseUrl}/{$namespace|namespaceLink}</loc>
+	<loc>{$config->baseUrl}/{$namespace|namespaceUrl}</loc>
 </url>
 {/foreach}
 {foreach $classes as $class}
 <url>
-	<loc>{$config->baseUrl}/{$class|classLink}</loc>
+	<loc>{$config->baseUrl}/{$class|classUrl}</loc>
 </url>
 {/foreach}
 </urlset>

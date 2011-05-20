@@ -667,7 +667,7 @@ class Generator extends Nette\Object
 			$template->classes = $package['classes'];
 			$template->interfaces = $package['interfaces'];
 			$template->exceptions = $package['exceptions'];
-			$template->setFile($templatePath . '/' . $templates['main']['package']['template'])->save($destination . '/' . $template->getPackageLink($packageName));
+			$template->setFile($templatePath . '/' . $templates['main']['package']['template'])->save($destination . '/' . $template->getPackageUrl($packageName));
 
 			$this->incrementProgressBar();
 		}
@@ -681,7 +681,7 @@ class Generator extends Nette\Object
 			$template->classes = $namespace['classes'];
 			$template->interfaces = $namespace['interfaces'];
 			$template->exceptions = $namespace['exceptions'];
-			$template->setFile($templatePath . '/' . $templates['main']['namespace']['template'])->save($destination . '/' . $template->getNamespaceLink($namespaceName));
+			$template->setFile($templatePath . '/' . $templates['main']['namespace']['template'])->save($destination . '/' . $template->getNamespaceUrl($namespaceName));
 
 			$this->incrementProgressBar();
 		}
@@ -729,7 +729,7 @@ class Generator extends Nette\Object
 				}
 
 				$template->class = $class;
-				$template->setFile($templatePath . '/' . $templates['main']['class']['template'])->save($destination . '/' . $template->getClassLink($class));
+				$template->setFile($templatePath . '/' . $templates['main']['class']['template'])->save($destination . '/' . $template->getClassUrl($class));
 
 				$this->incrementProgressBar();
 
@@ -739,7 +739,7 @@ class Generator extends Nette\Object
 					$source = str_replace(array("\r\n", "\r"), "\n", $source);
 
 					$template->source = $fshl->highlightString('PHP', $source);
-					$template->setFile($templatePath . '/' . $templates['main']['source']['template'])->save($destination . '/' . $template->getSourceLink($class, false));
+					$template->setFile($templatePath . '/' . $templates['main']['source']['template'])->save($destination . '/' . $template->getSourceUrl($class, false));
 
 					$this->incrementProgressBar();
 				}
