@@ -271,7 +271,6 @@ class Generator extends Nette\Object
 			}
 		}
 
-		uksort($packages, 'strcasecmp');
 		foreach (array_keys($packages) as $packageName) {
 			// Add missing class types
 			foreach ($classTypes as $type) {
@@ -282,8 +281,8 @@ class Generator extends Nette\Object
 			// Sort namespaces
 			uksort($packages[$packageName]['namespaces'], 'strcasecmp');
 		}
+		uksort($packages, 'strcasecmp');
 
-		uksort($namespaces, 'strcasecmp');
 		foreach (array_keys($namespaces) as $namespaceName) {
 			// Add missing parent namespaces
 			$parent = '';
@@ -303,6 +302,7 @@ class Generator extends Nette\Object
 			// Sort packages
 			uksort($namespaces[$namespaceName]['packages'], 'strcasecmp');
 		}
+		uksort($namespaces, 'strcasecmp');
 
 		$undocumentedEnabled = !empty($this->config->undocumented);
 		$deprecatedEnabled = $this->config->deprecated && isset($templates['optional']['deprecated']);
