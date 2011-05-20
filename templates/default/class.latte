@@ -20,7 +20,7 @@
 <div id="content">
 	<div id="classSummary">
 		<p n:if="$class->internal">PHP – {$class->extension->name|ucfirst}</p>
-		<p n:if="$class->inNamespace()">Namespace <a href="{$class|namespaceUrl}">{$class->namespaceName}</a></p>
+		<p n:if="$class->inNamespace()">Namespace {!$class->namespaceName|namespaceLinks}</p>
 
 		<h1>{include #title}</h1>
 

@@ -77,7 +77,7 @@ class Template extends Nette\Templating\FileTemplate
 			return $that->highlightPHP(preg_replace('#^(?:[ ]{4}|\t)#m', '', $definition));
 		});
 
-		// links
+		// url
 		$this->registerHelper('packageUrl', new Nette\Callback($this, 'getPackageUrl'));
 		$this->registerHelper('namespaceUrl', new Nette\Callback($this, 'getNamespaceUrl'));
 		$this->registerHelper('classUrl', new Nette\Callback($this, 'getClassUrl'));
@@ -86,6 +86,8 @@ class Template extends Nette\Templating\FileTemplate
 		$this->registerHelper('constantUrl', new Nette\Callback($this, 'getConstantUrl'));
 		$this->registerHelper('sourceUrl', new Nette\Callback($this, 'getSourceUrl'));
 		$this->registerHelper('manualUrl', new Nette\Callback($this, 'getManualUrl'));
+
+		$this->registerHelper('namespaceLinks', new Nette\Callback($this, 'getNamespaceLinks'));
 
 		// types
 		$this->registerHelper('getTypes', new Nette\Callback($this, 'getTypes'));
@@ -228,6 +230,28 @@ class Template extends Nette\Templating\FileTemplate
 			}
 			return $name;
 		});
+	}
+
+	/**
+	 * Returns links for namespace and its parent namespaces.
+	 *
+	 * @param string $namespace
+	 * @param boolean $last
+	 * @return string
+	 */
+	public function getNamespaceLinks($namespace, $last = true)
+	{
+		$links = array();
+
+		$parent = '';
+		foreach (explode('\\', $namespace) as $part) {
+			$parent = ltrim($parent . '\\' . $part, '\\');
+			$links[] = $last || $parent !== $namespace
+				? '<a href="' . $this->getNamespaceUrl($parent) . '">' . $this->escapeHtml($part) . '</a>'
+				: $this->escapeHtml($part);
+		}
+
+		return implode('\\', $links);
 	}
 
 	/**

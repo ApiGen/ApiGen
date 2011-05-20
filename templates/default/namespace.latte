@@ -17,7 +17,7 @@
 </div>
 
 <div id="content">
-	<h1>{include #title}</h1>
+	<h1>{if $namespace != 'None'}Namespace {!$namespace|namespaceLinks:false}{else}No namespace{/if}</h1>
 
 	{include '@classlist.latte'}
 </div>

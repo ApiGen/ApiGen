@@ -50,6 +50,9 @@ a {
 	padding: 3px 1px;
 	text-decoration: none;
 }
+h1 a {
+	color: #1e5eb6;
+}
 
 a:hover, a:active, a:focus {
 	background-color: #006aeb;
