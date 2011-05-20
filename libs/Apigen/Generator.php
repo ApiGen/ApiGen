@@ -252,9 +252,6 @@ class Generator extends Nette\Object
 				$packageName = $class->isInternal() ? 'PHP' : $class->getPackageName() ?: 'None';
 				$namespaceName = $class->isInternal() ? 'PHP' : $class->getNamespaceName() ?: 'None';
 
-				$packages[$packageName]['namespaces'][$namespaceName] = true;
-				$namespaces[$namespaceName]['packages'][$packageName] = true;
-
 				if ($class->isInterface()) {
 					$interfaces[$className] = $class;
 					$packages[$packageName]['interfaces'][$className] = $class;
@@ -288,7 +285,7 @@ class Generator extends Nette\Object
 				foreach (explode('\\', $namespaceName) as $part) {
 					$parent = ltrim($parent . '\\' . $part, '\\');
 					if (!isset($namespaces[$parent])) {
-						$namespaces[$parent] = array('classes' => array(), 'interfaces' => array(), 'exceptions' => array(), 'packages' => array());
+						$namespaces[$parent] = array('classes' => array(), 'interfaces' => array(), 'exceptions' => array());
 					}
 				}
 
@@ -298,8 +295,6 @@ class Generator extends Nette\Object
 						$namespaces[$namespaceName][$type] = array();
 					}
 				}
-				// Sort packages
-				uksort($namespaces[$namespaceName]['packages'], 'strcasecmp');
 			}
 			uksort($namespaces, 'strcasecmp');
 		} else {
@@ -312,8 +307,6 @@ class Generator extends Nette\Object
 						$packages[$packageName][$type] = array();
 					}
 				}
-				// Sort namespaces
-				uksort($packages[$packageName]['namespaces'], 'strcasecmp');
 			}
 			uksort($packages, 'strcasecmp');
 		}
