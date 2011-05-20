@@ -8,7 +8,7 @@
 	<ul>
 		<li><a href="index.html" title="Overview">Overview</a></li>
 		<li n:if="$packages"><a n:tag-if="$package" href="{$package|packageLink}" title="Summary of {$package}">Package</a></li>
-		<li n:if="$namespaces"><a n:tag-if="$namespace" href="{$namespace}" title="Summary of {$namespace}">Namespace</a></li>
+		<li n:if="$namespaces"><a n:tag-if="$namespace" href="{$namespace|namespaceLink}" title="Summary of {$namespace}">Namespace</a></li>
 		<li><a href="{$class|classLink}" title="Summary of {$class->name}">Class</a></li>
 	</ul>
 	<ul>
