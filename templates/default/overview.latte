@@ -38,5 +38,9 @@
 	</tr>
 	{/foreach}
 	</table>
+
+	{if !$packages && !$namespaces}
+	{include '@classlist.latte'}
+	{/if}
 </div>
 {/block}

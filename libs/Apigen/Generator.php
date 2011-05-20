@@ -277,6 +277,11 @@ class Generator extends Nette\Object
 		if ($userNamespaces > 0 || 0 === $userPackages) {
 			$packages = array();
 
+			// Don't generate only 'None' namespace
+			if (1 === count($namespaces) && isset($namespaces['None'])) {
+				$namespaces = array();
+			}
+
 			foreach (array_keys($namespaces) as $namespaceName) {
 				// Add missing parent namespaces
 				$parent = '';
@@ -698,16 +703,19 @@ class Generator extends Nette\Object
 		$fshl = new \fshlParser('HTML_UTF8', P_TAB_INDENT | P_LINE_COUNTER);
 		$this->forceDir($destination . '/' . $templates['main']['class']['filename']);
 		$this->forceDir($destination . '/' . $templates['main']['source']['filename']);
+		$template->package = null;
+		$template->namespace = null;
+		$template->classes = $classes;
+		$template->interfaces = $interfaces;
+		$template->exceptions = $exceptions;
 		foreach ($classTypes as $type) {
 			foreach ($$type as $class) {
 				if ($packages) {
 					$template->package = $package = $class->isInternal() ? 'PHP' : $class->getPackageName() ?: 'None';
-					$template->namespace = null;
 					$template->classes = $packages[$package]['classes'];
 					$template->interfaces = $packages[$package]['interfaces'];
 					$template->exceptions = $packages[$package]['exceptions'];
-				} else {
-					$template->package = null;
+				} elseif ($namespaces) {
 					$template->namespace = $namespace = $class->isInternal() ? 'PHP' : $class->getNamespaceName() ?: 'None';
 					$template->classes = $namespaces[$namespace]['classes'];
 					$template->interfaces = $namespaces[$namespace]['interfaces'];
