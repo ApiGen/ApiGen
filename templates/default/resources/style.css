@@ -235,13 +235,13 @@ pre {
 	margin: 0;
 }
 
-.classDescription {
+.description {
 	background: #ecede5;
 	padding: 1px 8px;
 	margin: 1.2em 0;
 }
 
-.classDescription pre {
+.description pre {
 	margin: .5em 0;
 	padding: .6em;
 	background: #fcfcf7;
@@ -256,7 +256,7 @@ dl.tree dd {
 	padding: 0;
 }
 
-.classInfo {
+.info {
 	margin: 1.2em 0;
 }
 

@@ -120,5 +120,21 @@
 	</tr>
 	{/foreach}
 	</table>
+
+	<table class="summary" id="functions" n:if="$deprecatedFunctions">
+	<caption>Functions summary</caption>
+	{foreach $deprecatedFunctions as $function}
+	<tr>
+		<td width="1%"><code><a href="{$function|functionUrl}"><b>{$function->name}()</b></a></code></td>
+		<td>
+			{foreach $function->annotations['deprecated'] as $description}
+				{if $description}
+					{!$description|docline|resolveLinks:$function}<br>
+				{/if}
+			{/foreach}
+		</td>
+	</tr>
+	{/foreach}
+	</table>
 </div>
 {/block}

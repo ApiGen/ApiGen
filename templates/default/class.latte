@@ -18,69 +18,67 @@
 </div>
 
 <div id="content">
-	<div id="classSummary">
-		<p n:if="$class->internal">PHP – {$class->extension->name|ucfirst}</p>
-		<p n:if="$class->inNamespace()">Namespace {!$class->namespaceName|namespaceLinks}</p>
+	<p n:if="$class->internal">PHP – {$class->extension->name|ucfirst}</p>
+	<p n:if="$class->inNamespace()">Namespace {!$class->namespaceName|namespaceLinks}</p>
 
-		<h1>{include #title}</h1>
+	<h1>{include #title}</h1>
 
-		<div class="classDescription" n:if="$class->docComment">
-		{!$class|longDescription|docblock|resolveLinks:$class}
-		</div>
+	<div class="description" n:if="$class->docComment">
+	{!$class|longDescription|docblock|resolveLinks:$class}
+	</div>
 
-		<dl class="tree" n:if="$class->parentClass || $class->ownInterfaces">
-			{foreach $tree as $item}
-			<dd style="padding-left:{=($iterator->counter - 1) * 30}px">
-				<img src="resources/inherit.gif" alt="Extended by" n:if="$iterator->counter > 1">
-				{if $item->documented}
-				<a href="{$item|classUrl}" n:tag-if="!$iterator->last">{last}<b>{/last}{$item->name}{last}</b>{/last}</a>
-				{else}{$item->name}{/if}
-				{var $itemOwnInterfaces = $item->ownInterfaces}
-				{if $itemOwnInterfaces} implements {foreach $itemOwnInterfaces as $interface}
-					<a href="{$interface|classUrl}" n:tag-if="$interface->documented">{$interface->name}</a>{sep}, {/sep}
-				{/foreach}{/if}
-			</dd>
+	<dl class="tree" n:if="$class->parentClass || $class->ownInterfaces">
+		{foreach $tree as $item}
+		<dd style="padding-left:{=($iterator->counter - 1) * 30}px">
+			<img src="resources/inherit.gif" alt="Extended by" n:if="$iterator->counter > 1">
+			{if $item->documented}
+			<a href="{$item|classUrl}" n:tag-if="!$iterator->last">{last}<b>{/last}{$item->name}{last}</b>{/last}</a>
+			{else}{$item->name}{/if}
+			{var $itemOwnInterfaces = $item->ownInterfaces}
+			{if $itemOwnInterfaces} implements {foreach $itemOwnInterfaces as $interface}
+				<a href="{$interface|classUrl}" n:tag-if="$interface->documented">{$interface->name}</a>{sep}, {/sep}
+			{/foreach}{/if}
+		</dd>
+		{/foreach}
+	</dl>
+
+	<div n:if="$directSubClasses">
+		<h4>Direct Known Subclasses</h4>
+		{foreach $directSubClasses as $item}
+			<a href="{$item|classUrl}" n:tag-if="$item->documented">{$item->name}</a>{sep}, {/sep}
+		{/foreach}
+	</div>
+
+	<div n:if="$indirectSubClasses">
+		<h4>Indirect Known Subclasses</h4>
+		{foreach $indirectSubClasses as $item}
+			<a href="{$item|classUrl}" n:tag-if="$item->documented">{$item->name}</a>{sep}, {/sep}
+		{/foreach}
+	</div>
+
+	<div n:if="$directImplementers">
+		<h4>Direct Known Implementers</h4>
+		{foreach $directImplementers as $item}
+			<a href="{$item|classUrl}" n:tag-if="$item->documented">{$item->name}</a>{sep}, {/sep}
+		{/foreach}
+	</div>
+
+	<div n:if="$indirectImplementers">
+		<h4>Indirect Known Implementers</h4>
+		{foreach $indirectImplementers as $item}
+			<a href="{$item|classUrl}" n:tag-if="$item->documented">{$item->name}</a>{sep}, {/sep}
+		{/foreach}
+	</div>
+
+	<div class="info">
+		{if $class->abstract || $class->final}<b>{if $class->abstract}Abstract{else}Final{/if} {if $class->interface}Interface{else}Class{/if}</b><br>{/if}
+		{foreach $template->annotationSort($template->annotationFilter($class->annotations)) as $annotation => $values}
+			{foreach $values as $value}
+				<b>{$annotation|ucfirst}{if $value}:{/if}</b>
+				{!$value|annotation:$annotation:$class}<br>
 			{/foreach}
-		</dl>
-
-		<div n:if="$directSubClasses">
-			<h4>Direct Known Subclasses</h4>
-			{foreach $directSubClasses as $item}
-				<a href="{$item|classUrl}" n:tag-if="$item->documented">{$item->name}</a>{sep}, {/sep}
-			{/foreach}
-		</div>
-
-		<div n:if="$indirectSubClasses">
-			<h4>Indirect Known Subclasses</h4>
-			{foreach $indirectSubClasses as $item}
-				<a href="{$item|classUrl}" n:tag-if="$item->documented">{$item->name}</a>{sep}, {/sep}
-			{/foreach}
-		</div>
-
-		<div n:if="$directImplementers">
-			<h4>Direct Known Implementers</h4>
-			{foreach $directImplementers as $item}
-				<a href="{$item|classUrl}" n:tag-if="$item->documented">{$item->name}</a>{sep}, {/sep}
-			{/foreach}
-		</div>
-
-		<div n:if="$indirectImplementers">
-			<h4>Indirect Known Implementers</h4>
-			{foreach $indirectImplementers as $item}
-				<a href="{$item|classUrl}" n:tag-if="$item->documented">{$item->name}</a>{sep}, {/sep}
-			{/foreach}
-		</div>
-
-		<div class="classInfo">
-			{if $class->abstract || $class->final}<b>{if $class->abstract}Abstract{else}Final{/if} {if $class->interface}Interface{else}Class{/if}</b><br>{/if}
-			{foreach $template->annotationSort($template->annotationFilter($class->annotations)) as $annotation => $values}
-				{foreach $values as $value}
-					<b>{$annotation|ucfirst}{if $value}:{/if}</b>
-					{!$value|annotation:$annotation:$class}<br>
-				{/foreach}
-			{/foreach}
-			{if $class->internal}<b>Documented at</b> <a href="{$class|manualUrl}">php.net</a>{else}<b>Located at</b> <a n:tag-if="$config->sourceCode" href="{$class|sourceUrl}">{$fileName}</a>{/if}<br>
-		</div>
+		{/foreach}
+		{if $class->internal}<b>Documented at</b> <a href="{$class|manualUrl}">php.net</a>{else}<b>Located at</b> <a n:tag-if="$config->sourceCode" href="{$class|sourceUrl}">{$fileName}</a>{/if}<br>
 	</div>
 
 

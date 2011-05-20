@@ -27,3 +27,13 @@
 </tr>
 {/foreach}
 </table>
+
+<table class="summary" id="functions" n:if="$functions">
+<caption>Functions summary</caption>
+{foreach $functions as $function}
+<tr>
+	<td class="nowrap" width="20%"><a href="{$function|functionUrl}">{if $namespace}{$function->shortName}{else}{$function->name}{/if}</a></td>
+	<td>{!$function|shortDescription|docline|resolveLinks:$function}</td>
+</tr>
+{/foreach}
+</table>

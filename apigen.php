@@ -81,8 +81,8 @@ try {
 	} elseif (!empty($config->exclude)) {
 		$generator->output(sprintf("Excluding %s\n", $config->exclude[0]));
 	}
-	list($count, $countInternal) = $generator->parse();
-	$generator->output(sprintf("Found %d classes and other %d used internal classes\n", $count, $countInternal));
+	list($countClasses, $countFunctions, $countClassesInternal) = $generator->parse();
+	$generator->output(sprintf("Found %d classes, %d functions and other %d used internal classes\n", $countClasses, $countFunctions, $countClassesInternal));
 
 	// Generating
 	$generator->output(sprintf("Searching template in %s\n", $config->templateDir));

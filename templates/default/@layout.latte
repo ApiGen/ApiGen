@@ -9,8 +9,8 @@
 
 	{var combined_js => 'resources/combined.js'}
 	<script type="text/javascript" src="{$combined_js|staticFile}"></script>
-	{var allclasses_js => 'allclasses.js'}
-	<script n:if="$config->googleCse" type="text/javascript" src="{$allclasses_js|staticFile}"></script>
+	{var elementlist_js => 'elementlist.js'}
+	<script n:if="$config->googleCse" type="text/javascript" src="{$elementlist_js|staticFile}"></script>
 	{var style_css => 'resources/style.css'}
 	<link rel="stylesheet" type="text/css" media="all" href="{$style_css|staticFile}">
 	<link n:if="$config->googleCse" rel="search" type="application/opensearchdescription+xml" title="{$config->title}" href="{$config->baseUrl}/opensearch.xml">
@@ -87,6 +87,15 @@
 		<ul>
 		{foreach $exceptions as $item}
 			<li n:class="$class === $item ? active"><a href="{$item|classUrl}">{if $namespace}{$item->shortName}{else}{$item->name}{/if}</a></li>
+		{/foreach}
+		</ul>
+		{/if}
+
+		{if $functions}
+		<h3>Functions</h3>
+		<ul>
+		{foreach $functions as $item}
+			<li n:class="$function === $item ? active"><a href="{$item|functionUrl}">{if $namespace}{$item->shortName}{else}{$item->name}{/if}</a></li>
 		{/foreach}
 		</ul>
 		{/if}
