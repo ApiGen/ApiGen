@@ -7,8 +7,8 @@
 <div id="navigation">
 	<ul>
 		<li class="active">Overview</li>
-		<li>Package</li>
-		<li>Namespace</li>
+		<li n:if="$packages">Package</li>
+		<li n:if="$namespaces">Namespace</li>
 		<li>Class</li>
 	</ul>
 	<ul>
@@ -38,5 +38,9 @@
 	</tr>
 	{/foreach}
 	</table>
+
+	{if !$packages && !$namespaces}
+	{include '@classlist.latte'}
+	{/if}
 </div>
 {/block}
