@@ -179,7 +179,7 @@
 			{var $prototype = $method->prototype}
 			{if $prototype->declaringClass->interface}
 				<h4>Implementation of</h4>
-				<div class="smallList"><code><a href="{$prototype|methodUrl}">{$prototype->declaringClass->name}::{$prototype->name}</a></code></div>
+				<div class="smallList"><code><a n:tag-if="$template->resolveClass($prototype->declaringClassName)" href="{$prototype|methodUrl}">{$prototype->declaringClassName}::{$prototype->name}</a></code></div>
 			{/if}
 			{/try}
 		</div>
