@@ -85,7 +85,7 @@
 
 
 	<table class="summary" id="methods" n:if="$ownMethods">
-	<caption>Method Summary</caption>
+	<caption>Methods summary</caption>
 	{foreach $ownMethods as $method}
 	<tr data-order="{$method->name}" id="_{$method->name}" n:class="$method->deprecated ? deprecated">
 		<td class="right" width="1%"><code class="nowrap">
@@ -203,7 +203,7 @@
 	{/foreach}
 
 	<table class="summary" id="constants" n:if="$ownConstants">
-	<caption>Constant Summary</caption>
+	<caption>Constants summary</caption>
 	{foreach $ownConstants as $name => $constant}
 	<tr data-order="{$name}" id="{$name}" n:class="$constant->deprecated ? deprecated">
 		<td class="right" width="1%"><code class="nowrap">
@@ -264,7 +264,7 @@
 
 
 	<table class="summary" id="properties" n:if="$ownProperties">
-	<caption>Property Summary</caption>
+	<caption>Properties summary</caption>
 	{foreach $ownProperties as $property}
 	<tr data-order="{$property->name}" id="${$property->name}" n:class="$property->deprecated ? deprecated">
 		<td class="right" width="1%"><code class="nowrap">
