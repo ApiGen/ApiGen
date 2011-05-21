@@ -302,8 +302,12 @@ tr:hover td {
 	background: #f6f6f4;
 }
 
-tr .detailed {
+.detailed {
 	display: none;
+}
+
+.detailed h4 {
+	margin-top: 5px;
 }
 
 .deprecated {
@@ -311,14 +315,6 @@ tr .detailed {
 }
 .right {
 	text-align: right;
-}
-
-.box {
-	border: 1px solid #cccccc;
-	border-top: none;
-	margin-bottom: 2.4em;
-	padding: 3px 1em;
-	font-size: 95%;
 }
 
 .position {
@@ -336,9 +332,8 @@ tr .detailed {
 	color: #006aeb !important;
 }
 
-div.smallList {
-	padding:0 0 10px 25px;
-	margin:0;
+.smallList {
+	margin: 0 0 5px 25px;
 }
 
 
