@@ -736,7 +736,12 @@ class Generator extends Nette\Object
 					$file = $class->getFileName();
 					foreach ($this->config->source as $source) {
 						if (0 === strpos($file, $source)) {
-							$template->fileName = str_replace('\\', '/', substr($file, strlen($source) + 1));
+							if (is_dir($source)) {
+								$template->fileName = str_replace('\\', '/', substr($file, strlen($source) + 1));
+							} else {
+								$template->fileName = basename($file);
+							}
+
 							break;
 						}
 					}
