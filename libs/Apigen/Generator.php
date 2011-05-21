@@ -383,8 +383,13 @@ class Generator extends Nette\Object
 			$this->incrementProgressBar();
 		}
 		if ($autocompleteEnabled) {
+			$template->elements = array_keys(array_merge($classes, $interfaces, $exceptions));
+			usort($template->elements, 'strcasecmp');
+
 			$template->setFile($templatePath . '/' . $templates['optional']['autocomplete']['template'])->save($this->forceDir($destination . '/' . $templates['optional']['autocomplete']['filename']));
 			$this->incrementProgressBar();
+
+			unset($template->elements);
 		}
 
 		// List of undocumented elements

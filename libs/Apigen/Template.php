@@ -62,10 +62,6 @@ class Template extends Nette\Templating\FileTemplate
 		// common operations
 		$this->registerHelperLoader('Nette\Templating\DefaultHelpers::loader');
 		$this->registerHelper('ucfirst', 'ucfirst');
-		$this->registerHelper('values', 'array_values');
-		$this->registerHelper('map', function($arr, $callback) {
-			return array_map(create_function('$value', $callback), $arr);
-		});
 		$this->registerHelper('replaceRE', 'Nette\Utils\Strings::replace');
 
 		// PHP source highlight

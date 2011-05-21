@@ -18,4 +18,14 @@
 	<loc>{$config->baseUrl}/{$class|classUrl}</loc>
 </url>
 {/foreach}
+{foreach $interfaces as $interface}
+<url>
+	<loc>{$config->baseUrl}/{$interface|classUrl}</loc>
+</url>
+{/foreach}
+{foreach $exceptions as $exception}
+<url>
+	<loc>{$config->baseUrl}/{$exception|classUrl}</loc>
+</url>
+{/foreach}
 </urlset>
