@@ -14,9 +14,9 @@
 namespace Apigen;
 
 use Nette;
-use Apigen\Reflection as ApiReflection, Apigen\Exception, Apigen\Config, Apigen\Template, Apigen\Backend;
+use Apigen\Exception, Apigen\Config, Apigen\Template, Apigen\Backend;
 use TokenReflection\Broker;
-use TokenReflection\IReflectionClass as ReflectionClass, TokenReflection\IReflectionProperty as ReflectionProperty, TokenReflection\IReflectionMethod as ReflectionMethod, TokenReflection\IReflectionConstant as ReflectionConstant, TokenReflection\IReflectionParameter as ReflectionParameter;
+use Apigen\Reflection as ReflectionClass, TokenReflection\IReflectionProperty as ReflectionProperty, TokenReflection\IReflectionMethod as ReflectionMethod, TokenReflection\IReflectionConstant as ReflectionConstant, TokenReflection\IReflectionParameter as ReflectionParameter;
 use TokenReflection\ReflectionAnnotation;
 
 /**
@@ -125,7 +125,7 @@ class Generator extends Nette\Object
 
 		$this->classes = new \ArrayObject();
 		foreach ($broker->getClasses(Backend::TOKENIZED_CLASSES | Backend::INTERNAL_CLASSES | Backend::NONEXISTENT_CLASSES) as $className => $class) {
-			$this->classes->offsetSet($className, new ApiReflection($class, $this));
+			$this->classes->offsetSet($className, new ReflectionClass($class, $this));
 		}
 		$this->classes->uksort('strcasecmp');
 
@@ -335,7 +335,7 @@ class Generator extends Nette\Object
 			;
 
 			if ($this->config->sourceCode) {
-				$tokenizedFilter = function(ApiReflection $class) {return $class->isTokenized();};
+				$tokenizedFilter = function(ReflectionClass $class) {return $class->isTokenized();};
 				$max += count(array_filter($classes, $tokenizedFilter))
 					+ count(array_filter($interfaces, $tokenizedFilter))
 					+ count(array_filter($exceptions, $tokenizedFilter));
@@ -395,7 +395,7 @@ class Generator extends Nette\Object
 		// List of undocumented elements
 		if ($undocumentedEnabled) {
 			$label = function($element) {
-				if ($element instanceof ApiReflection) {
+				if ($element instanceof ReflectionClass) {
 					return 'Class';
 				} elseif ($element instanceof ReflectionMethod) {
 					return sprintf('Method %s()', $element->getName());

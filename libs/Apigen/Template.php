@@ -14,8 +14,8 @@
 namespace Apigen;
 
 use Nette;
-use Apigen\Reflection as ApiReflection, Apigen\Generator;
-use TokenReflection\IReflectionClass as ReflectionClass, TokenReflection\IReflectionProperty as ReflectionProperty, TokenReflection\IReflectionMethod as ReflectionMethod, TokenReflection\IReflectionConstant as ReflectionConstant, TokenReflection\IReflectionParameter as ReflectionParameter;
+use Apigen\Generator;
+use Apigen\Reflection as ReflectionClass, TokenReflection\IReflectionProperty as ReflectionProperty, TokenReflection\IReflectionMethod as ReflectionMethod, TokenReflection\IReflectionConstant as ReflectionConstant, TokenReflection\IReflectionParameter as ReflectionParameter;
 use TokenReflection\ReflectionAnnotation, TokenReflection\ReflectionBase;
 
 /**
@@ -158,7 +158,7 @@ class Template extends Nette\Templating\FileTemplate
 		});
 
 		// individual annotations processing
-		$this->registerHelper('annotation', function($value, $name, ApiReflection $parent) use ($that) {
+		$this->registerHelper('annotation', function($value, $name, ReflectionClass $parent) use ($that) {
 			switch ($name) {
 				case 'package':
 					return !$parent->inNamespace()
@@ -258,7 +258,7 @@ class Template extends Nette\Templating\FileTemplate
 	 */
 	public function getNamespaceUrl($class)
 	{
-		$namespace = ($class instanceof ApiReflection) ? $class->getNamespaceName() : $class;
+		$namespace = ($class instanceof ReflectionClass) ? $class->getNamespaceName() : $class;
 		return sprintf($this->config->templates['main']['namespace']['filename'], $namespace ? preg_replace('#[^a-z0-9_]#i', '.', $namespace) : 'None');
 	}
 
@@ -270,7 +270,7 @@ class Template extends Nette\Templating\FileTemplate
 	 */
 	public function getPackageUrl($element)
 	{
-		$package = $element instanceof ApiReflection ? $element->getPackageName() ?: 'None' : $element;
+		$package = $element instanceof ReflectionClass ? $element->getPackageName() ?: 'None' : $element;
 		return sprintf($this->config->templates['main']['package']['filename'], preg_replace('#[^a-z0-9_]#i', '.', $package));
 	}
 
@@ -282,7 +282,7 @@ class Template extends Nette\Templating\FileTemplate
 	 */
 	public function getClassUrl($class)
 	{
-		if ($class instanceof ApiReflection) {
+		if ($class instanceof ReflectionClass) {
 			$class = $class->getName();
 		}
 
@@ -331,7 +331,7 @@ class Template extends Nette\Templating\FileTemplate
 	 */
 	public function getSourceUrl($element, $withLine = true)
 	{
-		$class = $element instanceof ApiReflection ? $element : $element->getDeclaringClass();
+		$class = $element instanceof ReflectionClass ? $element : $element->getDeclaringClass();
 
 		$file = str_replace('\\', '/', $class->getName());
 
@@ -357,7 +357,7 @@ class Template extends Nette\Templating\FileTemplate
 		static $manual = 'http://php.net/manual';
 		static $reservedClasses = array('stdClass', 'Closure', 'Directory');
 
-		$class = $element instanceof ApiReflection ? $element : $element->getDeclaringClass();
+		$class = $element instanceof ReflectionClass ? $element : $element->getDeclaringClass();
 
 		if (in_array($class->getName(), $reservedClasses)) {
 			return $manual . '/reserved.classes.php';
@@ -367,7 +367,7 @@ class Template extends Nette\Templating\FileTemplate
 		$classUrl = sprintf('%s/class.%s.php', $manual, $className);
 		$elementName = strtolower(strtr(ltrim($element->getName(), '_'), '_', '-'));
 
-		if ($element instanceof ApiReflection) {
+		if ($element instanceof ReflectionClass) {
 			return $classUrl;
 		} elseif ($element instanceof ReflectionMethod) {
 			return sprintf('%s/%s.%s.php', $manual, $className, $elementName);
@@ -490,7 +490,7 @@ class Template extends Nette\Templating\FileTemplate
 	 */
 	public function resolveLinks($text, $element)
 	{
-		$class = $element instanceof ApiReflection ? $element : $this->classes[$element->getDeclaringClassName()];
+		$class = $element instanceof ReflectionClass ? $element : $this->classes[$element->getDeclaringClassName()];
 		$that = $this;
 		return preg_replace_callback('~{@link\\s+([^}]+)}~', function ($matches) use ($class, $that) {
 			return $that->resolveClassLink($matches[1], $class) ?: $matches[0];
@@ -504,7 +504,7 @@ class Template extends Nette\Templating\FileTemplate
 	 * @param \Apigen\Reflection $context Link context
 	 * @return \Apigen\Reflection|\TokenReflection\IReflection|null
 	 */
-	public function resolveClassLink($link, ApiReflection $context = null)
+	public function resolveClassLink($link, ReflectionClass $context = null)
 	{
 		if (($pos = strpos($link, '::')) || ($pos = strpos($link, '->'))) {
 			// Class::something or Class->something
