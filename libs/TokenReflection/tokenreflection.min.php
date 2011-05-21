@@ -65,10 +65,10 @@ array(),self::CACHE_NAMESPACE
 array());$this->backend=$backend
 ->setBroker($this)->setStoringTokenStreams($storingTokenStream);}public
 function
-processFile($filename){try{$realName=realpath($filename);if(false
+processFile($fileName){try{$realName=realpath($fileName);if(false
 ===$realName){throw
 new
-Exception\Parse('File does not exist.',Exception\Parse::FILE_DOES_NOT_EXIST);}if($this->backend->isFileProcessed($realName)){$tokens=$this->backend->getFileTokens($realName);}else{$contents=@file_get_contents($filename);if(false
+Exception\Parse('File does not exist.',Exception\Parse::FILE_DOES_NOT_EXIST);}if($this->backend->isFileProcessed($realName)){$tokens=$this->backend->getFileTokens($realName);}else{$contents=@file_get_contents($realName);if(false
 ===$contents){throw
 new
 Exception\Parse('File is not readable.',Exception\Parse::FILE_NOT_READABLE);}$tokens=new
@@ -77,7 +77,7 @@ ReflectionFile($tokens,$this);if(!$this->backend->isFileProcessed($realName)){$t
 as$type
 =>$cached){if(!empty($cached)){$this->cache[$type]=array_filter($cached,function(IReflection$reflection){return$reflection->isTokenized();});}}}return$reflectionFile;}catch(Exception$e){throw
 new
-Exception\Parse(sprintf('Could not process file %s.',$filename),0,$e);}}public
+Exception\Parse(sprintf('Could not process file %s.',$fileName),0,$e);}}public
 function
 processDirectory($path){try{$realPath=realpath($path);if(false
 ===$realPath){throw
@@ -101,7 +101,11 @@ getFileTokens($fileName){try{return$this->backend->getFileTokens($fileName);}cat
 new
 Exception\Runtime(sprintf('Could not retrieve token stream for file %s.',$fileName),0,$e);}}public
 function
-getClasses($types=Broker\Backend::TOKENIZED_CLASSES){return$this->backend->getClasses($types);}}}
+getClasses($types=Broker\Backend::TOKENIZED_CLASSES){return$this->backend->getClasses($types);}public
+function
+getFunctions(){return$this->backend->getFunctions();}public
+function
+getConstants(){return$this->backend->getConstants();}}}
 
 namespace
 TokenReflection{use
@@ -160,7 +164,7 @@ as$template){if(!$template
 instanceof
 ReflectionAnnotation){throw
 new
-Exception\Runtime(sprintf('All templates have to be instances of \\TokenReflection\\ReflectionAnnotation; %s given.',is_object($template)?get_class($template):gettype($template)),Exception\Runtime::INVALID_ARGUMENT);}}$this->templates=$templates;}private
+Exception\Runtime(sprintf('All templates have to be instances of \\TokenReflection\\ReflectionAnnotation; %s given.',is_object($template)?get_class($template):gettype($template)),Exception\Runtime::INVALID_ARGUMENT);}}$this->templates=$templates;return$this;}private
 function
 parse(){$this->annotations=array();if(false
 !==$this->docComment){$name=self::SHORT_DESCRIPTION;$docblock=trim(preg_replace(array('~^'.preg_quote(ReflectionBase::DOCBLOCK_TEMPLATE_START,'~').'~','~^'.preg_quote(ReflectionBase::DOCBLOCK_TEMPLATE_END,'~').'$~','~^/\\*\\*~','~\\*/$~'),'',$this->docComment));foreach(explode("\n",$docblock)as$line){$line=preg_replace('~^\\*\\s*~','',trim($line));if(''
@@ -221,9 +225,9 @@ TokenReflection\Exception;use
 SeekableIterator,Countable,ArrayAccess;class
 Stream
 implements
-SeekableIterator,Countable,ArrayAccess{private$filename='unknown';private$types=array();private$contents=array();private$tokens=array();private$position=0;private$count=0;public
+SeekableIterator,Countable,ArrayAccess{private$fileName='unknown';private$types=array();private$contents=array();private$tokens=array();private$position=0;private$count=0;public
 function
-__construct(array$stream,$filename){$this->filename=$filename;static$checkLines;if(null
+__construct(array$stream,$fileName){$this->fileName=$fileName;static$checkLines;if(null
 ===$checkLines){$checkLines=array_flip(array(T_COMMENT,T_WHITESPACE,T_DOC_COMMENT,T_INLINE_HTML,T_ENCAPSED_AND_WHITESPACE,T_CONSTANT_ENCAPSED_STRING));}foreach($stream
 as$position
 =>$token){if(is_array($token)){list($this->types[],$this->contents[])=$token;$this->tokens[]=$token;}else{$this->types[]=$token;$this->contents[]=$token;$previous=$this->tokens[$position-1];$line=$previous[2];if(isset($checkLines[$previous[0]])){$line
@@ -260,7 +264,7 @@ count(){return$this->count;}public
 function
 seek($position){$this->position=(int)$position;return$this;}public
 function
-getFileName(){return$this->filename;}public
+getFileName(){return$this->fileName;}public
 function
 find($type){$actual=$this->position;while(isset($this->tokens[$this->position])){if($type
 ===$this->types[$this->position]){return$this;}$this->position++;}$this->position=$actual;return
@@ -274,9 +278,9 @@ findMatchingBracket(){static$brackets=array('('
 =>
 ']');if(!$this->valid()){throw
 new
-Exception\Runtime('Out of array.',Exception\Runtime::DOES_NOT_EXIST);}$position=$this->position;$bracket=$this->contents[$this->position];if(isset($brackets[$bracket])){$searching=$brackets[$bracket];}else{throw
+Exception\Runtime('Out of array.',Exception\Runtime::DOES_NOT_EXIST);}$position=$this->position;$bracket=$this->contents[$this->position];if(!isset($brackets[$bracket])){throw
 new
-Exception\Runtime(sprintf('There is no usable bracket at position "%d" in file "%s".',$position,$this->filename),Exception\Runtime::DOES_NOT_EXIST);}$level=0;while(isset($this->tokens[$this->position])){$type=$this->types[$this->position];if($searching
+Exception\Runtime(sprintf('There is no usable bracket at position "%d" in file "%s".',$position,$this->fileName),Exception\Runtime::DOES_NOT_EXIST);}$searching=$brackets[$bracket];$level=0;while(isset($this->tokens[$this->position])){$type=$this->types[$this->position];if($searching
 ===$type){$level--;}elseif($bracket
 ===$type
 ||($searching
@@ -289,7 +293,7 @@ T_DOLLAR_OPEN_CURLY_BRACES
 ===$type))){$level++;}if(0
 ===$level){return$this;}$this->position++;}throw
 new
-Exception\Runtime(sprintf('Could not find the end bracket "%s" of the bracket at position "%d" in file "%s".',$searching,$position,$this->filename),Exception\Runtime::DOES_NOT_EXIST);}public
+Exception\Runtime(sprintf('Could not find the end bracket "%s" of the bracket at position "%d" in file "%s".',$searching,$position,$this->fileName),Exception\Runtime::DOES_NOT_EXIST);}public
 function
 skipWhitespaces($startAtNext=true){if($startAtNext
 &&isset($this->tokens[$this->position])){$this->position++;}while(isset($this->types[$this->position])){if(T_WHITESPACE
@@ -326,7 +330,7 @@ TokenReflection;use
 TokenReflection\Stream,TokenReflection\Exception,TokenReflection\Broker,TokenReflection\Php,TokenReflection\Dummy;class
 Memory
 implements
-Broker\Backend{private$namespaces=array();private$allClasses;private$tokenStreams=array();private$broker;private$storingTokenStreams;public
+Broker\Backend{private$namespaces=array();private$allClasses;private$allFunctions;private$allConstants;private$tokenStreams=array();private$broker;private$storingTokenStreams;public
 function
 getNamespace($namespaceName){if(!isset($this->namespaces[TokenReflection\ReflectionNamespace::NO_NAMESPACE_NAME])){$this->namespaces[TokenReflection\ReflectionNamespace::NO_NAMESPACE_NAME]=new
 TokenReflection\ReflectionNamespace(TokenReflection\ReflectionNamespace::NO_NAMESPACE_NAME,$this->broker);}$namespaceName=ltrim($namespaceName,'\\');if(!isset($this->namespaces[$namespaceName])){throw
@@ -362,7 +366,7 @@ new
 Stream(@token_get_all(str_replace(array("\r\n","\r"),"\n",$contents)),$fileName);}public
 function
 addFile(TokenReflection\ReflectionFile$file,$storeTokenStream=true){foreach($file->getNamespaces()as$fileNamespace){$namespaceName=$fileNamespace->getName();if(!isset($this->namespaces[$namespaceName])){$this->namespaces[$namespaceName]=new
-TokenReflection\ReflectionNamespace($namespaceName,$file->getBroker());}$this->namespaces[$namespaceName]->addFileNamespace($fileNamespace);}if($this->storingTokenStreams){$this->tokenStreams[$file->getName()]=$file->getTokenStream();}$this->allClasses=null;return$this;}public
+TokenReflection\ReflectionNamespace($namespaceName,$file->getBroker());}$this->namespaces[$namespaceName]->addFileNamespace($fileNamespace);}if($this->storingTokenStreams){$this->tokenStreams[$file->getName()]=$file->getTokenStream();}$this->allClasses=null;$this->allFunctions=null;$this->allConstants=null;return$this;}public
 function
 setBroker(Broker$broker){$this->broker=$broker;return$this;}public
 function
@@ -385,7 +389,15 @@ function
 getClasses($type=self::TOKENIZED_CLASSES){if(null
 ===$this->allClasses){$this->allClasses=$this->parseClassLists();}$result=array();foreach($this->allClasses
 as$classType
-=>$classes){if($type&$classType){$result=array_merge($result,$classes);}}return$result;}}}
+=>$classes){if($type&$classType){$result=array_merge($result,$classes);}}return$result;}public
+function
+getFunctions(){if(null
+===$this->allFunctions){$this->allFunctions=array();foreach($this->namespaces
+as$namespace){foreach($namespace->getFunctions()as$function){$this->allFunctions[$function->getName()]=$function;}}}return$this->allFunctions;}public
+function
+getConstants(){if(null
+===$this->allConstants){$this->allConstants=array();foreach($this->namespaces
+as$namespace){foreach($namespace->getConstants()as$constant){$this->allConstants[$constant->getName()]=$constant;}}}return$this->allConstants;}}}
 
 namespace
 TokenReflection\Exception{use
@@ -715,8 +727,6 @@ IReflection{public
 function
 getDeclaringClass();public
 function
-getClass();public
-function
 getDeclaringClassName();public
 function
 getDocComment();public
@@ -769,19 +779,19 @@ implements
 IReflection{const
 DOCBLOCK_TEMPLATE_START='/**#@+';const
 DOCBLOCK_TEMPLATE_END='/**#@-*/';private
-static$methodCache=array();private$broker;private$startLine;private$endLine;protected$docComment;private$parsedDocComment;protected$name;private$filename;private$startPosition;private$endPosition;protected$docblockTemplates=array();public
+static$methodCache=array();private$broker;private$startLine;private$endLine;protected$docComment;private$parsedDocComment;protected$name;private$fileName;private$startPosition;private$endPosition;protected$docblockTemplates=array();public
 final
 function
 __construct(Stream$tokenStream,Broker$broker,IReflection$parent){if(0
 ===$tokenStream->count()){throw
 new
-Exception\Runtime('Reflection token stream must not be empty.',Exception\Runtime::INVALID_ARGUMENT);}$this->broker=$broker;$this->filename=$tokenStream->getFileName();try{$this
+Exception\Runtime('Reflection token stream must not be empty.',Exception\Runtime::INVALID_ARGUMENT);}$this->broker=$broker;$this->fileName=$tokenStream->getFileName();try{$this
 ->processParent($parent)->parseStartLine($tokenStream)->parseDocComment($tokenStream,$parent)->parse($tokenStream,$parent);}catch(Exception$e){$message='Could not parse %s.';if(null
 !==$this->name){$message=sprintf($message,get_class($this).' '.$this->getName());}else{$message=sprintf($message,get_class($this));}throw
 new
 Exception\Parse($message,Exception\Parse::PARSE_ELEMENT_ERROR,$e);}try{$this->parseChildren($tokenStream,$parent);}catch(Exception$e){throw
 new
-Exception\Parse(sprintf('Could not parse %s %s child elements.',get_class($this),$this->getName()),Exception\Parse::PARSE_CHILDREN_ERROR,$e);}return$this->parseEndLine($tokenStream);}protected
+Exception\Parse(sprintf('Could not parse %s %s child elements.',get_class($this),$this->getName()),Exception\Parse::PARSE_CHILDREN_ERROR,$e);}$this->parseEndLine($tokenStream);}protected
 function
 processParent(IReflection$parent){return$this;}protected
 function
@@ -819,7 +829,7 @@ protected
 function
 parseName(Stream$tokenStream);public
 function
-getFileName(){return$this->filename;}public
+getFileName(){return$this->fileName;}public
 function
 getStartLine(){return$this->startLine;}public
 function
@@ -878,7 +888,8 @@ __isset($key){return
 self::exists($this,$key);}public
 static
 function
-export($argument,$return=false){}final
+export($argument,$return=false){return
+'';}final
 public
 static
 function
@@ -983,8 +994,6 @@ static$parseValueDefinitions=false;private$declaringClassName;private$defaultVal
 function
 getDeclaringClassName(){return$this->declaringClassName;}public
 function
-getClass(){return$this->getDeclaringClassName();}public
-function
 getDeclaringClass(){return$this->getBroker()->getClass($this->declaringClassName);}public
 function
 getModifiers(){return$this->modifiers;}public
@@ -1073,7 +1082,7 @@ parseDefaultValue(Stream$tokenStream){$type=$tokenStream->getType();if(';'
 '}':$level--;break;case
 '(':case
 '{':case
-'[':$level++;}$this->defaultValueDefinition
+'[':$level++;break;default:break;}$this->defaultValueDefinition
 .=$tokenStream->getTokenValue();$tokenStream->next();}if(','
 ===$type){$tokenStream->next();}elseif(';'
 !==$type){throw
@@ -1409,8 +1418,6 @@ extends
 IReflectionFunctionBase{public
 function
 getDeclaringClass();public
-function
-getClass();public
 function
 getDeclaringClassName();public
 function
@@ -1901,8 +1908,6 @@ ReflectionClass::create(parent::getDeclaringClass(),$this->broker);}public
 function
 getDeclaringClassName(){return$this->getDeclaringClass()->getName();}public
 function
-getClass(){return$this->getDeclaringClassName();}public
-function
 getDocComment(){return
 false;}public
 function
@@ -1998,7 +2003,7 @@ T_ABSTRACT:case
 T_FUNCTION:$method=new
 ReflectionMethod($tokenStream,$this->getBroker(),$this);$this->methods[$method->getName()]=$method;$tokenStream->next();break;case
 T_CONST:$tokenStream->skipWhitespaces();while($tokenStream->is(T_STRING)){$constant=new
-ReflectionConstant($tokenStream,$this->getBroker(),$this);$this->constants[$constant->getName()]=$constant;if($tokenStream->is(',')){$tokenStream->skipWhitespaces();}else{$tokenStream->next();}}break;default:$tokenStream->next();}}return$this;}public
+ReflectionConstant($tokenStream,$this->getBroker(),$this);$this->constants[$constant->getName()]=$constant;if($tokenStream->is(',')){$tokenStream->skipWhitespaces();}else{$tokenStream->next();}}break;default:$tokenStream->next();break;}}return$this;}public
 function
 getConstant($name){try{return$this->getConstantReflection($name)->getValue();}catch(Exception\Runtime$e){if($e->getCode()===
 Exception\Runtime::DOES_NOT_EXIST){return
@@ -2029,7 +2034,7 @@ as$name
 =>$property){if($property->isStatic()===$static
 &&($property->getModifiers()&$level)){$defaults[$name]=$property->getDefaultValue();}}}}return$defaults;}public
 function
-getInterfaceNames(){$parentClass=$this->getParentClass();$names=$parentClass?$parentClass->getInterfaceNames():array();foreach(array_reverse($this->interfaces)as$interfaceName){$names=array_merge($names,$this->getBroker()->getClass($interfaceName)->getInterfaceNames());$names[]=$interfaceName;}return
+getInterfaceNames(){if($this->isInterface()){return$this->getParentClassNameList();}$parentClass=$this->getParentClass();$names=$parentClass?$parentClass->getInterfaceNames():array();foreach(array_reverse($this->interfaces)as$interfaceName){$names=array_merge($names,$this->getBroker()->getClass($interfaceName)->getInterfaceNames());$names[]=$interfaceName;}return
 array_unique($names);}public
 function
 getOwnInterfaceNames(){return
@@ -2132,14 +2137,14 @@ function
 hasOwnProperty($name){return
 isset($this->properties[$name]);}public
 function
-implementsInterface($interface){if(is_object($interface)){if($interface
+implementsInterface($interface){if(is_object($interface)){if(!$interface
 instanceof
 InternalReflectionClass
-||$interface
+&&!$interface
 instanceof
-IReflectionClass){$interfaceName=$interface->getName();}else{throw
+IReflectionClass){throw
 new
-Exception\Runtime(sprintf('Parameter must be a string or an instance of class reflection, "%s" provided.',get_class($interface)),Exception\Runtime::INVALID_ARGUMENT);}if(!$interface->isInterface()){throw
+Exception\Runtime(sprintf('Parameter must be a string or an instance of class reflection, "%s" provided.',get_class($interface)),Exception\Runtime::INVALID_ARGUMENT);}$interfaceName=$interface->getName();if(!$interface->isInterface()){throw
 new
 Exception\Runtime(sprintf('"%s" is not an interface.',$interfaceName),Exception\Runtime::INVALID_ARGUMENT);}}else{$reflection=$this->getBroker()->getClass($interface);if(!$reflection->isInterface()){throw
 new
@@ -2219,7 +2224,7 @@ array_keys($this->getIndirectSubclasses());}public
 function
 getDirectImplementers(){if(!$this->isInterface()){return
 array();}$that=$this->name;return
-array_filter($this->getBroker()->getClasses(),function(ReflectionClass$class)use($that){if(!$class->implementsInterface($that)){return
+array_filter($this->getBroker()->getClasses(),function(ReflectionClass$class)use($that){if($class->isInterface()||!$class->implementsInterface($that)){return
 false;}return
 null
 ===$class->getParentClassName()||!$class->getParentClass()->implementsInterface($that);});}public
@@ -2229,7 +2234,7 @@ array_keys($this->getDirectImplementers());}public
 function
 getIndirectImplementers(){if(!$this->isInterface()){return
 array();}$that=$this->name;return
-array_filter($this->getBroker()->getClasses(),function(ReflectionClass$class)use($that){if(!$class->implementsInterface($that)){return
+array_filter($this->getBroker()->getClasses(),function(ReflectionClass$class)use($that){if($class->isInterface()||!$class->implementsInterface($that)){return
 false;}return
 null
 !==$class->getParentClassName()&&$class->getParentClass()->implementsInterface($that);});}public
@@ -2264,7 +2269,7 @@ T_ABSTRACT:$this->modifiers=InternalReflectionClass::IS_EXPLICIT_ABSTRACT;break;
 T_FINAL:$this->modifiers=InternalReflectionClass::IS_FINAL;break;case
 T_INTERFACE:$this->modifiers=self::IS_INTERFACE;case
 T_CLASS:$tokenStream->skipWhitespaces();break
-2;}$tokenStream->skipWhitespaces();}return$this;}catch(Exception$e){throw
+2;default:break;}$tokenStream->skipWhitespaces();}return$this;}catch(Exception$e){throw
 new
 Exception\Parse('Could not parse class modifiers.',Exception\Parse::PARSE_ELEMENT_ERROR,$e);}}protected
 function
@@ -2338,14 +2343,13 @@ Exception\Parse('Could not find the definition start.',Exception\Parse::PARSE_EL
 ===$acceptedStrings){$acceptedStrings=array_flip(array('true','false','null'));$acceptedTokens=array_flip(array('-','+',T_STRING,T_NS_SEPARATOR,T_CONSTANT_ENCAPSED_STRING,T_DNUMBER,T_LNUMBER,T_DOUBLE_COLON));}$evalValue=true;while(null
 !==($type=$tokenStream->getType())){$value=$tokenStream->getTokenValue();if(!isset($acceptedTokens[$type])){break;}elseif($tokenStream->is(T_STRING)&&!isset($acceptedStrings[strtolower($value)])){$evalValue=false;}$this->valueDefinition
 .=$value;$tokenStream->next();}if(null
-!==$type
-&&(','
-===$value
-||
-';'
-===$value)){$this->valueDefinition=trim($this->valueDefinition);}else{throw
+===$type
+||(','
+!==$value
+&&';'
+!==$value)){throw
 new
-Exception\Parse(sprintf('Invalid value definition: "%s".',$this->valueDefinition),Exception\Parse::PARSE_ELEMENT_ERROR);}if($evalValue){$this->value=eval(sprintf('return %s;',$this->valueDefinition));}else{if('\\'
+Exception\Parse(sprintf('Invalid value definition: "%s".',$this->valueDefinition),Exception\Parse::PARSE_ELEMENT_ERROR);}$this->valueDefinition=trim($this->valueDefinition);if($evalValue){$this->value=eval(sprintf('return %s;',$this->valueDefinition));}else{if('\\'
 !==$this->valueDefinition{0}){$namespaceName=$this->namespaceName?:$parent->getNamespaceName();if($pos=strpos($this->valueDefinition,'::')){$className=substr($this->valueDefinition,0,$pos);$this->valueDefinition=ReflectionBase::resolveClassFQN($className,$parent->getNamespaceAliases(),$namespaceName).substr($this->valueDefinition,$pos);}elseif(ReflectionNamespace::NO_NAMESPACE_NAME
 !==$namespaceName){$this->valueDefinition=$namespaceName.'\\'.$this->valueDefinition;}}}return$this;}catch(Exception$e){throw
 new
@@ -2360,8 +2364,6 @@ getValue(){if(null
 strtolower($this->valueDefinition)){if($position=strpos($this->valueDefinition,'::')){$className=substr($this->valueDefinition,0,$position);$constantName=substr($this->valueDefinition,$position+2);$this->value=$this->getBroker()->getClass($className)->getConstant($constantName);}else{$constant=$this->getBroker()->getConstant($this->valueDefinition);$this->value=$constant?$constant->getValue():null;}}return$this->value;}public
 function
 getDeclaringClassName(){return$this->declaringClassName;}public
-function
-getClass(){return$this->getDeclaringClassName();}public
 function
 getDeclaringClass(){if(null
 ===$this->declaringClassName){return
@@ -2436,7 +2438,7 @@ T_FUNCTION:$position=$tokenStream->key()+1;while(isset($skipped[$type=$tokenStre
 ->seek($position)->findMatchingBracket()->skipWhiteSpaces();if($tokenStream->is(T_USE)){$tokenStream
 ->skipWhitespaces()->findMatchingBracket()->skipWhitespaces();}$tokenStream
 ->findMatchingBracket()->next();continue;}$function=new
-ReflectionFunction($tokenStream,$this->getBroker(),$this);$this->functions[$function->getName()]=$function;$tokenStream->next();break;default:$tokenStream->next();}}return$this;}protected
+ReflectionFunction($tokenStream,$this->getBroker(),$this);$this->functions[$function->getName()]=$function;$tokenStream->next();break;default:$tokenStream->next();break;}}return$this;}protected
 function
 parseName(Stream$tokenStream){if(!$tokenStream->is(T_NAMESPACE)){$this->name=ReflectionNamespace::NO_NAMESPACE_NAME;return$this;}try{$tokenStream->skipWhitespaces();$name='';while(true){switch($tokenStream->getType()){case
 T_STRING:case
@@ -2448,7 +2450,7 @@ new
 Exception\Parse('Could not parse namespace name.',Exception\Parse::PARSE_ELEMENT_ERROR,$e);}}private
 function
 parseAliases(Stream$tokenStream){if(ReflectionNamespace::NO_NAMESPACE_NAME
-===$this->name){return$this;}try{$aliases=array();while(true){if($tokenStream->is(T_USE)){while(true){$namespaceName='';$alias=null;$tokenStream->skipWhitespaces();while(true){switch($tokenStream->getType()){case
+===$this->name){return$this;}try{$aliases=array();while(true){if(!$tokenStream->is(T_USE)){break;}while(true){$namespaceName='';$alias=null;$tokenStream->skipWhitespaces();while(true){switch($tokenStream->getType()){case
 T_STRING:case
 T_NS_SEPARATOR:$namespaceName
 .=$tokenStream->getTokenValue();break;default:break
@@ -2468,7 +2470,7 @@ Exception\Parse(sprintf('Namespace alias "%s" already defined.',$alias),Exceptio
 2;}elseif(','
 ===$type){continue;}throw
 new
-Exception\Parse(sprintf('Unexpected token found: "%s".',$tokenStream->getTokenName()),Exception\Parse::PARSE_ELEMENT_ERROR);}}else{break;}}$this->aliases=$aliases;return$this;}catch(Exception\Parse$e){throw
+Exception\Parse(sprintf('Unexpected token found: "%s".',$tokenStream->getTokenName()),Exception\Parse::PARSE_ELEMENT_ERROR);}}$this->aliases=$aliases;return$this;}catch(Exception\Parse$e){throw
 new
 Exception\Parse('Could not parse namespace aliases.',0,$e);}}}}
 
@@ -2502,9 +2504,9 @@ getNumberOfRequiredParameters(){$count=0;array_walk($this->parameters,function(R
 function
 getParameters(){return$this->parameters;}public
 function
-getParameter($parameter){if(is_numeric($parameter)){if(isset($this->parameters[$parameter])){return$this->parameters[$parameter];}else{throw
+getParameter($parameter){if(is_numeric($parameter)){if(!isset($this->parameters[$parameter])){throw
 new
-Exception\Runtime(sprintf('There is no parameter at position "%d" in function/method "%s".',$parameter,$this->getName()),Exception\Runtime::DOES_NOT_EXIST);}}else{foreach($this->parameters
+Exception\Runtime(sprintf('There is no parameter at position "%d" in function/method "%s".',$parameter,$this->getName()),Exception\Runtime::DOES_NOT_EXIST);}return$this->parameters[$parameter];}else{foreach($this->parameters
 as$reflection){if($reflection->getName()===$parameter){return$reflection;}}throw
 new
 Exception\Runtime(sprintf('There is no parameter "%s" in function/method "%s".',$parameter,$this->getName()),Exception\Runtime::DOES_NOT_EXIST);}}public
@@ -2792,7 +2794,7 @@ parseDefaultValue(Stream$tokenStream){try{if($tokenStream->is('=')){$tokenStream
 '[':$level++;break;case
 ',':if(0
 ===$level){break
-2;}}$this->defaultValueDefinition
+2;}break;default:break;}$this->defaultValueDefinition
 .=$tokenStream->getTokenValue();$tokenStream->next();}if(','
 ===$type){$tokenStream->next();}elseif(')'
 !==$type){throw
@@ -2842,9 +2844,9 @@ getParameters(){if(null
 ===$this->parameters){$broker=$this->broker;$parent=$this;$this->parameters=array_map(function(InternalReflectionParameter$parameter)use($broker,$parent){return
 ReflectionParameter::create($parameter,$broker,$parent);},parent::getParameters());}return$this->parameters;}public
 function
-getParameter($parameter){$parameters=$this->getParameters();if(is_numeric($parameter)){if(isset($parameters[$parameter])){return$parameters[$parameter];}else{throw
+getParameter($parameter){$parameters=$this->getParameters();if(is_numeric($parameter)){if(!isset($parameters[$parameter])){throw
 new
-Exception\Runtime(sprintf('There is no parameter at position "%d" in function "%s".',$parameter,$this->getName()),Exception\Runtime::DOES_NOT_EXIST);}}else{foreach($parameters
+Exception\Runtime(sprintf('There is no parameter at position "%d" in function "%s".',$parameter,$this->getName()),Exception\Runtime::DOES_NOT_EXIST);}return$parameters[$parameter];}else{foreach($parameters
 as$reflection){if($reflection->getName()===$parameter){return$reflection;}}throw
 new
 Exception\Runtime(sprintf('There is no parameter "%s" in function "%s".',$parameter,$this->getName()),Exception\Runtime::DOES_NOT_EXIST);}}public
@@ -2906,9 +2908,9 @@ getInheritedDocComment(){if(false
 &&$parent->hasMethod($this->getName())){return$parent->getMethod($this->getName())->getInheritedDocComment();}return
 false;}public
 function
-getParameter($parameter){$parameters=$this->getParameters();if(is_numeric($parameter)){if(isset($parameters[$parameter])){return$parameters[$parameter];}else{throw
+getParameter($parameter){$parameters=$this->getParameters();if(is_numeric($parameter)){if(!isset($parameters[$parameter])){throw
 new
-Exception\Runtime(sprintf('There is no parameter at position "%d" in method "%s".',$parameter,$this->getName()),Exception\Runtime::DOES_NOT_EXIST);}}else{foreach($parameters
+Exception\Runtime(sprintf('There is no parameter at position "%d" in method "%s".',$parameter,$this->getName()),Exception\Runtime::DOES_NOT_EXIST);}return$parameters[$parameter];}else{foreach($parameters
 as$reflection){if($reflection->getName()===$parameter){return$reflection;}}throw
 new
 Exception\Runtime(sprintf('There is no parameter "%s" in method "%s".',$parameter,$this->getName()),Exception\Runtime::DOES_NOT_EXIST);}}public
@@ -2917,8 +2919,6 @@ getDeclaringClass(){return
 ReflectionClass::create(parent::getDeclaringClass(),$this->broker);}public
 function
 getDeclaringClassName(){return$this->getDeclaringClass()->getName();}public
-function
-getClass(){return$this->getDeclaringClassName();}public
 function
 getAnnotations(){return
 array();}public
@@ -3001,8 +3001,6 @@ null
 function
 getDeclaringClassName(){return$this->declaringClassName;}public
 function
-getClass(){return$this->getDeclaringClassName();}public
-function
 getInheritedDocComment(){if(false
 !==($docComment=$this->getDocComment())&&false
 ===
@@ -3057,7 +3055,7 @@ function
 isStatic(){return
 (bool)($this->modifiers&InternalReflectionMethod::IS_STATIC);}public
 function
-setAccessible($accessible){$this->accessible=$accessible;}public
+setAccessible($accessible){$this->accessible=(bool)$accessible;}public
 function
 isAccessible(){return$this->accessible;}public
 function
@@ -3097,7 +3095,7 @@ T_STATIC:$this->modifiers
 InternalReflectionMethod::IS_STATIC;break;case
 T_FUNCTION:case
 null:break
-2;}$tokenStream->skipWhitespaces();}if(!($this->modifiers&(InternalReflectionMethod::IS_PRIVATE|InternalReflectionMethod::IS_PROTECTED))){$this->modifiers
+2;default:break;}$tokenStream->skipWhitespaces();}if(!($this->modifiers&(InternalReflectionMethod::IS_PRIVATE|InternalReflectionMethod::IS_PROTECTED))){$this->modifiers
 |=
 InternalReflectionMethod::IS_PUBLIC;}return$this;}catch(Exception$e){throw
 new
