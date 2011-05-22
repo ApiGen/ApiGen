@@ -684,7 +684,9 @@ class Generator extends Nette\Object
 		$this->incrementProgressBar();
 
 		// Generate package summary
-		$this->forceDir($destination . '/' . $templates['main']['package']['filename']);
+		if (!empty($packages)) {
+			$this->forceDir($destination . '/' . $templates['main']['package']['filename']);
+		}
 		foreach ($packages as $packageName => $package) {
 			$template->package = $packageName;
 			$template->subpackages = array_filter($template->packages, function($subpackageName) use ($packageName) {
@@ -701,7 +703,9 @@ class Generator extends Nette\Object
 		unset($template->subpackages);
 
 		// Generate namespace summary
-		$this->forceDir($destination . '/' . $templates['main']['namespace']['filename']);
+		if (!empty($namespaces)) {
+			$this->forceDir($destination . '/' . $templates['main']['namespace']['filename']);
+		}
 		foreach ($namespaces as $namespaceName => $namespace) {
 			$template->package = null;
 			$template->namespace = $namespaceName;
@@ -719,8 +723,12 @@ class Generator extends Nette\Object
 
 		// Generate class & interface & exception files
 		$fshl = new \fshlParser('HTML_UTF8', P_TAB_INDENT | P_LINE_COUNTER);
-		$this->forceDir($destination . '/' . $templates['main']['class']['filename']);
-		$this->forceDir($destination . '/' . $templates['main']['source']['filename']);
+		if (!empty($classes) || !empty($interfaces) || !empty($exceptions)) {
+			$this->forceDir($destination . '/' . $templates['main']['class']['filename']);
+		}
+		if ($this->config->sourceCode) {
+			$this->forceDir($destination . '/' . $templates['main']['source']['filename']);
+		}
 		$template->package = null;
 		$template->namespace = null;
 		$template->classes = $classes;

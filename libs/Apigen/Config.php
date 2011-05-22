@@ -253,11 +253,10 @@ class Config
 		if (empty($this->config['template'])) {
 			throw new Exception('Template is not set', Exception::INVALID_CONFIG);
 		}
-		$templateConfig = $this->getTemplateConfig();
-		if (!is_dir(dirname($templateConfig))) {
+		if (!is_dir($this->getTemplateDir())) {
 			throw new Exception('Template doesn\'t exist', Exception::INVALID_CONFIG);
 		}
-		if (!is_file($templateConfig)) {
+		if (!is_file($this->getTemplateConfig())) {
 			throw new Exception('Template config doesn\'t exist', Exception::INVALID_CONFIG);
 		}
 
@@ -282,15 +281,28 @@ class Config
 		foreach (array('main', 'optional') as $section) {
 			foreach ($this->config['templates'][$section] as $type => $config) {
 				if (!isset($config['filename'])) {
-					throw new Exception(sprintf('Filename for %s not defined', $type), Exception::INVALID_CONFIG);
+					throw new Exception(sprintf('Filename for %s is not defined', $type), Exception::INVALID_CONFIG);
 				}
 				if (!isset($config['template'])) {
-					throw new Exception(sprintf('Template for %s not defined', $type), Exception::INVALID_CONFIG);
+					throw new Exception(sprintf('Template for %s is not defined', $type), Exception::INVALID_CONFIG);
+				}
+				if (!is_file($this->getTemplateDir() . DIRECTORY_SEPARATOR . $config['template'])) {
+					throw new Exception(sprintf('Template for %s doesn\'t exist', $type), Exception::INVALID_CONFIG);
 				}
 			}
 		}
 
 		return $this;
+	}
+
+	/**
+	 * Returns template dir path.
+	 *
+	 * @return string
+	 */
+	private function getTemplateDir()
+	{
+		return $this->config['templateDir'] . DIRECTORY_SEPARATOR . $this->config['template'];
 	}
 
 	/**
@@ -300,7 +312,7 @@ class Config
 	 */
 	private function getTemplateConfig()
 	{
-		return $this->config['templateDir'] . DIRECTORY_SEPARATOR . $this->config['template'] . DIRECTORY_SEPARATOR . 'config.neon';
+		return $this->getTemplateDir() . DIRECTORY_SEPARATOR . 'config.neon';
 	}
 
 	/**
