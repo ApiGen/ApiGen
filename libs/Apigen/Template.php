@@ -16,7 +16,7 @@ namespace Apigen;
 use Nette;
 use Apigen\Generator;
 use Apigen\Reflection as ReflectionClass, TokenReflection\IReflectionProperty as ReflectionProperty, TokenReflection\IReflectionMethod as ReflectionMethod, TokenReflection\IReflectionConstant as ReflectionConstant, TokenReflection\IReflectionParameter as ReflectionParameter;
-use TokenReflection\ReflectionAnnotation, TokenReflection\ReflectionBase;
+use TokenReflection\IReflectionExtension as ReflectionExtension, TokenReflection\ReflectionAnnotation, TokenReflection\ReflectionBase;
 
 /**
  * Customized ApiGen template class.
@@ -357,6 +357,21 @@ class Template extends Nette\Templating\FileTemplate
 		static $manual = 'http://php.net/manual';
 		static $reservedClasses = array('stdClass', 'Closure', 'Directory');
 
+		// Extension
+		if ($element instanceof ReflectionExtension) {
+			$extensionName = strtolower($element->getName());
+			if ('core' === $extensionName) {
+				return $manual;
+			}
+
+			if ('date' === $extensionName) {
+				$extensionName = 'datetime';
+			}
+
+			return sprintf('%s/book.%s.php', $manual, $extensionName);
+		}
+
+		// Class and its members
 		$class = $element instanceof ReflectionClass ? $element : $element->getDeclaringClass();
 
 		if (in_array($class->getName(), $reservedClasses)) {

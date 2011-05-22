@@ -19,7 +19,7 @@
 
 <div id="content">
 	<div id="classSummary">
-		<p n:if="$class->internal">PHP – {$class->extension->name|ucfirst}</p>
+		<p n:if="$class->internal">PHP Extension <a href="{$class->extension|manualUrl}" title="Go to PHP documentation">{$class->extension->name|ucfirst}</a></p>
 		<p n:if="$class->inNamespace()">Namespace {!$class->namespaceName|namespaceLinks}</p>
 
 		<h1>{include #title}</h1>
