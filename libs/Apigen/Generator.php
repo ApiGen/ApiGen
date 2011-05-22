@@ -308,8 +308,8 @@ class Generator extends Nette\Object
 			}
 		}
 		foreach ($functions as $functionName => $function) {
-			$packageName = $function->isInternal() ? 'PHP' : $function->getPackageName() ?: 'None';
-			$namespaceName = $function->isInternal() ? 'PHP' : $function->getNamespaceName() ?: 'None';
+			$packageName = $function->getPackageName() ?: 'None';
+			$namespaceName = $function->getNamespaceName() ?: 'None';
 
 			$packages[$packageName]['functions'][$functionName] = $function;
 			$namespaces[$namespaceName]['functions'][$function->getShortName()] = $function;

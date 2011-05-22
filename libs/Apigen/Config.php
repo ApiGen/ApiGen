@@ -279,7 +279,7 @@ class Config
 	 */
 	private function checkTemplate()
 	{
-		foreach (array('package', 'namespace', 'class', 'source', 'tree') as $type) {
+		foreach (array('package', 'namespace', 'class', 'function', 'source', 'tree') as $type) {
 			if (!isset($this->config['templates']['main'][$type]['filename'])) {
 				throw new Exception(sprintf('Filename for %s not defined', $type), Exception::INVALID_CONFIG);
 			}

@@ -100,7 +100,6 @@ class Template extends Nette\Templating\FileTemplate
 			return is_object($variable) ? get_class($variable) : gettype($variable);
 		});
 		$this->registerHelper('resolveClass', new Nette\Callback($this, 'resolveClass'));
-		$this->registerHelper('resolveFunction', new Nette\Callback($this, 'resolveFunction'));
 		$this->registerHelper('resolveConstant', new Nette\Callback($this, 'resolveConstant'));
 
 		// docblock
@@ -497,9 +496,9 @@ class Template extends Nette\Templating\FileTemplate
 	}
 
 	/**
-	 * Tries to resolve type function name.
+	 * Tries to resolve type as function name.
 	 *
-	 * @param string $functionName Function name description
+	 * @param string $functionName Function name
 	 * @param string $namespace Namespace name
 	 * @return string
 	 */
