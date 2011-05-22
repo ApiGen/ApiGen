@@ -166,12 +166,14 @@ class Template extends Nette\Templating\FileTemplate
 						: $that->escapeHtml($value);
 				case 'see':
 				case 'uses':
-					return $that->resolveClassLink($value, $parent) ?: $that->docline($value);
+					$link = $that->resolveClassLink($value, $parent);
+					if (null !== $link) {
+						return $link;
+					}
+					// Break missing intentionally
 				default:
-					return $that->docline($value);
+					return $that->resolveLinks($that->docline($value), $parent);
 			}
-
-
 		});
 
 		$todo = $this->config->todo;
