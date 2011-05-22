@@ -59,7 +59,7 @@ class Template extends Nette\Templating\FileTemplate
 		$latte->parser->macros['/try'] = '<?php } catch (\Exception $e) {} ?>';
 		$this->registerFilter($latte);
 
-		// common operations
+		// Common operations
 		$this->registerHelperLoader('Nette\Templating\DefaultHelpers::loader');
 		$this->registerHelper('ucfirst', 'ucfirst');
 		$this->registerHelper('replaceRE', 'Nette\Utils\Strings::replace');
@@ -73,7 +73,7 @@ class Template extends Nette\Templating\FileTemplate
 			return $that->highlightPHP(preg_replace('#^(?:[ ]{4}|\t)#m', '', $definition));
 		});
 
-		// url
+		// Url
 		$this->registerHelper('packageUrl', new Nette\Callback($this, 'getPackageUrl'));
 		$this->registerHelper('namespaceUrl', new Nette\Callback($this, 'getNamespaceUrl'));
 		$this->registerHelper('classUrl', new Nette\Callback($this, 'getClassUrl'));
@@ -85,7 +85,7 @@ class Template extends Nette\Templating\FileTemplate
 
 		$this->registerHelper('namespaceLinks', new Nette\Callback($this, 'getNamespaceLinks'));
 
-		// types
+		// Types
 		$this->registerHelper('getTypes', new Nette\Callback($this, 'getTypes'));
 		$this->registerHelper('resolveType', function($variable) {
 			return is_object($variable) ? get_class($variable) : gettype($variable);
@@ -93,7 +93,7 @@ class Template extends Nette\Templating\FileTemplate
 		$this->registerHelper('resolveClass', new Nette\Callback($this, 'resolveClass'));
 		$this->registerHelper('resolveConstant', new Nette\Callback($this, 'resolveConstant'));
 
-		// docblock
+		// Texy
 		$texy = new \Texy;
 		$linkModule = new \TexyLinkModule($texy);
 		$linkModule->shorten = FALSE;
@@ -103,7 +103,7 @@ class Template extends Nette\Templating\FileTemplate
 		$texy->allowed['list/definition'] = FALSE;
 		$texy->allowed['phrase/em-alt'] = FALSE;
 		$texy->allowed['longwords'] = FALSE;
-		// highlighting <code>, <pre>
+		// Highlighting <code>, <pre>
 		$texy->registerBlockPattern(
 			function($parser, $matches, $name) use ($fshl) {
 				$content = $matches[1] === 'code' ? $fshl->highlightString('PHP', $matches[2]) : htmlSpecialChars($matches[2]);
@@ -157,7 +157,7 @@ class Template extends Nette\Templating\FileTemplate
 			return $element->getAnnotation(ReflectionAnnotation::SHORT_DESCRIPTION);
 		});
 
-		// individual annotations processing
+		// Individual annotations processing
 		$this->registerHelper('annotation', function($value, $name, $parent) use ($that) {
 			switch ($name) {
 				case 'package':
@@ -218,7 +218,7 @@ class Template extends Nette\Templating\FileTemplate
 			return $annotations;
 		});
 
-		// static files versioning
+		// Static files versioning
 		$destination = $this->config->destination;
 		$this->registerHelper('staticFile', function($name, $line = null) use ($destination) {
 			static $versions = array();
