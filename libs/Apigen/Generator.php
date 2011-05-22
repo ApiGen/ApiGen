@@ -571,9 +571,9 @@ class Generator extends Nette\Object
 						continue;
 					}
 
-					$template->deprecatedMethods += array_filter($class->getOwnMethods(), $deprecatedFilter);
-					$template->deprecatedConstants += array_filter($class->getOwnConstants(), $deprecatedFilter);
-					$template->deprecatedProperties += array_filter($class->getOwnProperties(), $deprecatedFilter);
+					$template->deprecatedMethods = array_merge($template->deprecatedMethods, array_values(array_filter($class->getOwnMethods(), $deprecatedFilter)));
+					$template->deprecatedConstants = array_merge($template->deprecatedConstants, array_values(array_filter($class->getOwnConstants(), $deprecatedFilter)));
+					$template->deprecatedProperties = array_merge($template->deprecatedProperties, array_values(array_filter($class->getOwnProperties(), $deprecatedFilter)));
 				}
 			}
 
@@ -602,9 +602,9 @@ class Generator extends Nette\Object
 			$template->todoProperties = array();
 			foreach ($classTypes as $type) {
 				foreach ($$type as $class) {
-					$template->todoMethods += array_filter($class->getOwnMethods(), $todoFilter);
-					$template->todoConstants += array_filter($class->getOwnConstants(), $todoFilter);
-					$template->todoProperties += array_filter($class->getOwnProperties(), $todoFilter);
+					$template->todoMethods = array_merge($template->todoMethods, array_values(array_filter($class->getOwnMethods(), $todoFilter)));
+					$template->todoConstants = array_merge($template->todoConstants, array_values(array_filter($class->getOwnConstants(), $todoFilter)));
+					$template->todoProperties = array_merge($template->todoProperties, array_values(array_filter($class->getOwnProperties(), $todoFilter)));
 				}
 			}
 
