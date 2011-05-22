@@ -689,6 +689,9 @@ class Generator extends Nette\Object
 		foreach ($namespaces as $namespaceName => $namespace) {
 			$template->package = null;
 			$template->namespace = $namespaceName;
+			$template->subnamespaces = array_filter($template->namespaces, function($subnamespaceName) use ($namespaceName) {
+				return (bool) preg_match('~^' . preg_quote($namespaceName) . '\\\\[^\\\\]+$~', $subnamespaceName);
+			});
 			$template->classes = $namespace['classes'];
 			$template->interfaces = $namespace['interfaces'];
 			$template->exceptions = $namespace['exceptions'];
@@ -696,6 +699,7 @@ class Generator extends Nette\Object
 
 			$this->incrementProgressBar();
 		}
+		unset($template->subnamespaces);
 
 		// Generate class & interface & exception files
 		$fshl = new \fshlParser('HTML_UTF8', P_TAB_INDENT | P_LINE_COUNTER);

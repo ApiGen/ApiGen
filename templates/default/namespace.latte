@@ -19,6 +19,15 @@
 <div id="content">
 	<h1>{if $namespace != 'None'}Namespace {!$namespace|namespaceLinks:false}{else}No namespace{/if}</h1>
 
+	<table class="summary" id="namespaces" n:if="$subnamespaces">
+	<caption>Namespaces summary</caption>
+	{foreach $subnamespaces as $namespace}
+	<tr>
+		<td><a href="{$namespace|namespaceUrl}">{$namespace}</a></td>
+	</tr>
+	{/foreach}
+	</table>
+
 	{include '@classlist.latte'}
 </div>
 {/block}
