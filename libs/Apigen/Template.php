@@ -158,7 +158,7 @@ class Template extends Nette\Templating\FileTemplate
 		});
 
 		// individual annotations processing
-		$this->registerHelper('annotation', function($value, $name, ReflectionClass $parent) use ($that) {
+		$this->registerHelper('annotation', function($value, $name, $parent) use ($that) {
 			switch ($name) {
 				case 'package':
 					return !$parent->inNamespace()
@@ -507,10 +507,9 @@ class Template extends Nette\Templating\FileTemplate
 	 */
 	public function resolveLinks($text, $element)
 	{
-		$class = $element instanceof ReflectionClass ? $element : $this->classes[$element->getDeclaringClassName()];
 		$that = $this;
-		return preg_replace_callback('~{@link\\s+([^}]+)}~', function ($matches) use ($class, $that) {
-			return $that->resolveClassLink($matches[1], $class) ?: $matches[0];
+		return preg_replace_callback('~{@link\\s+([^}]+)}~', function ($matches) use ($element, $that) {
+			return $that->resolveClassLink($matches[1], $element) ?: $matches[0];
 		}, $text);
 	}
 
@@ -518,11 +517,13 @@ class Template extends Nette\Templating\FileTemplate
 	 * Tries to parse a link to a class/method/property and returns the appropriate link if successful.
 	 *
 	 * @param string $link Link definition
-	 * @param \Apigen\Reflection $context Link context
-	 * @return \Apigen\Reflection|\TokenReflection\IReflection|null
+	 * @param \Apigen\Reflection|\TokenReflection\IReflection $context Link context
+	 * @return string|null
 	 */
-	public function resolveClassLink($link, ReflectionClass $context = null)
+	public function resolveClassLink($link, $context = null)
 	{
+		$context = $context instanceof ReflectionClass ? $context : $this->classes[$context->getDeclaringClassName()];
+
 		if (($pos = strpos($link, '::')) || ($pos = strpos($link, '->'))) {
 			// Class::something or Class->something
 			$className = $this->resolveClass(substr($link, 0, $pos), null !== $context ? $context->getNamespaceName() : null);

@@ -28,7 +28,7 @@
 		<td>
 			{foreach $class->annotations['deprecated'] as $description}
 				{if $description}
-					{!$description|docline|resolveLinks:$class}<br>
+					{!$description|annotation:'deprecated':$class}<br>
 				{/if}
 			{/foreach}
 		</td>
@@ -44,7 +44,7 @@
 		<td>
 			{foreach $interface->annotations['deprecated'] as $description}
 				{if $description}
-					{!$description|docline|resolveLinks:$interface}<br>
+					{!$description|annotation:'deprecated':$interface}<br>
 				{/if}
 			{/foreach}
 		</td>
@@ -60,7 +60,7 @@
 		<td>
 			{foreach $exception->annotations['deprecated'] as $description}
 				{if $description}
-					{!$description|docline|resolveLinks:$exception}<br>
+					{!$description|annotation:'deprecated':$exception}<br>
 				{/if}
 			{/foreach}
 		</td>
@@ -78,7 +78,7 @@
 			{if $method->hasAnnotation('deprecated')}
 			{foreach $method->annotations['deprecated'] as $description}
 				{if $description}
-					{!$description|docline|resolveLinks:$method}<br>
+					{!$description|annotation:'deprecated':$method}<br>
 				{/if}
 			{/foreach}
 			{/if}
@@ -96,7 +96,7 @@
 		<td>
 			{foreach $constant->annotations['deprecated'] as $description}
 				{if $description}
-					{!$description|docline|resolveLinks:$constant}<br>
+					{!$description|annotation:'deprecated':$constant}<br>
 				{/if}
 			{/foreach}
 		</td>
@@ -113,7 +113,7 @@
 		<td>
 			{foreach $property->annotations['deprecated'] as $description}
 				{if $description}
-					{!$description|docline|resolveLinks:$property}<br>
+					{!$description|annotation:'deprecated':$property}<br>
 				{/if}
 			{/foreach}
 		</td>
