@@ -19,9 +19,6 @@
 
 <div id="content">
 	<div id="classSummary">
-		<p n:if="$class->internal">PHP Extension <a href="{$class->extension|manualUrl}" title="Go to PHP documentation">{$class->extension->name|ucfirst}</a></p>
-		<p n:if="$class->inNamespace()">Namespace {!$class->namespaceName|namespaceLinks}</p>
-
 		<h1>{include #title}</h1>
 
 		<div class="classDescription" n:if="$class->docComment">
@@ -73,6 +70,9 @@
 
 		<div class="classInfo">
 			{if $class->abstract || $class->final}<b>{if $class->abstract}Abstract{else}Final{/if} {if $class->interface}Interface{else}Class{/if}</b><br>{/if}
+			{if $class->internal}<b>PHP Extension:</b> <a href="{$class->extension|manualUrl}" title="Go to PHP documentation">{$class->extension->name|ucfirst}</a><br>{/if}
+			{if $class->inNamespace()}<b>Namespace:</b> {!$class->namespaceName|namespaceLinks}<br>{/if}
+
 			{foreach $template->annotationSort($template->annotationFilter($class->annotations)) as $annotation => $values}
 				{foreach $values as $value}
 					<b>{$annotation|ucfirst}{if $value}:{/if}</b>
