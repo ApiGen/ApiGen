@@ -324,6 +324,7 @@ class Generator extends Nette\Object
 		}
 
 		$undocumentedEnabled = !empty($this->config->undocumented);
+		$treeEnabled = (!empty($classes) || !empty($interfaces) || !empty($exceptions)) && isset($templates['optional']['tree']);
 		$deprecatedEnabled = $this->config->deprecated && isset($templates['optional']['deprecated']);
 		$todoEnabled = $this->config->todo && isset($templates['optional']['todo']);
 		$sitemapEnabled = !empty($this->config->baseUrl) && isset($templates['optional']['sitemap']);
@@ -338,12 +339,12 @@ class Generator extends Nette\Object
 				+ count($exceptions)
 				+ count($templates['common'])
 				+ (int) $undocumentedEnabled
+				+ (int) $treeEnabled
 				+ (int) $deprecatedEnabled
 				+ (int) $todoEnabled
 				+ (int) $sitemapEnabled
 				+ (int) $opensearchEnabled
 				+ (int) $autocompleteEnabled
-				+ 1 // Classes, iterators and exceptions tree
 			;
 
 			if ($this->config->sourceCode) {
@@ -367,8 +368,9 @@ class Generator extends Nette\Object
 		$template->generator = self::NAME;
 		$template->version = self::VERSION;
 		$template->config = $this->config;
-		$template->deprecated = $deprecatedEnabled;
-		$template->todo = $todoEnabled;
+		$template->treeEnabled = $treeEnabled;
+		$template->deprecatedEnabled = $deprecatedEnabled;
+		$template->todoEnabled = $todoEnabled;
 
 		// Generate summary files
 		$template->namespace = null;
@@ -636,66 +638,68 @@ class Generator extends Nette\Object
 		}
 
 		// Classes/interfaces/exceptions tree
-		$classTree = array();
-		$interfaceTree = array();
-		$exceptionTree = array();
+		if ($treeEnabled) {
+			$classTree = array();
+			$interfaceTree = array();
+			$exceptionTree = array();
 
-		$processed = array();
-		foreach ($this->classes as $className => $reflection) {
-			if (!$reflection->isDocumented() || isset($processed[$className])) {
-				continue;
-			}
+			$processed = array();
+			foreach ($this->classes as $className => $reflection) {
+				if (!$reflection->isDocumented() || isset($processed[$className])) {
+					continue;
+				}
 
-			if (null === $reflection->getParentClassName()) {
-				// No parent classes
-				if ($reflection->isInterface()) {
-					$t = &$interfaceTree;
-				} elseif ($reflection->isException()) {
-					$t = &$exceptionTree;
+				if (null === $reflection->getParentClassName()) {
+					// No parent classes
+					if ($reflection->isInterface()) {
+						$t = &$interfaceTree;
+					} elseif ($reflection->isException()) {
+						$t = &$exceptionTree;
+					} else {
+						$t = &$classTree;
+					}
 				} else {
-					$t = &$classTree;
-				}
-			} else {
-				foreach (array_values(array_reverse($reflection->getParentClasses())) as $level => $parent) {
-					if (0 === $level) {
-						// The topmost parent decides about the reflection type
-						if ($parent->isInterface()) {
-							$t = &$interfaceTree;
-						} elseif ($parent->isException()) {
-							$t = &$exceptionTree;
-						} else {
-							$t = &$classTree;
+					foreach (array_values(array_reverse($reflection->getParentClasses())) as $level => $parent) {
+						if (0 === $level) {
+							// The topmost parent decides about the reflection type
+							if ($parent->isInterface()) {
+								$t = &$interfaceTree;
+							} elseif ($parent->isException()) {
+								$t = &$exceptionTree;
+							} else {
+								$t = &$classTree;
+							}
 						}
-					}
-					$parentName = $parent->getName();
+						$parentName = $parent->getName();
 
-					if (!isset($t[$parentName])) {
-						$t[$parentName] = array();
-						$processed[$parentName] = true;
-						ksort($t, SORT_STRING);
-					}
+						if (!isset($t[$parentName])) {
+							$t[$parentName] = array();
+							$processed[$parentName] = true;
+							ksort($t, SORT_STRING);
+						}
 
-					$t = &$t[$parentName];
+						$t = &$t[$parentName];
+					}
 				}
+				$t[$className] = array();
+				ksort($t, SORT_STRING);
+				$processed[$className] = true;
+				unset($t);
 			}
-			$t[$className] = array();
-			ksort($t, SORT_STRING);
-			$processed[$className] = true;
-			unset($t);
+
+			$template->classTree = new Tree($classTree, $this->classes);
+			$template->interfaceTree = new Tree($interfaceTree, $this->classes);
+			$template->exceptionTree = new Tree($exceptionTree, $this->classes);
+
+			$template->setFile($templatePath . '/' . $templates['optional']['tree']['template'])->save($this->forceDir($destination . '/' . $templates['optional']['tree']['filename']));
+
+			unset($template->classTree);
+			unset($template->interfaceTree);
+			unset($template->exceptionTree);
+			unset($processed);
+
+			$this->incrementProgressBar();
 		}
-
-		$template->classTree = new Tree($classTree, $this->classes);
-		$template->interfaceTree = new Tree($interfaceTree, $this->classes);
-		$template->exceptionTree = new Tree($exceptionTree, $this->classes);
-
-		$template->setFile($templatePath . '/' . $templates['main']['tree']['template'])->save($this->forceDir($destination . '/' . $templates['main']['tree']['filename']));
-
-		unset($template->classTree);
-		unset($template->interfaceTree);
-		unset($template->exceptionTree);
-		unset($processed);
-
-		$this->incrementProgressBar();
 
 		// Generate package summary
 		if (!empty($packages)) {

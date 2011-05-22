@@ -19,11 +19,11 @@ templates:
 		source:
 			filename: source-%s.html
 			template: source.latte
+
+	optional:
 		tree:
 			filename: tree.html
 			template: tree.latte
-
-	optional:
 		deprecated:
 			filename: deprecated.html
 			template: deprecated.latte
