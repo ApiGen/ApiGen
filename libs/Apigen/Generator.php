@@ -558,6 +558,9 @@ class Generator extends Nette\Object
 		// List of deprecated elements
 		if ($deprecatedEnabled) {
 			$deprecatedFilter = function($element) {return $element->isDeprecated();};
+			$deprecatedSort = function($a, $b) {
+				return strcasecmp($a->getDeclaringClassName() . '::' . $a->getName(), $b->getDeclaringClassName() . '::' . $b->getName());
+			};
 			$template->deprecatedClasses = array_filter($classes, $deprecatedFilter);
 			$template->deprecatedInterfaces = array_filter($interfaces, $deprecatedFilter);
 			$template->deprecatedExceptions = array_filter($exceptions, $deprecatedFilter);
@@ -576,12 +579,16 @@ class Generator extends Nette\Object
 					$template->deprecatedProperties = array_merge($template->deprecatedProperties, array_values(array_filter($class->getOwnProperties(), $deprecatedFilter)));
 				}
 			}
+			usort($template->deprecatedMethods, $deprecatedSort);
+			usort($template->deprecatedConstants, $deprecatedSort);
+			usort($template->deprecatedProperties, $deprecatedSort);
 
 			$template->setFile($templatePath . '/' . $templates['optional']['deprecated']['template'])->save($this->forceDir($destination . '/' . $templates['optional']['deprecated']['filename']));
 
 			$this->incrementProgressBar();
 
 			unset($deprecatedFilter);
+			unset($deprecatedSort);
 			unset($template->deprecatedClasses);
 			unset($template->deprecatedInterfaces);
 			unset($template->deprecatedExceptions);
@@ -593,6 +600,9 @@ class Generator extends Nette\Object
 		// List of tasks
 		if ($todoEnabled) {
 			$todoFilter = function($element) {return $element->hasAnnotation('todo');};
+			$todoSort = function($a, $b) {
+				return strcasecmp($a->getDeclaringClassName() . '::' . $a->getName(), $b->getDeclaringClassName() . '::' . $b->getName());
+			};
 			$template->todoClasses = array_filter($classes, $todoFilter);
 			$template->todoInterfaces = array_filter($interfaces, $todoFilter);
 			$template->todoExceptions = array_filter($exceptions, $todoFilter);
@@ -607,12 +617,16 @@ class Generator extends Nette\Object
 					$template->todoProperties = array_merge($template->todoProperties, array_values(array_filter($class->getOwnProperties(), $todoFilter)));
 				}
 			}
+			usort($template->todoMethods, $todoSort);
+			usort($template->todoConstants, $todoSort);
+			usort($template->todoProperties, $todoSort);
 
 			$template->setFile($templatePath . '/' . $templates['optional']['todo']['template'])->save($this->forceDir($destination . '/' . $templates['optional']['todo']['filename']));
 
 			$this->incrementProgressBar();
 
 			unset($todoFilter);
+			unset($todoSort);
 			unset($template->todoClasses);
 			unset($template->todoInterfaces);
 			unset($template->todoExceptions);
