@@ -1,6 +1,6 @@
 {layout '@layout.latte'}
 
-{block #title}{if $class->deprecated}Deprecated {/if}{if $class->interface}Interface{else}Class{/if} {$class->shortName}{/block}
+{block #title}{if $class->deprecated}Deprecated {/if}{if $class->interface}Interface{else}Class{/if} {$class->name}{/block}
 
 {block #content}
 <div id="navigation">
@@ -19,9 +19,9 @@
 
 <div id="content">
 	<div id="classSummary">
-		<h1>{include #title}</h1>
+		<h1>{if $class->deprecated}Deprecated {/if}{if $class->interface}Interface{else}Class{/if} {$class->shortName}</h1>
 
-		<div class="classDescription" n:if="$class->docComment">
+		<div class="classDescription" n:if="$template->longDescription($class)">
 		{!$class|longDescription|docblock|resolveLinks:$class}
 		</div>
 
@@ -79,7 +79,7 @@
 					{!$value|annotation:$annotation:$class}<br>
 				{/foreach}
 			{/foreach}
-			{if $class->internal}<b>Documented at</b> <a href="{$class|manualUrl}">php.net</a>{else}<b>Located at</b> <a n:tag-if="$config->sourceCode" href="{$class|sourceUrl}">{$fileName}</a>{/if}<br>
+			{if $class->internal}<b>Documented at</b> <a href="{$class|manualUrl}" title="Go to PHP documentation">php.net</a>{else}<b>Located at</b> <a n:tag-if="$config->sourceCode" href="{$class|sourceUrl}" title="Go to source code">{$fileName}</a>{/if}<br>
 		</div>
 	</div>
 
@@ -209,7 +209,7 @@
 		<td class="right" width="1%"><code class="nowrap">
 			{if $constant->deprecated}deprecated{/if}
 			{if $constant->hasAnnotation('var')}
-				{foreach $constant->getAnnotation('var') as $type}{$type}{sep}|{/sep}{/foreach}
+				{foreach $template->getTypes($constant) as $type}<a href="{$type->class|classUrl}" n:tag-if="$type->class">{$type->name}</a>{sep}|{/sep}{/foreach}
 			{else}
 				{try}
 				{$constant->value|resolveType}
@@ -270,7 +270,7 @@
 		<td class="right" width="1%"><code class="nowrap">
 			{if $property->deprecated}deprecated{/if}
 			{if $property->protected}protected{elseif $property->private}private{else}public{/if} {if $property->static}static{/if}
-			{foreach $template->getTypes($property) as $return}<a href="{$return->class|classUrl}" n:tag-if="$return->class">{$return->name}</a>{sep}|{/sep}{/foreach}
+			{foreach $template->getTypes($property) as $type}<a href="{$type->class|classUrl}" n:tag-if="$type->class">{$type->name}</a>{sep}|{/sep}{/foreach}
 		</code></td>
 
 		<td width="1%"><var>

@@ -423,7 +423,7 @@ class Template extends Nette\Templating\FileTemplate
 	public function getTypes($element, $position = NULL)
 	{
 		$annotation = array();
-		if ($element instanceof ReflectionProperty) {
+		if ($element instanceof ReflectionProperty || $element instanceof ReflectionConstant) {
 			$annotation = $element->getAnnotation('var');
 			if (null === $annotation && !$element->isTokenized()) {
 				$value = $element->getDefaultValue();
