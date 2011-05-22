@@ -323,6 +323,7 @@ class Generator extends Nette\Object
 			uksort($packages, 'strcasecmp');
 		}
 
+		$sourceCodeEnabled = $this->config->sourceCode && isset($templates['optional']['source']);
 		$undocumentedEnabled = !empty($this->config->undocumented);
 		$treeEnabled = (!empty($classes) || !empty($interfaces) || !empty($exceptions)) && isset($templates['optional']['tree']);
 		$deprecatedEnabled = $this->config->deprecated && isset($templates['optional']['deprecated']);
@@ -347,7 +348,7 @@ class Generator extends Nette\Object
 				+ (int) $autocompleteEnabled
 			;
 
-			if ($this->config->sourceCode) {
+			if ($sourceCodeEnabled) {
 				$tokenizedFilter = function(ReflectionClass $class) {return $class->isTokenized();};
 				$max += count(array_filter($classes, $tokenizedFilter))
 					+ count(array_filter($interfaces, $tokenizedFilter))
@@ -368,6 +369,7 @@ class Generator extends Nette\Object
 		$template->generator = self::NAME;
 		$template->version = self::VERSION;
 		$template->config = $this->config;
+		$template->sourceCodeEnabled = $sourceCodeEnabled;
 		$template->treeEnabled = $treeEnabled;
 		$template->deprecatedEnabled = $deprecatedEnabled;
 		$template->todoEnabled = $todoEnabled;
@@ -744,8 +746,8 @@ class Generator extends Nette\Object
 		if (!empty($classes) || !empty($interfaces) || !empty($exceptions)) {
 			$this->forceDir($destination . '/' . $templates['main']['class']['filename']);
 		}
-		if ($this->config->sourceCode) {
-			$this->forceDir($destination . '/' . $templates['main']['source']['filename']);
+		if ($sourceCodeEnabled) {
+			$this->forceDir($destination . '/' . $templates['optional']['source']['filename']);
 		}
 		$template->package = null;
 		$template->namespace = null;
@@ -810,12 +812,12 @@ class Generator extends Nette\Object
 				$this->incrementProgressBar();
 
 				// Generate source codes
-				if ($this->config->sourceCode && $class->isTokenized()) {
+				if ($sourceCodeEnabled && $class->isTokenized()) {
 					$source = file_get_contents($class->getFileName());
 					$source = str_replace(array("\r\n", "\r"), "\n", $source);
 
 					$template->source = $fshl->highlightString('PHP', $source);
-					$template->setFile($templatePath . '/' . $templates['main']['source']['template'])->save($destination . '/' . $template->getSourceUrl($class, false));
+					$template->setFile($templatePath . '/' . $templates['optional']['source']['template'])->save($destination . '/' . $template->getSourceUrl($class, false));
 
 					$this->incrementProgressBar();
 				}
