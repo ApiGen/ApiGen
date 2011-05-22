@@ -1,0 +1,58 @@
+{layout '@layout.latte'}
+
+{block #title}{if $constant->deprecated}Deprecated {/if}Constant {$constant->name}{/block}
+
+{block #content}
+<div id="navigation">
+	<ul>
+		<li><a href="index.html" title="Overview"><span>Overview</span></a></li>
+		<li n:if="$packages"><a n:tag-if="$package" href="{$package|packageUrl}" title="Summary of {$package}"><span>Package</span></a></li>
+		<li n:if="$namespaces"><a n:tag-if="$namespace" href="{$namespace|namespaceUrl}" title="Summary of {$namespace}"><span>Namespace</span></a></li>
+		<li class="active"><span>Constant</span></li>
+	</ul>
+	<ul>
+		<li><a href="tree.html" title="Tree view of classes, interfaces and exceptions"><span>Tree</span></a></li>
+		<li n:if="$deprecated"><a href="deprecated.html" title="List of deprecated elements"><span>Deprecated</span></a></li>
+		<li n:if="$todo"><a href="todo.html" title="Todo list"><span>Todo</span></a></li>
+	</ul>
+</div>
+
+<div id="content">
+	<p n:if="$constant->inNamespace()">Namespace {!$constant->namespaceName|namespaceLinks}</p>
+
+	<h1>{if $constant->deprecated}Deprecated {/if}Constant {$constant->shortName}</h1>
+
+	<div class="description" n:if="$template->longDescription($constant)">
+	{!$constant|longDescription|docblock|resolveLinks:$constant}
+	</div>
+
+	<div class="info">
+		{foreach $template->annotationSort($template->annotationFilter($constant->annotations, array('var'))) as $annotation => $values}
+			{foreach $values as $value}
+				<b>{$annotation|ucfirst}{if $value}:{/if}</b>
+				{!$value|annotation:$annotation:$constant}<br>
+			{/foreach}
+		{/foreach}
+		<b>Located at</b> <a n:tag-if="$config->sourceCode" href="{$constant|sourceUrl}" title="Go to source code">{$fileName}</a><br>
+	</div>
+
+	{var $annotations = $constant->annotations}
+
+	<table class="summary" id="vars">
+	<caption>Value summary</caption>
+	<tr>
+		<td width="1%" class="right"><code class="nowrap">
+			{if isset($annotations['var'])}
+				{$annotations['var'][0]}
+			{else}
+				{try}
+				{$constant->value|resolveType}
+				{/try}
+			{/if}
+		</code></td>
+		<td width="1%"><a n:tag-if="$template->resolveConstant($constant->valueDefinition)" href="{$constant->valueDefinition|resolveConstant|constantUrl}"><code>{!$constant->valueDefinition|highlightValue}</code></a></td>
+		<td>{if isset($annotations['var'])}{!$annotations['var'][0]|docdescription:2|docline}{/if}</td>
+	</tr>
+	</table>
+</div>
+{/block}

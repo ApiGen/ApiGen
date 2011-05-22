@@ -64,6 +64,13 @@ class Generator extends Nette\Object
 	private $classes = null;
 
 	/**
+	 * List of constants.
+	 *
+	 * @var \ArrayObject
+	 */
+	private $constants = null;
+
+	/**
 	 * List of functions.
 	 *
 	 * @var \ArrayObject
@@ -137,6 +144,26 @@ class Generator extends Nette\Object
 		}
 		$this->classes->uksort('strcasecmp');
 
+		// Constants
+		$this->constants = new \ArrayObject();
+		foreach ($broker->getConstants() as $constantName => $constant) {
+			if (!$this->config->deprecated && $constant->isDeprecated()) {
+				continue;
+			}
+			foreach ($this->config->skipDocPath as $mask) {
+				if (fnmatch($mask, $constant->getFilename(), FNM_NOESCAPE | FNM_PATHNAME)) {
+					continue 2;
+				}
+			}
+			foreach ($this->config->skipDocPrefix as $prefix) {
+				if (0 === strpos($constant->getName(), $prefix)) {
+					continue 2;
+				}
+			}
+			$this->constants->offsetSet($constantName, $constant);
+		}
+		$this->constants->uksort('strcasecmp');
+
 		// Functions
 		$this->functions = new \ArrayObject();
 		foreach ($broker->getFunctions() as $functionName => $function) {
@@ -159,6 +186,7 @@ class Generator extends Nette\Object
 
 		return array(
 			count($broker->getClasses(Backend::TOKENIZED_CLASSES)),
+			count($broker->getConstants()),
 			count($broker->getFunctions()),
 			count($broker->getClasses(Backend::INTERNAL_CLASSES))
 		);
@@ -182,6 +210,16 @@ class Generator extends Nette\Object
 	public function getClasses()
 	{
 		return $this->classes;
+	}
+
+	/**
+	 * Returns parsed constant list.
+	 *
+	 * @return \ArrayObject
+	 */
+	public function getConstants()
+	{
+		return $this->constants;
 	}
 
 	/**
@@ -282,10 +320,11 @@ class Generator extends Nette\Object
 		// Categorize by packages and namespaces
 		$packages = array();
 		$namespaces = array();
-		$elementTypes = array('classes', 'interfaces', 'exceptions', 'functions');
+		$elementTypes = array('classes', 'interfaces', 'exceptions', 'constants', 'functions');
 		$classes = array();
 		$interfaces = array();
 		$exceptions = array();
+		$constants = $this->constants->getArrayCopy();
 		$functions = $this->functions->getArrayCopy();
 		foreach ($this->classes as $className => $class) {
 			if ($class->isDocumented()) {
@@ -306,6 +345,13 @@ class Generator extends Nette\Object
 					$namespaces[$namespaceName]['classes'][$class->getShortName()] = $class;
 				}
 			}
+		}
+		foreach ($constants as $constantName => $constant) {
+			$packageName = $constant->getPackageName() ?: 'None';
+			$namespaceName = $constant->getNamespaceName() ?: 'None';
+
+			$packages[$packageName]['constants'][$constantName] = $constant;
+			$namespaces[$namespaceName]['constants'][$constant->getShortName()] = $constant;
 		}
 		foreach ($functions as $functionName => $function) {
 			$packageName = $function->getPackageName() ?: 'None';
@@ -332,7 +378,7 @@ class Generator extends Nette\Object
 				foreach (explode('\\', $namespaceName) as $part) {
 					$parent = ltrim($parent . '\\' . $part, '\\');
 					if (!isset($namespaces[$parent])) {
-						$namespaces[$parent] = array('classes' => array(), 'interfaces' => array(), 'exceptions' => array(), 'functions' => array());
+						$namespaces[$parent] = array('classes' => array(), 'interfaces' => array(), 'exceptions' => array(), 'constants' => array(), 'functions' => array());
 					}
 				}
 
@@ -371,6 +417,7 @@ class Generator extends Nette\Object
 				+ count($classes)
 				+ count($interfaces)
 				+ count($exceptions)
+				+ count($constants)
 				+ count($functions)
 				+ count($templates['common'])
 				+ (int) $undocumentedEnabled
@@ -387,6 +434,7 @@ class Generator extends Nette\Object
 				$max += count(array_filter($classes, $tokenizedFilter))
 					+ count(array_filter($interfaces, $tokenizedFilter))
 					+ count(array_filter($exceptions, $tokenizedFilter))
+					+ count($constants)
 					+ count($functions);
 				unset($tokenizedFilter);
 			}
@@ -416,6 +464,8 @@ class Generator extends Nette\Object
 		$template->classes = $classes;
 		$template->interfaces = $interfaces;
 		$template->exceptions = $exceptions;
+		$template->constant = null;
+		$template->constants = $constants;
 		$template->function = null;
 		$template->functions = $functions;
 		foreach ($templates['common'] as $dest => $source) {
@@ -434,7 +484,7 @@ class Generator extends Nette\Object
 			$this->incrementProgressBar();
 		}
 		if ($autocompleteEnabled) {
-			$template->elements = array_keys(array_merge($classes, $interfaces, $exceptions, $functions));
+			$template->elements = array_keys(array_merge($classes, $interfaces, $exceptions, $constants, $functions));
 			usort($template->elements, 'strcasecmp');
 
 			$template->setFile($templatePath . '/' . $templates['optional']['autocomplete']['template'])->save($this->forceDir($destination . '/' . $templates['optional']['autocomplete']['filename']));
@@ -479,7 +529,7 @@ class Generator extends Nette\Object
 			$undocumented = array();
 			foreach ($elementTypes as $type) {
 				foreach ($$type as $parentElement) {
-					// Check only "documented" classes (except internal - no documentation) and functions
+					// Check only "documented" classes (except internal - no documentation), constants and functions
 					if ($parentElement instanceof ReflectionClass && (!$parentElement->isDocumented() || $parentElement->isInternal())) {
 						continue;
 					}
@@ -489,9 +539,14 @@ class Generator extends Nette\Object
 						$elements = array_merge($elements, array_values($parentElement->getOwnMethods()), array_values($parentElement->getOwnConstants()), array_values($parentElement->getOwnProperties()));
 					}
 
-					$parentElementLabel = $parentElement instanceof ReflectionClass
-						? sprintf('Class %s', $parentElement->getName())
-						: sprintf('Function %s()', $parentElement->getName());
+					if ($parentElement instanceof ReflectionClass) {
+						$parentElementLabel = 'Class %s';
+					} elseif ($parentElement instanceof ReflectionConstant) {
+						$parentElementLabel = 'Constant %s';
+					} else {
+						$parentElementLabel = 'Function %s()';
+					}
+					$parentElementLabel = sprintf($parentElementLabel, $parentElement->getName());
 
 					$tokens = $parentElement->getBroker()->getFileTokens($parentElement->getFileName());
 
@@ -622,10 +677,10 @@ class Generator extends Nette\Object
 			$template->deprecatedMethods = array();
 			$template->deprecatedConstants = array();
 			$template->deprecatedProperties = array();
-			foreach ($elementTypes as $type) {
+			foreach (array_reverse($elementTypes) as $type) {
 				$template->{'deprecated' . ucfirst($type)} = array_filter($$type, $deprecatedFilter);
 
-				if ('functions' === $type) {
+				if ('constants' === $type || 'functions' === $type) {
 					continue;
 				}
 
@@ -660,10 +715,10 @@ class Generator extends Nette\Object
 			$template->todoMethods = array();
 			$template->todoConstants = array();
 			$template->todoProperties = array();
-			foreach ($elementTypes as $type) {
+			foreach (array_reverse($elementTypes) as $type) {
 				$template->{'todo' . ucfirst($type)} = array_filter($$type, $todoFilter);
 
-				if ('functions' === $type) {
+				if ('constants' === $type || 'functions' === $type) {
 					continue;
 				}
 
@@ -757,6 +812,7 @@ class Generator extends Nette\Object
 			$template->classes = $package['classes'];
 			$template->interfaces = $package['interfaces'];
 			$template->exceptions = $package['exceptions'];
+			$template->constants = $package['constants'];
 			$template->functions = $package['functions'];
 			$template->setFile($templatePath . '/' . $templates['main']['package']['template'])->save($destination . '/' . $template->getPackageUrl($packageName));
 
@@ -771,6 +827,7 @@ class Generator extends Nette\Object
 			$template->classes = $namespace['classes'];
 			$template->interfaces = $namespace['interfaces'];
 			$template->exceptions = $namespace['exceptions'];
+			$template->constants = $namespace['constants'];
 			$template->functions = $namespace['functions'];
 			$template->setFile($templatePath . '/' . $templates['main']['namespace']['template'])->save($destination . '/' . $template->getNamespaceUrl($namespaceName));
 
@@ -780,6 +837,7 @@ class Generator extends Nette\Object
 		// Generate class & interface & exception files
 		$fshl = new \fshlParser('HTML_UTF8', P_TAB_INDENT | P_LINE_COUNTER);
 		$this->forceDir($destination . '/' . $templates['main']['class']['filename']);
+		$this->forceDir($destination . '/' . $templates['main']['constant']['filename']);
 		$this->forceDir($destination . '/' . $templates['main']['function']['filename']);
 		$this->forceDir($destination . '/' . $templates['main']['source']['filename']);
 		$template->package = null;
@@ -787,6 +845,7 @@ class Generator extends Nette\Object
 		$template->classes = $classes;
 		$template->interfaces = $interfaces;
 		$template->exceptions = $exceptions;
+		$template->constants = $constants;
 		$template->functions = $functions;
 		foreach ($elementTypes as $type) {
 			foreach ($$type as $element) {
@@ -809,15 +868,20 @@ class Generator extends Nette\Object
 					$template->classes = $packages[$package]['classes'];
 					$template->interfaces = $packages[$package]['interfaces'];
 					$template->exceptions = $packages[$package]['exceptions'];
+					$template->constants = $packages[$package]['constants'];
 					$template->functions = $packages[$package]['functions'];
 				} elseif ($namespaces) {
 					$template->namespace = $namespace = $element->isInternal() ? 'PHP' : $element->getNamespaceName() ?: 'None';
 					$template->classes = $namespaces[$namespace]['classes'];
 					$template->interfaces = $namespaces[$namespace]['interfaces'];
 					$template->exceptions = $namespaces[$namespace]['exceptions'];
+					$template->constants = $namespaces[$namespace]['constants'];
 					$template->functions = $namespaces[$namespace]['functions'];
 				}
 
+				$template->class = null;
+				$template->constant = null;
+				$template->function = null;
 				if ($element instanceof ReflectionClass) {
 					// Class
 					$template->tree = array_merge(array_reverse($element->getParentClasses()), array($element));
@@ -837,12 +901,15 @@ class Generator extends Nette\Object
 					$template->ownProperties = $element->getOwnProperties();
 
 					$template->class = $element;
-					$template->function = null;
 
 					$template->setFile($templatePath . '/' . $templates['main']['class']['template'])->save($destination . '/' . $template->getClassUrl($element));
+				} elseif ($element instanceof ReflectionConstant) {
+					// Constant
+					$template->constant = $element;
+
+					$template->setFile($templatePath . '/' . $templates['main']['constant']['template'])->save($destination . '/' . $template->getConstantUrl($element));
 				} elseif ($element instanceof ReflectionFunction) {
 					// Function
-					$template->class = null;
 					$template->function = $element;
 
 					$template->setFile($templatePath . '/' . $templates['main']['function']['template'])->save($destination . '/' . $template->getFunctionUrl($element));

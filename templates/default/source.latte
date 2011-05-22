@@ -10,6 +10,7 @@
 		<li n:if="$packages"><a n:tag-if="$package" href="{$package|packageUrl}" title="Summary of {$package}"><span>Package</span></a></li>
 		<li n:if="$namespaces"><a n:tag-if="$namespace" href="{$namespace|namespaceUrl}" title="Summary of {$namespace}"><span>Namespace</span></a></li>
 		<li n:if="$class"><a href="{$class|classUrl}" title="Summary of {$class->name}"><span>Class</span></a></li>
+		<li n:if="$constant"><a href="{$constant|constantUrl}" title="Summary of {$constant->name}"><span>Constant</span></a></li>
 		<li n:if="$function"><a href="{$function|functionUrl}" title="Summary of {$function->name}"><span>Function</span></a></li>
 	</ul>
 	<ul>

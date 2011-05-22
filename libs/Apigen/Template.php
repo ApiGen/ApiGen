@@ -43,6 +43,13 @@ class Template extends Nette\Templating\FileTemplate
 	private $classes;
 
 	/**
+	 * List of constants.
+	 *
+	 * @var \ArrayObject
+	 */
+	private $constants;
+
+	/**
 	 * List of functions.
 	 *
 	 * @var \ArrayObject
@@ -58,6 +65,7 @@ class Template extends Nette\Templating\FileTemplate
 	{
 		$this->config = $generator->getConfig();
 		$this->classes = $generator->getClasses();
+		$this->constants = $generator->getConstants();
 		$this->functions = $generator->getFunctions();
 
 		$that = $this;
@@ -325,14 +333,19 @@ class Template extends Nette\Templating\FileTemplate
 	}
 
 	/**
-	 * Returns a link to constant in class summary file.
+	 * Returns a link to constant in class summary file or to constant summary file.
 	 *
 	 * @param \TokenReflection\IReflectionConstant $constant Constant reflection
 	 * @return string
 	 */
 	public function getConstantUrl(ReflectionConstant $constant)
 	{
-		return $this->getClassUrl($constant->getDeclaringClassName()) . '#' . $constant->getName();
+		// Class constant
+		if ($className = $constant->getDeclaringClassName()) {
+			return $this->getClassUrl($constant->getDeclaringClassName()) . '#' . $constant->getName();
+		}
+		// Constant in namespace or global space
+		return sprintf($this->config->templates['main']['constant']['filename'], preg_replace('#[^a-z0-9_]#i', '.', $constant->getName()));
 	}
 
 	/**
@@ -355,14 +368,21 @@ class Template extends Nette\Templating\FileTemplate
 	 */
 	public function getSourceUrl($element, $withLine = true)
 	{
-		$elementName = $element instanceof ReflectionClass || $element instanceof ReflectionFunction
-			? $element->getName()
-			: $element->getDeclaringClassName();
+		$file = '';
 
-		$file = preg_replace('#[^a-z0-9_]#i', '.', str_replace('\\', '/', $elementName));
-		if ($element instanceof ReflectionFunction) {
-			$file = 'function-' . $file;
+		if ($element instanceof ReflectionClass || $element instanceof ReflectionFunction || ($element instanceof ReflectionConstant && null === $element->getDeclaringClassName())) {
+			$elementName = $element->getName();
+
+			if ($element instanceof ReflectionFunction) {
+				$file = 'function-';
+			} elseif ($element instanceof ReflectionConstant) {
+				$file = 'constant-';
+			}
+		} else {
+			$elementName = $element->getDeclaringClassName();
 		}
+
+		$file .= preg_replace('#[^a-z0-9_]#i', '.', str_replace('\\', '/', $elementName));
 
 		$line = null;
 		if ($withLine) {
@@ -521,6 +541,31 @@ class Template extends Nette\Templating\FileTemplate
 	}
 
 	/**
+	 * Tries to resolve type as constant name.
+	 *
+	 * @param string $constantName Constant name
+	 * @param string $namespace Namespace name
+	 * @return string
+	 */
+	public function resolveConstant2($constantName, $namespace = NULL)
+	{
+		if (substr($constantName, 0, 1) === '\\') {
+			$namespace = '';
+			$constantName = substr($constantName, 1);
+		}
+
+		if (isset($this->constants[$namespace . '\\' . $constantName])) {
+			return $namespace . '\\' . $constantName;
+		}
+
+		if (isset($this->constants[$constantName])) {
+			return $constantName;
+		}
+
+		return null;
+	}
+
+	/**
 	 * Tries to resolve a constant using its name.
 	 *
 	 * @param string $definition Constant name (NAME or Class::NAME)
@@ -568,7 +613,7 @@ class Template extends Nette\Templating\FileTemplate
 	 */
 	public function resolveClassLink($link, $context)
 	{
-		if (!$context instanceof ReflectionClass && !$context instanceof ReflectionFunction) {
+		if (!$context instanceof ReflectionClass && !$context instanceof ReflectionConstant && !$context instanceof ReflectionFunction) {
 			$context = $this->classes[$context->getDeclaringClassName()];
 		}
 
@@ -604,6 +649,11 @@ class Template extends Nette\Templating\FileTemplate
 			$context = $this->functions[$functionName];
 
 			return '<a href="' . $this->functionUrl($context) . '">' . $this->escapeHtml($functionName) . '</a>';
+		} elseif ($constantName = $this->resolveConstant2($link, $context->getNamespaceName())) {
+			// Function
+			$context = $this->constants[$constantName];
+
+			return '<a href="' . $this->constantUrl($context) . '">' . $this->escapeHtml($constantName) . '</a>';
 		}
 
 		// No "documented" class
@@ -612,7 +662,7 @@ class Template extends Nette\Templating\FileTemplate
 		}
 
 		// No context
-		if ($context instanceof ReflectionFunction) {
+		if ($context instanceof ReflectionConstant || $context instanceof ReflectionFunction) {
 			return null;
 		}
 

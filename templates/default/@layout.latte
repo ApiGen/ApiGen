@@ -91,6 +91,15 @@
 		</ul>
 		{/if}
 
+		{if $constants}
+		<h3>Constants</h3>
+		<ul>
+		{foreach $constants as $item}
+			<li n:class="$constant === $item ? active"><a href="{$item|constantUrl}">{if $namespace}{$item->shortName}{else}{$item->name}{/if}</a></li>
+		{/foreach}
+		</ul>
+		{/if}
+
 		{if $functions}
 		<h3>Functions</h3>
 		<ul>

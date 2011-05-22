@@ -28,6 +28,16 @@
 {/foreach}
 </table>
 
+<table class="summary" id="constants" n:if="$constants">
+<caption>Constants summary</caption>
+{foreach $constants as $constant}
+<tr>
+	<td class="nowrap" width="20%"><code><a href="{$constant|constantUrl}"><b>{if $namespace}{$constant->shortName}{else}{$constant->name}{/if}</b></a></code></td>
+	<td>{!$constant|shortDescription|docline|resolveLinks:$constant}</td>
+</tr>
+{/foreach}
+</table>
+
 <table class="summary" id="functions" n:if="$functions">
 <caption>Functions summary</caption>
 {foreach $functions as $function}
