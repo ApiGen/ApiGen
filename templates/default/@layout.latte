@@ -38,7 +38,15 @@
 		<h3>Packages</h3>
 		<ul>
 			{foreach $packages as $item}
-			<li n:class="$package === $item ? active"><a href="{$item|packageUrl}">{$item}</a></li>
+			<li n:class="$package === $item || 0 === strpos($package, $item . '\\') ? active"><a href="{$item|packageUrl}">{$template->subpackageName($item) ?: $item}</a>
+				{if substr_count($iterator->nextValue, '\\') > substr_count($item, '\\')}
+					<ul>
+				{else}
+					</li>
+					{if substr_count($iterator->nextValue, '\\') < substr_count($item, '\\')}
+						{!=str_repeat('</ul></li>', substr_count($item, '\\') - substr_count($iterator->nextValue, '\\'))}
+					{/if}
+				{/if}
 			{/foreach}
 		</ul>
 		{/if}

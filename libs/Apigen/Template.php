@@ -164,6 +164,10 @@ class Template extends Nette\Templating\FileTemplate
 					return $that->packages
 						? '<a href="' . $that->getPackageUrl($value) . '">' . $that->escapeHtml($value) . '</a>'
 						: $that->escapeHtml($value);
+				case 'subpackage':
+					return $that->packages
+						? '<a href="' . $that->getPackageUrl($parent->getPackageName() . '\\' . $value) . '">' . $that->escapeHtml($value) . '</a>'
+						: $that->escapeHtml($value);
 				case 'see':
 				case 'uses':
 					$link = $that->resolveClassLink($value, $parent);
@@ -227,6 +231,20 @@ class Template extends Nette\Templating\FileTemplate
 				$name .= '?' . $versions[$filename];
 			}
 			return $name;
+		});
+
+		// Packages
+		$this->registerHelper('packageName', function($packageName) {
+			if ($pos = strpos($packageName, '\\')) {
+				return substr($packageName, 0, $pos);
+			}
+			return $packageName;
+		});
+		$this->registerHelper('subpackageName', function($packageName) {
+			if ($pos = strpos($packageName, '\\')) {
+				return substr($packageName, $pos + 1);
+			}
+			return '';
 		});
 	}
 

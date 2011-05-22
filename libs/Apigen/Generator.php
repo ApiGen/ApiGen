@@ -250,6 +250,9 @@ class Generator extends Nette\Object
 		foreach ($this->classes as $className => $class) {
 			if ($class->isDocumented()) {
 				$packageName = $class->isInternal() ? 'PHP' : $class->getPackageName() ?: 'None';
+				if ($subpackage = $class->getAnnotation('subpackage')) {
+					$packageName .= '\\' . $subpackage[0];
+				}
 				$namespaceName = $class->isInternal() ? 'PHP' : $class->getNamespaceName() ?: 'None';
 
 				if ($class->isInterface()) {
@@ -301,6 +304,15 @@ class Generator extends Nette\Object
 			$namespaces = array();
 
 			foreach (array_keys($packages) as $packageName) {
+				// Add missing parent packages
+				$parent = '';
+				foreach (explode('\\', $packageName) as $part) {
+					$parent = ltrim($parent . '\\' . $part, '\\');
+					if (!isset($packages[$parent])) {
+						$packages[$parent] = array('classes' => array(), 'interfaces' => array(), 'exceptions' => array());
+					}
+				}
+
 				// Add missing class types
 				foreach ($classTypes as $type) {
 					if (!isset($packages[$packageName][$type])) {
@@ -675,6 +687,9 @@ class Generator extends Nette\Object
 		$this->forceDir($destination . '/' . $templates['main']['package']['filename']);
 		foreach ($packages as $packageName => $package) {
 			$template->package = $packageName;
+			$template->subpackages = array_filter($template->packages, function($subpackageName) use ($packageName) {
+				return 0 === strpos($subpackageName, $packageName . '\\');
+			});
 			$template->namespace = null;
 			$template->classes = $package['classes'];
 			$template->interfaces = $package['interfaces'];
@@ -683,6 +698,7 @@ class Generator extends Nette\Object
 
 			$this->incrementProgressBar();
 		}
+		unset($template->subpackages);
 
 		// Generate namespace summary
 		$this->forceDir($destination . '/' . $templates['main']['namespace']['filename']);
@@ -714,6 +730,9 @@ class Generator extends Nette\Object
 			foreach ($$type as $class) {
 				if ($packages) {
 					$template->package = $package = $class->isInternal() ? 'PHP' : $class->getPackageName() ?: 'None';
+					if ($subpackage = $class->getAnnotation('subpackage')) {
+						$template->package .= '\\' . $subpackage[0];
+					}
 					$template->classes = $packages[$package]['classes'];
 					$template->interfaces = $packages[$package]['interfaces'];
 					$template->exceptions = $packages[$package]['exceptions'];
