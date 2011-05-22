@@ -279,21 +279,14 @@ class Config
 	 */
 	private function checkTemplate()
 	{
-		foreach (array('package', 'namespace', 'class', 'source', 'tree') as $type) {
-			if (!isset($this->config['templates']['main'][$type]['filename'])) {
-				throw new Exception(sprintf('Filename for %s not defined', $type), Exception::INVALID_CONFIG);
-			}
-			if (!isset($this->config['templates']['main'][$type]['template'])) {
-				throw new Exception(sprintf('Template for %s not defined', $type), Exception::INVALID_CONFIG);
-			}
-		}
-
-		foreach ($this->config['templates']['optional'] as $type => $config) {
-			if (!isset($config['filename'])) {
-				throw new Exception(sprintf('Filename for %s not defined', $type), Exception::INVALID_CONFIG);
-			}
-			if (!isset($config['template'])) {
-				throw new Exception(sprintf('Template for %s not defined', $type), Exception::INVALID_CONFIG);
+		foreach (array('main', 'optional') as $section) {
+			foreach ($this->config['templates'][$section] as $type => $config) {
+				if (!isset($config['filename'])) {
+					throw new Exception(sprintf('Filename for %s not defined', $type), Exception::INVALID_CONFIG);
+				}
+				if (!isset($config['template'])) {
+					throw new Exception(sprintf('Template for %s not defined', $type), Exception::INVALID_CONFIG);
+				}
 			}
 		}
 
