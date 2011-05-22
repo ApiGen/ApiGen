@@ -1,7 +1,7 @@
 <table class="summary" id="classes" n:if="$classes">
 <caption>Classes summary</caption>
 {foreach $classes as $class}
-<tr>
+<tr n:class="$class->deprecated ? deprecated">
 	<td class="nowrap" width="20%"><a href="{$class|classUrl}">{if $namespace}{$class->shortName}{else}{$class->name}{/if}</a></td>
 	<td>{!$class|shortDescription|docline|resolveLinks:$class}</td>
 </tr>
@@ -11,7 +11,7 @@
 <table class="summary" id="interfaces" n:if="$interfaces">
 <caption>Interfaces summary</caption>
 {foreach $interfaces as $interface}
-<tr>
+<tr n:class="$interface->deprecated ? deprecated">
 	<td class="nowrap" width="20%"><a href="{$interface|classUrl}">{if $namespace}{$interface->shortName}{else}{$interface->name}{/if}</a></td>
 	<td>{!$interface|shortDescription|docline|resolveLinks:$interface}</td>
 </tr>
@@ -21,7 +21,7 @@
 <table class="summary" id="exceptions" n:if="$exceptions">
 <caption>Exceptions summary</caption>
 {foreach $exceptions as $exception}
-<tr>
+<tr n:class="$exception->deprecated ? deprecated">
 	<td class="nowrap" width="20%"><a href="{$exception|classUrl}">{if $namespace}{$exception->shortName}{else}{$exception->name}{/if}</a></td>
 	<td>{!$exception|shortDescription|docline|resolveLinks:$exception}</td>
 </tr>
