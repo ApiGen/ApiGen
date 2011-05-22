@@ -161,7 +161,7 @@ class Template extends Nette\Templating\FileTemplate
 		$this->registerHelper('annotation', function($value, $name, $parent) use ($that) {
 			switch ($name) {
 				case 'package':
-					return !$parent->inNamespace()
+					return $that->packages
 						? '<a href="' . $that->getPackageUrl($value) . '">' . $that->escapeHtml($value) . '</a>'
 						: $that->escapeHtml($value);
 				case 'see':
