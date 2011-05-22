@@ -2310,11 +2310,11 @@ ReflectionConstant
 extends
 ReflectionBase
 implements
-IReflectionConstant{private$declaringClassName;private$namespaceName;private$value;private$valueDefinition='';protected
+IReflectionConstant{private$declaringClassName;private$namespaceName;private$value;private$valueDefinition='';private$aliases=array();protected
 function
 processParent(IReflection$parent){if($parent
 instanceof
-ReflectionFileNamespace){$this->namespaceName=$parent->getName();}elseif($parent
+ReflectionFileNamespace){$this->namespaceName=$parent->getName();$this->aliases=$parent->getAliases();}elseif($parent
 instanceof
 ReflectionClass){$this->declaringClassName=$parent->getName();}else{throw
 new
@@ -2386,7 +2386,9 @@ getShortName(){$name=$this->getName();if(null
 !==$this->namespaceName
 &&$this->namespaceName
 !==
-ReflectionNamespace::NO_NAMESPACE_NAME){$name=substr($name,strlen($this->namespaceName)+1);}return$name;}}}
+ReflectionNamespace::NO_NAMESPACE_NAME){$name=substr($name,strlen($this->namespaceName)+1);}return$name;}public
+function
+getNamespaceAliases(){return$this->aliases;}}}
 
 namespace
 TokenReflection{use
