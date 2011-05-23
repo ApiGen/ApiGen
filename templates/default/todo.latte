@@ -80,8 +80,8 @@
 		<td class="right nowrap" width="1%"><a href="{$constant->declaringClassName|classUrl}">{$constant->declaringClassName}</a></td>
 		<td width="1%"><code class="nowrap"><a href="{$constant|constantUrl}"><b>{$constant->name}</b></a></code></td>
 		{else}
-		<td class="right nowrap" width="1%"><a n:if="$constant->namespaceName" href="{$constant->namespaceName|namespaceUrl}">{$constant->namespaceName}</a></td>
-		<td width="1%"><code class="nowrap"><a href="{$constant|constantUrl}"><b>{$constant->shortName}</b></a></code></td>
+		<td class="right nowrap" width="1%" n:if="$namespaces || $classes || $interfaces || $exceptions"><a n:if="$constant->namespaceName" href="{$constant->namespaceName|namespaceUrl}">{$constant->namespaceName}</a></td>
+		<td n:class="!$namespaces && !$classes && !$interfaces && !$exceptions ? right" width="1%"><code class="nowrap"><a href="{$constant|constantUrl}"><b>{$constant->shortName}</b></a></code></td>
 		{/if}
 		<td>
 			{foreach $constant->annotations['todo'] as $description}
@@ -115,7 +115,8 @@
 	<caption>Functions summary</caption>
 	{foreach $todoFunctions as $function}
 	<tr>
-		<td width="1%"><code><a href="{$function|functionUrl}"><b>{$function->name}()</b></a></code></td>
+		<td class="right nowrap" width="1%" n:if="$namespaces"><a n:if="$function->namespaceName" href="{$function->namespaceName|namespaceUrl}">{$function->namespaceName}</a></td>
+		<td width="1%"><code class="nowrap"><a href="{$function|functionUrl}"><b>{$function->shortName}</b></a></code></td>
 		<td>
 			{foreach $function->annotations['todo'] as $description}
 				{if $description}
