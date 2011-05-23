@@ -3,7 +3,7 @@ $(function(){
 	// enables search autocompletion
 	var $search = $("#search input[type=text]");
 	if ($search.size()) {
-		$search.autocomplete(classes, {
+		$search.autocomplete(elements, {
 			matchContains: true,
 			scrollHeight: 200,
 			max: 20,

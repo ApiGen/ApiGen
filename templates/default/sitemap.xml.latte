@@ -28,4 +28,14 @@
 	<loc>{$config->baseUrl}/{$exception|classUrl}</loc>
 </url>
 {/foreach}
+{foreach $constants as $constant}
+<url>
+	<loc>{$config->baseUrl}/{$constant|constantUrl}</loc>
+</url>
+{/foreach}
+{foreach $functions as $function}
+<url>
+	<loc>{$config->baseUrl}/{$function|functionUrl}</loc>
+</url>
+{/foreach}
 </urlset>

@@ -16,7 +16,7 @@ namespace Apigen;
 use Nette;
 use Apigen\Exception, Apigen\Config, Apigen\Template, Apigen\Backend;
 use TokenReflection\Broker;
-use Apigen\Reflection as ReflectionClass, TokenReflection\IReflectionProperty as ReflectionProperty, TokenReflection\IReflectionMethod as ReflectionMethod, TokenReflection\IReflectionConstant as ReflectionConstant, TokenReflection\IReflectionParameter as ReflectionParameter;
+use Apigen\Reflection as ReflectionClass, TokenReflection\IReflectionProperty as ReflectionProperty, TokenReflection\IReflectionMethod as ReflectionMethod, TokenReflection\IReflectionConstant as ReflectionConstant, TokenReflection\IReflectionFunction as ReflectionFunction, TokenReflection\IReflectionParameter as ReflectionParameter;
 use TokenReflection\ReflectionAnnotation;
 
 /**
@@ -57,11 +57,25 @@ class Generator extends Nette\Object
 	private $progressBar;
 
 	/**
-	 * Array of reflection envelopes.
+	 * List of classes.
 	 *
 	 * @var \ArrayObject
 	 */
-	private $classes = array();
+	private $classes = null;
+
+	/**
+	 * List of constants.
+	 *
+	 * @var \ArrayObject
+	 */
+	private $constants = null;
+
+	/**
+	 * List of functions.
+	 *
+	 * @var \ArrayObject
+	 */
+	private $functions = null;
 
 	/**
 	 * Sets configuration.
@@ -123,14 +137,57 @@ class Generator extends Nette\Object
 			$this->incrementProgressBar($size);
 		}
 
+		// Classes
 		$this->classes = new \ArrayObject();
 		foreach ($broker->getClasses(Backend::TOKENIZED_CLASSES | Backend::INTERNAL_CLASSES | Backend::NONEXISTENT_CLASSES) as $className => $class) {
 			$this->classes->offsetSet($className, new ReflectionClass($class, $this));
 		}
 		$this->classes->uksort('strcasecmp');
 
+		// Constants
+		$this->constants = new \ArrayObject();
+		foreach ($broker->getConstants() as $constantName => $constant) {
+			if (!$this->config->deprecated && $constant->isDeprecated()) {
+				continue;
+			}
+			foreach ($this->config->skipDocPath as $mask) {
+				if (fnmatch($mask, $constant->getFilename(), FNM_NOESCAPE | FNM_PATHNAME)) {
+					continue 2;
+				}
+			}
+			foreach ($this->config->skipDocPrefix as $prefix) {
+				if (0 === strpos($constant->getName(), $prefix)) {
+					continue 2;
+				}
+			}
+			$this->constants->offsetSet($constantName, $constant);
+		}
+		$this->constants->uksort('strcasecmp');
+
+		// Functions
+		$this->functions = new \ArrayObject();
+		foreach ($broker->getFunctions() as $functionName => $function) {
+			if (!$this->config->deprecated && $function->isDeprecated()) {
+				continue;
+			}
+			foreach ($this->config->skipDocPath as $mask) {
+				if (fnmatch($mask, $function->getFilename(), FNM_NOESCAPE | FNM_PATHNAME)) {
+					continue 2;
+				}
+			}
+			foreach ($this->config->skipDocPrefix as $prefix) {
+				if (0 === strpos($function->getName(), $prefix)) {
+					continue 2;
+				}
+			}
+			$this->functions->offsetSet($functionName, $function);
+		}
+		$this->functions->uksort('strcasecmp');
+
 		return array(
 			count($broker->getClasses(Backend::TOKENIZED_CLASSES)),
+			count($broker->getConstants()),
+			count($broker->getFunctions()),
 			count($broker->getClasses(Backend::INTERNAL_CLASSES))
 		);
 	}
@@ -153,6 +210,26 @@ class Generator extends Nette\Object
 	public function getClasses()
 	{
 		return $this->classes;
+	}
+
+	/**
+	 * Returns parsed constant list.
+	 *
+	 * @return \ArrayObject
+	 */
+	public function getConstants()
+	{
+		return $this->constants;
+	}
+
+	/**
+	 * Returns parsed function list.
+	 *
+	 * @return \ArrayObject
+	 */
+	public function getFunctions()
+	{
+		return $this->functions;
 	}
 
 	/**
@@ -243,10 +320,12 @@ class Generator extends Nette\Object
 		// Categorize by packages and namespaces
 		$packages = array();
 		$namespaces = array();
-		$classTypes = array('classes', 'interfaces', 'exceptions');
+		$elementTypes = array('classes', 'interfaces', 'exceptions', 'constants', 'functions');
 		$classes = array();
 		$interfaces = array();
 		$exceptions = array();
+		$constants = $this->constants->getArrayCopy();
+		$functions = $this->functions->getArrayCopy();
 		foreach ($this->classes as $className => $class) {
 			if ($class->isDocumented()) {
 				$packageName = $class->isInternal() ? 'PHP' : $class->getPackageName() ?: 'None';
@@ -270,6 +349,26 @@ class Generator extends Nette\Object
 				}
 			}
 		}
+		foreach ($constants as $constantName => $constant) {
+			$packageName = $constant->getPackageName() ?: 'None';
+			if ($subpackage = $constant->getAnnotation('subpackage')) {
+				$packageName .= '\\' . $subpackage[0];
+			}
+			$namespaceName = $constant->getNamespaceName() ?: 'None';
+
+			$packages[$packageName]['constants'][$constantName] = $constant;
+			$namespaces[$namespaceName]['constants'][$constant->getShortName()] = $constant;
+		}
+		foreach ($functions as $functionName => $function) {
+			$packageName = $function->getPackageName() ?: 'None';
+			if ($subpackage = $function->getAnnotation('subpackage')) {
+				$packageName .= '\\' . $subpackage[0];
+			}
+			$namespaceName = $function->getNamespaceName() ?: 'None';
+
+			$packages[$packageName]['functions'][$functionName] = $function;
+			$namespaces[$namespaceName]['functions'][$function->getShortName()] = $function;
+		}
 
 		// Select only packages or namespaces
 		$userPackages = count(array_diff(array_keys($packages), array('PHP', 'None')));
@@ -288,12 +387,12 @@ class Generator extends Nette\Object
 				foreach (explode('\\', $namespaceName) as $part) {
 					$parent = ltrim($parent . '\\' . $part, '\\');
 					if (!isset($namespaces[$parent])) {
-						$namespaces[$parent] = array('classes' => array(), 'interfaces' => array(), 'exceptions' => array());
+						$namespaces[$parent] = array('classes' => array(), 'interfaces' => array(), 'exceptions' => array(), 'constants' => array(), 'functions' => array());
 					}
 				}
 
-				// Add missing class types
-				foreach ($classTypes as $type) {
+				// Add missing element types
+				foreach ($elementTypes as $type) {
 					if (!isset($namespaces[$namespaceName][$type])) {
 						$namespaces[$namespaceName][$type] = array();
 					}
@@ -309,12 +408,12 @@ class Generator extends Nette\Object
 				foreach (explode('\\', $packageName) as $part) {
 					$parent = ltrim($parent . '\\' . $part, '\\');
 					if (!isset($packages[$parent])) {
-						$packages[$parent] = array('classes' => array(), 'interfaces' => array(), 'exceptions' => array());
+						$packages[$parent] = array('classes' => array(), 'interfaces' => array(), 'exceptions' => array(), 'constants' => array(), 'functions' => array());
 					}
 				}
 
 				// Add missing class types
-				foreach ($classTypes as $type) {
+				foreach ($elementTypes as $type) {
 					if (!isset($packages[$packageName][$type])) {
 						$packages[$packageName][$type] = array();
 					}
@@ -333,6 +432,8 @@ class Generator extends Nette\Object
 				+ count($classes)
 				+ count($interfaces)
 				+ count($exceptions)
+				+ count($constants)
+				+ count($functions)
 				+ count($templates['common'])
 				+ (int) $this->config->undocumented
 				+ (int) $this->config->tree
@@ -347,7 +448,9 @@ class Generator extends Nette\Object
 				$tokenizedFilter = function(ReflectionClass $class) {return $class->isTokenized();};
 				$max += count(array_filter($classes, $tokenizedFilter))
 					+ count(array_filter($interfaces, $tokenizedFilter))
-					+ count(array_filter($exceptions, $tokenizedFilter));
+					+ count(array_filter($exceptions, $tokenizedFilter))
+					+ count($constants)
+					+ count($functions);
 				unset($tokenizedFilter);
 			}
 
@@ -374,6 +477,10 @@ class Generator extends Nette\Object
 		$template->classes = $classes;
 		$template->interfaces = $interfaces;
 		$template->exceptions = $exceptions;
+		$template->constant = null;
+		$template->constants = $constants;
+		$template->function = null;
+		$template->functions = $functions;
 		foreach ($templates['common'] as $dest => $source) {
 			$template->setFile($templatePath . '/' . $source)->save($this->forceDir("$destination/$dest"));
 
@@ -390,7 +497,7 @@ class Generator extends Nette\Object
 			$this->incrementProgressBar();
 		}
 		if ($autocompleteEnabled) {
-			$template->elements = array_keys(array_merge($classes, $interfaces, $exceptions));
+			$template->elements = array_keys(array_merge($classes, $interfaces, $exceptions, $constants, $functions));
 			usort($template->elements, 'strcasecmp');
 
 			$template->setFile($templatePath . '/' . $templates['optional']['autocomplete']['template'])->save($this->forceDir($destination . '/' . $templates['optional']['autocomplete']['filename']));
@@ -401,67 +508,93 @@ class Generator extends Nette\Object
 
 		// List of undocumented elements
 		if ($this->config->undocumented) {
-			$label = function($element) {
-				if ($element instanceof ReflectionClass) {
-					return 'Class';
-				} elseif ($element instanceof ReflectionMethod) {
-					return sprintf('Method %s()', $element->getName());
-				} elseif ($element instanceof ReflectionConstant) {
-					return sprintf('Constant %s', $element->getName());
-				} elseif ($element instanceof ReflectionProperty) {
-					return sprintf('Property $%s', $element->getName());
-				} elseif ($element instanceof ReflectionParameter) {
-					return sprintf('Parameter $%s', $element->getName());
-				} else {
-					return $element->getName();
-				}
-			};
-			$normalize = function($string) {
-				return preg_replace('~\s+~', ' ', $string);
-			};
+			$message = function() {
+				$args = func_get_args();
 
-			$undocumented = array();
-			foreach ($classTypes as $type) {
-				foreach ($$type as $class) {
-					// Check only "documented" classes (except internal - no documentation)
-					if (!$class->isDocumented() || $class->isInternal()) {
+				$parentElement = array_shift($args);
+				$description = array_pop($args);
+
+				$message = '';
+				foreach ($args as $no => $element) {
+					if ($parentElement === $element) {
 						continue;
 					}
 
-					$tokens = $class->getBroker()->getFileTokens($class->getFileName());
+					if ($element instanceof ReflectionClass) {
+						$label = 'Class %s';
+					} elseif ($element instanceof ReflectionMethod) {
+						$label = 'Method %s()';
+					} elseif ($element instanceof ReflectionFunction) {
+						$label = 'Function %s()';
+					} elseif ($element instanceof ReflectionConstant) {
+						$label = 'Constant %s';
+					} elseif ($element instanceof ReflectionProperty) {
+						$label = 'Property $%s';
+					} elseif ($element instanceof ReflectionParameter) {
+						$label = 'Parameter $%s';
+					}
 
-					foreach (array_merge(array($class), array_values($class->getOwnMethods()), array_values($class->getOwnConstants()), array_values($class->getOwnProperties())) as $element) {
+					$message .= sprintf($label . ': ', $element->getName());
+				}
+				return $message . preg_replace('~\s+~', ' ', $description);
+			};
+
+			$undocumented = array();
+			foreach ($elementTypes as $type) {
+				foreach ($$type as $parentElement) {
+					// Check only "documented" classes (except internal - no documentation), constants and functions
+					if ($parentElement instanceof ReflectionClass && (!$parentElement->isDocumented() || $parentElement->isInternal())) {
+						continue;
+					}
+
+					$elements = array($parentElement);
+					if ($parentElement instanceof ReflectionClass) {
+						$elements = array_merge($elements, array_values($parentElement->getOwnMethods()), array_values($parentElement->getOwnConstants()), array_values($parentElement->getOwnProperties()));
+					}
+
+					if ($parentElement instanceof ReflectionClass) {
+						$parentElementLabel = 'Class %s';
+					} elseif ($parentElement instanceof ReflectionConstant) {
+						$parentElementLabel = 'Constant %s';
+					} else {
+						$parentElementLabel = 'Function %s()';
+					}
+					$parentElementLabel = sprintf($parentElementLabel, $parentElement->getName());
+
+					$tokens = $parentElement->getBroker()->getFileTokens($parentElement->getFileName());
+
+					foreach ($elements as $element) {
 						$annotations = $element->getAnnotations();
 
 						// Documentation
 						if (empty($annotations)) {
-							$undocumented[$class->getName()][] = sprintf('%s: Missing documentation.', $label($element));
+							$undocumented[$parentElementLabel][] = $message($parentElement, $element, 'Missing documentation.');
 							continue;
 						}
 
 						// Description
 						if (!isset($annotations[ReflectionAnnotation::SHORT_DESCRIPTION])) {
-							$undocumented[$class->getName()][] = sprintf('%s: Missing description.', $label($element));
+							$undocumented[$parentElementLabel][] = $message($parentElement, $element, 'Missing description.');
 						}
 
 						// Documentation of method
-						if ($element instanceof ReflectionMethod) {
+						if ($element instanceof ReflectionMethod || $element instanceof ReflectionFunction) {
 							// Parameters
 							foreach ($element->getParameters() as $no => $parameter) {
 								if (!isset($annotations['param'][$no])) {
-									$undocumented[$class->getName()][] = sprintf('%s: %s: Missing documentation.', $label($element), $label($parameter));
+									$undocumented[$parentElementLabel][] = $message($parentElement, $element, $parameter, 'Missing documentation.');
 									continue;
 								}
 
 								if (!preg_match('~^[\w\\\\]+(?:\|[\w\\\\]+)*\s+\$' . $parameter->getName() . '(?:\s+.+)?$~s', $annotations['param'][$no])) {
-									$undocumented[$class->getName()][] = sprintf('%s: %s: Invalid documentation "%s".', $label($element), $label($parameter), $normalize($annotations['param'][$no]));
+									$undocumented[$parentElementLabel][] = $message($parentElement, $element, $parameter, sprintf('Invalid documentation "%s".', $annotations['param'][$no]));
 								}
 
 								unset($annotations['param'][$no]);
 							}
 							if (isset($annotations['param'])) {
 								foreach ($annotations['param'] as $annotation) {
-									$undocumented[$class->getName()][] = sprintf('%s: Existing documentation "%s" of nonexistent parameter.', $label($element), $normalize($annotation));
+									$undocumented[$parentElementLabel][] = $message($parentElement, $element, sprintf('Existing documentation "%s" of nonexistent parameter.', $annotation));
 								}
 							}
 
@@ -481,16 +614,16 @@ class Generator extends Nette\Object
 								}
 							}
 							if ($return && !isset($annotations['return'])) {
-								$undocumented[$class->getName()][] = sprintf('%s: Missing documentation of return value.', $label($element));
+								$undocumented[$parentElementLabel][] = $message($parentElement, $element, 'Missing documentation of return value.');
 							} elseif (isset($annotations['return'])) {
-								if (!$return && 'void' !== $annotations['return'][0] && !$class->isInterface() && !$element->isAbstract()) {
-									$undocumented[$class->getName()][] = sprintf('%s: Existing documentation "%s" of nonexistent return value.', $label($element), $normalize($annotations['return'][0]));
+								if (!$return && 'void' !== $annotations['return'][0] && !$parentElement->isInterface() && !$element->isAbstract()) {
+									$undocumented[$parentElementLabel][] = $message($parentElement, $element, sprintf('Existing documentation "%s" of nonexistent return value.', $annotations['return'][0]));
 								} elseif (!preg_match('~^[\w\\\\]+(?:\|[\w\\\\]+)*(?:\s+.+)?$~s', $annotations['return'][0])) {
-									$undocumented[$class->getName()][] = sprintf('%s: Invalid documentation "%s" of return value.', $label($element), $normalize($annotations['return'][0]));
+									$undocumented[$parentElementLabel][] = $message($parentElement, $element, sprintf('Invalid documentation "%s" of return value.', $annotations['return'][0]));
 								}
 							}
 							if (isset($annotations['return'][1])) {
-								$undocumented[$class->getName()][] = sprintf('%s: Duplicate documentation "%s" of return value.', $label($element), $normalize($annotations['return'][1]));
+								$undocumented[$parentElementLabel][] = $message($parentElement, $element, sprintf('Duplicate documentation "%s" of return value.', $annotations['return'][1]));
 							}
 
 							// Throwing exceptions
@@ -508,22 +641,22 @@ class Generator extends Nette\Object
 								}
 							}
 							if ($throw && !isset($annotations['throws'])) {
-								$undocumented[$class->getName()][] = sprintf('%s: Missing documentation of throwing an exception.', $label($element));
+								$undocumented[$parentElementLabel][] = $message($parentElement, $element, 'Missing documentation of throwing an exception.');
 							} elseif (isset($annotations['throws'])	&& !preg_match('~^[\w\\\\]+(?:\|[\w\\\\]+)*(?:\s+.+)?$~s', $annotations['throws'][0])) {
-								$undocumented[$class->getName()][] = sprintf('%s: Invalid documentation "%s" of throwing an exception.', $label($element), $normalize($annotations['throws'][0]));
+								$undocumented[$parentElementLabel][] = $message($parentElement, $element, sprintf('Invalid documentation "%s" of throwing an exception.', $annotations['throws'][0]));
 							}
 						}
 
 						// Data type of constants & properties
 						if ($element instanceof ReflectionProperty || $element instanceof ReflectionConstant) {
 							if (!isset($annotations['var'])) {
-								$undocumented[$class->getName()][] = sprintf('%s: Missing documentation of the data type.', $label($element));
+								$undocumented[$parentElementLabel][] = $message($parentElement, $element, 'Missing documentation of the data type.');
 							} elseif (!preg_match('~^[\w\\\\]+(?:\|[\w\\\\]+)*(?:\s+.+)?$~s', $annotations['var'][0])) {
-								$undocumented[$class->getName()][] = sprintf('%s: Invalid documentation "%s" of the data type.', $label($element), $normalize($annotations['var'][0]));
+								$undocumented[$parentElementLabel][] = $message($parentElement, $element, sprintf('Invalid documentation "%s" of the data type.', $annotations['var'][0]));
 							}
 
 							if (isset($annotations['var'][1])) {
-								$undocumented[$class->getName()][] = sprintf('%s: Duplicate documentation "%s" of the data type.', $label($element), $normalize($annotations['var'][1]));
+								$undocumented[$parentElementLabel][] = $message($parentElement, $element, sprintf('Duplicate documentation "%s" of the data type.', $annotations['var'][1]));
 							}
 						}
 					}
@@ -536,8 +669,8 @@ class Generator extends Nette\Object
 			if (false === $fp) {
 				throw new Exception(sprintf('File %s isn\'t writable.', $this->config->undocumented));
 			}
-			foreach ($undocumented as $className => $elements) {
-				fwrite($fp, sprintf("%s\n%s\n", $className, str_repeat('-', strlen($className))));
+			foreach ($undocumented as $label => $elements) {
+				fwrite($fp, sprintf("%s\n%s\n", $label, str_repeat('-', strlen($label))));
 				foreach ($elements as $text) {
 					fwrite($fp, sprintf("\t%s\n", $text));
 				}
@@ -557,17 +690,17 @@ class Generator extends Nette\Object
 			}
 
 			$deprecatedFilter = function($element) {return $element->isDeprecated();};
-			$deprecatedSort = function($a, $b) {
-				return strcasecmp($a->getDeclaringClassName() . '::' . $a->getName(), $b->getDeclaringClassName() . '::' . $b->getName());
-			};
-			$template->deprecatedClasses = array_filter($classes, $deprecatedFilter);
-			$template->deprecatedInterfaces = array_filter($interfaces, $deprecatedFilter);
-			$template->deprecatedExceptions = array_filter($exceptions, $deprecatedFilter);
 
 			$template->deprecatedMethods = array();
 			$template->deprecatedConstants = array();
 			$template->deprecatedProperties = array();
-			foreach ($classTypes as $type) {
+			foreach (array_reverse($elementTypes) as $type) {
+				$template->{'deprecated' . ucfirst($type)} = array_filter($$type, $deprecatedFilter);
+
+				if ('constants' === $type || 'functions' === $type) {
+					continue;
+				}
+
 				foreach ($$type as $class) {
 					if ($class->isDeprecated()) {
 						continue;
@@ -578,21 +711,28 @@ class Generator extends Nette\Object
 					$template->deprecatedProperties = array_merge($template->deprecatedProperties, array_values(array_filter($class->getOwnProperties(), $deprecatedFilter)));
 				}
 			}
-			usort($template->deprecatedMethods, $deprecatedSort);
-			usort($template->deprecatedConstants, $deprecatedSort);
-			usort($template->deprecatedProperties, $deprecatedSort);
+			usort($template->deprecatedMethods, function($a, $b) {
+				return strcasecmp($a->getDeclaringClassName() . '::' . $a->getName(), $b->getDeclaringClassName() . '::' . $b->getName());
+			});
+			usort($template->deprecatedConstants, function($a, $b) {
+				return strcasecmp(($a->getDeclaringClassName() ?: $a->getNamespaceName()) . '\\' .  $a->getName(), ($b->getDeclaringClassName() ?: $b->getNamespaceName()) . '\\' .  $b->getName());
+			});
+			usort($template->deprecatedFunctions, function($a, $b) {
+				return strcasecmp($a->getNamespaceName() . '\\' . $a->getName(), $b->getNamespaceName() . '\\' . $b->getName());
+			});
+			usort($template->deprecatedProperties, function($a, $b) {
+				return strcasecmp($a->getDeclaringClassName() . '::' . $a->getName(), $b->getDeclaringClassName() . '::' . $b->getName());
+			});
 
 			$template->setFile($templatePath . '/' . $templates['main']['deprecated']['template'])->save($this->forceDir($destination . '/' . $templates['main']['deprecated']['filename']));
 
 			$this->incrementProgressBar();
 
 			unset($deprecatedFilter);
-			unset($deprecatedSort);
-			unset($template->deprecatedClasses);
-			unset($template->deprecatedInterfaces);
-			unset($template->deprecatedExceptions);
+			foreach ($elementTypes as $type) {
+				unset($template->{'deprecated' . ucfirst($type)});
+			}
 			unset($template->deprecatedMethods);
-			unset($template->deprecatedConstants);
 			unset($template->deprecatedProperties);
 		}
 
@@ -603,38 +743,45 @@ class Generator extends Nette\Object
 			}
 
 			$todoFilter = function($element) {return $element->hasAnnotation('todo');};
-			$todoSort = function($a, $b) {
-				return strcasecmp($a->getDeclaringClassName() . '::' . $a->getName(), $b->getDeclaringClassName() . '::' . $b->getName());
-			};
-			$template->todoClasses = array_filter($classes, $todoFilter);
-			$template->todoInterfaces = array_filter($interfaces, $todoFilter);
-			$template->todoExceptions = array_filter($exceptions, $todoFilter);
 
 			$template->todoMethods = array();
 			$template->todoConstants = array();
 			$template->todoProperties = array();
-			foreach ($classTypes as $type) {
+			foreach (array_reverse($elementTypes) as $type) {
+				$template->{'todo' . ucfirst($type)} = array_filter($$type, $todoFilter);
+
+				if ('constants' === $type || 'functions' === $type) {
+					continue;
+				}
+
 				foreach ($$type as $class) {
 					$template->todoMethods = array_merge($template->todoMethods, array_values(array_filter($class->getOwnMethods(), $todoFilter)));
 					$template->todoConstants = array_merge($template->todoConstants, array_values(array_filter($class->getOwnConstants(), $todoFilter)));
 					$template->todoProperties = array_merge($template->todoProperties, array_values(array_filter($class->getOwnProperties(), $todoFilter)));
 				}
 			}
-			usort($template->todoMethods, $todoSort);
-			usort($template->todoConstants, $todoSort);
-			usort($template->todoProperties, $todoSort);
+			usort($template->todoMethods, function($a, $b) {
+				return strcasecmp($a->getDeclaringClassName() . '::' . $a->getName(), $b->getDeclaringClassName() . '::' . $b->getName());
+			});
+			usort($template->todoConstants, function($a, $b) {
+				return strcasecmp(($a->getDeclaringClassName() ?: $a->getNamespaceName()) . '\\' .  $a->getName(), ($b->getDeclaringClassName() ?: $b->getNamespaceName()) . '\\' .  $b->getName());
+			});
+			usort($template->todoFunctions, function($a, $b) {
+				return strcasecmp($a->getNamespaceName() . '\\' . $a->getName(), $b->getNamespaceName() . '\\' . $b->getName());
+			});
+			usort($template->todoProperties, function($a, $b) {
+				return strcasecmp($a->getDeclaringClassName() . '::' . $a->getName(), $b->getDeclaringClassName() . '::' . $b->getName());
+			});
 
 			$template->setFile($templatePath . '/' . $templates['main']['todo']['template'])->save($this->forceDir($destination . '/' . $templates['main']['todo']['filename']));
 
 			$this->incrementProgressBar();
 
 			unset($todoFilter);
-			unset($todoSort);
-			unset($template->todoClasses);
-			unset($template->todoInterfaces);
-			unset($template->todoExceptions);
+			foreach ($elementTypes as $type) {
+				unset($template->{'todo' . ucfirst($type)});
+			}
 			unset($template->todoMethods);
-			unset($template->todoConstants);
 			unset($template->todoProperties);
 		}
 
@@ -719,10 +866,11 @@ class Generator extends Nette\Object
 			$template->subpackages = array_filter($template->packages, function($subpackageName) use ($packageName) {
 				return 0 === strpos($subpackageName, $packageName . '\\');
 			});
-			$template->namespace = null;
 			$template->classes = $package['classes'];
 			$template->interfaces = $package['interfaces'];
 			$template->exceptions = $package['exceptions'];
+			$template->constants = $package['constants'];
+			$template->functions = $package['functions'];
 			$template->setFile($templatePath . '/' . $templates['main']['package']['template'])->save($destination . '/' . $template->getPackageUrl($packageName));
 
 			$this->incrementProgressBar();
@@ -738,7 +886,6 @@ class Generator extends Nette\Object
 			$this->forceDir($destination . '/' . $templates['main']['namespace']['filename']);
 		}
 		foreach ($namespaces as $namespaceName => $namespace) {
-			$template->package = null;
 			$template->namespace = $namespaceName;
 			$template->subnamespaces = array_filter($template->namespaces, function($subnamespaceName) use ($namespaceName) {
 				return (bool) preg_match('~^' . preg_quote($namespaceName) . '\\\\[^\\\\]+$~', $subnamespaceName);
@@ -746,6 +893,8 @@ class Generator extends Nette\Object
 			$template->classes = $namespace['classes'];
 			$template->interfaces = $namespace['interfaces'];
 			$template->exceptions = $namespace['exceptions'];
+			$template->constants = $namespace['constants'];
+			$template->functions = $namespace['functions'];
 			$template->setFile($templatePath . '/' . $templates['main']['namespace']['template'])->save($destination . '/' . $template->getNamespaceUrl($namespaceName));
 
 			$this->incrementProgressBar();
@@ -761,6 +910,20 @@ class Generator extends Nette\Object
 
 			$this->forceDir($destination . '/' . $templates['main']['class']['filename']);
 		}
+		if (!empty($constants)) {
+			if (!isset($templates['main']['constant'])) {
+				throw new Exception('Template for constant is not set');
+			}
+
+			$this->forceDir($destination . '/' . $templates['main']['constant']['filename']);
+		}
+		if (!empty($functions)) {
+			if (!isset($templates['main']['function'])) {
+				throw new Exception('Template for function is not set');
+			}
+
+			$this->forceDir($destination . '/' . $templates['main']['function']['filename']);
+		}
 		if ($this->config->sourceCode) {
 			if (!isset($templates['main']['source'])) {
 				throw new Exception('Template for source code is not set');
@@ -773,70 +936,88 @@ class Generator extends Nette\Object
 		$template->classes = $classes;
 		$template->interfaces = $interfaces;
 		$template->exceptions = $exceptions;
-		foreach ($classTypes as $type) {
-			foreach ($$type as $class) {
+		$template->constants = $constants;
+		$template->functions = $functions;
+		foreach ($elementTypes as $type) {
+			foreach ($$type as $element) {
+				if ($element->isTokenized()) {
+					$template->fileName = null;
+					$file = $element->getFileName();
+					foreach ($this->config->source as $source) {
+						if (0 === strpos($file, $source)) {
+							$template->fileName = is_dir($source) ? str_replace('\\', '/', substr($file, strlen($source) + 1)) : basename($file);
+							break;
+						}
+					}
+					if (null === $template->fileName) {
+						throw new Exception(sprintf('Could not determine element %s relative path', $element->getName()));
+					}
+				}
+
 				if ($packages) {
-					$template->package = $package = $class->isInternal() ? 'PHP' : $class->getPackageName() ?: 'None';
+					$template->package = $package = $element->isInternal() ? 'PHP' : $element->getPackageName() ?: 'None';
 					if ($subpackage = $class->getAnnotation('subpackage')) {
 						$template->package .= '\\' . $subpackage[0];
 					}
 					$template->classes = $packages[$package]['classes'];
 					$template->interfaces = $packages[$package]['interfaces'];
 					$template->exceptions = $packages[$package]['exceptions'];
+					$template->constants = $packages[$package]['constants'];
+					$template->functions = $packages[$package]['functions'];
 				} elseif ($namespaces) {
-					$template->namespace = $namespace = $class->isInternal() ? 'PHP' : $class->getNamespaceName() ?: 'None';
+					$template->namespace = $namespace = $element->isInternal() ? 'PHP' : $element->getNamespaceName() ?: 'None';
 					$template->classes = $namespaces[$namespace]['classes'];
 					$template->interfaces = $namespaces[$namespace]['interfaces'];
 					$template->exceptions = $namespaces[$namespace]['exceptions'];
+					$template->constants = $namespaces[$namespace]['constants'];
+					$template->functions = $namespaces[$namespace]['functions'];
 				}
 
-				$template->tree = array_merge(array_reverse($class->getParentClasses()), array($class));
+				$template->class = null;
+				$template->constant = null;
+				$template->function = null;
+				if ($element instanceof ReflectionClass) {
+					// Class
+					$template->tree = array_merge(array_reverse($element->getParentClasses()), array($element));
 
-				$template->directSubClasses = $class->getDirectSubClasses();
-				uksort($template->directSubClasses, 'strcasecmp');
-				$template->indirectSubClasses = $class->getIndirectSubClasses();
-				uksort($template->indirectSubClasses, 'strcasecmp');
+					$template->directSubClasses = $element->getDirectSubClasses();
+					uksort($template->directSubClasses, 'strcasecmp');
+					$template->indirectSubClasses = $element->getIndirectSubClasses();
+					uksort($template->indirectSubClasses, 'strcasecmp');
 
-				$template->directImplementers = $class->getDirectImplementers();
-				uksort($template->directImplementers, 'strcasecmp');
-				$template->indirectImplementers = $class->getIndirectImplementers();
-				uksort($template->indirectImplementers, 'strcasecmp');
+					$template->directImplementers = $element->getDirectImplementers();
+					uksort($template->directImplementers, 'strcasecmp');
+					$template->indirectImplementers = $element->getIndirectImplementers();
+					uksort($template->indirectImplementers, 'strcasecmp');
 
-				$template->ownMethods = $class->getOwnMethods();
-				$template->ownConstants = $class->getOwnConstants();
-				$template->ownProperties = $class->getOwnProperties();
+					$template->ownMethods = $element->getOwnMethods();
+					$template->ownConstants = $element->getOwnConstants();
+					$template->ownProperties = $element->getOwnProperties();
 
-				if ($class->isTokenized()) {
-					$template->fileName = null;
-					$file = $class->getFileName();
-					foreach ($this->config->source as $source) {
-						if (0 === strpos($file, $source)) {
-							if (is_dir($source)) {
-								$template->fileName = str_replace('\\', '/', substr($file, strlen($source) + 1));
-							} else {
-								$template->fileName = basename($file);
-							}
+					$template->class = $element;
 
-							break;
-						}
-					}
-					if (null === $template->fileName) {
-						throw new Exception(sprintf('Could not determine class %s relative path', $class->getName()));
-					}
+					$template->setFile($templatePath . '/' . $templates['main']['class']['template'])->save($destination . '/' . $template->getClassUrl($element));
+				} elseif ($element instanceof ReflectionConstant) {
+					// Constant
+					$template->constant = $element;
+
+					$template->setFile($templatePath . '/' . $templates['main']['constant']['template'])->save($destination . '/' . $template->getConstantUrl($element));
+				} elseif ($element instanceof ReflectionFunction) {
+					// Function
+					$template->function = $element;
+
+					$template->setFile($templatePath . '/' . $templates['main']['function']['template'])->save($destination . '/' . $template->getFunctionUrl($element));
 				}
-
-				$template->class = $class;
-				$template->setFile($templatePath . '/' . $templates['main']['class']['template'])->save($destination . '/' . $template->getClassUrl($class));
 
 				$this->incrementProgressBar();
 
 				// Generate source codes
-				if ($this->config->sourceCode && $class->isTokenized()) {
-					$source = file_get_contents($class->getFileName());
+				if ($this->config->sourceCode && $element->isTokenized()) {
+					$source = file_get_contents($element->getFileName());
 					$source = str_replace(array("\r\n", "\r"), "\n", $source);
 
 					$template->source = $fshl->highlightString('PHP', $source);
-					$template->setFile($templatePath . '/' . $templates['main']['source']['template'])->save($destination . '/' . $template->getSourceUrl($class, false));
+					$template->setFile($templatePath . '/' . $templates['main']['source']['template'])->save($destination . '/' . $template->getSourceUrl($element, false));
 
 					$this->incrementProgressBar();
 				}

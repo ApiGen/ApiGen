@@ -9,8 +9,8 @@
 
 	{var combined_js => 'resources/combined.js'}
 	<script type="text/javascript" src="{$combined_js|staticFile}"></script>
-	{var allclasses_js => 'allclasses.js'}
-	<script n:if="$config->googleCse" type="text/javascript" src="{$allclasses_js|staticFile}"></script>
+	{var elementlist_js => 'elementlist.js'}
+	<script n:if="$config->googleCse" type="text/javascript" src="{$elementlist_js|staticFile}"></script>
 	{var style_css => 'resources/style.css'}
 	<link rel="stylesheet" type="text/css" media="all" href="{$style_css|staticFile}">
 	<link n:if="$config->googleCse" rel="search" type="application/opensearchdescription+xml" title="{$config->title}" href="{$config->baseUrl}/opensearch.xml">
@@ -98,6 +98,24 @@
 		{/foreach}
 		</ul>
 		{/if}
+
+		{if $constants}
+		<h3>Constants</h3>
+		<ul>
+		{foreach $constants as $item}
+			<li n:class="$constant === $item ? active"><a href="{$item|constantUrl}">{if $namespace}{$item->shortName}{else}{$item->name}{/if}</a></li>
+		{/foreach}
+		</ul>
+		{/if}
+
+		{if $functions}
+		<h3>Functions</h3>
+		<ul>
+		{foreach $functions as $item}
+			<li n:class="$function === $item ? active"><a href="{$item|functionUrl}">{if $namespace}{$item->shortName}{else}{$item->name}{/if}</a></li>
+		{/foreach}
+		</ul>
+		{/if}
 	</div>
 </div>
 <div id="rightWrapper">
@@ -117,8 +135,14 @@
 				<li n:class="'namespace' === $active ? active" n:if="$namespaces">
 					<a n:tag-if="'namespace' !== $active && $namespace" href="{$namespace|namespaceUrl}" title="Summary of {$namespace}"><span>Namespace</span></a>
 				</li>
-				<li n:class="'class' === $active ? active">
+				<li n:class="'class' === $active ? active" n:if="!$function && !$constant">
 					<a n:tag-if="'class' !== $active && $class" href="{$class|classUrl}" title="Summary of {$class->name}"><span>Class</span></a>
+				</li>
+				<li n:class="'function' === $active ? active" n:if="$function">
+					<a n:tag-if="'function' !== $active" href="{$function|functionUrl}" title="Summary of {$function->name}"><span>Function</span></a>
+				</li>
+				<li n:class="'constant' === $active ? active" n:if="$constant">
+					<a n:tag-if="'constant' !== $active" href="{$constant|constantUrl}" title="Summary of {$constant->name}"><span>Constant</span></a>
 				</li>
 			</ul>
 			<ul>

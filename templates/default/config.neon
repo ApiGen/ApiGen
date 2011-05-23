@@ -16,6 +16,12 @@ templates:
 		class:
 			filename: %s.html
 			template: class.latte
+		constant:
+			filename: constant-%s.html
+			template: constant.latte
+		function:
+			filename: function-%s.html
+			template: function.latte
 		source:
 			filename: source-%s.html
 			template: source.latte
@@ -37,5 +43,5 @@ templates:
 			filename: opensearch.xml
 			template: opensearch.xml.latte
 		autocomplete:
-			filename: allclasses.js
-			template: allclasses.js.latte
+			filename: elementlist.js
+			template: elementlist.js.latte

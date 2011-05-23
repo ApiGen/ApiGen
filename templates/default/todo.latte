@@ -76,8 +76,13 @@
 	<caption>Constants summary</caption>
 	{foreach $todoConstants as $constant}
 	<tr>
+		{if $constant->declaringClassName}
 		<td class="right nowrap" width="1%"><a href="{$constant->declaringClassName|classUrl}">{$constant->declaringClassName}</a></td>
-		<td width="1%"><code><a href="{$constant|constantUrl}"><b>{$constant->name}</b></a></code></td>
+		<td width="1%"><code class="nowrap"><a href="{$constant|constantUrl}"><b>{$constant->name}</b></a></code></td>
+		{else}
+		<td class="right nowrap" width="1%"><a n:if="$constant->namespaceName" href="{$constant->namespaceName|namespaceUrl}">{$constant->namespaceName}</a></td>
+		<td width="1%"><code class="nowrap"><a href="{$constant|constantUrl}"><b>{$constant->shortName}</b></a></code></td>
+		{/if}
 		<td>
 			{foreach $constant->annotations['todo'] as $description}
 				{if $description}
@@ -99,6 +104,22 @@
 			{foreach $property->annotations['todo'] as $description}
 				{if $description}
 					{!$description|annotation:'todo':$property}<br>
+				{/if}
+			{/foreach}
+		</td>
+	</tr>
+	{/foreach}
+	</table>
+
+	<table class="summary" id="functions" n:if="$todoFunctions">
+	<caption>Functions summary</caption>
+	{foreach $todoFunctions as $function}
+	<tr>
+		<td width="1%"><code><a href="{$function|functionUrl}"><b>{$function->name}()</b></a></code></td>
+		<td>
+			{foreach $function->annotations['todo'] as $description}
+				{if $description}
+					{!$description|docline|resolveLinks:$function}<br>
 				{/if}
 			{/foreach}
 		</td>
