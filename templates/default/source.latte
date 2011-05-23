@@ -1,22 +1,8 @@
 {layout '@layout.latte'}
-{var $noindex => TRUE}
+{var $active => 'source'}
 
 {block #title}File {$fileName}{/block}
 
 {block #content}
-<div id="navigation">
-	<ul>
-		<li><a href="index.html" title="Overview"><span>Overview</span></a></li>
-		<li n:if="$packages"><a n:tag-if="$package" href="{$package|packageUrl}" title="Summary of {$package}"><span>Package</span></a></li>
-		<li n:if="$namespaces"><a n:tag-if="$namespace" href="{$namespace|namespaceUrl}" title="Summary of {$namespace}"><span>Namespace</span></a></li>
-		<li><a href="{$class|classUrl}" title="Summary of {$class->name}"><span>Class</span></a></li>
-	</ul>
-	<ul>
-		<li n:if="$treeEnabled"><a href="tree.html" title="Tree view of classes, interfaces and exceptions"><span>Tree</span></a></li>
-		<li n:if="$deprecatedEnabled"><a href="deprecated.html" title="List of deprecated elements"><span>Deprecated</span></a></li>
-		<li n:if="$todoEnabled"><a href="todo.html" title="Todo list"><span>Todo</span></a></li>
-	</ul>
-</div>
-
 <pre><code>{!$source|replaceRE:'#<span class="count">(\s*(\d+):\s*)</span>#','<a href="#$2" id="$2" class="l">$1</a>'}</code></pre>
 {/block}

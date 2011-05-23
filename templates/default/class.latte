@@ -1,22 +1,9 @@
 {layout '@layout.latte'}
+{var $active => 'class'}
 
 {block #title}{if $class->deprecated}Deprecated {/if}{if $class->interface}Interface{else}Class{/if} {$class->name}{/block}
 
 {block #content}
-<div id="navigation">
-	<ul>
-		<li><a href="index.html" title="Overview"><span>Overview</span></a></li>
-		<li n:if="$packages"><a n:tag-if="$package" href="{$package|packageUrl}" title="Summary of {$package}"><span>Package</span></a></li>
-		<li n:if="$namespaces"><a n:tag-if="$namespace" href="{$namespace|namespaceUrl}" title="Summary of {$namespace}"><span>Namespace</span></a></li>
-		<li class="active"><span>Class</span></li>
-	</ul>
-	<ul>
-		<li n:if="$treeEnabled"><a href="tree.html" title="Tree view of classes, interfaces and exceptions"><span>Tree</span></a></li>
-		<li n:if="$deprecatedEnabled"><a href="deprecated.html" title="List of deprecated elements"><span>Deprecated</span></a></li>
-		<li n:if="$todoEnabled"><a href="todo.html" title="Todo list"><span>Todo</span></a></li>
-	</ul>
-</div>
-
 <div id="content">
 	<div id="classSummary">
 		<h1>{if $class->deprecated}Deprecated {/if}{if $class->interface}Interface{else}Class{/if} {$class->shortName}</h1>

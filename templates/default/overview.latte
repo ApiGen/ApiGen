@@ -1,23 +1,9 @@
 {layout '@layout.latte'}
-{var $overview => true}
+{var $active => 'overview'}
 
 {block #title}{$config->title ?: 'Overview'}{/block}
 
 {block #content}
-<div id="navigation">
-	<ul>
-		<li class="active"><span>Overview</span></li>
-		<li n:if="$packages"><span>Package</span></li>
-		<li n:if="$namespaces"><span>Namespace</span></li>
-		<li><span>Class</span></li>
-	</ul>
-	<ul>
-		<li n:if="$treeEnabled"><a href="tree.html" title="Tree view of classes, interfaces and exceptions"><span>Tree</span></a></li>
-		<li n:if="$deprecatedEnabled"><a href="deprecated.html" title="List of deprecated elements"><span>Deprecated</span></a></li>
-		<li n:if="$todoEnabled"><a href="todo.html" title="Todo list"><span>Todo</span></a></li>
-	</ul>
-</div>
-
 <div id="content">
 	<h1>{include #title}</h1>
 
