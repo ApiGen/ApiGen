@@ -323,11 +323,6 @@ class Generator extends Nette\Object
 			uksort($packages, 'strcasecmp');
 		}
 
-		$sourceCodeEnabled = $this->config->sourceCode && isset($templates['optional']['source']);
-		$undocumentedEnabled = !empty($this->config->undocumented);
-		$treeEnabled = $this->config->tree && (!empty($classes) || !empty($interfaces) || !empty($exceptions)) && isset($templates['optional']['tree']);
-		$deprecatedEnabled = $this->config->deprecated && isset($templates['optional']['deprecated']);
-		$todoEnabled = $this->config->todo && isset($templates['optional']['todo']);
 		$sitemapEnabled = !empty($this->config->baseUrl) && isset($templates['optional']['sitemap']);
 		$opensearchEnabled = !empty($this->config->googleCse) && !empty($this->config->baseUrl) && isset($templates['optional']['opensearch']);
 		$autocompleteEnabled = !empty($this->config->googleCse) && isset($templates['optional']['autocomplete']);
@@ -339,16 +334,16 @@ class Generator extends Nette\Object
 				+ count($interfaces)
 				+ count($exceptions)
 				+ count($templates['common'])
-				+ (int) $undocumentedEnabled
-				+ (int) $treeEnabled
-				+ (int) $deprecatedEnabled
-				+ (int) $todoEnabled
+				+ (int) $this->config->undocumented
+				+ (int) $this->config->tree
+				+ (int) $this->config->deprecated
+				+ (int) $this->config->todo
 				+ (int) $sitemapEnabled
 				+ (int) $opensearchEnabled
 				+ (int) $autocompleteEnabled
 			;
 
-			if ($sourceCodeEnabled) {
+			if ($this->config->sourceCode) {
 				$tokenizedFilter = function(ReflectionClass $class) {return $class->isTokenized();};
 				$max += count(array_filter($classes, $tokenizedFilter))
 					+ count(array_filter($interfaces, $tokenizedFilter))
@@ -369,10 +364,6 @@ class Generator extends Nette\Object
 		$template->generator = self::NAME;
 		$template->version = self::VERSION;
 		$template->config = $this->config;
-		$template->sourceCodeEnabled = $sourceCodeEnabled;
-		$template->treeEnabled = $treeEnabled;
-		$template->deprecatedEnabled = $deprecatedEnabled;
-		$template->todoEnabled = $todoEnabled;
 
 		// Generate summary files
 		$template->namespace = null;
@@ -409,7 +400,7 @@ class Generator extends Nette\Object
 		}
 
 		// List of undocumented elements
-		if ($undocumentedEnabled) {
+		if ($this->config->undocumented) {
 			$label = function($element) {
 				if ($element instanceof ReflectionClass) {
 					return 'Class';
@@ -560,7 +551,11 @@ class Generator extends Nette\Object
 		}
 
 		// List of deprecated elements
-		if ($deprecatedEnabled) {
+		if ($this->config->deprecated) {
+			if (!isset($templates['main']['deprecated'])) {
+				throw new Exception('Template for list of deprecated elements is not set');
+			}
+
 			$deprecatedFilter = function($element) {return $element->isDeprecated();};
 			$deprecatedSort = function($a, $b) {
 				return strcasecmp($a->getDeclaringClassName() . '::' . $a->getName(), $b->getDeclaringClassName() . '::' . $b->getName());
@@ -587,7 +582,7 @@ class Generator extends Nette\Object
 			usort($template->deprecatedConstants, $deprecatedSort);
 			usort($template->deprecatedProperties, $deprecatedSort);
 
-			$template->setFile($templatePath . '/' . $templates['optional']['deprecated']['template'])->save($this->forceDir($destination . '/' . $templates['optional']['deprecated']['filename']));
+			$template->setFile($templatePath . '/' . $templates['main']['deprecated']['template'])->save($this->forceDir($destination . '/' . $templates['main']['deprecated']['filename']));
 
 			$this->incrementProgressBar();
 
@@ -602,7 +597,11 @@ class Generator extends Nette\Object
 		}
 
 		// List of tasks
-		if ($todoEnabled) {
+		if ($this->config->todo) {
+			if (!isset($templates['main']['todo'])) {
+				throw new Exception('Template for list of tasks is not set');
+			}
+
 			$todoFilter = function($element) {return $element->hasAnnotation('todo');};
 			$todoSort = function($a, $b) {
 				return strcasecmp($a->getDeclaringClassName() . '::' . $a->getName(), $b->getDeclaringClassName() . '::' . $b->getName());
@@ -625,7 +624,7 @@ class Generator extends Nette\Object
 			usort($template->todoConstants, $todoSort);
 			usort($template->todoProperties, $todoSort);
 
-			$template->setFile($templatePath . '/' . $templates['optional']['todo']['template'])->save($this->forceDir($destination . '/' . $templates['optional']['todo']['filename']));
+			$template->setFile($templatePath . '/' . $templates['main']['todo']['template'])->save($this->forceDir($destination . '/' . $templates['main']['todo']['filename']));
 
 			$this->incrementProgressBar();
 
@@ -640,7 +639,11 @@ class Generator extends Nette\Object
 		}
 
 		// Classes/interfaces/exceptions tree
-		if ($treeEnabled) {
+		if ($this->config->tree) {
+			if (!isset($templates['main']['tree'])) {
+				throw new Exception('Template for tree view is not set');
+			}
+
 			$classTree = array();
 			$interfaceTree = array();
 			$exceptionTree = array();
@@ -693,7 +696,7 @@ class Generator extends Nette\Object
 			$template->interfaceTree = new Tree($interfaceTree, $this->classes);
 			$template->exceptionTree = new Tree($exceptionTree, $this->classes);
 
-			$template->setFile($templatePath . '/' . $templates['optional']['tree']['template'])->save($this->forceDir($destination . '/' . $templates['optional']['tree']['filename']));
+			$template->setFile($templatePath . '/' . $templates['main']['tree']['template'])->save($this->forceDir($destination . '/' . $templates['main']['tree']['filename']));
 
 			unset($template->classTree);
 			unset($template->interfaceTree);
@@ -705,6 +708,10 @@ class Generator extends Nette\Object
 
 		// Generate package summary
 		if (!empty($packages)) {
+			if (!isset($templates['main']['package'])) {
+				throw new Exception('Template for package is not set');
+			}
+
 			$this->forceDir($destination . '/' . $templates['main']['package']['filename']);
 		}
 		foreach ($packages as $packageName => $package) {
@@ -724,6 +731,10 @@ class Generator extends Nette\Object
 
 		// Generate namespace summary
 		if (!empty($namespaces)) {
+			if (!isset($templates['main']['namespace'])) {
+				throw new Exception('Template for namespace is not set');
+			}
+
 			$this->forceDir($destination . '/' . $templates['main']['namespace']['filename']);
 		}
 		foreach ($namespaces as $namespaceName => $namespace) {
@@ -744,10 +755,18 @@ class Generator extends Nette\Object
 		// Generate class & interface & exception files
 		$fshl = new \fshlParser('HTML_UTF8', P_TAB_INDENT | P_LINE_COUNTER);
 		if (!empty($classes) || !empty($interfaces) || !empty($exceptions)) {
+			if (!isset($templates['main']['class'])) {
+				throw new Exception('Template for class is not set');
+			}
+
 			$this->forceDir($destination . '/' . $templates['main']['class']['filename']);
 		}
-		if ($sourceCodeEnabled) {
-			$this->forceDir($destination . '/' . $templates['optional']['source']['filename']);
+		if ($this->config->sourceCode) {
+			if (!isset($templates['main']['source'])) {
+				throw new Exception('Template for source code is not set');
+			}
+
+			$this->forceDir($destination . '/' . $templates['main']['source']['filename']);
 		}
 		$template->package = null;
 		$template->namespace = null;
@@ -812,12 +831,12 @@ class Generator extends Nette\Object
 				$this->incrementProgressBar();
 
 				// Generate source codes
-				if ($sourceCodeEnabled && $class->isTokenized()) {
+				if ($this->config->sourceCode && $class->isTokenized()) {
 					$source = file_get_contents($class->getFileName());
 					$source = str_replace(array("\r\n", "\r"), "\n", $source);
 
 					$template->source = $fshl->highlightString('PHP', $source);
-					$template->setFile($templatePath . '/' . $templates['optional']['source']['template'])->save($destination . '/' . $template->getSourceUrl($class, false));
+					$template->setFile($templatePath . '/' . $templates['main']['source']['template'])->save($destination . '/' . $template->getSourceUrl($class, false));
 
 					$this->incrementProgressBar();
 				}

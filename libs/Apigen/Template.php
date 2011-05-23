@@ -363,7 +363,7 @@ class Template extends Nette\Templating\FileTemplate
 			}
 		}
 
-		return sprintf($this->config->templates['optional']['source']['filename'], preg_replace('#[^a-z0-9_]#i', '.', $file)) . (isset($line) ? "#$line" : '');
+		return sprintf($this->config->templates['main']['source']['filename'], preg_replace('#[^a-z0-9_]#i', '.', $file)) . (isset($line) ? "#$line" : '');
 	}
 
 	/**

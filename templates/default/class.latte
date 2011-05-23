@@ -66,7 +66,7 @@
 					{!$value|annotation:$annotation:$class}<br>
 				{/foreach}
 			{/foreach}
-			{if $class->internal}<b>Documented at</b> <a href="{$class|manualUrl}" title="Go to PHP documentation">php.net</a>{else}<b>Located at</b> <a n:tag-if="$sourceCodeEnabled" href="{$class|sourceUrl}" title="Go to source code">{$fileName}</a>{/if}<br>
+			{if $class->internal}<b>Documented at</b> <a href="{$class|manualUrl}" title="Go to PHP documentation">php.net</a>{else}<b>Located at</b> <a n:tag-if="$config->sourceCode" href="{$class|sourceUrl}" title="Go to source code">{$fileName}</a>{/if}<br>
 		</div>
 	</div>
 
@@ -89,7 +89,7 @@
 			{if $class->internal}
 				<a href="{$method|manualUrl}" title="Go to PHP documentation"><b>{$method->name}</b></a>(
 			{else}
-				<a n:tag-if="$sourceCodeEnabled" href="{$method|sourceUrl}" title="Go to source code"><b>{$method->name}</b></a>(
+				<a n:tag-if="$config->sourceCode" href="{$method|sourceUrl}" title="Go to source code"><b>{$method->name}</b></a>(
 			{/if}
 			{foreach $method->parameters as $parameter}
 				{if $parameter->array}array
@@ -207,7 +207,7 @@
 			{if $class->internal}
 				<a href="{$constant|manualUrl}" title="Go to PHP documentation"><b>{$name}</b></a>
 			{else}
-				<a n:tag-if="$sourceCodeEnabled" href="{$constant|sourceUrl}" title="Go to source code"><b>{$name}</b></a>
+				<a n:tag-if="$config->sourceCode" href="{$constant|sourceUrl}" title="Go to source code"><b>{$name}</b></a>
 			{/if}
 		</code></td>
 		<td width="1%"><a n:tag-if="$template->resolveConstant($constant->valueDefinition)" href="{$constant->valueDefinition|resolveConstant|constantUrl}"><code>{!$constant->valueDefinition|highlightValue}</code></a></td>
@@ -264,7 +264,7 @@
 			{if $class->internal}
 				<a href="{$property|manualUrl}" title="Go to PHP documentation">${$property->name}</a>
 			{else}
-				<a n:tag-if="$sourceCodeEnabled" href="{$property|sourceUrl}" title="Go to source code">${$property->name}</a>
+				<a n:tag-if="$config->sourceCode" href="{$property|sourceUrl}" title="Go to source code">${$property->name}</a>
 			{/if}
 		</var></td>
 		<td width="1%"><pre>{!$property->defaultValueDefinition|highlightValue}</pre></td>
