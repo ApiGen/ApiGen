@@ -234,7 +234,8 @@ function isPrivate();public function isProtected();public function isPublic();pu
 function isStatic();public function setAccessible($accessible);public function setValue($object,$value);}}
 
  namespace TokenReflection\Php{use TokenReflection;use Reflector;interface IReflection
-extends TokenReflection\IReflection{public static function create(Reflector$internalReflection,TokenReflection\Broker$broker);}}
+extends TokenReflection\IReflection{public function getNamespaceAliases();public
+static function create(Reflector$internalReflection,TokenReflection\Broker$broker);}}
 
  namespace TokenReflection{use TokenReflection\Exception;abstract class ReflectionBase
 implements IReflection{const DOCBLOCK_TEMPLATE_START='/**#@+';const DOCBLOCK_TEMPLATE_END='/**#@-*/';private
@@ -499,7 +500,7 @@ function getIndirectImplementers(){if(!$this->isInterface()){return array();}$th
 array_filter($this->getBroker()->getClasses(Broker\Backend::INTERNAL_CLASSES|Broker\Backend::TOKENIZED_CLASSES),function(IReflectionClass$class)use($that){if(!$class->implementsInterface($that)){return
 false;}return null !==$class->getParentClassName()&&$class->getParentClass()->implementsInterface($that);});}public
 function getIndirectImplementerNames(){return array_keys($this->getIndirectImplementers());}public
-static function create(Reflector$internalReflection,Broker$broker){if(!$internalReflection
+function getNamespaceAliases(){return array();}public static function create(Reflector$internalReflection,Broker$broker){if(!$internalReflection
 instanceof InternalReflectionClass){throw new RuntimeException(sprintf('Invalid reflection instance provided (%s), ReflectionClass expected.',get_class($internalReflection)));}return$broker->getClass($internalReflection->getName());}}}
 
  namespace TokenReflection\Php{use TokenReflection;use TokenReflection\Broker,TokenReflection\Exception,Reflector;class
@@ -515,15 +516,16 @@ array();}public function getAnnotation($name){return null;}public function hasAn
 false;}public function getDeclaringClass(){if(null ===$this->declaringClassName){return
 null;}return$this->getBroker()->getClass($this->declaringClassName);}public function
 getDeclaringClassName(){return$this->declaringClassName;}public function getNamespaceName(){return$this->namespaceName
-=== ReflectionNamespace::NO_NAMESPACE_NAME?'':$this->namespaceName;}public function
-inNamespace(){return '' !==$this->getNamespaceName();}public function getValueDefinition(){return
+=== TokenReflection\ReflectionNamespace::NO_NAMESPACE_NAME?'':$this->namespaceName;}public
+function inNamespace(){return '' !==$this->getNamespaceName();}public function getValueDefinition(){return
 var_export($this->value,true);}public function getDocComment(){return false;}public
 function getInheritedDocComment(){return$this->getDocComment();}public function getStartLine(){return
 false;}public function getEndLine(){return false;}public function getFileName(){return
 false;}public function getShortName(){$name=$this->getName();if(null !==$this->namespaceName
 &&$this->namespaceName !== ReflectionNamespace::NO_NAMESPACE_NAME){$name=substr($name,strlen($this->namespaceName)+1);}return$name;}public
 function isTokenized(){return false;}public function isDeprecated(){return false;}public
-static function create(Reflector$internalReflection,Broker$broker){return null;}}}
+function getNamespaceAliases(){return array();}public static function create(Reflector$internalReflection,Broker$broker){return
+null;}}}
 
  namespace TokenReflection\Php{use TokenReflection;use TokenReflection\Broker,TokenReflection\Exception;use
 Reflector,ReflectionExtension as InternalReflectionExtension;class ReflectionExtension
@@ -543,7 +545,7 @@ isset($constants[$name])?$constants[$name]:null;}public function getFunctions(){
 function getFunctionNames(){return array_keys($this->getFunctions());}public function
 getFunction($name){$functions=$this->getFunctions();return isset($functions[$name])?$functions[$name]:null;}public
 function isTokenized(){return false;}public function isDeprecated(){return false;}public
-static function create(Reflector$internalReflection,Broker$broker){static$cache=array();if(!$internalReflection
+function getNamespaceAliases(){return array();}public static function create(Reflector$internalReflection,Broker$broker){static$cache=array();if(!$internalReflection
 instanceof InternalReflectionExtension){throw new Exception\Runtime(sprintf('Invalid reflection instance provided: "%s", ReflectionExtension expected.',get_class($internalReflection)),Exception\Runtime::INVALID_ARGUMENT);}if(!isset($cache[$internalReflection->getName()])){$cache[$internalReflection->getName()]=new
 self($internalReflection->getName(),$broker);}return$cache[$internalReflection->getName()];}}}
 
@@ -564,7 +566,8 @@ function getDefaultValueDefinition(){$value=$this->getDefaultValue();return null
 ===$value?null:var_export($value,true);}public function getDocComment(){return false;}public
 function getInheritedDocComment(){return$this->getDocComment();}public function getStartLine(){return
 false;}public function getEndLine(){return false;}public function isTokenized(){return
-false;}public function isDeprecated(){return false;}public static function create(Reflector$internalReflection,Broker$broker){static$cache=array();if(!$internalReflection
+false;}public function isDeprecated(){return false;}public function getNamespaceAliases(){return
+array();}public static function create(Reflector$internalReflection,Broker$broker){static$cache=array();if(!$internalReflection
 instanceof InternalReflectionParameter){throw new Exception\Runtime(sprintf('Invalid reflection instance provided: "%s", ReflectionParameter expected.',get_class($internalReflection)),Exception\Runtime::INVALID_ARGUMENT);}$class=$internalReflection->getDeclaringClass();$function=$internalReflection->getDeclaringFunction();$key=$class?$class->getName().'::':'';$key
 .=$function->getName().'('.$internalReflection->getName().')';if(!isset($cache[$key])){$cache[$key]=new
 self($class?array($class->getName(),$function->getName()):$function->getName(),$internalReflection->getName(),$broker,$function);}return$cache[$key];}}}
@@ -586,7 +589,8 @@ function isUserDefined(){return$this->getDeclaringClass()->isUserDefined();}publ
 function getDefaultValue(){$values=$this->getDeclaringClass()->getDefaultProperties();return$values[$this->getName()];}public
 function getDefaultValueDefinition(){$value=$this->getDefaultValue();return null
 ===$value?null:var_export($value,true);}public function isTokenized(){return false;}public
-function isDeprecated(){return false;}public static function create(Reflector$internalReflection,Broker$broker){static$cache=array();if(!$internalReflection
+function isDeprecated(){return false;}public function getNamespaceAliases(){return
+array();}public static function create(Reflector$internalReflection,Broker$broker){static$cache=array();if(!$internalReflection
 instanceof InternalReflectionProperty){throw new Exception\Runtime(sprintf('Invalid reflection instance provided: "%s", ReflectionProperty expected.',get_class($internalReflection)),Exception\Runtime::INVALID_ARGUMENT);}$key=$internalReflection->getDeclaringClass()->getName().'::'.$internalReflection->getName();if(!isset($cache[$key])){$cache[$key]=new
 self($internalReflection->getDeclaringClass()->getName(),$internalReflection->getName(),$broker);}return$cache[$key];}}}
 
@@ -920,7 +924,8 @@ as$reflection){if($reflection->getName()===$parameter){return$reflection;}}throw
 new Exception\Runtime(sprintf('There is no parameter "%s" in function "%s".',$parameter,$this->getName()),Exception\Runtime::DOES_NOT_EXIST);}}public
 function getInheritedDocComment(){return$this->getDocComment();}public function getAnnotations(){return
 array();}public function getAnnotation($name){return null;}public function hasAnnotation($name){return
-false;}public function isTokenized(){return false;}public static function create(Reflector$internalReflection,Broker$broker){if(!$internalReflection
+false;}public function isTokenized(){return false;}public function getNamespaceAliases(){return
+array();}public static function create(Reflector$internalReflection,Broker$broker){if(!$internalReflection
 instanceof InternalReflectionFunction){throw new Exception\Runtime(sprintf('Invalid reflection instance provided: "%s", ReflectionFunction expected.',get_class($internalReflection)),Exception\Runtime::INVALID_ARGUMENT);}return$broker->getFunction($internalReflection->getName());}}}
 
  namespace TokenReflection\Php{use TokenReflection;use TokenReflection\Broker,TokenReflection\Exception;use
@@ -943,7 +948,8 @@ function getDeclaringClassName(){return$this->getDeclaringClass()->getName();}pu
 function getAnnotations(){return array();}public function getAnnotation($name){return
 null;}public function hasAnnotation($name){return false;}public function getPrototype(){return
 self::create(parent::getPrototype(),$this->broker);}public function isTokenized(){return
-false;}public static function create(Reflector$internalReflection,Broker$broker){static$cache=array();if(!$internalReflection
+false;}public function getNamespaceAliases(){return array();}public static function
+create(Reflector$internalReflection,Broker$broker){static$cache=array();if(!$internalReflection
 instanceof InternalReflectionMethod){throw new Exception\Runtime(sprintf('Invalid reflection instance provided: "%s", ReflectionMethod expected.',get_class($internalReflection)),Exception\Runtime::INVALID_ARGUMENT);}$key=$internalReflection->getDeclaringClass()->getName().'::'.$internalReflection->getName();if(!isset($cache[$key])){$cache[$key]=new
 self($internalReflection->getDeclaringClass()->getName(),$internalReflection->getName(),$broker);}return$cache[$key];}}}
 
