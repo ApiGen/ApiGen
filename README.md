@@ -48,6 +48,7 @@ Besides, we have made following changes in our ApiGen.
 * New version of FSHL.
 * Google Analytics support.
 * List of undocumented elements.
+* Documentation for functions and constants in namespace or global space.
 
 ### Bugfixes ###
 * No fatal errors when a class is missing (this is a benefit of using the TokenReflection library).
