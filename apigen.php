@@ -58,7 +58,7 @@ try {
 	));
 
 	// Help
-	if (isset($options['h']) || isset($options['help'])) {
+	if (empty($options) || isset($options['h']) || isset($options['help'])) {
 		echo Apigen\Generator::getHeader();
 		echo Apigen\Config::getHelp();
 		die();
