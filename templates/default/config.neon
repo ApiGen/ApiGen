@@ -14,7 +14,7 @@ templates:
 			filename: namespace-%s.html
 			template: namespace.latte
 		class:
-			filename: %s.html
+			filename: class-%s.html
 			template: class.latte
 		constant:
 			filename: constant-%s.html
