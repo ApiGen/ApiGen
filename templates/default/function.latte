@@ -35,9 +35,9 @@
 				{foreach $template->getTypes($function, $parameter->position) as $item}<a href="{$item->class|classUrl}" n:tag-if="$item->class">{$item->name}</a>{sep}|{/sep}{/foreach}
 			{/if}
 		</code></td>
-		<td width="1%">
+		<td width="1%"><code class="nowrap">
 			<var>{if $parameter->passedByReference}&amp; {/if}${$parameter->name}</var>{if $parameter->defaultValueAvailable} = {!$parameter->defaultValueDefinition|highlightPHP}{/if}
-		</td>
+		</code></td>
 		<td>
 			{if isset($annotations['param'][$parameter->position])}{!$annotations['param'][$parameter->position]|docdescription:3|docline}{/if}
 		</td>
