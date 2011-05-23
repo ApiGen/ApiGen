@@ -435,7 +435,7 @@ class Generator extends Nette\Object
 				+ count($constants)
 				+ count($functions)
 				+ count($templates['common'])
-				+ (int) $this->config->undocumented
+				+ (int) !empty($this->config->undocumented)
 				+ (int) $this->config->tree
 				+ (int) $this->config->deprecated
 				+ (int) $this->config->todo
@@ -507,7 +507,7 @@ class Generator extends Nette\Object
 		}
 
 		// List of undocumented elements
-		if ($this->config->undocumented) {
+		if (!empty($this->config->undocumented)) {
 			$message = function() {
 				$args = func_get_args();
 
