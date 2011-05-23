@@ -111,8 +111,7 @@ new Exception\Runtime(sprintf('There is no usable bracket at position "%d" in fi
 ===$type){$level--;}elseif($bracket ===$type ||($searching === '}' &&(T_CURLY_OPEN
 ===$type || T_DOLLAR_OPEN_CURLY_BRACES ===$type))){$level++;}if(0 ===$level){return$this;}$this->position++;}throw
 new Exception\Runtime(sprintf('Could not find the end bracket "%s" of the bracket at position "%d" in file "%s".',$searching,$position,$this->fileName),Exception\Runtime::DOES_NOT_EXIST);}public
-function skipWhitespaces($startAtNext=true){if($startAtNext &&isset($this->tokens[$this->position])){$this->position++;}while(isset($this->types[$this->position])){if(T_WHITESPACE
-===$this->types[$this->position]|| T_COMMENT ===$this->types[$this->position]){$this->position++;continue;}break;}return$this;}public
+function skipWhitespaces(){static$skipped=array(T_WHITESPACE,T_COMMENT);do{$this->position++;}while(isset($this->types[$this->position])&&in_array($this->types[$this->position],$skipped));return$this;}public
 function is($type,$position=-1){return$type ===$this->getType($position);}public
 function getType($position=-1){if(-1 ===$position){$position=$this->position;}return
 isset($this->types[$position])?$this->types[$position]:null;}public function getTokenValue($position=-1){if(-1
@@ -270,8 +269,8 @@ function getBroker(){return$this->broker;}public function isTokenized(){return t
 function __toString(){return '';}public function getPackageName(){if($package=$this->getAnnotation('package')){return$package[0];}return
 ReflectionClass::PACKAGE_NONE;}final public function getAnnotation($name){return$this->docComment->getAnnotation($name);}final
 public function hasAnnotation($name){return$this->docComment->hasAnnotation($name);}final
-public function getAnnotations(){return$this->docComment->getAnnotations();}public
-function getSource(){return$this->broker->getFileTokens($this->getFileName())->getSourcePart($this->startPosition,$this->endPosition);}final
+public function getAnnotations(){return$this->docComment->getAnnotations();}abstract
+public function getNamespaceAliases();public function getSource(){return$this->broker->getFileTokens($this->getFileName())->getSourcePart($this->startPosition,$this->endPosition);}final
 public function __get($key){return self::get($this,$key);}final public function __isset($key){return
 self::exists($this,$key);}public static function export($argument,$return=false){return
 '';}final public static function get(IReflection$object,$key){if(!empty($key)){$className=get_class($object);if(!isset(self::$methodCache[$className])){self::$methodCache[$className]=array_flip(get_class_methods($className));}$methods=self::$methodCache[$className];$key2=ucfirst($key);if(isset($methods['get'.$key2])){return$object->{'get'.$key2}();}elseif(isset($methods['is'.$key2])){return$object->{'is'.$key2}();}}throw
@@ -327,8 +326,8 @@ new Exception\Runtime('Only public and accessible properties can be set.',Except
 new Exception\Runtime(sprintf('Could not set value of property "%s::$%s".',$this->declaringClassName,$this->name),0,$e);}}public
 function setDefaultValue($value){$this->defaultValue=$value;}protected function processParent(IReflection$parent){if(!$parent
 instanceof ReflectionClass){throw new Exception\Parse(sprintf('The parent object has to be an instance of TokenReflection\ReflectionClass, "%s" given.',get_class($parent)),Exception\Parse::INVALID_PARENT);}$this->declaringClassName=$parent->getName();return
-parent::processParent($parent);}protected function parse(Stream$tokenStream,IReflection$parent){return$this
-->parseModifiers($tokenStream,$parent)->parseName($tokenStream)->parseDefaultValue($tokenStream);}protected
+parent::processParent($parent);}public function getNamespaceAliases(){return$this->getDeclaringClass()->getNamespaceAliases();}protected
+function parse(Stream$tokenStream,IReflection$parent){return$this ->parseModifiers($tokenStream,$parent)->parseName($tokenStream)->parseDefaultValue($tokenStream);}protected
 function parseName(Stream$tokenStream){try{if(!$tokenStream->is(T_VARIABLE)){throw
 new Exception\Parse('The property name could not be determined.',Exception\Parse::PARSE_ELEMENT_ERROR);}$this->name=substr($tokenStream->getTokenValue(),1);$tokenStream->skipWhitespaces();return$this;}catch(Exception$e){throw
 new Exception\Parse('Could not parse property name.',Exception\Parse::PARSE_ELEMENT_ERROR,$e);}}private
@@ -595,7 +594,7 @@ self($internalReflection->getDeclaringClass()->getName(),$internalReflection->ge
 as InternalReflectionProperty;class ReflectionClass extends ReflectionBase implements
 IReflectionClass{const PACKAGE_NONE='None';const IS_INTERFACE=128;const IMPLEMENTS_INTERFACES=0x80000;private$namespaceName;private$constants=array();private$properties=array();private$methods=array();private$aliases=array();private$modifiers=0;private$parentClassName;private$interfaces=array();protected
 function processParent(IReflection$parent){if(!$parent instanceof ReflectionFileNamespace){throw
-new Exception\Parse(sprintf('The parent object has to be an instance of TokenReflection\ReflectionFileNamespace, "%s" given.',get_class($parent)),Exception\Parse::INVALID_PARENT);}$this->namespaceName=$parent->getName();$this->aliases=$parent->getAliases();return
+new Exception\Parse(sprintf('The parent object has to be an instance of TokenReflection\ReflectionFileNamespace, "%s" given.',get_class($parent)),Exception\Parse::INVALID_PARENT);}$this->namespaceName=$parent->getName();$this->aliases=$parent->getNamespaceAliases();return
 parent::processParent($parent);}protected function parse(Stream$tokenStream,IReflection$parent){return$this
 ->parseModifiers($tokenStream)->parseName($tokenStream)->parseParent($tokenStream,$parent)->parseInterfaces($tokenStream,$parent);}protected
 function parseChildren(Stream$tokenStream,IReflection$parent){while(true){switch($type=$tokenStream->getType()){case
@@ -725,7 +724,7 @@ new Exception\Parse('Could not parse implemented interfaces.',Exception\Parse::P
 
  namespace TokenReflection{use RuntimeException;class ReflectionConstant extends ReflectionBase
 implements IReflectionConstant{private$declaringClassName;private$namespaceName;private$value;private$valueDefinition='';private$aliases=array();protected
-function processParent(IReflection$parent){if($parent instanceof ReflectionFileNamespace){$this->namespaceName=$parent->getName();$this->aliases=$parent->getAliases();}elseif($parent
+function processParent(IReflection$parent){if($parent instanceof ReflectionFileNamespace){$this->namespaceName=$parent->getName();$this->aliases=$parent->getNamespaceAliases();}elseif($parent
 instanceof ReflectionClass){$this->declaringClassName=$parent->getName();}else{throw
 new Exception\Parse(sprintf('The parent object has to be an instance of TokenReflection\ReflectionFileNamespace or TokenReflection\ReflectionClass, "%s" given.',get_class($parent)),Exception\Parse::INVALID_PARENT);}return
 parent::processParent($parent);}protected function parse(Stream$tokenStream,IReflection$parent){return$this
@@ -752,13 +751,13 @@ function getInheritedDocComment(){return$this->getDocComment();}public function 
 null ===$this->namespaceName ||$this->namespaceName === ReflectionNamespace::NO_NAMESPACE_NAME?'':$this->namespaceName;}public
 function inNamespace(){return '' !==$this->getNamespaceName();}public function getShortName(){$name=$this->getName();if(null
 !==$this->namespaceName &&$this->namespaceName !== ReflectionNamespace::NO_NAMESPACE_NAME){$name=substr($name,strlen($this->namespaceName)+1);}return$name;}public
-function getNamespaceAliases(){return$this->aliases;}}}
+function getNamespaceAliases(){return null ===$this->declaringClassName?$this->aliases:$this->getDeclaringClass()->getNamespaceAliases();}}}
 
  namespace TokenReflection{use TokenReflection\Exception;class ReflectionFileNamespace
 extends ReflectionBase{private$aliases=array();private$classes=array();private$functions=array();private$constants=array();public
 function getClasses(){return$this->classes;}public function getFunctions(){return$this->functions;}public
 function getConstants(){return$this->constants;}public function getInheritedDocComment(){return$this->getDocComment();}public
-function getAliases(){return$this->aliases;}protected function processParent(IReflection$parent){if(!$parent
+function getNamespaceAliases(){return$this->aliases;}protected function processParent(IReflection$parent){if(!$parent
 instanceof ReflectionFile){throw new Exception\Parse(sprintf('The parent object has to be an instance of TokenReflection\ReflectionFile, "%s" given.',get_class($parent)),Exception\Parse::INVALID_PARENT);}return
 parent::processParent($parent);}protected function parse(Stream$tokenStream,IReflection$parent){return$this
 ->parseName($tokenStream)->parseAliases($tokenStream);}protected function parseChildren(Stream$tokenStream,IReflection$parent){static$skipped;if(null
@@ -775,14 +774,15 @@ T_FUNCTION:$position=$tokenStream->key()+1;while(isset($skipped[$type=$tokenStre
 ReflectionFunction($tokenStream,$this->getBroker(),$this);$this->functions[$function->getName()]=$function;$tokenStream->next();break;default:$tokenStream->next();break;}}return$this;}protected
 function parseName(Stream$tokenStream){if(!$tokenStream->is(T_NAMESPACE)){$this->name=ReflectionNamespace::NO_NAMESPACE_NAME;return$this;}try{$tokenStream->skipWhitespaces();$name='';while(true){switch($tokenStream->getType()){case
 T_STRING:case T_NS_SEPARATOR:$name .=$tokenStream->getTokenValue();break;default:
-break 2;}$tokenStream->next();}$name=ltrim($name,'\\');if(empty($name)){$this->name=ReflectionNamespace::NO_NAMESPACE_NAME;}else{$this->name=$name;$tokenStream->skipWhitespaces();}return$this;}catch(Exception$e){throw
+break 2;}$tokenStream->skipWhitespaces();}$name=ltrim($name,'\\');if(empty($name)){$this->name=ReflectionNamespace::NO_NAMESPACE_NAME;}else{$this->name=$name;}if(!$tokenStream->is(';')&&!$tokenStream->is('{')){throw
+new Exception\Parse(sprintf('Invalid namespace name end: "%s", expecting ";" or "{".',$tokenStream->getTokenName()),Exception\Parse::PARSE_ELEMENT_ERROR);}$tokenStream->skipWhitespaces();return$this;}catch(Exception$e){throw
 new Exception\Parse('Could not parse namespace name.',Exception\Parse::PARSE_ELEMENT_ERROR,$e);}}private
 function parseAliases(Stream$tokenStream){if(ReflectionNamespace::NO_NAMESPACE_NAME
 ===$this->name){return$this;}try{$aliases=array();while(true){if(!$tokenStream->is(T_USE)){break;}while(true){$namespaceName='';$alias=null;$tokenStream->skipWhitespaces();while(true){switch($tokenStream->getType()){case
 T_STRING:case T_NS_SEPARATOR:$namespaceName .=$tokenStream->getTokenValue();break;default:break
-2;}$tokenStream->next();}$namespaceName=ltrim($namespaceName,'\\');if(empty($namespaceName)){throw
+2;}$tokenStream->skipWhitespaces();}$namespaceName=ltrim($namespaceName,'\\');if(empty($namespaceName)){throw
 new Exception\Parse('Imported namespace name could not be determined.',Exception\Parse::PARSE_ELEMENT_ERROR);}elseif('\\'
-=== substr($namespaceName,-1)){throw new Exception\Parse(sprintf('Invalid namespace name "%s".',$namespaceName),Exception\Parse::PARSE_ELEMENT_ERROR);}$tokenStream->skipWhitespaces(false);if($tokenStream->is(T_AS)){$tokenStream->skipWhitespaces();if(!$tokenStream->is(T_STRING)){throw
+=== substr($namespaceName,-1)){throw new Exception\Parse(sprintf('Invalid namespace name "%s".',$namespaceName),Exception\Parse::PARSE_ELEMENT_ERROR);}if($tokenStream->is(T_AS)){$tokenStream->skipWhitespaces();if(!$tokenStream->is(T_STRING)){throw
 new Exception\Parse(sprintf('The imported namespace "%s" seems aliased but the alias name could not be determined.',$namespaceName),Exception\Parse::PARSE_ELEMENT_ERROR);}$alias=$tokenStream->getTokenValue();$tokenStream->skipWhitespaces();}else{if(false
 !==($pos=strrpos($namespaceName,'\\'))){$alias=substr($namespaceName,$pos+1);}else{$alias=$namespaceName;}}if(isset($aliases[$alias])){throw
 new Exception\Parse(sprintf('Namespace alias "%s" already defined.',$alias),Exception\Parse::PARSE_ELEMENT_ERROR);}$aliases[$alias]=$namespaceName;$type=$tokenStream->getType();if(';'
@@ -846,9 +846,9 @@ array_keys($this->constants);}public function getConstantShortNames(){return arr
 function getName(){return$this->name;}public function getBroker(){return$this->broker;}public
 function isTokenized(){return true;}public function isInternal(){return false;}public
 function isUserDefined(){return true;}public function addFileNamespace(ReflectionFileNamespace$namespace){$classes=$namespace->getClasses();foreach($this->classes
-as$className =>$reflection){if(isset($classes[$className])){throw new Exception\Runtime(sprintf('Class "%s" is already defined; in file "%s".',$className,$classes[$className]->getFileName()),Exception\Runtime::ALREADY_EXISTS);}}$this->classes=array_merge($this->classes,$classes);$functions=$namespace->getFunctions();foreach($this->functions
-as$functionName =>$reflection){if(isset($functions[$functionName])){throw new Exception\Runtime(sprintf('Function "%s" is already defined; in file "%s".',$functionName,$functions[$functionName]->getFileName()),Exception\Runtime::ALREADY_EXISTS);}}$this->functions=array_merge($this->functions,$functions);$constants=$namespace->getConstants();foreach($this->constants
-as$constantName =>$reflection){if(isset($constants[$constantName])){throw new Exception\Runtime(sprintf('Constant "%s" is already defined; in file "%s".',$constantName,$constants[$constantName]->getFileName()),Exception\Runtime::ALREADY_EXISTS);}}$this->constants=array_merge($this->constants,$constants);}public
+as$className =>$reflection){if(isset($classes[$className])){throw new Exception\Runtime(sprintf('Class "%s" is already defined; in file "%s".',$className,$reflection->getFileName()),Exception\Runtime::ALREADY_EXISTS);}}$this->classes=array_merge($this->classes,$classes);$functions=$namespace->getFunctions();foreach($this->functions
+as$functionName =>$reflection){if(isset($functions[$functionName])){throw new Exception\Runtime(sprintf('Function "%s" is already defined; in file "%s".',$functionName,$reflection->getFileName()),Exception\Runtime::ALREADY_EXISTS);}}$this->functions=array_merge($this->functions,$functions);$constants=$namespace->getConstants();foreach($this->constants
+as$constantName =>$reflection){if(isset($constants[$constantName])){throw new Exception\Runtime(sprintf('Constant "%s" is already defined; in file "%s".',$constantName,$reflection->getFileName()),Exception\Runtime::ALREADY_EXISTS);}}$this->constants=array_merge($this->constants,$constants);}public
 function __toString(){return '';}public function getSource(){throw new \RuntimeException('Cannot export source code of a namespace.');}public
 static function export($argument,$return=false){return ReflectionBase::export($argument,$return);}final
 public function __get($key){return ReflectionBase::get($this,$key);}final public
@@ -882,8 +882,8 @@ function isPassedByReference(){return$this->passedByReference;}protected functio
 processParent(IReflection$parent){if(!$parent instanceof ReflectionFunctionBase){throw
 new Exception\Parse(sprintf('The parent object has to be an instance of TokenReflection\ReflectionFunctionBase, "%s" given.',get_class($parent)),Exception\Parse::INVALID_PARENT);}$this->declaringFunctionName=$parent->getName();$this->position=count($parent->getParameters());if($parent
 instanceof ReflectionMethod){$this->declaringClassName=$parent->getDeclaringClassName();}return
-parent::processParent($parent);}protected function parse(Stream$tokenStream,IReflection$parent){return$this
-->parseConstraint($tokenStream)->parsePassedByReference($tokenStream)->parseName($tokenStream)->parseDefaultValue($tokenStream);}protected
+parent::processParent($parent);}public function getNamespaceAliases(){return$this->getDeclaringFunction()->getNamespaceAliases();}protected
+function parse(Stream$tokenStream,IReflection$parent){return$this ->parseConstraint($tokenStream)->parsePassedByReference($tokenStream)->parseName($tokenStream)->parseDefaultValue($tokenStream);}protected
 function parseName(Stream$tokenStream){try{if(!$tokenStream->is(T_VARIABLE)){throw
 new Exception\Parse('The parameter name could not be determined.',Exception\Parse::PARSE_ELEMENT_ERROR);}$this->name=substr($tokenStream->getTokenValue(),1);$tokenStream->skipWhitespaces();return$this;}catch(Exception$e){throw
 new Exception\Parse('Could not parse parameter name.',Exception\Parse::PARSE_ELEMENT_ERROR,$e);}}private
@@ -955,7 +955,7 @@ new Exception\Runtime(sprintf('Could not invoke function "%s"; function is not d
 call_user_func_array($this->getName(),$args);}protected function parse(Stream$tokenStream,IReflection$parent){return$this
 ->parseReturnsReference($tokenStream)->parseName($tokenStream);}protected function
 processParent(IReflection$parent){if(!$parent instanceof ReflectionFileNamespace){throw
-new Exception\Parse(sprintf('The parent object has to be an instance of TokenReflection\ReflectionFileNamespace, "%s" given.',get_class($parent)),Exception\Parse::INVALID_PARENT);}$this->namespaceName=$parent->getName();$this->aliases=$parent->getAliases();return
+new Exception\Parse(sprintf('The parent object has to be an instance of TokenReflection\ReflectionFileNamespace, "%s" given.',get_class($parent)),Exception\Parse::INVALID_PARENT);}$this->namespaceName=$parent->getName();$this->aliases=$parent->getNamespaceAliases();return
 parent::processParent($parent);}public function getNamespaceAliases(){return$this->aliases;}}}
 
  namespace TokenReflection{use TokenReflection\Exception;use ReflectionMethod as InternalReflectionMethod,ReflectionClass
@@ -988,7 +988,8 @@ function isProtected(){return (bool)($this->modifiers&InternalReflectionMethod::
 function isPublic(){return (bool)($this->modifiers&InternalReflectionMethod::IS_PUBLIC);}public
 function isStatic(){return (bool)($this->modifiers&InternalReflectionMethod::IS_STATIC);}public
 function setAccessible($accessible){$this->accessible=(bool)$accessible;}public function
-isAccessible(){return$this->accessible;}public function getPrototype(){$declaring=$this->getDeclaringClass();if($declaring->getParentClassName()){foreach($declaring->getParentClass()->getMethods()as$method){if($method->getName()===$this->name
+isAccessible(){return$this->accessible;}public function getNamespaceAliases(){return$this->getDeclaringClass()->getNamespaceAliases();}public
+function getPrototype(){$declaring=$this->getDeclaringClass();if($declaring->getParentClassName()){foreach($declaring->getParentClass()->getMethods()as$method){if($method->getName()===$this->name
 &&!$method->isPrivate()){return$method;}}}foreach($declaring->getInterfaces()as$interface){if($interface->hasMethod($this->name)){return$interface->getMethod($this->name);}}throw
 new Exception\Runtime(sprintf('Method "%s::%s()" has no prototype.',$this->declaringClassName,$this->name),Exception\Runtime::DOES_NOT_EXIST);}protected
 function processParent(IReflection$parent){if(!$parent instanceof ReflectionClass){throw
