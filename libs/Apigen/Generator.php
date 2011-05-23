@@ -618,7 +618,7 @@ class Generator extends Nette\Object
 							if ($return && !isset($annotations['return'])) {
 								$undocumented[$parentElementLabel][] = $message($parentElement, $element, 'Missing documentation of return value.');
 							} elseif (isset($annotations['return'])) {
-								if (!$return && 'void' !== $annotations['return'][0] && !$parentElement->isInterface() && !$element->isAbstract()) {
+								if (!$return && 'void' !== $annotations['return'][0] && ($element instanceof ReflectionFunction || (!$parentElement->isInterface() && !$element->isAbstract()))) {
 									$undocumented[$parentElementLabel][] = $message($parentElement, $element, sprintf('Existing documentation "%s" of nonexistent return value.', $annotations['return'][0]));
 								} elseif (!preg_match('~^[\w\\\\]+(?:\|[\w\\\\]+)*(?:\s+.+)?$~s', $annotations['return'][0])) {
 									$undocumented[$parentElementLabel][] = $message($parentElement, $element, sprintf('Invalid documentation "%s" of return value.', $annotations['return'][0]));
