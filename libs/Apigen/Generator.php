@@ -419,7 +419,9 @@ class Generator extends Nette\Object
 					}
 				}
 			}
-			uksort($packages, 'strcasecmp');
+			uksort($packages, function($a, $b) {
+				return strcasecmp(str_replace('\\', ' ', $a), str_replace('\\', ' ', $b));
+			});
 		}
 
 		$sitemapEnabled = !empty($this->config->baseUrl) && isset($templates['optional']['sitemap']);
@@ -956,7 +958,7 @@ class Generator extends Nette\Object
 
 				if ($packages) {
 					$template->package = $package = $element->isInternal() ? 'PHP' : $element->getPackageName() ?: 'None';
-					if ($subpackage = $class->getAnnotation('subpackage')) {
+					if ($subpackage = $element->getAnnotation('subpackage')) {
 						$template->package .= '\\' . $subpackage[0];
 					}
 					$template->classes = $packages[$package]['classes'];
