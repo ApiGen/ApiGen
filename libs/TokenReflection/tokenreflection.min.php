@@ -68,11 +68,8 @@ function
 processFile($fileName){try{$realName=realpath($fileName);if(false
 ===$realName){throw
 new
-Exception\Parse('File does not exist.',Exception\Parse::FILE_DOES_NOT_EXIST);}if($this->backend->isFileProcessed($realName)){$tokens=$this->backend->getFileTokens($realName);}else{$contents=@file_get_contents($realName);if(false
-===$contents){throw
-new
-Exception\Parse('File is not readable.',Exception\Parse::FILE_NOT_READABLE);}$tokens=new
-Stream(@token_get_all(str_replace(array("\r\n","\r"),"\n",$contents)),$realName);}$reflectionFile=new
+Exception\Parse('File does not exist.',Exception\Parse::FILE_DOES_NOT_EXIST);}if($this->backend->isFileProcessed($realName)){$tokens=$this->backend->getFileTokens($realName);}else{$tokens=new
+Stream($realName);}$reflectionFile=new
 ReflectionFile($tokens,$this);if(!$this->backend->isFileProcessed($realName)){$this->backend->addFile($reflectionFile);foreach($this->cache
 as$type
 =>$cached){if(!empty($cached)){$this->cache[$type]=array_filter($cached,function(IReflection$reflection){return$reflection->isTokenized();});}}}return$reflectionFile;}catch(Exception$e){throw
@@ -227,7 +224,10 @@ Stream
 implements
 SeekableIterator,Countable,ArrayAccess{private$fileName='unknown';private$types=array();private$contents=array();private$tokens=array();private$position=0;private$count=0;public
 function
-__construct(array$stream,$fileName){$this->fileName=$fileName;static$checkLines;if(null
+__construct($fileName){$this->fileName=realpath($fileName);$contents=@file_get_contents($fileName);if(false
+===$contents){throw
+new
+Exception\Parse('File is not readable.',Exception\Parse::FILE_NOT_READABLE);}$stream=@token_get_all(str_replace(array("\r\n","\r"),"\n",$contents));static$checkLines;if(null
 ===$checkLines){$checkLines=array_flip(array(T_COMMENT,T_WHITESPACE,T_DOC_COMMENT,T_INLINE_HTML,T_ENCAPSED_AND_WHITESPACE,T_CONSTANT_ENCAPSED_STRING));}foreach($stream
 as$position
 =>$token){if(is_array($token)){list($this->types[],$this->contents[])=$token;$this->tokens[]=$token;}else{$this->types[]=$token;$this->contents[]=$token;$previous=$this->tokens[$position-1];$line=$previous[2];if(isset($checkLines[$previous[0]])){$line
@@ -313,7 +313,7 @@ getTokenValue($position=-1){if(-1
 isset($this->contents[$position])?$this->contents[$position]:null;}public
 function
 getTokenName($position=-1){$type=$this->getType($position);return
-token_name($type)?:$type;}public
+is_string($type)?$type:token_name($type);}public
 function
 __toString(){return$this->getSource();}public
 function
@@ -356,17 +356,17 @@ new
 Exception\Runtime(sprintf('Constant %s does not exist.',$constantName),0,$e);}}public
 function
 isFileProcessed($fileName){return
-isset($this->tokenStreams[$fileName]);}public
+isset($this->tokenStreams[realpath($fileName)]);}public
 function
-getFileTokens($fileName){if($this->isFileProcessed($fileName)){return$this->tokenStreams[$fileName];}$contents=@file_get_contents($fileName);if(false
-===$contents){throw
+getFileTokens($fileName){$realName=realpath($fileName);if(!isset($this->tokenStreams[$realName])){throw
 new
-Exception\Parse('File is not readable.',Exception\Parse::FILE_NOT_READABLE);}return
-new
-Stream(@token_get_all(str_replace(array("\r\n","\r"),"\n",$contents)),$fileName);}public
+Exception\Runtime(sprintf('File "%s" was not processed yet.',$fileName),Exception\Runtime::DOES_NOT_EXIST);}return
+true
+===$this->tokenStreams[$realName]?new
+Stream($realName):$this->tokenStreams[$realName];}public
 function
-addFile(TokenReflection\ReflectionFile$file,$storeTokenStream=true){foreach($file->getNamespaces()as$fileNamespace){$namespaceName=$fileNamespace->getName();if(!isset($this->namespaces[$namespaceName])){$this->namespaces[$namespaceName]=new
-TokenReflection\ReflectionNamespace($namespaceName,$file->getBroker());}$this->namespaces[$namespaceName]->addFileNamespace($fileNamespace);}if($this->storingTokenStreams){$this->tokenStreams[$file->getName()]=$file->getTokenStream();}$this->allClasses=null;$this->allFunctions=null;$this->allConstants=null;return$this;}public
+addFile(TokenReflection\ReflectionFile$file){foreach($file->getNamespaces()as$fileNamespace){$namespaceName=$fileNamespace->getName();if(!isset($this->namespaces[$namespaceName])){$this->namespaces[$namespaceName]=new
+TokenReflection\ReflectionNamespace($namespaceName,$file->getBroker());}$this->namespaces[$namespaceName]->addFileNamespace($fileNamespace);}$this->tokenStreams[$file->getName()]=$this->storingTokenStreams?$file->getTokenStream():true;$this->allClasses=null;$this->allFunctions=null;$this->allConstants=null;return$this;}public
 function
 setBroker(Broker$broker){$this->broker=$broker;return$this;}public
 function
@@ -418,10 +418,9 @@ TokenReflection;class
 Runtime
 extends
 TokenReflection\Exception{const
-TOKEN_STREAM_STORING_TURNED_OFF=20;const
-INVALID_ARGUMENT=21;const
-NOT_ACCESSBILE=22;const
-ALREADY_EXISTS=23;}}
+INVALID_ARGUMENT=20;const
+NOT_ACCESSBILE=21;const
+ALREADY_EXISTS=22;}}
 
 namespace
 TokenReflection{interface
@@ -1979,7 +1978,7 @@ function
 parse(Stream$tokenStream,IReflection$parent){return$this
 ->parseModifiers($tokenStream)->parseName($tokenStream)->parseParent($tokenStream,$parent)->parseInterfaces($tokenStream,$parent);}protected
 function
-parseChildren(Stream$tokenStream,IReflection$parent){while(true){switch($tokenStream->getType()){case
+parseChildren(Stream$tokenStream,IReflection$parent){while(true){switch($type=$tokenStream->getType()){case
 null:break
 2;case
 T_COMMENT:case
@@ -1994,8 +1993,11 @@ T_PROTECTED:case
 T_STATIC:case
 T_VAR:case
 T_VARIABLE:static$searching=array(T_VARIABLE,T_FUNCTION);if(T_VAR
-===$tokenStream->getType()){$tokenStream->skipWhitespaces();}else{$position=$tokenStream->key();while(null
+!==$tokenStream->getType()){$position=$tokenStream->key();while(null
 !==($type=$tokenStream->getType($position++))&&!in_array($type,$searching)){$position++;}}if(T_VARIABLE
+===$type
+||
+T_VAR
 ===$type){$property=new
 ReflectionProperty($tokenStream,$this->getBroker(),$this);$this->properties[$property->getName()]=$property;$tokenStream->next();break;}case
 T_FINAL:case
@@ -2797,8 +2799,9 @@ parseDefaultValue(Stream$tokenStream){try{if($tokenStream->is('=')){$tokenStream
 ',':if(0
 ===$level){break
 2;}break;default:break;}$this->defaultValueDefinition
-.=$tokenStream->getTokenValue();$tokenStream->next();}if(','
-===$type){$tokenStream->next();}elseif(')'
+.=$tokenStream->getTokenValue();$tokenStream->next();}if(')'
+!==$type
+&&','
 !==$type){throw
 new
 Exception\Parse(sprintf('The property default value is not terminated properly. Expected "," or ")", "%s" found.',$tokenStream->getTokenName()),Exception\Parse::PARSE_ELEMENT_ERROR);}if(self::$parseValueDefinitions){$this->defaultValue=@eval('return '.$this->defaultValueDefinition.';');}}return$this;}catch(Exception\Parse$e){throw
