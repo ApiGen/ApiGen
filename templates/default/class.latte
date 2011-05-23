@@ -208,7 +208,13 @@
 				<a n:tag-if="$config->sourceCode" href="{$constant|sourceUrl}" title="Go to source code"><b>{$name}</b></a>
 			{/if}
 		</code></td>
-		<td width="1%"><a n:tag-if="$template->resolveConstant($constant->valueDefinition)" href="{$constant->valueDefinition|resolveConstant|constantUrl}"><code>{!$constant->valueDefinition|highlightValue}</code></a></td>
+		<td width="1%">
+			{if $template->resolveClassLink($constant->valueDefinition, $constant)}
+				{!$constant->valueDefinition|resolveClassLink:$constant}
+			{else}
+				<code>{!$constant->valueDefinition|highlightValue}</code>
+			{/if}
+		</td>
 		<td><div class="position">
 			<a href="#{$name}" class="anchor">#</a>
 			<div class="short">

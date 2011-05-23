@@ -108,7 +108,6 @@ class Template extends Nette\Templating\FileTemplate
 			return is_object($variable) ? get_class($variable) : gettype($variable);
 		});
 		$this->registerHelper('resolveClass', new Nette\Callback($this, 'resolveClass'));
-		$this->registerHelper('resolveConstant', new Nette\Callback($this, 'resolveConstant'));
 
 		// Texy
 		$texy = new \Texy;
@@ -582,7 +581,7 @@ class Template extends Nette\Templating\FileTemplate
 	 * @param string $namespace Namespace name
 	 * @return string
 	 */
-	public function resolveConstant2($constantName, $namespace = NULL)
+	public function resolveConstant($constantName, $namespace = NULL)
 	{
 		if (substr($constantName, 0, 1) === '\\') {
 			$namespace = '';
@@ -598,30 +597,6 @@ class Template extends Nette\Templating\FileTemplate
 		}
 
 		return null;
-	}
-
-	/**
-	 * Tries to resolve a constant using its name.
-	 *
-	 * @param string $definition Constant name (NAME or Class::NAME)
-	 * @return \TokenReflection\ReflectionConstant|null
-	 */
-	public function resolveConstant($definition)
-	{
-		if (false === strpos($definition, '::')) {
-			return null;
-		}
-		list($className, $constantName) = explode('::', $definition);
-		$className = $this->resolveClass($className);
-		if (null === $className) {
-			return null;
-		}
-
-		try {
-			return $this->classes[$className]->getConstantReflection($constantName);
-		} catch (\Exception $e) {
-			return null;
-		}
 	}
 
 	/**
@@ -684,8 +659,8 @@ class Template extends Nette\Templating\FileTemplate
 			$context = $this->functions[$functionName];
 
 			return '<a href="' . $this->functionUrl($context) . '">' . $this->escapeHtml($functionName) . '</a>';
-		} elseif ($constantName = $this->resolveConstant2($link, $context->getNamespaceName())) {
-			// Function
+		} elseif ($constantName = $this->resolveConstant($link, $context->getNamespaceName())) {
+			// Constant
 			$context = $this->constants[$constantName];
 
 			return '<a href="' . $this->constantUrl($context) . '">' . $this->escapeHtml($constantName) . '</a>';
