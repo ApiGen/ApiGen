@@ -126,6 +126,10 @@ Access levels of methods and properties that should get their documentation pars
 
 Generate documentation for PHP internal classes, default is "Yes".
 
+```--tree <yes|no>```
+
+Generate tree view of classes, interfaces and exceptions, default is "Yes".
+
 ```--deprecated <yes|no>```
 
 Generate documentation for deprecated classes and class members, default is "No".

@@ -325,7 +325,7 @@ class Generator extends Nette\Object
 
 		$sourceCodeEnabled = $this->config->sourceCode && isset($templates['optional']['source']);
 		$undocumentedEnabled = !empty($this->config->undocumented);
-		$treeEnabled = (!empty($classes) || !empty($interfaces) || !empty($exceptions)) && isset($templates['optional']['tree']);
+		$treeEnabled = $this->config->tree && (!empty($classes) || !empty($interfaces) || !empty($exceptions)) && isset($templates['optional']['tree']);
 		$deprecatedEnabled = $this->config->deprecated && isset($templates['optional']['deprecated']);
 		$todoEnabled = $this->config->todo && isset($templates['optional']['todo']);
 		$sitemapEnabled = !empty($this->config->baseUrl) && isset($templates['optional']['sitemap']);

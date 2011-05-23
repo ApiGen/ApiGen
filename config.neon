@@ -28,6 +28,8 @@ allowedHtml: [b, i, a, ul, ol, li, p, br, var, samp, kbd, tt]
 accessLevels: [public, protected]
 # Generate documentation for internal classes
 internal: Yes
+# Generate tree view of classes, interfaces and exceptions
+tree: Yes
 # Generate documentation for deprecated classes, methods, properties and constants
 deprecated: No
 # Generate documentation of tasks

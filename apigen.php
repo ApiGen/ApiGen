@@ -45,6 +45,7 @@ try {
 		'allowed-html:',
 		'access-levels:',
 		'internal:',
+		'tree:',
 		'deprecated:',
 		'todo:',
 		'source-code:',
