@@ -85,6 +85,7 @@ class Generator extends Nette\Object
 	public function __construct(Config $config)
 	{
 		$this->config = $config;
+		$this->classes = new \ArrayObject();
 	}
 
 	/**
@@ -94,7 +95,7 @@ class Generator extends Nette\Object
 	 */
 	public function parse()
 	{
-		$broker = new Broker(new Backend(), false);
+		$broker = new Broker(new Backend($this), false);
 
 		$files = array();
 		foreach ($this->config->source as $source) {
@@ -138,10 +139,7 @@ class Generator extends Nette\Object
 		}
 
 		// Classes
-		$this->classes = new \ArrayObject();
-		foreach ($broker->getClasses(Backend::TOKENIZED_CLASSES | Backend::INTERNAL_CLASSES | Backend::NONEXISTENT_CLASSES) as $className => $class) {
-			$this->classes->offsetSet($className, new ReflectionClass($class, $this));
-		}
+		$this->classes->exchangeArray($broker->getClasses(Backend::TOKENIZED_CLASSES | Backend::INTERNAL_CLASSES | Backend::NONEXISTENT_CLASSES));
 		$this->classes->uksort('strcasecmp');
 
 		// Constants
@@ -165,23 +163,7 @@ class Generator extends Nette\Object
 		$this->constants->uksort('strcasecmp');
 
 		// Functions
-		$this->functions = new \ArrayObject();
-		foreach ($broker->getFunctions() as $functionName => $function) {
-			if (!$this->config->deprecated && $function->isDeprecated()) {
-				continue;
-			}
-			foreach ($this->config->skipDocPath as $mask) {
-				if (fnmatch($mask, $function->getFilename(), FNM_NOESCAPE | FNM_PATHNAME)) {
-					continue 2;
-				}
-			}
-			foreach ($this->config->skipDocPrefix as $prefix) {
-				if (0 === strpos($function->getName(), $prefix)) {
-					continue 2;
-				}
-			}
-			$this->functions->offsetSet($functionName, $function);
-		}
+		$this->functions = new \ArrayObject($broker->getFunctions());
 		$this->functions->uksort('strcasecmp');
 
 		return array(

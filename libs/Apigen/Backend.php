@@ -12,7 +12,7 @@
  */
 
 namespace Apigen;
-use TokenReflection\Broker\Backend\Memory, RuntimeException, ReflectionMethod;
+use TokenReflection, TokenReflection\Broker\Backend\Memory, RuntimeException, ReflectionMethod;
 
 /**
  * Customized TokenReflection broker backend.
@@ -26,6 +26,23 @@ use TokenReflection\Broker\Backend\Memory, RuntimeException, ReflectionMethod;
 class Backend extends Memory
 {
 	/**
+	 * Generator instance.
+	 *
+	 * @var \Apigen\Generator
+	 */
+	private $generator;
+
+	/**
+	 * Constructor.
+	 *
+	 * @param \Apigen\Generator $config Generator instance
+	 */
+	public function __construct(Generator $generator)
+	{
+		$this->generator = $generator;
+	}
+
+	/**
 	 * Prepares and returns used class lists.
 	 *
 	 * @return array
@@ -36,24 +53,14 @@ class Backend extends Memory
 
 		$allClasses = parent::parseClassLists();
 		foreach ($allClasses[self::TOKENIZED_CLASSES] as $name => $class) {
+			$class = new Reflection($class, $this->generator);
+			$allClasses[self::TOKENIZED_CLASSES][$name] = $class;
+			if (!$class->isDocumented()) {
+				continue;
+			}
+
 			foreach ($class->getOwnMethods() as $method) {
-				foreach (array('param', 'return', 'throws') as $annotation) {
-					if (!$method->hasAnnotation($annotation)) {
-						continue;
-					}
-
-					foreach ((array) $method->getAnnotation($annotation) as $doc) {
-						foreach (explode('|', preg_replace('#\s.*#', '', $doc)) as $name) {
-							$allClasses = $this->addClass($declared, $allClasses, $name);
-						}
-					}
-				}
-
-				foreach ($method->getParameters() as $param) {
-					if ($hint = $param->getClass()) {
-						$allClasses = $this->addClass($declared, $allClasses, $hint->getName());
-					}
-				}
+				$allClasses = $this->processFunction($declared, $allClasses, $method);
 			}
 
 			foreach ($class->getOwnProperties() as $property) {
@@ -66,6 +73,49 @@ class Backend extends Memory
 						$allClasses = $this->addClass($declared, $allClasses, $name);
 					}
 				}
+			}
+		}
+
+		foreach ($this->getFunctions() as $function) {
+			$allClasses = $this->processFunction($declared, $allClasses, $function);
+		}
+
+		array_walk_recursive($allClasses, function(&$reflection, $name, Generator $generator) {
+			if (!$reflection instanceof Reflection) {
+				$reflection = new Reflection($reflection, $generator);
+			}
+		}, $this->generator);
+
+		return $allClasses;
+	}
+
+	/**
+	 * Processes a function/method and adds classes from annotations to the overall class array.
+	 *
+	 * @param array $declared Array of declared classes
+	 * @param array $allClasses Array with all classes parsed so far
+	 * @param TokenReflection\IReflectionFunctionBase $function Function/method reflection
+	 * @return array
+	 */
+	private function processFunction(array $declared, array $allClasses, TokenReflection\IReflectionFunctionBase $function)
+	{
+		static $parsedAnnotations = array('param', 'return', 'throws');
+
+		foreach ($parsedAnnotations as $annotation) {
+			if (!$function->hasAnnotation($annotation)) {
+				continue;
+			}
+
+			foreach ((array) $function->getAnnotation($annotation) as $doc) {
+				foreach (explode('|', preg_replace('#\s.*#', '', $doc)) as $name) {
+					$allClasses = $this->addClass($declared, $allClasses, $name);
+				}
+			}
+		}
+
+		foreach ($function->getParameters() as $param) {
+			if ($hint = $param->getClass()) {
+				$allClasses = $this->addClass($declared, $allClasses, $hint->getName());
 			}
 		}
 
@@ -84,7 +134,7 @@ class Backend extends Memory
 	{
 		$name = ltrim($name, '\\');
 
-		if (!isset($declared[$name]) || isset($allClasses[self::TOKENIZED_CLASSES][$name])  || isset($allClasses[self::INTERNAL_CLASSES][$name])) {
+		if (!isset($declared[$name]) || isset($allClasses[self::TOKENIZED_CLASSES][$name]) || isset($allClasses[self::INTERNAL_CLASSES][$name]) || isset($allClasses[self::NONEXISTENT_CLASSES][$name])) {
 			return $allClasses;
 		}
 
@@ -103,5 +153,33 @@ class Backend extends Memory
 		}
 
 		return $allClasses;
+	}
+
+	/**
+	 * Returns all functions from all namespaces.
+	 *
+	 * @return array
+	 */
+	public function getFunctions()
+	{
+		$functions = array();
+		foreach (parent::getFunctions() as $functionName => $function) {
+			if (!$this->generator->getConfig()->deprecated && $function->isDeprecated()) {
+				continue;
+			}
+			foreach ($this->generator->getConfig()->skipDocPath as $mask) {
+				if (fnmatch($mask, $function->getFilename(), FNM_NOESCAPE | FNM_PATHNAME)) {
+					continue 2;
+				}
+			}
+			foreach ($this->generator->getConfig()->skipDocPrefix as $prefix) {
+				if (0 === strpos($function->getName(), $prefix)) {
+					continue 2;
+				}
+			}
+			$functions[$functionName] = $function;
+		}
+
+		return $functions;
 	}
 }
