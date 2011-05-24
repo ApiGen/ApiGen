@@ -143,23 +143,7 @@ class Generator extends Nette\Object
 		$this->classes->uksort('strcasecmp');
 
 		// Constants
-		$this->constants = new \ArrayObject();
-		foreach ($broker->getConstants() as $constantName => $constant) {
-			if (!$this->config->deprecated && $constant->isDeprecated()) {
-				continue;
-			}
-			foreach ($this->config->skipDocPath as $mask) {
-				if (fnmatch($mask, $constant->getFilename(), FNM_NOESCAPE | FNM_PATHNAME)) {
-					continue 2;
-				}
-			}
-			foreach ($this->config->skipDocPrefix as $prefix) {
-				if (0 === strpos($constant->getName(), $prefix)) {
-					continue 2;
-				}
-			}
-			$this->constants->offsetSet($constantName, $constant);
-		}
+		$this->constants = new \ArrayObject($broker->getConstants());
 		$this->constants->uksort('strcasecmp');
 
 		// Functions

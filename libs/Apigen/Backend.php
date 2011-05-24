@@ -156,30 +156,47 @@ class Backend extends Memory
 	}
 
 	/**
+	 * Returns true if the given reflection should be documented, false if not.
+	 *
+	 * @param TokenReflection\IReflection $reflection Reflection object
+	 * @return boolean
+	 */
+	private function filterReflections(TokenReflection\IReflection $reflection)
+	{
+		if (!$this->generator->getConfig()->deprecated && $reflection->isDeprecated()) {
+			return false;
+		}
+		foreach ($this->generator->getConfig()->skipDocPath as $mask) {
+			if (fnmatch($mask, $reflection->getFilename(), FNM_NOESCAPE | FNM_PATHNAME)) {
+				return false;
+			}
+		}
+		foreach ($this->generator->getConfig()->skipDocPrefix as $prefix) {
+			if (0 === strpos($reflection->getName(), $prefix)) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	/**
 	 * Returns all functions from all namespaces.
 	 *
 	 * @return array
 	 */
 	public function getFunctions()
 	{
-		$functions = array();
-		foreach (parent::getFunctions() as $functionName => $function) {
-			if (!$this->generator->getConfig()->deprecated && $function->isDeprecated()) {
-				continue;
-			}
-			foreach ($this->generator->getConfig()->skipDocPath as $mask) {
-				if (fnmatch($mask, $function->getFilename(), FNM_NOESCAPE | FNM_PATHNAME)) {
-					continue 2;
-				}
-			}
-			foreach ($this->generator->getConfig()->skipDocPrefix as $prefix) {
-				if (0 === strpos($function->getName(), $prefix)) {
-					continue 2;
-				}
-			}
-			$functions[$functionName] = $function;
-		}
+		return array_filter(parent::getFunctions(), array($this, 'filterReflections'));
+	}
 
-		return $functions;
+	/**
+	 * Returns all constants from all namespaces.
+	 *
+	 * @return array
+	 */
+	public function getConstants()
+	{
+		return array_filter(parent::getConstants(), array($this, 'filterReflections'));
 	}
 }
