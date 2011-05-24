@@ -7,7 +7,7 @@
 <div id="content">
 	<h1>{if $class->deprecated}Deprecated {/if}{if $class->interface}Interface{else}Class{/if} {$class->shortName}</h1>
 
-	<div class="classDescription" n:if="$template->longDescription($class)">
+	<div class="description" n:if="$template->longDescription($class)">
 	{!$class|longDescription|docblock|resolveLinks:$class}
 	</div>
 
@@ -246,7 +246,7 @@
 	<tr>
 		<td><code>
 			{foreach $constants as $constant}
-				<span n:class="$constant->deprecated ? deprecated"><a href="{$constant|constantUrl}" n:tag-if="$template->resolveClass($parentName)">{$constant->name}</a></span>{sep}, {/sep}
+				<span n:class="$constant->deprecated ? deprecated"><a href="{$constant|constantUrl}" n:tag-if="$template->resolveClass($parentName)"><b>{$constant->name}</b></a></span>{sep}, {/sep}
 			{/foreach}
 		</code></td>
 	</tr>
