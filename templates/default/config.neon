@@ -4,7 +4,6 @@ resources:
 templates:
 	common:
 		index.html: overview.latte
-		allclasses.html: package.latte
 		resources/combined.js: combined.js.latte
 
 	main:
@@ -15,22 +14,28 @@ templates:
 			filename: namespace-%s.html
 			template: namespace.latte
 		class:
-			filename: %s.html
+			filename: class-%s.html
 			template: class.latte
+		constant:
+			filename: constant-%s.html
+			template: constant.latte
+		function:
+			filename: function-%s.html
+			template: function.latte
 		source:
 			filename: source-%s.html
 			template: source.latte
 		tree:
 			filename: tree.html
 			template: tree.latte
-
-	optional:
 		deprecated:
 			filename: deprecated.html
 			template: deprecated.latte
 		todo:
 			filename: todo.html
 			template: todo.latte
+
+	optional:
 		sitemap:
 			filename: sitemap.xml
 			template: sitemap.xml.latte
@@ -38,5 +43,5 @@ templates:
 			filename: opensearch.xml
 			template: opensearch.xml.latte
 		autocomplete:
-			filename: allclasses.js
-			template: allclasses.js.latte
+			filename: elementlist.js
+			template: elementlist.js.latte

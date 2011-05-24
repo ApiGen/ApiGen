@@ -27,7 +27,7 @@ Besides, we have made following changes in our ApiGen.
 * A page with a list of deprecated elements.
 * A page with Todo tasks.
 * Detailed documentation for constants and properties with all annotations.
-* Links to PHP manual pages for constants and properties of internal classes.
+* Links to PHP manual pages for constants and properties of PHP internal classes.
 * Links to the start line in the highlighted source code for constants and properties.
 * List of packages.
 * List of indirect known subclasses and implementers.
@@ -44,11 +44,11 @@ Besides, we have made following changes in our ApiGen.
 * Better static files (stylesheets, javascript) versioning.
 * Full sitemap with links to package and namespace pages.
 * Class and interface tables/headings are displayed only if required.
-* Package and namespace lists in the left column are filtered when selecting a package, namespace or class.
 * New version of jQuery.
 * New version of FSHL.
 * Google Analytics support.
 * List of undocumented elements.
+* Documentation for functions and constants in namespace or global space.
 
 ### Bugfixes ###
 * No fatal errors when a class is missing (this is a benefit of using the TokenReflection library).
@@ -123,9 +123,13 @@ List of allowed HTML tags in documentation separated by comma. Default value is 
 
 Access levels of methods and properties that should get their documentation parsed. Default value is "public,protected" (don't generate private class members).
 
-```--internal <yes|no>```
+```--php <yes|no>```
 
 Generate documentation for PHP internal classes, default is "Yes".
+
+```--tree <yes|no>```
+
+Generate tree view of classes, interfaces and exceptions, default is "Yes".
 
 ```--deprecated <yes|no>```
 

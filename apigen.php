@@ -44,7 +44,8 @@ try {
 		'template-dir:',
 		'allowed-html:',
 		'access-levels:',
-		'internal:',
+		'php:',
+		'tree:',
 		'deprecated:',
 		'todo:',
 		'source-code:',
@@ -57,7 +58,7 @@ try {
 	));
 
 	// Help
-	if (isset($options['h']) || isset($options['help'])) {
+	if (empty($options) || isset($options['h']) || isset($options['help'])) {
 		echo Apigen\Generator::getHeader();
 		echo Apigen\Config::getHelp();
 		die();
@@ -81,8 +82,8 @@ try {
 	} elseif (!empty($config->exclude)) {
 		$generator->output(sprintf("Excluding %s\n", $config->exclude[0]));
 	}
-	list($count, $countInternal) = $generator->parse();
-	$generator->output(sprintf("Found %d classes and other %d used internal classes\n", $count, $countInternal));
+	list($countClasses, $countConstants, $countFunctions, $countClassesInternal) = $generator->parse();
+	$generator->output(sprintf("Found %d classes, %d constants, %d functions and other %d used PHP internal classes\n", $countClasses, $countConstants, $countFunctions, $countClassesInternal));
 
 	// Generating
 	$generator->output(sprintf("Searching template in %s\n", $config->templateDir));

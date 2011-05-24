@@ -1,25 +1,26 @@
 {layout '@layout.latte'}
+{var $active => 'package'}
 
-{block #title}{if $package}{if $package != 'None'}Package {$package}{else}No package{/if}{else}All Classes{/if}{/block}
+{block #title}{if $template->subpackageName($package)}Subpackage {$package|subpackageName} | {/if}{if $package != 'None'}Package {$package|packageName}{else}No package{/if}{/block}
 
 {block #content}
-<div id="navigation">
-	<ul>
-		<li><a href="index.html" title="Summary of all packages">Overview</a></li>
-		<li n:class="$package ? active">Package</li>
-		<li>Namespace</li>
-		<li>Class</li>
-	</ul>
-	<ul>
-		<li><a href="tree.html" title="Tree view of classes, interfaces and exceptions">Tree</a></li>
-		<li n:if="$deprecated"><a href="deprecated.html" title="List of deprecated elements">Deprecated</a></li>
-		<li n:if="$todo"><a href="todo.html" title="Todo list">Todo</a></li>
-	</ul>
-</div>
-
 <div id="content">
-	<h1>{include #title}</h1>
+	{if $template->subpackageName($package)}
+		<h1>Package <a href="{$package|packageName|packageUrl}">{$package|packageName}</a></h1>
+		<h2>Subpackage {$package|subpackageName}</h2>
+	{else}
+		<h1>{if $package != 'None'}Package {$package}{else}No package{/if}</h1>
+	{/if}
 
-	{include '@classlist.latte'}
+	<table class="summary" id="packages" n:if="$subpackages">
+	<caption>Subpackages summary</caption>
+	{foreach $subpackages as $package}
+	<tr>
+		<td><a href="{$package|packageUrl}">{$package|subpackageName}</a></td>
+	</tr>
+	{/foreach}
+	</table>
+
+	{include '@elementlist.latte'}
 </div>
 {/block}

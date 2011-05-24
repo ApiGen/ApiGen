@@ -339,7 +339,7 @@ class Reflection
 		$implementers = array();
 		$name = $this->reflection->getName();
 		foreach (self::$classes as $class) {
-			if (!$class->implementsInterface($name)) {
+			if ($class->isInterface() || !$class->implementsInterface($name)) {
 				continue;
 			}
 			if (null === $class->getParentClassName() || !$class->getParentClass()->implementsInterface($name)) {
@@ -363,7 +363,7 @@ class Reflection
 		$implementers = array();
 		$name = $this->reflection->getName();
 		foreach (self::$classes as $class) {
-			if (!$class->implementsInterface($name)) {
+			if ($class->isInterface() || !$class->implementsInterface($name)) {
 				continue;
 			}
 			if (null !== $class->getParentClassName() && $class->getParentClass()->implementsInterface($name)) {
@@ -456,7 +456,7 @@ class Reflection
 	public function isDocumented()
 	{
 		if (null === $this->isDocumented) {
-			if (self::$config->internal && $this->reflection->isInternal()) {
+			if (self::$config->php && $this->reflection->isInternal()) {
 				$this->isDocumented = true;
 			} elseif (!$this->reflection->isTokenized()) {
 				$this->isDocumented = false;

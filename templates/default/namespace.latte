@@ -1,25 +1,21 @@
 {layout '@layout.latte'}
+{var $active => 'namespace'}
 
-{block #title}{if $namespace}Namespace {$namespace}{else}No namespace{/if}{/block}
+{block #title}{if $namespace != 'None'}Namespace {$namespace}{else}No namespace{/if}{/block}
 
 {block #content}
-<div id="navigation">
-	<ul>
-		<li><a href="index.html" title="Summary of all packages">Overview</a></li>
-		<li><a n:tag-if="$package" href="{$package|packageLink}" title="Summary of {$package}">Package</a></li>
-		<li n:class="$namespace ? active">Namespace</li>
-		<li>Class</li>
-	</ul>
-	<ul>
-		<li><a href="tree.html" title="Tree view of classes, interfaces and exceptions">Tree</a></li>
-		<li n:if="$deprecated"><a href="deprecated.html" title="List of deprecated elements">Deprecated</a></li>
-		<li n:if="$todo"><a href="todo.html" title="Todo list">Todo</a></li>
-	</ul>
-</div>
-
 <div id="content">
-	<h1>{include #title}</h1>
+	<h1>{if $namespace != 'None'}Namespace {!$namespace|namespaceLinks:false}{else}No namespace{/if}</h1>
 
-	{include '@classlist.latte'}
+	<table class="summary" id="namespaces" n:if="$subnamespaces">
+	<caption>Namespaces summary</caption>
+	{foreach $subnamespaces as $namespace}
+	<tr>
+		<td><a href="{$namespace|namespaceUrl}">{$namespace}</a></td>
+	</tr>
+	{/foreach}
+	</table>
+
+	{include '@elementlist.latte'}
 </div>
 {/block}

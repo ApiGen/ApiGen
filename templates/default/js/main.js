@@ -3,7 +3,7 @@ $(function(){
 	// enables search autocompletion
 	var $search = $("#search input[type=text]");
 	if ($search.size()) {
-		$search.autocomplete(classes, {
+		$search.autocomplete(elements, {
 			matchContains: true,
 			scrollHeight: 200,
 			max: 20,
@@ -54,17 +54,14 @@ $(function(){
 		$this.find('.detailed').show();
 	});
 
-	// hide deep namespaces
-	$('#left ul li ul li:not(.active):not(:has(.active)) ul').addClass('collapsed');
-	$('#left > ul > li > ul > li').hover(function() {
-		clearTimeout(timeout);
-		var $this = $(this);
-		timeout = setTimeout(function() {
-			$('ul.collapsed', $this).stop(true, true).slideDown();
-		}, 500);
-	}, function() {
-		clearTimeout(timeout);
+	// hide deep packages and namespaces
+	$('#left ul span').click(function() {
+		$(this)
+			.toggleClass('collapsed')
+			.next('ul')
+			.toggleClass('collapsed');
 	});
+	$('#left ul li ul li:not(.active) span').click();
 
 	// splitter
 	$('#main').splitter({

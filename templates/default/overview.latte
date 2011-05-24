@@ -1,23 +1,9 @@
 {layout '@layout.latte'}
-{var $overview => true}
+{var $active => 'overview'}
 
 {block #title}{$config->title ?: 'Overview'}{/block}
 
 {block #content}
-<div id="navigation">
-	<ul>
-		<li class="active">Overview</li>
-		<li>Package</li>
-		<li>Namespace</li>
-		<li>Class</li>
-	</ul>
-	<ul>
-		<li><a href="tree.html" title="Tree view of classes, interfaces and exceptions">Tree</a></li>
-		<li n:if="$deprecated"><a href="deprecated.html" title="List of deprecated elements">Deprecated</a></li>
-		<li n:if="$todo"><a href="todo.html" title="Todo list">Todo</a></li>
-	</ul>
-</div>
-
 <div id="content">
 	<h1>{include #title}</h1>
 
@@ -25,7 +11,7 @@
 	<caption>Packages summary</caption>
 	{foreach $packages as $package}
 	<tr>
-		<td><a href="{$package|packageLink}">{$package ?: 'None'}</a></td>
+		<td><a href="{$package|packageUrl}">{$package}</a></td>
 	</tr>
 	{/foreach}
 	</table>
@@ -34,9 +20,13 @@
 	<caption>Namespaces summary</caption>
 	{foreach $namespaces as $namespace}
 	<tr>
-		<td><a href="{$namespace|namespaceLink}">{$namespace ?: 'None'}</a></td>
+		<td><a href="{$namespace|namespaceUrl}">{$namespace}</a></td>
 	</tr>
 	{/foreach}
 	</table>
+
+	{if !$packages && !$namespaces}
+	{include '@elementlist.latte'}
+	{/if}
 </div>
 {/block}

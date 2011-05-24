@@ -5,17 +5,37 @@
 </url>
 {foreach $packages as $package}
 <url>
-	<loc>{$config->baseUrl}/{$package|packageLink}</loc>
+	<loc>{$config->baseUrl}/{$package|packageUrl}</loc>
 </url>
 {/foreach}
 {foreach $namespaces as $namespace}
 <url>
-	<loc>{$config->baseUrl}/{$namespace|namespaceLink}</loc>
+	<loc>{$config->baseUrl}/{$namespace|namespaceUrl}</loc>
 </url>
 {/foreach}
 {foreach $classes as $class}
 <url>
-	<loc>{$config->baseUrl}/{$class|classLink}</loc>
+	<loc>{$config->baseUrl}/{$class|classUrl}</loc>
+</url>
+{/foreach}
+{foreach $interfaces as $interface}
+<url>
+	<loc>{$config->baseUrl}/{$interface|classUrl}</loc>
+</url>
+{/foreach}
+{foreach $exceptions as $exception}
+<url>
+	<loc>{$config->baseUrl}/{$exception|classUrl}</loc>
+</url>
+{/foreach}
+{foreach $constants as $constant}
+<url>
+	<loc>{$config->baseUrl}/{$constant|constantUrl}</loc>
+</url>
+{/foreach}
+{foreach $functions as $function}
+<url>
+	<loc>{$config->baseUrl}/{$function|functionUrl}</loc>
 </url>
 {/foreach}
 </urlset>

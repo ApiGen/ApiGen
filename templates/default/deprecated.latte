@@ -1,22 +1,9 @@
 {layout '@layout.latte'}
+{var $active => 'deprecated'}
 
 {block #title}Deprecated{/block}
 
 {block #content}
-<div id="navigation">
-	<ul>
-		<li><a href="index.html" title="Summary of all packages">Overview</a></li>
-		<li>Package</li>
-		<li>Namespace</li>
-		<li>Class</li>
-	</ul>
-	<ul>
-		<li><a href="tree.html" title="Tree view of classes, interfaces and exceptions">Tree</a></li>
-		<li class="active">Deprecated</li>
-		<li n:if="$todo"><a href="todo.html" title="Todo list">Todo</a></li>
-	</ul>
-</div>
-
 <div id="content">
 	<h1>{include #title}</h1>
 
@@ -24,11 +11,11 @@
 	<caption>Classes summary</caption>
 	{foreach $deprecatedClasses as $class}
 	<tr>
-		<td class="nowrap" width="1%"><a href="{$class|classLink}">{$class->name}</a></td>
+		<td class="nowrap" width="1%"><a href="{$class|classUrl}">{$class->name}</a></td>
 		<td>
 			{foreach $class->annotations['deprecated'] as $description}
 				{if $description}
-					{!$description|docline|resolveLinks:$class}<br>
+					{!$description|annotation:'deprecated':$class}<br>
 				{/if}
 			{/foreach}
 		</td>
@@ -40,11 +27,11 @@
 	<caption>Interfaces summary</caption>
 	{foreach $deprecatedInterfaces as $interface}
 	<tr>
-		<td class="nowrap" width="1%"><a href="{$interface|classLink}">{$interface->name}</a></td>
+		<td class="nowrap" width="1%"><a href="{$interface|classUrl}">{$interface->name}</a></td>
 		<td>
 			{foreach $interface->annotations['deprecated'] as $description}
 				{if $description}
-					{!$description|docline|resolveLinks:$interface}<br>
+					{!$description|annotation:'deprecated':$interface}<br>
 				{/if}
 			{/foreach}
 		</td>
@@ -56,11 +43,11 @@
 	<caption>Exceptions summary</caption>
 	{foreach $deprecatedExceptions as $exception}
 	<tr>
-		<td class="nowrap" width="1%"><a href="{$exception|classLink}">{$exception->name}</a></td>
+		<td class="nowrap" width="1%"><a href="{$exception|classUrl}">{$exception->name}</a></td>
 		<td>
 			{foreach $exception->annotations['deprecated'] as $description}
 				{if $description}
-					{!$description|docline|resolveLinks:$exception}<br>
+					{!$description|annotation:'deprecated':$exception}<br>
 				{/if}
 			{/foreach}
 		</td>
@@ -72,13 +59,13 @@
 	<caption>Methods summary</caption>
 	{foreach $deprecatedMethods as $method}
 	<tr>
-		<td class="right nowrap" width="1%"><a href="{$method->declaringClassName|classLink}">{$method->declaringClassName}</a></td>
-		<td width="1%"><code><a href="{$method|methodLink}"><b>{$method->name}()</b></a></code></td>
+		<td class="right nowrap" width="1%"><a href="{$method->declaringClassName|classUrl}">{$method->declaringClassName}</a></td>
+		<td width="1%"><code><a href="{$method|methodUrl}"><b>{$method->name}()</b></a></code></td>
 		<td>
 			{if $method->hasAnnotation('deprecated')}
 			{foreach $method->annotations['deprecated'] as $description}
 				{if $description}
-					{!$description|docline|resolveLinks:$method}<br>
+					{!$description|annotation:'deprecated':$method}<br>
 				{/if}
 			{/foreach}
 			{/if}
@@ -91,12 +78,17 @@
 	<caption>Constants summary</caption>
 	{foreach $deprecatedConstants as $constant}
 	<tr>
-		<td class="right nowrap" width="1%"><a href="{$constant->declaringClassName|classLink}">{$constant->declaringClassName}</a></td>
-		<td width="1%"><code><a href="{$constant|constantLink}"><b>{$constant->name}</b></a></code></td>
+		{if $constant->declaringClassName}
+		<td class="right nowrap" width="1%"><a href="{$constant->declaringClassName|classUrl}">{$constant->declaringClassName}</a></td>
+		<td width="1%"><code class="nowrap"><a href="{$constant|constantUrl}"><b>{$constant->name}</b></a></code></td>
+		{else}
+		<td class="right nowrap" width="1%" n:if="$namespaces || $classes || $interfaces || $exceptions"><a n:if="$constant->namespaceName" href="{$constant->namespaceName|namespaceUrl}">{$constant->namespaceName}</a></td>
+		<td n:class="!$namespaces && !$classes && !$interfaces && !$exceptions ? right" width="1%"><code class="nowrap"><a href="{$constant|constantUrl}"><b>{$constant->shortName}</b></a></code></td>
+		{/if}
 		<td>
 			{foreach $constant->annotations['deprecated'] as $description}
 				{if $description}
-					{!$description|docline|resolveLinks:$constant}<br>
+					{!$description|annotation:'deprecated':$constant}<br>
 				{/if}
 			{/foreach}
 		</td>
@@ -108,12 +100,29 @@
 	<caption>Properties summary</caption>
 	{foreach $deprecatedProperties as $property}
 	<tr>
-		<td class="right nowrap" width="1%"><a href="{$property->declaringClassName|classLink}">{$property->declaringClassName}</a></td>
-		<td width="1%"><var><a href="{$property|propertyLink}">${$property->name}</a></var></td>
+		<td class="right nowrap" width="1%"><a href="{$property->declaringClassName|classUrl}">{$property->declaringClassName}</a></td>
+		<td width="1%"><var><a href="{$property|propertyUrl}">${$property->name}</a></var></td>
 		<td>
 			{foreach $property->annotations['deprecated'] as $description}
 				{if $description}
-					{!$description|docline|resolveLinks:$property}<br>
+					{!$description|annotation:'deprecated':$property}<br>
+				{/if}
+			{/foreach}
+		</td>
+	</tr>
+	{/foreach}
+	</table>
+
+	<table class="summary" id="functions" n:if="$deprecatedFunctions">
+	<caption>Functions summary</caption>
+	{foreach $deprecatedFunctions as $function}
+	<tr>
+		<td class="right nowrap" width="1%" n:if="$namespaces"><a n:if="$function->namespaceName" href="{$function->namespaceName|namespaceUrl}">{$function->namespaceName}</a></td>
+		<td width="1%"><code class="nowrap"><a href="{$function|functionUrl}"><b>{$function->shortName}</b></a></code></td>
+		<td>
+			{foreach $function->annotations['deprecated'] as $description}
+				{if $description}
+					{!$description|docline|resolveLinks:$function}<br>
 				{/if}
 			{/foreach}
 		</td>

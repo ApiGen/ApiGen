@@ -22,14 +22,11 @@ h1 {
 	margin: .3em 0;
 }
 
-h2, caption {
-	border: 1px solid #ccc;
-	background: #ecede5;
-	font-weight: bold;
-	font-size: 1.2em;
-	padding: 3px 5px;
-	text-align: left;
-	margin-bottom: 0;
+h2 {
+	color: #1e5eb6;
+	font-size: 150%;
+	font-weight: normal;
+	margin: -.3em 0 .3em 0;
 }
 
 h3 {
@@ -45,10 +42,23 @@ h4 {
 	margin: 0;
 }
 
+caption {
+	border: 1px solid #ccc;
+	background: #ecede5;
+	font-weight: bold;
+	font-size: 1.2em;
+	padding: 3px 5px;
+	text-align: left;
+	margin-bottom: 0;
+}
+
 a {
 	color: #006aeb;
 	padding: 3px 1px;
 	text-decoration: none;
+}
+h1 a {
+	color: #1e5eb6;
 }
 
 a:hover, a:active, a:focus {
@@ -130,6 +140,7 @@ pre {
 
 #left li {
 	white-space: nowrap;
+	position: relative;
 }
 
 #left .active > a {
@@ -138,15 +149,31 @@ pre {
 	font-weight: bold;
 }
 
-#left .active > a:hover {
-    background-color: #006aeb;
+#left .active > a:hover, #left .active > a:active, #left .active > a:focus {
+	background-color: #006aeb;
 }
 
-#left .all {
-	font-style: italic;
+#left span {
+	position: absolute;
+	top: 4px;
+	right: 0;
+	cursor: pointer;
+	display: block;
+	width: 12px;
+	height: 12px;
+	background: url('collapsed.gif') #ffffff 0 0 no-repeat;
+}
+#left span:hover {
+	background-position: -12px 0;
+}
+#left span.collapsed {
+	background-position: 0 -12px;
+}
+#left span.collapsed:hover {
+	background-position: -12px -12px;
 }
 
-#left .collapsed {
+#left ul.collapsed {
 	display: none;
 }
 
@@ -167,9 +194,8 @@ pre {
  *	Navigation
  */
 #search {
-	display: inline;
 	float: right;
-	margin-top: 3px;
+	margin: 3px 8px;
 }
 
 #search input.text {
@@ -186,7 +212,7 @@ pre {
 
 #navigation ul {
 	list-style: none;
-	margin: 2px 0 4px 2px;
+	margin: 0 8px 4px 0px;
 	padding: 0;
 	overflow: hidden;
 	float: left;
@@ -194,36 +220,35 @@ pre {
 
 #navigation ul + ul {
 	border-left: 1px solid #000000;
-	margin-left: 10px;
-	padding-left: 12px;
+	padding-left: 8px;
 }
 
 #navigation ul li {
-	display: inline;
+	float: left;
 	margin: 2px;
-	padding: 0 2px;
-	font-family: Arial, Verdana;
-	color: gray;
+	padding: 0 3px;
+	font-family: Verdana, "Geneva CE", lucida, sans-serif;
+	color: #808080;
+}
+
+#navigation ul li.active {
+	background-color: #053368;
+	color: #ffffff;
+	font-weight: bold;
 }
 
 #navigation ul li a {
 	color: #000000;
 	font-weight: bold;
-	padding: 3px;
+	padding: 0;
 }
-
-#navigation ul li a:hover, #navigation ul li a:active, #navigation ul li a:focus {
-	color: #ffffff;
+#navigation ul li span {
+	float: left;
+	padding: 0 3px;
 }
-
-#navigation ul li.active {
-	background: #053368;
-	color: #ffffff;
-	padding: 3px;
-	font-weight: bold;
+#navigation ul li a:hover span, #navigation ul li a:active span, #navigation ul li a:focus span {
+	background-color: #006aeb;
 }
-
-
 
 /**
  * Content
@@ -238,13 +263,13 @@ pre {
 	margin: 0;
 }
 
-.classDescription {
+.description {
 	background: #ecede5;
 	padding: 1px 8px;
 	margin: 1.2em 0;
 }
 
-.classDescription pre {
+.description pre {
 	margin: .5em 0;
 	padding: .6em;
 	background: #fcfcf7;
@@ -259,7 +284,7 @@ dl.tree dd {
 	padding: 0;
 }
 
-.classInfo {
+.info {
 	margin: 1.2em 0;
 }
 
@@ -305,8 +330,12 @@ tr:hover td {
 	background: #f6f6f4;
 }
 
-tr .detailed {
+.detailed {
 	display: none;
+}
+
+.detailed h4 {
+	margin-top: 5px;
 }
 
 .deprecated {
@@ -314,14 +343,6 @@ tr .detailed {
 }
 .right {
 	text-align: right;
-}
-
-.box {
-	border: 1px solid #cccccc;
-	border-top: none;
-	margin-bottom: 2.4em;
-	padding: 3px 1em;
-	font-size: 95%;
 }
 
 .position {
@@ -339,9 +360,8 @@ tr .detailed {
 	color: #006aeb !important;
 }
 
-div.smallList {
-	padding:0 0 10px 25px;
-	margin:0;
+.smallList {
+	margin: 0 0 5px 25px;
 }
 
 

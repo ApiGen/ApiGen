@@ -1,0 +1,74 @@
+{layout '@layout.latte'}
+{var $active => 'function'}
+
+{block #title}{if $function->deprecated}Deprecated {/if}Function {$function->name}{/block}
+
+{block #content}
+<div id="content">
+	<h1>{if $function->deprecated}Deprecated {/if}Function {$function->shortName}</h1>
+
+	<div class="description" n:if="$template->longDescription($function)">
+	{!$function|longDescription|docblock|resolveLinks:$function}
+	</div>
+
+	<div class="info">
+		{if $function->inNamespace()}<b>Namespace:</b> {!$function->namespaceName|namespaceLinks}<br>{/if}
+		{foreach $template->annotationSort($template->annotationFilter($function->annotations, array('param', 'return', 'throws'))) as $annotation => $values}
+			{foreach $values as $value}
+				<b>{$annotation|ucfirst}{if $value}:{/if}</b>
+				{!$value|annotation:$annotation:$function}<br>
+			{/foreach}
+		{/foreach}
+		<b>Located at</b> <a n:tag-if="$config->sourceCode" href="{$function|sourceUrl}" title="Go to source code">{$fileName}</a><br>
+	</div>
+
+	{var $annotations = $function->annotations}
+
+	<table class="summary" id="parameters" n:if="$function->numberOfParameters">
+	<caption>Parameters summary</caption>
+	{foreach $function->parameters as $parameter}
+	<tr data-order="{$parameter->name}" id="${$parameter->name}">
+		<td width="1%" class="right"><code class="nowrap">
+			{if $parameter->array}array
+			{elseif $parameter->className}<a href="{$parameter->className|classUrl}" n:tag-if="$template->resolveClass($parameter->className)">{$parameter->className}</a>
+			{else}
+				{foreach $template->getTypes($function, $parameter->position) as $item}<a href="{$item->class|classUrl}" n:tag-if="$item->class">{$item->name}</a>{sep}|{/sep}{/foreach}
+			{/if}
+		</code></td>
+		<td width="1%"><code class="nowrap">
+			<var>{if $parameter->passedByReference}&amp; {/if}${$parameter->name}</var>{if $parameter->defaultValueAvailable} = {!$parameter->defaultValueDefinition|highlightPHP}{/if}
+		</code></td>
+		<td>
+			{if isset($annotations['param'][$parameter->position])}{!$annotations['param'][$parameter->position]|docdescription:3|docline}{/if}
+		</td>
+	</tr>
+	{/foreach}
+	</table>
+
+	<table class="summary" id="returns" n:if="isset($annotations['return']) && 'void' !== $annotations['return'][0]">
+	<caption>Return value summary</caption>
+	<tr>
+		<td width="1%" class="right"><code class="nowrap">
+			{foreach $template->getTypes($function) as $return}<a href="{$return->class|classUrl}" n:tag-if="$return->class">{$return->name}</a>{sep}|{/sep}{/foreach}
+		</code></td>
+		<td>
+			{!$annotations['return'][0]|docdescription:2|docline}
+		</td>
+	</tr>
+	</table>
+
+	<table class="summary" id="throws" n:if="isset($annotations['throws'])">
+	<caption>Thrown exceptions summary</caption>
+	{foreach $annotations['throws'] as $throws}
+	<tr>
+		<td width="1%" class="right"><code class="nowrap">
+			{foreach $template->getTypes($function, null, 'throws') as $type}<a href="{$type->class|classUrl}" n:tag-if="$type->class">{$type->name}</a>{sep}|{/sep}{/foreach}
+		</code></td>
+		<td>
+			{!$throws|docdescription:2|docline}
+		</td>
+	</tr>
+	{/foreach}
+	</table>
+</div>
+{/block}

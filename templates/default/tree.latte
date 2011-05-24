@@ -1,22 +1,9 @@
 {layout '@layout.latte'}
+{var $active => 'tree'}
 
 {block #title}Tree{/block}
 
 {block #content}
-<div id="navigation">
-	<ul>
-		<li><a href="index.html" title="Summary of all packages">Overview</a></li>
-		<li>Package</li>
-		<li>Namespace</li>
-		<li>Class</li>
-	</ul>
-	<ul>
-		<li class="active">Tree</li>
-		<li n:if="$deprecated"><a href="deprecated.html" title="List of deprecated elements">Deprecated</a></li>
-		<li n:if="$todo"><a href="todo.html" title="Todo list">Todo</a></li>
-	</ul>
-</div>
-
 <div id="content">
 	<h1>{include #title}</h1>
 

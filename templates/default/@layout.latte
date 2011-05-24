@@ -2,15 +2,15 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<meta name="generator" content="ApiGen {$version}">
-	<meta name="robots" content="noindex" n:ifset="$noindex">
+	<meta name="generator" content="{$generator} {$version}">
+	<meta name="robots" content="noindex" n:if="'source' === $active">
 
-	<title>{include #title}{if !isset($overview) && $config->title} | {$config->title}{/if}</title>
+	<title>{include #title}{if 'overview' !== $active && $config->title} | {$config->title}{/if}</title>
 
 	{var combined_js => 'resources/combined.js'}
 	<script type="text/javascript" src="{$combined_js|staticFile}"></script>
-	{var allclasses_js => 'allclasses.js'}
-	<script n:if="$config->googleCse" type="text/javascript" src="{$allclasses_js|staticFile}"></script>
+	{var elementlist_js => 'elementlist.js'}
+	<script n:if="$config->googleCse" type="text/javascript" src="{$elementlist_js|staticFile}"></script>
 	{var style_css => 'resources/style.css'}
 	<link rel="stylesheet" type="text/css" media="all" href="{$style_css|staticFile}">
 	<link n:if="$config->googleCse" rel="search" type="application/opensearchdescription+xml" title="{$config->title}" href="{$config->baseUrl}/opensearch.xml">
@@ -37,20 +37,10 @@
 		{if $packages}
 		<h3>Packages</h3>
 		<ul>
-			<li n:if="$package" class="all"><a href="index.html#packages">All</a></li>
 			{foreach $packages as $item}
-			<li n:class="$package === $item ? active"><a href="{$item|packageLink}">{$item ? $item : 'None'}</a></li>
-			{/foreach}
-		</ul>
-		{/if}
-
-		{if $namespaces}
-		<h3>Namespaces</h3>
-		<ul>
-			<li n:if="$namespace" class="all"><a href="index.html#namespaces">All</a></li>
-			{foreach $namespaces as $item}
-			<li n:class="$namespace === $item ? active"><a href="{$item|namespaceLink}">{$item ? $item : 'None'}</a>
+			<li n:class="$package === $item || 0 === strpos($package, $item . '\\') ? active"><a href="{$item|packageUrl}">{$template->subpackageName($item) ?: $item}</a>
 				{if substr_count($iterator->nextValue, '\\') > substr_count($item, '\\')}
+					<span></span>
 					<ul>
 				{else}
 					</li>
@@ -62,18 +52,33 @@
 		</ul>
 		{/if}
 
+		{if $namespaces}
+		<h3>Namespaces</h3>
+		<ul>
+			{foreach $namespaces as $item}
+			<li n:class="$namespace === $item || 0 === strpos($namespace, $item . '\\') ? active"><a href="{$item|namespaceUrl}">{$item|subnamespaceName}</a>
+				{if substr_count($iterator->nextValue, '\\') > substr_count($item, '\\')}
+					<span></span>
+					<ul>
+				{else}
+					</li>
+					{if substr_count($iterator->nextValue, '\\') < substr_count($item, '\\')}
+						{!=str_repeat('</ul></li>', substr_count($item, '\\') - substr_count($iterator->nextValue, '\\'))}
+					{/if}
+				{/if}
+			{/foreach}
+		</ul>
+		{/if}
+
+		{if $packages || $namespaces}
 		<hr>
+		{/if}
 
 		{if $classes}
 		<h3>Classes</h3>
 		<ul>
-		{if $class}
-			<li class="all"><a href="allclasses.html#classes">All</a></li>
-			<li n:if="$package" class="all"><a href="{$package|packageLink}#classes">All in package {$package}</a></li>
-			<li n:if="$namespace" class="all"><a href="{$namespace|namespaceLink}#classes">All in namespace {$namespace}</a></li>
-		{/if}
 		{foreach $classes as $item}
-			<li n:class="$class === $item ? active"><a href="{$item|classLink}">{if $namespace}{$item->shortName}{else}{$item->name}{/if}</a></li>
+			<li n:class="$class === $item ? active"><a href="{$item|classUrl}">{if $namespace}{$item->shortName}{else}{$item->name}{/if}</a></li>
 		{/foreach}
 		</ul>
 		{/if}
@@ -81,13 +86,8 @@
 		{if $interfaces}
 		<h3>Interfaces</h3>
 		<ul>
-		{if $class}
-			<li class="all"><a href="allclasses.html#interfaces">All</a></li>
-			<li n:if="$package" class="all"><a href="{$package|packageLink}#interfaces">All in package {$package}</a></li>
-			<li n:if="$namespace" class="all"><a href="{$namespace|namespaceLink}#interfaces">All in namespace {$namespace}</a></li>
-		{/if}
 		{foreach $interfaces as $item}
-			<li n:class="$class === $item ? active"><a href="{$item|classLink}">{if $namespace}{$item->shortName}{else}{$item->name}{/if}</a></li>
+			<li n:class="$class === $item ? active"><a href="{$item|classUrl}">{if $namespace}{$item->shortName}{else}{$item->name}{/if}</a></li>
 		{/foreach}
 		</ul>
 		{/if}
@@ -95,13 +95,26 @@
 		{if $exceptions}
 		<h3>Exceptions</h3>
 		<ul>
-		{if $class}
-			<li class="all"><a href="allclasses.html#exceptions">All</a></li>
-			<li n:if="$package" class="all"><a href="{$package|packageLink}#exceptions">All in package {$package}</a></li>
-			<li n:if="$namespace" class="all"><a href="{$namespace|namespaceLink}#exceptions">All in namespace {$namespace}</a></li>
-		{/if}
 		{foreach $exceptions as $item}
-			<li n:class="$class === $item ? active"><a href="{$item|classLink}">{if $namespace}{$item->shortName}{else}{$item->name}{/if}</a></li>
+			<li n:class="$class === $item ? active"><a href="{$item|classUrl}">{if $namespace}{$item->shortName}{else}{$item->name}{/if}</a></li>
+		{/foreach}
+		</ul>
+		{/if}
+
+		{if $constants}
+		<h3>Constants</h3>
+		<ul>
+		{foreach $constants as $item}
+			<li n:class="$constant === $item ? active"><a href="{$item|constantUrl}">{if $namespace}{$item->shortName}{else}{$item->name}{/if}</a></li>
+		{/foreach}
+		</ul>
+		{/if}
+
+		{if $functions}
+		<h3>Functions</h3>
+		<ul>
+		{foreach $functions as $item}
+			<li n:class="$function === $item ? active"><a href="{$item|functionUrl}">{if $namespace}{$item->shortName}{else}{$item->name}{/if}</a></li>
 		{/foreach}
 		</ul>
 		{/if}
@@ -113,10 +126,44 @@
 			<input type="hidden" name="cx" value="{$config->googleCse}"><input type="hidden" name="ie" value="UTF-8"><input type="text" name="q" class="text"><input type="submit" value="Search">
 		</form>
 
+		<div id="navigation">
+			<ul>
+				<li n:class="'overview' === $active ? active">
+					<a n:tag-if="'overview' !== $active" href="index.html" title="Overview"><span>Overview</span></a>
+				</li>
+				<li n:class="'package' === $active ? active" n:if="$packages">
+					<a n:tag-if="'package' !== $active && $package" href="{$package|packageUrl}" title="Summary of {$package}"><span>Package</span></a>
+				</li>
+				<li n:class="'namespace' === $active ? active" n:if="$namespaces">
+					<a n:tag-if="'namespace' !== $active && $namespace" href="{$namespace|namespaceUrl}" title="Summary of {$namespace}"><span>Namespace</span></a>
+				</li>
+				<li n:class="'class' === $active ? active" n:if="!$function && !$constant">
+					<a n:tag-if="'class' !== $active && $class" href="{$class|classUrl}" title="Summary of {$class->name}"><span>Class</span></a>
+				</li>
+				<li n:class="'function' === $active ? active" n:if="$function">
+					<a n:tag-if="'function' !== $active" href="{$function|functionUrl}" title="Summary of {$function->name}"><span>Function</span></a>
+				</li>
+				<li n:class="'constant' === $active ? active" n:if="$constant">
+					<a n:tag-if="'constant' !== $active" href="{$constant|constantUrl}" title="Summary of {$constant->name}"><span>Constant</span></a>
+				</li>
+			</ul>
+			<ul>
+				<li n:class="'tree' === $active ? active" n:if="$config->tree">
+					<a n:tag-if="'tree' !== $active" href="tree.html" title="Tree view of classes, interfaces and exceptions"><span>Tree</span></a>
+				</li>
+				<li n:class="'deprecated' === $active ? active" n:if="$config->deprecated">
+					<a n:tag-if="'deprecated' !== $active" href="deprecated.html" title="List of deprecated elements"><span>Deprecated</span></a>
+				</li>
+				<li n:class="'todo' === $active ? active" n:if="$config->todo">
+					<a n:tag-if="'todo' !== $active" href="todo.html" title="Todo list"><span>Todo</span></a>
+				</li>
+			</ul>
+		</div>
+
 		{include #content}
 
 		<div id="footer">
-			{$config->title} API documentation generated by <a href="http://github.com/Andrewsville/apigen">TR ApiGen</a>.<br>
+			{$config->title} API documentation generated by <a href="http://github.com/Andrewsville/apigen">{$generator}</a>.<br>
 			Generated using the <a href="https://github.com/Andrewsville/PHP-Token-Reflection" title="All your tokens are belong to us">TokenReflection</a> library.
 		</div>
 	</div>
