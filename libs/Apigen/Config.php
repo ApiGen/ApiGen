@@ -58,7 +58,7 @@ class Config
 		'templateDir' => '',
 		'allowedHtml' => array('b', 'i', 'a', 'ul', 'ol', 'li', 'p', 'br', 'var', 'samp', 'kbd', 'tt'),
 		'accessLevels' => array('public', 'protected'),
-		'internal' => true,
+		'php' => true,
 		'tree' => true,
 		'deprecated' => false,
 		'todo' => false,
@@ -365,7 +365,7 @@ Options:
 	--template-dir     <dir>       Directory with templates, default "./templates"
 	--allowed-html     <list>      List of allowed HTML tags in documentation, default "b,i,a,ul,ol,li,p,br,var,samp,kbd,tt"
 	--access-levels    <list>      Generate documentation for methods and properties with given access level, default "public,protected"
-	--internal         <yes|no>    Generate documentation for internal classes, default "yes"
+	--php              <yes|no>    Generate documentation for PHP internal classes, default "yes"
 	--tree             <yes|no>    Generate tree view of classes, interfaces and exceptions, default "yes"
 	--deprecated       <yes|no>    Generate documentation for deprecated classes, methods, properties and constants, default "no"
 	--todo             <yes|no>    Generate documentation of tasks, default "no"

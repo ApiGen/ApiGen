@@ -456,7 +456,7 @@ class Reflection
 	public function isDocumented()
 	{
 		if (null === $this->isDocumented) {
-			if (self::$config->internal && $this->reflection->isInternal()) {
+			if (self::$config->php && $this->reflection->isInternal()) {
 				$this->isDocumented = true;
 			} elseif (!$this->reflection->isTokenized()) {
 				$this->isDocumented = false;

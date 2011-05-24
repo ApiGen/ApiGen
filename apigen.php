@@ -44,7 +44,7 @@ try {
 		'template-dir:',
 		'allowed-html:',
 		'access-levels:',
-		'internal:',
+		'php:',
 		'tree:',
 		'deprecated:',
 		'todo:',
@@ -83,7 +83,7 @@ try {
 		$generator->output(sprintf("Excluding %s\n", $config->exclude[0]));
 	}
 	list($countClasses, $countConstants, $countFunctions, $countClassesInternal) = $generator->parse();
-	$generator->output(sprintf("Found %d classes, %d constants, %d functions and other %d used internal classes\n", $countClasses, $countConstants, $countFunctions, $countClassesInternal));
+	$generator->output(sprintf("Found %d classes, %d constants, %d functions and other %d used PHP internal classes\n", $countClasses, $countConstants, $countFunctions, $countClassesInternal));
 
 	// Generating
 	$generator->output(sprintf("Searching template in %s\n", $config->templateDir));

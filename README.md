@@ -27,7 +27,7 @@ Besides, we have made following changes in our ApiGen.
 * A page with a list of deprecated elements.
 * A page with Todo tasks.
 * Detailed documentation for constants and properties with all annotations.
-* Links to PHP manual pages for constants and properties of internal classes.
+* Links to PHP manual pages for constants and properties of PHP internal classes.
 * Links to the start line in the highlighted source code for constants and properties.
 * List of packages.
 * List of indirect known subclasses and implementers.
@@ -123,7 +123,7 @@ List of allowed HTML tags in documentation separated by comma. Default value is 
 
 Access levels of methods and properties that should get their documentation parsed. Default value is "public,protected" (don't generate private class members).
 
-```--internal <yes|no>```
+```--php <yes|no>```
 
 Generate documentation for PHP internal classes, default is "Yes".
 
