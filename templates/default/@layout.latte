@@ -40,6 +40,7 @@
 			{foreach $packages as $item}
 			<li n:class="$package === $item || 0 === strpos($package, $item . '\\') ? active"><a href="{$item|packageUrl}">{$template->subpackageName($item) ?: $item}</a>
 				{if substr_count($iterator->nextValue, '\\') > substr_count($item, '\\')}
+					<span></span>
 					<ul>
 				{else}
 					</li>
@@ -55,8 +56,9 @@
 		<h3>Namespaces</h3>
 		<ul>
 			{foreach $namespaces as $item}
-			<li n:class="$namespace === $item || 0 === strpos($namespace, $item . '\\') ? active"><a href="{$item|namespaceUrl}">{$item}</a>
+			<li n:class="$namespace === $item || 0 === strpos($namespace, $item . '\\') ? active"><a href="{$item|namespaceUrl}">{$item|subnamespaceName}</a>
 				{if substr_count($iterator->nextValue, '\\') > substr_count($item, '\\')}
+					<span></span>
 					<ul>
 				{else}
 					</li>

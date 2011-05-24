@@ -253,6 +253,14 @@ class Template extends Nette\Templating\FileTemplate
 			return $name;
 		});
 
+		// Namespaces
+		$this->registerHelper('subnamespaceName', function($namespaceName) {
+			if ($pos = strrpos($namespaceName, '\\')) {
+				return substr($namespaceName, $pos + 1);
+			}
+			return $namespaceName;
+		});
+
 		// Packages
 		$this->registerHelper('packageName', function($packageName) {
 			if ($pos = strpos($packageName, '\\')) {

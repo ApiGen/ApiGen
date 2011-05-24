@@ -140,6 +140,7 @@ pre {
 
 #left li {
 	white-space: nowrap;
+	position: relative;
 }
 
 #left .active > a {
@@ -152,7 +153,27 @@ pre {
 	background-color: #006aeb;
 }
 
-#left .collapsed {
+#left span {
+	position: absolute;
+	top: 4px;
+	right: 0;
+	cursor: pointer;
+	display: block;
+	width: 12px;
+	height: 12px;
+	background: url('collapsed.gif') #ffffff 0 0 no-repeat;
+}
+#left span:hover {
+	background-position: -12px 0;
+}
+#left span.collapsed {
+	background-position: 0 -12px;
+}
+#left span.collapsed:hover {
+	background-position: -12px -12px;
+}
+
+#left ul.collapsed {
 	display: none;
 }
 
