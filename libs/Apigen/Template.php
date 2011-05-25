@@ -301,25 +301,23 @@ class Template extends Nette\Templating\FileTemplate
 	/**
 	 * Returns a link to a namespace summary file.
 	 *
-	 * @param string|\Apigen\Reflection $element Class reflection or namespace name
+	 * @param string $namespaceName Namespace name
 	 * @return string
 	 */
-	public function getNamespaceUrl($element)
+	public function getNamespaceUrl($namespaceName)
 	{
-		$namespace = $element instanceof ReflectionClass ? $element->getNamespaceName() : $element;
-		return sprintf($this->config->templates['main']['namespace']['filename'], $namespace ? preg_replace('#[^a-z0-9_]#i', '.', $namespace) : 'None');
+		return sprintf($this->config->templates['main']['namespace']['filename'], preg_replace('#[^a-z0-9_]#i', '.', $namespaceName));
 	}
 
 	/**
 	 * Returns a link to a package summary file.
 	 *
-	 * @param string|\Apigen\Reflection $class Class reflection or package name
+	 * @param string $packageName Package name
 	 * @return string
 	 */
-	public function getPackageUrl($element)
+	public function getPackageUrl($packageName)
 	{
-		$package = $element instanceof ReflectionClass ? $element->getPackageName() ?: 'None' : $element;
-		return sprintf($this->config->templates['main']['package']['filename'], preg_replace('#[^a-z0-9_]#i', '.', $package));
+		return sprintf($this->config->templates['main']['package']['filename'], preg_replace('#[^a-z0-9_]#i', '.', $packageName));
 	}
 
 	/**
