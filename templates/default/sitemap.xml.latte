@@ -3,39 +3,25 @@
 <url>
 	<loc>{$config->baseUrl}/index.html</loc>
 </url>
-{foreach $packages as $package}
-<url>
+<url n:foreach="$packages as $package">
 	<loc>{$config->baseUrl}/{$package|packageUrl}</loc>
 </url>
-{/foreach}
-{foreach $namespaces as $namespace}
-<url>
+<url n:foreach="$namespaces as $namespace">
 	<loc>{$config->baseUrl}/{$namespace|namespaceUrl}</loc>
 </url>
-{/foreach}
-{foreach $classes as $class}
-<url>
+<url n:foreach="$classes as $class">
 	<loc>{$config->baseUrl}/{$class|classUrl}</loc>
 </url>
-{/foreach}
-{foreach $interfaces as $interface}
-<url>
+<url n:foreach="$interfaces as $interface">
 	<loc>{$config->baseUrl}/{$interface|classUrl}</loc>
 </url>
-{/foreach}
-{foreach $exceptions as $exception}
-<url>
+<url n:foreach="$exceptions as $exception">
 	<loc>{$config->baseUrl}/{$exception|classUrl}</loc>
 </url>
-{/foreach}
-{foreach $constants as $constant}
-<url>
+<url n:foreach="$constants as $constant">
 	<loc>{$config->baseUrl}/{$constant|constantUrl}</loc>
 </url>
-{/foreach}
-{foreach $functions as $function}
-<url>
+<url n:foreach="$functions as $function">
 	<loc>{$config->baseUrl}/{$function|functionUrl}</loc>
 </url>
-{/foreach}
 </urlset>

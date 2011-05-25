@@ -9,11 +9,9 @@
 
 	<table class="summary" id="namespaces" n:if="$subnamespaces">
 	<caption>Namespaces summary</caption>
-	{foreach $subnamespaces as $namespace}
-	<tr>
+	<tr n:foreach="$subnamespaces as $namespace">
 		<td><a href="{$namespace|namespaceUrl}">{$namespace}</a></td>
 	</tr>
-	{/foreach}
 	</table>
 
 	{include '@elementlist.latte'}

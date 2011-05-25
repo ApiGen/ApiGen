@@ -9,8 +9,7 @@
 
 	<table class="summary" id="classes" n:if="$todoClasses">
 	<caption>Classes summary</caption>
-	{foreach $todoClasses as $class}
-	<tr>
+	<tr n:foreach="$todoClasses as $class">
 		<td class="nowrap" width="1%"><a href="{$class|classUrl}">{$class->name}</a></td>
 		<td>
 			{foreach $class->annotations['todo'] as $description}
@@ -20,13 +19,11 @@
 			{/foreach}
 		</td>
 	</tr>
-	{/foreach}
 	</table>
 
 	<table class="summary" id="interfaces" n:if="$todoInterfaces">
 	<caption>Interfaces summary</caption>
-	{foreach $todoInterfaces as $interface}
-	<tr>
+	<tr n:foreach="$todoInterfaces as $interface">
 		<td class="nowrap" width="1%"><a href="{$interface|classUrl}">{$interface->name}</a></td>
 		<td>
 			{foreach $interface->annotations['todo'] as $description}
@@ -36,13 +33,11 @@
 			{/foreach}
 		</td>
 	</tr>
-	{/foreach}
 	</table>
 
 	<table class="summary" id="exceptions" n:if="$todoExceptions">
 	<caption>Exceptions summary</caption>
-	{foreach $todoExceptions as $exception}
-	<tr>
+	<tr n:foreach="$todoExceptions as $exception">
 		<td class="nowrap" width="1%"><a href="{$exception|classUrl}">{$exception->name}</a></td>
 		<td>
 			{foreach $exception->annotations['todo'] as $description}
@@ -52,13 +47,11 @@
 			{/foreach}
 		</td>
 	</tr>
-	{/foreach}
 	</table>
 
 	<table class="summary" id="methods" n:if="$todoMethods">
 	<caption>Methods summary</caption>
-	{foreach $todoMethods as $method}
-	<tr>
+	<tr n:foreach="$todoMethods as $method">
 		<td class="right nowrap" width="1%"><a href="{$method->declaringClassName|classUrl}">{$method->declaringClassName}</a></td>
 		<td width="1%"><code><a href="{$method|methodUrl}"><b>{$method->name}()</b></a></code></td>
 		<td>
@@ -69,13 +62,11 @@
 			{/foreach}
 		</td>
 	</tr>
-	{/foreach}
 	</table>
 
 	<table class="summary" id="constants" n:if="$todoConstants">
 	<caption>Constants summary</caption>
-	{foreach $todoConstants as $constant}
-	<tr>
+	<tr n:foreach="$todoConstants as $constant">
 		{if $constant->declaringClassName}
 		<td class="right nowrap" width="1%"><a href="{$constant->declaringClassName|classUrl}">{$constant->declaringClassName}</a></td>
 		<td width="1%"><code class="nowrap"><a href="{$constant|constantUrl}"><b>{$constant->name}</b></a></code></td>
@@ -91,13 +82,11 @@
 			{/foreach}
 		</td>
 	</tr>
-	{/foreach}
 	</table>
 
 	<table class="summary" id="properties" n:if="$todoProperties">
 	<caption>Properties summary</caption>
-	{foreach $todoProperties as $property}
-	<tr>
+	<tr n:foreach="$todoProperties as $property">
 		<td class="right nowrap" width="1%"><a href="{$property->declaringClassName|classUrl}">{$property->declaringClassName}</a></td>
 		<td width="1%"><var><a href="{$property|propertyUrl}">${$property->name}</a></var></td>
 		<td>
@@ -108,13 +97,11 @@
 			{/foreach}
 		</td>
 	</tr>
-	{/foreach}
 	</table>
 
 	<table class="summary" id="functions" n:if="$todoFunctions">
 	<caption>Functions summary</caption>
-	{foreach $todoFunctions as $function}
-	<tr>
+	<tr n:foreach="$todoFunctions as $function">
 		<td class="right nowrap" width="1%" n:if="$namespaces"><a n:if="$function->namespaceName" href="{$function->namespaceName|namespaceUrl}">{$function->namespaceName}</a></td>
 		<td width="1%"><code class="nowrap"><a href="{$function|functionUrl}"><b>{$function->shortName}</b></a></code></td>
 		<td>
@@ -125,7 +112,6 @@
 			{/foreach}
 		</td>
 	</tr>
-	{/foreach}
 	</table>
 </div>
 {/block}

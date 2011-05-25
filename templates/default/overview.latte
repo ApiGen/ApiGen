@@ -9,20 +9,16 @@
 
 	<table class="summary" id="packages" n:if="$packages">
 	<caption>Packages summary</caption>
-	{foreach $packages as $package}
-	<tr>
+	<tr n:foreach="$packages as $package">
 		<td><a href="{$package|packageUrl}">{$package}</a></td>
 	</tr>
-	{/foreach}
 	</table>
 
 	<table class="summary" id="namespaces" n:if="$namespaces">
 	<caption>Namespaces summary</caption>
-	{foreach $namespaces as $namespace}
-	<tr>
+	<tr n:foreach="$namespaces as $namespace">
 		<td><a href="{$namespace|namespaceUrl}">{$namespace}</a></td>
 	</tr>
-	{/foreach}
 	</table>
 
 	{if !$packages && !$namespaces}

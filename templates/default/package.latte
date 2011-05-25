@@ -14,11 +14,9 @@
 
 	<table class="summary" id="packages" n:if="$subpackages">
 	<caption>Subpackages summary</caption>
-	{foreach $subpackages as $package}
-	<tr>
+	<tr n:foreach="$subpackages as $package">
 		<td><a href="{$package|packageUrl}">{$package|subpackageName}</a></td>
 	</tr>
-	{/foreach}
 	</table>
 
 	{include '@elementlist.latte'}

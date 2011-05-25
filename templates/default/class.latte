@@ -12,18 +12,16 @@
 	</div>
 
 	<dl class="tree" n:if="$class->parentClass || $class->ownInterfaces">
-		{foreach $tree as $item}
-		<dd style="padding-left:{=($iterator->counter - 1) * 30}px">
+		<dd n:foreach="$tree as $item" style="padding-left:{=($iterator->counter - 1) * 30}px">
 			<img src="resources/inherit.gif" alt="Extended by" n:if="$iterator->counter > 1">
 			{if $item->documented}
 			<a href="{$item|classUrl}" n:tag-if="!$iterator->last">{last}<b>{/last}{$item->name}{last}</b>{/last}</a>
 			{else}{$item->name}{/if}
-			{var $itemOwnInterfaces = $item->ownInterfaces}
+			{var $itemOwnInterfaces => $item->ownInterfaces}
 			{if $itemOwnInterfaces} implements {foreach $itemOwnInterfaces as $interface}
 				<a href="{$interface|classUrl}" n:tag-if="$interface->documented">{$interface->name}</a>{sep}, {/sep}
 			{/foreach}{/if}
 		</dd>
-		{/foreach}
 	</dl>
 
 	<div n:if="$directSubClasses">
@@ -71,8 +69,7 @@
 
 	<table class="summary" id="methods" n:if="$ownMethods">
 	<caption>Methods summary</caption>
-	{foreach $ownMethods as $method}
-	<tr data-order="{$method->name}" id="_{$method->name}" n:class="$method->deprecated ? deprecated">
+	<tr n:foreach="$ownMethods as $method" data-order="{$method->name}" id="_{$method->name}" n:class="$method->deprecated ? deprecated">
 		<td class="right" width="1%"><code class="nowrap">
 			{if $method->deprecated}deprecated{/if}
 			{if !$class->interface && $method->abstract}abstract{elseif $method->final}final{/if} {if $method->protected}protected{elseif $method->private}private{else}public{/if} {if $method->static}static{/if}
@@ -106,7 +103,7 @@
 		<div class="detailed">
 			{!$method|longDescription|docblock|resolveLinks:$class}
 
-			{var $annotations = $method->annotations}
+			{var $annotations => $method->annotations}
 
 			{if $method->deprecated}
 				<h4>Deprecated</h4>
@@ -126,7 +123,7 @@
 				<div class="smallList"><dl>
 				{foreach $method->parameters as $parameter}
 					<dt><code>${$parameter->name}</code></dt>
-					<dd>{if isset($annotations['param'][$parameter->position])}{!$annotations['param'][$parameter->position]|doclabel:$namespace:$parameter}{/if}</dd>
+					<dd>{ifset $annotations['param'][$parameter->position]}{!$annotations['param'][$parameter->position]|doclabel:$namespace:$parameter}{/ifset}</dd>
 				{/foreach}
 				</dl></div>
 			{/if}
@@ -140,14 +137,14 @@
 				</div>
 			{/if}
 
-			{if isset($annotations['throws'])}
+			{ifset $annotations['throws']}
 				<h4>Throws</h4>
 				<div class="smallList">
 				{foreach $annotations['throws'] as $item}
 					{!$item|doclabel:$namespace}<br>
 				{/foreach}
 				</div>
-			{/if}
+			{/ifset}
 
 			{foreach $template->annotationSort($template->annotationFilter($annotations, array('deprecated', 'param', 'return', 'throws'))) as $annotation => $descriptions}
 				<h4>{$annotation|ucfirst}</h4>
@@ -161,7 +158,7 @@
 			{/foreach}
 
 			{try}
-			{var $prototype = $method->prototype}
+			{var $prototype => $method->prototype}
 			{if $prototype->declaringClass->interface}
 				<h4>Implementation of</h4>
 				<div class="smallList"><code><a n:tag-if="$template->resolveClass($prototype->declaringClassName)" href="{$prototype|methodUrl}">{$prototype->declaringClassName}::{$prototype->name}</a></code></div>
@@ -170,12 +167,10 @@
 		</div>
 		</div></td>
 	</tr>
-	{/foreach}
 	</table>
 
 
-	{foreach $class->inheritedMethods as $parentName => $methods}
-	<table class="summary methods">
+	<table n:foreach="$class->inheritedMethods as $parentName => $methods" class="summary methods">
 	<caption>Methods Inherited From <a href="{$parentName|classUrl}#methods" n:tag-if="$template->resolveClass($parentName)">{$parentName}</a></caption>
 	<tr>
 		<td><code>
@@ -185,12 +180,10 @@
 		</code></td>
 	</tr>
 	</table>
-	{/foreach}
 
 	<table class="summary" id="constants" n:if="$ownConstants">
 	<caption>Constants summary</caption>
-	{foreach $ownConstants as $name => $constant}
-	<tr data-order="{$name}" id="{$name}" n:class="$constant->deprecated ? deprecated">
+	<tr n:foreach="$ownConstants as $name => $constant" data-order="{$name}" id="{$name}" n:class="$constant->deprecated ? deprecated">
 		<td class="right" width="1%"><code class="nowrap">
 			{if $constant->deprecated}deprecated{/if}
 			{if $constant->hasAnnotation('var')}
@@ -237,11 +230,9 @@
 			</div>
 		</div></td>
 	</tr>
-	{/foreach}
 	</table>
 
-	{foreach $class->inheritedConstants as $parentName => $constants}
-	<table class="summary constants">
+	<table n:foreach="$class->inheritedConstants as $parentName => $constants" class="summary constants">
 	<caption>Constants Inherited From <a href="{$parentName|classUrl}#constants" n:tag-if="$template->resolveClass($parentName)">{$parentName}</a></caption>
 	<tr>
 		<td><code>
@@ -251,13 +242,11 @@
 		</code></td>
 	</tr>
 	</table>
-	{/foreach}
 
 
 	<table class="summary" id="properties" n:if="$ownProperties">
 	<caption>Properties summary</caption>
-	{foreach $ownProperties as $property}
-	<tr data-order="{$property->name}" id="${$property->name}" n:class="$property->deprecated ? deprecated">
+	<tr n:foreach="$ownProperties as $property" data-order="{$property->name}" id="${$property->name}" n:class="$property->deprecated ? deprecated">
 		<td class="right" width="1%"><code class="nowrap">
 			{if $property->deprecated}deprecated{/if}
 			{if $property->protected}protected{elseif $property->private}private{else}public{/if} {if $property->static}static{/if}
@@ -295,11 +284,9 @@
 			</div>
 		</div></td>
 	</tr>
-	{/foreach}
 	</table>
 
-	{foreach $class->inheritedProperties as $parentName => $properties}
-	<table class="summary properties">
+	<table n:foreach="$class->inheritedProperties as $parentName => $properties" class="summary properties">
 	<caption>Properties Inherited From <a href="{$parentName|classUrl}#properties" n:tag-if="$template->resolveClass($parentName)">{$parentName}</a></caption>
 	<tr>
 		<td><code>
@@ -309,7 +296,5 @@
 		</code></td>
 	</tr>
 	</table>
-	{/foreach}
-
 </div>
 {/block}

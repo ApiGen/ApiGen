@@ -70,52 +70,40 @@
 		</ul>
 		{/if}
 
-		{if $packages || $namespaces}
-		<hr>
-		{/if}
+		<hr n:if="$packages || $namespaces">
 
 		{if $classes}
 		<h3>Classes</h3>
 		<ul>
-		{foreach $classes as $item}
-			<li n:class="$class === $item ? active"><a href="{$item|classUrl}">{if $namespace}{$item->shortName}{else}{$item->name}{/if}</a></li>
-		{/foreach}
+			<li n:foreach="$classes as $item" n:class="$class === $item ? active"><a href="{$item|classUrl}">{if $namespace}{$item->shortName}{else}{$item->name}{/if}</a></li>
 		</ul>
 		{/if}
 
 		{if $interfaces}
 		<h3>Interfaces</h3>
 		<ul>
-		{foreach $interfaces as $item}
-			<li n:class="$class === $item ? active"><a href="{$item|classUrl}">{if $namespace}{$item->shortName}{else}{$item->name}{/if}</a></li>
-		{/foreach}
+			<li n:foreach="$interfaces as $item" n:class="$class === $item ? active"><a href="{$item|classUrl}">{if $namespace}{$item->shortName}{else}{$item->name}{/if}</a></li>
 		</ul>
 		{/if}
 
 		{if $exceptions}
 		<h3>Exceptions</h3>
 		<ul>
-		{foreach $exceptions as $item}
-			<li n:class="$class === $item ? active"><a href="{$item|classUrl}">{if $namespace}{$item->shortName}{else}{$item->name}{/if}</a></li>
-		{/foreach}
+			<li n:foreach="$exceptions as $item" n:class="$class === $item ? active"><a href="{$item|classUrl}">{if $namespace}{$item->shortName}{else}{$item->name}{/if}</a></li>
 		</ul>
 		{/if}
 
 		{if $constants}
 		<h3>Constants</h3>
 		<ul>
-		{foreach $constants as $item}
-			<li n:class="$constant === $item ? active"><a href="{$item|constantUrl}">{if $namespace}{$item->shortName}{else}{$item->name}{/if}</a></li>
-		{/foreach}
+			<li n:foreach="$constants as $item" n:class="$constant === $item ? active"><a href="{$item|constantUrl}">{if $namespace}{$item->shortName}{else}{$item->name}{/if}</a></li>
 		</ul>
 		{/if}
 
 		{if $functions}
 		<h3>Functions</h3>
 		<ul>
-		{foreach $functions as $item}
-			<li n:class="$function === $item ? active"><a href="{$item|functionUrl}">{if $namespace}{$item->shortName}{else}{$item->name}{/if}</a></li>
-		{/foreach}
+			<li n:foreach="$functions as $item" n:class="$function === $item ? active"><a href="{$item|functionUrl}">{if $namespace}{$item->shortName}{else}{$item->name}{/if}</a></li>
 		</ul>
 		{/if}
 	</div>
@@ -123,7 +111,9 @@
 <div id="rightWrapper">
 	<div id="right">
 		<form n:if="$config->googleCse" action="http://www.google.com/cse" id="search">
-			<input type="hidden" name="cx" value="{$config->googleCse}"><input type="hidden" name="ie" value="UTF-8"><input type="text" name="q" class="text"><input type="submit" value="Search">
+			<input type="hidden" name="cx" value="{$config->googleCse}">
+			<input type="hidden" name="ie" value="UTF-8">
+			<input type="text" name="q" class="text"><input type="submit" value="Search">
 		</form>
 
 		<div id="navigation">

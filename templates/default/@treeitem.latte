@@ -10,13 +10,13 @@
 				<ul>
 			{/if}
 
-			<li{if !$tree->hasSibling()} class="last"{/if}><div class="{if $tree->hasSibling()}not{/if}last"><a href="{$className|classUrl}" n:tag-if="$reflection->documented">{$className}</a>
-			{var $interfaces = $reflection->ownInterfaces}
+			<li n:class="!$tree->hasSibling() ? last"><div class="{if $tree->hasSibling()}not{/if}last"><a href="{$className|classUrl}" n:tag-if="$reflection->documented">{$className}</a>
+			{var $interfaces => $reflection->ownInterfaces}
 			{if $interfaces} implements {foreach $interfaces as $interface}
 				<a href="{$interface|classUrl}" n:tag-if="$interface->documented">{$interface->name}</a>{sep}, {/sep}
 			{/foreach}{/if}</div>
 
-			{var $level = $tree->getDepth()}
+			{var $level => $tree->getDepth()}
 		{? endforeach; }
 		</li>
 		{!=str_repeat('</ul></li>', $level)}
