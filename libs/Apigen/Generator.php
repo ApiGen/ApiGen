@@ -294,11 +294,8 @@ class Generator extends Nette\Object
 		$functions = $this->functions->getArrayCopy();
 		foreach ($this->classes as $className => $class) {
 			if ($class->isDocumented()) {
-				$packageName = $class->isInternal() ? 'PHP' : $class->getPackageName() ?: 'None';
-				if ($subpackage = $class->getAnnotation('subpackage')) {
-					$packageName .= '\\' . $subpackage[0];
-				}
-				$namespaceName = $class->isInternal() ? 'PHP' : $class->getNamespaceName() ?: 'None';
+				$packageName = $this->getElementPackageName($class);
+				$namespaceName = $this->getElementNamespaceName($class);
 
 				if ($class->isInterface()) {
 					$interfaces[$className] = $class;
@@ -316,21 +313,15 @@ class Generator extends Nette\Object
 			}
 		}
 		foreach ($constants as $constantName => $constant) {
-			$packageName = $constant->getPackageName() ?: 'None';
-			if ($subpackage = $constant->getAnnotation('subpackage')) {
-				$packageName .= '\\' . $subpackage[0];
-			}
-			$namespaceName = $constant->getNamespaceName() ?: 'None';
+			$packageName = $this->getElementPackageName($constant);
+			$namespaceName = $this->getElementNamespaceName($constant);
 
 			$packages[$packageName]['constants'][$constantName] = $constant;
 			$namespaces[$namespaceName]['constants'][$constant->getShortName()] = $constant;
 		}
 		foreach ($functions as $functionName => $function) {
-			$packageName = $function->getPackageName() ?: 'None';
-			if ($subpackage = $function->getAnnotation('subpackage')) {
-				$packageName .= '\\' . $subpackage[0];
-			}
-			$namespaceName = $function->getNamespaceName() ?: 'None';
+			$packageName = $this->getElementPackageName($function);
+			$namespaceName = $this->getElementNamespaceName($function);
 
 			$packages[$packageName]['functions'][$functionName] = $function;
 			$namespaces[$namespaceName]['functions'][$function->getShortName()] = $function;
@@ -923,22 +914,19 @@ class Generator extends Nette\Object
 				}
 
 				if ($packages) {
-					$template->package = $package = $element->isInternal() ? 'PHP' : $element->getPackageName() ?: 'None';
-					if ($subpackage = $element->getAnnotation('subpackage')) {
-						$template->package .= '\\' . $subpackage[0];
-					}
-					$template->classes = $packages[$package]['classes'];
-					$template->interfaces = $packages[$package]['interfaces'];
-					$template->exceptions = $packages[$package]['exceptions'];
-					$template->constants = $packages[$package]['constants'];
-					$template->functions = $packages[$package]['functions'];
+					$template->package = $packageName = $this->getElementPackageName($element);
+					$template->classes = $packages[$packageName]['classes'];
+					$template->interfaces = $packages[$packageName]['interfaces'];
+					$template->exceptions = $packages[$packageName]['exceptions'];
+					$template->constants = $packages[$packageName]['constants'];
+					$template->functions = $packages[$packageName]['functions'];
 				} elseif ($namespaces) {
-					$template->namespace = $namespace = $element->isInternal() ? 'PHP' : $element->getNamespaceName() ?: 'None';
-					$template->classes = $namespaces[$namespace]['classes'];
-					$template->interfaces = $namespaces[$namespace]['interfaces'];
-					$template->exceptions = $namespaces[$namespace]['exceptions'];
-					$template->constants = $namespaces[$namespace]['constants'];
-					$template->functions = $namespaces[$namespace]['functions'];
+					$template->namespace = $namespaceName = $this->getElementNamespaceName($element);
+					$template->classes = $namespaces[$namespaceName]['classes'];
+					$template->interfaces = $namespaces[$namespaceName]['interfaces'];
+					$template->exceptions = $namespaces[$namespaceName]['exceptions'];
+					$template->constants = $namespaces[$namespaceName]['constants'];
+					$template->functions = $namespaces[$namespaceName]['functions'];
 				}
 
 				$template->class = null;
@@ -1084,5 +1072,42 @@ class Generator extends Nette\Object
 		}
 
 		return true;
+	}
+
+	/**
+	 * Returns element package name (including subpackage name).
+	 *
+	 * For internal elements returns "PHP", for elements in global space returns "None".
+	 *
+	 * @param \Apigen\Reflection|\TokenReflection\IReflection $element
+	 * @return string
+	 */
+	private function getElementPackageName($element)
+	{
+		if ($element->isInternal()) {
+			$packageName = 'PHP';
+		} elseif ($package = $element->getAnnotation('package')) {
+			$packageName = $package[0];
+			if ($subpackage = $element->getAnnotation('subpackage')) {
+				$packageName .= '\\' . $subpackage[0];
+			}
+		} else {
+			$packageName = 'None';
+		}
+
+		return $packageName;
+	}
+
+	/**
+	 * Returns element namespace name.
+	 *
+	 * For internal elements returns "PHP", for elements in global space returns "None".
+	 *
+	 * @param \Apigen\Reflection|\TokenReflection\IReflection $element
+	 * @return string
+	 */
+	private function getElementNamespaceName($element)
+	{
+		return $element->isInternal() ? 'PHP' : $element->getNamespaceName() ?: 'None';
 	}
 }

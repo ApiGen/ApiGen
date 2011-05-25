@@ -185,8 +185,9 @@ class Template extends Nette\Templating\FileTemplate
 						? '<a href="' . $that->getPackageUrl($value) . '">' . $that->escapeHtml($value) . '</a>'
 						: $that->escapeHtml($value);
 				case 'subpackage':
-					return $that->packages
-						? '<a href="' . $that->getPackageUrl($parent->getPackageName() . '\\' . $value) . '">' . $that->escapeHtml($value) . '</a>'
+					$packageName = $parent->hasAnnotation('package') ? $parent->annotations['package'][0] : '';
+					return $that->packages && $packageName
+						? '<a href="' . $that->getPackageUrl($packageName . '\\' . $value) . '">' . $that->escapeHtml($value) . '</a>'
 						: $that->escapeHtml($value);
 				case 'see':
 				case 'uses':
