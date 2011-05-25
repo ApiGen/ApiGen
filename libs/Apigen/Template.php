@@ -181,13 +181,20 @@ class Template extends Nette\Templating\FileTemplate
 		$this->registerHelper('annotation', function($value, $name, $parent) use ($that) {
 			switch ($name) {
 				case 'package':
+					@list($packageName, $description) = preg_split('~\s+~', $value, 2);
 					return $that->packages
-						? '<a href="' . $that->getPackageUrl($value) . '">' . $that->escapeHtml($value) . '</a>'
+						? '<a href="' . $that->getPackageUrl($packageName) . '">' . $that->escapeHtml($packageName) . '</a> ' . $that->escapeHtml($description)
 						: $that->escapeHtml($value);
 				case 'subpackage':
-					$packageName = $parent->hasAnnotation('package') ? $parent->annotations['package'][0] : '';
+					if ($parent->hasAnnotation('package')) {
+						list($packageName) = preg_split('~\s+~', $parent->annotations['package'][0], 2);
+					} else {
+						$packageName = '';
+					}
+					@list($subpackageName, $description) = preg_split('~\s+~', $value, 2);
+
 					return $that->packages && $packageName
-						? '<a href="' . $that->getPackageUrl($packageName . '\\' . $value) . '">' . $that->escapeHtml($value) . '</a>'
+						? '<a href="' . $that->getPackageUrl($packageName . '\\' . $subpackageName) . '">' . $that->escapeHtml($subpackageName) . '</a> ' . $that->escapeHtml($description)
 						: $that->escapeHtml($value);
 				case 'see':
 				case 'uses':

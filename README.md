@@ -29,7 +29,7 @@ Besides, we have made following changes in our ApiGen.
 * Detailed documentation for constants and properties with all annotations.
 * Links to PHP manual pages for constants and properties of PHP internal classes.
 * Links to the start line in the highlighted source code for constants and properties.
-* List of packages.
+* List of packages and subpackages.
 * List of indirect known subclasses and implementers.
 * Inherited methods, constants and properties are in alphabetical order.
 * Class methods, constants and properties are in truly alphabetical order.
@@ -55,6 +55,7 @@ Besides, we have made following changes in our ApiGen.
 * Better FQN resolving in documentation.
 * Better values output of constants and properties (you see the actual definition - "\\n", not just a space).
 * Fixed email addresses in annotations (the original ApiGen cannot handle an email address next to the author name).
+* Fixed parsing packages and subpackages with description.
 * Displaying the "public" keyword for public properties.
 * Texy! downgraded to the stable 2.1 version (the 3.0-dev version causes PCRE internal errors sometimes).
 * Support for Mac and DOS line endings.

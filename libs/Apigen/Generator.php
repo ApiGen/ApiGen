@@ -1087,9 +1087,9 @@ class Generator extends Nette\Object
 		if ($element->isInternal()) {
 			$packageName = 'PHP';
 		} elseif ($package = $element->getAnnotation('package')) {
-			$packageName = $package[0];
+			$packageName = preg_replace('~\s+.*~s', '', $package[0]);
 			if ($subpackage = $element->getAnnotation('subpackage')) {
-				$packageName .= '\\' . $subpackage[0];
+				$packageName .= '\\' . preg_replace('~\s+.*~s', '', $subpackage[0]);
 			}
 		} else {
 			$packageName = 'None';
