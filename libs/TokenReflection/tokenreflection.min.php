@@ -19,7 +19,8 @@ getConstant($constantName);public function isFileProcessed($fileName);public fun
 getFileTokens($fileName);public function addFile(TokenReflection\ReflectionFile$file);public
 function setBroker(TokenReflection\Broker$broker);public function getBroker();public
 function setStoringTokenStreams($store);public function getStoringTokenStreams();public
-function getClasses($type=Backend::TOKENIZED_CLASSES);}}
+function getClasses($type=Backend::TOKENIZED_CLASSES);public function getFunctions();public
+function getConstants();}}
 
  namespace TokenReflection{use TokenReflection\Broker,TokenReflection\Exception;use
 RecursiveDirectoryIterator,RecursiveIteratorIterator;class Broker{const CACHE_CLASS='class';const
@@ -27,15 +28,22 @@ CACHE_FUNCTION='function';const CACHE_CONSTANT='constant';const CACHE_NAMESPACE=
 function __construct(Broker\Backend$backend,$storingTokenStream=true){$this->cache=array(self::CACHE_CLASS
 => array(),self::CACHE_CONSTANT => array(),self::CACHE_FUNCTION => array(),self::CACHE_NAMESPACE
 => array());$this->backend=$backend ->setBroker($this)->setStoringTokenStreams($storingTokenStream);}public
-function processFile($fileName){try{$realName=realpath($fileName);if(false ===$realName){throw
-new Exception\Parse('File does not exist.',Exception\Parse::FILE_DOES_NOT_EXIST);}if($this->backend->isFileProcessed($realName)){$tokens=$this->backend->getFileTokens($realName);}else{$tokens=new
-Stream($realName);}$reflectionFile=new ReflectionFile($tokens,$this);if(!$this->backend->isFileProcessed($realName)){$this->backend->addFile($reflectionFile);foreach($this->cache
-as$type =>$cached){if(!empty($cached)){$this->cache[$type]=array_filter($cached,function(IReflection$reflection){return$reflection->isTokenized();});}}}return$reflectionFile;}catch(Exception$e){throw
+function processFile($fileName,$returnReflectionFile=false){try{if($this->backend->isFileProcessed($fileName)){$tokens=$this->backend->getFileTokens($fileName);}else{$tokens=new
+Stream($fileName);}$reflectionFile=new ReflectionFile($tokens,$this);if(!$this->backend->isFileProcessed($fileName)){$this->backend->addFile($reflectionFile);foreach($this->cache
+as$type =>$cached){if(!empty($cached)){$this->cache[$type]=array_filter($cached,function(IReflection$reflection){return$reflection->isTokenized();});}}}return$returnReflectionFile?$reflectionFile:true;}catch(Exception$e){throw
 new Exception\Parse(sprintf('Could not process file %s.',$fileName),0,$e);}}public
-function processDirectory($path){try{$realPath=realpath($path);if(false ===$realPath){throw
+function processPhar($fileName,$returnReflectionFile=false){try{if(!is_file($fileName)){throw
+new Exception\Parse('File does not exist.',Exception\Parse::FILE_DOES_NOT_EXIST);}if(!class_exists('Phar',false)){throw
+new Exception\Parse('The PHAR PHP extension is not loaded.',Exception\Parse::UNSUPPORTED);}$result=array();foreach(new
+RecursiveIteratorIterator(new \Phar($fileName))as$entry){if($entry->isFile()){$result[$entry->getPathName()]=$this->processFile($entry->getPathName(),$returnReflectionFile);}}return$returnReflectionFile?$result:true;}catch(\Exception$e){throw
+new Exception\Parse(sprintf('Could not process PHAR archive %s.',$fileName),0,$e);}}public
+function processDirectory($path,$returnReflectionFile=false){try{if(!is_dir($realPath)){throw
 new Exception\Parse('Directory does not exist.',Exception\Parse::FILE_DOES_NOT_EXIST);}$result=array();foreach(new
-RecursiveIteratorIterator(new RecursiveDirectoryIterator($realPath))as$entry){if($entry->isFile()){$result[$entry->getPathName()]=$this->processFile($entry->getPathName());}}return$result;}catch(Exception$e){throw
+RecursiveIteratorIterator(new RecursiveDirectoryIterator($realPath))as$entry){if($entry->isFile()){$result[$entry->getPathName()]=$this->processFile($entry->getPathName(),$returnReflectionFile);}}return$returnReflectionFile?$result:true;}catch(Exception$e){throw
 new Exception\Parse(sprintf('Could not process directory %s.',$path),0,$e);}}public
+function process($path,$returnReflectionFile=false){if(is_dir($path)){return$this->processDirectory($path,$returnReflectionFile);}elseif(is_file($path)){if(preg_match('~\\.phar$~i',$path)){try{return$this->processPhar($path,$returnReflectionFile);}catch(Exception\Parse$e){if(!($ex=$e->getPrevious())||!($ex
+instanceof \UnexpectedValueException)){throw$e;}}}return$this->processFile($path,$returnReflectionFile);}else{throw
+new Exception\Parse(sprintf('Could not process target %s; target does not exist.',$path));}}public
 function getNamespace($namespaceName){$namespaceName=ltrim($namespaceName,'\\');if(isset($this->cache[self::CACHE_NAMESPACE][$namespaceName])){return$this->cache[self::CACHE_NAMESPACE][$namespaceName];}$namespace=$this->backend->getNamespace($namespaceName);if(null
 !==$namespace){$this->cache[self::CACHE_NAMESPACE][$namespaceName]=$namespaceName;}return$namespace;}public
 function getClass($className){$className=ltrim($className,'\\');if(isset($this->cache[self::CACHE_CLASS][$className])){return$this->cache[self::CACHE_CLASS][$className];}$this->cache[self::CACHE_CLASS][$className]=$this->backend->getClass($className);return$this->cache[self::CACHE_CLASS][$className];}public
@@ -44,7 +52,9 @@ function getConstant($constantName){$constantName=ltrim($constantName,'\\');if(i
 function getFileTokens($fileName){try{return$this->backend->getFileTokens($fileName);}catch(Exception$e){throw
 new Exception\Runtime(sprintf('Could not retrieve token stream for file %s.',$fileName),0,$e);}}public
 function getClasses($types=Broker\Backend::TOKENIZED_CLASSES){return$this->backend->getClasses($types);}public
-function getFunctions(){return$this->backend->getFunctions();}public function getConstants(){return$this->backend->getConstants();}}}
+function getFunctions(){return$this->backend->getFunctions();}public function getConstants(){return$this->backend->getConstants();}public
+static function getRealPath($path){if(0 === strpos($path,'phar://')){return is_file($path)||
+is_dir($path)?$path:false;}else{return realpath($path);}}}}
 
  namespace TokenReflection{use Exception as InternalException;abstract class Exception
 extends InternalException{const UNSUPPORTED=1;const DOES_NOT_EXIST=2;}}
@@ -87,16 +97,17 @@ ReflectionMethod){$parentReflection=$parentClass->getMethod($this->reflection->g
 !== strpos($this->annotations[self::LONG_DESCRIPTION],'{@inheritdoc}')){$this->annotations[self::LONG_DESCRIPTION]=str_replace('{@inheritdoc}',null
 ===$parentReflection?'':$parentReflection->getAnnotation(self::LONG_DESCRIPTION),$this->annotations[self::LONG_DESCRIPTION]);}}}}}
 
- namespace TokenReflection{use TokenReflection\Exception;use SeekableIterator,Countable,ArrayAccess;class
-Stream implements SeekableIterator,Countable,ArrayAccess{private$fileName='unknown';private$types=array();private$contents=array();private$tokens=array();private$position=0;private$count=0;public
-function __construct($fileName){$this->fileName=realpath($fileName);$contents=@file_get_contents($fileName);if(false
+ namespace TokenReflection{use TokenReflection\Exception;use SeekableIterator,Countable,ArrayAccess,Serializable;class
+Stream implements SeekableIterator,Countable,ArrayAccess,Serializable{private$fileName='unknown';private$tokens=array();private$position=0;private$count=0;public
+function __construct($fileName){$this->fileName=Broker::getRealPath($fileName);if(false
+===$this->fileName){throw new Exception\Parse('File does not exist.',Exception\Parse::FILE_DOES_NOT_EXIST);}$contents=file_get_contents($this->fileName);if(false
 ===$contents){throw new Exception\Parse('File is not readable.',Exception\Parse::FILE_NOT_READABLE);}$stream=@token_get_all(str_replace(array("\r\n","\r"),"\n",$contents));static$checkLines;if(null
 ===$checkLines){$checkLines=array_flip(array(T_COMMENT,T_WHITESPACE,T_DOC_COMMENT,T_INLINE_HTML,T_ENCAPSED_AND_WHITESPACE,T_CONSTANT_ENCAPSED_STRING));}foreach($stream
-as$position =>$token){if(is_array($token)){list($this->types[],$this->contents[])=$token;$this->tokens[]=$token;}else{$this->types[]=$token;$this->contents[]=$token;$previous=$this->tokens[$position-1];$line=$previous[2];if(isset($checkLines[$previous[0]])){$line
+as$position =>$token){if(is_array($token)){$this->tokens[]=$token;}else{$previous=$this->tokens[$position-1];$line=$previous[2];if(isset($checkLines[$previous[0]])){$line
 += substr_count($previous[1],"\n");}$this->tokens[]=array($token,$token,$line);}}$this->count=count($stream);}public
 function offsetExists($offset){return isset($this->tokens[$offset]);}public function
 offsetUnset($offset){throw new Exception\Runtime('Removing of tokens from the stream is not supported.',Exception\Runtime::UNSUPPORTED);}public
-function offsetGet($offset){return isset($this->contents[$offset])?$this->contents[$offset]:null;}public
+function offsetGet($offset){return isset($this->tokens[$offset])?$this->tokens[$offset]:null;}public
 function offsetSet($offset,$value){throw new Exception\Runtime('Setting token values is not supported.',Exception\Runtime::UNSUPPORTED);}public
 function key(){return$this->position;}public function next(){$this->position++;return$this;}public
 function rewind(){$this->position=0;return$this;}public function current(){return
@@ -104,22 +115,26 @@ isset($this->tokens[$this->position])?$this->tokens[$this->position]:null;}publi
 function valid(){return isset($this->tokens[$this->position]);}public function count(){return$this->count;}public
 function seek($position){$this->position=(int)$position;return$this;}public function
 getFileName(){return$this->fileName;}public function find($type){$actual=$this->position;while(isset($this->tokens[$this->position])){if($type
-===$this->types[$this->position]){return$this;}$this->position++;}$this->position=$actual;return
+===$this->tokens[$this->position][0]){return$this;}$this->position++;}$this->position=$actual;return
 false;}public function findMatchingBracket(){static$brackets=array('(' => ')','{'
-=> '}','[' => ']');if(!$this->valid()){throw new Exception\Runtime('Out of array.',Exception\Runtime::DOES_NOT_EXIST);}$position=$this->position;$bracket=$this->contents[$this->position];if(!isset($brackets[$bracket])){throw
-new Exception\Runtime(sprintf('There is no usable bracket at position "%d" in file "%s".',$position,$this->fileName),Exception\Runtime::DOES_NOT_EXIST);}$searching=$brackets[$bracket];$level=0;while(isset($this->tokens[$this->position])){$type=$this->types[$this->position];if($searching
+=> '}','[' => ']');if(!$this->valid()){throw new Exception\Runtime('Out of array.',Exception\Runtime::DOES_NOT_EXIST);}$position=$this->position;$bracket=$this->tokens[$this->position][0];if(!isset($brackets[$bracket])){throw
+new Exception\Runtime(sprintf('There is no usable bracket at position "%d" in file "%s".',$position,$this->fileName),Exception\Runtime::DOES_NOT_EXIST);}$searching=$brackets[$bracket];$level=0;while(isset($this->tokens[$this->position])){$type=$this->tokens[$this->position][0];if($searching
 ===$type){$level--;}elseif($bracket ===$type ||($searching === '}' &&(T_CURLY_OPEN
 ===$type || T_DOLLAR_OPEN_CURLY_BRACES ===$type))){$level++;}if(0 ===$level){return$this;}$this->position++;}throw
 new Exception\Runtime(sprintf('Could not find the end bracket "%s" of the bracket at position "%d" in file "%s".',$searching,$position,$this->fileName),Exception\Runtime::DOES_NOT_EXIST);}public
-function skipWhitespaces(){static$skipped=array(T_WHITESPACE,T_COMMENT);do{$this->position++;}while(isset($this->types[$this->position])&&in_array($this->types[$this->position],$skipped));return$this;}public
+function skipWhitespaces(){static$skipped=array(T_WHITESPACE,T_COMMENT);do{$this->position++;}while(isset($this->tokens[$this->position])&&in_array($this->tokens[$this->position][0],$skipped));return$this;}public
 function is($type,$position=-1){return$type ===$this->getType($position);}public
 function getType($position=-1){if(-1 ===$position){$position=$this->position;}return
-isset($this->types[$position])?$this->types[$position]:null;}public function getTokenValue($position=-1){if(-1
-===$position){$position=$this->position;}return isset($this->contents[$position])?$this->contents[$position]:null;}public
-function getTokenName($position=-1){$type=$this->getType($position);return is_string($type)?$type:token_name($type);}public
-function __toString(){return$this->getSource();}public function getSource(){return
-implode('',$this->contents);}public function getSourcePart($start,$end=null){return
-implode('',array_slice($this->contents,$start,null !==$end?$end-$start+1:null));}}}
+isset($this->tokens[$position])?$this->tokens[$position][0]:null;}public function
+getTokenValue($position=-1){if(-1 ===$position){$position=$this->position;}return
+isset($this->tokens[$position])?$this->tokens[$position][1]:null;}public function
+getTokenName($position=-1){$type=$this->getType($position);return is_string($type)?$type:token_name($type);}public
+function __toString(){return$this->getSource();}public function getSource(){return$this->getSourcePart();}public
+function getSourcePart($start=null,$end=null){$start=(int)$start;$end=null ===$end?($this->count-1):(int)$end;$source='';for($i=$start;$i
+<=$end;$i++){$source .=$this->tokens[$i][1];}return$source;}public function serialize(){return
+serialize(array($this->fileName,$this->tokens));}public function unserialize($serialized){$data=@unserialize($serialized);if(false
+===$data){throw new Exception\Runtime('Could not deserialize the serialized data.',Exception\Runtime::SERIALIZATION_ERROR);}if(2
+!== count($data)||!is_string($data[0])||!is_array($data[1])){throw new Exception\Runtime('Invalid serialization data.',Exception\Runtime::SERIALIZATION_ERROR);}$this->fileName=$data[0];$this->tokens=$data[1];$this->count=count($this->tokens);$this->position=0;}}}
 
  namespace TokenReflection\Broker\Backend{use TokenReflection;use TokenReflection\Stream,TokenReflection\Exception,TokenReflection\Broker,TokenReflection\Php,TokenReflection\Dummy;class
 Memory implements Broker\Backend{private$namespaces=array();private$allClasses;private$allFunctions;private$allConstants;private$tokenStreams=array();private$broker;private$storingTokenStreams;public
@@ -134,8 +149,8 @@ function getConstant($constantName){static$declared=array();if(empty($declared))
 new Exception\Runtime(sprintf('Constant %s does not exist.',$constantName),0,$e);}}try{$constantName=ltrim($constantName,'\\');if($boundary=strrpos($constantName,'\\')){$ns=$this->getNamespace(substr($constantName,0,$boundary));$constantName=substr($constantName,$boundary+1);}else{$ns=$this->getNamespace(TokenReflection\ReflectionNamespace::NO_NAMESPACE_NAME);}return$ns->getConstant($constantName);}catch(TokenReflection\Exception$e){$reflection=new
 Php\ReflectionConstant($constantName,$declared[$constantName],$this->broker);if($reflection->isInternal()){return$reflection;}throw
 new Exception\Runtime(sprintf('Constant %s does not exist.',$constantName),0,$e);}}public
-function isFileProcessed($fileName){return isset($this->tokenStreams[realpath($fileName)]);}public
-function getFileTokens($fileName){$realName=realpath($fileName);if(!isset($this->tokenStreams[$realName])){throw
+function isFileProcessed($fileName){return isset($this->tokenStreams[Broker::getRealPath($fileName)]);}public
+function getFileTokens($fileName){$realName=Broker::getRealPath($fileName);if(!isset($this->tokenStreams[$realName])){throw
 new Exception\Runtime(sprintf('File "%s" was not processed yet.',$fileName),Exception\Runtime::DOES_NOT_EXIST);}return
 true ===$this->tokenStreams[$realName]?new Stream($realName):$this->tokenStreams[$realName];}public
 function addFile(TokenReflection\ReflectionFile$file){foreach($file->getNamespaces()as$fileNamespace){$namespaceName=$fileNamespace->getName();if(!isset($this->namespaces[$namespaceName])){$this->namespaces[$namespaceName]=new
@@ -158,7 +173,7 @@ FILE_DOES_NOT_EXIST=10;const FILE_NOT_READABLE=11;const DIR_DOES_NOT_EXIST=12;co
 INVALID_PARENT=13;const PARSE_ELEMENT_ERROR=14;const PARSE_CHILDREN_ERROR=15;}}
 
  namespace TokenReflection\Exception{use TokenReflection;class Runtime extends TokenReflection\Exception{const
-INVALID_ARGUMENT=20;const NOT_ACCESSBILE=21;const ALREADY_EXISTS=22;}}
+INVALID_ARGUMENT=20;const NOT_ACCESSBILE=21;const ALREADY_EXISTS=22;const SERIALIZATION_ERROR=23;}}
 
  namespace TokenReflection{interface IReflectionClass extends IReflection{public function
 getConstant($name);public function getConstantReflection($name);public function getConstants();public
@@ -267,8 +282,7 @@ function isInternal(){return false;}public function isUserDefined(){return true;
 function isDeprecated(){return$this->hasAnnotation('deprecated');}public function
 getName(){return$this->name;}public function getDocComment(){return$this->docComment->getDocComment();}public
 function getBroker(){return$this->broker;}public function isTokenized(){return true;}public
-function __toString(){return '';}public function getPackageName(){if($package=$this->getAnnotation('package')){return$package[0];}return
-ReflectionClass::PACKAGE_NONE;}final public function getAnnotation($name){return$this->docComment->getAnnotation($name);}final
+function __toString(){return '';}final public function getAnnotation($name){return$this->docComment->getAnnotation($name);}final
 public function hasAnnotation($name){return$this->docComment->hasAnnotation($name);}final
 public function getAnnotations(){return$this->docComment->getAnnotations();}abstract
 public function getNamespaceAliases();public function getSource(){return$this->broker->getFileTokens($this->getFileName())->getSourcePart($this->startPosition,$this->endPosition);}final
@@ -336,8 +350,8 @@ function parseDefaultValue(Stream$tokenStream){$type=$tokenStream->getType();if(
 ===$type || ',' ===$type){return$this;}if('=' ===$type){$tokenStream->skipWhitespaces();}try{$level=0;while(null
 !==($type=$tokenStream->getType())){switch($type){case ',':if(0 !==$level){break;}case
 ';':break 2;case ')':case ']':case '}':$level--;break;case '(':case '{':case '[':$level++;break;default:break;}$this->defaultValueDefinition
-.=$tokenStream->getTokenValue();$tokenStream->next();}if(',' ===$type){$tokenStream->next();}elseif(';'
-!==$type){throw new Exception\Parse(sprintf('The property default value is not terminated properly. Expected "," or ";", "%s" found.',$tokenStream->getTokenName()),Exception\Parse::PARSE_ELEMENT_ERROR);}if(self::$parseValueDefinitions){$this->defaultValue=@eval('return '.$this->defaultValueDefinition.';');}return$this;}catch(Exception$e){throw
+.=$tokenStream->getTokenValue();$tokenStream->next();}if(',' !==$type &&';' !==$type){throw
+new Exception\Parse(sprintf('The property default value is not terminated properly. Expected "," or ";", "%s" found.',$tokenStream->getTokenName()),Exception\Parse::PARSE_ELEMENT_ERROR);}if(self::$parseValueDefinitions){$this->defaultValue=@eval('return '.$this->defaultValueDefinition.';');}return$this;}catch(Exception$e){throw
 new Exception\Parse('Could not parse property default value.',Exception\Parse::PARSE_ELEMENT_ERROR,$e);}}private
 function parseModifiers(Stream$tokenStream,ReflectionClass$class){while(true){switch($tokenStream->getType()){case
 T_PUBLIC:case T_VAR:$this->modifiers |= InternalReflectionProperty::IS_PUBLIC;break;case
@@ -354,15 +368,14 @@ static function getParseValueDefinitions(){return self::$parseValueDefinitions;}
 
  namespace TokenReflection\Dummy{use TokenReflection;use TokenReflection\Broker,TokenReflection\IReflectionClass,TokenReflection\ReflectionBase;use
 ReflectionClass as InternalReflectionClass,TokenReflection\Exception;class ReflectionClass
-implements IReflectionClass{const PACKAGE_NONE='None';private$broker;private$name;public
-function __construct($className,Broker$broker){$this->name=$className;$this->broker=$broker;}public
+implements IReflectionClass{private$broker;private$name;public function __construct($className,Broker$broker){$this->name=$className;$this->broker=$broker;}public
 function getName(){return$this->name;}public function getShortName(){$pos=strrpos($this->name,'\\');return
-false ===$pos?$this->name:substr($this->name,$pos+1);}public function getBroker(){return$this->broker;}public
-function getPackageName(){return self::PACKAGE_NONE;}final public function __get($key){return
-ReflectionBase::get($this,$key);}final public function __isset($key){return ReflectionBase::exists($this,$key);}public
-function getFileName(){return null;}public function getStartLine(){return null;}public
-function getEndLine(){return null;}public function getExtension(){return null;}public
-function getExtensionName(){return false;}public function isInternal(){return false;}public
+false ===$pos?$this->name:substr($this->name,$pos+1);}public function getBroker(){return$this->broker;}final
+public function __get($key){return ReflectionBase::get($this,$key);}final public
+function __isset($key){return ReflectionBase::exists($this,$key);}public function
+getFileName(){return null;}public function getStartLine(){return null;}public function
+getEndLine(){return null;}public function getExtension(){return null;}public function
+getExtensionName(){return false;}public function isInternal(){return false;}public
 function isUserDefined(){return false;}public function getSource(){return '';}public
 function getDocComment(){return false;}public function getInheritedDocComment(){return$this->getDocComment();}public
 function __toString(){return '';}public function getAnnotations(){return array();}public
@@ -432,8 +445,7 @@ isStatic();public function setAccessible($accessible);}}
  namespace TokenReflection\Php{use TokenReflection;use TokenReflection\Broker;use
 Reflector,ReflectionClass as InternalReflectionClass,ReflectionProperty as InternalReflectionProperty,ReflectionMethod
 as InternalReflectionMethod;use RuntimeException,TokenReflection\Exception;class
-ReflectionClass extends InternalReflectionClass implements IReflection,TokenReflection\IReflectionClass{const
-PACKAGE_INTERNAL='PHP';private$broker;private$contants;private$methods;private$interfaces;private$properties;public
+ReflectionClass extends InternalReflectionClass implements IReflection,TokenReflection\IReflectionClass{private$broker;private$contants;private$methods;private$interfaces;private$properties;public
 function __construct($className,Broker$broker){parent::__construct($className);$this->broker=$broker;}public
 function getBroker(){return$this->broker;}public function getParentClass(){$parent=parent::getParentClass();return$parent?self::create($parent,$this->broker):null;}public
 function getParentClassName(){$parent=$this->getParentClass();return$parent?$parent->getName():null;}public
@@ -444,9 +456,8 @@ function getConstantReflections(){if(null ===$this->contants){$this->contants=ar
 =>$value){$this->contants[$name]=$this->getConstantReflection($name);}}return$this->contants;}public
 function getOwnConstantReflections(){if(null ===$this->contants){$this->contants=array();foreach($this->getOwnConstants()as$name
 =>$value){$this->contants[$name]=$this->getConstantReflection($name);}}return$this->contants;}public
-function getParentClassNameList(){return class_parents($this->getName());}public
-function getPackageName(){return$this->isInternal()?self::PACKAGE_INTERNAL:TokenReflection\ReflectionClass::PACKAGE_NONE;}final
-public function __get($key){return TokenReflection\ReflectionBase::get($this,$key);}final
+function getParentClassNameList(){return class_parents($this->getName());}final public
+function __get($key){return TokenReflection\ReflectionBase::get($this,$key);}final
 public function __isset($key){return TokenReflection\ReflectionBase::exists($this,$key);}public
 function getOwnInterfaces(){$parent=$this->getParentClass();return$parent?array_diff_key($this->getInterfaces(),$parent->getInterfaces()):$this->getInterfaces();}public
 function getOwnInterfaceNames(){return array_keys($this->getOwnInterfaces());}public
@@ -596,7 +607,7 @@ self($internalReflection->getDeclaringClass()->getName(),$internalReflection->ge
 
  namespace TokenReflection{use TokenReflection\Exception;use ReflectionClass as InternalReflectionClass,ReflectionProperty
 as InternalReflectionProperty;class ReflectionClass extends ReflectionBase implements
-IReflectionClass{const PACKAGE_NONE='None';const IS_INTERFACE=128;const IMPLEMENTS_INTERFACES=0x80000;private$namespaceName;private$constants=array();private$properties=array();private$methods=array();private$aliases=array();private$modifiers=0;private$parentClassName;private$interfaces=array();protected
+IReflectionClass{const IS_INTERFACE=128;const IMPLEMENTS_INTERFACES=0x80000;private$namespaceName;private$constants=array();private$properties=array();private$methods=array();private$aliases=array();private$modifiers=0;private$parentClassName;private$interfaces=array();protected
 function processParent(IReflection$parent){if(!$parent instanceof ReflectionFileNamespace){throw
 new Exception\Parse(sprintf('The parent object has to be an instance of TokenReflection\ReflectionFileNamespace, "%s" given.',get_class($parent)),Exception\Parse::INVALID_PARENT);}$this->namespaceName=$parent->getName();$this->aliases=$parent->getNamespaceAliases();return
 parent::processParent($parent);}protected function parse(Stream$tokenStream,IReflection$parent){return$this
@@ -604,9 +615,9 @@ parent::processParent($parent);}protected function parse(Stream$tokenStream,IRef
 function parseChildren(Stream$tokenStream,IReflection$parent){while(true){switch($type=$tokenStream->getType()){case
 null:break 2;case T_COMMENT:case T_DOC_COMMENT:$docblock=$tokenStream->getTokenValue();if(preg_match('~^'.preg_quote(self::DOCBLOCK_TEMPLATE_START,'~').'~',$docblock)){array_unshift($this->docblockTemplates,new
 ReflectionAnnotation($this,$docblock));}elseif(self::DOCBLOCK_TEMPLATE_END ===$docblock){array_shift($this->docblockTemplates);}$tokenStream->next();break;case
-'}':$tokenStream->next();break 2;case T_PUBLIC:case T_PRIVATE:case T_PROTECTED:case
-T_STATIC:case T_VAR:case T_VARIABLE:static$searching=array(T_VARIABLE,T_FUNCTION);if(T_VAR
-!==$tokenStream->getType()){$position=$tokenStream->key();while(null !==($type=$tokenStream->getType($position++))&&!in_array($type,$searching)){$position++;}}if(T_VARIABLE
+'}':break 2;case T_PUBLIC:case T_PRIVATE:case T_PROTECTED:case T_STATIC:case T_VAR:case
+T_VARIABLE:static$searching=array(T_VARIABLE,T_FUNCTION);if(T_VAR !==$tokenStream->getType()){$position=$tokenStream->key();while(null
+!==($type=$tokenStream->getType($position++))&&!in_array($type,$searching)){$position++;}}if(T_VARIABLE
 ===$type || T_VAR ===$type){$property=new ReflectionProperty($tokenStream,$this->getBroker(),$this);$this->properties[$property->getName()]=$property;$tokenStream->next();break;}case
 T_FINAL:case T_ABSTRACT:case T_FUNCTION:$method=new ReflectionMethod($tokenStream,$this->getBroker(),$this);$this->methods[$method->getName()]=$method;$tokenStream->next();break;case
 T_CONST:$tokenStream->skipWhitespaces();while($tokenStream->is(T_STRING)){$constant=new

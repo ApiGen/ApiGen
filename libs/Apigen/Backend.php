@@ -12,9 +12,7 @@
  */
 
 namespace Apigen;
-
-use TokenReflection, TokenReflection\IReflectionConstant, TokenReflection\IReflectionFunction, TokenReflection\Broker\Backend\Memory;
-use RuntimeException, ReflectionMethod;
+use TokenReflection, TokenReflection\IReflectionConstant, TokenReflection\IReflectionFunction, TokenReflection\Broker;
 
 /**
  * Customized TokenReflection broker backend.
@@ -25,7 +23,7 @@ use RuntimeException, ReflectionMethod;
  * @author Ondřej Nešpor
  * @author Jaroslav Hanslík
  */
-class Backend extends Memory
+class Backend extends Broker\Backend\Memory
 {
 	/**
 	 * Generator instance.
@@ -35,13 +33,90 @@ class Backend extends Memory
 	private $generator;
 
 	/**
+	 * Cache of processed token streams.
+	 *
+	 * @var array
+	 */
+	private $fileCache = array();
+
+	/**
+	 * Determines if token streams should be cached in filesystem.
+	 *
+	 * @var boolean
+	 */
+	private $cacheTokenStreams = false;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param \Apigen\Generator $config Generator instance
 	 */
-	public function __construct(Generator $generator)
+	public function __construct(Generator $generator, $cacheTokenStreams = false)
 	{
 		$this->generator = $generator;
+		$this->cacheTokenStreams = $cacheTokenStreams;
+	}
+
+	/**
+	 * Destructor.
+	 *
+	 * Deletes all cached token streams.
+	 */
+	public function __destruct()
+	{
+		foreach ($this->fileCache as $file) {
+			unlink($file);
+		}
+	}
+
+	/**
+	 * Adds a file to the backend storage.
+	 *
+	 * @param \TokenReflection\ReflectionFile $file File reflection object
+	 * @return \TokenReflection\Broker\Backend\Memory
+	 */
+	public function addFile(TokenReflection\ReflectionFile $file)
+	{
+		parent::addFile($file);
+		if ($this->cacheTokenStreams) {
+			$this->fileCache[$file->getName()] = $cacheFile = tempnam(sys_get_temp_dir(), 'trc');
+			file_put_contents($cacheFile, serialize($file->getTokenStream()));
+		}
+		return $this;
+	}
+
+	/**
+	 * Returns an array of tokens for a particular file.
+	 *
+	 * @param string $fileName File name
+	 * @return \TokenReflection\Stream
+	 * @throws \Apigen\Exception If the token stream could not be returned
+	 */
+	public function getFileTokens($fileName)
+	{
+		try {
+			if (!$this->isFileProcessed($fileName)) {
+				throw new Exception('File was not processed.');
+			}
+
+			$realName = Broker::getRealPath($fileName);
+			if (!isset($this->fileCache[$realName])) {
+				throw new Exception('File is not in the cache.');
+			}
+
+			$data = @file_get_contents($this->fileCache[$realName]);
+			if (false === $data) {
+				throw new Exception('Cached file is not readable.');
+			}
+			$file = @unserialize($data);
+			if (false === $file) {
+				throw new Exception('Stream could not be loaded from cache.');
+			}
+
+			return $file;
+		} catch (\Exception $e) {
+			throw new Exception(sprintf('Could not return token stream for file %s.', $fileName), 0, $e);
+		}
 	}
 
 	/**
@@ -174,7 +249,7 @@ class Backend extends Memory
 		return array_map(function(IReflectionConstant $constant) use ($generator) {
 			return new ReflectionConstant($constant, $generator);
 		}, parent::getConstants());
-	}
+		}
 
 	/**
 	 * Returns all functions from all namespaces.
