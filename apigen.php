@@ -13,7 +13,6 @@
 
 require __DIR__ . '/libs/Nette/nette.min.php';
 require __DIR__ . '/libs/fshl/fshl.php';
-require __DIR__ . '/libs/Console/ProgressBar.php';
 require __DIR__ . '/libs/texy/texy.min.php';
 require __DIR__ . '/libs/TokenReflection/tokenreflection.min.php';
 require __DIR__ . '/libs/Apigen/Exception.php';

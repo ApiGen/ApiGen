@@ -49,13 +49,6 @@ class Generator extends Nette\Object
 	private $config;
 
 	/**
-	 * Progressbar
-	 *
-	 * @var \Console_ProgressBar
-	 */
-	private $progressBar;
-
-	/**
 	 * List of classes.
 	 *
 	 * @var \ArrayObject
@@ -75,6 +68,19 @@ class Generator extends Nette\Object
 	 * @var \ArrayObject
 	 */
 	private $functions = null;
+
+	/**
+	 * Progressbar settings and status.
+	 *
+	 * @var array
+	 */
+	private $progressbar = array(
+		'skeleton' => '[%s] %\' 6.2f%%',
+		'width' => 80,
+		'bar' => 70,
+		'current' => 0,
+		'maximum' => 1
+	);
 
 	/**
 	 * Sets configuration.
@@ -1008,17 +1014,16 @@ class Generator extends Nette\Object
 	/**
 	 * Prepares the progressbar.
 	 *
-	 * @param $maximum Maximum progressbar value
+	 * @param integer $maximum Maximum progressbar value
 	 */
 	private function prepareProgressBar($maximum = 1)
 	{
-		$this->progressBar = new \Console_ProgressBar(
-			'[%bar%] %percent%',
-			'=>',
-			' ',
-			80,
-			$maximum
-		);
+		if (!$this->config->progressbar) {
+			return;
+		}
+
+		$this->progressbar['current'] = 0;
+		$this->progressbar['maximum'] = $maximum;
 	}
 
 	/**
@@ -1028,8 +1033,22 @@ class Generator extends Nette\Object
 	 */
 	private function incrementProgressBar($increment = 1)
 	{
-		if ($this->config->progressbar) {
-			$this->progressBar->update($this->progressBar->getProgress() + $increment);
+		if (!$this->config->progressbar) {
+			return;
+		}
+
+		echo str_repeat(chr(0x08), $this->progressbar['width']);
+
+		$this->progressbar['current'] += $increment;
+
+		$percent = $this->progressbar['current'] / $this->progressbar['maximum'];
+
+		$progress = str_pad(str_pad('>', round($percent * $this->progressbar['bar']), '=', STR_PAD_LEFT), $this->progressbar['bar'], ' ', STR_PAD_RIGHT);
+
+		echo sprintf($this->progressbar['skeleton'], $progress, $percent * 100);
+
+		if ($this->progressbar['current'] === $this->progressbar['maximum']) {
+			echo "\n";
 		}
 	}
 
