@@ -14,9 +14,8 @@
 namespace Apigen;
 
 use Nette;
-use Apigen\Exception, Apigen\Config, Apigen\Template, Apigen\Backend;
 use TokenReflection\Broker;
-use Apigen\Reflection as ReflectionClass, TokenReflection\IReflectionProperty as ReflectionProperty, TokenReflection\IReflectionMethod as ReflectionMethod, TokenReflection\IReflectionConstant as ReflectionConstant, TokenReflection\IReflectionFunction as ReflectionFunction, TokenReflection\IReflectionParameter as ReflectionParameter;
+use TokenReflection\IReflectionProperty as ReflectionProperty, TokenReflection\IReflectionMethod as ReflectionMethod, TokenReflection\IReflectionParameter as ReflectionParameter;
 use TokenReflection\ReflectionAnnotation;
 
 /**
@@ -95,8 +94,6 @@ class Generator extends Nette\Object
 	 */
 	public function parse()
 	{
-		$broker = new Broker(new Backend($this), false);
-
 		$files = array();
 		foreach ($this->config->source as $source) {
 			$entries = array();
@@ -133,6 +130,8 @@ class Generator extends Nette\Object
 			$this->prepareProgressBar(array_sum($files));
 		}
 
+		$broker = new Broker(new Backend($this), false);
+
 		foreach ($files as $file => $size) {
 			$broker->processFile($file);
 			$this->incrementProgressBar($size);
@@ -152,8 +151,8 @@ class Generator extends Nette\Object
 
 		return array(
 			count($broker->getClasses(Backend::TOKENIZED_CLASSES)),
-			count($broker->getConstants()),
-			count($broker->getFunctions()),
+			count($this->constants),
+			count($this->functions),
 			count($broker->getClasses(Backend::INTERNAL_CLASSES))
 		);
 	}
@@ -290,41 +289,39 @@ class Generator extends Nette\Object
 		$classes = array();
 		$interfaces = array();
 		$exceptions = array();
-		$constants = $this->constants->getArrayCopy();
-		$functions = $this->functions->getArrayCopy();
-		foreach ($this->classes as $className => $class) {
-			if ($class->isDocumented()) {
-				$packageName = $this->getElementPackageName($class);
-				$namespaceName = $this->getElementNamespaceName($class);
+		$constants = array();
+		$functions = array();
+		foreach (array('classes', 'constants', 'functions') as $type) {
+			foreach ($this->$type as $elementName => $element) {
+				if (!$element->isDocumented()) {
+					continue;
+				}
 
-				if ($class->isInterface()) {
-					$interfaces[$className] = $class;
-					$packages[$packageName]['interfaces'][$className] = $class;
-					$namespaces[$namespaceName]['interfaces'][$class->getShortName()] = $class;
-				} elseif ($class->isException()) {
-					$exceptions[$className] = $class;
-					$packages[$packageName]['exceptions'][$className] = $class;
-					$namespaces[$namespaceName]['exceptions'][$class->getShortName()] = $class;
+				$packageName = $element->getPseudoPackageName();
+				$namespaceName = $element->getPseudoNamespaceName();
+
+				if ($element instanceof ReflectionConstant) {
+					$constants[$elementName] = $element;
+					$packages[$packageName]['constants'][$elementName] = $element;
+					$namespaces[$namespaceName]['constants'][$element->getShortName()] = $element;
+				} elseif ($element instanceof ReflectionFunction) {
+					$functions[$elementName] = $element;
+					$packages[$packageName]['functions'][$elementName] = $element;
+					$namespaces[$namespaceName]['functions'][$element->getShortName()] = $element;
+				} elseif ($element->isInterface()) {
+					$interfaces[$elementName] = $element;
+					$packages[$packageName]['interfaces'][$elementName] = $element;
+					$namespaces[$namespaceName]['interfaces'][$element->getShortName()] = $element;
+				} elseif ($element->isException()) {
+					$exceptions[$elementName] = $element;
+					$packages[$packageName]['exceptions'][$elementName] = $element;
+					$namespaces[$namespaceName]['exceptions'][$element->getShortName()] = $element;
 				} else {
-					$classes[$className] = $class;
-					$packages[$packageName]['classes'][$className] = $class;
-					$namespaces[$namespaceName]['classes'][$class->getShortName()] = $class;
+					$classes[$elementName] = $element;
+					$packages[$packageName]['classes'][$elementName] = $element;
+					$namespaces[$namespaceName]['classes'][$element->getShortName()] = $element;
 				}
 			}
-		}
-		foreach ($constants as $constantName => $constant) {
-			$packageName = $this->getElementPackageName($constant);
-			$namespaceName = $this->getElementNamespaceName($constant);
-
-			$packages[$packageName]['constants'][$constantName] = $constant;
-			$namespaces[$namespaceName]['constants'][$constant->getShortName()] = $constant;
-		}
-		foreach ($functions as $functionName => $function) {
-			$packageName = $this->getElementPackageName($function);
-			$namespaceName = $this->getElementNamespaceName($function);
-
-			$packages[$packageName]['functions'][$functionName] = $function;
-			$namespaces[$namespaceName]['functions'][$function->getShortName()] = $function;
 		}
 
 		// Select only packages or namespaces
@@ -501,8 +498,8 @@ class Generator extends Nette\Object
 			$undocumented = array();
 			foreach ($elementTypes as $type) {
 				foreach ($$type as $parentElement) {
-					// Check only "documented" classes (except internal - no documentation), constants and functions
-					if ($parentElement instanceof ReflectionClass && (!$parentElement->isDocumented() || $parentElement->isInternal())) {
+					// Internal elements don't have documentation
+					if ($parentElement->isInternal()) {
 						continue;
 					}
 
@@ -914,14 +911,14 @@ class Generator extends Nette\Object
 				}
 
 				if ($packages) {
-					$template->package = $packageName = $this->getElementPackageName($element);
+					$template->package = $packageName = $element->getPseudoPackageName();
 					$template->classes = $packages[$packageName]['classes'];
 					$template->interfaces = $packages[$packageName]['interfaces'];
 					$template->exceptions = $packages[$packageName]['exceptions'];
 					$template->constants = $packages[$packageName]['constants'];
 					$template->functions = $packages[$packageName]['functions'];
 				} elseif ($namespaces) {
-					$template->namespace = $namespaceName = $this->getElementNamespaceName($element);
+					$template->namespace = $namespaceName = $element->getPseudoNamespaceName();
 					$template->classes = $namespaces[$namespaceName]['classes'];
 					$template->interfaces = $namespaces[$namespaceName]['interfaces'];
 					$template->exceptions = $namespaces[$namespaceName]['exceptions'];
@@ -1072,42 +1069,5 @@ class Generator extends Nette\Object
 		}
 
 		return true;
-	}
-
-	/**
-	 * Returns element package name (including subpackage name).
-	 *
-	 * For internal elements returns "PHP", for elements in global space returns "None".
-	 *
-	 * @param \Apigen\Reflection|\TokenReflection\IReflection $element
-	 * @return string
-	 */
-	private function getElementPackageName($element)
-	{
-		if ($element->isInternal()) {
-			$packageName = 'PHP';
-		} elseif ($package = $element->getAnnotation('package')) {
-			$packageName = preg_replace('~\s+.*~s', '', $package[0]);
-			if ($subpackage = $element->getAnnotation('subpackage')) {
-				$packageName .= '\\' . preg_replace('~\s+.*~s', '', $subpackage[0]);
-			}
-		} else {
-			$packageName = 'None';
-		}
-
-		return $packageName;
-	}
-
-	/**
-	 * Returns element namespace name.
-	 *
-	 * For internal elements returns "PHP", for elements in global space returns "None".
-	 *
-	 * @param \Apigen\Reflection|\TokenReflection\IReflection $element
-	 * @return string
-	 */
-	private function getElementNamespaceName($element)
-	{
-		return $element->isInternal() ? 'PHP' : $element->getNamespaceName() ?: 'None';
 	}
 }
