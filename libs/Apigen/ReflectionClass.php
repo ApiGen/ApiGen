@@ -156,9 +156,20 @@ class ReflectionClass extends ReflectionBase
 	}
 
 	/**
+	 * Returns a constant reflection.
+	 *
+	 * @param string $name Constant name
+	 * @return \Apigen\ReflectionConstant
+	 */
+	public function getConstantReflection($name)
+	{
+		return new ReflectionConstant($this->reflection->getConstantReflection($name), self::$generator);
+	}
+
+	/**
 	 * Returns a parent class reflection encapsulated by this class.
 	 *
-	 * @return \Apigen\Reflection
+	 * @return \Apigen\ReflectionClass
 	 */
 	public function getParentClass()
 	{
