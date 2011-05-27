@@ -109,7 +109,7 @@
 		<td>
 			{foreach $function->annotations['deprecated'] as $description}
 				{if $description}
-					{!$description|docline|resolveLinks:$function}<br>
+					{!$description|annotation:'deprecated':$function}<br>
 				{/if}
 			{/foreach}
 		</td>
