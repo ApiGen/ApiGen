@@ -55,7 +55,7 @@
 
 	<table class="summary" id="throws" n:ifset="$annotations['throws']">
 	<caption>Thrown exceptions summary</caption>
-	<tr foreach="$annotations['throws'] as $throws">
+	<tr n:foreach="$annotations['throws'] as $throws">
 		<td width="1%" class="right"><code class="nowrap">
 			{!$throws|typeLinks:$function}
 		</code></td>
