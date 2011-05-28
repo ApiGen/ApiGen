@@ -36,6 +36,7 @@
 
 	<hr>
 
+	{if}
 	<h3>Classes</h3>
 
 	<ul>
@@ -44,7 +45,9 @@
 		<li n:class="$class === $item ? active"><a href="{$item|classLink}">{if $namespace}{$item->shortName}{else}{$item->name}{/if}</a></li>
 	{/foreach}
 	</ul>
+	{/if $iterations}
 
+	{if}
 	<h3>Interfaces</h3>
 
 	<ul>
@@ -53,7 +56,9 @@
 		<li n:class="$class === $item ? active"><a href="{$item|classLink}">{if $namespace}{$item->shortName}{else}{$item->name}{/if}</a></li>
 	{/foreach}
 	</ul>
+	{/if $iterations}
 
+	{if}
 	<h3>Exceptions</h3>
 
 	<ul>
@@ -62,6 +67,7 @@
 		<li n:class="$class === $item ? active"><a href="{$item|classLink}">{if $namespace}{$item->shortName}{else}{$item->name}{/if}</a></li>
 	{/foreach}
 	</ul>
+	{/if $iterations}
 </div>
 
 <div id="right">

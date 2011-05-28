@@ -15,6 +15,7 @@
 <div id="content">
 	<h1>{ifset $namespace}{if $namespace}Namespace {$namespace}{else}No namespace{/if}{else}All Classes{/ifset}</h1>
 
+	{if}
 	<table class="summary">
 	<caption>Class summary</caption>
 	{foreach $classes as $class}
@@ -25,7 +26,9 @@
 	</tr>
 	{/foreach}
 	</table>
+	{/if $iterations}
 
+	{if}
 	<table class="summary">
 	<caption>Interface summary</caption>
 	{foreach $classes as $class}
@@ -36,7 +39,9 @@
 	</tr>
 	{/foreach}
 	</table>
+	{/if $iterations}
 
+	{if}
 	<table class="summary">
 	<caption>Exception summary</caption>
 	{foreach $classes as $class}
@@ -47,5 +52,6 @@
 	</tr>
 	{/foreach}
 	</table>
+	{/if $iterations}
 </div>
 {/block}
