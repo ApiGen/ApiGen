@@ -118,8 +118,8 @@ class Generator extends NetteX\Object
 		$template->setCacheStorage(new NetteX\Caching\Storages\MemoryStorage);
 
 		$latte = new NetteX\Latte\Engine;
-		$latte->parser->macros['try'] = '<?php try { ?>';
-		$latte->parser->macros['/try'] = '<?php } catch (\Exception $e) {} ?>';
+		$macroSet = new NetteX\Latte\Macros\MacroSet($latte->parser);
+		$macroSet->addMacro('try', 'try {', '} catch (\Exception $e) {}');
 		$template->registerFilter($latte);
 
 		// common operations
