@@ -85,7 +85,7 @@ class Template extends Nette\Templating\FileTemplate
 			return $fshl->highlightString('PHP', (string) $source);
 		});
 		$this->registerHelper('highlightValue', function($definition) use ($that) {
-			return $that->highlightPHP(preg_replace('#^(?:[ ]{4}|\t)#m', '', $definition));
+			return $that->highlightPHP(preg_replace('~^(?:[ ]{4}|\t)~m', '', $definition));
 		});
 
 		// Urls
@@ -123,15 +123,15 @@ class Template extends Nette\Templating\FileTemplate
 		});
 
 		// Texy
-		$texy = new \Texy;
+		$texy = new \Texy();
 		$linkModule = new \TexyLinkModule($texy);
-		$linkModule->shorten = FALSE;
+		$linkModule->shorten = false;
 		$texy->linkModule = $linkModule;
-		$texy->mergeLines = FALSE;
+		$texy->mergeLines = false;
 		$texy->allowedTags = array_flip($this->config->allowedHtml);
-		$texy->allowed['list/definition'] = FALSE;
-		$texy->allowed['phrase/em-alt'] = FALSE;
-		$texy->allowed['longwords'] = FALSE;
+		$texy->allowed['list/definition'] = false;
+		$texy->allowed['phrase/em-alt'] = false;
+		$texy->allowed['longwords'] = false;
 		// Highlighting <code>, <pre>
 		$texy->registerBlockPattern(
 			function($parser, $matches, $name) use ($fshl) {
@@ -166,7 +166,7 @@ class Template extends Nette\Templating\FileTemplate
 			}
 			return $description;
 		});
-		$this->registerHelper('longDescription', function($element, $shortIfNone = false) {
+		$this->registerHelper('longDescription', function($element) {
 			$short = $element->getAnnotation(ReflectionAnnotation::SHORT_DESCRIPTION);
 			$long = $element->getAnnotation(ReflectionAnnotation::LONG_DESCRIPTION);
 
@@ -309,7 +309,7 @@ class Template extends Nette\Templating\FileTemplate
 		$links = array();
 		list($types) = preg_split('~\s+|$~', $annotation, 2);
 		foreach (explode('|', $types) as $type) {
-			$links[] = $this->resolveLink($type, $context) ?: $this->escapeHtml($this->getTypeName($type)) ;
+			$links[] = $this->resolveLink($type, $context) ?: $this->escapeHtml($this->getTypeName($type));
 		}
 
 		return implode('|', $links);
@@ -592,6 +592,10 @@ class Template extends Nette\Templating\FileTemplate
 	 */
 	public function resolveElement($definition, $context)
 	{
+		if (empty($definition)) {
+			return null;
+		}
+
 		if ($context instanceof ReflectionParameter && null === $context->getDeclaringClassName()) {
 			$context = $this->functions[$context->getDeclaringFunctionName()];
 		} elseif (!$context instanceof ReflectionClass && !$context instanceof ReflectionConstant && !$context instanceof ReflectionFunction) {
@@ -669,6 +673,10 @@ class Template extends Nette\Templating\FileTemplate
 	 */
 	public function resolveLink($definition, $context)
 	{
+		if (empty($definition)) {
+			return null;
+		}
+
 		$element = $this->resolveElement($definition, $context);
 		if (null === $element) {
 			return null;
