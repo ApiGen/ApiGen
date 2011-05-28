@@ -172,7 +172,7 @@ class Config
 						$value = realpath($value);
 					}
 				});
-				sort($this->config[$option]);
+				usort($this->config[$option], 'strcasecmp');
 			} else {
 				if (file_exists($this->config[$option])) {
 					$this->config[$option] = realpath($this->config[$option]);
@@ -185,13 +185,17 @@ class Config
 			$this->config[$option] = array_map(function($mask) {
 				return str_replace(array('/', '\\'), DIRECTORY_SEPARATOR, $mask);
 			}, $this->config[$option]);
+			usort($this->config[$option], 'strcasecmp');
 		}
 
 		// Unify prefixes
 		$this->config['skipDocPrefix'] = array_map(function($prefix) {
 			return ltrim($prefix, '\\');
 		}, $this->config['skipDocPrefix']);
-		sort($this->config['skipDocPrefix']);
+		usort($this->config['skipDocPrefix'], 'strcasecmp');
+
+		// Base url without slash at the end
+		$this->config['baseUrl'] = rtrim($this->config['baseUrl'], '/');
 
 		// No progressbar in quiet mode
 		if ($this->config['quiet']) {
@@ -261,12 +265,20 @@ class Config
 			throw new Exception('Template config doesn\'t exist', Exception::INVALID_CONFIG);
 		}
 
-		if (empty($this->config['accessLevels'])) {
-			throw new Exception('No supported access level given', Exception::INVALID_CONFIG);
+		if (!empty($this->config['baseUrl']) && !preg_match('~^https?://(?:[-a-z0-9]+\.)+[a-z]{2,6}(?:/.*)?$~i', $this->config['baseUrl'])) {
+			throw new Exception('Invalid base url', Exception::INVALID_CONFIG);
+		}
+
+		if (!empty($this->config['googleCse']) && !preg_match('~^\d{21}:[a-z0-9]{11}$~', $this->config['googleCse'])) {
+			throw new Exception('Invalid Google Custom Search ID', Exception::INVALID_CONFIG);
 		}
 
 		if (!empty($this->config['googleAnalytics']) && !preg_match('~^UA\\-\\d+\\-\\d+$~', $this->config['googleAnalytics'])) {
 			throw new Exception('Invalid Google Analytics tracking code', Exception::INVALID_CONFIG);
+		}
+
+		if (empty($this->config['accessLevels'])) {
+			throw new Exception('No supported access level given', Exception::INVALID_CONFIG);
 		}
 
 		return $this;
