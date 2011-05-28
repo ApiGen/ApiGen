@@ -69,9 +69,9 @@ class Template extends Nette\Templating\FileTemplate
 
 		$that = $this;
 
-		$latte = new Nette\Latte\Engine;
-		$latte->parser->macros['try'] = '<?php try { ?>';
-		$latte->parser->macros['/try'] = '<?php } catch (\Exception $e) {} ?>';
+		$latte = new Nette\Latte\Engine();
+		$macroSet = new Nette\Latte\Macros\MacroSet($latte->parser);
+		$macroSet->addMacro('try', 'try {', '} catch (\Exception $e) {}');
 		$this->registerFilter($latte);
 
 		// Common operations
