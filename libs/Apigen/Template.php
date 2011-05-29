@@ -597,8 +597,10 @@ class Template extends Nette\Templating\FileTemplate
 		}
 
 		if ($context instanceof ReflectionParameter && null === $context->getDeclaringClassName()) {
+			// Parameter of function in namespace or global space
 			$context = $this->functions[$context->getDeclaringFunctionName()];
-		} elseif (!$context instanceof ReflectionClass && !$context instanceof ReflectionConstant && !$context instanceof ReflectionFunction) {
+		} elseif ($context instanceof ReflectionMethod || $context instanceof ReflectionParameter || ($context instanceof ReflectionConstant && null !== $context->getDeclaringClassName()) || $context instanceof ReflectionProperty) {
+			// Member of a class
 			$context = $this->classes[$context->getDeclaringClassName()];
 		}
 
@@ -638,9 +640,13 @@ class Template extends Nette\Templating\FileTemplate
 			$definition = substr($definition, $pos + 2);
 		}
 
-		// No "documented" context
-		if (($context instanceof ReflectionClass || $context instanceof ReflectionConstant || $context instanceof ReflectionFunction)
-				&& !$context->isDocumented()) {
+		// No usable context
+		if ($context instanceof ReflectionConstant || $context instanceof ReflectionFunction) {
+			return null;
+		}
+
+		// No "documented" class
+		if ($context instanceof ReflectionClass && !$context->isDocumented()) {
 			return null;
 		}
 
