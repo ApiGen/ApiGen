@@ -2,7 +2,7 @@
 <caption>Classes summary</caption>
 <tr n:foreach="$classes as $class">
 	<td class="nowrap" width="20%"><a href="{$class|classUrl}">{if $namespace}{$class->shortName}{else}{$class->name}{/if}</a></td>
-	<td>{!$class|shortDescription|docline:$class}</td>
+	<td>{!$class|shortDescription}</td>
 </tr>
 </table>
 
@@ -10,7 +10,7 @@
 <caption>Interfaces summary</caption>
 <tr n:foreach="$interfaces as $interface">
 	<td class="nowrap" width="20%"><a href="{$interface|classUrl}">{if $namespace}{$interface->shortName}{else}{$interface->name}{/if}</a></td>
-	<td>{!$interface|shortDescription|docline:$interface}</td>
+	<td>{!$interface|shortDescription}</td>
 </tr>
 </table>
 
@@ -18,7 +18,7 @@
 <caption>Exceptions summary</caption>
 <tr n:foreach="$exceptions as $exception">
 	<td class="nowrap" width="20%"><a href="{$exception|classUrl}">{if $namespace}{$exception->shortName}{else}{$exception->name}{/if}</a></td>
-	<td>{!$exception|shortDescription|docline:$exception}</td>
+	<td>{!$exception|shortDescription}</td>
 </tr>
 </table>
 
@@ -26,7 +26,7 @@
 <caption>Constants summary</caption>
 <tr n:foreach="$constants as $constant">
 	<td class="nowrap" width="20%"><code><a href="{$constant|constantUrl}"><b>{if $namespace}{$constant->shortName}{else}{$constant->name}{/if}</b></a></code></td>
-	<td>{!$constant|shortDescription|docline:$constant}</td>
+	<td>{!$constant|shortDescription}</td>
 </tr>
 </table>
 
@@ -34,6 +34,6 @@
 <caption>Functions summary</caption>
 <tr n:foreach="$functions as $function">
 	<td class="nowrap" width="20%"><a href="{$function|functionUrl}">{if $namespace}{$function->shortName}{else}{$function->name}{/if}</a></td>
-	<td>{!$function|shortDescription|docline:$function}</td>
+	<td>{!$function|shortDescription}</td>
 </tr>
 </table>

@@ -8,7 +8,7 @@
 	<h1>{if $constant->deprecated}Deprecated {/if}Constant {$constant->shortName}</h1>
 
 	<div class="description" n:if="$template->longDescription($constant)">
-	{!$constant|longDescription|docblock:$constant}
+	{!$constant|longDescription}
 	</div>
 
 	<div class="info">
@@ -34,7 +34,7 @@
 			{var $element => $template->resolveElement($constant->valueDefinition, $constant)}
 			{if $element}<a href="{$element|constantUrl}">{$constant->valueDefinition}</a>{else}<code>{!$constant->valueDefinition|highlightValue}</code>{/if}
 		</td>
-		<td>{ifset $annotations['var']}{!$annotations['var'][0]|description|docline:$constant}{/ifset}</td>
+		<td>{ifset $annotations['var']}{!$annotations['var'][0]|description:$constant}{/ifset}</td>
 	</tr>
 	</table>
 </div>

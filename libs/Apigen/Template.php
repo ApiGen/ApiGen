@@ -56,6 +56,13 @@ class Template extends Nette\Templating\FileTemplate
 	private $functions;
 
 	/**
+	 * Texy.
+	 *
+	 * @var Texy
+	 */
+	private $texy;
+
+	/**
 	 * Creates template.
 	 *
 	 * @param \Apigen\Generator $generator
@@ -69,6 +76,30 @@ class Template extends Nette\Templating\FileTemplate
 
 		$that = $this;
 
+		// FSHL
+		$fshl = new \fshlParser('HTML_UTF8');
+
+		// Texy
+		$this->texy = new \Texy();
+		$linkModule = new \TexyLinkModule($this->texy);
+		$linkModule->shorten = false;
+		$this->texy->linkModule = $linkModule;
+		$this->texy->mergeLines = false;
+		$this->texy->allowedTags = array_flip($this->config->allowedHtml);
+		$this->texy->allowed['list/definition'] = false;
+		$this->texy->allowed['phrase/em-alt'] = false;
+		$this->texy->allowed['longwords'] = false;
+		// Highlighting <code>, <pre>
+		$this->texy->registerBlockPattern(
+			function($parser, $matches, $name) use ($fshl) {
+				$content = 'code' === $matches[1] ? $fshl->highlightString('PHP', $matches[2]) : htmlSpecialChars($matches[2]);
+				$content = $parser->getTexy()->protect($content, \Texy::CONTENT_BLOCK);
+				return \TexyHtml::el('pre', $content);
+			},
+			'~<(code|pre)>(.+?)</\1>~s',
+			'codeBlockSyntax'
+		);
+
 		$latte = new Nette\Latte\Engine();
 		$macroSet = new Nette\Latte\Macros\MacroSet($latte->parser);
 		$macroSet->addMacro('try', 'try {', '} catch (\Exception $e) {}');
@@ -80,7 +111,6 @@ class Template extends Nette\Templating\FileTemplate
 		$this->registerHelper('replaceRE', 'Nette\Utils\Strings::replace');
 
 		// PHP source highlight
-		$fshl = new \fshlParser('HTML_UTF8');
 		$this->registerHelper('highlightPHP', function($source) use ($fshl) {
 			return $fshl->highlightString('PHP', (string) $source);
 		});
@@ -122,27 +152,6 @@ class Template extends Nette\Templating\FileTemplate
 			return $namespaceName;
 		});
 
-		// Texy
-		$texy = new \Texy();
-		$linkModule = new \TexyLinkModule($texy);
-		$linkModule->shorten = false;
-		$texy->linkModule = $linkModule;
-		$texy->mergeLines = false;
-		$texy->allowedTags = array_flip($this->config->allowedHtml);
-		$texy->allowed['list/definition'] = false;
-		$texy->allowed['phrase/em-alt'] = false;
-		$texy->allowed['longwords'] = false;
-		// Highlighting <code>, <pre>
-		$texy->registerBlockPattern(
-			function($parser, $matches, $name) use ($fshl) {
-				$content = 'code' === $matches[1] ? $fshl->highlightString('PHP', $matches[2]) : htmlSpecialChars($matches[2]);
-				$content = $parser->getTexy()->protect($content, \Texy::CONTENT_BLOCK);
-				return \TexyHtml::el('pre', $content);
-			},
-			'~<(code|pre)>(.+?)</\1>~s',
-			'codeBlockSyntax'
-		);
-
 		// Types
 		$this->registerHelper('typeLinks', new Nette\Callback($this, 'getTypeLinks'));
 		$this->registerHelper('type', function($value) use ($that) {
@@ -150,23 +159,18 @@ class Template extends Nette\Templating\FileTemplate
 			return 'null' !== $type ? $type : '';
 		});
 
-		// Documentation formatting
-		$this->registerHelper('docline', function($text, $context) use ($that, $texy) {
-			return $that->resolveLinks($texy->processLine($text), $context);
-		});
-		$this->registerHelper('docblock', function($text, $context) use ($that, $texy) {
-			return $that->resolveLinks($texy->process($text), $context);
-		});
-
 		// Docblock descriptions
-		$this->registerHelper('description', function($annotation, $context = null) {
+		$this->registerHelper('description', function($annotation, $context) use ($that) {
 			list(, $description) = preg_split('~\s+|$~', $annotation, 2);
-			if (null !== $context && $context instanceof ReflectionParameter) {
+			if ($context instanceof ReflectionParameter) {
 				$description = preg_replace('~^(\\$?' . $context->getName() . ')(\s+|$)~i', '\\2', $description, 1);
 			}
-			return $description;
+			return $that->docline($description, $context);
 		});
-		$this->registerHelper('longDescription', function($element) {
+		$this->registerHelper('shortDescription', function($element) use ($that) {
+			return $that->docline($element->getAnnotation(ReflectionAnnotation::SHORT_DESCRIPTION), $element);
+		});
+		$this->registerHelper('longDescription', function($element) use ($that) {
 			$short = $element->getAnnotation(ReflectionAnnotation::SHORT_DESCRIPTION);
 			$long = $element->getAnnotation(ReflectionAnnotation::LONG_DESCRIPTION);
 
@@ -174,10 +178,7 @@ class Template extends Nette\Templating\FileTemplate
 				$short .= "\n\n" . $long;
 			}
 
-			return $short;
-		});
-		$this->registerHelper('shortDescription', function($element) {
-			return $element->getAnnotation(ReflectionAnnotation::SHORT_DESCRIPTION);
+			return $that->docblock($short, $element);
 		});
 
 		// Individual annotations processing
@@ -459,7 +460,7 @@ class Template extends Nette\Templating\FileTemplate
 	/**
 	 * Returns a link to a element documentation at php.net.
 	 *
-	 * @param \Apigen\ReflectionBase|\TokenReflection\IReflectionMethod|\TokenReflection\IReflectionProperty $element Element reflection
+	 * @param \Apigen\ReflectionBase|\TokenReflection\IReflection $element Element reflection
 	 * @return string
 	 */
 	public function getManualUrl($element)
@@ -724,6 +725,30 @@ class Template extends Nette\Templating\FileTemplate
 		return preg_replace_callback('~{@link\\s+([^}]+)}~', function ($matches) use ($context, $that) {
 			return $that->resolveLink($matches[1], $context) ?: $matches[0];
 		}, $text);
+	}
+
+	/**
+	 * Formats text as documentation block.
+	 *
+	 * @param string $text Text
+	 * @param \Apigen\ReflectionBase|\TokenReflection\IReflection $context Reflection object
+	 * @return string
+	 */
+	public function docblock($text, $context)
+	{
+		return $this->resolveLinks($this->texy->process($text), $context);
+	}
+
+	/**
+	 * Formats text as documentation line.
+	 *
+	 * @param string $text Text
+	 * @param \Apigen\ReflectionBase|\TokenReflection\IReflection $context Reflection object
+	 * @return string
+	 */
+	public function docline($text, $context)
+	{
+		return $this->resolveLinks($this->texy->processLine($text), $context);
 	}
 
 	/**

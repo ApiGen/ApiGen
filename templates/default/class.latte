@@ -8,7 +8,7 @@
 	<h1>{if $class->deprecated}Deprecated {/if}{if $class->interface}Interface{else}Class{/if} {$class->shortName}</h1>
 
 	<div class="description" n:if="$template->longDescription($class)">
-	{!$class|longDescription|docblock:$class}
+	{!$class|longDescription}
 	</div>
 
 	<dl class="tree" n:if="$class->parentClass || $class->ownInterfaces">
@@ -97,11 +97,11 @@
 		)</code>
 
 		<div class="short">
-			{!$method|shortDescription|docblock:$class}
+			{!$method|shortDescription}
 		</div>
 
 		<div class="detailed">
-			{!$method|longDescription|docblock:$class}
+			{!$method|longDescription}
 
 			{if $method->deprecated}
 				<h4>Deprecated</h4>
@@ -109,7 +109,7 @@
 				<div class="smallList">
 				{foreach $annotations['deprecated'] as $description}
 					{if $description}
-						{!$description|annotation:$annotation:$class}<br>
+						{!$description|annotation:'deprecated':$class}<br>
 					{/if}
 				{/foreach}
 				</div>
@@ -159,7 +159,7 @@
 			{var $prototype => $method->prototype}
 			{if $prototype->declaringClass->interface}
 				<h4>Implementation of</h4>
-				<div class="smallList"><a n:tag-if="$template->getClass($prototype->declaringClassName)" href="{$prototype|methodUrl}">{$prototype->declaringClassName}::{$prototype->name}</a></div>
+				<div class="smallList"><code><a n:tag-if="$template->getClass($prototype->declaringClassName)" href="{$prototype|methodUrl}">{$prototype->declaringClassName}::{$prototype->name}</a></code></div>
 			{/if}
 			{/try}
 		</div>
@@ -202,11 +202,11 @@
 		<td><div class="position">
 			<a href="#{$name}" class="anchor">#</a>
 			<div class="short">
-				{!$constant|shortDescription|docblock:$class}
+				{!$constant|shortDescription}
 			</div>
 
 			<div class="detailed">
-				{!$constant|longDescription|docblock:$class}
+				{!$constant|longDescription}
 
 				{foreach $template->annotationSort($template->annotationFilter($annotations, array('var'))) as $annotation => $descriptions}
 					<h4>{$annotation|ucfirst}</h4>
@@ -258,11 +258,11 @@
 			<a href="#${$property->name}" class="anchor">#</a>
 
 			<div class="short">
-				{!$property|shortDescription|docline:$class}
+				{!$property|shortDescription}
 			</div>
 
 			<div class="detailed">
-				{!$property|longDescription|docblock:$class}
+				{!$property|longDescription}
 
 				{foreach $template->annotationSort($template->annotationFilter($annotations, array('var'))) as $annotation => $descriptions}
 					<h4>{$annotation|ucfirst}</h4>

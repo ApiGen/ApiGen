@@ -8,7 +8,7 @@
 	<h1>{if $function->deprecated}Deprecated {/if}Function {$function->shortName}</h1>
 
 	<div class="description" n:if="$template->longDescription($function)">
-	{!$function|longDescription|docblock:$function}
+	{!$function|longDescription}
 	</div>
 
 	<div class="info">
@@ -36,7 +36,7 @@
 			<var>{if $parameter->passedByReference}&amp; {/if}${$parameter->name}</var>{if $parameter->defaultValueAvailable} = {!$parameter->defaultValueDefinition|highlightPHP}{/if}
 		</code></td>
 		<td>
-			{ifset $annotations['param'][$parameter->position]}{!$annotations['param'][$parameter->position]|description:$parameter|docline:$function}{/ifset}
+			{ifset $annotations['param'][$parameter->position]}{!$annotations['param'][$parameter->position]|description:$parameter}{/ifset}
 		</td>
 	</tr>
 	</table>
@@ -48,7 +48,7 @@
 			{!$annotations['return'][0]|typeLinks:$function}
 		</code></td>
 		<td>
-			{!$annotations['return'][0]|description|docline:$function}
+			{!$annotations['return'][0]|description:$function}
 		</td>
 	</tr>
 	</table>
@@ -60,7 +60,7 @@
 			{!$throws|typeLinks:$function}
 		</code></td>
 		<td>
-			{!$throws|description|docline:$function}
+			{!$throws|description:$function}
 		</td>
 	</tr>
 	</table>
