@@ -317,20 +317,22 @@ class ReflectionClass extends ReflectionBase
 	public function getInheritedMethods()
 	{
 		$methods = array();
-		$allMethods = $this->getOwnMethods();
+		$allMethods = array_flip(array_map(function($method) {
+			return $method->getName();
+		}, $this->getOwnMethods()));
 
 		foreach ($this->getParentClasses() as $class) {
 			$inheritedMethods = array();
-			foreach ($class->getOwnMethods() as $name => $method) {
-				if (!isset($allMethods[$name]) && !$method->isPrivate()) {
-					$inheritedMethods[$name] = $method;
-					$allMethods[$name] = null;
+			foreach ($class->getOwnMethods() as $method) {
+				if (!isset($allMethods[$method->getName()]) && !$method->isPrivate()) {
+					$inheritedMethods[$method->getName()] = $method;
+					$allMethods[$method->getName()] = null;
 				}
 			}
 
 			if (!empty($inheritedMethods)) {
 				ksort($inheritedMethods);
-				$methods[$class->getName()] = $inheritedMethods;
+				$methods[$class->getName()] = array_values($inheritedMethods);
 			}
 		}
 
@@ -345,20 +347,22 @@ class ReflectionClass extends ReflectionBase
 	public function getInheritedProperties()
 	{
 		$properties = array();
-		$allProperties = $this->getOwnProperties();
+		$allProperties = array_flip(array_map(function($property) {
+			return $property->getName();
+		}, $this->getOwnProperties()));
 
 		foreach ($this->getParentClasses() as $class) {
 			$inheritedProperties = array();
-			foreach ($class->getOwnProperties() as $name => $property) {
-				if (!isset($allProperties[$name]) && !$property->isPrivate()) {
-					$inheritedProperties[$name] = $property;
-					$allProperties[$name] = null;
+			foreach ($class->getOwnProperties() as $property) {
+				if (!isset($allProperties[$property->getName()]) && !$property->isPrivate()) {
+					$inheritedProperties[$property->getName()] = $property;
+					$allProperties[$property->getName()] = null;
 				}
 			}
 
 			if (!empty($inheritedProperties)) {
 				ksort($inheritedProperties);
-				$properties[$class->getName()] = $inheritedProperties;
+				$properties[$class->getName()] = array_values($inheritedProperties);
 			}
 		}
 
