@@ -84,7 +84,6 @@ class Template extends Nette\Templating\FileTemplate
 		$linkModule = new \TexyLinkModule($this->texy);
 		$linkModule->shorten = false;
 		$this->texy->linkModule = $linkModule;
-		$this->texy->mergeLines = false;
 		$this->texy->allowedTags = array_flip($this->config->allowedHtml);
 		$this->texy->allowed['list/definition'] = false;
 		$this->texy->allowed['phrase/em-alt'] = false;
