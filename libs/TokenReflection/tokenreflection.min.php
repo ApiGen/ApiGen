@@ -69,29 +69,33 @@ isset($this->annotations[$annotation])?$this->annotations[$annotation]:null;}pub
 function getAnnotations(){if(null ===$this->annotations){$this->parse();}return$this->annotations;}public
 function setTemplates(array$templates){foreach($templates as$template){if(!$template
 instanceof ReflectionAnnotation){throw new Exception\Runtime(sprintf('All templates have to be instances of \\TokenReflection\\ReflectionAnnotation; %s given.',is_object($template)?get_class($template):gettype($template)),Exception\Runtime::INVALID_ARGUMENT);}}$this->templates=$templates;return$this;}private
-function parse(){$this->annotations=array();if(false !==$this->docComment){$name=self::SHORT_DESCRIPTION;$docblock=trim(preg_replace(array('~^'.preg_quote(ReflectionBase::DOCBLOCK_TEMPLATE_START,'~').'~','~^'.preg_quote(ReflectionBase::DOCBLOCK_TEMPLATE_END,'~').'$~','~^/\\*\\*~','~\\*/$~'),'',$this->docComment));foreach(explode("\n",$docblock)as$line){$line=preg_replace('~^\\*\\s*~','',trim($line));if(''
+function parse(){$this->annotations=array();if(false !==$this->docComment){$name=self::SHORT_DESCRIPTION;$docblock=trim(preg_replace(array('~^'.preg_quote(ReflectionBase::DOCBLOCK_TEMPLATE_START,'~').'~','~^'.preg_quote(ReflectionBase::DOCBLOCK_TEMPLATE_END,'~').'$~','~^/\\*\\*~','~\\*/$~'),'',$this->docComment));foreach(explode("\n",$docblock)as$line){$line=preg_replace('~^\\*\\s?~','',trim($line));if(''
 ===$line &&self::SHORT_DESCRIPTION ===$name){$name=self::LONG_DESCRIPTION;continue;}if(preg_match('~^@([\\S]+)\\s*(.*)~',$line,$matches)){$name=$matches[1];$this->annotations[$name][]=$matches[2];continue;}if(self::SHORT_DESCRIPTION
 ===$name || self::LONG_DESCRIPTION ===$name){if(!isset($this->annotations[$name])){$this->annotations[$name]=$line;}else{$this->annotations[$name].=
 "\n".$line;}}else{$this->annotations[$name][count($this->annotations[$name])-1].=
-"\n".$line;}}array_walk_recursive($this->annotations,function(&$value){$value=str_replace('{@*}','*/',$value);$value=trim($value);});}$this->mergeTemplates();$willInherit=false
-===$this->docComment;if(!$willInherit &&isset($this->annotations[self::SHORT_DESCRIPTION])){$willInherit=false
-!== stripos($this->annotations[self::SHORT_DESCRIPTION],'{@inheritdoc}');}if(!$willInherit
-&&isset($this->annotations[self::LONG_DESCRIPTION])){$willInherit=false !== stripos($this->annotations[self::LONG_DESCRIPTION],'{@inheritdoc}');}if($willInherit){$this->inheritAnnotations();}}private
+"\n".$line;}}array_walk_recursive($this->annotations,function(&$value){$value=str_replace('{@*}','*/',$value);$value=trim($value);});}$this->mergeTemplates();if($this->reflection
+instanceof ReflectionClass ||$this->reflection instanceof ReflectionMethod ||$this->reflection
+instanceof ReflectionProperty){$willInherit=false ===$this->docComment;if(!$willInherit
+&&isset($this->annotations[self::SHORT_DESCRIPTION])){$willInherit=false !== stripos($this->annotations[self::SHORT_DESCRIPTION],'{@inheritdoc}');}if(!$willInherit
+&&isset($this->annotations[self::LONG_DESCRIPTION])){$willInherit=false !== stripos($this->annotations[self::LONG_DESCRIPTION],'{@inheritdoc}');}if($willInherit){$this->inheritAnnotations();}}}private
 function mergeTemplates(){foreach($this->templates as$index =>$template){if(0 ===$index
 &&$template->getDocComment()===$this->docComment){continue;}foreach($template->getAnnotations()as$name
 =>$value){if($name === self::LONG_DESCRIPTION){if(isset($this->annotations[self::LONG_DESCRIPTION])){$this->annotations[self::LONG_DESCRIPTION]=$value."\n".$this->annotations[self::LONG_DESCRIPTION];}else{$this->annotations[self::LONG_DESCRIPTION]=$value;}}elseif($name
 !== self::SHORT_DESCRIPTION){if(isset($this->annotations[$name])){$this->annotations[$name]=array_merge($this->annotations[$name],$value);}else{$this->annotations[$name]=$value;}}}}}private
-function inheritAnnotations(){$parentReflection=null;if($this->reflection instanceof
-ReflectionClass){$parentClass=$this->reflection->getParentClass();if(false !==$parentClass
-&&$parentClass->isTokenized()){$parentReflection=$parentClass;}}elseif($this->reflection
-instanceof ReflectionMethod ||$this->reflection instanceof ReflectionProperty){$parentClass=$this->reflection->getDeclaringClass()->getParentClass();if(false
-!==$parentClass &&$parentClass->isTokenized()){try{if($this->reflection instanceof
-ReflectionMethod){$parentReflection=$parentClass->getMethod($this->reflection->getName());}else{$parentReflection=$parentClass->getProperty($this->reflection->getName());}}catch(Exception\Runtime$e){}}}if(false
-===$this->docComment){if(null !==$parentReflection){$this->annotations=$parentReflection->getAnnotations();}}else{if(isset($this->annotations[self::SHORT_DESCRIPTION])&&false
-!== stripos($this->annotations[self::SHORT_DESCRIPTION],'{@inheritdoc}')){$this->annotations[self::SHORT_DESCRIPTION]=str_ireplace('{@inheritdoc}',null
-===$parentReflection?'':$parentReflection->getAnnotation(self::SHORT_DESCRIPTION),$this->annotations[self::SHORT_DESCRIPTION]);}if(isset($this->annotations[self::LONG_DESCRIPTION])&&false
-!== stripos($this->annotations[self::LONG_DESCRIPTION],'{@inheritdoc}')){$this->annotations[self::LONG_DESCRIPTION]=str_ireplace('{@inheritdoc}',null
-===$parentReflection?'':$parentReflection->getAnnotation(self::LONG_DESCRIPTION),$this->annotations[self::LONG_DESCRIPTION]);}}}}}
+function inheritAnnotations(){if($this->reflection instanceof ReflectionClass){$declaringClass=$this->reflection;}elseif($this->reflection
+instanceof ReflectionMethod ||$this->reflection instanceof ReflectionProperty){$declaringClass=$this->reflection->getDeclaringClass();}else{throw
+new Exception\Parse(sprintf('Unsupported reflection type: "%s".',get_class($this->reflection)),Exception\Parse::UNSUPPORTED);}$parents=array_filter(array_merge(array($declaringClass->getParentClass()),$declaringClass->getOwnInterfaces()),function($class){return$class
+instanceof ReflectionClass;});$parentDefinitions=array();if($this->reflection instanceof
+ReflectionProperty){$name=$this->reflection->getName();foreach($parents as$parent){try{$parentDefinitions[]=$parent->getProperty($name);}catch(Exception\Runtime$e){if(Exception\Runtime::DOES_NOT_EXIST
+===$e->getCode()){continue;}throw$e;}}$parents=$parentDefinitions;}elseif($this->reflection
+instanceof ReflectionMethod){$name=$this->reflection->getName();foreach($parents
+as$parent){try{$parentDefinitions[]=$parent->getMethod($name);}catch(Exception\Runtime$e){if(Exception\Runtime::DOES_NOT_EXIST
+===$e->getCode()){continue;}throw$e;}}$parents=$parentDefinitions;}if(false ===$this->docComment){foreach($parents
+as$parent){$annotations=$parent->getAnnotations();if(!empty($annotations)){$this->annotations=$annotations;break;}}}else{if(isset($this->annotations[self::LONG_DESCRIPTION])&&false
+!== stripos($this->annotations[self::LONG_DESCRIPTION],'{@inheritdoc}')){foreach($parents
+as$parent){if($parent->hasAnnotation(self::LONG_DESCRIPTION)){$this->annotations[self::LONG_DESCRIPTION]=str_ireplace('{@inheritdoc}',$parent->getAnnotation(self::LONG_DESCRIPTION),$this->annotations[self::LONG_DESCRIPTION]);break;}}$this->annotations[self::LONG_DESCRIPTION]=str_ireplace('{@inheritdoc}','',$this->annotations[self::LONG_DESCRIPTION]);}if(isset($this->annotations[self::SHORT_DESCRIPTION])&&false
+!== stripos($this->annotations[self::SHORT_DESCRIPTION],'{@inheritdoc}')){foreach($parents
+as$parent){if($parent->hasAnnotation(self::SHORT_DESCRIPTION)){$this->annotations[self::SHORT_DESCRIPTION]=str_ireplace('{@inheritdoc}',$parent->getAnnotation(self::SHORT_DESCRIPTION),$this->annotations[self::SHORT_DESCRIPTION]);break;}}$this->annotations[self::SHORT_DESCRIPTION]=str_ireplace('{@inheritdoc}','',$this->annotations[self::SHORT_DESCRIPTION]);}}}}}
  namespace TokenReflection{use TokenReflection\Exception;use SeekableIterator,Countable,ArrayAccess,Serializable;class
 Stream implements SeekableIterator,Countable,ArrayAccess,Serializable{private$fileName='unknown';private$tokens=array();private$position=0;private$count=0;public
 function __construct($fileName){$this->fileName=Broker::getRealPath($fileName);if(false
@@ -423,27 +427,29 @@ isStatic();public function setAccessible($accessible);}}
  namespace TokenReflection\Php{use TokenReflection;use TokenReflection\Broker,TokenReflection\Exception;use
 Reflector,ReflectionClass as InternalReflectionClass,ReflectionProperty as InternalReflectionProperty,ReflectionMethod
 as InternalReflectionMethod;class ReflectionClass extends InternalReflectionClass
-implements IReflection,TokenReflection\IReflectionClass{private$broker;private$contants;private$methods;private$interfaces;private$properties;public
+implements IReflection,TokenReflection\IReflectionClass{private$broker;private$constants;private$methods;private$interfaces;private$properties;public
 function __construct($className,Broker$broker){parent::__construct($className);$this->broker=$broker;}public
 function getBroker(){return$this->broker;}public function getParentClass(){$parent=parent::getParentClass();return$parent?self::create($parent,$this->broker):null;}public
 function getParentClassName(){$parent=$this->getParentClass();return$parent?$parent->getName():null;}public
 function getParentClasses(){$broker=$this->broker;return array_map(function($className)use($broker){return$broker->getClass($className);},$this->getParentClassNameList());}public
 function getConstantReflection($name){if($this->hasConstant($name)){return new ReflectionConstant($name,$this->getConstant($name),$this->broker,$this);}throw
 new Exception(sprintf('Constant "%s" is not defined in class "%s"',$name,$this->getName()),Exception::DOES_NOT_EXIST);}public
-function getConstantReflections(){if(null ===$this->contants){$this->contants=array();foreach($this->getConstants()as$name
-=>$value){$this->contants[$name]=$this->getConstantReflection($name);}}return$this->contants;}public
-function getOwnConstantReflections(){if(null ===$this->contants){$this->contants=array();foreach($this->getOwnConstants()as$name
-=>$value){$this->contants[$name]=$this->getConstantReflection($name);}}return$this->contants;}public
+function getConstantReflections(){if(null ===$this->constants){$this->constants=array();foreach($this->getConstants()as$name
+=>$value){$this->constants[$name]=$this->getConstantReflection($name);}}return array_values($this->constants);}public
+function getOwnConstantReflections(){$constants=array();foreach($this->getOwnConstants()as$name
+=>$value){$constants[]=$this->getConstantReflection($name);}return$constants;}public
 function getParentClassNameList(){return class_parents($this->getName());}final public
 function __get($key){return TokenReflection\ReflectionBase::get($this,$key);}final
 public function __isset($key){return TokenReflection\ReflectionBase::exists($this,$key);}public
 function getOwnInterfaces(){$parent=$this->getParentClass();return$parent?array_diff_key($this->getInterfaces(),$parent->getInterfaces()):$this->getInterfaces();}public
 function getOwnInterfaceNames(){return array_keys($this->getOwnInterfaces());}public
 function getOwnMethods($filter=null){$me=$this->getName();return array_filter($this->getMethods($filter),function(ReflectionMethod$method)use($me){return$method->getDeclaringClass()->getName()===$me;});}public
-function hasOwnMethod($name){$methods=$this->getOwnMethods();return isset($methods[$name]);}public
-function getOwnProperties($filter=null){$me=$this->getName();return array_filter($this->getProperties($filter),function(ReflectionProperty$property)use($me){return$property->getDeclaringClass()->getName()===$me;});}public
-function hasOwnProperty($name){$properties=$this->getOwnProperties();return isset($properties[$name]);}public
-function getOwnConstants(){return array_diff_assoc($this->getConstants(),$this->getParentClass()?$this->getParentClass()->getConstants():array());}public
+function hasOwnMethod($name){foreach($this->getOwnMethods()as$method){if($name ===$method->getName()){return
+true;}}return false;}public function getOwnProperties($filter=null){$me=$this->getName();return
+array_filter($this->getProperties($filter),function(ReflectionProperty$property)use($me){return$property->getDeclaringClass()->getName()===$me;});}public
+function hasOwnProperty($name){foreach($this->getOwnProperties()as$property){if($name
+===$property->getName()){return true;}}return false;}public function getOwnConstants(){return
+array_diff_assoc($this->getConstants(),$this->getParentClass()?$this->getParentClass()->getConstants():array());}public
 function hasOwnConstant($name){$constants=$this->getOwnConstants();return isset($constants[$name]);}public
 function getProperties($filter=null){if(null ===$this->properties){$broker=$this->broker;$this->properties=array_map(function(InternalReflectionProperty$property)use($broker){return
 ReflectionProperty::create($property,$broker);},parent::getProperties());}if(null
@@ -577,7 +583,7 @@ instanceof InternalReflectionProperty){throw new Exception\Runtime(sprintf('Inva
 self($internalReflection->getDeclaringClass()->getName(),$internalReflection->getName(),$broker);}return$cache[$key];}}}
  namespace TokenReflection{use TokenReflection\Exception;use ReflectionClass as InternalReflectionClass,ReflectionProperty
 as InternalReflectionProperty;class ReflectionClass extends ReflectionBase implements
-IReflectionClass{const IS_INTERFACE=128;const IMPLEMENTS_INTERFACES=0x80000;private$namespaceName;private$constants=array();private$properties=array();private$methods=array();private$aliases=array();private$modifiers=0;private$parentClassName;private$interfaces=array();protected
+IReflectionClass{const IS_INTERFACE=128;const IMPLEMENTS_INTERFACES=0x80000;private$namespaceName;private$constants=array();private$properties=array();private$methods=array();private$aliases=array();private$modifiers=0;private$modifiersComplete=false;private$parentClassName;private$interfaces=array();protected
 function processParent(IReflection$parent){if(!$parent instanceof ReflectionFileNamespace){throw
 new Exception\Parse(sprintf('The parent object has to be an instance of TokenReflection\ReflectionFileNamespace, "%s" given.',get_class($parent)),Exception\Parse::INVALID_PARENT);}$this->namespaceName=$parent->getName();$this->aliases=$parent->getNamespaceAliases();return
 parent::processParent($parent);}protected function parse(Stream$tokenStream,IReflection$parent){return$this
@@ -593,11 +599,11 @@ T_FINAL:case T_ABSTRACT:case T_FUNCTION:$method=new ReflectionMethod($tokenStrea
 T_CONST:$tokenStream->skipWhitespaces();while($tokenStream->is(T_STRING)){$constant=new
 ReflectionConstant($tokenStream,$this->getBroker(),$this);$this->constants[$constant->getName()]=$constant;if($tokenStream->is(',')){$tokenStream->skipWhitespaces();}else{$tokenStream->next();}}break;default:$tokenStream->next();break;}}return$this;}public
 function getConstant($name){try{return$this->getConstantReflection($name)->getValue();}catch(Exception\Runtime$e){if($e->getCode()===
-Exception\Runtime::DOES_NOT_EXIST){return false;}throw$e;}}public function getConstantReflection($name){$constants=$this->getConstantReflections();if(isset($constants[$name])){return$constants[$name];}throw
-new Exception\Runtime(sprintf('There is no constant "%s" in class "%s".',$name,$this->name),Exception\Runtime::DOES_NOT_EXIST);}public
-function getConstants(){return array_map(function(IReflectionConstant$constant){return$constant->getValue();},$this->getConstantReflections());}public
-function getConstantReflections(){if(null ===$this->parentClassName){return$this->constants;}else{return
-array_merge($this->constants,$this->getParentClass()->getConstantReflections());}}public
+Exception\Runtime::DOES_NOT_EXIST){return false;}throw$e;}}public function getConstantReflection($name){if(isset($this->constants[$name])){return$this->constants[$name];}foreach($this->getConstantReflections()as$constant){if($name
+===$constant->getName()){return$constant;}}throw new Exception\Runtime(sprintf('There is no constant "%s" in class "%s".',$name,$this->name),Exception\Runtime::DOES_NOT_EXIST);}public
+function getConstants(){$constants=array();foreach($this->getConstantReflections()as$constant){$constants[$constant->getName()]=$constant->getValue();}return$constants;}public
+function getConstantReflections(){if(null ===$this->parentClassName){return array_values($this->constants);}else{return
+array_merge(array_values($this->constants),$this->getParentClass()->getConstantReflections());}}public
 function getConstructor(){foreach($this->getMethods()as$method){if($method->isConstructor()){return$method;}}return
 null;}public function getDestructor(){foreach($this->getMethods()as$method){if($method->isDestructor()){return$method;}}return
 null;}public function getDefaultProperties(){static$accessLevels=array(InternalReflectionProperty::IS_PUBLIC,InternalReflectionProperty::IS_PRIVATE,InternalReflectionProperty::IS_PROTECTED);$defaults=array();$properties=$this->getProperties();foreach(array(true,false)as$static){foreach($accessLevels
@@ -606,31 +612,30 @@ function getInterfaceNames(){if($this->isInterface()){return$this->getParentClas
 array_unique($names);}public function getOwnInterfaceNames(){return array_reverse($this->interfaces);}public
 function getInterfaces(){$interfaceNames=$this->getInterfaceNames();if(empty($interfaceNames)){return
 array();}$broker=$this->getBroker();return array_combine($interfaceNames,array_map(function($interfaceName)use($broker){return$broker->getClass($interfaceName);},$interfaceNames));}public
-function getMethod($name){foreach($this->getMethods()as$method){if($name ===$method->getName()){return$method;}}throw
-new Exception\Runtime(sprintf('There is no method "%s" in class "%s".',$name,$this->name),Exception\Runtime::DOES_NOT_EXIST);}public
-function getMethods($filter=null){$methods=$this->getOwnMethods($filter);if(null
-!==$this->parentClassName){foreach($this->getParentClass()->getMethods($filter)as$parentMethod){foreach($methods
-as$method){if($method->getName()===$parentMethod->getName()){continue 2;}}$methods[]=$parentMethod;}}return$methods;}public
-function getModifiers(){if(($this->modifiers&InternalReflectionClass::IS_EXPLICIT_ABSTRACT)&&!($this->modifiers&InternalReflectionClass::IS_IMPLICIT_ABSTRACT)){foreach($this->getMethods()as$reflectionMethod){if($reflectionMethod->isAbstract()){$this->modifiers
+function getMethod($name){if(isset($this->methods[$name])){return$this->methods[$name];}foreach($this->getMethods()as$method){if($name
+===$method->getName()){return$method;}}throw new Exception\Runtime(sprintf('There is no method "%s" in class "%s".',$name,$this->name),Exception\Runtime::DOES_NOT_EXIST);}public
+function getMethods($filter=null){$methods=$this->methods;if(null !==$filter){$methods=array_filter($methods,function(ReflectionMethod$method)use($filter){return
+(bool)($method->getModifiers()&$filter);});}if(null !==$this->parentClassName){foreach($this->getParentClass()->getMethods($filter)as$parentMethod){if(!isset($methods[$parentMethod->getName()])){$methods[$parentMethod->getName()]=$parentMethod;}}}return
+array_values($methods);}public function getModifiers(){if(false ===$this->modifiersComplete){if(($this->modifiers&InternalReflectionClass::IS_EXPLICIT_ABSTRACT)&&!($this->modifiers&InternalReflectionClass::IS_IMPLICIT_ABSTRACT)){foreach($this->getMethods()as$reflectionMethod){if($reflectionMethod->isAbstract()){$this->modifiers
 |= InternalReflectionClass::IS_IMPLICIT_ABSTRACT;}}}if(count($this->getInterfaceNames())){$this->modifiers
-|= self::IMPLEMENTS_INTERFACES;}return$this->modifiers;}public function getNamespaceName(){return$this->namespaceName
-=== ReflectionNamespace::NO_NAMESPACE_NAME?'':$this->namespaceName;}public function
-getParentClass(){$className=$this->getParentClassName();if(null ===$className){return
+|= self::IMPLEMENTS_INTERFACES;}$this->modifiersComplete=true;foreach($this->getParentClasses()as$parentClass){if($parentClass
+instanceof Dummy\ReflectionClass){$this->modifiersComplete=false;break;}}}return$this->modifiers;}public
+function getNamespaceName(){return$this->namespaceName === ReflectionNamespace::NO_NAMESPACE_NAME?'':$this->namespaceName;}public
+function getParentClass(){$className=$this->getParentClassName();if(null ===$className){return
 false;}return$this->getBroker()->getClass($className);}public function getParentClasses(){$parent=$this->getParentClass();if(false
 ===$parent){return array();}return array_merge(array($parent->getName()=>$parent),$parent->getParentClasses());}public
 function getParentClassNameList(){$parent=$this->getParentClass();if(false ===$parent){return
 array();}return array_merge(array($parent->getName()),$parent->getParentClassNameList());}public
-function getParentClassName(){return$this->parentClassName;}public function getProperties($filter=null){$properties=$this->getOwnProperties($filter);if(null
-!==$this->parentClassName){foreach($this->getParentClass()->getProperties($filter)as$parentProperty){foreach($properties
-as$property){if($property->getName()===$parentProperty->getName()){continue 2;}}$properties[]=$parentProperty;}}return$properties;}public
-function getProperty($name){foreach($this->getProperties()as$property){if($name ===$property->getName()){return$property;}}throw
-new Exception\Runtime(sprintf('There is no property "%s" in class "%s".',$name,$this->name),Exception\Runtime::DOES_NOT_EXIST);}public
+function getParentClassName(){return$this->parentClassName;}public function getProperties($filter=null){$properties=$this->properties;if(null
+!==$filter){$properties=array_filter($properties,function(ReflectionProperty$property)use($filter){return
+(bool)($property->getModifiers()&$filter);});}if(null !==$this->parentClassName){foreach($this->getParentClass()->getProperties($filter)as$parentProperty){if(!isset($properties[$parentProperty->getName()])){$properties[$parentProperty->getName()]=$parentProperty;}}}return
+array_values($properties);}public function getProperty($name){if(isset($this->properties[$name])){return$this->properties[$name];}foreach($this->getProperties()as$property){if($name
+===$property->getName()){return$property;}}throw new Exception\Runtime(sprintf('There is no property "%s" in class "%s".',$name,$this->name),Exception\Runtime::DOES_NOT_EXIST);}public
 function getShortName(){$name=$this->getName();if($this->namespaceName !== ReflectionNamespace::NO_NAMESPACE_NAME){$name=substr($name,strlen($this->namespaceName)+1);}return$name;}public
 function getStaticProperties(){$defaults=array();foreach($this->getProperties(InternalReflectionProperty::IS_STATIC)as$property){if($property
 instanceof ReflectionProperty){$defaults[$property->getName()]=$property->getDefaultValue();}}return$defaults;}public
-function getStaticPropertyValue($name,$default=null){$properties=$this->getProperties(InternalReflectionProperty::IS_STATIC);foreach($this->getProperties(InternalReflectionProperty::IS_STATIC)as$property){if($name
-===$property->getName()){if(!$property instanceof ReflectionProperty){return$property->getDeclaringClass()->getStaticPropertyValue($name,$default);}if(!$property->isPublic()&&!$property->isAccessible()){throw
-new Exception\Runtime(sprintf('Static property "%s" in class "%s" is not accessible.',$name,$this->name),Exception\Runtime::NOT_ACCESSBILE);}return$property->getDefaultValue();}}throw
+function getStaticPropertyValue($name,$default=null){if($this->hasProperty($name)&&($property=$this->getProperty($name))&&$property->isStatic()){if(!$property->isPublic()&&!$property->isAccessible()){throw
+new Exception\Runtime(sprintf('Static property "%s" in class "%s" is not accessible.',$name,$this->name),Exception\Runtime::NOT_ACCESSBILE);}return$property->getDefaultValue();}throw
 new Exception\Runtime(sprintf('There is no static property "%s" in class "%s".',$name,$this->name),Exception\Runtime::DOES_NOT_EXIST);}public
 function getOwnInterfaces(){$interfaceNames=$this->getOwnInterfaceNames();if(empty($interfaceNames)){return
 array();}$broker=$this->getBroker();return array_combine($interfaceNames,array_map(function($interfaceName)use($broker){return$broker->getClass($interfaceName);},$interfaceNames));}public
@@ -639,13 +644,14 @@ function getOwnMethods($filter=null){$methods=$this->methods;if(null !==$filter)
 function getOwnProperties($filter=null){$properties=$this->properties;if(null !==$filter){$properties=array_filter($properties,function(ReflectionProperty$property)use($filter){return
 (bool)($property->getModifiers()&$filter);});}return array_values($properties);}public
 function getOwnConstants(){return array_map(function(ReflectionConstant$constant){return$constant->getValue();},$this->constants);}public
-function getOwnConstantReflections(){return$this->constants;}public function hasConstant($name){$constants=$this->getConstantReflections();return
-isset($constants[$name]);}public function hasOwnConstant($name){return isset($this->constants[$name]);}public
-function hasMethod($name){foreach($this->getMethods()as$method){if($name ===$method->getName()){return
-true;}}return false;}public function hasOwnMethod($name){return isset($this->methods[$name]);}public
-function hasProperty($name){foreach($this->getProperties()as$property){if($name ===$property->getName()){return
-true;}}return false;}public function hasOwnProperty($name){return isset($this->properties[$name]);}public
-function implementsInterface($interface){if(is_object($interface)){if(!$interface
+function getOwnConstantReflections(){return array_values($this->constants);}public
+function hasConstant($name){if(isset($this->constants[$name])){return true;}foreach($this->getConstantReflections()as$constant){if($name
+===$constant->getName()){return true;}}return false;}public function hasOwnConstant($name){return
+isset($this->constants[$name]);}public function hasMethod($name){foreach($this->getMethods()as$method){if($name
+===$method->getName()){return true;}}return false;}public function hasOwnMethod($name){return
+isset($this->methods[$name]);}public function hasProperty($name){foreach($this->getProperties()as$property){if($name
+===$property->getName()){return true;}}return false;}public function hasOwnProperty($name){return
+isset($this->properties[$name]);}public function implementsInterface($interface){if(is_object($interface)){if(!$interface
 instanceof InternalReflectionClass &&!$interface instanceof IReflectionClass){throw
 new Exception\Runtime(sprintf('Parameter must be a string or an instance of class reflection, "%s" provided.',get_class($interface)),Exception\Runtime::INVALID_ARGUMENT);}$interfaceName=$interface->getName();if(!$interface->isInterface()){throw
 new Exception\Runtime(sprintf('"%s" is not an interface.',$interfaceName),Exception\Runtime::INVALID_ARGUMENT);}}else{$reflection=$this->getBroker()->getClass($interface);if(!$reflection->isInterface()){throw
@@ -657,10 +663,10 @@ function isFinal(){return$this->modifiers === InternalReflectionClass::IS_FINAL;
 function isInstance($object){if(!is_object($object)){throw new Exception\Runtime(sprintf('Parameter must be a class instance, "%s" provided.',gettype($object)),Exception\Runtime::INVALID_ARGUMENT);}return$this->name
 === get_class($object)|| is_subclass_of($object,$this->name);}public function isInstantiable(){if($this->isInterface()||$this->isAbstract()){return
 false;}if(null ===($constructor=$this->getConstructor())){return true;}return$constructor->isPublic();}public
-function isCloneable(){if(!$this->isInstantiable()){return false;}foreach($this->getMethods()as$method){if('__clone'
-===$method->getName()){return$method->isPublic();}}return true;}public function isInterface(){return
-self::IS_INTERFACE ===$this->modifiers;}public function isException(){return 'Exception'
-===$this->name ||$this->isSubclassOf('Exception');}public function isIterateable(){return$this->implementsInterface('Traversable');}public
+function isCloneable(){if(!$this->isInstantiable()){return false;}if($this->hasMethod('__clone')){return$this->getMethod('__clone')->isPublic();}return
+true;}public function isInterface(){return self::IS_INTERFACE ===$this->modifiers;}public
+function isException(){return 'Exception' ===$this->name ||$this->isSubclassOf('Exception');}public
+function isIterateable(){return$this->implementsInterface('Traversable');}public
 function isSubclassOf($class){if(is_object($class)){if(!$class instanceof InternalReflectionClass
 &&!$class instanceof IReflectionClass){throw new Exception\Runtime(sprintf('Parameter must be a string or an instance of class reflection, "%s" provided.',get_class($class)),Exception\Runtime::INVALID_ARGUMENT);}$class=$class->getName();}if($class
 ===$this->parentClassName){return true;}$parent=$this->getParentClass();return false
@@ -685,9 +691,8 @@ function newInstance($args){return$this->newInstanceArgs(func_get_args());}publi
 function newInstanceArgs(array$args=array()){if(!class_exists($this->name,true)){throw
 new Exception\Runtime(sprintf('Could not create an instance of class "%s"; class does not exist.',$this->name),Exception\Runtime::DOES_NOT_EXIST);}$reflection=new
 InternalReflectionClass($this->name);return$reflection->newInstanceArgs($args);}public
-function setStaticPropertyValue($name,$value){foreach($this->getProperties(InternalReflectionProperty::IS_STATIC)as$property){if($name
-===$property->getName()){if(!$property->isPublic()&&!$property->isAccessible()){throw
-new Exception\Runtime(sprintf('Static property "%s" in class "%s" is not accessible.',$name,$this->name),Exception\Runtime::NOT_ACCESSBILE);}$property->setDefaultValue($value);return;}}throw
+function setStaticPropertyValue($name,$value){if($this->hasProperty($name)&&($property=$this->getProperty($name))&&$property->isStatic()){if(!$property->isPublic()&&!$property->isAccessible()){throw
+new Exception\Runtime(sprintf('Static property "%s" in class "%s" is not accessible.',$name,$this->name),Exception\Runtime::NOT_ACCESSBILE);}$property->setDefaultValue($value);return;}throw
 new Exception\Runtime(sprintf('There is no static property "%s" in class "%s".',$name,$this->name),Exception\Runtime::DOES_NOT_EXIST);}private
 function parseModifiers(Stream$tokenStream){try{while(true){switch($tokenStream->getType()){case
 null:break 2;case T_ABSTRACT:$this->modifiers=InternalReflectionClass::IS_EXPLICIT_ABSTRACT;break;case
@@ -946,11 +951,10 @@ getInheritedDocComment(){if(false !==($docComment=$this->getDocComment())&&false
 === stripos($docComment,'@inheritdoc')){return$docComment;}$parent=$this->getDeclaringClass()->getParentClass();if(false
 !==$parent &&$parent->hasMethod($this->getName())){return$parent->getMethod($this->getName())->getInheritedDocComment();}return
 false;}public function getModifiers(){if(!$this->modifiersComplete &&!($this->modifiers&(self::ACCESS_LEVEL_CHANGED|self::IS_IMPLEMENTED_ABSTRACT))){$declaringClass=$this->getDeclaringClass();$parentClass=$declaringClass->getParentClass();if(false
-!==$parentClass){foreach($parentClass->getMethods()as$parentClassMethod){if($this->name
-===$parentClassMethod->getName()){if($this->modifiers&InternalReflectionMethod::IS_PUBLIC
+!==$parentClass &&$parentClass->hasMethod($this->name)){$parentClassMethod=$parentClass->getMethod($this->name);if($this->modifiers&InternalReflectionMethod::IS_PUBLIC
 &&($parentClassMethod->getModifiers()&(self::ACCESS_LEVEL_CHANGED|InternalReflectionMethod::IS_PRIVATE))){$this->modifiers
 |= self::ACCESS_LEVEL_CHANGED;}if($parentClassMethod->getModifiers()&(self::IS_IMPLEMENTED_ABSTRACT|InternalReflectionMethod::IS_ABSTRACT)){$this->modifiers
-|= self::IS_IMPLEMENTED_ABSTRACT;}break;}}}$this->modifiersComplete=true;foreach($declaringClass->getParentClasses()as$parentClass){if($parentClass
+|= self::IS_IMPLEMENTED_ABSTRACT;}}$this->modifiersComplete=true;foreach($declaringClass->getParentClasses()as$parentClass){if($parentClass
 instanceof Dummy\ReflectionClass){$this->modifiersComplete=false;break;}}}return$this->modifiers;}public
 function invoke($object,$args){$params=func_get_args();return$this->invokeArgs(array_shift($params),$params);}public
 function invokeArgs($object,array$args=array()){try{$declaringClass=$this->getDeclaringClass();if(!$declaringClass->isInstance($object)){throw

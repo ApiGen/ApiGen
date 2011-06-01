@@ -181,7 +181,7 @@
 
 	<table class="summary" id="constants" n:if="$ownConstants">
 	<caption>Constants summary</caption>
-	<tr n:foreach="$ownConstants as $name => $constant" data-order="{$name}" id="{$name}" n:class="$constant->deprecated ? deprecated">
+	<tr n:foreach="$ownConstants as $constant" data-order="{$constant->name}" id="{$constant->name}" n:class="$constant->deprecated ? deprecated">
 		{var $annotations => $constant->annotations}
 
 		<td class="right" width="1%"><code class="nowrap">
@@ -190,9 +190,9 @@
 		</code></td>
 		<td width="1%"><code>
 			{if $class->internal}
-				<a href="{$constant|manualUrl}" title="Go to PHP documentation"><b>{$name}</b></a>
+				<a href="{$constant|manualUrl}" title="Go to PHP documentation"><b>{$constant->name}</b></a>
 			{else}
-				<a n:tag-if="$config->sourceCode" href="{$constant|sourceUrl}" title="Go to source code"><b>{$name}</b></a>
+				<a n:tag-if="$config->sourceCode" href="{$constant|sourceUrl}" title="Go to source code"><b>{$constant->name}</b></a>
 			{/if}
 		</code></td>
 		<td width="1%">
@@ -200,7 +200,7 @@
 			{if $element}<a href="{$element|constantUrl}">{$constant->valueDefinition}</a>{else}<code>{!$constant->valueDefinition|highlightValue}</code>{/if}
 		</td>
 		<td><div class="position">
-			<a href="#{$name}" class="anchor">#</a>
+			<a href="#{$constant->name}" class="anchor">#</a>
 			<div class="short">
 				{!$constant|shortDescription}
 			</div>
