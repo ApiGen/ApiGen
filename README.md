@@ -1,27 +1,27 @@
 # Welcome to TR ApiGen #
 
-TR ApiGen is a fork of the original [tool](https://github.com/nette/apigen) created by [Andrewsville](https://github.com/Andrewsville) and [Kukulich](https://github.com/kukulich). We have taken the original ApiGen, fixed some bugs, altered some things and added many useful features.
+TR ApiGen is a fork of the original [tool](https://github.com/nette/apigen) created by [Andrewsville](https://github.com/Andrewsville) and [Kukulich](https://github.com/kukulich).
+
+When the original ApiGen was introduced, its [author](https://github.com/dg) stated that: *"This time with no technical support. There are definitely things that ApiGen does not support and that are absolutely crucial for you. And without them there is no use in trying ApiGen because other similar tools have them. If this is the case, feel free to add them."*
+
+And we did :) That is how our **TR ApiGen** was born. We have taken the original tool, fixed some bugs, altered some things and added many useful features.
 
 # Differences from the original tool #
 
 The biggest difference is that we use our own [TokenReflection library](https://github.com/Andrewsville/PHP-Token-Reflection) to describe the source code. Using TokenReflection is:
 
-* fast (TR Apigen is faster than the original version, actually),
-* safe (documented source code does not get included and thus parsed),
-* simple (you do not need to include or autoload all libraries you use in your source code).
+* **safe** (documented source code does not get included and thus parsed),
+* **simple** (you do not need to include or autoload all libraries you use in your source code).
 
 Besides, we have made following changes in our ApiGen.
 
-### Changed behavior ###
+### Changes ###
 
-* There are different command line parameters (we will look at them later).
-* TR Apigen supports multiple/custom templates.
-* There are two fancy progressbars. One is displayed while parsing source codes, the other one while generating the actual documentation. So you do not have to stare at the command prompt not having an idea how long it will take to finish.
-* We can handle exceptions. So if something goes wrong, you will know what happened (and you can let us know ;)
-* TR ApiGen uses much less memory.
-
-### Documentation changes ###
-
+* Different command line parameters (see below).
+* Support for multiple/custom templates.
+* Fancy progressbars (one while parsing source codes, one while generating documentation).
+* Exceptions handling.
+* Much lower memory usage.
 * Better page titles.
 * A page with trees of classes, interfaces and exceptions.
 * A page with a list of deprecated elements.
