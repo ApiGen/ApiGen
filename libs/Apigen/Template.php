@@ -186,6 +186,8 @@ class Template extends Nette\Templating\FileTemplate
 				case 'param':
 				case 'return':
 				case 'throws':
+				case 'see':
+				case 'uses':
 					$description = $that->description($value, $context);
 					return '<code>' . $that->getTypeLinks($value, $context) . '</code>' . ($description ? '<br />' . $that->docline($description, $context) : '');
 				case 'package':
@@ -204,13 +206,6 @@ class Template extends Nette\Templating\FileTemplate
 					return $that->packages && $packageName
 						? $that->link($that->getPackageUrl($packageName . '\\' . $subpackageName), $subpackageName) . ' ' . $that->docline($description, $context)
 						: $that->docline($value, $context);
-				case 'see':
-				case 'uses':
-					$link = $that->resolveLink($value, $context);
-					if (null !== $link) {
-						return $link;
-					}
-					// Break missing intentionally
 				default:
 					return $that->docline($value, $context);
 			}
@@ -691,24 +686,27 @@ class Template extends Nette\Templating\FileTemplate
 		if ($element instanceof ReflectionClass) {
 			return $this->link($this->getClassUrl($element), $element->getName());
 		} elseif ($element instanceof ReflectionConstant && null === $element->getDeclaringClassName()) {
-			return $this->link($this->getConstantUrl($element), $element->getName());
+			$text = $element->inNamespace()
+				? $this->escapeHtml($element->getNamespaceName()) . '\\<b>' . $this->escapeHtml($element->getShortName()) . '</b>'
+				: '<b>' . $this->escapeHtml($element->getName()) . '</b>';
+			return sprintf('<a href="%s">%s</a>', $this->getConstantUrl($element), $text);
 		} elseif ($element instanceof ReflectionFunction) {
-			return $this->link($this->getFunctionUrl($element), $element->getName());
+			return $this->link($this->getFunctionUrl($element), $element->getName() . '()');
 		}
 
-		$text = $element->getDeclaringClassName();
+		$text = $this->escapeHtml($element->getDeclaringClassName());
 		if ($element instanceof ReflectionProperty) {
 			$url = $this->propertyUrl($element);
-			$text .= '::$' . $element->getName();
+			$text .= '::<var>$' . $this->escapeHtml($element->getName()) . '</var>';
 		} elseif ($element instanceof ReflectionMethod) {
 			$url = $this->methodUrl($element);
-			$text .= '::' . $element->getName() . '()';
+			$text .= '::' . $this->escapeHtml($element->getName()) . '()';
 		} elseif ($element instanceof ReflectionConstant) {
 			$url = $this->constantUrl($element);
-			$text .= '::' . $element->getName();
+			$text .= '::<b>' . $this->escapeHtml($element->getName()) . '</b>';
 		}
 
-		return $this->link($url, $text);
+		return sprintf('<a href="%s">%s</a>', $url, $text);
 	}
 
 	/**
@@ -722,7 +720,7 @@ class Template extends Nette\Templating\FileTemplate
 	{
 		$that = $this;
 		return preg_replace_callback('~{@link\\s+([^}]+)}~', function ($matches) use ($context, $that) {
-			return $that->resolveLink($matches[1], $context) ?: $matches[0];
+			return $that->resolveLink($matches[1], $context) ?: $matches[1];
 		}, $text);
 	}
 

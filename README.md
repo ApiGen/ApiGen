@@ -49,6 +49,7 @@ Besides, we have made following changes in our ApiGen.
 * Google Analytics support.
 * List of undocumented elements.
 * Documentation for functions and constants in namespace or global space.
+* A lot of visual enhancements.
 
 ### Bugfixes ###
 * No fatal errors when a class is missing (this is a benefit of using the TokenReflection library).

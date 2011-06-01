@@ -97,6 +97,14 @@ pre {
 	color: #000000;
 }
 
+#constants .smallList code a, .constants .smallList code a {
+	color: #006aeb;
+}
+
+#constants .smallList code a b, .constants .smallList code a b {
+	color: #000000;
+}
+
 #properties var a, .properties var a {
 	color: #ca8a04;
 }
@@ -269,10 +277,15 @@ pre {
 	margin: 1.2em 0;
 }
 
-.description pre {
-	margin: .5em 0;
+.description pre, .detailed pre {
 	padding: .6em;
 	background: #fcfcf7;
+}
+.description pre {
+	margin: .5em 0;
+}
+.detailed pre {
+	border: .5em solid #ecede5;
 }
 
 dl.tree {
