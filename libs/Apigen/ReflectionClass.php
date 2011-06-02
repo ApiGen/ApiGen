@@ -13,7 +13,7 @@
 
 namespace Apigen;
 
-use TokenReflection\IReflectionClass, TokenReflection\IReflectionMethod, TokenReflection\IReflectionProperty, TokenReflection\IReflectionConstant;
+use TokenReflection, TokenReflection\IReflectionClass, TokenReflection\IReflectionMethod, TokenReflection\IReflectionProperty, TokenReflection\IReflectionConstant;
 use ReflectionMethod, ReflectionProperty;
 
 /**
@@ -386,5 +386,81 @@ class ReflectionClass extends ReflectionBase
 				$this->getParentClasses()
 			)
 		);
+	}
+
+	/**
+	 * Checks if there is a constant of the given name.
+	 *
+	 * @param string $constantName Constant name
+	 * @return boolean
+	 */
+	public function hasConstant($constantName)
+	{
+		try {
+			$constant = $this->reflection->getConstantReflection($constantName);
+
+			if (!self::$config->deprecated && $constant->isDeprecated()) {
+				// Deprecated constant
+				return false;
+			}
+
+			return self::$classes[$constant->getDeclaringClassName()]->isDocumented();
+		} catch (TokenReflection\Exception $e) {
+			return false;
+		}
+	}
+
+	/**
+	 * Checks if there is a property of the given name.
+	 *
+	 * @param string $propertyName Property name
+	 * @return boolean
+	 */
+	public function hasProperty($propertyName)
+	{
+		try {
+			$property = $this->reflection->getProperty($property);
+
+			if (!self::$config->deprecated && $property->isDeprecated()) {
+				// Deprecated property
+				return false;
+			}
+
+			if (!($property & self::$propertyAccessLevels)) {
+				// Wrong access level
+				return false;
+			}
+
+			return self::$classes[$property->getDeclaringClassName()]->isDocumented();
+		} catch (TokenReflection\Exception $e) {
+			return false;
+		}
+	}
+
+	/**
+	 * Checks if there is a method of the given name.
+	 *
+	 * @param string $methodName Method name
+	 * @return boolean
+	 */
+	public function hasMethod($methodName)
+	{
+		try {
+			$method = $this->reflection->getMethod($methodName);
+
+			if (!self::$config->deprecated && $method->isDeprecated()) {
+				// Deprecated method
+				return false;
+			}
+
+			if (!($method & self::$methodAccessLevels)) {
+				// Wrong access level
+				return false;
+			}
+
+			return self::$classes[$method->getDeclaringClassName()]->isDocumented();
+		} catch (TokenReflection\Exception $e) {
+			return false;
+		}
 	}
 }
