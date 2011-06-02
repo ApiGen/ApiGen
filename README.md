@@ -17,39 +17,38 @@ Besides, we have made following changes in our ApiGen.
 
 ### Changes ###
 
-* Different command line parameters (see below).
-* Support for multiple/custom templates.
-* Fancy progressbars (one while parsing source codes, one while generating documentation).
-* Exceptions handling.
+* Much more confuguration options (see below).
 * Much lower memory usage.
-* Better page titles.
+* Documentation for functions and constants in namespaces or global space.
 * A page with trees of classes, interfaces and exceptions.
 * A page with a list of deprecated elements.
 * A page with Todo tasks.
+* List of undocumented elements.
+* Support of the {@link} tag.
+* Clickable links for @see and @uses tags.
 * Detailed documentation for constants and properties with all annotations.
 * Links to PHP manual pages for constants and properties of PHP internal classes.
 * Links to the start line in the highlighted source code for constants and properties.
 * List of packages and subpackages.
 * List of indirect known subclasses and implementers.
+* Support for multiple/custom templates.
+* Fancy progressbars (one while parsing source codes, one while generating documentation).
+* Exceptions handling.
 * Inherited methods, constants and properties are in alphabetical order.
 * Class methods, constants and properties are in truly alphabetical order.
 * Better visualization of method parameters.
 * Unified order of annotations.
-* Support of the {@link} tag.
-* Clickable links for @see and @uses tags.
 * No URL shortening.
 * Better visualization of nested namespaces.
 * No wrapping of class names.
 * Resizable left column.
 * Better static files (stylesheets, javascript) versioning.
+* Better page titles.
+* A lot of visual enhancements.
+* Google Analytics support.
 * Full sitemap with links to package and namespace pages.
-* Class and interface tables/headings are displayed only if required.
 * New version of jQuery.
 * New version of FSHL.
-* Google Analytics support.
-* List of undocumented elements.
-* Documentation for functions and constants in namespace or global space.
-* A lot of visual enhancements.
 
 ### Bugfixes ###
 * No fatal errors when a class is missing (this is a benefit of using the TokenReflection library).
