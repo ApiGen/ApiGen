@@ -21,6 +21,7 @@ function setBroker(TokenReflection\Broker$broker);public function getBroker();pu
 function setStoringTokenStreams($store);public function getStoringTokenStreams();public
 function getClasses($type=Backend::TOKENIZED_CLASSES);public function getFunctions();public
 function getConstants();}}
+
  namespace TokenReflection{use TokenReflection\Broker,TokenReflection\Exception;use
 RecursiveDirectoryIterator,RecursiveIteratorIterator;class Broker{const CACHE_CLASS='class';const
 CACHE_FUNCTION='function';const CACHE_CONSTANT='constant';const CACHE_NAMESPACE='namespace';private$backend;private$cache;public
@@ -54,11 +55,14 @@ function getClasses($types=Broker\Backend::TOKENIZED_CLASSES){return$this->backe
 function getFunctions(){return$this->backend->getFunctions();}public function getConstants(){return$this->backend->getConstants();}public
 static function getRealPath($path){if(0 === strpos($path,'phar://')){return is_file($path)||
 is_dir($path)?$path:false;}else{return realpath($path);}}}}
+
  namespace TokenReflection{use Exception as InternalException;abstract class Exception
 extends InternalException{const UNSUPPORTED=1;const DOES_NOT_EXIST=2;}}
+
  namespace TokenReflection{interface IReflection{public function getName();public
 function getBroker();public function isTokenized();public function isInternal();public
 function isUserDefined();public function __get($key);public function __isset($key);}}
+
  namespace TokenReflection{use TokenReflection\Exception;class ReflectionAnnotation{const
 SHORT_DESCRIPTION=' short_description';const LONG_DESCRIPTION=' long_description';private$templates=array();private$annotations;private$docComment;private$reflection;public
 function __construct(ReflectionBase$reflection,$docComment=false){$this->reflection=$reflection;$this->docComment=$docComment?:false;}public
@@ -96,6 +100,7 @@ as$parent){$annotations=$parent->getAnnotations();if(!empty($annotations)){$this
 as$parent){if($parent->hasAnnotation(self::LONG_DESCRIPTION)){$this->annotations[self::LONG_DESCRIPTION]=str_ireplace('{@inheritdoc}',$parent->getAnnotation(self::LONG_DESCRIPTION),$this->annotations[self::LONG_DESCRIPTION]);break;}}$this->annotations[self::LONG_DESCRIPTION]=str_ireplace('{@inheritdoc}','',$this->annotations[self::LONG_DESCRIPTION]);}if(isset($this->annotations[self::SHORT_DESCRIPTION])&&false
 !== stripos($this->annotations[self::SHORT_DESCRIPTION],'{@inheritdoc}')){foreach($parents
 as$parent){if($parent->hasAnnotation(self::SHORT_DESCRIPTION)){$this->annotations[self::SHORT_DESCRIPTION]=str_ireplace('{@inheritdoc}',$parent->getAnnotation(self::SHORT_DESCRIPTION),$this->annotations[self::SHORT_DESCRIPTION]);break;}}$this->annotations[self::SHORT_DESCRIPTION]=str_ireplace('{@inheritdoc}','',$this->annotations[self::SHORT_DESCRIPTION]);}}}}}
+
  namespace TokenReflection{use TokenReflection\Exception;use SeekableIterator,Countable,ArrayAccess,Serializable;class
 Stream implements SeekableIterator,Countable,ArrayAccess,Serializable{private$fileName='unknown';private$tokens=array();private$position=0;private$count=0;public
 function __construct($fileName){$this->fileName=Broker::getRealPath($fileName);if(false
@@ -134,6 +139,7 @@ function getSourcePart($start=null,$end=null){$start=(int)$start;$end=null ===$e
 serialize(array($this->fileName,$this->tokens));}public function unserialize($serialized){$data=@unserialize($serialized);if(false
 ===$data){throw new Exception\Runtime('Could not deserialize the serialized data.',Exception\Runtime::SERIALIZATION_ERROR);}if(2
 !== count($data)||!is_string($data[0])||!is_array($data[1])){throw new Exception\Runtime('Invalid serialization data.',Exception\Runtime::SERIALIZATION_ERROR);}$this->fileName=$data[0];$this->tokens=$data[1];$this->count=count($this->tokens);$this->position=0;}}}
+
  namespace TokenReflection\Broker\Backend{use TokenReflection;use TokenReflection\Stream,TokenReflection\Exception,TokenReflection\Broker,TokenReflection\Php,TokenReflection\Dummy;class
 Memory implements Broker\Backend{private$namespaces=array();private$allClasses;private$allFunctions;private$allConstants;private$tokenStreams=array();private$broker;private$storingTokenStreams;public
 function getNamespace($namespaceName){if(!isset($this->namespaces[TokenReflection\ReflectionNamespace::NO_NAMESPACE_NAME])){$this->namespaces[TokenReflection\ReflectionNamespace::NO_NAMESPACE_NAME]=new
@@ -165,11 +171,14 @@ function getFunctions(){if(null ===$this->allFunctions){$this->allFunctions=arra
 as$namespace){foreach($namespace->getFunctions()as$function){$this->allFunctions[$function->getName()]=$function;}}}return$this->allFunctions;}public
 function getConstants(){if(null ===$this->allConstants){$this->allConstants=array();foreach($this->namespaces
 as$namespace){foreach($namespace->getConstants()as$constant){$this->allConstants[$constant->getName()]=$constant;}}}return$this->allConstants;}}}
+
  namespace TokenReflection\Exception{use TokenReflection;class Parse extends TokenReflection\Exception{const
 FILE_DOES_NOT_EXIST=10;const FILE_NOT_READABLE=11;const DIR_DOES_NOT_EXIST=12;const
 INVALID_PARENT=13;const PARSE_ELEMENT_ERROR=14;const PARSE_CHILDREN_ERROR=15;}}
+
  namespace TokenReflection\Exception{use TokenReflection;class Runtime extends TokenReflection\Exception{const
 INVALID_ARGUMENT=20;const NOT_ACCESSBILE=21;const ALREADY_EXISTS=22;const SERIALIZATION_ERROR=23;}}
+
  namespace TokenReflection{interface IReflectionClass extends IReflection{public function
 getConstant($name);public function getConstantReflection($name);public function getConstants();public
 function getOwnConstants();public function getConstantReflections();public function
@@ -195,17 +204,20 @@ function getIndirectSubclassNames();public function getDirectImplementers();publ
 function getDirectImplementerNames();public function getIndirectImplementers();public
 function getIndirectImplementerNames();public function newInstance($args);public
 function newInstanceArgs(array$args=array());public function setStaticPropertyValue($name,$value);}}
+
  namespace TokenReflection{interface IReflectionConstant extends IReflection{public
 function getDeclaringClass();public function getDeclaringClassName();public function
 getNamespaceName();public function inNamespace();public function getValue();public
 function getValueDefinition();public function getDocComment();public function getInheritedDocComment();public
 function getStartLine();public function getEndLine();public function getFileName();public
 function getShortName();}}
+
  namespace TokenReflection{interface IReflectionExtension extends IReflection{public
 function getClass($name);public function getClasses();public function getClassNames();public
 function getConstantReflection($name);public function getConstantReflections();public
 function getConstant($name);public function getConstants();public function getFunction($name);public
 function getFunctions();public function getFunctionNames();}}
+
  namespace TokenReflection{interface IReflectionFunctionBase extends IReflection{public
 function getDocComment();public function getInheritedDocComment();public function
 getStartLine();public function getEndLine();public function getExtension();public
@@ -214,12 +226,14 @@ function getNumberOfParameters();public function getNumberOfRequiredParameters()
 function getParameters();public function getParameter($parameter);public function
 getStaticVariables();public function inNamespace();public function isClosure();public
 function isDeprecated();public function returnsReference();}}
+
  namespace TokenReflection{interface IReflectionNamespace extends IReflection{public
 function getClass($className);public function getClasses();public function getClassNames();public
 function getClassShortNames();public function getFunction($functionName);public function
 getFunctions();public function getFunctionNames();public function getFunctionShortNames();public
 function getConstant($constantName);public function getConstants();public function
 getConstantNames();public function getConstantShortNames();}}
+
  namespace TokenReflection{interface IReflectionParameter extends IReflection{public
 function getDeclaringClass();public function getDeclaringClassName();public function
 getDeclaringFunction();public function getDeclaringFunctionName();public function
@@ -229,6 +243,7 @@ function getClassName();public function isDefaultValueAvailable();public functio
 isOptional();public function isPassedByReference();public function getDocComment();public
 function getInheritedDocComment();public function getStartLine();public function
 getEndLine();}}
+
  namespace TokenReflection{interface IReflectionProperty extends IReflection{public
 function getDeclaringClass();public function getDeclaringClassName();public function
 getDocComment();public function getInheritedDocComment();public function getStartLine();public
@@ -236,9 +251,11 @@ function getEndLine();public function getModifiers();public function getValue($o
 function isDefault();public function getDefaultValue();public function getDefaultValueDefinition();public
 function isPrivate();public function isProtected();public function isPublic();public
 function isStatic();public function setAccessible($accessible);public function setValue($object,$value);}}
+
  namespace TokenReflection\Php{use TokenReflection;use Reflector;interface IReflection
 extends TokenReflection\IReflection{public function getNamespaceAliases();public
 static function create(Reflector$internalReflection,TokenReflection\Broker$broker);}}
+
  namespace TokenReflection{use TokenReflection\Exception;abstract class ReflectionBase
 implements IReflection{const DOCBLOCK_TEMPLATE_START='/**#@+';const DOCBLOCK_TEMPLATE_END='/**#@-*/';private
 static$methodCache=array();private$broker;private$startLine;private$endLine;protected$docComment;private$parsedDocComment;protected$name;private$fileName;private$startPosition;private$endPosition;protected$docblockTemplates=array();public
@@ -282,6 +299,7 @@ public static function exists(IReflection$object,$key){try{self::get($object,$ke
 true;}catch(RuntimeException$e){return false;}}final public static function resolveClassFQN($className,array$aliases,$namespaceName=null){if($className{0}==
 '\\'){return ltrim($className,'\\');}if(false ===($position=strpos($className,'\\'))){if(isset($aliases[$className])){return$aliases[$className];}}else{$alias=substr($className,0,$position);if(isset($aliases[$alias])){return$aliases[$alias].'\\'.substr($className,$position+1);}}return
 null ===$namespaceName ||$namespaceName === ReflectionNamespace::NO_NAMESPACE_NAME?$className:$namespaceName.'\\'.$className;}}}
+
  namespace TokenReflection{use ArrayIterator;class ReflectionFile implements IReflection{private$namespaces=array();private$tokenStream=null;private$broker;public
 function __construct(Stream$tokenStream,Broker$broker){$this->tokenStream=$tokenStream;$this->broker=$broker;$this->parse();}public
 function getNamespaces(){return$this->namespaces;}private function parse(){if($this->tokenStream->count()<=
@@ -299,6 +317,7 @@ ReflectionBase::export($argument,$return);}public function isTokenized(){return 
 function isInternal(){return false;}public function isUserDefined(){return true;}final
 public function __get($key){return ReflectionBase::get($this,$key);}final public
 function __isset($key){return ReflectionBase::exists($this,$key);}}}
+
  namespace TokenReflection{use TokenReflection\Exception;use ReflectionProperty as
 InternalReflectionProperty,ReflectionClass as InternalReflectionClass;class ReflectionProperty
 extends ReflectionBase implements IReflectionProperty{private static$parseValueDefinitions=false;private$declaringClassName;private$defaultValue;private$defaultValueDefinition;private$modifiers=0;private$accessible=false;public
@@ -351,6 +370,7 @@ new Exception\Parse(sprintf('Property sibling "%s" has no access level defined.'
 |= InternalReflectionProperty::IS_STATIC;}}catch(Exception$e){throw new Exception\Parse('Could not parse modifiers.',Exception\Parse::PARSE_ELEMENT_ERROR,$e);}}return$this;}public
 static function setParseValueDefinitions($parse){self::$parseValueDefinitions=(bool)$parse;}public
 static function getParseValueDefinitions(){return self::$parseValueDefinitions;}}}
+
  namespace TokenReflection\Dummy{use TokenReflection;use TokenReflection\Broker,TokenReflection\IReflectionClass,TokenReflection\ReflectionBase;use
 ReflectionClass as InternalReflectionClass,TokenReflection\Exception;class ReflectionClass
 implements IReflectionClass{private$broker;private$name;public function __construct($className,Broker$broker){$this->name=$className;$this->broker=$broker;}public
@@ -415,8 +435,10 @@ function newInstanceArgs(array$args=array()){if(!class_exists($this->name,true))
 new Exception\Runtime(sprintf('Could not create an instance of class "%s"; class does not exist.',$this->name),Exception\Runtime::DOES_NOT_EXIST);}$reflection=new
 InternalReflectionClass($this->name);return$reflection->newInstanceArgs($args);}public
 function setStaticPropertyValue($name,$value){throw new Exception\Runtime(sprintf('There is no static property "%s" in class "%s".',$name,$this->name),Exception\Runtime::DOES_NOT_EXIST);}}}
+
  namespace TokenReflection{interface IReflectionFunction extends IReflectionFunctionBase{public
 function isDisabled();public function invoke();public function invokeArgs(array$args);}}
+
  namespace TokenReflection{interface IReflectionMethod extends IReflectionFunctionBase{public
 function getDeclaringClass();public function getDeclaringClassName();public function
 getModifiers();public function getPrototype();public function invoke($object,$args);public
@@ -424,6 +446,7 @@ function invokeArgs($object,array$args);public function isAbstract();public func
 isConstructor();public function isDestructor();public function isFinal();public function
 isPrivate();public function isProtected();public function isPublic();public function
 isStatic();public function setAccessible($accessible);}}
+
  namespace TokenReflection\Php{use TokenReflection;use TokenReflection\Broker,TokenReflection\Exception;use
 Reflector,ReflectionClass as InternalReflectionClass,ReflectionProperty as InternalReflectionProperty,ReflectionMethod
 as InternalReflectionMethod;class ReflectionClass extends InternalReflectionClass
@@ -433,7 +456,7 @@ function getBroker(){return$this->broker;}public function getParentClass(){$pare
 function getParentClassName(){$parent=$this->getParentClass();return$parent?$parent->getName():null;}public
 function getParentClasses(){$broker=$this->broker;return array_map(function($className)use($broker){return$broker->getClass($className);},$this->getParentClassNameList());}public
 function getConstantReflection($name){if($this->hasConstant($name)){return new ReflectionConstant($name,$this->getConstant($name),$this->broker,$this);}throw
-new Exception(sprintf('Constant "%s" is not defined in class "%s"',$name,$this->getName()),Exception::DOES_NOT_EXIST);}public
+new Exception\Runtime(sprintf('Constant "%s" is not defined in class "%s"',$name,$this->getName()),Exception::DOES_NOT_EXIST);}public
 function getConstantReflections(){if(null ===$this->constants){$this->constants=array();foreach($this->getConstants()as$name
 =>$value){$this->constants[$name]=$this->getConstantReflection($name);}}return array_values($this->constants);}public
 function getOwnConstantReflections(){$constants=array();foreach($this->getOwnConstants()as$name
@@ -468,11 +491,11 @@ isException(){return 'Exception' ===$this->getName()||$this->isSubclassOf('Excep
 function getInterfaces(){if(null ===$this->interfaces){$broker=$this->broker;$this->interfaces=array_map(function($interfaceName)use($broker){return$broker->getClass($interfaceName);},$this->getInterfaceNames());}return$this->interfaces;}public
 function implementsInterface($interface){if(is_object($interface)){if($interface
 instanceof InternalReflectionClass ||$interface instanceof IReflectionClass){$interfaceName=$interface->getName();}else{throw
-new InvalidArgumentException('Parameter must be a string or an instance of class reflection');}}else{$interfaceName=$interface;}$interfaces=$this->getInterfaces();return
+new Exception\Runtime(sprintf('Parameter must be a string or an instance of class reflection, "%s" provided.',get_class($interface)),Exception\Runtime::INVALID_ARGUMENT);}}else{$interfaceName=$interface;}$interfaces=$this->getInterfaces();return
 isset($interfaces[$interfaceName]);}public function getMethod($name){foreach($this->getMethods()as$method){if($method->getName()===$name){return$method;}}throw
-new Exception(sprintf('There is no method %s in class %s',$name,$this->name),Exception::DOES_NOT_EXIST);}public
+new Exception\Runtime(sprintf('There is no method %s in class %s',$name,$this->name),Exception::DOES_NOT_EXIST);}public
 function getProperty($name){foreach($this->getProperties()as$property){if($name ===$property->getName()){return$property;}}throw
-new Exception(sprintf('There is no property %s in class %s',$name,$this->getName()),Exception::DOES_NOT_EXIST);}public
+new Exception\Runtime(sprintf('There is no property %s in class %s',$name,$this->getName()),Exception::DOES_NOT_EXIST);}public
 function getStaticProperties(){return$this->getProperties(InternalReflectionProperty::IS_STATIC);}public
 function getInheritedDocComment(){return false;}public function getAnnotations(){return
 array();}public function getAnnotation($name){return null;}public function hasAnnotation($name){return
@@ -494,6 +517,7 @@ false;}return null !==$class->getParentClassName()&&$class->getParentClass()->im
 function getIndirectImplementerNames(){return array_keys($this->getIndirectImplementers());}public
 function getNamespaceAliases(){return array();}public static function create(Reflector$internalReflection,Broker$broker){if(!$internalReflection
 instanceof InternalReflectionClass){throw new Exception\Runtime(sprintf('Invalid reflection instance provided (%s), ReflectionClass expected.',get_class($internalReflection)));}return$broker->getClass($internalReflection->getName());}}}
+
  namespace TokenReflection\Php{use TokenReflection;use TokenReflection\Broker,TokenReflection\Exception,Reflector;class
 ReflectionConstant implements IReflection,TokenReflection\IReflectionConstant{private$broker;private$declaringClassName;private$namespaceName;private$value;private$name;private$userDefined;public
 function __construct($name,$value,Broker$broker,ReflectionClass$parent=null){$this->name=$name;$this->value=$value;$this->broker=$broker;if(null
@@ -517,6 +541,7 @@ null;}public function getShortName(){$name=$this->getName();if(null !==$this->na
 function isTokenized(){return false;}public function isDeprecated(){return false;}public
 function getNamespaceAliases(){return array();}public static function create(Reflector$internalReflection,Broker$broker){return
 null;}}}
+
  namespace TokenReflection\Php{use TokenReflection;use TokenReflection\Broker,TokenReflection\Exception;use
 Reflector,ReflectionExtension as InternalReflectionExtension;class ReflectionExtension
 extends InternalReflectionExtension implements IReflection,TokenReflection\IReflectionExtension{private$broker;private$classes;private$constants;private$functions;public
@@ -538,6 +563,7 @@ function isTokenized(){return false;}public function isDeprecated(){return false
 function getNamespaceAliases(){return array();}public static function create(Reflector$internalReflection,Broker$broker){static$cache=array();if(!$internalReflection
 instanceof InternalReflectionExtension){throw new Exception\Runtime(sprintf('Invalid reflection instance provided: "%s", ReflectionExtension expected.',get_class($internalReflection)),Exception\Runtime::INVALID_ARGUMENT);}if(!isset($cache[$internalReflection->getName()])){$cache[$internalReflection->getName()]=new
 self($internalReflection->getName(),$broker);}return$cache[$internalReflection->getName()];}}}
+
  namespace TokenReflection\Php{use TokenReflection;use TokenReflection\Broker,TokenReflection\Exception;use
 Reflector,ReflectionParameter as InternalReflectionParameter,ReflectionFunctionAbstract
 as InternalReflectionFunctionAbstract;class ReflectionParameter extends InternalReflectionParameter
@@ -560,6 +586,7 @@ array();}public static function create(Reflector$internalReflection,Broker$broke
 instanceof InternalReflectionParameter){throw new Exception\Runtime(sprintf('Invalid reflection instance provided: "%s", ReflectionParameter expected.',get_class($internalReflection)),Exception\Runtime::INVALID_ARGUMENT);}$class=$internalReflection->getDeclaringClass();$function=$internalReflection->getDeclaringFunction();$key=$class?$class->getName().'::':'';$key
 .=$function->getName().'('.$internalReflection->getName().')';if(!isset($cache[$key])){$cache[$key]=new
 self($class?array($class->getName(),$function->getName()):$function->getName(),$internalReflection->getName(),$broker,$function);}return$cache[$key];}}}
+
  namespace TokenReflection\Php{use TokenReflection;use TokenReflection\Broker,TokenReflection\Exception;use
 Reflector,ReflectionProperty as InternalReflectionProperty;class ReflectionProperty
 extends InternalReflectionProperty implements IReflection,TokenReflection\IReflectionProperty{private$broker;public
@@ -581,6 +608,7 @@ function isDeprecated(){return false;}public function getNamespaceAliases(){retu
 array();}public static function create(Reflector$internalReflection,Broker$broker){static$cache=array();if(!$internalReflection
 instanceof InternalReflectionProperty){throw new Exception\Runtime(sprintf('Invalid reflection instance provided: "%s", ReflectionProperty expected.',get_class($internalReflection)),Exception\Runtime::INVALID_ARGUMENT);}$key=$internalReflection->getDeclaringClass()->getName().'::'.$internalReflection->getName();if(!isset($cache[$key])){$cache[$key]=new
 self($internalReflection->getDeclaringClass()->getName(),$internalReflection->getName(),$broker);}return$cache[$key];}}}
+
  namespace TokenReflection{use TokenReflection\Exception;use ReflectionClass as InternalReflectionClass,ReflectionProperty
 as InternalReflectionProperty;class ReflectionClass extends ReflectionBase implements
 IReflectionClass{const IS_INTERFACE=128;const IMPLEMENTS_INTERFACES=0x80000;private$namespaceName;private$constants=array();private$properties=array();private$methods=array();private$aliases=array();private$modifiers=0;private$modifiersComplete=false;private$parentClassName;private$interfaces=array();protected
@@ -712,6 +740,7 @@ T_STRING:case T_NS_SEPARATOR:$interfaceName .=$tokenStream->getTokenValue();brea
 2;}$tokenStream->skipWhitespaces();}$this->interfaces[]=self::resolveClassFQN($interfaceName,$this->aliases,$this->namespaceName);$type=$tokenStream->getType();if('{'
 ===$type){break;}elseif(',' !==$type){throw new Exception\Parse(sprintf('Invalid token found: "%s", expected "{" or ";".',$tokenStream->getTokenName()),Exception\Parse::PARSE_ELEMENT_ERROR);}}return$this;}catch(Exception$e){throw
 new Exception\Parse('Could not parse implemented interfaces.',Exception\Parse::PARSE_ELEMENT_ERROR,$e);}}}}
+
  namespace TokenReflection{class ReflectionConstant extends ReflectionBase implements
 IReflectionConstant{private$declaringClassName;private$namespaceName;private$value;private$valueDefinition='';private$aliases=array();protected
 function processParent(IReflection$parent){if($parent instanceof ReflectionFileNamespace){$this->namespaceName=$parent->getName();$this->aliases=$parent->getNamespaceAliases();}elseif($parent
@@ -742,6 +771,7 @@ null ===$this->namespaceName ||$this->namespaceName === ReflectionNamespace::NO_
 function inNamespace(){return '' !==$this->getNamespaceName();}public function getShortName(){$name=$this->getName();if(null
 !==$this->namespaceName &&$this->namespaceName !== ReflectionNamespace::NO_NAMESPACE_NAME){$name=substr($name,strlen($this->namespaceName)+1);}return$name;}public
 function getNamespaceAliases(){return null ===$this->declaringClassName?$this->aliases:$this->getDeclaringClass()->getNamespaceAliases();}}}
+
  namespace TokenReflection{use TokenReflection\Exception;class ReflectionFileNamespace
 extends ReflectionBase{private$aliases=array();private$classes=array();private$functions=array();private$constants=array();public
 function getClasses(){return$this->classes;}public function getFunctions(){return$this->functions;}public
@@ -778,6 +808,7 @@ new Exception\Parse(sprintf('Namespace alias "%s" already defined.',$alias),Exce
 ===$type){$tokenStream->skipWhitespaces();continue 2;}elseif(',' ===$type){continue;}throw
 new Exception\Parse(sprintf('Unexpected token found: "%s".',$tokenStream->getTokenName()),Exception\Parse::PARSE_ELEMENT_ERROR);}}$this->aliases=$aliases;return$this;}catch(Exception\Parse$e){throw
 new Exception\Parse('Could not parse namespace aliases.',0,$e);}}}}
+
  namespace TokenReflection{use TokenReflection\Exception;abstract class ReflectionFunctionBase
 extends ReflectionBase implements IReflectionFunctionBase{protected$modifiers=0;private$staticVariables=array();protected$namespaceName;private$returnsReference=false;private$parameters=array();public
 function getModifiers(){return$this->modifiers;}public function inNamespace(){return
@@ -812,6 +843,7 @@ new Exception\Parse('Could not find the function keyword.',Exception\Parse::PARS
 ===$type){$this->returnsReference=true;$tokenStream->skipWhitespaces();}elseif(T_STRING
 !==$type){throw new Exception\Parse(sprintf('Invalid token found: "%s".',$tokenStream->getTokenName()),Exception\Parse::PARSE_ELEMENT_ERROR);}return$this;}catch(Exception\Parse$e){throw
 new Exception\Parse('Could not determine if the function\method returns its value by reference.',Exception\Parse::PARSE_ELEMENT_ERROR,$e);}}}}
+
  namespace TokenReflection{use TokenReflection\Exception;class ReflectionNamespace
 implements IReflectionNamespace{const NO_NAMESPACE_NAME='no-namespace';private$broker;private$name;private$classes=array();private$functions=array();private$constants=array();public
 function __construct($name,Broker$broker){$this->name=$name;$this->broker=$broker;}public
@@ -836,10 +868,11 @@ function isUserDefined(){return true;}public function addFileNamespace(Reflectio
 as$className =>$reflection){if(isset($classes[$className])){throw new Exception\Runtime(sprintf('Class "%s" is already defined; in file "%s".',$className,$reflection->getFileName()),Exception\Runtime::ALREADY_EXISTS);}}$this->classes=array_merge($this->classes,$classes);$functions=$namespace->getFunctions();foreach($this->functions
 as$functionName =>$reflection){if(isset($functions[$functionName])){throw new Exception\Runtime(sprintf('Function "%s" is already defined; in file "%s".',$functionName,$reflection->getFileName()),Exception\Runtime::ALREADY_EXISTS);}}$this->functions=array_merge($this->functions,$functions);$constants=$namespace->getConstants();foreach($this->constants
 as$constantName =>$reflection){if(isset($constants[$constantName])){throw new Exception\Runtime(sprintf('Constant "%s" is already defined; in file "%s".',$constantName,$reflection->getFileName()),Exception\Runtime::ALREADY_EXISTS);}}$this->constants=array_merge($this->constants,$constants);}public
-function __toString(){return '';}public function getSource(){throw new \RuntimeException('Cannot export source code of a namespace.');}public
+function __toString(){return '';}public function getSource(){throw new Exception\Runtime('Cannot export source code of a namespace.',Exception\Runtime::UNSUPPORTED);}public
 static function export($argument,$return=false){return ReflectionBase::export($argument,$return);}final
 public function __get($key){return ReflectionBase::get($this,$key);}final public
 function __isset($key){return ReflectionBase::exists($this,$key);}}}
+
  namespace TokenReflection{use TokenReflection\Exception;class ReflectionParameter
 extends ReflectionBase implements IReflectionParameter{CONST ARRAY_CONSTRAINT='array';private
 static$parseValueDefinitions=false;private$valueConstraint;private$originalValueConstraint;private$defaultValueDefinition;private$defaultValue;private$declaringClassName;private$declaringFunctionName;private$passedByReference=false;private$isOptional;private$position;public
@@ -889,6 +922,7 @@ function parseDefaultValue(Stream$tokenStream){try{if($tokenStream->is('=')){$to
 new Exception\Parse('Could not parse the default value.',0,$e);}}public static function
 setParseValueDefinitions($parse){self::$parseValueDefinitions=(bool)$parse;}public
 static function getParseValueDefinitions(){return self::$parseValueDefinitions;}}}
+
  namespace TokenReflection\Php{use TokenReflection;use TokenReflection\Broker,TokenReflection\Exception;use
 Reflector,ReflectionFunction as InternalReflectionFunction,ReflectionParameter as
 InternalReflectionParameter;class ReflectionFunction extends InternalReflectionFunction
@@ -909,6 +943,7 @@ array();}public function getAnnotation($name){return null;}public function hasAn
 false;}public function isTokenized(){return false;}public function getNamespaceAliases(){return
 array();}public static function create(Reflector$internalReflection,Broker$broker){if(!$internalReflection
 instanceof InternalReflectionFunction){throw new Exception\Runtime(sprintf('Invalid reflection instance provided: "%s", ReflectionFunction expected.',get_class($internalReflection)),Exception\Runtime::INVALID_ARGUMENT);}return$broker->getFunction($internalReflection->getName());}}}
+
  namespace TokenReflection\Php{use TokenReflection;use TokenReflection\Broker,TokenReflection\Exception;use
 Reflector,ReflectionMethod as InternalReflectionMethod,ReflectionParameter as InternalReflectionParameter;class
 ReflectionMethod extends InternalReflectionMethod implements IReflection,TokenReflection\IReflectionMethod{private$broker;private$parameters;public
@@ -931,6 +966,7 @@ false;}public function getNamespaceAliases(){return array();}public static funct
 create(Reflector$internalReflection,Broker$broker){static$cache=array();if(!$internalReflection
 instanceof InternalReflectionMethod){throw new Exception\Runtime(sprintf('Invalid reflection instance provided: "%s", ReflectionMethod expected.',get_class($internalReflection)),Exception\Runtime::INVALID_ARGUMENT);}$key=$internalReflection->getDeclaringClass()->getName().'::'.$internalReflection->getName();if(!isset($cache[$key])){$cache[$key]=new
 self($internalReflection->getDeclaringClass()->getName(),$internalReflection->getName(),$broker);}return$cache[$key];}}}
+
  namespace TokenReflection{use TokenReflection\Exception;class ReflectionFunction
 extends ReflectionFunctionBase implements IReflectionFunction{private$aliases=array();public
 function isDisabled(){return$this->hasAnnotation('disabled');}public function getInheritedDocComment(){return$this->getDocComment();}public
@@ -941,6 +977,7 @@ call_user_func_array($this->getName(),$args);}protected function parse(Stream$to
 processParent(IReflection$parent){if(!$parent instanceof ReflectionFileNamespace){throw
 new Exception\Parse(sprintf('The parent object has to be an instance of TokenReflection\ReflectionFileNamespace, "%s" given.',get_class($parent)),Exception\Parse::INVALID_PARENT);}$this->namespaceName=$parent->getName();$this->aliases=$parent->getNamespaceAliases();return
 parent::processParent($parent);}public function getNamespaceAliases(){return$this->aliases;}}}
+
  namespace TokenReflection{use TokenReflection\Exception;use ReflectionMethod as InternalReflectionMethod,ReflectionClass
 as InternalReflectionClass;class ReflectionMethod extends ReflectionFunctionBase
 implements IReflectionMethod{const IS_IMPLEMENTED_ABSTRACT=0x08;const ACCESS_LEVEL_CHANGED=0x800;const
@@ -993,3 +1030,4 @@ function parseInternalModifiers(ReflectionClass$class){$name=strtolower($this->n
 |= self::IS_CONSTRUCTOR;}elseif('__destruct' ===$name){$this->modifiers |= self::IS_DESTRUCTOR;}elseif('__clone'
 ===$name){$this->modifiers |= self::IS_CLONE;}static$notAllowed;if(null ===$notAllowed){$notAllowed=array_flip(array('__clone','__tostring','__get','__set','__isset','__unset'));}if(!$this->isConstructor()&&!$this->isDestructor()&&!isset($notAllowed[$name])){$this->modifiers
 |= self::IS_ALLOWED_STATIC;}return$this;}}}
+
