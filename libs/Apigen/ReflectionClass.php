@@ -426,7 +426,7 @@ class ReflectionClass extends ReflectionBase
 				return false;
 			}
 
-			if (!($property & self::$propertyAccessLevels)) {
+			if ($property->getModifiers() & ~self::$propertyAccessLevels) {
 				// Wrong access level
 				return false;
 			}
@@ -453,7 +453,7 @@ class ReflectionClass extends ReflectionBase
 				return false;
 			}
 
-			if (!($method & self::$methodAccessLevels)) {
+			if ($method->getModifiers() & ~self::$methodAccessLevels) {
 				// Wrong access level
 				return false;
 			}
