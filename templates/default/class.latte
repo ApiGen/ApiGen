@@ -75,7 +75,7 @@
 		<td class="right" width="1%"><code class="nowrap">
 			{if $method->deprecated}deprecated{/if}
 			{if !$class->interface && $method->abstract}abstract{elseif $method->final}final{/if} {if $method->protected}protected{elseif $method->private}private{else}public{/if} {if $method->static}static{/if}
-			{ifset $annotations['return']}{!$annotations['return'][0]|typeLinks:$class}{/ifset}
+			{ifset $annotations['return']}{!$annotations['return'][0]|typeLinks:$method}{/ifset}
 			{if $method->returnsReference()}&amp;{/if}
 			</code>
 		</td>
@@ -91,7 +91,7 @@
 			{foreach $method->parameters as $parameter}
 				{if $parameter->array}array
 				{elseif $parameter->className}<a href="{$parameter->className|classUrl}" n:tag-if="$template->getClass($parameter->className)">{$parameter->className}</a>
-				{elseif isset($annotations['param'][$parameter->position])}{!$annotations['param'][$parameter->position]|typeLinks:$class}{/if}
+				{elseif isset($annotations['param'][$parameter->position])}{!$annotations['param'][$parameter->position]|typeLinks:$parameter}{/if}
 				<var>{if $parameter->passedByReference}&amp; {/if}${$parameter->name}</var>{if $parameter->defaultValueAvailable} = {!$parameter->defaultValueDefinition|highlightPHP}{/if}{sep}, {/sep}
 			{/foreach}
 		)</code>
@@ -109,7 +109,7 @@
 				<div class="smallList">
 				{foreach $annotations['deprecated'] as $description}
 					{if $description}
-						{!$description|annotation:'deprecated':$class}<br>
+						{!$description|annotation:'deprecated':$method}<br>
 					{/if}
 				{/foreach}
 				</div>
@@ -130,7 +130,7 @@
 				<h4>Returns</h4>
 				<div class="smallList">
 				{foreach $annotations['return'] as $description}
-					{!$description|annotation:'return':$class}<br>
+					{!$description|annotation:'return':$method}<br>
 				{/foreach}
 				</div>
 			{/if}
@@ -139,7 +139,7 @@
 				<h4>Throws</h4>
 				<div class="smallList">
 				{foreach $annotations['throws'] as $description}
-					{!$description|annotation:'throws':$class}<br>
+					{!$description|annotation:'throws':$method}<br>
 				{/foreach}
 				</div>
 			{/ifset}
@@ -149,7 +149,7 @@
 				<div class="smallList">
 				{foreach $descriptions as $description}
 					{if $description}
-						{!$description|annotation:$annotation:$class}<br>
+						{!$description|annotation:$annotation:$method}<br>
 					{/if}
 				{/foreach}
 				</div>
@@ -186,7 +186,7 @@
 
 		<td class="right" width="1%"><code class="nowrap">
 			{if $constant->deprecated}deprecated{/if}
-			{ifset $annotations['var']}{!$annotations['var'][0]|typeLinks:$class}{else}{try}{$constant->value|type}{/try}{/ifset}
+			{ifset $annotations['var']}{!$annotations['var'][0]|typeLinks:$constant}{else}{try}{$constant->value|type}{/try}{/ifset}
 		</code></td>
 		<td width="1%"><code>
 			{if $class->internal}
@@ -213,7 +213,7 @@
 					<div class="smallList">
 					{foreach $descriptions as $description}
 						{if $description}
-							{!$description|annotation:$annotation:$class}<br>
+							{!$description|annotation:$annotation:$constant}<br>
 						{/if}
 					{/foreach}
 					</div>
@@ -243,7 +243,7 @@
 		<td class="right" width="1%"><code class="nowrap">
 			{if $property->deprecated}deprecated{/if}
 			{if $property->protected}protected{elseif $property->private}private{else}public{/if} {if $property->static}static{/if}
-			{ifset $annotations['var']}{!$annotations['var'][0]|typeLinks:$class}{else}{try}{$property->defaultValue|type}{/try}{/ifset}
+			{ifset $annotations['var']}{!$annotations['var'][0]|typeLinks:$property}{else}{try}{$property->defaultValue|type}{/try}{/ifset}
 		</code></td>
 
 		<td width="1%"><var>
@@ -269,7 +269,7 @@
 					<div class="smallList">
 					{foreach $descriptions as $description}
 						{if $description}
-							{!$description|annotation:$annotation:$class}<br>
+							{!$description|annotation:$annotation:$property}<br>
 						{/if}
 					{/foreach}
 					</div>

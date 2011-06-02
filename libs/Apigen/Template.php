@@ -160,7 +160,7 @@ class Template extends Nette\Templating\FileTemplate
 
 		// Docblock descriptions
 		$this->registerHelper('description', function($annotation, $context) use ($that) {
-			list(, $description) = preg_split('~\s+|$~', $annotation, 2);
+			list(, $description) = $that->split($annotation);
 			if ($context instanceof ReflectionParameter) {
 				$description = preg_replace('~^(\\$?' . $context->getName() . ')(\s+|$)~i', '\\2', $description, 1);
 			}
@@ -186,29 +186,40 @@ class Template extends Nette\Templating\FileTemplate
 				case 'param':
 				case 'return':
 				case 'throws':
-				case 'see':
-				case 'uses':
 					$description = $that->description($value, $context);
-					return '<code>' . $that->getTypeLinks($value, $context) . '</code>' . ($description ? '<br />' . $that->docline($description, $context) : '');
+					return sprintf('<code>%s</code>%s', $that->getTypeLinks($value, $context), $description ? '<br />' . $description : '');
 				case 'package':
-					list($packageName, $description) = preg_split('~\s+|$~', $value, 2);
-					return $that->packages
-						? $that->link($that->getPackageUrl($packageName), $packageName) . ' ' . $that->docline($description, $context)
-						: $that->docline($value, $context);
+					list($packageName, $description) = $that->split($value);
+					if ($that->packages) {
+						return $that->link($that->getPackageUrl($packageName), $packageName) . ' ' . $that->docline($description, $context);
+					}
+					break;
 				case 'subpackage':
 					if ($context->hasAnnotation('package')) {
-						list($packageName) = preg_split('~\s+|$~', $context->annotations['package'][0], 2);
+						list($packageName) = $that->split($context->annotations['package'][0]);
 					} else {
 						$packageName = '';
 					}
-					list($subpackageName, $description) = preg_split('~\s+|$~', $value, 2);
+					list($subpackageName, $description) = $that->split($value);
 
-					return $that->packages && $packageName
-						? $that->link($that->getPackageUrl($packageName . '\\' . $subpackageName), $subpackageName) . ' ' . $that->docline($description, $context)
-						: $that->docline($value, $context);
+					if ($that->packages && $packageName) {
+						return $that->link($that->getPackageUrl($packageName . '\\' . $subpackageName), $subpackageName) . ' ' . $that->docline($description, $context);
+					}
+					break;
+				case 'see':
+				case 'uses':
+					list($link, $description) = $that->split($value);
+					$separator = $context instanceof ReflectionClass || !$description ? ' ' : '<br />';
+					if (null !== $that->resolveElement($link, $context)) {
+						return sprintf('<code>%s</code>%s%s', $that->getTypeLinks($link, $context), $separator, $description);
+					}
+					break;
 				default:
-					return $that->docline($value, $context);
+					break;
 			}
+
+			// Default
+			return $that->docline($value, $context);
 		});
 
 		$todo = $this->config->todo;
@@ -302,7 +313,7 @@ class Template extends Nette\Templating\FileTemplate
 	public function getTypeLinks($annotation, $context)
 	{
 		$links = array();
-		list($types) = preg_split('~\s+|$~', $annotation, 2);
+		list($types) = $this->split($annotation);
 		foreach (explode('|', $types) as $type) {
 			$type = $this->getTypeName($type);
 			$links[] = $this->resolveLink($type, $context) ?: $this->escapeHtml($type);
@@ -742,6 +753,17 @@ class Template extends Nette\Templating\FileTemplate
 	public function docline($text, $context)
 	{
 		return $this->resolveLinks($this->texy->processLine($text), $context);
+	}
+
+	/**
+	 * Parses annotation value.
+	 *
+	 * @param string $value
+	 * @return array
+	 */
+	public function split($value)
+	{
+		return preg_split('~\s+|$~', $value, 2);
 	}
 
 	/**
