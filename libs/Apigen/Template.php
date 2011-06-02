@@ -304,7 +304,8 @@ class Template extends Nette\Templating\FileTemplate
 		$links = array();
 		list($types) = preg_split('~\s+|$~', $annotation, 2);
 		foreach (explode('|', $types) as $type) {
-			$links[] = $this->resolveLink($type, $context) ?: $this->escapeHtml($this->getTypeName($type));
+			$type = $this->getTypeName($type);
+			$links[] = $this->resolveLink($type, $context) ?: $this->escapeHtml($type);
 		}
 
 		return implode('|', $links);
@@ -505,13 +506,8 @@ class Template extends Nette\Templating\FileTemplate
 	 * @param string $namespace Namespace name
 	 * @return \Apigen\ReflectionClass
 	 */
-	public function getClass($className, $namespace = null)
+	public function getClass($className, $namespace = '')
 	{
-		if ('\\' === substr($className, 0, 1)) {
-			$namespace = '';
-			$className = substr($className, 1);
-		}
-
 		if (isset($this->classes[$namespace . '\\' . $className])) {
 			$name = $namespace . '\\' . $className;
 		} elseif (isset($this->classes[$className])) {
@@ -535,13 +531,8 @@ class Template extends Nette\Templating\FileTemplate
 	 * @param string $namespace Namespace name
 	 * @return \Apigen\ReflectionConstant
 	 */
-	public function getConstant($constantName, $namespace = null)
+	public function getConstant($constantName, $namespace = '')
 	{
-		if ('\\' === substr($constantName, 0, 1)) {
-			$namespace = '';
-			$constantName = substr($constantName, 1);
-		}
-
 		if (isset($this->constants[$namespace . '\\' . $constantName])) {
 			return $this->constants[$namespace . '\\' . $constantName];
 		}
@@ -560,13 +551,8 @@ class Template extends Nette\Templating\FileTemplate
 	 * @param string $namespace Namespace name
 	 * @return \Apigen\ReflectionFunction
 	 */
-	public function getFunction($functionName, $namespace = null)
+	public function getFunction($functionName, $namespace = '')
 	{
-		if ('\\' === substr($functionName, 0, 1)) {
-			$namespace = '';
-			$functionName = substr($functionName, 1);
-		}
-
 		if (isset($this->functions[$namespace . '\\' . $functionName])) {
 			return $this->functions[$namespace . '\\' . $functionName];
 		}
@@ -588,6 +574,16 @@ class Template extends Nette\Templating\FileTemplate
 	public function resolveElement($definition, $context)
 	{
 		if (empty($definition)) {
+			return null;
+		}
+
+		// No simple type resolving
+		static $types = array(
+			'boolean' => 1, 'integer' => 1, 'float' => 1, 'string' => 1,
+			'array' => 1, 'object' => 1, 'resource' => 1, 'callback' => 1,
+			'null' => 1, 'false' => 1, 'true' => 1
+		);
+		if (isset($types[$definition])) {
 			return null;
 		}
 
