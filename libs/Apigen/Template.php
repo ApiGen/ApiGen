@@ -619,7 +619,8 @@ class Template extends Nette\Templating\FileTemplate
 		} elseif ($constant = $this->getConstant($definition, $context->getNamespaceName())) {
 			// Constant
 			return $constant;
-		} elseif ($function = $this->getFunction($definition, $context->getNamespaceName())) {
+		} elseif (($function = $this->getFunction($definition, $context->getNamespaceName()))
+			|| ('()' === substr($definition, -2) && ($function = $this->getFunction(substr($definition, 0, -2), $context->getNamespaceName())))) {
 			// Function
 			return $function;
 		}
