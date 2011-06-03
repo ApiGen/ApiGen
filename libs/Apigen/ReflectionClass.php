@@ -449,7 +449,7 @@ class ReflectionClass extends ReflectionBase
 	public function hasProperty($propertyName)
 	{
 		try {
-			$property = $this->reflection->getProperty($property);
+			$property = $this->reflection->getProperty($propertyName);
 
 			if (!self::$config->deprecated && $property->isDeprecated()) {
 				// Deprecated property
