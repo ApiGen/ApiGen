@@ -26,6 +26,8 @@ allowedHtml: [b, i, a, ul, ol, li, p, br, var, samp, kbd, tt]
 
 # Generate documentation for methods and properties with given access level
 accessLevels: [public, protected]
+# Generate documentation for elements marked as internal
+internal: No
 # Generate documentation for PHP internal classes
 php: Yes
 # Generate tree view of classes, interfaces and exceptions

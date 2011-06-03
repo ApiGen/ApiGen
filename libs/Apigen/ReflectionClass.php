@@ -118,6 +118,11 @@ class ReflectionClass extends ReflectionBase
 					return !$method->isDeprecated();
 				});
 			}
+			if (!self::$config->internal) {
+				$this->ownMethods = array_filter($this->ownMethods, function(IReflectionMethod $method) {
+					return !$method->hasAnnotation('internal');
+				});
+			}
 		}
 
 		return $this->ownMethods;
@@ -137,6 +142,11 @@ class ReflectionClass extends ReflectionBase
 					return !$property->isDeprecated();
 				});
 			}
+			if (!self::$config->internal) {
+				$this->ownProperties = array_filter($this->ownProperties, function(IReflectionProperty $property) {
+					return !$property->hasAnnotation('internal');
+				});
+			}
 		}
 		return $this->ownProperties;
 	}
@@ -154,6 +164,11 @@ class ReflectionClass extends ReflectionBase
 			if (!self::$config->deprecated) {
 				$this->ownConstants = array_filter($this->ownConstants, function(IReflectionConstant $constant) {
 					return !$constant->isDeprecated();
+				});
+			}
+			if (!self::$config->internal) {
+				$this->ownConstants = array_filter($this->ownConstants, function(IReflectionConstant $constant) {
+					return !$constant->hasAnnotation('internal');
 				});
 			}
 
@@ -414,6 +429,11 @@ class ReflectionClass extends ReflectionBase
 				return false;
 			}
 
+			if (!self::$config->internal && $constant->hasAnnotation('internal')) {
+				// Internal constant
+				return false;
+			}
+
 			return self::$classes[$constant->getDeclaringClassName()]->isDocumented();
 		} catch (TokenReflection\Exception $e) {
 			return false;
@@ -433,6 +453,11 @@ class ReflectionClass extends ReflectionBase
 
 			if (!self::$config->deprecated && $property->isDeprecated()) {
 				// Deprecated property
+				return false;
+			}
+
+			if (!self::$config->internal && $property->hasAnnotation('internal')) {
+				// Internal property
 				return false;
 			}
 
@@ -462,6 +487,11 @@ class ReflectionClass extends ReflectionBase
 
 			if (!self::$config->deprecated && $method->isDeprecated()) {
 				// Deprecated method
+				return false;
+			}
+
+			if (!self::$config->internal && $method->hasAnnotation('internal')) {
+				// Internal method
 				return false;
 			}
 

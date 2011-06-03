@@ -249,9 +249,9 @@ class Template extends Nette\Templating\FileTemplate
 		$this->registerHelper('annotationSort', function(array $annotations) {
 			uksort($annotations, function($a, $b) {
 				static $order = array(
-					'deprecated' => 0, 'category' => 1, 'package' => 2, 'subpackage' => 3, 'copyright' => 4,
-					'license' => 5, 'author' => 6, 'version' => 7, 'since' => 8, 'see' => 9, 'uses' => 10,
-					'link' => 11, 'example' => 12, 'tutorial' => 13, 'todo' => 14
+					'deprecated' => 0, 'internal' => 1, 'category' => 2, 'package' => 3, 'subpackage' => 4, 'copyright' => 5,
+					'license' => 6, 'author' => 7, 'version' => 8, 'since' => 9, 'see' => 10, 'uses' => 11,
+					'link' => 12, 'example' => 13, 'tutorial' => 14, 'todo' => 15
 				);
 				$orderA = isset($order[$a]) ? $order[$a] : 99;
 				$orderB = isset($order[$b]) ? $order[$b] : 99;

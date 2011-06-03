@@ -144,6 +144,8 @@ abstract class ReflectionBase
 				$this->isDocumented = false;
 			} elseif (!self::$config->deprecated && $this->reflection->isDeprecated()) {
 				$this->isDocumented = false;
+			} elseif (!self::$config->internal && $this->reflection->hasAnnotation('internal')) {
+				$this->isDocumented = false;
 			} else {
 				$this->isDocumented = true;
 				foreach (self::$config->skipDocPath as $mask) {

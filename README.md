@@ -124,6 +124,10 @@ List of allowed HTML tags in documentation separated by comma. Default value is 
 
 Access levels of methods and properties that should get their documentation parsed. Default value is "public,protected" (don't generate private class members).
 
+```--internal <yes|no>```
+
+Generate documentation for elements marked as internal, default is "No".
+
 ```--php <yes|no>```
 
 Generate documentation for PHP internal classes, default is "Yes".
