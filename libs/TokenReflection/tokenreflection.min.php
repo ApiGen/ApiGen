@@ -183,16 +183,16 @@ INVALID_ARGUMENT=20;const NOT_ACCESSBILE=21;const ALREADY_EXISTS=22;const SERIAL
 getConstant($name);public function getConstantReflection($name);public function getConstants();public
 function getOwnConstants();public function getConstantReflections();public function
 getOwnConstantReflections();public function getConstructor();public function getDestructor();public
-function getDefaultProperties();public function getDocComment();public function getInheritedDocComment();public
-function getStartLine();public function getEndLine();public function getExtension();public
-function getExtensionName();public function getFileName();public function getInterfaceNames();public
-function getOwnInterfaceNames();public function getInterfaces();public function getOwnInterfaces();public
-function getMethod($name);public function getMethods($filter=null);public function
-getOwnMethods($filter=null);public function getModifiers();public function getNamespaceName();public
-function getParentClass();public function getParentClasses();public function getParentClassName();public
-function getParentClassNameList();public function getProperties($filter=null);public
-function getOwnProperties($filter=null);public function getProperty($name);public
-function getShortName();public function getStaticProperties();public function getStaticPropertyValue($name,$default=null);public
+function getDefaultProperties();public function getDocComment();public function getStartLine();public
+function getEndLine();public function getExtension();public function getExtensionName();public
+function getFileName();public function getInterfaceNames();public function getOwnInterfaceNames();public
+function getInterfaces();public function getOwnInterfaces();public function getMethod($name);public
+function getMethods($filter=null);public function getOwnMethods($filter=null);public
+function getModifiers();public function getNamespaceName();public function getParentClass();public
+function getParentClasses();public function getParentClassName();public function
+getParentClassNameList();public function getProperties($filter=null);public function
+getOwnProperties($filter=null);public function getProperty($name);public function
+getShortName();public function getStaticProperties();public function getStaticPropertyValue($name,$default=null);public
 function hasConstant($name);public function hasOwnConstant($name);public function
 hasMethod($name);public function hasOwnMethod($name);public function hasProperty($name);public
 function hasOwnProperty($name);public function implementsInterface($interface);public
@@ -203,14 +203,14 @@ function getDirectSubclassNames();public function getIndirectSubclasses();public
 function getIndirectSubclassNames();public function getDirectImplementers();public
 function getDirectImplementerNames();public function getIndirectImplementers();public
 function getIndirectImplementerNames();public function newInstance($args);public
-function newInstanceArgs(array$args=array());public function setStaticPropertyValue($name,$value);}}
+function newInstanceArgs(array$args=array());public function setStaticPropertyValue($name,$value);public
+function isComplete();}}
 
  namespace TokenReflection{interface IReflectionConstant extends IReflection{public
 function getDeclaringClass();public function getDeclaringClassName();public function
 getNamespaceName();public function inNamespace();public function getValue();public
-function getValueDefinition();public function getDocComment();public function getInheritedDocComment();public
-function getStartLine();public function getEndLine();public function getFileName();public
-function getShortName();}}
+function getValueDefinition();public function getDocComment();public function getStartLine();public
+function getEndLine();public function getFileName();public function getShortName();}}
 
  namespace TokenReflection{interface IReflectionExtension extends IReflection{public
 function getClass($name);public function getClasses();public function getClassNames();public
@@ -219,12 +219,11 @@ function getConstant($name);public function getConstants();public function getFu
 function getFunctions();public function getFunctionNames();}}
 
  namespace TokenReflection{interface IReflectionFunctionBase extends IReflection{public
-function getDocComment();public function getInheritedDocComment();public function
-getStartLine();public function getEndLine();public function getExtension();public
-function getExtensionName();public function getFileName();public function getNamespaceName();public
-function getNumberOfParameters();public function getNumberOfRequiredParameters();public
-function getParameters();public function getParameter($parameter);public function
-getStaticVariables();public function inNamespace();public function isClosure();public
+function getDocComment();public function getStartLine();public function getEndLine();public
+function getExtension();public function getExtensionName();public function getFileName();public
+function getNamespaceName();public function getNumberOfParameters();public function
+getNumberOfRequiredParameters();public function getParameters();public function getParameter($parameter);public
+function getStaticVariables();public function inNamespace();public function isClosure();public
 function isDeprecated();public function returnsReference();}}
 
  namespace TokenReflection{interface IReflectionNamespace extends IReflection{public
@@ -241,16 +240,15 @@ getDefaultValue();public function getDefaultValueDefinition();public function ge
 function isArray();public function allowsNull();public function getClass();public
 function getClassName();public function isDefaultValueAvailable();public function
 isOptional();public function isPassedByReference();public function getDocComment();public
-function getInheritedDocComment();public function getStartLine();public function
-getEndLine();}}
+function getStartLine();public function getEndLine();}}
 
  namespace TokenReflection{interface IReflectionProperty extends IReflection{public
 function getDeclaringClass();public function getDeclaringClassName();public function
-getDocComment();public function getInheritedDocComment();public function getStartLine();public
-function getEndLine();public function getModifiers();public function getValue($object);public
-function isDefault();public function getDefaultValue();public function getDefaultValueDefinition();public
-function isPrivate();public function isProtected();public function isPublic();public
-function isStatic();public function setAccessible($accessible);public function setValue($object,$value);}}
+getDocComment();public function getStartLine();public function getEndLine();public
+function getModifiers();public function getValue($object);public function isDefault();public
+function getDefaultValue();public function getDefaultValueDefinition();public function
+isPrivate();public function isProtected();public function isPublic();public function
+isStatic();public function setAccessible($accessible);public function setValue($object,$value);}}
 
  namespace TokenReflection\Php{use TokenReflection;use Reflector;interface IReflection
 extends TokenReflection\IReflection{public function getNamespaceAliases();public
@@ -336,10 +334,7 @@ function isProtected(){return (bool)($this->modifiers&InternalReflectionProperty
 function isPublic(){return (bool)($this->modifiers&InternalReflectionProperty::IS_PUBLIC);}public
 function isStatic(){return (bool)($this->modifiers&InternalReflectionProperty::IS_STATIC);}public
 function setAccessible($accessible){$this->accessible=(bool)$accessible;}public function
-isAccessible(){return$this->accessible;}public function getInheritedDocComment(){if(false
-!==($docComment=$this->getDocComment())&&false === stripos($docComment,'@inheritdoc')){return$docComment;}$parent=$this->getDeclaringClass()->getParentClass();if(false
-!==$parent &&$parent->hasProperty($this->getName())){return$parent->getProperty($this->getName())->getInheritedDocComment();}return
-false;}public function setValue($object,$value){try{$declaringClass=$this->getDeclaringClass();if(!$declaringClass->isInstance($object)){throw
+isAccessible(){return$this->accessible;}public function setValue($object,$value){try{$declaringClass=$this->getDeclaringClass();if(!$declaringClass->isInstance($object)){throw
 new Exception\Runtime(sprintf('Invalid class, "%s" expected "%s" given.',$declaringClass->getName(),get_class($object)),Exception\Runtime::INVALID_ARGUMENT);}if($this->isPublic()){$object->{$this->name}=$value;}elseif($this->isAccessible()){$refClass=new
 InternalReflectionClass($object);$refProperty=$refClass->getProperty($this->name);$refProperty->setAccessible(true);$refProperty->setValue($object,$value);$refProperty->setAccessible(false);if($this->isStatic()){$this->defaultValue=$value;$this->defaultValueDefinition=null;}}else{throw
 new Exception\Runtime('Only public and accessible properties can be set.',Exception\Runtime::NOT_ACCESSBILE);}}catch(Exception\Runtime$e){throw
@@ -382,10 +377,10 @@ getFileName(){return null;}public function getStartLine(){return null;}public fu
 getEndLine(){return null;}public function getExtension(){return null;}public function
 getExtensionName(){return false;}public function isInternal(){return false;}public
 function isUserDefined(){return false;}public function getSource(){return '';}public
-function getDocComment(){return false;}public function getInheritedDocComment(){return$this->getDocComment();}public
-function __toString(){return '';}public function getAnnotations(){return array();}public
-function getAnnotation($name){return null;}public function hasAnnotation($name){return
-false;}public function getConstant($name){throw new Exception\Runtime(sprintf('There is no constant "%s" in class "%s".',$name,$this->name),Exception\Runtime::DOES_NOT_EXIST);}public
+function getDocComment(){return false;}public function __toString(){return '';}public
+function getAnnotations(){return array();}public function getAnnotation($name){return
+null;}public function hasAnnotation($name){return false;}public function getConstant($name){throw
+new Exception\Runtime(sprintf('There is no constant "%s" in class "%s".',$name,$this->name),Exception\Runtime::DOES_NOT_EXIST);}public
 function getConstantReflection($name){throw new Exception\Runtime(sprintf('There is no constant "%s" in class "%s".',$name,$this->name),Exception\Runtime::DOES_NOT_EXIST);}public
 function getConstants(){return array();}public function getConstantReflections(){return
 array();}public function getOwnConstantReflections(){return array();}public function
@@ -434,7 +429,8 @@ function newInstance($args){return$this->newInstanceArgs(func_get_args());}publi
 function newInstanceArgs(array$args=array()){if(!class_exists($this->name,true)){throw
 new Exception\Runtime(sprintf('Could not create an instance of class "%s"; class does not exist.',$this->name),Exception\Runtime::DOES_NOT_EXIST);}$reflection=new
 InternalReflectionClass($this->name);return$reflection->newInstanceArgs($args);}public
-function setStaticPropertyValue($name,$value){throw new Exception\Runtime(sprintf('There is no static property "%s" in class "%s".',$name,$this->name),Exception\Runtime::DOES_NOT_EXIST);}}}
+function setStaticPropertyValue($name,$value){throw new Exception\Runtime(sprintf('There is no static property "%s" in class "%s".',$name,$this->name),Exception\Runtime::DOES_NOT_EXIST);}public
+function isComplete(){return false;}}}
 
  namespace TokenReflection{interface IReflectionFunction extends IReflectionFunctionBase{public
 function isDisabled();public function invoke();public function invokeArgs(array$args);}}
@@ -497,11 +493,11 @@ new Exception\Runtime(sprintf('There is no method %s in class %s',$name,$this->n
 function getProperty($name){foreach($this->getProperties()as$property){if($name ===$property->getName()){return$property;}}throw
 new Exception\Runtime(sprintf('There is no property %s in class %s',$name,$this->getName()),Exception::DOES_NOT_EXIST);}public
 function getStaticProperties(){return$this->getProperties(InternalReflectionProperty::IS_STATIC);}public
-function getInheritedDocComment(){return false;}public function getAnnotations(){return
-array();}public function getAnnotation($name){return null;}public function hasAnnotation($name){return
-false;}public function isSubclassOf($class){return in_array($class,$this->getParentClassNameList());}public
-function isTokenized(){return false;}public function isDeprecated(){return false;}public
-function getDirectSubclasses(){$that=$this->name;return array_filter($this->getBroker()->getClasses(Broker\Backend::INTERNAL_CLASSES|Broker\Backend::TOKENIZED_CLASSES),function(IReflectionClass$class)use($that){if(!$class->isSubclassOf($that)){return
+function getAnnotations(){return array();}public function getAnnotation($name){return
+null;}public function hasAnnotation($name){return false;}public function isSubclassOf($class){return
+in_array($class,$this->getParentClassNameList());}public function isTokenized(){return
+false;}public function isDeprecated(){return false;}public function getDirectSubclasses(){$that=$this->name;return
+array_filter($this->getBroker()->getClasses(Broker\Backend::INTERNAL_CLASSES|Broker\Backend::TOKENIZED_CLASSES),function(IReflectionClass$class)use($that){if(!$class->isSubclassOf($that)){return
 false;}return null ===$class->getParentClassName()||!$class->getParentClass()->isSubClassOf($that);});}public
 function getDirectSubclassNames(){return array_keys($this->getDirectSubclasses());}public
 function getIndirectSubclasses(){$that=$this->name;return array_filter($this->getBroker()->getClasses(Broker\Backend::INTERNAL_CLASSES|Broker\Backend::TOKENIZED_CLASSES),function(IReflectionClass$class)use($that){if(!$class->isSubclassOf($that)){return
@@ -515,7 +511,8 @@ function getIndirectImplementers(){if(!$this->isInterface()){return array();}$th
 array_filter($this->getBroker()->getClasses(Broker\Backend::INTERNAL_CLASSES|Broker\Backend::TOKENIZED_CLASSES),function(IReflectionClass$class)use($that){if(!$class->implementsInterface($that)){return
 false;}return null !==$class->getParentClassName()&&$class->getParentClass()->implementsInterface($that);});}public
 function getIndirectImplementerNames(){return array_keys($this->getIndirectImplementers());}public
-function getNamespaceAliases(){return array();}public static function create(Reflector$internalReflection,Broker$broker){if(!$internalReflection
+function getNamespaceAliases(){return array();}public function isComplete(){return
+true;}public static function create(Reflector$internalReflection,Broker$broker){if(!$internalReflection
 instanceof InternalReflectionClass){throw new Exception\Runtime(sprintf('Invalid reflection instance provided (%s), ReflectionClass expected.',get_class($internalReflection)));}return$broker->getClass($internalReflection->getName());}}}
 
  namespace TokenReflection\Php{use TokenReflection;use TokenReflection\Broker,TokenReflection\Exception,Reflector;class
@@ -534,10 +531,9 @@ getDeclaringClassName(){return$this->declaringClassName;}public function getName
 === TokenReflection\ReflectionNamespace::NO_NAMESPACE_NAME?'':$this->namespaceName;}public
 function inNamespace(){return '' !==$this->getNamespaceName();}public function getValueDefinition(){return
 var_export($this->value,true);}public function getDocComment(){return false;}public
-function getInheritedDocComment(){return false;}public function getStartLine(){return
-null;}public function getEndLine(){return null;}public function getFileName(){return
-null;}public function getShortName(){$name=$this->getName();if(null !==$this->namespaceName
-&&$this->namespaceName !== ReflectionNamespace::NO_NAMESPACE_NAME){$name=substr($name,strlen($this->namespaceName)+1);}return$name;}public
+function getStartLine(){return null;}public function getEndLine(){return null;}public
+function getFileName(){return null;}public function getShortName(){$name=$this->getName();if(null
+!==$this->namespaceName &&$this->namespaceName !== ReflectionNamespace::NO_NAMESPACE_NAME){$name=substr($name,strlen($this->namespaceName)+1);}return$name;}public
 function isTokenized(){return false;}public function isDeprecated(){return false;}public
 function getNamespaceAliases(){return array();}public static function create(Reflector$internalReflection,Broker$broker){return
 null;}}}
@@ -579,10 +575,9 @@ function getDeclaringFunction(){$class=$this->getDeclaringClass();$function=pare
 function getDeclaringFunctionName(){$function=parent::getDeclaringFunction();return$function?$function->getName():$function;}public
 function getDefaultValueDefinition(){$value=$this->getDefaultValue();return null
 ===$value?null:var_export($value,true);}public function getDocComment(){return false;}public
-function getInheritedDocComment(){return false;}public function getStartLine(){return
-null;}public function getEndLine(){return null;}public function isTokenized(){return
-false;}public function isDeprecated(){return false;}public function getNamespaceAliases(){return
-array();}public static function create(Reflector$internalReflection,Broker$broker){static$cache=array();if(!$internalReflection
+function getStartLine(){return null;}public function getEndLine(){return null;}public
+function isTokenized(){return false;}public function isDeprecated(){return false;}public
+function getNamespaceAliases(){return array();}public static function create(Reflector$internalReflection,Broker$broker){static$cache=array();if(!$internalReflection
 instanceof InternalReflectionParameter){throw new Exception\Runtime(sprintf('Invalid reflection instance provided: "%s", ReflectionParameter expected.',get_class($internalReflection)),Exception\Runtime::INVALID_ARGUMENT);}$class=$internalReflection->getDeclaringClass();$function=$internalReflection->getDeclaringFunction();$key=$class?$class->getName().'::':'';$key
 .=$function->getName().'('.$internalReflection->getName().')';if(!isset($cache[$key])){$cache[$key]=new
 self($class?array($class->getName(),$function->getName()):$function->getName(),$internalReflection->getName(),$broker,$function);}return$cache[$key];}}}
@@ -596,10 +591,10 @@ TokenReflection\ReflectionBase::get($this,$key);}final public function __isset($
 TokenReflection\ReflectionBase::exists($this,$key);}public function getDeclaringClass(){return
 ReflectionClass::create(parent::getDeclaringClass(),$this->broker);}public function
 getDeclaringClassName(){return$this->getDeclaringClass()->getName();}public function
-getDocComment(){return false;}public function getInheritedDocComment(){return false;}public
-function getStartLine(){return null;}public function getEndLine(){return null;}public
-function getAnnotations(){return array();}public function getAnnotation($name){return
-null;}public function hasAnnotation($name){return false;}public function isInternal(){return$this->getDeclaringClass()->isInternal();}public
+getDocComment(){return false;}public function getStartLine(){return null;}public
+function getEndLine(){return null;}public function getAnnotations(){return array();}public
+function getAnnotation($name){return null;}public function hasAnnotation($name){return
+false;}public function isInternal(){return$this->getDeclaringClass()->isInternal();}public
 function isUserDefined(){return$this->getDeclaringClass()->isUserDefined();}public
 function getDefaultValue(){$values=$this->getDeclaringClass()->getDefaultProperties();return$values[$this->getName()];}public
 function getDefaultValueDefinition(){$value=$this->getDefaultValue();return null
@@ -611,7 +606,7 @@ self($internalReflection->getDeclaringClass()->getName(),$internalReflection->ge
 
  namespace TokenReflection{use TokenReflection\Exception;use ReflectionClass as InternalReflectionClass,ReflectionProperty
 as InternalReflectionProperty;class ReflectionClass extends ReflectionBase implements
-IReflectionClass{const IS_INTERFACE=128;const IMPLEMENTS_INTERFACES=0x80000;private$namespaceName;private$constants=array();private$properties=array();private$methods=array();private$aliases=array();private$modifiers=0;private$modifiersComplete=false;private$parentClassName;private$interfaces=array();protected
+IReflectionClass{const IS_INTERFACE=128;const IMPLEMENTS_INTERFACES=0x80000;private$namespaceName;private$constants=array();private$properties=array();private$methods=array();private$aliases=array();private$modifiers=0;private$modifiersComplete=false;private$parentClassName;private$interfaces=array();private$definitionComplete=false;protected
 function processParent(IReflection$parent){if(!$parent instanceof ReflectionFileNamespace){throw
 new Exception\Parse(sprintf('The parent object has to be an instance of TokenReflection\ReflectionFileNamespace, "%s" given.',get_class($parent)),Exception\Parse::INVALID_PARENT);}$this->namespaceName=$parent->getName();$this->aliases=$parent->getNamespaceAliases();return
 parent::processParent($parent);}protected function parse(Stream$tokenStream,IReflection$parent){return$this
@@ -642,8 +637,8 @@ function getInterfaces(){$interfaceNames=$this->getInterfaceNames();if(empty($in
 array();}$broker=$this->getBroker();return array_combine($interfaceNames,array_map(function($interfaceName)use($broker){return$broker->getClass($interfaceName);},$interfaceNames));}public
 function getMethod($name){if(isset($this->methods[$name])){return$this->methods[$name];}foreach($this->getMethods()as$method){if($name
 ===$method->getName()){return$method;}}throw new Exception\Runtime(sprintf('There is no method "%s" in class "%s".',$name,$this->name),Exception\Runtime::DOES_NOT_EXIST);}public
-function getMethods($filter=null){$methods=$this->methods;if(null !==$filter){$methods=array_filter($methods,function(ReflectionMethod$method)use($filter){return
-(bool)($method->getModifiers()&$filter);});}if(null !==$this->parentClassName){foreach($this->getParentClass()->getMethods($filter)as$parentMethod){if(!isset($methods[$parentMethod->getName()])){$methods[$parentMethod->getName()]=$parentMethod;}}}return
+function getMethods($filter=null){$methods=$this->methods;if(null !==$filter){$methods=array_filter($methods,function(ReflectionMethod$method)use($filter){return$method->is($filter);});}if(null
+!==$this->parentClassName){foreach($this->getParentClass()->getMethods($filter)as$parentMethod){if(!isset($methods[$parentMethod->getName()])){$methods[$parentMethod->getName()]=$parentMethod;}}}return
 array_values($methods);}public function getModifiers(){if(false ===$this->modifiersComplete){if(($this->modifiers&InternalReflectionClass::IS_EXPLICIT_ABSTRACT)&&!($this->modifiers&InternalReflectionClass::IS_IMPLICIT_ABSTRACT)){foreach($this->getMethods()as$reflectionMethod){if($reflectionMethod->isAbstract()){$this->modifiers
 |= InternalReflectionClass::IS_IMPLICIT_ABSTRACT;}}}if(count($this->getInterfaceNames())){$this->modifiers
 |= self::IMPLEMENTS_INTERFACES;}$this->modifiersComplete=true;foreach($this->getParentClasses()as$parentClass){if($parentClass
@@ -667,9 +662,9 @@ new Exception\Runtime(sprintf('Static property "%s" in class "%s" is not accessi
 new Exception\Runtime(sprintf('There is no static property "%s" in class "%s".',$name,$this->name),Exception\Runtime::DOES_NOT_EXIST);}public
 function getOwnInterfaces(){$interfaceNames=$this->getOwnInterfaceNames();if(empty($interfaceNames)){return
 array();}$broker=$this->getBroker();return array_combine($interfaceNames,array_map(function($interfaceName)use($broker){return$broker->getClass($interfaceName);},$interfaceNames));}public
-function getOwnMethods($filter=null){$methods=$this->methods;if(null !==$filter){$methods=array_filter($methods,function(ReflectionMethod$method)use($filter){return
-(bool)($method->getModifiers()&$filter);});}return array_values($methods);}public
-function getOwnProperties($filter=null){$properties=$this->properties;if(null !==$filter){$properties=array_filter($properties,function(ReflectionProperty$property)use($filter){return
+function getOwnMethods($filter=null){$methods=$this->methods;if(null !==$filter){$methods=array_filter($methods,function(ReflectionMethod$method)use($filter){return$method->is($filter);});}return
+array_values($methods);}public function getOwnProperties($filter=null){$properties=$this->properties;if(null
+!==$filter){$properties=array_filter($properties,function(ReflectionProperty$property)use($filter){return
 (bool)($property->getModifiers()&$filter);});}return array_values($properties);}public
 function getOwnConstants(){return array_map(function(ReflectionConstant$constant){return$constant->getValue();},$this->constants);}public
 function getOwnConstantReflections(){return array_values($this->constants);}public
@@ -713,15 +708,16 @@ function getIndirectImplementers(){if(!$this->isInterface()){return array();}$th
 array_filter($this->getBroker()->getClasses(),function(ReflectionClass$class)use($that){if($class->isInterface()||!$class->implementsInterface($that)){return
 false;}return null !==$class->getParentClassName()&&$class->getParentClass()->implementsInterface($that);});}public
 function getIndirectImplementerNames(){return array_keys($this->getIndirectImplementers());}public
-function getInheritedDocComment(){if(false !==($docComment=$this->getDocComment())&&false
-=== stripos($docComment,'@inheritdoc')){return$docComment;}return null ===$this->parentClassName?false:$this->getParentClass()->getInheritedDocComment();}public
 function newInstance($args){return$this->newInstanceArgs(func_get_args());}public
 function newInstanceArgs(array$args=array()){if(!class_exists($this->name,true)){throw
 new Exception\Runtime(sprintf('Could not create an instance of class "%s"; class does not exist.',$this->name),Exception\Runtime::DOES_NOT_EXIST);}$reflection=new
 InternalReflectionClass($this->name);return$reflection->newInstanceArgs($args);}public
 function setStaticPropertyValue($name,$value){if($this->hasProperty($name)&&($property=$this->getProperty($name))&&$property->isStatic()){if(!$property->isPublic()&&!$property->isAccessible()){throw
 new Exception\Runtime(sprintf('Static property "%s" in class "%s" is not accessible.',$name,$this->name),Exception\Runtime::NOT_ACCESSBILE);}$property->setDefaultValue($value);return;}throw
-new Exception\Runtime(sprintf('There is no static property "%s" in class "%s".',$name,$this->name),Exception\Runtime::DOES_NOT_EXIST);}private
+new Exception\Runtime(sprintf('There is no static property "%s" in class "%s".',$name,$this->name),Exception\Runtime::DOES_NOT_EXIST);}public
+function isComplete(){if(!$this->definitionComplete){if(null !==$this->parentClassName
+&&!$this->getParentClass()->isComplete()){return false;}foreach($this->getOwnInterfaces()as$interface){if(!$interface->isComplete()){return
+false;}}$this->definitionComplete=true;}return$this->definitionComplete;}private
 function parseModifiers(Stream$tokenStream){try{while(true){switch($tokenStream->getType()){case
 null:break 2;case T_ABSTRACT:$this->modifiers=InternalReflectionClass::IS_EXPLICIT_ABSTRACT;break;case
 T_FINAL:$this->modifiers=InternalReflectionClass::IS_FINAL;break;case T_INTERFACE:$this->modifiers=self::IS_INTERFACE;case
@@ -766,18 +762,18 @@ function getValueDefinition(){return$this->valueDefinition;}public function getV
 ===$this->value &&'null' !== strtolower($this->valueDefinition)){if($position=strpos($this->valueDefinition,'::')){$className=substr($this->valueDefinition,0,$position);$constantName=substr($this->valueDefinition,$position+2);$this->value=$this->getBroker()->getClass($className)->getConstant($constantName);}else{$constant=$this->getBroker()->getConstant($this->valueDefinition);$this->value=$constant?$constant->getValue():null;}}return$this->value;}public
 function getDeclaringClassName(){return$this->declaringClassName;}public function
 getDeclaringClass(){if(null ===$this->declaringClassName){return null;}return$this->getBroker()->getClass($this->declaringClassName);}public
-function getInheritedDocComment(){return$this->getDocComment();}public function getNamespaceName(){return
-null ===$this->namespaceName ||$this->namespaceName === ReflectionNamespace::NO_NAMESPACE_NAME?'':$this->namespaceName;}public
-function inNamespace(){return '' !==$this->getNamespaceName();}public function getShortName(){$name=$this->getName();if(null
+function getNamespaceName(){return null ===$this->namespaceName ||$this->namespaceName
+=== ReflectionNamespace::NO_NAMESPACE_NAME?'':$this->namespaceName;}public function
+inNamespace(){return '' !==$this->getNamespaceName();}public function getShortName(){$name=$this->getName();if(null
 !==$this->namespaceName &&$this->namespaceName !== ReflectionNamespace::NO_NAMESPACE_NAME){$name=substr($name,strlen($this->namespaceName)+1);}return$name;}public
 function getNamespaceAliases(){return null ===$this->declaringClassName?$this->aliases:$this->getDeclaringClass()->getNamespaceAliases();}}}
 
  namespace TokenReflection{use TokenReflection\Exception;class ReflectionFileNamespace
 extends ReflectionBase{private$aliases=array();private$classes=array();private$functions=array();private$constants=array();public
 function getClasses(){return$this->classes;}public function getFunctions(){return$this->functions;}public
-function getConstants(){return$this->constants;}public function getInheritedDocComment(){return$this->getDocComment();}public
-function getNamespaceAliases(){return$this->aliases;}protected function processParent(IReflection$parent){if(!$parent
-instanceof ReflectionFile){throw new Exception\Parse(sprintf('The parent object has to be an instance of TokenReflection\ReflectionFile, "%s" given.',get_class($parent)),Exception\Parse::INVALID_PARENT);}return
+function getConstants(){return$this->constants;}public function getNamespaceAliases(){return$this->aliases;}protected
+function processParent(IReflection$parent){if(!$parent instanceof ReflectionFile){throw
+new Exception\Parse(sprintf('The parent object has to be an instance of TokenReflection\ReflectionFile, "%s" given.',get_class($parent)),Exception\Parse::INVALID_PARENT);}return
 parent::processParent($parent);}protected function parse(Stream$tokenStream,IReflection$parent){return$this
 ->parseName($tokenStream)->parseAliases($tokenStream);}protected function parseChildren(Stream$tokenStream,IReflection$parent){static$skipped;if(null
 ===$skipped){$skipped=array_flip(array(T_WHITESPACE,T_COMMENT,T_DOC_COMMENT));}while(true){switch($tokenStream->getType()){case
@@ -894,8 +890,7 @@ getDefaultValue(){if(null ===$this->defaultValueDefinition){throw new Exception\
 function getDefaultValueDefinition(){return$this->defaultValueDefinition;}public
 function getPosition(){return$this->position;}public function isArray(){return$this->valueConstraint
 === self::ARRAY_CONSTRAINT;}public function isDefaultValueAvailable(){return null
-!==$this->defaultValueDefinition;}public function getInheritedDocComment(){return$this->getDocComment();}public
-function isOptional(){try{if(null ===$this->isOptional){$function=$this->getDeclaringFunction();if(null
+!==$this->defaultValueDefinition;}public function isOptional(){try{if(null ===$this->isOptional){$function=$this->getDeclaringFunction();if(null
 ===$function){throw new Exception\Runtime(sprintf('Could not get the declaring function "%s" reflection.',$this->declaringFunctionName),Exception\Runtime::DOES_NOT_EXIST);}$this->isOptional=true;foreach(array_slice($function->getParameters(),$this->position)as$reflectionParameter){if(!$reflectionParameter->isDefaultValueAvailable()){$this->isOptional=false;break;}}}return$this->isOptional;}catch(Exception\Runtime$e){throw
 new Exception\Runtime(sprintf('Could not determine if parameter "%s" is optional.',$this->name),0,$e);}}public
 function isPassedByReference(){return$this->passedByReference;}protected function
@@ -938,11 +933,11 @@ function getParameter($parameter){$parameters=$this->getParameters();if(is_numer
 new Exception\Runtime(sprintf('There is no parameter at position "%d" in function "%s".',$parameter,$this->getName()),Exception\Runtime::DOES_NOT_EXIST);}return$parameters[$parameter];}else{foreach($parameters
 as$reflection){if($reflection->getName()===$parameter){return$reflection;}}throw
 new Exception\Runtime(sprintf('There is no parameter "%s" in function "%s".',$parameter,$this->getName()),Exception\Runtime::DOES_NOT_EXIST);}}public
-function getInheritedDocComment(){return false;}public function getAnnotations(){return
-array();}public function getAnnotation($name){return null;}public function hasAnnotation($name){return
-false;}public function isTokenized(){return false;}public function getNamespaceAliases(){return
-array();}public static function create(Reflector$internalReflection,Broker$broker){if(!$internalReflection
-instanceof InternalReflectionFunction){throw new Exception\Runtime(sprintf('Invalid reflection instance provided: "%s", ReflectionFunction expected.',get_class($internalReflection)),Exception\Runtime::INVALID_ARGUMENT);}return$broker->getFunction($internalReflection->getName());}}}
+function getAnnotations(){return array();}public function getAnnotation($name){return
+null;}public function hasAnnotation($name){return false;}public function isTokenized(){return
+false;}public function getNamespaceAliases(){return array();}public static function
+create(Reflector$internalReflection,Broker$broker){if(!$internalReflection instanceof
+InternalReflectionFunction){throw new Exception\Runtime(sprintf('Invalid reflection instance provided: "%s", ReflectionFunction expected.',get_class($internalReflection)),Exception\Runtime::INVALID_ARGUMENT);}return$broker->getFunction($internalReflection->getName());}}}
 
  namespace TokenReflection\Php{use TokenReflection;use TokenReflection\Broker,TokenReflection\Exception;use
 Reflector,ReflectionMethod as InternalReflectionMethod,ReflectionParameter as InternalReflectionParameter;class
@@ -953,7 +948,7 @@ TokenReflection\ReflectionBase::get($this,$key);}final public function __isset($
 TokenReflection\ReflectionBase::exists($this,$key);}public function getParameters(){if(null
 ===$this->parameters){$broker=$this->broker;$parent=$this;$this->parameters=array_map(function(InternalReflectionParameter$parameter)use($broker,$parent){return
 ReflectionParameter::create($parameter,$broker,$parent);},parent::getParameters());}return$this->parameters;}public
-function getInheritedDocComment(){return false;}public function getParameter($parameter){$parameters=$this->getParameters();if(is_numeric($parameter)){if(!isset($parameters[$parameter])){throw
+function getParameter($parameter){$parameters=$this->getParameters();if(is_numeric($parameter)){if(!isset($parameters[$parameter])){throw
 new Exception\Runtime(sprintf('There is no parameter at position "%d" in method "%s".',$parameter,$this->getName()),Exception\Runtime::DOES_NOT_EXIST);}return$parameters[$parameter];}else{foreach($parameters
 as$reflection){if($reflection->getName()===$parameter){return$reflection;}}throw
 new Exception\Runtime(sprintf('There is no parameter "%s" in method "%s".',$parameter,$this->getName()),Exception\Runtime::DOES_NOT_EXIST);}}public
@@ -969,8 +964,8 @@ self($internalReflection->getDeclaringClass()->getName(),$internalReflection->ge
 
  namespace TokenReflection{use TokenReflection\Exception;class ReflectionFunction
 extends ReflectionFunctionBase implements IReflectionFunction{private$aliases=array();public
-function isDisabled(){return$this->hasAnnotation('disabled');}public function getInheritedDocComment(){return$this->getDocComment();}public
-function invoke(){return$this->invokeArgs(func_get_args());}public function invokeArgs(array$args=array()){if(!function_exists($this->getName())){throw
+function isDisabled(){return$this->hasAnnotation('disabled');}public function invoke(){return$this->invokeArgs(func_get_args());}public
+function invokeArgs(array$args=array()){if(!function_exists($this->getName())){throw
 new Exception\Runtime(sprintf('Could not invoke function "%s"; function is not defined.',$this->name),Exception\Runtime::DOES_NOT_EXIST);}return
 call_user_func_array($this->getName(),$args);}protected function parse(Stream$tokenStream,IReflection$parent){return$this
 ->parseReturnsReference($tokenStream)->parseName($tokenStream);}protected function
@@ -981,19 +976,17 @@ parent::processParent($parent);}public function getNamespaceAliases(){return$thi
  namespace TokenReflection{use TokenReflection\Exception;use ReflectionMethod as InternalReflectionMethod,ReflectionClass
 as InternalReflectionClass;class ReflectionMethod extends ReflectionFunctionBase
 implements IReflectionMethod{const IS_IMPLEMENTED_ABSTRACT=0x08;const ACCESS_LEVEL_CHANGED=0x800;const
-IS_CONSTRUCTOR=0x2000;const IS_DESTRUCTOR=0x4000;const IS_CLONE=0x8000;const IS_ALLOWED_STATIC=0x10000;private$declaringClassName;private$accessible=false;private$modifiersComplete=false;public
+IS_CONSTRUCTOR=0x2000;const IS_DESTRUCTOR=0x4000;const IS_CLONE=0x8000;const IS_ALLOWED_STATIC=0x10000;private$declaringClassName;private$accessible=false;private$modifiersComplete=false;private$prototype;public
 function getDeclaringClass(){return null ===$this->declaringClassName?null:$this->getBroker()->getClass($this->declaringClassName);}public
 function getDeclaringClassName(){return$this->declaringClassName;}public function
-getInheritedDocComment(){if(false !==($docComment=$this->getDocComment())&&false
-=== stripos($docComment,'@inheritdoc')){return$docComment;}$parent=$this->getDeclaringClass()->getParentClass();if(false
-!==$parent &&$parent->hasMethod($this->getName())){return$parent->getMethod($this->getName())->getInheritedDocComment();}return
-false;}public function getModifiers(){if(!$this->modifiersComplete &&!($this->modifiers&(self::ACCESS_LEVEL_CHANGED|self::IS_IMPLEMENTED_ABSTRACT))){$declaringClass=$this->getDeclaringClass();$parentClass=$declaringClass->getParentClass();if(false
+getModifiers(){if(!$this->modifiersComplete &&!($this->modifiers&(self::ACCESS_LEVEL_CHANGED|self::IS_IMPLEMENTED_ABSTRACT))){$declaringClass=$this->getDeclaringClass();$parentClass=$declaringClass->getParentClass();if(false
 !==$parentClass &&$parentClass->hasMethod($this->name)){$parentClassMethod=$parentClass->getMethod($this->name);if($this->modifiers&InternalReflectionMethod::IS_PUBLIC
-&&($parentClassMethod->getModifiers()&(self::ACCESS_LEVEL_CHANGED|InternalReflectionMethod::IS_PRIVATE))){$this->modifiers
-|= self::ACCESS_LEVEL_CHANGED;}if($parentClassMethod->getModifiers()&(self::IS_IMPLEMENTED_ABSTRACT|InternalReflectionMethod::IS_ABSTRACT)){$this->modifiers
-|= self::IS_IMPLEMENTED_ABSTRACT;}}$this->modifiersComplete=true;foreach($declaringClass->getParentClasses()as$parentClass){if($parentClass
-instanceof Dummy\ReflectionClass){$this->modifiersComplete=false;break;}}}return$this->modifiers;}public
-function invoke($object,$args){$params=func_get_args();return$this->invokeArgs(array_shift($params),$params);}public
+&&$parentClassMethod->is(self::ACCESS_LEVEL_CHANGED|InternalReflectionMethod::IS_PRIVATE)){$this->modifiers
+|= self::ACCESS_LEVEL_CHANGED;}if($parentClassMethod->is(self::IS_IMPLEMENTED_ABSTRACT|InternalReflectionMethod::IS_ABSTRACT)){$this->modifiers
+|= self::IS_IMPLEMENTED_ABSTRACT;}}$this->modifiersComplete=$this->isComplete()||(($this->modifiers&self::IS_IMPLEMENTED_ABSTRACT)&&($this->modifiers&self::ACCESS_LEVEL_CHANGED));}return$this->modifiers;}public
+function is($filter=null){static$computedModifiers=0x808;if(null ===$filter ||($this->modifiers&$filter)){return
+true;}elseif(($filter&$computedModifiers)&&!$this->modifiersComplete){return$this->getModifiers()&$filter;}return
+false;}public function invoke($object,$args){$params=func_get_args();return$this->invokeArgs(array_shift($params),$params);}public
 function invokeArgs($object,array$args=array()){try{$declaringClass=$this->getDeclaringClass();if(!$declaringClass->isInstance($object)){throw
 new Exception\Runtime(sprintf('Invalid class, "%s" expected "%s" given.',$declaringClass->getName(),get_class($object)),Exception\Runtime::INVALID_ARGUMENT);}if($this->isPublic()){return
 call_user_func_array(array($object,$this->getName()),$args);}elseif($this->isAccessible()){$refClass=new
@@ -1010,11 +1003,12 @@ function isPublic(){return (bool)($this->modifiers&InternalReflectionMethod::IS_
 function isStatic(){return (bool)($this->modifiers&InternalReflectionMethod::IS_STATIC);}public
 function setAccessible($accessible){$this->accessible=(bool)$accessible;}public function
 isAccessible(){return$this->accessible;}public function getNamespaceAliases(){return$this->getDeclaringClass()->getNamespaceAliases();}public
-function getPrototype(){$declaring=$this->getDeclaringClass();if($declaring->getParentClassName()){foreach($declaring->getParentClass()->getMethods()as$method){if($method->getName()===$this->name
-&&!$method->isPrivate()){return$method;}}}foreach($declaring->getInterfaces()as$interface){if($interface->hasMethod($this->name)){return$interface->getMethod($this->name);}}throw
-new Exception\Runtime(sprintf('Method "%s::%s()" has no prototype.',$this->declaringClassName,$this->name),Exception\Runtime::DOES_NOT_EXIST);}protected
-function processParent(IReflection$parent){if(!$parent instanceof ReflectionClass){throw
-new Exception\Parse(sprintf('The parent object has to be an instance of TokenReflection\ReflectionClass, "%s" given.',get_class($parent)),Exception\Parse::INVALID_PARENT);}$this->declaringClassName=$parent->getName();return
+function getPrototype(){if(null ===$this->prototype){$prototype=null;$declaring=$this->getDeclaringClass();if($parent=$declaring->getParentClass()){if($parent->hasMethod($this->name)){$method=$parent->getMethod($this->name);if(!$method->isPrivate()){$prototype=$method;}}}if(null
+===$prototype){foreach($declaring->getInterfaces()as$interface){if($interface->hasMethod($this->name)){$prototype=$interface->getMethod($this->name);break;}}}$this->prototype=$prototype?:($this->isComplete()?false:null);}if(empty($this->prototype)){throw
+new Exception\Runtime(sprintf('Method "%s::%s()" has no prototype.',$this->declaringClassName,$this->name),Exception\Runtime::DOES_NOT_EXIST);}return$this->prototype;}private
+function isComplete(){return$this->getDeclaringClass()->isComplete();}protected function
+processParent(IReflection$parent){if(!$parent instanceof ReflectionClass){throw new
+Exception\Parse(sprintf('The parent object has to be an instance of TokenReflection\ReflectionClass, "%s" given.',get_class($parent)),Exception\Parse::INVALID_PARENT);}$this->declaringClassName=$parent->getName();return
 parent::processParent($parent);}protected function parse(Stream$tokenStream,IReflection$parent){return$this
 ->parseBaseModifiers($tokenStream)->parseReturnsReference($tokenStream)->parseName($tokenStream)->parseInternalModifiers($parent);}private
 function parseBaseModifiers(Stream$tokenStream){try{while(true){switch($tokenStream->getType()){case

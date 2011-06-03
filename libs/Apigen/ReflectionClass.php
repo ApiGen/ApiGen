@@ -94,6 +94,13 @@ class ReflectionClass extends ReflectionBase
 				self::$methodAccessLevels |= constant('ReflectionMethod::IS_' . strtoupper($level));
 				self::$propertyAccessLevels |= constant('ReflectionProperty::IS_' . strtoupper($level));
 			}
+
+			if ((ReflectionMethod::IS_PUBLIC | ReflectionMethod::IS_PROTECTED | ReflectionMethod::IS_PRIVATE) === self::$methodAccessLevels) {
+				self::$methodAccessLevels = null;
+			}
+			if ((ReflectionProperty::IS_PUBLIC | ReflectionProperty::IS_PROTECTED | ReflectionProperty::IS_PRIVATE) === self::$propertyAccessLevels) {
+				self::$propertyAccessLevels = null;
+			}
 		}
 	}
 
@@ -142,15 +149,18 @@ class ReflectionClass extends ReflectionBase
 	public function getOwnConstants()
 	{
 		if (null === $this->ownConstants) {
-			$generator = self::$generator;
-			$this->ownConstants = array_map(function(IReflectionConstant $constant) use ($generator) {
-				return new ReflectionConstant($constant, $generator);
-			}, $this->reflection->getOwnConstantReflections());
+			$this->ownConstants = $this->reflection->getOwnConstantReflections();
+
 			if (!self::$config->deprecated) {
-				$this->ownConstants = array_filter($this->ownConstants, function(ReflectionConstant $constant) {
+				$this->ownConstants = array_filter($this->ownConstants, function(IReflectionConstant $constant) {
 					return !$constant->isDeprecated();
 				});
 			}
+
+			$generator = self::$generator;
+			$this->ownConstants = array_map(function(IReflectionConstant $constant) use ($generator) {
+				return new ReflectionConstant($constant, $generator);
+			}, $this->ownConstants);
 		}
 		return $this->ownConstants;
 	}
@@ -426,9 +436,11 @@ class ReflectionClass extends ReflectionBase
 				return false;
 			}
 
-			if ($property->getModifiers() & ~self::$propertyAccessLevels) {
-				// Wrong access level
-				return false;
+			if (null !== self::$propertyAccessLevels) {
+				if ($property->getModifiers() & ~self::$propertyAccessLevels) {
+					// Wrong access level
+					return false;
+				}
 			}
 
 			return self::$classes[$property->getDeclaringClassName()]->isDocumented();
@@ -453,9 +465,11 @@ class ReflectionClass extends ReflectionBase
 				return false;
 			}
 
-			if ($method->getModifiers() & ~self::$methodAccessLevels) {
-				// Wrong access level
-				return false;
+			if (null !== self::$methodAccessLevels) {
+				if (!$method->is(self::$methodAccessLevels)) {
+					// Wrong access level
+					return false;
+				}
 			}
 
 			return self::$classes[$method->getDeclaringClassName()]->isDocumented();
