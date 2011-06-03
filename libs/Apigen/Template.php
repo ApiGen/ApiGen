@@ -164,10 +164,10 @@ class Template extends Nette\Templating\FileTemplate
 			if ($context instanceof ReflectionParameter) {
 				$description = preg_replace('~^(\\$?' . $context->getName() . ')(\s+|$)~i', '\\2', $description, 1);
 			}
-			return $that->docline($description, $context);
+			return $that->doc($description, $context);
 		});
 		$this->registerHelper('shortDescription', function($element) use ($that) {
-			return $that->docline($element->getAnnotation(ReflectionAnnotation::SHORT_DESCRIPTION), $element);
+			return $that->doc($element->getAnnotation(ReflectionAnnotation::SHORT_DESCRIPTION), $element);
 		});
 		$this->registerHelper('longDescription', function($element) use ($that) {
 			$short = $element->getAnnotation(ReflectionAnnotation::SHORT_DESCRIPTION);
@@ -177,7 +177,7 @@ class Template extends Nette\Templating\FileTemplate
 				$short .= "\n\n" . $long;
 			}
 
-			return $that->docblock($short, $element);
+			return $that->doc($short, $element, true);
 		});
 
 		// Individual annotations processing
@@ -191,7 +191,7 @@ class Template extends Nette\Templating\FileTemplate
 				case 'package':
 					list($packageName, $description) = $that->split($value);
 					if ($that->packages) {
-						return $that->link($that->getPackageUrl($packageName), $packageName) . ' ' . $that->docline($description, $context);
+						return $that->link($that->getPackageUrl($packageName), $packageName) . ' ' . $that->doc($description, $context);
 					}
 					break;
 				case 'subpackage':
@@ -203,7 +203,7 @@ class Template extends Nette\Templating\FileTemplate
 					list($subpackageName, $description) = $that->split($value);
 
 					if ($that->packages && $packageName) {
-						return $that->link($that->getPackageUrl($packageName . '\\' . $subpackageName), $subpackageName) . ' ' . $that->docline($description, $context);
+						return $that->link($that->getPackageUrl($packageName . '\\' . $subpackageName), $subpackageName) . ' ' . $that->doc($description, $context);
 					}
 					break;
 				case 'see':
@@ -219,7 +219,7 @@ class Template extends Nette\Templating\FileTemplate
 			}
 
 			// Default
-			return $that->docline($value, $context);
+			return $that->doc($value, $context);
 		});
 
 		$todo = $this->config->todo;
@@ -723,7 +723,7 @@ class Template extends Nette\Templating\FileTemplate
 	 * @param \Apigen\ReflectionBase|\TokenReflection\IReflection $context Reflection object
 	 * @return string
 	 */
-	public function resolveLinks($text, $context)
+	private function resolveLinks($text, $context)
 	{
 		$that = $this;
 		return preg_replace_callback('~{@(?:link|see)\\s+([^}]+)}~', function ($matches) use ($context, $that) {
@@ -732,27 +732,34 @@ class Template extends Nette\Templating\FileTemplate
 	}
 
 	/**
-	 * Formats text as documentation block.
+	 * Resolves internal annotation.
 	 *
-	 * @param string $text Text
-	 * @param \Apigen\ReflectionBase|\TokenReflection\IReflection $context Reflection object
+	 * @param string $text
 	 * @return string
 	 */
-	public function docblock($text, $context)
+	private function resolveInternal($text)
 	{
-		return $this->resolveLinks($this->texy->process($text), $context);
+		$internal = $this->config->internal;
+		return preg_replace_callback('~\\{@(\\w+)(?:(?:\\s+((?>(?R)|[^{}]+)*)\\})|\\})~', function($matches) use ($internal) {
+			// Replace only internal
+			if ('internal' !== $matches[1]) {
+				return $matches[0];
+			}
+			return $internal && isset($matches[2]) ? $matches[2] : '';
+		}, $text);
 	}
 
 	/**
-	 * Formats text as documentation line.
+	 * Formats text as documentation block or line.
 	 *
 	 * @param string $text Text
 	 * @param \Apigen\ReflectionBase|\TokenReflection\IReflection $context Reflection object
+	 * @param boolean $block Parse text as block
 	 * @return string
 	 */
-	public function docline($text, $context)
+	public function doc($text, $context, $block = false)
 	{
-		return $this->resolveLinks($this->texy->processLine($text), $context);
+		return $this->resolveLinks($this->texy->process($this->resolveInternal($text), !$block), $context);
 	}
 
 	/**
