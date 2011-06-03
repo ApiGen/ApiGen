@@ -93,12 +93,36 @@ class Config
 
 	/**
 	 * Initializes configuration.
-	 *
-	 * @param array $options Configuration options from the command line
 	 */
-	public function __construct(array $options)
+	public function __construct()
 	{
-		$this->options = $options;
+		$options = $_SERVER['argv'];
+		array_shift($options);
+
+		while ($option = current($options)) {
+			if (preg_match('~^--([a-z][-a-z]*[a-z])(?:=(.+))?$~', $option, $matches) || preg_match('~^-([a-z])=?(.*)~', $option, $matches)) {
+				$name = $matches[1];
+
+				if (!empty($matches[2])) {
+					$value = $matches[2];
+				} else {
+					$next = next($options);
+					if (false === $next || '-' === $next{0}) {
+						prev($options);
+						$value = true;
+					} else {
+						$value = $next;
+					}
+				}
+
+				$this->options[$name][] = $value;
+			}
+
+			next($options);
+		}
+		$this->options = array_map(function($value) {
+			return 1 === count($value) ? $value[0] : $value;
+		}, $this->options);
 
 		$this->config = self::$defaultConfig;
 		$this->config['templateDir'] = realpath(__DIR__ . '/../../templates');
@@ -111,7 +135,7 @@ class Config
 	 */
 	public function parse()
 	{
-		// Compatibility
+		// Compatibility with ApiGen 1.0
 		foreach (array('config', 'source', 'destination') as $option) {
 			if (isset($this->options[$option{0}]) && !isset($this->options[$option])) {
 				$this->options[$option] = $this->options[$option{0}];
@@ -329,7 +353,7 @@ class Config
 	}
 
 	/**
-	 * Checks it a configuration option exists.
+	 * Checks if a configuration option exists.
 	 *
 	 * @param string $name Option name
 	 * @return boolean
@@ -348,6 +372,16 @@ class Config
 	public function __get($name)
 	{
 		return isset($this->config[$name]) ? $this->config[$name] : null;
+	}
+
+	/**
+	 * If the user requests help.
+	 *
+	 * @return boolean
+	 */
+	public function isHelpRequested()
+	{
+		return empty($this->options) || isset($this->options['h']) || isset($this->options['help']);
 	}
 
 	/**

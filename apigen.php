@@ -31,45 +31,18 @@ try {
 	Nette\Diagnostics\Debugger::enable();
 	Nette\Diagnostics\Debugger::timer();
 
-	$options = getopt('c:s:d:h', array(
-		'config:',
-		'source:',
-		'destination:',
-		'skip-doc-path:',
-		'skip-doc-prefix:',
-		'exclude:',
-		'title:',
-		'base-url:',
-		'google-cse:',
-		'google-analytics:',
-		'template:',
-		'template-dir:',
-		'allowed-html:',
-		'access-levels:',
-		'php:',
-		'tree:',
-		'deprecated:',
-		'todo:',
-		'source-code:',
-		'undocumented:',
-		'wipeout:',
-		'quiet:',
-		'progressbar:',
-		'debug:',
-		'help'
-	));
+	$config = new Apigen\Config();
 
 	// Help
-	if (empty($options) || isset($options['h']) || isset($options['help'])) {
+	if ($config->isHelpRequested()) {
 		echo Apigen\Generator::getHeader();
 		echo Apigen\Config::getHelp();
 		die();
 	}
 
-	// Start
-	$config = new Apigen\Config($options);
 	$config->parse();
 
+	// Start
 	$generator = new Apigen\Generator($config);
 	$generator->output(Apigen\Generator::getHeader());
 
