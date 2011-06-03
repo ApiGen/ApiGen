@@ -726,7 +726,7 @@ class Template extends Nette\Templating\FileTemplate
 	public function resolveLinks($text, $context)
 	{
 		$that = $this;
-		return preg_replace_callback('~{@link\\s+([^}]+)}~', function ($matches) use ($context, $that) {
+		return preg_replace_callback('~{@(?:link|see)\\s+([^}]+)}~', function ($matches) use ($context, $that) {
 			return $that->resolveLink($matches[1], $context) ?: $matches[1];
 		}, $text);
 	}
