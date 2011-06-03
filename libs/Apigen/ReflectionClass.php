@@ -120,7 +120,7 @@ class ReflectionClass extends ReflectionBase
 			}
 			if (!self::$config->internal) {
 				$this->ownMethods = array_filter($this->ownMethods, function(IReflectionMethod $method) {
-					return !$method->hasAnnotation('internal');
+					return (!$internal = $method->getAnnotation('internal')) || !empty($internal[0]);
 				});
 			}
 		}
@@ -144,7 +144,7 @@ class ReflectionClass extends ReflectionBase
 			}
 			if (!self::$config->internal) {
 				$this->ownProperties = array_filter($this->ownProperties, function(IReflectionProperty $property) {
-					return !$property->hasAnnotation('internal');
+					return (!$internal = $property->getAnnotation('internal')) || !empty($internal[0]);
 				});
 			}
 		}
@@ -168,7 +168,7 @@ class ReflectionClass extends ReflectionBase
 			}
 			if (!self::$config->internal) {
 				$this->ownConstants = array_filter($this->ownConstants, function(IReflectionConstant $constant) {
-					return !$constant->hasAnnotation('internal');
+					return (!$internal = $constant->getAnnotation('internal')) || !empty($internal[0]);
 				});
 			}
 
@@ -429,7 +429,7 @@ class ReflectionClass extends ReflectionBase
 				return false;
 			}
 
-			if (!self::$config->internal && $constant->hasAnnotation('internal')) {
+			if (!self::$config->internal && ($internal = $constant->getAnnotation('internal')) && empty($internal[0])) {
 				// Internal constant
 				return false;
 			}
@@ -456,7 +456,7 @@ class ReflectionClass extends ReflectionBase
 				return false;
 			}
 
-			if (!self::$config->internal && $property->hasAnnotation('internal')) {
+			if (!self::$config->internal && ($internal = $property->getAnnotation('internal')) && empty($internal[0])) {
 				// Internal property
 				return false;
 			}
@@ -490,7 +490,7 @@ class ReflectionClass extends ReflectionBase
 				return false;
 			}
 
-			if (!self::$config->internal && $method->hasAnnotation('internal')) {
+			if (!self::$config->internal && ($internal = $method->getAnnotation('internal')) && empty($internal[0])) {
 				// Internal method
 				return false;
 			}

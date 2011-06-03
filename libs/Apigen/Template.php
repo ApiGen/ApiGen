@@ -223,7 +223,8 @@ class Template extends Nette\Templating\FileTemplate
 		});
 
 		$todo = $this->config->todo;
-		$this->registerHelper('annotationFilter', function(array $annotations, array $filter = array()) use ($todo) {
+		$internal = $this->config->internal;
+		$this->registerHelper('annotationFilter', function(array $annotations, array $filter = array()) use ($todo, $internal) {
 			// Unsupported or deprecated annotations
 			static $unsupported = array(
 				ReflectionAnnotation::SHORT_DESCRIPTION, ReflectionAnnotation::LONG_DESCRIPTION,
@@ -238,6 +239,11 @@ class Template extends Nette\Templating\FileTemplate
 				unset($annotations[$annotation]);
 			}
 
+			// Show/hide internal
+			if (!$internal) {
+				unset($annotations['internal']);
+			}
+
 			// Show/hide todo
 			if (!$todo) {
 				unset($annotations['todo']);
@@ -249,9 +255,9 @@ class Template extends Nette\Templating\FileTemplate
 		$this->registerHelper('annotationSort', function(array $annotations) {
 			uksort($annotations, function($a, $b) {
 				static $order = array(
-					'deprecated' => 0, 'internal' => 1, 'category' => 2, 'package' => 3, 'subpackage' => 4, 'copyright' => 5,
-					'license' => 6, 'author' => 7, 'version' => 8, 'since' => 9, 'see' => 10, 'uses' => 11,
-					'link' => 12, 'example' => 13, 'tutorial' => 14, 'todo' => 15
+					'deprecated' => 0, 'category' => 1, 'package' => 2, 'subpackage' => 3, 'copyright' => 4,
+					'license' => 5, 'author' => 6, 'version' => 7, 'since' => 8, 'see' => 9, 'uses' => 10,
+					'link' => 11, 'internal' => 14, 'example' => 13, 'tutorial' => 14, 'todo' => 15
 				);
 				$orderA = isset($order[$a]) ? $order[$a] : 99;
 				$orderB = isset($order[$b]) ? $order[$b] : 99;
