@@ -158,6 +158,10 @@ class Config
 		}
 
 		foreach (self::$defaultConfig as $option => $valueDefinition) {
+			if (is_array($this->config[$option]) && !is_array($valueDefinition)) {
+				throw new Exception(sprintf('Option %s must be set only once', $option), Exception::INVALID_CONFIG);
+			}
+
 			if (is_bool($valueDefinition)) {
 				// Boolean option
 				$value = strtolower($this->config[$option]);
