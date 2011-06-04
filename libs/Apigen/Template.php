@@ -110,11 +110,11 @@ class Template extends Nette\Templating\FileTemplate
 		$this->registerHelper('replaceRE', 'Nette\Utils\Strings::replace');
 
 		// PHP source highlight
-		$this->registerHelper('highlightPHP', function($source) use ($fshl) {
-			return $fshl->highlightString('PHP', (string) $source);
+		$this->registerHelper('highlightPHP', function($source, $context) use ($that, $fshl) {
+			return $that->resolveLink($source, $context) ?: $fshl->highlightString('PHP', (string) $source);
 		});
-		$this->registerHelper('highlightValue', function($definition) use ($that) {
-			return $that->highlightPHP(preg_replace('~^(?:[ ]{4}|\t)~m', '', $definition));
+		$this->registerHelper('highlightValue', function($definition, $context) use ($that) {
+			return $that->highlightPHP(preg_replace('~^(?:[ ]{4}|\t)~m', '', $definition), $context);
 		});
 
 		// Urls
@@ -627,18 +627,25 @@ class Template extends Nette\Templating\FileTemplate
 
 		// Class::something or Class->something
 		if (($pos = strpos($definition, '::')) || ($pos = strpos($definition, '->'))) {
-			$class = $this->getClass(substr($definition, 0, $pos), $context->getNamespaceName());
+			if (0 === strpos($definition, 'self::')) {
+				// Link to the current class
+				if (!$context instanceof ReflectionClass) {
+					return null;
+				}
+			} else {
+				$class = $this->getClass(substr($definition, 0, $pos), $context->getNamespaceName());
 
-			if (null === $class) {
-				$class = $this->getClass(\TokenReflection\ReflectionBase::resolveClassFQN(substr($definition, 0, $pos), $context->getNamespaceAliases(), $context->getNamespaceName()));
+				if (null === $class) {
+					$class = $this->getClass(\TokenReflection\ReflectionBase::resolveClassFQN(substr($definition, 0, $pos), $context->getNamespaceAliases(), $context->getNamespaceName()));
+				}
+
+				// No class
+				if (null === $class) {
+					return null;
+				}
+
+				$context = $class;
 			}
-
-			// No class
-			if (null === $class) {
-				return null;
-			}
-
-			$context = $class;
 
 			$definition = substr($definition, $pos + 2);
 		}

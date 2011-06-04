@@ -32,7 +32,7 @@
 		</code></td>
 		<td width="1%">
 			{var $element => $template->resolveElement($constant->valueDefinition, $constant)}
-			{if $element}<a href="{$element|constantUrl}">{$constant->valueDefinition}</a>{else}<code>{!$constant->valueDefinition|highlightValue}</code>{/if}
+			{if $element}<a href="{$element|constantUrl}">{$constant->valueDefinition}</a>{else}<code>{!$constant->valueDefinition|highlightValue:$constant}</code>{/if}
 		</td>
 		<td>{ifset $annotations['var']}{!$annotations['var'][0]|description:$constant}{/ifset}</td>
 	</tr>

@@ -92,7 +92,7 @@
 				{if $parameter->array}array
 				{elseif $parameter->className}<a href="{$parameter->className|classUrl}" n:tag-if="$template->getClass($parameter->className)">{$parameter->className}</a>
 				{elseif isset($annotations['param'][$parameter->position])}{!$annotations['param'][$parameter->position]|typeLinks:$parameter}{/if}
-				<var>{if $parameter->passedByReference}&amp; {/if}${$parameter->name}</var>{if $parameter->defaultValueAvailable} = {!$parameter->defaultValueDefinition|highlightPHP}{/if}{sep}, {/sep}
+				<var>{if $parameter->passedByReference}&amp; {/if}${$parameter->name}</var>{if $parameter->defaultValueAvailable} = {!$parameter->defaultValueDefinition|highlightPHP:$class}{/if}{sep}, {/sep}
 			{/foreach}
 		)</code>
 
@@ -197,7 +197,7 @@
 		</code></td>
 		<td width="1%">
 			{var $element => $template->resolveElement($constant->valueDefinition, $constant)}
-			{if $element}<a href="{$element|constantUrl}">{$constant->valueDefinition}</a>{else}<code>{!$constant->valueDefinition|highlightValue}</code>{/if}
+			{if $element}<a href="{$element|constantUrl}">{$constant->valueDefinition}</a>{else}<code>{!$constant->valueDefinition|highlightValue:$class}</code>{/if}
 		</td>
 		<td><div class="position">
 			<a href="#{$constant->name}" class="anchor">#</a>
@@ -253,7 +253,7 @@
 				<a n:tag-if="$config->sourceCode" href="{$property|sourceUrl}" title="Go to source code">${$property->name}</a>
 			{/if}
 		</var></td>
-		<td width="1%"><pre>{!$property->defaultValueDefinition|highlightValue}</pre></td>
+		<td width="1%"><pre>{!$property->defaultValueDefinition|highlightValue:$class}</pre></td>
 		<td><div class="position">
 			<a href="#${$property->name}" class="anchor">#</a>
 

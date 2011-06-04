@@ -33,7 +33,7 @@
 			{elseif isset($annotations['param'][$parameter->position])}{!$annotations['param'][$parameter->position]|typeLinks:$function}{/if}
 		</code></td>
 		<td width="1%"><code class="nowrap">
-			<var>{if $parameter->passedByReference}&amp; {/if}${$parameter->name}</var>{if $parameter->defaultValueAvailable} = {!$parameter->defaultValueDefinition|highlightPHP}{/if}
+			<var>{if $parameter->passedByReference}&amp; {/if}${$parameter->name}</var>{if $parameter->defaultValueAvailable} = {!$parameter->defaultValueDefinition|highlightPHP:$function}{/if}
 		</code></td>
 		<td>
 			{ifset $annotations['param'][$parameter->position]}{!$annotations['param'][$parameter->position]|description:$parameter}{/ifset}
