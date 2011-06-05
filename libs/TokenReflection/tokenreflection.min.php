@@ -406,7 +406,7 @@ getModifiers();public function getPrototype();public function invoke($object,$ar
 function invokeArgs($object,array$args);public function isAbstract();public function
 isConstructor();public function isDestructor();public function isFinal();public function
 isPrivate();public function isProtected();public function isPublic();public function
-isStatic();public function setAccessible($accessible);}}
+isStatic();public function is($filter=null);public function setAccessible($accessible);}}
 
  namespace TokenReflection\Php{use TokenReflection;use TokenReflection\Broker,TokenReflection\Exception;use
 Reflector,ReflectionClass as InternalReflectionClass,ReflectionProperty as InternalReflectionProperty,ReflectionMethod
@@ -870,8 +870,8 @@ function getDeclaringClassName(){return$this->getDeclaringClass()->getName();}pu
 function getAnnotations(){return array();}public function getAnnotation($name){return
 null;}public function hasAnnotation($name){return false;}public function getPrototype(){return
 self::create(parent::getPrototype(),$this->broker);}public function isTokenized(){return
-false;}public function getNamespaceAliases(){return array();}public static function
-create(Reflector$internalReflection,Broker$broker){static$cache=array();if(!$internalReflection
+false;}public function getNamespaceAliases(){return array();}public function is($filter=null){return
+null===$filter||($this->getModifiers()&$filter);}public static function create(Reflector$internalReflection,Broker$broker){static$cache=array();if(!$internalReflection
 instanceof InternalReflectionMethod){throw new Exception\Runtime(sprintf('Invalid reflection instance provided: "%s", ReflectionMethod expected.',get_class($internalReflection)),Exception\Runtime::INVALID_ARGUMENT);}$key=$internalReflection->getDeclaringClass()->getName().'::'.$internalReflection->getName();if(!isset($cache[$key])){$cache[$key]=new
 self($internalReflection->getDeclaringClass()->getName(),$internalReflection->getName(),$broker);}return$cache[$key];}}}
 
