@@ -384,6 +384,8 @@ class Generator extends Nette\Object
 			});
 		}
 
+		$mainFilter = function($element) {return $element->isMain();};
+
 		$sitemapEnabled = !empty($this->config->baseUrl) && isset($templates['optional']['sitemap']);
 		$opensearchEnabled = !empty($this->config->googleCse) && !empty($this->config->baseUrl) && isset($templates['optional']['opensearch']);
 		$autocompleteEnabled = !empty($this->config->googleCse) && isset($templates['optional']['autocomplete']);
@@ -436,13 +438,13 @@ class Generator extends Nette\Object
 		$template->package = null;
 		$template->packages = array_keys($packages);
 		$template->class = null;
-		$template->classes = $classes;
-		$template->interfaces = $interfaces;
-		$template->exceptions = $exceptions;
+		$template->classes = array_filter($classes, $mainFilter);
+		$template->interfaces = array_filter($interfaces, $mainFilter);
+		$template->exceptions = array_filter($exceptions, $mainFilter);
 		$template->constant = null;
-		$template->constants = $constants;
+		$template->constants = array_filter($constants, $mainFilter);
 		$template->function = null;
-		$template->functions = $functions;
+		$template->functions = array_filter($functions, $mainFilter);
 		foreach ($templates['common'] as $dest => $source) {
 			$template->setFile($templatePath . '/' . $source)->save($this->forceDir("$destination/$dest"));
 
@@ -504,6 +506,11 @@ class Generator extends Nette\Object
 			$undocumented = array();
 			foreach ($elementTypes as $type) {
 				foreach ($$type as $parentElement) {
+					// Skip elements not from the main project
+					if (!$parentElement->isMain()) {
+						continue;
+					}
+
 					// Internal elements don't have documentation
 					if ($parentElement->isInternal()) {
 						continue;
@@ -657,13 +664,17 @@ class Generator extends Nette\Object
 			$template->deprecatedConstants = array();
 			$template->deprecatedProperties = array();
 			foreach (array_reverse($elementTypes) as $type) {
-				$template->{'deprecated' . ucfirst($type)} = array_filter($$type, $deprecatedFilter);
+				$template->{'deprecated' . ucfirst($type)} = array_filter(array_filter($$type, $mainFilter), $deprecatedFilter);
 
 				if ('constants' === $type || 'functions' === $type) {
 					continue;
 				}
 
 				foreach ($$type as $class) {
+					if (!$class->isMain()) {
+						continue;
+					}
+
 					if ($class->isDeprecated()) {
 						continue;
 					}
@@ -710,13 +721,17 @@ class Generator extends Nette\Object
 			$template->todoConstants = array();
 			$template->todoProperties = array();
 			foreach (array_reverse($elementTypes) as $type) {
-				$template->{'todo' . ucfirst($type)} = array_filter($$type, $todoFilter);
+				$template->{'todo' . ucfirst($type)} = array_filter(array_filter($$type, $mainFilter), $todoFilter);
 
 				if ('constants' === $type || 'functions' === $type) {
 					continue;
 				}
 
 				foreach ($$type as $class) {
+					if (!$class->isMain()) {
+						continue;
+					}
+
 					$template->todoMethods = array_merge($template->todoMethods, array_values(array_filter($class->getOwnMethods(), $todoFilter)));
 					$template->todoConstants = array_merge($template->todoConstants, array_values(array_filter($class->getOwnConstants(), $todoFilter)));
 					$template->todoProperties = array_merge($template->todoProperties, array_values(array_filter($class->getOwnProperties(), $todoFilter)));
@@ -759,7 +774,7 @@ class Generator extends Nette\Object
 
 			$processed = array();
 			foreach ($this->classes as $className => $reflection) {
-				if (!$reflection->isDocumented() || isset($processed[$className])) {
+				if (!$reflection->isMain() || !$reflection->isDocumented() || isset($processed[$className])) {
 					continue;
 				}
 

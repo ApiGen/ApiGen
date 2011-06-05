@@ -131,7 +131,17 @@ abstract class ReflectionBase
 	}
 
 	/**
-	 * Returns if the class should be documented.
+	 * Returns if the element belongs to the main project.
+	 *
+	 * @return boolean
+	 */
+	public function isMain()
+	{
+		return empty(self::$config->main) || 0 === strpos($this->reflection->getName(), self::$config->main);
+	}
+
+	/**
+	 * Returns if the element should be documented.
 	 *
 	 * @return boolean
 	 */
