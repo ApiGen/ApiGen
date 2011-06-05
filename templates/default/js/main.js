@@ -64,6 +64,7 @@ $(function(){
 	$('#left ul li ul li:not(.active) span').click();
 
 	// splitter
+	$('#rightWrapper').css('marginLeft', 0);
 	$('#main').splitter({
 		sizeLeft: true,
 		minLeft: 230,

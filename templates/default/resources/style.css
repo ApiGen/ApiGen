@@ -118,6 +118,8 @@ code a b {
 	overflow: auto;
 	background: #ffffff;
 	width: 270px;
+	height: 100%;
+	position: fixed;
 }
 
 #left {
@@ -178,6 +180,7 @@ code a b {
  */
 #rightWrapper {
 	overflow: auto;
+	margin-left: 270px;
 }
 
 #right {
