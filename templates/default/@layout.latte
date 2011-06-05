@@ -71,7 +71,7 @@
 			</ul>
 			{/if}
 
-			<hr n:if="$packages || $namespaces">
+			<hr n:if="($packages || $namespaces) && ($classes || $interfaces || $exceptions || $constants || $functions)">
 
 			{if $classes}
 			<h3>Classes</h3>
