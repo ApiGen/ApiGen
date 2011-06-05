@@ -155,11 +155,17 @@ class Generator extends Nette\Object
 		$this->functions = new \ArrayObject($broker->getFunctions());
 		$this->functions->uksort('strcasecmp');
 
+		$documentedCounter = function($count, $element) {return $count += (int) $element->isDocumented();};
+
 		return array(
 			count($broker->getClasses(Backend::TOKENIZED_CLASSES)),
 			count($this->constants),
 			count($this->functions),
-			count($broker->getClasses(Backend::INTERNAL_CLASSES))
+			count($broker->getClasses(Backend::INTERNAL_CLASSES)),
+			array_reduce($broker->getClasses(Backend::TOKENIZED_CLASSES), $documentedCounter),
+			array_reduce($this->constants->getArrayCopy(), $documentedCounter),
+			array_reduce($this->functions->getArrayCopy(), $documentedCounter),
+			array_reduce($broker->getClasses(Backend::INTERNAL_CLASSES), $documentedCounter)
 		);
 	}
 

@@ -57,12 +57,14 @@ try {
 	} elseif (!empty($config->exclude)) {
 		$generator->output(sprintf("Excluding %s\n", $config->exclude[0]));
 	}
-	list($countClasses, $countConstants, $countFunctions, $countClassesInternal) = $generator->parse();
-	$generator->output(sprintf("Found %d classes, %d constants, %d functions and other %d used PHP internal classes\n", $countClasses, $countConstants, $countFunctions, $countClassesInternal));
+	$parsed = $generator->parse();
+	$generator->output(vsprintf("Found %d classes, %d constants, %d functions and other %d used PHP internal classes\n", array_slice($parsed, 0, 4)));
+	$generator->output(vsprintf("Documentation for %d classes, %d constants, %d functions and other %d used PHP internal classes will be generated\n", array_slice($parsed, 4, 4)));
 
 	// Generating
 	$generator->output(sprintf("Searching template in %s\n", $config->templateDir));
 	$generator->output(sprintf("Using template %s\n", $config->template));
+
 	if ($config->wipeout && is_dir($config->destination)) {
 		$generator->output("Wiping out destination directory\n");
 		if (!$generator->wipeOutDestination()) {
@@ -70,7 +72,7 @@ try {
 		}
 	}
 
-	$generator->output(sprintf("Generating documentation to directory %s\n", $config->destination));
+	$generator->output(sprintf("Generating to directory %s\n", $config->destination));
 	$skipping = array_merge($config->skipDocPath, $config->skipDocPrefix);
 	if (count($skipping) > 1) {
 		$generator->output(sprintf("Will not generate documentation for\n %s\n", implode("\n ", $skipping)));
