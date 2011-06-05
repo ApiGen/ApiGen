@@ -81,13 +81,12 @@ class Template extends Nette\Templating\FileTemplate
 
 		// Texy
 		$this->texy = new \Texy();
-		$linkModule = new \TexyLinkModule($this->texy);
-		$linkModule->shorten = false;
-		$this->texy->linkModule = $linkModule;
 		$this->texy->allowedTags = array_flip($this->config->allowedHtml);
 		$this->texy->allowed['list/definition'] = false;
 		$this->texy->allowed['phrase/em-alt'] = false;
 		$this->texy->allowed['longwords'] = false;
+		$this->texy->allowed['typography'] = false;
+		$this->texy->linkModule->shorten = false;
 		// Highlighting <code>, <pre>
 		$this->texy->registerBlockPattern(
 			function($parser, $matches, $name) use ($fshl) {
