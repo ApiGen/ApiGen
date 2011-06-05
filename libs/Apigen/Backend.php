@@ -126,30 +126,49 @@ class Backend extends Broker\Backend\Memory
 	 */
 	protected function parseClassLists()
 	{
+		$allClasses = array(
+			self::TOKENIZED_CLASSES => array(),
+			self::INTERNAL_CLASSES => array(),
+			self::NONEXISTENT_CLASSES => array()
+		);
+
 		$declared = array_flip(array_merge(get_declared_classes(), get_declared_interfaces()));
 
-		$allClasses = parent::parseClassLists();
-		foreach ($allClasses[self::TOKENIZED_CLASSES] as $name => $class) {
-			$class = new ReflectionClass($class, $this->generator);
-			$allClasses[self::TOKENIZED_CLASSES][$name] = $class;
-			if (!$class->isDocumented()) {
-				continue;
-			}
-
-			foreach ($class->getOwnMethods() as $method) {
-				$allClasses = $this->processFunction($declared, $allClasses, $method);
-			}
-
-			foreach ($class->getOwnProperties() as $property) {
-				$annotations = $property->getAnnotations();
-
-				if (!isset($annotations['var'])) {
+		foreach ($this->getNamespaces() as $namespace) {
+			foreach ($namespace->getClasses() as $name => $trClass) {
+				$class = new ReflectionClass($trClass, $this->generator);
+				$allClasses[self::TOKENIZED_CLASSES][$name] = $class;
+				if (!$class->isDocumented()) {
 					continue;
 				}
 
-				foreach ($annotations['var'] as $doc) {
-					foreach (explode('|', preg_replace('#\s.*#', '', $doc)) as $name) {
-						$allClasses = $this->addClass($declared, $allClasses, $name);
+				foreach (array_merge($trClass->getParentClasses(), $trClass->getInterfaces()) as $parentName => $parent) {
+					if ($parent->isInternal()) {
+						if (!isset($allClasses[self::INTERNAL_CLASSES][$parentName])) {
+							$allClasses[self::INTERNAL_CLASSES][$parentName] = $parent;
+						}
+					} elseif (!$parent->isTokenized()) {
+						if (!isset($allClasses[self::NONEXISTENT_CLASSES][$parentName])) {
+							$allClasses[self::NONEXISTENT_CLASSES][$parentName] = $parent;
+						}
+					}
+				}
+
+				foreach ($class->getOwnMethods() as $method) {
+					$allClasses = $this->processFunction($declared, $allClasses, $method);
+				}
+
+				foreach ($class->getOwnProperties() as $property) {
+					$annotations = $property->getAnnotations();
+
+					if (!isset($annotations['var'])) {
+						continue;
+					}
+
+					foreach ($annotations['var'] as $doc) {
+						foreach (explode('|', preg_replace('#\s.*#', '', $doc)) as $name) {
+							$allClasses = $this->addClass($declared, $allClasses, $name);
+						}
 					}
 				}
 			}
@@ -220,10 +239,6 @@ class Backend extends Broker\Backend\Memory
 		}
 
 		$parameterClass = $this->getBroker()->getClass($name);
-		if ($parameterClass->isTokenized()) {
-			throw new RuntimeException(sprintf('Error. Trying to add a tokenized class %s. It should be already in the class list.', $name));
-		}
-
 		if ($parameterClass->isInternal()) {
 			$allClasses[self::INTERNAL_CLASSES][$name] = $parameterClass;
 			foreach (array_merge($parameterClass->getInterfaces(), $parameterClass->getParentClasses()) as $parentClass) {
@@ -231,7 +246,7 @@ class Backend extends Broker\Backend\Memory
 					$allClasses[self::INTERNAL_CLASSES][$parentName] = $parentClass;
 				}
 			}
-		} else {
+		} elseif (!$parameterClass->isTokenized() && !isset($allClasses[self::NONEXISTENT_CLASSES][$name])) {
 			$allClasses[self::NONEXISTENT_CLASSES][$name] = $parameterClass;
 		}
 
