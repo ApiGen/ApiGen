@@ -705,29 +705,31 @@ class Template extends Nette\Templating\FileTemplate
 		}
 
 		if ($element instanceof ReflectionClass) {
-			return $this->link($this->getClassUrl($element), $element->getName());
+			$link = $this->link($this->getClassUrl($element), $element->getName());
 		} elseif ($element instanceof ReflectionConstant && null === $element->getDeclaringClassName()) {
 			$text = $element->inNamespace()
 				? $this->escapeHtml($element->getNamespaceName()) . '\\<b>' . $this->escapeHtml($element->getShortName()) . '</b>'
 				: '<b>' . $this->escapeHtml($element->getName()) . '</b>';
-			return sprintf('<a href="%s">%s</a>', $this->getConstantUrl($element), $text);
+			$link = $this->link($this->getConstantUrl($element), $text, false);
 		} elseif ($element instanceof ReflectionFunction) {
-			return $this->link($this->getFunctionUrl($element), $element->getName() . '()');
+			$link = $this->link($this->getFunctionUrl($element), $element->getName() . '()');
+		} else {
+			$text = $this->escapeHtml($element->getDeclaringClassName());
+			if ($element instanceof ReflectionProperty) {
+				$url = $this->propertyUrl($element);
+				$text .= '::<var>$' . $this->escapeHtml($element->getName()) . '</var>';
+			} elseif ($element instanceof ReflectionMethod) {
+				$url = $this->methodUrl($element);
+				$text .= '::' . $this->escapeHtml($element->getName()) . '()';
+			} elseif ($element instanceof ReflectionConstant) {
+				$url = $this->constantUrl($element);
+				$text .= '::<b>' . $this->escapeHtml($element->getName()) . '</b>';
+			}
+
+			$link = $this->link($url, $text, false);
 		}
 
-		$text = $this->escapeHtml($element->getDeclaringClassName());
-		if ($element instanceof ReflectionProperty) {
-			$url = $this->propertyUrl($element);
-			$text .= '::<var>$' . $this->escapeHtml($element->getName()) . '</var>';
-		} elseif ($element instanceof ReflectionMethod) {
-			$url = $this->methodUrl($element);
-			$text .= '::' . $this->escapeHtml($element->getName()) . '()';
-		} elseif ($element instanceof ReflectionConstant) {
-			$url = $this->constantUrl($element);
-			$text .= '::<b>' . $this->escapeHtml($element->getName()) . '</b>';
-		}
-
-		return sprintf('<a href="%s">%s</a>', $url, $text);
+		return sprintf('<code>%s</code>', $link);
 	}
 
 	/**
@@ -792,11 +794,12 @@ class Template extends Nette\Templating\FileTemplate
 	 *
 	 * @param string $url
 	 * @param string $text
+	 * @param boolean $escape If the text should be escaped
 	 * @return string
 	 */
-	public function link($url, $text)
+	public function link($url, $text, $escape = true)
 	{
-		return sprintf('<a href="%s">%s</a>', $url, $this->escapeHtml($text));
+		return sprintf('<a href="%s">%s</a>', $url, $escape ? $this->escapeHtml($text) : $text);
 	}
 
 	/**

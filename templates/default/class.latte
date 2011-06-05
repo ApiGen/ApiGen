@@ -84,9 +84,9 @@
 		<a class="anchor" href="#_{$method->name}">#</a>
 		<code class="nowrap">
 			{if $class->internal}
-				<a href="{$method|manualUrl}" title="Go to PHP documentation"><b>{$method->name}</b></a>(
+				<a href="{$method|manualUrl}" title="Go to PHP documentation">{$method->name}</a>(
 			{else}
-				<a n:tag-if="$config->sourceCode" href="{$method|sourceUrl}" title="Go to source code"><b>{$method->name}</b></a>(
+				<a n:tag-if="$config->sourceCode" href="{$method|sourceUrl}" title="Go to source code">{$method->name}</a>(
 			{/if}
 			{foreach $method->parameters as $parameter}
 				{if $parameter->array}array
@@ -228,7 +228,7 @@
 	<tr>
 		<td><code>
 			{foreach $constants as $constant}
-				<span n:class="$constant->deprecated ? deprecated"><a href="{$constant|constantUrl}" n:tag-if="$template->getClass($parentName)"><b>{$constant->name}</b></a></span>{sep}, {/sep}
+				<span n:if="$constant->deprecated" class"deprecated"><a href="{$constant|constantUrl}" n:tag-if="$template->getClass($parentName)"><b>{$constant->name}</b></a></span>{sep}, {/sep}
 			{/foreach}
 		</code></td>
 	</tr>
@@ -246,13 +246,13 @@
 			{ifset $annotations['var']}{!$annotations['var'][0]|typeLinks:$property}{else}{try}{$property->defaultValue|type}{/try}{/ifset}
 		</code></td>
 
-		<td width="1%"><var>
+		<td width="1%">
 			{if $class->internal}
-				<a href="{$property|manualUrl}" title="Go to PHP documentation">${$property->name}</a>
+				<a href="{$property|manualUrl}" title="Go to PHP documentation"><var>${$property->name}</var></a>
 			{else}
-				<a n:tag-if="$config->sourceCode" href="{$property|sourceUrl}" title="Go to source code">${$property->name}</a>
+				<a n:tag-if="$config->sourceCode" href="{$property|sourceUrl}" title="Go to source code"><var>${$property->name}</var></a>
 			{/if}
-		</var></td>
+		</td>
 		<td width="1%"><pre>{!$property->defaultValueDefinition|highlightValue:$class}</pre></td>
 		<td><div class="position">
 			<a href="#${$property->name}" class="anchor">#</a>
@@ -284,7 +284,7 @@
 	<tr>
 		<td><code>
 			{foreach $properties as $property}
-				<var n:class="$property->deprecated ? deprecated"><a href="{$property|propertyUrl}" n:tag-if="$template->getClass($parentName)">${$property->name}</a></var>{sep}, {/sep}
+				<span n:if="$property->deprecated" class="deprecated"><a href="{$property|propertyUrl}" n:tag-if="$template->getClass($parentName)"><var>${$property->name}</var></a></span>{sep}, {/sep}
 			{/foreach}
 		</code></td>
 	</tr>

@@ -52,21 +52,6 @@ caption {
 	margin-bottom: 0;
 }
 
-a {
-	color: #006aeb;
-	padding: 3px 1px;
-	text-decoration: none;
-}
-h1 a {
-	color: #1e5eb6;
-}
-
-a:hover, a:active, a:focus {
-	background-color: #006aeb;
-	text-decoration: none;
-	color: #ffffff !important;
-}
-
 p {
 	margin: .7em 0 1em;
 	padding: 0;
@@ -79,7 +64,22 @@ hr {
 	height: 0;
 }
 
-var, code, pre {
+a {
+	color: #006aeb;
+	padding: 3px 1px;
+	text-decoration: none;
+}
+h1 a {
+	color: #1e5eb6;
+}
+
+a:hover, a:active, a:focus, a:hover b, a:hover var {
+	background-color: #006aeb;
+	text-decoration: none;
+	color: #ffffff !important;
+}
+
+code, var, pre {
 	font-family: monospace;
 }
 
@@ -93,20 +93,8 @@ pre {
 	margin: 0;
 }
 
-#constants code a, .constants code a {
+code a b {
 	color: #000000;
-}
-
-#constants .smallList code a, .constants .smallList code a {
-	color: #006aeb;
-}
-
-#constants .smallList code a b, .constants .smallList code a b {
-	color: #000000;
-}
-
-#properties var a, .properties var a {
-	color: #ca8a04;
 }
 
 /**

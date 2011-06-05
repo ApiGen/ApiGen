@@ -88,7 +88,7 @@
 	<caption>Properties summary</caption>
 	<tr n:foreach="$todoProperties as $property">
 		<td class="right nowrap" width="1%"><a href="{$property->declaringClassName|classUrl}">{$property->declaringClassName}</a></td>
-		<td width="1%"><var><a href="{$property|propertyUrl}">${$property->name}</a></var></td>
+		<td width="1%"><a href="{$property|propertyUrl}"><var>${$property->name}</var></a></td>
 		<td>
 			{foreach $property->annotations['todo'] as $description}
 				{if $description}
