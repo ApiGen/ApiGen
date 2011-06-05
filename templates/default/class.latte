@@ -173,7 +173,7 @@
 	<tr>
 		<td><code>
 		{foreach $methods as $method}
-			<a href="{$method|methodUrl}" n:tag-if="$template->getClass($parentName)"><span n:class="$method->deprecated ? deprecated">{$method->name}()</span></a>{sep}, {/sep}
+			<span n:tag-if="$method->deprecated" class="deprecated"><a href="{$method|methodUrl}" n:tag-if="$template->getClass($parentName)">{$method->name}()</a></span>{sep}, {/sep}
 		{/foreach}
 		</code></td>
 	</tr>
@@ -228,7 +228,7 @@
 	<tr>
 		<td><code>
 			{foreach $constants as $constant}
-				<span n:if="$constant->deprecated" class"deprecated"><a href="{$constant|constantUrl}" n:tag-if="$template->getClass($parentName)"><b>{$constant->name}</b></a></span>{sep}, {/sep}
+				<span n:tag-if="$constant->deprecated" class"deprecated"><a href="{$constant|constantUrl}" n:tag-if="$template->getClass($parentName)"><b>{$constant->name}</b></a></span>{sep}, {/sep}
 			{/foreach}
 		</code></td>
 	</tr>
@@ -284,7 +284,7 @@
 	<tr>
 		<td><code>
 			{foreach $properties as $property}
-				<span n:if="$property->deprecated" class="deprecated"><a href="{$property|propertyUrl}" n:tag-if="$template->getClass($parentName)"><var>${$property->name}</var></a></span>{sep}, {/sep}
+				<span n:tag-if="$property->deprecated" class="deprecated"><a href="{$property|propertyUrl}" n:tag-if="$template->getClass($parentName)"><var>${$property->name}</var></a></span>{sep}, {/sep}
 			{/foreach}
 		</code></td>
 	</tr>
