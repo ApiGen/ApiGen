@@ -431,6 +431,10 @@ Options:
 
 Only source and destination directories are required - either set explicitly or using a config file.
 
+Boolean options (those with possible values yes|no) do not have to have their values defined explicitly. Using --debug and --debug=yes is exactly the same.
+
+Some options can have multiple values. You can do so either by using them multiple times or by
+
 Files or directories specified by --exclude will not be processed at all.
 Classes from files within --skip-doc-path or with --skip-doc-prefix will be parsed but will not have
 their documentation generated. However if they have any child classes, the full class tree will be
