@@ -433,7 +433,7 @@ Only source and destination directories are required - either set explicitly or 
 
 Boolean options (those with possible values yes|no) do not have to have their values defined explicitly. Using --debug and --debug=yes is exactly the same.
 
-Some options can have multiple values. You can do so either by using them multiple times or by
+Some options can have multiple values. You can do so either by using them multiple times or by separating values by a comma. That means that writing --source=file1.php --source=file2.php or --source=file1.php,file2.php is exactly the same.
 
 Files or directories specified by --exclude will not be processed at all.
 Classes from files within --skip-doc-path or with --skip-doc-prefix will be parsed but will not have
