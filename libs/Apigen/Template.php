@@ -532,19 +532,19 @@ class Template extends Nette\Templating\FileTemplate
 	public function getClass($className, $namespace = '')
 	{
 		if (isset($this->classes[$namespace . '\\' . $className])) {
-			$name = $namespace . '\\' . $className;
+			$class = $this->classes[$namespace . '\\' . $className];
 		} elseif (isset($this->classes[$className])) {
-			$name = $className;
+			$class = $this->classes[$className];
 		} else {
 			return null;
 		}
 
 		// Class is not "documented"
-		if (!$this->classes[$name]->isDocumented()) {
+		if (!$class->isDocumented()) {
 			return null;
 		}
 
-		return $this->classes[$name];
+		return $class;
 	}
 
 	/**
@@ -557,19 +557,19 @@ class Template extends Nette\Templating\FileTemplate
 	public function getConstant($constantName, $namespace = '')
 	{
 		if (isset($this->constants[$namespace . '\\' . $constantName])) {
-			$name = $namespace . '\\' . $constantName;
-		} elseif (isset($this->constant[$constantName])) {
-			$name = $constantName;
+			$constant = $this->constants[$namespace . '\\' . $constantName];
+		} elseif (isset($this->constants[$constantName])) {
+			$constant = $this->constants[$constantName];
 		} else {
 			return null;
 		}
 
 		// Constant is not "documented"
-		if (!$this->constants[$name]->isDocumented()) {
+		if (!$constant->isDocumented()) {
 			return null;
 		}
 
-		return $this->constants[$name];
+		return $constant;
 	}
 
 	/**
@@ -582,19 +582,19 @@ class Template extends Nette\Templating\FileTemplate
 	public function getFunction($functionName, $namespace = '')
 	{
 		if (isset($this->functions[$namespace . '\\' . $functionName])) {
-			$name = $this->functions[$namespace . '\\' . $functionName];
+			$function = $this->functions[$namespace . '\\' . $functionName];
 		} elseif (isset($this->functions[$functionName])) {
-			$name = $functionName;
+			$function = $this->functions[$functionName];
 		} else {
 			return null;
 		}
 
 		// Function is not "documented"
-		if (!$this->function[$name]->isDocumented()) {
+		if (!$function->isDocumented()) {
 			return null;
 		}
 
-		return $this->functions[$name];
+		return $function;
 	}
 
 	/**
