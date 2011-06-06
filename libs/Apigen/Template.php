@@ -176,6 +176,13 @@ class Template extends Nette\Templating\FileTemplate
 				$short .= "\n\n" . $long;
 			}
 
+			// Merge lines
+			$short = preg_replace_callback('~(?:<(code|pre)>.+?</\1>)|([^<]*)~s', function($matches) {
+				return !empty($matches[2])
+					? preg_replace('~\n(?:\t|[ ])+~', ' ', $matches[2])
+					: $matches[0];
+			}, $short);
+
 			return $that->doc($short, $element, true);
 		});
 
