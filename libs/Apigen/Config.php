@@ -429,19 +429,14 @@ Options:
 	--debug            <yes|no>    Display additional information in case of an error, default "no"
 	--help|-h                      Display this help
 
-Only source and destination directories are required - either set explicitly or using a config file.
+Only source and destination directories are required - either set explicitly or using a config file. Configuration parameters passed via command line have precedence over parameters from a config file.
 
 Boolean options (those with possible values yes|no) do not have to have their values defined explicitly. Using --debug and --debug=yes is exactly the same.
 
 Some options can have multiple values. You can do so either by using them multiple times or by separating values by a comma. That means that writing --source=file1.php --source=file2.php or --source=file1.php,file2.php is exactly the same.
 
 Files or directories specified by --exclude will not be processed at all.
-Classes from files within --skip-doc-path or with --skip-doc-prefix will be parsed but will not have
-their documentation generated. However if they have any child classes, the full class tree will be
-generated and their inherited methods, properties and constants will be displayed (but will not
-be clickable).
-
-Configuration parameters passed via command line have precedence over parameters from a config file.
+Classes from files within --skip-doc-path or with --skip-doc-prefix will be parsed but will not have their documentation generated. However if they have any child classes, the full class tree will be generated and their inherited methods, properties and constants will be displayed (but will not be clickable).
 
 HELP;
 	}
