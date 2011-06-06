@@ -94,7 +94,7 @@ Using this parameters you can tell TR ApiGen not to generate documentation for c
 
 ```--main <value>```
 
-Using this name prefix you can set the main project.
+Classes with this name prefix will be considered as the "main project" (the rest will be considered as libraries).
 
 ```--title <value>```
 
