@@ -550,14 +550,19 @@ class Template extends Nette\Templating\FileTemplate
 	public function getConstant($constantName, $namespace = '')
 	{
 		if (isset($this->constants[$namespace . '\\' . $constantName])) {
-			return $this->constants[$namespace . '\\' . $constantName];
+			$name = $namespace . '\\' . $constantName;
+		} elseif (isset($this->constant[$constantName])) {
+			$name = $constantName;
+		} else {
+			return null;
 		}
 
-		if (isset($this->constants[$constantName])) {
-			return $this->constants[$constantName];
+		// Constant is not "documented"
+		if (!$this->constants[$name]->isDocumented()) {
+			return null;
 		}
 
-		return null;
+		return $this->constants[$name];
 	}
 
 	/**
@@ -570,14 +575,19 @@ class Template extends Nette\Templating\FileTemplate
 	public function getFunction($functionName, $namespace = '')
 	{
 		if (isset($this->functions[$namespace . '\\' . $functionName])) {
-			return $this->functions[$namespace . '\\' . $functionName];
+			$name = $this->functions[$namespace . '\\' . $functionName];
+		} elseif (isset($this->functions[$functionName])) {
+			$name = $functionName;
+		} else {
+			return null;
 		}
 
-		if (isset($this->functions[$functionName])) {
-			return $this->functions[$functionName];
+		// Function is not "documented"
+		if (!$this->function[$name]->isDocumented()) {
+			return null;
 		}
 
-		return null;
+		return $this->functions[$name];
 	}
 
 	/**
@@ -614,12 +624,6 @@ class Template extends Nette\Templating\FileTemplate
 		if (($class = $this->getClass(\TokenReflection\ReflectionBase::resolveClassFQN($definition, $context->getNamespaceAliases(), $context->getNamespaceName()), $context->getNamespaceName()))
 			|| ($class = $this->getClass($definition, $context->getNamespaceName()))) {
 			// Class
-
-			// No "documented" class
-			if (!$class->isDocumented()) {
-				return null;
-			}
-
 			return $class;
 		} elseif ($constant = $this->getConstant($definition, $context->getNamespaceName())) {
 			// Constant
@@ -634,7 +638,7 @@ class Template extends Nette\Templating\FileTemplate
 		if (($pos = strpos($definition, '::')) || ($pos = strpos($definition, '->'))) {
 			if (0 === strpos($definition, 'self::')) {
 				// Link to the current class
-				if (!$context instanceof ReflectionClass) {
+				if (!$context instanceof ReflectionClass || !$context->isDocumented()) {
 					return null;
 				}
 			} else {
@@ -657,11 +661,6 @@ class Template extends Nette\Templating\FileTemplate
 
 		// No usable context
 		if ($context instanceof ReflectionConstant || $context instanceof ReflectionFunction) {
-			return null;
-		}
-
-		// No "documented" class
-		if ($context instanceof ReflectionClass && !$context->isDocumented()) {
 			return null;
 		}
 
