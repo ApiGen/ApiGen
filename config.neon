@@ -8,7 +8,7 @@ exclude: ''
 skipDocPath: ''
 # Don't generate documentation for classes with this name prefix
 skipDocPrefix: ''
-# Name prefix of the main project
+# Main project name prefix
 main: ''
 
 # Title of generated documentation
