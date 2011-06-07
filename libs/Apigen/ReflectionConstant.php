@@ -23,6 +23,17 @@ namespace Apigen;
 class ReflectionConstant extends ReflectionBase
 {
 	/**
+	 * Returns the constant declaring class.
+	 *
+	 * @return \ApiGen\ReflectionClass|null
+	 */
+	public function getDeclaringClass()
+	{
+		$className = $this->reflection->getDeclaringClassName();
+		return null === $className ? null : self::$classes[$className];
+	}
+
+	/**
 	 * Returns if the class should be documented.
 	 *
 	 * @return boolean
