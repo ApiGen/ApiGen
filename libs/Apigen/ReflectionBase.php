@@ -51,7 +51,14 @@ abstract class ReflectionBase
 	 *
 	 * @var array
 	 */
-	private static $methods = array();
+	private static $reflectionMethods = array();
+
+	/**
+	 * Reflection type (reflection class).
+	 *
+	 * @var string
+	 */
+	private $reflectionType;
 
 	/**
 	 * Inspected class reflection.
@@ -81,8 +88,11 @@ abstract class ReflectionBase
 			self::$generator = $generator;
 			self::$config = $generator->getConfig();
 			self::$classes = $generator->getClasses();
+		}
 
-			self::$methods = array_flip(get_class_methods($this));
+		$this->reflectionType = get_class($this);
+		if (!isset(self::$reflectionMethods[$this->reflectionType])) {
+			self::$reflectionMethods[$this->reflectionType] = array_flip(get_class_methods($this));
 		}
 
 		$this->reflection = $reflection;
@@ -100,11 +110,11 @@ abstract class ReflectionBase
 	public function __get($name)
 	{
 		$key = ucfirst($name);
-		if (isset(self::$methods['get' . $key])) {
+		if (isset(self::$reflectionMethods[$this->reflectionType]['get' . $key])) {
 			return $this->{'get' . $key}();
 		}
 
-		if (isset(self::$methods['is' . $key])) {
+		if (isset(self::$reflectionMethods[$this->reflectionType]['is' . $key])) {
 			return $this->{'is' . $key}();
 		}
 
@@ -123,7 +133,7 @@ abstract class ReflectionBase
 	public function __isset($name)
 	{
 		$key = ucfirst($name);
-		return isset(self::$methods['get' . $key]) || isset(self::$methods['is' . $key]) || $this->reflection->__isset($name);
+		return isset(self::$reflectionMethods[$this->reflectionType]['get' . $key]) || isset(self::$reflectionMethods[$this->reflectionType]['is' . $key]) || $this->reflection->__isset($name);
 	}
 
 	/**
