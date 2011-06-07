@@ -298,6 +298,47 @@ class ReflectionClass extends ReflectionBase
 	}
 
 	/**
+	 * Returns a constant reflection.
+	 *
+	 * @param string $name Constant name
+	 * @return \Apigen\ReflectionConstant
+	 */
+	public function getConstant($name)
+	{
+		return $this->getConstantReflection($name);
+	}
+
+	/**
+	 * Returns a constant reflection.
+	 *
+	 * @param string $name Constant name
+	 * @return \Apigen\ReflectionConstant
+	 */
+	public function getOwnConstantReflection($name)
+	{
+		if (null === $this->ownConstants) {
+			$this->getOwnConstants();
+		}
+
+		if (isset($this->ownConstants[$name])) {
+			return $this->ownConstants[$name];
+		}
+
+		throw new \InvalidArgumentException(sprintf('Constant %s does not exist in class %s', $name, $this->reflection->getName()));
+	}
+
+	/**
+	 * Returns a constant reflection.
+	 *
+	 * @param string $name Constant name
+	 * @return \Apigen\ReflectionConstant
+	 */
+	public function getOwnConstant($name)
+	{
+		return $this->getOwnConstantReflection($name);
+	}
+
+	/**
 	 * Returns a parent class reflection encapsulated by this class.
 	 *
 	 * @return \Apigen\ReflectionClass
@@ -517,21 +558,6 @@ class ReflectionClass extends ReflectionBase
 				$this->getParentClasses()
 			)
 		);
-	}
-
-	/**
-	 * Checks if there is a constant of the given name.
-	 *
-	 * @param string $constantName Constant name
-	 * @return boolean
-	 */
-	public function hasConstant($constantName)
-	{
-		if (null === $this->constants) {
-			$this->getConstants();
-		}
-
-		return isset($this->constants[$constantName]);
 	}
 
 	/**

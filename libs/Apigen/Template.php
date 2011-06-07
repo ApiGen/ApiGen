@@ -685,7 +685,7 @@ class Template extends Nette\Templating\FileTemplate
 			return $context->getMethod(substr($definition, 0, -2));
 		} elseif ($context->hasConstant($definition)) {
 			// Class constant
-			return $context->getConstantReflection($definition);
+			return $context->getConstant($definition);
 		}
 
 		return null;
