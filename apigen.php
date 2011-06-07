@@ -28,6 +28,7 @@ require __DIR__ . '/libs/Apigen/Tree.php';
 
 try {
 
+	Nette\Diagnostics\Debugger::$strictMode = true;
 	Nette\Diagnostics\Debugger::enable();
 	Nette\Diagnostics\Debugger::timer();
 
