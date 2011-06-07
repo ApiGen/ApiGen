@@ -35,7 +35,7 @@ new Exception\Parse('File does not exist.',Exception\Parse::FILE_DOES_NOT_EXIST)
 new Exception\Parse('The PHAR PHP extension is not loaded.',Exception\Parse::UNSUPPORTED);}$result=array();foreach(new
 RecursiveIteratorIterator(new \Phar($fileName))as$entry){if($entry->isFile()){$result[$entry->getPathName()]=$this->processFile($entry->getPathName(),$returnReflectionFile);}}return$returnReflectionFile?$result:true;}catch(\Exception$e){throw
 new Exception\Parse(sprintf('Could not process PHAR archive %s.',$fileName),0,$e);}}public
-function processDirectory($path,$returnReflectionFile=false){try{if(!is_dir($realPath)){throw
+function processDirectory($path,$returnReflectionFile=false){try{$realPath=realpath($path);if(!is_dir($realPath)){throw
 new Exception\Parse('Directory does not exist.',Exception\Parse::FILE_DOES_NOT_EXIST);}$result=array();foreach(new
 RecursiveIteratorIterator(new RecursiveDirectoryIterator($realPath))as$entry){if($entry->isFile()){$result[$entry->getPathName()]=$this->processFile($entry->getPathName(),$returnReflectionFile);}}return$returnReflectionFile?$result:true;}catch(Exception$e){throw
 new Exception\Parse(sprintf('Could not process directory %s.',$path),0,$e);}}public
@@ -577,8 +577,7 @@ function getConstant($name){try{return$this->getConstantReflection($name)->getVa
 false;}throw$e;}}public function getConstantReflection($name){if(isset($this->constants[$name])){return$this->constants[$name];}foreach($this->getConstantReflections()as$constant){if($name===$constant->getName()){return$constant;}}throw
 new Exception\Runtime(sprintf('There is no constant "%s" in class "%s".',$name,$this->name),Exception\Runtime::DOES_NOT_EXIST);}public
 function getConstants(){$constants=array();foreach($this->getConstantReflections()as$constant){$constants[$constant->getName()]=$constant->getValue();}return$constants;}public
-function getConstantReflections(){if(null===$this->parentClassName){return array_values($this->constants);}else{return
-array_merge(array_values($this->constants),$this->getParentClass()->getConstantReflections());}}public
+function getConstantReflections(){if(null===$this->parentClassName){return array_values($this->constants);}else{$reflections=array_values($this->constants);if(null!==$this->parentClassName){$reflections=array_merge($reflections,$this->getParentClass()->getConstantReflections());}foreach($this->getOwnInterfaces()as$interface){$reflections=array_merge($reflections,$interface->getConstantReflections());}return$reflections;}}public
 function getConstructor(){foreach($this->getMethods()as$method){if($method->isConstructor()){return$method;}}return
 null;}public function getDestructor(){foreach($this->getMethods()as$method){if($method->isDestructor()){return$method;}}return
 null;}public function getDefaultProperties(){static$accessLevels=array(InternalReflectionProperty::IS_PUBLIC,InternalReflectionProperty::IS_PRIVATE,InternalReflectionProperty::IS_PROTECTED);$defaults=array();$properties=$this->getProperties();foreach(array(true,false)as$static){foreach($accessLevels
@@ -589,7 +588,7 @@ function getInterfaces(){$interfaceNames=$this->getInterfaceNames();if(empty($in
 array();}$broker=$this->getBroker();return array_combine($interfaceNames,array_map(function($interfaceName)use($broker){return$broker->getClass($interfaceName);},$interfaceNames));}public
 function getMethod($name){if(isset($this->methods[$name])){return$this->methods[$name];}foreach($this->getMethods()as$method){if($name===$method->getName()){return$method;}}throw
 new Exception\Runtime(sprintf('There is no method "%s" in class "%s".',$name,$this->name),Exception\Runtime::DOES_NOT_EXIST);}public
-function getMethods($filter=null){$methods=$this->methods;if(null!==$filter){$methods=array_filter($methods,function(ReflectionMethod$method)use($filter){return$method->is($filter);});}if(null!==$this->parentClassName){foreach($this->getParentClass()->getMethods($filter)as$parentMethod){if(!isset($methods[$parentMethod->getName()])){$methods[$parentMethod->getName()]=$parentMethod;}}}return
+function getMethods($filter=null){$methods=$this->methods;if(null!==$this->parentClassName){foreach($this->getParentClass()->getMethods(null)as$parentMethod){if(!isset($methods[$parentMethod->getName()])){$methods[$parentMethod->getName()]=$parentMethod;}}}foreach($this->getOwnInterfaces()as$interface){foreach($interface->getMethods(null)as$parentMethod){if(!isset($methods[$parentMethod->getName()])){$methods[$parentMethod->getName()]=$parentMethod;}}}if(null!==$filter){$methods=array_filter($methods,function(IReflectionMethod$method)use($filter){return$method->is($filter);});}return
 array_values($methods);}public function getModifiers(){if(false===$this->modifiersComplete){if(($this->modifiers&InternalReflectionClass::IS_EXPLICIT_ABSTRACT)&&!($this->modifiers&InternalReflectionClass::IS_IMPLICIT_ABSTRACT)){foreach($this->getMethods()as$reflectionMethod){if($reflectionMethod->isAbstract()){$this->modifiers|=InternalReflectionClass::IS_IMPLICIT_ABSTRACT;}}}if(count($this->getInterfaceNames())){$this->modifiers|=self::IMPLEMENTS_INTERFACES;}$this->modifiersComplete=true;foreach($this->getParentClasses()as$parentClass){if($parentClass
 instanceof Dummy\ReflectionClass){$this->modifiersComplete=false;break;}}}return$this->modifiers;}public
 function getNamespaceName(){return$this->namespaceName===ReflectionNamespace::NO_NAMESPACE_NAME?'':$this->namespaceName;}public
@@ -598,9 +597,9 @@ false;}return$this->getBroker()->getClass($className);}public function getParent
 array();}return array_merge(array($parent->getName()=>$parent),$parent->getParentClasses());}public
 function getParentClassNameList(){$parent=$this->getParentClass();if(false===$parent){return
 array();}return array_merge(array($parent->getName()),$parent->getParentClassNameList());}public
-function getParentClassName(){return$this->parentClassName;}public function getProperties($filter=null){$properties=$this->properties;if(null!==$filter){$properties=array_filter($properties,function(ReflectionProperty$property)use($filter){return
-(bool)($property->getModifiers()&$filter);});}if(null!==$this->parentClassName){foreach($this->getParentClass()->getProperties($filter)as$parentProperty){if(!isset($properties[$parentProperty->getName()])){$properties[$parentProperty->getName()]=$parentProperty;}}}return
-array_values($properties);}public function getProperty($name){if(isset($this->properties[$name])){return$this->properties[$name];}foreach($this->getProperties()as$property){if($name===$property->getName()){return$property;}}throw
+function getParentClassName(){return$this->parentClassName;}public function getProperties($filter=null){$properties=$this->properties;if(null!==$this->parentClassName){foreach($this->getParentClass()->getProperties(null)as$parentProperty){if(!isset($properties[$parentProperty->getName()])){$properties[$parentProperty->getName()]=$parentProperty;}}}if(null!==$filter){$properties=array_filter($properties,function(IReflectionProperty$property)use($filter){return
+(bool)($property->getModifiers()&$filter);});}return array_values($properties);}public
+function getProperty($name){if(isset($this->properties[$name])){return$this->properties[$name];}foreach($this->getProperties()as$property){if($name===$property->getName()){return$property;}}throw
 new Exception\Runtime(sprintf('There is no property "%s" in class "%s".',$name,$this->name),Exception\Runtime::DOES_NOT_EXIST);}public
 function getShortName(){$name=$this->getName();if($this->namespaceName!==ReflectionNamespace::NO_NAMESPACE_NAME){$name=substr($name,strlen($this->namespaceName)+1);}return$name;}public
 function getStaticProperties(){$defaults=array();foreach($this->getProperties(InternalReflectionProperty::IS_STATIC)as$property){if($property
