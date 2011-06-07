@@ -27,13 +27,6 @@ use ReflectionMethod, ReflectionProperty;
 class ReflectionClass extends ReflectionBase
 {
 	/**
-	 * List of classes.
-	 *
-	 * @var \ArrayObject
-	 */
-	private static $classes;
-
-	/**
 	 * Access level for methods.
 	 *
 	 * @var integer
@@ -85,11 +78,7 @@ class ReflectionClass extends ReflectionBase
 	 */
 	public function __construct(IReflectionClass $reflection, Generator $generator)
 	{
-		parent::__construct($reflection, $generator);
-
 		if (null === self::$classes) {
-			self::$classes = $generator->getClasses();
-
 			foreach (self::$config->accessLevels as $level) {
 				self::$methodAccessLevels |= constant('ReflectionMethod::IS_' . strtoupper($level));
 				self::$propertyAccessLevels |= constant('ReflectionProperty::IS_' . strtoupper($level));
@@ -102,6 +91,8 @@ class ReflectionClass extends ReflectionBase
 				self::$propertyAccessLevels = null;
 			}
 		}
+
+		parent::__construct($reflection, $generator);
 	}
 
 	/**

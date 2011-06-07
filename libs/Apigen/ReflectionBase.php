@@ -26,6 +26,13 @@ use TokenReflection\IReflection;
 abstract class ReflectionBase
 {
 	/**
+	 * List of classes.
+	 *
+	 * @var \ArrayObject
+	 */
+	protected static $classes;
+
+	/**
 	 * Generator.
 	 *
 	 * @var \Apigen\Generator
@@ -73,6 +80,7 @@ abstract class ReflectionBase
 		if (null === self::$generator) {
 			self::$generator = $generator;
 			self::$config = $generator->getConfig();
+			self::$classes = $generator->getClasses();
 
 			self::$methods = array_flip(get_class_methods($this));
 		}

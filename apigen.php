@@ -22,6 +22,8 @@ require __DIR__ . '/libs/Apigen/ReflectionBase.php';
 require __DIR__ . '/libs/Apigen/ReflectionClass.php';
 require __DIR__ . '/libs/Apigen/ReflectionConstant.php';
 require __DIR__ . '/libs/Apigen/ReflectionFunction.php';
+require __DIR__ . '/libs/Apigen/ReflectionMethod.php';
+require __DIR__ . '/libs/Apigen/ReflectionProperty.php';
 require __DIR__ . '/libs/Apigen/Backend.php';
 require __DIR__ . '/libs/Apigen/Generator.php';
 require __DIR__ . '/libs/Apigen/Tree.php';
