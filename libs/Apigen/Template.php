@@ -319,7 +319,7 @@ class Template extends Nette\Templating\FileTemplate
 	 * Returns links for types.
 	 *
 	 * @param string $annotation
-	 * @param \Apigen\ReflectionBase|\TokenReflection\IReflection $context
+	 * @param \Apigen\ReflectionBase $context
 	 * @return string
 	 */
 	public function getTypeLinks($annotation, $context)
@@ -393,7 +393,7 @@ class Template extends Nette\Templating\FileTemplate
 	/**
 	 * Returns a link to method in class summary file.
 	 *
-	 * @param \TokenReflection\IReflectionMethod $method Method reflection
+	 * @param \Apigen\ReflectionMethod $method Method reflection
 	 * @return string
 	 */
 	public function getMethodUrl(ReflectionMethod $method)
@@ -404,7 +404,7 @@ class Template extends Nette\Templating\FileTemplate
 	/**
 	 * Returns a link to property in class summary file.
 	 *
-	 * @param \TokenReflection\IReflectionProperty $property Property reflection
+	 * @param \Apigen\ReflectionProperty $property Property reflection
 	 * @return string
 	 */
 	public function getPropertyUrl(ReflectionProperty $property)
@@ -442,7 +442,7 @@ class Template extends Nette\Templating\FileTemplate
 	/**
 	 * Returns a link to a element source code.
 	 *
-	 * @param \Apigen\ReflectionBase|\TokenReflection\IReflection $element Element reflection
+	 * @param \Apigen\ReflectionBase $element Element reflection
 	 * @param boolean $withLine Include file line number into the link
 	 * @return string
 	 */
@@ -478,7 +478,7 @@ class Template extends Nette\Templating\FileTemplate
 	/**
 	 * Returns a link to a element documentation at php.net.
 	 *
-	 * @param \Apigen\ReflectionBase|\TokenReflection\IReflection $element Element reflection
+	 * @param \Apigen\ReflectionBase $element Element reflection
 	 * @return string
 	 */
 	public function getManualUrl($element)
@@ -601,8 +601,8 @@ class Template extends Nette\Templating\FileTemplate
 	 * Tries to parse a definition of a class/method/property/constant/function and returns the appropriate instance if successful.
 	 *
 	 * @param string $definition Definition
-	 * @param \Apigen\ReflectionBase|\TokenReflection\IReflection $context Link context
-	 * @return \Apigen\ReflectionBase|\TokenReflection\IReflection|null
+	 * @param \Apigen\ReflectionBase $context Link context
+	 * @return \Apigen\ReflectionBase|null
 	 */
 	public function resolveElement($definition, $context)
 	{
@@ -695,7 +695,7 @@ class Template extends Nette\Templating\FileTemplate
 	 * Tries to parse a definition of a class/method/property/constant/function and returns the appropriate link if successful.
 	 *
 	 * @param string $definition Definition
-	 * @param \Apigen\ReflectionBase|\TokenReflection\IReflection $context Link context
+	 * @param \Apigen\ReflectionBase $context Link context
 	 * @return string|null
 	 */
 	public function resolveLink($definition, $context)
@@ -741,7 +741,7 @@ class Template extends Nette\Templating\FileTemplate
 	 * Resolves links in documentation.
 	 *
 	 * @param string $text Processed documentation text
-	 * @param \Apigen\ReflectionBase|\TokenReflection\IReflection $context Reflection object
+	 * @param \Apigen\ReflectionBase $context Reflection object
 	 * @return string
 	 */
 	private function resolveLinks($text, $context)
@@ -774,7 +774,7 @@ class Template extends Nette\Templating\FileTemplate
 	 * Formats text as documentation block or line.
 	 *
 	 * @param string $text Text
-	 * @param \Apigen\ReflectionBase|\TokenReflection\IReflection $context Reflection object
+	 * @param \Apigen\ReflectionBase $context Reflection object
 	 * @param boolean $block Parse text as block
 	 * @return string
 	 */
