@@ -22,4 +22,30 @@ namespace Apigen;
  */
 class ReflectionFunction extends ReflectionBase
 {
+	/**
+	 * Returns if the function should be documented.
+	 *
+	 * @return boolean
+	 */
+	public function isDocumented()
+	{
+		if (null === $this->isDocumented && parent::isDocumented()) {
+			foreach (self::$config->skipDocPath as $mask) {
+				if (fnmatch($mask, $this->reflection->getFilename(), FNM_NOESCAPE | FNM_PATHNAME)) {
+					$this->isDocumented = false;
+					break;
+				}
+			}
+			if (true === $this->isDocumented) {
+				foreach (self::$config->skipDocPrefix as $prefix) {
+					if (0 === strpos($this->reflection->getName(), $prefix)) {
+						$this->isDocumented = false;
+						break;
+					}
+				}
+			}
+		}
+
+		return $this->isDocumented;
+	}
 }

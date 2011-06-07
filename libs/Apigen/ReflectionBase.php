@@ -65,7 +65,7 @@ abstract class ReflectionBase
 	 *
 	 * @var boolean
 	 */
-	private $isDocumented;
+	protected $isDocumented;
 
 	/**
 	 * Constructor.
@@ -139,39 +139,26 @@ abstract class ReflectionBase
 	}
 
 	/**
-	 * Returns if the class should be documented.
+	 * Returns if the element should be documented.
 	 *
 	 * @return boolean
 	 */
 	public function isDocumented()
 	{
 		if (null === $this->isDocumented) {
-			if (self::$config->php && $this->reflection->isInternal()) {
-				$this->isDocumented = true;
-			} elseif (!$this->reflection->isTokenized()) {
-				$this->isDocumented = false;
-			} elseif (!self::$config->deprecated && $this->reflection->isDeprecated()) {
-				$this->isDocumented = false;
-			} elseif (!self::$config->internal && ($internal = $this->reflection->getAnnotation('internal')) && empty($internal[0])) {
-				$this->isDocumented = false;
-			} else {
-				$this->isDocumented = true;
-				foreach (self::$config->skipDocPath as $mask) {
-					if (fnmatch($mask, $this->reflection->getFilename(), FNM_NOESCAPE | FNM_PATHNAME)) {
-						$this->isDocumented = false;
-						break;
-					}
-				}
-				if (true === $this->isDocumented) {
-					foreach (self::$config->skipDocPrefix as $prefix) {
-						if (0 === strpos($this->reflection->getName(), $prefix)) {
-							$this->isDocumented = false;
-							break;
-						}
-					}
+			$this->isDocumented = $this->reflection->isTokenized() || $this->reflection->isInternal();
+
+			if ($this->isDocumented) {
+				if (!self::$config->php && $this->reflection->isInternal()) {
+					$this->isDocumented = false;
+				} elseif (!self::$config->deprecated && $this->reflection->isDeprecated()) {
+					$this->isDocumented = false;
+				} elseif (!self::$config->internal && ($internal = $this->reflection->getAnnotation('internal')) && empty($internal[0])) {
+					$this->isDocumented = false;
 				}
 			}
 		}
+
 		return $this->isDocumented;
 	}
 
