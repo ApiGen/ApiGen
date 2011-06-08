@@ -309,6 +309,36 @@ class ReflectionClass extends ReflectionBase
 	}
 
 	/**
+	 * Checks if there is a constant of the given name.
+	 *
+	 * @param string $constantName Constant name
+	 * @return boolean
+	 */
+	public function hasConstant($constantName)
+	{
+		if (null === $this->constants) {
+			$this->getConstants();
+		}
+
+		return isset($this->constants[$constantName]);
+	}
+
+	/**
+	 * Checks if there is a constant of the given name.
+	 *
+	 * @param string $constantName Constant name
+	 * @return boolean
+	 */
+	public function hasOwnConstant($constantName)
+	{
+		if (null === $this->ownConstants) {
+			$this->getOwnConstants();
+		}
+
+		return isset($this->ownConstants[$constantName]);
+	}
+
+	/**
 	 * Returns a constant reflection.
 	 *
 	 * @param string $name Constant name
@@ -576,6 +606,21 @@ class ReflectionClass extends ReflectionBase
 	}
 
 	/**
+	 * Checks if there is a property of the given name.
+	 *
+	 * @param string $propertyName Property name
+	 * @return boolean
+	 */
+	public function hasOwnProperty($propertyName)
+	{
+		if (null === $this->ownProperties) {
+			$this->getOwnProperties();
+		}
+
+		return isset($this->ownProperties[$propertyName]);
+	}
+
+	/**
 	 * Checks if there is a method of the given name.
 	 *
 	 * @param string $methodName Method name
@@ -588,6 +633,21 @@ class ReflectionClass extends ReflectionBase
 		}
 
 		return isset($this->methods[$methodName]);
+	}
+
+	/**
+	 * Checks if there is a method of the given name.
+	 *
+	 * @param string $methodName Method name
+	 * @return boolean
+	 */
+	public function hasOwnMethod($methodName)
+	{
+		if (null === $this->ownMethods) {
+			$this->getOwnMethods();
+		}
+
+		return isset($this->ownMethods[$methodName]);
 	}
 
 	/**
