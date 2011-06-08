@@ -20,7 +20,7 @@ namespace Apigen;
  *
  * @author Ondřej Nešpor
  */
-class ReflectionMethod extends ReflectionBase
+class ReflectionMethod extends ReflectionFunctionBase
 {
 	/**
 	 * Returns the method declaring class.

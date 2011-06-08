@@ -20,7 +20,7 @@ namespace Apigen;
  *
  * @author Jaroslav Hanslík
  */
-class ReflectionFunction extends ReflectionBase
+class ReflectionFunction extends ReflectionFunctionBase
 {
 	/**
 	 * Returns if the function should be documented.

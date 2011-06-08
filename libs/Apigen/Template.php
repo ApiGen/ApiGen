@@ -15,7 +15,7 @@ namespace Apigen;
 
 use Nette;
 use TokenReflection\ReflectionAnnotation;
-use TokenReflection\IReflectionParameter as ReflectionParameter, TokenReflection\IReflectionExtension as ReflectionExtension;
+use TokenReflection\IReflectionExtension as ReflectionExtension;
 
 /**
  * Customized ApiGen template class.

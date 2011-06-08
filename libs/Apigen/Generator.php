@@ -14,7 +14,7 @@
 namespace Apigen;
 
 use Nette;
-use TokenReflection\Broker, TokenReflection\IReflectionParameter as ReflectionParameter, TokenReflection\ReflectionAnnotation;
+use TokenReflection\Broker, TokenReflection\ReflectionAnnotation;
 
 /**
  * Generates a HTML API documentation.

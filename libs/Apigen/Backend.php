@@ -138,6 +138,7 @@ class Backend extends Broker\Backend\Memory
 			foreach ($namespace->getClasses() as $name => $trClass) {
 				$class = new ReflectionClass($trClass, $this->generator);
 				$allClasses[self::TOKENIZED_CLASSES][$name] = $class;
+
 				if (!$class->isDocumented()) {
 					continue;
 				}
@@ -153,22 +154,28 @@ class Backend extends Broker\Backend\Memory
 						}
 					}
 				}
+			}
+		}
 
-				foreach ($class->getOwnMethods() as $method) {
-					$allClasses = $this->processFunction($declared, $allClasses, $method);
+		foreach ($allClasses[self::TOKENIZED_CLASSES][$name] as $class) {
+			if (!$class->isDocumented()) {
+				continue;
+			}
+
+			foreach ($class->getOwnMethods() as $method) {
+				$allClasses = $this->processFunction($declared, $allClasses, $method);
+			}
+
+			foreach ($class->getOwnProperties() as $property) {
+				$annotations = $property->getAnnotations();
+
+				if (!isset($annotations['var'])) {
+					continue;
 				}
 
-				foreach ($class->getOwnProperties() as $property) {
-					$annotations = $property->getAnnotations();
-
-					if (!isset($annotations['var'])) {
-						continue;
-					}
-
-					foreach ($annotations['var'] as $doc) {
-						foreach (explode('|', preg_replace('#\s.*#', '', $doc)) as $name) {
-							$allClasses = $this->addClass($declared, $allClasses, $name);
-						}
+				foreach ($annotations['var'] as $doc) {
+					foreach (explode('|', preg_replace('#\s.*#', '', $doc)) as $name) {
+						$allClasses = $this->addClass($declared, $allClasses, $name);
 					}
 				}
 			}
