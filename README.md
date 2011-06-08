@@ -45,6 +45,8 @@ Besides, we have made following changes in our ApiGen.
 * Better static files (stylesheets, javascript) versioning.
 * Better page titles.
 * A lot of visual enhancements.
+* Support for docblock templates.
+* Support for @inheritDoc.
 * Google Analytics support.
 * Full sitemap with links to package and namespace pages.
 * New version of jQuery.
