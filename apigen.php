@@ -63,8 +63,7 @@ try {
 	$generator->output(vsprintf("Documentation for %d classes, %d constants, %d functions and other %d used PHP internal classes will be generated\n", array_slice($parsed, 4, 4)));
 
 	// Generating
-	$generator->output(sprintf("Searching template in %s\n", $config->templateDir));
-	$generator->output(sprintf("Using template %s\n", $config->template));
+	$generator->output(sprintf("Using template config file %s\n", $config->templateConfig));
 
 	if ($config->wipeout && is_dir($config->destination)) {
 		$generator->output("Wiping out destination directory\n");
