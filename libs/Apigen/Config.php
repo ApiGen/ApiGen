@@ -53,7 +53,8 @@ class Config
 		'main' => '',
 		'title' => '',
 		'baseUrl' => '',
-		'googleCse' => '',
+		'googleCseId' => '',
+		'googleCseLabel' => '',
 		'googleAnalytics' => '',
 		'templateConfig' => '',
 		'allowedHtml' => array('b', 'i', 'a', 'ul', 'ol', 'li', 'p', 'br', 'var', 'samp', 'kbd', 'tt'),
@@ -286,7 +287,7 @@ class Config
 			throw new Exception('Invalid base url', Exception::INVALID_CONFIG);
 		}
 
-		if (!empty($this->config['googleCse']) && !preg_match('~^\d{21}:[a-z0-9]{11}$~', $this->config['googleCse'])) {
+		if (!empty($this->config['googleCseId']) && !preg_match('~^\d{21}:[a-z0-9]{11}$~', $this->config['googleCseId'])) {
 			throw new Exception('Invalid Google Custom Search ID', Exception::INVALID_CONFIG);
 		}
 
@@ -379,7 +380,8 @@ Options:
 	--main             <value>     Main project name prefix
 	--title            <value>     Title of generated documentation
 	--base-url         <value>     Documentation base URL
-	--google-cse       <value>     Google Custom Search ID
+	--google-cse-id    <value>     Google Custom Search ID
+	--google-cse-label <value>     Google Custom Search label
 	--google-analytics <value>     Google Analytics tracking code
 	--template-config  <file>      Template config file, default "./templates/default/config.neon"
 	--allowed-html     <list>      List of allowed HTML tags in documentation, default "b,i,a,ul,ol,li,p,br,var,samp,kbd,tt"

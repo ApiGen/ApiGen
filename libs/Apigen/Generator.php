@@ -409,7 +409,7 @@ class Generator extends Nette\Object
 		$mainFilter = function($element) {return $element->isMain();};
 
 		$sitemapEnabled = !empty($this->config->baseUrl) && isset($templates['optional']['sitemap']);
-		$opensearchEnabled = !empty($this->config->googleCse) && !empty($this->config->baseUrl) && isset($templates['optional']['opensearch']);
+		$opensearchEnabled = !empty($this->config->googleCseId) && !empty($this->config->baseUrl) && isset($templates['optional']['opensearch']);
 
 		if ($this->config->progressbar) {
 			$max = count($packages)

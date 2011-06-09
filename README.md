@@ -111,9 +111,13 @@ Title of the generated documentation.
 
 Documentation base URL used in the sitemap. Only needed if you plan to make your documentation public.
 
-```--google-cse <value>```
+```--google-cse-id <value>```
 
-If you have a Google CSE ID, there will be a search field on the top of all pages leading to your customized search.
+If you have a Google CSE ID, the search box will use it when you do not enter an exact class, constant or function name.
+
+```--google-cse-label <value>```
+
+This will be the default label when using Google CSE.
 
 ```--google-analytics <value>```
 
