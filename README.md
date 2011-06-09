@@ -215,5 +215,7 @@ When generating documentation of large libraries (Zend Framework for example) we
 ## Usage examples ##
 
 * Jyxo PHP Libraries, both [namespaced](http://jyxo.github.com/php/) and [non-namespaced](http://jyxo.github.com/php-no-namespace/),
-* [TokenReflection library](http://andrewsville.github.com/PHP-Token-Reflection/).
-* [Nella Framework](http://api.nella-project.org/framework/)
+* [TokenReflection library](http://andrewsville.github.com/PHP-Token-Reflection/),
+* [Nella Framework](http://api.nella-project.org/framework/).
+
+Besides from these publicly visible examples there are companies that use TR ApiGen to generate their inhouse documentation: [Medio Interactive](http://www.medio.cz/), [Wikidi](http://wikidi.com/).
