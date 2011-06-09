@@ -70,13 +70,27 @@ $(function() {
 	});
 
 	// Hide deep packages and namespaces
-	$('#left ul span').click(function() {
+	$('#entities ul span').click(function() {
 		$(this)
 			.toggleClass('collapsed')
 			.next('ul')
 			.toggleClass('collapsed');
-	});
-	$('#left ul li ul li:not(.active) span').click();
+	}).click();
+
+	$active = $('#entities ul li.active');
+	if ($active.length > 0) {
+		// Open active
+		$('> span', $active).click();
+	} else {
+		$main = $('#entities > ul > li.main');
+		if ($main.length > 0) {
+			// Open first level of the main project
+			$('> span', $main).click();
+		} else {
+			// Open first level of all
+			$('#entities > ul > li > span').click();
+		}
+	}
 
 	// Splitter
 	$('#rightWrapper').css('marginLeft', 0);

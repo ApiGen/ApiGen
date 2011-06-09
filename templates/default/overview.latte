@@ -7,21 +7,35 @@
 <div id="content">
 	<h1>{include #title}</h1>
 
-	<table class="summary" id="packages" n:if="$packages">
+	{var $group => false}
+
+	{if}
+	<table class="summary" id="packages">
 	<caption>Packages summary</caption>
-	<tr n:foreach="$packages as $package">
+	{foreach $packages as $package}
+	{continueIf $config->main && 0 !== strpos($package, $config->main)}
+	<tr>
+		{var $group => true}
 		<td><a href="{$package|packageUrl}">{$package}</a></td>
 	</tr>
+	{/foreach}
 	</table>
+	{/if $iterations}
 
-	<table class="summary" id="namespaces" n:if="$namespaces">
+	{if}
+	<table class="summary" id="namespaces">
 	<caption>Namespaces summary</caption>
-	<tr n:foreach="$namespaces as $namespace">
+	{foreach $namespaces as $namespace}
+	{continueIf $config->main && 0 !== strpos($namespace, $config->main)}
+	<tr>
+		{var $group => true}
 		<td><a href="{$namespace|namespaceUrl}">{$namespace}</a></td>
 	</tr>
+	{/foreach}
 	</table>
+	{/if $iterations}
 
-	{if !$packages && !$namespaces}
+	{if !$group}
 	{include '@elementlist.latte'}
 	{/if}
 </div>

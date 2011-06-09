@@ -50,6 +50,7 @@ class Config
 		'exclude' => array(),
 		'skipDocPath' => array(),
 		'skipDocPrefix' => array(),
+		'main' => '',
 		'title' => '',
 		'baseUrl' => '',
 		'googleCse' => '',
@@ -375,6 +376,7 @@ Options:
 	--exclude          <mask>      Mask to exclude file or directory from processing (can be used multiple times)
 	--skip-doc-path    <mask>      Don't generate documentation for classes from file or directory with this mask (can be used multiple times)
 	--skip-doc-prefix  <value>     Don't generate documentation for classes with this name prefix (can be used multiple times)
+	--main             <value>     Main project name prefix
 	--title            <value>     Title of generated documentation
 	--base-url         <value>     Documentation base URL
 	--google-cse       <value>     Google Custom Search ID

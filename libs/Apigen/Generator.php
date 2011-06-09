@@ -336,6 +336,24 @@ class Generator extends Nette\Object
 			}
 		}
 
+		// Sorting for namespaces and packages
+		$main = $this->config->main;
+		$sort = function($a, $b) use ($main) {
+			// \ as separator has to be first
+			$a = str_replace('\\', ' ', $a);
+			$b = str_replace('\\', ' ', $b);
+
+			if ($main) {
+				if (0 === strpos($a, $main) && 0 !== strpos($b, $main)) {
+					return -1;
+				} elseif (0 !== strpos($a, $main) && 0 === strpos($b, $main)) {
+					return 1;
+				}
+			}
+
+			return strcasecmp($a, $b);
+		};
+
 		// Select only packages or namespaces
 		$userPackages = count(array_diff(array_keys($packages), array('PHP', 'None')));
 		$userNamespaces = count(array_diff(array_keys($namespaces), array('PHP', 'None')));
@@ -364,7 +382,7 @@ class Generator extends Nette\Object
 					}
 				}
 			}
-			uksort($namespaces, 'strcasecmp');
+			uksort($namespaces, $sort);
 		} else {
 			$namespaces = array();
 
@@ -385,10 +403,10 @@ class Generator extends Nette\Object
 					}
 				}
 			}
-			uksort($packages, function($a, $b) {
-				return strcasecmp(str_replace('\\', ' ', $a), str_replace('\\', ' ', $b));
-			});
+			uksort($packages, $sort);
 		}
+
+		$mainFilter = function($element) {return $element->isMain();};
 
 		$sitemapEnabled = !empty($this->config->baseUrl) && isset($templates['optional']['sitemap']);
 		$opensearchEnabled = !empty($this->config->googleCse) && !empty($this->config->baseUrl) && isset($templates['optional']['opensearch']);
@@ -440,13 +458,13 @@ class Generator extends Nette\Object
 		$template->package = null;
 		$template->packages = array_keys($packages);
 		$template->class = null;
-		$template->classes = $classes;
-		$template->interfaces = $interfaces;
-		$template->exceptions = $exceptions;
+		$template->classes = array_filter($classes, $mainFilter);
+		$template->interfaces = array_filter($interfaces, $mainFilter);
+		$template->exceptions = array_filter($exceptions, $mainFilter);
 		$template->constant = null;
-		$template->constants = $constants;
+		$template->constants = array_filter($constants, $mainFilter);
 		$template->function = null;
-		$template->functions = $functions;
+		$template->functions = array_filter($functions, $mainFilter);
 
 		// Autocomplete
 		$elements = array();
@@ -514,6 +532,11 @@ class Generator extends Nette\Object
 			$undocumented = array();
 			foreach ($elementTypes as $type) {
 				foreach ($$type as $parentElement) {
+					// Skip elements not from the main project
+					if (!$parentElement->isMain()) {
+						continue;
+					}
+
 					// Internal elements don't have documentation
 					if ($parentElement->isInternal()) {
 						continue;
@@ -667,13 +690,17 @@ class Generator extends Nette\Object
 			$template->deprecatedConstants = array();
 			$template->deprecatedProperties = array();
 			foreach (array_reverse($elementTypes) as $type) {
-				$template->{'deprecated' . ucfirst($type)} = array_filter($$type, $deprecatedFilter);
+				$template->{'deprecated' . ucfirst($type)} = array_filter(array_filter($$type, $mainFilter), $deprecatedFilter);
 
 				if ('constants' === $type || 'functions' === $type) {
 					continue;
 				}
 
 				foreach ($$type as $class) {
+					if (!$class->isMain()) {
+						continue;
+					}
+
 					if ($class->isDeprecated()) {
 						continue;
 					}
@@ -720,13 +747,17 @@ class Generator extends Nette\Object
 			$template->todoConstants = array();
 			$template->todoProperties = array();
 			foreach (array_reverse($elementTypes) as $type) {
-				$template->{'todo' . ucfirst($type)} = array_filter($$type, $todoFilter);
+				$template->{'todo' . ucfirst($type)} = array_filter(array_filter($$type, $mainFilter), $todoFilter);
 
 				if ('constants' === $type || 'functions' === $type) {
 					continue;
 				}
 
 				foreach ($$type as $class) {
+					if (!$class->isMain()) {
+						continue;
+					}
+
 					$template->todoMethods = array_merge($template->todoMethods, array_values(array_filter($class->getOwnMethods(), $todoFilter)));
 					$template->todoConstants = array_merge($template->todoConstants, array_values(array_filter($class->getOwnConstants(), $todoFilter)));
 					$template->todoProperties = array_merge($template->todoProperties, array_values(array_filter($class->getOwnProperties(), $todoFilter)));
@@ -769,7 +800,7 @@ class Generator extends Nette\Object
 
 			$processed = array();
 			foreach ($this->classes as $className => $reflection) {
-				if (!$reflection->isDocumented() || isset($processed[$className])) {
+				if (!$reflection->isMain() || !$reflection->isDocumented() || isset($processed[$className])) {
 					continue;
 				}
 

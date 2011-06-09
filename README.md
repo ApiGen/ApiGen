@@ -99,6 +99,10 @@ Directories and files matching this file mask will not be parsed. You can exclud
 
 Using this parameters you can tell TR ApiGen not to generate documentation for classes from certain files or with certain name prefix. Such classes will appear in class trees, but will not create a link to their documentation. These parameters can be used multiple times.
 
+```--main <value>```
+
+Classes with this name prefix will be considered as the "main project" (the rest will be considered as libraries).
+
 ```--title <value>```
 
 Title of the generated documentation.
