@@ -208,7 +208,7 @@ apigen --source ~/nella/Nella --source ~/doctrine2/lib/Doctrine --source ~/doctr
 
 ## Requirements ##
 
-TR ApiGen requires PHP 5.3.1 or later. We do not officially support PHP 5.3.0 because of a [reflection bug](http://bugs.php.net/bug.php?id=48757) that affects the TokenReflection library.
+TR ApiGen requires PHP 5.3 or later.
 
 When generating documentation of large libraries (Zend Framework for example) we recommend not to have the Xdebug PHP extension loaded (it does not need to be used, it significantly slows down the generating process even when only loaded).
 
