@@ -90,7 +90,7 @@ Nette\FatalErrorException($error['message'],0,$error['type'],$error['file'],$err
 static function _exceptionHandler(\Exception$exception){if(!headers_sent()){header('HTTP/1.1 500 Internal Server Error');}$htmlMode=!self::$ajaxDetected
 &&!preg_match('#^Content-Type: (?!text/html)#im',implode("\n",headers_list()));try{if(self::$productionMode){self::log($exception,self::ERROR);if(self::$consoleMode){echo
 "ERROR: the server encountered an internal error and was unable to complete your request.\n";}elseif($htmlMode){require
-__DIR__.'/templates/error.phtml';}}else{if(self::$consoleMode){echo"$exception\n";}elseif($htmlMode){self::$blueScreen->render($exception);if(self::$bar){self::$bar->render();}}elseif(!self::fireLog($exception,self::ERROR)){self::log($exception);}}foreach(self::$onFatalError
+__DIR__.'/templates/error.phtml';}}else{if(self::$consoleMode){ob_get_level()&&ob_end_clean();echo"\n$exception\n";}elseif($htmlMode){self::$blueScreen->render($exception);if(self::$bar){self::$bar->render();}}elseif(!self::fireLog($exception,self::ERROR)){self::log($exception);}}foreach(self::$onFatalError
 as$handler){call_user_func($handler,$exception);}}catch(\Exception$e){echo "\nNette\\Debug FATAL ERROR: thrown ",get_class($e),': ',$e->getMessage(),"\nwhile processing ",get_class($exception),': ',$exception->getMessage(),"\n";}self::$enabled=FALSE;exit(255);}public
 static function _errorHandler($severity,$message,$file,$line,$context){if(self::$scream){error_reporting(E_ALL|E_STRICT);}if(self::$lastError
 !== FALSE &&($severity&error_reporting())===$severity){self::$lastError=new \ErrorException($message,0,$severity,$file,$line);return

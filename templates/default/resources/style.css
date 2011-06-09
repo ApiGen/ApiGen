@@ -199,7 +199,7 @@ code a b {
 
 #search input.text {
 	padding: 3px 5px;
-	width: 200px;
+	width: 250px;
 }
 
 #navigation {
@@ -432,8 +432,8 @@ tr:hover td {
  * Autocomplete
  */
 .ac_results {
-	padding: 0px;
-	border: 1px solid #000000;
+	padding: 0;
+	border: 1px solid #cccccc;
 	background-color: #ffffff;
 	overflow: hidden;
 	z-index: 99999;
@@ -448,14 +448,17 @@ tr:hover td {
 }
 
 .ac_results li {
-	margin: 0px;
+	margin: 0;
 	padding: 2px 5px;
 	cursor: default;
 	display: block;
-	font: menu;
-	font-size: 12px;
+	font: 12px Trebuchet MS, "Geneva CE", lucida, sans-serif;
 	line-height: 16px;
 	overflow: hidden;
+	white-space: nowrap;
+}
+.ac_results li strong {
+	color: #000000;
 }
 
 .ac_odd {
@@ -463,6 +466,9 @@ tr:hover td {
 }
 
 .ac_over {
-	background-color: #0a246a;
+	background-color: #006aeb;
+	color: #ffffff;
+}
+.ac_results li.ac_over strong {
 	color: #ffffff;
 }

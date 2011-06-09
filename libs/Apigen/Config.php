@@ -50,12 +50,13 @@ class Config
 		'exclude' => array(),
 		'skipDocPath' => array(),
 		'skipDocPrefix' => array(),
+		'main' => '',
 		'title' => '',
 		'baseUrl' => '',
-		'googleCse' => '',
+		'googleCseId' => '',
+		'googleCseLabel' => '',
 		'googleAnalytics' => '',
-		'template' => 'default',
-		'templateDir' => '',
+		'templateConfig' => '',
 		'allowedHtml' => array('b', 'i', 'a', 'ul', 'ol', 'li', 'p', 'br', 'var', 'samp', 'kbd', 'tt'),
 		'accessLevels' => array('public', 'protected'),
 		'internal' => false,
@@ -80,7 +81,7 @@ class Config
 		'config',
 		'source',
 		'destination',
-		'templateDir'
+		'templateConfig'
 	);
 
 	/**
@@ -126,7 +127,7 @@ class Config
 		}, $this->options);
 
 		$this->config = self::$defaultConfig;
-		$this->config['templateDir'] = realpath(__DIR__ . '/../../templates');
+		$this->config['templateConfig'] = realpath(__DIR__ . '/../../templates/default/config.neon');
 	}
 
 	/**
@@ -239,7 +240,7 @@ class Config
 		$this->config['templates'] = array('common' => array(), 'optional' => array());
 
 		// Merge template config
-		$this->config = array_merge_recursive($this->config, Neon::decode(file_get_contents($this->getTemplateConfig())));
+		$this->config = array_merge_recursive($this->config, Neon::decode(file_get_contents($this->config['templateConfig'])));
 
 		// Check template
 		$this->checkTemplate();
@@ -278,19 +279,7 @@ class Config
 			throw new Exception('Destination is not set', Exception::INVALID_CONFIG);
 		}
 
-		if (empty($this->config['templateDir'])) {
-			throw new Exception('Template directory is not set', Exception::INVALID_CONFIG);
-		}
-		if (!is_dir($this->config['templateDir'])) {
-			throw new Exception(sprintf('Template directory %s doesn\'t exist', $this->config['templateDir']), Exception::INVALID_CONFIG);
-		}
-		if (empty($this->config['template'])) {
-			throw new Exception('Template is not set', Exception::INVALID_CONFIG);
-		}
-		if (!is_dir($this->getTemplateDir())) {
-			throw new Exception('Template doesn\'t exist', Exception::INVALID_CONFIG);
-		}
-		if (!is_file($this->getTemplateConfig())) {
+		if (!is_file($this->config['templateConfig'])) {
 			throw new Exception('Template config doesn\'t exist', Exception::INVALID_CONFIG);
 		}
 
@@ -298,7 +287,7 @@ class Config
 			throw new Exception('Invalid base url', Exception::INVALID_CONFIG);
 		}
 
-		if (!empty($this->config['googleCse']) && !preg_match('~^\d{21}:[a-z0-9]{11}$~', $this->config['googleCse'])) {
+		if (!empty($this->config['googleCseId']) && !preg_match('~^\d{21}:[a-z0-9]{11}$~', $this->config['googleCseId'])) {
 			throw new Exception('Invalid Google Custom Search ID', Exception::INVALID_CONFIG);
 		}
 
@@ -328,33 +317,13 @@ class Config
 				if (!isset($config['template'])) {
 					throw new Exception(sprintf('Template for %s is not defined', $type), Exception::INVALID_CONFIG);
 				}
-				if (!is_file($this->getTemplateDir() . DIRECTORY_SEPARATOR . $config['template'])) {
+				if (!is_file(dirname($this->config['templateConfig']) . DIRECTORY_SEPARATOR . $config['template'])) {
 					throw new Exception(sprintf('Template for %s doesn\'t exist', $type), Exception::INVALID_CONFIG);
 				}
 			}
 		}
 
 		return $this;
-	}
-
-	/**
-	 * Returns template dir path.
-	 *
-	 * @return string
-	 */
-	private function getTemplateDir()
-	{
-		return $this->config['templateDir'] . DIRECTORY_SEPARATOR . $this->config['template'];
-	}
-
-	/**
-	 * Returns template config path.
-	 *
-	 * @return string
-	 */
-	private function getTemplateConfig()
-	{
-		return $this->getTemplateDir() . DIRECTORY_SEPARATOR . 'config.neon';
 	}
 
 	/**
@@ -408,12 +377,13 @@ Options:
 	--exclude          <mask>      Mask to exclude file or directory from processing (can be used multiple times)
 	--skip-doc-path    <mask>      Don't generate documentation for classes from file or directory with this mask (can be used multiple times)
 	--skip-doc-prefix  <value>     Don't generate documentation for classes with this name prefix (can be used multiple times)
+	--main             <value>     Main project name prefix
 	--title            <value>     Title of generated documentation
 	--base-url         <value>     Documentation base URL
-	--google-cse       <value>     Google Custom Search ID
+	--google-cse-id    <value>     Google Custom Search ID
+	--google-cse-label <value>     Google Custom Search label
 	--google-analytics <value>     Google Analytics tracking code
-	--template         <value>     Template name, default "default"
-	--template-dir     <dir>       Directory with templates, default "./templates"
+	--template-config  <file>      Template config file, default "./templates/default/config.neon"
 	--allowed-html     <list>      List of allowed HTML tags in documentation, default "b,i,a,ul,ol,li,p,br,var,samp,kbd,tt"
 	--access-levels    <list>      Generate documentation for methods and properties with given access level, default "public,protected"
 	--internal         <yes|no>    Generate documentation for elements marked as internal, default "no"
@@ -429,19 +399,14 @@ Options:
 	--debug            <yes|no>    Display additional information in case of an error, default "no"
 	--help|-h                      Display this help
 
-Only source and destination directories are required - either set explicitly or using a config file.
+Only source and destination directories are required - either set explicitly or using a config file. Configuration parameters passed via command line have precedence over parameters from a config file.
 
 Boolean options (those with possible values yes|no) do not have to have their values defined explicitly. Using --debug and --debug=yes is exactly the same.
 
 Some options can have multiple values. You can do so either by using them multiple times or by separating values by a comma. That means that writing --source=file1.php --source=file2.php or --source=file1.php,file2.php is exactly the same.
 
 Files or directories specified by --exclude will not be processed at all.
-Classes from files within --skip-doc-path or with --skip-doc-prefix will be parsed but will not have
-their documentation generated. However if they have any child classes, the full class tree will be
-generated and their inherited methods, properties and constants will be displayed (but will not
-be clickable).
-
-Configuration parameters passed via command line have precedence over parameters from a config file.
+Classes from files within --skip-doc-path or with --skip-doc-prefix will be parsed but will not have their documentation generated. However if they have any child classes, the full class tree will be generated and their inherited methods, properties and constants will be displayed (but will not be clickable).
 
 HELP;
 	}

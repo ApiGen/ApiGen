@@ -8,19 +8,21 @@ exclude: ''
 skipDocPath: ''
 # Don't generate documentation for classes with this name prefix
 skipDocPrefix: ''
+# Main project name prefix
+main: ''
 
 # Title of generated documentation
 title: ''
 # Documentation base URL
 baseUrl: ''
 # Google Custom Search ID
-googleCse: ''
+googleCseId: ''
+# Google Custom Search label
+googleCseLabel: ''
 # Google Analytics tracking code
 googleAnalytics: ''
-# Template name
-template: default
-# Directory with templates
-templateDir: ''
+# Template config file
+templateConfig: ''
 # List of allowed HTML tags in documentation
 allowedHtml: [b, i, a, ul, ol, li, p, br, var, samp, kbd, tt]
 

@@ -10,10 +10,10 @@
 	{var combined_js => 'resources/combined.js'}
 	<script type="text/javascript" src="{$combined_js|staticFile}"></script>
 	{var elementlist_js => 'elementlist.js'}
-	<script n:if="$config->googleCse" type="text/javascript" src="{$elementlist_js|staticFile}"></script>
+	<script type="text/javascript" src="{$elementlist_js|staticFile}"></script>
 	{var style_css => 'resources/style.css'}
 	<link rel="stylesheet" type="text/css" media="all" href="{$style_css|staticFile}">
-	<link n:if="$config->googleCse" rel="search" type="application/opensearchdescription+xml" title="{$config->title}" href="{$config->baseUrl}/opensearch.xml">
+	<link n:if="$config->googleCseId" rel="search" type="application/opensearchdescription+xml" title="{$config->title}" href="{$config->baseUrl}/opensearch.xml">
 
 	<script n:if="$config->googleAnalytics" type="text/javascript">
 		var _gaq = _gaq || [];
@@ -39,7 +39,7 @@
 			<h3>Packages</h3>
 			<ul>
 				{foreach $packages as $item}
-				<li n:class="$package === $item || 0 === strpos($package, $item . '\\') ? active"><a href="{$item|packageUrl}">{$template->subpackageName($item) ?: $item}</a>
+				<li n:class="$package === $item || 0 === strpos($package, $item . '\\') ? active, $config->main && 0 === strpos($item, $config->main) ? main"><a href="{$item|packageUrl}">{$template->subpackageName($item) ?: $item}</a>
 					{if substr_count($iterator->nextValue, '\\') > substr_count($item, '\\')}
 						<span></span>
 						<ul>
@@ -57,7 +57,7 @@
 			<h3>Namespaces</h3>
 			<ul>
 				{foreach $namespaces as $item}
-				<li n:class="$namespace === $item || 0 === strpos($namespace, $item . '\\') ? active"><a href="{$item|namespaceUrl}">{$item|subnamespaceName}</a>
+				<li n:class="$namespace === $item || 0 === strpos($namespace, $item . '\\') ? active, $config->main && 0 === strpos($item, $config->main) ? main"><a href="{$item|namespaceUrl}">{$item|subnamespaceName}</a>
 					{if substr_count($iterator->nextValue, '\\') > substr_count($item, '\\')}
 						<span></span>
 						<ul>
@@ -112,10 +112,12 @@
 </div>
 <div id="rightWrapper">
 	<div id="right">
-		<form n:if="$config->googleCse" action="http://www.google.com/cse" id="search">
-			<input type="hidden" name="cx" value="{$config->googleCse}">
+		<form{if $config->googleCseId} action="http://www.google.com/cse"{/if} id="search">
+			<input type="hidden" name="cx" value="{$config->googleCseId}">
 			<input type="hidden" name="ie" value="UTF-8">
-			<input type="text" name="q" class="text"><input type="submit" value="Search">
+			<input type="hidden" name="more" value="{$config->googleCseLabel}" n:if="$config->googleCseLabel">
+			<input type="text" name="q" class="text">
+			<input type="submit" value="Search">
 		</form>
 
 		<div id="navigation">

@@ -24,13 +24,16 @@ Besides, we have made following changes in our ApiGen.
 * A page with a list of deprecated elements.
 * A page with Todo tasks.
 * List of undocumented elements.
-* Support of the {@link} tag.
-* Clickable links for @see and @uses tags.
+* Support for docblock templates.
+* Support for @inheritdoc.
+* Support for {@link}.
+* Clickable links for @see and @uses.
 * Detailed documentation for constants and properties with all annotations.
 * Links to PHP manual pages for constants and properties of PHP internal classes.
 * Links to the start line in the highlighted source code for constants and properties.
 * List of packages and subpackages.
 * List of indirect known subclasses and implementers.
+* Improved search and suggest - lets you search in class, functions and constant names without the need of Google CSE.
 * Support for multiple/custom templates.
 * Fancy progressbars (one while parsing source codes, one while generating documentation).
 * Exceptions handling.
@@ -96,6 +99,10 @@ Directories and files matching this file mask will not be parsed. You can exclud
 
 Using this parameters you can tell TR ApiGen not to generate documentation for classes from certain files or with certain name prefix. Such classes will appear in class trees, but will not create a link to their documentation. These parameters can be used multiple times.
 
+```--main <value>```
+
+Classes with this name prefix will be considered as the "main project" (the rest will be considered as libraries).
+
 ```--title <value>```
 
 Title of the generated documentation.
@@ -104,21 +111,21 @@ Title of the generated documentation.
 
 Documentation base URL used in the sitemap. Only needed if you plan to make your documentation public.
 
-```--google-cse <value>```
+```--google-cse-id <value>```
 
-If you have a Google CSE ID, there will be a search field on the top of all pages leading to your customized search.
+If you have a Google CSE ID, the search box will use it when you do not enter an exact class, constant or function name.
+
+```--google-cse-label <value>```
+
+This will be the default label when using Google CSE.
 
 ```--google-analytics <value>```
 
 A Google Analytics tracking code. If provided, an ansynchronous tracking code will be placed into every generated page.
 
-```--template <value>```
+```--template-config <file>```
 
-Template name, default is "default" :)
-
-```--template-dir <directory>```
-
-Template directory, default is the ApiGen template directory.
+Template config file, default is the config file of ApiGen default template.
 
 ```--allowed-html <list>```
 
