@@ -710,7 +710,7 @@ $.Autocompleter.Select = function (options, input, select, config) {
 		show: function() {
 			var offset = $(input).offset();
 			element.css({
-				width: typeof options.width == "string" || options.width > 0 ? options.width : $(input).width(),
+				width: typeof options.width == "string" || options.width > 0 ? options.width : $(input).innerWidth(),
 				top: offset.top + input.offsetHeight,
 				left: offset.left
 			}).show();

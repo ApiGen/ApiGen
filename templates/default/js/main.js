@@ -1,16 +1,28 @@
 $(function(){
 
-	// enables search autocompletion
-	var $search = $("#search input[type=text]");
-	if ($search.size()) {
-		$search.autocomplete(elements, {
-			matchContains: true,
-			scrollHeight: 200,
-			max: 20,
-			formatItem: function(row) { return row[0].replace(/^(.+\\)(.+)$/, '<small>$1</small>$2'); },
-			formatMatch: function(row) { return row[0]; }
-		});
-	}
+	// Search autocompletion
+	var autocompleteFound = false;
+	var $search = $("#search input[name=q]");
+	$search.autocomplete(elements, {
+		matchContains: true,
+		scrollHeight: 200,
+		max: 20,
+		formatItem: function(data) {return data[1].replace(/^(.+\\)(.+)$/, '<small>$1</small>$2');},
+		formatMatch: function(data) {return data[1];},
+		formatResult: function(data) {return data[1];}
+	}).result(function(event, data) {
+		autocompleteFound = true;
+		var location = window.location.href.split('/');
+		location.pop();
+		location.push(data[0] + '-' + data[1].replace(/[^\w]/g, '.') + '.html');
+		window.location = location.join('/');
+	}).parent('form').submit(function() {
+		var query = $search.val();
+		if ('' === query) {
+			return false;
+		}
+		return !autocompleteFound && '' !== $('#search input[name=cx]').val();
+	});
 
 	// saves original order
 	$("table.summary:has(tr[data-order]) tr").each(function(index) {

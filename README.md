@@ -24,13 +24,16 @@ Besides, we have made following changes in our ApiGen.
 * A page with a list of deprecated elements.
 * A page with Todo tasks.
 * List of undocumented elements.
-* Support of the {@link} tag.
-* Clickable links for @see and @uses tags.
+* Support for docblock templates.
+* Support for @inheritdoc.
+* Support for {@link}.
+* Clickable links for @see and @uses.
 * Detailed documentation for constants and properties with all annotations.
 * Links to PHP manual pages for constants and properties of PHP internal classes.
 * Links to the start line in the highlighted source code for constants and properties.
 * List of packages and subpackages.
 * List of indirect known subclasses and implementers.
+* Improved search and suggest - lets you search in class, functions and constant names without the need of Google CSE.
 * Support for multiple/custom templates.
 * Fancy progressbars (one while parsing source codes, one while generating documentation).
 * Exceptions handling.
@@ -45,8 +48,6 @@ Besides, we have made following changes in our ApiGen.
 * Better static files (stylesheets, javascript) versioning.
 * Better page titles.
 * A lot of visual enhancements.
-* Support for docblock templates.
-* Support for @inheritDoc.
 * Google Analytics support.
 * Full sitemap with links to package and namespace pages.
 * New version of jQuery.

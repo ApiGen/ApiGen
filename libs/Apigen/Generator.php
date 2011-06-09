@@ -392,7 +392,6 @@ class Generator extends Nette\Object
 
 		$sitemapEnabled = !empty($this->config->baseUrl) && isset($templates['optional']['sitemap']);
 		$opensearchEnabled = !empty($this->config->googleCse) && !empty($this->config->baseUrl) && isset($templates['optional']['opensearch']);
-		$autocompleteEnabled = !empty($this->config->googleCse) && isset($templates['optional']['autocomplete']);
 
 		if ($this->config->progressbar) {
 			$max = count($packages)
@@ -409,7 +408,6 @@ class Generator extends Nette\Object
 				+ (int) $this->config->todo
 				+ (int) $sitemapEnabled
 				+ (int) $opensearchEnabled
-				+ (int) $autocompleteEnabled
 			;
 
 			if ($this->config->sourceCode) {
@@ -436,7 +434,7 @@ class Generator extends Nette\Object
 		$template->version = self::VERSION;
 		$template->config = $this->config;
 
-		// Generate summary files
+		// Generate common files
 		$template->namespace = null;
 		$template->namespaces = array_keys($namespaces);
 		$template->package = null;
@@ -449,13 +447,28 @@ class Generator extends Nette\Object
 		$template->constants = $constants;
 		$template->function = null;
 		$template->functions = $functions;
+
+		// Autocomplete
+		$elements = array();
+		foreach ($elementTypes as $type) {
+			foreach ($$type as $element) {
+				$type = $element instanceof ReflectionClass ? 'class' : ($element instanceof ReflectionConstant ? 'constant' : 'function');
+				$elements[] = array($type, $element->getName());
+			}
+		}
+		usort($elements, function($a, $b) {return strcasecmp($a[1], $b[1]);});
+		$template->elements = $elements;
+
 		foreach ($templates['common'] as $dest => $source) {
 			$template->setFile($templatePath . '/' . $source)->save($this->forceDir("$destination/$dest"));
 
 			$this->incrementProgressBar();
 		}
 
-		// Optional files
+		unset($elements);
+		unset($template->elements);
+
+		// Generate optional files
 		if ($sitemapEnabled) {
 			$template->setFile($templatePath . '/' . $templates['optional']['sitemap']['template'])->save($this->forceDir($destination . '/' . $templates['optional']['sitemap']['filename']));
 			$this->incrementProgressBar();
@@ -463,15 +476,6 @@ class Generator extends Nette\Object
 		if ($opensearchEnabled) {
 			$template->setFile($templatePath . '/' . $templates['optional']['opensearch']['template'])->save($this->forceDir($destination . '/' . $templates['optional']['opensearch']['filename']));
 			$this->incrementProgressBar();
-		}
-		if ($autocompleteEnabled) {
-			$template->elements = array_keys(array_merge($classes, $interfaces, $exceptions, $constants, $functions));
-			usort($template->elements, 'strcasecmp');
-
-			$template->setFile($templatePath . '/' . $templates['optional']['autocomplete']['template'])->save($this->forceDir($destination . '/' . $templates['optional']['autocomplete']['filename']));
-			$this->incrementProgressBar();
-
-			unset($template->elements);
 		}
 
 		// List of undocumented elements

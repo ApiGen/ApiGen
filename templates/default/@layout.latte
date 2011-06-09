@@ -10,7 +10,7 @@
 	{var combined_js => 'resources/combined.js'}
 	<script type="text/javascript" src="{$combined_js|staticFile}"></script>
 	{var elementlist_js => 'elementlist.js'}
-	<script n:if="$config->googleCse" type="text/javascript" src="{$elementlist_js|staticFile}"></script>
+	<script type="text/javascript" src="{$elementlist_js|staticFile}"></script>
 	{var style_css => 'resources/style.css'}
 	<link rel="stylesheet" type="text/css" media="all" href="{$style_css|staticFile}">
 	<link n:if="$config->googleCse" rel="search" type="application/opensearchdescription+xml" title="{$config->title}" href="{$config->baseUrl}/opensearch.xml">
@@ -112,10 +112,11 @@
 </div>
 <div id="rightWrapper">
 	<div id="right">
-		<form n:if="$config->googleCse" action="http://www.google.com/cse" id="search">
+		<form{if $config->googleCse} action="http://www.google.com/cse"{/if} id="search">
 			<input type="hidden" name="cx" value="{$config->googleCse}">
 			<input type="hidden" name="ie" value="UTF-8">
-			<input type="text" name="q" class="text"><input type="submit" value="Search">
+			<input type="text" name="q" class="text">
+			<input type="submit" value="Search">
 		</form>
 
 		<div id="navigation">

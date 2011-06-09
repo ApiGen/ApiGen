@@ -5,6 +5,7 @@ templates:
 	common:
 		index.html: overview.latte
 		resources/combined.js: combined.js.latte
+		elementlist.js: elementlist.js.latte
 
 	main:
 		package:
@@ -42,6 +43,3 @@ templates:
 		opensearch:
 			filename: opensearch.xml
 			template: opensearch.xml.latte
-		autocomplete:
-			filename: elementlist.js
-			template: elementlist.js.latte
