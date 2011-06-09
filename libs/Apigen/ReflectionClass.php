@@ -256,7 +256,7 @@ class ReflectionClass extends ReflectionBase
 		$subClasses = array();
 		$name = $this->reflection->getName();
 		foreach (self::$classes as $class) {
-			if (!$class->isSubclassOf($name)) {
+			if (!$class->isDocumented() || !$class->isSubclassOf($name)) {
 				continue;
 			}
 			if (null === $class->getParentClassName() || !$class->getParentClass()->isSubClassOf($name)) {
@@ -276,7 +276,7 @@ class ReflectionClass extends ReflectionBase
 		$subClasses = array();
 		$name = $this->reflection->getName();
 		foreach (self::$classes as $class) {
-			if (!$class->isSubclassOf($name)) {
+			if (!$class->isDocumented() || !$class->isSubclassOf($name)) {
 				continue;
 			}
 			if (null !== $class->getParentClassName() && $class->getParentClass()->isSubClassOf($name)) {
@@ -300,7 +300,7 @@ class ReflectionClass extends ReflectionBase
 		$implementers = array();
 		$name = $this->reflection->getName();
 		foreach (self::$classes as $class) {
-			if ($class->isInterface() || !$class->implementsInterface($name)) {
+			if (!$class->isDocumented() || $class->isInterface() || !$class->implementsInterface($name)) {
 				continue;
 			}
 			if (null === $class->getParentClassName() || !$class->getParentClass()->implementsInterface($name)) {
@@ -324,7 +324,7 @@ class ReflectionClass extends ReflectionBase
 		$implementers = array();
 		$name = $this->reflection->getName();
 		foreach (self::$classes as $class) {
-			if ($class->isInterface() || !$class->implementsInterface($name)) {
+			if (!$class->isDocumented() || $class->isInterface() || !$class->implementsInterface($name)) {
 				continue;
 			}
 			if (null !== $class->getParentClassName() && $class->getParentClass()->implementsInterface($name)) {
