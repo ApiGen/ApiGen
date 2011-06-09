@@ -114,13 +114,9 @@ If you have a Google CSE ID, there will be a search field on the top of all page
 
 A Google Analytics tracking code. If provided, an ansynchronous tracking code will be placed into every generated page.
 
-```--template <value>```
+```--template-config <file>```
 
-Template name, default is "default" :)
-
-```--template-dir <directory>```
-
-Template directory, default is the ApiGen template directory.
+Template config file, default is the config file of ApiGen default template.
 
 ```--allowed-html <list>```
 

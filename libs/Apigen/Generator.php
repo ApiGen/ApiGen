@@ -277,7 +277,7 @@ class Generator extends Nette\Object
 
 		$destination = $this->config->destination;
 		$templates = $this->config->templates;
-		$templatePath = $this->config->templateDir . '/' . $this->config->template;
+		$templatePath = dirname($this->config->templateConfig);
 
 		// Copy resources
 		foreach ($this->config->resources as $resourceSource => $resourceDestination) {

@@ -54,8 +54,7 @@ class Config
 		'baseUrl' => '',
 		'googleCse' => '',
 		'googleAnalytics' => '',
-		'template' => 'default',
-		'templateDir' => '',
+		'templateConfig' => '',
 		'allowedHtml' => array('b', 'i', 'a', 'ul', 'ol', 'li', 'p', 'br', 'var', 'samp', 'kbd', 'tt'),
 		'accessLevels' => array('public', 'protected'),
 		'internal' => false,
@@ -80,7 +79,7 @@ class Config
 		'config',
 		'source',
 		'destination',
-		'templateDir'
+		'templateConfig'
 	);
 
 	/**
@@ -126,7 +125,7 @@ class Config
 		}, $this->options);
 
 		$this->config = self::$defaultConfig;
-		$this->config['templateDir'] = realpath(__DIR__ . '/../../templates');
+		$this->config['templateConfig'] = realpath(__DIR__ . '/../../templates/default/config.neon');
 	}
 
 	/**
@@ -239,7 +238,7 @@ class Config
 		$this->config['templates'] = array('common' => array(), 'optional' => array());
 
 		// Merge template config
-		$this->config = array_merge_recursive($this->config, Neon::decode(file_get_contents($this->getTemplateConfig())));
+		$this->config = array_merge_recursive($this->config, Neon::decode(file_get_contents($this->config['templateConfig'])));
 
 		// Check template
 		$this->checkTemplate();
@@ -278,19 +277,7 @@ class Config
 			throw new Exception('Destination is not set', Exception::INVALID_CONFIG);
 		}
 
-		if (empty($this->config['templateDir'])) {
-			throw new Exception('Template directory is not set', Exception::INVALID_CONFIG);
-		}
-		if (!is_dir($this->config['templateDir'])) {
-			throw new Exception(sprintf('Template directory %s doesn\'t exist', $this->config['templateDir']), Exception::INVALID_CONFIG);
-		}
-		if (empty($this->config['template'])) {
-			throw new Exception('Template is not set', Exception::INVALID_CONFIG);
-		}
-		if (!is_dir($this->getTemplateDir())) {
-			throw new Exception('Template doesn\'t exist', Exception::INVALID_CONFIG);
-		}
-		if (!is_file($this->getTemplateConfig())) {
+		if (!is_file($this->config['templateConfig'])) {
 			throw new Exception('Template config doesn\'t exist', Exception::INVALID_CONFIG);
 		}
 
@@ -328,33 +315,13 @@ class Config
 				if (!isset($config['template'])) {
 					throw new Exception(sprintf('Template for %s is not defined', $type), Exception::INVALID_CONFIG);
 				}
-				if (!is_file($this->getTemplateDir() . DIRECTORY_SEPARATOR . $config['template'])) {
+				if (!is_file(dirname($this->config['templateConfig']) . DIRECTORY_SEPARATOR . $config['template'])) {
 					throw new Exception(sprintf('Template for %s doesn\'t exist', $type), Exception::INVALID_CONFIG);
 				}
 			}
 		}
 
 		return $this;
-	}
-
-	/**
-	 * Returns template dir path.
-	 *
-	 * @return string
-	 */
-	private function getTemplateDir()
-	{
-		return $this->config['templateDir'] . DIRECTORY_SEPARATOR . $this->config['template'];
-	}
-
-	/**
-	 * Returns template config path.
-	 *
-	 * @return string
-	 */
-	private function getTemplateConfig()
-	{
-		return $this->getTemplateDir() . DIRECTORY_SEPARATOR . 'config.neon';
 	}
 
 	/**
@@ -412,8 +379,7 @@ Options:
 	--base-url         <value>     Documentation base URL
 	--google-cse       <value>     Google Custom Search ID
 	--google-analytics <value>     Google Analytics tracking code
-	--template         <value>     Template name, default "default"
-	--template-dir     <dir>       Directory with templates, default "./templates"
+	--template-config  <file>      Template config file, default "./templates/default/config.neon"
 	--allowed-html     <list>      List of allowed HTML tags in documentation, default "b,i,a,ul,ol,li,p,br,var,samp,kbd,tt"
 	--access-levels    <list>      Generate documentation for methods and properties with given access level, default "public,protected"
 	--internal         <yes|no>    Generate documentation for elements marked as internal, default "no"

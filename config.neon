@@ -17,10 +17,8 @@ baseUrl: ''
 googleCse: ''
 # Google Analytics tracking code
 googleAnalytics: ''
-# Template name
-template: default
-# Directory with templates
-templateDir: ''
+# Template config file
+templateConfig: ''
 # List of allowed HTML tags in documentation
 allowedHtml: [b, i, a, ul, ol, li, p, br, var, samp, kbd, tt]
 
