@@ -283,7 +283,7 @@ new Exception\Runtime(sprintf('Cannot read %s "%s" property "%s".',get_class($ob
 public static function exists(IReflection$object,$key){try{self::get($object,$key);return
 true;}catch(RuntimeException$e){return false;}}final public static function resolveClassFQN($className,array$aliases,$namespaceName=null){if($className{0}=='\\'){return
 ltrim($className,'\\');}if(false===($position=strpos($className,'\\'))){if(isset($aliases[$className])){return$aliases[$className];}}else{$alias=substr($className,0,$position);if(isset($aliases[$alias])){return$aliases[$alias].'\\'.substr($className,$position+1);}}return
-null===$namespaceName||$namespaceName===ReflectionNamespace::NO_NAMESPACE_NAME?$className:$namespaceName.'\\'.$className;}}}
+null===$namespaceName||''===$namespaceName||$namespaceName===ReflectionNamespace::NO_NAMESPACE_NAME?$className:$namespaceName.'\\'.$className;}}}
 
  namespace TokenReflection{class ReflectionFile implements IReflection{private$namespaces=array();private$tokenStream=null;private$broker;public
 function __construct(Stream$tokenStream,Broker$broker){$this->tokenStream=$tokenStream;$this->broker=$broker;$this->parse();}public
