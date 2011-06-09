@@ -330,6 +330,24 @@ class Generator extends Nette\Object
 			}
 		}
 
+		// Sorting for namespaces and packages
+		$main = $this->config->main;
+		$sort = function($a, $b) use ($main) {
+			// \ as separator has to be first
+			$a = str_replace('\\', ' ', $a);
+			$b = str_replace('\\', ' ', $b);
+
+			if ($main) {
+				if (0 === strpos($a, $main) && 0 !== strpos($b, $main)) {
+					return -1;
+				} elseif (0 !== strpos($a, $main) && 0 === strpos($b, $main)) {
+					return 1;
+				}
+			}
+
+			return strcasecmp($a, $b);
+		};
+
 		// Select only packages or namespaces
 		$userPackages = count(array_diff(array_keys($packages), array('PHP', 'None')));
 		$userNamespaces = count(array_diff(array_keys($namespaces), array('PHP', 'None')));
@@ -358,7 +376,7 @@ class Generator extends Nette\Object
 					}
 				}
 			}
-			uksort($namespaces, 'strcasecmp');
+			uksort($namespaces, $sort);
 		} else {
 			$namespaces = array();
 
@@ -379,9 +397,7 @@ class Generator extends Nette\Object
 					}
 				}
 			}
-			uksort($packages, function($a, $b) {
-				return strcasecmp(str_replace('\\', ' ', $a), str_replace('\\', ' ', $b));
-			});
+			uksort($packages, $sort);
 		}
 
 		$mainFilter = function($element) {return $element->isMain();};
