@@ -895,7 +895,9 @@ self::create(parent::getPrototype(),$this->broker);}public function isTokenized(
 false;}public function getNamespaceAliases(){return array();}public function is($filter=null){return
 null===$filter||($this->getModifiers()&$filter);}public static function create(Reflector$internalReflection,Broker$broker){static$cache=array();if(!$internalReflection
 instanceof InternalReflectionMethod){throw new Exception\Runtime(sprintf('Invalid reflection instance provided: "%s", ReflectionMethod expected.',get_class($internalReflection)),Exception\Runtime::INVALID_ARGUMENT);}$key=$internalReflection->getDeclaringClass()->getName().'::'.$internalReflection->getName();if(!isset($cache[$key])){$cache[$key]=new
-self($internalReflection->getDeclaringClass()->getName(),$internalReflection->getName(),$broker);}return$cache[$key];}}}
+self($internalReflection->getDeclaringClass()->getName(),$internalReflection->getName(),$broker);}return$cache[$key];}public
+function setAccessible($accessible){if(PHP_VERSION_ID<50302){throw new Exception\Runtime(sprintf('Method setAccessible was introduced the internal reflection in PHP 5.3.2, you are using %s.',PHP_VERSION),Exception\Runtime::UNSUPPORTED);}return
+parent::setAccessible($accessible);}}}
 
  namespace TokenReflection{use TokenReflection\Exception;class ReflectionFunction
 extends ReflectionFunctionBase implements IReflectionFunction{private$aliases=array();public
