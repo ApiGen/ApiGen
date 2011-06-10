@@ -1,5 +1,5 @@
 {layout '@layout.latte'}
-{var $active => 'overview'}
+{var $active = 'overview'}
 
 {block #title}{$config->title ?: 'Overview'}{/block}
 
@@ -7,7 +7,7 @@
 <div id="content">
 	<h1>{include #title}</h1>
 
-	{var $group => false}
+	{var $group = false}
 
 	{if}
 	<table class="summary" id="packages">
@@ -15,7 +15,7 @@
 	{foreach $packages as $package}
 	{continueIf $config->main && 0 !== strpos($package, $config->main)}
 	<tr>
-		{var $group => true}
+		{var $group = true}
 		<td><a href="{$package|packageUrl}">{$package}</a></td>
 	</tr>
 	{/foreach}
@@ -28,7 +28,7 @@
 	{foreach $namespaces as $namespace}
 	{continueIf $config->main && 0 !== strpos($namespace, $config->main)}
 	<tr>
-		{var $group => true}
+		{var $group = true}
 		<td><a href="{$namespace|namespaceUrl}">{$namespace}</a></td>
 	</tr>
 	{/foreach}

@@ -105,8 +105,6 @@ class Template extends Nette\Templating\FileTemplate
 
 		// Common operations
 		$this->registerHelperLoader('Nette\Templating\DefaultHelpers::loader');
-		$this->registerHelper('ucfirst', 'ucfirst');
-		$this->registerHelper('replaceRE', 'Nette\Utils\Strings::replace');
 
 		// PHP source highlight
 		$this->registerHelper('highlightPHP', function($source, $context) use ($that, $fshl) {
