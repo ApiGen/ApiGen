@@ -416,8 +416,8 @@ $.Autocompleter.defaults = {
 	highlight: function(value, term) {
 		return value.replace(new RegExp("(?![^&;]+;)(?!<[^<>]*)(" + term.replace(/([\^\$\(\)\[\]\{\}\*\.\+\?\|\\])/gi, "\\$1") + ")(?![^<>]*>)(?![^&;]+;)", "gi"), "<strong>$1</strong>");
 	},
-    scroll: true,
-    scrollHeight: 180
+	scroll: true,
+	scrollHeight: 180
 };
 
 $.Autocompleter.Cache = function(options) {
@@ -584,9 +584,9 @@ $.Autocompleter.Select = function (options, input, select, config) {
 
 		list = $("<ul/>").appendTo(element).mouseover( function(event) {
 			if(target(event).nodeName && target(event).nodeName.toUpperCase() == 'LI') {
-	            active = $("li", list).removeClass(CLASSES.ACTIVE).index(target(event));
-			    $(target(event)).addClass(CLASSES.ACTIVE);
-	        }
+				active = $("li", list).removeClass(CLASSES.ACTIVE).index(target(event));
+				$(target(event)).addClass(CLASSES.ACTIVE);
+			}
 		}).click(function(event) {
 			$(target(event)).addClass(CLASSES.ACTIVE);
 			select();
@@ -618,18 +618,18 @@ $.Autocompleter.Select = function (options, input, select, config) {
 	function moveSelect(step) {
 		listItems.slice(active, active + 1).removeClass(CLASSES.ACTIVE);
 		movePosition(step);
-        var activeItem = listItems.slice(active, active + 1).addClass(CLASSES.ACTIVE);
-        if(options.scroll) {
-            var offset = 0;
-            listItems.slice(0, active).each(function() {
+		var activeItem = listItems.slice(active, active + 1).addClass(CLASSES.ACTIVE);
+		if(options.scroll) {
+			var offset = 0;
+			listItems.slice(0, active).each(function() {
 				offset += this.offsetHeight;
 			});
-            if((offset + activeItem[0].offsetHeight - list.scrollTop()) > list[0].clientHeight) {
-                list.scrollTop(offset + activeItem[0].offsetHeight - list.innerHeight());
-            } else if(offset < list.scrollTop()) {
-                list.scrollTop(offset);
-            }
-        }
+			if((offset + activeItem[0].offsetHeight - list.scrollTop()) > list[0].clientHeight) {
+				list.scrollTop(offset + activeItem[0].offsetHeight - list.innerHeight());
+			} else if(offset < list.scrollTop()) {
+				list.scrollTop(offset);
+			}
+		}
 	};
 
 	function movePosition(step) {
@@ -710,31 +710,31 @@ $.Autocompleter.Select = function (options, input, select, config) {
 		show: function() {
 			var offset = $(input).offset();
 			element.css({
-				width: typeof options.width == "string" || options.width > 0 ? options.width : $(input).width(),
+				width: typeof options.width == "string" || options.width > 0 ? options.width : $(input).innerWidth(),
 				top: offset.top + input.offsetHeight,
 				left: offset.left
 			}).show();
-            if(options.scroll) {
-                list.scrollTop(0);
-                list.css({
+			if(options.scroll) {
+				list.scrollTop(0);
+				list.css({
 					maxHeight: options.scrollHeight,
 					overflow: 'auto'
 				});
 
-                if($.browser.msie && typeof document.body.style.maxHeight === "undefined") {
+				if($.browser.msie && typeof document.body.style.maxHeight === "undefined") {
 					var listHeight = 0;
 					listItems.each(function() {
 						listHeight += this.offsetHeight;
 					});
 					var scrollbarsVisible = listHeight > options.scrollHeight;
-                    list.css('height', scrollbarsVisible ? options.scrollHeight : listHeight );
+					list.css('height', scrollbarsVisible ? options.scrollHeight : listHeight );
 					if (!scrollbarsVisible) {
 						// IE doesn't recalculate width when scrollbar disappears
 						listItems.width( list.width() - parseInt(listItems.css("padding-left")) - parseInt(listItems.css("padding-right")) );
 					}
-                }
+				}
 
-            }
+			}
 		},
 		selected: function() {
 			var selected = listItems && listItems.filter("." + CLASSES.ACTIVE).removeClass(CLASSES.ACTIVE);

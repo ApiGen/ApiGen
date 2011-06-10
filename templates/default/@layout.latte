@@ -7,13 +7,13 @@
 
 	<title>{include #title}{if 'overview' !== $active && $config->title} | {$config->title}{/if}</title>
 
-	{var combined_js => 'resources/combined.js'}
+	{var combined_js = 'resources/combined.js'}
 	<script type="text/javascript" src="{$combined_js|staticFile}"></script>
-	{var elementlist_js => 'elementlist.js'}
-	<script n:if="$config->googleCse" type="text/javascript" src="{$elementlist_js|staticFile}"></script>
-	{var style_css => 'resources/style.css'}
+	{var elementlist_js = 'elementlist.js'}
+	<script type="text/javascript" src="{$elementlist_js|staticFile}"></script>
+	{var style_css = 'resources/style.css'}
 	<link rel="stylesheet" type="text/css" media="all" href="{$style_css|staticFile}">
-	<link n:if="$config->googleCse" rel="search" type="application/opensearchdescription+xml" title="{$config->title}" href="{$config->baseUrl}/opensearch.xml">
+	<link n:if="$config->googleCseId" rel="search" type="application/opensearchdescription+xml" title="{$config->title}" href="{$config->baseUrl}/opensearch.xml">
 
 	<script n:if="$config->googleAnalytics" type="text/javascript">
 		var _gaq = _gaq || [];
@@ -32,98 +32,92 @@
 <div id="main">
 <div id="leftWrapper">
 	<div id="left">
-		<a href="index.html">Overview</a>
+		<a n:tag-if="'overview' !== $active" href="index.html" title="Overview"><span>Overview</span></a>
 
-		{if $packages}
-		<h3>Packages</h3>
-		<ul>
-			{foreach $packages as $item}
-			<li n:class="$package === $item || 0 === strpos($package, $item . '\\') ? active"><a href="{$item|packageUrl}">{$template->subpackageName($item) ?: $item}</a>
-				{if substr_count($iterator->nextValue, '\\') > substr_count($item, '\\')}
-					<span></span>
-					<ul>
-				{else}
-					</li>
-					{if substr_count($iterator->nextValue, '\\') < substr_count($item, '\\')}
-						{!=str_repeat('</ul></li>', substr_count($item, '\\') - substr_count($iterator->nextValue, '\\'))}
+		<div id="entities">
+			{if $packages}
+			<h3>Packages</h3>
+			<ul>
+				{foreach $packages as $item}
+				<li n:class="$package === $item || 0 === strpos($package, $item . '\\') ? active, $config->main && 0 === strpos($item, $config->main) ? main"><a href="{$item|packageUrl}">{$template->subpackageName($item) ?: $item}</a>
+					{if substr_count($iterator->nextValue, '\\') > substr_count($item, '\\')}
+						<span></span>
+						<ul>
+					{else}
+						</li>
+						{if substr_count($iterator->nextValue, '\\') < substr_count($item, '\\')}
+							{!'</ul></li>'|repeat:substr_count($item, '\\') - substr_count($iterator->nextValue, '\\')}
+						{/if}
 					{/if}
-				{/if}
-			{/foreach}
-		</ul>
-		{/if}
+				{/foreach}
+			</ul>
+			{/if}
 
-		{if $namespaces}
-		<h3>Namespaces</h3>
-		<ul>
-			{foreach $namespaces as $item}
-			<li n:class="$namespace === $item || 0 === strpos($namespace, $item . '\\') ? active"><a href="{$item|namespaceUrl}">{$item|subnamespaceName}</a>
-				{if substr_count($iterator->nextValue, '\\') > substr_count($item, '\\')}
-					<span></span>
-					<ul>
-				{else}
-					</li>
-					{if substr_count($iterator->nextValue, '\\') < substr_count($item, '\\')}
-						{!=str_repeat('</ul></li>', substr_count($item, '\\') - substr_count($iterator->nextValue, '\\'))}
+			{if $namespaces}
+			<h3>Namespaces</h3>
+			<ul>
+				{foreach $namespaces as $item}
+				<li n:class="$namespace === $item || 0 === strpos($namespace, $item . '\\') ? active, $config->main && 0 === strpos($item, $config->main) ? main"><a href="{$item|namespaceUrl}">{$item|subnamespaceName}</a>
+					{if substr_count($iterator->nextValue, '\\') > substr_count($item, '\\')}
+						<span></span>
+						<ul>
+					{else}
+						</li>
+						{if substr_count($iterator->nextValue, '\\') < substr_count($item, '\\')}
+							{!'</ul></li>'|repeat:substr_count($item, '\\') - substr_count($iterator->nextValue, '\\')}
+						{/if}
 					{/if}
-				{/if}
-			{/foreach}
-		</ul>
-		{/if}
+				{/foreach}
+			</ul>
+			{/if}
 
-		{if $packages || $namespaces}
-		<hr>
-		{/if}
+			<hr n:if="($packages || $namespaces) && ($classes || $interfaces || $exceptions || $constants || $functions)">
 
-		{if $classes}
-		<h3>Classes</h3>
-		<ul>
-		{foreach $classes as $item}
-			<li n:class="$class === $item ? active"><a href="{$item|classUrl}">{if $namespace}{$item->shortName}{else}{$item->name}{/if}</a></li>
-		{/foreach}
-		</ul>
-		{/if}
+			{if $classes}
+			<h3>Classes</h3>
+			<ul>
+				<li n:foreach="$classes as $item" n:class="$class === $item ? active"><a href="{$item|classUrl}">{if $namespace}{$item->shortName}{else}{$item->name}{/if}</a></li>
+			</ul>
+			{/if}
 
-		{if $interfaces}
-		<h3>Interfaces</h3>
-		<ul>
-		{foreach $interfaces as $item}
-			<li n:class="$class === $item ? active"><a href="{$item|classUrl}">{if $namespace}{$item->shortName}{else}{$item->name}{/if}</a></li>
-		{/foreach}
-		</ul>
-		{/if}
+			{if $interfaces}
+			<h3>Interfaces</h3>
+			<ul>
+				<li n:foreach="$interfaces as $item" n:class="$class === $item ? active"><a href="{$item|classUrl}">{if $namespace}{$item->shortName}{else}{$item->name}{/if}</a></li>
+			</ul>
+			{/if}
 
-		{if $exceptions}
-		<h3>Exceptions</h3>
-		<ul>
-		{foreach $exceptions as $item}
-			<li n:class="$class === $item ? active"><a href="{$item|classUrl}">{if $namespace}{$item->shortName}{else}{$item->name}{/if}</a></li>
-		{/foreach}
-		</ul>
-		{/if}
+			{if $exceptions}
+			<h3>Exceptions</h3>
+			<ul>
+				<li n:foreach="$exceptions as $item" n:class="$class === $item ? active"><a href="{$item|classUrl}">{if $namespace}{$item->shortName}{else}{$item->name}{/if}</a></li>
+			</ul>
+			{/if}
 
-		{if $constants}
-		<h3>Constants</h3>
-		<ul>
-		{foreach $constants as $item}
-			<li n:class="$constant === $item ? active"><a href="{$item|constantUrl}">{if $namespace}{$item->shortName}{else}{$item->name}{/if}</a></li>
-		{/foreach}
-		</ul>
-		{/if}
+			{if $constants}
+			<h3>Constants</h3>
+			<ul>
+				<li n:foreach="$constants as $item" n:class="$constant === $item ? active"><a href="{$item|constantUrl}">{if $namespace}{$item->shortName}{else}{$item->name}{/if}</a></li>
+			</ul>
+			{/if}
 
-		{if $functions}
-		<h3>Functions</h3>
-		<ul>
-		{foreach $functions as $item}
-			<li n:class="$function === $item ? active"><a href="{$item|functionUrl}">{if $namespace}{$item->shortName}{else}{$item->name}{/if}</a></li>
-		{/foreach}
-		</ul>
-		{/if}
+			{if $functions}
+			<h3>Functions</h3>
+			<ul>
+				<li n:foreach="$functions as $item" n:class="$function === $item ? active"><a href="{$item|functionUrl}">{if $namespace}{$item->shortName}{else}{$item->name}{/if}</a></li>
+			</ul>
+			{/if}
+		</div>
 	</div>
 </div>
 <div id="rightWrapper">
 	<div id="right">
-		<form n:if="$config->googleCse" action="http://www.google.com/cse" id="search" onsubmit="if(this.q.value.indexOf('more:')==-1)this.q.value+=' more:api'">
-			<input type="hidden" name="cx" value="{$config->googleCse}"><input type="hidden" name="ie" value="UTF-8"><input type="text" name="q" class="text"><input type="submit" value="Search">
+		<form{if $config->googleCseId} action="http://www.google.com/cse"{/if} id="search">
+			<input type="hidden" name="cx" value="{$config->googleCseId}">
+			<input type="hidden" name="ie" value="UTF-8">
+			<input type="hidden" name="more" value="{$config->googleCseLabel}" n:if="$config->googleCseLabel">
+			<input type="text" name="q" class="text">
+			<input type="submit" value="Search">
 		</form>
 
 		<div id="navigation">

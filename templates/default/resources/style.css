@@ -43,28 +43,13 @@ h4 {
 }
 
 caption {
-	border: 1px solid #ccc;
+	border: 1px solid #cccccc;
 	background: #ecede5;
 	font-weight: bold;
 	font-size: 1.2em;
 	padding: 3px 5px;
 	text-align: left;
 	margin-bottom: 0;
-}
-
-a {
-	color: #006aeb;
-	padding: 3px 1px;
-	text-decoration: none;
-}
-h1 a {
-	color: #1e5eb6;
-}
-
-a:hover, a:active, a:focus {
-	background-color: #006aeb;
-	text-decoration: none;
-	color: #ffffff !important;
 }
 
 p {
@@ -79,7 +64,22 @@ hr {
 	height: 0;
 }
 
-var, code, pre {
+a {
+	color: #006aeb;
+	padding: 3px 1px;
+	text-decoration: none;
+}
+h1 a {
+	color: #1e5eb6;
+}
+
+a:hover, a:active, a:focus, a:hover b, a:hover var {
+	background-color: #006aeb;
+	text-decoration: none;
+	color: #ffffff !important;
+}
+
+code, var, pre {
 	font-family: monospace;
 }
 
@@ -93,12 +93,8 @@ pre {
 	margin: 0;
 }
 
-#constants code a, .constants code a {
+code a b {
 	color: #000000;
-}
-
-#properties var a, .properties var a {
-	color: #ca8a04;
 }
 
 /**
@@ -122,6 +118,8 @@ pre {
 	overflow: auto;
 	background: #ffffff;
 	width: 270px;
+	height: 100%;
+	position: fixed;
 }
 
 #left {
@@ -143,7 +141,7 @@ pre {
 	position: relative;
 }
 
-#left .active > a {
+#left .active > a, #left > span {
 	color: #333333;
 	background: none;
 	font-weight: bold;
@@ -153,7 +151,7 @@ pre {
 	background-color: #006aeb;
 }
 
-#left span {
+#left #entities span {
 	position: absolute;
 	top: 4px;
 	right: 0;
@@ -163,13 +161,13 @@ pre {
 	height: 12px;
 	background: url('collapsed.gif') #ffffff 0 0 no-repeat;
 }
-#left span:hover {
+#left #entities span:hover {
 	background-position: -12px 0;
 }
-#left span.collapsed {
+#left #entities span.collapsed {
 	background-position: 0 -12px;
 }
-#left span.collapsed:hover {
+#left #entities span.collapsed:hover {
 	background-position: -12px -12px;
 }
 
@@ -182,6 +180,7 @@ pre {
  */
 #rightWrapper {
 	overflow: auto;
+	margin-left: 270px;
 }
 
 #right {
@@ -200,7 +199,7 @@ pre {
 
 #search input.text {
 	padding: 3px 5px;
-	width: 200px;
+	width: 250px;
 }
 
 #navigation {
@@ -212,7 +211,7 @@ pre {
 
 #navigation ul {
 	list-style: none;
-	margin: 0 8px 4px 0px;
+	margin: 0 8px 4px 0;
 	padding: 0;
 	overflow: hidden;
 	float: left;
@@ -269,10 +268,15 @@ pre {
 	margin: 1.2em 0;
 }
 
-.description pre {
-	margin: .5em 0;
+.description pre, .detailed pre {
 	padding: .6em;
 	background: #fcfcf7;
+}
+.description pre {
+	margin: .5em 0;
+}
+.detailed pre {
+	border: .5em solid #ecede5;
 }
 
 dl.tree {
@@ -428,8 +432,8 @@ tr:hover td {
  * Autocomplete
  */
 .ac_results {
-	padding: 0px;
-	border: 1px solid #000000;
+	padding: 0;
+	border: 1px solid #cccccc;
 	background-color: #ffffff;
 	overflow: hidden;
 	z-index: 99999;
@@ -444,14 +448,17 @@ tr:hover td {
 }
 
 .ac_results li {
-	margin: 0px;
+	margin: 0;
 	padding: 2px 5px;
 	cursor: default;
 	display: block;
-	font: menu;
-	font-size: 12px;
+	font: 12px Trebuchet MS, "Geneva CE", lucida, sans-serif;
 	line-height: 16px;
 	overflow: hidden;
+	white-space: nowrap;
+}
+.ac_results li strong {
+	color: #000000;
 }
 
 .ac_odd {
@@ -459,6 +466,9 @@ tr:hover td {
 }
 
 .ac_over {
-	background-color: #0a246a;
+	background-color: #006aeb;
+	color: #ffffff;
+}
+.ac_results li.ac_over strong {
 	color: #ffffff;
 }

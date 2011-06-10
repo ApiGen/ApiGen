@@ -13,61 +13,37 @@
 
 require __DIR__ . '/libs/Nette/nette.min.php';
 require __DIR__ . '/libs/fshl/fshl.php';
-require __DIR__ . '/libs/Console/ProgressBar.php';
 require __DIR__ . '/libs/texy/texy.min.php';
 require __DIR__ . '/libs/TokenReflection/tokenreflection.min.php';
 require __DIR__ . '/libs/Apigen/Exception.php';
 require __DIR__ . '/libs/Apigen/Config.php';
 require __DIR__ . '/libs/Apigen/Template.php';
-require __DIR__ . '/libs/Apigen/Reflection.php';
+require __DIR__ . '/libs/Apigen/ReflectionBase.php';
+require __DIR__ . '/libs/Apigen/ReflectionClass.php';
+require __DIR__ . '/libs/Apigen/ReflectionConstant.php';
+require __DIR__ . '/libs/Apigen/ReflectionFunction.php';
 require __DIR__ . '/libs/Apigen/Backend.php';
 require __DIR__ . '/libs/Apigen/Generator.php';
 require __DIR__ . '/libs/Apigen/Tree.php';
 
 try {
 
+	Nette\Diagnostics\Debugger::$strictMode = true;
 	Nette\Diagnostics\Debugger::enable();
 	Nette\Diagnostics\Debugger::timer();
 
-	$options = getopt('c:s:d:h', array(
-		'config:',
-		'source:',
-		'destination:',
-		'skip-doc-path:',
-		'skip-doc-prefix:',
-		'exclude:',
-		'title:',
-		'base-url:',
-		'google-cse:',
-		'google-analytics:',
-		'template:',
-		'template-dir:',
-		'allowed-html:',
-		'access-levels:',
-		'php:',
-		'tree:',
-		'deprecated:',
-		'todo:',
-		'source-code:',
-		'undocumented:',
-		'wipeout:',
-		'quiet:',
-		'progressbar:',
-		'debug:',
-		'help'
-	));
+	$config = new Apigen\Config();
 
 	// Help
-	if (empty($options) || isset($options['h']) || isset($options['help'])) {
+	if ($config->isHelpRequested()) {
 		echo Apigen\Generator::getHeader();
 		echo Apigen\Config::getHelp();
 		die();
 	}
 
-	// Start
-	$config = new Apigen\Config($options);
 	$config->parse();
 
+	// Start
 	$generator = new Apigen\Generator($config);
 	$generator->output(Apigen\Generator::getHeader());
 
@@ -82,12 +58,13 @@ try {
 	} elseif (!empty($config->exclude)) {
 		$generator->output(sprintf("Excluding %s\n", $config->exclude[0]));
 	}
-	list($countClasses, $countConstants, $countFunctions, $countClassesInternal) = $generator->parse();
-	$generator->output(sprintf("Found %d classes, %d constants, %d functions and other %d used PHP internal classes\n", $countClasses, $countConstants, $countFunctions, $countClassesInternal));
+	$parsed = $generator->parse();
+	$generator->output(vsprintf("Found %d classes, %d constants, %d functions and other %d used PHP internal classes\n", array_slice($parsed, 0, 4)));
+	$generator->output(vsprintf("Documentation for %d classes, %d constants, %d functions and other %d used PHP internal classes will be generated\n", array_slice($parsed, 4, 4)));
 
 	// Generating
-	$generator->output(sprintf("Searching template in %s\n", $config->templateDir));
-	$generator->output(sprintf("Using template %s\n", $config->template));
+	$generator->output(sprintf("Using template config file %s\n", $config->templateConfig));
+
 	if ($config->wipeout && is_dir($config->destination)) {
 		$generator->output("Wiping out destination directory\n");
 		if (!$generator->wipeOutDestination()) {
@@ -95,7 +72,7 @@ try {
 		}
 	}
 
-	$generator->output(sprintf("Generating documentation to directory %s\n", $config->destination));
+	$generator->output(sprintf("Generating to directory %s\n", $config->destination));
 	$skipping = array_merge($config->skipDocPath, $config->skipDocPrefix);
 	if (count($skipping) > 1) {
 		$generator->output(sprintf("Will not generate documentation for\n %s\n", implode("\n ", $skipping)));

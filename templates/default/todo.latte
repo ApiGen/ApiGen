@@ -1,5 +1,5 @@
 {layout '@layout.latte'}
-{var $active => 'todo'}
+{var $active = 'todo'}
 
 {block #title}Todo{/block}
 
@@ -11,14 +11,10 @@
 	<caption>Classes summary</caption>
 	{foreach $todoClasses as $class}
 	<tr>
-		<td class="nowrap" width="1%"><a href="{$class|classUrl}">{$class->name}</a></td>
-		<td>
-			{foreach $class->annotations['todo'] as $description}
-				{if $description}
-					{!$description|annotation:'todo':$class}<br>
-				{/if}
-			{/foreach}
-		</td>
+		<td class="nowrap" width="1%" rowspan="{count($class->annotations['todo'])}"><a href="{$class|classUrl}">{$class->name}</a></td>
+		{foreach $class->annotations['todo'] as $description}
+		<td>{!$description|annotation:'todo':$class}</td>{sep}</tr><tr>{/sep}
+		{/foreach}
 	</tr>
 	{/foreach}
 	</table>
@@ -27,14 +23,10 @@
 	<caption>Interfaces summary</caption>
 	{foreach $todoInterfaces as $interface}
 	<tr>
-		<td class="nowrap" width="1%"><a href="{$interface|classUrl}">{$interface->name}</a></td>
-		<td>
-			{foreach $interface->annotations['todo'] as $description}
-				{if $description}
-					{!$description|annotation:'todo':$interface}<br>
-				{/if}
-			{/foreach}
-		</td>
+		<td class="nowrap" width="1%" rowspan="{count($interface->annotations['todo'])}"><a href="{$interface|classUrl}">{$interface->name}</a></td>
+		{foreach $interface->annotations['todo'] as $description}
+		<td>{!$description|annotation:'todo':$interface}</td>{sep}</tr><tr>{/sep}
+		{/foreach}
 	</tr>
 	{/foreach}
 	</table>
@@ -43,14 +35,10 @@
 	<caption>Exceptions summary</caption>
 	{foreach $todoExceptions as $exception}
 	<tr>
-		<td class="nowrap" width="1%"><a href="{$exception|classUrl}">{$exception->name}</a></td>
-		<td>
-			{foreach $exception->annotations['todo'] as $description}
-				{if $description}
-					{!$description|annotation:'todo':$exception}<br>
-				{/if}
-			{/foreach}
-		</td>
+		<td class="nowrap" width="1%" rowspan="{count($exception->annotations['todo'])}"><a href="{$exception|classUrl}">{$exception->name}</a></td>
+		{foreach $exception->annotations['todo'] as $description}
+		<td>{!$description|annotation:'todo':$exception}</td>{sep}</tr><tr>{/sep}
+		{/foreach}
 	</tr>
 	{/foreach}
 	</table>
@@ -59,15 +47,12 @@
 	<caption>Methods summary</caption>
 	{foreach $todoMethods as $method}
 	<tr>
-		<td class="right nowrap" width="1%"><a href="{$method->declaringClassName|classUrl}">{$method->declaringClassName}</a></td>
-		<td width="1%"><code><a href="{$method|methodUrl}"><b>{$method->name}()</b></a></code></td>
-		<td>
-			{foreach $method->annotations['todo'] as $description}
-				{if $description}
-					{!$description|annotation:'todo':$method}<br>
-				{/if}
-			{/foreach}
-		</td>
+		{var $count = count($method->annotations['todo'])}
+		<td class="right nowrap" width="1%" rowspan="{$count}"><a href="{$method->declaringClassName|classUrl}">{$method->declaringClassName}</a></td>
+		<td width="1%" rowspan="{$count}"><code><a href="{$method|methodUrl}">{$method->name}()</a></code></td>
+		{foreach $method->annotations['todo'] as $description}
+		<td>{!$description|annotation:'todo':$method}</td>{sep}</tr><tr>{/sep}
+		{/foreach}
 	</tr>
 	{/foreach}
 	</table>
@@ -76,20 +61,17 @@
 	<caption>Constants summary</caption>
 	{foreach $todoConstants as $constant}
 	<tr>
+		{var $count = count($constant->annotations['todo'])}
 		{if $constant->declaringClassName}
-		<td class="right nowrap" width="1%"><a href="{$constant->declaringClassName|classUrl}">{$constant->declaringClassName}</a></td>
-		<td width="1%"><code class="nowrap"><a href="{$constant|constantUrl}"><b>{$constant->name}</b></a></code></td>
+		<td class="right nowrap" width="1%" rowspan="{$count}"><a href="{$constant->declaringClassName|classUrl}">{$constant->declaringClassName}</a></td>
+		<td width="1%" rowspan="{$count}"><code class="nowrap"><a href="{$constant|constantUrl}"><b>{$constant->name}</b></a></code></td>
 		{else}
-		<td class="right nowrap" width="1%" n:if="$namespaces || $classes || $interfaces || $exceptions"><a n:if="$constant->namespaceName" href="{$constant->namespaceName|namespaceUrl}">{$constant->namespaceName}</a></td>
-		<td n:class="!$namespaces && !$classes && !$interfaces && !$exceptions ? right" width="1%"><code class="nowrap"><a href="{$constant|constantUrl}"><b>{$constant->shortName}</b></a></code></td>
+		<td class="right nowrap" width="1%" rowspan="{$count}" n:if="$namespaces || $classes || $interfaces || $exceptions"><a n:if="$constant->namespaceName" href="{$constant->namespaceName|namespaceUrl}">{$constant->namespaceName}</a></td>
+		<td n:class="!$namespaces && !$classes && !$interfaces && !$exceptions ? right" width="1%" rowspan="{$count}"><code class="nowrap"><a href="{$constant|constantUrl}"><b>{$constant->shortName}</b></a></code></td>
 		{/if}
-		<td>
-			{foreach $constant->annotations['todo'] as $description}
-				{if $description}
-					{!$description|annotation:'todo':$constant}<br>
-				{/if}
-			{/foreach}
-		</td>
+		{foreach $constant->annotations['todo'] as $description}
+		<td>{!$description|annotation:'todo':$constant}</td>{sep}</tr><tr>{/sep}
+		{/foreach}
 	</tr>
 	{/foreach}
 	</table>
@@ -98,15 +80,12 @@
 	<caption>Properties summary</caption>
 	{foreach $todoProperties as $property}
 	<tr>
-		<td class="right nowrap" width="1%"><a href="{$property->declaringClassName|classUrl}">{$property->declaringClassName}</a></td>
-		<td width="1%"><var><a href="{$property|propertyUrl}">${$property->name}</a></var></td>
-		<td>
-			{foreach $property->annotations['todo'] as $description}
-				{if $description}
-					{!$description|annotation:'todo':$property}<br>
-				{/if}
-			{/foreach}
-		</td>
+		{var $count = count($property->annotations['todo'])}
+		<td class="right nowrap" width="1%" rowspan="{$count}"><a href="{$property->declaringClassName|classUrl}">{$property->declaringClassName}</a></td>
+		<td width="1%" rowspan="{$count}"><a href="{$property|propertyUrl}"><var>${$property->name}</var></a></td>
+		{foreach $property->annotations['todo'] as $description}
+		<td>{!$description|annotation:'todo':$property}</td>{sep}</tr><tr>{/sep}
+		{/foreach}
 	</tr>
 	{/foreach}
 	</table>
@@ -115,15 +94,12 @@
 	<caption>Functions summary</caption>
 	{foreach $todoFunctions as $function}
 	<tr>
-		<td class="right nowrap" width="1%" n:if="$namespaces"><a n:if="$function->namespaceName" href="{$function->namespaceName|namespaceUrl}">{$function->namespaceName}</a></td>
-		<td width="1%"><code class="nowrap"><a href="{$function|functionUrl}"><b>{$function->shortName}</b></a></code></td>
-		<td>
-			{foreach $function->annotations['todo'] as $description}
-				{if $description}
-					{!$description|docline|resolveLinks:$function}<br>
-				{/if}
-			{/foreach}
-		</td>
+		{var $count = count($function->annotations['todo'])}
+		<td class="right nowrap" width="1%" rowspan="{$count}" n:if="$namespaces"><a n:if="$function->namespaceName" href="{$function->namespaceName|namespaceUrl}">{$function->namespaceName}</a></td>
+		<td width="1%" rowspan="{$count}"><code class="nowrap"><a href="{$function|functionUrl}">{$function->shortName}</a></code></td>
+		{foreach $function->annotations['todo'] as $description}
+		<td>{!$description|annotation:'todo':$function}</td>{sep}</tr><tr>{/sep}
+		{/foreach}
 	</tr>
 	{/foreach}
 	</table>

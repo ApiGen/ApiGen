@@ -1,5 +1,5 @@
 {layout '@layout.latte'}
-{var $active => 'constant'}
+{var $active = 'constant'}
 
 {block #title}{if $constant->deprecated}Deprecated {/if}Constant {$constant->name}{/block}
 
@@ -8,14 +8,14 @@
 	<h1>{if $constant->deprecated}Deprecated {/if}Constant {$constant->shortName}</h1>
 
 	<div class="description" n:if="$template->longDescription($constant)">
-	{!$constant|longDescription|docblock|resolveLinks:$constant}
+	{!$constant|longDescription}
 	</div>
 
 	<div class="info">
 		{if $constant->inNamespace()}<b>Namespace:</b> {!$constant->namespaceName|namespaceLinks}<br>{/if}
 		{foreach $template->annotationSort($template->annotationFilter($constant->annotations, array('var'))) as $annotation => $values}
 			{foreach $values as $value}
-				<b>{$annotation|ucfirst}{if $value}:{/if}</b>
+				<b>{$annotation|firstUpper}{if $value}:{/if}</b>
 				{!$value|annotation:$annotation:$constant}<br>
 			{/foreach}
 		{/foreach}
@@ -28,16 +28,13 @@
 	<caption>Value summary</caption>
 	<tr>
 		<td width="1%" class="right"><code class="nowrap">
-			{if isset($annotations['var'])}
-				{$annotations['var'][0]}
-			{else}
-				{try}
-				{$constant->value|resolveType}
-				{/try}
-			{/if}
+			{ifset $annotations['var']}{!$annotations['var'][0]|typeLinks:$constant}{else}{try}{$constant->value|type}{/try}{/ifset}
 		</code></td>
-		<td width="1%"><a n:tag-if="$template->resolveConstant($constant->valueDefinition)" href="{$constant->valueDefinition|resolveConstant|constantUrl}"><code>{!$constant->valueDefinition|highlightValue}</code></a></td>
-		<td>{if isset($annotations['var'])}{!$annotations['var'][0]|docdescription:2|docline}{/if}</td>
+		<td width="1%">
+			{var $element = $template->resolveElement($constant->valueDefinition, $constant)}
+			{if $element}<a href="{$element|constantUrl}">{$constant->valueDefinition}</a>{else}<code>{!$constant->valueDefinition|highlightValue:$constant}</code>{/if}
+		</td>
+		<td>{ifset $annotations['var']}{!$annotations['var'][0]|description:$constant}{/ifset}</td>
 	</tr>
 	</table>
 </div>

@@ -14,9 +14,8 @@
 namespace Apigen;
 
 use Nette;
-use Apigen\Exception, Apigen\Config, Apigen\Template, Apigen\Backend;
 use TokenReflection\Broker;
-use Apigen\Reflection as ReflectionClass, TokenReflection\IReflectionProperty as ReflectionProperty, TokenReflection\IReflectionMethod as ReflectionMethod, TokenReflection\IReflectionConstant as ReflectionConstant, TokenReflection\IReflectionFunction as ReflectionFunction, TokenReflection\IReflectionParameter as ReflectionParameter;
+use TokenReflection\IReflectionProperty as ReflectionProperty, TokenReflection\IReflectionMethod as ReflectionMethod, TokenReflection\IReflectionParameter as ReflectionParameter;
 use TokenReflection\ReflectionAnnotation;
 
 /**
@@ -40,7 +39,7 @@ class Generator extends Nette\Object
 	 *
 	 * @var string
 	 */
-	const VERSION = '2.0 beta 3';
+	const VERSION = '2.0 RC';
 
 	/**
 	 * Configuration.
@@ -48,13 +47,6 @@ class Generator extends Nette\Object
 	 * @var \Apigen\Config
 	 */
 	private $config;
-
-	/**
-	 * Progressbar
-	 *
-	 * @var \Console_ProgressBar
-	 */
-	private $progressBar;
 
 	/**
 	 * List of classes.
@@ -78,6 +70,26 @@ class Generator extends Nette\Object
 	private $functions = null;
 
 	/**
+	 * List of symlinks.
+	 *
+	 * @var array
+	 */
+	private $symlinks = array();
+
+	/**
+	 * Progressbar settings and status.
+	 *
+	 * @var array
+	 */
+	private $progressbar = array(
+		'skeleton' => '[%s] %\' 6.2f%%',
+		'width' => 80,
+		'bar' => 70,
+		'current' => 0,
+		'maximum' => 1
+	);
+
+	/**
 	 * Sets configuration.
 	 *
 	 * @param array $config
@@ -85,6 +97,7 @@ class Generator extends Nette\Object
 	public function __construct(Config $config)
 	{
 		$this->config = $config;
+		$this->classes = new \ArrayObject();
 	}
 
 	/**
@@ -94,13 +107,17 @@ class Generator extends Nette\Object
 	 */
 	public function parse()
 	{
-		$broker = new Broker(new Backend(), false);
-
 		$files = array();
+
+		$flags = \RecursiveDirectoryIterator::CURRENT_AS_FILEINFO | \RecursiveDirectoryIterator::SKIP_DOTS;
+		if (defined('\RecursiveDirectoryIterator::FOLLOW_SYMLINKS')) {
+			// Available from PHP 5.3.1
+			$flags |= \RecursiveDirectoryIterator::FOLLOW_SYMLINKS;
+		}
 		foreach ($this->config->source as $source) {
 			$entries = array();
 			if (is_dir($source)) {
-				foreach (new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($source)) as $entry) {
+				foreach (new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($source, $flags)) as $entry) {
 					if (!$entry->isFile()) {
 						continue;
 					}
@@ -121,6 +138,9 @@ class Generator extends Nette\Object
 				}
 
 				$files[$entry->getPathName()] = $entry->getSize();
+				if ($entry->getPathName() !== $entry->getRealPath()) {
+					$this->symlinks[$entry->getRealPath()] = $entry->getPathName();
+				}
 			}
 		}
 
@@ -132,63 +152,36 @@ class Generator extends Nette\Object
 			$this->prepareProgressBar(array_sum($files));
 		}
 
+		$broker = new Broker(new Backend($this, !empty($this->config->undocumented)), false);
+
 		foreach ($files as $file => $size) {
 			$broker->processFile($file);
 			$this->incrementProgressBar($size);
 		}
 
 		// Classes
-		$this->classes = new \ArrayObject();
-		foreach ($broker->getClasses(Backend::TOKENIZED_CLASSES | Backend::INTERNAL_CLASSES | Backend::NONEXISTENT_CLASSES) as $className => $class) {
-			$this->classes->offsetSet($className, new ReflectionClass($class, $this));
-		}
+		$this->classes->exchangeArray($broker->getClasses(Backend::TOKENIZED_CLASSES | Backend::INTERNAL_CLASSES | Backend::NONEXISTENT_CLASSES));
 		$this->classes->uksort('strcasecmp');
 
 		// Constants
-		$this->constants = new \ArrayObject();
-		foreach ($broker->getConstants() as $constantName => $constant) {
-			if (!$this->config->deprecated && $constant->isDeprecated()) {
-				continue;
-			}
-			foreach ($this->config->skipDocPath as $mask) {
-				if (fnmatch($mask, $constant->getFilename(), FNM_NOESCAPE | FNM_PATHNAME)) {
-					continue 2;
-				}
-			}
-			foreach ($this->config->skipDocPrefix as $prefix) {
-				if (0 === strpos($constant->getName(), $prefix)) {
-					continue 2;
-				}
-			}
-			$this->constants->offsetSet($constantName, $constant);
-		}
+		$this->constants = new \ArrayObject($broker->getConstants());
 		$this->constants->uksort('strcasecmp');
 
 		// Functions
-		$this->functions = new \ArrayObject();
-		foreach ($broker->getFunctions() as $functionName => $function) {
-			if (!$this->config->deprecated && $function->isDeprecated()) {
-				continue;
-			}
-			foreach ($this->config->skipDocPath as $mask) {
-				if (fnmatch($mask, $function->getFilename(), FNM_NOESCAPE | FNM_PATHNAME)) {
-					continue 2;
-				}
-			}
-			foreach ($this->config->skipDocPrefix as $prefix) {
-				if (0 === strpos($function->getName(), $prefix)) {
-					continue 2;
-				}
-			}
-			$this->functions->offsetSet($functionName, $function);
-		}
+		$this->functions = new \ArrayObject($broker->getFunctions());
 		$this->functions->uksort('strcasecmp');
+
+		$documentedCounter = function($count, $element) {return $count += (int) $element->isDocumented();};
 
 		return array(
 			count($broker->getClasses(Backend::TOKENIZED_CLASSES)),
-			count($broker->getConstants()),
-			count($broker->getFunctions()),
-			count($broker->getClasses(Backend::INTERNAL_CLASSES))
+			count($this->constants),
+			count($this->functions),
+			count($broker->getClasses(Backend::INTERNAL_CLASSES)),
+			array_reduce($broker->getClasses(Backend::TOKENIZED_CLASSES), $documentedCounter),
+			array_reduce($this->constants->getArrayCopy(), $documentedCounter),
+			array_reduce($this->functions->getArrayCopy(), $documentedCounter),
+			array_reduce($broker->getClasses(Backend::INTERNAL_CLASSES), $documentedCounter)
 		);
 	}
 
@@ -293,14 +286,14 @@ class Generator extends Nette\Object
 	 */
 	public function generate()
 	{
-		@mkdir($this->config->destination);
+		@mkdir($this->config->destination, 0755, true);
 		if (!is_dir($this->config->destination) || !is_writable($this->config->destination)) {
 			throw new Exception(sprintf('Directory %s isn\'t writable.', $this->config->destination));
 		}
 
 		$destination = $this->config->destination;
 		$templates = $this->config->templates;
-		$templatePath = $this->config->templateDir . '/' . $this->config->template;
+		$templatePath = dirname($this->config->templateConfig);
 
 		// Copy resources
 		foreach ($this->config->resources as $resourceSource => $resourceDestination) {
@@ -324,51 +317,58 @@ class Generator extends Nette\Object
 		$classes = array();
 		$interfaces = array();
 		$exceptions = array();
-		$constants = $this->constants->getArrayCopy();
-		$functions = $this->functions->getArrayCopy();
-		foreach ($this->classes as $className => $class) {
-			if ($class->isDocumented()) {
-				$packageName = $class->isInternal() ? 'PHP' : $class->getPackageName() ?: 'None';
-				if ($subpackage = $class->getAnnotation('subpackage')) {
-					$packageName .= '\\' . $subpackage[0];
+		$constants = array();
+		$functions = array();
+		foreach (array('classes', 'constants', 'functions') as $type) {
+			foreach ($this->$type as $elementName => $element) {
+				if (!$element->isDocumented()) {
+					continue;
 				}
-				$namespaceName = $class->isInternal() ? 'PHP' : $class->getNamespaceName() ?: 'None';
 
-				if ($class->isInterface()) {
-					$interfaces[$className] = $class;
-					$packages[$packageName]['interfaces'][$className] = $class;
-					$namespaces[$namespaceName]['interfaces'][$class->getShortName()] = $class;
-				} elseif ($class->isException()) {
-					$exceptions[$className] = $class;
-					$packages[$packageName]['exceptions'][$className] = $class;
-					$namespaces[$namespaceName]['exceptions'][$class->getShortName()] = $class;
+				$packageName = $element->getPseudoPackageName();
+				$namespaceName = $element->getPseudoNamespaceName();
+
+				if ($element instanceof ReflectionConstant) {
+					$constants[$elementName] = $element;
+					$packages[$packageName]['constants'][$elementName] = $element;
+					$namespaces[$namespaceName]['constants'][$element->getShortName()] = $element;
+				} elseif ($element instanceof ReflectionFunction) {
+					$functions[$elementName] = $element;
+					$packages[$packageName]['functions'][$elementName] = $element;
+					$namespaces[$namespaceName]['functions'][$element->getShortName()] = $element;
+				} elseif ($element->isInterface()) {
+					$interfaces[$elementName] = $element;
+					$packages[$packageName]['interfaces'][$elementName] = $element;
+					$namespaces[$namespaceName]['interfaces'][$element->getShortName()] = $element;
+				} elseif ($element->isException()) {
+					$exceptions[$elementName] = $element;
+					$packages[$packageName]['exceptions'][$elementName] = $element;
+					$namespaces[$namespaceName]['exceptions'][$element->getShortName()] = $element;
 				} else {
-					$classes[$className] = $class;
-					$packages[$packageName]['classes'][$className] = $class;
-					$namespaces[$namespaceName]['classes'][$class->getShortName()] = $class;
+					$classes[$elementName] = $element;
+					$packages[$packageName]['classes'][$elementName] = $element;
+					$namespaces[$namespaceName]['classes'][$element->getShortName()] = $element;
 				}
 			}
 		}
-		foreach ($constants as $constantName => $constant) {
-			$packageName = $constant->getPackageName() ?: 'None';
-			if ($subpackage = $constant->getAnnotation('subpackage')) {
-				$packageName .= '\\' . $subpackage[0];
-			}
-			$namespaceName = $constant->getNamespaceName() ?: 'None';
 
-			$packages[$packageName]['constants'][$constantName] = $constant;
-			$namespaces[$namespaceName]['constants'][$constant->getShortName()] = $constant;
-		}
-		foreach ($functions as $functionName => $function) {
-			$packageName = $function->getPackageName() ?: 'None';
-			if ($subpackage = $function->getAnnotation('subpackage')) {
-				$packageName .= '\\' . $subpackage[0];
-			}
-			$namespaceName = $function->getNamespaceName() ?: 'None';
+		// Sorting for namespaces and packages
+		$main = $this->config->main;
+		$sort = function($a, $b) use ($main) {
+			// \ as separator has to be first
+			$a = str_replace('\\', ' ', $a);
+			$b = str_replace('\\', ' ', $b);
 
-			$packages[$packageName]['functions'][$functionName] = $function;
-			$namespaces[$namespaceName]['functions'][$function->getShortName()] = $function;
-		}
+			if ($main) {
+				if (0 === strpos($a, $main) && 0 !== strpos($b, $main)) {
+					return -1;
+				} elseif (0 !== strpos($a, $main) && 0 === strpos($b, $main)) {
+					return 1;
+				}
+			}
+
+			return strcasecmp($a, $b);
+		};
 
 		// Select only packages or namespaces
 		$userPackages = count(array_diff(array_keys($packages), array('PHP', 'None')));
@@ -398,7 +398,7 @@ class Generator extends Nette\Object
 					}
 				}
 			}
-			uksort($namespaces, 'strcasecmp');
+			uksort($namespaces, $sort);
 		} else {
 			$namespaces = array();
 
@@ -419,14 +419,13 @@ class Generator extends Nette\Object
 					}
 				}
 			}
-			uksort($packages, function($a, $b) {
-				return strcasecmp(str_replace('\\', ' ', $a), str_replace('\\', ' ', $b));
-			});
+			uksort($packages, $sort);
 		}
 
+		$mainFilter = function($element) {return $element->isMain();};
+
 		$sitemapEnabled = !empty($this->config->baseUrl) && isset($templates['optional']['sitemap']);
-		$opensearchEnabled = !empty($this->config->googleCse) && !empty($this->config->baseUrl) && isset($templates['optional']['opensearch']);
-		$autocompleteEnabled = !empty($this->config->googleCse) && isset($templates['optional']['autocomplete']);
+		$opensearchEnabled = !empty($this->config->googleCseId) && !empty($this->config->baseUrl) && isset($templates['optional']['opensearch']);
 
 		if ($this->config->progressbar) {
 			$max = count($packages)
@@ -443,7 +442,6 @@ class Generator extends Nette\Object
 				+ (int) $this->config->todo
 				+ (int) $sitemapEnabled
 				+ (int) $opensearchEnabled
-				+ (int) $autocompleteEnabled
 			;
 
 			if ($this->config->sourceCode) {
@@ -465,31 +463,46 @@ class Generator extends Nette\Object
 
 		// Prepare template
 		$template = new Template($this);
-		$template->setCacheStorage(new Nette\Templating\PhpFileStorage($tmp));
+		$template->setCacheStorage(new Nette\Caching\Storages\PhpFileStorage($tmp));
 		$template->generator = self::NAME;
 		$template->version = self::VERSION;
 		$template->config = $this->config;
 
-		// Generate summary files
+		// Generate common files
 		$template->namespace = null;
 		$template->namespaces = array_keys($namespaces);
 		$template->package = null;
 		$template->packages = array_keys($packages);
 		$template->class = null;
-		$template->classes = $classes;
-		$template->interfaces = $interfaces;
-		$template->exceptions = $exceptions;
+		$template->classes = array_filter($classes, $mainFilter);
+		$template->interfaces = array_filter($interfaces, $mainFilter);
+		$template->exceptions = array_filter($exceptions, $mainFilter);
 		$template->constant = null;
-		$template->constants = $constants;
+		$template->constants = array_filter($constants, $mainFilter);
 		$template->function = null;
-		$template->functions = $functions;
+		$template->functions = array_filter($functions, $mainFilter);
+
+		// Autocomplete
+		$elements = array();
+		foreach ($elementTypes as $type) {
+			foreach ($$type as $element) {
+				$type = $element instanceof ReflectionClass ? 'class' : ($element instanceof ReflectionConstant ? 'constant' : 'function');
+				$elements[] = array($type, $element->getName());
+			}
+		}
+		usort($elements, function($a, $b) {return strcasecmp($a[1], $b[1]);});
+		$template->elements = $elements;
+
 		foreach ($templates['common'] as $dest => $source) {
 			$template->setFile($templatePath . '/' . $source)->save($this->forceDir("$destination/$dest"));
 
 			$this->incrementProgressBar();
 		}
 
-		// Optional files
+		unset($elements);
+		unset($template->elements);
+
+		// Generate optional files
 		if ($sitemapEnabled) {
 			$template->setFile($templatePath . '/' . $templates['optional']['sitemap']['template'])->save($this->forceDir($destination . '/' . $templates['optional']['sitemap']['filename']));
 			$this->incrementProgressBar();
@@ -497,15 +510,6 @@ class Generator extends Nette\Object
 		if ($opensearchEnabled) {
 			$template->setFile($templatePath . '/' . $templates['optional']['opensearch']['template'])->save($this->forceDir($destination . '/' . $templates['optional']['opensearch']['filename']));
 			$this->incrementProgressBar();
-		}
-		if ($autocompleteEnabled) {
-			$template->elements = array_keys(array_merge($classes, $interfaces, $exceptions, $constants, $functions));
-			usort($template->elements, 'strcasecmp');
-
-			$template->setFile($templatePath . '/' . $templates['optional']['autocomplete']['template'])->save($this->forceDir($destination . '/' . $templates['optional']['autocomplete']['filename']));
-			$this->incrementProgressBar();
-
-			unset($template->elements);
 		}
 
 		// List of undocumented elements
@@ -544,8 +548,13 @@ class Generator extends Nette\Object
 			$undocumented = array();
 			foreach ($elementTypes as $type) {
 				foreach ($$type as $parentElement) {
-					// Check only "documented" classes (except internal - no documentation), constants and functions
-					if ($parentElement instanceof ReflectionClass && (!$parentElement->isDocumented() || $parentElement->isInternal())) {
+					// Skip elements not from the main project
+					if (!$parentElement->isMain()) {
+						continue;
+					}
+
+					// Internal elements don't have documentation
+					if ($parentElement->isInternal()) {
 						continue;
 					}
 
@@ -697,13 +706,17 @@ class Generator extends Nette\Object
 			$template->deprecatedConstants = array();
 			$template->deprecatedProperties = array();
 			foreach (array_reverse($elementTypes) as $type) {
-				$template->{'deprecated' . ucfirst($type)} = array_filter($$type, $deprecatedFilter);
+				$template->{'deprecated' . ucfirst($type)} = array_filter(array_filter($$type, $mainFilter), $deprecatedFilter);
 
 				if ('constants' === $type || 'functions' === $type) {
 					continue;
 				}
 
 				foreach ($$type as $class) {
+					if (!$class->isMain()) {
+						continue;
+					}
+
 					if ($class->isDeprecated()) {
 						continue;
 					}
@@ -750,13 +763,17 @@ class Generator extends Nette\Object
 			$template->todoConstants = array();
 			$template->todoProperties = array();
 			foreach (array_reverse($elementTypes) as $type) {
-				$template->{'todo' . ucfirst($type)} = array_filter($$type, $todoFilter);
+				$template->{'todo' . ucfirst($type)} = array_filter(array_filter($$type, $mainFilter), $todoFilter);
 
 				if ('constants' === $type || 'functions' === $type) {
 					continue;
 				}
 
 				foreach ($$type as $class) {
+					if (!$class->isMain()) {
+						continue;
+					}
+
 					$template->todoMethods = array_merge($template->todoMethods, array_values(array_filter($class->getOwnMethods(), $todoFilter)));
 					$template->todoConstants = array_merge($template->todoConstants, array_values(array_filter($class->getOwnConstants(), $todoFilter)));
 					$template->todoProperties = array_merge($template->todoProperties, array_values(array_filter($class->getOwnProperties(), $todoFilter)));
@@ -799,7 +816,7 @@ class Generator extends Nette\Object
 
 			$processed = array();
 			foreach ($this->classes as $className => $reflection) {
-				if (!$reflection->isDocumented() || isset($processed[$className])) {
+				if (!$reflection->isMain() || !$reflection->isDocumented() || isset($processed[$className])) {
 					continue;
 				}
 
@@ -944,10 +961,13 @@ class Generator extends Nette\Object
 			foreach ($$type as $element) {
 				if ($element->isTokenized()) {
 					$template->fileName = null;
-					$file = $element->getFileName();
+					$fileName = $element->getFileName();
+					if (isset($this->symlinks[$fileName])) {
+						$fileName = $this->symlinks[$fileName];
+					}
 					foreach ($this->config->source as $source) {
-						if (0 === strpos($file, $source)) {
-							$template->fileName = is_dir($source) ? str_replace('\\', '/', substr($file, strlen($source) + 1)) : basename($file);
+						if (0 === strpos($fileName, $source)) {
+							$template->fileName = is_dir($source) ? str_replace('\\', '/', substr($fileName, strlen($source) + 1)) : basename($fileName);
 							break;
 						}
 					}
@@ -957,22 +977,19 @@ class Generator extends Nette\Object
 				}
 
 				if ($packages) {
-					$template->package = $package = $element->isInternal() ? 'PHP' : $element->getPackageName() ?: 'None';
-					if ($subpackage = $element->getAnnotation('subpackage')) {
-						$template->package .= '\\' . $subpackage[0];
-					}
-					$template->classes = $packages[$package]['classes'];
-					$template->interfaces = $packages[$package]['interfaces'];
-					$template->exceptions = $packages[$package]['exceptions'];
-					$template->constants = $packages[$package]['constants'];
-					$template->functions = $packages[$package]['functions'];
+					$template->package = $packageName = $element->getPseudoPackageName();
+					$template->classes = $packages[$packageName]['classes'];
+					$template->interfaces = $packages[$packageName]['interfaces'];
+					$template->exceptions = $packages[$packageName]['exceptions'];
+					$template->constants = $packages[$packageName]['constants'];
+					$template->functions = $packages[$packageName]['functions'];
 				} elseif ($namespaces) {
-					$template->namespace = $namespace = $element->isInternal() ? 'PHP' : $element->getNamespaceName() ?: 'None';
-					$template->classes = $namespaces[$namespace]['classes'];
-					$template->interfaces = $namespaces[$namespace]['interfaces'];
-					$template->exceptions = $namespaces[$namespace]['exceptions'];
-					$template->constants = $namespaces[$namespace]['constants'];
-					$template->functions = $namespaces[$namespace]['functions'];
+					$template->namespace = $namespaceName = $element->getPseudoNamespaceName();
+					$template->classes = $namespaces[$namespaceName]['classes'];
+					$template->interfaces = $namespaces[$namespaceName]['interfaces'];
+					$template->exceptions = $namespaces[$namespaceName]['exceptions'];
+					$template->constants = $namespaces[$namespaceName]['constants'];
+					$template->functions = $namespaces[$namespaceName]['functions'];
 				}
 
 				$template->class = null;
@@ -1057,17 +1074,16 @@ class Generator extends Nette\Object
 	/**
 	 * Prepares the progressbar.
 	 *
-	 * @param $maximum Maximum progressbar value
+	 * @param integer $maximum Maximum progressbar value
 	 */
 	private function prepareProgressBar($maximum = 1)
 	{
-		$this->progressBar = new \Console_ProgressBar(
-			'[%bar%] %percent%',
-			'=>',
-			' ',
-			80,
-			$maximum
-		);
+		if (!$this->config->progressbar) {
+			return;
+		}
+
+		$this->progressbar['current'] = 0;
+		$this->progressbar['maximum'] = $maximum;
 	}
 
 	/**
@@ -1077,8 +1093,22 @@ class Generator extends Nette\Object
 	 */
 	private function incrementProgressBar($increment = 1)
 	{
-		if ($this->config->progressbar) {
-			$this->progressBar->update($this->progressBar->getProgress() + $increment);
+		if (!$this->config->progressbar) {
+			return;
+		}
+
+		echo str_repeat(chr(0x08), $this->progressbar['width']);
+
+		$this->progressbar['current'] += $increment;
+
+		$percent = $this->progressbar['current'] / $this->progressbar['maximum'];
+
+		$progress = str_pad(str_pad('>', round($percent * $this->progressbar['bar']), '=', STR_PAD_LEFT), $this->progressbar['bar'], ' ', STR_PAD_RIGHT);
+
+		echo sprintf($this->progressbar['skeleton'], $progress, $percent * 100);
+
+		if ($this->progressbar['current'] === $this->progressbar['maximum']) {
+			echo "\n";
 		}
 	}
 

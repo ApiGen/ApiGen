@@ -1,60 +1,64 @@
 # Welcome to TR ApiGen #
 
-TR ApiGen is a fork of the original [tool](https://github.com/nette/apigen) created by [Andrewsville](https://github.com/Andrewsville) and [Kukulich](https://github.com/kukulich). We have taken the original ApiGen, fixed some bugs, altered some things and added many useful features.
+TR ApiGen is a fork of the original [tool](https://github.com/nette/apigen) created by [Andrewsville](https://github.com/Andrewsville) and [Kukulich](https://github.com/kukulich).
+
+When the original ApiGen was introduced, its [author](https://github.com/dg) stated that: *"This time with no technical support. There are definitely things that ApiGen does not support and that are absolutely crucial for you. And without them there is no use in trying ApiGen because other similar tools have them. If this is the case, feel free to add them."*
+
+And we did :) That is how our **TR ApiGen** was born. We have taken the original tool, fixed some bugs, altered some things and added many useful features.
 
 # Differences from the original tool #
 
 The biggest difference is that we use our own [TokenReflection library](https://github.com/Andrewsville/PHP-Token-Reflection) to describe the source code. Using TokenReflection is:
 
-* fast (TR Apigen is faster than the original version, actually),
-* safe (documented source code does not get included and thus parsed),
-* simple (you do not need to include or autoload all libraries you use in your source code).
+* **safe** (documented source code does not get included and thus parsed),
+* **simple** (you do not need to include or autoload all libraries you use in your source code).
 
 Besides, we have made following changes in our ApiGen.
 
-### Changed behavior ###
+### Changes ###
 
-* There are different command line parameters (we will look at them later).
-* TR Apigen supports multiple/custom templates.
-* There are two fancy progressbars. One is displayed while parsing source codes, the other one while generating the actual documentation. So you do not have to stare at the command prompt not having an idea how long it will take to finish.
-* We can handle exceptions. So if something goes wrong, you will know what happened (and you can let us know ;)
-* TR ApiGen uses much less memory.
-
-### Documentation changes ###
-
-* Better page titles.
+* Much more confuguration options (see below).
+* Much lower memory usage.
+* Documentation for functions and constants in namespaces or global space.
 * A page with trees of classes, interfaces and exceptions.
 * A page with a list of deprecated elements.
 * A page with Todo tasks.
+* List of undocumented elements.
+* Support for docblock templates.
+* Support for @inheritdoc.
+* Support for {@link}.
+* Clickable links for @see and @uses.
 * Detailed documentation for constants and properties with all annotations.
 * Links to PHP manual pages for constants and properties of PHP internal classes.
 * Links to the start line in the highlighted source code for constants and properties.
-* List of packages.
+* List of packages and subpackages.
 * List of indirect known subclasses and implementers.
+* Improved search and suggest - lets you search in class, functions and constant names without the need of Google CSE.
+* Support for multiple/custom templates.
+* Fancy progressbars (one while parsing source codes, one while generating documentation).
+* Exceptions handling.
 * Inherited methods, constants and properties are in alphabetical order.
 * Class methods, constants and properties are in truly alphabetical order.
 * Better visualization of method parameters.
 * Unified order of annotations.
-* Support of the {@link} tag.
-* Clickable links for @see and @uses tags.
 * No URL shortening.
 * Better visualization of nested namespaces.
 * No wrapping of class names.
 * Resizable left column.
 * Better static files (stylesheets, javascript) versioning.
+* Better page titles.
+* A lot of visual enhancements.
+* Google Analytics support.
 * Full sitemap with links to package and namespace pages.
-* Class and interface tables/headings are displayed only if required.
 * New version of jQuery.
 * New version of FSHL.
-* Google Analytics support.
-* List of undocumented elements.
-* Documentation for functions and constants in namespace or global space.
 
 ### Bugfixes ###
 * No fatal errors when a class is missing (this is a benefit of using the TokenReflection library).
 * Better FQN resolving in documentation.
 * Better values output of constants and properties (you see the actual definition - "\\n", not just a space).
 * Fixed email addresses in annotations (the original ApiGen cannot handle an email address next to the author name).
+* Fixed parsing packages and subpackages with description.
 * Displaying the "public" keyword for public properties.
 * Texy! downgraded to the stable 2.1 version (the 3.0-dev version causes PCRE internal errors sometimes).
 * Support for Mac and DOS line endings.
@@ -67,6 +71,10 @@ Besides, we have made following changes in our ApiGen.
 ```
 
 As you can see, you can use TR ApiGen either by providing individual parameters via the command line or using a config file. Moreover you can combine the two methods and the command line parameters will have precedence over those in the config file.
+
+Every configuration option has to be followed by its value. And it is exactly the same to write ```--config=file.conf``` and ```--config file.conf```. The only exceptions are boolean options (those with yes|no values). When using these options on the command line you do not have to provide the "yes" value explicitly. If ommited, it is assumed that you wanted to turn the option on. So using ```--debug=yes``` and ```--debug``` does exactly the same (and the opposite is ```--debug=no```).
+
+Some options can have multiple values. To do so, you can either use them multiple times or separate their values by a comma. It means that ```--source=file1.php --source=file2.php``` and ```--source=file1.php,file2.php``` is exactly the same.
 
 ### Parameter list ###
 
@@ -91,6 +99,10 @@ Directories and files matching this file mask will not be parsed. You can exclud
 
 Using this parameters you can tell TR ApiGen not to generate documentation for classes from certain files or with certain name prefix. Such classes will appear in class trees, but will not create a link to their documentation. These parameters can be used multiple times.
 
+```--main <value>```
+
+Classes with this name prefix will be considered as the "main project" (the rest will be considered as libraries).
+
 ```--title <value>```
 
 Title of the generated documentation.
@@ -99,21 +111,21 @@ Title of the generated documentation.
 
 Documentation base URL used in the sitemap. Only needed if you plan to make your documentation public.
 
-```--google-cse <value>```
+```--google-cse-id <value>```
 
-If you have a Google CSE ID, there will be a search field on the top of all pages leading to your customized search.
+If you have a Google CSE ID, the search box will use it when you do not enter an exact class, constant or function name.
+
+```--google-cse-label <value>```
+
+This will be the default label when using Google CSE.
 
 ```--google-analytics <value>```
 
 A Google Analytics tracking code. If provided, an ansynchronous tracking code will be placed into every generated page.
 
-```--template <value>```
+```--template-config <file>```
 
-Template name, default is "default" :)
-
-```--template-dir <directory>```
-
-Template directory, default is the ApiGen template directory.
+Template config file, default is the config file of ApiGen default template.
 
 ```--allowed-html <list>```
 
@@ -122,6 +134,10 @@ List of allowed HTML tags in documentation separated by comma. Default value is 
 ```--access-levels <list>```
 
 Access levels of methods and properties that should get their documentation parsed. Default value is "public,protected" (don't generate private class members).
+
+```--internal <yes|no>```
+
+Generate documentation for elements marked as internal, default is "No".
 
 ```--php <yes|no>```
 
@@ -192,11 +208,14 @@ apigen --source ~/nella/Nella --source ~/doctrine2/lib/Doctrine --source ~/doctr
 
 ## Requirements ##
 
-TR ApiGen requires PHP 5.3.1 or later. We do not officially support PHP 5.3.0 because of a [reflection bug](http://bugs.php.net/bug.php?id=48757) that affects the TokenReflection library.
+TR ApiGen requires PHP 5.3 or later.
 
 When generating documentation of large libraries (Zend Framework for example) we recommend not to have the Xdebug PHP extension loaded (it does not need to be used, it significantly slows down the generating process even when only loaded).
 
 ## Usage examples ##
 
 * Jyxo PHP Libraries, both [namespaced](http://jyxo.github.com/php/) and [non-namespaced](http://jyxo.github.com/php-no-namespace/),
-* [TokenReflection library](http://andrewsville.github.com/PHP-Token-Reflection/).
+* [TokenReflection library](http://andrewsville.github.com/PHP-Token-Reflection/),
+* [Nella Framework](http://api.nella-project.org/framework/).
+
+Besides from these publicly visible examples there are companies that use TR ApiGen to generate their inhouse documentation: [Medio Interactive](http://www.medio.cz/), [Wikidi](http://wikidi.com/).
