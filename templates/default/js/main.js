@@ -23,7 +23,7 @@ $(function() {
 		}
 
 		var label = $('#search input[name=more]').val();
-		if (label && -1 === query.indexOf('more:')) {
+		if (!autocompleteFound && label && -1 === query.indexOf('more:')) {
 			$search.val(query + ' more:' + label);
 		}
 

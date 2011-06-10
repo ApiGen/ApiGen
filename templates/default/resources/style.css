@@ -43,7 +43,7 @@ h4 {
 }
 
 caption {
-	border: 1px solid #ccc;
+	border: 1px solid #cccccc;
 	background: #ecede5;
 	font-weight: bold;
 	font-size: 1.2em;
@@ -211,7 +211,7 @@ code a b {
 
 #navigation ul {
 	list-style: none;
-	margin: 0 8px 4px 0px;
+	margin: 0 8px 4px 0;
 	padding: 0;
 	overflow: hidden;
 	float: left;
