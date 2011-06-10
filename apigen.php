@@ -12,45 +12,52 @@
  * the file license.txt that was distributed with this source code.
  */
 
-require __DIR__ . '/libs/Nette/nette.min.php';
-require __DIR__ . '/libs/fshl/fshl.php';
-require __DIR__ . '/libs/texy/texy.min.php';
-require __DIR__ . '/libs/TokenReflection/tokenreflection.min.php';
-require __DIR__ . '/libs/Apigen/Exception.php';
-require __DIR__ . '/libs/Apigen/Config.php';
-require __DIR__ . '/libs/Apigen/Template.php';
-require __DIR__ . '/libs/Apigen/ReflectionBase.php';
-require __DIR__ . '/libs/Apigen/ReflectionClass.php';
-require __DIR__ . '/libs/Apigen/ReflectionConstant.php';
-require __DIR__ . '/libs/Apigen/ReflectionFunctionBase.php';
-require __DIR__ . '/libs/Apigen/ReflectionFunction.php';
-require __DIR__ . '/libs/Apigen/ReflectionMethod.php';
-require __DIR__ . '/libs/Apigen/ReflectionProperty.php';
-require __DIR__ . '/libs/Apigen/ReflectionParameter.php';
-require __DIR__ . '/libs/Apigen/Backend.php';
-require __DIR__ . '/libs/Apigen/Generator.php';
-require __DIR__ . '/libs/Apigen/Tree.php';
+namespace Apigen;
+
+use Nette\Diagnostics\Debugger;
+
+define('LIBRARY_DIR', realpath(__DIR__ . '/libs'));
+define('TEMPLATE_DIR', realpath(__DIR__ . '/templates'));
+
+require LIBRARY_DIR . '/Nette/nette.min.php';
+require LIBRARY_DIR . '/fshl/fshl.php';
+require LIBRARY_DIR . '/texy/texy.min.php';
+require LIBRARY_DIR . '/TokenReflection/tokenreflection.min.php';
+require LIBRARY_DIR . '/Apigen/Exception.php';
+require LIBRARY_DIR . '/Apigen/Config.php';
+require LIBRARY_DIR . '/Apigen/Template.php';
+require LIBRARY_DIR . '/Apigen/ReflectionBase.php';
+require LIBRARY_DIR . '/Apigen/ReflectionClass.php';
+require LIBRARY_DIR . '/Apigen/ReflectionConstant.php';
+require LIBRARY_DIR . '/Apigen/ReflectionFunctionBase.php';
+require LIBRARY_DIR . '/Apigen/ReflectionFunction.php';
+require LIBRARY_DIR . '/Apigen/ReflectionMethod.php';
+require LIBRARY_DIR . '/Apigen/ReflectionProperty.php';
+require LIBRARY_DIR . '/Apigen/ReflectionParameter.php';
+require LIBRARY_DIR . '/Apigen/Backend.php';
+require LIBRARY_DIR . '/Apigen/Generator.php';
+require LIBRARY_DIR . '/Apigen/Tree.php';
 
 try {
 
-	Nette\Diagnostics\Debugger::$strictMode = true;
-	Nette\Diagnostics\Debugger::enable();
-	Nette\Diagnostics\Debugger::timer();
+	Debugger::$strictMode = true;
+	Debugger::enable();
+	Debugger::timer();
 
-	$config = new Apigen\Config();
+	$config = new Config();
 
 	// Help
 	if ($config->isHelpRequested()) {
-		echo Apigen\Generator::getHeader();
-		echo Apigen\Config::getHelp();
+		echo Generator::getHeader();
+		echo Config::getHelp();
 		die();
 	}
 
 	$config->parse();
 
 	// Start
-	$generator = new Apigen\Generator($config);
-	$generator->output(Apigen\Generator::getHeader());
+	$generator = new Generator($config);
+	$generator->output(Generator::getHeader());
 
 	// Scan
 	if (count($config->source) > 1) {
@@ -87,11 +94,11 @@ try {
 	$generator->generate();
 
 	// End
-	$generator->output(sprintf("Done. Total time: %d seconds, used: %d MB RAM\n", Nette\Diagnostics\Debugger::timer(), round(memory_get_peak_usage(true) / 1024 / 1024)));
+	$generator->output(sprintf("Done. Total time: %d seconds, used: %d MB RAM\n", Debugger::timer(), round(memory_get_peak_usage(true) / 1024 / 1024)));
 
 } catch (Exception $e) {
-	if ($e instanceof Apigen\Exception && Apigen\Exception::INVALID_CONFIG === $e->getCode()) {
-		echo Apigen\Generator::getHeader();
+	if ($e instanceof Exception && Exception::INVALID_CONFIG === $e->getCode()) {
+		echo Generator::getHeader();
 	}
 
 	if ($config->debug) {
@@ -106,8 +113,8 @@ try {
 	}
 
 	// Help only for invalid configuration
-	if ($e instanceof Apigen\Exception && Apigen\Exception::INVALID_CONFIG === $e->getCode()) {
-		echo Apigen\Config::getHelp();
+	if ($e instanceof Exception && Exception::INVALID_CONFIG === $e->getCode()) {
+		echo Config::getHelp();
 	}
 
 	die(1);

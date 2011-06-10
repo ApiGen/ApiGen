@@ -13,7 +13,6 @@
 
 namespace Apigen;
 
-use Apigen\Exception;
 use Nette\Utils\Neon;
 
 /**
@@ -127,7 +126,7 @@ class Config
 		}, $this->options);
 
 		$this->config = self::$defaultConfig;
-		$this->config['templateConfig'] = realpath(__DIR__ . '/../../templates/default/config.neon');
+		$this->config['templateConfig'] = TEMPLATE_DIR . '/default/config.neon';
 	}
 
 	/**
