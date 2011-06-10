@@ -270,7 +270,7 @@ class Generator extends Nette\Object
 	 */
 	public function generate()
 	{
-		@mkdir($this->config->destination);
+		@mkdir($this->config->destination, 0755, true);
 		if (!is_dir($this->config->destination) || !is_writable($this->config->destination)) {
 			throw new Exception(sprintf('Directory %s isn\'t writable.', $this->config->destination));
 		}
@@ -953,7 +953,8 @@ class Generator extends Nette\Object
 						}
 					}
 					if (null === $template->fileName) {
-						throw new Exception(sprintf('Could not determine element %s relative path', $element->getName()));
+						$template->fileName = $element->getFileName();
+						//throw new Exception(sprintf('Could not determine element %s relative path', $element->getName()));
 					}
 				}
 
