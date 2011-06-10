@@ -140,7 +140,7 @@ class ReflectionClass extends ReflectionBase
 			$this->methods = array();
 			foreach ($this->reflection->getMethods(self::$methodAccessLevels) as $method) {
 				$apiMethod = new ReflectionMethod($method, self::$generator);
-				if ($apiMethod->isDocumented()) {
+				if (!$this->isDocumented() || $apiMethod->isDocumented()) {
 					$this->methods[$method->getName()] = $apiMethod;
 				}
 			}
@@ -195,7 +195,7 @@ class ReflectionClass extends ReflectionBase
 			$this->properties = array();
 			foreach ($this->reflection->getProperties(self::$propertyAccessLevels) as $property) {
 				$apiProperty = new ReflectionProperty($property, self::$generator);
-				if ($apiProperty->isDocumented()) {
+				if (!$this->isDocumented() || $apiProperty->isDocumented()) {
 					$this->properties[$property->getName()] = $apiProperty;
 				}
 			}
@@ -250,7 +250,7 @@ class ReflectionClass extends ReflectionBase
 			$this->constants = array();
 			foreach ($this->reflection->getConstantReflections() as $constant) {
 				$apiConstant = new ReflectionConstant($constant, self::$generator);
-				if ($apiConstant->isDocumented()) {
+				if (!$this->isDocumented() || $apiConstant->isDocumented()) {
 					$this->constants[$constant->getName()] = $apiConstant;
 				}
 			}
