@@ -1,5 +1,5 @@
 {layout '@layout.latte'}
-{var $active => 'package'}
+{var $active = 'package'}
 
 {block #title}{if $template->subpackageName($package)}Subpackage {$package|subpackageName} | {/if}{if $package != 'None'}Package {$package|packageName}{else}No package{/if}{/block}
 

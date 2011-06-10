@@ -7,11 +7,11 @@
 
 	<title>{include #title}{if 'overview' !== $active && $config->title} | {$config->title}{/if}</title>
 
-	{var combined_js => 'resources/combined.js'}
+	{var combined_js = 'resources/combined.js'}
 	<script type="text/javascript" src="{$combined_js|staticFile}"></script>
-	{var elementlist_js => 'elementlist.js'}
+	{var elementlist_js = 'elementlist.js'}
 	<script type="text/javascript" src="{$elementlist_js|staticFile}"></script>
-	{var style_css => 'resources/style.css'}
+	{var style_css = 'resources/style.css'}
 	<link rel="stylesheet" type="text/css" media="all" href="{$style_css|staticFile}">
 	<link n:if="$config->googleCseId" rel="search" type="application/opensearchdescription+xml" title="{$config->title}" href="{$config->baseUrl}/opensearch.xml">
 
@@ -46,7 +46,7 @@
 					{else}
 						</li>
 						{if substr_count($iterator->nextValue, '\\') < substr_count($item, '\\')}
-							{!=str_repeat('</ul></li>', substr_count($item, '\\') - substr_count($iterator->nextValue, '\\'))}
+							{!'</ul></li>'|repeat:substr_count($item, '\\') - substr_count($iterator->nextValue, '\\')}
 						{/if}
 					{/if}
 				{/foreach}
@@ -64,7 +64,7 @@
 					{else}
 						</li>
 						{if substr_count($iterator->nextValue, '\\') < substr_count($item, '\\')}
-							{!=str_repeat('</ul></li>', substr_count($item, '\\') - substr_count($iterator->nextValue, '\\'))}
+							{!'</ul></li>'|repeat:substr_count($item, '\\') - substr_count($iterator->nextValue, '\\')}
 						{/if}
 					{/if}
 				{/foreach}

@@ -1,5 +1,5 @@
 {layout '@layout.latte'}
-{var $active => 'class'}
+{var $active = 'class'}
 
 {block #title}{if $class->deprecated}Deprecated {/if}{if $class->interface}Interface{else}Class{/if} {$class->name}{/block}
 
@@ -12,12 +12,12 @@
 	</div>
 
 	<dl class="tree" n:if="$class->parentClass || $class->ownInterfaces">
-		<dd n:foreach="$tree as $item" style="padding-left:{=($iterator->counter - 1) * 30}px">
+		<dd n:foreach="$tree as $item" style="padding-left:{($iterator->counter - 1) * 30}px">
 			<img src="resources/inherit.gif" alt="Extended by" n:if="$iterator->counter > 1">
 			{if $item->documented}
 			<a href="{$item|classUrl}" n:tag-if="!$iterator->last">{last}<b>{/last}{$item->name}{last}</b>{/last}</a>
 			{else}{$item->name}{/if}
-			{var $itemOwnInterfaces => $item->ownInterfaces}
+			{var $itemOwnInterfaces = $item->ownInterfaces}
 			{if $itemOwnInterfaces} implements {foreach $itemOwnInterfaces as $interface}
 				<a href="{$interface|classUrl}" n:tag-if="$interface->documented">{$interface->name}</a>{sep}, {/sep}
 			{/foreach}{/if}
@@ -54,12 +54,12 @@
 
 	<div class="info">
 		{if $class->abstract || $class->final}<b>{if $class->abstract}Abstract{else}Final{/if} {if $class->interface}Interface{else}Class{/if}</b><br>{/if}
-		{if $class->internal}<b>PHP Extension:</b> <a href="{$class->extension|manualUrl}" title="Go to PHP documentation">{$class->extension->name|ucfirst}</a><br>{/if}
+		{if $class->internal}<b>PHP Extension:</b> <a href="{$class->extension|manualUrl}" title="Go to PHP documentation">{$class->extension->name|firstUpper}</a><br>{/if}
 		{if $class->inNamespace()}<b>Namespace:</b> {!$class->namespaceName|namespaceLinks}<br>{/if}
 
 		{foreach $template->annotationSort($template->annotationFilter($class->annotations)) as $annotation => $values}
 			{foreach $values as $value}
-				<b>{$annotation|ucfirst}{if $value}:{/if}</b>
+				<b>{$annotation|firstUpper}{if $value}:{/if}</b>
 				{!$value|annotation:$annotation:$class}<br>
 			{/foreach}
 		{/foreach}
@@ -70,7 +70,7 @@
 	<table class="summary" id="methods" n:if="$ownMethods">
 	<caption>Methods summary</caption>
 	<tr n:foreach="$ownMethods as $method" data-order="{$method->name}" id="_{$method->name}" n:class="$method->deprecated ? deprecated">
-		{var $annotations => $method->annotations}
+		{var $annotations = $method->annotations}
 
 		<td class="right" width="1%"><code class="nowrap">
 			{if $method->deprecated}deprecated{/if}
@@ -145,7 +145,7 @@
 			{/ifset}
 
 			{foreach $template->annotationSort($template->annotationFilter($annotations, array('deprecated', 'param', 'return', 'throws'))) as $annotation => $descriptions}
-				<h4>{$annotation|ucfirst}</h4>
+				<h4>{$annotation|firstUpper}</h4>
 				<div class="smallList">
 				{foreach $descriptions as $description}
 					{if $description}
@@ -156,7 +156,7 @@
 			{/foreach}
 
 			{try}
-			{var $prototype => $method->prototype}
+			{var $prototype = $method->prototype}
 			{if $prototype->declaringClass->interface}
 				<h4>Implementation of</h4>
 				<div class="smallList"><code><a n:tag-if="$template->getClass($prototype->declaringClassName)" href="{$prototype|methodUrl}">{$prototype->declaringClassName}::{$prototype->name}</a></code></div>
@@ -182,7 +182,7 @@
 	<table class="summary" id="constants" n:if="$ownConstants">
 	<caption>Constants summary</caption>
 	<tr n:foreach="$ownConstants as $constant" data-order="{$constant->name}" id="{$constant->name}" n:class="$constant->deprecated ? deprecated">
-		{var $annotations => $constant->annotations}
+		{var $annotations = $constant->annotations}
 
 		<td class="right" width="1%"><code class="nowrap">
 			{if $constant->deprecated}deprecated{/if}
@@ -196,7 +196,7 @@
 			{/if}
 		</code></td>
 		<td width="1%">
-			{var $element => $template->resolveElement($constant->valueDefinition, $constant)}
+			{var $element = $template->resolveElement($constant->valueDefinition, $constant)}
 			{if $element}<a href="{$element|constantUrl}">{$constant->valueDefinition}</a>{else}<code>{!$constant->valueDefinition|highlightValue:$class}</code>{/if}
 		</td>
 		<td><div class="position">
@@ -209,7 +209,7 @@
 				{!$constant|longDescription}
 
 				{foreach $template->annotationSort($template->annotationFilter($annotations, array('var'))) as $annotation => $descriptions}
-					<h4>{$annotation|ucfirst}</h4>
+					<h4>{$annotation|firstUpper}</h4>
 					<div class="smallList">
 					{foreach $descriptions as $description}
 						{if $description}
@@ -238,7 +238,7 @@
 	<table class="summary" id="properties" n:if="$ownProperties">
 	<caption>Properties summary</caption>
 	<tr n:foreach="$ownProperties as $property" data-order="{$property->name}" id="${$property->name}" n:class="$property->deprecated ? deprecated">
-		{var $annotations => $property->annotations}
+		{var $annotations = $property->annotations}
 
 		<td class="right" width="1%"><code class="nowrap">
 			{if $property->deprecated}deprecated{/if}
@@ -265,7 +265,7 @@
 				{!$property|longDescription}
 
 				{foreach $template->annotationSort($template->annotationFilter($annotations, array('var'))) as $annotation => $descriptions}
-					<h4>{$annotation|ucfirst}</h4>
+					<h4>{$annotation|firstUpper}</h4>
 					<div class="smallList">
 					{foreach $descriptions as $description}
 						{if $description}
