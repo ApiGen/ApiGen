@@ -26,20 +26,6 @@ use TokenReflection\IReflection;
 abstract class ReflectionBase
 {
 	/**
-	 * List of classes.
-	 *
-	 * @var \ArrayObject
-	 */
-	protected static $classes;
-
-	/**
-	 * List of functions.
-	 *
-	 * @var \ArrayObject
-	 */
-	protected static $functions;
-
-	/**
 	 * Generator.
 	 *
 	 * @var \Apigen\Generator
@@ -79,7 +65,7 @@ abstract class ReflectionBase
 	 *
 	 * @var boolean
 	 */
-	protected $isDocumented;
+	private $isDocumented;
 
 	/**
 	 * Constructor.
@@ -94,8 +80,6 @@ abstract class ReflectionBase
 		if (null === self::$generator) {
 			self::$generator = $generator;
 			self::$config = $generator->getConfig();
-			self::$classes = $generator->getClasses();
-			self::$functions = $generator->getFunctions();
 		}
 
 		$this->reflectionType = get_class($this);
@@ -157,7 +141,7 @@ abstract class ReflectionBase
 	}
 
 	/**
-	 * Returns if the class should be documented.
+	 * Returns if the element belongs to the main project.
 	 *
 	 * @return boolean
 	 */
@@ -174,19 +158,32 @@ abstract class ReflectionBase
 	public function isDocumented()
 	{
 		if (null === $this->isDocumented) {
-			$this->isDocumented = $this->reflection->isTokenized() || $this->reflection->isInternal();
-
-			if ($this->isDocumented) {
-				if (!self::$config->php && $this->reflection->isInternal()) {
-					$this->isDocumented = false;
-				} elseif (!self::$config->deprecated && $this->reflection->isDeprecated()) {
-					$this->isDocumented = false;
-				} elseif (!self::$config->internal && ($internal = $this->reflection->getAnnotation('internal')) && empty($internal[0])) {
-					$this->isDocumented = false;
+			if (self::$config->php && $this->reflection->isInternal()) {
+				$this->isDocumented = true;
+			} elseif (!$this->reflection->isTokenized()) {
+				$this->isDocumented = false;
+			} elseif (!self::$config->deprecated && $this->reflection->isDeprecated()) {
+				$this->isDocumented = false;
+			} elseif (!self::$config->internal && ($internal = $this->reflection->getAnnotation('internal')) && empty($internal[0])) {
+				$this->isDocumented = false;
+			} else {
+				$this->isDocumented = true;
+				foreach (self::$config->skipDocPath as $mask) {
+					if (fnmatch($mask, $this->reflection->getFilename(), FNM_NOESCAPE | FNM_PATHNAME)) {
+						$this->isDocumented = false;
+						break;
+					}
+				}
+				if (true === $this->isDocumented) {
+					foreach (self::$config->skipDocPrefix as $prefix) {
+						if (0 === strpos($this->reflection->getName(), $prefix)) {
+							$this->isDocumented = false;
+							break;
+						}
+					}
 				}
 			}
 		}
-
 		return $this->isDocumented;
 	}
 

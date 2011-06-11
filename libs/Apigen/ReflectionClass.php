@@ -14,7 +14,7 @@
 namespace Apigen;
 
 use TokenReflection, TokenReflection\IReflectionClass, TokenReflection\IReflectionMethod, TokenReflection\IReflectionProperty, TokenReflection\IReflectionConstant;
-use ReflectionMethod as InternalReflectionMethod, ReflectionProperty as InternalReflectionProperty;
+use ReflectionMethod, ReflectionProperty;
 
 /**
  * Class reflection envelope.
@@ -27,18 +27,25 @@ use ReflectionMethod as InternalReflectionMethod, ReflectionProperty as Internal
 class ReflectionClass extends ReflectionBase
 {
 	/**
+	 * List of classes.
+	 *
+	 * @var \ArrayObject
+	 */
+	private static $classes;
+
+	/**
 	 * Access level for methods.
 	 *
 	 * @var integer
 	 */
-	private static $methodAccessLevels = false;
+	private static $methodAccessLevels;
 
 	/**
 	 * Access level for properties.
 	 *
 	 * @var integer
 	 */
-	private static $propertyAccessLevels = false;
+	private static $propertyAccessLevels;
 
 	/**
 	 * Cache for list of parent classes.
@@ -69,27 +76,6 @@ class ReflectionClass extends ReflectionBase
 	private $ownConstants;
 
 	/**
-	 * Cache for list of own methods.
-	 *
-	 * @var array
-	 */
-	private $methods;
-
-	/**
-	 * Cache for list of own properties.
-	 *
-	 * @var array
-	 */
-	private $properties;
-
-	/**
-	 * Cache for list of own constants.
-	 *
-	 * @var array
-	 */
-	private $constants;
-
-	/**
 	 * Constructor.
 	 *
 	 * Sets the inspected class reflection.
@@ -101,52 +87,21 @@ class ReflectionClass extends ReflectionBase
 	{
 		parent::__construct($reflection, $generator);
 
-		if (false === self::$methodAccessLevels) {
-			if (count(self::$config->accessLevels) < 3) {
-				self::$methodAccessLevels = 0;
-				self::$propertyAccessLevels = 0;
+		if (null === self::$classes) {
+			self::$classes = $generator->getClasses();
 
-				foreach (self::$config->accessLevels as $level) {
-					switch (strtolower($level)) {
-						case 'public':
-							self::$methodAccessLevels |= InternalReflectionMethod::IS_PUBLIC;
-							self::$propertyAccessLevels |= InternalReflectionProperty::IS_PUBLIC;
-							break;
-						case 'protected':
-							self::$methodAccessLevels |= InternalReflectionMethod::IS_PROTECTED;
-							self::$propertyAccessLevels |= InternalReflectionProperty::IS_PROTECTED;
-							break;
-						case 'private':
-							self::$methodAccessLevels |= InternalReflectionMethod::IS_PRIVATE;
-							self::$propertyAccessLevels |= InternalReflectionProperty::IS_PRIVATE;
-							break;
-					}
-				}
-			} else {
+			foreach (self::$config->accessLevels as $level) {
+				self::$methodAccessLevels |= constant('ReflectionMethod::IS_' . strtoupper($level));
+				self::$propertyAccessLevels |= constant('ReflectionProperty::IS_' . strtoupper($level));
+			}
+
+			if ((ReflectionMethod::IS_PUBLIC | ReflectionMethod::IS_PROTECTED | ReflectionMethod::IS_PRIVATE) === self::$methodAccessLevels) {
 				self::$methodAccessLevels = null;
+			}
+			if ((ReflectionProperty::IS_PUBLIC | ReflectionProperty::IS_PROTECTED | ReflectionProperty::IS_PRIVATE) === self::$propertyAccessLevels) {
 				self::$propertyAccessLevels = null;
 			}
 		}
-	}
-
-	/**
-	 * Returns visible methods.
-	 *
-	 * @return array
-	 */
-	public function getMethods()
-	{
-		if (null === $this->methods) {
-			$this->methods = array();
-			foreach ($this->reflection->getMethods(self::$methodAccessLevels) as $method) {
-				$apiMethod = new ReflectionMethod($method, self::$generator);
-				if (!$this->isDocumented() || $apiMethod->isDocumented()) {
-					$this->methods[$method->getName()] = $apiMethod;
-				}
-			}
-		}
-
-		return $this->methods;
 	}
 
 	/**
@@ -157,53 +112,21 @@ class ReflectionClass extends ReflectionBase
 	public function getOwnMethods()
 	{
 		if (null === $this->ownMethods) {
-			$className = $this->reflection->getName();
-			$this->ownMethods = array();
-			foreach ($this->getMethods() as $methodName => $method) {
-				if ($className === $method->getDeclaringClassName()) {
-					$this->ownMethods[$methodName] = $method;
-				}
+			$this->ownMethods = $this->reflection->getOwnMethods(self::$methodAccessLevels);
+			if (!self::$config->deprecated) {
+				$this->ownMethods = array_filter($this->ownMethods, function(IReflectionMethod $method) {
+					return !$method->isDeprecated();
+				});
+			}
+			if (!self::$config->internal) {
+				$this->ownMethods = array_filter($this->ownMethods, function(IReflectionMethod $method) {
+					return (!$internal = $method->getAnnotation('internal')) || !empty($internal[0]);
+				});
 			}
 		}
 
 		return $this->ownMethods;
 	}
-
-	/**
-	 * Returns a method reflection.
-	 *
-	 * @param string $name Method name
-	 * @return \Apigen\ReflectionMethod
-	 */
-	public function getMethod($name)
-	{
-		if ($this->hasMethod($name)) {
-			return $this->methods[$name];
-		}
-
-		throw new \InvalidArgumentException(sprintf('Method %s does not exist in class %s', $name, $this->reflection->getName()));
-	}
-
-	/**
-	 * Returns visible properties.
-	 *
-	 * @return array
-	 */
-	public function getProperties()
-	{
-		if (null === $this->properties) {
-			$this->properties = array();
-			foreach ($this->reflection->getProperties(self::$propertyAccessLevels) as $property) {
-				$apiProperty = new ReflectionProperty($property, self::$generator);
-				if (!$this->isDocumented() || $apiProperty->isDocumented()) {
-					$this->properties[$property->getName()] = $apiProperty;
-				}
-			}
-		}
-
-		return $this->properties;
-	}
-
 
 	/**
 	 * Returns visible properties declared by inspected class.
@@ -213,50 +136,19 @@ class ReflectionClass extends ReflectionBase
 	public function getOwnProperties()
 	{
 		if (null === $this->ownProperties) {
-			$className = $this->reflection->getName();
-			$this->ownProperties = array();
-			foreach ($this->getProperties() as $propertyName => $property) {
-				if ($className === $property->getDeclaringClassName()) {
-					$this->ownProperties[$propertyName] = $property;
-				}
+			$this->ownProperties = $this->reflection->getOwnProperties(self::$propertyAccessLevels);
+			if (!self::$config->deprecated) {
+				$this->ownProperties = array_filter($this->ownProperties, function(IReflectionProperty $property) {
+					return !$property->isDeprecated();
+				});
+			}
+			if (!self::$config->internal) {
+				$this->ownProperties = array_filter($this->ownProperties, function(IReflectionProperty $property) {
+					return (!$internal = $property->getAnnotation('internal')) || !empty($internal[0]);
+				});
 			}
 		}
 		return $this->ownProperties;
-	}
-
-	/**
-	 * Returns a method property.
-	 *
-	 * @param string $name Method name
-	 * @return \Apigen\ReflectionProperty
-	 */
-	public function getProperty($name)
-	{
-		if ($this->hasProperty($name)) {
-			return $this->properties[$name];
-		}
-
-		throw new \InvalidArgumentException(sprintf('Property %s does not exist in class %s', $name, $this->reflection->getName()));
-	}
-
-	/**
-	 * Returns visible properties.
-	 *
-	 * @return array
-	 */
-	public function getConstants()
-	{
-		if (null === $this->constants) {
-			$this->constants = array();
-			foreach ($this->reflection->getConstantReflections() as $constant) {
-				$apiConstant = new ReflectionConstant($constant, self::$generator);
-				if (!$this->isDocumented() || $apiConstant->isDocumented()) {
-					$this->constants[$constant->getName()] = $apiConstant;
-				}
-			}
-		}
-
-		return $this->constants;
 	}
 
 	/**
@@ -267,13 +159,23 @@ class ReflectionClass extends ReflectionBase
 	public function getOwnConstants()
 	{
 		if (null === $this->ownConstants) {
-			$this->ownConstants = array();
-			$className = $this->reflection->getName();
-			foreach ($this->getConstants() as $constantName => $constant) {
-				if ($className === $constant->getDeclaringClassName()) {
-					$this->ownConstants[$constantName] = $constant;
-				}
+			$this->ownConstants = $this->reflection->getOwnConstantReflections();
+
+			if (!self::$config->deprecated) {
+				$this->ownConstants = array_filter($this->ownConstants, function(IReflectionConstant $constant) {
+					return !$constant->isDeprecated();
+				});
 			}
+			if (!self::$config->internal) {
+				$this->ownConstants = array_filter($this->ownConstants, function(IReflectionConstant $constant) {
+					return (!$internal = $constant->getAnnotation('internal')) || !empty($internal[0]);
+				});
+			}
+
+			$generator = self::$generator;
+			$this->ownConstants = array_map(function(IReflectionConstant $constant) use ($generator) {
+				return new ReflectionConstant($constant, $generator);
+			}, $this->ownConstants);
 		}
 		return $this->ownConstants;
 	}
@@ -286,86 +188,7 @@ class ReflectionClass extends ReflectionBase
 	 */
 	public function getConstantReflection($name)
 	{
-		if (null === $this->constants) {
-			$this->getConstants();
-		}
-
-		if (isset($this->constants[$name])) {
-			return $this->constants[$name];
-		}
-
-		throw new \InvalidArgumentException(sprintf('Constant %s does not exist in class %s', $name, $this->reflection->getName()));
-	}
-
-	/**
-	 * Returns a constant reflection.
-	 *
-	 * @param string $name Constant name
-	 * @return \Apigen\ReflectionConstant
-	 */
-	public function getConstant($name)
-	{
-		return $this->getConstantReflection($name);
-	}
-
-	/**
-	 * Checks if there is a constant of the given name.
-	 *
-	 * @param string $constantName Constant name
-	 * @return boolean
-	 */
-	public function hasConstant($constantName)
-	{
-		if (null === $this->constants) {
-			$this->getConstants();
-		}
-
-		return isset($this->constants[$constantName]);
-	}
-
-	/**
-	 * Checks if there is a constant of the given name.
-	 *
-	 * @param string $constantName Constant name
-	 * @return boolean
-	 */
-	public function hasOwnConstant($constantName)
-	{
-		if (null === $this->ownConstants) {
-			$this->getOwnConstants();
-		}
-
-		return isset($this->ownConstants[$constantName]);
-	}
-
-	/**
-	 * Returns a constant reflection.
-	 *
-	 * @param string $name Constant name
-	 * @return \Apigen\ReflectionConstant
-	 */
-	public function getOwnConstantReflection($name)
-	{
-		if (null === $this->ownConstants) {
-			$this->getOwnConstants();
-		}
-
-		if (isset($this->ownConstants[$name])) {
-			return $this->ownConstants[$name];
-		}
-
-		throw new \InvalidArgumentException(sprintf('Constant %s does not exist in class %s', $name, $this->reflection->getName()));
-	}
-
-	/**
-	 * Returns a constant reflection.
-	 *
-	 * @param string $name Constant name
-	 * @return \Apigen\ReflectionConstant
-	 */
-	public function getOwnConstant($name)
-	{
-		return $this->getOwnConstantReflection($name);
+		return new ReflectionConstant($this->reflection->getConstantReflection($name), self::$generator);
 	}
 
 	/**
@@ -591,18 +414,30 @@ class ReflectionClass extends ReflectionBase
 	}
 
 	/**
-	 * Checks if there is a property of the given name.
+	 * Checks if there is a constant of the given name.
 	 *
-	 * @param string $propertyName Property name
+	 * @param string $constantName Constant name
 	 * @return boolean
 	 */
-	public function hasProperty($propertyName)
+	public function hasConstant($constantName)
 	{
-		if (null === $this->properties) {
-			$this->getProperties();
-		}
+		try {
+			$constant = $this->reflection->getConstantReflection($constantName);
 
-		return isset($this->properties[$propertyName]);
+			if (!self::$config->deprecated && $constant->isDeprecated()) {
+				// Deprecated constant
+				return false;
+			}
+
+			if (!self::$config->internal && ($internal = $constant->getAnnotation('internal')) && empty($internal[0])) {
+				// Internal constant
+				return false;
+			}
+
+			return self::$classes[$constant->getDeclaringClassName()]->isDocumented();
+		} catch (TokenReflection\Exception $e) {
+			return false;
+		}
 	}
 
 	/**
@@ -611,13 +446,32 @@ class ReflectionClass extends ReflectionBase
 	 * @param string $propertyName Property name
 	 * @return boolean
 	 */
-	public function hasOwnProperty($propertyName)
+	public function hasProperty($propertyName)
 	{
-		if (null === $this->ownProperties) {
-			$this->getOwnProperties();
-		}
+		try {
+			$property = $this->reflection->getProperty($propertyName);
 
-		return isset($this->ownProperties[$propertyName]);
+			if (!self::$config->deprecated && $property->isDeprecated()) {
+				// Deprecated property
+				return false;
+			}
+
+			if (!self::$config->internal && ($internal = $property->getAnnotation('internal')) && empty($internal[0])) {
+				// Internal property
+				return false;
+			}
+
+			if (null !== self::$propertyAccessLevels) {
+				if (!($property->getModifiers() & self::$propertyAccessLevels)) {
+					// Wrong access level
+					return false;
+				}
+			}
+
+			return self::$classes[$property->getDeclaringClassName()]->isDocumented();
+		} catch (TokenReflection\Exception $e) {
+			return false;
+		}
 	}
 
 	/**
@@ -628,52 +482,29 @@ class ReflectionClass extends ReflectionBase
 	 */
 	public function hasMethod($methodName)
 	{
-		if (null === $this->methods) {
-			$this->getMethods();
-		}
+		try {
+			$method = $this->reflection->getMethod($methodName);
 
-		return isset($this->methods[$methodName]);
-	}
+			if (!self::$config->deprecated && $method->isDeprecated()) {
+				// Deprecated method
+				return false;
+			}
 
-	/**
-	 * Checks if there is a method of the given name.
-	 *
-	 * @param string $methodName Method name
-	 * @return boolean
-	 */
-	public function hasOwnMethod($methodName)
-	{
-		if (null === $this->ownMethods) {
-			$this->getOwnMethods();
-		}
+			if (!self::$config->internal && ($internal = $method->getAnnotation('internal')) && empty($internal[0])) {
+				// Internal method
+				return false;
+			}
 
-		return isset($this->ownMethods[$methodName]);
-	}
-
-	/**
-	 * Returns if the class should be documented.
-	 *
-	 * @return boolean
-	 */
-	public function isDocumented()
-	{
-		if (null === $this->isDocumented && parent::isDocumented()) {
-			foreach (self::$config->skipDocPath as $mask) {
-				if (fnmatch($mask, $this->reflection->getFilename(), FNM_NOESCAPE | FNM_PATHNAME)) {
-					$this->isDocumented = false;
-					break;
+			if (null !== self::$methodAccessLevels) {
+				if (!$method->is(self::$methodAccessLevels)) {
+					// Wrong access level
+					return false;
 				}
 			}
-			if (true === $this->isDocumented) {
-				foreach (self::$config->skipDocPrefix as $prefix) {
-					if (0 === strpos($this->reflection->getName(), $prefix)) {
-						$this->isDocumented = false;
-						break;
-					}
-				}
-			}
-		}
 
-		return $this->isDocumented;
+			return self::$classes[$method->getDeclaringClassName()]->isDocumented();
+		} catch (TokenReflection\Exception $e) {
+			return false;
+		}
 	}
 }
