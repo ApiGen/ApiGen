@@ -23,20 +23,10 @@ require LIBRARY_DIR . '/Nette/nette.min.php';
 require LIBRARY_DIR . '/fshl/fshl.php';
 require LIBRARY_DIR . '/texy/texy.min.php';
 require LIBRARY_DIR . '/TokenReflection/tokenreflection.min.php';
-require LIBRARY_DIR . '/Apigen/Exception.php';
-require LIBRARY_DIR . '/Apigen/Config.php';
-require LIBRARY_DIR . '/Apigen/Template.php';
-require LIBRARY_DIR . '/Apigen/ReflectionBase.php';
-require LIBRARY_DIR . '/Apigen/ReflectionClass.php';
-require LIBRARY_DIR . '/Apigen/ReflectionConstant.php';
-require LIBRARY_DIR . '/Apigen/ReflectionFunctionBase.php';
-require LIBRARY_DIR . '/Apigen/ReflectionFunction.php';
-require LIBRARY_DIR . '/Apigen/ReflectionMethod.php';
-require LIBRARY_DIR . '/Apigen/ReflectionProperty.php';
-require LIBRARY_DIR . '/Apigen/ReflectionParameter.php';
-require LIBRARY_DIR . '/Apigen/Backend.php';
-require LIBRARY_DIR . '/Apigen/Generator.php';
-require LIBRARY_DIR . '/Apigen/Tree.php';
+
+spl_autoload_register(function($class) {
+	require_once sprintf('%s%s%s.php', LIBRARY_DIR, DIRECTORY_SEPARATOR, str_replace('\\', DIRECTORY_SEPARATOR, $class));
+});
 
 try {
 
