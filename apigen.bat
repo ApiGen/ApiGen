@@ -9,4 +9,4 @@ REM For the full copyright and license information, please view
 REM the file LICENCE that was distributed with this source code.
 REM
 
-php.exe %~dp0apigen.php %*
+"php.exe" "%~dp0apigen.php" %*
