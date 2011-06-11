@@ -1,13 +1,13 @@
 <?php
 /**
- * ApiGen - API Generator.
+ * TR ApiGen - API documentation generator.
  *
  * Copyright (c) 2010 David Grudl (http://davidgrudl.com)
  * Copyright (c) 2011 Ondřej Nešpor (http://andrewsville.cz)
  * Copyright (c) 2011 Jaroslav Hanslík (http://kukulich.cz)
  *
- * This source file is subject to the "Nette license", and/or
- * GPL license. For more information please see http://nette.org
+ * For the full copyright and license information, please view
+ * the file LICENSE that was distributed with this source code.
  */
 
 namespace Apigen;
