@@ -48,45 +48,48 @@ date_default_timezone_set('Europe/Prague');
 Debugger::enable();
 Debugger::timer();
 
-if (isset($options['l'])) {
-  $robot = new NetteX\Loaders\RobotLoader;
-  $robot->setCacheStorage(new NetteX\Caching\Storages\MemoryStorage);
-  $robot->addDirectory($options['l']);
-  $robot->register();
-}
-
-echo "Scanning folder $options[s]\n";
-$model = new Apigen\Model;
-$model->parse($options['s']);
-$count = count($model->getClasses());
-
-$model->expand();
-$countD = count($model->getClasses()) - $count;
-
-echo "Found $count classes and $countD system classes\n";
-
-
-
-$configPath = isset($options['c']) ? $options['c'] : __DIR__ . '/config.neon';
-$config = str_replace('%dir%', dirname($configPath), file_get_contents($configPath));
-$config = NetteX\Utils\Neon::decode($config);
-if (isset($options['t'])) {
-	$config['variables']['title'] = $options['t'];
-}
-
-
-echo "Generating documentation to folder $options[d]\n";
-@mkdir($options['d']);
-foreach (NetteX\Utils\Finder::find('*')->from($options['d'])->childFirst() as $item) {
-	if ($item->isDir()) {
-		rmdir($item);
-	} elseif ($item->isFile()) {
-		unlink($item);
+try {
+	if (isset($options['l'])) {
+		$robot = new NetteX\Loaders\RobotLoader;
+		$robot->setCacheStorage(new NetteX\Caching\Storages\MemoryStorage);
+		$robot->addDirectory($options['l']);
+		$robot->register();
 	}
+
+	echo "Scanning folder $options[s]\n";
+	$model = new Apigen\Model;
+	$model->parse($options['s']);
+	$count = count($model->getClasses());
+
+	$model->expand();
+	$countD = count($model->getClasses()) - $count;
+
+	echo "Found $count classes and $countD system classes\n";
+
+
+
+	$configPath = isset($options['c']) ? $options['c'] : __DIR__ . '/config.neon';
+	$config = str_replace('%dir%', dirname($configPath), file_get_contents($configPath));
+	$config = NetteX\Utils\Neon::decode($config);
+	if (isset($options['t'])) {
+		$config['variables']['title'] = $options['t'];
+	}
+
+
+	echo "Generating documentation to folder $options[d]\n";
+	@mkdir($options['d']);
+	foreach (NetteX\Utils\Finder::find('*')->from($options['d'])->childFirst() as $item) {
+		if ($item->isDir()) {
+			rmdir($item);
+		} elseif ($item->isFile()) {
+			unlink($item);
+		}
+	}
+	$generator = new Apigen\Generator($model);
+	$generator->generate($options['d'], $config);
+
+	echo 'Done. Total time: ' . (int) Debugger::timer() . " seconds\n";
+
+} catch (Exception $e) {
+	echo "Fatal error: {$e->getMessage()}\n";
 }
-$generator = new Apigen\Generator($model);
-$generator->generate($options['d'], $config);
-
-
-
-echo 'Done. Total time: ' . (int) Debugger::timer() . " seconds\n";
