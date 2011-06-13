@@ -163,6 +163,10 @@ class Config
 				throw new Exception(sprintf('Option %s must be set only once', $option), Exception::INVALID_CONFIG);
 			}
 
+			if (is_bool($this->config[$option]) && !is_bool($valueDefinition)) {
+				throw new Exception(sprintf('Option %s expects value', $option), Exception::INVALID_CONFIG);
+			}
+
 			if (is_bool($valueDefinition)) {
 				// Boolean option
 				$value = strtolower($this->config[$option]);
