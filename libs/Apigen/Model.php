@@ -32,21 +32,26 @@ class Model extends NetteX\Object
 
 	/**
 	 * Scans and parses PHP files.
-	 * @param  string  directory
+	 * @param  string|array directory to scan
+	 * @param  string|array directory to ignore
 	 * @return void
 	 */
-	public function parse($dir)
+	public function parse($dir, $ignore)
 	{
 		$robot = new NetteX\Loaders\RobotLoader;
 		$robot->setCacheStorage(new NetteX\Caching\Storages\MemoryStorage);
 		$robot->addDirectory($dir);
+		$robot->ignoreDirs = $ignore;
 		$robot->register();
 
 		// load add classes
 		$this->dir = realpath($dir);
 		$this->classes = array();
-		foreach ($robot->getIndexedClasses() as $name => $foo) {
+		foreach ($robot->getIndexedClasses() as $name => $file) {
 			$class = new CustomClassReflection($name);
+			if ($class->getFileName() !== $file) {
+				throw new \Exception("Duplicated class '$name'; defined in $file and in {$class->getFileName()}.");
+			}
 			if (!$class->hasAnnotation('internal') && !$class->hasAnnotation('deprecated')) {
 				$this->classes[$name] = $class;
 			}
@@ -79,7 +84,7 @@ class Model extends NetteX\Object
 				}
 
 				foreach (array('param', 'return', 'throws') as $annotation) {
-				    if (isset($method->annotations[$annotation])) {
+					if (isset($method->annotations[$annotation])) {
 						foreach ($method->annotations[$annotation] as $doc) {
 							$found = array_merge($found, self::splitAnnotation($doc));
 						}
