@@ -86,8 +86,9 @@ try {
 	// End
 	$generator->output(sprintf("Done. Total time: %d seconds, used: %d MB RAM\n", Debugger::timer(), round(memory_get_peak_usage(true) / 1024 / 1024)));
 
-} catch (Exception $e) {
-	if ($e instanceof Exception && Exception::INVALID_CONFIG === $e->getCode()) {
+} catch (\Exception $e) {
+	$invalidConfig = $e instanceof Exception && Exception::INVALID_CONFIG === $e->getCode();
+	if ($invalidConfig) {
 		echo Generator::getHeader();
 	}
 
@@ -103,7 +104,7 @@ try {
 	}
 
 	// Help only for invalid configuration
-	if ($e instanceof Exception && Exception::INVALID_CONFIG === $e->getCode()) {
+	if ($invalidConfig) {
 		echo Config::getHelp();
 	}
 
