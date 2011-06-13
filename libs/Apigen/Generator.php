@@ -1069,12 +1069,12 @@ class Generator extends Nette\Object
 	public function colorize($message)
 	{
 		static $placeholders = array(
-			'%header%' => "\x1b[1;34;40m",
-			'%count%' => "\x1b[1;34;40m",
-			'%option%' => "\x1b[36;40m",
-			'%value%' => "\x1b[32;40m",
-			'%error%' => "\x1b[31;40m",
-			'%c' => "\x1b[0m"
+			'@header@' => "\x1b[1;34;40m",
+			'@count@' => "\x1b[1;34;40m",
+			'@option@' => "\x1b[36;40m",
+			'@value@' => "\x1b[32;40m",
+			'@error@' => "\x1b[31;40m",
+			'@c' => "\x1b[0m"
 		);
 
 		// Windows doesn't support colors
@@ -1093,7 +1093,7 @@ class Generator extends Nette\Object
 	public function getHeader()
 	{
 		$name = sprintf('%s %s', self::NAME, self::VERSION);
-		return '%header%' . $name . "%c\n" . str_repeat('-', strlen($name)) . "\n";
+		return sprintf("@header@%s@c\n%s\n", $name, str_repeat('-', strlen($name)));
 	}
 
 	/**
