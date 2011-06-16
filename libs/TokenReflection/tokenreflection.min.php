@@ -33,7 +33,7 @@ Stream($fileName);}$reflectionFile=new ReflectionFile($tokens,$this);if(!$this->
 as$type=>$cached){if(!empty($cached)){$this->cache[$type]=array_filter($cached,function(IReflection$reflection){return$reflection->isTokenized();});}}}return$returnReflectionFile?$reflectionFile:true;}catch(Exception$e){throw
 new Exception\Parse(sprintf('Could not process file %s.',$fileName),0,$e);}}public
 function processPhar($fileName,$returnReflectionFile=false){try{if(!is_file($fileName)){throw
-new Exception\Parse('File does not exist.',Exception\Parse::FILE_DOES_NOT_EXIST);}if(!class_exists('Phar',false)){throw
+new Exception\Parse('File does not exist.',Exception\Parse::FILE_DOES_NOT_EXIST);}if(!extension_loaded('Phar')){throw
 new Exception\Parse('The PHAR PHP extension is not loaded.',Exception\Parse::UNSUPPORTED);}$result=array();foreach(new
 RecursiveIteratorIterator(new \Phar($fileName))as$entry){if($entry->isFile()){$result[$entry->getPathName()]=$this->processFile($entry->getPathName(),$returnReflectionFile);}}return$returnReflectionFile?$result:true;}catch(\Exception$e){throw
 new Exception\Parse(sprintf('Could not process PHAR archive %s.',$fileName),0,$e);}}public
@@ -90,9 +90,29 @@ as$parent){$annotations=$parent->getAnnotations();if(!empty($annotations)){$this
 as$parent){if($parent->hasAnnotation(self::LONG_DESCRIPTION)){$this->annotations[self::LONG_DESCRIPTION]=str_ireplace('{@inheritdoc}',$parent->getAnnotation(self::LONG_DESCRIPTION),$this->annotations[self::LONG_DESCRIPTION]);break;}}$this->annotations[self::LONG_DESCRIPTION]=str_ireplace('{@inheritdoc}','',$this->annotations[self::LONG_DESCRIPTION]);}if(isset($this->annotations[self::SHORT_DESCRIPTION])&&false!==stripos($this->annotations[self::SHORT_DESCRIPTION],'{@inheritdoc}')){foreach($parents
 as$parent){if($parent->hasAnnotation(self::SHORT_DESCRIPTION)){$this->annotations[self::SHORT_DESCRIPTION]=str_ireplace('{@inheritdoc}',$parent->getAnnotation(self::SHORT_DESCRIPTION),$this->annotations[self::SHORT_DESCRIPTION]);break;}}$this->annotations[self::SHORT_DESCRIPTION]=str_ireplace('{@inheritdoc}','',$this->annotations[self::SHORT_DESCRIPTION]);}}}}}
 
+ namespace TokenReflection{class Resolver{const CONSTANT_NOT_FOUND='~~NOT RESOLVED~~';final
+public function __construct(){throw new \LogicException('Static class cannot be instantiated.');}final
+public static function resolveClassFQN($className,array$aliases,$namespaceName=null){if($className{0}=='\\'){return
+ltrim($className,'\\');}if(false===($position=strpos($className,'\\'))){if(isset($aliases[$className])){return$aliases[$className];}}else{$alias=substr($className,0,$position);if(isset($aliases[$alias])){return$aliases[$alias].'\\'.substr($className,$position+1);}}return
+null===$namespaceName||''===$namespaceName||$namespaceName===ReflectionNamespace::NO_NAMESPACE_NAME?$className:$namespaceName.'\\'.$className;}final
+public static function getValueDefinition(array$tokens,ReflectionBase$reflection){$source=self::getSourceCode($tokens);$constants=self::findConstants($tokens,$reflection);if(!empty($constants)){$replacements=array();foreach($constants
+as$constant){try{if(0===stripos($constant,'self::')||0===stripos($constant,'parent::')){if($reflection
+instanceof ReflectionConstant){throw new Exception\Runtime('Constants cannot use self:: and parent:: references.',Exception\Runtime::INVALID_ARGUMENT);}elseif($reflection
+instanceof ReflectionParameter&&null===$reflection->getDeclaringClassName()){throw
+new Exception\Runtime('Function parameters cannot use self:: and parent:: references.',Exception\Runtime::INVALID_ARGUMENT);}if(0===stripos($constant,'self::')){$className=$reflection->getDeclaringClassName();}else{$declaringClass=$reflection->getDeclaringClass();$className=$declaringClass->getParentClassName()?:self::CONSTANT_NOT_FOUND;}$constantName=$className.substr($constant,strpos($constant,'::'));}else{$constantName=$constant;}$reflection=$reflection->getBroker()->getConstant($constantName);$value=$reflection->getValue();}catch(Exception\Runtime$e){$value=self::CONSTANT_NOT_FOUND;}$replacements[$constant]=var_export($value,true);}uksort($replacements,function($a,$b){$ca=strspn($a,'\\');$cb=strspn($b,'\\');return$ca===$cb?strcasecmp($b,$a):$cb-$ca;});$source=strtr($source,$replacements);}return
+eval(sprintf('return %s;',$source));}final public static function getSourceCode(array$tokens){if(empty($tokens)){return
+null;}$source='';foreach($tokens as$token){$source.=$token[1];}return$source;}final
+public static function findConstants(array$tokens,ReflectionBase$reflection){static$accepted=array(T_DOUBLE_COLON=>true,T_STRING=>true,T_NS_SEPARATOR=>true);static$dontResolve=array('true'=>true,'false'=>true,'null'=>true);if($reflection
+instanceof ReflectionConstant){$namespace=$reflection->getNamespaceName();}elseif($reflection
+instanceof ReflectionParameter){$namespace=$reflection->getDeclaringFunction()->getNamespaceName();}elseif($reflection
+instanceof ReflectionProperty){$namespace=$reflection->getDeclaringClass()->getNamespaceName();}else{throw
+new Exception\Runtime(sprintf('Invalid reflection object given: "%s" ("%s")',get_class($reflection),$reflection->getName()),Exception\Runtime::INVALID_ARGUMENT);}$tokens[]=array(-1);;$constants=array();$constant='';foreach($tokens
+as$token){if(isset($accepted[$token[0]])){$constant.=$token[1];}elseif(''!==$constant){if(!isset($dontResolve[strtolower($constant)])){if(0===stripos($constant,'self::')||0===stripos($constant,'parent::')){$resolvedConstant=$constant;}else{$resolvedConstant=self::resolveClassFQN($constant,$reflection->getNamespaceAliases(),$namespace);if($cnt=strspn($constant,'\\')){$resolvedConstant=str_repeat('\\',$cnt).$resolvedConstant;}}$constants[$resolvedConstant]=true;}$constant='';}}return
+array_keys($constants);}}}
+
  namespace TokenReflection{use TokenReflection\Exception;use SeekableIterator,Countable,ArrayAccess,Serializable;class
 Stream implements SeekableIterator,Countable,ArrayAccess,Serializable{private$fileName='unknown';private$tokens=array();private$position=0;private$count=0;public
-function __construct($fileName){$this->fileName=Broker::getRealPath($fileName);if(false===$this->fileName){throw
+function __construct($fileName){if(!extension_loaded('tokenizer')){throw new Exception\Parse('The tokenizer PHP extension is not loaded.',Exception\Parse::UNSUPPORTED);}$this->fileName=Broker::getRealPath($fileName);if(false===$this->fileName){throw
 new Exception\Parse('File does not exist.',Exception\Parse::FILE_DOES_NOT_EXIST);}$contents=file_get_contents($this->fileName);if(false===$contents){throw
 new Exception\Parse('File is not readable.',Exception\Parse::FILE_NOT_READABLE);}$stream=@token_get_all(str_replace(array("\r\n","\r"),"\n",$contents));static$checkLines=array(T_COMMENT=>true,T_WHITESPACE=>true,T_DOC_COMMENT=>true,T_INLINE_HTML=>true,T_ENCAPSED_AND_WHITESPACE=>true,T_CONSTANT_ENCAPSED_STRING=>true);foreach($stream
 as$position=>$token){if(is_array($token)){$this->tokens[]=$token;}else{$previous=$this->tokens[$position-1];$line=$previous[2];if(isset($checkLines[$previous[0]])){$line+=substr_count($previous[1],"\n");}$this->tokens[]=array($token,$token,$line);}}$this->count=count($stream);}public
@@ -194,19 +214,20 @@ function getIndirectSubclassNames();public function getDirectImplementers();publ
 function getDirectImplementerNames();public function getIndirectImplementers();public
 function getIndirectImplementerNames();public function newInstance($args);public
 function newInstanceArgs(array$args=array());public function setStaticPropertyValue($name,$value);public
-function isComplete();}}
+function isComplete();public function __toString();}}
 
  namespace TokenReflection{interface IReflectionConstant extends IReflection{public
 function getDeclaringClass();public function getDeclaringClassName();public function
 getNamespaceName();public function inNamespace();public function getValue();public
 function getValueDefinition();public function getDocComment();public function getStartLine();public
-function getEndLine();public function getFileName();public function getShortName();}}
+function getEndLine();public function getFileName();public function getShortName();public
+function __toString();}}
 
  namespace TokenReflection{interface IReflectionExtension extends IReflection{public
 function getClass($name);public function getClasses();public function getClassNames();public
 function getConstantReflection($name);public function getConstantReflections();public
 function getConstant($name);public function getConstants();public function getFunction($name);public
-function getFunctions();public function getFunctionNames();}}
+function getFunctions();public function getFunctionNames();public function __toString();}}
 
  namespace TokenReflection{interface IReflectionFunctionBase extends IReflection{public
 function getDocComment();public function getStartLine();public function getEndLine();public
@@ -222,7 +243,8 @@ getClasses();public function getClassNames();public function getClassShortNames(
 function getFunction($functionName);public function getFunctions();public function
 hasFunction($functionName);public function getFunctionNames();public function getFunctionShortNames();public
 function getConstant($constantName);public function getConstants();public function
-hasConstant($constantName);public function getConstantNames();public function getConstantShortNames();}}
+hasConstant($constantName);public function getConstantNames();public function getConstantShortNames();public
+function __toString();}}
 
  namespace TokenReflection{interface IReflectionParameter extends IReflection{public
 function getDeclaringClass();public function getDeclaringClassName();public function
@@ -231,7 +253,7 @@ getDefaultValue();public function getDefaultValueDefinition();public function ge
 function isArray();public function allowsNull();public function getClass();public
 function getClassName();public function isDefaultValueAvailable();public function
 isOptional();public function isPassedByReference();public function getDocComment();public
-function getStartLine();public function getEndLine();}}
+function getStartLine();public function getEndLine();public function __toString();}}
 
  namespace TokenReflection{interface IReflectionProperty extends IReflection{public
 function getDeclaringClass();public function getDeclaringClassName();public function
@@ -239,7 +261,8 @@ getDocComment();public function getStartLine();public function getEndLine();publ
 function getModifiers();public function getValue($object);public function isDefault();public
 function getDefaultValue();public function getDefaultValueDefinition();public function
 isPrivate();public function isProtected();public function isPublic();public function
-isStatic();public function setAccessible($accessible);public function setValue($object,$value);}}
+isStatic();public function setAccessible($accessible);public function setValue($object,$value);public
+function __toString();}}
 
  namespace TokenReflection\Php{use TokenReflection;use Reflector;interface IReflection
 extends TokenReflection\IReflection{public function getNamespaceAliases();public
@@ -271,19 +294,16 @@ function getExtension(){return null;}public function getExtensionName(){return f
 function isInternal(){return false;}public function isUserDefined(){return true;}public
 function isDeprecated(){return$this->hasAnnotation('deprecated');}public function
 getName(){return$this->name;}public function getDocComment(){return$this->docComment->getDocComment();}public
-function getBroker(){return$this->broker;}public function isTokenized(){return true;}public
-function __toString(){return '';}final public function getAnnotation($name){return$this->docComment->getAnnotation($name);}final
+function getBroker(){return$this->broker;}public function isTokenized(){return true;}final
+public function getAnnotation($name){return$this->docComment->getAnnotation($name);}final
 public function hasAnnotation($name){return$this->docComment->hasAnnotation($name);}final
 public function getAnnotations(){return$this->docComment->getAnnotations();}abstract
 public function getNamespaceAliases();public function getSource(){return$this->broker->getFileTokens($this->getFileName())->getSourcePart($this->startPosition,$this->endPosition);}final
 public function __get($key){return self::get($this,$key);}final public function __isset($key){return
-self::exists($this,$key);}public static function export($argument,$return=false){return
-'';}final public static function get(IReflection$object,$key){if(!empty($key)){$className=get_class($object);if(!isset(self::$methodCache[$className])){self::$methodCache[$className]=array_flip(get_class_methods($className));}$methods=self::$methodCache[$className];$key2=ucfirst($key);if(isset($methods['get'.$key2])){return$object->{'get'.$key2}();}elseif(isset($methods['is'.$key2])){return$object->{'is'.$key2}();}}throw
+self::exists($this,$key);}final public static function get(IReflection$object,$key){if(!empty($key)){$className=get_class($object);if(!isset(self::$methodCache[$className])){self::$methodCache[$className]=array_flip(get_class_methods($className));}$methods=self::$methodCache[$className];$key2=ucfirst($key);if(isset($methods['get'.$key2])){return$object->{'get'.$key2}();}elseif(isset($methods['is'.$key2])){return$object->{'is'.$key2}();}}throw
 new Exception\Runtime(sprintf('Cannot read %s "%s" property "%s".',get_class($object),$object->getName(),$key),Exception\Runtime::DOES_NOT_EXIST);}final
 public static function exists(IReflection$object,$key){try{self::get($object,$key);return
-true;}catch(RuntimeException$e){return false;}}final public static function resolveClassFQN($className,array$aliases,$namespaceName=null){if($className{0}=='\\'){return
-ltrim($className,'\\');}if(false===($position=strpos($className,'\\'))){if(isset($aliases[$className])){return$aliases[$className];}}else{$alias=substr($className,0,$position);if(isset($aliases[$alias])){return$aliases[$alias].'\\'.substr($className,$position+1);}}return
-null===$namespaceName||''===$namespaceName||$namespaceName===ReflectionNamespace::NO_NAMESPACE_NAME?$className:$namespaceName.'\\'.$className;}}}
+true;}catch(RuntimeException$e){return false;}}}}
 
  namespace TokenReflection{class ReflectionFile implements IReflection{private$namespaces=array();private$tokenStream=null;private$broker;public
 function __construct(Stream$tokenStream,Broker$broker){$this->tokenStream=$tokenStream;$this->broker=$broker;$this->parse();}public
@@ -303,17 +323,17 @@ function __isset($key){return ReflectionBase::exists($this,$key);}}}
 
  namespace TokenReflection{use TokenReflection\Exception;use ReflectionProperty as
 InternalReflectionProperty,ReflectionClass as InternalReflectionClass;class ReflectionProperty
-extends ReflectionBase implements IReflectionProperty{private static$parseValueDefinitions=false;private$declaringClassName;private$defaultValue;private$defaultValueDefinition;private$modifiers=0;private$accessible=false;public
+extends ReflectionBase implements IReflectionProperty{private$declaringClassName;private$defaultValue;private$defaultValueDefinition=array();private$modifiers=0;private$accessible=false;public
 function getDeclaringClassName(){return$this->declaringClassName;}public function
 getDeclaringClass(){return$this->getBroker()->getClass($this->declaringClassName);}public
 function getModifiers(){return$this->modifiers;}public function isDefault(){return
-null!==$this->defaultValueDefinition;}public function getDefaultValue(){return$this->defaultValue;}public
+null!==$this->getDefaultValueDefinition();}public function getDefaultValue(){if(is_array($this->defaultValueDefinition)){$this->defaultValue=Resolver::getValueDefinition($this->defaultValueDefinition,$this);$this->defaultValueDefinition=Resolver::getSourceCode($this->defaultValueDefinition);}return$this->defaultValue;}public
 function getValue($object){try{$declaringClass=$this->getDeclaringClass();if(!$declaringClass->isInstance($object)){throw
 new Exception\Runtime(sprintf('Invalid class, "%s" expected "%s" given.',$declaringClass->getName(),get_class($object)),Exception\Runtime::INVALID_ARGUMENT);}if($this->isPublic()){return$object->{$this->name};}elseif($this->isAccessible()){$refClass=new
 InternalReflectionClass($object);$refProperty=$refClass->getProperty($this->name);$refProperty->setAccessible(true);$value=$refProperty->getValue($object);$refProperty->setAccessible(false);return$value;}throw
 new Exception\Runtime('Only public and accessible properties can return their values.',Exception\Runtime::NOT_ACCESSBILE);}catch(Exception\Runtime$e){throw
 new Exception\Runtime(sprintf('Could not get value of property "%s::$%s".',$this->declaringClassName,$this->name),0,$e);}}public
-function getDefaultValueDefinition(){return$this->defaultValueDefinition;}public
+function getDefaultValueDefinition(){return is_array($this->defaultValueDefinition)?Resolver::getSourceCode($this->defaultValueDefinition):$this->defaultValueDefinition;}public
 function isPrivate(){return (bool)($this->modifiers&InternalReflectionProperty::IS_PRIVATE);}public
 function isProtected(){return (bool)($this->modifiers&InternalReflectionProperty::IS_PROTECTED);}public
 function isPublic(){return (bool)($this->modifiers&InternalReflectionProperty::IS_PUBLIC);}public
@@ -321,11 +341,15 @@ function isStatic(){return (bool)($this->modifiers&InternalReflectionProperty::I
 function setAccessible($accessible){$this->accessible=(bool)$accessible;}public function
 isAccessible(){return$this->accessible;}public function setValue($object,$value){try{$declaringClass=$this->getDeclaringClass();if(!$declaringClass->isInstance($object)){throw
 new Exception\Runtime(sprintf('Invalid class, "%s" expected "%s" given.',$declaringClass->getName(),get_class($object)),Exception\Runtime::INVALID_ARGUMENT);}if($this->isPublic()){$object->{$this->name}=$value;}elseif($this->isAccessible()){$refClass=new
-InternalReflectionClass($object);$refProperty=$refClass->getProperty($this->name);$refProperty->setAccessible(true);$refProperty->setValue($object,$value);$refProperty->setAccessible(false);if($this->isStatic()){$this->defaultValue=$value;$this->defaultValueDefinition=null;}}else{throw
+InternalReflectionClass($object);$refProperty=$refClass->getProperty($this->name);$refProperty->setAccessible(true);$refProperty->setValue($object,$value);$refProperty->setAccessible(false);if($this->isStatic()){$this->setDefaultValue($value);}}else{throw
 new Exception\Runtime('Only public and accessible properties can be set.',Exception\Runtime::NOT_ACCESSBILE);}}catch(Exception\Runtime$e){throw
 new Exception\Runtime(sprintf('Could not set value of property "%s::$%s".',$this->declaringClassName,$this->name),0,$e);}}public
-function setDefaultValue($value){$this->defaultValue=$value;}protected function processParent(IReflection$parent){if(!$parent
-instanceof ReflectionClass){throw new Exception\Parse(sprintf('The parent object has to be an instance of TokenReflection\ReflectionClass, "%s" given.',get_class($parent)),Exception\Parse::INVALID_PARENT);}$this->declaringClassName=$parent->getName();return
+function setDefaultValue($value){$this->defaultValue=$value;$this->defaultValueDefinition=var_export($value,true);}public
+function __toString(){return sprintf("Property [ %s%s%s%s%s\$%s ]\n",$this->isStatic()?'':'<default> ',$this->isPublic()?'public ':'',$this->isPrivate()?'private ':'',$this->isProtected()?'protected ':'',$this->isStatic()?'static ':'',$this->getName());}public
+static function export(Broker$broker,$class,$property,$return=false){$className=is_object($class)?get_class($class):$class;$propertyName=$property;$class=$broker->getClass($className);if($class
+instanceof Dummy\ReflectionClass){throw new Exception\Runtime(sprintf('Class %s does not exist.',$className),Exception\Runtime::DOES_NOT_EXIST);}$property=$class->getProperty($propertyName);if($return){return$property->__toString();}echo$property->__toString();}protected
+function processParent(IReflection$parent){if(!$parent instanceof ReflectionClass){throw
+new Exception\Parse(sprintf('The parent object has to be an instance of TokenReflection\ReflectionClass, "%s" given.',get_class($parent)),Exception\Parse::INVALID_PARENT);}$this->declaringClassName=$parent->getName();return
 parent::processParent($parent);}public function getNamespaceAliases(){return$this->getDeclaringClass()->getNamespaceAliases();}protected
 function parse(Stream$tokenStream,IReflection$parent){return$this->parseModifiers($tokenStream,$parent)->parseName($tokenStream)->parseDefaultValue($tokenStream);}protected
 function parseName(Stream$tokenStream){try{if(!$tokenStream->is(T_VARIABLE)){throw
@@ -333,8 +357,8 @@ new Exception\Parse('The property name could not be determined.',Exception\Parse
 new Exception\Parse('Could not parse property name.',Exception\Parse::PARSE_ELEMENT_ERROR,$e);}}private
 function parseDefaultValue(Stream$tokenStream){$type=$tokenStream->getType();if(';'===$type||','===$type){return$this;}if('='===$type){$tokenStream->skipWhitespaces();}try{$level=0;while(null!==($type=$tokenStream->getType())){switch($type){case
 ',':if(0!==$level){break;}case ';':break 2;case ')':case ']':case '}':$level--;break;case
-'(':case '{':case '[':$level++;break;default:break;}$this->defaultValueDefinition.=$tokenStream->getTokenValue();$tokenStream->next();}if(','!==$type&&';'!==$type){throw
-new Exception\Parse(sprintf('The property default value is not terminated properly. Expected "," or ";", "%s" found.',$tokenStream->getTokenName()),Exception\Parse::PARSE_ELEMENT_ERROR);}if(self::$parseValueDefinitions){$this->defaultValue=@eval('return '.$this->defaultValueDefinition.';');}return$this;}catch(Exception$e){throw
+'(':case '{':case '[':$level++;break;default:break;}$this->defaultValueDefinition[]=$tokenStream->current();$tokenStream->next();}if(','!==$type&&';'!==$type){throw
+new Exception\Parse(sprintf('The property default value is not terminated properly. Expected "," or ";", "%s" found.',$tokenStream->getTokenName()),Exception\Parse::PARSE_ELEMENT_ERROR);}return$this;}catch(Exception$e){throw
 new Exception\Parse('Could not parse property default value.',Exception\Parse::PARSE_ELEMENT_ERROR,$e);}}private
 function parseModifiers(Stream$tokenStream,ReflectionClass$class){while(true){switch($tokenStream->getType()){case
 T_PUBLIC:case T_VAR:$this->modifiers|=InternalReflectionProperty::IS_PUBLIC;break;case
@@ -343,9 +367,7 @@ T_PRIVATE:$this->modifiers|=InternalReflectionProperty::IS_PRIVATE;break;case T_
 2;}$tokenStream->skipWhitespaces();}if(InternalReflectionProperty::IS_STATIC===$this->modifiers){$this->modifiers|=InternalReflectionProperty::IS_PUBLIC;}elseif(0===$this->modifiers){try{$parentProperties=$class->getOwnProperties();if(empty($parentProperties)){throw
 new Exception\Parse('No access level defined and no previous defining class property present.',Exception\Parse::PARSE_ELEMENT_ERROR);}$sibling=array_pop($parentProperties);if($sibling->isPublic()){$this->modifiers=InternalReflectionProperty::IS_PUBLIC;}elseif($sibling->isPrivate()){$this->modifiers=InternalReflectionProperty::IS_PRIVATE;}elseif($sibling->isProtected()){$this->modifiers=InternalReflectionProperty::IS_PROTECTED;}else{throw
 new Exception\Parse(sprintf('Property sibling "%s" has no access level defined.',$sibling->getName()),Exception\Parse::PARSE_ELEMENT_ERROR);}if($sibling->isStatic()){$this->modifiers|=InternalReflectionProperty::IS_STATIC;}}catch(Exception$e){throw
-new Exception\Parse('Could not parse modifiers.',Exception\Parse::PARSE_ELEMENT_ERROR,$e);}}return$this;}public
-static function setParseValueDefinitions($parse){self::$parseValueDefinitions=(bool)$parse;}public
-static function getParseValueDefinitions(){return self::$parseValueDefinitions;}}}
+new Exception\Parse('Could not parse modifiers.',Exception\Parse::PARSE_ELEMENT_ERROR,$e);}}return$this;}}}
 
  namespace TokenReflection\Dummy{use TokenReflection;use TokenReflection\Broker,TokenReflection\IReflectionClass,TokenReflection\ReflectionBase;use
 ReflectionClass as InternalReflectionClass,TokenReflection\Exception;class ReflectionClass
@@ -358,10 +380,9 @@ getFileName(){return null;}public function getStartLine(){return null;}public fu
 getEndLine(){return null;}public function getExtension(){return null;}public function
 getExtensionName(){return false;}public function isInternal(){return false;}public
 function isUserDefined(){return false;}public function getSource(){return '';}public
-function getDocComment(){return false;}public function __toString(){return '';}public
-function getAnnotations(){return array();}public function getAnnotation($name){return
-null;}public function hasAnnotation($name){return false;}public function getConstant($name){throw
-new Exception\Runtime(sprintf('There is no constant "%s" in class "%s".',$name,$this->name),Exception\Runtime::DOES_NOT_EXIST);}public
+function getDocComment(){return false;}public function getAnnotations(){return array();}public
+function getAnnotation($name){return null;}public function hasAnnotation($name){return
+false;}public function getConstant($name){throw new Exception\Runtime(sprintf('There is no constant "%s" in class "%s".',$name,$this->name),Exception\Runtime::DOES_NOT_EXIST);}public
 function getConstantReflection($name){throw new Exception\Runtime(sprintf('There is no constant "%s" in class "%s".',$name,$this->name),Exception\Runtime::DOES_NOT_EXIST);}public
 function getConstants(){return array();}public function getConstantReflections(){return
 array();}public function getOwnConstantReflections(){return array();}public function
@@ -410,7 +431,7 @@ function newInstanceArgs(array$args=array()){if(!class_exists($this->name,true))
 new Exception\Runtime(sprintf('Could not create an instance of class "%s"; class does not exist.',$this->name),Exception\Runtime::DOES_NOT_EXIST);}$reflection=new
 InternalReflectionClass($this->name);return$reflection->newInstanceArgs($args);}public
 function setStaticPropertyValue($name,$value){throw new Exception\Runtime(sprintf('There is no static property "%s" in class "%s".',$name,$this->name),Exception\Runtime::DOES_NOT_EXIST);}public
-function isComplete(){return false;}}}
+function isComplete(){return false;}public function __toString(){return sprintf("Class|Interface [ <user> class|interface %s ] {\n  %s%s%s%s%s\n}\n",$this->getShortName(),"\n\n  - Constants [0] {\n  }","\n\n  - Static properties [0] {\n  }","\n\n  - Static methods [0] {\n  }","\n\n  - Properties [0] {\n  }","\n\n  - Methods [0] {\n  }");}}}
 
  namespace TokenReflection{interface IReflectionFunction extends IReflectionFunctionBase{public
 function isDisabled();public function invokeArgs(array$args);}}
@@ -508,8 +529,12 @@ var_export($this->value,true);}public function getDocComment(){return false;}pub
 function getStartLine(){return null;}public function getEndLine(){return null;}public
 function getFileName(){return null;}public function getShortName(){$name=$this->getName();if(null!==$this->namespaceName&&$this->namespaceName!==ReflectionNamespace::NO_NAMESPACE_NAME){$name=substr($name,strlen($this->namespaceName)+1);}return$name;}public
 function isTokenized(){return false;}public function isDeprecated(){return false;}public
-function getNamespaceAliases(){return array();}public static function create(Reflector$internalReflection,Broker$broker){return
-null;}}}
+function getNamespaceAliases(){return array();}public function __toString(){return
+sprintf("Constant [ %s %s ] { %s }\n",gettype($this->getValue()),$this->getShortName(),$this->getValue());}public
+static function export(Broker$broker,$class,$constant,$return=false){$className=is_object($class)?get_class($class):$class;$constantName=$constant;if(null===$className){$constant=$broker->getConstant($constantName);if(null===$constant){throw
+new Exception\Runtime(sprintf('Constant %s does not exist.',$constantName),Exception\Runtime::DOES_NOT_EXIST);}}else{$class=$broker->getClass($className);if($class
+instanceof Dummy\ReflectionClass){throw new Exception\Runtime(sprintf('Class %s does not exist.',$className),Exception\Runtime::DOES_NOT_EXIST);}$constant=$class->getConstantReflection($constantName);}if($return){return$constant->__toString();}echo$constant->__toString();}public
+static function create(Reflector$internalReflection,Broker$broker){return null;}}}
 
  namespace TokenReflection\Php{use TokenReflection;use TokenReflection\Broker,TokenReflection\Exception;use
 Reflector,ReflectionExtension as InternalReflectionExtension;class ReflectionExtension
@@ -597,7 +622,7 @@ function getConstructor(){foreach($this->getMethods()as$method){if($method->isCo
 null;}public function getDestructor(){foreach($this->getMethods()as$method){if($method->isDestructor()){return$method;}}return
 null;}public function getDefaultProperties(){static$accessLevels=array(InternalReflectionProperty::IS_PUBLIC,InternalReflectionProperty::IS_PRIVATE,InternalReflectionProperty::IS_PROTECTED);$defaults=array();$properties=$this->getProperties();foreach(array(true,false)as$static){foreach($accessLevels
 as$level){foreach($properties as$property){if($property->isStatic()===$static&&($property->getModifiers()&$level)){$defaults[$property->getName()]=$property->getDefaultValue();}}}}return$defaults;}public
-function getInterfaceNames(){if($this->isInterface()){return$this->getParentClassNameList();}$parentClass=$this->getParentClass();$names=$parentClass?$parentClass->getInterfaceNames():array();foreach(array_reverse($this->interfaces)as$interfaceName){$names=array_merge($names,$this->getBroker()->getClass($interfaceName)->getInterfaceNames());$names[]=$interfaceName;}return
+function getInterfaceNames(){$parentClass=$this->getParentClass();$names=$parentClass?$parentClass->getInterfaceNames():array();foreach(array_reverse($this->interfaces)as$interfaceName){$names=array_merge($names,$this->getBroker()->getClass($interfaceName)->getInterfaceNames());$names[]=$interfaceName;}return
 array_unique($names);}public function getOwnInterfaceNames(){return array_reverse($this->interfaces);}public
 function getInterfaces(){$interfaceNames=$this->getInterfaceNames();if(empty($interfaceNames)){return
 array();}$broker=$this->getBroker();return array_combine($interfaceNames,array_map(function($interfaceName)use($broker){return$broker->getClass($interfaceName);},$interfaceNames));}public
@@ -654,6 +679,10 @@ function isIterateable(){return$this->implementsInterface('Traversable');}public
 function isSubclassOf($class){if(is_object($class)){if(!$class instanceof InternalReflectionClass&&!$class
 instanceof IReflectionClass){throw new Exception\Runtime(sprintf('Parameter must be a string or an instance of class reflection, "%s" provided.',get_class($class)),Exception\Runtime::INVALID_ARGUMENT);}$class=$class->getName();}if($class===$this->parentClassName){return
 true;}$parent=$this->getParentClass();return false===$parent?false:$parent->isSubclassOf($class);}public
+function __toString(){$implements='';if(count($this->getInterfaceNames())>0){$interfaceNames=$this->getInterfaceNames();$implements=' implements '.implode(', ',$interfaceNames);}$buffer='';$count=0;foreach($this->getConstantReflections()as$constant){$buffer.="    ".$constant->__toString();$count++;}$constants=sprintf("\n\n  - Constants [%d] {\n%s  }",$count,$buffer);$sBuffer='';$sCount=0;$buffer='';$count=0;foreach($this->getProperties()as$property){$string="    ".preg_replace('~\n(?!$)~',"\n    ",$property->__toString());if($property->isStatic()){$sBuffer.=$string;$sCount++;}else{$buffer.=$string;$count++;}}$staticProperties=sprintf("\n\n  - Static properties [%d] {\n%s  }",$sCount,$sBuffer);$properties=sprintf("\n\n  - Properties [%d] {\n%s  }",$count,$buffer);$sBuffer='';$sCount=0;$buffer='';$count=0;foreach($this->getMethods()as$method){if($method->getDeclaringClassName()!==$this->getName()&&$method->isPrivate()){continue;}$string="\n    ".preg_replace('~\n(?!$|\n)~',"\n    ",$method->__toString());if($method->getDeclaringClassName()!==$this->getName()){$string=preg_replace('~Method [ <[\w:]+~','\0, inherits '.$method->getDeclaringClassName(),$string);}if($method->isStatic()){$sBuffer.=$string;$sCount++;}else{$buffer.=$string;$count++;}}$staticMethods=sprintf("\n\n  - Static methods [%d] {\n%s  }",$sCount,ltrim($sBuffer,"\n"));$methods=sprintf("\n\n  - Methods [%d] {\n%s  }",$count,ltrim($buffer,"\n"));return
+sprintf("%s [ <user>%s %s%s%s %s%s%s ] {\n  @@ %s %d-%d%s%s%s%s%s\n}\n",$this->isInterface()?'Interface':'Class',$this->isIterateable()?' <iterateable>':'',$this->isAbstract()?'abstract ':'',$this->isFinal()?'final ':'',$this->isInterface()?'interface':'class',$this->getShortName(),null!==$this->getParentClassName()?' extends '.$this->getParentClassName():'',$implements,$this->getFileName(),$this->getStartLine(),$this->getEndLine(),$constants,$staticProperties,$staticMethods,$properties,$methods);}public
+static function export(Broker$broker,$className,$return=false){if(is_object($className)){$className=get_class($className);}$class=$broker->getClass($className);if($class
+instanceof Dummy\ReflectionClass){throw new Exception\Runtime(sprintf('Class %s does not exist.',$className),Exception\Runtime::DOES_NOT_EXIST);}if($return){return$class->__toString();}echo$class->__toString();}public
 function getDirectSubclasses(){$that=$this->name;return array_filter($this->getBroker()->getClasses(),function(ReflectionClass$class)use($that){if(!$class->isSubclassOf($that)){return
 false;}return null===$class->getParentClassName()||!$class->getParentClass()->isSubClassOf($that);});}public
 function getDirectSubclassNames(){return array_keys($this->getDirectSubclasses());}public
@@ -686,18 +715,19 @@ new Exception\Parse('Could not parse class modifiers.',Exception\Parse::PARSE_EL
 function parseName(Stream$tokenStream){try{if(!$tokenStream->is(T_STRING)){throw
 new Exception\Parse(sprintf('Invalid token found: "%s".',$tokenStream->getTokenName()),Exception\Parse::PARSE_ELEMENT_ERROR);}if($this->namespaceName===ReflectionNamespace::NO_NAMESPACE_NAME){$this->name=$tokenStream->getTokenValue();}else{$this->name=$this->namespaceName.'\\'.$tokenStream->getTokenValue();}$tokenStream->skipWhitespaces();return$this;}catch(Exception$e){throw
 new Exception\Parse('Could not parse class name.',Exception\Parse::PARSE_ELEMENT_ERROR,$e);}}private
-function parseParent(Stream$tokenStream,ReflectionBase$parent=null){if(!$tokenStream->is(T_EXTENDS)){return$this;}try{$tokenStream->skipWhitespaces();$parentClassName='';while(true){switch($tokenStream->getType()){case
+function parseParent(Stream$tokenStream,ReflectionBase$parent=null){if(!$tokenStream->is(T_EXTENDS)){return$this;}try{while(true){$tokenStream->skipWhitespaces();$parentClassName='';while(true){switch($tokenStream->getType()){case
 T_STRING:case T_NS_SEPARATOR:$parentClassName.=$tokenStream->getTokenValue();break;default:break
-2;}$tokenStream->next();}$tokenStream->skipWhitespaces();$this->parentClassName=self::resolveClassFQN($parentClassName,$this->aliases,$this->namespaceName);return$this;}catch(Exception$e){throw
+2;}$tokenStream->skipWhitespaces();}$parentClassName=Resolver::resolveClassFQN($parentClassName,$this->aliases,$this->namespaceName);if($this->isInterface()){$this->interfaces[]=$parentClassName;if(','===$tokenStream->getTokenValue()){continue;}}else{$this->parentClassName=$parentClassName;}break;}return$this;}catch(Exception$e){throw
 new Exception\Parse('Could not parse parent class name.',Exception\Parse::PARSE_ELEMENT_ERROR,$e);}}public
-function getNamespaceAliases(){return$this->aliases;}private function parseInterfaces(Stream$tokenStream,ReflectionBase$parent=null){if(!$tokenStream->is(T_IMPLEMENTS)){return$this;}try{while(true){$interfaceName='';$tokenStream->skipWhitespaces();while(true){switch($tokenStream->getType()){case
+function getNamespaceAliases(){return$this->aliases;}private function parseInterfaces(Stream$tokenStream,ReflectionBase$parent=null){if(!$tokenStream->is(T_IMPLEMENTS)){return$this;}if($this->isInterface()){throw
+new Exception\Parse(sprintf('Interfaces ("%s") cannot implement interfaces.',$this->name),Exception\Parse::PARSE_ELEMENT_ERROR);}try{while(true){$interfaceName='';$tokenStream->skipWhitespaces();while(true){switch($tokenStream->getType()){case
 T_STRING:case T_NS_SEPARATOR:$interfaceName.=$tokenStream->getTokenValue();break;default:break
-2;}$tokenStream->skipWhitespaces();}$this->interfaces[]=self::resolveClassFQN($interfaceName,$this->aliases,$this->namespaceName);$type=$tokenStream->getType();if('{'===$type){break;}elseif(','!==$type){throw
+2;}$tokenStream->skipWhitespaces();}$this->interfaces[]=Resolver::resolveClassFQN($interfaceName,$this->aliases,$this->namespaceName);$type=$tokenStream->getType();if('{'===$type){break;}elseif(','!==$type){throw
 new Exception\Parse(sprintf('Invalid token found: "%s", expected "{" or ";".',$tokenStream->getTokenName()),Exception\Parse::PARSE_ELEMENT_ERROR);}}return$this;}catch(Exception$e){throw
 new Exception\Parse('Could not parse implemented interfaces.',Exception\Parse::PARSE_ELEMENT_ERROR,$e);}}}}
 
  namespace TokenReflection{class ReflectionConstant extends ReflectionBase implements
-IReflectionConstant{private$declaringClassName;private$namespaceName;private$value;private$valueDefinition='';private$valueAsLink=false;private$aliases=array();protected
+IReflectionConstant{private$declaringClassName;private$namespaceName;private$value;private$valueDefinition=array();private$aliases=array();protected
 function processParent(IReflection$parent){if($parent instanceof ReflectionFileNamespace){$this->namespaceName=$parent->getName();$this->aliases=$parent->getNamespaceAliases();}elseif($parent
 instanceof ReflectionClass){$this->declaringClassName=$parent->getName();}else{throw
 new Exception\Parse(sprintf('The parent object has to be an instance of TokenReflection\ReflectionFileNamespace or TokenReflection\ReflectionClass, "%s" given.',get_class($parent)),Exception\Parse::INVALID_PARENT);}return
@@ -707,12 +737,17 @@ new Exception\Parse('The constant name could not be determined.',Exception\Parse
 new Exception\Parse('Could not parse constant name.',Exception\Parse::PARSE_ELEMENT_ERROR,$e);}}protected
 function parseDocComment(Stream$tokenStream,IReflection$parent){$position=$tokenStream->key()-1;while($position>0&&!$tokenStream->is(T_CONST,$position)){$position--;}$actual=$tokenStream->key();parent::parseDocComment($tokenStream->seek($position),$parent);$tokenStream->seek($actual);return$this;}private
 function parseValue(Stream$tokenStream,IReflection$parent){try{if(!$tokenStream->is('=')){throw
-new Exception\Parse('Could not find the definition start.',Exception\Parse::PARSE_ELEMENT_ERROR);}$tokenStream->skipWhitespaces();static$acceptedStrings=array('true'=>true,'false'=>true,'null'=>true);static$acceptedTokens=array('-'=>true,'+'=>true,T_STRING=>true,T_NS_SEPARATOR=>true,T_CONSTANT_ENCAPSED_STRING=>true,T_DNUMBER=>true,T_LNUMBER=>true,T_DOUBLE_COLON=>true);$evalValue=true;while(null!==($type=$tokenStream->getType())){$value=$tokenStream->getTokenValue();if(!isset($acceptedTokens[$type])){break;}elseif($tokenStream->is(T_STRING)&&!isset($acceptedStrings[strtolower($value)])){$evalValue=false;}$this->valueDefinition.=$value;$tokenStream->next();}if(null===$type||(','!==$value&&';'!==$value)){throw
-new Exception\Parse(sprintf('Invalid value definition: "%s".',$this->valueDefinition),Exception\Parse::PARSE_ELEMENT_ERROR);}$this->valueDefinition=trim($this->valueDefinition);$this->valueAsLink=!$evalValue;if($evalValue){$this->value=eval(sprintf('return %s;',$this->valueDefinition));}return$this;}catch(Exception$e){throw
+new Exception\Parse('Could not find the definition start.',Exception\Parse::PARSE_ELEMENT_ERROR);}$tokenStream->skipWhitespaces();static$acceptedTokens=array('-'=>true,'+'=>true,T_STRING=>true,T_NS_SEPARATOR=>true,T_CONSTANT_ENCAPSED_STRING=>true,T_DNUMBER=>true,T_LNUMBER=>true,T_DOUBLE_COLON=>true);while(null!==($type=$tokenStream->getType())&&isset($acceptedTokens[$type])){$this->valueDefinition[]=$tokenStream->current();$tokenStream->next();}if(empty($this->valueDefinition)){throw
+new Exception\Parse('Value definition is empty.',Exception\Parse::PARSE_ELEMENT_ERROR);}$value=$tokenStream->getTokenValue();if(null===$type||(','!==$value&&';'!==$value)){throw
+new Exception\Parse(sprintf('Invalid value definition: "%s".',$this->valueDefinition),Exception\Parse::PARSE_ELEMENT_ERROR);}return$this;}catch(Exception$e){throw
 new Exception\Parse('Could not parse constant value.',Exception\Parse::PARSE_ELEMENT_ERROR,$e);}}public
-function getValueDefinition(){if(!$this->valueAsLink){return$this->valueDefinition;}if($pos=strpos($this->valueDefinition,'::')){$className=substr($this->valueDefinition,0,$pos);if('self'===strtolower($className)){return$this->valueDefinition;}$nsClassName=self::resolveClassFQN($className,$this->getNamespaceAliases(),$this->namespaceName?:$this->getDeclaringClass()->getNamespaceName());$nsValue=$nsClassName.substr($this->valueDefinition,$pos);}else{$nsValue=$this->valueDefinition;if('\\'!==$nsValue{0}){$nsValue=ltrim(($this->namespaceName?$this->getNamespaceName():$this->getDeclaringClass()->getNamespaceName()).'\\'.$nsValue,'\\');}}return$this->getBroker()->hasConstant($nsValue)?$nsValue:$this->valueDefinition;}public
+function getValueDefinition(){return is_array($this->valueDefinition)?Resolver::getSourceCode($this->valueDefinition):$this->valueDefinition;}public
 function getOriginalValueDefinition(){return$this->valueDefinition;}public function
-getValue(){if(null===$this->value&&'null'!==strtolower($this->valueDefinition)){if($position=strpos($this->valueDefinition,'::')){$className=substr($this->valueDefinition,0,$position);$constantName=substr($this->valueDefinition,$position+2);$class=$this->getBroker()->getClass($className);$this->value=$class->hasConstant($constantName)?$class->getConstantReflection($constantName)->getValue():null;}else{$constant=$this->getBroker()->getConstant($this->valueDefinition);$this->value=$constant?$constant->getValue():null;}}return$this->value;}public
+__toString(){return sprintf("Constant [ %s %s ] { %s }\n",gettype($this->getValue()),$this->getShortName(),$this->getValue());}public
+static function export(Broker$broker,$class,$constant,$return=false){$className=is_object($class)?get_class($class):$class;$constantName=$constant;if(null===$className){$constant=$broker->getConstant($constantName);if(null===$constant){throw
+new Exception\Runtime(sprintf('Constant %s does not exist.',$constantName),Exception\Runtime::DOES_NOT_EXIST);}}else{$class=$broker->getClass($className);if($class
+instanceof Dummy\ReflectionClass){throw new Exception\Runtime(sprintf('Class %s does not exist.',$className),Exception\Runtime::DOES_NOT_EXIST);}$constant=$class->getConstantReflection($constantName);}if($return){return$constant->__toString();}echo$constant->__toString();}public
+function getValue(){if(is_array($this->valueDefinition)){$this->value=Resolver::getValueDefinition($this->valueDefinition,$this);$this->valueDefinition=Resolver::getSourceCode($this->valueDefinition);}return$this->value;}public
 function getDeclaringClassName(){return$this->declaringClassName;}public function
 getDeclaringClass(){if(null===$this->declaringClassName){return null;}return$this->getBroker()->getClass($this->declaringClassName);}public
 function getNamespaceName(){return null===$this->namespaceName||$this->namespaceName===ReflectionNamespace::NO_NAMESPACE_NAME?'':$this->namespaceName;}public
@@ -806,35 +841,44 @@ function isUserDefined(){return true;}public function addFileNamespace(Reflectio
 as$className=>$reflection){if(isset($classes[$className])){throw new Exception\Runtime(sprintf('Class "%s" is already defined; in file "%s".',$className,$reflection->getFileName()),Exception\Runtime::ALREADY_EXISTS);}}$this->classes=array_merge($this->classes,$classes);$functions=$namespace->getFunctions();foreach($this->functions
 as$functionName=>$reflection){if(isset($functions[$functionName])){throw new Exception\Runtime(sprintf('Function "%s" is already defined; in file "%s".',$functionName,$reflection->getFileName()),Exception\Runtime::ALREADY_EXISTS);}}$this->functions=array_merge($this->functions,$functions);$constants=$namespace->getConstants();foreach($this->constants
 as$constantName=>$reflection){if(isset($constants[$constantName])){throw new Exception\Runtime(sprintf('Constant "%s" is already defined; in file "%s".',$constantName,$reflection->getFileName()),Exception\Runtime::ALREADY_EXISTS);}}$this->constants=array_merge($this->constants,$constants);}public
-function __toString(){return '';}public function getSource(){throw new Exception\Runtime('Cannot export source code of a namespace.',Exception\Runtime::UNSUPPORTED);}public
-static function export($argument,$return=false){return ReflectionBase::export($argument,$return);}final
+function __toString(){$buffer='';$count=0;foreach($this->getClasses()as$class){$string="\n    ".trim(str_replace("\n","\n    ",$class->__toString()),' ');$string=str_replace("    \n      - Parameters","\n      - Parameters",$string);$buffer.=$string;$count++;}$classes=sprintf("\n\n  - Classes [%d] {\n%s  }",$count,ltrim($buffer,"\n"));$buffer='';$count=0;foreach($this->getConstants()as$constant){$buffer.="    ".$constant->__toString();$count++;}$constants=sprintf("\n\n  - Constants [%d] {\n%s  }",$count,$buffer);$buffer='';$count=0;foreach($this->getFunctions()as$function){$string="\n    ".trim(str_replace("\n","\n    ",$function->__toString()),' ');$string=str_replace("    \n      - Parameters","\n      - Parameters",$string);$buffer.=$string;$count++;}$functions=sprintf("\n\n  - Functions [%d] {\n%s  }",$count,ltrim($buffer,"\n"));return
+sprintf("Namespace [ <user> namespace %s ] {  %s%s%s\n}\n",$this->getName(),$classes,$constants,$functions);}public
+static function export(Broker$broker,$namespace,$return=false){$namespaceName=$namespace;$namespace=$broker->getNamespace($namespaceName);if(null===$namespace){throw
+new Exception\Runtime(sprintf('Namespace %s does not exist.',$namespaceName),Exception\Runtime::DOES_NOT_EXIST);}if($return){return$namespace->__toString();}echo$namespace->__toString();}public
+function getSource(){throw new Exception\Runtime('Cannot export source code of a namespace.',Exception\Runtime::UNSUPPORTED);}final
 public function __get($key){return ReflectionBase::get($this,$key);}final public
 function __isset($key){return ReflectionBase::exists($this,$key);}}}
 
- namespace TokenReflection{use TokenReflection\Exception;class ReflectionParameter
-extends ReflectionBase implements IReflectionParameter{CONST ARRAY_CONSTRAINT='array';private
-static$parseValueDefinitions=false;private$valueConstraint;private$originalValueConstraint;private$defaultValueDefinition;private$defaultValue;private$declaringClassName;private$declaringFunctionName;private$passedByReference=false;private$isOptional;private$position;public
-function allowsNull(){if(($this->isArray()||null!==$this->getOriginalClassName())&&'null'!==strtolower($this->defaultValueDefinition)){return
+ namespace TokenReflection{use TokenReflection\Exception;use ReflectionParameter as
+InternalReflectionParameter;class ReflectionParameter extends ReflectionBase implements
+IReflectionParameter{CONST ARRAY_CONSTRAINT='array';private$valueConstraint;private$originalTypeHint;private$defaultValueDefinition=array();private$defaultValue;private$declaringClassName;private$declaringFunctionName;private$passedByReference=false;private$isOptional;private$position;public
+function allowsNull(){if(($this->isArray()||null!==$this->getOriginalTypeHint())&&'null'!==strtolower($this->getDefaultValueDefinition())){return
 false;}return true;}public function getClass(){$name=$this->getClassName();if(null===$name){return
 null;}return$this->getBroker()->getClass($name);}public function getClassName(){if($this->isArray()){return
-null;}try{if(null===$this->valueConstraint&&null!==$this->originalValueConstraint){if(null!==$this->declaringClassName){$parent=$this->getDeclaringClass();if(null===$parent){throw
+null;}try{if(null===$this->valueConstraint&&null!==$this->originalTypeHint){if(null!==$this->declaringClassName){$parent=$this->getDeclaringClass();if(null===$parent){throw
 new Exception\Runtime(sprintf('Could not load class "%s" reflection.',$this->declaringClassName),Exception\Runtime::DOES_NOT_EXIST);}}else{$parent=$this->getDeclaringFunction();if(null===$parent||!$parent->isTokenized()){throw
-new Exception\Runtime(sprintf('Could not load function "%s" reflection.',$this->declaringFunctionName),Exception\Runtime::DOES_NOT_EXIST);}}$this->valueConstraint=ltrim(self::resolveClassFQN($this->originalValueConstraint,$parent->getNamespaceAliases(),$parent->getNamespaceName()),'\\');}return$this->valueConstraint;}catch(Exception\Runtime$e){throw
+new Exception\Runtime(sprintf('Could not load function "%s" reflection.',$this->declaringFunctionName),Exception\Runtime::DOES_NOT_EXIST);}}$lConstraint=strtolower($this->originalTypeHint);if('parent'===$lConstraint||'self'===$lConstraint){if(null===$this->declaringClassName){throw
+new Exception\Runtime('Parameter constraint cannot be "self" nor "parent" when not a method.',Exception::UNSUPPORTED);}if('parent'===$lConstraint){if($parent->isInterface()||null===$parent->getParentClassName()){throw
+new Exception\Runtime(sprintf('Class "%s" has no parent.',$this->declaringClassName),Exception::DOES_NOT_EXIST);}$this->valueConstraint=$parent->getParentClassName();}else{$this->valueConstraint=$this->declaringClassName;}}else{$this->valueConstraint=ltrim(Resolver::resolveClassFQN($this->originalTypeHint,$parent->getNamespaceAliases(),$parent->getNamespaceName()),'\\');}}return$this->valueConstraint;}catch(Exception\Runtime$e){throw
 new Exception\Runtime('Could not determine the class constraint FQN.',0,$e);}}public
-function getOriginalClassName(){return!$this->isArray()?ltrim($this->originalValueConstraint,'\\'):null;}public
+function getOriginalTypeHint(){return!$this->isArray()?ltrim($this->originalTypeHint,'\\'):null;}public
 function getDeclaringClass(){return null===$this->declaringClassName?null:$this->getBroker()->getClass($this->declaringClassName);}public
 function getDeclaringClassName(){return$this->declaringClassName;}public function
 getDeclaringFunction(){if(null!==$this->declaringClassName){$class=$this->getBroker()->getClass($this->declaringClassName);if(null!==$class){return$class->getMethod($this->declaringFunctionName);}}else{return$this->getBroker()->getFunction($this->declaringFunctionName);}}public
 function getDeclaringFunctionName(){return$this->declaringFunctionName;}public function
-getDefaultValue(){if(null===$this->defaultValueDefinition){throw new Exception\Runtime(sprintf('Property "%s" has no default value.',$this->name),Exception\Runtime::DOES_NOT_EXIST);}return$this->defaultValue;}public
-function getDefaultValueDefinition(){return$this->defaultValueDefinition;}public
+getDefaultValue(){if(is_array($this->defaultValueDefinition)){if(0===count($this->defaultValueDefinition)){throw
+new Exception\Runtime(sprintf('Property "%s" has no default value.',$this->name),Exception\Runtime::DOES_NOT_EXIST);}$this->defaultValue=Resolver::getValueDefinition($this->defaultValueDefinition,$this);$this->defaultValueDefinition=Resolver::getSourceCode($this->defaultValueDefinition);}return$this->defaultValue;}public
+function getDefaultValueDefinition(){return is_array($this->defaultValueDefinition)?Resolver::getSourceCode($this->defaultValueDefinition):$this->defaultValueDefinition;}public
 function getPosition(){return$this->position;}public function isArray(){return$this->valueConstraint===self::ARRAY_CONSTRAINT;}public
-function isDefaultValueAvailable(){return null!==$this->defaultValueDefinition;}public
+function isDefaultValueAvailable(){return null!==$this->getDefaultValueDefinition();}public
 function isOptional(){try{if(null===$this->isOptional){$function=$this->getDeclaringFunction();if(null===$function){throw
 new Exception\Runtime(sprintf('Could not get the declaring function "%s" reflection.',$this->declaringFunctionName),Exception\Runtime::DOES_NOT_EXIST);}$this->isOptional=true;foreach(array_slice($function->getParameters(),$this->position)as$reflectionParameter){if(!$reflectionParameter->isDefaultValueAvailable()){$this->isOptional=false;break;}}}return$this->isOptional;}catch(Exception\Runtime$e){throw
 new Exception\Runtime(sprintf('Could not determine if parameter "%s" is optional.',$this->name),0,$e);}}public
-function isPassedByReference(){return$this->passedByReference;}protected function
-processParent(IReflection$parent){if(!$parent instanceof ReflectionFunctionBase){throw
+function isPassedByReference(){return$this->passedByReference;}public function __toString(){if($this->getClass()){$hint=$this->getClassName();if($this->allowsNull()){$hint.=' or NULL';}}elseif($this->isArray()){$hint='array';if($this->allowsNull()){$hint.=' or NULL';}}else{$hint='';}if($this->isDefaultValueAvailable()){$default=' = ';if(is_null($this->getDefaultValue())){$default.='NULL';}elseif(is_array($this->getDefaultValue())){$default.='Array';}elseif(is_bool($this->getDefaultValue())){$default.=$this->getDefaultValue()?'true':'false';}elseif(is_string($this->getDefaultValue())){$default.=sprintf("'%s'",str_replace("'","\\'",$this->getDefaultValue()));}else{$default.=$this->getDefaultValue();}}else{$default='';}return
+sprintf('Parameter #%d [ <%s> %s%s$%s%s ]',$this->getPosition(),$this->isOptional()?'optional':'required',$hint?$hint.' ':'',$this->isPassedByReference()?'&':'',$this->getName(),$default);}public
+static function export(Broker$broker,$function,$parameter,$return=false){$functionName=$function;$parameterName=$parameter;$function=$broker->getFunction($functionName);if(null===$function){throw
+new Exception\Runtime(sprintf('Function %s() does not exist.',$functionName),Exception\Runtime::DOES_NOT_EXIST);}$parameter=$function->getParameter($parameterName);if($return){return$parameter->__toString();}echo$parameter->__toString();}protected
+function processParent(IReflection$parent){if(!$parent instanceof ReflectionFunctionBase){throw
 new Exception\Parse(sprintf('The parent object has to be an instance of TokenReflection\ReflectionFunctionBase, "%s" given.',get_class($parent)),Exception\Parse::INVALID_PARENT);}$this->declaringFunctionName=$parent->getName();$this->position=count($parent->getParameters());if($parent
 instanceof ReflectionMethod){$this->declaringClassName=$parent->getDeclaringClassName();}return
 parent::processParent($parent);}public function getNamespaceAliases(){return$this->getDeclaringFunction()->getNamespaceAliases();}protected
@@ -842,17 +886,15 @@ function parse(Stream$tokenStream,IReflection$parent){return$this->parseConstrai
 function parseName(Stream$tokenStream){try{if(!$tokenStream->is(T_VARIABLE)){throw
 new Exception\Parse('The parameter name could not be determined.',Exception\Parse::PARSE_ELEMENT_ERROR);}$this->name=substr($tokenStream->getTokenValue(),1);$tokenStream->skipWhitespaces();return$this;}catch(Exception$e){throw
 new Exception\Parse('Could not parse parameter name.',Exception\Parse::PARSE_ELEMENT_ERROR,$e);}}private
-function parseConstraint(Stream$tokenStream){try{$type=$tokenStream->getType();if(T_ARRAY===$type){$this->valueConstraint=self::ARRAY_CONSTRAINT;$this->originalValueConstraint=self::ARRAY_CONSTRAINT;$tokenStream->skipWhitespaces();}elseif(T_STRING===$type||T_NS_SEPARATOR===$type){$className='';do{$className.=$tokenStream->getTokenValue();$tokenStream->skipWhitespaces();$type=$tokenStream->getType();}while(T_STRING===$type||T_NS_SEPARATOR===$type);if(''===ltrim($className,'\\')){throw
-new Exception\Parse(sprintf('Invalid class name definition: "%s".',$className),Exception\Parse::PARSE_ELEMENT_ERROR);}$this->originalValueConstraint=$className;}return$this;}catch(Exception\Parse$e){throw
+function parseConstraint(Stream$tokenStream){try{$type=$tokenStream->getType();if(T_ARRAY===$type){$this->valueConstraint=self::ARRAY_CONSTRAINT;$this->originalTypeHint=self::ARRAY_CONSTRAINT;$tokenStream->skipWhitespaces();}elseif(T_STRING===$type||T_NS_SEPARATOR===$type){$className='';do{$className.=$tokenStream->getTokenValue();$tokenStream->skipWhitespaces();$type=$tokenStream->getType();}while(T_STRING===$type||T_NS_SEPARATOR===$type);if(''===ltrim($className,'\\')){throw
+new Exception\Parse(sprintf('Invalid class name definition: "%s".',$className),Exception\Parse::PARSE_ELEMENT_ERROR);}$this->originalTypeHint=$className;}return$this;}catch(Exception\Parse$e){throw
 new Exception\Parse('Could not parse the value constaint class name.',0,$e);}}private
 function parsePassedByReference(Stream$tokenStream){if($tokenStream->is('&')){$this->passedByReference=true;$tokenStream->skipWhitespaces();}return$this;}private
 function parseDefaultValue(Stream$tokenStream){try{if($tokenStream->is('=')){$tokenStream->skipWhitespaces();$level=0;while(null!==($type=$tokenStream->getType())){switch($type){case
 ')':if(0===$level){break 2;}case '}':case ']':$level--;break;case '(':case '{':case
-'[':$level++;break;case ',':if(0===$level){break 2;}break;default:break;}$this->defaultValueDefinition.=$tokenStream->getTokenValue();$tokenStream->next();}if(')'!==$type&&','!==$type){throw
-new Exception\Parse(sprintf('The property default value is not terminated properly. Expected "," or ")", "%s" found.',$tokenStream->getTokenName()),Exception\Parse::PARSE_ELEMENT_ERROR);}if(self::$parseValueDefinitions){$this->defaultValue=@eval('return '.$this->defaultValueDefinition.';');}}return$this;}catch(Exception\Parse$e){throw
-new Exception\Parse('Could not parse the default value.',0,$e);}}public static function
-setParseValueDefinitions($parse){self::$parseValueDefinitions=(bool)$parse;}public
-static function getParseValueDefinitions(){return self::$parseValueDefinitions;}}}
+'[':$level++;break;case ',':if(0===$level){break 2;}break;default:break;}$this->defaultValueDefinition[]=$tokenStream->current();$tokenStream->next();}if(')'!==$type&&','!==$type){throw
+new Exception\Parse(sprintf('The property default value is not terminated properly. Expected "," or ")", "%s" found.',$tokenStream->getTokenName()),Exception\Parse::PARSE_ELEMENT_ERROR);}}return$this;}catch(Exception\Parse$e){throw
+new Exception\Parse('Could not parse the default value.',0,$e);}}}}
 
  namespace TokenReflection\Php{use TokenReflection;use TokenReflection\Broker,TokenReflection\Exception;use
 Reflector,ReflectionFunction as InternalReflectionFunction,ReflectionParameter as
@@ -899,10 +941,14 @@ self($internalReflection->getDeclaringClass()->getName(),$internalReflection->ge
 function setAccessible($accessible){if(PHP_VERSION_ID<50302){throw new Exception\Runtime(sprintf('Method setAccessible was introduced the internal reflection in PHP 5.3.2, you are using %s.',PHP_VERSION),Exception\Runtime::UNSUPPORTED);}return
 parent::setAccessible($accessible);}}}
 
- namespace TokenReflection{use TokenReflection\Exception;class ReflectionFunction
-extends ReflectionFunctionBase implements IReflectionFunction{private$aliases=array();public
-function isDisabled(){return$this->hasAnnotation('disabled');}public function invoke(){return$this->invokeArgs(func_get_args());}public
-function invokeArgs(array$args=array()){if(!function_exists($this->getName())){throw
+ namespace TokenReflection{use TokenReflection\Exception;use ReflectionFunction as
+InternalReflectionFunction;class ReflectionFunction extends ReflectionFunctionBase
+implements IReflectionFunction{private$aliases=array();public function isDisabled(){return$this->hasAnnotation('disabled');}public
+function __toString(){$parameters='';if($this->getNumberOfParameters()>0){$buffer='';foreach($this->getParameters()as$parameter){$buffer.="\n    ".$parameter->__toString();}$parameters=sprintf("\n\n  - Parameters [%d] {%s\n  }",$this->getNumberOfParameters(),$buffer);}return
+sprintf("Function [ <user> function %s%s ] {\n  @@ %s %d - %d%s\n}\n",$this->returnsReference()?'&':'',$this->getName(),$this->getFileName(),$this->getStartLine(),$this->getEndLine(),$parameters);}public
+static function export(Broker$broker,$function,$return=false){$functionName=$function;$function=$broker->getFunction($functionName);if(null===$function){throw
+new Exception\Runtime(sprintf('Function %s() does not exist.',$functionName),Exception\Runtime::DOES_NOT_EXIST);}if($return){return$function->__toString();}echo$function->__toString();}public
+function invoke(){return$this->invokeArgs(func_get_args());}public function invokeArgs(array$args=array()){if(!function_exists($this->getName())){throw
 new Exception\Runtime(sprintf('Could not invoke function "%s"; function is not defined.',$this->name),Exception\Runtime::DOES_NOT_EXIST);}return
 call_user_func_array($this->getName(),$args);}protected function parse(Stream$tokenStream,IReflection$parent){return$this->parseReturnsReference($tokenStream)->parseName($tokenStream);}protected
 function processParent(IReflection$parent){if(!$parent instanceof ReflectionFileNamespace){throw
@@ -918,7 +964,12 @@ function getDeclaringClassName(){return$this->declaringClassName;}public functio
 getModifiers(){if(!$this->modifiersComplete&&!($this->modifiers&(self::ACCESS_LEVEL_CHANGED|self::IS_IMPLEMENTED_ABSTRACT))){$declaringClass=$this->getDeclaringClass();$parentClass=$declaringClass->getParentClass();if(false!==$parentClass&&$parentClass->hasMethod($this->name)){$parentClassMethod=$parentClass->getMethod($this->name);if($this->modifiers&InternalReflectionMethod::IS_PUBLIC&&$parentClassMethod->is(self::ACCESS_LEVEL_CHANGED|InternalReflectionMethod::IS_PRIVATE)){$this->modifiers|=self::ACCESS_LEVEL_CHANGED;}if($parentClassMethod->is(self::IS_IMPLEMENTED_ABSTRACT|InternalReflectionMethod::IS_ABSTRACT)){$this->modifiers|=self::IS_IMPLEMENTED_ABSTRACT;}}$this->modifiersComplete=$this->isComplete()||(($this->modifiers&self::IS_IMPLEMENTED_ABSTRACT)&&($this->modifiers&self::ACCESS_LEVEL_CHANGED));}return$this->modifiers;}public
 function is($filter=null){static$computedModifiers=0x808;if(null===$filter||($this->modifiers&$filter)){return
 true;}elseif(($filter&$computedModifiers)&&!$this->modifiersComplete){return$this->getModifiers()&$filter;}return
-false;}public function invoke($object,$args){$params=func_get_args();return$this->invokeArgs(array_shift($params),$params);}public
+false;}public function __toString(){$internal='';$overwrite='';$prototype='';try{$parent=$this->getPrototype();if(!$parent->getDeclaringClass()->isInterface()){$overwrite=', overwrites '.$parent->getDeclaringClassName();}$prototype=', prototype '.$parent->getDeclaringClassName();}catch(Exception$e){$parentClass=$this->getDeclaringClass()->getParentClass();if($parentClass&&($parentMethods=$parentClass->getMethods(\ReflectionMethod::IS_PRIVATE))){foreach($parentMethods
+as$parent){if($parent->getName()===$this->getName()){$overwrite=', overwrites '.$parent->getDeclaringClassName();break;}}}if($parentClass&&$parentClass->isInternal()){$internal='internal:'.$parentClass->getExtensionName();}}if($this->isConstructor()){$cdtor=', ctor';}elseif($this->isDestructor()){$cdtor=', dtor';}else{$cdtor='';}$parameters='';if($this->getNumberOfParameters()>0){$buffer='';foreach($this->getParameters()as$parameter){$buffer.="\n    ".$parameter->__toString();}$parameters=sprintf("\n\n  - Parameters [%d] {%s\n  }",$this->getNumberOfParameters(),$buffer);}return
+sprintf("Method [ <%s%s%s%s> %s%s%s%s%s%s method %s%s ] {\n  @@ %s %d - %d%s\n}\n",!empty($internal)?$internal:'user',$overwrite,$prototype,$cdtor,$this->isAbstract()?'abstract ':'',$this->isFinal()?'final ':'',$this->isStatic()?'static ':'',$this->isPublic()?'public':'',$this->isPrivate()?'private':'',$this->isProtected()?'protected':'',$this->returnsReference()?'&':'',$this->getName(),$this->getFileName(),$this->getStartLine(),$this->getEndLine(),$parameters);}public
+static function export(Broker$broker,$class,$method,$return=false){$className=is_object($class)?get_class($class):$class;$methodName=$method;$class=$broker->getClass($className);if($class
+instanceof Dummy\ReflectionClass){throw new Exception\Runtime(sprintf('Class %s does not exist.',$className),Exception\Runtime::DOES_NOT_EXIST);}$method=$class->getMethod($methodName);if($return){return$method->__toString();}echo$method->__toString();}public
+function invoke($object,$args){$params=func_get_args();return$this->invokeArgs(array_shift($params),$params);}public
 function invokeArgs($object,array$args=array()){try{$declaringClass=$this->getDeclaringClass();if(!$declaringClass->isInstance($object)){throw
 new Exception\Runtime(sprintf('Invalid class, "%s" expected "%s" given.',$declaringClass->getName(),get_class($object)),Exception\Runtime::INVALID_ARGUMENT);}if($this->isPublic()){return
 call_user_func_array(array($object,$this->getName()),$args);}elseif($this->isAccessible()){$refClass=new

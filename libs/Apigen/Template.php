@@ -623,7 +623,7 @@ class Template extends Nette\Templating\FileTemplate
 			$context = $this->getClass($context->getDeclaringClassName());
 		}
 
-		if (($class = $this->getClass(\TokenReflection\ReflectionBase::resolveClassFQN($definition, $context->getNamespaceAliases(), $context->getNamespaceName()), $context->getNamespaceName()))
+		if (($class = $this->getClass(\TokenReflection\Resolver::resolveClassFQN($definition, $context->getNamespaceAliases(), $context->getNamespaceName()), $context->getNamespaceName()))
 			|| ($class = $this->getClass($definition, $context->getNamespaceName()))) {
 			// Class
 			return $class;
@@ -642,7 +642,7 @@ class Template extends Nette\Templating\FileTemplate
 				$class = $this->getClass(substr($definition, 0, $pos), $context->getNamespaceName());
 
 				if (null === $class) {
-					$class = $this->getClass(\TokenReflection\ReflectionBase::resolveClassFQN(substr($definition, 0, $pos), $context->getNamespaceAliases(), $context->getNamespaceName()));
+					$class = $this->getClass(\TokenReflection\Resolver::resolveClassFQN(substr($definition, 0, $pos), $context->getNamespaceAliases(), $context->getNamespaceName()));
 				}
 
 				$context = $class;
