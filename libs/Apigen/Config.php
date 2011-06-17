@@ -389,7 +389,7 @@ Options:
 	@option@--template-config@c  <@value@file@c>      Template config file, default "@value@./templates/default/config.neon@c"
 	@option@--allowed-html@c     <@value@list@c>      List of allowed HTML tags in documentation, default "@value@b,i,a,ul,ol,li,p,br,var,samp,kbd,tt@c"
 	@option@--access-levels@c    <@value@list@c>      Generate documentation for methods and properties with given access level, default "@value@public,protected@c"
-	@option@--internal@c         <@value@yes@c|@value@no@c>    Generate documentation for elements marked as internal, default "@value@no@c"
+	@option@--internal@c         <@value@yes@c|@value@no@c>    Generate documentation for elements marked as internal and display internal documentation parts, default "@value@no@c"
 	@option@--php@c              <@value@yes@c|@value@no@c>    Generate documentation for PHP internal classes, default "@value@yes@c"
 	@option@--tree@c             <@value@yes@c|@value@no@c>    Generate tree view of classes, interfaces and exceptions, default "@value@yes@c"
 	@option@--deprecated@c       <@value@yes@c|@value@no@c>    Generate documentation for deprecated classes, methods, properties and constants, default "@value@no@c"

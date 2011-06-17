@@ -137,7 +137,7 @@ Access levels of methods and properties that should get their documentation pars
 
 ```--internal <yes|no>```
 
-Generate documentation for elements marked as internal, default is "No".
+Generate documentation for elements marked as internal (```@internal``` without description) and display parts of the documentation that are marked as internal (```@internal with description ...``` or inline ```{@internal ...}```), default is "No".
 
 ```--php <yes|no>```
 
