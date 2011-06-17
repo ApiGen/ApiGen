@@ -1,69 +1,70 @@
+#!/usr/bin/env php
 <?php
 
 /**
- * ApiGen - API Generator.
+ * TR ApiGen - API documentation generator.
  *
  * Copyright (c) 2010 David Grudl (http://davidgrudl.com)
  * Copyright (c) 2011 Ondřej Nešpor (http://andrewsville.cz)
  * Copyright (c) 2011 Jaroslav Hanslík (http://kukulich.cz)
  *
  * For the full copyright and license information, please view
- * the file license.txt that was distributed with this source code.
+ * the file LICENSE that was distributed with this source code.
  */
 
-require __DIR__ . '/libs/Nette/nette.min.php';
-require __DIR__ . '/libs/fshl/fshl.php';
-require __DIR__ . '/libs/texy/texy.min.php';
-require __DIR__ . '/libs/TokenReflection/tokenreflection.min.php';
-require __DIR__ . '/libs/Apigen/Exception.php';
-require __DIR__ . '/libs/Apigen/Config.php';
-require __DIR__ . '/libs/Apigen/Template.php';
-require __DIR__ . '/libs/Apigen/ReflectionBase.php';
-require __DIR__ . '/libs/Apigen/ReflectionClass.php';
-require __DIR__ . '/libs/Apigen/ReflectionConstant.php';
-require __DIR__ . '/libs/Apigen/ReflectionFunction.php';
-require __DIR__ . '/libs/Apigen/Backend.php';
-require __DIR__ . '/libs/Apigen/Generator.php';
-require __DIR__ . '/libs/Apigen/Tree.php';
+namespace Apigen;
+
+use Nette\Diagnostics\Debugger;
+
+define('LIBRARY_DIR', realpath(__DIR__ . '/libs'));
+define('TEMPLATE_DIR', realpath(__DIR__ . '/templates'));
+
+require LIBRARY_DIR . '/Nette/nette.min.php';
+require LIBRARY_DIR . '/fshl/fshl.php';
+require LIBRARY_DIR . '/texy/texy.min.php';
+require LIBRARY_DIR . '/TokenReflection/tokenreflection.min.php';
+
+spl_autoload_register(function($class) {
+	require_once sprintf('%s%s%s.php', LIBRARY_DIR, DIRECTORY_SEPARATOR, str_replace('\\', DIRECTORY_SEPARATOR, $class));
+});
 
 try {
 
-	Nette\Diagnostics\Debugger::$strictMode = true;
-	Nette\Diagnostics\Debugger::enable();
-	Nette\Diagnostics\Debugger::timer();
+	Debugger::$strictMode = true;
+	Debugger::enable();
+	Debugger::timer();
 
-	$config = new Apigen\Config();
+	$config = new Config();
+	$generator = new Generator($config);
 
 	// Help
 	if ($config->isHelpRequested()) {
-		echo Apigen\Generator::getHeader();
-		echo Apigen\Config::getHelp();
+		echo $generator->colorize($generator->getHeader());
+		echo $generator->colorize($config->getHelp());
 		die();
 	}
 
-	$config->parse();
-
 	// Start
-	$generator = new Apigen\Generator($config);
-	$generator->output(Apigen\Generator::getHeader());
+	$config->parse();
+	$generator->output($generator->getHeader());
 
 	// Scan
 	if (count($config->source) > 1) {
-		$generator->output(sprintf("Scanning\n %s\n", implode("\n ", $config->source)));
+		$generator->output(sprintf("Scanning\n @value@%s@c\n", implode("\n ", $config->source)));
 	} else {
-		$generator->output(sprintf("Scanning %s\n", $config->source[0]));
+		$generator->output(sprintf("Scanning @value@%s@c\n", $config->source[0]));
 	}
 	if (count($config->exclude) > 1) {
-		$generator->output(sprintf("Excluding\n %s\n", implode("\n ", $config->exclude)));
+		$generator->output(sprintf("Excluding\n @value@%s@c\n", implode("\n ", $config->exclude)));
 	} elseif (!empty($config->exclude)) {
-		$generator->output(sprintf("Excluding %s\n", $config->exclude[0]));
+		$generator->output(sprintf("Excluding @value@%s@c\n", $config->exclude[0]));
 	}
 	$parsed = $generator->parse();
-	$generator->output(vsprintf("Found %d classes, %d constants, %d functions and other %d used PHP internal classes\n", array_slice($parsed, 0, 4)));
-	$generator->output(vsprintf("Documentation for %d classes, %d constants, %d functions and other %d used PHP internal classes will be generated\n", array_slice($parsed, 4, 4)));
+	$generator->output(vsprintf("Found @count@%d@c classes, @count@%d@c constants, @count@%d@c functions and other @count@%d@c used PHP internal classes\n", array_slice($parsed, 0, 4)));
+	$generator->output(vsprintf("Documentation for @count@%d@c classes, @count@%d@c constants, @count@%d@c functions and other @count@%d@c used PHP internal classes will be generated\n", array_slice($parsed, 4, 4)));
 
 	// Generating
-	$generator->output(sprintf("Using template config file %s\n", $config->templateConfig));
+	$generator->output(sprintf("Using template config file @value@%s@c\n", $config->templateConfig));
 
 	if ($config->wipeout && is_dir($config->destination)) {
 		$generator->output("Wiping out destination directory\n");
@@ -72,37 +73,38 @@ try {
 		}
 	}
 
-	$generator->output(sprintf("Generating to directory %s\n", $config->destination));
+	$generator->output(sprintf("Generating to directory @value@%s@c\n", $config->destination));
 	$skipping = array_merge($config->skipDocPath, $config->skipDocPrefix);
 	if (count($skipping) > 1) {
-		$generator->output(sprintf("Will not generate documentation for\n %s\n", implode("\n ", $skipping)));
+		$generator->output(sprintf("Will not generate documentation for\n @value@%s@c\n", implode("\n ", $skipping)));
 	} elseif (!empty($skipping)) {
-		$generator->output(sprintf("Will not generate documentation for %s\n", $skipping[0]));
+		$generator->output(sprintf("Will not generate documentation for @value@%s@c\n", $skipping[0]));
 	}
 	$generator->generate();
 
 	// End
-	$generator->output(sprintf("Done. Total time: %d seconds, used: %d MB RAM\n", Nette\Diagnostics\Debugger::timer(), round(memory_get_peak_usage(true) / 1024 / 1024)));
+	$generator->output(sprintf("Done. Total time: @count@%d@c seconds, used: @count@%d@c MB RAM\n", Debugger::timer(), round(memory_get_peak_usage(true) / 1024 / 1024)));
 
-} catch (Exception $e) {
-	if ($e instanceof Apigen\Exception && Apigen\Exception::INVALID_CONFIG === $e->getCode()) {
-		echo Apigen\Generator::getHeader();
+} catch (\Exception $e) {
+	$invalidConfig = $e instanceof Exception && Exception::INVALID_CONFIG === $e->getCode();
+	if ($invalidConfig) {
+		echo $generator->colorize($generator->getHeader());
 	}
 
 	if ($config->debug) {
 		do {
-			printf("\n%s", $e->getMessage());
+			echo $generator->colorize(sprintf("\n@error@%s@c", $e->getMessage()));
 			$trace = $e->getTraceAsString();
 		} while ($e = $e->getPrevious());
 
 		printf("\n\n%s\n\n", $trace);
 	} else {
-		printf("\n%s\n\n", $e->getMessage());
+		echo $generator->colorize(sprintf("\n@error@%s@c\n\n", $e->getMessage()));
 	}
 
 	// Help only for invalid configuration
-	if ($e instanceof Apigen\Exception && Apigen\Exception::INVALID_CONFIG === $e->getCode()) {
-		echo Apigen\Config::getHelp();
+	if ($invalidConfig) {
+		echo $generator->colorize($config->getHelp());
 	}
 
 	die(1);

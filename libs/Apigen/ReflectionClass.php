@@ -1,14 +1,14 @@
 <?php
 
 /**
- * ApiGen - API Generator.
+ * TR ApiGen - API documentation generator.
  *
  * Copyright (c) 2010 David Grudl (http://davidgrudl.com)
  * Copyright (c) 2011 Ondřej Nešpor (http://andrewsville.cz)
  * Copyright (c) 2011 Jaroslav Hanslík (http://kukulich.cz)
  *
- * This source file is subject to the "Nette license", and/or
- * GPL license. For more information please see http://nette.org
+ * For the full copyright and license information, please view
+ * the file LICENSE that was distributed with this source code.
  */
 
 namespace Apigen;
@@ -230,7 +230,7 @@ class ReflectionClass extends ReflectionBase
 		$classes = self::$classes;
 		return array_map(function(IReflectionClass $class) use ($classes) {
 			return $classes[$class->getName()];
-		}, $this->reflection->getInterfaces());
+		}, array_reverse($this->reflection->getInterfaces()));
 	}
 
 	/**
@@ -346,7 +346,7 @@ class ReflectionClass extends ReflectionBase
 			return $method->getName();
 		}, $this->getOwnMethods()));
 
-		foreach ($this->getParentClasses() as $class) {
+		foreach (array_merge($this->getParentClasses(), $this->getInterfaces()) as $class) {
 			$inheritedMethods = array();
 			foreach ($class->getOwnMethods() as $method) {
 				if (!isset($allMethods[$method->getName()]) && !$method->isPrivate()) {
@@ -376,7 +376,7 @@ class ReflectionClass extends ReflectionBase
 			return $property->getName();
 		}, $this->getOwnProperties()));
 
-		foreach ($this->getParentClasses() as $class) {
+		foreach (array_merge($this->getParentClasses(), $this->getInterfaces()) as $class) {
 			$inheritedProperties = array();
 			foreach ($class->getOwnProperties() as $property) {
 				if (!isset($allProperties[$property->getName()]) && !$property->isPrivate()) {
@@ -408,7 +408,7 @@ class ReflectionClass extends ReflectionBase
 					ksort($reflections);
 					return $reflections;
 				},
-				$this->getParentClasses()
+				array_merge($this->getParentClasses(), $this->getInterfaces())
 			)
 		);
 	}

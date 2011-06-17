@@ -1,19 +1,18 @@
 <?php
 
 /**
- * ApiGen - API Generator.
+ * TR ApiGen - API documentation generator.
  *
  * Copyright (c) 2010 David Grudl (http://davidgrudl.com)
  * Copyright (c) 2011 Ondřej Nešpor (http://andrewsville.cz)
  * Copyright (c) 2011 Jaroslav Hanslík (http://kukulich.cz)
  *
- * This source file is subject to the "Nette license", and/or
- * GPL license. For more information please see http://nette.org
+ * For the full copyright and license information, please view
+ * the file LICENSE that was distributed with this source code.
  */
 
 namespace Apigen;
 
-use Apigen\Exception;
 use Nette\Utils\Neon;
 
 /**
@@ -127,7 +126,7 @@ class Config
 		}, $this->options);
 
 		$this->config = self::$defaultConfig;
-		$this->config['templateConfig'] = realpath(__DIR__ . '/../../templates/default/config.neon');
+		$this->config['templateConfig'] = TEMPLATE_DIR . '/default/config.neon';
 	}
 
 	/**
@@ -162,6 +161,10 @@ class Config
 		foreach (self::$defaultConfig as $option => $valueDefinition) {
 			if (is_array($this->config[$option]) && !is_array($valueDefinition)) {
 				throw new Exception(sprintf('Option %s must be set only once', $option), Exception::INVALID_CONFIG);
+			}
+
+			if (is_bool($this->config[$option]) && !is_bool($valueDefinition)) {
+				throw new Exception(sprintf('Option %s expects value', $option), Exception::INVALID_CONFIG);
 			}
 
 			if (is_bool($valueDefinition)) {
@@ -363,50 +366,50 @@ class Config
 	 *
 	 * @return string
 	 */
-	public static function getHelp()
+	public function getHelp()
 	{
 		return <<<'HELP'
 Usage:
-	apigen --config <path> [options]
-	apigen --source <dir|file> --destination <dir> [options]
+	apigen @option@--config@c <@value@path@c> [options]
+	apigen @option@--source@c <@value@dir@c|@value@file@c> @option@--destination@c <@value@dir@c> [options]
 
 Options:
-	--config|-c        <file>      Config file
-	--source|-s        <dir|file>  Source file or directory to parse (can be used multiple times)
-	--destination|-d   <dir>       Directory where to save the generated documentation
-	--exclude          <mask>      Mask to exclude file or directory from processing (can be used multiple times)
-	--skip-doc-path    <mask>      Don't generate documentation for classes from file or directory with this mask (can be used multiple times)
-	--skip-doc-prefix  <value>     Don't generate documentation for classes with this name prefix (can be used multiple times)
-	--main             <value>     Main project name prefix
-	--title            <value>     Title of generated documentation
-	--base-url         <value>     Documentation base URL
-	--google-cse-id    <value>     Google Custom Search ID
-	--google-cse-label <value>     Google Custom Search label
-	--google-analytics <value>     Google Analytics tracking code
-	--template-config  <file>      Template config file, default "./templates/default/config.neon"
-	--allowed-html     <list>      List of allowed HTML tags in documentation, default "b,i,a,ul,ol,li,p,br,var,samp,kbd,tt"
-	--access-levels    <list>      Generate documentation for methods and properties with given access level, default "public,protected"
-	--internal         <yes|no>    Generate documentation for elements marked as internal, default "no"
-	--php              <yes|no>    Generate documentation for PHP internal classes, default "yes"
-	--tree             <yes|no>    Generate tree view of classes, interfaces and exceptions, default "yes"
-	--deprecated       <yes|no>    Generate documentation for deprecated classes, methods, properties and constants, default "no"
-	--todo             <yes|no>    Generate documentation of tasks, default "no"
-	--source-code      <yes|no>    Generate highlighted source code files, default "yes"
-	--undocumented     <file>      Save a list of undocumented classes, methods, properties and constants into a file
-	--wipeout          <yes|no>    Wipe out the destination directory first, default "yes"
-	--quiet            <yes|no>    Don't display scaning and generating messages, default "no"
-	--progressbar      <yes|no>    Display progressbars, default "yes"
-	--debug            <yes|no>    Display additional information in case of an error, default "no"
-	--help|-h                      Display this help
+	@option@--config@c|@option@-c@c        <@value@file@c>      Config file
+	@option@--source@c|@option@-s@c        <@value@dir@c|@value@file@c>  Source file or directory to parse (can be used multiple times)
+	@option@--destination@c|@option@-d@c   <@value@dir@c>       Directory where to save the generated documentation
+	@option@--exclude@c          <@value@mask@c>      Mask to exclude file or directory from processing (can be used multiple times)
+	@option@--skip-doc-path@c    <@value@mask@c>      Don't generate documentation for classes from file or directory with this mask (can be used multiple times)
+	@option@--skip-doc-prefix@c  <@value@value@c>     Don't generate documentation for classes with this name prefix (can be used multiple times)
+	@option@--main@c             <@value@value@c>     Main project name prefix
+	@option@--title@c            <@value@value@c>     Title of generated documentation
+	@option@--base-url@c         <@value@value@c>     Documentation base URL
+	@option@--google-cse-id@c    <@value@value@c>     Google Custom Search ID
+	@option@--google-cse-label@c <@value@value@c>     Google Custom Search label
+	@option@--google-analytics@c <@value@value@c>     Google Analytics tracking code
+	@option@--template-config@c  <@value@file@c>      Template config file, default "@value@./templates/default/config.neon@c"
+	@option@--allowed-html@c     <@value@list@c>      List of allowed HTML tags in documentation, default "@value@b,i,a,ul,ol,li,p,br,var,samp,kbd,tt@c"
+	@option@--access-levels@c    <@value@list@c>      Generate documentation for methods and properties with given access level, default "@value@public,protected@c"
+	@option@--internal@c         <@value@yes@c|@value@no@c>    Generate documentation for elements marked as internal and display internal documentation parts, default "@value@no@c"
+	@option@--php@c              <@value@yes@c|@value@no@c>    Generate documentation for PHP internal classes, default "@value@yes@c"
+	@option@--tree@c             <@value@yes@c|@value@no@c>    Generate tree view of classes, interfaces and exceptions, default "@value@yes@c"
+	@option@--deprecated@c       <@value@yes@c|@value@no@c>    Generate documentation for deprecated classes, methods, properties and constants, default "@value@no@c"
+	@option@--todo@c             <@value@yes@c|@value@no@c>    Generate documentation of tasks, default "@value@no@c"
+	@option@--source-code@c      <@value@yes@c|@value@no@c>    Generate highlighted source code files, default "@value@yes@c"
+	@option@--undocumented@c     <@value@file@c>      Save a list of undocumented classes, methods, properties and constants into a file
+	@option@--wipeout@c          <@value@yes@c|@value@no@c>    Wipe out the destination directory first, default "@value@yes@c"
+	@option@--quiet@c            <@value@yes@c|@value@no@c>    Don't display scaning and generating messages, default "@value@no@c"
+	@option@--progressbar@c      <@value@yes@c|@value@no@c>    Display progressbars, default "@value@yes@c"
+	@option@--debug@c            <@value@yes@c|@value@no@c>    Display additional information in case of an error, default "@value@no@c"
+	@option@--help@c|@option@-h@c                      Display this help
 
 Only source and destination directories are required - either set explicitly or using a config file. Configuration parameters passed via command line have precedence over parameters from a config file.
 
-Boolean options (those with possible values yes|no) do not have to have their values defined explicitly. Using --debug and --debug=yes is exactly the same.
+Boolean options (those with possible values @value@yes@c|@value@no@c) do not have to have their values defined explicitly. Using @option@--debug@c and @option@--debug@c=@value@yes@c is exactly the same.
 
-Some options can have multiple values. You can do so either by using them multiple times or by separating values by a comma. That means that writing --source=file1.php --source=file2.php or --source=file1.php,file2.php is exactly the same.
+Some options can have multiple values. You can do so either by using them multiple times or by separating values by a comma. That means that writing @option@--source@c=@value@file1.php@c @option@--source@c=@value@file2.php@c or @option@--source@c=@value@file1.php,file2.php@c is exactly the same.
 
-Files or directories specified by --exclude will not be processed at all.
-Classes from files within --skip-doc-path or with --skip-doc-prefix will be parsed but will not have their documentation generated. However if they have any child classes, the full class tree will be generated and their inherited methods, properties and constants will be displayed (but will not be clickable).
+Files or directories specified by @option@--exclude@c will not be processed at all.
+Classes from files within @option@--skip-doc-path@c or with @option@--skip-doc-prefix@c will be parsed but will not have their documentation generated. However if they have any child classes, the full class tree will be generated and their inherited methods, properties and constants will be displayed (but will not be clickable).
 
 HELP;
 	}

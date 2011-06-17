@@ -137,7 +137,7 @@ Access levels of methods and properties that should get their documentation pars
 
 ```--internal <yes|no>```
 
-Generate documentation for elements marked as internal, default is "No".
+Generate documentation for elements marked as internal (```@internal``` without description) and display parts of the documentation that are marked as internal (```@internal with description ...``` or inline ```{@internal ...}```), default is "No".
 
 ```--php <yes|no>```
 
@@ -208,9 +208,18 @@ apigen --source ~/nella/Nella --source ~/doctrine2/lib/Doctrine --source ~/doctr
 
 ## Requirements ##
 
-TR ApiGen requires PHP 5.3 or later.
+TR ApiGen requires PHP 5.3 or later. The following extensions are also required: tokenizer, iconv, mbstring, json.
 
 When generating documentation of large libraries (Zend Framework for example) we recommend not to have the Xdebug PHP extension loaded (it does not need to be used, it significantly slows down the generating process even when only loaded).
+
+## Authors ##
+
+### Original ApiGen ###
+* [David Grudl](https://github.com/dg)
+
+### TR ApiGen ###
+* [Jaroslav Hanslík](https://github.com/kukulich)
+* [Ondřej Nešpor](https://github.com/Andrewsville)
 
 ## Usage examples ##
 

@@ -74,7 +74,7 @@ instanceof Nette\Templating\FilterException){return array('tab' => 'Template','p
 Bar;self::$bar->addPanel(new DefaultBarPanel('time'));self::$bar->addPanel(new DefaultBarPanel('memory'));self::$bar->addPanel(self::$errorPanel=new
 DefaultBarPanel('errors'));self::$bar->addPanel(self::$dumpPanel=new DefaultBarPanel('dumps'));}public
 static function enable($mode=NULL,$logDirectory=NULL,$email=NULL){error_reporting(E_ALL|E_STRICT);if(is_bool($mode)){self::$productionMode=$mode;}elseif(is_string($mode)){$mode=preg_split('#[,\s]+#',"$mode 127.0.0.1 ::1");}if(is_array($mode)){self::$productionMode=!isset($_SERVER['REMOTE_ADDR'])||!in_array($_SERVER['REMOTE_ADDR'],$mode,TRUE);}if(self::$productionMode
-=== self::DETECT){if(class_exists('Nette\Environment')){self::$productionMode=Nette\Environment::isProduction();}elseif(isset($_SERVER['SERVER_ADDR'])||
+=== self::DETECT){if(class_exists('Nette\Environment', false)){self::$productionMode=Nette\Environment::isProduction();}elseif(isset($_SERVER['SERVER_ADDR'])||
 isset($_SERVER['LOCAL_ADDR'])){$addrs=array();if(isset($_SERVER['HTTP_X_FORWARDED_FOR'])){$addrs=preg_split('#,\s*#',$_SERVER['HTTP_X_FORWARDED_FOR']);}if(isset($_SERVER['REMOTE_ADDR'])){$addrs[]=$_SERVER['REMOTE_ADDR'];}$addrs[]=isset($_SERVER['SERVER_ADDR'])?$_SERVER['SERVER_ADDR']:$_SERVER['LOCAL_ADDR'];self::$productionMode=FALSE;foreach($addrs
 as$addr){$oct=explode('.',$addr);if($addr !== '::1' &&(count($oct)!== 4 ||($oct[0]!==
 '10' &&$oct[0]!== '127' &&($oct[0]!== '172' ||$oct[1]<16 ||$oct[1]>31)&&($oct[0]!==

@@ -195,10 +195,7 @@
 				<a n:tag-if="$config->sourceCode" href="{$constant|sourceUrl}" title="Go to source code"><b>{$constant->name}</b></a>
 			{/if}
 		</code></td>
-		<td width="1%">
-			{var $element = $template->resolveElement($constant->valueDefinition, $constant)}
-			{if $element}<a href="{$element|constantUrl}">{$constant->valueDefinition}</a>{else}<code>{!$constant->valueDefinition|highlightValue:$class}</code>{/if}
-		</td>
+		<td width="1%"><code>{!$constant->valueDefinition|highlightValue:$class}</code></td>
 		<td><div class="position">
 			<a href="#{$constant->name}" class="anchor">#</a>
 			<div class="short">
@@ -253,7 +250,7 @@
 				<a n:tag-if="$config->sourceCode" href="{$property|sourceUrl}" title="Go to source code"><var>${$property->name}</var></a>
 			{/if}
 		</td>
-		<td width="1%"><pre>{!$property->defaultValueDefinition|highlightValue:$class}</pre></td>
+		<td width="1%"><code>{!$property->defaultValueDefinition|highlightValue:$class}</code></td>
 		<td><div class="position">
 			<a href="#${$property->name}" class="anchor">#</a>
 

@@ -1,14 +1,14 @@
 <?php
 
 /**
- * ApiGen - API Generator.
+ * TR ApiGen - API documentation generator.
  *
  * Copyright (c) 2010 David Grudl (http://davidgrudl.com)
  * Copyright (c) 2011 Ondřej Nešpor (http://andrewsville.cz)
  * Copyright (c) 2011 Jaroslav Hanslík (http://kukulich.cz)
  *
- * This source file is subject to the "Nette license", and/or
- * GPL license. For more information please see http://nette.org
+ * For the full copyright and license information, please view
+ * the file LICENSE that was distributed with this source code.
  */
 
 namespace Apigen;
@@ -604,29 +604,26 @@ class Template extends Nette\Templating\FileTemplate
 	 */
 	public function resolveElement($definition, $context)
 	{
-		if (empty($definition)) {
-			return null;
-		}
-
 		// No simple type resolving
 		static $types = array(
 			'boolean' => 1, 'integer' => 1, 'float' => 1, 'string' => 1,
 			'array' => 1, 'object' => 1, 'resource' => 1, 'callback' => 1,
 			'null' => 1, 'false' => 1, 'true' => 1
 		);
-		if (isset($types[$definition])) {
+
+		if (empty($definition) || isset($types[$definition])) {
 			return null;
 		}
 
 		if ($context instanceof ReflectionParameter && null === $context->getDeclaringClassName()) {
 			// Parameter of function in namespace or global space
-			$context = $this->functions[$context->getDeclaringFunctionName()];
+			$context = $this->getFunction($context->getDeclaringFunctionName());
 		} elseif ($context instanceof ReflectionMethod || $context instanceof ReflectionParameter || ($context instanceof ReflectionConstant && null !== $context->getDeclaringClassName()) || $context instanceof ReflectionProperty) {
 			// Member of a class
-			$context = $this->classes[$context->getDeclaringClassName()];
+			$context = $this->getClass($context->getDeclaringClassName());
 		}
 
-		if (($class = $this->getClass(\TokenReflection\ReflectionBase::resolveClassFQN($definition, $context->getNamespaceAliases(), $context->getNamespaceName()), $context->getNamespaceName()))
+		if (($class = $this->getClass(\TokenReflection\Resolver::resolveClassFQN($definition, $context->getNamespaceAliases(), $context->getNamespaceName()), $context->getNamespaceName()))
 			|| ($class = $this->getClass($definition, $context->getNamespaceName()))) {
 			// Class
 			return $class;
@@ -637,25 +634,15 @@ class Template extends Nette\Templating\FileTemplate
 			|| ('()' === substr($definition, -2) && ($function = $this->getFunction(substr($definition, 0, -2), $context->getNamespaceName())))) {
 			// Function
 			return $function;
-		}
-
-		// Class::something or Class->something
-		if (($pos = strpos($definition, '::')) || ($pos = strpos($definition, '->'))) {
-			if (0 === strpos($definition, 'self::')) {
-				// Link to the current class
-				if (!$context instanceof ReflectionClass || !$context->isDocumented()) {
-					return null;
-				}
-			} else {
+		} elseif (($pos = strpos($definition, '::')) || ($pos = strpos($definition, '->'))) {
+			// Class::something or Class->something
+			if (0 === strpos($definition, 'parent::') && ($parentClassName = $context->getParentClassName())) {
+				$context = $this->getClass($parentClassName);
+			} elseif (0 !== strpos($definition, 'self::')) {
 				$class = $this->getClass(substr($definition, 0, $pos), $context->getNamespaceName());
 
 				if (null === $class) {
-					$class = $this->getClass(\TokenReflection\ReflectionBase::resolveClassFQN(substr($definition, 0, $pos), $context->getNamespaceAliases(), $context->getNamespaceName()));
-				}
-
-				// No class
-				if (null === $class) {
-					return null;
+					$class = $this->getClass(\TokenReflection\Resolver::resolveClassFQN(substr($definition, 0, $pos), $context->getNamespaceAliases(), $context->getNamespaceName()));
 				}
 
 				$context = $class;
@@ -665,7 +652,7 @@ class Template extends Nette\Templating\FileTemplate
 		}
 
 		// No usable context
-		if ($context instanceof ReflectionConstant || $context instanceof ReflectionFunction) {
+		if (null === $context || $context instanceof ReflectionConstant || $context instanceof ReflectionFunction) {
 			return null;
 		}
 
