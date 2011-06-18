@@ -44,16 +44,14 @@ $(function() {
 		var $this = $(this);
 		var sorted = !$this.data('sorted');
 		$this.data('sorted', sorted);
-		var expire = new Date();
-		expire.setTime(expire.getTime() + (365 * 24 * 60 * 60 * 1000));
-		document.cookie = 'methods-order=' + sorted + '; expire=' + expire.toUTCString();
+		$.cookie('sorted', sorted, {expires: 365});
 		var attr = sorted ? 'data-order' : 'data-orig-order';
 		$this.closest("table").find('tr').sortElements(function(a, b) {
 			return $(a).attr(attr) > $(b).attr(attr) ? 1 : -1;
 		});
 		return false;
 	}).addClass('switchable').attr('title', 'Switch between natural and alphabetical order');
-	if (document.cookie.indexOf('methods-order=true') > -1) {
+	if ('true' === $.cookie('sorted')) {
 		$caption.click();
 	}
 
@@ -106,7 +104,7 @@ $(function() {
 		minRight: 600,
 		anchorToWindow: true,
 		cookie: 'splitter'
-	}).resize();
+	});
 
 	if (window.location.hash && $('#right ' + window.location.hash).size()) {
 		$('#rightWrapper').scrollTop($('#rightWrapper ' + window.location.hash).offset().top);
