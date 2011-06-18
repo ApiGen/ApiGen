@@ -38,6 +38,7 @@
  *  V1.28   PHP5 keywords added
  *  V1.29   Fixed bug where methods was highlighted as variables
  *  V1.30   PHP 5.3 compatible
+ *  V1.31   Added missing keyword "as" and constant "__LINE__"
  */
 class PHP_lang
 {
@@ -50,7 +51,7 @@ class PHP_lang
 	function PHP_lang()
 	{
 		$this->signature = "SHL";
-		$this->version = "1.29";
+		$this->version = "1.31";
 		$this->initial_state = "OUT";
 		$this->states = array(
 
@@ -198,6 +199,7 @@ class PHP_lang
 				"abstract" => 1,
 				"and" => 1,
 				"array" => 1,
+				"as" => 1,
 				"break" => 1,
 				"case" => 1,
 				"catch" => 1,
@@ -244,6 +246,7 @@ class PHP_lang
 				"__CLASS__" => 1,
 				"__DIR__" => 1,
 				"__FILE__" => 1,
+				"__LINE__" => 1,
 				"__FUNCTION__" => 1,
 				"__METHOD__" => 1,
 				"__NAMESPACE__" => 1,

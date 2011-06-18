@@ -26,7 +26,7 @@
 // new experimental code grabbed from FSHL 0.V.x (0.5.0)
 // ---------------------------------------------------------------------
 class fshlHelper {
-	function getStringSource($var, $human_readable = false) {
+	static function getStringSource($var, $human_readable = true) {
 		if(!is_string($var)) {
 			return fshlHelper::getVarContentSource($var, $human_readable);
 		}
@@ -78,7 +78,7 @@ class fshlHelper {
 		return '\''.$out.'\'';
 	}
 
-	function getVarContentSource($var, $human_readable = false)
+	static function getVarContentSource($var, $human_readable = true)
 	{
 		if(is_numeric($var)) {
 			return $var;
@@ -106,15 +106,15 @@ class fshlHelper {
 		return 'fshlHelper::getVarContentSource error';
 	}
 
-	function getVarSource($varname, $mixed_var, $human_readable = false) {
+	static function getVarSource($varname, $mixed_var, $human_readable = true) {
 		return '$'.$varname."=".fshlHelper::getVarContentSource($mixed_var, $human_readable).";\n";
 	}
 
-	function getFncSource($fncname,$param=null) {
+	static function getFncSource($fncname,$param=null) {
 		return "function $fncname ($param) {\n";
 	}
 
-	function blockIndent($string, $level) {
+	static function blockIndent($string, $level) {
 		$tab = str_repeat("  ", $level);
 		$lines = explode("\n", $string);
 		$out = null;
@@ -130,7 +130,7 @@ class fshlHelper {
 // ---------------------------------------------------------------------
 // old style wrappers for generator version < 0.5.0 compatibility
 // ---------------------------------------------------------------------
-function get_string_source($var, $human_readable = false)
+function get_string_source($var, $human_readable = true)
 {
 	return fshlHelper::getStringSource($var, $human_readable);
 }
