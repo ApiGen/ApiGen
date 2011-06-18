@@ -104,7 +104,8 @@ $(function() {
 		sizeLeft: true,
 		minLeft: 230,
 		minRight: 600,
-		anchorToWindow: true
+		anchorToWindow: true,
+		cookie: 'splitter'
 	}).resize();
 
 	if (window.location.hash && $('#right ' + window.location.hash).size()) {
