@@ -104,6 +104,7 @@ class Generator extends Nette\Object
 	 * Scans and parses PHP files.
 	 *
 	 * @return array
+	 * @throws \Apigen\Exception If no PHP files have been found.
 	 */
 	public function parse()
 	{
@@ -145,7 +146,7 @@ class Generator extends Nette\Object
 		}
 
 		if (empty($files)) {
-			throw new Exception("No PHP files found.");
+			throw new Exception('No PHP files found.');
 		}
 
 		if ($this->config->progressbar) {
@@ -171,7 +172,9 @@ class Generator extends Nette\Object
 		$this->functions = new \ArrayObject($broker->getFunctions());
 		$this->functions->uksort('strcasecmp');
 
-		$documentedCounter = function($count, $element) {return $count += (int) $element->isDocumented();};
+		$documentedCounter = function($count, $element) {
+			return $count += (int) $element->isDocumented();
+		};
 
 		return array(
 			count($broker->getClasses(Backend::TOKENIZED_CLASSES)),
@@ -283,6 +286,8 @@ class Generator extends Nette\Object
 
 	/**
 	 * Generates API documentation.
+	 *
+	 * @throws \Apigen\Exception If destination directory is not writable
 	 */
 	public function generate()
 	{
@@ -300,13 +305,13 @@ class Generator extends Nette\Object
 			// File
 			$resourcePath = $templatePath . '/' . $resourceSource;
 			if (is_file($resourcePath)) {
-				copy($resourcePath, $this->forceDir("$destination/$resourceDestination"));
+				copy($resourcePath, $this->forceDir($destination . '/' . $resourceDestination));
 				continue;
 			}
 
 			// Dir
 			foreach ($iterator = Nette\Utils\Finder::findFiles('*')->from($resourcePath)->getIterator() as $item) {
-				copy($item->getPathName(), $this->forceDir("$destination/$resourceDestination/" . $iterator->getSubPathName()));
+				copy($item->getPathName(), $this->forceDir($destination . '/' . $resourceDestination . '/' . $iterator->getSubPathName()));
 			}
 		}
 
@@ -422,7 +427,9 @@ class Generator extends Nette\Object
 			uksort($packages, $sort);
 		}
 
-		$mainFilter = function($element) {return $element->isMain();};
+		$mainFilter = function($element) {
+			return $element->isMain();
+		};
 
 		$sitemapEnabled = !empty($this->config->baseUrl) && isset($templates['optional']['sitemap']);
 		$opensearchEnabled = !empty($this->config->googleCseId) && !empty($this->config->baseUrl) && isset($templates['optional']['opensearch']);
@@ -441,11 +448,12 @@ class Generator extends Nette\Object
 				+ (int) $this->config->deprecated
 				+ (int) $this->config->todo
 				+ (int) $sitemapEnabled
-				+ (int) $opensearchEnabled
-			;
+				+ (int) $opensearchEnabled;
 
 			if ($this->config->sourceCode) {
-				$tokenizedFilter = function(ReflectionClass $class) {return $class->isTokenized();};
+				$tokenizedFilter = function(ReflectionClass $class) {
+					return $class->isTokenized();
+				};
 				$max += count(array_filter($classes, $tokenizedFilter))
 					+ count(array_filter($interfaces, $tokenizedFilter))
 					+ count(array_filter($exceptions, $tokenizedFilter))
@@ -490,11 +498,13 @@ class Generator extends Nette\Object
 				$elements[] = array($type, $element->getName());
 			}
 		}
-		usort($elements, function($a, $b) {return strcasecmp($a[1], $b[1]);});
+		usort($elements, function($a, $b) {
+			return strcasecmp($a[1], $b[1]);
+		});
 		$template->elements = $elements;
 
 		foreach ($templates['common'] as $dest => $source) {
-			$template->setFile($templatePath . '/' . $source)->save($this->forceDir("$destination/$dest"));
+			$template->setFile($templatePath . '/' . $source)->save($this->forceDir($destination . '/' . $dest));
 
 			$this->incrementProgressBar();
 		}
@@ -700,7 +710,9 @@ class Generator extends Nette\Object
 				throw new Exception('Template for list of deprecated elements is not set');
 			}
 
-			$deprecatedFilter = function($element) {return $element->isDeprecated();};
+			$deprecatedFilter = function($element) {
+				return $element->isDeprecated();
+			};
 
 			$template->deprecatedMethods = array();
 			$template->deprecatedConstants = array();
@@ -757,7 +769,9 @@ class Generator extends Nette\Object
 				throw new Exception('Template for list of tasks is not set');
 			}
 
-			$todoFilter = function($element) {return $element->hasAnnotation('todo');};
+			$todoFilter = function($element) {
+				return $element->hasAnnotation('todo');
+			};
 
 			$template->todoMethods = array();
 			$template->todoConstants = array();
@@ -1140,7 +1154,7 @@ class Generator extends Nette\Object
 	/**
 	 * Ensures a directory is created.
 	 *
-	 * @param string Directory path
+	 * @param string $path Directory path
 	 * @return string
 	 */
 	private function forceDir($path)

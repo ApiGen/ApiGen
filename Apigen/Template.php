@@ -90,7 +90,7 @@ class Template extends Nette\Templating\FileTemplate
 		// Highlighting <code>, <pre>
 		$this->texy->registerBlockPattern(
 			function($parser, $matches, $name) use ($fshl) {
-				$content = 'code' === $matches[1] ? $fshl->highlightString('PHP', $matches[2]) : htmlSpecialChars($matches[2]);
+				$content = 'code' === $matches[1] ? $fshl->highlightString('PHP', $matches[2]) : htmlspecialchars($matches[2]);
 				$content = $parser->getTexy()->protect($content, \Texy::CONTENT_BLOCK);
 				return \TexyHtml::el('pre', $content);
 			},
@@ -429,7 +429,7 @@ class Template extends Nette\Templating\FileTemplate
 	/**
 	 * Returns a link to function summary file.
 	 *
-	 * @param \Apigen\ReflectionFunction $method Function reflection
+	 * @param \Apigen\ReflectionFunction $function Function reflection
 	 * @return string
 	 */
 	public function getFunctionUrl(ReflectionFunction $function)
@@ -470,7 +470,7 @@ class Template extends Nette\Templating\FileTemplate
 			}
 		}
 
-		return sprintf($this->config->templates['main']['source']['filename'], $file) . (isset($line) ? "#$line" : '');
+		return sprintf($this->config->templates['main']['source']['filename'], $file) . (isset($line) ? '#' . $line : '');
 	}
 
 	/**

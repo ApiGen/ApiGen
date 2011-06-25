@@ -49,7 +49,8 @@ class Backend extends Broker\Backend\Memory
 	/**
 	 * Constructor.
 	 *
-	 * @param \Apigen\Generator $config Generator instance
+	 * @param \Apigen\Generator $generator Generator instance
+	 * @param boolean $cacheTokenStreams If token stream should be cached
 	 */
 	public function __construct(Generator $generator, $cacheTokenStreams = false)
 	{
@@ -264,7 +265,7 @@ class Backend extends Broker\Backend\Memory
 		return array_map(function(IReflectionConstant $constant) use ($generator) {
 			return new ReflectionConstant($constant, $generator);
 		}, parent::getConstants());
-		}
+	}
 
 	/**
 	 * Returns all functions from all namespaces.
