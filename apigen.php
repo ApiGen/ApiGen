@@ -21,7 +21,7 @@ define('LIBRARY_DIR', ROOT_DIR . '/libs');
 define('TEMPLATE_DIR', ROOT_DIR . '/templates');
 
 require LIBRARY_DIR . '/Nette/nette.min.php';
-require LIBRARY_DIR . '/fshl/fshl.php';
+require LIBRARY_DIR . '/Fshl/fshl.min.php';
 require LIBRARY_DIR . '/texy/texy.min.php';
 require LIBRARY_DIR . '/TokenReflection/tokenreflection.min.php';
 

@@ -13,7 +13,7 @@
 
 namespace Apigen;
 
-use Nette;
+use Nette, Fshl;
 use TokenReflection\Broker;
 use TokenReflection\IReflectionProperty as ReflectionProperty, TokenReflection\IReflectionMethod as ReflectionMethod, TokenReflection\IReflectionParameter as ReflectionParameter;
 use TokenReflection\ReflectionAnnotation;
@@ -935,7 +935,8 @@ class Generator extends Nette\Object
 		unset($template->subnamespaces);
 
 		// Generate class & interface & exception files
-		$fshl = new \fshlParser('HTML_UTF8', P_TAB_INDENT | P_LINE_COUNTER);
+		$fshl = new Fshl\Highlighter(new Fshl\Output\Html(), Fshl\Highlighter::OPTION_TAB_INDENT | Fshl\Highlighter::OPTION_LINE_COUNTER);
+		$fshlPhpLexer = new Fshl\Lexer\Php();
 		if (!empty($classes) || !empty($interfaces) || !empty($exceptions)) {
 			if (!isset($templates['main']['class'])) {
 				throw new Exception('Template for class is not set');
@@ -1046,10 +1047,7 @@ class Generator extends Nette\Object
 
 				// Generate source codes
 				if ($this->config->sourceCode && $element->isTokenized()) {
-					$source = file_get_contents($element->getFileName());
-					$source = str_replace(array("\r\n", "\r"), "\n", $source);
-
-					$template->source = $fshl->highlightString('PHP', $source);
+					$template->source = $fshl->highlight($fshlPhpLexer, file_get_contents($element->getFileName()));
 					$template->setFile($templatePath . '/' . $templates['main']['source']['template'])->save($destination . '/' . $template->getSourceUrl($element, false));
 
 					$this->incrementProgressBar();

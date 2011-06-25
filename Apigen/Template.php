@@ -13,7 +13,7 @@
 
 namespace Apigen;
 
-use Nette;
+use Nette, Fshl;
 use TokenReflection\IReflectionProperty as ReflectionProperty, TokenReflection\IReflectionMethod as ReflectionMethod, TokenReflection\IReflectionParameter as ReflectionParameter;
 use TokenReflection\IReflectionExtension as ReflectionExtension, TokenReflection\ReflectionAnnotation;
 
@@ -77,7 +77,8 @@ class Template extends Nette\Templating\FileTemplate
 		$that = $this;
 
 		// FSHL
-		$fshl = new \fshlParser('HTML_UTF8');
+		$fshl = new Fshl\Highlighter(new Fshl\Output\Html());
+		$fshlPhpLexer = new Fshl\Lexer\Php();
 
 		// Texy
 		$this->texy = new \Texy();
@@ -89,8 +90,8 @@ class Template extends Nette\Templating\FileTemplate
 		$this->texy->linkModule->shorten = false;
 		// Highlighting <code>, <pre>
 		$this->texy->registerBlockPattern(
-			function($parser, $matches, $name) use ($fshl) {
-				$content = 'code' === $matches[1] ? $fshl->highlightString('PHP', $matches[2]) : htmlspecialchars($matches[2]);
+			function($parser, $matches, $name) use ($fshl, $fshlPhpLexer) {
+				$content = 'code' === $matches[1] ? $fshl->highlight($fshlPhpLexer, $matches[2]) : htmlspecialchars($matches[2]);
 				$content = $parser->getTexy()->protect($content, \Texy::CONTENT_BLOCK);
 				return \TexyHtml::el('pre', $content);
 			},
@@ -107,8 +108,8 @@ class Template extends Nette\Templating\FileTemplate
 		$this->registerHelperLoader('Nette\Templating\DefaultHelpers::loader');
 
 		// PHP source highlight
-		$this->registerHelper('highlightPHP', function($source, $context) use ($that, $fshl) {
-			return $that->resolveLink($source, $context) ?: $fshl->highlightString('PHP', (string) $source);
+		$this->registerHelper('highlightPHP', function($source, $context) use ($that, $fshl, $fshlPhpLexer) {
+			return $that->resolveLink($source, $context) ?: $fshl->highlight($fshlPhpLexer, (string) $source);
 		});
 		$this->registerHelper('highlightValue', function($definition, $context) use ($that) {
 			return $that->highlightPHP(preg_replace('~^(?:[ ]{4}|\t)~m', '', $definition), $context);
