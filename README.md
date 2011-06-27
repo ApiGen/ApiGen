@@ -63,6 +63,41 @@ Besides, we have made following changes in our ApiGen.
 * Texy! downgraded to the stable 2.1 version (the 3.0-dev version causes PCRE internal errors sometimes).
 * Support for Mac and DOS line endings.
 
+## Installation ##
+
+The preferred installation way is using the PEAR package. PEAR is a distribution system for PHP packages. It is bundled with PHP since the 4.3 version and it is easy to use.
+
+Unlike the GitHub version that contains everything you need to use it, the PEAR package contains only ApiGen itself. Its dependencies (Nette, Texy, FSHL and TokenReflection) have to be installed separately But do not panic, the PEAR installer will take care of it (almost).
+
+In order to install any PEAR package, you have to add the appropriate repository URL. The good news is that you have to do that only once. Using these two commands you add our own and Nette repository.
+
+```
+	pear channel-discover pear.kukulich.cz
+	pear channel-discover pear.nette.org
+```
+
+Theoretically you should only use one command
+
+```
+pear install kukulich/Apigen
+```
+
+to install ApiGen, then. However things are not so easy. This would work if all required libraries were in stable versions. But they aren't. Nette, TokenReflection and FSHL are beta versions. Assuming you have your PEAR installer configured that it will not install non-stable packages (that is the default configuration), you have to explicitly enter each non-stable package you want to use. So you have to  run these commands
+
+```
+pear install kukulich/FSHL-beta
+pear install kukulich/TokenReflection-beta
+pear install nette/Nette-beta
+```
+
+and finally
+
+```
+pear install kukulich/Apigen
+```
+
+When all required libraries appear in stable versions, only the last command will be required and all dependencies will be downloaded by the PEAR installer automatically.
+
 ## Usage ##
 
 ```
@@ -208,7 +243,7 @@ apigen --source ~/nella/Nella --source ~/doctrine2/lib/Doctrine --source ~/doctr
 
 ## Requirements ##
 
-TR ApiGen requires PHP 5.3 or later. The following extensions are also required: tokenizer, iconv, mbstring, json.
+TR ApiGen requires PHP 5.3 or later. Four libraries it uses (Nette, Texy, TokenReflection and FSHL) require further three PHP extensions: tokenizer, iconv and mbstring.
 
 When generating documentation of large libraries (Zend Framework for example) we recommend not to have the Xdebug PHP extension loaded (it does not need to be used, it significantly slows down the generating process even when only loaded).
 
