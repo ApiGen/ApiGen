@@ -22,7 +22,7 @@ define('TEMPLATE_DIR', ROOT_DIR . '/templates');
 
 require LIBRARY_DIR . '/Nette/nette.min.php';
 require LIBRARY_DIR . '/Fshl/fshl.min.php';
-require LIBRARY_DIR . '/texy/texy.min.php';
+require LIBRARY_DIR . '/Texy/texy.min.php';
 require LIBRARY_DIR . '/TokenReflection/tokenreflection.min.php';
 
 spl_autoload_register(function($class) {
