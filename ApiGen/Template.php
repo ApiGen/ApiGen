@@ -13,7 +13,7 @@
 
 namespace ApiGen;
 
-use Nette, Fshl;
+use Nette, FSHL;
 use TokenReflection\IReflectionProperty as ReflectionProperty, TokenReflection\IReflectionMethod as ReflectionMethod, TokenReflection\IReflectionParameter as ReflectionParameter;
 use TokenReflection\IReflectionExtension as ReflectionExtension, TokenReflection\ReflectionAnnotation;
 
@@ -77,8 +77,8 @@ class Template extends Nette\Templating\FileTemplate
 		$that = $this;
 
 		// FSHL
-		$fshl = new Fshl\Highlighter(new Fshl\Output\Html());
-		$fshlPhpLexer = new Fshl\Lexer\Php();
+		$fshl = new FSHL\Highlighter(new FSHL\Output\Html());
+		$fshlPhpLexer = new FSHL\Lexer\Php();
 
 		// Texy
 		$this->texy = new \Texy();

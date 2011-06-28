@@ -13,7 +13,7 @@
 
 namespace ApiGen;
 
-use Nette, Fshl;
+use Nette, FSHL;
 use TokenReflection\Broker;
 use TokenReflection\IReflectionProperty as ReflectionProperty, TokenReflection\IReflectionMethod as ReflectionMethod, TokenReflection\IReflectionParameter as ReflectionParameter;
 use TokenReflection\ReflectionAnnotation;
@@ -935,8 +935,8 @@ class Generator extends Nette\Object
 		unset($template->subnamespaces);
 
 		// Generate class & interface & exception files
-		$fshl = new Fshl\Highlighter(new Fshl\Output\Html(), Fshl\Highlighter::OPTION_TAB_INDENT | Fshl\Highlighter::OPTION_LINE_COUNTER);
-		$fshlPhpLexer = new Fshl\Lexer\Php();
+		$fshl = new FSHL\Highlighter(new FSHL\Output\Html(), FSHL\Highlighter::OPTION_TAB_INDENT | FSHL\Highlighter::OPTION_LINE_COUNTER);
+		$fshlPhpLexer = new FSHL\Lexer\Php();
 		if (!empty($classes) || !empty($interfaces) || !empty($exceptions)) {
 			if (!isset($templates['main']['class'])) {
 				throw new Exception('Template for class is not set');
