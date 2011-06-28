@@ -238,12 +238,12 @@ Keep in mind, that any values in the config file will be **overwritten** by valu
 We are generating documentation for the Nella Framework. We want Nette and Doctrine to be parsed as well because we want their classes to appear in class trees, lists of parent classes and their members in lists of inherited properties, methods and constants. However we do not want to generate their full documentation along with highlighted source codes. And we do not want to process any "test" directories, because there might be classes that do not belong to the project actually.
 
 ```
-apigen --source ~/nella/Nella --source ~/doctrine2/lib/Doctrine --source ~/doctrine2/lib/vendor --source ~/nette/Nette --skip-doc-path ~/doctrine2 --skip-doc-prefix Nette --exclude "*/tests/*" --destination ~/docs/ --title "Nella Framework"
+	apigen --source ~/nella/Nella --source ~/doctrine2/lib/Doctrine --source ~/doctrine2/lib/vendor --source ~/nette/Nette --skip-doc-path ~/doctrine2 --skip-doc-prefix Nette --exclude "*/tests/*" --destination ~/docs/ --title "Nella Framework"
 ```
 
 ## Requirements ##
 
-ApiGen requires PHP 5.3 or later. Four libraries it uses (Nette, Texy, TokenReflection and FSHL) require three additional PHP extensions: tokenizer, iconv and mbstring.
+ApiGen requires PHP 5.3 or later. Four libraries it uses ([Nette](https://github.com/nette/nette), [Texy](http://texy.info/), [TokenReflection](https://github.com/Andrewsville/PHP-Token-Reflection) and [FSHL](https://github.com/kukulich/fshl)) require three additional PHP extensions: tokenizer, iconv and mbstring.
 
 When generating documentation of large libraries (Zend Framework for example) we recommend not to have the Xdebug PHP extension loaded (it does not need to be used, it significantly slows down the generating process even when only loaded).
 
@@ -260,6 +260,7 @@ When generating documentation of large libraries (Zend Framework for example) we
 
 * Jyxo PHP Libraries, both [namespaced](http://jyxo.github.com/php/) and [non-namespaced](http://jyxo.github.com/php-no-namespace/),
 * [TokenReflection library](http://andrewsville.github.com/PHP-Token-Reflection/),
+* [FSHL library](http://kukulich.github.com/fshl/),
 * [Nella Framework](http://api.nella-project.org/framework/).
 
 Besides from these publicly visible examples there are companies that use ApiGen to generate their inhouse documentation: [Medio Interactive](http://www.medio.cz/), [Wikidi](http://wikidi.com/).
