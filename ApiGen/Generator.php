@@ -1,7 +1,7 @@
 <?php
 
 /**
- * TR ApiGen - API documentation generator.
+ * ApiGen 2.0 - API documentation generator.
  *
  * Copyright (c) 2010 David Grudl (http://davidgrudl.com)
  * Copyright (c) 2011 Ondřej Nešpor (http://andrewsville.cz)
@@ -11,9 +11,9 @@
  * the file LICENSE that was distributed with this source code.
  */
 
-namespace Apigen;
+namespace ApiGen;
 
-use Nette;
+use Nette, FSHL;
 use TokenReflection\Broker;
 use TokenReflection\IReflectionProperty as ReflectionProperty, TokenReflection\IReflectionMethod as ReflectionMethod, TokenReflection\IReflectionParameter as ReflectionParameter;
 use TokenReflection\ReflectionAnnotation;
@@ -32,19 +32,19 @@ class Generator extends Nette\Object
 	 *
 	 * @var string
 	 */
-	const NAME = 'TR ApiGen';
+	const NAME = 'ApiGen';
 
 	/**
 	 * Library version.
 	 *
 	 * @var string
 	 */
-	const VERSION = '2.0 RC 2';
+	const VERSION = '2.0';
 
 	/**
 	 * Configuration.
 	 *
-	 * @var \Apigen\Config
+	 * @var \ApiGen\Config
 	 */
 	private $config;
 
@@ -104,6 +104,7 @@ class Generator extends Nette\Object
 	 * Scans and parses PHP files.
 	 *
 	 * @return array
+	 * @throws \ApiGen\Exception If no PHP files have been found.
 	 */
 	public function parse()
 	{
@@ -145,7 +146,7 @@ class Generator extends Nette\Object
 		}
 
 		if (empty($files)) {
-			throw new Exception("No PHP files found.");
+			throw new Exception('No PHP files found.');
 		}
 
 		if ($this->config->progressbar) {
@@ -171,7 +172,9 @@ class Generator extends Nette\Object
 		$this->functions = new \ArrayObject($broker->getFunctions());
 		$this->functions->uksort('strcasecmp');
 
-		$documentedCounter = function($count, $element) {return $count += (int) $element->isDocumented();};
+		$documentedCounter = function($count, $element) {
+			return $count += (int) $element->isDocumented();
+		};
 
 		return array(
 			count($broker->getClasses(Backend::TOKENIZED_CLASSES)),
@@ -283,6 +286,8 @@ class Generator extends Nette\Object
 
 	/**
 	 * Generates API documentation.
+	 *
+	 * @throws \ApiGen\Exception If destination directory is not writable
 	 */
 	public function generate()
 	{
@@ -300,13 +305,13 @@ class Generator extends Nette\Object
 			// File
 			$resourcePath = $templatePath . '/' . $resourceSource;
 			if (is_file($resourcePath)) {
-				copy($resourcePath, $this->forceDir("$destination/$resourceDestination"));
+				copy($resourcePath, $this->forceDir($destination . '/' . $resourceDestination));
 				continue;
 			}
 
 			// Dir
 			foreach ($iterator = Nette\Utils\Finder::findFiles('*')->from($resourcePath)->getIterator() as $item) {
-				copy($item->getPathName(), $this->forceDir("$destination/$resourceDestination/" . $iterator->getSubPathName()));
+				copy($item->getPathName(), $this->forceDir($destination . '/' . $resourceDestination . '/' . $iterator->getSubPathName()));
 			}
 		}
 
@@ -422,7 +427,9 @@ class Generator extends Nette\Object
 			uksort($packages, $sort);
 		}
 
-		$mainFilter = function($element) {return $element->isMain();};
+		$mainFilter = function($element) {
+			return $element->isMain();
+		};
 
 		$sitemapEnabled = !empty($this->config->baseUrl) && isset($templates['optional']['sitemap']);
 		$opensearchEnabled = !empty($this->config->googleCseId) && !empty($this->config->baseUrl) && isset($templates['optional']['opensearch']);
@@ -441,11 +448,12 @@ class Generator extends Nette\Object
 				+ (int) $this->config->deprecated
 				+ (int) $this->config->todo
 				+ (int) $sitemapEnabled
-				+ (int) $opensearchEnabled
-			;
+				+ (int) $opensearchEnabled;
 
 			if ($this->config->sourceCode) {
-				$tokenizedFilter = function(ReflectionClass $class) {return $class->isTokenized();};
+				$tokenizedFilter = function(ReflectionClass $class) {
+					return $class->isTokenized();
+				};
 				$max += count(array_filter($classes, $tokenizedFilter))
 					+ count(array_filter($interfaces, $tokenizedFilter))
 					+ count(array_filter($exceptions, $tokenizedFilter))
@@ -490,11 +498,13 @@ class Generator extends Nette\Object
 				$elements[] = array($type, $element->getName());
 			}
 		}
-		usort($elements, function($a, $b) {return strcasecmp($a[1], $b[1]);});
+		usort($elements, function($a, $b) {
+			return strcasecmp($a[1], $b[1]);
+		});
 		$template->elements = $elements;
 
 		foreach ($templates['common'] as $dest => $source) {
-			$template->setFile($templatePath . '/' . $source)->save($this->forceDir("$destination/$dest"));
+			$template->setFile($templatePath . '/' . $source)->save($this->forceDir($destination . '/' . $dest));
 
 			$this->incrementProgressBar();
 		}
@@ -700,7 +710,9 @@ class Generator extends Nette\Object
 				throw new Exception('Template for list of deprecated elements is not set');
 			}
 
-			$deprecatedFilter = function($element) {return $element->isDeprecated();};
+			$deprecatedFilter = function($element) {
+				return $element->isDeprecated();
+			};
 
 			$template->deprecatedMethods = array();
 			$template->deprecatedConstants = array();
@@ -757,7 +769,9 @@ class Generator extends Nette\Object
 				throw new Exception('Template for list of tasks is not set');
 			}
 
-			$todoFilter = function($element) {return $element->hasAnnotation('todo');};
+			$todoFilter = function($element) {
+				return $element->hasAnnotation('todo');
+			};
 
 			$template->todoMethods = array();
 			$template->todoConstants = array();
@@ -921,7 +935,8 @@ class Generator extends Nette\Object
 		unset($template->subnamespaces);
 
 		// Generate class & interface & exception files
-		$fshl = new \fshlParser('HTML_UTF8', P_TAB_INDENT | P_LINE_COUNTER);
+		$fshl = new FSHL\Highlighter(new FSHL\Output\Html(), FSHL\Highlighter::OPTION_TAB_INDENT | FSHL\Highlighter::OPTION_LINE_COUNTER);
+		$fshlPhpLexer = new FSHL\Lexer\Php();
 		if (!empty($classes) || !empty($interfaces) || !empty($exceptions)) {
 			if (!isset($templates['main']['class'])) {
 				throw new Exception('Template for class is not set');
@@ -1032,10 +1047,7 @@ class Generator extends Nette\Object
 
 				// Generate source codes
 				if ($this->config->sourceCode && $element->isTokenized()) {
-					$source = file_get_contents($element->getFileName());
-					$source = str_replace(array("\r\n", "\r"), "\n", $source);
-
-					$template->source = $fshl->highlightString('PHP', $source);
+					$template->source = $fshl->highlight($fshlPhpLexer, file_get_contents($element->getFileName()));
 					$template->setFile($templatePath . '/' . $templates['main']['source']['template'])->save($destination . '/' . $template->getSourceUrl($element, false));
 
 					$this->incrementProgressBar();
@@ -1140,7 +1152,7 @@ class Generator extends Nette\Object
 	/**
 	 * Ensures a directory is created.
 	 *
-	 * @param string Directory path
+	 * @param string $path Directory path
 	 * @return string
 	 */
 	private function forceDir($path)

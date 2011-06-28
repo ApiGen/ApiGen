@@ -2,7 +2,7 @@
 <?php
 
 /**
- * TR ApiGen - API documentation generator.
+ * ApiGen 2.0 - API documentation generator.
  *
  * Copyright (c) 2010 David Grudl (http://davidgrudl.com)
  * Copyright (c) 2011 Ondřej Nešpor (http://andrewsville.cz)
@@ -12,20 +12,21 @@
  * the file LICENSE that was distributed with this source code.
  */
 
-namespace Apigen;
+namespace ApiGen;
 
 use Nette\Diagnostics\Debugger;
 
-define('LIBRARY_DIR', realpath(__DIR__ . '/libs'));
-define('TEMPLATE_DIR', realpath(__DIR__ . '/templates'));
+define('ROOT_DIR', __DIR__);
+define('LIBRARY_DIR', ROOT_DIR . '/libs');
+define('TEMPLATE_DIR', ROOT_DIR . '/templates');
 
 require LIBRARY_DIR . '/Nette/nette.min.php';
-require LIBRARY_DIR . '/fshl/fshl.php';
-require LIBRARY_DIR . '/texy/texy.min.php';
+require LIBRARY_DIR . '/FSHL/fshl.min.php';
+require LIBRARY_DIR . '/Texy/texy.min.php';
 require LIBRARY_DIR . '/TokenReflection/tokenreflection.min.php';
 
 spl_autoload_register(function($class) {
-	require_once sprintf('%s%s%s.php', LIBRARY_DIR, DIRECTORY_SEPARATOR, str_replace('\\', DIRECTORY_SEPARATOR, $class));
+	require_once sprintf('%s%s%s.php', ROOT_DIR, DIRECTORY_SEPARATOR, str_replace('\\', DIRECTORY_SEPARATOR, $class));
 });
 
 try {

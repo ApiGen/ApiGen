@@ -1,6 +1,6 @@
 <?php
 /**
- * TR ApiGen - API documentation generator.
+ * ApiGen 2.0 - API documentation generator.
  *
  * Copyright (c) 2010 David Grudl (http://davidgrudl.com)
  * Copyright (c) 2011 Ondřej Nešpor (http://andrewsville.cz)
@@ -10,7 +10,7 @@
  * the file LICENSE that was distributed with this source code.
  */
 
-namespace Apigen;
+namespace ApiGen;
 use RecursiveTreeIterator;
 
 /**
@@ -76,7 +76,8 @@ class Tree extends RecursiveTreeIterator
 	/**
 	 * Returns the current reflection.
 	 *
-	 * @return \Apigen\Reflection
+	 * @return \ApiGen\Reflection
+	 * @throws \UnexpectedValueException If current is not reflection array
 	 */
 	public function current()
 	{

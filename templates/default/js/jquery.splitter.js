@@ -1,11 +1,11 @@
 /*
  * jQuery.splitter.js - two-pane splitter window plugin
  *
- * version 1.51 (2009/01/09) 
- * 
- * Dual licensed under the MIT and GPL licenses: 
- *   http://www.opensource.org/licenses/mit-license.php 
- *   http://www.gnu.org/licenses/gpl.html 
+ * version 1.51 (2009/01/09)
+ *
+ * Dual licensed under the MIT and GPL licenses:
+ *   http://www.opensource.org/licenses/mit-license.php
+ *   http://www.gnu.org/licenses/gpl.html
  */
 
 /**
@@ -13,12 +13,12 @@
  * The selected elements in the jQuery object are converted to a splitter;
  * each selected element should have two child elements, used for the panes
  * of the splitter. The plugin adds a third child element for the splitbar.
- * 
+ *
  * For more details see: http://methvin.com/splitter/
  *
  *
  * @example $('#MySplitter').splitter();
- * @desc Create a vertical splitter with default settings 
+ * @desc Create a vertical splitter with default settings
  *
  * @example $('#MySplitter').splitter({type: 'h', accessKey: 'M'});
  * @desc Create a horizontal splitter resizable via Alt+Shift+M
@@ -31,7 +31,7 @@
  * @author Dave Methvin (dave.methvin@gmail.com)
  */
  ;(function($){
- 
+
  $.fn.splitter = function(args){
 	args = args || {};
 	return this.each(function() {
@@ -51,7 +51,7 @@
 			if ( opts.outline ) {
 				newPos = Math.max(0, Math.min(newPos, splitter._DA - bar._DA));
 				bar.css(opts.origin, newPos);
-			} else 
+			} else
 				resplit(newPos);
 		}
 		function endSplitMouse(evt) {
@@ -68,7 +68,7 @@
 		}
 		function resplit(newPos) {
 			// Constrain new splitbar position to fit pane size limits
-			newPos = Math.max(A._min, splitter._DA - B._max, 
+			newPos = Math.max(A._min, splitter._DA - B._max,
 					Math.min(newPos, A._max, splitter._DA - bar._DA - B._min));
 			// Resize/position the two panes
 			bar._DA = bar[0][opts.pxSplit];		// bar size may change during dock
@@ -87,7 +87,7 @@
 				sum += Math.max(parseInt(jq.css(arguments[i])) || 0, 0);
 			return sum;
 		}
-		
+
 		// Determine settings based on incoming opts, element classes, and defaults
 		var vh = (args.splitHorizontal? 'h' : args.splitVertical? 'v' : args.type) || 'v';
 		var opts = $.extend({
@@ -133,7 +133,7 @@
 					resplit(A[0][opts.pxSplit]+dir*opts.pxPerKey, false);
 			})
 			.bind("blur", function(){ bar.removeClass(opts.activeClass) });
-			
+
 		// Splitbar element, can be already in the doc or we create one
 		var bar = $(panes[2] || '<div></div>')
 			.insertAfter(A).css("z-index", "100").append(focuser)
@@ -157,7 +157,7 @@
 			this._init = opts["size"+this._pane]===true ?
 				parseInt($.curCSS(this[0],opts.split)) : opts["size"+this._pane];
 		});
-		
+
 		// Determine initial position, get from cookie if specified
 		var initPos = A._init;
 		if ( !isNaN(B._init) )	// recalc initial B size as an offset from the top or left side
@@ -170,8 +170,8 @@
 				initPos = ckpos;
 			$(window).bind("unload", function(){
 				var state = String(bar.css(opts.origin));	// current location of splitbar
-				$.cookie(opts.cookie, state, {expires: opts.cookieExpires || 365, 
-					path: opts.cookiePath || document.location.pathname});
+				$.cookie(opts.cookie, state, {expires: opts.cookieExpires || 365,
+					path: opts.cookiePath || ''});
 			});
 		}
 		if ( isNaN(initPos) )	// King Solomon's algorithm
@@ -191,7 +191,7 @@
 		}
 		else if ( opts.resizeToWidth && !$.browser.msie )
 			$(window).bind("resize", function(){
-				splitter.trigger("resize"); 
+				splitter.trigger("resize");
 			});
 
 		// Resize event handler; triggered immediately to set initial position

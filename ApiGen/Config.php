@@ -1,7 +1,7 @@
 <?php
 
 /**
- * TR ApiGen - API documentation generator.
+ * ApiGen 2.0 - API documentation generator.
  *
  * Copyright (c) 2010 David Grudl (http://davidgrudl.com)
  * Copyright (c) 2011 Ondřej Nešpor (http://andrewsville.cz)
@@ -11,7 +11,7 @@
  * the file LICENSE that was distributed with this source code.
  */
 
-namespace Apigen;
+namespace ApiGen;
 
 use Nette\Utils\Neon;
 
@@ -132,7 +132,8 @@ class Config
 	/**
 	 * Parses options and configuration.
 	 *
-	 * @return \Apigen\Config
+	 * @return \ApiGen\Config
+	 * @throws \ApiGen\Exception If something in config is wrong
 	 */
 	public function parse()
 	{
@@ -254,7 +255,8 @@ class Config
 	/**
 	 * Checks configuration.
 	 *
-	 * @return \Apigen\Config
+	 * @return \ApiGen\Config
+	 * @throws \ApiGen\Exception If something in config is wrong
 	 */
 	private function check()
 	{
@@ -308,7 +310,8 @@ class Config
 	/**
 	 * Checks template configuration.
 	 *
-	 * @return \Apigen\Config
+	 * @return \ApiGen\Config
+	 * @throws \ApiGen\Exception If something in template config is wrong
 	 */
 	private function checkTemplate()
 	{

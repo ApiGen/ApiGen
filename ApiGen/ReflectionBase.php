@@ -1,7 +1,7 @@
 <?php
 
 /**
- * TR ApiGen - API documentation generator.
+ * ApiGen 2.0 - API documentation generator.
  *
  * Copyright (c) 2010 David Grudl (http://davidgrudl.com)
  * Copyright (c) 2011 Ondřej Nešpor (http://andrewsville.cz)
@@ -11,7 +11,7 @@
  * the file LICENSE that was distributed with this source code.
  */
 
-namespace Apigen;
+namespace ApiGen;
 
 use TokenReflection\IReflection;
 
@@ -28,14 +28,14 @@ abstract class ReflectionBase
 	/**
 	 * Generator.
 	 *
-	 * @var \Apigen\Generator
+	 * @var \ApiGen\Generator
 	 */
 	protected static $generator = null;
 
 	/**
 	 * Config.
 	 *
-	 * @var \Apigen\Config
+	 * @var \ApiGen\Config
 	 */
 	protected static $config = null;
 
@@ -73,7 +73,7 @@ abstract class ReflectionBase
 	 * Sets the inspected element reflection.
 	 *
 	 * @param \TokenReflection\IReflection $reflection Inspected element reflection
-	 * @param \Apigen\Generator $generator Apigen generator
+	 * @param \ApiGen\Generator $generator ApiGen generator
 	 */
 	public function __construct(IReflection $reflection, Generator $generator)
 	{

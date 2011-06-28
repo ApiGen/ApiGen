@@ -1,7 +1,7 @@
 <?php
 
 /**
- * TR ApiGen - API documentation generator.
+ * ApiGen 2.0 - API documentation generator.
  *
  * Copyright (c) 2010 David Grudl (http://davidgrudl.com)
  * Copyright (c) 2011 Ondřej Nešpor (http://andrewsville.cz)
@@ -11,15 +11,21 @@
  * the file LICENSE that was distributed with this source code.
  */
 
-namespace Apigen;
+namespace ApiGen;
 
 /**
- * Function reflection envelope.
+ * ApiGen exception.
  *
- * Alters TokenReflection\IReflectionFunction functionality for ApiGen.
+ * This is the topmost exception class. Exceptions of this class are caught in the apigen.php script.
  *
  * @author Jaroslav Hanslík
  */
-class ReflectionFunction extends ReflectionBase
+class Exception extends \Exception
 {
+	/**
+	 * Invalid configuration.
+	 *
+	 * @var integer
+	 */
+	const INVALID_CONFIG = 1;
 }
