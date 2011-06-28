@@ -243,7 +243,7 @@ apigen --source ~/nella/Nella --source ~/doctrine2/lib/Doctrine --source ~/doctr
 
 ## Requirements ##
 
-TR ApiGen requires PHP 5.3 or later. Four libraries it uses (Nette, Texy, TokenReflection and FSHL) require further three PHP extensions: tokenizer, iconv and mbstring.
+TR ApiGen requires PHP 5.3 or later. Four libraries it uses (Nette, Texy, TokenReflection and FSHL) require three additional PHP extensions: tokenizer, iconv and mbstring.
 
 When generating documentation of large libraries (Zend Framework for example) we recommend not to have the Xdebug PHP extension loaded (it does not need to be used, it significantly slows down the generating process even when only loaded).
 
