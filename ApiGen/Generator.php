@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ApiGen - API documentation generator.
+ * ApiGen 2.0 - API documentation generator.
  *
  * Copyright (c) 2010 David Grudl (http://davidgrudl.com)
  * Copyright (c) 2011 Ondřej Nešpor (http://andrewsville.cz)
@@ -39,7 +39,7 @@ class Generator extends Nette\Object
 	 *
 	 * @var string
 	 */
-	const VERSION = '2.0 RC 2';
+	const VERSION = '2.0';
 
 	/**
 	 * Configuration.

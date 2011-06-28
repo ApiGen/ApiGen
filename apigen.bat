@@ -1,5 +1,5 @@
 @echo off
-REM TR ApiGen - API documentation generator.
+REM ApiGen 2.0 - API documentation generator.
 REM
 REM Copyright (c) 2010 David Grudl (http://davidgrudl.com)
 REM Copyright (c) 2011 Ondřej Nešpor (http://andrewsville.cz)
