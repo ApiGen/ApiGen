@@ -1,7 +1,7 @@
 <?php
 
 /**
- * TR ApiGen - API documentation generator.
+ * ApiGen - API documentation generator.
  *
  * Copyright (c) 2010 David Grudl (http://davidgrudl.com)
  * Copyright (c) 2011 Ondřej Nešpor (http://andrewsville.cz)
@@ -11,7 +11,7 @@
  * the file LICENSE that was distributed with this source code.
  */
 
-namespace Apigen;
+namespace ApiGen;
 
 use Nette, Fshl;
 use TokenReflection\Broker;
@@ -32,7 +32,7 @@ class Generator extends Nette\Object
 	 *
 	 * @var string
 	 */
-	const NAME = 'TR ApiGen';
+	const NAME = 'ApiGen';
 
 	/**
 	 * Library version.
@@ -44,7 +44,7 @@ class Generator extends Nette\Object
 	/**
 	 * Configuration.
 	 *
-	 * @var \Apigen\Config
+	 * @var \ApiGen\Config
 	 */
 	private $config;
 
@@ -104,7 +104,7 @@ class Generator extends Nette\Object
 	 * Scans and parses PHP files.
 	 *
 	 * @return array
-	 * @throws \Apigen\Exception If no PHP files have been found.
+	 * @throws \ApiGen\Exception If no PHP files have been found.
 	 */
 	public function parse()
 	{
@@ -287,7 +287,7 @@ class Generator extends Nette\Object
 	/**
 	 * Generates API documentation.
 	 *
-	 * @throws \Apigen\Exception If destination directory is not writable
+	 * @throws \ApiGen\Exception If destination directory is not writable
 	 */
 	public function generate()
 	{

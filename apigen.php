@@ -2,7 +2,7 @@
 <?php
 
 /**
- * TR ApiGen - API documentation generator.
+ * ApiGen - API documentation generator.
  *
  * Copyright (c) 2010 David Grudl (http://davidgrudl.com)
  * Copyright (c) 2011 Ondřej Nešpor (http://andrewsville.cz)
@@ -12,7 +12,7 @@
  * the file LICENSE that was distributed with this source code.
  */
 
-namespace Apigen;
+namespace ApiGen;
 
 use Nette\Diagnostics\Debugger;
 

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * TR ApiGen - API documentation generator.
+ * ApiGen - API documentation generator.
  *
  * Copyright (c) 2010 David Grudl (http://davidgrudl.com)
  * Copyright (c) 2011 Ondřej Nešpor (http://andrewsville.cz)
@@ -11,7 +11,7 @@
  * the file LICENSE that was distributed with this source code.
  */
 
-namespace Apigen;
+namespace ApiGen;
 use TokenReflection, TokenReflection\IReflectionConstant, TokenReflection\IReflectionFunction, TokenReflection\Broker;
 
 /**
@@ -28,7 +28,7 @@ class Backend extends Broker\Backend\Memory
 	/**
 	 * Generator instance.
 	 *
-	 * @var \Apigen\Generator
+	 * @var \ApiGen\Generator
 	 */
 	private $generator;
 
@@ -49,7 +49,7 @@ class Backend extends Broker\Backend\Memory
 	/**
 	 * Constructor.
 	 *
-	 * @param \Apigen\Generator $generator Generator instance
+	 * @param \ApiGen\Generator $generator Generator instance
 	 * @param boolean $cacheTokenStreams If token stream should be cached
 	 */
 	public function __construct(Generator $generator, $cacheTokenStreams = false)
@@ -91,7 +91,7 @@ class Backend extends Broker\Backend\Memory
 	 *
 	 * @param string $fileName File name
 	 * @return \TokenReflection\Stream
-	 * @throws \Apigen\Exception If the token stream could not be returned
+	 * @throws \ApiGen\Exception If the token stream could not be returned
 	 */
 	public function getFileTokens($fileName)
 	{
@@ -193,7 +193,7 @@ class Backend extends Broker\Backend\Memory
 	 *
 	 * @param array $declared Array of declared classes
 	 * @param array $allClasses Array with all classes parsed so far
-	 * @param \Apigen\ReflectionFunction|\TokenReflection\IReflectionFunctionBase $function Function/method reflection
+	 * @param \ApiGen\ReflectionFunction|\TokenReflection\IReflectionFunctionBase $function Function/method reflection
 	 * @return array
 	 */
 	private function processFunction(array $declared, array $allClasses, $function)

@@ -1,10 +1,10 @@
-# Welcome to TR ApiGen #
+# Welcome to ApiGen #
 
-TR ApiGen is a fork of the original [tool](https://github.com/nette/apigen) created by [Andrewsville](https://github.com/Andrewsville) and [Kukulich](https://github.com/kukulich).
+ApiGen is a fork of the original [tool](https://github.com/nette/apigen) created by [Andrewsville](https://github.com/Andrewsville) and [Kukulich](https://github.com/kukulich).
 
 When the original ApiGen was introduced, its [author](https://github.com/dg) stated that: *"This time with no technical support. There are definitely things that ApiGen does not support and that are absolutely crucial for you. And without them there is no use in trying ApiGen because other similar tools have them. If this is the case, feel free to add them."*
 
-And we did :) That is how our **TR ApiGen** was born. We have taken the original tool, fixed some bugs, altered some things and added many useful features.
+And we did :) That is how our **ApiGen** was born. We have taken the original tool, fixed some bugs, altered some things and added many useful features.
 
 # Differences from the original tool #
 
@@ -79,7 +79,7 @@ In order to install any PEAR package, you have to add the appropriate repository
 Theoretically you should only use one command
 
 ```
-pear install kukulich/Apigen
+pear install kukulich/ApiGen
 ```
 
 to install ApiGen, then. However things are not so easy. This would work if all required libraries were in stable versions. But they aren't. Nette, TokenReflection and FSHL are beta versions. Assuming you have your PEAR installer configured that it will not install non-stable packages (that is the default configuration), you have to explicitly enter each non-stable package you want to use. So you have to  run these commands
@@ -93,7 +93,7 @@ pear install nette/Nette-beta
 and finally
 
 ```
-pear install kukulich/Apigen
+pear install kukulich/ApiGen
 ```
 
 When all required libraries appear in stable versions, only the last command will be required and all dependencies will be downloaded by the PEAR installer automatically.
@@ -105,7 +105,7 @@ When all required libraries appear in stable versions, only the last command wil
 	apigen --source <path> --destination <path> [options]
 ```
 
-As you can see, you can use TR ApiGen either by providing individual parameters via the command line or using a config file. Moreover you can combine the two methods and the command line parameters will have precedence over those in the config file.
+As you can see, you can use ApiGen either by providing individual parameters via the command line or using a config file. Moreover you can combine the two methods and the command line parameters will have precedence over those in the config file.
 
 Every configuration option has to be followed by its value. And it is exactly the same to write ```--config=file.conf``` and ```--config file.conf```. The only exceptions are boolean options (those with yes|no values). When using these options on the command line you do not have to provide the "yes" value explicitly. If ommited, it is assumed that you wanted to turn the option on. So using ```--debug=yes``` and ```--debug``` does exactly the same (and the opposite is ```--debug=no```).
 
@@ -132,7 +132,7 @@ Directories and files matching this file mask will not be parsed. You can exclud
 ```--skip-doc-path <mask>```
 ```--skip-doc-prefix <value>```
 
-Using this parameters you can tell TR ApiGen not to generate documentation for classes from certain files or with certain name prefix. Such classes will appear in class trees, but will not create a link to their documentation. These parameters can be used multiple times.
+Using this parameters you can tell ApiGen not to generate documentation for classes from certain files or with certain name prefix. Such classes will appear in class trees, but will not create a link to their documentation. These parameters can be used multiple times.
 
 ```--main <value>```
 
@@ -243,7 +243,7 @@ apigen --source ~/nella/Nella --source ~/doctrine2/lib/Doctrine --source ~/doctr
 
 ## Requirements ##
 
-TR ApiGen requires PHP 5.3 or later. Four libraries it uses (Nette, Texy, TokenReflection and FSHL) require three additional PHP extensions: tokenizer, iconv and mbstring.
+ApiGen requires PHP 5.3 or later. Four libraries it uses (Nette, Texy, TokenReflection and FSHL) require three additional PHP extensions: tokenizer, iconv and mbstring.
 
 When generating documentation of large libraries (Zend Framework for example) we recommend not to have the Xdebug PHP extension loaded (it does not need to be used, it significantly slows down the generating process even when only loaded).
 
@@ -252,7 +252,7 @@ When generating documentation of large libraries (Zend Framework for example) we
 ### Original ApiGen ###
 * [David Grudl](https://github.com/dg)
 
-### TR ApiGen ###
+### New ApiGen ###
 * [Jaroslav Hanslík](https://github.com/kukulich)
 * [Ondřej Nešpor](https://github.com/Andrewsville)
 
@@ -262,4 +262,4 @@ When generating documentation of large libraries (Zend Framework for example) we
 * [TokenReflection library](http://andrewsville.github.com/PHP-Token-Reflection/),
 * [Nella Framework](http://api.nella-project.org/framework/).
 
-Besides from these publicly visible examples there are companies that use TR ApiGen to generate their inhouse documentation: [Medio Interactive](http://www.medio.cz/), [Wikidi](http://wikidi.com/).
+Besides from these publicly visible examples there are companies that use ApiGen to generate their inhouse documentation: [Medio Interactive](http://www.medio.cz/), [Wikidi](http://wikidi.com/).

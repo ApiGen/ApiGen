@@ -1,7 +1,7 @@
 <?php
 
 /**
- * TR ApiGen - API documentation generator.
+ * ApiGen - API documentation generator.
  *
  * Copyright (c) 2010 David Grudl (http://davidgrudl.com)
  * Copyright (c) 2011 Ondřej Nešpor (http://andrewsville.cz)
@@ -11,7 +11,7 @@
  * the file LICENSE that was distributed with this source code.
  */
 
-namespace Apigen;
+namespace ApiGen;
 
 use Nette, Fshl;
 use TokenReflection\IReflectionProperty as ReflectionProperty, TokenReflection\IReflectionMethod as ReflectionMethod, TokenReflection\IReflectionParameter as ReflectionParameter;
@@ -30,7 +30,7 @@ class Template extends Nette\Templating\FileTemplate
 	/**
 	 * Config.
 	 *
-	 * @var \Apigen\Config
+	 * @var \ApiGen\Config
 	 */
 	private $config;
 
@@ -65,7 +65,7 @@ class Template extends Nette\Templating\FileTemplate
 	/**
 	 * Creates template.
 	 *
-	 * @param \Apigen\Generator $generator
+	 * @param \ApiGen\Generator $generator
 	 */
 	public function __construct(Generator $generator)
 	{
@@ -318,7 +318,7 @@ class Template extends Nette\Templating\FileTemplate
 	 * Returns links for types.
 	 *
 	 * @param string $annotation
-	 * @param \Apigen\ReflectionBase|\TokenReflection\IReflection $context
+	 * @param \ApiGen\ReflectionBase|\TokenReflection\IReflection $context
 	 * @return string
 	 */
 	public function getTypeLinks($annotation, $context)
@@ -380,7 +380,7 @@ class Template extends Nette\Templating\FileTemplate
 	/**
 	 * Returns a link to class summary file.
 	 *
-	 * @param string|\Apigen\ReflectionClass $class Class reflection or name
+	 * @param string|\ApiGen\ReflectionClass $class Class reflection or name
 	 * @return string
 	 */
 	public function getClassUrl($class)
@@ -414,7 +414,7 @@ class Template extends Nette\Templating\FileTemplate
 	/**
 	 * Returns a link to constant in class summary file or to constant summary file.
 	 *
-	 * @param \Apigen\ReflectionConstant $constant Constant reflection
+	 * @param \ApiGen\ReflectionConstant $constant Constant reflection
 	 * @return string
 	 */
 	public function getConstantUrl(ReflectionConstant $constant)
@@ -430,7 +430,7 @@ class Template extends Nette\Templating\FileTemplate
 	/**
 	 * Returns a link to function summary file.
 	 *
-	 * @param \Apigen\ReflectionFunction $function Function reflection
+	 * @param \ApiGen\ReflectionFunction $function Function reflection
 	 * @return string
 	 */
 	public function getFunctionUrl(ReflectionFunction $function)
@@ -441,7 +441,7 @@ class Template extends Nette\Templating\FileTemplate
 	/**
 	 * Returns a link to a element source code.
 	 *
-	 * @param \Apigen\ReflectionBase|\TokenReflection\IReflection $element Element reflection
+	 * @param \ApiGen\ReflectionBase|\TokenReflection\IReflection $element Element reflection
 	 * @param boolean $withLine Include file line number into the link
 	 * @return string
 	 */
@@ -477,7 +477,7 @@ class Template extends Nette\Templating\FileTemplate
 	/**
 	 * Returns a link to a element documentation at php.net.
 	 *
-	 * @param \Apigen\ReflectionBase|\TokenReflection\IReflection $element Element reflection
+	 * @param \ApiGen\ReflectionBase|\TokenReflection\IReflection $element Element reflection
 	 * @return string
 	 */
 	public function getManualUrl($element)
@@ -526,7 +526,7 @@ class Template extends Nette\Templating\FileTemplate
 	 *
 	 * @param string $className Class name description
 	 * @param string $namespace Namespace name
-	 * @return \Apigen\ReflectionClass
+	 * @return \ApiGen\ReflectionClass
 	 */
 	public function getClass($className, $namespace = '')
 	{
@@ -551,7 +551,7 @@ class Template extends Nette\Templating\FileTemplate
 	 *
 	 * @param string $constantName Constant name
 	 * @param string $namespace Namespace name
-	 * @return \Apigen\ReflectionConstant
+	 * @return \ApiGen\ReflectionConstant
 	 */
 	public function getConstant($constantName, $namespace = '')
 	{
@@ -576,7 +576,7 @@ class Template extends Nette\Templating\FileTemplate
 	 *
 	 * @param string $functionName Function name
 	 * @param string $namespace Namespace name
-	 * @return \Apigen\ReflectionFunction
+	 * @return \ApiGen\ReflectionFunction
 	 */
 	public function getFunction($functionName, $namespace = '')
 	{
@@ -600,8 +600,8 @@ class Template extends Nette\Templating\FileTemplate
 	 * Tries to parse a definition of a class/method/property/constant/function and returns the appropriate instance if successful.
 	 *
 	 * @param string $definition Definition
-	 * @param \Apigen\ReflectionBase|\TokenReflection\IReflection $context Link context
-	 * @return \Apigen\ReflectionBase|\TokenReflection\IReflection|null
+	 * @param \ApiGen\ReflectionBase|\TokenReflection\IReflection $context Link context
+	 * @return \ApiGen\ReflectionBase|\TokenReflection\IReflection|null
 	 */
 	public function resolveElement($definition, $context)
 	{
@@ -681,7 +681,7 @@ class Template extends Nette\Templating\FileTemplate
 	 * Tries to parse a definition of a class/method/property/constant/function and returns the appropriate link if successful.
 	 *
 	 * @param string $definition Definition
-	 * @param \Apigen\ReflectionBase|\TokenReflection\IReflection $context Link context
+	 * @param \ApiGen\ReflectionBase|\TokenReflection\IReflection $context Link context
 	 * @return string|null
 	 */
 	public function resolveLink($definition, $context)
@@ -727,7 +727,7 @@ class Template extends Nette\Templating\FileTemplate
 	 * Resolves links in documentation.
 	 *
 	 * @param string $text Processed documentation text
-	 * @param \Apigen\ReflectionBase|\TokenReflection\IReflection $context Reflection object
+	 * @param \ApiGen\ReflectionBase|\TokenReflection\IReflection $context Reflection object
 	 * @return string
 	 */
 	private function resolveLinks($text, $context)
@@ -760,7 +760,7 @@ class Template extends Nette\Templating\FileTemplate
 	 * Formats text as documentation block or line.
 	 *
 	 * @param string $text Text
-	 * @param \Apigen\ReflectionBase|\TokenReflection\IReflection $context Reflection object
+	 * @param \ApiGen\ReflectionBase|\TokenReflection\IReflection $context Reflection object
 	 * @param boolean $block Parse text as block
 	 * @return string
 	 */

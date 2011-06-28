@@ -1,7 +1,7 @@
 <?php
 
 /**
- * TR ApiGen - API documentation generator.
+ * ApiGen - API documentation generator.
  *
  * Copyright (c) 2010 David Grudl (http://davidgrudl.com)
  * Copyright (c) 2011 Ondřej Nešpor (http://andrewsville.cz)
@@ -11,7 +11,7 @@
  * the file LICENSE that was distributed with this source code.
  */
 
-namespace Apigen;
+namespace ApiGen;
 
 use TokenReflection, TokenReflection\IReflectionClass, TokenReflection\IReflectionMethod, TokenReflection\IReflectionProperty, TokenReflection\IReflectionConstant;
 use ReflectionMethod, ReflectionProperty;
@@ -81,7 +81,7 @@ class ReflectionClass extends ReflectionBase
 	 * Sets the inspected class reflection.
 	 *
 	 * @param \TokenReflection\IReflectionClass $reflection Inspected class reflection
-	 * @param \Apigen\Generator $generator Apigen generator
+	 * @param \ApiGen\Generator $generator ApiGen generator
 	 */
 	public function __construct(IReflectionClass $reflection, Generator $generator)
 	{
@@ -184,7 +184,7 @@ class ReflectionClass extends ReflectionBase
 	 * Returns a constant reflection.
 	 *
 	 * @param string $name Constant name
-	 * @return \Apigen\ReflectionConstant
+	 * @return \ApiGen\ReflectionConstant
 	 */
 	public function getConstantReflection($name)
 	{
@@ -194,7 +194,7 @@ class ReflectionClass extends ReflectionBase
 	/**
 	 * Returns a parent class reflection encapsulated by this class.
 	 *
-	 * @return \Apigen\ReflectionClass
+	 * @return \ApiGen\ReflectionClass
 	 */
 	public function getParentClass()
 	{
