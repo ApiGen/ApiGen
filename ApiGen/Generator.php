@@ -235,6 +235,12 @@ class Generator extends Nette\Object
 	 */
 	public function wipeOutDestination()
 	{
+		// Temporary directory
+		$tmpDir = $this->config->destination . '/tmp';
+		if (is_dir($tmpDir) && !$this->deleteDir($tmpDir)) {
+			return false;
+		}
+
 		// Resources
 		foreach ($this->config->resources as $resource) {
 			$path = $this->config->destination . '/' . $resource;
