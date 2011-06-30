@@ -1093,8 +1093,7 @@ class Generator extends Nette\Object
 			'@c' => "\x1b[0m"
 		);
 
-		// Windows doesn't support colors
-		if ('WIN' === substr(PHP_OS, 0, 3)) {
+		if (!$this->config->colors) {
 			$placeholders = array_fill_keys(array_keys($placeholders), '');
 		}
 

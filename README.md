@@ -210,6 +210,10 @@ Do not print any messages to the console, default is "No".
 
 Display progressbars, default is "Yes".
 
+```--colors <yes|no>```
+
+Use colors, default "No" on Windows, "Yes" on other systems. Windows doesn't support colors in console however you can enable it with [Ansicon](http://adoxa.110mb.com/ansicon/).
+
 ```--debug <yes|no>```
 
 Display additional information (exception trace) in case of an error, default is "No".

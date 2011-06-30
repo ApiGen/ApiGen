@@ -68,6 +68,7 @@ class Config
 		'wipeout' => true,
 		'quiet' => false,
 		'progressbar' => true,
+		'colors' => true,
 		'debug' => false
 	);
 
@@ -127,6 +128,7 @@ class Config
 
 		$this->config = self::$defaultConfig;
 		$this->config['templateConfig'] = TEMPLATE_DIR . '/default/config.neon';
+		$this->config['colors'] = 'WIN' !== substr(PHP_OS, 0, 3);
 	}
 
 	/**
@@ -402,6 +404,7 @@ Options:
 	@option@--wipeout@c          <@value@yes@c|@value@no@c>    Wipe out the destination directory first, default "@value@yes@c"
 	@option@--quiet@c            <@value@yes@c|@value@no@c>    Don't display scaning and generating messages, default "@value@no@c"
 	@option@--progressbar@c      <@value@yes@c|@value@no@c>    Display progressbars, default "@value@yes@c"
+	@option@--colors@c           <@value@yes@c|@value@no@c>    Use colors, default "@value@no@c" on Windows, "@value@yes@c" on other systems
 	@option@--debug@c            <@value@yes@c|@value@no@c>    Display additional information in case of an error, default "@value@no@c"
 	@option@--help@c|@option@-h@c                      Display this help
 
