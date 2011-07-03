@@ -12,6 +12,7 @@
  */
 
 namespace ApiGen;
+use TokenReflection;
 
 /**
  * Function/method reflection envelope parent class.
@@ -23,53 +24,44 @@ namespace ApiGen;
 abstract class ReflectionFunctionBase extends ReflectionBase
 {
 	/**
-	 * Cache for list of parameters.
-	 *
-	 * @var array
-	 */
-	private $parameters;
-
-	/**
 	 * Returns a list of function/method parameters.
 	 *
 	 * @return array
 	 */
 	public function getParameters()
 	{
-		if (null === $this->parameters) {
-			$this->parameters = array();
-			foreach ($this->reflection->getParameters() as $parameter) {
-				$this->parameters[$parameter->getName()] = new ReflectionParameter($parameter, self::$generator);
-			}
-		}
-
-		return $this->parameters;
+		$generator = self::$generator;
+		return array_map(function(TokenReflection\ReflectionParameter $parameter) use ($generator) {
+			return new ReflectionParameter($parameter, $generator);
+		}, $this->reflection->getParameters());
 	}
 
 	/**
 	 * Returns a particular function/method parameter.
 	 *
-	 * @param integer|string $parameter Parameter name or position
+	 * @param integer|string $parameterName Parameter name or position
 	 * @return \ApiGen\ReflectionParameter
 	 * @throws \InvalidArgumentException If there is no parameter of the given name
 	 * @throws \InvalidArgumentException If there is no parameter at the given position
 	 */
-	public function getParameter($parameter)
+	public function getParameter($parameterName)
 	{
 		$parameters = $this->getParameters();
 
-		if (is_numeric($parameter)) {
-			if (isset($parameters[$parameter])) {
-				return $parameters[$parameter];
+		if (is_numeric($parameterName)) {
+			if (isset($parameters[$parameterName])) {
+				return $parameters[$parameterName];
 			}
 
-			throw new \InvalidArgumentException(sprintf('There is no parameter at position "%d" in function/method "%s".', $parameter, $this->getName()), Exception\Runtime::DOES_NOT_EXIST);
+			throw new \InvalidArgumentException(sprintf('There is no parameter at position "%d" in function/method "%s".', $parameterName, $this->getName()), Exception\Runtime::DOES_NOT_EXIST);
 		} else {
-			if (isset($this->parameters[$parameter])) {
-				return $this->parameters[$parameter];
+			foreach ($parameters as $parameter) {
+				if ($parameter->getName() === $parameterName) {
+					return $parameter;
+				}
 			}
 
-			throw new \InvalidArgumentException(sprintf('There is no parameter "%s" in function/method "%s".', $parameter, $this->getName()), Exception\Runtime::DOES_NOT_EXIST);
+			throw new \InvalidArgumentException(sprintf('There is no parameter "%s" in function/method "%s".', $parameterName, $this->getName()), Exception\Runtime::DOES_NOT_EXIST);
 		}
 	}
 }
