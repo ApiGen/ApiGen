@@ -30,7 +30,7 @@ class Tree extends RecursiveTreeIterator
 	/**
 	 * Last item on the current level.
 	 *
-	 * @var integer
+	 * @var string
 	 */
 	const LAST = '0';
 
