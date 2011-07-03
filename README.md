@@ -6,20 +6,12 @@ When the original ApiGen was introduced, its [author](https://github.com/dg) sta
 
 And we did :) That is how our **ApiGen** was born. We have taken the original tool, fixed some bugs, altered some things and added many useful features.
 
-# Differences from the original tool #
+## Features ##
 
-The biggest difference is that we use our own [TokenReflection library](https://github.com/Andrewsville/PHP-Token-Reflection) to describe the source code. Using TokenReflection is:
-
-* **safe** (documented source code does not get included and thus parsed),
-* **simple** (you do not need to include or autoload all libraries you use in your source code).
-
-Besides, we have made following changes in our ApiGen.
-
-### Changes ###
-
-* Much more confuguration options (see below).
-* Much lower memory usage.
-* Documentation for functions and constants in namespaces or global space.
+* Our own [TokenReflection library](https://github.com/Andrewsville/PHP-Token-Reflection) is used to describe the source code. It is **safe** (documented source code does not get included and thus parsed) and **simple** (you do not need to include or autoload all libraries you use in your source code).
+* Detailed documentation of classes, functions and constants.
+* Highlighted source code.
+* Support of namespaces and packages with subpackages.
 * A page with trees of classes, interfaces and exceptions.
 * A page with a list of deprecated elements.
 * A page with Todo tasks.
@@ -27,41 +19,16 @@ Besides, we have made following changes in our ApiGen.
 * Support for docblock templates.
 * Support for @inheritdoc.
 * Support for {@link}.
-* Clickable links for @see and @uses.
-* Detailed documentation for constants and properties with all annotations.
-* Links to PHP manual pages for constants and properties of PHP internal classes.
-* Links to the start line in the highlighted source code for constants and properties.
-* List of packages and subpackages.
-* List of indirect known subclasses and implementers.
-* Improved search and suggest - lets you search in class, functions and constant names without the need of Google CSE.
-* Support for multiple/custom templates.
-* Fancy progressbars (one while parsing source codes, one while generating documentation).
-* Exceptions handling.
-* Inherited methods, constants and properties are in alphabetical order.
-* Class methods, constants and properties are in truly alphabetical order.
-* Better visualization of method parameters.
-* Unified order of annotations.
-* No URL shortening.
-* Better visualization of nested namespaces.
-* No wrapping of class names.
-* Resizable left column.
-* Better static files (stylesheets, javascript) versioning.
-* Better page titles.
-* A lot of visual enhancements.
+* Active links in @see and @uses tags.
+* Documentation of used internal PHP classes.
+* Links to the start line in the highlighted source code for every described element.
+* List of direct and indirect known subclasses and implementers for every class/inteface.
+* Google CSE support with suggest.
 * Google Analytics support.
-* Full sitemap with links to package and namespace pages.
-* New version of jQuery.
-* New version of FSHL.
-
-### Bugfixes ###
-* No fatal errors when a class is missing (this is a benefit of using the TokenReflection library).
-* Better FQN resolving in documentation.
-* Better values output of constants and properties (you see the actual definition - "\\n", not just a space).
-* Fixed email addresses in annotations (the original ApiGen cannot handle an email address next to the author name).
-* Fixed parsing packages and subpackages with description.
-* Displaying the "public" keyword for public properties.
-* Texy! downgraded to the stable 2.1 version (the 3.0-dev version causes PCRE internal errors sometimes).
-* Support for Mac and DOS line endings.
+* Support for multiple/custom templates.
+* Sitemap and opensearch support.
+* Support for different line endings.
+* Lots of configuration options (see below).
 
 ## Installation ##
 
