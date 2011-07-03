@@ -69,21 +69,21 @@ class ReflectionClass extends ReflectionBase
 	private $ownConstants;
 
 	/**
-	 * Cache for list of own methods.
+	 * Cache for list of all methods.
 	 *
 	 * @var array
 	 */
 	private $methods;
 
 	/**
-	 * Cache for list of own properties.
+	 * Cache for list of all properties.
 	 *
 	 * @var array
 	 */
 	private $properties;
 
 	/**
-	 * Cache for list of own constants.
+	 * Cache for list of all constants.
 	 *
 	 * @var array
 	 */

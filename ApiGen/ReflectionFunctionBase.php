@@ -50,9 +50,9 @@ abstract class ReflectionFunctionBase extends ReflectionBase
 	 * Returns a particular function/method parameter.
 	 *
 	 * @param integer|string $parameter Parameter name or position
-	 * @return \TokenReflection\ReflectionParameter
-	 * @throws \TokenReflection\Exception\Runtime If there is no parameter of the given name
-	 * @throws \TokenReflection\Exception\Runtime If there is no parameter at the given position
+	 * @return \ApiGen\ReflectionParameter
+	 * @throws \InvalidArgumentException If there is no parameter of the given name
+	 * @throws \InvalidArgumentException If there is no parameter at the given position
 	 */
 	public function getParameter($parameter)
 	{
