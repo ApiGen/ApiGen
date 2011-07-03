@@ -36,7 +36,7 @@ class ReflectionParameter extends ReflectionBase
 	/**
 	 * Returns the declaring function.
 	 *
-	 * @return \TokenReflection\ReflectionFunctionBase
+	 * @return \ApiGen\ReflectionFunctionBase
 	 */
 	public function getDeclaringFunction()
 	{
