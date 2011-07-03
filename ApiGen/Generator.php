@@ -938,9 +938,7 @@ class Generator extends Nette\Object
 		}
 		unset($template->subnamespaces);
 
-		// Generate class & interface & exception files
-		$fshl = new FSHL\Highlighter(new FSHL\Output\Html(), FSHL\Highlighter::OPTION_TAB_INDENT | FSHL\Highlighter::OPTION_LINE_COUNTER);
-		$fshlPhpLexer = new FSHL\Lexer\Php();
+		// Generate classes, interfaces, exceptions, constants and functions files
 		if (!empty($classes) || !empty($interfaces) || !empty($exceptions)) {
 			if (!isset($templates['main']['class'])) {
 				throw new Exception('Template for class is not set');
@@ -963,6 +961,9 @@ class Generator extends Nette\Object
 			$this->forceDir($destination . '/' . $templates['main']['function']['filename']);
 		}
 		if ($this->config->sourceCode) {
+			$fshl = new FSHL\Highlighter(new FSHL\Output\Html(), FSHL\Highlighter::OPTION_TAB_INDENT | FSHL\Highlighter::OPTION_LINE_COUNTER);
+			$fshl->setLexer(new FSHL\Lexer\Php());
+
 			if (!isset($templates['main']['source'])) {
 				throw new Exception('Template for source code is not set');
 			}
@@ -1051,7 +1052,7 @@ class Generator extends Nette\Object
 
 				// Generate source codes
 				if ($this->config->sourceCode && $element->isTokenized()) {
-					$template->source = $fshl->highlight($fshlPhpLexer, file_get_contents($element->getFileName()));
+					$template->source = $fshl->highlight(file_get_contents($element->getFileName()));
 					$template->setFile($templatePath . '/' . $templates['main']['source']['template'])->save($destination . '/' . $template->getSourceUrl($element, false));
 
 					$this->incrementProgressBar();
