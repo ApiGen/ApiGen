@@ -541,7 +541,13 @@ class Generator extends Nette\Object
 					}
 
 					if ($element instanceof ReflectionClass) {
-						$label = 'Class %s';
+						if ($element->isInterface()) {
+							$label = 'Interface %s';
+						} elseif ($element->isException()) {
+							$label = 'Exception %s';
+						} else {
+							$label = 'Class %s';
+						}
 					} elseif ($element instanceof ReflectionMethod) {
 						$label = 'Method %s()';
 					} elseif ($element instanceof ReflectionFunction) {
@@ -578,7 +584,13 @@ class Generator extends Nette\Object
 					}
 
 					if ($parentElement instanceof ReflectionClass) {
-						$parentElementLabel = 'Class %s';
+						if ($parentElement->isInterface()) {
+							$parentElementLabel = 'Interface %s';
+						} elseif ($parentElement->isException()) {
+							$parentElementLabel = 'Exception %s';
+						} else {
+							$parentElementLabel = 'Class %s';
+						}
 					} elseif ($parentElement instanceof ReflectionConstant) {
 						$parentElementLabel = 'Constant %s';
 					} else {
