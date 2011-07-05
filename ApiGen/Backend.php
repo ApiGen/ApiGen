@@ -157,7 +157,7 @@ class Backend extends Broker\Backend\Memory
 			}
 		}
 
-		foreach ($allClasses[self::TOKENIZED_CLASSES][$name] as $class) {
+		foreach ($allClasses[self::TOKENIZED_CLASSES] as $class) {
 			if (!$class->isDocumented()) {
 				continue;
 			}
