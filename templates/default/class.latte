@@ -25,28 +25,28 @@
 	</dl>
 
 	<div n:if="$directSubClasses">
-		<h4>Direct Known Subclasses</h4>
+		<h4>Direct known subclasses</h4>
 		{foreach $directSubClasses as $item}
 			<a href="{$item|classUrl}" n:tag-if="$item->documented">{$item->name}</a>{sep}, {/sep}
 		{/foreach}
 	</div>
 
 	<div n:if="$indirectSubClasses">
-		<h4>Indirect Known Subclasses</h4>
+		<h4>Indirect known subclasses</h4>
 		{foreach $indirectSubClasses as $item}
 			<a href="{$item|classUrl}" n:tag-if="$item->documented">{$item->name}</a>{sep}, {/sep}
 		{/foreach}
 	</div>
 
 	<div n:if="$directImplementers">
-		<h4>Direct Known Implementers</h4>
+		<h4>Direct known implementers</h4>
 		{foreach $directImplementers as $item}
 			<a href="{$item|classUrl}" n:tag-if="$item->documented">{$item->name}</a>{sep}, {/sep}
 		{/foreach}
 	</div>
 
 	<div n:if="$indirectImplementers">
-		<h4>Indirect Known Implementers</h4>
+		<h4>Indirect known implementers</h4>
 		{foreach $indirectImplementers as $item}
 			<a href="{$item|classUrl}" n:tag-if="$item->documented">{$item->name}</a>{sep}, {/sep}
 		{/foreach}
@@ -169,7 +169,7 @@
 
 
 	<table n:foreach="$class->inheritedMethods as $parentName => $methods" class="summary methods">
-	<caption>Methods Inherited From <a href="{$parentName|classUrl}#methods" n:tag-if="$template->getClass($parentName)">{$parentName}</a></caption>
+	<caption>Methods inherited from <a href="{$parentName|classUrl}#methods" n:tag-if="$template->getClass($parentName)">{$parentName}</a></caption>
 	<tr>
 		<td><code>
 		{foreach $methods as $method}
@@ -221,7 +221,7 @@
 	</table>
 
 	<table n:foreach="$class->inheritedConstants as $parentName => $constants" class="summary constants">
-	<caption>Constants Inherited From <a href="{$parentName|classUrl}#constants" n:tag-if="$template->getClass($parentName)">{$parentName}</a></caption>
+	<caption>Constants inherited from <a href="{$parentName|classUrl}#constants" n:tag-if="$template->getClass($parentName)">{$parentName}</a></caption>
 	<tr>
 		<td><code>
 			{foreach $constants as $constant}
@@ -277,7 +277,7 @@
 	</table>
 
 	<table n:foreach="$class->inheritedProperties as $parentName => $properties" class="summary properties">
-	<caption>Properties Inherited From <a href="{$parentName|classUrl}#properties" n:tag-if="$template->getClass($parentName)">{$parentName}</a></caption>
+	<caption>Properties inherited from <a href="{$parentName|classUrl}#properties" n:tag-if="$template->getClass($parentName)">{$parentName}</a></caption>
 	<tr>
 		<td><code>
 			{foreach $properties as $property}
