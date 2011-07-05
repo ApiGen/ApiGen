@@ -433,10 +433,10 @@ class ReflectionClass extends ReflectionBase
 		$subClasses = array();
 		$name = $this->reflection->getName();
 		foreach (self::$classes as $class) {
-			if (!$class->isDocumented() || !$class->isSubclassOf($name)) {
+			if (!$class->isDocumented()) {
 				continue;
 			}
-			if (null === $class->getParentClassName() || !$class->getParentClass()->isSubClassOf($name)) {
+			if ($name === $class->getParentClassName()) {
 				$subClasses[] = $class;
 			}
 		}
@@ -453,10 +453,10 @@ class ReflectionClass extends ReflectionBase
 		$subClasses = array();
 		$name = $this->reflection->getName();
 		foreach (self::$classes as $class) {
-			if (!$class->isDocumented() || !$class->isSubclassOf($name)) {
+			if (!$class->isDocumented()) {
 				continue;
 			}
-			if (null !== $class->getParentClassName() && $class->getParentClass()->isSubClassOf($name)) {
+			if ($name !== $class->getParentClassName() && $class->isSubclassOf($name)) {
 				$subClasses[] = $class;
 			}
 		}
@@ -477,10 +477,10 @@ class ReflectionClass extends ReflectionBase
 		$implementers = array();
 		$name = $this->reflection->getName();
 		foreach (self::$classes as $class) {
-			if (!$class->isDocumented() || $class->isInterface() || !$class->implementsInterface($name)) {
+			if (!$class->isDocumented()) {
 				continue;
 			}
-			if (null === $class->getParentClassName() || !$class->getParentClass()->implementsInterface($name)) {
+			if (in_array($name, $class->getOwnInterfaceNames())) {
 				$implementers[] = $class;
 			}
 		}
@@ -501,10 +501,10 @@ class ReflectionClass extends ReflectionBase
 		$implementers = array();
 		$name = $this->reflection->getName();
 		foreach (self::$classes as $class) {
-			if (!$class->isDocumented() || $class->isInterface() || !$class->implementsInterface($name)) {
+			if (!$class->isDocumented()) {
 				continue;
 			}
-			if (null !== $class->getParentClassName() && $class->getParentClass()->implementsInterface($name)) {
+			if ($class->implementsInterface($name) && !in_array($name, $class->getOwnInterfaceNames())) {
 				$implementers[] = $class;
 			}
 		}
