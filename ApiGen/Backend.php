@@ -206,9 +206,8 @@ class Backend extends Broker\Backend\Memory
 	{
 		static $parsedAnnotations = array('param', 'return', 'throws');
 
+		$annotations = $function->getAnnotations();
 		foreach ($parsedAnnotations as $annotation) {
-			$annotations = $function->getAnnotations();
-
 			if (!isset($annotations[$annotation])) {
 				continue;
 			}
@@ -221,8 +220,8 @@ class Backend extends Broker\Backend\Memory
 		}
 
 		foreach ($function->getParameters() as $param) {
-			if ($hint = $param->getClass()) {
-				$allClasses = $this->addClass($declared, $allClasses, $hint->getName());
+			if ($hint = $param->getClassName()) {
+				$allClasses = $this->addClass($declared, $allClasses, $hint);
 			}
 		}
 
