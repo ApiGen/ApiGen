@@ -553,7 +553,7 @@ class ReflectionClass extends ReflectionBase
 			return $property->getName();
 		}, $this->getOwnProperties()));
 
-		foreach (array_merge($this->getParentClasses(), $this->getInterfaces()) as $class) {
+		foreach ($this->getParentClasses() as $class) {
 			$inheritedProperties = array();
 			foreach ($class->getOwnProperties() as $property) {
 				if (!isset($allProperties[$property->getName()]) && !$property->isPrivate()) {
