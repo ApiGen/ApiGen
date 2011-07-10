@@ -4,7 +4,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<meta name="generator" content="{$generator} {$version}">
 
-	<title>{$config->title}</title>
+	<title>{$config->title ?: 'Overview'}</title>
 
 	{var combined_js = 'resources/combined.js'}
 	<script type="text/javascript" src="{$combined_js|staticFile}"></script>
@@ -24,8 +24,8 @@
 		})();
 	</script>
 </head>
-<frameset cols="270,*" id="main">
-	<frame frameborder="0" src="menu.html" id="left" name="left" />
-	<frame frameborder="0" src="overview.html" id="right" name="right" />
+<frameset cols="270,*" id="main" frameborder="0" framespacing="0">
+	<frame src="menu.html" id="left" name="left" noresize="noresize" />
+	<frame src="overview.html" id="right" name="right" />
 </frameset>
 </html>

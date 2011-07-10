@@ -285,6 +285,8 @@ class Template extends Nette\Templating\FileTemplate
 			}
 			return $name;
 		});
+
+		$this->registerHelper('urlize', array($this, 'urlize'));
 	}
 
 	/**
@@ -799,7 +801,7 @@ class Template extends Nette\Templating\FileTemplate
 	 * @param string $string
 	 * @return string
 	 */
-	private function urlize($string)
+	public function urlize($string)
 	{
 		return preg_replace('~[^\w]~', '.', $string);
 	}

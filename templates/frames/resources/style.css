@@ -100,16 +100,18 @@ code a b {
 /**
  * Splitter
  */
-.vsplitbar {
+#splitter {
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 100%;
 	width: 5px;
 	background: #1e5eb6 url('resize.png') left center no-repeat;
+	cursor: e-resize;
 }
-
-.vsplitbar.active {
+#splitter.active {
 	opacity: .5;
 }
-
-
 
 /**
  * Menu
@@ -144,7 +146,7 @@ code a b {
 	background-color: #006aeb;
 }
 
-#menu #entities span {
+#menu #groups span {
 	position: absolute;
 	top: 4px;
 	right: 0;
@@ -154,26 +156,36 @@ code a b {
 	height: 12px;
 	background: url('collapsed.gif') #ffffff 0 0 no-repeat;
 }
-#menu #entities span:hover {
+#menu #groups span:hover {
 	background-position: -12px 0;
 }
-#menu #entities span.collapsed {
+#menu #groups span.collapsed {
 	background-position: 0 -12px;
 }
-#menu #entities span.collapsed:hover {
+#menu #groups span.collapsed:hover {
 	background-position: -12px -12px;
 }
 
-#menu ul.collapsed {
+#menu #groups ul.collapsed {
 	display: none;
 }
+
+
+/**
+ *	Right wrapper
+ */
+#wrapper {
+	max-width: 1000px;
+	margin-left: 5px;
+}
+
 
 /**
  *	Navigation
  */
 #search {
 	float: right;
-	margin: 3px 5px 3px 8px;
+	margin: 3px 8px;
 }
 
 #search input.text {
@@ -182,7 +194,6 @@ code a b {
 }
 
 #navigation {
-	margin-bottom: 3px;
 	padding: 3px 8px;
 	background-color: #f6f6f4;
 	height: 26px;
