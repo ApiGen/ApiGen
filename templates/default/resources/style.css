@@ -100,29 +100,29 @@ code a b {
 /**
  * Splitter
  */
-.vsplitbar {
+#splitter {
+	position: fixed;
+	height: 100%;
 	width: 5px;
+	left: 270px;
 	background: #1e5eb6 url('resize.png') left center no-repeat;
+	cursor: e-resize;
 }
-
-.vsplitbar.active {
+#splitter.active {
 	opacity: .5;
 }
-
-
 
 /**
  * Left side
  */
-#leftWrapper {
+#left {
 	overflow: auto;
-	background: #ffffff;
 	width: 270px;
 	height: 100%;
 	position: fixed;
 }
 
-#left {
+#leftInner {
 	padding: 10px;
 }
 
@@ -178,16 +178,11 @@ code a b {
 /**
  *	Right side
  */
-#rightWrapper {
-	overflow: auto;
-	margin-left: 270px;
-}
-
 #right {
+	overflow: auto;
+	margin-left: 275px;
 	max-width: 1000px;
 }
-
-
 
 /**
  *	Navigation
