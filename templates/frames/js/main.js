@@ -30,8 +30,9 @@ $(function() {
 	if (window.self === window.top) {
 		window.page = 'overview.html';
 
-		if (null !== $.cookie('splitter')) {
-			$frameset.attr('cols', $.cookie('splitter') + ',*');
+		var splitterPosition = $.cookie('splitter');
+		if (null !== splitterPosition) {
+			$frameset.attr('cols', parseInt(splitterPosition) + ',*');
 		}
 	}
 
@@ -156,17 +157,16 @@ $(function() {
 			updateMenu(window.location.pathname.split('/').pop());
 		});
 
-		var $wrapper = $('#wrapper');
-		var $content = $('#content', $wrapper);
+		var $content = $('#content');
 
 		// Update menu
-		$('a', $wrapper).click(function() {
+		$('a').click(function() {
 			updateMenu($(this).attr('href'));
 		});
 
 		// Search autocompletion
 		var autocompleteFound = false;
-		var $search = $('#search input[name=q]', $wrapper);
+		var $search = $('#search input[name=q]');
 		$search
 			.autocomplete(window.top.elements, {
 				matchContains: true,
@@ -213,7 +213,9 @@ $(function() {
 		});
 
 		// Switch between natural and alphabetical order
-		var $caption = $('table.summary', $content).filter(':has(tr[data-order])').find('caption');
+		var $caption = $('table.summary', $content)
+			.filter(':has(tr[data-order])')
+				.find('caption');
 		$caption
 			.click(function() {
 				var $this = $(this);
@@ -240,16 +242,16 @@ $(function() {
 				clearTimeout(timeout);
 				var $this = $(this);
 				timeout = setTimeout(function() {
-					$this.find('.short').hide();
-					$this.find('.detailed').show();
+					$('.short', $this).hide();
+					$('.detailed', $this).show();
 				}, 500);
 			}, function() {
 				clearTimeout(timeout);
 			}).click(function() { // Immediate hover effect on summary
 				clearTimeout(timeout);
 				var $this = $(this);
-				$this.find('.short').hide();
-				$this.find('.detailed').show();
+				$('.short', $this).hide();
+				$('.detailed', $this).show();
 			});
 
 
@@ -260,6 +262,7 @@ $(function() {
 			.add($documentLeft)
 			.add($documentRight);
 		var $splitter = $('#splitter');
+		var splitterWidth = $splitter.width();
 
 		$splitter
 			.attr('unselectable', 'on')
@@ -278,7 +281,7 @@ $(function() {
 					}
 				});
 				$documentRight.mousemove(function(event) {
-					if ($documentRight.width() >= 600) {
+					if ($documentRight.width() >= 600 + splitterWidth) {
 						$frameset.attr('cols', parseInt($frameset.attr('cols')) + event.pageX + ',*');
 					}
 				});

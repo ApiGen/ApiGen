@@ -28,7 +28,7 @@
 <body>
 <div id="splitter"></div>
 
-<div id="wrapper">
+<div id="rightInner">
 	<form{if $config->googleCseId} action="http://www.google.com/cse"{/if} id="search">
 		<input type="hidden" name="cx" value="{$config->googleCseId}">
 		<input type="hidden" name="ie" value="UTF-8">
@@ -78,6 +78,5 @@
 		Generated using the <a href="https://github.com/Andrewsville/PHP-Token-Reflection" title="All your tokens are belong to us">TokenReflection</a> library.
 	</div>
 </div>
-
 </body>
 </html>

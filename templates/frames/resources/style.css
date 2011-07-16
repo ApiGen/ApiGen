@@ -1,5 +1,5 @@
 /*!
-	(c) David Grudl, Ondřej Nešpor, Jaroslav Hanslík, Martin Cohen, Jörn Zaefferer
+	(c) David Grudl, Ondřej Nešpor, Jaroslav Hanslík, Jörn Zaefferer
 */
 
 body {
@@ -69,6 +69,7 @@ a {
 	padding: 3px 1px;
 	text-decoration: none;
 }
+
 h1 a {
 	color: #1e5eb6;
 }
@@ -98,22 +99,6 @@ code a b {
 }
 
 /**
- * Splitter
- */
-#splitter {
-	position: fixed;
-	top: 0;
-	left: 0;
-	height: 100%;
-	width: 5px;
-	background: #1e5eb6 url('resize.png') left center no-repeat;
-	cursor: e-resize;
-}
-#splitter.active {
-	opacity: .5;
-}
-
-/**
  * Menu
  */
 #menu {
@@ -136,13 +121,13 @@ code a b {
 	position: relative;
 }
 
-#menu .active > a, #left > span {
+#menu .active > a {
 	color: #333333;
 	background: none;
 	font-weight: bold;
 }
 
-#menu .active > a:hover, #left .active > a:active, #left .active > a:focus {
+#menu .active > a:hover, #menu .active > a:active, #menu .active > a:focus {
 	background-color: #006aeb;
 }
 
@@ -156,12 +141,15 @@ code a b {
 	height: 12px;
 	background: url('collapsed.gif') #ffffff 0 0 no-repeat;
 }
+
 #menu #groups span:hover {
 	background-position: -12px 0;
 }
+
 #menu #groups span.collapsed {
 	background-position: 0 -12px;
 }
+
 #menu #groups span.collapsed:hover {
 	background-position: -12px -12px;
 }
@@ -170,18 +158,16 @@ code a b {
 	display: none;
 }
 
-
 /**
- *	Right wrapper
+ * Right side
  */
-#wrapper {
+#rightInner {
 	max-width: 1000px;
 	margin-left: 5px;
 }
 
-
 /**
- *	Navigation
+ * Search
  */
 #search {
 	float: right;
@@ -193,6 +179,56 @@ code a b {
 	width: 250px;
 }
 
+/**
+ * Autocomplete
+ */
+.ac_results {
+	padding: 0;
+	border: 1px solid #cccccc;
+	background-color: #ffffff;
+	overflow: hidden;
+	z-index: 99999;
+}
+
+.ac_results ul {
+	width: 100%;
+	list-style-position: outside;
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+.ac_results li {
+	margin: 0;
+	padding: 2px 5px;
+	cursor: default;
+	display: block;
+	font: 12px Trebuchet MS, "Geneva CE", lucida, sans-serif;
+	line-height: 16px;
+	overflow: hidden;
+	white-space: nowrap;
+}
+
+.ac_results li strong {
+	color: #000000;
+}
+
+.ac_odd {
+	background-color: #eeeeee;
+}
+
+.ac_over {
+	background-color: #006aeb;
+	color: #ffffff;
+}
+
+.ac_results li.ac_over strong {
+	color: #ffffff;
+}
+
+/**
+ * Navigation
+ */
 #navigation {
 	padding: 3px 8px;
 	background-color: #f6f6f4;
@@ -231,10 +267,12 @@ code a b {
 	font-weight: bold;
 	padding: 0;
 }
+
 #navigation ul li span {
 	float: left;
 	padding: 0 3px;
 }
+
 #navigation ul li a:hover span, #navigation ul li a:active span, #navigation ul li a:focus span {
 	background-color: #006aeb;
 }
@@ -243,11 +281,8 @@ code a b {
  * Content
  */
 #content {
-	padding: 5px 10px;
-}
-
-.nowrap {
-	white-space: nowrap;
+	clear: both;
+	padding: 5px 15px;
 }
 
 .description {
@@ -260,9 +295,11 @@ code a b {
 	padding: .6em;
 	background: #fcfcf7;
 }
+
 .description pre {
 	margin: .5em 0;
 }
+
 .detailed pre {
 	border: .5em solid #ecede5;
 }
@@ -279,7 +316,6 @@ dl.tree dd {
 .info {
 	margin: 1.2em 0;
 }
-
 
 .summary {
 	border: 1px solid #cccccc;
@@ -330,9 +366,14 @@ tr:hover td {
 	margin-top: 5px;
 }
 
+.nowrap {
+	white-space: nowrap;
+}
+
 .deprecated {
 	opacity: .5;
 }
+
 .right {
 	text-align: right;
 }
@@ -356,8 +397,26 @@ tr:hover td {
 	margin: 0 0 5px 25px;
 }
 
+/**
+ * Splitter
+ */
+#splitter {
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 5px;
+	background: #1e5eb6 url('resize.png') left center no-repeat;
+	cursor: e-resize;
+}
 
+#splitter.active {
+	opacity: .5;
+}
 
+/**
+ * Footer
+ */
 #footer {
 	border-top: 1px solid #e9eeef;
 	clear: both;
@@ -370,93 +429,72 @@ tr:hover td {
 	background: #ffffff url('footer.gif') no-repeat center top;
 }
 
-.classtree ul {
+/**
+ * Tree
+ */
+div.tree ul {
 	list-style: none;
 	background: url('tree-vertical.gif') left repeat-y;
 	padding: 0;
 	margin-left: 20px;
 }
 
-.classtree li {
+div.tree li {
 	margin: 0;
 	padding: 0;
 }
 
-.classtree div {
+div.tree div {
 	padding-left: 30px;
 	background: left center no-repeat;
 }
 
-.classtree div.notlast {
+div.tree div.notlast {
 	background-image: url('tree-hasnext.gif');
 }
 
-.classtree div.last {
+div.tree div.last {
 	background-image: url('tree-last.png');
 }
 
-.classtree li.last {
+div.tree li.last {
 	background: url('tree-cleaner.gif') left repeat-y;
 }
-
 
 /**
  * Source code
  */
-.php-keyword1 { color: #e71818; font-weight: bold }
-.php-keyword2 { font-weight: bold }
-.php-var { color: #d59401; font-weight: bold }
-.php-num { color: #cd0673 }
-.php-quote { color: green }
-.php-vquote { color: #0F0; font-weight: bold }
-.php-comment { color: #929292 }
-
-.xlang { color: red; font-weight: bold }
-.l { color: silver; background-color: #ffffff }
-
-
-
-/**
- * Autocomplete
- */
-.ac_results {
-	padding: 0;
-	border: 1px solid #cccccc;
-	background-color: #ffffff;
-	overflow: hidden;
-	z-index: 99999;
+.php-keyword1 {
+	color: #e71818;
+	font-weight: bold;
 }
 
-.ac_results ul {
-	width: 100%;
-	list-style-position: outside;
-	list-style: none;
-	padding: 0;
-	margin: 0;
+.php-keyword2 {
+	font-weight: bold;
 }
 
-.ac_results li {
-	margin: 0;
-	padding: 2px 5px;
-	cursor: default;
-	display: block;
-	font: 12px Trebuchet MS, "Geneva CE", lucida, sans-serif;
-	line-height: 16px;
-	overflow: hidden;
-	white-space: nowrap;
-}
-.ac_results li strong {
-	color: #000000;
+.php-var {
+	color: #d59401;
+	font-weight: bold;
 }
 
-.ac_odd {
-	background-color: #eeeeee;
+.php-num {
+	color: #cd0673;
 }
 
-.ac_over {
-	background-color: #006aeb;
-	color: #ffffff;
+.php-quote {
+	color: #008000;
 }
-.ac_results li.ac_over strong {
-	color: #ffffff;
+
+.php-comment {
+	color: #929292;
+}
+
+.xlang {
+	color: #ff0000;
+	font-weight: bold;
+}
+
+.l {
+	color: #c0c0c0;
 }

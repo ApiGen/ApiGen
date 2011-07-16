@@ -30,10 +30,10 @@
 
 <body>
 <div id="left">
-	<div id="leftInner">
+	<div id="menu">
 		<a n:tag-if="'overview' !== $active" href="index.html" title="Overview"><span>Overview</span></a>
 
-		<div id="entities">
+		<div id="groups">
 			{if $packages}
 			<h3>Packages</h3>
 			<ul>
@@ -69,9 +69,11 @@
 				{/foreach}
 			</ul>
 			{/if}
+		</div>
 
-			<hr n:if="($packages || $namespaces) && ($classes || $interfaces || $exceptions || $constants || $functions)">
+		<hr n:if="($packages || $namespaces) && ($classes || $interfaces || $exceptions || $constants || $functions)">
 
+		<div id="elements">
 			{if $classes}
 			<h3>Classes</h3>
 			<ul>
@@ -109,7 +111,9 @@
 		</div>
 	</div>
 </div>
+
 <div id="splitter"></div>
+
 <div id="right">
 	<form{if $config->googleCseId} action="http://www.google.com/cse"{/if} id="search">
 		<input type="hidden" name="cx" value="{$config->googleCseId}">
