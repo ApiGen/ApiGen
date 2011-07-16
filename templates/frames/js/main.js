@@ -152,6 +152,7 @@ $(function() {
 	if (window.self === window.top.frames['right']) {
 		// Move back/next in browser history
 		$(function() {
+			window.top.document.title = window.document.title;
 			updateMenu(window.location.pathname.split('/').pop());
 		});
 
