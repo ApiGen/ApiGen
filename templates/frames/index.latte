@@ -6,23 +6,13 @@
 
 	<title>{$config->title ?: 'Overview'}</title>
 
+	{var elementlist_js = 'elementlist.js'}
+	<script type="text/javascript" src="{$elementlist_js|staticFile}"></script>
 	{var combined_js = 'resources/combined.js'}
 	<script type="text/javascript" src="{$combined_js|staticFile}"></script>
 	{var style_css = 'resources/style.css'}
 	<link rel="stylesheet" type="text/css" media="all" href="{$style_css|staticFile}">
 	<link n:if="$config->googleCseId" rel="search" type="application/opensearchdescription+xml" title="{$config->title}" href="{$config->baseUrl}/opensearch.xml">
-
-	<script n:if="$config->googleAnalytics" type="text/javascript">
-		var _gaq = _gaq || [];
-		_gaq.push(['_setAccount', {$config->googleAnalytics}]);
-		_gaq.push(['_trackPageview']);
-
-		(function() {
-			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-		})();
-	</script>
 </head>
 <frameset cols="270,*" id="main" frameborder="0" framespacing="0">
 	<frame src="menu.html" id="left" name="left" noresize="noresize" />

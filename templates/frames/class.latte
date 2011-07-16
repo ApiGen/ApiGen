@@ -54,7 +54,7 @@
 
 	<div class="info">
 		{if $class->abstract || $class->final}<b>{if $class->abstract}Abstract{else}Final{/if} {if $class->interface}Interface{else}Class{/if}</b><br>{/if}
-		{if $class->internal}<b>PHP Extension:</b> <a href="{$class->extension|manualUrl}" title="Go to PHP documentation">{$class->extension->name|firstUpper}</a><br>{/if}
+		{if $class->internal}<b>PHP Extension:</b> <a href="{$class->extension|manualUrl}" target="_top" title="Go to PHP documentation">{$class->extension->name|firstUpper}</a><br>{/if}
 		{if $class->inNamespace()}<b>Namespace:</b> {!$class->namespaceName|namespaceLinks}<br>{/if}
 
 		{foreach $template->annotationSort($template->annotationFilter($class->annotations)) as $annotation => $values}
@@ -63,7 +63,7 @@
 				{!$value|annotation:$annotation:$class}<br>
 			{/foreach}
 		{/foreach}
-		{if $class->internal}<b>Documented at</b> <a href="{$class|manualUrl}" title="Go to PHP documentation">php.net</a>{else}<b>Located at</b> <a n:tag-if="$config->sourceCode" href="{$class|sourceUrl}" title="Go to source code">{$fileName}</a>{/if}<br>
+		{if $class->internal}<b>Documented at</b> <a href="{$class|manualUrl}" target="_top" title="Go to PHP documentation">php.net</a>{else}<b>Located at</b> <a n:tag-if="$config->sourceCode" href="{$class|sourceUrl}" title="Go to source code">{$fileName}</a>{/if}<br>
 	</div>
 
 
@@ -84,7 +84,7 @@
 		<a class="anchor" href="#_{$method->name}">#</a>
 		<code class="nowrap">
 			{if $class->internal}
-				<a href="{$method|manualUrl}" title="Go to PHP documentation">{$method->name}</a>(
+				<a href="{$method|manualUrl}" target="_top" title="Go to PHP documentation">{$method->name}</a>(
 			{else}
 				<a n:tag-if="$config->sourceCode" href="{$method|sourceUrl}" title="Go to source code">{$method->name}</a>(
 			{/if}
@@ -190,7 +190,7 @@
 		</code></td>
 		<td width="1%"><code>
 			{if $class->internal}
-				<a href="{$constant|manualUrl}" title="Go to PHP documentation"><b>{$constant->name}</b></a>
+				<a href="{$constant|manualUrl}" target="_top" title="Go to PHP documentation"><b>{$constant->name}</b></a>
 			{else}
 				<a n:tag-if="$config->sourceCode" href="{$constant|sourceUrl}" title="Go to source code"><b>{$constant->name}</b></a>
 			{/if}
@@ -245,7 +245,7 @@
 
 		<td width="1%">
 			{if $class->internal}
-				<a href="{$property|manualUrl}" title="Go to PHP documentation"><var>${$property->name}</var></a>
+				<a href="{$property|manualUrl}" target="_top" title="Go to PHP documentation"><var>${$property->name}</var></a>
 			{else}
 				<a n:tag-if="$config->sourceCode" href="{$property|sourceUrl}" title="Go to source code"><var>${$property->name}</var></a>
 			{/if}
