@@ -14,6 +14,14 @@
 </tr>
 </table>
 
+<table class="summary" id="traits" n:if="$traits">
+<caption>Traits summary</caption>
+<tr n:foreach="$traits as $trait">
+	<td class="nowrap" width="20%"><a href="{$trait|classUrl}">{if $namespace}{$trait->shortName}{else}{$trait->name}{/if}</a></td>
+	<td>{!$trait|shortDescription}</td>
+</tr>
+</table>
+
 <table class="summary" id="exceptions" n:if="$exceptions">
 <caption>Exceptions summary</caption>
 <tr n:foreach="$exceptions as $exception">

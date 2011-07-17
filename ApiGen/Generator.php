@@ -322,9 +322,10 @@ class Generator extends Nette\Object
 		// Categorize by packages and namespaces
 		$packages = array();
 		$namespaces = array();
-		$elementTypes = array('classes', 'interfaces', 'exceptions', 'constants', 'functions');
+		$elementTypes = array('classes', 'interfaces', 'traits', 'exceptions', 'constants', 'functions');
 		$classes = array();
 		$interfaces = array();
+		$traits = array();
 		$exceptions = array();
 		$constants = array();
 		$functions = array();
@@ -349,6 +350,10 @@ class Generator extends Nette\Object
 					$interfaces[$elementName] = $element;
 					$packages[$packageName]['interfaces'][$elementName] = $element;
 					$namespaces[$namespaceName]['interfaces'][$element->getShortName()] = $element;
+				} elseif ($element->isTrait()) {
+					$traits[$elementName] = $element;
+					$packages[$packageName]['traits'][$elementName] = $element;
+					$namespaces[$namespaceName]['traits'][$element->getShortName()] = $element;
 				} elseif ($element->isException()) {
 					$exceptions[$elementName] = $element;
 					$packages[$packageName]['exceptions'][$elementName] = $element;
@@ -396,7 +401,7 @@ class Generator extends Nette\Object
 				foreach (explode('\\', $namespaceName) as $part) {
 					$parent = ltrim($parent . '\\' . $part, '\\');
 					if (!isset($namespaces[$parent])) {
-						$namespaces[$parent] = array('classes' => array(), 'interfaces' => array(), 'exceptions' => array(), 'constants' => array(), 'functions' => array());
+						$namespaces[$parent] = array('classes' => array(), 'interfaces' => array(), 'traits' => array(), 'exceptions' => array(), 'constants' => array(), 'functions' => array());
 					}
 				}
 
@@ -417,7 +422,7 @@ class Generator extends Nette\Object
 				foreach (explode('\\', $packageName) as $part) {
 					$parent = ltrim($parent . '\\' . $part, '\\');
 					if (!isset($packages[$parent])) {
-						$packages[$parent] = array('classes' => array(), 'interfaces' => array(), 'exceptions' => array(), 'constants' => array(), 'functions' => array());
+						$packages[$parent] = array('classes' => array(), 'interfaces' => array(), 'traits' => array(), 'exceptions' => array(), 'constants' => array(), 'functions' => array());
 					}
 				}
 
@@ -443,6 +448,7 @@ class Generator extends Nette\Object
 				+ count($namespaces)
 				+ count($classes)
 				+ count($interfaces)
+				+ count($traits)
 				+ count($exceptions)
 				+ count($constants)
 				+ count($functions)
@@ -460,6 +466,7 @@ class Generator extends Nette\Object
 				};
 				$max += count(array_filter($classes, $tokenizedFilter))
 					+ count(array_filter($interfaces, $tokenizedFilter))
+					+ count(array_filter($traits, $tokenizedFilter))
 					+ count(array_filter($exceptions, $tokenizedFilter))
 					+ count($constants)
 					+ count($functions);
@@ -488,6 +495,7 @@ class Generator extends Nette\Object
 		$template->class = null;
 		$template->classes = array_filter($classes, $mainFilter);
 		$template->interfaces = array_filter($interfaces, $mainFilter);
+		$template->traits = array_filter($traits, $mainFilter);
 		$template->exceptions = array_filter($exceptions, $mainFilter);
 		$template->constant = null;
 		$template->constants = array_filter($constants, $mainFilter);
@@ -543,6 +551,8 @@ class Generator extends Nette\Object
 					if ($element instanceof ReflectionClass) {
 						if ($element->isInterface()) {
 							$label = 'Interface %s';
+						} elseif ($element->isTrait()) {
+							$label = 'Trait %s';
 						} elseif ($element->isException()) {
 							$label = 'Exception %s';
 						} else {
@@ -586,6 +596,8 @@ class Generator extends Nette\Object
 					if ($parentElement instanceof ReflectionClass) {
 						if ($parentElement->isInterface()) {
 							$parentElementLabel = 'Interface %s';
+						} elseif ($parentElement->isTrait()) {
+							$parentElementLabel = 'Trait %s';
 						} elseif ($parentElement->isException()) {
 							$parentElementLabel = 'Exception %s';
 						} else {
@@ -834,7 +846,7 @@ class Generator extends Nette\Object
 			unset($template->todoProperties);
 		}
 
-		// Classes/interfaces/exceptions tree
+		// Classes/interfaces/traits/exceptions tree
 		if ($this->config->tree) {
 			if (!isset($templates['main']['tree'])) {
 				throw new Exception('Template for tree view is not set');
@@ -842,6 +854,7 @@ class Generator extends Nette\Object
 
 			$classTree = array();
 			$interfaceTree = array();
+			$traitTree = array();
 			$exceptionTree = array();
 
 			$processed = array();
@@ -854,6 +867,8 @@ class Generator extends Nette\Object
 					// No parent classes
 					if ($reflection->isInterface()) {
 						$t = &$interfaceTree;
+					} elseif ($reflection->isTrait()) {
+						$t = &$traitTree;
 					} elseif ($reflection->isException()) {
 						$t = &$exceptionTree;
 					} else {
@@ -865,6 +880,8 @@ class Generator extends Nette\Object
 							// The topmost parent decides about the reflection type
 							if ($parent->isInterface()) {
 								$t = &$interfaceTree;
+							} elseif ($parent->isTrait()) {
+								$t = &$traitTree;
 							} elseif ($parent->isException()) {
 								$t = &$exceptionTree;
 							} else {
@@ -890,12 +907,14 @@ class Generator extends Nette\Object
 
 			$template->classTree = new Tree($classTree, $this->classes);
 			$template->interfaceTree = new Tree($interfaceTree, $this->classes);
+			$template->traitTree = new Tree($traitTree, $this->classes);
 			$template->exceptionTree = new Tree($exceptionTree, $this->classes);
 
 			$template->setFile($templatePath . '/' . $templates['main']['tree']['template'])->save($this->forceDir($destination . '/' . $templates['main']['tree']['filename']));
 
 			unset($template->classTree);
 			unset($template->interfaceTree);
+			unset($template->traitTree);
 			unset($template->exceptionTree);
 			unset($processed);
 
@@ -917,6 +936,7 @@ class Generator extends Nette\Object
 			});
 			$template->classes = $package['classes'];
 			$template->interfaces = $package['interfaces'];
+			$template->traits = $package['traits'];
 			$template->exceptions = $package['exceptions'];
 			$template->constants = $package['constants'];
 			$template->functions = $package['functions'];
@@ -941,6 +961,7 @@ class Generator extends Nette\Object
 			});
 			$template->classes = $namespace['classes'];
 			$template->interfaces = $namespace['interfaces'];
+			$template->traits = $namespace['traits'];
 			$template->exceptions = $namespace['exceptions'];
 			$template->constants = $namespace['constants'];
 			$template->functions = $namespace['functions'];
@@ -950,8 +971,8 @@ class Generator extends Nette\Object
 		}
 		unset($template->subnamespaces);
 
-		// Generate classes, interfaces, exceptions, constants and functions files
-		if (!empty($classes) || !empty($interfaces) || !empty($exceptions)) {
+		// Generate classes, interfaces, traits, exceptions, constants and functions files
+		if (!empty($classes) || !empty($interfaces) || !empty($traits) || !empty($exceptions)) {
 			if (!isset($templates['main']['class'])) {
 				throw new Exception('Template for class is not set');
 			}
@@ -986,6 +1007,7 @@ class Generator extends Nette\Object
 		$template->namespace = null;
 		$template->classes = $classes;
 		$template->interfaces = $interfaces;
+		$template->traits = $traits;
 		$template->exceptions = $exceptions;
 		$template->constants = $constants;
 		$template->functions = $functions;
@@ -1012,6 +1034,7 @@ class Generator extends Nette\Object
 					$template->package = $packageName = $element->getPseudoPackageName();
 					$template->classes = $packages[$packageName]['classes'];
 					$template->interfaces = $packages[$packageName]['interfaces'];
+					$template->traits = $packages[$packageName]['traits'];
 					$template->exceptions = $packages[$packageName]['exceptions'];
 					$template->constants = $packages[$packageName]['constants'];
 					$template->functions = $packages[$packageName]['functions'];
@@ -1019,6 +1042,7 @@ class Generator extends Nette\Object
 					$template->namespace = $namespaceName = $element->getPseudoNamespaceName();
 					$template->classes = $namespaces[$namespaceName]['classes'];
 					$template->interfaces = $namespaces[$namespaceName]['interfaces'];
+					$template->traits = $namespaces[$namespaceName]['traits'];
 					$template->exceptions = $namespaces[$namespaceName]['exceptions'];
 					$template->constants = $namespaces[$namespaceName]['constants'];
 					$template->functions = $namespaces[$namespaceName]['functions'];
@@ -1040,6 +1064,11 @@ class Generator extends Nette\Object
 					uksort($template->directImplementers, 'strcasecmp');
 					$template->indirectImplementers = $element->getIndirectImplementers();
 					uksort($template->indirectImplementers, 'strcasecmp');
+
+					$template->directUsers = $element->getDirectUsers();
+					uksort($template->directUsers, 'strcasecmp');
+					$template->indirectUsers = $element->getIndirectUsers();
+					uksort($template->indirectUsers, 'strcasecmp');
 
 					$template->ownMethods = $element->getOwnMethods();
 					$template->ownConstants = $element->getOwnConstants();

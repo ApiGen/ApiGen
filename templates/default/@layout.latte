@@ -88,6 +88,13 @@
 			</ul>
 			{/if}
 
+			{if $traits}
+			<h3>Traits</h3>
+			<ul>
+				<li n:foreach="$traits as $item" n:class="$class === $item ? active"><a href="{$item|classUrl}">{if $namespace}{$item->shortName}{else}{$item->name}{/if}</a></li>
+			</ul>
+			{/if}
+
 			{if $exceptions}
 			<h3>Exceptions</h3>
 			<ul>

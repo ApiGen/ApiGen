@@ -71,6 +71,13 @@
 		</ul>
 		{/if}
 
+		{if $traits}
+		<h3>Traits</h3>
+		<ul>
+			<li n:foreach="$traits as $item"><a href="{$item|classUrl}" target="right" rel="{if $namespaces}{$item->pseudoNamespaceName|urlize}{else}{$item->pseudoPackageName|urlize}{/if}">{if $namespaces && $item->namespaceName}<span>{$item->namespaceName}\</span>{$item->shortName}{else}{$item->name}{/if}</a></li>
+		</ul>
+		{/if}
+
 		{if $exceptions}
 		<h3>Exceptions</h3>
 		<ul>

@@ -15,6 +15,9 @@
 <url n:foreach="$interfaces as $interface">
 	<loc>{$config->baseUrl}/{$interface|classUrl}</loc>
 </url>
+<url n:foreach="$traits as $trait">
+	<loc>{$config->baseUrl}/{$trait|classUrl}</loc>
+</url>
 <url n:foreach="$exceptions as $exception">
 	<loc>{$config->baseUrl}/{$exception|classUrl}</loc>
 </url>

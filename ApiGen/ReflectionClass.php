@@ -137,15 +137,17 @@ class ReflectionClass extends ReflectionBase
 	public function getMethods()
 	{
 		if (null === $this->methods) {
-			$this->methods = array();
+			$this->methods = $this->getOwnMethods();
 			foreach ($this->reflection->getMethods(self::$methodAccessLevels) as $method) {
+				if (isset($this->methods[$method->getName()])) {
+					continue;
+				}
 				$apiMethod = new ReflectionMethod($method, self::$generator);
 				if (!$this->isDocumented() || $apiMethod->isDocumented()) {
 					$this->methods[$method->getName()] = $apiMethod;
 				}
 			}
 		}
-
 		return $this->methods;
 	}
 
@@ -157,16 +159,32 @@ class ReflectionClass extends ReflectionBase
 	public function getOwnMethods()
 	{
 		if (null === $this->ownMethods) {
-			$className = $this->reflection->getName();
 			$this->ownMethods = array();
-			foreach ($this->getMethods() as $methodName => $method) {
-				if ($className === $method->getDeclaringClassName()) {
-					$this->ownMethods[$methodName] = $method;
+			foreach ($this->reflection->getOwnMethods(self::$methodAccessLevels) as $method) {
+				$apiMethod = new ReflectionMethod($method, self::$generator);
+				if (!$this->isDocumented() || $apiMethod->isDocumented()) {
+					$this->ownMethods[$method->getName()] = $apiMethod;
 				}
 			}
 		}
-
 		return $this->ownMethods;
+	}
+
+	/**
+	 * Returns visible methods declared by traits.
+	 *
+	 * @return array
+	 */
+	public function getTraitMethods()
+	{
+		$methods = array();
+		foreach ($this->reflection->getTraitMethods(self::$methodAccessLevels) as $method) {
+			$apiMethod = new ReflectionMethod($method, self::$generator);
+			if (!$this->isDocumented() || $apiMethod->isDocumented()) {
+				$methods[$method->getName()] = $apiMethod;
+			}
+		}
+		return $methods;
 	}
 
 	/**
@@ -192,15 +210,17 @@ class ReflectionClass extends ReflectionBase
 	public function getProperties()
 	{
 		if (null === $this->properties) {
-			$this->properties = array();
+			$this->properties = $this->getOwnProperties();
 			foreach ($this->reflection->getProperties(self::$propertyAccessLevels) as $property) {
+				if (isset($this->properties[$property->getName()])) {
+					continue;
+				}
 				$apiProperty = new ReflectionProperty($property, self::$generator);
 				if (!$this->isDocumented() || $apiProperty->isDocumented()) {
 					$this->properties[$property->getName()] = $apiProperty;
 				}
 			}
 		}
-
 		return $this->properties;
 	}
 
@@ -213,15 +233,32 @@ class ReflectionClass extends ReflectionBase
 	public function getOwnProperties()
 	{
 		if (null === $this->ownProperties) {
-			$className = $this->reflection->getName();
 			$this->ownProperties = array();
-			foreach ($this->getProperties() as $propertyName => $property) {
-				if ($className === $property->getDeclaringClassName()) {
-					$this->ownProperties[$propertyName] = $property;
+			foreach ($this->reflection->getOwnProperties(self::$propertyAccessLevels) as $property) {
+				$apiProperty = new ReflectionProperty($property, self::$generator);
+				if (!$this->isDocumented() || $apiProperty->isDocumented()) {
+					$this->ownProperties[$property->getName()] = $apiProperty;
 				}
 			}
 		}
 		return $this->ownProperties;
+	}
+
+	/**
+	 * Returns visible properties declared by traits.
+	 *
+	 * @return array
+	 */
+	public function getTraitProperties()
+	{
+		$properties = array();
+		foreach ($this->reflection->getTraitProperties(self::$propertyAccessLevels) as $property) {
+			$apiProperty = new ReflectionProperty($property, self::$generator);
+			if (!$this->isDocumented() || $apiProperty->isDocumented()) {
+				$properties[$property->getName()] = $apiProperty;
+			}
+		}
+		return $properties;
 	}
 
 	/**
@@ -424,6 +461,32 @@ class ReflectionClass extends ReflectionBase
 	}
 
 	/**
+	 * Returns all traits reflections encapsulated by this class.
+	 *
+	 * @return array
+	 */
+	public function getTraits()
+	{
+		$classes = self::$classes;
+		return array_map(function(IReflectionClass $class) use ($classes) {
+			return $classes[$class->getName()];
+		}, array_reverse($this->reflection->getTraits()));
+	}
+
+	/**
+	 * Returns all traits used by the inspected class and not its parents.
+	 *
+	 * @return array
+	 */
+	public function getOwnTraits()
+	{
+		$classes = self::$classes;
+		return array_map(function(IReflectionClass $class) use ($classes) {
+			return $classes[$class->getName()];
+		}, $this->reflection->getOwnTraits());
+	}
+
+	/**
 	 * Returns reflections of direct subclasses.
 	 *
 	 * @return array
@@ -512,6 +575,55 @@ class ReflectionClass extends ReflectionBase
 	}
 
 	/**
+	 * Returns reflections of classes directly using this trait.
+	 *
+	 * @return array
+	 */
+	public function getDirectUsers()
+	{
+		if (!$this->isTrait()) {
+			return array();
+		}
+
+		$users = array();
+		$name = $this->reflection->getName();
+		foreach (self::$classes as $class) {
+			if (!$class->isDocumented()) {
+				continue;
+			}
+
+			if (in_array($name, $class->getOwnTraitNames())) {
+				$users[] = $class;
+			}
+		}
+		return $users;
+	}
+
+	/**
+	 * Returns reflections of classes indirectly using this trait.
+	 *
+	 * @return array
+	 */
+	public function getIndirectUsers()
+	{
+		if (!$this->isTrait()) {
+			return array();
+		}
+
+		$users = array();
+		$name = $this->reflection->getName();
+		foreach (self::$classes as $class) {
+			if (!$class->isDocumented()) {
+				continue;
+			}
+			if ($class->usesTrait($name) && !in_array($name, $class->getOwnTraitNames())) {
+				$users[] = $class;
+			}
+		}
+		return $users;
+	}
+
+	/**
 	 * Returns an array of inherited methods from parent classes grouped by the declaring class name.
 	 *
 	 * @return array
@@ -539,6 +651,55 @@ class ReflectionClass extends ReflectionBase
 		}
 
 		return $methods;
+	}
+
+	/**
+	 * Returns an array of used methods from used traits grouped by the declaring trait name.
+	 *
+	 * @return array
+	 */
+	public function getUsedMethods()
+	{
+		$methods = array();
+		$allMethods = array_flip(array_map(function($method) {
+			return $method->getName();
+		}, $this->getOwnMethods()));
+
+		foreach ($this->getTraits() as $trait) {
+			$usedMethods = array();
+			foreach ($trait->getOwnMethods() as $method) {
+				if (!array_key_exists($method->getName(), $allMethods)) {
+					$usedMethods[$method->getName()] = $method;
+					$allMethods[$method->getName()] = null;
+				}
+			}
+
+			if (!empty($usedMethods)) {
+				ksort($usedMethods);
+				$methods[$trait->getName()] = array_values($usedMethods);
+			}
+		}
+
+		return $methods;
+	}
+
+	/**
+	 * Returns an array of inherited constants from parent classes grouped by the declaring class name.
+	 *
+	 * @return array
+	 */
+	public function getInheritedConstants()
+	{
+		return array_filter(
+			array_map(
+				function(ReflectionClass $class) {
+					$reflections = $class->getOwnConstants();
+					ksort($reflections);
+					return $reflections;
+				},
+				array_merge($this->getParentClasses(), $this->getInterfaces())
+			)
+		);
 	}
 
 	/**
@@ -572,22 +733,33 @@ class ReflectionClass extends ReflectionBase
 	}
 
 	/**
-	 * Returns an array of inherited constants from parent classes grouped by the declaring class name.
+	 * Returns an array of used properties from used traits grouped by the declaring trait name.
 	 *
 	 * @return array
 	 */
-	public function getInheritedConstants()
+	public function getUsedProperties()
 	{
-		return array_filter(
-			array_map(
-				function(ReflectionClass $class) {
-					$reflections = $class->getOwnConstants();
-					ksort($reflections);
-					return $reflections;
-				},
-				array_merge($this->getParentClasses(), $this->getInterfaces())
-			)
-		);
+		$properties = array();
+		$allProperties = array_flip(array_map(function($property) {
+			return $property->getName();
+		}, $this->getOwnProperties()));
+
+		foreach ($this->getTraits() as $trait) {
+			$usedProperties = array();
+			foreach ($trait->getOwnProperties() as $property) {
+				if (!array_key_exists($property->getName(), $allProperties)) {
+					$usedProperties[$property->getName()] = $property;
+					$allProperties[$property->getName()] = null;
+				}
+			}
+
+			if (!empty($usedProperties)) {
+				ksort($usedProperties);
+				$properties[$trait->getName()] = array_values($usedProperties);
+			}
+		}
+
+		return $properties;
 	}
 
 	/**
@@ -621,6 +793,18 @@ class ReflectionClass extends ReflectionBase
 	}
 
 	/**
+	 * Checks if there is a property of the given name.
+	 *
+	 * @param string $propertyName Property name
+	 * @return boolean
+	 */
+	public function hasTraitProperty($propertyName)
+	{
+		$properties = $this->getTraitProperties();
+		return isset($properties[$propertyName]);
+	}
+
+	/**
 	 * Checks if there is a method of the given name.
 	 *
 	 * @param string $methodName Method name
@@ -648,6 +832,18 @@ class ReflectionClass extends ReflectionBase
 		}
 
 		return isset($this->ownMethods[$methodName]);
+	}
+
+	/**
+	 * Checks if there is a method of the given name.
+	 *
+	 * @param string $methodName Method name
+	 * @return boolean
+	 */
+	public function hasTraitMethod($methodName)
+	{
+		$methods = $this->getTraitMethods();
+		return isset($methods[$methodName]);
 	}
 
 	/**

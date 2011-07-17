@@ -1,17 +1,17 @@
 {layout '@content.latte'}
 {var $active = 'class'}
 
-{block #title}{if $class->deprecated}Deprecated {/if}{if $class->interface}Interface{else}Class{/if} {$class->name}{/block}
+{block #title}{if $class->deprecated}Deprecated {/if}{if $class->interface}Interface{elseif $class->trait}Trait{else}Class{/if} {$class->name}{/block}
 
 {block #content}
 <div id="content">
-	<h1>{if $class->deprecated}Deprecated {/if}{if $class->interface}Interface{else}Class{/if} {$class->shortName}</h1>
+	<h1>{if $class->deprecated}Deprecated {/if}{if $class->interface}Interface{elseif $class->trait}Trait{else}Class{/if} {$class->shortName}</h1>
 
 	<div class="description" n:if="$template->longDescription($class)">
 	{!$class|longDescription}
 	</div>
 
-	<dl class="tree" n:if="$class->parentClass || $class->ownInterfaces">
+	<dl class="tree" n:if="$class->parentClass || $class->ownInterfaces || $class->ownTraits">
 		<dd n:foreach="$tree as $item" style="padding-left:{($iterator->counter - 1) * 30}px">
 			<img src="resources/inherit.gif" alt="Extended by" n:if="$iterator->counter > 1">
 			{if $item->documented}
@@ -20,6 +20,10 @@
 			{var $itemOwnInterfaces = $item->ownInterfaces}
 			{if $itemOwnInterfaces} implements {foreach $itemOwnInterfaces as $interface}
 				<a href="{$interface|classUrl}" n:tag-if="$interface->documented">{$interface->name}</a>{sep}, {/sep}
+			{/foreach}{/if}
+			{var $itemOwnTraits = $item->ownTraits}
+			{if $itemOwnTraits} uses {foreach $itemOwnTraits as $trait}
+				<a href="{$trait|classUrl}" n:tag-if="$trait->documented">{$trait->name}</a>{sep}, {/sep}
 			{/foreach}{/if}
 		</dd>
 	</dl>
@@ -48,6 +52,20 @@
 	<div n:if="$indirectImplementers">
 		<h4>Indirect known implementers</h4>
 		{foreach $indirectImplementers as $item}
+			<a href="{$item|classUrl}" n:tag-if="$item->documented">{$item->name}</a>{sep}, {/sep}
+		{/foreach}
+	</div>
+
+	<div n:if="$directUsers">
+		<h4>Direct Known Users</h4>
+		{foreach $directUsers as $item}
+			<a href="{$item|classUrl}" n:tag-if="$item->documented">{$item->name}</a>{sep}, {/sep}
+		{/foreach}
+	</div>
+
+	<div n:if="$indirectUsers">
+		<h4>Indirect Known Users</h4>
+		{foreach $indirectUsers as $item}
 			<a href="{$item|classUrl}" n:tag-if="$item->documented">{$item->name}</a>{sep}, {/sep}
 		{/foreach}
 	</div>
@@ -179,6 +197,17 @@
 	</tr>
 	</table>
 
+	<table n:foreach="$class->usedMethods as $traitName => $methods" class="summary methods">
+	<caption>Methods used from <a href="{$traitName|classUrl}#methods" n:tag-if="$template->getClass($traitName)">{$traitName}</a></caption>
+	<tr>
+		<td><code>
+		{foreach $methods as $method}
+			<span n:tag-if="$method->deprecated" class="deprecated"><a href="{$method|methodUrl}" n:tag-if="$template->getClass($traitName)">{$method->name}()</a></span>{sep}, {/sep}
+		{/foreach}
+		</code></td>
+	</tr>
+	</table>
+
 	<table class="summary" id="constants" n:if="$ownConstants">
 	<caption>Constants summary</caption>
 	<tr n:foreach="$ownConstants as $constant" data-order="{$constant->name}" id="{$constant->name}" n:class="$constant->deprecated ? deprecated">
@@ -224,9 +253,9 @@
 	<caption>Constants inherited from <a href="{$parentName|classUrl}#constants" n:tag-if="$template->getClass($parentName)">{$parentName}</a></caption>
 	<tr>
 		<td><code>
-			{foreach $constants as $constant}
-				<span n:tag-if="$constant->deprecated" class"deprecated"><a href="{$constant|constantUrl}" n:tag-if="$template->getClass($parentName)"><b>{$constant->name}</b></a></span>{sep}, {/sep}
-			{/foreach}
+		{foreach $constants as $constant}
+			<span n:tag-if="$constant->deprecated" class"deprecated"><a href="{$constant|constantUrl}" n:tag-if="$template->getClass($parentName)"><b>{$constant->name}</b></a></span>{sep}, {/sep}
+		{/foreach}
 		</code></td>
 	</tr>
 	</table>
@@ -280,9 +309,20 @@
 	<caption>Properties inherited from <a href="{$parentName|classUrl}#properties" n:tag-if="$template->getClass($parentName)">{$parentName}</a></caption>
 	<tr>
 		<td><code>
-			{foreach $properties as $property}
-				<span n:tag-if="$property->deprecated" class="deprecated"><a href="{$property|propertyUrl}" n:tag-if="$template->getClass($parentName)"><var>${$property->name}</var></a></span>{sep}, {/sep}
-			{/foreach}
+		{foreach $properties as $property}
+			<span n:tag-if="$property->deprecated" class="deprecated"><a href="{$property|propertyUrl}" n:tag-if="$template->getClass($parentName)"><var>${$property->name}</var></a></span>{sep}, {/sep}
+		{/foreach}
+		</code></td>
+	</tr>
+	</table>
+
+	<table n:foreach="$class->usedProperties as $traitName => $properties" class="summary properties">
+	<caption>Properties used from <a href="{$traitName|classUrl}#properties" n:tag-if="$template->getClass($traitName)">{$traitName}</a></caption>
+	<tr>
+		<td><code>
+		{foreach $properties as $property}
+			<span n:tag-if="$property->deprecated" class="deprecated"><a href="{$property|propertyUrl}" n:tag-if="$template->getClass($traitName)"><var>${$property->name}</var></a></span>{sep}, {/sep}
+		{/foreach}
 		</code></td>
 	</tr>
 	</table>

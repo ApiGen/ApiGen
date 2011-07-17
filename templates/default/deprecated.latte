@@ -35,6 +35,20 @@
 	</tr>
 	</table>
 
+	<table class="summary" id="traits" n:if="$deprecatedTraits">
+	<caption>Traits summary</caption>
+	<tr n:foreach="$deprecatedTraits as $trait">
+		<td class="nowrap" width="1%"><a href="{$trait|classUrl}">{$trait->name}</a></td>
+		<td>
+			{foreach $trait->annotations['deprecated'] as $description}
+				{if $description}
+					{!$description|annotation:'deprecated':$trait}<br>
+				{/if}
+			{/foreach}
+		</td>
+	</tr>
+	</table>
+
 	<table class="summary" id="exceptions" n:if="$deprecatedExceptions">
 	<caption>Exceptions summary</caption>
 	<tr n:foreach="$deprecatedExceptions as $exception">

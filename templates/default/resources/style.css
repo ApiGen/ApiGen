@@ -455,19 +455,22 @@ div.tree li {
 
 div.tree div {
 	padding-left: 30px;
-	background: left center no-repeat;
 }
 
 div.tree div.notlast {
-	background-image: url('tree-hasnext.gif');
+	background: url('tree-hasnext.gif') left 10px no-repeat;
 }
 
 div.tree div.last {
-	background-image: url('tree-last.png');
+	background: url('tree-last.png') left -240px no-repeat;
 }
 
 div.tree li.last {
-	background: url('tree-cleaner.gif') left repeat-y;
+	background: url('tree-cleaner.gif') left center repeat-y;
+}
+
+div.tree span.padding {
+	padding-left: 15px;
 }
 
 /**
