@@ -2,7 +2,7 @@
 /**
  * PHP Token Reflection
  *
- * Version 1.0 beta 4
+ * Version 1.0 beta 5
  *
  * LICENSE
  *
@@ -385,7 +385,7 @@ false;}public function isException(){return false;}public function isInstantiabl
 false;}public function isCloneable(){return false;}public function isIterateable(){return
 false;}public function isInternal(){return false;}public function isUserDefined(){return
 false;}public function isTokenized(){return false;}public function isSubclassOf($class){return
-false;}public function getParentClass(){return null;}public function getParentClasses(){return
+false;}public function getParentClass(){return false;}public function getParentClasses(){return
 array();}public function getParentClassNameList(){return array();}public function
 getParentClassName(){return null;}public function implementsInterface($interface){if(is_object($interface)){if(!$interface
 instanceof IReflectionClass){throw new Exception\Runtime(sprintf('Parameter must be a string or an instance of class reflection, "%s" provided.',get_class($interface)),Exception\Runtime::INVALID_ARGUMENT);}$interfaceName=$interface->getName();if(!$interface->isInterface()){throw
@@ -605,12 +605,13 @@ IReflectionClass{const IS_INTERFACE=0x80;const IMPLEMENTS_INTERFACES=0x80000;pri
 function getShortName(){$name=$this->getName();if($this->namespaceName!==ReflectionNamespace::NO_NAMESPACE_NAME){$name=substr($name,strlen($this->namespaceName)+1);}return$name;}public
 function getNamespaceName(){return$this->namespaceName===ReflectionNamespace::NO_NAMESPACE_NAME?'':$this->namespaceName;}public
 function inNamespace(){return null!==$this->namespaceName&&ReflectionNamespace::NO_NAMESPACE_NAME!==$this->namespaceName;}public
-function getModifiers(){if(false===$this->modifiersComplete){if(($this->modifiers&InternalReflectionClass::IS_EXPLICIT_ABSTRACT)&&!($this->modifiers&InternalReflectionClass::IS_IMPLICIT_ABSTRACT)){foreach($this->getMethods()as$reflectionMethod){if($reflectionMethod->isAbstract()){$this->modifiers|=InternalReflectionClass::IS_IMPLICIT_ABSTRACT;}}}if(count($this->getInterfaceNames())){$this->modifiers|=self::IMPLEMENTS_INTERFACES;}$this->modifiersComplete=true;foreach($this->getParentClasses()as$parentClass){if($parentClass
-instanceof Dummy\ReflectionClass){$this->modifiersComplete=false;break;}}}return$this->modifiers;}public
+function getModifiers(){if(false===$this->modifiersComplete){if(($this->modifiers&InternalReflectionClass::IS_EXPLICIT_ABSTRACT)&&!($this->modifiers&InternalReflectionClass::IS_IMPLICIT_ABSTRACT)){foreach($this->getMethods()as$reflectionMethod){if($reflectionMethod->isAbstract()){$this->modifiers|=InternalReflectionClass::IS_IMPLICIT_ABSTRACT;}}if(!empty($this->interfaces)){$this->modifiers|=InternalReflectionClass::IS_IMPLICIT_ABSTRACT;}}if(!empty($this->interfaces)){$this->modifiers|=self::IMPLEMENTS_INTERFACES;}if($this->isInterface()&&!empty($this->methods)){$this->modifiers|=InternalReflectionClass::IS_IMPLICIT_ABSTRACT;}$this->modifiersComplete=true;foreach($this->getParentClasses()as$parentClass){if($parentClass
+instanceof Dummy\ReflectionClass){$this->modifiersComplete=false;break;}}if($this->modifiersComplete){foreach($this->getInterfaces()as$interface){if($interface
+instanceof Dummy\ReflectionClass){$this->modifiersComplete=false;break;}}}}return$this->modifiers;}public
 function isAbstract(){return (bool)($this->modifiers&InternalReflectionClass::IS_EXPLICIT_ABSTRACT);}public
-function isFinal(){return$this->modifiers===InternalReflectionClass::IS_FINAL;}public
-function isInterface(){return self::IS_INTERFACE===$this->modifiers;}public function
-isException(){return 'Exception'===$this->name||$this->isSubclassOf('Exception');}public
+function isFinal(){return (bool)($this->modifiers&InternalReflectionClass::IS_FINAL);}public
+function isInterface(){return (bool)($this->modifiers&self::IS_INTERFACE);}public
+function isException(){return 'Exception'===$this->name||$this->isSubclassOf('Exception');}public
 function isInstantiable(){if($this->isInterface()||$this->isAbstract()){return false;}if(null===($constructor=$this->getConstructor())){return
 true;}return$constructor->isPublic();}public function isCloneable(){if($this->isInterface()||$this->isAbstract()){return
 false;}if($this->hasMethod('__clone')){return$this->getMethod('__clone')->isPublic();}return
@@ -690,7 +691,7 @@ InternalReflectionClass($this->name);return$reflection->newInstanceArgs($args);}
 function setStaticPropertyValue($name,$value){if($this->hasProperty($name)&&($property=$this->getProperty($name))&&$property->isStatic()){if(!$property->isPublic()&&!$property->isAccessible()){throw
 new Exception\Runtime(sprintf('Static property "%s" in class "%s" is not accessible.',$name,$this->name),Exception\Runtime::NOT_ACCESSBILE);}$property->setDefaultValue($value);return;}throw
 new Exception\Runtime(sprintf('There is no static property "%s" in class "%s".',$name,$this->name),Exception\Runtime::DOES_NOT_EXIST);}public
-function __toString(){$implements='';if(count($this->getInterfaceNames())>0){$interfaceNames=$this->getInterfaceNames();$implements=' implements '.implode(', ',$interfaceNames);}$buffer='';$count=0;foreach($this->getConstantReflections()as$constant){$buffer.='    '.$constant->__toString();$count++;}$constants=sprintf("\n\n  - Constants [%d] {\n%s  }",$count,$buffer);$sBuffer='';$sCount=0;$buffer='';$count=0;foreach($this->getProperties()as$property){$string='    '.preg_replace('~\n(?!$)~',"\n    ",$property->__toString());if($property->isStatic()){$sBuffer.=$string;$sCount++;}else{$buffer.=$string;$count++;}}$staticProperties=sprintf("\n\n  - Static properties [%d] {\n%s  }",$sCount,$sBuffer);$properties=sprintf("\n\n  - Properties [%d] {\n%s  }",$count,$buffer);$sBuffer='';$sCount=0;$buffer='';$count=0;foreach($this->getMethods()as$method){if($method->getDeclaringClassName()!==$this->getName()&&$method->isPrivate()){continue;}$string="\n    ".preg_replace('~\n(?!$|\n)~',"\n    ",$method->__toString());if($method->getDeclaringClassName()!==$this->getName()){$string=preg_replace('~Method [ <[\w:]+~','\0, inherits '.$method->getDeclaringClassName(),$string);}if($method->isStatic()){$sBuffer.=$string;$sCount++;}else{$buffer.=$string;$count++;}}$staticMethods=sprintf("\n\n  - Static methods [%d] {\n%s  }",$sCount,ltrim($sBuffer,"\n"));$methods=sprintf("\n\n  - Methods [%d] {\n%s  }",$count,ltrim($buffer,"\n"));return
+function __toString(){$implements='';if(count($this->getInterfaceNames())>0){$interfaceNames=$this->getInterfaceNames();$implements=' implements '.implode(', ',$interfaceNames);}$buffer='';$count=0;foreach($this->getConstantReflections()as$constant){$buffer.='    '.$constant->__toString();$count++;}$constants=sprintf("\n\n  - Constants [%d] {\n%s  }",$count,$buffer);$sBuffer='';$sCount=0;$buffer='';$count=0;foreach($this->getProperties()as$property){$string='    '.preg_replace('~\n(?!$)~',"\n    ",$property->__toString());if($property->isStatic()){$sBuffer.=$string;$sCount++;}else{$buffer.=$string;$count++;}}$staticProperties=sprintf("\n\n  - Static properties [%d] {\n%s  }",$sCount,$sBuffer);$properties=sprintf("\n\n  - Properties [%d] {\n%s  }",$count,$buffer);$sBuffer='';$sCount=0;$buffer='';$count=0;foreach($this->getMethods()as$method){if($method->getDeclaringClassName()!==$this->getName()&&$method->isPrivate()){continue;}$string="\n    ".preg_replace('~\n(?!$|\n|\s*\*)~',"\n    ",$method->__toString());if($method->getDeclaringClassName()!==$this->getName()){$string=preg_replace('~Method [ <[\w:]+~','\0, inherits '.$method->getDeclaringClassName(),$string);}if($method->isStatic()){$sBuffer.=$string;$sCount++;}else{$buffer.=$string;$count++;}}$staticMethods=sprintf("\n\n  - Static methods [%d] {\n%s  }",$sCount,ltrim($sBuffer,"\n"));$methods=sprintf("\n\n  - Methods [%d] {\n%s  }",$count,ltrim($buffer,"\n"));return
 sprintf("%s%s [ <user>%s %s%s%s %s%s%s ] {\n  @@ %s %d-%d%s%s%s%s%s\n}\n",$this->getDocComment()?$this->getDocComment()."\n":'',$this->isInterface()?'Interface':'Class',$this->isIterateable()?' <iterateable>':'',$this->isAbstract()?'abstract ':'',$this->isFinal()?'final ':'',$this->isInterface()?'interface':'class',$this->getName(),null!==$this->getParentClassName()?' extends '.$this->getParentClassName():'',$implements,$this->getFileName(),$this->getStartLine(),$this->getEndLine(),$constants,$staticProperties,$staticMethods,$properties,$methods);}public
 static function export(Broker$broker,$className,$return=false){if(is_object($className)){$className=get_class($className);}$class=$broker->getClass($className);if($class
 instanceof Dummy\ReflectionClass){throw new Exception\Runtime(sprintf('Class %s does not exist.',$className),Exception\Runtime::DOES_NOT_EXIST);}if($return){return$class->__toString();}echo$class->__toString();}public
@@ -762,22 +763,21 @@ function getClasses(){return$this->classes;}public function getConstants(){retur
 function getFunctions(){return$this->functions;}public function getNamespaceAliases(){return$this->aliases;}protected
 function processParent(IReflection$parent){if(!$parent instanceof ReflectionFile){throw
 new Exception\Parse(sprintf('The parent object has to be an instance of TokenReflection\ReflectionFile, "%s" given.',get_class($parent)),Exception\Parse::INVALID_PARENT);}return
-parent::processParent($parent);}protected function parse(Stream$tokenStream,IReflection$parent){return$this->parseName($tokenStream)->parseAliases($tokenStream);}protected
+parent::processParent($parent);}protected function parse(Stream$tokenStream,IReflection$parent){return$this->parseName($tokenStream);}protected
 function parseName(Stream$tokenStream){if(!$tokenStream->is(T_NAMESPACE)){$this->name=ReflectionNamespace::NO_NAMESPACE_NAME;return$this;}try{$tokenStream->skipWhitespaces();$name='';while(true){switch($tokenStream->getType()){case
 T_STRING:case T_NS_SEPARATOR:$name.=$tokenStream->getTokenValue();break;default:break
 2;}$tokenStream->skipWhitespaces();}$name=ltrim($name,'\\');if(empty($name)){$this->name=ReflectionNamespace::NO_NAMESPACE_NAME;}else{$this->name=$name;}if(!$tokenStream->is(';')&&!$tokenStream->is('{')){throw
 new Exception\Parse(sprintf('Invalid namespace name end: "%s", expecting ";" or "{".',$tokenStream->getTokenName()),Exception\Parse::PARSE_ELEMENT_ERROR);}$tokenStream->skipWhitespaces();return$this;}catch(Exception$e){throw
-new Exception\Parse('Could not parse namespace name.',Exception\Parse::PARSE_ELEMENT_ERROR,$e);}}private
-function parseAliases(Stream$tokenStream){if(ReflectionNamespace::NO_NAMESPACE_NAME===$this->name){return$this;}try{$aliases=array();while(true){if(!$tokenStream->is(T_USE)){break;}while(true){$namespaceName='';$alias=null;$tokenStream->skipWhitespaces();while(true){switch($tokenStream->getType()){case
+new Exception\Parse('Could not parse namespace name.',Exception\Parse::PARSE_ELEMENT_ERROR,$e);}}protected
+function parseChildren(Stream$tokenStream,IReflection$parent){static$skipped=array(T_WHITESPACE=>true,T_COMMENT=>true,T_DOC_COMMENT=>true);while(true){switch($tokenStream->getType()){case
+T_USE:while(true){$namespaceName='';$alias=null;$tokenStream->skipWhitespaces();while(true){switch($tokenStream->getType()){case
 T_STRING:case T_NS_SEPARATOR:$namespaceName.=$tokenStream->getTokenValue();break;default:break
 2;}$tokenStream->skipWhitespaces();}$namespaceName=ltrim($namespaceName,'\\');if(empty($namespaceName)){throw
 new Exception\Parse('Imported namespace name could not be determined.',Exception\Parse::PARSE_ELEMENT_ERROR);}elseif('\\'===substr($namespaceName,-1)){throw
 new Exception\Parse(sprintf('Invalid namespace name "%s".',$namespaceName),Exception\Parse::PARSE_ELEMENT_ERROR);}if($tokenStream->is(T_AS)){$tokenStream->skipWhitespaces();if(!$tokenStream->is(T_STRING)){throw
 new Exception\Parse(sprintf('The imported namespace "%s" seems aliased but the alias name could not be determined.',$namespaceName),Exception\Parse::PARSE_ELEMENT_ERROR);}$alias=$tokenStream->getTokenValue();$tokenStream->skipWhitespaces();}else{if(false!==($pos=strrpos($namespaceName,'\\'))){$alias=substr($namespaceName,$pos+1);}else{$alias=$namespaceName;}}if(isset($aliases[$alias])){throw
-new Exception\Parse(sprintf('Namespace alias "%s" already defined.',$alias),Exception\Parse::PARSE_ELEMENT_ERROR);}$aliases[$alias]=$namespaceName;$type=$tokenStream->getType();if(';'===$type){$tokenStream->skipWhitespaces();continue
-2;}elseif(','===$type){continue;}throw new Exception\Parse(sprintf('Unexpected token found: "%s".',$tokenStream->getTokenName()),Exception\Parse::PARSE_ELEMENT_ERROR);}}$this->aliases=$aliases;return$this;}catch(Exception\Parse$e){throw
-new Exception\Parse('Could not parse namespace aliases.',0,$e);}}protected function
-parseChildren(Stream$tokenStream,IReflection$parent){static$skipped=array(T_WHITESPACE=>true,T_COMMENT=>true,T_DOC_COMMENT=>true);while(true){switch($tokenStream->getType()){case
+new Exception\Parse(sprintf('Namespace alias "%s" already defined.',$alias),Exception\Parse::PARSE_ELEMENT_ERROR);}$this->aliases[$alias]=$namespaceName;$type=$tokenStream->getType();if(';'===$type){$tokenStream->skipWhitespaces();break
+2;}elseif(','===$type){continue;}throw new Exception\Parse(sprintf('Unexpected token found: "%s".',$tokenStream->getTokenName()),Exception\Parse::PARSE_ELEMENT_ERROR);}case
 T_COMMENT:case T_DOC_COMMENT:$docblock=$tokenStream->getTokenValue();if(preg_match('~^'.preg_quote(self::DOCBLOCK_TEMPLATE_START,'~').'~',$docblock)){array_unshift($this->docblockTemplates,new
 ReflectionAnnotation($this,$docblock));}elseif(self::DOCBLOCK_TEMPLATE_END===$docblock){array_shift($this->docblockTemplates);}$tokenStream->next();break;case
 '{':$tokenStream->findMatchingBracket()->next();break;case '}':case null:case T_NAMESPACE:break
@@ -960,7 +960,7 @@ implements IReflectionMethod{const IS_IMPLEMENTED_ABSTRACT=0x08;const ACCESS_LEV
 IS_CONSTRUCTOR=0x2000;const IS_DESTRUCTOR=0x4000;const IS_CLONE=0x8000;const IS_ALLOWED_STATIC=0x10000;private$declaringClassName;private$prototype;private$accessible=false;private$modifiersComplete=false;public
 function getDeclaringClass(){return null===$this->declaringClassName?null:$this->getBroker()->getClass($this->declaringClassName);}public
 function getDeclaringClassName(){return$this->declaringClassName;}public function
-getModifiers(){if(!$this->modifiersComplete&&!($this->modifiers&(self::ACCESS_LEVEL_CHANGED|self::IS_IMPLEMENTED_ABSTRACT))){$declaringClass=$this->getDeclaringClass();$parentClass=$declaringClass->getParentClass();if(false!==$parentClass&&$parentClass->hasMethod($this->name)){$parentClassMethod=$parentClass->getMethod($this->name);if($this->modifiers&InternalReflectionMethod::IS_PUBLIC&&$parentClassMethod->is(self::ACCESS_LEVEL_CHANGED|InternalReflectionMethod::IS_PRIVATE)){$this->modifiers|=self::ACCESS_LEVEL_CHANGED;}if($parentClassMethod->is(self::IS_IMPLEMENTED_ABSTRACT|InternalReflectionMethod::IS_ABSTRACT)){$this->modifiers|=self::IS_IMPLEMENTED_ABSTRACT;}}$this->modifiersComplete=$this->isComplete()||(($this->modifiers&self::IS_IMPLEMENTED_ABSTRACT)&&($this->modifiers&self::ACCESS_LEVEL_CHANGED));}return$this->modifiers;}public
+getModifiers(){if(!$this->modifiersComplete&&!($this->modifiers&(self::ACCESS_LEVEL_CHANGED|self::IS_IMPLEMENTED_ABSTRACT))){$declaringClass=$this->getDeclaringClass();$parentClass=$declaringClass->getParentClass();if(false!==$parentClass&&$parentClass->hasMethod($this->name)){$parentClassMethod=$parentClass->getMethod($this->name);if(($this->isPublic()||$this->isProtected())&&$parentClassMethod->is(self::ACCESS_LEVEL_CHANGED|InternalReflectionMethod::IS_PRIVATE)){$this->modifiers|=self::ACCESS_LEVEL_CHANGED;}if($parentClassMethod->isAbstract()){$this->modifiers|=self::IS_IMPLEMENTED_ABSTRACT;}}$this->modifiersComplete=$this->isComplete()||(($this->modifiers&self::IS_IMPLEMENTED_ABSTRACT)&&($this->modifiers&self::ACCESS_LEVEL_CHANGED));}return$this->modifiers;}public
 function isAbstract(){return (bool)($this->modifiers&InternalReflectionMethod::IS_ABSTRACT);}public
 function isFinal(){return (bool)($this->modifiers&InternalReflectionMethod::IS_FINAL);}public
 function isPrivate(){return (bool)($this->modifiers&InternalReflectionMethod::IS_PRIVATE);}public
@@ -968,7 +968,7 @@ function isProtected(){return (bool)($this->modifiers&InternalReflectionMethod::
 function isPublic(){return (bool)($this->modifiers&InternalReflectionMethod::IS_PUBLIC);}public
 function isStatic(){return (bool)($this->modifiers&InternalReflectionMethod::IS_STATIC);}public
 function is($filter=null){static$computedModifiers=0x808;if(null===$filter||($this->modifiers&$filter)){return
-true;}elseif(($filter&$computedModifiers)&&!$this->modifiersComplete){return$this->getModifiers()&$filter;}return
+true;}elseif(($filter&$computedModifiers)&&!$this->modifiersComplete){return (bool)($this->getModifiers()&$filter);}return
 false;}public function isConstructor(){return (bool)($this->modifiers&self::IS_CONSTRUCTOR);}public
 function isDestructor(){return (bool)($this->modifiers&self::IS_DESTRUCTOR);}public
 function getPrototype(){if(null===$this->prototype){$prototype=null;$declaring=$this->getDeclaringClass();if($parent=$declaring->getParentClass()){if($parent->hasMethod($this->name)){$method=$parent->getMethod($this->name);if(!$method->isPrivate()){$prototype=$method;}}}if(null===$prototype){foreach($declaring->getInterfaces()as$interface){if($interface->hasMethod($this->name)){$prototype=$interface->getMethod($this->name);break;}}}$this->prototype=$prototype?:($this->isComplete()?false:null);}if(empty($this->prototype)){throw
@@ -997,5 +997,5 @@ T_PUBLIC:$this->modifiers|=InternalReflectionMethod::IS_PUBLIC;break;case T_PRIV
 T_PROTECTED:$this->modifiers|=InternalReflectionMethod::IS_PROTECTED;break;case T_STATIC:$this->modifiers|=InternalReflectionMethod::IS_STATIC;break;case
 T_FUNCTION:case null:break 2;default:break;}$tokenStream->skipWhitespaces();}if(!($this->modifiers&(InternalReflectionMethod::IS_PRIVATE|InternalReflectionMethod::IS_PROTECTED))){$this->modifiers|=InternalReflectionMethod::IS_PUBLIC;}return$this;}catch(Exception$e){throw
 new Exception\Parse('Could not parse basic modifiers.',Exception\Parse::PARSE_ELEMENT_ERROR,$e);}}private
-function parseInternalModifiers(ReflectionClass$class){$name=strtolower($this->name);if('__construct'===$name||($class&&(!$class->inNamespace()||PHP_VERSION_ID<50303)&&strtolower($class->getShortName())===$name)){$this->modifiers|=self::IS_CONSTRUCTOR;}elseif('__destruct'===$name){$this->modifiers|=self::IS_DESTRUCTOR;}elseif('__clone'===$name){$this->modifiers|=self::IS_CLONE;}static$notAllowed=array('__clone'=>true,'__tostring'=>true,'__get'=>true,'__set'=>true,'__isset'=>true,'__unset'=>true);if(!$this->isConstructor()&&!$this->isDestructor()&&!isset($notAllowed[$name])){$this->modifiers|=self::IS_ALLOWED_STATIC;}return$this;}}}
+function parseInternalModifiers(ReflectionClass$class){$name=strtolower($this->name);if('__construct'===$name||((!$class->inNamespace()||PHP_VERSION_ID<50303)&&strtolower($class->getShortName())===$name)){$this->modifiers|=self::IS_CONSTRUCTOR;}elseif('__destruct'===$name){$this->modifiers|=self::IS_DESTRUCTOR;}elseif('__clone'===$name){$this->modifiers|=self::IS_CLONE;}if($class->isInterface()){$this->modifiers|=InternalReflectionMethod::IS_ABSTRACT;}else{static$notAllowed=array('__clone'=>true,'__tostring'=>true,'__get'=>true,'__set'=>true,'__isset'=>true,'__unset'=>true);if(!$this->isStatic()&&!$this->isConstructor()&&!$this->isDestructor()&&!isset($notAllowed[$name])){$this->modifiers|=self::IS_ALLOWED_STATIC;}}return$this;}}}
 
