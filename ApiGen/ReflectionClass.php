@@ -667,10 +667,11 @@ class ReflectionClass extends ReflectionBase
 
 		foreach ($this->getTraits() as $trait) {
 			$usedMethods = array();
-			foreach ($trait->getOwnMethods() as $method) {
-				if (!array_key_exists($method->getName(), $allMethods)) {
-					$usedMethods[$method->getName()] = $method;
-					$allMethods[$method->getName()] = null;
+			foreach ($trait->reflection->getMethods() as $trMethod) {
+				$methodName = $trMethod->getName();
+				if (!array_key_exists($methodName, $allMethods) && $this->hasMethod($methodName)) {
+					$usedMethods[$methodName] = $this->getMethod($methodName);
+					$allMethods[$methodName] = null;
 				}
 			}
 
