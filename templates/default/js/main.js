@@ -126,15 +126,7 @@ $(function() {
 	var $right = $('#right');
 	var $splitter = $('#splitter');
 	var splitterWidth = $splitter.width();
-	$splitter
-		.attr('unselectable', 'on')
-		.css({
-			'user-select': 'none',
-			'-moz-user-select': 'none',
-			'-ms-user-select': 'none',
-			'-webkit-user-select': 'none',
-			'-khtml-user-select': 'none'
-		}).mousedown(function() {
+	$splitter.mousedown(function() {
 			$splitter.addClass('active');
 
 			$document.mousemove(function(event) {
@@ -145,8 +137,6 @@ $(function() {
 				}
 			});
 
-			$('body', $document).css('-webkit-user-select', 'none');
-
 			$()
 				.add($splitter)
 				.add($document)
@@ -156,12 +146,12 @@ $(function() {
 							.unbind('mouseup');
 						$document
 							.unbind('mousemove')
-							.unbind('mouseup')
-							.find('body')
-								.css('-webkit-user-select', 'text');
+							.unbind('mouseup');
 
 						$.cookie('splitter', parseInt($splitter.css('left')), {expires: 365});
 					});
+
+			return false;
 		});
 	var splitterPosition = $.cookie('splitter');
 	if (null !== splitterPosition) {

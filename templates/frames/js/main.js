@@ -59,6 +59,7 @@ $(function() {
 			$(this).blur();
 
 			$('li.active', $menu).removeClass('active');
+			$('h3', $elements).show();
 			$('ul', $elements).show();
 			$('li', $elements).show();
 			$('a span', $elements).show();
@@ -264,15 +265,7 @@ $(function() {
 		var $splitter = $('#splitter');
 		var splitterWidth = $splitter.width();
 
-		$splitter
-			.attr('unselectable', 'on')
-			.css({
-				'user-select': 'none',
-				'-moz-user-select': 'none',
-				'-ms-user-select': 'none',
-				'-webkit-user-select': 'none',
-				'-khtml-user-select': 'none'
-			}).mousedown(function() {
+		$splitter.mousedown(function() {
 				$splitter.addClass('active');
 
 				$documentLeft.mousemove(function(event) {
@@ -286,8 +279,6 @@ $(function() {
 					}
 				});
 
-				$('body', $documents).css('-webkit-user-select', 'none');
-
 				$()
 					.add($splitter)
 					.add($documents)
@@ -297,12 +288,12 @@ $(function() {
 								.unbind('mouseup');
 							$documents
 								.unbind('mousemove')
-								.unbind('mouseup')
-								.find('body')
-									.css('-webkit-user-select', 'text');
+								.unbind('mouseup');
 
 							$.cookie('splitter', parseInt($frameset.attr('cols')), {expires: 365});
 						});
+
+				return false;
 			});
 	}
 });
