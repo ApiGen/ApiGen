@@ -131,7 +131,7 @@ class Generator extends Nette\Object
 					continue;
 				}
 				foreach ($this->config->exclude as $mask) {
-					if (fnmatch($mask, $entry->getPathName(), FNM_NOESCAPE | FNM_PATHNAME)) {
+					if (fnmatch($mask, $entry->getPathName(), FNM_NOESCAPE)) {
 						continue 2;
 					}
 				}

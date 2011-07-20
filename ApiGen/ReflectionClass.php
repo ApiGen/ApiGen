@@ -659,7 +659,7 @@ class ReflectionClass extends ReflectionBase
 	{
 		if (null === $this->isDocumented && parent::isDocumented()) {
 			foreach (self::$config->skipDocPath as $mask) {
-				if (fnmatch($mask, $this->reflection->getFilename(), FNM_NOESCAPE | FNM_PATHNAME)) {
+				if (fnmatch($mask, $this->reflection->getFilename(), FNM_NOESCAPE)) {
 					$this->isDocumented = false;
 					break;
 				}

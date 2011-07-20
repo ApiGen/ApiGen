@@ -42,7 +42,7 @@ class ReflectionConstant extends ReflectionBase
 	{
 		if (null === $this->isDocumented && parent::isDocumented() && null === $this->reflection->getDeclaringClassName()) {
 			foreach (self::$config->skipDocPath as $mask) {
-				if (fnmatch($mask, $this->reflection->getFilename(), FNM_NOESCAPE | FNM_PATHNAME)) {
+				if (fnmatch($mask, $this->reflection->getFilename(), FNM_NOESCAPE)) {
 					$this->isDocumented = false;
 					break;
 				}
