@@ -58,12 +58,13 @@ $(function() {
 
 			$(this).blur();
 
+			// Css is a little quicker than show/hide/toggle
 			$('li.active', $menu).removeClass('active');
-			$('h3', $elements).show();
-			$('ul', $elements).show();
-			$('li', $elements).show();
-			$('a span', $elements).show();
-			$('hr', $menu).show();
+			$('h3', $elements).css('display', 'block');
+			$('ul', $elements).css('display', 'block');
+			$('li', $elements).css('display', 'list-item');
+			$('a span', $elements).css('display', 'inline');
+			$('hr', $menu).css('display', 'block');
 
 			namespacesHidden = false;
 
@@ -106,29 +107,34 @@ $(function() {
 			$elementsLists.each(function() {
 				var $innerThis = $(this);
 
+				// Css is a little quicker than show/hide/toggle
+
 				var $all = $('li', $innerThis);
-				$all.hide()
+				$all.css('display', 'none');
 				var $visible = $('a[rel="' + $this.attr('rel') + '"]', $all);
 				$visible
 					.parent()
-						.show();
+						.css('display', 'list-item');
 
-				var visible = 0 !== $visible.length;
-				$innerThis
-					.toggle(visible)
-					.prev()
-						.toggle(visible);
-				if (!visible) {
+				if (0 !== $visible.length) {
+					$innerThis
+						.css('display', 'block')
+						.prev()
+							.css('display', 'block');
+				} else {
+					$innerThis
+						.css('display', 'none')
+						.prev()
+							.css('display', 'none');
+
 					elementsListsHidden++;
 				}
 			});
-			$elements
-				.prev()
-					.toggle($elementsLists.length !== elementsListsHidden);
+			$('hr', $menu).toggle($elementsLists.length !== elementsListsHidden);
 
 			// Hide namespaces in elements names
 			if (!namespacesHidden) {
-				$('span', $elements).hide();
+				$('span', $elements).css('display', 'none');
 				namespacesHidden = true;
 			}
 
