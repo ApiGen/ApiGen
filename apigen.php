@@ -47,6 +47,11 @@ try {
 
 	// Start
 	$config->parse();
+
+	if ($config->debug) {
+		Debugger::enable(Debugger::DEVELOPMENT);
+	}
+
 	$generator->output($generator->getHeader());
 
 	// Scan
