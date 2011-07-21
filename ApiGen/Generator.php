@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ApiGen 2.0.1 - API documentation generator.
+ * ApiGen 2.0.2 - API documentation generator.
  *
  * Copyright (c) 2010 David Grudl (http://davidgrudl.com)
  * Copyright (c) 2011 Ondřej Nešpor (http://andrewsville.cz)
@@ -39,7 +39,7 @@ class Generator extends Nette\Object
 	 *
 	 * @var string
 	 */
-	const VERSION = '2.0';
+	const VERSION = '2.0.2';
 
 	/**
 	 * Configuration.
@@ -133,7 +133,7 @@ class Generator extends Nette\Object
 					continue;
 				}
 				foreach ($this->config->exclude as $mask) {
-					if (fnmatch($mask, $entry->getPathName(), FNM_NOESCAPE | FNM_PATHNAME)) {
+					if (fnmatch($mask, $entry->getPathName(), FNM_NOESCAPE)) {
 						continue 2;
 					}
 				}

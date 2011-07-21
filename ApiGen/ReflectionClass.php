@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ApiGen 2.0.1 - API documentation generator.
+ * ApiGen 2.0.2 - API documentation generator.
  *
  * Copyright (c) 2010 David Grudl (http://davidgrudl.com)
  * Copyright (c) 2011 Ondřej Nešpor (http://andrewsville.cz)
@@ -349,7 +349,7 @@ class ReflectionClass extends ReflectionBase
 		foreach (array_merge($this->getParentClasses(), $this->getInterfaces()) as $class) {
 			$inheritedMethods = array();
 			foreach ($class->getOwnMethods() as $method) {
-				if (!isset($allMethods[$method->getName()]) && !$method->isPrivate()) {
+				if (!array_key_exists($method->getName(), $allMethods) && !$method->isPrivate()) {
 					$inheritedMethods[$method->getName()] = $method;
 					$allMethods[$method->getName()] = null;
 				}
@@ -379,7 +379,7 @@ class ReflectionClass extends ReflectionBase
 		foreach (array_merge($this->getParentClasses(), $this->getInterfaces()) as $class) {
 			$inheritedProperties = array();
 			foreach ($class->getOwnProperties() as $property) {
-				if (!isset($allProperties[$property->getName()]) && !$property->isPrivate()) {
+				if (!array_key_exists($property->getName(), $allProperties) && !$property->isPrivate()) {
 					$inheritedProperties[$property->getName()] = $property;
 					$allProperties[$property->getName()] = null;
 				}

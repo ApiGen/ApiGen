@@ -2,7 +2,7 @@
 <?php
 
 /**
- * ApiGen 2.0.1 - API documentation generator.
+ * ApiGen 2.0.2 - API documentation generator.
  *
  * Copyright (c) 2010 David Grudl (http://davidgrudl.com)
  * Copyright (c) 2011 Ondřej Nešpor (http://andrewsville.cz)
@@ -47,6 +47,11 @@ try {
 
 	// Start
 	$config->parse();
+
+	if ($config->debug) {
+		Debugger::enable(Debugger::DEVELOPMENT);
+	}
+
 	$generator->output($generator->getHeader());
 
 	// Scan
@@ -92,7 +97,7 @@ try {
 		echo $generator->colorize($generator->getHeader());
 	}
 
-	if ($config->debug) {
+	if (!empty($config) && $config->debug) {
 		do {
 			echo $generator->colorize(sprintf("\n@error@%s@c", $e->getMessage()));
 			$trace = $e->getTraceAsString();

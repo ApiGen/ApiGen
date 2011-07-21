@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ApiGen 2.0.1 - API documentation generator.
+ * ApiGen 2.0.2 - API documentation generator.
  *
  * Copyright (c) 2010 David Grudl (http://davidgrudl.com)
  * Copyright (c) 2011 Ondřej Nešpor (http://andrewsville.cz)
@@ -169,7 +169,7 @@ abstract class ReflectionBase
 			} else {
 				$this->isDocumented = true;
 				foreach (self::$config->skipDocPath as $mask) {
-					if (fnmatch($mask, $this->reflection->getFilename(), FNM_NOESCAPE | FNM_PATHNAME)) {
+					if (fnmatch($mask, $this->reflection->getFilename(), FNM_NOESCAPE)) {
 						$this->isDocumented = false;
 						break;
 					}
