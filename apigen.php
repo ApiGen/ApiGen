@@ -92,7 +92,7 @@ try {
 		echo $generator->colorize($generator->getHeader());
 	}
 
-	if ($config->debug) {
+	if (!empty($config) && $config->debug) {
 		do {
 			echo $generator->colorize(sprintf("\n@error@%s@c", $e->getMessage()));
 			$trace = $e->getTraceAsString();
