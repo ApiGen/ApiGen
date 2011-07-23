@@ -50,38 +50,25 @@ $(function() {
 				.toggleClass('collapsed')
 				.next('ul')
 					.toggleClass('collapsed');
-		});
+		}).click();
+
+		var $main = $('> ul > li.main', $groups);
+		if ($main.length > 0) {
+			// Open first level of the main project
+			$('> span', $main).click();
+		} else {
+			// Open first level of all
+			$('> ul > li > span', $groups).click();
+		}
 
 		// Reset menu
 		$('> a', $menu).click(function() {
 			var $this = $(this);
 
-			$(this).blur();
+			window.top.page = 'overview.html';
 
-			// Css is a little quicker than show/hide/toggle
-			$('li.active', $menu).removeClass('active');
-			$('h3', $elements).css('display', 'block');
-			$('ul', $elements).css('display', 'block');
-			$('li', $elements).css('display', 'list-item');
-			$('a span', $elements).css('display', 'inline');
-			$('hr', $menu).css('display', 'block');
-
-			namespacesHidden = false;
-
-			// Collapse deep packages and namespaces
-			$('span:not(.collapsed)', $groups).click();
-
-			var $main = $('> ul > li.main', $groups);
-			if ($main.length > 0) {
-				// Open first level of the main project
-				$('> span', $main).click();
-			} else {
-				// Open first level of all
-				$('> ul > li > span', $groups).click();
-			}
-
-			window.top.page = $this.attr('href');
-		}).click();
+			window.top.frames['left'].location.reload();
+		});
 		// Mark active
 		// Show only elements in package/namespace
 		$('a', $groups).click(function() {
