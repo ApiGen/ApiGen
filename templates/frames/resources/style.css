@@ -2,10 +2,15 @@
 	(c) David Grudl, Ondřej Nešpor, Jaroslav Hanslík, Jörn Zaefferer
 */
 
-body {
-	font: 13px/1.5 Verdana, "Geneva CE", lucida, sans-serif;
+html, body, iframe {
+	height: 100%;
 	margin: 0;
 	padding: 0;
+	border: none;
+}
+
+body {
+	font: 13px/1.5 Verdana, "Geneva CE", lucida, sans-serif;
 	background: #ffffff;
 	color: #333333;
 }
@@ -99,6 +104,21 @@ code a b {
 }
 
 /**
+ * Main
+ */
+#main {
+	overflow: hidden;
+}
+
+/**
+ * Left side
+ */
+#left {
+	position: fixed;
+	width: 270px;
+}
+
+/**
  * Menu
  */
 #menu {
@@ -161,9 +181,17 @@ code a b {
 /**
  * Right side
  */
+#rightWrapper {
+	height: 100%;
+	margin-left: 275px;
+}
+
+#right {
+	width: 100%;
+}
+
 #rightInner {
 	max-width: 1000px;
-	margin-left: 5px;
 }
 
 /**
@@ -402,10 +430,9 @@ tr:hover td {
  */
 #splitter {
 	position: fixed;
-	top: 0;
-	left: 0;
 	height: 100%;
 	width: 5px;
+	left: 270px;
 	background: #1e5eb6 url('resize.png') left center no-repeat;
 	cursor: e-resize;
 }

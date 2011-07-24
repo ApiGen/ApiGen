@@ -1,46 +1,9 @@
 $(function() {
 
-	/**
-	 * Changes page.
-	 *
-	 * @param string page
-	 */
-	function changePage(page)
-	{
-		var location = window.location.href.split('/');
-		location.pop();
-		location.push(page);
-		window.location = location.join('/');
-	}
-
-	/**
-	 * Updates menu.
-	 *
-	 * @param string page
-	 */
-	function updateMenu(page)
-	{
-		if (page === window.parent.location.hash.substr(1)) {
-			return;
-		}
-
-		if (0 === page.search(/^class|function|constant/)) {
-			window.parent.frames['left'].$('#elements a[href^="' + page + '"]').click();
-		} else if (0 === page.indexOf('source')) {
-			window.parent.frames['left'].$('#elements a[href^="' + page.substr(7) + '"]').click();
-		} else if (0 === page.search(/^package|namespace/)) {
-			window.parent.frames['left'].$('#groups a[href^="' + page + '"]').click();
-		} else if (0 === page.search(/^overview|tree|deprecated|todo/)) {
-			window.parent.frames['left'].$('#menu > a').click();
-		}
-
-		window.parent.location.hash = page;
-	}
-
 	// Frames detection
-	var isTopFrame = $('frameset').length > 0;
-	var isLeftFrame = $('#menu').length > 0;
-	var isRightFrame = $('#rightInner').length > 0;
+	var isTopFrame = $('iframe').length !== 0;
+	var isLeftFrame = $('#menu').length !== 0;
+	var isRightFrame = $('#rightInner').length !== 0;
 
 	if (isTopFrame) {
 		// Top
@@ -49,10 +12,170 @@ $(function() {
 			window.location.hash = 'overview.html';
 		}
 
-		// Menu size
+		/**
+		 * Loads new page.
+		 *
+		 * @param string page
+		 */
+		window.loadPage = function(page)
+		{
+			// Change content
+			var location = window.frames['right'].location.href.split('/');
+			location.pop();
+			location.push(page);
+			window.frames['right'].location.replace(location.join('/'));
+
+			// Change menu
+			if (0 === page.search(/^overview|tree|deprecated|todo/)) {
+				window.frames['left'].location.reload();
+			} else {
+				if (0 === page.indexOf('source-')) {
+					page = page.substr(7);
+				}
+
+				var $menu = $('#menu', window.frames['left'].document);
+				var $groups = $('#groups', $menu);
+				var $elements = $('#elements', $menu);
+
+				// Collapse deep packages and namespaces
+				$('span:not(.collapsed)', $groups).click();
+
+				// Unmark active
+				$('li.active', $menu).removeClass('active');
+
+				if (0 === page.search(/^package|namespace/)) {
+					// Select group
+					var $group = $('a[href^="' + page + '"]', $groups);
+				} else {
+					// Select element
+					var $element = $('a[href^="' + page + '"]', $elements);
+					var $group = $('a[rel="' + $element.attr('rel') + '"]', $groups);
+
+					// Mark active element
+					$element
+						.blur()
+						.parent()
+							.addClass('active');
+				}
+
+				// Mark active group
+				$group
+					.blur()
+					.parentsUntil('#groups', 'li')
+						.addClass('active')
+						.children('span')
+							.click();
+
+				// Shows only elements in active group
+				var elementsListsHidden = 0;
+				var $elementsLists = $('ul', $elements);
+				$elementsLists.each(function() {
+					var $this = $(this);
+
+					// Css is a little quicker than show/hide/toggle
+
+					var $all = $('li', $this);
+					$all.css('display', 'none');
+					var $visible = $('a[rel="' + $group.attr('rel') + '"]', $all);
+					$visible
+						.parent()
+							.css('display', 'list-item');
+
+					if (0 !== $visible.length) {
+						$this
+							.css('display', 'block')
+							.prev()
+								.css('display', 'block');
+					} else {
+						$this
+							.css('display', 'none')
+							.prev()
+								.css('display', 'none');
+
+						elementsListsHidden++;
+					}
+				});
+				$('hr', $menu).toggle($elementsLists.length !== elementsListsHidden);
+
+				// Hide namespaces in elements names
+				if (!window.frames['left'].namespacesHidden) {
+					$('span', $elements).css('display', 'none');
+					window.frames['left'].namespacesHidden = true;
+				}
+			}
+		}
+
+		// Back/Forward button
+		window.setInterval(function() {
+			var page = window.location.hash.substr(1);
+			if (page !== window.frames['right'].location.pathname.split('/').pop()) {
+				window.loadPage(page);
+			}
+		}, 100);
+
+		// Splitter
+		var $left = $('#left');
+		var $right = $('#rightWrapper');
+		var $splitter = $('#splitter');
+		var splitterWidth = $splitter.width();
+		$splitter.mousedown(function() {
+				$splitter.addClass('active');
+
+				var $document = $(window.document);
+				var $documentLeft = $(window.frames['left'].document);
+				var $documentRight = $(window.frames['right'].document);
+				var $documents = $()
+					.add($document)
+					.add($documentLeft)
+					.add($documentRight);
+
+				// For Opera
+				$document.mousemove(function(event) {
+					if (event.pageX >= 230 && $document.width() - event.pageX >= 600 + splitterWidth) {
+						$left.width(event.pageX);
+						$right.css('margin-left', event.pageX + splitterWidth);
+						$splitter.css('left', event.pageX);
+					}
+				});
+				// For other browsers
+				$documentLeft.mousemove(function(event) {
+					if (event.pageX >= 230) {
+						$left.width(event.pageX);
+						$right.css('margin-left', event.pageX + splitterWidth);
+						$splitter.css('left', event.pageX);
+					}
+				});
+				$documentRight.mousemove(function(event) {
+					if ($right.width() >= 600 + splitterWidth) {
+						var splitterPosition = parseInt($splitter.css('left')) + splitterWidth + event.pageX;
+						$left.width(splitterPosition);
+						$right.css('margin-left', splitterPosition + splitterWidth);
+						$splitter.css('left', splitterPosition);
+					}
+				});
+
+				$()
+					.add($splitter)
+					.add($documents)
+						.mouseup(function() {
+							$splitter
+								.removeClass('active')
+								.unbind('mouseup');
+							$documents
+								.unbind('mousemove')
+								.unbind('mouseup');
+
+							$.cookie('splitter', parseInt($splitter.css('left')), {expires: 365});
+						});
+
+				return false;
+			});
 		var splitterPosition = $.cookie('splitter');
 		if (null !== splitterPosition) {
-			$('frameset').attr('cols', parseInt(splitterPosition) + ',*');
+			splitterPosition = parseInt(splitterPosition);
+			$left.width(splitterPosition);
+			$right.css('margin-left', splitterPosition + splitterWidth);
+			$splitter.css('left', splitterPosition);
 		}
 
 	} else if (isLeftFrame) {
@@ -60,7 +183,10 @@ $(function() {
 
 		// Check parent frame
 		if (window.self !== window.parent.frames['left']) {
-			changePage('index.html');
+			var location = window.location.href.split('/');
+			location.pop();
+			location.push('index.html');
+			window.location.replace(location.join('/'));
 			return;
 		}
 
@@ -87,85 +213,12 @@ $(function() {
 			$('> ul > li > span', $groups).click();
 		}
 
-		// Reset menu
-		$('> a', $menu).click(function() {
-			var $this = $(this);
-
-			window.parent.location.hash = $this.attr('href');
-
-			window.location.reload();
-		});
-		// Mark active
-		// Show only elements in package/namespace
-		$('a', $groups).click(function() {
-			var $this = $(this);
-
-			// Collapse deep packages and namespaces
-			$('span:not(.collapsed)', $groups).click();
-
-			// Unmark active
-			$('li.active', $menu).removeClass('active');
-
-			// Mark active
-			$this
-				.blur()
-				.parentsUntil('#groups', 'li')
-					.addClass('active')
-					.children('span')
-						.click();
-
-			// Shows only elements in package/namespace
-			var elementsListsHidden = 0;
-			var $elementsLists = $('ul', $elements);
-			$elementsLists.each(function() {
-				var $innerThis = $(this);
-
-				// Css is a little quicker than show/hide/toggle
-
-				var $all = $('li', $innerThis);
-				$all.css('display', 'none');
-				var $visible = $('a[rel="' + $this.attr('rel') + '"]', $all);
-				$visible
-					.parent()
-						.css('display', 'list-item');
-
-				if (0 !== $visible.length) {
-					$innerThis
-						.css('display', 'block')
-						.prev()
-							.css('display', 'block');
-				} else {
-					$innerThis
-						.css('display', 'none')
-						.prev()
-							.css('display', 'none');
-
-					elementsListsHidden++;
-				}
-			});
-			$('hr', $menu).toggle($elementsLists.length !== elementsListsHidden);
-
-			// Hide namespaces in elements names
-			if (!namespacesHidden) {
-				$('span', $elements).css('display', 'none');
-				namespacesHidden = true;
-			}
-
-			window.parent.location.hash = $this.attr('href');
-		});
-		$('a', $elements).click(function() {
-			var $this = $(this);
-
-			// Mark active package/namespace
-			$('a[rel="' + $this.attr('rel') + '"]', $groups).click();
-
-			// Mark active
-			$this
-				.blur()
-				.parent()
-					.addClass('active');
-
-			window.parent.location.hash = $this.attr('href');
+		// Links
+		$('a', $menu).click(function() {
+			var page = $(this).attr('href');
+			window.parent.loadPage(page);
+			window.parent.location.hash = page;
+			return false;
 		});
 
 	} else if (isRightFrame) {
@@ -175,26 +228,24 @@ $(function() {
 
 		// Check parent frame
 		if (window.self !== window.parent.frames['right']) {
-			changePage('index.html#' + actualPage);
+			var location = window.location.href.split('/');
+			location.pop();
+			location.push('index.html#' + actualPage);
+			window.location.replace(location.join('/'));
 			return;
 		}
-
-		// Check page
-		var parentPage = window.parent.location.hash.substr(1);
-		if ('' !== parentPage && actualPage !== parentPage) {
-			updateMenu(parentPage);
-			changePage(parentPage);
-			return;
-		}
-
-		var $content = $('#content');
 
 		// Update title
 		window.parent.document.title = window.document.title;
 
-		// Update menu
+		var $content = $('#content');
+
+		// Links
 		$('a:not([href*="://"])').click(function() {
-			updateMenu($(this).attr('href').replace(/#.*/, ''));
+			var page = $(this).attr('href').replace(/#.*/, '');
+			window.parent.loadPage(page);
+			window.parent.location.hash = page;
+			return false;
 		});
 
 		// Open external links to top window
@@ -220,8 +271,8 @@ $(function() {
 			}).result(function(event, data) {
 				autocompleteFound = true;
 				var page = data[0] + '-' + data[1].replace(/[^\w]/g, '.') + '.html';
-				updateMenu(page);
-				changePage(page);
+				window.parent.loadPage(page);
+				window.parent.location.hash = page;
 			}).closest('form')
 				.submit(function() {
 					var query = $search.val();
@@ -285,48 +336,6 @@ $(function() {
 				var $this = $(this);
 				$('.short', $this).hide();
 				$('.detailed', $this).show();
-			});
-
-
-		// Splitter
-		var $frameset = $('frameset', window.parent.document);
-		var $documentLeft = $(window.parent.frames['left'].document);
-		var $documentRight = $(window.parent.frames['right'].document);
-		var $documents = $()
-			.add($documentLeft)
-			.add($documentRight);
-		var $splitter = $('#splitter');
-		var splitterWidth = $splitter.width();
-
-		$splitter.mousedown(function() {
-				$splitter.addClass('active');
-
-				$documentLeft.mousemove(function(event) {
-					if (event.pageX >= 230) {
-						$frameset.attr('cols', event.pageX + ',*');
-					}
-				});
-				$documentRight.mousemove(function(event) {
-					if ($documentRight.width() >= 600 + splitterWidth) {
-						$frameset.attr('cols', parseInt($frameset.attr('cols')) + event.pageX + ',*');
-					}
-				});
-
-				$()
-					.add($splitter)
-					.add($documents)
-						.mouseup(function() {
-							$splitter
-								.removeClass('active')
-								.unbind('mouseup');
-							$documents
-								.unbind('mousemove')
-								.unbind('mouseup');
-
-							$.cookie('splitter', parseInt($frameset.attr('cols')), {expires: 365});
-						});
-
-				return false;
 			});
 	}
 });
