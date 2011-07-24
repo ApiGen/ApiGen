@@ -1,13 +1,26 @@
 $(function() {
 
 	/**
+	 * Changes page.
+	 *
+	 * @param string page
+	 */
+	function changePage(page)
+	{
+		var location = window.location.href.split('/');
+		location.pop();
+		location.push(page);
+		window.location = location.join('/');
+	}
+
+	/**
 	 * Updates menu.
 	 *
 	 * @param string page
 	 */
 	function updateMenu(page)
 	{
-		if (page === window.top.page) {
+		if (page === window.top.location.hash.substr(1)) {
 			return;
 		}
 
@@ -21,23 +34,38 @@ $(function() {
 			window.top.frames['left'].$('#menu > a').click();
 		}
 
-		window.top.page = page;
+		window.top.location.hash = page;
 	}
 
 	var $frameset = $('frameset', window.top.document);
 
-	// Menu size
-	if (window.self === window.top) {
-		window.page = 'overview.html';
+	// Frames detection
+	var isTopFrame = $('frameset').length > 0;
+	var isLeftFrame = $('#menu').length > 0;
+	var isRightFrame = $('#rightInner').length > 0;
 
+	if (isTopFrame) {
+		// Top
+
+		if ('' === window.location.hash.substr(1)) {
+			window.location.hash = 'overview.html';
+		}
+
+		// Menu size
 		var splitterPosition = $.cookie('splitter');
 		if (null !== splitterPosition) {
 			$frameset.attr('cols', parseInt(splitterPosition) + ',*');
 		}
-	}
 
-	// Menu
-	if (window.self === window.top.frames['left']) {
+	} else if (isLeftFrame) {
+		// Menu
+
+		// Check top frame
+		if (window.self === window.top) {
+			changePage('index.html');
+			return;
+		}
+
 		var $menu = $('#menu');
 		var $groups = $('#groups', $menu);
 		var $elements = $('#elements', $menu);
@@ -65,9 +93,9 @@ $(function() {
 		$('> a', $menu).click(function() {
 			var $this = $(this);
 
-			window.top.page = 'overview.html';
+			window.top.location.hash = $this.attr('href');
 
-			window.top.frames['left'].location.reload();
+			window.location.reload();
 		});
 		// Mark active
 		// Show only elements in package/namespace
@@ -125,7 +153,7 @@ $(function() {
 				namespacesHidden = true;
 			}
 
-			window.top.page = $this.attr('href');
+			window.top.location.hash = $this.attr('href');
 		});
 		$('a', $elements).click(function() {
 			var $this = $(this);
@@ -139,23 +167,36 @@ $(function() {
 				.parent()
 					.addClass('active');
 
-			window.top.page = $this.attr('href');
+			window.top.location.hash = $this.attr('href');
 		});
-	}
 
-	// Content
-	if (window.self === window.top.frames['right']) {
-		// Move back/next in browser history
-		$(function() {
-			window.top.document.title = window.document.title;
-			updateMenu(window.location.pathname.split('/').pop());
-		});
+	} else if (isRightFrame) {
+		// Content
+
+		var actualPage = window.location.pathname.split('/').pop();
+
+		// Check top frame
+		if (window.self === window.top) {
+			changePage('index.html#' + actualPage);
+			return;
+		}
+
+		// Check page
+		var topPage = window.top.location.hash.substr(1);
+		if ('' !== topPage && actualPage !== topPage) {
+			updateMenu(topPage);
+			changePage(topPage);
+			return;
+		}
 
 		var $content = $('#content');
 
+		// Update title
+		window.top.document.title = window.document.title;
+
 		// Update menu
 		$('a').click(function() {
-			updateMenu($(this).attr('href'));
+			updateMenu($(this).attr('href').replace(/#.*/, ''));
 		});
 
 		// Search autocompletion
@@ -179,10 +220,7 @@ $(function() {
 				autocompleteFound = true;
 				var page = data[0] + '-' + data[1].replace(/[^\w]/g, '.') + '.html';
 				updateMenu(page);
-				var location = window.location.href.split('/');
-				location.pop();
-				location.push(page);
-				window.location = location.join('/');
+				changePage(page);
 			}).closest('form')
 				.submit(function() {
 					var query = $search.val();
