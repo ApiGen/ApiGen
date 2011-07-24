@@ -195,9 +195,12 @@ $(function() {
 		window.top.document.title = window.document.title;
 
 		// Update menu
-		$('a').click(function() {
+		$('a:not([href*="://"])').click(function() {
 			updateMenu($(this).attr('href').replace(/#.*/, ''));
 		});
+
+		// Open external links to top window
+		$('a[href*="://"]').attr('target', '_top');
 
 		// Search autocompletion
 		var autocompleteFound = false;
