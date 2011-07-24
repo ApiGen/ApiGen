@@ -20,24 +20,22 @@ $(function() {
 	 */
 	function updateMenu(page)
 	{
-		if (page === window.top.location.hash.substr(1)) {
+		if (page === window.parent.location.hash.substr(1)) {
 			return;
 		}
 
 		if (0 === page.search(/^class|function|constant/)) {
-			window.top.frames['left'].$('#elements a[href^="' + page + '"]').click();
+			window.parent.frames['left'].$('#elements a[href^="' + page + '"]').click();
 		} else if (0 === page.indexOf('source')) {
-			window.top.frames['left'].$('#elements a[href^="' + page.substr(7) + '"]').click();
+			window.parent.frames['left'].$('#elements a[href^="' + page.substr(7) + '"]').click();
 		} else if (0 === page.search(/^package|namespace/)) {
-			window.top.frames['left'].$('#groups a[href^="' + page + '"]').click();
+			window.parent.frames['left'].$('#groups a[href^="' + page + '"]').click();
 		} else if (0 === page.search(/^overview|tree|deprecated|todo/)) {
-			window.top.frames['left'].$('#menu > a').click();
+			window.parent.frames['left'].$('#menu > a').click();
 		}
 
-		window.top.location.hash = page;
+		window.parent.location.hash = page;
 	}
-
-	var $frameset = $('frameset', window.top.document);
 
 	// Frames detection
 	var isTopFrame = $('frameset').length > 0;
@@ -54,14 +52,14 @@ $(function() {
 		// Menu size
 		var splitterPosition = $.cookie('splitter');
 		if (null !== splitterPosition) {
-			$frameset.attr('cols', parseInt(splitterPosition) + ',*');
+			$('frameset').attr('cols', parseInt(splitterPosition) + ',*');
 		}
 
 	} else if (isLeftFrame) {
 		// Menu
 
-		// Check top frame
-		if (window.self === window.top) {
+		// Check parent frame
+		if (window.self !== window.parent.frames['left']) {
 			changePage('index.html');
 			return;
 		}
@@ -93,7 +91,7 @@ $(function() {
 		$('> a', $menu).click(function() {
 			var $this = $(this);
 
-			window.top.location.hash = $this.attr('href');
+			window.parent.location.hash = $this.attr('href');
 
 			window.location.reload();
 		});
@@ -153,7 +151,7 @@ $(function() {
 				namespacesHidden = true;
 			}
 
-			window.top.location.hash = $this.attr('href');
+			window.parent.location.hash = $this.attr('href');
 		});
 		$('a', $elements).click(function() {
 			var $this = $(this);
@@ -167,7 +165,7 @@ $(function() {
 				.parent()
 					.addClass('active');
 
-			window.top.location.hash = $this.attr('href');
+			window.parent.location.hash = $this.attr('href');
 		});
 
 	} else if (isRightFrame) {
@@ -175,24 +173,24 @@ $(function() {
 
 		var actualPage = window.location.pathname.split('/').pop();
 
-		// Check top frame
-		if (window.self === window.top) {
+		// Check parent frame
+		if (window.self !== window.parent.frames['right']) {
 			changePage('index.html#' + actualPage);
 			return;
 		}
 
 		// Check page
-		var topPage = window.top.location.hash.substr(1);
-		if ('' !== topPage && actualPage !== topPage) {
-			updateMenu(topPage);
-			changePage(topPage);
+		var parentPage = window.parent.location.hash.substr(1);
+		if ('' !== parentPage && actualPage !== parentPage) {
+			updateMenu(parentPage);
+			changePage(parentPage);
 			return;
 		}
 
 		var $content = $('#content');
 
 		// Update title
-		window.top.document.title = window.document.title;
+		window.parent.document.title = window.document.title;
 
 		// Update menu
 		$('a:not([href*="://"])').click(function() {
@@ -200,13 +198,13 @@ $(function() {
 		});
 
 		// Open external links to top window
-		$('a[href*="://"]').attr('target', '_top');
+		$('a[href*="://"]').attr('target', '_parent');
 
 		// Search autocompletion
 		var autocompleteFound = false;
 		var $search = $('#search input[name=q]');
 		$search
-			.autocomplete(window.top.elements, {
+			.autocomplete(window.parent.elements, {
 				matchContains: true,
 				scrollHeight: 200,
 				max: 20,
@@ -291,8 +289,9 @@ $(function() {
 
 
 		// Splitter
-		var $documentLeft = $(window.top.frames['left'].document);
-		var $documentRight = $(window.top.frames['right'].document);
+		var $frameset = $('frameset', window.parent.document);
+		var $documentLeft = $(window.parent.frames['left'].document);
+		var $documentRight = $(window.parent.frames['right'].document);
 		var $documents = $()
 			.add($documentLeft)
 			.add($documentRight);
