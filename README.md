@@ -1,5 +1,4 @@
-﻿# TEST PUSH #
-# Welcome to ApiGen #
+﻿# Welcome to ApiGen #
 
 ApiGen is a fork of the original [tool](https://github.com/nette/apigen) created by [Andrewsville](https://github.com/Andrewsville) and [Kukulich](https://github.com/kukulich).
 
