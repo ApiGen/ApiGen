@@ -43,6 +43,13 @@ sourceCode: Yes
 # Save a list of undocumented classes, methods, properties and constants into a file
 undocumented: ''
 
+# Hide classes, constants and functions who not passed the filters
+# eg. classFilter: [isApi] show only classes with @api annotation
+# actual available filters: isApi, isInterface
+classFilter: []
+constantFilter: []
+functionFilter: []
+
 # Wipe out the destination directory first
 wipeout: Yes
 # Don't display scaning and generating messages
