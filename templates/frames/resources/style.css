@@ -99,19 +99,10 @@ code a b {
 }
 
 /**
- * Left side
- */
-#left {
-	overflow: auto;
-	width: 270px;
-	height: 100%;
-	position: fixed;
-}
-
-/**
  * Menu
  */
 #menu {
+	background: #ffffff;
 	padding: 10px;
 }
 
@@ -130,7 +121,7 @@ code a b {
 	position: relative;
 }
 
-#menu .active > a, #menu > span {
+#menu .active > a {
 	color: #333333;
 	background: none;
 	font-weight: bold;
@@ -163,17 +154,16 @@ code a b {
 	background-position: -12px -12px;
 }
 
-#menu ul.collapsed {
+#menu #groups ul.collapsed {
 	display: none;
 }
 
 /**
  * Right side
  */
-#right {
-	overflow: auto;
-	margin-left: 275px;
+#rightInner {
 	max-width: 1000px;
+	margin-left: 5px;
 }
 
 /**
@@ -412,9 +402,10 @@ tr:hover td {
  */
 #splitter {
 	position: fixed;
+	top: 0;
+	left: 0;
 	height: 100%;
 	width: 5px;
-	left: 270px;
 	background: #1e5eb6 url('resize.png') left center no-repeat;
 	cursor: e-resize;
 }

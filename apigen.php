@@ -2,7 +2,7 @@
 <?php
 
 /**
- * ApiGen 2.0.2 - API documentation generator.
+ * ApiGen 2.1 dev - API documentation generator.
  *
  * Copyright (c) 2010 David Grudl (http://davidgrudl.com)
  * Copyright (c) 2011 Ondřej Nešpor (http://andrewsville.cz)
@@ -65,10 +65,32 @@ try {
 	} elseif (!empty($config->exclude)) {
 		$generator->output(sprintf("Excluding @value@%s@c\n", $config->exclude[0]));
 	}
+	
+	// print filter configuration
+	$filterTypes = array('classFilter', 'constantFilter', 'functionFilter');
+	$filterActive = false;
+	foreach ($filterTypes as $filterTypeToCheck) {
+		$filterActive = !empty($config->$filterTypeToCheck);
+		if ($filterActive) {
+			break;
+		}
+	}
+	if ($filterActive) {
+		$generator->output("Source Filters:\n");
+		foreach ($filterTypes as $filterType) {
+			if (is_array($config->$filterType) && !empty($config->$filterType)) {
+				$generator->output(" ".$filterType." :\n");	
+				foreach ($config->$filterType as $filter) {
+					$generator->output(sprintf("   @value@- %s@c\n", $filter));
+				}
+			}
+		}
+	}
+	
 	$parsed = $generator->parse();
 	$generator->output(vsprintf("Found @count@%d@c classes, @count@%d@c constants, @count@%d@c functions and other @count@%d@c used PHP internal classes\n", array_slice($parsed, 0, 4)));
 	$generator->output(vsprintf("Documentation for @count@%d@c classes, @count@%d@c constants, @count@%d@c functions and other @count@%d@c used PHP internal classes will be generated\n", array_slice($parsed, 4, 4)));
-
+	
 	// Generating
 	$generator->output(sprintf("Using template config file @value@%s@c\n", $config->templateConfig));
 

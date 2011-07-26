@@ -1,6 +1,6 @@
 <?php
 /**
- * ApiGen 2.0.2 - API documentation generator.
+ * ApiGen 2.1 dev - API documentation generator.
  *
  * Copyright (c) 2010 David Grudl (http://davidgrudl.com)
  * Copyright (c) 2011 Ondřej Nešpor (http://andrewsville.cz)
@@ -30,7 +30,7 @@ class Tree extends RecursiveTreeIterator
 	/**
 	 * Last item on the current level.
 	 *
-	 * @var integer
+	 * @var string
 	 */
 	const LAST = '0';
 

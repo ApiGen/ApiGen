@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ApiGen 2.0.2 - API documentation generator.
+ * ApiGen 2.1 dev - API documentation generator.
  *
  * Copyright (c) 2010 David Grudl (http://davidgrudl.com)
  * Copyright (c) 2011 Ondřej Nešpor (http://andrewsville.cz)
@@ -22,4 +22,41 @@ namespace ApiGen;
  */
 class ReflectionConstant extends ReflectionBase
 {
+	/**
+	 * Returns the constant declaring class.
+	 *
+	 * @return \ApiGen\ReflectionClass|null
+	 */
+	public function getDeclaringClass()
+	{
+		$className = $this->reflection->getDeclaringClassName();
+		return null === $className ? null : self::$classes[$className];
+	}
+
+	/**
+	 * Returns if the class should be documented.
+	 *
+	 * @return boolean
+	 */
+	public function isDocumented()
+	{
+		if (null === $this->isDocumented && parent::isDocumented() && null === $this->reflection->getDeclaringClassName()) {
+			foreach (self::$config->skipDocPath as $mask) {
+				if (fnmatch($mask, $this->reflection->getFilename(), FNM_NOESCAPE)) {
+					$this->isDocumented = false;
+					break;
+				}
+			}
+			if (true === $this->isDocumented) {
+				foreach (self::$config->skipDocPrefix as $prefix) {
+					if (0 === strpos($this->reflection->getName(), $prefix)) {
+						$this->isDocumented = false;
+						break;
+					}
+				}
+			}
+		}
+
+		return $this->isDocumented;
+	}
 }

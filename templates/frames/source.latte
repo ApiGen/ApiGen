@@ -1,0 +1,8 @@
+{layout '@content.latte'}
+{var $active = 'source'}
+
+{block #title}File {$fileName}{/block}
+
+{block #content}
+<pre><code>{!$source|replaceRE:'#<span class="line">(\s*(\d+):\s*)</span>#','<a href="#$2" id="$2" class="l">$1</a>'}</code></pre>
+{/block}

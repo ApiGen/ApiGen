@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ApiGen 2.0.2 - API documentation generator.
+ * ApiGen 2.1 dev - API documentation generator.
  *
  * Copyright (c) 2010 David Grudl (http://davidgrudl.com)
  * Copyright (c) 2011 Ondřej Nešpor (http://andrewsville.cz)
@@ -25,6 +25,20 @@ use TokenReflection\IReflection;
  */
 abstract class ReflectionBase
 {
+	/**
+	 * List of classes.
+	 *
+	 * @var \ArrayObject
+	 */
+	protected static $classes;
+
+	/**
+	 * List of functions.
+	 *
+	 * @var \ArrayObject
+	 */
+	protected static $functions;
+
 	/**
 	 * Generator.
 	 *
@@ -65,7 +79,7 @@ abstract class ReflectionBase
 	 *
 	 * @var boolean
 	 */
-	private $isDocumented;
+	protected $isDocumented;
 
 	/**
 	 * Constructor.
@@ -80,6 +94,8 @@ abstract class ReflectionBase
 		if (null === self::$generator) {
 			self::$generator = $generator;
 			self::$config = $generator->getConfig();
+			self::$classes = $generator->getClasses();
+			self::$functions = $generator->getFunctions();
 		}
 
 		$this->reflectionType = get_class($this);
@@ -141,7 +157,7 @@ abstract class ReflectionBase
 	}
 
 	/**
-	 * Returns if the element belongs to the main project.
+	 * Returns if the class should be documented.
 	 *
 	 * @return boolean
 	 */
@@ -158,32 +174,19 @@ abstract class ReflectionBase
 	public function isDocumented()
 	{
 		if (null === $this->isDocumented) {
-			if (self::$config->php && $this->reflection->isInternal()) {
-				$this->isDocumented = true;
-			} elseif (!$this->reflection->isTokenized()) {
-				$this->isDocumented = false;
-			} elseif (!self::$config->deprecated && $this->reflection->isDeprecated()) {
-				$this->isDocumented = false;
-			} elseif (!self::$config->internal && ($internal = $this->reflection->getAnnotation('internal')) && empty($internal[0])) {
-				$this->isDocumented = false;
-			} else {
-				$this->isDocumented = true;
-				foreach (self::$config->skipDocPath as $mask) {
-					if (fnmatch($mask, $this->reflection->getFilename(), FNM_NOESCAPE)) {
-						$this->isDocumented = false;
-						break;
-					}
-				}
-				if (true === $this->isDocumented) {
-					foreach (self::$config->skipDocPrefix as $prefix) {
-						if (0 === strpos($this->reflection->getName(), $prefix)) {
-							$this->isDocumented = false;
-							break;
-						}
-					}
+			$this->isDocumented = $this->reflection->isTokenized() || $this->reflection->isInternal();
+
+			if ($this->isDocumented) {
+				if (!self::$config->php && $this->reflection->isInternal()) {
+					$this->isDocumented = false;
+				} elseif (!self::$config->deprecated && $this->reflection->isDeprecated()) {
+					$this->isDocumented = false;
+				} elseif (!self::$config->internal && ($internal = $this->reflection->getAnnotation('internal')) && empty($internal[0])) {
+					$this->isDocumented = false;
 				}
 			}
 		}
+
 		return $this->isDocumented;
 	}
 
@@ -221,5 +224,79 @@ abstract class ReflectionBase
 	public function getPseudoNamespaceName()
 	{
 		return $this->reflection->isInternal() ? 'PHP' : $this->reflection->getNamespaceName() ?: 'None';
+	}
+	
+	/**
+	 * filter:
+	 * check for @api annotation
+	 * @return bool 
+	 */
+	private function filterIsApi()
+	{
+		return $this->hasAnnotation('api');
+	}
+	
+	/**
+	 * filter:
+	 * check if element is an interface
+	 * @return bool
+	 */
+	private function filterIsInterface()
+	{
+		return $this instanceof ReflectionClass && $this->isInterface();
+	}
+	
+	/**
+	 * filter:
+	 * check if element documented
+	 * @return bool
+	 */
+	private function filterIsDocumented()
+	{
+		return $this->isDocumented();
+	}
+	
+	/**
+	 * check if reflection passed all defined filters.
+	 * 
+	 * @throws Exception
+	 * @return bool true if all filters passed, otherwise false
+	 */
+	public function checkFilter()
+	{
+		$filtersPassed = true;
+		$mandatoryFilters = array('isDocumented');
+		
+		// get reflection type name
+		$matches = array();
+		preg_match('/.*Reflection(.*)/', $this->reflectionType, $matches);
+		$reflectionTypeName = '';
+		if (isset($matches[1])) {
+			$reflectionTypeName = $matches[1];
+		}
+		if (!$reflectionTypeName)
+		{
+			throw new Exception('Class "'.$this->reflectionType.'" has not a reflection class name');
+		}
+		
+		// get filter config name
+		$filterConfigName = strtolower($reflectionTypeName).'Filter';
+		$filter = self::$config->$filterConfigName;
+		$filter = array_merge($filter, $mandatoryFilters);
+		if($filter) {
+			// check all filters
+			foreach ($filter as $filterName) {
+				$filterMethodName = 'filter'.ucfirst($filterName); 
+				if (method_exists($this, $filterMethodName)) {
+					$filtersPassed = $this->$filterMethodName();
+					if (!$filtersPassed) {
+						break;
+					}
+				} else {
+					throw new Exception('Cant find filter method "'.$filterMethodName.'" in Class'.$this->reflectionType);
+				}
+			}
+		}
+		return $filtersPassed;
 	}
 }

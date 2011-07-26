@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ApiGen 2.0.2 - API documentation generator.
+ * ApiGen 2.1 dev - API documentation generator.
  *
  * Copyright (c) 2010 David Grudl (http://davidgrudl.com)
  * Copyright (c) 2011 Ondřej Nešpor (http://andrewsville.cz)
@@ -14,8 +14,8 @@
 namespace ApiGen;
 
 use Nette, FSHL;
-use TokenReflection\IReflectionProperty as ReflectionProperty, TokenReflection\IReflectionMethod as ReflectionMethod, TokenReflection\IReflectionParameter as ReflectionParameter;
-use TokenReflection\IReflectionExtension as ReflectionExtension, TokenReflection\ReflectionAnnotation;
+use TokenReflection\ReflectionAnnotation;
+use TokenReflection\IReflectionExtension as ReflectionExtension;
 
 /**
  * Customized ApiGen template class.
@@ -78,7 +78,7 @@ class Template extends Nette\Templating\FileTemplate
 
 		// FSHL
 		$fshl = new FSHL\Highlighter(new FSHL\Output\Html());
-		$fshlPhpLexer = new FSHL\Lexer\Php();
+		$fshl->setLexer(new FSHL\Lexer\Php());
 
 		// Texy
 		$this->texy = new \Texy();
@@ -90,8 +90,8 @@ class Template extends Nette\Templating\FileTemplate
 		$this->texy->linkModule->shorten = false;
 		// Highlighting <code>, <pre>
 		$this->texy->registerBlockPattern(
-			function($parser, $matches, $name) use ($fshl, $fshlPhpLexer) {
-				$content = 'code' === $matches[1] ? $fshl->highlight($fshlPhpLexer, $matches[2]) : htmlspecialchars($matches[2]);
+			function($parser, $matches, $name) use ($fshl) {
+				$content = 'code' === $matches[1] ? $fshl->highlight($matches[2]) : htmlspecialchars($matches[2]);
 				$content = $parser->getTexy()->protect($content, \Texy::CONTENT_BLOCK);
 				return \TexyHtml::el('pre', $content);
 			},
@@ -108,8 +108,8 @@ class Template extends Nette\Templating\FileTemplate
 		$this->registerHelperLoader('Nette\Templating\DefaultHelpers::loader');
 
 		// PHP source highlight
-		$this->registerHelper('highlightPHP', function($source, $context) use ($that, $fshl, $fshlPhpLexer) {
-			return $that->resolveLink($source, $context) ?: $fshl->highlight($fshlPhpLexer, (string) $source);
+		$this->registerHelper('highlightPHP', function($source, $context) use ($that, $fshl) {
+			return $that->resolveLink($source, $context) ?: $fshl->highlight((string) $source);
 		});
 		$this->registerHelper('highlightValue', function($definition, $context) use ($that) {
 			return $that->highlightPHP(preg_replace('~^(?:[ ]{4}|\t)~m', '', $definition), $context);
@@ -285,6 +285,8 @@ class Template extends Nette\Templating\FileTemplate
 			}
 			return $name;
 		});
+
+		$this->registerHelper('urlize', array($this, 'urlize'));
 	}
 
 	/**
@@ -318,7 +320,7 @@ class Template extends Nette\Templating\FileTemplate
 	 * Returns links for types.
 	 *
 	 * @param string $annotation
-	 * @param \ApiGen\ReflectionBase|\TokenReflection\IReflection $context
+	 * @param \ApiGen\ReflectionBase $context
 	 * @return string
 	 */
 	public function getTypeLinks($annotation, $context)
@@ -392,7 +394,7 @@ class Template extends Nette\Templating\FileTemplate
 	/**
 	 * Returns a link to method in class summary file.
 	 *
-	 * @param \TokenReflection\IReflectionMethod $method Method reflection
+	 * @param \ApiGen\ReflectionMethod $method Method reflection
 	 * @return string
 	 */
 	public function getMethodUrl(ReflectionMethod $method)
@@ -403,7 +405,7 @@ class Template extends Nette\Templating\FileTemplate
 	/**
 	 * Returns a link to property in class summary file.
 	 *
-	 * @param \TokenReflection\IReflectionProperty $property Property reflection
+	 * @param \ApiGen\ReflectionProperty $property Property reflection
 	 * @return string
 	 */
 	public function getPropertyUrl(ReflectionProperty $property)
@@ -441,24 +443,25 @@ class Template extends Nette\Templating\FileTemplate
 	/**
 	 * Returns a link to a element source code.
 	 *
-	 * @param \ApiGen\ReflectionBase|\TokenReflection\IReflection $element Element reflection
+	 * @param \ApiGen\ReflectionBase $element Element reflection
 	 * @param boolean $withLine Include file line number into the link
 	 * @return string
 	 */
 	public function getSourceUrl($element, $withLine = true)
 	{
-		$file = '';
-
 		if ($element instanceof ReflectionClass || $element instanceof ReflectionFunction || ($element instanceof ReflectionConstant && null === $element->getDeclaringClassName())) {
 			$elementName = $element->getName();
 
-			if ($element instanceof ReflectionFunction) {
-				$file = 'function-';
+			if ($element instanceof ReflectionClass) {
+				$file = 'class-';
 			} elseif ($element instanceof ReflectionConstant) {
 				$file = 'constant-';
+			} elseif ($element instanceof ReflectionFunction) {
+				$file = 'function-';
 			}
 		} else {
 			$elementName = $element->getDeclaringClassName();
+			$file = 'class-';
 		}
 
 		$file .= $this->urlize($elementName);
@@ -477,7 +480,7 @@ class Template extends Nette\Templating\FileTemplate
 	/**
 	 * Returns a link to a element documentation at php.net.
 	 *
-	 * @param \ApiGen\ReflectionBase|\TokenReflection\IReflection $element Element reflection
+	 * @param \ApiGen\ReflectionBase $element Element reflection
 	 * @return string
 	 */
 	public function getManualUrl($element)
@@ -600,8 +603,8 @@ class Template extends Nette\Templating\FileTemplate
 	 * Tries to parse a definition of a class/method/property/constant/function and returns the appropriate instance if successful.
 	 *
 	 * @param string $definition Definition
-	 * @param \ApiGen\ReflectionBase|\TokenReflection\IReflection $context Link context
-	 * @return \ApiGen\ReflectionBase|\TokenReflection\IReflection|null
+	 * @param \ApiGen\ReflectionBase $context Link context
+	 * @return \ApiGen\ReflectionBase|null
 	 */
 	public function resolveElement($definition, $context)
 	{
@@ -671,7 +674,7 @@ class Template extends Nette\Templating\FileTemplate
 			return $context->getMethod(substr($definition, 0, -2));
 		} elseif ($context->hasConstant($definition)) {
 			// Class constant
-			return $context->getConstantReflection($definition);
+			return $context->getConstant($definition);
 		}
 
 		return null;
@@ -681,7 +684,7 @@ class Template extends Nette\Templating\FileTemplate
 	 * Tries to parse a definition of a class/method/property/constant/function and returns the appropriate link if successful.
 	 *
 	 * @param string $definition Definition
-	 * @param \ApiGen\ReflectionBase|\TokenReflection\IReflection $context Link context
+	 * @param \ApiGen\ReflectionBase $context Link context
 	 * @return string|null
 	 */
 	public function resolveLink($definition, $context)
@@ -727,7 +730,7 @@ class Template extends Nette\Templating\FileTemplate
 	 * Resolves links in documentation.
 	 *
 	 * @param string $text Processed documentation text
-	 * @param \ApiGen\ReflectionBase|\TokenReflection\IReflection $context Reflection object
+	 * @param \ApiGen\ReflectionBase $context Reflection object
 	 * @return string
 	 */
 	private function resolveLinks($text, $context)
@@ -760,7 +763,7 @@ class Template extends Nette\Templating\FileTemplate
 	 * Formats text as documentation block or line.
 	 *
 	 * @param string $text Text
-	 * @param \ApiGen\ReflectionBase|\TokenReflection\IReflection $context Reflection object
+	 * @param \ApiGen\ReflectionBase $context Reflection object
 	 * @param boolean $block Parse text as block
 	 * @return string
 	 */
@@ -799,7 +802,7 @@ class Template extends Nette\Templating\FileTemplate
 	 * @param string $string
 	 * @return string
 	 */
-	private function urlize($string)
+	public function urlize($string)
 	{
 		return preg_replace('~[^\w]~', '.', $string);
 	}

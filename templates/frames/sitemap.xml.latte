@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<url>
+	<loc>{$config->baseUrl}/index.html</loc>
+</url>
+<url n:foreach="$packages as $package">
+	<loc>{$config->baseUrl}/{$package|packageUrl}</loc>
+</url>
+<url n:foreach="$namespaces as $namespace">
+	<loc>{$config->baseUrl}/{$namespace|namespaceUrl}</loc>
+</url>
+<url n:foreach="$classes as $class">
+	<loc>{$config->baseUrl}/{$class|classUrl}</loc>
+</url>
+<url n:foreach="$interfaces as $interface">
+	<loc>{$config->baseUrl}/{$interface|classUrl}</loc>
+</url>
+<url n:foreach="$exceptions as $exception">
+	<loc>{$config->baseUrl}/{$exception|classUrl}</loc>
+</url>
+<url n:foreach="$constants as $constant">
+	<loc>{$config->baseUrl}/{$constant|constantUrl}</loc>
+</url>
+<url n:foreach="$functions as $function">
+	<loc>{$config->baseUrl}/{$function|functionUrl}</loc>
+</url>
+</urlset>

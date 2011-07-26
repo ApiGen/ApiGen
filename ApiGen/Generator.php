@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ApiGen 2.0.2 - API documentation generator.
+ * ApiGen 2.1 dev - API documentation generator.
  *
  * Copyright (c) 2010 David Grudl (http://davidgrudl.com)
  * Copyright (c) 2011 Ondřej Nešpor (http://andrewsville.cz)
@@ -14,9 +14,7 @@
 namespace ApiGen;
 
 use Nette, FSHL;
-use TokenReflection\Broker;
-use TokenReflection\IReflectionProperty as ReflectionProperty, TokenReflection\IReflectionMethod as ReflectionMethod, TokenReflection\IReflectionParameter as ReflectionParameter;
-use TokenReflection\ReflectionAnnotation;
+use TokenReflection\Broker, TokenReflection\ReflectionAnnotation;
 
 /**
  * Generates a HTML API documentation.
@@ -39,7 +37,7 @@ class Generator extends Nette\Object
 	 *
 	 * @var string
 	 */
-	const VERSION = '2.0.2';
+	const VERSION = '2.1 dev';
 
 	/**
 	 * Configuration.
@@ -235,6 +233,12 @@ class Generator extends Nette\Object
 	 */
 	public function wipeOutDestination()
 	{
+		// Temporary directory
+		$tmpDir = $this->config->destination . '/tmp';
+		if (is_dir($tmpDir) && !$this->deleteDir($tmpDir)) {
+			return false;
+		}
+
 		// Resources
 		foreach ($this->config->resources as $resource) {
 			$path = $this->config->destination . '/' . $resource;
@@ -326,7 +330,7 @@ class Generator extends Nette\Object
 		$functions = array();
 		foreach (array('classes', 'constants', 'functions') as $type) {
 			foreach ($this->$type as $elementName => $element) {
-				if (!$element->isDocumented()) {
+				if (!$element->checkFilter()) {
 					continue;
 				}
 
@@ -537,7 +541,13 @@ class Generator extends Nette\Object
 					}
 
 					if ($element instanceof ReflectionClass) {
-						$label = 'Class %s';
+						if ($element->isInterface()) {
+							$label = 'Interface %s';
+						} elseif ($element->isException()) {
+							$label = 'Exception %s';
+						} else {
+							$label = 'Class %s';
+						}
 					} elseif ($element instanceof ReflectionMethod) {
 						$label = 'Method %s()';
 					} elseif ($element instanceof ReflectionFunction) {
@@ -574,7 +584,13 @@ class Generator extends Nette\Object
 					}
 
 					if ($parentElement instanceof ReflectionClass) {
-						$parentElementLabel = 'Class %s';
+						if ($parentElement->isInterface()) {
+							$parentElementLabel = 'Interface %s';
+						} elseif ($parentElement->isException()) {
+							$parentElementLabel = 'Exception %s';
+						} else {
+							$parentElementLabel = 'Class %s';
+						}
 					} elseif ($parentElement instanceof ReflectionConstant) {
 						$parentElementLabel = 'Constant %s';
 					} else {
@@ -830,7 +846,7 @@ class Generator extends Nette\Object
 
 			$processed = array();
 			foreach ($this->classes as $className => $reflection) {
-				if (!$reflection->isMain() || !$reflection->isDocumented() || isset($processed[$className])) {
+				if (!$reflection->isMain() || !$reflection->checkFilter() || isset($processed[$className])) {
 					continue;
 				}
 
@@ -934,9 +950,7 @@ class Generator extends Nette\Object
 		}
 		unset($template->subnamespaces);
 
-		// Generate class & interface & exception files
-		$fshl = new FSHL\Highlighter(new FSHL\Output\Html(), FSHL\Highlighter::OPTION_TAB_INDENT | FSHL\Highlighter::OPTION_LINE_COUNTER);
-		$fshlPhpLexer = new FSHL\Lexer\Php();
+		// Generate classes, interfaces, exceptions, constants and functions files
 		if (!empty($classes) || !empty($interfaces) || !empty($exceptions)) {
 			if (!isset($templates['main']['class'])) {
 				throw new Exception('Template for class is not set');
@@ -959,6 +973,9 @@ class Generator extends Nette\Object
 			$this->forceDir($destination . '/' . $templates['main']['function']['filename']);
 		}
 		if ($this->config->sourceCode) {
+			$fshl = new FSHL\Highlighter(new FSHL\Output\Html(), FSHL\Highlighter::OPTION_TAB_INDENT | FSHL\Highlighter::OPTION_LINE_COUNTER);
+			$fshl->setLexer(new FSHL\Lexer\Php());
+
 			if (!isset($templates['main']['source'])) {
 				throw new Exception('Template for source code is not set');
 			}
@@ -1047,7 +1064,7 @@ class Generator extends Nette\Object
 
 				// Generate source codes
 				if ($this->config->sourceCode && $element->isTokenized()) {
-					$template->source = $fshl->highlight($fshlPhpLexer, file_get_contents($element->getFileName()));
+					$template->source = $fshl->highlight(file_get_contents($element->getFileName()));
 					$template->setFile($templatePath . '/' . $templates['main']['source']['template'])->save($destination . '/' . $template->getSourceUrl($element, false));
 
 					$this->incrementProgressBar();
@@ -1089,8 +1106,7 @@ class Generator extends Nette\Object
 			'@c' => "\x1b[0m"
 		);
 
-		// Windows doesn't support colors
-		if ('WIN' === substr(PHP_OS, 0, 3)) {
+		if (!$this->config->colors) {
 			$placeholders = array_fill_keys(array_keys($placeholders), '');
 		}
 
