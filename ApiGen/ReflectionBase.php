@@ -238,16 +238,6 @@ abstract class ReflectionBase
 	
 	/**
 	 * filter:
-	 * check if element is an interface
-	 * @return bool
-	 */
-	private function filterIsInterface()
-	{
-		return $this instanceof ReflectionClass && $this->isInterface();
-	}
-	
-	/**
-	 * filter:
 	 * check if element documented
 	 * @return bool
 	 */

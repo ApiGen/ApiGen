@@ -676,4 +676,14 @@ class ReflectionClass extends ReflectionBase
 
 		return $this->isDocumented;
 	}
+	
+	/**
+	 * filter:
+	 * check if class is an interface
+	 * @return bool
+	 */
+	protected function filterIsInterface()
+	{
+		return $this->isInterface();
+	}
 }
