@@ -225,17 +225,27 @@ abstract class ReflectionBase
 	{
 		return $this->reflection->isInternal() ? 'PHP' : $this->reflection->getNamespaceName() ?: 'None';
 	}
-	
+
 	/**
 	 * filter:
 	 * check for @api annotation
-	 * @return bool 
+	 * @return bool
 	 */
 	private function filterIsApi()
 	{
-		return $this->hasAnnotation('api');
+		$isApi = $this->hasAnnotation('api');
+		if (!$isApi) {
+		  $implementers = $this->getIndirectImplementers();
+		  foreach($implementers as $implementer) {
+		  	$isApi = $implementer->hasAnnotation('api');
+		  	if ($isApi) {
+		  		break;
+		  	}
+		  }
+		}
+		return $isApi;
 	}
-	
+
 	/**
 	 * filter:
 	 * check if element documented
@@ -245,10 +255,10 @@ abstract class ReflectionBase
 	{
 		return $this->isDocumented();
 	}
-	
+
 	/**
 	 * check if reflection passed all defined filters.
-	 * 
+	 *
 	 * @throws Exception
 	 * @return bool true if all filters passed, otherwise false
 	 */
@@ -256,7 +266,7 @@ abstract class ReflectionBase
 	{
 		$filtersPassed = true;
 		$mandatoryFilters = array('isDocumented');
-		
+
 		// get reflection type name
 		$matches = array();
 		preg_match('/.*Reflection(.*)/', $this->reflectionType, $matches);
@@ -268,7 +278,7 @@ abstract class ReflectionBase
 		{
 			throw new Exception('Class "'.$this->reflectionType.'" has not a reflection class name');
 		}
-		
+
 		// get filter config name
 		$filterConfigName = strtolower($reflectionTypeName).'Filter';
 		$filter = self::$config->$filterConfigName;
@@ -276,7 +286,7 @@ abstract class ReflectionBase
 		if($filter) {
 			// check all filters
 			foreach ($filter as $filterName) {
-				$filterMethodName = 'filter'.ucfirst($filterName); 
+				$filterMethodName = 'filter'.ucfirst($filterName);
 				if (method_exists($this, $filterMethodName)) {
 					$filtersPassed = $this->$filterMethodName();
 					if (!$filtersPassed) {
