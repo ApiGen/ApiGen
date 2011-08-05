@@ -469,7 +469,7 @@ function getParentClassNameList(){return class_parents($this->getName());}public
 function implementsInterface($interface){if(is_object($interface)){if($interface
 instanceof InternalReflectionClass||$interface instanceof IReflectionClass){$interfaceName=$interface->getName();}else{throw
 new Exception\Runtime(sprintf('Parameter must be a string or an instance of class reflection, "%s" provided.',get_class($interface)),Exception\Runtime::INVALID_ARGUMENT);}}else{$interfaceName=$interface;}$interfaces=$this->getInterfaces();return
-isset($interfaces[$interfaceName]);}public function getInterfaces(){if(null===$this->interfaces){$broker=$this->broker;$interfaceNames=$this->getInterfaceNames();$this->interfaces=array_combine($interfaceNames,array_map(function($interfaceName)use($broker){return$broker->getClass($interfaceName);},$interfaceNames));}return$this->interfaces;}public
+isset($interfaces[$interfaceName]);}public function getInterfaces(){if(null===$this->interfaces){$broker=$this->broker;$interfaceNames=$this->getInterfaceNames();if(empty($interfaceNames)){$this->interfaces=array();}else{$this->interfaces=array_combine($interfaceNames,array_map(function($interfaceName)use($broker){return$broker->getClass($interfaceName);},$interfaceNames));}}return$this->interfaces;}public
 function getOwnInterfaces(){$parent=$this->getParentClass();return$parent?array_diff_key($this->getInterfaces(),$parent->getInterfaces()):$this->getInterfaces();}public
 function getOwnInterfaceNames(){return array_keys($this->getOwnInterfaces());}public
 function getConstructor(){return ReflectionMethod::create(parent::getConstructor(),$this->broker);}public
