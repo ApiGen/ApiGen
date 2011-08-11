@@ -330,7 +330,7 @@ class Generator extends Nette\Object
 		$functions = array();
 		foreach (array('classes', 'constants', 'functions') as $type) {
 			foreach ($this->$type as $elementName => $element) {
-				if (!$element->isDocumented()) {
+				if (!$element->checkFilter()) {
 					continue;
 				}
 
@@ -846,7 +846,7 @@ class Generator extends Nette\Object
 
 			$processed = array();
 			foreach ($this->classes as $className => $reflection) {
-				if (!$reflection->isMain() || !$reflection->isDocumented() || isset($processed[$className])) {
+				if (!$reflection->isMain() || !$reflection->checkFilter() || isset($processed[$className])) {
 					continue;
 				}
 

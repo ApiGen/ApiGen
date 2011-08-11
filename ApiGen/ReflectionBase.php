@@ -225,4 +225,78 @@ abstract class ReflectionBase
 	{
 		return $this->reflection->isInternal() ? 'PHP' : $this->reflection->getNamespaceName() ?: 'None';
 	}
+
+	/**
+	 * filter:
+	 * check for @api annotation
+	 * @return bool
+	 */
+	private function filterIsApi()
+	{
+		$isApi = $this->hasAnnotation('api');
+		if (!$isApi) {
+		  $implementers = $this->getIndirectImplementers();
+		  foreach($implementers as $implementer) {
+		  	$isApi = $implementer->hasAnnotation('api');
+		  	if ($isApi) {
+		  		break;
+		  	}
+		  }
+		}
+		return $isApi;
+	}
+
+	/**
+	 * filter:
+	 * check if element documented
+	 * @return bool
+	 */
+	private function filterIsDocumented()
+	{
+		return $this->isDocumented();
+	}
+
+	/**
+	 * check if reflection passed all defined filters.
+	 *
+	 * @throws Exception
+	 * @return bool true if all filters passed, otherwise false
+	 */
+	public function checkFilter()
+	{
+		$filtersPassed = true;
+		$mandatoryFilters = array('isDocumented');
+
+		// get reflection type name
+		$matches = array();
+		preg_match('/.*Reflection(.*)/', $this->reflectionType, $matches);
+		$reflectionTypeName = '';
+		if (isset($matches[1])) {
+			$reflectionTypeName = $matches[1];
+		}
+		if (!$reflectionTypeName)
+		{
+			throw new Exception('Class "'.$this->reflectionType.'" has not a reflection class name');
+		}
+
+		// get filter config name
+		$filterConfigName = strtolower($reflectionTypeName).'Filter';
+		$filter = self::$config->$filterConfigName;
+		$filter = array_merge($filter, $mandatoryFilters);
+		if($filter) {
+			// check all filters
+			foreach ($filter as $filterName) {
+				$filterMethodName = 'filter'.ucfirst($filterName);
+				if (method_exists($this, $filterMethodName)) {
+					$filtersPassed = $this->$filterMethodName();
+					if (!$filtersPassed) {
+						break;
+					}
+				} else {
+					throw new Exception('Cant find filter method "'.$filterMethodName.'" in Class'.$this->reflectionType);
+				}
+			}
+		}
+		return $filtersPassed;
+	}
 }

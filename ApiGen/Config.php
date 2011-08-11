@@ -65,6 +65,9 @@ class Config
 		'todo' => false,
 		'sourceCode' => true,
 		'undocumented' => '',
+		'classFilter' => array(),
+		'constantFilter' => array(),
+		'functionFilter' => array(),
 		'wipeout' => true,
 		'quiet' => false,
 		'progressbar' => true,
@@ -82,6 +85,15 @@ class Config
 		'source',
 		'destination',
 		'templateConfig'
+	);
+	
+	/**
+	 * Allowed filter options
+	 */
+	private static $allowedFilters = array(
+	  'classFilter' => array('isApi', 'isInterface'),
+	  'constantFilter' => array('isApi'),
+	  'functionFilter' => array('isApi')
 	);
 
 	/**
@@ -281,6 +293,18 @@ class Config
 				}
 			}
 		}
+		
+		// check filter config
+		foreach (self::$allowedFilters as $filterName => $filters) {
+			if (!empty($this->config[$filterName])) {
+				foreach ($this->config[$filterName] as $configFilter) {
+					if (!in_array($configFilter, $filters)) {
+						throw new Exception('Filter "'.$configFilter.'" is not allowed in '.$filterName, Exception::INVALID_CONFIG);
+					}
+				}
+			}
+		}
+		
 
 		if (empty($this->config['destination'])) {
 			throw new Exception('Destination is not set', Exception::INVALID_CONFIG);
@@ -400,7 +424,10 @@ Options:
 	@option@--deprecated@c       <@value@yes@c|@value@no@c>    Generate documentation for deprecated classes, methods, properties and constants, default "@value@no@c"
 	@option@--todo@c             <@value@yes@c|@value@no@c>    Generate documentation of tasks, default "@value@no@c"
 	@option@--source-code@c      <@value@yes@c|@value@no@c>    Generate highlighted source code files, default "@value@yes@c"
-	@option@--undocumented@c     <@value@file@c>      Save a list of undocumented classes, methods, properties and constants into a file
+	@option@--undocumented@c     <@value@file@c>      Save a list of undocumented classes, methods, properties and constants into a file      
+	@option@--class-filter@c     <@value@list@c>      document only classes which passed given filters (Allowed filters: isApi, isInterface)
+	@option@--constant-filter@c  <@value@list@c>      document only constants which passed given filters (Allowed filters: isApi)
+	@option@--function-filter@c  <@value@list@c>      document only functions which passed given filters (Allowed filters: isApi)
 	@option@--wipeout@c          <@value@yes@c|@value@no@c>    Wipe out the destination directory first, default "@value@yes@c"
 	@option@--quiet@c            <@value@yes@c|@value@no@c>    Don't display scaning and generating messages, default "@value@no@c"
 	@option@--progressbar@c      <@value@yes@c|@value@no@c>    Display progressbars, default "@value@yes@c"
