@@ -90,9 +90,10 @@ as$parent){if($parent->hasAnnotation(self::LONG_DESCRIPTION)){$this->annotations
 as$parent){if($parent->hasAnnotation(self::SHORT_DESCRIPTION)){$this->annotations[self::SHORT_DESCRIPTION]=str_ireplace('{@inheritdoc}',$parent->getAnnotation(self::SHORT_DESCRIPTION),$this->annotations[self::SHORT_DESCRIPTION]);break;}}$this->annotations[self::SHORT_DESCRIPTION]=str_ireplace('{@inheritdoc}','',$this->annotations[self::SHORT_DESCRIPTION]);}}if($this->reflection
 instanceof ReflectionProperty&&empty($this->annotations['var'])){foreach($parents
 as$parent){if($parent->hasAnnotation('var')){$this->annotations['var']=$parent->getAnnotation('var');break;}}}if($this->reflection
-instanceof ReflectionMethod&&0!==$this->reflection->getNumberOfParameters()&&(empty($this->annotations['param'])||count($this->annotations['param'])<$this->reflection->getNumberOfParameters())){$params=isset($this->annotations['param'])?$this->annotations['param']:array();foreach($parents
+instanceof ReflectionMethod){if(0!==$this->reflection->getNumberOfParameters()&&(empty($this->annotations['param'])||count($this->annotations['param'])<$this->reflection->getNumberOfParameters())){$params=isset($this->annotations['param'])?$this->annotations['param']:array();foreach($parents
 as$parent){if($parent->hasAnnotation('param')){$parentParams=array_slice($parent->getAnnotation('param'),count($params));while(!empty($parentParams)){array_push($params,array_shift($parentParams));if(count($params)===$this->reflection->getNumberOfParameters()){break
-2;}}}}if(!empty($params)){$this->annotations['param']=$params;}}}}}
+2;}}}}if(!empty($params)){$this->annotations['param']=$params;}}foreach(array('return','throws')as$paramName){if(!isset($this->annotations[$paramName])){foreach($parents
+as$parent){if($parent->hasAnnotation($paramName)){$this->annotations[$paramName]=$parent->getAnnotation($paramName);break;}}}}}}}}
 
  namespace TokenReflection{class Resolver{const CONSTANT_NOT_FOUND='~~NOT RESOLVED~~';final
 public function __construct(){throw new \LogicException('Static class cannot be instantiated.');}final
@@ -123,9 +124,9 @@ as$position=>$token){if(is_array($token)){$this->tokens[]=$token;}else{$previous
 function getFileName(){return$this->fileName;}public function getSource(){return$this->getSourcePart();}public
 function getSourcePart($start=null,$end=null){$start=(int)$start;$end=null===$end?($this->count-1):(int)$end;$source='';for($i=$start;$i<=$end;$i++){$source.=$this->tokens[$i][1];}return$source;}public
 function find($type){$actual=$this->position;while(isset($this->tokens[$this->position])){if($type===$this->tokens[$this->position][0]){return$this;}$this->position++;}$this->position=$actual;return
-false;}public function findMatchingBracket(){static$brackets=array('('=>')','{'=>'}','['=>']');if(!$this->valid()){throw
+false;}public function findMatchingBracket(){static$brackets=array('('=>')','{'=>'}','['=>']',T_CURLY_OPEN=>'}',T_DOLLAR_OPEN_CURLY_BRACES=>'}');if(!$this->valid()){throw
 new Exception\Runtime('Out of array.',Exception\Runtime::DOES_NOT_EXIST);}$position=$this->position;$bracket=$this->tokens[$this->position][0];if(!isset($brackets[$bracket])){throw
-new Exception\Runtime(sprintf('There is no usable bracket at position "%d" in file "%s".',$position,$this->fileName),Exception\Runtime::DOES_NOT_EXIST);}$searching=$brackets[$bracket];$level=0;while(isset($this->tokens[$this->position])){$type=$this->tokens[$this->position][0];if($searching===$type){$level--;}elseif($bracket===$type||($searching==='}'&&(T_CURLY_OPEN===$type||T_DOLLAR_OPEN_CURLY_BRACES===$type))){$level++;}if(0===$level){return$this;}$this->position++;}throw
+new Exception\Runtime(sprintf('There is no usable bracket at position "%d" in file "%s".',$position,$this->fileName),Exception\Runtime::DOES_NOT_EXIST);}$searching=$brackets[$bracket];$level=0;while(isset($this->tokens[$this->position])){$type=$this->tokens[$this->position][0];if($searching===$type){$level--;}elseif($bracket===$type||($searching==='}'&&('{'===$type||T_CURLY_OPEN===$type||T_DOLLAR_OPEN_CURLY_BRACES===$type))){$level++;}if(0===$level){return$this;}$this->position++;}throw
 new Exception\Runtime(sprintf('Could not find the end bracket "%s" of the bracket at position "%d" in file "%s".',$searching,$position,$this->fileName),Exception\Runtime::DOES_NOT_EXIST);}public
 function skipWhitespaces(){static$skipped=array(T_WHITESPACE=>true,T_COMMENT=>true);do{$this->position++;}while(isset($this->tokens[$this->position])&&isset($skipped[$this->tokens[$this->position][0]]));return$this;}public
 function is($type,$position=-1){return$type===$this->getType($position);}public function
@@ -729,7 +730,7 @@ function parseChildren(Stream$tokenStream,IReflection$parent){while(true){switch
 null:break 2;case T_COMMENT:case T_DOC_COMMENT:$docblock=$tokenStream->getTokenValue();if(preg_match('~^'.preg_quote(self::DOCBLOCK_TEMPLATE_START,'~').'~',$docblock)){array_unshift($this->docblockTemplates,new
 ReflectionAnnotation($this,$docblock));}elseif(self::DOCBLOCK_TEMPLATE_END===$docblock){array_shift($this->docblockTemplates);}$tokenStream->next();break;case
 '}':break 2;case T_PUBLIC:case T_PRIVATE:case T_PROTECTED:case T_STATIC:case T_VAR:case
-T_VARIABLE:static$searching=array(T_VARIABLE=>true,T_FUNCTION=>true);if(T_VAR!==$tokenStream->getType()){$position=$tokenStream->key();while(null!==($type=$tokenStream->getType($position++))&&!isset($searching[$type])){$position++;}}if(T_VARIABLE===$type||T_VAR===$type){$property=new
+T_VARIABLE:static$searching=array(T_VARIABLE=>true,T_FUNCTION=>true);if(T_VAR!==$tokenStream->getType()){$position=$tokenStream->key();while(null!==($type=$tokenStream->getType($position))&&!isset($searching[$type])){$position++;}}if(T_VARIABLE===$type||T_VAR===$type){$property=new
 ReflectionProperty($tokenStream,$this->getBroker(),$this);$this->properties[$property->getName()]=$property;$tokenStream->next();break;}case
 T_FINAL:case T_ABSTRACT:case T_FUNCTION:$method=new ReflectionMethod($tokenStream,$this->getBroker(),$this);$this->methods[$method->getName()]=$method;$tokenStream->next();break;case
 T_CONST:$tokenStream->skipWhitespaces();while($tokenStream->is(T_STRING)){$constant=new
@@ -822,11 +823,11 @@ ReflectionParameter($tokenStream,$this->getBroker(),$this);$this->parameters[]=$
 new Exception\Parse(sprintf('Could not parse function/method "%s" parameters.',$this->name),Exception\Parse::PARSE_CHILDREN_ERROR,$e);}}final
 protected function parseStaticVariables(Stream$tokenStream){try{$type=$tokenStream->getType();if('{'===$type){$tokenStream->skipWhitespaces();while('}'!==($type=$tokenStream->getType())){switch($type){case
 T_STATIC:$type=$tokenStream->skipWhitespaces()->getType();if(T_VARIABLE!==$type){break;}while(T_VARIABLE===$type){$variableName=$tokenStream->getTokenValue();$variableDefinition=array();$type=$tokenStream->skipWhitespaces()->getType();if('='===$type){$type=$tokenStream->skipWhitespaces()->getType();$level=0;while($tokenStream->valid()){switch($type){case
-'(':case '[':case '{':$level++;break;case ')':case ']':case '}':$level--;break;case
-';':case ',':if(0===$level){break 2;}}$variableDefinition[]=$tokenStream->current();$type=$tokenStream->skipWhitespaces()->getType();}if(!$tokenStream->valid()){throw
+'(':case '[':case '{':case T_CURLY_OPEN:case T_DOLLAR_OPEN_CURLY_BRACES:$level++;break;case
+')':case ']':case '}':$level--;break;case ';':case ',':if(0===$level){break 2;}}$variableDefinition[]=$tokenStream->current();$type=$tokenStream->skipWhitespaces()->getType();}if(!$tokenStream->valid()){throw
 new Exception\Parse('Invalid end of token stream.',Exception\Parse::PARSE_CHILDREN_ERROR);}}$this->staticVariablesDefinition[substr($variableName,1)]=$variableDefinition;if(','===$type){$type=$tokenStream->skipWhitespaces()->getType();}else{break;}}break;case
 T_FUNCTION:if(!$tokenStream->find('{')){throw new Exception\Parse('Could not find beginning of the anonymous function.',Exception\Parse::PARSE_CHILDREN_ERROR);}case
-'{':case '[':case '(':$tokenStream->findMatchingBracket()->skipWhitespaces();break;default:$tokenStream->skipWhitespaces();}}}elseif(';'!==$type){throw
+'{':case '[':case '(':case T_CURLY_OPEN:case T_DOLLAR_OPEN_CURLY_BRACES:$tokenStream->findMatchingBracket()->skipWhitespaces();break;default:$tokenStream->skipWhitespaces();}}}elseif(';'!==$type){throw
 new Exception\Parse(sprintf('Invalid token found: "%s".',$tokenStream->getTokenName()),Exception\Parse::PARSE_CHILDREN_ERROR);}return$this;}catch(Exception$e){throw
 new Exception\Parse(sprintf('Could not parse function/method "%s" static variables.',$this->name),Exception\Parse::PARSE_CHILDREN_ERROR,$e);}}}}
 
