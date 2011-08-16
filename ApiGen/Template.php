@@ -91,7 +91,38 @@ class Template extends Nette\Templating\FileTemplate
 		// Highlighting <code>, <pre>
 		$this->texy->registerBlockPattern(
 			function($parser, $matches, $name) use ($fshl) {
-				$content = 'code' === $matches[1] ? $fshl->highlight($matches[2]) : htmlspecialchars($matches[2]);
+				if ('code' === $matches[1]) {
+					$lines = array_filter(explode("\n", $matches[2]));
+					if (!empty($lines)) {
+						$firstLine = array_shift($lines);
+
+						$indent = '';
+						$li = 0;
+
+						while (isset($firstLine[$li]) && preg_match('~\s~', $firstLine[$li])) {
+							foreach ($lines as $line) {
+								if (!isset($line[$li]) || $firstLine[$li] !== $line[$li]) {
+									break 2;
+								}
+							}
+
+							$indent .= $firstLine[$li++];
+						}
+
+						if (!empty($indent)) {
+							$matches[2] = str_replace(
+								"\n" . $indent,
+								"\n",
+								0 === strpos($matches[2], $indent) ? substr($matches[2], $li) : $matches[2]
+							);
+						}
+					}
+
+					$content = $fshl->highlight($matches[2]);
+				} else {
+					$content = htmlspecialchars($matches[2]);
+				}
+
 				$content = $parser->getTexy()->protect($content, \Texy::CONTENT_BLOCK);
 				return \TexyHtml::el('pre', $content);
 			},
