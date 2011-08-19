@@ -1,10 +1,8 @@
 # Welcome to ApiGen #
 
-ApiGen is a fork of the original [tool](https://github.com/nette/apigen) created by [Andrewsville](https://github.com/Andrewsville) and [Kukulich](https://github.com/kukulich).
+ApiGen is the tool for creating professional API documentation from PHP source code, similar to discontinued phpDocumentor/phpDoc.
 
-When the original ApiGen was introduced, its [author](https://github.com/dg) stated that: *"This time with no technical support. There are definitely things that ApiGen does not support and that are absolutely crucial for you. And without them there is no use in trying ApiGen because other similar tools have them. If this is the case, feel free to add them."*
-
-And we did :) That is how our **ApiGen** was born. We have taken the original tool, fixed some bugs, altered some things and added many useful features.
+ApiGen has support for PHP 5.3 namespaces, packages, linking between documentation, cross referencing to PHP standard classes and general documentation and creation of highlighted source code.
 
 ## Features ##
 
@@ -78,7 +76,7 @@ Every configuration option has to be followed by its value. And it is exactly th
 
 Some options can have multiple values. To do so, you can either use them multiple times or separate their values by a comma. It means that ```--source=file1.php --source=file2.php``` and ```--source=file1.php,file2.php``` is exactly the same.
 
-### Parameter list ###
+### Options ###
 
 ```--config|-c <file>```
 
@@ -220,12 +218,9 @@ When generating documentation of large libraries (Zend Framework for example) we
 
 ## Authors ##
 
-### Original ApiGen ###
-* [David Grudl](https://github.com/dg)
-
-### New ApiGen ###
 * [Jaroslav Hanslík](https://github.com/kukulich)
 * [Ondřej Nešpor](https://github.com/Andrewsville)
+* [David Grudl](https://github.com/dg)
 
 ## Usage examples ##
 
