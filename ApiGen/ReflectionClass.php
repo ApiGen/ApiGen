@@ -407,7 +407,7 @@ class ReflectionClass extends ReflectionBase
 		$classes = self::$classes;
 		return array_map(function(IReflectionClass $class) use ($classes) {
 			return $classes[$class->getName()];
-		}, array_reverse($this->reflection->getInterfaces()));
+		}, $this->reflection->getInterfaces());
 	}
 
 	/**
