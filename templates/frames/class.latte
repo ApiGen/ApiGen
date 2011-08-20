@@ -96,11 +96,13 @@
 			{/foreach}
 		)</code>
 
+		{if $config->template['options']['elementDetailsCollapsed']}
 		<div class="short">
 			{!$method|shortDescription}
 		</div>
+		{/if}
 
-		<div class="detailed">
+		<div n:class="detailed, $config->template['options']['elementDetailsCollapsed'] ? hidden">
 			{!$method|longDescription}
 
 			{if $method->deprecated}
@@ -198,11 +200,14 @@
 		<td width="1%"><code>{!$constant->valueDefinition|highlightValue:$class}</code></td>
 		<td><div class="position">
 			<a href="#{$constant->name}" class="anchor">#</a>
+
+			{if $config->template['options']['elementDetailsCollapsed']}
 			<div class="short">
 				{!$constant|shortDescription}
 			</div>
+			{/if}
 
-			<div class="detailed">
+			<div n:class="detailed, $config->template['options']['elementDetailsCollapsed'] ? hidden">
 				{!$constant|longDescription}
 
 				{foreach $template->annotationSort($template->annotationFilter($annotations, array('var'))) as $annotation => $descriptions}
@@ -254,11 +259,13 @@
 		<td><div class="position">
 			<a href="#${$property->name}" class="anchor">#</a>
 
+			{if $config->template['options']['elementDetailsCollapsed']}
 			<div class="short">
 				{!$property|shortDescription}
 			</div>
+			{/if}
 
-			<div class="detailed">
+			<div n:class="detailed, $config->template['options']['elementDetailsCollapsed'] ? hidden">
 				{!$property|longDescription}
 
 				{foreach $template->annotationSort($template->annotationFilter($annotations, array('var'))) as $annotation => $descriptions}

@@ -320,22 +320,24 @@ $(function() {
 		}
 
 		// Delayed hover efect on summary
-		var timeout;
-		$('tr', $content).filter(':has(.detailed)')
-			.hover(function() {
-				clearTimeout(timeout);
-				var $this = $(this);
-				timeout = setTimeout(function() {
+		if (window.parent.Apigen.options.elementDetailsCollapsed) {
+			var timeout;
+			$('tr', $content).filter(':has(.detailed)')
+				.hover(function() {
+					clearTimeout(timeout);
+					var $this = $(this);
+					timeout = setTimeout(function() {
+						$('.short', $this).hide();
+						$('.detailed', $this).show();
+					}, 500);
+				}, function() {
+					clearTimeout(timeout);
+				}).click(function() { // Immediate hover effect on summary
+					clearTimeout(timeout);
+					var $this = $(this);
 					$('.short', $this).hide();
 					$('.detailed', $this).show();
-				}, 500);
-			}, function() {
-				clearTimeout(timeout);
-			}).click(function() { // Immediate hover effect on summary
-				clearTimeout(timeout);
-				var $this = $(this);
-				$('.short', $this).hide();
-				$('.detailed', $this).show();
-			});
+				});
+		}
 	}
 });

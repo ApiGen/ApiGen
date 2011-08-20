@@ -386,12 +386,12 @@ tr:hover td {
 	background: #f6f6f4;
 }
 
-.detailed {
-	display: none;
-}
-
 .detailed h4 {
 	margin-top: 5px;
+}
+
+.hidden {
+	display: none;
 }
 
 .nowrap {
