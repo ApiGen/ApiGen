@@ -242,11 +242,16 @@ class Config
 		$this->check();
 
 		// Default template config
-		$this->config['resources'] = array();
-		$this->config['templates'] = array('common' => array(), 'optional' => array());
+		$this->config['template'] = array(
+			'resources' => array(),
+			'templates' => array(
+				'common' => array(),
+				'optional' => array()
+			)
+		);
 
 		// Merge template config
-		$this->config = array_merge_recursive($this->config, Neon::decode(file_get_contents($this->config['templateConfig'])));
+		$this->config = array_merge_recursive($this->config, array('template' => Neon::decode(file_get_contents($this->config['templateConfig']))));
 
 		// Check template
 		$this->checkTemplate();
@@ -318,7 +323,7 @@ class Config
 	private function checkTemplate()
 	{
 		foreach (array('main', 'optional') as $section) {
-			foreach ($this->config['templates'][$section] as $type => $config) {
+			foreach ($this->config['template']['templates'][$section] as $type => $config) {
 				if (!isset($config['filename'])) {
 					throw new Exception(sprintf('Filename for %s is not defined', $type), Exception::INVALID_CONFIG);
 				}

@@ -240,7 +240,7 @@ class Generator extends Nette\Object
 		}
 
 		// Resources
-		foreach ($this->config->resources as $resource) {
+		foreach ($this->config->template['resources'] as $resource) {
 			$path = $this->config->destination . '/' . $resource;
 			if (is_dir($path) && !$this->deleteDir($path)) {
 				return false;
@@ -250,7 +250,7 @@ class Generator extends Nette\Object
 		}
 
 		// Common files
-		$filenames = array_keys($this->config->templates['common']);
+		$filenames = array_keys($this->config->template['templates']['common']);
 		foreach (Nette\Utils\Finder::findFiles($filenames)->from($this->config->destination) as $item) {
 			if (!@unlink($item)) {
 				return false;
@@ -258,7 +258,7 @@ class Generator extends Nette\Object
 		}
 
 		// Optional files
-		foreach ($this->config->templates['optional'] as $optional) {
+		foreach ($this->config->template['templates']['optional'] as $optional) {
 			$file = $this->config->destination . '/' . $optional['filename'];
 			if (is_file($file) && !@unlink($file)) {
 				return false;
@@ -268,7 +268,7 @@ class Generator extends Nette\Object
 		// Main files
 		$masks = array_map(function($config) {
 			return preg_replace('~%[^%]*?s~', '*', $config['filename']);
-		}, $this->config->templates['main']);
+		}, $this->config->template['templates']['main']);
 		$filter = function($item) use ($masks) {
 			foreach ($masks as $mask) {
 				if (fnmatch($mask, $item->getFilename())) {
@@ -301,11 +301,11 @@ class Generator extends Nette\Object
 		}
 
 		$destination = $this->config->destination;
-		$templates = $this->config->templates;
+		$templates = $this->config->template['templates'];
 		$templatePath = dirname($this->config->templateConfig);
 
 		// Copy resources
-		foreach ($this->config->resources as $resourceSource => $resourceDestination) {
+		foreach ($this->config->template['resources'] as $resourceSource => $resourceDestination) {
 			// File
 			$resourcePath = $templatePath . '/' . $resourceSource;
 			if (is_file($resourcePath)) {

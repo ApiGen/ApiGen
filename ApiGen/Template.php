@@ -365,7 +365,7 @@ class Template extends Nette\Templating\FileTemplate
 	 */
 	public function getNamespaceUrl($namespaceName)
 	{
-		return sprintf($this->config->templates['main']['namespace']['filename'], $this->urlize($namespaceName));
+		return sprintf($this->config->template['templates']['main']['namespace']['filename'], $this->urlize($namespaceName));
 	}
 
 	/**
@@ -376,7 +376,7 @@ class Template extends Nette\Templating\FileTemplate
 	 */
 	public function getPackageUrl($packageName)
 	{
-		return sprintf($this->config->templates['main']['package']['filename'], $this->urlize($packageName));
+		return sprintf($this->config->template['templates']['main']['package']['filename'], $this->urlize($packageName));
 	}
 
 	/**
@@ -388,7 +388,7 @@ class Template extends Nette\Templating\FileTemplate
 	public function getClassUrl($class)
 	{
 		$className = $class instanceof ReflectionClass ? $class->getName() : $class;
-		return sprintf($this->config->templates['main']['class']['filename'], $this->urlize($className));
+		return sprintf($this->config->template['templates']['main']['class']['filename'], $this->urlize($className));
 	}
 
 	/**
@@ -426,7 +426,7 @@ class Template extends Nette\Templating\FileTemplate
 			return $this->getClassUrl($constant->getDeclaringClassName()) . '#' . $constant->getName();
 		}
 		// Constant in namespace or global space
-		return sprintf($this->config->templates['main']['constant']['filename'], $this->urlize($constant->getName()));
+		return sprintf($this->config->template['templates']['main']['constant']['filename'], $this->urlize($constant->getName()));
 	}
 
 	/**
@@ -437,7 +437,7 @@ class Template extends Nette\Templating\FileTemplate
 	 */
 	public function getFunctionUrl(ReflectionFunction $function)
 	{
-		return sprintf($this->config->templates['main']['function']['filename'], $this->urlize($function->getName()));
+		return sprintf($this->config->template['templates']['main']['function']['filename'], $this->urlize($function->getName()));
 	}
 
 	/**
@@ -474,7 +474,7 @@ class Template extends Nette\Templating\FileTemplate
 			}
 		}
 
-		return sprintf($this->config->templates['main']['source']['filename'], $file) . (isset($line) ? '#' . $line : '');
+		return sprintf($this->config->template['templates']['main']['source']['filename'], $file) . (isset($line) ? '#' . $line : '');
 	}
 
 	/**

@@ -35,7 +35,7 @@ $(function() {
 	var autocompleteFound = false;
 	var $search = $('#search input[name=q]');
 	$search
-		.autocomplete(elements, {
+		.autocomplete(Apigen.elements, {
 			matchContains: true,
 			scrollHeight: 200,
 			max: 20,

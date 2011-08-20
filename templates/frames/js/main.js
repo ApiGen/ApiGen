@@ -17,7 +17,7 @@ $(function() {
 		 *
 		 * @param string page
 		 */
-		window.loadPage = function(page)
+		window.Apigen.loadPage = function(page)
 		{
 			// Change content
 			var location = window.frames['right'].location.href.split('/');
@@ -109,7 +109,7 @@ $(function() {
 		window.setInterval(function() {
 			var page = window.location.hash.substr(1);
 			if (page !== window.frames['right'].location.pathname.split('/').pop()) {
-				window.loadPage(page);
+				window.Apigen.loadPage(page);
 			}
 		}, 100);
 
@@ -216,7 +216,7 @@ $(function() {
 		// Links
 		$('a', $menu).click(function() {
 			var page = $(this).attr('href');
-			window.parent.loadPage(page);
+			window.parent.Apigen.loadPage(page);
 			window.parent.location.hash = page;
 			return false;
 		});
@@ -243,7 +243,7 @@ $(function() {
 		// Links
 		$('a:not([href*="://"])').click(function() {
 			var page = $(this).attr('href').replace(/#.*/, '');
-			window.parent.loadPage(page);
+			window.parent.Apigen.loadPage(page);
 			window.parent.location.hash = page;
 			return false;
 		});
@@ -255,7 +255,7 @@ $(function() {
 		var autocompleteFound = false;
 		var $search = $('#search input[name=q]');
 		$search
-			.autocomplete(window.parent.elements, {
+			.autocomplete(window.parent.Apigen.elements, {
 				matchContains: true,
 				scrollHeight: 200,
 				max: 20,
@@ -271,7 +271,7 @@ $(function() {
 			}).result(function(event, data) {
 				autocompleteFound = true;
 				var page = data[0] + '-' + data[1].replace(/[^\w]/g, '.') + '.html';
-				window.parent.loadPage(page);
+				window.parent.Apigen.loadPage(page);
 				window.parent.location.hash = page;
 			}).closest('form')
 				.submit(function() {
