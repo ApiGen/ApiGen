@@ -32,4 +32,15 @@ class ReflectionProperty extends ReflectionBase
 		$className = $this->reflection->getDeclaringClassName();
 		return null === $className ? null : self::$classes[$className];
 	}
+
+	/**
+	 * Returns the property declaring trait.
+	 *
+	 * @return \ApiGen\ReflectionClass|null
+	 */
+	public function getDeclaringTrait()
+	{
+		$traitName = $this->reflection->getDeclaringTraitName();
+		return null === $traitName ? null : self::$classes[$traitName];
+	}
 }

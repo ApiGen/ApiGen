@@ -395,22 +395,26 @@ class Template extends Nette\Templating\FileTemplate
 	 * Returns a link to method in class summary file.
 	 *
 	 * @param \ApiGen\ReflectionMethod $method Method reflection
+	 * @param \ApiGen\ReflectionClass $class Method declaring class
 	 * @return string
 	 */
-	public function getMethodUrl(ReflectionMethod $method)
+	public function getMethodUrl(ReflectionMethod $method, ReflectionClass $class = null)
 	{
-		return $this->getClassUrl($method->getDeclaringClassName()) . '#_' . $method->getName();
+		$className = null !== $class ? $class->getName() : $method->getDeclaringClassName();
+		return $this->getClassUrl($className) . '#_' . $method->getName();
 	}
 
 	/**
 	 * Returns a link to property in class summary file.
 	 *
 	 * @param \ApiGen\ReflectionProperty $property Property reflection
+	 * @param \ApiGen\ReflectionClass $class Property declaring class
 	 * @return string
 	 */
-	public function getPropertyUrl(ReflectionProperty $property)
+	public function getPropertyUrl(ReflectionProperty $property, ReflectionClass $class = null)
 	{
-		return $this->getClassUrl($property->getDeclaringClassName()) . '#$' . $property->getName();
+		$className = null !== $class ? $class->getName() : $property->getDeclaringClassName();
+		return $this->getClassUrl($className) . '#$' . $property->getName();
 	}
 
 	/**

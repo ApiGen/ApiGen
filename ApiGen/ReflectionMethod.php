@@ -34,6 +34,17 @@ class ReflectionMethod extends ReflectionFunctionBase
 	}
 
 	/**
+	 * Returns the method declaring trait.
+	 *
+	 * @return \ApiGen\ReflectionClass|null
+	 */
+	public function getDeclaringTrait()
+	{
+		$traitName = $this->reflection->getDeclaringTraitName();
+		return null === $traitName ? null : self::$classes[$traitName];
+	}
+
+	/**
 	 * Returns the method prototype.
 	 *
 	 * @return \Apigen\ReflectionMethod
