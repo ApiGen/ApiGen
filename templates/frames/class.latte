@@ -202,7 +202,7 @@
 	<tr>
 		<td><code>
 		{foreach $methods as $method}
-			<span n:tag-if="$method->deprecated" class="deprecated"><a href="{$method|methodUrl:$method->declaringTrait}" n:tag-if="$template->getClass($traitName)">{$method->name}()</a></span>{sep}, {/sep}
+			<span n:tag-if="$method->deprecated" class="deprecated">{if $method->originalName !== $method->name}<a href="{$method|methodUrl:$method->declaringTrait}" n:tag-if="$template->getClass($traitName)">{$method->originalName}()</a> as {$method->name}(){else}<a href="{$method|methodUrl:$method->declaringTrait}" n:tag-if="$template->getClass($traitName)">{$method->name}()</a>{/if}</span>{sep}, {/sep}
 		{/foreach}
 		</code></td>
 	</tr>
