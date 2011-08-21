@@ -829,7 +829,7 @@ T_STATIC:$type=$tokenStream->skipWhitespaces()->getType();if(T_VARIABLE!==$type)
 ')':case ']':case '}':$level--;break;case ';':case ',':if(0===$level){break 2;}}$variableDefinition[]=$tokenStream->current();$type=$tokenStream->skipWhitespaces()->getType();}if(!$tokenStream->valid()){throw
 new Exception\Parse('Invalid end of token stream.',Exception\Parse::PARSE_CHILDREN_ERROR);}}$this->staticVariablesDefinition[substr($variableName,1)]=$variableDefinition;if(','===$type){$type=$tokenStream->skipWhitespaces()->getType();}else{break;}}break;case
 T_FUNCTION:if(!$tokenStream->find('{')){throw new Exception\Parse('Could not find beginning of the anonymous function.',Exception\Parse::PARSE_CHILDREN_ERROR);}case
-'{':case '[':case '(':case T_CURLY_OPEN:case T_DOLLAR_OPEN_CURLY_BRACES:$tokenStream->findMatchingBracket()->skipWhitespaces();break;default:$tokenStream->skipWhitespaces();}}}else{$tokenStream->findMatchingBracket()->skipWhitespaces();}}elseif(';'!==$type){throw
+'{':case '[':case '(':case T_CURLY_OPEN:case T_DOLLAR_OPEN_CURLY_BRACES:$tokenStream->findMatchingBracket()->skipWhitespaces();break;default:$tokenStream->skipWhitespaces();}}}else{$tokenStream->findMatchingBracket();}}elseif(';'!==$type){throw
 new Exception\Parse(sprintf('Invalid token found: "%s".',$tokenStream->getTokenName()),Exception\Parse::PARSE_CHILDREN_ERROR);}return$this;}catch(Exception$e){throw
 new Exception\Parse(sprintf('Could not parse function/method "%s" static variables.',$this->name),Exception\Parse::PARSE_CHILDREN_ERROR,$e);}}}}
 
