@@ -175,6 +175,8 @@ code a b {
 	margin-left: 275px;
 	height: 100%;
 	position: fixed;
+	left: 0;
+	right: 0;
 }
 #rightInner {
 	max-width: 1000px;
