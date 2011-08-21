@@ -153,7 +153,7 @@ class Generator extends Nette\Object
 			$this->prepareProgressBar(array_sum($files));
 		}
 
-		$broker = new Broker(new Backend($this, !empty($this->config->undocumented)), false);
+		$broker = new Broker(new Backend($this, !empty($this->config->undocumented)), Broker::OPTION_DEFAULT & ~(Broker::OPTION_PARSE_FUNCTION_BODY | Broker::OPTION_SAVE_TOKEN_STREAM));
 
 		foreach ($files as $file => $size) {
 			$broker->processFile($file);
