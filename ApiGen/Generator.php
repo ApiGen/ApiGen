@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ApiGen 2.0.2 - API documentation generator.
+ * ApiGen 2.0.3 - API documentation generator.
  *
  * Copyright (c) 2010 David Grudl (http://davidgrudl.com)
  * Copyright (c) 2011 Ondřej Nešpor (http://andrewsville.cz)
@@ -39,7 +39,7 @@ class Generator extends Nette\Object
 	 *
 	 * @var string
 	 */
-	const VERSION = '2.0.2';
+	const VERSION = '2.0.3';
 
 	/**
 	 * Configuration.
@@ -153,7 +153,7 @@ class Generator extends Nette\Object
 			$this->prepareProgressBar(array_sum($files));
 		}
 
-		$broker = new Broker(new Backend($this, !empty($this->config->undocumented)), false);
+		$broker = new Broker(new Backend($this, !empty($this->config->undocumented)), Broker::OPTION_DEFAULT & ~(Broker::OPTION_PARSE_FUNCTION_BODY | Broker::OPTION_SAVE_TOKEN_STREAM));
 
 		foreach ($files as $file => $size) {
 			$broker->processFile($file);

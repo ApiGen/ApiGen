@@ -1,3 +1,7 @@
+## ApiGen 2.0.3 ##
+
+* @param, @return and @throw annotations are inherited
+
 ## ApiGen 2.0.2 ##
 
 * Fixed inherited methods listing
