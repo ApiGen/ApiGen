@@ -1,7 +1,7 @@
 Licenses
 ========
 
-Good news! You may use ApiGen under the terms of either
+You may use ApiGen under the terms of either
 the New BSD License or the GNU General Public License (GPL) version 2 or 3.
 
 The BSD License is recommended for most projects. It is easy to understand and it
@@ -17,9 +17,9 @@ remains intact.
 New BSD License
 ---------------
 
-Copyright (c) 2004, 2011 David Grudl (http://davidgrudl.com)
-Copyright (c) 2011 Ondřej Nešpor (http://andrewsville.cz)
-Copyright (c) 2011 Jaroslav Hanslík (http://kukulich.cz)
+(c) 2004, 2011 David Grudl (http://davidgrudl.com)
+(c) 2011 Jaroslav Hanslík (https://github.com/kukulich)
+(c) 2011 Ondřej Nešpor (https://github.com/Andrewsville)
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,
