@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ApiGen 2.0.2 - API documentation generator.
+ * ApiGen 2.0.3 - API documentation generator.
  *
  * Copyright (c) 2010 David Grudl (http://davidgrudl.com)
  * Copyright (c) 2011 Ondřej Nešpor (http://andrewsville.cz)
