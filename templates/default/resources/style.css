@@ -173,6 +173,10 @@ code a b {
 #right {
 	overflow: auto;
 	margin-left: 275px;
+	height: 100%;
+	position: fixed;
+}
+#rightInner {
 	max-width: 1000px;
 }
 
