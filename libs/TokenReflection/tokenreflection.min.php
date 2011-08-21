@@ -2,7 +2,7 @@
 /**
  * PHP Token Reflection
  *
- * Version 1.0 beta 6
+ * Version 1.0 beta 7
  *
  * LICENSE
  *
@@ -24,10 +24,12 @@ function setBroker(TokenReflection\Broker$broker);public function getBroker();pu
 function setStoringTokenStreams($store);public function getStoringTokenStreams();}}
 
  namespace TokenReflection{use TokenReflection\Broker,TokenReflection\Exception;use
-RecursiveDirectoryIterator,RecursiveIteratorIterator;class Broker{const CACHE_NAMESPACE='namespace';const
-CACHE_CLASS='class';const CACHE_CONSTANT='constant';const CACHE_FUNCTION='function';private$backend;private$cache;public
-function __construct(Broker\Backend$backend,$storingTokenStream=true){$this->cache=array(self::CACHE_NAMESPACE=>array(),self::CACHE_CLASS=>array(),self::CACHE_CONSTANT=>array(),self::CACHE_FUNCTION=>array());$this->backend=$backend->setBroker($this)->setStoringTokenStreams($storingTokenStream);}public
-function processFile($fileName,$returnReflectionFile=false){try{if($this->backend->isFileProcessed($fileName)){$tokens=$this->backend->getFileTokens($fileName);}else{$tokens=new
+RecursiveDirectoryIterator,RecursiveIteratorIterator;class Broker{const OPTION_SAVE_TOKEN_STREAM=0x0001;const
+OPTION_PARSE_FUNCTION_BODY=0x0002;const OPTION_DEFAULT=0x0003;const CACHE_NAMESPACE='namespace';const
+CACHE_CLASS='class';const CACHE_CONSTANT='constant';const CACHE_FUNCTION='function';private$backend;private$cache;private$options;public
+function __construct(Broker\Backend$backend,$options=self::OPTION_DEFAULT){$this->cache=array(self::CACHE_NAMESPACE=>array(),self::CACHE_CLASS=>array(),self::CACHE_CONSTANT=>array(),self::CACHE_FUNCTION=>array());$this->options=$options;$this->backend=$backend->setBroker($this)->setStoringTokenStreams((bool)($options&self::OPTION_SAVE_TOKEN_STREAM));}public
+function getOptions(){return$this->options;}public function isOptionSet($option){return
+(bool)($this->options&$option);}public function processFile($fileName,$returnReflectionFile=false){try{if($this->backend->isFileProcessed($fileName)){$tokens=$this->backend->getFileTokens($fileName);}else{$tokens=new
 Stream($fileName);}$reflectionFile=new ReflectionFile($tokens,$this);if(!$this->backend->isFileProcessed($fileName)){$this->backend->addFile($reflectionFile);foreach($this->cache
 as$type=>$cached){if(!empty($cached)){$this->cache[$type]=array_filter($cached,function(IReflection$reflection){return$reflection->isTokenized();});}}}return$returnReflectionFile?$reflectionFile:true;}catch(Exception$e){throw
 new Exception\Parse(sprintf('Could not process file %s.',$fileName),0,$e);}}public
@@ -120,7 +122,7 @@ Stream implements SeekableIterator,Countable,ArrayAccess,Serializable{private$fi
 function __construct($fileName){if(!extension_loaded('tokenizer')){throw new Exception\Parse('The tokenizer PHP extension is not loaded.',Exception\Parse::UNSUPPORTED);}$this->fileName=Broker::getRealPath($fileName);if(false===$this->fileName){throw
 new Exception\Parse('File does not exist.',Exception\Parse::FILE_DOES_NOT_EXIST);}$contents=file_get_contents($this->fileName);if(false===$contents){throw
 new Exception\Parse('File is not readable.',Exception\Parse::FILE_NOT_READABLE);}$stream=@token_get_all(str_replace(array("\r\n","\r"),"\n",$contents));static$checkLines=array(T_COMMENT=>true,T_WHITESPACE=>true,T_DOC_COMMENT=>true,T_INLINE_HTML=>true,T_ENCAPSED_AND_WHITESPACE=>true,T_CONSTANT_ENCAPSED_STRING=>true);foreach($stream
-as$position=>$token){if(is_array($token)){$this->tokens[]=$token;}else{$previous=$this->tokens[$position-1];$line=$previous[2];if(isset($checkLines[$previous[0]])){$line+=substr_count($previous[1],"\n");}$this->tokens[]=array($token,$token,$line);}}$this->count=count($stream);}public
+as$position=>$token){if(is_array($token)){$this->tokens[]=$token;}else{$previous=$this->tokens[$position-1];$line=$previous[2];if(isset($checkLines[$previous[0]])){$line+=substr_count($previous[1],"\n");}$this->tokens[]=array($token,$token,$line);}}$this->count=count($this->tokens);}public
 function getFileName(){return$this->fileName;}public function getSource(){return$this->getSourcePart();}public
 function getSourcePart($start=null,$end=null){$start=(int)$start;$end=null===$end?($this->count-1):(int)$end;$source='';for($i=$start;$i<=$end;$i++){$source.=$this->tokens[$i][1];}return$source;}public
 function find($type){$actual=$this->position;while(isset($this->tokens[$this->position])){if($type===$this->tokens[$this->position][0]){return$this;}$this->position++;}$this->position=$actual;return
@@ -821,13 +823,13 @@ protected function parseParameters(Stream$tokenStream){try{if(!$tokenStream->is(
 new Exception\Parse('Could find the start token.',Exception\Parse::PARSE_CHILDREN_ERROR);}static$accepted=array(T_NS_SEPARATOR=>true,T_STRING=>true,T_ARRAY=>true,T_VARIABLE=>true,'&'=>true);$tokenStream->skipWhitespaces();while(null!==($type=$tokenStream->getType())&&')'!==$type){if(isset($accepted[$type])){$parameter=new
 ReflectionParameter($tokenStream,$this->getBroker(),$this);$this->parameters[]=$parameter;}if($tokenStream->is(')')){break;}$tokenStream->skipWhitespaces();}$tokenStream->skipWhitespaces();return$this;}catch(Exception$e){throw
 new Exception\Parse(sprintf('Could not parse function/method "%s" parameters.',$this->name),Exception\Parse::PARSE_CHILDREN_ERROR,$e);}}final
-protected function parseStaticVariables(Stream$tokenStream){try{$type=$tokenStream->getType();if('{'===$type){$tokenStream->skipWhitespaces();while('}'!==($type=$tokenStream->getType())){switch($type){case
+protected function parseStaticVariables(Stream$tokenStream){try{$type=$tokenStream->getType();if('{'===$type){if($this->getBroker()->isOptionSet(Broker::OPTION_PARSE_FUNCTION_BODY)){$tokenStream->skipWhitespaces();while('}'!==($type=$tokenStream->getType())){switch($type){case
 T_STATIC:$type=$tokenStream->skipWhitespaces()->getType();if(T_VARIABLE!==$type){break;}while(T_VARIABLE===$type){$variableName=$tokenStream->getTokenValue();$variableDefinition=array();$type=$tokenStream->skipWhitespaces()->getType();if('='===$type){$type=$tokenStream->skipWhitespaces()->getType();$level=0;while($tokenStream->valid()){switch($type){case
 '(':case '[':case '{':case T_CURLY_OPEN:case T_DOLLAR_OPEN_CURLY_BRACES:$level++;break;case
 ')':case ']':case '}':$level--;break;case ';':case ',':if(0===$level){break 2;}}$variableDefinition[]=$tokenStream->current();$type=$tokenStream->skipWhitespaces()->getType();}if(!$tokenStream->valid()){throw
 new Exception\Parse('Invalid end of token stream.',Exception\Parse::PARSE_CHILDREN_ERROR);}}$this->staticVariablesDefinition[substr($variableName,1)]=$variableDefinition;if(','===$type){$type=$tokenStream->skipWhitespaces()->getType();}else{break;}}break;case
 T_FUNCTION:if(!$tokenStream->find('{')){throw new Exception\Parse('Could not find beginning of the anonymous function.',Exception\Parse::PARSE_CHILDREN_ERROR);}case
-'{':case '[':case '(':case T_CURLY_OPEN:case T_DOLLAR_OPEN_CURLY_BRACES:$tokenStream->findMatchingBracket()->skipWhitespaces();break;default:$tokenStream->skipWhitespaces();}}}elseif(';'!==$type){throw
+'{':case '[':case '(':case T_CURLY_OPEN:case T_DOLLAR_OPEN_CURLY_BRACES:$tokenStream->findMatchingBracket()->skipWhitespaces();break;default:$tokenStream->skipWhitespaces();}}}else{$tokenStream->findMatchingBracket()->skipWhitespaces();}}elseif(';'!==$type){throw
 new Exception\Parse(sprintf('Invalid token found: "%s".',$tokenStream->getTokenName()),Exception\Parse::PARSE_CHILDREN_ERROR);}return$this;}catch(Exception$e){throw
 new Exception\Parse(sprintf('Could not parse function/method "%s" static variables.',$this->name),Exception\Parse::PARSE_CHILDREN_ERROR,$e);}}}}
 
