@@ -9,4 +9,8 @@ REM For the full copyright and license information, please view
 REM the file LICENCE that was distributed with this source code.
 REM
 
-"php.exe" "%~dp0apigen.php" %*
+IF EXIST "@php_bin@" (
+	"@php_bin@" "@bin_dir@\apigen" %*
+) ELSE (
+	"php.exe" "%~dp0apigen.php" %*
+)

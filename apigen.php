@@ -16,15 +16,29 @@ namespace ApiGen;
 
 use Nette\Diagnostics\Debugger;
 
-define('ROOT_DIR', __DIR__);
-define('LIBRARY_DIR', ROOT_DIR . '/libs');
-define('TEMPLATE_DIR', ROOT_DIR . '/templates');
+// Set dirs
+define('PEAR_PHP_DIR', '@php_dir@');
+define('PEAR_DATA_DIR', '@data_dir@');
 
-require LIBRARY_DIR . '/Nette/nette.min.php';
-require LIBRARY_DIR . '/FSHL/fshl.min.php';
-require LIBRARY_DIR . '/Texy/texy.min.php';
-require LIBRARY_DIR . '/TokenReflection/tokenreflection.min.php';
+if (false === strpos(PEAR_PHP_DIR, '@php_dir')) {
+	// PEAR package
+	define('ROOT_DIR', PEAR_PHP_DIR);
+	define('TEMPLATE_DIR', PEAR_DATA_DIR . '/ApiGen/templates');
 
+	require ROOT_DIR . '/Nette/loader.php';
+	require PEAR_PHP_DIR . '/ApiGen/libs/Texy/texy.min.php';
+} else {
+	// Downloaded package
+	define('ROOT_DIR', __DIR__);
+	define('TEMPLATE_DIR', ROOT_DIR . '/templates');
+
+	require ROOT_DIR . '/libs/Nette/nette.min.php';
+	require ROOT_DIR . '/libs/FSHL/fshl.min.php';
+	require ROOT_DIR . '/libs/Texy/texy.min.php';
+	require ROOT_DIR . '/libs/TokenReflection/tokenreflection.min.php';
+}
+
+// Autoload
 spl_autoload_register(function($class) {
 	require_once sprintf('%s%s%s.php', ROOT_DIR, DIRECTORY_SEPARATOR, str_replace('\\', DIRECTORY_SEPARATOR, $class));
 });
