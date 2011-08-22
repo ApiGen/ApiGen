@@ -660,28 +660,31 @@ class ReflectionClass extends ReflectionBase
 	 */
 	public function getUsedMethods()
 	{
-		$methods = array();
-		$allMethods = array_flip(array_map(function($method) {
-			return $method->getName();
-		}, $this->getOwnMethods()));
-
-		foreach ($this->getTraits() as $trait) {
-			$usedMethods = array();
-			foreach ($trait->reflection->getMethods() as $trMethod) {
-				$methodName = $trMethod->getName();
-				if (!array_key_exists($methodName, $allMethods) && $this->hasMethod($methodName)) {
-					$usedMethods[$methodName] = $this->getMethod($methodName);
-					$allMethods[$methodName] = null;
-				}
+		$usedMethods = array();
+		foreach ($this->getMethods() as $method) {
+			if (null === $method->getDeclaringTraitName()) {
+				continue;
 			}
 
-			if (!empty($usedMethods)) {
-				ksort($usedMethods);
-				$methods[$trait->getName()] = array_values($usedMethods);
+			if (null === $method->getOriginalName() || $method->getName() === $method->getOriginalName()) {
+				$usedMethods[$method->getDeclaringTraitName()][$method->getName()]['method'] = $method;
+			} else {
+				$usedMethods[$method->getDeclaringTraitName()][$method->getOriginalName()]['aliases'][$method->getName()] = $method;
 			}
 		}
 
-		return $methods;
+		// Sort
+		array_walk($usedMethods, function(&$methods) {
+			ksort($methods);
+			array_walk($methods, function(&$aliasedMethods) {
+				if (!isset($aliasedMethods['aliases'])) {
+					$aliasedMethods['aliases'] = array();
+				}
+				ksort($aliasedMethods['aliases']);
+			});
+		});
+
+		return $usedMethods;
 	}
 
 	/**

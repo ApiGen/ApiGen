@@ -201,8 +201,8 @@
 	<caption>Methods used from <a href="{$traitName|classUrl}#methods" n:tag-if="$template->getClass($traitName)">{$traitName}</a></caption>
 	<tr>
 		<td><code>
-		{foreach $methods as $method}
-			<span n:tag-if="$method->deprecated" class="deprecated">{if $method->originalName !== $method->name}<a href="{$method|methodUrl:$method->declaringTrait}" n:tag-if="$template->getClass($traitName)">{$method->originalName}()</a> as {$method->name}(){else}<a href="{$method|methodUrl:$method->declaringTrait}" n:tag-if="$template->getClass($traitName)">{$method->name}()</a>{/if}</span>{sep}, {/sep}
+		{foreach $methods as $data}
+			<span n:tag-if="$data['method']->deprecated" class="deprecated"><a href="{$data['method']|methodUrl:$data['method']->declaringTrait}" n:tag-if="$template->getClass($traitName)">{$data['method']->name}()</a>{if $data['aliases']}(as {foreach $data['aliases'] as $alias}{$alias->name}(){sep}, {/sep}{/foreach}){/if}</span>{sep}, {/sep}
 		{/foreach}
 		</code></td>
 	</tr>

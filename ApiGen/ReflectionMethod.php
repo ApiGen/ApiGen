@@ -54,4 +54,15 @@ class ReflectionMethod extends ReflectionFunctionBase
 		$prototype = $this->reflection->getPrototype();
 		return self::$classes[$prototype->getDeclaringClassName()]->getMethod($prototype->getName());
 	}
+
+	/**
+	 * Returns the original method when importing from a trait.
+	 *
+	 * @return \ApiGen\ReflectionMethod|null
+	 */
+	public function getOriginal()
+	{
+		$originalName = $this->reflection->getOriginalName();
+		return null === $originalName ? null : self::$classes[$this->reflection->getOriginal()->getDeclaringClassName()]->getMethod($originalName);
+	}
 }
