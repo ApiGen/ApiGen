@@ -35,7 +35,7 @@ $(function() {
 	var autocompleteFound = false;
 	var $search = $('#search input[name=q]');
 	$search
-		.autocomplete(Apigen.elements, {
+		.autocomplete(ApiGen.elements, {
 			matchContains: true,
 			scrollHeight: 200,
 			max: 20,
@@ -102,7 +102,7 @@ $(function() {
 	}
 
 	// Delayed hover efect on summary
-	if (Apigen.options.elementDetailsCollapsed) {
+	if (ApiGen.options.elementDetailsCollapsed) {
 		var timeout;
 		$('tr', $content).filter(':has(.detailed)')
 			.hover(function() {
