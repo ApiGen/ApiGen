@@ -173,7 +173,7 @@ class ReflectionClass extends ReflectionBase
 	 * Returns a method reflection.
 	 *
 	 * @param string $name Method name
-	 * @return \Apigen\ReflectionMethod
+	 * @return \ApiGen\ReflectionMethod
 	 */
 	public function getMethod($name)
 	{
@@ -228,7 +228,7 @@ class ReflectionClass extends ReflectionBase
 	 * Returns a method property.
 	 *
 	 * @param string $name Method name
-	 * @return \Apigen\ReflectionProperty
+	 * @return \ApiGen\ReflectionProperty
 	 */
 	public function getProperty($name)
 	{
@@ -301,7 +301,7 @@ class ReflectionClass extends ReflectionBase
 	 * Returns a constant reflection.
 	 *
 	 * @param string $name Constant name
-	 * @return \Apigen\ReflectionConstant
+	 * @return \ApiGen\ReflectionConstant
 	 */
 	public function getConstant($name)
 	{
@@ -342,7 +342,7 @@ class ReflectionClass extends ReflectionBase
 	 * Returns a constant reflection.
 	 *
 	 * @param string $name Constant name
-	 * @return \Apigen\ReflectionConstant
+	 * @return \ApiGen\ReflectionConstant
 	 */
 	public function getOwnConstantReflection($name)
 	{
@@ -361,7 +361,7 @@ class ReflectionClass extends ReflectionBase
 	 * Returns a constant reflection.
 	 *
 	 * @param string $name Constant name
-	 * @return \Apigen\ReflectionConstant
+	 * @return \ApiGen\ReflectionConstant
 	 */
 	public function getOwnConstant($name)
 	{

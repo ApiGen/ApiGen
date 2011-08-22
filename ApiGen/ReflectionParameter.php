@@ -25,7 +25,7 @@ class ReflectionParameter extends ReflectionBase
 	/**
 	 * Returns reflection of the required class of the value.
 	 *
-	 * @return \Apigen\ReflectionClass|null
+	 * @return \ApiGen\ReflectionClass|null
 	 */
 	public function getClass()
 	{

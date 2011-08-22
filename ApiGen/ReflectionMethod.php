@@ -36,7 +36,7 @@ class ReflectionMethod extends ReflectionFunctionBase
 	/**
 	 * Returns the method prototype.
 	 *
-	 * @return \Apigen\ReflectionMethod
+	 * @return \ApiGen\ReflectionMethod
 	 */
 	public function getPrototype()
 	{
