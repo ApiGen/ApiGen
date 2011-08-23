@@ -82,7 +82,7 @@
 
 		<td><div class="position">
 		<a class="anchor" href="#_{$method->name}">#</a>
-		<code class="nowrap">
+		<code class="wrap">{block|strip}
 			{if $class->internal}
 				<a href="{$method|manualUrl}" target="_parent" title="Go to PHP documentation">{$method->name}</a>(
 			{else}
@@ -90,11 +90,11 @@
 			{/if}
 			{foreach $method->parameters as $parameter}
 				{if $parameter->array}array
-				{elseif $parameter->className}<a href="{$parameter->className|classUrl}" n:tag-if="$template->getClass($parameter->className)">{$parameter->className}</a>
+				{elseif $parameter->className}<a href="{$parameter->className|classUrl}" n:tag-if="$template->getClass($parameter->className)"><span class="nowrap">{$parameter->className}</span></a>
 				{elseif isset($annotations['param'][$parameter->position])}{!$annotations['param'][$parameter->position]|typeLinks:$parameter}{/if}
-				<var>{if $parameter->passedByReference}&amp; {/if}${$parameter->name}</var>{if $parameter->defaultValueAvailable} = {!$parameter->defaultValueDefinition|highlightPHP:$class}{/if}{sep}, {/sep}
+				<span class="nowrap"><var>{if $parameter->passedByReference}&amp; {/if}${$parameter->name}</var>{if $parameter->defaultValueAvailable} = {!$parameter->defaultValueDefinition|highlightPHP:$class}{/if}</span>{sep}, {/sep}
 			{/foreach}
-		)</code>
+		){/block}</code>
 
 		{if $config->template['options']['elementDetailsCollapsed']}
 		<div class="short">
@@ -197,7 +197,7 @@
 				<a n:tag-if="$config->sourceCode" href="{$constant|sourceUrl}" title="Go to source code"><b>{$constant->name}</b></a>
 			{/if}
 		</code></td>
-		<td width="1%"><code>{!$constant->valueDefinition|highlightValue:$class}</code></td>
+		<td><code class="wrap">{!$constant->valueDefinition|highlightValue:$class}</code></td>
 		<td><div class="position">
 			<a href="#{$constant->name}" class="anchor">#</a>
 
@@ -255,7 +255,7 @@
 				<a n:tag-if="$config->sourceCode" href="{$property|sourceUrl}" title="Go to source code"><var>${$property->name}</var></a>
 			{/if}
 		</td>
-		<td width="1%"><code>{!$property->defaultValueDefinition|highlightValue:$class}</code></td>
+		<td><code class="wrap">{!$property->defaultValueDefinition|highlightValue:$class}</code></td>
 		<td><div class="position">
 			<a href="#${$property->name}" class="anchor">#</a>
 

@@ -398,6 +398,10 @@ tr:hover td {
 	white-space: nowrap;
 }
 
+.wrap {
+	white-space: pre-wrap;
+}
+
 .deprecated {
 	opacity: .5;
 }

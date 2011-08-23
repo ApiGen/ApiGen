@@ -64,10 +64,10 @@
 		{var $count = count($constant->annotations['todo'])}
 		{if $constant->declaringClassName}
 		<td class="right nowrap" width="1%" rowspan="{$count}"><a href="{$constant->declaringClassName|classUrl}">{$constant->declaringClassName}</a></td>
-		<td width="1%" rowspan="{$count}"><code class="nowrap"><a href="{$constant|constantUrl}"><b>{$constant->name}</b></a></code></td>
+		<td width="1%" rowspan="{$count}"><code><a href="{$constant|constantUrl}"><b>{$constant->name}</b></a></code></td>
 		{else}
 		<td class="right nowrap" width="1%" rowspan="{$count}" n:if="$namespaces || $classes || $interfaces || $exceptions"><a n:if="$constant->namespaceName" href="{$constant->namespaceName|namespaceUrl}">{$constant->namespaceName}</a></td>
-		<td n:class="!$namespaces && !$classes && !$interfaces && !$exceptions ? right" width="1%" rowspan="{$count}"><code class="nowrap"><a href="{$constant|constantUrl}"><b>{$constant->shortName}</b></a></code></td>
+		<td n:class="!$namespaces && !$classes && !$interfaces && !$exceptions ? right" width="1%" rowspan="{$count}"><code><a href="{$constant|constantUrl}"><b>{$constant->shortName}</b></a></code></td>
 		{/if}
 		{foreach $constant->annotations['todo'] as $description}
 		<td>{!$description|annotation:'todo':$constant}</td>{sep}</tr><tr>{/sep}
@@ -96,7 +96,7 @@
 	<tr>
 		{var $count = count($function->annotations['todo'])}
 		<td class="right nowrap" width="1%" rowspan="{$count}" n:if="$namespaces"><a n:if="$function->namespaceName" href="{$function->namespaceName|namespaceUrl}">{$function->namespaceName}</a></td>
-		<td width="1%" rowspan="{$count}"><code class="nowrap"><a href="{$function|functionUrl}">{$function->shortName}</a></code></td>
+		<td width="1%" rowspan="{$count}"><code><a href="{$function|functionUrl}">{$function->shortName}</a></code></td>
 		{foreach $function->annotations['todo'] as $description}
 		<td>{!$description|annotation:'todo':$function}</td>{sep}</tr><tr>{/sep}
 		{/foreach}
