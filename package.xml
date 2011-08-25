@@ -52,12 +52,6 @@
 			<file name="Template.php" role="php" />
 			<file name="Tree.php" role="php" />
 		</dir>
-		<dir name="libs" baseinstalldir="ApiGen">
-			<dir name="Texy">
-				<file name="license.txt" role="doc" />
-				<file name="texy.min.php" role="php" />
-			</dir>
-		</dir>
 		<dir name="templates">
 			<dir name="default">
 				<dir name="js">
@@ -164,6 +158,10 @@
 		<package>
 			<name>Nette</name>
 			<channel>pear.nette.org</channel>
+		</package>
+		<package>
+			<name>Texy</name>
+			<channel>pear.texy.info</channel>
 		</package>
 		<package>
 			<name>FSHL</name>

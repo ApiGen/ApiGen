@@ -39,6 +39,7 @@ In order to install any PEAR package, you have to add the appropriate repository
 ```
 	pear channel-discover pear.kukulich.cz
 	pear channel-discover pear.nette.org
+	pear channel-discover pear.texy.info
 ```
 
 Theoretically you should only use one command

@@ -26,7 +26,7 @@ if (false === strpos(PEAR_PHP_DIR, '@php_dir')) {
 	define('TEMPLATE_DIR', PEAR_DATA_DIR . '/ApiGen/templates');
 
 	require ROOT_DIR . '/Nette/loader.php';
-	require PEAR_PHP_DIR . '/ApiGen/libs/Texy/texy.min.php';
+	require ROOT_DIR . '/Texy/texy.php';
 } else {
 	// Downloaded package
 	define('ROOT_DIR', __DIR__);
