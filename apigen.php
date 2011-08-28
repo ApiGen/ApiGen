@@ -22,25 +22,34 @@ define('PEAR_DATA_DIR', '@data_dir@');
 
 if (false === strpos(PEAR_PHP_DIR, '@php_dir')) {
 	// PEAR package
-	define('ROOT_DIR', PEAR_PHP_DIR);
-	define('TEMPLATE_DIR', PEAR_DATA_DIR . '/ApiGen/templates');
 
-	require ROOT_DIR . '/Nette/loader.php';
-	require ROOT_DIR . '/Texy/texy.php';
+	set_include_path(
+		PEAR_PHP_DIR . PATH_SEPARATOR .
+		get_include_path()
+	);
+
+	require PEAR_PHP_DIR . '/Nette/loader.php';
+	require PEAR_PHP_DIR . '/Texy/texy.php';
+
+	define('TEMPLATE_DIR', PEAR_DATA_DIR . '/ApiGen/templates');
 } else {
 	// Downloaded package
-	define('ROOT_DIR', __DIR__);
-	define('TEMPLATE_DIR', ROOT_DIR . '/templates');
 
-	require ROOT_DIR . '/libs/Nette/nette.min.php';
-	require ROOT_DIR . '/libs/FSHL/fshl.min.php';
-	require ROOT_DIR . '/libs/Texy/texy.min.php';
-	require ROOT_DIR . '/libs/TokenReflection/tokenreflection.min.php';
+	set_include_path(
+		__DIR__ . '/libs/FSHL' . PATH_SEPARATOR .
+		__DIR__ . '/libs/TokenReflection' . PATH_SEPARATOR .
+		get_include_path()
+	);
+
+	require __DIR__ . '/libs/Nette/Nette/loader.php';
+	require __DIR__ . '/libs/Texy/texy/texy.php';
+
+	define('TEMPLATE_DIR', __DIR__ . '/templates');
 }
 
 // Autoload
 spl_autoload_register(function($class) {
-	require_once sprintf('%s%s%s.php', ROOT_DIR, DIRECTORY_SEPARATOR, str_replace('\\', DIRECTORY_SEPARATOR, $class));
+	require sprintf('%s.php', str_replace('\\', DIRECTORY_SEPARATOR, $class));
 });
 
 try {
