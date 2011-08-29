@@ -54,6 +54,24 @@ spl_autoload_register(function($class) {
 
 try {
 
+	// Check dependencies
+	if (!class_exists('Nette\\Diagnostics\\Debugger')) {
+		echo "Required dependency missing: Nette Framework\n";
+		die(1);
+	}
+	if (!class_exists('Texy')) {
+		echo "Required dependency missing: Texy library\n";
+		die(1);
+	}
+	if (!class_exists('FSHL\\Highlighter')) {
+		echo "Required dependency missing: FSHL library\n";
+		die(1);
+	}
+	if (!class_exists('TokenReflection\\Broker')) {
+		echo "Required dependency missing: TokenReflection library\n";
+		die(1);
+	}
+
 	Debugger::$strictMode = true;
 	Debugger::enable();
 	Debugger::timer();
