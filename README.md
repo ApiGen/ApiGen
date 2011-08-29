@@ -48,10 +48,9 @@ Theoretically you should only use one command
 	pear install kukulich/ApiGen
 ```
 
-to install ApiGen, then. However things are not so easy. This would work if all required libraries were in stable versions. But they aren't. Nette, TokenReflection and FSHL are beta versions. Assuming you have your PEAR installer configured that it will not install non-stable packages (that is the default configuration), you have to explicitly enter each non-stable package you want to use. So you have to  run these commands
+to install ApiGen, then. However things are not so easy. This would work if all required libraries were in stable versions. But they aren't. Nette and TokenReflection are beta versions. Assuming you have your PEAR installer configured that it will not install non-stable packages (that is the default configuration), you have to explicitly enter each non-stable package you want to use. So you have to  run these commands
 
 ```
-	pear install kukulich/FSHL-beta
 	pear install kukulich/TokenReflection-beta
 	pear install nette/Nette-beta
 ```
