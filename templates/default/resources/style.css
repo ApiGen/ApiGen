@@ -398,6 +398,14 @@ tr:hover td {
 	text-align: right;
 }
 
+.min {
+	width: 1%;
+}
+
+.name {
+	width: 20%;
+}
+
 .position {
 	position: relative;
 	padding-right: 1em;

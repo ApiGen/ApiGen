@@ -72,7 +72,7 @@
 	<tr n:foreach="$ownMethods as $method" data-order="{$method->name}" id="_{$method->name}" n:class="$method->deprecated ? deprecated">
 		{var $annotations = $method->annotations}
 
-		<td class="right" width="1%"><code class="nowrap">
+		<td class="right min"><code class="nowrap">
 			{if $method->deprecated}deprecated{/if}
 			{if !$class->interface && $method->abstract}abstract{elseif $method->final}final{/if} {if $method->protected}protected{elseif $method->private}private{else}public{/if} {if $method->static}static{/if}
 			{ifset $annotations['return']}{!$annotations['return'][0]|typeLinks:$method}{/ifset}
@@ -186,11 +186,11 @@
 	<tr n:foreach="$ownConstants as $constant" data-order="{$constant->name}" id="{$constant->name}" n:class="$constant->deprecated ? deprecated">
 		{var $annotations = $constant->annotations}
 
-		<td class="right" width="1%"><code class="nowrap">
+		<td class="right min"><code class="nowrap">
 			{if $constant->deprecated}deprecated{/if}
 			{ifset $annotations['var']}{!$annotations['var'][0]|typeLinks:$constant}{else}{try}{$constant->value|type}{/try}{/ifset}
 		</code></td>
-		<td width="1%"><code>
+		<td class="min"><code>
 			{if $class->internal}
 				<a href="{$constant|manualUrl}" target="_parent" title="Go to PHP documentation"><b>{$constant->name}</b></a>
 			{else}
@@ -242,13 +242,13 @@
 	<tr n:foreach="$ownProperties as $property" data-order="{$property->name}" id="${$property->name}" n:class="$property->deprecated ? deprecated">
 		{var $annotations = $property->annotations}
 
-		<td class="right" width="1%"><code class="nowrap">
+		<td class="right min"><code class="nowrap">
 			{if $property->deprecated}deprecated{/if}
 			{if $property->protected}protected{elseif $property->private}private{else}public{/if} {if $property->static}static{/if}
 			{ifset $annotations['var']}{!$annotations['var'][0]|typeLinks:$property}{else}{try}{$property->defaultValue|type}{/try}{/ifset}
 		</code></td>
 
-		<td width="1%">
+		<td class="min">
 			{if $class->internal}
 				<a href="{$property|manualUrl}" target="_parent" title="Go to PHP documentation"><var>${$property->name}</var></a>
 			{else}
