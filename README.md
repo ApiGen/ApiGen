@@ -1,10 +1,8 @@
 # Welcome to ApiGen #
 
-ApiGen is a fork of the original [tool](https://github.com/nette/apigen) created by [Andrewsville](https://github.com/Andrewsville) and [Kukulich](https://github.com/kukulich).
+ApiGen is the tool for creating professional API documentation from PHP source code, similar to discontinued phpDocumentor/phpDoc.
 
-When the original ApiGen was introduced, its [author](https://github.com/dg) stated that: *"This time with no technical support. There are definitely things that ApiGen does not support and that are absolutely crucial for you. And without them there is no use in trying ApiGen because other similar tools have them. If this is the case, feel free to add them."*
-
-And we did :) That is how our **ApiGen** was born. We have taken the original tool, fixed some bugs, altered some things and added many useful features.
+ApiGen has support for PHP 5.3 namespaces, packages, linking between documentation, cross referencing to PHP standard classes and general documentation and creation of highlighted source code.
 
 ## Features ##
 
@@ -41,6 +39,7 @@ In order to install any PEAR package, you have to add the appropriate repository
 ```
 	pear channel-discover pear.kukulich.cz
 	pear channel-discover pear.nette.org
+	pear channel-discover pear.texy.info
 ```
 
 Theoretically you should only use one command
@@ -49,10 +48,9 @@ Theoretically you should only use one command
 	pear install kukulich/ApiGen
 ```
 
-to install ApiGen, then. However things are not so easy. This would work if all required libraries were in stable versions. But they aren't. Nette, TokenReflection and FSHL are beta versions. Assuming you have your PEAR installer configured that it will not install non-stable packages (that is the default configuration), you have to explicitly enter each non-stable package you want to use. So you have to  run these commands
+to install ApiGen, then. However things are not so easy. This would work if all required libraries were in stable versions. But they aren't. Nette and TokenReflection are beta versions. Assuming you have your PEAR installer configured that it will not install non-stable packages (that is the default configuration), you have to explicitly enter each non-stable package you want to use. So you have to  run these commands
 
 ```
-	pear install kukulich/FSHL-beta
 	pear install kukulich/TokenReflection-beta
 	pear install nette/Nette-beta
 ```
@@ -78,7 +76,7 @@ Every configuration option has to be followed by its value. And it is exactly th
 
 Some options can have multiple values. To do so, you can either use them multiple times or separate their values by a comma. It means that ```--source=file1.php --source=file2.php``` and ```--source=file1.php,file2.php``` is exactly the same.
 
-### Parameter list ###
+### Options ###
 
 ```--config|-c <file>```
 
@@ -220,18 +218,15 @@ When generating documentation of large libraries (Zend Framework for example) we
 
 ## Authors ##
 
-### Original ApiGen ###
-* [David Grudl](https://github.com/dg)
-
-### New ApiGen ###
 * [Jaroslav Hanslík](https://github.com/kukulich)
 * [Ondřej Nešpor](https://github.com/Andrewsville)
+* [David Grudl](https://github.com/dg)
 
 ## Usage examples ##
 
 * Jyxo PHP Libraries, both [namespaced](http://jyxo.github.com/php/) and [non-namespaced](http://jyxo.github.com/php-no-namespace/),
 * [TokenReflection library](http://andrewsville.github.com/PHP-Token-Reflection/),
-* [FSHL library](http://kukulich.github.com/fshl/),
+* [FSHL library](http://fshl.kukulich.cz/api/),
 * [Nella Framework](http://api.nella-project.org/framework/).
 
 Besides from these publicly visible examples there are companies that use ApiGen to generate their inhouse documentation: [Medio Interactive](http://www.medio.cz/), [Wikidi](http://wikidi.com/).

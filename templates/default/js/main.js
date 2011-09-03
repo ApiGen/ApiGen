@@ -35,7 +35,7 @@ $(function() {
 	var autocompleteFound = false;
 	var $search = $('#search input[name=q]');
 	$search
-		.autocomplete(elements, {
+		.autocomplete(ApiGen.elements, {
 			matchContains: true,
 			scrollHeight: 200,
 			max: 20,
@@ -102,23 +102,25 @@ $(function() {
 	}
 
 	// Delayed hover efect on summary
-	var timeout;
-	$('tr', $content).filter(':has(.detailed)')
-		.hover(function() {
-			clearTimeout(timeout);
-			var $this = $(this);
-			timeout = setTimeout(function() {
+	if (ApiGen.options.elementDetailsCollapsed) {
+		var timeout;
+		$('tr', $content).filter(':has(.detailed)')
+			.hover(function() {
+				clearTimeout(timeout);
+				var $this = $(this);
+				timeout = setTimeout(function() {
+					$('.short', $this).hide();
+					$('.detailed', $this).show();
+				}, 500);
+			}, function() {
+				clearTimeout(timeout);
+			}).click(function() { // Immediate hover effect on summary
+				clearTimeout(timeout);
+				var $this = $(this);
 				$('.short', $this).hide();
 				$('.detailed', $this).show();
-			}, 500);
-		}, function() {
-			clearTimeout(timeout);
-		}).click(function() { // Immediate hover effect on summary
-			clearTimeout(timeout);
-			var $this = $(this);
-			$('.short', $this).hide();
-			$('.detailed', $this).show();
-		});
+			});
+	}
 
 	// Splitter
 	var $document = $(document);
@@ -126,15 +128,7 @@ $(function() {
 	var $right = $('#right');
 	var $splitter = $('#splitter');
 	var splitterWidth = $splitter.width();
-	$splitter
-		.attr('unselectable', 'on')
-		.css({
-			'user-select': 'none',
-			'-moz-user-select': 'none',
-			'-ms-user-select': 'none',
-			'-webkit-user-select': 'none',
-			'-khtml-user-select': 'none'
-		}).mousedown(function() {
+	$splitter.mousedown(function() {
 			$splitter.addClass('active');
 
 			$document.mousemove(function(event) {
@@ -145,8 +139,6 @@ $(function() {
 				}
 			});
 
-			$('body', $document).css('-webkit-user-select', 'none');
-
 			$()
 				.add($splitter)
 				.add($document)
@@ -156,12 +148,12 @@ $(function() {
 							.unbind('mouseup');
 						$document
 							.unbind('mousemove')
-							.unbind('mouseup')
-							.find('body')
-								.css('-webkit-user-select', 'text');
+							.unbind('mouseup');
 
 						$.cookie('splitter', parseInt($splitter.css('left')), {expires: 365});
 					});
+
+			return false;
 		});
 	var splitterPosition = $.cookie('splitter');
 	if (null !== splitterPosition) {

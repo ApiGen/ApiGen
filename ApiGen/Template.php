@@ -1,11 +1,11 @@
 <?php
 
 /**
- * ApiGen 2.1 dev - API documentation generator.
+ * ApiGen 2.1 dev - API documentation generator for PHP 5.3+
  *
  * Copyright (c) 2010 David Grudl (http://davidgrudl.com)
- * Copyright (c) 2011 Ondřej Nešpor (http://andrewsville.cz)
- * Copyright (c) 2011 Jaroslav Hanslík (http://kukulich.cz)
+ * Copyright (c) 2011 Jaroslav Hanslík (https://github.com/kukulich)
+ * Copyright (c) 2011 Ondřej Nešpor (https://github.com/Andrewsville)
  *
  * For the full copyright and license information, please view
  * the file LICENSE that was distributed with this source code.
@@ -91,7 +91,38 @@ class Template extends Nette\Templating\FileTemplate
 		// Highlighting <code>, <pre>
 		$this->texy->registerBlockPattern(
 			function($parser, $matches, $name) use ($fshl) {
-				$content = 'code' === $matches[1] ? $fshl->highlight($matches[2]) : htmlspecialchars($matches[2]);
+				if ('code' === $matches[1]) {
+					$lines = array_filter(explode("\n", $matches[2]));
+					if (!empty($lines)) {
+						$firstLine = array_shift($lines);
+
+						$indent = '';
+						$li = 0;
+
+						while (isset($firstLine[$li]) && preg_match('~\s~', $firstLine[$li])) {
+							foreach ($lines as $line) {
+								if (!isset($line[$li]) || $firstLine[$li] !== $line[$li]) {
+									break 2;
+								}
+							}
+
+							$indent .= $firstLine[$li++];
+						}
+
+						if (!empty($indent)) {
+							$matches[2] = str_replace(
+								"\n" . $indent,
+								"\n",
+								0 === strpos($matches[2], $indent) ? substr($matches[2], $li) : $matches[2]
+							);
+						}
+					}
+
+					$content = $fshl->highlight($matches[2]);
+				} else {
+					$content = htmlspecialchars($matches[2]);
+				}
+
 				$content = $parser->getTexy()->protect($content, \Texy::CONTENT_BLOCK);
 				return \TexyHtml::el('pre', $content);
 			},
@@ -365,7 +396,7 @@ class Template extends Nette\Templating\FileTemplate
 	 */
 	public function getNamespaceUrl($namespaceName)
 	{
-		return sprintf($this->config->templates['main']['namespace']['filename'], $this->urlize($namespaceName));
+		return sprintf($this->config->template['templates']['main']['namespace']['filename'], $this->urlize($namespaceName));
 	}
 
 	/**
@@ -376,7 +407,7 @@ class Template extends Nette\Templating\FileTemplate
 	 */
 	public function getPackageUrl($packageName)
 	{
-		return sprintf($this->config->templates['main']['package']['filename'], $this->urlize($packageName));
+		return sprintf($this->config->template['templates']['main']['package']['filename'], $this->urlize($packageName));
 	}
 
 	/**
@@ -388,7 +419,7 @@ class Template extends Nette\Templating\FileTemplate
 	public function getClassUrl($class)
 	{
 		$className = $class instanceof ReflectionClass ? $class->getName() : $class;
-		return sprintf($this->config->templates['main']['class']['filename'], $this->urlize($className));
+		return sprintf($this->config->template['templates']['main']['class']['filename'], $this->urlize($className));
 	}
 
 	/**
@@ -430,7 +461,7 @@ class Template extends Nette\Templating\FileTemplate
 			return $this->getClassUrl($constant->getDeclaringClassName()) . '#' . $constant->getName();
 		}
 		// Constant in namespace or global space
-		return sprintf($this->config->templates['main']['constant']['filename'], $this->urlize($constant->getName()));
+		return sprintf($this->config->template['templates']['main']['constant']['filename'], $this->urlize($constant->getName()));
 	}
 
 	/**
@@ -441,7 +472,7 @@ class Template extends Nette\Templating\FileTemplate
 	 */
 	public function getFunctionUrl(ReflectionFunction $function)
 	{
-		return sprintf($this->config->templates['main']['function']['filename'], $this->urlize($function->getName()));
+		return sprintf($this->config->template['templates']['main']['function']['filename'], $this->urlize($function->getName()));
 	}
 
 	/**
@@ -478,7 +509,7 @@ class Template extends Nette\Templating\FileTemplate
 			}
 		}
 
-		return sprintf($this->config->templates['main']['source']['filename'], $file) . (isset($line) ? '#' . $line : '');
+		return sprintf($this->config->template['templates']['main']['source']['filename'], $file) . (isset($line) ? '#' . $line : '');
 	}
 
 	/**

@@ -43,3 +43,6 @@ templates:
 		opensearch:
 			filename: opensearch.xml
 			template: opensearch.xml.latte
+
+options:
+	elementDetailsCollapsed: Yes

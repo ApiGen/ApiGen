@@ -1,11 +1,11 @@
 <?php
 
 /**
- * ApiGen 2.1 dev - API documentation generator.
+ * ApiGen 2.1 dev - API documentation generator for PHP 5.3+
  *
  * Copyright (c) 2010 David Grudl (http://davidgrudl.com)
- * Copyright (c) 2011 Ondřej Nešpor (http://andrewsville.cz)
- * Copyright (c) 2011 Jaroslav Hanslík (http://kukulich.cz)
+ * Copyright (c) 2011 Jaroslav Hanslík (https://github.com/kukulich)
+ * Copyright (c) 2011 Ondřej Nešpor (https://github.com/Andrewsville)
  *
  * For the full copyright and license information, please view
  * the file LICENSE that was distributed with this source code.
@@ -242,11 +242,16 @@ class Config
 		$this->check();
 
 		// Default template config
-		$this->config['resources'] = array();
-		$this->config['templates'] = array('common' => array(), 'optional' => array());
+		$this->config['template'] = array(
+			'resources' => array(),
+			'templates' => array(
+				'common' => array(),
+				'optional' => array()
+			)
+		);
 
 		// Merge template config
-		$this->config = array_merge_recursive($this->config, Neon::decode(file_get_contents($this->config['templateConfig'])));
+		$this->config = array_merge_recursive($this->config, array('template' => Neon::decode(file_get_contents($this->config['templateConfig']))));
 
 		// Check template
 		$this->checkTemplate();
@@ -294,7 +299,7 @@ class Config
 			throw new Exception('Invalid base url', Exception::INVALID_CONFIG);
 		}
 
-		if (!empty($this->config['googleCseId']) && !preg_match('~^\d{21}:[a-z0-9]{11}$~', $this->config['googleCseId'])) {
+		if (!empty($this->config['googleCseId']) && !preg_match('~^\d{21}:[-a-z0-9]{11}$~', $this->config['googleCseId'])) {
 			throw new Exception('Invalid Google Custom Search ID', Exception::INVALID_CONFIG);
 		}
 
@@ -318,7 +323,7 @@ class Config
 	private function checkTemplate()
 	{
 		foreach (array('main', 'optional') as $section) {
-			foreach ($this->config['templates'][$section] as $type => $config) {
+			foreach ($this->config['template']['templates'][$section] as $type => $config) {
 				if (!isset($config['filename'])) {
 					throw new Exception(sprintf('Filename for %s is not defined', $type), Exception::INVALID_CONFIG);
 				}

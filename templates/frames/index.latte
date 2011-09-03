@@ -6,17 +6,26 @@
 
 	<title>{$config->title ?: 'Overview'}</title>
 
-	{var elementlist_js = 'elementlist.js'}
-	<script type="text/javascript" src="{$elementlist_js|staticFile}"></script>
 	{var combined_js = 'resources/combined.js'}
 	<script type="text/javascript" src="{$combined_js|staticFile}"></script>
+	{var elementlist_js = 'elementlist.js'}
+	<script type="text/javascript" src="{$elementlist_js|staticFile}"></script>
+	<script type="text/javascript">
+		var ApiGen = ApiGen || {};
+		ApiGen.options = {$config->template['options']};
+	</script>
 	{var style_css = 'resources/style.css'}
 	<link rel="stylesheet" type="text/css" media="all" href="{$style_css|staticFile}">
 	<link n:if="$config->googleCseId" rel="search" type="application/opensearchdescription+xml" title="{$config->title}" href="{$config->baseUrl}/opensearch.xml">
 </head>
 
-<frameset cols="270,*" id="main" frameborder="0" framespacing="0">
-	<frame src="menu.html" id="left" name="left" noresize="noresize" />
-	<frame src="overview.html" id="right" name="right" />
-</frameset>
+<body id="main">
+<div id="leftWrapper">
+	<iframe src="menu.html" id="left" name="left"></iframe>
+</div>
+<div id="splitter"></div>
+<div id="rightWrapper">
+	<iframe src="overview.html" id="right" name="right"></iframe>
+</div>
+</body>
 </html>

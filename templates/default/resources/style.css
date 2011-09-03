@@ -173,6 +173,12 @@ code a b {
 #right {
 	overflow: auto;
 	margin-left: 275px;
+	height: 100%;
+	position: fixed;
+	left: 0;
+	right: 0;
+}
+#rightInner {
 	max-width: 1000px;
 }
 
@@ -368,16 +374,20 @@ tr:hover td {
 	background: #f6f6f4;
 }
 
-.detailed {
-	display: none;
-}
-
 .detailed h4 {
 	margin-top: 5px;
 }
 
+.hidden {
+	display: none;
+}
+
 .nowrap {
 	white-space: nowrap;
+}
+
+.wrap {
+	white-space: pre-wrap;
 }
 
 .deprecated {
@@ -386,6 +396,14 @@ tr:hover td {
 
 .right {
 	text-align: right;
+}
+
+.min {
+	width: 1%;
+}
+
+.name {
+	width: 20%;
 }
 
 .position {

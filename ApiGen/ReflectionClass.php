@@ -1,11 +1,11 @@
 <?php
 
 /**
- * ApiGen 2.1 dev - API documentation generator.
+ * ApiGen 2.1 dev - API documentation generator for PHP 5.3+
  *
  * Copyright (c) 2010 David Grudl (http://davidgrudl.com)
- * Copyright (c) 2011 Ondřej Nešpor (http://andrewsville.cz)
- * Copyright (c) 2011 Jaroslav Hanslík (http://kukulich.cz)
+ * Copyright (c) 2011 Jaroslav Hanslík (https://github.com/kukulich)
+ * Copyright (c) 2011 Ondřej Nešpor (https://github.com/Andrewsville)
  *
  * For the full copyright and license information, please view
  * the file LICENSE that was distributed with this source code.
@@ -191,7 +191,7 @@ class ReflectionClass extends ReflectionBase
 	 * Returns a method reflection.
 	 *
 	 * @param string $name Method name
-	 * @return \Apigen\ReflectionMethod
+	 * @return \ApiGen\ReflectionMethod
 	 */
 	public function getMethod($name)
 	{
@@ -265,7 +265,7 @@ class ReflectionClass extends ReflectionBase
 	 * Returns a method property.
 	 *
 	 * @param string $name Method name
-	 * @return \Apigen\ReflectionProperty
+	 * @return \ApiGen\ReflectionProperty
 	 */
 	public function getProperty($name)
 	{
@@ -338,7 +338,7 @@ class ReflectionClass extends ReflectionBase
 	 * Returns a constant reflection.
 	 *
 	 * @param string $name Constant name
-	 * @return \Apigen\ReflectionConstant
+	 * @return \ApiGen\ReflectionConstant
 	 */
 	public function getConstant($name)
 	{
@@ -379,7 +379,7 @@ class ReflectionClass extends ReflectionBase
 	 * Returns a constant reflection.
 	 *
 	 * @param string $name Constant name
-	 * @return \Apigen\ReflectionConstant
+	 * @return \ApiGen\ReflectionConstant
 	 */
 	public function getOwnConstantReflection($name)
 	{
@@ -398,7 +398,7 @@ class ReflectionClass extends ReflectionBase
 	 * Returns a constant reflection.
 	 *
 	 * @param string $name Constant name
-	 * @return \Apigen\ReflectionConstant
+	 * @return \ApiGen\ReflectionConstant
 	 */
 	public function getOwnConstant($name)
 	{
@@ -444,7 +444,7 @@ class ReflectionClass extends ReflectionBase
 		$classes = self::$classes;
 		return array_map(function(IReflectionClass $class) use ($classes) {
 			return $classes[$class->getName()];
-		}, array_reverse($this->reflection->getInterfaces()));
+		}, $this->reflection->getInterfaces());
 	}
 
 	/**
@@ -859,7 +859,7 @@ class ReflectionClass extends ReflectionBase
 	{
 		if (null === $this->isDocumented && parent::isDocumented()) {
 			foreach (self::$config->skipDocPath as $mask) {
-				if (fnmatch($mask, $this->reflection->getFilename(), FNM_NOESCAPE | FNM_PATHNAME)) {
+				if (fnmatch($mask, $this->reflection->getFilename(), FNM_NOESCAPE)) {
 					$this->isDocumented = false;
 					break;
 				}
