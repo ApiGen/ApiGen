@@ -170,7 +170,7 @@
 		</package>
 		<package>
 			<name>TokenReflection</name>
-			<channel>pear.kukulich.cz</channel>
+			<channel>pear.andrewsville.cz</channel>
 			<min>1.0.0beta5</min>
 		</package>
 	</required>

@@ -37,9 +37,10 @@ Unlike the GitHub version that contains everything you need to use it, the PEAR 
 In order to install any PEAR package, you have to add the appropriate repository URL. The good news is that you have to do that only once. Using these two commands you add our own and Nette repository.
 
 ```
-	pear channel-discover pear.kukulich.cz
 	pear channel-discover pear.nette.org
 	pear channel-discover pear.texy.info
+	pear channel-discover pear.kukulich.cz
+	pear channel-discover pear.andrewsville.cz
 ```
 
 Theoretically you should only use one command
@@ -51,8 +52,8 @@ Theoretically you should only use one command
 to install ApiGen, then. However things are not so easy. This would work if all required libraries were in stable versions. But they aren't. Nette and TokenReflection are beta versions. Assuming you have your PEAR installer configured that it will not install non-stable packages (that is the default configuration), you have to explicitly enter each non-stable package you want to use. So you have to  run these commands
 
 ```
-	pear install kukulich/TokenReflection-beta
 	pear install nette/Nette-beta
+	pear install andrewsville/TokenReflection-beta
 ```
 
 and finally
