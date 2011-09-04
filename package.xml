@@ -166,12 +166,12 @@
 		<package>
 			<name>FSHL</name>
 			<channel>pear.kukulich.cz</channel>
-			<max>2.0.0RC</max>
+			<min>2.0.0</min>
 		</package>
 		<package>
 			<name>TokenReflection</name>
 			<channel>pear.andrewsville.cz</channel>
-			<min>1.0.0beta5</min>
+			<min>1.0.0RC1</min>
 		</package>
 	</required>
 </dependencies>
