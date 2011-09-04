@@ -1,3 +1,10 @@
+## ApiGen 2.1.0 ##
+
+* Experimental support of PHP 5.4 traits
+* Added option ```--colors```
+* Added template with frames
+* Added templates option to make element details expanded by default
+
 ## ApiGen 2.0.3 ##
 
 * @param, @return and @throw annotations are inherited
