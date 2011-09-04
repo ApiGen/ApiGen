@@ -23,10 +23,10 @@
 	<email>andrew@apigen.org</email>
 	<active>yes</active>
 </lead>
-<date>2011-07-21</date>
+<date>2011-09-04</date>
 <version>
-	<release>2.0.2</release>
-	<api>2.0.0</api>
+	<release>2.1.0</release>
+	<api>2.1.0</api>
 </version>
 <stability>
 	<release>stable</release>

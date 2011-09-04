@@ -88,7 +88,7 @@
 		<td class="min"><code><a href="{$constant|constantUrl}"><b>{$constant->name}</b></a></code></td>
 		{else}
 		<td class="right min nowrap" n:if="$namespaces || $classes || $interfaces || $exceptions"><a n:if="$constant->namespaceName" href="{$constant->namespaceName|namespaceUrl}">{$constant->namespaceName}</a></td>
-		<td n:class="!$namespaces && !$classes && !$interfaces && !$exceptions ? right min"><code><a href="{$constant|constantUrl}"><b>{$constant->shortName}</b></a></code></td>
+		<td n:class="!$namespaces && !$classes && !$interfaces && !$exceptions ? right, min"><code><a href="{$constant|constantUrl}"><b>{$constant->shortName}</b></a></code></td>
 		{/if}
 		<td>
 			{foreach $constant->annotations['deprecated'] as $description}

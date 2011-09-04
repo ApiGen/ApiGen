@@ -79,7 +79,7 @@
 		<td class="min" rowspan="{$count}"><code><a href="{$constant|constantUrl}"><b>{$constant->name}</b></a></code></td>
 		{else}
 		<td class="right min nowrap" rowspan="{$count}" n:if="$namespaces || $classes || $interfaces || $exceptions"><a n:if="$constant->namespaceName" href="{$constant->namespaceName|namespaceUrl}">{$constant->namespaceName}</a></td>
-		<td n:class="!$namespaces && !$classes && !$interfaces && !$exceptions ? right min" rowspan="{$count}"><code><a href="{$constant|constantUrl}"><b>{$constant->shortName}</b></a></code></td>
+		<td n:class="!$namespaces && !$classes && !$interfaces && !$exceptions ? right, min" rowspan="{$count}"><code><a href="{$constant|constantUrl}"><b>{$constant->shortName}</b></a></code></td>
 		{/if}
 		{foreach $constant->annotations['todo'] as $description}
 		<td>{!$description|annotation:'todo':$constant}</td>{sep}</tr><tr>{/sep}

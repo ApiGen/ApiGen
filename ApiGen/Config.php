@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ApiGen 2.1 dev - API documentation generator for PHP 5.3+
+ * ApiGen 2.1.0 - API documentation generator for PHP 5.3+
  *
  * Copyright (c) 2010 David Grudl (http://davidgrudl.com)
  * Copyright (c) 2011 Jaroslav Hanslík (https://github.com/kukulich)
@@ -127,7 +127,7 @@ class Config
 		}, $this->options);
 
 		$this->config = self::$defaultConfig;
-		$this->config['templateConfig'] = TEMPLATE_DIR . '/default/config.neon';
+		$this->config['templateConfig'] = realpath(TEMPLATE_DIR . '/default/config.neon');
 		$this->config['colors'] = 'WIN' !== substr(PHP_OS, 0, 3);
 	}
 
@@ -378,7 +378,7 @@ class Config
 	 */
 	public function getHelp()
 	{
-		return <<<'HELP'
+		return <<<"HELP"
 Usage:
 	apigen @option@--config@c <@value@path@c> [options]
 	apigen @option@--source@c <@value@dir@c|@value@file@c> @option@--destination@c <@value@dir@c> [options]
@@ -396,7 +396,7 @@ Options:
 	@option@--google-cse-id@c    <@value@value@c>     Google Custom Search ID
 	@option@--google-cse-label@c <@value@value@c>     Google Custom Search label
 	@option@--google-analytics@c <@value@value@c>     Google Analytics tracking code
-	@option@--template-config@c  <@value@file@c>      Template config file, default "@value@./templates/default/config.neon@c"
+	@option@--template-config@c  <@value@file@c>      Template config file, default "@value@{$this->config['templateConfig']}@c"
 	@option@--allowed-html@c     <@value@list@c>      List of allowed HTML tags in documentation, default "@value@b,i,a,ul,ol,li,p,br,var,samp,kbd,tt@c"
 	@option@--access-levels@c    <@value@list@c>      Generate documentation for methods and properties with given access level, default "@value@public,protected@c"
 	@option@--internal@c         <@value@yes@c|@value@no@c>    Generate documentation for elements marked as internal and display internal documentation parts, default "@value@no@c"
