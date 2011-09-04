@@ -1,7 +1,7 @@
 <?php
 
 /**
- * TR ApiGen - API documentation generator for PHP 5.3+
+ * ApiGen 2.1 dev - API documentation generator for PHP 5.3+
  *
  * Copyright (c) 2010 David Grudl (http://davidgrudl.com)
  * Copyright (c) 2011 Jaroslav Hanslík (https://github.com/kukulich)
