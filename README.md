@@ -34,9 +34,10 @@ The preferred installation way is using the PEAR package. PEAR is a distribution
 
 Unlike the GitHub version that contains everything you need to use it, the PEAR package contains only ApiGen itself. Its dependencies (Nette, Texy, FSHL and TokenReflection) have to be installed separately. But do not panic, the PEAR installer will take care of it (almost).
 
-In order to install any PEAR package, you have to add the appropriate repository URL. The good news is that you have to do that only once. Using these two commands you add our own and Nette repository.
+In order to install any PEAR package, you have to add the appropriate repository URL. The good news is that you have to do that only once. Using these commands you add all required repositories.
 
 ```
+	pear channel-discover pear.apigen.org
 	pear channel-discover pear.nette.org
 	pear channel-discover pear.texy.info
 	pear channel-discover pear.kukulich.cz
@@ -46,7 +47,7 @@ In order to install any PEAR package, you have to add the appropriate repository
 Theoretically you should only use one command
 
 ```
-	pear install kukulich/ApiGen
+	pear install apigen/ApiGen
 ```
 
 to install ApiGen, then. However things are not so easy. This would work if all required libraries were in stable versions. But they aren't. Nette and TokenReflection are beta versions. Assuming you have your PEAR installer configured that it will not install non-stable packages (that is the default configuration), you have to explicitly enter each non-stable package you want to use. So you have to  run these commands
@@ -59,10 +60,19 @@ to install ApiGen, then. However things are not so easy. This would work if all 
 and finally
 
 ```
-	pear install kukulich/ApiGen
+	pear install apigen/ApiGen
 ```
 
 When all required libraries appear in stable versions, only the last command will be required and all dependencies will be downloaded by the PEAR installer automatically.
+
+If you have have installed a version older than 2.1 using PEAR you will have to uninstall it first using these commands.
+
+```
+	pear uninstall kukulich/ApiGen
+	pear uninstall kukulich/TokenReflection
+```
+
+This is required because we have moved from a temporary PEAR repository to a definitive one. So this change will be required only if you have installed ApiGen and TokenReflection library from the ```pear.kukulich.cz``` repository.
 
 ## Usage ##
 
