@@ -1,11 +1,11 @@
 <?php
 
 /**
- * ApiGen 2.0.3 - API documentation generator.
+ * ApiGen 2.1.0 - API documentation generator for PHP 5.3+
  *
  * Copyright (c) 2010 David Grudl (http://davidgrudl.com)
- * Copyright (c) 2011 Ondřej Nešpor (http://andrewsville.cz)
- * Copyright (c) 2011 Jaroslav Hanslík (http://kukulich.cz)
+ * Copyright (c) 2011 Jaroslav Hanslík (https://github.com/kukulich)
+ * Copyright (c) 2011 Ondřej Nešpor (https://github.com/Andrewsville)
  *
  * For the full copyright and license information, please view
  * the file LICENSE that was distributed with this source code.
@@ -68,6 +68,7 @@ class Config
 		'wipeout' => true,
 		'quiet' => false,
 		'progressbar' => true,
+		'colors' => true,
 		'debug' => false
 	);
 
@@ -126,7 +127,8 @@ class Config
 		}, $this->options);
 
 		$this->config = self::$defaultConfig;
-		$this->config['templateConfig'] = TEMPLATE_DIR . '/default/config.neon';
+		$this->config['templateConfig'] = realpath(TEMPLATE_DIR . '/default/config.neon');
+		$this->config['colors'] = 'WIN' !== substr(PHP_OS, 0, 3);
 	}
 
 	/**
@@ -240,11 +242,16 @@ class Config
 		$this->check();
 
 		// Default template config
-		$this->config['resources'] = array();
-		$this->config['templates'] = array('common' => array(), 'optional' => array());
+		$this->config['template'] = array(
+			'resources' => array(),
+			'templates' => array(
+				'common' => array(),
+				'optional' => array()
+			)
+		);
 
 		// Merge template config
-		$this->config = array_merge_recursive($this->config, Neon::decode(file_get_contents($this->config['templateConfig'])));
+		$this->config = array_merge_recursive($this->config, array('template' => Neon::decode(file_get_contents($this->config['templateConfig']))));
 
 		// Check template
 		$this->checkTemplate();
@@ -316,7 +323,7 @@ class Config
 	private function checkTemplate()
 	{
 		foreach (array('main', 'optional') as $section) {
-			foreach ($this->config['templates'][$section] as $type => $config) {
+			foreach ($this->config['template']['templates'][$section] as $type => $config) {
 				if (!isset($config['filename'])) {
 					throw new Exception(sprintf('Filename for %s is not defined', $type), Exception::INVALID_CONFIG);
 				}
@@ -371,7 +378,7 @@ class Config
 	 */
 	public function getHelp()
 	{
-		return <<<'HELP'
+		return <<<"HELP"
 Usage:
 	apigen @option@--config@c <@value@path@c> [options]
 	apigen @option@--source@c <@value@dir@c|@value@file@c> @option@--destination@c <@value@dir@c> [options]
@@ -389,7 +396,7 @@ Options:
 	@option@--google-cse-id@c    <@value@value@c>     Google Custom Search ID
 	@option@--google-cse-label@c <@value@value@c>     Google Custom Search label
 	@option@--google-analytics@c <@value@value@c>     Google Analytics tracking code
-	@option@--template-config@c  <@value@file@c>      Template config file, default "@value@./templates/default/config.neon@c"
+	@option@--template-config@c  <@value@file@c>      Template config file, default "@value@{$this->config['templateConfig']}@c"
 	@option@--allowed-html@c     <@value@list@c>      List of allowed HTML tags in documentation, default "@value@b,i,a,ul,ol,li,p,br,var,samp,kbd,tt@c"
 	@option@--access-levels@c    <@value@list@c>      Generate documentation for methods and properties with given access level, default "@value@public,protected@c"
 	@option@--internal@c         <@value@yes@c|@value@no@c>    Generate documentation for elements marked as internal and display internal documentation parts, default "@value@no@c"
@@ -402,6 +409,7 @@ Options:
 	@option@--wipeout@c          <@value@yes@c|@value@no@c>    Wipe out the destination directory first, default "@value@yes@c"
 	@option@--quiet@c            <@value@yes@c|@value@no@c>    Don't display scaning and generating messages, default "@value@no@c"
 	@option@--progressbar@c      <@value@yes@c|@value@no@c>    Display progressbars, default "@value@yes@c"
+	@option@--colors@c           <@value@yes@c|@value@no@c>    Use colors, default "@value@no@c" on Windows, "@value@yes@c" on other systems
 	@option@--debug@c            <@value@yes@c|@value@no@c>    Display additional information in case of an error, default "@value@no@c"
 	@option@--help@c|@option@-h@c                      Display this help
 

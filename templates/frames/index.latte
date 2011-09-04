@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="generator" content="{$generator} {$version}">
+
+	<title>{$config->title ?: 'Overview'}</title>
+
+	{var combined_js = 'resources/combined.js'}
+	<script type="text/javascript" src="{$combined_js|staticFile}"></script>
+	{var elementlist_js = 'elementlist.js'}
+	<script type="text/javascript" src="{$elementlist_js|staticFile}"></script>
+	<script type="text/javascript">
+		var ApiGen = ApiGen || {};
+		ApiGen.options = {$config->template['options']};
+	</script>
+	{var style_css = 'resources/style.css'}
+	<link rel="stylesheet" type="text/css" media="all" href="{$style_css|staticFile}">
+	<link n:if="$config->googleCseId" rel="search" type="application/opensearchdescription+xml" title="{$config->title}" href="{$config->baseUrl}/opensearch.xml">
+</head>
+
+<body id="main">
+<div id="leftWrapper">
+	<iframe src="menu.html" id="left" name="left"></iframe>
+</div>
+<div id="splitter"></div>
+<div id="rightWrapper">
+	<iframe src="overview.html" id="right" name="right"></iframe>
+</div>
+</body>
+</html>

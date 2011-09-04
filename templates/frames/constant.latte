@@ -1,0 +1,41 @@
+{layout '@content.latte'}
+{var $active = 'constant'}
+
+{block #title}{if $constant->deprecated}Deprecated {/if}Constant {$constant->name}{/block}
+
+{block #content}
+<div id="content">
+	<h1>{if $constant->deprecated}Deprecated {/if}Constant {$constant->shortName}</h1>
+
+	<div class="description" n:if="$template->longDescription($constant)">
+	{!$constant|longDescription}
+	</div>
+
+	<div class="info">
+		{if $constant->inNamespace()}<b>Namespace:</b> {!$constant->namespaceName|namespaceLinks}<br>{/if}
+		{foreach $template->annotationSort($template->annotationFilter($constant->annotations, array('var'))) as $annotation => $values}
+			{foreach $values as $value}
+				<b>{$annotation|firstUpper}{if $value}:{/if}</b>
+				{!$value|annotation:$annotation:$constant}<br>
+			{/foreach}
+		{/foreach}
+		<b>Located at</b> <a n:tag-if="$config->sourceCode" href="{$constant|sourceUrl}" title="Go to source code">{$fileName}</a><br>
+	</div>
+
+	{var $annotations = $constant->annotations}
+
+	<table class="summary" id="vars">
+	<caption>Value summary</caption>
+	<tr>
+		<td class="right min"><code class="nowrap">
+			{ifset $annotations['var']}{!$annotations['var'][0]|typeLinks:$constant}{else}{try}{$constant->value|type}{/try}{/ifset}
+		</code></td>
+		<td>
+			{var $element = $template->resolveElement($constant->valueDefinition, $constant)}
+			{if $element}<a href="{$element|constantUrl}">{$constant->valueDefinition}</a>{else}<code class="wrap">{!$constant->valueDefinition|highlightValue:$constant}</code>{/if}
+		</td>
+		<td>{ifset $annotations['var']}{!$annotations['var'][0]|description:$constant}{/ifset}</td>
+	</tr>
+	</table>
+</div>
+{/block}

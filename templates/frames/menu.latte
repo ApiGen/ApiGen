@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="generator" content="{$generator} {$version}">
+
+	<title>Menu{if $config->title} | {$config->title}{/if}</title>
+
+	{var combined_js = 'resources/combined.js'}
+	<script type="text/javascript" src="{$combined_js|staticFile}"></script>
+	{var style_css = 'resources/style.css'}
+	<link rel="stylesheet" type="text/css" media="all" href="{$style_css|staticFile}">
+</head>
+
+<body>
+<div id="menu">
+	<a href="overview.html" target="right" title="Overview"><span>Overview</span></a>
+
+	<div id="groups">
+		{if $packages}
+		<h3>Packages</h3>
+		<ul>
+			{foreach $packages as $item}
+			<li n:class="$config->main && 0 === strpos($item, $config->main) ? main"><a href="{$item|packageUrl}" target="right" rel="{$item|urlize}">{$template->subpackageName($item) ?: $item}</a>
+				{if substr_count($iterator->nextValue, '\\') > substr_count($item, '\\')}
+					<span></span>
+					<ul>
+				{else}
+					</li>
+					{if substr_count($iterator->nextValue, '\\') < substr_count($item, '\\')}
+						{!'</ul></li>'|repeat:substr_count($item, '\\') - substr_count($iterator->nextValue, '\\')}
+					{/if}
+				{/if}
+			{/foreach}
+		</ul>
+		{/if}
+
+		{if $namespaces}
+		<h3>Namespaces</h3>
+		<ul>
+			{foreach $namespaces as $item}
+			<li n:class="$config->main && 0 === strpos($item, $config->main) ? main"><a href="{$item|namespaceUrl}" target="right" rel="{$item|urlize}">{$item|subnamespaceName}</a>
+				{if substr_count($iterator->nextValue, '\\') > substr_count($item, '\\')}
+					<span></span>
+					<ul>
+				{else}
+					</li>
+					{if substr_count($iterator->nextValue, '\\') < substr_count($item, '\\')}
+						{!'</ul></li>'|repeat:substr_count($item, '\\') - substr_count($iterator->nextValue, '\\')}
+					{/if}
+				{/if}
+			{/foreach}
+		</ul>
+		{/if}
+	</div>
+
+	<hr n:if="($packages || $namespaces) && ($classes || $interfaces || $exceptions || $constants || $functions)">
+
+	<div id="elements">
+		{if $classes}
+		<h3>Classes</h3>
+		<ul>
+			<li n:foreach="$classes as $item"><a href="{$item|classUrl}" target="right" rel="{if $namespaces}{$item->pseudoNamespaceName|urlize}{else}{$item->pseudoPackageName|urlize}{/if}">{if $namespaces && $item->namespaceName}<span>{$item->namespaceName}\</span>{$item->shortName}{else}{$item->name}{/if}</a></li>
+		</ul>
+		{/if}
+
+		{if $interfaces}
+		<h3>Interfaces</h3>
+		<ul>
+			<li n:foreach="$interfaces as $item"><a href="{$item|classUrl}" target="right" rel="{if $namespaces}{$item->pseudoNamespaceName|urlize}{else}{$item->pseudoPackageName|urlize}{/if}">{if $namespaces && $item->namespaceName}<span>{$item->namespaceName}\</span>{$item->shortName}{else}{$item->name}{/if}</a></li>
+		</ul>
+		{/if}
+
+		{if $traits}
+		<h3>Traits</h3>
+		<ul>
+			<li n:foreach="$traits as $item"><a href="{$item|classUrl}" target="right" rel="{if $namespaces}{$item->pseudoNamespaceName|urlize}{else}{$item->pseudoPackageName|urlize}{/if}">{if $namespaces && $item->namespaceName}<span>{$item->namespaceName}\</span>{$item->shortName}{else}{$item->name}{/if}</a></li>
+		</ul>
+		{/if}
+
+		{if $exceptions}
+		<h3>Exceptions</h3>
+		<ul>
+			<li n:foreach="$exceptions as $item"><a href="{$item|classUrl}" target="right" rel="{if $namespaces}{$item->pseudoNamespaceName|urlize}{else}{$item->pseudoPackageName|urlize}{/if}">{if $namespaces && $item->namespaceName}<span>{$item->namespaceName}\</span>{$item->shortName}{else}{$item->name}{/if}</a></li>
+		</ul>
+		{/if}
+
+		{if $constants}
+		<h3>Constants</h3>
+		<ul>
+			<li n:foreach="$constants as $item"><a href="{$item|constantUrl}" target="right" rel="{if $namespaces}{$item->pseudoNamespaceName|urlize}{else}{$item->pseudoPackageName|urlize}{/if}">{if $namespaces && $item->namespace}<span>{$item->namespaceName}\</span>{$item->shortName}{else}{$item->name}{/if}</a></li>
+		</ul>
+		{/if}
+
+		{if $functions}
+		<h3>Functions</h3>
+		<ul>
+			<li n:foreach="$functions as $item"><a href="{$item|functionUrl}" target="right" rel="{if $namespaces}{$item->pseudoNamespaceName|urlize}{else}{$item->pseudoPackageName|urlize}{/if}">{if $namespaces && $item->namespaceName}<span>{$item->namespaceName}\</span>{$item->shortName}{else}{$item->name}{/if}</a></li>
+		</ul>
+		{/if}
+	</div>
+</div>
+</body>
+</html>

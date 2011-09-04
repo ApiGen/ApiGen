@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0
+		http://pear.php.net/dtd/tasks-1.0.xsd
+		http://pear.php.net/dtd/package-2.0
+		http://pear.php.net/dtd/package-2.0.xsd">
+<name>ApiGen</name>
+<channel>pear.apigen.org</channel>
+<summary>API documentation generator for PHP 5.3+</summary>
+<description>
+	ApiGen is the tool for creating professional API documentation from PHP source code, similar to discontinued phpDocumentor/phpDoc.
+	ApiGen has support for PHP 5.3 namespaces, packages, linking between documentation, cross referencing to PHP standard classes and general documentation, creation of highlighted source code and experimental support for PHP 5.4 traits.
+</description>
+<lead>
+	<name>Jaroslav Hanslík</name>
+	<user>kukulich</user>
+	<email>kukulich@apigen.org</email>
+	<active>yes</active>
+</lead>
+<lead>
+	<name>Ondřej Nešpor</name>
+	<user>andrewsville</user>
+	<email>andrew@apigen.org</email>
+	<active>yes</active>
+</lead>
+<date>2011-09-04</date>
+<version>
+	<release>2.1.0</release>
+	<api>2.1.0</api>
+</version>
+<stability>
+	<release>stable</release>
+	<api>stable</api>
+</stability>
+<license uri="https://github.com/apigen/apigen/blob/master/LICENSE">New BSD, GPL v2, GPL v3</license>
+<notes>https://github.com/apigen/apigen/blob/master/CHANGELOG.md</notes>
+<contents>
+	<dir name="/">
+		<dir name="ApiGen">
+			<file name="Backend.php" role="php" />
+			<file name="Config.php" role="php" />
+			<file name="Exception.php" role="php" />
+			<file name="Generator.php" role="php" />
+			<file name="ReflectionBase.php" role="php" />
+			<file name="ReflectionClass.php" role="php" />
+			<file name="ReflectionConstant.php" role="php" />
+			<file name="ReflectionFunction.php" role="php" />
+			<file name="ReflectionFunctionBase.php" role="php" />
+			<file name="ReflectionMethod.php" role="php" />
+			<file name="ReflectionParameter.php" role="php" />
+			<file name="ReflectionProperty.php" role="php" />
+			<file name="Template.php" role="php" />
+			<file name="Tree.php" role="php" />
+		</dir>
+		<dir name="templates">
+			<dir name="default">
+				<dir name="js">
+					<file name="jquery.autocomplete.js" role="data" />
+					<file name="jquery.cookie.js" role="data" />
+					<file name="jquery.min.js" role="data" />
+					<file name="jquery.sortElements.js" role="data" />
+					<file name="main.js" role="data" />
+				</dir>
+				<dir name="resources">
+					<file name="collapsed.gif" role="data" />
+					<file name="footer.gif" role="data" />
+					<file name="inherit.gif" role="data" />
+					<file name="resize.png" role="data" />
+					<file name="sort.gif" role="data" />
+					<file name="style.css" role="data" />
+					<file name="tree-cleaner.gif" role="data" />
+					<file name="tree-hasnext.gif" role="data" />
+					<file name="tree-last.png" role="data" />
+					<file name="tree-vertical.gif" role="data" />
+				</dir>
+				<file name="@elementlist.latte" role="data" />
+				<file name="@layout.latte" role="data" />
+				<file name="class.latte" role="data" />
+				<file name="combined.js.latte" role="data" />
+				<file name="config.neon" role="data" />
+				<file name="constant.latte" role="data" />
+				<file name="deprecated.latte" role="data" />
+				<file name="elementlist.js.latte" role="data" />
+				<file name="function.latte" role="data" />
+				<file name="namespace.latte" role="data" />
+				<file name="opensearch.xml.latte" role="data" />
+				<file name="overview.latte" role="data" />
+				<file name="package.latte" role="data" />
+				<file name="sitemap.xml.latte" role="data" />
+				<file name="source.latte" role="data" />
+				<file name="todo.latte" role="data" />
+				<file name="tree.latte" role="data" />
+			</dir>
+			<dir name="frames">
+				<dir name="js">
+					<file name="jquery.autocomplete.js" role="data" />
+					<file name="jquery.cookie.js" role="data" />
+					<file name="jquery.min.js" role="data" />
+					<file name="jquery.sortElements.js" role="data" />
+					<file name="main.js" role="data" />
+				</dir>
+				<dir name="resources">
+					<file name="collapsed.gif" role="data" />
+					<file name="footer.gif" role="data" />
+					<file name="inherit.gif" role="data" />
+					<file name="resize.png" role="data" />
+					<file name="sort.gif" role="data" />
+					<file name="style.css" role="data" />
+					<file name="tree-cleaner.gif" role="data" />
+					<file name="tree-hasnext.gif" role="data" />
+					<file name="tree-last.png" role="data" />
+					<file name="tree-vertical.gif" role="data" />
+				</dir>
+				<file name="@content.latte" role="data" />
+				<file name="@elementlist.latte" role="data" />
+				<file name="class.latte" role="data" />
+				<file name="combined.js.latte" role="data" />
+				<file name="config.neon" role="data" />
+				<file name="constant.latte" role="data" />
+				<file name="deprecated.latte" role="data" />
+				<file name="elementlist.js.latte" role="data" />
+				<file name="function.latte" role="data" />
+				<file name="index.latte" role="data" />
+				<file name="menu.latte" role="data" />
+				<file name="namespace.latte" role="data" />
+				<file name="opensearch.xml.latte" role="data" />
+				<file name="overview.latte" role="data" />
+				<file name="package.latte" role="data" />
+				<file name="sitemap.xml.latte" role="data" />
+				<file name="source.latte" role="data" />
+				<file name="todo.latte" role="data" />
+				<file name="tree.latte" role="data" />
+			</dir>
+		</dir>
+		<file name="apigen.bat" role="script">
+			<tasks:replace type="pear-config" from="@php_bin@" to="php_bin" />
+			<tasks:replace type="pear-config" from="@bin_dir@" to="bin_dir" />
+		</file>
+		<file name="apigen.php" role="script">
+			<tasks:replace type="pear-config" from="/usr/bin/env php" to="php_bin" />
+			<tasks:replace type="pear-config" from="@php_dir@" to="php_dir" />
+			<tasks:replace type="pear-config" from="@data_dir@" to="data_dir" />
+		</file>
+		<file name="config.neon.example" role="cfg" />
+		<file name="CHANGELOG.md" role="doc" />
+		<file name="LICENSE" role="doc" />
+		<file name="README.md" role="doc" />
+	</dir>
+</contents>
+<dependencies>
+	<required>
+		<php>
+			<min>5.3.0</min>
+		</php>
+		<pearinstaller>
+			<min>1.4.0</min>
+		</pearinstaller>
+		<package>
+			<name>Nette</name>
+			<channel>pear.nette.org</channel>
+		</package>
+		<package>
+			<name>Texy</name>
+			<channel>pear.texy.info</channel>
+		</package>
+		<package>
+			<name>FSHL</name>
+			<channel>pear.kukulich.cz</channel>
+			<min>2.0.0</min>
+		</package>
+		<package>
+			<name>TokenReflection</name>
+			<channel>pear.andrewsville.cz</channel>
+			<min>1.0.0RC1</min>
+		</package>
+	</required>
+</dependencies>
+<phprelease>
+	<installconditions>
+		<os>
+			<name>windows</name>
+		</os>
+	</installconditions>
+	<filelist>
+		<install as="apigen" name="apigen.php" />
+		<install as="apigen.bat" name="apigen.bat" />
+	</filelist>
+</phprelease>
+<phprelease>
+	<filelist>
+		<install as="apigen" name="apigen.php" />
+		<ignore name="apigen.bat" />
+	</filelist>
+</phprelease>
+</package>

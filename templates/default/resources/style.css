@@ -1,5 +1,5 @@
 /*!
-	(c) David Grudl, Ondřej Nešpor, Jaroslav Hanslík, Martin Cohen, Jörn Zaefferer
+	(c) David Grudl, Ondřej Nešpor, Jaroslav Hanslík, Jörn Zaefferer
 */
 
 body {
@@ -69,6 +69,7 @@ a {
 	padding: 3px 1px;
 	text-decoration: none;
 }
+
 h1 a {
 	color: #1e5eb6;
 }
@@ -98,60 +99,48 @@ code a b {
 }
 
 /**
- * Splitter
- */
-.vsplitbar {
-	width: 5px;
-	background: #1e5eb6 url('resize.png') left center no-repeat;
-}
-
-.vsplitbar.active {
-	opacity: .5;
-}
-
-
-
-/**
  * Left side
  */
-#leftWrapper {
+#left {
 	overflow: auto;
-	background: #ffffff;
 	width: 270px;
 	height: 100%;
 	position: fixed;
 }
 
-#left {
+/**
+ * Menu
+ */
+#menu {
 	padding: 10px;
 }
 
-#left ul {
+#menu ul {
 	list-style: none;
 	padding: 0;
 	margin: 0;
 }
 
-#left ul ul {
+#menu ul ul {
 	padding-left: 10px;
 }
 
-#left li {
+#menu li {
 	white-space: nowrap;
 	position: relative;
 }
 
-#left .active > a, #left > span {
+#menu .active > a, #menu > span {
 	color: #333333;
 	background: none;
 	font-weight: bold;
 }
 
-#left .active > a:hover, #left .active > a:active, #left .active > a:focus {
+#menu .active > a:hover, #menu .active > a:active, #menu .active > a:focus {
 	background-color: #006aeb;
 }
 
-#left #entities span {
+#menu #groups span {
 	position: absolute;
 	top: 4px;
 	right: 0;
@@ -161,36 +150,40 @@ code a b {
 	height: 12px;
 	background: url('collapsed.gif') #ffffff 0 0 no-repeat;
 }
-#left #entities span:hover {
+
+#menu #groups span:hover {
 	background-position: -12px 0;
 }
-#left #entities span.collapsed {
+
+#menu #groups span.collapsed {
 	background-position: 0 -12px;
 }
-#left #entities span.collapsed:hover {
+
+#menu #groups span.collapsed:hover {
 	background-position: -12px -12px;
 }
 
-#left ul.collapsed {
+#menu ul.collapsed {
 	display: none;
 }
 
 /**
- *	Right side
+ * Right side
  */
-#rightWrapper {
-	overflow: auto;
-	margin-left: 270px;
-}
-
 #right {
+	overflow: auto;
+	margin-left: 275px;
+	height: 100%;
+	position: fixed;
+	left: 0;
+	right: 0;
+}
+#rightInner {
 	max-width: 1000px;
 }
 
-
-
 /**
- *	Navigation
+ * Search
  */
 #search {
 	float: right;
@@ -202,8 +195,57 @@ code a b {
 	width: 250px;
 }
 
+/**
+ * Autocomplete
+ */
+.ac_results {
+	padding: 0;
+	border: 1px solid #cccccc;
+	background-color: #ffffff;
+	overflow: hidden;
+	z-index: 99999;
+}
+
+.ac_results ul {
+	width: 100%;
+	list-style-position: outside;
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+.ac_results li {
+	margin: 0;
+	padding: 2px 5px;
+	cursor: default;
+	display: block;
+	font: 12px Trebuchet MS, "Geneva CE", lucida, sans-serif;
+	line-height: 16px;
+	overflow: hidden;
+	white-space: nowrap;
+}
+
+.ac_results li strong {
+	color: #000000;
+}
+
+.ac_odd {
+	background-color: #eeeeee;
+}
+
+.ac_over {
+	background-color: #006aeb;
+	color: #ffffff;
+}
+
+.ac_results li.ac_over strong {
+	color: #ffffff;
+}
+
+/**
+ * Navigation
+ */
 #navigation {
-	margin: 0 3px 3px 3px;
 	padding: 3px 8px;
 	background-color: #f6f6f4;
 	height: 26px;
@@ -241,10 +283,12 @@ code a b {
 	font-weight: bold;
 	padding: 0;
 }
+
 #navigation ul li span {
 	float: left;
 	padding: 0 3px;
 }
+
 #navigation ul li a:hover span, #navigation ul li a:active span, #navigation ul li a:focus span {
 	background-color: #006aeb;
 }
@@ -252,14 +296,9 @@ code a b {
 /**
  * Content
  */
-.nowrap {
-	white-space: nowrap;
-}
-
 #content {
 	clear: both;
-	padding: 5px 10px;
-	margin: 0;
+	padding: 5px 15px;
 }
 
 .description {
@@ -272,9 +311,11 @@ code a b {
 	padding: .6em;
 	background: #fcfcf7;
 }
+
 .description pre {
 	margin: .5em 0;
 }
+
 .detailed pre {
 	border: .5em solid #ecede5;
 }
@@ -291,7 +332,6 @@ dl.tree dd {
 .info {
 	margin: 1.2em 0;
 }
-
 
 .summary {
 	border: 1px solid #cccccc;
@@ -334,19 +374,36 @@ tr:hover td {
 	background: #f6f6f4;
 }
 
-.detailed {
+.detailed h4 {
+	margin-top: 5px;
+}
+
+.hidden {
 	display: none;
 }
 
-.detailed h4 {
-	margin-top: 5px;
+.nowrap {
+	white-space: nowrap;
+}
+
+.wrap {
+	white-space: pre-wrap;
 }
 
 .deprecated {
 	opacity: .5;
 }
+
 .right {
 	text-align: right;
+}
+
+.min {
+	width: 1%;
+}
+
+.name {
+	width: 20%;
 }
 
 .position {
@@ -368,8 +425,25 @@ tr:hover td {
 	margin: 0 0 5px 25px;
 }
 
+/**
+ * Splitter
+ */
+#splitter {
+	position: fixed;
+	height: 100%;
+	width: 5px;
+	left: 270px;
+	background: #1e5eb6 url('resize.png') left center no-repeat;
+	cursor: e-resize;
+}
 
+#splitter.active {
+	opacity: .5;
+}
 
+/**
+ * Footer
+ */
 #footer {
 	border-top: 1px solid #e9eeef;
 	clear: both;
@@ -382,93 +456,75 @@ tr:hover td {
 	background: #ffffff url('footer.gif') no-repeat center top;
 }
 
-.classtree ul {
+/**
+ * Tree
+ */
+div.tree ul {
 	list-style: none;
 	background: url('tree-vertical.gif') left repeat-y;
 	padding: 0;
 	margin-left: 20px;
 }
 
-.classtree li {
+div.tree li {
 	margin: 0;
 	padding: 0;
 }
 
-.classtree div {
+div.tree div {
 	padding-left: 30px;
-	background: left center no-repeat;
 }
 
-.classtree div.notlast {
-	background-image: url('tree-hasnext.gif');
+div.tree div.notlast {
+	background: url('tree-hasnext.gif') left 10px no-repeat;
 }
 
-.classtree div.last {
-	background-image: url('tree-last.png');
+div.tree div.last {
+	background: url('tree-last.png') left -240px no-repeat;
 }
 
-.classtree li.last {
-	background: url('tree-cleaner.gif') left repeat-y;
+div.tree li.last {
+	background: url('tree-cleaner.gif') left center repeat-y;
 }
 
+div.tree span.padding {
+	padding-left: 15px;
+}
 
 /**
  * Source code
  */
-.php-keyword1 { color: #e71818; font-weight: bold }
-.php-keyword2 { font-weight: bold }
-.php-var { color: #d59401; font-weight: bold }
-.php-num { color: #cd0673 }
-.php-quote { color: green }
-.php-vquote { color: #0F0; font-weight: bold }
-.php-comment { color: #929292 }
-
-.xlang { color: red; font-weight: bold }
-.l { color: silver; background-color: #ffffff }
-
-
-
-/**
- * Autocomplete
- */
-.ac_results {
-	padding: 0;
-	border: 1px solid #cccccc;
-	background-color: #ffffff;
-	overflow: hidden;
-	z-index: 99999;
+.php-keyword1 {
+	color: #e71818;
+	font-weight: bold;
 }
 
-.ac_results ul {
-	width: 100%;
-	list-style-position: outside;
-	list-style: none;
-	padding: 0;
-	margin: 0;
+.php-keyword2 {
+	font-weight: bold;
 }
 
-.ac_results li {
-	margin: 0;
-	padding: 2px 5px;
-	cursor: default;
-	display: block;
-	font: 12px Trebuchet MS, "Geneva CE", lucida, sans-serif;
-	line-height: 16px;
-	overflow: hidden;
-	white-space: nowrap;
-}
-.ac_results li strong {
-	color: #000000;
+.php-var {
+	color: #d59401;
+	font-weight: bold;
 }
 
-.ac_odd {
-	background-color: #eeeeee;
+.php-num {
+	color: #cd0673;
 }
 
-.ac_over {
-	background-color: #006aeb;
-	color: #ffffff;
+.php-quote {
+	color: #008000;
 }
-.ac_results li.ac_over strong {
-	color: #ffffff;
+
+.php-comment {
+	color: #929292;
+}
+
+.xlang {
+	color: #ff0000;
+	font-weight: bold;
+}
+
+.l {
+	color: #c0c0c0;
 }

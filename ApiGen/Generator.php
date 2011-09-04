@@ -1,11 +1,11 @@
 <?php
 
 /**
- * ApiGen 2.0.3 - API documentation generator.
+ * ApiGen 2.1.0 - API documentation generator for PHP 5.3+
  *
  * Copyright (c) 2010 David Grudl (http://davidgrudl.com)
- * Copyright (c) 2011 Ondřej Nešpor (http://andrewsville.cz)
- * Copyright (c) 2011 Jaroslav Hanslík (http://kukulich.cz)
+ * Copyright (c) 2011 Jaroslav Hanslík (https://github.com/kukulich)
+ * Copyright (c) 2011 Ondřej Nešpor (https://github.com/Andrewsville)
  *
  * For the full copyright and license information, please view
  * the file LICENSE that was distributed with this source code.
@@ -14,9 +14,7 @@
 namespace ApiGen;
 
 use Nette, FSHL;
-use TokenReflection\Broker;
-use TokenReflection\IReflectionProperty as ReflectionProperty, TokenReflection\IReflectionMethod as ReflectionMethod, TokenReflection\IReflectionParameter as ReflectionParameter;
-use TokenReflection\ReflectionAnnotation;
+use TokenReflection\Broker, TokenReflection\ReflectionAnnotation;
 
 /**
  * Generates a HTML API documentation.
@@ -39,7 +37,7 @@ class Generator extends Nette\Object
 	 *
 	 * @var string
 	 */
-	const VERSION = '2.0.3';
+	const VERSION = '2.1.0';
 
 	/**
 	 * Configuration.
@@ -235,8 +233,14 @@ class Generator extends Nette\Object
 	 */
 	public function wipeOutDestination()
 	{
+		// Temporary directory
+		$tmpDir = $this->config->destination . '/tmp';
+		if (is_dir($tmpDir) && !$this->deleteDir($tmpDir)) {
+			return false;
+		}
+
 		// Resources
-		foreach ($this->config->resources as $resource) {
+		foreach ($this->config->template['resources'] as $resource) {
 			$path = $this->config->destination . '/' . $resource;
 			if (is_dir($path) && !$this->deleteDir($path)) {
 				return false;
@@ -246,7 +250,7 @@ class Generator extends Nette\Object
 		}
 
 		// Common files
-		$filenames = array_keys($this->config->templates['common']);
+		$filenames = array_keys($this->config->template['templates']['common']);
 		foreach (Nette\Utils\Finder::findFiles($filenames)->from($this->config->destination) as $item) {
 			if (!@unlink($item)) {
 				return false;
@@ -254,7 +258,7 @@ class Generator extends Nette\Object
 		}
 
 		// Optional files
-		foreach ($this->config->templates['optional'] as $optional) {
+		foreach ($this->config->template['templates']['optional'] as $optional) {
 			$file = $this->config->destination . '/' . $optional['filename'];
 			if (is_file($file) && !@unlink($file)) {
 				return false;
@@ -264,7 +268,7 @@ class Generator extends Nette\Object
 		// Main files
 		$masks = array_map(function($config) {
 			return preg_replace('~%[^%]*?s~', '*', $config['filename']);
-		}, $this->config->templates['main']);
+		}, $this->config->template['templates']['main']);
 		$filter = function($item) use ($masks) {
 			foreach ($masks as $mask) {
 				if (fnmatch($mask, $item->getFilename())) {
@@ -297,11 +301,11 @@ class Generator extends Nette\Object
 		}
 
 		$destination = $this->config->destination;
-		$templates = $this->config->templates;
+		$templates = $this->config->template['templates'];
 		$templatePath = dirname($this->config->templateConfig);
 
 		// Copy resources
-		foreach ($this->config->resources as $resourceSource => $resourceDestination) {
+		foreach ($this->config->template['resources'] as $resourceSource => $resourceDestination) {
 			// File
 			$resourcePath = $templatePath . '/' . $resourceSource;
 			if (is_file($resourcePath)) {
@@ -318,9 +322,10 @@ class Generator extends Nette\Object
 		// Categorize by packages and namespaces
 		$packages = array();
 		$namespaces = array();
-		$elementTypes = array('classes', 'interfaces', 'exceptions', 'constants', 'functions');
+		$elementTypes = array('classes', 'interfaces', 'traits', 'exceptions', 'constants', 'functions');
 		$classes = array();
 		$interfaces = array();
+		$traits = array();
 		$exceptions = array();
 		$constants = array();
 		$functions = array();
@@ -345,6 +350,10 @@ class Generator extends Nette\Object
 					$interfaces[$elementName] = $element;
 					$packages[$packageName]['interfaces'][$elementName] = $element;
 					$namespaces[$namespaceName]['interfaces'][$element->getShortName()] = $element;
+				} elseif ($element->isTrait()) {
+					$traits[$elementName] = $element;
+					$packages[$packageName]['traits'][$elementName] = $element;
+					$namespaces[$namespaceName]['traits'][$element->getShortName()] = $element;
 				} elseif ($element->isException()) {
 					$exceptions[$elementName] = $element;
 					$packages[$packageName]['exceptions'][$elementName] = $element;
@@ -392,7 +401,7 @@ class Generator extends Nette\Object
 				foreach (explode('\\', $namespaceName) as $part) {
 					$parent = ltrim($parent . '\\' . $part, '\\');
 					if (!isset($namespaces[$parent])) {
-						$namespaces[$parent] = array('classes' => array(), 'interfaces' => array(), 'exceptions' => array(), 'constants' => array(), 'functions' => array());
+						$namespaces[$parent] = array('classes' => array(), 'interfaces' => array(), 'traits' => array(), 'exceptions' => array(), 'constants' => array(), 'functions' => array());
 					}
 				}
 
@@ -413,7 +422,7 @@ class Generator extends Nette\Object
 				foreach (explode('\\', $packageName) as $part) {
 					$parent = ltrim($parent . '\\' . $part, '\\');
 					if (!isset($packages[$parent])) {
-						$packages[$parent] = array('classes' => array(), 'interfaces' => array(), 'exceptions' => array(), 'constants' => array(), 'functions' => array());
+						$packages[$parent] = array('classes' => array(), 'interfaces' => array(), 'traits' => array(), 'exceptions' => array(), 'constants' => array(), 'functions' => array());
 					}
 				}
 
@@ -439,6 +448,7 @@ class Generator extends Nette\Object
 				+ count($namespaces)
 				+ count($classes)
 				+ count($interfaces)
+				+ count($traits)
 				+ count($exceptions)
 				+ count($constants)
 				+ count($functions)
@@ -456,6 +466,7 @@ class Generator extends Nette\Object
 				};
 				$max += count(array_filter($classes, $tokenizedFilter))
 					+ count(array_filter($interfaces, $tokenizedFilter))
+					+ count(array_filter($traits, $tokenizedFilter))
 					+ count(array_filter($exceptions, $tokenizedFilter))
 					+ count($constants)
 					+ count($functions);
@@ -484,6 +495,7 @@ class Generator extends Nette\Object
 		$template->class = null;
 		$template->classes = array_filter($classes, $mainFilter);
 		$template->interfaces = array_filter($interfaces, $mainFilter);
+		$template->traits = array_filter($traits, $mainFilter);
 		$template->exceptions = array_filter($exceptions, $mainFilter);
 		$template->constant = null;
 		$template->constants = array_filter($constants, $mainFilter);
@@ -537,7 +549,15 @@ class Generator extends Nette\Object
 					}
 
 					if ($element instanceof ReflectionClass) {
-						$label = 'Class %s';
+						if ($element->isInterface()) {
+							$label = 'Interface %s';
+						} elseif ($element->isTrait()) {
+							$label = 'Trait %s';
+						} elseif ($element->isException()) {
+							$label = 'Exception %s';
+						} else {
+							$label = 'Class %s';
+						}
 					} elseif ($element instanceof ReflectionMethod) {
 						$label = 'Method %s()';
 					} elseif ($element instanceof ReflectionFunction) {
@@ -574,7 +594,15 @@ class Generator extends Nette\Object
 					}
 
 					if ($parentElement instanceof ReflectionClass) {
-						$parentElementLabel = 'Class %s';
+						if ($parentElement->isInterface()) {
+							$parentElementLabel = 'Interface %s';
+						} elseif ($parentElement->isTrait()) {
+							$parentElementLabel = 'Trait %s';
+						} elseif ($parentElement->isException()) {
+							$parentElementLabel = 'Exception %s';
+						} else {
+							$parentElementLabel = 'Class %s';
+						}
 					} elseif ($parentElement instanceof ReflectionConstant) {
 						$parentElementLabel = 'Constant %s';
 					} else {
@@ -818,7 +846,7 @@ class Generator extends Nette\Object
 			unset($template->todoProperties);
 		}
 
-		// Classes/interfaces/exceptions tree
+		// Classes/interfaces/traits/exceptions tree
 		if ($this->config->tree) {
 			if (!isset($templates['main']['tree'])) {
 				throw new Exception('Template for tree view is not set');
@@ -826,6 +854,7 @@ class Generator extends Nette\Object
 
 			$classTree = array();
 			$interfaceTree = array();
+			$traitTree = array();
 			$exceptionTree = array();
 
 			$processed = array();
@@ -838,6 +867,8 @@ class Generator extends Nette\Object
 					// No parent classes
 					if ($reflection->isInterface()) {
 						$t = &$interfaceTree;
+					} elseif ($reflection->isTrait()) {
+						$t = &$traitTree;
 					} elseif ($reflection->isException()) {
 						$t = &$exceptionTree;
 					} else {
@@ -849,6 +880,8 @@ class Generator extends Nette\Object
 							// The topmost parent decides about the reflection type
 							if ($parent->isInterface()) {
 								$t = &$interfaceTree;
+							} elseif ($parent->isTrait()) {
+								$t = &$traitTree;
 							} elseif ($parent->isException()) {
 								$t = &$exceptionTree;
 							} else {
@@ -874,12 +907,14 @@ class Generator extends Nette\Object
 
 			$template->classTree = new Tree($classTree, $this->classes);
 			$template->interfaceTree = new Tree($interfaceTree, $this->classes);
+			$template->traitTree = new Tree($traitTree, $this->classes);
 			$template->exceptionTree = new Tree($exceptionTree, $this->classes);
 
 			$template->setFile($templatePath . '/' . $templates['main']['tree']['template'])->save($this->forceDir($destination . '/' . $templates['main']['tree']['filename']));
 
 			unset($template->classTree);
 			unset($template->interfaceTree);
+			unset($template->traitTree);
 			unset($template->exceptionTree);
 			unset($processed);
 
@@ -901,6 +936,7 @@ class Generator extends Nette\Object
 			});
 			$template->classes = $package['classes'];
 			$template->interfaces = $package['interfaces'];
+			$template->traits = $package['traits'];
 			$template->exceptions = $package['exceptions'];
 			$template->constants = $package['constants'];
 			$template->functions = $package['functions'];
@@ -925,6 +961,7 @@ class Generator extends Nette\Object
 			});
 			$template->classes = $namespace['classes'];
 			$template->interfaces = $namespace['interfaces'];
+			$template->traits = $namespace['traits'];
 			$template->exceptions = $namespace['exceptions'];
 			$template->constants = $namespace['constants'];
 			$template->functions = $namespace['functions'];
@@ -934,10 +971,8 @@ class Generator extends Nette\Object
 		}
 		unset($template->subnamespaces);
 
-		// Generate class & interface & exception files
-		$fshl = new FSHL\Highlighter(new FSHL\Output\Html(), FSHL\Highlighter::OPTION_TAB_INDENT | FSHL\Highlighter::OPTION_LINE_COUNTER);
-		$fshlPhpLexer = new FSHL\Lexer\Php();
-		if (!empty($classes) || !empty($interfaces) || !empty($exceptions)) {
+		// Generate classes, interfaces, traits, exceptions, constants and functions files
+		if (!empty($classes) || !empty($interfaces) || !empty($traits) || !empty($exceptions)) {
 			if (!isset($templates['main']['class'])) {
 				throw new Exception('Template for class is not set');
 			}
@@ -959,6 +994,9 @@ class Generator extends Nette\Object
 			$this->forceDir($destination . '/' . $templates['main']['function']['filename']);
 		}
 		if ($this->config->sourceCode) {
+			$fshl = new FSHL\Highlighter(new FSHL\Output\Html(), FSHL\Highlighter::OPTION_TAB_INDENT | FSHL\Highlighter::OPTION_LINE_COUNTER);
+			$fshl->setLexer(new FSHL\Lexer\Php());
+
 			if (!isset($templates['main']['source'])) {
 				throw new Exception('Template for source code is not set');
 			}
@@ -969,6 +1007,7 @@ class Generator extends Nette\Object
 		$template->namespace = null;
 		$template->classes = $classes;
 		$template->interfaces = $interfaces;
+		$template->traits = $traits;
 		$template->exceptions = $exceptions;
 		$template->constants = $constants;
 		$template->functions = $functions;
@@ -995,6 +1034,7 @@ class Generator extends Nette\Object
 					$template->package = $packageName = $element->getPseudoPackageName();
 					$template->classes = $packages[$packageName]['classes'];
 					$template->interfaces = $packages[$packageName]['interfaces'];
+					$template->traits = $packages[$packageName]['traits'];
 					$template->exceptions = $packages[$packageName]['exceptions'];
 					$template->constants = $packages[$packageName]['constants'];
 					$template->functions = $packages[$packageName]['functions'];
@@ -1002,6 +1042,7 @@ class Generator extends Nette\Object
 					$template->namespace = $namespaceName = $element->getPseudoNamespaceName();
 					$template->classes = $namespaces[$namespaceName]['classes'];
 					$template->interfaces = $namespaces[$namespaceName]['interfaces'];
+					$template->traits = $namespaces[$namespaceName]['traits'];
 					$template->exceptions = $namespaces[$namespaceName]['exceptions'];
 					$template->constants = $namespaces[$namespaceName]['constants'];
 					$template->functions = $namespaces[$namespaceName]['functions'];
@@ -1023,6 +1064,11 @@ class Generator extends Nette\Object
 					uksort($template->directImplementers, 'strcasecmp');
 					$template->indirectImplementers = $element->getIndirectImplementers();
 					uksort($template->indirectImplementers, 'strcasecmp');
+
+					$template->directUsers = $element->getDirectUsers();
+					uksort($template->directUsers, 'strcasecmp');
+					$template->indirectUsers = $element->getIndirectUsers();
+					uksort($template->indirectUsers, 'strcasecmp');
 
 					$template->ownMethods = $element->getOwnMethods();
 					$template->ownConstants = $element->getOwnConstants();
@@ -1047,7 +1093,7 @@ class Generator extends Nette\Object
 
 				// Generate source codes
 				if ($this->config->sourceCode && $element->isTokenized()) {
-					$template->source = $fshl->highlight($fshlPhpLexer, file_get_contents($element->getFileName()));
+					$template->source = $fshl->highlight(file_get_contents($element->getFileName()));
 					$template->setFile($templatePath . '/' . $templates['main']['source']['template'])->save($destination . '/' . $template->getSourceUrl($element, false));
 
 					$this->incrementProgressBar();
@@ -1089,8 +1135,7 @@ class Generator extends Nette\Object
 			'@c' => "\x1b[0m"
 		);
 
-		// Windows doesn't support colors
-		if ('WIN' === substr(PHP_OS, 0, 3)) {
+		if (!$this->config->colors) {
 			$placeholders = array_fill_keys(array_keys($placeholders), '');
 		}
 

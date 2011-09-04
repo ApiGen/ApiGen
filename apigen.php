@@ -2,11 +2,11 @@
 <?php
 
 /**
- * ApiGen 2.0.3 - API documentation generator.
+ * ApiGen 2.1.0 - API documentation generator for PHP 5.3+
  *
  * Copyright (c) 2010 David Grudl (http://davidgrudl.com)
- * Copyright (c) 2011 Ondřej Nešpor (http://andrewsville.cz)
- * Copyright (c) 2011 Jaroslav Hanslík (http://kukulich.cz)
+ * Copyright (c) 2011 Jaroslav Hanslík (https://github.com/kukulich)
+ * Copyright (c) 2011 Ondřej Nešpor (https://github.com/Andrewsville)
  *
  * For the full copyright and license information, please view
  * the file LICENSE that was distributed with this source code.
@@ -16,20 +16,61 @@ namespace ApiGen;
 
 use Nette\Diagnostics\Debugger;
 
-define('ROOT_DIR', __DIR__);
-define('LIBRARY_DIR', ROOT_DIR . '/libs');
-define('TEMPLATE_DIR', ROOT_DIR . '/templates');
+// Set dirs
+define('PEAR_PHP_DIR', '@php_dir@');
+define('PEAR_DATA_DIR', '@data_dir@');
 
-require LIBRARY_DIR . '/Nette/nette.min.php';
-require LIBRARY_DIR . '/FSHL/fshl.min.php';
-require LIBRARY_DIR . '/Texy/texy.min.php';
-require LIBRARY_DIR . '/TokenReflection/tokenreflection.min.php';
+if (false === strpos(PEAR_PHP_DIR, '@php_dir')) {
+	// PEAR package
 
+	set_include_path(
+		PEAR_PHP_DIR . PATH_SEPARATOR .
+		get_include_path()
+	);
+
+	require PEAR_PHP_DIR . '/Nette/loader.php';
+	require PEAR_PHP_DIR . '/Texy/texy.php';
+
+	define('TEMPLATE_DIR', PEAR_DATA_DIR . '/ApiGen/templates');
+} else {
+	// Downloaded package
+
+	set_include_path(
+		__DIR__ . '/libs/FSHL' . PATH_SEPARATOR .
+		__DIR__ . '/libs/TokenReflection' . PATH_SEPARATOR .
+		get_include_path()
+	);
+
+	require __DIR__ . '/libs/Nette/Nette/loader.php';
+	require __DIR__ . '/libs/Texy/texy/texy.php';
+
+	define('TEMPLATE_DIR', __DIR__ . '/templates');
+}
+
+// Autoload
 spl_autoload_register(function($class) {
-	require_once sprintf('%s%s%s.php', ROOT_DIR, DIRECTORY_SEPARATOR, str_replace('\\', DIRECTORY_SEPARATOR, $class));
+	require sprintf('%s.php', str_replace('\\', DIRECTORY_SEPARATOR, $class));
 });
 
 try {
+
+	// Check dependencies
+	if (!class_exists('Nette\\Diagnostics\\Debugger')) {
+		echo "Required dependency missing: Nette Framework\n";
+		die(1);
+	}
+	if (!class_exists('Texy')) {
+		echo "Required dependency missing: Texy library\n";
+		die(1);
+	}
+	if (!class_exists('FSHL\\Highlighter')) {
+		echo "Required dependency missing: FSHL library\n";
+		die(1);
+	}
+	if (!class_exists('TokenReflection\\Broker')) {
+		echo "Required dependency missing: TokenReflection library\n";
+		die(1);
+	}
 
 	Debugger::$strictMode = true;
 	Debugger::enable();

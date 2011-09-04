@@ -4,7 +4,7 @@
 {block #title}Tree{/block}
 
 {define #tree}
-<div class="classtree">
+<div class="tree">
 	<ul>
 		{var $level = -1}
 		{? foreach ($tree as $className => $reflection): }
@@ -20,7 +20,12 @@
 			{var $interfaces = $reflection->ownInterfaces}
 			{if $interfaces} implements {foreach $interfaces as $interface}
 				<a href="{$interface|classUrl}" n:tag-if="$interface->documented">{$interface->name}</a>{sep}, {/sep}
-			{/foreach}{/if}</div>
+			{/foreach}{/if}
+			{var $traits = $reflection->ownTraits}
+			{if $traits}{if $interfaces}<br><span class="padding"></span>{/if} uses {foreach $traits as $trait}
+				<a href="{$trait|classUrl}" n:tag-if="$trait->documented">{$trait->name}</a>{sep}, {/sep}
+			{/foreach}{/if}
+			</div>
 
 			{var $level = $tree->getDepth()}
 		{? endforeach; }
@@ -42,6 +47,11 @@
 	{if $interfaceTree->valid()}
 		<h3>Interfaces</h3>
 		{include #tree, tree => $interfaceTree}
+	{/if}
+
+	{if $traitTree->valid()}
+		<h3>Traits</h3>
+		{include #tree, tree => $traitTree}
 	{/if}
 
 	{if $exceptionTree->valid()}

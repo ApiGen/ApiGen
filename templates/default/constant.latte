@@ -27,12 +27,12 @@
 	<table class="summary" id="vars">
 	<caption>Value summary</caption>
 	<tr>
-		<td width="1%" class="right"><code class="nowrap">
+		<td class="right min"><code class="nowrap">
 			{ifset $annotations['var']}{!$annotations['var'][0]|typeLinks:$constant}{else}{try}{$constant->value|type}{/try}{/ifset}
 		</code></td>
-		<td width="1%">
+		<td>
 			{var $element = $template->resolveElement($constant->valueDefinition, $constant)}
-			{if $element}<a href="{$element|constantUrl}">{$constant->valueDefinition}</a>{else}<code>{!$constant->valueDefinition|highlightValue:$constant}</code>{/if}
+			{if $element}<a href="{$element|constantUrl}">{$constant->valueDefinition}</a>{else}<code class="wrap">{!$constant->valueDefinition|highlightValue:$constant}</code>{/if}
 		</td>
 		<td>{ifset $annotations['var']}{!$annotations['var'][0]|description:$constant}{/ifset}</td>
 	</tr>

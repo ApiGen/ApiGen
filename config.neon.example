@@ -49,5 +49,7 @@ wipeout: Yes
 quiet: No
 # Display progressbars
 progressbar: Yes
+# Use colors
+colors: No
 # Display additional information in case of an error
 debug: No

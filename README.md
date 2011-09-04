@@ -1,67 +1,33 @@
 # Welcome to ApiGen #
 
-ApiGen is a fork of the original [tool](https://github.com/nette/apigen) created by [Andrewsville](https://github.com/Andrewsville) and [Kukulich](https://github.com/kukulich).
+ApiGen is the tool for creating professional API documentation from PHP source code, similar to discontinued phpDocumentor/phpDoc.
 
-When the original ApiGen was introduced, its [author](https://github.com/dg) stated that: *"This time with no technical support. There are definitely things that ApiGen does not support and that are absolutely crucial for you. And without them there is no use in trying ApiGen because other similar tools have them. If this is the case, feel free to add them."*
+ApiGen has support for PHP 5.3 namespaces, packages, linking between documentation, cross referencing to PHP standard classes and general documentation, creation of highlighted source code and experimental support for PHP 5.4 **traits**.
 
-And we did :) That is how our **ApiGen** was born. We have taken the original tool, fixed some bugs, altered some things and added many useful features.
+## Features ##
 
-# Differences from the original tool #
-
-The biggest difference is that we use our own [TokenReflection library](https://github.com/Andrewsville/PHP-Token-Reflection) to describe the source code. Using TokenReflection is:
-
-* **safe** (documented source code does not get included and thus parsed),
-* **simple** (you do not need to include or autoload all libraries you use in your source code).
-
-Besides, we have made following changes in our ApiGen.
-
-### Changes ###
-
-* Much more confuguration options (see below).
-* Much lower memory usage.
-* Documentation for functions and constants in namespaces or global space.
-* A page with trees of classes, interfaces and exceptions.
+* Our own [TokenReflection library](https://github.com/Andrewsville/PHP-Token-Reflection) is used to describe the source code. It is **safe** (documented source code does not get included and thus parsed) and **simple** (you do not need to include or autoload all libraries you use in your source code).
+* Detailed documentation of classes, functions and constants.
+* Highlighted source code.
+* Support of namespaces and packages with subpackages.
+* Experimental support of traits.
+* A page with trees of classes, interfaces, traits and exceptions.
 * A page with a list of deprecated elements.
 * A page with Todo tasks.
 * List of undocumented elements.
 * Support for docblock templates.
 * Support for @inheritdoc.
 * Support for {@link}.
-* Clickable links for @see and @uses.
-* Detailed documentation for constants and properties with all annotations.
-* Links to PHP manual pages for constants and properties of PHP internal classes.
-* Links to the start line in the highlighted source code for constants and properties.
-* List of packages and subpackages.
-* List of indirect known subclasses and implementers.
-* Improved search and suggest - lets you search in class, functions and constant names without the need of Google CSE.
-* Support for multiple/custom templates.
-* Fancy progressbars (one while parsing source codes, one while generating documentation).
-* Exceptions handling.
-* Inherited methods, constants and properties are in alphabetical order.
-* Class methods, constants and properties are in truly alphabetical order.
-* Better visualization of method parameters.
-* Unified order of annotations.
-* No URL shortening.
-* Better visualization of nested namespaces.
-* No wrapping of class names.
-* Resizable left column.
-* Better static files (stylesheets, javascript) versioning.
-* Better page titles.
-* A lot of visual enhancements.
+* Active links in @see and @uses tags.
+* Documentation of used internal PHP classes.
+* Links to the start line in the highlighted source code for every described element.
+* List of direct and indirect known subclasses, implementers and users for every class/interface/trait.
+* Google CSE support with suggest.
 * Google Analytics support.
-* Full sitemap with links to package and namespace pages.
-* New version of jQuery.
-* New version of FSHL.
-
-### Bugfixes ###
-* No fatal errors when a class is missing (this is a benefit of using the TokenReflection library).
-* Better FQN resolving in documentation.
-* Better values output of constants and properties (you see the actual definition - "\\n", not just a space).
-* Fixed email addresses in annotations (the original ApiGen cannot handle an email address next to the author name).
-* Fixed parsing packages and subpackages with description.
-* Displaying the "public" keyword for public properties.
-* Texy! downgraded to the stable 2.1 version (the 3.0-dev version causes PCRE internal errors sometimes).
-* Support for Mac and DOS line endings.
+* Support for multiple/custom templates.
+* Sitemap and opensearch support.
+* Support for different line endings.
+* Lots of configuration options (see below).
 
 ## Installation ##
 
@@ -69,34 +35,45 @@ The preferred installation way is using the PEAR package. PEAR is a distribution
 
 Unlike the GitHub version that contains everything you need to use it, the PEAR package contains only ApiGen itself. Its dependencies (Nette, Texy, FSHL and TokenReflection) have to be installed separately. But do not panic, the PEAR installer will take care of it (almost).
 
-In order to install any PEAR package, you have to add the appropriate repository URL. The good news is that you have to do that only once. Using these two commands you add our own and Nette repository.
+In order to install any PEAR package, you have to add the appropriate repository URL. The good news is that you have to do that only once. Using these commands you add all required repositories.
 
 ```
-	pear channel-discover pear.kukulich.cz
+	pear channel-discover pear.apigen.org
 	pear channel-discover pear.nette.org
+	pear channel-discover pear.texy.info
+	pear channel-discover pear.kukulich.cz
+	pear channel-discover pear.andrewsville.cz
 ```
 
 Theoretically you should only use one command
 
 ```
-	pear install kukulich/ApiGen
+	pear install apigen/ApiGen
 ```
 
-to install ApiGen, then. However things are not so easy. This would work if all required libraries were in stable versions. But they aren't. Nette, TokenReflection and FSHL are beta versions. Assuming you have your PEAR installer configured that it will not install non-stable packages (that is the default configuration), you have to explicitly enter each non-stable package you want to use. So you have to  run these commands
+to install ApiGen, then. However things are not so easy. This would work if all required libraries were in stable versions. But they aren't. Nette and TokenReflection are beta versions. Assuming you have your PEAR installer configured that it will not install non-stable packages (that is the default configuration), you have to explicitly enter each non-stable package you want to use. So you have to  run these commands
 
 ```
-	pear install kukulich/FSHL-2.0.0RC
-	pear install kukulich/TokenReflection-beta
 	pear install nette/Nette-beta
+	pear install andrewsville/TokenReflection-beta
 ```
 
 and finally
 
 ```
-	pear install kukulich/ApiGen
+	pear install apigen/ApiGen
 ```
 
 When all required libraries appear in stable versions, only the last command will be required and all dependencies will be downloaded by the PEAR installer automatically.
+
+If you have have installed a version older than 2.1 using PEAR you will have to uninstall it first using these commands.
+
+```
+	pear uninstall kukulich/ApiGen
+	pear uninstall kukulich/TokenReflection
+```
+
+This is required because we have moved from a temporary PEAR repository to a definitive one. So this change will be required only if you have installed ApiGen and TokenReflection library from the ```pear.kukulich.cz``` repository.
 
 ## Usage ##
 
@@ -111,7 +88,7 @@ Every configuration option has to be followed by its value. And it is exactly th
 
 Some options can have multiple values. To do so, you can either use them multiple times or separate their values by a comma. It means that ```--source=file1.php --source=file2.php``` and ```--source=file1.php,file2.php``` is exactly the same.
 
-### Parameter list ###
+### Options ###
 
 ```--config|-c <file>```
 
@@ -210,6 +187,10 @@ Do not print any messages to the console, default is "No".
 
 Display progressbars, default is "Yes".
 
+```--colors <yes|no>```
+
+Use colors, default "No" on Windows, "Yes" on other systems. Windows doesn't support colors in console however you can enable it with [Ansicon](http://adoxa.110mb.com/ansicon/).
+
 ```--debug <yes|no>```
 
 Display additional information (exception trace) in case of an error, default is "No".
@@ -249,18 +230,15 @@ When generating documentation of large libraries (Zend Framework for example) we
 
 ## Authors ##
 
-### Original ApiGen ###
-* [David Grudl](https://github.com/dg)
-
-### New ApiGen ###
 * [Jaroslav Hanslík](https://github.com/kukulich)
 * [Ondřej Nešpor](https://github.com/Andrewsville)
+* [David Grudl](https://github.com/dg)
 
 ## Usage examples ##
 
 * Jyxo PHP Libraries, both [namespaced](http://jyxo.github.com/php/) and [non-namespaced](http://jyxo.github.com/php-no-namespace/),
 * [TokenReflection library](http://andrewsville.github.com/PHP-Token-Reflection/),
-* [FSHL library](http://kukulich.github.com/fshl/),
+* [FSHL library](http://fshl.kukulich.cz/api/),
 * [Nella Framework](http://api.nella-project.org/framework/).
 
 Besides from these publicly visible examples there are companies that use ApiGen to generate their inhouse documentation: [Medio Interactive](http://www.medio.cz/), [Wikidi](http://wikidi.com/).
