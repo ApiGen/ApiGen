@@ -2,7 +2,7 @@
 
 ApiGen is the tool for creating professional API documentation from PHP source code, similar to discontinued phpDocumentor/phpDoc.
 
-ApiGen has support for PHP 5.3 namespaces, packages, linking between documentation, cross referencing to PHP standard classes and general documentation and creation of highlighted source code.
+ApiGen has support for PHP 5.3 namespaces, packages, linking between documentation, cross referencing to PHP standard classes and general documentation, creation of highlighted source code and experimental support for PHP 5.4 **traits**.
 
 ## Features ##
 
@@ -10,7 +10,8 @@ ApiGen has support for PHP 5.3 namespaces, packages, linking between documentati
 * Detailed documentation of classes, functions and constants.
 * Highlighted source code.
 * Support of namespaces and packages with subpackages.
-* A page with trees of classes, interfaces and exceptions.
+* Experimental support of traits.
+* A page with trees of classes, interfaces, traits and exceptions.
 * A page with a list of deprecated elements.
 * A page with Todo tasks.
 * List of undocumented elements.
@@ -20,7 +21,7 @@ ApiGen has support for PHP 5.3 namespaces, packages, linking between documentati
 * Active links in @see and @uses tags.
 * Documentation of used internal PHP classes.
 * Links to the start line in the highlighted source code for every described element.
-* List of direct and indirect known subclasses and implementers for every class/inteface.
+* List of direct and indirect known subclasses, implementers and users for every class/interface/trait.
 * Google CSE support with suggest.
 * Google Analytics support.
 * Support for multiple/custom templates.
