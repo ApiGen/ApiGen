@@ -173,9 +173,9 @@ class Config
 			if (is_bool($valueDefinition)) {
 				// Boolean option
 				$value = strtolower($this->config[$option]);
-				if ('on' === $value || 'yes' === $value) {
+				if ('on' === $value || 'yes' === $value || 'true' === $value) {
 					$value = true;
-				} elseif ('off' === $value || 'no' === $value) {
+				} elseif ('off' === $value || 'no' === $value || 'false' === $value) {
 					$value = false;
 				}
 				$this->config[$option] = (bool) $value;
