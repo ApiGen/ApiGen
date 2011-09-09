@@ -76,6 +76,9 @@ class Template extends Nette\Templating\FileTemplate
 
 		$that = $this;
 
+		// Output in HTML5
+		Nette\Utils\Html::$xhtml = false;
+
 		// FSHL
 		$fshl = new FSHL\Highlighter(new FSHL\Output\Html());
 		$fshl->setLexer(new FSHL\Lexer\Php());
@@ -223,7 +226,7 @@ class Template extends Nette\Templating\FileTemplate
 				case 'return':
 				case 'throws':
 					$description = $that->description($value, $context);
-					return sprintf('<code>%s</code>%s', $that->getTypeLinks($value, $context), $description ? '<br />' . $description : '');
+					return sprintf('<code>%s</code>%s', $that->getTypeLinks($value, $context), $description ? '<br>' . $description : '');
 				case 'package':
 					list($packageName, $description) = $that->split($value);
 					if ($that->packages) {
@@ -245,7 +248,7 @@ class Template extends Nette\Templating\FileTemplate
 				case 'see':
 				case 'uses':
 					list($link, $description) = $that->split($value);
-					$separator = $context instanceof ReflectionClass || !$description ? ' ' : '<br />';
+					$separator = $context instanceof ReflectionClass || !$description ? ' ' : '<br>';
 					if (null !== $that->resolveElement($link, $context)) {
 						return sprintf('<code>%s</code>%s%s', $that->getTypeLinks($link, $context), $separator, $description);
 					}
