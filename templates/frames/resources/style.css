@@ -538,5 +538,11 @@ div.tree span.padding {
 }
 
 .l {
+	padding-left: 2px; 
 	color: #c0c0c0;
+}
+
+.l:target {
+	background: #68abfe right center no-repeat url(data:image/gif;base64,R0lGODdhDAAVAPMPAPH3/3Wy/pLD/nq1/unz//T5/+Lv/////2ir/vr8/364/u/2//3+/+bx/4O6/qrQ/iwAAAAADAAVAEAEQvClQ6tFOGMxjw6GRX2E6GnZsFACYF5IUL4oohRwjT0nCQeNl0cxo2FkxlRxVHPgmDoBo1e7UZUVFEiU2ZoQg6UoAgA7);
+	color: #fff;
 }
