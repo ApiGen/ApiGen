@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="ApiGen" default="build" basedir=".">
+	<property name="source" value="${basedir}" />
+
+	<condition property="executableExtension" value=".bat" else="">
+		<os family="windows" />
+	</condition>
+
+	<target name="build" depends="clean,pdepend,phpmd,phpcpd,phploc,phpcs,apigen,phpcb" />
+
+	<target name="clean" description="Clean up and create artifact directories">
+		<delete dir="${basedir}/build/api" />
+		<delete dir="${basedir}/build/code-browser" />
+		<delete dir="${basedir}/build/coverage" />
+		<delete dir="${basedir}/build/logs" />
+		<delete dir="${basedir}/build/pdepend" />
+
+		<mkdir dir="${basedir}/build/api" />
+		<mkdir dir="${basedir}/build/code-browser" />
+		<mkdir dir="${basedir}/build/coverage" />
+		<mkdir dir="${basedir}/build/logs" />
+		<mkdir dir="${basedir}/build/pdepend" />
+	</target>
+
+	<target name="pdepend" description="Generate jdepend.xml and software metrics charts using PHP_Depend">
+		<exec executable="pdepend${executableExtension}">
+			<arg value="--jdepend-xml=${basedir}/build/logs/jdepend.xml" />
+			<arg value="--jdepend-chart=${basedir}/build/pdepend/dependencies.svg" />
+			<arg value="--overview-pyramid=${basedir}/build/pdepend/overview-pyramid.svg" />
+			<arg value="${source}/ApiGen,${source}/apigen.php" />
+		</exec>
+	</target>
+
+	<target name="phpmd" description="Generate pmd.xml using PHPMD">
+		<exec executable="phpmd${executableExtension}">
+			<arg value="${source}/ApiGen,${source}/apigen.php" />
+			<arg value="xml" />
+			<arg path="${basedir}/build/phpmd.xml" />
+			<arg value="--reportfile" />
+			<arg path="${basedir}/build/logs/pmd.xml" />
+		</exec>
+	</target>
+
+	<target name="phpcpd" description="Generate pmd-cpd.xml using PHPCPD">
+		<exec executable="phpcpd${executableExtension}">
+			<arg value="--log-pmd" />
+			<arg path="${basedir}/build/logs/pmd-cpd.xml" />
+			<arg path="${source}/ApiGen" />
+			<arg path="${source}/apigen.php" />
+		</exec>
+	</target>
+
+	<target name="phploc" description="Generate phploc.csv using PHPLOC">
+		<exec executable="phploc${executableExtension}">
+			<arg value="--log-csv" />
+			<arg path="${basedir}/build/logs/phploc.csv" />
+			<arg path="${source}/ApiGen" />
+			<arg path="${source}/apigen.php" />
+		</exec>
+	</target>
+
+	<target name="phpcs" description="Generate checkstyle.xml using PHP_CodeSniffer">
+		<exec executable="phpcs${executableExtension}">
+			<arg value="--standard=${basedir}/build/phpcs.xml" />
+			<arg value="--tab-width=4" />
+			<arg value="--encoding=utf-8" />
+			<arg value="--report=checkstyle" />
+			<arg value="--report-file=${basedir}/build/logs/checkstyle.xml" />
+			<arg value="--ignore=jquery" />
+			<arg path="${source}/ApiGen" />
+			<arg path="${source}/apigen.php" />
+			<arg path="${source}/templates" />
+		</exec>
+	</target>
+
+	<target name="apigen" description="Generate API documentation using ApiGen">
+		<exec executable="apigen${executableExtension}">
+			<arg value="--source" />
+			<arg path="${source}/ApiGen" />
+			<arg value="--source" />
+			<arg path="${source}/apigen.php" />
+			<arg value="--destination" />
+			<arg path="${basedir}/build/api" />
+			<arg value="--deprecated" />
+			<arg value="--todo" />
+			<arg value="--progressbar=no" />
+		</exec>
+	</target>
+
+	<target name="phpcb" description="Aggregate tool output with PHP_CodeBrowser">
+		<exec executable="phpcb${executableExtension}">
+			<arg value="--log" />
+			<arg path="${basedir}/build/logs" />
+			<arg value="--source" />
+			<arg path="${source}/ApiGen" />
+			<arg value="--source" />
+			<arg path="${source}/apigen.php" />
+			<arg value="--source" />
+			<arg path="${source}/templates" />
+			<arg value="--exclude" />
+			<arg value="*jquery*" />
+			<arg value="--output" />
+			<arg path="${basedir}/build/code-browser" />
+		</exec>
+	</target>
+</project>
