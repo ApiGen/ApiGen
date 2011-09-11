@@ -79,7 +79,7 @@ try {
 	}
 
 	Debugger::$strictMode = true;
-	Debugger::enable();
+	Debugger::enable(Debugger::PRODUCTION, false);
 	Debugger::timer();
 
 	$config = new Config();
@@ -96,7 +96,7 @@ try {
 	$config->parse();
 
 	if ($config->debug) {
-		Debugger::enable(Debugger::DEVELOPMENT);
+		Debugger::enable(Debugger::DEVELOPMENT, false);
 	}
 
 	$generator->output($generator->getHeader());
