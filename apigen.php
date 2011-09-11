@@ -55,6 +55,12 @@ spl_autoload_register(function($class) {
 try {
 
 	// Check dependencies
+	foreach (array('iconv', 'mbstring', 'tokenizer') as $extension) {
+		if (!extension_loaded($extension)) {
+			printf("Required extension missing: %s\n", $extension);
+			die(1);
+		}
+	}
 	if (!class_exists('Nette\\Diagnostics\\Debugger')) {
 		echo "Required dependency missing: Nette Framework\n";
 		die(1);
