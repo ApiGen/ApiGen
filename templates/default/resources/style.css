@@ -526,5 +526,11 @@ div.tree span.padding {
 }
 
 .l {
+	padding-left: 2px;
 	color: #c0c0c0;
+}
+
+.l:target {
+	background: #006AEB url('code-line.png') right center no-repeat;
+	color: #FFF;
 }
