@@ -36,6 +36,7 @@ if (false === strpos(PEAR_PHP_DIR, '@php_dir')) {
 	// Downloaded package
 
 	set_include_path(
+		__DIR__ . PATH_SEPARATOR .
 		__DIR__ . '/libs/FSHL' . PATH_SEPARATOR .
 		__DIR__ . '/libs/TokenReflection' . PATH_SEPARATOR .
 		get_include_path()
