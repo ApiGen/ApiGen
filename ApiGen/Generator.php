@@ -442,6 +442,7 @@ class Generator extends Nette\Object
 
 		$sitemapEnabled = !empty($this->config->baseUrl) && isset($templates['optional']['sitemap']);
 		$opensearchEnabled = !empty($this->config->googleCseId) && !empty($this->config->baseUrl) && isset($templates['optional']['opensearch']);
+		$robotsEnabled = !empty($this->config->baseUrl) && isset($templates['optional']['robots']);
 
 		if ($this->config->progressbar) {
 			$max = count($packages)
@@ -458,7 +459,8 @@ class Generator extends Nette\Object
 				+ (int) $this->config->deprecated
 				+ (int) $this->config->todo
 				+ (int) $sitemapEnabled
-				+ (int) $opensearchEnabled;
+				+ (int) $opensearchEnabled
+				+ (int) $robotsEnabled;
 
 			if ($this->config->sourceCode) {
 				$tokenizedFilter = function(ReflectionClass $class) {
@@ -531,6 +533,10 @@ class Generator extends Nette\Object
 		}
 		if ($opensearchEnabled) {
 			$template->setFile($templatePath . '/' . $templates['optional']['opensearch']['template'])->save($this->forceDir($destination . '/' . $templates['optional']['opensearch']['filename']));
+			$this->incrementProgressBar();
+		}
+		if ($robotsEnabled) {
+			$template->setFile($templatePath . '/' . $templates['optional']['robots']['template'])->save($this->forceDir($destination . '/' . $templates['optional']['robots']['filename']));
 			$this->incrementProgressBar();
 		}
 
