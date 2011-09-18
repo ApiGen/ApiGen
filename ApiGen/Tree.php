@@ -77,7 +77,7 @@ class Tree extends RecursiveTreeIterator
 	 * Returns the current reflection.
 	 *
 	 * @return \ApiGen\Reflection
-	 * @throws \UnexpectedValueException If current is not reflection array
+	 * @throws \UnexpectedValueException If current is not reflection array.
 	 */
 	public function current()
 	{

@@ -283,7 +283,7 @@ class Template extends Nette\Templating\FileTemplate
 				unset($annotations['internal']);
 			}
 
-			// Show/hide todo
+			// Show/hide tasks
 			if (!$todo) {
 				unset($annotations['todo']);
 			}
@@ -357,7 +357,7 @@ class Template extends Nette\Templating\FileTemplate
 	 * @param \ApiGen\ReflectionBase $context
 	 * @return string
 	 */
-	public function getTypeLinks($annotation, $context)
+	public function getTypeLinks($annotation, ReflectionBase $context)
 	{
 		$links = array();
 		list($types) = $this->split($annotation);
@@ -485,7 +485,7 @@ class Template extends Nette\Templating\FileTemplate
 	 * @param boolean $withLine Include file line number into the link
 	 * @return string
 	 */
-	public function getSourceUrl($element, $withLine = true)
+	public function getSourceUrl(ReflectionBase $element, $withLine = true)
 	{
 		if ($element instanceof ReflectionClass || $element instanceof ReflectionFunction || ($element instanceof ReflectionConstant && null === $element->getDeclaringClassName())) {
 			$elementName = $element->getName();
@@ -521,7 +521,7 @@ class Template extends Nette\Templating\FileTemplate
 	 * @param \ApiGen\ReflectionBase $element Element reflection
 	 * @return string
 	 */
-	public function getManualUrl($element)
+	public function getManualUrl(ReflectionBase $element)
 	{
 		static $manual = 'http://php.net/manual';
 		static $reservedClasses = array('stdClass', 'Closure', 'Directory');
@@ -644,7 +644,7 @@ class Template extends Nette\Templating\FileTemplate
 	 * @param \ApiGen\ReflectionBase $context Link context
 	 * @return \ApiGen\ReflectionBase|null
 	 */
-	public function resolveElement($definition, $context)
+	public function resolveElement($definition, ReflectionBase $context)
 	{
 		// No simple type resolving
 		static $types = array(
@@ -660,20 +660,25 @@ class Template extends Nette\Templating\FileTemplate
 		if ($context instanceof ReflectionParameter && null === $context->getDeclaringClassName()) {
 			// Parameter of function in namespace or global space
 			$context = $this->getFunction($context->getDeclaringFunctionName());
-		} elseif ($context instanceof ReflectionMethod || $context instanceof ReflectionParameter || ($context instanceof ReflectionConstant && null !== $context->getDeclaringClassName()) || $context instanceof ReflectionProperty) {
+		} elseif ($context instanceof ReflectionMethod || $context instanceof ReflectionParameter
+			|| ($context instanceof ReflectionConstant && null !== $context->getDeclaringClassName())
+			|| $context instanceof ReflectionProperty
+		) {
 			// Member of a class
 			$context = $this->getClass($context->getDeclaringClassName());
 		}
 
 		if (($class = $this->getClass(\TokenReflection\Resolver::resolveClassFQN($definition, $context->getNamespaceAliases(), $context->getNamespaceName()), $context->getNamespaceName()))
-			|| ($class = $this->getClass($definition, $context->getNamespaceName()))) {
+			|| ($class = $this->getClass($definition, $context->getNamespaceName()))
+		) {
 			// Class
 			return $class;
 		} elseif ($constant = $this->getConstant($definition, $context->getNamespaceName())) {
 			// Constant
 			return $constant;
 		} elseif (($function = $this->getFunction($definition, $context->getNamespaceName()))
-			|| ('()' === substr($definition, -2) && ($function = $this->getFunction(substr($definition, 0, -2), $context->getNamespaceName())))) {
+			|| ('()' === substr($definition, -2) && ($function = $this->getFunction(substr($definition, 0, -2), $context->getNamespaceName())))
+		) {
 			// Function
 			return $function;
 		} elseif (($pos = strpos($definition, '::')) || ($pos = strpos($definition, '->'))) {
@@ -725,7 +730,7 @@ class Template extends Nette\Templating\FileTemplate
 	 * @param \ApiGen\ReflectionBase $context Link context
 	 * @return string|null
 	 */
-	public function resolveLink($definition, $context)
+	public function resolveLink($definition, ReflectionBase $context)
 	{
 		if (empty($definition)) {
 			return null;
@@ -771,7 +776,7 @@ class Template extends Nette\Templating\FileTemplate
 	 * @param \ApiGen\ReflectionBase $context Reflection object
 	 * @return string
 	 */
-	private function resolveLinks($text, $context)
+	private function resolveLinks($text, ReflectionBase $context)
 	{
 		$that = $this;
 		return preg_replace_callback('~{@(?:link|see)\\s+([^}]+)}~', function ($matches) use ($context, $that) {
@@ -805,7 +810,7 @@ class Template extends Nette\Templating\FileTemplate
 	 * @param boolean $block Parse text as block
 	 * @return string
 	 */
-	public function doc($text, $context, $block = false)
+	public function doc($text, ReflectionBase $context, $block = false)
 	{
 		return $this->resolveLinks($this->texy->process($this->resolveInternal($text), !$block), $context);
 	}

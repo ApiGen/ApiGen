@@ -91,7 +91,7 @@ class Backend extends Broker\Backend\Memory
 	 *
 	 * @param string $fileName File name
 	 * @return \TokenReflection\Stream
-	 * @throws \ApiGen\Exception If the token stream could not be returned
+	 * @throws \ApiGen\Exception If the token stream could not be returned.
 	 */
 	public function getFileTokens($fileName)
 	{
@@ -240,7 +240,9 @@ class Backend extends Broker\Backend\Memory
 	{
 		$name = ltrim($name, '\\');
 
-		if (!isset($declared[$name]) || isset($allClasses[self::TOKENIZED_CLASSES][$name]) || isset($allClasses[self::INTERNAL_CLASSES][$name]) || isset($allClasses[self::NONEXISTENT_CLASSES][$name])) {
+		if (!isset($declared[$name]) || isset($allClasses[self::TOKENIZED_CLASSES][$name])
+			|| isset($allClasses[self::INTERNAL_CLASSES][$name]) || isset($allClasses[self::NONEXISTENT_CLASSES][$name])
+		) {
 			return $allClasses;
 		}
 

@@ -42,8 +42,8 @@ abstract class ReflectionFunctionBase extends ReflectionBase
 	 *
 	 * @param integer|string $parameterName Parameter name or position
 	 * @return \ApiGen\ReflectionParameter
-	 * @throws \InvalidArgumentException If there is no parameter of the given name
-	 * @throws \InvalidArgumentException If there is no parameter at the given position
+	 * @throws \InvalidArgumentException If there is no parameter of the given name.
+	 * @throws \InvalidArgumentException If there is no parameter at the given position.
 	 */
 	public function getParameter($parameterName)
 	{

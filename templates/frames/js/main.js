@@ -1,5 +1,4 @@
 $(function() {
-
 	// Frames detection
 	var isTopFrame = $('iframe').length !== 0;
 	var isLeftFrame = $('#menu').length !== 0;
@@ -43,13 +42,14 @@ $(function() {
 				// Unmark active
 				$('li.active', $menu).removeClass('active');
 
+				var $group;
 				if (0 === page.search(/^package|namespace/)) {
 					// Select group
-					var $group = $('a[href^="' + page + '"]', $groups);
+					$group = $('a[href^="' + page + '"]', $groups);
 				} else {
 					// Select element
 					var $element = $('a[href^="' + page + '"]', $elements);
-					var $group = $('a[rel="' + $element.attr('rel') + '"]', $groups);
+					$group = $('a[rel="' + $element.attr('rel') + '"]', $groups);
 
 					// Mark active element
 					$element
@@ -103,7 +103,7 @@ $(function() {
 					window.frames['left'].namespacesHidden = true;
 				}
 			}
-		}
+		};
 
 		// Back/Forward button
 		window.setInterval(function() {
@@ -177,7 +177,6 @@ $(function() {
 			$right.css('margin-left', splitterPosition + splitterWidth);
 			$splitter.css('left', splitterPosition);
 		}
-
 	} else if (isLeftFrame) {
 		// Menu
 
@@ -220,7 +219,6 @@ $(function() {
 			window.parent.location.hash = page;
 			return false;
 		});
-
 	} else if (isRightFrame) {
 		// Content
 
@@ -308,7 +306,7 @@ $(function() {
 				$.cookie('sorted', sorted, {expires: 365});
 				var attr = sorted ? 'data-order' : 'data-orig-order';
 				$this
-					.closest("table")
+					.closest('table')
 						.find('tr').sortElements(function(a, b) {
 							return $(a).attr(attr) > $(b).attr(attr) ? 1 : -1;
 						});
@@ -332,7 +330,8 @@ $(function() {
 					}, 500);
 				}, function() {
 					clearTimeout(timeout);
-				}).click(function() { // Immediate hover effect on summary
+				}).click(function() {
+					// Immediate hover effect on summary
 					clearTimeout(timeout);
 					var $this = $(this);
 					$('.short', $this).hide();

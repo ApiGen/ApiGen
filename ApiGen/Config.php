@@ -135,7 +135,7 @@ class Config
 	 * Parses options and configuration.
 	 *
 	 * @return \ApiGen\Config
-	 * @throws \ApiGen\Exception If something in config is wrong
+	 * @throws \ApiGen\Exception If something in config is wrong.
 	 */
 	public function parse()
 	{
@@ -263,7 +263,7 @@ class Config
 	 * Checks configuration.
 	 *
 	 * @return \ApiGen\Config
-	 * @throws \ApiGen\Exception If something in config is wrong
+	 * @throws \ApiGen\Exception If something in config is wrong.
 	 */
 	private function check()
 	{
@@ -318,7 +318,7 @@ class Config
 	 * Checks template configuration.
 	 *
 	 * @return \ApiGen\Config
-	 * @throws \ApiGen\Exception If something in template config is wrong
+	 * @throws \ApiGen\Exception If something in template config is wrong.
 	 */
 	private function checkTemplate()
 	{

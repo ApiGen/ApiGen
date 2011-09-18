@@ -3,7 +3,7 @@
 */
 
 body {
-	font: 13px/1.5 Verdana, "Geneva CE", lucida, sans-serif;
+	font: 13px/1.5 Verdana, 'Geneva CE', lucida, sans-serif;
 	margin: 0;
 	padding: 0;
 	background: #ffffff;
@@ -11,7 +11,7 @@ body {
 }
 
 h1, h2, h3, h4, caption {
-	font-family: Trebuchet MS, "Geneva CE", lucida, sans-serif;
+	font-family: Trebuchet MS, 'Geneva CE', lucida, sans-serif;
 	color: #053368;
 }
 
@@ -98,9 +98,7 @@ code a b {
 	color: #000000;
 }
 
-/**
- * Left side
- */
+/* Left side */
 #left {
 	overflow: auto;
 	width: 270px;
@@ -108,9 +106,7 @@ code a b {
 	position: fixed;
 }
 
-/**
- * Menu
- */
+/* Menu */
 #menu {
 	padding: 10px;
 }
@@ -167,9 +163,7 @@ code a b {
 	display: none;
 }
 
-/**
- * Right side
- */
+/* Right side */
 #right {
 	overflow: auto;
 	margin-left: 275px;
@@ -178,13 +172,12 @@ code a b {
 	left: 0;
 	right: 0;
 }
+
 #rightInner {
 	max-width: 1000px;
 }
 
-/**
- * Search
- */
+/* Search */
 #search {
 	float: right;
 	margin: 3px 8px;
@@ -195,9 +188,7 @@ code a b {
 	width: 250px;
 }
 
-/**
- * Autocomplete
- */
+/* Autocomplete */
 .ac_results {
 	padding: 0;
 	border: 1px solid #cccccc;
@@ -219,7 +210,7 @@ code a b {
 	padding: 2px 5px;
 	cursor: default;
 	display: block;
-	font: 12px Trebuchet MS, "Geneva CE", lucida, sans-serif;
+	font: 12px Trebuchet MS, 'Geneva CE', lucida, sans-serif;
 	line-height: 16px;
 	overflow: hidden;
 	white-space: nowrap;
@@ -242,9 +233,7 @@ code a b {
 	color: #ffffff;
 }
 
-/**
- * Navigation
- */
+/* Navigation */
 #navigation {
 	padding: 3px 8px;
 	background-color: #f6f6f4;
@@ -268,7 +257,7 @@ code a b {
 	float: left;
 	margin: 2px;
 	padding: 0 3px;
-	font-family: Verdana, "Geneva CE", lucida, sans-serif;
+	font-family: Verdana, 'Geneva CE', lucida, sans-serif;
 	color: #808080;
 }
 
@@ -293,9 +282,7 @@ code a b {
 	background-color: #006aeb;
 }
 
-/**
- * Content
- */
+/* Content */
 #content {
 	clear: both;
 	padding: 5px 15px;
@@ -335,7 +322,7 @@ dl.tree dd {
 
 .summary {
 	border: 1px solid #cccccc;
-	border-collapse:collapse;
+	border-collapse: collapse;
 	font-size: 1em;
 	width: 100%;
 	margin: 1.2em 0 2.4em;
@@ -425,9 +412,7 @@ tr:hover td {
 	margin: 0 0 5px 25px;
 }
 
-/**
- * Splitter
- */
+/* Splitter */
 #splitter {
 	position: fixed;
 	height: 100%;
@@ -441,9 +426,7 @@ tr:hover td {
 	opacity: .5;
 }
 
-/**
- * Footer
- */
+/* Footer */
 #footer {
 	border-top: 1px solid #e9eeef;
 	clear: both;
@@ -456,9 +439,7 @@ tr:hover td {
 	background: #ffffff url('footer.gif') no-repeat center top;
 }
 
-/**
- * Tree
- */
+/* Tree */
 div.tree ul {
 	list-style: none;
 	background: url('tree-vertical.gif') left repeat-y;
@@ -491,9 +472,7 @@ div.tree span.padding {
 	padding-left: 15px;
 }
 
-/**
- * Source code
- */
+/* Source code */
 .php-keyword1 {
 	color: #e71818;
 	font-weight: bold;
@@ -531,6 +510,6 @@ div.tree span.padding {
 }
 
 .l:target {
-	background: #006AEB url('code-line.png') right center no-repeat;
+	background: #006aeb url('code-line.png') right center no-repeat;
 	color: #FFF;
 }

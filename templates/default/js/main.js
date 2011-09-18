@@ -1,5 +1,4 @@
 $(function() {
-
 	// Menu
 
 	var $groups = $('#groups');
@@ -89,7 +88,7 @@ $(function() {
 			$.cookie('sorted', sorted, {expires: 365});
 			var attr = sorted ? 'data-order' : 'data-orig-order';
 			$this
-				.closest("table")
+				.closest('table')
 					.find('tr').sortElements(function(a, b) {
 						return $(a).attr(attr) > $(b).attr(attr) ? 1 : -1;
 					});
@@ -114,7 +113,8 @@ $(function() {
 				}, 500);
 			}, function() {
 				clearTimeout(timeout);
-			}).click(function() { // Immediate hover effect on summary
+			}).click(function() {
+				// Immediate hover effect on summary
 				clearTimeout(timeout);
 				var $this = $(this);
 				$('.short', $this).hide();

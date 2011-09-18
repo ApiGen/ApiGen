@@ -291,7 +291,7 @@ class Generator extends Nette\Object
 	/**
 	 * Generates API documentation.
 	 *
-	 * @throws \ApiGen\Exception If destination directory is not writable
+	 * @throws \ApiGen\Exception If destination directory is not writable.
 	 */
 	public function generate()
 	{
@@ -596,7 +596,12 @@ class Generator extends Nette\Object
 
 					$elements = array($parentElement);
 					if ($parentElement instanceof ReflectionClass) {
-						$elements = array_merge($elements, array_values($parentElement->getOwnMethods()), array_values($parentElement->getOwnConstants()), array_values($parentElement->getOwnProperties()));
+						$elements = array_merge(
+							$elements,
+							array_values($parentElement->getOwnMethods()),
+							array_values($parentElement->getOwnConstants()),
+							array_values($parentElement->getOwnProperties())
+						);
 					}
 
 					if ($parentElement instanceof ReflectionClass) {

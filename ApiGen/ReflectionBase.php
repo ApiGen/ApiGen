@@ -151,7 +151,7 @@ abstract class ReflectionBase
 	 * @param array $args Arguments
 	 * @return mixed
 	 */
-	public function __call($name, $args)
+	public function __call($name, array $args)
 	{
 		return call_user_func_array(array($this->reflection, $name), $args);
 	}

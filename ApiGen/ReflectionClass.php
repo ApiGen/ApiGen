@@ -120,6 +120,8 @@ class ReflectionClass extends ReflectionBase
 							self::$methodAccessLevels |= InternalReflectionMethod::IS_PRIVATE;
 							self::$propertyAccessLevels |= InternalReflectionProperty::IS_PRIVATE;
 							break;
+						default:
+							break;
 					}
 				}
 			} else {
@@ -192,6 +194,7 @@ class ReflectionClass extends ReflectionBase
 	 *
 	 * @param string $name Method name
 	 * @return \ApiGen\ReflectionMethod
+	 * @throws \InvalidArgumentException If required method does not exist.
 	 */
 	public function getMethod($name)
 	{
@@ -266,6 +269,7 @@ class ReflectionClass extends ReflectionBase
 	 *
 	 * @param string $name Method name
 	 * @return \ApiGen\ReflectionProperty
+	 * @throws \InvalidArgumentException If required property does not exist.
 	 */
 	public function getProperty($name)
 	{
@@ -320,6 +324,7 @@ class ReflectionClass extends ReflectionBase
 	 *
 	 * @param string $name Constant name
 	 * @return \ApiGen\ReflectionConstant
+	 * @throws \InvalidArgumentException If required constant does not exist.
 	 */
 	public function getConstantReflection($name)
 	{
@@ -380,6 +385,7 @@ class ReflectionClass extends ReflectionBase
 	 *
 	 * @param string $name Constant name
 	 * @return \ApiGen\ReflectionConstant
+	 * @throws \InvalidArgumentException If required constant does not exist.
 	 */
 	public function getOwnConstantReflection($name)
 	{
