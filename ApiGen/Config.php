@@ -111,7 +111,7 @@ class Config
 					$next = next($options);
 					if (false === $next || '-' === $next{0}) {
 						prev($options);
-						$value = true;
+						$value = 'yes';
 					} else {
 						$value = $next;
 					}
@@ -154,7 +154,7 @@ class Config
 
 		// Parse options
 		foreach ($this->options as $option => $value) {
-			$option = preg_replace_callback('#-([a-z])#', function($matches) {
+			$option = preg_replace_callback('~-([a-z])~', function($matches) {
 				return ucfirst($matches[1]);
 			}, $option);
 
