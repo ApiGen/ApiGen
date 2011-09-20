@@ -298,9 +298,16 @@ class Template extends Nette\Templating\FileTemplate
 					'license' => 5, 'author' => 6, 'version' => 7, 'since' => 8, 'see' => 9, 'uses' => 10,
 					'link' => 11, 'internal' => 14, 'example' => 13, 'tutorial' => 14, 'todo' => 15
 				);
-				$orderA = isset($order[$a]) ? $order[$a] : 99;
-				$orderB = isset($order[$b]) ? $order[$b] : 99;
-				return $orderA - $orderB;
+
+				if (isset($order[$a], $order[$b])) {
+					return $order[$a] - $order[$b];
+				} elseif (isset($order[$a])) {
+					return -1;
+				} elseif (isset($order[$b])) {
+					return 1;
+				} else {
+					return strcasecmp($a, $b);
+				}
 			});
 			return $annotations;
 		});
