@@ -157,7 +157,7 @@ abstract class ReflectionBase
 	}
 
 	/**
-	 * Returns if the class should be documented.
+	 * Returns if the element should be documented.
 	 *
 	 * @return boolean
 	 */
