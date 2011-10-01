@@ -68,12 +68,12 @@ $(function() {
 				return !autocompleteFound && '' !== $('#search input[name=cx]').val();
 			});
 
-	// Save original order
+	// Save natural order
 	$('table.summary tr[data-order]', $content).each(function(index) {
 		do {
 			index = '0' + index;
 		} while (index.length < 3);
-		$(this).attr('data-orig-order', index);
+		$(this).attr('data-order-natural', index);
 	});
 
 	// Switch between natural and alphabetical order
@@ -83,10 +83,11 @@ $(function() {
 	$caption
 		.click(function() {
 			var $this = $(this);
-			var sorted = !$this.data('sorted');
-			$this.data('sorted', sorted);
-			$.cookie('sorted', sorted, {expires: 365});
-			var attr = sorted ? 'data-order' : 'data-orig-order';
+			var order = $this.data('order') || 'natural';
+			order = 'natural' === order ? 'alphabetical' : 'natural';
+			$this.data('order', order);
+			$.cookie('order', order, {expires: 365});
+			var attr = 'alphabetical' === order ? 'data-order' : 'data-order-natural';
 			$this
 				.closest('table')
 					.find('tr').sortElements(function(a, b) {
@@ -96,7 +97,7 @@ $(function() {
 		})
 		.addClass('switchable')
 		.attr('title', 'Switch between natural and alphabetical order');
-	if ('true' === $.cookie('sorted')) {
+	if ((null === $.cookie('order') && 'alphabetical' === ApiGen.options.elementsOrder) || 'alphabetical' === $.cookie('order')) {
 		$caption.click();
 	}
 

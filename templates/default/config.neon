@@ -49,3 +49,4 @@ templates:
 
 options:
 	elementDetailsCollapsed: Yes
+	elementsOrder: natural
