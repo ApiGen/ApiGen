@@ -20,7 +20,7 @@ namespace ApiGen;
  *
  * @author Jaroslav Hanslík
  */
-class ReflectionConstant extends ReflectionBase
+class ReflectionConstant extends ReflectionElement
 {
 	/**
 	 * Returns the constant declaring class.
@@ -30,11 +30,11 @@ class ReflectionConstant extends ReflectionBase
 	public function getDeclaringClass()
 	{
 		$className = $this->reflection->getDeclaringClassName();
-		return null === $className ? null : self::$classes[$className];
+		return null === $className ? null : self::$allClasses[$className];
 	}
 
 	/**
-	 * Returns if the class should be documented.
+	 * Returns if the constant should be documented.
 	 *
 	 * @return boolean
 	 */

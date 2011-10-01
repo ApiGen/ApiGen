@@ -14,13 +14,13 @@
 namespace ApiGen;
 
 /**
- * Function reflection envelope.
+ * Property reflection envelope.
  *
  * Alters TokenReflection\IReflectionProperty functionality for ApiGen.
  *
  * @author Ondřej Nešpor
  */
-class ReflectionProperty extends ReflectionBase
+class ReflectionProperty extends ReflectionElement
 {
 	/**
 	 * Returns the property declaring class.
@@ -30,7 +30,7 @@ class ReflectionProperty extends ReflectionBase
 	public function getDeclaringClass()
 	{
 		$className = $this->reflection->getDeclaringClassName();
-		return null === $className ? null : self::$classes[$className];
+		return null === $className ? null : self::$allClasses[$className];
 	}
 
 	/**
@@ -41,6 +41,6 @@ class ReflectionProperty extends ReflectionBase
 	public function getDeclaringTrait()
 	{
 		$traitName = $this->reflection->getDeclaringTraitName();
-		return null === $traitName ? null : self::$classes[$traitName];
+		return null === $traitName ? null : self::$allClasses[$traitName];
 	}
 }

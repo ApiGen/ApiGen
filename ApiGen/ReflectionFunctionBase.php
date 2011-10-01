@@ -22,7 +22,7 @@ use TokenReflection;
  *
  * @author Ondřej Nešpor
  */
-abstract class ReflectionFunctionBase extends ReflectionBase
+abstract class ReflectionFunctionBase extends ReflectionElement
 {
 	/**
 	 * Returns a list of function/method parameters.

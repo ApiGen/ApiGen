@@ -14,23 +14,23 @@
 namespace ApiGen;
 
 /**
- * Constant reflection envelope.
+ * Parameter reflection envelope.
  *
  * Alters TokenReflection\IReflectionParameter functionality for ApiGen.
  *
  * @author Ondřej Nešpor
  */
-class ReflectionParameter extends ReflectionBase
+class ReflectionParameter extends ReflectionElement
 {
 	/**
-	 * Returns reflection of the required class of the value.
+	 * Returns reflection of the required class of the parameter.
 	 *
 	 * @return \ApiGen\ReflectionClass|null
 	 */
 	public function getClass()
 	{
 		$className = $this->reflection->getClassName();
-		return null === $className ? null : self::$classes[$className];
+		return null === $className ? null : self::$allClasses[$className];
 	}
 
 	/**
@@ -43,20 +43,20 @@ class ReflectionParameter extends ReflectionBase
 		$functionName = $this->reflection->getDeclaringFunctionName();
 
 		if ($className = $this->reflection->getDeclaringClassName()) {
-			return self::$classes[$className]->getMethod($functionName);
+			return self::$allClasses[$className]->getMethod($functionName);
 		} else {
-			return self::$functions[$functionName];
+			return self::$allFunctions[$functionName];
 		}
 	}
 
 	/**
-	 * Returns the method declaring class.
+	 * Returns the function/method declaring class.
 	 *
 	 * @return \ApiGen\ReflectionClass|null
 	 */
 	public function getDeclaringClass()
 	{
 		$className = $this->reflection->getDeclaringClassName();
-		return null === $className ? null : self::$classes[$className];
+		return null === $className ? null : self::$allClasses[$className];
 	}
 }

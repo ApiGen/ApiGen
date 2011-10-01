@@ -24,7 +24,7 @@ use ReflectionMethod as InternalReflectionMethod, ReflectionProperty as Internal
  * @author Jaroslav Hanslík
  * @author Ondřej Nešpor
  */
-class ReflectionClass extends ReflectionBase
+class ReflectionClass extends ReflectionElement
 {
 	/**
 	 * Access level for methods.
@@ -419,7 +419,7 @@ class ReflectionClass extends ReflectionBase
 	public function getParentClass()
 	{
 		if ($className = $this->reflection->getParentClassName()) {
-			return self::$classes[$className];
+			return self::$allClasses[$className];
 		}
 		return $className;
 	}
@@ -432,7 +432,7 @@ class ReflectionClass extends ReflectionBase
 	public function getParentClasses()
 	{
 		if (null === $this->parentClasses) {
-			$classes = self::$classes;
+			$classes = self::$allClasses;
 			$this->parentClasses = array_map(function(IReflectionClass $class) use ($classes) {
 				return $classes[$class->getName()];
 			}, $this->reflection->getParentClasses());
@@ -447,7 +447,7 @@ class ReflectionClass extends ReflectionBase
 	 */
 	public function getInterfaces()
 	{
-		$classes = self::$classes;
+		$classes = self::$allClasses;
 		return array_map(function(IReflectionClass $class) use ($classes) {
 			return $classes[$class->getName()];
 		}, $this->reflection->getInterfaces());
@@ -460,7 +460,7 @@ class ReflectionClass extends ReflectionBase
 	 */
 	public function getOwnInterfaces()
 	{
-		$classes = self::$classes;
+		$classes = self::$allClasses;
 		return array_map(function(IReflectionClass $class) use ($classes) {
 			return $classes[$class->getName()];
 		}, $this->reflection->getOwnInterfaces());
@@ -473,7 +473,7 @@ class ReflectionClass extends ReflectionBase
 	 */
 	public function getTraits()
 	{
-		$classes = self::$classes;
+		$classes = self::$allClasses;
 		return array_map(function(IReflectionClass $class) use ($classes) {
 			return $classes[$class->getName()];
 		}, $this->reflection->getTraits());
@@ -486,7 +486,7 @@ class ReflectionClass extends ReflectionBase
 	 */
 	public function getOwnTraits()
 	{
-		$classes = self::$classes;
+		$classes = self::$allClasses;
 		return array_map(function(IReflectionClass $class) use ($classes) {
 			return $classes[$class->getName()];
 		}, $this->reflection->getOwnTraits());
@@ -501,7 +501,7 @@ class ReflectionClass extends ReflectionBase
 	{
 		$subClasses = array();
 		$name = $this->reflection->getName();
-		foreach (self::$classes as $class) {
+		foreach (self::$allClasses as $class) {
 			if (!$class->isDocumented()) {
 				continue;
 			}
@@ -521,7 +521,7 @@ class ReflectionClass extends ReflectionBase
 	{
 		$subClasses = array();
 		$name = $this->reflection->getName();
-		foreach (self::$classes as $class) {
+		foreach (self::$allClasses as $class) {
 			if (!$class->isDocumented()) {
 				continue;
 			}
@@ -545,7 +545,7 @@ class ReflectionClass extends ReflectionBase
 
 		$implementers = array();
 		$name = $this->reflection->getName();
-		foreach (self::$classes as $class) {
+		foreach (self::$allClasses as $class) {
 			if (!$class->isDocumented()) {
 				continue;
 			}
@@ -569,7 +569,7 @@ class ReflectionClass extends ReflectionBase
 
 		$implementers = array();
 		$name = $this->reflection->getName();
-		foreach (self::$classes as $class) {
+		foreach (self::$allClasses as $class) {
 			if (!$class->isDocumented()) {
 				continue;
 			}
@@ -593,7 +593,7 @@ class ReflectionClass extends ReflectionBase
 
 		$users = array();
 		$name = $this->reflection->getName();
-		foreach (self::$classes as $class) {
+		foreach (self::$allClasses as $class) {
 			if (!$class->isDocumented()) {
 				continue;
 			}
@@ -618,7 +618,7 @@ class ReflectionClass extends ReflectionBase
 
 		$users = array();
 		$name = $this->reflection->getName();
-		foreach (self::$classes as $class) {
+		foreach (self::$allClasses as $class) {
 			if (!$class->isDocumented()) {
 				continue;
 			}

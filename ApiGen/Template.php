@@ -15,7 +15,6 @@ namespace ApiGen;
 
 use Nette, FSHL;
 use TokenReflection\ReflectionAnnotation;
-use TokenReflection\IReflectionExtension as ReflectionExtension;
 
 /**
  * Customized ApiGen template class.
@@ -361,10 +360,10 @@ class Template extends Nette\Templating\FileTemplate
 	 * Returns links for types.
 	 *
 	 * @param string $annotation
-	 * @param \ApiGen\ReflectionBase $context
+	 * @param \ApiGen\ReflectionElement $context
 	 * @return string
 	 */
-	public function getTypeLinks($annotation, ReflectionBase $context)
+	public function getTypeLinks($annotation, ReflectionElement $context)
 	{
 		$links = array();
 		list($types) = $this->split($annotation);
@@ -488,11 +487,11 @@ class Template extends Nette\Templating\FileTemplate
 	/**
 	 * Returns a link to a element source code.
 	 *
-	 * @param \ApiGen\ReflectionBase $element Element reflection
+	 * @param \ApiGen\ReflectionElement $element Element reflection
 	 * @param boolean $withLine Include file line number into the link
 	 * @return string
 	 */
-	public function getSourceUrl(ReflectionBase $element, $withLine = true)
+	public function getSourceUrl(ReflectionElement $element, $withLine = true)
 	{
 		if ($element instanceof ReflectionClass || $element instanceof ReflectionFunction || ($element instanceof ReflectionConstant && null === $element->getDeclaringClassName())) {
 			$elementName = $element->getName();
@@ -648,10 +647,10 @@ class Template extends Nette\Templating\FileTemplate
 	 * Tries to parse a definition of a class/method/property/constant/function and returns the appropriate instance if successful.
 	 *
 	 * @param string $definition Definition
-	 * @param \ApiGen\ReflectionBase $context Link context
-	 * @return \ApiGen\ReflectionBase|null
+	 * @param \ApiGen\ReflectionElement $context Link context
+	 * @return \ApiGen\ReflectionElement|null
 	 */
-	public function resolveElement($definition, ReflectionBase $context)
+	public function resolveElement($definition, ReflectionElement $context)
 	{
 		// No simple type resolving
 		static $types = array(
@@ -734,10 +733,10 @@ class Template extends Nette\Templating\FileTemplate
 	 * Tries to parse a definition of a class/method/property/constant/function and returns the appropriate link if successful.
 	 *
 	 * @param string $definition Definition
-	 * @param \ApiGen\ReflectionBase $context Link context
+	 * @param \ApiGen\ReflectionElement $context Link context
 	 * @return string|null
 	 */
-	public function resolveLink($definition, ReflectionBase $context)
+	public function resolveLink($definition, ReflectionElement $context)
 	{
 		if (empty($definition)) {
 			return null;
@@ -780,10 +779,10 @@ class Template extends Nette\Templating\FileTemplate
 	 * Resolves links in documentation.
 	 *
 	 * @param string $text Processed documentation text
-	 * @param \ApiGen\ReflectionBase $context Reflection object
+	 * @param \ApiGen\ReflectionElement $context Reflection object
 	 * @return string
 	 */
-	private function resolveLinks($text, ReflectionBase $context)
+	private function resolveLinks($text, ReflectionElement $context)
 	{
 		$that = $this;
 		return preg_replace_callback('~{@(?:link|see)\\s+([^}]+)}~', function ($matches) use ($context, $that) {
@@ -813,11 +812,11 @@ class Template extends Nette\Templating\FileTemplate
 	 * Formats text as documentation block or line.
 	 *
 	 * @param string $text Text
-	 * @param \ApiGen\ReflectionBase $context Reflection object
+	 * @param \ApiGen\ReflectionElement $context Reflection object
 	 * @param boolean $block Parse text as block
 	 * @return string
 	 */
-	public function doc($text, ReflectionBase $context, $block = false)
+	public function doc($text, ReflectionElement $context, $block = false)
 	{
 		return $this->resolveLinks($this->texy->process($this->resolveInternal($text), !$block), $context);
 	}

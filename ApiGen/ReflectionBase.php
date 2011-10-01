@@ -30,14 +30,21 @@ abstract class ReflectionBase
 	 *
 	 * @var \ArrayObject
 	 */
-	protected static $classes;
+	protected static $allClasses;
+
+	/**
+	 * List of constants.
+	 *
+	 * @var \ArrayObject
+	 */
+	protected static $allConstants;
 
 	/**
 	 * List of functions.
 	 *
 	 * @var \ArrayObject
 	 */
-	protected static $functions;
+	protected static $allFunctions;
 
 	/**
 	 * Generator.
@@ -75,18 +82,11 @@ abstract class ReflectionBase
 	protected $reflection;
 
 	/**
-	 * Cache for information if the class should be documented.
-	 *
-	 * @var boolean
-	 */
-	protected $isDocumented;
-
-	/**
 	 * Constructor.
 	 *
-	 * Sets the inspected element reflection.
+	 * Sets the inspected reflection.
 	 *
-	 * @param \TokenReflection\IReflection $reflection Inspected element reflection
+	 * @param \TokenReflection\IReflection $reflection Inspected reflection
 	 * @param \ApiGen\Generator $generator ApiGen generator
 	 */
 	public function __construct(IReflection $reflection, Generator $generator)
@@ -94,8 +94,9 @@ abstract class ReflectionBase
 		if (null === self::$generator) {
 			self::$generator = $generator;
 			self::$config = $generator->getConfig();
-			self::$classes = $generator->getClasses();
-			self::$functions = $generator->getFunctions();
+			self::$allClasses = $generator->getClasses();
+			self::$allConstants = $generator->getConstants();
+			self::$allFunctions = $generator->getFunctions();
 		}
 
 		$this->reflectionType = get_class($this);
@@ -154,75 +155,5 @@ abstract class ReflectionBase
 	public function __call($name, array $args)
 	{
 		return call_user_func_array(array($this->reflection, $name), $args);
-	}
-
-	/**
-	 * Returns if the element should be documented.
-	 *
-	 * @return boolean
-	 */
-	public function isMain()
-	{
-		return empty(self::$config->main) || 0 === strpos($this->reflection->getName(), self::$config->main);
-	}
-
-	/**
-	 * Returns if the element should be documented.
-	 *
-	 * @return boolean
-	 */
-	public function isDocumented()
-	{
-		if (null === $this->isDocumented) {
-			$this->isDocumented = $this->reflection->isTokenized() || $this->reflection->isInternal();
-
-			if ($this->isDocumented) {
-				if (!self::$config->php && $this->reflection->isInternal()) {
-					$this->isDocumented = false;
-				} elseif (!self::$config->deprecated && $this->reflection->isDeprecated()) {
-					$this->isDocumented = false;
-				} elseif (!self::$config->internal && ($internal = $this->reflection->getAnnotation('internal')) && empty($internal[0])) {
-					$this->isDocumented = false;
-				}
-			}
-		}
-
-		return $this->isDocumented;
-	}
-
-	/**
-	 * Returns element package name (including subpackage name).
-	 *
-	 * For internal elements returns "PHP", for elements in global space returns "None".
-	 *
-	 * @return string
-	 */
-	public function getPseudoPackageName()
-	{
-		if ($this->reflection->isInternal()) {
-			return 'PHP';
-		}
-
-		if ($package = $this->reflection->getAnnotation('package')) {
-			$packageName = preg_replace('~\s+.*~s', '', $package[0]);
-			if ($subpackage = $this->reflection->getAnnotation('subpackage')) {
-				$packageName .= '\\' . preg_replace('~\s+.*~s', '', $subpackage[0]);
-			}
-			return $packageName;
-		}
-
-		return 'None';
-	}
-
-	/**
-	 * Returns element namespace name.
-	 *
-	 * For internal elements returns "PHP", for elements in global space returns "None".
-	 *
-	 * @return string
-	 */
-	public function getPseudoNamespaceName()
-	{
-		return $this->reflection->isInternal() ? 'PHP' : $this->reflection->getNamespaceName() ?: 'None';
 	}
 }
