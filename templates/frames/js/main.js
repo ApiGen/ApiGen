@@ -1,8 +1,8 @@
 $(function() {
 	// Frames detection
-	var isTopFrame = $('iframe').length !== 0;
-	var isLeftFrame = $('#menu').length !== 0;
-	var isRightFrame = $('#rightInner').length !== 0;
+	var isTopFrame = 0 !== $('iframe').length;
+	var isLeftFrame = 0 !== $('#menu').length;
+	var isRightFrame = 0 !== $('#rightInner').length;
 
 	if (isTopFrame) {
 		// Top
@@ -14,14 +14,15 @@ $(function() {
 		/**
 		 * Loads new page.
 		 *
-		 * @param string page
+		 * @param string href
 		 */
-		window.ApiGen.loadPage = function(page)
+		window.ApiGen.loadPage = function(href)
 		{
 			// Change content
+			var page = href.split('#')[0];
 			var location = window.frames['right'].location.href.split('/');
 			location.pop();
-			location.push(page);
+			location.push(href);
 			window.frames['right'].location.replace(location.join('/'));
 
 			// Change menu
@@ -239,10 +240,10 @@ $(function() {
 		var $content = $('#content');
 
 		// Links
-		$('a:not([href*="://"])').click(function() {
-			var page = $(this).attr('href').replace(/#.*/, '');
-			window.parent.ApiGen.loadPage(page);
-			window.parent.location.hash = page;
+		$('a:not([href*="://"]):not([href^="#"])').click(function() {
+			var href = $(this).attr('href');
+			window.parent.ApiGen.loadPage(href);
+			window.parent.location.hash = href.split('#')[0];
 			return false;
 		});
 
@@ -315,7 +316,7 @@ $(function() {
 			})
 			.addClass('switchable')
 			.attr('title', 'Switch between natural and alphabetical order');
-		if ((null === $.cookie('order') && 'alphabetical' === ApiGen.options.elementsOrder) || 'alphabetical' === $.cookie('order')) {
+		if ((null === $.cookie('order') && 'alphabetical' === window.parent.ApiGen.options.elementsOrder) || 'alphabetical' === $.cookie('order')) {
 			$caption.click();
 		}
 
