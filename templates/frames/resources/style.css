@@ -390,7 +390,7 @@ dl.tree dd {
 	white-space: pre-wrap;
 }
 
-td.name, td.attributes, td.value {
+td.name, td.attributes {
 	width: 1%;
 }
 
