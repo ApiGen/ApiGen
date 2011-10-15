@@ -65,16 +65,16 @@
 				</dir>
 				<dir name="resources">
 					<file name="code-line.png" role="data" />
-					<file name="collapsed.gif" role="data" />
-					<file name="footer.gif" role="data" />
-					<file name="inherit.gif" role="data" />
+					<file name="collapsed.png" role="data" />
+					<file name="footer.png" role="data" />
+					<file name="inherit.png" role="data" />
 					<file name="resize.png" role="data" />
-					<file name="sort.gif" role="data" />
+					<file name="sort.png" role="data" />
 					<file name="style.css" role="data" />
-					<file name="tree-cleaner.gif" role="data" />
-					<file name="tree-hasnext.gif" role="data" />
+					<file name="tree-cleaner.png" role="data" />
+					<file name="tree-hasnext.png" role="data" />
 					<file name="tree-last.png" role="data" />
-					<file name="tree-vertical.gif" role="data" />
+					<file name="tree-vertical.png" role="data" />
 				</dir>
 				<file name="@elementlist.latte" role="data" />
 				<file name="@layout.latte" role="data" />
@@ -105,16 +105,16 @@
 				</dir>
 				<dir name="resources">
 					<file name="code-line.png" role="data" />
-					<file name="collapsed.gif" role="data" />
-					<file name="footer.gif" role="data" />
-					<file name="inherit.gif" role="data" />
+					<file name="collapsed.png" role="data" />
+					<file name="footer.png" role="data" />
+					<file name="inherit.png" role="data" />
 					<file name="resize.png" role="data" />
-					<file name="sort.gif" role="data" />
+					<file name="sort.png" role="data" />
 					<file name="style.css" role="data" />
-					<file name="tree-cleaner.gif" role="data" />
-					<file name="tree-hasnext.gif" role="data" />
+					<file name="tree-cleaner.png" role="data" />
+					<file name="tree-hasnext.png" role="data" />
 					<file name="tree-last.png" role="data" />
-					<file name="tree-vertical.gif" role="data" />
+					<file name="tree-vertical.png" role="data" />
 				</dir>
 				<file name="@content.latte" role="data" />
 				<file name="@elementlist.latte" role="data" />

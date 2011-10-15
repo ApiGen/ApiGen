@@ -144,7 +144,7 @@ code a b {
 	display: block;
 	width: 12px;
 	height: 12px;
-	background: url('collapsed.gif') #ffffff 0 0 no-repeat;
+	background: url('collapsed.png') #ffffff 0 0 no-repeat;
 }
 
 #menu #groups span:hover {
@@ -329,7 +329,7 @@ dl.tree dd {
 }
 
 .summary caption.switchable {
-	background: #ecede5 url('sort.gif') no-repeat center right;
+	background: #ecede5 url('sort.png') no-repeat center right;
 	cursor: pointer;
 }
 
@@ -449,13 +449,13 @@ td.name, td.attributes {
 	padding: 20px 0 0;
 	margin: 3em 0 0;
 	height: 90px;
-	background: #ffffff url('footer.gif') no-repeat center top;
+	background: #ffffff url('footer.png') no-repeat center top;
 }
 
 /* Tree */
 div.tree ul {
 	list-style: none;
-	background: url('tree-vertical.gif') left repeat-y;
+	background: url('tree-vertical.png') left repeat-y;
 	padding: 0;
 	margin-left: 20px;
 }
@@ -470,7 +470,7 @@ div.tree div {
 }
 
 div.tree div.notlast {
-	background: url('tree-hasnext.gif') left 10px no-repeat;
+	background: url('tree-hasnext.png') left 10px no-repeat;
 }
 
 div.tree div.last {
@@ -478,7 +478,7 @@ div.tree div.last {
 }
 
 div.tree li.last {
-	background: url('tree-cleaner.gif') left center repeat-y;
+	background: url('tree-cleaner.png') left center repeat-y;
 }
 
 div.tree span.padding {
