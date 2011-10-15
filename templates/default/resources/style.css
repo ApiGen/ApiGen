@@ -159,7 +159,7 @@ code a b {
 	background-position: -12px -12px;
 }
 
-#menu ul.collapsed {
+#menu #groups ul.collapsed {
 	display: none;
 }
 
@@ -288,23 +288,19 @@ code a b {
 	padding: 5px 15px;
 }
 
-.description {
+.description pre {
+	padding: .6em;
+	background: #fcfcf7;
+}
+
+#content > .description {
 	background: #ecede5;
 	padding: 1px 8px;
 	margin: 1.2em 0;
 }
 
-.description pre, .detailed pre {
-	padding: .6em;
-	background: #fcfcf7;
-}
-
-.description pre {
+#content > .description pre {
 	margin: .5em 0;
-}
-
-.detailed pre {
-	border: .5em solid #ecede5;
 }
 
 dl.tree {
@@ -333,16 +329,40 @@ dl.tree dd {
 }
 
 .summary caption.switchable {
-	background: #ecede5 url(sort.gif) no-repeat center right;
+	background: #ecede5 url('sort.gif') no-repeat center right;
 	cursor: pointer;
 }
 
 .summary td {
-	border: 1px solid #ccc;
+	border: 1px solid #cccccc;
 	margin: 0;
 	padding: 3px 10px;
 	font-size: 1em;
 	vertical-align: top;
+}
+
+.summary td:first-child {
+	text-align: right;
+}
+
+#packages.summary td:first-child, #namespaces.summary td:first-child, .inherited.summary td:first-child, .used.summary td:first-child {
+	text-align: left;
+}
+
+.summary tr:hover td {
+	background: #f6f6f4;
+}
+
+.summary .description pre {
+	border: .5em solid #ecede5;
+}
+
+.summary .description p {
+	margin: .4em 0;
+}
+
+.summary .description.detailed h4 {
+	margin-top: 5px;
 }
 
 .summary dl {
@@ -353,47 +373,32 @@ dl.tree dd {
 	margin: 0 0 0 25px;
 }
 
-.short p, .detailed p {
-	margin: .4em 0;
-}
-
-tr:hover td {
-	background: #f6f6f4;
-}
-
-.detailed h4 {
-	margin-top: 5px;
-}
-
-.hidden {
-	display: none;
-}
-
-.nowrap {
+.name, .attributes {
 	white-space: nowrap;
 }
 
-.wrap {
+.value {
 	white-space: pre-wrap;
 }
 
-.deprecated {
-	opacity: .5;
-}
-
-.right {
-	text-align: right;
-}
-
-.min {
+td.name, td.attributes, td.value {
 	width: 1%;
 }
 
-.name {
-	width: 20%;
+.class #methods .name {
+	width: auto;
+	white-space: normal;
 }
 
-.position {
+.class #methods .name > div > code {
+	white-space: pre-wrap;
+}
+
+.class #methods .name > div > code span, .function .value > code {
+	white-space: nowrap;
+}
+
+.class #methods td.name > div, .class td.description > div  {
 	position: relative;
 	padding-right: 1em;
 }
@@ -408,8 +413,16 @@ tr:hover td {
 	color: #006aeb !important;
 }
 
-.smallList {
+.list {
 	margin: 0 0 5px 25px;
+}
+
+.deprecated {
+	opacity: .5;
+}
+
+.hidden {
+	display: none;
 }
 
 /* Splitter */
@@ -511,5 +524,5 @@ div.tree span.padding {
 
 .l:target {
 	background: #006aeb url('code-line.png') right center no-repeat;
-	color: #FFF;
+	color: #ffffff;
 }

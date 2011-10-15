@@ -4,13 +4,13 @@
 {block #title}{if $namespace != 'None'}Namespace {$namespace}{else}No namespace{/if}{/block}
 
 {block #content}
-<div id="content">
+<div id="content" class="namespace">
 	<h1>{if $namespace != 'None'}Namespace {!$namespace|namespaceLinks:false}{else}No namespace{/if}</h1>
 
 	<table class="summary" id="namespaces" n:if="$subnamespaces">
 	<caption>Namespaces summary</caption>
 	<tr n:foreach="$subnamespaces as $namespace">
-		<td><a href="{$namespace|namespaceUrl}">{$namespace}</a></td>
+		<td class="name"><a href="{$namespace|namespaceUrl}">{$namespace}</a></td>
 	</tr>
 	</table>
 

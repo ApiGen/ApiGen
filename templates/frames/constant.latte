@@ -4,7 +4,7 @@
 {block #title}{if $constant->deprecated}Deprecated {/if}Constant {$constant->name}{/block}
 
 {block #content}
-<div id="content">
+<div id="content" class="constant">
 	<h1>{if $constant->deprecated}Deprecated {/if}Constant {$constant->shortName}</h1>
 
 	<div class="description" n:if="$template->longDescription($constant)">
@@ -27,13 +27,13 @@
 	<table class="summary" id="vars">
 	<caption>Value summary</caption>
 	<tr>
-		<td class="right min"><code class="nowrap">
+		<td class="name"><code>
 			{ifset $annotations['var']}{!$annotations['var'][0]|typeLinks:$constant}{else}{try}{$constant->value|type}{/try}{/ifset}
 		</code></td>
-		<td>
+		<td class="value">{block|strip}
 			{var $element = $template->resolveElement($constant->valueDefinition, $constant)}
-			{if $element}<a href="{$element|constantUrl}">{$constant->valueDefinition}</a>{else}<code class="wrap">{!$constant->valueDefinition|highlightValue:$constant}</code>{/if}
-		</td>
+			{if $element}<a href="{$element|constantUrl}">{$constant->valueDefinition}</a>{else}<code>{!$constant->valueDefinition|highlightValue:$constant}</code>{/if}
+		{/block}</td>
 		<td>{ifset $annotations['var']}{!$annotations['var'][0]|description:$constant}{/ifset}</td>
 	</tr>
 	</table>

@@ -16,7 +16,7 @@
 	{continueIf $config->main && 0 !== strpos($package, $config->main)}
 	<tr>
 		{var $group = true}
-		<td><a href="{$package|packageUrl}">{$package}</a></td>
+		<td class="name"><a href="{$package|packageUrl}">{$package}</a></td>
 	</tr>
 	{/foreach}
 	</table>
@@ -29,7 +29,7 @@
 	{continueIf $config->main && 0 !== strpos($namespace, $config->main)}
 	<tr>
 		{var $group = true}
-		<td><a href="{$namespace|namespaceUrl}">{$namespace}</a></td>
+		<td class="name"><a href="{$namespace|namespaceUrl}">{$namespace}</a></td>
 	</tr>
 	{/foreach}
 	</table>
