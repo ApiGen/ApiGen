@@ -6,7 +6,7 @@ REM Copyright (c) 2011 Jaroslav Hanslík (https://github.com/kukulich)
 REM Copyright (c) 2011 Ondřej Nešpor (https://github.com/Andrewsville)
 REM
 REM For the full copyright and license information, please view
-REM the file LICENCE that was distributed with this source code.
+REM the file LICENCE.md that was distributed with this source code.
 REM
 
 IF EXIST "@php_bin@" (

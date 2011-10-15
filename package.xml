@@ -32,7 +32,7 @@
 	<release>stable</release>
 	<api>stable</api>
 </stability>
-<license uri="https://github.com/apigen/apigen/blob/master/LICENSE">New BSD, GPL v2, GPL v3</license>
+<license uri="https://github.com/apigen/apigen/blob/master/LICENSE.md">New BSD, GPL v2, GPL v3</license>
 <notes>https://github.com/apigen/apigen/blob/master/CHANGELOG.md</notes>
 <contents>
 	<dir name="/">
@@ -149,7 +149,7 @@
 		</file>
 		<file name="config.neon.example" role="cfg" />
 		<file name="CHANGELOG.md" role="doc" />
-		<file name="LICENSE" role="doc" />
+		<file name="LICENSE.md" role="doc" />
 		<file name="README.md" role="doc" />
 	</dir>
 </contents>
