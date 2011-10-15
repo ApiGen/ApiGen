@@ -192,7 +192,7 @@ class Template extends Nette\Templating\FileTemplate
 		$this->registerHelper('description', function($annotation, $context) use ($that) {
 			list(, $description) = $that->split($annotation);
 			if ($context instanceof ReflectionParameter) {
-				$description = preg_replace('~^(\\$?' . $context->getName() . ')(\s+|$)~i', '\\2', $description, 1);
+				$description = preg_replace('~^(\\$' . $context->getName() . ')(\s+|$)~i', '\\2', $description, 1);
 			}
 			return $that->doc($description, $context);
 		});
