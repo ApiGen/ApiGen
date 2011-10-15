@@ -1,4 +1,4 @@
-## Licenses ##
+# Licenses #
 
 You may use ApiGen under the terms of either the New BSD License or the GNU General Public License (GPL) version 2 or 3.
 
@@ -6,11 +6,12 @@ The BSD License is recommended for most projects. It is easy to understand and i
 
 You don't have to notify anyone which license you are using. You can freely use ApiGen in commercial projects as long as the copyright header remains intact.
 
-### New BSD License ###
+## New BSD License ##
 
 Copyright (c) 2004, 2011 [David Grudl](http://davidgrudl.com)
 Copyright (c) 2011 [Jaroslav Hanslík](https://github.com/kukulich)
 Copyright (c) 2011 [Ondřej Nešpor](https://github.com/Andrewsville)
+
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
@@ -23,7 +24,7 @@ Redistribution and use in source and binary forms, with or without modification,
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-### GNU General Public License ###
+## GNU General Public License ##
 
 GPL licenses are very very long, so instead of including them here we offer you URLs with full text:
 
