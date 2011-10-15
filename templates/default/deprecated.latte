@@ -87,7 +87,7 @@
 		<td class="name"><a href="{$constant->declaringClassName|classUrl}">{$constant->declaringClassName}</a></td>
 		<td class="name"><code><a href="{$constant|constantUrl}"><b>{$constant->name}</b></a></code></td>
 		{else}
-		<td class="name" n:if="$namespaces || $classes || $interfaces || $exceptions"><a n:if="$constant->namespaceName" href="{$constant->namespaceName|namespaceUrl}">{$constant->namespaceName}</a></td>
+		<td class="name" n:if="$namespaces || $classes || $interfaces || $traits || $exceptions"><a n:if="$constant->namespaceName" href="{$constant->namespaceName|namespaceUrl}">{$constant->namespaceName}</a></td>
 		<td n:class="name"><code><a href="{$constant|constantUrl}"><b>{$constant->shortName}</b></a></code></td>
 		{/if}
 		<td>

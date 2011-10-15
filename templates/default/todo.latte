@@ -78,7 +78,7 @@
 		<td class="name" rowspan="{$count}"><a href="{$constant->declaringClassName|classUrl}">{$constant->declaringClassName}</a></td>
 		<td class="name" rowspan="{$count}"><code><a href="{$constant|constantUrl}"><b>{$constant->name}</b></a></code></td>
 		{else}
-		<td class="name" rowspan="{$count}" n:if="$namespaces || $classes || $interfaces || $exceptions"><a n:if="$constant->namespaceName" href="{$constant->namespaceName|namespaceUrl}">{$constant->namespaceName}</a></td>
+		<td class="name" rowspan="{$count}" n:if="$namespaces || $classes || $interfaces || $traits || $exceptions"><a n:if="$constant->namespaceName" href="{$constant->namespaceName|namespaceUrl}">{$constant->namespaceName}</a></td>
 		<td n:class="name" rowspan="{$count}"><code><a href="{$constant|constantUrl}"><b>{$constant->shortName}</b></a></code></td>
 		{/if}
 		{foreach $constant->annotations['todo'] as $description}
