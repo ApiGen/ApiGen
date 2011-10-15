@@ -14,7 +14,6 @@
 namespace ApiGen;
 
 use Nette, FSHL;
-use TokenReflection\ReflectionAnnotation;
 
 /**
  * Customized ApiGen template class.
@@ -198,24 +197,19 @@ class Template extends Nette\Templating\FileTemplate
 			return $that->doc($description, $context);
 		});
 		$this->registerHelper('shortDescription', function($element) use ($that) {
-			return $that->doc($element->getAnnotation(ReflectionAnnotation::SHORT_DESCRIPTION), $element);
+			return $that->doc($element->getShortDescription(), $element);
 		});
 		$this->registerHelper('longDescription', function($element) use ($that) {
-			$short = $element->getAnnotation(ReflectionAnnotation::SHORT_DESCRIPTION);
-			$long = $element->getAnnotation(ReflectionAnnotation::LONG_DESCRIPTION);
-
-			if ($long) {
-				$short .= "\n\n" . $long;
-			}
+			$long = $element->getLongDescription();
 
 			// Merge lines
-			$short = preg_replace_callback('~(?:<(code|pre)>.+?</\1>)|([^<]*)~s', function($matches) {
+			$long = preg_replace_callback('~(?:<(code|pre)>.+?</\1>)|([^<]*)~s', function($matches) {
 				return !empty($matches[2])
 					? preg_replace('~\n(?:\t|[ ])+~', ' ', $matches[2])
 					: $matches[0];
-			}, $short);
+			}, $long);
 
-			return $that->doc($short, $element, true);
+			return $that->doc($long, $element, true);
 		});
 
 		// Individual annotations processing
@@ -265,7 +259,6 @@ class Template extends Nette\Templating\FileTemplate
 		$this->registerHelper('annotationFilter', function(array $annotations, array $filter = array()) use ($todo, $internal) {
 			// Unsupported or deprecated annotations
 			static $unsupported = array(
-				ReflectionAnnotation::SHORT_DESCRIPTION, ReflectionAnnotation::LONG_DESCRIPTION,
 				'property', 'property-read', 'property-write', 'method', 'abstract', 'access', 'final', 'filesource', 'global', 'name', 'static', 'staticvar'
 			);
 			foreach ($unsupported as $annotation) {

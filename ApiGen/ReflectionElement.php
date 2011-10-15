@@ -110,4 +110,54 @@ abstract class ReflectionElement extends ReflectionBase
 	{
 		return $this->reflection->isInternal() ? 'PHP' : $this->reflection->getNamespaceName() ?: 'None';
 	}
+
+	/**
+	 * Returns the short description.
+	 *
+	 * @return string
+	 */
+	public function getShortDescription()
+	{
+		$short = $this->reflection->getAnnotation(\TokenReflection\ReflectionAnnotation::SHORT_DESCRIPTION);
+		if (!empty($short)) {
+			return $short;
+		}
+
+		if ($this instanceof ReflectionProperty || $this instanceof ReflectionConstant) {
+			$var = $this->reflection->getAnnotation('var');
+			list(, $short) = preg_split('~\s+|$~', $var[0], 2);
+		}
+
+		return $short;
+	}
+
+	/**
+	 * Returns the long description.
+	 *
+	 * @return string
+	 */
+	public function getLongDescription()
+	{
+		$short = $this->getShortDescription();
+		$long = $this->reflection->getAnnotation(\TokenReflection\ReflectionAnnotation::LONG_DESCRIPTION);
+
+		if (!empty($long)) {
+			$short .= "\n\n" . $long;
+		}
+
+		return $short;
+	}
+
+	/**
+	 * Returns all annotations.
+	 *
+	 * @return array
+	 */
+	public function getAnnotations()
+	{
+		$annotations = $this->reflection->getAnnotations();
+		unset($annotations[\TokenReflection\ReflectionAnnotation::SHORT_DESCRIPTION]);
+		unset($annotations[\TokenReflection\ReflectionAnnotation::LONG_DESCRIPTION]);
+		return $annotations;
+	}
 }
