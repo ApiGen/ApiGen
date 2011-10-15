@@ -44,6 +44,8 @@
 			<file name="ReflectionBase.php" role="php" />
 			<file name="ReflectionClass.php" role="php" />
 			<file name="ReflectionConstant.php" role="php" />
+			<file name="ReflectionElement.php" role="php" />
+			<file name="ReflectionExtension.php" role="php" />
 			<file name="ReflectionFunction.php" role="php" />
 			<file name="ReflectionFunctionBase.php" role="php" />
 			<file name="ReflectionMethod.php" role="php" />
@@ -62,6 +64,7 @@
 					<file name="main.js" role="data" />
 				</dir>
 				<dir name="resources">
+					<file name="code-line.png" role="data" />
 					<file name="collapsed.gif" role="data" />
 					<file name="footer.gif" role="data" />
 					<file name="inherit.gif" role="data" />
@@ -101,6 +104,7 @@
 					<file name="main.js" role="data" />
 				</dir>
 				<dir name="resources">
+					<file name="code-line.png" role="data" />
 					<file name="collapsed.gif" role="data" />
 					<file name="footer.gif" role="data" />
 					<file name="inherit.gif" role="data" />
