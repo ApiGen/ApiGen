@@ -195,11 +195,15 @@ Display progressbars, default is "Yes".
 
 Use colors, default "No" on Windows, "Yes" on other systems. Windows doesn't support colors in console however you can enable it with [Ansicon](http://adoxa.110mb.com/ansicon/).
 
+```--update-check <yes|no>```
+
+Check for a new version of ApiGen, default is "Yes".
+
 ```--debug <yes|no>```
 
 Display additional information (exception trace) in case of an error, default is "No".
 
-```--help|-h ```
+```--help|-h```
 
 Display the list of possible options.
 

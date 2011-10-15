@@ -102,6 +102,15 @@ try {
 
 	$generator->output($generator->getHeader());
 
+	// Check for update
+	if ($config->updateCheck) {
+		ini_set('default_socket_timeout', 5);
+		$latestVersion = @file_get_contents('http://apigen.org/version.txt');
+		if (false !== $latestVersion && version_compare(trim($latestVersion), Generator::VERSION) > 0) {
+			$generator->output(sprintf("New version @header@%s@c available\n\n", $latestVersion));
+		}
+	}
+
 	// Scan
 	if (count($config->source) > 1) {
 		$generator->output(sprintf("Scanning\n @value@%s@c\n", implode("\n ", $config->source)));
