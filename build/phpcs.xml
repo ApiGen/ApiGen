@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset name="ApiGen">
+	<description>ApiGen coding standards</description>
+
+	<rule ref="Kukulich" />
+</ruleset>

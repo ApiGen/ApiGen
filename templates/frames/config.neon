@@ -45,6 +45,10 @@ templates:
 		opensearch:
 			filename: opensearch.xml
 			template: opensearch.xml.latte
+		robots:
+			filename: robots.txt
+			template: robots.txt.latte
 
 options:
 	elementDetailsCollapsed: Yes
+	elementsOrder: natural

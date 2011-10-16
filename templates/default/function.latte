@@ -4,7 +4,7 @@
 {block #title}{if $function->deprecated}Deprecated {/if}Function {$function->name}{/block}
 
 {block #content}
-<div id="content">
+<div id="content" class="function">
 	<h1>{if $function->deprecated}Deprecated {/if}Function {$function->shortName}</h1>
 
 	<div class="description" n:if="$template->longDescription($function)">
@@ -27,14 +27,14 @@
 	<table class="summary" id="parameters" n:if="$function->numberOfParameters">
 	<caption>Parameters summary</caption>
 	<tr n:foreach="$function->parameters as $parameter" data-order="{$parameter->name}" id="${$parameter->name}">
-		<td class="right min"><code class="nowrap">
+		<td class="name"><code>
 			{if $parameter->array}array
 			{elseif $parameter->className}<a href="{$parameter->className|classUrl}" n:tag-if="$template->getClass($parameter->className)">{$parameter->className}</a>
 			{elseif isset($annotations['param'][$parameter->position])}{!$annotations['param'][$parameter->position]|typeLinks:$function}{/if}
 		</code></td>
-		<td class="min"><code class="nowrap">
+		<td class="value"><code>{block|strip}
 			<var>{if $parameter->passedByReference}&amp; {/if}${$parameter->name}</var>{if $parameter->defaultValueAvailable} = {!$parameter->defaultValueDefinition|highlightPHP:$function}{/if}
-		</code></td>
+		{/block}</code></td>
 		<td>
 			{ifset $annotations['param'][$parameter->position]}{!$annotations['param'][$parameter->position]|description:$parameter}{/ifset}
 		</td>
@@ -44,7 +44,7 @@
 	<table class="summary" id="returns" n:if="isset($annotations['return']) && 'void' !== $annotations['return'][0]">
 	<caption>Return value summary</caption>
 	<tr>
-		<td class="right min"><code class="nowrap">
+		<td class="name"><code>
 			{!$annotations['return'][0]|typeLinks:$function}
 		</code></td>
 		<td>
@@ -56,7 +56,7 @@
 	<table class="summary" id="throws" n:ifset="$annotations['throws']">
 	<caption>Thrown exceptions summary</caption>
 	<tr n:foreach="$annotations['throws'] as $throws">
-		<td class="right min"><code class="nowrap">
+		<td class="name"><code>
 			{!$throws|typeLinks:$function}
 		</code></td>
 		<td>

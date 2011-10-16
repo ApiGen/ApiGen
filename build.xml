@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="ApiGen" default="build" basedir=".">
+	<property name="sourcedir" value="${basedir}/ApiGen" />
+	<property name="builddir" value="${basedir}/build" />
+
+	<condition property="executableExtension" value=".bat" else="">
+		<os family="windows" />
+	</condition>
+
+	<target name="build" depends="prepare,phplint,pdepend,phpmd,phpcpd,phploc,phpcs,apigen,phpcb" />
+
+	<target name="clean" description="Clean build artifacts">
+		<delete dir="${builddir}/api" />
+		<delete dir="${builddir}/code-browser" />
+		<delete dir="${builddir}/coverage" />
+		<delete dir="${builddir}/logs" />
+		<delete dir="${builddir}/pdepend" />
+	</target>
+
+	<target name="prepare" description="Prepare build" depends="clean">
+		<mkdir dir="${builddir}/api" />
+		<mkdir dir="${builddir}/code-browser" />
+		<mkdir dir="${builddir}/coverage" />
+		<mkdir dir="${builddir}/logs" />
+		<mkdir dir="${builddir}/pdepend" />
+	</target>
+
+	<target name="phplint">
+		<apply executable="php" failonerror="true">
+			<arg value="-l" />
+
+			<fileset dir="${sourcedir}" />
+			<fileset file="${basedir}/apigen.php" />
+		</apply>
+	</target>
+
+	<target name="pdepend" description="Calculate software metrics using PHP_Depend">
+		<exec executable="pdepend${executableExtension}">
+			<arg value="--jdepend-xml=${builddir}/logs/jdepend.xml" />
+			<arg value="--jdepend-chart=${builddir}/pdepend/dependencies.svg" />
+			<arg value="--overview-pyramid=${builddir}/pdepend/overview-pyramid.svg" />
+			<arg value="${sourcedir},${basedir}/apigen.php" />
+		</exec>
+	</target>
+
+	<target name="phpmd" description="Find duplicate code using PHPCPD">
+		<exec executable="phpmd${executableExtension}">
+			<arg value="${sourcedir},${basedir}/apigen.php" />
+			<arg value="xml" />
+			<arg path="${builddir}/phpmd.xml" />
+			<arg value="--reportfile" />
+			<arg path="${builddir}/logs/pmd.xml" />
+		</exec>
+	</target>
+
+	<target name="phpcpd" description="Perform project mess detection using PHPMD">
+		<exec executable="phpcpd${executableExtension}">
+			<arg value="--log-pmd" />
+			<arg path="${builddir}/logs/pmd-cpd.xml" />
+			<arg path="${sourcedir}" />
+			<arg path="${basedir}/apigen.php" />
+		</exec>
+	</target>
+
+	<target name="phploc" description="Measure project size using PHPLOC">
+		<exec executable="phploc${executableExtension}">
+			<arg value="--log-csv" />
+			<arg path="${builddir}/logs/phploc.csv" />
+			<arg path="${sourcedir}" />
+			<arg path="${basedir}/apigen.php" />
+		</exec>
+	</target>
+
+	<target name="phpcs" description="Find coding standard violations using PHP_CodeSniffer">
+		<exec executable="phpcs${executableExtension}">
+			<arg value="--standard=${builddir}/phpcs.xml" />
+			<arg value="--tab-width=4" />
+			<arg value="--encoding=utf-8" />
+			<arg value="--report=checkstyle" />
+			<arg value="--report-file=${builddir}/logs/checkstyle.xml" />
+			<arg value="--ignore=jquery" />
+			<arg path="${sourcedir}" />
+			<arg path="${basedir}/apigen.php" />
+			<arg path="${basedir}/templates" />
+		</exec>
+	</target>
+
+	<target name="apigen" description="Generate API documentation using ApiGen">
+		<exec executable="apigen${executableExtension}">
+			<arg value="--source" />
+			<arg path="${sourcedir}" />
+			<arg value="--source" />
+			<arg path="${basedir}/apigen.php" />
+			<arg value="--destination" />
+			<arg path="${builddir}/api" />
+			<arg value="--undocumented" />
+			<arg path="${builddir}/logs/documentation.xml" />
+			<arg value="--deprecated" />
+			<arg value="--todo" />
+			<arg value="--progressbar=no" />
+		</exec>
+	</target>
+
+	<target name="phpcb" description="Aggregate tool output using PHP_CodeBrowser">
+		<exec executable="phpcb${executableExtension}">
+			<arg value="--log" />
+			<arg path="${builddir}/logs" />
+			<arg value="--source" />
+			<arg path="${sourcedir}" />
+			<arg value="--source" />
+			<arg path="${basedir}/apigen.php" />
+			<arg value="--source" />
+			<arg path="${basedir}/templates" />
+			<arg value="--exclude" />
+			<arg value="*jquery*" />
+			<arg value="--output" />
+			<arg path="${builddir}/code-browser" />
+		</exec>
+	</target>
+</project>

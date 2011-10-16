@@ -1,36 +1,36 @@
 <?php
 
 /**
- * ApiGen 2.1.0 - API documentation generator for PHP 5.3+
+ * ApiGen 2.2.0 - API documentation generator for PHP 5.3+
  *
  * Copyright (c) 2010 David Grudl (http://davidgrudl.com)
  * Copyright (c) 2011 Jaroslav Hanslík (https://github.com/kukulich)
  * Copyright (c) 2011 Ondřej Nešpor (https://github.com/Andrewsville)
  *
  * For the full copyright and license information, please view
- * the file LICENSE that was distributed with this source code.
+ * the file LICENSE.md that was distributed with this source code.
  */
 
 namespace ApiGen;
 
 /**
- * Constant reflection envelope.
+ * Parameter reflection envelope.
  *
  * Alters TokenReflection\IReflectionParameter functionality for ApiGen.
  *
  * @author Ondřej Nešpor
  */
-class ReflectionParameter extends ReflectionBase
+class ReflectionParameter extends ReflectionElement
 {
 	/**
-	 * Returns reflection of the required class of the value.
+	 * Returns reflection of the required class of the parameter.
 	 *
 	 * @return \ApiGen\ReflectionClass|null
 	 */
 	public function getClass()
 	{
 		$className = $this->reflection->getClassName();
-		return null === $className ? null : self::$classes[$className];
+		return null === $className ? null : self::$parsedClasses[$className];
 	}
 
 	/**
@@ -43,20 +43,20 @@ class ReflectionParameter extends ReflectionBase
 		$functionName = $this->reflection->getDeclaringFunctionName();
 
 		if ($className = $this->reflection->getDeclaringClassName()) {
-			return self::$classes[$className]->getMethod($functionName);
+			return self::$parsedClasses[$className]->getMethod($functionName);
 		} else {
-			return self::$functions[$functionName];
+			return self::$parsedFunctions[$functionName];
 		}
 	}
 
 	/**
-	 * Returns the method declaring class.
+	 * Returns the function/method declaring class.
 	 *
 	 * @return \ApiGen\ReflectionClass|null
 	 */
 	public function getDeclaringClass()
 	{
 		$className = $this->reflection->getDeclaringClassName();
-		return null === $className ? null : self::$classes[$className];
+		return null === $className ? null : self::$parsedClasses[$className];
 	}
 }

@@ -1,14 +1,14 @@
 <?php
 
 /**
- * ApiGen 2.1.0 - API documentation generator for PHP 5.3+
+ * ApiGen 2.2.0 - API documentation generator for PHP 5.3+
  *
  * Copyright (c) 2010 David Grudl (http://davidgrudl.com)
  * Copyright (c) 2011 Jaroslav Hanslík (https://github.com/kukulich)
  * Copyright (c) 2011 Ondřej Nešpor (https://github.com/Andrewsville)
  *
  * For the full copyright and license information, please view
- * the file LICENSE that was distributed with this source code.
+ * the file LICENSE.md that was distributed with this source code.
  */
 
 namespace ApiGen;
@@ -24,7 +24,7 @@ use ReflectionMethod as InternalReflectionMethod, ReflectionProperty as Internal
  * @author Jaroslav Hanslík
  * @author Ondřej Nešpor
  */
-class ReflectionClass extends ReflectionBase
+class ReflectionClass extends ReflectionElement
 {
 	/**
 	 * Access level for methods.
@@ -120,6 +120,8 @@ class ReflectionClass extends ReflectionBase
 							self::$methodAccessLevels |= InternalReflectionMethod::IS_PRIVATE;
 							self::$propertyAccessLevels |= InternalReflectionProperty::IS_PRIVATE;
 							break;
+						default:
+							break;
 					}
 				}
 			} else {
@@ -192,6 +194,7 @@ class ReflectionClass extends ReflectionBase
 	 *
 	 * @param string $name Method name
 	 * @return \ApiGen\ReflectionMethod
+	 * @throws \InvalidArgumentException If required method does not exist.
 	 */
 	public function getMethod($name)
 	{
@@ -266,6 +269,7 @@ class ReflectionClass extends ReflectionBase
 	 *
 	 * @param string $name Method name
 	 * @return \ApiGen\ReflectionProperty
+	 * @throws \InvalidArgumentException If required property does not exist.
 	 */
 	public function getProperty($name)
 	{
@@ -320,6 +324,7 @@ class ReflectionClass extends ReflectionBase
 	 *
 	 * @param string $name Constant name
 	 * @return \ApiGen\ReflectionConstant
+	 * @throws \InvalidArgumentException If required constant does not exist.
 	 */
 	public function getConstantReflection($name)
 	{
@@ -380,6 +385,7 @@ class ReflectionClass extends ReflectionBase
 	 *
 	 * @param string $name Constant name
 	 * @return \ApiGen\ReflectionConstant
+	 * @throws \InvalidArgumentException If required constant does not exist.
 	 */
 	public function getOwnConstantReflection($name)
 	{
@@ -413,7 +419,7 @@ class ReflectionClass extends ReflectionBase
 	public function getParentClass()
 	{
 		if ($className = $this->reflection->getParentClassName()) {
-			return self::$classes[$className];
+			return self::$parsedClasses[$className];
 		}
 		return $className;
 	}
@@ -426,7 +432,7 @@ class ReflectionClass extends ReflectionBase
 	public function getParentClasses()
 	{
 		if (null === $this->parentClasses) {
-			$classes = self::$classes;
+			$classes = self::$parsedClasses;
 			$this->parentClasses = array_map(function(IReflectionClass $class) use ($classes) {
 				return $classes[$class->getName()];
 			}, $this->reflection->getParentClasses());
@@ -441,7 +447,7 @@ class ReflectionClass extends ReflectionBase
 	 */
 	public function getInterfaces()
 	{
-		$classes = self::$classes;
+		$classes = self::$parsedClasses;
 		return array_map(function(IReflectionClass $class) use ($classes) {
 			return $classes[$class->getName()];
 		}, $this->reflection->getInterfaces());
@@ -454,7 +460,7 @@ class ReflectionClass extends ReflectionBase
 	 */
 	public function getOwnInterfaces()
 	{
-		$classes = self::$classes;
+		$classes = self::$parsedClasses;
 		return array_map(function(IReflectionClass $class) use ($classes) {
 			return $classes[$class->getName()];
 		}, $this->reflection->getOwnInterfaces());
@@ -467,7 +473,7 @@ class ReflectionClass extends ReflectionBase
 	 */
 	public function getTraits()
 	{
-		$classes = self::$classes;
+		$classes = self::$parsedClasses;
 		return array_map(function(IReflectionClass $class) use ($classes) {
 			return $classes[$class->getName()];
 		}, $this->reflection->getTraits());
@@ -480,7 +486,7 @@ class ReflectionClass extends ReflectionBase
 	 */
 	public function getOwnTraits()
 	{
-		$classes = self::$classes;
+		$classes = self::$parsedClasses;
 		return array_map(function(IReflectionClass $class) use ($classes) {
 			return $classes[$class->getName()];
 		}, $this->reflection->getOwnTraits());
@@ -495,7 +501,7 @@ class ReflectionClass extends ReflectionBase
 	{
 		$subClasses = array();
 		$name = $this->reflection->getName();
-		foreach (self::$classes as $class) {
+		foreach (self::$parsedClasses as $class) {
 			if (!$class->isDocumented()) {
 				continue;
 			}
@@ -515,7 +521,7 @@ class ReflectionClass extends ReflectionBase
 	{
 		$subClasses = array();
 		$name = $this->reflection->getName();
-		foreach (self::$classes as $class) {
+		foreach (self::$parsedClasses as $class) {
 			if (!$class->isDocumented()) {
 				continue;
 			}
@@ -539,7 +545,7 @@ class ReflectionClass extends ReflectionBase
 
 		$implementers = array();
 		$name = $this->reflection->getName();
-		foreach (self::$classes as $class) {
+		foreach (self::$parsedClasses as $class) {
 			if (!$class->isDocumented()) {
 				continue;
 			}
@@ -563,7 +569,7 @@ class ReflectionClass extends ReflectionBase
 
 		$implementers = array();
 		$name = $this->reflection->getName();
-		foreach (self::$classes as $class) {
+		foreach (self::$parsedClasses as $class) {
 			if (!$class->isDocumented()) {
 				continue;
 			}
@@ -587,7 +593,7 @@ class ReflectionClass extends ReflectionBase
 
 		$users = array();
 		$name = $this->reflection->getName();
-		foreach (self::$classes as $class) {
+		foreach (self::$parsedClasses as $class) {
 			if (!$class->isDocumented()) {
 				continue;
 			}
@@ -612,7 +618,7 @@ class ReflectionClass extends ReflectionBase
 
 		$users = array();
 		$name = $this->reflection->getName();
-		foreach (self::$classes as $class) {
+		foreach (self::$parsedClasses as $class) {
 			if (!$class->isDocumented()) {
 				continue;
 			}

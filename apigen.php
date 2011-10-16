@@ -2,14 +2,14 @@
 <?php
 
 /**
- * ApiGen 2.1.0 - API documentation generator for PHP 5.3+
+ * ApiGen 2.2.0 - API documentation generator for PHP 5.3+
  *
  * Copyright (c) 2010 David Grudl (http://davidgrudl.com)
  * Copyright (c) 2011 Jaroslav Hanslík (https://github.com/kukulich)
  * Copyright (c) 2011 Ondřej Nešpor (https://github.com/Andrewsville)
  *
  * For the full copyright and license information, please view
- * the file LICENSE that was distributed with this source code.
+ * the file LICENSE.md that was distributed with this source code.
  */
 
 namespace ApiGen;
@@ -36,6 +36,7 @@ if (false === strpos(PEAR_PHP_DIR, '@php_dir')) {
 	// Downloaded package
 
 	set_include_path(
+		__DIR__ . PATH_SEPARATOR .
 		__DIR__ . '/libs/FSHL' . PATH_SEPARATOR .
 		__DIR__ . '/libs/TokenReflection' . PATH_SEPARATOR .
 		get_include_path()
@@ -55,6 +56,12 @@ spl_autoload_register(function($class) {
 try {
 
 	// Check dependencies
+	foreach (array('iconv', 'mbstring', 'tokenizer') as $extension) {
+		if (!extension_loaded($extension)) {
+			printf("Required extension missing: %s\n", $extension);
+			die(1);
+		}
+	}
 	if (!class_exists('Nette\\Diagnostics\\Debugger')) {
 		echo "Required dependency missing: Nette Framework\n";
 		die(1);
@@ -73,7 +80,7 @@ try {
 	}
 
 	Debugger::$strictMode = true;
-	Debugger::enable();
+	Debugger::enable(Debugger::PRODUCTION, false);
 	Debugger::timer();
 
 	$config = new Config();
@@ -90,10 +97,19 @@ try {
 	$config->parse();
 
 	if ($config->debug) {
-		Debugger::enable(Debugger::DEVELOPMENT);
+		Debugger::enable(Debugger::DEVELOPMENT, false);
 	}
 
 	$generator->output($generator->getHeader());
+
+	// Check for update
+	if ($config->updateCheck) {
+		ini_set('default_socket_timeout', 5);
+		$latestVersion = @file_get_contents('http://apigen.org/version.txt');
+		if (false !== $latestVersion && version_compare(trim($latestVersion), Generator::VERSION) > 0) {
+			$generator->output(sprintf("New version @header@%s@c available\n\n", $latestVersion));
+		}
+	}
 
 	// Scan
 	if (count($config->source) > 1) {

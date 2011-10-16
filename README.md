@@ -4,6 +4,10 @@ ApiGen is the tool for creating professional API documentation from PHP source c
 
 ApiGen has support for PHP 5.3 namespaces, packages, linking between documentation, cross referencing to PHP standard classes and general documentation, creation of highlighted source code and experimental support for PHP 5.4 **traits**.
 
+## Support/Bug Reports ##
+
+For all support questions please use our [mailing list](https://groups.google.com/group/apigen). For bug reports and issues the [issue tracker](https://github.com/apigen/apigen/issues) is available. Changes between versions are described in the [change log](https://github.com/apigen/apigen/blob/master/CHANGELOG.md).
+
 ## Features ##
 
 * Our own [TokenReflection library](https://github.com/Andrewsville/PHP-Token-Reflection) is used to describe the source code. It is **safe** (documented source code does not get included and thus parsed) and **simple** (you do not need to include or autoload all libraries you use in your source code).
@@ -191,11 +195,15 @@ Display progressbars, default is "Yes".
 
 Use colors, default "No" on Windows, "Yes" on other systems. Windows doesn't support colors in console however you can enable it with [Ansicon](http://adoxa.110mb.com/ansicon/).
 
+```--update-check <yes|no>```
+
+Check for a new version of ApiGen, default is "Yes".
+
 ```--debug <yes|no>```
 
 Display additional information (exception trace) in case of an error, default is "No".
 
-```--help|-h ```
+```--help|-h```
 
 Display the list of possible options.
 

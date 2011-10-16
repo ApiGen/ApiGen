@@ -1,14 +1,14 @@
 <?php
 
 /**
- * ApiGen 2.1.0 - API documentation generator for PHP 5.3+
+ * ApiGen 2.2.0 - API documentation generator for PHP 5.3+
  *
  * Copyright (c) 2010 David Grudl (http://davidgrudl.com)
  * Copyright (c) 2011 Jaroslav Hanslík (https://github.com/kukulich)
  * Copyright (c) 2011 Ondřej Nešpor (https://github.com/Andrewsville)
  *
  * For the full copyright and license information, please view
- * the file LICENSE that was distributed with this source code.
+ * the file LICENSE.md that was distributed with this source code.
  */
 
 namespace ApiGen;
@@ -22,7 +22,7 @@ use TokenReflection;
  *
  * @author Ondřej Nešpor
  */
-abstract class ReflectionFunctionBase extends ReflectionBase
+abstract class ReflectionFunctionBase extends ReflectionElement
 {
 	/**
 	 * Returns a list of function/method parameters.
@@ -42,8 +42,8 @@ abstract class ReflectionFunctionBase extends ReflectionBase
 	 *
 	 * @param integer|string $parameterName Parameter name or position
 	 * @return \ApiGen\ReflectionParameter
-	 * @throws \InvalidArgumentException If there is no parameter of the given name
-	 * @throws \InvalidArgumentException If there is no parameter at the given position
+	 * @throws \InvalidArgumentException If there is no parameter of the given name.
+	 * @throws \InvalidArgumentException If there is no parameter at the given position.
 	 */
 	public function getParameter($parameterName)
 	{

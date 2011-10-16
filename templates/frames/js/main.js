@@ -1,9 +1,8 @@
 $(function() {
-
 	// Frames detection
-	var isTopFrame = $('iframe').length !== 0;
-	var isLeftFrame = $('#menu').length !== 0;
-	var isRightFrame = $('#rightInner').length !== 0;
+	var isTopFrame = 0 !== $('iframe').length;
+	var isLeftFrame = 0 !== $('#menu').length;
+	var isRightFrame = 0 !== $('#rightInner').length;
 
 	if (isTopFrame) {
 		// Top
@@ -15,14 +14,14 @@ $(function() {
 		/**
 		 * Loads new page.
 		 *
-		 * @param string page
+		 * @param string href
 		 */
-		window.ApiGen.loadPage = function(page)
-		{
+		window.ApiGen.loadPage = function(href) {
 			// Change content
+			var page = href.split('#')[0];
 			var location = window.frames['right'].location.href.split('/');
 			location.pop();
-			location.push(page);
+			location.push(href);
 			window.frames['right'].location.replace(location.join('/'));
 
 			// Change menu
@@ -43,13 +42,14 @@ $(function() {
 				// Unmark active
 				$('li.active', $menu).removeClass('active');
 
+				var $group;
 				if (0 === page.search(/^package|namespace/)) {
 					// Select group
-					var $group = $('a[href^="' + page + '"]', $groups);
+					$group = $('a[href^="' + page + '"]', $groups);
 				} else {
 					// Select element
 					var $element = $('a[href^="' + page + '"]', $elements);
-					var $group = $('a[rel="' + $element.attr('rel') + '"]', $groups);
+					$group = $('a[rel="' + $element.attr('rel') + '"]', $groups);
 
 					// Mark active element
 					$element
@@ -103,7 +103,7 @@ $(function() {
 					window.frames['left'].namespacesHidden = true;
 				}
 			}
-		}
+		};
 
 		// Back/Forward button
 		window.setInterval(function() {
@@ -177,15 +177,14 @@ $(function() {
 			$right.css('margin-left', splitterPosition + splitterWidth);
 			$splitter.css('left', splitterPosition);
 		}
-
 	} else if (isLeftFrame) {
 		// Menu
 
 		// Check parent frame
 		if (window.self !== window.parent.frames['left']) {
-			var location = window.location.href.split('/');
-			location.pop();
-			location.push('index.html');
+			var leftLocation = window.location.href.split('/');
+			leftLocation.pop();
+			leftLocation.push('index.html');
 			window.location.replace(location.join('/'));
 			return;
 		}
@@ -220,7 +219,6 @@ $(function() {
 			window.parent.location.hash = page;
 			return false;
 		});
-
 	} else if (isRightFrame) {
 		// Content
 
@@ -228,10 +226,10 @@ $(function() {
 
 		// Check parent frame
 		if (window.self !== window.parent.frames['right']) {
-			var location = window.location.href.split('/');
-			location.pop();
-			location.push('index.html#' + actualPage);
-			window.location.replace(location.join('/'));
+			var rightLocation = window.location.href.split('/');
+			rightLocation.pop();
+			rightLocation.push('index.html#' + actualPage);
+			window.location.replace(rightLocation.join('/'));
 			return;
 		}
 
@@ -241,10 +239,10 @@ $(function() {
 		var $content = $('#content');
 
 		// Links
-		$('a:not([href*="://"])').click(function() {
-			var page = $(this).attr('href').replace(/#.*/, '');
-			window.parent.ApiGen.loadPage(page);
-			window.parent.location.hash = page;
+		$('a:not([href*="://"]):not([href^="#"])').click(function() {
+			var href = $(this).attr('href');
+			window.parent.ApiGen.loadPage(href);
+			window.parent.location.hash = href.split('#')[0];
 			return false;
 		});
 
@@ -288,12 +286,12 @@ $(function() {
 					return !autocompleteFound && '' !== $('#search input[name=cx]').val();
 				});
 
-		// Save original order
+		// Save natural order
 		$('table.summary tr[data-order]', $content).each(function(index) {
 			do {
 				index = '0' + index;
 			} while (index.length < 3);
-			$(this).attr('data-orig-order', index);
+			$(this).attr('data-order-natural', index);
 		});
 
 		// Switch between natural and alphabetical order
@@ -303,19 +301,21 @@ $(function() {
 		$caption
 			.click(function() {
 				var $this = $(this);
-				var sorted = !$this.data('sorted');
-				$this.data('sorted', sorted);
-				$.cookie('sorted', sorted, {expires: 365});
-				var attr = sorted ? 'data-order' : 'data-orig-order';
+				var order = $this.data('order') || 'natural';
+				order = 'natural' === order ? 'alphabetical' : 'natural';
+				$this.data('order', order);
+				$.cookie('order', order, {expires: 365});
+				var attr = 'alphabetical' === order ? 'data-order' : 'data-order-natural';
 				$this
-					.closest("table")
+					.closest('table')
 						.find('tr').sortElements(function(a, b) {
 							return $(a).attr(attr) > $(b).attr(attr) ? 1 : -1;
 						});
 				return false;
-			}).addClass('switchable')
+			})
+			.addClass('switchable')
 			.attr('title', 'Switch between natural and alphabetical order');
-		if ('true' === $.cookie('sorted')) {
+		if ((null === $.cookie('order') && 'alphabetical' === window.parent.ApiGen.options.elementsOrder) || 'alphabetical' === $.cookie('order')) {
 			$caption.click();
 		}
 
@@ -332,7 +332,8 @@ $(function() {
 					}, 500);
 				}, function() {
 					clearTimeout(timeout);
-				}).click(function() { // Immediate hover effect on summary
+				}).click(function() {
+					// Immediate hover effect on summary
 					clearTimeout(timeout);
 					var $this = $(this);
 					$('.short', $this).hide();

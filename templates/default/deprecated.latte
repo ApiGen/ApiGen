@@ -10,7 +10,7 @@
 	<table class="summary" id="classes" n:if="$deprecatedClasses">
 	<caption>Classes summary</caption>
 	<tr n:foreach="$deprecatedClasses as $class">
-		<td class="min nowrap"><a href="{$class|classUrl}">{$class->name}</a></td>
+		<td class="name"><a href="{$class|classUrl}">{$class->name}</a></td>
 		<td>
 			{foreach $class->annotations['deprecated'] as $description}
 				{if $description}
@@ -24,7 +24,7 @@
 	<table class="summary" id="interfaces" n:if="$deprecatedInterfaces">
 	<caption>Interfaces summary</caption>
 	<tr n:foreach="$deprecatedInterfaces as $interface">
-		<td class="min nowrap"><a href="{$interface|classUrl}">{$interface->name}</a></td>
+		<td class="name"><a href="{$interface|classUrl}">{$interface->name}</a></td>
 		<td>
 			{foreach $interface->annotations['deprecated'] as $description}
 				{if $description}
@@ -38,7 +38,7 @@
 	<table class="summary" id="traits" n:if="$deprecatedTraits">
 	<caption>Traits summary</caption>
 	<tr n:foreach="$deprecatedTraits as $trait">
-		<td class="nowrap" width="1%"><a href="{$trait|classUrl}">{$trait->name}</a></td>
+		<td class="name"><a href="{$trait|classUrl}">{$trait->name}</a></td>
 		<td>
 			{foreach $trait->annotations['deprecated'] as $description}
 				{if $description}
@@ -52,7 +52,7 @@
 	<table class="summary" id="exceptions" n:if="$deprecatedExceptions">
 	<caption>Exceptions summary</caption>
 	<tr n:foreach="$deprecatedExceptions as $exception">
-		<td class="min nowrap"><a href="{$exception|classUrl}">{$exception->name}</a></td>
+		<td class="name"><a href="{$exception|classUrl}">{$exception->name}</a></td>
 		<td>
 			{foreach $exception->annotations['deprecated'] as $description}
 				{if $description}
@@ -66,8 +66,8 @@
 	<table class="summary" id="methods" n:if="$deprecatedMethods">
 	<caption>Methods summary</caption>
 	<tr n:foreach="$deprecatedMethods as $method">
-		<td class="right min nowrap"><a href="{$method->declaringClassName|classUrl}">{$method->declaringClassName}</a></td>
-		<td class="min"><code><a href="{$method|methodUrl}">{$method->name}()</a></code></td>
+		<td class="name"><a href="{$method->declaringClassName|classUrl}">{$method->declaringClassName}</a></td>
+		<td class="name"><code><a href="{$method|methodUrl}">{$method->name}()</a></code></td>
 		<td>
 			{if $method->hasAnnotation('deprecated')}
 			{foreach $method->annotations['deprecated'] as $description}
@@ -84,11 +84,11 @@
 	<caption>Constants summary</caption>
 	<tr n:foreach="$deprecatedConstants as $constant">
 		{if $constant->declaringClassName}
-		<td class="right min nowrap"><a href="{$constant->declaringClassName|classUrl}">{$constant->declaringClassName}</a></td>
-		<td class="min"><code><a href="{$constant|constantUrl}"><b>{$constant->name}</b></a></code></td>
+		<td class="name"><a href="{$constant->declaringClassName|classUrl}">{$constant->declaringClassName}</a></td>
+		<td class="name"><code><a href="{$constant|constantUrl}"><b>{$constant->name}</b></a></code></td>
 		{else}
-		<td class="right min nowrap" n:if="$namespaces || $classes || $interfaces || $exceptions"><a n:if="$constant->namespaceName" href="{$constant->namespaceName|namespaceUrl}">{$constant->namespaceName}</a></td>
-		<td n:class="!$namespaces && !$classes && !$interfaces && !$exceptions ? right, min"><code><a href="{$constant|constantUrl}"><b>{$constant->shortName}</b></a></code></td>
+		<td class="name" n:if="$namespaces || $classes || $interfaces || $traits || $exceptions"><a n:if="$constant->namespaceName" href="{$constant->namespaceName|namespaceUrl}">{$constant->namespaceName}</a></td>
+		<td n:class="name"><code><a href="{$constant|constantUrl}"><b>{$constant->shortName}</b></a></code></td>
 		{/if}
 		<td>
 			{foreach $constant->annotations['deprecated'] as $description}
@@ -103,8 +103,8 @@
 	<table class="summary" id="properties" n:if="$deprecatedProperties">
 	<caption>Properties summary</caption>
 	<tr n:foreach="$deprecatedProperties as $property">
-		<td class="right min nowrap"><a href="{$property->declaringClassName|classUrl}">{$property->declaringClassName}</a></td>
-		<td class="min"><a href="{$property|propertyUrl}"><var>${$property->name}</var></a></td>
+		<td class="name"><a href="{$property->declaringClassName|classUrl}">{$property->declaringClassName}</a></td>
+		<td class="name"><a href="{$property|propertyUrl}"><var>${$property->name}</var></a></td>
 		<td>
 			{foreach $property->annotations['deprecated'] as $description}
 				{if $description}
@@ -118,8 +118,8 @@
 	<table class="summary" id="functions" n:if="$deprecatedFunctions">
 	<caption>Functions summary</caption>
 	<tr n:foreach="$deprecatedFunctions as $function">
-		<td class="right min nowrap" n:if="$namespaces"><a n:if="$function->namespaceName" href="{$function->namespaceName|namespaceUrl}">{$function->namespaceName}</a></td>
-		<td class="min"><code><a href="{$function|functionUrl}">{$function->shortName}</a></code></td>
+		<td class="name" n:if="$namespaces"><a n:if="$function->namespaceName" href="{$function->namespaceName|namespaceUrl}">{$function->namespaceName}</a></td>
+		<td class="name"><code><a href="{$function|functionUrl}">{$function->shortName}</a></code></td>
 		<td>
 			{foreach $function->annotations['deprecated'] as $description}
 				{if $description}

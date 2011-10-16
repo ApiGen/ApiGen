@@ -54,48 +54,48 @@
 		{/if}
 	</div>
 
-	<hr n:if="($packages || $namespaces) && ($classes || $interfaces || $exceptions || $constants || $functions)">
+	<hr n:if="($packages || $namespaces) && ($classes || $interfaces || $traits || $exceptions || $constants || $functions)">
 
 	<div id="elements">
 		{if $classes}
 		<h3>Classes</h3>
 		<ul>
-			<li n:foreach="$classes as $item"><a href="{$item|classUrl}" target="right" rel="{if $namespaces}{$item->pseudoNamespaceName|urlize}{else}{$item->pseudoPackageName|urlize}{/if}">{if $namespaces && $item->namespaceName}<span>{$item->namespaceName}\</span>{$item->shortName}{else}{$item->name}{/if}</a></li>
+			<li n:foreach="$classes as $item" n:class="$item->deprecated ? deprecated"><a href="{$item|classUrl}" target="right" rel="{if $namespaces}{$item->pseudoNamespaceName|urlize}{else}{$item->pseudoPackageName|urlize}{/if}">{if $namespaces && $item->namespaceName}<span>{$item->namespaceName}\</span>{$item->shortName}{else}{$item->name}{/if}</a></li>
 		</ul>
 		{/if}
 
 		{if $interfaces}
 		<h3>Interfaces</h3>
 		<ul>
-			<li n:foreach="$interfaces as $item"><a href="{$item|classUrl}" target="right" rel="{if $namespaces}{$item->pseudoNamespaceName|urlize}{else}{$item->pseudoPackageName|urlize}{/if}">{if $namespaces && $item->namespaceName}<span>{$item->namespaceName}\</span>{$item->shortName}{else}{$item->name}{/if}</a></li>
+			<li n:foreach="$interfaces as $item" n:class="$item->deprecated ? deprecated"><a href="{$item|classUrl}" target="right" rel="{if $namespaces}{$item->pseudoNamespaceName|urlize}{else}{$item->pseudoPackageName|urlize}{/if}">{if $namespaces && $item->namespaceName}<span>{$item->namespaceName}\</span>{$item->shortName}{else}{$item->name}{/if}</a></li>
 		</ul>
 		{/if}
 
 		{if $traits}
 		<h3>Traits</h3>
 		<ul>
-			<li n:foreach="$traits as $item"><a href="{$item|classUrl}" target="right" rel="{if $namespaces}{$item->pseudoNamespaceName|urlize}{else}{$item->pseudoPackageName|urlize}{/if}">{if $namespaces && $item->namespaceName}<span>{$item->namespaceName}\</span>{$item->shortName}{else}{$item->name}{/if}</a></li>
+			<li n:foreach="$traits as $item" n:class="$item->deprecated ? deprecated"><a href="{$item|classUrl}" target="right" rel="{if $namespaces}{$item->pseudoNamespaceName|urlize}{else}{$item->pseudoPackageName|urlize}{/if}">{if $namespaces && $item->namespaceName}<span>{$item->namespaceName}\</span>{$item->shortName}{else}{$item->name}{/if}</a></li>
 		</ul>
 		{/if}
 
 		{if $exceptions}
 		<h3>Exceptions</h3>
 		<ul>
-			<li n:foreach="$exceptions as $item"><a href="{$item|classUrl}" target="right" rel="{if $namespaces}{$item->pseudoNamespaceName|urlize}{else}{$item->pseudoPackageName|urlize}{/if}">{if $namespaces && $item->namespaceName}<span>{$item->namespaceName}\</span>{$item->shortName}{else}{$item->name}{/if}</a></li>
+			<li n:foreach="$exceptions as $item" n:class="$item->deprecated ? deprecated"><a href="{$item|classUrl}" target="right" rel="{if $namespaces}{$item->pseudoNamespaceName|urlize}{else}{$item->pseudoPackageName|urlize}{/if}">{if $namespaces && $item->namespaceName}<span>{$item->namespaceName}\</span>{$item->shortName}{else}{$item->name}{/if}</a></li>
 		</ul>
 		{/if}
 
 		{if $constants}
 		<h3>Constants</h3>
 		<ul>
-			<li n:foreach="$constants as $item"><a href="{$item|constantUrl}" target="right" rel="{if $namespaces}{$item->pseudoNamespaceName|urlize}{else}{$item->pseudoPackageName|urlize}{/if}">{if $namespaces && $item->namespace}<span>{$item->namespaceName}\</span>{$item->shortName}{else}{$item->name}{/if}</a></li>
+			<li n:foreach="$constants as $item" n:class="$item->deprecated ? deprecated"><a href="{$item|constantUrl}" target="right" rel="{if $namespaces}{$item->pseudoNamespaceName|urlize}{else}{$item->pseudoPackageName|urlize}{/if}">{if $namespaces && $item->namespace}<span>{$item->namespaceName}\</span>{$item->shortName}{else}{$item->name}{/if}</a></li>
 		</ul>
 		{/if}
 
 		{if $functions}
 		<h3>Functions</h3>
 		<ul>
-			<li n:foreach="$functions as $item"><a href="{$item|functionUrl}" target="right" rel="{if $namespaces}{$item->pseudoNamespaceName|urlize}{else}{$item->pseudoPackageName|urlize}{/if}">{if $namespaces && $item->namespaceName}<span>{$item->namespaceName}\</span>{$item->shortName}{else}{$item->name}{/if}</a></li>
+			<li n:foreach="$functions as $item" n:class="$item->deprecated ? deprecated"><a href="{$item|functionUrl}" target="right" rel="{if $namespaces}{$item->pseudoNamespaceName|urlize}{else}{$item->pseudoPackageName|urlize}{/if}">{if $namespaces && $item->namespaceName}<span>{$item->namespaceName}\</span>{$item->shortName}{else}{$item->name}{/if}</a></li>
 		</ul>
 		{/if}
 	</div>

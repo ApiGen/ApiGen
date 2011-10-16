@@ -23,16 +23,16 @@
 	<email>andrew@apigen.org</email>
 	<active>yes</active>
 </lead>
-<date>2011-09-04</date>
+<date>2011-10-16</date>
 <version>
-	<release>2.1.0</release>
-	<api>2.1.0</api>
+	<release>2.2.0</release>
+	<api>2.2.0</api>
 </version>
 <stability>
 	<release>stable</release>
 	<api>stable</api>
 </stability>
-<license uri="https://github.com/apigen/apigen/blob/master/LICENSE">New BSD, GPL v2, GPL v3</license>
+<license uri="https://github.com/apigen/apigen/blob/master/LICENSE.md">New BSD, GPL v2, GPL v3</license>
 <notes>https://github.com/apigen/apigen/blob/master/CHANGELOG.md</notes>
 <contents>
 	<dir name="/">
@@ -44,6 +44,8 @@
 			<file name="ReflectionBase.php" role="php" />
 			<file name="ReflectionClass.php" role="php" />
 			<file name="ReflectionConstant.php" role="php" />
+			<file name="ReflectionElement.php" role="php" />
+			<file name="ReflectionExtension.php" role="php" />
 			<file name="ReflectionFunction.php" role="php" />
 			<file name="ReflectionFunctionBase.php" role="php" />
 			<file name="ReflectionMethod.php" role="php" />
@@ -62,16 +64,17 @@
 					<file name="main.js" role="data" />
 				</dir>
 				<dir name="resources">
-					<file name="collapsed.gif" role="data" />
-					<file name="footer.gif" role="data" />
-					<file name="inherit.gif" role="data" />
+					<file name="code-line.png" role="data" />
+					<file name="collapsed.png" role="data" />
+					<file name="footer.png" role="data" />
+					<file name="inherit.png" role="data" />
 					<file name="resize.png" role="data" />
-					<file name="sort.gif" role="data" />
+					<file name="sort.png" role="data" />
 					<file name="style.css" role="data" />
-					<file name="tree-cleaner.gif" role="data" />
-					<file name="tree-hasnext.gif" role="data" />
+					<file name="tree-cleaner.png" role="data" />
+					<file name="tree-hasnext.png" role="data" />
 					<file name="tree-last.png" role="data" />
-					<file name="tree-vertical.gif" role="data" />
+					<file name="tree-vertical.png" role="data" />
 				</dir>
 				<file name="@elementlist.latte" role="data" />
 				<file name="@layout.latte" role="data" />
@@ -86,6 +89,7 @@
 				<file name="opensearch.xml.latte" role="data" />
 				<file name="overview.latte" role="data" />
 				<file name="package.latte" role="data" />
+				<file name="robots.txt.latte" role="data" />
 				<file name="sitemap.xml.latte" role="data" />
 				<file name="source.latte" role="data" />
 				<file name="todo.latte" role="data" />
@@ -100,16 +104,17 @@
 					<file name="main.js" role="data" />
 				</dir>
 				<dir name="resources">
-					<file name="collapsed.gif" role="data" />
-					<file name="footer.gif" role="data" />
-					<file name="inherit.gif" role="data" />
+					<file name="code-line.png" role="data" />
+					<file name="collapsed.png" role="data" />
+					<file name="footer.png" role="data" />
+					<file name="inherit.png" role="data" />
 					<file name="resize.png" role="data" />
-					<file name="sort.gif" role="data" />
+					<file name="sort.png" role="data" />
 					<file name="style.css" role="data" />
-					<file name="tree-cleaner.gif" role="data" />
-					<file name="tree-hasnext.gif" role="data" />
+					<file name="tree-cleaner.png" role="data" />
+					<file name="tree-hasnext.png" role="data" />
 					<file name="tree-last.png" role="data" />
-					<file name="tree-vertical.gif" role="data" />
+					<file name="tree-vertical.png" role="data" />
 				</dir>
 				<file name="@content.latte" role="data" />
 				<file name="@elementlist.latte" role="data" />
@@ -126,6 +131,7 @@
 				<file name="opensearch.xml.latte" role="data" />
 				<file name="overview.latte" role="data" />
 				<file name="package.latte" role="data" />
+				<file name="robots.txt.latte" role="data" />
 				<file name="sitemap.xml.latte" role="data" />
 				<file name="source.latte" role="data" />
 				<file name="todo.latte" role="data" />
@@ -143,7 +149,7 @@
 		</file>
 		<file name="config.neon.example" role="cfg" />
 		<file name="CHANGELOG.md" role="doc" />
-		<file name="LICENSE" role="doc" />
+		<file name="LICENSE.md" role="doc" />
 		<file name="README.md" role="doc" />
 	</dir>
 </contents>

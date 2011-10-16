@@ -4,7 +4,7 @@
 {block #title}{if $class->deprecated}Deprecated {/if}{if $class->interface}Interface{elseif $class->trait}Trait{else}Class{/if} {$class->name}{/block}
 
 {block #content}
-<div id="content">
+<div id="content" class="class">
 	<h1>{if $class->deprecated}Deprecated {/if}{if $class->interface}Interface{elseif $class->trait}Trait{else}Class{/if} {$class->shortName}</h1>
 
 	<div class="description" n:if="$template->longDescription($class)">
@@ -13,7 +13,7 @@
 
 	<dl class="tree" n:if="$class->parentClass || $class->ownInterfaces || $class->ownTraits">
 		<dd n:foreach="$tree as $item" style="padding-left:{($iterator->counter - 1) * 30}px">
-			<img src="resources/inherit.gif" alt="Extended by" n:if="$iterator->counter > 1">
+			<img src="resources/inherit.png" alt="Extended by" n:if="$iterator->counter > 1">
 			{if $item->documented}
 			<a href="{$item|classUrl}" n:tag-if="!$iterator->last">{last}<b>{/last}{$item->name}{last}</b>{/last}</a>
 			{else}{$item->name}{/if}
@@ -90,7 +90,7 @@
 	<tr n:foreach="$ownMethods as $method" data-order="{$method->name}" id="_{$method->name}" n:class="$method->deprecated ? deprecated">
 		{var $annotations = $method->annotations}
 
-		<td class="right min"><code class="nowrap">
+		<td class="attributes"><code>
 			{if $method->deprecated}deprecated{/if}
 			{if !$class->interface && $method->abstract}abstract{elseif $method->final}final{/if} {if $method->protected}protected{elseif $method->private}private{else}public{/if} {if $method->static}static{/if}
 			{ifset $annotations['return']}{!$annotations['return'][0]|typeLinks:$method}{/ifset}
@@ -98,35 +98,35 @@
 			</code>
 		</td>
 
-		<td><div class="position">
+		<td class="name"><div>
 		<a class="anchor" href="#_{$method->name}">#</a>
-		<code class="wrap">{block|strip}
+		<code>{block|strip}
 			{if $class->internal}
 				<a href="{$method|manualUrl}" target="_parent" title="Go to PHP documentation">{$method->name}</a>(
 			{else}
 				<a n:tag-if="$config->sourceCode" href="{$method|sourceUrl}" title="Go to source code">{$method->name}</a>(
 			{/if}
 			{foreach $method->parameters as $parameter}
-				{if $parameter->array}array
-				{elseif $parameter->className}<a href="{$parameter->className|classUrl}" n:tag-if="$template->getClass($parameter->className)"><span class="nowrap">{$parameter->className}</span></a>
+				<span>{if $parameter->array}array
+				{elseif $parameter->className}<a href="{$parameter->className|classUrl}" n:tag-if="$template->getClass($parameter->className)">{$parameter->className}</a>
 				{elseif isset($annotations['param'][$parameter->position])}{!$annotations['param'][$parameter->position]|typeLinks:$parameter}{/if}
-				<span class="nowrap"><var>{if $parameter->passedByReference}&amp; {/if}${$parameter->name}</var>{if $parameter->defaultValueAvailable} = {!$parameter->defaultValueDefinition|highlightPHP:$class}{/if}</span>{sep}, {/sep}
+				<var>{if $parameter->passedByReference}&amp; {/if}${$parameter->name}</var>{if $parameter->defaultValueAvailable} = {!$parameter->defaultValueDefinition|highlightPHP:$class}{/if}</span>{sep}, {/sep}
 			{/foreach}
 		){/block}</code>
 
 		{if $config->template['options']['elementDetailsCollapsed']}
-		<div class="short">
-			{!$method|shortDescription}
+		<div class="description short">
+			{!$method|shortDescription:true}
 		</div>
 		{/if}
 
-		<div n:class="detailed, $config->template['options']['elementDetailsCollapsed'] ? hidden">
+		<div n:class="description, detailed, $config->template['options']['elementDetailsCollapsed'] ? hidden">
 			{!$method|longDescription}
 
 			{if $method->deprecated}
 				<h4>Deprecated</h4>
 				{if $annotations['deprecated']}
-				<div class="smallList">
+				<div class="list">
 				{foreach $annotations['deprecated'] as $description}
 					{if $description}
 						{!$description|annotation:'deprecated':$method}<br>
@@ -138,7 +138,7 @@
 
 			{if $method->parameters && isset($annotations['param'])}
 				<h4>Parameters</h4>
-				<div class="smallList"><dl>
+				<div class="list"><dl>
 				{foreach $method->parameters as $parameter}
 					<dt><var>${$parameter->name}</var></dt>
 					<dd>{ifset $annotations['param'][$parameter->position]}{!$annotations['param'][$parameter->position]|annotation:'param':$parameter}{/ifset}</dd>
@@ -148,7 +148,7 @@
 
 			{if isset($annotations['return']) && 'void' !== $annotations['return'][0]}
 				<h4>Returns</h4>
-				<div class="smallList">
+				<div class="list">
 				{foreach $annotations['return'] as $description}
 					{!$description|annotation:'return':$method}<br>
 				{/foreach}
@@ -157,7 +157,7 @@
 
 			{ifset $annotations['throws']}
 				<h4>Throws</h4>
-				<div class="smallList">
+				<div class="list">
 				{foreach $annotations['throws'] as $description}
 					{!$description|annotation:'throws':$method}<br>
 				{/foreach}
@@ -166,7 +166,7 @@
 
 			{foreach $template->annotationSort($template->annotationFilter($annotations, array('deprecated', 'param', 'return', 'throws'))) as $annotation => $descriptions}
 				<h4>{$annotation|firstUpper}</h4>
-				<div class="smallList">
+				<div class="list">
 				{foreach $descriptions as $description}
 					{if $description}
 						{!$description|annotation:$annotation:$method}<br>
@@ -179,7 +179,7 @@
 			{var $prototype = $method->prototype}
 			{if $prototype->declaringClass->interface}
 				<h4>Implementation of</h4>
-				<div class="smallList"><code><a n:tag-if="$template->getClass($prototype->declaringClassName)" href="{$prototype|methodUrl}">{$prototype->declaringClassName}::{$prototype->name}</a></code></div>
+				<div class="list"><code><a n:tag-if="$template->getClass($prototype->declaringClassName)" href="{$prototype|methodUrl}">{$prototype->declaringClassName}::{$prototype->name}</a></code></div>
 			{/if}
 			{/try}
 		</div>
@@ -187,8 +187,7 @@
 	</tr>
 	</table>
 
-
-	<table n:foreach="$class->inheritedMethods as $parentName => $methods" class="summary methods">
+	<table n:foreach="$class->inheritedMethods as $parentName => $methods" class="summary inherited">
 	<caption>Methods inherited from <a href="{$parentName|classUrl}#methods" n:tag-if="$template->getClass($parentName)">{$parentName}</a></caption>
 	<tr>
 		<td><code>
@@ -199,7 +198,7 @@
 	</tr>
 	</table>
 
-	<table n:foreach="$class->usedMethods as $traitName => $methods" class="summary methods">
+	<table n:foreach="$class->usedMethods as $traitName => $methods" class="summary used">
 	<caption>Methods used from <a href="{$traitName|classUrl}#methods" n:tag-if="$template->getClass($traitName)">{$traitName}</a></caption>
 	<tr>
 		<td><code>
@@ -210,38 +209,39 @@
 	</tr>
 	</table>
 
+
 	<table class="summary" id="constants" n:if="$ownConstants">
 	<caption>Constants summary</caption>
 	<tr n:foreach="$ownConstants as $constant" data-order="{$constant->name}" id="{$constant->name}" n:class="$constant->deprecated ? deprecated">
 		{var $annotations = $constant->annotations}
 
-		<td class="right min"><code class="nowrap">
+		<td class="attributes"><code>
 			{if $constant->deprecated}deprecated{/if}
 			{ifset $annotations['var']}{!$annotations['var'][0]|typeLinks:$constant}{else}{try}{$constant->value|type}{/try}{/ifset}
 		</code></td>
-		<td class="min"><code>
+		<td class="name"><code>
 			{if $class->internal}
 				<a href="{$constant|manualUrl}" target="_parent" title="Go to PHP documentation"><b>{$constant->name}</b></a>
 			{else}
 				<a n:tag-if="$config->sourceCode" href="{$constant|sourceUrl}" title="Go to source code"><b>{$constant->name}</b></a>
 			{/if}
 		</code></td>
-		<td><code class="wrap">{!$constant->valueDefinition|highlightValue:$class}</code></td>
-		<td><div class="position">
+		<td class="value"><code>{!$constant->valueDefinition|highlightValue:$class}</code></td>
+		<td class="description"><div>
 			<a href="#{$constant->name}" class="anchor">#</a>
 
 			{if $config->template['options']['elementDetailsCollapsed']}
-			<div class="short">
-				{!$constant|shortDescription}
+			<div class="description short">
+				{!$constant|shortDescription:true}
 			</div>
 			{/if}
 
-			<div n:class="detailed, $config->template['options']['elementDetailsCollapsed'] ? hidden">
+			<div n:class="description, detailed, $config->template['options']['elementDetailsCollapsed'] ? hidden">
 				{!$constant|longDescription}
 
 				{foreach $template->annotationSort($template->annotationFilter($annotations, array('var'))) as $annotation => $descriptions}
 					<h4>{$annotation|firstUpper}</h4>
-					<div class="smallList">
+					<div class="list">
 					{foreach $descriptions as $description}
 						{if $description}
 							{!$description|annotation:$annotation:$constant}<br>
@@ -254,7 +254,7 @@
 	</tr>
 	</table>
 
-	<table n:foreach="$class->inheritedConstants as $parentName => $constants" class="summary constants">
+	<table n:foreach="$class->inheritedConstants as $parentName => $constants" class="summary inherited">
 	<caption>Constants inherited from <a href="{$parentName|classUrl}#constants" n:tag-if="$template->getClass($parentName)">{$parentName}</a></caption>
 	<tr>
 		<td><code>
@@ -271,35 +271,35 @@
 	<tr n:foreach="$ownProperties as $property" data-order="{$property->name}" id="${$property->name}" n:class="$property->deprecated ? deprecated">
 		{var $annotations = $property->annotations}
 
-		<td class="right min"><code class="nowrap">
+		<td class="attributes"><code>
 			{if $property->deprecated}deprecated{/if}
 			{if $property->protected}protected{elseif $property->private}private{else}public{/if} {if $property->static}static{/if}
 			{ifset $annotations['var']}{!$annotations['var'][0]|typeLinks:$property}{else}{try}{$property->defaultValue|type}{/try}{/ifset}
 		</code></td>
 
-		<td class="min">
+		<td class="name">
 			{if $class->internal}
-				<a href="{$property|manualUrl}" target="_parent" title="Go to PHP documentation"><var>${$property->name}</var></a>
+				<a href="{$property|manualUrl}" title="Go to PHP documentation"><var>${$property->name}</var></a>
 			{else}
 				<a n:tag-if="$config->sourceCode" href="{$property|sourceUrl}" title="Go to source code"><var>${$property->name}</var></a>
 			{/if}
 		</td>
-		<td><code class="wrap">{!$property->defaultValueDefinition|highlightValue:$class}</code></td>
-		<td><div class="position">
+		<td class="value"><code>{!$property->defaultValueDefinition|highlightValue:$class}</code></td>
+		<td class="description"><div>
 			<a href="#${$property->name}" class="anchor">#</a>
 
 			{if $config->template['options']['elementDetailsCollapsed']}
-			<div class="short">
-				{!$property|shortDescription}
+			<div class="description short">
+				{!$property|shortDescription:true}
 			</div>
 			{/if}
 
-			<div n:class="detailed, $config->template['options']['elementDetailsCollapsed'] ? hidden">
+			<div n:class="description, detailed, $config->template['options']['elementDetailsCollapsed'] ? hidden">
 				{!$property|longDescription}
 
 				{foreach $template->annotationSort($template->annotationFilter($annotations, array('var'))) as $annotation => $descriptions}
 					<h4>{$annotation|firstUpper}</h4>
-					<div class="smallList">
+					<div class="list">
 					{foreach $descriptions as $description}
 						{if $description}
 							{!$description|annotation:$annotation:$property}<br>
@@ -312,7 +312,7 @@
 	</tr>
 	</table>
 
-	<table n:foreach="$class->inheritedProperties as $parentName => $properties" class="summary properties">
+	<table n:foreach="$class->inheritedProperties as $parentName => $properties" class="summary inherited">
 	<caption>Properties inherited from <a href="{$parentName|classUrl}#properties" n:tag-if="$template->getClass($parentName)">{$parentName}</a></caption>
 	<tr>
 		<td><code>
@@ -323,7 +323,7 @@
 	</tr>
 	</table>
 
-	<table n:foreach="$class->usedProperties as $traitName => $properties" class="summary properties">
+	<table n:foreach="$class->usedProperties as $traitName => $properties" class="summary used">
 	<caption>Properties used from <a href="{$traitName|classUrl}#properties" n:tag-if="$template->getClass($traitName)">{$traitName}</a></caption>
 	<tr>
 		<td><code>

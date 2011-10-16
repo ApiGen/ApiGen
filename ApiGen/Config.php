@@ -1,14 +1,14 @@
 <?php
 
 /**
- * ApiGen 2.1.0 - API documentation generator for PHP 5.3+
+ * ApiGen 2.2.0 - API documentation generator for PHP 5.3+
  *
  * Copyright (c) 2010 David Grudl (http://davidgrudl.com)
  * Copyright (c) 2011 Jaroslav Hanslík (https://github.com/kukulich)
  * Copyright (c) 2011 Ondřej Nešpor (https://github.com/Andrewsville)
  *
  * For the full copyright and license information, please view
- * the file LICENSE that was distributed with this source code.
+ * the file LICENSE.md that was distributed with this source code.
  */
 
 namespace ApiGen;
@@ -69,6 +69,7 @@ class Config
 		'quiet' => false,
 		'progressbar' => true,
 		'colors' => true,
+		'updateCheck' => true,
 		'debug' => false
 	);
 
@@ -111,7 +112,7 @@ class Config
 					$next = next($options);
 					if (false === $next || '-' === $next{0}) {
 						prev($options);
-						$value = true;
+						$value = 'yes';
 					} else {
 						$value = $next;
 					}
@@ -135,7 +136,7 @@ class Config
 	 * Parses options and configuration.
 	 *
 	 * @return \ApiGen\Config
-	 * @throws \ApiGen\Exception If something in config is wrong
+	 * @throws \ApiGen\Exception If something in config is wrong.
 	 */
 	public function parse()
 	{
@@ -154,7 +155,7 @@ class Config
 
 		// Parse options
 		foreach ($this->options as $option => $value) {
-			$option = preg_replace_callback('#-([a-z])#', function($matches) {
+			$option = preg_replace_callback('~-([a-z])~', function($matches) {
 				return ucfirst($matches[1]);
 			}, $option);
 
@@ -173,9 +174,9 @@ class Config
 			if (is_bool($valueDefinition)) {
 				// Boolean option
 				$value = strtolower($this->config[$option]);
-				if ('on' === $value || 'yes' === $value) {
+				if ('on' === $value || 'yes' === $value || 'true' === $value) {
 					$value = true;
-				} elseif ('off' === $value || 'no' === $value) {
+				} elseif ('off' === $value || 'no' === $value || 'false' === $value) {
 					$value = false;
 				}
 				$this->config[$option] = (bool) $value;
@@ -263,7 +264,7 @@ class Config
 	 * Checks configuration.
 	 *
 	 * @return \ApiGen\Config
-	 * @throws \ApiGen\Exception If something in config is wrong
+	 * @throws \ApiGen\Exception If something in config is wrong.
 	 */
 	private function check()
 	{
@@ -318,7 +319,7 @@ class Config
 	 * Checks template configuration.
 	 *
 	 * @return \ApiGen\Config
-	 * @throws \ApiGen\Exception If something in template config is wrong
+	 * @throws \ApiGen\Exception If something in template config is wrong.
 	 */
 	private function checkTemplate()
 	{
@@ -410,6 +411,7 @@ Options:
 	@option@--quiet@c            <@value@yes@c|@value@no@c>    Don't display scaning and generating messages, default "@value@no@c"
 	@option@--progressbar@c      <@value@yes@c|@value@no@c>    Display progressbars, default "@value@yes@c"
 	@option@--colors@c           <@value@yes@c|@value@no@c>    Use colors, default "@value@no@c" on Windows, "@value@yes@c" on other systems
+	@option@--update-check@c     <@value@yes@c|@value@no@c>    Check for update, default "@value@yes@c"
 	@option@--debug@c            <@value@yes@c|@value@no@c>    Display additional information in case of an error, default "@value@no@c"
 	@option@--help@c|@option@-h@c                      Display this help
 
