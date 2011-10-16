@@ -16,7 +16,7 @@ $(function() {
 		 *
 		 * @param string href
 		 */
-		window.ApiGen.loadPage = function(href)	{
+		window.ApiGen.loadPage = function(href) {
 			// Change content
 			var page = href.split('#')[0];
 			var location = window.frames['right'].location.href.split('/');
