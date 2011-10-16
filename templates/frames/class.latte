@@ -116,7 +116,7 @@
 
 		{if $config->template['options']['elementDetailsCollapsed']}
 		<div class="description short">
-			{!$method|shortDescription}
+			{!$method|shortDescription:true}
 		</div>
 		{/if}
 
@@ -232,7 +232,7 @@
 
 			{if $config->template['options']['elementDetailsCollapsed']}
 			<div class="description short">
-				{!$constant|shortDescription}
+				{!$constant|shortDescription:true}
 			</div>
 			{/if}
 
@@ -290,7 +290,7 @@
 
 			{if $config->template['options']['elementDetailsCollapsed']}
 			<div class="description short">
-				{!$property|shortDescription}
+				{!$property|shortDescription:true}
 			</div>
 			{/if}
 

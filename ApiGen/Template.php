@@ -196,8 +196,8 @@ class Template extends Nette\Templating\FileTemplate
 			}
 			return $that->doc($description, $context);
 		});
-		$this->registerHelper('shortDescription', function($element) use ($that) {
-			return $that->doc($element->getShortDescription(), $element);
+		$this->registerHelper('shortDescription', function($element, $block = false) use ($that) {
+			return $that->doc($element->getShortDescription(), $element, $block);
 		});
 		$this->registerHelper('longDescription', function($element) use ($that) {
 			$long = $element->getLongDescription();
