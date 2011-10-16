@@ -1,4 +1,4 @@
-## ApiGen 2.1.0 ##
+## ApiGen 2.2.0 ##
 
 * Experimental support of PHP 5.4 traits
 * Added option ```--colors```
