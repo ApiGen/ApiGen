@@ -14,7 +14,7 @@
 namespace ApiGen;
 
 use Nette, FSHL;
-use TokenReflection\Broker, TokenReflection\ReflectionAnnotation;
+use TokenReflection\Broker;
 
 /**
  * Generates a HTML API documentation.
@@ -542,43 +542,37 @@ class Generator extends Nette\Object
 
 		// List of undocumented elements
 		if (!empty($this->config->undocumented)) {
-			$message = function() {
-				$args = func_get_args();
-
-				$parentElement = array_shift($args);
-				$description = array_pop($args);
-
-				$message = '';
-				foreach ($args as $no => $element) {
-					if ($parentElement === $element) {
-						continue;
+			$labeler = function($element) {
+				if ($element instanceof ReflectionClass) {
+					if ($element->isInterface()) {
+						return sprintf('interface %s', $element->getName());
+					} elseif ($element->isTrait()) {
+						return sprintf('trait %s', $element->getName());
+					} elseif ($element->isException()) {
+						return sprintf('exception %s', $element->getName());
+					} else {
+						return sprintf('class %s', $element->getName());
 					}
-
-					if ($element instanceof ReflectionClass) {
-						if ($element->isInterface()) {
-							$label = 'Interface %s';
-						} elseif ($element->isTrait()) {
-							$label = 'Trait %s';
-						} elseif ($element->isException()) {
-							$label = 'Exception %s';
-						} else {
-							$label = 'Class %s';
-						}
-					} elseif ($element instanceof ReflectionMethod) {
-						$label = 'Method %s()';
-					} elseif ($element instanceof ReflectionFunction) {
-						$label = 'Function %s()';
-					} elseif ($element instanceof ReflectionConstant) {
-						$label = 'Constant %s';
-					} elseif ($element instanceof ReflectionProperty) {
-						$label = 'Property $%s';
-					} elseif ($element instanceof ReflectionParameter) {
-						$label = 'Parameter $%s';
+				} elseif ($element instanceof ReflectionMethod) {
+					return sprintf('method %s::%s()', $element->getDeclaringClassName(), $element->getName());
+				} elseif ($element instanceof ReflectionFunction) {
+					return sprintf('function %s()', $element->getName());
+				} elseif ($element instanceof ReflectionConstant) {
+					if ($className = $element->getDeclaringClassName()) {
+						return sprintf('constant %s::%s', $className, $element->getName());
+					} else {
+						return sprintf('constant %s', $element->getName());
 					}
-
-					$message .= sprintf($label . ': ', $element->getName());
+				} elseif ($element instanceof ReflectionProperty) {
+					return sprintf('property %s::$%s', $element->getDeclaringClassName(), $element->getName());
+				} elseif ($element instanceof ReflectionParameter) {
+					if ($element->getDeclaringFunction() instanceof ReflectionMethod) {
+						$parentLabel = sprintf('method %s::%s()', $element->getDeclaringClassName(), $element->getDeclaringFunctionName());
+					} else {
+						$parentLabel = sprintf('function %s()', $element->getDeclaringFunctionName());
+					}
+					return sprintf('parameter $%s of %s', $element->getName(), $parentLabel);
 				}
-				return $message . preg_replace('~\s+~', ' ', $description);
 			};
 
 			$undocumented = array();
@@ -604,37 +598,24 @@ class Generator extends Nette\Object
 						);
 					}
 
-					if ($parentElement instanceof ReflectionClass) {
-						if ($parentElement->isInterface()) {
-							$parentElementLabel = 'Interface %s';
-						} elseif ($parentElement->isTrait()) {
-							$parentElementLabel = 'Trait %s';
-						} elseif ($parentElement->isException()) {
-							$parentElementLabel = 'Exception %s';
-						} else {
-							$parentElementLabel = 'Class %s';
-						}
-					} elseif ($parentElement instanceof ReflectionConstant) {
-						$parentElementLabel = 'Constant %s';
-					} else {
-						$parentElementLabel = 'Function %s()';
-					}
-					$parentElementLabel = sprintf($parentElementLabel, $parentElement->getName());
+					$fileName = $parentElement->getFileName();
 
 					$tokens = $parentElement->getBroker()->getFileTokens($parentElement->getFileName());
 
 					foreach ($elements as $element) {
+						$line = $element->getStartLine();
+						$label = $labeler($element);
+
 						$annotations = $element->getAnnotations();
 
 						// Documentation
-						if (empty($annotations)) {
-							$undocumented[$parentElementLabel][] = $message($parentElement, $element, 'Missing documentation.');
-							continue;
-						}
-
-						// Description
-						if (!isset($annotations[ReflectionAnnotation::SHORT_DESCRIPTION])) {
-							$undocumented[$parentElementLabel][] = $message($parentElement, $element, 'Missing description.');
+						if (empty($element->shortDescription)) {
+							if (empty($annotations)) {
+								$undocumented[$fileName][] = array('error', $line, sprintf('Missing documentation of %s', $label));
+								continue;
+							}
+							// Description
+							$undocumented[$fileName][] = array('error', $line, sprintf('Missing description of %s', $label));
 						}
 
 						// Documentation of method
@@ -642,19 +623,19 @@ class Generator extends Nette\Object
 							// Parameters
 							foreach ($element->getParameters() as $no => $parameter) {
 								if (!isset($annotations['param'][$no])) {
-									$undocumented[$parentElementLabel][] = $message($parentElement, $element, $parameter, 'Missing documentation.');
+									$undocumented[$fileName][] = array('error', $line, sprintf('Missing documentation of %s', $labeler($parameter)));
 									continue;
 								}
 
-								if (!preg_match('~^[\w\\\\]+(?:\|[\w\\\\]+)*\s+\$' . $parameter->getName() . '(?:\s+.+)?$~s', $annotations['param'][$no])) {
-									$undocumented[$parentElementLabel][] = $message($parentElement, $element, $parameter, sprintf('Invalid documentation "%s".', $annotations['param'][$no]));
+								if (!preg_match('~^[\\w\\\\]+(?:\\|[\\w\\\\]+)*\\s+\$' . $parameter->getName() . '(?:\\s+.+)?$~s', $annotations['param'][$no])) {
+									$undocumented[$fileName][] = array('warning', $line, sprintf('Invalid documentation "%s" of %s', $annotations['param'][$no], $labeler($parameter)));
 								}
 
 								unset($annotations['param'][$no]);
 							}
 							if (isset($annotations['param'])) {
 								foreach ($annotations['param'] as $annotation) {
-									$undocumented[$parentElementLabel][] = $message($parentElement, $element, sprintf('Existing documentation "%s" of nonexistent parameter.', $annotation));
+									$undocumented[$fileName][] = array('warning', $line, sprintf('Existing documentation "%s" of nonexistent parameter of %s', $annotation, $label));
 								}
 							}
 
@@ -674,16 +655,16 @@ class Generator extends Nette\Object
 								}
 							}
 							if ($return && !isset($annotations['return'])) {
-								$undocumented[$parentElementLabel][] = $message($parentElement, $element, 'Missing documentation of return value.');
+								$undocumented[$fileName][] = array('error', $line, sprintf('Missing documentation of return value of %s', $label));
 							} elseif (isset($annotations['return'])) {
 								if (!$return && 'void' !== $annotations['return'][0] && ($element instanceof ReflectionFunction || (!$parentElement->isInterface() && !$element->isAbstract()))) {
-									$undocumented[$parentElementLabel][] = $message($parentElement, $element, sprintf('Existing documentation "%s" of nonexistent return value.', $annotations['return'][0]));
-								} elseif (!preg_match('~^[\w\\\\]+(?:\|[\w\\\\]+)*(?:\s+.+)?$~s', $annotations['return'][0])) {
-									$undocumented[$parentElementLabel][] = $message($parentElement, $element, sprintf('Invalid documentation "%s" of return value.', $annotations['return'][0]));
+									$undocumented[$fileName][] = array('warning', $line, sprintf('Existing documentation "%s" of nonexistent return value of %s', $annotations['return'][0], $label));
+								} elseif (!preg_match('~^[\\w\\\\]+(?:\\|[\\w\\\\]+)*(?:\\s+.+)?$~s', $annotations['return'][0])) {
+									$undocumented[$fileName][] = array('warning', $line, sprintf('Invalid documentation "%s" of return value of %s', $annotations['return'][0], $label));
 								}
 							}
 							if (isset($annotations['return'][1])) {
-								$undocumented[$parentElementLabel][] = $message($parentElement, $element, sprintf('Duplicate documentation "%s" of return value.', $annotations['return'][1]));
+								$undocumented[$fileName][] = array('warning', $line, sprintf('Duplicate documentation "%s" of return value of %s', $annotations['return'][1], $label));
 							}
 
 							// Throwing exceptions
@@ -701,22 +682,22 @@ class Generator extends Nette\Object
 								}
 							}
 							if ($throw && !isset($annotations['throws'])) {
-								$undocumented[$parentElementLabel][] = $message($parentElement, $element, 'Missing documentation of throwing an exception.');
-							} elseif (isset($annotations['throws'])	&& !preg_match('~^[\w\\\\]+(?:\|[\w\\\\]+)*(?:\s+.+)?$~s', $annotations['throws'][0])) {
-								$undocumented[$parentElementLabel][] = $message($parentElement, $element, sprintf('Invalid documentation "%s" of throwing an exception.', $annotations['throws'][0]));
+								$undocumented[$fileName][] = array('error', $line, sprintf('Missing documentation of throwing an exception of %s', $label));
+							} elseif (isset($annotations['throws'])	&& !preg_match('~^[\\w\\\\]+(?:\\|[\w\\\\]+)*(?:\\s+.+)?$~s', $annotations['throws'][0])) {
+								$undocumented[$fileName][] = array('warning', $line, sprintf('Invalid documentation "%s" of throwing an exception of %s', $annotations['throws'][0], $label));
 							}
 						}
 
 						// Data type of constants & properties
 						if ($element instanceof ReflectionProperty || $element instanceof ReflectionConstant) {
 							if (!isset($annotations['var'])) {
-								$undocumented[$parentElementLabel][] = $message($parentElement, $element, 'Missing documentation of the data type.');
-							} elseif (!preg_match('~^[\w\\\\]+(?:\|[\w\\\\]+)*(?:\s+.+)?$~s', $annotations['var'][0])) {
-								$undocumented[$parentElementLabel][] = $message($parentElement, $element, sprintf('Invalid documentation "%s" of the data type.', $annotations['var'][0]));
+								$undocumented[$fileName][] = array('error', $line, sprintf('Missing documentation of the data type of %s', $label));
+							} elseif (!preg_match('~^[\\w\\\\]+(?:\\|[\w\\\\]+)*(?:\\s+.+)?$~s', $annotations['var'][0])) {
+								$undocumented[$fileName][] = array('warning', $line, sprintf('Invalid documentation "%s" of the data type of %s', $annotations['var'][0], $label));
 							}
 
 							if (isset($annotations['var'][1])) {
-								$undocumented[$parentElementLabel][] = $message($parentElement, $element, sprintf('Duplicate documentation "%s" of the data type.', $annotations['var'][1]));
+								$undocumented[$fileName][] = array('warning', $line, sprintf('Duplicate documentation "%s" of the data type of %s', $annotations['var'][1], $label));
 							}
 						}
 					}
@@ -729,13 +710,25 @@ class Generator extends Nette\Object
 			if (false === $fp) {
 				throw new Exception(sprintf('File %s isn\'t writable.', $this->config->undocumented));
 			}
-			foreach ($undocumented as $label => $elements) {
-				fwrite($fp, sprintf("%s\n%s\n", $label, str_repeat('-', strlen($label))));
-				foreach ($elements as $text) {
-					fwrite($fp, sprintf("\t%s\n", $text));
+			fwrite($fp, sprintf('<?xml version="1.0" encoding="UTF-8"?>%s', "\n"));
+			fwrite($fp, sprintf('<checkstyle version="1.3.0">%s', "\n"));
+			foreach ($undocumented as $fileName => $reports) {
+				fwrite($fp, sprintf('%s<file name="%s">%s', "\t", $fileName, "\n"));
+
+				// Sort by line
+				usort($reports, function($a, $b) {
+					return strnatcmp($a[1], $b[1]);
+				});
+
+				foreach ($reports as $report) {
+					list($severity, $line, $message) = $report;
+					$message = preg_replace('~\\s+~u', ' ', $message);
+					fwrite($fp, sprintf('%s<error severity="%s" line="%s" message="%s" source="ApiGen.Documentation.Documentation"/>%s', "\t\t", $severity, $line, htmlspecialchars($message), "\n"));
 				}
-				fwrite($fp, "\n");
+
+				fwrite($fp, sprintf('%s</file>%s', "\t", "\n"));
 			}
+			fwrite($fp, sprintf('</checkstyle>%s', "\n"));
 			fclose($fp);
 
 			$this->incrementProgressBar();

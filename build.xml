@@ -93,6 +93,8 @@
 			<arg path="${basedir}/apigen.php" />
 			<arg value="--destination" />
 			<arg path="${builddir}/api" />
+			<arg value="--undocumented" />
+			<arg path="${builddir}/logs/documentation.xml" />
 			<arg value="--deprecated" />
 			<arg value="--todo" />
 			<arg value="--progressbar=no" />
