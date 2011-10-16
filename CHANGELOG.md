@@ -1,3 +1,18 @@
+## ApiGen 2.2.0 ##
+
+* Added an option to check for updates
+* Added an option to initially display elements in alphabetical order
+* Added an option to generate the robots.txt file
+* Added required extensions check
+* Changed reporting of undocumented elements to the checkstyle format
+* Improved deprecated elements highlighting
+* Highlighting the linked source code line
+* Unknown annotations are sorted alphabetically
+* Fixed class parameter description parsing
+* Fixed command line options parsing
+* Fixed include path setting of the GitHub version
+* Fixed frames template
+
 ## ApiGen 2.1.0 ##
 
 * Experimental support of PHP 5.4 traits
