@@ -407,7 +407,7 @@ td.name, td.attributes {
 	white-space: nowrap;
 }
 
-.class #methods td.name > div, .class td.description > div  {
+.class #methods td.name > div, .class td.description > div {
 	position: relative;
 	padding-right: 1em;
 }

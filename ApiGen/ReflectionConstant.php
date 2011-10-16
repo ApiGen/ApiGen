@@ -30,7 +30,7 @@ class ReflectionConstant extends ReflectionElement
 	public function getDeclaringClass()
 	{
 		$className = $this->reflection->getDeclaringClassName();
-		return null === $className ? null : self::$allClasses[$className];
+		return null === $className ? null : self::$parsedClasses[$className];
 	}
 
 	/**

@@ -16,8 +16,7 @@ $(function() {
 		 *
 		 * @param string href
 		 */
-		window.ApiGen.loadPage = function(href)
-		{
+		window.ApiGen.loadPage = function(href)	{
 			// Change content
 			var page = href.split('#')[0];
 			var location = window.frames['right'].location.href.split('/');
@@ -183,9 +182,9 @@ $(function() {
 
 		// Check parent frame
 		if (window.self !== window.parent.frames['left']) {
-			var location = window.location.href.split('/');
-			location.pop();
-			location.push('index.html');
+			var leftLocation = window.location.href.split('/');
+			leftLocation.pop();
+			leftLocation.push('index.html');
 			window.location.replace(location.join('/'));
 			return;
 		}
@@ -227,10 +226,10 @@ $(function() {
 
 		// Check parent frame
 		if (window.self !== window.parent.frames['right']) {
-			var location = window.location.href.split('/');
-			location.pop();
-			location.push('index.html#' + actualPage);
-			window.location.replace(location.join('/'));
+			var rightLocation = window.location.href.split('/');
+			rightLocation.pop();
+			rightLocation.push('index.html#' + actualPage);
+			window.location.replace(rightLocation.join('/'));
 			return;
 		}
 

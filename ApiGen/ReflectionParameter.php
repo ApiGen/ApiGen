@@ -30,7 +30,7 @@ class ReflectionParameter extends ReflectionElement
 	public function getClass()
 	{
 		$className = $this->reflection->getClassName();
-		return null === $className ? null : self::$allClasses[$className];
+		return null === $className ? null : self::$parsedClasses[$className];
 	}
 
 	/**
@@ -43,9 +43,9 @@ class ReflectionParameter extends ReflectionElement
 		$functionName = $this->reflection->getDeclaringFunctionName();
 
 		if ($className = $this->reflection->getDeclaringClassName()) {
-			return self::$allClasses[$className]->getMethod($functionName);
+			return self::$parsedClasses[$className]->getMethod($functionName);
 		} else {
-			return self::$allFunctions[$functionName];
+			return self::$parsedFunctions[$functionName];
 		}
 	}
 
@@ -57,6 +57,6 @@ class ReflectionParameter extends ReflectionElement
 	public function getDeclaringClass()
 	{
 		$className = $this->reflection->getDeclaringClassName();
-		return null === $className ? null : self::$allClasses[$className];
+		return null === $className ? null : self::$parsedClasses[$className];
 	}
 }

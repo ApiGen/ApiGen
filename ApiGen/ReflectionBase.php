@@ -26,25 +26,25 @@ use TokenReflection\IReflection;
 abstract class ReflectionBase
 {
 	/**
-	 * List of classes.
+	 * List of parsed classes.
 	 *
 	 * @var \ArrayObject
 	 */
-	protected static $allClasses;
+	protected static $parsedClasses;
 
 	/**
-	 * List of constants.
+	 * List of parsed constants.
 	 *
 	 * @var \ArrayObject
 	 */
-	protected static $allConstants;
+	protected static $parsedConstants;
 
 	/**
-	 * List of functions.
+	 * List of parsed functions.
 	 *
 	 * @var \ArrayObject
 	 */
-	protected static $allFunctions;
+	protected static $parsedFunctions;
 
 	/**
 	 * Generator.
@@ -94,9 +94,9 @@ abstract class ReflectionBase
 		if (null === self::$generator) {
 			self::$generator = $generator;
 			self::$config = $generator->getConfig();
-			self::$allClasses = $generator->getClasses();
-			self::$allConstants = $generator->getConstants();
-			self::$allFunctions = $generator->getFunctions();
+			self::$parsedClasses = $generator->getParsedClasses();
+			self::$parsedConstants = $generator->getParsedConstants();
+			self::$parsedFunctions = $generator->getParsedFunctions();
 		}
 
 		$this->reflectionType = get_class($this);

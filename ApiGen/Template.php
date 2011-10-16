@@ -33,25 +33,25 @@ class Template extends Nette\Templating\FileTemplate
 	private $config;
 
 	/**
-	 * List of classes.
+	 * List of parsed classes.
 	 *
 	 * @var \ArrayObject
 	 */
-	private $classes;
+	private $parsedClasses;
 
 	/**
-	 * List of constants.
+	 * List of parsed constants.
 	 *
 	 * @var \ArrayObject
 	 */
-	private $constants;
+	private $parsedConstants;
 
 	/**
-	 * List of functions.
+	 * List of parsed functions.
 	 *
 	 * @var \ArrayObject
 	 */
-	private $functions;
+	private $parsedFunctions;
 
 	/**
 	 * Texy.
@@ -68,9 +68,9 @@ class Template extends Nette\Templating\FileTemplate
 	public function __construct(Generator $generator)
 	{
 		$this->config = $generator->getConfig();
-		$this->classes = $generator->getClasses();
-		$this->constants = $generator->getConstants();
-		$this->functions = $generator->getFunctions();
+		$this->parsedClasses = $generator->getParsedClasses();
+		$this->parsedConstants = $generator->getParsedConstants();
+		$this->parsedFunctions = $generator->getParsedFunctions();
 
 		$that = $this;
 
@@ -284,21 +284,21 @@ class Template extends Nette\Templating\FileTemplate
 		});
 
 		$this->registerHelper('annotationSort', function(array $annotations) {
-			uksort($annotations, function($a, $b) {
+			uksort($annotations, function($one, $two) {
 				static $order = array(
 					'deprecated' => 0, 'category' => 1, 'package' => 2, 'subpackage' => 3, 'copyright' => 4,
 					'license' => 5, 'author' => 6, 'version' => 7, 'since' => 8, 'see' => 9, 'uses' => 10,
 					'link' => 11, 'internal' => 14, 'example' => 13, 'tutorial' => 14, 'todo' => 15
 				);
 
-				if (isset($order[$a], $order[$b])) {
-					return $order[$a] - $order[$b];
-				} elseif (isset($order[$a])) {
+				if (isset($order[$one], $order[$two])) {
+					return $order[$one] - $order[$two];
+				} elseif (isset($order[$one])) {
 					return -1;
-				} elseif (isset($order[$b])) {
+				} elseif (isset($order[$two])) {
 					return 1;
 				} else {
-					return strcasecmp($a, $b);
+					return strcasecmp($one, $two);
 				}
 			});
 			return $annotations;
@@ -460,7 +460,7 @@ class Template extends Nette\Templating\FileTemplate
 	{
 		// Class constant
 		if ($className = $constant->getDeclaringClassName()) {
-			return $this->getClassUrl($constant->getDeclaringClassName()) . '#' . $constant->getName();
+			return $this->getClassUrl($className) . '#' . $constant->getName();
 		}
 		// Constant in namespace or global space
 		return sprintf($this->config->template['templates']['main']['constant']['filename'], $this->urlize($constant->getName()));
@@ -570,10 +570,10 @@ class Template extends Nette\Templating\FileTemplate
 	 */
 	public function getClass($className, $namespace = '')
 	{
-		if (isset($this->classes[$namespace . '\\' . $className])) {
-			$class = $this->classes[$namespace . '\\' . $className];
-		} elseif (isset($this->classes[$className])) {
-			$class = $this->classes[$className];
+		if (isset($this->parsedClasses[$namespace . '\\' . $className])) {
+			$class = $this->parsedClasses[$namespace . '\\' . $className];
+		} elseif (isset($this->parsedClasses[$className])) {
+			$class = $this->parsedClasses[$className];
 		} else {
 			return null;
 		}
@@ -595,10 +595,10 @@ class Template extends Nette\Templating\FileTemplate
 	 */
 	public function getConstant($constantName, $namespace = '')
 	{
-		if (isset($this->constants[$namespace . '\\' . $constantName])) {
-			$constant = $this->constants[$namespace . '\\' . $constantName];
-		} elseif (isset($this->constants[$constantName])) {
-			$constant = $this->constants[$constantName];
+		if (isset($this->parsedConstants[$namespace . '\\' . $constantName])) {
+			$constant = $this->parsedConstants[$namespace . '\\' . $constantName];
+		} elseif (isset($this->parsedConstants[$constantName])) {
+			$constant = $this->parsedConstants[$constantName];
 		} else {
 			return null;
 		}
@@ -620,10 +620,10 @@ class Template extends Nette\Templating\FileTemplate
 	 */
 	public function getFunction($functionName, $namespace = '')
 	{
-		if (isset($this->functions[$namespace . '\\' . $functionName])) {
-			$function = $this->functions[$namespace . '\\' . $functionName];
-		} elseif (isset($this->functions[$functionName])) {
-			$function = $this->functions[$functionName];
+		if (isset($this->parsedFunctions[$namespace . '\\' . $functionName])) {
+			$function = $this->parsedFunctions[$namespace . '\\' . $functionName];
+		} elseif (isset($this->parsedFunctions[$functionName])) {
+			$function = $this->parsedFunctions[$functionName];
 		} else {
 			return null;
 		}

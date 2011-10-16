@@ -30,7 +30,7 @@ class ReflectionMethod extends ReflectionFunctionBase
 	public function getDeclaringClass()
 	{
 		$className = $this->reflection->getDeclaringClassName();
-		return null === $className ? null : self::$allClasses[$className];
+		return null === $className ? null : self::$parsedClasses[$className];
 	}
 
 	/**
@@ -41,7 +41,7 @@ class ReflectionMethod extends ReflectionFunctionBase
 	public function getDeclaringTrait()
 	{
 		$traitName = $this->reflection->getDeclaringTraitName();
-		return null === $traitName ? null : self::$allClasses[$traitName];
+		return null === $traitName ? null : self::$parsedClasses[$traitName];
 	}
 
 	/**
@@ -52,7 +52,7 @@ class ReflectionMethod extends ReflectionFunctionBase
 	public function getPrototype()
 	{
 		$prototype = $this->reflection->getPrototype();
-		return self::$allClasses[$prototype->getDeclaringClassName()]->getMethod($prototype->getName());
+		return self::$parsedClasses[$prototype->getDeclaringClassName()]->getMethod($prototype->getName());
 	}
 
 	/**
@@ -63,6 +63,6 @@ class ReflectionMethod extends ReflectionFunctionBase
 	public function getOriginal()
 	{
 		$originalName = $this->reflection->getOriginalName();
-		return null === $originalName ? null : self::$allClasses[$this->reflection->getOriginal()->getDeclaringClassName()]->getMethod($originalName);
+		return null === $originalName ? null : self::$parsedClasses[$this->reflection->getOriginal()->getDeclaringClassName()]->getMethod($originalName);
 	}
 }

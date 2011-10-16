@@ -35,8 +35,8 @@ class ReflectionExtension extends ReflectionBase
 		if (null === $class) {
 			return null;
 		}
-		if (isset(self::$allClasses[$name])) {
-			return self::$allClasses[$name];
+		if (isset(self::$parsedClasses[$name])) {
+			return self::$parsedClasses[$name];
 		}
 		return new ReflectionClass($class, self::$generator);
 	}
@@ -49,7 +49,7 @@ class ReflectionExtension extends ReflectionBase
 	public function getClasses()
 	{
 		$generator = self::$generator;
-		$classes = self::$allClasses;
+		$classes = self::$parsedClasses;
 		return array_map(function(TokenReflection\IReflectionClass $class) use ($generator, $classes) {
 			return isset($classes[$class->getName()]) ? $classes[$class->getName()] : new ReflectionClass($class, $generator);
 		}, $this->reflection->getClasses());

@@ -30,7 +30,7 @@ class ReflectionProperty extends ReflectionElement
 	public function getDeclaringClass()
 	{
 		$className = $this->reflection->getDeclaringClassName();
-		return null === $className ? null : self::$allClasses[$className];
+		return null === $className ? null : self::$parsedClasses[$className];
 	}
 
 	/**
@@ -41,6 +41,6 @@ class ReflectionProperty extends ReflectionElement
 	public function getDeclaringTrait()
 	{
 		$traitName = $this->reflection->getDeclaringTraitName();
-		return null === $traitName ? null : self::$allClasses[$traitName];
+		return null === $traitName ? null : self::$parsedClasses[$traitName];
 	}
 }
