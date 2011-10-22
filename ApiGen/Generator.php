@@ -289,12 +289,6 @@ class Generator extends Nette\Object
 	 */
 	public function wipeOutDestination()
 	{
-		// Temporary directory
-		$tmpDir = $this->config->destination . DIRECTORY_SEPARATOR . 'tmp';
-		if (is_dir($tmpDir) && !$this->deleteDir($tmpDir)) {
-			return false;
-		}
-
 		// Resources
 		foreach ($this->config->template['resources'] as $resource) {
 			$path = $this->config->destination . DIRECTORY_SEPARATOR . $resource;
@@ -409,11 +403,10 @@ class Generator extends Nette\Object
 			$this->prepareProgressBar($max);
 		}
 
-		// Create temporary directory
-		$tmp = $this->config->destination . DIRECTORY_SEPARATOR . 'tmp';
-		@mkdir($tmp, 0755, true);
-
 		// Prepare template
+		$tmp = $this->config->destination . DIRECTORY_SEPARATOR . 'tmp';
+		$this->deleteDir($tmp);
+		@mkdir($tmp, 0755, true);
 		$template = new Template($this);
 		$template->setCacheStorage(new Nette\Caching\Storages\PhpFileStorage($tmp));
 		$template->generator = self::NAME;
@@ -1543,6 +1536,10 @@ class Generator extends Nette\Object
 	 */
 	private function deleteDir($path)
 	{
+		if (!is_dir($path)) {
+			return true;
+		}
+
 		foreach (Nette\Utils\Finder::find('*')->from($path)->childFirst() as $item) {
 			if ($item->isDir()) {
 				if (!@rmdir($item)) {
