@@ -131,6 +131,13 @@ class Generator extends Nette\Object
 	private $symlinks = array();
 
 	/**
+	 * List of detected character sets for parsed files.
+	 *
+	 * @var array
+	 */
+	private $charsets = array();
+
+	/**
 	 * Progressbar settings and status.
 	 *
 	 * @var array
@@ -209,8 +216,13 @@ class Generator extends Nette\Object
 
 		$broker = new Broker(new Backend($this, !empty($this->config->undocumented)), Broker::OPTION_DEFAULT & ~(Broker::OPTION_PARSE_FUNCTION_BODY | Broker::OPTION_SAVE_TOKEN_STREAM));
 
-		foreach ($files as $file => $size) {
-			$broker->processFile($file);
+		foreach ($files as $fileName => $size) {
+			$content = file_get_contents($fileName);
+			$charset = $this->detectCharset($content);
+			$this->charsets[$fileName] = $charset;
+			$content = $this->toUtf($content, $charset);
+
+			$broker->processString($content, $fileName);
 			$this->incrementProgressBar($size);
 		}
 
@@ -1237,7 +1249,7 @@ class Generator extends Nette\Object
 
 				// Generate source codes
 				if ($this->config->sourceCode && $element->isTokenized()) {
-					$template->source = $fshl->highlight(file_get_contents($element->getFileName()));
+					$template->source = $fshl->highlight($this->toUtf(file_get_contents($element->getFileName()), $this->charsets[$element->getFileName()]));
 					$template
 						->setFile($this->getTemplatePath('source'))
 						->save($this->config->destination . '/' . $template->getSourceUrl($element, false));
@@ -1336,6 +1348,67 @@ class Generator extends Nette\Object
 		if ($this->progressbar['current'] === $this->progressbar['maximum']) {
 			echo "\n";
 		}
+	}
+
+	/**
+	 * Detects character set for the given text.
+	 *
+	 * @param string $text Text
+	 * @return string
+	 */
+	private function detectCharset($text)
+	{
+		// One character set
+		if (1 === count($this->config->charset) && 'AUTO' !== $this->config->charset[0]) {
+			return $this->config->charset[0];
+		}
+
+		static $charsets = array();
+		if (empty($charsets)) {
+			if (1 === count($this->config->charset) && 'AUTO' === $this->config->charset[0]) {
+				// Autodetection
+				$charsets = array(
+					'Windows-1251', 'Windows-1252', 'ISO-8859-2', 'ISO-8859-1', 'ISO-8859-3', 'ISO-8859-4', 'ISO-8859-5', 'ISO-8859-6',
+					'ISO-8859-7', 'ISO-8859-8', 'ISO-8859-9', 'ISO-8859-10', 'ISO-8859-13', 'ISO-8859-14', 'ISO-8859-15'
+				);
+			} else {
+				// More character sets
+				$charsets = $this->config->charset;
+				if (false !== ($key = array_search('WINDOWS-1250', $charsets))) {
+					// WINDOWS-1250 is not supported
+					$charsets[$key] = 'ISO-8859-2';
+				}
+			}
+			// Only supported character sets
+			$charsets = array_intersect($charsets, mb_list_encodings());
+
+			// UTF-8 have to be first
+			array_unshift($charsets, 'UTF-8');
+		}
+
+		$charset = mb_detect_encoding($text, $charsets);
+		// The previous function can not handle WINDOWS-1250 and returns ISO-8859-2 instead
+		if ('ISO-8859-2' === $charset && preg_match('~[\x7F-\x9F\xBC]~', $text)) {
+			$charset = 'WINDOWS-1250';
+		}
+
+		return $charset;
+	}
+
+	/**
+	 * Converts text from given character set to UTF-8.
+	 *
+	 * @param string $text Text
+	 * @param string $charset Character set
+	 * @return string
+	 */
+	private function toUtf($text, $charset)
+	{
+		if ('UTF-8' === $charset) {
+			return $text;
+		}
+
+		return @iconv($charset, 'UTF-8//TRANSLIT//IGNORE', $text);
 	}
 
 	/**

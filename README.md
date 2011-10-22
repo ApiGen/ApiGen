@@ -116,6 +116,10 @@ Directories and files matching this file mask will not be parsed. You can exclud
 
 Using this parameters you can tell ApiGen not to generate documentation for classes from certain files or with certain name prefix. Such classes will appear in class trees, but will not create a link to their documentation. These parameters can be used multiple times.
 
+```--charset <list>```
+
+Character set of source files, default is "UTF-8". You can use the parameter multiple times to provide a list of all used character sets in your documentation. In that case ApiGen will try to choose one of provided sets for every file. You can also use the "auto" value to let ApiGen choose from all supported character sets. However you should avoid this because every kind of autodetection can be tricky (and not completely realiable).
+
 ```--main <value>```
 
 Classes with this name prefix will be considered as the "main project" (the rest will be considered as libraries).
