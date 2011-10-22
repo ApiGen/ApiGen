@@ -180,6 +180,17 @@
 			<min>1.0.0RC1</min>
 		</package>
 	</required>
+	<optional>
+		<extension>
+			<name>bz2</name>
+		</extension>
+		<extension>
+			<name>phar</name>
+		</extension>
+		<extension>
+			<name>zlib</name>
+		</extension>
+	</optional>
 </dependencies>
 <phprelease>
 	<installconditions>

@@ -165,7 +165,7 @@ class Generator extends Nette\Object
 		$files = array();
 
 		$flags = \RecursiveDirectoryIterator::CURRENT_AS_FILEINFO | \RecursiveDirectoryIterator::SKIP_DOTS;
-		if (defined('\RecursiveDirectoryIterator::FOLLOW_SYMLINKS')) {
+		if (defined('\\RecursiveDirectoryIterator::FOLLOW_SYMLINKS')) {
 			// Available from PHP 5.3.1
 			$flags |= \RecursiveDirectoryIterator::FOLLOW_SYMLINKS;
 		}
@@ -173,6 +173,16 @@ class Generator extends Nette\Object
 			$entries = array();
 			if (is_dir($source)) {
 				foreach (new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($source, $flags)) as $entry) {
+					if (!$entry->isFile()) {
+						continue;
+					}
+					$entries[] = $entry;
+				}
+			} elseif ($this->isPhar($source)) {
+				if (!extension_loaded('phar')) {
+					throw new Exception('Phar extension is not loaded');
+				}
+				foreach (new \RecursiveIteratorIterator(new \Phar($source, $flags)) as $entry) {
 					if (!$entry->isFile()) {
 						continue;
 					}
@@ -186,8 +196,9 @@ class Generator extends Nette\Object
 				if (!preg_match('~\\.php$~i', $entry->getFilename())) {
 					continue;
 				}
+				$pathName = $this->unPharPath($entry->getPathName());
 				foreach ($this->config->exclude as $mask) {
-					if (fnmatch($mask, $entry->getPathName(), FNM_NOESCAPE)) {
+					if (fnmatch($mask, $pathName, FNM_NOESCAPE)) {
 						continue 2;
 					}
 				}
@@ -712,7 +723,7 @@ class Generator extends Nette\Object
 					);
 				}
 
-				$fileName = $parentElement->getFileName();
+				$fileName = $this->unPharPath($parentElement->getFileName());
 
 				$tokens = $parentElement->getBroker()->getFileTokens($parentElement->getFileName());
 
@@ -1291,6 +1302,31 @@ class Generator extends Nette\Object
 	}
 
 	/**
+	 * Removes phar:// from the path and fixes directory separator.
+	 *
+	 * @param string $path Path
+	 * @return string
+	 */
+	public function unPharPath($path)
+	{
+		if (0 === strpos($path, 'phar://')) {
+			$path = str_replace('/', DIRECTORY_SEPARATOR, substr($path, 7));
+		}
+		return $path;
+	}
+
+	/**
+	 * Checks if given path is a phar.
+	 *
+	 * @param string $path
+	 * @return boolean
+	 */
+	private function isPhar($path)
+	{
+		return (bool) preg_match('~\\.phar(?:\\.zip|\\.tar|(?:(?:\\.tar)?(?:\\.gz|\\.bz2))|$)~i', $path);
+	}
+
+	/**
 	 * Prepares the progressbar.
 	 *
 	 * @param integer $maximum Maximum progressbar value
@@ -1446,6 +1482,9 @@ class Generator extends Nette\Object
 			$fileName = $this->symlinks[$fileName];
 		}
 		foreach ($this->config->source as $source) {
+			if ($this->isPhar($source)) {
+				$source = 'phar://' . str_replace(DIRECTORY_SEPARATOR, '/', $source);
+			}
 			if (0 === strpos($fileName, $source)) {
 				return is_dir($source) ? str_replace('\\', '/', substr($fileName, strlen($source) + 1)) : basename($fileName);
 			}
