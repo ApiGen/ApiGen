@@ -290,14 +290,14 @@ class Generator extends Nette\Object
 	public function wipeOutDestination()
 	{
 		// Temporary directory
-		$tmpDir = $this->config->destination . '/tmp';
+		$tmpDir = $this->config->destination . DIRECTORY_SEPARATOR . 'tmp';
 		if (is_dir($tmpDir) && !$this->deleteDir($tmpDir)) {
 			return false;
 		}
 
 		// Resources
 		foreach ($this->config->template['resources'] as $resource) {
-			$path = $this->config->destination . '/' . $resource;
+			$path = $this->config->destination . DIRECTORY_SEPARATOR . $resource;
 			if (is_dir($path) && !$this->deleteDir($path)) {
 				return false;
 			} elseif (is_file($path) && !@unlink($path)) {
@@ -315,7 +315,7 @@ class Generator extends Nette\Object
 
 		// Optional files
 		foreach ($this->config->template['templates']['optional'] as $optional) {
-			$file = $this->config->destination . '/' . $optional['filename'];
+			$file = $this->config->destination . DIRECTORY_SEPARATOR . $optional['filename'];
 			if (is_file($file) && !@unlink($file)) {
 				return false;
 			}
@@ -359,15 +359,15 @@ class Generator extends Nette\Object
 		// Copy resources
 		foreach ($this->config->template['resources'] as $resourceSource => $resourceDestination) {
 			// File
-			$resourcePath = $this->getTemplateDir() . '/' . $resourceSource;
+			$resourcePath = $this->getTemplateDir() . DIRECTORY_SEPARATOR . $resourceSource;
 			if (is_file($resourcePath)) {
-				copy($resourcePath, $this->forceDir($this->config->destination . '/' . $resourceDestination));
+				copy($resourcePath, $this->forceDir($this->config->destination . DIRECTORY_SEPARATOR . $resourceDestination));
 				continue;
 			}
 
 			// Dir
 			foreach ($iterator = Nette\Utils\Finder::findFiles('*')->from($resourcePath)->getIterator() as $item) {
-				copy($item->getPathName(), $this->forceDir($this->config->destination . '/' . $resourceDestination . '/' . $iterator->getSubPathName()));
+				copy($item->getPathName(), $this->forceDir($this->config->destination . DIRECTORY_SEPARATOR . $resourceDestination . DIRECTORY_SEPARATOR . $iterator->getSubPathName()));
 			}
 		}
 
@@ -613,8 +613,8 @@ class Generator extends Nette\Object
 
 		foreach ($this->config->template['templates']['common'] as $dest => $source) {
 			$template
-				->setFile($this->getTemplateDir() . '/' . $source)
-				->save($this->forceDir($this->config->destination . '/' . $dest));
+				->setFile($this->getTemplateDir() . DIRECTORY_SEPARATOR . $source)
+				->save($this->forceDir($this->config->destination . DIRECTORY_SEPARATOR . $dest));
 
 			$this->incrementProgressBar();
 		}
@@ -1082,7 +1082,7 @@ class Generator extends Nette\Object
 			$template->functions = $package['functions'];
 			$template
 				->setFile($this->getTemplatePath('package'))
-				->save($this->config->destination . '/' . $template->getPackageUrl($packageName));
+				->save($this->config->destination . DIRECTORY_SEPARATOR . $template->getPackageUrl($packageName));
 
 			$this->incrementProgressBar();
 		}
@@ -1119,7 +1119,7 @@ class Generator extends Nette\Object
 			$template->functions = $namespace['functions'];
 			$template
 				->setFile($this->getTemplatePath('namespace'))
-				->save($this->config->destination . '/' . $template->getNamespaceUrl($namespaceName));
+				->save($this->config->destination . DIRECTORY_SEPARATOR . $template->getNamespaceUrl($namespaceName));
 
 			$this->incrementProgressBar();
 		}
@@ -1216,21 +1216,21 @@ class Generator extends Nette\Object
 
 					$template
 						->setFile($this->getTemplatePath('class'))
-						->save($this->config->destination . '/' . $template->getClassUrl($element));
+						->save($this->config->destination . DIRECTORY_SEPARATOR . $template->getClassUrl($element));
 				} elseif ($element instanceof ReflectionConstant) {
 					// Constant
 					$template->constant = $element;
 
 					$template
 						->setFile($this->getTemplatePath('constant'))
-						->save($this->config->destination . '/' . $template->getConstantUrl($element));
+						->save($this->config->destination . DIRECTORY_SEPARATOR . $template->getConstantUrl($element));
 				} elseif ($element instanceof ReflectionFunction) {
 					// Function
 					$template->function = $element;
 
 					$template
 						->setFile($this->getTemplatePath('function'))
-						->save($this->config->destination . '/' . $template->getFunctionUrl($element));
+						->save($this->config->destination . DIRECTORY_SEPARATOR . $template->getFunctionUrl($element));
 				}
 
 				$this->incrementProgressBar();
@@ -1240,7 +1240,7 @@ class Generator extends Nette\Object
 					$template->source = $fshl->highlight(file_get_contents($element->getFileName()));
 					$template
 						->setFile($this->getTemplatePath('source'))
-						->save($this->config->destination . '/' . $template->getSourceUrl($element, false));
+						->save($this->config->destination . DIRECTORY_SEPARATOR . $template->getSourceUrl($element, false));
 
 					$this->incrementProgressBar();
 				}
@@ -1480,7 +1480,7 @@ class Generator extends Nette\Object
 	 */
 	private function getTemplatePath($name, $type = 'main')
 	{
-		return $this->getTemplateDir() . '/' . $this->config->template['templates'][$type][$name]['template'];
+		return $this->getTemplateDir() . DIRECTORY_SEPARATOR . $this->config->template['templates'][$type][$name]['template'];
 	}
 
 	/**
@@ -1492,7 +1492,7 @@ class Generator extends Nette\Object
 	 */
 	private function getTemplateFileName($name, $type = 'main')
 	{
-		return $this->config->destination . '/' . $this->config->template['templates'][$type][$name]['filename'];
+		return $this->config->destination . DIRECTORY_SEPARATOR . $this->config->template['templates'][$type][$name]['filename'];
 	}
 
 	/**

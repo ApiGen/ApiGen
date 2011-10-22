@@ -309,7 +309,7 @@ class Template extends Nette\Templating\FileTemplate
 		$this->registerHelper('staticFile', function($name) use ($destination) {
 			static $versions = array();
 
-			$filename = $destination . '/' . $name;
+			$filename = $destination . DIRECTORY_SEPARATOR . $name;
 			if (!isset($versions[$filename]) && is_file($filename)) {
 				$versions[$filename] = sprintf('%u', crc32(file_get_contents($filename)));
 			}

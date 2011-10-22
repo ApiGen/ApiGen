@@ -128,7 +128,7 @@ class Config
 		}, $this->options);
 
 		$this->config = self::$defaultConfig;
-		$this->config['templateConfig'] = realpath(TEMPLATE_DIR . '/default/config.neon');
+		$this->config['templateConfig'] = realpath(TEMPLATE_DIR . DIRECTORY_SEPARATOR . 'default' . DIRECTORY_SEPARATOR . 'config.neon');
 		$this->config['colors'] = 'WIN' !== substr(PHP_OS, 0, 3);
 	}
 
