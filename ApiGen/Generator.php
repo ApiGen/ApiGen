@@ -300,9 +300,9 @@ class Generator extends Nette\Object
 		}
 
 		// Common files
-		$filenames = array_keys($this->config->template['templates']['common']);
-		foreach (Nette\Utils\Finder::findFiles($filenames)->from($this->config->destination) as $item) {
-			if (!@unlink($item)) {
+		foreach ($this->config->template['templates']['common'] as $item) {
+			$file = $this->config->destination . DIRECTORY_SEPARATOR . $item;
+			if (is_file($file) && !@unlink($file)) {
 				return false;
 			}
 		}
@@ -360,7 +360,8 @@ class Generator extends Nette\Object
 			}
 
 			// Dir
-			foreach ($iterator = Nette\Utils\Finder::findFiles('*')->from($resourcePath)->getIterator() as $item) {
+			$iterator = Nette\Utils\Finder::findFiles('*')->from($resourcePath)->getIterator();
+			foreach ($iterator as $item) {
 				copy($item->getPathName(), $this->forceDir($this->config->destination . DIRECTORY_SEPARATOR . $resourceDestination . DIRECTORY_SEPARATOR . $iterator->getSubPathName()));
 			}
 		}
@@ -604,10 +605,10 @@ class Generator extends Nette\Object
 		});
 		$template->elements = $elements;
 
-		foreach ($this->config->template['templates']['common'] as $dest => $source) {
+		foreach ($this->config->template['templates']['common'] as $source => $destination) {
 			$template
 				->setFile($this->getTemplateDir() . DIRECTORY_SEPARATOR . $source)
-				->save($this->forceDir($this->config->destination . DIRECTORY_SEPARATOR . $dest));
+				->save($this->forceDir($this->config->destination . DIRECTORY_SEPARATOR . $destination));
 
 			$this->incrementProgressBar();
 		}
