@@ -18,6 +18,7 @@ For all support questions please use our [mailing list](https://groups.google.co
 * A page with trees of classes, interfaces, traits and exceptions.
 * A page with a list of deprecated elements.
 * A page with Todo tasks.
+* Link to download documentation as ZIP archive.
 * Checkstyle report of undocumented elements.
 * Support for docblock templates.
 * Support for @inheritdoc.
@@ -175,6 +176,10 @@ Generate a list of tasks, default is "No".
 ```--source-code <yes|no>```
 
 Generate highlighted source code for user defined classes, default is "Yes".
+
+```--download <yes|no>```
+
+Add a link to download documentation as a ZIP archive, default is "No". Requires [PHP zip extension](http://php.net/manual/book.zip.php).
 
 ```--undocumented <file>```
 

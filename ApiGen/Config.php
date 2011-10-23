@@ -63,6 +63,7 @@ class Config
 		'tree' => true,
 		'deprecated' => false,
 		'todo' => false,
+		'download' => false,
 		'sourceCode' => true,
 		'undocumented' => '',
 		'wipeout' => true,
@@ -406,6 +407,7 @@ Options:
 	@option@--deprecated@c       <@value@yes@c|@value@no@c>    Generate documentation for deprecated classes, methods, properties and constants, default "@value@no@c"
 	@option@--todo@c             <@value@yes@c|@value@no@c>    Generate documentation of tasks, default "@value@no@c"
 	@option@--source-code@c      <@value@yes@c|@value@no@c>    Generate highlighted source code files, default "@value@yes@c"
+	@option@--download@c         <@value@yes@c|@value@no@c>    Add a link to download documentation as a ZIP archive, default "@value@no@c"
 	@option@--undocumented@c     <@value@file@c>      Save a list of undocumented classes, methods, properties and constants into a file
 	@option@--wipeout@c          <@value@yes@c|@value@no@c>    Wipe out the destination directory first, default "@value@yes@c"
 	@option@--quiet@c            <@value@yes@c|@value@no@c>    Don't display scaning and generating messages, default "@value@no@c"

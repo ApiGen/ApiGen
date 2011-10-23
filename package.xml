@@ -180,6 +180,9 @@
 			<min>1.0.0RC1</min>
 		</package>
 	</required>
+	<optional>
+		<extension>zip</extension>
+	</optional>
 </dependencies>
 <phprelease>
 	<installconditions>
