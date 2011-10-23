@@ -358,11 +358,15 @@ dl.tree dd {
 }
 
 .summary .description p {
-	margin: .4em 0;
+	margin: 0;
+}
+
+.summary .description p + p, .summary .description ul {
+	margin: 3px 0 0 0;
 }
 
 .summary .description.detailed h4 {
-	margin-top: 5px;
+	margin-top: 3px;
 }
 
 .summary dl {
