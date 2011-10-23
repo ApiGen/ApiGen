@@ -30,8 +30,9 @@ class ReflectionFunction extends ReflectionFunctionBase
 	public function isDocumented()
 	{
 		if (null === $this->isDocumented && parent::isDocumented()) {
+			$fileName = self::$generator->unPharPath($this->reflection->getFilename());
 			foreach (self::$config->skipDocPath as $mask) {
-				if (fnmatch($mask, $this->reflection->getFilename(), FNM_NOESCAPE)) {
+				if (fnmatch($mask, $fileName, FNM_NOESCAPE)) {
 					$this->isDocumented = false;
 					break;
 				}

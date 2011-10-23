@@ -181,7 +181,18 @@
 		</package>
 	</required>
 	<optional>
-		<extension>zip</extension>
+		<extension>
+			<name>bz2</name>
+		</extension>
+		<extension>
+			<name>phar</name>
+		</extension>
+		<extension>
+			<name>zip</name>
+		</extension>
+		<extension>
+			<name>zlib</name>
+		</extension>
 	</optional>
 </dependencies>
 <phprelease>
