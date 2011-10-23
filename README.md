@@ -233,7 +233,7 @@ We are generating documentation for the Nella Framework. We want Nette and Doctr
 
 ## Requirements ##
 
-ApiGen requires PHP 5.3 or later. Four libraries it uses ([Nette](https://github.com/nette/nette), [Texy](https://github.com/dg/texy), [TokenReflection](https://github.com/Andrewsville/PHP-Token-Reflection) and [FSHL](https://github.com/kukulich/fshl)) require three additional PHP extensions: [tokenizer](http://php.net/manual/book.tokenizer.php), [mbstring](http://php.net/manual/book.mbstring.php) and [iconv](http://php.net/manual/book.iconv.php).
+ApiGen requires PHP 5.3 or later. Four libraries it uses ([Nette](https://github.com/nette/nette), [Texy](https://github.com/dg/texy), [TokenReflection](https://github.com/Andrewsville/PHP-Token-Reflection) and [FSHL](https://github.com/kukulich/fshl)) require four additional PHP extensions: [tokenizer](http://php.net/manual/book.tokenizer.php), [mbstring](http://php.net/manual/book.mbstring.php), [iconv](http://php.net/manual/book.iconv.php) and [json](http://php.net/manual/book.json.php).
 
 When generating documentation of large libraries (Zend Framework for example) we recommend not to have the Xdebug PHP extension loaded (it does not need to be used, it significantly slows down the generating process even when only loaded).
 
