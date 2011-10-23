@@ -196,16 +196,17 @@ class Generator extends Nette\Object
 				if (!preg_match('~\\.php$~i', $entry->getFilename())) {
 					continue;
 				}
-				$pathName = $this->unPharPath($entry->getPathName());
+				$pathName = $this->normalizePath($entry->getPathName());
+				$unPharName = $this->unPharPath($pathName);
 				foreach ($this->config->exclude as $mask) {
-					if (fnmatch($mask, $pathName, FNM_NOESCAPE)) {
+					if (fnmatch($mask, $unPharName, FNM_NOESCAPE)) {
 						continue 2;
 					}
 				}
 
-				$files[$entry->getPathName()] = $entry->getSize();
-				if ($entry->getPathName() !== $entry->getRealPath()) {
-					$this->symlinks[$entry->getRealPath()] = $entry->getPathName();
+				$files[$pathName] = $entry->getSize();
+				if (false !== $entry->getRealPath() && $pathName !== $entry->getRealPath()) {
+					$this->symlinks[$entry->getRealPath()] = $pathName;
 				}
 			}
 		}
@@ -1302,7 +1303,7 @@ class Generator extends Nette\Object
 	}
 
 	/**
-	 * Removes phar:// from the path and fixes directory separator.
+	 * Removes phar:// from the path.
 	 *
 	 * @param string $path Path
 	 * @return string
@@ -1310,9 +1311,20 @@ class Generator extends Nette\Object
 	public function unPharPath($path)
 	{
 		if (0 === strpos($path, 'phar://')) {
-			$path = str_replace('/', DIRECTORY_SEPARATOR, substr($path, 7));
+			$path = substr($path, 7);
 		}
 		return $path;
+	}
+
+	/**
+	 * Adds phar:// to the path.
+	 *
+	 * @param string $path Path
+	 * @return string
+	 */
+	private function pharPath($path)
+	{
+		return 'phar://' . $path;
 	}
 
 	/**
@@ -1324,6 +1336,19 @@ class Generator extends Nette\Object
 	private function isPhar($path)
 	{
 		return (bool) preg_match('~\\.phar(?:\\.zip|\\.tar|(?:(?:\\.tar)?(?:\\.gz|\\.bz2))|$)~i', $path);
+	}
+
+	/**
+	 * Normalizes directory separators in given path.
+	 *
+	 * @param string $path Path
+	 * @return string
+	 */
+	private function normalizePath($path)
+	{
+		$path = str_replace(array('/', '\\'), DIRECTORY_SEPARATOR, $path);
+		$path = str_replace('phar:\\\\', 'phar://', $path);
+		return $path;
 	}
 
 	/**
@@ -1483,7 +1508,7 @@ class Generator extends Nette\Object
 		}
 		foreach ($this->config->source as $source) {
 			if ($this->isPhar($source)) {
-				$source = 'phar://' . str_replace(DIRECTORY_SEPARATOR, '/', $source);
+				$source = $this->pharPath($source);
 			}
 			if (0 === strpos($fileName, $source)) {
 				return is_dir($source) ? str_replace('\\', '/', substr($fileName, strlen($source) + 1)) : basename($fileName);
