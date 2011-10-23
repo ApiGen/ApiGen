@@ -49,6 +49,7 @@ class Config
 		'exclude' => array(),
 		'skipDocPath' => array(),
 		'skipDocPrefix' => array(),
+		'charset' => array('UTF-8'),
 		'main' => '',
 		'title' => '',
 		'baseUrl' => '',
@@ -201,6 +202,9 @@ class Config
 				}
 			}
 		}
+
+		// Unify character sets
+		$this->config['charset'] = array_map('strtoupper', $this->config['charset']);
 
 		// Process options that specify a filesystem path
 		foreach (self::$pathOptions as $option) {
@@ -392,6 +396,7 @@ Options:
 	@option@--exclude@c          <@value@mask@c>      Mask to exclude file or directory from processing (can be used multiple times)
 	@option@--skip-doc-path@c    <@value@mask@c>      Don't generate documentation for classes from file or directory with this mask (can be used multiple times)
 	@option@--skip-doc-prefix@c  <@value@value@c>     Don't generate documentation for classes with this name prefix (can be used multiple times)
+	@option@--charset@c          <@value@list@c>      Character set of source files, default "UTF-8"
 	@option@--main@c             <@value@value@c>     Main project name prefix
 	@option@--title@c            <@value@value@c>     Title of generated documentation
 	@option@--base-url@c         <@value@value@c>     Documentation base URL

@@ -8,6 +8,8 @@ exclude: ''
 skipDocPath: ''
 # Don't generate documentation for classes with this name prefix
 skipDocPrefix: ''
+# Character set of source files
+charset: ['UTF-8']
 # Main project name prefix
 main: ''
 
