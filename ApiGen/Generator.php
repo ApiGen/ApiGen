@@ -200,7 +200,7 @@ class Generator extends Nette\Object
 		}
 
 		if (empty($files)) {
-			throw new Exception('No PHP files found.');
+			throw new Exception('No PHP files found');
 		}
 
 		if ($this->config->progressbar) {
@@ -347,7 +347,7 @@ class Generator extends Nette\Object
 	{
 		@mkdir($this->config->destination, 0755, true);
 		if (!is_dir($this->config->destination) || !is_writable($this->config->destination)) {
-			throw new Exception(sprintf('Directory %s isn\'t writable.', $this->config->destination));
+			throw new Exception(sprintf('Directory %s isn\'t writable', $this->config->destination));
 		}
 
 		// Copy resources
@@ -822,7 +822,7 @@ class Generator extends Nette\Object
 
 		$file = @fopen($this->config->undocumented, 'w');
 		if (false === $file) {
-			throw new Exception(sprintf('File %s isn\'t writable.', $this->config->undocumented));
+			throw new Exception(sprintf('File %s isn\'t writable', $this->config->undocumented));
 		}
 		fwrite($file, sprintf('<?xml version="1.0" encoding="UTF-8"?>%s', "\n"));
 		fwrite($file, sprintf('<checkstyle version="1.3.0">%s', "\n"));
@@ -1509,7 +1509,7 @@ class Generator extends Nette\Object
 	private function prepareTemplate($name)
 	{
 		if (!$this->templateExists($name)) {
-			throw new Exception(sprintf('Template for %s is not set.', $name));
+			throw new Exception(sprintf('Template for %s is not set', $name));
 		}
 
 		$this->forceDir($this->getTemplateFileName($name));

@@ -83,7 +83,7 @@ class Tree extends RecursiveTreeIterator
 	{
 		$className = $this->key();
 		if (!isset($this->reflections[$className])) {
-			throw new \UnexpectedValueException(sprintf('Class "%s" is not in the reflection array.', $className));
+			throw new \UnexpectedValueException(sprintf('Class "%s" is not in the reflection array', $className));
 		}
 
 		return $this->reflections[$className];
