@@ -40,6 +40,8 @@ deprecated: No
 todo: No
 # Generate highlighted source code files
 sourceCode: Yes
+# Add a link to download documentation as a ZIP archive
+download: No
 # Save a list of undocumented classes, methods, properties and constants into a file
 undocumented: ''
 

@@ -167,6 +167,11 @@
 				<a n:tag-if="'todo' !== $active" href="todo.html" title="Todo list"><span>Todo</span></a>
 			</li>
 		</ul>
+		<ul>
+			<li n:if="$config->download">
+				<a href="{$archive}" title="Download documentation as ZIP archive"><span>Download</span></a>
+			</li>
+		</ul>
 	</div>
 
 	{include #content}
