@@ -226,7 +226,7 @@ class Generator extends Nette\Object
 			$this->prepareProgressBar(array_sum($files));
 		}
 
-		$broker = new Broker(new Backend($this, !empty($this->config->undocumented)), Broker::OPTION_DEFAULT & ~(Broker::OPTION_PARSE_FUNCTION_BODY | Broker::OPTION_SAVE_TOKEN_STREAM));
+		$broker = new Broker(new Backend($this, !empty($this->config->report)), Broker::OPTION_DEFAULT & ~(Broker::OPTION_PARSE_FUNCTION_BODY | Broker::OPTION_SAVE_TOKEN_STREAM));
 
 		foreach ($files as $fileName => $size) {
 			$content = file_get_contents($fileName);
@@ -369,7 +369,7 @@ class Generator extends Nette\Object
 				+ count($this->constants)
 				+ count($this->functions)
 				+ count($this->config->template['templates']['common'])
-				+ (int) !empty($this->config->undocumented)
+				+ (int) !empty($this->config->report)
 				+ (int) $this->config->tree
 				+ (int) $this->config->deprecated
 				+ (int) $this->config->todo
@@ -410,9 +410,9 @@ class Generator extends Nette\Object
 		// Optional files
 		$this->generateOptional($template);
 
-		// List of undocumented elements
-		if (!empty($this->config->undocumented)) {
-			$this->generateUndocumented();
+		// List of poorly documented elements
+		if (!empty($this->config->report)) {
+			$this->generateReport();
 		}
 
 		// List of deprecated elements
@@ -645,12 +645,12 @@ class Generator extends Nette\Object
 	}
 
 	/**
-	 * Generates list of undocumented elements.
+	 * Generates list of poorly documented elements.
 	 *
 	 * @return \ApiGen\Generator
 	 * @throws \ApiGen\Exception If file isn't writable.
 	 */
-	private function generateUndocumented()
+	private function generateReport()
 	{
 		// Function for element labels
 		$labeler = function($element) {
@@ -686,7 +686,7 @@ class Generator extends Nette\Object
 			}
 		};
 
-		$undocumented = array();
+		$list = array();
 		foreach ($this->getElementTypes() as $type) {
 			foreach ($this->$type as $parentElement) {
 				// Skip elements not from the main project
@@ -722,11 +722,11 @@ class Generator extends Nette\Object
 					// Documentation
 					if (empty($element->shortDescription)) {
 						if (empty($annotations)) {
-							$undocumented[$fileName][] = array('error', $line, sprintf('Missing documentation of %s', $label));
+							$list[$fileName][] = array('error', $line, sprintf('Missing documentation of %s', $label));
 							continue;
 						}
 						// Description
-						$undocumented[$fileName][] = array('error', $line, sprintf('Missing description of %s', $label));
+						$list[$fileName][] = array('error', $line, sprintf('Missing description of %s', $label));
 					}
 
 					// Documentation of method
@@ -734,19 +734,19 @@ class Generator extends Nette\Object
 						// Parameters
 						foreach ($element->getParameters() as $no => $parameter) {
 							if (!isset($annotations['param'][$no])) {
-								$undocumented[$fileName][] = array('error', $line, sprintf('Missing documentation of %s', $labeler($parameter)));
+								$list[$fileName][] = array('error', $line, sprintf('Missing documentation of %s', $labeler($parameter)));
 								continue;
 							}
 
 							if (!preg_match('~^[\\w\\\\]+(?:\\|[\\w\\\\]+)*\\s+\$' . $parameter->getName() . '(?:\\s+.+)?$~s', $annotations['param'][$no])) {
-								$undocumented[$fileName][] = array('warning', $line, sprintf('Invalid documentation "%s" of %s', $annotations['param'][$no], $labeler($parameter)));
+								$list[$fileName][] = array('warning', $line, sprintf('Invalid documentation "%s" of %s', $annotations['param'][$no], $labeler($parameter)));
 							}
 
 							unset($annotations['param'][$no]);
 						}
 						if (isset($annotations['param'])) {
 							foreach ($annotations['param'] as $annotation) {
-								$undocumented[$fileName][] = array('warning', $line, sprintf('Existing documentation "%s" of nonexistent parameter of %s', $annotation, $label));
+								$list[$fileName][] = array('warning', $line, sprintf('Existing documentation "%s" of nonexistent parameter of %s', $annotation, $label));
 							}
 						}
 
@@ -766,16 +766,16 @@ class Generator extends Nette\Object
 							}
 						}
 						if ($return && !isset($annotations['return'])) {
-							$undocumented[$fileName][] = array('error', $line, sprintf('Missing documentation of return value of %s', $label));
+							$list[$fileName][] = array('error', $line, sprintf('Missing documentation of return value of %s', $label));
 						} elseif (isset($annotations['return'])) {
 							if (!$return && 'void' !== $annotations['return'][0] && ($element instanceof ReflectionFunction || (!$parentElement->isInterface() && !$element->isAbstract()))) {
-								$undocumented[$fileName][] = array('warning', $line, sprintf('Existing documentation "%s" of nonexistent return value of %s', $annotations['return'][0], $label));
+								$list[$fileName][] = array('warning', $line, sprintf('Existing documentation "%s" of nonexistent return value of %s', $annotations['return'][0], $label));
 							} elseif (!preg_match('~^[\\w\\\\]+(?:\\|[\\w\\\\]+)*(?:\\s+.+)?$~s', $annotations['return'][0])) {
-								$undocumented[$fileName][] = array('warning', $line, sprintf('Invalid documentation "%s" of return value of %s', $annotations['return'][0], $label));
+								$list[$fileName][] = array('warning', $line, sprintf('Invalid documentation "%s" of return value of %s', $annotations['return'][0], $label));
 							}
 						}
 						if (isset($annotations['return'][1])) {
-							$undocumented[$fileName][] = array('warning', $line, sprintf('Duplicate documentation "%s" of return value of %s', $annotations['return'][1], $label));
+							$list[$fileName][] = array('warning', $line, sprintf('Duplicate documentation "%s" of return value of %s', $annotations['return'][1], $label));
 						}
 
 						// Throwing exceptions
@@ -793,37 +793,37 @@ class Generator extends Nette\Object
 							}
 						}
 						if ($throw && !isset($annotations['throws'])) {
-							$undocumented[$fileName][] = array('error', $line, sprintf('Missing documentation of throwing an exception of %s', $label));
+							$list[$fileName][] = array('error', $line, sprintf('Missing documentation of throwing an exception of %s', $label));
 						} elseif (isset($annotations['throws'])	&& !preg_match('~^[\\w\\\\]+(?:\\|[\w\\\\]+)*(?:\\s+.+)?$~s', $annotations['throws'][0])) {
-							$undocumented[$fileName][] = array('warning', $line, sprintf('Invalid documentation "%s" of throwing an exception of %s', $annotations['throws'][0], $label));
+							$list[$fileName][] = array('warning', $line, sprintf('Invalid documentation "%s" of throwing an exception of %s', $annotations['throws'][0], $label));
 						}
 					}
 
 					// Data type of constants & properties
 					if ($element instanceof ReflectionProperty || $element instanceof ReflectionConstant) {
 						if (!isset($annotations['var'])) {
-							$undocumented[$fileName][] = array('error', $line, sprintf('Missing documentation of the data type of %s', $label));
+							$list[$fileName][] = array('error', $line, sprintf('Missing documentation of the data type of %s', $label));
 						} elseif (!preg_match('~^[\\w\\\\]+(?:\\|[\w\\\\]+)*(?:\\s+.+)?$~s', $annotations['var'][0])) {
-							$undocumented[$fileName][] = array('warning', $line, sprintf('Invalid documentation "%s" of the data type of %s', $annotations['var'][0], $label));
+							$list[$fileName][] = array('warning', $line, sprintf('Invalid documentation "%s" of the data type of %s', $annotations['var'][0], $label));
 						}
 
 						if (isset($annotations['var'][1])) {
-							$undocumented[$fileName][] = array('warning', $line, sprintf('Duplicate documentation "%s" of the data type of %s', $annotations['var'][1], $label));
+							$list[$fileName][] = array('warning', $line, sprintf('Duplicate documentation "%s" of the data type of %s', $annotations['var'][1], $label));
 						}
 					}
 				}
 				unset($tokens);
 			}
 		}
-		uksort($undocumented, 'strcasecmp');
+		uksort($list, 'strcasecmp');
 
-		$file = @fopen($this->config->undocumented, 'w');
+		$file = @fopen($this->config->report, 'w');
 		if (false === $file) {
-			throw new Exception(sprintf('File %s isn\'t writable', $this->config->undocumented));
+			throw new Exception(sprintf('File %s isn\'t writable', $this->config->report));
 		}
 		fwrite($file, sprintf('<?xml version="1.0" encoding="UTF-8"?>%s', "\n"));
 		fwrite($file, sprintf('<checkstyle version="1.3.0">%s', "\n"));
-		foreach ($undocumented as $fileName => $reports) {
+		foreach ($list as $fileName => $reports) {
 			fwrite($file, sprintf('%s<file name="%s">%s', "\t", $fileName, "\n"));
 
 			// Sort by line

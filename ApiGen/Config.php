@@ -66,7 +66,7 @@ class Config
 		'todo' => false,
 		'download' => false,
 		'sourceCode' => true,
-		'undocumented' => '',
+		'report' => '',
 		'wipeout' => true,
 		'quiet' => false,
 		'progressbar' => true,
@@ -148,6 +148,11 @@ class Config
 				$this->options[$option] = $this->options[$option{0}];
 			}
 			unset($this->options[$option{0}]);
+		}
+
+		// Compatibility with old option name "undocumented"
+		if (!isset($this->options['report']) && isset($this->options['undocumented'])) {
+			$this->options['report'] = $this->options['undocumented'];
 		}
 
 		// Config file
@@ -413,7 +418,7 @@ Options:
 	@option@--todo@c             <@value@yes@c|@value@no@c>    Generate documentation of tasks, default "@value@no@c"
 	@option@--source-code@c      <@value@yes@c|@value@no@c>    Generate highlighted source code files, default "@value@yes@c"
 	@option@--download@c         <@value@yes@c|@value@no@c>    Add a link to download documentation as a ZIP archive, default "@value@no@c"
-	@option@--undocumented@c     <@value@file@c>      Save a list of undocumented classes, methods, properties and constants into a file
+	@option@--report@c           <@value@file@c>      Save a checkstyle report of poorly documented elements into a file
 	@option@--wipeout@c          <@value@yes@c|@value@no@c>    Wipe out the destination directory first, default "@value@yes@c"
 	@option@--quiet@c            <@value@yes@c|@value@no@c>    Don't display scaning and generating messages, default "@value@no@c"
 	@option@--progressbar@c      <@value@yes@c|@value@no@c>    Display progressbars, default "@value@yes@c"

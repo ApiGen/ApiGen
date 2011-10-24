@@ -19,7 +19,7 @@ For all support questions please use our [mailing list](https://groups.google.co
 * A page with a list of deprecated elements.
 * A page with Todo tasks.
 * Link to download documentation as ZIP archive.
-* Checkstyle report of undocumented elements.
+* Checkstyle report of poorly documented elements.
 * Support for docblock templates.
 * Support for @inheritdoc.
 * Support for {@link}.
@@ -185,9 +185,9 @@ Generate highlighted source code for user defined classes, default is "Yes".
 
 Add a link to download documentation as a ZIP archive, default is "No". Requires [PHP zip extension](http://php.net/manual/book.zip.php).
 
-```--undocumented <file>```
+```--report <file>```
 
-Save a list of undocumented classes, methods, properties and constants into a file.
+Save a checkstyle report of poorly documented elements into a file.
 
 ```--wipeout <yes|no>```
 

@@ -44,8 +44,8 @@ todo: No
 sourceCode: Yes
 # Add a link to download documentation as a ZIP archive
 download: No
-# Save a list of undocumented classes, methods, properties and constants into a file
-undocumented: ''
+# Save a checkstyle report of poorly documented elements into a file
+report: ''
 
 # Wipe out the destination directory first
 wipeout: Yes
