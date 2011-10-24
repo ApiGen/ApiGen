@@ -399,8 +399,8 @@ Options:
 	@option@--source@c|@option@-s@c        <@value@dir@c|@value@file@c>  Source file or directory to parse (can be used multiple times)
 	@option@--destination@c|@option@-d@c   <@value@dir@c>       Directory where to save the generated documentation
 	@option@--exclude@c          <@value@mask@c>      Mask to exclude file or directory from processing (can be used multiple times)
-	@option@--skip-doc-path@c    <@value@mask@c>      Don't generate documentation for classes from file or directory with this mask (can be used multiple times)
-	@option@--skip-doc-prefix@c  <@value@value@c>     Don't generate documentation for classes with this name prefix (can be used multiple times)
+	@option@--skip-doc-path@c    <@value@mask@c>      Don't generate documentation for elements from file or directory with this mask (can be used multiple times)
+	@option@--skip-doc-prefix@c  <@value@value@c>     Don't generate documentation for elements with this name prefix (can be used multiple times)
 	@option@--charset@c          <@value@list@c>      Character set of source files, default "UTF-8"
 	@option@--main@c             <@value@value@c>     Main project name prefix
 	@option@--title@c            <@value@value@c>     Title of generated documentation
@@ -413,8 +413,8 @@ Options:
 	@option@--access-levels@c    <@value@list@c>      Generate documentation for methods and properties with given access level, default "@value@public,protected@c"
 	@option@--internal@c         <@value@yes@c|@value@no@c>    Generate documentation for elements marked as internal and display internal documentation parts, default "@value@no@c"
 	@option@--php@c              <@value@yes@c|@value@no@c>    Generate documentation for PHP internal classes, default "@value@yes@c"
-	@option@--tree@c             <@value@yes@c|@value@no@c>    Generate tree view of classes, interfaces and exceptions, default "@value@yes@c"
-	@option@--deprecated@c       <@value@yes@c|@value@no@c>    Generate documentation for deprecated classes, methods, properties and constants, default "@value@no@c"
+	@option@--tree@c             <@value@yes@c|@value@no@c>    Generate tree view of classes, interfaces, traits and exceptions, default "@value@yes@c"
+	@option@--deprecated@c       <@value@yes@c|@value@no@c>    Generate documentation for deprecated elements, default "@value@no@c"
 	@option@--todo@c             <@value@yes@c|@value@no@c>    Generate documentation of tasks, default "@value@no@c"
 	@option@--source-code@c      <@value@yes@c|@value@no@c>    Generate highlighted source code files, default "@value@yes@c"
 	@option@--download@c         <@value@yes@c|@value@no@c>    Add a link to download documentation as a ZIP archive, default "@value@no@c"
@@ -434,7 +434,7 @@ Boolean options (those with possible values @value@yes@c|@value@no@c) do not hav
 Some options can have multiple values. You can do so either by using them multiple times or by separating values by a comma. That means that writing @option@--source@c=@value@file1.php@c @option@--source@c=@value@file2.php@c or @option@--source@c=@value@file1.php,file2.php@c is exactly the same.
 
 Files or directories specified by @option@--exclude@c will not be processed at all.
-Classes from files within @option@--skip-doc-path@c or with @option@--skip-doc-prefix@c will be parsed but will not have their documentation generated. However if they have any child classes, the full class tree will be generated and their inherited methods, properties and constants will be displayed (but will not be clickable).
+Elements from files within @option@--skip-doc-path@c or with @option@--skip-doc-prefix@c will be parsed but will not have their documentation generated. However if classes have any child classes, the full class tree will be generated and their inherited methods, properties and constants will be displayed (but will not be clickable).
 
 HELP;
 	}

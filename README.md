@@ -26,7 +26,7 @@ For all support questions please use our [mailing list](https://groups.google.co
 * Active links in @see and @uses tags.
 * Documentation of used internal PHP classes.
 * Links to the start line in the highlighted source code for every described element.
-* List of direct and indirect known subclasses, implementers and users for every class/interface/trait.
+* List of direct and indirect known subclasses, implementers and users for every class/interface/trait/exception.
 * Check for a new version.
 * Google CSE support with suggest.
 * Google Analytics support.
@@ -115,7 +115,7 @@ Directories and files matching this file mask will not be parsed. You can exclud
 ```--skip-doc-path <mask>```
 ```--skip-doc-prefix <value>```
 
-Using this parameters you can tell ApiGen not to generate documentation for classes from certain files or with certain name prefix. Such classes will appear in class trees, but will not create a link to their documentation. These parameters can be used multiple times.
+Using this parameters you can tell ApiGen not to generate documentation for elements from certain files or with certain name prefix. Such classes will appear in class trees, but will not create a link to their documentation. These parameters can be used multiple times.
 
 ```--charset <list>```
 
@@ -123,7 +123,7 @@ Character set of source files, default is "UTF-8". You can use the parameter mul
 
 ```--main <value>```
 
-Classes with this name prefix will be considered as the "main project" (the rest will be considered as libraries).
+Elements with this name prefix will be considered as the "main project" (the rest will be considered as libraries).
 
 ```--title <value>```
 
@@ -167,11 +167,11 @@ Generate documentation for PHP internal classes, default is "Yes".
 
 ```--tree <yes|no>```
 
-Generate tree view of classes, interfaces and exceptions, default is "Yes".
+Generate tree view of classes, interfaces, traits and exceptions, default is "Yes".
 
 ```--deprecated <yes|no>```
 
-Generate documentation for deprecated classes and class members, default is "No".
+Generate documentation for deprecated elements, default is "No".
 
 ```--todo <yes|no>```
 
@@ -179,7 +179,7 @@ Generate a list of tasks, default is "No".
 
 ```--source-code <yes|no>```
 
-Generate highlighted source code for user defined classes, default is "Yes".
+Generate highlighted source code for user defined elements, default is "Yes".
 
 ```--download <yes|no>```
 
@@ -223,7 +223,7 @@ Only ```--source``` and ```--destination``` parameters are required. You can pro
 
 Instead of providing individual parameters via the command line, you can prepare a config file for later use. You can use all the above listed parameters (with one exception: the ```--config``` option) only without dashes and with an uppercase letter after each dash (so ```--access-level``` becomes ```accessLevel```).
 
-And then you can call apigen with a single parameter ```--config``` specifying the config file to load.
+And then you can call ApiGen with a single parameter ```--config``` specifying the config file to load.
 
 ```
 	apigen --config <path> [options]
