@@ -68,6 +68,8 @@ abstract class ReflectionElement extends ReflectionBase
 					$this->isDocumented = false;
 				} elseif (!self::$config->internal && ($internal = $this->reflection->getAnnotation('internal')) && empty($internal[0])) {
 					$this->isDocumented = false;
+				} elseif (count($this->reflection->getAnnotation('ignore')) > 0) {
+					$this->isDocumented = false;
 				}
 			}
 		}
