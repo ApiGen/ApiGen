@@ -102,7 +102,7 @@ Path to the config file.
 
 ```--source|-s <directory|file>``` **required**
 
-Path to the directory or file to be processed. You can use the parameter multiple times to provide a list of directories or files.
+Path to the directory or file to be processed. You can use the parameter multiple times to provide a list of directories or files. All types of PHAR archives are supported (requires the PHAR extension). To process gz/bz2 compressed archives you need the appropriate extension (see requirements).
 
 ```--destination|-d <directory>``` **required**
 
@@ -183,7 +183,7 @@ Generate highlighted source code for user defined elements, default is "Yes".
 
 ```--download <yes|no>```
 
-Add a link to download documentation as a ZIP archive, default is "No". Requires [PHP zip extension](http://php.net/manual/book.zip.php).
+Add a link to download documentation as a ZIP archive, default is "No".
 
 ```--report <file>```
 
@@ -223,7 +223,9 @@ Only ```--source``` and ```--destination``` parameters are required. You can pro
 
 Instead of providing individual parameters via the command line, you can prepare a config file for later use. You can use all the above listed parameters (with one exception: the ```--config``` option) only without dashes and with an uppercase letter after each dash (so ```--access-level``` becomes ```accessLevel```).
 
-And then you can call ApiGen with a single parameter ```--config``` specifying the config file to load.
+ApiGen uses the [NEON file format](http://ne-on.org) for all its config files. You can try the [online parser](http://ne-on.org) to debug your config files and see how they get parsed.
+
+Then you can call ApiGen with a single parameter ```--config``` specifying the config file to load.
 
 ```
 	apigen --config <path> [options]
@@ -243,7 +245,7 @@ We are generating documentation for the Nella Framework. We want Nette and Doctr
 
 ## Requirements ##
 
-ApiGen requires PHP 5.3 or later. Four libraries it uses ([Nette](https://github.com/nette/nette), [Texy](https://github.com/dg/texy), [TokenReflection](https://github.com/Andrewsville/PHP-Token-Reflection) and [FSHL](https://github.com/kukulich/fshl)) require four additional PHP extensions: [tokenizer](http://php.net/manual/book.tokenizer.php), [mbstring](http://php.net/manual/book.mbstring.php), [iconv](http://php.net/manual/book.iconv.php) and [json](http://php.net/manual/book.json.php).
+ApiGen requires PHP 5.3 or later. Four libraries it uses ([Nette](https://github.com/nette/nette), [Texy](https://github.com/dg/texy), [TokenReflection](https://github.com/Andrewsville/PHP-Token-Reflection) and [FSHL](https://github.com/kukulich/fshl)) require four additional PHP extensions: [tokenizer](http://php.net/manual/book.tokenizer.php), [mbstring](http://php.net/manual/book.mbstring.php), [iconv](http://php.net/manual/book.iconv.php) and [json](http://php.net/manual/book.json.php). For documenting PHAR archives you need the [phar extension](http://php.net/manual/book.phar.php) and for documenting gz or bz2 compressed PHARs, you need the [zlib](http://php.net/manual/book.zlib.php) or [bz2](http://php.net/manual/book.bzip2.php) extension respectively. To generate the ZIP file with documentation you need the [zip extension](http://php.net/manual/book.zip.php).
 
 When generating documentation of large libraries (Zend Framework for example) we recommend not to have the Xdebug PHP extension loaded (it does not need to be used, it significantly slows down the generating process even when only loaded).
 
