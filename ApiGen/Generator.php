@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ApiGen 2.2.0 - API documentation generator for PHP 5.3+
+ * ApiGen 2.2.1 - API documentation generator for PHP 5.3+
  *
  * Copyright (c) 2010 David Grudl (http://davidgrudl.com)
  * Copyright (c) 2011 Jaroslav Hanslík (https://github.com/kukulich)
@@ -37,7 +37,7 @@ class Generator extends Nette\Object
 	 *
 	 * @var string
 	 */
-	const VERSION = '2.2.0';
+	const VERSION = '2.2.1';
 
 	/**
 	 * Configuration.
