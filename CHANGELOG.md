@@ -1,3 +1,9 @@
+## ApiGen 2.2.1 ##
+
+* Fixed processing of magic constants
+* Fixed resize.png
+* TokenReflection library updated to version 1.0.0RC2
+
 ## ApiGen 2.2.0 ##
 
 * Added an option to check for updates
