@@ -203,7 +203,7 @@ Check for a new version of ApiGen, default is "Yes".
 
 Display additional information (exception trace) in case of an error, default is "No".
 
-```--help|-h```
+```--help|-h ```
 
 Display the list of possible options.
 
@@ -224,6 +224,7 @@ Even when using a config file, you can still provide additional parameters via t
 Keep in mind, that any values in the config file will be **overwritten** by values from the command line. That means that providing the ```--source``` parameter values both in the config file and via the command line will not result in using all the provided values but only those from the command line.
 
 ### Example ###
+
 We are generating documentation for the Nella Framework. We want Nette and Doctrine to be parsed as well because we want their classes to appear in class trees, lists of parent classes and their members in lists of inherited properties, methods and constants. However we do not want to generate their full documentation along with highlighted source codes. And we do not want to process any "test" directories, because there might be classes that do not belong to the project actually.
 
 ```

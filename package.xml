@@ -23,9 +23,9 @@
 	<email>andrew@apigen.org</email>
 	<active>yes</active>
 </lead>
-<date>2011-10-16</date>
+<date>2011-10-26</date>
 <version>
-	<release>2.2.0</release>
+	<release>2.2.1</release>
 	<api>2.2.0</api>
 </version>
 <stability>
@@ -177,7 +177,7 @@
 		<package>
 			<name>TokenReflection</name>
 			<channel>pear.andrewsville.cz</channel>
-			<min>1.0.0RC1</min>
+			<min>1.0.0RC2</min>
 		</package>
 	</required>
 </dependencies>
