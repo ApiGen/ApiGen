@@ -735,6 +735,12 @@ class Template extends Nette\Templating\FileTemplate
 			return null;
 		}
 
+		$suffix = '';
+		if ('[]' === substr($definition, -2)) {
+			$definition = substr($definition, 0, -2);
+			$suffix = '[]';
+		}
+
 		$element = $this->resolveElement($definition, $context);
 		if (null === $element) {
 			return null;
@@ -765,7 +771,7 @@ class Template extends Nette\Templating\FileTemplate
 			$link = $this->link($url, $text, false);
 		}
 
-		return sprintf('<code>%s</code>', $link);
+		return sprintf('<code>%s</code>', $link . $suffix);
 	}
 
 	/**
