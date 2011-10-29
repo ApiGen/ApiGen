@@ -738,7 +738,7 @@ class Generator extends Nette\Object
 								continue;
 							}
 
-							if (!preg_match('~^[\\w\\\\]+(?:\\|[\\w\\\\]+)*\\s+\$' . $parameter->getName() . '(?:\\s+.+)?$~s', $annotations['param'][$no])) {
+							if (!preg_match('~^[\\w\\\\]+(?:\\[\\])?(?:\\|[\\w\\\\]+(?:\\[\\])?)*\\s+\\$' . $parameter->getName() . '(?:\\s+.+)?$~s', $annotations['param'][$no])) {
 								$list[$fileName][] = array('warning', $line, sprintf('Invalid documentation "%s" of %s', $annotations['param'][$no], $labeler($parameter)));
 							}
 
@@ -770,7 +770,7 @@ class Generator extends Nette\Object
 						} elseif (isset($annotations['return'])) {
 							if (!$return && 'void' !== $annotations['return'][0] && ($element instanceof ReflectionFunction || (!$parentElement->isInterface() && !$element->isAbstract()))) {
 								$list[$fileName][] = array('warning', $line, sprintf('Existing documentation "%s" of nonexistent return value of %s', $annotations['return'][0], $label));
-							} elseif (!preg_match('~^[\\w\\\\]+(?:\\|[\\w\\\\]+)*(?:\\s+.+)?$~s', $annotations['return'][0])) {
+							} elseif (!preg_match('~^[\\w\\\\]+(?:\\[\\])?(?:\\|[\\w\\\\]+(?:\\[\\])?)*(?:\\s+.+)?$~s', $annotations['return'][0])) {
 								$list[$fileName][] = array('warning', $line, sprintf('Invalid documentation "%s" of return value of %s', $annotations['return'][0], $label));
 							}
 						}
@@ -794,7 +794,7 @@ class Generator extends Nette\Object
 						}
 						if ($throw && !isset($annotations['throws'])) {
 							$list[$fileName][] = array('error', $line, sprintf('Missing documentation of throwing an exception of %s', $label));
-						} elseif (isset($annotations['throws'])	&& !preg_match('~^[\\w\\\\]+(?:\\|[\w\\\\]+)*(?:\\s+.+)?$~s', $annotations['throws'][0])) {
+						} elseif (isset($annotations['throws'])	&& !preg_match('~^[\\w\\\\]+(?:\\|[\\w\\\\]+)*(?:\\s+.+)?$~s', $annotations['throws'][0])) {
 							$list[$fileName][] = array('warning', $line, sprintf('Invalid documentation "%s" of throwing an exception of %s', $annotations['throws'][0], $label));
 						}
 					}
@@ -803,7 +803,7 @@ class Generator extends Nette\Object
 					if ($element instanceof ReflectionProperty || $element instanceof ReflectionConstant) {
 						if (!isset($annotations['var'])) {
 							$list[$fileName][] = array('error', $line, sprintf('Missing documentation of the data type of %s', $label));
-						} elseif (!preg_match('~^[\\w\\\\]+(?:\\|[\w\\\\]+)*(?:\\s+.+)?$~s', $annotations['var'][0])) {
+						} elseif (!preg_match('~^[\\w\\\\]+(?:\\[\\])?(?:\\|[\\w\\\\]+(?:\\[\\])?)*(?:\\s+.+)?$~s', $annotations['var'][0])) {
 							$list[$fileName][] = array('warning', $line, sprintf('Invalid documentation "%s" of the data type of %s', $annotations['var'][0], $label));
 						}
 

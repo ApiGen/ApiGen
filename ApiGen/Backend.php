@@ -174,7 +174,8 @@ class Backend extends Broker\Backend\Memory
 				}
 
 				foreach ($annotations['var'] as $doc) {
-					foreach (explode('|', preg_replace('#\s.*#', '', $doc)) as $name) {
+					foreach (explode('|', preg_replace('~\\s.*~', '', $doc)) as $name) {
+						$name = rtrim($name, '[]');
 						$allClasses = $this->addClass($declared, $allClasses, $name);
 					}
 				}
@@ -213,7 +214,8 @@ class Backend extends Broker\Backend\Memory
 			}
 
 			foreach ($annotations[$annotation] as $doc) {
-				foreach (explode('|', preg_replace('#\s.*#', '', $doc)) as $name) {
+				foreach (explode('|', preg_replace('~\\s.*~', '', $doc)) as $name) {
+					$name = rtrim($name, '[]');
 					$allClasses = $this->addClass($declared, $allClasses, $name);
 				}
 			}
