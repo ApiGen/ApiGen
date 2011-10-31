@@ -102,8 +102,8 @@ try {
 
 	$generator->output($generator->getHeader());
 
-	// Check for update
-	if ($config->updateCheck) {
+	// Check for update (only in production mode)
+	if ($config->updateCheck && !$config->debug) {
 		ini_set('default_socket_timeout', 5);
 		$latestVersion = @file_get_contents('http://apigen.org/version.txt');
 		if (false !== $latestVersion && version_compare(trim($latestVersion), Generator::VERSION) > 0) {
