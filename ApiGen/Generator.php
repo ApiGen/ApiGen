@@ -143,9 +143,9 @@ class Generator extends Nette\Object
 	 * @var array
 	 */
 	private $progressbar = array(
-		'skeleton' => '[%s] %\' 6.2f%%',
+		'skeleton' => '[%s] %\' 6.2f%% %\' 3dMB',
 		'width' => 80,
-		'bar' => 70,
+		'bar' => 64,
 		'current' => 0,
 		'maximum' => 1
 	);
@@ -1398,12 +1398,7 @@ class Generator extends Nette\Object
 			return;
 		}
 
-		$width = $this->progressbar['width'];
-		if ($this->config->debug) {
-			$width += 6;
-		}
-
-		echo str_repeat(chr(0x08), $width);
+		echo str_repeat(chr(0x08), $this->progressbar['width']);
 
 		$this->progressbar['current'] += $increment;
 
@@ -1411,15 +1406,7 @@ class Generator extends Nette\Object
 
 		$progress = str_pad(str_pad('>', round($percent * $this->progressbar['bar']), '=', STR_PAD_LEFT), $this->progressbar['bar'], ' ', STR_PAD_RIGHT);
 
-		$skeleton = $this->progressbar['skeleton'];
-		$args = array($progress, $percent * 100);
-
-		if ($this->config->debug) {
-			$skeleton .= ' %\' 3dMB';
-			$args[] = round(memory_get_usage(true) / 1024 / 1024);
-		}
-
-		echo vsprintf($skeleton, $args);
+		echo sprintf($this->progressbar['skeleton'], $progress, $percent * 100, round(memory_get_usage(true) / 1024 / 1024));
 
 		if ($this->progressbar['current'] === $this->progressbar['maximum']) {
 			echo "\n";
