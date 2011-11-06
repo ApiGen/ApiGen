@@ -156,7 +156,9 @@ class Config
 		}
 
 		// Config file
-		if (isset($this->options['config']) && is_file($this->options['config'])) {
+		if (empty($this->options) && $this->defaultConfigExists()) {
+			$this->config = array_merge($this->config, Neon::decode(file_get_contents($this->getDefaultConfigPath())));
+		} elseif (isset($this->options['config']) && is_file($this->options['config'])) {
 			$this->config = array_merge($this->config, Neon::decode(file_get_contents($this->options['config'])));
 		}
 
@@ -351,6 +353,26 @@ class Config
 	}
 
 	/**
+	 * Returns default configuration file path.
+	 *
+	 * @return string
+	 */
+	private function getDefaultConfigPath()
+	{
+		return getcwd() . DIRECTORY_SEPARATOR . 'apigen.neon';
+	}
+
+	/**
+	 * Checks if default configuration file exists.
+	 *
+	 * @return boolean
+	 */
+	private function defaultConfigExists()
+	{
+		return is_file($this->getDefaultConfigPath());
+	}
+
+	/**
 	 * Checks if a configuration option exists.
 	 *
 	 * @param string $name Option name
@@ -379,7 +401,15 @@ class Config
 	 */
 	public function isHelpRequested()
 	{
-		return empty($this->options) || isset($this->options['h']) || isset($this->options['help']);
+		if (empty($this->options) && !$this->defaultConfigExists()) {
+			return true;
+		}
+
+		if (isset($this->options['h']) || isset($this->options['help'])) {
+			return true;
+		}
+
+		return false;
 	}
 
 	/**
