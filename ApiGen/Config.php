@@ -157,8 +157,9 @@ class Config
 
 		// Config file
 		if (empty($this->options) && $this->defaultConfigExists()) {
-			$this->config = array_merge($this->config, Neon::decode(file_get_contents($this->getDefaultConfigPath())));
-		} elseif (isset($this->options['config']) && is_file($this->options['config'])) {
+			$this->options['config'] = $this->getDefaultConfigPath();
+		}
+		if (isset($this->options['config']) && is_file($this->options['config'])) {
 			$this->config = array_merge($this->config, Neon::decode(file_get_contents($this->options['config'])));
 		}
 
