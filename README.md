@@ -37,7 +37,12 @@ For all support questions please use our [mailing list](https://groups.google.co
 
 ## Installation ##
 
-The preferred installation way is using the PEAR package. PEAR is a distribution system for PHP packages. It is bundled with PHP since the 4.3 version and it is easy to use.
+The preferred installation way is using the PEAR package but there are three more ways how to install ApiGen.
+
+
+### PEAR ###
+
+PEAR is a distribution system for PHP packages. It is bundled with PHP since the 4.3 version and it is easy to use.
 
 Unlike the GitHub version that contains everything you need to use it, the PEAR package contains only ApiGen itself. Its dependencies (Nette, Texy, FSHL and TokenReflection) have to be installed separately. But do not panic, the PEAR installer will take care of it (almost).
 
@@ -80,6 +85,20 @@ If you have have installed a version older than 2.1 using PEAR you will have to 
 ```
 
 This is required because we have moved from a temporary PEAR repository to a definitive one. So this change will be required only if you have installed ApiGen and TokenReflection library from the ```pear.kukulich.cz``` repository.
+
+### Standalone package ###
+
+Using the standalone package is even easier than using the PEAR installer but it does not handle updates automatically.
+
+To download the actual release visit the [Downloads section](https://github.com/apigen/apigen/downloads). There you find separate packages for each release in two formats - zip and tar.gz. These packages are prepared by the ApiGen team and are truly standalone; they contain all required libraries in appropriate versions. You just need to extract the contents of an archive and you can start using ApiGen.
+
+### GitHub built archive ###
+
+GitHub allows you to download any repository as a zip or tar.gz archive. You can use this feature to download an archive with the current version of ApiGen. However this approach has one disadvantage. Such archive (in contrast to the standalone packages) does not contain required libraries. They are included as git submodules in the repository and GitHub simply ignores them when generating the archive. It means that you will have to obtain required libraries manually.
+
+### Cloning the repository ###
+
+The last way how to install ApiGen is simply to clone our repository. If you do so, remember to fetch and rebase to get new versions and do not forget to update submodules in the libs directory.
 
 ## Usage ##
 
