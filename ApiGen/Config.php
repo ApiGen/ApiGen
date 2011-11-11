@@ -429,9 +429,9 @@ Options:
 	@option@--config@c|@option@-c@c        <@value@file@c>      Config file
 	@option@--source@c|@option@-s@c        <@value@dir@c|@value@file@c>  Source file or directory to parse (can be used multiple times)
 	@option@--destination@c|@option@-d@c   <@value@dir@c>       Directory where to save the generated documentation
-	@option@--exclude@c          <@value@mask@c>      Mask to exclude file or directory from processing (can be used multiple times)
-	@option@--skip-doc-path@c    <@value@mask@c>      Don't generate documentation for elements from file or directory with this mask (can be used multiple times)
-	@option@--skip-doc-prefix@c  <@value@value@c>     Don't generate documentation for elements with this name prefix (can be used multiple times)
+	@option@--exclude@c          <@value@mask@c>      Mask (case sensitive) to exclude file or directory from processing (can be used multiple times)
+	@option@--skip-doc-path@c    <@value@mask@c>      Don't generate documentation for elements from file or directory with this (case sensitive) mask (can be used multiple times)
+	@option@--skip-doc-prefix@c  <@value@value@c>     Don't generate documentation for elements with this (case sensitive) name prefix (can be used multiple times)
 	@option@--charset@c          <@value@list@c>      Character set of source files, default "UTF-8"
 	@option@--main@c             <@value@value@c>     Main project name prefix
 	@option@--title@c            <@value@value@c>     Title of generated documentation

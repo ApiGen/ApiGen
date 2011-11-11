@@ -110,12 +110,12 @@ Documentation will be generated into this directory.
 
 ```--exclude <mask>```
 
-Directories and files matching this file mask will not be parsed. You can exclude for example tests from processing this way. This parameter can be used multiple times.
+Directories and files matching this file mask will not be parsed. You can exclude for example tests from processing this way. This parameter is case sensitive and can be used multiple times.
 
 ```--skip-doc-path <mask>```
 ```--skip-doc-prefix <value>```
 
-Using this parameters you can tell ApiGen not to generate documentation for elements from certain files or with certain name prefix. Such classes will appear in class trees, but will not create a link to their documentation. These parameters can be used multiple times.
+Using this parameters you can tell ApiGen not to generate documentation for elements from certain files or with certain name prefix. Such classes will appear in class trees, but will not create a link to their documentation. These parameters are case sensitive and can be used multiple times.
 
 ```--charset <list>```
 
