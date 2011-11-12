@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ApiGen 2.2.1 - API documentation generator for PHP 5.3+
+ * ApiGen 2.3.0 - API documentation generator for PHP 5.3+
  *
  * Copyright (c) 2010 David Grudl (http://davidgrudl.com)
  * Copyright (c) 2011 Jaroslav Hanslík (https://github.com/kukulich)
@@ -67,6 +67,8 @@ abstract class ReflectionElement extends ReflectionBase
 				} elseif (!self::$config->deprecated && $this->reflection->isDeprecated()) {
 					$this->isDocumented = false;
 				} elseif (!self::$config->internal && ($internal = $this->reflection->getAnnotation('internal')) && empty($internal[0])) {
+					$this->isDocumented = false;
+				} elseif (count($this->reflection->getAnnotation('ignore')) > 0) {
 					$this->isDocumented = false;
 				}
 			}

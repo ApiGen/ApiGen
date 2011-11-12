@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ApiGen 2.2.1 - API documentation generator for PHP 5.3+
+ * ApiGen 2.3.0 - API documentation generator for PHP 5.3+
  *
  * Copyright (c) 2010 David Grudl (http://davidgrudl.com)
  * Copyright (c) 2011 Jaroslav Hanslík (https://github.com/kukulich)
@@ -30,8 +30,9 @@ class ReflectionFunction extends ReflectionFunctionBase
 	public function isDocumented()
 	{
 		if (null === $this->isDocumented && parent::isDocumented()) {
+			$fileName = self::$generator->unPharPath($this->reflection->getFilename());
 			foreach (self::$config->skipDocPath as $mask) {
-				if (fnmatch($mask, $this->reflection->getFilename(), FNM_NOESCAPE)) {
+				if (fnmatch($mask, $fileName, FNM_NOESCAPE)) {
 					$this->isDocumented = false;
 					break;
 				}

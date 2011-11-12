@@ -3,11 +3,11 @@ resources:
 
 templates:
 	common:
-		index.html: index.latte
-		menu.html: menu.latte
-		overview.html: overview.latte
-		resources/combined.js: combined.js.latte
-		elementlist.js: elementlist.js.latte
+		index.latte: index.html
+		menu.latte: menu.html
+		overview.latte: overview.html
+		combined.js.latte: resources/combined.js
+		elementlist.js.latte: elementlist.js
 
 	main:
 		package:

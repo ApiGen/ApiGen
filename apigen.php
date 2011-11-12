@@ -2,7 +2,7 @@
 <?php
 
 /**
- * ApiGen 2.2.1 - API documentation generator for PHP 5.3+
+ * ApiGen 2.3.0 - API documentation generator for PHP 5.3+
  *
  * Copyright (c) 2010 David Grudl (http://davidgrudl.com)
  * Copyright (c) 2011 Jaroslav Hanslík (https://github.com/kukulich)
@@ -56,7 +56,7 @@ spl_autoload_register(function($class) {
 try {
 
 	// Check dependencies
-	foreach (array('iconv', 'mbstring', 'tokenizer') as $extension) {
+	foreach (array('json', 'iconv', 'mbstring', 'tokenizer') as $extension) {
 		if (!extension_loaded($extension)) {
 			printf("Required extension missing: %s\n", $extension);
 			die(1);
@@ -102,8 +102,8 @@ try {
 
 	$generator->output($generator->getHeader());
 
-	// Check for update
-	if ($config->updateCheck) {
+	// Check for update (only in production mode)
+	if ($config->updateCheck && !$config->debug) {
 		ini_set('default_socket_timeout', 5);
 		$latestVersion = @file_get_contents('http://apigen.org/version.txt');
 		if (false !== $latestVersion && version_compare(trim($latestVersion), Generator::VERSION) > 0) {

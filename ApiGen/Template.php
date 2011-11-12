@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ApiGen 2.2.1 - API documentation generator for PHP 5.3+
+ * ApiGen 2.3.0 - API documentation generator for PHP 5.3+
  *
  * Copyright (c) 2010 David Grudl (http://davidgrudl.com)
  * Copyright (c) 2011 Jaroslav Hanslík (https://github.com/kukulich)
@@ -309,7 +309,7 @@ class Template extends Nette\Templating\FileTemplate
 		$this->registerHelper('staticFile', function($name) use ($destination) {
 			static $versions = array();
 
-			$filename = $destination . '/' . $name;
+			$filename = $destination . DIRECTORY_SEPARATOR . $name;
 			if (!isset($versions[$filename]) && is_file($filename)) {
 				$versions[$filename] = sprintf('%u', crc32(file_get_contents($filename)));
 			}
@@ -735,6 +735,12 @@ class Template extends Nette\Templating\FileTemplate
 			return null;
 		}
 
+		$suffix = '';
+		if ('[]' === substr($definition, -2)) {
+			$definition = substr($definition, 0, -2);
+			$suffix = '[]';
+		}
+
 		$element = $this->resolveElement($definition, $context);
 		if (null === $element) {
 			return null;
@@ -765,7 +771,7 @@ class Template extends Nette\Templating\FileTemplate
 			$link = $this->link($url, $text, false);
 		}
 
-		return sprintf('<code>%s</code>', $link);
+		return sprintf('<code>%s</code>', $link . $suffix);
 	}
 
 	/**

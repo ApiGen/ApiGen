@@ -23,10 +23,10 @@
 	<email>andrew@apigen.org</email>
 	<active>yes</active>
 </lead>
-<date>2011-10-26</date>
+<date>2011-11-13</date>
 <version>
-	<release>2.2.1</release>
-	<api>2.2.0</api>
+	<release>2.3.0</release>
+	<api>2.3.0</api>
 </version>
 <stability>
 	<release>stable</release>
@@ -147,7 +147,7 @@
 			<tasks:replace type="pear-config" from="@php_dir@" to="php_dir" />
 			<tasks:replace type="pear-config" from="@data_dir@" to="data_dir" />
 		</file>
-		<file name="config.neon.example" role="cfg" />
+		<file name="apigen.neon.example" role="cfg" />
 		<file name="CHANGELOG.md" role="doc" />
 		<file name="LICENSE.md" role="doc" />
 		<file name="README.md" role="doc" />
@@ -172,7 +172,7 @@
 		<package>
 			<name>FSHL</name>
 			<channel>pear.kukulich.cz</channel>
-			<min>2.0.0</min>
+			<min>2.0.1</min>
 		</package>
 		<package>
 			<name>TokenReflection</name>
@@ -180,6 +180,20 @@
 			<min>1.0.0RC2</min>
 		</package>
 	</required>
+	<optional>
+		<extension>
+			<name>bz2</name>
+		</extension>
+		<extension>
+			<name>phar</name>
+		</extension>
+		<extension>
+			<name>zip</name>
+		</extension>
+		<extension>
+			<name>zlib</name>
+		</extension>
+	</optional>
 </dependencies>
 <phprelease>
 	<installconditions>

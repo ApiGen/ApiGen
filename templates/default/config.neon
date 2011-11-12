@@ -3,9 +3,9 @@ resources:
 
 templates:
 	common:
-		index.html: overview.latte
-		resources/combined.js: combined.js.latte
-		elementlist.js: elementlist.js.latte
+		overview.latte: index.html
+		combined.js.latte: resources/combined.js
+		elementlist.js.latte: elementlist.js
 
 	main:
 		package:

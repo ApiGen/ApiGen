@@ -8,6 +8,8 @@ exclude: ''
 skipDocPath: ''
 # Don't generate documentation for classes with this name prefix
 skipDocPrefix: ''
+# Character set of source files
+charset: ['UTF-8']
 # Main project name prefix
 main: ''
 
@@ -40,8 +42,10 @@ deprecated: No
 todo: No
 # Generate highlighted source code files
 sourceCode: Yes
-# Save a list of undocumented classes, methods, properties and constants into a file
-undocumented: ''
+# Add a link to download documentation as a ZIP archive
+download: No
+# Save a checkstyle report of poorly documented elements into a file
+report: ''
 
 # Wipe out the destination directory first
 wipeout: Yes

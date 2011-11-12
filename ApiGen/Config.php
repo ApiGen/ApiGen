@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ApiGen 2.2.1 - API documentation generator for PHP 5.3+
+ * ApiGen 2.3.0 - API documentation generator for PHP 5.3+
  *
  * Copyright (c) 2010 David Grudl (http://davidgrudl.com)
  * Copyright (c) 2011 Jaroslav Hanslík (https://github.com/kukulich)
@@ -49,6 +49,7 @@ class Config
 		'exclude' => array(),
 		'skipDocPath' => array(),
 		'skipDocPrefix' => array(),
+		'charset' => array('UTF-8'),
 		'main' => '',
 		'title' => '',
 		'baseUrl' => '',
@@ -63,8 +64,9 @@ class Config
 		'tree' => true,
 		'deprecated' => false,
 		'todo' => false,
+		'download' => false,
 		'sourceCode' => true,
-		'undocumented' => '',
+		'report' => '',
 		'wipeout' => true,
 		'quiet' => false,
 		'progressbar' => true,
@@ -128,7 +130,7 @@ class Config
 		}, $this->options);
 
 		$this->config = self::$defaultConfig;
-		$this->config['templateConfig'] = realpath(TEMPLATE_DIR . '/default/config.neon');
+		$this->config['templateConfig'] = realpath(TEMPLATE_DIR . DIRECTORY_SEPARATOR . 'default' . DIRECTORY_SEPARATOR . 'config.neon');
 		$this->config['colors'] = 'WIN' !== substr(PHP_OS, 0, 3);
 	}
 
@@ -148,7 +150,15 @@ class Config
 			unset($this->options[$option{0}]);
 		}
 
+		// Compatibility with old option name "undocumented"
+		if (!isset($this->options['report']) && isset($this->options['undocumented'])) {
+			$this->options['report'] = $this->options['undocumented'];
+		}
+
 		// Config file
+		if (empty($this->options) && $this->defaultConfigExists()) {
+			$this->options['config'] = $this->getDefaultConfigPath();
+		}
 		if (isset($this->options['config']) && is_file($this->options['config'])) {
 			$this->config = array_merge($this->config, Neon::decode(file_get_contents($this->options['config'])));
 		}
@@ -200,6 +210,9 @@ class Config
 				}
 			}
 		}
+
+		// Unify character sets
+		$this->config['charset'] = array_map('strtoupper', $this->config['charset']);
 
 		// Process options that specify a filesystem path
 		foreach (self::$pathOptions as $option) {
@@ -341,6 +354,26 @@ class Config
 	}
 
 	/**
+	 * Returns default configuration file path.
+	 *
+	 * @return string
+	 */
+	private function getDefaultConfigPath()
+	{
+		return getcwd() . DIRECTORY_SEPARATOR . 'apigen.neon';
+	}
+
+	/**
+	 * Checks if default configuration file exists.
+	 *
+	 * @return boolean
+	 */
+	private function defaultConfigExists()
+	{
+		return is_file($this->getDefaultConfigPath());
+	}
+
+	/**
 	 * Checks if a configuration option exists.
 	 *
 	 * @param string $name Option name
@@ -369,7 +402,15 @@ class Config
 	 */
 	public function isHelpRequested()
 	{
-		return empty($this->options) || isset($this->options['h']) || isset($this->options['help']);
+		if (empty($this->options) && !$this->defaultConfigExists()) {
+			return true;
+		}
+
+		if (isset($this->options['h']) || isset($this->options['help'])) {
+			return true;
+		}
+
+		return false;
 	}
 
 	/**
@@ -388,9 +429,10 @@ Options:
 	@option@--config@c|@option@-c@c        <@value@file@c>      Config file
 	@option@--source@c|@option@-s@c        <@value@dir@c|@value@file@c>  Source file or directory to parse (can be used multiple times)
 	@option@--destination@c|@option@-d@c   <@value@dir@c>       Directory where to save the generated documentation
-	@option@--exclude@c          <@value@mask@c>      Mask to exclude file or directory from processing (can be used multiple times)
-	@option@--skip-doc-path@c    <@value@mask@c>      Don't generate documentation for classes from file or directory with this mask (can be used multiple times)
-	@option@--skip-doc-prefix@c  <@value@value@c>     Don't generate documentation for classes with this name prefix (can be used multiple times)
+	@option@--exclude@c          <@value@mask@c>      Mask (case sensitive) to exclude file or directory from processing (can be used multiple times)
+	@option@--skip-doc-path@c    <@value@mask@c>      Don't generate documentation for elements from file or directory with this (case sensitive) mask (can be used multiple times)
+	@option@--skip-doc-prefix@c  <@value@value@c>     Don't generate documentation for elements with this (case sensitive) name prefix (can be used multiple times)
+	@option@--charset@c          <@value@list@c>      Character set of source files, default "UTF-8"
 	@option@--main@c             <@value@value@c>     Main project name prefix
 	@option@--title@c            <@value@value@c>     Title of generated documentation
 	@option@--base-url@c         <@value@value@c>     Documentation base URL
@@ -402,11 +444,12 @@ Options:
 	@option@--access-levels@c    <@value@list@c>      Generate documentation for methods and properties with given access level, default "@value@public,protected@c"
 	@option@--internal@c         <@value@yes@c|@value@no@c>    Generate documentation for elements marked as internal and display internal documentation parts, default "@value@no@c"
 	@option@--php@c              <@value@yes@c|@value@no@c>    Generate documentation for PHP internal classes, default "@value@yes@c"
-	@option@--tree@c             <@value@yes@c|@value@no@c>    Generate tree view of classes, interfaces and exceptions, default "@value@yes@c"
-	@option@--deprecated@c       <@value@yes@c|@value@no@c>    Generate documentation for deprecated classes, methods, properties and constants, default "@value@no@c"
+	@option@--tree@c             <@value@yes@c|@value@no@c>    Generate tree view of classes, interfaces, traits and exceptions, default "@value@yes@c"
+	@option@--deprecated@c       <@value@yes@c|@value@no@c>    Generate documentation for deprecated elements, default "@value@no@c"
 	@option@--todo@c             <@value@yes@c|@value@no@c>    Generate documentation of tasks, default "@value@no@c"
 	@option@--source-code@c      <@value@yes@c|@value@no@c>    Generate highlighted source code files, default "@value@yes@c"
-	@option@--undocumented@c     <@value@file@c>      Save a list of undocumented classes, methods, properties and constants into a file
+	@option@--download@c         <@value@yes@c|@value@no@c>    Add a link to download documentation as a ZIP archive, default "@value@no@c"
+	@option@--report@c           <@value@file@c>      Save a checkstyle report of poorly documented elements into a file
 	@option@--wipeout@c          <@value@yes@c|@value@no@c>    Wipe out the destination directory first, default "@value@yes@c"
 	@option@--quiet@c            <@value@yes@c|@value@no@c>    Don't display scaning and generating messages, default "@value@no@c"
 	@option@--progressbar@c      <@value@yes@c|@value@no@c>    Display progressbars, default "@value@yes@c"
@@ -422,7 +465,7 @@ Boolean options (those with possible values @value@yes@c|@value@no@c) do not hav
 Some options can have multiple values. You can do so either by using them multiple times or by separating values by a comma. That means that writing @option@--source@c=@value@file1.php@c @option@--source@c=@value@file2.php@c or @option@--source@c=@value@file1.php,file2.php@c is exactly the same.
 
 Files or directories specified by @option@--exclude@c will not be processed at all.
-Classes from files within @option@--skip-doc-path@c or with @option@--skip-doc-prefix@c will be parsed but will not have their documentation generated. However if they have any child classes, the full class tree will be generated and their inherited methods, properties and constants will be displayed (but will not be clickable).
+Elements from files within @option@--skip-doc-path@c or with @option@--skip-doc-prefix@c will be parsed but will not have their documentation generated. However if classes have any child classes, the full class tree will be generated and their inherited methods, properties and constants will be displayed (but will not be clickable).
 
 HELP;
 	}

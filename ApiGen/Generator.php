@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ApiGen 2.2.1 - API documentation generator for PHP 5.3+
+ * ApiGen 2.3.0 - API documentation generator for PHP 5.3+
  *
  * Copyright (c) 2010 David Grudl (http://davidgrudl.com)
  * Copyright (c) 2011 Jaroslav Hanslík (https://github.com/kukulich)
@@ -37,7 +37,7 @@ class Generator extends Nette\Object
 	 *
 	 * @var string
 	 */
-	const VERSION = '2.2.1';
+	const VERSION = '2.3.0';
 
 	/**
 	 * Configuration.
@@ -131,14 +131,21 @@ class Generator extends Nette\Object
 	private $symlinks = array();
 
 	/**
+	 * List of detected character sets for parsed files.
+	 *
+	 * @var array
+	 */
+	private $charsets = array();
+
+	/**
 	 * Progressbar settings and status.
 	 *
 	 * @var array
 	 */
 	private $progressbar = array(
-		'skeleton' => '[%s] %\' 6.2f%%',
+		'skeleton' => '[%s] %\' 6.2f%% %\' 3dMB',
 		'width' => 80,
-		'bar' => 70,
+		'bar' => 64,
 		'current' => 0,
 		'maximum' => 1
 	);
@@ -165,7 +172,7 @@ class Generator extends Nette\Object
 		$files = array();
 
 		$flags = \RecursiveDirectoryIterator::CURRENT_AS_FILEINFO | \RecursiveDirectoryIterator::SKIP_DOTS;
-		if (defined('\RecursiveDirectoryIterator::FOLLOW_SYMLINKS')) {
+		if (defined('\\RecursiveDirectoryIterator::FOLLOW_SYMLINKS')) {
 			// Available from PHP 5.3.1
 			$flags |= \RecursiveDirectoryIterator::FOLLOW_SYMLINKS;
 		}
@@ -173,6 +180,16 @@ class Generator extends Nette\Object
 			$entries = array();
 			if (is_dir($source)) {
 				foreach (new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($source, $flags)) as $entry) {
+					if (!$entry->isFile()) {
+						continue;
+					}
+					$entries[] = $entry;
+				}
+			} elseif ($this->isPhar($source)) {
+				if (!extension_loaded('phar')) {
+					throw new Exception('Phar extension is not loaded');
+				}
+				foreach (new \RecursiveIteratorIterator(new \Phar($source, $flags)) as $entry) {
 					if (!$entry->isFile()) {
 						continue;
 					}
@@ -186,31 +203,38 @@ class Generator extends Nette\Object
 				if (!preg_match('~\\.php$~i', $entry->getFilename())) {
 					continue;
 				}
+				$pathName = $this->normalizePath($entry->getPathName());
+				$unPharName = $this->unPharPath($pathName);
 				foreach ($this->config->exclude as $mask) {
-					if (fnmatch($mask, $entry->getPathName(), FNM_NOESCAPE)) {
+					if (fnmatch($mask, $unPharName, FNM_NOESCAPE)) {
 						continue 2;
 					}
 				}
 
-				$files[$entry->getPathName()] = $entry->getSize();
-				if ($entry->getPathName() !== $entry->getRealPath()) {
-					$this->symlinks[$entry->getRealPath()] = $entry->getPathName();
+				$files[$pathName] = $entry->getSize();
+				if (false !== $entry->getRealPath() && $pathName !== $entry->getRealPath()) {
+					$this->symlinks[$entry->getRealPath()] = $pathName;
 				}
 			}
 		}
 
 		if (empty($files)) {
-			throw new Exception('No PHP files found.');
+			throw new Exception('No PHP files found');
 		}
 
 		if ($this->config->progressbar) {
 			$this->prepareProgressBar(array_sum($files));
 		}
 
-		$broker = new Broker(new Backend($this, !empty($this->config->undocumented)), Broker::OPTION_DEFAULT & ~(Broker::OPTION_PARSE_FUNCTION_BODY | Broker::OPTION_SAVE_TOKEN_STREAM));
+		$broker = new Broker(new Backend($this, !empty($this->config->report)), Broker::OPTION_DEFAULT & ~(Broker::OPTION_PARSE_FUNCTION_BODY | Broker::OPTION_SAVE_TOKEN_STREAM));
 
-		foreach ($files as $file => $size) {
-			$broker->processFile($file);
+		foreach ($files as $fileName => $size) {
+			$content = file_get_contents($fileName);
+			$charset = $this->detectCharset($content);
+			$this->charsets[$fileName] = $charset;
+			$content = $this->toUtf($content, $charset);
+
+			$broker->processString($content, $fileName);
 			$this->incrementProgressBar($size);
 		}
 
@@ -289,56 +313,15 @@ class Generator extends Nette\Object
 	 */
 	public function wipeOutDestination()
 	{
-		// Temporary directory
-		$tmpDir = $this->config->destination . '/tmp';
-		if (is_dir($tmpDir) && !$this->deleteDir($tmpDir)) {
+		foreach ($this->getGeneratedFiles() as $path) {
+			if (is_file($path) && !@unlink($path)) {
+				return false;
+			}
+		}
+
+		$archive = $this->getArchivePath();
+		if (is_file($archive) && !@unlink($archive)) {
 			return false;
-		}
-
-		// Resources
-		foreach ($this->config->template['resources'] as $resource) {
-			$path = $this->config->destination . '/' . $resource;
-			if (is_dir($path) && !$this->deleteDir($path)) {
-				return false;
-			} elseif (is_file($path) && !@unlink($path)) {
-				return false;
-			}
-		}
-
-		// Common files
-		$filenames = array_keys($this->config->template['templates']['common']);
-		foreach (Nette\Utils\Finder::findFiles($filenames)->from($this->config->destination) as $item) {
-			if (!@unlink($item)) {
-				return false;
-			}
-		}
-
-		// Optional files
-		foreach ($this->config->template['templates']['optional'] as $optional) {
-			$file = $this->config->destination . '/' . $optional['filename'];
-			if (is_file($file) && !@unlink($file)) {
-				return false;
-			}
-		}
-
-		// Main files
-		$masks = array_map(function($config) {
-			return preg_replace('~%[^%]*?s~', '*', $config['filename']);
-		}, $this->config->template['templates']['main']);
-		$filter = function($item) use ($masks) {
-			foreach ($masks as $mask) {
-				if (fnmatch($mask, $item->getFilename())) {
-					return true;
-				}
-			}
-
-			return false;
-		};
-
-		foreach (Nette\Utils\Finder::findFiles('*')->filter($filter)->from($this->config->destination) as $item) {
-			if (!@unlink($item)) {
-				return false;
-			}
 		}
 
 		return true;
@@ -353,21 +336,22 @@ class Generator extends Nette\Object
 	{
 		@mkdir($this->config->destination, 0755, true);
 		if (!is_dir($this->config->destination) || !is_writable($this->config->destination)) {
-			throw new Exception(sprintf('Directory %s isn\'t writable.', $this->config->destination));
+			throw new Exception(sprintf('Directory %s isn\'t writable', $this->config->destination));
 		}
 
 		// Copy resources
 		foreach ($this->config->template['resources'] as $resourceSource => $resourceDestination) {
 			// File
-			$resourcePath = $this->getTemplateDir() . '/' . $resourceSource;
+			$resourcePath = $this->getTemplateDir() . DIRECTORY_SEPARATOR . $resourceSource;
 			if (is_file($resourcePath)) {
-				copy($resourcePath, $this->forceDir($this->config->destination . '/' . $resourceDestination));
+				copy($resourcePath, $this->forceDir($this->config->destination . DIRECTORY_SEPARATOR . $resourceDestination));
 				continue;
 			}
 
 			// Dir
-			foreach ($iterator = Nette\Utils\Finder::findFiles('*')->from($resourcePath)->getIterator() as $item) {
-				copy($item->getPathName(), $this->forceDir($this->config->destination . '/' . $resourceDestination . '/' . $iterator->getSubPathName()));
+			$iterator = Nette\Utils\Finder::findFiles('*')->from($resourcePath)->getIterator();
+			foreach ($iterator as $item) {
+				copy($item->getPathName(), $this->forceDir($this->config->destination . DIRECTORY_SEPARATOR . $resourceDestination . DIRECTORY_SEPARATOR . $iterator->getSubPathName()));
 			}
 		}
 
@@ -385,10 +369,11 @@ class Generator extends Nette\Object
 				+ count($this->constants)
 				+ count($this->functions)
 				+ count($this->config->template['templates']['common'])
-				+ (int) !empty($this->config->undocumented)
+				+ (int) !empty($this->config->report)
 				+ (int) $this->config->tree
 				+ (int) $this->config->deprecated
 				+ (int) $this->config->todo
+				+ (int) $this->config->download
 				+ (int) $this->isSitemapEnabled()
 				+ (int) $this->isOpensearchEnabled()
 				+ (int) $this->isRobotsEnabled();
@@ -409,11 +394,10 @@ class Generator extends Nette\Object
 			$this->prepareProgressBar($max);
 		}
 
-		// Create temporary directory
-		$tmp = $this->config->destination . DIRECTORY_SEPARATOR . 'tmp';
-		@mkdir($tmp, 0755, true);
-
 		// Prepare template
+		$tmp = $this->config->destination . DIRECTORY_SEPARATOR . 'tmp';
+		$this->deleteDir($tmp);
+		@mkdir($tmp, 0755, true);
 		$template = new Template($this);
 		$template->setCacheStorage(new Nette\Caching\Storages\PhpFileStorage($tmp));
 		$template->generator = self::NAME;
@@ -426,9 +410,9 @@ class Generator extends Nette\Object
 		// Optional files
 		$this->generateOptional($template);
 
-		// List of undocumented elements
-		if (!empty($this->config->undocumented)) {
-			$this->generateUndocumented();
+		// List of poorly documented elements
+		if (!empty($this->config->report)) {
+			$this->generateReport();
 		}
 
 		// List of deprecated elements
@@ -454,6 +438,11 @@ class Generator extends Nette\Object
 
 		// Generate classes, interfaces, traits, exceptions, constants and functions files
 		$this->generateElements($template);
+
+		// Generate ZIP archive
+		if ($this->config->download) {
+			$this->generateArchive();
+		}
 
 		// Delete temporary directory
 		$this->deleteDir($tmp);
@@ -597,6 +586,7 @@ class Generator extends Nette\Object
 		$template->constants = array_filter($this->constants, $this->getMainFilter());
 		$template->function = null;
 		$template->functions = array_filter($this->functions, $this->getMainFilter());
+		$template->archive = basename($this->getArchivePath());
 
 		// Elements for autocomplete
 		$elements = array();
@@ -611,10 +601,10 @@ class Generator extends Nette\Object
 		});
 		$template->elements = $elements;
 
-		foreach ($this->config->template['templates']['common'] as $dest => $source) {
+		foreach ($this->config->template['templates']['common'] as $source => $destination) {
 			$template
-				->setFile($this->getTemplateDir() . '/' . $source)
-				->save($this->forceDir($this->config->destination . '/' . $dest));
+				->setFile($this->getTemplateDir() . DIRECTORY_SEPARATOR . $source)
+				->save($this->forceDir($this->config->destination . DIRECTORY_SEPARATOR . $destination));
 
 			$this->incrementProgressBar();
 		}
@@ -655,12 +645,12 @@ class Generator extends Nette\Object
 	}
 
 	/**
-	 * Generates list of undocumented elements.
+	 * Generates list of poorly documented elements.
 	 *
 	 * @return \ApiGen\Generator
 	 * @throws \ApiGen\Exception If file isn't writable.
 	 */
-	private function generateUndocumented()
+	private function generateReport()
 	{
 		// Function for element labels
 		$labeler = function($element) {
@@ -696,7 +686,7 @@ class Generator extends Nette\Object
 			}
 		};
 
-		$undocumented = array();
+		$list = array();
 		foreach ($this->getElementTypes() as $type) {
 			foreach ($this->$type as $parentElement) {
 				// Skip elements not from the main project
@@ -719,7 +709,7 @@ class Generator extends Nette\Object
 					);
 				}
 
-				$fileName = $parentElement->getFileName();
+				$fileName = $this->unPharPath($parentElement->getFileName());
 
 				$tokens = $parentElement->getBroker()->getFileTokens($parentElement->getFileName());
 
@@ -732,11 +722,11 @@ class Generator extends Nette\Object
 					// Documentation
 					if (empty($element->shortDescription)) {
 						if (empty($annotations)) {
-							$undocumented[$fileName][] = array('error', $line, sprintf('Missing documentation of %s', $label));
+							$list[$fileName][] = array('error', $line, sprintf('Missing documentation of %s', $label));
 							continue;
 						}
 						// Description
-						$undocumented[$fileName][] = array('error', $line, sprintf('Missing description of %s', $label));
+						$list[$fileName][] = array('error', $line, sprintf('Missing description of %s', $label));
 					}
 
 					// Documentation of method
@@ -744,19 +734,19 @@ class Generator extends Nette\Object
 						// Parameters
 						foreach ($element->getParameters() as $no => $parameter) {
 							if (!isset($annotations['param'][$no])) {
-								$undocumented[$fileName][] = array('error', $line, sprintf('Missing documentation of %s', $labeler($parameter)));
+								$list[$fileName][] = array('error', $line, sprintf('Missing documentation of %s', $labeler($parameter)));
 								continue;
 							}
 
-							if (!preg_match('~^[\\w\\\\]+(?:\\|[\\w\\\\]+)*\\s+\$' . $parameter->getName() . '(?:\\s+.+)?$~s', $annotations['param'][$no])) {
-								$undocumented[$fileName][] = array('warning', $line, sprintf('Invalid documentation "%s" of %s', $annotations['param'][$no], $labeler($parameter)));
+							if (!preg_match('~^[\\w\\\\]+(?:\\[\\])?(?:\\|[\\w\\\\]+(?:\\[\\])?)*\\s+\\$' . $parameter->getName() . '(?:\\s+.+)?$~s', $annotations['param'][$no])) {
+								$list[$fileName][] = array('warning', $line, sprintf('Invalid documentation "%s" of %s', $annotations['param'][$no], $labeler($parameter)));
 							}
 
 							unset($annotations['param'][$no]);
 						}
 						if (isset($annotations['param'])) {
 							foreach ($annotations['param'] as $annotation) {
-								$undocumented[$fileName][] = array('warning', $line, sprintf('Existing documentation "%s" of nonexistent parameter of %s', $annotation, $label));
+								$list[$fileName][] = array('warning', $line, sprintf('Existing documentation "%s" of nonexistent parameter of %s', $annotation, $label));
 							}
 						}
 
@@ -776,16 +766,16 @@ class Generator extends Nette\Object
 							}
 						}
 						if ($return && !isset($annotations['return'])) {
-							$undocumented[$fileName][] = array('error', $line, sprintf('Missing documentation of return value of %s', $label));
+							$list[$fileName][] = array('error', $line, sprintf('Missing documentation of return value of %s', $label));
 						} elseif (isset($annotations['return'])) {
 							if (!$return && 'void' !== $annotations['return'][0] && ($element instanceof ReflectionFunction || (!$parentElement->isInterface() && !$element->isAbstract()))) {
-								$undocumented[$fileName][] = array('warning', $line, sprintf('Existing documentation "%s" of nonexistent return value of %s', $annotations['return'][0], $label));
-							} elseif (!preg_match('~^[\\w\\\\]+(?:\\|[\\w\\\\]+)*(?:\\s+.+)?$~s', $annotations['return'][0])) {
-								$undocumented[$fileName][] = array('warning', $line, sprintf('Invalid documentation "%s" of return value of %s', $annotations['return'][0], $label));
+								$list[$fileName][] = array('warning', $line, sprintf('Existing documentation "%s" of nonexistent return value of %s', $annotations['return'][0], $label));
+							} elseif (!preg_match('~^[\\w\\\\]+(?:\\[\\])?(?:\\|[\\w\\\\]+(?:\\[\\])?)*(?:\\s+.+)?$~s', $annotations['return'][0])) {
+								$list[$fileName][] = array('warning', $line, sprintf('Invalid documentation "%s" of return value of %s', $annotations['return'][0], $label));
 							}
 						}
 						if (isset($annotations['return'][1])) {
-							$undocumented[$fileName][] = array('warning', $line, sprintf('Duplicate documentation "%s" of return value of %s', $annotations['return'][1], $label));
+							$list[$fileName][] = array('warning', $line, sprintf('Duplicate documentation "%s" of return value of %s', $annotations['return'][1], $label));
 						}
 
 						// Throwing exceptions
@@ -803,37 +793,37 @@ class Generator extends Nette\Object
 							}
 						}
 						if ($throw && !isset($annotations['throws'])) {
-							$undocumented[$fileName][] = array('error', $line, sprintf('Missing documentation of throwing an exception of %s', $label));
-						} elseif (isset($annotations['throws'])	&& !preg_match('~^[\\w\\\\]+(?:\\|[\w\\\\]+)*(?:\\s+.+)?$~s', $annotations['throws'][0])) {
-							$undocumented[$fileName][] = array('warning', $line, sprintf('Invalid documentation "%s" of throwing an exception of %s', $annotations['throws'][0], $label));
+							$list[$fileName][] = array('error', $line, sprintf('Missing documentation of throwing an exception of %s', $label));
+						} elseif (isset($annotations['throws'])	&& !preg_match('~^[\\w\\\\]+(?:\\|[\\w\\\\]+)*(?:\\s+.+)?$~s', $annotations['throws'][0])) {
+							$list[$fileName][] = array('warning', $line, sprintf('Invalid documentation "%s" of throwing an exception of %s', $annotations['throws'][0], $label));
 						}
 					}
 
 					// Data type of constants & properties
 					if ($element instanceof ReflectionProperty || $element instanceof ReflectionConstant) {
 						if (!isset($annotations['var'])) {
-							$undocumented[$fileName][] = array('error', $line, sprintf('Missing documentation of the data type of %s', $label));
-						} elseif (!preg_match('~^[\\w\\\\]+(?:\\|[\w\\\\]+)*(?:\\s+.+)?$~s', $annotations['var'][0])) {
-							$undocumented[$fileName][] = array('warning', $line, sprintf('Invalid documentation "%s" of the data type of %s', $annotations['var'][0], $label));
+							$list[$fileName][] = array('error', $line, sprintf('Missing documentation of the data type of %s', $label));
+						} elseif (!preg_match('~^[\\w\\\\]+(?:\\[\\])?(?:\\|[\\w\\\\]+(?:\\[\\])?)*(?:\\s+.+)?$~s', $annotations['var'][0])) {
+							$list[$fileName][] = array('warning', $line, sprintf('Invalid documentation "%s" of the data type of %s', $annotations['var'][0], $label));
 						}
 
 						if (isset($annotations['var'][1])) {
-							$undocumented[$fileName][] = array('warning', $line, sprintf('Duplicate documentation "%s" of the data type of %s', $annotations['var'][1], $label));
+							$list[$fileName][] = array('warning', $line, sprintf('Duplicate documentation "%s" of the data type of %s', $annotations['var'][1], $label));
 						}
 					}
 				}
 				unset($tokens);
 			}
 		}
-		uksort($undocumented, 'strcasecmp');
+		uksort($list, 'strcasecmp');
 
-		$file = @fopen($this->config->undocumented, 'w');
+		$file = @fopen($this->config->report, 'w');
 		if (false === $file) {
-			throw new Exception(sprintf('File %s isn\'t writable.', $this->config->undocumented));
+			throw new Exception(sprintf('File %s isn\'t writable', $this->config->report));
 		}
 		fwrite($file, sprintf('<?xml version="1.0" encoding="UTF-8"?>%s', "\n"));
 		fwrite($file, sprintf('<checkstyle version="1.3.0">%s', "\n"));
-		foreach ($undocumented as $fileName => $reports) {
+		foreach ($list as $fileName => $reports) {
 			fwrite($file, sprintf('%s<file name="%s">%s', "\t", $fileName, "\n"));
 
 			// Sort by line
@@ -1082,7 +1072,7 @@ class Generator extends Nette\Object
 			$template->functions = $package['functions'];
 			$template
 				->setFile($this->getTemplatePath('package'))
-				->save($this->config->destination . '/' . $template->getPackageUrl($packageName));
+				->save($this->config->destination . DIRECTORY_SEPARATOR . $template->getPackageUrl($packageName));
 
 			$this->incrementProgressBar();
 		}
@@ -1119,7 +1109,7 @@ class Generator extends Nette\Object
 			$template->functions = $namespace['functions'];
 			$template
 				->setFile($this->getTemplatePath('namespace'))
-				->save($this->config->destination . '/' . $template->getNamespaceUrl($namespaceName));
+				->save($this->config->destination . DIRECTORY_SEPARATOR . $template->getNamespaceUrl($namespaceName));
 
 			$this->incrementProgressBar();
 		}
@@ -1216,36 +1206,72 @@ class Generator extends Nette\Object
 
 					$template
 						->setFile($this->getTemplatePath('class'))
-						->save($this->config->destination . '/' . $template->getClassUrl($element));
+						->save($this->config->destination . DIRECTORY_SEPARATOR . $template->getClassUrl($element));
 				} elseif ($element instanceof ReflectionConstant) {
 					// Constant
 					$template->constant = $element;
 
 					$template
 						->setFile($this->getTemplatePath('constant'))
-						->save($this->config->destination . '/' . $template->getConstantUrl($element));
+						->save($this->config->destination . DIRECTORY_SEPARATOR . $template->getConstantUrl($element));
 				} elseif ($element instanceof ReflectionFunction) {
 					// Function
 					$template->function = $element;
 
 					$template
 						->setFile($this->getTemplatePath('function'))
-						->save($this->config->destination . '/' . $template->getFunctionUrl($element));
+						->save($this->config->destination . DIRECTORY_SEPARATOR . $template->getFunctionUrl($element));
 				}
 
 				$this->incrementProgressBar();
 
 				// Generate source codes
 				if ($this->config->sourceCode && $element->isTokenized()) {
-					$template->source = $fshl->highlight(file_get_contents($element->getFileName()));
+					$template->source = $fshl->highlight($this->toUtf(file_get_contents($element->getFileName()), $this->charsets[$element->getFileName()]));
 					$template
 						->setFile($this->getTemplatePath('source'))
-						->save($this->config->destination . '/' . $template->getSourceUrl($element, false));
+						->save($this->config->destination . DIRECTORY_SEPARATOR . $template->getSourceUrl($element, false));
 
 					$this->incrementProgressBar();
 				}
 			}
 		}
+
+		return $this;
+	}
+
+	/**
+	 * Creates ZIP archive.
+	 *
+	 * @return \ApiGen\Generator
+	 * @throws \ApiGen\Exception If something went wront.
+	 */
+	private function generateArchive()
+	{
+		if (!extension_loaded('zip')) {
+			throw new Exception('Extension zip is not loaded');
+		}
+
+		$archive = new \ZipArchive();
+		if (true !== $archive->open($this->getArchivePath(), \ZipArchive::CREATE)) {
+			throw new Exception('Could not open ZIP archive');
+		}
+
+		$archive->setArchiveComment(trim(sprintf('%s API documentation generated by %s %s on %s', $this->config->title, self::NAME, self::VERSION, date('Y-m-d H:i:s'))));
+
+		$directory = Nette\Utils\Strings::webalize(trim(sprintf('%s API documentation', $this->config->title)), null, false);
+		$destinationLength = strlen($this->config->destination);
+		foreach ($this->getGeneratedFiles() as $file) {
+			if (is_file($file)) {
+				$archive->addFile($file, $directory . DIRECTORY_SEPARATOR . substr($file, $destinationLength + 1));
+			}
+		}
+
+		if (false === $archive->close()) {
+			throw new Exception('Could not save ZIP archive');
+		}
+
+		$this->incrementProgressBar();
 
 		return $this;
 	}
@@ -1298,6 +1324,55 @@ class Generator extends Nette\Object
 	}
 
 	/**
+	 * Removes phar:// from the path.
+	 *
+	 * @param string $path Path
+	 * @return string
+	 */
+	public function unPharPath($path)
+	{
+		if (0 === strpos($path, 'phar://')) {
+			$path = substr($path, 7);
+		}
+		return $path;
+	}
+
+	/**
+	 * Adds phar:// to the path.
+	 *
+	 * @param string $path Path
+	 * @return string
+	 */
+	private function pharPath($path)
+	{
+		return 'phar://' . $path;
+	}
+
+	/**
+	 * Checks if given path is a phar.
+	 *
+	 * @param string $path
+	 * @return boolean
+	 */
+	private function isPhar($path)
+	{
+		return (bool) preg_match('~\\.phar(?:\\.zip|\\.tar|(?:(?:\\.tar)?(?:\\.gz|\\.bz2))|$)~i', $path);
+	}
+
+	/**
+	 * Normalizes directory separators in given path.
+	 *
+	 * @param string $path Path
+	 * @return string
+	 */
+	private function normalizePath($path)
+	{
+		$path = str_replace(array('/', '\\'), DIRECTORY_SEPARATOR, $path);
+		$path = str_replace('phar:\\\\', 'phar://', $path);
+		return $path;
+	}
+
+	/**
 	 * Prepares the progressbar.
 	 *
 	 * @param integer $maximum Maximum progressbar value
@@ -1331,11 +1406,72 @@ class Generator extends Nette\Object
 
 		$progress = str_pad(str_pad('>', round($percent * $this->progressbar['bar']), '=', STR_PAD_LEFT), $this->progressbar['bar'], ' ', STR_PAD_RIGHT);
 
-		echo sprintf($this->progressbar['skeleton'], $progress, $percent * 100);
+		echo sprintf($this->progressbar['skeleton'], $progress, $percent * 100, round(memory_get_usage(true) / 1024 / 1024));
 
 		if ($this->progressbar['current'] === $this->progressbar['maximum']) {
 			echo "\n";
 		}
+	}
+
+	/**
+	 * Detects character set for the given text.
+	 *
+	 * @param string $text Text
+	 * @return string
+	 */
+	private function detectCharset($text)
+	{
+		// One character set
+		if (1 === count($this->config->charset) && 'AUTO' !== $this->config->charset[0]) {
+			return $this->config->charset[0];
+		}
+
+		static $charsets = array();
+		if (empty($charsets)) {
+			if (1 === count($this->config->charset) && 'AUTO' === $this->config->charset[0]) {
+				// Autodetection
+				$charsets = array(
+					'Windows-1251', 'Windows-1252', 'ISO-8859-2', 'ISO-8859-1', 'ISO-8859-3', 'ISO-8859-4', 'ISO-8859-5', 'ISO-8859-6',
+					'ISO-8859-7', 'ISO-8859-8', 'ISO-8859-9', 'ISO-8859-10', 'ISO-8859-13', 'ISO-8859-14', 'ISO-8859-15'
+				);
+			} else {
+				// More character sets
+				$charsets = $this->config->charset;
+				if (false !== ($key = array_search('WINDOWS-1250', $charsets))) {
+					// WINDOWS-1250 is not supported
+					$charsets[$key] = 'ISO-8859-2';
+				}
+			}
+			// Only supported character sets
+			$charsets = array_intersect($charsets, mb_list_encodings());
+
+			// UTF-8 have to be first
+			array_unshift($charsets, 'UTF-8');
+		}
+
+		$charset = mb_detect_encoding($text, $charsets);
+		// The previous function can not handle WINDOWS-1250 and returns ISO-8859-2 instead
+		if ('ISO-8859-2' === $charset && preg_match('~[\x7F-\x9F\xBC]~', $text)) {
+			$charset = 'WINDOWS-1250';
+		}
+
+		return $charset;
+	}
+
+	/**
+	 * Converts text from given character set to UTF-8.
+	 *
+	 * @param string $text Text
+	 * @param string $charset Character set
+	 * @return string
+	 */
+	private function toUtf($text, $charset)
+	{
+		if ('UTF-8' === $charset) {
+			return $text;
+		}
+
+		return @iconv($charset, 'UTF-8//TRANSLIT//IGNORE', $text);
 	}
 
 	/**
@@ -1440,6 +1576,17 @@ class Generator extends Nette\Object
 	}
 
 	/**
+	 * Returns ZIP archive path.
+	 *
+	 * @return string
+	 */
+	private function getArchivePath()
+	{
+		$name = trim(sprintf('%s API documentation', $this->config->title));
+		return $this->config->destination . DIRECTORY_SEPARATOR . Nette\Utils\Strings::webalize($name) . '.zip';
+	}
+
+	/**
 	 * Returns element relative path to the source directory.
 	 *
 	 * @param \ApiGen\ReflectionElement $element
@@ -1453,6 +1600,9 @@ class Generator extends Nette\Object
 			$fileName = $this->symlinks[$fileName];
 		}
 		foreach ($this->config->source as $source) {
+			if ($this->isPhar($source)) {
+				$source = $this->pharPath($source);
+			}
 			if (0 === strpos($fileName, $source)) {
 				return is_dir($source) ? str_replace('\\', '/', substr($fileName, strlen($source) + 1)) : basename($fileName);
 			}
@@ -1480,7 +1630,7 @@ class Generator extends Nette\Object
 	 */
 	private function getTemplatePath($name, $type = 'main')
 	{
-		return $this->getTemplateDir() . '/' . $this->config->template['templates'][$type][$name]['template'];
+		return $this->getTemplateDir() . DIRECTORY_SEPARATOR . $this->config->template['templates'][$type][$name]['template'];
 	}
 
 	/**
@@ -1492,7 +1642,7 @@ class Generator extends Nette\Object
 	 */
 	private function getTemplateFileName($name, $type = 'main')
 	{
-		return $this->config->destination . '/' . $this->config->template['templates'][$type][$name]['filename'];
+		return $this->config->destination . DIRECTORY_SEPARATOR . $this->config->template['templates'][$type][$name]['filename'];
 	}
 
 	/**
@@ -1516,11 +1666,63 @@ class Generator extends Nette\Object
 	private function prepareTemplate($name)
 	{
 		if (!$this->templateExists($name)) {
-			throw new Exception(sprintf('Template for %s is not set.', $name));
+			throw new Exception(sprintf('Template for %s is not set', $name));
 		}
 
 		$this->forceDir($this->getTemplateFileName($name));
 		return $this;
+	}
+
+	/**
+	 * Returns list of all generated files.
+	 *
+	 * @return array
+	 */
+	private function getGeneratedFiles()
+	{
+		$files = array();
+
+		// Resources
+		foreach ($this->config->template['resources'] as $item) {
+			$path = $this->getTemplateDir() . DIRECTORY_SEPARATOR . $item;
+			if (is_dir($path)) {
+				$iterator = Nette\Utils\Finder::findFiles('*')->from($path)->getIterator();
+				foreach ($iterator as $innerItem) {
+					$files[] = $this->config->destination . DIRECTORY_SEPARATOR . $item . DIRECTORY_SEPARATOR . $iterator->getSubPathName();
+				}
+			} else {
+				$files[] = $this->config->destination . DIRECTORY_SEPARATOR . $item;
+			}
+		}
+
+		// Common files
+		foreach ($this->config->template['templates']['common'] as $item) {
+			$files[] = $this->config->destination . DIRECTORY_SEPARATOR . $item;
+		}
+
+		// Optional files
+		foreach ($this->config->template['templates']['optional'] as $optional) {
+			$files[] = $this->config->destination . DIRECTORY_SEPARATOR . $optional['filename'];
+		}
+
+		// Main files
+		$masks = array_map(function($config) {
+			return preg_replace('~%[^%]*?s~', '*', $config['filename']);
+		}, $this->config->template['templates']['main']);
+		$filter = function($item) use ($masks) {
+			foreach ($masks as $mask) {
+				if (fnmatch($mask, $item->getFilename())) {
+					return true;
+				}
+			}
+			return false;
+		};
+
+		foreach (Nette\Utils\Finder::findFiles('*')->filter($filter)->from($this->config->destination) as $item) {
+			$files[] = $item->getPathName();
+		}
+
+		return $files;
 	}
 
 	/**
@@ -1543,6 +1745,10 @@ class Generator extends Nette\Object
 	 */
 	private function deleteDir($path)
 	{
+		if (!is_dir($path)) {
+			return true;
+		}
+
 		foreach (Nette\Utils\Finder::find('*')->from($path)->childFirst() as $item) {
 			if ($item->isDir()) {
 				if (!@rmdir($item)) {

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ApiGen 2.2.1 - API documentation generator for PHP 5.3+
+ * ApiGen 2.3.0 - API documentation generator for PHP 5.3+
  *
  * Copyright (c) 2010 David Grudl (http://davidgrudl.com)
  * Copyright (c) 2011 Jaroslav Hanslík (https://github.com/kukulich)
@@ -97,26 +97,26 @@ class Backend extends Broker\Backend\Memory
 	{
 		try {
 			if (!$this->isFileProcessed($fileName)) {
-				throw new Exception('File was not processed.');
+				throw new Exception('File was not processed');
 			}
 
 			$realName = Broker::getRealPath($fileName);
 			if (!isset($this->fileCache[$realName])) {
-				throw new Exception('File is not in the cache.');
+				throw new Exception('File is not in the cache');
 			}
 
 			$data = @file_get_contents($this->fileCache[$realName]);
 			if (false === $data) {
-				throw new Exception('Cached file is not readable.');
+				throw new Exception('Cached file is not readable');
 			}
 			$file = @unserialize($data);
 			if (false === $file) {
-				throw new Exception('Stream could not be loaded from cache.');
+				throw new Exception('Stream could not be loaded from cache');
 			}
 
 			return $file;
 		} catch (\Exception $e) {
-			throw new Exception(sprintf('Could not return token stream for file %s.', $fileName), 0, $e);
+			throw new Exception(sprintf('Could not return token stream for file %s', $fileName), 0, $e);
 		}
 	}
 
@@ -174,7 +174,8 @@ class Backend extends Broker\Backend\Memory
 				}
 
 				foreach ($annotations['var'] as $doc) {
-					foreach (explode('|', preg_replace('#\s.*#', '', $doc)) as $name) {
+					foreach (explode('|', preg_replace('~\\s.*~', '', $doc)) as $name) {
+						$name = rtrim($name, '[]');
 						$allClasses = $this->addClass($declared, $allClasses, $name);
 					}
 				}
@@ -213,7 +214,8 @@ class Backend extends Broker\Backend\Memory
 			}
 
 			foreach ($annotations[$annotation] as $doc) {
-				foreach (explode('|', preg_replace('#\s.*#', '', $doc)) as $name) {
+				foreach (explode('|', preg_replace('~\\s.*~', '', $doc)) as $name) {
+					$name = rtrim($name, '[]');
 					$allClasses = $this->addClass($declared, $allClasses, $name);
 				}
 			}

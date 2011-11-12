@@ -175,6 +175,7 @@ code a b {
 
 #rightInner {
 	max-width: 1000px;
+	min-width: 350px;
 }
 
 /* Search */
@@ -358,11 +359,15 @@ dl.tree dd {
 }
 
 .summary .description p {
-	margin: .4em 0;
+	margin: 0;
+}
+
+.summary .description p + p, .summary .description ul {
+	margin: 3px 0 0 0;
 }
 
 .summary .description.detailed h4 {
-	margin-top: 5px;
+	margin-top: 3px;
 }
 
 .summary dl {
@@ -525,4 +530,30 @@ div.tree span.padding {
 .l:target {
 	background: #006aeb url('code-line.png') right center no-repeat;
 	color: #ffffff;
+}
+
+#rightInner.medium #navigation {
+	height: 52px;
+}
+
+#rightInner.medium #navigation ul:first-child + ul {
+	clear: left;
+	border: none;
+	padding: 0;
+}
+
+#rightInner.medium .name, #rightInner.medium .attributes {
+	white-space: normal;
+}
+
+#rightInner.small #search {
+	float: left;
+}
+
+#rightInner.small #navigation {
+	height: 78px;
+}
+
+#rightInner.small #navigation ul:first-child {
+	clear: both;
 }

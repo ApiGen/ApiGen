@@ -4,7 +4,7 @@ ApiGen is the tool for creating professional API documentation from PHP source c
 
 ApiGen has support for PHP 5.3 namespaces, packages, linking between documentation, cross referencing to PHP standard classes and general documentation, creation of highlighted source code and experimental support for PHP 5.4 **traits**.
 
-## Support/Bug Reports ##
+## Support & Bug Reports ##
 
 For all support questions please use our [mailing list](https://groups.google.com/group/apigen). For bug reports and issues the [issue tracker](https://github.com/apigen/apigen/issues) is available. Changes between versions are described in the [change log](https://github.com/apigen/apigen/blob/master/CHANGELOG.md).
 
@@ -18,26 +18,33 @@ For all support questions please use our [mailing list](https://groups.google.co
 * A page with trees of classes, interfaces, traits and exceptions.
 * A page with a list of deprecated elements.
 * A page with Todo tasks.
-* List of undocumented elements.
+* Link to download documentation as ZIP archive.
+* Checkstyle report of poorly documented elements.
 * Support for docblock templates.
 * Support for @inheritdoc.
 * Support for {@link}.
 * Active links in @see and @uses tags.
 * Documentation of used internal PHP classes.
 * Links to the start line in the highlighted source code for every described element.
-* List of direct and indirect known subclasses, implementers and users for every class/interface/trait.
+* List of direct and indirect known subclasses, implementers and users for every class/interface/trait/exception.
+* Check for a new version.
 * Google CSE support with suggest.
 * Google Analytics support.
 * Support for multiple/custom templates.
 * Sitemap and opensearch support.
-* Support for different line endings.
+* Support for different charsets and line endings.
 * Lots of configuration options (see below).
 
 ## Installation ##
 
-The preferred installation way is using the PEAR package. PEAR is a distribution system for PHP packages. It is bundled with PHP since the 4.3 version and it is easy to use.
+The preferred installation way is using the PEAR package but there are three more ways how to install ApiGen.
 
-Unlike the GitHub version that contains everything you need to use it, the PEAR package contains only ApiGen itself. Its dependencies (Nette, Texy, FSHL and TokenReflection) have to be installed separately. But do not panic, the PEAR installer will take care of it (almost).
+
+### PEAR ###
+
+PEAR is a distribution system for PHP packages. It is bundled with PHP since the 4.3 version and it is easy to use.
+
+The PEAR package contains only ApiGen itself. Its dependencies (Nette, Texy, FSHL and TokenReflection) have to be installed separately. But do not panic, the PEAR installer will take care of it (almost).
 
 In order to install any PEAR package, you have to add the appropriate repository URL. The good news is that you have to do that only once. Using these commands you add all required repositories.
 
@@ -79,6 +86,20 @@ If you have have installed a version older than 2.1 using PEAR you will have to 
 
 This is required because we have moved from a temporary PEAR repository to a definitive one. So this change will be required only if you have installed ApiGen and TokenReflection library from the ```pear.kukulich.cz``` repository.
 
+### Standalone package ###
+
+Using the standalone package is even easier than using the PEAR installer but it does not handle updates automatically.
+
+To download the actual release visit the [Downloads section](https://github.com/apigen/apigen/downloads). There you find separate packages for each release in two formats - zip and tar.gz. These packages are prepared by the ApiGen team and are truly standalone; they contain all required libraries in appropriate versions. You just need to extract the contents of an archive and you can start using ApiGen.
+
+### GitHub built archive ###
+
+GitHub allows you to download any repository as a zip or tar.gz archive. You can use this feature to download an archive with the current version of ApiGen. However this approach has one disadvantage. Such archive (in contrast to the standalone packages) does not contain required libraries. They are included as git submodules in the repository and GitHub simply ignores them when generating the archive. It means that you will have to obtain required libraries manually.
+
+### Cloning the repository ###
+
+The last way how to install ApiGen is simply to clone our repository. If you do so, remember to fetch and rebase to get new versions and do not forget to update submodules in the libs directory.
+
 ## Usage ##
 
 ```
@@ -100,7 +121,7 @@ Path to the config file.
 
 ```--source|-s <directory|file>``` **required**
 
-Path to the directory or file to be processed. You can use the parameter multiple times to provide a list of directories or files.
+Path to the directory or file to be processed. You can use the parameter multiple times to provide a list of directories or files. All types of PHAR archives are supported (requires the PHAR extension). To process gz/bz2 compressed archives you need the appropriate extension (see requirements).
 
 ```--destination|-d <directory>``` **required**
 
@@ -108,16 +129,20 @@ Documentation will be generated into this directory.
 
 ```--exclude <mask>```
 
-Directories and files matching this file mask will not be parsed. You can exclude for example tests from processing this way. This parameter can be used multiple times.
+Directories and files matching this file mask will not be parsed. You can exclude for example tests from processing this way. This parameter is case sensitive and can be used multiple times.
 
 ```--skip-doc-path <mask>```
 ```--skip-doc-prefix <value>```
 
-Using this parameters you can tell ApiGen not to generate documentation for classes from certain files or with certain name prefix. Such classes will appear in class trees, but will not create a link to their documentation. These parameters can be used multiple times.
+Using this parameters you can tell ApiGen not to generate documentation for elements from certain files or with certain name prefix. Such classes will appear in class trees, but will not create a link to their documentation. These parameters are case sensitive and can be used multiple times.
+
+```--charset <list>```
+
+Character set of source files, default is "UTF-8". You can use the parameter multiple times to provide a list of all used character sets in your documentation. In that case ApiGen will try to choose one of provided sets for every file. You can also use the "auto" value to let ApiGen choose from all supported character sets. However you should avoid this because every kind of autodetection can be tricky (and not completely realiable).
 
 ```--main <value>```
 
-Classes with this name prefix will be considered as the "main project" (the rest will be considered as libraries).
+Elements with this name prefix will be considered as the "main project" (the rest will be considered as libraries).
 
 ```--title <value>```
 
@@ -161,11 +186,11 @@ Generate documentation for PHP internal classes, default is "Yes".
 
 ```--tree <yes|no>```
 
-Generate tree view of classes, interfaces and exceptions, default is "Yes".
+Generate tree view of classes, interfaces, traits and exceptions, default is "Yes".
 
 ```--deprecated <yes|no>```
 
-Generate documentation for deprecated classes and class members, default is "No".
+Generate documentation for deprecated elements, default is "No".
 
 ```--todo <yes|no>```
 
@@ -173,11 +198,15 @@ Generate a list of tasks, default is "No".
 
 ```--source-code <yes|no>```
 
-Generate highlighted source code for user defined classes, default is "Yes".
+Generate highlighted source code for user defined elements, default is "Yes".
 
-```--undocumented <file>```
+```--download <yes|no>```
 
-Save a list of undocumented classes, methods, properties and constants into a file.
+Add a link to download documentation as a ZIP archive, default is "No".
+
+```--report <file>```
+
+Save a checkstyle report of poorly documented elements into a file.
 
 ```--wipeout <yes|no>```
 
@@ -213,7 +242,9 @@ Only ```--source``` and ```--destination``` parameters are required. You can pro
 
 Instead of providing individual parameters via the command line, you can prepare a config file for later use. You can use all the above listed parameters (with one exception: the ```--config``` option) only without dashes and with an uppercase letter after each dash (so ```--access-level``` becomes ```accessLevel```).
 
-And then you can call apigen with a single parameter ```--config``` specifying the config file to load.
+ApiGen uses the [NEON file format](http://ne-on.org) for all its config files. You can try the [online parser](http://ne-on.org) to debug your config files and see how they get parsed.
+
+Then you can call ApiGen with a single parameter ```--config``` specifying the config file to load.
 
 ```
 	apigen --config <path> [options]
@@ -222,6 +253,8 @@ And then you can call apigen with a single parameter ```--config``` specifying t
 Even when using a config file, you can still provide additional parameters via the command line. Such parameters will have precedence over parameters from the config file.
 
 Keep in mind, that any values in the config file will be **overwritten** by values from the command line. That means that providing the ```--source``` parameter values both in the config file and via the command line will not result in using all the provided values but only those from the command line.
+
+If you provide no command line parameters at all, ApiGen will try to load a default config file called ```apigen.neon``` in the current working directory. If found it will work as if you used the --config option. Note that when using any command line option, you have to specify the config file if you have one. ApiGen will try to load one automatically only when no command line parameters are used.
 
 ### Example ###
 
@@ -233,7 +266,7 @@ We are generating documentation for the Nella Framework. We want Nette and Doctr
 
 ## Requirements ##
 
-ApiGen requires PHP 5.3 or later. Four libraries it uses ([Nette](https://github.com/nette/nette), [Texy](https://github.com/dg/texy), [TokenReflection](https://github.com/Andrewsville/PHP-Token-Reflection) and [FSHL](https://github.com/kukulich/fshl)) require three additional PHP extensions: tokenizer, iconv and mbstring.
+ApiGen requires PHP 5.3 or later. Four libraries it uses ([Nette](https://github.com/nette/nette), [Texy](https://github.com/dg/texy), [TokenReflection](https://github.com/Andrewsville/PHP-Token-Reflection) and [FSHL](https://github.com/kukulich/fshl)) require four additional PHP extensions: [tokenizer](http://php.net/manual/book.tokenizer.php), [mbstring](http://php.net/manual/book.mbstring.php), [iconv](http://php.net/manual/book.iconv.php) and [json](http://php.net/manual/book.json.php). For documenting PHAR archives you need the [phar extension](http://php.net/manual/book.phar.php) and for documenting gz or bz2 compressed PHARs, you need the [zlib](http://php.net/manual/book.zlib.php) or [bz2](http://php.net/manual/book.bzip2.php) extension respectively. To generate the ZIP file with documentation you need the [zip extension](http://php.net/manual/book.zip.php).
 
 When generating documentation of large libraries (Zend Framework for example) we recommend not to have the Xdebug PHP extension loaded (it does not need to be used, it significantly slows down the generating process even when only loaded).
 
@@ -245,9 +278,10 @@ When generating documentation of large libraries (Zend Framework for example) we
 
 ## Usage examples ##
 
-* Jyxo PHP Libraries, both [namespaced](http://jyxo.github.com/php/) and [non-namespaced](http://jyxo.github.com/php-no-namespace/),
-* [TokenReflection library](http://andrewsville.github.com/PHP-Token-Reflection/),
-* [FSHL library](http://fshl.kukulich.cz/api/),
-* [Nella Framework](http://api.nella-project.org/framework/).
+* [TokenReflection library](http://andrewsville.github.com/PHP-Token-Reflection/)
+* [FSHL library](http://fshl.kukulich.cz/api/)
+* [FuelPHP Framework](http://fuelphp.com/api/)
+* [Nella Framework](http://api.nella-project.org/framework/)
+* Jyxo PHP Libraries, both [namespaced](http://jyxo.github.com/php/) and [non-namespaced](http://jyxo.github.com/php-no-namespace/)
 
 Besides from these publicly visible examples there are companies that use ApiGen to generate their inhouse documentation: [Medio Interactive](http://www.medio.cz/), [Wikidi](http://wikidi.com/).
