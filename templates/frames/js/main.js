@@ -118,6 +118,12 @@ $(function() {
 		var $right = $('#rightWrapper');
 		var $splitter = $('#splitter');
 		var splitterWidth = $splitter.width();
+		function setSplitterPosition(position)
+		{
+			$left.width(position);
+			$right.css('margin-left', position + splitterWidth);
+			$splitter.css('left', position);
+		}
 		$splitter.mousedown(function() {
 				$splitter.addClass('active');
 
@@ -132,25 +138,18 @@ $(function() {
 				// For Opera
 				$document.mousemove(function(event) {
 					if (event.pageX >= 230 && $document.width() - event.pageX >= 600 + splitterWidth) {
-						$left.width(event.pageX);
-						$right.css('margin-left', event.pageX + splitterWidth);
-						$splitter.css('left', event.pageX);
+						setSplitterPosition(event.pageX);
 					}
 				});
 				// For other browsers
 				$documentLeft.mousemove(function(event) {
 					if (event.pageX >= 230) {
-						$left.width(event.pageX);
-						$right.css('margin-left', event.pageX + splitterWidth);
-						$splitter.css('left', event.pageX);
+						setSplitterPosition(event.pageX);
 					}
 				});
 				$documentRight.mousemove(function(event) {
 					if ($right.width() >= 600 + splitterWidth) {
-						var splitterPosition = parseInt($splitter.css('left')) + splitterWidth + event.pageX;
-						$left.width(splitterPosition);
-						$right.css('margin-left', splitterPosition + splitterWidth);
-						$splitter.css('left', splitterPosition);
+						setSplitterPosition(parseInt($splitter.css('left')) + splitterWidth + event.pageX);
 					}
 				});
 
@@ -172,10 +171,7 @@ $(function() {
 			});
 		var splitterPosition = $.cookie('splitter');
 		if (null !== splitterPosition) {
-			splitterPosition = parseInt(splitterPosition);
-			$left.width(splitterPosition);
-			$right.css('margin-left', splitterPosition + splitterWidth);
-			$splitter.css('left', splitterPosition);
+			setSplitterPosition(parseInt(splitterPosition));
 		}
 	} else if (isLeftFrame) {
 		// Menu
