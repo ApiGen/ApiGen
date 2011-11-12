@@ -1,3 +1,16 @@
+## ApiGen 2.3.0 ##
+
+* Added support for default configuration file
+* Added link to download documentation as ZIP archive
+* Added option ```--charset``` and autodetection of charsets
+* Added support for @ignore annotation
+* Added PHAR support
+* Added support for ClassName[]
+* Added memory usage reporting in progressbar
+* Improved templates for small screens
+* Changed option name ```--undocumented``` to ```--report```
+* FSHL library updated to version 2.0.1
+
 ## ApiGen 2.2.1 ##
 
 * Fixed processing of magic constants
