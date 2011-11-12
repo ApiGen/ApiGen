@@ -32,7 +32,7 @@ For all support questions please use our [mailing list](https://groups.google.co
 * Google Analytics support.
 * Support for multiple/custom templates.
 * Sitemap and opensearch support.
-* Support for different line endings.
+* Support for different charsets and line endings.
 * Lots of configuration options (see below).
 
 ## Installation ##
@@ -253,6 +253,8 @@ Then you can call ApiGen with a single parameter ```--config``` specifying the c
 Even when using a config file, you can still provide additional parameters via the command line. Such parameters will have precedence over parameters from the config file.
 
 Keep in mind, that any values in the config file will be **overwritten** by values from the command line. That means that providing the ```--source``` parameter values both in the config file and via the command line will not result in using all the provided values but only those from the command line.
+
+If you provide no command line parameters at all, ApiGen will try to load a default config file called ```apigen.neon``` in the current working directory. If found it will work as if you used the --config option. Note that when using any command line option, you have to specify the config file if you have one. ApiGen will try to load one automatically only when no command line parameters are used.
 
 ### Example ###
 
