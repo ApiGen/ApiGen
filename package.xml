@@ -23,10 +23,10 @@
 	<email>andrew@apigen.org</email>
 	<active>yes</active>
 </lead>
-<date>2011-10-26</date>
+<date>2011-11-13</date>
 <version>
-	<release>2.2.1</release>
-	<api>2.2.0</api>
+	<release>2.3.0</release>
+	<api>2.3.0</api>
 </version>
 <stability>
 	<release>stable</release>
@@ -172,7 +172,7 @@
 		<package>
 			<name>FSHL</name>
 			<channel>pear.kukulich.cz</channel>
-			<min>2.0.0</min>
+			<min>2.0.1</min>
 		</package>
 		<package>
 			<name>TokenReflection</name>
