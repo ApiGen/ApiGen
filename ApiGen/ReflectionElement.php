@@ -78,6 +78,26 @@ abstract class ReflectionElement extends ReflectionBase
 	}
 
 	/**
+	 * Returns if the element is deprecated.
+	 *
+	 * @return boolean
+	 */
+	public function isDeprecated()
+	{
+		if ($this->reflection->isDeprecated()) {
+			return true;
+		}
+
+		if (($this instanceof ReflectionMethod || $this instanceof ReflectionProperty || $this instanceof ReflectionConstant)
+			&& $class = $this->getDeclaringClass()
+		) {
+			return $class->isDeprecated();
+		}
+
+		return false;
+	}
+
+	/**
 	 * Returns element package name (including subpackage name).
 	 *
 	 * For internal elements returns "PHP", for elements in global space returns "None".

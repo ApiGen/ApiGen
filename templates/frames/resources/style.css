@@ -435,6 +435,10 @@ td.name, td.attributes {
 	opacity: .5;
 }
 
+.deprecated:hover {
+	opacity: 1;
+}
+
 .hidden {
 	display: none;
 }
