@@ -160,7 +160,11 @@ class Config
 			$this->options['config'] = $this->getDefaultConfigPath();
 		}
 		if (isset($this->options['config']) && is_file($this->options['config'])) {
-			$this->config = array_merge($this->config, Neon::decode(file_get_contents($this->options['config'])));
+			$neon = Neon::decode(file_get_contents($this->options['config']));
+			if (isset($neon['templateConfig']) && !preg_match('#/|[a-z]:#Ai', $neon['templateConfig'])) {
+				$neon['templateConfig'] = dirname($this->options['config']) . '/' . $neon['templateConfig'];
+			}
+			$this->config = array_merge($this->config, $neon);
 		}
 
 		// Parse options
