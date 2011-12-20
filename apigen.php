@@ -50,6 +50,7 @@ if (false === strpos(PEAR_PHP_DIR, '@php_dir')) {
 
 // Autoload
 spl_autoload_register(function($class) {
+	$class = trim($class, '\\');
 	require sprintf('%s.php', str_replace('\\', DIRECTORY_SEPARATOR, $class));
 });
 
