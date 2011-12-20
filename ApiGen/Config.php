@@ -161,8 +161,8 @@ class Config
 		}
 		if (isset($this->options['config']) && is_file($this->options['config'])) {
 			$neon = Neon::decode(file_get_contents($this->options['config']));
-			if (isset($neon['templateConfig']) && !preg_match('#/|[a-z]:#Ai', $neon['templateConfig'])) {
-				$neon['templateConfig'] = dirname($this->options['config']) . '/' . $neon['templateConfig'];
+			if (isset($neon['templateConfig']) && !preg_match('~/|[a-z]:~Ai', $neon['templateConfig'])) {
+				$neon['templateConfig'] = dirname($this->options['config']) . DIRECTORY_SEPARATOR . $neon['templateConfig'];
 			}
 			$this->config = array_merge($this->config, $neon);
 		}
