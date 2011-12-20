@@ -278,9 +278,9 @@ When generating documentation of large libraries (Zend Framework for example) we
 
 ## Usage examples ##
 
+* [Nette Framework](http://api.nette.org/2.0/)
 * [TokenReflection library](http://andrewsville.github.com/PHP-Token-Reflection/)
 * [FSHL library](http://fshl.kukulich.cz/api/)
-* [FuelPHP Framework](http://fuelphp.com/api/)
 * [Nella Framework](http://api.nella-project.org/framework/)
 * Jyxo PHP Libraries, both [namespaced](http://jyxo.github.com/php/) and [non-namespaced](http://jyxo.github.com/php-no-namespace/)
 
