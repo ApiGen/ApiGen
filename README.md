@@ -62,11 +62,10 @@ Theoretically you should only use one command
 	pear install apigen/ApiGen
 ```
 
-to install ApiGen, then. However things are not so easy. This would work if all required libraries were in stable versions. But they aren't. Nette and TokenReflection are beta versions. Assuming you have your PEAR installer configured that it will not install non-stable packages (that is the default configuration), you have to explicitly enter each non-stable package you want to use. So you have to  run these commands
+to install ApiGen, then. However things are not so easy. This would work if all required libraries were in stable versions. But Nette isn't (and that is going to change soon). Assuming you have your PEAR installer configured that it will not install non-stable packages (that is the default configuration), you have to explicitly enter each non-stable package you want to use. So you have to install Nette manually this way
 
 ```
 	pear install nette/Nette-beta
-	pear install andrewsville/TokenReflection-beta
 ```
 
 and finally
@@ -75,7 +74,7 @@ and finally
 	pear install apigen/ApiGen
 ```
 
-When all required libraries appear in stable versions, only the last command will be required and all dependencies will be downloaded by the PEAR installer automatically.
+When a stable version of Nette gets released, only the last command will be required and all dependencies will be downloaded by the PEAR installer automatically.
 
 If you have have installed a version older than 2.1 using PEAR you will have to uninstall it first using these commands.
 
@@ -278,9 +277,9 @@ When generating documentation of large libraries (Zend Framework for example) we
 
 ## Usage examples ##
 
+* [Nette Framework](http://api.nette.org/2.0/)
 * [TokenReflection library](http://andrewsville.github.com/PHP-Token-Reflection/)
 * [FSHL library](http://fshl.kukulich.cz/api/)
-* [FuelPHP Framework](http://fuelphp.com/api/)
 * [Nella Framework](http://api.nella-project.org/framework/)
 * Jyxo PHP Libraries, both [namespaced](http://jyxo.github.com/php/) and [non-namespaced](http://jyxo.github.com/php-no-namespace/)
 

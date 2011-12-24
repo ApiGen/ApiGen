@@ -1,3 +1,9 @@
+## ApiGen 2.4.0 ##
+
+* TokenReflection library updated to version 1.0.0
+* Fixed support for older PHP versions of the 5.3 branch
+* Option ```templateConfig``` is relative to the config file (was relative to cwd)
+
 ## ApiGen 2.3.0 ##
 
 * Added support for default configuration file

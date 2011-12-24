@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ApiGen 2.3.0 - API documentation generator for PHP 5.3+
+ * ApiGen 2.4.0 - API documentation generator for PHP 5.3+
  *
  * Copyright (c) 2010 David Grudl (http://davidgrudl.com)
  * Copyright (c) 2011 Jaroslav Hanslík (https://github.com/kukulich)
@@ -75,6 +75,26 @@ abstract class ReflectionElement extends ReflectionBase
 		}
 
 		return $this->isDocumented;
+	}
+
+	/**
+	 * Returns if the element is deprecated.
+	 *
+	 * @return boolean
+	 */
+	public function isDeprecated()
+	{
+		if ($this->reflection->isDeprecated()) {
+			return true;
+		}
+
+		if (($this instanceof ReflectionMethod || $this instanceof ReflectionProperty || $this instanceof ReflectionConstant)
+			&& $class = $this->getDeclaringClass()
+		) {
+			return $class->isDeprecated();
+		}
+
+		return false;
 	}
 
 	/**

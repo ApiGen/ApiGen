@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ApiGen 2.3.0 - API documentation generator for PHP 5.3+
+ * ApiGen 2.4.0 - API documentation generator for PHP 5.3+
  *
  * Copyright (c) 2010 David Grudl (http://davidgrudl.com)
  * Copyright (c) 2011 Jaroslav Hanslík (https://github.com/kukulich)
@@ -76,12 +76,12 @@ class Backend extends Broker\Backend\Memory
 	 * @param \TokenReflection\ReflectionFile $file File reflection object
 	 * @return \TokenReflection\Broker\Backend\Memory
 	 */
-	public function addFile(TokenReflection\ReflectionFile $file)
+	public function addFile(TokenReflection\Stream\StreamBase $tokenStream, TokenReflection\ReflectionFile $file)
 	{
-		parent::addFile($file);
+		parent::addFile($tokenStream, $file);
 		if ($this->cacheTokenStreams) {
 			$this->fileCache[$file->getName()] = $cacheFile = tempnam(sys_get_temp_dir(), 'trc');
-			file_put_contents($cacheFile, serialize($file->getTokenStream()));
+			file_put_contents($cacheFile, serialize($tokenStream));
 		}
 		return $this;
 	}

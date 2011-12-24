@@ -2,7 +2,7 @@
 <?php
 
 /**
- * ApiGen 2.3.0 - API documentation generator for PHP 5.3+
+ * ApiGen 2.4.0 - API documentation generator for PHP 5.3+
  *
  * Copyright (c) 2010 David Grudl (http://davidgrudl.com)
  * Copyright (c) 2011 Jaroslav Hanslík (https://github.com/kukulich)
@@ -50,6 +50,7 @@ if (false === strpos(PEAR_PHP_DIR, '@php_dir')) {
 
 // Autoload
 spl_autoload_register(function($class) {
+	$class = trim($class, '\\');
 	require sprintf('%s.php', str_replace('\\', DIRECTORY_SEPARATOR, $class));
 });
 

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ApiGen 2.3.0 - API documentation generator for PHP 5.3+
+ * ApiGen 2.4.0 - API documentation generator for PHP 5.3+
  *
  * Copyright (c) 2010 David Grudl (http://davidgrudl.com)
  * Copyright (c) 2011 Jaroslav Hanslík (https://github.com/kukulich)
@@ -160,7 +160,11 @@ class Config
 			$this->options['config'] = $this->getDefaultConfigPath();
 		}
 		if (isset($this->options['config']) && is_file($this->options['config'])) {
-			$this->config = array_merge($this->config, Neon::decode(file_get_contents($this->options['config'])));
+			$neon = Neon::decode(file_get_contents($this->options['config']));
+			if (isset($neon['templateConfig']) && !preg_match('~/|[a-z]:~Ai', $neon['templateConfig'])) {
+				$neon['templateConfig'] = dirname($this->options['config']) . DIRECTORY_SEPARATOR . $neon['templateConfig'];
+			}
+			$this->config = array_merge($this->config, $neon);
 		}
 
 		// Parse options
