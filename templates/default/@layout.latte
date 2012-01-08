@@ -7,12 +7,12 @@
 
 	<title>{include #title}{if 'overview' !== $active && $config->title} | {$config->title}{/if}</title>
 
-	{var combined_js = 'resources/combined.js'}
-	<script type="text/javascript" src="{$combined_js|staticFile}"></script>
-	{var elementlist_js = 'elementlist.js'}
-	<script type="text/javascript" src="{$elementlist_js|staticFile}"></script>
-	{var style_css = 'resources/style.css'}
-	<link rel="stylesheet" type="text/css" media="all" href="{$style_css|staticFile}">
+	{var combinedJs = 'resources/combined.js'}
+	<script type="text/javascript" src="{$combinedJs|staticFile}"></script>
+	{var elementListJs = 'elementlist.js'}
+	<script type="text/javascript" src="{$elementListJs|staticFile}"></script>
+	{var styleCss = 'resources/style.css'}
+	<link rel="stylesheet" type="text/css" media="all" href="{$styleCss|staticFile}">
 	<link n:if="$config->googleCseId" rel="search" type="application/opensearchdescription+xml" title="{$config->title}" href="{$config->baseUrl}/opensearch.xml">
 
 	<script n:if="$config->googleAnalytics" type="text/javascript">
