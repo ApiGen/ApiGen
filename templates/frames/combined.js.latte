@@ -1,4 +1,9 @@
-{var $scripts = ['jquery.min.js', 'jquery.cookie.js', 'jquery.autocomplete.js', 'jquery.sortElements.js', 'main.js']}
+{contentType javascript}
+
+var ApiGen = ApiGen || {};
+ApiGen.config = {$config->template};
+
+{var $scripts = ['jquery.min.js', 'jquery.cookie.js', 'jquery.sprintf.js', 'jquery.autocomplete.js', 'jquery.sortElements.js', 'main.js']}
 {var $dir = dirname($template->getFile())}
 
 {foreach $scripts as $script}

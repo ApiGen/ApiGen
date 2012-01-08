@@ -8,7 +8,7 @@ $(function() {
 		// Top
 
 		if ('' === window.location.hash.substr(1)) {
-			window.location.hash = 'overview.html';
+			window.location.hash = window.ApiGen.config.templates.common['overview.latte'];
 		}
 
 		/**
@@ -180,7 +180,7 @@ $(function() {
 		if (window.self !== window.parent.frames['left']) {
 			var leftLocation = window.location.href.split('/');
 			leftLocation.pop();
-			leftLocation.push('index.html');
+			leftLocation.push(window.parent.ApiGen.config.templates.common['index.latte']);
 			window.location.replace(location.join('/'));
 			return;
 		}
@@ -264,7 +264,7 @@ $(function() {
 				}
 			}).result(function(event, data) {
 				autocompleteFound = true;
-				var page = data[0] + '-' + data[1].replace(/[^\w]/g, '.') + '.html';
+				var page = $.sprintf(window.parent.ApiGen.config.templates.main[data[0]].filename, data[1].replace(/[^\w]/g, '.'));
 				window.parent.ApiGen.loadPage(page);
 				window.parent.location.hash = page;
 			}).closest('form')
@@ -311,12 +311,12 @@ $(function() {
 			})
 			.addClass('switchable')
 			.attr('title', 'Switch between natural and alphabetical order');
-		if ((null === $.cookie('order') && 'alphabetical' === window.parent.ApiGen.options.elementsOrder) || 'alphabetical' === $.cookie('order')) {
+		if ((null === $.cookie('order') && 'alphabetical' === window.parent.ApiGen.config.options.elementsOrder) || 'alphabetical' === $.cookie('order')) {
 			$caption.click();
 		}
 
 		// Delayed hover efect on summary
-		if (window.parent.ApiGen.options.elementDetailsCollapsed) {
+		if (window.parent.ApiGen.config.options.elementDetailsCollapsed) {
 			var timeout;
 			$('tr', $content).filter(':has(.detailed)')
 				.hover(function() {

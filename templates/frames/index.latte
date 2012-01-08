@@ -10,10 +10,6 @@
 	<script type="text/javascript" src="{$combined_js|staticFile}"></script>
 	{var elementlist_js = 'elementlist.js'}
 	<script type="text/javascript" src="{$elementlist_js|staticFile}"></script>
-	<script type="text/javascript">
-		var ApiGen = ApiGen || {};
-		ApiGen.options = {$config->template['options']};
-	</script>
 	{var style_css = 'resources/style.css'}
 	<link rel="stylesheet" type="text/css" media="all" href="{$style_css|staticFile}">
 	<link n:if="$config->googleCseId" rel="search" type="application/opensearchdescription+xml" title="{$config->title}" href="{$config->baseUrl}/opensearch.xml">

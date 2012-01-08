@@ -51,7 +51,7 @@ $(function() {
 			autocompleteFound = true;
 			var location = window.location.href.split('/');
 			location.pop();
-			location.push(data[0] + '-' + data[1].replace(/[^\w]/g, '.') + '.html');
+			location.push($.sprintf(ApiGen.config.templates.main[data[0]].filename, data[1].replace(/[^\w]/g, '.')));
 			window.location = location.join('/');
 		}).closest('form')
 			.submit(function() {
@@ -97,12 +97,12 @@ $(function() {
 		})
 		.addClass('switchable')
 		.attr('title', 'Switch between natural and alphabetical order');
-	if ((null === $.cookie('order') && 'alphabetical' === ApiGen.options.elementsOrder) || 'alphabetical' === $.cookie('order')) {
+	if ((null === $.cookie('order') && 'alphabetical' === ApiGen.config.options.elementsOrder) || 'alphabetical' === $.cookie('order')) {
 		$caption.click();
 	}
 
 	// Delayed hover efect on summary
-	if (ApiGen.options.elementDetailsCollapsed) {
+	if (ApiGen.config.options.elementDetailsCollapsed) {
 		var timeout;
 		$('tr', $content).filter(':has(.detailed)')
 			.hover(function() {
