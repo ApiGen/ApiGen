@@ -239,6 +239,15 @@ class Template extends Nette\Templating\FileTemplate
 					}
 					break;
 				case 'see':
+					$doc = array();
+					foreach (preg_split('~\\s*,\\s*~', $value) as $link) {
+						if (null !== $that->resolveElement($link, $context)) {
+							$doc[] = sprintf('<code>%s</code>', $that->getTypeLinks($link, $context));
+						} else {
+							$doc[] = $that->doc($link, $context);
+						}
+					}
+					return implode(', ', $doc);
 				case 'uses':
 					list($link, $description) = $that->split($value);
 					$separator = $context instanceof ReflectionClass || !$description ? ' ' : '<br>';
