@@ -132,7 +132,7 @@ class Template extends Nette\Templating\FileTemplate
 		);
 
 		$latte = new Nette\Latte\Engine();
-		$macroSet = new Nette\Latte\Macros\MacroSet($latte->parser);
+		$macroSet = new Nette\Latte\Macros\MacroSet($latte->compiler);
 		$macroSet->addMacro('try', 'try {', '} catch (\Exception $e) {}');
 		$this->registerFilter($latte);
 
