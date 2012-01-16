@@ -31,6 +31,13 @@ abstract class ReflectionElement extends ReflectionBase
 	protected $isDocumented;
 
 	/**
+	 * Reflection elements annotations.
+	 *
+	 * @var array
+	 */
+	private $annotations;
+
+	/**
 	 * Returns the PHP extension reflection.
 	 *
 	 * @return \ApiGen\ReflectionExtension
@@ -110,9 +117,9 @@ abstract class ReflectionElement extends ReflectionBase
 			return 'PHP';
 		}
 
-		if ($package = $this->reflection->getAnnotation('package')) {
+		if ($package = $this->getAnnotation('package')) {
 			$packageName = preg_replace('~\s+.*~s', '', $package[0]);
-			if ($subpackage = $this->reflection->getAnnotation('subpackage')) {
+			if ($subpackage = $this->getAnnotation('subpackage')) {
 				$packageName .= '\\' . preg_replace('~\s+.*~s', '', $subpackage[0]);
 			}
 			return $packageName;
@@ -171,15 +178,47 @@ abstract class ReflectionElement extends ReflectionBase
 	}
 
 	/**
-	 * Returns all annotations.
+	 * Returns reflection element annotations.
+	 *
+	 * Removes the short and long description.
+	 *
+	 * In case of classes, functions and constants, @package, @subpackage, @author and @license annotations
+	 * are added from declaring files if not already present.
 	 *
 	 * @return array
 	 */
 	public function getAnnotations()
 	{
-		$annotations = $this->reflection->getAnnotations();
-		unset($annotations[\TokenReflection\ReflectionAnnotation::SHORT_DESCRIPTION]);
-		unset($annotations[\TokenReflection\ReflectionAnnotation::LONG_DESCRIPTION]);
-		return $annotations;
+		if (null === $this->annotations) {
+			static $fileLevel = array('package' => true, 'subpackage' => true, 'author' => true, 'license' => true, 'copyright' => true);
+
+			$annotations = $this->reflection->getAnnotations();
+			unset($annotations[\TokenReflection\ReflectionAnnotation::SHORT_DESCRIPTION]);
+			unset($annotations[\TokenReflection\ReflectionAnnotation::LONG_DESCRIPTION]);
+
+			if ($this->reflection instanceof \TokenReflection\ReflectionClass || $this->reflection instanceof \TokenReflection\ReflectionFunction || ($this->reflection instanceof \TokenReflection\ReflectionConstant && null === $this->reflection->getDeclaringClassName())) {
+				foreach ($this->reflection->getFileReflection()->getAnnotations() as $name => $value) {
+					if (isset($fileLevel[$name]) && empty($annotations[$name])) {
+						$annotations[$name] = $value;
+					}
+				}
+			}
+
+			$this->annotations = $annotations;
+		}
+
+		return $this->annotations;
+	}
+
+	/**
+	 * Returns reflection element annotation.
+	 *
+	 * @param string $annotation Annotation name
+	 * @return array
+	 */
+	public function getAnnotation($annotation)
+	{
+		$annotations = $this->annotations ?: $this->getAnnotations();
+		return isset($annotations[$annotation]) ? $annotations[$annotation] : null;
 	}
 }
