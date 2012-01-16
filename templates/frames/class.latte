@@ -135,7 +135,7 @@ the file LICENSE.md that was distributed with this source code.
 
 			{if $method->deprecated}
 				<h4>Deprecated</h4>
-				{if $annotations['deprecated']}
+				{ifset $annotations['deprecated']}
 				<div class="list">
 				{foreach $annotations['deprecated'] as $description}
 					{if $description}
@@ -143,7 +143,7 @@ the file LICENSE.md that was distributed with this source code.
 					{/if}
 				{/foreach}
 				</div>
-				{/if}
+				{/ifset}
 			{/if}
 
 			{if $method->parameters && isset($annotations['param'])}
