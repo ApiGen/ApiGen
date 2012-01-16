@@ -190,7 +190,7 @@ abstract class ReflectionElement extends ReflectionBase
 	public function getAnnotations()
 	{
 		if (null === $this->annotations) {
-			static $fileLevel = array('package' => true, 'subpackage' => true, 'author' => true, 'license' => true);
+			static $fileLevel = array('package' => true, 'subpackage' => true, 'author' => true, 'license' => true, 'copyright' => true);
 
 			$annotations = $this->reflection->getAnnotations();
 			unset($annotations[\TokenReflection\ReflectionAnnotation::SHORT_DESCRIPTION]);
