@@ -653,37 +653,30 @@ class Generator extends Nette\Object
 	private function generateReport()
 	{
 		// Function for element labels
-		$labeler = function($element) {
+		$that = $this;
+		$labeler = function($element) use ($that) {
 			if ($element instanceof ReflectionClass) {
 				if ($element->isInterface()) {
-					return sprintf('interface %s', $element->getName());
+					$label = 'interface';
 				} elseif ($element->isTrait()) {
-					return sprintf('trait %s', $element->getName());
+					$label = 'trait';
 				} elseif ($element->isException()) {
-					return sprintf('exception %s', $element->getName());
+					$label = 'exception';
 				} else {
-					return sprintf('class %s', $element->getName());
+					$label = 'class';
 				}
 			} elseif ($element instanceof ReflectionMethod) {
-				return sprintf('method %s::%s()', $element->getDeclaringClassName(), $element->getName());
+				$label = 'method';
 			} elseif ($element instanceof ReflectionFunction) {
-				return sprintf('function %s()', $element->getName());
+				$label = 'function';
 			} elseif ($element instanceof ReflectionConstant) {
-				if ($className = $element->getDeclaringClassName()) {
-					return sprintf('constant %s::%s', $className, $element->getName());
-				} else {
-					return sprintf('constant %s', $element->getName());
-				}
+				$label = 'constant';
 			} elseif ($element instanceof ReflectionProperty) {
-				return sprintf('property %s::$%s', $element->getDeclaringClassName(), $element->getName());
+				$label = 'property';
 			} elseif ($element instanceof ReflectionParameter) {
-				if ($element->getDeclaringFunction() instanceof ReflectionMethod) {
-					$parentLabel = sprintf('method %s::%s()', $element->getDeclaringClassName(), $element->getDeclaringFunctionName());
-				} else {
-					$parentLabel = sprintf('function %s()', $element->getDeclaringFunctionName());
-				}
-				return sprintf('parameter $%s of %s', $element->getName(), $parentLabel);
+				$label = 'parameter';
 			}
+			return sprintf('%s %s', $label, $that->getElementName($element));
 		};
 
 		$list = array();
@@ -1143,6 +1136,34 @@ class Generator extends Nette\Object
 			$fshl->setLexer(new FSHL\Lexer\Php());
 		}
 
+		// Add @usedby annotation
+		foreach ($this->getElementTypes() as $type) {
+			foreach ($this->$type as $parentElement) {
+				$elements = array($parentElement);
+				if ($parentElement instanceof ReflectionClass) {
+					$elements = array_merge(
+						$elements,
+						array_values($parentElement->getOwnMethods()),
+						array_values($parentElement->getOwnConstants()),
+						array_values($parentElement->getOwnProperties())
+					);
+				}
+				foreach ($elements as $element) {
+					$uses = $element->getAnnotation('uses');
+					if (null === $uses) {
+						continue;
+					}
+					foreach ($uses as $value) {
+						list($link, $description) = preg_split('~\s+|$~', $value, 2);
+						$resolved = $this->resolveElement($link, $element);
+						if (null !== $resolved) {
+							$resolved->addAnnotation('usedby', $this->getElementName($element) . ' ' . $description);
+						}
+					}
+				}
+			}
+		}
+
 		$template->package = null;
 		$template->namespace = null;
 		$template->classes = $this->classes;
@@ -1274,6 +1295,167 @@ class Generator extends Nette\Object
 		$this->incrementProgressBar();
 
 		return $this;
+	}
+
+	/**
+	 * Tries to resolve string as class, interface or exception name.
+	 *
+	 * @param string $className Class name description
+	 * @param string $namespace Namespace name
+	 * @return \ApiGen\ReflectionClass
+	 */
+	public function getClass($className, $namespace = '')
+	{
+		if (isset($this->parsedClasses[$namespace . '\\' . $className])) {
+			$class = $this->parsedClasses[$namespace . '\\' . $className];
+		} elseif (isset($this->parsedClasses[$className])) {
+			$class = $this->parsedClasses[$className];
+		} else {
+			return null;
+		}
+
+		// Class is not "documented"
+		if (!$class->isDocumented()) {
+			return null;
+		}
+
+		return $class;
+	}
+
+	/**
+	 * Tries to resolve type as constant name.
+	 *
+	 * @param string $constantName Constant name
+	 * @param string $namespace Namespace name
+	 * @return \ApiGen\ReflectionConstant
+	 */
+	public function getConstant($constantName, $namespace = '')
+	{
+		if (isset($this->parsedConstants[$namespace . '\\' . $constantName])) {
+			$constant = $this->parsedConstants[$namespace . '\\' . $constantName];
+		} elseif (isset($this->parsedConstants[$constantName])) {
+			$constant = $this->parsedConstants[$constantName];
+		} else {
+			return null;
+		}
+
+		// Constant is not "documented"
+		if (!$constant->isDocumented()) {
+			return null;
+		}
+
+		return $constant;
+	}
+
+	/**
+	 * Tries to resolve type as function name.
+	 *
+	 * @param string $functionName Function name
+	 * @param string $namespace Namespace name
+	 * @return \ApiGen\ReflectionFunction
+	 */
+	public function getFunction($functionName, $namespace = '')
+	{
+		if (isset($this->parsedFunctions[$namespace . '\\' . $functionName])) {
+			$function = $this->parsedFunctions[$namespace . '\\' . $functionName];
+		} elseif (isset($this->parsedFunctions[$functionName])) {
+			$function = $this->parsedFunctions[$functionName];
+		} else {
+			return null;
+		}
+
+		// Function is not "documented"
+		if (!$function->isDocumented()) {
+			return null;
+		}
+
+		return $function;
+	}
+
+	/**
+	 * Tries to parse a definition of a class/method/property/constant/function and returns the appropriate instance if successful.
+	 *
+	 * @param string $definition Definition
+	 * @param \ApiGen\ReflectionElement $context Link context
+	 * @return \ApiGen\ReflectionElement|null
+	 */
+	public function resolveElement($definition, ReflectionElement $context)
+	{
+		// No simple type resolving
+		static $types = array(
+			'boolean' => 1, 'integer' => 1, 'float' => 1, 'string' => 1,
+			'array' => 1, 'object' => 1, 'resource' => 1, 'callback' => 1,
+			'null' => 1, 'false' => 1, 'true' => 1
+		);
+
+		if (empty($definition) || isset($types[$definition])) {
+			return null;
+		}
+
+		if ($context instanceof ReflectionParameter && null === $context->getDeclaringClassName()) {
+			// Parameter of function in namespace or global space
+			$context = $this->getFunction($context->getDeclaringFunctionName());
+		} elseif ($context instanceof ReflectionMethod || $context instanceof ReflectionParameter
+			|| ($context instanceof ReflectionConstant && null !== $context->getDeclaringClassName())
+			|| $context instanceof ReflectionProperty
+		) {
+			// Member of a class
+			$context = $this->getClass($context->getDeclaringClassName());
+		}
+
+		if (($class = $this->getClass(\TokenReflection\Resolver::resolveClassFQN($definition, $context->getNamespaceAliases(), $context->getNamespaceName()), $context->getNamespaceName()))
+			|| ($class = $this->getClass($definition, $context->getNamespaceName()))
+		) {
+			// Class
+			return $class;
+		} elseif ($constant = $this->getConstant($definition, $context->getNamespaceName())) {
+			// Constant
+			return $constant;
+		} elseif (($function = $this->getFunction($definition, $context->getNamespaceName()))
+			|| ('()' === substr($definition, -2) && ($function = $this->getFunction(substr($definition, 0, -2), $context->getNamespaceName())))
+		) {
+			// Function
+			return $function;
+		} elseif (($pos = strpos($definition, '::')) || ($pos = strpos($definition, '->'))) {
+			// Class::something or Class->something
+			if (0 === strpos($definition, 'parent::') && ($parentClassName = $context->getParentClassName())) {
+				$context = $this->getClass($parentClassName);
+			} elseif (0 !== strpos($definition, 'self::')) {
+				$class = $this->getClass(substr($definition, 0, $pos), $context->getNamespaceName());
+
+				if (null === $class) {
+					$class = $this->getClass(\TokenReflection\Resolver::resolveClassFQN(substr($definition, 0, $pos), $context->getNamespaceAliases(), $context->getNamespaceName()));
+				}
+
+				$context = $class;
+			}
+
+			$definition = substr($definition, $pos + 2);
+		}
+
+		// No usable context
+		if (null === $context || $context instanceof ReflectionConstant || $context instanceof ReflectionFunction) {
+			return null;
+		}
+
+		if ($context->hasProperty($definition)) {
+			// Class property
+			return $context->getProperty($definition);
+		} elseif ('$' === $definition{0} && $context->hasProperty(substr($definition, 1))) {
+			// Class $property
+			return $context->getProperty(substr($definition, 1));
+		} elseif ($context->hasMethod($definition)) {
+			// Class method
+			return $context->getMethod($definition);
+		} elseif ('()' === substr($definition, -2) && $context->hasMethod(substr($definition, 0, -2))) {
+			// Class method()
+			return $context->getMethod(substr($definition, 0, -2));
+		} elseif ($context->hasConstant($definition)) {
+			// Class constant
+			return $context->getConstant($definition);
+		}
+
+		return null;
 	}
 
 	/**
@@ -1561,6 +1743,33 @@ class Generator extends Nette\Object
 	{
 		static $types = array('classes', 'interfaces', 'traits', 'exceptions', 'constants', 'functions');
 		return $types;
+	}
+
+	/**
+	 * Returns element name.
+	 *
+	 * @param \Apigen\ReflectionElement $element
+	 * @return string
+	 */
+	private function getElementName(ReflectionElement $element)
+	{
+		if ($element instanceof ReflectionClass) {
+			return $element->getName();
+		} elseif ($element instanceof ReflectionMethod) {
+			return sprintf('%s::%s()', $element->getDeclaringClassName(), $element->getName());
+		} elseif ($element instanceof ReflectionFunction) {
+			return sprintf('%s()', $element->getName());
+		} elseif ($element instanceof ReflectionConstant) {
+			if ($className = $element->getDeclaringClassName()) {
+				return sprintf('%s::%s', $className, $element->getName());
+			} else {
+				return sprintf('%s', $element->getName());
+			}
+		} elseif ($element instanceof ReflectionProperty) {
+			return sprintf('%s::$%s', $element->getDeclaringClassName(), $element->getName());
+		} elseif ($element instanceof ReflectionParameter) {
+			return sprintf('%s($%s)', $this->getElementName($element->getDeclaringFunction()), $element->getName());
+		}
 	}
 
 	/**
