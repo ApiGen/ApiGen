@@ -67,6 +67,7 @@ class Config
 		'download' => false,
 		'sourceCode' => true,
 		'report' => '',
+		'undocumented' => '',
 		'wipeout' => true,
 		'quiet' => false,
 		'progressbar' => true,
@@ -162,12 +163,26 @@ class Config
 	{
 		// Command line options
 		$cli = array();
+		$translator = array();
 		foreach ($this->options as $option => $value) {
-			$option = preg_replace_callback('~-([a-z])~', function($matches) {
+			$converted = preg_replace_callback('~-([a-z])~', function($matches) {
 				return strtoupper($matches[1]);
 			}, $option);
 
-			$cli[$option] = $value;
+			$cli[$converted] = $value;
+			$translator[$converted] = $option;
+		}
+
+		$unknownOptions = array_keys(array_diff_key($cli, self::$defaultConfig));
+		if (!empty($unknownOptions)) {
+			$originalOptions = array_map(function($option) {
+				return (1 === strlen($option) ? '-' : '--') . $option;
+			}, array_values(array_diff_key($translator, self::$defaultConfig)));
+
+			$message = count($unknownOptions) > 1
+				? sprintf('Unknown command line options %s', implode(', ', $originalOptions))
+				: sprintf('Unknown command line option %s', $originalOptions[0]);
+			throw new Exception($message, Exception::INVALID_CONFIG);
 		}
 
 		// Config file
@@ -181,6 +196,14 @@ class Config
 				if (!empty($neon[$option]) && !preg_match('~/|[a-z]:~Ai', $neon[$option])) {
 					$neon[$option] = dirname($this->options['config']) . DIRECTORY_SEPARATOR . $neon[$option];
 				}
+			}
+
+			$unknownOptions = array_keys(array_diff_key($neon, self::$defaultConfig));
+			if (!empty($unknownOptions)) {
+				$message = count($unknownOptions) > 1
+					? sprintf('Unknown config file options %s', implode(', ', $unknownOptions))
+					: sprintf('Unknown config file option %s', $unknownOptions[0]);
+				throw new Exception($message, Exception::INVALID_CONFIG);
 			}
 		}
 
