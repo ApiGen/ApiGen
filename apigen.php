@@ -85,6 +85,7 @@ try {
 	Debugger::timer();
 
 	$config = new Config();
+	$config->processCliOptions();
 	$generator = new Generator($config);
 
 	// Help
@@ -94,8 +95,8 @@ try {
 		die();
 	}
 
-	// Start
-	$config->parse();
+	// Prepare configuration
+	$config->prepare();
 
 	if ($config->debug) {
 		Debugger::enable(Debugger::DEVELOPMENT, false);

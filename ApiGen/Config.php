@@ -98,9 +98,20 @@ class Config
 	);
 
 	/**
-	 * Initializes configuration.
+	 * Initializes default configuration.
 	 */
 	public function __construct()
+	{
+		self::$defaultConfig['templateConfig'] = realpath(TEMPLATE_DIR . DIRECTORY_SEPARATOR . 'default' . DIRECTORY_SEPARATOR . 'config.neon');
+		self::$defaultConfig['colors'] = 'WIN' !== substr(PHP_OS, 0, 3);
+	}
+
+	/**
+	 * Processes command line options.
+	 *
+	 * @return \ApiGen\Config
+	 */
+	public function processCliOptions()
 	{
 		$options = $_SERVER['argv'];
 		array_shift($options);
@@ -130,19 +141,6 @@ class Config
 			return 1 === count($value) ? $value[0] : $value;
 		}, $this->options);
 
-		$this->config = self::$defaultConfig;
-		$this->config['templateConfig'] = realpath(TEMPLATE_DIR . DIRECTORY_SEPARATOR . 'default' . DIRECTORY_SEPARATOR . 'config.neon');
-		$this->config['colors'] = 'WIN' !== substr(PHP_OS, 0, 3);
-	}
-
-	/**
-	 * Parses options and configuration.
-	 *
-	 * @return \ApiGen\Config
-	 * @throws \ApiGen\Exception If something in config is wrong.
-	 */
-	public function parse()
-	{
 		// Compatibility with ApiGen 1.0
 		foreach (array('config', 'source', 'destination') as $option) {
 			if (isset($this->options[$option{0}]) && !isset($this->options[$option])) {
@@ -151,12 +149,29 @@ class Config
 			unset($this->options[$option{0}]);
 		}
 
-		// Compatibility with old option name "undocumented"
-		if (!isset($this->options['report']) && isset($this->options['undocumented'])) {
-			$this->options['report'] = $this->options['undocumented'];
+		return $this;
+	}
+
+	/**
+	 * Prepares configuration.
+	 *
+	 * @return \ApiGen\Config
+	 * @throws \ApiGen\Exception If something in configuration is wrong.
+	 */
+	public function prepare()
+	{
+		// Command line options
+		$cli = array();
+		foreach ($this->options as $option => $value) {
+			$option = preg_replace_callback('~-([a-z])~', function($matches) {
+				return strtoupper($matches[1]);
+			}, $option);
+
+			$cli[$option] = $value;
 		}
 
 		// Config file
+		$neon = array();
 		if (empty($this->options) && $this->defaultConfigExists()) {
 			$this->options['config'] = $this->getDefaultConfigPath();
 		}
@@ -167,16 +182,15 @@ class Config
 					$neon[$option] = dirname($this->options['config']) . DIRECTORY_SEPARATOR . $neon[$option];
 				}
 			}
-			$this->config = array_merge($this->config, $neon);
 		}
 
-		// Parse options
-		foreach ($this->options as $option => $value) {
-			$option = preg_replace_callback('~-([a-z])~', function($matches) {
-				return ucfirst($matches[1]);
-			}, $option);
+		// Merge options
+		$this->config = array_merge(self::$defaultConfig, $neon, $cli);
 
-			$this->config[$option] = $value;
+		// Compatibility with old option name "undocumented"
+		if (!isset($this->config['report']) && isset($this->config['undocumented'])) {
+			$this->config['report'] = $this->config['undocumented'];
+			unset($this->config['undocumented']);
 		}
 
 		foreach (self::$defaultConfig as $option => $valueDefinition) {
@@ -284,7 +298,7 @@ class Config
 	 * Checks configuration.
 	 *
 	 * @return \ApiGen\Config
-	 * @throws \ApiGen\Exception If something in config is wrong.
+	 * @throws \ApiGen\Exception If something in configuration is wrong.
 	 */
 	private function check()
 	{
@@ -339,7 +353,7 @@ class Config
 	 * Checks template configuration.
 	 *
 	 * @return \ApiGen\Config
-	 * @throws \ApiGen\Exception If something in template config is wrong.
+	 * @throws \ApiGen\Exception If something in template configuration is wrong.
 	 */
 	private function checkTemplate()
 	{
