@@ -1751,7 +1751,7 @@ class Generator extends Nette\Object
 	 * @param \Apigen\ReflectionElement $element
 	 * @return string
 	 */
-	private function getElementName(ReflectionElement $element)
+	public function getElementName(ReflectionElement $element)
 	{
 		if ($element instanceof ReflectionClass) {
 			return $element->getName();
