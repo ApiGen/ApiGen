@@ -298,6 +298,18 @@ class Template extends Nette\Templating\FileTemplate
 			return $annotations;
 		});
 
+		$this->registerHelper('annotationBeautify', function($annotation) {
+			static $names = array(
+				'usedby' => 'Used by'
+			);
+
+			if (isset($names[$annotation])) {
+				return $names[$annotation];
+			}
+
+			return Nette\Utils\Strings::firstUpper($annotation);
+		});
+
 		// Static files versioning
 		$destination = $this->config->destination;
 		$this->registerHelper('staticFile', function($name) use ($destination) {

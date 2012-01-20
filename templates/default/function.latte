@@ -25,7 +25,7 @@ the file LICENSE.md that was distributed with this source code.
 		{if $function->inNamespace()}<b>Namespace:</b> {!$function->namespaceName|namespaceLinks}<br>{/if}
 		{foreach $template->annotationSort($template->annotationFilter($function->annotations, array('param', 'return', 'throws'))) as $annotation => $values}
 			{foreach $values as $value}
-				<b>{$annotation|firstUpper}{if $value}:{/if}</b>
+				<b>{$annotation|annotationBeautify}{if $value}:{/if}</b>
 				{!$value|annotation:$annotation:$function}<br>
 			{/foreach}
 		{/foreach}
