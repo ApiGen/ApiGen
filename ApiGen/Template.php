@@ -282,7 +282,7 @@ class Template extends Nette\Templating\FileTemplate
 				static $order = array(
 					'deprecated' => 0, 'category' => 1, 'package' => 2, 'subpackage' => 3, 'copyright' => 4,
 					'license' => 5, 'author' => 6, 'version' => 7, 'since' => 8, 'see' => 9, 'uses' => 10,
-					'link' => 11, 'internal' => 14, 'example' => 13, 'tutorial' => 14, 'todo' => 15
+					'usedby' => 11, 'link' => 12, 'internal' => 13, 'example' => 14, 'tutorial' => 15, 'todo' => 16
 				);
 
 				if (isset($order[$one], $order[$two])) {
