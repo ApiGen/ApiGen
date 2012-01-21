@@ -740,7 +740,7 @@ class Generator extends Nette\Object
 								continue;
 							}
 
-							if (!preg_match('~^[\\w\\\\]+(?:\\[\\])?(?:\\|[\\w\\\\]+(?:\\[\\])?)*\\s+\\$' . $parameter->getName() . '(?:\\s+.+)?$~s', $annotations['param'][$no])) {
+							if (!preg_match('~^[\\w\\\\]+(?:\\[\\])?(?:\\|[\\w\\\\]+(?:\\[\\])?)*(?:\\s+\\$' . $parameter->getName() . ')?(?:\\s+.+)?$~s', $annotations['param'][$no])) {
 								$list[$fileName][] = array('warning', $line, sprintf('Invalid documentation "%s" of %s', $annotations['param'][$no], $labeler($parameter)));
 							}
 
