@@ -159,6 +159,8 @@ class Generator extends Nette\Object
 	{
 		$this->config = $config;
 		$this->parsedClasses = new \ArrayObject();
+		$this->parsedConstants = new \ArrayObject();
+		$this->parsedFunctions = new \ArrayObject();
 	}
 
 	/**
@@ -243,11 +245,11 @@ class Generator extends Nette\Object
 		$this->parsedClasses->uksort('strcasecmp');
 
 		// Constants
-		$this->parsedConstants = new \ArrayObject($broker->getConstants());
+		$this->parsedConstants->exchangeArray($broker->getConstants());
 		$this->parsedConstants->uksort('strcasecmp');
 
 		// Functions
-		$this->parsedFunctions = new \ArrayObject($broker->getFunctions());
+		$this->parsedFunctions->exchangeArray($broker->getFunctions());
 		$this->parsedFunctions->uksort('strcasecmp');
 
 		$documentedCounter = function($count, $element) {
