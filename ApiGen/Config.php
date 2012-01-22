@@ -349,7 +349,7 @@ class Config
 		}
 
 		if (!is_file($this->config['templateConfig'])) {
-			throw new Exception('Template config doesn\'t exist', Exception::INVALID_CONFIG);
+			throw new Exception(sprintf('Template config %s doesn\'t exist', $this->config['templateConfig']), Exception::INVALID_CONFIG);
 		}
 
 		if (!empty($this->config['baseUrl']) && !preg_match('~^https?://(?:[-a-z0-9]+\.)+[a-z]{2,6}(?:/.*)?$~i', $this->config['baseUrl'])) {
