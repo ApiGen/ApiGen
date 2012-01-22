@@ -16,22 +16,11 @@ namespace ApiGen;
 
 use Nette\Diagnostics\Debugger;
 
-// Set dirs
-define('PEAR_PHP_DIR', '@php_dir@');
-define('PEAR_DATA_DIR', '@data_dir@');
-
-if (false === strpos(PEAR_PHP_DIR, '@php_dir')) {
+if (false === strpos('@php_dir@', '@php_dir')) {
 	// PEAR package
 
-	set_include_path(
-		PEAR_PHP_DIR . PATH_SEPARATOR .
-		get_include_path()
-	);
-
-	require PEAR_PHP_DIR . '/Nette/loader.php';
-	require PEAR_PHP_DIR . '/Texy/texy.php';
-
-	define('TEMPLATE_DIR', PEAR_DATA_DIR . '/ApiGen/templates');
+	require '@php_dir@/Nette/loader.php';
+	require '@php_dir@/Texy/texy.php';
 } else {
 	// Downloaded package
 
@@ -44,8 +33,6 @@ if (false === strpos(PEAR_PHP_DIR, '@php_dir')) {
 
 	require __DIR__ . '/libs/Nette/Nette/loader.php';
 	require __DIR__ . '/libs/Texy/texy/texy.php';
-
-	define('TEMPLATE_DIR', __DIR__ . '/templates');
 }
 
 // Autoload

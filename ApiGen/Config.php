@@ -103,7 +103,8 @@ class Config
 	 */
 	public function __construct()
 	{
-		self::$defaultConfig['templateConfig'] = realpath(TEMPLATE_DIR . DIRECTORY_SEPARATOR . 'default' . DIRECTORY_SEPARATOR . 'config.neon');
+		$templateDir = self::isInstalledByPear() ? '@data_dir@' . DIRECTORY_SEPARATOR . 'ApiGen' : realpath(__DIR__ . DIRECTORY_SEPARATOR . '..');
+		self::$defaultConfig['templateConfig'] = $templateDir . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'default' . DIRECTORY_SEPARATOR . 'config.neon';
 		self::$defaultConfig['colors'] = 'WIN' !== substr(PHP_OS, 0, 3);
 	}
 
@@ -510,5 +511,25 @@ Files or directories specified by @option@--exclude@c will not be processed at a
 Elements from files within @option@--skip-doc-path@c or with @option@--skip-doc-prefix@c will be parsed but will not have their documentation generated. However if classes have any child classes, the full class tree will be generated and their inherited methods, properties and constants will be displayed (but will not be clickable).
 
 HELP;
+	}
+
+	/**
+	 * Checks if ApiGen is installed by PEAR.
+	 *
+	 * @return boolean
+	 */
+	public static function isInstalledByPear()
+	{
+		return false === strpos('@data_dir@', '@data_dir');
+	}
+
+	/**
+	 * Checks if ApiGen is installed from downloaded archive.
+	 *
+	 * @return boolean
+	 */
+	public static function isInstalledByDownload()
+	{
+		return !self::isInstalledByPear();
 	}
 }
