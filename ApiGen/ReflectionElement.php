@@ -227,6 +227,7 @@ abstract class ReflectionElement extends ReflectionBase
 	 *
 	 * @param string $annotation Annotation name
 	 * @param string $value Annotation value
+	 * @return \ApiGen\ReflectionElement
 	 */
 	public function addAnnotation($annotation, $value)
 	{
@@ -234,5 +235,7 @@ abstract class ReflectionElement extends ReflectionBase
 			$this->getAnnotations();
 		}
 		$this->annotations[$annotation][] = $value;
+
+		return $this;
 	}
 }
