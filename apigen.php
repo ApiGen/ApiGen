@@ -84,8 +84,11 @@ try {
 	Debugger::enable(Debugger::PRODUCTION, false);
 	Debugger::timer();
 
+	$options = $_SERVER['argv'];
+	array_shift($options);
+
 	$config = new Config();
-	$config->processCliOptions();
+	$config->processCliOptions($options);
 	$generator = new Generator($config);
 
 	// Help

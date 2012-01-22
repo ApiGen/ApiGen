@@ -110,13 +110,11 @@ class Config
 	/**
 	 * Processes command line options.
 	 *
+	 * @param array $options
 	 * @return \ApiGen\Config
 	 */
-	public function processCliOptions()
+	public function processCliOptions(array $options)
 	{
-		$options = $_SERVER['argv'];
-		array_shift($options);
-
 		while ($option = current($options)) {
 			if (preg_match('~^--([a-z][-a-z]*[a-z])(?:=(.+))?$~', $option, $matches) || preg_match('~^-([a-z])=?(.*)~', $option, $matches)) {
 				$name = $matches[1];
