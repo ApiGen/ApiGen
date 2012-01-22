@@ -19,8 +19,8 @@ use Nette\Diagnostics\Debugger;
 if (false === strpos('@php_dir@', '@php_dir')) {
 	// PEAR package
 
-	require '@php_dir@/Nette/loader.php';
-	require '@php_dir@/Texy/texy.php';
+	@include '@php_dir@/Nette/loader.php';
+	@include '@php_dir@/Texy/texy.php';
 } else {
 	// Downloaded package
 
@@ -31,8 +31,8 @@ if (false === strpos('@php_dir@', '@php_dir')) {
 		get_include_path()
 	);
 
-	require __DIR__ . '/libs/Nette/Nette/loader.php';
-	require __DIR__ . '/libs/Texy/texy/texy.php';
+	@include __DIR__ . '/libs/Nette/Nette/loader.php';
+	@include __DIR__ . '/libs/Texy/texy/texy.php';
 }
 
 // Autoload
