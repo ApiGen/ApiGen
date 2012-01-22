@@ -26,32 +26,18 @@ use Nette, FSHL;
 class Template extends Nette\Templating\FileTemplate
 {
 	/**
+	 * Generator.
+	 *
+	 * @var \ApiGen\Generator
+	 */
+	private $generator;
+
+	/**
 	 * Config.
 	 *
 	 * @var \ApiGen\Config
 	 */
 	private $config;
-
-	/**
-	 * List of parsed classes.
-	 *
-	 * @var \ArrayObject
-	 */
-	private $parsedClasses;
-
-	/**
-	 * List of parsed constants.
-	 *
-	 * @var \ArrayObject
-	 */
-	private $parsedConstants;
-
-	/**
-	 * List of parsed functions.
-	 *
-	 * @var \ArrayObject
-	 */
-	private $parsedFunctions;
 
 	/**
 	 * Texy.
@@ -67,10 +53,8 @@ class Template extends Nette\Templating\FileTemplate
 	 */
 	public function __construct(Generator $generator)
 	{
+		$this->generator = $generator;
 		$this->config = $generator->getConfig();
-		$this->parsedClasses = $generator->getParsedClasses();
-		$this->parsedConstants = $generator->getParsedConstants();
-		$this->parsedFunctions = $generator->getParsedFunctions();
 
 		$that = $this;
 
@@ -213,7 +197,7 @@ class Template extends Nette\Templating\FileTemplate
 		});
 
 		// Individual annotations processing
-		$this->registerHelper('annotation', function($value, $name, $context) use ($that) {
+		$this->registerHelper('annotation', function($value, $name, $context) use ($that, $generator) {
 			switch ($name) {
 				case 'param':
 				case 'return':
@@ -241,7 +225,7 @@ class Template extends Nette\Templating\FileTemplate
 				case 'see':
 					$doc = array();
 					foreach (preg_split('~\\s*,\\s*~', $value) as $link) {
-						if (null !== $that->resolveElement($link, $context)) {
+						if (null !== $generator->resolveElement($link, $context)) {
 							$doc[] = sprintf('<code>%s</code>', $that->getTypeLinks($link, $context));
 						} else {
 							$doc[] = $that->doc($link, $context);
@@ -249,9 +233,10 @@ class Template extends Nette\Templating\FileTemplate
 					}
 					return implode(', ', $doc);
 				case 'uses':
+				case 'usedby':
 					list($link, $description) = $that->split($value);
 					$separator = $context instanceof ReflectionClass || !$description ? ' ' : '<br>';
-					if (null !== $that->resolveElement($link, $context)) {
+					if (null !== $generator->resolveElement($link, $context)) {
 						return sprintf('<code>%s</code>%s%s', $that->getTypeLinks($link, $context), $separator, $description);
 					}
 					break;
@@ -297,7 +282,7 @@ class Template extends Nette\Templating\FileTemplate
 				static $order = array(
 					'deprecated' => 0, 'category' => 1, 'package' => 2, 'subpackage' => 3, 'copyright' => 4,
 					'license' => 5, 'author' => 6, 'version' => 7, 'since' => 8, 'see' => 9, 'uses' => 10,
-					'link' => 11, 'internal' => 14, 'example' => 13, 'tutorial' => 14, 'todo' => 15
+					'usedby' => 11, 'link' => 12, 'internal' => 13, 'example' => 14, 'tutorial' => 15, 'todo' => 16
 				);
 
 				if (isset($order[$one], $order[$two])) {
@@ -311,6 +296,18 @@ class Template extends Nette\Templating\FileTemplate
 				}
 			});
 			return $annotations;
+		});
+
+		$this->registerHelper('annotationBeautify', function($annotation) {
+			static $names = array(
+				'usedby' => 'Used by'
+			);
+
+			if (isset($names[$annotation])) {
+				return $names[$annotation];
+			}
+
+			return Nette\Utils\Strings::firstUpper($annotation);
 		});
 
 		// Static files versioning
@@ -329,6 +326,8 @@ class Template extends Nette\Templating\FileTemplate
 		});
 
 		$this->registerHelper('urlize', array($this, 'urlize'));
+
+		$this->registerHelper('getClass', array($generator, 'getClass'));
 	}
 
 	/**
@@ -571,167 +570,6 @@ class Template extends Nette\Templating\FileTemplate
 	}
 
 	/**
-	 * Tries to resolve string as class, interface or exception name.
-	 *
-	 * @param string $className Class name description
-	 * @param string $namespace Namespace name
-	 * @return \ApiGen\ReflectionClass
-	 */
-	public function getClass($className, $namespace = '')
-	{
-		if (isset($this->parsedClasses[$namespace . '\\' . $className])) {
-			$class = $this->parsedClasses[$namespace . '\\' . $className];
-		} elseif (isset($this->parsedClasses[$className])) {
-			$class = $this->parsedClasses[$className];
-		} else {
-			return null;
-		}
-
-		// Class is not "documented"
-		if (!$class->isDocumented()) {
-			return null;
-		}
-
-		return $class;
-	}
-
-	/**
-	 * Tries to resolve type as constant name.
-	 *
-	 * @param string $constantName Constant name
-	 * @param string $namespace Namespace name
-	 * @return \ApiGen\ReflectionConstant
-	 */
-	public function getConstant($constantName, $namespace = '')
-	{
-		if (isset($this->parsedConstants[$namespace . '\\' . $constantName])) {
-			$constant = $this->parsedConstants[$namespace . '\\' . $constantName];
-		} elseif (isset($this->parsedConstants[$constantName])) {
-			$constant = $this->parsedConstants[$constantName];
-		} else {
-			return null;
-		}
-
-		// Constant is not "documented"
-		if (!$constant->isDocumented()) {
-			return null;
-		}
-
-		return $constant;
-	}
-
-	/**
-	 * Tries to resolve type as function name.
-	 *
-	 * @param string $functionName Function name
-	 * @param string $namespace Namespace name
-	 * @return \ApiGen\ReflectionFunction
-	 */
-	public function getFunction($functionName, $namespace = '')
-	{
-		if (isset($this->parsedFunctions[$namespace . '\\' . $functionName])) {
-			$function = $this->parsedFunctions[$namespace . '\\' . $functionName];
-		} elseif (isset($this->parsedFunctions[$functionName])) {
-			$function = $this->parsedFunctions[$functionName];
-		} else {
-			return null;
-		}
-
-		// Function is not "documented"
-		if (!$function->isDocumented()) {
-			return null;
-		}
-
-		return $function;
-	}
-
-	/**
-	 * Tries to parse a definition of a class/method/property/constant/function and returns the appropriate instance if successful.
-	 *
-	 * @param string $definition Definition
-	 * @param \ApiGen\ReflectionElement $context Link context
-	 * @return \ApiGen\ReflectionElement|null
-	 */
-	public function resolveElement($definition, ReflectionElement $context)
-	{
-		// No simple type resolving
-		static $types = array(
-			'boolean' => 1, 'integer' => 1, 'float' => 1, 'string' => 1,
-			'array' => 1, 'object' => 1, 'resource' => 1, 'callback' => 1,
-			'null' => 1, 'false' => 1, 'true' => 1
-		);
-
-		if (empty($definition) || isset($types[$definition])) {
-			return null;
-		}
-
-		if ($context instanceof ReflectionParameter && null === $context->getDeclaringClassName()) {
-			// Parameter of function in namespace or global space
-			$context = $this->getFunction($context->getDeclaringFunctionName());
-		} elseif ($context instanceof ReflectionMethod || $context instanceof ReflectionParameter
-			|| ($context instanceof ReflectionConstant && null !== $context->getDeclaringClassName())
-			|| $context instanceof ReflectionProperty
-		) {
-			// Member of a class
-			$context = $this->getClass($context->getDeclaringClassName());
-		}
-
-		if (($class = $this->getClass(\TokenReflection\Resolver::resolveClassFQN($definition, $context->getNamespaceAliases(), $context->getNamespaceName()), $context->getNamespaceName()))
-			|| ($class = $this->getClass($definition, $context->getNamespaceName()))
-		) {
-			// Class
-			return $class;
-		} elseif ($constant = $this->getConstant($definition, $context->getNamespaceName())) {
-			// Constant
-			return $constant;
-		} elseif (($function = $this->getFunction($definition, $context->getNamespaceName()))
-			|| ('()' === substr($definition, -2) && ($function = $this->getFunction(substr($definition, 0, -2), $context->getNamespaceName())))
-		) {
-			// Function
-			return $function;
-		} elseif (($pos = strpos($definition, '::')) || ($pos = strpos($definition, '->'))) {
-			// Class::something or Class->something
-			if (0 === strpos($definition, 'parent::') && ($parentClassName = $context->getParentClassName())) {
-				$context = $this->getClass($parentClassName);
-			} elseif (0 !== strpos($definition, 'self::')) {
-				$class = $this->getClass(substr($definition, 0, $pos), $context->getNamespaceName());
-
-				if (null === $class) {
-					$class = $this->getClass(\TokenReflection\Resolver::resolveClassFQN(substr($definition, 0, $pos), $context->getNamespaceAliases(), $context->getNamespaceName()));
-				}
-
-				$context = $class;
-			}
-
-			$definition = substr($definition, $pos + 2);
-		}
-
-		// No usable context
-		if (null === $context || $context instanceof ReflectionConstant || $context instanceof ReflectionFunction) {
-			return null;
-		}
-
-		if ($context->hasProperty($definition)) {
-			// Class property
-			return $context->getProperty($definition);
-		} elseif ('$' === $definition{0} && $context->hasProperty(substr($definition, 1))) {
-			// Class $property
-			return $context->getProperty(substr($definition, 1));
-		} elseif ($context->hasMethod($definition)) {
-			// Class method
-			return $context->getMethod($definition);
-		} elseif ('()' === substr($definition, -2) && $context->hasMethod(substr($definition, 0, -2))) {
-			// Class method()
-			return $context->getMethod(substr($definition, 0, -2));
-		} elseif ($context->hasConstant($definition)) {
-			// Class constant
-			return $context->getConstant($definition);
-		}
-
-		return null;
-	}
-
-	/**
 	 * Tries to parse a definition of a class/method/property/constant/function and returns the appropriate link if successful.
 	 *
 	 * @param string $definition Definition
@@ -750,7 +588,7 @@ class Template extends Nette\Templating\FileTemplate
 			$suffix = '[]';
 		}
 
-		$element = $this->resolveElement($definition, $context);
+		$element = $this->generator->resolveElement($definition, $context);
 		if (null === $element) {
 			return null;
 		}

@@ -221,4 +221,18 @@ abstract class ReflectionElement extends ReflectionBase
 		$annotations = $this->annotations ?: $this->getAnnotations();
 		return isset($annotations[$annotation]) ? $annotations[$annotation] : null;
 	}
+
+	/**
+	 * Adds element annotation.
+	 *
+	 * @param string $annotation Annotation name
+	 * @param string $value Annotation value
+	 */
+	public function addAnnotation($annotation, $value)
+	{
+		if (null === $this->annotations) {
+			$this->getAnnotations();
+		}
+		$this->annotations[$annotation][] = $value;
+	}
 }
