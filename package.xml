@@ -164,6 +164,7 @@
 		<package>
 			<name>Nette</name>
 			<channel>pear.nette.org</channel>
+			<min>2.0.0rc1</min>
 		</package>
 		<package>
 			<name>Texy</name>
