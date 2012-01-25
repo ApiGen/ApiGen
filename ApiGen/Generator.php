@@ -1387,7 +1387,7 @@ class Generator extends Nette\Object
 		static $types = array(
 			'boolean' => 1, 'integer' => 1, 'float' => 1, 'string' => 1,
 			'array' => 1, 'object' => 1, 'resource' => 1, 'callback' => 1,
-			'null' => 1, 'false' => 1, 'true' => 1
+			'callable' => 1, 'null' => 1, 'false' => 1, 'true' => 1, 'mixed' => 1
 		);
 
 		if (empty($definition) || isset($types[$definition])) {
