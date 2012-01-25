@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ApiGen 2.4.0 - API documentation generator for PHP 5.3+
+ * ApiGen 2.4.1 - API documentation generator for PHP 5.3+
  *
  * Copyright (c) 2010 David Grudl (http://davidgrudl.com)
  * Copyright (c) 2011 Jaroslav Hanslík (https://github.com/kukulich)
@@ -132,7 +132,7 @@ class Template extends Nette\Templating\FileTemplate
 		);
 
 		$latte = new Nette\Latte\Engine();
-		$macroSet = new Nette\Latte\Macros\MacroSet($latte->parser);
+		$macroSet = new Nette\Latte\Macros\MacroSet($latte->compiler);
 		$macroSet->addMacro('try', 'try {', '} catch (\Exception $e) {}');
 		$this->registerFilter($latte);
 

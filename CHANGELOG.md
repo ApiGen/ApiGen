@@ -1,3 +1,8 @@
+## ApiGen 2.4.1 ##
+
+* TokenReflection library updated to version 1.0.2
+* Nette framework updated to version 2.0.0RC1
+
 ## ApiGen 2.4.0 ##
 
 * TokenReflection library updated to version 1.0.0

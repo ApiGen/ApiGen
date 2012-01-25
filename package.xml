@@ -23,9 +23,9 @@
 	<email>andrew@apigen.org</email>
 	<active>yes</active>
 </lead>
-<date>2011-12-24</date>
+<date>2012-01-25</date>
 <version>
-	<release>2.4.0</release>
+	<release>2.4.1</release>
 	<api>2.4.0</api>
 </version>
 <stability>
@@ -164,6 +164,7 @@
 		<package>
 			<name>Nette</name>
 			<channel>pear.nette.org</channel>
+			<min>2.0.0rc1</min>
 		</package>
 		<package>
 			<name>Texy</name>
@@ -177,7 +178,7 @@
 		<package>
 			<name>TokenReflection</name>
 			<channel>pear.andrewsville.cz</channel>
-			<min>1.0.0</min>
+			<min>1.0.2</min>
 		</package>
 	</required>
 	<optional>
