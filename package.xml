@@ -177,7 +177,7 @@
 		<package>
 			<name>TokenReflection</name>
 			<channel>pear.andrewsville.cz</channel>
-			<min>1.0.0</min>
+			<min>1.0.2</min>
 		</package>
 	</required>
 	<optional>
