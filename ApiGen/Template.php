@@ -121,7 +121,7 @@ class Template extends Nette\Templating\FileTemplate
 		$this->registerFilter($latte);
 
 		// Common operations
-		$this->registerHelperLoader('Nette\Templating\DefaultHelpers::loader');
+		$this->registerHelperLoader('Nette\Templating\Helpers::loader');
 
 		// PHP source highlight
 		$this->registerHelper('highlightPHP', function($source, $context) use ($that, $fshl) {
@@ -327,6 +327,7 @@ class Template extends Nette\Templating\FileTemplate
 
 		$this->registerHelper('urlize', array($this, 'urlize'));
 
+		$this->registerHelper('resolveElement', array($generator, 'resolveElement'));
 		$this->registerHelper('getClass', array($generator, 'getClass'));
 	}
 
