@@ -192,8 +192,14 @@ class Config
 		if (isset($this->options['config']) && is_file($this->options['config'])) {
 			$neon = Neon::decode(file_get_contents($this->options['config']));
 			foreach (self::$pathOptions as $option) {
-				if (!empty($neon[$option]) && !preg_match('~/|[a-z]:~Ai', $neon[$option])) {
-					$neon[$option] = dirname($this->options['config']) . DIRECTORY_SEPARATOR . $neon[$option];
+				if (!empty($neon[$option])) {
+					if (is_array($neon[$option])) {
+						foreach ($neon[$option] as $key => $value) {
+							$neon[$option][$key] = $this->getAbsolutePath($value);
+						}
+					} else {
+						$neon[$option] = $this->getAbsolutePath($neon[$option]);
+					}
 				}
 			}
 
@@ -414,6 +420,21 @@ class Config
 	private function defaultConfigExists()
 	{
 		return is_file($this->getDefaultConfigPath());
+	}
+
+	/**
+	 * Returns absolute path.
+	 *
+	 * @param string $path Path
+	 * @return string
+	 */
+	private function getAbsolutePath($path)
+	{
+		if (preg_match('~/|[a-z]:~Ai', $path)) {
+			return $path;
+		}
+
+		return dirname($this->options['config']) . DIRECTORY_SEPARATOR . $path;
 	}
 
 	/**
