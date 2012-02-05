@@ -513,9 +513,13 @@ class Generator extends Nette\Object
 		};
 
 		// Select only packages or namespaces
-		$userPackages = count(array_diff(array_keys($this->packages), array('PHP', 'None')));
-		$userNamespaces = count(array_diff(array_keys($this->namespaces), array('PHP', 'None')));
-		if ($userNamespaces > 0 || 0 === $userPackages) {
+		$userPackagesCount = count(array_diff(array_keys($this->packages), array('PHP', 'None')));
+		$userNamespacesCount = count(array_diff(array_keys($this->namespaces), array('PHP', 'None')));
+
+		$namespacesEnabled = ('auto' === $this->config->groups && ($userNamespacesCount > 0 || 0 === $userPackagesCount)) || 'namespaces' === $this->config->groups;
+		$packagesEnabled = ('auto' === $this->config->groups && !$namespacesEnabled) || 'packages' === $this->config->groups;
+
+		if ($namespacesEnabled) {
 			$this->packages = array();
 
 			// Don't generate only 'None' namespace
@@ -541,8 +545,13 @@ class Generator extends Nette\Object
 				}
 			}
 			uksort($this->namespaces, $sort);
-		} else {
+		} elseif ($packagesEnabled) {
 			$this->namespaces = array();
+
+			// Don't generate only 'None' package
+			if (1 === count($this->packages) && isset($this->packages['None'])) {
+				$this->packages = array();
+			}
 
 			foreach (array_keys($this->packages) as $packageName) {
 				// Add missing parent packages
@@ -562,6 +571,9 @@ class Generator extends Nette\Object
 				}
 			}
 			uksort($this->packages, $sort);
+		} else {
+			$this->namespaces = array();
+			$this->packages = array();
 		}
 
 		return $this;
@@ -1054,6 +1066,8 @@ class Generator extends Nette\Object
 
 		$this->prepareTemplate('package');
 
+		$template->namespace = null;
+
 		foreach ($this->packages as $packageName => $package) {
 			$template->package = $packageName;
 			$template->subpackages = array_filter($template->packages, function($subpackageName) use ($packageName) {
@@ -1090,6 +1104,8 @@ class Generator extends Nette\Object
 		}
 
 		$this->prepareTemplate('namespace');
+
+		$template->package = null;
 
 		foreach ($this->namespaces as $namespaceName => $namespace) {
 			$template->namespace = $namespaceName;
@@ -1176,15 +1192,7 @@ class Generator extends Nette\Object
 		$template->functions = $this->functions;
 		foreach ($this->getElementTypes() as $type) {
 			foreach ($this->$type as $element) {
-				if (!empty($this->packages)) {
-					$template->package = $packageName = $element->getPseudoPackageName();
-					$template->classes = $this->packages[$packageName]['classes'];
-					$template->interfaces = $this->packages[$packageName]['interfaces'];
-					$template->traits = $this->packages[$packageName]['traits'];
-					$template->exceptions = $this->packages[$packageName]['exceptions'];
-					$template->constants = $this->packages[$packageName]['constants'];
-					$template->functions = $this->packages[$packageName]['functions'];
-				} elseif (!empty($this->namespaces)) {
+				if (!empty($this->namespaces)) {
 					$template->namespace = $namespaceName = $element->getPseudoNamespaceName();
 					$template->classes = $this->namespaces[$namespaceName]['classes'];
 					$template->interfaces = $this->namespaces[$namespaceName]['interfaces'];
@@ -1192,6 +1200,14 @@ class Generator extends Nette\Object
 					$template->exceptions = $this->namespaces[$namespaceName]['exceptions'];
 					$template->constants = $this->namespaces[$namespaceName]['constants'];
 					$template->functions = $this->namespaces[$namespaceName]['functions'];
+				} elseif (!empty($this->packages)) {
+					$template->package = $packageName = $element->getPseudoPackageName();
+					$template->classes = $this->packages[$packageName]['classes'];
+					$template->interfaces = $this->packages[$packageName]['interfaces'];
+					$template->traits = $this->packages[$packageName]['traits'];
+					$template->exceptions = $this->packages[$packageName]['exceptions'];
+					$template->constants = $this->packages[$packageName]['constants'];
+					$template->functions = $this->packages[$packageName]['functions'];
 				}
 
 				$template->fileName = null;

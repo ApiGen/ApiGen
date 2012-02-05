@@ -58,6 +58,7 @@ class Config
 		'googleAnalytics' => '',
 		'templateConfig' => '',
 		'allowedHtml' => array('b', 'i', 'a', 'ul', 'ol', 'li', 'p', 'br', 'var', 'samp', 'kbd', 'tt'),
+		'groups' => 'auto',
 		'accessLevels' => array('public', 'protected'),
 		'internal' => false,
 		'php' => true,
@@ -90,11 +91,12 @@ class Config
 	);
 
 	/**
-	 * Possible values for options with list of values.
+	 * Possible values for options.
 	 *
 	 * @var array
 	 */
-	private static $arrayOptionsValues = array(
+	private static $possibleOptionsValues = array(
+		'groups' => array('auto', 'namespaces', 'packages', 'none'),
 		'accessLevels' => array('public', 'protected', 'private')
 	);
 
@@ -250,12 +252,18 @@ class Config
 					$this->config[$option][$key] = array_shift($value);
 				}
 				$this->config[$option] = array_filter($this->config[$option]);
+			}
 
-				if (!empty(self::$arrayOptionsValues[$option])) {
-					$values = self::$arrayOptionsValues[$option];
+			// Check posssible values
+			if (!empty(self::$possibleOptionsValues[$option])) {
+				$values = self::$possibleOptionsValues[$option];
+
+				if (is_array($valueDefinition)) {
 					$this->config[$option] = array_filter($this->config[$option], function($value) use ($values) {
 						return in_array($value, $values);
 					});
+				} elseif (!in_array($this->config[$option], $values)) {
+					$this->config[$option] = '';
 				}
 			}
 		}
@@ -368,6 +376,10 @@ class Config
 
 		if (!empty($this->config['googleAnalytics']) && !preg_match('~^UA\\-\\d+\\-\\d+$~', $this->config['googleAnalytics'])) {
 			throw new Exception('Invalid Google Analytics tracking code', Exception::INVALID_CONFIG);
+		}
+
+		if (empty($this->config['groups'])) {
+			throw new Exception('No supported groups value given', Exception::INVALID_CONFIG);
 		}
 
 		if (empty($this->config['accessLevels'])) {
@@ -505,6 +517,7 @@ Options:
 	@option@--google-analytics@c <@value@value@c>     Google Analytics tracking code
 	@option@--template-config@c  <@value@file@c>      Template config file, default "@value@{$this->config['templateConfig']}@c"
 	@option@--allowed-html@c     <@value@list@c>      List of allowed HTML tags in documentation, default "@value@b,i,a,ul,ol,li,p,br,var,samp,kbd,tt@c"
+	@option@--groups@c           <@value@value@c>     How should elements be grouped in the menu. Default value is "@value@auto@c" (namespaces if available, packages otherwise)
 	@option@--access-levels@c    <@value@list@c>      Generate documentation for methods and properties with given access level, default "@value@public,protected@c"
 	@option@--internal@c         <@value@yes@c|@value@no@c>    Generate documentation for elements marked as internal and display internal documentation parts, default "@value@no@c"
 	@option@--php@c              <@value@yes@c|@value@no@c>    Generate documentation for PHP internal classes, default "@value@yes@c"

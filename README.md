@@ -171,6 +171,10 @@ Template config file, default is the config file of ApiGen default template.
 
 List of allowed HTML tags in documentation separated by comma. Default value is "b,i,a,ul,ol,li,p,br,var,samp,kbd,tt".
 
+```--groups <value>```
+
+How should elements be grouped in the menu. Possible options are "auto", "namespaces", "packages" and "none". Default value is "auto" (namespaces are used if the source code uses them, packages otherwise).
+
 ```--access-levels <list>```
 
 Access levels of methods and properties that should get their documentation parsed. Default value is "public,protected" (don't generate private class members).

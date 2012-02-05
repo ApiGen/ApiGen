@@ -19,19 +19,7 @@ the file LICENSE.md that was distributed with this source code.
 
 	{var $group = false}
 
-	{if}
-	<table class="summary" id="packages">
-	<caption>Packages summary</caption>
-	{foreach $packages as $package}
-	{continueIf $config->main && 0 !== strpos($package, $config->main)}
-	<tr>
-		{var $group = true}
-		<td class="name"><a href="{$package|packageUrl}">{$package}</a></td>
-	</tr>
-	{/foreach}
-	</table>
-	{/if $iterations}
-
+	{if $namespaces}
 	{if}
 	<table class="summary" id="namespaces">
 	<caption>Namespaces summary</caption>
@@ -44,6 +32,22 @@ the file LICENSE.md that was distributed with this source code.
 	{/foreach}
 	</table>
 	{/if $iterations}
+	{/if}
+
+	{if $packages}
+	{if}
+	<table class="summary" id="packages">
+	<caption>Packages summary</caption>
+	{foreach $packages as $package}
+	{continueIf $config->main && 0 !== strpos($package, $config->main)}
+	<tr>
+		{var $group = true}
+		<td class="name"><a href="{$package|packageUrl}">{$package}</a></td>
+	</tr>
+	{/foreach}
+	</table>
+	{/if $iterations}
+	{/if}
 
 	{if !$group}
 	{include '@elementlist.latte'}

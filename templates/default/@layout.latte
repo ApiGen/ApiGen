@@ -44,24 +44,6 @@ the file LICENSE.md that was distributed with this source code.
 		<a n:tag-if="'overview' !== $active" href="index.html" title="Overview"><span>Overview</span></a>
 
 		<div id="groups">
-			{if $packages}
-			<h3>Packages</h3>
-			<ul>
-				{foreach $packages as $item}
-				<li n:class="$package === $item || 0 === strpos($package, $item . '\\') ? active, $config->main && 0 === strpos($item, $config->main) ? main"><a href="{$item|packageUrl}">{$template->subpackageName($item) ?: $item}</a>
-					{if substr_count($iterator->nextValue, '\\') > substr_count($item, '\\')}
-						<span></span>
-						<ul>
-					{else}
-						</li>
-						{if substr_count($iterator->nextValue, '\\') < substr_count($item, '\\')}
-							{!'</ul></li>'|repeat:substr_count($item, '\\') - substr_count($iterator->nextValue, '\\')}
-						{/if}
-					{/if}
-				{/foreach}
-			</ul>
-			{/if}
-
 			{if $namespaces}
 			<h3>Namespaces</h3>
 			<ul>
@@ -78,10 +60,26 @@ the file LICENSE.md that was distributed with this source code.
 					{/if}
 				{/foreach}
 			</ul>
+			{elseif $packages}
+			<h3>Packages</h3>
+			<ul>
+				{foreach $packages as $item}
+				<li n:class="$package === $item || 0 === strpos($package, $item . '\\') ? active, $config->main && 0 === strpos($item, $config->main) ? main"><a href="{$item|packageUrl}">{$template->subpackageName($item) ?: $item}</a>
+					{if substr_count($iterator->nextValue, '\\') > substr_count($item, '\\')}
+						<span></span>
+						<ul>
+					{else}
+						</li>
+						{if substr_count($iterator->nextValue, '\\') < substr_count($item, '\\')}
+							{!'</ul></li>'|repeat:substr_count($item, '\\') - substr_count($iterator->nextValue, '\\')}
+						{/if}
+					{/if}
+				{/foreach}
+			</ul>
 			{/if}
 		</div>
 
-		<hr n:if="($packages || $namespaces) && ($classes || $interfaces || $traits || $exceptions || $constants || $functions)">
+		<hr n:if="($namespaces || $packages) && ($classes || $interfaces || $traits || $exceptions || $constants || $functions)">
 
 		<div id="elements">
 			{if $classes}

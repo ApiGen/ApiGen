@@ -386,6 +386,10 @@ class Template extends Nette\Templating\FileTemplate
 	 */
 	public function getNamespaceLinks($namespace, $last = true)
 	{
+		if (empty($this->namespaces)) {
+			return $namespace;
+		}
+
 		$links = array();
 
 		$parent = '';
