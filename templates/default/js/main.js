@@ -43,6 +43,7 @@ $(function() {
 
 	// Search autocompletion
 	var autocompleteFound = false;
+	var autocompleteFiles = {'c': 'class', 'co': 'constant', 'f': 'function', 'm': 'class', 'p': 'class', 'cc': 'class'};
 	var $search = $('#search input[name=q]');
 	$search
 		.autocomplete(ApiGen.elements, {
@@ -62,7 +63,12 @@ $(function() {
 			autocompleteFound = true;
 			var location = window.location.href.split('/');
 			location.pop();
-			location.push($.sprintf(ApiGen.config.templates.main[data[0]].filename, data[1].replace(/[^\w]/g, '.')));
+			var parts = data[1].split(/::|$/);
+			var file = $.sprintf(ApiGen.config.templates.main[autocompleteFiles[data[0]]].filename, parts[0].replace(/[^\w]/g, ''));
+			if (parts[1]) {
+				file += '#' + parts[1].replace(/([\w]+)\(\)/, '_$1');
+			}
+			location.push(file);
 			window.location = location.join('/');
 		}).closest('form')
 			.submit(function() {

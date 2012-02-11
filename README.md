@@ -175,6 +175,10 @@ List of allowed HTML tags in documentation separated by comma. Default value is 
 
 How should elements be grouped in the menu. Possible options are "auto", "namespaces", "packages" and "none". Default value is "auto" (namespaces are used if the source code uses them, packages otherwise).
 
+```--autocomplete <list>```
+
+List of element types that will appear in the search input autocomplete. Possible values are "classes", "constants", "functions", "methods", "properties" and "classconstants". Default value is "classes,constants,functions".
+
 ```--access-levels <list>```
 
 Access levels of methods and properties that should get their documentation parsed. Default value is "public,protected" (don't generate private class members).

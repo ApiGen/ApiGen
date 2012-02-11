@@ -604,10 +604,33 @@ class Generator extends Nette\Object
 
 		// Elements for autocomplete
 		$elements = array();
+		$autocomplete = array_flip($this->config->autocomplete);
 		foreach ($this->getElementTypes() as $type) {
 			foreach ($this->$type as $element) {
-				$type = $element instanceof ReflectionClass ? 'class' : ($element instanceof ReflectionConstant ? 'constant' : 'function');
-				$elements[] = array($type, $element->getName());
+				if ($element instanceof ReflectionClass) {
+					if (isset($autocomplete['classes'])) {
+						$elements[] = array('c', $this->getElementName($element));
+					}
+					if (isset($autocomplete['methods'])) {
+						foreach ($element->getOwnMethods() as $method) {
+							$elements[] = array('m', $this->getElementName($method));
+						}
+					}
+					if (isset($autocomplete['properties'])) {
+						foreach ($element->getOwnProperties() as $property) {
+							$elements[] = array('p', $this->getElementName($property));
+						}
+					}
+					if (isset($autocomplete['classconstants'])) {
+						foreach ($element->getOwnConstants() as $constant) {
+							$elements[] = array('cc', $this->getElementName($constant));
+						}
+					}
+				} elseif ($element instanceof ReflectionConstant && isset($autocomplete['constants'])) {
+					$elements[] = array('co', $this->getElementName($element));
+				} elseif ($element instanceof ReflectionFunction && isset($autocomplete['functions'])) {
+					$elements[] = array('f', $this->getElementName($element));
+				}
 			}
 		}
 		usort($elements, function($one, $two) {

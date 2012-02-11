@@ -59,6 +59,7 @@ class Config
 		'templateConfig' => '',
 		'allowedHtml' => array('b', 'i', 'a', 'ul', 'ol', 'li', 'p', 'br', 'var', 'samp', 'kbd', 'tt'),
 		'groups' => 'auto',
+		'autocomplete' => array('classes', 'constants', 'functions'),
 		'accessLevels' => array('public', 'protected'),
 		'internal' => false,
 		'php' => true,
@@ -97,6 +98,7 @@ class Config
 	 */
 	private static $possibleOptionsValues = array(
 		'groups' => array('auto', 'namespaces', 'packages', 'none'),
+		'autocomplete' => array('classes', 'constants', 'functions', 'methods', 'properties', 'classconstants'),
 		'accessLevels' => array('public', 'protected', 'private')
 	);
 
@@ -382,6 +384,10 @@ class Config
 			throw new Exception('No supported groups value given', Exception::INVALID_CONFIG);
 		}
 
+		if (empty($this->config['autocomplete'])) {
+			throw new Exception('No supported autocomplete value given', Exception::INVALID_CONFIG);
+		}
+
 		if (empty($this->config['accessLevels'])) {
 			throw new Exception('No supported access level given', Exception::INVALID_CONFIG);
 		}
@@ -518,6 +524,7 @@ Options:
 	@option@--template-config@c  <@value@file@c>      Template config file, default "@value@{$this->config['templateConfig']}@c"
 	@option@--allowed-html@c     <@value@list@c>      List of allowed HTML tags in documentation, default "@value@b,i,a,ul,ol,li,p,br,var,samp,kbd,tt@c"
 	@option@--groups@c           <@value@value@c>     How should elements be grouped in the menu. Default value is "@value@auto@c" (namespaces if available, packages otherwise)
+	@option@--autocomplete@c     <@value@list@c>      Element types for search input autocomplete. Default value is "@value@classes,constants,functions@c"
 	@option@--access-levels@c    <@value@list@c>      Generate documentation for methods and properties with given access level, default "@value@public,protected@c"
 	@option@--internal@c         <@value@yes@c|@value@no@c>    Generate documentation for elements marked as internal and display internal documentation parts, default "@value@no@c"
 	@option@--php@c              <@value@yes@c|@value@no@c>    Generate documentation for PHP internal classes, default "@value@yes@c"
