@@ -2,6 +2,8 @@
 <project name="ApiGen" default="build" basedir=".">
 	<property name="sourcedir" value="${basedir}/ApiGen" />
 	<property name="builddir" value="${basedir}/build" />
+	<property name="releasedir" value="${basedir}/release" />
+	<property name="version" value="2.4.1" />
 
 	<condition property="executableExtension" value=".bat" else="">
 		<os family="windows" />
@@ -116,5 +118,29 @@
 			<arg value="--output" />
 			<arg path="${builddir}/code-browser" />
 		</exec>
+	</target>
+
+	<target name="release" description="Release packages">
+		<delete dir="${releasedir}" />
+		<mkdir dir="${releasedir}" />
+
+		<exec executable="pear${executableExtension}">
+			<arg value="package" />
+		</exec>
+		<move file="${ant.project.name}-${version}.tgz" todir="${releasedir}" />
+
+		<zip destfile="${releasedir}/${ant.project.name}-${version}-standalone.zip">
+			<zipfileset dir="ApiGen" prefix="apigen/ApiGen" />
+			<zipfileset dir="libs/FSHL" includes="FSHL/**/*, LICENSE" prefix="apigen/libs/FSHL" />
+			<zipfileset dir="libs/Nette" includes="Nette/**/*, license.txt" prefix="apigen/libs/Nette" />
+			<zipfileset dir="libs/Texy" includes="texy/**/*, license.txt" prefix="apigen/libs/Texy" />
+			<zipfileset dir="libs/TokenReflection" includes="TokenReflection/**/*, LICENSE" prefix="apigen/libs/TokenReflection" />
+			<zipfileset dir="templates" prefix="apigen/templates" />
+			<zipfileset dir="." includes="apigen.bat, apigen.neon.example, apigen.php, CHANGELOG.md, LICENSE.md, README.md" prefix="apigen" />
+		</zip>
+
+		<tar destfile="${releasedir}/${ant.project.name}-${version}-standalone.tar.gz" compression="gzip">
+			<zipfileset src="${releasedir}/${ant.project.name}-${version}-standalone.zip"/>
+		</tar>
 	</target>
 </project>
