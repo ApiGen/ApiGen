@@ -1,3 +1,14 @@
+/*!
+ * ApiGen 2.5.0 - API documentation generator for PHP 5.3+
+ *
+ * Copyright (c) 2010-2011 David Grudl (http://davidgrudl.com)
+ * Copyright (c) 2011-2012 Jaroslav Hanslík (https://github.com/kukulich)
+ * Copyright (c) 2011-2012 Ondřej Nešpor (https://github.com/Andrewsville)
+ *
+ * For the full copyright and license information, please view
+ * the file LICENSE.md that was distributed with this source code.
+ */
+
 $(function() {
 	// Menu
 
@@ -32,6 +43,7 @@ $(function() {
 
 	// Search autocompletion
 	var autocompleteFound = false;
+	var autocompleteFiles = {'c': 'class', 'co': 'constant', 'f': 'function', 'm': 'class', 'p': 'class', 'cc': 'class'};
 	var $search = $('#search input[name=q]');
 	$search
 		.autocomplete(ApiGen.elements, {
@@ -51,7 +63,12 @@ $(function() {
 			autocompleteFound = true;
 			var location = window.location.href.split('/');
 			location.pop();
-			location.push(data[0] + '-' + data[1].replace(/[^\w]/g, '.') + '.html');
+			var parts = data[1].split(/::|$/);
+			var file = $.sprintf(ApiGen.config.templates.main[autocompleteFiles[data[0]]].filename, parts[0].replace(/[^\w]/g, ''));
+			if (parts[1]) {
+				file += '#' + parts[1].replace(/([\w]+)\(\)/, '_$1');
+			}
+			location.push(file);
 			window.location = location.join('/');
 		}).closest('form')
 			.submit(function() {
@@ -97,12 +114,12 @@ $(function() {
 		})
 		.addClass('switchable')
 		.attr('title', 'Switch between natural and alphabetical order');
-	if ((null === $.cookie('order') && 'alphabetical' === ApiGen.options.elementsOrder) || 'alphabetical' === $.cookie('order')) {
+	if ((null === $.cookie('order') && 'alphabetical' === ApiGen.config.options.elementsOrder) || 'alphabetical' === $.cookie('order')) {
 		$caption.click();
 	}
 
 	// Delayed hover efect on summary
-	if (ApiGen.options.elementDetailsCollapsed) {
+	if (ApiGen.config.options.elementDetailsCollapsed) {
 		var timeout;
 		$('tr', $content).filter(':has(.detailed)')
 			.hover(function() {

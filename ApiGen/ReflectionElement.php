@@ -1,11 +1,11 @@
 <?php
 
 /**
- * ApiGen 2.4.1 - API documentation generator for PHP 5.3+
+ * ApiGen 2.5.0 - API documentation generator for PHP 5.3+
  *
- * Copyright (c) 2010 David Grudl (http://davidgrudl.com)
- * Copyright (c) 2011 Jaroslav Hanslík (https://github.com/kukulich)
- * Copyright (c) 2011 Ondřej Nešpor (https://github.com/Andrewsville)
+ * Copyright (c) 2010-2011 David Grudl (http://davidgrudl.com)
+ * Copyright (c) 2011-2012 Jaroslav Hanslík (https://github.com/kukulich)
+ * Copyright (c) 2011-2012 Ondřej Nešpor (https://github.com/Andrewsville)
  *
  * For the full copyright and license information, please view
  * the file LICENSE.md that was distributed with this source code.
@@ -17,9 +17,6 @@ namespace ApiGen;
  * Element reflection envelope.
  *
  * Alters TokenReflection\IReflection functionality for ApiGen.
- *
- * @author Jaroslav Hanslík
- * @author Ondřej Nešpor
  */
 abstract class ReflectionElement extends ReflectionBase
 {
@@ -29,6 +26,13 @@ abstract class ReflectionElement extends ReflectionBase
 	 * @var boolean
 	 */
 	protected $isDocumented;
+
+	/**
+	 * Reflection elements annotations.
+	 *
+	 * @var array
+	 */
+	private $annotations;
 
 	/**
 	 * Returns the PHP extension reflection.
@@ -110,9 +114,9 @@ abstract class ReflectionElement extends ReflectionBase
 			return 'PHP';
 		}
 
-		if ($package = $this->reflection->getAnnotation('package')) {
+		if ($package = $this->getAnnotation('package')) {
 			$packageName = preg_replace('~\s+.*~s', '', $package[0]);
-			if ($subpackage = $this->reflection->getAnnotation('subpackage')) {
+			if ($subpackage = $this->getAnnotation('subpackage')) {
 				$packageName .= '\\' . preg_replace('~\s+.*~s', '', $subpackage[0]);
 			}
 			return $packageName;
@@ -171,15 +175,64 @@ abstract class ReflectionElement extends ReflectionBase
 	}
 
 	/**
-	 * Returns all annotations.
+	 * Returns reflection element annotations.
+	 *
+	 * Removes the short and long description.
+	 *
+	 * In case of classes, functions and constants, @package, @subpackage, @author and @license annotations
+	 * are added from declaring files if not already present.
 	 *
 	 * @return array
 	 */
 	public function getAnnotations()
 	{
-		$annotations = $this->reflection->getAnnotations();
-		unset($annotations[\TokenReflection\ReflectionAnnotation::SHORT_DESCRIPTION]);
-		unset($annotations[\TokenReflection\ReflectionAnnotation::LONG_DESCRIPTION]);
-		return $annotations;
+		if (null === $this->annotations) {
+			static $fileLevel = array('package' => true, 'subpackage' => true, 'author' => true, 'license' => true, 'copyright' => true);
+
+			$annotations = $this->reflection->getAnnotations();
+			unset($annotations[\TokenReflection\ReflectionAnnotation::SHORT_DESCRIPTION]);
+			unset($annotations[\TokenReflection\ReflectionAnnotation::LONG_DESCRIPTION]);
+
+			if ($this->reflection instanceof \TokenReflection\ReflectionClass || $this->reflection instanceof \TokenReflection\ReflectionFunction || ($this->reflection instanceof \TokenReflection\ReflectionConstant && null === $this->reflection->getDeclaringClassName())) {
+				foreach ($this->reflection->getFileReflection()->getAnnotations() as $name => $value) {
+					if (isset($fileLevel[$name]) && empty($annotations[$name])) {
+						$annotations[$name] = $value;
+					}
+				}
+			}
+
+			$this->annotations = $annotations;
+		}
+
+		return $this->annotations;
+	}
+
+	/**
+	 * Returns reflection element annotation.
+	 *
+	 * @param string $annotation Annotation name
+	 * @return array
+	 */
+	public function getAnnotation($annotation)
+	{
+		$annotations = $this->annotations ?: $this->getAnnotations();
+		return isset($annotations[$annotation]) ? $annotations[$annotation] : null;
+	}
+
+	/**
+	 * Adds element annotation.
+	 *
+	 * @param string $annotation Annotation name
+	 * @param string $value Annotation value
+	 * @return \ApiGen\ReflectionElement
+	 */
+	public function addAnnotation($annotation, $value)
+	{
+		if (null === $this->annotations) {
+			$this->getAnnotations();
+		}
+		$this->annotations[$annotation][] = $value;
+
+		return $this;
 	}
 }

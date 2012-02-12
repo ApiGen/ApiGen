@@ -1,11 +1,11 @@
 <?php
 
 /**
- * ApiGen 2.4.1 - API documentation generator for PHP 5.3+
+ * ApiGen 2.5.0 - API documentation generator for PHP 5.3+
  *
- * Copyright (c) 2010 David Grudl (http://davidgrudl.com)
- * Copyright (c) 2011 Jaroslav Hanslík (https://github.com/kukulich)
- * Copyright (c) 2011 Ondřej Nešpor (https://github.com/Andrewsville)
+ * Copyright (c) 2010-2011 David Grudl (http://davidgrudl.com)
+ * Copyright (c) 2011-2012 Jaroslav Hanslík (https://github.com/kukulich)
+ * Copyright (c) 2011-2012 Ondřej Nešpor (https://github.com/Andrewsville)
  *
  * For the full copyright and license information, please view
  * the file LICENSE.md that was distributed with this source code.
@@ -15,14 +15,12 @@ namespace ApiGen;
 
 use TokenReflection, TokenReflection\IReflectionClass, TokenReflection\IReflectionMethod, TokenReflection\IReflectionProperty, TokenReflection\IReflectionConstant;
 use ReflectionMethod as InternalReflectionMethod, ReflectionProperty as InternalReflectionProperty;
+use InvalidArgumentException;
 
 /**
  * Class reflection envelope.
  *
  * Alters TokenReflection\IReflectionClass functionality for ApiGen.
- *
- * @author Jaroslav Hanslík
- * @author Ondřej Nešpor
  */
 class ReflectionClass extends ReflectionElement
 {
@@ -202,7 +200,7 @@ class ReflectionClass extends ReflectionElement
 			return $this->methods[$name];
 		}
 
-		throw new \InvalidArgumentException(sprintf('Method %s does not exist in class %s', $name, $this->reflection->getName()));
+		throw new InvalidArgumentException(sprintf('Method %s does not exist in class %s', $name, $this->reflection->getName()));
 	}
 
 	/**
@@ -277,7 +275,7 @@ class ReflectionClass extends ReflectionElement
 			return $this->properties[$name];
 		}
 
-		throw new \InvalidArgumentException(sprintf('Property %s does not exist in class %s', $name, $this->reflection->getName()));
+		throw new InvalidArgumentException(sprintf('Property %s does not exist in class %s', $name, $this->reflection->getName()));
 	}
 
 	/**
@@ -336,7 +334,7 @@ class ReflectionClass extends ReflectionElement
 			return $this->constants[$name];
 		}
 
-		throw new \InvalidArgumentException(sprintf('Constant %s does not exist in class %s', $name, $this->reflection->getName()));
+		throw new InvalidArgumentException(sprintf('Constant %s does not exist in class %s', $name, $this->reflection->getName()));
 	}
 
 	/**
@@ -397,7 +395,7 @@ class ReflectionClass extends ReflectionElement
 			return $this->ownConstants[$name];
 		}
 
-		throw new \InvalidArgumentException(sprintf('Constant %s does not exist in class %s', $name, $this->reflection->getName()));
+		throw new InvalidArgumentException(sprintf('Constant %s does not exist in class %s', $name, $this->reflection->getName()));
 	}
 
 	/**

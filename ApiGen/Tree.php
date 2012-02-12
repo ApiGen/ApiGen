@@ -1,22 +1,21 @@
 <?php
 /**
- * ApiGen 2.4.1 - API documentation generator for PHP 5.3+
+ * ApiGen 2.5.0 - API documentation generator for PHP 5.3+
  *
- * Copyright (c) 2010 David Grudl (http://davidgrudl.com)
- * Copyright (c) 2011 Jaroslav Hanslík (https://github.com/kukulich)
- * Copyright (c) 2011 Ondřej Nešpor (https://github.com/Andrewsville)
+ * Copyright (c) 2010-2011 David Grudl (http://davidgrudl.com)
+ * Copyright (c) 2011-2012 Jaroslav Hanslík (https://github.com/kukulich)
+ * Copyright (c) 2011-2012 Ondřej Nešpor (https://github.com/Andrewsville)
  *
  * For the full copyright and license information, please view
  * the file LICENSE.md that was distributed with this source code.
  */
 
 namespace ApiGen;
-use RecursiveTreeIterator;
+
+use RecursiveTreeIterator, RuntimeException;
 
 /**
  * Customized recursive tree iterator.
- *
- * @author Ondřej Nešpor
  */
 class Tree extends RecursiveTreeIterator
 {
@@ -83,7 +82,7 @@ class Tree extends RecursiveTreeIterator
 	{
 		$className = $this->key();
 		if (!isset($this->reflections[$className])) {
-			throw new \UnexpectedValueException(sprintf('Class "%s" is not in the reflection array', $className));
+			throw new RuntimeException(sprintf('Class "%s" is not in the reflection array', $className));
 		}
 
 		return $this->reflections[$className];

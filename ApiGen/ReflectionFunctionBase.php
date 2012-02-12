@@ -1,11 +1,11 @@
 <?php
 
 /**
- * ApiGen 2.4.1 - API documentation generator for PHP 5.3+
+ * ApiGen 2.5.0 - API documentation generator for PHP 5.3+
  *
- * Copyright (c) 2010 David Grudl (http://davidgrudl.com)
- * Copyright (c) 2011 Jaroslav Hanslík (https://github.com/kukulich)
- * Copyright (c) 2011 Ondřej Nešpor (https://github.com/Andrewsville)
+ * Copyright (c) 2010-2011 David Grudl (http://davidgrudl.com)
+ * Copyright (c) 2011-2012 Jaroslav Hanslík (https://github.com/kukulich)
+ * Copyright (c) 2011-2012 Ondřej Nešpor (https://github.com/Andrewsville)
  *
  * For the full copyright and license information, please view
  * the file LICENSE.md that was distributed with this source code.
@@ -14,13 +14,12 @@
 namespace ApiGen;
 
 use TokenReflection;
+use InvalidArgumentException;
 
 /**
  * Function/method reflection envelope parent class.
  *
  * Alters TokenReflection\IReflectionFunctionBase functionality for ApiGen.
- *
- * @author Ondřej Nešpor
  */
 abstract class ReflectionFunctionBase extends ReflectionElement
 {
@@ -54,7 +53,7 @@ abstract class ReflectionFunctionBase extends ReflectionElement
 				return $parameters[$parameterName];
 			}
 
-			throw new \InvalidArgumentException(sprintf('There is no parameter at position "%d" in function/method "%s"', $parameterName, $this->getName()), Exception\Runtime::DOES_NOT_EXIST);
+			throw new InvalidArgumentException(sprintf('There is no parameter at position "%d" in function/method "%s"', $parameterName, $this->getName()), Exception\Runtime::DOES_NOT_EXIST);
 		} else {
 			foreach ($parameters as $parameter) {
 				if ($parameter->getName() === $parameterName) {
@@ -62,7 +61,7 @@ abstract class ReflectionFunctionBase extends ReflectionElement
 				}
 			}
 
-			throw new \InvalidArgumentException(sprintf('There is no parameter "%s" in function/method "%s"', $parameterName, $this->getName()), Exception\Runtime::DOES_NOT_EXIST);
+			throw new InvalidArgumentException(sprintf('There is no parameter "%s" in function/method "%s"', $parameterName, $this->getName()), Exception\Runtime::DOES_NOT_EXIST);
 		}
 	}
 }

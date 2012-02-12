@@ -44,9 +44,16 @@ The preferred installation way is using the PEAR package but there are three mor
 
 PEAR is a distribution system for PHP packages. It is bundled with PHP since the 4.3 version and it is easy to use.
 
-The PEAR package contains only ApiGen itself. Its dependencies (Nette, Texy, FSHL and TokenReflection) have to be installed separately. But do not panic, the PEAR installer will take care of it (almost).
+The PEAR package contains only ApiGen itself. Its dependencies (Nette, Texy, FSHL and TokenReflection) have to be installed separately. But do not panic, the PEAR installer can take care of it.
 
-In order to install any PEAR package, you have to add the appropriate repository URL. The good news is that you have to do that only once. Using these commands you add all required repositories.
+The easiest way is to use the PEAR auto discovery feature. In that case all you have to do is to type two commands.
+
+```
+	pear config-set auto_discover 1
+	pear install pear.apigen.org/apigen
+```
+
+If you don't want to use the auto discovery, you have to add PEAR channels of all ApiGen libraries manually. In this case you can install ApiGen by typing these commands.
 
 ```
 	pear channel-discover pear.apigen.org
@@ -54,36 +61,9 @@ In order to install any PEAR package, you have to add the appropriate repository
 	pear channel-discover pear.texy.info
 	pear channel-discover pear.kukulich.cz
 	pear channel-discover pear.andrewsville.cz
-```
 
-Theoretically you should only use one command
-
-```
 	pear install apigen/ApiGen
 ```
-
-to install ApiGen, then. However things are not so easy. This would work if all required libraries were in stable versions. But Nette isn't (and that is going to change soon). Assuming you have your PEAR installer configured that it will not install non-stable packages (that is the default configuration), you have to explicitly enter each non-stable package you want to use. So you have to install Nette manually this way
-
-```
-	pear install nette/Nette-beta
-```
-
-and finally
-
-```
-	pear install apigen/ApiGen
-```
-
-When a stable version of Nette gets released, only the last command will be required and all dependencies will be downloaded by the PEAR installer automatically.
-
-If you have have installed a version older than 2.1 using PEAR you will have to uninstall it first using these commands.
-
-```
-	pear uninstall kukulich/ApiGen
-	pear uninstall kukulich/TokenReflection
-```
-
-This is required because we have moved from a temporary PEAR repository to a definitive one. So this change will be required only if you have installed ApiGen and TokenReflection library from the ```pear.kukulich.cz``` repository.
 
 ### Standalone package ###
 
@@ -170,6 +150,14 @@ Template config file, default is the config file of ApiGen default template.
 ```--allowed-html <list>```
 
 List of allowed HTML tags in documentation separated by comma. Default value is "b,i,a,ul,ol,li,p,br,var,samp,kbd,tt".
+
+```--groups <value>```
+
+How should elements be grouped in the menu. Possible options are "auto", "namespaces", "packages" and "none". Default value is "auto" (namespaces are used if the source code uses them, packages otherwise).
+
+```--autocomplete <list>```
+
+List of element types that will appear in the search input autocomplete. Possible values are "classes", "constants", "functions", "methods", "properties" and "classconstants". Default value is "classes,constants,functions".
 
 ```--access-levels <list>```
 

@@ -25,8 +25,12 @@ googleCseLabel: ''
 googleAnalytics: ''
 # Template config file
 templateConfig: './templates/default/config.neon'
+# Grouping of classes
+groups: auto
 # List of allowed HTML tags in documentation
 allowedHtml: [b, i, a, ul, ol, li, p, br, var, samp, kbd, tt]
+# Element types for search input autocomplete
+autocomplete: [classes, constants, functions]
 
 # Generate documentation for methods and properties with given access level
 accessLevels: [public, protected]

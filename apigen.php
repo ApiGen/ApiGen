@@ -2,11 +2,11 @@
 <?php
 
 /**
- * ApiGen 2.4.1 - API documentation generator for PHP 5.3+
+ * ApiGen 2.5.0 - API documentation generator for PHP 5.3+
  *
- * Copyright (c) 2010 David Grudl (http://davidgrudl.com)
- * Copyright (c) 2011 Jaroslav Hanslík (https://github.com/kukulich)
- * Copyright (c) 2011 Ondřej Nešpor (https://github.com/Andrewsville)
+ * Copyright (c) 2010-2011 David Grudl (http://davidgrudl.com)
+ * Copyright (c) 2011-2012 Jaroslav Hanslík (https://github.com/kukulich)
+ * Copyright (c) 2011-2012 Ondřej Nešpor (https://github.com/Andrewsville)
  *
  * For the full copyright and license information, please view
  * the file LICENSE.md that was distributed with this source code.
@@ -15,23 +15,13 @@
 namespace ApiGen;
 
 use Nette\Diagnostics\Debugger;
+use TokenReflection;
 
-// Set dirs
-define('PEAR_PHP_DIR', '@php_dir@');
-define('PEAR_DATA_DIR', '@data_dir@');
-
-if (false === strpos(PEAR_PHP_DIR, '@php_dir')) {
+if (false === strpos('@php_dir@', '@php_dir')) {
 	// PEAR package
 
-	set_include_path(
-		PEAR_PHP_DIR . PATH_SEPARATOR .
-		get_include_path()
-	);
-
-	require PEAR_PHP_DIR . '/Nette/loader.php';
-	require PEAR_PHP_DIR . '/Texy/texy.php';
-
-	define('TEMPLATE_DIR', PEAR_DATA_DIR . '/ApiGen/templates');
+	@include '@php_dir@/Nette/loader.php';
+	@include '@php_dir@/Texy/texy.php';
 } else {
 	// Downloaded package
 
@@ -42,10 +32,8 @@ if (false === strpos(PEAR_PHP_DIR, '@php_dir')) {
 		get_include_path()
 	);
 
-	require __DIR__ . '/libs/Nette/Nette/loader.php';
-	require __DIR__ . '/libs/Texy/texy/texy.php';
-
-	define('TEMPLATE_DIR', __DIR__ . '/templates');
+	@include __DIR__ . '/libs/Nette/Nette/loader.php';
+	@include __DIR__ . '/libs/Texy/texy/texy.php';
 }
 
 // Autoload
@@ -84,7 +72,11 @@ try {
 	Debugger::enable(Debugger::PRODUCTION, false);
 	Debugger::timer();
 
+	$options = $_SERVER['argv'];
+	array_shift($options);
+
 	$config = new Config();
+	$config->processCliOptions($options);
 	$generator = new Generator($config);
 
 	// Help
@@ -94,8 +86,8 @@ try {
 		die();
 	}
 
-	// Start
-	$config->parse();
+	// Prepare configuration
+	$config->prepare();
 
 	if ($config->debug) {
 		Debugger::enable(Debugger::DEVELOPMENT, false);
@@ -106,7 +98,7 @@ try {
 	// Check for update (only in production mode)
 	if ($config->updateCheck && !$config->debug) {
 		ini_set('default_socket_timeout', 5);
-		$latestVersion = @file_get_contents('http://apigen.org/version.txt');
+		$latestVersion = @file_get_contents('http://pear.apigen.org/rest/r/apigen/latest.txt');
 		if (false !== $latestVersion && version_compare(trim($latestVersion), Generator::VERSION) > 0) {
 			$generator->output(sprintf("New version @header@%s@c available\n\n", $latestVersion));
 		}
@@ -149,12 +141,45 @@ try {
 	// End
 	$generator->output(sprintf("Done. Total time: @count@%d@c seconds, used: @count@%d@c MB RAM\n", Debugger::timer(), round(memory_get_peak_usage(true) / 1024 / 1024)));
 
-} catch (\Exception $e) {
-	$invalidConfig = $e instanceof Exception && Exception::INVALID_CONFIG === $e->getCode();
-	if ($invalidConfig) {
-		echo $generator->colorize($generator->getHeader());
+} catch (ConfigException $e) {
+	// Configuration error
+	echo $generator->colorize($generator->getHeader() . sprintf("\n@error@%s@c\n\n", $e->getMessage()) . $config->getHelp());
+
+	die(2);
+} catch (TokenReflection\Exception\ParseException $e) {
+	// TR library parse error
+
+	echo $generator->colorize(sprintf("\nThe TokenReflection library threw an exception while parsing the file @value@%s@c.\n", $e->getFileName()));
+	if (!empty($config) && $config->debug) {
+		echo "This can have two reasons: a) the source code in the file is not valid or b) you have just found a bug in the TokenReflection library.\n\n";
+		echo "If the license allows it please send the whole file or at least the following fragment describing where exacly is the problem along with the backtrace to apigen@apigen.org. Thank you!\n\n";
+
+		$token = $e->getToken();
+		$sender = $e->getSender();
+		if (!empty($token)) {
+			echo $generator->colorize(sprintf(
+				"The cause of the exception \"%s\" was the @value@%s@c token (line @count@%s@c) in following part of %s source code:\n\n",
+				$e->getMessage(),
+				$e->getTokenName(),
+				$e->getExceptionLine(),
+				$sender && $sender->getName() ? '@value@' . $sender->getPrettyName() . '@c' : 'the'
+			));
+		} else {
+			echo $generator->colorize(sprintf(
+				"The exception \"%s\" was thrown when processing %s source code:\n\n",
+				$e->getMessage(),
+				$sender && $sender->getName() ? '@value@' . $sender->getPrettyName() . '@c' : 'the'
+			));
+		}
+
+		echo $e->getSourcePart(true) . "\n\nThe exception backtrace is following:\n\n" . $e->getTraceAsString();
+	} else {
+		echo $generator->colorize("Please enable the debug mode (@option@--debug@c) to learn how you can help us fix this issue. Thanks.\n");
 	}
 
+	die(3);
+} catch (\Exception $e) {
+	// Everything else
 	if (!empty($config) && $config->debug) {
 		do {
 			echo $generator->colorize(sprintf("\n@error@%s@c", $e->getMessage()));
@@ -164,11 +189,6 @@ try {
 		printf("\n\n%s\n\n", $trace);
 	} else {
 		echo $generator->colorize(sprintf("\n@error@%s@c\n\n", $e->getMessage()));
-	}
-
-	// Help only for invalid configuration
-	if ($invalidConfig) {
-		echo $generator->colorize($config->getHelp());
 	}
 
 	die(1);
