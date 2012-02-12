@@ -17,8 +17,6 @@ namespace ApiGen;
  * Method reflection envelope.
  *
  * Alters TokenReflection\IReflectionMethod functionality for ApiGen.
- *
- * @author Ondřej Nešpor
  */
 class ReflectionMethod extends ReflectionFunctionBase
 {

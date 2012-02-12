@@ -17,8 +17,6 @@ namespace ApiGen;
  * Property reflection envelope.
  *
  * Alters TokenReflection\IReflectionProperty functionality for ApiGen.
- *
- * @author Ondřej Nešpor
  */
 class ReflectionProperty extends ReflectionElement
 {

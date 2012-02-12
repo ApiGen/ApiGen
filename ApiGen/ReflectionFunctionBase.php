@@ -19,8 +19,6 @@ use TokenReflection;
  * Function/method reflection envelope parent class.
  *
  * Alters TokenReflection\IReflectionFunctionBase functionality for ApiGen.
- *
- * @author Ondřej Nešpor
  */
 abstract class ReflectionFunctionBase extends ReflectionElement
 {

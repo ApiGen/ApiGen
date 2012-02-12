@@ -17,9 +17,6 @@ namespace ApiGen;
  * Extension reflection envelope.
  *
  * Alters TokenReflection\IReflectionExtension functionality for ApiGen.
- *
- * @author Jaroslav Hanslík
- * @author Ondřej Nešpor
  */
 class ReflectionExtension extends ReflectionBase
 {

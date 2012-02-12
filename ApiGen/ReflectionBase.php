@@ -19,9 +19,6 @@ use TokenReflection\IReflection;
  * Base reflection envelope.
  *
  * Alters TokenReflection\IReflection functionality for ApiGen.
- *
- * @author Jaroslav Hanslík
- * @author Ondřej Nešpor
  */
 abstract class ReflectionBase
 {

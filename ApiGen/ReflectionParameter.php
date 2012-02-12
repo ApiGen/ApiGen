@@ -17,8 +17,6 @@ namespace ApiGen;
  * Parameter reflection envelope.
  *
  * Alters TokenReflection\IReflectionParameter functionality for ApiGen.
- *
- * @author Ondřej Nešpor
  */
 class ReflectionParameter extends ReflectionElement
 {

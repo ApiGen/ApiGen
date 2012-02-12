@@ -17,8 +17,6 @@ namespace ApiGen;
  * Constant reflection envelope.
  *
  * Alters TokenReflection\IReflectionConstant functionality for ApiGen.
- *
- * @author Jaroslav Hanslík
  */
 class ReflectionConstant extends ReflectionElement
 {

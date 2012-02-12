@@ -20,9 +20,6 @@ use ReflectionMethod as InternalReflectionMethod, ReflectionProperty as Internal
  * Class reflection envelope.
  *
  * Alters TokenReflection\IReflectionClass functionality for ApiGen.
- *
- * @author Jaroslav Hanslík
- * @author Ondřej Nešpor
  */
 class ReflectionClass extends ReflectionElement
 {

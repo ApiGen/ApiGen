@@ -18,10 +18,6 @@ use TokenReflection\Broker;
 
 /**
  * Generates a HTML API documentation.
- *
- * @author Jaroslav Hanslík
- * @author Ondřej Nešpor
- * @author David Grudl
  */
 class Generator extends Nette\Object
 {

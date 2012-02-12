@@ -15,8 +15,6 @@ use RecursiveTreeIterator;
 
 /**
  * Customized recursive tree iterator.
- *
- * @author Ondřej Nešpor
  */
 class Tree extends RecursiveTreeIterator
 {

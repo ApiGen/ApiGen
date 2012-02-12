@@ -19,9 +19,6 @@ use Nette, FSHL;
  * Customized ApiGen template class.
  *
  * Adds ApiGen helpers to the Nette\Templating\FileTemplate parent class.
- *
- * @author Jaroslav Hanslík
- * @author Ondřej Nešpor
  */
 class Template extends Nette\Templating\FileTemplate
 {
