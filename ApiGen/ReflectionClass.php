@@ -15,6 +15,7 @@ namespace ApiGen;
 
 use TokenReflection, TokenReflection\IReflectionClass, TokenReflection\IReflectionMethod, TokenReflection\IReflectionProperty, TokenReflection\IReflectionConstant;
 use ReflectionMethod as InternalReflectionMethod, ReflectionProperty as InternalReflectionProperty;
+use InvalidArgumentException;
 
 /**
  * Class reflection envelope.
@@ -199,7 +200,7 @@ class ReflectionClass extends ReflectionElement
 			return $this->methods[$name];
 		}
 
-		throw new \InvalidArgumentException(sprintf('Method %s does not exist in class %s', $name, $this->reflection->getName()));
+		throw new InvalidArgumentException(sprintf('Method %s does not exist in class %s', $name, $this->reflection->getName()));
 	}
 
 	/**
@@ -274,7 +275,7 @@ class ReflectionClass extends ReflectionElement
 			return $this->properties[$name];
 		}
 
-		throw new \InvalidArgumentException(sprintf('Property %s does not exist in class %s', $name, $this->reflection->getName()));
+		throw new InvalidArgumentException(sprintf('Property %s does not exist in class %s', $name, $this->reflection->getName()));
 	}
 
 	/**
@@ -333,7 +334,7 @@ class ReflectionClass extends ReflectionElement
 			return $this->constants[$name];
 		}
 
-		throw new \InvalidArgumentException(sprintf('Constant %s does not exist in class %s', $name, $this->reflection->getName()));
+		throw new InvalidArgumentException(sprintf('Constant %s does not exist in class %s', $name, $this->reflection->getName()));
 	}
 
 	/**
@@ -394,7 +395,7 @@ class ReflectionClass extends ReflectionElement
 			return $this->ownConstants[$name];
 		}
 
-		throw new \InvalidArgumentException(sprintf('Constant %s does not exist in class %s', $name, $this->reflection->getName()));
+		throw new InvalidArgumentException(sprintf('Constant %s does not exist in class %s', $name, $this->reflection->getName()));
 	}
 
 	/**

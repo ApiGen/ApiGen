@@ -41,7 +41,7 @@
 			<file name="Config.php" role="php">
 				<tasks:replace type="pear-config" from="@data_dir@" to="data_dir" />
 			</file>
-			<file name="Exception.php" role="php" />
+			<file name="ConfigException.php" role="php" />
 			<file name="Generator.php" role="php" />
 			<file name="ReflectionBase.php" role="php" />
 			<file name="ReflectionClass.php" role="php" />
@@ -179,7 +179,7 @@
 		<package>
 			<name>TokenReflection</name>
 			<channel>pear.andrewsville.cz</channel>
-			<min>1.0.2</min>
+			<min>1.1.0</min>
 		</package>
 	</required>
 	<optional>

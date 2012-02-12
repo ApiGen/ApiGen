@@ -13,17 +13,13 @@
 
 namespace ApiGen;
 
+use RuntimeException;
+
 /**
- * ApiGen exception.
+ * ApiGen configuration exception.
  *
- * This is the topmost exception class. Exceptions of this class are caught in the apigen.php script.
+ * Thrown when an invalid configuration is detected.
  */
-class Exception extends \Exception
+class ConfigException extends RuntimeException
 {
-	/**
-	 * Invalid configuration.
-	 *
-	 * @var integer
-	 */
-	const INVALID_CONFIG = 1;
 }

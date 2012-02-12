@@ -182,7 +182,7 @@ class Config
 			$message = count($unknownOptions) > 1
 				? sprintf('Unknown command line options %s', implode(', ', $originalOptions))
 				: sprintf('Unknown command line option %s', $originalOptions[0]);
-			throw new Exception($message, Exception::INVALID_CONFIG);
+			throw new ConfigException($message);
 		}
 
 		// Config file
@@ -209,7 +209,7 @@ class Config
 				$message = count($unknownOptions) > 1
 					? sprintf('Unknown config file options %s', implode(', ', $unknownOptions))
 					: sprintf('Unknown config file option %s', $unknownOptions[0]);
-				throw new Exception($message, Exception::INVALID_CONFIG);
+				throw new ConfigException($message);
 			}
 		}
 
@@ -224,11 +224,11 @@ class Config
 
 		foreach (self::$defaultConfig as $option => $valueDefinition) {
 			if (is_array($this->config[$option]) && !is_array($valueDefinition)) {
-				throw new Exception(sprintf('Option %s must be set only once', $option), Exception::INVALID_CONFIG);
+				throw new ConfigException(sprintf('Option %s must be set only once', $option));
 			}
 
 			if (is_bool($this->config[$option]) && !is_bool($valueDefinition)) {
-				throw new Exception(sprintf('Option %s expects value', $option), Exception::INVALID_CONFIG);
+				throw new ConfigException(sprintf('Option %s expects value', $option));
 			}
 
 			if (is_bool($valueDefinition)) {
@@ -338,47 +338,47 @@ class Config
 	private function check()
 	{
 		if (!empty($this->config['config']) && !is_file($this->config['config'])) {
-			throw new Exception(sprintf('Config file %s doesn\'t exist', $this->config['config']), Exception::INVALID_CONFIG);
+			throw new ConfigException(sprintf('Config file %s doesn\'t exist', $this->config['config']));
 		}
 
 		if (empty($this->config['source'])) {
-			throw new Exception('Source is not set', Exception::INVALID_CONFIG);
+			throw new ConfigException('Source is not set');
 		}
 		foreach ($this->config['source'] as $source) {
 			if (!file_exists($source)) {
-				throw new Exception(sprintf('Source %s doesn\'t exist', $source), Exception::INVALID_CONFIG);
+				throw new ConfigException(sprintf('Source %s doesn\'t exist', $source));
 			}
 		}
 		foreach ($this->config['source'] as $source) {
 			foreach ($this->config['source'] as $source2) {
 				if ($source !== $source2 && 0 === strpos($source, $source2)) {
-					throw new Exception(sprintf('Sources %s and %s overlap', $source, $source2), Exception::INVALID_CONFIG);
+					throw new ConfigException(sprintf('Sources %s and %s overlap', $source, $source2));
 				}
 			}
 		}
 
 		if (empty($this->config['destination'])) {
-			throw new Exception('Destination is not set', Exception::INVALID_CONFIG);
+			throw new ConfigException('Destination is not set');
 		}
 
 		if (!is_file($this->config['templateConfig'])) {
-			throw new Exception(sprintf('Template config %s doesn\'t exist', $this->config['templateConfig']), Exception::INVALID_CONFIG);
+			throw new ConfigException(sprintf('Template config %s doesn\'t exist', $this->config['templateConfig']));
 		}
 
 		if (!empty($this->config['baseUrl']) && !preg_match('~^https?://(?:[-a-z0-9]+\.)+[a-z]{2,6}(?:/.*)?$~i', $this->config['baseUrl'])) {
-			throw new Exception('Invalid base url', Exception::INVALID_CONFIG);
+			throw new ConfigException('Invalid base url');
 		}
 
 		if (!empty($this->config['googleCseId']) && !preg_match('~^\d{21}:[-a-z0-9]{11}$~', $this->config['googleCseId'])) {
-			throw new Exception('Invalid Google Custom Search ID', Exception::INVALID_CONFIG);
+			throw new ConfigException('Invalid Google Custom Search ID');
 		}
 
 		if (!empty($this->config['googleAnalytics']) && !preg_match('~^UA\\-\\d+\\-\\d+$~', $this->config['googleAnalytics'])) {
-			throw new Exception('Invalid Google Analytics tracking code', Exception::INVALID_CONFIG);
+			throw new ConfigException('Invalid Google Analytics tracking code');
 		}
 
 		if (empty($this->config['groups'])) {
-			throw new Exception('No supported groups value given', Exception::INVALID_CONFIG);
+			throw new ConfigException('No supported groups value given');
 		}
 
 		if (empty($this->config['autocomplete'])) {
@@ -386,7 +386,7 @@ class Config
 		}
 
 		if (empty($this->config['accessLevels'])) {
-			throw new Exception('No supported access level given', Exception::INVALID_CONFIG);
+			throw new ConfigException('No supported access level given');
 		}
 
 		return $this;
@@ -403,13 +403,13 @@ class Config
 		foreach (array('main', 'optional') as $section) {
 			foreach ($this->config['template']['templates'][$section] as $type => $config) {
 				if (!isset($config['filename'])) {
-					throw new Exception(sprintf('Filename for %s is not defined', $type), Exception::INVALID_CONFIG);
+					throw new ConfigException(sprintf('Filename for %s is not defined', $type));
 				}
 				if (!isset($config['template'])) {
-					throw new Exception(sprintf('Template for %s is not defined', $type), Exception::INVALID_CONFIG);
+					throw new ConfigException(sprintf('Template for %s is not defined', $type));
 				}
 				if (!is_file(dirname($this->config['templateConfig']) . DIRECTORY_SEPARATOR . $config['template'])) {
-					throw new Exception(sprintf('Template for %s doesn\'t exist', $type), Exception::INVALID_CONFIG);
+					throw new ConfigException(sprintf('Template for %s doesn\'t exist', $type));
 				}
 			}
 		}
