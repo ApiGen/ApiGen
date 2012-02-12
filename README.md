@@ -56,34 +56,11 @@ In order to install any PEAR package, you have to add the appropriate repository
 	pear channel-discover pear.andrewsville.cz
 ```
 
-Theoretically you should only use one command
+And then finally you can install ApiGen.
 
 ```
 	pear install apigen/ApiGen
 ```
-
-to install ApiGen, then. However things are not so easy. This would work if all required libraries were in stable versions. But Nette isn't (and that is going to change soon). Assuming you have your PEAR installer configured that it will not install non-stable packages (that is the default configuration), you have to explicitly enter each non-stable package you want to use. So you have to install Nette manually this way
-
-```
-	pear install nette/Nette-beta
-```
-
-and finally
-
-```
-	pear install apigen/ApiGen
-```
-
-When a stable version of Nette gets released, only the last command will be required and all dependencies will be downloaded by the PEAR installer automatically.
-
-If you have have installed a version older than 2.1 using PEAR you will have to uninstall it first using these commands.
-
-```
-	pear uninstall kukulich/ApiGen
-	pear uninstall kukulich/TokenReflection
-```
-
-This is required because we have moved from a temporary PEAR repository to a definitive one. So this change will be required only if you have installed ApiGen and TokenReflection library from the ```pear.kukulich.cz``` repository.
 
 ### Standalone package ###
 
