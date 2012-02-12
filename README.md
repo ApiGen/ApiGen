@@ -44,9 +44,16 @@ The preferred installation way is using the PEAR package but there are three mor
 
 PEAR is a distribution system for PHP packages. It is bundled with PHP since the 4.3 version and it is easy to use.
 
-The PEAR package contains only ApiGen itself. Its dependencies (Nette, Texy, FSHL and TokenReflection) have to be installed separately. But do not panic, the PEAR installer will take care of it (almost).
+The PEAR package contains only ApiGen itself. Its dependencies (Nette, Texy, FSHL and TokenReflection) have to be installed separately. But do not panic, the PEAR installer can take care of it.
 
-In order to install any PEAR package, you have to add the appropriate repository URL. The good news is that you have to do that only once. Using these commands you add all required repositories.
+The easiest way is to use the PEAR auto discovery feature. In that case all you have to do is to type two commands.
+
+```
+	pear config-set auto_discover 1
+	pear install pear.apigen.org/apigen
+```
+
+If you don't want to use the auto discovery, you have to add PEAR channels of all ApiGen libraries manually. In this case you can install ApiGen by typing these commands.
 
 ```
 	pear channel-discover pear.apigen.org
@@ -54,11 +61,7 @@ In order to install any PEAR package, you have to add the appropriate repository
 	pear channel-discover pear.texy.info
 	pear channel-discover pear.kukulich.cz
 	pear channel-discover pear.andrewsville.cz
-```
 
-And then finally you can install ApiGen.
-
-```
 	pear install apigen/ApiGen
 ```
 
