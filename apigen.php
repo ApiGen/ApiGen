@@ -141,7 +141,7 @@ try {
 	$generator->output(sprintf("Done. Total time: @count@%d@c seconds, used: @count@%d@c MB RAM\n", Debugger::timer(), round(memory_get_peak_usage(true) / 1024 / 1024)));
 
 } catch (\Exception $e) {
-	$invalidConfig = $e instanceof Exception && Exception::INVALID_CONFIG === $e->getCode();
+	$invalidConfig = $e instanceof ConfigException;
 	if ($invalidConfig) {
 		echo $generator->colorize($generator->getHeader());
 	}

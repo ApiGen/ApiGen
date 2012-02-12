@@ -12,7 +12,9 @@
  */
 
 namespace ApiGen;
+
 use TokenReflection, TokenReflection\IReflectionConstant, TokenReflection\IReflectionFunction, TokenReflection\Broker;
+use InvalidArgumentException, RuntimeException;
 
 /**
  * Customized TokenReflection broker backend.
@@ -98,26 +100,26 @@ class Backend extends Broker\Backend\Memory
 	{
 		try {
 			if (!$this->isFileProcessed($fileName)) {
-				throw new Exception('File was not processed');
+				throw new InvalidArgumentException('File was not processed');
 			}
 
 			$realName = Broker::getRealPath($fileName);
 			if (!isset($this->fileCache[$realName])) {
-				throw new Exception('File is not in the cache');
+				throw new InvalidArgumentException('File is not in the cache');
 			}
 
 			$data = @file_get_contents($this->fileCache[$realName]);
 			if (false === $data) {
-				throw new Exception('Cached file is not readable');
+				throw new RuntimeException('Cached file is not readable');
 			}
 			$file = @unserialize($data);
 			if (false === $file) {
-				throw new Exception('Stream could not be loaded from cache');
+				throw new RuntimeException('Stream could not be loaded from cache');
 			}
 
 			return $file;
 		} catch (\Exception $e) {
-			throw new Exception(sprintf('Could not return token stream for file %s', $fileName), 0, $e);
+			throw new RuntimeException(sprintf('Could not return token stream for file %s', $fileName), 0, $e);
 		}
 	}
 

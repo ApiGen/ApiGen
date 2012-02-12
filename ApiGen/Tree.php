@@ -11,7 +11,8 @@
  */
 
 namespace ApiGen;
-use RecursiveTreeIterator;
+
+use RecursiveTreeIterator, RuntimeException;
 
 /**
  * Customized recursive tree iterator.
@@ -83,7 +84,7 @@ class Tree extends RecursiveTreeIterator
 	{
 		$className = $this->key();
 		if (!isset($this->reflections[$className])) {
-			throw new \UnexpectedValueException(sprintf('Class "%s" is not in the reflection array', $className));
+			throw new RuntimeException(sprintf('Class "%s" is not in the reflection array', $className));
 		}
 
 		return $this->reflections[$className];
