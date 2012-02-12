@@ -15,6 +15,7 @@
 namespace ApiGen;
 
 use Nette\Diagnostics\Debugger;
+use TokenReflection;
 
 if (false === strpos('@php_dir@', '@php_dir')) {
 	// PEAR package
@@ -145,6 +146,38 @@ try {
 	echo $generator->colorize($generator->getHeader() . sprintf("\n@error@%s@c\n\n", $e->getMessage()) . $config->getHelp());
 
 	die(2);
+} catch (TokenReflection\Exception\ParseException $e) {
+	// TR library parse error
+
+	echo $generator->colorize(sprintf("\nThe TokenReflection library threw an exception while parsing the file @value@%s@c.\n", $e->getFileName()));
+	if (!empty($config) && $config->debug) {
+		echo "This can have two reasons: a) the source code in the file is not valid or b) you have just found a bug in the TokenReflection library.\n\n";
+		echo "If the license allows it please send the whole file or at least the following fragment describing where exacly is the problem along with the backtrace to apigen@apigen.org. Thank you!\n\n";
+
+		$token = $e->getToken();
+		$sender = $e->getSender();
+		if (!empty($token)) {
+			echo $generator->colorize(sprintf(
+				"The cause of the exception \"%s\" was the @value@%s@c token (line @count@%s@c) in following part of %s source code:\n\n",
+				$e->getMessage(),
+				$e->getTokenName(),
+				$e->getExceptionLine(),
+				$sender && $sender->getName() ? '@value@' . $sender->getPrettyName() . '@c' : 'the'
+			));
+		} else {
+			echo $generator->colorize(sprintf(
+				"The exception \"%s\" was thrown when processing %s source code:\n\n",
+				$e->getMessage(),
+				$sender && $sender->getName() ? '@value@' . $sender->getPrettyName() . '@c' : 'the'
+			));
+		}
+
+		echo $e->getSourcePart(true) . "\n\nThe exception backtrace is following:\n\n" . $e->getTraceAsString();
+	} else {
+		echo $generator->colorize("Please enable the debug mode (@option@--debug@c) to learn how you can help us fix this issue. Thanks.\n");
+	}
+
+	die(3);
 } catch (\Exception $e) {
 	// Everything else
 	if (!empty($config) && $config->debug) {
