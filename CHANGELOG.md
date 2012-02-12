@@ -1,3 +1,16 @@
+## ApiGen 2.5.0 ##
+
+* Added option ```--groups``` for grouping classes, interfaces, traits and exceptions in the menu
+* Added option ```--autocomplete``` for choosing elements in the search autocomplete
+* Inheriting some annotations from the file-level docblock
+* @uses annotations create a @usedby annotation in the target documentation
+* Added warning for unknown options
+* Added support of comma-separated values for @see
+* Changed all path options to be relative to the configuration file
+* Fixed dependencies check
+* Nette framework updated to 2.0.0 stable version
+* TokenReflection library updated to version 1.1.0
+
 ## ApiGen 2.4.1 ##
 
 * TokenReflection library updated to version 1.0.2
