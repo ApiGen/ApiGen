@@ -150,7 +150,7 @@ try {
 	// TR library parse error
 
 	echo $generator->colorize(sprintf("\nThe TokenReflection library threw an exception while parsing the file @value@%s@c.\n", $e->getFileName()));
-	if (!empty($config) && $config->debug) {
+	if ($config->debug) {
 		echo "This can have two reasons: a) the source code in the file is not valid or b) you have just found a bug in the TokenReflection library.\n\n";
 		echo "If the license allows it please send the whole file or at least the following fragment describing where exacly is the problem along with the backtrace to apigen@apigen.org. Thank you!\n\n";
 
@@ -184,7 +184,7 @@ try {
 	die(3);
 } catch (\Exception $e) {
 	// Everything else
-	if (!empty($config) && $config->debug) {
+	if ($config->debug) {
 		do {
 			echo $generator->colorize(sprintf("\n@error@%s@c", $e->getMessage()));
 			$trace = $e->getTraceAsString();
