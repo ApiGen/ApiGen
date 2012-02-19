@@ -382,7 +382,7 @@ class Config
 		}
 
 		if (empty($this->config['autocomplete'])) {
-			throw new Exception('No supported autocomplete value given', Exception::INVALID_CONFIG);
+			throw new ConfigException('No supported autocomplete value given');
 		}
 
 		if (empty($this->config['accessLevels'])) {
