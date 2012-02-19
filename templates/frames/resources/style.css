@@ -553,27 +553,35 @@ div.tree span.padding {
 }
 
 @media (max-width: 960px) {
+
 	#navigation {
 		height: 52px;
 	}
+
 	#navigation ul:first-child + ul {
 		clear: left;
 		border: none;
 		padding: 0;
 	}
+
 	.name, .attributes {
 		white-space: normal;
 	}
+
 }
 
 @media (max-width: 650px) {
+
 	#search {
 		float: left;
 	}
+
 	#navigation {
 		height: 78px;
 	}
+
 	#navigation ul:first-child {
 		clear: both;
 	}
+
 }

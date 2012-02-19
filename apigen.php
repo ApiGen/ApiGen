@@ -157,19 +157,23 @@ try {
 		$token = $e->getToken();
 		$sender = $e->getSender();
 		if (!empty($token)) {
-			echo $generator->colorize(sprintf(
-				"The cause of the exception \"%s\" was the @value@%s@c token (line @count@%s@c) in following part of %s source code:\n\n",
-				$e->getMessage(),
-				$e->getTokenName(),
-				$e->getExceptionLine(),
-				$sender && $sender->getName() ? '@value@' . $sender->getPrettyName() . '@c' : 'the'
-			));
+			echo $generator->colorize(
+				sprintf(
+					"The cause of the exception \"%s\" was the @value@%s@c token (line @count@%s@c) in following part of %s source code:\n\n",
+					$e->getMessage(),
+					$e->getTokenName(),
+					$e->getExceptionLine(),
+					$sender && $sender->getName() ? '@value@' . $sender->getPrettyName() . '@c' : 'the'
+				)
+			);
 		} else {
-			echo $generator->colorize(sprintf(
-				"The exception \"%s\" was thrown when processing %s source code:\n\n",
-				$e->getMessage(),
-				$sender && $sender->getName() ? '@value@' . $sender->getPrettyName() . '@c' : 'the'
-			));
+			echo $generator->colorize(
+				sprintf(
+					"The exception \"%s\" was thrown when processing %s source code:\n\n",
+					$e->getMessage(),
+					$sender && $sender->getName() ? '@value@' . $sender->getPrettyName() . '@c' : 'the'
+				)
+			);
 		}
 
 		echo $e->getSourcePart(true) . "\n\nThe exception backtrace is following:\n\n" . $e->getTraceAsString();

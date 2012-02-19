@@ -157,7 +157,7 @@ class Config
 	 * Prepares configuration.
 	 *
 	 * @return \ApiGen\Config
-	 * @throws \ApiGen\Exception If something in configuration is wrong.
+	 * @throws \ApiGen\ConfigException If something in configuration is wrong.
 	 */
 	public function prepare()
 	{
@@ -333,7 +333,7 @@ class Config
 	 * Checks configuration.
 	 *
 	 * @return \ApiGen\Config
-	 * @throws \ApiGen\Exception If something in configuration is wrong.
+	 * @throws \ApiGen\ConfigException If something in configuration is wrong.
 	 */
 	private function check()
 	{
@@ -396,7 +396,7 @@ class Config
 	 * Checks template configuration.
 	 *
 	 * @return \ApiGen\Config
-	 * @throws \ApiGen\Exception If something in template configuration is wrong.
+	 * @throws \ApiGen\ConfigException If something in template configuration is wrong.
 	 */
 	private function checkTemplate()
 	{

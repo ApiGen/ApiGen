@@ -164,7 +164,7 @@ class Generator extends Nette\Object
 	 * Scans and parses PHP files.
 	 *
 	 * @return array
-	 * @throws \ApiGen\Exception If no PHP files have been found.
+	 * @throws \RuntimeException If no PHP files have been found.
 	 */
 	public function parse()
 	{
@@ -329,7 +329,7 @@ class Generator extends Nette\Object
 	/**
 	 * Generates API documentation.
 	 *
-	 * @throws \ApiGen\Exception If destination directory is not writable.
+	 * @throws \RuntimeException If destination directory is not writable.
 	 */
 	public function generate()
 	{
@@ -682,7 +682,7 @@ class Generator extends Nette\Object
 	 * Generates list of poorly documented elements.
 	 *
 	 * @return \ApiGen\Generator
-	 * @throws \ApiGen\Exception If file isn't writable.
+	 * @throws \RuntimeException If file isn't writable.
 	 */
 	private function generateReport()
 	{
@@ -879,7 +879,7 @@ class Generator extends Nette\Object
 	 *
 	 * @param \ApiGen\Template $template Template
 	 * @return \ApiGen\Generator
-	 * @throws \ApiGen\Exception If template is not set.
+	 * @throws \RuntimeException If template is not set.
 	 */
 	private function generateDeprecated(Template $template)
 	{
@@ -938,7 +938,7 @@ class Generator extends Nette\Object
 	 *
 	 * @param \ApiGen\Template $template Template
 	 * @return \ApiGen\Generator
-	 * @throws \ApiGen\Exception If template is not set.
+	 * @throws \RuntimeException If template is not set.
 	 */
 	private function generateTodo(Template $template)
 	{
@@ -993,7 +993,7 @@ class Generator extends Nette\Object
 	 *
 	 * @param \ApiGen\Template $template Template
 	 * @return \ApiGen\Generator
-	 * @throws \ApiGen\Exception If template is not set.
+	 * @throws \RuntimeException If template is not set.
 	 */
 	private function generateTree(Template $template)
 	{
@@ -1076,7 +1076,7 @@ class Generator extends Nette\Object
 	 *
 	 * @param \ApiGen\Template $template Template
 	 * @return \ApiGen\Generator
-	 * @throws \ApiGen\Exception If template is not set.
+	 * @throws \RuntimeException If template is not set.
 	 */
 	private function generatePackages(Template $template)
 	{
@@ -1115,7 +1115,7 @@ class Generator extends Nette\Object
 	 *
 	 * @param \ApiGen\Template $template Template
 	 * @return \ApiGen\Generator
-	 * @throws \ApiGen\Exception If template is not set.
+	 * @throws \RuntimeException If template is not set.
 	 */
 	private function generateNamespaces(Template $template)
 	{
@@ -1154,7 +1154,7 @@ class Generator extends Nette\Object
 	 *
 	 * @param Template $template Template
 	 * @return \ApiGen\Generator
-	 * @throws \ApiGen\Exception If template is not set.
+	 * @throws \RuntimeException If template is not set.
 	 */
 	private function generateElements(Template $template)
 	{
@@ -1303,7 +1303,7 @@ class Generator extends Nette\Object
 	 * Creates ZIP archive.
 	 *
 	 * @return \ApiGen\Generator
-	 * @throws \ApiGen\Exception If something went wront.
+	 * @throws \RuntimeException If something went wront.
 	 */
 	private function generateArchive()
 	{
@@ -1838,7 +1838,7 @@ class Generator extends Nette\Object
 	 *
 	 * @param \ApiGen\ReflectionElement $element
 	 * @return string
-	 * @throws \ApiGen\Exception If relative path could not be determined.
+	 * @throws \InvalidArgumentException If relative path could not be determined.
 	 */
 	private function getRelativePath(ReflectionElement $element)
 	{
@@ -1907,8 +1907,8 @@ class Generator extends Nette\Object
 	/**
 	 * Checks if template exists and creates dir.
 	 *
-	 * @param mixed $name
-	 * @throws \ApiGen\Exception If template is not set.
+	 * @param string $name
+	 * @throws \RuntimeException If template is not set.
 	 */
 	private function prepareTemplate($name)
 	{

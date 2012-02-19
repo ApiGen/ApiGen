@@ -91,7 +91,7 @@ class Backend extends Broker\Backend\Memory
 	 *
 	 * @param string $fileName File name
 	 * @return \TokenReflection\Stream
-	 * @throws \ApiGen\Exception If the token stream could not be returned.
+	 * @throws \RuntimeException If the token stream could not be returned.
 	 */
 	public function getFileTokens($fileName)
 	{
