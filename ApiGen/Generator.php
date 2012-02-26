@@ -560,7 +560,7 @@ class Generator extends Nette\Object
 					}
 				}
 
-				// Add missing class types
+				// Add missing element types
 				foreach ($this->getElementTypes() as $type) {
 					if (!isset($this->packages[$packageName][$type])) {
 						$this->packages[$packageName][$type] = array();
