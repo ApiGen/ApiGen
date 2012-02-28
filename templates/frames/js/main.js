@@ -277,7 +277,7 @@ $(function() {
 			}).result(function(event, data) {
 				autocompleteFound = true;
 				var parts = data[1].split(/::|$/);
-				var page = pageHash = $.sprintf(ApiGen.config.templates.main[autocompleteFiles[data[0]]].filename, parts[0].replace(/[^\w]/g, ''));
+				var page = pageHash = $.sprintf(ApiGen.config.templates.main[autocompleteFiles[data[0]]].filename, parts[0].replace(/[^\w]/g, '.'));
 				if (parts[1]) {
 					pageHash += '#' + parts[1].replace(/([\w]+)\(\)/, '_$1');
 				}
