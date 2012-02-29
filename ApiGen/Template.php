@@ -108,7 +108,7 @@ class Template extends Nette\Templating\FileTemplate
 				$content = $parser->getTexy()->protect($content, \Texy::CONTENT_BLOCK);
 				return \TexyHtml::el('pre', $content);
 			},
-			'~<(code|pre)>(.*(?:\\n+.*)*)</\1>~Us',
+			'~<(code|pre)>(.+?)</\1>~Us',
 			'codeBlockSyntax'
 		);
 
