@@ -227,13 +227,20 @@ class Generator extends Nette\Object
 
 		$broker = new Broker(new Backend($this, !empty($this->config->report)), Broker::OPTION_DEFAULT & ~(Broker::OPTION_PARSE_FUNCTION_BODY | Broker::OPTION_SAVE_TOKEN_STREAM));
 
+		$errors = array();
+
 		foreach ($files as $fileName => $size) {
 			$content = file_get_contents($fileName);
 			$charset = $this->detectCharset($content);
 			$this->charsets[$fileName] = $charset;
 			$content = $this->toUtf($content, $charset);
 
-			$broker->processString($content, $fileName);
+			try {
+				$broker->processString($content, $fileName);
+			} catch (\Exception $e) {
+				$errors[] = $e;
+			}
+
 			$this->incrementProgressBar($size);
 		}
 
@@ -253,15 +260,16 @@ class Generator extends Nette\Object
 			return $count += (int) $element->isDocumented();
 		};
 
-		return array(
-			count($broker->getClasses(Backend::TOKENIZED_CLASSES)),
-			count($this->parsedConstants),
-			count($this->parsedFunctions),
-			count($broker->getClasses(Backend::INTERNAL_CLASSES)),
-			array_reduce($broker->getClasses(Backend::TOKENIZED_CLASSES), $documentedCounter),
-			array_reduce($this->parsedConstants->getArrayCopy(), $documentedCounter),
-			array_reduce($this->parsedFunctions->getArrayCopy(), $documentedCounter),
-			array_reduce($broker->getClasses(Backend::INTERNAL_CLASSES), $documentedCounter)
+		return (object) array(
+			'classes' => count($broker->getClasses(Backend::TOKENIZED_CLASSES)),
+			'constants' => count($this->parsedConstants),
+			'functions' => count($this->parsedFunctions),
+			'internalClasses' => count($broker->getClasses(Backend::INTERNAL_CLASSES)),
+			'documentedClasses' => array_reduce($broker->getClasses(Backend::TOKENIZED_CLASSES), $documentedCounter),
+			'documentedConstants' => array_reduce($this->parsedConstants->getArrayCopy(), $documentedCounter),
+			'documentedFunctions' => array_reduce($this->parsedFunctions->getArrayCopy(), $documentedCounter),
+			'documentedInternalClasses' => array_reduce($broker->getClasses(Backend::INTERNAL_CLASSES), $documentedCounter),
+			'errors' => $errors
 		);
 	}
 

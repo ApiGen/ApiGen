@@ -115,9 +115,59 @@ try {
 	} elseif (!empty($config->exclude)) {
 		$generator->output(sprintf("Excluding @value@%s@c\n", $config->exclude[0]));
 	}
+
 	$parsed = $generator->parse();
-	$generator->output(vsprintf("Found @count@%d@c classes, @count@%d@c constants, @count@%d@c functions and other @count@%d@c used PHP internal classes\n", array_slice($parsed, 0, 4)));
-	$generator->output(vsprintf("Documentation for @count@%d@c classes, @count@%d@c constants, @count@%d@c functions and other @count@%d@c used PHP internal classes will be generated\n", array_slice($parsed, 4, 4)));
+
+	if (count($parsed->errors) > 1) {
+		$generator->output(sprintf("@error@Found %d errors@c\n", count($parsed->errors)));
+
+		$no = 1;
+		foreach ($parsed->errors as $e) {
+
+			if ($e instanceof TokenReflection\Exception\ParseException) {
+				$generator->output(sprintf("\n@error@%d.@c The TokenReflection library threw an exception while parsing the file @value@%s@c.\n", $no, $e->getFileName()));
+				if ($config->debug) {
+					$generator->output("This can have two reasons: a) the source code in the file is not valid or b) you have just found a bug in the TokenReflection library.\n\n");
+					$generator->output("If the license allows it please send the whole file or at least the following fragment describing where exacly is the problem along with the backtrace to apigen@apigen.org. Thank you!\n\n");
+
+					$token = $e->getToken();
+					$sender = $e->getSender();
+					if (!empty($token)) {
+						$generator->output(
+							sprintf(
+								"The cause of the exception \"%s\" was the @value@%s@c token (line @count@%d@c) in following part of %s source code:\n\n",
+								$e->getMessage(),
+								$e->getTokenName(),
+								$e->getExceptionLine(),
+								$sender && $sender->getName() ? '@value@' . $sender->getPrettyName() . '@c' : 'the'
+							)
+						);
+					} else {
+						$generator->output(
+							sprintf(
+								"The exception \"%s\" was thrown when processing %s source code:\n\n",
+								$e->getMessage(),
+								$sender && $sender->getName() ? '@value@' . $sender->getPrettyName() . '@c' : 'the'
+							)
+						);
+					}
+
+					$generator->output($e->getSourcePart(true) . "\n\nThe exception backtrace is following:\n\n" . $e->getTraceAsString() . "\n");
+				} else {
+					$generator->output("Please enable the debug mode (@option@--debug@c) to learn how you can help us fix this issue. Thanks.\n");
+				}
+			} else {
+				$generator->output(sprintf("\n@error@%d.@c %s\n", $no, $e->getMessage()));
+			}
+
+			$no++;
+		}
+
+		$generator->output("\n");
+	}
+
+	$generator->output(sprintf("Found @count@%d@c classes, @count@%d@c constants, @count@%d@c functions and other @count@%d@c used PHP internal classes\n", $parsed->classes, $parsed->constants, $parsed->functions, $parsed->internalClasses));
+	$generator->output(sprintf("Documentation for @count@%d@c classes, @count@%d@c constants, @count@%d@c functions and other @count@%d@c used PHP internal classes will be generated\n", $parsed->documentedClasses, $parsed->documentedConstants, $parsed->documentedFunctions, $parsed->documentedInternalClasses));
 
 	// Generating
 	$generator->output(sprintf("Using template config file @value@%s@c\n", $config->templateConfig));
@@ -146,42 +196,6 @@ try {
 	echo $generator->colorize($generator->getHeader() . sprintf("\n@error@%s@c\n\n", $e->getMessage()) . $config->getHelp());
 
 	die(2);
-} catch (TokenReflection\Exception\ParseException $e) {
-	// TR library parse error
-
-	echo $generator->colorize(sprintf("\nThe TokenReflection library threw an exception while parsing the file @value@%s@c.\n", $e->getFileName()));
-	if ($config->debug) {
-		echo "This can have two reasons: a) the source code in the file is not valid or b) you have just found a bug in the TokenReflection library.\n\n";
-		echo "If the license allows it please send the whole file or at least the following fragment describing where exacly is the problem along with the backtrace to apigen@apigen.org. Thank you!\n\n";
-
-		$token = $e->getToken();
-		$sender = $e->getSender();
-		if (!empty($token)) {
-			echo $generator->colorize(
-				sprintf(
-					"The cause of the exception \"%s\" was the @value@%s@c token (line @count@%s@c) in following part of %s source code:\n\n",
-					$e->getMessage(),
-					$e->getTokenName(),
-					$e->getExceptionLine(),
-					$sender && $sender->getName() ? '@value@' . $sender->getPrettyName() . '@c' : 'the'
-				)
-			);
-		} else {
-			echo $generator->colorize(
-				sprintf(
-					"The exception \"%s\" was thrown when processing %s source code:\n\n",
-					$e->getMessage(),
-					$sender && $sender->getName() ? '@value@' . $sender->getPrettyName() . '@c' : 'the'
-				)
-			);
-		}
-
-		echo $e->getSourcePart(true) . "\n\nThe exception backtrace is following:\n\n" . $e->getTraceAsString();
-	} else {
-		echo $generator->colorize("Please enable the debug mode (@option@--debug@c) to learn how you can help us fix this issue. Thanks.\n");
-	}
-
-	die(3);
 } catch (\Exception $e) {
 	// Everything else
 	if ($config->debug) {
