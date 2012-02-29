@@ -71,6 +71,16 @@ class Template extends Nette\Templating\FileTemplate
 		$this->texy->allowed['typography'] = false;
 		$this->texy->linkModule->shorten = false;
 		// Highlighting <code>, <pre>
+		$this->texy->addHandler('beforeParse', function($texy, &$text, $singleLine) {
+			$text = preg_replace('~<code>(.+?)</code>~', '#code#\\1#/code#', $text);
+		});
+		$this->texy->registerLinePattern(
+			function($parser, $matches, $name) use ($fshl) {
+				return \TexyHtml::el('code', $fshl->highlight($matches[1]));
+			},
+			'~#code#(.+?)#/code#~',
+			'codeInlineSyntax'
+		);
 		$this->texy->registerBlockPattern(
 			function($parser, $matches, $name) use ($fshl) {
 				if ('code' === $matches[1]) {
@@ -108,7 +118,7 @@ class Template extends Nette\Templating\FileTemplate
 				$content = $parser->getTexy()->protect($content, \Texy::CONTENT_BLOCK);
 				return \TexyHtml::el('pre', $content);
 			},
-			'~<(code|pre)>(.+?)</\1>~Us',
+			'~<(code|pre)>(.+?)</\1>~s',
 			'codeBlockSyntax'
 		);
 
