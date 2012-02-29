@@ -102,6 +102,34 @@ abstract class ReflectionElement extends ReflectionBase
 	}
 
 	/**
+	 * Returns if the element is in package.
+	 *
+	 * @return boolean
+	 */
+	public function inPackage()
+	{
+		return '' !== $this->getPackageName();
+	}
+
+	/**
+	 * Returns element package name (including subpackage name).
+	 *
+	 * @return string
+	 */
+	public function getPackageName()
+	{
+		if ($package = $this->getAnnotation('package')) {
+			$packageName = preg_replace('~\s+.*~s', '', $package[0]);
+			if ($subpackage = $this->getAnnotation('subpackage')) {
+				$packageName .= '\\' . preg_replace('~\s+.*~s', '', $subpackage[0]);
+			}
+			return strtr($packageName, '._', '\\\\');
+		}
+
+		return '';
+	}
+
+	/**
 	 * Returns element package name (including subpackage name).
 	 *
 	 * For internal elements returns "PHP", for elements in global space returns "None".
@@ -114,15 +142,7 @@ abstract class ReflectionElement extends ReflectionBase
 			return 'PHP';
 		}
 
-		if ($package = $this->getAnnotation('package')) {
-			$packageName = preg_replace('~\s+.*~s', '', $package[0]);
-			if ($subpackage = $this->getAnnotation('subpackage')) {
-				$packageName .= '\\' . preg_replace('~\s+.*~s', '', $subpackage[0]);
-			}
-			return $packageName;
-		}
-
-		return 'None';
+		return $this->getPackageName() ?: 'None';
 	}
 
 	/**

@@ -84,6 +84,7 @@ the file LICENSE.md that was distributed with this source code.
 		{if !$class->interface && !$class->trait && ($class->abstract || $class->final)}<b>{if $class->abstract}Abstract{else}Final{/if}</b><br>{/if}
 		{if $class->internal}<b>PHP Extension:</b> <a href="{$class->extension|manualUrl}" target="_parent" title="Go to PHP documentation">{$class->extension->name|firstUpper}</a><br>{/if}
 		{if $class->inNamespace()}<b>Namespace:</b> {!$class->namespaceName|namespaceLinks}<br>{/if}
+		{if $class->inPackage()}<b>Package:</b> {!$class->packageName|packageLinks}<br>{/if}
 
 		{foreach $template->annotationSort($template->annotationFilter($class->annotations)) as $annotation => $values}
 			{foreach $values as $value}

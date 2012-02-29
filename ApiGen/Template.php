@@ -108,7 +108,7 @@ class Template extends Nette\Templating\FileTemplate
 				$content = $parser->getTexy()->protect($content, \Texy::CONTENT_BLOCK);
 				return \TexyHtml::el('pre', $content);
 			},
-			'~<(code|pre)>(.+?)</\1>~s',
+			'~<(code|pre)>(.*(?:\\n+.*)*)</\1>~Us',
 			'codeBlockSyntax'
 		);
 
@@ -139,27 +139,14 @@ class Template extends Nette\Templating\FileTemplate
 		$this->registerHelper('sourceUrl', new Nette\Callback($this, 'getSourceUrl'));
 		$this->registerHelper('manualUrl', new Nette\Callback($this, 'getManualUrl'));
 
-		// Packages
-		$this->registerHelper('packageName', function($packageName) {
-			if ($pos = strpos($packageName, '\\')) {
-				return substr($packageName, 0, $pos);
-			}
-			return $packageName;
-		});
-		$this->registerHelper('subpackageName', function($packageName) {
-			if ($pos = strpos($packageName, '\\')) {
-				return substr($packageName, $pos + 1);
-			}
-			return '';
-		});
-
-		// Namespaces
+		// Packages & namespaces
+		$this->registerHelper('packageLinks', new Nette\Callback($this, 'getPackageLinks'));
 		$this->registerHelper('namespaceLinks', new Nette\Callback($this, 'getNamespaceLinks'));
-		$this->registerHelper('subnamespaceName', function($namespaceName) {
-			if ($pos = strrpos($namespaceName, '\\')) {
-				return substr($namespaceName, $pos + 1);
+		$this->registerHelper('subgroupName', function($groupName) {
+			if ($pos = strrpos($groupName, '\\')) {
+				return substr($groupName, $pos + 1);
 			}
-			return $namespaceName;
+			return $groupName;
 		});
 
 		// Types
@@ -201,24 +188,6 @@ class Template extends Nette\Templating\FileTemplate
 				case 'throws':
 					$description = $that->description($value, $context);
 					return sprintf('<code>%s</code>%s', $that->getTypeLinks($value, $context), $description ? '<br>' . $description : '');
-				case 'package':
-					list($packageName, $description) = $that->split($value);
-					if ($that->packages) {
-						return $that->link($that->getPackageUrl($packageName), $packageName) . ' ' . $that->doc($description, $context);
-					}
-					break;
-				case 'subpackage':
-					if ($context->hasAnnotation('package')) {
-						list($packageName) = $that->split($context->annotations['package'][0]);
-					} else {
-						$packageName = '';
-					}
-					list($subpackageName, $description) = $that->split($value);
-
-					if ($that->packages && $packageName) {
-						return $that->link($that->getPackageUrl($packageName . '\\' . $subpackageName), $subpackageName) . ' ' . $that->doc($description, $context);
-					}
-					break;
 				case 'see':
 					$doc = array();
 					foreach (preg_split('~\\s*,\\s*~', $value) as $link) {
@@ -248,9 +217,10 @@ class Template extends Nette\Templating\FileTemplate
 		$todo = $this->config->todo;
 		$internal = $this->config->internal;
 		$this->registerHelper('annotationFilter', function(array $annotations, array $filter = array()) use ($todo, $internal) {
-			// Unsupported or deprecated annotations
+			// Filtered, unsupported or deprecated annotations
 			static $unsupported = array(
-				'property', 'property-read', 'property-write', 'method', 'abstract', 'access', 'final', 'filesource', 'global', 'name', 'static', 'staticvar'
+				'package', 'subpackage', 'property', 'property-read', 'property-write', 'method', 'abstract',
+				'access', 'final', 'filesource', 'global', 'name', 'static', 'staticvar'
 			);
 			foreach ($unsupported as $annotation) {
 				unset($annotations[$annotation]);
@@ -277,9 +247,9 @@ class Template extends Nette\Templating\FileTemplate
 		$this->registerHelper('annotationSort', function(array $annotations) {
 			uksort($annotations, function($one, $two) {
 				static $order = array(
-					'deprecated' => 0, 'category' => 1, 'package' => 2, 'subpackage' => 3, 'copyright' => 4,
-					'license' => 5, 'author' => 6, 'version' => 7, 'since' => 8, 'see' => 9, 'uses' => 10,
-					'usedby' => 11, 'link' => 12, 'internal' => 13, 'example' => 14, 'tutorial' => 15, 'todo' => 16
+					'deprecated' => 0, 'category' => 1, 'copyright' => 2, 'license' => 3, 'author' => 4, 'version' => 5,
+					'since' => 6, 'see' => 7, 'uses' => 8, 'usedby' => 9, 'link' => 10, 'internal' => 11,
+					'example' => 12, 'tutorial' => 13, 'todo' => 14
 				);
 
 				if (isset($order[$one], $order[$two])) {
@@ -372,6 +342,32 @@ class Template extends Nette\Templating\FileTemplate
 		}
 
 		return implode('|', $links);
+	}
+
+	/**
+	 * Returns links for package/namespace and its parent packages.
+	 *
+	 * @param string $package
+	 * @param boolean $last
+	 * @return string
+	 */
+	public function getPackageLinks($package, $last = true)
+	{
+		if (empty($this->packages)) {
+			return $package;
+		}
+
+		$links = array();
+
+		$parent = '';
+		foreach (explode('\\', $package) as $part) {
+			$parent = ltrim($parent . '\\' . $part, '\\');
+			$links[] = $last || $parent !== $package
+				? $this->link($this->getPackageUrl($parent), $part)
+				: $this->escapeHtml($part);
+		}
+
+		return implode('\\', $links);
 	}
 
 	/**

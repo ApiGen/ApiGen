@@ -23,6 +23,7 @@ the file LICENSE.md that was distributed with this source code.
 
 	<div class="info">
 		{if $function->inNamespace()}<b>Namespace:</b> {!$function->namespaceName|namespaceLinks}<br>{/if}
+		{if $function->inPackage()}<b>Package:</b> {!$function->packageName|packageLinks}<br>{/if}
 		{foreach $template->annotationSort($template->annotationFilter($function->annotations, array('param', 'return', 'throws'))) as $annotation => $values}
 			{foreach $values as $value}
 				<b>{$annotation|annotationBeautify}{if $value}:{/if}</b>

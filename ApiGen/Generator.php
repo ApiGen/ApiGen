@@ -1091,7 +1091,7 @@ class Generator extends Nette\Object
 		foreach ($this->packages as $packageName => $package) {
 			$template->package = $packageName;
 			$template->subpackages = array_filter($template->packages, function($subpackageName) use ($packageName) {
-				return 0 === strpos($subpackageName, $packageName . '\\');
+				return (bool) preg_match('~^' . preg_quote($packageName) . '\\\\[^\\\\]+$~', $subpackageName);
 			});
 			$template->classes = $package['classes'];
 			$template->interfaces = $package['interfaces'];
