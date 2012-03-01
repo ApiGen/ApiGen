@@ -198,6 +198,15 @@ class Template extends Nette\Templating\FileTemplate
 				case 'throws':
 					$description = $that->description($value, $context);
 					return sprintf('<code>%s</code>%s', $that->getTypeLinks($value, $context), $description ? '<br>' . $description : '');
+				case 'license':
+					list($url, $description) = $that->split($value);
+					return $that->link($url, $description ?: $url);
+				case 'link':
+					list($url, $description) = $that->split($value);
+					if (Nette\Utils\Validators::isUrl($url)) {
+						return $that->link($url, $description ?: $url);
+					}
+					break;
 				case 'see':
 					$doc = array();
 					foreach (preg_split('~\\s*,\\s*~', $value) as $link) {
@@ -640,6 +649,11 @@ class Template extends Nette\Templating\FileTemplate
 	{
 		$that = $this;
 		return preg_replace_callback('~{@(?:link|see)\\s+([^}]+)}~', function ($matches) use ($context, $that) {
+			// Texy already added <a> so it has to be stripped
+			list($url, $description) = $that->split(strip_tags($matches[1]));
+			if (Nette\Utils\Validators::isUrl($url)) {
+				return $that->link($url, $description ?: $url);
+			}
 			return $that->resolveLink($matches[1], $context) ?: $matches[1];
 		}, $text);
 	}
