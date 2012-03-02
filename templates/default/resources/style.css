@@ -159,17 +159,17 @@ code a b {
 	background: url('collapsed.png') #ffffff 0 0 no-repeat;
 }
 
-/*#menu #groups span:hover {
+#menu #groups span:hover {
 	background-position: -12px 0;
-}*/
+}
 
 #menu #groups span.collapsed {
 	background-position: 0 -12px;
 }
 
-/*#menu #groups span.collapsed:hover {
+#menu #groups span.collapsed:hover {
 	background-position: -12px -12px;
-}*/
+}
 
 #menu #groups ul.collapsed {
 	display: none;
