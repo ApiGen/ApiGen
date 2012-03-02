@@ -133,6 +133,11 @@ code a b {
 	position: relative;
 }
 
+#menu a {
+	display: block;
+	padding: 1px 4px;
+}
+
 #menu .active > a, #menu > span {
 	color: #333333;
 	background: none;
@@ -145,8 +150,8 @@ code a b {
 
 #menu #groups span {
 	position: absolute;
-	top: 4px;
-	right: 0;
+	top: 5px;
+	right: 4px;
 	cursor: pointer;
 	display: block;
 	width: 12px;
