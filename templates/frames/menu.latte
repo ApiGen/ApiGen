@@ -31,9 +31,9 @@ the file LICENSE.md that was distributed with this source code.
 		<h3>Namespaces</h3>
 		<ul>
 			{foreach $namespaces as $item}
-			<li n:class="$config->main && 0 === strpos($item, $config->main) ? main"><a href="{$item|namespaceUrl}" target="right" rel="{$item|urlize}">{$item|subnamespaceName}</a>
+			<li n:class="$namespace === $item || 0 === strpos($namespace, $item . '\\') ? active, $config->main && 0 === strpos($item, $config->main) ? main">
+				<a href="{$item|namespaceUrl}">{$item|subnamespaceName}{if substr_count($iterator->nextValue, '\\') > substr_count($item, '\\')}<span></span>{/if}</a>
 				{if substr_count($iterator->nextValue, '\\') > substr_count($item, '\\')}
-					<span></span>
 					<ul>
 				{else}
 					</li>
@@ -47,9 +47,9 @@ the file LICENSE.md that was distributed with this source code.
 		<h3>Packages</h3>
 		<ul>
 			{foreach $packages as $item}
-			<li n:class="$config->main && 0 === strpos($item, $config->main) ? main"><a href="{$item|packageUrl}" target="right" rel="{$item|urlize}">{$template->subpackageName($item) ?: $item}</a>
+			<li n:class="$package === $item || 0 === strpos($package, $item . '\\') ? active, $config->main && 0 === strpos($item, $config->main) ? main">
+				<a href="{$item|packageUrl}">{$template->subpackageName($item) ?: $item}{if substr_count($iterator->nextValue, '\\') > substr_count($item, '\\')}<span></span>{/if}</a>
 				{if substr_count($iterator->nextValue, '\\') > substr_count($item, '\\')}
-					<span></span>
 					<ul>
 				{else}
 					</li>

@@ -142,6 +142,11 @@ code a b {
 	position: relative;
 }
 
+#menu a {
+	display: block;
+	padding: 1px 4px;
+}
+
 #menu .active > a {
 	color: #333333;
 	background: none;
@@ -154,8 +159,8 @@ code a b {
 
 #menu #groups span {
 	position: absolute;
-	top: 4px;
-	right: 0;
+	top: 5px;
+	right: 4px;
 	cursor: pointer;
 	display: block;
 	width: 12px;
@@ -163,17 +168,17 @@ code a b {
 	background: url('collapsed.png') #ffffff 0 0 no-repeat;
 }
 
-#menu #groups span:hover {
+/*#menu #groups span:hover {
 	background-position: -12px 0;
-}
+}*/
 
 #menu #groups span.collapsed {
 	background-position: 0 -12px;
 }
 
-#menu #groups span.collapsed:hover {
+/*#menu #groups span.collapsed:hover {
 	background-position: -12px -12px;
-}
+}*/
 
 #menu #groups ul.collapsed {
 	display: none;
