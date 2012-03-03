@@ -41,4 +41,18 @@ class ReflectionProperty extends ReflectionElement
 		$traitName = $this->reflection->getDeclaringTraitName();
 		return null === $traitName ? null : self::$parsedClasses[$traitName];
 	}
+
+	/**
+	 * Returns if the property is valid.
+	 *
+	 * @return boolean
+	 */
+	public function isValid()
+	{
+		if ($class = $this->getDeclaringClass()) {
+			return $class->isValid();
+		}
+
+		return true;
+	}
 }

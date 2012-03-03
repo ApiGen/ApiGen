@@ -32,6 +32,24 @@ class ReflectionConstant extends ReflectionElement
 	}
 
 	/**
+	 * Returns if the constant is valid.
+	 *
+	 * @return boolean
+	 */
+	public function isValid()
+	{
+		if ($this->reflection instanceof \TokenReflection\Invalid\ReflectionConstant) {
+			return false;
+		}
+
+		if ($class = $this->getDeclaringClass()) {
+			return $class->isValid();
+		}
+
+		return true;
+	}
+
+	/**
 	 * Returns if the constant should be documented.
 	 *
 	 * @return boolean

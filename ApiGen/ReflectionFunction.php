@@ -21,6 +21,20 @@ namespace ApiGen;
 class ReflectionFunction extends ReflectionFunctionBase
 {
 	/**
+	 * Returns if the function is valid.
+	 *
+	 * @return boolean
+	 */
+	public function isValid()
+	{
+		if ($this->reflection instanceof \TokenReflection\Invalid\ReflectionFunction) {
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
 	 * Returns if the function should be documented.
 	 *
 	 * @return boolean

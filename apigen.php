@@ -119,15 +119,15 @@ try {
 	$parsed = $generator->parse();
 
 	if (count($parsed->errors) > 1) {
-		$generator->output(sprintf("@error@Found %d errors@c\n", count($parsed->errors)));
+		$generator->output(sprintf("@error@Found %d errors@c\n\n", count($parsed->errors)));
 
 		$no = 1;
 		foreach ($parsed->errors as $e) {
 
 			if ($e instanceof TokenReflection\Exception\ParseException) {
-				$generator->output(sprintf("\n@error@%d.@c The TokenReflection library threw an exception while parsing the file @value@%s@c.\n", $no, $e->getFileName()));
+				$generator->output(sprintf("@error@%d.@c The TokenReflection library threw an exception while parsing the file @value@%s@c.\n", $no, $e->getFileName()));
 				if ($config->debug) {
-					$generator->output("This can have two reasons: a) the source code in the file is not valid or b) you have just found a bug in the TokenReflection library.\n\n");
+					$generator->output("\nThis can have two reasons: a) the source code in the file is not valid or b) you have just found a bug in the TokenReflection library.\n\n");
 					$generator->output("If the license allows it please send the whole file or at least the following fragment describing where exacly is the problem along with the backtrace to apigen@apigen.org. Thank you!\n\n");
 
 					$token = $e->getToken();
@@ -152,18 +152,31 @@ try {
 						);
 					}
 
-					$generator->output($e->getSourcePart(true) . "\n\nThe exception backtrace is following:\n\n" . $e->getTraceAsString() . "\n");
-				} else {
-					$generator->output("Please enable the debug mode (@option@--debug@c) to learn how you can help us fix this issue. Thanks.\n");
+					$generator->output($e->getSourcePart(true) . "\n\nThe exception backtrace is following:\n\n" . $e->getTraceAsString() . "\n\n");
+				}
+			} elseif ($e instanceof TokenReflection\Exception\FileProcessingException) {
+				$generator->output(sprintf("@error@%d.@c %s\n", $no, $e->getMessage()));
+				if ($config->debug) {
+					$generator->output("\n" . $e->getDetail() . "\n\n");
 				}
 			} else {
-				$generator->output(sprintf("\n@error@%d.@c %s\n", $no, $e->getMessage()));
+				$generator->output(sprintf("@error@%d.@c %s\n", $no, $e->getMessage()));
+				if ($config->debug) {
+					$trace = $e->getTraceAsString();
+					while ($e = $e->getPrevious()) {
+						$generator->output(sprintf("\n%s", $e->getMessage()));
+						$trace = $e->getTraceAsString();
+					}
+					$generator->output(sprintf("\n%s\n\n", $trace));
+				}
 			}
 
 			$no++;
 		}
 
-		$generator->output("\n");
+		if (!$config->debug) {
+			$generator->output("\nEnable the debug mode (@option@--debug@c) to see more details.\n\n");
+		}
 	}
 
 	$generator->output(sprintf("Found @count@%d@c classes, @count@%d@c constants, @count@%d@c functions and other @count@%d@c used PHP internal classes\n", $parsed->classes, $parsed->constants, $parsed->functions, $parsed->internalClasses));

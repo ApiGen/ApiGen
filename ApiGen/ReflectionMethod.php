@@ -63,4 +63,18 @@ class ReflectionMethod extends ReflectionFunctionBase
 		$originalName = $this->reflection->getOriginalName();
 		return null === $originalName ? null : self::$parsedClasses[$this->reflection->getOriginal()->getDeclaringClassName()]->getMethod($originalName);
 	}
+
+	/**
+	 * Returns if the method is valid.
+	 *
+	 * @return boolean
+	 */
+	public function isValid()
+	{
+		if ($class = $this->getDeclaringClass()) {
+			return $class->isValid();
+		}
+
+		return true;
+	}
 }

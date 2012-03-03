@@ -17,6 +17,8 @@ the file LICENSE.md that was distributed with this source code.
 <div id="content" class="constant">
 	<h1>{if $constant->deprecated}Deprecated {/if}Constant {$constant->shortName}</h1>
 
+	{if $constant->valid}
+
 	<div class="description" n:if="$template->longDescription($constant)">
 	{!$constant|longDescription}
 	</div>
@@ -30,7 +32,7 @@ the file LICENSE.md that was distributed with this source code.
 				{!$value|annotation:$annotation:$constant}<br>
 			{/foreach}
 		{/foreach}
-		<b>Located at</b> <a n:tag-if="$config->sourceCode" href="{$constant|sourceUrl}" title="Go to source code">{$fileName}</a><br>
+		<b>Located at</b> <a n:tag-if="$config->sourceCode" href="{$constant|sourceUrl}" title="Go to source code">{$constant->fileName|relativePath}</a><br>
 	</div>
 
 	{var $annotations = $constant->annotations}
@@ -48,5 +50,19 @@ the file LICENSE.md that was distributed with this source code.
 		<td>{ifset $annotations['var']}{!$annotations['var'][0]|description:$constant}{/ifset}</td>
 	</tr>
 	</table>
+
+	{else}
+		<div class="invalid">
+			<p>
+				Documentation of this constant could not be generated.
+			</p>
+			<p>
+				Constant was firstly declared in {$constant->fileName|relativePath} and is invalid because of:
+			</p>
+			<ul>
+				<li n:foreach="$constant->reasons as $reason">Constant was redeclared in {$reason->getSender()->getFileName()|relativePath}.</li>
+			</ul>
+		</div>
+	{/if}
 </div>
 {/block}

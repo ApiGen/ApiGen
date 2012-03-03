@@ -105,6 +105,22 @@ code a b {
 	color: #000000;
 }
 
+.deprecated {
+	opacity: .5;
+}
+
+.deprecated:hover {
+	opacity: 1;
+}
+
+.invalid, .invalid a {
+	color: #e71818;
+}
+
+.hidden {
+	display: none;
+}
+
 /* Left side */
 #left {
 	overflow: auto;
@@ -137,6 +153,10 @@ code a b {
 	color: #333333;
 	background: none;
 	font-weight: bold;
+}
+
+#menu .active.invalid > a {
+	color: #e71818;
 }
 
 #menu .active > a:hover, #menu .active > a:active, #menu .active > a:focus {
@@ -429,16 +449,9 @@ td.name, td.attributes {
 	margin: 0 0 5px 25px;
 }
 
-.deprecated {
-	opacity: .5;
-}
-
-.deprecated:hover {
-	opacity: 1;
-}
-
-.hidden {
-	display: none;
+div.invalid {
+	background-color: #fae4e0;
+	padding: 10px;
 }
 
 /* Splitter */

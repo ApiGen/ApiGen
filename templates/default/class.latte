@@ -17,6 +17,8 @@ the file LICENSE.md that was distributed with this source code.
 <div id="content" class="class">
 	<h1>{if $class->deprecated}Deprecated {/if}{if $class->interface}Interface{elseif $class->trait}Trait{else}Class{/if} {$class->shortName}</h1>
 
+	{if $class->valid}
+
 	<div class="description" n:if="$template->longDescription($class)">
 	{!$class|longDescription}
 	</div>
@@ -25,15 +27,15 @@ the file LICENSE.md that was distributed with this source code.
 		<dd n:foreach="$tree as $item" style="padding-left:{($iterator->counter - 1) * 30}px">
 			<img src="resources/inherit.png" alt="Extended by" n:if="$iterator->counter > 1">
 			{if $item->documented}
-			<a href="{$item|classUrl}" n:tag-if="!$iterator->last">{last}<b>{/last}{$item->name}{last}</b>{/last}</a>
+			<a href="{$item|classUrl}" n:tag-if="!$iterator->last" n:class="!$item->valid ? invalid">{last}<b>{/last}{$item->name}{last}</b>{/last}</a>
 			{else}{$item->name}{/if}
 			{var $itemOwnInterfaces = $item->ownInterfaces}
 			{if $itemOwnInterfaces} implements {foreach $itemOwnInterfaces as $interface}
-				<a href="{$interface|classUrl}" n:tag-if="$interface->documented">{$interface->name}</a>{sep}, {/sep}
+				<a href="{$interface|classUrl}" n:tag-if="$interface->documented" n:class="!$interface->valid ? invalid">{$interface->name}</a>{sep}, {/sep}
 			{/foreach}{/if}
 			{var $itemOwnTraits = $item->ownTraits}
 			{if $itemOwnTraits} uses {foreach $itemOwnTraits as $trait}
-				<a href="{$trait|classUrl}" n:tag-if="$trait->documented">{$trait->name}</a>{sep}, {/sep}
+				<a href="{$trait|classUrl}" n:tag-if="$trait->documented" n:class="!$trait->valid ? invalid">{$trait->name}</a>{sep}, {/sep}
 			{/foreach}{/if}
 		</dd>
 	</dl>
@@ -92,7 +94,7 @@ the file LICENSE.md that was distributed with this source code.
 				{!$value|annotation:$annotation:$class}<br>
 			{/foreach}
 		{/foreach}
-		{if $class->internal}<b>Documented at</b> <a href="{$class|manualUrl}" title="Go to PHP documentation">php.net</a>{else}<b>Located at</b> <a n:tag-if="$config->sourceCode" href="{$class|sourceUrl}" title="Go to source code">{$fileName}</a>{/if}<br>
+		{if $class->internal}<b>Documented at</b> <a href="{$class|manualUrl}" title="Go to PHP documentation">php.net</a>{else}<b>Located at</b> <a n:tag-if="$config->sourceCode" href="{$class|sourceUrl}" title="Go to source code">{$class->fileName|relativePath}</a>{/if}<br>
 	</div>
 
 
@@ -119,7 +121,7 @@ the file LICENSE.md that was distributed with this source code.
 			{/if}
 			{foreach $method->parameters as $parameter}
 				<span>{if $parameter->array}array
-				{elseif $parameter->className}<a href="{$parameter->className|classUrl}" n:tag-if="$template->getClass($parameter->className)">{$parameter->className}</a>
+				{elseif $parameter->className}{var $element = $template->getClass($parameter->className)}<a href="{$parameter->className|classUrl}" n:tag-if="$element" n:class="!$element->valid ? invalid">{$parameter->className}</a>
 				{elseif isset($annotations['param'][$parameter->position])}{!$annotations['param'][$parameter->position]|typeLinks:$parameter}{/if}
 				<var>{if $parameter->passedByReference}&amp; {/if}${$parameter->name}</var>{if $parameter->defaultValueAvailable} = {!$parameter->defaultValueDefinition|highlightPHP:$class}{/if}</span>{sep}, {/sep}
 			{/foreach}
@@ -344,5 +346,19 @@ the file LICENSE.md that was distributed with this source code.
 		</code></td>
 	</tr>
 	</table>
+
+	{else}
+		<div class="invalid">
+			<p>
+				Documentation of this class could not be generated.
+			</p>
+			<p>
+				Class was firstly declared in {$class->fileName|relativePath} and is invalid because of:
+			</p>
+			<ul>
+				<li n:foreach="$class->reasons as $reason">Class was redeclared in {$reason->getSender()->getFileName()|relativePath}.</li>
+			</ul>
+		</div>
+	{/if}
 </div>
 {/block}

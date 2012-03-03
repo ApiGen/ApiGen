@@ -313,6 +313,7 @@ class Template extends Nette\Templating\FileTemplate
 
 		$this->registerHelper('urlize', array($this, 'urlize'));
 
+		$this->registerHelper('relativePath', array($generator, 'getRelativePath'));
 		$this->registerHelper('resolveElement', array($generator, 'resolveElement'));
 		$this->registerHelper('getClass', array($generator, 'getClass'));
 	}
@@ -610,15 +611,20 @@ class Template extends Nette\Templating\FileTemplate
 			return null;
 		}
 
+		$classes = array();
+		if (!$element->isValid()) {
+			$classes[] = 'invalid';
+		}
+
 		if ($element instanceof ReflectionClass) {
-			$link = $this->link($this->getClassUrl($element), $element->getName());
+			$link = $this->link($this->getClassUrl($element), $element->getName(), true, $classes);
 		} elseif ($element instanceof ReflectionConstant && null === $element->getDeclaringClassName()) {
 			$text = $element->inNamespace()
 				? $this->escapeHtml($element->getNamespaceName()) . '\\<b>' . $this->escapeHtml($element->getShortName()) . '</b>'
 				: '<b>' . $this->escapeHtml($element->getName()) . '</b>';
-			$link = $this->link($this->getConstantUrl($element), $text, false);
+			$link = $this->link($this->getConstantUrl($element), $text, false, $classes);
 		} elseif ($element instanceof ReflectionFunction) {
-			$link = $this->link($this->getFunctionUrl($element), $element->getName() . '()');
+			$link = $this->link($this->getFunctionUrl($element), $element->getName() . '()', true, $classes);
 		} else {
 			$text = $this->escapeHtml($element->getDeclaringClassName());
 			if ($element instanceof ReflectionProperty) {
@@ -632,7 +638,7 @@ class Template extends Nette\Templating\FileTemplate
 				$text .= '::<b>' . $this->escapeHtml($element->getName()) . '</b>';
 			}
 
-			$link = $this->link($url, $text, false);
+			$link = $this->link($url, $text, false, $classes);
 		}
 
 		return sprintf('<code>%s</code>', $link . $suffix);
@@ -706,11 +712,13 @@ class Template extends Nette\Templating\FileTemplate
 	 * @param string $url
 	 * @param string $text
 	 * @param boolean $escape If the text should be escaped
+	 * @param array $classes List of classes
 	 * @return string
 	 */
-	public function link($url, $text, $escape = true)
+	public function link($url, $text, $escape = true, array $classes = array())
 	{
-		return sprintf('<a href="%s">%s</a>', $url, $escape ? $this->escapeHtml($text) : $text);
+		$class = !empty($classes) ? sprintf(' class="%s"', implode(' ', $classes)) : '';
+		return sprintf('<a href="%s"%s>%s</a>', $url, $class, $escape ? $this->escapeHtml($text) : $text);
 	}
 
 	/**

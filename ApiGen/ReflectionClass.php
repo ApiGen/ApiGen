@@ -855,6 +855,20 @@ class ReflectionClass extends ReflectionElement
 	}
 
 	/**
+	 * Returns if the class is valid.
+	 *
+	 * @return boolean
+	 */
+	public function isValid()
+	{
+		if ($this->reflection instanceof TokenReflection\Invalid\ReflectionClass) {
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
 	 * Returns if the class should be documented.
 	 *
 	 * @return boolean

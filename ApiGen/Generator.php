@@ -1238,11 +1238,6 @@ class Generator extends Nette\Object
 					$template->functions = $this->packages[$packageName]['functions'];
 				}
 
-				$template->fileName = null;
-				if ($element->isTokenized()) {
-					$template->fileName = $this->getRelativePath($element);
-				}
-
 				$template->class = null;
 				$template->constant = null;
 				$template->function = null;
@@ -1294,6 +1289,7 @@ class Generator extends Nette\Object
 
 				// Generate source codes
 				if ($this->config->sourceCode && $element->isTokenized()) {
+					$template->fileName = $this->getRelativePath($element->getFileName());
 					$template->source = $fshl->highlight($this->toUtf(file_get_contents($element->getFileName()), $this->charsets[$element->getFileName()]));
 					$template
 						->setFile($this->getTemplatePath('source'))
@@ -1842,15 +1838,14 @@ class Generator extends Nette\Object
 	}
 
 	/**
-	 * Returns element relative path to the source directory.
+	 * Returns filename relative path to the source directory.
 	 *
-	 * @param \ApiGen\ReflectionElement $element
+	 * @param string $fileName
 	 * @return string
 	 * @throws \InvalidArgumentException If relative path could not be determined.
 	 */
-	private function getRelativePath(ReflectionElement $element)
+	public function getRelativePath($fileName)
 	{
-		$fileName = $element->getFileName();
 		if (isset($this->symlinks[$fileName])) {
 			$fileName = $this->symlinks[$fileName];
 		}
@@ -1863,7 +1858,7 @@ class Generator extends Nette\Object
 			}
 		}
 
-		throw new InvalidArgumentException(sprintf('Could not determine element %s relative path', $element->getName()));
+		throw new InvalidArgumentException(sprintf('Could not determine %s relative path', $fileName));
 	}
 
 	/**

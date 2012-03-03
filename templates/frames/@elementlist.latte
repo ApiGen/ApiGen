@@ -11,7 +11,7 @@ the file LICENSE.md that was distributed with this source code.
 <table class="summary" id="classes" n:if="$classes">
 <caption>Classes summary</caption>
 <tr n:foreach="$classes as $class" n:class="$class->deprecated ? deprecated">
-	<td class="name"><a href="{$class|classUrl}">{if $namespace}{$class->shortName}{else}{$class->name}{/if}</a></td>
+	<td class="name"><a href="{$class|classUrl}" n:class="!$class->valid ? invalid">{if $namespace}{$class->shortName}{else}{$class->name}{/if}</a></td>
 	<td>{!$class|shortDescription}</td>
 </tr>
 </table>
@@ -19,7 +19,7 @@ the file LICENSE.md that was distributed with this source code.
 <table class="summary" id="interfaces" n:if="$interfaces">
 <caption>Interfaces summary</caption>
 <tr n:foreach="$interfaces as $interface" n:class="$interface->deprecated ? deprecated">
-	<td class="name"><a href="{$interface|classUrl}">{if $namespace}{$interface->shortName}{else}{$interface->name}{/if}</a></td>
+	<td class="name"><a href="{$interface|classUrl}" n:class="!$interface->valid ? invalid">{if $namespace}{$interface->shortName}{else}{$interface->name}{/if}</a></td>
 	<td>{!$interface|shortDescription}</td>
 </tr>
 </table>
@@ -27,7 +27,7 @@ the file LICENSE.md that was distributed with this source code.
 <table class="summary" id="traits" n:if="$traits">
 <caption>Traits summary</caption>
 <tr n:foreach="$traits as $trait" n:class="$trait->deprecated ? deprecated">
-	<td class="name"><a href="{$trait|classUrl}">{if $namespace}{$trait->shortName}{else}{$trait->name}{/if}</a></td>
+	<td class="name"><a href="{$trait|classUrl}" n:class="!$trait->valid ? invalid">{if $namespace}{$trait->shortName}{else}{$trait->name}{/if}</a></td>
 	<td>{!$trait|shortDescription}</td>
 </tr>
 </table>
@@ -35,7 +35,7 @@ the file LICENSE.md that was distributed with this source code.
 <table class="summary" id="exceptions" n:if="$exceptions">
 <caption>Exceptions summary</caption>
 <tr n:foreach="$exceptions as $exception" n:class="$exception->deprecated ? deprecated">
-	<td class="name"><a href="{$exception|classUrl}">{if $namespace}{$exception->shortName}{else}{$exception->name}{/if}</a></td>
+	<td class="name"><a href="{$exception|classUrl}" n:class="!$exception->valid ? invalid">{if $namespace}{$exception->shortName}{else}{$exception->name}{/if}</a></td>
 	<td>{!$exception|shortDescription}</td>
 </tr>
 </table>
@@ -43,7 +43,7 @@ the file LICENSE.md that was distributed with this source code.
 <table class="summary" id="constants" n:if="$constants">
 <caption>Constants summary</caption>
 <tr n:foreach="$constants as $constant" n:class="$constant->deprecated ? deprecated">
-	<td class="name"><code><a href="{$constant|constantUrl}"><b>{if $namespace}{$constant->shortName}{else}{$constant->name}{/if}</b></a></code></td>
+	<td class="name"><code><a href="{$constant|constantUrl}" n:class="!$constant->valid ? invalid"><b>{if $namespace}{$constant->shortName}{else}{$constant->name}{/if}</b></a></code></td>
 	<td>{!$constant|shortDescription}</td>
 </tr>
 </table>
@@ -51,7 +51,7 @@ the file LICENSE.md that was distributed with this source code.
 <table class="summary" id="functions" n:if="$functions">
 <caption>Functions summary</caption>
 <tr n:foreach="$functions as $function" n:class="$function->deprecated ? deprecated">
-	<td class="name"><a href="{$function|functionUrl}">{if $namespace}{$function->shortName}{else}{$function->name}{/if}</a></td>
+	<td class="name"><a href="{$function|functionUrl}" n:class="!$function->valid ? invalid">{if $namespace}{$function->shortName}{else}{$function->name}{/if}</a></td>
 	<td>{!$function|shortDescription}</td>
 </tr>
 </table>
