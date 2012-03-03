@@ -9,7 +9,7 @@ skipDocPath: ''
 # Don't generate documentation for classes with this name prefix
 skipDocPrefix: ''
 # Character set of source files
-charset: ['UTF-8']
+charset: auto
 # Main project name prefix
 main: ''
 

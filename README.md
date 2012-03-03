@@ -117,7 +117,7 @@ Using this parameters you can tell ApiGen not to generate documentation for elem
 
 ```--charset <list>```
 
-Character set of source files, default is "UTF-8". You can use the parameter multiple times to provide a list of all used character sets in your documentation. In that case ApiGen will try to choose one of provided sets for every file. You can also use the "auto" value to let ApiGen choose from all supported character sets. However you should avoid this because every kind of autodetection can be tricky (and not completely realiable).
+Character set of source files, default is "auto" that lets ApiGen choose from all supported character sets. However if you use only one characters set across your source files you should set it explicitly to avoid autodetection because it can be tricky (and is not completely realiable). Moreover autodetection slows down the process of generating documentation. You can also use the parameter multiple times to provide a list of all used character sets in your documentation. In that case ApiGen will choose one of provided character sets for each file.
 
 ```--main <value>```
 
