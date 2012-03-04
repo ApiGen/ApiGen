@@ -42,7 +42,7 @@ the file LICENSE.md that was distributed with this source code.
 	<tr n:foreach="$function->parameters as $parameter" data-order="{$parameter->name}" id="${$parameter->name}">
 		<td class="name"><code>
 			{if $parameter->array}array
-			{elseif $parameter->className}{var $element = $template->getClass($parameter->className)}<a href="{$parameter->className|classUrl}" n:tag-if="$element" n:class="$element->deprecated ? deprecated, !$element->valid ? invalid">{$parameter->className}</a>
+			{elseif $parameter->className}{!$parameter->className|typeLinks:$function}
 			{elseif isset($annotations['param'][$parameter->position])}{!$annotations['param'][$parameter->position]|typeLinks:$function}{/if}
 		</code></td>
 		<td class="value"><code>{block|strip}

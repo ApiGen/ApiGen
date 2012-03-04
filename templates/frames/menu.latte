@@ -26,85 +26,71 @@ the file LICENSE.md that was distributed with this source code.
 <div id="menu">
 	<a href="overview.html" target="right" title="Overview"><span>Overview</span></a>
 
-	<div id="groups">
-		{if $namespaces}
-		<h3>Namespaces</h3>
+	{define #group}
 		<ul>
-			{foreach $namespaces as $item}
-			{var $nextLevel = substr_count($iterator->nextValue, '\\') > substr_count($item, '\\')}
-			<li n:class="$config->main && 0 === strpos($item, $config->main) ? main"><a href="{$item|namespaceUrl}" target="right" rel="{$item|urlize}">{$item|subgroupName}{if $nextLevel}<span></span>{/if}</a>
+			{foreach $groups as $group}
+			{var $nextLevel = substr_count($iterator->nextValue, '\\') > substr_count($group, '\\')}
+			<li n:class="$config->main && 0 === strpos($group, $config->main) ? main"><a href="{$group|groupUrl}" target="right" rel="{$group|urlize}">{$group|subgroupName}{if $nextLevel}<span></span>{/if}</a>
 				{if $nextLevel}
 					<ul>
 				{else}
 					</li>
-					{if substr_count($iterator->nextValue, '\\') < substr_count($item, '\\')}
-						{!'</ul></li>'|repeat:substr_count($item, '\\') - substr_count($iterator->nextValue, '\\')}
+					{if substr_count($iterator->nextValue, '\\') < substr_count($group, '\\')}
+						{!'</ul></li>'|repeat:substr_count($group, '\\') - substr_count($iterator->nextValue, '\\')}
 					{/if}
 				{/if}
 			{/foreach}
 		</ul>
+	{/define}
+
+	<div id="groups">
+		{if $namespaces}
+		<h3>Namespaces</h3>
+		{include #group, groups => $namespaces}
 		{elseif $packages}
 		<h3>Packages</h3>
-		<ul>
-			{foreach $packages as $item}
-			{var $nextLevel = substr_count($iterator->nextValue, '\\') > substr_count($item, '\\')}
-			<li n:class="$config->main && 0 === strpos($item, $config->main) ? main"><a href="{$item|packageUrl}" target="right" rel="{$item|urlize}">{$item|subgroupName}{if $nextLevel}<span></span>{/if}</a>
-				{if $nextLevel}
-					<ul>
-				{else}
-					</li>
-					{if substr_count($iterator->nextValue, '\\') < substr_count($item, '\\')}
-						{!'</ul></li>'|repeat:substr_count($item, '\\') - substr_count($iterator->nextValue, '\\')}
-					{/if}
-				{/if}
-			{/foreach}
+		{include #group, groups => $packages}
 		</ul>
 		{/if}
 	</div>
 
 	<hr n:if="($namespaces || $packages) && ($classes || $interfaces || $traits || $exceptions || $constants || $functions)">
 
+	{define #elements}
+		<ul>
+			<li n:foreach="$elements as $element" n:class="$element->deprecated ? deprecated, !$element->valid ? invalid"><a href="{$element|elementUrl}" target="right" rel="{if $namespaces}{$element->pseudoNamespaceName|urlize}{else}{$element->pseudoPackageName|urlize}{/if}">{if $namespaces && $element->namespaceName}<span>{$element->namespaceName}\</span>{$element->shortName}{else}{$element->name}{/if}</a></li>
+		</ul>
+	{/define}
+
 	<div id="elements">
 		{if $classes}
 		<h3>Classes</h3>
-		<ul>
-			<li n:foreach="$classes as $item" n:class="$item->deprecated ? deprecated, !$item->valid ? invalid"><a href="{$item|classUrl}" target="right" rel="{if $namespaces}{$item->pseudoNamespaceName|urlize}{else}{$item->pseudoPackageName|urlize}{/if}">{if $namespaces && $item->namespaceName}<span>{$item->namespaceName}\</span>{$item->shortName}{else}{$item->name}{/if}</a></li>
-		</ul>
+		{include #elements, elements => $classes}
 		{/if}
 
 		{if $interfaces}
 		<h3>Interfaces</h3>
-		<ul>
-			<li n:foreach="$interfaces as $item" n:class="$item->deprecated ? deprecated, !$item->valid ? invalid"><a href="{$item|classUrl}" target="right" rel="{if $namespaces}{$item->pseudoNamespaceName|urlize}{else}{$item->pseudoPackageName|urlize}{/if}">{if $namespaces && $item->namespaceName}<span>{$item->namespaceName}\</span>{$item->shortName}{else}{$item->name}{/if}</a></li>
-		</ul>
+		{include #elements, elements => $interfaces}
 		{/if}
 
 		{if $traits}
 		<h3>Traits</h3>
-		<ul>
-			<li n:foreach="$traits as $item" n:class="$item->deprecated ? deprecated, !$item->valid ? invalid"><a href="{$item|classUrl}" target="right" rel="{if $namespaces}{$item->pseudoNamespaceName|urlize}{else}{$item->pseudoPackageName|urlize}{/if}">{if $namespaces && $item->namespaceName}<span>{$item->namespaceName}\</span>{$item->shortName}{else}{$item->name}{/if}</a></li>
-		</ul>
+		{include #elements, elements => $traits}
 		{/if}
 
 		{if $exceptions}
 		<h3>Exceptions</h3>
-		<ul>
-			<li n:foreach="$exceptions as $item" n:class="$item->deprecated ? deprecated, !$item->valid ? invalid"><a href="{$item|classUrl}" target="right" rel="{if $namespaces}{$item->pseudoNamespaceName|urlize}{else}{$item->pseudoPackageName|urlize}{/if}">{if $namespaces && $item->namespaceName}<span>{$item->namespaceName}\</span>{$item->shortName}{else}{$item->name}{/if}</a></li>
-		</ul>
+		{include #elements, elements => $exceptions}
 		{/if}
 
 		{if $constants}
 		<h3>Constants</h3>
-		<ul>
-			<li n:foreach="$constants as $item" n:class="$item->deprecated ? deprecated, !$item->valid ? invalid"><a href="{$item|constantUrl}" target="right" rel="{if $namespaces}{$item->pseudoNamespaceName|urlize}{else}{$item->pseudoPackageName|urlize}{/if}">{if $namespaces && $item->namespace}<span>{$item->namespaceName}\</span>{$item->shortName}{else}{$item->name}{/if}</a></li>
-		</ul>
+		{include #elements, elements => $constants}
 		{/if}
 
 		{if $functions}
 		<h3>Functions</h3>
-		<ul>
-			<li n:foreach="$functions as $item" n:class="$item->deprecated ? deprecated, !$item->valid ? invalid"><a href="{$item|functionUrl}" target="right" rel="{if $namespaces}{$item->pseudoNamespaceName|urlize}{else}{$item->pseudoPackageName|urlize}{/if}">{if $namespaces && $item->namespaceName}<span>{$item->namespaceName}\</span>{$item->shortName}{else}{$item->name}{/if}</a></li>
-		</ul>
+		{include #elements, elements => $functions}
 		{/if}
 	</div>
 </div>

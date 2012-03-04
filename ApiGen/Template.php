@@ -141,11 +141,13 @@ class Template extends Nette\Templating\FileTemplate
 		// Urls
 		$this->registerHelper('packageUrl', new Nette\Callback($this, 'getPackageUrl'));
 		$this->registerHelper('namespaceUrl', new Nette\Callback($this, 'getNamespaceUrl'));
+		$this->registerHelper('groupUrl', new Nette\Callback($this, 'getGroupUrl'));
 		$this->registerHelper('classUrl', new Nette\Callback($this, 'getClassUrl'));
 		$this->registerHelper('methodUrl', new Nette\Callback($this, 'getMethodUrl'));
 		$this->registerHelper('propertyUrl', new Nette\Callback($this, 'getPropertyUrl'));
 		$this->registerHelper('constantUrl', new Nette\Callback($this, 'getConstantUrl'));
 		$this->registerHelper('functionUrl', new Nette\Callback($this, 'getFunctionUrl'));
+		$this->registerHelper('elementUrl', new Nette\Callback($this, 'getElementUrl'));
 		$this->registerHelper('sourceUrl', new Nette\Callback($this, 'getSourceUrl'));
 		$this->registerHelper('manualUrl', new Nette\Callback($this, 'getManualUrl'));
 
@@ -439,6 +441,21 @@ class Template extends Nette\Templating\FileTemplate
 	}
 
 	/**
+	 * Returns a link to a group summary file.
+	 *
+	 * @param string $groupName Group name
+	 * @return string
+	 */
+	public function getGroupUrl($groupName)
+	{
+		if (!empty($this->packages)) {
+			return $this->getPackageUrl($groupName);
+		}
+
+		return $this->getNamespaceUrl($groupName);
+	}
+
+	/**
 	 * Returns a link to class summary file.
 	 *
 	 * @param string|\ApiGen\ReflectionClass $class Class reflection or name
@@ -501,6 +518,27 @@ class Template extends Nette\Templating\FileTemplate
 	public function getFunctionUrl(ReflectionFunction $function)
 	{
 		return sprintf($this->config->template['templates']['main']['function']['filename'], $this->urlize($function->getName()));
+	}
+
+	/**
+	 * Returns a link to element summary file.
+	 *
+	 * @param \ApiGen\ReflectionElement $element Element reflection
+	 * @return string
+	 */
+	public function getElementUrl(ReflectionElement $element)
+	{
+		if ($element instanceof ReflectionClass) {
+			return $this->getClassUrl($element);
+		} elseif ($element instanceof ReflectionMethod) {
+			return $this->getMethodUrl($element);
+		} elseif ($element instanceof ReflectionProperty) {
+			return $this->getPropertyUrl($element);
+		} elseif ($element instanceof ReflectionConstant) {
+			return $this->getConstantUrl($element);
+		} elseif ($element instanceof ReflectionFunction) {
+			return $this->getFunctionUrl($element);
+		}
 	}
 
 	/**
