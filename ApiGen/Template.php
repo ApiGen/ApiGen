@@ -612,6 +612,9 @@ class Template extends Nette\Templating\FileTemplate
 		}
 
 		$classes = array();
+		if ($element->isDeprecated()) {
+			$classes[] = 'deprecated';
+		}
 		if (!$element->isValid()) {
 			$classes[] = 'invalid';
 		}

@@ -27,15 +27,15 @@ the file LICENSE.md that was distributed with this source code.
 		<dd n:foreach="$tree as $item" style="padding-left:{($iterator->counter - 1) * 30}px">
 			<img src="resources/inherit.png" alt="Extended by" n:if="$iterator->counter > 1">
 			{if $item->documented}
-			<a href="{$item|classUrl}" n:tag-if="!$iterator->last" n:class="!$item->valid ? invalid">{last}<b>{/last}{$item->name}{last}</b>{/last}</a>
+			<a href="{$item|classUrl}" n:tag-if="!$iterator->last" n:class="$item->deprecated ? deprecated, !$item->valid ? invalid">{last}<b>{/last}{$item->name}{last}</b>{/last}</a>
 			{else}{$item->name}{/if}
 			{var $itemOwnInterfaces = $item->ownInterfaces}
 			{if $itemOwnInterfaces} implements {foreach $itemOwnInterfaces as $interface}
-				<a href="{$interface|classUrl}" n:tag-if="$interface->documented" n:class="!$interface->valid ? invalid">{$interface->name}</a>{sep}, {/sep}
+				<a href="{$interface|classUrl}" n:tag-if="$interface->documented" n:class="$interface->deprecated ? deprecated, !$interface->valid ? invalid">{$interface->name}</a>{sep}, {/sep}
 			{/foreach}{/if}
 			{var $itemOwnTraits = $item->ownTraits}
 			{if $itemOwnTraits} uses {foreach $itemOwnTraits as $trait}
-				<a href="{$trait|classUrl}" n:tag-if="$trait->documented" n:class="!$trait->valid ? invalid">{$trait->name}</a>{sep}, {/sep}
+				<a href="{$trait|classUrl}" n:tag-if="$trait->documented" n:class="$trait->deprecated ? deprecated, !$trait->valid ? invalid">{$trait->name}</a>{sep}, {/sep}
 			{/foreach}{/if}
 		</dd>
 	</dl>
@@ -43,42 +43,42 @@ the file LICENSE.md that was distributed with this source code.
 	<div n:if="$directSubClasses">
 		<h4>Direct known subclasses</h4>
 		{foreach $directSubClasses as $item}
-			<a href="{$item|classUrl}" n:tag-if="$item->documented">{$item->name}</a>{sep}, {/sep}
+			<a href="{$item|classUrl}" n:tag-if="$item->documented" n:class="$item->deprecated ? deprecated">{$item->name}</a>{sep}, {/sep}
 		{/foreach}
 	</div>
 
 	<div n:if="$indirectSubClasses">
 		<h4>Indirect known subclasses</h4>
 		{foreach $indirectSubClasses as $item}
-			<a href="{$item|classUrl}" n:tag-if="$item->documented">{$item->name}</a>{sep}, {/sep}
+			<a href="{$item|classUrl}" n:tag-if="$item->documented" n:class="$item->deprecated ? deprecated">{$item->name}</a>{sep}, {/sep}
 		{/foreach}
 	</div>
 
 	<div n:if="$directImplementers">
 		<h4>Direct known implementers</h4>
 		{foreach $directImplementers as $item}
-			<a href="{$item|classUrl}" n:tag-if="$item->documented">{$item->name}</a>{sep}, {/sep}
+			<a href="{$item|classUrl}" n:tag-if="$item->documented" n:class="$item->deprecated ? deprecated">{$item->name}</a>{sep}, {/sep}
 		{/foreach}
 	</div>
 
 	<div n:if="$indirectImplementers">
 		<h4>Indirect known implementers</h4>
 		{foreach $indirectImplementers as $item}
-			<a href="{$item|classUrl}" n:tag-if="$item->documented">{$item->name}</a>{sep}, {/sep}
+			<a href="{$item|classUrl}" n:tag-if="$item->documented" n:class="$item->deprecated ? deprecated">{$item->name}</a>{sep}, {/sep}
 		{/foreach}
 	</div>
 
 	<div n:if="$directUsers">
 		<h4>Direct Known Users</h4>
 		{foreach $directUsers as $item}
-			<a href="{$item|classUrl}" n:tag-if="$item->documented">{$item->name}</a>{sep}, {/sep}
+			<a href="{$item|classUrl}" n:tag-if="$item->documented" n:class="$item->deprecated ? deprecated">{$item->name}</a>{sep}, {/sep}
 		{/foreach}
 	</div>
 
 	<div n:if="$indirectUsers">
 		<h4>Indirect Known Users</h4>
 		{foreach $indirectUsers as $item}
-			<a href="{$item|classUrl}" n:tag-if="$item->documented">{$item->name}</a>{sep}, {/sep}
+			<a href="{$item|classUrl}" n:tag-if="$item->documented" n:class="$item->deprecated ? deprecated">{$item->name}</a>{sep}, {/sep}
 		{/foreach}
 	</div>
 
@@ -121,7 +121,7 @@ the file LICENSE.md that was distributed with this source code.
 			{/if}
 			{foreach $method->parameters as $parameter}
 				<span>{if $parameter->array}array
-				{elseif $parameter->className}{var $element = $template->getClass($parameter->className)}<a href="{$parameter->className|classUrl}" n:tag-if="$element" n:class="!$element->valid ? invalid">{$parameter->className}</a>
+				{elseif $parameter->className}{var $element = $template->getClass($parameter->className)}<a href="{$parameter->className|classUrl}" n:tag-if="$element" n:class="$element->deprecated ? deprecated, !$element->valid ? invalid">{$parameter->className}</a>
 				{elseif isset($annotations['param'][$parameter->position])}{!$annotations['param'][$parameter->position]|typeLinks:$parameter}{/if}
 				<var>{if $parameter->passedByReference}&amp; {/if}${$parameter->name}</var>{if $parameter->defaultValueAvailable} = {!$parameter->defaultValueDefinition|highlightPHP:$class}{/if}</span>{sep}, {/sep}
 			{/foreach}
