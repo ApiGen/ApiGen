@@ -120,7 +120,7 @@ the file LICENSE.md that was distributed with this source code.
 		<input type="hidden" name="cx" value="{$config->googleCseId}">
 		<input type="hidden" name="ie" value="UTF-8">
 		<input type="hidden" name="more" value="{$config->googleCseLabel}" n:if="$config->googleCseLabel">
-		<input type="text" name="q" class="text">
+		<input type="text" name="q" class="text"{if 'overview' === $active} autofocus{/if}>
 		<input type="submit" value="Search">
 	</form>
 
