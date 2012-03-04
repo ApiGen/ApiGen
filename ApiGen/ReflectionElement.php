@@ -121,7 +121,12 @@ abstract class ReflectionElement extends ReflectionBase
 		if ($package = $this->getAnnotation('package')) {
 			$packageName = preg_replace('~\s+.*~s', '', $package[0]);
 			if ($subpackage = $this->getAnnotation('subpackage')) {
-				$packageName .= '\\' . preg_replace('~\s+.*~s', '', $subpackage[0]);
+				$subpackageName = preg_replace('~\s+.*~s', '', $subpackage[0]);
+				if (0 === strpos($subpackageName, $packageName)) {
+					$packageName = $subpackageName;
+				} else {
+					$packageName .= '\\' . $subpackageName;
+				}
 			}
 			return strtr($packageName, '._/', '\\\\\\');
 		}
