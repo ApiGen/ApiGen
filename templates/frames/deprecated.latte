@@ -32,22 +32,22 @@ the file LICENSE.md that was distributed with this source code.
 
 	<table class="summary" id="classes" n:if="$deprecatedClasses">
 	<caption>Classes summary</caption>
-	{include #classes, items => deprecatedClasses}
+	{include #classes, items => $deprecatedClasses}
 	</table>
 
 	<table class="summary" id="interfaces" n:if="$deprecatedInterfaces">
 	<caption>Interfaces summary</caption>
-	{include #classes, items => deprecatedInterfaces}
+	{include #classes, items => $deprecatedInterfaces}
 	</table>
 
 	<table class="summary" id="traits" n:if="$deprecatedTraits">
 	<caption>Traits summary</caption>
-	{include #classes, items => deprecatedTraits}
+	{include #classes, items => $deprecatedTraits}
 	</table>
 
 	<table class="summary" id="exceptions" n:if="$deprecatedExceptions">
 	<caption>Exceptions summary</caption>
-	{include #classes, items => deprecatedExceptions}
+	{include #classes, items => $deprecatedExceptions}
 	</table>
 
 	<table class="summary" id="methods" n:if="$deprecatedMethods">
