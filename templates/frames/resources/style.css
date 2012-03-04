@@ -158,6 +158,11 @@ code a b {
 	position: relative;
 }
 
+#menu a {
+	display: block;
+	padding: 0 2px;
+}
+
 #menu .active > a {
 	color: #333333;
 	background: none;
@@ -175,12 +180,12 @@ code a b {
 #menu #groups span {
 	position: absolute;
 	top: 4px;
-	right: 0;
+	right: 2px;
 	cursor: pointer;
 	display: block;
 	width: 12px;
 	height: 12px;
-	background: url('collapsed.png') #ffffff 0 0 no-repeat;
+	background: url('collapsed.png') transparent 0 0 no-repeat;
 }
 
 #menu #groups span:hover {

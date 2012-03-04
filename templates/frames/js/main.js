@@ -74,7 +74,7 @@ $(function() {
 					.blur()
 					.parentsUntil('#groups', 'li')
 						.addClass('active')
-						.children('span')
+						.find('span')
 							.click();
 
 				// Shows only elements in active group
@@ -203,28 +203,34 @@ $(function() {
 		var namespacesHidden = false;
 
 		// Collapse deep packages and namespaces
-		$('span', $groups).click(function() {
+		$('span', $groups).click(function(event) {
+			event.preventDefault();
+			event.stopPropagation();
 			$(this)
 				.toggleClass('collapsed')
-				.next('ul')
-					.toggleClass('collapsed');
+				.parent()
+					.next('ul')
+						.toggleClass('collapsed');
 		}).click();
 
 		var $main = $('> ul > li.main', $groups);
 		if ($main.length > 0) {
 			// Open first level of the main project
-			$('> span', $main).click();
+			$('> a > span', $main).click();
 		} else {
 			// Open first level of all
-			$('> ul > li > span', $groups).click();
+			$('> ul > li > a > span', $groups).click();
 		}
 
 		// Links
-		$('a', $menu).click(function() {
-			var page = $(this).attr('href');
+		$('a', $menu).click(function(event) {
+			event.preventDefault();
+			event.stopPropagation();
+			$this = $(this);
+			$this.blur();
+			var page = $this.attr('href');
 			window.parent.ApiGen.loadPage(page);
 			window.parent.location.hash = page;
-			return false;
 		});
 	} else if (isRightFrame) {
 		// Content
