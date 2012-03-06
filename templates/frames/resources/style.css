@@ -113,7 +113,7 @@ code a b {
 	text-decoration: line-through;
 }
 
-.invalid, .invalid a {
+.invalid {
 	color: #e71818;
 }
 

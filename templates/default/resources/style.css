@@ -108,7 +108,7 @@ code a b {
 	text-decoration: line-through;
 }
 
-.invalid, .invalid a {
+.invalid {
 	color: #e71818;
 }
 
@@ -155,7 +155,7 @@ code a b {
 	font-weight: bold;
 }
 
-#menu .active.invalid > a {
+#menu .active > a.invalid {
 	color: #e71818;
 }
 

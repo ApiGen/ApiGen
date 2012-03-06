@@ -27,15 +27,15 @@ the file LICENSE.md that was distributed with this source code.
 		<dd n:foreach="$tree as $item" style="padding-left:{($iterator->counter - 1) * 30}px">
 			<img src="resources/inherit.png" alt="Extended by" n:if="$iterator->counter > 1">
 			{if $item->documented}
-			<a href="{$item|classUrl}" n:tag-if="!$iterator->last" n:class="!$item->valid ? invalid">{last}<b>{/last}<span n:tag-if="$item->deprecated" class="deprecated">{$item->name}</span>{last}</b>{/last}</a>
+			<a href="{$item|classUrl}" n:tag-if="!$iterator->last">{last}<b>{/last}<span n:class="$item->deprecated ? deprecated, !$item->valid ? invalid">{$item->name}</span>{last}</b>{/last}</a>
 			{else}{$item->name}{/if}
 			{var $itemOwnInterfaces = $item->ownInterfaces}
 			{if $itemOwnInterfaces} implements {foreach $itemOwnInterfaces as $interface}
-				<a href="{$interface|classUrl}" n:tag-if="$interface->documented" n:class="!$interface->valid ? invalid"><span n:tag-if="$interface->deprecated" class="deprecated">{$interface->name}</span></a>{sep}, {/sep}
+				<a href="{$interface|classUrl}" n:tag-if="$interface->documented"><span n:class="$interface->deprecated ? deprecated, !$interface->valid ? invalid">{$interface->name}</span></a>{sep}, {/sep}
 			{/foreach}{/if}
 			{var $itemOwnTraits = $item->ownTraits}
 			{if $itemOwnTraits} uses {foreach $itemOwnTraits as $trait}
-				<a href="{$trait|classUrl}" n:tag-if="$trait->documented" n:class="!$trait->valid ? invalid"><span n:tag-if="$trait->deprecated" class="deprecated">{$trait->name}</span></a>{sep}, {/sep}
+				<a href="{$trait|classUrl}" n:tag-if="$trait->documented"><span n:class="$trait->deprecated ? deprecated, !$trait->valid ? invalid">{$trait->name}</span></a>{sep}, {/sep}
 			{/foreach}{/if}
 		</dd>
 	</dl>
