@@ -26,14 +26,14 @@ the file LICENSE.md that was distributed with this source code.
 				<ul>
 			{/if}
 
-			<li n:class="!$tree->hasSibling() ? last"><div class="{if $tree->hasSibling()}not{/if}last"><a href="{$reflectionName|classUrl}" n:tag-if="$reflection->documented" n:class="$reflection->deprecated ? deprecated, !$reflection->valid ? invalid">{$reflectionName}</a>
+			<li n:class="!$tree->hasSibling() ? last"><div class="{if $tree->hasSibling()}not{/if}last"><a href="{$reflectionName|classUrl}" n:tag-if="$reflection->documented" n:class="!$reflection->valid ? invalid"><span n:tag-if="$reflection->deprecated" class="deprecated">{$reflectionName}</span></a>
 			{var $interfaces = $reflection->ownInterfaces}
 			{if $interfaces} implements {foreach $interfaces as $interface}
-				<a href="{$interface|classUrl}" n:tag-if="$interface->documented" n:class="$interface->deprecated ? deprecated, !$interface->valid ? invalid">{$interface->name}</a>{sep}, {/sep}
+				<a href="{$interface|classUrl}" n:tag-if="$interface->documented" n:class="!$interface->valid ? invalid"><span n:tag-if="$interface->deprecated" class="deprecated">{$interface->name}</span></a>{sep}, {/sep}
 			{/foreach}{/if}
 			{var $traits = $reflection->ownTraits}
 			{if $traits}{if $interfaces}<br><span class="padding"></span>{/if} uses {foreach $traits as $trait}
-				<a href="{$trait|classUrl}" n:tag-if="$trait->documented" n:class="$trait->deprecated ? deprecated, !$trait->valid ? invalid">{$trait->name}</a>{sep}, {/sep}
+				<a href="{$trait|classUrl}" n:tag-if="$trait->documented" n:class="!$trait->valid ? invalid"><span n:tag-if="$trait->deprecated" class="deprecated">{$trait->name}</span></a>{sep}, {/sep}
 			{/foreach}{/if}
 			</div>
 

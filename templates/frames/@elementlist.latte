@@ -9,8 +9,8 @@ For the full copyright and license information, please view
 the file LICENSE.md that was distributed with this source code.
 *}
 {define #elements}
-<tr n:foreach="$elements as $element" n:class="$element->deprecated ? deprecated">
-	<td class="name"><a href="{$element|elementUrl}" n:class="!$element->valid ? invalid">{if $namespace}{$element->shortName}{else}{$element->name}{/if}</a></td>
+<tr n:foreach="$elements as $element">
+	<td class="name"><a href="{$element|elementUrl}" n:class="$element->deprecated ? deprecated, !$element->valid ? invalid">{if $namespace}{$element->shortName}{else}{$element->name}{/if}</a></td>
 	<td>{!$element|shortDescription}</td>
 </tr>
 {/define}

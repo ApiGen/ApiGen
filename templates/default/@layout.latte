@@ -74,7 +74,7 @@ the file LICENSE.md that was distributed with this source code.
 
 		{define #elements}
 			<ul>
-				<li n:foreach="$elements as $element" n:class="$activeElement === $element ? active, $element->deprecated ? deprecated, !$element->valid ? invalid"><a href="{$element|elementUrl}">{if $namespace}{$element->shortName}{else}{$element->name}{/if}</a></li>
+				<li n:foreach="$elements as $element" n:class="$activeElement === $element ? active"><a n:class="$element->deprecated ? deprecated, !$element->valid ? invalid" href="{$element|elementUrl}">{if $namespace}{$element->shortName}{else}{$element->name}{/if}</a></li>
 			</ul>
 		{/define}
 

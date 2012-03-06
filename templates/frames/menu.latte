@@ -58,7 +58,7 @@ the file LICENSE.md that was distributed with this source code.
 
 	{define #elements}
 		<ul>
-			<li n:foreach="$elements as $element" n:class="$element->deprecated ? deprecated, !$element->valid ? invalid"><a href="{$element|elementUrl}" target="right" rel="{if $namespaces}{$element->pseudoNamespaceName|urlize}{else}{$element->pseudoPackageName|urlize}{/if}">{if $namespaces && $element->namespaceName}<span>{$element->namespaceName}\</span>{$element->shortName}{else}{$element->name}{/if}</a></li>
+			<li n:foreach="$elements as $element"><a n:class="$element->deprecated ? deprecated, !$element->valid ? invalid" href="{$element|elementUrl}" target="right" rel="{if $namespaces}{$element->pseudoNamespaceName|urlize}{else}{$element->pseudoPackageName|urlize}{/if}">{if $namespaces && $element->namespaceName}<span>{$element->namespaceName}\</span>{$element->shortName}{else}{$element->name}{/if}</a></li>
 		</ul>
 	{/define}
 

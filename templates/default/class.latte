@@ -15,7 +15,7 @@ the file LICENSE.md that was distributed with this source code.
 
 {block #content}
 <div id="content" class="class">
-	<h1>{if $class->deprecated}Deprecated {/if}{if $class->interface}Interface{elseif $class->trait}Trait{else}Class{/if} {$class->shortName}</h1>
+	<h1 n:class="$class->deprecated ? deprecated">{if $class->interface}Interface{elseif $class->trait}Trait{else}Class{/if} {$class->shortName}</h1>
 
 	{if $class->valid}
 
@@ -27,22 +27,22 @@ the file LICENSE.md that was distributed with this source code.
 		<dd n:foreach="$tree as $item" style="padding-left:{($iterator->counter - 1) * 30}px">
 			<img src="resources/inherit.png" alt="Extended by" n:if="$iterator->counter > 1">
 			{if $item->documented}
-			<a href="{$item|classUrl}" n:tag-if="!$iterator->last" n:class="$item->deprecated ? deprecated, !$item->valid ? invalid">{last}<b>{/last}{$item->name}{last}</b>{/last}</a>
+			<a href="{$item|classUrl}" n:tag-if="!$iterator->last" n:class="!$item->valid ? invalid">{last}<b>{/last}<span n:tag-if="$item->deprecated" class="deprecated">{$item->name}</span>{last}</b>{/last}</a>
 			{else}{$item->name}{/if}
 			{var $itemOwnInterfaces = $item->ownInterfaces}
 			{if $itemOwnInterfaces} implements {foreach $itemOwnInterfaces as $interface}
-				<a href="{$interface|classUrl}" n:tag-if="$interface->documented" n:class="$interface->deprecated ? deprecated, !$interface->valid ? invalid">{$interface->name}</a>{sep}, {/sep}
+				<a href="{$interface|classUrl}" n:tag-if="$interface->documented" n:class="!$interface->valid ? invalid"><span n:tag-if="$interface->deprecated" class="deprecated">{$interface->name}</span></a>{sep}, {/sep}
 			{/foreach}{/if}
 			{var $itemOwnTraits = $item->ownTraits}
 			{if $itemOwnTraits} uses {foreach $itemOwnTraits as $trait}
-				<a href="{$trait|classUrl}" n:tag-if="$trait->documented" n:class="$trait->deprecated ? deprecated, !$trait->valid ? invalid">{$trait->name}</a>{sep}, {/sep}
+				<a href="{$trait|classUrl}" n:tag-if="$trait->documented" n:class="!$trait->valid ? invalid"><span n:tag-if="$trait->deprecated" class="deprecated">{$trait->name}</span></a>{sep}, {/sep}
 			{/foreach}{/if}
 		</dd>
 	</dl>
 
 	{define #children}
 		{foreach $children as $child}
-			<a href="{$child|classUrl}" n:tag-if="$child->documented" n:class="$child->deprecated ? deprecated">{$child->name}</a>{sep}, {/sep}
+			<a href="{$child|classUrl}" n:tag-if="$child->documented"><span n:tag-if="$child->deprecated" class="deprecated">{$child->name}</span></a>{sep}, {/sep}
 		{/foreach}
 	{/define}
 
@@ -94,11 +94,10 @@ the file LICENSE.md that was distributed with this source code.
 
 	<table class="summary" id="methods" n:if="$ownMethods">
 	<caption>Methods summary</caption>
-	<tr n:foreach="$ownMethods as $method" data-order="{$method->name}" id="_{$method->name}" n:class="$method->deprecated ? deprecated">
+	<tr n:foreach="$ownMethods as $method" data-order="{$method->name}" id="_{$method->name}">
 		{var $annotations = $method->annotations}
 
 		<td class="attributes"><code>
-			{if $method->deprecated}deprecated{/if}
 			{if !$class->interface && $method->abstract}abstract{elseif $method->final}final{/if} {if $method->protected}protected{elseif $method->private}private{else}public{/if} {if $method->static}static{/if}
 			{ifset $annotations['return']}{!$annotations['return'][0]|typeLinks:$method}{/ifset}
 			{if $method->returnsReference()}&amp;{/if}
@@ -130,7 +129,7 @@ the file LICENSE.md that was distributed with this source code.
 		<div n:class="description, detailed, $config->template['options']['elementDetailsCollapsed'] ? hidden">
 			{!$method|longDescription}
 
-			{if $method->deprecated}
+			{if !$class->deprecated && $method->deprecated}
 				<h4>Deprecated</h4>
 				{ifset $annotations['deprecated']}
 				<div class="list">
@@ -199,7 +198,7 @@ the file LICENSE.md that was distributed with this source code.
 	<tr>
 		<td><code>
 		{foreach $methods as $method}
-			<span n:tag-if="$method->deprecated" class="deprecated"><a href="{$method|methodUrl}" n:tag-if="$template->getClass($parentName)">{$method->name}()</a></span>{sep}, {/sep}
+			<a href="{$method|methodUrl}" n:tag-if="$template->getClass($parentName)"><span n:tag-if="$method->deprecated" class="deprecated">{$method->name}()</span></a>{sep}, {/sep}
 		{/foreach}
 		</code></td>
 	</tr>
@@ -210,7 +209,7 @@ the file LICENSE.md that was distributed with this source code.
 	<tr>
 		<td><code>
 		{foreach $methods as $data}
-			<span n:tag-if="$data['method']->deprecated" class="deprecated"><a href="{$data['method']|methodUrl:$data['method']->declaringTrait}" n:tag-if="$template->getClass($traitName)">{$data['method']->name}()</a>{if $data['aliases']}(as {foreach $data['aliases'] as $alias}{$alias->name}(){sep}, {/sep}{/foreach}){/if}</span>{sep}, {/sep}
+			<a href="{$data['method']|methodUrl:$data['method']->declaringTrait}" n:tag-if="$template->getClass($traitName)"><span n:tag-if="$data['method']->deprecated" class="deprecated">{$data['method']->name}()</span></a>{if $data['aliases']}(as {foreach $data['aliases'] as $alias}<span n:tag-if="$data['method']->deprecated" class="deprecated">{$alias->name}()</span>{sep}, {/sep}{/foreach}){/if}{sep}, {/sep}
 		{/foreach}
 		</code></td>
 	</tr>
@@ -219,11 +218,10 @@ the file LICENSE.md that was distributed with this source code.
 
 	<table class="summary" id="constants" n:if="$ownConstants">
 	<caption>Constants summary</caption>
-	<tr n:foreach="$ownConstants as $constant" data-order="{$constant->name}" id="{$constant->name}" n:class="$constant->deprecated ? deprecated">
+	<tr n:foreach="$ownConstants as $constant" data-order="{$constant->name}" id="{$constant->name}">
 		{var $annotations = $constant->annotations}
 
 		<td class="attributes"><code>
-			{if $constant->deprecated}deprecated{/if}
 			{ifset $annotations['var']}{!$annotations['var'][0]|typeLinks:$constant}{else}{try}{$constant->value|type}{/try}{/ifset}
 		</code></td>
 		<td class="name"><code>
@@ -266,7 +264,7 @@ the file LICENSE.md that was distributed with this source code.
 	<tr>
 		<td><code>
 		{foreach $constants as $constant}
-			<span n:tag-if="$constant->deprecated" class"deprecated"><a href="{$constant|constantUrl}" n:tag-if="$template->getClass($parentName)"><b>{$constant->name}</b></a></span>{sep}, {/sep}
+			<a href="{$constant|constantUrl}" n:tag-if="$template->getClass($parentName)"><b><span n:tag-if="$constant->deprecated" class"deprecated">{$constant->name}</span></b></a>{sep}, {/sep}
 		{/foreach}
 		</code></td>
 	</tr>
@@ -275,11 +273,10 @@ the file LICENSE.md that was distributed with this source code.
 
 	<table class="summary" id="properties" n:if="$ownProperties">
 	<caption>Properties summary</caption>
-	<tr n:foreach="$ownProperties as $property" data-order="{$property->name}" id="${$property->name}" n:class="$property->deprecated ? deprecated">
+	<tr n:foreach="$ownProperties as $property" data-order="{$property->name}" id="${$property->name}">
 		{var $annotations = $property->annotations}
 
 		<td class="attributes"><code>
-			{if $property->deprecated}deprecated{/if}
 			{if $property->protected}protected{elseif $property->private}private{else}public{/if} {if $property->static}static{/if}
 			{ifset $annotations['var']}{!$annotations['var'][0]|typeLinks:$property}{else}{try}{$property->defaultValue|type}{/try}{/ifset}
 		</code></td>
@@ -324,7 +321,7 @@ the file LICENSE.md that was distributed with this source code.
 	<tr>
 		<td><code>
 		{foreach $properties as $property}
-			<span n:tag-if="$property->deprecated" class="deprecated"><a href="{$property|propertyUrl}" n:tag-if="$template->getClass($parentName)"><var>${$property->name}</var></a></span>{sep}, {/sep}
+			<a href="{$property|propertyUrl}" n:tag-if="$template->getClass($parentName)"><var><span n:tag-if="$property->deprecated" class="deprecated">${$property->name}</span></var></a>{sep}, {/sep}
 		{/foreach}
 		</code></td>
 	</tr>
@@ -335,7 +332,7 @@ the file LICENSE.md that was distributed with this source code.
 	<tr>
 		<td><code>
 		{foreach $properties as $property}
-			<span n:tag-if="$property->deprecated" class="deprecated"><a href="{$property|propertyUrl:$property->declaringTrait}" n:tag-if="$template->getClass($traitName)"><var>${$property->name}</var></a></span>{sep}, {/sep}
+			<a href="{$property|propertyUrl:$property->declaringTrait}" n:tag-if="$template->getClass($traitName)"><var><span n:tag-if="$property->deprecated" class="deprecated">${$property->name}</span></var></a>{sep}, {/sep}
 		{/foreach}
 		</code></td>
 	</tr>

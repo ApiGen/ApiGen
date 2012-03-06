@@ -88,7 +88,6 @@ h1 a {
 
 a:hover, a:active, a:focus, a:hover b, a:hover var {
 	background-color: #006aeb;
-	text-decoration: none;
 	color: #ffffff !important;
 }
 
@@ -111,11 +110,7 @@ code a b {
 }
 
 .deprecated {
-	opacity: .5;
-}
-
-.deprecated:hover {
-	opacity: 1;
+	text-decoration: line-through;
 }
 
 .invalid, .invalid a {
