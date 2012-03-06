@@ -283,7 +283,7 @@ the file LICENSE.md that was distributed with this source code.
 
 		<td class="name">
 			{if $class->internal}
-				<a href="{$property|manualUrl}" title="Go to PHP documentation"><var>${$property->name}</var></a>
+				<a href="{$property|manualUrl}" target="_parent" title="Go to PHP documentation"><var>${$property->name}</var></a>
 			{else}
 				<a n:tag-if="$config->sourceCode" href="{$property|sourceUrl}" title="Go to source code"><var>${$property->name}</var></a>
 			{/if}
