@@ -724,6 +724,13 @@ class Generator extends Nette\Object
 		$list = array();
 		foreach ($this->getElementTypes() as $type) {
 			foreach ($this->$type as $parentElement) {
+				$fileName = $this->unPharPath($parentElement->getFileName());
+
+				if (!$parentElement->isValid()) {
+					$list[$fileName][] = array('error', 0, sprintf('Duplicate %s', $labeler($parentElement)));
+					continue;
+				}
+
 				// Skip elements not from the main project
 				if (!$parentElement->isMain()) {
 					continue;
@@ -743,8 +750,6 @@ class Generator extends Nette\Object
 						array_values($parentElement->getOwnProperties())
 					);
 				}
-
-				$fileName = $this->unPharPath($parentElement->getFileName());
 
 				$tokens = $parentElement->getBroker()->getFileTokens($parentElement->getFileName());
 

@@ -78,11 +78,13 @@ class Backend extends Broker\Backend\Memory
 	 */
 	public function addFile(TokenReflection\Stream\StreamBase $tokenStream, TokenReflection\ReflectionFile $file)
 	{
-		parent::addFile($tokenStream, $file);
 		if ($this->cacheTokenStreams) {
 			$this->fileCache[$file->getName()] = $cacheFile = tempnam(sys_get_temp_dir(), 'trc');
 			file_put_contents($cacheFile, serialize($tokenStream));
 		}
+
+		parent::addFile($tokenStream, $file);
+
 		return $this;
 	}
 

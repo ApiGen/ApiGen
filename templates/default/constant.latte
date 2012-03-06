@@ -57,7 +57,7 @@ the file LICENSE.md that was distributed with this source code.
 				Documentation of this constant could not be generated.
 			</p>
 			<p>
-				Constant was firstly declared in {$constant->fileName|relativePath} and is invalid because of:
+				Constant was originally declared in {$constant->fileName|relativePath} and is invalid because of:
 			</p>
 			<ul>
 				<li n:foreach="$constant->reasons as $reason">Constant was redeclared in {$reason->getSender()->getFileName()|relativePath}.</li>
