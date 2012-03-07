@@ -129,7 +129,7 @@ class Config
 					$next = next($options);
 					if (false === $next || '-' === $next{0}) {
 						prev($options);
-						$value = 'yes';
+						$value = '';
 					} else {
 						$value = $next;
 					}
@@ -233,10 +233,10 @@ class Config
 				throw new ConfigException(sprintf('Option "%s" expects value', $option));
 			}
 
-			if (is_bool($valueDefinition)) {
+			if (is_bool($valueDefinition) && !is_bool($this->config[$option])) {
 				// Boolean option
 				$value = strtolower($this->config[$option]);
-				if ('on' === $value || 'yes' === $value || 'true' === $value) {
+				if ('on' === $value || 'yes' === $value || 'true' === $value || '' === $value) {
 					$value = true;
 				} elseif ('off' === $value || 'no' === $value || 'false' === $value) {
 					$value = false;
