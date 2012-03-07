@@ -1,30 +1,30 @@
 # Source file or directory to parse
-source: ''
+source:
 # Directory where to save the generated documentation
-destination: ''
+destination:
 # List of allowed file extensions
 extensions: [php]
 # Mask to exclude file or directory from processing
-exclude: ''
+exclude:
 # Don't generate documentation for classes from file or directory with this mask
-skipDocPath: ''
+skipDocPath:
 # Don't generate documentation for classes with this name prefix
-skipDocPrefix: ''
+skipDocPrefix:
 # Character set of source files
 charset: auto
 # Main project name prefix
-main: ''
+main:
 
 # Title of generated documentation
-title: ''
+title:
 # Documentation base URL
-baseUrl: ''
+baseUrl:
 # Google Custom Search ID
-googleCseId: ''
+googleCseId:
 # Google Custom Search label
-googleCseLabel: ''
+googleCseLabel:
 # Google Analytics tracking code
-googleAnalytics: ''
+googleAnalytics:
 # Template config file
 templateConfig: './templates/default/config.neon'
 # Grouping of classes
@@ -51,7 +51,7 @@ sourceCode: Yes
 # Add a link to download documentation as a ZIP archive
 download: No
 # Save a checkstyle report of poorly documented elements into a file
-report: ''
+report:
 
 # Wipe out the destination directory first
 wipeout: Yes
