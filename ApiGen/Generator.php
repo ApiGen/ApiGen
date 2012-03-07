@@ -345,7 +345,7 @@ class Generator extends Nette\Object
 	{
 		@mkdir($this->config->destination, 0755, true);
 		if (!is_dir($this->config->destination) || !is_writable($this->config->destination)) {
-			throw new RuntimeException(sprintf('Directory %s isn\'t writable', $this->config->destination));
+			throw new RuntimeException(sprintf('Directory "%s" isn\'t writable', $this->config->destination));
 		}
 
 		// Copy resources
@@ -865,7 +865,7 @@ class Generator extends Nette\Object
 
 		$file = @fopen($this->config->report, 'w');
 		if (false === $file) {
-			throw new RuntimeException(sprintf('File %s isn\'t writable', $this->config->report));
+			throw new RuntimeException(sprintf('File "%s" isn\'t writable', $this->config->report));
 		}
 		fwrite($file, sprintf('<?xml version="1.0" encoding="UTF-8"?>%s', "\n"));
 		fwrite($file, sprintf('<checkstyle version="1.3.0">%s', "\n"));
@@ -1910,7 +1910,7 @@ class Generator extends Nette\Object
 			}
 		}
 
-		throw new InvalidArgumentException(sprintf('Could not determine %s relative path', $fileName));
+		throw new InvalidArgumentException(sprintf('Could not determine "%s" relative path', $fileName));
 	}
 
 	/**
@@ -1968,7 +1968,7 @@ class Generator extends Nette\Object
 	private function prepareTemplate($name)
 	{
 		if (!$this->templateExists($name)) {
-			throw new RuntimeException(sprintf('Template for %s is not set', $name));
+			throw new RuntimeException(sprintf('Template for "%s" is not set', $name));
 		}
 
 		$this->forceDir($this->getTemplateFileName($name));
