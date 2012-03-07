@@ -217,9 +217,9 @@ try {
 			$trace = $e->getTraceAsString();
 		} while ($e = $e->getPrevious());
 
-		printf("\n\n%s\n\n", $trace);
+		printf("\n\n%s\n", $trace);
 	} else {
-		echo $generator->colorize(sprintf("\n@error@%s@c\n\n", $e->getMessage()));
+		echo $generator->colorize(sprintf("\n@error@%s@c\n", $e->getMessage()));
 	}
 
 	die(1);

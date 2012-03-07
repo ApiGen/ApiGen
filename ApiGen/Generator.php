@@ -242,6 +242,7 @@ class Generator extends Nette\Object
 			}
 
 			$this->incrementProgressBar($size);
+			$this->checkMemory();
 		}
 
 		// Classes
@@ -653,6 +654,8 @@ class Generator extends Nette\Object
 
 		unset($template->elements);
 
+		$this->checkMemory();
+
 		return $this;
 	}
 
@@ -682,6 +685,8 @@ class Generator extends Nette\Object
 				->save($this->forceDir($this->getTemplateFileName('robots', 'optional')));
 			$this->incrementProgressBar();
 		}
+
+		$this->checkMemory();
 
 		return $this;
 	}
@@ -883,6 +888,7 @@ class Generator extends Nette\Object
 		fclose($file);
 
 		$this->incrementProgressBar();
+		$this->checkMemory();
 
 		return $this;
 	}
@@ -942,6 +948,7 @@ class Generator extends Nette\Object
 		unset($template->deprecatedProperties);
 
 		$this->incrementProgressBar();
+		$this->checkMemory();
 
 		return $this;
 	}
@@ -997,6 +1004,7 @@ class Generator extends Nette\Object
 		unset($template->todoProperties);
 
 		$this->incrementProgressBar();
+		$this->checkMemory();
 
 		return $this;
 	}
@@ -1080,6 +1088,7 @@ class Generator extends Nette\Object
 		unset($template->exceptionTree);
 
 		$this->incrementProgressBar();
+		$this->checkMemory();
 
 		return $this;
 	}
@@ -1120,6 +1129,8 @@ class Generator extends Nette\Object
 		}
 		unset($template->subpackages);
 
+		$this->checkMemory();
+
 		return $this;
 	}
 
@@ -1158,6 +1169,8 @@ class Generator extends Nette\Object
 			$this->incrementProgressBar();
 		}
 		unset($template->subnamespaces);
+
+		$this->checkMemory();
 
 		return $this;
 	}
@@ -1302,6 +1315,8 @@ class Generator extends Nette\Object
 
 					$this->incrementProgressBar();
 				}
+
+				$this->checkMemory();
 			}
 		}
 
@@ -1340,6 +1355,7 @@ class Generator extends Nette\Object
 		}
 
 		$this->incrementProgressBar();
+		$this->checkMemory();
 
 		return $this;
 	}
@@ -1640,6 +1656,36 @@ class Generator extends Nette\Object
 		if ($this->progressbar['current'] === $this->progressbar['maximum']) {
 			echo "\n";
 		}
+	}
+
+	/**
+	 * Checks memory usage.
+	 *
+	 * @return \ApiGen\Generator
+	 * @throws \RuntimeException If there is unsufficient reserve of memory.
+	 */
+	public function checkMemory()
+	{
+		static $limit = null;
+		if (null === $limit) {
+			$value = ini_get('memory_limit');
+			$unit = substr($value, -1);
+			if ('-1' === $value) {
+				$limit = 0;
+			} elseif ('G' === $unit) {
+				$limit = (int) $value * 1024 * 1024 * 1024;
+			} elseif ('M' === $unit) {
+				$limit = (int) $value * 1024 * 1024;
+			} else {
+				$limit = (int) $value;
+			}
+		}
+
+		if ($limit && memory_get_usage(true) / $limit >= 0.9) {
+			throw new RuntimeException(sprintf('Used %d%% of memory limit, please increase the limit.', round(memory_get_usage(true) / $limit * 100)));
+		}
+
+		return $this;
 	}
 
 	/**
