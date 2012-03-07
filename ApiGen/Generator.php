@@ -501,9 +501,61 @@ class Generator extends Nette\Object
 			}
 		}
 
-		// Sorting for namespaces and packages
+		// Select only packages or namespaces
+		$userPackagesCount = count(array_diff(array_keys($this->packages), array('PHP', 'None')));
+		$userNamespacesCount = count(array_diff(array_keys($this->namespaces), array('PHP', 'None')));
+
+		$namespacesEnabled = ('auto' === $this->config->groups && ($userNamespacesCount > 0 || 0 === $userPackagesCount)) || 'namespaces' === $this->config->groups;
+		$packagesEnabled = ('auto' === $this->config->groups && !$namespacesEnabled) || 'packages' === $this->config->groups;
+
+		if ($namespacesEnabled) {
+			$this->packages = array();
+			$this->namespaces = $this->sortGroups($this->namespaces);
+		} elseif ($packagesEnabled) {
+			$this->namespaces = array();
+			$this->packages = $this->sortGroups($this->packages);
+		} else {
+			$this->namespaces = array();
+			$this->packages = array();
+		}
+
+		return $this;
+	}
+
+	/**
+	 * Sorts and filters groups.
+	 *
+	 * @param array $groups
+	 * @return array
+	 */
+	private function sortGroups(array $groups)
+	{
+		// Don't generate only 'None' groups
+		if (1 === count($groups) && isset($groups['None'])) {
+			return array();
+		}
+
+		$emptyList = array('classes' => array(), 'interfaces' => array(), 'traits' => array(), 'exceptions' => array(), 'constants' => array(), 'functions' => array());
+		foreach (array_keys($groups) as $groupName) {
+			// Add missing parent groups
+			$parent = '';
+			foreach (explode('\\', $groupName) as $part) {
+				$parent = ltrim($parent . '\\' . $part, '\\');
+				if (!isset($groups[$parent])) {
+					$groups[$parent] = $emptyList;
+				}
+			}
+
+			// Add missing element types
+			foreach ($this->getElementTypes() as $type) {
+				if (!isset($groups[$groupName][$type])) {
+					$groups[$groupName][$type] = array();
+				}
+			}
+		}
+
 		$main = $this->config->main;
-		$sort = function($one, $two) use ($main) {
+		uksort($groups, function($one, $two) use ($main) {
 			// \ as separator has to be first
 			$one = str_replace('\\', ' ', $one);
 			$two = str_replace('\\', ' ', $two);
@@ -517,73 +569,9 @@ class Generator extends Nette\Object
 			}
 
 			return strcasecmp($one, $two);
-		};
+		});
 
-		// Select only packages or namespaces
-		$userPackagesCount = count(array_diff(array_keys($this->packages), array('PHP', 'None')));
-		$userNamespacesCount = count(array_diff(array_keys($this->namespaces), array('PHP', 'None')));
-
-		$namespacesEnabled = ('auto' === $this->config->groups && ($userNamespacesCount > 0 || 0 === $userPackagesCount)) || 'namespaces' === $this->config->groups;
-		$packagesEnabled = ('auto' === $this->config->groups && !$namespacesEnabled) || 'packages' === $this->config->groups;
-
-		if ($namespacesEnabled) {
-			$this->packages = array();
-
-			// Don't generate only 'None' namespace
-			if (1 === count($this->namespaces) && isset($this->namespaces['None'])) {
-				$this->namespaces = array();
-			}
-
-			foreach (array_keys($this->namespaces) as $namespaceName) {
-				// Add missing parent namespaces
-				$parent = '';
-				foreach (explode('\\', $namespaceName) as $part) {
-					$parent = ltrim($parent . '\\' . $part, '\\');
-					if (!isset($this->namespaces[$parent])) {
-						$this->namespaces[$parent] = array('classes' => array(), 'interfaces' => array(), 'traits' => array(), 'exceptions' => array(), 'constants' => array(), 'functions' => array());
-					}
-				}
-
-				// Add missing element types
-				foreach ($this->getElementTypes() as $type) {
-					if (!isset($this->namespaces[$namespaceName][$type])) {
-						$this->namespaces[$namespaceName][$type] = array();
-					}
-				}
-			}
-			uksort($this->namespaces, $sort);
-		} elseif ($packagesEnabled) {
-			$this->namespaces = array();
-
-			// Don't generate only 'None' package
-			if (1 === count($this->packages) && isset($this->packages['None'])) {
-				$this->packages = array();
-			}
-
-			foreach (array_keys($this->packages) as $packageName) {
-				// Add missing parent packages
-				$parent = '';
-				foreach (explode('\\', $packageName) as $part) {
-					$parent = ltrim($parent . '\\' . $part, '\\');
-					if (!isset($this->packages[$parent])) {
-						$this->packages[$parent] = array('classes' => array(), 'interfaces' => array(), 'traits' => array(), 'exceptions' => array(), 'constants' => array(), 'functions' => array());
-					}
-				}
-
-				// Add missing element types
-				foreach ($this->getElementTypes() as $type) {
-					if (!isset($this->packages[$packageName][$type])) {
-						$this->packages[$packageName][$type] = array();
-					}
-				}
-			}
-			uksort($this->packages, $sort);
-		} else {
-			$this->namespaces = array();
-			$this->packages = array();
-		}
-
-		return $this;
+		return $groups;
 	}
 
 	/**
