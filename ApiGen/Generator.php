@@ -1683,7 +1683,7 @@ class Generator extends Nette\Object
 		}
 
 		if ($limit && memory_get_usage(true) / $limit >= 0.9) {
-			throw new RuntimeException(sprintf('Used %d%% of memory limit, please increase the limit.', round(memory_get_usage(true) / $limit * 100)));
+			throw new RuntimeException(sprintf('Used %d%% of the current memory limit, please increase the limit to generate the whole documentation.', round(memory_get_usage(true) / $limit * 100)));
 		}
 
 		return $this;
