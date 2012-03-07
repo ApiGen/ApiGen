@@ -198,8 +198,9 @@ class Generator extends Nette\Object
 				$entries[] = new \SplFileInfo($source);
 			}
 
+			$regexp = '~\\.' . implode('|', $this->config->extensions) . '$~i';
 			foreach ($entries as $entry) {
-				if (!preg_match('~\\.php$~i', $entry->getFilename())) {
+				if (!preg_match($regexp, $entry->getFilename())) {
 					continue;
 				}
 				$pathName = $this->normalizePath($entry->getPathName());

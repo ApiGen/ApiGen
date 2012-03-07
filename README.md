@@ -106,6 +106,10 @@ Path to the directory or file to be processed. You can use the parameter multipl
 
 Documentation will be generated into this directory.
 
+```--extensions <list>```
+
+List of allowed file extensions, default is "php".
+
 ```--exclude <mask>```
 
 Directories and files matching this file mask will not be parsed. You can exclude for example tests from processing this way. This parameter is case sensitive and can be used multiple times.

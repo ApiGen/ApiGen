@@ -2,6 +2,8 @@
 source: ''
 # Directory where to save the generated documentation
 destination: ''
+# List of allowed file extensions
+extensions: [php]
 # Mask to exclude file or directory from processing
 exclude: ''
 # Don't generate documentation for classes from file or directory with this mask

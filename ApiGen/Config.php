@@ -43,6 +43,7 @@ class Config
 		'config' => '',
 		'source' => array(),
 		'destination' => '',
+		'extensions' => array('php'),
 		'exclude' => array(),
 		'skipDocPath' => array(),
 		'skipDocPrefix' => array(),
@@ -362,6 +363,12 @@ class Config
 			throw new ConfigException('Destination is not set');
 		}
 
+		foreach ($this->config['extensions'] as $extension) {
+			if (!preg_match('~^[a-z\\d]+$~i', $extension)) {
+				throw new ConfigException(sprintf('Invalid file extension %s', $extension));
+			}
+		}
+
 		if (!is_file($this->config['templateConfig'])) {
 			throw new ConfigException(sprintf('Template config %s doesn\'t exist', $this->config['templateConfig']));
 		}
@@ -509,10 +516,11 @@ Options:
 	@option@--config@c|@option@-c@c        <@value@file@c>      Config file
 	@option@--source@c|@option@-s@c        <@value@dir@c|@value@file@c>  Source file or directory to parse (can be used multiple times)
 	@option@--destination@c|@option@-d@c   <@value@dir@c>       Directory where to save the generated documentation
+	@option@--extensions@c       <@value@list@c>      List of allowed file extensions, default "@value@php@c"
 	@option@--exclude@c          <@value@mask@c>      Mask (case sensitive) to exclude file or directory from processing (can be used multiple times)
 	@option@--skip-doc-path@c    <@value@mask@c>      Don't generate documentation for elements from file or directory with this (case sensitive) mask (can be used multiple times)
 	@option@--skip-doc-prefix@c  <@value@value@c>     Don't generate documentation for elements with this (case sensitive) name prefix (can be used multiple times)
-	@option@--charset@c          <@value@list@c>      Character set of source files, default "auto"
+	@option@--charset@c          <@value@list@c>      Character set of source files, default "@value@auto@c"
 	@option@--main@c             <@value@value@c>     Main project name prefix
 	@option@--title@c            <@value@value@c>     Title of generated documentation
 	@option@--base-url@c         <@value@value@c>     Documentation base URL
