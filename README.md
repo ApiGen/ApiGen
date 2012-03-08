@@ -272,7 +272,7 @@ When generating documentation of large libraries (Zend Framework for example) we
 * [Nette Framework](http://api.nette.org/2.0/)
 * [TokenReflection library](http://andrewsville.github.com/PHP-Token-Reflection/)
 * [FSHL library](http://fshl.kukulich.cz/api/)
-* [Nella Framework](http://api.nella-project.org/framework/)
+* [Nella Framework](http://api.nellafw.org/)
 * Jyxo PHP Libraries, both [namespaced](http://jyxo.github.com/php/) and [non-namespaced](http://jyxo.github.com/php-no-namespace/)
 
 Besides from these publicly visible examples there are companies that use ApiGen to generate their inhouse documentation: [Medio Interactive](http://www.medio.cz/), [Wikidi](http://wikidi.com/).
