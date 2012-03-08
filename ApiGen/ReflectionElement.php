@@ -118,6 +118,8 @@ abstract class ReflectionElement extends ReflectionBase
 	 */
 	public function getPackageName()
 	{
+		static $packages = array();
+
 		if ($package = $this->getAnnotation('package')) {
 			$packageName = preg_replace('~\s+.*~s', '', $package[0]);
 			if ($subpackage = $this->getAnnotation('subpackage')) {
@@ -128,7 +130,14 @@ abstract class ReflectionElement extends ReflectionBase
 					$packageName .= '\\' . $subpackageName;
 				}
 			}
-			return strtr($packageName, '._/', '\\\\\\');
+			$packageName = strtr($packageName, '._/', '\\\\\\');
+
+			$lowerPackageName = strtolower($packageName);
+			if (!isset($packages[$lowerPackageName])) {
+				$packages[$lowerPackageName] = $packageName;
+			}
+
+			return $packages[$lowerPackageName];
 		}
 
 		return '';
@@ -153,13 +162,36 @@ abstract class ReflectionElement extends ReflectionBase
 	/**
 	 * Returns element namespace name.
 	 *
+	 * @return string
+	 */
+	public function getNamespaceName()
+	{
+		static $namespaces = array();
+
+		$namespaceName = $this->reflection->getNamespaceName();
+
+		if (!$namespaceName) {
+			return $namespaceName;
+		}
+
+		$lowerNamespaceName = strtolower($namespaceName);
+		if (!isset($namespaces[$lowerNamespaceName])) {
+			$namespaces[$lowerNamespaceName] = $namespaceName;
+		}
+
+		return $namespaces[$lowerNamespaceName];
+	}
+
+	/**
+	 * Returns element namespace name.
+	 *
 	 * For internal elements returns "PHP", for elements in global space returns "None".
 	 *
 	 * @return string
 	 */
 	public function getPseudoNamespaceName()
 	{
-		return $this->reflection->isInternal() ? 'PHP' : $this->reflection->getNamespaceName() ?: 'None';
+		return $this->reflection->isInternal() ? 'PHP' : $this->getNamespaceName() ?: 'None';
 	}
 
 	/**

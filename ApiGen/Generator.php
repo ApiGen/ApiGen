@@ -536,12 +536,18 @@ class Generator extends Nette\Object
 		}
 
 		$emptyList = array('classes' => array(), 'interfaces' => array(), 'traits' => array(), 'exceptions' => array(), 'constants' => array(), 'functions' => array());
-		foreach (array_keys($groups) as $groupName) {
+
+		$groupNames = array_keys($groups);
+		$lowerGroupNames = array_flip(array_map(function($y) {
+			return strtolower($y);
+		}, $groupNames));
+
+		foreach ($groupNames as $groupName) {
 			// Add missing parent groups
 			$parent = '';
 			foreach (explode('\\', $groupName) as $part) {
 				$parent = ltrim($parent . '\\' . $part, '\\');
-				if (!isset($groups[$parent])) {
+				if (!isset($lowerGroupNames[strtolower($parent)])) {
 					$groups[$parent] = $emptyList;
 				}
 			}
