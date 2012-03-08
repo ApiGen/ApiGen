@@ -69,6 +69,9 @@ try {
 	}
 
 	Debugger::$strictMode = true;
+	Debugger::$onFatalError[] = function() {
+		echo "\nFor more information turn on the debug mode using the --debug option.\n";
+	};
 	Debugger::enable(Debugger::PRODUCTION, false);
 	Debugger::timer();
 
@@ -90,6 +93,7 @@ try {
 	$config->prepare();
 
 	if ($config->debug) {
+		Debugger::$onFatalError = array();
 		Debugger::enable(Debugger::DEVELOPMENT, false);
 	}
 
