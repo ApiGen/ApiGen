@@ -1,3 +1,16 @@
+## ApiGen 2.6.0 (2012-03-11) ##
+
+* Better error reporting, especially about duplicate classes, functions and constants
+* Character set autodetection is on by default
+* Changed visualization of deprecated elements
+* Improved packages parsing and visualization
+* Improved @license and @link visualization
+* Improved <code> parsing
+* Added option ```--extensions``` to specify file extensions of parsed files
+* Minor visualization improvements
+* Fixed autocomplete for classes in namespaces
+* TokenReflection library updated to version 1.2.0
+
 ## ApiGen 2.5.0 (2012-02-12) ##
 
 * Added option ```--groups``` for grouping classes, interfaces, traits and exceptions in the menu
