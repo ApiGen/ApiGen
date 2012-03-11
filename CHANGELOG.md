@@ -5,7 +5,7 @@
 * Changed visualization of deprecated elements
 * Improved packages parsing and visualization
 * Improved @license and @link visualization
-* Improved <code> parsing
+* Improved ```<code>``` parsing
 * Added option ```--extensions``` to specify file extensions of parsed files
 * Minor visualization improvements
 * Fixed autocomplete for classes in namespaces
