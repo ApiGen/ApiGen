@@ -1,5 +1,5 @@
 {*
-ApiGen 2.5.0 - API documentation generator for PHP 5.3+
+ApiGen 2.6.0 - API documentation generator for PHP 5.3+
 
 Copyright (c) 2010-2011 David Grudl (http://davidgrudl.com)
 Copyright (c) 2011-2012 Jaroslav Hanslík (https://github.com/kukulich)
@@ -43,85 +43,70 @@ the file LICENSE.md that was distributed with this source code.
 	<div id="menu">
 		<a n:tag-if="'overview' !== $active" href="index.html" title="Overview"><span>Overview</span></a>
 
+		{define #group}
+			<ul>
+				{foreach $groups as $group}
+				{var $nextLevel = substr_count($iterator->nextValue, '\\') > substr_count($group, '\\')}
+				<li n:class="$actualGroup === $group || 0 === strpos($actualGroup, $group . '\\') ? active, $config->main && 0 === strpos($group, $config->main) ? main"><a href="{$group|groupUrl}">{$group|subgroupName}{if $nextLevel}<span></span>{/if}</a>
+					{if $nextLevel}
+						<ul>
+					{else}
+						</li>
+						{if substr_count($iterator->nextValue, '\\') < substr_count($group, '\\')}
+							{!'</ul></li>'|repeat:substr_count($group, '\\') - substr_count($iterator->nextValue, '\\')}
+						{/if}
+					{/if}
+				{/foreach}
+			</ul>
+		{/define}
+
 		<div id="groups">
 			{if $namespaces}
 			<h3>Namespaces</h3>
-			<ul>
-				{foreach $namespaces as $item}
-				<li n:class="$namespace === $item || 0 === strpos($namespace, $item . '\\') ? active, $config->main && 0 === strpos($item, $config->main) ? main"><a href="{$item|namespaceUrl}">{$item|subnamespaceName}</a>
-					{if substr_count($iterator->nextValue, '\\') > substr_count($item, '\\')}
-						<span></span>
-						<ul>
-					{else}
-						</li>
-						{if substr_count($iterator->nextValue, '\\') < substr_count($item, '\\')}
-							{!'</ul></li>'|repeat:substr_count($item, '\\') - substr_count($iterator->nextValue, '\\')}
-						{/if}
-					{/if}
-				{/foreach}
-			</ul>
+			{include #group, groups => $namespaces, actualGroup => $namespace}
 			{elseif $packages}
 			<h3>Packages</h3>
-			<ul>
-				{foreach $packages as $item}
-				<li n:class="$package === $item || 0 === strpos($package, $item . '\\') ? active, $config->main && 0 === strpos($item, $config->main) ? main"><a href="{$item|packageUrl}">{$template->subpackageName($item) ?: $item}</a>
-					{if substr_count($iterator->nextValue, '\\') > substr_count($item, '\\')}
-						<span></span>
-						<ul>
-					{else}
-						</li>
-						{if substr_count($iterator->nextValue, '\\') < substr_count($item, '\\')}
-							{!'</ul></li>'|repeat:substr_count($item, '\\') - substr_count($iterator->nextValue, '\\')}
-						{/if}
-					{/if}
-				{/foreach}
-			</ul>
+			{include #group, groups => $packages, actualGroup => $package}
 			{/if}
 		</div>
 
 		<hr n:if="($namespaces || $packages) && ($classes || $interfaces || $traits || $exceptions || $constants || $functions)">
 
+		{define #elements}
+			<ul>
+				<li n:foreach="$elements as $element" n:class="$activeElement === $element ? active"><a n:class="$element->deprecated ? deprecated, !$element->valid ? invalid" href="{$element|elementUrl}">{if $namespace}{$element->shortName}{else}{$element->name}{/if}</a></li>
+			</ul>
+		{/define}
+
 		<div id="elements">
 			{if $classes}
 			<h3>Classes</h3>
-			<ul>
-				<li n:foreach="$classes as $item" n:class="$class === $item ? active, $item->deprecated ? deprecated"><a href="{$item|classUrl}">{if $namespace}{$item->shortName}{else}{$item->name}{/if}</a></li>
-			</ul>
+			{include #elements, elements => $classes, activeElement => $class}
 			{/if}
 
 			{if $interfaces}
 			<h3>Interfaces</h3>
-			<ul>
-				<li n:foreach="$interfaces as $item" n:class="$class === $item ? active, $item->deprecated ? deprecated"><a href="{$item|classUrl}">{if $namespace}{$item->shortName}{else}{$item->name}{/if}</a></li>
-			</ul>
+			{include #elements, elements => $interfaces, activeElement => $class}
 			{/if}
 
 			{if $traits}
 			<h3>Traits</h3>
-			<ul>
-				<li n:foreach="$traits as $item" n:class="$class === $item ? active, $item->deprecated ? deprecated"><a href="{$item|classUrl}">{if $namespace}{$item->shortName}{else}{$item->name}{/if}</a></li>
-			</ul>
+			{include #elements, elements => $traits, activeElement => $class}
 			{/if}
 
 			{if $exceptions}
 			<h3>Exceptions</h3>
-			<ul>
-				<li n:foreach="$exceptions as $item" n:class="$class === $item ? active, $item->deprecated ? deprecated"><a href="{$item|classUrl}">{if $namespace}{$item->shortName}{else}{$item->name}{/if}</a></li>
-			</ul>
+			{include #elements, elements => $exceptions, activeElement => $class}
 			{/if}
 
 			{if $constants}
 			<h3>Constants</h3>
-			<ul>
-				<li n:foreach="$constants as $item" n:class="$constant === $item ? active, $item->deprecated ? deprecated"><a href="{$item|constantUrl}">{if $namespace}{$item->shortName}{else}{$item->name}{/if}</a></li>
-			</ul>
+			{include #elements, elements => $constants, activeElement => $constant}
 			{/if}
 
 			{if $functions}
 			<h3>Functions</h3>
-			<ul>
-				<li n:foreach="$functions as $item" n:class="$function === $item ? active, $item->deprecated ? deprecated"><a href="{$item|functionUrl}">{if $namespace}{$item->shortName}{else}{$item->name}{/if}</a></li>
-			</ul>
+			{include #elements, elements => $functions, activeElement => $function}
 			{/if}
 		</div>
 	</div>
@@ -135,7 +120,7 @@ the file LICENSE.md that was distributed with this source code.
 		<input type="hidden" name="cx" value="{$config->googleCseId}">
 		<input type="hidden" name="ie" value="UTF-8">
 		<input type="hidden" name="more" value="{$config->googleCseLabel}" n:if="$config->googleCseLabel">
-		<input type="text" name="q" class="text">
+		<input type="text" name="q" class="text"{if 'overview' === $active} autofocus{/if}>
 		<input type="submit" value="Search">
 	</form>
 

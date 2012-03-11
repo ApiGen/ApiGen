@@ -1,5 +1,5 @@
 {*
-ApiGen 2.5.0 - API documentation generator for PHP 5.3+
+ApiGen 2.6.0 - API documentation generator for PHP 5.3+
 
 Copyright (c) 2010-2011 David Grudl (http://davidgrudl.com)
 Copyright (c) 2011-2012 Jaroslav Hanslík (https://github.com/kukulich)
@@ -15,7 +15,9 @@ the file LICENSE.md that was distributed with this source code.
 
 {block #content}
 <div id="content" class="function">
-	<h1>{if $function->deprecated}Deprecated {/if}Function {$function->shortName}</h1>
+	<h1 n:class="$function->deprecated ? deprecated">Function {$function->shortName}</h1>
+
+	{if $function->valid}
 
 	<div class="description" n:if="$template->longDescription($function)">
 	{!$function|longDescription}
@@ -23,13 +25,14 @@ the file LICENSE.md that was distributed with this source code.
 
 	<div class="info">
 		{if $function->inNamespace()}<b>Namespace:</b> {!$function->namespaceName|namespaceLinks}<br>{/if}
+		{if $function->inPackage()}<b>Package:</b> {!$function->packageName|packageLinks}<br>{/if}
 		{foreach $template->annotationSort($template->annotationFilter($function->annotations, array('param', 'return', 'throws'))) as $annotation => $values}
 			{foreach $values as $value}
 				<b>{$annotation|annotationBeautify}{if $value}:{/if}</b>
 				{!$value|annotation:$annotation:$function}<br>
 			{/foreach}
 		{/foreach}
-		<b>Located at</b> <a n:tag-if="$config->sourceCode" href="{$function|sourceUrl}" title="Go to source code">{$fileName}</a><br>
+		<b>Located at</b> <a n:tag-if="$config->sourceCode" href="{$function|sourceUrl}" title="Go to source code">{$function->fileName|relativePath}</a><br>
 	</div>
 
 	{var $annotations = $function->annotations}
@@ -39,7 +42,7 @@ the file LICENSE.md that was distributed with this source code.
 	<tr n:foreach="$function->parameters as $parameter" data-order="{$parameter->name}" id="${$parameter->name}">
 		<td class="name"><code>
 			{if $parameter->array}array
-			{elseif $parameter->className}<a href="{$parameter->className|classUrl}" n:tag-if="$template->getClass($parameter->className)">{$parameter->className}</a>
+			{elseif $parameter->className}{!$parameter->className|typeLinks:$function}
 			{elseif isset($annotations['param'][$parameter->position])}{!$annotations['param'][$parameter->position]|typeLinks:$function}{/if}
 		</code></td>
 		<td class="value"><code>{block|strip}
@@ -74,5 +77,19 @@ the file LICENSE.md that was distributed with this source code.
 		</td>
 	</tr>
 	</table>
+
+	{else}
+		<div class="invalid">
+			<p>
+				Documentation of this function could not be generated.
+			</p>
+			<p>
+				Function was originally declared in {$function->fileName|relativePath} and is invalid because of:
+			</p>
+			<ul>
+				<li n:foreach="$function->reasons as $reason">Function was redeclared in {$reason->getSender()->getFileName()|relativePath}.</li>
+			</ul>
+		</div>
+	{/if}
 </div>
 {/block}

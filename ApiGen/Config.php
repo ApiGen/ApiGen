@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ApiGen 2.5.0 - API documentation generator for PHP 5.3+
+ * ApiGen 2.6.0 - API documentation generator for PHP 5.3+
  *
  * Copyright (c) 2010-2011 David Grudl (http://davidgrudl.com)
  * Copyright (c) 2011-2012 Jaroslav Hanslík (https://github.com/kukulich)
@@ -43,10 +43,11 @@ class Config
 		'config' => '',
 		'source' => array(),
 		'destination' => '',
+		'extensions' => array('php'),
 		'exclude' => array(),
 		'skipDocPath' => array(),
 		'skipDocPrefix' => array(),
-		'charset' => array('UTF-8'),
+		'charset' => array('auto'),
 		'main' => '',
 		'title' => '',
 		'baseUrl' => '',
@@ -107,6 +108,7 @@ class Config
 		$templateDir = self::isInstalledByPear() ? '@data_dir@' . DIRECTORY_SEPARATOR . 'ApiGen' : realpath(__DIR__ . DIRECTORY_SEPARATOR . '..');
 		self::$defaultConfig['templateConfig'] = $templateDir . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'default' . DIRECTORY_SEPARATOR . 'config.neon';
 		self::$defaultConfig['colors'] = 'WIN' !== substr(PHP_OS, 0, 3);
+		$this->config = self::$defaultConfig;
 	}
 
 	/**
@@ -127,7 +129,7 @@ class Config
 					$next = next($options);
 					if (false === $next || '-' === $next{0}) {
 						prev($options);
-						$value = 'yes';
+						$value = '';
 					} else {
 						$value = $next;
 					}
@@ -157,7 +159,7 @@ class Config
 	 * Prepares configuration.
 	 *
 	 * @return \ApiGen\Config
-	 * @throws \ApiGen\Exception If something in configuration is wrong.
+	 * @throws \ApiGen\ConfigException If something in configuration is wrong.
 	 */
 	public function prepare()
 	{
@@ -180,8 +182,8 @@ class Config
 			}, array_values(array_diff_key($translator, self::$defaultConfig)));
 
 			$message = count($unknownOptions) > 1
-				? sprintf('Unknown command line options %s', implode(', ', $originalOptions))
-				: sprintf('Unknown command line option %s', $originalOptions[0]);
+				? sprintf('Unknown command line options "%s"', implode('", "', $originalOptions))
+				: sprintf('Unknown command line option "%s"', $originalOptions[0]);
 			throw new ConfigException($message);
 		}
 
@@ -207,8 +209,8 @@ class Config
 			$unknownOptions = array_keys(array_diff_key($neon, self::$defaultConfig));
 			if (!empty($unknownOptions)) {
 				$message = count($unknownOptions) > 1
-					? sprintf('Unknown config file options %s', implode(', ', $unknownOptions))
-					: sprintf('Unknown config file option %s', $unknownOptions[0]);
+					? sprintf('Unknown config file options "%s"', implode('", "', $unknownOptions))
+					: sprintf('Unknown config file option "%s"', $unknownOptions[0]);
 				throw new ConfigException($message);
 			}
 		}
@@ -224,17 +226,17 @@ class Config
 
 		foreach (self::$defaultConfig as $option => $valueDefinition) {
 			if (is_array($this->config[$option]) && !is_array($valueDefinition)) {
-				throw new ConfigException(sprintf('Option %s must be set only once', $option));
+				throw new ConfigException(sprintf('Option "%s" must be set only once', $option));
 			}
 
 			if (is_bool($this->config[$option]) && !is_bool($valueDefinition)) {
-				throw new ConfigException(sprintf('Option %s expects value', $option));
+				throw new ConfigException(sprintf('Option "%s" expects value', $option));
 			}
 
-			if (is_bool($valueDefinition)) {
+			if (is_bool($valueDefinition) && !is_bool($this->config[$option])) {
 				// Boolean option
 				$value = strtolower($this->config[$option]);
-				if ('on' === $value || 'yes' === $value || 'true' === $value) {
+				if ('on' === $value || 'yes' === $value || 'true' === $value || '' === $value) {
 					$value = true;
 				} elseif ('off' === $value || 'no' === $value || 'false' === $value) {
 					$value = false;
@@ -333,12 +335,12 @@ class Config
 	 * Checks configuration.
 	 *
 	 * @return \ApiGen\Config
-	 * @throws \ApiGen\Exception If something in configuration is wrong.
+	 * @throws \ApiGen\ConfigException If something in configuration is wrong.
 	 */
 	private function check()
 	{
 		if (!empty($this->config['config']) && !is_file($this->config['config'])) {
-			throw new ConfigException(sprintf('Config file %s doesn\'t exist', $this->config['config']));
+			throw new ConfigException(sprintf('Config file "%s" doesn\'t exist', $this->config['config']));
 		}
 
 		if (empty($this->config['source'])) {
@@ -346,13 +348,13 @@ class Config
 		}
 		foreach ($this->config['source'] as $source) {
 			if (!file_exists($source)) {
-				throw new ConfigException(sprintf('Source %s doesn\'t exist', $source));
+				throw new ConfigException(sprintf('Source "%s" doesn\'t exist', $source));
 			}
 		}
 		foreach ($this->config['source'] as $source) {
 			foreach ($this->config['source'] as $source2) {
 				if ($source !== $source2 && 0 === strpos($source, $source2)) {
-					throw new ConfigException(sprintf('Sources %s and %s overlap', $source, $source2));
+					throw new ConfigException(sprintf('Sources "%s" and "%s" overlap', $source, $source2));
 				}
 			}
 		}
@@ -361,20 +363,26 @@ class Config
 			throw new ConfigException('Destination is not set');
 		}
 
+		foreach ($this->config['extensions'] as $extension) {
+			if (!preg_match('~^[a-z\\d]+$~i', $extension)) {
+				throw new ConfigException(sprintf('Invalid file extension "%s"', $extension));
+			}
+		}
+
 		if (!is_file($this->config['templateConfig'])) {
-			throw new ConfigException(sprintf('Template config %s doesn\'t exist', $this->config['templateConfig']));
+			throw new ConfigException(sprintf('Template config "%s" doesn\'t exist', $this->config['templateConfig']));
 		}
 
 		if (!empty($this->config['baseUrl']) && !preg_match('~^https?://(?:[-a-z0-9]+\.)+[a-z]{2,6}(?:/.*)?$~i', $this->config['baseUrl'])) {
-			throw new ConfigException('Invalid base url');
+			throw new ConfigException(sprintf('Invalid base url "%s"', $this->config['baseUrl']));
 		}
 
 		if (!empty($this->config['googleCseId']) && !preg_match('~^\d{21}:[-a-z0-9]{11}$~', $this->config['googleCseId'])) {
-			throw new ConfigException('Invalid Google Custom Search ID');
+			throw new ConfigException(sprintf('Invalid Google Custom Search ID "%s"', $this->config['googleCseId']));
 		}
 
 		if (!empty($this->config['googleAnalytics']) && !preg_match('~^UA\\-\\d+\\-\\d+$~', $this->config['googleAnalytics'])) {
-			throw new ConfigException('Invalid Google Analytics tracking code');
+			throw new ConfigException(sprintf('Invalid Google Analytics tracking code "%s"', $this->config['googleAnalytics']));
 		}
 
 		if (empty($this->config['groups'])) {
@@ -382,7 +390,7 @@ class Config
 		}
 
 		if (empty($this->config['autocomplete'])) {
-			throw new Exception('No supported autocomplete value given', Exception::INVALID_CONFIG);
+			throw new ConfigException('No supported autocomplete value given');
 		}
 
 		if (empty($this->config['accessLevels'])) {
@@ -396,20 +404,20 @@ class Config
 	 * Checks template configuration.
 	 *
 	 * @return \ApiGen\Config
-	 * @throws \ApiGen\Exception If something in template configuration is wrong.
+	 * @throws \ApiGen\ConfigException If something in template configuration is wrong.
 	 */
 	private function checkTemplate()
 	{
 		foreach (array('main', 'optional') as $section) {
 			foreach ($this->config['template']['templates'][$section] as $type => $config) {
 				if (!isset($config['filename'])) {
-					throw new ConfigException(sprintf('Filename for %s is not defined', $type));
+					throw new ConfigException(sprintf('Filename for "%s" is not defined', $type));
 				}
 				if (!isset($config['template'])) {
-					throw new ConfigException(sprintf('Template for %s is not defined', $type));
+					throw new ConfigException(sprintf('Template for "%s" is not defined', $type));
 				}
 				if (!is_file(dirname($this->config['templateConfig']) . DIRECTORY_SEPARATOR . $config['template'])) {
-					throw new ConfigException(sprintf('Template for %s doesn\'t exist', $type));
+					throw new ConfigException(sprintf('Template for "%s" doesn\'t exist', $type));
 				}
 			}
 		}
@@ -508,10 +516,11 @@ Options:
 	@option@--config@c|@option@-c@c        <@value@file@c>      Config file
 	@option@--source@c|@option@-s@c        <@value@dir@c|@value@file@c>  Source file or directory to parse (can be used multiple times)
 	@option@--destination@c|@option@-d@c   <@value@dir@c>       Directory where to save the generated documentation
+	@option@--extensions@c       <@value@list@c>      List of allowed file extensions, default "@value@php@c"
 	@option@--exclude@c          <@value@mask@c>      Mask (case sensitive) to exclude file or directory from processing (can be used multiple times)
 	@option@--skip-doc-path@c    <@value@mask@c>      Don't generate documentation for elements from file or directory with this (case sensitive) mask (can be used multiple times)
 	@option@--skip-doc-prefix@c  <@value@value@c>     Don't generate documentation for elements with this (case sensitive) name prefix (can be used multiple times)
-	@option@--charset@c          <@value@list@c>      Character set of source files, default "UTF-8"
+	@option@--charset@c          <@value@list@c>      Character set of source files, default "@value@auto@c"
 	@option@--main@c             <@value@value@c>     Main project name prefix
 	@option@--title@c            <@value@value@c>     Title of generated documentation
 	@option@--base-url@c         <@value@value@c>     Documentation base URL

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ApiGen 2.5.0 - API documentation generator for PHP 5.3+
+ * ApiGen 2.6.0 - API documentation generator for PHP 5.3+
  *
  * Copyright (c) 2010-2011 David Grudl (http://davidgrudl.com)
  * Copyright (c) 2011-2012 Jaroslav Hanslík (https://github.com/kukulich)
@@ -29,6 +29,24 @@ class ReflectionConstant extends ReflectionElement
 	{
 		$className = $this->reflection->getDeclaringClassName();
 		return null === $className ? null : self::$parsedClasses[$className];
+	}
+
+	/**
+	 * Returns if the constant is valid.
+	 *
+	 * @return boolean
+	 */
+	public function isValid()
+	{
+		if ($this->reflection instanceof \TokenReflection\Invalid\ReflectionConstant) {
+			return false;
+		}
+
+		if ($class = $this->getDeclaringClass()) {
+			return $class->isValid();
+		}
+
+		return true;
 	}
 
 	/**

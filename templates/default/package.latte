@@ -1,5 +1,5 @@
 {*
-ApiGen 2.5.0 - API documentation generator for PHP 5.3+
+ApiGen 2.6.0 - API documentation generator for PHP 5.3+
 
 Copyright (c) 2010-2011 David Grudl (http://davidgrudl.com)
 Copyright (c) 2011-2012 Jaroslav Hanslík (https://github.com/kukulich)
@@ -11,21 +11,16 @@ the file LICENSE.md that was distributed with this source code.
 {layout '@layout.latte'}
 {var $active = 'package'}
 
-{block #title}{if $template->subpackageName($package)}Subpackage {$package|subpackageName} | {/if}{if $package != 'None'}Package {$package|packageName}{else}No package{/if}{/block}
+{block #title}{if $package != 'None'}Package {$package}{else}No package{/if}{/block}
 
 {block #content}
-<div id="content" class="namespace">
-	{if $template->subpackageName($package)}
-		<h1>Package <a href="{$package|packageName|packageUrl}">{$package|packageName}</a></h1>
-		<h2>Subpackage {$package|subpackageName}</h2>
-	{else}
-		<h1>{if $package != 'None'}Package {$package}{else}No package{/if}</h1>
-	{/if}
+<div id="content" class="package">
+	<h1>{if $package != 'None'}Package {!$package|packageLinks:false}{else}No package{/if}</h1>
 
 	<table class="summary" id="packages" n:if="$subpackages">
-	<caption>Subpackages summary</caption>
+	<caption>Packages summary</caption>
 	<tr n:foreach="$subpackages as $package">
-		<td class="name"><a href="{$package|packageUrl}">{$package|subpackageName}</a></td>
+		<td class="name"><a href="{$package|packageUrl}">{$package}</a></td>
 	</tr>
 	</table>
 

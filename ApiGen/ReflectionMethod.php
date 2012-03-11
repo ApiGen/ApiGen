@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ApiGen 2.5.0 - API documentation generator for PHP 5.3+
+ * ApiGen 2.6.0 - API documentation generator for PHP 5.3+
  *
  * Copyright (c) 2010-2011 David Grudl (http://davidgrudl.com)
  * Copyright (c) 2011-2012 Jaroslav Hanslík (https://github.com/kukulich)
@@ -62,5 +62,19 @@ class ReflectionMethod extends ReflectionFunctionBase
 	{
 		$originalName = $this->reflection->getOriginalName();
 		return null === $originalName ? null : self::$parsedClasses[$this->reflection->getOriginal()->getDeclaringClassName()]->getMethod($originalName);
+	}
+
+	/**
+	 * Returns if the method is valid.
+	 *
+	 * @return boolean
+	 */
+	public function isValid()
+	{
+		if ($class = $this->getDeclaringClass()) {
+			return $class->isValid();
+		}
+
+		return true;
 	}
 }

@@ -1,5 +1,5 @@
 {*
-ApiGen 2.5.0 - API documentation generator for PHP 5.3+
+ApiGen 2.6.0 - API documentation generator for PHP 5.3+
 
 Copyright (c) 2010-2011 David Grudl (http://davidgrudl.com)
 Copyright (c) 2011-2012 Jaroslav Hanslík (https://github.com/kukulich)
@@ -17,9 +17,8 @@ the file LICENSE.md that was distributed with this source code.
 <div id="content">
 	<h1>{include #title}</h1>
 
-	<table class="summary" id="classes" n:if="$todoClasses">
-	<caption>Classes summary</caption>
-	{foreach $todoClasses as $class}
+	{define #classes}
+	{foreach $items as $class}
 	<tr>
 		<td class="name" rowspan="{count($class->annotations['todo'])}"><a href="{$class|classUrl}">{$class->name}</a></td>
 		{foreach $class->annotations['todo'] as $description}
@@ -27,42 +26,26 @@ the file LICENSE.md that was distributed with this source code.
 		{/foreach}
 	</tr>
 	{/foreach}
+	{/define}
+
+	<table class="summary" id="classes" n:if="$todoClasses">
+	<caption>Classes summary</caption>
+	{include #classes, items => $todoClasses}
 	</table>
 
 	<table class="summary" id="interfaces" n:if="$todoInterfaces">
 	<caption>Interfaces summary</caption>
-	{foreach $todoInterfaces as $interface}
-	<tr>
-		<td class="name" rowspan="{count($interface->annotations['todo'])}"><a href="{$interface|classUrl}">{$interface->name}</a></td>
-		{foreach $interface->annotations['todo'] as $description}
-		<td>{!$description|annotation:'todo':$interface}</td>{sep}</tr><tr>{/sep}
-		{/foreach}
-	</tr>
-	{/foreach}
+	{include #classes, items => $todoInterfaces}
 	</table>
 
 	<table class="summary" id="traits" n:if="$todoTraits">
 	<caption>Traits summary</caption>
-	{foreach $todoTraits as $trait}
-	<tr>
-		<td class="name" rowspan="{count($trait->annotations['todo'])}"><a href="{$trait|classUrl}">{$trait->name}</a></td>
-		{foreach $trait->annotations['todo'] as $description}
-		<td>{!$description|annotation:'todo':$trait}</td>{sep}</tr><tr>{/sep}
-		{/foreach}
-	</tr>
-	{/foreach}
+	{include #classes, items => $todoTraits}
 	</table>
 
 	<table class="summary" id="exceptions" n:if="$todoExceptions">
 	<caption>Exceptions summary</caption>
-	{foreach $todoExceptions as $exception}
-	<tr>
-		<td class="name" rowspan="{count($exception->annotations['todo'])}"><a href="{$exception|classUrl}">{$exception->name}</a></td>
-		{foreach $exception->annotations['todo'] as $description}
-		<td>{!$description|annotation:'todo':$exception}</td>{sep}</tr><tr>{/sep}
-		{/foreach}
-	</tr>
-	{/foreach}
+	{include #classes, items => $todoExceptions}
 	</table>
 
 	<table class="summary" id="methods" n:if="$todoMethods">

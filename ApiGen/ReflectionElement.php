@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ApiGen 2.5.0 - API documentation generator for PHP 5.3+
+ * ApiGen 2.6.0 - API documentation generator for PHP 5.3+
  *
  * Copyright (c) 2010-2011 David Grudl (http://davidgrudl.com)
  * Copyright (c) 2011-2012 Jaroslav Hanslík (https://github.com/kukulich)
@@ -102,6 +102,48 @@ abstract class ReflectionElement extends ReflectionBase
 	}
 
 	/**
+	 * Returns if the element is in package.
+	 *
+	 * @return boolean
+	 */
+	public function inPackage()
+	{
+		return '' !== $this->getPackageName();
+	}
+
+	/**
+	 * Returns element package name (including subpackage name).
+	 *
+	 * @return string
+	 */
+	public function getPackageName()
+	{
+		static $packages = array();
+
+		if ($package = $this->getAnnotation('package')) {
+			$packageName = preg_replace('~\s+.*~s', '', $package[0]);
+			if ($subpackage = $this->getAnnotation('subpackage')) {
+				$subpackageName = preg_replace('~\s+.*~s', '', $subpackage[0]);
+				if (0 === strpos($subpackageName, $packageName)) {
+					$packageName = $subpackageName;
+				} else {
+					$packageName .= '\\' . $subpackageName;
+				}
+			}
+			$packageName = strtr($packageName, '._/', '\\\\\\');
+
+			$lowerPackageName = strtolower($packageName);
+			if (!isset($packages[$lowerPackageName])) {
+				$packages[$lowerPackageName] = $packageName;
+			}
+
+			return $packages[$lowerPackageName];
+		}
+
+		return '';
+	}
+
+	/**
 	 * Returns element package name (including subpackage name).
 	 *
 	 * For internal elements returns "PHP", for elements in global space returns "None".
@@ -114,15 +156,30 @@ abstract class ReflectionElement extends ReflectionBase
 			return 'PHP';
 		}
 
-		if ($package = $this->getAnnotation('package')) {
-			$packageName = preg_replace('~\s+.*~s', '', $package[0]);
-			if ($subpackage = $this->getAnnotation('subpackage')) {
-				$packageName .= '\\' . preg_replace('~\s+.*~s', '', $subpackage[0]);
-			}
-			return $packageName;
+		return $this->getPackageName() ?: 'None';
+	}
+
+	/**
+	 * Returns element namespace name.
+	 *
+	 * @return string
+	 */
+	public function getNamespaceName()
+	{
+		static $namespaces = array();
+
+		$namespaceName = $this->reflection->getNamespaceName();
+
+		if (!$namespaceName) {
+			return $namespaceName;
 		}
 
-		return 'None';
+		$lowerNamespaceName = strtolower($namespaceName);
+		if (!isset($namespaces[$lowerNamespaceName])) {
+			$namespaces[$lowerNamespaceName] = $namespaceName;
+		}
+
+		return $namespaces[$lowerNamespaceName];
 	}
 
 	/**
@@ -134,7 +191,7 @@ abstract class ReflectionElement extends ReflectionBase
 	 */
 	public function getPseudoNamespaceName()
 	{
-		return $this->reflection->isInternal() ? 'PHP' : $this->reflection->getNamespaceName() ?: 'None';
+		return $this->reflection->isInternal() ? 'PHP' : $this->getNamespaceName() ?: 'None';
 	}
 
 	/**

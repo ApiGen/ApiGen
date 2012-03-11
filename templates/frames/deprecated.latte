@@ -1,5 +1,5 @@
 {*
-ApiGen 2.5.0 - API documentation generator for PHP 5.3+
+ApiGen 2.6.0 - API documentation generator for PHP 5.3+
 
 Copyright (c) 2010-2011 David Grudl (http://davidgrudl.com)
 Copyright (c) 2011-2012 Jaroslav Hanslík (https://github.com/kukulich)
@@ -17,9 +17,8 @@ the file LICENSE.md that was distributed with this source code.
 <div id="content">
 	<h1>{include #title}</h1>
 
-	<table class="summary" id="classes" n:if="$deprecatedClasses">
-	<caption>Classes summary</caption>
-	<tr n:foreach="$deprecatedClasses as $class">
+	{define #classes}
+	<tr n:foreach="$items as $class">
 		<td class="name"><a href="{$class|classUrl}">{$class->name}</a></td>
 		<td>
 			{foreach $class->annotations['deprecated'] as $description}
@@ -29,48 +28,26 @@ the file LICENSE.md that was distributed with this source code.
 			{/foreach}
 		</td>
 	</tr>
+	{/define}
+
+	<table class="summary" id="classes" n:if="$deprecatedClasses">
+	<caption>Classes summary</caption>
+	{include #classes, items => $deprecatedClasses}
 	</table>
 
 	<table class="summary" id="interfaces" n:if="$deprecatedInterfaces">
 	<caption>Interfaces summary</caption>
-	<tr n:foreach="$deprecatedInterfaces as $interface">
-		<td class="name"><a href="{$interface|classUrl}">{$interface->name}</a></td>
-		<td>
-			{foreach $interface->annotations['deprecated'] as $description}
-				{if $description}
-					{!$description|annotation:'deprecated':$interface}<br>
-				{/if}
-			{/foreach}
-		</td>
-	</tr>
+	{include #classes, items => $deprecatedInterfaces}
 	</table>
 
 	<table class="summary" id="traits" n:if="$deprecatedTraits">
 	<caption>Traits summary</caption>
-	<tr n:foreach="$deprecatedTraits as $trait">
-		<td class="name"><a href="{$trait|classUrl}">{$trait->name}</a></td>
-		<td>
-			{foreach $trait->annotations['deprecated'] as $description}
-				{if $description}
-					{!$description|annotation:'deprecated':$trait}<br>
-				{/if}
-			{/foreach}
-		</td>
-	</tr>
+	{include #classes, items => $deprecatedTraits}
 	</table>
 
 	<table class="summary" id="exceptions" n:if="$deprecatedExceptions">
 	<caption>Exceptions summary</caption>
-	<tr n:foreach="$deprecatedExceptions as $exception">
-		<td class="name"><a href="{$exception|classUrl}">{$exception->name}</a></td>
-		<td>
-			{foreach $exception->annotations['deprecated'] as $description}
-				{if $description}
-					{!$description|annotation:'deprecated':$exception}<br>
-				{/if}
-			{/foreach}
-		</td>
-	</tr>
+	{include #classes, items => $deprecatedExceptions}
 	</table>
 
 	<table class="summary" id="methods" n:if="$deprecatedMethods">

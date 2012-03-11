@@ -1,5 +1,5 @@
 {*
-ApiGen 2.5.0 - API documentation generator for PHP 5.3+
+ApiGen 2.6.0 - API documentation generator for PHP 5.3+
 
 Copyright (c) 2010-2011 David Grudl (http://davidgrudl.com)
 Copyright (c) 2011-2012 Jaroslav Hanslík (https://github.com/kukulich)
@@ -8,50 +8,39 @@ Copyright (c) 2011-2012 Ondřej Nešpor (https://github.com/Andrewsville)
 For the full copyright and license information, please view
 the file LICENSE.md that was distributed with this source code.
 *}
+{define #elements}
+<tr n:foreach="$elements as $element">
+	<td class="name"><a href="{$element|elementUrl}" n:class="$element->deprecated ? deprecated, !$element->valid ? invalid">{if $namespace}{$element->shortName}{else}{$element->name}{/if}</a></td>
+	<td>{!$element|shortDescription}</td>
+</tr>
+{/define}
+
 <table class="summary" id="classes" n:if="$classes">
 <caption>Classes summary</caption>
-<tr n:foreach="$classes as $class" n:class="$class->deprecated ? deprecated">
-	<td class="name"><a href="{$class|classUrl}">{if $namespace}{$class->shortName}{else}{$class->name}{/if}</a></td>
-	<td>{!$class|shortDescription}</td>
-</tr>
+{include #elements, elements => $classes}
 </table>
 
 <table class="summary" id="interfaces" n:if="$interfaces">
 <caption>Interfaces summary</caption>
-<tr n:foreach="$interfaces as $interface" n:class="$interface->deprecated ? deprecated">
-	<td class="name"><a href="{$interface|classUrl}">{if $namespace}{$interface->shortName}{else}{$interface->name}{/if}</a></td>
-	<td>{!$interface|shortDescription}</td>
-</tr>
+{include #elements, elements => $interfaces}
 </table>
 
 <table class="summary" id="traits" n:if="$traits">
 <caption>Traits summary</caption>
-<tr n:foreach="$traits as $trait" n:class="$trait->deprecated ? deprecated">
-	<td class="name"><a href="{$trait|classUrl}">{if $namespace}{$trait->shortName}{else}{$trait->name}{/if}</a></td>
-	<td>{!$trait|shortDescription}</td>
-</tr>
+{include #elements, elements => $traits}
 </table>
 
 <table class="summary" id="exceptions" n:if="$exceptions">
 <caption>Exceptions summary</caption>
-<tr n:foreach="$exceptions as $exception" n:class="$exception->deprecated ? deprecated">
-	<td class="name"><a href="{$exception|classUrl}">{if $namespace}{$exception->shortName}{else}{$exception->name}{/if}</a></td>
-	<td>{!$exception|shortDescription}</td>
-</tr>
+{include #elements, elements => $exceptions}
 </table>
 
 <table class="summary" id="constants" n:if="$constants">
 <caption>Constants summary</caption>
-<tr n:foreach="$constants as $constant" n:class="$constant->deprecated ? deprecated">
-	<td class="name"><code><a href="{$constant|constantUrl}"><b>{if $namespace}{$constant->shortName}{else}{$constant->name}{/if}</b></a></code></td>
-	<td>{!$constant|shortDescription}</td>
-</tr>
+{include #elements, elements => $constants}
 </table>
 
 <table class="summary" id="functions" n:if="$functions">
 <caption>Functions summary</caption>
-<tr n:foreach="$functions as $function" n:class="$function->deprecated ? deprecated">
-	<td class="name"><a href="{$function|functionUrl}">{if $namespace}{$function->shortName}{else}{$function->name}{/if}</a></td>
-	<td>{!$function|shortDescription}</td>
-</tr>
+{include #elements, elements => $functions}
 </table>

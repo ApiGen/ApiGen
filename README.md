@@ -106,6 +106,10 @@ Path to the directory or file to be processed. You can use the parameter multipl
 
 Documentation will be generated into this directory.
 
+```--extensions <list>```
+
+List of allowed file extensions, default is "php".
+
 ```--exclude <mask>```
 
 Directories and files matching this file mask will not be parsed. You can exclude for example tests from processing this way. This parameter is case sensitive and can be used multiple times.
@@ -117,7 +121,7 @@ Using this parameters you can tell ApiGen not to generate documentation for elem
 
 ```--charset <list>```
 
-Character set of source files, default is "UTF-8". You can use the parameter multiple times to provide a list of all used character sets in your documentation. In that case ApiGen will try to choose one of provided sets for every file. You can also use the "auto" value to let ApiGen choose from all supported character sets. However you should avoid this because every kind of autodetection can be tricky (and not completely realiable).
+Character set of source files, default is "auto" that lets ApiGen choose from all supported character sets. However if you use only one characters set across your source files you should set it explicitly to avoid autodetection because it can be tricky (and is not completely realiable). Moreover autodetection slows down the process of generating documentation. You can also use the parameter multiple times to provide a list of all used character sets in your documentation. In that case ApiGen will choose one of provided character sets for each file.
 
 ```--main <value>```
 
@@ -268,7 +272,7 @@ When generating documentation of large libraries (Zend Framework for example) we
 * [Nette Framework](http://api.nette.org/2.0/)
 * [TokenReflection library](http://andrewsville.github.com/PHP-Token-Reflection/)
 * [FSHL library](http://fshl.kukulich.cz/api/)
-* [Nella Framework](http://api.nella-project.org/framework/)
+* [Nella Framework](http://api.nellafw.org/)
 * Jyxo PHP Libraries, both [namespaced](http://jyxo.github.com/php/) and [non-namespaced](http://jyxo.github.com/php-no-namespace/)
 
 Besides from these publicly visible examples there are companies that use ApiGen to generate their inhouse documentation: [Medio Interactive](http://www.medio.cz/), [Wikidi](http://wikidi.com/).

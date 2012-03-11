@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ApiGen 2.5.0 - API documentation generator for PHP 5.3+
+ * ApiGen 2.6.0 - API documentation generator for PHP 5.3+
  *
  * Copyright (c) 2010-2011 David Grudl (http://davidgrudl.com)
  * Copyright (c) 2011-2012 Jaroslav Hanslík (https://github.com/kukulich)
@@ -78,11 +78,13 @@ class Backend extends Broker\Backend\Memory
 	 */
 	public function addFile(TokenReflection\Stream\StreamBase $tokenStream, TokenReflection\ReflectionFile $file)
 	{
-		parent::addFile($tokenStream, $file);
 		if ($this->cacheTokenStreams) {
 			$this->fileCache[$file->getName()] = $cacheFile = tempnam(sys_get_temp_dir(), 'trc');
 			file_put_contents($cacheFile, serialize($tokenStream));
 		}
+
+		parent::addFile($tokenStream, $file);
+
 		return $this;
 	}
 
@@ -91,7 +93,7 @@ class Backend extends Broker\Backend\Memory
 	 *
 	 * @param string $fileName File name
 	 * @return \TokenReflection\Stream
-	 * @throws \ApiGen\Exception If the token stream could not be returned.
+	 * @throws \RuntimeException If the token stream could not be returned.
 	 */
 	public function getFileTokens($fileName)
 	{
@@ -154,6 +156,8 @@ class Backend extends Broker\Backend\Memory
 						}
 					}
 				}
+
+				$this->generator->checkMemory();
 			}
 		}
 
@@ -180,6 +184,8 @@ class Backend extends Broker\Backend\Memory
 					}
 				}
 			}
+
+			$this->generator->checkMemory();
 		}
 
 		foreach ($this->getFunctions() as $function) {

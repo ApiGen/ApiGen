@@ -1,5 +1,5 @@
 /*!
- * ApiGen 2.5.0 - API documentation generator for PHP 5.3+
+ * ApiGen 2.6.0 - API documentation generator for PHP 5.3+
  *
  * Copyright (c) 2010-2011 David Grudl (http://davidgrudl.com)
  * Copyright (c) 2011-2012 Jaroslav Hanslík (https://github.com/kukulich)
@@ -83,7 +83,6 @@ h1 a {
 
 a:hover, a:active, a:focus, a:hover b, a:hover var {
 	background-color: #006aeb;
-	text-decoration: none;
 	color: #ffffff !important;
 }
 
@@ -103,6 +102,18 @@ pre {
 
 code a b {
 	color: #000000;
+}
+
+.deprecated {
+	text-decoration: line-through;
+}
+
+.invalid {
+	color: #e71818;
+}
+
+.hidden {
+	display: none;
 }
 
 /* Left side */
@@ -133,10 +144,19 @@ code a b {
 	position: relative;
 }
 
+#menu a {
+	display: block;
+	padding: 0 2px;
+}
+
 #menu .active > a, #menu > span {
 	color: #333333;
 	background: none;
 	font-weight: bold;
+}
+
+#menu .active > a.invalid {
+	color: #e71818;
 }
 
 #menu .active > a:hover, #menu .active > a:active, #menu .active > a:focus {
@@ -146,12 +166,12 @@ code a b {
 #menu #groups span {
 	position: absolute;
 	top: 4px;
-	right: 0;
+	right: 2px;
 	cursor: pointer;
 	display: block;
 	width: 12px;
 	height: 12px;
-	background: url('collapsed.png') #ffffff 0 0 no-repeat;
+	background: url('collapsed.png') transparent 0 0 no-repeat;
 }
 
 #menu #groups span:hover {
@@ -429,16 +449,9 @@ td.name, td.attributes {
 	margin: 0 0 5px 25px;
 }
 
-.deprecated {
-	opacity: .5;
-}
-
-.deprecated:hover {
-	opacity: 1;
-}
-
-.hidden {
-	display: none;
+div.invalid {
+	background-color: #fae4e0;
+	padding: 10px;
 }
 
 /* Splitter */

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ApiGen 2.5.0 - API documentation generator for PHP 5.3+
+ * ApiGen 2.6.0 - API documentation generator for PHP 5.3+
  *
  * Copyright (c) 2010-2011 David Grudl (http://davidgrudl.com)
  * Copyright (c) 2011-2012 Jaroslav Hanslík (https://github.com/kukulich)
@@ -20,6 +20,20 @@ namespace ApiGen;
  */
 class ReflectionFunction extends ReflectionFunctionBase
 {
+	/**
+	 * Returns if the function is valid.
+	 *
+	 * @return boolean
+	 */
+	public function isValid()
+	{
+		if ($this->reflection instanceof \TokenReflection\Invalid\ReflectionFunction) {
+			return false;
+		}
+
+		return true;
+	}
+
 	/**
 	 * Returns if the function should be documented.
 	 *
