@@ -1,5 +1,5 @@
 {*
-ApiGen 2.5.0 - API documentation generator for PHP 5.3+
+ApiGen 2.6.0 - API documentation generator for PHP 5.3+
 
 Copyright (c) 2010-2011 David Grudl (http://davidgrudl.com)
 Copyright (c) 2011-2012 Jaroslav Hanslík (https://github.com/kukulich)
@@ -15,5 +15,5 @@ the file LICENSE.md that was distributed with this source code.
 {block #title}File {$fileName}{/block}
 
 {block #content}
-<pre><code>{!$source|replaceRE:'#<span class="line">(\s*(\d+):\s*)</span>#','<a href="#$2" id="$2" class="l">$1</a>'}</code></pre>
+<pre id="source"><code>{!$source|replaceRE:'#<span class="line">(\s*)(\d+):(\s*)</span>#','<a href="#$2" id="$2" class="l">$1$2$3</a>'}</code></pre>
 {/block}

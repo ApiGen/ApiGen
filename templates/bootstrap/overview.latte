@@ -1,5 +1,5 @@
 {*
-ApiGen 2.5.0 - API documentation generator for PHP 5.3+
+ApiGen 2.6.0 - API documentation generator for PHP 5.3+
 
 Copyright (c) 2010-2011 David Grudl (http://davidgrudl.com)
 Copyright (c) 2011-2012 Jaroslav Hanslík (https://github.com/kukulich)
@@ -24,20 +24,13 @@ the file LICENSE.md that was distributed with this source code.
 	{if}
 	<h2>Namespaces summary</h2>
 	<table class="summary table table-bordered table-striped" id="namespaces">
-	<thead>
-		<tr>
-			<th>Namespace</th>
-		</tr>
-	</thead>
-	<tbody>
-		{foreach $namespaces as $namespace}
-		{continueIf $config->main && 0 !== strpos($namespace, $config->main)}
-		<tr>
-			{var $group = true}
-			<td class="name"><a href="{$namespace|namespaceUrl}">{$namespace}</a></td>
-		</tr>
-		{/foreach}
-	</tbody>
+	{foreach $namespaces as $namespace}
+	{continueIf $config->main && 0 !== strpos($namespace, $config->main)}
+	<tr>
+		{var $group = true}
+		<td class="name"><a href="{$namespace|namespaceUrl}">{$namespace}</a></td>
+	</tr>
+	{/foreach}
 	</table>
 	{/if $iterations}
 	{/if}
@@ -46,20 +39,13 @@ the file LICENSE.md that was distributed with this source code.
 	{if}
 	<h2>Packages summary</h2>
 	<table class="summary table table-bordered table-striped" id="packages">
-	<thead>
-		<tr>
-			<th>Package</th>
-		</tr>
-	</thead>
-	<tbody>
-		{foreach $packages as $package}
-		{continueIf $config->main && 0 !== strpos($package, $config->main)}
-		<tr>
-			{var $group = true}
-			<td class="name"><a href="{$package|packageUrl}">{$package}</a></td>
-		</tr>
-		{/foreach}
-	</tbody>
+	{foreach $packages as $package}
+	{continueIf $config->main && 0 !== strpos($package, $config->main)}
+	<tr>
+		{var $group = true}
+		<td class="name"><a href="{$package|packageUrl}">{$package}</a></td>
+	</tr>
+	{/foreach}
 	</table>
 	{/if $iterations}
 	{/if}

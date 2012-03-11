@@ -1,5 +1,5 @@
 /*!
- * ApiGen 2.5.0 - API documentation generator for PHP 5.3+
+ * ApiGen 2.6.0 - API documentation generator for PHP 5.3+
  *
  * Copyright (c) 2010-2011 David Grudl (http://davidgrudl.com)
  * Copyright (c) 2011-2012 Jaroslav Hanslík (https://github.com/kukulich)
@@ -16,25 +16,28 @@ $(function() {
 	var $groups = $('#groups');
 
 	// Hide deep packages and namespaces
-	$('ul span', $groups).click(function() {
+	$('ul span', $groups).click(function(event) {
+		event.preventDefault();
+		event.stopPropagation();
 		$(this)
 			.toggleClass('collapsed')
-			.next('ul')
-				.toggleClass('collapsed');
+			.parent()
+				.next('ul')
+					.toggleClass('collapsed');
 	}).click();
 
 	$active = $('ul li.active', $groups);
 	if ($active.length > 0) {
 		// Open active
-		$('> span', $active).click();
+		$('> a > span', $active).click();
 	} else {
 		$main = $('> ul > li.main', $groups);
 		if ($main.length > 0) {
 			// Open first level of the main project
-			$('> span', $main).click();
+			$('> a > span', $main).click();
 		} else {
 			// Open first level of all
-			$('> ul > li > span', $groups).click();
+			$('> ul > li > a > span', $groups).click();
 		}
 	}
 
@@ -65,7 +68,7 @@ $(function() {
 			var location = window.location.href.split('/');
 			location.pop();
 			var parts = data[1].split(/::|$/);
-			var file = $.sprintf(ApiGen.config.templates.main[autocompleteFiles[data[0]]].filename, parts[0].replace('\\', '.').replace(/[^\w\.]/g, ''));
+			var file = $.sprintf(ApiGen.config.templates.main[autocompleteFiles[data[0]]].filename, parts[0].replace(/[^\w]/g, '.'));
 			if (parts[1]) {
 				file += '#' + parts[1].replace(/([\w]+)\(\)/, '_$1');
 			}
@@ -97,7 +100,7 @@ $(function() {
 	// Switch between natural and alphabetical order
 	var $caption = $('table.summary', $content)
 		.filter(':has(tr[data-order])')
-			.find('caption');
+			.prev('h2');
 	$caption
 		.click(function() {
 			var $this = $(this);
@@ -107,7 +110,7 @@ $(function() {
 			$.cookie('order', order, {expires: 365});
 			var attr = 'alphabetical' === order ? 'data-order' : 'data-order-natural';
 			$this
-				.closest('table')
+				.next('table')
 					.find('tr').sortElements(function(a, b) {
 						return $(a).attr(attr) > $(b).attr(attr) ? 1 : -1;
 					});
@@ -143,6 +146,8 @@ $(function() {
 
 	// Splitter
 	var $document = $(document);
+	var $navigation = $('#navigation');
+	var navigationHeight = $('#navigation').height();
 	var $left = $('#left');
 	var $right = $('#right');
 	var $rightInner = $('#rightInner');
@@ -156,6 +161,13 @@ $(function() {
 	}
 	function setNavigationPosition()
 	{
+		var height = $(window).height() - navigationHeight;
+		$left.height(height);
+		$splitter.height(height);
+		$right.height(height);
+	}
+	function setContentWidth()
+	{
 		var width = $rightInner.width();
 		$rightInner
 			.toggleClass('medium', width <= 960)
@@ -167,7 +179,7 @@ $(function() {
 			$document.mousemove(function(event) {
 				if (event.pageX >= 230 && $document.width() - event.pageX >= 600 + splitterWidth) {
 					setSplitterPosition(event.pageX);
-					setNavigationPosition();
+					setContentWidth();
 				}
 			});
 
@@ -192,5 +204,8 @@ $(function() {
 		setSplitterPosition(parseInt(splitterPosition));
 	}
 	setNavigationPosition();
-	$(window).resize(setNavigationPosition);
+	setContentWidth();
+	$(window)
+		.resize(setNavigationPosition)
+		.resize(setContentWidth);
 });
