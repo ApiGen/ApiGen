@@ -269,6 +269,7 @@ When generating documentation of large libraries (Zend Framework for example) we
 
 ## Usage examples ##
 
+* [Doctrine](http://www.doctrine-project.org/api/orm/2.2/index.html)
 * [Nette Framework](http://api.nette.org/2.0/)
 * [TokenReflection library](http://andrewsville.github.com/PHP-Token-Reflection/)
 * [FSHL library](http://fshl.kukulich.cz/api/)
