@@ -259,7 +259,7 @@ caption {
 #right {
 	overflow: auto;
 	margin-left: 275px;
-	background: url(http://twitter.github.com/bootstrap/assets/img/grid-18px-masked.png) repeat-x;
+	background: #ffffff;
 	position: fixed;
 	left: 0;
 	right: 0;
