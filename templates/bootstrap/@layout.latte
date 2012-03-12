@@ -22,8 +22,9 @@ the file LICENSE.md that was distributed with this source code.
 	<script type="text/javascript" src="{$combinedJs|staticFile}"></script>
 	{var elementListJs = 'elementlist.js'}
 	<script type="text/javascript" src="{$elementListJs|staticFile}"></script>
+	{var bootstrapCss = 'resources/bootstrap.min.css'}
+	<link rel="stylesheet" type="text/css" media="all" href="{$bootstrapCss|staticFile}">
 	{var styleCss = 'resources/style.css'}
-	<link rel="stylesheet" type="text/css" media="all" href="http://twitter.github.com/bootstrap/assets/css/bootstrap.css">
 	<link rel="stylesheet" type="text/css" media="all" href="{$styleCss|staticFile}">
 	<link n:if="$config->googleCseId" rel="search" type="application/opensearchdescription+xml" title="{$config->title}" href="{$config->baseUrl}/opensearch.xml">
 
