@@ -1322,7 +1322,7 @@ class Generator extends Nette\Object
 	 * Creates ZIP archive.
 	 *
 	 * @return \ApiGen\Generator
-	 * @throws \RuntimeException If something went wront.
+	 * @throws \RuntimeException If something went wrong.
 	 */
 	private function generateArchive()
 	{
