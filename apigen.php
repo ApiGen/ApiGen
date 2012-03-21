@@ -15,7 +15,6 @@
 namespace ApiGen;
 
 use Nette\Diagnostics\Debugger;
-use TokenReflection;
 
 if (false === strpos('@php_dir@', '@php_dir')) {
 	// PEAR package
