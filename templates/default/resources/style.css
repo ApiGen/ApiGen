@@ -18,7 +18,7 @@ body {
 }
 
 h1, h2, h3, h4, caption {
-	font-family: Trebuchet MS, 'Geneva CE', lucida, sans-serif;
+	font-family: 'Trebuchet MS', 'Geneva CE', lucida, sans-serif;
 	color: #053368;
 }
 
@@ -238,7 +238,7 @@ code a b {
 	padding: 2px 5px;
 	cursor: default;
 	display: block;
-	font: 12px Trebuchet MS, 'Geneva CE', lucida, sans-serif;
+	font: 12px 'Trebuchet MS', 'Geneva CE', lucida, sans-serif;
 	line-height: 16px;
 	overflow: hidden;
 	white-space: nowrap;
