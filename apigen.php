@@ -223,7 +223,7 @@ try {
 
 		printf("\n\n%s\n", $trace);
 	} else {
-		echo $generator->colorize(sprintf("\n@error@%s@c\n", $e->getMessage()));
+		echo $generator->colorize(sprintf("\n@error@%s@c in %s:%d\n", $e->getMessage(), $e->getFile(), $e->getLine()));
 	}
 
 	die(1);
