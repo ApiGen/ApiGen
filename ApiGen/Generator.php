@@ -1461,9 +1461,10 @@ class Generator extends Nette\Object
 			$context = $this->getClass($context->getDeclaringClassName());
 		}
 
-		if (($class = $this->getClass(\TokenReflection\Resolver::resolveClassFQN($definition, $context->getNamespaceAliases(), $context->getNamespaceName()), $context->getNamespaceName()))
-			|| ($class = $this->getClass($definition, $context->getNamespaceName()))
-		) {
+		if ($definition !== ($className = \TokenReflection\Resolver::resolveClassFQN($definition, $context->getNamespaceAliases(), $context->getNamespaceName()))) {
+			// Aliased class
+			return $this->getClass($className, $context->getNamespaceName());
+		} elseif ($class = $this->getClass($definition, $context->getNamespaceName())) {
 			// Class
 			return $class;
 		} elseif ($constant = $this->getConstant($definition, $context->getNamespaceName())) {
