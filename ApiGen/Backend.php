@@ -13,7 +13,7 @@
 
 namespace ApiGen;
 
-use TokenReflection, TokenReflection\IReflectionConstant, TokenReflection\IReflectionFunction, TokenReflection\Broker;
+use TokenReflection, TokenReflection\IReflectionConstant, TokenReflection\IReflectionFunction, TokenReflection\Broker, TokenReflection\Resolver;
 use InvalidArgumentException, RuntimeException;
 
 /**
@@ -179,7 +179,7 @@ class Backend extends Broker\Backend\Memory
 
 				foreach ($annotations['var'] as $doc) {
 					foreach (explode('|', preg_replace('~\\s.*~', '', $doc)) as $name) {
-						$name = rtrim($name, '[]');
+						$name = Resolver::resolveClassFQN(rtrim($name, '[]'), $class->getNamespaceAliases(), $class->getNamespaceName());
 						$allClasses = $this->addClass($declared, $allClasses, $name);
 					}
 				}
@@ -221,7 +221,7 @@ class Backend extends Broker\Backend\Memory
 
 			foreach ($annotations[$annotation] as $doc) {
 				foreach (explode('|', preg_replace('~\\s.*~', '', $doc)) as $name) {
-					$name = rtrim($name, '[]');
+					$name = Resolver::resolveClassFQN(rtrim($name, '[]'), $function->getNamespaceAliases(), $function->getNamespaceName());
 					$allClasses = $this->addClass($declared, $allClasses, $name);
 				}
 			}
