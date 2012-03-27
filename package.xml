@@ -23,9 +23,9 @@
 	<email>andrew@apigen.org</email>
 	<active>yes</active>
 </lead>
-<date>2012-03-11</date>
+<date>2012-03-27</date>
 <version>
-	<release>2.6.0</release>
+	<release>2.6.1</release>
 	<api>2.6.0</api>
 </version>
 <stability>
