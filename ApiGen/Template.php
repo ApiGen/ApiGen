@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ApiGen 2.6.0 - API documentation generator for PHP 5.3+
+ * ApiGen 2.6.1 - API documentation generator for PHP 5.3+
  *
  * Copyright (c) 2010-2011 David Grudl (http://davidgrudl.com)
  * Copyright (c) 2011-2012 Jaroslav Hanslík (https://github.com/kukulich)
@@ -644,9 +644,9 @@ class Template extends Nette\Templating\FileTemplate
 			$suffix = '[]';
 		}
 
-		$element = $this->generator->resolveElement($definition, $context);
+		$element = $this->generator->resolveElement($definition, $context, $expectedName);
 		if (null === $element) {
-			return null;
+			return $expectedName;
 		}
 
 		$classes = array();

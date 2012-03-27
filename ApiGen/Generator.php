@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ApiGen 2.6.0 - API documentation generator for PHP 5.3+
+ * ApiGen 2.6.1 - API documentation generator for PHP 5.3+
  *
  * Copyright (c) 2010-2011 David Grudl (http://davidgrudl.com)
  * Copyright (c) 2011-2012 Jaroslav Hanslík (https://github.com/kukulich)
@@ -34,7 +34,7 @@ class Generator extends Nette\Object
 	 *
 	 * @var string
 	 */
-	const VERSION = '2.6.0';
+	const VERSION = '2.6.1';
 
 	/**
 	 * Configuration.
@@ -1435,9 +1435,10 @@ class Generator extends Nette\Object
 	 *
 	 * @param string $definition Definition
 	 * @param \ApiGen\ReflectionElement $context Link context
+	 * @param string $expectedName Expected element name
 	 * @return \ApiGen\ReflectionElement|null
 	 */
-	public function resolveElement($definition, ReflectionElement $context)
+	public function resolveElement($definition, ReflectionElement $context, &$expectedName = null)
 	{
 		// No simple type resolving
 		static $types = array(
@@ -1461,9 +1462,12 @@ class Generator extends Nette\Object
 			$context = $this->getClass($context->getDeclaringClassName());
 		}
 
-		if (($class = $this->getClass(\TokenReflection\Resolver::resolveClassFQN($definition, $context->getNamespaceAliases(), $context->getNamespaceName()), $context->getNamespaceName()))
-			|| ($class = $this->getClass($definition, $context->getNamespaceName()))
-		) {
+		$namespaceAliases = $context->getNamespaceAliases();
+		if (isset($namespaceAliases[$definition]) && $definition !== ($className = \TokenReflection\Resolver::resolveClassFQN($definition, $namespaceAliases, $context->getNamespaceName()))) {
+			// Aliased class
+			$expectedName = $className;
+			return $this->getClass($className, $context->getNamespaceName());
+		} elseif ($class = $this->getClass($definition, $context->getNamespaceName())) {
 			// Class
 			return $class;
 		} elseif ($constant = $this->getConstant($definition, $context->getNamespaceName())) {

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ApiGen 2.6.0 - API documentation generator for PHP 5.3+
+ * ApiGen 2.6.1 - API documentation generator for PHP 5.3+
  *
  * Copyright (c) 2010-2011 David Grudl (http://davidgrudl.com)
  * Copyright (c) 2011-2012 Jaroslav Hanslík (https://github.com/kukulich)
@@ -13,7 +13,7 @@
 
 namespace ApiGen;
 
-use TokenReflection, TokenReflection\IReflectionConstant, TokenReflection\IReflectionFunction, TokenReflection\Broker;
+use TokenReflection, TokenReflection\IReflectionConstant, TokenReflection\IReflectionFunction, TokenReflection\Broker, TokenReflection\Resolver;
 use InvalidArgumentException, RuntimeException;
 
 /**
@@ -179,8 +179,10 @@ class Backend extends Broker\Backend\Memory
 
 				foreach ($annotations['var'] as $doc) {
 					foreach (explode('|', preg_replace('~\\s.*~', '', $doc)) as $name) {
-						$name = rtrim($name, '[]');
-						$allClasses = $this->addClass($declared, $allClasses, $name);
+						if ($name = rtrim($name, '[]')) {
+							$name = Resolver::resolveClassFQN($name, $class->getNamespaceAliases(), $class->getNamespaceName());
+							$allClasses = $this->addClass($declared, $allClasses, $name);
+						}
 					}
 				}
 			}
@@ -221,8 +223,10 @@ class Backend extends Broker\Backend\Memory
 
 			foreach ($annotations[$annotation] as $doc) {
 				foreach (explode('|', preg_replace('~\\s.*~', '', $doc)) as $name) {
-					$name = rtrim($name, '[]');
-					$allClasses = $this->addClass($declared, $allClasses, $name);
+					if ($name) {
+						$name = Resolver::resolveClassFQN(rtrim($name, '[]'), $function->getNamespaceAliases(), $function->getNamespaceName());
+						$allClasses = $this->addClass($declared, $allClasses, $name);
+					}
 				}
 			}
 		}

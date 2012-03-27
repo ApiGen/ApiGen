@@ -3,7 +3,7 @@
 	<property name="sourcedir" value="${basedir}/ApiGen" />
 	<property name="builddir" value="${basedir}/build" />
 	<property name="releasedir" value="${basedir}/release" />
-	<property name="version" value="2.6.0" />
+	<property name="version" value="2.6.1" />
 
 	<condition property="executableExtension" value=".bat" else="">
 		<os family="windows" />
