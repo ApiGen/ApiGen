@@ -1,3 +1,9 @@
+## ApiGen 2.6.1 (2012-03-27) ##
+
+* Fixed resolving element names in annotations
+* Nette framework updated to version 2.0.1
+* TokenReflection library updated to version 1.2.2
+
 ## ApiGen 2.6.0 (2012-03-11) ##
 
 * Better error reporting, especially about duplicate classes, functions and constants
