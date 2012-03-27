@@ -231,7 +231,7 @@ try {
 	// Everything else
 	if ($config->debug) {
 		do {
-			echo $generator->colorize(sprintf("\n@error@%s@c", $e->getMessage()));
+			echo $generator->colorize(sprintf("\n%s(%d): @error@%s@c", $e->getFile(), $e->getLine(), $e->getMessage()));
 			$trace = $e->getTraceAsString();
 		} while ($e = $e->getPrevious());
 
