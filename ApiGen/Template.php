@@ -644,9 +644,9 @@ class Template extends Nette\Templating\FileTemplate
 			$suffix = '[]';
 		}
 
-		$element = $this->generator->resolveElement($definition, $context);
+		$element = $this->generator->resolveElement($definition, $context, $expectedName);
 		if (null === $element) {
-			return null;
+			return $expectedName;
 		}
 
 		$classes = array();
