@@ -11,7 +11,7 @@
  * the file LICENSE.md that was distributed with this source code.
  */
 
-namespace ApiGen;
+namespace ApiGen\Reflection;
 
 /**
  * Element reflection envelope.
@@ -37,7 +37,7 @@ abstract class ReflectionElement extends ReflectionBase
 	/**
 	 * Returns the PHP extension reflection.
 	 *
-	 * @return \ApiGen\ReflectionExtension
+	 * @return \ApiGen\Reflection\ReflectionExtension
 	 */
 	public function getExtension()
 	{
@@ -281,7 +281,7 @@ abstract class ReflectionElement extends ReflectionBase
 	 *
 	 * @param string $annotation Annotation name
 	 * @param string $value Annotation value
-	 * @return \ApiGen\ReflectionElement
+	 * @return \ApiGen\Reflection\ReflectionElement
 	 */
 	public function addAnnotation($annotation, $value)
 	{

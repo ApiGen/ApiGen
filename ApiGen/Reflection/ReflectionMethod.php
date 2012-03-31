@@ -11,7 +11,7 @@
  * the file LICENSE.md that was distributed with this source code.
  */
 
-namespace ApiGen;
+namespace ApiGen\Reflection;
 
 /**
  * Method reflection envelope.
@@ -23,7 +23,7 @@ class ReflectionMethod extends ReflectionFunctionBase
 	/**
 	 * Returns the method declaring class.
 	 *
-	 * @return \ApiGen\ReflectionClass|null
+	 * @return \ApiGen\Reflection\ReflectionClass|null
 	 */
 	public function getDeclaringClass()
 	{
@@ -34,7 +34,7 @@ class ReflectionMethod extends ReflectionFunctionBase
 	/**
 	 * Returns the method declaring trait.
 	 *
-	 * @return \ApiGen\ReflectionClass|null
+	 * @return \ApiGen\Reflection\ReflectionClass|null
 	 */
 	public function getDeclaringTrait()
 	{
@@ -45,7 +45,7 @@ class ReflectionMethod extends ReflectionFunctionBase
 	/**
 	 * Returns the method prototype.
 	 *
-	 * @return \ApiGen\ReflectionMethod
+	 * @return \ApiGen\Reflection\ReflectionMethod
 	 */
 	public function getPrototype()
 	{
@@ -56,7 +56,7 @@ class ReflectionMethod extends ReflectionFunctionBase
 	/**
 	 * Returns the original method when importing from a trait.
 	 *
-	 * @return \ApiGen\ReflectionMethod|null
+	 * @return \ApiGen\Reflection\ReflectionMethod|null
 	 */
 	public function getOriginal()
 	{

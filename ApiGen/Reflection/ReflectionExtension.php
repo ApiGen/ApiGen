@@ -11,7 +11,7 @@
  * the file LICENSE.md that was distributed with this source code.
  */
 
-namespace ApiGen;
+namespace ApiGen\Reflection;
 
 /**
  * Extension reflection envelope.
@@ -24,7 +24,7 @@ class ReflectionExtension extends ReflectionBase
 	 * Returns a class reflection.
 	 *
 	 * @param string $name Class name
-	 * @return \ApiGen\ReflectionClass|null
+	 * @return \ApiGen\Reflection\ReflectionClass|null
 	 */
 	public function getClass($name)
 	{
@@ -56,7 +56,7 @@ class ReflectionExtension extends ReflectionBase
 	 * Returns a constant reflection.
 	 *
 	 * @param string $name Constant name
-	 * @return \ApiGen\ReflectionConstant|null
+	 * @return \ApiGen\Reflection\ReflectionConstant|null
 	 */
 	public function getConstant($name)
 	{
@@ -67,7 +67,7 @@ class ReflectionExtension extends ReflectionBase
 	 * Returns a constant reflection.
 	 *
 	 * @param string $name Constant name
-	 * @return \ApiGen\ReflectionConstant|null
+	 * @return \ApiGen\Reflection\ReflectionConstant|null
 	 */
 	public function getConstantReflection($name)
 	{
@@ -102,7 +102,7 @@ class ReflectionExtension extends ReflectionBase
 	 * Returns a function reflection.
 	 *
 	 * @param string $name Function name
-	 * @return \ApiGen\ReflectionFunction
+	 * @return \ApiGen\Reflection\ReflectionFunction
 	 */
 	public function getFunction($name)
 	{

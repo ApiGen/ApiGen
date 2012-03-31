@@ -11,7 +11,7 @@
  * the file LICENSE.md that was distributed with this source code.
  */
 
-namespace ApiGen;
+namespace ApiGen\Reflection;
 
 /**
  * Parameter reflection envelope.
@@ -23,7 +23,7 @@ class ReflectionParameter extends ReflectionElement
 	/**
 	 * Returns reflection of the required class of the parameter.
 	 *
-	 * @return \ApiGen\ReflectionClass|null
+	 * @return \ApiGen\Reflection\ReflectionClass|null
 	 */
 	public function getClass()
 	{
@@ -34,7 +34,7 @@ class ReflectionParameter extends ReflectionElement
 	/**
 	 * Returns the declaring function.
 	 *
-	 * @return \ApiGen\ReflectionFunctionBase
+	 * @return \ApiGen\Reflection\ReflectionFunctionBase
 	 */
 	public function getDeclaringFunction()
 	{
@@ -50,7 +50,7 @@ class ReflectionParameter extends ReflectionElement
 	/**
 	 * Returns the function/method declaring class.
 	 *
-	 * @return \ApiGen\ReflectionClass|null
+	 * @return \ApiGen\Reflection\ReflectionClass|null
 	 */
 	public function getDeclaringClass()
 	{

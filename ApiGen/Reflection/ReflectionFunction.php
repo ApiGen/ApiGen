@@ -11,52 +11,37 @@
  * the file LICENSE.md that was distributed with this source code.
  */
 
-namespace ApiGen;
+namespace ApiGen\Reflection;
 
 /**
- * Constant reflection envelope.
+ * Function reflection envelope.
  *
- * Alters TokenReflection\IReflectionConstant functionality for ApiGen.
+ * Alters TokenReflection\IReflectionFunction functionality for ApiGen.
  */
-class ReflectionConstant extends ReflectionElement
+class ReflectionFunction extends ReflectionFunctionBase
 {
 	/**
-	 * Returns the constant declaring class.
-	 *
-	 * @return \ApiGen\ReflectionClass|null
-	 */
-	public function getDeclaringClass()
-	{
-		$className = $this->reflection->getDeclaringClassName();
-		return null === $className ? null : self::$parsedClasses[$className];
-	}
-
-	/**
-	 * Returns if the constant is valid.
+	 * Returns if the function is valid.
 	 *
 	 * @return boolean
 	 */
 	public function isValid()
 	{
-		if ($this->reflection instanceof \TokenReflection\Invalid\ReflectionConstant) {
+		if ($this->reflection instanceof \TokenReflection\Invalid\ReflectionFunction) {
 			return false;
-		}
-
-		if ($class = $this->getDeclaringClass()) {
-			return $class->isValid();
 		}
 
 		return true;
 	}
 
 	/**
-	 * Returns if the constant should be documented.
+	 * Returns if the function should be documented.
 	 *
 	 * @return boolean
 	 */
 	public function isDocumented()
 	{
-		if (null === $this->isDocumented && parent::isDocumented() && null === $this->reflection->getDeclaringClassName()) {
+		if (null === $this->isDocumented && parent::isDocumented()) {
 			$fileName = self::$generator->unPharPath($this->reflection->getFilename());
 			foreach (self::$config->skipDocPath as $mask) {
 				if (fnmatch($mask, $fileName, FNM_NOESCAPE)) {

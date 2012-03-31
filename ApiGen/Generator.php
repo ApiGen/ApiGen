@@ -384,7 +384,7 @@ class Generator extends Nette\Object
 				+ (int) $this->isRobotsEnabled();
 
 			if ($this->config->sourceCode) {
-				$tokenizedFilter = function(ReflectionClass $class) {
+				$tokenizedFilter = function(Reflection\ReflectionClass $class) {
 					return $class->isTokenized();
 				};
 				$max += count(array_filter($this->classes, $tokenizedFilter))
@@ -469,11 +469,11 @@ class Generator extends Nette\Object
 				$packageName = $element->getPseudoPackageName();
 				$namespaceName = $element->getPseudoNamespaceName();
 
-				if ($element instanceof ReflectionConstant) {
+				if ($element instanceof Reflection\ReflectionConstant) {
 					$this->constants[$elementName] = $element;
 					$this->packages[$packageName]['constants'][$elementName] = $element;
 					$this->namespaces[$namespaceName]['constants'][$element->getShortName()] = $element;
-				} elseif ($element instanceof ReflectionFunction) {
+				} elseif ($element instanceof Reflection\ReflectionFunction) {
 					$this->functions[$elementName] = $element;
 					$this->packages[$packageName]['functions'][$elementName] = $element;
 					$this->namespaces[$namespaceName]['functions'][$element->getShortName()] = $element;
@@ -604,7 +604,7 @@ class Generator extends Nette\Object
 		$autocomplete = array_flip($this->config->autocomplete);
 		foreach ($this->getElementTypes() as $type) {
 			foreach ($this->$type as $element) {
-				if ($element instanceof ReflectionClass) {
+				if ($element instanceof Reflection\ReflectionClass) {
 					if (isset($autocomplete['classes'])) {
 						$elements[] = array('c', $this->getElementName($element));
 					}
@@ -623,9 +623,9 @@ class Generator extends Nette\Object
 							$elements[] = array('cc', $this->getElementName($constant));
 						}
 					}
-				} elseif ($element instanceof ReflectionConstant && isset($autocomplete['constants'])) {
+				} elseif ($element instanceof Reflection\ReflectionConstant && isset($autocomplete['constants'])) {
 					$elements[] = array('co', $this->getElementName($element));
-				} elseif ($element instanceof ReflectionFunction && isset($autocomplete['functions'])) {
+				} elseif ($element instanceof Reflection\ReflectionFunction && isset($autocomplete['functions'])) {
 					$elements[] = array('f', $this->getElementName($element));
 				}
 			}
@@ -693,7 +693,7 @@ class Generator extends Nette\Object
 		// Function for element labels
 		$that = $this;
 		$labeler = function($element) use ($that) {
-			if ($element instanceof ReflectionClass) {
+			if ($element instanceof Reflection\ReflectionClass) {
 				if ($element->isInterface()) {
 					$label = 'interface';
 				} elseif ($element->isTrait()) {
@@ -703,15 +703,15 @@ class Generator extends Nette\Object
 				} else {
 					$label = 'class';
 				}
-			} elseif ($element instanceof ReflectionMethod) {
+			} elseif ($element instanceof Reflection\ReflectionMethod) {
 				$label = 'method';
-			} elseif ($element instanceof ReflectionFunction) {
+			} elseif ($element instanceof Reflection\ReflectionFunction) {
 				$label = 'function';
-			} elseif ($element instanceof ReflectionConstant) {
+			} elseif ($element instanceof Reflection\ReflectionConstant) {
 				$label = 'constant';
-			} elseif ($element instanceof ReflectionProperty) {
+			} elseif ($element instanceof Reflection\ReflectionProperty) {
 				$label = 'property';
-			} elseif ($element instanceof ReflectionParameter) {
+			} elseif ($element instanceof Reflection\ReflectionParameter) {
 				$label = 'parameter';
 			}
 			return sprintf('%s %s', $label, $that->getElementName($element));
@@ -738,7 +738,7 @@ class Generator extends Nette\Object
 				}
 
 				$elements = array($parentElement);
-				if ($parentElement instanceof ReflectionClass) {
+				if ($parentElement instanceof Reflection\ReflectionClass) {
 					$elements = array_merge(
 						$elements,
 						array_values($parentElement->getOwnMethods()),
@@ -766,7 +766,7 @@ class Generator extends Nette\Object
 					}
 
 					// Documentation of method
-					if ($element instanceof ReflectionMethod || $element instanceof ReflectionFunction) {
+					if ($element instanceof Reflection\ReflectionMethod || $element instanceof Reflection\ReflectionFunction) {
 						// Parameters
 						foreach ($element->getParameters() as $no => $parameter) {
 							if (!isset($annotations['param'][$no])) {
@@ -804,7 +804,7 @@ class Generator extends Nette\Object
 						if ($return && !isset($annotations['return'])) {
 							$list[$fileName][] = array('error', $line, sprintf('Missing documentation of return value of %s', $label));
 						} elseif (isset($annotations['return'])) {
-							if (!$return && 'void' !== $annotations['return'][0] && ($element instanceof ReflectionFunction || (!$parentElement->isInterface() && !$element->isAbstract()))) {
+							if (!$return && 'void' !== $annotations['return'][0] && ($element instanceof Reflection\ReflectionFunction || (!$parentElement->isInterface() && !$element->isAbstract()))) {
 								$list[$fileName][] = array('warning', $line, sprintf('Existing documentation "%s" of nonexistent return value of %s', $annotations['return'][0], $label));
 							} elseif (!preg_match('~^[\\w\\\\]+(?:\\[\\])?(?:\\|[\\w\\\\]+(?:\\[\\])?)*(?:\\s+.+)?$~s', $annotations['return'][0])) {
 								$list[$fileName][] = array('warning', $line, sprintf('Invalid documentation "%s" of return value of %s', $annotations['return'][0], $label));
@@ -836,7 +836,7 @@ class Generator extends Nette\Object
 					}
 
 					// Data type of constants & properties
-					if ($element instanceof ReflectionProperty || $element instanceof ReflectionConstant) {
+					if ($element instanceof Reflection\ReflectionProperty || $element instanceof Reflection\ReflectionConstant) {
 						if (!isset($annotations['var'])) {
 							$list[$fileName][] = array('error', $line, sprintf('Missing documentation of the data type of %s', $label));
 						} elseif (!preg_match('~^[\\w\\\\]+(?:\\[\\])?(?:\\|[\\w\\\\]+(?:\\[\\])?)*(?:\\s+.+)?$~s', $annotations['var'][0])) {
@@ -1195,7 +1195,7 @@ class Generator extends Nette\Object
 		foreach ($this->getElementTypes() as $type) {
 			foreach ($this->$type as $parentElement) {
 				$elements = array($parentElement);
-				if ($parentElement instanceof ReflectionClass) {
+				if ($parentElement instanceof Reflection\ReflectionClass) {
 					$elements = array_merge(
 						$elements,
 						array_values($parentElement->getOwnMethods()),
@@ -1250,7 +1250,7 @@ class Generator extends Nette\Object
 				$template->class = null;
 				$template->constant = null;
 				$template->function = null;
-				if ($element instanceof ReflectionClass) {
+				if ($element instanceof Reflection\ReflectionClass) {
 					// Class
 					$template->tree = array_merge(array_reverse($element->getParentClasses()), array($element));
 
@@ -1278,14 +1278,14 @@ class Generator extends Nette\Object
 					$template
 						->setFile($this->getTemplatePath('class'))
 						->save($this->config->destination . DIRECTORY_SEPARATOR . $template->getClassUrl($element));
-				} elseif ($element instanceof ReflectionConstant) {
+				} elseif ($element instanceof Reflection\ReflectionConstant) {
 					// Constant
 					$template->constant = $element;
 
 					$template
 						->setFile($this->getTemplatePath('constant'))
 						->save($this->config->destination . DIRECTORY_SEPARATOR . $template->getConstantUrl($element));
-				} elseif ($element instanceof ReflectionFunction) {
+				} elseif ($element instanceof Reflection\ReflectionFunction) {
 					// Function
 					$template->function = $element;
 
@@ -1356,7 +1356,7 @@ class Generator extends Nette\Object
 	 *
 	 * @param string $className Class name description
 	 * @param string $namespace Namespace name
-	 * @return \ApiGen\ReflectionClass
+	 * @return \ApiGen\Reflection\ReflectionClass
 	 */
 	public function getClass($className, $namespace = '')
 	{
@@ -1381,7 +1381,7 @@ class Generator extends Nette\Object
 	 *
 	 * @param string $constantName Constant name
 	 * @param string $namespace Namespace name
-	 * @return \ApiGen\ReflectionConstant
+	 * @return \ApiGen\Reflection\ReflectionConstant
 	 */
 	public function getConstant($constantName, $namespace = '')
 	{
@@ -1406,7 +1406,7 @@ class Generator extends Nette\Object
 	 *
 	 * @param string $functionName Function name
 	 * @param string $namespace Namespace name
-	 * @return \ApiGen\ReflectionFunction
+	 * @return \ApiGen\Reflection\ReflectionFunction
 	 */
 	public function getFunction($functionName, $namespace = '')
 	{
@@ -1430,11 +1430,11 @@ class Generator extends Nette\Object
 	 * Tries to parse a definition of a class/method/property/constant/function and returns the appropriate instance if successful.
 	 *
 	 * @param string $definition Definition
-	 * @param \ApiGen\ReflectionElement $context Link context
+	 * @param \ApiGen\Reflection\ReflectionElement $context Link context
 	 * @param string $expectedName Expected element name
-	 * @return \ApiGen\ReflectionElement|null
+	 * @return \ApiGen\Reflection\ReflectionElement|null
 	 */
-	public function resolveElement($definition, ReflectionElement $context, &$expectedName = null)
+	public function resolveElement($definition, Reflection\ReflectionElement $context, &$expectedName = null)
 	{
 		// No simple type resolving
 		static $types = array(
@@ -1447,12 +1447,12 @@ class Generator extends Nette\Object
 			return null;
 		}
 
-		if ($context instanceof ReflectionParameter && null === $context->getDeclaringClassName()) {
+		if ($context instanceof Reflection\ReflectionParameter && null === $context->getDeclaringClassName()) {
 			// Parameter of function in namespace or global space
 			$context = $this->getFunction($context->getDeclaringFunctionName());
-		} elseif ($context instanceof ReflectionMethod || $context instanceof ReflectionParameter
-			|| ($context instanceof ReflectionConstant && null !== $context->getDeclaringClassName())
-			|| $context instanceof ReflectionProperty
+		} elseif ($context instanceof Reflection\ReflectionMethod || $context instanceof Reflection\ReflectionParameter
+			|| ($context instanceof Reflection\ReflectionConstant && null !== $context->getDeclaringClassName())
+			|| $context instanceof Reflection\ReflectionProperty
 		) {
 			// Member of a class
 			$context = $this->getClass($context->getDeclaringClassName());
@@ -1492,7 +1492,7 @@ class Generator extends Nette\Object
 		}
 
 		// No usable context
-		if (null === $context || $context instanceof ReflectionConstant || $context instanceof ReflectionFunction) {
+		if (null === $context || $context instanceof Reflection\ReflectionConstant || $context instanceof Reflection\ReflectionFunction) {
 			return null;
 		}
 
@@ -1760,11 +1760,11 @@ class Generator extends Nette\Object
 	/**
 	 * Sorts methods by FQN.
 	 *
-	 * @param \ApiGen\ReflectionMethod $one
-	 * @param \ApiGen\ReflectionMethod $two
+	 * @param \ApiGen\Reflection\ReflectionMethod $one
+	 * @param \ApiGen\Reflection\ReflectionMethod $two
 	 * @return integer
 	 */
-	private function sortMethods(ReflectionMethod $one, ReflectionMethod $two)
+	private function sortMethods(Reflection\ReflectionMethod $one, Reflection\ReflectionMethod $two)
 	{
 		return strcasecmp($one->getDeclaringClassName() . '::' . $one->getName(), $two->getDeclaringClassName() . '::' . $two->getName());
 	}
@@ -1772,11 +1772,11 @@ class Generator extends Nette\Object
 	/**
 	 * Sorts constants by FQN.
 	 *
-	 * @param \ApiGen\ReflectionConstant $one
-	 * @param \ApiGen\ReflectionConstant $two
+	 * @param \ApiGen\Reflection\ReflectionConstant $one
+	 * @param \ApiGen\Reflection\ReflectionConstant $two
 	 * @return integer
 	 */
-	private function sortConstants(ReflectionConstant $one, ReflectionConstant $two)
+	private function sortConstants(Reflection\ReflectionConstant $one, Reflection\ReflectionConstant $two)
 	{
 		return strcasecmp(($one->getDeclaringClassName() ?: $one->getNamespaceName()) . '\\' .  $one->getName(), ($two->getDeclaringClassName() ?: $two->getNamespaceName()) . '\\' .  $two->getName());
 	}
@@ -1784,11 +1784,11 @@ class Generator extends Nette\Object
 	/**
 	 * Sorts functions by FQN.
 	 *
-	 * @param \ApiGen\ReflectionFunction $one
-	 * @param \ApiGen\ReflectionFunction $two
+	 * @param \ApiGen\Reflection\ReflectionFunction $one
+	 * @param \ApiGen\Reflection\ReflectionFunction $two
 	 * @return integer
 	 */
-	private function sortFunctions(ReflectionFunction $one, ReflectionFunction $two)
+	private function sortFunctions(Reflection\ReflectionFunction $one, Reflection\ReflectionFunction $two)
 	{
 		return strcasecmp($one->getNamespaceName() . '\\' . $one->getName(), $two->getNamespaceName() . '\\' . $two->getName());
 	}
@@ -1796,11 +1796,11 @@ class Generator extends Nette\Object
 	/**
 	 * Sorts functions by FQN.
 	 *
-	 * @param \ApiGen\ReflectionProperty $one
-	 * @param \ApiGen\ReflectionProperty $two
+	 * @param \ApiGen\Reflection\ReflectionProperty $one
+	 * @param \ApiGen\Reflection\ReflectionProperty $two
 	 * @return integer
 	 */
-	private function sortProperties(ReflectionProperty $one, ReflectionProperty $two)
+	private function sortProperties(Reflection\ReflectionProperty $one, Reflection\ReflectionProperty $two)
 	{
 		return strcasecmp($one->getDeclaringClassName() . '::' . $one->getName(), $two->getDeclaringClassName() . '::' . $two->getName());
 	}
@@ -1819,26 +1819,26 @@ class Generator extends Nette\Object
 	/**
 	 * Returns element name.
 	 *
-	 * @param \Apigen\ReflectionElement $element
+	 * @param \Apigen\Reflection\ReflectionElement $element
 	 * @return string
 	 */
-	public function getElementName(ReflectionElement $element)
+	public function getElementName(Reflection\ReflectionElement $element)
 	{
-		if ($element instanceof ReflectionClass) {
+		if ($element instanceof Reflection\ReflectionClass) {
 			return $element->getName();
-		} elseif ($element instanceof ReflectionMethod) {
+		} elseif ($element instanceof Reflection\ReflectionMethod) {
 			return sprintf('%s::%s()', $element->getDeclaringClassName(), $element->getName());
-		} elseif ($element instanceof ReflectionFunction) {
+		} elseif ($element instanceof Reflection\ReflectionFunction) {
 			return sprintf('%s()', $element->getName());
-		} elseif ($element instanceof ReflectionConstant) {
+		} elseif ($element instanceof Reflection\ReflectionConstant) {
 			if ($className = $element->getDeclaringClassName()) {
 				return sprintf('%s::%s', $className, $element->getName());
 			} else {
 				return sprintf('%s', $element->getName());
 			}
-		} elseif ($element instanceof ReflectionProperty) {
+		} elseif ($element instanceof Reflection\ReflectionProperty) {
 			return sprintf('%s::$%s', $element->getDeclaringClassName(), $element->getName());
-		} elseif ($element instanceof ReflectionParameter) {
+		} elseif ($element instanceof Reflection\ReflectionParameter) {
 			return sprintf('%s($%s)', $this->getElementName($element->getDeclaringFunction()), $element->getName());
 		}
 	}
