@@ -145,9 +145,9 @@ class Generator extends Nette\Object
 	 * Sets dependencies.
 	 *
 	 * @param \ApiGen\Config $config
-	 * @param \ApiGen\Progressbar $progressbar
+	 * @param \ApiGen\IProgressbar $progressbar
 	 */
-	public function __construct(Config $config, Progressbar $progressbar)
+	public function __construct(Config $config, IProgressbar $progressbar)
 	{
 		$this->config = $config;
 		$this->progressbar = $progressbar;
