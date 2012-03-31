@@ -81,7 +81,7 @@ try {
 
 	$config = new Config();
 	$config->processCliOptions($options);
-	$generator = new Generator($config);
+	$generator = new Generator($config, new Progressbar());
 
 	// Help
 	if ($config->isHelpRequested()) {

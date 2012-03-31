@@ -44,6 +44,13 @@ class Generator extends Nette\Object
 	private $config;
 
 	/**
+	 * Progressbar.
+	 *
+	 * @var \ApiGen\Progressbar
+	 */
+	private $progressbar;
+
+	/**
 	 * List of parsed classes.
 	 *
 	 * @var \ArrayObject
@@ -135,26 +142,15 @@ class Generator extends Nette\Object
 	private $charsets = array();
 
 	/**
-	 * Progressbar settings and status.
+	 * Sets dependencies.
 	 *
-	 * @var array
+	 * @param \ApiGen\Config $config
+	 * @param \ApiGen\Progressbar $progressbar
 	 */
-	private $progressbar = array(
-		'skeleton' => '[%s] %\' 6.2f%% %\' 3dMB',
-		'width' => 80,
-		'bar' => 64,
-		'current' => 0,
-		'maximum' => 1
-	);
-
-	/**
-	 * Sets configuration.
-	 *
-	 * @param array $config
-	 */
-	public function __construct(Config $config)
+	public function __construct(Config $config, Progressbar $progressbar)
 	{
 		$this->config = $config;
+		$this->progressbar = $progressbar;
 		$this->parsedClasses = new \ArrayObject();
 		$this->parsedConstants = new \ArrayObject();
 		$this->parsedFunctions = new \ArrayObject();
@@ -223,7 +219,7 @@ class Generator extends Nette\Object
 		}
 
 		if ($this->config->progressbar) {
-			$this->prepareProgressBar(array_sum($files));
+			$this->initProgressBar(array_sum($files));
 		}
 
 		$broker = new Broker(new Backend($this, !empty($this->config->report)), Broker::OPTION_DEFAULT & ~(Broker::OPTION_PARSE_FUNCTION_BODY | Broker::OPTION_SAVE_TOKEN_STREAM));
@@ -400,7 +396,7 @@ class Generator extends Nette\Object
 				unset($tokenizedFilter);
 			}
 
-			$this->prepareProgressBar($max);
+			$this->initProgressBar($max);
 		}
 
 		// Prepare template
@@ -1617,43 +1613,26 @@ class Generator extends Nette\Object
 	}
 
 	/**
-	 * Prepares the progressbar.
+	 * Initializes the progressbar.
 	 *
 	 * @param integer $maximum Maximum progressbar value
 	 */
-	private function prepareProgressBar($maximum = 1)
+	private function initProgressBar($maximum = 1)
 	{
-		if (!$this->config->progressbar) {
-			return;
+		if ($this->config->progressbar) {
+			$this->progressbar->init($maximum);
 		}
-
-		$this->progressbar['current'] = 0;
-		$this->progressbar['maximum'] = $maximum;
 	}
 
 	/**
-	 * Increments the progressbar by one.
+	 * Increments the progressbar.
 	 *
 	 * @param integer $increment Progressbar increment
 	 */
 	private function incrementProgressBar($increment = 1)
 	{
-		if (!$this->config->progressbar) {
-			return;
-		}
-
-		echo str_repeat(chr(0x08), $this->progressbar['width']);
-
-		$this->progressbar['current'] += $increment;
-
-		$percent = $this->progressbar['current'] / $this->progressbar['maximum'];
-
-		$progress = str_pad(str_pad('>', round($percent * $this->progressbar['bar']), '=', STR_PAD_LEFT), $this->progressbar['bar'], ' ', STR_PAD_RIGHT);
-
-		echo sprintf($this->progressbar['skeleton'], $progress, $percent * 100, round(memory_get_usage(true) / 1024 / 1024));
-
-		if ($this->progressbar['current'] === $this->progressbar['maximum']) {
-			echo "\n";
+		if ($this->config->progressbar) {
+			$this->progressbar->increment($increment);
 		}
 	}
 

@@ -43,6 +43,8 @@
 			</file>
 			<file name="ConfigException.php" role="php" />
 			<file name="Generator.php" role="php" />
+			<file name="IProgressBar.php" role="php" />
+			<file name="ProgressBar.php" role="php" />
 			<file name="ReflectionBase.php" role="php" />
 			<file name="ReflectionClass.php" role="php" />
 			<file name="ReflectionConstant.php" role="php" />
