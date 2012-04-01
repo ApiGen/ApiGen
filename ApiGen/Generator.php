@@ -13,14 +13,17 @@
 
 namespace ApiGen;
 
+use ApiGen\Config\Configuration;
+use FSHL;
+use InvalidArgumentException;
+use Nette;
+use RuntimeException;
 use TokenReflection\Broker;
-use Nette, FSHL;
-use InvalidArgumentException, RuntimeException;
 
 /**
  * Generates a HTML API documentation.
  */
-class Generator extends Nette\Object
+class Generator extends Nette\Object implements IGenerator
 {
 	/**
 	 * Library name.
@@ -152,9 +155,9 @@ class Generator extends Nette\Object
 	 *
 	 * @param array $config
 	 */
-	public function __construct(Config $config)
+	public function __construct(Configuration $config)
 	{
-		$this->config = $config;
+		$this->config = (object) $config->toArray(); // @todo Refactor configuration usage
 		$this->parsedClasses = new \ArrayObject();
 		$this->parsedConstants = new \ArrayObject();
 		$this->parsedFunctions = new \ArrayObject();
@@ -1518,53 +1521,6 @@ class Generator extends Nette\Object
 		}
 
 		return null;
-	}
-
-	/**
-	 * Prints message if printing is enabled.
-	 *
-	 * @param string $message Output message
-	 */
-	public function output($message)
-	{
-		if (!$this->config->quiet) {
-			echo $this->colorize($message);
-		}
-	}
-
-	/**
-	 * Colorizes message or removes placeholders if OS doesn't support colors.
-	 *
-	 * @param string $message
-	 * @return string
-	 */
-	public function colorize($message)
-	{
-		static $placeholders = array(
-			'@header@' => "\x1b[1;34m",
-			'@count@' => "\x1b[1;34m",
-			'@option@' => "\x1b[0;36m",
-			'@value@' => "\x1b[0;32m",
-			'@error@' => "\x1b[0;31m",
-			'@c' => "\x1b[0m"
-		);
-
-		if (!$this->config->colors) {
-			$placeholders = array_fill_keys(array_keys($placeholders), '');
-		}
-
-		return strtr($message, $placeholders);
-	}
-
-	/**
-	 * Returns header.
-	 *
-	 * @return string
-	 */
-	public function getHeader()
-	{
-		$name = sprintf('%s %s', self::NAME, self::VERSION);
-		return sprintf("@header@%s@c\n%s\n", $name, str_repeat('-', strlen($name)));
 	}
 
 	/**
