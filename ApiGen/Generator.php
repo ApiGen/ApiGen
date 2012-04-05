@@ -413,6 +413,8 @@ class Generator extends Nette\Object
 		$template->version = self::VERSION;
 		$template->config = $this->config;
 
+		$this->registerCustomTemplateMacros($template);
+
 		// Common files
 		$this->generateCommon($template);
 
@@ -455,6 +457,63 @@ class Generator extends Nette\Object
 
 		// Delete temporary directory
 		$this->deleteDir($tmp);
+	}
+
+	/**
+	 * Loads template-specific macro and helper libraries.
+	 *
+	 * @param \ApiGen\Template $template Template instance
+	 */
+	private function registerCustomTemplateMacros(Template $template)
+	{
+		$latte = new Nette\Latte\Engine();
+		$macroSet = new Nette\Latte\Macros\MacroSet($latte->compiler);
+		$macroSet->addMacro('try', 'try {', '} catch (\Exception $e) {}');
+
+		if (!empty($this->config->template['options']['extensions'])) {
+			$this->output("Loading custom template macro and helper libraries\n");
+			$broker = new Broker(new Broker\Backend\Memory(), 0);
+
+			$baseDir = dirname($this->config->template['config']);
+			foreach ((array) $this->config->template['options']['extensions'] as $fileName) {
+				$pathName = $baseDir . DIRECTORY_SEPARATOR . $fileName;
+				if (is_file($pathName)) {
+					try {
+						$reflectionFile = $broker->processFile($pathName, true);
+						include $pathName;
+
+						foreach ($reflectionFile->getNamespaces() as $namespace) {
+							foreach ($namespace->getClasses() as $class) {
+								if ($class->isSubclassOf('Nette\\Latte\\Macros\\MacroSet')) {
+									// Macro set
+									call_user_func(array($class->getName(), 'install'), $latte->compiler);
+
+									$this->output(sprintf("  %s (macro set)\n", $class->getName()));
+								} elseif ($class->hasMethod('loader')) {
+									// Helpers set
+									$loaderMethod = $class->getMethod('loader');
+									if ($loaderMethod->isPublic() && !$loaderMethod->isAbstract()) {
+										if ($class->isInstantiable()) {
+											$template->registerHelperLoader(callback($class->newInstanceArgs(), 'loader'));
+										} else {
+											$template->registerHelperLoader(callback($class->getName(), 'loader'));
+										}
+
+										$this->output(sprintf("  %s (helper set)\n", $class->getName()));
+									}
+								}
+							}
+						}
+					} catch (\Exception $e) {
+						throw new \Exception(sprintf('Could not load macros and helpers from file "%s"', $pathName), 0, $e);
+					}
+				} else {
+					throw new \Exception(sprintf('Helper file "%s" does not exist.', $pathName));
+				}
+			}
+		}
+
+		$template->registerFilter($latte);
 	}
 
 	/**
