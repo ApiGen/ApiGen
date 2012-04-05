@@ -323,7 +323,8 @@ class Config
 		);
 
 		// Merge template config
-		$this->config = array_merge_recursive($this->config, array('template' => Neon::decode(file_get_contents($this->config['templateConfig']))));
+		$this->config = array_merge_recursive($this->config, array('template' => Neon::decode(file_get_contents($fileName = $this->config['templateConfig']))));
+		$this->config['template']['config'] = realpath($fileName);
 
 		// Check template
 		$this->checkTemplate();
