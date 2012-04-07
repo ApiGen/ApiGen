@@ -126,11 +126,11 @@ final class ApiGenExtension extends CompilerExtension
 			->addSetup('fillContainer');
 
 		// Logger
-		$container->addDefinition($this->prefix('logger'))
+		$container->addDefinition('logger')
 			->setClass('ApiGen\ConsoleLogger', array($config['quiet'], $config['colors'], $config['debug']));
 
 		// Progressbar
-		$container->addDefinition($this->prefix('progressbar'))
+		$container->addDefinition('progressbar')
 			->setClass('ApiGen\ConsoleProgressBar');
 
 		// Update checker
@@ -138,11 +138,11 @@ final class ApiGenExtension extends CompilerExtension
 			->setClass('ApiGen\UpdateChecker');
 
 		// Error handler
-		$container->addDefinition($this->prefix('errorHandler'))
+		$container->addDefinition('errorHandler')
 			->setClass('ApiGen\ErrorHandler');
 
 		// Generator
-		$container->addDefinition($this->prefix('generator'))
+		$container->addDefinition('generator')
 			->setClass('ApiGen\Generator');
 	}
 
