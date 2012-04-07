@@ -99,6 +99,9 @@ class Application extends Object
 		$start = new DateTime();
 
 		try {
+			$name = Environment::getApplicationName();
+			$this->logger->log("%h1\n", $name, str_repeat('-', strlen($name)) . "\n");
+
 			$this->onStartup($this);
 
 			// Update check
@@ -107,7 +110,7 @@ class Application extends Object
 			// Scan and parse sources
 			$this->parse();
 
-			$this->logger->log(sprintf("Generating to directory @value@%s@c\n", $this->config->destination));
+			$this->logger->log("Generating to directory %value\n", $this->config->destination);
 
 			// Wipeout the destination directory
 			$this->wipeout();
@@ -134,8 +137,8 @@ class Application extends Object
 	{
 		if (null !== $this->updateChecker) {
 			$latestVersion = $this->updateChecker->getNewestVersion();
-			if (!empty($latestVersion) && version_compare(ApiGen\VERSION, $latestVersion, '<')) {
-				$this->logger->log(sprintf("New version @header@%s@c available\n\n", $latestVersion));
+			if (!empty($latestVersion) && version_compare(VERSION, $latestVersion, '<')) {
+				$this->logger->log("New version %h1 available\n\n", $latestVersion);
 			}
 		}
 
@@ -151,26 +154,26 @@ class Application extends Object
 	{
 		// Scan
 		if (count($this->config->source) > 1) {
-			$this->logger->log(sprintf("Scanning\n @value@%s@c\n", implode("\n ", $this->config->source)));
+			$this->logger->log("Scanning\n %value", implode("\n ", $this->config->source) . "\n");
 		} else {
-			$this->logger->log(sprintf("Scanning @value@%s@c\n", $this->config->source[0]));
+			$this->logger->log("Scanning %value\n", $this->config->source[0]);
 		}
 
 		if (count($this->config->exclude) > 1) {
-			$this->logger->log(sprintf("Excluding\n @value@%s@c\n", implode("\n ", $this->config->exclude)));
+			$this->logger->log("Excluding\n %value", implode("\n ", $this->config->exclude) . "\n");
 		} elseif (count($this->config->exclude) === 1) {
-			$this->logger->log(sprintf("Excluding @value@%s@c\n", $this->config->exclude[0]));
+			$this->logger->log("Excluding %value\n", $this->config->exclude[0]);
 		}
 
 		$parseInfo = $this->generator->parse();
 
 		if (count($parseInfo->errors) > 1) {
-			$this->logger->log(sprintf("@error@Found %d errors@c\n\n", count($parseInfo->errors)));
+			$this->logger->log("%error\n\n", sprintf('Found %d errors', count($parseInfo->errors)));
 
 			$no = 1;
 			foreach ($parseInfo->errors as $e) {
 				if ($e instanceof TokenReflection\Exception\ParseException) {
-					$this->logger->log(sprintf("@error@%d.@c The TokenReflection library threw an exception while parsing the file @value@%s@c.\n", $no, $e->getFileName()));
+					$this->logger->log("%error. The TokenReflection library threw an exception while parsing the file %value.\n", $no, $e->getFileName());
 					if ($this->config->debug) {
 						$this->logger->log("\nThis can have two reasons: a) the source code in the file is not valid or b) you have just found a bug in the TokenReflection library.\n\n");
 						$this->logger->log("If the license allows it please send the whole file or at least the following fragment describing where exacly is the problem along with the backtrace to apigen@apigen.org. Thank you!\n\n");
@@ -179,40 +182,40 @@ class Application extends Object
 						$sender = $e->getSender();
 						if (!empty($token)) {
 							$this->logger->log(
-								sprintf(
-									"The cause of the exception \"%s\" was the @value@%s@c token (line @count@%d@c) in following part of %s source code:\n\n",
-									$e->getMessage(),
-									$e->getTokenName(),
-									$e->getExceptionLine(),
-									$sender && $sender->getName() ? '@value@' . $sender->getPrettyName() . '@c' : 'the'
-								)
+								"The cause of the exception \"{$e->getMessage()}\" was the %value token (line %number) in the following part of ",
+								$e->getTokenName(),
+								$e->getExceptionLine(),
+								($sender && $sender->getName() ? '%value' : ''),
+								($sender && $sender->getName() ? $sender->getPrettyName() : ''),
+								($sender && $sender->getName() ? '' : 'the'),
+								" source code:\n\n"
 							);
 						} else {
 							$this->logger->log(
-								sprintf(
-									"The exception \"%s\" was thrown when processing %s source code:\n\n",
-									$e->getMessage(),
-									$sender && $sender->getName() ? '@value@' . $sender->getPrettyName() . '@c' : 'the'
-								)
+								"The exception \"{$e->getMessage()}\" was thrown when processing ",
+								($sender && $sender->getName() ? '%value' : ''),
+								($sender && $sender->getName() ? $sender->getPrettyName() : ''),
+								($sender && $sender->getName() ? '' : 'the'),
+								" source code:\n\n"
 							);
 						}
 
 						$this->logger->log($e->getSourcePart(true) . "\n\nThe exception backtrace is following:\n\n" . $e->getTraceAsString() . "\n\n");
 					}
 				} elseif ($e instanceof TokenReflection\Exception\FileProcessingException) {
-					$this->logger->log(sprintf("@error@%d.@c %s\n", $no, $e->getMessage()));
+					$this->logger->log("%error. {$e->getMessage()}\n", $no);
 					if ($this->config->debug) {
-						$this->logger->log("\n" . $e->getDetail() . "\n\n");
+						$this->logger->log("\n{$e->getDetail()}\n\n");
 					}
 				} else {
-					$this->logger->log(sprintf("@error@%d.@c %s\n", $no, $e->getMessage()));
+					$this->logger->log("%error. {$e->getMessage()}\n", $no);
 					if ($this->config->debug) {
 						$trace = $e->getTraceAsString();
 						while ($e = $e->getPrevious()) {
-							$this->logger->log(sprintf("\n%s", $e->getMessage()));
+							$this->logger->log("\n" . $e->getMessage());
 							$trace = $e->getTraceAsString();
 						}
-						$this->logger->log(sprintf("\n%s\n\n", $trace));
+						$this->logger->log("\n$trace\n\n");
 					}
 				}
 
@@ -221,11 +224,11 @@ class Application extends Object
 		}
 
 		if (!$this->config->debug) {
-			$this->logger->log("\nEnable the debug mode (@option@--debug@c) to see more details.\n\n");
+			$this->logger->log("\nEnable the debug mode (%h2) to see more details.\n\n", '--debug');
 		}
 
-		$this->logger->log(sprintf("Found @count@%d@c classes, @count@%d@c constants, @count@%d@c functions and other @count@%d@c used PHP internal classes\n", $parseInfo->classes, $parseInfo->constants, $parseInfo->functions, $parseInfo->internalClasses));
-		$this->logger->log(sprintf("Documentation for @count@%d@c classes, @count@%d@c constants, @count@%d@c functions and other @count@%d@c used PHP internal classes will be generated\n", $parseInfo->documentedClasses, $parseInfo->documentedConstants, $parseInfo->documentedFunctions, $parseInfo->documentedInternalClasses));
+		$this->logger->log("Found %number classes, %number constants, %number functions and other %number used PHP internal classes\n", (int) $parseInfo->classes, (int) $parseInfo->constants, (int) $parseInfo->functions, (int) $parseInfo->internalClasses);
+		$this->logger->log("Documentation for %number classes, %number constants, %number functions and other %number used PHP internal classes will be generated\n", (int) $parseInfo->documentedClasses, (int) $parseInfo->documentedConstants, (int) $parseInfo->documentedFunctions, (int) $parseInfo->documentedInternalClasses);
 
 		return $this;
 	}
@@ -256,9 +259,9 @@ class Application extends Object
 	{
 		$skipping = array_merge($this->config->skipDocPath->toArray(), $this->config->skipDocPrefix->toArray()); // @todo better merge
 		if (count($skipping) > 1) {
-			$this->logger->log(sprintf("Will not generate documentation for\n @value@%s@c\n", implode("\n ", $skipping)));
+			$this->logger->log("Will not generate documentation for\n %value\n", implode("\n ", $skipping));
 		} elseif (!empty($skipping)) {
-			$this->logger->log(sprintf("Will not generate documentation for @value@%s@c\n", $skipping[0]));
+			$this->logger->log("Will not generate documentation for %value\n", $skipping[0]);
 		}
 
 		$this->generator->generate();
@@ -277,19 +280,21 @@ class Application extends Object
 	{
 		$interval = $end->diff($start);
 
-		$parts = array();
+		$parts = array('Done. Total time:');
+
 		if ($interval->h > 0) {
-			$parts[] = sprintf('@count@%d@c hours', $interval->h);
+			array_push($parts, ' %number hours', $interval->h);
 		}
 		if ($interval->i > 0) {
-			$parts[] = sprintf('@count@%d@c min', $interval->i);
+			array_push($parts, ' %number min', $interval->i);
 		}
 		if ($interval->s > 0) {
-			$parts[] = sprintf('@count@%d@c sec', $interval->s);
+			array_push($parts, ' %number sec', $interval->s);
 		}
-		$duration = implode(' ', $parts);
 
-		$this->logger->log(sprintf("Done. Total time: %s, used: @count@%d@c MB RAM\n", $duration, round(memory_get_peak_usage(true) / 1024 / 1024)));
+		array_push($parts, ", used: %number MB RAM\n", round(memory_get_peak_usage(true) / 1024 / 1024));
+
+		call_user_func_array(array($this->logger, 'log'), $parts);
 
 		return $this;
 	}

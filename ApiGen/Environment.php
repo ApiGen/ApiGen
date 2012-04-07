@@ -51,4 +51,14 @@ class Environment
 
 		return $params;
 	}
+
+	/**
+	 * Returns the application name.
+	 *
+	 * @return string
+	 */
+	public static function getApplicationName()
+	{
+		return 'ApiGen ' . VERSION;
+	}
 }

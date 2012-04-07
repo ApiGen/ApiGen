@@ -2,6 +2,8 @@
 
 namespace ApiGen;
 
+use Exception;
+
 /**
  * Default error handling service.
  */

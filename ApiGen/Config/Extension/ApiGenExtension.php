@@ -106,6 +106,13 @@ final class ApiGenExtension extends CompilerExtension
 	 */
 	public function loadConfiguration()
 	{
+		// Application configuration
+		$config = $this->prepareConfiguration();
+		$this->checkConfiguration($config);
+
+		$this->containerBuilder->parameters = $config;
+
+		// Services
 		$container = $this->getContainerBuilder();
 
 		// Application
@@ -120,7 +127,7 @@ final class ApiGenExtension extends CompilerExtension
 
 		// Logger
 		$container->addDefinition($this->prefix('logger'))
-			->setClass('ApiGen\ConsoleLogger');
+			->setClass('ApiGen\ConsoleLogger', array($config['quiet'], $config['colors'], $config['debug']));
 
 		// Progressbar
 		$container->addDefinition($this->prefix('progressbar'))
@@ -137,12 +144,6 @@ final class ApiGenExtension extends CompilerExtension
 		// Generator
 		$container->addDefinition($this->prefix('generator'))
 			->setClass('ApiGen\Generator');
-
-		// Application configuration
-		$config = $this->prepareConfiguration();
-		$this->checkConfiguration($config);
-
-		$this->containerBuilder->parameters = $config;
 	}
 
 	/**
