@@ -183,6 +183,13 @@ final class ApiGenExtension extends AbstractExtension
 			}));');
 		}
 
+		if ($config['progressbar']) {
+			$initialize->addBody('$this->apigen->eventDispatcher->registerListener("generator", "parseStart", callback($this->progressbar, "init"));');
+			$initialize->addBody('$this->apigen->eventDispatcher->registerListener("generator", "parseProgress", callback($this->progressbar, "increment"));');
+			$initialize->addBody('$this->apigen->eventDispatcher->registerListener("generator", "generateStart", callback($this->progressbar, "init"));');
+			$initialize->addBody('$this->apigen->eventDispatcher->registerListener("generator", "generateProgress", callback($this->progressbar, "increment"));');
+		}
+
 		// Make the event dispatcher read-only
 		$initialize->addBody('$this->apigen->eventDispatcher->freeze();');
 	}

@@ -47,13 +47,6 @@ class Generator extends Object implements IGenerator
 	private $config;
 
 	/**
-	 * Progressbar.
-	 *
-	 * @var \ApiGen\IProgressbar
-	 */
-	private $progressbar;
-
-	/**
 	 * List of parsed classes.
 	 *
 	 * @var \ArrayObject
@@ -148,12 +141,10 @@ class Generator extends Object implements IGenerator
 	 * Sets dependencies.
 	 *
 	 * @param \ApiGen\Config\Configuration $config
-	 * @param \ApiGen\IProgressbar $progressbar
 	 */
-	public function __construct(Configuration $config, IProgressbar $progressbar)
+	public function __construct(Configuration $config)
 	{
 		$this->config = (object) $config->toArray(); // @todo Refactor configuration usage
-		$this->progressbar = $progressbar;
 		$this->parsedClasses = new \ArrayObject();
 		$this->parsedConstants = new \ArrayObject();
 		$this->parsedFunctions = new \ArrayObject();
@@ -221,9 +212,7 @@ class Generator extends Object implements IGenerator
 			throw new RuntimeException('No PHP files found');
 		}
 
-		if ($this->config->progressbar) {
-			$this->initProgressBar(array_sum($files));
-		}
+		$this->fireEvent('parseStart', array_sum($files));
 
 		$broker = new Broker(new Backend($this, !empty($this->config->report)), Broker::OPTION_DEFAULT & ~(Broker::OPTION_PARSE_FUNCTION_BODY | Broker::OPTION_SAVE_TOKEN_STREAM));
 
@@ -241,7 +230,7 @@ class Generator extends Object implements IGenerator
 				$errors[] = $e;
 			}
 
-			$this->incrementProgressBar($size);
+			$this->fireEvent('parseProgress', $size);
 			$this->checkMemory();
 		}
 
@@ -366,41 +355,39 @@ class Generator extends Object implements IGenerator
 		// Categorize by packages and namespaces
 		$this->categorize();
 
-		// Prepare progressbar
-		if ($this->config->progressbar) {
-			$max = count($this->packages)
-				+ count($this->namespaces)
-				+ count($this->classes)
-				+ count($this->interfaces)
-				+ count($this->traits)
-				+ count($this->exceptions)
+		// Prepare progressbar & stuff
+		$steps = count($this->packages)
+			+ count($this->namespaces)
+			+ count($this->classes)
+			+ count($this->interfaces)
+			+ count($this->traits)
+			+ count($this->exceptions)
+			+ count($this->constants)
+			+ count($this->functions)
+			+ count($this->config->template['templates']['common'])
+			+ (int) !empty($this->config->report)
+			+ (int) $this->config->tree
+			+ (int) $this->config->deprecated
+			+ (int) $this->config->todo
+			+ (int) $this->config->download
+			+ (int) $this->isSitemapEnabled()
+			+ (int) $this->isOpensearchEnabled()
+			+ (int) $this->isRobotsEnabled();
+
+		if ($this->config->sourceCode) {
+			$tokenizedFilter = function(Reflection\ReflectionClass $class) {
+				return $class->isTokenized();
+			};
+			$steps += count(array_filter($this->classes, $tokenizedFilter))
+				+ count(array_filter($this->interfaces, $tokenizedFilter))
+				+ count(array_filter($this->traits, $tokenizedFilter))
+				+ count(array_filter($this->exceptions, $tokenizedFilter))
 				+ count($this->constants)
-				+ count($this->functions)
-				+ count($this->config->template['templates']['common'])
-				+ (int) !empty($this->config->report)
-				+ (int) $this->config->tree
-				+ (int) $this->config->deprecated
-				+ (int) $this->config->todo
-				+ (int) $this->config->download
-				+ (int) $this->isSitemapEnabled()
-				+ (int) $this->isOpensearchEnabled()
-				+ (int) $this->isRobotsEnabled();
-
-			if ($this->config->sourceCode) {
-				$tokenizedFilter = function(Reflection\ReflectionClass $class) {
-					return $class->isTokenized();
-				};
-				$max += count(array_filter($this->classes, $tokenizedFilter))
-					+ count(array_filter($this->interfaces, $tokenizedFilter))
-					+ count(array_filter($this->traits, $tokenizedFilter))
-					+ count(array_filter($this->exceptions, $tokenizedFilter))
-					+ count($this->constants)
-					+ count($this->functions);
-				unset($tokenizedFilter);
-			}
-
-			$this->initProgressBar($max);
+				+ count($this->functions);
+			unset($tokenizedFilter);
 		}
+
+		$this->fireEvent('generateStart', $steps);
 
 		// Prepare template
 		$tmp = $this->config->destination . DIRECTORY_SEPARATOR . 'tmp';
@@ -643,7 +630,7 @@ class Generator extends Object implements IGenerator
 				->setFile($this->getTemplateDir() . DIRECTORY_SEPARATOR . $source)
 				->save($this->forceDir($this->config->destination . DIRECTORY_SEPARATOR . $destination));
 
-			$this->incrementProgressBar();
+			$this->fireEvent('generateProgress', 1);
 		}
 
 		unset($template->elements);
@@ -665,19 +652,19 @@ class Generator extends Object implements IGenerator
 			$template
 				->setFile($this->getTemplatePath('sitemap', 'optional'))
 				->save($this->forceDir($this->getTemplateFileName('sitemap', 'optional')));
-			$this->incrementProgressBar();
+			$this->fireEvent('generateProgress', 1);
 		}
 		if ($this->isOpensearchEnabled()) {
 			$template
 				->setFile($this->getTemplatePath('opensearch', 'optional'))
 				->save($this->forceDir($this->getTemplateFileName('opensearch', 'optional')));
-			$this->incrementProgressBar();
+			$this->fireEvent('generateProgress', 1);
 		}
 		if ($this->isRobotsEnabled()) {
 			$template
 				->setFile($this->getTemplatePath('robots', 'optional'))
 				->save($this->forceDir($this->getTemplateFileName('robots', 'optional')));
-			$this->incrementProgressBar();
+			$this->fireEvent('generateProgress', 1);
 		}
 
 		$this->checkMemory();
@@ -881,7 +868,7 @@ class Generator extends Object implements IGenerator
 		fwrite($file, sprintf('</checkstyle>%s', "\n"));
 		fclose($file);
 
-		$this->incrementProgressBar();
+		$this->fireEvent('generateProgress', 1);
 		$this->checkMemory();
 
 		return $this;
@@ -941,7 +928,7 @@ class Generator extends Object implements IGenerator
 		unset($template->deprecatedMethods);
 		unset($template->deprecatedProperties);
 
-		$this->incrementProgressBar();
+		$this->fireEvent('generateProgress', 1);
 		$this->checkMemory();
 
 		return $this;
@@ -997,7 +984,7 @@ class Generator extends Object implements IGenerator
 		unset($template->todoMethods);
 		unset($template->todoProperties);
 
-		$this->incrementProgressBar();
+		$this->fireEvent('generateProgress', 1);
 		$this->checkMemory();
 
 		return $this;
@@ -1081,7 +1068,7 @@ class Generator extends Object implements IGenerator
 		unset($template->traitTree);
 		unset($template->exceptionTree);
 
-		$this->incrementProgressBar();
+		$this->fireEvent('generateProgress', 1);
 		$this->checkMemory();
 
 		return $this;
@@ -1119,7 +1106,7 @@ class Generator extends Object implements IGenerator
 				->setFile($this->getTemplatePath('package'))
 				->save($this->config->destination . DIRECTORY_SEPARATOR . $template->getPackageUrl($packageName));
 
-			$this->incrementProgressBar();
+			$this->fireEvent('generateProgress', 1);
 		}
 		unset($template->subpackages);
 
@@ -1160,7 +1147,7 @@ class Generator extends Object implements IGenerator
 				->setFile($this->getTemplatePath('namespace'))
 				->save($this->config->destination . DIRECTORY_SEPARATOR . $template->getNamespaceUrl($namespaceName));
 
-			$this->incrementProgressBar();
+			$this->fireEvent('generateProgress', 1);
 		}
 		unset($template->subnamespaces);
 
@@ -1297,7 +1284,7 @@ class Generator extends Object implements IGenerator
 						->save($this->config->destination . DIRECTORY_SEPARATOR . $template->getFunctionUrl($element));
 				}
 
-				$this->incrementProgressBar();
+				$this->fireEvent('generateProgress', 1);
 
 				// Generate source codes
 				if ($this->config->sourceCode && $element->isTokenized()) {
@@ -1307,7 +1294,7 @@ class Generator extends Object implements IGenerator
 						->setFile($this->getTemplatePath('source'))
 						->save($this->config->destination . DIRECTORY_SEPARATOR . $template->getSourceUrl($element, false));
 
-					$this->incrementProgressBar();
+					$this->fireEvent('generateProgress', 1);
 				}
 
 				$this->checkMemory();
@@ -1348,7 +1335,7 @@ class Generator extends Object implements IGenerator
 			throw new RuntimeException('Could not save ZIP archive');
 		}
 
-		$this->incrementProgressBar();
+		$this->fireEvent('generateProgress', 1);
 		$this->checkMemory();
 
 		return $this;
@@ -1566,30 +1553,6 @@ class Generator extends Object implements IGenerator
 		$path = str_replace(array('/', '\\'), DIRECTORY_SEPARATOR, $path);
 		$path = str_replace('phar:\\\\', 'phar://', $path);
 		return $path;
-	}
-
-	/**
-	 * Initializes the progressbar.
-	 *
-	 * @param integer $maximum Maximum progressbar value
-	 */
-	private function initProgressBar($maximum = 1)
-	{
-		if ($this->config->progressbar) {
-			$this->progressbar->init($maximum);
-		}
-	}
-
-	/**
-	 * Increments the progressbar.
-	 *
-	 * @param integer $increment Progressbar increment
-	 */
-	private function incrementProgressBar($increment = 1)
-	{
-		if ($this->config->progressbar) {
-			$this->progressbar->increment($increment);
-		}
 	}
 
 	/**
