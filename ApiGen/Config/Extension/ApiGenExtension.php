@@ -122,6 +122,10 @@ final class ApiGenExtension extends CompilerExtension
 		$container->addDefinition($this->prefix('logger'))
 			->setClass('ApiGen\ConsoleLogger');
 
+		// Progressbar
+		$container->addDefinition($this->prefix('progressbar'))
+			->setClass('ApiGen\ConsoleProgressBar');
+
 		// Update checker
 		$container->addDefinition($this->prefix('updateChecker'))
 			->setClass('ApiGen\UpdateChecker');

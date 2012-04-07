@@ -62,6 +62,7 @@
 			</dir>
 			<file name="ConfigException.php" role="php" />
 			<file name="ConsoleLogger.php" role="php" />
+			<file name="ConsoleProgressBar.php" role="php" />
 			<file name="Environment.php" role="php">
 				<tasks:replace type="pear-config" from="@php_dir@" to="php_dir" />
 			</file>
@@ -73,7 +74,6 @@
 			<file name="IProgressBar.php" role="php" />
 			<file name="IUpdateChecker.php" role="php" />
 			<file name="loader.php" role="php" />
-			<file name="ProgressBar.php" role="php" />
 			<file name="Template.php" role="php" />
 			<file name="Tree.php" role="php" />
 			<file name="UpdateChecker.php" role="php" />

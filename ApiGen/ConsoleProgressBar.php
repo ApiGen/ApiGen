@@ -15,9 +15,18 @@ namespace ApiGen;
 
 /**
  * Simple console progressbar.
+ *
+ * Requires the console logger {@see \ApiGen\ConsoleLogger}.
  */
-class ProgressBar implements IProgressBar
+class ConsoleProgressBar implements IProgressBar
 {
+	/**
+	 * Console logger.
+	 *
+	 * @var \ApiGen\ConsoleLogger
+	 */
+	private $logger;
+
 	/**
 	 * Current value.
 	 *
@@ -33,10 +42,20 @@ class ProgressBar implements IProgressBar
 	private $maximum = 1;
 
 	/**
+	 * Creates the progressbar service.
+	 *
+	 * @param \ApiGen\ConsoleLogger $logger Console logger service.
+	 */
+	public function __construct(ConsoleLogger $logger)
+	{
+		$this->logger = $logger;
+	}
+
+	/**
 	 * Initializes the progressbar.
 	 *
 	 * @param integer $maximum Maximum value
-	 * @return \ApiGen\ProgressBar
+	 * @return \ApiGen\ConsoleProgressBar
 	 */
 	public function init($maximum = 1)
 	{
@@ -50,7 +69,7 @@ class ProgressBar implements IProgressBar
 	 * Increments the progressbar.
 	 *
 	 * @param integer $increment Increment
-	 * @return \ApiGen\ProgressBar
+	 * @return \ApiGen\ConsoleProgressBar
 	 */
 	public function increment($increment = 1)
 	{
@@ -65,10 +84,10 @@ class ProgressBar implements IProgressBar
 
 		$progress = str_pad(str_pad('>', round($percent * $barWidth), '=', STR_PAD_LEFT), $barWidth, ' ', STR_PAD_RIGHT);
 
-		echo sprintf('[%s] %\' 6.2f%% %\' 3dMB', $progress, $percent * 100, round(memory_get_usage(true) / 1024 / 1024));
+		$this->logger->log(sprintf('[%s] %\' 6.2f%% %\' 3dMB', $progress, $percent * 100, round(memory_get_usage(true) / 1024 / 1024)));
 
 		if ($this->current === $this->maximum) {
-			echo "\n";
+			$this->logger->log("\n");
 		}
 
 		return $this;
