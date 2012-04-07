@@ -66,9 +66,9 @@ class EventDispatcher extends Object implements IEventDispatcher, IFreezable
 			$internalName = $this->getInternalEventName($originName, $name);
 
 			if (isset($this->listeners[$internalName])) {
-				array_walk_recursive($this->listeners[$internalName], function(Callback $callback) use ($event) {
+				array_walk_recursive($this->listeners[$internalName], function($callback) use ($event) {
 					if (!$event->isPropagationStopped()) {
-						$callback->invoke($event);
+						$callback($event);
 					}
 				});
 			}
@@ -99,6 +99,10 @@ class EventDispatcher extends Object implements IEventDispatcher, IFreezable
 	/**
 	 * Register an event listener.
 	 *
+	 * Autodetects the callback type according to its first argument. If there is none or its class
+	 * is \ApiGen\Event, the callback will receive the event instance. If not, the event payload will
+	 * be expanded and passed as arguments. The original event will be the last argument in that case.
+	 *
 	 * @param string $originName Origin name
 	 * @param string $eventName Event name
 	 * @param \Nette\Callback $callback Registered callback
@@ -117,7 +121,14 @@ class EventDispatcher extends Object implements IEventDispatcher, IFreezable
 		$internalName = $this->getInternalEventName($originName, $eventName);
 		$needsSorting = !isset($this->listeners[$internalName][$priority]);
 
-		$this->listeners[$internalName][$priority][] = $callback;
+		$params = $callback->toReflection()->getParameters();
+		if (count($params) > 0 && $params[0]->getClassName() !== 'ApiGen\\Event') {
+			$this->listeners[$internalName][$priority][] = function(Event $event) use ($callback) {
+				return EventDispatcher::expandEventCallback($callback, $event);
+			};
+		} else {
+			$this->listeners[$internalName][$priority][] = $callback;
+		}
 
 		if ($needsSorting) {
 			krsort($this->listeners[$internalName], SORT_NUMERIC);
@@ -158,6 +169,22 @@ class EventDispatcher extends Object implements IEventDispatcher, IFreezable
 		if ($this->isFrozen()) {
 			throw new InvalidStateException('The event dispatcher configuration is frozen.');
 		}
+	}
+
+	/**
+	 * Expands the event to the callback.
+	 *
+	 * @param \Nette\Callback $callback Original callback
+	 * @param \ApiGen\Event $event Event
+	 * @return mixed
+	 */
+	public static function expandEventCallback(Callback $callback, Event $event)
+	{
+		$payload = $event->getPayload();
+		$arguments = is_array($payload) ? $payload : (empty($payload) ? array() : array($payload));
+		$arguments[] = $event;
+
+		return $callback->invokeArgs($arguments);
 	}
 
 	/**
