@@ -48,34 +48,6 @@ class Application extends Object
 	private $generator;
 
 	/**
-	 * Error handling service.
-	 *
-	 * @var \ApiGen\IErrorHandler
-	 */
-	private $errorHandler;
-
-	/**
-	 * Latest version checker.
-	 *
-	 * @var \ApiGen\UpdateChecker
-	 */
-	private $updateChecker;
-
-	/**
-	 * Callbacks performed on application startup.
-	 *
-	 * @var array
-	 */
-	public $onStartup = array();
-
-	/**
-	 * Callbacks performed on application shutdown.
-	 *
-	 * @var array
-	 */
-	public $onShutdown = array();
-
-	/**
 	 * Creates an instance.
 	 *
 	 * @param \ApiGen\Config\Configuration $config Application configuration
@@ -83,22 +55,11 @@ class Application extends Object
 	 * @param \ApiGen\IGenerator $generator Generator service
 	 * @param \ApiGen\IErrorHandler $errorHandler Error handler service
 	 */
-	public function __construct(Configuration $config, ILogger $logger, IGenerator $generator, IErrorHandler $errorHandler)
+	public function __construct(Configuration $config, ILogger $logger, IGenerator $generator)
 	{
 		$this->config = $config;
 		$this->logger = $logger;
 		$this->generator = $generator;
-		$this->errorHandler = $errorHandler;
-	}
-
-	/**
-	 * Sets the update checker service.
-	 *
-	 * @param \ApiGen\UpdateChecker $updateChecker Update checker
-	 */
-	public function setUpdateChecker(UpdateChecker $updateChecker)
-	{
-		$this->updateChecker = $updateChecker;
 	}
 
 	/**
@@ -112,10 +73,7 @@ class Application extends Object
 			$name = Environment::getApplicationName();
 			$this->logger->log("%h1\n", $name, str_repeat('-', strlen($name)) . "\n");
 
-			$this->onStartup($this);
-
-			// Update check
-			$this->checkUpdates();
+			$this->fireEvent('startup');
 
 			// Scan and parse sources
 			$this->parse();
@@ -129,30 +87,13 @@ class Application extends Object
 			$this->generate();
 
 		} catch (Exception $e) {
-			$this->errorHandler->handleException($e);
+			$this->fireEvent('error', $e);
 		}
 
-		$this->onShutdown($this);
+		$this->fireEvent('shutdown');
 
 		// Prints the elapsed time
 		$this->printElapsed($start, new DateTime());
-	}
-
-	/**
-	 * Performs an update check.
-	 *
-	 * @return \ApiGen\Application
-	 */
-	protected function checkUpdates()
-	{
-		if (null !== $this->updateChecker) {
-			$latestVersion = $this->updateChecker->getNewestVersion();
-			if (!empty($latestVersion) && version_compare(VERSION, $latestVersion, '<')) {
-				$this->logger->log("New version %h1 available\n\n", $latestVersion);
-			}
-		}
-
-		return $this;
 	}
 
 	/**

@@ -38,4 +38,20 @@ class UpdateChecker extends Object implements IUpdateChecker
 		$latestVersion = @file_get_contents('http://pear.apigen.org/rest/r/apigen/latest.txt');
 		return false === $latestVersion ? null : trim($latestVersion);
 	}
+
+	/**
+	 * Checks if there is newer version. If so, triggers the "updateAvailable" event.
+	 *
+	 * @return boolean
+	 */
+	public function checkUpdate()
+	{
+		$latestVersion = $this->getNewestVersion();
+		if (!empty($latestVersion) && version_compare(VERSION, $latestVersion, '<')) {
+			$this->fireEvent('updateAvailable', $latestVersion);
+			return true;
+		}
+
+		return false;
+	}
 }

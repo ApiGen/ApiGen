@@ -167,7 +167,24 @@ final class ApiGenExtension extends AbstractExtension
 	{
 		parent::afterCompile($class);
 
-		$class->methods['initialize']->addBody('$this->apigen->eventDispatcher->freeze();');
+		$config = $this->containerBuilder->parameters;
+
+		/**
+		 * @var \Nette\Utils\PhpGenerator\Method
+		 */
+		$initialize = $class->methods['initialize'];
+
+		$initialize->addBody('$this->apigen->eventDispatcher->registerListener("apigen.application", "error", callback($this->errorHandler, "handleException"));');
+
+		if ($config['updateCheck']) {
+			$initialize->addBody('$this->apigen->eventDispatcher->registerListener("apigen.application", "startup", callback($this->apigen->updateChecker, "checkUpdate"));');
+			$initialize->addBody('$that = $this; $this->apigen->eventDispatcher->registerListener("apigen.updateChecker", "updateAvailable", callback(function(ApiGen\Event $event) use ($that) {
+				$that->logger->log("New version %h1 available\n\n", $event->getPayload());
+			}));');
+		}
+
+		// Make the event dispatcher read-only
+		$initialize->addBody('$this->apigen->eventDispatcher->freeze();');
 	}
 
 	/**

@@ -24,4 +24,11 @@ interface IUpdateChecker
 	 * @return string
 	 */
 	public function getNewestVersion();
+
+	/**
+	 * Checks if there is newer version. If so, triggers the "updateAvailable" event.
+	 *
+	 * @return boolean
+	 */
+	public function checkUpdate();
 }
