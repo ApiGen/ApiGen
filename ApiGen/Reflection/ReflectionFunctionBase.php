@@ -11,7 +11,7 @@
  * the file LICENSE.md that was distributed with this source code.
  */
 
-namespace ApiGen;
+namespace ApiGen\Reflection;
 
 use TokenReflection;
 use InvalidArgumentException;
@@ -40,7 +40,7 @@ abstract class ReflectionFunctionBase extends ReflectionElement
 	 * Returns a particular function/method parameter.
 	 *
 	 * @param integer|string $parameterName Parameter name or position
-	 * @return \ApiGen\ReflectionParameter
+	 * @return \ApiGen\Reflection\ReflectionParameter
 	 * @throws \InvalidArgumentException If there is no parameter of the given name.
 	 * @throws \InvalidArgumentException If there is no parameter at the given position.
 	 */

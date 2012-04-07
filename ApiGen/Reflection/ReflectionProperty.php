@@ -11,7 +11,7 @@
  * the file LICENSE.md that was distributed with this source code.
  */
 
-namespace ApiGen;
+namespace ApiGen\Reflection;
 
 /**
  * Property reflection envelope.
@@ -23,7 +23,7 @@ class ReflectionProperty extends ReflectionElement
 	/**
 	 * Returns the property declaring class.
 	 *
-	 * @return \ApiGen\ReflectionClass|null
+	 * @return \ApiGen\Reflection\ReflectionClass|null
 	 */
 	public function getDeclaringClass()
 	{
@@ -34,7 +34,7 @@ class ReflectionProperty extends ReflectionElement
 	/**
 	 * Returns the property declaring trait.
 	 *
-	 * @return \ApiGen\ReflectionClass|null
+	 * @return \ApiGen\Reflection\ReflectionClass|null
 	 */
 	public function getDeclaringTrait()
 	{

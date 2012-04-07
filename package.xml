@@ -37,22 +37,26 @@
 <contents>
 	<dir name="/">
 		<dir name="ApiGen">
+			<dir name="Reflection">
+				<file name="ReflectionBase.php" role="php" />
+				<file name="ReflectionClass.php" role="php" />
+				<file name="ReflectionConstant.php" role="php" />
+				<file name="ReflectionElement.php" role="php" />
+				<file name="ReflectionExtension.php" role="php" />
+				<file name="ReflectionFunction.php" role="php" />
+				<file name="ReflectionFunctionBase.php" role="php" />
+				<file name="ReflectionMethod.php" role="php" />
+				<file name="ReflectionParameter.php" role="php" />
+				<file name="ReflectionProperty.php" role="php" />
+			</dir>
 			<file name="Backend.php" role="php" />
 			<file name="Config.php" role="php">
 				<tasks:replace type="pear-config" from="@data_dir@" to="data_dir" />
 			</file>
 			<file name="ConfigException.php" role="php" />
 			<file name="Generator.php" role="php" />
-			<file name="ReflectionBase.php" role="php" />
-			<file name="ReflectionClass.php" role="php" />
-			<file name="ReflectionConstant.php" role="php" />
-			<file name="ReflectionElement.php" role="php" />
-			<file name="ReflectionExtension.php" role="php" />
-			<file name="ReflectionFunction.php" role="php" />
-			<file name="ReflectionFunctionBase.php" role="php" />
-			<file name="ReflectionMethod.php" role="php" />
-			<file name="ReflectionParameter.php" role="php" />
-			<file name="ReflectionProperty.php" role="php" />
+			<file name="IProgressBar.php" role="php" />
+			<file name="ProgressBar.php" role="php" />
 			<file name="Template.php" role="php" />
 			<file name="Tree.php" role="php" />
 		</dir>

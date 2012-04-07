@@ -11,8 +11,9 @@
  * the file LICENSE.md that was distributed with this source code.
  */
 
-namespace ApiGen;
+namespace ApiGen\Reflection;
 
+use ApiGen\Generator;
 use TokenReflection\IReflection;
 
 /**
