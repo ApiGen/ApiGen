@@ -231,7 +231,6 @@ class Generator extends Object implements IGenerator
 			}
 
 			$this->fireEvent('parseProgress', $size);
-			$this->checkMemory();
 		}
 
 		// Classes
@@ -635,8 +634,6 @@ class Generator extends Object implements IGenerator
 
 		unset($template->elements);
 
-		$this->checkMemory();
-
 		return $this;
 	}
 
@@ -666,8 +663,6 @@ class Generator extends Object implements IGenerator
 				->save($this->forceDir($this->getTemplateFileName('robots', 'optional')));
 			$this->fireEvent('generateProgress', 1);
 		}
-
-		$this->checkMemory();
 
 		return $this;
 	}
@@ -869,7 +864,6 @@ class Generator extends Object implements IGenerator
 		fclose($file);
 
 		$this->fireEvent('generateProgress', 1);
-		$this->checkMemory();
 
 		return $this;
 	}
@@ -929,7 +923,6 @@ class Generator extends Object implements IGenerator
 		unset($template->deprecatedProperties);
 
 		$this->fireEvent('generateProgress', 1);
-		$this->checkMemory();
 
 		return $this;
 	}
@@ -985,7 +978,6 @@ class Generator extends Object implements IGenerator
 		unset($template->todoProperties);
 
 		$this->fireEvent('generateProgress', 1);
-		$this->checkMemory();
 
 		return $this;
 	}
@@ -1069,7 +1061,6 @@ class Generator extends Object implements IGenerator
 		unset($template->exceptionTree);
 
 		$this->fireEvent('generateProgress', 1);
-		$this->checkMemory();
 
 		return $this;
 	}
@@ -1110,8 +1101,6 @@ class Generator extends Object implements IGenerator
 		}
 		unset($template->subpackages);
 
-		$this->checkMemory();
-
 		return $this;
 	}
 
@@ -1150,8 +1139,6 @@ class Generator extends Object implements IGenerator
 			$this->fireEvent('generateProgress', 1);
 		}
 		unset($template->subnamespaces);
-
-		$this->checkMemory();
 
 		return $this;
 	}
@@ -1296,8 +1283,6 @@ class Generator extends Object implements IGenerator
 
 					$this->fireEvent('generateProgress', 1);
 				}
-
-				$this->checkMemory();
 			}
 		}
 
@@ -1336,7 +1321,6 @@ class Generator extends Object implements IGenerator
 		}
 
 		$this->fireEvent('generateProgress', 1);
-		$this->checkMemory();
 
 		return $this;
 	}
@@ -1553,36 +1537,6 @@ class Generator extends Object implements IGenerator
 		$path = str_replace(array('/', '\\'), DIRECTORY_SEPARATOR, $path);
 		$path = str_replace('phar:\\\\', 'phar://', $path);
 		return $path;
-	}
-
-	/**
-	 * Checks memory usage.
-	 *
-	 * @return \ApiGen\Generator
-	 * @throws \RuntimeException If there is unsufficient reserve of memory.
-	 */
-	public function checkMemory()
-	{
-		static $limit = null;
-		if (null === $limit) {
-			$value = ini_get('memory_limit');
-			$unit = substr($value, -1);
-			if ('-1' === $value) {
-				$limit = 0;
-			} elseif ('G' === $unit) {
-				$limit = (int) $value * 1024 * 1024 * 1024;
-			} elseif ('M' === $unit) {
-				$limit = (int) $value * 1024 * 1024;
-			} else {
-				$limit = (int) $value;
-			}
-		}
-
-		if ($limit && memory_get_usage(true) / $limit >= 0.9) {
-			throw new RuntimeException(sprintf('Used %d%% of the current memory limit, please increase the limit to generate the whole documentation.', round(memory_get_usage(true) / $limit * 100)));
-		}
-
-		return $this;
 	}
 
 	/**

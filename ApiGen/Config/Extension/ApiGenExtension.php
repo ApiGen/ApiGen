@@ -129,6 +129,9 @@ final class ApiGenExtension extends AbstractExtension
 		// Event dispatcher
 		$this->addServiceDefinition($this->prefix('eventDispatcher'), 'ApiGen\\EventDispatcher');
 
+		// Memory limit checker
+		$this->addServiceDefinition($this->prefix('memoryLimitChecker'), 'ApiGen\\MemoryLimitChecker');
+
 		// Application
 		$this->addServiceDefinition($this->prefix('application'), 'ApiGen\\Application')
 			->addSetup('setEventDispatcher');
@@ -189,6 +192,9 @@ final class ApiGenExtension extends AbstractExtension
 			$initialize->addBody('$this->apigen->eventDispatcher->registerListener("generator", "generateStart", callback($this->progressbar, "init"));');
 			$initialize->addBody('$this->apigen->eventDispatcher->registerListener("generator", "generateProgress", callback($this->progressbar, "increment"));');
 		}
+
+		$initialize->addBody('$this->apigen->eventDispatcher->registerListener("generator", "parseProgress", callback($this->apigen->memoryLimitChecker, "check"));');
+		$initialize->addBody('$this->apigen->eventDispatcher->registerListener("generator", "generateProgress", callback($this->apigen->memoryLimitChecker, "check"));');
 
 		// Make the event dispatcher read-only
 		$initialize->addBody('$this->apigen->eventDispatcher->freeze();');
