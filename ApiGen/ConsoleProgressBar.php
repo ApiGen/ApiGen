@@ -78,7 +78,7 @@ class ConsoleProgressBar extends Object implements IProgressBar
 
 		echo str_repeat(chr(0x08), $width);
 
-		$this->current += (int) $increment;
+		$this->current = min($this->maximum, $this->current + (int) $increment);
 
 		$percent = $this->current / $this->maximum;
 
