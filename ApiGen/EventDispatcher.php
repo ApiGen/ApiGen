@@ -181,7 +181,7 @@ class EventDispatcher extends Object implements IEventDispatcher, IFreezable
 	public static function expandEventCallback(Callback $callback, Event $event)
 	{
 		$payload = $event->getPayload();
-		$arguments = is_array($payload) ? $payload : (empty($payload) ? array() : array($payload));
+		$arguments = is_array($payload) ? $payload : (null === $payload ? array() : array($payload));
 		$arguments[] = $event;
 
 		return $callback->invokeArgs($arguments);
