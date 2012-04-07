@@ -18,7 +18,7 @@ use Exception;
 /**
  * Default error handling service.
  */
-class ErrorHandler implements IErrorHandler
+class ErrorHandler extends Object implements IErrorHandler
 {
 	/**
 	 * Error handling service.

@@ -16,7 +16,7 @@ namespace ApiGen;
 /**
  * pear.ApiGen.org update checker.
  */
-class UpdateChecker implements IUpdateChecker
+class UpdateChecker extends Object implements IUpdateChecker
 {
 	/**
 	 * Creates a checker instance.

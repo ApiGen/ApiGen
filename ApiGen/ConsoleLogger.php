@@ -23,7 +23,7 @@ use Nette\InvalidStateException;
  *
  * Uses STDOUT as output stream.
  */
-class ConsoleLogger implements ILogger
+class ConsoleLogger extends Object implements ILogger
 {
 	/**
 	 * Do not output anything at all.

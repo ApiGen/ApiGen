@@ -17,12 +17,12 @@ use ApiGen;
 use ApiGen\Config\Helper;
 use ApiGen\ConfigException;
 use ApiGen\Environment;
-use Nette\Config\CompilerExtension;
+use Nette\Utils\PhpGenerator\ClassType;
 
 /**
  * Internal ApiGen DIC extension.
  */
-final class ApiGenExtension extends CompilerExtension
+final class ApiGenExtension extends AbstractExtension
 {
 	/**
 	 * Default configuration.
@@ -126,35 +126,48 @@ final class ApiGenExtension extends CompilerExtension
 		// Services
 		$container = $this->getContainerBuilder();
 
+		// Event dispatcher
+		$this->addServiceDefinition($this->prefix('eventDispatcher'), 'ApiGen\\EventDispatcher');
+
 		// Application
-		$container->addDefinition($this->prefix('application'))
-			->setClass('ApiGen\Application')
-			->addSetup('setUpdateChecker');
+		$this->addServiceDefinition($this->prefix('application'), 'ApiGen\\Application')
+			->addSetup('setEventDispatcher');
 
 		// Configuration
-		$container->addDefinition($this->prefix('config'))
-			->setClass('ApiGen\Config\Configuration')
+		$this->addServiceDefinition($this->prefix('config'), 'ApiGen\\Config\\Configuration')
 			->addSetup('fillContainer');
 
 		// Logger
-		$container->addDefinition('logger')
-			->setClass('ApiGen\ConsoleLogger', array($config['quiet'], $config['colors'], $config['debug']));
+		$this->addServiceDefinition('logger', 'ApiGen\\ConsoleLogger', array($config['quiet'], $config['colors'], $config['debug']))
+			->addSetup('setEventDispatcher');
 
 		// Progressbar
-		$container->addDefinition('progressbar')
-			->setClass('ApiGen\ConsoleProgressBar');
+		$this->addServiceDefinition('progressbar', 'ApiGen\\ConsoleProgressBar')
+			->addSetup('setEventDispatcher');
 
 		// Update checker
-		$container->addDefinition($this->prefix('updateChecker'))
-			->setClass('ApiGen\UpdateChecker');
+		$this->addServiceDefinition($this->prefix('updateChecker'), 'ApiGen\\UpdateChecker')
+			->addSetup('setEventDispatcher');
 
 		// Error handler
-		$container->addDefinition('errorHandler')
-			->setClass('ApiGen\ErrorHandler');
+		$this->addServiceDefinition('errorHandler', 'ApiGen\\ErrorHandler')
+			->addSetup('setEventDispatcher');
 
 		// Generator
-		$container->addDefinition('generator')
-			->setClass('ApiGen\Generator');
+		$this->addServiceDefinition('generator', 'ApiGen\\Generator')
+			->addSetup('setEventDispatcher');
+	}
+
+	/**
+	 * Adjusts the generated DI container class.
+	 *
+	 * @param \Nette\Utils\PhpGenerator\ClassType $class DIC class
+	 */
+	public function afterCompile(ClassType $class)
+	{
+		parent::afterCompile($class);
+
+		$class->methods['initialize']->addBody('$this->apigen->eventDispatcher->freeze();');
 	}
 
 	/**

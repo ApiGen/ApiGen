@@ -84,7 +84,9 @@ class Configurator extends NetteConfigurator
 	 */
 	public function createContainer()
 	{
-		LimitedScope::evaluate($c = $this->buildContainer());
+		$c = $this->buildContainer();
+
+		LimitedScope::evaluate($c);
 
 		$container = new $this->parameters['container']['class'];
 		$container->initialize();
@@ -100,8 +102,8 @@ class Configurator extends NetteConfigurator
 	protected function createCompiler()
 	{
 		$compiler = new Compiler();
-		$compiler->addExtension('apigen', new ApiGenExtension($this->helper));
 		$compiler->addExtension('plugins', new PluginsExtension());
+		$compiler->addExtension('apigen', new ApiGenExtension($this->helper));
 
 		return $compiler;
 	}

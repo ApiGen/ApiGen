@@ -17,7 +17,6 @@ use ApiGen;
 use ApiGen\Config\Configuration;
 use DateTime;
 use Exception;
-use Nette\Object;
 use TokenReflection;
 
 /**

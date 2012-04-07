@@ -18,7 +18,7 @@ namespace ApiGen;
  *
  * Requires the console logger {@see \ApiGen\ConsoleLogger}.
  */
-class ConsoleProgressBar implements IProgressBar
+class ConsoleProgressBar extends Object implements IProgressBar
 {
 	/**
 	 * Console logger.

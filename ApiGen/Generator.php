@@ -23,7 +23,7 @@ use TokenReflection\Broker;
 /**
  * Generates a HTML API documentation.
  */
-class Generator extends Nette\Object implements IGenerator
+class Generator extends Object implements IGenerator
 {
 	/**
 	 * Library name.
