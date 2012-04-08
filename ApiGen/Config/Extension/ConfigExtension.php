@@ -264,7 +264,7 @@ final class ConfigExtension extends CompilerExtension
 				if (file_exists($config[$option])) {
 					$config[$option] = realpath($config[$option]);
 				} else {
-					$config[$option] = str_replace(array('/', '\\'), DIRECTORY_SEPARATOR, $value);
+					$config[$option] = str_replace(array('/', '\\'), DIRECTORY_SEPARATOR, $config[$option]);
 				}
 			}
 		}
