@@ -39,8 +39,6 @@ class MemoryLimitChecker implements IMemoryLimitChecker
 			}
 		}
 
-		echo 'check';
-
 		if ($limit && memory_get_usage(true) / $limit >= 0.9) {
 			throw new InvalidStateException(sprintf('Used %d%% of the current memory limit, please increase the limit to generate the whole documentation.', round(memory_get_usage(true) / $limit * 100)));
 		}
