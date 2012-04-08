@@ -67,13 +67,17 @@
 				<tasks:replace type="pear-config" from="@php_dir@" to="php_dir" />
 			</file>
 			<file name="ErrorHandler.php" role="php" />
+			<file name="EventDispatcher.php" role="php" />
 			<file name="Generator.php" role="php" />
 			<file name="IErrorHandler.php" role="php" />
+			<file name="IEventDispatcher.php" role="php" />
 			<file name="IGenerator.php" role="php" />
+			<file name="IMemoryLimitChecker.php" role="php" />
 			<file name="ILogger.php" role="php" />
 			<file name="IProgressBar.php" role="php" />
 			<file name="IUpdateChecker.php" role="php" />
 			<file name="loader.php" role="php" />
+			<file name="MemoryLimitChecker.php" role="php" />
 			<file name="Template.php" role="php" />
 			<file name="Tree.php" role="php" />
 			<file name="UpdateChecker.php" role="php" />
