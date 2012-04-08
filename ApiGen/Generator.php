@@ -152,7 +152,7 @@ class Generator extends Object implements IGenerator
 	 */
 	public function __construct(Configuration $config, CharsetConvertor $charsetConvertor, ISourceCodeHighlighter $highlighter)
 	{
-		$this->config = (object) $config->toArray(); // @todo Refactor configuration usage
+		$this->config = $config;
 		$this->charsetConvertor = $charsetConvertor;
 		$this->highlighter = $highlighter;
 		$this->parsedClasses = new \ArrayObject();
@@ -198,7 +198,7 @@ class Generator extends Object implements IGenerator
 				$entries[] = new \SplFileInfo($source);
 			}
 
-			$regexp = '~\\.' . implode('|', $this->config->extensions) . '$~i';
+			$regexp = '~\\.' . implode('|', $this->config->extensions->toArray()) . '$~i';
 			foreach ($entries as $entry) {
 				if (!preg_match($regexp, $entry->getFilename())) {
 					continue;
@@ -343,7 +343,7 @@ class Generator extends Object implements IGenerator
 		}
 
 		// Copy resources
-		foreach ($this->config->template['resources'] as $resourceSource => $resourceDestination) {
+		foreach ($this->config->template->resources as $resourceSource => $resourceDestination) {
 			// File
 			$resourcePath = $this->getTemplateDir() . DIRECTORY_SEPARATOR . $resourceSource;
 			if (is_file($resourcePath)) {
@@ -370,7 +370,7 @@ class Generator extends Object implements IGenerator
 			+ count($this->exceptions)
 			+ count($this->constants)
 			+ count($this->functions)
-			+ count($this->config->template['templates']['common'])
+			+ count($this->config->template->templates->common)
 			+ (int) !empty($this->config->report)
 			+ (int) $this->config->tree
 			+ (int) $this->config->deprecated
@@ -597,7 +597,7 @@ class Generator extends Object implements IGenerator
 
 		// Elements for autocomplete
 		$elements = array();
-		$autocomplete = array_flip($this->config->autocomplete);
+		$autocomplete = array_flip($this->config->autocomplete->toArray());
 		foreach ($this->getElementTypes() as $type) {
 			foreach ($this->$type as $element) {
 				if ($element instanceof Reflection\ReflectionClass) {
@@ -631,7 +631,7 @@ class Generator extends Object implements IGenerator
 		});
 		$template->elements = $elements;
 
-		foreach ($this->config->template['templates']['common'] as $source => $destination) {
+		foreach ($this->config->template->templates->common as $source => $destination) {
 			$template
 				->setFile($this->getTemplateDir() . DIRECTORY_SEPARATOR . $source)
 				->save($this->forceDir($this->config->destination . DIRECTORY_SEPARATOR . $destination));
@@ -1725,7 +1725,7 @@ class Generator extends Object implements IGenerator
 	 */
 	private function getTemplatePath($name, $type = 'main')
 	{
-		return $this->getTemplateDir() . DIRECTORY_SEPARATOR . $this->config->template['templates'][$type][$name]['template'];
+		return $this->getTemplateDir() . DIRECTORY_SEPARATOR . $this->config->template->templates->$type->$name->template;
 	}
 
 	/**
@@ -1737,7 +1737,7 @@ class Generator extends Object implements IGenerator
 	 */
 	private function getTemplateFileName($name, $type = 'main')
 	{
-		return $this->config->destination . DIRECTORY_SEPARATOR . $this->config->template['templates'][$type][$name]['filename'];
+		return $this->config->destination . DIRECTORY_SEPARATOR . $this->config->template->templates->$type->$name->filename;
 	}
 
 	/**
@@ -1749,7 +1749,7 @@ class Generator extends Object implements IGenerator
 	 */
 	private function templateExists($name, $type = 'main')
 	{
-		return isset($this->config->template['templates'][$type][$name]);
+		return isset($this->config->template->templates->$type->$name);
 	}
 
 	/**
@@ -1778,7 +1778,7 @@ class Generator extends Object implements IGenerator
 		$files = array();
 
 		// Resources
-		foreach ($this->config->template['resources'] as $item) {
+		foreach ($this->config->template->resources as $item) {
 			$path = $this->getTemplateDir() . DIRECTORY_SEPARATOR . $item;
 			if (is_dir($path)) {
 				$iterator = Nette\Utils\Finder::findFiles('*')->from($path)->getIterator();
@@ -1791,19 +1791,19 @@ class Generator extends Object implements IGenerator
 		}
 
 		// Common files
-		foreach ($this->config->template['templates']['common'] as $item) {
+		foreach ($this->config->template->templates->common as $item) {
 			$files[] = $this->config->destination . DIRECTORY_SEPARATOR . $item;
 		}
 
 		// Optional files
-		foreach ($this->config->template['templates']['optional'] as $optional) {
+		foreach ($this->config->template->templates->optional as $optional) {
 			$files[] = $this->config->destination . DIRECTORY_SEPARATOR . $optional['filename'];
 		}
 
 		// Main files
 		$masks = array_map(function($config) {
 			return preg_replace('~%[^%]*?s~', '*', $config['filename']);
-		}, $this->config->template['templates']['main']);
+		}, $this->config->template->templates->main->toArray());
 		$filter = function($item) use ($masks) {
 			foreach ($masks as $mask) {
 				if (fnmatch($mask, $item->getFilename())) {

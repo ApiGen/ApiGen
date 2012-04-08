@@ -20,11 +20,11 @@ class TexyMarkup implements IMarkup
 {
 	private $texy;
 
-	public function __construct(array $allowedHtml, ISourceCodeHighlighter $highlighter)
+	public function __construct(Config\Configuration $allowedHtml, ISourceCodeHighlighter $highlighter)
 	{
 		// @todo DI
 		$this->texy = new Texy();
-		$this->texy->allowedTags = array_flip($allowedHtml);
+		$this->texy->allowedTags = array_flip($allowedHtml->toArray());
 		$this->texy->allowed['list/definition'] = false;
 		$this->texy->allowed['phrase/em-alt'] = false;
 		$this->texy->allowed['longwords'] = false;

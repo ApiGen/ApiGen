@@ -235,13 +235,13 @@ the file LICENSE.md that was distributed with this source code.
 		<td class="description"><div>
 			<a href="#{$constant->name}" class="anchor">#</a>
 
-			{if $config->template['options']['elementDetailsCollapsed']}
+			{if $config->template->options->elementDetailsCollapsed}
 			<div class="description short">
 				{!$constant|shortDescription:true}
 			</div>
 			{/if}
 
-			<div n:class="description, detailed, $config->template['options']['elementDetailsCollapsed'] ? hidden">
+			<div n:class="description, detailed, $config->template->options->elementDetailsCollapsed ? hidden">
 				{!$constant|longDescription}
 
 				{foreach $template->annotationSort($template->annotationFilter($annotations, array('var'))) as $annotation => $descriptions}
@@ -292,13 +292,13 @@ the file LICENSE.md that was distributed with this source code.
 		<td class="description"><div>
 			<a href="#${$property->name}" class="anchor">#</a>
 
-			{if $config->template['options']['elementDetailsCollapsed']}
+			{if $config->template->options->elementDetailsCollapsed}
 			<div class="description short">
 				{!$property|shortDescription:true}
 			</div>
 			{/if}
 
-			<div n:class="description, detailed, $config->template['options']['elementDetailsCollapsed'] ? hidden">
+			<div n:class="description, detailed, $config->template->options->elementDetailsCollapsed ? hidden">
 				{!$property|longDescription}
 
 				{foreach $template->annotationSort($template->annotationFilter($annotations, array('var'))) as $annotation => $descriptions}
