@@ -63,6 +63,7 @@
 				<file name="Helper.php" role="php" />
 			</dir>
 			<file name="ConsoleLogger.php" role="php" />
+			<file name="ConsoleParser.php" role="php" />
 			<file name="ConsoleProgressBar.php" role="php" />
 			<file name="Environment.php" role="php">
 				<tasks:replace type="pear-config" from="@php_dir@" to="php_dir" />
@@ -77,7 +78,6 @@
 			<file name="ILogger.php" role="php" />
 			<file name="IProgressBar.php" role="php" />
 			<file name="IUpdateChecker.php" role="php" />
-			<file name="loader.php" role="php" />
 			<file name="MemoryLimitChecker.php" role="php" />
 			<file name="Template.php" role="php" />
 			<file name="Tree.php" role="php" />
@@ -175,6 +175,7 @@
 		</file>
 		<file name="apigen.php" role="script" />
 		<file name="apigen.neon.example" role="cfg" />
+		<file name="apigen.plugins.neon.example" role="cfg" />
 		<file name="CHANGELOG.md" role="doc" />
 		<file name="LICENSE.md" role="doc" />
 		<file name="README.md" role="doc" />
