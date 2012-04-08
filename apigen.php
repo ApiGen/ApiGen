@@ -14,11 +14,16 @@
 
 namespace ApiGen;
 
-use ApiGen\Config;
 use Nette\Diagnostics\Debugger;
 
-// Load ApiGen basic environment and check requirements and dependencies
-require __DIR__ . '/ApiGen/loader.php';
+// Check environment
+try {
+	require __DIR__ . '/ApiGen/Environment.php';
+	Environment::init();
+} catch (\Exception $e) {
+	fputs(STDERR, $e->getMessage() . "\n");
+	exit(min(1, $e->getCode()));
+}
 
 // Init Nette debugger
 Debugger::$strictMode = true;

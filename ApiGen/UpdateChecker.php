@@ -47,7 +47,7 @@ class UpdateChecker extends Object implements IUpdateChecker
 	public function checkUpdate()
 	{
 		$latestVersion = $this->getNewestVersion();
-		if (!empty($latestVersion) && version_compare(VERSION, $latestVersion, '<')) {
+		if (!empty($latestVersion) && version_compare(Environment::getApplicationVersion(), $latestVersion, '<')) {
 			$this->fireEvent('updateAvailable', $latestVersion);
 			return true;
 		}

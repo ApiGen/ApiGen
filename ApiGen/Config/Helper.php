@@ -37,33 +37,6 @@ class Helper extends Helpers
 	const DEFAULT_TEMPLATE_CONFIG_FILENAME = 'default/config.neon';
 
 	/**
-	 * Command line arguments.
-	 *
-	 * @var array
-	 */
-	private $cliArguments = array();
-
-	/**
-	 * Creates a helper instance.
-	 *
-	 * @param array $argv Command line arguments
-	 */
-	public function __construct(array $argv)
-	{
-		$this->cliArguments = Environment::getCliArguments($argv);
-	}
-
-	/**
-	 * Returns command line arguments.
-	 *
-	 * @return array
-	 */
-	public function getCliArguments()
-	{
-		return $this->cliArguments;
-	}
-
-	/**
 	 * Returns default configuration file path.
 	 *
 	 * @return string
@@ -80,7 +53,7 @@ class Helper extends Helpers
 	 */
 	public static function getTemplatesDir()
 	{
-		return realpath(ApiGen\ROOT_PATH . '/templates/');
+		return realpath(Environment::getRootDir() . '/templates');
 	}
 
 	/**
@@ -90,7 +63,7 @@ class Helper extends Helpers
 	 */
 	public static function getDefaultTemplateConfigPath()
 	{
-		return static::getTemplatesDir() . '/' . static::DEFAULT_TEMPLATE_CONFIG_FILENAME;
+		return static::getTemplatesDir() . DIRECTORY_SEPARATOR . static::DEFAULT_TEMPLATE_CONFIG_FILENAME;
 	}
 
 	/**

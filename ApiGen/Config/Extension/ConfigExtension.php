@@ -16,6 +16,7 @@ namespace ApiGen\Config\Extension;
 use ApiGen;
 use ApiGen\Config\Exception as ConfigException;
 use ApiGen\Config\Helper;
+use ApiGen\Environment;
 use Nette\Config\CompilerExtension;
 
 /**
@@ -109,7 +110,7 @@ final class ConfigExtension extends CompilerExtension
 		$this->arguments = $arguments;
 
 		$this->defaultConfig['colors'] = 'WIN' !== substr(PHP_OS, 0, 3);
-		$this->defaultConfig['templateConfig'] = ApiGen\ROOT_PATH . '/templates/' . Helper::DEFAULT_TEMPLATE_CONFIG_FILENAME;
+		$this->defaultConfig['templateConfig'] = Environment::getRootDir() . '/templates/' . Helper::DEFAULT_TEMPLATE_CONFIG_FILENAME;
 	}
 
 	/**
@@ -305,7 +306,7 @@ final class ConfigExtension extends CompilerExtension
 				array(
 					getcwd(),
 					!empty($cliArguments['config']) ? dirname($cliArguments['config']) : '',
-					ApiGen\ROOT_PATH . '/templates'
+					Helper::getTemplatesDir()
 				)
 			)))
 		);
@@ -313,8 +314,8 @@ final class ConfigExtension extends CompilerExtension
 		// Set overall DIC parameters
 		$config['application'] = array(
 			'application' => array(
-				'name' => 'ApiGen',
-				'version' => ApiGen\VERSION
+				'name' => Environment::getApplicationName(),
+				'version' => Environment::getApplicationVersion()
 			),
 		);
 

@@ -70,7 +70,7 @@ class Application extends Object
 		try {
 			$start = new DateTime();
 
-			$name = Environment::getApplicationName();
+			$name = Environment::getApplicationName() . ' ' . Environment::getApplicationVersion();
 			$this->logger->log("%header\n", $name, str_repeat('-', strlen($name)) . "\n");
 
 			$this->fireEvent('startup');
