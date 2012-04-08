@@ -172,10 +172,10 @@ class Application extends Object
 
 				$no++;
 			}
-		}
 
-		if (!$this->config->debug) {
-			$this->logger->log("\nEnable the debug mode (%option) to see more details.\n\n", '--debug');
+			if (!$this->config->debug) {
+				$this->logger->log("\nEnable the debug mode (%option) to see more details.\n\n", '--debug');
+			}
 		}
 
 		$this->logger->log("Found %number classes, %number constants, %number functions and other %number used PHP internal classes\n", (int) $parseInfo->classes, (int) $parseInfo->constants, (int) $parseInfo->functions, (int) $parseInfo->internalClasses);
