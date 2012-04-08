@@ -31,18 +31,19 @@ if ($configHelper->isHelpRequested()) {
 
 // Init Nette debugger
 Debugger::$strictMode = true;
-Debugger::enable(Debugger::DEVELOPMENT, false);
+Debugger::$onFatalError[] = function() {
+	echo "\nFor more information turn on the debug mode using the --debug option.\n";
+};
+Debugger::enable(Debugger::PRODUCTION, false);
 
 // Build the DIC
 $configurator = new Config\Configurator($configHelper);
 $context = $configurator->createContainer();
 
 // Update debugger configuration if needed
-if (!$context->apigen->config->debug) {
-	Debugger::enable(Debugger::PRODUCTION, true);
-	Debugger::$onFatalError[] = function() {
-		echo "\nFor more information turn on the debug mode using the --debug option.\n";
-	};
+if ($context->apigen->config->debug) {
+	Debugger::enable(Debugger::DEVELOPMENT, false);
+	Debugger::$onFatalError = array();
 }
 
 // Let's rock
