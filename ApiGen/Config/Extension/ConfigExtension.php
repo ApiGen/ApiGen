@@ -131,19 +131,8 @@ final class ConfigExtension extends CompilerExtension
 	 */
 	private function prepareConfiguration()
 	{
-		// Command line arguments
-		$cliArguments = array();
-		$originalNames = array();
-		foreach ($this->helper->getCliArguments() as $name => $value) {
-			$newName = preg_replace_callback( '~-([a-z])~', function($matches) {
-				return ucfirst($matches[1]);
-			}, $name);
-
-			$originalNames[$newName] = $name;
-			$cliArguments[$newName] = 1 === count($value) ? $value[0] : $value;
-		}
-
 		// Compatibility with ApiGen 1.0
+		$cliArguments = $this->helper->getCliArguments();
 		foreach (array('config', 'source', 'destination') as $option) {
 			if (isset($cliArguments[$option{0}]) && !isset($cliArguments[$option])) {
 				$cliArguments[$option] = $cliArguments[$option{0}];
@@ -152,8 +141,20 @@ final class ConfigExtension extends CompilerExtension
 			unset($cliArguments[$option{0}]);
 		}
 
+		// Command line options
+		$cliOptions = array();
+		$originalNames = array();
+		foreach ($cliArguments as $name => $value) {
+			$newName = preg_replace_callback('~-([a-z])~', function($matches) {
+				return ucfirst($matches[1]);
+			}, $name);
+
+			$originalNames[$newName] = $name;
+			$cliOptions[$newName] = $value;
+		}
+
 		// Check for unknown options
-		$unknownOptions = array_keys(array_diff_key($cliArguments, $this->defaultConfig));
+		$unknownOptions = array_keys(array_diff_key($cliOptions, $this->defaultConfig));
 		if (!empty($unknownOptions)) {
 			$originalOptions = array_map(function($option) {
 				return (1 === strlen($option) ? '-' : '--') . $option;
@@ -167,17 +168,17 @@ final class ConfigExtension extends CompilerExtension
 		}
 
 		// Load config file
-		if (empty($cliArguments) && $this->helper->defaultConfigExists()) {
+		if (empty($cliOptions) && $this->helper->defaultConfigExists()) {
 			// Default config file present
-			$cliArguments['config'] = $this->helper->getDefaultConfigPath();
+			$cliOptions['config'] = $this->helper->getDefaultConfigPath();
 		} else {
 			// Make the config file name absolute
-			$cliArguments['config'] = $this->helper->getAbsolutePath($cliArguments['config'], array(getcwd()));
+			$cliOptions['config'] = $this->helper->getAbsolutePath($cliOptions['config'], array(getcwd()));
 		}
-		if (!empty($cliArguments['config']) && is_file($cliArguments['config'])) {
-			$fileConfig = $this->loadFromFile($cliArguments['config']);
+		if (!empty($cliOptions['config']) && is_file($cliOptions['config'])) {
+			$fileOptions = $this->loadFromFile($cliOptions['config']);
 
-			$unknownOptions = array_keys(array_diff_key($fileConfig, $this->defaultConfig));
+			$unknownOptions = array_keys(array_diff_key($fileOptions, $this->defaultConfig));
 			if (!empty($unknownOptions)) {
 				$message = count($unknownOptions) > 1
 					? sprintf('Unknown config file options "%s"', implode('", "', $unknownOptions))
@@ -186,11 +187,11 @@ final class ConfigExtension extends CompilerExtension
 				throw new ConfigException($message);
 			}
 		} else {
-			$fileConfig = array();
+			$fileOptions = array();
 		}
 
 		// Merge configurations
-		$config = array_merge($this->defaultConfig, $fileConfig, $cliArguments);
+		$config = array_merge($this->defaultConfig, $fileOptions, $cliOptions);
 
 		// Compatibility with the old option name "undocumented"
 		if (!isset($config['report']) && isset($config['undocumented'])) {

@@ -35,32 +35,39 @@ class Environment
 	 *
 	 * @param array $argv Command line arguments
 	 * @return array
-	 * @throws \Nette\UnexpectedValueException If an unexpected option is found
+	 * @todo Throw exception if an unexpected argument is found
 	 */
 	public static function getCliArguments(array $argv)
 	{
-		$params = array();
+		$options = array();
 
-		$current = null;
-		foreach ($argv as $argument) {
+		while ($argument = current($argv)) {
 			if (preg_match('~^--([a-z][-a-z]*[a-z])(?:=(.+))?$~', $argument, $matches) || preg_match('~^-([a-z])=?(.*)~', $argument, $matches)) {
-				if (isset($matches[2])) {
-					$current = null;
-					$params[$matches[1]][] = $matches[2];
+				$name = $matches[1];
+
+				if (!empty($matches[2])) {
+					$value = $matches[2];
 				} else {
-					$current = $matches[1];
-					$params[$current][] = true;
+					$next = next($argv);
+					if (false === $next || '-' === $next{0}) {
+						prev($argv);
+						$value = '';
+					} else {
+						$value = $next;
+					}
 				}
-			} elseif (null !== $current) {
-				array_pop($params[$current]);
-				$params[$current][] = $argument;
-				$current = null;
-			} else {
-				throw new UnexpectedValueException(sprintf('Invalid option "%s" found.', $argument));
+
+				$options[$name][] = $value;
 			}
+
+			next($argv);
 		}
 
-		return $params;
+		$options = array_map(function($value) {
+			return 1 === count($value) ? $value[0] : $value;
+		}, $options);
+
+		return $options;
 	}
 
 	/**
