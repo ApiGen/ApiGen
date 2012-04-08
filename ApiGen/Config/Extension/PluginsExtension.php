@@ -13,10 +13,12 @@
 
 namespace ApiGen\Config\Extension;
 
+use Nette\Config\CompilerExtension;
+
 /**
  * ApiGen plugins DIC extension.
  */
-final class PluginsExtension extends AbstractExtension
+final class PluginsExtension extends CompilerExtension
 {
 
 }

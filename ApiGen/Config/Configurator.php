@@ -14,6 +14,7 @@
 namespace ApiGen\Config;
 
 use ApiGen\Config\Extension\ApiGenExtension;
+use ApiGen\Config\Extension\ConfigExtension;
 use ApiGen\Config\Extension\PluginsExtension;
 use Nette\Caching\Storages\MemoryStorage;
 use Nette\Config\Configurator as NetteConfigurator;
@@ -102,8 +103,9 @@ class Configurator extends NetteConfigurator
 	protected function createCompiler()
 	{
 		$compiler = new Compiler();
+		$compiler->addExtension('config', new ConfigExtension($this->helper));
+		$compiler->addExtension('apigen', new ApiGenExtension());
 		$compiler->addExtension('plugins', new PluginsExtension());
-		$compiler->addExtension('apigen', new ApiGenExtension($this->helper));
 
 		return $compiler;
 	}

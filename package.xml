@@ -56,6 +56,7 @@
 				<file name="Configurator.php" role="php" />
 				<dir name="Extension">
 					<file name="ApiGenExtension.php" role="php" />
+					<file name="ConfigExtension.php" role="php" />
 					<file name="PluginsExtension.php" role="php" />
 				</dir>
 				<file name="Helper.php" role="php" />
