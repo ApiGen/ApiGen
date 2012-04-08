@@ -44,18 +44,18 @@ interface ILogger
 	const TYPE_VALUE = '%value';
 
 	/**
-	 * Topmost header placeholder.
+	 * Header placeholder.
 	 *
 	 * @var string
 	 */
-	const TYPE_H1 = '%h1';
+	const TYPE_HEADER = '%header';
 
 	/**
-	 * Second header placeholder.
+	 * Option placeholder.
 	 *
 	 * @var string
 	 */
-	const TYPE_H2 = '%h2';
+	const TYPE_OPTION = '%option';
 
 	/**
 	 * Log a message.

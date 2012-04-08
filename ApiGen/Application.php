@@ -71,7 +71,7 @@ class Application extends Object
 			$start = new DateTime();
 
 			$name = Environment::getApplicationName();
-			$this->logger->log("%h1\n", $name, str_repeat('-', strlen($name)) . "\n");
+			$this->logger->log("%header\n", $name, str_repeat('-', strlen($name)) . "\n");
 
 			$this->fireEvent('startup');
 
@@ -175,7 +175,7 @@ class Application extends Object
 		}
 
 		if (!$this->config->debug) {
-			$this->logger->log("\nEnable the debug mode (%h2) to see more details.\n\n", '--debug');
+			$this->logger->log("\nEnable the debug mode (%option) to see more details.\n\n", '--debug');
 		}
 
 		$this->logger->log("Found %number classes, %number constants, %number functions and other %number used PHP internal classes\n", (int) $parseInfo->classes, (int) $parseInfo->constants, (int) $parseInfo->functions, (int) $parseInfo->internalClasses);

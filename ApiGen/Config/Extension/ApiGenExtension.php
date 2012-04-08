@@ -104,7 +104,7 @@ final class ApiGenExtension extends CompilerExtension
 		if ($config['updateCheck']) {
 			$initialize->addBody('$this->apigen->eventDispatcher->registerListener("apigen.application", "startup", callback($this->apigen->updateChecker, "checkUpdate"));');
 			$initialize->addBody('$that = $this; $this->apigen->eventDispatcher->registerListener("apigen.updateChecker", "updateAvailable", callback(function(ApiGen\Event $event) use ($that) {
-				$that->logger->log("New version %h1 available\n\n", $event->getPayload());
+				$that->logger->log("New version %header available\n\n", $event->getPayload());
 			}));');
 		}
 

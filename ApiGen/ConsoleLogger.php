@@ -45,9 +45,9 @@ class ConsoleLogger extends Object implements ILogger
 	 * @var array
 	 */
 	private $placeholders = array(
-		self::TYPE_H1 => "\x1b[1;34m",
+		self::TYPE_HEADER => "\x1b[1;34m",
 		self::TYPE_NUMBER => "\x1b[1;34m",
-		self::TYPE_H2 => "\x1b[0;36m",
+		self::TYPE_OPTION => "\x1b[0;36m",
 		self::TYPE_VALUE => "\x1b[0;32m",
 		self::TYPE_ERROR => "\x1b[0;31m"
 	);
