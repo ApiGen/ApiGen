@@ -22,7 +22,6 @@ class TexyMarkup implements IMarkup
 
 	public function __construct(Config\Configuration $allowedHtml, ISourceCodeHighlighter $highlighter)
 	{
-		// @todo DI
 		$this->texy = new Texy();
 		$this->texy->allowedTags = array_flip($allowedHtml->toArray());
 		$this->texy->allowed['list/definition'] = false;

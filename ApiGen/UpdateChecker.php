@@ -33,7 +33,7 @@ class UpdateChecker extends Object implements IUpdateChecker
 	 *
 	 * @return string
 	 */
-	public function getNewestVersion()
+	public function getLatestVersion()
 	{
 		$latestVersion = @file_get_contents('http://pear.apigen.org/rest/r/apigen/latest.txt');
 		return false === $latestVersion ? null : trim($latestVersion);
@@ -46,7 +46,7 @@ class UpdateChecker extends Object implements IUpdateChecker
 	 */
 	public function checkUpdate()
 	{
-		$latestVersion = $this->getNewestVersion();
+		$latestVersion = $this->getLatestVersion();
 		if (!empty($latestVersion) && version_compare(Environment::getApplicationVersion(), $latestVersion, '<')) {
 			$this->fireEvent('updateAvailable', $latestVersion);
 			return true;

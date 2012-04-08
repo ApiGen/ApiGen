@@ -21,7 +21,6 @@ class FshlSourceCodeHighlighter implements ISourceCodeHighlighter
 
 	public function __construct()
 	{
-		// @todo DI
 		$this->highlighter = new FSHL\Highlighter(new FSHL\Output\Html());
 		$this->highlighter->setLexer(new FSHL\Lexer\Php());
 	}

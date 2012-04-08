@@ -19,11 +19,11 @@ namespace ApiGen;
 interface IUpdateChecker
 {
 	/**
-	 * Returns the newest version.
+	 * Returns the latest version.
 	 *
 	 * @return string
 	 */
-	public function getNewestVersion();
+	public function getLatestVersion();
 
 	/**
 	 * Checks if there is newer version. If so, triggers the "updateAvailable" event.

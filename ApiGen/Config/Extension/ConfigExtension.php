@@ -292,6 +292,11 @@ final class ConfigExtension extends CompilerExtension
 			$config['progressbar'] = false;
 		}
 
+		// No update check in debug mode
+		if ($config['debug']) {
+			$config['updateCheck'] = false;
+		}
+
 		// Help
 		if (empty($cliOptions) && !Helper::defaultConfigExists()) {
 			$config['help'] = true;
