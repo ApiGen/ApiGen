@@ -35,12 +35,12 @@ try {
 
 	if (Environment::isPearPackage()) {
 		// PEAR package
-		@include('Nette/loader.php');
-		@include('Texy/texy.php');
+		@include 'Nette/loader.php';
+		@include 'Texy/texy.php';
 	} else {
 		// Standalone package
 		@include ROOT_PATH . '/libs/Nette/Nette/loader.php';
-		@include $file = ROOT_PATH . '/libs/Texy/texy/texy.php';
+		@include ROOT_PATH . '/libs/Texy/texy/texy.php';
 
 		set_include_path(
 			ROOT_PATH . '/libs/FSHL' . PATH_SEPARATOR .
