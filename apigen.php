@@ -20,21 +20,15 @@ use Nette\Diagnostics\Debugger;
 // Load ApiGen basic environment and check requirements and dependencies
 require __DIR__ . '/ApiGen/loader.php';
 
-// Prepare basic configuration
-$configHelper = new Config\Helper(array_slice($argv, 1));
-
-// Print help if requested
-if ($configHelper->isHelpRequested()) {
-	$configHelper->printHelp();
-	exit;
-}
-
 // Init Nette debugger
 Debugger::$strictMode = true;
 Debugger::$onFatalError[] = function() {
 	echo "\nFor more information turn on the debug mode using the --debug option.\n";
 };
 Debugger::enable(Debugger::PRODUCTION, false);
+
+// Prepare basic configuration
+$configHelper = new Config\Helper(array_slice($argv, 1));
 
 // Build the DIC
 $configurator = new Config\Configurator($configHelper);

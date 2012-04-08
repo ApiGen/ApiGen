@@ -63,7 +63,8 @@ final class ConfigExtension extends CompilerExtension
 		'progressbar' => true,
 		'colors' => true,
 		'updateCheck' => true,
-		'debug' => false
+		'debug' => false,
+		'help' => false
 	);
 
 	/**
@@ -131,9 +132,9 @@ final class ConfigExtension extends CompilerExtension
 	 */
 	private function prepareConfiguration()
 	{
-		// Compatibility with ApiGen 1.0
+		// Short command line options
 		$cliArguments = $this->helper->getCliArguments();
-		foreach (array('config', 'source', 'destination') as $option) {
+		foreach (array('config', 'source', 'destination', 'help') as $option) {
 			if (isset($cliArguments[$option{0}]) && !isset($cliArguments[$option])) {
 				$cliArguments[$option] = $cliArguments[$option{0}];
 			}
@@ -171,7 +172,7 @@ final class ConfigExtension extends CompilerExtension
 		if (empty($cliOptions) && $this->helper->defaultConfigExists()) {
 			// Default config file present
 			$cliOptions['config'] = $this->helper->getDefaultConfigPath();
-		} else {
+		} elseif (!empty($cliOptions['config'])) {
 			// Make the config file name absolute
 			$cliOptions['config'] = $this->helper->getAbsolutePath($cliOptions['config'], array(getcwd()));
 		}
@@ -281,6 +282,11 @@ final class ConfigExtension extends CompilerExtension
 		// No progressbar in quiet mode
 		if ($config['quiet']) {
 			$config['progressbar'] = false;
+		}
+
+		// Help
+		if (empty($cliOptions) && !$this->helper->defaultConfigExists()) {
+			$config['help'] = true;
 		}
 
 		// Default template config
