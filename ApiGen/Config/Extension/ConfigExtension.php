@@ -16,7 +16,6 @@ namespace ApiGen\Config\Extension;
 use ApiGen;
 use ApiGen\Config\Exception as ConfigException;
 use ApiGen\Config\Helper;
-use ApiGen\Environment;
 use Nette\Config\CompilerExtension;
 
 /**
@@ -94,20 +93,20 @@ final class ConfigExtension extends CompilerExtension
 	);
 
 	/**
-	 * Configuration helper.
+	 * CLI arguments.
 	 *
-	 * @var \ApiGen\Config\Helper
+	 * @var array
 	 */
-	private $helper;
+	private $arguments;
 
 	/**
 	 * Creates an instance of the DIC extension.
 	 *
-	 * @param array \ApiGen\Config\Helper $helper Configuration helper
+	 * @param array $arguments CLI arguments
 	 */
-	public function __construct(Helper $helper)
+	public function __construct(array $arguments)
 	{
-		$this->helper = $helper;
+		$this->arguments = $arguments;
 
 		$this->defaultConfig['colors'] = 'WIN' !== substr(PHP_OS, 0, 3);
 		$this->defaultConfig['templateConfig'] = ApiGen\ROOT_PATH . '/templates/' . Helper::DEFAULT_TEMPLATE_CONFIG_FILENAME;
@@ -133,7 +132,7 @@ final class ConfigExtension extends CompilerExtension
 	private function prepareConfiguration()
 	{
 		// Short command line options
-		$cliArguments = $this->helper->getCliArguments();
+		$cliArguments = $this->arguments;
 		foreach (array('config', 'source', 'destination', 'help') as $option) {
 			if (isset($cliArguments[$option{0}]) && !isset($cliArguments[$option])) {
 				$cliArguments[$option] = $cliArguments[$option{0}];
@@ -169,12 +168,12 @@ final class ConfigExtension extends CompilerExtension
 		}
 
 		// Load config file
-		if (empty($cliOptions) && $this->helper->defaultConfigExists()) {
+		if (empty($cliOptions) && Helper::defaultConfigExists()) {
 			// Default config file present
-			$cliOptions['config'] = $this->helper->getDefaultConfigPath();
+			$cliOptions['config'] = Helper::getDefaultConfigPath();
 		} elseif (!empty($cliOptions['config'])) {
 			// Make the config file name absolute
-			$cliOptions['config'] = $this->helper->getAbsolutePath($cliOptions['config'], array(getcwd()));
+			$cliOptions['config'] = Helper::getAbsolutePath($cliOptions['config'], array(getcwd()));
 		}
 		if (!empty($cliOptions['config']) && is_file($cliOptions['config'])) {
 			$fileOptions = $this->loadFromFile($cliOptions['config']);
@@ -285,7 +284,7 @@ final class ConfigExtension extends CompilerExtension
 		}
 
 		// Help
-		if (empty($cliOptions) && !$this->helper->defaultConfigExists()) {
+		if (empty($cliOptions) && !Helper::defaultConfigExists()) {
 			$config['help'] = true;
 		}
 
@@ -301,7 +300,7 @@ final class ConfigExtension extends CompilerExtension
 		// Merge template configuration
 		$config = array_merge_recursive(
 			$config,
-			array('template' => $this->loadFromFile($this->helper->getAbsolutePath(
+			array('template' => $this->loadFromFile(Helper::getAbsolutePath(
 				$config['templateConfig'],
 				array(
 					getcwd(),

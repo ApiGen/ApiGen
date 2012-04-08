@@ -27,11 +27,12 @@ Debugger::$onFatalError[] = function() {
 };
 Debugger::enable(Debugger::PRODUCTION, false);
 
-// Prepare basic configuration
-$configHelper = new Config\Helper(array_slice($argv, 1));
+// Parse console input
+$parser = new ConsoleParser();
+$arguments = $parser->parseArguments(array_slice($argv, 1));
 
 // Build the DIC
-$configurator = new Config\Configurator($configHelper);
+$configurator = new Config\Configurator($arguments);
 $context = $configurator->createContainer();
 
 // Update debugger configuration if needed

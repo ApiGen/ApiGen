@@ -44,18 +44,16 @@ class Configurator extends NetteConfigurator
 	private $loader;
 
 	/**
-	 * Configuration helper.
+	 * CLI arguments.
 	 *
-	 * @var \ApiGen\Config\Helper
+	 * @var array
 	 */
-	private $helper;
+	private $arguments;
 
 	/**
 	 * Creates the configurator instance and prepares configuration cache.
-	 *
-	 * @param array \ApiGen\Config\Helper $helper Configuration helper
 	 */
-	public function __construct(Helper $helper)
+	public function __construct(array $arguments)
 	{
 		parent::__construct();
 
@@ -65,7 +63,7 @@ class Configurator extends NetteConfigurator
 		$this->loader->setCacheStorage($this->cache);
 		$this->loader->autoRebuild = false;
 
-		$this->helper = $helper;
+		$this->arguments = $arguments;
 	}
 
 	/**
@@ -103,7 +101,7 @@ class Configurator extends NetteConfigurator
 	protected function createCompiler()
 	{
 		$compiler = new Compiler();
-		$compiler->addExtension('config', new ConfigExtension($this->helper));
+		$compiler->addExtension('config', new ConfigExtension($this->arguments));
 		$compiler->addExtension('apigen', new ApiGenExtension());
 		$compiler->addExtension('plugins', new PluginsExtension());
 

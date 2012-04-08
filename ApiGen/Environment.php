@@ -13,8 +13,6 @@
 
 namespace ApiGen;
 
-use Nette\UnexpectedValueException;
-
 /**
  * ApiGen environment helpers.
  */
@@ -28,46 +26,6 @@ class Environment
 	public static function isPearPackage()
 	{
 		return false === strpos('@php_dir@', '@php_dir');
-	}
-
-	/**
-	 * Processes and returns command line arguments.
-	 *
-	 * @param array $argv Command line arguments
-	 * @return array
-	 * @todo Throw exception if an unexpected argument is found
-	 */
-	public static function getCliArguments(array $argv)
-	{
-		$options = array();
-
-		while ($argument = current($argv)) {
-			if (preg_match('~^--([a-z][-a-z]*[a-z])(?:=(.+))?$~', $argument, $matches) || preg_match('~^-([a-z])=?(.*)~', $argument, $matches)) {
-				$name = $matches[1];
-
-				if (!empty($matches[2])) {
-					$value = $matches[2];
-				} else {
-					$next = next($argv);
-					if (false === $next || '-' === $next{0}) {
-						prev($argv);
-						$value = '';
-					} else {
-						$value = $next;
-					}
-				}
-
-				$options[$name][] = $value;
-			}
-
-			next($argv);
-		}
-
-		$options = array_map(function($value) {
-			return 1 === count($value) ? $value[0] : $value;
-		}, $options);
-
-		return $options;
 	}
 
 	/**
