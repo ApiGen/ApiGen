@@ -49,7 +49,7 @@ class ConsoleLogger extends Object implements ILogger
 		self::TYPE_NUMBER => "\x1b[1;34m",
 		self::TYPE_OPTION => "\x1b[0;36m",
 		self::TYPE_VALUE => "\x1b[0;32m",
-		self::TYPE_ERROR => "\x1b[0;31m"
+		self::TYPE_ERROR => "\x1b[0;37;41m"
 	);
 
 	/**
