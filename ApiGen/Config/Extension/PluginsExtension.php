@@ -14,11 +14,26 @@
 namespace ApiGen\Config\Extension;
 
 use Nette\Config\CompilerExtension;
+use Nette\Utils\PhpGenerator\ClassType;
 
 /**
  * ApiGen plugins DIC extension.
  */
 final class PluginsExtension extends CompilerExtension
 {
+	/**
+	 * Adjusts the generated DI container class.
+	 *
+	 * @param \Nette\Utils\PhpGenerator\ClassType $class DIC class
+	 */
+	public function afterCompile(ClassType $class)
+	{
+		/**
+		 * @var \Nette\Utils\PhpGenerator\Method
+		 */
+		$initialize = $class->methods['initialize'];
 
+		// Make the event dispatcher read-only
+		$initialize->addBody('$this->apigen->eventDispatcher->freeze();');
+	}
 }

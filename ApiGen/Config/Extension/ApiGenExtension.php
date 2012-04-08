@@ -125,9 +125,6 @@ final class ApiGenExtension extends CompilerExtension
 
 		$initialize->addBody('$this->apigen->eventDispatcher->registerListener("generator", "parseProgress", callback($this->apigen->memoryLimitChecker, "check"));');
 		$initialize->addBody('$this->apigen->eventDispatcher->registerListener("generator", "generateProgress", callback($this->apigen->memoryLimitChecker, "check"));');
-
-		// Make the event dispatcher read-only
-		$initialize->addBody('$this->apigen->eventDispatcher->freeze();');
 	}
 }
 
