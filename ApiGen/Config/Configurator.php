@@ -103,7 +103,7 @@ class Configurator extends NetteConfigurator
 		$compiler = new Compiler();
 		$compiler->addExtension('config', new ConfigExtension($this->arguments));
 		$compiler->addExtension('apigen', new ApiGenExtension());
-		$compiler->addExtension('plugins', new PluginsExtension());
+		$compiler->addExtension('plugin', new PluginsExtension($this->createRobotLoader()));
 
 		return $compiler;
 	}
