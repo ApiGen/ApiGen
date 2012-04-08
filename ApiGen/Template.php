@@ -13,7 +13,7 @@
 
 namespace ApiGen;
 
-use Nette, FSHL;
+use Nette;
 
 /**
  * Customized ApiGen template class.
@@ -47,8 +47,9 @@ class Template extends Nette\Templating\FileTemplate
 	 * Creates template.
 	 *
 	 * @param \ApiGen\Generator $generator
+	 * @param \ApiGen\ISourceCodeHighlighter $highlighter
 	 */
-	public function __construct(Generator $generator)
+	public function __construct(Generator $generator, ISourceCodeHighlighter $highlighter)
 	{
 		$this->generator = $generator;
 		$this->config = $generator->getConfig();
@@ -57,10 +58,6 @@ class Template extends Nette\Templating\FileTemplate
 
 		// Output in HTML5
 		Nette\Utils\Html::$xhtml = false;
-
-		// FSHL
-		$fshl = new FSHL\Highlighter(new FSHL\Output\Html());
-		$fshl->setLexer(new FSHL\Lexer\Php());
 
 		// Texy
 		$this->texy = new \Texy();
@@ -75,14 +72,14 @@ class Template extends Nette\Templating\FileTemplate
 			$text = preg_replace('~<code>(.+?)</code>~', '#code#\\1#/code#', $text);
 		});
 		$this->texy->registerLinePattern(
-			function($parser, $matches, $name) use ($fshl) {
-				return \TexyHtml::el('code', $fshl->highlight($matches[1]));
+			function($parser, $matches, $name) use ($highlighter) {
+				return \TexyHtml::el('code', $highlighter->highlight($matches[1]));
 			},
 			'~#code#(.+?)#/code#~',
 			'codeInlineSyntax'
 		);
 		$this->texy->registerBlockPattern(
-			function($parser, $matches, $name) use ($fshl) {
+			function($parser, $matches, $name) use ($highlighter) {
 				if ('code' === $matches[1]) {
 					$lines = array_filter(explode("\n", $matches[2]));
 					if (!empty($lines)) {
@@ -110,7 +107,7 @@ class Template extends Nette\Templating\FileTemplate
 						}
 					}
 
-					$content = $fshl->highlight($matches[2]);
+					$content = $highlighter->highlight($matches[2]);
 				} else {
 					$content = htmlspecialchars($matches[2]);
 				}
@@ -131,8 +128,8 @@ class Template extends Nette\Templating\FileTemplate
 		$this->registerHelperLoader('Nette\Templating\Helpers::loader');
 
 		// PHP source highlight
-		$this->registerHelper('highlightPHP', function($source, $context) use ($that, $fshl) {
-			return $that->resolveLink($source, $context) ?: $fshl->highlight((string) $source);
+		$this->registerHelper('highlightPHP', function($source, $context) use ($that, $highlighter) {
+			return $that->resolveLink($source, $context) ?: $highlighter->highlight((string) $source);
 		});
 		$this->registerHelper('highlightValue', function($definition, $context) use ($that) {
 			return $that->highlightPHP(preg_replace('~^(?:[ ]{4}|\t)~m', '', $definition), $context);

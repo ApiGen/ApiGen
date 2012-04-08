@@ -73,6 +73,10 @@ final class ApiGenExtension extends CompilerExtension
 		$container->addDefinition($this->prefix('charsetConvertor'))
 			->setClass('ApiGen\\CharsetConvertor', array($config['charset']));
 
+		// Source code highlighter
+		$container->addDefinition('sourceCodeHighlighter')
+			->setClass('ApiGen\\FshlSourceCodeHighlighter');
+
 		// Generator
 		$container->addDefinition('generator')
 			->setClass('ApiGen\\Generator')

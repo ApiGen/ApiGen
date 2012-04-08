@@ -14,7 +14,6 @@
 namespace ApiGen;
 
 use ApiGen\Config\Configuration;
-use FSHL;
 use InvalidArgumentException;
 use Nette;
 use RuntimeException;
@@ -52,6 +51,13 @@ class Generator extends Object implements IGenerator
 	 * @var \ApiGen\CharsetConvertor
 	 */
 	private $charsetConvertor;
+
+	/**
+	 * Source code highlighter.
+	 *
+	 * @var \ApiGen\ISourceCodeHighlighter
+	 */
+	private $highlighter;
 
 	/**
 	 * List of parsed classes.
@@ -141,12 +147,14 @@ class Generator extends Object implements IGenerator
 	 * Sets dependencies.
 	 *
 	 * @param \ApiGen\Config\Configuration $config
-	 * @param \ApiGen\CharsetConvertor
+	 * @param \ApiGen\CharsetConvertor $charsetConvertor
+	 * @param \ApiGen\ISourceCodeHighlighter $highlighter
 	 */
-	public function __construct(Configuration $config, CharsetConvertor $charsetConvertor)
+	public function __construct(Configuration $config, CharsetConvertor $charsetConvertor, ISourceCodeHighlighter $highlighter)
 	{
 		$this->config = (object) $config->toArray(); // @todo Refactor configuration usage
 		$this->charsetConvertor = $charsetConvertor;
+		$this->highlighter = $highlighter;
 		$this->parsedClasses = new \ArrayObject();
 		$this->parsedConstants = new \ArrayObject();
 		$this->parsedFunctions = new \ArrayObject();
@@ -391,7 +399,7 @@ class Generator extends Object implements IGenerator
 		$tmp = $this->config->destination . DIRECTORY_SEPARATOR . 'tmp';
 		$this->deleteDir($tmp);
 		@mkdir($tmp, 0755, true);
-		$template = new Template($this);
+		$template = new Template($this, $this->highlighter);
 		$template->setCacheStorage(new Nette\Caching\Storages\PhpFileStorage($tmp));
 		$template->generator = self::NAME;
 		$template->version = self::VERSION;
@@ -1162,9 +1170,6 @@ class Generator extends Object implements IGenerator
 		}
 		if ($this->config->sourceCode) {
 			$this->prepareTemplate('source');
-
-			$fshl = new FSHL\Highlighter(new FSHL\Output\Html(), FSHL\Highlighter::OPTION_TAB_INDENT | FSHL\Highlighter::OPTION_LINE_COUNTER);
-			$fshl->setLexer(new FSHL\Lexer\Php());
 		}
 
 		// Add @usedby annotation
@@ -1275,7 +1280,7 @@ class Generator extends Object implements IGenerator
 				// Generate source codes
 				if ($this->config->sourceCode && $element->isTokenized()) {
 					$template->fileName = $this->getRelativePath($element->getFileName());
-					$template->source = $fshl->highlight($this->charsetConvertor->convertFile($element->getFileName()));
+					$template->source = $this->highlighter->highlight($this->charsetConvertor->convertFile($element->getFileName()), true);
 					$template
 						->setFile($this->getTemplatePath('source'))
 						->save($this->config->destination . DIRECTORY_SEPARATOR . $template->getSourceUrl($element, false));
