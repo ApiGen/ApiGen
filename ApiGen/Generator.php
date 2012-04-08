@@ -47,6 +47,13 @@ class Generator extends Object implements IGenerator
 	private $config;
 
 	/**
+	 * Charset convertor.
+	 *
+	 * @var \ApiGen\CharsetConvertor
+	 */
+	private $charsetConvertor;
+
+	/**
 	 * List of parsed classes.
 	 *
 	 * @var \ArrayObject
@@ -131,20 +138,15 @@ class Generator extends Object implements IGenerator
 	private $symlinks = array();
 
 	/**
-	 * List of detected character sets for parsed files.
-	 *
-	 * @var array
-	 */
-	private $charsets = array();
-
-	/**
 	 * Sets dependencies.
 	 *
 	 * @param \ApiGen\Config\Configuration $config
+	 * @param \ApiGen\CharsetConvertor
 	 */
-	public function __construct(Configuration $config)
+	public function __construct(Configuration $config, CharsetConvertor $charsetConvertor)
 	{
 		$this->config = (object) $config->toArray(); // @todo Refactor configuration usage
+		$this->charsetConvertor = $charsetConvertor;
 		$this->parsedClasses = new \ArrayObject();
 		$this->parsedConstants = new \ArrayObject();
 		$this->parsedFunctions = new \ArrayObject();
@@ -218,14 +220,11 @@ class Generator extends Object implements IGenerator
 
 		$errors = array();
 
-		foreach ($files as $fileName => $size) {
-			$content = file_get_contents($fileName);
-			$charset = $this->detectCharset($content);
-			$this->charsets[$fileName] = $charset;
-			$content = $this->toUtf($content, $charset);
+		foreach ($files as $filePath => $size) {
+			$content = $this->charsetConvertor->convertFile($filePath);
 
 			try {
-				$broker->processString($content, $fileName);
+				$broker->processString($content, $filePath);
 			} catch (\Exception $e) {
 				$errors[] = $e;
 			}
@@ -1276,7 +1275,7 @@ class Generator extends Object implements IGenerator
 				// Generate source codes
 				if ($this->config->sourceCode && $element->isTokenized()) {
 					$template->fileName = $this->getRelativePath($element->getFileName());
-					$template->source = $fshl->highlight($this->toUtf(file_get_contents($element->getFileName()), $this->charsets[$element->getFileName()]));
+					$template->source = $fshl->highlight($this->charsetConvertor->convertFile($element->getFileName()));
 					$template
 						->setFile($this->getTemplatePath('source'))
 						->save($this->config->destination . DIRECTORY_SEPARATOR . $template->getSourceUrl($element, false));
@@ -1537,67 +1536,6 @@ class Generator extends Object implements IGenerator
 		$path = str_replace(array('/', '\\'), DIRECTORY_SEPARATOR, $path);
 		$path = str_replace('phar:\\\\', 'phar://', $path);
 		return $path;
-	}
-
-	/**
-	 * Detects character set for the given text.
-	 *
-	 * @param string $text Text
-	 * @return string
-	 */
-	private function detectCharset($text)
-	{
-		// One character set
-		if (1 === count($this->config->charset) && 'AUTO' !== $this->config->charset[0]) {
-			return $this->config->charset[0];
-		}
-
-		static $charsets = array();
-		if (empty($charsets)) {
-			if (1 === count($this->config->charset) && 'AUTO' === $this->config->charset[0]) {
-				// Autodetection
-				$charsets = array(
-					'Windows-1251', 'Windows-1252', 'ISO-8859-2', 'ISO-8859-1', 'ISO-8859-3', 'ISO-8859-4', 'ISO-8859-5', 'ISO-8859-6',
-					'ISO-8859-7', 'ISO-8859-8', 'ISO-8859-9', 'ISO-8859-10', 'ISO-8859-13', 'ISO-8859-14', 'ISO-8859-15'
-				);
-			} else {
-				// More character sets
-				$charsets = $this->config->charset;
-				if (false !== ($key = array_search('WINDOWS-1250', $charsets))) {
-					// WINDOWS-1250 is not supported
-					$charsets[$key] = 'ISO-8859-2';
-				}
-			}
-			// Only supported character sets
-			$charsets = array_intersect($charsets, mb_list_encodings());
-
-			// UTF-8 have to be first
-			array_unshift($charsets, 'UTF-8');
-		}
-
-		$charset = mb_detect_encoding($text, $charsets);
-		// The previous function can not handle WINDOWS-1250 and returns ISO-8859-2 instead
-		if ('ISO-8859-2' === $charset && preg_match('~[\x7F-\x9F\xBC]~', $text)) {
-			$charset = 'WINDOWS-1250';
-		}
-
-		return $charset;
-	}
-
-	/**
-	 * Converts text from given character set to UTF-8.
-	 *
-	 * @param string $text Text
-	 * @param string $charset Character set
-	 * @return string
-	 */
-	private function toUtf($text, $charset)
-	{
-		if ('UTF-8' === $charset) {
-			return $text;
-		}
-
-		return @iconv($charset, 'UTF-8//TRANSLIT//IGNORE', $text);
 	}
 
 	/**

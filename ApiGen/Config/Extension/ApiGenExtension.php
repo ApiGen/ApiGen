@@ -69,6 +69,10 @@ final class ApiGenExtension extends CompilerExtension
 			->setClass('ApiGen\\ErrorHandler')
 			->addSetup('setEventDispatcher');
 
+		// Charset convertor
+		$container->addDefinition($this->prefix('charsetConvertor'))
+			->setClass('ApiGen\\CharsetConvertor', array($config['charset']));
+
 		// Generator
 		$container->addDefinition('generator')
 			->setClass('ApiGen\\Generator')
