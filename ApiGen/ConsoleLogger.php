@@ -121,7 +121,7 @@ class ConsoleLogger extends Object implements ILogger
 	 */
 	public function logException(Exception $e)
 	{
-		if ($e instanceof ConfigException) {
+		if ($e instanceof Config\Exception) {
 			$this->log("\n", self::TYPE_ERROR, $e->getMessage(), "\n\n");
 		} else {
 			if ($this->debug) {

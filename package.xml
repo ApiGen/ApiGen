@@ -54,6 +54,7 @@
 			<dir name="Config">
 				<file name="Configuration.php" role="php" />
 				<file name="Configurator.php" role="php" />
+				<file name="Exception.php" role="php" />
 				<dir name="Extension">
 					<file name="ApiGenExtension.php" role="php" />
 					<file name="ConfigExtension.php" role="php" />
@@ -61,7 +62,6 @@
 				</dir>
 				<file name="Helper.php" role="php" />
 			</dir>
-			<file name="ConfigException.php" role="php" />
 			<file name="ConsoleLogger.php" role="php" />
 			<file name="ConsoleProgressBar.php" role="php" />
 			<file name="Environment.php" role="php">

@@ -14,8 +14,8 @@
 namespace ApiGen\Config\Extension;
 
 use ApiGen;
+use ApiGen\Config\Exception as ConfigException;
 use ApiGen\Config\Helper;
-use ApiGen\ConfigException;
 use ApiGen\Environment;
 use Nette\Config\CompilerExtension;
 
@@ -127,7 +127,7 @@ final class ConfigExtension extends CompilerExtension
 	 * Prepares ApiGen configuration.
 	 *
 	 * @return array
-	 * @throws \ApiGen\ConfigException If there is an error in the configuration
+	 * @throws \ApiGen\Config\Exception If there is an error in the configuration
 	 */
 	private function prepareConfiguration()
 	{
