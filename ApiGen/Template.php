@@ -37,11 +37,11 @@ class Template extends Nette\Templating\FileTemplate
 	private $config;
 
 	/**
-	 * Texy.
+	 * Markup.
 	 *
-	 * @var Texy
+	 * @var \ApiGen\IMarkup
 	 */
-	private $texy;
+	private $markup;
 
 	/**
 	 * Creates template.
@@ -53,71 +53,13 @@ class Template extends Nette\Templating\FileTemplate
 	{
 		$this->generator = $generator;
 		$this->config = $generator->getConfig();
+		// @todo DI
+		$this->markup = new TexyMarkup($this->config->allowedHtml, $highlighter);
 
 		$that = $this;
 
 		// Output in HTML5
 		Nette\Utils\Html::$xhtml = false;
-
-		// Texy
-		$this->texy = new \Texy();
-		$this->texy->allowedTags = array_flip($this->config->allowedHtml);
-		$this->texy->allowed['list/definition'] = false;
-		$this->texy->allowed['phrase/em-alt'] = false;
-		$this->texy->allowed['longwords'] = false;
-		$this->texy->allowed['typography'] = false;
-		$this->texy->linkModule->shorten = false;
-		// Highlighting <code>, <pre>
-		$this->texy->addHandler('beforeParse', function($texy, &$text, $singleLine) {
-			$text = preg_replace('~<code>(.+?)</code>~', '#code#\\1#/code#', $text);
-		});
-		$this->texy->registerLinePattern(
-			function($parser, $matches, $name) use ($highlighter) {
-				return \TexyHtml::el('code', $highlighter->highlight($matches[1]));
-			},
-			'~#code#(.+?)#/code#~',
-			'codeInlineSyntax'
-		);
-		$this->texy->registerBlockPattern(
-			function($parser, $matches, $name) use ($highlighter) {
-				if ('code' === $matches[1]) {
-					$lines = array_filter(explode("\n", $matches[2]));
-					if (!empty($lines)) {
-						$firstLine = array_shift($lines);
-
-						$indent = '';
-						$li = 0;
-
-						while (isset($firstLine[$li]) && preg_match('~\s~', $firstLine[$li])) {
-							foreach ($lines as $line) {
-								if (!isset($line[$li]) || $firstLine[$li] !== $line[$li]) {
-									break 2;
-								}
-							}
-
-							$indent .= $firstLine[$li++];
-						}
-
-						if (!empty($indent)) {
-							$matches[2] = str_replace(
-								"\n" . $indent,
-								"\n",
-								0 === strpos($matches[2], $indent) ? substr($matches[2], $li) : $matches[2]
-							);
-						}
-					}
-
-					$content = $highlighter->highlight($matches[2]);
-				} else {
-					$content = htmlspecialchars($matches[2]);
-				}
-
-				$content = $parser->getTexy()->protect($content, \Texy::CONTENT_BLOCK);
-				return \TexyHtml::el('pre', $content);
-			},
-			'~<(code|pre)>(.+?)</\1>~s',
-			'codeBlockSyntax'
-		);
 
 		$latte = new Nette\Latte\Engine();
 		$macroSet = new Nette\Latte\Macros\MacroSet($latte->compiler);
@@ -730,7 +672,20 @@ class Template extends Nette\Templating\FileTemplate
 	 */
 	public function doc($text, Reflection\ReflectionElement $context, $block = false)
 	{
-		return $this->resolveLinks($this->texy->process($this->resolveInternal($text), !$block), $context);
+		// Resolve @internal
+		$text = $this->resolveInternal($text);
+
+		// Process markup
+		if ($block) {
+			$text = $this->markup->block($text);
+		} else {
+			$text = $this->markup->line($text);
+		}
+
+		// Resolve @link and @see
+		$text = $this->resolveLinks($text, $context);
+
+		return $text;
 	}
 
 	/**
