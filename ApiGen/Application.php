@@ -270,6 +270,7 @@ Options:
 	--download         <yes|no>    Add a link to download documentation as a ZIP archive, default "no"
 	--report           <file>      Save a checkstyle report of poorly documented elements into a file
 	--wipeout          <yes|no>    Wipe out the destination directory first, default "yes"
+	--plugin-config    <file>      Plugin config file (can be used multiple times)
 	--quiet            <yes|no>    Don't display scaning and generating messages, default "no"
 	--progressbar      <yes|no>    Display progressbars, default "yes"
 	--colors           <yes|no>    Use colors, default "no" on Windows, "yes" on other systems

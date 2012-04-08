@@ -1,0 +1,20 @@
+# To prevent conflicts between internal services and user plusings, you should
+# always prefix your plugin name with "plugin.". Use bare service names only when
+# you really want to override an internal service with your own one.
+plugin.name:
+
+	# ApiGen will put this path into its plugin autoloading mechanism. Your plugin
+	# does not have to follow any classname -> filename guidelines to be accessible.
+	# The path can be relative to the config file directory.
+	location: /directory/with/the/plugin/source/files
+
+	# The main class of the plugin that will be called by ApiGen.
+	# If the class has some dependencies (configuration, ...), they have to be defined in
+	# its constructor. Such dependencies will be autowired.
+	class: Namespace\ClassName
+
+	# You can set hooks to various events. You have to define a callback method placed
+	# in the main class that will be called when the event occurs. You also have to define
+	# the event origin service name and the event name in the scope of this service.
+	events:
+		- methodName@originName::eventName

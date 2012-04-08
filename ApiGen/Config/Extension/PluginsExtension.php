@@ -22,6 +22,13 @@ use Nette\Utils\PhpGenerator\ClassType;
 final class PluginsExtension extends CompilerExtension
 {
 	/**
+	 * Event listener definition format.
+	 *
+	 * @var string
+	 */
+	const EVENT_LISTENER_FORMAT = '~^([a-z][a-z0-9_]+)@(.*?)::([a-z0-9]+)$~i';
+
+	/**
 	 * Adjusts the generated DI container class.
 	 *
 	 * @param \Nette\Utils\PhpGenerator\ClassType $class DIC class

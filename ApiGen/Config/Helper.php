@@ -83,16 +83,40 @@ class Helper extends Helpers
 	 * @param array $baseDirectories List of base directories
 	 * @return string|null
 	 */
-	public static function getAbsolutePath($relativePath, array $baseDirectories)
+	public static function getAbsoluteFilePath($relativePath, array $baseDirectories)
 	{
 		if (preg_match('~/|[a-z]:~Ai', $relativePath)) {
 			// Absolute path already
-			return $relativePath;
+			return is_file($relativePath) ? $relativePath : null;
 		}
 
 		foreach ($baseDirectories as $directory) {
 			$fileName = $directory . DIRECTORY_SEPARATOR . $relativePath;
 			if (is_file($fileName)) {
+				return realpath($fileName);
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns a directory absolute path.
+	 *
+	 * @param string $relativePath Directory relative path
+	 * @param array $baseDirectories List of base directories
+	 * @return string|null
+	 */
+	public static function getAbsoluteDirectoryPath($relativePath, array $baseDirectories)
+	{
+		if (preg_match('~/|[a-z]:~Ai', $relativePath)) {
+			// Absolute path already
+			return is_dir($relativePath) ? $relativePath : null;
+		}
+
+		foreach ($baseDirectories as $directory) {
+			$fileName = $directory . DIRECTORY_SEPARATOR . $relativePath;
+			if (is_dir($fileName)) {
 				return realpath($fileName);
 			}
 		}

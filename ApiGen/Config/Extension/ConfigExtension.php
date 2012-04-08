@@ -64,7 +64,8 @@ final class ConfigExtension extends CompilerExtension
 		'colors' => true,
 		'updateCheck' => true,
 		'debug' => false,
-		'help' => false
+		'help' => false,
+		'pluginConfig' => array()
 	);
 
 	/**
@@ -77,6 +78,7 @@ final class ConfigExtension extends CompilerExtension
 		'source',
 		'destination',
 		'templateConfig',
+		'pluginConfig',
 		'report',
 		'exclude',
 		'skipDocPath'
@@ -174,7 +176,7 @@ final class ConfigExtension extends CompilerExtension
 			$cliOptions['config'] = Helper::getDefaultConfigPath();
 		} elseif (!empty($cliOptions['config'])) {
 			// Make the config file name absolute
-			$cliOptions['config'] = Helper::getAbsolutePath($cliOptions['config'], array(getcwd()));
+			$cliOptions['config'] = Helper::getAbsoluteFilePath($cliOptions['config'], array(getcwd()));
 		}
 		if (!empty($cliOptions['config']) && is_file($cliOptions['config'])) {
 			$fileOptions = $this->loadFromFile($cliOptions['config']);
@@ -301,7 +303,7 @@ final class ConfigExtension extends CompilerExtension
 		// Merge template configuration
 		$config = array_merge_recursive(
 			$config,
-			array('template' => $this->loadFromFile(Helper::getAbsolutePath(
+			array('template' => $this->loadFromFile(Helper::getAbsoluteFilePath(
 				$config['templateConfig'],
 				array(
 					getcwd(),
@@ -310,6 +312,29 @@ final class ConfigExtension extends CompilerExtension
 				)
 			)))
 		);
+
+		// Plugins
+		$config['plugins'] = array();
+		foreach ($config['pluginConfig'] as $fileName) {
+			$fileName = Helper::getAbsoluteFilePath(
+				$fileName,
+				array(
+					getcwd(),
+					!empty($cliArguments['config']) ? dirname($cliArguments['config']) : ''
+				)
+			);
+
+			foreach ($this->loadFromFile($fileName) as $name => $definition) {
+				if (isset($definition['location'])) {
+					$definition['location'] = Helper::getAbsoluteDirectoryPath(
+						$definition['location'],
+						array(dirname($fileName))
+					);
+				}
+
+				$config['plugins'][$name] = $definition;
+			}
+		}
 
 		// Set overall DIC parameters
 		$config['application'] = array(
@@ -326,9 +351,49 @@ final class ConfigExtension extends CompilerExtension
 	 * Checks ApiGen configuration.
 	 *
 	 * @param array $config Parsed configuration
+	 * @throws \ApiGen\Config\Exception If there is an error in configuration
 	 */
 	private function checkConfiguration(array $config)
 	{
 		// @todo
+
+
+
+		// Plugins definition
+
+		foreach ($config['plugins'] as $pluginName => $definition) {
+			if (!isset($definition['location'], $definition['class'])) {
+				throw new ConfigException(sprintf('Plugin "%s" has to declare its location and class name', $pluginName));
+			}
+
+			foreach ($definition as $key => $value) {
+				switch ($key) {
+					case 'location':
+					case 'class':
+						if (!is_string($value)) {
+							throw new ConfigException(sprintf('Parameter "%s" value has to be a string in plugin "%s" configuration', $key, $pluginName));
+						}
+
+						if ('location' === $key && !is_dir($value)) {
+							throw new ConfigException(sprintf('Plugin "%s" location "%s" does not exist', $pluginName, $value));
+						}
+
+						break;
+					case 'events':
+						if (!is_array($value)) {
+							throw new ConfigException(sprintf('Event hooks have to be defined as an array in plugin "%s" configuration', $pluginName));
+						}
+
+						foreach ($value as $index => $listenerDefinition) {
+							if (!preg_match(PluginsExtension::EVENT_LISTENER_FORMAT, $listenerDefinition, $matches)) {
+								throw new ConfigException(sprintf('Event hooks #%d definition is invalid in plugin "%s" configuration', $index + 1, $pluginName));
+							}
+						}
+						break;
+					default:
+						throw new ConfigException(sprintf('Unknown plugin configuration option "%s" in plugin "%s" configuration', $key, $pluginName));
+				}
+			}
+		}
 	}
 }
