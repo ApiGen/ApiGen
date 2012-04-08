@@ -67,9 +67,9 @@ class Application extends Object
 	 */
 	public function run()
 	{
-		$start = new DateTime();
-
 		try {
+			$start = new DateTime();
+
 			$name = Environment::getApplicationName();
 			$this->logger->log("%h1\n", $name, str_repeat('-', strlen($name)) . "\n");
 
@@ -86,14 +86,14 @@ class Application extends Object
 			// Generate the API documentation
 			$this->generate();
 
+			$this->fireEvent('shutdown');
+
+			// Prints the elapsed time
+			$this->printElapsed($start, new DateTime());
+
 		} catch (Exception $e) {
 			$this->fireEvent('error', $e);
 		}
-
-		$this->fireEvent('shutdown');
-
-		// Prints the elapsed time
-		$this->printElapsed($start, new DateTime());
 	}
 
 	/**
