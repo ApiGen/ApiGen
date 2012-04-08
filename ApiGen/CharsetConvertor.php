@@ -77,6 +77,8 @@ class CharsetConvertor
 			}
 
 			$cache[$filePath] = $charset;
+		} else {
+			$charset = $cache[$filePath];
 		}
 
 		if ('UTF-8' === $charset) {
