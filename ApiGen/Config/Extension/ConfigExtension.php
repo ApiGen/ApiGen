@@ -65,7 +65,8 @@ final class ConfigExtension extends CompilerExtension
 		'updateCheck' => true,
 		'debug' => false,
 		'help' => false,
-		'pluginConfig' => array()
+		'pluginConfig' => array(),
+		'plugins' => array()
 	);
 
 	/**
@@ -170,6 +171,11 @@ final class ConfigExtension extends CompilerExtension
 			throw new ConfigException($message);
 		}
 
+		// It is not possible to define plugins via command line
+		if (isset($cliOptions['plugins'])) {
+			throw new ConfigException('Plugins cannot be defined via command line options');
+		}
+
 		// Load config file
 		if (empty($cliOptions) && Helper::defaultConfigExists()) {
 			// Default config file present
@@ -222,7 +228,7 @@ final class ConfigExtension extends CompilerExtension
 				}
 
 				$config[$option] = (bool) $value;
-			} elseif (is_array($valueDefinition)) {
+			} elseif (is_array($valueDefinition) && 'plugins' !== $option) {
 				// Array option
 				$config[$option] = array_unique((array) $config[$option]);
 				foreach ($config[$option] as $key => $value) {
@@ -314,7 +320,6 @@ final class ConfigExtension extends CompilerExtension
 		);
 
 		// Plugins
-		$config['plugins'] = array();
 		foreach ($config['pluginConfig'] as $fileName) {
 			$fileName = Helper::getAbsoluteFilePath(
 				$fileName,
@@ -362,6 +367,10 @@ final class ConfigExtension extends CompilerExtension
 		// Plugins definition
 
 		foreach ($config['plugins'] as $pluginName => $definition) {
+			if (!is_array($definition)) {
+				throw new ConfigException(sprintf('Definition of plugin "%s" has to be an array', $pluginName));
+			}
+
 			if (!isset($definition['location'], $definition['class'])) {
 				throw new ConfigException(sprintf('Plugin "%s" has to declare its location and class name', $pluginName));
 			}
