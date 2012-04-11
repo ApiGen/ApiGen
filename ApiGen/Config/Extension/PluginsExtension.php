@@ -72,8 +72,11 @@ final class PluginsExtension extends CompilerExtension
 			// In case we are overriding an internal service
 			$container->removeDefinition($name);
 
-			$container->addDefinition($name)
-				->setClass($definition['class']);
+			$service = $container->addDefinition($name);
+			$service->setClass($definition['class']);
+			if (!empty($definition['options'])) {
+				$service->addSetup('setOptions', array('options' => $definition['options']));
+			}
 		}
 	}
 

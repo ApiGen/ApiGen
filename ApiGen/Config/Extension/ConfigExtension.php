@@ -388,6 +388,7 @@ final class ConfigExtension extends CompilerExtension
 						}
 
 						break;
+
 					case 'events':
 						if (!is_array($value)) {
 							throw new ConfigException(sprintf('Event hooks have to be defined as an array in plugin "%s" configuration', $pluginName));
@@ -398,7 +399,16 @@ final class ConfigExtension extends CompilerExtension
 								throw new ConfigException(sprintf('Event hooks #%d definition is invalid in plugin "%s" configuration', $index + 1, $pluginName));
 							}
 						}
+
 						break;
+
+					case 'options':
+						if (!is_array($value)) {
+							throw new ConfigException(sprintf('Parameter "%s" value has to be an array in plugin "%s" configuration', $key, $pluginName));
+						}
+
+						break;
+
 					default:
 						throw new ConfigException(sprintf('Unknown plugin configuration option "%s" in plugin "%s" configuration', $key, $pluginName));
 				}

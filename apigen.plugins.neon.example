@@ -18,3 +18,10 @@ plugin.name:
 	# the event origin service name and the event name in the scope of this service.
 	events:
 		- methodName@originName::eventName
+
+	# Plugin options. This whole part of the config file will be passed to the setOptions()
+	# method as an array.
+	options:
+		option1: value1
+		option2: [value21, value22]
+		option3: true
