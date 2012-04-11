@@ -14,6 +14,7 @@
 namespace ApiGen\Contrib;
 
 use ApiGen\ConsoleLogger;
+use ApiGen\IPlugin;
 use ApiGen\IProgressBar;
 use ApiGen\Object;
 
@@ -22,7 +23,7 @@ use ApiGen\Object;
  *
  * Requires the console logger {@see \ApiGen\ConsoleLogger}.
  */
-class PhpunitProgressBar extends Object implements IProgressBar
+class PhpunitProgressBar extends Object implements IPlugin, IProgressBar
 {
 	/**
 	 * Console logger.
@@ -74,6 +75,22 @@ class PhpunitProgressBar extends Object implements IProgressBar
 	public function __construct(ConsoleLogger $logger)
 	{
 		$this->logger = $logger;
+	}
+
+	/**
+	 * Sets plugin options from the configuration.
+	 *
+	 * @param array $options Plugin options
+	 */
+	public function setOptions(array $options)
+	{
+		if (isset($options['maxWidth'])) {
+			$this->maxWidth = (int) $options['maxWidth'];
+		}
+
+		if (isset($options['maxSteps'])) {
+			$this->maxSteps = (int) $options['maxSteps'];
+		}
 	}
 
 	/**

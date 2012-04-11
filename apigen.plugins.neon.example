@@ -1,6 +1,8 @@
 # To prevent conflicts between internal services and user plusings, you should
 # always prefix your plugin name with "plugin.". Use bare service names only when
 # you really want to override an internal service with your own one.
+# No matter if you override an internal service or create a new one, its main class
+# (see below) has to implement the \ApiGen\IPlugin interface.
 plugin.name:
 
 	# ApiGen will put this path into its plugin autoloading mechanism. Your plugin
@@ -20,7 +22,7 @@ plugin.name:
 		- methodName@originName::eventName
 
 	# Plugin options. This whole part of the config file will be passed to the setOptions()
-	# method as an array.
+	# method (defined by the IPlugin interface) as an array.
 	options:
 		option1: value1
 		option2: [value21, value22]

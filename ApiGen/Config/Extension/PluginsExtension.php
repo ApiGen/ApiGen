@@ -14,9 +14,11 @@
 namespace ApiGen\Config\Extension;
 
 use Nette\Config\CompilerExtension;
+use Nette\InvalidStateException;
 use Nette\Loaders\RobotLoader;
 use Nette\Utils\PhpGenerator\ClassType;
 use Nette\Utils\PhpGenerator\PhpLiteral;
+use ReflectionClass;
 
 /**
  * ApiGen plugins DIC extension.
@@ -94,6 +96,11 @@ final class PluginsExtension extends CompilerExtension
 
 		// Plugin event listeners
 		foreach ($this->containerBuilder->parameters['plugins'] as $name => $definition) {
+			$reflection = new ReflectionClass($definition['class']);
+			if (!$reflection->implementsInterface('ApiGen\\IPlugin')) {
+				throw new InvalidStateException(sprintf('Plugin "%s" does not implement interface ApiGen\\IPlugin', $name));
+			}
+
 			if (!empty($definition['events'])) {
 				foreach ($definition['events'] as $eventDefinition) {
 					preg_match(self::EVENT_LISTENER_FORMAT, $eventDefinition, $matches);
