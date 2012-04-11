@@ -126,9 +126,9 @@ class PhpunitProgressBar extends Object implements IPlugin, IProgressBar
 			return;
 		}
 
-		$currentSteps = round($this->current * $this->stepSize);
+		$currentSteps = floor($this->current * $this->stepSize);
 		$this->current += $increment;
-		$newSteps = round($this->current * $this->stepSize);
+		$newSteps = floor($this->current * $this->stepSize);
 
 		if ($newSteps === $currentSteps) {
 			// No progress
