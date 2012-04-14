@@ -351,13 +351,6 @@ class Config
 				throw new ConfigException(sprintf('Source "%s" doesn\'t exist', $source));
 			}
 		}
-		foreach ($this->config['source'] as $source) {
-			foreach ($this->config['source'] as $source2) {
-				if ($source !== $source2 && 0 === strpos($source, $source2)) {
-					throw new ConfigException(sprintf('Sources "%s" and "%s" overlap', $source, $source2));
-				}
-			}
-		}
 
 		if (empty($this->config['destination'])) {
 			throw new ConfigException('Destination is not set');
