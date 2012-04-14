@@ -71,11 +71,16 @@ final class PluginsExtension extends CompilerExtension
 		foreach ($this->containerBuilder->parameters['plugins'] as $name => $definition) {
 			$name = $this->processPluginName($name);
 
+			// Only internal services
+			$autoWired = false === strpos($name, '.') && $container->hasDefinition($name);
+
 			// In case we are overriding an internal service
 			$container->removeDefinition($name);
 
 			$service = $container->addDefinition($name);
-			$service->setClass($definition['class']);
+			$service
+				->setClass($definition['class'])
+				->setAutowired($autoWired);
 			if (!empty($definition['options'])) {
 				$service->addSetup('setOptions', array('options' => $definition['options']));
 			}
