@@ -494,7 +494,8 @@ class Generator extends Nette\Object
 									$loaderMethod = $class->getMethod('loader');
 									if ($loaderMethod->isPublic() && !$loaderMethod->isAbstract()) {
 										if ($class->isInstantiable()) {
-											$template->registerHelperLoader(callback($class->newInstanceArgs(), 'loader'));
+											$className = $class->getName();
+											$template->registerHelperLoader(callback(new $className(), 'loader'));
 										} else {
 											$template->registerHelperLoader(callback($class->getName(), 'loader'));
 										}
