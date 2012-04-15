@@ -664,197 +664,20 @@ class Generator extends Object implements IGenerator
 	 * Generates list of poorly documented elements.
 	 *
 	 * @return \ApiGen\Generator
-	 * @throws \RuntimeException If file isn't writable.
 	 */
 	private function generateReport()
 	{
-		// Function for element labels
-		$that = $this;
-		$labeler = function($element) use ($that) {
-			if ($element instanceof Reflection\ReflectionClass) {
-				if ($element->isInterface()) {
-					$label = 'interface';
-				} elseif ($element->isTrait()) {
-					$label = 'trait';
-				} elseif ($element->isException()) {
-					$label = 'exception';
-				} else {
-					$label = 'class';
-				}
-			} elseif ($element instanceof Reflection\ReflectionMethod) {
-				$label = 'method';
-			} elseif ($element instanceof Reflection\ReflectionFunction) {
-				$label = 'function';
-			} elseif ($element instanceof Reflection\ReflectionConstant) {
-				$label = 'constant';
-			} elseif ($element instanceof Reflection\ReflectionProperty) {
-				$label = 'property';
-			} elseif ($element instanceof Reflection\ReflectionParameter) {
-				$label = 'parameter';
-			}
-			return sprintf('%s %s', $label, $that->getElementName($element));
-		};
-
-		$list = array();
+		$elements = array();
 		foreach ($this->getElementTypes() as $type) {
-			foreach ($this->$type as $parentElement) {
-				$fileName = $this->unPharPath($parentElement->getFileName());
-
-				if (!$parentElement->isValid()) {
-					$list[$fileName][] = array('error', 0, sprintf('Duplicate %s', $labeler($parentElement)));
-					continue;
-				}
-
-				// Skip elements not from the main project
-				if (!$parentElement->isMain()) {
-					continue;
-				}
-
-				// Internal elements don't have documentation
-				if ($parentElement->isInternal()) {
-					continue;
-				}
-
-				$elements = array($parentElement);
-				if ($parentElement instanceof Reflection\ReflectionClass) {
-					$elements = array_merge(
-						$elements,
-						array_values($parentElement->getOwnMethods()),
-						array_values($parentElement->getOwnConstants()),
-						array_values($parentElement->getOwnProperties())
-					);
-				}
-
-				$tokens = $parentElement->getBroker()->getFileTokens($parentElement->getFileName());
-
-				foreach ($elements as $element) {
-					$line = $element->getStartLine();
-					$label = $labeler($element);
-
-					$annotations = $element->getAnnotations();
-
-					// Documentation
-					if (empty($element->shortDescription)) {
-						if (empty($annotations)) {
-							$list[$fileName][] = array('error', $line, sprintf('Missing documentation of %s', $label));
-							continue;
-						}
-						// Description
-						$list[$fileName][] = array('error', $line, sprintf('Missing description of %s', $label));
-					}
-
-					// Documentation of method
-					if ($element instanceof Reflection\ReflectionMethod || $element instanceof Reflection\ReflectionFunction) {
-						// Parameters
-						foreach ($element->getParameters() as $no => $parameter) {
-							if (!isset($annotations['param'][$no])) {
-								$list[$fileName][] = array('error', $line, sprintf('Missing documentation of %s', $labeler($parameter)));
-								continue;
-							}
-
-							if (!preg_match('~^[\\w\\\\]+(?:\\[\\])?(?:\\|[\\w\\\\]+(?:\\[\\])?)*(?:\\s+\\$' . $parameter->getName() . ')?(?:\\s+.+)?$~s', $annotations['param'][$no])) {
-								$list[$fileName][] = array('warning', $line, sprintf('Invalid documentation "%s" of %s', $annotations['param'][$no], $labeler($parameter)));
-							}
-
-							unset($annotations['param'][$no]);
-						}
-						if (isset($annotations['param'])) {
-							foreach ($annotations['param'] as $annotation) {
-								$list[$fileName][] = array('warning', $line, sprintf('Existing documentation "%s" of nonexistent parameter of %s', $annotation, $label));
-							}
-						}
-
-						// Return values
-						$return = false;
-						$tokens->seek($element->getStartPosition())
-							->find(T_FUNCTION);
-						while ($tokens->next() && $tokens->key() < $element->getEndPosition()) {
-							$type = $tokens->getType();
-							if (T_FUNCTION === $type) {
-								// Skip annonymous functions
-								$tokens->find('{')->findMatchingBracket();
-							} elseif (T_RETURN === $type && !$tokens->skipWhitespaces()->is(';')) {
-								// Skip return without return value
-								$return = true;
-								break;
-							}
-						}
-						if ($return && !isset($annotations['return'])) {
-							$list[$fileName][] = array('error', $line, sprintf('Missing documentation of return value of %s', $label));
-						} elseif (isset($annotations['return'])) {
-							if (!$return && 'void' !== $annotations['return'][0] && ($element instanceof Reflection\ReflectionFunction || (!$parentElement->isInterface() && !$element->isAbstract()))) {
-								$list[$fileName][] = array('warning', $line, sprintf('Existing documentation "%s" of nonexistent return value of %s', $annotations['return'][0], $label));
-							} elseif (!preg_match('~^[\\w\\\\]+(?:\\[\\])?(?:\\|[\\w\\\\]+(?:\\[\\])?)*(?:\\s+.+)?$~s', $annotations['return'][0])) {
-								$list[$fileName][] = array('warning', $line, sprintf('Invalid documentation "%s" of return value of %s', $annotations['return'][0], $label));
-							}
-						}
-						if (isset($annotations['return'][1])) {
-							$list[$fileName][] = array('warning', $line, sprintf('Duplicate documentation "%s" of return value of %s', $annotations['return'][1], $label));
-						}
-
-						// Throwing exceptions
-						$throw = false;
-						$tokens->seek($element->getStartPosition())
-							->find(T_FUNCTION);
-						while ($tokens->next() && $tokens->key() < $element->getEndPosition()) {
-							$type = $tokens->getType();
-							if (T_TRY === $type) {
-								// Skip try
-								$tokens->find('{')->findMatchingBracket();
-							} elseif (T_THROW === $type) {
-								$throw = true;
-								break;
-							}
-						}
-						if ($throw && !isset($annotations['throws'])) {
-							$list[$fileName][] = array('error', $line, sprintf('Missing documentation of throwing an exception of %s', $label));
-						} elseif (isset($annotations['throws'])	&& !preg_match('~^[\\w\\\\]+(?:\\|[\\w\\\\]+)*(?:\\s+.+)?$~s', $annotations['throws'][0])) {
-							$list[$fileName][] = array('warning', $line, sprintf('Invalid documentation "%s" of throwing an exception of %s', $annotations['throws'][0], $label));
-						}
-					}
-
-					// Data type of constants & properties
-					if ($element instanceof Reflection\ReflectionProperty || $element instanceof Reflection\ReflectionConstant) {
-						if (!isset($annotations['var'])) {
-							$list[$fileName][] = array('error', $line, sprintf('Missing documentation of the data type of %s', $label));
-						} elseif (!preg_match('~^[\\w\\\\]+(?:\\[\\])?(?:\\|[\\w\\\\]+(?:\\[\\])?)*(?:\\s+.+)?$~s', $annotations['var'][0])) {
-							$list[$fileName][] = array('warning', $line, sprintf('Invalid documentation "%s" of the data type of %s', $annotations['var'][0], $label));
-						}
-
-						if (isset($annotations['var'][1])) {
-							$list[$fileName][] = array('warning', $line, sprintf('Duplicate documentation "%s" of the data type of %s', $annotations['var'][1], $label));
-						}
-					}
-				}
-				unset($tokens);
-			}
+			$elements = array_merge($elements, $this->$type);
 		}
-		uksort($list, 'strcasecmp');
 
-		$file = @fopen($this->config->report, 'w');
-		if (false === $file) {
-			throw new RuntimeException(sprintf('File "%s" isn\'t writable', $this->config->report));
-		}
-		fwrite($file, sprintf('<?xml version="1.0" encoding="UTF-8"?>%s', "\n"));
-		fwrite($file, sprintf('<checkstyle version="1.3.0">%s', "\n"));
-		foreach ($list as $fileName => $reports) {
-			fwrite($file, sprintf('%s<file name="%s">%s', "\t", $fileName, "\n"));
-
-			// Sort by line
-			usort($reports, function($one, $two) {
-				return strnatcmp($one[1], $two[1]);
-			});
-
-			foreach ($reports as $report) {
-				list($severity, $line, $message) = $report;
-				$message = preg_replace('~\\s+~u', ' ', $message);
-				fwrite($file, sprintf('%s<error severity="%s" line="%s" message="%s" source="ApiGen.Documentation.Documentation"/>%s', "\t\t", $severity, $line, htmlspecialchars($message), "\n"));
-			}
-
-			fwrite($file, sprintf('%s</file>%s', "\t", "\n"));
-		}
-		fwrite($file, sprintf('</checkstyle>%s', "\n"));
-		fclose($file);
+		$report = new Checkstyle\Report($elements);
+		$report
+			->addCheck(new Checkstyle\DescriptionCheck())
+			->addCheck(new Checkstyle\FunctionCheck())
+			->addCheck(new Checkstyle\DataTypeCheck());
+		$report->make($this->config->report);
 
 		$this->fireEvent('generateProgress', 1);
 
