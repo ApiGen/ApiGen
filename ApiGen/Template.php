@@ -132,7 +132,7 @@ class Template extends Nette\Templating\FileTemplate
 
 		// PHP source highlight
 		$this->registerHelper('highlightPHP', function($source, $context) use ($that, $fshl) {
-			return $that->resolveLink($source, $context) ?: $fshl->highlight((string) $source);
+			return $that->resolveLink($that->getTypeName($source), $context) ?: $fshl->highlight((string) $source);
 		});
 		$this->registerHelper('highlightValue', function($definition, $context) use ($that) {
 			return $that->highlightPHP(preg_replace('~^(?:[ ]{4}|\t)~m', '', $definition), $context);
