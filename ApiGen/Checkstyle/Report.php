@@ -37,9 +37,7 @@ class Report
 
 	public function addCheck(ICheck $check)
 	{
-		foreach ($check->register() as $elementName) {
-			$this->checks[$elementName][] = $check;
-		}
+		$this->checks[] = $check;
 
 		return $this;
 	}
@@ -81,11 +79,9 @@ class Report
 			}
 
 			foreach ($elements as $element) {
-				if (isset($this->checks[get_class($element)])) {
-					foreach ($this->checks[get_class($element)] as $check) {
-						foreach ($check->check($element) as $message) {
-							$messages[$fileName][] = $message;
-						}
+				foreach ($this->checks as $check) {
+					foreach ($check->check($element) as $message) {
+						$messages[$fileName][] = $message;
 					}
 				}
 			}

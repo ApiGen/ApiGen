@@ -14,22 +14,16 @@
 namespace ApiGen\Checkstyle;
 
 use ApiGen\Reflection\ReflectionElement;
+use ApiGen\Reflection\ReflectionParameter;
 
 class DescriptionCheck implements ICheck
 {
-	public function register()
-	{
-		return array(
-			'ApiGen\\Reflection\\ReflectionClass',
-			'ApiGen\\Reflection\\ReflectionConstant',
-			'ApiGen\\Reflection\\ReflectionFunction',
-			'ApiGen\\Reflection\\ReflectionMethod',
-			'ApiGen\\Reflection\\ReflectionProperty'
-		);
-	}
-
 	public function check(ReflectionElement $element)
 	{
+		if ($element instanceof ReflectionParameter) {
+			return array();
+		}
+
 		$messages = array();
 
 		if (empty($element->shortDescription)) {

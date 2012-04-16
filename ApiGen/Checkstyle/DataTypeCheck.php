@@ -13,20 +13,18 @@
 
 namespace ApiGen\Checkstyle;
 
+use ApiGen\Reflection\ReflectionConstant;
 use ApiGen\Reflection\ReflectionElement;
+use ApiGen\Reflection\ReflectionProperty;
 
 class DataTypeCheck implements ICheck
 {
-	public function register()
-	{
-		return array(
-			'ApiGen\\Reflection\\ReflectionProperty',
-			'ApiGen\\Reflection\\ReflectionConstant'
-		);
-	}
-
 	public function check(ReflectionElement $element)
 	{
+		if (!$element instanceof ReflectionProperty && !$element instanceof ReflectionConstant) {
+			return array();
+		}
+
 		$messages = array();
 
 		$annotations = $element->getAnnotations();

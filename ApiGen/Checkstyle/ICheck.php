@@ -17,7 +17,5 @@ use ApiGen\Reflection\ReflectionElement;
 
 interface ICheck
 {
-	public function register();
-
 	public function check(ReflectionElement $element);
 }
