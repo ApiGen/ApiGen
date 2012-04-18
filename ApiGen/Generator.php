@@ -1515,6 +1515,8 @@ class Generator extends Nette\Object
 			return null;
 		}
 
+		$originalContext = $context;
+
 		if ($context instanceof ReflectionParameter && null === $context->getDeclaringClassName()) {
 			// Parameter of function in namespace or global space
 			$context = $this->getFunction($context->getDeclaringFunctionName());
@@ -1561,6 +1563,8 @@ class Generator extends Nette\Object
 			}
 
 			$definition = substr($definition, $pos + 2);
+		} elseif ($originalContext instanceof ReflectionParameter) {
+			return null;
 		}
 
 		// No usable context
