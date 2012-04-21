@@ -480,32 +480,24 @@ class Generator extends Nette\Object
 				if (is_file($pathName)) {
 					try {
 						$reflectionFile = $broker->processFile($pathName, true);
-						include $pathName;
 
 						foreach ($reflectionFile->getNamespaces() as $namespace) {
 							foreach ($namespace->getClasses() as $class) {
 								if ($class->isSubclassOf('Nette\\Latte\\Macros\\MacroSet')) {
 									// Macro set
+
+									include $pathName;
 									call_user_func(array($class->getName(), 'install'), $latte->compiler);
 
 									$this->output(sprintf("  %s (macro set)\n", $class->getName()));
-								} elseif ($class->hasMethod('loader')) {
+								} elseif ($class->implementsInterface('ApiGen\\IHelperSet')) {
 									// Helpers set
-									$loaderMethod = $class->getMethod('loader');
-									if ($loaderMethod->isPublic() && !$loaderMethod->isAbstract()) {
-										if ($class->isInstantiable()) {
-											if ($class->getConstructor()) {
-												$template->registerHelperLoader(callback($class->newInstance($template), 'loader'));
-											} else {
-												$className = $class->getName();
-												$template->registerHelperLoader(callback(new $className(), 'loader'));
-											}
-										} else {
-											$template->registerHelperLoader(callback($class->getName(), 'loader'));
-										}
 
-										$this->output(sprintf("  %s (helper set)\n", $class->getName()));
-									}
+									include $pathName;
+									$className = $class->getName();
+									$template->registerHelperLoader(callback(new $className($template), 'loader'));
+
+									$this->output(sprintf("  %s (helper set)\n", $class->getName()));
 								}
 							}
 						}
