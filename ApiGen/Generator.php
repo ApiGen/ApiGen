@@ -1468,11 +1468,17 @@ class Generator extends Nette\Object
 			return null;
 		}
 
+		$definitionBase = substr($definition, 0, strcspn($definition, '\\:'));
 		$namespaceAliases = $context->getNamespaceAliases();
-		if (isset($namespaceAliases[$definition]) && $definition !== ($className = \TokenReflection\Resolver::resolveClassFQN($definition, $namespaceAliases, $context->getNamespaceName()))) {
+		if (!empty($definitionBase) && isset($namespaceAliases[$definitionBase]) && $definition !== ($className = \TokenReflection\Resolver::resolveClassFQN($definition, $namespaceAliases, $context->getNamespaceName()))) {
 			// Aliased class
 			$expectedName = $className;
-			return $this->getClass($className, $context->getNamespaceName());
+
+			if (false === strpos($className, ':')) {
+				return $this->getClass($className, $context->getNamespaceName());
+			} else {
+				$definition = $className;
+			}
 		} elseif ($class = $this->getClass($definition, $context->getNamespaceName())) {
 			// Class
 			return $class;
@@ -1484,7 +1490,9 @@ class Generator extends Nette\Object
 		) {
 			// Function
 			return $function;
-		} elseif (($pos = strpos($definition, '::')) || ($pos = strpos($definition, '->'))) {
+		}
+
+		if (($pos = strpos($definition, '::')) || ($pos = strpos($definition, '->'))) {
 			// Class::something or Class->something
 			if (0 === strpos($definition, 'parent::') && ($parentClassName = $context->getParentClassName())) {
 				$context = $this->getClass($parentClassName);
