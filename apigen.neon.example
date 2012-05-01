@@ -55,7 +55,7 @@ report:
 
 # Wipe out the destination directory first
 wipeout: Yes
-# Don't display scaning and generating messages
+# Don't display scanning and generating messages
 quiet: No
 # Display progressbars
 progressbar: Yes
