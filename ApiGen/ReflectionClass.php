@@ -666,14 +666,13 @@ class ReflectionClass extends ReflectionElement
 	{
 		$usedMethods = array();
 		foreach ($this->getMethods() as $method) {
-			if (null === $method->getDeclaringTraitName()) {
+			if (null === $method->getDeclaringTraitName() || $this->getName() === $method->getDeclaringTraitName()) {
 				continue;
 			}
 
-			if (null === $method->getOriginalName() || $method->getName() === $method->getOriginalName()) {
-				$usedMethods[$method->getDeclaringTraitName()][$method->getName()]['method'] = $method;
-			} else {
-				$usedMethods[$method->getDeclaringTraitName()][$method->getOriginalName()]['aliases'][$method->getName()] = $method;
+			$usedMethods[$method->getDeclaringTraitName()][$method->getName()]['method'] = $method;
+			if (null !== $method->getOriginalName() && $method->getName() !== $method->getOriginalName()) {
+				$usedMethods[$method->getDeclaringTraitName()][$method->getName()]['aliases'][$method->getName()] = $method;
 			}
 		}
 
