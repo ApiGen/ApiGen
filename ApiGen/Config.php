@@ -377,7 +377,7 @@ class Config
 			throw new ConfigException(sprintf('Invalid base url "%s"', $this->config['baseUrl']));
 		}
 
-		if (!empty($this->config['googleCseId']) && !preg_match('~^\d{21}:[-a-z0-9]{11}$~', $this->config['googleCseId'])) {
+		if (!empty($this->config['googleCseId']) && !preg_match('~^\d{21}:[-a-z0-9_]{11}$~', $this->config['googleCseId'])) {
 			throw new ConfigException(sprintf('Invalid Google Custom Search ID "%s"', $this->config['googleCseId']));
 		}
 
