@@ -122,11 +122,6 @@ class Template extends Nette\Templating\FileTemplate
 			'codeBlockSyntax'
 		);
 
-		$latte = new Nette\Latte\Engine();
-		$macroSet = new Nette\Latte\Macros\MacroSet($latte->compiler);
-		$macroSet->addMacro('try', 'try {', '} catch (\Exception $e) {}');
-		$this->registerFilter($latte);
-
 		// Common operations
 		$this->registerHelperLoader('Nette\Templating\Helpers::loader');
 
