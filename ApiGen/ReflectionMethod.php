@@ -67,7 +67,7 @@ class ReflectionMethod extends ReflectionFunctionBase
 
 		foreach ($parent->getMethods() as $method) {
 			if ($this->getName() === $method->getName()) {
-				if (!$method->isPrivate()) {
+				if (!$method->isPrivate() && !$method->isAbstract()) {
 					return $method;
 				} else {
 					return null;
