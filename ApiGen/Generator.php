@@ -483,7 +483,7 @@ class Generator extends Nette\Object
 
 						foreach ($reflectionFile->getNamespaces() as $namespace) {
 							foreach ($namespace->getClasses() as $class) {
-								if ($class->isSubclassOf('Nette\\Latte\\Macros\\MacroSet')) {
+								if ($class->isSubclassOf('ApiGen\\MacroSet')) {
 									// Macro set
 
 									include $pathName;
