@@ -43,6 +43,8 @@
 			</file>
 			<file name="ConfigException.php" role="php" />
 			<file name="Generator.php" role="php" />
+			<file name="IHelperSet.php" role="php" />
+			<file name="MacroSet.php" role="php" />
 			<file name="ReflectionBase.php" role="php" />
 			<file name="ReflectionClass.php" role="php" />
 			<file name="ReflectionConstant.php" role="php" />
@@ -98,7 +100,7 @@
 				<file name="todo.latte" role="data" />
 				<file name="tree.latte" role="data" />
 			</dir>
-			<dir name="frames">
+			<dir name="bootstrap">
 				<dir name="js">
 					<file name="jquery.autocomplete.js" role="data" />
 					<file name="jquery.cookie.js" role="data" />
@@ -108,9 +110,9 @@
 					<file name="main.js" role="data" />
 				</dir>
 				<dir name="resources">
+					<file name="bootstrap.min.css" role="data" />
 					<file name="code-line.png" role="data" />
 					<file name="collapsed.png" role="data" />
-					<file name="footer.png" role="data" />
 					<file name="inherit.png" role="data" />
 					<file name="resize.png" role="data" />
 					<file name="sort.png" role="data" />
@@ -120,8 +122,8 @@
 					<file name="tree-last.png" role="data" />
 					<file name="tree-vertical.png" role="data" />
 				</dir>
-				<file name="@content.latte" role="data" />
 				<file name="@elementlist.latte" role="data" />
+				<file name="@layout.latte" role="data" />
 				<file name="class.latte" role="data" />
 				<file name="combined.js.latte" role="data" />
 				<file name="config.neon" role="data" />
@@ -129,8 +131,6 @@
 				<file name="deprecated.latte" role="data" />
 				<file name="elementlist.js.latte" role="data" />
 				<file name="function.latte" role="data" />
-				<file name="index.latte" role="data" />
-				<file name="menu.latte" role="data" />
 				<file name="namespace.latte" role="data" />
 				<file name="opensearch.xml.latte" role="data" />
 				<file name="overview.latte" role="data" />
