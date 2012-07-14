@@ -54,13 +54,23 @@ $(function() {
 			scrollHeight: 200,
 			max: 20,
 			formatItem: function(data) {
-				return data[1].replace(/^(.+\\)(.+)$/, '<small>$1</small>$2');
+				return data[1].replace(/^(.+\\)(.+)$/, '<span><small>$1</small>$2</span>');
 			},
 			formatMatch: function(data) {
 				return data[1];
 			},
 			formatResult: function(data) {
 				return data[1];
+			},
+			show: function($list) {
+				var $items = $('li span', $list);
+				var maxWidth = Math.max.apply(null, $items.map(function() {
+					return $(this).width();
+				}));
+				// 10px padding
+				$list
+					.width(Math.max(maxWidth + 10, $search.innerWidth()))
+					.css('left', $search.offset().left + $search.outerWidth() - $list.outerWidth());
 			}
 		}).result(function(event, data) {
 			autocompleteFound = true;
