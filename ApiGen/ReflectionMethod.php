@@ -54,6 +54,31 @@ class ReflectionMethod extends ReflectionFunctionBase
 	}
 
 	/**
+	 * Returns the overridden method.
+	 *
+	 * @return \ApiGen\ReflectionMethod
+	 */
+	public function getOverriddenMethod()
+	{
+		$parent = $this->getDeclaringClass()->getParentClass();
+		if (null === $parent) {
+			return null;
+		}
+
+		foreach ($parent->getMethods() as $method) {
+			if ($this->getName() === $method->getName()) {
+				if (!$method->isPrivate()) {
+					return $method;
+				} else {
+					return null;
+				}
+			}
+		}
+
+		return null;
+	}
+
+	/**
 	 * Returns the original method when importing from a trait.
 	 *
 	 * @return \ApiGen\ReflectionMethod|null
