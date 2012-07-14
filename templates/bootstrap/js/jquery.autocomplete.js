@@ -28,6 +28,8 @@ $.fn.extend({
 		// if the formatMatch option is not specified, then use formatItem for backwards compatibility
 		options.formatMatch = options.formatMatch || options.formatItem;
 
+		options.show = options.show || function(list) {};
+
 		return this.each(function() {
 			new $.Autocompleter(this, options);
 		});
@@ -714,6 +716,7 @@ $.Autocompleter.Select = function (options, input, select, config) {
 				top: offset.top + input.offsetHeight,
 				left: offset.left
 			}).show();
+			options.show(element);
 			if(options.scroll) {
 				list.scrollTop(0);
 				list.css({
