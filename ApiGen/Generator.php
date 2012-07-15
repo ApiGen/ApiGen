@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ApiGen 2.6.1 - API documentation generator for PHP 5.3+
+ * ApiGen 2.7.0 - API documentation generator for PHP 5.3+
  *
  * Copyright (c) 2010-2011 David Grudl (http://davidgrudl.com)
  * Copyright (c) 2011-2012 Jaroslav Hanslík (https://github.com/kukulich)
@@ -34,7 +34,7 @@ class Generator extends Nette\Object
 	 *
 	 * @var string
 	 */
-	const VERSION = '2.6.1';
+	const VERSION = '2.7.0';
 
 	/**
 	 * Configuration.
@@ -413,6 +413,8 @@ class Generator extends Nette\Object
 		$template->version = self::VERSION;
 		$template->config = $this->config;
 
+		$this->registerCustomTemplateMacros($template);
+
 		// Common files
 		$this->generateCommon($template);
 
@@ -455,6 +457,60 @@ class Generator extends Nette\Object
 
 		// Delete temporary directory
 		$this->deleteDir($tmp);
+	}
+
+	/**
+	 * Loads template-specific macro and helper libraries.
+	 *
+	 * @param \ApiGen\Template $template Template instance
+	 */
+	private function registerCustomTemplateMacros(Template $template)
+	{
+		$latte = new Nette\Latte\Engine();
+		$macroSet = new Nette\Latte\Macros\MacroSet($latte->compiler);
+		$macroSet->addMacro('try', 'try {', '} catch (\Exception $e) {}');
+
+		if (!empty($this->config->template['options']['extensions'])) {
+			$this->output("Loading custom template macro and helper libraries\n");
+			$broker = new Broker(new Broker\Backend\Memory(), 0);
+
+			$baseDir = dirname($this->config->template['config']);
+			foreach ((array) $this->config->template['options']['extensions'] as $fileName) {
+				$pathName = $baseDir . DIRECTORY_SEPARATOR . $fileName;
+				if (is_file($pathName)) {
+					try {
+						$reflectionFile = $broker->processFile($pathName, true);
+
+						foreach ($reflectionFile->getNamespaces() as $namespace) {
+							foreach ($namespace->getClasses() as $class) {
+								if ($class->isSubclassOf('ApiGen\\MacroSet')) {
+									// Macro set
+
+									include $pathName;
+									call_user_func(array($class->getName(), 'install'), $latte->compiler);
+
+									$this->output(sprintf("  %s (macro set)\n", $class->getName()));
+								} elseif ($class->implementsInterface('ApiGen\\IHelperSet')) {
+									// Helpers set
+
+									include $pathName;
+									$className = $class->getName();
+									$template->registerHelperLoader(callback(new $className($template), 'loader'));
+
+									$this->output(sprintf("  %s (helper set)\n", $class->getName()));
+								}
+							}
+						}
+					} catch (\Exception $e) {
+						throw new \Exception(sprintf('Could not load macros and helpers from file "%s"', $pathName), 0, $e);
+					}
+				} else {
+					throw new \Exception(sprintf('Helper file "%s" does not exist.', $pathName));
+				}
+			}
+		}
+
+		$template->registerFilter($latte);
 	}
 
 	/**
@@ -1322,7 +1378,7 @@ class Generator extends Nette\Object
 	 * Creates ZIP archive.
 	 *
 	 * @return \ApiGen\Generator
-	 * @throws \RuntimeException If something went wront.
+	 * @throws \RuntimeException If something went wrong.
 	 */
 	private function generateArchive()
 	{
@@ -1451,6 +1507,8 @@ class Generator extends Nette\Object
 			return null;
 		}
 
+		$originalContext = $context;
+
 		if ($context instanceof ReflectionParameter && null === $context->getDeclaringClassName()) {
 			// Parameter of function in namespace or global space
 			$context = $this->getFunction($context->getDeclaringFunctionName());
@@ -1462,11 +1520,21 @@ class Generator extends Nette\Object
 			$context = $this->getClass($context->getDeclaringClassName());
 		}
 
+		if (null === $context) {
+			return null;
+		}
+
+		$definitionBase = substr($definition, 0, strcspn($definition, '\\:'));
 		$namespaceAliases = $context->getNamespaceAliases();
-		if (isset($namespaceAliases[$definition]) && $definition !== ($className = \TokenReflection\Resolver::resolveClassFQN($definition, $namespaceAliases, $context->getNamespaceName()))) {
+		if (!empty($definitionBase) && isset($namespaceAliases[$definitionBase]) && $definition !== ($className = \TokenReflection\Resolver::resolveClassFQN($definition, $namespaceAliases, $context->getNamespaceName()))) {
 			// Aliased class
 			$expectedName = $className;
-			return $this->getClass($className, $context->getNamespaceName());
+
+			if (false === strpos($className, ':')) {
+				return $this->getClass($className, $context->getNamespaceName());
+			} else {
+				$definition = $className;
+			}
 		} elseif ($class = $this->getClass($definition, $context->getNamespaceName())) {
 			// Class
 			return $class;
@@ -1478,7 +1546,9 @@ class Generator extends Nette\Object
 		) {
 			// Function
 			return $function;
-		} elseif (($pos = strpos($definition, '::')) || ($pos = strpos($definition, '->'))) {
+		}
+
+		if (($pos = strpos($definition, '::')) || ($pos = strpos($definition, '->'))) {
 			// Class::something or Class->something
 			if (0 === strpos($definition, 'parent::') && ($parentClassName = $context->getParentClassName())) {
 				$context = $this->getClass($parentClassName);
@@ -1493,6 +1563,8 @@ class Generator extends Nette\Object
 			}
 
 			$definition = substr($definition, $pos + 2);
+		} elseif ($originalContext instanceof ReflectionParameter) {
+			return null;
 		}
 
 		// No usable context

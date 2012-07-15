@@ -13,13 +13,11 @@
 
 namespace ApiGen;
 
-use RuntimeException;
+use Nette\Latte\Macros\MacroSet as NetteMacroSet;
 
 /**
- * ApiGen configuration exception.
- *
- * Thrown when an invalid configuration is detected.
+ * Macro set base class.
  */
-class ConfigException extends RuntimeException
+abstract class MacroSet extends NetteMacroSet
 {
 }

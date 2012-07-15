@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ApiGen 2.6.1 - API documentation generator for PHP 5.3+
+ * ApiGen 2.7.0 - API documentation generator for PHP 5.3+
  *
  * Copyright (c) 2010-2011 David Grudl (http://davidgrudl.com)
  * Copyright (c) 2011-2012 Jaroslav Hanslík (https://github.com/kukulich)
@@ -122,9 +122,15 @@ abstract class ReflectionElement extends ReflectionBase
 
 		if ($package = $this->getAnnotation('package')) {
 			$packageName = preg_replace('~\s+.*~s', '', $package[0]);
+			if (empty($packageName)) {
+				return '';
+			}
+
 			if ($subpackage = $this->getAnnotation('subpackage')) {
 				$subpackageName = preg_replace('~\s+.*~s', '', $subpackage[0]);
-				if (0 === strpos($subpackageName, $packageName)) {
+				if (empty($subpackageName)) {
+					// Do nothing
+				} elseif (0 === strpos($subpackageName, $packageName)) {
 					$packageName = $subpackageName;
 				} else {
 					$packageName .= '\\' . $subpackageName;

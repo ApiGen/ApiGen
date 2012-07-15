@@ -3,9 +3,7 @@ resources:
 
 templates:
 	common:
-		index.latte: index.html
-		menu.latte: menu.html
-		overview.latte: overview.html
+		overview.latte: index.html
 		combined.js.latte: resources/combined.js
 		elementlist.js.latte: elementlist.js
 

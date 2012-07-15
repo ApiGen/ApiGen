@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ApiGen 2.6.1 - API documentation generator for PHP 5.3+
+ * ApiGen 2.7.0 - API documentation generator for PHP 5.3+
  *
  * Copyright (c) 2010-2011 David Grudl (http://davidgrudl.com)
  * Copyright (c) 2011-2012 Jaroslav Hanslík (https://github.com/kukulich)
@@ -323,7 +323,8 @@ class Config
 		);
 
 		// Merge template config
-		$this->config = array_merge_recursive($this->config, array('template' => Neon::decode(file_get_contents($this->config['templateConfig']))));
+		$this->config = array_merge_recursive($this->config, array('template' => Neon::decode(file_get_contents($fileName = $this->config['templateConfig']))));
+		$this->config['template']['config'] = realpath($fileName);
 
 		// Check template
 		$this->checkTemplate();
@@ -351,13 +352,6 @@ class Config
 				throw new ConfigException(sprintf('Source "%s" doesn\'t exist', $source));
 			}
 		}
-		foreach ($this->config['source'] as $source) {
-			foreach ($this->config['source'] as $source2) {
-				if ($source !== $source2 && 0 === strpos($source, $source2)) {
-					throw new ConfigException(sprintf('Sources "%s" and "%s" overlap', $source, $source2));
-				}
-			}
-		}
 
 		if (empty($this->config['destination'])) {
 			throw new ConfigException('Destination is not set');
@@ -377,7 +371,7 @@ class Config
 			throw new ConfigException(sprintf('Invalid base url "%s"', $this->config['baseUrl']));
 		}
 
-		if (!empty($this->config['googleCseId']) && !preg_match('~^\d{21}:[-a-z0-9]{11}$~', $this->config['googleCseId'])) {
+		if (!empty($this->config['googleCseId']) && !preg_match('~^\d{21}:[-a-z0-9_]{11}$~', $this->config['googleCseId'])) {
 			throw new ConfigException(sprintf('Invalid Google Custom Search ID "%s"', $this->config['googleCseId']));
 		}
 

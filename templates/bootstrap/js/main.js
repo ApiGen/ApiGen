@@ -4,6 +4,7 @@
  * Copyright (c) 2010-2011 David Grudl (http://davidgrudl.com)
  * Copyright (c) 2011-2012 Jaroslav Hanslík (https://github.com/kukulich)
  * Copyright (c) 2011-2012 Ondřej Nešpor (https://github.com/Andrewsville)
+ * Copyright (c) 2012 Olivier Laviale (https://github.com/olvlvl)
  *
  * For the full copyright and license information, please view
  * the file LICENSE.md that was distributed with this source code.
@@ -68,9 +69,7 @@ $(function() {
 					return $(this).width();
 				}));
 				// 10px padding
-				$list
-					.width(Math.max(maxWidth + 10, $search.innerWidth()))
-					.css('left', $search.offset().left + $search.outerWidth() - $list.outerWidth());
+				$list.width(Math.max(maxWidth + 10, $search.innerWidth()));
 			}
 		}).result(function(event, data) {
 			autocompleteFound = true;
@@ -109,7 +108,7 @@ $(function() {
 	// Switch between natural and alphabetical order
 	var $caption = $('table.summary', $content)
 		.filter(':has(tr[data-order])')
-			.find('caption');
+			.prev('h2');
 	$caption
 		.click(function() {
 			var $this = $(this);
@@ -119,7 +118,7 @@ $(function() {
 			$.cookie('order', order, {expires: 365});
 			var attr = 'alphabetical' === order ? 'data-order' : 'data-order-natural';
 			$this
-				.closest('table')
+				.next('table')
 					.find('tr').sortElements(function(a, b) {
 						return $(a).attr(attr) > $(b).attr(attr) ? 1 : -1;
 					});
@@ -131,10 +130,22 @@ $(function() {
 		$caption.click();
 	}
 
-	// Open details
+	// Delayed hover efect on summary
 	if (ApiGen.config.options.elementDetailsCollapsed) {
+		var timeout;
 		$('tr', $content).filter(':has(.detailed)')
-			.click(function() {
+			.hover(function() {
+				clearTimeout(timeout);
+				var $this = $(this);
+				timeout = setTimeout(function() {
+					$('.short', $this).hide();
+					$('.detailed', $this).show();
+				}, 500);
+			}, function() {
+				clearTimeout(timeout);
+			}).click(function() {
+				// Immediate hover effect on summary
+				clearTimeout(timeout);
 				var $this = $(this);
 				$('.short', $this).hide();
 				$('.detailed', $this).show();
@@ -143,6 +154,8 @@ $(function() {
 
 	// Splitter
 	var $document = $(document);
+	var $navigation = $('#navigation');
+	var navigationHeight = $('#navigation').height();
 	var $left = $('#left');
 	var $right = $('#right');
 	var $rightInner = $('#rightInner');
@@ -156,6 +169,13 @@ $(function() {
 	}
 	function setNavigationPosition()
 	{
+		var height = $(window).height() - navigationHeight;
+		$left.height(height);
+		$splitter.height(height);
+		$right.height(height);
+	}
+	function setContentWidth()
+	{
 		var width = $rightInner.width();
 		$rightInner
 			.toggleClass('medium', width <= 960)
@@ -167,7 +187,7 @@ $(function() {
 			$document.mousemove(function(event) {
 				if (event.pageX >= 230 && $document.width() - event.pageX >= 600 + splitterWidth) {
 					setSplitterPosition(event.pageX);
-					setNavigationPosition();
+					setContentWidth();
 				}
 			});
 
@@ -192,5 +212,8 @@ $(function() {
 		setSplitterPosition(parseInt(splitterPosition));
 	}
 	setNavigationPosition();
-	$(window).resize(setNavigationPosition);
+	setContentWidth();
+	$(window)
+		.resize(setNavigationPosition)
+		.resize(setContentWidth);
 });

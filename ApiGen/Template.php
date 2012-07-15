@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ApiGen 2.6.1 - API documentation generator for PHP 5.3+
+ * ApiGen 2.7.0 - API documentation generator for PHP 5.3+
  *
  * Copyright (c) 2010-2011 David Grudl (http://davidgrudl.com)
  * Copyright (c) 2011-2012 Jaroslav Hanslík (https://github.com/kukulich)
@@ -122,17 +122,12 @@ class Template extends Nette\Templating\FileTemplate
 			'codeBlockSyntax'
 		);
 
-		$latte = new Nette\Latte\Engine();
-		$macroSet = new Nette\Latte\Macros\MacroSet($latte->compiler);
-		$macroSet->addMacro('try', 'try {', '} catch (\Exception $e) {}');
-		$this->registerFilter($latte);
-
 		// Common operations
 		$this->registerHelperLoader('Nette\Templating\Helpers::loader');
 
 		// PHP source highlight
 		$this->registerHelper('highlightPHP', function($source, $context) use ($that, $fshl) {
-			return $that->resolveLink($source, $context) ?: $fshl->highlight((string) $source);
+			return $that->resolveLink($that->getTypeName($source), $context) ?: $fshl->highlight((string) $source);
 		});
 		$this->registerHelper('highlightValue', function($definition, $context) use ($that) {
 			return $that->highlightPHP(preg_replace('~^(?:[ ]{4}|\t)~m', '', $definition), $context);
@@ -477,7 +472,7 @@ class Template extends Nette\Templating\FileTemplate
 	public function getMethodUrl(ReflectionMethod $method, ReflectionClass $class = null)
 	{
 		$className = null !== $class ? $class->getName() : $method->getDeclaringClassName();
-		return $this->getClassUrl($className) . '#_' . $method->getName();
+		return $this->getClassUrl($className) . '#_' . $method->getOriginalName();
 	}
 
 	/**

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ApiGen 2.6.1 - API documentation generator for PHP 5.3+
+ * ApiGen 2.7.0 - API documentation generator for PHP 5.3+
  *
  * Copyright (c) 2010-2011 David Grudl (http://davidgrudl.com)
  * Copyright (c) 2011-2012 Jaroslav Hanslík (https://github.com/kukulich)
@@ -51,6 +51,31 @@ class ReflectionMethod extends ReflectionFunctionBase
 	{
 		$prototype = $this->reflection->getPrototype();
 		return self::$parsedClasses[$prototype->getDeclaringClassName()]->getMethod($prototype->getName());
+	}
+
+	/**
+	 * Returns the overridden method.
+	 *
+	 * @return \ApiGen\ReflectionMethod
+	 */
+	public function getOverriddenMethod()
+	{
+		$parent = $this->getDeclaringClass()->getParentClass();
+		if (null === $parent) {
+			return null;
+		}
+
+		foreach ($parent->getMethods() as $method) {
+			if ($this->getName() === $method->getName()) {
+				if (!$method->isPrivate() && !$method->isAbstract()) {
+					return $method;
+				} else {
+					return null;
+				}
+			}
+		}
+
+		return null;
 	}
 
 	/**

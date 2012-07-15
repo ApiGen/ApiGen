@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ApiGen 2.6.1 - API documentation generator for PHP 5.3+
+ * ApiGen 2.7.0 - API documentation generator for PHP 5.3+
  *
  * Copyright (c) 2010-2011 David Grudl (http://davidgrudl.com)
  * Copyright (c) 2011-2012 Jaroslav Hanslík (https://github.com/kukulich)
@@ -666,14 +666,13 @@ class ReflectionClass extends ReflectionElement
 	{
 		$usedMethods = array();
 		foreach ($this->getMethods() as $method) {
-			if (null === $method->getDeclaringTraitName()) {
+			if (null === $method->getDeclaringTraitName() || $this->getName() === $method->getDeclaringTraitName()) {
 				continue;
 			}
 
-			if (null === $method->getOriginalName() || $method->getName() === $method->getOriginalName()) {
-				$usedMethods[$method->getDeclaringTraitName()][$method->getName()]['method'] = $method;
-			} else {
-				$usedMethods[$method->getDeclaringTraitName()][$method->getOriginalName()]['aliases'][$method->getName()] = $method;
+			$usedMethods[$method->getDeclaringTraitName()][$method->getName()]['method'] = $method;
+			if (null !== $method->getOriginalName() && $method->getName() !== $method->getOriginalName()) {
+				$usedMethods[$method->getDeclaringTraitName()][$method->getName()]['aliases'][$method->getName()] = $method;
 			}
 		}
 

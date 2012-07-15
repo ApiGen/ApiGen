@@ -2,7 +2,7 @@
 <?php
 
 /**
- * ApiGen 2.6.1 - API documentation generator for PHP 5.3+
+ * ApiGen 2.7.0 - API documentation generator for PHP 5.3+
  *
  * Copyright (c) 2010-2011 David Grudl (http://davidgrudl.com)
  * Copyright (c) 2011-2012 Jaroslav Hanslík (https://github.com/kukulich)
@@ -73,7 +73,8 @@ try {
 		echo "\nFor more information turn on the debug mode using the --debug option.\n";
 	};
 	Debugger::enable(Debugger::PRODUCTION, false);
-	Debugger::timer();
+
+	$start = new \DateTime();
 
 	$options = $_SERVER['argv'];
 	array_shift($options);
@@ -206,7 +207,20 @@ try {
 	$generator->generate();
 
 	// End
-	$generator->output(sprintf("Done. Total time: @count@%d@c seconds, used: @count@%d@c MB RAM\n", Debugger::timer(), round(memory_get_peak_usage(true) / 1024 / 1024)));
+	$end = new \DateTime();
+	$interval = $end->diff($start);
+	$parts = array();
+	if ($interval->h > 0) {
+		$parts[] = sprintf('@count@%d@c hours', $interval->h);
+	}
+	if ($interval->i > 0) {
+		$parts[] = sprintf('@count@%d@c min', $interval->i);
+	}
+	if ($interval->s > 0) {
+		$parts[] = sprintf('@count@%d@c sec', $interval->s);
+	}
+	$duration = implode(' ', $parts);
+	$generator->output(sprintf("Done. Total time: %s, used: @count@%d@c MB RAM\n", $duration, round(memory_get_peak_usage(true) / 1024 / 1024)));
 
 } catch (ConfigException $e) {
 	// Configuration error
@@ -217,7 +231,7 @@ try {
 	// Everything else
 	if ($config->debug) {
 		do {
-			echo $generator->colorize(sprintf("\n@error@%s@c", $e->getMessage()));
+			echo $generator->colorize(sprintf("\n%s(%d): @error@%s@c", $e->getFile(), $e->getLine(), $e->getMessage()));
 			$trace = $e->getTraceAsString();
 		} while ($e = $e->getPrevious());
 

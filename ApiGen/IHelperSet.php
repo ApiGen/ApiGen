@@ -13,13 +13,16 @@
 
 namespace ApiGen;
 
-use RuntimeException;
-
 /**
- * ApiGen configuration exception.
- *
- * Thrown when an invalid configuration is detected.
+ * Helper set interface.
  */
-class ConfigException extends RuntimeException
+interface IHelperSet
 {
+	/**
+	 * Tries to load the requested helper.
+	 *
+	 * @param string $helperName Helper name
+	 * @return \Nette\Callback
+	 */
+	public function loader($helperName);
 }

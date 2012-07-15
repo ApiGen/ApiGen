@@ -1,14 +1,15 @@
 {*
-ApiGen 2.6.1 - API documentation generator for PHP 5.3+
+ApiGen 2.7.0 - API documentation generator for PHP 5.3+
 
 Copyright (c) 2010-2011 David Grudl (http://davidgrudl.com)
 Copyright (c) 2011-2012 Jaroslav Hanslík (https://github.com/kukulich)
 Copyright (c) 2011-2012 Ondřej Nešpor (https://github.com/Andrewsville)
+Copyright (c) 2012 Olivier Laviale (https://github.com/olvlvl)
 
 For the full copyright and license information, please view
 the file LICENSE.md that was distributed with this source code.
 *}
-{layout '@content.latte'}
+{layout '@layout.latte'}
 {var $active = 'tree'}
 
 {block #title}Tree{/block}
@@ -50,22 +51,22 @@ the file LICENSE.md that was distributed with this source code.
 	<h1>{include #title}</h1>
 
 	{if $classTree->valid()}
-		<h3>Classes</h3>
+		<h2>Classes</h2>
 		{include #tree, tree => $classTree}
 	{/if}
 
 	{if $interfaceTree->valid()}
-		<h3>Interfaces</h3>
+		<h2>Interfaces</h2>
 		{include #tree, tree => $interfaceTree}
 	{/if}
 
 	{if $traitTree->valid()}
-		<h3>Traits</h3>
+		<h2>Traits</h2>
 		{include #tree, tree => $traitTree}
 	{/if}
 
 	{if $exceptionTree->valid()}
-		<h3>Exceptions</h3>
+		<h2>Exceptions</h2>
 		{include #tree, tree => $exceptionTree}
 	{/if}
 </div>

@@ -1,5 +1,5 @@
 {*
-ApiGen 2.6.1 - API documentation generator for PHP 5.3+
+ApiGen 2.7.0 - API documentation generator for PHP 5.3+
 
 Copyright (c) 2010-2011 David Grudl (http://davidgrudl.com)
 Copyright (c) 2011-2012 Jaroslav Hanslík (https://github.com/kukulich)
@@ -181,6 +181,12 @@ the file LICENSE.md that was distributed with this source code.
 				</div>
 			{/foreach}
 
+			{var $overriddenMethod = $method->overriddenMethod}
+			{if $overriddenMethod}
+				<h4>Overrides</h4>
+				<div class="list"><code><a n:tag-if="$template->getClass($overriddenMethod->declaringClassName)" href="{$overriddenMethod|methodUrl}">{$overriddenMethod->declaringClassName}::{$overriddenMethod->name}</a></code></div>
+			{/if}
+
 			{try}
 			{var $prototype = $method->prototype}
 			{if $prototype->declaringClass->interface}
@@ -209,7 +215,7 @@ the file LICENSE.md that was distributed with this source code.
 	<tr>
 		<td><code>
 		{foreach $methods as $data}
-			<a href="{$data['method']|methodUrl:$data['method']->declaringTrait}" n:tag-if="$template->getClass($traitName)"><span n:tag-if="$data['method']->deprecated" class="deprecated">{$data['method']->name}()</span></a>{if $data['aliases']}(as {foreach $data['aliases'] as $alias}<span n:tag-if="$data['method']->deprecated" class="deprecated">{$alias->name}()</span>{sep}, {/sep}{/foreach}){/if}{sep}, {/sep}
+			<a href="{$data['method']|methodUrl:$data['method']->declaringTrait}" n:tag-if="$template->getClass($traitName)"><span n:tag-if="$data['method']->deprecated" class="deprecated">{$data['method']->originalName}()</span></a>{if $data['aliases']}(as {foreach $data['aliases'] as $alias}<span n:tag-if="$data['method']->deprecated" class="deprecated">{$alias->name}()</span>{sep}, {/sep}{/foreach}){/if}{sep}, {/sep}
 		{/foreach}
 		</code></td>
 	</tr>
