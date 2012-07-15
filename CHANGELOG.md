@@ -1,3 +1,13 @@
+## ApiGen 2.7.0 (2012-07-15) ##
+
+* Support of custom template macros and helpers
+* Information about overridden methods in class method list
+* Template UX fixes
+* Fixed bugs causing ApiGen to crash
+* TokenReflection library updated to version 1.3.0
+* Bootstrap2 based template
+* Removed template with frames
+
 ## ApiGen 2.6.1 (2012-03-27) ##
 
 * Fixed resolving element names in annotations
