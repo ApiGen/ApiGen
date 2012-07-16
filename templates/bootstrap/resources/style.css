@@ -52,15 +52,13 @@ var {
 code {
 	color: #000000;
 	white-space: nowrap;
+	border: none;
+	background: transparent;
+	padding: 0
 }
 
 code:empty {
 	display: none;
-}
-
-code code {
-	border: none;
-	padding: 0;
 }
 
 code a b {
