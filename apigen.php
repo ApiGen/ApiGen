@@ -74,6 +74,12 @@ try {
 	};
 	Debugger::enable(Debugger::PRODUCTION, false);
 
+	// No timezone specified in php.ini
+	$tz = ini_get('date.timezone');
+	if (!$tz) {
+		date_default_timezone_set('UTC');
+	}
+
 	$start = new \DateTime();
 
 	$options = $_SERVER['argv'];
