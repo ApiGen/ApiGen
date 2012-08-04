@@ -42,6 +42,9 @@ spl_autoload_register(function($class) {
 	require sprintf('%s.php', str_replace('\\', DIRECTORY_SEPARATOR, $class));
 });
 
+// Safe locale
+setlocale(LC_ALL, 'C');
+
 try {
 
 	// Check dependencies
