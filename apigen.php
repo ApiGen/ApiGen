@@ -196,7 +196,7 @@ try {
 	if ($config->wipeout && is_dir($config->destination)) {
 		$generator->output("Wiping out destination directory\n");
 		if (!$generator->wipeOutDestination()) {
-			throw new Exception('Cannot wipe out destination directory');
+			throw new \RuntimeException('Cannot wipe out destination directory');
 		}
 	}
 
