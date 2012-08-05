@@ -472,7 +472,7 @@ class Template extends Nette\Templating\FileTemplate
 	public function getMethodUrl(ReflectionMethod $method, ReflectionClass $class = null)
 	{
 		$className = null !== $class ? $class->getName() : $method->getDeclaringClassName();
-		return $this->getClassUrl($className) . '#_' . $method->getOriginalName();
+		return $this->getClassUrl($className) . '#_' . ($method->getOriginalName() ?: $method->getName());
 	}
 
 	/**
