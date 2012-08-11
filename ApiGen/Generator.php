@@ -1524,6 +1524,11 @@ class Generator extends Nette\Object
 			return null;
 		}
 
+		// self, $this references
+		if ('self' === $definition || '$this' === $definition) {
+			return $context instanceof ReflectionClass ? $context : null;
+		}
+
 		$definitionBase = substr($definition, 0, strcspn($definition, '\\:'));
 		$namespaceAliases = $context->getNamespaceAliases();
 		if (!empty($definitionBase) && isset($namespaceAliases[$definitionBase]) && $definition !== ($className = \TokenReflection\Resolver::resolveClassFQN($definition, $namespaceAliases, $context->getNamespaceName()))) {
