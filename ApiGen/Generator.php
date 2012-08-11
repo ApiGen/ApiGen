@@ -175,10 +175,11 @@ class Generator extends Nette\Object
 			// Available from PHP 5.3.1
 			$flags |= \RecursiveDirectoryIterator::FOLLOW_SYMLINKS;
 		}
+
 		foreach ($this->config->source as $source) {
 			$entries = array();
 			if (is_dir($source)) {
-				foreach (new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($source, $flags)) as $entry) {
+				foreach (new \RecursiveIteratorIterator(new SourceFilesFilterIterator(new \RecursiveDirectoryIterator($source, $flags), $this->config->exclude)) as $entry) {
 					if (!$entry->isFile()) {
 						continue;
 					}
@@ -203,14 +204,8 @@ class Generator extends Nette\Object
 				if (!preg_match($regexp, $entry->getFilename())) {
 					continue;
 				}
-				$pathName = $this->normalizePath($entry->getPathName());
-				$unPharName = $this->unPharPath($pathName);
-				foreach ($this->config->exclude as $mask) {
-					if (fnmatch($mask, $unPharName, FNM_NOESCAPE)) {
-						continue 2;
-					}
-				}
 
+				$pathName = $this->normalizePath($entry->getPathName());
 				$files[$pathName] = $entry->getSize();
 				if (false !== $entry->getRealPath() && $pathName !== $entry->getRealPath()) {
 					$this->symlinks[$entry->getRealPath()] = $pathName;
