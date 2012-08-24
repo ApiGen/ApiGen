@@ -470,16 +470,15 @@ div.tree span.padding {
 	font-weight: bold;
 }
 
-.l {
+.l a {
 	background: #fbfbfc;
 	margin-right: 8px;
 	padding: 2px 2px 2px 8px;
 	color: #c0c0c0;
 }
 
-.l:target {
-	background: #0088cc url('code-line.png') right center no-repeat;
-	color: #ffffff;
+.l.selected, .l:target {
+	background: #f9f2d2;
 }
 
 /* Small screens */

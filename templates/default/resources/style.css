@@ -546,14 +546,13 @@ div.tree span.padding {
 	font-weight: bold;
 }
 
-.l {
+.l a {
 	padding-left: 2px;
 	color: #c0c0c0;
 }
 
-.l:target {
-	background: #006aeb url('code-line.png') right center no-repeat;
-	color: #ffffff;
+.l.selected, .l:target {
+	background: #f6f6f4;
 }
 
 #rightInner.medium #navigation {

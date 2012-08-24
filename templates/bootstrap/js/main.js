@@ -11,9 +11,17 @@
  */
 
 $(function() {
-	// Menu
-
+	var $document = $(document);
+	var $navigation = $('#navigation');
+	var navigationHeight = $('#navigation').height();
+	var $left = $('#left');
+	var $right = $('#right');
+	var $rightInner = $('#rightInner');
+	var $splitter = $('#splitter');
 	var $groups = $('#groups');
+	var $content = $('#content');
+
+	// Menu
 
 	// Hide deep packages and namespaces
 	$('ul span', $groups).click(function(event) {
@@ -42,8 +50,6 @@ $(function() {
 	}
 
 	// Content
-
-	var $content = $('#content');
 
 	// Search autocompletion
 	var autocompleteFound = false;
@@ -153,13 +159,6 @@ $(function() {
 	}
 
 	// Splitter
-	var $document = $(document);
-	var $navigation = $('#navigation');
-	var navigationHeight = $('#navigation').height();
-	var $left = $('#left');
-	var $right = $('#right');
-	var $rightInner = $('#rightInner');
-	var $splitter = $('#splitter');
 	var splitterWidth = $splitter.width();
 	function setSplitterPosition(position)
 	{
@@ -216,4 +215,14 @@ $(function() {
 	$(window)
 		.resize(setNavigationPosition)
 		.resize(setContentWidth);
+
+	// Line selection
+	var matches = window.location.hash.match(/^#(\d+)-(\d+)$/);
+	if (null !== matches) {
+		for (var i = parseInt(matches[1]); i <= parseInt(matches[2]); i++) {
+			$('#' + i).addClass('selected');
+		}
+
+		$right.scrollTop($('#' + matches[1]).offset().top);
+	}
 });

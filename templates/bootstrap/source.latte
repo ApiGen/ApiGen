@@ -15,5 +15,5 @@ the file LICENSE.md that was distributed with this source code.
 {block #title}File {$fileName}{/block}
 
 {block #content}
-<pre id="source"><code>{!$source|replaceRE:'#<span class="line">(\s*)(\d+):(\s*)</span>#','<a href="#$2" id="$2" class="l">$1$2$3</a>'}</code></pre>
+<pre id="source"><code>{!$source|replaceRE:'~<span class="line">(\s*)(\d+):(\s*)</span>([^\\n]*\\n)?~','<div id="$2" class="l"><a href="#$2">$1$2$3</a>$4</div>'}</code></pre>
 {/block}
