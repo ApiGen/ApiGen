@@ -1417,8 +1417,8 @@ class Generator extends Nette\Object
 	{
 		if (isset($this->parsedClasses[$namespace . '\\' . $className])) {
 			$class = $this->parsedClasses[$namespace . '\\' . $className];
-		} elseif (isset($this->parsedClasses[$className])) {
-			$class = $this->parsedClasses[$className];
+		} elseif (isset($this->parsedClasses[ltrim($className, '\\')])) {
+			$class = $this->parsedClasses[ltrim($className, '\\')];
 		} else {
 			return null;
 		}
@@ -1442,8 +1442,8 @@ class Generator extends Nette\Object
 	{
 		if (isset($this->parsedConstants[$namespace . '\\' . $constantName])) {
 			$constant = $this->parsedConstants[$namespace . '\\' . $constantName];
-		} elseif (isset($this->parsedConstants[$constantName])) {
-			$constant = $this->parsedConstants[$constantName];
+		} elseif (isset($this->parsedConstants[ltrim($constantName, '\\')])) {
+			$constant = $this->parsedConstants[ltrim($constantName, '\\')];
 		} else {
 			return null;
 		}
@@ -1467,8 +1467,8 @@ class Generator extends Nette\Object
 	{
 		if (isset($this->parsedFunctions[$namespace . '\\' . $functionName])) {
 			$function = $this->parsedFunctions[$namespace . '\\' . $functionName];
-		} elseif (isset($this->parsedFunctions[$functionName])) {
-			$function = $this->parsedFunctions[$functionName];
+		} elseif (isset($this->parsedFunctions[ltrim($functionName, '\\')])) {
+			$function = $this->parsedFunctions[ltrim($functionName, '\\')];
 		} else {
 			return null;
 		}

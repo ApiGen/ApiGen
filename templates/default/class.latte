@@ -114,7 +114,7 @@ the file LICENSE.md that was distributed with this source code.
 			{/if}
 			{foreach $method->parameters as $parameter}
 				<span>{if $parameter->array}array
-				{elseif $parameter->className}{!$parameter->className|typeLinks:$method}
+				{elseif $parameter->className}{capture $typeHint}\{$parameter->className}{/capture}{!$typeHint|typeLinks:$method}
 				{elseif isset($annotations['param'][$parameter->position])}{!$annotations['param'][$parameter->position]|typeLinks:$parameter}{/if}
 				<var>{if $parameter->passedByReference}&amp; {/if}${$parameter->name}</var>{if $parameter->defaultValueAvailable} = {!$parameter->defaultValueDefinition|highlightPHP:$class}{/if}</span>{sep}, {/sep}
 			{/foreach}

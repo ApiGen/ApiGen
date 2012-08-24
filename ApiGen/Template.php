@@ -320,9 +320,10 @@ class Template extends Nette\Templating\FileTemplate
 	 * Returns unified type value definition (class name or member data type).
 	 *
 	 * @param string $name
+	 * @param boolean $trimNamespaceSeparator
 	 * @return string
 	 */
-	public function getTypeName($name)
+	public function getTypeName($name, $trimNamespaceSeparator = true)
 	{
 		static $names = array(
 			'int' => 'integer',
@@ -340,7 +341,7 @@ class Template extends Nette\Templating\FileTemplate
 		}
 
 		// Class, constant or function
-		return ltrim($name, '\\');
+		return $trimNamespaceSeparator ? ltrim($name, '\\') : $name;
 	}
 
 	/**
@@ -368,8 +369,8 @@ class Template extends Nette\Templating\FileTemplate
 		}
 
 		foreach (explode('|', $types) as $type) {
-			$type = $this->getTypeName($type);
-			$links[] = $this->resolveLink($type, $context) ?: $this->escapeHtml($type);
+			$type = $this->getTypeName($type, false);
+			$links[] = $this->resolveLink($type, $context) ?: ltrim($this->escapeHtml($type), '\\');
 		}
 
 		return implode('|', $links);
