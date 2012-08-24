@@ -165,7 +165,7 @@ class Template extends Nette\Templating\FileTemplate
 
 		// Docblock descriptions
 		$this->registerHelper('description', function($annotation, $context) use ($that) {
-			$description = trim(strpbrk($annotation, ' $'));
+			$description = trim(strpbrk($annotation, "\n\r\t $"));
 
 			if ($context instanceof ReflectionParameter) {
 				$description = preg_replace('~^(\\$' . $context->getName() . ')(\s+|$)~i', '\\2', $description, 1);
@@ -354,7 +354,10 @@ class Template extends Nette\Templating\FileTemplate
 	{
 		$links = array();
 
-		$types = trim(substr($annotation, 0, strcspn($annotation, ' $')));
+		list($types) = $this->split($annotation);
+		if ('$' === $types{0}) {
+			$types = null;
+		}
 
 		if (empty($types) && $context instanceof ReflectionParameter) {
 			$types = $context->getClassName();
