@@ -9,12 +9,14 @@ Copyright (c) 2012 Olivier Laviale (https://github.com/olvlvl)
 For the full copyright and license information, please view
 the file LICENSE.md that was distributed with this source code.
 *}
+{default $robots = true}
+{default $active = ''}
 <!DOCTYPE html>
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<meta name="generator" content="{$generator} {$version}">
-	<meta name="robots" content="noindex" n:if="'source' === $active">
+	<meta name="robots" content="noindex" n:if="!$robots">
 
 	<title>{include #title}{if 'overview' !== $active && $config->title} | {$config->title}{/if}</title>
 

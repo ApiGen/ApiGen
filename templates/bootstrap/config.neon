@@ -6,6 +6,7 @@ templates:
 		overview.latte: index.html
 		combined.js.latte: resources/combined.js
 		elementlist.js.latte: elementlist.js
+		404.latte: 404.html
 
 	main:
 		package:
