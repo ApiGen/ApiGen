@@ -165,7 +165,8 @@ class Template extends Nette\Templating\FileTemplate
 
 		// Docblock descriptions
 		$this->registerHelper('description', function($annotation, $context) use ($that) {
-			list(, $description) = $that->split($annotation);
+			$description = trim(strpbrk($annotation, ' $'));
+
 			if ($context instanceof ReflectionParameter) {
 				$description = preg_replace('~^(\\$' . $context->getName() . ')(\s+|$)~i', '\\2', $description, 1);
 			}
@@ -352,7 +353,17 @@ class Template extends Nette\Templating\FileTemplate
 	public function getTypeLinks($annotation, ReflectionElement $context)
 	{
 		$links = array();
-		list($types) = $this->split($annotation);
+
+		$types = trim(substr($annotation, 0, strcspn($annotation, ' $')));
+
+		if (empty($types) && $context instanceof ReflectionParameter) {
+			$types = $context->getClassName();
+		}
+
+		if (empty($types)) {
+			$types = 'mixed';
+		}
+
 		foreach (explode('|', $types) as $type) {
 			$type = $this->getTypeName($type);
 			$links[] = $this->resolveLink($type, $context) ?: $this->escapeHtml($type);
