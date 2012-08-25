@@ -370,7 +370,7 @@ class Template extends Nette\Templating\FileTemplate
 
 		foreach (explode('|', $types) as $type) {
 			$type = $this->getTypeName($type, false);
-			$links[] = $this->resolveLink($type, $context) ?: ltrim($this->escapeHtml($type), '\\');
+			$links[] = $this->resolveLink($type, $context) ?: $this->escapeHtml(ltrim($type, '\\'));
 		}
 
 		return implode('|', $links);
