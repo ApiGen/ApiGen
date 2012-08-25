@@ -309,6 +309,39 @@ class Template extends Nette\Templating\FileTemplate
 			return $name;
 		});
 
+		// Source anchors
+		$this->registerHelper('sourceAnchors', function($source) {
+			// Classes, interfaces, traits and exceptions
+			$source = preg_replace_callback('~(<span\\s+class="php-keyword1">(?:class|interface|trait)</span>\\s+)(\\w+)~i', function($matches) {
+				$link = sprintf('<a id="%1$s" href="#%1$s">%1$s</a>', $matches[2]);
+				return $matches[1] . $link;
+			}, $source);
+
+			// Methods and functions
+			$source = preg_replace_callback('~(<span\\s+class="php-keyword1">function</span>\\s+)(\\w+)~i', function($matches) {
+				$link = sprintf('<a id="_%1$s" href="#_%1$s">%1$s</a>', $matches[2]);
+				return $matches[1] . $link;
+			}, $source);
+
+			// Constants
+			$source = preg_replace_callback('~(<span class="php-keyword1">const</span>)(.*?)(;)~is', function($matches) {
+				$links = preg_replace_callback('~(\\s|,)([A-Z_]+)(\\s+=)~', function($matches) {
+					return $matches[1] . sprintf('<a id="%1$s" href="#%1$s">%1$s</a>', $matches[2]) . $matches[3];
+				}, $matches[2]);
+				return $matches[1] . $links . $matches[3];
+			}, $source);
+
+			// Properties
+			$source = preg_replace_callback('~(<span\\s+class="php-keyword1">(?:private|protected|public|var|static)</span>\\s+)(<span\\s+class="php-var">.*?)(;)~is', function($matches) {
+				$links = preg_replace_callback('~(<span\\s+class="php-var">)(\\$\\w+)~i', function($matches) {
+					return $matches[1] . sprintf('<a id="%1$s" href="#%1$s">%1$s</a>', $matches[2]);
+				}, $matches[2]);
+				return $matches[1] . $links . $matches[3];
+			}, $source);
+
+			return $source;
+		});
+
 		$this->registerHelper('urlize', array($this, 'urlize'));
 
 		$this->registerHelper('relativePath', array($generator, 'getRelativePath'));

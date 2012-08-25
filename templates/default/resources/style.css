@@ -546,17 +546,33 @@ div.tree span.padding {
 	font-weight: bold;
 }
 
-.l.selected {
+div.l.selected {
 	background: #f6f6f4;
 }
 
+div.l a {
+	color: #333333;
+}
 
-.l a {
+div.l a:hover, div.l a:active, div.l a:focus {
+	background: transparent;
+	color: #333333 !important;
+}
+
+div.l .php-var a {
+	color: #d59401;
+}
+
+div.l .php-var a:hover, div.l .php-var a:active, div.l .php-var a:focus {
+	color: #d59401 !important;
+}
+
+div.l a.l {
 	padding-left: 2px;
 	color: #c0c0c0;
 }
 
-.l a:hover, .l a:active, .l a:focus {
+div.l a.l:hover, div.l a.l:active, div.l a.l:focus {
 	background: transparent;
 	color: #c0c0c0 !important;
 }
