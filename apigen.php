@@ -17,6 +17,12 @@ namespace ApiGen;
 use Nette\Diagnostics\Debugger;
 use TokenReflection;
 
+// Safe locale and timezone
+setlocale(LC_ALL, 'C');
+if (!ini_get('date.timezone')) {
+	date_default_timezone_set('UTC');
+}
+
 if (false === strpos('@php_dir@', '@php_dir')) {
 	// PEAR package
 
@@ -41,9 +47,6 @@ spl_autoload_register(function($class) {
 	$class = trim($class, '\\');
 	require sprintf('%s.php', str_replace('\\', DIRECTORY_SEPARATOR, $class));
 });
-
-// Safe locale
-setlocale(LC_ALL, 'C');
 
 try {
 
@@ -76,12 +79,6 @@ try {
 		echo "\nFor more information turn on the debug mode using the --debug option.\n";
 	};
 	Debugger::enable(Debugger::PRODUCTION, false);
-
-	// No timezone specified in php.ini
-	$tz = ini_get('date.timezone');
-	if (!$tz) {
-		date_default_timezone_set('UTC');
-	}
 
 	$start = new \DateTime();
 
