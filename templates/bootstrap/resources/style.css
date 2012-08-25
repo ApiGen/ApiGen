@@ -468,35 +468,39 @@ div.tree span.padding {
 	font-weight: bold;
 }
 
-div.l.selected {
+span.l {
+	display: block;
+}
+
+span.l.selected {
 	background: #f9f2d2;
 }
 
-div.l a {
+span.l a {
 	color: #333333;
 }
 
-div.l a:hover, div.l a:active, div.l a:focus {
+span.l a:hover, span.l a:active, span.l a:focus {
 	background: transparent;
 	color: #333333 !important;
 }
 
-div.l .php-var a {
+span.l .php-var a {
 	color: #c09853;
 }
 
-div.l .php-var a:hover, div.l .php-var a:active, div.l .php-var a:focus {
+span.l .php-var a:hover, span.l .php-var a:active, span.l .php-var a:focus {
 	color: #c09853 !important;
 }
 
-div.l a.l {
+span.l a.l {
 	background: #fbfbfc;
 	margin-right: 8px;
 	padding: 2px 2px 2px 8px;
 	color: #c0c0c0;
 }
 
-div.l a.l:hover, div.l a.l:active, div.l a.l:focus {
+span.l a.l:hover, span.l a.l:active, span.l a.l:focus {
 	background: #fbfbfc;
 	color: #c0c0c0 !important;
 }
