@@ -210,8 +210,8 @@ $(function() {
 		var lists = matches[0].split(',');
 		for (var i = 0; i < lists.length; i++) {
 			var lines = lists[i].split('-');
-			for (var j = 0; j < lines.length; j++) {
-				$('#' + lines[j]).addClass('selected');
+			for (var j = lines[0]; j <= lines[1]; j++) {
+				$('#' + j).addClass('selected');
 			}
 		}
 
