@@ -610,15 +610,17 @@ class Template extends Nette\Templating\FileTemplate
 
 		$file .= $this->urlize($elementName);
 
-		$line = null;
+		$lines = null;
 		if ($withLine) {
-			$line = $element->getStartLine();
+			$startLine = $element->getStartLine();
 			if ($doc = $element->getDocComment()) {
-				$line -= substr_count($doc, "\n") + 1;
+				$startLine -= substr_count($doc, "\n") + 1;
 			}
+
+			$lines = $startLine !== $element->getEndLine() ? sprintf('%s-%s', $startLine, $element->getEndLine()) : $startLine;
 		}
 
-		return sprintf($this->config->template['templates']['main']['source']['filename'], $file) . (isset($line) ? '#' . $line : '');
+		return sprintf($this->config->template['templates']['main']['source']['filename'], $file) . (null !== $lines ? '#' . $lines : '');
 	}
 
 	/**
