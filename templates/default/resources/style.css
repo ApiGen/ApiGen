@@ -546,13 +546,19 @@ div.tree span.padding {
 	font-weight: bold;
 }
 
+.l.selected {
+	background: #f6f6f4;
+}
+
+
 .l a {
 	padding-left: 2px;
 	color: #c0c0c0;
 }
 
-.l.selected, .l:target {
-	background: #f6f6f4;
+.l a:hover, .l a:active, .l a:focus {
+	background: transparent;
+	color: #c0c0c0 !important;
 }
 
 #rightInner.medium #navigation {

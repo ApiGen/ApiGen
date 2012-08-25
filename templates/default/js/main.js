@@ -193,13 +193,85 @@ $(function() {
 	setNavigationPosition();
 	$(window).resize(setNavigationPosition);
 
-	// Line selection
-	var matches = window.location.hash.match(/^#(\d+)-(\d+)$/);
+	// Select selected lines
+	var matches = window.location.hash.substr(1).match(/^\d+(?:-\d+)?(?:,\d+(?:-\d+)?)*$/);
 	if (null !== matches) {
-		for (var i = parseInt(matches[1]); i <= parseInt(matches[2]); i++) {
-			$('#' + i).addClass('selected');
+		var lists = matches[0].split(',');
+		for (var i = 0; i < lists.length; i++) {
+			var lines = lists[i].split('-');
+			for (var j = 0; j < lines.length; j++) {
+				$('#' + lines[j]).addClass('selected');
+			}
 		}
 
-		$right.scrollTop($('#' + matches[1]).offset().top);
+		var $firstLine = $('#' + parseInt(matches[0]));
+		if ($firstLine.length > 0) {
+			$right.scrollTop($firstLine.offset().top);
+		}
 	}
+
+	// Save selected lines
+	var lastLine;
+	$('.l a').click(function(event) {
+		event.preventDefault();
+
+		var $selectedLine = $(this).parent();
+		var selectedLine = parseInt($selectedLine.attr('id'));
+
+		if (event.shiftKey) {
+			if (lastLine) {
+				for (var i = Math.min(selectedLine, lastLine); i <= Math.max(selectedLine, lastLine); i++) {
+					$('#' + i).addClass('selected');
+				}
+			} else {
+				$selectedLine.addClass('selected');
+			}
+		} else if (event.ctrlKey) {
+			$selectedLine.toggleClass('selected');
+		} else {
+			var $selected = $('.l.selected')
+				.not($selectedLine)
+				.removeClass('selected');
+			if ($selected.length > 0) {
+				$selectedLine.addClass('selected');
+			} else {
+				$selectedLine.toggleClass('selected');
+			}
+		}
+
+		lastLine = $selectedLine.hasClass('selected') ? selectedLine : null;
+
+		// Update hash
+		var lines = $('.l.selected')
+			.map(function() {
+				return parseInt($(this).attr('id'));
+			})
+			.get()
+			.sort(function(a, b) {
+				return a - b;
+			});
+
+		var hash = [];
+		var list = [];
+		for (var j = 0; j < lines.length; j++) {
+			if (0 === j && j + 1 === lines.length) {
+				hash.push(lines[j]);
+			} else if (0 === j) {
+				list[0] = lines[j];
+			} else if (lines[j - 1] + 1 !== lines[j] && j + 1 === lines.length) {
+				hash.push(list.join('-'));
+				hash.push(lines[j]);
+			} else if (lines[j - 1] + 1 !== lines[j]) {
+				hash.push(list.join('-'));
+				list = [lines[j]];
+			} else if (j + 1 === lines.length) {
+				list[1] = lines[j];
+				hash.push(list.join('-'));
+			} else {
+				list[1] = lines[j];
+			}
+		}
+
+		window.location.hash = hash.join(',');
+	});
 });

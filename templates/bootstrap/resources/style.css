@@ -470,6 +470,11 @@ div.tree span.padding {
 	font-weight: bold;
 }
 
+.l.selected {
+	background: #f9f2d2;
+}
+
+
 .l a {
 	background: #fbfbfc;
 	margin-right: 8px;
@@ -477,8 +482,9 @@ div.tree span.padding {
 	color: #c0c0c0;
 }
 
-.l.selected, .l:target {
-	background: #f9f2d2;
+.l a:hover, .l a:active, .l a:focus {
+	background: #fbfbfc;
+	color: #c0c0c0 !important;
 }
 
 /* Small screens */
