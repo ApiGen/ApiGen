@@ -225,6 +225,10 @@ try {
 	if ($interval->s > 0) {
 		$parts[] = sprintf('@count@%d@c sec', $interval->s);
 	}
+	if (empty($parts)) {
+		$parts[] = sprintf('@count@%d@c sec', 1);
+	}
+
 	$duration = implode(' ', $parts);
 	$generator->output(sprintf("Done. Total time: %s, used: @count@%d@c MB RAM\n", $duration, round(memory_get_peak_usage(true) / 1024 / 1024)));
 
