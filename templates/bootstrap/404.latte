@@ -16,6 +16,8 @@ the file LICENSE.md that was distributed with this source code.
 {block #content}
 <div id="content">
 	<h1>{include #title}</h1>
-	<p>The page you requested could not be found. It is possible that the address is incorrect, or that the page no longer exists.</p>
+	<p>The requested page could not be found.</p>
+	<p>You have probably clicked on a link that is outdated and points to a page that does not exist any more or you have made an typing error in the address.</p>
+	<p>To continue please try to find requested page in the menu,{if $config->tree} take a look at <a href="tree.html">the tree view</a> of the whole project{/if} or use search field on the top.</p>
 </div>
 {/block}
