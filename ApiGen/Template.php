@@ -389,7 +389,7 @@ class Template extends Nette\Templating\FileTemplate
 		$links = array();
 
 		list($types) = $this->split($annotation);
-		if ('$' === $types{0}) {
+		if (!empty($types) && '$' === $types{0}) {
 			$types = null;
 		}
 
