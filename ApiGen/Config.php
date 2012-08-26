@@ -405,10 +405,10 @@ class Config
 	{
 		$require = $this->config['template']['require'];
 		if (isset($require['min']) && !preg_match('~^\\d+(?:\\.\\d+){0,2}$~', $require['min'])) {
-			throw new ConfigException(sprintf('Invalid minimal template version "%s"', $require['min']));
+			throw new ConfigException(sprintf('Invalid minimal version definition "%s"', $require['min']));
 		}
 		if (isset($require['max']) && !preg_match('~^\\d+(?:\\.\\d+){0,2}$~', $require['max'])) {
-			throw new ConfigException(sprintf('Invalid maximum template version "%s"', $require['max']));
+			throw new ConfigException(sprintf('Invalid maximal version definition "%s"', $require['max']));
 		}
 
 		$isMinOk = function($min) {
