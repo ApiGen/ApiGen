@@ -110,7 +110,7 @@ try {
 	if ($config->updateCheck && !$config->debug) {
 		ini_set('default_socket_timeout', 5);
 		$latestVersion = @file_get_contents('http://pear.apigen.org/rest/r/apigen/latest.txt');
-		if (false !== $latestVersion && version_compare(trim($latestVersion), Generator::VERSION) > 0) {
+		if (false !== $latestVersion && version_compare(trim($latestVersion), Generator::VERSION, '>')) {
 			$generator->output(sprintf("New version @header@%s@c available\n\n", $latestVersion));
 		}
 	}
