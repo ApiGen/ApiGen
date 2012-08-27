@@ -168,7 +168,7 @@ class Template extends Nette\Templating\FileTemplate
 			$description = trim(strpbrk($annotation, "\n\r\t $"));
 
 			if ($context instanceof ReflectionParameter) {
-				$description = preg_replace('~^(\\$' . $context->getName() . ')(\s+|$)~i', '\\2', $description, 1);
+				$description = preg_replace('~^(\\$' . $context->getName() . '(?:,\\.{3})?)(\s+|$)~i', '\\2', $description, 1);
 			}
 			return $that->doc($description, $context);
 		});

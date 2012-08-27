@@ -823,14 +823,21 @@ class Generator extends Nette\Object
 					// Documentation of method
 					if ($element instanceof ReflectionMethod || $element instanceof ReflectionFunction) {
 						// Parameters
+						$unlimited = false;
 						foreach ($element->getParameters() as $no => $parameter) {
 							if (!isset($annotations['param'][$no])) {
 								$list[$fileName][] = array('error', $line, sprintf('Missing documentation of %s', $labeler($parameter)));
 								continue;
 							}
 
-							if (!preg_match('~^[\\w\\\\]+(?:\\[\\])?(?:\\|[\\w\\\\]+(?:\\[\\])?)*(?:\\s+\\$' . $parameter->getName() . ')?(?:\\s+.+)?$~s', $annotations['param'][$no])) {
+							if (!preg_match('~^[\\w\\\\]+(?:\\[\\])?(?:\\|[\\w\\\\]+(?:\\[\\])?)*(?:\\s+\\$' . $parameter->getName() . ($parameter->isUnlimited() ? ',\\.{3}' : '') . ')?(?:\\s+.+)?$~s', $annotations['param'][$no])) {
 								$list[$fileName][] = array('warning', $line, sprintf('Invalid documentation "%s" of %s', $annotations['param'][$no], $labeler($parameter)));
+							}
+
+							if ($unlimited && $parameter->isUnlimited()) {
+								$list[$fileName][] = array('warning', $line, sprintf('More than one unlimited parameters of %s', $labeler($element)));
+							} elseif ($parameter->isUnlimited()) {
+								$unlimited = true;
 							}
 
 							unset($annotations['param'][$no]);
