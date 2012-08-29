@@ -39,7 +39,7 @@ the file LICENSE.md that was distributed with this source code.
 
 	<table class="summary" id="parameters" n:if="$function->numberOfParameters">
 	<caption>Parameters summary</caption>
-	<tr n:foreach="$function->parameters as $parameter" data-order="{$parameter->name}" id="${$parameter->name}">
+	<tr n:foreach="$function->parameters as $parameter" id="${$parameter->name}">
 		<td class="name"><code>
 			{if $parameter->array}array
 			{elseif $parameter->className}{!$parameter->className|typeLinks:$function}
