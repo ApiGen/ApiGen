@@ -661,27 +661,27 @@ class Generator extends Nette\Object
 			foreach ($this->$type as $element) {
 				if ($element instanceof ReflectionClass) {
 					if (isset($autocomplete['classes'])) {
-						$elements[] = array('c', $this->getElementName($element));
+						$elements[] = array('c', $element->getPrettyName());
 					}
 					if (isset($autocomplete['methods'])) {
 						foreach ($element->getOwnMethods() as $method) {
-							$elements[] = array('m', $this->getElementName($method));
+							$elements[] = array('m', $method->getPrettyName());
 						}
 					}
 					if (isset($autocomplete['properties'])) {
 						foreach ($element->getOwnProperties() as $property) {
-							$elements[] = array('p', $this->getElementName($property));
+							$elements[] = array('p', $property->getPrettyName());
 						}
 					}
 					if (isset($autocomplete['classconstants'])) {
 						foreach ($element->getOwnConstants() as $constant) {
-							$elements[] = array('cc', $this->getElementName($constant));
+							$elements[] = array('cc', $constant->getPrettyName());
 						}
 					}
 				} elseif ($element instanceof ReflectionConstant && isset($autocomplete['constants'])) {
-					$elements[] = array('co', $this->getElementName($element));
+					$elements[] = array('co', $element->getPrettyName());
 				} elseif ($element instanceof ReflectionFunction && isset($autocomplete['functions'])) {
-					$elements[] = array('f', $this->getElementName($element));
+					$elements[] = array('f', $element->getPrettyName());
 				}
 			}
 		}
@@ -769,7 +769,7 @@ class Generator extends Nette\Object
 			} elseif ($element instanceof ReflectionParameter) {
 				$label = 'parameter';
 			}
-			return sprintf('%s %s', $label, $that->getElementName($element));
+			return sprintf('%s %s', $label, $element->getPrettyName());
 		};
 
 		$list = array();
@@ -1267,7 +1267,7 @@ class Generator extends Nette\Object
 						list($link, $description) = preg_split('~\s+|$~', $value, 2);
 						$resolved = $this->resolveElement($link, $element);
 						if (null !== $resolved) {
-							$resolved->addAnnotation('usedby', $this->getElementName($element) . ' ' . $description);
+							$resolved->addAnnotation('usedby', $element->getPrettyName() . ' ' . $description);
 						}
 					}
 				}
@@ -1907,33 +1907,6 @@ class Generator extends Nette\Object
 	{
 		static $types = array('classes', 'interfaces', 'traits', 'exceptions', 'constants', 'functions');
 		return $types;
-	}
-
-	/**
-	 * Returns element name.
-	 *
-	 * @param \Apigen\ReflectionElement $element
-	 * @return string
-	 */
-	public function getElementName(ReflectionElement $element)
-	{
-		if ($element instanceof ReflectionClass) {
-			return $element->getName();
-		} elseif ($element instanceof ReflectionMethod) {
-			return sprintf('%s::%s()', $element->getDeclaringClassName(), $element->getName());
-		} elseif ($element instanceof ReflectionFunction) {
-			return sprintf('%s()', $element->getName());
-		} elseif ($element instanceof ReflectionConstant) {
-			if ($className = $element->getDeclaringClassName()) {
-				return sprintf('%s::%s', $className, $element->getName());
-			} else {
-				return sprintf('%s', $element->getName());
-			}
-		} elseif ($element instanceof ReflectionProperty) {
-			return sprintf('%s::$%s', $element->getDeclaringClassName(), $element->getName());
-		} elseif ($element instanceof ReflectionParameter) {
-			return sprintf('%s($%s)', $this->getElementName($element->getDeclaringFunction()), $element->getName());
-		}
 	}
 
 	/**
