@@ -62,14 +62,14 @@ abstract class ReflectionBase
 	 *
 	 * @var array
 	 */
-	private static $reflectionMethods = array();
+	protected static $reflectionMethods = array();
 
 	/**
 	 * Reflection type (reflection class).
 	 *
 	 * @var string
 	 */
-	private $reflectionType;
+	protected $reflectionType;
 
 	/**
 	 * Inspected class reflection.

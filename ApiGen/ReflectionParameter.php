@@ -57,4 +57,14 @@ class ReflectionParameter extends ReflectionElement
 		$className = $this->reflection->getDeclaringClassName();
 		return null === $className ? null : self::$parsedClasses[$className];
 	}
+
+	/**
+	 * If the parameter can be used unlimited.
+	 *
+	 * @return boolean
+	 */
+	public function isUnlimited()
+	{
+		return false;
+	}
 }

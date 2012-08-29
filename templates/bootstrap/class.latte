@@ -120,7 +120,7 @@ the file LICENSE.md that was distributed with this source code.
 					<span>{if $parameter->array}array
 					{elseif $parameter->className}{capture $typeHint}\{$parameter->className}{/capture}{!$typeHint|typeLinks:$method}
 					{elseif isset($annotations['param'][$parameter->position])}{!$annotations['param'][$parameter->position]|typeLinks:$parameter}{/if}
-					<var>{if $parameter->passedByReference}&amp; {/if}${$parameter->name}</var>{if $parameter->defaultValueAvailable} = {!$parameter->defaultValueDefinition|highlightPHP:$class}{/if}</span>{sep}, {/sep}
+					<var>{if $parameter->passedByReference}&amp; {/if}${$parameter->name}</var>{if $parameter->defaultValueAvailable} = {!$parameter->defaultValueDefinition|highlightPHP:$class}{elseif $parameter->unlimited},…{/if}</span>{sep}, {/sep}
 				{/foreach}
 			){/block}</code>
 
@@ -150,7 +150,7 @@ the file LICENSE.md that was distributed with this source code.
 					<h4>Parameters</h4>
 					<div class="list"><dl>
 					{foreach $method->parameters as $parameter}
-						<dt><var>${$parameter->name}</var></dt>
+						<dt><var>${$parameter->name}</var>{if $parameter->unlimited},…{/if}</dt>
 						<dd>{ifset $annotations['param'][$parameter->position]}{!$annotations['param'][$parameter->position]|annotation:'param':$parameter}{/ifset}</dd>
 					{/foreach}
 					</dl></div>

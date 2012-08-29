@@ -24,16 +24,64 @@ use InvalidArgumentException;
 abstract class ReflectionFunctionBase extends ReflectionElement
 {
 	/**
+	 * Cache for list of parameters.
+	 *
+	 * @var array
+	 */
+	protected $parameters;
+
+	/**
 	 * Returns a list of function/method parameters.
 	 *
 	 * @return array
 	 */
 	public function getParameters()
 	{
-		$generator = self::$generator;
-		return array_map(function(TokenReflection\IReflectionParameter $parameter) use ($generator) {
+		if (null === $this->parameters) {
+			$generator = self::$generator;
+			$this->parameters = array_map(function(TokenReflection\IReflectionParameter $parameter) use ($generator) {
 			return new ReflectionParameter($parameter, $generator);
-		}, $this->reflection->getParameters());
+			}, $this->reflection->getParameters());
+
+			$annotations = $this->getAnnotation('param');
+			if (null !== $annotations) {
+				foreach ($annotations as $position => $annotation) {
+					if (isset($parameters[$position])) {
+						// Standard parameter
+						continue;
+					}
+
+					list($typeHint, $name) = preg_split('~\s+|$~', $annotation, 3);
+					if (empty($typeHint)) {
+						// Empty annotation
+						continue;
+					}
+
+					if ('$' === $typeHint[0]) {
+						$name = $typeHint;
+						$typeHint = 'mixed';
+					}
+
+					if (',...' !== substr($name, -4)) {
+						// Not unlimited
+						continue;
+					}
+
+					$name = substr($name, 1, -4);
+
+					$parameter = new ReflectionParameterUnlimited(null, self::$generator);
+					$parameter
+						->setName($name)
+						->setPosition($position)
+						->setTypeHint($typeHint)
+						->setDeclaringFunction($this);
+
+					$this->parameters[$position] = $parameter;
+				}
+			}
+		}
+
+		return $this->parameters;
 	}
 
 	/**
