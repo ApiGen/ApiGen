@@ -366,7 +366,8 @@ class Template extends Nette\Templating\FileTemplate
 			'void' => '',
 			'FALSE' => 'false',
 			'TRUE' => 'true',
-			'NULL' => 'null'
+			'NULL' => 'null',
+			'callback' => 'callable'
 		);
 
 		// Simple type
