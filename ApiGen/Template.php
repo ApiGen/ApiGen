@@ -236,11 +236,11 @@ class Template extends Nette\Templating\FileTemplate
 		$internal = $this->config->internal;
 		$this->registerHelper('annotationFilter', function(array $annotations, array $filter = array()) use ($todo, $internal) {
 			// Filtered, unsupported or deprecated annotations
-			static $unsupported = array(
+			static $filtered = array(
 				'package', 'subpackage', 'property', 'property-read', 'property-write', 'method', 'abstract',
 				'access', 'final', 'filesource', 'global', 'name', 'static', 'staticvar'
 			);
-			foreach ($unsupported as $annotation) {
+			foreach ($filtered as $annotation) {
 				unset($annotations[$annotation]);
 			}
 
