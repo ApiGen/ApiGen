@@ -18,7 +18,7 @@ namespace ApiGen;
  *
  * Alters TokenReflection\IReflectionParameter functionality for ApiGen.
  */
-class ReflectionParameter extends ReflectionElement
+class ReflectionParameter extends ReflectionBase
 {
 	/**
 	 * Returns reflection of the required class of the parameter.

@@ -169,6 +169,7 @@ class Template extends Nette\Templating\FileTemplate
 
 			if ($context instanceof ReflectionParameter) {
 				$description = preg_replace('~^(\\$' . $context->getName() . '(?:,\\.{3})?)(\s+|$)~i', '\\2', $description, 1);
+				$context = $context->getDeclaringFunction();
 			}
 			return $that->doc($description, $context);
 		});
@@ -391,10 +392,6 @@ class Template extends Nette\Templating\FileTemplate
 		list($types) = $this->split($annotation);
 		if (!empty($types) && '$' === $types{0}) {
 			$types = null;
-		}
-
-		if (empty($types) && $context instanceof ReflectionParameter) {
-			$types = $context->getClassName();
 		}
 
 		if (empty($types)) {

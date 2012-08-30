@@ -1492,11 +1492,11 @@ class Generator extends Nette\Object
 	 * Tries to parse a definition of a class/method/property/constant/function and returns the appropriate instance if successful.
 	 *
 	 * @param string $definition Definition
-	 * @param \ApiGen\ReflectionElement $context Link context
+	 * @param \ApiGen\ReflectionElement|\ApiGen\ReflectionParameter $context Link context
 	 * @param string $expectedName Expected element name
 	 * @return \ApiGen\ReflectionElement|null
 	 */
-	public function resolveElement($definition, ReflectionElement $context, &$expectedName = null)
+	public function resolveElement($definition, $context, &$expectedName = null)
 	{
 		// No simple type resolving
 		static $types = array(

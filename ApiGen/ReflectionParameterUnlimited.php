@@ -19,7 +19,7 @@ use TokenReflection;
  * Envelope for parameters that can be used unlimited times
  * and are not defined in function/method signature, only in @param annotation.
  */
-class ReflectionParameterUnlimited extends ReflectionParameter
+class ReflectionParameterUnlimited extends ReflectionBase
 {
 	/**
 	 * Parameter name.
@@ -353,126 +353,6 @@ class ReflectionParameterUnlimited extends ReflectionParameter
 	public function canBePassedByValue()
 	{
 		return false;
-	}
-
-	/**
-	 * Returns the PHP extension reflection.
-	 *
-	 * @return \ApiGen\ReflectionExtension
-	 */
-	public function getExtension()
-	{
-		return null;
-	}
-
-	/**
-	 * Returns if the element belongs to main project.
-	 *
-	 * @return boolean
-	 */
-	public function isMain()
-	{
-		return true;
-	}
-
-	/**
-	 * Returns if the element should be documented.
-	 *
-	 * @return boolean
-	 */
-	public function isDocumented()
-	{
-		return true;
-	}
-
-	/**
-	 * Returns if the element is deprecated.
-	 *
-	 * @return boolean
-	 */
-	public function isDeprecated()
-	{
-		return false;
-	}
-
-	/**
-	 * Returns if the element is in package.
-	 *
-	 * @return boolean
-	 */
-	public function inPackage()
-	{
-		return false;
-	}
-
-	/**
-	 * Returns element package name (including subpackage name).
-	 *
-	 * @return string
-	 */
-	public function getPackageName()
-	{
-		return '';
-	}
-
-	/**
-	 * Returns element package name (including subpackage name).
-	 *
-	 * @return string
-	 */
-	public function getPseudoPackageName()
-	{
-		return '';
-	}
-
-	/**
-	 * Returns element namespace name.
-	 *
-	 * @return string
-	 */
-	public function getNamespaceName()
-	{
-		return '';
-	}
-
-	/**
-	 * Returns element namespace name.
-	 *
-	 * @return string
-	 */
-	public function getPseudoNamespaceName()
-	{
-		return '';
-	}
-
-	/**
-	 * Returns the short description.
-	 *
-	 * @return string
-	 */
-	public function getShortDescription()
-	{
-		return '';
-	}
-
-	/**
-	 * Returns the long description.
-	 *
-	 * @return string
-	 */
-	public function getLongDescription()
-	{
-		return '';
-	}
-
-	/**
-	 * Returns element annotations.
-	 *
-	 * @return array
-	 */
-	public function getAnnotations()
-	{
-		return array();
 	}
 
 	/**
