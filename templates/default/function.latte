@@ -42,6 +42,7 @@ the file LICENSE.md that was distributed with this source code.
 	<tr n:foreach="$function->parameters as $parameter" id="${$parameter->name}">
 		<td class="name"><code>
 			{if $parameter->array}array
+			{elseif $parameter->callable}callable
 			{elseif $parameter->className}{!$parameter->className|typeLinks:$function}
 			{elseif isset($annotations['param'][$parameter->position])}{!$annotations['param'][$parameter->position]|typeLinks:$function}{/if}
 		</code></td>
