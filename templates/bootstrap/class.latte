@@ -117,7 +117,7 @@ the file LICENSE.md that was distributed with this source code.
 					<a n:tag-if="$config->sourceCode" href="{$method|sourceUrl}" title="Go to source code">{$method->name}</a>(
 				{/if}
 				{foreach $method->parameters as $parameter}
-					<span>{$parameter->typeHint|typeLinks:$method}
+					<span>{!$parameter->typeHint|typeLinks:$method}
 					<var>{if $parameter->passedByReference}&amp; {/if}${$parameter->name}</var>{if $parameter->defaultValueAvailable} = {!$parameter->defaultValueDefinition|highlightPHP:$class}{elseif $parameter->unlimited},…{/if}</span>{sep}, {/sep}
 				{/foreach}
 			){/block}</code>
@@ -227,7 +227,7 @@ the file LICENSE.md that was distributed with this source code.
 		<tr n:foreach="$ownConstants as $constant" data-order="{$constant->name}" id="{$constant->name}">
 			{var $annotations = $constant->annotations}
 
-			<td class="attributes"><code>{$constant->typeHint|typeLinks:$constant}</code></td>
+			<td class="attributes"><code>{!$constant->typeHint|typeLinks:$constant}</code></td>
 			<td class="name"><code>
 				{if $class->internal}
 					<a href="{$constant|manualUrl}" title="Go to PHP documentation"><b>{$constant->name}</b></a>
@@ -282,7 +282,7 @@ the file LICENSE.md that was distributed with this source code.
 
 			<td class="attributes"><code>
 				{if $property->protected}protected{elseif $property->private}private{else}public{/if} {if $property->static}static{/if}
-				{$property->typeHint|typeLinks:$property}
+				{!$property->typeHint|typeLinks:$property}
 			</code></td>
 
 			<td class="name">

@@ -40,7 +40,7 @@ the file LICENSE.md that was distributed with this source code.
 	<table class="summary" id="vars">
 	<caption>Value summary</caption>
 	<tr>
-		<td class="name"><code>{$constant->typeHint|typeLinks:$constant}</code></td>
+		<td class="name"><code>{!$constant->typeHint|typeLinks:$constant}</code></td>
 		<td class="value">{block|strip}
 			{var $element = $template->resolveElement($constant->valueDefinition, $constant)}
 			{if $element}<a href="{$element|constantUrl}">{$constant->valueDefinition}</a>{else}<code>{!$constant->valueDefinition|highlightValue:$constant}</code>{/if}
