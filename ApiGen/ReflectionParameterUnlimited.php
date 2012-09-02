@@ -368,10 +368,7 @@ class ReflectionParameterUnlimited extends ReflectionBase
 	/**
 	 * Retrieves a property or method value.
 	 *
-	 * First tries the envelope object's property storage, then its methods
-	 * and finally the inspected element reflection.
-	 *
-	 * @param string $name Attribute name
+	 * @param string $name Property name
 	 * @return mixed
 	 */
 	public function __get($name)
@@ -390,9 +387,6 @@ class ReflectionParameterUnlimited extends ReflectionBase
 
 	/**
 	 * Checks if the given property exists.
-	 *
-	 * First tries the envelope object's property storage, then its methods
-	 * and finally the inspected element reflection.
 	 *
 	 * @param mixed $name Property name
 	 * @return boolean

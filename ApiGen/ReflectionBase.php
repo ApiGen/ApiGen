@@ -110,7 +110,7 @@ abstract class ReflectionBase
 	 * First tries the envelope object's property storage, then its methods
 	 * and finally the inspected element reflection.
 	 *
-	 * @param string $name Attribute name
+	 * @param string $name Property name
 	 * @return mixed
 	 */
 	public function __get($name)
