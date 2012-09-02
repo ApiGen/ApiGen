@@ -158,10 +158,6 @@ class Template extends Nette\Templating\FileTemplate
 
 		// Types
 		$this->registerHelper('typeLinks', new Nette\Callback($this, 'getTypeLinks'));
-		$this->registerHelper('type', function($value) use ($that) {
-			$type = $that->getTypeName(gettype($value));
-			return 'null' !== $type ? $type : '';
-		});
 
 		// Docblock descriptions
 		$this->registerHelper('description', function($annotation, $context) use ($that) {

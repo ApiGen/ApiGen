@@ -21,6 +21,32 @@ namespace ApiGen;
 class ReflectionConstant extends ReflectionElement
 {
 	/**
+	 * Returns constant type hint.
+	 *
+	 * @return string
+	 */
+	public function getTypeHint()
+	{
+		if ($annotations = $this->getAnnotation('var')) {
+			list($types) = preg_split('~\s+|$~', $annotations[0], 2);
+			if (!empty($types)) {
+				return $types;
+			}
+		}
+
+		try {
+			$type = gettype($this->getValue());
+			if ('null' !== strtolower($type)) {
+				return $type;
+			}
+		} catch (\Exception $e) {
+			// Nothing
+		}
+
+		return 'mixed';
+	}
+
+	/**
 	 * Returns the constant declaring class.
 	 *
 	 * @return \ApiGen\ReflectionClass|null

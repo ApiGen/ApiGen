@@ -41,9 +41,7 @@ the file LICENSE.md that was distributed with this source code.
 	<h2>Value summary</h2>
 	<table class="summary table table-bordered table-striped" id="vars">
 	<tr>
-		<td class="name"><code>
-			{ifset $annotations['var']}{!$annotations['var'][0]|typeLinks:$constant}{else}{try}{$constant->value|type}{/try}{/ifset}
-		</code></td>
+		<td class="name"><code>{$constant->typeHint|typeLinks:$constant}</code></td>
 		<td class="value">{block|strip}
 			{var $element = $template->resolveElement($constant->valueDefinition, $constant)}
 			{if $element}<a href="{$element|constantUrl}">{$constant->valueDefinition}</a>{else}<code>{!$constant->valueDefinition|highlightValue:$constant}</code>{/if}

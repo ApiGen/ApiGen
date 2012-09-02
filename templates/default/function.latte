@@ -40,12 +40,7 @@ the file LICENSE.md that was distributed with this source code.
 	<table class="summary" id="parameters" n:if="$function->numberOfParameters">
 	<caption>Parameters summary</caption>
 	<tr n:foreach="$function->parameters as $parameter" id="${$parameter->name}">
-		<td class="name"><code>
-			{if $parameter->array}array
-			{elseif $parameter->callable}callable
-			{elseif $parameter->className}{!$parameter->className|typeLinks:$function}
-			{elseif isset($annotations['param'][$parameter->position])}{!$annotations['param'][$parameter->position]|typeLinks:$function}{/if}
-		</code></td>
+		<td class="name"><code>{$parameter->typeHint|typeLinks:$function}</code></td>
 		<td class="value"><code>{block|strip}
 			<var>{if $parameter->passedByReference}&amp; {/if}${$parameter->name}</var>{if $parameter->defaultValueAvailable} = {!$parameter->defaultValueDefinition|highlightPHP:$function}{elseif $parameter->unlimited},…{/if}
 		{/block}</code></td>

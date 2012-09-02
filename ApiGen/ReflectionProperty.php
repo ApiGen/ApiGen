@@ -21,6 +21,32 @@ namespace ApiGen;
 class ReflectionProperty extends ReflectionElement
 {
 	/**
+	 * Returns property type hint.
+	 *
+	 * @return string
+	 */
+	public function getTypeHint()
+	{
+		if ($annotations = $this->getAnnotation('var')) {
+			list($types) = preg_split('~\s+|$~', $annotations[0], 2);
+			if (!empty($types) && '$' !== $types[0]) {
+				return $types;
+			}
+		}
+
+		try {
+			$type = gettype($this->getDefaultValue());
+			if ('null' !== strtolower($type)) {
+				return $type;
+			}
+		} catch (\Exception $e) {
+			// Nothing
+		}
+
+		return 'mixed';
+	}
+
+	/**
 	 * Returns the property declaring class.
 	 *
 	 * @return \ApiGen\ReflectionClass|null

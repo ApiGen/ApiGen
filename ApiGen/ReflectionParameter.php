@@ -21,6 +21,31 @@ namespace ApiGen;
 class ReflectionParameter extends ReflectionBase
 {
 	/**
+	 * Returns parameter type hint.
+	 *
+	 * @return string
+	 */
+	public function getTypeHint()
+	{
+		if ($this->isArray()) {
+			return 'array';
+		} elseif ($this->isCallable()) {
+			return 'callable';
+		} elseif ($className = $this->getClassName()) {
+			return $className;
+		} elseif ($annotations = $this->getDeclaringFunction()->getAnnotation('param')) {
+			if (!empty($annotations[$this->getPosition()])) {
+				list($types) = preg_split('~\s+|$~', $annotations[$this->getPosition()], 2);
+				if (!empty($types) && '$' !== $types[0]) {
+					return $types;
+				}
+			}
+		}
+
+		return 'mixed';
+	}
+
+	/**
 	 * Returns reflection of the required class of the parameter.
 	 *
 	 * @return \ApiGen\ReflectionClass|null

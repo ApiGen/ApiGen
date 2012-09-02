@@ -122,6 +122,16 @@ class ReflectionParameterUnlimited extends ReflectionBase
 	}
 
 	/**
+	 * Returns the type hint.
+	 *
+	 * @return string
+	 */
+	public function getTypeHint()
+	{
+		return $this->typeHint;
+	}
+
+	/**
 	 * Returns if the reflection object is internal.
 	 *
 	 * @return boolean
