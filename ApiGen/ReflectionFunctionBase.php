@@ -31,6 +31,16 @@ abstract class ReflectionFunctionBase extends ReflectionElement
 	protected $parameters;
 
 	/**
+	 * Returns the unqualified name (UQN).
+	 *
+	 * @return string
+	 */
+	public function getShortName()
+	{
+		return $this->reflection->getShortName();
+	}
+
+	/**
 	 * Returns if the function/method returns its value as reference.
 	 *
 	 * @return boolean
@@ -61,29 +71,25 @@ abstract class ReflectionFunctionBase extends ReflectionElement
 						continue;
 					}
 
-					list($typeHint, $name) = preg_split('~\s+|$~', $annotation, 3);
-					if (empty($typeHint)) {
-						// Empty annotation
+					if (!preg_match('~^(?:([\\w\\\\]+(?:\\|[\\w\\\\]+)*)\\s+)?\\$(\\w+),\\.{3}(?:\\s+(.*))?($)~s', $annotation, $matches)) {
+						// Wrong annotation format
 						continue;
 					}
 
-					if ('$' === $typeHint[0]) {
-						$name = $typeHint;
+					list(, $typeHint, $name) = $matches;
+
+					if (empty($typeHint)) {
 						$typeHint = 'mixed';
 					}
 
-					if (',...' !== substr($name, -4)) {
-						// Not unlimited
-						continue;
-					}
-
-					$name = substr($name, 1, -4);
-
-					$parameter = new ReflectionParameterUnlimited(null, self::$generator);
+					$parameter = new ReflectionParameterMagic(null, self::$generator);
 					$parameter
 						->setName($name)
 						->setPosition($position)
 						->setTypeHint($typeHint)
+						->setDefaultValueDefinition(null)
+						->setUnlimited(true)
+						->setPassedByReference(false)
 						->setDeclaringFunction($this);
 
 					$this->parameters[$position] = $parameter;

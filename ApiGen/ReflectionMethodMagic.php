@@ -13,27 +13,19 @@
 
 namespace ApiGen;
 
-use ReflectionProperty as InternalReflectionProperty;
+use ReflectionProperty as InternalReflectionMethod;
 
 /**
- * Envelope for magic properties that are defined
- * only as @property, @property-read or @property-write annotation.
+ * Envelope for magic methods that are defined only as @method annotation.
  */
-class ReflectionPropertyMagic extends ReflectionProperty
+class ReflectionMethodMagic extends ReflectionMethod
 {
 	/**
-	 * Property name.
+	 * Method name.
 	 *
 	 * @var string
 	 */
 	protected $name;
-
-	/**
-	 * Defines a type hint of parameter values.
-	 *
-	 * @var string
-	 */
-	protected $typeHint;
 
 	/**
 	 * Short description.
@@ -57,18 +49,11 @@ class ReflectionPropertyMagic extends ReflectionProperty
 	protected $endLine;
 
 	/**
-	 * If the property is read-only.
+	 * If the method returns reference.
 	 *
 	 * @var boolean
 	 */
-	protected $readOnly;
-
-	/**
-	 * If the property is write-only.
-	 *
-	 * @var boolean
-	 */
-	protected $writeOnly;
+	protected $returnsReference;
 
 	/**
 	 * The declaring class.
@@ -92,10 +77,10 @@ class ReflectionPropertyMagic extends ReflectionProperty
 	}
 
 	/**
-	 * Sets property name.
+	 * Sets method name.
 	 *
 	 * @param string $name
-	 * @return \Apigen\ReflectionPropertyMagic
+	 * @return \Apigen\ReflectionMethodMagic
 	 */
 	public function setName($name)
 	{
@@ -105,22 +90,10 @@ class ReflectionPropertyMagic extends ReflectionProperty
 	}
 
 	/**
-	 * Sets type hint.
-	 *
-	 * @param string $typeHint
-	 * @return \ApiGen\ReflectionParameterUnlimited
-	 */
-	public function setTypeHint($typeHint)
-	{
-		$this->typeHint = (string) $typeHint;
-		return $this;
-	}
-
-	/**
 	 * Sets short description.
 	 *
 	 * @param string $shortDescription
-	 * @return \Apigen\ReflectionPropertyMagic
+	 * @return \Apigen\ReflectionMethodMagic
 	 */
 	public function setShortDescription($shortDescription)
 	{
@@ -132,7 +105,7 @@ class ReflectionPropertyMagic extends ReflectionProperty
 	 * Sets start line.
 	 *
 	 * @param integer $startLine
-	 * @return \Apigen\ReflectionPropertyMagic
+	 * @return \Apigen\ReflectionMethodMagic
 	 */
 	public function setStartLine($startLine)
 	{
@@ -144,7 +117,7 @@ class ReflectionPropertyMagic extends ReflectionProperty
 	 * Sets end line.
 	 *
 	 * @param integer $endLine
-	 * @return \Apigen\ReflectionPropertyMagic
+	 * @return \Apigen\ReflectionMethodMagic
 	 */
 	public function setEndLine($endLine)
 	{
@@ -153,26 +126,26 @@ class ReflectionPropertyMagic extends ReflectionProperty
 	}
 
 	/**
-	 * Sets if the property is read-only.
+	 * Sets if the method returns reference.
 	 *
-	 * @param boolean $readOnly
-	 * @return \Apigen\ReflectionPropertyMagic
+	 * @param boolean $returnsReference
+	 * @return \Apigen\ReflectionMethodMagic
 	 */
-	public function setReadOnly($readOnly)
+	public function setReturnsReference($returnsReference)
 	{
-		$this->readOnly = (bool) $readOnly;
+		$this->returnsReference = (bool) $returnsReference;
 		return $this;
 	}
 
 	/**
-	 * Sets if the property is write only.
+	 * Sets parameters.
 	 *
-	 * @param boolean $writeOnly
-	 * @return \Apigen\ReflectionPropertyMagic
+	 * @param array $parameters
+	 * @return \Apigen\ReflectionMethodMagic
 	 */
-	public function setWriteOnly($writeOnly)
+	public function setParameters(array $parameters)
 	{
-		$this->writeOnly = (bool) $writeOnly;
+		$this->parameters = $parameters;
 		return $this;
 	}
 
@@ -180,7 +153,7 @@ class ReflectionPropertyMagic extends ReflectionProperty
 	 * Sets declaring class.
 	 *
 	 * @param \ApiGen\ReflectionClass $declaringClass
-	 * @return \ApiGen\ReflectionPropertyMagic
+	 * @return \ApiGen\ReflectionMethodMagic
 	 */
 	public function setDeclaringClass(ReflectionClass $declaringClass)
 	{
@@ -229,16 +202,6 @@ class ReflectionPropertyMagic extends ReflectionProperty
 	}
 
 	/**
-	 * Returns the type hint.
-	 *
-	 * @return string
-	 */
-	public function getTypeHint()
-	{
-		return $this->typeHint;
-	}
-
-	/**
 	 * Returns the short description.
 	 *
 	 * @return string
@@ -279,23 +242,13 @@ class ReflectionPropertyMagic extends ReflectionProperty
 	}
 
 	/**
-	 * Returns if the property is read-only.
+	 * Returns if the function/method returns its value as reference.
 	 *
 	 * @return boolean
 	 */
-	public function isReadOnly()
+	public function returnsReference()
 	{
-		return $this->readOnly;
-	}
-
-	/**
-	 * Returns if the property is write-only.
-	 *
-	 * @return boolean
-	 */
-	public function isWriteOnly()
-	{
-		return $this->writeOnly;
+		return $this->returnsReference;
 	}
 
 	/**
@@ -306,6 +259,16 @@ class ReflectionPropertyMagic extends ReflectionProperty
 	public function isMagic()
 	{
 		return true;
+	}
+
+	/**
+	 * Returns the unqualified name (UQN).
+	 *
+	 * @return string
+	 */
+	public function getShortName()
+	{
+		return $this->name;
 	}
 
 	/**
@@ -329,7 +292,7 @@ class ReflectionPropertyMagic extends ReflectionProperty
 	}
 
 	/**
-	 * Returns if the property should be documented.
+	 * Returns if the method should be documented.
 	 *
 	 * @return boolean
 	 */
@@ -386,7 +349,7 @@ class ReflectionPropertyMagic extends ReflectionProperty
 	}
 
 	/**
-	 * Returns the property declaring class.
+	 * Returns the method declaring class.
 	 *
 	 * @return \ApiGen\ReflectionClass|null
 	 */
@@ -396,9 +359,9 @@ class ReflectionPropertyMagic extends ReflectionProperty
 	}
 
 	/**
-	 * Returns the name of the declaring class.
+	 * Returns the declaring class name.
 	 *
-	 * @return string
+	 * @return string|null
 	 */
 	public function getDeclaringClassName()
 	{
@@ -406,47 +369,37 @@ class ReflectionPropertyMagic extends ReflectionProperty
 	}
 
 	/**
-	 * Returns the property default value.
-	 *
-	 * @return mixed
-	 */
-	public function getDefaultValue()
-	{
-		return null;
-	}
-
-	/**
-	 * Returns the part of the source code defining the property default value.
-	 *
-	 * @return string
-	 */
-	public function getDefaultValueDefinition()
-	{
-		return '';
-	}
-
-	/**
-	 * Returns if the property was created at compile time.
-	 *
-	 * @return boolean
-	 */
-	public function isDefault()
-	{
-		return false;
-	}
-
-	/**
-	 * Returns property modifiers.
+	 * Returns method modifiers.
 	 *
 	 * @return integer
 	 */
 	public function getModifiers()
 	{
-		return InternalReflectionProperty::IS_PUBLIC;
+		return InternalReflectionMethod::IS_PUBLIC;
 	}
 
 	/**
-	 * Returns if the property is private.
+	 * Returns if the method is abstract.
+	 *
+	 * @return boolean
+	 */
+	public function isAbstract()
+	{
+		return false;
+	}
+
+	/**
+	 * Returns if the method is final.
+	 *
+	 * @return boolean
+	 */
+	public function isFinal()
+	{
+		return false;
+	}
+
+	/**
+	 * Returns if the method is private.
 	 *
 	 * @return boolean
 	 */
@@ -456,7 +409,7 @@ class ReflectionPropertyMagic extends ReflectionProperty
 	}
 
 	/**
-	 * Returns if the property is protected.
+	 * Returns if the method is protected.
 	 *
 	 * @return boolean
 	 */
@@ -466,7 +419,7 @@ class ReflectionPropertyMagic extends ReflectionProperty
 	}
 
 	/**
-	 * Returns if the property is public.
+	 * Returns if the method is public.
 	 *
 	 * @return boolean
 	 */
@@ -476,7 +429,7 @@ class ReflectionPropertyMagic extends ReflectionProperty
 	}
 
 	/**
-	 * Returns if the poperty is static.
+	 * Returns if the method is static.
 	 *
 	 * @return boolean
 	 */
@@ -496,7 +449,27 @@ class ReflectionPropertyMagic extends ReflectionProperty
 	}
 
 	/**
-	 * Returns the property declaring trait.
+	 * Returns if the method is a constructor.
+	 *
+	 * @return boolean
+	 */
+	public function isConstructor()
+	{
+		return false;
+	}
+
+	/**
+	 * Returns if the method is a destructor.
+	 *
+	 * @return boolean
+	 */
+	public function isDestructor()
+	{
+		return false;
+	}
+
+	/**
+	 * Returns the method declaring trait.
 	 *
 	 * @return \ApiGen\ReflectionClass|null
 	 */
@@ -519,6 +492,108 @@ class ReflectionPropertyMagic extends ReflectionProperty
 	}
 
 	/**
+	 * Returns the method prototype.
+	 *
+	 * @return \ApiGen\ReflectionMethod
+	 * @throws \RuntimeException If the method has no prototype.
+	 */
+	public function getPrototype()
+	{
+		if ($prototype = $this->getOverriddenMethod()) {
+			return $prototype;
+		}
+
+		throw new \RuntimeException('Method has no prototype.');
+	}
+
+	/**
+	 * Returns the overridden method.
+	 *
+	 * @return \ApiGen\ReflectionMethod|null
+	 */
+	public function getOverriddenMethod()
+	{
+		$parent = $this->declaringClass->getParentClass();
+		if (null === $parent) {
+			return null;
+		}
+
+		foreach ($parent->getMagicMethods() as $method) {
+			if ($this->name === $method->getName()) {
+				return $method;
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the original name when importing from a trait.
+	 *
+	 * @return string|null
+	 */
+	public function getOriginalName()
+	{
+		return $this->getName();
+	}
+
+	/**
+	 * Returns the original modifiers value when importing from a trait.
+	 *
+	 * @return integer|null
+	 */
+	public function getOriginalModifiers()
+	{
+		return $this->getModifiers();
+	}
+
+	/**
+	 * Returns the original method when importing from a trait.
+	 *
+	 * @return \ApiGen\ReflectionMethod|null
+	 */
+	public function getOriginal()
+	{
+		return null;
+	}
+
+	/**
+	 * Returns a list of method parameters.
+	 *
+	 * @return array
+	 */
+	public function getParameters()
+	{
+		return $this->parameters;
+	}
+
+	/**
+	 * Returns the number of parameters.
+	 *
+	 * @return integer
+	 */
+	public function getNumberOfParameters()
+	{
+		return count($this->parameters);
+	}
+
+	/**
+	 * Returns the number of required parameters.
+	 *
+	 * @return integer
+	 */
+	public function getNumberOfRequiredParameters()
+	{
+		$count = 0;
+		array_walk($this->parameters, function(ReflectionParameter $parameter) use (&$count) {
+			if (!$parameter->isOptional()) {
+				$count++;
+			}
+		});
+		return $count;
+	}
+
+	/**
 	 * Returns imported namespaces and aliases from the declaring namespace.
 	 *
 	 * @return array
@@ -535,11 +610,11 @@ class ReflectionPropertyMagic extends ReflectionProperty
 	 */
 	public function getPrettyName()
 	{
-		return sprintf('%s::$%s', $this->declaringClass->getName(), $this->name);
+		return sprintf('%s::%s()', $this->declaringClass->getName(), $this->name);
 	}
 
 	/**
-	 * Returns the file name the property is defined in.
+	 * Returns the file name the method is defined in.
 	 *
 	 * @return string
 	 */
@@ -549,7 +624,7 @@ class ReflectionPropertyMagic extends ReflectionProperty
 	}
 
 	/**
-	 * Returns if the property is user defined.
+	 * Returns if the method is user defined.
 
 	 * @return boolean
 	 */
@@ -559,7 +634,7 @@ class ReflectionPropertyMagic extends ReflectionProperty
 	}
 
 	/**
-	 * Returns if the property comes from a tokenized source.
+	 * Returns if the method comes from a tokenized source.
 	 *
 	 * @return boolean
 	 */
@@ -581,8 +656,16 @@ class ReflectionPropertyMagic extends ReflectionProperty
 			$docComment .= $this->shortDescription . "\n\n";
 		}
 
-		if ($annotations = $this->getAnnotation('var')) {
-			$docComment .= sprintf("@var %s\n", $annotations[0]);
+		if ($annotations = $this->getAnnotation('param')) {
+			foreach ($annotations as $annotation) {
+				$docComment .= sprintf("@param %s\n", $annotation);
+			}
+		}
+
+		if ($annotations = $this->getAnnotation('return')) {
+			foreach ($annotations as $annotation) {
+				$docComment .= sprintf("@return %s\n", $annotation);
+			}
 		}
 
 		$docComment .= "*/\n";

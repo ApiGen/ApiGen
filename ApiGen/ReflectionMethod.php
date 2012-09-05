@@ -21,6 +21,16 @@ namespace ApiGen;
 class ReflectionMethod extends ReflectionFunctionBase
 {
 	/**
+	 * Returns if the method is magic.
+	 *
+	 * @return boolean
+	 */
+	public function isMagic()
+	{
+		return false;
+	}
+
+	/**
 	 * Returns the method declaring class.
 	 *
 	 * @return \ApiGen\ReflectionClass|null

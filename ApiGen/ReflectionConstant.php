@@ -21,6 +21,16 @@ namespace ApiGen;
 class ReflectionConstant extends ReflectionElement
 {
 	/**
+	 * Returns the unqualified name (UQN).
+	 *
+	 * @return string
+	 */
+	public function getShortName()
+	{
+		return $this->reflection->getShortName();
+	}
+
+	/**
 	 * Returns constant type hint.
 	 *
 	 * @return string

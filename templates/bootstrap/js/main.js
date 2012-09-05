@@ -53,7 +53,7 @@ $(function() {
 
 	// Search autocompletion
 	var autocompleteFound = false;
-	var autocompleteFiles = {'c': 'class', 'co': 'constant', 'f': 'function', 'm': 'class', 'p': 'class', 'mp': 'class', 'cc': 'class'};
+	var autocompleteFiles = {'c': 'class', 'co': 'constant', 'f': 'function', 'm': 'class', 'mm': 'class', 'p': 'class', 'mp': 'class', 'cc': 'class'};
 	var $search = $('#search input[name=q]');
 	$search
 		.autocomplete(ApiGen.elements, {
@@ -84,7 +84,7 @@ $(function() {
 			var parts = data[1].split(/::|$/);
 			var file = $.sprintf(ApiGen.config.templates.main[autocompleteFiles[data[0]]].filename, parts[0].replace(/[^\w]/g, '.'));
 			if (parts[1]) {
-				file += '#' + ('mp' === data[0] ? 'm' : '') + parts[1].replace(/([\w]+)\(\)/, '_$1');
+				file += '#' + ('mm' === data[0] || 'mp' === data[0] ? 'm' : '') + parts[1].replace(/([\w]+)\(\)/, '_$1');
 			}
 			location.push(file);
 			window.location = location.join('/');

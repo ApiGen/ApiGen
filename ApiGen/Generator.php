@@ -667,6 +667,9 @@ class Generator extends Nette\Object
 						foreach ($element->getOwnMethods() as $method) {
 							$elements[] = array('m', $method->getPrettyName());
 						}
+						foreach ($element->getOwnMagicMethods() as $method) {
+							$elements[] = array('mm', $method->getPrettyName());
+						}
 					}
 					if (isset($autocomplete['properties'])) {
 						foreach ($element->getOwnProperties() as $property) {
@@ -1333,9 +1336,6 @@ class Generator extends Nette\Object
 					uksort($template->directUsers, 'strcasecmp');
 					$template->indirectUsers = $element->getIndirectUsers();
 					uksort($template->indirectUsers, 'strcasecmp');
-
-					$template->ownMethods = $element->getOwnMethods();
-					$template->ownConstants = $element->getOwnConstants();
 
 					$template->class = $element;
 

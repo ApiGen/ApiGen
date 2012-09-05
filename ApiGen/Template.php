@@ -514,7 +514,7 @@ class Template extends Nette\Templating\FileTemplate
 	public function getMethodUrl(ReflectionMethod $method, ReflectionClass $class = null)
 	{
 		$className = null !== $class ? $class->getName() : $method->getDeclaringClassName();
-		return $this->getClassUrl($className) . '#_' . ($method->getOriginalName() ?: $method->getName());
+		return $this->getClassUrl($className) . '#' . ($method->isMagic() ? 'm' : '') . '_' . ($method->getOriginalName() ?: $method->getName());
 	}
 
 	/**
@@ -527,7 +527,7 @@ class Template extends Nette\Templating\FileTemplate
 	public function getPropertyUrl(ReflectionProperty $property, ReflectionClass $class = null)
 	{
 		$className = null !== $class ? $class->getName() : $property->getDeclaringClassName();
-		return $this->getClassUrl($className) . '#$' . $property->getName();
+		return $this->getClassUrl($className) . '#' . ($property->isMagic() ? 'm' : '') . '$' . $property->getName();
 	}
 
 	/**
@@ -606,12 +606,7 @@ class Template extends Nette\Templating\FileTemplate
 
 		$lines = null;
 		if ($withLine) {
-			$startLine = $element->getStartLine();
-			if ($doc = $element->getDocComment()) {
-				$startLine -= substr_count($doc, "\n") + 1;
-			}
-
-			$lines = $startLine !== $element->getEndLine() ? sprintf('%s-%s', $startLine, $element->getEndLine()) : $startLine;
+			$lines = $element->getStartLine() !== $element->getEndLine() ? sprintf('%s-%s', $element->getStartLine(), $element->getEndLine()) : $element->getStartLine();
 		}
 
 		return sprintf($this->config->template['templates']['main']['source']['filename'], $file) . (null !== $lines ? '#' . $lines : '');

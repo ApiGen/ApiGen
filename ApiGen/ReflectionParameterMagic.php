@@ -16,10 +16,9 @@ namespace ApiGen;
 use TokenReflection;
 
 /**
- * Envelope for parameters that can be used unlimited times
- * and are not defined in function/method signature, only in @param annotation.
+ * Envelope for parameters that are defined only in @param or @method annotation.
  */
-class ReflectionParameterUnlimited extends ReflectionParameter
+class ReflectionParameterMagic extends ReflectionParameter
 {
 	/**
 	 * Parameter name.
@@ -41,6 +40,27 @@ class ReflectionParameterUnlimited extends ReflectionParameter
 	 * @var integer
 	 */
 	protected $position;
+
+	/**
+	 * The part of the source code defining the parameter default value.
+	 *
+	 * @var boolean
+	 */
+	protected $defaultValueDefinition;
+
+	/**
+	 * If the parameter can be used unlimited times.
+	 *
+	 * @var boolean
+	 */
+	protected $unlimited;
+
+	/**
+	 * If the parameter value is passed by reference.
+	 *
+	 * @var boolean
+	 */
+	protected $passedByReference;
 
 	/**
 	 * The declaring function.
@@ -67,7 +87,7 @@ class ReflectionParameterUnlimited extends ReflectionParameter
 	 * Sets parameter name.
 	 *
 	 * @param string $name
-	 * @return \ApiGen\ReflectionParameterUnlimited
+	 * @return \ApiGen\ReflectionParameterMagic
 	 */
 	public function setName($name)
 	{
@@ -79,7 +99,7 @@ class ReflectionParameterUnlimited extends ReflectionParameter
 	 * Sets type hint.
 	 *
 	 * @param string $typeHint
-	 * @return \ApiGen\ReflectionParameterUnlimited
+	 * @return \ApiGen\ReflectionParameterMagic
 	 */
 	public function setTypeHint($typeHint)
 	{
@@ -91,7 +111,7 @@ class ReflectionParameterUnlimited extends ReflectionParameter
 	 * Sets position of the parameter in the function/method.
 	 *
 	 * @param integer $position
-	 * @return \ApiGen\ReflectionParameterUnlimited
+	 * @return \ApiGen\ReflectionParameterMagic
 	 */
 	public function setPosition($position)
 	{
@@ -100,10 +120,46 @@ class ReflectionParameterUnlimited extends ReflectionParameter
 	}
 
 	/**
+	 * Sets the part of the source code defining the parameter default value.
+	 *
+	 * @param string|null $defaultValueDefinition
+	 * @return \ApiGen\ReflectionParameterMagic
+	 */
+	public function setDefaultValueDefinition($defaultValueDefinition)
+	{
+		$this->defaultValueDefinition = $defaultValueDefinition;
+		return $this;
+	}
+
+	/**
+	 * Sets if the parameter can be used unlimited times.
+	 *
+	 * @param boolean $unlimited
+	 * @return \ApiGen\ReflectionParameterMagic
+	 */
+	public function setUnlimited($unlimited)
+	{
+		$this->unlimited = (bool) $unlimited;
+		return $this;
+	}
+
+	/**
+	 * Sets if the parameter value is passed by reference.
+	 *
+	 * @param boolean $passedByReference
+	 * @return \ApiGen\ReflectionParameterMagic
+	 */
+	public function setPassedByReference($passedByReference)
+	{
+		$this->passedByReference = (bool) $passedByReference;
+		return $this;
+	}
+
+	/**
 	 * Sets declaring function.
 	 *
 	 * @param \ApiGen\ReflectionFunctionBase $declaringFunction
-	 * @return \ApiGen\ReflectionParameterUnlimited
+	 * @return \ApiGen\ReflectionParameterMagic
 	 */
 	public function setDeclaringFunction(ReflectionFunctionBase $declaringFunction)
 	{
@@ -262,23 +318,13 @@ class ReflectionParameterUnlimited extends ReflectionParameter
 	}
 
 	/**
-	 * Returns the default value.
-	 *
-	 * @return mixed
-	 */
-	public function getDefaultValue()
-	{
-		return null;
-	}
-
-	/**
-	 * Returns the part of the source code defining the paramter default value.
+	 * Returns the part of the source code defining the parameter default value.
 	 *
 	 * @return string
 	 */
 	public function getDefaultValueDefinition()
 	{
-		return '';
+		return $this->defaultValueDefinition;
 	}
 
 	/**
@@ -288,7 +334,7 @@ class ReflectionParameterUnlimited extends ReflectionParameter
 	 */
 	public function isDefaultValueAvailable()
 	{
-		return false;
+		return null !== $this->defaultValueDefinition;
 	}
 
 	/**
@@ -352,7 +398,11 @@ class ReflectionParameterUnlimited extends ReflectionParameter
 	 */
 	public function allowsNull()
 	{
-		return true;
+		if ($this->isArray() || $this->isCallable()) {
+			return 'null' === strtolower($this->defaultValueDefinition);
+		}
+
+		return !empty($this->defaultValueDefinition);
 	}
 
 	/**
@@ -362,7 +412,7 @@ class ReflectionParameterUnlimited extends ReflectionParameter
 	 */
 	public function isOptional()
 	{
-		return true;
+		return $this->isDefaultValueAvailable();
 	}
 
 	/**
@@ -372,11 +422,11 @@ class ReflectionParameterUnlimited extends ReflectionParameter
 	 */
 	public function isPassedByReference()
 	{
-		return false;
+		return $this->passedByReference;
 	}
 
 	/**
-	 * Returns if the paramter value can be passed by value.
+	 * Returns if the parameter value can be passed by value.
 	 *
 	 * @return boolean
 	 */
@@ -386,13 +436,13 @@ class ReflectionParameterUnlimited extends ReflectionParameter
 	}
 
 	/**
-	 * If the parameter can be used unlimited times.
+	 * Returns if the parameter can be used unlimited times.
 	 *
 	 * @return boolean
 	 */
 	public function isUnlimited()
 	{
-		return true;
+		return $this->unlimited;
 	}
 
 	/**

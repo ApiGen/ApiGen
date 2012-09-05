@@ -35,16 +35,6 @@ abstract class ReflectionElement extends ReflectionBase
 	protected $annotations;
 
 	/**
-	 * Returns the unqualified name (UQN).
-	 *
-	 * @return string
-	 */
-	public function getShortName()
-	{
-		return $this->reflection->name;
-	}
-
-	/**
 	 * Returns the PHP extension reflection.
 	 *
 	 * @return \ApiGen\ReflectionExtension|null
@@ -267,7 +257,7 @@ abstract class ReflectionElement extends ReflectionBase
 	 */
 	public function getShortDescription()
 	{
-		$short = $this->getAnnotation(\TokenReflection\ReflectionAnnotation::SHORT_DESCRIPTION);
+		$short = $this->reflection->getAnnotation(\TokenReflection\ReflectionAnnotation::SHORT_DESCRIPTION);
 		if (!empty($short)) {
 			return $short;
 		}
@@ -288,7 +278,7 @@ abstract class ReflectionElement extends ReflectionBase
 	public function getLongDescription()
 	{
 		$short = $this->getShortDescription();
-		$long = $this->getAnnotation(\TokenReflection\ReflectionAnnotation::LONG_DESCRIPTION);
+		$long = $this->reflection->getAnnotation(\TokenReflection\ReflectionAnnotation::LONG_DESCRIPTION);
 
 		if (!empty($long)) {
 			$short .= "\n\n" . $long;

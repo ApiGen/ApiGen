@@ -46,16 +46,6 @@ class ReflectionParameter extends ReflectionBase
 	}
 
 	/**
-	 * Returns the default value.
-	 *
-	 * @return mixed
-	 */
-	public function getDefaultValue()
-	{
-		return $this->reflection->getDefaultValue();
-	}
-
-	/**
 	 * Returns the part of the source code defining the parameter default value.
 	 *
 	 * @return string

@@ -94,11 +94,16 @@ the file LICENSE.md that was distributed with this source code.
 		{if $class->internal}<b>Documented at</b> <a href="{$class|manualUrl}" title="Go to PHP documentation">php.net</a>{else}<b>Located at</b> <a n:tag-if="$config->sourceCode" href="{$class|sourceUrl}" title="Go to source code">{$class->fileName|relativePath}</a>{/if}<br>
 	</div>
 
+	{var $ownMethods = $class->ownMethods}
+	{var $inheritedMethods = $class->inheritedMethods}
+	{var $usedMethods = $class->usedMethods}
+	{var $ownMagicMethods = $class->ownMagicMethods}
+	{var $inheritedMagicMethods = $class->inheritedMagicMethods}
+	{var $usedMagicMethods = $class->usedMagicMethods}
 
-	{if $ownMethods || $class->inheritedMethods || $class->usedMethods}
-		<h2>Methods summary</h2>
-		<table class="summary table table-bordered table-striped" id="methods" n:if="$ownMethods">
-		<tr n:foreach="$ownMethods as $method" data-order="{$method->name}" id="_{$method->name}">
+	{if $ownMethods || $inheritedMethods || $usedMethods || $ownMagicMethods || $usedMagicMethods}
+		{define #method}
+		<tr data-order="{$method->name}" id="{if $method->magic}m{/if}_{$method->name}">
 			{var $annotations = $method->annotations}
 
 			<td class="attributes"><code>
@@ -109,7 +114,7 @@ the file LICENSE.md that was distributed with this source code.
 			</td>
 
 			<td class="name"><div>
-			<a class="anchor" href="#_{$method->name}">#</a>
+			<a class="anchor" href="#{if $method->magic}m{/if}_{$method->name}">#</a>
 			<code>{block|strip}
 				{if $class->internal}
 					<a href="{$method|manualUrl}" title="Go to PHP documentation">{$method->name}</a>(
@@ -199,9 +204,16 @@ the file LICENSE.md that was distributed with this source code.
 			</div>
 			</div></td>
 		</tr>
+		{/define}
+
+		<h2>Methods summary</h2>
+		<table class="summary table table-bordered table-striped" id="methods" n:if="$ownMethods">
+		{foreach $ownMethods as $method}
+			{include #method, method => $method}
+		{/foreach}
 		</table>
 
-		{foreach $class->inheritedMethods as $parentName => $methods}
+		{foreach $inheritedMethods as $parentName => $methods}
 		<h3>Methods inherited from <a href="{$parentName|classUrl}#methods" n:tag-if="$template->getClass($parentName)">{$parentName}</a></h3>
 		<p class="elementList">
 		{foreach $methods as $method}
@@ -210,8 +222,33 @@ the file LICENSE.md that was distributed with this source code.
 		</p>
 		{/foreach}
 
-		{foreach $class->usedMethods as $traitName => $methods}
+		{foreach $usedMethods as $traitName => $methods}
 		<h3>Methods used from <a href="{$traitName|classUrl}#methods" n:tag-if="$template->getClass($traitName)">{$traitName}</a></h3>
+		<p class="elementList">
+		{foreach $methods as $data}
+			<code><a href="{$data['method']|methodUrl:$data['method']->declaringTrait}" n:tag-if="$template->getClass($traitName)"><span n:tag-if="$data['method']->deprecated" class="deprecated">{$data['method']->name}()</span></a>{if $data['aliases']}(as {foreach $data['aliases'] as $alias}<span n:tag-if="$data['method']->deprecated" class="deprecated">{$alias->name}()</span>{sep}, {/sep}{/foreach}){/if}</code>{sep}, {/sep}
+		{/foreach}
+		</p>
+		{/foreach}
+
+		<h3>Magic methods summary</h3>
+		<table class="summary table table-bordered table-striped" id="magicMethods" n:if="$ownMagicMethods">
+		{foreach $ownMagicMethods as $method}
+			{include #method, method => $method}
+		{/foreach}
+		</table>
+
+		{foreach $inheritedMagicMethods as $parentName => $methods}
+		<h3>Magic methods inherited from <a href="{$parentName|classUrl}#methods" n:tag-if="$template->getClass($parentName)">{$parentName}</a></h3>
+		<p class="elementList">
+		{foreach $methods as $method}
+			<code><a href="{$method|methodUrl}" n:tag-if="$template->getClass($parentName)"><span n:tag-if="$method->deprecated" class="deprecated">{$method->name}()</span></a></code>{sep}, {/sep}
+		{/foreach}
+		</p>
+		{/foreach}
+
+		{foreach $usedMagicMethods as $traitName => $methods}
+		<h3>Magic methods used from <a href="{$traitName|classUrl}#methods" n:tag-if="$template->getClass($traitName)">{$traitName}</a></h3>
 		<p class="elementList">
 		{foreach $methods as $data}
 			<code><a href="{$data['method']|methodUrl:$data['method']->declaringTrait}" n:tag-if="$template->getClass($traitName)"><span n:tag-if="$data['method']->deprecated" class="deprecated">{$data['method']->name}()</span></a>{if $data['aliases']}(as {foreach $data['aliases'] as $alias}<span n:tag-if="$data['method']->deprecated" class="deprecated">{$alias->name}()</span>{sep}, {/sep}{/foreach}){/if}</code>{sep}, {/sep}
@@ -221,7 +258,10 @@ the file LICENSE.md that was distributed with this source code.
 	{/if}
 
 
-	{if $ownConstants || $class->inheritedConstants}
+	{var $ownConstants = $class->ownConstants}
+	{var $inheritedConstants = $class->inheritedConstants}
+
+	{if $ownConstants || $inheritedConstants}
 		<h2>Constants summary</h2>
 		<table class="summary table table-bordered table-striped" id="constants" n:if="$ownConstants">
 		<tr n:foreach="$ownConstants as $constant" data-order="{$constant->name}" id="{$constant->name}">
@@ -263,7 +303,7 @@ the file LICENSE.md that was distributed with this source code.
 		</tr>
 		</table>
 
-		{foreach $class->inheritedConstants as $parentName => $constants}
+		{foreach $inheritedConstants as $parentName => $constants}
 		<h3>Constants inherited from <a href="{$parentName|classUrl}#constants" n:tag-if="$template->getClass($parentName)">{$parentName}</a></h3>
 		<p class="elementList">
 		{foreach $constants as $constant}

@@ -219,7 +219,13 @@ abstract class ReflectionBase
 	 */
 	public function getStartLine()
 	{
-		return $this->reflection->getStartLine();
+		$startLine = $this->reflection->getStartLine();
+
+		if ($doc = $this->getDocComment()) {
+			$startLine -= substr_count($doc, "\n") + 1;
+		}
+
+		return $startLine;
 	}
 
 	/**

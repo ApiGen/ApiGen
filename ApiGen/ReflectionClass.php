@@ -53,6 +53,13 @@ class ReflectionClass extends ReflectionElement
 	private $ownMethods;
 
 	/**
+	 * Cache for list of own magic methods.
+	 *
+	 * @var array
+	 */
+	private $ownMagicMethods;
+
+	/**
 	 * Cache for list of own properties.
 	 *
 	 * @var array
@@ -134,6 +141,16 @@ class ReflectionClass extends ReflectionElement
 				self::$propertyAccessLevels = null;
 			}
 		}
+	}
+
+	/**
+	 * Returns the unqualified name (UQN).
+	 *
+	 * @return string
+	 */
+	public function getShortName()
+	{
+		return $this->reflection->getShortName();
 	}
 
 	/**
@@ -239,6 +256,125 @@ class ReflectionClass extends ReflectionElement
 	}
 
 	/**
+	 * Returns visible magic methods.
+	 *
+	 * @return array
+	 */
+	public function getMagicMethods()
+	{
+		$methods = $this->getOwnMagicMethods();
+
+		$parent = $this->getParentClass();
+		while ($parent) {
+			foreach ($parent->getOwnMagicMethods() as $method) {
+				if (isset($methods[$method->getName()])) {
+					continue;
+				}
+
+				if (!$this->isDocumented() || $method->isDocumented()) {
+					$methods[$method->getName()] = $method;
+				}
+			}
+			$parent = $parent->getParentClass();
+		}
+
+		foreach ($this->getTraits() as $trait) {
+			foreach ($trait->getOwnMagicMethods() as $method) {
+				if (isset($methods[$method->getName()])) {
+					continue;
+				}
+
+				if (!$this->isDocumented() || $method->isDocumented()) {
+					$methods[$method->getName()] = $method;
+				}
+			}
+		}
+
+		return $methods;
+	}
+
+	/**
+	 * Returns visible magic methods declared by inspected class.
+	 *
+	 * @return array
+	 */
+	public function getOwnMagicMethods()
+	{
+		if (null === $this->ownMagicMethods) {
+			$this->ownMagicMethods = array();
+
+			if (!(self::$methodAccessLevels & InternalReflectionMethod::IS_PUBLIC) || false === $this->getDocComment()) {
+				return $this->ownMagicMethods;
+			}
+
+			$annotations = $this->getAnnotation('method');
+			if (null === $annotations) {
+				return $this->ownMagicMethods;
+			}
+
+			foreach ($annotations as $annotation) {
+				if (!preg_matwch('~^(?:([\\w\\\\]+(?:\\|[\\w\\\\]+)*)\\s+)?(&)?\\s*(\\w+)\\s*\\(\\s*(.*)\\s*\\)\\s*(.*|$)~s', $annotation, $matches)) {
+					// Wrong annotation format
+					continue;
+				}
+
+				list(, $returnTypeHint, $returnsReference, $name, $args, $shortDescription) = $matches;
+
+				$doc = $this->getDocComment();
+				$tmp = $annotation;
+				if ($delimiter = strpos($annotation, "\n")) {
+					$tmp = substr($annotation, 0, $delimiter);
+				}
+
+				$startLine = $this->getStartLine() + substr_count(substr($doc, 0, strpos($doc, $tmp)), "\n");
+				$endLine = $startLine + substr_count($annotation, "\n");
+
+				$method = new ReflectionMethodMagic(null, self::$generator);
+				$method
+					->setName($name)
+					->setShortDescription(str_replace("\n", ' ', $shortDescription))
+					->setStartLine($startLine)
+					->setEndLine($endLine)
+					->setReturnsReference('&' === $returnsReference)
+					->setDeclaringClass($this)
+					->addAnnotation('return', $returnTypeHint);
+
+				$this->ownMagicMethods[$name] = $method;
+
+				$parameters = array();
+				foreach (array_filter(preg_split('~\\s*,\\s*~', $args)) as $position => $arg) {
+					if (!preg_match('~^(?:([\\w\\\\]+(?:\\|[\\w\\\\]+)*)\\s+)?(&)?\\s*\\$(\\w+)(?:\\s*=\\s*(.*))?($)~s', $arg, $matches)) {
+						// Wrong annotation format
+						continue;
+					}
+
+					list(, $typeHint, $passedByReference, $name, $defaultValueDefinition) = $matches;
+
+					if (empty($typeHint)) {
+						$typeHint = 'mixed';
+					}
+
+					$parameter = new ReflectionParameterMagic(null, self::$generator);
+					$parameter
+						->setName($name)
+						->setPosition($position)
+						->setTypeHint($typeHint)
+						->setDefaultValueDefinition($defaultValueDefinition)
+						->setUnlimited(false)
+						->setPassedByReference('&' === $passedByReference)
+						->setDeclaringFunction($method);
+
+					$parameters[$name] = $parameter;
+
+					$method->addAnnotation('param', ltrim(sprintf('%s $%s', $typeHint, $name)));
+				}
+				$method->setParameters($parameters);
+			}
+		}
+		return $this->ownMagicMethods;
+	}
+
+	/**
 	 * Returns visible methods declared by traits.
 	 *
 	 * @return array
@@ -293,6 +429,43 @@ class ReflectionClass extends ReflectionElement
 		return $this->properties;
 	}
 
+	/**
+	 * Returns visible magic properties.
+	 *
+	 * @return array
+	 */
+	public function getMagicProperties()
+	{
+		$properties = $this->getOwnMagicProperties();
+
+		$parent = $this->getParentClass();
+		while ($parent) {
+			foreach ($parent->getOwnMagicProperties() as $property) {
+				if (isset($properties[$method->getName()])) {
+					continue;
+				}
+
+				if (!$this->isDocumented() || $property->isDocumented()) {
+					$properties[$property->getName()] = $property;
+				}
+			}
+			$parent = $parent->getParentClass();
+		}
+
+		foreach ($this->getTraits() as $trait) {
+			foreach ($trait->getOwnMagicProperties() as $property) {
+				if (isset($properties[$method->getName()])) {
+					continue;
+				}
+
+				if (!$this->isDocumented() || $property->isDocumented()) {
+					$properties[$property->getName()] = $property;
+				}
+			}
+		}
+
+		return $properties;
+	}
 
 	/**
 	 * Returns visible properties declared by inspected class.
@@ -322,58 +495,51 @@ class ReflectionClass extends ReflectionElement
 	{
 		if (null === $this->ownMagicProperties) {
 			$this->ownMagicProperties = array();
-			if (self::$propertyAccessLevels & InternalReflectionProperty::IS_PUBLIC && false !== $this->getDocComment()) {
-				foreach (array('property', 'property-read', 'property-write') as $annotationName) {
-					$annotations = $this->getAnnotation($annotationName);
-					if (null === $annotations) {
+
+			if (!(self::$propertyAccessLevels & InternalReflectionProperty::IS_PUBLIC) || false === $this->getDocComment()) {
+				return $this->ownMagicProperties;
+			}
+
+			foreach (array('property', 'property-read', 'property-write') as $annotationName) {
+				$annotations = $this->getAnnotation($annotationName);
+				if (null === $annotations) {
+					continue;
+				}
+
+				foreach ($annotations as $annotation) {
+					if (!preg_match('~^(?:([\\w\\\\]+(?:\\|[\\w\\\\]+)*)\\s+)?\\$(\\w+)(?:\\s+(.*))?($)~s', $annotation, $matches)) {
+						// Wrong annotation format
 						continue;
 					}
 
-					foreach ($annotations as $annotation) {
-						$parts = preg_split('~\\s+|$~', $annotation, 3);
-						list($typeHint, $name) = $parts;
-						if (empty($typeHint)) {
-							// Empty annotation
-							continue;
-						}
-						$shortDescription = !empty($parts[2]) ? $parts[2] : '';
+					list(, $typeHint, $name, $shortDescription) = $matches;
 
-						if ('$' === $typeHint[0]) {
-							$shortDescription = $name;
-							$name = $typeHint;
-							$typeHint = 'mixed';
-						}
-
-						if (empty($name) || '$' !== $name[0]) {
-							// No property name
-							continue;
-						}
-
-						$name = substr($name, 1);
-
-						$doc = $this->getDocComment();
-						$tmp = $annotation;
-						if ($delimiter = strpos($annotation, "\n")) {
-							$tmp = substr($annotation, 0, $delimiter);
-						}
-
-						$startLine = $this->getStartLine() - substr_count($doc, "\n") + substr_count(substr($doc, 0, strpos($doc, $tmp)), "\n");
-						$endLine = $startLine + substr_count($annotation, "\n") - 1;
-
-						$magicProperty = new ReflectionPropertyMagic(null, self::$generator);
-						$magicProperty
-							->setName($name)
-							->setTypeHint($typeHint)
-							->setShortDescription($shortDescription)
-							->setStartLine($startLine)
-							->setEndLine($endLine)
-							->setReadOnly('property-read' === $annotationName)
-							->setWriteOnly('property-write' === $annotationName)
-							->setDeclaringClass($this)
-							->addAnnotation('var', $typeHint);
-
-						$this->ownMagicProperties[$name] = $magicProperty;
+					if (empty($typeHint)) {
+						$typeHint = 'mixed';
 					}
+
+					$doc = $this->getDocComment();
+					$tmp = $annotation;
+					if ($delimiter = strpos($annotation, "\n")) {
+						$tmp = substr($annotation, 0, $delimiter);
+					}
+
+					$startLine = $this->getStartLine() + substr_count(substr($doc, 0, strpos($doc, $tmp)), "\n");
+					$endLine = $startLine + substr_count($annotation, "\n");
+
+					$magicProperty = new ReflectionPropertyMagic(null, self::$generator);
+					$magicProperty
+						->setName($name)
+						->setTypeHint($typeHint)
+						->setShortDescription(str_replace("\n", ' ', $shortDescription))
+						->setStartLine($startLine)
+						->setEndLine($endLine)
+						->setReadOnly('property-read' === $annotationName)
+						->setWriteOnly('property-write' === $annotationName)
+						->setDeclaringClass($this)
+						->addAnnotation('var', $typeHint);
+
+					$this->ownMagicProperties[$name] = $magicProperty;
 				}
 			}
 		}
@@ -897,6 +1063,36 @@ class ReflectionClass extends ReflectionElement
 	}
 
 	/**
+	 * Returns an array of inherited magic methods from parent classes grouped by the declaring class name.
+	 *
+	 * @return array
+	 */
+	public function getInheritedMagicMethods()
+	{
+		$methods = array();
+		$allMethods = array_flip(array_map(function($method) {
+			return $method->getName();
+		}, $this->getOwnMagicMethods()));
+
+		foreach (array_merge($this->getParentClasses(), $this->getInterfaces()) as $class) {
+			$inheritedMethods = array();
+			foreach ($class->getOwnMagicMethods() as $method) {
+				if (!array_key_exists($method->getName(), $allMethods)) {
+					$inheritedMethods[$method->getName()] = $method;
+					$allMethods[$method->getName()] = null;
+				}
+			}
+
+			if (!empty($inheritedMethods)) {
+				ksort($inheritedMethods);
+				$methods[$class->getName()] = array_values($inheritedMethods);
+			}
+		}
+
+		return $methods;
+	}
+
+	/**
 	 * Returns an array of used methods from used traits grouped by the declaring trait name.
 	 *
 	 * @return array
@@ -913,6 +1109,37 @@ class ReflectionClass extends ReflectionElement
 			if (null !== $method->getOriginalName() && $method->getName() !== $method->getOriginalName()) {
 				$usedMethods[$method->getDeclaringTraitName()][$method->getName()]['aliases'][$method->getName()] = $method;
 			}
+		}
+
+		// Sort
+		array_walk($usedMethods, function(&$methods) {
+			ksort($methods);
+			array_walk($methods, function(&$aliasedMethods) {
+				if (!isset($aliasedMethods['aliases'])) {
+					$aliasedMethods['aliases'] = array();
+				}
+				ksort($aliasedMethods['aliases']);
+			});
+		});
+
+		return $usedMethods;
+	}
+
+	/**
+	 * Returns an array of used magic methods from used traits grouped by the declaring trait name.
+	 *
+	 * @return array
+	 */
+	public function getUsedMagicMethods()
+	{
+		$usedMethods = array();
+
+		foreach ($this->getMagicMethods() as $method) {
+			if (null === $method->getDeclaringTraitName() || $this->getName() === $method->getDeclaringTraitName()) {
+				continue;
+			}
+
+			$usedMethods[$method->getDeclaringTraitName()][$method->getName()]['method'] = $method;
 		}
 
 		// Sort
