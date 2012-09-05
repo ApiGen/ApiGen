@@ -58,6 +58,96 @@ class ReflectionProperty extends ReflectionElement
 	}
 
 	/**
+	 * Returns the name of the declaring class.
+	 *
+	 * @return string
+	 */
+	public function getDeclaringClassName()
+	{
+		return $this->reflection->getDeclaringClassName();
+	}
+
+	/**
+	 * Returns the property default value.
+	 *
+	 * @return mixed
+	 */
+	public function getDefaultValue()
+	{
+		return $this->reflection->getDefaultValue();
+	}
+
+	/**
+	 * Returns the part of the source code defining the property default value.
+	 *
+	 * @return string
+	 */
+	public function getDefaultValueDefinition()
+	{
+		return $this->reflection->getDefaultValueDefinition();
+	}
+
+	/**
+	 * Returns if the property was created at compile time.
+	 *
+	 * @return boolean
+	 */
+	public function isDefault()
+	{
+		return $this->reflection->isDefault();
+	}
+
+	/**
+	 * Returns property modifiers.
+	 *
+	 * @return integer
+	 */
+	public function getModifiers()
+	{
+		return $this->reflection->getModifiers();
+	}
+
+	/**
+	 * Returns if the property is private.
+	 *
+	 * @return boolean
+	 */
+	public function isPrivate()
+	{
+		return $this->reflection->isPrivate();
+	}
+
+	/**
+	 * Returns if the property is protected.
+	 *
+	 * @return boolean
+	 */
+	public function isProtected()
+	{
+		return $this->reflection->isProtected();
+	}
+
+	/**
+	 * Returns if the property is public.
+	 *
+	 * @return boolean
+	 */
+	public function isPublic()
+	{
+		return $this->reflection->isPublic();
+	}
+
+	/**
+	 * Returns if the poperty is static.
+	 *
+	 * @return boolean
+	 */
+	public function isStatic()
+	{
+		return $this->reflection->isStatic();
+	}
+
+	/**
 	 * Returns the property declaring trait.
 	 *
 	 * @return \ApiGen\ReflectionClass|null
@@ -66,6 +156,16 @@ class ReflectionProperty extends ReflectionElement
 	{
 		$traitName = $this->reflection->getDeclaringTraitName();
 		return null === $traitName ? null : self::$parsedClasses[$traitName];
+	}
+
+	/**
+	 * Returns the declaring trait name.
+	 *
+	 * @return string|null
+	 */
+	public function getDeclaringTraitName()
+	{
+		return $this->reflection->getDeclaringTraitName();
 	}
 
 	/**

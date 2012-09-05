@@ -31,6 +31,16 @@ abstract class ReflectionFunctionBase extends ReflectionElement
 	protected $parameters;
 
 	/**
+	 * Returns if the function/method returns its value as reference.
+	 *
+	 * @return boolean
+	 */
+	public function returnsReference()
+	{
+		return $this->reflection->returnsReference();
+	}
+
+	/**
 	 * Returns a list of function/method parameters.
 	 *
 	 * @return array
@@ -111,5 +121,25 @@ abstract class ReflectionFunctionBase extends ReflectionElement
 
 			throw new InvalidArgumentException(sprintf('There is no parameter "%s" in function/method "%s"', $parameterName, $this->getName()), Exception\Runtime::DOES_NOT_EXIST);
 		}
+	}
+
+	/**
+	 * Returns the number of parameters.
+	 *
+	 * @return integer
+	 */
+	public function getNumberOfParameters()
+	{
+		return $this->reflection->getNumberOfParameters();
+	}
+
+	/**
+	 * Returns the number of required parameters.
+	 *
+	 * @return integer
+	 */
+	public function getNumberOfRequiredParameters()
+	{
+		return $this->reflection->getNumberOfRequiredParameters();
 	}
 }

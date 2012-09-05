@@ -143,14 +143,92 @@ abstract class ReflectionBase
 	}
 
 	/**
-	 * Calls a method of the inspected element reflection.
+	 * Returns the reflection broker used by this reflection object.
 	 *
-	 * @param string $name Method name
-	 * @param array $args Arguments
-	 * @return mixed
+	 * @return \TokenReflection\Broker
 	 */
-	public function __call($name, array $args)
+	public function getBroker()
 	{
-		return call_user_func_array(array($this->reflection, $name), $args);
+		return $this->reflection->getBroker();
+	}
+
+	/**
+	 * Returns the name (FQN).
+	 *
+	 * @return string
+	 */
+	public function getName()
+	{
+		return $this->reflection->getName();
+	}
+
+	/**
+	 * Returns an element pretty (docblock compatible) name.
+	 *
+	 * @return string
+	 */
+	public function getPrettyName()
+	{
+		return $this->reflection->getPrettyName();
+	}
+
+	/**
+	 * Returns if the reflection object is internal.
+	 *
+	 * @return boolean
+	 */
+	public function isInternal()
+	{
+		return $this->reflection->isInternal();
+	}
+
+	/**
+	 * Returns if the reflection object is user defined.
+	 *
+	 * @return boolean
+	 */
+	public function isUserDefined()
+	{
+		return $this->reflection->isUserDefined();
+	}
+
+	/**
+	 * Returns if the current reflection comes from a tokenized source.
+	 *
+	 * @return boolean
+	 */
+	public function isTokenized()
+	{
+		return $this->reflection->isTokenized();
+	}
+
+	/**
+	 * Returns the file name the reflection object is defined in.
+	 *
+	 * @return string
+	 */
+	public function getFileName()
+	{
+		return $this->reflection->getFileName();
+	}
+
+	/**
+	 * Returns the definition start line number in the file.
+	 *
+	 * @return integer
+	 */
+	public function getStartLine()
+	{
+		return $this->reflection->getStartLine();
+	}
+
+	/**
+	 * Returns the definition end line number in the file.
+	 *
+	 * @return integer
+	 */
+	public function getEndLine()
+	{
+		return $this->reflection->getEndLine();
 	}
 }

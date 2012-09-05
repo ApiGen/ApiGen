@@ -19,7 +19,7 @@ use TokenReflection;
  * Envelope for parameters that can be used unlimited times
  * and are not defined in function/method signature, only in @param annotation.
  */
-class ReflectionParameterUnlimited extends ReflectionBase
+class ReflectionParameterUnlimited extends ReflectionParameter
 {
 	/**
 	 * Parameter name.
@@ -67,7 +67,7 @@ class ReflectionParameterUnlimited extends ReflectionBase
 	 * Sets parameter name.
 	 *
 	 * @param string $name
-	 * @return \Apigen\ReflectionParameterUnlimited
+	 * @return \ApiGen\ReflectionParameterUnlimited
 	 */
 	public function setName($name)
 	{
@@ -112,6 +112,16 @@ class ReflectionParameterUnlimited extends ReflectionBase
 	}
 
 	/**
+	 * Returns the reflection broker used by this reflection object.
+	 *
+	 * @return \TokenReflection\Broker
+	 */
+	public function getBroker()
+	{
+		return $this->declaringFunction->getBroker();
+	}
+
+	/**
 	 * Returns the name.
 	 *
 	 * @return string
@@ -129,6 +139,16 @@ class ReflectionParameterUnlimited extends ReflectionBase
 	public function getTypeHint()
 	{
 		return $this->typeHint;
+	}
+
+	/**
+	 * Returns the file name the parameter is defined in.
+	 *
+	 * @return string
+	 */
+	public function getFileName()
+	{
+		return $this->declaringFunction->getFileName();
 	}
 
 	/**
@@ -229,16 +249,6 @@ class ReflectionParameterUnlimited extends ReflectionBase
 	public function getEndLine()
 	{
 		return $this->declaringFunction->getEndLine();
-	}
-
-	/**
-	 * Returns the appropriate docblock definition.
-	 *
-	 * @return string|boolean
-	 */
-	public function getDocComment()
-	{
-		return false;
 	}
 
 	/**

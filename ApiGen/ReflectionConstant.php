@@ -58,6 +58,36 @@ class ReflectionConstant extends ReflectionElement
 	}
 
 	/**
+	 * Returns the name of the declaring class.
+	 *
+	 * @return string|null
+	 */
+	public function getDeclaringClassName()
+	{
+		return $this->reflection->getDeclaringClassName();
+	}
+
+	/**
+	 * Returns the constant value.
+	 *
+	 * @return mixed
+	 */
+	public function getValue()
+	{
+		return $this->reflection->getValue();
+	}
+
+	/**
+	 * Returns the constant value definition.
+	 *
+	 * @return string
+	 */
+	public function getValueDefinition()
+	{
+		return $this->reflection->getValueDefinition();
+	}
+
+	/**
 	 * Returns if the constant is valid.
 	 *
 	 * @return boolean

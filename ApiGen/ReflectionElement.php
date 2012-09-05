@@ -35,6 +35,16 @@ abstract class ReflectionElement extends ReflectionBase
 	private $annotations;
 
 	/**
+	 * Returns the unqualified name (UQN).
+	 *
+	 * @return string
+	 */
+	public function getShortName()
+	{
+		return $this->reflection->name;
+	}
+
+	/**
 	 * Returns the PHP extension reflection.
 	 *
 	 * @return \ApiGen\ReflectionExtension
@@ -43,6 +53,36 @@ abstract class ReflectionElement extends ReflectionBase
 	{
 		$extension = $this->reflection->getExtension();
 		return null === $extension ? null : new ReflectionExtension($extension, self::$generator);
+	}
+
+	/**
+	 * Returns the PHP extension name.
+	 *
+	 * @return boolean
+	 */
+	public function getExtensionName()
+	{
+		return $this->reflection->getExtensionName();
+	}
+
+	/**
+	 * Returns the start position in the file token stream.
+	 *
+	 * @return integer
+	 */
+	public function getStartPosition()
+	{
+		return $this->reflection->getStartPosition();
+	}
+
+	/**
+	 * Returns the end position in the file token stream.
+	 *
+	 * @return integer
+	 */
+	public function getEndPosition()
+	{
+		return $this->reflection->getEndPosition();
 	}
 
 	/**
@@ -166,6 +206,16 @@ abstract class ReflectionElement extends ReflectionBase
 	}
 
 	/**
+	 * Returns if the element is defined within a namespace.
+	 *
+	 * @return boolean
+	 */
+	public function inNamespace()
+	{
+		return '' !== $this->getNamespaceName();
+	}
+
+	/**
 	 * Returns element namespace name.
 	 *
 	 * @return string
@@ -198,6 +248,16 @@ abstract class ReflectionElement extends ReflectionBase
 	public function getPseudoNamespaceName()
 	{
 		return $this->reflection->isInternal() ? 'PHP' : $this->getNamespaceName() ?: 'None';
+	}
+
+	/**
+	 * Returns imported namespaces and aliases from the declaring namespace.
+	 *
+	 * @return array
+	 */
+	public function getNamespaceAliases()
+	{
+		return $this->reflection->getNamespaceAliases();
 	}
 
 	/**
@@ -235,6 +295,16 @@ abstract class ReflectionElement extends ReflectionBase
 		}
 
 		return $short;
+	}
+
+	/**
+	 * Returns the appropriate docblock definition.
+	 *
+	 * @return string|boolean
+	 */
+	public function getDocComment()
+	{
+		return $this->reflection->getDocComment();
 	}
 
 	/**
@@ -278,8 +348,20 @@ abstract class ReflectionElement extends ReflectionBase
 	 */
 	public function getAnnotation($annotation)
 	{
-		$annotations = $this->annotations ?: $this->getAnnotations();
+		$annotations = $this->getAnnotations();
 		return isset($annotations[$annotation]) ? $annotations[$annotation] : null;
+	}
+
+	/**
+	 * Checks if there is a particular annotation.
+	 *
+	 * @param string $annotation Annotation name
+	 * @return boolean
+	 */
+	public function hasAnnotation($annotation)
+	{
+		$annotations = $this->getAnnotations();
+		return isset($annotations[$annotation]);
 	}
 
 	/**

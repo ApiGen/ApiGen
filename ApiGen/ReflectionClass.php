@@ -130,6 +130,67 @@ class ReflectionClass extends ReflectionElement
 	}
 
 	/**
+	 * Returns modifiers.
+	 *
+	 * @return array
+	 */
+	public function getModifiers()
+	{
+		return $this->reflection->getModifiers();
+	}
+
+	/**
+	 * Returns if the class is abstract.
+	 *
+	 * @return boolean
+	 */
+	public function isAbstract()
+	{
+		return $this->reflection->isAbstract();
+	}
+
+	/**
+	 * Returns if the class is final.
+	 *
+	 * @return boolean
+	 */
+	public function isFinal()
+	{
+		return $this->reflection->isFinal();
+	}
+
+	/**
+	 * Returns if the class is an interface.
+	 *
+	 * @return boolean
+	 */
+	public function isInterface()
+	{
+		return $this->reflection->isInterface();
+	}
+
+	/**
+	 * Returns if the class is an exception or its descendant.
+	 *
+	 * @return boolean
+	 */
+	public function isException()
+	{
+		return $this->reflection->isException();
+	}
+
+	/**
+	 * Returns if the current class is a subclass of the given class.
+	 *
+	 * @param string $class Class name
+	 * @return boolean
+	 */
+	public function isSubclassOf($class)
+	{
+		return $this->reflection->isSubclassOf($class);
+	}
+
+	/**
 	 * Returns visible methods.
 	 *
 	 * @return array
@@ -423,6 +484,16 @@ class ReflectionClass extends ReflectionElement
 	}
 
 	/**
+	 * Returns the parent class name.
+	 *
+	 * @return string|null
+	 */
+	public function getParentClassName()
+	{
+		return $this->reflection->getParentClassName();
+	}
+
+	/**
 	 * Returns all parent classes reflections encapsulated by this class.
 	 *
 	 * @return array
@@ -436,6 +507,28 @@ class ReflectionClass extends ReflectionElement
 			}, $this->reflection->getParentClasses());
 		}
 		return $this->parentClasses;
+	}
+
+
+	/**
+	 * Returns the parent classes names.
+	 *
+	 * @return array
+	 */
+	public function getParentClassNameList()
+	{
+		return $this->reflection->getParentClassNameList();
+	}
+
+	/**
+	 * Returns if the class implements the given interface.
+	 *
+	 * @param string|object $interface Interface name or reflection object
+	 * @return boolean
+	 */
+	public function implementsInterface($interface)
+	{
+		return $this->reflection->implementsInterface($interface);
 	}
 
 	/**
@@ -452,6 +545,16 @@ class ReflectionClass extends ReflectionElement
 	}
 
 	/**
+	 * Returns interface names.
+	 *
+	 * @return array
+	 */
+	public function getInterfaceNames()
+	{
+		return $this->reflection->getInterfaceNames();
+	}
+
+	/**
 	 * Returns all interfaces implemented by the inspected class and not its parents.
 	 *
 	 * @return array
@@ -462,6 +565,16 @@ class ReflectionClass extends ReflectionElement
 		return array_map(function(IReflectionClass $class) use ($classes) {
 			return $classes[$class->getName()];
 		}, $this->reflection->getOwnInterfaces());
+	}
+
+	/**
+	 * Returns names of interfaces implemented by this class, not its parents.
+	 *
+	 * @return array
+	 */
+	public function getOwnInterfaceNames()
+	{
+		return $this->reflection->getOwnInterfaceNames();
 	}
 
 	/**
@@ -478,6 +591,36 @@ class ReflectionClass extends ReflectionElement
 	}
 
 	/**
+	 * Returns names of used traits.
+	 *
+	 * @return array
+	 */
+	public function getTraitNames()
+	{
+		return $this->reflection->getTraitNames();
+	}
+
+	/**
+	 * Returns names of traits used by this class an not its parents.
+	 *
+	 * @return array
+	 */
+	public function getOwnTraitNames()
+	{
+		return $this->reflection->getOwnTraitNames();
+	}
+
+	/**
+	 * Returns method aliases from traits.
+	 *
+	 * @return array
+	 */
+	public function getTraitAliases()
+	{
+		return $this->reflection->getTraitAliases();
+	}
+
+	/**
 	 * Returns all traits used by the inspected class and not its parents.
 	 *
 	 * @return array
@@ -488,6 +631,27 @@ class ReflectionClass extends ReflectionElement
 		return array_map(function(IReflectionClass $class) use ($classes) {
 			return $classes[$class->getName()];
 		}, $this->reflection->getOwnTraits());
+	}
+
+	/**
+	 * Returns if the class is a trait.
+	 *
+	 * @return boolean
+	 */
+	public function isTrait()
+	{
+		return $this->reflection->isTrait();
+	}
+
+	/**
+	 * Returns if the class uses a particular trait.
+	 *
+	 * @param string $trait Trait name
+	 * @return boolean
+	 */
+	public function usesTrait($trait)
+	{
+		return $this->reflection->usesTrait($trait);
 	}
 
 	/**
