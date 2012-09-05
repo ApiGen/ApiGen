@@ -32,7 +32,7 @@ abstract class ReflectionElement extends ReflectionBase
 	 *
 	 * @var array
 	 */
-	private $annotations;
+	protected $annotations;
 
 	/**
 	 * Returns the unqualified name (UQN).
@@ -47,7 +47,7 @@ abstract class ReflectionElement extends ReflectionBase
 	/**
 	 * Returns the PHP extension reflection.
 	 *
-	 * @return \ApiGen\ReflectionExtension
+	 * @return \ApiGen\ReflectionExtension|null
 	 */
 	public function getExtension()
 	{
@@ -92,7 +92,7 @@ abstract class ReflectionElement extends ReflectionBase
 	 */
 	public function isMain()
 	{
-		return empty(self::$config->main) || 0 === strpos($this->reflection->getName(), self::$config->main);
+		return empty(self::$config->main) || 0 === strpos($this->getName(), self::$config->main);
 	}
 
 	/**
@@ -198,7 +198,7 @@ abstract class ReflectionElement extends ReflectionBase
 	 */
 	public function getPseudoPackageName()
 	{
-		if ($this->reflection->isInternal()) {
+		if ($this->isInternal()) {
 			return 'PHP';
 		}
 
@@ -247,7 +247,7 @@ abstract class ReflectionElement extends ReflectionBase
 	 */
 	public function getPseudoNamespaceName()
 	{
-		return $this->reflection->isInternal() ? 'PHP' : $this->getNamespaceName() ?: 'None';
+		return $this->isInternal() ? 'PHP' : $this->getNamespaceName() ?: 'None';
 	}
 
 	/**
@@ -267,13 +267,13 @@ abstract class ReflectionElement extends ReflectionBase
 	 */
 	public function getShortDescription()
 	{
-		$short = $this->reflection->getAnnotation(\TokenReflection\ReflectionAnnotation::SHORT_DESCRIPTION);
+		$short = $this->getAnnotation(\TokenReflection\ReflectionAnnotation::SHORT_DESCRIPTION);
 		if (!empty($short)) {
 			return $short;
 		}
 
 		if ($this instanceof ReflectionProperty || $this instanceof ReflectionConstant) {
-			$var = $this->reflection->getAnnotation('var');
+			$var = $this->getAnnotation('var');
 			list(, $short) = preg_split('~\s+|$~', $var[0], 2);
 		}
 
@@ -288,7 +288,7 @@ abstract class ReflectionElement extends ReflectionBase
 	public function getLongDescription()
 	{
 		$short = $this->getShortDescription();
-		$long = $this->reflection->getAnnotation(\TokenReflection\ReflectionAnnotation::LONG_DESCRIPTION);
+		$long = $this->getAnnotation(\TokenReflection\ReflectionAnnotation::LONG_DESCRIPTION);
 
 		if (!empty($long)) {
 			$short .= "\n\n" . $long;

@@ -21,6 +21,36 @@ namespace ApiGen;
 class ReflectionProperty extends ReflectionElement
 {
 	/**
+	 * Returns if the property is read-only.
+	 *
+	 * @return boolean
+	 */
+	public function isReadOnly()
+	{
+		return false;
+	}
+
+	/**
+	 * Returns if the property is write-only.
+	 *
+	 * @return boolean
+	 */
+	public function isWriteOnly()
+	{
+		return false;
+	}
+
+	/**
+	 * Returns if the property is magic.
+	 *
+	 * @return boolean
+	 */
+	public function isMagic()
+	{
+		return false;
+	}
+
+	/**
 	 * Returns property type hint.
 	 *
 	 * @return string

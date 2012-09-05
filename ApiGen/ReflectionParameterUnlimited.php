@@ -252,6 +252,16 @@ class ReflectionParameterUnlimited extends ReflectionParameter
 	}
 
 	/**
+	 * Returns the appropriate docblock definition.
+	 *
+	 * @return string|boolean
+	 */
+	public function getDocComment()
+	{
+		return false;
+	}
+
+	/**
 	 * Returns the default value.
 	 *
 	 * @return mixed

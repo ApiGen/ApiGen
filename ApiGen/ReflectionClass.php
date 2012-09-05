@@ -60,6 +60,13 @@ class ReflectionClass extends ReflectionElement
 	private $ownProperties;
 
 	/**
+	 * Cache for list of own magic properties.
+	 *
+	 * @var array
+	 */
+	private $ownMagicProperties;
+
+	/**
 	 * Cache for list of own constants.
 	 *
 	 * @var array
@@ -304,6 +311,74 @@ class ReflectionClass extends ReflectionElement
 			}
 		}
 		return $this->ownProperties;
+	}
+
+	/**
+	 * Returns visible properties magicly declared by inspected class.
+	 *
+	 * @return array
+	 */
+	public function getOwnMagicProperties()
+	{
+		if (null === $this->ownMagicProperties) {
+			$this->ownMagicProperties = array();
+			if (self::$propertyAccessLevels & InternalReflectionProperty::IS_PUBLIC && false !== $this->getDocComment()) {
+				foreach (array('property', 'property-read', 'property-write') as $annotationName) {
+					$annotations = $this->getAnnotation($annotationName);
+					if (null === $annotations) {
+						continue;
+					}
+
+					foreach ($annotations as $annotation) {
+						$parts = preg_split('~\\s+|$~', $annotation, 3);
+						list($typeHint, $name) = $parts;
+						if (empty($typeHint)) {
+							// Empty annotation
+							continue;
+						}
+						$shortDescription = !empty($parts[2]) ? $parts[2] : '';
+
+						if ('$' === $typeHint[0]) {
+							$shortDescription = $name;
+							$name = $typeHint;
+							$typeHint = 'mixed';
+						}
+
+						if (empty($name) || '$' !== $name[0]) {
+							// No property name
+							continue;
+						}
+
+						$name = substr($name, 1);
+
+						$doc = $this->getDocComment();
+						$tmp = $annotation;
+						if ($delimiter = strpos($annotation, "\n")) {
+							$tmp = substr($annotation, 0, $delimiter);
+						}
+
+						$startLine = $this->getStartLine() - substr_count($doc, "\n") + substr_count(substr($doc, 0, strpos($doc, $tmp)), "\n");
+						$endLine = $startLine + substr_count($annotation, "\n") - 1;
+
+						$magicProperty = new ReflectionPropertyMagic(null, self::$generator);
+						$magicProperty
+							->setName($name)
+							->setTypeHint($typeHint)
+							->setShortDescription($shortDescription)
+							->setStartLine($startLine)
+							->setEndLine($endLine)
+							->setReadOnly('property-read' === $annotationName)
+							->setWriteOnly('property-write' === $annotationName)
+							->setDeclaringClass($this)
+							->addAnnotation('var', $typeHint);
+
+						$this->ownMagicProperties[$name] = $magicProperty;
+					}
+				}
+			}
+		}
+
+		return $this->ownMagicProperties;
 	}
 
 	/**
@@ -904,6 +979,36 @@ class ReflectionClass extends ReflectionElement
 	}
 
 	/**
+	 * Returns an array of inherited magic properties from parent classes grouped by the declaring class name.
+	 *
+	 * @return array
+	 */
+	public function getInheritedMagicProperties()
+	{
+		$properties = array();
+		$allProperties = array_flip(array_map(function($property) {
+			return $property->getName();
+		}, $this->getOwnMagicProperties()));
+
+		foreach ($this->getParentClasses() as $class) {
+			$inheritedProperties = array();
+			foreach ($class->getOwnMagicProperties() as $property) {
+				if (!array_key_exists($property->getName(), $allProperties)) {
+					$inheritedProperties[$property->getName()] = $property;
+					$allProperties[$property->getName()] = null;
+				}
+			}
+
+			if (!empty($inheritedProperties)) {
+				ksort($inheritedProperties);
+				$properties[$class->getName()] = array_values($inheritedProperties);
+			}
+		}
+
+		return $properties;
+	}
+
+	/**
 	 * Returns an array of used properties from used traits grouped by the declaring trait name.
 	 *
 	 * @return array
@@ -918,6 +1023,36 @@ class ReflectionClass extends ReflectionElement
 		foreach ($this->getTraits() as $trait) {
 			$usedProperties = array();
 			foreach ($trait->getOwnProperties() as $property) {
+				if (!array_key_exists($property->getName(), $allProperties)) {
+					$usedProperties[$property->getName()] = $property;
+					$allProperties[$property->getName()] = null;
+				}
+			}
+
+			if (!empty($usedProperties)) {
+				ksort($usedProperties);
+				$properties[$trait->getName()] = array_values($usedProperties);
+			}
+		}
+
+		return $properties;
+	}
+
+	/**
+	 * Returns an array of used magic properties from used traits grouped by the declaring trait name.
+	 *
+	 * @return array
+	 */
+	public function getUsedMagicProperties()
+	{
+		$properties = array();
+		$allProperties = array_flip(array_map(function($property) {
+			return $property->getName();
+		}, $this->getOwnMagicProperties()));
+
+		foreach ($this->getTraits() as $trait) {
+			$usedProperties = array();
+			foreach ($trait->getOwnMagicProperties() as $property) {
 				if (!array_key_exists($property->getName(), $allProperties)) {
 					$usedProperties[$property->getName()] = $property;
 					$allProperties[$property->getName()] = null;

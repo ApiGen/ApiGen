@@ -672,6 +672,9 @@ class Generator extends Nette\Object
 						foreach ($element->getOwnProperties() as $property) {
 							$elements[] = array('p', $property->getPrettyName());
 						}
+						foreach ($element->getOwnMagicProperties() as $property) {
+							$elements[] = array('mp', $property->getPrettyName());
+						}
 					}
 					if (isset($autocomplete['classconstants'])) {
 						foreach ($element->getOwnConstants() as $constant) {
@@ -1333,7 +1336,6 @@ class Generator extends Nette\Object
 
 					$template->ownMethods = $element->getOwnMethods();
 					$template->ownConstants = $element->getOwnConstants();
-					$template->ownProperties = $element->getOwnProperties();
 
 					$template->class = $element;
 
