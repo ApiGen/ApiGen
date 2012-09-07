@@ -462,8 +462,6 @@ class Generator extends Nette\Object
 	private function registerCustomTemplateMacros(Template $template)
 	{
 		$latte = new Nette\Latte\Engine();
-		$macroSet = new Nette\Latte\Macros\MacroSet($latte->compiler);
-		$macroSet->addMacro('try', 'try {', '} catch (\Exception $e) {}');
 
 		if (!empty($this->config->template['options']['extensions'])) {
 			$this->output("Loading custom template macro and helper libraries\n");

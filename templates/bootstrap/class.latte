@@ -194,13 +194,11 @@ the file LICENSE.md that was distributed with this source code.
 					<div class="list"><code><a n:tag-if="$template->getClass($overriddenMethod->declaringClassName)" href="{$overriddenMethod|methodUrl}">{$overriddenMethod->declaringClassName}::{$overriddenMethod->name}</a></code></div>
 				{/if}
 
-				{try}
-				{var $prototype = $method->prototype}
-				{if $prototype->declaringClass->interface}
+				{var $implementedMethod = $method->implementedMethod}
+				{if $implementedMethod}
 					<h4>Implementation of</h4>
-					<div class="list"><code><a n:tag-if="$template->getClass($prototype->declaringClassName)" href="{$prototype|methodUrl}">{$prototype->declaringClassName}::{$prototype->name}</a></code></div>
+					<div class="list"><code><a n:tag-if="$template->getClass($implementedMethod->declaringClassName)" href="{$implementedMethod|methodUrl}">{$implementedMethod->prettyName}</a></code></div>
 				{/if}
-				{/try}
 			</div>
 			</div></td>
 		</tr>

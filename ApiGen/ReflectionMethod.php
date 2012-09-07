@@ -163,20 +163,25 @@ class ReflectionMethod extends ReflectionFunctionBase
 	}
 
 	/**
-	 * Returns the method prototype.
+	 * Returns the overridden method.
 	 *
-	 * @return \ApiGen\ReflectionMethod
+	 * @return \ApiGen\ReflectionMethod|null
 	 */
-	public function getPrototype()
+	public function getImplementedMethod()
 	{
-		$prototype = $this->reflection->getPrototype();
-		return self::$parsedClasses[$prototype->getDeclaringClassName()]->getMethod($prototype->getName());
+		foreach ($this->getDeclaringClass()->getOwnInterfaces() as $interface) {
+			if ($interface->hasMethod($this->getName())) {
+				return $interface->getMethod($this->getName());
+			}
+		}
+
+		return null;
 	}
 
 	/**
 	 * Returns the overridden method.
 	 *
-	 * @return \ApiGen\ReflectionMethod
+	 * @return \ApiGen\ReflectionMethod|null
 	 */
 	public function getOverriddenMethod()
 	{

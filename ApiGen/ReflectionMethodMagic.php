@@ -492,18 +492,13 @@ class ReflectionMethodMagic extends ReflectionMethod
 	}
 
 	/**
-	 * Returns the method prototype.
+	 * Returns the overridden method.
 	 *
-	 * @return \ApiGen\ReflectionMethod
-	 * @throws \RuntimeException If the method has no prototype.
+	 * @return \ApiGen\ReflectionMethod|null
 	 */
-	public function getPrototype()
+	public function getImplementedMethod()
 	{
-		if ($prototype = $this->getOverriddenMethod()) {
-			return $prototype;
-		}
-
-		throw new \RuntimeException('Method has no prototype.');
+		return null;
 	}
 
 	/**
