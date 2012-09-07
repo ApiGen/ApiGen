@@ -313,7 +313,7 @@ class ReflectionClass extends ReflectionElement
 			}
 
 			foreach ($annotations as $annotation) {
-				if (!preg_matwch('~^(?:([\\w\\\\]+(?:\\|[\\w\\\\]+)*)\\s+)?(&)?\\s*(\\w+)\\s*\\(\\s*(.*)\\s*\\)\\s*(.*|$)~s', $annotation, $matches)) {
+				if (!preg_match('~^(?:([\\w\\\\]+(?:\\|[\\w\\\\]+)*)\\s+)?(&)?\\s*(\\w+)\\s*\\(\\s*(.*)\\s*\\)\\s*(.*|$)~s', $annotation, $matches)) {
 					// Wrong annotation format
 					continue;
 				}
