@@ -87,6 +87,9 @@ $(function() {
 			}
 			location.push(file);
 			window.location = location.join('/');
+
+			// Workaround for Opera bug
+			$(this).closest('form').attr('action', location.join('/'));
 		}).closest('form')
 			.submit(function() {
 				var query = $search.val();
