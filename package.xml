@@ -53,8 +53,12 @@
 			<file name="ReflectionFunction.php" role="php" />
 			<file name="ReflectionFunctionBase.php" role="php" />
 			<file name="ReflectionMethod.php" role="php" />
+			<file name="ReflectionMethodMagic.php" role="php" />
 			<file name="ReflectionParameter.php" role="php" />
+			<file name="ReflectionParameterMagic.php" role="php" />
 			<file name="ReflectionProperty.php" role="php" />
+			<file name="ReflectionPropertyMagic.php" role="php" />
+			<file name="SourceFilesFilterIterator.php" role="php" />
 			<file name="Template.php" role="php" />
 			<file name="Tree.php" role="php" />
 		</dir>
@@ -69,7 +73,6 @@
 					<file name="main.js" role="data" />
 				</dir>
 				<dir name="resources">
-					<file name="code-line.png" role="data" />
 					<file name="collapsed.png" role="data" />
 					<file name="footer.png" role="data" />
 					<file name="inherit.png" role="data" />
@@ -83,6 +86,7 @@
 				</dir>
 				<file name="@elementlist.latte" role="data" />
 				<file name="@layout.latte" role="data" />
+				<file name="404.latte" role="data" />
 				<file name="class.latte" role="data" />
 				<file name="combined.js.latte" role="data" />
 				<file name="config.neon" role="data" />
@@ -111,7 +115,6 @@
 				</dir>
 				<dir name="resources">
 					<file name="bootstrap.min.css" role="data" />
-					<file name="code-line.png" role="data" />
 					<file name="collapsed.png" role="data" />
 					<file name="inherit.png" role="data" />
 					<file name="resize.png" role="data" />
@@ -124,6 +127,7 @@
 				</dir>
 				<file name="@elementlist.latte" role="data" />
 				<file name="@layout.latte" role="data" />
+				<file name="404.latte" role="data" />
 				<file name="class.latte" role="data" />
 				<file name="combined.js.latte" role="data" />
 				<file name="config.neon" role="data" />
