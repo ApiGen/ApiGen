@@ -1,5 +1,5 @@
 require:
-	min: 2.7.0
+	min: 2.8.0
 
 resources:
 	resources: resources
