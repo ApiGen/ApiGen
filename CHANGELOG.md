@@ -1,3 +1,18 @@
+## ApiGen 2.8.0 (2012-09-08) ##
+
+* Added support for @property and @method annotations
+* Added support for variable length parameters
+* Enabled selection of more rows in source code
+* Templates can specify minimum and maximum required ApiGen version
+* Added template for 404 page
+* Improved support for malformed @param annotations
+* Fixed excluding files and directories and detecting non accessible files and directories
+* Fixed internal error when no timezone is specified in php.ini
+* Fixed autocomplate in Opera browser
+* Nette framework updated to version 2.0.5
+* TokenReflection library updated to version 1.3.1
+* FSHL library updated to version 2.1.0
+
 ## ApiGen 2.7.0 (2012-07-15) ##
 
 * Support of custom template macros and helpers
