@@ -65,6 +65,12 @@ If you don't want to use the auto discovery, you have to add PEAR channels of al
 	pear install apigen/ApiGen
 ```
 
+If you encounter a message like `WARNING: channel "pear.apigen.org" has updated its protocols, use "pear channel-update pear.apigen.org" to update`, you need to tell PEAR to update its information about the ApiGen channel using the suggested command.
+
+```
+pear channel-update pear.apigen.org
+```
+
 ### Standalone package ###
 
 Using the standalone package is even easier than using the PEAR installer but it does not handle updates automatically.
