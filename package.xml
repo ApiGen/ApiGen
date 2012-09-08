@@ -176,7 +176,7 @@
 		<package>
 			<name>FSHL</name>
 			<channel>pear.kukulich.cz</channel>
-			<min>2.0.1</min>
+			<min>2.1.0</min>
 		</package>
 		<package>
 			<name>TokenReflection</name>
