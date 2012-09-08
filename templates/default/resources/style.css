@@ -1,5 +1,5 @@
 /*!
- * ApiGen 2.7.0 - API documentation generator for PHP 5.3+
+ * ApiGen 2.8.0 - API documentation generator for PHP 5.3+
  *
  * Copyright (c) 2010-2011 David Grudl (http://davidgrudl.com)
  * Copyright (c) 2011-2012 Jaroslav Hanslík (https://github.com/kukulich)
@@ -546,14 +546,39 @@ div.tree span.padding {
 	font-weight: bold;
 }
 
-.l {
+span.l {
+	display: block;
+}
+
+span.l.selected {
+	background: #f6f6f4;
+}
+
+span.l a {
+	color: #333333;
+}
+
+span.l a:hover, div.l a:active, div.l a:focus {
+	background: transparent;
+	color: #333333 !important;
+}
+
+span.l .php-var a {
+	color: #d59401;
+}
+
+span.l .php-var a:hover, span.l .php-var a:active, span.l .php-var a:focus {
+	color: #d59401 !important;
+}
+
+span.l a.l {
 	padding-left: 2px;
 	color: #c0c0c0;
 }
 
-.l:target {
-	background: #006aeb url('code-line.png') right center no-repeat;
-	color: #ffffff;
+span.l a.l:hover, span.l a.l:active, span.l a.l:focus {
+	background: transparent;
+	color: #c0c0c0 !important;
 }
 
 #rightInner.medium #navigation {

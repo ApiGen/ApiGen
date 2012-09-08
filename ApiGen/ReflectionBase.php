@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ApiGen 2.7.0 - API documentation generator for PHP 5.3+
+ * ApiGen 2.8.0 - API documentation generator for PHP 5.3+
  *
  * Copyright (c) 2010-2011 David Grudl (http://davidgrudl.com)
  * Copyright (c) 2011-2012 Jaroslav Hanslík (https://github.com/kukulich)
@@ -62,14 +62,14 @@ abstract class ReflectionBase
 	 *
 	 * @var array
 	 */
-	private static $reflectionMethods = array();
+	protected static $reflectionMethods = array();
 
 	/**
 	 * Reflection type (reflection class).
 	 *
 	 * @var string
 	 */
-	private $reflectionType;
+	protected $reflectionType;
 
 	/**
 	 * Inspected class reflection.
@@ -110,7 +110,7 @@ abstract class ReflectionBase
 	 * First tries the envelope object's property storage, then its methods
 	 * and finally the inspected element reflection.
 	 *
-	 * @param string $name Attribute name
+	 * @param string $name Property name
 	 * @return mixed
 	 */
 	public function __get($name)
@@ -143,14 +143,98 @@ abstract class ReflectionBase
 	}
 
 	/**
-	 * Calls a method of the inspected element reflection.
+	 * Returns the reflection broker used by this reflection object.
 	 *
-	 * @param string $name Method name
-	 * @param array $args Arguments
-	 * @return mixed
+	 * @return \TokenReflection\Broker
 	 */
-	public function __call($name, array $args)
+	public function getBroker()
 	{
-		return call_user_func_array(array($this->reflection, $name), $args);
+		return $this->reflection->getBroker();
+	}
+
+	/**
+	 * Returns the name (FQN).
+	 *
+	 * @return string
+	 */
+	public function getName()
+	{
+		return $this->reflection->getName();
+	}
+
+	/**
+	 * Returns an element pretty (docblock compatible) name.
+	 *
+	 * @return string
+	 */
+	public function getPrettyName()
+	{
+		return $this->reflection->getPrettyName();
+	}
+
+	/**
+	 * Returns if the reflection object is internal.
+	 *
+	 * @return boolean
+	 */
+	public function isInternal()
+	{
+		return $this->reflection->isInternal();
+	}
+
+	/**
+	 * Returns if the reflection object is user defined.
+	 *
+	 * @return boolean
+	 */
+	public function isUserDefined()
+	{
+		return $this->reflection->isUserDefined();
+	}
+
+	/**
+	 * Returns if the current reflection comes from a tokenized source.
+	 *
+	 * @return boolean
+	 */
+	public function isTokenized()
+	{
+		return $this->reflection->isTokenized();
+	}
+
+	/**
+	 * Returns the file name the reflection object is defined in.
+	 *
+	 * @return string
+	 */
+	public function getFileName()
+	{
+		return $this->reflection->getFileName();
+	}
+
+	/**
+	 * Returns the definition start line number in the file.
+	 *
+	 * @return integer
+	 */
+	public function getStartLine()
+	{
+		$startLine = $this->reflection->getStartLine();
+
+		if ($doc = $this->getDocComment()) {
+			$startLine -= substr_count($doc, "\n") + 1;
+		}
+
+		return $startLine;
+	}
+
+	/**
+	 * Returns the definition end line number in the file.
+	 *
+	 * @return integer
+	 */
+	public function getEndLine()
+	{
+		return $this->reflection->getEndLine();
 	}
 }

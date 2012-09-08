@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ApiGen 2.7.0 - API documentation generator for PHP 5.3+
+ * ApiGen 2.8.0 - API documentation generator for PHP 5.3+
  *
  * Copyright (c) 2010-2011 David Grudl (http://davidgrudl.com)
  * Copyright (c) 2011-2012 Jaroslav Hanslík (https://github.com/kukulich)
@@ -32,17 +32,47 @@ abstract class ReflectionElement extends ReflectionBase
 	 *
 	 * @var array
 	 */
-	private $annotations;
+	protected $annotations;
 
 	/**
 	 * Returns the PHP extension reflection.
 	 *
-	 * @return \ApiGen\ReflectionExtension
+	 * @return \ApiGen\ReflectionExtension|null
 	 */
 	public function getExtension()
 	{
 		$extension = $this->reflection->getExtension();
 		return null === $extension ? null : new ReflectionExtension($extension, self::$generator);
+	}
+
+	/**
+	 * Returns the PHP extension name.
+	 *
+	 * @return boolean
+	 */
+	public function getExtensionName()
+	{
+		return $this->reflection->getExtensionName();
+	}
+
+	/**
+	 * Returns the start position in the file token stream.
+	 *
+	 * @return integer
+	 */
+	public function getStartPosition()
+	{
+		return $this->reflection->getStartPosition();
+	}
+
+	/**
+	 * Returns the end position in the file token stream.
+	 *
+	 * @return integer
+	 */
+	public function getEndPosition()
+	{
+		return $this->reflection->getEndPosition();
 	}
 
 	/**
@@ -52,7 +82,7 @@ abstract class ReflectionElement extends ReflectionBase
 	 */
 	public function isMain()
 	{
-		return empty(self::$config->main) || 0 === strpos($this->reflection->getName(), self::$config->main);
+		return empty(self::$config->main) || 0 === strpos($this->getName(), self::$config->main);
 	}
 
 	/**
@@ -158,11 +188,21 @@ abstract class ReflectionElement extends ReflectionBase
 	 */
 	public function getPseudoPackageName()
 	{
-		if ($this->reflection->isInternal()) {
+		if ($this->isInternal()) {
 			return 'PHP';
 		}
 
 		return $this->getPackageName() ?: 'None';
+	}
+
+	/**
+	 * Returns if the element is defined within a namespace.
+	 *
+	 * @return boolean
+	 */
+	public function inNamespace()
+	{
+		return '' !== $this->getNamespaceName();
 	}
 
 	/**
@@ -197,7 +237,17 @@ abstract class ReflectionElement extends ReflectionBase
 	 */
 	public function getPseudoNamespaceName()
 	{
-		return $this->reflection->isInternal() ? 'PHP' : $this->getNamespaceName() ?: 'None';
+		return $this->isInternal() ? 'PHP' : $this->getNamespaceName() ?: 'None';
+	}
+
+	/**
+	 * Returns imported namespaces and aliases from the declaring namespace.
+	 *
+	 * @return array
+	 */
+	public function getNamespaceAliases()
+	{
+		return $this->reflection->getNamespaceAliases();
 	}
 
 	/**
@@ -213,7 +263,7 @@ abstract class ReflectionElement extends ReflectionBase
 		}
 
 		if ($this instanceof ReflectionProperty || $this instanceof ReflectionConstant) {
-			$var = $this->reflection->getAnnotation('var');
+			$var = $this->getAnnotation('var');
 			list(, $short) = preg_split('~\s+|$~', $var[0], 2);
 		}
 
@@ -235,6 +285,16 @@ abstract class ReflectionElement extends ReflectionBase
 		}
 
 		return $short;
+	}
+
+	/**
+	 * Returns the appropriate docblock definition.
+	 *
+	 * @return string|boolean
+	 */
+	public function getDocComment()
+	{
+		return $this->reflection->getDocComment();
 	}
 
 	/**
@@ -278,8 +338,20 @@ abstract class ReflectionElement extends ReflectionBase
 	 */
 	public function getAnnotation($annotation)
 	{
-		$annotations = $this->annotations ?: $this->getAnnotations();
+		$annotations = $this->getAnnotations();
 		return isset($annotations[$annotation]) ? $annotations[$annotation] : null;
+	}
+
+	/**
+	 * Checks if there is a particular annotation.
+	 *
+	 * @param string $annotation Annotation name
+	 * @return boolean
+	 */
+	public function hasAnnotation($annotation)
+	{
+		$annotations = $this->getAnnotations();
+		return isset($annotations[$annotation]);
 	}
 
 	/**

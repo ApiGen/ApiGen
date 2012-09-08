@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ApiGen 2.7.0 - API documentation generator for PHP 5.3+
+ * ApiGen 2.8.0 - API documentation generator for PHP 5.3+
  *
  * Copyright (c) 2010-2011 David Grudl (http://davidgrudl.com)
  * Copyright (c) 2011-2012 Jaroslav Hanslík (https://github.com/kukulich)
@@ -158,16 +158,14 @@ class Template extends Nette\Templating\FileTemplate
 
 		// Types
 		$this->registerHelper('typeLinks', new Nette\Callback($this, 'getTypeLinks'));
-		$this->registerHelper('type', function($value) use ($that) {
-			$type = $that->getTypeName(gettype($value));
-			return 'null' !== $type ? $type : '';
-		});
 
 		// Docblock descriptions
 		$this->registerHelper('description', function($annotation, $context) use ($that) {
-			list(, $description) = $that->split($annotation);
+			$description = trim(strpbrk($annotation, "\n\r\t $"));
+
 			if ($context instanceof ReflectionParameter) {
-				$description = preg_replace('~^(\\$' . $context->getName() . ')(\s+|$)~i', '\\2', $description, 1);
+				$description = preg_replace('~^(\\$' . $context->getName() . '(?:,\\.{3})?)(\s+|$)~i', '\\2', $description, 1);
+				$context = $context->getDeclaringFunction();
 			}
 			return $that->doc($description, $context);
 		});
@@ -234,11 +232,11 @@ class Template extends Nette\Templating\FileTemplate
 		$internal = $this->config->internal;
 		$this->registerHelper('annotationFilter', function(array $annotations, array $filter = array()) use ($todo, $internal) {
 			// Filtered, unsupported or deprecated annotations
-			static $unsupported = array(
+			static $filtered = array(
 				'package', 'subpackage', 'property', 'property-read', 'property-write', 'method', 'abstract',
 				'access', 'final', 'filesource', 'global', 'name', 'static', 'staticvar'
 			);
-			foreach ($unsupported as $annotation) {
+			foreach ($filtered as $annotation) {
 				unset($annotations[$annotation]);
 			}
 
@@ -308,6 +306,39 @@ class Template extends Nette\Templating\FileTemplate
 			return $name;
 		});
 
+		// Source anchors
+		$this->registerHelper('sourceAnchors', function($source) {
+			// Classes, interfaces, traits and exceptions
+			$source = preg_replace_callback('~(<span\\s+class="php-keyword1">(?:class|interface|trait)</span>\\s+)(\\w+)~i', function($matches) {
+				$link = sprintf('<a id="%1$s" href="#%1$s">%1$s</a>', $matches[2]);
+				return $matches[1] . $link;
+			}, $source);
+
+			// Methods and functions
+			$source = preg_replace_callback('~(<span\\s+class="php-keyword1">function</span>\\s+)(\\w+)~i', function($matches) {
+				$link = sprintf('<a id="_%1$s" href="#_%1$s">%1$s</a>', $matches[2]);
+				return $matches[1] . $link;
+			}, $source);
+
+			// Constants
+			$source = preg_replace_callback('~(<span class="php-keyword1">const</span>)(.*?)(;)~is', function($matches) {
+				$links = preg_replace_callback('~(\\s|,)([A-Z_]+)(\\s+=)~', function($matches) {
+					return $matches[1] . sprintf('<a id="%1$s" href="#%1$s">%1$s</a>', $matches[2]) . $matches[3];
+				}, $matches[2]);
+				return $matches[1] . $links . $matches[3];
+			}, $source);
+
+			// Properties
+			$source = preg_replace_callback('~(<span\\s+class="php-keyword1">(?:private|protected|public|var|static)</span>\\s+)(<span\\s+class="php-var">.*?)(;)~is', function($matches) {
+				$links = preg_replace_callback('~(<span\\s+class="php-var">)(\\$\\w+)~i', function($matches) {
+					return $matches[1] . sprintf('<a id="%1$s" href="#%1$s">%1$s</a>', $matches[2]);
+				}, $matches[2]);
+				return $matches[1] . $links . $matches[3];
+			}, $source);
+
+			return $source;
+		});
+
 		$this->registerHelper('urlize', array($this, 'urlize'));
 
 		$this->registerHelper('relativePath', array($generator, 'getRelativePath'));
@@ -319,9 +350,10 @@ class Template extends Nette\Templating\FileTemplate
 	 * Returns unified type value definition (class name or member data type).
 	 *
 	 * @param string $name
+	 * @param boolean $trimNamespaceSeparator
 	 * @return string
 	 */
-	public function getTypeName($name)
+	public function getTypeName($name, $trimNamespaceSeparator = true)
 	{
 		static $names = array(
 			'int' => 'integer',
@@ -330,7 +362,8 @@ class Template extends Nette\Templating\FileTemplate
 			'void' => '',
 			'FALSE' => 'false',
 			'TRUE' => 'true',
-			'NULL' => 'null'
+			'NULL' => 'null',
+			'callback' => 'callable'
 		);
 
 		// Simple type
@@ -339,7 +372,7 @@ class Template extends Nette\Templating\FileTemplate
 		}
 
 		// Class, constant or function
-		return ltrim($name, '\\');
+		return $trimNamespaceSeparator ? ltrim($name, '\\') : $name;
 	}
 
 	/**
@@ -352,10 +385,19 @@ class Template extends Nette\Templating\FileTemplate
 	public function getTypeLinks($annotation, ReflectionElement $context)
 	{
 		$links = array();
+
 		list($types) = $this->split($annotation);
+		if (!empty($types) && '$' === $types{0}) {
+			$types = null;
+		}
+
+		if (empty($types)) {
+			$types = 'mixed';
+		}
+
 		foreach (explode('|', $types) as $type) {
-			$type = $this->getTypeName($type);
-			$links[] = $this->resolveLink($type, $context) ?: $this->escapeHtml($type);
+			$type = $this->getTypeName($type, false);
+			$links[] = $this->resolveLink($type, $context) ?: $this->escapeHtml(ltrim($type, '\\'));
 		}
 
 		return implode('|', $links);
@@ -472,7 +514,7 @@ class Template extends Nette\Templating\FileTemplate
 	public function getMethodUrl(ReflectionMethod $method, ReflectionClass $class = null)
 	{
 		$className = null !== $class ? $class->getName() : $method->getDeclaringClassName();
-		return $this->getClassUrl($className) . '#_' . $method->getOriginalName();
+		return $this->getClassUrl($className) . '#' . ($method->isMagic() ? 'm' : '') . '_' . ($method->getOriginalName() ?: $method->getName());
 	}
 
 	/**
@@ -485,7 +527,7 @@ class Template extends Nette\Templating\FileTemplate
 	public function getPropertyUrl(ReflectionProperty $property, ReflectionClass $class = null)
 	{
 		$className = null !== $class ? $class->getName() : $property->getDeclaringClassName();
-		return $this->getClassUrl($className) . '#$' . $property->getName();
+		return $this->getClassUrl($className) . '#' . ($property->isMagic() ? 'm' : '') . '$' . $property->getName();
 	}
 
 	/**
@@ -562,15 +604,12 @@ class Template extends Nette\Templating\FileTemplate
 
 		$file .= $this->urlize($elementName);
 
-		$line = null;
+		$lines = null;
 		if ($withLine) {
-			$line = $element->getStartLine();
-			if ($doc = $element->getDocComment()) {
-				$line -= substr_count($doc, "\n") + 1;
-			}
+			$lines = $element->getStartLine() !== $element->getEndLine() ? sprintf('%s-%s', $element->getStartLine(), $element->getEndLine()) : $element->getStartLine();
 		}
 
-		return sprintf($this->config->template['templates']['main']['source']['filename'], $file) . (isset($line) ? '#' . $line : '');
+		return sprintf($this->config->template['templates']['main']['source']['filename'], $file) . (null !== $lines ? '#' . $lines : '');
 	}
 
 	/**

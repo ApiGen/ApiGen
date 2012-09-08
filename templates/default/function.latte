@@ -1,5 +1,5 @@
 {*
-ApiGen 2.7.0 - API documentation generator for PHP 5.3+
+ApiGen 2.8.0 - API documentation generator for PHP 5.3+
 
 Copyright (c) 2010-2011 David Grudl (http://davidgrudl.com)
 Copyright (c) 2011-2012 Jaroslav Hanslík (https://github.com/kukulich)
@@ -39,14 +39,10 @@ the file LICENSE.md that was distributed with this source code.
 
 	<table class="summary" id="parameters" n:if="$function->numberOfParameters">
 	<caption>Parameters summary</caption>
-	<tr n:foreach="$function->parameters as $parameter" data-order="{$parameter->name}" id="${$parameter->name}">
-		<td class="name"><code>
-			{if $parameter->array}array
-			{elseif $parameter->className}{!$parameter->className|typeLinks:$function}
-			{elseif isset($annotations['param'][$parameter->position])}{!$annotations['param'][$parameter->position]|typeLinks:$function}{/if}
-		</code></td>
+	<tr n:foreach="$function->parameters as $parameter" id="${$parameter->name}">
+		<td class="name"><code>{!$parameter->typeHint|typeLinks:$function}</code></td>
 		<td class="value"><code>{block|strip}
-			<var>{if $parameter->passedByReference}&amp; {/if}${$parameter->name}</var>{if $parameter->defaultValueAvailable} = {!$parameter->defaultValueDefinition|highlightPHP:$function}{/if}
+			<var>{if $parameter->passedByReference}&amp; {/if}${$parameter->name}</var>{if $parameter->defaultValueAvailable} = {!$parameter->defaultValueDefinition|highlightPHP:$function}{elseif $parameter->unlimited},…{/if}
 		{/block}</code></td>
 		<td>
 			{ifset $annotations['param'][$parameter->position]}{!$annotations['param'][$parameter->position]|description:$parameter}{/ifset}

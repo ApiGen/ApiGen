@@ -1,5 +1,5 @@
 /*!
- * ApiGen 2.7.0 - API documentation generator for PHP 5.3+
+ * ApiGen 2.8.0 - API documentation generator for PHP 5.3+
  *
  * Copyright (c) 2010-2011 David Grudl (http://davidgrudl.com)
  * Copyright (c) 2011-2012 Jaroslav Hanslík (https://github.com/kukulich)
@@ -52,15 +52,13 @@ var {
 code {
 	color: #000000;
 	white-space: nowrap;
+	border: none;
+	background: transparent;
+	padding: 0
 }
 
 code:empty {
 	display: none;
-}
-
-code code {
-	border: none;
-	padding: 0;
 }
 
 code a b {
@@ -470,16 +468,41 @@ div.tree span.padding {
 	font-weight: bold;
 }
 
-.l {
+span.l {
+	display: block;
+}
+
+span.l.selected {
+	background: #f9f2d2;
+}
+
+span.l a {
+	color: #333333;
+}
+
+span.l a:hover, span.l a:active, span.l a:focus {
+	background: transparent;
+	color: #333333 !important;
+}
+
+span.l .php-var a {
+	color: #c09853;
+}
+
+span.l .php-var a:hover, span.l .php-var a:active, span.l .php-var a:focus {
+	color: #c09853 !important;
+}
+
+span.l a.l {
 	background: #fbfbfc;
 	margin-right: 8px;
 	padding: 2px 2px 2px 8px;
 	color: #c0c0c0;
 }
 
-.l:target {
-	background: #0088cc url('code-line.png') right center no-repeat;
-	color: #ffffff;
+span.l a.l:hover, span.l a.l:active, span.l a.l:focus {
+	background: #fbfbfc;
+	color: #c0c0c0 !important;
 }
 
 /* Small screens */

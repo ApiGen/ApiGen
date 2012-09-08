@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ApiGen 2.7.0 - API documentation generator for PHP 5.3+
+ * ApiGen 2.8.0 - API documentation generator for PHP 5.3+
  *
  * Copyright (c) 2010-2011 David Grudl (http://davidgrudl.com)
  * Copyright (c) 2011-2012 Jaroslav Hanslík (https://github.com/kukulich)
@@ -315,6 +315,7 @@ class Config
 
 		// Default template config
 		$this->config['template'] = array(
+			'require' => array(),
 			'resources' => array(),
 			'templates' => array(
 				'common' => array(),
@@ -402,6 +403,31 @@ class Config
 	 */
 	private function checkTemplate()
 	{
+		$require = $this->config['template']['require'];
+		if (isset($require['min']) && !preg_match('~^\\d+(?:\\.\\d+){0,2}$~', $require['min'])) {
+			throw new ConfigException(sprintf('Invalid minimal version definition "%s"', $require['min']));
+		}
+		if (isset($require['max']) && !preg_match('~^\\d+(?:\\.\\d+){0,2}$~', $require['max'])) {
+			throw new ConfigException(sprintf('Invalid maximal version definition "%s"', $require['max']));
+		}
+
+		$isMinOk = function($min) {
+			$min .= str_repeat('.0', 2 - substr_count($min, '.'));
+			return version_compare($min, Generator::VERSION, '<=');
+		};
+		$isMaxOk = function($max) {
+			$max .= str_repeat('.0', 2 - substr_count($max, '.'));
+			return version_compare($max, Generator::VERSION, '>=');
+		};
+
+		if (isset($require['min'], $require['max']) && (!$isMinOk($require['min']) || !$isMaxOk($require['max']))) {
+			throw new ConfigException(sprintf('The template requires version from "%s" to "%s", you are using version "%s"', $require['min'], $require['max'], Generator::VERSION));
+		} elseif (isset($require['min']) && !$isMinOk($require['min'])) {
+			throw new ConfigException(sprintf('The template requires version "%s" or newer, you are using version "%s"', $require['min'], Generator::VERSION));
+		} elseif (isset($require['max']) && !$isMaxOk($require['max'])) {
+			throw new ConfigException(sprintf('The template requires version "%s" or older, you are using version "%s"', $require['max'], Generator::VERSION));
+		}
+
 		foreach (array('main', 'optional') as $section) {
 			foreach ($this->config['template']['templates'][$section] as $type => $config) {
 				if (!isset($config['filename'])) {

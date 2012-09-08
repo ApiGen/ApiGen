@@ -2,7 +2,7 @@
 <?php
 
 /**
- * ApiGen 2.7.0 - API documentation generator for PHP 5.3+
+ * ApiGen 2.8.0 - API documentation generator for PHP 5.3+
  *
  * Copyright (c) 2010-2011 David Grudl (http://davidgrudl.com)
  * Copyright (c) 2011-2012 Jaroslav Hanslík (https://github.com/kukulich)
@@ -16,6 +16,12 @@ namespace ApiGen;
 
 use Nette\Diagnostics\Debugger;
 use TokenReflection;
+
+// Safe locale and timezone
+setlocale(LC_ALL, 'C');
+if (!ini_get('date.timezone')) {
+	date_default_timezone_set('UTC');
+}
 
 if (false === strpos('@php_dir@', '@php_dir')) {
 	// PEAR package
@@ -104,7 +110,7 @@ try {
 	if ($config->updateCheck && !$config->debug) {
 		ini_set('default_socket_timeout', 5);
 		$latestVersion = @file_get_contents('http://pear.apigen.org/rest/r/apigen/latest.txt');
-		if (false !== $latestVersion && version_compare(trim($latestVersion), Generator::VERSION) > 0) {
+		if (false !== $latestVersion && version_compare(trim($latestVersion), Generator::VERSION, '>')) {
 			$generator->output(sprintf("New version @header@%s@c available\n\n", $latestVersion));
 		}
 	}
@@ -193,7 +199,7 @@ try {
 	if ($config->wipeout && is_dir($config->destination)) {
 		$generator->output("Wiping out destination directory\n");
 		if (!$generator->wipeOutDestination()) {
-			throw new Exception('Cannot wipe out destination directory');
+			throw new \RuntimeException('Cannot wipe out destination directory');
 		}
 	}
 
@@ -219,6 +225,10 @@ try {
 	if ($interval->s > 0) {
 		$parts[] = sprintf('@count@%d@c sec', $interval->s);
 	}
+	if (empty($parts)) {
+		$parts[] = sprintf('@count@%d@c sec', 1);
+	}
+
 	$duration = implode(' ', $parts);
 	$generator->output(sprintf("Done. Total time: %s, used: @count@%d@c MB RAM\n", $duration, round(memory_get_peak_usage(true) / 1024 / 1024)));
 

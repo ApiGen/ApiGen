@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ApiGen 2.7.0 - API documentation generator for PHP 5.3+
+ * ApiGen 2.8.0 - API documentation generator for PHP 5.3+
  *
  * Copyright (c) 2010-2011 David Grudl (http://davidgrudl.com)
  * Copyright (c) 2011-2012 Jaroslav Hanslík (https://github.com/kukulich)
@@ -34,7 +34,7 @@ class Generator extends Nette\Object
 	 *
 	 * @var string
 	 */
-	const VERSION = '2.7.0';
+	const VERSION = '2.8.0';
 
 	/**
 	 * Configuration.
@@ -175,10 +175,11 @@ class Generator extends Nette\Object
 			// Available from PHP 5.3.1
 			$flags |= \RecursiveDirectoryIterator::FOLLOW_SYMLINKS;
 		}
+
 		foreach ($this->config->source as $source) {
 			$entries = array();
 			if (is_dir($source)) {
-				foreach (new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($source, $flags)) as $entry) {
+				foreach (new \RecursiveIteratorIterator(new SourceFilesFilterIterator(new \RecursiveDirectoryIterator($source, $flags), $this->config->exclude)) as $entry) {
 					if (!$entry->isFile()) {
 						continue;
 					}
@@ -203,14 +204,8 @@ class Generator extends Nette\Object
 				if (!preg_match($regexp, $entry->getFilename())) {
 					continue;
 				}
-				$pathName = $this->normalizePath($entry->getPathName());
-				$unPharName = $this->unPharPath($pathName);
-				foreach ($this->config->exclude as $mask) {
-					if (fnmatch($mask, $unPharName, FNM_NOESCAPE)) {
-						continue 2;
-					}
-				}
 
+				$pathName = $this->normalizePath($entry->getPathName());
 				$files[$pathName] = $entry->getSize();
 				if (false !== $entry->getRealPath() && $pathName !== $entry->getRealPath()) {
 					$this->symlinks[$entry->getRealPath()] = $pathName;
@@ -467,8 +462,6 @@ class Generator extends Nette\Object
 	private function registerCustomTemplateMacros(Template $template)
 	{
 		$latte = new Nette\Latte\Engine();
-		$macroSet = new Nette\Latte\Macros\MacroSet($latte->compiler);
-		$macroSet->addMacro('try', 'try {', '} catch (\Exception $e) {}');
 
 		if (!empty($this->config->template['options']['extensions'])) {
 			$this->output("Loading custom template macro and helper libraries\n");
@@ -666,27 +659,33 @@ class Generator extends Nette\Object
 			foreach ($this->$type as $element) {
 				if ($element instanceof ReflectionClass) {
 					if (isset($autocomplete['classes'])) {
-						$elements[] = array('c', $this->getElementName($element));
+						$elements[] = array('c', $element->getPrettyName());
 					}
 					if (isset($autocomplete['methods'])) {
 						foreach ($element->getOwnMethods() as $method) {
-							$elements[] = array('m', $this->getElementName($method));
+							$elements[] = array('m', $method->getPrettyName());
+						}
+						foreach ($element->getOwnMagicMethods() as $method) {
+							$elements[] = array('mm', $method->getPrettyName());
 						}
 					}
 					if (isset($autocomplete['properties'])) {
 						foreach ($element->getOwnProperties() as $property) {
-							$elements[] = array('p', $this->getElementName($property));
+							$elements[] = array('p', $property->getPrettyName());
+						}
+						foreach ($element->getOwnMagicProperties() as $property) {
+							$elements[] = array('mp', $property->getPrettyName());
 						}
 					}
 					if (isset($autocomplete['classconstants'])) {
 						foreach ($element->getOwnConstants() as $constant) {
-							$elements[] = array('cc', $this->getElementName($constant));
+							$elements[] = array('cc', $constant->getPrettyName());
 						}
 					}
 				} elseif ($element instanceof ReflectionConstant && isset($autocomplete['constants'])) {
-					$elements[] = array('co', $this->getElementName($element));
+					$elements[] = array('co', $element->getPrettyName());
 				} elseif ($element instanceof ReflectionFunction && isset($autocomplete['functions'])) {
-					$elements[] = array('f', $this->getElementName($element));
+					$elements[] = array('f', $element->getPrettyName());
 				}
 			}
 		}
@@ -774,7 +773,7 @@ class Generator extends Nette\Object
 			} elseif ($element instanceof ReflectionParameter) {
 				$label = 'parameter';
 			}
-			return sprintf('%s %s', $label, $that->getElementName($element));
+			return sprintf('%s %s', $label, $element->getPrettyName());
 		};
 
 		$list = array();
@@ -828,14 +827,21 @@ class Generator extends Nette\Object
 					// Documentation of method
 					if ($element instanceof ReflectionMethod || $element instanceof ReflectionFunction) {
 						// Parameters
+						$unlimited = false;
 						foreach ($element->getParameters() as $no => $parameter) {
 							if (!isset($annotations['param'][$no])) {
 								$list[$fileName][] = array('error', $line, sprintf('Missing documentation of %s', $labeler($parameter)));
 								continue;
 							}
 
-							if (!preg_match('~^[\\w\\\\]+(?:\\[\\])?(?:\\|[\\w\\\\]+(?:\\[\\])?)*(?:\\s+\\$' . $parameter->getName() . ')?(?:\\s+.+)?$~s', $annotations['param'][$no])) {
+							if (!preg_match('~^[\\w\\\\]+(?:\\[\\])?(?:\\|[\\w\\\\]+(?:\\[\\])?)*(?:\\s+\\$' . $parameter->getName() . ($parameter->isUnlimited() ? ',\\.{3}' : '') . ')?(?:\\s+.+)?$~s', $annotations['param'][$no])) {
 								$list[$fileName][] = array('warning', $line, sprintf('Invalid documentation "%s" of %s', $annotations['param'][$no], $labeler($parameter)));
+							}
+
+							if ($unlimited && $parameter->isUnlimited()) {
+								$list[$fileName][] = array('warning', $line, sprintf('More than one unlimited parameters of %s', $labeler($element)));
+							} elseif ($parameter->isUnlimited()) {
+								$unlimited = true;
 							}
 
 							unset($annotations['param'][$no]);
@@ -1272,7 +1278,7 @@ class Generator extends Nette\Object
 						list($link, $description) = preg_split('~\s+|$~', $value, 2);
 						$resolved = $this->resolveElement($link, $element);
 						if (null !== $resolved) {
-							$resolved->addAnnotation('usedby', $this->getElementName($element) . ' ' . $description);
+							$resolved->addAnnotation('usedby', $element->getPrettyName() . ' ' . $description);
 						}
 					}
 				}
@@ -1328,10 +1334,6 @@ class Generator extends Nette\Object
 					uksort($template->directUsers, 'strcasecmp');
 					$template->indirectUsers = $element->getIndirectUsers();
 					uksort($template->indirectUsers, 'strcasecmp');
-
-					$template->ownMethods = $element->getOwnMethods();
-					$template->ownConstants = $element->getOwnConstants();
-					$template->ownProperties = $element->getOwnProperties();
 
 					$template->class = $element;
 
@@ -1422,8 +1424,8 @@ class Generator extends Nette\Object
 	{
 		if (isset($this->parsedClasses[$namespace . '\\' . $className])) {
 			$class = $this->parsedClasses[$namespace . '\\' . $className];
-		} elseif (isset($this->parsedClasses[$className])) {
-			$class = $this->parsedClasses[$className];
+		} elseif (isset($this->parsedClasses[ltrim($className, '\\')])) {
+			$class = $this->parsedClasses[ltrim($className, '\\')];
 		} else {
 			return null;
 		}
@@ -1447,8 +1449,8 @@ class Generator extends Nette\Object
 	{
 		if (isset($this->parsedConstants[$namespace . '\\' . $constantName])) {
 			$constant = $this->parsedConstants[$namespace . '\\' . $constantName];
-		} elseif (isset($this->parsedConstants[$constantName])) {
-			$constant = $this->parsedConstants[$constantName];
+		} elseif (isset($this->parsedConstants[ltrim($constantName, '\\')])) {
+			$constant = $this->parsedConstants[ltrim($constantName, '\\')];
 		} else {
 			return null;
 		}
@@ -1472,8 +1474,8 @@ class Generator extends Nette\Object
 	{
 		if (isset($this->parsedFunctions[$namespace . '\\' . $functionName])) {
 			$function = $this->parsedFunctions[$namespace . '\\' . $functionName];
-		} elseif (isset($this->parsedFunctions[$functionName])) {
-			$function = $this->parsedFunctions[$functionName];
+		} elseif (isset($this->parsedFunctions[ltrim($functionName, '\\')])) {
+			$function = $this->parsedFunctions[ltrim($functionName, '\\')];
 		} else {
 			return null;
 		}
@@ -1490,11 +1492,11 @@ class Generator extends Nette\Object
 	 * Tries to parse a definition of a class/method/property/constant/function and returns the appropriate instance if successful.
 	 *
 	 * @param string $definition Definition
-	 * @param \ApiGen\ReflectionElement $context Link context
+	 * @param \ApiGen\ReflectionElement|\ApiGen\ReflectionParameter $context Link context
 	 * @param string $expectedName Expected element name
 	 * @return \ApiGen\ReflectionElement|null
 	 */
-	public function resolveElement($definition, ReflectionElement $context, &$expectedName = null)
+	public function resolveElement($definition, $context, &$expectedName = null)
 	{
 		// No simple type resolving
 		static $types = array(
@@ -1522,6 +1524,11 @@ class Generator extends Nette\Object
 
 		if (null === $context) {
 			return null;
+		}
+
+		// self, $this references
+		if ('self' === $definition || '$this' === $definition) {
+			return $context instanceof ReflectionClass ? $context : null;
 		}
 
 		$definitionBase = substr($definition, 0, strcspn($definition, '\\:'));
@@ -1907,33 +1914,6 @@ class Generator extends Nette\Object
 	{
 		static $types = array('classes', 'interfaces', 'traits', 'exceptions', 'constants', 'functions');
 		return $types;
-	}
-
-	/**
-	 * Returns element name.
-	 *
-	 * @param \Apigen\ReflectionElement $element
-	 * @return string
-	 */
-	public function getElementName(ReflectionElement $element)
-	{
-		if ($element instanceof ReflectionClass) {
-			return $element->getName();
-		} elseif ($element instanceof ReflectionMethod) {
-			return sprintf('%s::%s()', $element->getDeclaringClassName(), $element->getName());
-		} elseif ($element instanceof ReflectionFunction) {
-			return sprintf('%s()', $element->getName());
-		} elseif ($element instanceof ReflectionConstant) {
-			if ($className = $element->getDeclaringClassName()) {
-				return sprintf('%s::%s', $className, $element->getName());
-			} else {
-				return sprintf('%s', $element->getName());
-			}
-		} elseif ($element instanceof ReflectionProperty) {
-			return sprintf('%s::$%s', $element->getDeclaringClassName(), $element->getName());
-		} elseif ($element instanceof ReflectionParameter) {
-			return sprintf('%s($%s)', $this->getElementName($element->getDeclaringFunction()), $element->getName());
-		}
 	}
 
 	/**

@@ -1,5 +1,5 @@
 {*
-ApiGen 2.7.0 - API documentation generator for PHP 5.3+
+ApiGen 2.8.0 - API documentation generator for PHP 5.3+
 
 Copyright (c) 2010-2011 David Grudl (http://davidgrudl.com)
 Copyright (c) 2011-2012 Jaroslav Hanslík (https://github.com/kukulich)
@@ -9,10 +9,10 @@ For the full copyright and license information, please view
 the file LICENSE.md that was distributed with this source code.
 *}
 {layout '@layout.latte'}
-{var $active = 'source'}
+{var $robots = false}
 
 {block #title}File {$fileName}{/block}
 
 {block #content}
-<pre><code>{!$source|replaceRE:'#<span class="line">(\s*(\d+):\s*)</span>#','<a href="#$2" id="$2" class="l">$1</a>'}</code></pre>
+<pre><code>{!$source|sourceAnchors|replaceRE:'~<span class="line">(\\s*(\\d+):\\s*)</span>([^\\n]*\\n)?~','<span id="$2" class="l"><a class="l" href="#$2">$1</a>$3</span>'}</code></pre>
 {/block}
