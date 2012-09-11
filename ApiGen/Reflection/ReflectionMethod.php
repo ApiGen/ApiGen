@@ -21,6 +21,16 @@ namespace ApiGen\Reflection;
 class ReflectionMethod extends ReflectionFunctionBase
 {
 	/**
+	 * Returns if the method is magic.
+	 *
+	 * @return boolean
+	 */
+	public function isMagic()
+	{
+		return false;
+	}
+
+	/**
 	 * Returns the method declaring class.
 	 *
 	 * @return \ApiGen\Reflection\ReflectionClass|null
@@ -29,6 +39,106 @@ class ReflectionMethod extends ReflectionFunctionBase
 	{
 		$className = $this->reflection->getDeclaringClassName();
 		return null === $className ? null : self::$parsedClasses[$className];
+	}
+
+	/**
+	 * Returns the declaring class name.
+	 *
+	 * @return string|null
+	 */
+	public function getDeclaringClassName()
+	{
+		return $this->reflection->getDeclaringClassName();
+	}
+
+	/**
+	 * Returns method modifiers.
+	 *
+	 * @return integer
+	 */
+	public function getModifiers()
+	{
+		return $this->reflection->getModifiers();
+	}
+
+	/**
+	 * Returns if the method is abstract.
+	 *
+	 * @return boolean
+	 */
+	public function isAbstract()
+	{
+		return $this->reflection->isAbstract();
+	}
+
+	/**
+	 * Returns if the method is final.
+	 *
+	 * @return boolean
+	 */
+	public function isFinal()
+	{
+		return $this->reflection->isFinal();
+	}
+
+	/**
+	 * Returns if the method is private.
+	 *
+	 * @return boolean
+	 */
+	public function isPrivate()
+	{
+		return $this->reflection->isPrivate();
+	}
+
+	/**
+	 * Returns if the method is protected.
+	 *
+	 * @return boolean
+	 */
+	public function isProtected()
+	{
+		return $this->reflection->isProtected();
+	}
+
+	/**
+	 * Returns if the method is public.
+	 *
+	 * @return boolean
+	 */
+	public function isPublic()
+	{
+		return $this->reflection->isPublic();
+	}
+
+	/**
+	 * Returns if the method is static.
+	 *
+	 * @return boolean
+	 */
+	public function isStatic()
+	{
+		return $this->reflection->isStatic();
+	}
+
+	/**
+	 * Returns if the method is a constructor.
+	 *
+	 * @return boolean
+	 */
+	public function isConstructor()
+	{
+		return $this->reflection->isConstructor();
+	}
+
+	/**
+	 * Returns if the method is a destructor.
+	 *
+	 * @return boolean
+	 */
+	public function isDestructor()
+	{
+		return $this->reflection->isDestructor();
 	}
 
 	/**
@@ -43,14 +153,74 @@ class ReflectionMethod extends ReflectionFunctionBase
 	}
 
 	/**
-	 * Returns the method prototype.
+	 * Returns the declaring trait name.
 	 *
-	 * @return \ApiGen\Reflection\ReflectionMethod
+	 * @return string|null
 	 */
-	public function getPrototype()
+	public function getDeclaringTraitName()
 	{
-		$prototype = $this->reflection->getPrototype();
-		return self::$parsedClasses[$prototype->getDeclaringClassName()]->getMethod($prototype->getName());
+		return $this->reflection->getDeclaringTraitName();
+	}
+
+	/**
+	 * Returns the overridden method.
+	 *
+	 * @return \ApiGen\ReflectionMethod|null
+	 */
+	public function getImplementedMethod()
+	{
+		foreach ($this->getDeclaringClass()->getOwnInterfaces() as $interface) {
+			if ($interface->hasMethod($this->getName())) {
+				return $interface->getMethod($this->getName());
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the overridden method.
+	 *
+	 * @return \ApiGen\ReflectionMethod|null
+	 */
+	public function getOverriddenMethod()
+	{
+		$parent = $this->getDeclaringClass()->getParentClass();
+		if (null === $parent) {
+			return null;
+		}
+
+		foreach ($parent->getMethods() as $method) {
+			if ($this->getName() === $method->getName()) {
+				if (!$method->isPrivate() && !$method->isAbstract()) {
+					return $method;
+				} else {
+					return null;
+				}
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the original name when importing from a trait.
+	 *
+	 * @return string|null
+	 */
+	public function getOriginalName()
+	{
+		return $this->reflection->getOriginalName();
+	}
+
+	/**
+	 * Returns the original modifiers value when importing from a trait.
+	 *
+	 * @return integer|null
+	 */
+	public function getOriginalModifiers()
+	{
+		return $this->reflection->getOriginalModifiers();
 	}
 
 	/**

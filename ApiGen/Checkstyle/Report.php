@@ -117,8 +117,9 @@ class Report
 
 	/**
 	 * @todo Move to a helper class?
+	 * @param \ApiGen\Reflection\ReflectionElement|ApiGen\Reflection\ReflectionParameter
 	 */
-	public static function getElementLabel(ReflectionElement $element)
+	public static function getElementLabel($element)
 	{
 		if ($element instanceof ReflectionClass) {
 			if ($element->isInterface()) {
@@ -141,31 +142,6 @@ class Report
 		} elseif ($element instanceof ReflectionParameter) {
 			$label = 'parameter';
 		}
-		return sprintf('%s %s', $label, static::getElementName($element));
-	}
-
-	/**
-	 * @todo Remove duplicate code, see \ApiGen\Generator::getElementName()
-	 * @todo Move to a helper class?
-	 */
-	public static function getElementName(ReflectionElement $element)
-	{
-		if ($element instanceof ReflectionClass) {
-			return $element->getName();
-		} elseif ($element instanceof ReflectionMethod) {
-			return sprintf('%s::%s()', $element->getDeclaringClassName(), $element->getName());
-		} elseif ($element instanceof ReflectionFunction) {
-			return sprintf('%s()', $element->getName());
-		} elseif ($element instanceof ReflectionConstant) {
-			if ($className = $element->getDeclaringClassName()) {
-				return sprintf('%s::%s', $className, $element->getName());
-			} else {
-				return sprintf('%s', $element->getName());
-			}
-		} elseif ($element instanceof ReflectionProperty) {
-			return sprintf('%s::$%s', $element->getDeclaringClassName(), $element->getName());
-		} elseif ($element instanceof ReflectionParameter) {
-			return sprintf('%s($%s)', static::getElementName($element->getDeclaringFunction()), $element->getName());
-		}
+		return sprintf('%s %s', $label, $element->getPrettyName());
 	}
 }

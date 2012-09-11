@@ -21,6 +21,42 @@ namespace ApiGen\Reflection;
 class ReflectionConstant extends ReflectionElement
 {
 	/**
+	 * Returns the unqualified name (UQN).
+	 *
+	 * @return string
+	 */
+	public function getShortName()
+	{
+		return $this->reflection->getShortName();
+	}
+
+	/**
+	 * Returns constant type hint.
+	 *
+	 * @return string
+	 */
+	public function getTypeHint()
+	{
+		if ($annotations = $this->getAnnotation('var')) {
+			list($types) = preg_split('~\s+|$~', $annotations[0], 2);
+			if (!empty($types)) {
+				return $types;
+			}
+		}
+
+		try {
+			$type = gettype($this->getValue());
+			if ('null' !== strtolower($type)) {
+				return $type;
+			}
+		} catch (\Exception $e) {
+			// Nothing
+		}
+
+		return 'mixed';
+	}
+
+	/**
 	 * Returns the constant declaring class.
 	 *
 	 * @return \ApiGen\Reflection\ReflectionClass|null
@@ -29,6 +65,36 @@ class ReflectionConstant extends ReflectionElement
 	{
 		$className = $this->reflection->getDeclaringClassName();
 		return null === $className ? null : self::$parsedClasses[$className];
+	}
+
+	/**
+	 * Returns the name of the declaring class.
+	 *
+	 * @return string|null
+	 */
+	public function getDeclaringClassName()
+	{
+		return $this->reflection->getDeclaringClassName();
+	}
+
+	/**
+	 * Returns the constant value.
+	 *
+	 * @return mixed
+	 */
+	public function getValue()
+	{
+		return $this->reflection->getValue();
+	}
+
+	/**
+	 * Returns the constant value definition.
+	 *
+	 * @return string
+	 */
+	public function getValueDefinition()
+	{
+		return $this->reflection->getValueDefinition();
 	}
 
 	/**

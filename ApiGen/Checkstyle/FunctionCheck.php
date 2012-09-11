@@ -32,14 +32,21 @@ class FunctionCheck implements ICheck
 		$line = $element->getStartLine();
 
 		// Parameters
+		$unlimited = false;
 		foreach ($element->getParameters() as $no => $parameter) {
 			if (!isset($annotations['param'][$no])) {
 				$messages[] = new Message(sprintf('Missing documentation of %s', Report::getElementLabel($parameter)), $line);
 				continue;
 			}
 
-			if (!preg_match('~^[\\w\\\\]+(?:\\[\\])?(?:\\|[\\w\\\\]+(?:\\[\\])?)*(?:\\s+\\$' . $parameter->getName() . ')?(?:\\s+.+)?$~s', $annotations['param'][$no])) {
+			if (!preg_match('~^[\\w\\\\]+(?:\\[\\])?(?:\\|[\\w\\\\]+(?:\\[\\])?)*(?:\\s+\\$' . $parameter->getName() . ($parameter->isUnlimited() ? ',\\.{3}' : '') . ')?(?:\\s+.+)?$~s', $annotations['param'][$no])) {
 				$messages[] = new Message(sprintf('Invalid documentation "%s" of %s', $annotations['param'][$no], Report::getElementLabel($parameter)), $line, Message::SEVERITY_WARNING);
+			}
+
+			if ($unlimited && $parameter->isUnlimited()) {
+				$messages[] = new Message(sprintf('More than one unlimited parameters of %s', Report::getElementLabel($element)), $line, Message::SEVERITY_WARNING);
+			} elseif ($parameter->isUnlimited()) {
+				$unlimited = true;
 			}
 
 			unset($annotations['param'][$no]);

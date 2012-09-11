@@ -122,4 +122,14 @@ class ReflectionExtension extends ReflectionBase
 			return new ReflectionFunction($function, $generator);
 		}, $this->reflection->getFunctions());
 	}
+
+	/**
+	 * Returns names of functions defined by this extension.
+	 *
+	 * @return array
+	 */
+	public function getFunctionNames()
+	{
+		return $this->reflection->getFunctionNames();
+	}
 }

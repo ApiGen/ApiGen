@@ -304,6 +304,7 @@ final class ConfigExtension extends CompilerExtension
 
 		// Default template config
 		$config['template'] = array(
+			'require' => array(),
 			'resources' => array(),
 			'templates' => array(
 				'common' => array(),

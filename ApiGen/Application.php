@@ -317,6 +317,10 @@ HELP;
 			array_push($parts, ' %number sec', $interval->s);
 		}
 
+		if (empty($parts)) {
+			array_push($parts, ' %number sec', 1);
+		}
+
 		array_push($parts, ", used: %number MB RAM\n", round(memory_get_peak_usage(true) / 1024 / 1024));
 
 		call_user_func_array(array($this->logger, 'log'), $parts);

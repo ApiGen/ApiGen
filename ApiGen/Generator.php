@@ -161,10 +161,11 @@ class Generator extends Object implements IGenerator
 			// Available from PHP 5.3.1
 			$flags |= \RecursiveDirectoryIterator::FOLLOW_SYMLINKS;
 		}
+
 		foreach ($this->config->source as $source) {
 			$entries = array();
 			if (is_dir($source)) {
-				foreach (new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($source, $flags)) as $entry) {
+				foreach (new \RecursiveIteratorIterator(new SourceFilesFilterIterator(new \RecursiveDirectoryIterator($source, $flags), $this->config->exclude)) as $entry) {
 					if (!$entry->isFile()) {
 						continue;
 					}
@@ -189,14 +190,8 @@ class Generator extends Object implements IGenerator
 				if (!preg_match($regexp, $entry->getFilename())) {
 					continue;
 				}
-				$pathName = $this->normalizePath($entry->getPathName());
-				$unPharName = $this->unPharPath($pathName);
-				foreach ($this->config->exclude as $mask) {
-					if (fnmatch($mask, $unPharName, FNM_NOESCAPE)) {
-						continue 2;
-					}
-				}
 
+				$pathName = $this->normalizePath($entry->getPathName());
 				$files[$pathName] = $entry->getSize();
 				if (false !== $entry->getRealPath() && $pathName !== $entry->getRealPath()) {
 					$this->symlinks[$entry->getRealPath()] = $pathName;
@@ -391,6 +386,8 @@ class Generator extends Object implements IGenerator
 		$template->version = Environment::getApplicationVersion();
 		$template->config = $this->config;
 
+		$this->registerCustomTemplateMacros($template);
+
 		// Common files
 		$this->generateCommon($template);
 
@@ -433,6 +430,58 @@ class Generator extends Object implements IGenerator
 
 		// Delete temporary directory
 		$this->deleteDir($tmp);
+	}
+
+	/**
+	 * Loads template-specific macro and helper libraries.
+	 *
+	 * @param \ApiGen\Template $template Template instance
+	 */
+	private function registerCustomTemplateMacros(Template $template)
+	{
+		$latte = new Nette\Latte\Engine();
+
+		if (!empty($this->config->template['options']['extensions'])) {
+			$this->output("Loading custom template macro and helper libraries\n");
+			$broker = new Broker(new Broker\Backend\Memory(), 0);
+
+			$baseDir = dirname($this->config->template['config']);
+			foreach ((array) $this->config->template['options']['extensions'] as $fileName) {
+				$pathName = $baseDir . DIRECTORY_SEPARATOR . $fileName;
+				if (is_file($pathName)) {
+					try {
+						$reflectionFile = $broker->processFile($pathName, true);
+
+						foreach ($reflectionFile->getNamespaces() as $namespace) {
+							foreach ($namespace->getClasses() as $class) {
+								if ($class->isSubclassOf('ApiGen\\MacroSet')) {
+									// Macro set
+
+									include $pathName;
+									call_user_func(array($class->getName(), 'install'), $latte->compiler);
+
+									$this->output(sprintf("  %s (macro set)\n", $class->getName()));
+								} elseif ($class->implementsInterface('ApiGen\\IHelperSet')) {
+									// Helpers set
+
+									include $pathName;
+									$className = $class->getName();
+									$template->registerHelperLoader(callback(new $className($template), 'loader'));
+
+									$this->output(sprintf("  %s (helper set)\n", $class->getName()));
+								}
+							}
+						}
+					} catch (\Exception $e) {
+						throw new \Exception(sprintf('Could not load macros and helpers from file "%s"', $pathName), 0, $e);
+					}
+				} else {
+					throw new \Exception(sprintf('Helper file "%s" does not exist.', $pathName));
+				}
+			}
+		}
+
+		$template->registerFilter($latte);
 	}
 
 	/**
@@ -588,27 +637,33 @@ class Generator extends Object implements IGenerator
 			foreach ($this->$type as $element) {
 				if ($element instanceof Reflection\ReflectionClass) {
 					if (isset($autocomplete['classes'])) {
-						$elements[] = array('c', $this->getElementName($element));
+						$elements[] = array('c', $element->getPrettyName());
 					}
 					if (isset($autocomplete['methods'])) {
 						foreach ($element->getOwnMethods() as $method) {
-							$elements[] = array('m', $this->getElementName($method));
+							$elements[] = array('m', $method->getPrettyName());
+						}
+						foreach ($element->getOwnMagicMethods() as $method) {
+							$elements[] = array('mm', $method->getPrettyName());
 						}
 					}
 					if (isset($autocomplete['properties'])) {
 						foreach ($element->getOwnProperties() as $property) {
-							$elements[] = array('p', $this->getElementName($property));
+							$elements[] = array('p', $property->getPrettyName());
+						}
+						foreach ($element->getOwnMagicProperties() as $property) {
+							$elements[] = array('mp', $property->getPrettyName());
 						}
 					}
 					if (isset($autocomplete['classconstants'])) {
 						foreach ($element->getOwnConstants() as $constant) {
-							$elements[] = array('cc', $this->getElementName($constant));
+							$elements[] = array('cc', $constant->getPrettyName());
 						}
 					}
 				} elseif ($element instanceof Reflection\ReflectionConstant && isset($autocomplete['constants'])) {
-					$elements[] = array('co', $this->getElementName($element));
+					$elements[] = array('co', $element->getPrettyName());
 				} elseif ($element instanceof Reflection\ReflectionFunction && isset($autocomplete['functions'])) {
-					$elements[] = array('f', $this->getElementName($element));
+					$elements[] = array('f', $element->getPrettyName());
 				}
 			}
 		}
@@ -1002,7 +1057,7 @@ class Generator extends Object implements IGenerator
 						list($link, $description) = preg_split('~\s+|$~', $value, 2);
 						$resolved = $this->resolveElement($link, $element);
 						if (null !== $resolved) {
-							$resolved->addAnnotation('usedby', $this->getElementName($element) . ' ' . $description);
+							$resolved->addAnnotation('usedby', $element->getPrettyName() . ' ' . $description);
 						}
 					}
 				}
@@ -1058,10 +1113,6 @@ class Generator extends Object implements IGenerator
 					uksort($template->directUsers, 'strcasecmp');
 					$template->indirectUsers = $element->getIndirectUsers();
 					uksort($template->indirectUsers, 'strcasecmp');
-
-					$template->ownMethods = $element->getOwnMethods();
-					$template->ownConstants = $element->getOwnConstants();
-					$template->ownProperties = $element->getOwnProperties();
 
 					$template->class = $element;
 
@@ -1149,8 +1200,8 @@ class Generator extends Object implements IGenerator
 	{
 		if (isset($this->parsedClasses[$namespace . '\\' . $className])) {
 			$class = $this->parsedClasses[$namespace . '\\' . $className];
-		} elseif (isset($this->parsedClasses[$className])) {
-			$class = $this->parsedClasses[$className];
+		} elseif (isset($this->parsedClasses[ltrim($className, '\\')])) {
+			$class = $this->parsedClasses[ltrim($className, '\\')];
 		} else {
 			return null;
 		}
@@ -1174,8 +1225,8 @@ class Generator extends Object implements IGenerator
 	{
 		if (isset($this->parsedConstants[$namespace . '\\' . $constantName])) {
 			$constant = $this->parsedConstants[$namespace . '\\' . $constantName];
-		} elseif (isset($this->parsedConstants[$constantName])) {
-			$constant = $this->parsedConstants[$constantName];
+		} elseif (isset($this->parsedConstants[ltrim($constantName, '\\')])) {
+			$constant = $this->parsedConstants[ltrim($constantName, '\\')];
 		} else {
 			return null;
 		}
@@ -1199,8 +1250,8 @@ class Generator extends Object implements IGenerator
 	{
 		if (isset($this->parsedFunctions[$namespace . '\\' . $functionName])) {
 			$function = $this->parsedFunctions[$namespace . '\\' . $functionName];
-		} elseif (isset($this->parsedFunctions[$functionName])) {
-			$function = $this->parsedFunctions[$functionName];
+		} elseif (isset($this->parsedFunctions[ltrim($functionName, '\\')])) {
+			$function = $this->parsedFunctions[ltrim($functionName, '\\')];
 		} else {
 			return null;
 		}
@@ -1217,11 +1268,11 @@ class Generator extends Object implements IGenerator
 	 * Tries to parse a definition of a class/method/property/constant/function and returns the appropriate instance if successful.
 	 *
 	 * @param string $definition Definition
-	 * @param \ApiGen\Reflection\ReflectionElement $context Link context
+	 * @param \ApiGen\ReflectionElement|\ApiGen\ReflectionParameter $context Link context
 	 * @param string $expectedName Expected element name
 	 * @return \ApiGen\Reflection\ReflectionElement|null
 	 */
-	public function resolveElement($definition, Reflection\ReflectionElement $context, &$expectedName = null)
+	public function resolveElement($definition, $context, &$expectedName = null)
 	{
 		// No simple type resolving
 		static $types = array(
@@ -1234,6 +1285,8 @@ class Generator extends Object implements IGenerator
 			return null;
 		}
 
+		$originalContext = $context;
+
 		if ($context instanceof Reflection\ReflectionParameter && null === $context->getDeclaringClassName()) {
 			// Parameter of function in namespace or global space
 			$context = $this->getFunction($context->getDeclaringFunctionName());
@@ -1245,11 +1298,26 @@ class Generator extends Object implements IGenerator
 			$context = $this->getClass($context->getDeclaringClassName());
 		}
 
+		if (null === $context) {
+			return null;
+		}
+
+		// self, $this references
+		if ('self' === $definition || '$this' === $definition) {
+			return $context instanceof ReflectionClass ? $context : null;
+		}
+
+		$definitionBase = substr($definition, 0, strcspn($definition, '\\:'));
 		$namespaceAliases = $context->getNamespaceAliases();
-		if (isset($namespaceAliases[$definition]) && $definition !== ($className = \TokenReflection\Resolver::resolveClassFQN($definition, $namespaceAliases, $context->getNamespaceName()))) {
+		if (!empty($definitionBase) && isset($namespaceAliases[$definitionBase]) && $definition !== ($className = \TokenReflection\Resolver::resolveClassFQN($definition, $namespaceAliases, $context->getNamespaceName()))) {
 			// Aliased class
 			$expectedName = $className;
-			return $this->getClass($className, $context->getNamespaceName());
+
+			if (false === strpos($className, ':')) {
+				return $this->getClass($className, $context->getNamespaceName());
+			} else {
+				$definition = $className;
+			}
 		} elseif ($class = $this->getClass($definition, $context->getNamespaceName())) {
 			// Class
 			return $class;
@@ -1261,7 +1329,9 @@ class Generator extends Object implements IGenerator
 		) {
 			// Function
 			return $function;
-		} elseif (($pos = strpos($definition, '::')) || ($pos = strpos($definition, '->'))) {
+		}
+
+		if (($pos = strpos($definition, '::')) || ($pos = strpos($definition, '->'))) {
 			// Class::something or Class->something
 			if (0 === strpos($definition, 'parent::') && ($parentClassName = $context->getParentClassName())) {
 				$context = $this->getClass($parentClassName);
@@ -1276,6 +1346,8 @@ class Generator extends Object implements IGenerator
 			}
 
 			$definition = substr($definition, $pos + 2);
+		} elseif ($originalContext instanceof Reflection\ReflectionParameter) {
+			return null;
 		}
 
 		// No usable context
@@ -1439,33 +1511,6 @@ class Generator extends Object implements IGenerator
 	{
 		static $types = array('classes', 'interfaces', 'traits', 'exceptions', 'constants', 'functions');
 		return $types;
-	}
-
-	/**
-	 * Returns element name.
-	 *
-	 * @param \Apigen\Reflection\ReflectionElement $element
-	 * @return string
-	 */
-	public function getElementName(Reflection\ReflectionElement $element)
-	{
-		if ($element instanceof Reflection\ReflectionClass) {
-			return $element->getName();
-		} elseif ($element instanceof Reflection\ReflectionMethod) {
-			return sprintf('%s::%s()', $element->getDeclaringClassName(), $element->getName());
-		} elseif ($element instanceof Reflection\ReflectionFunction) {
-			return sprintf('%s()', $element->getName());
-		} elseif ($element instanceof Reflection\ReflectionConstant) {
-			if ($className = $element->getDeclaringClassName()) {
-				return sprintf('%s::%s', $className, $element->getName());
-			} else {
-				return sprintf('%s', $element->getName());
-			}
-		} elseif ($element instanceof Reflection\ReflectionProperty) {
-			return sprintf('%s::$%s', $element->getDeclaringClassName(), $element->getName());
-		} elseif ($element instanceof Reflection\ReflectionParameter) {
-			return sprintf('%s($%s)', $this->getElementName($element->getDeclaringFunction()), $element->getName());
-		}
 	}
 
 	/**

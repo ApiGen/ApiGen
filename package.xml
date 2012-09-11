@@ -23,10 +23,10 @@
 	<email>andrew@apigen.org</email>
 	<active>yes</active>
 </lead>
-<date>2012-03-27</date>
+<date>2012-09-08</date>
 <version>
 	<release>3.0dev</release>
-	<api>2.6.0</api>
+	<api>3.0.0</api>
 </version>
 <stability>
 	<release>stable</release>
@@ -46,8 +46,11 @@
 				<file name="ReflectionFunction.php" role="php" />
 				<file name="ReflectionFunctionBase.php" role="php" />
 				<file name="ReflectionMethod.php" role="php" />
+				<file name="ReflectionMethodMagic.php" role="php" />
 				<file name="ReflectionParameter.php" role="php" />
+				<file name="ReflectionParameterMagic.php" role="php" />
 				<file name="ReflectionProperty.php" role="php" />
+				<file name="ReflectionPropertyMagic.php" role="php" />
 			</dir>
 			<file name="Application.php" role="php" />
 			<file name="Backend.php" role="php" />
@@ -74,11 +77,14 @@
 			<file name="IErrorHandler.php" role="php" />
 			<file name="IEventDispatcher.php" role="php" />
 			<file name="IGenerator.php" role="php" />
+			<file name="IHelperSet.php" role="php" />
 			<file name="IMemoryLimitChecker.php" role="php" />
 			<file name="ILogger.php" role="php" />
 			<file name="IProgressBar.php" role="php" />
 			<file name="IUpdateChecker.php" role="php" />
+			<file name="MacroSet.php" role="php" />
 			<file name="MemoryLimitChecker.php" role="php" />
+			<file name="SourceFilesFilterIterator.php" role="php" />
 			<file name="Template.php" role="php" />
 			<file name="Tree.php" role="php" />
 			<file name="UpdateChecker.php" role="php" />
@@ -94,7 +100,6 @@
 					<file name="main.js" role="data" />
 				</dir>
 				<dir name="resources">
-					<file name="code-line.png" role="data" />
 					<file name="collapsed.png" role="data" />
 					<file name="footer.png" role="data" />
 					<file name="inherit.png" role="data" />
@@ -108,6 +113,7 @@
 				</dir>
 				<file name="@elementlist.latte" role="data" />
 				<file name="@layout.latte" role="data" />
+				<file name="404.latte" role="data" />
 				<file name="class.latte" role="data" />
 				<file name="combined.js.latte" role="data" />
 				<file name="config.neon" role="data" />
@@ -125,7 +131,7 @@
 				<file name="todo.latte" role="data" />
 				<file name="tree.latte" role="data" />
 			</dir>
-			<dir name="frames">
+			<dir name="bootstrap">
 				<dir name="js">
 					<file name="jquery.autocomplete.js" role="data" />
 					<file name="jquery.cookie.js" role="data" />
@@ -135,9 +141,8 @@
 					<file name="main.js" role="data" />
 				</dir>
 				<dir name="resources">
-					<file name="code-line.png" role="data" />
+					<file name="bootstrap.min.css" role="data" />
 					<file name="collapsed.png" role="data" />
-					<file name="footer.png" role="data" />
 					<file name="inherit.png" role="data" />
 					<file name="resize.png" role="data" />
 					<file name="sort.png" role="data" />
@@ -147,8 +152,9 @@
 					<file name="tree-last.png" role="data" />
 					<file name="tree-vertical.png" role="data" />
 				</dir>
-				<file name="@content.latte" role="data" />
 				<file name="@elementlist.latte" role="data" />
+				<file name="@layout.latte" role="data" />
+				<file name="404.latte" role="data" />
 				<file name="class.latte" role="data" />
 				<file name="combined.js.latte" role="data" />
 				<file name="config.neon" role="data" />
@@ -156,8 +162,6 @@
 				<file name="deprecated.latte" role="data" />
 				<file name="elementlist.js.latte" role="data" />
 				<file name="function.latte" role="data" />
-				<file name="index.latte" role="data" />
-				<file name="menu.latte" role="data" />
 				<file name="namespace.latte" role="data" />
 				<file name="opensearch.xml.latte" role="data" />
 				<file name="overview.latte" role="data" />
@@ -192,7 +196,7 @@
 		<package>
 			<name>Nette</name>
 			<channel>pear.nette.org</channel>
-			<min>2.0.1</min>
+			<min>2.0.5</min>
 		</package>
 		<package>
 			<name>Texy</name>
@@ -201,12 +205,12 @@
 		<package>
 			<name>FSHL</name>
 			<channel>pear.kukulich.cz</channel>
-			<min>2.0.1</min>
+			<min>2.1.0</min>
 		</package>
 		<package>
 			<name>TokenReflection</name>
 			<channel>pear.andrewsville.cz</channel>
-			<min>1.2.2</min>
+			<min>1.3.1</min>
 		</package>
 	</required>
 	<optional>
