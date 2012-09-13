@@ -183,8 +183,12 @@ final class ConfigExtension extends CompilerExtension
 		} elseif (!empty($cliOptions['config'])) {
 			// Make the config file name absolute
 			$cliOptions['config'] = Helper::getAbsoluteFilePath($cliOptions['config'], array(getcwd()));
+
+			if (null === $cliOptions['config']) {
+				// @todo
+			}
 		}
-		if (!empty($cliOptions['config']) && is_file($cliOptions['config'])) {
+		if (!empty($cliOptions['config'])) {
 			$fileOptions = $this->loadFromFile($cliOptions['config']);
 
 			$unknownOptions = array_keys(array_diff_key($fileOptions, $this->defaultConfig));
@@ -313,16 +317,22 @@ final class ConfigExtension extends CompilerExtension
 		);
 
 		// Merge template configuration
+		$templateConfigAbsolutePath = Helper::getAbsoluteFilePath(
+			$config['templateConfig'],
+			array(
+				getcwd(),
+				!empty($cliArguments['config']) ? dirname($cliArguments['config']) : '',
+				Helper::getTemplatesDir()
+			)
+		);
+
+		if (null !== $templateConfigAbsolutePath) {
+			// @todo
+		}
+
 		$config = array_merge_recursive(
 			$config,
-			array('template' => $this->loadFromFile(Helper::getAbsoluteFilePath(
-				$config['templateConfig'],
-				array(
-					getcwd(),
-					!empty($cliArguments['config']) ? dirname($cliArguments['config']) : '',
-					Helper::getTemplatesDir()
-				)
-			)))
+			array('template' => $this->loadFromFile($templateConfigAbsolutePath))
 		);
 
 		// Plugins
@@ -334,6 +344,8 @@ final class ConfigExtension extends CompilerExtension
 					!empty($cliArguments['config']) ? dirname($cliArguments['config']) : ''
 				)
 			);
+
+			// @todo Check if file name is not null
 
 			foreach ($this->loadFromFile($fileName) as $name => $definition) {
 				if (isset($definition['location'])) {
@@ -366,12 +378,91 @@ final class ConfigExtension extends CompilerExtension
 	 */
 	private function checkConfiguration(array $config)
 	{
-		// @todo
+		// Base configuration
+		if (empty($config['source'])) {
+			throw new ConfigException('Source is not set');
+		}
+		foreach ($config['source'] as $source) {
+			if (!file_exists($source)) {
+				throw new ConfigException(sprintf('Source "%s" doesn\'t exist', $source));
+			}
+		}
 
+		if (empty($config['destination'])) {
+			throw new ConfigException('Destination is not set');
+		}
 
+		foreach ($config['extensions'] as $extension) {
+			if (!preg_match('~^[a-z\\d]+$~i', $extension)) {
+				throw new ConfigException(sprintf('Invalid file extension "%s"', $extension));
+			}
+		}
 
-		// Plugins definition
+		if (!empty($config['baseUrl']) && !preg_match('~^https?://(?:[-a-z0-9]+\.)+[a-z]{2,6}(?:/.*)?$~i', $config['baseUrl'])) {
+			throw new ConfigException(sprintf('Invalid base url "%s"', $config['baseUrl']));
+		}
 
+		if (!empty($config['googleCseId']) && !preg_match('~^\d{21}:[-a-z0-9_]{11}$~', $config['googleCseId'])) {
+			throw new ConfigException(sprintf('Invalid Google Custom Search ID "%s"', $config['googleCseId']));
+		}
+
+		if (!empty($config['googleAnalytics']) && !preg_match('~^UA\\-\\d+\\-\\d+$~', $config['googleAnalytics'])) {
+			throw new ConfigException(sprintf('Invalid Google Analytics tracking code "%s"', $config['googleAnalytics']));
+		}
+
+		if (empty($config['groups'])) {
+			throw new ConfigException('No supported groups value given');
+		}
+
+		if (empty($config['autocomplete'])) {
+			throw new ConfigException('No supported autocomplete value given');
+		}
+
+		if (empty($config['accessLevels'])) {
+			throw new ConfigException('No supported access level given');
+		}
+
+		// Template configuration
+		$require = $config['template']['require'];
+		if (isset($require['min']) && !preg_match('~^\\d+(?:\\.\\d+){0,2}$~', $require['min'])) {
+			throw new ConfigException(sprintf('Invalid minimal version definition "%s"', $require['min']));
+		}
+		if (isset($require['max']) && !preg_match('~^\\d+(?:\\.\\d+){0,2}$~', $require['max'])) {
+			throw new ConfigException(sprintf('Invalid maximal version definition "%s"', $require['max']));
+		}
+
+		$isMinOk = function($min) {
+			$min .= str_repeat('.0', 2 - substr_count($min, '.'));
+			return version_compare($min, Environment::getApplicationVersion(), '<=');
+		};
+		$isMaxOk = function($max) {
+			$max .= str_repeat('.0', 2 - substr_count($max, '.'));
+			return version_compare($max, Environment::getApplicationVersion(), '>=');
+		};
+
+		if (isset($require['min'], $require['max']) && (!$isMinOk($require['min']) || !$isMaxOk($require['max']))) {
+			throw new ConfigException(sprintf('The template requires version from "%s" to "%s", you are using version "%s"', $require['min'], $require['max'], Environment::getApplicationVersion()));
+		} elseif (isset($require['min']) && !$isMinOk($require['min'])) {
+			throw new ConfigException(sprintf('The template requires version "%s" or newer, you are using version "%s"', $require['min'], Environment::getApplicationVersion()));
+		} elseif (isset($require['max']) && !$isMaxOk($require['max'])) {
+			throw new ConfigException(sprintf('The template requires version "%s" or older, you are using version "%s"', $require['max'], Environment::getApplicationVersion()));
+		}
+
+		foreach (array('main', 'optional') as $section) {
+			foreach ($config['template']['templates'][$section] as $type => $typeConfig) {
+				if (!isset($typeConfig['filename'])) {
+					throw new ConfigException(sprintf('Filename for "%s" is not defined', $type));
+				}
+				if (!isset($typeConfig['template'])) {
+					throw new ConfigException(sprintf('Template for "%s" is not defined', $type));
+				}
+				if (null === Helper::getAbsoluteFilePath($typeConfig['template'], array(dirname($config['templateConfig'])))) {
+					throw new ConfigException(sprintf('Template for "%s" doesn\'t exist', $type));
+				}
+			}
+		}
+
+		// Plugins configuration
 		foreach ($config['plugins'] as $pluginName => $definition) {
 			if (!is_array($definition)) {
 				throw new ConfigException(sprintf('Definition of plugin "%s" has to be an array', $pluginName));
