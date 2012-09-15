@@ -398,10 +398,6 @@ final class ConfigExtension extends CompilerExtension
 			}
 		}
 
-		if (!empty($config['baseUrl']) && !preg_match('~^https?://(?:[-a-z0-9]+\.)+[a-z]{2,6}(?:/.*)?$~i', $config['baseUrl'])) {
-			throw new ConfigException(sprintf('Invalid base url "%s"', $config['baseUrl']));
-		}
-
 		if (!empty($config['googleCseId']) && !preg_match('~^\d{21}:[-a-z0-9_]{11}$~', $config['googleCseId'])) {
 			throw new ConfigException(sprintf('Invalid Google Custom Search ID "%s"', $config['googleCseId']));
 		}
