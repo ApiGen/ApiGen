@@ -47,6 +47,12 @@ class Environment
 
 	public static function init()
 	{
+		// Safe locale and timezone
+		setlocale(LC_ALL, 'C');
+		if (!ini_get('date.timezone')) {
+			date_default_timezone_set('UTC');
+		}
+
 		$rootDir = static::getRootDir();
 
 		spl_autoload_register(function($className) use ($rootDir) {

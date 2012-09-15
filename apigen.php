@@ -16,12 +16,6 @@ namespace ApiGen;
 
 use Nette\Diagnostics\Debugger;
 
-// Safe locale and timezone
-setlocale(LC_ALL, 'C');
-if (!ini_get('date.timezone')) {
-	date_default_timezone_set('UTC');
-}
-
 // Check environment
 try {
 	require __DIR__ . '/ApiGen/Environment.php';
