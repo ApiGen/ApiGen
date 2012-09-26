@@ -65,7 +65,7 @@ class Environment
 
 		foreach (array('json', 'iconv', 'mbstring', 'tokenizer') as $extension) {
 			if (!extension_loaded($extension)) {
-				throw new Exception(sprintf("Required extension missing: %s\n", $extension), 1);
+				throw new \Exception(sprintf("Required extension missing: %s\n", $extension), 1);
 			}
 		}
 
@@ -86,16 +86,16 @@ class Environment
 		}
 
 		if (!class_exists('Nette\\Diagnostics\\Debugger')) {
-			throw new Exception('Could not find Nette framework', 2);
+			throw new \Exception('Could not find Nette framework', 2);
 		}
 		if (!class_exists('Texy')) {
-			throw new Exception('Could not find Texy! library', 2);
+			throw new \Exception('Could not find Texy! library', 2);
 		}
 		if (!class_exists('FSHL\\Highlighter')) {
-			throw new Exception('Could not find FSHL library', 2);
+			throw new \Exception('Could not find FSHL library', 2);
 		}
 		if (!class_exists('TokenReflection\\Broker')) {
-			throw new Exception('Could not find TokenReflection library', 2);
+			throw new \Exception('Could not find TokenReflection library', 2);
 		}
 	}
 
