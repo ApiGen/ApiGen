@@ -112,7 +112,7 @@ final class ConfigExtension extends CompilerExtension
 	{
 		$this->arguments = $arguments;
 
-		$this->defaultConfig['colors'] = 'WIN' !== substr(PHP_OS, 0, 3);
+		$this->defaultConfig['colors'] = 'WIN' === substr(PHP_OS, 0, 3) ? FALSE : (function_exists('posix_isatty') && defined('STDOUT') ? posix_isatty(STDOUT) : TRUE);
 		$this->defaultConfig['templateConfig'] = Environment::getRootDir() . '/templates/' . Helper::DEFAULT_TEMPLATE_CONFIG_FILENAME;
 	}
 
