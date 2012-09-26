@@ -106,7 +106,7 @@ class Config
 	{
 		$templateDir = self::isInstalledByPear() ? '@data_dir@' . DIRECTORY_SEPARATOR . 'ApiGen' : realpath(__DIR__ . DIRECTORY_SEPARATOR . '..');
 		self::$defaultConfig['templateConfig'] = $templateDir . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'default' . DIRECTORY_SEPARATOR . 'config.neon';
-		self::$defaultConfig['colors'] = 'WIN' !== substr(PHP_OS, 0, 3);
+		self::$defaultConfig['colors'] = 'WIN' === substr(PHP_OS, 0, 3) ? false : (function_exists('posix_isatty') && defined('STDOUT') ? posix_isatty(STDOUT) : true);
 		$this->config = self::$defaultConfig;
 	}
 
