@@ -85,7 +85,7 @@ class Environment
 			);
 		}
 
-		if (!class_exists('Nette\\Diagnostics\\Debugger')) {
+		if (!class_exists('Nette\\Diagnostics\\Debugger', FALSE)) {
 			throw new \Exception('Could not find Nette framework', 2);
 		}
 		if (!class_exists('Texy')) {
