@@ -377,7 +377,7 @@ class Generator extends Object implements IGenerator
 		$this->fireEvent('generateStart', $steps);
 
 		// Prepare template
-		$tmp = $this->config->destination . DIRECTORY_SEPARATOR . 'tmp';
+		$tmp = $this->config->destination . DIRECTORY_SEPARATOR . uniqid();
 		$this->deleteDir($tmp);
 		@mkdir($tmp, 0755, true);
 		$template = new Template($this, $this->highlighter);
