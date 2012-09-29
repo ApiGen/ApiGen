@@ -1,5 +1,8 @@
-build/ export-ignore
-libs/ export-ignore
-release/ export-ignore
+build export-ignore
+libs export-ignore
+release export-ignore
+.gitattributes export-ignore
+.gitignore export-ignore
+.gitmodules export-ignore
 build.xml export-ignore
 package.xml export-ignore
