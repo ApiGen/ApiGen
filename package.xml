@@ -201,6 +201,7 @@
 		<package>
 			<name>Texy</name>
 			<channel>pear.texy.info</channel>
+			<min>2.1.0</min>
 		</package>
 		<package>
 			<name>FSHL</name>
