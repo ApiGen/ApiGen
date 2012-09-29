@@ -1,0 +1,54 @@
+{
+	"name": "apigen/apigen",
+	"description": "API documentation generator for PHP 5.3+",
+	"type": "library",
+	"keywords": ["documentation", "docblock", "phpdoc", "phpdocumentor", "generator", "api"],
+	"homepage": "http://apigen.org/",
+	"license": "BSD-3-Clause",
+	"authors": [
+		{
+			"name": "Jaroslav Hanslík",
+			"homepage": "https://github.com/kukulich"
+		},
+		{
+			"name": "Ondřej Nešpor",
+			"homepage": "https://github.com/andrewsville"
+		},
+		{
+			"name": "David Grudl",
+			"homepage": "http://davidgrudl.com"
+		}
+	],
+	"support": {
+		"issues": "https://github.com/apigen/apigen/issues",
+		"forum": "https://groups.google.com/group/apigen",
+		"source": "https://github.com/apigen/apigen"
+	},
+	"require": {
+		"php": ">=5.3.0",
+		"nette/nette": ">=2.0.5",
+		"dg/texy": ">=2.1.0",
+		"kukulich/fshl": ">=2.1.0",
+		"andrewsville/php-token-reflection": ">=1.3.1"
+	},
+	"suggest": {
+		"ext-bz2": "*",
+		"ext-phar": "*",
+		"ext-zip": "*",
+		"ext-zlib": "*"
+	},
+	"autoload": {
+		"psr-0": {
+			"ApiGen": "./"
+		}
+	},
+	"bin": [
+		"apigen.php"
+	],
+	"extra": {
+		"branch-alias": {
+			"dev-master": "2.8.0",
+			"dev-develop": "3.0.0-dev"
+		}
+	}
+}

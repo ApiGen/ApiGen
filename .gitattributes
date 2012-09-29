@@ -1,0 +1,5 @@
+build/ export-ignore
+libs/ export-ignore
+release/ export-ignore
+build.xml export-ignore
+package.xml export-ignore

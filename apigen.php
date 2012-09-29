@@ -28,8 +28,17 @@ if (false === strpos('@php_dir@', '@php_dir')) {
 
 	@include '@php_dir@/Nette/loader.php';
 	@include '@php_dir@/Texy/texy.php';
+
+	spl_autoload_register(function($class) {
+		$class = trim($class, '\\');
+		require sprintf('%s.php', str_replace('\\', DIRECTORY_SEPARATOR, $class));
+	});
+} elseif (is_file($composerAutoload = __DIR__ . '/../../autoload.php')) {
+	// Composer package
+
+	@include $composerAutoload;
 } else {
-	// Downloaded package
+	// Standalone package
 
 	set_include_path(
 		__DIR__ . PATH_SEPARATOR .
@@ -40,13 +49,12 @@ if (false === strpos('@php_dir@', '@php_dir')) {
 
 	@include __DIR__ . '/libs/Nette/Nette/loader.php';
 	@include __DIR__ . '/libs/Texy/texy/texy.php';
-}
 
-// Autoload
-spl_autoload_register(function($class) {
-	$class = trim($class, '\\');
-	require sprintf('%s.php', str_replace('\\', DIRECTORY_SEPARATOR, $class));
-});
+	spl_autoload_register(function($class) {
+		$class = trim($class, '\\');
+		require sprintf('%s.php', str_replace('\\', DIRECTORY_SEPARATOR, $class));
+	});
+}
 
 try {
 
