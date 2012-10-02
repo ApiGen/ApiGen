@@ -219,7 +219,7 @@ Display progressbars, default is "Yes".
 
 ```--colors <yes|no>```
 
-Use colors, default "No" on Windows, "Yes" on other systems. Windows doesn't support colors in console however you can enable it with [Ansicon](http://adoxa.110mb.com/ansicon/).
+Use colors, default "Yes" in terminals with colors support. Windows doesn't support colors in console however you can enable it with [Ansicon](http://adoxa.110mb.com/ansicon/).
 
 ```--update-check <yes|no>```
 

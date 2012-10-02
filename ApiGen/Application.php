@@ -273,7 +273,7 @@ Options:
 	--plugin-config    <file>      Plugin config file (can be used multiple times)
 	--quiet            <yes|no>    Don't display scaning and generating messages, default "no"
 	--progressbar      <yes|no>    Display progressbars, default "yes"
-	--colors           <yes|no>    Use colors, default "no" on Windows, "yes" on other systems
+	--colors           <yes|no>    Use colors, default "yes" in terminals with colors support
 	--update-check     <yes|no>    Check for update, default "yes"
 	--debug            <yes|no>    Display additional information in case of an error, default "no"
 	--help|-h                      Display this help

@@ -13,8 +13,6 @@
 
 namespace ApiGen;
 
-use Nette\Utils\LimitedScope;
-
 /**
  * ApiGen environment helpers.
  */
@@ -168,5 +166,29 @@ class Environment
 	public static function isGitRepository()
 	{
 		return is_file(__DIR__ . '/../.gitmodules');
+	}
+
+	/**
+	 * Returns if ApiGen is runnning on Windows.
+	 *
+	 * @return boolean
+	 */
+	public static function isWindows()
+	{
+		return 'WIN' === substr(PHP_OS, 0, 3);
+	}
+
+	/**
+	 * Returns if ApiGen is running in a terminal with colors support.
+	 *
+	 * @return boolean
+	 */
+	public static function isTerminalWithColors()
+	{
+		if (static::isWindows()) {
+			return false !== getenv('ANSICON');
+		} else {
+			return function_exists('posix_isatty') && defined('STDOUT') && @posix_isatty(STDOUT);
+		}
 	}
 }

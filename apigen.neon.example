@@ -60,7 +60,7 @@ quiet: No
 # Display progressbars
 progressbar: Yes
 # Use colors
-colors: No
+colors: Yes
 # Check for update
 updateCheck: Yes
 # Display additional information in case of an error
