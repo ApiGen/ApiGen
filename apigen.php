@@ -18,7 +18,7 @@ use Nette\Diagnostics\Debugger;
 
 // Check environment
 try {
-	require __DIR__ . '/ApiGen/Environment.php';
+	require 'ApiGen/Environment.php';
 	Environment::init();
 } catch (\Exception $e) {
 	fputs(STDERR, $e->getMessage() . "\n");

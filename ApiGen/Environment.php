@@ -40,11 +40,19 @@ class Environment
 		return '3.0dev';
 	}
 
+	/**
+	 * Returns root directory.
+	 *
+	 * @return string
+	 */
 	public static function getRootDir()
 	{
 		return realpath(__DIR__ . '/..');
 	}
 
+	/**
+	 * Initializes ApiGen environment.
+	 */
 	public static function init()
 	{
 		// Safe locale and timezone
@@ -53,28 +61,36 @@ class Environment
 			date_default_timezone_set('UTC');
 		}
 
-		$rootDir = static::getRootDir();
-
-		spl_autoload_register(function($className) use ($rootDir) {
-			if ('ApiGen\\' === substr($className, 0, 7) && is_file($fileName = $rootDir . DIRECTORY_SEPARATOR . str_replace('\\', DIRECTORY_SEPARATOR, $className . '.php'))) {
-				LimitedScope::load($fileName);
-			} else {
-				@LimitedScope::load(str_replace('\\', DIRECTORY_SEPARATOR, $className . '.php'));
-			}
-		});
-
+		// Check required extensions
 		foreach (array('json', 'iconv', 'mbstring', 'tokenizer') as $extension) {
 			if (!extension_loaded($extension)) {
 				throw new Exception(sprintf("Required extension missing: %s\n", $extension), 1);
 			}
 		}
 
-		if (Environment::isPearPackage()) {
+		if (static::isPearPackage()) {
 			// PEAR package
 			@include 'Nette/loader.php';
 			@include 'Texy/texy.php';
-		} else {
-			// Standalone package
+		} elseif (static::isComposerPackage()) {
+			// Composer package
+
+			$vendorDir = realpath(static::getRootDir() . '/../..');
+
+			@include $vendorDir . '/nette/nette/Nette/loader.php';
+			@include $vendorDir . '/dg/texy/texy/texy.php';
+
+			set_include_path(
+				$vendorDir . '/kukulich/fshl' . PATH_SEPARATOR .
+				$vendorDir . '/andrewsville/php-token-reflection' . PATH_SEPARATOR .
+				get_include_path()
+			);
+
+		} elseif (static::isStandalonePackage() || static::isGitRepository()) {
+			// Standalone package or Git repository
+
+			$rootDir = static::getRootDir();
+
 			@include $rootDir . '/libs/Nette/Nette/loader.php';
 			@include $rootDir . '/libs/Texy/texy/texy.php';
 
@@ -83,19 +99,34 @@ class Environment
 				$rootDir . '/libs/TokenReflection' . PATH_SEPARATOR .
 				get_include_path()
 			);
+		} else {
+			throw new Exception('Unsupported installation way', 2);
 		}
 
+		// Autoload
+		spl_autoload_register(function($className) {
+			$className = trim($className, '\\');
+			$classFileName = str_replace('\\', DIRECTORY_SEPARATOR, $className) . '.php';
+
+			if (0 === strpos($className, 'ApiGen\\') && is_file($fileName = static::getRootDir() . DIRECTORY_SEPARATOR . $classFileName)) {
+				include $fileName;
+			} else {
+				@include $classFileName;
+			}
+		});
+
+		// Check required libraries
 		if (!class_exists('Nette\\Diagnostics\\Debugger')) {
-			throw new Exception('Could not find Nette framework', 2);
+			throw new Exception('Could not find Nette framework', 3);
 		}
 		if (!class_exists('Texy')) {
-			throw new Exception('Could not find Texy! library', 2);
+			throw new Exception('Could not find Texy! library', 3);
 		}
 		if (!class_exists('FSHL\\Highlighter')) {
-			throw new Exception('Could not find FSHL library', 2);
+			throw new Exception('Could not find FSHL library', 3);
 		}
 		if (!class_exists('TokenReflection\\Broker')) {
-			throw new Exception('Could not find TokenReflection library', 2);
+			throw new Exception('Could not find TokenReflection library', 3);
 		}
 	}
 
@@ -107,5 +138,35 @@ class Environment
 	public static function isPearPackage()
 	{
 		return false === strpos('@php_dir@', '@php_dir');
+	}
+
+	/**
+	 * Returns if ApiGen is installed as a Composer package.
+	 *
+	 * @return boolean
+	 */
+	public static function isComposerPackage()
+	{
+		return is_file(__DIR__ . '/../../../autoload.php');
+	}
+
+	/**
+	 * Returns if ApiGen is installed as a standalone package.
+	 *
+	 * @return boolean
+	 */
+	public static function isStandalonePackage()
+	{
+		return is_dir(__DIR__ . '/../libs') && !static::isGitRepository();
+	}
+
+	/**
+	 * Returns if ApiGen is installed as Git repository.
+	 *
+	 * @return boolean
+	 */
+	public static function isGitRepository()
+	{
+		return is_file(__DIR__ . '/../.gitmodules');
 	}
 }
