@@ -27,10 +27,8 @@ try {
 
 // Init Nette debugger
 Debugger::$strictMode = true;
-Debugger::$onFatalError[] = function() {
-	echo "\nFor more information turn on the debug mode using the --debug option.\n";
-};
-Debugger::enable(Debugger::PRODUCTION, false);
+Debugger::$onFatalError = array();
+Debugger::enable(Debugger::DEVELOPMENT, false);
 
 // Parse console input
 $parser = new ConsoleParser();
@@ -41,9 +39,11 @@ $configurator = new Config\Configurator($arguments);
 $context = $configurator->createContainer();
 
 // Update debugger configuration if needed
-if ($context->apigen->config->debug) {
-	Debugger::enable(Debugger::DEVELOPMENT, false);
-	Debugger::$onFatalError = array();
+if (!$context->apigen->config->debug) {
+	Debugger::$onFatalError[] = function() {
+		echo "\nFor more information turn on the debug mode using the --debug option.\n";
+	};
+	Debugger::enable(Debugger::PRODUCTION, false);
 }
 
 // Let's rock
