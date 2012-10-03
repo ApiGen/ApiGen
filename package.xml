@@ -193,6 +193,12 @@
 		<pearinstaller>
 			<min>1.4.0</min>
 		</pearinstaller>
+		<extension>
+			<name>json</name>
+		</extension>
+		<extension>
+			<name>mbstring</name>
+		</extension>
 		<package>
 			<name>Nette</name>
 			<channel>pear.nette.org</channel>

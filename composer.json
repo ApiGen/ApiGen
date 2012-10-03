@@ -26,6 +26,8 @@
 	},
 	"require": {
 		"php": ">=5.3.0",
+		"ext-json": "*",
+		"ext-mbstring": "*",
 		"nette/nette": ">=2.0.6",
 		"dg/texy": ">=2.1.0",
 		"kukulich/fshl": ">=2.1.0",
