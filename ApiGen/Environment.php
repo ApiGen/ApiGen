@@ -87,14 +87,14 @@ class Environment
 		} elseif (static::isStandalonePackage() || static::isGitRepository()) {
 			// Standalone package or Git repository
 
-			$rootDir = static::getRootDir();
+			$vendorDir = static::getRootDir() . '/vendor';
 
-			@include $rootDir . '/libs/Nette/Nette/loader.php';
-			@include $rootDir . '/libs/Texy/texy/texy.php';
+			@include $vendorDir . '/Nette/Nette/loader.php';
+			@include $vendorDir . '/Texy/texy/texy.php';
 
 			set_include_path(
-				$rootDir . '/libs/FSHL' . PATH_SEPARATOR .
-				$rootDir . '/libs/TokenReflection' . PATH_SEPARATOR .
+				$vendorDir . '/FSHL' . PATH_SEPARATOR .
+				$vendorDir . '/TokenReflection' . PATH_SEPARATOR .
 				get_include_path()
 			);
 		} else {
@@ -145,7 +145,7 @@ class Environment
 	 */
 	public static function isComposerPackage()
 	{
-		return is_file(__DIR__ . '/../../../autoload.php');
+		return is_file(static::getRootDir() . '/../../autoload.php');
 	}
 
 	/**
@@ -155,7 +155,7 @@ class Environment
 	 */
 	public static function isStandalonePackage()
 	{
-		return is_dir(__DIR__ . '/../libs') && !static::isGitRepository();
+		return is_dir(static::getRootDir() . '/vendor') && !static::isGitRepository();
 	}
 
 	/**
@@ -165,7 +165,7 @@ class Environment
 	 */
 	public static function isGitRepository()
 	{
-		return is_file(__DIR__ . '/../.gitmodules');
+		return is_file(static::getRootDir() . '/.gitmodules');
 	}
 
 	/**

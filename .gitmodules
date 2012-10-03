@@ -1,12 +1,12 @@
-[submodule "libs/FSHL"]
-	path = libs/FSHL
+[submodule "vendor/FSHL"]
+	path = vendor/FSHL
 	url = git://github.com/kukulich/fshl.git
-[submodule "libs/Nette"]
-	path = libs/Nette
+[submodule "vendor/Nette"]
+	path = vendor/Nette
 	url = git://github.com/nette/nette.git
-[submodule "libs/Texy"]
-	path = libs/Texy
+[submodule "vendor/Texy"]
+	path = vendor/Texy
 	url = git://github.com/dg/texy.git
-[submodule "libs/TokenReflection"]
-	path = libs/TokenReflection
+[submodule "vendor/TokenReflection"]
+	path = vendor/TokenReflection
 	url = git://github.com/Andrewsville/PHP-Token-Reflection.git

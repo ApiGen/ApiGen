@@ -83,7 +83,7 @@ GitHub allows you to download any repository as a zip or tar.gz archive. You can
 
 ### Cloning the repository ###
 
-The last way how to install ApiGen is simply to clone our repository. If you do so, remember to fetch and rebase to get new versions and do not forget to update submodules in the libs directory.
+The last way how to install ApiGen is simply to clone our repository. If you do so, remember to fetch and rebase to get new versions and do not forget to update submodules in the vendor directory.
 
 ## Usage ##
 
