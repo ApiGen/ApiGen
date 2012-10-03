@@ -106,7 +106,7 @@ class Environment
 			$className = trim($className, '\\');
 			$classFileName = str_replace('\\', DIRECTORY_SEPARATOR, $className) . '.php';
 
-			if (0 === strpos($className, 'ApiGen\\') && is_file($fileName = static::getRootDir() . DIRECTORY_SEPARATOR . $classFileName)) {
+			if (0 === strpos($className, 'ApiGen\\') && is_file($fileName = Environment::getRootDir() . DIRECTORY_SEPARATOR . $classFileName)) {
 				include $fileName;
 			} else {
 				@include $classFileName;
