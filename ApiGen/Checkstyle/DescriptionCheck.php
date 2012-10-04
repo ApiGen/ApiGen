@@ -13,17 +13,18 @@
 
 namespace ApiGen\Checkstyle;
 
+use ApiGen\Reflection\ReflectionBase;
 use ApiGen\Reflection\ReflectionElement;
-use ApiGen\Reflection\ReflectionParameter;
 
 class DescriptionCheck implements ICheck
 {
-	public function check(ReflectionElement $element)
+	public function isDoable(ReflectionBase $element)
 	{
-		if ($element instanceof ReflectionParameter) {
-			return array();
-		}
+		return $element instanceof ReflectionElement;
+	}
 
+	public function check(ReflectionBase $element)
+	{
 		$messages = array();
 
 		if (empty($element->shortDescription)) {

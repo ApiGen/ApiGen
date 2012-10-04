@@ -13,18 +13,18 @@
 
 namespace ApiGen\Checkstyle;
 
-use ApiGen\Reflection\ReflectionElement;
-use ApiGen\Reflection\ReflectionFunction;
-use ApiGen\Reflection\ReflectionMethod;
+use ApiGen\Reflection\ReflectionBase;
+use ApiGen\Reflection\ReflectionFunctionBase;
 
 class FunctionCheck implements ICheck
 {
-	public function check(ReflectionElement $element)
+	public function isDoable(ReflectionBase $element)
 	{
-		if (!$element instanceof ReflectionMethod && !$element instanceof ReflectionFunction) {
-			return array();
-		}
+		return $element instanceof ReflectionFunctionBase;
+	}
 
+	public function check(ReflectionBase $element)
+	{
 		$messages = array();
 
 		$annotations = $element->getAnnotations();

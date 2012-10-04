@@ -80,6 +80,10 @@ class Report
 
 			foreach ($elements as $element) {
 				foreach ($this->checks as $check) {
+					if (!$check->isDoable($element)) {
+						continue;
+					}
+
 					foreach ($check->check($element) as $message) {
 						$messages[$fileName][] = $message;
 					}

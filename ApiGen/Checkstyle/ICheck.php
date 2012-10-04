@@ -13,9 +13,11 @@
 
 namespace ApiGen\Checkstyle;
 
+use ApiGen\Reflection\ReflectionBase;
 use ApiGen\Reflection\ReflectionElement;
 
 interface ICheck
 {
-	public function check(ReflectionElement $element);
+	public function isDoable(ReflectionBase $element);
+	public function check(ReflectionBase $element);
 }
