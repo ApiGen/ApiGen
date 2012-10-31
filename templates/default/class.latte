@@ -269,31 +269,31 @@ the file LICENSE.md that was distributed with this source code.
 			{else}
 				<a n:tag-if="$config->sourceCode" href="{$constant|sourceUrl}" title="Go to source code"><b>{$constant->name}</b></a>
 			{/if}
-		</code></td>
+		</code>
+		{if $config->template->options->elementDetailsCollapsed}
+            <div class="description short">
+                {!$constant|shortDescription:true}
+            </div>
+            {/if}
+
+            <div n:class="description, detailed, $config->template->options->elementDetailsCollapsed ? hidden">
+                {!$constant|longDescription}
+
+                {foreach $template->annotationSort($template->annotationFilter($annotations, array('var'))) as $annotation => $descriptions}
+                    <h4>{$annotation|annotationBeautify}</h4>
+                    <div class="list">
+                    {foreach $descriptions as $description}
+                        {if $description}
+                            {!$description|annotation:$annotation:$constant}<br>
+                        {/if}
+                    {/foreach}
+                    </div>
+                {/foreach}
+            </div>
+            </td>
 		<td class="value"><code>{!$constant->valueDefinition|highlightValue:$class}</code></td>
 		<td class="description"><div>
 			<a href="#{$constant->name}" class="anchor">#</a>
-
-			{if $config->template->options->elementDetailsCollapsed}
-			<div class="description short">
-				{!$constant|shortDescription:true}
-			</div>
-			{/if}
-
-			<div n:class="description, detailed, $config->template->options->elementDetailsCollapsed ? hidden">
-				{!$constant|longDescription}
-
-				{foreach $template->annotationSort($template->annotationFilter($annotations, array('var'))) as $annotation => $descriptions}
-					<h4>{$annotation|annotationBeautify}</h4>
-					<div class="list">
-					{foreach $descriptions as $description}
-						{if $description}
-							{!$description|annotation:$annotation:$constant}<br>
-						{/if}
-					{/foreach}
-					</div>
-				{/foreach}
-			</div>
 		</div></td>
 	</tr>
 	</table>
