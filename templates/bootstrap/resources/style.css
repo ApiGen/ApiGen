@@ -305,6 +305,14 @@ h2.switchable {
 	margin: 0;
 }
 
+/**
+ * Spacify summaries paragraphs while keeping
+ * hidden sections (like constants) untouched
+ */
+table#methods .description p {
+	margin: .7em 0 1em;
+}
+
 .class #methods.summary .description p:first-child, .summary .description.detailed h4:first-child {
 	margin-top: 8px;
 }
@@ -333,17 +341,19 @@ h2.switchable {
 	white-space: pre-wrap;
 }
 
-td.name, td.attributes {
+td.attributes {
+	vertical-align: middle;
 	width: 1%;
 }
 
 .class #methods .name {
+	vertical-align: middle;
 	width: auto;
 	white-space: normal;
 }
 
 .class #methods .name > div > code {
-	white-space: pre-wrap;
+	/*white-space: pre-wrap;*/ /* Removes right-boundary space in arguments list */
 }
 
 .class #methods .name > div > code span, .function .value > code {

@@ -389,6 +389,14 @@ dl.tree dd {
 	margin: 0;
 }
 
+/**
+ * Spacify summaries paragraphs while keeping
+ * hidden sections (like constants) untouched
+ */
+table#methods .description p {
+	margin: .7em 0 1em;
+}
+
 .summary .description p + p, .summary .description ul {
 	margin: 3px 0 0 0;
 }
@@ -413,17 +421,19 @@ dl.tree dd {
 	white-space: pre-wrap;
 }
 
-td.name, td.attributes {
+td.attributes {
+	vertical-align: middle;
 	width: 1%;
 }
 
 .class #methods .name {
+	vertical-align: middle;
 	width: auto;
 	white-space: normal;
 }
 
 .class #methods .name > div > code {
-	white-space: pre-wrap;
+	/*white-space: pre-wrap;*/ /* Removes right-boundary space in arguments list */
 }
 
 .class #methods .name > div > code span, .function .value > code {
