@@ -107,9 +107,7 @@ the file LICENSE.md that was distributed with this source code.
 			{var $annotations = $method->annotations}
 
 			<td class="attributes"><code>
-				{if !$class->interface && $method->abstract}abstract{elseif $method->final}final{/if} {if $method->protected}protected{elseif $method->private}private{else}public{/if} {if $method->static}static{/if}
-				{ifset $annotations['return']}{!$annotations['return'][0]|typeLinks:$method}{/ifset}
-				{if $method->returnsReference()}&amp;{/if}
+				{if !$class->interface && $method->abstract}abstract<br />{elseif $method->final}final<br />{/if}{if $method->protected}protected{elseif $method->private}private{else}public{/if}{if $method->static}<br />static{/if}
 				</code>
 			</td>
 
@@ -129,7 +127,7 @@ the file LICENSE.md that was distributed with this source code.
 
 			{if $config->template['options']['elementDetailsCollapsed']}
 			<div class="description short">
-				{!$method|shortDescription:true}
+				{!$method|shortDescription:false}
 			</div>
 			{/if}
 
@@ -229,7 +227,7 @@ the file LICENSE.md that was distributed with this source code.
 		</p>
 		{/foreach}
 
-		<h3>Magic methods summary</h3>
+		<h3 n:if="$ownMagicMethods">Magic methods summary</h3>
 		<table class="summary table table-bordered table-striped" id="magicMethods" n:if="$ownMagicMethods">
 		{foreach $ownMagicMethods as $method}
 			{include #method, method => $method}
@@ -267,37 +265,35 @@ the file LICENSE.md that was distributed with this source code.
 
 			<td class="attributes"><code>{!$constant->typeHint|typeLinks:$constant}</code></td>
 			<td class="name"><code>
-				{if $class->internal}
-					<a href="{$constant|manualUrl}" title="Go to PHP documentation"><b>{$constant->name}</b></a>
-				{else}
-					<a n:tag-if="$config->sourceCode" href="{$constant|sourceUrl}" title="Go to source code"><b>{$constant->name}</b></a>
-				{/if}
-			</code></td>
-			<td class="value"><code>{!$constant->valueDefinition|highlightValue:$class}</code></td>
-			<td class="description"><div>
-				<a href="#{$constant->name}" class="anchor">#</a>
-
-				{if $config->template['options']['elementDetailsCollapsed']}
+					{if $class->internal} <a href="{$constant|manualUrl}"
+						title="Go to PHP documentation"><b>{$constant->name}</b></a>
+					{else} <a n:tag-if="$config->sourceCode"
+						href="{$constant|sourceUrl}" title="Go to source code"><b>{$constant->name}</b></a>
+					{/if}
+				</code> {if $config->template['options']['elementDetailsCollapsed']}
 				<div class="description short">
-					{!$constant|shortDescription:true}
-				</div>
-				{/if}
+					{!$constant|shortDescription:true}</div> {/if}
 
-				<div n:class="description, detailed, $config->template['options']['elementDetailsCollapsed'] ? hidden">
-					{!$constant|longDescription}
+				<div
+					n:class="description, detailed, $config->template['options']['elementDetailsCollapsed'] ? hidden">
 
-					{foreach $template->annotationSort($template->annotationFilter($annotations, array('var'))) as $annotation => $descriptions}
-						<h4>{$annotation|annotationBeautify}</h4>
-						<div class="list">
-						{foreach $descriptions as $description}
-							{if $description}
-								{!$description|annotation:$annotation:$constant}<br>
-							{/if}
+					{!$constant|longDescription} {foreach
+					$template->annotationSort($template->annotationFilter($annotations,
+					array('var'))) as $annotation => $descriptions}
+					<h4>{$annotation|annotationBeautify}</h4>
+					<div class="list">
+						{foreach $descriptions as $description} {if $description}
+						{!$description|annotation:$annotation:$constant}<br> {/if}
 						{/foreach}
-						</div>
+					</div>
 					{/foreach}
+				</div></td>
+			<td class="value"><code>{!$constant->valueDefinition|highlightValue:$class}</code></td>
+			<td class="description">
+				<div>
+					<a href="#{$constant->name}" class="anchor">#</a>
 				</div>
-			</div></td>
+			</td>
 		</tr>
 		</table>
 
