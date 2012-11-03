@@ -111,13 +111,13 @@ class Application extends Object
 	{
 		// Scan
 		if (count($this->config->source) > 1) {
-			$this->logger->log("Scanning\n %value", implode("\n ", $this->config->source) . "\n");
+			$this->logger->log("Scanning\n %value", implode("\n ", $this->config->source->toArray()) . "\n");
 		} else {
 			$this->logger->log("Scanning %value\n", $this->config->source[0]);
 		}
 
 		if (count($this->config->exclude) > 1) {
-			$this->logger->log("Excluding\n %value", implode("\n ", $this->config->exclude) . "\n");
+			$this->logger->log("Excluding\n %value", implode("\n ", $this->config->exclude->toArray()) . "\n");
 		} elseif (count($this->config->exclude) === 1) {
 			$this->logger->log("Excluding %value\n", $this->config->exclude[0]);
 		}
