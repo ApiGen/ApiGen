@@ -229,12 +229,14 @@ the file LICENSE.md that was distributed with this source code.
 		</p>
 		{/foreach}
 
+		{if $ownMagicMethods}
 		<h3>Magic methods summary</h3>
-		<table class="summary table table-bordered table-striped methods" id="magicMethods" n:if="$ownMagicMethods">
+		<table class="summary table table-bordered table-striped methods" id="magicMethods">
 		{foreach $ownMagicMethods as $method}
 			{include #method, method => $method}
 		{/foreach}
 		</table>
+		{/if}
 
 		{foreach $inheritedMagicMethods as $parentName => $methods}
 		<h3>Magic methods inherited from <a href="{$parentName|classUrl}#methods" n:tag-if="$template->getClass($parentName)">{$parentName}</a></h3>
