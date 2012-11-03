@@ -154,7 +154,7 @@ the file LICENSE.md that was distributed with this source code.
 					<div class="list"><dl>
 					{foreach $method->parameters as $parameter}
 						<dt><var>${$parameter->name}</var>{if $parameter->unlimited},…{/if}</dt>
-						<dd>{ifset $annotations['param'][$parameter->position]}{!$annotations['param'][$parameter->position]|annotation:'param':$method}{/ifset}</dd>
+						<dd>{$parameter->description|description:$method}</dd>
 					{/foreach}
 					</dl></div>
 				{/if}

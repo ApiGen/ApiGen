@@ -46,7 +46,6 @@ the file LICENSE.md that was distributed with this source code.
 			{var $element = $template->resolveElement($constant->valueDefinition, $constant)}
 			{if $element}<a href="{$element|constantUrl}">{$constant->valueDefinition}</a>{else}<code>{$constant->valueDefinition|highlightValue:$constant|noescape}</code>{/if}
 		{/block}</td>
-		<td>{ifset $annotations['var']}{!$annotations['var'][0]|description:$constant}{/ifset}</td>
 	</tr>
 	</table>
 

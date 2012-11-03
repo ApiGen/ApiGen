@@ -46,6 +46,22 @@ class ReflectionParameter extends ReflectionBase
 	}
 
 	/**
+	 * Returns parameter description.
+	 *
+	 * @return string
+	 */
+	public function getDescription()
+	{
+		$annotations = $this->getDeclaringFunction()->getAnnotation('param');
+		if (empty($annotations[$this->getPosition()])) {
+			return '';
+		}
+
+		$description = trim(strpbrk($annotations[$this->getPosition()], "\n\r\t "));
+		return preg_replace('~^(\\$' . $this->getName() . '(?:,\\.{3})?)(\\s+|$)~i', '\\2', $description, 1);
+	}
+
+	/**
 	 * Returns the part of the source code defining the parameter default value.
 	 *
 	 * @return string
