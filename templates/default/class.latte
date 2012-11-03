@@ -196,7 +196,7 @@ the file LICENSE.md that was distributed with this source code.
 	</tr>
 	{/define}
 
-	<table class="summary" id="methods" n:if="$ownMethods">
+	<table class="summary methods" id="methods" n:if="$ownMethods">
 	<caption>Methods summary</caption>
 	{foreach $ownMethods as $method}
 		{include method, method => $method}
@@ -225,7 +225,7 @@ the file LICENSE.md that was distributed with this source code.
 	</tr>
 	</table>
 
-	<table class="summary" id="methods" n:if="$ownMagicMethods">
+	<table class="summary methods" id="magicMethods" n:if="$ownMagicMethods">
 	<caption>Magic methods summary</caption>
 	{foreach $ownMagicMethods as $method}
 		{include method, method => $method}
@@ -257,28 +257,24 @@ the file LICENSE.md that was distributed with this source code.
 
 	{var $ownConstants = $class->ownConstants}
 
-	<table class="summary" id="constants" n:if="$ownConstants">
+	<table class="summary constants" id="constants" n:if="$ownConstants">
 	<caption>Constants summary</caption>
 	<tr n:foreach="$ownConstants as $constant" data-order="{$constant->name}" id="{$constant->name}">
 		{var $annotations = $constant->annotations}
 
 		<td class="attributes"><code>{$constant->typeHint|typeLinks:$constant|noescape}</code></td>
-		<td class="name"><code>
+		<td class="name">
+			<code>
 			{if $class->internal}
 				<a href="{$constant|manualUrl}" title="Go to PHP documentation"><b>{$constant->name}</b></a>
 			{else}
 				<a n:tag-if="$config->sourceCode" href="{$constant|sourceUrl}" title="Go to source code"><b>{$constant->name}</b></a>
 			{/if}
-		</code></td>
-		<td class="value"><code>{!$constant->valueDefinition|highlightValue:$class}</code></td>
-		<td class="description"><div>
-			<a href="#{$constant->name}" class="anchor">#</a>
+			</code>
 
-			{if $config->template['options']['elementDetailsCollapsed']}
-			<div class="description short">
+			<div n:if="$config->template['options']['elementDetailsCollapsed']" class="description short">
 				{$constant|shortDescription:true|noescape}
 			</div>
-			{/if}
 
 			<div n:class="description, detailed, $config->template['options']['elementDetailsCollapsed'] ? hidden">
 				{$constant|longDescription|noescape}
@@ -294,7 +290,8 @@ the file LICENSE.md that was distributed with this source code.
 					</div>
 				{/foreach}
 			</div>
-		</div></td>
+		</td>
+		<td class="value"><div><a href="#{$constant->name}" class="anchor">#</a><code>{!$constant->valueDefinition|highlightValue:$class}</code></div></td>
 	</tr>
 	</table>
 
@@ -322,16 +319,10 @@ the file LICENSE.md that was distributed with this source code.
 			{else}
 				<a n:tag-if="$config->sourceCode" href="{$property|sourceUrl}" title="Go to source code"><var>${$property->name}</var></a>
 			{/if}
-		</td>
-		<td n:if="!$property->magic" class="value"><code>{!$property->defaultValueDefinition|highlightValue:$class}</code></td>
-		<td class="description"><div>
-			<a href="#{if $property->magic}m{/if}${$property->name}" class="anchor">#</a>
 
-			{if $config->template['options']['elementDetailsCollapsed']}
-			<div class="description short">
+			<div n:if="$config->template['options']['elementDetailsCollapsed']" class="description short">
 				{$property|shortDescription:true|noescape}
 			</div>
-			{/if}
 
 			<div n:class="description, detailed, $config->template['options']['elementDetailsCollapsed'] ? hidden">
 				{$property|longDescription|noescape}
@@ -347,14 +338,15 @@ the file LICENSE.md that was distributed with this source code.
 					</div>
 				{/foreach}
 			</div>
-		</div></td>
+		</td>
+		<td n:if="!$property->magic" class="value"><div><a href="#{if $property->magic}m{/if}${$property->name}" class="anchor">#</a><code>{!$property->defaultValueDefinition|highlightValue:$class}</code></div></td>
 	</tr>
 	{/define}
 
 	{var $ownProperties = $class->ownProperties}
 	{var $ownMagicProperties = $class->ownMagicProperties}
 
-	<table class="summary" id="properties" n:if="$ownProperties">
+	<table class="summary properties" id="properties" n:if="$ownProperties">
 	<caption>Properties summary</caption>
 	{foreach $ownProperties as $property}
 		{include property, property => $property}
@@ -383,7 +375,7 @@ the file LICENSE.md that was distributed with this source code.
 	</tr>
 	</table>
 
-	<table class="summary" id="magicProperties" n:if="$ownMagicProperties">
+	<table class="summary properties" id="magicProperties" n:if="$ownMagicProperties">
 	<caption>Magic properties summary</caption>
 	{foreach $ownMagicProperties as $property}
 		{include property, property => $property}
