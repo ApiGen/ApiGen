@@ -152,8 +152,12 @@ $(function() {
 
 	// Splitter
 	var splitterWidth = $splitter.width();
+	var splitterPosition = $.cookie('splitter') ? parseInt($.cookie('splitter')) : null;
+	var splitterPositionBackup = $.cookie('splitterBackup') ? parseInt($.cookie('splitterBackup')) : null;
 	function setSplitterPosition(position)
 	{
+		splitterPosition = position;
+
 		$left.width(position);
 		$right.css('margin-left', position + splitterWidth);
 		$splitter.css('left', position);
@@ -193,14 +197,27 @@ $(function() {
 							.unbind('mousemove')
 							.unbind('mouseup');
 
-						$.cookie('splitter', parseInt($splitter.css('left')), {expires: 365});
+						$.cookie('splitter', splitterPosition, {expires: 365});
 					});
 
 			return false;
 		});
-	var splitterPosition = $.cookie('splitter');
+	$splitter.dblclick(function() {
+		if (splitterPosition) {
+			splitterPositionBackup = $left.width();
+			setSplitterPosition(0);
+		} else {
+			setSplitterPosition(splitterPositionBackup);
+			splitterPositionBackup = null;
+		}
+
+		setContentWidth();
+
+		$.cookie('splitter', splitterPosition, {expires: 365});
+		$.cookie('splitterBackup', splitterPositionBackup, {expires: 365});
+	});
 	if (null !== splitterPosition) {
-		setSplitterPosition(parseInt(splitterPosition));
+		setSplitterPosition(splitterPosition);
 	}
 	setNavigationPosition();
 	setContentWidth();
