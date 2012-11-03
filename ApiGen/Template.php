@@ -100,12 +100,7 @@ class Template extends Nette\Templating\FileTemplate
 
 		// Docblock descriptions
 		$this->registerHelper('description', function($annotation, $context) use ($that) {
-			$description = trim(strpbrk($annotation, "\n\r\t $"));
-
-			if ($context instanceof Reflection\ReflectionParameter) {
-				$description = preg_replace('~^(\\$' . $context->getName() . '(?:,\\.{3})?)(\s+|$)~i', '\\2', $description, 1);
-				$context = $context->getDeclaringFunction();
-			}
+			$description = trim(strpbrk($annotation, "\n\r\t $")) ?: $annotation;
 			return $that->doc($description, $context);
 		});
 		$this->registerHelper('shortDescription', function($element, $block = false) use ($that) {
@@ -125,9 +120,8 @@ class Template extends Nette\Templating\FileTemplate
 		});
 
 		// Individual annotations processing
-		$this->registerHelper('annotation', function($value, $name, $context) use ($that, $generator) {
+		$this->registerHelper('annotation', function($value, $name, Reflection\ReflectionElement $context) use ($that, $generator) {
 			switch ($name) {
-				case 'param':
 				case 'return':
 				case 'throws':
 					$description = $that->description($value, $context);
