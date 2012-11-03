@@ -413,24 +413,24 @@ dl.tree dd {
 	white-space: pre-wrap;
 }
 
-td.name, td.attributes {
+td.attributes {
 	width: 1%;
 }
 
-.class #methods .name {
+.class .methods .name, .class .properties .name, .class .constants .name {
 	width: auto;
 	white-space: normal;
 }
 
-.class #methods .name > div > code {
+.class .methods .name > div > code {
 	white-space: pre-wrap;
 }
 
-.class #methods .name > div > code span, .function .value > code {
+.class .methods .name > div > code span, .function .value > code {
 	white-space: nowrap;
 }
 
-.class #methods td.name > div, .class td.description > div {
+.class .methods td.name > div, .class td.value > div {
 	position: relative;
 	padding-right: 1em;
 }
