@@ -245,7 +245,7 @@ final class ConfigExtension extends CompilerExtension
 				$config[$option] = array_values(array_filter($config[$option]));
 			}
 
-			// Check posssible values
+			// Check possible values
 			if (!empty($this->possibleOptionsValues[$option])) {
 				$values = $this->possibleOptionsValues[$option];
 
