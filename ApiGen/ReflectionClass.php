@@ -114,31 +114,26 @@ class ReflectionClass extends ReflectionElement
 		parent::__construct($reflection, $generator);
 
 		if (false === self::$methodAccessLevels) {
-			if (count(self::$config->accessLevels) < 3) {
-				self::$methodAccessLevels = 0;
-				self::$propertyAccessLevels = 0;
+			self::$methodAccessLevels = 0;
+			self::$propertyAccessLevels = 0;
 
-				foreach (self::$config->accessLevels as $level) {
-					switch (strtolower($level)) {
-						case 'public':
-							self::$methodAccessLevels |= InternalReflectionMethod::IS_PUBLIC;
-							self::$propertyAccessLevels |= InternalReflectionProperty::IS_PUBLIC;
-							break;
-						case 'protected':
-							self::$methodAccessLevels |= InternalReflectionMethod::IS_PROTECTED;
-							self::$propertyAccessLevels |= InternalReflectionProperty::IS_PROTECTED;
-							break;
-						case 'private':
-							self::$methodAccessLevels |= InternalReflectionMethod::IS_PRIVATE;
-							self::$propertyAccessLevels |= InternalReflectionProperty::IS_PRIVATE;
-							break;
-						default:
-							break;
-					}
+			foreach (self::$config->accessLevels as $level) {
+				switch (strtolower($level)) {
+					case 'public':
+						self::$methodAccessLevels |= InternalReflectionMethod::IS_PUBLIC;
+						self::$propertyAccessLevels |= InternalReflectionProperty::IS_PUBLIC;
+						break;
+					case 'protected':
+						self::$methodAccessLevels |= InternalReflectionMethod::IS_PROTECTED;
+						self::$propertyAccessLevels |= InternalReflectionProperty::IS_PROTECTED;
+						break;
+					case 'private':
+						self::$methodAccessLevels |= InternalReflectionMethod::IS_PRIVATE;
+						self::$propertyAccessLevels |= InternalReflectionProperty::IS_PRIVATE;
+						break;
+					default:
+						break;
 				}
-			} else {
-				self::$methodAccessLevels = null;
-				self::$propertyAccessLevels = null;
 			}
 		}
 	}
