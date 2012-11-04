@@ -35,7 +35,7 @@ class TexyMarkup implements IMarkup
 		});
 		$this->texy->registerLinePattern(
 			function($parser, $matches, $name) use ($highlighter) {
-				return TexyHtml::el('code', $highlighter->highlight($matches[1]));
+				return TexyHtml::el('code', $matches[1]);
 			},
 			'~#code#(.+?)#/code#~',
 			'codeInlineSyntax'
