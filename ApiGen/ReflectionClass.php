@@ -29,14 +29,14 @@ class ReflectionClass extends ReflectionElement
 	 *
 	 * @var integer
 	 */
-	private static $methodAccessLevels = false;
+	private static $methodAccessLevels = null;
 
 	/**
 	 * Access level for properties.
 	 *
 	 * @var integer
 	 */
-	private static $propertyAccessLevels = false;
+	private static $propertyAccessLevels = null;
 
 	/**
 	 * Cache for list of parent classes.
@@ -113,7 +113,7 @@ class ReflectionClass extends ReflectionElement
 	{
 		parent::__construct($reflection, $generator);
 
-		if (false === self::$methodAccessLevels) {
+		if (null === self::$methodAccessLevels) {
 			self::$methodAccessLevels = 0;
 			self::$propertyAccessLevels = 0;
 
