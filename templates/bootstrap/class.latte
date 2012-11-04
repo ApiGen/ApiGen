@@ -107,100 +107,104 @@ the file LICENSE.md that was distributed with this source code.
 			{var $annotations = $method->annotations}
 
 			<td class="attributes"><code>
-				{if !$class->interface && $method->abstract}abstract{elseif $method->final}final{/if} {if $method->protected}protected{elseif $method->private}private{else}public{/if} {if $method->static}static{/if}
-				{ifset $annotations['return']}{!$annotations['return'][0]|typeLinks:$method}{/ifset}
-				{if $method->returnsReference()}&amp;{/if}
+				{if !$class->interface && $method->abstract}abstract<br />{elseif $method->final}final<br />{/if}{if $method->protected}protected{elseif $method->private}private{else}public{/if}{if $method->static}<br />static{/if}
 				</code>
 			</td>
 
-			<td class="name"><div>
-			<a class="anchor" href="#{if $method->magic}m{/if}_{$method->name}">#</a>
-			<code>{block|strip}
-				{if $class->internal}
-					<a href="{$method|manualUrl}" title="Go to PHP documentation">{$method->name}</a>(
-				{else}
-					<a n:tag-if="$config->sourceCode" href="{$method|sourceUrl}" title="Go to source code">{$method->name}</a>(
-				{/if}
-				{foreach $method->parameters as $parameter}
-					<span>{!$parameter->typeHint|typeLinks:$method}
-					<var>{if $parameter->passedByReference}&amp; {/if}${$parameter->name}</var>{if $parameter->defaultValueAvailable} = {!$parameter->defaultValueDefinition|highlightPHP:$class}{elseif $parameter->unlimited},…{/if}</span>{sep}, {/sep}
-				{/foreach}
-			){/block}</code>
-
-			{if $config->template['options']['elementDetailsCollapsed']}
-			<div class="description short">
-				{!$method|shortDescription:true}
-			</div>
-			{/if}
-
-			<div n:class="description, detailed, $config->template['options']['elementDetailsCollapsed'] ? hidden">
-				{!$method|longDescription}
-
-				{if !$class->deprecated && $method->deprecated}
-					<h4>Deprecated</h4>
-					{ifset $annotations['deprecated']}
-					<div class="list">
-					{foreach $annotations['deprecated'] as $description}
-						{if $description}
-							{!$description|annotation:'deprecated':$method}<br>
-						{/if}
-					{/foreach}
-					</div>
-					{/ifset}
-				{/if}
-
-				{if $method->parameters && isset($annotations['param'])}
-					<h4>Parameters</h4>
-					<div class="list"><dl>
+			<td class="name">
+				<div>
+				<code>{block|strip}
+					{if $class->internal}
+						<a href="{$method|manualUrl}" title="Go to PHP documentation">{$method->name}</a>(
+					{else}
+						<a n:tag-if="$config->sourceCode" href="{$method|sourceUrl}" title="Go to source code">{$method->name}</a>(
+					{/if}
 					{foreach $method->parameters as $parameter}
-						<dt><var>${$parameter->name}</var>{if $parameter->unlimited},…{/if}</dt>
-						<dd>{ifset $annotations['param'][$parameter->position]}{!$annotations['param'][$parameter->position]|annotation:'param':$method}{/ifset}</dd>
+						<span>{!$parameter->typeHint|typeLinks:$method}
+						<var>{if $parameter->passedByReference}&amp; {/if}${$parameter->name}</var>{if $parameter->defaultValueAvailable} = {!$parameter->defaultValueDefinition|highlightPHP:$class}{elseif $parameter->unlimited},…{/if}</span>{sep}, {/sep}
 					{/foreach}
-					</dl></div>
+				){/block}</code>
+	
+				{if $config->template['options']['elementDetailsCollapsed']}
+				<div class="description short">
+					{!$method|shortDescription:false}
+				</div>
 				{/if}
-
-				{if isset($annotations['return']) && 'void' !== $annotations['return'][0]}
-					<h4>Returns</h4>
-					<div class="list">
-					{foreach $annotations['return'] as $description}
-						{!$description|annotation:'return':$method}<br>
+	
+				<div n:class="description, detailed, $config->template['options']['elementDetailsCollapsed'] ? hidden">
+					{!$method|longDescription}
+	
+					{if !$class->deprecated && $method->deprecated}
+						<h4>Deprecated</h4>
+						{ifset $annotations['deprecated']}
+						<div class="list">
+						{foreach $annotations['deprecated'] as $description}
+							{if $description}
+								{!$description|annotation:'deprecated':$method}<br>
+							{/if}
+						{/foreach}
+						</div>
+						{/ifset}
+					{/if}
+	
+					{if $method->parameters && isset($annotations['param'])}
+						<h4>Parameters</h4>
+						<div class="list"><dl>
+						{foreach $method->parameters as $parameter}
+							<dt><var>${$parameter->name}</var>{if $parameter->unlimited},…{/if}</dt>
+							<dd>{ifset $annotations['param'][$parameter->position]}{!$annotations['param'][$parameter->position]|annotation:'param':$method}{/ifset}</dd>
+						{/foreach}
+						</dl></div>
+					{/if}
+	
+					{if isset($annotations['return']) && 'void' !== $annotations['return'][0]}
+						<h4>Returns</h4>
+						<div class="list">
+						{foreach $annotations['return'] as $description}
+							{!$description|annotation:'return':$method}<br>
+						{/foreach}
+						</div>
+					{/if}
+	
+					{ifset $annotations['throws']}
+						<h4>Throws</h4>
+						<div class="list">
+						{foreach $annotations['throws'] as $description}
+							{!$description|annotation:'throws':$method}<br>
+						{/foreach}
+						</div>
+					{/ifset}
+	
+					{foreach $template->annotationSort($template->annotationFilter($annotations, array('deprecated', 'param', 'return', 'throws'))) as $annotation => $descriptions}
+						<h4>{$annotation|annotationBeautify}</h4>
+						<div class="list">
+						{foreach $descriptions as $description}
+							{if $description}
+								{!$description|annotation:$annotation:$method}<br>
+							{/if}
+						{/foreach}
+						</div>
 					{/foreach}
-					</div>
-				{/if}
-
-				{ifset $annotations['throws']}
-					<h4>Throws</h4>
-					<div class="list">
-					{foreach $annotations['throws'] as $description}
-						{!$description|annotation:'throws':$method}<br>
-					{/foreach}
-					</div>
-				{/ifset}
-
-				{foreach $template->annotationSort($template->annotationFilter($annotations, array('deprecated', 'param', 'return', 'throws'))) as $annotation => $descriptions}
-					<h4>{$annotation|annotationBeautify}</h4>
-					<div class="list">
-					{foreach $descriptions as $description}
-						{if $description}
-							{!$description|annotation:$annotation:$method}<br>
-						{/if}
-					{/foreach}
-					</div>
-				{/foreach}
-
-				{var $overriddenMethod = $method->overriddenMethod}
-				{if $overriddenMethod}
-					<h4>Overrides</h4>
-					<div class="list"><code><a n:tag-if="$template->getClass($overriddenMethod->declaringClassName)" href="{$overriddenMethod|methodUrl}">{$overriddenMethod->declaringClassName}::{$overriddenMethod->name}</a></code></div>
-				{/if}
-
-				{var $implementedMethod = $method->implementedMethod}
-				{if $implementedMethod}
-					<h4>Implementation of</h4>
-					<div class="list"><code><a n:tag-if="$template->getClass($implementedMethod->declaringClassName)" href="{$implementedMethod|methodUrl}">{$implementedMethod->prettyName}</a></code></div>
-				{/if}
-			</div>
-			</div></td>
+	
+					{var $overriddenMethod = $method->overriddenMethod}
+					{if $overriddenMethod}
+						<h4>Overrides</h4>
+						<div class="list"><code><a n:tag-if="$template->getClass($overriddenMethod->declaringClassName)" href="{$overriddenMethod|methodUrl}">{$overriddenMethod->declaringClassName}::{$overriddenMethod->name}</a></code></div>
+					{/if}
+	
+					{var $implementedMethod = $method->implementedMethod}
+					{if $implementedMethod}
+						<h4>Implementation of</h4>
+						<div class="list"><code><a n:tag-if="$template->getClass($implementedMethod->declaringClassName)" href="{$implementedMethod|methodUrl}">{$implementedMethod->prettyName}</a></code></div>
+					{/if}
+				</div>
+				</div>
+			</td>
+			<td class="description">
+				<div>
+					<a class="anchor" href="#{if $method->magic}m{/if}_{$method->name}">#</a>
+				</div>
+			</td>
 		</tr>
 		{/define}
 
@@ -229,7 +233,7 @@ the file LICENSE.md that was distributed with this source code.
 		</p>
 		{/foreach}
 
-		<h3>Magic methods summary</h3>
+		<h3 n:if="$ownMagicMethods">Magic methods summary</h3>
 		<table class="summary table table-bordered table-striped" id="magicMethods" n:if="$ownMagicMethods">
 		{foreach $ownMagicMethods as $method}
 			{include #method, method => $method}
@@ -267,37 +271,35 @@ the file LICENSE.md that was distributed with this source code.
 
 			<td class="attributes"><code>{!$constant->typeHint|typeLinks:$constant}</code></td>
 			<td class="name"><code>
-				{if $class->internal}
-					<a href="{$constant|manualUrl}" title="Go to PHP documentation"><b>{$constant->name}</b></a>
-				{else}
-					<a n:tag-if="$config->sourceCode" href="{$constant|sourceUrl}" title="Go to source code"><b>{$constant->name}</b></a>
-				{/if}
-			</code></td>
-			<td class="value"><code>{!$constant->valueDefinition|highlightValue:$class}</code></td>
-			<td class="description"><div>
-				<a href="#{$constant->name}" class="anchor">#</a>
-
-				{if $config->template['options']['elementDetailsCollapsed']}
+					{if $class->internal} <a href="{$constant|manualUrl}"
+						title="Go to PHP documentation"><b>{$constant->name}</b></a>
+					{else} <a n:tag-if="$config->sourceCode"
+						href="{$constant|sourceUrl}" title="Go to source code"><b>{$constant->name}</b></a>
+					{/if}
+				</code> {if $config->template['options']['elementDetailsCollapsed']}
 				<div class="description short">
-					{!$constant|shortDescription:true}
-				</div>
-				{/if}
+					{!$constant|shortDescription:true}</div> {/if}
 
-				<div n:class="description, detailed, $config->template['options']['elementDetailsCollapsed'] ? hidden">
-					{!$constant|longDescription}
+				<div
+					n:class="description, detailed, $config->template['options']['elementDetailsCollapsed'] ? hidden">
 
-					{foreach $template->annotationSort($template->annotationFilter($annotations, array('var'))) as $annotation => $descriptions}
-						<h4>{$annotation|annotationBeautify}</h4>
-						<div class="list">
-						{foreach $descriptions as $description}
-							{if $description}
-								{!$description|annotation:$annotation:$constant}<br>
-							{/if}
+					{!$constant|longDescription} {foreach
+					$template->annotationSort($template->annotationFilter($annotations,
+					array('var'))) as $annotation => $descriptions}
+					<h4>{$annotation|annotationBeautify}</h4>
+					<div class="list">
+						{foreach $descriptions as $description} {if $description}
+						{!$description|annotation:$annotation:$constant}<br> {/if}
 						{/foreach}
-						</div>
+					</div>
 					{/foreach}
+				</div></td>
+			<td class="value"><code>{!$constant->valueDefinition|highlightValue:$class}</code></td>
+			<td class="description">
+				<div>
+					<a href="#{$constant->name}" class="anchor">#</a>
 				</div>
-			</div></td>
+			</td>
 		</tr>
 		</table>
 

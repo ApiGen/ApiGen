@@ -389,6 +389,14 @@ dl.tree dd {
 	margin: 0;
 }
 
+/**
+ * Spacify summaries paragraphs while keeping
+ * hidden sections (like constants) untouched
+ */
+table#methods .description p {
+	margin: 1em 0 .7em 0;
+}
+
 .summary .description p + p, .summary .description ul {
 	margin: 3px 0 0 0;
 }
@@ -409,12 +417,23 @@ dl.tree dd {
 	white-space: nowrap;
 }
 
-.value {
-	white-space: pre-wrap;
+/**
+ * Break long lines of arguments
+ */
+.value code, #methods .name code {
+	white-space: pre-line;
 }
 
-td.name, td.attributes {
+.summary td {
+	vertical-align: middle;
+}
+
+td.attributes {
 	width: 1%;
+}
+
+.class #methods .attributes {
+	padding: 8px;
 }
 
 .class #methods .name {
@@ -422,9 +441,12 @@ td.name, td.attributes {
 	white-space: normal;
 }
 
-.class #methods .name > div > code {
-	white-space: pre-wrap;
-}
+/**
+ * Removes right-boundary space in arguments list
+ */
+/*.class #methods .name > div > code {
+	white-space: pre-wrap; 
+}*/
 
 .class #methods .name > div > code span, .function .value > code {
 	white-space: nowrap;
@@ -435,10 +457,22 @@ td.name, td.attributes {
 	padding-right: 1em;
 }
 
+/**
+ * Fixed width for anchors
+ */
+.class td.description {
+	width: 2%;
+}
+
+/**
+ * Anchor alignment
+  */
+.class td.description > div {
+	padding: 0 5px;
+	text-align: center;
+}
+
 .anchor {
-	position: absolute;
-	top: 0;
-	right: 0;
 	line-height: 1;
 	font-size: 85%;
 	margin: 0;
