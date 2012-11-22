@@ -50,7 +50,7 @@ class Report
 		$messages = array();
 
 		foreach ($this->elements as $parentElement) {
-			// $fileName = $this->unPharPath($parentElement->getFileName());
+			// @todo $fileName = $this->unPharPath($parentElement->getFileName());
 			$fileName = $parentElement->getFileName();
 
 			if (!$parentElement->isValid()) {

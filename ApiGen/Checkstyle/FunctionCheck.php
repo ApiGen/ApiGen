@@ -14,7 +14,9 @@
 namespace ApiGen\Checkstyle;
 
 use ApiGen\Reflection\ReflectionBase;
+use ApiGen\Reflection\ReflectionFunction;
 use ApiGen\Reflection\ReflectionFunctionBase;
+use ApiGen\Reflection\ReflectionMethod;
 
 class FunctionCheck implements ICheck
 {
@@ -78,7 +80,7 @@ class FunctionCheck implements ICheck
 		if ($return && !isset($annotations['return'])) {
 			$messages[] = new Message(sprintf('Missing documentation of return value of %s', $label), $line);
 		} elseif (isset($annotations['return'])) {
-			if (!$return && 'void' !== $annotations['return'][0] && ($element instanceof Reflection\ReflectionFunction || (!$parentElement->isInterface() && !$element->isAbstract()))) {
+			if (!$return && 'void' !== $annotations['return'][0] && ($element instanceof ReflectionFunction || (!$parentElement->isInterface() && !$element->isAbstract()))) {
 				$messages[] = new Message(sprintf('Existing documentation "%s" of nonexistent return value of %s', $annotations['return'][0], $label), $line, Message::SEVERITY_WARNING);
 			} elseif (!preg_match('~^[\\w\\\\]+(?:\\[\\])?(?:\\|[\\w\\\\]+(?:\\[\\])?)*(?:\\s+.+)?$~s', $annotations['return'][0])) {
 				$messages[] = new Message(sprintf('Invalid documentation "%s" of return value of %s', $annotations['return'][0], $label), $line, Message::SEVERITY_WARNING);
