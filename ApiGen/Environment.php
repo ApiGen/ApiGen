@@ -76,7 +76,7 @@ class Environment
 			$vendorDir = realpath(static::getRootDir() . '/../..');
 
 			@include $vendorDir . '/nette/nette/Nette/loader.php';
-			@include $vendorDir . '/dg/texy/texy/texy.php';
+			@include $vendorDir . '/dg/texy/Texy/Texy.php';
 
 			set_include_path(
 				$vendorDir . '/kukulich/fshl' . PATH_SEPARATOR .
