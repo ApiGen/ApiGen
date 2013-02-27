@@ -76,7 +76,8 @@ class Template extends Nette\Templating\FileTemplate
 		});
 		$this->texy->registerLinePattern(
 			function($parser, $matches, $name) use ($fshl) {
-				return \TexyHtml::el('code', $fshl->highlight($matches[1]));
+				$content = $parser->getTexy()->protect($fshl->highlight($matches[1]), \Texy::CONTENT_MARKUP);
+				return \TexyHtml::el('code', $content);
 			},
 			'~#code#(.+?)#/code#~',
 			'codeInlineSyntax'
