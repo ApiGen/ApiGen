@@ -119,7 +119,7 @@ the file LICENSE.md that was distributed with this source code.
 				{if $class->internal}
 					<a href="{$method|manualUrl}" title="Go to PHP documentation">{$method->name}</a>(
 				{else}
-					<a n:tag-if="$config->sourceCode" href="{$method|sourceUrl}" title="Go to source code">{$method->name}</a>(
+					<a n:tag-if="$config->sourceCode" href="{$method|sourceUrl}" title="Go to source code"><span n:tag-if="$method->deprecated" class="deprecated">{$method->name}</span></a>(
 				{/if}
 				{foreach $method->parameters as $parameter}
 					<span>{!$parameter->typeHint|typeLinks:$method}
