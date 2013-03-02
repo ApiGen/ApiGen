@@ -219,7 +219,8 @@ $(function() {
 		var lists = matches[0].split(',');
 		for (var i = 0; i < lists.length; i++) {
 			var lines = lists[i].split('-');
-			lines[1] = lines[1] || lines[0];
+			lines[0] = parseInt(lines[0]);
+			lines[1] = parseInt(lines[1] || lines[0]);
 			for (var j = lines[0]; j <= lines[1]; j++) {
 				$('#' + j).addClass('selected');
 			}
