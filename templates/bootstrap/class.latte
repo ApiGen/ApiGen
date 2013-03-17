@@ -31,11 +31,11 @@ the file LICENSE.md that was distributed with this source code.
 			<a href="{$item|classUrl}" n:tag-if="!$iterator->last">{last}<b>{/last}<span n:class="$item->deprecated ? deprecated, !$item->valid ? invalid">{$item->name}</span>{last}</b>{/last}</a>
 			{else}{$item->name}{/if}
 			{var $itemOwnInterfaces = $item->ownInterfaces}
-			{if $itemOwnInterfaces} implements {foreach $itemOwnInterfaces as $interface}
+			{if $itemOwnInterfaces} <code>implements</code> {foreach $itemOwnInterfaces as $interface}
 				<a href="{$interface|classUrl}" n:tag-if="$interface->documented"><span n:class="$interface->deprecated ? deprecated, !$interface->valid ? invalid">{$interface->name}</span></a>{sep}, {/sep}
 			{/foreach}{/if}
 			{var $itemOwnTraits = $item->ownTraits}
-			{if $itemOwnTraits} uses {foreach $itemOwnTraits as $trait}
+			{if $itemOwnTraits} <code>uses</code> {foreach $itemOwnTraits as $trait}
 				<a href="{$trait|classUrl}" n:tag-if="$trait->documented"><span n:class="$trait->deprecated ? deprecated, !$trait->valid ? invalid">{$trait->name}</span></a>{sep}, {/sep}
 			{/foreach}{/if}
 		</dd>
