@@ -95,7 +95,7 @@ the file LICENSE.md that was distributed with this source code.
 	{var $ownMagicMethods = $class->ownMagicMethods}
 
 	{define #method}
-	<tr data-order="{$method->name}" id="{if $method->magic}m{/if}_{$method->name}">
+	<tr data-order="{$method->name}" id="{if $method->magic}m{/if}_{$method->name}" n:class="$method->deprecated ? deprecated">
 		{var $annotations = $method->annotations}
 
 		<td class="attributes"><code>
