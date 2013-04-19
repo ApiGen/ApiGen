@@ -75,10 +75,6 @@ abstract class ReflectionFunctionBase extends ReflectionElement
 
 					list(, $typeHint, $name) = $matches;
 
-					if (empty($typeHint)) {
-						$typeHint = 'mixed';
-					}
-
 					$parameter = new ReflectionParameterMagic(NULL);
 					$parameter->setName($name)
 						->setPosition($position)

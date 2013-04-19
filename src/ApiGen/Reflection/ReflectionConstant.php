@@ -64,8 +64,6 @@ class ReflectionConstant extends ReflectionElement
 		} catch (\Exception $e) {
 			return NULL;
 		}
-
-		return 'mixed';
 	}
 
 

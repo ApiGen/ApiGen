@@ -433,10 +433,6 @@ class UrlFilters extends Filters
 			$types = NULL;
 		}
 
-		if (empty($types)) {
-			$types = 'mixed';
-		}
-
 		foreach (explode('|', $types) as $type) {
 			$type = $this->getTypeName($type, FALSE);
 			$links[] = $this->resolveLink($type, $context) ?: $this->escapeHtml(ltrim($type, '\\'));
