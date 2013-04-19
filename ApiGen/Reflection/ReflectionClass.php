@@ -346,10 +346,6 @@ class ReflectionClass extends ReflectionElement
 
 					list(, $typeHint, $passedByReference, $name, $defaultValueDefinition) = $matches;
 
-					if (empty($typeHint)) {
-						$typeHint = 'mixed';
-					}
-
 					$parameter = new ReflectionParameterMagic(null, self::$generator);
 					$parameter
 						->setName($name)
@@ -509,10 +505,6 @@ class ReflectionClass extends ReflectionElement
 					}
 
 					list(, $typeHint, $name, $shortDescription) = $matches;
-
-					if (empty($typeHint)) {
-						$typeHint = 'mixed';
-					}
 
 					$doc = $this->getDocComment();
 					$tmp = $annotation;
