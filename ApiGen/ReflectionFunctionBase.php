@@ -78,10 +78,6 @@ abstract class ReflectionFunctionBase extends ReflectionElement
 
 					list(, $typeHint, $name) = $matches;
 
-					if (empty($typeHint)) {
-						$typeHint = 'mixed';
-					}
-
 					$parameter = new ReflectionParameterMagic(null, self::$generator);
 					$parameter
 						->setName($name)
