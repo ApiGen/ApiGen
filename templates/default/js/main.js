@@ -210,7 +210,7 @@ $(function() {
 
 		var $firstLine = $('#' + parseInt(matches[0]));
 		if ($firstLine.length > 0) {
-			$right.scrollTop($firstLine.offset().top);
+			$document.scrollTop($firstLine.offset().top);
 		}
 	}
 
