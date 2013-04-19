@@ -293,6 +293,9 @@ $(function() {
 			}
 		}
 
-		window.location.hash = hash.join(',');
+		hash = hash.join(',');
+		$backup = $('#' + hash).removeAttr('id');
+		window.location.hash = hash;
+		$backup.attr('id', hash);
 	});
 });
