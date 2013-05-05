@@ -334,7 +334,7 @@ class ReflectionParameterMagic extends ReflectionParameter
 	 */
 	public function isDefaultValueAvailable()
 	{
-		return null !== $this->defaultValueDefinition;
+		return (bool) $this->defaultValueDefinition;
 	}
 
 	/**
