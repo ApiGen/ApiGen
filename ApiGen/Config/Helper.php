@@ -53,7 +53,7 @@ class Helper extends Helpers
 	 */
 	public static function getTemplatesDir()
 	{
-		return realpath(Environment::getRootDir() . '/templates');
+		return Environment::getRootDir() . '/templates';
 	}
 
 	/**
@@ -85,7 +85,7 @@ class Helper extends Helpers
 	 */
 	public static function getAbsoluteFilePath($relativePath, array $baseDirectories)
 	{
-		if (preg_match('~/|[a-z]:~Ai', $relativePath)) {
+		if (preg_match('~/|[a-z]:~Ai', $relativePath) || self::isPathInPhar($relativePath)) {
 			// Absolute path already
 			return is_file($relativePath) ? $relativePath : null;
 		}
@@ -109,18 +109,35 @@ class Helper extends Helpers
 	 */
 	public static function getAbsoluteDirectoryPath($relativePath, array $baseDirectories)
 	{
-		if (preg_match('~/|[a-z]:~Ai', $relativePath)) {
-			// Absolute path already
-			return is_dir($relativePath) ? $relativePath : null;
-		}
+	    return self::getAbsoluteFilePath($relativePath, $baseDirectories);
+	}
 
-		foreach ($baseDirectories as $directory) {
-			$fileName = $directory . DIRECTORY_SEPARATOR . $relativePath;
-			if (is_dir($fileName)) {
-				return realpath($fileName);
-			}
-		}
+	/**
+	 * get realpath (resolve relative paths) for given directory
+	 *
+	 * @param string $path Relative path to resolve
+	 * @return string|boolean Resolved path or false if path does not exist
+	 */
+	public static function realpath($path)
+	{
+	    if (file_exists($path)) {
+	        if (!self::isPathInPhar($path)) {
+	            $path = realpath($path);
+	        }
+	        return $path;
+	    }
 
-		return null;
+	    return false;
+	}
+
+	/**
+	 * Returns whether the given path is within a phar archive
+	 *
+	 * @param string $path
+	 * @return boolean
+	 */
+	public static function isPathInPhar($path)
+	{
+        return (substr($path, 0, 7) === 'phar://');
 	}
 }
