@@ -547,7 +547,7 @@ Options:
 	@option@--google-analytics@c <@value@value@c>     Google Analytics tracking code
 	@option@--template-config@c  <@value@file@c>      Template config file, default "@value@{$this->config['templateConfig']}@c"
 	@option@--allowed-html@c     <@value@list@c>      List of allowed HTML tags in documentation, default "@value@b,i,a,ul,ol,li,p,br,var,samp,kbd,tt@c"
-	@option@--groups@c           <@value@value@c>     How should elements be grouped in the menu. Default value is "@value@auto@c" (namespaces if available, packages otherwise)
+	@option@--groups@c           <@value@value@c>     How should elements be grouped in the menu. Possible options are "auto", "namespaces", "packages" and "none". Default value is "@value@auto@c" (namespaces if available, packages otherwise)
 	@option@--autocomplete@c     <@value@list@c>      Element types for search input autocomplete. Default value is "@value@classes,constants,functions@c"
 	@option@--access-levels@c    <@value@list@c>      Generate documentation for methods and properties with given access level, default "@value@public,protected@c"
 	@option@--internal@c         <@value@yes@c|@value@no@c>    Generate documentation for elements marked as internal and display internal documentation parts, default "@value@no@c"
