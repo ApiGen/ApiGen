@@ -258,7 +258,7 @@ Options:
 	--google-analytics <value>     Google Analytics tracking code
 	--template-config  <file>      Template config file, default "$defaultTemplateConfig"
 	--allowed-html     <list>      List of allowed HTML tags in documentation, default "b,i,a,ul,ol,li,p,br,var,samp,kbd,tt"
-	--groups           <value>     How should elements be grouped in the menu. Default value is "auto" (namespaces if available, packages otherwise)
+	--groups           <value>     How should elements be grouped in the menu. Possible options are "auto", "namespaces", "packages" and "none". Default value is "auto" (namespaces if available, packages otherwise)
 	--autocomplete     <list>      Element types for search input autocomplete. Default value is "@valuelasses,constants,functions"
 	--access-levels    <list>      Generate documentation for methods and properties with given access level, default "public,protected"
 	--internal         <yes|no>    Generate documentation for elements marked as internal and display internal documentation parts, default "no"
