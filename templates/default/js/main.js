@@ -96,12 +96,6 @@ $(function() {
 				if ('' === query) {
 					return false;
 				}
-
-				var label = $('#search input[name=more]').val();
-				if (!autocompleteFound && label && -1 === query.indexOf('more:')) {
-					$search.val(query + ' more:' + label);
-				}
-
 				return !autocompleteFound && '' !== $('#search input[name=cx]').val();
 			});
 

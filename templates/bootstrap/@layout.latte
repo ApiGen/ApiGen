@@ -94,7 +94,6 @@ the file LICENSE.md that was distributed with this source code.
 		<form{if $config->googleCseId} action="http://www.google.com/cse"{/if} id="search" class="form-search">
 			<input type="hidden" name="cx" value="{$config->googleCseId}">
 			<input type="hidden" name="ie" value="UTF-8">
-			<input type="hidden" name="more" value="{$config->googleCseLabel}" n:if="$config->googleCseLabel">
 			<input type="text" name="q" class="search-query" placeholder="Search"{if 'overview' === $active} autofocus{/if}>
 		</form>
 

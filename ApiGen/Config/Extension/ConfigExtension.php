@@ -42,7 +42,6 @@ final class ConfigExtension extends CompilerExtension
 		'title' => '',
 		'baseUrl' => '',
 		'googleCseId' => '',
-		'googleCseLabel' => '',
 		'googleAnalytics' => '',
 		'templateConfig' => '',
 		'allowedHtml' => array('b', 'i', 'a', 'ul', 'ol', 'li', 'p', 'br', 'var', 'samp', 'kbd', 'tt'),
