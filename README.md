@@ -123,10 +123,6 @@ Documentation base URL used in the sitemap. Only needed if you plan to make your
 
 If you have a Google CSE ID, the search box will use it when you do not enter an exact class, constant or function name.
 
-```--google-cse-label <value>```
-
-This will be the default label when using Google CSE.
-
 ```--google-analytics <value>```
 
 A Google Analytics tracking code. If provided, an ansynchronous tracking code will be placed into every generated page.

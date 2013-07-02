@@ -52,7 +52,6 @@ class Config
 		'title' => '',
 		'baseUrl' => '',
 		'googleCseId' => '',
-		'googleCseLabel' => '',
 		'googleAnalytics' => '',
 		'templateConfig' => '',
 		'allowedHtml' => array('b', 'i', 'a', 'ul', 'ol', 'li', 'p', 'br', 'var', 'samp', 'kbd', 'tt'),
@@ -545,7 +544,6 @@ Options:
 	@option@--title@c            <@value@value@c>     Title of generated documentation
 	@option@--base-url@c         <@value@value@c>     Documentation base URL
 	@option@--google-cse-id@c    <@value@value@c>     Google Custom Search ID
-	@option@--google-cse-label@c <@value@value@c>     Google Custom Search label
 	@option@--google-analytics@c <@value@value@c>     Google Analytics tracking code
 	@option@--template-config@c  <@value@file@c>      Template config file, default "@value@{$this->config['templateConfig']}@c"
 	@option@--allowed-html@c     <@value@list@c>      List of allowed HTML tags in documentation, default "@value@b,i,a,ul,ol,li,p,br,var,samp,kbd,tt@c"
