@@ -468,14 +468,9 @@ $.Autocompleter.Cache = function(options) {
 	var length = 0;
 
 	function matchSubset(s, sub) {
-		if (!options.matchCase)
-			s = s.toLowerCase();
-		var i = s.indexOf(sub);
-		if (options.matchContains == "word"){
-			i = s.toLowerCase().search("\\b" + sub.toLowerCase());
-		}
-		if (i == -1) return false;
-		return i == 0 || options.matchContains;
+		return (new RegExp(sub.toUpperCase().replace(/([\^\$\(\)\[\]\{\}\*\.\+\?\|\\])/gi, "\\$1").replace(/[A-Z0-9]/g, function(m, offset) {
+			return offset === 0 ? '(?:' + m + '|^' + m.toLowerCase() + ')' : '(?:.*' + m + '|' + m.toLowerCase() + ')';
+		}))).test(s); // find by initials
 	};
 
 	function add(q, value) {

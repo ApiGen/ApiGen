@@ -57,8 +57,15 @@ $(function() {
 			matchContains: true,
 			scrollHeight: 200,
 			max: 20,
+			noRecord: '',
+			highlight: function(value, term) {
+				var term = term.toUpperCase().replace(/([\^\$\(\)\[\]\{\}\*\.\+\?\|\\])/gi, "\\$1").replace(/[A-Z0-9]/g, function(m, offset) {
+					return offset === 0 ? '(?:' + m + '|^' + m.toLowerCase() + ')' : '(?:(?:[^<>]|<[^<>]*>)*' + m + '|' + m.toLowerCase() + ')';
+				});
+				return value.replace(new RegExp("(?![^&;]+;)(?!<[^<>]*)(" + term + ")(?![^<>]*>)(?![^&;]+;)"), "<strong>$1</strong>");
+			},
 			formatItem: function(data) {
-				return data[1].replace(/^(.+\\)(.+)$/, '<span><small>$1</small>$2</span>');
+				return data.length > 1 ? data[1].replace(/^(.+\\)(.+)$/, '<span><small>$1</small>$2</span>') : data[0];
 			},
 			formatMatch: function(data) {
 				return data[1];
