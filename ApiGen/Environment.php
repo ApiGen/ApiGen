@@ -69,14 +69,14 @@ class Environment
 		if (static::isPearPackage()) {
 			// PEAR package
 			@include 'Nette/loader.php';
-			@include 'Texy/texy.php';
+			@include 'texy/src/texy.php';
 		} elseif (static::isComposerPackage()) {
 			// Composer package
 
 			$vendorDir = realpath(static::getRootDir() . '/../..');
 
 			@include $vendorDir . '/nette/nette/Nette/loader.php';
-			@include $vendorDir . '/dg/texy/Texy/Texy.php';
+			@include $vendorDir . '/dg/texy/texy/src/texy.php';
 
 			set_include_path(
 				$vendorDir . '/kukulich/fshl' . PATH_SEPARATOR .
@@ -90,7 +90,7 @@ class Environment
 			$vendorDir = static::getRootDir() . '/vendor';
 
 			@include $vendorDir . '/Nette/Nette/loader.php';
-			@include $vendorDir . '/Texy/texy/texy.php';
+			@include $vendorDir . '/Texy/texy/src/texy.php';
 
 			set_include_path(
 				$vendorDir . '/FSHL' . PATH_SEPARATOR .
