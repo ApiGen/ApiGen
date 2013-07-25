@@ -29,7 +29,7 @@
 		"ext-json": "*",
 		"ext-mbstring": "*",
 		"nette/nette": ">=2.0.6",
-		"dg/texy": ">=2.1.0",
+		"texy/texy": ">=2.1.0",
 		"kukulich/fshl": ">=2.1.0",
 		"andrewsville/php-token-reflection": ">=1.3.1"
 	},
