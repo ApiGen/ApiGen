@@ -37,7 +37,7 @@ For all support questions please use our [mailing list](https://groups.google.co
 
 ## Installation ##
 
-The preferred installation way is using the PEAR package but there are three more ways how to install ApiGen.
+The preferred installation way is using the PEAR package but there are four more ways how to install ApiGen.
 
 
 ### PEAR ###
@@ -70,6 +70,17 @@ If you encounter a message like `WARNING: channel "pear.apigen.org" has updated 
 ```
 pear channel-update pear.apigen.org
 ```
+
+### Composer ###
+
+Just create a `composer.json` file and
+run the `php composer.phar install` command to install it:
+
+	{
+		"require-dev": {
+			"apigen/apigen": "~2.8.0"
+		}
+	}
 
 ### Standalone package ###
 
