@@ -37,12 +37,23 @@ For all support questions please use our [mailing list](https://groups.google.co
 
 ## Installation ##
 
-The preferred installation way is using the standalone package but there are two more ways how to install ApiGen.
-
+The preferred installation way is using the standalone package but there are three more ways how to install ApiGen.
 
 ### Standalone package ###
 
 To download the actual release visit the [Downloads section](https://github.com/apigen/apigen/downloads). There you find separate packages for each release in two formats - zip and tar.gz. These packages are prepared by the ApiGen team and are truly standalone; they contain all required libraries in appropriate versions. You just need to extract the contents of an archive and you can start using ApiGen.
+
+### Composer ###
+
+Just create a `composer.json` file and run the `php composer.phar install` command to install it:
+
+```
+{
+	"require-dev": {
+		"apigen/apigen": "~2.8.0"
+	}
+}
+```
 
 ### GitHub built archive ###
 
