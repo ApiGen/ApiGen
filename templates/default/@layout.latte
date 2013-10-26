@@ -48,7 +48,7 @@ the file LICENSE.md that was distributed with this source code.
 		{define #group}
 			<ul>
 				{foreach $groups as $group}
-				{var $nextLevel = substr_count($iterator->nextValue, '\\') > substr_count($group, '\\')}
+				{var $nextLevel = substr_count($iterator->nextValue,'\\')>substr_count($group,'\\')}
 				<li n:class="$actualGroup === $group || 0 === strpos($actualGroup, $group . '\\') ? active, $config->main && 0 === strpos($group, $config->main) ? main"><a href="{$group|groupUrl}">{$group|subgroupName}{if $nextLevel}<span></span>{/if}</a>
 					{if $nextLevel}
 						<ul>
