@@ -22,7 +22,7 @@ the file LICENSE.md that was distributed with this source code.
 	<tr>
 		<td class="name" rowspan="{count($class->annotations['todo'])}"><a href="{$class|classUrl}">{$class->name}</a></td>
 		{foreach $class->annotations['todo'] as $description}
-		<td>{!$description|annotation:'todo':$class}</td>{sep}</tr><tr>{/sep}
+		<td>{$description|annotation:'todo':$class|noescape}</td>{sep}</tr><tr>{/sep}
 		{/foreach}
 	</tr>
 	{/foreach}
@@ -56,7 +56,7 @@ the file LICENSE.md that was distributed with this source code.
 		<td class="name" rowspan="{$count}"><a href="{$method->declaringClassName|classUrl}">{$method->declaringClassName}</a></td>
 		<td class="name" rowspan="{$count}"><code><a href="{$method|methodUrl}">{$method->name}()</a></code></td>
 		{foreach $method->annotations['todo'] as $description}
-		<td>{!$description|annotation:'todo':$method}</td>{sep}</tr><tr>{/sep}
+		<td>{$description|annotation:'todo':$method|noescape}</td>{sep}</tr><tr>{/sep}
 		{/foreach}
 	</tr>
 	{/foreach}
@@ -75,7 +75,7 @@ the file LICENSE.md that was distributed with this source code.
 		<td n:class="name" rowspan="{$count}"><code><a href="{$constant|constantUrl}"><b>{$constant->shortName}</b></a></code></td>
 		{/if}
 		{foreach $constant->annotations['todo'] as $description}
-		<td>{!$description|annotation:'todo':$constant}</td>{sep}</tr><tr>{/sep}
+		<td>{$description|annotation:'todo':$constant|noescape}</td>{sep}</tr><tr>{/sep}
 		{/foreach}
 	</tr>
 	{/foreach}
@@ -89,7 +89,7 @@ the file LICENSE.md that was distributed with this source code.
 		<td class="name" rowspan="{$count}"><a href="{$property->declaringClassName|classUrl}">{$property->declaringClassName}</a></td>
 		<td class="name" rowspan="{$count}"><a href="{$property|propertyUrl}"><var>${$property->name}</var></a></td>
 		{foreach $property->annotations['todo'] as $description}
-		<td>{!$description|annotation:'todo':$property}</td>{sep}</tr><tr>{/sep}
+		<td>{$description|annotation:'todo':$property|noescape}</td>{sep}</tr><tr>{/sep}
 		{/foreach}
 	</tr>
 	{/foreach}
@@ -103,7 +103,7 @@ the file LICENSE.md that was distributed with this source code.
 		<td class="name" rowspan="{$count}" n:if="$namespaces"><a n:if="$function->namespaceName" href="{$function->namespaceName|namespaceUrl}">{$function->namespaceName}</a></td>
 		<td class="name" rowspan="{$count}"><code><a href="{$function|functionUrl}">{$function->shortName}</a></code></td>
 		{foreach $function->annotations['todo'] as $description}
-		<td>{!$description|annotation:'todo':$function}</td>{sep}</tr><tr>{/sep}
+		<td>{$description|annotation:'todo':$function|noescape}</td>{sep}</tr><tr>{/sep}
 		{/foreach}
 	</tr>
 	{/foreach}

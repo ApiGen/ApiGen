@@ -55,7 +55,7 @@ the file LICENSE.md that was distributed with this source code.
 					{else}
 						</li>
 						{if substr_count($iterator->nextValue, '\\') < substr_count($group, '\\')}
-							{!'</ul></li>'|repeat:substr_count($group, '\\') - substr_count($iterator->nextValue, '\\')}
+							{='</ul></li>'|repeat:substr_count($group, '\\') - substr_count($iterator->nextValue, '\\')|noescape}
 						{/if}
 					{/if}
 				{/foreach}

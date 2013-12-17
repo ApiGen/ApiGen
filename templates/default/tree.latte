@@ -21,7 +21,7 @@ the file LICENSE.md that was distributed with this source code.
 			{if $level === $tree->getDepth()}
 				</li>
 			{elseif $level > $tree->getDepth()}
-				{!'</ul></li>'|repeat:$level - $tree->getDepth()}
+				{='</ul></li>'|repeat:$level - $tree->getDepth()|noescape}
 			{elseif -1 !== $level}
 				<ul>
 			{/if}
@@ -40,7 +40,7 @@ the file LICENSE.md that was distributed with this source code.
 			{var $level = $tree->getDepth()}
 		{/foreach}
 		</li>
-		{!'</ul></li>'|repeat:$level}
+		{='</ul></li>'|repeat:$level|noescape}
 	</ul>
 </div>
 {/define}
