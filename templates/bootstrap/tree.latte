@@ -18,7 +18,7 @@ the file LICENSE.md that was distributed with this source code.
 <div class="tree">
 	<ul>
 		{var $level = -1}
-		{? foreach ($tree as $reflectionName => $reflection): }
+		{foreach $tree as $reflectionName => $reflection|noiterator}
 			{if $level === $tree->getDepth()}
 				</li>
 			{elseif $level > $tree->getDepth()}
@@ -39,7 +39,7 @@ the file LICENSE.md that was distributed with this source code.
 			</div>
 
 			{var $level = $tree->getDepth()}
-		{? endforeach; }
+		{/foreach}
 		</li>
 		{!'</ul></li>'|repeat:$level}
 	</ul>
