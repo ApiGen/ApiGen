@@ -14,23 +14,19 @@ the file LICENSE.md that was distributed with this source code.
 <!DOCTYPE html>
 <html>
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta charset="utf-8">
 	<meta name="generator" content="{$generator} {$version}">
 	<meta name="robots" content="noindex" n:if="!$robots">
 
 	<title>{include title}{if 'overview' !== $active && $config->title} | {$config->title}{/if}</title>
 
-	{var combinedJs = 'resources/combined.js'}
-	<script type="text/javascript" src="{$combinedJs|staticFile}"></script>
-	{var elementListJs = 'elementlist.js'}
-	<script type="text/javascript" src="{$elementListJs|staticFile}"></script>
-	{var bootstrapCss = 'resources/bootstrap.min.css'}
-	<link rel="stylesheet" type="text/css" media="all" href="{$bootstrapCss|staticFile}">
-	{var styleCss = 'resources/style.css'}
-	<link rel="stylesheet" type="text/css" media="all" href="{$styleCss|staticFile}">
+	<script src="{='resources/combined.js'|staticFile}"></script>
+	<script src="{='elementlist.js'|staticFile}"></script>
+	<link rel="stylesheet" href="{='resources/bootstrap.min.css'|staticFile}">
+	<link rel="stylesheet" href="{='resources/style.css'|staticFile}">
 	<link n:if="$config->googleCseId" rel="search" type="application/opensearchdescription+xml" title="{$config->title}" href="{$config->baseUrl}/opensearch.xml">
 
-	<script n:if="$config->googleAnalytics" type="text/javascript">
+	<script n:if="$config->googleAnalytics">
 		var _gaq = _gaq || [];
 		_gaq.push(['_setAccount', {$config->googleAnalytics}]);
 		_gaq.push(['_trackPageview']);
