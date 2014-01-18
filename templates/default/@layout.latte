@@ -19,8 +19,6 @@ the file LICENSE.md that was distributed with this source code.
 
 	<title>{include #title}{if 'overview' !== $active && $config->title} | {$config->title}{/if}</title>
 
-	<script src="{='resources/combined.js'|staticFile}"></script>
-	<script src="{='elementlist.js'|staticFile}"></script>
 	<link rel="stylesheet" href="{='resources/style.css'|staticFile}">
 	<link n:if="$config->googleCseId" rel="search" type="application/opensearchdescription+xml" title="{$config->title}" href="{$config->baseUrl}/opensearch.xml">
 
@@ -168,5 +166,7 @@ the file LICENSE.md that was distributed with this source code.
 	</div>
 </div>
 </div>
+<script src="{='resources/combined.js'|staticFile}"></script>
+<script src="{='elementlist.js'|staticFile}"></script>
 </body>
 </html>
