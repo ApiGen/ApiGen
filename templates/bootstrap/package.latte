@@ -12,9 +12,9 @@ the file LICENSE.md that was distributed with this source code.
 {layout '@layout.latte'}
 {var $active = 'package'}
 
-{block #title}{if $package != 'None'}Package {$package}{else}No package{/if}{/block}
+{block title}{if $package != 'None'}Package {$package}{else}No package{/if}{/block}
 
-{block #content}
+{block content}
 <div id="content" class="package">
 	<h1>{if $package != 'None'}Package {$package|packageLinks:false|noescape}{else}No package{/if}</h1>
 

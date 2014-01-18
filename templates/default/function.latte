@@ -11,9 +11,9 @@ the file LICENSE.md that was distributed with this source code.
 {layout '@layout.latte'}
 {var $active = 'function'}
 
-{block #title}{if $function->deprecated}Deprecated {/if}Function {$function->name}{/block}
+{block title}{if $function->deprecated}Deprecated {/if}Function {$function->name}{/block}
 
-{block #content}
+{block content}
 <div id="content" class="function">
 	<h1 n:class="$function->deprecated ? deprecated">Function {$function->shortName}</h1>
 

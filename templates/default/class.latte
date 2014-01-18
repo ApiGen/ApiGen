@@ -11,9 +11,9 @@ the file LICENSE.md that was distributed with this source code.
 {layout '@layout.latte'}
 {var $active = 'class'}
 
-{block #title}{if $class->deprecated}Deprecated {/if}{if $class->interface}Interface{elseif $class->trait}Trait{else}Class{/if} {$class->name}{/block}
+{block title}{if $class->deprecated}Deprecated {/if}{if $class->interface}Interface{elseif $class->trait}Trait{else}Class{/if} {$class->name}{/block}
 
-{block #content}
+{block content}
 <div id="content" class="class">
 	<h1 n:class="$class->deprecated ? deprecated">{if $class->interface}Interface{elseif $class->trait}Trait{else}Class{/if} {$class->shortName}</h1>
 
@@ -40,7 +40,7 @@ the file LICENSE.md that was distributed with this source code.
 		</dd>
 	</dl>
 
-	{define #children}
+	{define children}
 		{foreach $children as $child}
 			<a href="{$child|classUrl}" n:tag-if="$child->documented"><span n:tag-if="$child->deprecated" class="deprecated">{$child->name}</span></a>{sep}, {/sep}
 		{/foreach}
@@ -48,32 +48,32 @@ the file LICENSE.md that was distributed with this source code.
 
 	<div n:if="$directSubClasses">
 		<h4>Direct known subclasses</h4>
-		{include #children, children => $directSubClasses}
+		{include children, children => $directSubClasses}
 	</div>
 
 	<div n:if="$indirectSubClasses">
 		<h4>Indirect known subclasses</h4>
-		{include #children, children => $indirectSubClasses}
+		{include children, children => $indirectSubClasses}
 	</div>
 
 	<div n:if="$directImplementers">
 		<h4>Direct known implementers</h4>
-		{include #children, children => $directImplementers}
+		{include children, children => $directImplementers}
 	</div>
 
 	<div n:if="$indirectImplementers">
 		<h4>Indirect known implementers</h4>
-		{include #children, children => $indirectImplementers}
+		{include children, children => $indirectImplementers}
 	</div>
 
 	<div n:if="$directUsers">
 		<h4>Direct Known Users</h4>
-		{include #children, children => $directUsers}
+		{include children, children => $directUsers}
 	</div>
 
 	<div n:if="$indirectUsers">
 		<h4>Indirect Known Users</h4>
-		{include #children, children => $indirectUsers}
+		{include children, children => $indirectUsers}
 	</div>
 
 	<div class="info">
@@ -94,7 +94,7 @@ the file LICENSE.md that was distributed with this source code.
 	{var $ownMethods = $class->ownMethods}
 	{var $ownMagicMethods = $class->ownMagicMethods}
 
-	{define #method}
+	{define method}
 	<tr data-order="{$method->name}" id="{if $method->magic}m{/if}_{$method->name}">
 		{var $annotations = $method->annotations}
 
@@ -199,7 +199,7 @@ the file LICENSE.md that was distributed with this source code.
 	<table class="summary methods" id="methods" n:if="$ownMethods">
 	<caption>Methods summary</caption>
 	{foreach $ownMethods as $method}
-		{include #method, method => $method}
+		{include method, method => $method}
 	{/foreach}
 	</table>
 
@@ -228,7 +228,7 @@ the file LICENSE.md that was distributed with this source code.
 	<table class="summary methods" id="magicMethods" n:if="$ownMagicMethods">
 	<caption>Magic methods summary</caption>
 	{foreach $ownMagicMethods as $method}
-		{include #method, method => $method}
+		{include method, method => $method}
 	{/foreach}
 	</table>
 
@@ -306,7 +306,7 @@ the file LICENSE.md that was distributed with this source code.
 	</tr>
 	</table>
 
-	{define #property}
+	{define property}
 	<tr data-order="{$property->name}" id="{if $property->magic}m{/if}${$property->name}">
 		<td class="attributes"><code>
 			{if $property->protected}protected{elseif $property->private}private{else}public{/if} {if $property->static}static{/if} {if $property->readOnly}read-only{elseif $property->writeOnly}write-only{/if}
@@ -349,7 +349,7 @@ the file LICENSE.md that was distributed with this source code.
 	<table class="summary properties" id="properties" n:if="$ownProperties">
 	<caption>Properties summary</caption>
 	{foreach $ownProperties as $property}
-		{include #property, property => $property}
+		{include property, property => $property}
 	{/foreach}
 	</table>
 
@@ -378,7 +378,7 @@ the file LICENSE.md that was distributed with this source code.
 	<table class="summary properties" id="magicProperties" n:if="$ownMagicProperties">
 	<caption>Magic properties summary</caption>
 	{foreach $ownMagicProperties as $property}
-		{include #property, property => $property}
+		{include property, property => $property}
 	{/foreach}
 	</table>
 
