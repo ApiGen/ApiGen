@@ -12,17 +12,17 @@ the file LICENSE.md that was distributed with this source code.
 {layout '@layout.latte'}
 {var $active = 'tree'}
 
-{block #title}Tree{/block}
+{block title}Tree{/block}
 
-{define #tree}
+{define tree}
 <div class="tree">
 	<ul>
 		{var $level = -1}
-		{? foreach ($tree as $reflectionName => $reflection): }
+		{foreach $tree as $reflectionName => $reflection|noiterator}
 			{if $level === $tree->getDepth()}
 				</li>
 			{elseif $level > $tree->getDepth()}
-				{!'</ul></li>'|repeat:$level - $tree->getDepth()}
+				{='</ul></li>'|repeat:$level - $tree->getDepth()|noescape}
 			{elseif -1 !== $level}
 				<ul>
 			{/if}
@@ -39,35 +39,35 @@ the file LICENSE.md that was distributed with this source code.
 			</div>
 
 			{var $level = $tree->getDepth()}
-		{? endforeach; }
+		{/foreach}
 		</li>
-		{!'</ul></li>'|repeat:$level}
+		{='</ul></li>'|repeat:$level|noescape}
 	</ul>
 </div>
 {/define}
 
-{block #content}
+{block content}
 <div id="content">
-	<h1>{include #title}</h1>
+	<h1>{include title}</h1>
 
 	{if $classTree->valid()}
 		<h2>Classes</h2>
-		{include #tree, tree => $classTree}
+		{include tree, tree => $classTree}
 	{/if}
 
 	{if $interfaceTree->valid()}
 		<h2>Interfaces</h2>
-		{include #tree, tree => $interfaceTree}
+		{include tree, tree => $interfaceTree}
 	{/if}
 
 	{if $traitTree->valid()}
 		<h2>Traits</h2>
-		{include #tree, tree => $traitTree}
+		{include tree, tree => $traitTree}
 	{/if}
 
 	{if $exceptionTree->valid()}
 		<h2>Exceptions</h2>
-		{include #tree, tree => $exceptionTree}
+		{include tree, tree => $exceptionTree}
 	{/if}
 </div>
 {/block}

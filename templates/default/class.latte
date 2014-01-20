@@ -11,16 +11,16 @@ the file LICENSE.md that was distributed with this source code.
 {layout '@layout.latte'}
 {var $active = 'class'}
 
-{block #title}{if $class->deprecated}Deprecated {/if}{if $class->interface}Interface{elseif $class->trait}Trait{else}Class{/if} {$class->name}{/block}
+{block title}{if $class->deprecated}Deprecated {/if}{if $class->interface}Interface{elseif $class->trait}Trait{else}Class{/if} {$class->name}{/block}
 
-{block #content}
+{block content}
 <div id="content" class="class">
 	<h1 n:class="$class->deprecated ? deprecated">{if $class->interface}Interface{elseif $class->trait}Trait{else}Class{/if} {$class->shortName}</h1>
 
 	{if $class->valid}
 
 	<div class="description" n:if="$template->longDescription($class)">
-	{!$class|longDescription}
+	{$class|longDescription|noescape}
 	</div>
 
 	<dl class="tree" n:if="$class->parentClass || $class->ownInterfaces || $class->ownTraits">
@@ -40,7 +40,7 @@ the file LICENSE.md that was distributed with this source code.
 		</dd>
 	</dl>
 
-	{define #children}
+	{define children}
 		{foreach $children as $child}
 			<a href="{$child|classUrl}" n:tag-if="$child->documented"><span n:tag-if="$child->deprecated" class="deprecated">{$child->name}</span></a>{sep}, {/sep}
 		{/foreach}
@@ -48,44 +48,44 @@ the file LICENSE.md that was distributed with this source code.
 
 	<div n:if="$directSubClasses">
 		<h4>Direct known subclasses</h4>
-		{include #children, children => $directSubClasses}
+		{include children, children => $directSubClasses}
 	</div>
 
 	<div n:if="$indirectSubClasses">
 		<h4>Indirect known subclasses</h4>
-		{include #children, children => $indirectSubClasses}
+		{include children, children => $indirectSubClasses}
 	</div>
 
 	<div n:if="$directImplementers">
 		<h4>Direct known implementers</h4>
-		{include #children, children => $directImplementers}
+		{include children, children => $directImplementers}
 	</div>
 
 	<div n:if="$indirectImplementers">
 		<h4>Indirect known implementers</h4>
-		{include #children, children => $indirectImplementers}
+		{include children, children => $indirectImplementers}
 	</div>
 
 	<div n:if="$directUsers">
 		<h4>Direct Known Users</h4>
-		{include #children, children => $directUsers}
+		{include children, children => $directUsers}
 	</div>
 
 	<div n:if="$indirectUsers">
 		<h4>Indirect Known Users</h4>
-		{include #children, children => $indirectUsers}
+		{include children, children => $indirectUsers}
 	</div>
 
 	<div class="info">
 		{if !$class->interface && !$class->trait && ($class->abstract || $class->final)}<b>{if $class->abstract}Abstract{else}Final{/if}</b><br>{/if}
 		{if $class->internal}<b>PHP Extension:</b> <a href="{$class->extension|manualUrl}" title="Go to PHP documentation">{$class->extension->name|firstUpper}</a><br>{/if}
-		{if $class->inNamespace()}<b>Namespace:</b> {!$class->namespaceName|namespaceLinks}<br>{/if}
-		{if $class->inPackage()}<b>Package:</b> {!$class->packageName|packageLinks}<br>{/if}
+		{if $class->inNamespace()}<b>Namespace:</b> {$class->namespaceName|namespaceLinks|noescape}<br>{/if}
+		{if $class->inPackage()}<b>Package:</b> {$class->packageName|packageLinks|noescape}<br>{/if}
 
 		{foreach $template->annotationSort($template->annotationFilter($class->annotations)) as $annotation => $values}
 			{foreach $values as $value}
 				<b>{$annotation|annotationBeautify}{if $value}:{/if}</b>
-				{!$value|annotation:$annotation:$class}<br>
+				{$value|annotation:$annotation:$class|noescape}<br>
 			{/foreach}
 		{/foreach}
 		{if $class->internal}<b>Documented at</b> <a href="{$class|manualUrl}" title="Go to PHP documentation">php.net</a>{else}<b>Located at</b> <a n:tag-if="$config->sourceCode" href="{$class|sourceUrl}" title="Go to source code">{$class->fileName|relativePath}</a>{/if}<br>
@@ -94,13 +94,13 @@ the file LICENSE.md that was distributed with this source code.
 	{var $ownMethods = $class->ownMethods}
 	{var $ownMagicMethods = $class->ownMagicMethods}
 
-	{define #method}
+	{define method}
 	<tr data-order="{$method->name}" id="{if $method->magic}m{/if}_{$method->name}">
 		{var $annotations = $method->annotations}
 
 		<td class="attributes"><code>
 			{if !$class->interface && $method->abstract}abstract{elseif $method->final}final{/if} {if $method->protected}protected{elseif $method->private}private{else}public{/if} {if $method->static}static{/if}
-			{ifset $annotations['return']}{!$annotations['return'][0]|typeLinks:$method}{/ifset}
+			{ifset $annotations['return']}{$annotations['return'][0]|typeLinks:$method|noescape}{/ifset}
 			{if $method->returnsReference()}&amp;{/if}
 			</code>
 		</td>
@@ -114,19 +114,19 @@ the file LICENSE.md that was distributed with this source code.
 				<a n:tag-if="$config->sourceCode" href="{$method|sourceUrl}" title="Go to source code">{$method->name}</a>(
 			{/if}
 			{foreach $method->parameters as $parameter}
-				<span>{!$parameter->typeHint|typeLinks:$method}
-				<var>{if $parameter->passedByReference}&amp; {/if}${$parameter->name}</var>{if $parameter->defaultValueAvailable} = {!$parameter->defaultValueDefinition|highlightPHP:$class}{elseif $parameter->unlimited},…{/if}</span>{sep}, {/sep}
+				<span>{$parameter->typeHint|typeLinks:$method|noescape}
+				<var>{if $parameter->passedByReference}&amp; {/if}${$parameter->name}</var>{if $parameter->defaultValueAvailable} = {$parameter->defaultValueDefinition|highlightPHP:$class|noescape}{elseif $parameter->unlimited},…{/if}</span>{sep}, {/sep}
 			{/foreach}
 		){/block}</code>
 
 		{if $config->template['options']['elementDetailsCollapsed']}
 		<div class="description short">
-			{!$method|shortDescription:true}
+			{$method|shortDescription:true|noescape}
 		</div>
 		{/if}
 
 		<div n:class="description, detailed, $config->template['options']['elementDetailsCollapsed'] ? hidden">
-			{!$method|longDescription}
+			{$method|longDescription|noescape}
 
 			{if !$class->deprecated && $method->deprecated}
 				<h4>Deprecated</h4>
@@ -134,7 +134,7 @@ the file LICENSE.md that was distributed with this source code.
 				<div class="list">
 				{foreach $annotations['deprecated'] as $description}
 					{if $description}
-						{!$description|annotation:'deprecated':$method}<br>
+						{$description|annotation:'deprecated':$method|noescape}<br>
 					{/if}
 				{/foreach}
 				</div>
@@ -155,7 +155,7 @@ the file LICENSE.md that was distributed with this source code.
 				<h4>Returns</h4>
 				<div class="list">
 				{foreach $annotations['return'] as $description}
-					{!$description|annotation:'return':$method}<br>
+					{$description|annotation:'return':$method|noescape}<br>
 				{/foreach}
 				</div>
 			{/if}
@@ -164,7 +164,7 @@ the file LICENSE.md that was distributed with this source code.
 				<h4>Throws</h4>
 				<div class="list">
 				{foreach $annotations['throws'] as $description}
-					{!$description|annotation:'throws':$method}<br>
+					{$description|annotation:'throws':$method|noescape}<br>
 				{/foreach}
 				</div>
 			{/ifset}
@@ -174,7 +174,7 @@ the file LICENSE.md that was distributed with this source code.
 				<div class="list">
 				{foreach $descriptions as $description}
 					{if $description}
-						{!$description|annotation:$annotation:$method}<br>
+						{$description|annotation:$annotation:$method|noescape}<br>
 					{/if}
 				{/foreach}
 				</div>
@@ -199,7 +199,7 @@ the file LICENSE.md that was distributed with this source code.
 	<table class="summary methods" id="methods" n:if="$ownMethods">
 	<caption>Methods summary</caption>
 	{foreach $ownMethods as $method}
-		{include #method, method => $method}
+		{include method, method => $method}
 	{/foreach}
 	</table>
 
@@ -228,7 +228,7 @@ the file LICENSE.md that was distributed with this source code.
 	<table class="summary methods" id="magicMethods" n:if="$ownMagicMethods">
 	<caption>Magic methods summary</caption>
 	{foreach $ownMagicMethods as $method}
-		{include #method, method => $method}
+		{include method, method => $method}
 	{/foreach}
 	</table>
 
@@ -262,7 +262,7 @@ the file LICENSE.md that was distributed with this source code.
 	<tr n:foreach="$ownConstants as $constant" data-order="{$constant->name}" id="{$constant->name}">
 		{var $annotations = $constant->annotations}
 
-		<td class="attributes"><code>{!$constant->typeHint|typeLinks:$constant}</code></td>
+		<td class="attributes"><code>{$constant->typeHint|typeLinks:$constant|noescape}</code></td>
 		<td class="name">
 			<code>
 			{if $class->internal}
@@ -273,18 +273,18 @@ the file LICENSE.md that was distributed with this source code.
 			</code>
 
 			<div n:if="$config->template->options->elementDetailsCollapsed" class="description short">
-				{!$constant|shortDescription:true}
+				{$constant|shortDescription:true|noescape}
 			</div>
 
 			<div n:class="description, detailed, $config->template->options->elementDetailsCollapsed ? hidden">
-				{!$constant|longDescription}
+				{$constant|longDescription|noescape}
 
 				{foreach $template->annotationSort($template->annotationFilter($annotations, array('var'))) as $annotation => $descriptions}
 					<h4>{$annotation|annotationBeautify}</h4>
 					<div class="list">
 					{foreach $descriptions as $description}
 						{if $description}
-							{!$description|annotation:$annotation:$constant}<br>
+							{$description|annotation:$annotation:$constant|noescape}<br>
 						{/if}
 					{/foreach}
 					</div>
@@ -306,11 +306,11 @@ the file LICENSE.md that was distributed with this source code.
 	</tr>
 	</table>
 
-	{define #property}
+	{define property}
 	<tr data-order="{$property->name}" id="{if $property->magic}m{/if}${$property->name}">
 		<td class="attributes"><code>
 			{if $property->protected}protected{elseif $property->private}private{else}public{/if} {if $property->static}static{/if} {if $property->readOnly}read-only{elseif $property->writeOnly}write-only{/if}
-			{!$property->typeHint|typeLinks:$property}
+			{$property->typeHint|typeLinks:$property|noescape}
 		</code></td>
 
 		<td class="name">
@@ -321,18 +321,18 @@ the file LICENSE.md that was distributed with this source code.
 			{/if}
 
 			<div n:if="$config->template->options->elementDetailsCollapsed" class="description short">
-				{!$property|shortDescription:true}
+				{$property|shortDescription:true|noescape}
 			</div>
 
 			<div n:class="description, detailed, $config->template->options->elementDetailsCollapsed ? hidden">
-				{!$property|longDescription}
+				{$property|longDescription|noescape}
 
 				{foreach $template->annotationSort($template->annotationFilter($property->annotations, array('var'))) as $annotation => $descriptions}
 					<h4>{$annotation|annotationBeautify}</h4>
 					<div class="list">
 					{foreach $descriptions as $description}
 						{if $description}
-							{!$description|annotation:$annotation:$property}<br>
+							{$description|annotation:$annotation:$property|noescape}<br>
 						{/if}
 					{/foreach}
 					</div>
@@ -349,7 +349,7 @@ the file LICENSE.md that was distributed with this source code.
 	<table class="summary properties" id="properties" n:if="$ownProperties">
 	<caption>Properties summary</caption>
 	{foreach $ownProperties as $property}
-		{include #property, property => $property}
+		{include property, property => $property}
 	{/foreach}
 	</table>
 
@@ -378,7 +378,7 @@ the file LICENSE.md that was distributed with this source code.
 	<table class="summary properties" id="magicProperties" n:if="$ownMagicProperties">
 	<caption>Magic properties summary</caption>
 	{foreach $ownMagicProperties as $property}
-		{include #property, property => $property}
+		{include property, property => $property}
 	{/foreach}
 	</table>
 

@@ -12,19 +12,19 @@ the file LICENSE.md that was distributed with this source code.
 {layout '@layout.latte'}
 {var $active = 'deprecated'}
 
-{block #title}Deprecated{/block}
+{block title}Deprecated{/block}
 
-{block #content}
+{block content}
 <div id="content">
-	<h1>{include #title}</h1>
+	<h1>{include title}</h1>
 
-	{define #classes}
+	{define classes}
 	<tr n:foreach="$items as $class">
 		<td class="name"><a href="{$class|classUrl}">{$class->name}</a></td>
 		<td>
 			{foreach $class->annotations['deprecated'] as $description}
 				{if $description}
-					{!$description|annotation:'deprecated':$class}<br>
+					{$description|annotation:'deprecated':$class|noescape}<br>
 				{/if}
 			{/foreach}
 		</td>
@@ -34,28 +34,28 @@ the file LICENSE.md that was distributed with this source code.
 	{if $deprecatedClasses}
 	<h2>Classes summary</h2>
 	<table class="summary table table-bordered table-striped" id="classes">
-	{include #classes, items => $deprecatedClasses}
+	{include classes, items => $deprecatedClasses}
 	</table>
 	{/if}
 
 	{if $deprecatedInterfaces}
 	<h2>Interfaces summary</h2>
 	<table class="summary table table-bordered table-striped" id="interfaces">
-	{include #classes, items => $deprecatedInterfaces}
+	{include classes, items => $deprecatedInterfaces}
 	</table>
 	{/if}
 
 	{if $deprecatedTraits}
 	<h2>Traits summary</h2>
 	<table class="summary table table-bordered table-striped" id="traits">
-	{include #classes, items => $deprecatedTraits}
+	{include classes, items => $deprecatedTraits}
 	</table>
 	{/if}
 
 	{if $deprecatedExceptions}
 	<h2>Exceptions summary</h2>
 	<table class="summary table table-bordered table-striped" id="exceptions">
-	{include #classes, items => $deprecatedExceptions}
+	{include classes, items => $deprecatedExceptions}
 	</table>
 	{/if}
 
@@ -69,7 +69,7 @@ the file LICENSE.md that was distributed with this source code.
 			{if $method->hasAnnotation('deprecated')}
 			{foreach $method->annotations['deprecated'] as $description}
 				{if $description}
-					{!$description|annotation:'deprecated':$method}<br>
+					{$description|annotation:'deprecated':$method|noescape}<br>
 				{/if}
 			{/foreach}
 			{/if}
@@ -92,7 +92,7 @@ the file LICENSE.md that was distributed with this source code.
 		<td>
 			{foreach $constant->annotations['deprecated'] as $description}
 				{if $description}
-					{!$description|annotation:'deprecated':$constant}<br>
+					{$description|annotation:'deprecated':$constant|noescape}<br>
 				{/if}
 			{/foreach}
 		</td>
@@ -109,7 +109,7 @@ the file LICENSE.md that was distributed with this source code.
 		<td>
 			{foreach $property->annotations['deprecated'] as $description}
 				{if $description}
-					{!$description|annotation:'deprecated':$property}<br>
+					{$description|annotation:'deprecated':$property|noescape}<br>
 				{/if}
 			{/foreach}
 		</td>
@@ -126,7 +126,7 @@ the file LICENSE.md that was distributed with this source code.
 		<td>
 			{foreach $function->annotations['deprecated'] as $description}
 				{if $description}
-					{!$description|annotation:'deprecated':$function}<br>
+					{$description|annotation:'deprecated':$function|noescape}<br>
 				{/if}
 			{/foreach}
 		</td>
