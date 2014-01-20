@@ -324,10 +324,6 @@ class Template extends Nette\Templating\FileTemplate
 			$types = null;
 		}
 
-		if (empty($types)) {
-			$types = 'mixed';
-		}
-
 		foreach (explode('|', $types) as $type) {
 			$type = $this->getTypeName($type, false);
 			$links[] = $this->resolveLink($type, $context) ?: $this->escapeHtml(ltrim($type, '\\'));
