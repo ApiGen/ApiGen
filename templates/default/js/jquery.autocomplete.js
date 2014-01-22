@@ -1,5 +1,5 @@
-/*!
- * jQuery Autocomplete plugin 1.1
+/*
+ * jQuery Autocomplete plugin 1.2.3
  *
  * Copyright (c) 2009 Jörn Zaefferer
  *
@@ -7,7 +7,9 @@
  *   http://www.opensource.org/licenses/mit-license.php
  *   http://www.gnu.org/licenses/gpl.html
  *
- * Revision: $Id: jquery.autocomplete.js 15 2009-08-22 10:30:27Z joern.zaefferer $
+ * With small modifications by Alfonso Gómez-Arzola.
+ * See changelog for details.
+ *
  */
 
 ;(function($) {
@@ -19,7 +21,8 @@ $.fn.extend({
 			url: isUrl ? urlOrData : null,
 			data: isUrl ? null : urlOrData,
 			delay: isUrl ? $.Autocompleter.defaults.delay : 10,
-			max: options && !options.scroll ? 10 : 150
+			max: options && !options.scroll ? 10 : 150,
+			noRecord: "No Records."
 		}, options);
 
 		// if highlight is set to false, replace it with a do-nothing function
@@ -27,8 +30,6 @@ $.fn.extend({
 
 		// if the formatMatch option is not specified, then use formatItem for backwards compatibility
 		options.formatMatch = options.formatMatch || options.formatItem;
-
-		options.show = options.show || function(list) {};
 
 		return this.each(function() {
 			new $.Autocompleter(this, options);
@@ -66,6 +67,11 @@ $.Autocompleter = function(input, options) {
 		BACKSPACE: 8
 	};
 
+	var globalFailure = null;
+	if(options.failure != null && typeof options.failure == "function") {
+	  globalFailure = options.failure;
+	}
+
 	// Create $ object for input element
 	var $input = $(input).attr("autocomplete", "off").addClass(options.inputClass);
 
@@ -79,8 +85,18 @@ $.Autocompleter = function(input, options) {
 	};
 	var select = $.Autocompleter.Select(options, input, selectCurrent, config);
 
-	// only opera doesn't trigger keydown multiple times while pressed, others don't work with keypress at all
-	$input.bind(($.browser.opera ? "keypress" : "keydown") + ".autocomplete", function(event) {
+	var blockSubmit;
+
+	// prevent form submit in opera when selecting with return key
+  navigator.userAgent.indexOf("Opera") != -1 && $(input.form).bind("submit.autocomplete", function() {
+		if (blockSubmit) {
+			blockSubmit = false;
+			return false;
+		}
+	});
+
+	// older versions of opera don't trigger keydown multiple times while pressed, others don't work with keypress at all
+	$input.bind((navigator.userAgent.indexOf("Opera") != -1 && !'KeyboardEvent' in window ? "keypress" : "keydown") + ".autocomplete", function(event) {
 		// a keypress means the input has focus
 		// avoids issue where input had focus before the autocomplete was applied
 		hasFocus = 1;
@@ -89,8 +105,8 @@ $.Autocompleter = function(input, options) {
 		switch(event.keyCode) {
 
 			case KEY.UP:
-				event.preventDefault();
 				if ( select.visible() ) {
+					event.preventDefault();
 					select.prev();
 				} else {
 					onChange(0, true);
@@ -98,8 +114,8 @@ $.Autocompleter = function(input, options) {
 				break;
 
 			case KEY.DOWN:
-				event.preventDefault();
 				if ( select.visible() ) {
+					event.preventDefault();
 					select.next();
 				} else {
 					onChange(0, true);
@@ -107,8 +123,8 @@ $.Autocompleter = function(input, options) {
 				break;
 
 			case KEY.PAGEUP:
-				event.preventDefault();
 				if ( select.visible() ) {
+  				event.preventDefault();
 					select.pageUp();
 				} else {
 					onChange(0, true);
@@ -116,8 +132,8 @@ $.Autocompleter = function(input, options) {
 				break;
 
 			case KEY.PAGEDOWN:
-				event.preventDefault();
 				if ( select.visible() ) {
+  				event.preventDefault();
 					select.pageDown();
 				} else {
 					onChange(0, true);
@@ -129,8 +145,10 @@ $.Autocompleter = function(input, options) {
 			case KEY.TAB:
 			case KEY.RETURN:
 				if( selectCurrent() ) {
-					//event.preventDefault();
-					//return false;
+					// stop default to prevent a form submit, Opera needs special handling
+					event.preventDefault();
+					blockSubmit = true;
+					return false;
 				}
 				break;
 
@@ -148,14 +166,22 @@ $.Autocompleter = function(input, options) {
 		// results if the field no longer has focus
 		hasFocus++;
 	}).blur(function() {
-		hasFocus = 0;
+	  hasFocus = 0;
 		if (!config.mouseDownOnSelect) {
 			hideResults();
 		}
 	}).click(function() {
 		// show select when clicking in a focused field
-		if ( hasFocus++ > 1 && !select.visible() ) {
-			onChange(0, true);
+		// but if clickFire is true, don't require field
+		// to be focused to begin with; just show select
+		if( options.clickFire ) {
+		  if ( !select.visible() ) {
+  			onChange(0, true);
+  		}
+		} else {
+		  if ( hasFocus++ > 1 && !select.visible() ) {
+  			onChange(0, true);
+  		}
 		}
 	}).bind("search", function() {
 		// TODO why not just specifying both arguments?
@@ -179,7 +205,7 @@ $.Autocompleter = function(input, options) {
 	}).bind("flushCache", function() {
 		cache.flush();
 	}).bind("setOptions", function() {
-		$.extend(options, arguments[1]);
+		$.extend(true, options, arguments[1]);
 		// if we've updated the data, repopulate
 		if ( "data" in arguments[1] )
 			cache.populate();
@@ -336,8 +362,14 @@ $.Autocompleter = function(input, options) {
 			term = term.toLowerCase();
 		var data = cache.load(term);
 		// recieve the cached data
-		if (data && data.length) {
-			success(term, data);
+		if (data) {
+			if(data.length)	{
+				success(term, data);
+			}
+			else{
+				var parsed = options.parse && options.parse(options.noRecord) || parse(options.noRecord);
+				success(term,parsed);
+			}
 		// if an AJAX url has been supplied, try loading the data now
 		} else if( (typeof options.url == "string") && (options.url.length > 0) ){
 
@@ -368,7 +400,12 @@ $.Autocompleter = function(input, options) {
 		} else {
 			// if we have a failure, we need to empty the list -- this prevents the the [TAB] key from selecting the last successful match
 			select.emptyList();
-			failure(term);
+			if(globalFailure != null) {
+        globalFailure();
+      }
+      else {
+        failure(term);
+			}
 		}
 	};
 
@@ -404,8 +441,8 @@ $.Autocompleter.defaults = {
 	matchCase: false,
 	matchSubset: true,
 	matchContains: false,
-	cacheLength: 10,
-	max: 100,
+	cacheLength: 100,
+	max: 1000,
 	mustMatch: false,
 	extraParams: {},
 	selectFirst: true,
@@ -414,12 +451,15 @@ $.Autocompleter.defaults = {
 	autoFill: false,
 	width: 0,
 	multiple: false,
-	multipleSeparator: ", ",
+	multipleSeparator: " ",
+	inputFocus: true,
+	clickFire: false,
 	highlight: function(value, term) {
 		return value.replace(new RegExp("(?![^&;]+;)(?!<[^<>]*)(" + term.replace(/([\^\$\(\)\[\]\{\}\*\.\+\?\|\\])/gi, "\\$1") + ")(?![^<>]*>)(?![^&;]+;)", "gi"), "<strong>$1</strong>");
 	},
-	scroll: true,
-	scrollHeight: 180
+    scroll: true,
+    scrollHeight: 180,
+    scrollJumpPosition: true
 };
 
 $.Autocompleter.Cache = function(options) {
@@ -428,14 +468,9 @@ $.Autocompleter.Cache = function(options) {
 	var length = 0;
 
 	function matchSubset(s, sub) {
-		if (!options.matchCase)
-			s = s.toLowerCase();
-		var i = s.indexOf(sub);
-		if (options.matchContains == "word"){
-			i = s.toLowerCase().search("\\b" + sub.toLowerCase());
-		}
-		if (i == -1) return false;
-		return i == 0 || options.matchContains;
+		return (new RegExp(sub.toUpperCase().replace(/([\^\$\(\)\[\]\{\}\*\.\+\?\|\\])/gi, "\\$1").replace(/[A-Z0-9]/g, function(m, offset) {
+			return offset === 0 ? '(?:' + m + '|^' + m.toLowerCase() + ')' : '(?:.*' + m + '|' + m.toLowerCase() + ')';
+		}))).test(s); // find by initials
 	};
 
 	function add(q, value) {
@@ -467,7 +502,7 @@ $.Autocompleter.Cache = function(options) {
 			rawValue = (typeof rawValue == "string") ? [rawValue] : rawValue;
 
 			var value = options.formatMatch(rawValue, i+1, options.data.length);
-			if ( value === false )
+			if ( typeof(value) === 'undefined' || value === false )
 				continue;
 
 			var firstChar = value.charAt(0).toLowerCase();
@@ -582,18 +617,25 @@ $.Autocompleter.Select = function (options, input, select, config) {
 		.hide()
 		.addClass(options.resultsClass)
 		.css("position", "absolute")
-		.appendTo(document.body);
+		.appendTo(document.body)
+		.hover(function(event) {
+		  // Browsers except FF do not fire mouseup event on scrollbars, resulting in mouseDownOnSelect remaining true, and results list not always hiding.
+		  if($(this).is(":visible")) {
+		    input.focus();
+		  }
+		  config.mouseDownOnSelect = false;
+		});
 
 		list = $("<ul/>").appendTo(element).mouseover( function(event) {
 			if(target(event).nodeName && target(event).nodeName.toUpperCase() == 'LI') {
-				active = $("li", list).removeClass(CLASSES.ACTIVE).index(target(event));
-				$(target(event)).addClass(CLASSES.ACTIVE);
-			}
+	            active = $("li", list).removeClass(CLASSES.ACTIVE).index(target(event));
+			    $(target(event)).addClass(CLASSES.ACTIVE);
+	        }
 		}).click(function(event) {
 			$(target(event)).addClass(CLASSES.ACTIVE);
 			select();
-			// TODO provide option to avoid setting focus again after selection? useful for cleanup-on-focus
-			input.focus();
+			if( options.inputFocus )
+			  input.focus();
 			return false;
 		}).mousedown(function() {
 			config.mouseDownOnSelect = true;
@@ -620,28 +662,31 @@ $.Autocompleter.Select = function (options, input, select, config) {
 	function moveSelect(step) {
 		listItems.slice(active, active + 1).removeClass(CLASSES.ACTIVE);
 		movePosition(step);
-		var activeItem = listItems.slice(active, active + 1).addClass(CLASSES.ACTIVE);
-		if(options.scroll) {
-			var offset = 0;
-			listItems.slice(0, active).each(function() {
+        var activeItem = listItems.slice(active, active + 1).addClass(CLASSES.ACTIVE);
+        if(options.scroll) {
+            var offset = 0;
+            listItems.slice(0, active).each(function() {
 				offset += this.offsetHeight;
 			});
-			if((offset + activeItem[0].offsetHeight - list.scrollTop()) > list[0].clientHeight) {
-				list.scrollTop(offset + activeItem[0].offsetHeight - list.innerHeight());
-			} else if(offset < list.scrollTop()) {
-				list.scrollTop(offset);
-			}
-		}
+            if((offset + activeItem[0].offsetHeight - list.scrollTop()) > list[0].clientHeight) {
+                list.scrollTop(offset + activeItem[0].offsetHeight - list.innerHeight());
+            } else if(offset < list.scrollTop()) {
+                list.scrollTop(offset);
+            }
+        }
 	};
 
 	function movePosition(step) {
-		active += step;
-		if (active < 0) {
-			active = listItems.size() - 1;
-		} else if (active >= listItems.size()) {
-			active = 0;
+		if (options.scrollJumpPosition || (!options.scrollJumpPosition && !((step < 0 && active == 0) || (step > 0 && active == listItems.size() - 1)) )) {
+			active += step;
+			if (active < 0) {
+				active = listItems.size() - 1;
+			} else if (active >= listItems.size()) {
+				active = 0;
+			}
 		}
 	}
+
 
 	function limitNumberOfItems(available) {
 		return options.max && options.max < available
@@ -712,32 +757,31 @@ $.Autocompleter.Select = function (options, input, select, config) {
 		show: function() {
 			var offset = $(input).offset();
 			element.css({
-				width: typeof options.width == "string" || options.width > 0 ? options.width : $(input).innerWidth(),
+				width: typeof options.width == "string" || options.width > 0 ? options.width : $(input).width(),
 				top: offset.top + input.offsetHeight,
 				left: offset.left
 			}).show();
-			options.show(element);
-			if(options.scroll) {
-				list.scrollTop(0);
-				list.css({
+            if(options.scroll) {
+                list.scrollTop(0);
+                list.css({
 					maxHeight: options.scrollHeight,
 					overflow: 'auto'
 				});
 
-				if($.browser.msie && typeof document.body.style.maxHeight === "undefined") {
+                if(navigator.userAgent.indexOf("MSIE") != -1 && typeof document.body.style.maxHeight === "undefined") {
 					var listHeight = 0;
 					listItems.each(function() {
 						listHeight += this.offsetHeight;
 					});
 					var scrollbarsVisible = listHeight > options.scrollHeight;
-					list.css('height', scrollbarsVisible ? options.scrollHeight : listHeight );
+                    list.css('height', scrollbarsVisible ? options.scrollHeight : listHeight );
 					if (!scrollbarsVisible) {
 						// IE doesn't recalculate width when scrollbar disappears
 						listItems.width( list.width() - parseInt(listItems.css("padding-left")) - parseInt(listItems.css("padding-right")) );
 					}
-				}
+                }
 
-			}
+            }
 		},
 		selected: function() {
 			var selected = listItems && listItems.filter("." + CLASSES.ACTIVE).removeClass(CLASSES.ACTIVE);

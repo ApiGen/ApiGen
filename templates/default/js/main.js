@@ -57,8 +57,15 @@ $(function() {
 			matchContains: true,
 			scrollHeight: 200,
 			max: 20,
+			noRecord: '',
+			highlight: function(value, term) {
+				var term = term.toUpperCase().replace(/([\^\$\(\)\[\]\{\}\*\.\+\?\|\\])/gi, "\\$1").replace(/[A-Z0-9]/g, function(m, offset) {
+					return offset === 0 ? '(?:' + m + '|^' + m.toLowerCase() + ')' : '(?:(?:[^<>]|<[^<>]*>)*' + m + '|' + m.toLowerCase() + ')';
+				});
+				return value.replace(new RegExp("(?![^&;]+;)(?!<[^<>]*)(" + term + ")(?![^<>]*>)(?![^&;]+;)"), "<strong>$1</strong>");
+			},
 			formatItem: function(data) {
-				return data[1].replace(/^(.+\\)(.+)$/, '<span><small>$1</small>$2</span>');
+				return data.length > 1 ? data[1].replace(/^(.+\\)(.+)$/, '<span><small>$1</small>$2</span>') : data[0];
 			},
 			formatMatch: function(data) {
 				return data[1];
@@ -96,12 +103,6 @@ $(function() {
 				if ('' === query) {
 					return false;
 				}
-
-				var label = $('#search input[name=more]').val();
-				if (!autocompleteFound && label && -1 === query.indexOf('more:')) {
-					$search.val(query + ' more:' + label);
-				}
-
 				return !autocompleteFound && '' !== $('#search input[name=cx]').val();
 			});
 
@@ -227,7 +228,7 @@ $(function() {
 
 		var $firstLine = $('#' + parseInt(matches[0]));
 		if ($firstLine.length > 0) {
-			$right.scrollTop($firstLine.offset().top);
+			$document.scrollTop($firstLine.offset().top);
 		}
 	}
 
@@ -293,6 +294,9 @@ $(function() {
 			}
 		}
 
-		window.location.hash = hash.join(',');
+		hash = hash.join(',');
+		$backup = $('#' + hash).removeAttr('id');
+		window.location.hash = hash;
+		$backup.attr('id', hash);
 	});
 });
