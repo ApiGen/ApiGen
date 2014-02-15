@@ -37,43 +37,10 @@ For all support questions please use our [mailing list](https://groups.google.co
 
 ## Installation ##
 
-The preferred installation way is using the PEAR package but there are three more ways how to install ApiGen.
+The preferred installation way is using the standalone package but there are two more ways how to install ApiGen.
 
-
-### PEAR ###
-
-PEAR is a distribution system for PHP packages. It is bundled with PHP since the 4.3 version and it is easy to use.
-
-The PEAR package contains only ApiGen itself. Its dependencies (Nette, Texy, FSHL and TokenReflection) have to be installed separately. But do not panic, the PEAR installer can take care of it.
-
-The easiest way is to use the PEAR auto discovery feature. In that case all you have to do is to type two commands.
-
-```
-	pear config-set auto_discover 1
-	pear install pear.apigen.org/apigen
-```
-
-If you don't want to use the auto discovery, you have to add PEAR channels of all ApiGen libraries manually. In this case you can install ApiGen by typing these commands.
-
-```
-	pear channel-discover pear.apigen.org
-	pear channel-discover pear.nette.org
-	pear channel-discover pear.texy.info
-	pear channel-discover pear.kukulich.cz
-	pear channel-discover pear.andrewsville.cz
-
-	pear install apigen/ApiGen
-```
-
-If you encounter a message like `WARNING: channel "pear.apigen.org" has updated its protocols, use "pear channel-update pear.apigen.org" to update`, you need to tell PEAR to update its information about the ApiGen channel using the suggested command.
-
-```
-pear channel-update pear.apigen.org
-```
 
 ### Standalone package ###
-
-Using the standalone package is even easier than using the PEAR installer but it does not handle updates automatically.
 
 To download the actual release visit the [Downloads section](https://github.com/apigen/apigen/downloads). There you find separate packages for each release in two formats - zip and tar.gz. These packages are prepared by the ApiGen team and are truly standalone; they contain all required libraries in appropriate versions. You just need to extract the contents of an archive and you can start using ApiGen.
 
