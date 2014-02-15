@@ -11,11 +11,11 @@ the file LICENSE.md that was distributed with this source code.
 {layout '@layout.latte'}
 {var $active = 'namespace'}
 
-{block #title}{if $namespace != 'None'}Namespace {$namespace}{else}No namespace{/if}{/block}
+{block title}{if $namespace != 'None'}Namespace {$namespace}{else}No namespace{/if}{/block}
 
-{block #content}
+{block content}
 <div id="content" class="namespace">
-	<h1>{if $namespace != 'None'}Namespace {!$namespace|namespaceLinks:false}{else}No namespace{/if}</h1>
+	<h1>{if $namespace != 'None'}Namespace {$namespace|namespaceLinks:false|noescape}{else}No namespace{/if}</h1>
 
 	<table class="summary" id="namespaces" n:if="$subnamespaces">
 	<caption>Namespaces summary</caption>

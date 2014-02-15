@@ -12,25 +12,25 @@ the file LICENSE.md that was distributed with this source code.
 {layout '@layout.latte'}
 {var $active = 'constant'}
 
-{block #title}{if $constant->deprecated}Deprecated {/if}Constant {$constant->name}{/block}
+{block title}{if $constant->deprecated}Deprecated {/if}Constant {$constant->name}{/block}
 
-{block #content}
+{block content}
 <div id="content" class="constant">
 	<h1 n:class="$constant->deprecated ? deprecated">Constant {$constant->shortName}</h1>
 
 	{if $constant->valid}
 
 	<div class="description" n:if="$template->longDescription($constant)">
-	{!$constant|longDescription}
+	{$constant|longDescription|noescape}
 	</div>
 
 	<div class="alert alert-info">
-		{if $constant->inNamespace()}<b>Namespace:</b> {!$constant->namespaceName|namespaceLinks}<br>{/if}
-		{if $constant->inPackage()}<b>Package:</b> {!$constant->packageName|packageLinks}<br>{/if}
+		{if $constant->inNamespace()}<b>Namespace:</b> {$constant->namespaceName|namespaceLinks|noescape}<br>{/if}
+		{if $constant->inPackage()}<b>Package:</b> {$constant->packageName|packageLinks|noescape}<br>{/if}
 		{foreach $template->annotationSort($template->annotationFilter($constant->annotations, array('var'))) as $annotation => $values}
 			{foreach $values as $value}
 				<b>{$annotation|annotationBeautify}{if $value}:{/if}</b>
-				{!$value|annotation:$annotation:$constant}<br>
+				{$value|annotation:$annotation:$constant|noescape}<br>
 			{/foreach}
 		{/foreach}
 		<b>Located at</b> <a n:tag-if="$config->sourceCode" href="{$constant|sourceUrl}" title="Go to source code">{$constant->fileName|relativePath}</a><br>
@@ -41,10 +41,10 @@ the file LICENSE.md that was distributed with this source code.
 	<h2>Value summary</h2>
 	<table class="summary table table-bordered table-striped" id="vars">
 	<tr>
-		<td class="name"><code>{!$constant->typeHint|typeLinks:$constant}</code></td>
+		<td class="name"><code>{$constant->typeHint|typeLinks:$constant|noescape}</code></td>
 		<td class="value">{block|strip}
 			{var $element = $template->resolveElement($constant->valueDefinition, $constant)}
-			{if $element}<a href="{$element|constantUrl}">{$constant->valueDefinition}</a>{else}<code>{!$constant->valueDefinition|highlightValue:$constant}</code>{/if}
+			{if $element}<a href="{$element|constantUrl}">{$constant->valueDefinition}</a>{else}<code>{$constant->valueDefinition|highlightValue:$constant|noescape}</code>{/if}
 		{/block}</td>
 		<td>{ifset $annotations['var']}{!$annotations['var'][0]|description:$constant}{/ifset}</td>
 	</tr>

@@ -17,5 +17,5 @@ ApiGen.config = {$config->template};
 {var $dir = dirname($template->getFile())}
 
 {foreach $scripts as $script}
-{!file_get_contents("$dir/js/$script")}
+{file_get_contents("$dir/js/$script")|noescape}
 {/foreach}

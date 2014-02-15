@@ -11,11 +11,11 @@ the file LICENSE.md that was distributed with this source code.
 {layout '@layout.latte'}
 {var $active = 'overview'}
 
-{block #title}{$config->title ?: 'Overview'}{/block}
+{block title}{$config->title ?: 'Overview'}{/block}
 
-{block #content}
+{block content}
 <div id="content">
-	<h1>{include #title}</h1>
+	<h1>{include title}</h1>
 
 	{var $group = false}
 
