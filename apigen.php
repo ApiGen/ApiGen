@@ -27,7 +27,7 @@ if (false === strpos('@php_dir@', '@php_dir')) {
 	// PEAR package
 
 	@include '@php_dir@/Nette/loader.php';
-	@include '@php_dir@/Texy/texy.php';
+	@include '@php_dir@/src/Texy/texy.php';
 
 	spl_autoload_register(function($class) {
 		$class = trim($class, '\\');
@@ -48,7 +48,7 @@ if (false === strpos('@php_dir@', '@php_dir')) {
 	);
 
 	@include __DIR__ . '/libs/Nette/Nette/loader.php';
-	@include __DIR__ . '/libs/Texy/texy/texy.php';
+	@include __DIR__ . '/libs/Texy/src/texy.php';
 
 	spl_autoload_register(function($class) {
 		$class = trim($class, '\\');
