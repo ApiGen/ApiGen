@@ -102,7 +102,7 @@ the file LICENSE.md that was distributed with this source code.
 			<ul>
 				{foreach $groups as $group}
 				{var $nextLevel = substr_count($iterator->nextValue, '\\') > substr_count($group, '\\')}
-				<li n:class="$actualGroup === $group || 0 === strpos($actualGroup, $group . '\\') ? active, $config->main && 0 === strpos($group, $config->main) ? main"><a href="{$group|groupUrl}">{$group|subgroupName}{if $nextLevel}<span></span>{/if}</a>
+				<li n:class="$actualGroup === $group || 0 === strpos($actualGroup, $group . '\\') ? active, $config->main && 0 === strpos($group, $config->main) ? main"><a href="{if $groupType=='package'}{$group|packageUrl}{else}{$group|namespaceUrl}{/if}">{$group|subgroupName}{if $nextLevel}<span></span>{/if}</a>
 					{if $nextLevel}
 						<ul>
 					{else}
@@ -118,10 +118,11 @@ the file LICENSE.md that was distributed with this source code.
 		<div id="groups">
 			{if $namespaces}
 			<h3>Namespaces</h3>
-			{include #group, groups => $namespaces, actualGroup => $namespace}
-			{elseif $packages}
+			{include #group, groups => $namespaces, actualGroup => $namespace, groupType => 'namespace'}
+			{/if}
+			{if $packages}
 			<h3>Packages</h3>
-			{include #group, groups => $packages, actualGroup => $package}
+			{include #group, groups => $packages, actualGroup => $package, groupType => 'package'}
 			{/if}
 		</div>
 

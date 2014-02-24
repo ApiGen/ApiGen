@@ -532,17 +532,18 @@ class Generator extends Object implements IGenerator
 		$userPackagesCount = count(array_diff(array_keys($this->packages), array('PHP', 'None')));
 		$userNamespacesCount = count(array_diff(array_keys($this->namespaces), array('PHP', 'None')));
 
-		$namespacesEnabled = ('auto' === $this->config->groups && ($userNamespacesCount > 0 || 0 === $userPackagesCount)) || 'namespaces' === $this->config->groups;
-		$packagesEnabled = ('auto' === $this->config->groups && !$namespacesEnabled) || 'packages' === $this->config->groups;
+		$namespacesEnabled = ('auto' === $this->config->groups && ($userNamespacesCount > 0 || 0 === $userPackagesCount)) || 'namespaces' === $this->config->groups || 'all' === $this->config->groups;
+		$packagesEnabled = ('auto' === $this->config->groups && !$namespacesEnabled) || 'packages' === $this->config->groups || 'all' === $this->config->groups;
 
 		if ($namespacesEnabled) {
-			$this->packages = array();
 			$this->namespaces = $this->sortGroups($this->namespaces);
-		} elseif ($packagesEnabled) {
-			$this->namespaces = array();
-			$this->packages = $this->sortGroups($this->packages);
 		} else {
 			$this->namespaces = array();
+		}
+
+		if ($packagesEnabled) {
+			$this->packages = $this->sortGroups($this->packages);
+		} else {
 			$this->packages = array();
 		}
 

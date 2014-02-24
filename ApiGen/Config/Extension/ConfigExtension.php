@@ -91,7 +91,7 @@ final class ConfigExtension extends CompilerExtension
 	 * @var array
 	 */
 	private $possibleOptionsValues = array(
-		'groups' => array('auto', 'namespaces', 'packages', 'none'),
+		'groups' => array('auto', 'all', 'namespaces', 'packages', 'none'),
 		'autocomplete' => array('classes', 'constants', 'functions', 'methods', 'properties', 'classconstants'),
 		'accessLevels' => array('public', 'protected', 'private')
 	);
