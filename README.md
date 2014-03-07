@@ -118,7 +118,7 @@ List of allowed file extensions, default is "php".
 
 ```--exclude <mask>```
 
-Directories and files matching this file mask will not be parsed. You can exclude for example tests from processing this way. This parameter is case sensitive and can be used multiple times.
+Directories and files matching this file mask will not be parsed. You can exclude for example tests from processing this way using array syntax (`[path1, path2]`). This parameter is case sensitive.
 
 ```--skip-doc-path <mask>```
 ```--skip-doc-prefix <value>```
