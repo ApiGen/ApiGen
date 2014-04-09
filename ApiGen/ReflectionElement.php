@@ -313,6 +313,8 @@ abstract class ReflectionElement extends ReflectionBase
 			static $fileLevel = array('package' => true, 'subpackage' => true, 'author' => true, 'license' => true, 'copyright' => true);
 
 			$annotations = $this->reflection->getAnnotations();
+            $annotations = array_change_key_case($annotations, CASE_LOWER);
+
 			unset($annotations[\TokenReflection\ReflectionAnnotation::SHORT_DESCRIPTION]);
 			unset($annotations[\TokenReflection\ReflectionAnnotation::LONG_DESCRIPTION]);
 
