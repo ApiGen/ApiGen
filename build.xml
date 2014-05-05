@@ -133,7 +133,7 @@
 			<zipfileset dir="ApiGen" prefix="apigen/ApiGen" />
 			<zipfileset dir="vendor/FSHL" includes="FSHL/**/*, LICENSE" prefix="apigen/vendor/FSHL" />
 			<zipfileset dir="vendor/Nette" includes="Nette/**/*, license.txt" prefix="apigen/vendor/Nette" />
-			<zipfileset dir="vendor/Texy" includes="texy/**/*, license.txt" prefix="apigen/vendor/Texy" />
+			<zipfileset dir="vendor/Parsedown" includes="Parsedown/**/*, license.txt" prefix="apigen/vendor/Parsedown" />
 			<zipfileset dir="vendor/TokenReflection" includes="TokenReflection/**/*, LICENSE" prefix="apigen/vendor/TokenReflection" />
 			<zipfileset dir="templates" prefix="apigen/templates" />
 			<zipfileset dir="." includes="apigen.bat, apigen.neon.example, apigen.php, CHANGELOG.md, LICENSE.md, README.md" prefix="apigen" />

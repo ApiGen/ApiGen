@@ -54,7 +54,7 @@ class Template extends Nette\Templating\FileTemplate
 		$this->generator = $generator;
 		$this->config = $generator->getConfig();
 		// @todo DI
-		$this->markup = new TexyMarkup($this->config->allowedHtml, $highlighter);
+		$this->markup = new ParsedownMarkup($this->config->allowedHtml, $highlighter);
 
 		$that = $this;
 
@@ -663,7 +663,7 @@ class Template extends Nette\Templating\FileTemplate
 	{
 		$that = $this;
 		return preg_replace_callback('~{@(?:link|see)\\s+([^}]+)}~', function ($matches) use ($context, $that) {
-			// Texy already added <a> so it has to be stripped
+			// Markup already added <a> so it has to be stripped
 			list($url, $description) = $that->split(strip_tags($matches[1]));
 			if (Nette\Utils\Validators::isUrl($url)) {
 				return $that->link($url, $description ?: $url);

@@ -79,7 +79,7 @@ final class ApiGenExtension extends CompilerExtension
 
 		// Markup
 		$container->addDefinition('markup')
-			->setClass('ApiGen\\TexyMarkup', array($config['allowedHtml'], '@sourceCodeHighlighter'));
+			->setClass('ApiGen\\ParsedownMarkup', array($config['allowedHtml'], '@sourceCodeHighlighter'));
 
 		// Generator
 		$container->addDefinition('generator')
