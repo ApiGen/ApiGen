@@ -35,6 +35,6 @@ class ParsedownMarkup implements IMarkup
 
 	public function block($text)
 	{
-		return preg_replace_callback('|<code>(.+?)</code>|', $this->callback, $this->pd->text($text));
+		return preg_replace_callback('|<code>(.+?)</code>|s', $this->callback, $this->pd->text($text));
 	}
 }
