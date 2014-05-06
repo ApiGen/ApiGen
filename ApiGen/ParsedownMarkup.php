@@ -18,23 +18,28 @@ use Parsedown;
 class ParsedownMarkup implements IMarkup
 {
 	private $pd;
-	private $callback;
+	private $highlight;
 
 	public function __construct(Config\Configuration $allowedHtml, ISourceCodeHighlighter $highlighter)
 	{
 		$this->pd = new Parsedown();
-		$this->callback = function($matches) use ($highlighter) {
-			return '<code>' . $highlighter->highlight($matches[1]) . '</code>';
+
+		$this->highlight = function($matches) use ($highlighter) {
+			return '<code>' .
+			       htmlspecialchars_decode($highlighter->highlight($matches[1]), ENT_NOQUOTES) .
+			       '</code>';
 		};
 	}
 
 	public function line($line)
 	{
-		return preg_replace_callback('|<code>(.+?)</code>|', $this->callback, $this->pd->line($line));
+		return $this->pd->line($line);
 	}
 
 	public function block($text)
 	{
-		return preg_replace_callback('|<code>(.+?)</code>|s', $this->callback, $this->pd->text($text));
+		$content = $this->pd->text($text);
+		$content = preg_replace_callback('~<code>(.+?)</code>~s', $this->highlight, $content);
+		return $content;
 	}
 }
