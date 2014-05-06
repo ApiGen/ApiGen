@@ -70,6 +70,7 @@ class Environment
 			// PEAR package
 			@include 'Nette/loader.php';
 			@include 'Texy/texy.php';
+			@include 'Parsedown/Parsedown.php';
 		} elseif (static::isComposerPackage()) {
 			// Composer package
 
@@ -77,6 +78,7 @@ class Environment
 
 			@include $vendorDir . '/nette/nette/Nette/loader.php';
 			@include $vendorDir . '/dg/texy/Texy/Texy.php';
+			@include $vendorDir . '/erusev/parsedown/Parsedown.php';
 
 			set_include_path(
 				$vendorDir . '/kukulich/fshl' . PATH_SEPARATOR .
@@ -91,6 +93,7 @@ class Environment
 
 			@include $vendorDir . '/Nette/Nette/loader.php';
 			@include $vendorDir . '/Texy/texy/texy.php';
+			@include $vendorDir . '/Parsedown/Parsedown.php';
 
 			set_include_path(
 				$vendorDir . '/FSHL' . PATH_SEPARATOR .
@@ -119,6 +122,9 @@ class Environment
 		}
 		if (!class_exists('Texy')) {
 			throw new \Exception('Could not find Texy! library', 3);
+		}
+		if (!class_exists('Parsedown')) {
+			throw new \Exception('Could not find Parsedown library', 3);
 		}
 		if (!class_exists('FSHL\\Highlighter')) {
 			throw new \Exception('Could not find FSHL library', 3);
