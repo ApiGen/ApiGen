@@ -54,7 +54,10 @@ class Template extends Nette\Templating\FileTemplate
 		$this->generator = $generator;
 		$this->config = $generator->getConfig();
 		// @todo DI
-		$this->markup = new ParsedownMarkup($this->config->allowedHtml, $highlighter);
+		if($this->config->markdown)
+			$this->markup = new ParsedownMarkup($this->config->allowedHtml, $highlighter);
+		else
+			$this->markup = new TexyMarkup($this->config->allowedHtml, $highlighter);
 
 		$that = $this;
 

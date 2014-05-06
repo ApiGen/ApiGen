@@ -56,6 +56,7 @@ final class ConfigExtension extends CompilerExtension
 		'todo' => false,
 		'download' => false,
 		'sourceCode' => true,
+		'markdown' => false,
 		'report' => '',
 		'undocumented' => '',
 		'wipeout' => true,

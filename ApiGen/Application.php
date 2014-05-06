@@ -267,6 +267,7 @@ Options:
 	--deprecated       <yes|no>    Generate documentation for deprecated elements, default "no"
 	--todo             <yes|no>    Generate documentation of tasks, default "no"
 	--source-code      <yes|no>    Generate highlighted source code files, default "yes"
+	--markdown         <yes|no>    Parse text as Markdown, default "no"
 	--download         <yes|no>    Add a link to download documentation as a ZIP archive, default "no"
 	--report           <file>      Save a checkstyle report of poorly documented elements into a file
 	--wipeout          <yes|no>    Wipe out the destination directory first, default "yes"

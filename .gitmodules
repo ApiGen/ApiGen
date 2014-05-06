@@ -4,6 +4,9 @@
 [submodule "vendor/Nette"]
 	path = vendor/Nette
 	url = git://github.com/nette/nette.git
+[submodule "vendor/Texy"]
+	path = vendor/Texy
+	url = git://github.com/dg/texy.git
 [submodule "vendor/Parsedown"]
 	path = vendor/Parsedown
 	url = git://github.com/erusev/parsedown.git
