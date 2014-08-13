@@ -23,17 +23,7 @@ if (!ini_get('date.timezone')) {
 	date_default_timezone_set('UTC');
 }
 
-if (false === strpos('@php_dir@', '@php_dir')) {
-	// PEAR package
-
-	@include '@php_dir@/Nette/loader.php';
-	@include '@php_dir@/src/Texy/texy.php';
-
-	spl_autoload_register(function($class) {
-		$class = trim($class, '\\');
-		require sprintf('%s.php', str_replace('\\', DIRECTORY_SEPARATOR, $class));
-	});
-} elseif (is_file($composerAutoload = __DIR__ . '/../../autoload.php')) {
+if (is_file($composerAutoload = __DIR__ . '/../../autoload.php')) {
 	// Composer package
 
 	@include $composerAutoload;
