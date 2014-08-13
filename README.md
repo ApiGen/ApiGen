@@ -4,9 +4,12 @@ ApiGen is the tool for creating professional API documentation from PHP source c
 
 ApiGen has support for PHP 5.3 namespaces, packages, linking between documentation, cross referencing to PHP standard classes and general documentation, creation of highlighted source code and experimental support for PHP 5.4 **traits**.
 
+
 ## Support & Bug Reports ##
 
-For all support questions please use our [mailing list](https://groups.google.com/group/apigen). For bug reports and issues the [issue tracker](https://github.com/apigen/apigen/issues) is available. Changes between versions are described in the [change log](https://github.com/apigen/apigen/blob/master/CHANGELOG.md).
+For bug reports and issues the [issue tracker](https://github.com/apigen/apigen/issues) is available.
+Changes between versions are described in the [change log](https://github.com/apigen/apigen/blob/master/CHANGELOG.md).
+
 
 ## Features ##
 
@@ -35,33 +38,16 @@ For all support questions please use our [mailing list](https://groups.google.co
 * Support for different charsets and line endings.
 * Lots of configuration options (see below).
 
+
 ## Installation ##
 
-The preferred installation way is using the standalone package but there are three more ways how to install ApiGen.
+The best way to install ApiGen is using [Composer](https://getcomposer.org/).
 
-### Standalone package ###
 
-To download the actual release visit the [Downloads section](https://github.com/apigen/apigen/downloads). There you find separate packages for each release in two formats - zip and tar.gz. These packages are prepared by the ApiGen team and are truly standalone; they contain all required libraries in appropriate versions. You just need to extract the contents of an archive and you can start using ApiGen.
-
-### Composer ###
-
-Just create a `composer.json` file and run the `php composer.phar install` command to install it:
-
-```
-{
-	"require-dev": {
-		"apigen/apigen": "~2.8.0"
-	}
-}
+```sh
+$ composer require apigen/apigen:~2.8 --dev
 ```
 
-### GitHub built archive ###
-
-GitHub allows you to download any repository as a zip or tar.gz archive. You can use this feature to download an archive with the current version of ApiGen. However this approach has one disadvantage. Such archive (in contrast to the standalone packages) does not contain required libraries. They are included as git submodules in the repository and GitHub simply ignores them when generating the archive. It means that you will have to obtain required libraries manually.
-
-### Cloning the repository ###
-
-The last way how to install ApiGen is simply to clone our repository. If you do so, remember to fetch and rebase to get new versions and do not forget to update submodules in the libs directory.
 
 ## Usage ##
 
