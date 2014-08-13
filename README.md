@@ -52,8 +52,8 @@ $ composer require apigen/apigen:~2.8 --dev
 ## Usage ##
 
 ```
-	apigen --config <path> [options]
-	apigen --source <path> --destination <path> [options]
+apigen --config <path> [options]
+apigen --source <path> --destination <path> [options]
 ```
 
 As you can see, you can use ApiGen either by providing individual parameters via the command line or using a config file. Moreover you can combine the two methods and the command line parameters will have precedence over those in the config file.
@@ -61,6 +61,7 @@ As you can see, you can use ApiGen either by providing individual parameters via
 Every configuration option has to be followed by its value. And it is exactly the same to write ```--config=file.conf``` and ```--config file.conf```. The only exceptions are boolean options (those with yes|no values). When using these options on the command line you do not have to provide the "yes" value explicitly. If ommited, it is assumed that you wanted to turn the option on. So using ```--debug=yes``` and ```--debug``` does exactly the same (and the opposite is ```--debug=no```).
 
 Some options can have multiple values. To do so, you can either use them multiple times or separate their values by a comma. It means that ```--source=file1.php --source=file2.php``` and ```--source=file1.php,file2.php``` is exactly the same.
+
 
 ### Options ###
 
@@ -195,6 +196,7 @@ Display the list of possible options.
 
 Only ```--source``` and ```--destination``` parameters are required. You can provide them via command line or a configuration file.
 
+
 ### Config files ###
 
 Instead of providing individual parameters via the command line, you can prepare a config file for later use. You can use all the above listed parameters (with one exception: the ```--config``` option) only without dashes and with an uppercase letter after each dash (so ```--access-level``` becomes ```accessLevel```).
@@ -204,7 +206,7 @@ ApiGen uses the [NEON file format](http://ne-on.org) for all its config files. Y
 Then you can call ApiGen with a single parameter ```--config``` specifying the config file to load.
 
 ```
-	apigen --config <path> [options]
+apigen --config <path> [options]
 ```
 
 Even when using a config file, you can still provide additional parameters via the command line. Such parameters will have precedence over parameters from the config file.
@@ -213,13 +215,15 @@ Keep in mind, that any values in the config file will be **overwritten** by valu
 
 If you provide no command line parameters at all, ApiGen will try to load a default config file called ```apigen.neon``` in the current working directory. If found it will work as if you used the ```--config``` option. Note that when using any command line option, you have to specify the config file if you have one. ApiGen will try to load one automatically only when no command line parameters are used. Option names have to be in camelCase in config files (```--template-config``` on the command line becomes ```templateConfig``` in a config file). You can see a full list of configuration options with short descriptions in the example config file [apigen.neon.example](https://github.com/apigen/apigen/blob/master/apigen.neon.example).
 
+
 ### Example ###
 
 We are generating documentation for the Nella Framework. We want Nette and Doctrine to be parsed as well because we want their classes to appear in class trees, lists of parent classes and their members in lists of inherited properties, methods and constants. However we do not want to generate their full documentation along with highlighted source codes. And we do not want to process any "test" directories, because there might be classes that do not belong to the project actually.
 
 ```
-	apigen --source ~/nella/Nella --source ~/doctrine2/lib/Doctrine --source ~/doctrine2/lib/vendor --source ~/nette/Nette --skip-doc-path "~/doctrine2/*" --skip-doc-prefix Nette --exclude "*/tests/*" --destination ~/docs/ --title "Nella Framework"
+apigen --source ~/nella/Nella --source ~/doctrine2/lib/Doctrine --source ~/doctrine2/lib/vendor --source ~/nette/Nette --skip-doc-path "~/doctrine2/*" --skip-doc-prefix Nette --exclude "*/tests/*" --destination ~/docs/ --title "Nella Framework"
 ```
+
 
 ## Requirements ##
 
@@ -227,16 +231,18 @@ ApiGen requires PHP 5.3 or later. Four libraries it uses ([Nette](https://github
 
 When generating documentation of large libraries (Zend Framework for example) we recommend not to have the Xdebug PHP extension loaded (it does not need to be used, it significantly slows down the generating process even when only loaded).
 
+
 ## Authors ##
 
 * [Jaroslav Hanslík](https://github.com/kukulich)
 * [Ondřej Nešpor](https://github.com/Andrewsville)
 * [David Grudl](https://github.com/dg)
 
+
 ## Usage examples ##
 
-* [Doctrine](http://www.doctrine-project.org/api/orm/2.2/index.html)
-* [Nette Framework](http://api.nette.org/2.0/)
+* [Doctrine](http://www.doctrine-project.org/api/orm/2.4/index.html)
+* [Nette Framework](http://api.nette.org/)
 * [TokenReflection library](http://andrewsville.github.com/PHP-Token-Reflection/)
 * [FSHL library](http://fshl.kukulich.cz/api/)
 * [Nella Framework](http://api.nellafw.org/)
