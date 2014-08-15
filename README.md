@@ -232,13 +232,6 @@ ApiGen requires PHP 5.3 or later. Four libraries it uses ([Nette](https://github
 When generating documentation of large libraries (Zend Framework for example) we recommend not to have the Xdebug PHP extension loaded (it does not need to be used, it significantly slows down the generating process even when only loaded).
 
 
-## Authors ##
-
-* [Jaroslav Hanslík](https://github.com/kukulich)
-* [Ondřej Nešpor](https://github.com/Andrewsville)
-* [David Grudl](https://github.com/dg)
-
-
 ## Usage examples ##
 
 * [Doctrine](http://www.doctrine-project.org/api/orm/2.4/index.html)
