@@ -45,7 +45,7 @@
 		}
 	},
 	"bin": [
-		"apigen.php"
+		"apigen"
 	],
 	"extra": {
 		"branch-alias": {

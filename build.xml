@@ -32,7 +32,7 @@
 			<arg value="-l" />
 
 			<fileset dir="${sourcedir}" />
-			<fileset file="${basedir}/apigen.php" />
+			<fileset file="${basedir}/apigen" />
 		</apply>
 	</target>
 
@@ -41,13 +41,13 @@
 			<arg value="--jdepend-xml=${builddir}/logs/jdepend.xml" />
 			<arg value="--jdepend-chart=${builddir}/pdepend/dependencies.svg" />
 			<arg value="--overview-pyramid=${builddir}/pdepend/overview-pyramid.svg" />
-			<arg value="${sourcedir},${basedir}/apigen.php" />
+			<arg value="${sourcedir},${basedir}/apigen" />
 		</exec>
 	</target>
 
 	<target name="phpmd" description="Find duplicate code using PHPCPD">
 		<exec executable="phpmd${executableExtension}">
-			<arg value="${sourcedir},${basedir}/apigen.php" />
+			<arg value="${sourcedir},${basedir}/apigen" />
 			<arg value="xml" />
 			<arg path="${builddir}/phpmd.xml" />
 			<arg value="--reportfile" />
@@ -60,7 +60,7 @@
 			<arg value="--log-pmd" />
 			<arg path="${builddir}/logs/pmd-cpd.xml" />
 			<arg path="${sourcedir}" />
-			<arg path="${basedir}/apigen.php" />
+			<arg path="${basedir}/apigen" />
 		</exec>
 	</target>
 
@@ -69,7 +69,7 @@
 			<arg value="--log-csv" />
 			<arg path="${builddir}/logs/phploc.csv" />
 			<arg path="${sourcedir}" />
-			<arg path="${basedir}/apigen.php" />
+			<arg path="${basedir}/apigen" />
 		</exec>
 	</target>
 
@@ -82,7 +82,7 @@
 			<arg value="--report-file=${builddir}/logs/checkstyle.xml" />
 			<arg value="--ignore=jquery" />
 			<arg path="${sourcedir}" />
-			<arg path="${basedir}/apigen.php" />
+			<arg path="${basedir}/apigen" />
 			<arg path="${basedir}/templates" />
 		</exec>
 	</target>
@@ -92,7 +92,7 @@
 			<arg value="--source" />
 			<arg path="${sourcedir}" />
 			<arg value="--source" />
-			<arg path="${basedir}/apigen.php" />
+			<arg path="${basedir}/apigen" />
 			<arg value="--destination" />
 			<arg path="${builddir}/api" />
 			<arg value="--report" />
@@ -110,7 +110,7 @@
 			<arg value="--source" />
 			<arg path="${sourcedir}" />
 			<arg value="--source" />
-			<arg path="${basedir}/apigen.php" />
+			<arg path="${basedir}/apigen" />
 			<arg value="--source" />
 			<arg path="${basedir}/templates" />
 			<arg value="--exclude" />
@@ -131,7 +131,7 @@
 			<zipfileset dir="libs/Texy" includes="texy/**/*, license.txt" prefix="apigen/libs/Texy" />
 			<zipfileset dir="libs/TokenReflection" includes="TokenReflection/**/*, LICENSE" prefix="apigen/libs/TokenReflection" />
 			<zipfileset dir="templates" prefix="apigen/templates" />
-			<zipfileset dir="." includes="apigen.bat, apigen.neon.example, apigen.php, CHANGELOG.md, LICENSE.md, README.md" prefix="apigen" />
+			<zipfileset dir="." includes="apigen.bat, apigen.neon.example, apigen, CHANGELOG.md, LICENSE.md, README.md" prefix="apigen" />
 		</zip>
 
 		<tar destfile="${releasedir}/${ant.project.name}-${version}-standalone.tar.gz" compression="gzip">
