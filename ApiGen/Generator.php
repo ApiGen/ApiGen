@@ -407,6 +407,7 @@ class Generator extends Nette\Object
 		$template->generator = self::NAME;
 		$template->version = self::VERSION;
 		$template->config = $this->config;
+		$template->basePath = dirname($this->config->templateConfig);
 
 		$this->registerCustomTemplateMacros($template);
 
