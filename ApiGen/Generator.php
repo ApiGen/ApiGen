@@ -815,7 +815,7 @@ class Generator extends Nette\Object
 					$annotations = $element->getAnnotations();
 
 					// Documentation
-					if (empty($element->shortDescription)) {
+					if (empty($element->longDescription)) {
 						if (empty($annotations)) {
 							$list[$fileName][] = array('error', $line, sprintf('Missing documentation of %s', $label));
 							continue;
