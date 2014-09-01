@@ -865,6 +865,9 @@ class ReflectionClass extends ReflectionElement
 	{
 		$classes = self::$parsedClasses;
 		return array_map(function(IReflectionClass $class) use ($classes) {
+			if (!isset($classes[$class->getName()])) {
+				throw new InvalidArgumentException(sprintf('The class %s is in use but has not been found in the defined sources.', $class->getName()));
+			}
 			return $classes[$class->getName()];
 		}, $this->reflection->getOwnTraits());
 	}
