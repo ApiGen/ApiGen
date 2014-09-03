@@ -1,11 +1,11 @@
 The MIT License
 ---------------
 
-Copyright (c) 2010 [David Grudl](http://davidgrudl.com)
-Copyright (c) 2011 [Jaroslav Hanslík](https://github.com/kukulich)
-Copyright (c) 2011 [Ondřej Nešpor](https://github.com/Andrewsville)
-Copyright (c) 2012 [Olivier Laviale](https://github.com/olvlvl)
-Copyright (c) 2014 [Tomáš Votruba](http://tomasvotruba.cz)
+- Copyright (c) 2010 [David Grudl](http://davidgrudl.com)
+- Copyright (c) 2011 [Jaroslav Hanslík](https://github.com/kukulich)
+- Copyright (c) 2011 [Ondřej Nešpor](https://github.com/Andrewsville)
+- Copyright (c) 2012 [Olivier Laviale](https://github.com/olvlvl)
+- Copyright (c) 2014 [Tomáš Votruba](http://tomasvotruba.cz)
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
