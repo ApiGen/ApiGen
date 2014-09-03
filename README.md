@@ -1,4 +1,4 @@
-# ApiGen - PHP source code API documentation generator
+# ApiGen - PHP source code API generator
 
 **[WIP] In renewal process, stay tuned.**
 
