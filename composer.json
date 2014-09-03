@@ -2,7 +2,7 @@
 	"name": "apigen/apigen",
 	"description": "PHP source code API generator",
 	"type": "project",
-	"keywords": ["documentation", "docblock", "phpdoc", "phpdocumentor", "generator", "api"],
+	"keywords": ["documentation", "phpdoc", "generator", "api"],
 	"homepage": "http://apigen.org/",
 	"license": "MIT",
 	"authors": [
@@ -47,5 +47,10 @@
 	},
 	"bin": [
 		"apigen"
-	]
+	],
+	"extra": {
+		"branch-alias": {
+			"dev-develop": "3.0.0-dev"
+		}
+	}
 }
