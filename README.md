@@ -1,82 +1,60 @@
-# Welcome to ApiGen #
+# ApiGen - PHP source code API documentation generator
 
-ApiGen is the tool for creating professional API documentation from PHP source code, similar to discontinued phpDocumentor/phpDoc.
+**[WIP] In renewal process, stay tuned.**
 
-ApiGen has support for PHP 5.3 namespaces, packages, linking between documentation, cross referencing to PHP standard classes and general documentation, creation of highlighted source code and experimental support for PHP 5.4 **traits**.
+So what's the output? Look at [Doctrine ORM API](http://www.doctrine-project.org/api/orm/2.4/), [Nette API](http://api.nette.org/) or [Kdyby API](https://api.kdyby.org).
 
-## Support & Bug Reports ##
 
-For all support questions please use our [mailing list](https://groups.google.com/group/apigen). For bug reports and issues the [issue tracker](https://github.com/apigen/apigen/issues) is available. Changes between versions are described in the [change log](https://github.com/apigen/apigen/blob/master/CHANGELOG.md).
+## Features
 
-## Features ##
-
-* Our own [TokenReflection library](https://github.com/Andrewsville/PHP-Token-Reflection) is used to describe the source code. It is **safe** (documented source code does not get included and thus parsed) and **simple** (you do not need to include or autoload all libraries you use in your source code).
-* Detailed documentation of classes, functions and constants.
-* Highlighted source code.
-* Support of namespaces and packages with subpackages.
-* Experimental support of traits.
-* A page with trees of classes, interfaces, traits and exceptions.
-* A page with a list of deprecated elements.
-* A page with Todo tasks.
-* Link to download documentation as ZIP archive.
-* Checkstyle report of poorly documented elements.
-* Support for docblock templates.
-* Support for @inheritdoc.
-* Support for {@link}.
+* Detailed documentation of classes, functions and constants
+* [Highlighted source code](http://api.nette.org/source-Application.UI.Form.php.html)
+* Experimental support of [traits](https://api.kdyby.org/class-Nextras.Application.UI.SecuredLinksControlTrait.html).
+* A page with:
+    - [trees of classes, interfaces, traits and exceptions](https://api.kdyby.org/tree.html)
+	- [list of deprecated elements](http://api.nette.org/deprecated.html)
+	- Todo tasks
+* Support for:
+    - docblock templates
+	- @inheritdoc
+	- {@link}
 * Active links in @see and @uses tags.
-* Documentation of used internal PHP classes.
-* Links to the start line in the highlighted source code for every described element.
-* List of direct and indirect known subclasses, implementers and users for every class/interface/trait/exception.
-* Check for a new version.
+* Links to internal PHP classes and PHP documentation.
+* [Links to the start line](http://api.nette.org/2.2.3/Nette.Application.UI.Control.html#_redrawControl) in the highlighted source code for every described element.
+* [List of known subclasses and implementers](https://api.kdyby.org/class-Kdyby.Doctrine.EntityRepository.html)
 * Google CSE support with suggest.
 * Google Analytics support.
-* Support for multiple/custom templates.
-* Sitemap and opensearch support.
-* Support for different charsets and line endings.
-* Lots of configuration options (see below).
+* Support for custom templates.
 
-## Installation ##
 
-The preferred installation way is using the standalone package but there are three more ways how to install ApiGen.
+## Installation
 
-### Standalone package ###
+The best way to install Apigen is via [Composer](https://getcomposer.org/):
 
-To download the actual release visit the [Downloads section](https://github.com/apigen/apigen/downloads). There you find separate packages for each release in two formats - zip and tar.gz. These packages are prepared by the ApiGen team and are truly standalone; they contain all required libraries in appropriate versions. You just need to extract the contents of an archive and you can start using ApiGen.
-
-### Composer ###
-
-Just create a `composer.json` file and run the `php composer.phar install` command to install it:
-
-```
-{
-	"require-dev": {
-		"apigen/apigen": "~2.8.0"
-	}
-}
+```sh
+$ composer require apigen/apigen:~2.8.1 --dev
 ```
 
-### GitHub built archive ###
 
-GitHub allows you to download any repository as a zip or tar.gz archive. You can use this feature to download an archive with the current version of ApiGen. However this approach has one disadvantage. Such archive (in contrast to the standalone packages) does not contain required libraries. They are included as git submodules in the repository and GitHub simply ignores them when generating the archive. It means that you will have to obtain required libraries manually.
-
-### Cloning the repository ###
-
-The last way how to install ApiGen is simply to clone our repository. If you do so, remember to fetch and rebase to get new versions and do not forget to update submodules in the libs directory.
-
-## Usage ##
+## Usage
 
 ```
-	apigen --config <path> [options]
-	apigen --source <path> --destination <path> [options]
+apigen --config <path> [options]
+apigen --source <path> --destination <path> [options]
 ```
 
-As you can see, you can use ApiGen either by providing individual parameters via the command line or using a config file. Moreover you can combine the two methods and the command line parameters will have precedence over those in the config file.
+As you can see, you can use ApiGen either by providing individual parameters via the command line or using a config file.
+Moreover you can combine the two methods and the command line parameters will have precedence over those in the config file.
 
-Every configuration option has to be followed by its value. And it is exactly the same to write ```--config=file.conf``` and ```--config file.conf```. The only exceptions are boolean options (those with yes|no values). When using these options on the command line you do not have to provide the "yes" value explicitly. If ommited, it is assumed that you wanted to turn the option on. So using ```--debug=yes``` and ```--debug``` does exactly the same (and the opposite is ```--debug=no```).
+Every configuration option has to be followed by its value. And it is exactly the same to write ```--config=file.conf``` and ```--config file.conf```. The only exceptions are boolean options (those with yes|no values). When using these options on the command line you do not have to provide the "yes" value explicitly. If omitted, it is assumed that you wanted to turn the option on. So using ```--debug=yes``` and ```--debug``` does exactly the same (and the opposite is ```--debug=no```).
 
-Some options can have multiple values. To do so, you can either use them multiple times or separate their values by a comma. It means that ```--source=file1.php --source=file2.php``` and ```--source=file1.php,file2.php``` is exactly the same.
+Some options can have multiple values:
 
-### Options ###
+* ```--source=file1.php --source=file2.php```
+* ```--source=file1.php,file2.php```
+
+
+### Options
 
 ```--config|-c <file>```
 
@@ -209,7 +187,8 @@ Display the list of possible options.
 
 Only ```--source``` and ```--destination``` parameters are required. You can provide them via command line or a configuration file.
 
-### Config files ###
+
+### Config files
 
 Instead of providing individual parameters via the command line, you can prepare a config file for later use. You can use all the above listed parameters (with one exception: the ```--config``` option) only without dashes and with an uppercase letter after each dash (so ```--access-level``` becomes ```accessLevel```).
 
@@ -218,7 +197,7 @@ ApiGen uses the [NEON file format](http://ne-on.org) for all its config files. Y
 Then you can call ApiGen with a single parameter ```--config``` specifying the config file to load.
 
 ```
-	apigen --config <path> [options]
+apigen --config <path> [options]
 ```
 
 Even when using a config file, you can still provide additional parameters via the command line. Such parameters will have precedence over parameters from the config file.
@@ -227,33 +206,5 @@ Keep in mind, that any values in the config file will be **overwritten** by valu
 
 If you provide no command line parameters at all, ApiGen will try to load a default config file called ```apigen.neon``` in the current working directory. If found it will work as if you used the ```--config``` option. Note that when using any command line option, you have to specify the config file if you have one. ApiGen will try to load one automatically only when no command line parameters are used. Option names have to be in camelCase in config files (```--template-config``` on the command line becomes ```templateConfig``` in a config file). You can see a full list of configuration options with short descriptions in the example config file [apigen.neon.example](https://github.com/apigen/apigen/blob/master/apigen.neon.example).
 
-### Example ###
 
-We are generating documentation for the Nella Framework. We want Nette and Doctrine to be parsed as well because we want their classes to appear in class trees, lists of parent classes and their members in lists of inherited properties, methods and constants. However we do not want to generate their full documentation along with highlighted source codes. And we do not want to process any "test" directories, because there might be classes that do not belong to the project actually.
-
-```
-	apigen --source ~/nella/Nella --source ~/doctrine2/lib/Doctrine --source ~/doctrine2/lib/vendor --source ~/nette/Nette --skip-doc-path "~/doctrine2/*" --skip-doc-prefix Nette --exclude "*/tests/*" --destination ~/docs/ --title "Nella Framework"
-```
-
-## Requirements ##
-
-ApiGen requires PHP 5.3 or later. Four libraries it uses ([Nette](https://github.com/nette/nette), [Texy](https://github.com/dg/texy), [TokenReflection](https://github.com/Andrewsville/PHP-Token-Reflection) and [FSHL](https://github.com/kukulich/fshl)) require four additional PHP extensions: [tokenizer](http://php.net/manual/book.tokenizer.php), [mbstring](http://php.net/manual/book.mbstring.php), [iconv](http://php.net/manual/book.iconv.php) and [json](http://php.net/manual/book.json.php). For documenting PHAR archives you need the [phar extension](http://php.net/manual/book.phar.php) and for documenting gz or bz2 compressed PHARs, you need the [zlib](http://php.net/manual/book.zlib.php) or [bz2](http://php.net/manual/book.bzip2.php) extension respectively. To generate the ZIP file with documentation you need the [zip extension](http://php.net/manual/book.zip.php).
-
-When generating documentation of large libraries (Zend Framework for example) we recommend not to have the Xdebug PHP extension loaded (it does not need to be used, it significantly slows down the generating process even when only loaded).
-
-## Authors ##
-
-* [Jaroslav Hanslík](https://github.com/kukulich)
-* [Ondřej Nešpor](https://github.com/Andrewsville)
-* [David Grudl](https://github.com/dg)
-
-## Usage examples ##
-
-* [Doctrine](http://www.doctrine-project.org/api/orm/2.2/index.html)
-* [Nette Framework](http://api.nette.org/2.0/)
-* [TokenReflection library](http://andrewsville.github.com/PHP-Token-Reflection/)
-* [FSHL library](http://fshl.kukulich.cz/api/)
-* [Nella Framework](http://api.nellafw.org/)
-* Jyxo PHP Libraries, both [namespaced](http://jyxo.github.com/php/) and [non-namespaced](http://jyxo.github.com/php-no-namespace/)
-
-Besides from these publicly visible examples there are companies that use ApiGen to generate their inhouse documentation: [Medio Interactive](http://www.medio.cz/), [Wikidi](http://wikidi.com/).
+Note: When generating documentation of large libraries, not loading the Xdebug PHP might improve performance.
