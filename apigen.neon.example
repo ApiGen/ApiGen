@@ -59,7 +59,5 @@ quiet: No
 progressbar: Yes
 # Use colors
 colors: No
-# Check for update
-updateCheck: Yes
 # Display additional information in case of an error
 debug: No

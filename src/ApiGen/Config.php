@@ -67,7 +67,6 @@ class Config
 		'quiet' => false,
 		'progressbar' => true,
 		'colors' => true,
-		'updateCheck' => true,
 		'debug' => false
 	);
 
@@ -554,7 +553,6 @@ Options:
 	@option@--quiet@c            <@value@yes@c|@value@no@c>    Don't display scaning and generating messages, default "@value@no@c"
 	@option@--progressbar@c      <@value@yes@c|@value@no@c>    Display progressbars, default "@value@yes@c"
 	@option@--colors@c           <@value@yes@c|@value@no@c>    Use colors, default "@value@no@c" on Windows, "@value@yes@c" on other systems
-	@option@--update-check@c     <@value@yes@c|@value@no@c>    Check for update, default "@value@yes@c"
 	@option@--debug@c            <@value@yes@c|@value@no@c>    Display additional information in case of an error, default "@value@no@c"
 	@option@--help@c|@option@-h@c                      Display this help
 
