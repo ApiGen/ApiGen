@@ -7,7 +7,14 @@
 	"license": "BSD-3-Clause",
 	"authors": [
 		{
-			"name": "Jaroslav Hanslík",
+			"name": "Tomáš Votruba",
+			"homepage": "http://tomasvotruba.cz"
+		},
+		{
+			"name": "Olivier Laviale",
+			"homepage": "https://github.com/olvlvl"
+		},
+		{	"name": "Jaroslav Hanslík",
 			"homepage": "https://github.com/kukulich"
 		},
 		{
