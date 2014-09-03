@@ -1,5 +1,9 @@
 # ApiGen - PHP source code API generator
 
+[![Downloads this Month](https://img.shields.io/packagist/dm/apigen/apigen.svg)](https://packagist.org/packages/apigen/apigen)
+[![Latest stable](https://img.shields.io/packagist/v/apigen/apigen.svg)](https://packagist.org/packages/apigen/apigen)
+
+
 **[WIP] In renewal process, stay tuned.**
 
 So what's the output? Look at [Doctrine ORM API](http://www.doctrine-project.org/api/orm/2.4/), [Nette API](http://api.nette.org/) or [Kdyby API](https://api.kdyby.org).
