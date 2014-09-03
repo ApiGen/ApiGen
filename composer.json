@@ -34,7 +34,7 @@
 		"kukulich/fshl": "~2.1",
 		"andrewsville/php-token-reflection": "~1.4"
 	},
-	"require-dev" : {
+	"require-dev": {
 		"nette/tester": "~1.2"
 	},
 	"suggest": {
