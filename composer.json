@@ -1,10 +1,10 @@
 {
 	"name": "apigen/apigen",
-	"description": "API documentation generator for PHP 5.3+",
+	"description": "PHP source code API generator",
 	"type": "project",
 	"keywords": ["documentation", "docblock", "phpdoc", "phpdocumentor", "generator", "api"],
 	"homepage": "http://apigen.org/",
-	"license": "BSD-3-Clause",
+	"license": "MIT",
 	"authors": [
 		{
 			"name": "Tomáš Votruba",
@@ -26,19 +26,13 @@
 			"homepage": "http://davidgrudl.com"
 		}
 	],
-	"support": {
-		"issues": "https://github.com/apigen/apigen/issues",
-		"forum": "https://groups.google.com/group/apigen",
-		"source": "https://github.com/apigen/apigen"
-	},
 	"require": {
-		"php": ">=5.3.0",
 		"ext-json": "*",
 		"ext-mbstring": "*",
-		"nette/nette": "~2.1.1",
-		"texy/texy": "~2.4.0",
-		"kukulich/fshl": "~2.1.0",
-		"andrewsville/php-token-reflection": "~1.3.1"
+		"nette/nette": "~2.2",
+		"texy/texy": "~2.6",
+		"kukulich/fshl": "~2.1",
+		"andrewsville/php-token-reflection": "~1.4"
 	},
 	"suggest": {
 		"ext-bz2": "*",
@@ -53,11 +47,5 @@
 	},
 	"bin": [
 		"apigen"
-	],
-	"extra": {
-		"branch-alias": {
-			"dev-master": "2.8.0",
-			"dev-develop": "3.0.0-dev"
-		}
-	}
+	]
 }
