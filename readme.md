@@ -1,5 +1,6 @@
 # ApiGen - PHP source code API generator
 
+[![Build Status](https://travis-ci.org/apigen/apigen.svg?branch=develop)](https://travis-ci.org/apigen/apigen)
 [![Downloads this Month](https://img.shields.io/packagist/dm/apigen/apigen.svg)](https://packagist.org/packages/apigen/apigen)
 [![Latest stable](https://img.shields.io/packagist/v/apigen/apigen.svg)](https://packagist.org/packages/apigen/apigen)
 
