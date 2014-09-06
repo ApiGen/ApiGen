@@ -25,7 +25,7 @@ class HelloWorldTest extends TestCase
 
 	public function testBasicGeneration()
 	{
-		exec('php ../../../apigen --source=../../../src/ApiGen/Generator.php --destination=' . TEMP_DIR, $output);
+		exec('php ../../../apigen --source=Project --destination=' . TEMP_DIR);
 		Assert::true(file_exists(TEMP_DIR . '/index.html'));
 	}
 
