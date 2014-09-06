@@ -150,10 +150,6 @@ Generate documentation for deprecated elements, default is "No".
 
 Generate a list of tasks, default is "No".
 
-```--source-code <yes|no>```
-
-Generate highlighted source code for user defined elements, default is "Yes".
-
 ```--download <yes|no>```
 
 Add a link to download documentation as a ZIP archive, default is "No".

@@ -375,18 +375,16 @@ class Generator extends Nette\Object
 			+ (int) $this->isOpensearchEnabled()
 			+ (int) $this->isRobotsEnabled();
 
-		if ($this->config->sourceCode) {
-			$tokenizedFilter = function(ReflectionClass $class) {
-				return $class->isTokenized();
-			};
-			$max += count(array_filter($this->classes, $tokenizedFilter))
-				+ count(array_filter($this->interfaces, $tokenizedFilter))
-				+ count(array_filter($this->traits, $tokenizedFilter))
-				+ count(array_filter($this->exceptions, $tokenizedFilter))
-				+ count($this->constants)
-				+ count($this->functions);
-			unset($tokenizedFilter);
-		}
+		$tokenizedFilter = function(ReflectionClass $class) {
+			return $class->isTokenized();
+		};
+		$max += count(array_filter($this->classes, $tokenizedFilter))
+			+ count(array_filter($this->interfaces, $tokenizedFilter))
+			+ count(array_filter($this->traits, $tokenizedFilter))
+			+ count(array_filter($this->exceptions, $tokenizedFilter))
+			+ count($this->constants)
+			+ count($this->functions);
+		unset($tokenizedFilter);
 
 		$this->prepareProgressBar($max);
 
@@ -1243,12 +1241,10 @@ class Generator extends Nette\Object
 		if (!empty($this->functions)) {
 			$this->prepareTemplate('function');
 		}
-		if ($this->config->sourceCode) {
-			$this->prepareTemplate('source');
+		$this->prepareTemplate('source');
 
-			$fshl = new FSHL\Highlighter(new FSHL\Output\Html(), FSHL\Highlighter::OPTION_TAB_INDENT | FSHL\Highlighter::OPTION_LINE_COUNTER);
-			$fshl->setLexer(new FSHL\Lexer\Php());
-		}
+		$fshl = new FSHL\Highlighter(new FSHL\Output\Html(), FSHL\Highlighter::OPTION_TAB_INDENT | FSHL\Highlighter::OPTION_LINE_COUNTER);
+		$fshl->setLexer(new FSHL\Lexer\Php());
 
 		// Add @usedby annotation
 		foreach ($this->getElementTypes() as $type) {
@@ -1352,7 +1348,7 @@ class Generator extends Nette\Object
 				$this->incrementProgressBar();
 
 				// Generate source codes
-				if ($this->config->sourceCode && $element->isTokenized()) {
+				if ($element->isTokenized()) {
 					$template->fileName = $this->getRelativePath($element->getFileName());
 					$template->source = $fshl->highlight($this->toUtf(file_get_contents($element->getFileName()), $this->charsets[$element->getFileName()]));
 					$template

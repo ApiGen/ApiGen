@@ -60,7 +60,6 @@ class Config
 		'deprecated' => false,
 		'todo' => false,
 		'download' => false,
-		'sourceCode' => true,
 		'report' => '',
 		'undocumented' => '',
 		'wipeout' => true,
@@ -540,7 +539,6 @@ Options:
 	@option@--tree@c             <@value@yes@c|@value@no@c>    Generate tree view of classes, interfaces, traits and exceptions, default "@value@yes@c"
 	@option@--deprecated@c       <@value@yes@c|@value@no@c>    Generate documentation for deprecated elements, default "@value@no@c"
 	@option@--todo@c             <@value@yes@c|@value@no@c>    Generate documentation of tasks, default "@value@no@c"
-	@option@--source-code@c      <@value@yes@c|@value@no@c>    Generate highlighted source code files, default "@value@yes@c"
 	@option@--download@c         <@value@yes@c|@value@no@c>    Add a link to download documentation as a ZIP archive, default "@value@no@c"
 	@option@--report@c           <@value@file@c>      Save a checkstyle report of poorly documented elements into a file
 	@option@--wipeout@c          <@value@yes@c|@value@no@c>    Wipe out the destination directory first, default "@value@yes@c"

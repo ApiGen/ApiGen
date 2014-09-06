@@ -22,7 +22,7 @@
 				{$value|annotation:$annotation:$function|noescape}<br>
 			{/foreach}
 		{/foreach}
-		<b>Located at</b> <a n:tag-if="$config->sourceCode" href="{$function|sourceUrl}" title="Go to source code">{$function->fileName|relativePath}</a><br>
+		<b>Located at</b> <a href="{$function|sourceUrl}" title="Go to source code">{$function->fileName|relativePath}</a><br>
 	</div>
 
 	{var $annotations = $function->annotations}

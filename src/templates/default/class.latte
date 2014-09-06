@@ -101,7 +101,7 @@
 			{if $class->internal}
 				<a href="{$method|manualUrl}" title="Go to PHP documentation">{$method->name}</a>(
 			{else}
-				<a n:tag-if="$config->sourceCode" href="{$method|sourceUrl}" title="Go to source code">{$method->name}</a>(
+				<a href="{$method|sourceUrl}" title="Go to source code">{$method->name}</a>(
 			{/if}
 			{foreach $method->parameters as $parameter}
 				<span>{$parameter->typeHint|typeLinks:$method|noescape}
@@ -258,7 +258,7 @@
 			{if $class->internal}
 				<a href="{$constant|manualUrl}" title="Go to PHP documentation"><b>{$constant->name}</b></a>
 			{else}
-				<a n:tag-if="$config->sourceCode" href="{$constant|sourceUrl}" title="Go to source code"><b>{$constant->name}</b></a>
+				<a href="{$constant|sourceUrl}" title="Go to source code"><b>{$constant->name}</b></a>
 			{/if}
 			</code>
 
@@ -307,7 +307,7 @@
 			{if $class->internal}
 				<a href="{$property|manualUrl}" title="Go to PHP documentation"><var>${$property->name}</var></a>
 			{else}
-				<a n:tag-if="$config->sourceCode" href="{$property|sourceUrl}" title="Go to source code"><var>${$property->name}</var></a>
+				<a href="{$property|sourceUrl}" title="Go to source code"><var>${$property->name}</var></a>
 			{/if}
 
 			<div n:if="$config->template['options']['elementDetailsCollapsed']" class="description short">
