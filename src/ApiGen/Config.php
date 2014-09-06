@@ -9,7 +9,7 @@
 
 namespace ApiGen;
 
-use Nette\Utils\Neon;
+use Nette\Neon\Neon;
 
 /**
  * Configuration processing class.
