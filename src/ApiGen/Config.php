@@ -299,11 +299,6 @@ class Config
 		// Base url without slash at the end
 		$this->config['baseUrl'] = rtrim($this->config['baseUrl'], '/');
 
-		// No progressbar in quiet mode
-		if ($this->config['quiet']) {
-			$this->config['progressbar'] = false;
-		}
-
 		// Check
 		$this->check();
 
@@ -551,8 +546,6 @@ Options:
 	@option@--report@c           <@value@file@c>      Save a checkstyle report of poorly documented elements into a file
 	@option@--wipeout@c          <@value@yes@c|@value@no@c>    Wipe out the destination directory first, default "@value@yes@c"
 	@option@--quiet@c            <@value@yes@c|@value@no@c>    Don't display scaning and generating messages, default "@value@no@c"
-	@option@--progressbar@c      <@value@yes@c|@value@no@c>    Display progressbars, default "@value@yes@c"
-	@option@--colors@c           <@value@yes@c|@value@no@c>    Use colors, default "@value@no@c" on Windows, "@value@yes@c" on other systems
 	@option@--debug@c            <@value@yes@c|@value@no@c>    Display additional information in case of an error, default "@value@no@c"
 	@option@--help@c|@option@-h@c                      Display this help
 

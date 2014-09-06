@@ -55,7 +55,5 @@ report:
 wipeout: Yes
 # Don't display scanning and generating messages
 quiet: No
-# Display progressbars
-progressbar: Yes
 # Display additional information in case of an error
 debug: No

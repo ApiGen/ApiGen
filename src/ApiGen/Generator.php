@@ -213,9 +213,7 @@ class Generator extends Nette\Object
 			throw new RuntimeException('No PHP files found');
 		}
 
-		if ($this->config->progressbar) {
-			$this->prepareProgressBar(array_sum($files));
-		}
+		$this->prepareProgressBar(array_sum($files));
 
 		$broker = new Broker(new Backend($this, !empty($this->config->report)), Broker::OPTION_DEFAULT & ~(Broker::OPTION_PARSE_FUNCTION_BODY | Broker::OPTION_SAVE_TOKEN_STREAM));
 
@@ -359,40 +357,38 @@ class Generator extends Nette\Object
 		$this->categorize();
 
 		// Prepare progressbar
-		if ($this->config->progressbar) {
-			$max = count($this->packages)
-				+ count($this->namespaces)
-				+ count($this->classes)
-				+ count($this->interfaces)
-				+ count($this->traits)
-				+ count($this->exceptions)
+		$max = count($this->packages)
+			+ count($this->namespaces)
+			+ count($this->classes)
+			+ count($this->interfaces)
+			+ count($this->traits)
+			+ count($this->exceptions)
+			+ count($this->constants)
+			+ count($this->functions)
+			+ count($this->config->template['templates']['common'])
+			+ (int) !empty($this->config->report)
+			+ (int) $this->config->tree
+			+ (int) $this->config->deprecated
+			+ (int) $this->config->todo
+			+ (int) $this->config->download
+			+ (int) $this->isSitemapEnabled()
+			+ (int) $this->isOpensearchEnabled()
+			+ (int) $this->isRobotsEnabled();
+
+		if ($this->config->sourceCode) {
+			$tokenizedFilter = function(ReflectionClass $class) {
+				return $class->isTokenized();
+			};
+			$max += count(array_filter($this->classes, $tokenizedFilter))
+				+ count(array_filter($this->interfaces, $tokenizedFilter))
+				+ count(array_filter($this->traits, $tokenizedFilter))
+				+ count(array_filter($this->exceptions, $tokenizedFilter))
 				+ count($this->constants)
-				+ count($this->functions)
-				+ count($this->config->template['templates']['common'])
-				+ (int) !empty($this->config->report)
-				+ (int) $this->config->tree
-				+ (int) $this->config->deprecated
-				+ (int) $this->config->todo
-				+ (int) $this->config->download
-				+ (int) $this->isSitemapEnabled()
-				+ (int) $this->isOpensearchEnabled()
-				+ (int) $this->isRobotsEnabled();
-
-			if ($this->config->sourceCode) {
-				$tokenizedFilter = function(ReflectionClass $class) {
-					return $class->isTokenized();
-				};
-				$max += count(array_filter($this->classes, $tokenizedFilter))
-					+ count(array_filter($this->interfaces, $tokenizedFilter))
-					+ count(array_filter($this->traits, $tokenizedFilter))
-					+ count(array_filter($this->exceptions, $tokenizedFilter))
-					+ count($this->constants)
-					+ count($this->functions);
-				unset($tokenizedFilter);
-			}
-
-			$this->prepareProgressBar($max);
+				+ count($this->functions);
+			unset($tokenizedFilter);
 		}
+
+		$this->prepareProgressBar($max);
 
 		// Prepare template
 		$tmp = $this->config->destination . DIRECTORY_SEPARATOR . 'tmp';
@@ -1699,10 +1695,6 @@ class Generator extends Nette\Object
 	 */
 	private function prepareProgressBar($maximum = 1)
 	{
-		if (!$this->config->progressbar) {
-			return;
-		}
-
 		$this->progressbar['current'] = 0;
 		$this->progressbar['maximum'] = $maximum;
 	}
@@ -1714,10 +1706,6 @@ class Generator extends Nette\Object
 	 */
 	private function incrementProgressBar($increment = 1)
 	{
-		if (!$this->config->progressbar) {
-			return;
-		}
-
 		echo str_repeat(chr(0x08), $this->progressbar['width']);
 
 		$this->progressbar['current'] += $increment;

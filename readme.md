@@ -170,10 +170,6 @@ Delete files generated in the previous run, default is "Yes".
 
 Do not print any messages to the console, default is "No".
 
-```--progressbar <yes|no>```
-
-Display progressbars, default is "Yes".
-
 ```--debug <yes|no>```
 
 Display additional information (exception trace) in case of an error, default is "No".
