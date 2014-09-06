@@ -43,6 +43,7 @@ $ composer require apigen/apigen:~2.8
 ## Usage
 
 First, we create config file, e.g. `apigen.neon` and set required parameters.
+
 If you haven't heard about .neon yet, [go check it](http://ne-on.org). It's similar to .yaml, just nicer.
 
 ### Minimal configuration
