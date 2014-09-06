@@ -166,10 +166,6 @@ Save a checkstyle report of poorly documented elements into a file.
 
 Delete files generated in the previous run, default is "Yes".
 
-```--quiet <yes|no>```
-
-Do not print any messages to the console, default is "No".
-
 ```--debug <yes|no>```
 
 Display additional information (exception trace) in case of an error, default is "No".

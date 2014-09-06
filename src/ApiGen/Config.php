@@ -64,7 +64,6 @@ class Config
 		'report' => '',
 		'undocumented' => '',
 		'wipeout' => true,
-		'quiet' => false,
 		'progressbar' => true,
 		'colors' => true,
 		'debug' => false
@@ -545,7 +544,6 @@ Options:
 	@option@--download@c         <@value@yes@c|@value@no@c>    Add a link to download documentation as a ZIP archive, default "@value@no@c"
 	@option@--report@c           <@value@file@c>      Save a checkstyle report of poorly documented elements into a file
 	@option@--wipeout@c          <@value@yes@c|@value@no@c>    Wipe out the destination directory first, default "@value@yes@c"
-	@option@--quiet@c            <@value@yes@c|@value@no@c>    Don't display scaning and generating messages, default "@value@no@c"
 	@option@--debug@c            <@value@yes@c|@value@no@c>    Display additional information in case of an error, default "@value@no@c"
 	@option@--help@c|@option@-h@c                      Display this help
 

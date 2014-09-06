@@ -1599,9 +1599,7 @@ class Generator extends Nette\Object
 	 */
 	public function output($message)
 	{
-		if (!$this->config->quiet) {
-			echo $this->colorize($message);
-		}
+		echo $this->colorize($message);
 	}
 
 	/**
