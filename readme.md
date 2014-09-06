@@ -37,7 +37,7 @@ So what's the output? Look at [Doctrine ORM API](http://www.doctrine-project.org
 The best way to install Apigen is via [Composer](https://getcomposer.org/):
 
 ```sh
-$ composer require apigen/apigen:~2.8.1 --dev
+$ composer require apigen/apigen:~2.8
 ```
 
 
