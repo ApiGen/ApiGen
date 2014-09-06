@@ -61,9 +61,7 @@ class Config
 		'todo' => false,
 		'download' => false,
 		'report' => '',
-		'undocumented' => '',
 		'wipeout' => true,
-		'progressbar' => true,
 		'colors' => true,
 		'debug' => false
 	);
@@ -209,12 +207,6 @@ class Config
 
 		// Merge options
 		$this->config = array_merge(self::$defaultConfig, $neon, $cli);
-
-		// Compatibility with old option name "undocumented"
-		if (!isset($this->config['report']) && isset($this->config['undocumented'])) {
-			$this->config['report'] = $this->config['undocumented'];
-			unset($this->config['undocumented']);
-		}
 
 		foreach (self::$defaultConfig as $option => $valueDefinition) {
 			if (is_array($this->config[$option]) && !is_array($valueDefinition)) {
