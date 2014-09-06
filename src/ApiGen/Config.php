@@ -547,9 +547,7 @@ Options:
 	@option@--debug@c            <@value@yes@c|@value@no@c>    Display additional information in case of an error, default "@value@no@c"
 	@option@--help@c|@option@-h@c                      Display this help
 
-Only source and destination directories are required - either set explicitly or using a config file. Configuration parameters passed via command line have precedence over parameters from a config file.
-
-Boolean options (those with possible values @value@yes@c|@value@no@c) do not have to have their values defined explicitly. Using @option@--debug@c and @option@--debug@c=@value@yes@c is exactly the same.
+Command line has priority to config file.
 
 Some options can have multiple values. You can do so either by using them multiple times or by separating values by a comma. That means that writing @option@--source@c=@value@file1.php@c @option@--source@c=@value@file2.php@c or @option@--source@c=@value@file1.php,file2.php@c is exactly the same.
 
