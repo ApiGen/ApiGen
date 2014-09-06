@@ -98,7 +98,7 @@ class Config
 	 */
 	public function __construct()
 	{
-		$templateDir = self::isInstalledByPear() ? '@data_dir@' . DIRECTORY_SEPARATOR . 'ApiGen' : realpath(__DIR__ . DIRECTORY_SEPARATOR . '..');
+		$templateDir = realpath(__DIR__ . DIRECTORY_SEPARATOR . '..');
 		self::$defaultConfig['templateConfig'] = $templateDir . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'default' . DIRECTORY_SEPARATOR . 'config.neon';
 		self::$defaultConfig['colors'] = 'WIN' === substr(PHP_OS, 0, 3) ? false : (function_exists('posix_isatty') && defined('STDOUT') ? posix_isatty(STDOUT) : true);
 		$this->config = self::$defaultConfig;
@@ -559,23 +559,4 @@ Elements from files within @option@--skip-doc-path@c or with @option@--skip-doc-
 HELP;
 	}
 
-	/**
-	 * Checks if ApiGen is installed by PEAR.
-	 *
-	 * @return boolean
-	 */
-	public static function isInstalledByPear()
-	{
-		return false === strpos('@data_dir@', '@data_dir');
-	}
-
-	/**
-	 * Checks if ApiGen is installed from downloaded archive.
-	 *
-	 * @return boolean
-	 */
-	public static function isInstalledByDownload()
-	{
-		return !self::isInstalledByPear();
-	}
 }
