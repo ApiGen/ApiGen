@@ -9,6 +9,7 @@
 
 namespace ApiGen\Reflection;
 
+use ApiGen\FileSystem;
 use ApiGen\Generator;
 use TokenReflection, TokenReflection\IReflectionClass;
 use ReflectionMethod as InternalReflectionMethod, ReflectionProperty as InternalReflectionProperty;
@@ -1396,7 +1397,7 @@ class ReflectionClass extends ReflectionElement
 	public function isDocumented()
 	{
 		if (null === $this->isDocumented && parent::isDocumented()) {
-			$fileName = self::$generator->unPharPath($this->reflection->getFilename());
+			$fileName = FileSystem::unPharPath($this->reflection->getFilename());
 			foreach (self::$config->skipDocPath as $mask) {
 				if (fnmatch($mask, $fileName, FNM_NOESCAPE)) {
 					$this->isDocumented = false;

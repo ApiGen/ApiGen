@@ -24,21 +24,17 @@ class SimpleProgressBar implements ProgressBar
 
 
 	/**
-	 * @param integer $maximum
-	 * @return self
+	 * @param int $maximum
 	 */
 	public function init($maximum = 1)
 	{
 		$this->current = 0;
 		$this->maximum = (int) $maximum;
-
-		return $this;
 	}
 
 
 	/**
-	 * @param integer $increment
-	 * @return self
+	 * @param int $increment
 	 */
 	public function increment($increment = 1)
 	{
@@ -58,8 +54,6 @@ class SimpleProgressBar implements ProgressBar
 		if ($this->current === $this->maximum) {
 			echo "\n";
 		}
-
-		return $this;
 	}
 
 }

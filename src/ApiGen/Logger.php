@@ -7,21 +7,25 @@
  * the file license.md that was distributed with this source code.
  */
 
-namespace ApiGen\Console;
+namespace ApiGen;
+
+use Exception;
 
 
-interface ProgressBar
+interface Logger
 {
 
 	/**
-	 * @param int $maximum
+	 * Log a message.
+	 *
+	 * @param string $message
 	 */
-	public function init($maximum = 1);
+	public function log($message);
 
 
 	/**
-	 * @param int $increment
+	 * Log en exception.
 	 */
-	public function increment($increment = 1);
+	public function logException(Exception $e);
 
 }

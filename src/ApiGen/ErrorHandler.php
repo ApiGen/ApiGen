@@ -7,21 +7,17 @@
  * the file license.md that was distributed with this source code.
  */
 
-namespace ApiGen\Console;
+namespace ApiGen;
+
+use Exception;
 
 
-interface ProgressBar
+interface ErrorHandler
 {
 
 	/**
-	 * @param int $maximum
+	 * Handles an exception.
 	 */
-	public function init($maximum = 1);
-
-
-	/**
-	 * @param int $increment
-	 */
-	public function increment($increment = 1);
+	public function handleException(Exception $e);
 
 }

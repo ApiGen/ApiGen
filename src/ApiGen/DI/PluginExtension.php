@@ -7,21 +7,15 @@
  * the file license.md that was distributed with this source code.
  */
 
-namespace ApiGen\Console;
+namespace ApiGen\DI;
+
+use Nette\DI\CompilerExtension;
 
 
-interface ProgressBar
+/**
+ * ApiGen plugins DIC extension.
+ */
+class PluginExtension extends CompilerExtension
 {
-
-	/**
-	 * @param int $maximum
-	 */
-	public function init($maximum = 1);
-
-
-	/**
-	 * @param int $increment
-	 */
-	public function increment($increment = 1);
 
 }

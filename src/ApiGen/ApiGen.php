@@ -7,21 +7,12 @@
  * the file license.md that was distributed with this source code.
  */
 
-namespace ApiGen\Console;
+namespace ApiGen;
 
 
-interface ProgressBar
+class ApiGen
 {
-
-	/**
-	 * @param int $maximum
-	 */
-	public function init($maximum = 1);
-
-
-	/**
-	 * @param int $increment
-	 */
-	public function increment($increment = 1);
+	const NAME = 'ApiGen';
+	const VERSION = '3.0.0';
 
 }

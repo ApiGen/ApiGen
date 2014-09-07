@@ -49,20 +49,10 @@ If you haven't heard about .neon yet, [go check it](http://ne-on.org). It's simi
 ### Minimal configuration
 
 ```yaml
-source: src # directory API is generated for
-destination: api # target dir for documentation
-```
-
-Source can be also:
-
-```yaml
-# file
-source: src/ApiGen/Generator.php
-
-# or more items
 source:
-	- src/ApiGen/Generator.php
-	- src/ApiGen/Console
+    - src # directory API is generated for
+    - tests/ApiGen/Generator.php # or file
+destination: api # target dir for documentation
 ```
 
 Then run ApiGen passing your config:

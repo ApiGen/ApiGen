@@ -1,0 +1,3 @@
+extensions:
+	apigen: ApiGen\DI\ApiGenExtension
+	plugin: ApiGen\DI\PluginExtension
