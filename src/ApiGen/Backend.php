@@ -135,7 +135,7 @@ class Backend extends Broker\Backend\Memory
 
 		foreach ($this->getNamespaces() as $namespace) {
 			foreach ($namespace->getClasses() as $name => $trClass) {
-				$class = new ReflectionClass($trClass, $this->generator);
+				$class = new Reflection\ReflectionClass($trClass, $this->generator);
 				$allClasses[self::TOKENIZED_CLASSES][$name] = $class;
 				if (!$class->isDocumented()) {
 					continue;
@@ -191,8 +191,8 @@ class Backend extends Broker\Backend\Memory
 		}
 
 		array_walk_recursive($allClasses, function(&$reflection, $name, Generator $generator) {
-			if (!$reflection instanceof ReflectionClass) {
-				$reflection = new ReflectionClass($reflection, $generator);
+			if (!$reflection instanceof Reflection\ReflectionClass) {
+				$reflection = new Reflection\ReflectionClass($reflection, $generator);
 			}
 		}, $this->generator);
 
@@ -204,7 +204,7 @@ class Backend extends Broker\Backend\Memory
 	 *
 	 * @param array $declared Array of declared classes
 	 * @param array $allClasses Array with all classes parsed so far
-	 * @param \ApiGen\ReflectionFunction|\TokenReflection\IReflectionFunctionBase $function Function/method reflection
+	 * @param \ApiGen\Reflection\ReflectionFunction|\TokenReflection\IReflectionFunctionBase $function Function/method reflection
 	 * @return array
 	 */
 	private function processFunction(array $declared, array $allClasses, $function)
@@ -278,7 +278,7 @@ class Backend extends Broker\Backend\Memory
 	{
 		$generator = $this->generator;
 		return array_map(function(IReflectionConstant $constant) use ($generator) {
-			return new ReflectionConstant($constant, $generator);
+			return new Reflection\ReflectionConstant($constant, $generator);
 		}, parent::getConstants());
 	}
 
@@ -291,7 +291,7 @@ class Backend extends Broker\Backend\Memory
 	{
 		$generator = $this->generator;
 		return array_map(function(IReflectionFunction $function) use ($generator) {
-			return new ReflectionFunction($function, $generator);
+			return new Reflection\ReflectionFunction($function, $generator);
 		}, parent::getFunctions());
 	}
 }

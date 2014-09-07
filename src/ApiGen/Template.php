@@ -178,7 +178,7 @@ class Template extends Nette\Templating\FileTemplate
 		});
 
 		// Individual annotations processing
-		$this->registerHelper('annotation', function($value, $name, ReflectionElement $context) use ($that, $generator) {
+		$this->registerHelper('annotation', function($value, $name, Reflection\ReflectionElement $context) use ($that, $generator) {
 			switch ($name) {
 				case 'return':
 				case 'throws':
@@ -206,7 +206,7 @@ class Template extends Nette\Templating\FileTemplate
 				case 'uses':
 				case 'usedby':
 					list($link, $description) = $that->split($value);
-					$separator = $context instanceof ReflectionClass || !$description ? ' ' : '<br>';
+					$separator = $context instanceof Reflection\ReflectionClass || !$description ? ' ' : '<br>';
 					if (null !== $generator->resolveElement($link, $context)) {
 						return sprintf('<code>%s</code>%s%s', $that->getTypeLinks($link, $context), $separator, $description);
 					}
@@ -370,10 +370,10 @@ class Template extends Nette\Templating\FileTemplate
 	 * Returns links for types.
 	 *
 	 * @param string $annotation
-	 * @param \ApiGen\ReflectionElement $context
+	 * @param \ApiGen\Reflection\ReflectionElement $context
 	 * @return string
 	 */
-	public function getTypeLinks($annotation, ReflectionElement $context)
+	public function getTypeLinks($annotation, Reflection\ReflectionElement $context)
 	{
 		$links = array();
 
@@ -491,7 +491,7 @@ class Template extends Nette\Templating\FileTemplate
 	 */
 	public function getClassUrl($class)
 	{
-		$className = $class instanceof ReflectionClass ? $class->getName() : $class;
+		$className = $class instanceof Reflection\ReflectionClass ? $class->getName() : $class;
 		return sprintf($this->config->template['templates']['main']['class']['filename'], $this->urlize($className));
 	}
 
@@ -524,7 +524,7 @@ class Template extends Nette\Templating\FileTemplate
 	/**
 	 * Returns a link to constant in class summary file or to constant summary file.
 	 *
-	 * @param \ApiGen\ReflectionConstant $constant Constant reflection
+	 * @param \ApiGen\Reflection\ReflectionConstant $constant Constant reflection
 	 * @return string
 	 */
 	public function getConstantUrl(ReflectionConstant $constant)
@@ -551,20 +551,20 @@ class Template extends Nette\Templating\FileTemplate
 	/**
 	 * Returns a link to element summary file.
 	 *
-	 * @param \ApiGen\ReflectionElement $element Element reflection
+	 * @param \ApiGen\Reflection\ReflectionElement $element Element reflection
 	 * @return string
 	 */
-	public function getElementUrl(ReflectionElement $element)
+	public function getElementUrl(Reflection\ReflectionElement $element)
 	{
-		if ($element instanceof ReflectionClass) {
+		if ($element instanceof Reflection\ReflectionClass) {
 			return $this->getClassUrl($element);
-		} elseif ($element instanceof ReflectionMethod) {
+		} elseif ($element instanceof Reflection\ReflectionMethod) {
 			return $this->getMethodUrl($element);
-		} elseif ($element instanceof ReflectionProperty) {
+		} elseif ($element instanceof Reflection\ReflectionProperty) {
 			return $this->getPropertyUrl($element);
-		} elseif ($element instanceof ReflectionConstant) {
+		} elseif ($element instanceof Reflection\ReflectionConstant) {
 			return $this->getConstantUrl($element);
-		} elseif ($element instanceof ReflectionFunction) {
+		} elseif ($element instanceof Reflection\ReflectionFunction) {
 			return $this->getFunctionUrl($element);
 		}
 	}
@@ -572,20 +572,20 @@ class Template extends Nette\Templating\FileTemplate
 	/**
 	 * Returns a link to a element source code.
 	 *
-	 * @param \ApiGen\ReflectionElement $element Element reflection
+	 * @param \ApiGen\Reflection\ReflectionElement $element Element reflection
 	 * @param boolean $withLine Include file line number into the link
 	 * @return string
 	 */
-	public function getSourceUrl(ReflectionElement $element, $withLine = true)
+	public function getSourceUrl(Reflection\ReflectionElement $element, $withLine = true)
 	{
-		if ($element instanceof ReflectionClass || $element instanceof ReflectionFunction || ($element instanceof ReflectionConstant && null === $element->getDeclaringClassName())) {
+		if ($element instanceof Reflection\ReflectionClass || $element instanceof Reflection\ReflectionFunction || ($element instanceof Reflection\ReflectionConstant && null === $element->getDeclaringClassName())) {
 			$elementName = $element->getName();
 
-			if ($element instanceof ReflectionClass) {
+			if ($element instanceof Reflection\ReflectionClass) {
 				$file = 'class-';
-			} elseif ($element instanceof ReflectionConstant) {
+			} elseif ($element instanceof Reflection\ReflectionConstant) {
 				$file = 'constant-';
-			} elseif ($element instanceof ReflectionFunction) {
+			} elseif ($element instanceof Reflection\ReflectionFunction) {
 				$file = 'function-';
 			}
 		} else {
@@ -615,7 +615,7 @@ class Template extends Nette\Templating\FileTemplate
 		static $reservedClasses = array('stdClass', 'Closure', 'Directory');
 
 		// Extension
-		if ($element instanceof ReflectionExtension) {
+		if ($element instanceof Reflection\ReflectionExtension) {
 			$extensionName = strtolower($element->getName());
 			if ('core' === $extensionName) {
 				return $manual;
@@ -629,7 +629,7 @@ class Template extends Nette\Templating\FileTemplate
 		}
 
 		// Class and its members
-		$class = $element instanceof ReflectionClass ? $element : $element->getDeclaringClass();
+		$class = $element instanceof Reflection\ReflectionClass ? $element : $element->getDeclaringClass();
 
 		if (in_array($class->getName(), $reservedClasses)) {
 			return $manual . '/reserved.classes.php';
@@ -639,13 +639,13 @@ class Template extends Nette\Templating\FileTemplate
 		$classUrl = sprintf('%s/class.%s.php', $manual, $className);
 		$elementName = strtolower(strtr(ltrim($element->getName(), '_'), '_', '-'));
 
-		if ($element instanceof ReflectionClass) {
+		if ($element instanceof Reflection\ReflectionClass) {
 			return $classUrl;
-		} elseif ($element instanceof ReflectionMethod) {
+		} elseif ($element instanceof Reflection\ReflectionMethod) {
 			return sprintf('%s/%s.%s.php', $manual, $className, $elementName);
-		} elseif ($element instanceof ReflectionProperty) {
+		} elseif ($element instanceof Reflection\ReflectionProperty) {
 			return sprintf('%s#%s.props.%s', $classUrl, $className, $elementName);
-		} elseif ($element instanceof ReflectionConstant) {
+		} elseif ($element instanceof Reflection\ReflectionConstant) {
 			return sprintf('%s#%s.constants.%s', $classUrl, $className, $elementName);
 		}
 	}
@@ -654,10 +654,10 @@ class Template extends Nette\Templating\FileTemplate
 	 * Tries to parse a definition of a class/method/property/constant/function and returns the appropriate link if successful.
 	 *
 	 * @param string $definition Definition
-	 * @param \ApiGen\ReflectionElement $context Link context
+	 * @param \ApiGen\Reflection\ReflectionElement $context Link context
 	 * @return string|null
 	 */
-	public function resolveLink($definition, ReflectionElement $context)
+	public function resolveLink($definition, Reflection\ReflectionElement $context)
 	{
 		if (empty($definition)) {
 			return null;
@@ -682,24 +682,24 @@ class Template extends Nette\Templating\FileTemplate
 			$classes[] = 'invalid';
 		}
 
-		if ($element instanceof ReflectionClass) {
+		if ($element instanceof Reflection\ReflectionClass) {
 			$link = $this->link($this->getClassUrl($element), $element->getName(), true, $classes);
-		} elseif ($element instanceof ReflectionConstant && null === $element->getDeclaringClassName()) {
+		} elseif ($element instanceof Reflection\ReflectionConstant && null === $element->getDeclaringClassName()) {
 			$text = $element->inNamespace()
 				? $this->escapeHtml($element->getNamespaceName()) . '\\<b>' . $this->escapeHtml($element->getShortName()) . '</b>'
 				: '<b>' . $this->escapeHtml($element->getName()) . '</b>';
 			$link = $this->link($this->getConstantUrl($element), $text, false, $classes);
-		} elseif ($element instanceof ReflectionFunction) {
+		} elseif ($element instanceof Reflection\ReflectionFunction) {
 			$link = $this->link($this->getFunctionUrl($element), $element->getName() . '()', true, $classes);
 		} else {
 			$text = $this->escapeHtml($element->getDeclaringClassName());
-			if ($element instanceof ReflectionProperty) {
+			if ($element instanceof Reflection\ReflectionProperty) {
 				$url = $this->propertyUrl($element);
 				$text .= '::<var>$' . $this->escapeHtml($element->getName()) . '</var>';
-			} elseif ($element instanceof ReflectionMethod) {
+			} elseif ($element instanceof Reflection\ReflectionMethod) {
 				$url = $this->methodUrl($element);
 				$text .= '::' . $this->escapeHtml($element->getName()) . '()';
-			} elseif ($element instanceof ReflectionConstant) {
+			} elseif ($element instanceof Reflection\ReflectionConstant) {
 				$url = $this->constantUrl($element);
 				$text .= '::<b>' . $this->escapeHtml($element->getName()) . '</b>';
 			}
@@ -714,10 +714,10 @@ class Template extends Nette\Templating\FileTemplate
 	 * Resolves links in documentation.
 	 *
 	 * @param string $text Processed documentation text
-	 * @param \ApiGen\ReflectionElement $context Reflection object
+	 * @param \ApiGen\Reflection\ReflectionElement $context Reflection object
 	 * @return string
 	 */
-	private function resolveLinks($text, ReflectionElement $context)
+	private function resolveLinks($text, Reflection\ReflectionElement $context)
 	{
 		$that = $this;
 		return preg_replace_callback('~{@(?:link|see)\\s+([^}]+)}~', function ($matches) use ($context, $that) {
@@ -752,11 +752,11 @@ class Template extends Nette\Templating\FileTemplate
 	 * Formats text as documentation block or line.
 	 *
 	 * @param string $text Text
-	 * @param \ApiGen\ReflectionElement $context Reflection object
+	 * @param \ApiGen\Reflection\ReflectionElement $context Reflection object
 	 * @param boolean $block Parse text as block
 	 * @return string
 	 */
-	public function doc($text, ReflectionElement $context, $block = false)
+	public function doc($text, Reflection\ReflectionElement $context, $block = false)
 	{
 		return $this->resolveLinks($this->texy->process($this->resolveInternal($text), !$block), $context);
 	}

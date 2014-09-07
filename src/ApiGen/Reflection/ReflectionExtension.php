@@ -7,7 +7,7 @@
  * the file license.md that was distributed with this source code.
  */
 
-namespace ApiGen;
+namespace ApiGen\Reflection;
 
 /**
  * Extension reflection envelope.
@@ -52,7 +52,7 @@ class ReflectionExtension extends ReflectionBase
 	 * Returns a constant reflection.
 	 *
 	 * @param string $name Constant name
-	 * @return \ApiGen\ReflectionConstant|null
+	 * @return \ApiGen\Reflection\ReflectionConstant|null
 	 */
 	public function getConstant($name)
 	{
@@ -63,7 +63,7 @@ class ReflectionExtension extends ReflectionBase
 	 * Returns a constant reflection.
 	 *
 	 * @param string $name Constant name
-	 * @return \ApiGen\ReflectionConstant|null
+	 * @return \ApiGen\Reflection\ReflectionConstant|null
 	 */
 	public function getConstantReflection($name)
 	{

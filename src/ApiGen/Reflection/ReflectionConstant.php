@@ -7,7 +7,7 @@
  * the file license.md that was distributed with this source code.
  */
 
-namespace ApiGen;
+namespace ApiGen\Reflection;
 
 /**
  * Constant reflection envelope.
