@@ -35,7 +35,9 @@ try {
 	$options = $_SERVER['argv'];
 	array_shift($options);
 
-	$config = new Config($options);
+	$config = new Config;
+	$config->processCliOptions($options);
+	$config->prepare();
 	$generator = new Generator($config);
 
 
