@@ -9,6 +9,7 @@
 
 namespace ApiGen;
 
+use RecursiveDirectoryIterator;
 use TokenReflection\Broker;
 use Nette, FSHL;
 use InvalidArgumentException, RuntimeException;
@@ -162,20 +163,18 @@ class Generator extends Nette\Object
 	 * @return array
 	 * @throws \RuntimeException If no PHP files have been found.
 	 */
-	public function parse()
+	public function parse($sources)
 	{
 		$files = array();
+		$flags = RecursiveDirectoryIterator::CURRENT_AS_FILEINFO
+			| RecursiveDirectoryIterator::SKIP_DOTS
+			| RecursiveDirectoryIterator::FOLLOW_SYMLINKS;
 
-		$flags = \RecursiveDirectoryIterator::CURRENT_AS_FILEINFO | \RecursiveDirectoryIterator::SKIP_DOTS;
-		if (defined('\\RecursiveDirectoryIterator::FOLLOW_SYMLINKS')) {
-			// Available from PHP 5.3.1
-			$flags |= \RecursiveDirectoryIterator::FOLLOW_SYMLINKS;
-		}
-
-		foreach ($this->config->source as $source) {
+		foreach ($sources as $source) {
 			$entries = array();
+
 			if (is_dir($source)) {
-				foreach (new \RecursiveIteratorIterator(new SourceFilesFilterIterator(new \RecursiveDirectoryIterator($source, $flags), $this->config->exclude)) as $entry) {
+				foreach (new \RecursiveIteratorIterator(new SourceFilesFilterIterator(new RecursiveDirectoryIterator($source, $flags), $this->config->exclude)) as $entry) {
 					if (!$entry->isFile()) {
 						continue;
 					}
@@ -485,9 +484,11 @@ class Generator extends Nette\Object
 								}
 							}
 						}
+
 					} catch (\Exception $e) {
 						throw new \Exception(sprintf('Could not load macros and helpers from file "%s"', $pathName), 0, $e);
 					}
+
 				} else {
 					throw new \Exception(sprintf('Helper file "%s" does not exist.', $pathName));
 				}
@@ -720,6 +721,7 @@ class Generator extends Nette\Object
 				->save($this->forceDir($this->getTemplateFileName('opensearch', 'optional')));
 			$this->incrementProgressBar();
 		}
+
 		if ($this->isRobotsEnabled()) {
 			$template
 				->setFile($this->getTemplatePath('robots', 'optional'))
@@ -1595,31 +1597,7 @@ class Generator extends Nette\Object
 	 */
 	public function output($message)
 	{
-		echo $this->colorize($message);
-	}
-
-	/**
-	 * Colorizes message or removes placeholders if OS doesn't support colors.
-	 *
-	 * @param string $message
-	 * @return string
-	 */
-	public function colorize($message)
-	{
-		static $placeholders = array(
-			'@header@' => "\x1b[1;34m",
-			'@count@' => "\x1b[1;34m",
-			'@option@' => "\x1b[0;36m",
-			'@value@' => "\x1b[0;32m",
-			'@error@' => "\x1b[0;31m",
-			'@c' => "\x1b[0m"
-		);
-
-		if (!$this->config->colors) {
-			$placeholders = array_fill_keys(array_keys($placeholders), '');
-		}
-
-		return strtr($message, $placeholders);
+		echo $message;
 	}
 
 	/**
@@ -1630,7 +1608,7 @@ class Generator extends Nette\Object
 	public function getHeader()
 	{
 		$name = sprintf('%s %s', self::NAME, self::VERSION);
-		return sprintf("@header@%s@c\n%s\n", $name, str_repeat('-', strlen($name)));
+		return sprintf("%s\n%s\n", $name, str_repeat('-', strlen($name)));
 	}
 
 	/**

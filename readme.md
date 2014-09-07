@@ -40,156 +40,141 @@ The best way to install Apigen is via [Composer](https://getcomposer.org/):
 $ composer require apigen/apigen:~2.8
 ```
 
-
 ## Usage
 
-```
-apigen --config <path> [options]
-apigen --source <path> --destination <path> [options]
-```
+First, we create config file, e.g. `apigen.neon` and set required parameters.
 
-As you can see, you can use ApiGen either by providing individual parameters via the command line or using a config file.
-Moreover you can combine the two methods and the command line parameters will have precedence over those in the config file.
+If you haven't heard about .neon yet, [go check it](http://ne-on.org). It's similar to .yaml, just nicer.
 
-Every configuration option has to be followed by its value. And it is exactly the same to write ```--config=file.conf``` and ```--config file.conf```. The only exceptions are boolean options (those with yes|no values). When using these options on the command line you do not have to provide the "yes" value explicitly. If omitted, it is assumed that you wanted to turn the option on. So using ```--debug=yes``` and ```--debug``` does exactly the same (and the opposite is ```--debug=no```).
+### Minimal configuration
 
-Some options can have multiple values:
-
-* ```--source=file1.php --source=file2.php```
-* ```--source=file1.php,file2.php```
-
-
-### Options
-
-```--config|-c <file>```
-
-Path to the config file.
-
-```--source|-s <directory|file>``` **required**
-
-Path to the directory or file to be processed. You can use the parameter multiple times to provide a list of directories or files. All types of PHAR archives are supported (requires the PHAR extension). To process gz/bz2 compressed archives you need the appropriate extension (see requirements).
-
-```--destination|-d <directory>``` **required**
-
-Documentation will be generated into this directory.
-
-```--extensions <list>```
-
-List of allowed file extensions, default is "php".
-
-```--exclude <mask>```
-
-Directories and files matching this file mask will not be parsed. You can exclude for example tests from processing this way. This parameter is case sensitive and can be used multiple times.
-
-```--skip-doc-path <mask>```
-```--skip-doc-prefix <value>```
-
-Using this parameters you can tell ApiGen not to generate documentation for elements from certain files or with certain name prefix. Such classes will appear in class trees, but will not create a link to their documentation. These parameters are case sensitive and can be used multiple times.
-
-```--charset <list>```
-
-Character set of source files, default is "auto" that lets ApiGen choose from all supported character sets. However if you use only one characters set across your source files you should set it explicitly to avoid autodetection because it can be tricky (and is not completely realiable). Moreover autodetection slows down the process of generating documentation. You can also use the parameter multiple times to provide a list of all used character sets in your documentation. In that case ApiGen will choose one of provided character sets for each file.
-
-```--main <value>```
-
-Elements with this name prefix will be considered as the "main project" (the rest will be considered as libraries).
-
-```--title <value>```
-
-Title of the generated documentation.
-
-```--base-url <value>```
-
-Documentation base URL used in the sitemap. Only needed if you plan to make your documentation public.
-
-```--google-cse-id <value>```
-
-If you have a Google CSE ID, the search box will use it when you do not enter an exact class, constant or function name.
-
-```--google-analytics <value>```
-
-A Google Analytics tracking code. If provided, an ansynchronous tracking code will be placed into every generated page.
-
-```--template-config <file>```
-
-Template config file, default is the config file of ApiGen default template.
-
-```--allowed-html <list>```
-
-List of allowed HTML tags in documentation separated by comma. Default value is "b,i,a,ul,ol,li,p,br,var,samp,kbd,tt".
-
-```--groups <value>```
-
-How should elements be grouped in the menu. Possible options are "auto", "namespaces", "packages" and "none". Default value is "auto" (namespaces are used if the source code uses them, packages otherwise).
-
-```--autocomplete <list>```
-
-List of element types that will appear in the search input autocomplete. Possible values are "classes", "constants", "functions", "methods", "properties" and "classconstants". Default value is "classes,constants,functions".
-
-```--access-levels <list>```
-
-Access levels of methods and properties that should get their documentation parsed. Default value is "public,protected" (don't generate private class members).
-
-```--internal <yes|no>```
-
-Generate documentation for elements marked as internal (```@internal``` without description) and display parts of the documentation that are marked as internal (```@internal with description ...``` or inline ```{@internal ...}```), default is "No".
-
-```--php <yes|no>```
-
-Generate documentation for PHP internal classes, default is "Yes".
-
-```--tree <yes|no>```
-
-Generate tree view of classes, interfaces, traits and exceptions, default is "Yes".
-
-```--deprecated <yes|no>```
-
-Generate documentation for deprecated elements, default is "No".
-
-```--todo <yes|no>```
-
-Generate a list of tasks, default is "No".
-
-```--download <yes|no>```
-
-Add a link to download documentation as a ZIP archive, default is "No".
-
-```--report <file>```
-
-Save a checkstyle report of poorly documented elements into a file.
-
-```--wipeout <yes|no>```
-
-Delete files generated in the previous run, default is "Yes".
-
-```--debug <yes|no>```
-
-Display additional information (exception trace) in case of an error, default is "No".
-
-```--help|-h ```
-
-Display the list of possible options.
-
-Only ```--source``` and ```--destination``` parameters are required. You can provide them via command line or a configuration file.
-
-
-### Config files
-
-Instead of providing individual parameters via the command line, you can prepare a config file for later use. You can use all the above listed parameters (with one exception: the ```--config``` option) only without dashes and with an uppercase letter after each dash (so ```--access-level``` becomes ```accessLevel```).
-
-ApiGen uses the [NEON file format](http://ne-on.org) for all its config files. You can try the [online parser](http://ne-on.org) to debug your config files and see how they get parsed.
-
-Then you can call ApiGen with a single parameter ```--config``` specifying the config file to load.
-
-```
-apigen --config <path> [options]
+```yaml
+source: src # directory API is generated for
+destination: api # target dir for documentation
 ```
 
-Even when using a config file, you can still provide additional parameters via the command line. Such parameters will have precedence over parameters from the config file.
+Source can be also:
 
-Keep in mind, that any values in the config file will be **overwritten** by values from the command line. That means that providing the ```--source``` parameter values both in the config file and via the command line will not result in using all the provided values but only those from the command line.
+```yaml
+# file
+source: src/ApiGen/Generator.php
 
-If you provide no command line parameters at all, ApiGen will try to load a default config file called ```apigen.neon``` in the current working directory. If found it will work as if you used the ```--config``` option. Note that when using any command line option, you have to specify the config file if you have one. ApiGen will try to load one automatically only when no command line parameters are used. Option names have to be in camelCase in config files (```--template-config``` on the command line becomes ```templateConfig``` in a config file). You can see a full list of configuration options with short descriptions in the example config file [apigen.neon.example](https://github.com/apigen/apigen/blob/master/apigen.neon.example).
+# or more items
+source:
+	- src/ApiGen/Generator.php
+	- src/ApiGen/Console
+```
+
+Then run ApiGen passing your config:
+
+```sh
+php apigen --config apigen.neon
+```
+
+That's it!
 
 
-Note: When generating documentation of large libraries, not loading the Xdebug PHP might improve performance.
+### Optional configuration
+
+```sh
+# list of allowed extensions
+extensions:
+	- php # default
+
+# directories and files matching this file mask will not be parsed
+exclude:
+	- */tests/*
+	- */vendor/*
+
+# this files will be included in class tree, but will not create a link to their documentation
+# either files
+skipDocPath:
+    - * <mask>``` # mask
+
+# or with certain name prefix
+skipDocPrefix:
+    - Nette
+
+# character set of source files; if you use only one across your files, we recommend you name it
+charset:
+	# default
+    - auto # will choose from all supported (starting with UTF-8), slow and not 100% reliable
+    # e.g.
+    - UTF-8
+    - Windows-1252
+
+# elements with this name prefix will be considered as the "main project" (the rest will be considered as libraries)
+main: ApiGen
+
+# title of generated documentation
+title: ApiGen API
+
+# base url used for sitemap (useful for public doc)
+baseUrl: http://nette.org
+
+# custom search engine id, will be used by search box
+googleCseId: 011549293477758430224
+
+# Google Analytics tracking code
+googleAnalytics: UA-35236-5
+
+# path to template config file
+templateConfig: .. # default @todo
+
+# list of allowed HTML tags
+allowedHtml: [b,i,a,ul,ol,li,p,br,var,samp,kbd,tt] # default
+
+# the way elements are grouped in menu
+groups: auto # default [other options: namespace, packages, none], auto will detect namespace first, than packages
+
+# element supported by autocomplete in search input
+autocomplete:
+	# default
+	- classes
+	- constants
+	- functions
+	# other
+	- methods
+	- properties
+	- classconstants
+
+# access levels of included method and properties
+accessLevels:
+	# default
+	- public
+	- protected
+	# other
+	- private
+
+# include elements marked as @internal/{@internal}
+internal: false # default [true]
+
+# generate documentation for PHP internal classes
+php: true # default [false]
+
+# generate tree view of classes, interfaces, traits and exceptions
+tree: true # default [false]
+
+# generate documentation for deprecated elements
+deprecated: false # default [false]
+
+# generate list of tasks with @todo annotation
+todo: false # default [true]
+
+# add link to ZIP archive of documentation
+download: false # default [true]
+
+# save a checkstyle report of poorly documented elements into a file
+report: apigen-report.html
+
+# delete files generated in the previous run.
+wipeout: true # default [false]
+
+# display additional information (exception trace) in case of an error
+debug: false # default [true]
+```
+
+
+### Performance
+
+When generating documentation of large libraries, **not loading the Xdebug PHP extension**  will improve performance.

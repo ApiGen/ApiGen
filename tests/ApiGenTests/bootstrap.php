@@ -15,6 +15,8 @@ define('TEMP_DIR', __DIR__ . '/../tmp/' . (isset($_SERVER['argv']) ? md5(seriali
 Tester\Helpers::purge(TEMP_DIR);
 Tracy\Debugger::$logDirectory = TEMP_DIR;
 
+define('API_DIR', dirname(TEMP_DIR). '/api');
+
 
 $_SERVER = array_intersect_key($_SERVER, array_flip(array(
 	'PHP_SELF', 'SCRIPT_NAME', 'SERVER_ADDR', 'SERVER_SOFTWARE', 'HTTP_HOST', 'DOCUMENT_ROOT', 'OS', 'argc', 'argv')));
