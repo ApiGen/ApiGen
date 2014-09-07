@@ -26,15 +26,12 @@ class SourceFilesFilterIterator extends RecursiveFilterIterator
 
 
 	/**
-	 * Creates the iterator.
-	 *
-	 * @param \RecursiveDirectoryIterator $iterator Directory iterator
-	 * @param array $excludeMasks File/directory exlude masks
+	 * @param \RecursiveDirectoryIterator $iterator
+	 * @param array $excludeMasks
 	 */
-	public function __construct(RecursiveDirectoryIterator $iterator, array $excludeMasks)
+	public function __construct(RecursiveDirectoryIterator $iterator, $excludeMasks = array())
 	{
 		parent::__construct($iterator);
-
 		$this->excludeMasks = $excludeMasks;
 	}
 

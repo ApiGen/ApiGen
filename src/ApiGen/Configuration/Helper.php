@@ -136,10 +136,8 @@ class Helper extends Nette\Object
 
 		// Set overall DIC parameters, @todo: what for?
 		$config['application'] = array(
-			'application' => array(
-				'name' => 'ApiGen',
-				'version' => ApiGen\VERSION
-			),
+			'name' => ApiGen\ApiGen::NAME,
+			'version' => ApiGen\ApiGen::VERSION
 		);
 
 		return $config;

@@ -38,26 +38,20 @@ class ConsoleLogger implements Logger
 
 
 	/**
-	 * Logs a message.
 	 * @param string $message
 	 */
 	public function log($message)
 	{
-		if (!$this->config->quiet) {
-			if (!$this->outputStarted) {
-				// Print out the header right before the first message
-				$this->getHeader();
-				$this->outputStarted = TRUE;
-			}
-
-			fputs(STDOUT, $message);
+		if ( ! $this->outputStarted) {
+			// Print out the header right before the first message
+			$this->getHeader();
+			$this->outputStarted = TRUE;
 		}
+
+		fputs(STDOUT, $message);
 	}
 
 
-	/**
-	 * Log en exception.
-	 */
 	public function logException(Exception $e)
 	{
 		if ($e instanceof ConfigException) {

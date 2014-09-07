@@ -17,30 +17,23 @@ use Tracy\Debugger;
 
 require_once 'vendor/autoload.php';
 
-
 // Safe locale and timezone
 setlocale(LC_ALL, 'C');
 if ( ! ini_get('date.timezone')) {
 	date_default_timezone_set('UTC');
 }
 
-// ApiGen version
-const VERSION = '3.0dev';
-
-
 // ApiGen root path
 define('APIGEN_ROOT_PATH', __DIR__ . '/src');
 
-
-// Init Nette debugger
+// Init debugger
 Debugger::$strictMode = TRUE;
 Debugger::enable(Debugger::DEVELOPMENT, FALSE);
 
 // Build the DIC
 $configurator = new Configurator;
-$configurator->setTempDirectory(__DIR__ . '/tmp');
+$configurator->setTempDirectory(__DIR__ . '/temp');
 $configurator->addConfig(__DIR__ . '/src/ApiGen/DI/config.neon');
-// $configurator->defaultExtensions;
 $container = $configurator->createContainer();
 
 // Update debugger configuration if needed

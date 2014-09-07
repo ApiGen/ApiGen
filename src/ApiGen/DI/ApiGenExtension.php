@@ -65,7 +65,9 @@ class ApiGenExtension extends CompilerExtension
 	 */
 	protected $configurationComposer;
 
-	/** @var ApiGen\Configuration\Helper */
+	/**
+	 * @var ApiGen\Configuration\Helper
+	 */
 	private $configurationHelper;
 
 
@@ -95,26 +97,21 @@ class ApiGenExtension extends CompilerExtension
 
 		$this->configurationValidator->validateConfig($config);
 
+		// configuration
 		$builder->addDefinition($this->prefix('configuration'))
-			->setFactory('Nette\Utils\ArrayHash::from')
+			->setClass('ApiGen\Configuration\Configuration')
 			->setArguments(array($config));
-
 
 		// application
 		$builder->addDefinition($this->prefix('application'))
-			->setClass('ApiGen\Application\Application')
-			->addSetup('setName', array(ApiGen\ApiGen::NAME))
-			->addSetup('setVersion', array(ApiGen\ApiGen::VERSION))
-			->setArguments(array($this->prefix('configuration')));
-
+			->setClass('ApiGen\Application\Application');
 
 		$builder->addDefinition($this->prefix('configurationHelper'))
 			->setClass('ApiGen\Configuration\Helper');
 
 		// console
 		$builder->addDefinition($this->prefix('console.logger'))
-			->setClass('ApiGen\Console\ConsoleLogger')
-			->setArguments(array($config));
+			->setClass('ApiGen\Console\ConsoleLogger');
 
 		$builder->addDefinition($this->prefix('console.progressBar'))
 			->setClass('ApiGen\Console\SimpleProgressBar');
@@ -127,16 +124,13 @@ class ApiGenExtension extends CompilerExtension
 
 		// generator
 		$builder->addDefinition($this->prefix('generator'))
-			->setClass('ApiGen\Generator\HtmlGenerator')
-			->setArguments(array($this->prefix('configuration')));
+			->setClass('ApiGen\Generator\HtmlGenerator');
 
 		$builder->addDefinition($this->prefix('scanner'))
 			->setClass('ApiGen\Generator\PhpScanner');
 
-
-
 		// @todo: what for? removes system parameters!
-//		$builder->parameters = $config;
+		// $builder->parameters = $config;
 	}
 
 }

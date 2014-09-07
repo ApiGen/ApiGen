@@ -43,7 +43,7 @@ class Composer extends Nette\Object
 		}
 
 		// Load config file path
-		if (empty($cliArguments) && $this->helper->defaultConfigExists()) {
+		if (empty($cliArguments['config']) && $this->helper->defaultConfigExists()) {
 			// Default config file present
 			$cliArguments['config'] = $this->helper->getDefaultConfigPath();
 

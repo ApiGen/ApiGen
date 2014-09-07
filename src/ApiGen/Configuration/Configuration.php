@@ -11,43 +11,23 @@ namespace ApiGen\Configuration;
 
 use Nette;
 use Nette\Utils\ArrayHash;
+use Traversable;
 
 
 /**
- * @method ArrayHash getData()
+ * @method ArrayHash getParameters()
  */
-class Configuration extends Nette\Object
+class Configuration implements \ArrayAccess, \Countable, \IteratorAggregate
 {
 	/**
-	 * Configuration data.
 	 * @var ArrayHash
 	 */
-	private $data;
+	private $parameters;
 
 
 	public function __construct(array $parameters = array())
 	{
-		$this->data = new ArrayHash;
-		$this->fill($parameters);
-	}
-
-
-	public function fillByContainer(Nette\DI\Container $container)
-	{
-		$this->fill($container->params);
-	}
-
-
-	protected function fill(array $parameters)
-	{
-		if ( ! empty($this->data)) {
-			throw new Nette\InvalidStateException('Cannot update an already filled configuration.');
-		}
-
-		$this->data = ArrayHash::from($parameters);
-//			array_map(function ($value) {
-//			return is_array($value) ? new Configuration($value) : $value;
-//		}, $parameters);
+		$this->parameters = ArrayHash::from($parameters);
 	}
 
 
@@ -56,9 +36,84 @@ class Configuration extends Nette\Object
 	 */
 	public function toArray()
 	{
-		return array_map(function ($value) {
-			return $value instanceof Configuration ? $value->toArray() : $value;
-		}, $this->data);
+		return (array) $this->parameters;
+	}
+
+
+	/********************* \ArrayAccess *********************/
+
+
+	/**
+	 * @param string $name
+	 * @return mixed
+	 */
+	public function __get($name)
+	{
+		return $this->offsetGet($name);
+	}
+
+
+	/**
+	 * @param mixed $offset
+	 * @return boolean
+	 */
+	public function offsetExists($offset)
+	{
+		return isset($this->parameters[$offset]);
+	}
+
+
+	/**
+	 * @param mixed $offset
+	 * @return mixed
+	 */
+	public function offsetGet($offset)
+	{
+		return $this->parameters[$offset];
+	}
+
+
+	/**
+	 * @param mixed $offset
+	 * @param mixed $value
+	 */
+	public function offsetSet($offset, $value)
+	{
+		throw new Nette\InvalidStateException('Application configuration is read-only.');
+	}
+
+
+	/**
+	 * @param mixed $offset
+	 * @return void
+	 */
+	public function offsetUnset($offset)
+	{
+		throw new Nette\InvalidStateException('Application configuration is read-only.');
+	}
+
+
+	/********************* \Countable *********************/
+
+
+	/**
+	 * @return int
+	 */
+	public function count()
+	{
+		return count($this->parameters);
+	}
+
+
+	/********************* \IteratorAggregate *********************/
+
+
+	/**
+	 * @return Traversable
+	 */
+	public function getIterator()
+	{
+		return $this->parameters;
 	}
 
 }

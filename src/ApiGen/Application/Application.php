@@ -78,6 +78,8 @@ class Application extends Object
 		$start = new DateTime;
 
 		try {
+			$this->logger->log(ApiGen\ApiGen::NAME . ' ' . ApiGen\ApiGen::VERSION . "\n");
+
 			$this->onStartup($this);
 
 			$this->scan();
@@ -102,7 +104,7 @@ class Application extends Object
 
 	protected function scan()
 	{
-		$this->generator->scan($this->config->source, $this->config->exclude, $this->config->extensions);
+		$this->generator->scan((array) $this->config->source, (array) $this->config->exclude, (array) $this->config->extensions);
 
 		foreach ($this->config->source as $source) {
 			$this->logger->log(sprintf("Scanning\n %s\n", $source));
