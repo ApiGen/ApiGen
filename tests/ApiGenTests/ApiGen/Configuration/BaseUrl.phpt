@@ -21,7 +21,7 @@ class BaseUrlTest extends TestCase
 
 	public function testConfig()
 	{
-		exec('php ../../../../apigen --config=../config/baseUrl.neon');
+		exec(APIGEN_BIN . ' --config=../config/baseUrl.neon');
 		Assert::true(file_exists(API_DIR . '/index.html'));
 
 		Assert::true(file_exists(API_DIR . '/robots.txt'));

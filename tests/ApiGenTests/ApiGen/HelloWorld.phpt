@@ -7,7 +7,6 @@
 namespace ApiGenTests\ApiGen;
 
 use Tester\Assert;
-use Tester\Helpers;
 use Tester\TestCase;
 
 
@@ -25,7 +24,7 @@ class HelloWorldTest extends TestCase
 
 	public function testBasicGeneration()
 	{
-		exec('php ../../../apigen --config=config/apigen.neon');
+		exec(APIGEN_BIN . ' --config=config/apigen.neon');
 		Assert::true(file_exists(API_DIR . '/index.html'));
 
 		$fooClassFile = API_DIR . '/source-class-ApiGenTests.ApiGen.Project.Foo.html';
