@@ -50,7 +50,6 @@ class Config
 		'download' => false,
 		'report' => '',
 		'wipeout' => true,
-		'colors' => true,
 		'debug' => false,
 		'template' => array(
 			'require' => array(),
@@ -85,7 +84,6 @@ class Config
 	public function __construct()
 	{
 		$this->configValidator = new Validator;
-		$this->defaults['colors'] = 'WIN' === substr(PHP_OS, 0, 3) ? FALSE : (function_exists('posix_isatty') && defined('STDOUT') ? posix_isatty(STDOUT) : TRUE);
 		return $this;
 	}
 
