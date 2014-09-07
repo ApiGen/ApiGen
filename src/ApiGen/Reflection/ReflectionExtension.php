@@ -52,7 +52,7 @@ class ReflectionExtension extends ReflectionBase
 	 * Returns a constant reflection.
 	 *
 	 * @param string $name Constant name
-	 * @return \ApiGen\Reflection\ReflectionConstant|null
+	 * @return ReflectionConstant|null
 	 */
 	public function getConstant($name)
 	{
@@ -63,7 +63,7 @@ class ReflectionExtension extends ReflectionBase
 	 * Returns a constant reflection.
 	 *
 	 * @param string $name Constant name
-	 * @return \ApiGen\Reflection\ReflectionConstant|null
+	 * @return ReflectionConstant|null
 	 */
 	public function getConstantReflection($name)
 	{

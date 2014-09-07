@@ -10,7 +10,7 @@
 namespace ApiGen\Reflection;
 
 use ApiGen\Generator;
-use TokenReflection, TokenReflection\IReflectionClass, TokenReflection\IReflectionMethod, TokenReflection\IReflectionProperty, TokenReflection\IReflectionConstant;
+use TokenReflection, TokenReflection\IReflectionClass;
 use ReflectionMethod as InternalReflectionMethod, ReflectionProperty as InternalReflectionProperty;
 use InvalidArgumentException;
 
@@ -387,7 +387,7 @@ class ReflectionClass extends ReflectionElement
 	 * Returns a method reflection.
 	 *
 	 * @param string $name Method name
-	 * @return \ApiGen\Reflection\ReflectionMethod
+	 * @return ReflectionMethod
 	 * @throws \InvalidArgumentException If required method does not exist.
 	 */
 	public function getMethod($name)
@@ -615,7 +615,7 @@ class ReflectionClass extends ReflectionElement
 	 * Returns a constant reflection.
 	 *
 	 * @param string $name Constant name
-	 * @return \ApiGen\Reflection\ReflectionConstant
+	 * @return ReflectionConstant
 	 * @throws \InvalidArgumentException If required constant does not exist.
 	 */
 	public function getConstantReflection($name)
@@ -635,7 +635,7 @@ class ReflectionClass extends ReflectionElement
 	 * Returns a constant reflection.
 	 *
 	 * @param string $name Constant name
-	 * @return \ApiGen\Reflection\ReflectionConstant
+	 * @return ReflectionConstant
 	 */
 	public function getConstant($name)
 	{
@@ -676,7 +676,7 @@ class ReflectionClass extends ReflectionElement
 	 * Returns a constant reflection.
 	 *
 	 * @param string $name Constant name
-	 * @return \ApiGen\Reflection\ReflectionConstant
+	 * @return ReflectionConstant
 	 * @throws \InvalidArgumentException If required constant does not exist.
 	 */
 	public function getOwnConstantReflection($name)
@@ -696,7 +696,7 @@ class ReflectionClass extends ReflectionElement
 	 * Returns a constant reflection.
 	 *
 	 * @param string $name Constant name
-	 * @return \ApiGen\Reflection\ReflectionConstant
+	 * @return ReflectionConstant
 	 */
 	public function getOwnConstant($name)
 	{
