@@ -10,6 +10,7 @@
 
 namespace ApiGen;
 
+use ApiGen\Console\SimpleProgressBar;
 use TokenReflection;
 use Tracy\Debugger;
 
@@ -38,7 +39,7 @@ try {
 	$config = new Config;
 	$config->processCliOptions($options);
 	$config->prepare();
-	$generator = new Generator($config);
+	$generator = new Generator($config, new SimpleProgressBar);
 
 
 	// Prepare configuration
