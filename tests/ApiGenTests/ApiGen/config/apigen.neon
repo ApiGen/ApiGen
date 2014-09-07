@@ -1,3 +1,2 @@
 source: ../Project
 destination: ../../../tmp/api
-baseUrl: http://nette.org
