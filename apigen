@@ -26,7 +26,7 @@ require_once 'vendor/autoload.php';
 try {
 	Debugger::$strictMode = TRUE;
 	Debugger::$onFatalError[] = function() {
-		echo "\nFor more information turn on the debug mode using the --debug option.\n";
+		echo "\nFor more information turn on the debug mode using the debug option.\n";
 	};
 	Debugger::enable(Debugger::PRODUCTION, FALSE);
 
@@ -35,20 +35,11 @@ try {
 	$options = $_SERVER['argv'];
 	array_shift($options);
 
-	$config = new Config();
-	$config->processCliOptions($options);
+	$config = new Config($options);
 	$generator = new Generator($config);
 
-	// Help
-	if ($config->isHelpRequested()) {
-		echo $generator->colorize($generator->getHeader());
-		echo $generator->colorize($config->getHelp());
-		die();
-	}
 
 	// Prepare configuration
-	$config->prepare();
-
 	if ($config->debug) {
 		Debugger::$onFatalError = array();
 		Debugger::enable(Debugger::DEVELOPMENT, FALSE);
@@ -71,7 +62,7 @@ try {
 		$generator->output(sprintf("Excluding @value@%s@c\n", $config->exclude[0]));
 	}
 
-	$parsed = $generator->parse();
+	$parsed = $generator->parse($config->source);
 
 	if (count($parsed->errors) > 1) {
 		$generator->output(sprintf("@error@Found %d errors@c\n\n", count($parsed->errors)));

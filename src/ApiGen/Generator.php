@@ -9,6 +9,7 @@
 
 namespace ApiGen;
 
+use RecursiveDirectoryIterator;
 use TokenReflection\Broker;
 use Nette, FSHL;
 use InvalidArgumentException, RuntimeException;
@@ -162,20 +163,18 @@ class Generator extends Nette\Object
 	 * @return array
 	 * @throws \RuntimeException If no PHP files have been found.
 	 */
-	public function parse()
+	public function parse($sources)
 	{
 		$files = array();
+		$flags = RecursiveDirectoryIterator::CURRENT_AS_FILEINFO
+			| RecursiveDirectoryIterator::SKIP_DOTS
+			| RecursiveDirectoryIterator::FOLLOW_SYMLINKS;
 
-		$flags = \RecursiveDirectoryIterator::CURRENT_AS_FILEINFO | \RecursiveDirectoryIterator::SKIP_DOTS;
-		if (defined('\\RecursiveDirectoryIterator::FOLLOW_SYMLINKS')) {
-			// Available from PHP 5.3.1
-			$flags |= \RecursiveDirectoryIterator::FOLLOW_SYMLINKS;
-		}
-
-		foreach ($this->config->source as $source) {
+		foreach ($sources as $source) {
 			$entries = array();
+
 			if (is_dir($source)) {
-				foreach (new \RecursiveIteratorIterator(new SourceFilesFilterIterator(new \RecursiveDirectoryIterator($source, $flags), $this->config->exclude)) as $entry) {
+				foreach (new \RecursiveIteratorIterator(new SourceFilesFilterIterator(new RecursiveDirectoryIterator($source, $flags), $this->config->exclude)) as $entry) {
 					if (!$entry->isFile()) {
 						continue;
 					}
@@ -485,9 +484,11 @@ class Generator extends Nette\Object
 								}
 							}
 						}
+
 					} catch (\Exception $e) {
 						throw new \Exception(sprintf('Could not load macros and helpers from file "%s"', $pathName), 0, $e);
 					}
+
 				} else {
 					throw new \Exception(sprintf('Helper file "%s" does not exist.', $pathName));
 				}
