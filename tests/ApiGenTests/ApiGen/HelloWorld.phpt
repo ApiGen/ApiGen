@@ -27,6 +27,12 @@ class HelloWorldTest extends TestCase
 	{
 		exec('php ../../../apigen --config=config/apigen.neon');
 		Assert::true(file_exists(API_DIR . '/index.html'));
+
+		$fooClassFile = API_DIR . '/source-class-ApiGenTests.ApiGen.Project.Foo.html';
+		Assert::true(file_exists($fooClassFile));
+
+		$fooClassFileSource = file_get_contents($fooClassFile);
+		Assert::true(strlen($fooClassFileSource) > 1);
 	}
 
 }
