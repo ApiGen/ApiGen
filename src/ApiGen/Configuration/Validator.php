@@ -57,9 +57,6 @@ class Validator extends Nette\Object
 		foreach ($config['extensions'] as $extension) {
 			Validators::assert($extension, 'string', 'file extension');
 		}
-		if ( ! is_file($config['templateConfig'])) {
-			throw new ConfigException(sprintf('Template config "%s" doesn\'t exist', $config['templateConfig']));
-		}
 	}
 
 
@@ -68,26 +65,25 @@ class Validator extends Nette\Object
 	 */
 	public function validateTemplateConfig($config)
 	{
-		return; // todo: fix
+		if ( ! is_file($config['templateConfig'])) {
+			throw new ConfigException(sprintf('Template config "%s" doesn\'t exist', $config['templateConfig']));
+		}
+
 		foreach (array('main', 'optional') as $section) {
-			foreach ($config['template']['templates'][$section] as $type => $config) {
-				if ( ! isset($config['filename'])) {
+			foreach ($config['template']['templates'][$section] as $type => $configSection) {
+				if ( ! isset($configSection['filename'])) {
 					throw new ConfigException(sprintf('Filename for "%s" is not defined', $type));
 				}
 
-
-				if ( ! isset($config['template'])) {
+				if ( ! isset($configSection['template'])) {
 					throw new ConfigException(sprintf('Template for "%s" is not defined', $type));
 				}
 
-				// todo: fix
-//				if ( ! is_file(dirname($config['templateConfig']) . DIRECTORY_SEPARATOR . $config['template'])) {
-//					throw new ConfigException(sprintf('Template for "%s" doesn\'t exist', $type));
-//				}
+				if ( ! is_file(dirname($config['templateConfig']) . DIRECTORY_SEPARATOR . $configSection['template'])) {
+					throw new ConfigException(sprintf('Template for "%s" doesn\'t exist', $type));
+				}
 			}
 		}
-
-
 	}
 
 }

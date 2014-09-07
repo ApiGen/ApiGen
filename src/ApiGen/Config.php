@@ -82,18 +82,10 @@ class Config
 	 * @param array $options
 	 * @return \ApiGen\Config
 	 */
-	public function __construct($options)
+	public function __construct()
 	{
 		$this->configValidator = new Validator;
-
-		$templateDir = realpath(__DIR__ . DIRECTORY_SEPARATOR . '..');
-		$this->defaults['templateConfig'] = $templateDir . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'default' . DIRECTORY_SEPARATOR . 'config.neon';
-		$this->defaults['colors'] = 'WIN' === substr(PHP_OS, 0, 3) ? false : (function_exists('posix_isatty') && defined('STDOUT') ? posix_isatty(STDOUT) : true);
-
-		$config = $this->processCliOptions($options);
-		$this->config = $this->prepare($config);
-
-
+		$this->defaults['colors'] = 'WIN' === substr(PHP_OS, 0, 3) ? FALSE : (function_exists('posix_isatty') && defined('STDOUT') ? posix_isatty(STDOUT) : TRUE);
 		return $this;
 	}
 
@@ -135,7 +127,7 @@ class Config
 			return 1 === count($value) ? $value[0] : $value;
 		}, $options);
 
-		return $options;
+		return $this->config = $options;
 	}
 
 
@@ -144,8 +136,10 @@ class Config
 	 * @return \ApiGen\Config
 	 * @throws \ApiGen\ConfigException If something in configuration is wrong.
 	 */
-	public function prepare($config)
+	public function prepare()
 	{
+		$config = $this->config;
+
 		if ( ! isset($config['config'])) {
 			throw new ConfigException('Parameter "--config" is required');
 		}
@@ -180,6 +174,9 @@ class Config
 		$config['baseUrl'] = rtrim($config['baseUrl'], '/');
 
 		// Merge template config
+		$templateDir = realpath(__DIR__ . DIRECTORY_SEPARATOR . '..');
+		$config['templateConfig'] = $templateDir . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'default' . DIRECTORY_SEPARATOR . 'config.neon';
+
 		$config = array_merge_recursive($config, array(
 			'template' => Neon::decode(file_get_contents($fileName = $config['templateConfig'])))
 		);
@@ -189,7 +186,8 @@ class Config
 		// Check template
 		$this->configValidator->validateTemplateConfig($config);
 
-		return $config;
+
+		return $this->config = $config;
 	}
 
 
@@ -263,20 +261,17 @@ class Config
 	}
 
 
-	/************************ array access ************************/
+	/**
+	 * Checks if a configuration option exists.
+	 *
+	 * @param string $name Option name
+	 * @return boolean
+	 */
+	public function __isset($name)
+	{
+		return isset($this->config[$name]);
+	}
 
-
-//	/**
-//	 * Checks if a configuration option exists.
-//	 *
-//	 * @param string $name Option name
-//	 * @return boolean
-//	 */
-//	public function __isset($name)
-//	{
-//		return isset($this->config[$name]);
-//	}
-//
 
 	/**
 	 * Returns a configuration option value.

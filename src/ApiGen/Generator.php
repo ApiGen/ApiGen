@@ -721,6 +721,7 @@ class Generator extends Nette\Object
 				->save($this->forceDir($this->getTemplateFileName('opensearch', 'optional')));
 			$this->incrementProgressBar();
 		}
+
 		if ($this->isRobotsEnabled()) {
 			$template
 				->setFile($this->getTemplatePath('robots', 'optional'))
