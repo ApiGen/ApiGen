@@ -147,31 +147,31 @@ accessLevels:
 	- private
 
 # include elements marked as @internal/{@internal}
-internal: no # default [yes]
+internal: false # default [true]
 
 # generate documentation for PHP internal classes
-php: yes # default [no]
+php: true # default [false]
 
 # generate tree view of classes, interfaces, traits and exceptions
-tree: yes # default [no]
+tree: true # default [false]
 
 # generate documentation for deprecated elements
-deprecated: no # default [no]
+deprecated: false # default [false]
 
 # generate list of tasks with @todo annotation
-todo: no # default [yes]
+todo: false # default [true]
 
 # add link to ZIP archive of documentation
-download: no # default [yes]
+download: false # default [true]
 
 # save a checkstyle report of poorly documented elements into a file
 report: apigen-report.html
 
 # delete files generated in the previous run.
-wipeout: yes # default [no]
+wipeout: true # default [false]
 
 # display additional information (exception trace) in case of an error
-debug: no # default [yes]
+debug: false # default [true]
 ```
 
 
