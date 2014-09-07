@@ -26,7 +26,7 @@ class HelloWorldTest extends TestCase
 	public function testBasicGeneration()
 	{
 		exec('php ../../../apigen --config=config/apigen.neon');
-		Assert::true(file_exists(dirname(TEMP_DIR) . '/api/index.html'));
+		Assert::true(file_exists(API_DIR . '/index.html'));
 	}
 
 }
