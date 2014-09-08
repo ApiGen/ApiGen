@@ -122,6 +122,13 @@ class ApiGenExtension extends CompilerExtension
 		$builder->addDefinition($this->prefix('errorHandler'))
 			->setClass('ApiGen\LogErrorHandler');
 
+		// charset
+		$builder->addDefinition($this->prefix('charsetConvertor'))
+			->setClass('ApiGen\Charset\CharsetConvertor')
+			->addSetup('setCharset', array(
+				new \Nette\DI\Statement('(array) ?->?', array('@ApiGen\Configuration\Configuration', 'charset')))
+			);
+
 		// generator
 		$builder->addDefinition($this->prefix('generator'))
 			->setClass('ApiGen\Generator\HtmlGenerator');

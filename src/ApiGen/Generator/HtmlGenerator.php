@@ -11,6 +11,7 @@ namespace ApiGen\Generator;
 
 use ApiGen\ApiGen;
 use ApiGen\Backend;
+use ApiGen\Charset\CharsetConvertor;
 use ApiGen\Tree;
 use ApiGen\Configuration\Configuration;
 use ApiGen\FileSystem;
@@ -122,27 +123,29 @@ class HtmlGenerator extends Nette\Object implements Generator
 	private $symlinks = array();
 
 	/**
-	 * List of detected character sets for parsed files.
 	 * @var array
 	 */
-	private $charsets = array();
+	private $files;
 
 	/**
 	 * @var Scanner
 	 */
 	private $scanner;
 
-	/** @var array */
-	private $files;
+	/**
+	 * @var CharsetConvertor
+	 */
+	private $charsetConvertor;
 
 
-	public function __construct(Configuration $config, Scanner $scanner)
+	public function __construct(Configuration $config, CharsetConvertor $charsetConvertor, Scanner $scanner)
 	{
-		$this->config = $config;
-		$this->scanner = $scanner;
 		$this->parsedClasses = new ArrayObject;
 		$this->parsedConstants = new ArrayObject;
 		$this->parsedFunctions = new ArrayObject;
+		$this->config = $config;
+		$this->charsetConvertor = $charsetConvertor;
+		$this->scanner = $scanner;
 	}
 
 
@@ -163,7 +166,6 @@ class HtmlGenerator extends Nette\Object implements Generator
 	 */
 	public function parse()
 	{
-
 		$files = $this->files;
 
 		$this->onParseStart(array_sum($this->files));
@@ -174,14 +176,11 @@ class HtmlGenerator extends Nette\Object implements Generator
 
 		$errors = array();
 
-		foreach ($files as $fileName => $size) {
-			$content = file_get_contents($fileName);
-			$charset = $this->detectCharset($content);
-			$this->charsets[$fileName] = $charset;
-			$content = $this->toUtf($content, $charset);
+		foreach ($files as $filePath => $size) {
+			$content = $this->charsetConvertor->convertFile($filePath);
 
 			try {
-				$broker->processString($content, $fileName);
+				$broker->processString($content, $filePath);
 
 			} catch (\Exception $e) {
 				$errors[] = $e;
@@ -1249,7 +1248,8 @@ class HtmlGenerator extends Nette\Object implements Generator
 				// Generate source codes
 				if ($element->isTokenized()) {
 					$template->fileName = $this->getRelativePath($element->getFileName());
-					$template->source = $fshl->highlight($this->toUtf(file_get_contents($element->getFileName()), $this->charsets[$element->getFileName()]));
+					$content = $this->charsetConvertor->convertFile($element->getFileName());
+					$template->source = $fshl->highlight($content);
 					$template->setFile($this->getTemplatePath('source'))
 						->save($this->config->destination . DIRECTORY_SEPARATOR . $template->getSourceUrl($element, FALSE));
 
@@ -1493,66 +1493,6 @@ class HtmlGenerator extends Nette\Object implements Generator
 		}
 
 		return NULL;
-	}
-
-
-	/**
-	 * Detects character set for the given text.
-	 * @param string $text
-	 * @return string
-	 */
-	private function detectCharset($text)
-	{
-		// One character set
-		if (1 === count($this->config->charset) && 'AUTO' !== $this->config->charset[0]) {
-			return $this->config->charset[0];
-		}
-
-		static $charsets = array();
-		if (empty($charsets)) {
-			if (1 === count($this->config->charset) && 'AUTO' === $this->config->charset[0]) {
-				// Autodetection
-				$charsets = array(
-					'Windows-1251', 'Windows-1252', 'ISO-8859-2', 'ISO-8859-1', 'ISO-8859-3', 'ISO-8859-4', 'ISO-8859-5', 'ISO-8859-6',
-					'ISO-8859-7', 'ISO-8859-8', 'ISO-8859-9', 'ISO-8859-10', 'ISO-8859-13', 'ISO-8859-14', 'ISO-8859-15'
-				);
-			} else {
-				// More character sets
-				$charsets = $this->config->charset;
-				if (FALSE !== ($key = array_search('WINDOWS-1250', $charsets))) {
-					// WINDOWS-1250 is not supported
-					$charsets[$key] = 'ISO-8859-2';
-				}
-			}
-			// Only supported character sets
-			$charsets = array_intersect($charsets, mb_list_encodings());
-
-			// UTF-8 have to be first
-			array_unshift($charsets, 'UTF-8');
-		}
-
-		$charset = mb_detect_encoding($text, $charsets);
-		// The previous function can not handle WINDOWS-1250 and returns ISO-8859-2 instead
-		if ('ISO-8859-2' === $charset && preg_match('~[\x7F-\x9F\xBC]~', $text)) {
-			$charset = 'WINDOWS-1250';
-		}
-
-		return $charset;
-	}
-
-
-	/**
-	 * @param string $text
-	 * @param string $charset
-	 * @return string
-	 */
-	private function toUtf($text, $charset)
-	{
-		if ('UTF-8' === $charset) {
-			return $text;
-		}
-
-		return @iconv($charset, 'UTF-8//TRANSLIT//IGNORE', $text);
 	}
 
 
