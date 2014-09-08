@@ -1,6 +1,7 @@
 services:
 	- {class: ApiGen\Events\LogOnError, tags: [kdyby.subscriber]}
 	- {class: ApiGen\Events\ProgressBarIncrement, tags: [kdyby.subscriber]}
+	- {class: ApiGen\Events\MemoryLimitCheckerOnProgress, tags: [kdyby.subscriber]}
 
 extensions:
 	apigen: ApiGen\DI\ApiGenExtension

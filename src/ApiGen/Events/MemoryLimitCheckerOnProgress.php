@@ -43,7 +43,7 @@ class MemoryLimitCheckerOnProgress extends Nette\Object implements Subscriber
 
 	public function onProgress()
 	{
-		$this->memoryLimitChecker->checkUsage();
+		$this->memoryLimitChecker->check();
 	}
 
 }
