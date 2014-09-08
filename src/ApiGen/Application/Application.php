@@ -75,9 +75,9 @@ class Application extends Object
 	 */
 	public function run()
 	{
-		$start = new DateTime;
-
 		try {
+			$start = new DateTime;
+
 			$this->logger->log(ApiGen\ApiGen::NAME . ' ' . ApiGen\ApiGen::VERSION . "\n");
 
 			$this->onStartup($this);
@@ -92,13 +92,13 @@ class Application extends Object
 
 			$this->generate();
 
+			$this->onShutdown($this);
+
+			$this->printElapsed($start, new DateTime());
+
 		} catch (Exception $e) {
 			$this->onError($e);
 		}
-
-		$this->onShutdown($this);
-
-		$this->printElapsed($start, new DateTime());
 	}
 
 
