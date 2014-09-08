@@ -225,11 +225,11 @@ class Application extends Object
 	 */
 	protected function generate()
 	{
-		$skipping = array_merge($this->config->skipDocPath->toArray(), $this->config->skipDocPrefix->toArray()); // @todo better merge
+		$skipping = array_merge((array) $this->config->skipDocPath, (array) $this->config->skipDocPrefix); // @todo better merge
 		if (count($skipping) > 1) {
 			$this->logger->log(sprintf("Will not generate documentation for\n %s\n", implode("\n ", $skipping)));
 
-		} elseif (!empty($skipping)) {
+		} elseif ( ! empty($skipping)) {
 			$this->logger->log(sprintf("Will not generate documentation for %s\n", $skipping[0]));
 		}
 

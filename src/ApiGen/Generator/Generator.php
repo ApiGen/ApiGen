@@ -41,4 +41,11 @@ interface Generator
 	 */
 	public function wipeOutDestination();
 
+
+	/**
+	 * Returns configuration
+	 * @return Generator
+	 */
+	public function getConfig();
+
 }

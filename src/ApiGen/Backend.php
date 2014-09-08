@@ -9,8 +9,14 @@
 
 namespace ApiGen;
 
-use TokenReflection, TokenReflection\IReflectionConstant, TokenReflection\IReflectionFunction, TokenReflection\Broker, TokenReflection\Resolver;
+use ApiGen\Generator\Generator;
+use TokenReflection;
+use TokenReflection\IReflectionConstant;
+use TokenReflection\IReflectionFunction;
+use TokenReflection\Broker;
+use TokenReflection\Resolver;
 use InvalidArgumentException, RuntimeException;
+
 
 /**
  * Customized TokenReflection broker backend.
@@ -21,41 +27,33 @@ use InvalidArgumentException, RuntimeException;
 class Backend extends Broker\Backend\Memory
 {
 	/**
-	 * Generator instance.
-	 *
-	 * @var \ApiGen\Generator
+	 * @var Generator
 	 */
 	private $generator;
 
 	/**
 	 * Cache of processed token streams.
-	 *
 	 * @var array
 	 */
 	private $fileCache = array();
 
 	/**
 	 * Determines if token streams should be cached in filesystem.
-	 *
 	 * @var boolean
 	 */
-	private $cacheTokenStreams = false;
+	private $cacheTokenStreams = FALSE;
 
 	/**
-	 * Constructor.
-	 *
-	 * @param \ApiGen\Generator $generator Generator instance
+	 * @param Generator $generator
 	 * @param boolean $cacheTokenStreams If token stream should be cached
 	 */
-	public function __construct(Generator $generator, $cacheTokenStreams = false)
+	public function __construct(Generator $generator, $cacheTokenStreams = FALSE)
 	{
 		$this->generator = $generator;
 		$this->cacheTokenStreams = $cacheTokenStreams;
 	}
 
 	/**
-	 * Destructor.
-	 *
 	 * Deletes all cached token streams.
 	 */
 	public function __destruct()
@@ -65,11 +63,9 @@ class Backend extends Broker\Backend\Memory
 		}
 	}
 
+
 	/**
 	 * Adds a file to the backend storage.
-	 *
-	 * @param \TokenReflection\Stream\StreamBase $tokenStream Token stream
-	 * @param \TokenReflection\ReflectionFile $file File reflection object
 	 * @return \TokenReflection\Broker\Backend\Memory
 	 */
 	public function addFile(TokenReflection\Stream\StreamBase $tokenStream, TokenReflection\ReflectionFile $file)
@@ -94,21 +90,21 @@ class Backend extends Broker\Backend\Memory
 	public function getFileTokens($fileName)
 	{
 		try {
-			if (!$this->isFileProcessed($fileName)) {
+			if ( ! $this->isFileProcessed($fileName)) {
 				throw new InvalidArgumentException('File was not processed');
 			}
 
 			$realName = Broker::getRealPath($fileName);
-			if (!isset($this->fileCache[$realName])) {
+			if ( ! isset($this->fileCache[$realName])) {
 				throw new InvalidArgumentException('File is not in the cache');
 			}
 
 			$data = @file_get_contents($this->fileCache[$realName]);
-			if (false === $data) {
+			if (FALSE === $data) {
 				throw new RuntimeException('Cached file is not readable');
 			}
 			$file = @unserialize($data);
-			if (false === $file) {
+			if (FALSE === $file) {
 				throw new RuntimeException('Stream could not be loaded from cache');
 			}
 
@@ -118,9 +114,9 @@ class Backend extends Broker\Backend\Memory
 		}
 	}
 
+
 	/**
 	 * Prepares and returns used class lists.
-	 *
 	 * @return array
 	 */
 	protected function parseClassLists()
@@ -137,17 +133,17 @@ class Backend extends Broker\Backend\Memory
 			foreach ($namespace->getClasses() as $name => $trClass) {
 				$class = new Reflection\ReflectionClass($trClass, $this->generator);
 				$allClasses[self::TOKENIZED_CLASSES][$name] = $class;
-				if (!$class->isDocumented()) {
+				if ( ! $class->isDocumented()) {
 					continue;
 				}
 
 				foreach (array_merge($trClass->getParentClasses(), $trClass->getInterfaces()) as $parentName => $parent) {
 					if ($parent->isInternal()) {
-						if (!isset($allClasses[self::INTERNAL_CLASSES][$parentName])) {
+						if ( ! isset($allClasses[self::INTERNAL_CLASSES][$parentName])) {
 							$allClasses[self::INTERNAL_CLASSES][$parentName] = $parent;
 						}
-					} elseif (!$parent->isTokenized()) {
-						if (!isset($allClasses[self::NONEXISTENT_CLASSES][$parentName])) {
+					} elseif ( ! $parent->isTokenized()) {
+						if ( ! isset($allClasses[self::NONEXISTENT_CLASSES][$parentName])) {
 							$allClasses[self::NONEXISTENT_CLASSES][$parentName] = $parent;
 						}
 					}
@@ -158,7 +154,7 @@ class Backend extends Broker\Backend\Memory
 		}
 
 		foreach ($allClasses[self::TOKENIZED_CLASSES] as $class) {
-			if (!$class->isDocumented()) {
+			if ( ! $class->isDocumented()) {
 				continue;
 			}
 
@@ -169,7 +165,7 @@ class Backend extends Broker\Backend\Memory
 			foreach ($class->getOwnProperties() as $property) {
 				$annotations = $property->getAnnotations();
 
-				if (!isset($annotations['var'])) {
+				if ( ! isset($annotations['var'])) {
 					continue;
 				}
 
@@ -191,7 +187,7 @@ class Backend extends Broker\Backend\Memory
 		}
 
 		array_walk_recursive($allClasses, function(&$reflection, $name, Generator $generator) {
-			if (!$reflection instanceof Reflection\ReflectionClass) {
+			if ( ! $reflection instanceof Reflection\ReflectionClass) {
 				$reflection = new Reflection\ReflectionClass($reflection, $generator);
 			}
 		}, $this->generator);
@@ -199,12 +195,12 @@ class Backend extends Broker\Backend\Memory
 		return $allClasses;
 	}
 
+
 	/**
 	 * Processes a function/method and adds classes from annotations to the overall class array.
-	 *
-	 * @param array $declared Array of declared classes
-	 * @param array $allClasses Array with all classes parsed so far
-	 * @param \ApiGen\Reflection\ReflectionFunction|\TokenReflection\IReflectionFunctionBase $function Function/method reflection
+	 * @param array $declared
+	 * @param array $allClasses
+	 * @param \ApiGen\Reflection\ReflectionFunction|\TokenReflection\IReflectionFunctionBase $function
 	 * @return array
 	 */
 	private function processFunction(array $declared, array $allClasses, $function)
@@ -213,7 +209,7 @@ class Backend extends Broker\Backend\Memory
 
 		$annotations = $function->getAnnotations();
 		foreach ($parsedAnnotations as $annotation) {
-			if (!isset($annotations[$annotation])) {
+			if ( ! isset($annotations[$annotation])) {
 				continue;
 			}
 
@@ -236,19 +232,19 @@ class Backend extends Broker\Backend\Memory
 		return $allClasses;
 	}
 
+
 	/**
 	 * Adds a class to list of classes.
-	 *
-	 * @param array $declared Array of declared classes
-	 * @param array $allClasses Array with all classes parsed so far
-	 * @param string $name Class name
+	 * @param array $declared
+	 * @param array $allClasses
+	 * @param string $name
 	 * @return array
 	 */
 	private function addClass(array $declared, array $allClasses, $name)
 	{
 		$name = ltrim($name, '\\');
 
-		if (!isset($declared[$name]) || isset($allClasses[self::TOKENIZED_CLASSES][$name])
+		if ( ! isset($declared[$name]) || isset($allClasses[self::TOKENIZED_CLASSES][$name])
 			|| isset($allClasses[self::INTERNAL_CLASSES][$name]) || isset($allClasses[self::NONEXISTENT_CLASSES][$name])
 		) {
 			return $allClasses;
@@ -258,20 +254,21 @@ class Backend extends Broker\Backend\Memory
 		if ($parameterClass->isInternal()) {
 			$allClasses[self::INTERNAL_CLASSES][$name] = $parameterClass;
 			foreach (array_merge($parameterClass->getInterfaces(), $parameterClass->getParentClasses()) as $parentClass) {
-				if (!isset($allClasses[self::INTERNAL_CLASSES][$parentName = $parentClass->getName()])) {
+				if ( ! isset($allClasses[self::INTERNAL_CLASSES][$parentName = $parentClass->getName()])) {
 					$allClasses[self::INTERNAL_CLASSES][$parentName] = $parentClass;
 				}
 			}
-		} elseif (!$parameterClass->isTokenized() && !isset($allClasses[self::NONEXISTENT_CLASSES][$name])) {
+
+		} elseif ( ! $parameterClass->isTokenized() &&  ! isset($allClasses[self::NONEXISTENT_CLASSES][$name])) {
 			$allClasses[self::NONEXISTENT_CLASSES][$name] = $parameterClass;
 		}
 
 		return $allClasses;
 	}
 
+
 	/**
 	 * Returns all constants from all namespaces.
-	 *
 	 * @return array
 	 */
 	public function getConstants()
@@ -282,9 +279,9 @@ class Backend extends Broker\Backend\Memory
 		}, parent::getConstants());
 	}
 
+
 	/**
 	 * Returns all functions from all namespaces.
-	 *
 	 * @return array
 	 */
 	public function getFunctions()
@@ -294,4 +291,5 @@ class Backend extends Broker\Backend\Memory
 			return new Reflection\ReflectionFunction($function, $generator);
 		}, parent::getFunctions());
 	}
+
 }
