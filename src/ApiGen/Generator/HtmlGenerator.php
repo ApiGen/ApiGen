@@ -18,7 +18,6 @@ use ApiGen\FileSystem;
 use ApiGen\Reflection;
 use ApiGen\Templating\Template;
 use ArrayObject;
-use FSHL;
 use InvalidArgumentException;
 use Nette;
 use RuntimeException;
@@ -137,8 +136,14 @@ class HtmlGenerator extends Nette\Object implements Generator
 	 */
 	private $charsetConvertor;
 
+	/**
+	 * @var SourceCodeHighlighter
+	 */
+	private $sourceCodeHighlighter;
 
-	public function __construct(Configuration $config, CharsetConvertor $charsetConvertor, Scanner $scanner)
+
+	public function __construct(Configuration $config, CharsetConvertor $charsetConvertor, Scanner $scanner,
+	                            SourceCodeHighlighter $sourceCodeHighlighter)
 	{
 		$this->parsedClasses = new ArrayObject;
 		$this->parsedConstants = new ArrayObject;
@@ -146,6 +151,7 @@ class HtmlGenerator extends Nette\Object implements Generator
 		$this->config = $config;
 		$this->charsetConvertor = $charsetConvertor;
 		$this->scanner = $scanner;
+		$this->sourceCodeHighlighter = $sourceCodeHighlighter;
 	}
 
 
@@ -306,7 +312,7 @@ class HtmlGenerator extends Nette\Object implements Generator
 		$tmp = $this->config->destination . DIRECTORY_SEPARATOR . 'tmp';
 		$this->deleteDir($tmp);
 		@mkdir($tmp, 0755, TRUE);
-		$template = new Template($this);
+		$template = new Template($this, $this->sourceCodeHighlighter); // @todo: DI
 		$template->setCacheStorage(new Nette\Caching\Storages\PhpFileStorage($tmp));
 		$template->generator = ApiGen::NAME;
 		$template->version = ApiGen::VERSION;
@@ -1138,9 +1144,6 @@ class HtmlGenerator extends Nette\Object implements Generator
 		}
 		$this->prepareTemplate('source');
 
-		$fshl = new FSHL\Highlighter(new FSHL\Output\Html(), FSHL\Highlighter::OPTION_TAB_INDENT | FSHL\Highlighter::OPTION_LINE_COUNTER);
-		$fshl->setLexer(new FSHL\Lexer\Php());
-
 		// Add @usedby annotation
 		foreach ($this->getElementTypes() as $type) {
 			foreach ($this->$type as $parentElement) {
@@ -1249,7 +1252,7 @@ class HtmlGenerator extends Nette\Object implements Generator
 				if ($element->isTokenized()) {
 					$template->fileName = $this->getRelativePath($element->getFileName());
 					$content = $this->charsetConvertor->convertFile($element->getFileName());
-					$template->source = $fshl->highlight($content);
+					$template->source = $this->sourceCodeHighlighter->highlight($content);
 					$template->setFile($this->getTemplatePath('source'))
 						->save($this->config->destination . DIRECTORY_SEPARATOR . $template->getSourceUrl($element, FALSE));
 

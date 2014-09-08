@@ -136,6 +136,20 @@ class ApiGenExtension extends CompilerExtension
 		$builder->addDefinition($this->prefix('scanner'))
 			->setClass('ApiGen\Generator\PhpScanner');
 
+		// source code highlither
+		$builder->addDefinition($this->prefix('fshl.output'))
+			->setClass('FSHL\Output\Html');
+
+		$builder->addDefinition($this->prefix('fshl.lexter'))
+			->setClass('FSHL\Lexer\Php');
+
+		$builder->addDefinition($this->prefix('fshl.highlighter'))
+			->setClass('FSHL\Highlighter')
+			->addSetup('setLexer', array('@FSHL\Lexer\Php'));
+
+		$builder->addDefinition($this->prefix('sourceCodeHighlighter'))
+			->setClass('ApiGen\Generator\FshlSourceCodeHighlighter');
+
 		$builder->addDefinition($this->prefix('memoryLimitChecker'))
 			->setClass('ApiGen\Metrics\SimpleMemoryLimitChecker');
 
