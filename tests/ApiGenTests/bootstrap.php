@@ -13,18 +13,41 @@ define('TEMP_DIR', createTempDir());
 Tracy\Debugger::$logDirectory = TEMP_DIR;
 
 
-define('API_DIR', dirname(TEMP_DIR) . DIRECTORY_SEPARATOR . 'api');
+define('API_DIR', TEMP_DIR . DIRECTORY_SEPARATOR . 'api');
 define('APIGEN_BIN', 'php ' . realpath(__DIR__ . '/../../apigen'));
 
 
 /** @return string */
-function createTempDir()
-{
+function createTempDir() {
 	@mkdir(__DIR__ . '/../tmp'); // @ - directory may exists
 	@mkdir($tempDir = __DIR__ . '/../tmp/' . (isset($_SERVER['argv']) ? md5(serialize($_SERVER['argv'])) : getmypid()));
 	Tester\Helpers::purge($tempDir);
 
 	return realpath($tempDir);
+}
+
+
+/**
+ * Moves config file to temp directory and replaces paths in it.
+ *
+ * @param  string
+ * @return string
+ */
+function atomicConfig($original) {
+	if (!is_file($original)) {
+		Tester\Assert::fail("Configuration file '$original' does not exist.");
+	}
+
+	$config = Nette\Neon\Neon::decode(file_get_contents($original));
+	if (isset($config['source'])) {
+		$config['source'] = array(__DIR__ . '/ApiGen/Project');
+	}
+	if (isset($config['destination'])) {
+		$config['destination'] = API_DIR;
+	}
+
+	file_put_contents($new = TEMP_DIR . DIRECTORY_SEPARATOR . basename($original), Nette\Neon\Neon::encode($config, Nette\Neon\Encoder::BLOCK));
+	return $new;
 }
 
 
