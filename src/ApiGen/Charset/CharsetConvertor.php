@@ -64,7 +64,6 @@ class CharsetConvertor extends Nette\Object
 	public function convertFile($filePath)
 	{
 		$content = file_get_contents($filePath);
-		$charset = '';
 
 		static $cache = array();
 		if ( ! isset($cache[$filePath])) {
@@ -83,6 +82,9 @@ class CharsetConvertor extends Nette\Object
 			}
 
 			$cache[$filePath] = $charset;
+
+		} else {
+			$charset = $cache[$filePath];
 		}
 
 		if ($charset === 'UTF-8') {
