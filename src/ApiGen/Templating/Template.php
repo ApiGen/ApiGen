@@ -11,6 +11,7 @@ namespace ApiGen\Templating;
 
 use ApiGen\Configuration\Configuration;
 use ApiGen\Generator\Generator;
+use ApiGen\Generator\Markup;
 use ApiGen\Generator\SourceCodeHighlighter;
 use ApiGen\Reflection;
 use ApiGen\Reflection\ReflectionBase;
@@ -25,6 +26,7 @@ use Nette;
 /**
  * Customized ApiGen template class.
  * Adds ApiGen helpers to the Nette\Templating\FileTemplate parent class.
+ * @method Template setGenerator(object)
  */
 class Template extends Nette\Templating\FileTemplate
 {
@@ -34,88 +36,40 @@ class Template extends Nette\Templating\FileTemplate
 	private $generator;
 
 	/**
-	 * @var Configuration
+	 * @var Markup
 	 */
-	private $config;
+	private $markup;
 
 	/**
-	 * @var \Texy
+	 * @var SourceCodeHighlighter
 	 */
-	private $texy;
+	private $highlighter;
+
+	/**
+	 * @var Configuration
+	 */
+	private $configuration;
 
 
-	public function __construct(Generator $generator, SourceCodeHighlighter $highlighter)
+	public function __construct(Markup $markup, SourceCodeHighlighter $highlighter, Configuration $configuration)
 	{
-		$this->generator = $generator;
-		$this->config = $generator->getConfig();
+		$this->markup = $markup;
+		$this->highlighter = $highlighter;
+		$this->configuration = $configuration;
+	}
+
+
+	public function setup()
+	{
+		$markup = $this->markup;
+		$highlighter = $this->highlighter;
+		$generator = $this->generator;
 
 		$that = $this;
 
 		// Output in HTML5
 		Nette\Utils\Html::$xhtml = FALSE;
 
-		// Texy // @todo: DI
-		$this->texy = new \Texy();
-		$this->texy->allowedTags = array_flip((array) $this->config->allowedHtml);
-		$this->texy->allowed['list/definition'] = FALSE;
-		$this->texy->allowed['phrase/em-alt'] = FALSE;
-		$this->texy->allowed['longwords'] = FALSE;
-		$this->texy->allowed['typography'] = FALSE;
-		$this->texy->linkModule->shorten = FALSE;
-		// Highlighting <code>, <pre>
-		$this->texy->addHandler('beforeParse', function ($texy, &$text, $singleLine) {
-			$text = preg_replace('~<code>(.+?)</code>~', '#code#\\1#/code#', $text);
-		});
-		$this->texy->registerLinePattern(
-			function ($parser, $matches, $name) use ($highlighter) {
-				$content = $parser->getTexy()->protect($highlighter->highlight($matches[1]), \Texy::CONTENT_MARKUP);
-				return \TexyHtml::el('code', $content);
-			},
-			'~#code#(.+?)#/code#~',
-			'codeInlineSyntax'
-		);
-
-		$this->texy->registerBlockPattern(
-			function ($parser, $matches, $name) use ($highlighter) {
-				if ('code' === $matches[1]) {
-					$lines = array_filter(explode("\n", $matches[2]));
-					if ( ! empty($lines)) {
-						$firstLine = array_shift($lines);
-
-						$indent = '';
-						$li = 0;
-
-						while (isset($firstLine[$li]) && preg_match('~\s~', $firstLine[$li])) {
-							foreach ($lines as $line) {
-								if (!isset($line[$li]) || $firstLine[$li] !== $line[$li]) {
-									break 2;
-								}
-							}
-
-							$indent .= $firstLine[$li++];
-						}
-
-						if (!empty($indent)) {
-							$matches[2] = str_replace(
-								"\n" . $indent,
-								"\n",
-								0 === strpos($matches[2], $indent) ? substr($matches[2], $li) : $matches[2]
-							);
-						}
-					}
-
-					$content = $highlighter->highlight($matches[2]);
-
-				} else {
-					$content = htmlspecialchars($matches[2]);
-				}
-
-				$content = $parser->getTexy()->protect($content, \Texy::CONTENT_BLOCK);
-				return \TexyHtml::el('pre', $content);
-			},
-			'~<(code|pre)>(.+?)</\1>~s',
-			'codeBlockSyntax'
-		);
 
 		// Common operations
 		$this->registerHelperLoader('Nette\Templating\Helpers::loader');
@@ -217,8 +171,8 @@ class Template extends Nette\Templating\FileTemplate
 			return $that->doc($value, $context);
 		});
 
-		$todo = $this->config->todo;
-		$internal = $this->config->internal;
+		$todo = $this->configuration->todo;
+		$internal = $this->configuration->internal;
 		$this->registerHelper('annotationFilter', function (array $annotations, array $filter = array()) use ($todo, $internal) {
 			// Filtered, unsupported or deprecated annotations
 			static $filtered = array(
@@ -281,7 +235,7 @@ class Template extends Nette\Templating\FileTemplate
 		});
 
 		// Static files versioning
-		$destination = $this->config->destination;
+		$destination = $this->configuration->destination;
 		$this->registerHelper('staticFile', function ($name) use ($destination) {
 			static $versions = array();
 
@@ -334,6 +288,7 @@ class Template extends Nette\Templating\FileTemplate
 		$this->registerHelper('resolveElement', array($generator, 'resolveElement'));
 		$this->registerHelper('getClass', array($generator, 'getClass'));
 		$this->sourceCodeHighlighter = $highlighter;
+		$this->markup = $markup;
 	}
 
 
@@ -453,7 +408,7 @@ class Template extends Nette\Templating\FileTemplate
 	 */
 	public function getNamespaceUrl($namespaceName)
 	{
-		return sprintf($this->config->template['templates']['main']['namespace']['filename'], $this->urlize($namespaceName));
+		return sprintf($this->configuration->template['templates']['main']['namespace']['filename'], $this->urlize($namespaceName));
 	}
 
 
@@ -464,7 +419,7 @@ class Template extends Nette\Templating\FileTemplate
 	 */
 	public function getPackageUrl($packageName)
 	{
-		return sprintf($this->config->template['templates']['main']['package']['filename'], $this->urlize($packageName));
+		return sprintf($this->configuration->template['templates']['main']['package']['filename'], $this->urlize($packageName));
 	}
 
 
@@ -491,7 +446,7 @@ class Template extends Nette\Templating\FileTemplate
 	public function getClassUrl($class)
 	{
 		$className = $class instanceof Reflection\ReflectionClass ? $class->getName() : $class;
-		return sprintf($this->config->template['templates']['main']['class']['filename'], $this->urlize($className));
+		return sprintf($this->configuration->template['templates']['main']['class']['filename'], $this->urlize($className));
 	}
 
 
@@ -529,7 +484,7 @@ class Template extends Nette\Templating\FileTemplate
 			return $this->getClassUrl($className) . '#' . $constant->getName();
 		}
 		// Constant in namespace or global space
-		return sprintf($this->config->template['templates']['main']['constant']['filename'], $this->urlize($constant->getName()));
+		return sprintf($this->configuration->template['templates']['main']['constant']['filename'], $this->urlize($constant->getName()));
 	}
 
 
@@ -540,7 +495,7 @@ class Template extends Nette\Templating\FileTemplate
 	 */
 	public function getFunctionUrl(ReflectionFunction $function)
 	{
-		return sprintf($this->config->template['templates']['main']['function']['filename'], $this->urlize($function->getName()));
+		return sprintf($this->configuration->template['templates']['main']['function']['filename'], $this->urlize($function->getName()));
 	}
 
 
@@ -599,7 +554,7 @@ class Template extends Nette\Templating\FileTemplate
 			$lines = $element->getStartLine() !== $element->getEndLine() ? sprintf('%s-%s', $element->getStartLine(), $element->getEndLine()) : $element->getStartLine();
 		}
 
-		return sprintf($this->config->template['templates']['main']['source']['filename'], $file) . (NULL !== $lines ? '#' . $lines : '');
+		return sprintf($this->configuration->template['templates']['main']['source']['filename'], $file) . (NULL !== $lines ? '#' . $lines : '');
 	}
 
 
@@ -745,7 +700,7 @@ class Template extends Nette\Templating\FileTemplate
 	 */
 	private function resolveInternal($text)
 	{
-		$internal = $this->config->internal;
+		$internal = $this->configuration->internal;
 		return preg_replace_callback('~\\{@(\\w+)(?:(?:\\s+((?>(?R)|[^{}]+)*)\\})|\\})~', function ($matches) use ($internal) {
 			// Replace only internal
 			if ('internal' !== $matches[1]) {
@@ -765,7 +720,21 @@ class Template extends Nette\Templating\FileTemplate
 	 */
 	public function doc($text, ReflectionElement $context, $block = FALSE)
 	{
-		return $this->resolveLinks($this->texy->process($this->resolveInternal($text), !$block), $context);
+		// Resolve @internal
+		$text = $this->resolveInternal($text);
+
+		// Process markup
+		if ($block) {
+			$text = $this->markup->block($text);
+
+		} else {
+			$text = $this->markup->line($text);
+		}
+
+		// Resolve @link and @see
+		$text = $this->resolveLinks($text, $context);
+
+		return $text;
 	}
 
 

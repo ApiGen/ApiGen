@@ -12,6 +12,7 @@ namespace ApiGen\Generator;
 use ApiGen\ApiGen;
 use ApiGen\Backend;
 use ApiGen\Charset\CharsetConvertor;
+use ApiGen\Templating\TemplateFactory;
 use ApiGen\Tree;
 use ApiGen\Configuration\Configuration;
 use ApiGen\FileSystem;
@@ -141,9 +142,14 @@ class HtmlGenerator extends Nette\Object implements Generator
 	 */
 	private $sourceCodeHighlighter;
 
+	/**
+	 * @var TemplateFactory
+	 */
+	private $templateFactory;
+
 
 	public function __construct(Configuration $config, CharsetConvertor $charsetConvertor, Scanner $scanner,
-	                            SourceCodeHighlighter $sourceCodeHighlighter)
+	                            SourceCodeHighlighter $sourceCodeHighlighter, TemplateFactory $templateFactory)
 	{
 		$this->parsedClasses = new ArrayObject;
 		$this->parsedConstants = new ArrayObject;
@@ -152,6 +158,7 @@ class HtmlGenerator extends Nette\Object implements Generator
 		$this->charsetConvertor = $charsetConvertor;
 		$this->scanner = $scanner;
 		$this->sourceCodeHighlighter = $sourceCodeHighlighter;
+		$this->templateFactory = $templateFactory;
 	}
 
 
@@ -312,7 +319,9 @@ class HtmlGenerator extends Nette\Object implements Generator
 		$tmp = $this->config->destination . DIRECTORY_SEPARATOR . 'tmp';
 		$this->deleteDir($tmp);
 		@mkdir($tmp, 0755, TRUE);
-		$template = new Template($this, $this->sourceCodeHighlighter); // @todo: DI
+		$template = $this->templateFactory->create();
+		$template->setGenerator($this);
+		$template->setup();
 		$template->setCacheStorage(new Nette\Caching\Storages\PhpFileStorage($tmp));
 		$template->generator = ApiGen::NAME;
 		$template->version = ApiGen::VERSION;
@@ -368,11 +377,12 @@ class HtmlGenerator extends Nette\Object implements Generator
 
 	/**
 	 * Loads template-specific macro and helper libraries.
-	 * @param \ApiGen\Template $template Template instance
+	 * @param Template $template
+	 * @throws \Exception
 	 */
 	private function registerCustomTemplateMacros(Template $template)
 	{
-		$latte = new Nette\Latte\Engine();
+		$latte = new Nette\Latte\Engine;
 
 		if (!empty($this->config->template['options']['extensions'])) {
 			$this->output("Loading custom template macro and helper libraries\n");
