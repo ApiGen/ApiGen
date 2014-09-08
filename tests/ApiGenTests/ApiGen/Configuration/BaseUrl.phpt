@@ -6,7 +6,6 @@
 
 namespace ApiGenTests\ApiGen\Configuration;
 
-use Nette\Utils\Strings;
 use Tester\Assert;
 use Tester\TestCase;
 
@@ -23,12 +22,10 @@ class BaseUrlTest extends TestCase
 	{
 		$config = atomicConfig(__DIR__ . '/../config/baseUrl.neon');
 		exec(APIGEN_BIN . " --config=$config");
+
 		Assert::true(file_exists(API_DIR . '/index.html'));
-
 		Assert::true(file_exists(API_DIR . '/robots.txt'));
-
-		$robotsTxt = file_get_contents(API_DIR . '/robots.txt');
-		Assert::true(Strings::contains($robotsTxt, self::BASE_URL));
+		Assert::match('%A%Sitemap: ' . self::BASE_URL . '%A%', file_get_contents(API_DIR . '/robots.txt'));
 	}
 
 }
