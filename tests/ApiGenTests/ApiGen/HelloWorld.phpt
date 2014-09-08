@@ -25,7 +25,7 @@ class HelloWorldTest extends TestCase
 	public function testBasicGeneration()
 	{
 		$config = atomicConfig(__DIR__ . '/config/apigen.neon');
-		exec(APIGEN_BIN . " --config=$config");
+		passthru(APIGEN_BIN . " --config=$config");
 		Assert::true(file_exists(API_DIR . '/index.html'));
 
 		$fooClassFile = API_DIR . '/source-class-ApiGenTests.ApiGen.Project.Foo.html';

@@ -21,7 +21,7 @@ class BaseUrlTest extends TestCase
 	public function testConfig()
 	{
 		$config = atomicConfig(__DIR__ . '/../config/baseUrl.neon');
-		exec(APIGEN_BIN . " --config=$config");
+		passthru(APIGEN_BIN . " --config=$config");
 
 		Assert::true(file_exists(API_DIR . '/index.html'));
 		Assert::true(file_exists(API_DIR . '/robots.txt'));
