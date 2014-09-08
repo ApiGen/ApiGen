@@ -9,7 +9,10 @@
 
 namespace ApiGen\Reflection;
 
+use ApiGen\Generator\Generator;
 use TokenReflection;
+use TokenReflection\IReflection;
+
 
 /**
  * Envelope for parameters that are defined only in @param or @method annotation.
@@ -65,12 +68,7 @@ class ReflectionParameterMagic extends ReflectionParameter
 	 */
 	protected $declaringFunction;
 
-	/**
-	 * Constructor.
-	 *
-	 * @param \TokenReflection\IReflection $reflection Inspected reflection
-	 * @param \ApiGen\Generator $generator ApiGen generator
-	 */
+
 	public function __construct(IReflection $reflection = null, Generator $generator = null)
 	{
 		$this->reflectionType = get_class($this);
