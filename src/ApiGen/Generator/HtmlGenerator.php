@@ -910,7 +910,6 @@ class HtmlGenerator extends Nette\Object implements Generator
 		unset($template->deprecatedProperties);
 
 		$this->onGenerateProgress(1);
-		$this->checkMemory();
 
 		return $this;
 	}
@@ -918,8 +917,7 @@ class HtmlGenerator extends Nette\Object implements Generator
 
 	/**
 	 * Generates list of tasks.
-	 * @param \ApiGen\Template $template Template
-	 * @return \ApiGen\Generator
+	 * @return Generator
 	 * @throws \RuntimeException If template is not set.
 	 */
 	private function generateTodo(Template $template)
@@ -1053,15 +1051,11 @@ class HtmlGenerator extends Nette\Object implements Generator
 		unset($template->exceptionTree);
 
 		$this->onGenerateProgress(1);
-
-		return $this;
 	}
 
 
 	/**
 	 * Generates packages summary.
-	 * @param \ApiGen\Template $template Template
-	 * @return \ApiGen\Generator
 	 * @throws \RuntimeException If template is not set.
 	 */
 	private function generatePackages(Template $template)
@@ -1091,15 +1085,11 @@ class HtmlGenerator extends Nette\Object implements Generator
 			$this->onGenerateProgress(1);
 		}
 		unset($template->subpackages);
-
-		return $this;
 	}
 
 
 	/**
 	 * Generates namespaces summary.
-	 * @param \ApiGen\Template $template Template
-	 * @return \ApiGen\Generator
 	 * @throws \RuntimeException If template is not set.
 	 */
 	private function generateNamespaces(Template $template)
@@ -1129,14 +1119,11 @@ class HtmlGenerator extends Nette\Object implements Generator
 			$this->onGenerateProgress(1);
 		}
 		unset($template->subnamespaces);
-
-		return $this;
 	}
 
 
 	/**
 	 * Generate classes, interfaces, traits, exceptions, constants and functions files.
-	 * @return Generator
 	 * @throws \RuntimeException If template is not set.
 	 */
 	private function generateElements(Template $template)
@@ -1270,19 +1257,16 @@ class HtmlGenerator extends Nette\Object implements Generator
 				}
 			}
 		}
-
-		return $this;
 	}
 
 
 	/**
 	 * Creates ZIP archive.
-	 * @return Generator
 	 * @throws \RuntimeException If something went wrong.
 	 */
 	private function generateArchive()
 	{
-		if (!extension_loaded('zip')) {
+		if ( ! extension_loaded('zip')) {
 			throw new RuntimeException('Extension zip is not loaded');
 		}
 
@@ -1306,29 +1290,29 @@ class HtmlGenerator extends Nette\Object implements Generator
 		}
 
 		$this->onGenerateProgress(1);
-
-		return $this;
 	}
 
 
 	/**
 	 * Tries to resolve string as class, interface or exception name.
-	 * @param string $className Class name description
-	 * @param string $namespace Namespace name
+	 * @param string $className
+	 * @param string $namespace
 	 * @return \ApiGen\Reflection\ReflectionClass
 	 */
 	public function getClass($className, $namespace = '')
 	{
 		if (isset($this->parsedClasses[$namespace . '\\' . $className])) {
 			$class = $this->parsedClasses[$namespace . '\\' . $className];
+
 		} elseif (isset($this->parsedClasses[ltrim($className, '\\')])) {
 			$class = $this->parsedClasses[ltrim($className, '\\')];
+
 		} else {
 			return NULL;
 		}
 
 		// Class is not "documented"
-		if (!$class->isDocumented()) {
+		if ( ! $class->isDocumented()) {
 			return NULL;
 		}
 
@@ -1338,22 +1322,24 @@ class HtmlGenerator extends Nette\Object implements Generator
 
 	/**
 	 * Tries to resolve type as constant name.
-	 * @param string $constantName Constant name
-	 * @param string $namespace Namespace name
+	 * @param string $constantName
+	 * @param string $namespace
 	 * @return \ApiGen\Reflection\ReflectionConstant
 	 */
 	public function getConstant($constantName, $namespace = '')
 	{
 		if (isset($this->parsedConstants[$namespace . '\\' . $constantName])) {
 			$constant = $this->parsedConstants[$namespace . '\\' . $constantName];
+
 		} elseif (isset($this->parsedConstants[ltrim($constantName, '\\')])) {
 			$constant = $this->parsedConstants[ltrim($constantName, '\\')];
+
 		} else {
 			return NULL;
 		}
 
 		// Constant is not "documented"
-		if (!$constant->isDocumented()) {
+		if ( ! $constant->isDocumented()) {
 			return NULL;
 		}
 
@@ -1363,22 +1349,24 @@ class HtmlGenerator extends Nette\Object implements Generator
 
 	/**
 	 * Tries to resolve type as function name.
-	 * @param string $functionName Function name
-	 * @param string $namespace Namespace name
+	 * @param string $functionName
+	 * @param string $namespace
 	 * @return \ApiGen\Reflection\ReflectionFunction
 	 */
 	public function getFunction($functionName, $namespace = '')
 	{
 		if (isset($this->parsedFunctions[$namespace . '\\' . $functionName])) {
 			$function = $this->parsedFunctions[$namespace . '\\' . $functionName];
+
 		} elseif (isset($this->parsedFunctions[ltrim($functionName, '\\')])) {
 			$function = $this->parsedFunctions[ltrim($functionName, '\\')];
+
 		} else {
 			return NULL;
 		}
 
 		// Function is not "documented"
-		if (!$function->isDocumented()) {
+		if ( ! $function->isDocumented()) {
 			return NULL;
 		}
 
@@ -1389,8 +1377,8 @@ class HtmlGenerator extends Nette\Object implements Generator
 	/**
 	 * Tries to parse a definition of a class/method/property/constant/function and returns the appropriate instance if successful.
 	 * @param string $definition Definition
-	 * @param \ApiGen\ReflectionElement|\ApiGen\ReflectionParameter $context Link context
-	 * @param string $expectedName Expected element name
+	 * @param \ApiGen\Reflection\ReflectionElement|\ApiGen\Reflection\ReflectionParameter $context Link context
+	 * @param string $expectedName
 	 * @return \ApiGen\Reflection\ReflectionElement|NULL
 	 */
 	public function resolveElement($definition, $context, &$expectedName = NULL)
@@ -1411,6 +1399,7 @@ class HtmlGenerator extends Nette\Object implements Generator
 		if ($context instanceof Reflection\ReflectionParameter && NULL === $context->getDeclaringClassName()) {
 			// Parameter of function in namespace or global space
 			$context = $this->getFunction($context->getDeclaringFunctionName());
+
 		} elseif ($context instanceof Reflection\ReflectionMethod || $context instanceof Reflection\ReflectionParameter
 			|| ($context instanceof Reflection\ReflectionConstant && NULL !== $context->getDeclaringClassName())
 			|| $context instanceof Reflection\ReflectionProperty
@@ -1436,15 +1425,19 @@ class HtmlGenerator extends Nette\Object implements Generator
 
 			if (FALSE === strpos($className, ':')) {
 				return $this->getClass($className, $context->getNamespaceName());
+
 			} else {
 				$definition = $className;
 			}
+
 		} elseif ($class = $this->getClass($definition, $context->getNamespaceName())) {
 			// Class
 			return $class;
+
 		} elseif ($constant = $this->getConstant($definition, $context->getNamespaceName())) {
 			// Constant
 			return $constant;
+
 		} elseif (($function = $this->getFunction($definition, $context->getNamespaceName()))
 			|| ('()' === substr($definition, -2) && ($function = $this->getFunction(substr($definition, 0, -2), $context->getNamespaceName())))
 		) {
@@ -1456,6 +1449,7 @@ class HtmlGenerator extends Nette\Object implements Generator
 			// Class::something or Class->something
 			if (0 === strpos($definition, 'parent::') && ($parentClassName = $context->getParentClassName())) {
 				$context = $this->getClass($parentClassName);
+
 			} elseif (0 !== strpos($definition, 'self::')) {
 				$class = $this->getClass(substr($definition, 0, $pos), $context->getNamespaceName());
 
@@ -1467,6 +1461,7 @@ class HtmlGenerator extends Nette\Object implements Generator
 			}
 
 			$definition = substr($definition, $pos + 2);
+
 		} elseif ($originalContext instanceof Reflection\ReflectionParameter) {
 			return NULL;
 		}
@@ -1479,15 +1474,19 @@ class HtmlGenerator extends Nette\Object implements Generator
 		if ($context->hasProperty($definition)) {
 			// Class property
 			return $context->getProperty($definition);
+
 		} elseif ('$' === $definition{0} && $context->hasProperty(substr($definition, 1))) {
 			// Class $property
 			return $context->getProperty(substr($definition, 1));
+
 		} elseif ($context->hasMethod($definition)) {
 			// Class method
 			return $context->getMethod($definition);
+
 		} elseif ('()' === substr($definition, -2) && $context->hasMethod(substr($definition, 0, -2))) {
 			// Class method()
 			return $context->getMethod(substr($definition, 0, -2));
+
 		} elseif ($context->hasConstant($definition)) {
 			// Class constant
 			return $context->getConstant($definition);
@@ -1498,41 +1497,8 @@ class HtmlGenerator extends Nette\Object implements Generator
 
 
 	/**
-	 * Checks memory usage.
-	 * @return \ApiGen\Generator
-	 * @throws \RuntimeException If there is unsufficient reserve of memory.
-	 */
-	public function checkMemory()
-	{
-		static $limit = NULL;
-		if (NULL === $limit) {
-			$value = ini_get('memory_limit');
-			$unit = substr($value, -1);
-			if ('-1' === $value) {
-				$limit = 0;
-
-			} elseif ('G' === $unit) {
-				$limit = (int)$value * 1024 * 1024 * 1024;
-
-			} elseif ('M' === $unit) {
-				$limit = (int)$value * 1024 * 1024;
-
-			} else {
-				$limit = (int)$value;
-			}
-		}
-
-		if ($limit && memory_get_usage(TRUE) / $limit >= 0.9) {
-			throw new RuntimeException(sprintf('Used %d%% of the current memory limit, please increase the limit to generate the whole documentation.', round(memory_get_usage(TRUE) / $limit * 100)));
-		}
-
-		return $this;
-	}
-
-
-	/**
 	 * Detects character set for the given text.
-	 * @param string $text Text
+	 * @param string $text
 	 * @return string
 	 */
 	private function detectCharset($text)
@@ -1576,9 +1542,8 @@ class HtmlGenerator extends Nette\Object implements Generator
 
 
 	/**
-	 * Converts text from given character set to UTF-8.
-	 * @param string $text Text
-	 * @param string $charset Character set
+	 * @param string $text
+	 * @param string $charset
 	 * @return string
 	 */
 	private function toUtf($text, $charset)
@@ -1720,7 +1685,6 @@ class HtmlGenerator extends Nette\Object implements Generator
 
 
 	/**
-	 * Returns template directory.
 	 * @return string
 	 */
 	private function getTemplateDir()
@@ -1730,9 +1694,8 @@ class HtmlGenerator extends Nette\Object implements Generator
 
 
 	/**
-	 * Returns template path.
-	 * @param string $name Template name
-	 * @param string $type Template type
+	 * @param string $name
+	 * @param string $type
 	 * @return string
 	 */
 	private function getTemplatePath($name, $type = 'main')
@@ -1742,9 +1705,8 @@ class HtmlGenerator extends Nette\Object implements Generator
 
 
 	/**
-	 * Returns template filename.
-	 * @param string $name Template name
-	 * @param string $type Template type
+	 * @param string $name
+	 * @param string $type
 	 * @return string
 	 */
 	private function getTemplateFileName($name, $type = 'main')
@@ -1754,9 +1716,8 @@ class HtmlGenerator extends Nette\Object implements Generator
 
 
 	/**
-	 * Checks if template exists.
-	 * @param string $name Template name
-	 * @param string $type Template type
+	 * @param string $name
+	 * @param string $type
 	 * @return string
 	 */
 	private function templateExists($name, $type = 'main')
@@ -1777,7 +1738,6 @@ class HtmlGenerator extends Nette\Object implements Generator
 		}
 
 		$this->forceDir($this->getTemplateFileName($name));
-		return $this;
 	}
 
 
@@ -1797,6 +1757,7 @@ class HtmlGenerator extends Nette\Object implements Generator
 				foreach ($iterator as $innerItem) {
 					$files[] = $this->config->destination . DIRECTORY_SEPARATOR . $item . DIRECTORY_SEPARATOR . $iterator->getSubPathName();
 				}
+
 			} else {
 				$files[] = $this->config->destination . DIRECTORY_SEPARATOR . $item;
 			}
@@ -1836,7 +1797,7 @@ class HtmlGenerator extends Nette\Object implements Generator
 
 	/**
 	 * Ensures a directory is created.
-	 * @param string $path Directory path
+	 * @param string $path
 	 * @return string
 	 */
 	private function forceDir($path)
@@ -1847,8 +1808,7 @@ class HtmlGenerator extends Nette\Object implements Generator
 
 
 	/**
-	 * Deletes a directory.
-	 * @param string $path Directory path
+	 * @param string $path
 	 * @return boolean
 	 */
 	private function deleteDir($path)
@@ -1858,16 +1818,19 @@ class HtmlGenerator extends Nette\Object implements Generator
 		}
 
 		foreach (Nette\Utils\Finder::find('*')->from($path)->childFirst() as $item) {
+			/** @var \SplFileInfo $item */
 			if ($item->isDir()) {
 				if (!@rmdir($item)) {
 					return FALSE;
 				}
+
 			} elseif ($item->isFile()) {
 				if (!@unlink($item)) {
 					return FALSE;
 				}
 			}
 		}
+
 		if (!@rmdir($path)) {
 			return FALSE;
 		}
