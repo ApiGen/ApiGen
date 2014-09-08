@@ -78,7 +78,9 @@ class Application extends Object
 		try {
 			$start = new DateTime;
 
-			$this->logger->log(ApiGen\ApiGen::NAME . ' ' . ApiGen\ApiGen::VERSION . "\n");
+			$headline = ApiGen\ApiGen::NAME . ' ' . ApiGen\ApiGen::VERSION;
+			$this->logger->log($headline . "\n");
+			$this->logger->log(str_repeat('-', strlen($headline)) . "\n");
 
 			$this->onStartup($this);
 
@@ -193,10 +195,10 @@ class Application extends Object
 
 				$no++;
 			}
-		}
 
-		if ( ! $this->config->debug) {
-			$this->logger->log("\nEnable the debug mode (debug) to see more details.\n\n");
+			if ( ! $this->config->debug) {
+				$this->logger->log("\nEnable the debug mode (--debug) to see more details.\n\n");
+			}
 		}
 
 		$this->logger->log(sprintf("Found %d classes, %d constants, %d functions and other %d used PHP internal classes\n", $parseInfo->classes, $parseInfo->constants, $parseInfo->functions, $parseInfo->internalClasses));
