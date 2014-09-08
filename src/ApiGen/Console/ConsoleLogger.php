@@ -9,8 +9,8 @@
 
 namespace ApiGen\Console;
 
-use ApiGen\ConfigException;
 use ApiGen\Configuration\Configuration;
+use ApiGen\Configuration\ConfigurationException;
 use ApiGen\Logger;
 use Exception;
 
@@ -54,8 +54,8 @@ class ConsoleLogger implements Logger
 
 	public function logException(Exception $e)
 	{
-		if ($e instanceof ConfigException) {
-			$this->log(sprintf("\n@error@%s@c\n\n", $e->getMessage()));
+		if ($e instanceof ConfigurationException) {
+			$this->log(sprintf("\n%s\n\n", $e->getMessage()));
 
 		} else {
 			if ($this->config->debug) {
