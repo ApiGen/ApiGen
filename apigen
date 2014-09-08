@@ -28,7 +28,11 @@ define('APIGEN_ROOT_PATH', __DIR__ . '/src');
 
 // Init debugger
 Debugger::$strictMode = TRUE;
-Debugger::enable(Debugger::DEVELOPMENT, FALSE);
+Debugger::$onFatalError[] = function() {
+	echo "\nFor more information turn on the debug mode using the --debug option.\n";
+};
+Debugger::enable(Debugger::PRODUCTION);
+
 
 // Build the DIC
 $configurator = new Configurator;
@@ -37,12 +41,11 @@ $configurator->addConfig(__DIR__ . '/src/ApiGen/DI/config.neon');
 $container = $configurator->createContainer();
 
 // Update debugger configuration if needed
-if ( ! $container->getService('apigen.configuration')->debug) {
-	Debugger::enable(Debugger::PRODUCTION, TRUE);
-	Debugger::$onFatalError[] = function() {
-		echo "\nFor more information turn on the debug mode using the --debug option.\n";
-	};
+if ($container->getbyType('ApiGen\Configuration\Configuration')->debug) {
+	Debugger::enable(Debugger::DEVELOPMENT);
+	Debugger::$onFatalError[] = array();
 }
+
 
 // Let's rock
 $container->getByType('ApiGen\Application\Application')->run();
