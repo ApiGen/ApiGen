@@ -13,7 +13,6 @@ use ApiGen\ApiGen;
 use ApiGen\Backend;
 use ApiGen\Tree;
 use ApiGen\Configuration\Configuration;
-use ApiGen\Console\ProgressBar;
 use ApiGen\FileSystem;
 use ApiGen\Reflection;
 use ApiGen\Templating\Template;
@@ -27,12 +26,36 @@ use TokenReflection\Broker;
 
 /**
  * Generates a HTML API documentation.
- * @method ArrayObject getParsedClasses()
- * @method ArrayObject getParsedConstants()
- * @method ArrayObject getParsedFunctions()
+ * @method ArrayObject      getParsedClasses()
+ * @method ArrayObject      getParsedConstants()
+ * @method ArrayObject      getParsedFunctions()
+ * @method HtmlGenerator    onParseStart($steps)
+ * @method HtmlGenerator    onParseProgress($size)
+ * @method HtmlGenerator    onGenerateStart($steps)
+ * @method HtmlGenerator    onGenerateProgress($size)
  */
 class HtmlGenerator extends Nette\Object implements Generator
 {
+	/**
+	 * @var array
+	 */
+	public $onParseStart = array();
+
+	/**
+	 * @var array
+	 */
+	public $onParseProgress = array();
+
+	/**
+	 * @var array
+	 */
+	public $onGenerateStart = array();
+
+	/**
+	 * @var array
+	 */
+	public $onGenerateProgress = array();
+
 	/**
 	 * @var Configuration
 	 */
@@ -105,11 +128,6 @@ class HtmlGenerator extends Nette\Object implements Generator
 	private $charsets = array();
 
 	/**
-	 * @var ProgressBar
-	 */
-	private $progressBar;
-
-	/**
 	 * @var Scanner
 	 */
 	private $scanner;
@@ -118,11 +136,10 @@ class HtmlGenerator extends Nette\Object implements Generator
 	private $files;
 
 
-	public function __construct(Configuration $config, Scanner $scanner, ProgressBar $progressBar)
+	public function __construct(Configuration $config, Scanner $scanner)
 	{
 		$this->config = $config;
 		$this->scanner = $scanner;
-		$this->progressBar = $progressBar;
 		$this->parsedClasses = new ArrayObject;
 		$this->parsedConstants = new ArrayObject;
 		$this->parsedFunctions = new ArrayObject;
@@ -146,9 +163,10 @@ class HtmlGenerator extends Nette\Object implements Generator
 	 */
 	public function parse()
 	{
+
 		$files = $this->files;
 
-		$this->progressBar->increment(array_sum($files));
+		$this->onParseStart(array_sum($this->files));
 
 		$broker = new Broker(new Backend($this, !empty($this->config->report)), Broker::OPTION_DEFAULT & ~(Broker::OPTION_PARSE_FUNCTION_BODY | Broker::OPTION_SAVE_TOKEN_STREAM));
 
@@ -169,7 +187,7 @@ class HtmlGenerator extends Nette\Object implements Generator
 				$errors[] = $e;
 			}
 
-			$this->progressBar->increment($size);
+			$this->onParseProgress($size);
 			$this->checkMemory();
 		}
 
@@ -254,8 +272,8 @@ class HtmlGenerator extends Nette\Object implements Generator
 		// Categorize by packages and namespaces
 		$this->categorize();
 
-		// Prepare progressbar
-		$max = count($this->packages)
+		// Prepare progressbar & stuffs
+		$steps = count($this->packages)
 			+ count($this->namespaces)
 			+ count($this->classes)
 			+ count($this->interfaces)
@@ -276,7 +294,7 @@ class HtmlGenerator extends Nette\Object implements Generator
 		$tokenizedFilter = function (Reflection\ReflectionClass $class) {
 			return $class->isTokenized();
 		};
-		$max += count(array_filter($this->classes, $tokenizedFilter))
+		$steps += count(array_filter($this->classes, $tokenizedFilter))
 			+ count(array_filter($this->interfaces, $tokenizedFilter))
 			+ count(array_filter($this->traits, $tokenizedFilter))
 			+ count(array_filter($this->exceptions, $tokenizedFilter))
@@ -284,7 +302,7 @@ class HtmlGenerator extends Nette\Object implements Generator
 			+ count($this->functions);
 		unset($tokenizedFilter);
 
-		$this->progressBar->increment($max);
+		$this->onGenerateStart($steps);
 
 		// Prepare template
 		$tmp = $this->config->destination . DIRECTORY_SEPARATOR . 'tmp';
@@ -590,7 +608,7 @@ class HtmlGenerator extends Nette\Object implements Generator
 				->setFile($this->getTemplateDir() . DIRECTORY_SEPARATOR . $source)
 				->save($this->forceDir($this->config->destination . DIRECTORY_SEPARATOR . $destination));
 
-			$this->progressBar->increment();
+			$this->onGenerateProgress(1);
 		}
 
 		unset($template->elements);
@@ -609,23 +627,24 @@ class HtmlGenerator extends Nette\Object implements Generator
 	private function generateOptional(Template $template)
 	{
 		if ($this->isSitemapEnabled()) {
-			$template
-				->setFile($this->getTemplatePath('sitemap', 'optional'))
+			$template->setFile($this->getTemplatePath('sitemap', 'optional'))
 				->save($this->forceDir($this->getTemplateFileName('sitemap', 'optional')));
-			$this->progressBar->increment();
+
+			$this->onGenerateProgress(1);
 		}
+
 		if ($this->isOpensearchEnabled()) {
-			$template
-				->setFile($this->getTemplatePath('opensearch', 'optional'))
+			$template->setFile($this->getTemplatePath('opensearch', 'optional'))
 				->save($this->forceDir($this->getTemplateFileName('opensearch', 'optional')));
-			$this->progressBar->increment();
+
+			$this->onGenerateProgress(1);
 		}
 
 		if ($this->isRobotsEnabled()) {
-			$template
-				->setFile($this->getTemplatePath('robots', 'optional'))
+			$template->setFile($this->getTemplatePath('robots', 'optional'))
 				->save($this->forceDir($this->getTemplateFileName('robots', 'optional')));
-			$this->progressBar->increment();
+
+			$this->onGenerateProgress(1);
 		}
 
 		$this->checkMemory();
@@ -836,7 +855,7 @@ class HtmlGenerator extends Nette\Object implements Generator
 		fwrite($file, sprintf('</checkstyle>%s', "\n"));
 		fclose($file);
 
-		$this->progressBar->increment();
+		$this->onGenerateProgress(1);
 		$this->checkMemory();
 
 		return $this;
@@ -896,7 +915,7 @@ class HtmlGenerator extends Nette\Object implements Generator
 		unset($template->deprecatedMethods);
 		unset($template->deprecatedProperties);
 
-		$this->progressBar->increment();
+		$this->onGenerateProgress(1);
 		$this->checkMemory();
 
 		return $this;
@@ -952,7 +971,7 @@ class HtmlGenerator extends Nette\Object implements Generator
 		unset($template->todoMethods);
 		unset($template->todoProperties);
 
-		$this->progressBar->increment();
+		$this->onGenerateProgress(1);
 		$this->checkMemory();
 
 		return $this;
@@ -1040,7 +1059,7 @@ class HtmlGenerator extends Nette\Object implements Generator
 		unset($template->traitTree);
 		unset($template->exceptionTree);
 
-		$this->progressBar->increment();
+		$this->onGenerateProgress(1);
 		$this->checkMemory();
 
 		return $this;
@@ -1074,11 +1093,10 @@ class HtmlGenerator extends Nette\Object implements Generator
 			$template->exceptions = $package['exceptions'];
 			$template->constants = $package['constants'];
 			$template->functions = $package['functions'];
-			$template
-				->setFile($this->getTemplatePath('package'))
+			$template->setFile($this->getTemplatePath('package'))
 				->save($this->config->destination . DIRECTORY_SEPARATOR . $template->getPackageUrl($packageName));
 
-			$this->progressBar->increment();
+			$this->onGenerateProgress(1);
 		}
 		unset($template->subpackages);
 
@@ -1115,11 +1133,10 @@ class HtmlGenerator extends Nette\Object implements Generator
 			$template->exceptions = $namespace['exceptions'];
 			$template->constants = $namespace['constants'];
 			$template->functions = $namespace['functions'];
-			$template
-				->setFile($this->getTemplatePath('namespace'))
+			$template->setFile($this->getTemplatePath('namespace'))
 				->save($this->config->destination . DIRECTORY_SEPARATOR . $template->getNamespaceUrl($namespaceName));
 
-			$this->progressBar->increment();
+			$this->onGenerateProgress(1);
 		}
 		unset($template->subnamespaces);
 
@@ -1252,17 +1269,16 @@ class HtmlGenerator extends Nette\Object implements Generator
 						->save($this->config->destination . DIRECTORY_SEPARATOR . $template->getFunctionUrl($element));
 				}
 
-				$this->progressBar->increment();
+				$this->onGenerateProgress(1);
 
 				// Generate source codes
 				if ($element->isTokenized()) {
 					$template->fileName = $this->getRelativePath($element->getFileName());
 					$template->source = $fshl->highlight($this->toUtf(file_get_contents($element->getFileName()), $this->charsets[$element->getFileName()]));
-					$template
-						->setFile($this->getTemplatePath('source'))
+					$template->setFile($this->getTemplatePath('source'))
 						->save($this->config->destination . DIRECTORY_SEPARATOR . $template->getSourceUrl($element, FALSE));
 
-					$this->progressBar->increment();
+					$this->onGenerateProgress(1);
 				}
 
 				$this->checkMemory();
@@ -1303,7 +1319,7 @@ class HtmlGenerator extends Nette\Object implements Generator
 			throw new RuntimeException('Could not save ZIP archive');
 		}
 
-		$this->progressBar->increment();
+		$this->onGenerateProgress(1);
 		$this->checkMemory();
 
 		return $this;
