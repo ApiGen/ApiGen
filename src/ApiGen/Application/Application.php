@@ -11,7 +11,6 @@ namespace ApiGen\Application;
 
 use ApiGen;
 use ApiGen\Configuration\Configuration;
-use ApiGen\ErrorHandler;
 use ApiGen\Generator\Generator;
 use ApiGen\Logger;
 use DateTime;
@@ -23,8 +22,9 @@ use TokenReflection;
 /**
  * Resposible for the documentation generator run.
  *
- * @method  Application   onStartup()
- * @method  Application   onShutdown()
+ * @method  Application   onStartup(Application $app)
+ * @method  Application   onShutdown(Application $app)
+ * @method  Application   onError(\Exception $e)
  */
 class Application extends Object
 {
@@ -44,11 +44,6 @@ class Application extends Object
 	private $generator;
 
 	/**
-	 * @var ErrorHandler
-	 */
-	private $errorHandler;
-
-	/**
 	 * Callbacks performed on application startup.
 	 * @var array
 	 */
@@ -60,13 +55,18 @@ class Application extends Object
 	 */
 	public $onShutdown = array();
 
+	/**
+	 * Callbacks performed on application error.
+	 * @var array
+	 */
+	public $onError = array();
 
-	public function __construct(Configuration $config, Logger $logger, Generator $generator, ErrorHandler $errorHandler)
+
+	public function __construct(Configuration $config, Logger $logger, Generator $generator)
 	{
 		$this->config = $config;
 		$this->logger = $logger;
 		$this->generator = $generator;
-		$this->errorHandler = $errorHandler;
 	}
 
 
@@ -93,7 +93,7 @@ class Application extends Object
 			$this->generate();
 
 		} catch (Exception $e) {
-			$this->errorHandler->handleException($e);
+			$this->onError($e);
 		}
 
 		$this->onShutdown($this);
