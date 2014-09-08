@@ -129,6 +129,9 @@ class ApiGenExtension extends CompilerExtension
 		$builder->addDefinition($this->prefix('scanner'))
 			->setClass('ApiGen\Generator\PhpScanner');
 
+		$builder->addDefinition($this->prefix('memoryLimitChecker'))
+			->setClass('ApiGen\Metrics\SimpleMemoryLimitChecker');
+
 		// @todo: what for? removes system parameters!
 		// $builder->parameters = $config;
 	}

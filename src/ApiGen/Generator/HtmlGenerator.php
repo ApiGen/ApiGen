@@ -188,7 +188,6 @@ class HtmlGenerator extends Nette\Object implements Generator
 			}
 
 			$this->onParseProgress($size);
-			$this->checkMemory();
 		}
 
 		// Classes
@@ -613,8 +612,6 @@ class HtmlGenerator extends Nette\Object implements Generator
 
 		unset($template->elements);
 
-		$this->checkMemory();
-
 		return $this;
 	}
 
@@ -646,8 +643,6 @@ class HtmlGenerator extends Nette\Object implements Generator
 
 			$this->onGenerateProgress(1);
 		}
-
-		$this->checkMemory();
 
 		return $this;
 	}
@@ -856,7 +851,6 @@ class HtmlGenerator extends Nette\Object implements Generator
 		fclose($file);
 
 		$this->onGenerateProgress(1);
-		$this->checkMemory();
 
 		return $this;
 	}
@@ -972,7 +966,6 @@ class HtmlGenerator extends Nette\Object implements Generator
 		unset($template->todoProperties);
 
 		$this->onGenerateProgress(1);
-		$this->checkMemory();
 
 		return $this;
 	}
@@ -1060,7 +1053,6 @@ class HtmlGenerator extends Nette\Object implements Generator
 		unset($template->exceptionTree);
 
 		$this->onGenerateProgress(1);
-		$this->checkMemory();
 
 		return $this;
 	}
@@ -1100,8 +1092,6 @@ class HtmlGenerator extends Nette\Object implements Generator
 		}
 		unset($template->subpackages);
 
-		$this->checkMemory();
-
 		return $this;
 	}
 
@@ -1139,8 +1129,6 @@ class HtmlGenerator extends Nette\Object implements Generator
 			$this->onGenerateProgress(1);
 		}
 		unset($template->subnamespaces);
-
-		$this->checkMemory();
 
 		return $this;
 	}
@@ -1280,8 +1268,6 @@ class HtmlGenerator extends Nette\Object implements Generator
 
 					$this->onGenerateProgress(1);
 				}
-
-				$this->checkMemory();
 			}
 		}
 
@@ -1320,7 +1306,6 @@ class HtmlGenerator extends Nette\Object implements Generator
 		}
 
 		$this->onGenerateProgress(1);
-		$this->checkMemory();
 
 		return $this;
 	}

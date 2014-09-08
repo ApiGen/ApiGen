@@ -148,8 +148,6 @@ class Backend extends Broker\Backend\Memory
 						}
 					}
 				}
-
-				$this->generator->checkMemory();
 			}
 		}
 
@@ -178,8 +176,6 @@ class Backend extends Broker\Backend\Memory
 					}
 				}
 			}
-
-			$this->generator->checkMemory();
 		}
 
 		foreach ($this->getFunctions() as $function) {
