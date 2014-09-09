@@ -1,0 +1,4 @@
+source:
+	- src/ApiGen
+
+destination: api-test

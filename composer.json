@@ -31,6 +31,7 @@
 		"texy/texy": "~2.6",
 		"kukulich/fshl": "~2.1",
 		"andrewsville/php-token-reflection": "~1.4",
+		"kdyby/events": "~2.0",
 		"ext-json": "*",
 		"ext-mbstring": "*",
 		"ext-iconv": "*",

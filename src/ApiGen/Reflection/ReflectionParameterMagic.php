@@ -7,9 +7,12 @@
  * the file license.md that was distributed with this source code.
  */
 
-namespace ApiGen;
+namespace ApiGen\Reflection;
 
+use ApiGen\Generator\Generator;
 use TokenReflection;
+use TokenReflection\IReflection;
+
 
 /**
  * Envelope for parameters that are defined only in @param or @method annotation.
@@ -65,12 +68,7 @@ class ReflectionParameterMagic extends ReflectionParameter
 	 */
 	protected $declaringFunction;
 
-	/**
-	 * Constructor.
-	 *
-	 * @param \TokenReflection\IReflection $reflection Inspected reflection
-	 * @param \ApiGen\Generator $generator ApiGen generator
-	 */
+
 	public function __construct(IReflection $reflection = null, Generator $generator = null)
 	{
 		$this->reflectionType = get_class($this);
@@ -350,12 +348,12 @@ class ReflectionParameterMagic extends ReflectionParameter
 	 */
 	public function isArray()
 	{
-		return TokenReflection\ReflectionParameter::ARRAY_TYPE_HINT === $this->typeHint;
+		return TokenReflectionParameter::ARRAY_TYPE_HINT === $this->typeHint;
 	}
 
 	public function isCallable()
 	{
-		return TokenReflection\ReflectionParameter::CALLABLE_TYPE_HINT === $this->typeHint;
+		return TokenReflectionParameter::CALLABLE_TYPE_HINT === $this->typeHint;
 	}
 
 	/**

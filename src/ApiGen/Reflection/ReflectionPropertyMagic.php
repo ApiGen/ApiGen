@@ -7,9 +7,12 @@
  * the file license.md that was distributed with this source code.
  */
 
-namespace ApiGen;
+namespace ApiGen\Reflection;
 
+use ApiGen\Generator\Generator;
 use ReflectionProperty as InternalReflectionProperty;
+use TokenReflection\IReflection;
+
 
 /**
  * Envelope for magic properties that are defined

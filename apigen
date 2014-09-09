@@ -10,186 +10,39 @@
 
 namespace ApiGen;
 
+use Nette\Configurator;
 use TokenReflection;
 use Tracy\Debugger;
 
 
+require_once 'vendor/autoload.php';
+
 // Safe locale and timezone
 setlocale(LC_ALL, 'C');
-if (!ini_get('date.timezone')) {
+if ( ! ini_get('date.timezone')) {
 	date_default_timezone_set('UTC');
 }
 
-require_once 'vendor/autoload.php';
+// ApiGen root path
+define('APIGEN_ROOT_PATH', __DIR__ . '/src');
 
+// Init debugger
+Debugger::$strictMode = TRUE;
+Debugger::enable(Debugger::DEVELOPMENT, FALSE);
 
-try {
-	Debugger::$strictMode = TRUE;
+// Build the DIC
+$configurator = new Configurator;
+$configurator->setTempDirectory(__DIR__ . '/temp');
+$configurator->addConfig(__DIR__ . '/src/ApiGen/DI/config.neon');
+$container = $configurator->createContainer();
+
+// Update debugger configuration if needed
+if ( ! $container->getService('apigen.configuration')->debug) {
+	Debugger::enable(Debugger::PRODUCTION, TRUE);
 	Debugger::$onFatalError[] = function() {
-		echo "\nFor more information turn on the debug mode using the debug option.\n";
+		echo "\nFor more information turn on the debug mode using the --debug option.\n";
 	};
-	Debugger::enable(Debugger::PRODUCTION, FALSE);
-
-	$start = new \DateTime();
-
-	$options = $_SERVER['argv'];
-	array_shift($options);
-
-	$config = new Config;
-	$config->processCliOptions($options);
-	$config->prepare();
-	$generator = new Generator($config);
-
-
-	// Prepare configuration
-	if ($config->debug) {
-		Debugger::$onFatalError = array();
-		Debugger::enable(Debugger::DEVELOPMENT, FALSE);
-	}
-
-	$generator->output($generator->getHeader());
-
-	// Scan
-	if (count($config->source) > 1) {
-		$generator->output(sprintf("Scanning\n %s\n", implode("\n ", $config->source)));
-
-	} else {
-		$generator->output(sprintf("Scanning %s\n", $config->source[0]));
-	}
-
-	if (count($config->exclude) > 1) {
-		$generator->output(sprintf("Excluding\n %s\n", implode("\n ", $config->exclude)));
-
-	} elseif ( ! empty($config->exclude)) {
-		$generator->output(sprintf("Excluding %s\n", $config->exclude[0]));
-	}
-
-	$parsed = $generator->parse($config->source);
-
-	if (count($parsed->errors) > 1) {
-		$generator->output(sprintf("Found %d errors\n\n", count($parsed->errors)));
-
-		$no = 1;
-		foreach ($parsed->errors as $e) {
-
-			if ($e instanceof TokenReflection\Exception\ParseException) {
-				$generator->output(sprintf("%d. The TokenReflection library threw an exception while parsing the file %s.\n", $no, $e->getFileName()));
-				if ($config->debug) {
-					$generator->output("\nThis can have two reasons: a) the source code in the file is not valid or b) you have just found a bug in the TokenReflection library.\n\n");
-					$generator->output("If the license allows it please send the whole file or at least the following fragment describing where exacly is the problem along with the backtrace to apigen@apigen.org. Thank you!\n\n");
-
-					$token = $e->getToken();
-					$sender = $e->getSender();
-					if (!empty($token)) {
-						$generator->output(
-							sprintf(
-								"The cause of the exception \"%s\" was the %s token (line %d) in following part of %s source code:\n\n",
-								$e->getMessage(),
-								$e->getTokenName(),
-								$e->getExceptionLine(),
-								$sender && $sender->getName() ?$sender->getPrettyName(): 'the'
-							)
-						);
-					} else {
-						$generator->output(
-							sprintf(
-								"The exception \"%s\" was thrown when processing %s source code:\n\n",
-								$e->getMessage(),
-								$sender && $sender->getName() ? $sender->getPrettyName() : 'the'
-							)
-						);
-					}
-
-					$generator->output($e->getSourcePart(TRUE) . "\n\nThe exception backtrace is following:\n\n" . $e->getTraceAsString() . "\n\n");
-				}
-
-			} elseif ($e instanceof TokenReflection\Exception\FileProcessingException) {
-				$generator->output(sprintf("%d. %s\n", $no, $e->getMessage()));
-				if ($config->debug) {
-					$generator->output("\n" . $e->getDetail() . "\n\n");
-				}
-
-			} else {
-				$generator->output(sprintf("%d. %s\n", $no, $e->getMessage()));
-				if ($config->debug) {
-					$trace = $e->getTraceAsString();
-					while ($e = $e->getPrevious()) {
-						$generator->output(sprintf("\n%s", $e->getMessage()));
-						$trace = $e->getTraceAsString();
-					}
-					$generator->output(sprintf("\n%s\n\n", $trace));
-				}
-			}
-
-			$no++;
-		}
-
-		if ( ! $config->debug) {
-			$generator->output("\nEnable the debug mode (debug) to see more details.\n\n");
-		}
-	}
-
-	$generator->output(sprintf("Found %d classes, %d constants, %d functions and other %d used PHP internal classes\n", $parsed->classes, $parsed->constants, $parsed->functions, $parsed->internalClasses));
-	$generator->output(sprintf("Documentation for %d classes, %d constants, %d functions and other %d used PHP internal classes will be generated\n", $parsed->documentedClasses, $parsed->documentedConstants, $parsed->documentedFunctions, $parsed->documentedInternalClasses));
-
-	// Generating
-	$generator->output(sprintf("Using template config file %s\n", $config->templateConfig));
-
-	if ($config->wipeout && is_dir($config->destination)) {
-		$generator->output("Wiping out destination directory\n");
-		if (!$generator->wipeOutDestination()) {
-			throw new \RuntimeException('Cannot wipe out destination directory');
-		}
-	}
-
-	$generator->output(sprintf("Generating to directory %s\n", $config->destination));
-	$skipping = array_merge($config->skipDocPath, $config->skipDocPrefix);
-	if (count($skipping) > 1) {
-		$generator->output(sprintf("Will not generate documentation for\n %s\n", implode("\n ", $skipping)));
-
-	} elseif (!empty($skipping)) {
-		$generator->output(sprintf("Will not generate documentation for %s\n", $skipping[0]));
-	}
-	$generator->generate();
-
-	// End
-	$end = new \DateTime();
-	$interval = $end->diff($start);
-	$parts = array();
-	if ($interval->h > 0) {
-		$parts[] = sprintf('%d hours', $interval->h);
-	}
-	if ($interval->i > 0) {
-		$parts[] = sprintf('%d min', $interval->i);
-	}
-	if ($interval->s > 0) {
-		$parts[] = sprintf('%d sec', $interval->s);
-	}
-	if (empty($parts)) {
-		$parts[] = sprintf('%d sec', 1);
-	}
-
-	$duration = implode(' ', $parts);
-	$generator->output(sprintf("Done. Total time: %s, used: %d MB RAM\n", $duration, round(memory_get_peak_usage(TRUE) / 1024 / 1024)));
-
-} catch (ConfigException $e) {
-	// Configuration error
-	echo $generator->output($generator->getHeader() . sprintf("\n%s\n\n", $e->getMessage()));;
-
-	die(2);
-} catch (\Exception $e) {
-	// Everything else
-	if ($config->debug) {
-		do {
-			echo $generator->output(sprintf("\n%s(%d): %s", $e->getFile(), $e->getLine(), $e->getMessage()));
-			$trace = $e->getTraceAsString();
-			$trace = $e->getTraceAsString();
-		} while ($e = $e->getPrevious());
-
-		printf("\n\n%s\n", $trace);
-	} else {
-		echo $generator->output(sprintf("\n%s\n", $e->getMessage()));
-	}
-
-	die(1);
 }
+
+// Let's rock
+$container->getByType('ApiGen\Application\Application')->run();

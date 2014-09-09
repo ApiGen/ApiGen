@@ -7,7 +7,10 @@
  * the file license.md that was distributed with this source code.
  */
 
-namespace ApiGen;
+namespace ApiGen\Reflection;
+
+use ApiGen\FileSystem;
+
 
 /**
  * Function reflection envelope.
@@ -38,7 +41,7 @@ class ReflectionFunction extends ReflectionFunctionBase
 	public function isDocumented()
 	{
 		if (null === $this->isDocumented && parent::isDocumented()) {
-			$fileName = self::$generator->unPharPath($this->reflection->getFilename());
+			$fileName = FileSystem::unPharPath($this->reflection->getFilename());
 			foreach (self::$config->skipDocPath as $mask) {
 				if (fnmatch($mask, $fileName, FNM_NOESCAPE)) {
 					$this->isDocumented = false;

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the ApiGen (http://apigen.org)
  *
@@ -8,7 +9,9 @@
 
 namespace ApiGen;
 
-use RecursiveTreeIterator, RuntimeException;
+use RecursiveTreeIterator;
+use RuntimeException;
+
 
 /**
  * Customized recursive tree iterator.
@@ -17,28 +20,24 @@ class Tree extends RecursiveTreeIterator
 {
 	/**
 	 * Has a sibling on the same level.
-	 *
 	 * @var string
 	 */
 	const HAS_NEXT = '1';
 
 	/**
 	 * Last item on the current level.
-	 *
 	 * @var string
 	 */
 	const LAST = '0';
 
 	/**
 	 * Reflections in the tree.
-	 *
 	 * @var \ArrayObject
 	 */
 	private $reflections;
 
+
 	/**
-	 * Constructor.
-	 *
 	 * @param array $treePart Part of the tree
 	 * @param \ArrayObject $reflections Array of reflections in the tree part
 	 */
@@ -47,7 +46,7 @@ class Tree extends RecursiveTreeIterator
 		parent::__construct(
 			new \RecursiveArrayIterator($treePart),
 			RecursiveTreeIterator::BYPASS_KEY,
-			null,
+			NULL,
 			\RecursiveIteratorIterator::SELF_FIRST
 		);
 		$this->setPrefixPart(RecursiveTreeIterator::PREFIX_END_HAS_NEXT, self::HAS_NEXT);
@@ -57,9 +56,9 @@ class Tree extends RecursiveTreeIterator
 		$this->reflections = $reflections;
 	}
 
+
 	/**
 	 * Returns if the current item has a sibling on the same level.
-	 *
 	 * @return boolean
 	 */
 	public function hasSibling()
@@ -68,10 +67,10 @@ class Tree extends RecursiveTreeIterator
 		return !empty($prefix) && self::HAS_NEXT === substr($prefix, -1);
 	}
 
+
 	/**
 	 * Returns the current reflection.
-	 *
-	 * @return \ApiGen\Reflection
+	 * @return \ApiGen\Reflection\ReflectionElement
 	 * @throws \UnexpectedValueException If current is not reflection array.
 	 */
 	public function current()
@@ -83,4 +82,5 @@ class Tree extends RecursiveTreeIterator
 
 		return $this->reflections[$className];
 	}
+
 }

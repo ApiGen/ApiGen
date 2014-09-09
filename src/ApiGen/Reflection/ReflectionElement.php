@@ -7,7 +7,10 @@
  * the file license.md that was distributed with this source code.
  */
 
-namespace ApiGen;
+namespace ApiGen\Reflection;
+
+use TokenReflection\ReflectionAnnotation;
+
 
 /**
  * Element reflection envelope.
@@ -253,7 +256,7 @@ abstract class ReflectionElement extends ReflectionBase
 	 */
 	public function getShortDescription()
 	{
-		$short = $this->reflection->getAnnotation(\TokenReflection\ReflectionAnnotation::SHORT_DESCRIPTION);
+		$short = $this->reflection->getAnnotation(ReflectionAnnotation::SHORT_DESCRIPTION);
 		if (!empty($short)) {
 			return $short;
 		}
@@ -274,7 +277,7 @@ abstract class ReflectionElement extends ReflectionBase
 	public function getLongDescription()
 	{
 		$short = $this->getShortDescription();
-		$long = $this->reflection->getAnnotation(\TokenReflection\ReflectionAnnotation::LONG_DESCRIPTION);
+		$long = $this->reflection->getAnnotation(ReflectionAnnotation::LONG_DESCRIPTION);
 
 		if (!empty($long)) {
 			$short .= "\n\n" . $long;
@@ -311,10 +314,10 @@ abstract class ReflectionElement extends ReflectionBase
 			$annotations = $this->reflection->getAnnotations();
             		$annotations = array_change_key_case($annotations, CASE_LOWER);
 
-			unset($annotations[\TokenReflection\ReflectionAnnotation::SHORT_DESCRIPTION]);
-			unset($annotations[\TokenReflection\ReflectionAnnotation::LONG_DESCRIPTION]);
+			unset($annotations[ReflectionAnnotation::SHORT_DESCRIPTION]);
+			unset($annotations[ReflectionAnnotation::LONG_DESCRIPTION]);
 
-			if ($this->reflection instanceof \TokenReflection\ReflectionClass || $this->reflection instanceof \TokenReflection\ReflectionFunction || ($this->reflection instanceof \TokenReflection\ReflectionConstant && null === $this->reflection->getDeclaringClassName())) {
+			if ($this->reflection instanceof \TokenReflectionClass || $this->reflection instanceof \TokenReflectionFunction || ($this->reflection instanceof \TokenReflectionConstant && null === $this->reflection->getDeclaringClassName())) {
 				foreach ($this->reflection->getFileReflection()->getAnnotations() as $name => $value) {
 					if (isset($fileLevel[$name]) && empty($annotations[$name])) {
 						$annotations[$name] = $value;

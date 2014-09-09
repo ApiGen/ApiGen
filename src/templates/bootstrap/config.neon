@@ -1,6 +1,3 @@
-require:
-	min: 2.8.0
-
 resources:
 	resources: resources
 

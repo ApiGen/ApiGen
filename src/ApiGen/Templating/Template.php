@@ -7,43 +7,42 @@
  * the file license.md that was distributed with this source code.
  */
 
-namespace ApiGen;
+namespace ApiGen\Templating;
 
-use Nette, FSHL;
+use ApiGen\Configuration\Configuration;
+use ApiGen\Generator\Generator;
+use ApiGen\Reflection;
+use ApiGen\Reflection\ReflectionBase;
+use ApiGen\Reflection\ReflectionClass;
+use ApiGen\Reflection\ReflectionConstant;
+use ApiGen\Reflection\ReflectionFunction;
+use ApiGen\Reflection\ReflectionProperty;
+use FSHL;
+use Nette;
+
 
 /**
  * Customized ApiGen template class.
- *
  * Adds ApiGen helpers to the Nette\Templating\FileTemplate parent class.
  */
 class Template extends Nette\Templating\FileTemplate
 {
 	/**
-	 * Generator.
-	 *
-	 * @var \ApiGen\Generator
+	 * @var Generator
 	 */
 	private $generator;
 
 	/**
-	 * Config.
-	 *
-	 * @var \ApiGen\Config
+	 * @var Configuration
 	 */
 	private $config;
 
 	/**
-	 * Texy.
-	 *
-	 * @var Texy
+	 * @var \Texy
 	 */
 	private $texy;
 
-	/**
-	 * Creates template.
-	 *
-	 * @param \ApiGen\Generator $generator
-	 */
+
 	public function __construct(Generator $generator)
 	{
 		$this->generator = $generator;
@@ -52,7 +51,7 @@ class Template extends Nette\Templating\FileTemplate
 		$that = $this;
 
 		// Output in HTML5
-		Nette\Utils\Html::$xhtml = false;
+		Nette\Utils\Html::$xhtml = FALSE;
 
 		// FSHL
 		$fshl = new FSHL\Highlighter(new FSHL\Output\Html());
@@ -60,18 +59,18 @@ class Template extends Nette\Templating\FileTemplate
 
 		// Texy
 		$this->texy = new \Texy();
-		$this->texy->allowedTags = array_flip($this->config->allowedHtml);
-		$this->texy->allowed['list/definition'] = false;
-		$this->texy->allowed['phrase/em-alt'] = false;
-		$this->texy->allowed['longwords'] = false;
-		$this->texy->allowed['typography'] = false;
-		$this->texy->linkModule->shorten = false;
+		$this->texy->allowedTags = array_flip((array) $this->config->allowedHtml);
+		$this->texy->allowed['list/definition'] = FALSE;
+		$this->texy->allowed['phrase/em-alt'] = FALSE;
+		$this->texy->allowed['longwords'] = FALSE;
+		$this->texy->allowed['typography'] = FALSE;
+		$this->texy->linkModule->shorten = FALSE;
 		// Highlighting <code>, <pre>
-		$this->texy->addHandler('beforeParse', function($texy, &$text, $singleLine) {
+		$this->texy->addHandler('beforeParse', function ($texy, &$text, $singleLine) {
 			$text = preg_replace('~<code>(.+?)</code>~', '#code#\\1#/code#', $text);
 		});
 		$this->texy->registerLinePattern(
-			function($parser, $matches, $name) use ($fshl) {
+			function ($parser, $matches, $name) use ($fshl) {
 				$content = $parser->getTexy()->protect($fshl->highlight($matches[1]), \Texy::CONTENT_MARKUP);
 				return \TexyHtml::el('code', $content);
 			},
@@ -79,7 +78,7 @@ class Template extends Nette\Templating\FileTemplate
 			'codeInlineSyntax'
 		);
 		$this->texy->registerBlockPattern(
-			function($parser, $matches, $name) use ($fshl) {
+			function ($parser, $matches, $name) use ($fshl) {
 				if ('code' === $matches[1]) {
 					$lines = array_filter(explode("\n", $matches[2]));
 					if (!empty($lines)) {
@@ -123,10 +122,10 @@ class Template extends Nette\Templating\FileTemplate
 		$this->registerHelperLoader('Nette\Templating\Helpers::loader');
 
 		// PHP source highlight
-		$this->registerHelper('highlightPHP', function($source, $context) use ($that, $fshl) {
-			return $that->resolveLink($that->getTypeName($source), $context) ?: $fshl->highlight((string) $source);
+		$this->registerHelper('highlightPHP', function ($source, $context) use ($that, $fshl) {
+			return $that->resolveLink($that->getTypeName($source), $context) ?: $fshl->highlight((string)$source);
 		});
-		$this->registerHelper('highlightValue', function($definition, $context) use ($that) {
+		$this->registerHelper('highlightValue', function ($definition, $context) use ($that) {
 			return $that->highlightPHP(preg_replace('~^(?:[ ]{4}|\t)~m', '', $definition), $context);
 		});
 
@@ -146,7 +145,7 @@ class Template extends Nette\Templating\FileTemplate
 		// Packages & namespaces
 		$this->registerHelper('packageLinks', new Nette\Callback($this, 'getPackageLinks'));
 		$this->registerHelper('namespaceLinks', new Nette\Callback($this, 'getNamespaceLinks'));
-		$this->registerHelper('subgroupName', function($groupName) {
+		$this->registerHelper('subgroupName', function ($groupName) {
 			if ($pos = strrpos($groupName, '\\')) {
 				return substr($groupName, $pos + 1);
 			}
@@ -157,28 +156,28 @@ class Template extends Nette\Templating\FileTemplate
 		$this->registerHelper('typeLinks', new Nette\Callback($this, 'getTypeLinks'));
 
 		// Docblock descriptions
-		$this->registerHelper('description', function($annotation, $context) use ($that) {
+		$this->registerHelper('description', function ($annotation, $context) use ($that) {
 			$description = trim(strpbrk($annotation, "\n\r\t $")) ?: $annotation;
 			return $that->doc($description, $context);
 		});
-		$this->registerHelper('shortDescription', function($element, $block = false) use ($that) {
+		$this->registerHelper('shortDescription', function ($element, $block = FALSE) use ($that) {
 			return $that->doc($element->getShortDescription(), $element, $block);
 		});
-		$this->registerHelper('longDescription', function($element) use ($that) {
+		$this->registerHelper('longDescription', function ($element) use ($that) {
 			$long = $element->getLongDescription();
 
 			// Merge lines
-			$long = preg_replace_callback('~(?:<(code|pre)>.+?</\1>)|([^<]*)~s', function($matches) {
+			$long = preg_replace_callback('~(?:<(code|pre)>.+?</\1>)|([^<]*)~s', function ($matches) {
 				return !empty($matches[2])
 					? preg_replace('~\n(?:\t|[ ])+~', ' ', $matches[2])
 					: $matches[0];
 			}, $long);
 
-			return $that->doc($long, $element, true);
+			return $that->doc($long, $element, TRUE);
 		});
 
 		// Individual annotations processing
-		$this->registerHelper('annotation', function($value, $name, ReflectionElement $context) use ($that, $generator) {
+		$this->registerHelper('annotation', function ($value, $name, Reflection\ReflectionElement $context) use ($that, $generator) {
 			switch ($name) {
 				case 'return':
 				case 'throws':
@@ -196,7 +195,7 @@ class Template extends Nette\Templating\FileTemplate
 				case 'see':
 					$doc = array();
 					foreach (preg_split('~\\s*,\\s*~', $value) as $link) {
-						if (null !== $generator->resolveElement($link, $context)) {
+						if (NULL !== $generator->resolveElement($link, $context)) {
 							$doc[] = sprintf('<code>%s</code>', $that->getTypeLinks($link, $context));
 						} else {
 							$doc[] = $that->doc($link, $context);
@@ -207,7 +206,7 @@ class Template extends Nette\Templating\FileTemplate
 				case 'usedby':
 					list($link, $description) = $that->split($value);
 					$separator = $context instanceof ReflectionClass || !$description ? ' ' : '<br>';
-					if (null !== $generator->resolveElement($link, $context)) {
+					if (NULL !== $generator->resolveElement($link, $context)) {
 						return sprintf('<code>%s</code>%s%s', $that->getTypeLinks($link, $context), $separator, $description);
 					}
 					break;
@@ -221,7 +220,7 @@ class Template extends Nette\Templating\FileTemplate
 
 		$todo = $this->config->todo;
 		$internal = $this->config->internal;
-		$this->registerHelper('annotationFilter', function(array $annotations, array $filter = array()) use ($todo, $internal) {
+		$this->registerHelper('annotationFilter', function (array $annotations, array $filter = array()) use ($todo, $internal) {
 			// Filtered, unsupported or deprecated annotations
 			static $filtered = array(
 				'package', 'subpackage', 'property', 'property-read', 'property-write', 'method', 'abstract',
@@ -249,8 +248,8 @@ class Template extends Nette\Templating\FileTemplate
 			return $annotations;
 		});
 
-		$this->registerHelper('annotationSort', function(array $annotations) {
-			uksort($annotations, function($one, $two) {
+		$this->registerHelper('annotationSort', function (array $annotations) {
+			uksort($annotations, function ($one, $two) {
 				static $order = array(
 					'deprecated' => 0, 'category' => 1, 'copyright' => 2, 'license' => 3, 'author' => 4, 'version' => 5,
 					'since' => 6, 'see' => 7, 'uses' => 8, 'usedby' => 9, 'link' => 10, 'internal' => 11,
@@ -270,7 +269,7 @@ class Template extends Nette\Templating\FileTemplate
 			return $annotations;
 		});
 
-		$this->registerHelper('annotationBeautify', function($annotation) {
+		$this->registerHelper('annotationBeautify', function ($annotation) {
 			static $names = array(
 				'usedby' => 'Used by'
 			);
@@ -284,7 +283,7 @@ class Template extends Nette\Templating\FileTemplate
 
 		// Static files versioning
 		$destination = $this->config->destination;
-		$this->registerHelper('staticFile', function($name) use ($destination) {
+		$this->registerHelper('staticFile', function ($name) use ($destination) {
 			static $versions = array();
 
 			$filename = $destination . DIRECTORY_SEPARATOR . $name;
@@ -298,30 +297,30 @@ class Template extends Nette\Templating\FileTemplate
 		});
 
 		// Source anchors
-		$this->registerHelper('sourceAnchors', function($source) {
+		$this->registerHelper('sourceAnchors', function ($source) {
 			// Classes, interfaces, traits and exceptions
-			$source = preg_replace_callback('~(<span\\s+class="php-keyword1">(?:class|interface|trait)</span>\\s+)(\\w+)~i', function($matches) {
+			$source = preg_replace_callback('~(<span\\s+class="php-keyword1">(?:class|interface|trait)</span>\\s+)(\\w+)~i', function ($matches) {
 				$link = sprintf('<a id="%1$s" href="#%1$s">%1$s</a>', $matches[2]);
 				return $matches[1] . $link;
 			}, $source);
 
 			// Methods and functions
-			$source = preg_replace_callback('~(<span\\s+class="php-keyword1">function</span>\\s+)(\\w+)~i', function($matches) {
+			$source = preg_replace_callback('~(<span\\s+class="php-keyword1">function</span>\\s+)(\\w+)~i', function ($matches) {
 				$link = sprintf('<a id="_%1$s" href="#_%1$s">%1$s</a>', $matches[2]);
 				return $matches[1] . $link;
 			}, $source);
 
 			// Constants
-			$source = preg_replace_callback('~(<span class="php-keyword1">const</span>)(.*?)(;)~is', function($matches) {
-				$links = preg_replace_callback('~(\\s|,)([A-Z_]+)(\\s+=)~', function($matches) {
+			$source = preg_replace_callback('~(<span class="php-keyword1">const</span>)(.*?)(;)~is', function ($matches) {
+				$links = preg_replace_callback('~(\\s|,)([A-Z_]+)(\\s+=)~', function ($matches) {
 					return $matches[1] . sprintf('<a id="%1$s" href="#%1$s">%1$s</a>', $matches[2]) . $matches[3];
 				}, $matches[2]);
 				return $matches[1] . $links . $matches[3];
 			}, $source);
 
 			// Properties
-			$source = preg_replace_callback('~(<span\\s+class="php-keyword1">(?:private|protected|public|var|static)</span>\\s+)(<span\\s+class="php-var">.*?)(;)~is', function($matches) {
-				$links = preg_replace_callback('~(<span\\s+class="php-var">)(\\$\\w+)~i', function($matches) {
+			$source = preg_replace_callback('~(<span\\s+class="php-keyword1">(?:private|protected|public|var|static)</span>\\s+)(<span\\s+class="php-var">.*?)(;)~is', function ($matches) {
+				$links = preg_replace_callback('~(<span\\s+class="php-var">)(\\$\\w+)~i', function ($matches) {
 					return $matches[1] . sprintf('<a id="%1$s" href="#%1$s">%1$s</a>', $matches[2]);
 				}, $matches[2]);
 				return $matches[1] . $links . $matches[3];
@@ -337,14 +336,14 @@ class Template extends Nette\Templating\FileTemplate
 		$this->registerHelper('getClass', array($generator, 'getClass'));
 	}
 
+
 	/**
 	 * Returns unified type value definition (class name or member data type).
-	 *
 	 * @param string $name
 	 * @param boolean $trimNamespaceSeparator
 	 * @return string
 	 */
-	public function getTypeName($name, $trimNamespaceSeparator = true)
+	public function getTypeName($name, $trimNamespaceSeparator = TRUE)
 	{
 		static $names = array(
 			'int' => 'integer',
@@ -366,20 +365,20 @@ class Template extends Nette\Templating\FileTemplate
 		return $trimNamespaceSeparator ? ltrim($name, '\\') : $name;
 	}
 
+
 	/**
 	 * Returns links for types.
-	 *
 	 * @param string $annotation
-	 * @param \ApiGen\ReflectionElement $context
+	 * @param \ApiGen\Reflection\ReflectionElement $context
 	 * @return string
 	 */
-	public function getTypeLinks($annotation, ReflectionElement $context)
+	public function getTypeLinks($annotation, Reflection\ReflectionElement $context)
 	{
 		$links = array();
 
 		list($types) = $this->split($annotation);
 		if (!empty($types) && '$' === $types{0}) {
-			$types = null;
+			$types = NULL;
 		}
 
 		if (empty($types)) {
@@ -387,21 +386,21 @@ class Template extends Nette\Templating\FileTemplate
 		}
 
 		foreach (explode('|', $types) as $type) {
-			$type = $this->getTypeName($type, false);
+			$type = $this->getTypeName($type, FALSE);
 			$links[] = $this->resolveLink($type, $context) ?: $this->escapeHtml(ltrim($type, '\\'));
 		}
 
 		return implode('|', $links);
 	}
 
+
 	/**
 	 * Returns links for package/namespace and its parent packages.
-	 *
 	 * @param string $package
 	 * @param boolean $last
 	 * @return string
 	 */
-	public function getPackageLinks($package, $last = true)
+	public function getPackageLinks($package, $last = TRUE)
 	{
 		if (empty($this->packages)) {
 			return $package;
@@ -420,14 +419,14 @@ class Template extends Nette\Templating\FileTemplate
 		return implode('\\', $links);
 	}
 
+
 	/**
 	 * Returns links for namespace and its parent namespaces.
-	 *
 	 * @param string $namespace
 	 * @param boolean $last
 	 * @return string
 	 */
-	public function getNamespaceLinks($namespace, $last = true)
+	public function getNamespaceLinks($namespace, $last = TRUE)
 	{
 		if (empty($this->namespaces)) {
 			return $namespace;
@@ -446,9 +445,9 @@ class Template extends Nette\Templating\FileTemplate
 		return implode('\\', $links);
 	}
 
+
 	/**
 	 * Returns a link to a namespace summary file.
-	 *
 	 * @param string $namespaceName Namespace name
 	 * @return string
 	 */
@@ -457,9 +456,9 @@ class Template extends Nette\Templating\FileTemplate
 		return sprintf($this->config->template['templates']['main']['namespace']['filename'], $this->urlize($namespaceName));
 	}
 
+
 	/**
 	 * Returns a link to a package summary file.
-	 *
 	 * @param string $packageName Package name
 	 * @return string
 	 */
@@ -468,9 +467,9 @@ class Template extends Nette\Templating\FileTemplate
 		return sprintf($this->config->template['templates']['main']['package']['filename'], $this->urlize($packageName));
 	}
 
+
 	/**
 	 * Returns a link to a group summary file.
-	 *
 	 * @param string $groupName Group name
 	 * @return string
 	 */
@@ -483,48 +482,44 @@ class Template extends Nette\Templating\FileTemplate
 		return $this->getNamespaceUrl($groupName);
 	}
 
+
 	/**
 	 * Returns a link to class summary file.
-	 *
 	 * @param string|\ApiGen\ReflectionClass $class Class reflection or name
 	 * @return string
 	 */
 	public function getClassUrl($class)
 	{
-		$className = $class instanceof ReflectionClass ? $class->getName() : $class;
+		$className = $class instanceof Reflection\ReflectionClass ? $class->getName() : $class;
 		return sprintf($this->config->template['templates']['main']['class']['filename'], $this->urlize($className));
 	}
 
+
 	/**
 	 * Returns a link to method in class summary file.
-	 *
-	 * @param \ApiGen\ReflectionMethod $method Method reflection
-	 * @param \ApiGen\ReflectionClass $class Method declaring class
 	 * @return string
 	 */
-	public function getMethodUrl(ReflectionMethod $method, ReflectionClass $class = null)
+	public function getMethodUrl(Reflection\ReflectionMethod $method, Reflection\ReflectionClass $class = NULL)
 	{
-		$className = null !== $class ? $class->getName() : $method->getDeclaringClassName();
+		$className = NULL !== $class ? $class->getName() : $method->getDeclaringClassName();
 		return $this->getClassUrl($className) . '#' . ($method->isMagic() ? 'm' : '') . '_' . ($method->getOriginalName() ?: $method->getName());
 	}
 
+
 	/**
 	 * Returns a link to property in class summary file.
-	 *
-	 * @param \ApiGen\ReflectionProperty $property Property reflection
-	 * @param \ApiGen\ReflectionClass $class Property declaring class
 	 * @return string
 	 */
-	public function getPropertyUrl(ReflectionProperty $property, ReflectionClass $class = null)
+	public function getPropertyUrl(ReflectionProperty $property, ReflectionClass $class = NULL)
 	{
-		$className = null !== $class ? $class->getName() : $property->getDeclaringClassName();
+		$className = NULL !== $class ? $class->getName() : $property->getDeclaringClassName();
 		return $this->getClassUrl($className) . '#' . ($property->isMagic() ? 'm' : '') . '$' . $property->getName();
 	}
 
+
 	/**
 	 * Returns a link to constant in class summary file or to constant summary file.
-	 *
-	 * @param \ApiGen\ReflectionConstant $constant Constant reflection
+	 * @param \ApiGen\Reflection\ReflectionConstant $constant Constant reflection
 	 * @return string
 	 */
 	public function getConstantUrl(ReflectionConstant $constant)
@@ -537,9 +532,9 @@ class Template extends Nette\Templating\FileTemplate
 		return sprintf($this->config->template['templates']['main']['constant']['filename'], $this->urlize($constant->getName()));
 	}
 
+
 	/**
 	 * Returns a link to function summary file.
-	 *
 	 * @param \ApiGen\ReflectionFunction $function Function reflection
 	 * @return string
 	 */
@@ -548,44 +543,44 @@ class Template extends Nette\Templating\FileTemplate
 		return sprintf($this->config->template['templates']['main']['function']['filename'], $this->urlize($function->getName()));
 	}
 
+
 	/**
 	 * Returns a link to element summary file.
-	 *
-	 * @param \ApiGen\ReflectionElement $element Element reflection
+	 * @param \ApiGen\Reflection\ReflectionElement $element Element reflection
 	 * @return string
 	 */
-	public function getElementUrl(ReflectionElement $element)
+	public function getElementUrl(Reflection\ReflectionElement $element)
 	{
-		if ($element instanceof ReflectionClass) {
+		if ($element instanceof Reflection\ReflectionClass) {
 			return $this->getClassUrl($element);
-		} elseif ($element instanceof ReflectionMethod) {
+		} elseif ($element instanceof Reflection\ReflectionMethod) {
 			return $this->getMethodUrl($element);
-		} elseif ($element instanceof ReflectionProperty) {
+		} elseif ($element instanceof Reflection\ReflectionProperty) {
 			return $this->getPropertyUrl($element);
-		} elseif ($element instanceof ReflectionConstant) {
+		} elseif ($element instanceof Reflection\ReflectionConstant) {
 			return $this->getConstantUrl($element);
-		} elseif ($element instanceof ReflectionFunction) {
+		} elseif ($element instanceof Reflection\ReflectionFunction) {
 			return $this->getFunctionUrl($element);
 		}
 	}
 
+
 	/**
 	 * Returns a link to a element source code.
-	 *
-	 * @param \ApiGen\ReflectionElement $element Element reflection
+	 * @param \ApiGen\Reflection\ReflectionElement $element Element reflection
 	 * @param boolean $withLine Include file line number into the link
 	 * @return string
 	 */
-	public function getSourceUrl(ReflectionElement $element, $withLine = true)
+	public function getSourceUrl(Reflection\ReflectionElement $element, $withLine = TRUE)
 	{
-		if ($element instanceof ReflectionClass || $element instanceof ReflectionFunction || ($element instanceof ReflectionConstant && null === $element->getDeclaringClassName())) {
+		if ($element instanceof Reflection\ReflectionClass || $element instanceof Reflection\ReflectionFunction || ($element instanceof Reflection\ReflectionConstant && NULL === $element->getDeclaringClassName())) {
 			$elementName = $element->getName();
 
-			if ($element instanceof ReflectionClass) {
+			if ($element instanceof Reflection\ReflectionClass) {
 				$file = 'class-';
-			} elseif ($element instanceof ReflectionConstant) {
+			} elseif ($element instanceof Reflection\ReflectionConstant) {
 				$file = 'constant-';
-			} elseif ($element instanceof ReflectionFunction) {
+			} elseif ($element instanceof Reflection\ReflectionFunction) {
 				$file = 'function-';
 			}
 		} else {
@@ -595,17 +590,17 @@ class Template extends Nette\Templating\FileTemplate
 
 		$file .= $this->urlize($elementName);
 
-		$lines = null;
+		$lines = NULL;
 		if ($withLine) {
 			$lines = $element->getStartLine() !== $element->getEndLine() ? sprintf('%s-%s', $element->getStartLine(), $element->getEndLine()) : $element->getStartLine();
 		}
 
-		return sprintf($this->config->template['templates']['main']['source']['filename'], $file) . (null !== $lines ? '#' . $lines : '');
+		return sprintf($this->config->template['templates']['main']['source']['filename'], $file) . (NULL !== $lines ? '#' . $lines : '');
 	}
+
 
 	/**
 	 * Returns a link to a element documentation at php.net.
-	 *
 	 * @param \ApiGen\ReflectionBase $element Element reflection
 	 * @return string
 	 */
@@ -615,7 +610,7 @@ class Template extends Nette\Templating\FileTemplate
 		static $reservedClasses = array('stdClass', 'Closure', 'Directory');
 
 		// Extension
-		if ($element instanceof ReflectionExtension) {
+		if ($element instanceof Reflection\ReflectionExtension) {
 			$extensionName = strtolower($element->getName());
 			if ('core' === $extensionName) {
 				return $manual;
@@ -629,7 +624,7 @@ class Template extends Nette\Templating\FileTemplate
 		}
 
 		// Class and its members
-		$class = $element instanceof ReflectionClass ? $element : $element->getDeclaringClass();
+		$class = $element instanceof Reflection\ReflectionClass ? $element : $element->getDeclaringClass();
 
 		if (in_array($class->getName(), $reservedClasses)) {
 			return $manual . '/reserved.classes.php';
@@ -639,28 +634,28 @@ class Template extends Nette\Templating\FileTemplate
 		$classUrl = sprintf('%s/class.%s.php', $manual, $className);
 		$elementName = strtolower(strtr(ltrim($element->getName(), '_'), '_', '-'));
 
-		if ($element instanceof ReflectionClass) {
+		if ($element instanceof Reflection\ReflectionClass) {
 			return $classUrl;
-		} elseif ($element instanceof ReflectionMethod) {
+		} elseif ($element instanceof Reflection\ReflectionMethod) {
 			return sprintf('%s/%s.%s.php', $manual, $className, $elementName);
-		} elseif ($element instanceof ReflectionProperty) {
+		} elseif ($element instanceof Reflection\ReflectionProperty) {
 			return sprintf('%s#%s.props.%s', $classUrl, $className, $elementName);
-		} elseif ($element instanceof ReflectionConstant) {
+		} elseif ($element instanceof Reflection\ReflectionConstant) {
 			return sprintf('%s#%s.constants.%s', $classUrl, $className, $elementName);
 		}
 	}
 
+
 	/**
 	 * Tries to parse a definition of a class/method/property/constant/function and returns the appropriate link if successful.
-	 *
 	 * @param string $definition Definition
-	 * @param \ApiGen\ReflectionElement $context Link context
+	 * @param \ApiGen\Reflection\ReflectionElement $context Link context
 	 * @return string|null
 	 */
-	public function resolveLink($definition, ReflectionElement $context)
+	public function resolveLink($definition, Reflection\ReflectionElement $context)
 	{
 		if (empty($definition)) {
-			return null;
+			return NULL;
 		}
 
 		$suffix = '';
@@ -670,7 +665,7 @@ class Template extends Nette\Templating\FileTemplate
 		}
 
 		$element = $this->generator->resolveElement($definition, $context, $expectedName);
-		if (null === $element) {
+		if (NULL === $element) {
 			return $expectedName;
 		}
 
@@ -682,42 +677,42 @@ class Template extends Nette\Templating\FileTemplate
 			$classes[] = 'invalid';
 		}
 
-		if ($element instanceof ReflectionClass) {
-			$link = $this->link($this->getClassUrl($element), $element->getName(), true, $classes);
-		} elseif ($element instanceof ReflectionConstant && null === $element->getDeclaringClassName()) {
+		if ($element instanceof Reflection\ReflectionClass) {
+			$link = $this->link($this->getClassUrl($element), $element->getName(), TRUE, $classes);
+		} elseif ($element instanceof Reflection\ReflectionConstant && NULL === $element->getDeclaringClassName()) {
 			$text = $element->inNamespace()
 				? $this->escapeHtml($element->getNamespaceName()) . '\\<b>' . $this->escapeHtml($element->getShortName()) . '</b>'
 				: '<b>' . $this->escapeHtml($element->getName()) . '</b>';
-			$link = $this->link($this->getConstantUrl($element), $text, false, $classes);
-		} elseif ($element instanceof ReflectionFunction) {
-			$link = $this->link($this->getFunctionUrl($element), $element->getName() . '()', true, $classes);
+			$link = $this->link($this->getConstantUrl($element), $text, FALSE, $classes);
+		} elseif ($element instanceof Reflection\ReflectionFunction) {
+			$link = $this->link($this->getFunctionUrl($element), $element->getName() . '()', TRUE, $classes);
 		} else {
 			$text = $this->escapeHtml($element->getDeclaringClassName());
-			if ($element instanceof ReflectionProperty) {
+			if ($element instanceof Reflection\ReflectionProperty) {
 				$url = $this->propertyUrl($element);
 				$text .= '::<var>$' . $this->escapeHtml($element->getName()) . '</var>';
-			} elseif ($element instanceof ReflectionMethod) {
+			} elseif ($element instanceof Reflection\ReflectionMethod) {
 				$url = $this->methodUrl($element);
 				$text .= '::' . $this->escapeHtml($element->getName()) . '()';
-			} elseif ($element instanceof ReflectionConstant) {
+			} elseif ($element instanceof Reflection\ReflectionConstant) {
 				$url = $this->constantUrl($element);
 				$text .= '::<b>' . $this->escapeHtml($element->getName()) . '</b>';
 			}
 
-			$link = $this->link($url, $text, false, $classes);
+			$link = $this->link($url, $text, FALSE, $classes);
 		}
 
 		return sprintf('<code>%s</code>', $link . $suffix);
 	}
 
+
 	/**
 	 * Resolves links in documentation.
-	 *
 	 * @param string $text Processed documentation text
-	 * @param \ApiGen\ReflectionElement $context Reflection object
+	 * @param \ApiGen\Reflection\ReflectionElement $context Reflection object
 	 * @return string
 	 */
-	private function resolveLinks($text, ReflectionElement $context)
+	private function resolveLinks($text, Reflection\ReflectionElement $context)
 	{
 		$that = $this;
 		return preg_replace_callback('~{@(?:link|see)\\s+([^}]+)}~', function ($matches) use ($context, $that) {
@@ -730,16 +725,16 @@ class Template extends Nette\Templating\FileTemplate
 		}, $text);
 	}
 
+
 	/**
 	 * Resolves internal annotation.
-	 *
 	 * @param string $text
 	 * @return string
 	 */
 	private function resolveInternal($text)
 	{
 		$internal = $this->config->internal;
-		return preg_replace_callback('~\\{@(\\w+)(?:(?:\\s+((?>(?R)|[^{}]+)*)\\})|\\})~', function($matches) use ($internal) {
+		return preg_replace_callback('~\\{@(\\w+)(?:(?:\\s+((?>(?R)|[^{}]+)*)\\})|\\})~', function ($matches) use ($internal) {
 			// Replace only internal
 			if ('internal' !== $matches[1]) {
 				return $matches[0];
@@ -748,22 +743,22 @@ class Template extends Nette\Templating\FileTemplate
 		}, $text);
 	}
 
+
 	/**
 	 * Formats text as documentation block or line.
-	 *
 	 * @param string $text Text
-	 * @param \ApiGen\ReflectionElement $context Reflection object
+	 * @param \ApiGen\Reflection\ReflectionElement $context Reflection object
 	 * @param boolean $block Parse text as block
 	 * @return string
 	 */
-	public function doc($text, ReflectionElement $context, $block = false)
+	public function doc($text, Reflection\ReflectionElement $context, $block = FALSE)
 	{
 		return $this->resolveLinks($this->texy->process($this->resolveInternal($text), !$block), $context);
 	}
 
+
 	/**
 	 * Parses annotation value.
-	 *
 	 * @param string $value
 	 * @return array
 	 */
@@ -772,24 +767,24 @@ class Template extends Nette\Templating\FileTemplate
 		return preg_split('~\s+|$~', $value, 2);
 	}
 
+
 	/**
 	 * Returns link.
-	 *
 	 * @param string $url
 	 * @param string $text
 	 * @param boolean $escape If the text should be escaped
 	 * @param array $classes List of classes
 	 * @return string
 	 */
-	public function link($url, $text, $escape = true, array $classes = array())
+	public function link($url, $text, $escape = TRUE, array $classes = array())
 	{
 		$class = !empty($classes) ? sprintf(' class="%s"', implode(' ', $classes)) : '';
 		return sprintf('<a href="%s"%s>%s</a>', $url, $class, $escape ? $this->escapeHtml($text) : $text);
 	}
 
+
 	/**
 	 * Converts string to url safe characters.
-	 *
 	 * @param string $string
 	 * @return string
 	 */
@@ -797,4 +792,5 @@ class Template extends Nette\Templating\FileTemplate
 	{
 		return preg_replace('~[^\w]~', '.', $string);
 	}
+
 }
