@@ -28,15 +28,15 @@ define('APIGEN_ROOT_PATH', __DIR__ . '/src');
 
 // Init debugger
 Debugger::$strictMode = TRUE;
-Debugger::$onFatalError[] = function() {
-	echo "\nFor more information turn on the debug mode using the --debug option.\n";
-};
 Debugger::enable(Debugger::PRODUCTION);
 
 
 // Build the DIC
+$tmp = __DIR__ . '/_temp' . uniqid(); // @todo: or custom in memory container
+@mkdir($tmp, 0755, TRUE);
+
 $configurator = new Configurator;
-$configurator->setTempDirectory(__DIR__ . '/temp');
+$configurator->setTempDirectory($tmp);
 $configurator->addConfig(__DIR__ . '/src/ApiGen/DI/config.neon');
 $container = $configurator->createContainer();
 
@@ -49,3 +49,6 @@ if ($container->getbyType('ApiGen\Configuration\Configuration')->debug) {
 
 // Let's rock
 $container->getByType('ApiGen\Application\Application')->run();
+
+// cleanup
+FileSystem::deleteDir($tmp);

@@ -9,6 +9,8 @@
 
 namespace ApiGen;
 
+use Nette;
+
 
 class FileSystem
 {
@@ -56,6 +58,50 @@ class FileSystem
 	public static function pharPath($path)
 	{
 		return 'phar://' . $path;
+	}
+
+
+	/**
+	 * Ensures a directory is created.
+	 * @param string $path
+	 * @return string
+	 */
+	public static function forceDir($path)
+	{
+		@mkdir(dirname($path), 0755, TRUE);
+		return $path;
+	}
+
+
+	/**
+	 * @param string $path
+	 * @return bool
+	 */
+	public static function deleteDir($path)
+	{
+		if ( ! is_dir($path)) {
+			return TRUE;
+		}
+
+		foreach (Nette\Utils\Finder::find('*')->from($path)->childFirst() as $item) {
+			/** @var \SplFileInfo $item */
+			if ($item->isDir()) {
+				if (!@rmdir($item)) {
+					return FALSE;
+				}
+
+			} elseif ($item->isFile()) {
+				if (!@unlink($item)) {
+					return FALSE;
+				}
+			}
+		}
+
+		if (!@rmdir($path)) {
+			return FALSE;
+		}
+
+		return TRUE;
 	}
 
 }

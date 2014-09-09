@@ -272,14 +272,14 @@ class HtmlGenerator extends Nette\Object implements Generator
 			// File
 			$resourcePath = $this->getTemplateDir() . DIRECTORY_SEPARATOR . $resourceSource;
 			if (is_file($resourcePath)) {
-				copy($resourcePath, $this->forceDir($this->config->destination . DIRECTORY_SEPARATOR . $resourceDestination));
+				copy($resourcePath, FileSystem::forceDir($this->config->destination . DIRECTORY_SEPARATOR . $resourceDestination));
 				continue;
 			}
 
 			// Dir
 			$iterator = Nette\Utils\Finder::findFiles('*')->from($resourcePath)->getIterator();
 			foreach ($iterator as $item) {
-				copy($item->getPathName(), $this->forceDir($this->config->destination . DIRECTORY_SEPARATOR . $resourceDestination . DIRECTORY_SEPARATOR . $iterator->getSubPathName()));
+				copy($item->getPathName(), FileSystem::forceDir($this->config->destination . DIRECTORY_SEPARATOR . $resourceDestination . DIRECTORY_SEPARATOR . $iterator->getSubPathName()));
 			}
 		}
 
@@ -317,10 +317,12 @@ class HtmlGenerator extends Nette\Object implements Generator
 
 		$this->onGenerateStart($steps);
 
-		// Prepare template
+		// Prepare template, @todo: move to factory
 		$tmp = $this->config->destination . DIRECTORY_SEPARATOR . '_' . uniqid();
-		$this->deleteDir($tmp);
+
+		FileSystem::deleteDir($tmp);
 		@mkdir($tmp, 0755, TRUE);
+
 		$template = $this->templateFactory->create();
 		$template->setGenerator($this);
 		$template->setup();
@@ -368,7 +370,7 @@ class HtmlGenerator extends Nette\Object implements Generator
 		}
 
 		// Delete temporary directory
-		$this->deleteDir($tmp);
+		FileSystem::deleteDir($tmp);
 	}
 
 
@@ -617,7 +619,7 @@ class HtmlGenerator extends Nette\Object implements Generator
 		foreach ($this->config->template['templates']['common'] as $source => $destination) {
 			$template
 				->setFile($this->getTemplateDir() . DIRECTORY_SEPARATOR . $source)
-				->save($this->forceDir($this->config->destination . DIRECTORY_SEPARATOR . $destination));
+				->save(FileSystem::forceDir($this->config->destination . DIRECTORY_SEPARATOR . $destination));
 
 			$this->onGenerateProgress(1);
 		}
@@ -637,21 +639,21 @@ class HtmlGenerator extends Nette\Object implements Generator
 	{
 		if ($this->isSitemapEnabled()) {
 			$template->setFile($this->getTemplatePath('sitemap', 'optional'))
-				->save($this->forceDir($this->getTemplateFileName('sitemap', 'optional')));
+				->save(FileSystem::forceDir($this->getTemplateFileName('sitemap', 'optional')));
 
 			$this->onGenerateProgress(1);
 		}
 
 		if ($this->isOpensearchEnabled()) {
 			$template->setFile($this->getTemplatePath('opensearch', 'optional'))
-				->save($this->forceDir($this->getTemplateFileName('opensearch', 'optional')));
+				->save(FileSystem::forceDir($this->getTemplateFileName('opensearch', 'optional')));
 
 			$this->onGenerateProgress(1);
 		}
 
 		if ($this->isRobotsEnabled()) {
 			$template->setFile($this->getTemplatePath('robots', 'optional'))
-				->save($this->forceDir($this->getTemplateFileName('robots', 'optional')));
+				->save(FileSystem::forceDir($this->getTemplateFileName('robots', 'optional')));
 
 			$this->onGenerateProgress(1);
 		}
@@ -705,7 +707,7 @@ class HtmlGenerator extends Nette\Object implements Generator
 
 		$template
 			->setFile($this->getTemplatePath('deprecated'))
-			->save($this->forceDir($this->getTemplateFileName('deprecated')));
+			->save(FileSystem::forceDir($this->getTemplateFileName('deprecated')));
 
 		foreach ($this->getElementTypes() as $type) {
 			unset($template->{'deprecated' . ucfirst($type)});
@@ -759,7 +761,7 @@ class HtmlGenerator extends Nette\Object implements Generator
 
 		$template
 			->setFile($this->getTemplatePath('todo'))
-			->save($this->forceDir($this->getTemplateFileName('todo')));
+			->save(FileSystem::forceDir($this->getTemplateFileName('todo')));
 
 		foreach ($this->getElementTypes() as $type) {
 			unset($template->{'todo' . ucfirst($type)});
@@ -847,7 +849,7 @@ class HtmlGenerator extends Nette\Object implements Generator
 		$template->exceptionTree = new Tree($exceptionTree, $this->parsedClasses);
 
 		$template->setFile($this->getTemplatePath('tree'))
-			->save($this->forceDir($this->getTemplateFileName('tree')));
+			->save(FileSystem::forceDir($this->getTemplateFileName('tree')));
 
 		unset($template->classTree);
 		unset($template->interfaceTree);
@@ -1479,7 +1481,7 @@ class HtmlGenerator extends Nette\Object implements Generator
 			throw new RuntimeException(sprintf('Template for "%s" is not set', $name));
 		}
 
-		$this->forceDir($this->getTemplateFileName($name));
+		FileSystem::forceDir($this->getTemplateFileName($name));
 	}
 
 
@@ -1534,50 +1536,6 @@ class HtmlGenerator extends Nette\Object implements Generator
 		}
 
 		return $files;
-	}
-
-
-	/**
-	 * Ensures a directory is created.
-	 * @param string $path
-	 * @return string
-	 */
-	private function forceDir($path)
-	{
-		@mkdir(dirname($path), 0755, TRUE);
-		return $path;
-	}
-
-
-	/**
-	 * @param string $path
-	 * @return boolean
-	 */
-	private function deleteDir($path)
-	{
-		if (!is_dir($path)) {
-			return TRUE;
-		}
-
-		foreach (Nette\Utils\Finder::find('*')->from($path)->childFirst() as $item) {
-			/** @var \SplFileInfo $item */
-			if ($item->isDir()) {
-				if (!@rmdir($item)) {
-					return FALSE;
-				}
-
-			} elseif ($item->isFile()) {
-				if (!@unlink($item)) {
-					return FALSE;
-				}
-			}
-		}
-
-		if (!@rmdir($path)) {
-			return FALSE;
-		}
-
-		return TRUE;
 	}
 
 
