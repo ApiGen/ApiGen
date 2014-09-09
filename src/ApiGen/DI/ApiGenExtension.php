@@ -17,24 +17,24 @@ class ApiGenExtension extends CompilerExtension
 	/**
 	 * @var array
 	 */
-	protected $defaults = array(
+	protected $defaults = [
 		'config' => '',
-		'source' => array(),
+		'source' => [],
 		'destination' => '',
-		'extensions' => array('php'),
-		'exclude' => array(),
-		'skipDocPath' => array(),
-		'skipDocPrefix' => array(),
-		'charset' => array('auto'),
+		'extensions' => ['php'],
+		'exclude' => [],
+		'skipDocPath' => [],
+		'skipDocPrefix' => [],
+		'charset' => ['auto'],
 		'main' => '',
 		'title' => '',
 		'baseUrl' => '',
 		'googleCseId' => '',
 		'googleAnalytics' => '',
-		'allowedHtml' => array('b', 'i', 'a', 'ul', 'ol', 'li', 'p', 'br', 'var', 'samp', 'kbd', 'tt'),
+		'allowedHtml' => ['b', 'i', 'a', 'ul', 'ol', 'li', 'p', 'br', 'var', 'samp', 'kbd', 'tt'],
 		'groups' => 'auto',
-		'autocomplete' => array('classes', 'constants', 'functions'),
-		'accessLevels' => array('public', 'protected'),
+		'autocomplete' => ['classes', 'constants', 'functions'],
+		'accessLevels' => ['public', 'protected'],
 		'internal' => FALSE,
 		'php' => TRUE,
 		'tree' => TRUE,
@@ -43,16 +43,17 @@ class ApiGenExtension extends CompilerExtension
 		'download' => FALSE,
 		'wipeout' => TRUE,
 		'debug' => FALSE,
+		'markup' => 'markdown',
 		// template
 		'templateConfig' => '',
-		'template' => array(
-			'resources' => array(),
-			'templates' => array(
-				'common' => array(),
-				'optional' => array()
-			)
-		)
-	);
+		'template' => [
+			'resources' => [],
+			'templates' => [
+				'common' => [],
+				'optional' => []
+			]
+		]
+	];
 
 	/**
 	 * @var ApiGen\Configuration\Validator
@@ -99,7 +100,7 @@ class ApiGenExtension extends CompilerExtension
 		// configuration
 		$builder->addDefinition($this->prefix('configuration'))
 			->setClass('ApiGen\Configuration\Configuration')
-			->setArguments(array($config));
+			->setArguments([$config]);
 
 		// application
 		$builder->addDefinition($this->prefix('application'))
@@ -124,8 +125,8 @@ class ApiGenExtension extends CompilerExtension
 		// charset
 		$builder->addDefinition($this->prefix('charsetConvertor'))
 			->setClass('ApiGen\Charset\CharsetConvertor')
-			->addSetup('setCharset', array(
-				new \Nette\DI\Statement('(array) ?->?', array('@ApiGen\Configuration\Configuration', 'charset')))
+			->addSetup('setCharset', [
+				new \Nette\DI\Statement('(array) ?->?', ['@ApiGen\Configuration\Configuration', 'charset'])]
 			);
 
 		// generator
@@ -144,18 +145,27 @@ class ApiGenExtension extends CompilerExtension
 
 		$builder->addDefinition($this->prefix('fshl.highlighter'))
 			->setClass('FSHL\Highlighter')
-			->addSetup('setLexer', array('@FSHL\Lexer\Php'));
+			->addSetup('setLexer', ['@FSHL\Lexer\Php']);
 
 		$builder->addDefinition($this->prefix('sourceCodeHighlighter'))
 			->setClass('ApiGen\Generator\FshlSourceCodeHighlighter');
 
 		// markup
-		$builder->addDefinition($this->prefix('texy'))
-			->setClass('Texy');
+		if ($config['markup'] === 'markdown') {
+			$builder->addDefinition($this->prefix('markdown'))
+				->setClass('Michelf\MarkdownExtra');
 
-		$builder->addDefinition($this->prefix('markup'))
-			->setClass('ApiGen\Generator\TexyMarkup')
-			->addSetup('setup');
+			$builder->addDefinition($this->prefix('markdownMarkup'))
+				->setClass('ApiGen\Generator\MarkdownMarkup');
+
+		} else {
+			$builder->addDefinition($this->prefix('texy'))
+				->setClass('Texy');
+
+			$builder->addDefinition($this->prefix('texyMarkup'))
+				->setClass('ApiGen\Generator\TexyMarkup')
+				->addSetup('setup');
+		}
 
 		// template factory
 		$builder->addDefinition($this->prefix('templateFactory'))
