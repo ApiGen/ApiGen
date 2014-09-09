@@ -318,7 +318,7 @@ class HtmlGenerator extends Nette\Object implements Generator
 		$this->onGenerateStart($steps);
 
 		// Prepare template
-		$tmp = $this->config->destination . DIRECTORY_SEPARATOR . 'tmp';
+		$tmp = $this->config->destination . DIRECTORY_SEPARATOR . '_' . uniqid();
 		$this->deleteDir($tmp);
 		@mkdir($tmp, 0755, TRUE);
 		$template = $this->templateFactory->create();

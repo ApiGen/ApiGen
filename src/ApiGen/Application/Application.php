@@ -258,6 +258,11 @@ class Application extends Object
 		if ($interval->s > 0) {
 			$parts[] = sprintf('%d sec', $interval->s);
 		}
+
+		if (empty($parts)) {
+			array_push($parts, ' %d sec', 1);
+		}
+
 		$duration = implode(' ', $parts);
 
 		$this->logger->log(sprintf("Done. Total time: %s, used: %d MB RAM\n", $duration, round(memory_get_peak_usage(TRUE) / 1024 / 1024)));
