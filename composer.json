@@ -27,6 +27,7 @@
 		}
 	],
 	"require": {
+		"php": ">=5.3.1", 
 		"nette/nette": "~2.2",
 		"texy/texy": "~2.6",
 		"kukulich/fshl": "~2.1",
