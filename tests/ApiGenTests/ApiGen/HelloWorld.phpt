@@ -18,7 +18,7 @@ class HelloWorldTest extends TestCase
 
 	public function testInit()
 	{
-		Assert::true(class_exists('ApiGen\Generator'));
+		Assert::true(interface_exists('ApiGen\Generator\Generator'));
 	}
 
 
