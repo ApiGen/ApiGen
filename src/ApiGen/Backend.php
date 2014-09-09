@@ -37,20 +37,13 @@ class Backend extends Broker\Backend\Memory
 	 */
 	private $fileCache = array();
 
-	/**
-	 * Determines if token streams should be cached in filesystem.
-	 * @var boolean
-	 */
-	private $cacheTokenStreams = FALSE;
 
 	/**
 	 * @param Generator $generator
-	 * @param boolean $cacheTokenStreams If token stream should be cached
 	 */
-	public function __construct(Generator $generator, $cacheTokenStreams = FALSE)
+	public function __construct(Generator $generator)
 	{
 		$this->generator = $generator;
-		$this->cacheTokenStreams = $cacheTokenStreams;
 	}
 
 	/**
@@ -60,57 +53,6 @@ class Backend extends Broker\Backend\Memory
 	{
 		foreach ($this->fileCache as $file) {
 			unlink($file);
-		}
-	}
-
-
-	/**
-	 * Adds a file to the backend storage.
-	 * @return \TokenReflection\Broker\Backend\Memory
-	 */
-	public function addFile(TokenReflection\Stream\StreamBase $tokenStream, TokenReflection\ReflectionFile $file)
-	{
-		if ($this->cacheTokenStreams) {
-			$this->fileCache[$file->getName()] = $cacheFile = tempnam(sys_get_temp_dir(), 'trc');
-			file_put_contents($cacheFile, serialize($tokenStream));
-		}
-
-		parent::addFile($tokenStream, $file);
-
-		return $this;
-	}
-
-	/**
-	 * Returns an array of tokens for a particular file.
-	 *
-	 * @param string $fileName File name
-	 * @return \TokenReflection\Stream
-	 * @throws \RuntimeException If the token stream could not be returned.
-	 */
-	public function getFileTokens($fileName)
-	{
-		try {
-			if ( ! $this->isFileProcessed($fileName)) {
-				throw new InvalidArgumentException('File was not processed');
-			}
-
-			$realName = Broker::getRealPath($fileName);
-			if ( ! isset($this->fileCache[$realName])) {
-				throw new InvalidArgumentException('File is not in the cache');
-			}
-
-			$data = @file_get_contents($this->fileCache[$realName]);
-			if (FALSE === $data) {
-				throw new RuntimeException('Cached file is not readable');
-			}
-			$file = @unserialize($data);
-			if (FALSE === $file) {
-				throw new RuntimeException('Stream could not be loaded from cache');
-			}
-
-			return $file;
-		} catch (\Exception $e) {
-			throw new RuntimeException(sprintf('Could not return token stream for file %s', $fileName), 0, $e);
 		}
 	}
 

@@ -49,7 +49,7 @@ class SimpleProgressBar implements ProgressBar
 
 		$progress = str_pad(str_pad('>', round($percent * $barWidth), '=', STR_PAD_LEFT), $barWidth, ' ', STR_PAD_RIGHT);
 
-		echo sprintf('[%s] %\' 6.2f%% %\' 3dMB', $progress, $percent * 100, round(memory_get_usage(true) / 1024 / 1024));
+		echo sprintf('[%s] %\' 6.0f%% %\' 3dMB', $progress, $percent * 100, round(memory_get_usage(true) / 1024 / 1024));
 
 		if ($this->current === $this->maximum) {
 			echo "\n";

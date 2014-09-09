@@ -9,7 +9,6 @@
 
 namespace ApiGen\Configuration;
 
-use ApiGen\ConfigException;
 use ApiGen\Generator;
 use Nette;
 use Nette\Utils\Validators;
@@ -44,13 +43,12 @@ class Validator extends Nette\Object
 		Validators::assertField($config, 'deprecated', 'bool');
 		Validators::assertField($config, 'todo', 'bool');
 		Validators::assertField($config, 'download', 'bool');
-		Validators::assertField($config, 'report', 'string');
 		Validators::assertField($config, 'wipeout', 'bool');
 		Validators::assertField($config, 'debug', 'bool');
 
 		foreach ($config['source'] as $source) {
 			if ( ! file_exists($source)) {
-				throw new ConfigException(sprintf('Source "%s" doesn\'t exist', $source));
+				throw new ConfigurationException(sprintf('Source "%s" doesn\'t exist', $source));
 			}
 		}
 
@@ -66,24 +64,32 @@ class Validator extends Nette\Object
 	public function validateTemplateConfig($config)
 	{
 		if ( ! is_file($config['templateConfig'])) {
-			throw new ConfigException(sprintf('Template config "%s" doesn\'t exist', $config['templateConfig']));
+			throw new ConfigurationException(sprintf('Template config "%s" doesn\'t exist', $config['templateConfig']));
 		}
 
 		foreach (array('main', 'optional') as $section) {
 			foreach ($config['template']['templates'][$section] as $type => $configSection) {
 				if ( ! isset($configSection['filename'])) {
-					throw new ConfigException(sprintf('Filename for "%s" is not defined', $type));
+					throw new ConfigurationException(sprintf('Filename for "%s" is not defined', $type));
 				}
 
 				if ( ! isset($configSection['template'])) {
-					throw new ConfigException(sprintf('Template for "%s" is not defined', $type));
+					throw new ConfigurationException(sprintf('Template for "%s" is not defined', $type));
 				}
 
 				if ( ! is_file(dirname($config['templateConfig']) . DIRECTORY_SEPARATOR . $configSection['template'])) {
-					throw new ConfigException(sprintf('Template for "%s" doesn\'t exist', $type));
+					throw new ConfigurationException(sprintf('Template for "%s" doesn\'t exist', $type));
 				}
 			}
 		}
 	}
 
+}
+
+
+/**
+ * Thrown when an invalid configuration is detected.
+ */
+class ConfigurationException extends \RuntimeException
+{
 }

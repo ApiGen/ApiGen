@@ -75,10 +75,12 @@ class Application extends Object
 	 */
 	public function run()
 	{
-		$start = new DateTime;
-
 		try {
-			$this->logger->log(ApiGen\ApiGen::NAME . ' ' . ApiGen\ApiGen::VERSION . "\n");
+			$start = new DateTime;
+
+			$headline = ApiGen\ApiGen::NAME . ' ' . ApiGen\ApiGen::VERSION;
+			$this->logger->log($headline . "\n");
+			$this->logger->log(str_repeat('-', strlen($headline)) . "\n");
 
 			$this->onStartup($this);
 
@@ -92,13 +94,13 @@ class Application extends Object
 
 			$this->generate();
 
+			$this->onShutdown($this);
+
+			$this->printElapsed($start, new DateTime());
+
 		} catch (Exception $e) {
 			$this->onError($e);
 		}
-
-		$this->onShutdown($this);
-
-		$this->printElapsed($start, new DateTime());
 	}
 
 
@@ -193,10 +195,10 @@ class Application extends Object
 
 				$no++;
 			}
-		}
 
-		if ( ! $this->config->debug) {
-			$this->logger->log("\nEnable the debug mode (debug) to see more details.\n\n");
+			if ( ! $this->config->debug) {
+				$this->logger->log("\nEnable the debug mode (--debug) to see more details.\n\n");
+			}
 		}
 
 		$this->logger->log(sprintf("Found %d classes, %d constants, %d functions and other %d used PHP internal classes\n", $parseInfo->classes, $parseInfo->constants, $parseInfo->functions, $parseInfo->internalClasses));
@@ -256,6 +258,11 @@ class Application extends Object
 		if ($interval->s > 0) {
 			$parts[] = sprintf('%d sec', $interval->s);
 		}
+
+		if (empty($parts)) {
+			array_push($parts, ' %d sec', 1);
+		}
+
 		$duration = implode(' ', $parts);
 
 		$this->logger->log(sprintf("Done. Total time: %s, used: %d MB RAM\n", $duration, round(memory_get_peak_usage(TRUE) / 1024 / 1024)));

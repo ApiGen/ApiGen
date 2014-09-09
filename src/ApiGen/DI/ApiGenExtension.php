@@ -41,7 +41,6 @@ class ApiGenExtension extends CompilerExtension
 		'deprecated' => FALSE,
 		'todo' => FALSE,
 		'download' => FALSE,
-		'report' => '',
 		'wipeout' => TRUE,
 		'debug' => FALSE,
 		// template
@@ -122,12 +121,45 @@ class ApiGenExtension extends CompilerExtension
 		$builder->addDefinition($this->prefix('errorHandler'))
 			->setClass('ApiGen\LogErrorHandler');
 
+		// charset
+		$builder->addDefinition($this->prefix('charsetConvertor'))
+			->setClass('ApiGen\Charset\CharsetConvertor')
+			->addSetup('setCharset', array(
+				new \Nette\DI\Statement('(array) ?->?', array('@ApiGen\Configuration\Configuration', 'charset')))
+			);
+
 		// generator
 		$builder->addDefinition($this->prefix('generator'))
 			->setClass('ApiGen\Generator\HtmlGenerator');
 
 		$builder->addDefinition($this->prefix('scanner'))
 			->setClass('ApiGen\Generator\PhpScanner');
+
+		// source code highlighter
+		$builder->addDefinition($this->prefix('fshl.output'))
+			->setClass('FSHL\Output\Html');
+
+		$builder->addDefinition($this->prefix('fshl.lexter'))
+			->setClass('FSHL\Lexer\Php');
+
+		$builder->addDefinition($this->prefix('fshl.highlighter'))
+			->setClass('FSHL\Highlighter')
+			->addSetup('setLexer', array('@FSHL\Lexer\Php'));
+
+		$builder->addDefinition($this->prefix('sourceCodeHighlighter'))
+			->setClass('ApiGen\Generator\FshlSourceCodeHighlighter');
+
+		// markup
+		$builder->addDefinition($this->prefix('texy'))
+			->setClass('Texy');
+
+		$builder->addDefinition($this->prefix('markup'))
+			->setClass('ApiGen\Generator\TexyMarkup')
+			->addSetup('setup');
+
+		// template factory
+		$builder->addDefinition($this->prefix('templateFactory'))
+			->setClass('ApiGen\Templating\TemplateFactory');
 
 		$builder->addDefinition($this->prefix('memoryLimitChecker'))
 			->setClass('ApiGen\Metrics\SimpleMemoryLimitChecker');

@@ -36,7 +36,6 @@ class Helper extends Nette\Object
 		'source',
 		'destination',
 		'templateConfig',
-		'report',
 		'exclude',
 		'skipDocPath'
 	);
