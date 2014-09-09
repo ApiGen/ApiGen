@@ -595,3 +595,11 @@ span.l a.l:hover, span.l a.l:active, span.l a.l:focus {
 #rightInner.small #navigation ul:first-child {
 	clear: both;
 }
+
+/* global style */
+.left, .summary td.left {
+	text-align: left;
+}
+.right, .summary td.right {
+	text-align: right;
+}

@@ -10,11 +10,11 @@
 	{define classes}
 		{foreach $items as $class}
 			<tr>
-				<td class="name" rowspan="{count($class->annotations['todo'])}">
+				<td class="name right" rowspan="{count($class->annotations['todo'])}">
 					<a href="{$class|classUrl}">{$class->name}</a>
 				</td>
 				{foreach $class->annotations['todo'] as $description}
-					<td>{$description|annotation:'todo':$class|noescape}</td>{sep}</tr><tr>{/sep}
+					<td class="left">{$description|annotation:'todo':$class|noescape}</td>{sep}</tr><tr>{/sep}
 				{/foreach}
 			</tr>
 		{/foreach}

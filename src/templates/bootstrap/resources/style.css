@@ -497,3 +497,11 @@ span.l a.l:hover, span.l a.l:active, span.l a.l:focus {
 #rightInner.medium .name, #rightInner.medium .attributes {
 	white-space: normal;
 }
+
+/* global style */
+.left, .summary td.left {
+	text-align: left;
+}
+.right, .summary td.right {
+	text-align: right;
+}
