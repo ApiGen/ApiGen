@@ -154,9 +154,6 @@ todo: false # default [true]
 # add link to ZIP archive of documentation
 download: false # default [true]
 
-# save a checkstyle report of poorly documented elements into a file
-report: apigen-report.html
-
 # delete files generated in the previous run.
 wipeout: true # default [false]
 

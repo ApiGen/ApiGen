@@ -41,7 +41,6 @@ class ApiGenExtension extends CompilerExtension
 		'deprecated' => FALSE,
 		'todo' => FALSE,
 		'download' => FALSE,
-		'report' => '',
 		'wipeout' => TRUE,
 		'debug' => FALSE,
 		// template

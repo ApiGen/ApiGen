@@ -43,7 +43,6 @@ class Validator extends Nette\Object
 		Validators::assertField($config, 'deprecated', 'bool');
 		Validators::assertField($config, 'todo', 'bool');
 		Validators::assertField($config, 'download', 'bool');
-		Validators::assertField($config, 'report', 'string');
 		Validators::assertField($config, 'wipeout', 'bool');
 		Validators::assertField($config, 'debug', 'bool');
 
