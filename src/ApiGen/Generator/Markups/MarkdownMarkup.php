@@ -49,14 +49,14 @@ class MarkdownMarkup implements Markup
 	 */
 	public function block($text)
 	{
-		$highlighted = preg_replace_callback('~<(code|pre)>(.+?)</\1>~s', array($this, 'highlightCb'), $text);
+		$highlighted = preg_replace_callback('~<(code|pre)>(.+?)</\1>|```php\s(.+?)\n```~s', array($this, 'highlightCb'), $text);
 		return $this->markdown->transform($highlighted);
 	}
 
 
 	private function highlightCb(array $match)
 	{
-		$highlighted = $this->highlighter->highlight(trim($match[2]));
+		$highlighted = $this->highlighter->highlight(trim(isset($match[3]) ? $match[3] : $match[2]));
 		return "<pre>$highlighted</pre>";
 	}
 

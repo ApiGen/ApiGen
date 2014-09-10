@@ -13,4 +13,8 @@ THREE
 FOUR
 </pre>
 
+```php
+FIVE
+```
+
 End
