@@ -15,7 +15,7 @@ use TokenReflection;
 use Tracy\Debugger;
 
 
-require_once __DIR__ . '/vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 // Safe locale and timezone
 setlocale(LC_ALL, 'C');
@@ -24,7 +24,7 @@ if ( ! ini_get('date.timezone')) {
 }
 
 // ApiGen root path
-define('APIGEN_ROOT_PATH', __DIR__ . '/src');
+define('APIGEN_ROOT_PATH', __DIR__ . '/../src');
 
 // Init debugger
 Debugger::$strictMode = TRUE;
@@ -32,12 +32,12 @@ Debugger::enable(Debugger::PRODUCTION);
 
 
 // Build the DIC
-$tmp = __DIR__ . '/_temp' . uniqid(); // @todo: or custom in memory container
+$tmp = __DIR__ . '/../_temp' . uniqid(); // @todo: or custom in memory container
 @mkdir($tmp, 0755, TRUE);
 
 $configurator = new Configurator;
 $configurator->setTempDirectory($tmp);
-$configurator->addConfig(__DIR__ . '/src/ApiGen/DI/config.neon');
+$configurator->addConfig(__DIR__ . '/../src/ApiGen/DI/config.neon');
 $container = $configurator->createContainer();
 
 // Update debugger configuration if needed

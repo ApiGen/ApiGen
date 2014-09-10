@@ -42,7 +42,7 @@ $ composer require apigen/apigen:~2.8
 
 ## Usage
 
-First, we create config file, e.g. `apigen.neon` and set required parameters.
+First, we create `apigen.neon` and set required parameters.
 
 If you haven't heard about .neon yet, [go check it](http://ne-on.org). It's similar to .yaml, just nicer.
 
@@ -58,7 +58,7 @@ destination: api # target dir for documentation
 Then run ApiGen passing your config:
 
 ```sh
-php apigen --config apigen.neon
+bin/apigen --config apigen.neon
 ```
 
 That's it!
