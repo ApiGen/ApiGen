@@ -27,15 +27,9 @@ class TexyMarkup implements Markup
 	 */
 	private $highlighter;
 
-	/**
-	 * @var Configuration
-	 */
-	private $configuration;
 
-
-	public function __construct(Configuration $configuration, Texy $texy, SourceCodeHighlighter $highlighter)
+	public function __construct(Texy $texy, SourceCodeHighlighter $highlighter)
 	{
-		$this->configuration = $configuration;
 		$this->texy = $texy;
 		$this->highlighter = $highlighter;
 	}
@@ -43,7 +37,7 @@ class TexyMarkup implements Markup
 
 	public function setup()
 	{
-		$this->texy->allowedTags = array_flip((array) $this->configuration->allowedHtml);
+		$this->texy->allowedTags = Texy::ALL;
 		$this->texy->allowed['list/definition'] = FALSE;
 		$this->texy->allowed['phrase/em-alt'] = FALSE;
 		$this->texy->allowed['longwords'] = FALSE;

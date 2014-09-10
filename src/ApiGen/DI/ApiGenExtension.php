@@ -32,7 +32,6 @@ class ApiGenExtension extends CompilerExtension
 		'baseUrl' => '',
 		'googleCseId' => '',
 		'googleAnalytics' => '',
-		'allowedHtml' => array('b', 'i', 'a', 'ul', 'ol', 'li', 'p', 'br', 'var', 'samp', 'kbd', 'tt'),
 		'groups' => 'auto',
 		'autocomplete' => array('classes', 'constants', 'functions'),
 		'accessLevels' => array('public', 'protected'),

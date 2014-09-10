@@ -34,7 +34,6 @@ class Validator extends Nette\Object
 		Validators::assertField($config, 'baseUrl', 'string');
 		Validators::assertField($config, 'googleCseId', 'string');
 		Validators::assertField($config, 'googleAnalytics', 'string');
-		Validators::assertField($config, 'allowedHtml', 'list');
 		Validators::assertField($config, 'autocomplete', 'list');
 		Validators::assertField($config, 'accessLevels', 'list');
 		Validators::assertField($config, 'internal', 'bool');

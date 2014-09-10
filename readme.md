@@ -114,9 +114,6 @@ googleAnalytics: UA-35236-5
 # path to template config file
 templateConfig: .. # default @todo
 
-# list of allowed HTML tags
-allowedHtml: [b,i,a,ul,ol,li,p,br,var,samp,kbd,tt] # default
-
 # the way elements are grouped in menu
 groups: auto # default [other options: namespace, packages, none], auto will detect namespace first, than packages
 
