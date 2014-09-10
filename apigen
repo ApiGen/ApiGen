@@ -15,7 +15,19 @@ use TokenReflection;
 use Tracy\Debugger;
 
 
-require_once 'vendor/autoload.php';
+// autoloader's loading path
+$autoloaders = array(
+	'vendor/autoload.php',
+	__DIR__ . '/vendor/autoload.php',
+	__DIR__ . '/../../autoload.php',
+);
+// autoload
+foreach ($autoloaders as $file) {
+	if (file_exists($file)) {
+		require_once $file;
+		break;
+	}
+}
 
 // Safe locale and timezone
 setlocale(LC_ALL, 'C');
