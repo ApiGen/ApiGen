@@ -10,6 +10,7 @@ namespace ApiGen\DI;
 
 use ApiGen;
 use Nette\DI\CompilerExtension;
+use Nette\DI\Statement;
 
 
 class ApiGenExtension extends CompilerExtension
@@ -17,24 +18,24 @@ class ApiGenExtension extends CompilerExtension
 	/**
 	 * @var array
 	 */
-	protected $defaults = [
+	protected $defaults = array(
 		'config' => '',
-		'source' => [],
+		'source' => array(),
 		'destination' => '',
-		'extensions' => ['php'],
-		'exclude' => [],
-		'skipDocPath' => [],
-		'skipDocPrefix' => [],
-		'charset' => ['auto'],
+		'extensions' => array('php'),
+		'exclude' => array(),
+		'skipDocPath' => array(),
+		'skipDocPrefix' => array(),
+		'charset' => array('auto'),
 		'main' => '',
 		'title' => '',
 		'baseUrl' => '',
 		'googleCseId' => '',
 		'googleAnalytics' => '',
-		'allowedHtml' => ['b', 'i', 'a', 'ul', 'ol', 'li', 'p', 'br', 'var', 'samp', 'kbd', 'tt'],
+		'allowedHtml' => array('b', 'i', 'a', 'ul', 'ol', 'li', 'p', 'br', 'var', 'samp', 'kbd', 'tt'),
 		'groups' => 'auto',
-		'autocomplete' => ['classes', 'constants', 'functions'],
-		'accessLevels' => ['public', 'protected'],
+		'autocomplete' => array('classes', 'constants', 'functions'),
+		'accessLevels' => array('public', 'protected'),
 		'internal' => FALSE,
 		'php' => TRUE,
 		'tree' => TRUE,
@@ -46,14 +47,14 @@ class ApiGenExtension extends CompilerExtension
 		'markup' => 'markdown',
 		// template
 		'templateConfig' => '',
-		'template' => [
-			'resources' => [],
-			'templates' => [
-				'common' => [],
-				'optional' => []
-			]
-		]
-	];
+		'template' => array(
+			'resources' => array(),
+			'templates' => array(
+				'common' => array(),
+				'optional' => array()
+			)
+		)
+	);
 
 	/**
 	 * @var ApiGen\Configuration\Validator
@@ -100,7 +101,7 @@ class ApiGenExtension extends CompilerExtension
 		// configuration
 		$builder->addDefinition($this->prefix('configuration'))
 			->setClass('ApiGen\Configuration\Configuration')
-			->setArguments([$config]);
+			->setArguments(array($config));
 
 		// application
 		$builder->addDefinition($this->prefix('application'))
@@ -125,8 +126,8 @@ class ApiGenExtension extends CompilerExtension
 		// charset
 		$builder->addDefinition($this->prefix('charsetConvertor'))
 			->setClass('ApiGen\Charset\CharsetConvertor')
-			->addSetup('setCharset', [
-				new \Nette\DI\Statement('(array) ?->?', ['@ApiGen\Configuration\Configuration', 'charset'])]
+			->addSetup('setCharset', array(
+				new Statement('(array) ?->?', array('@ApiGen\Configuration\Configuration', 'charset')))
 			);
 
 		// generator
@@ -145,7 +146,7 @@ class ApiGenExtension extends CompilerExtension
 
 		$builder->addDefinition($this->prefix('fshl.highlighter'))
 			->setClass('FSHL\Highlighter')
-			->addSetup('setLexer', ['@FSHL\Lexer\Php']);
+			->addSetup('setLexer', array('@FSHL\Lexer\Php'));
 
 		$builder->addDefinition($this->prefix('sourceCodeHighlighter'))
 			->setClass('ApiGen\Generator\FshlSourceCodeHighlighter');
@@ -156,14 +157,14 @@ class ApiGenExtension extends CompilerExtension
 				->setClass('Michelf\MarkdownExtra');
 
 			$builder->addDefinition($this->prefix('markdownMarkup'))
-				->setClass('ApiGen\Generator\MarkdownMarkup');
+				->setClass('ApiGen\Generator\Markups\MarkdownMarkup');
 
 		} else {
 			$builder->addDefinition($this->prefix('texy'))
 				->setClass('Texy');
 
 			$builder->addDefinition($this->prefix('texyMarkup'))
-				->setClass('ApiGen\Generator\TexyMarkup')
+				->setClass('ApiGen\Generator\Markups\TexyMarkup')
 				->addSetup('setup');
 		}
 
