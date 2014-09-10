@@ -51,7 +51,7 @@ class MarkdownMarkup implements Markup
 	{
 		// Match all <code> or <pre> blocks
 		preg_match_all(
-			'~<(code|pre)>(.+?)</\\1>~sm',
+			'~<(code|pre)>(.+?)</\1>~s',
 			$text,
 			$matches,
 			PREG_OFFSET_CAPTURE | PREG_SET_ORDER
@@ -68,7 +68,7 @@ class MarkdownMarkup implements Markup
 				// Wraps with <pre> the formatted code
 				$postCode = $this->highlighter->highlight(trim($preCode));
 				if ($tagName !== 'pre') {
-					$postCode = '<pre>' . $postCode . '</pre>';
+					$postCode = '<pre>' . trim($postCode) . '</pre>';
 				}
 
 				// Replace the new formatted code instead of the old

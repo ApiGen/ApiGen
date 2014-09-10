@@ -13,6 +13,7 @@ use ApiGen\Configuration\Configuration;
 use ApiGen\Generator\SourceCodeHighlighter;
 use Texy;
 use TexyHtml;
+use TexyParser;
 
 
 class TexyMarkup implements Markup
@@ -43,24 +44,21 @@ class TexyMarkup implements Markup
 		$this->texy->allowed['longwords'] = FALSE;
 		$this->texy->allowed['typography'] = FALSE;
 		$this->texy->linkModule->shorten = FALSE;
-		// Highlighting <code>, <pre>
-		$this->texy->addHandler('beforeParse', function ($texy, &$text, $singleLine) {
-			$text = preg_replace('~<code>(.+?)</code>~', '#code#\\1#/code#', $text);
-		});
 
+		// Highlighting <code>, <pre>
 		$highlighter = $this->highlighter;
 		$this->texy->registerLinePattern(
-			function ($parser, $matches, $name) use ($highlighter) {
+			function (TexyParser $parser, $matches, $name) use ($highlighter) {
 				$content = $parser->getTexy()->protect($highlighter->highlight($matches[1]), \Texy::CONTENT_MARKUP);
-				return \TexyHtml::el('code', $content);
+				return TexyHtml::el('code', $content);
 			},
 			'~#code#(.+?)#/code#~',
 			'codeInlineSyntax'
 		);
 
 		$this->texy->registerBlockPattern(
-			function ($parser, $matches, $name) use ($highlighter) {
-				if ('code' === $matches[1]) {
+			function (TexyParser $parser, $matches, $name) use ($highlighter) {
+				if ('code' === $matches[1] || 'pre' === $matches[1]) {
 					$lines = array_filter(explode("\n", $matches[2]));
 					if ( ! empty($lines)) {
 						$firstLine = array_shift($lines);
@@ -87,14 +85,14 @@ class TexyMarkup implements Markup
 						}
 					}
 
-					$content = $highlighter->highlight($matches[2]);
+					$content = $highlighter->highlight(trim($matches[2]));
 
 				} else {
 					$content = htmlspecialchars($matches[2]);
 				}
 
 				$content = $parser->getTexy()->protect($content, \Texy::CONTENT_BLOCK);
-				return \TexyHtml::el('pre', $content);
+				return TexyHtml::el('pre', $content);
 			},
 			'~<(code|pre)>(.+?)</\1>~s',
 			'codeBlockSyntax'
