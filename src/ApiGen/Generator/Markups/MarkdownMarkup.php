@@ -7,9 +7,11 @@
  * the file license.md that was distributed with this source code.
  */
 
-namespace ApiGen\Generator;
+namespace ApiGen\Generator\Markups;
 
+use ApiGen\Generator\SourceCodeHighlighter;
 use Michelf\MarkdownExtra;
+use Tracy\Debugger;
 
 
 class MarkdownMarkup implements Markup
@@ -58,25 +60,26 @@ class MarkdownMarkup implements Markup
 
 		$offset = 0;
 		foreach ($matches as $match) {
-			// Processes only <code> blocks
 			$tagName = isset($match[1][0]) ? $match[1][0] : NULL;
-			if ($tagName === 'code') {
+			if ($tagName === 'code' || $tagName === 'pre') {
 				$position  = $match[2][1];
 				$preCode = $match[2][0];
 				$preLen = strlen($preCode);
 
 				// Wraps with <pre> the formatted code
-				// TODO It looks better, but could be replaced with a CSS rule maybe
-				$post_code = '<pre>' . $this->highlighter->highlight($preCode) . '</pre>';
+				$postCode = $this->highlighter->highlight(trim($preCode));
+				if ($tagName !== 'pre') {
+					$postCode = '<pre>' . $postCode . '</pre>';
+				}
 
 				// Replace the new formatted code instead of the old
 				$text = substr($text, 0, $offset + $position)
-					. $post_code
+					. $postCode
 					. substr($text, $offset + $position + $preLen);
 
 				// The new piece of code we injected might be of a different
 				// length, so all our positions need to be shifted by that difference
-				$offset += strlen($post_code) - strlen($preCode);
+				$offset += strlen($postCode) - strlen($preCode);
 			}
 		}
 

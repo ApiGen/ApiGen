@@ -7,9 +7,10 @@
  * the file license.md that was distributed with this source code.
  */
 
-namespace ApiGen\Generator;
+namespace ApiGen\Generator\Markups;
 
 use ApiGen\Configuration\Configuration;
+use ApiGen\Generator\SourceCodeHighlighter;
 use Texy;
 use TexyHtml;
 
