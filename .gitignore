@@ -3,6 +3,7 @@ vendor
 composer.lock
 log
 temp
+_temp*
 
 tests/DemoApp
 tests/DemoApp-Api
