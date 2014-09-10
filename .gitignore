@@ -4,3 +4,5 @@ composer.lock
 log
 temp
 
+tests/DemoApp
+tests/DemoApp-Api
