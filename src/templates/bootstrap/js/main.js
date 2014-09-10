@@ -1,7 +1,7 @@
-$(function() {
+$(window).load(function() {
 	var $document = $(document);
 	var $navigation = $('#navigation');
-	var navigationHeight = $('#navigation').height();
+	var navigationHeight = $navigation.height();
 	var $left = $('#left');
 	var $right = $('#right');
 	var $rightInner = $('#rightInner');

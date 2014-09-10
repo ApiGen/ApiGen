@@ -9,7 +9,7 @@
  * the file LICENSE.md that was distributed with this source code.
  */
 
-$(function() {
+$(window).load(function() {
 	var $document = $(document);
 	var $left = $('#left');
 	var $right = $('#right');
