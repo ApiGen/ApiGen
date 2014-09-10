@@ -54,7 +54,7 @@
 		}
 	},
 	"bin": [
-		"apigen"
+		"bin/apigen"
 	],
 	"extra": {
 		"branch-alias": {
