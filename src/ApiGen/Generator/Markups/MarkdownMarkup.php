@@ -11,7 +11,6 @@ namespace ApiGen\Generator\Markups;
 
 use ApiGen\Generator\SourceCodeHighlighter;
 use Michelf\MarkdownExtra;
-use Tracy\Debugger;
 
 
 class MarkdownMarkup implements Markup
