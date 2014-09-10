@@ -15,7 +15,7 @@ use TokenReflection;
 use Tracy\Debugger;
 
 
-require_once 'vendor/autoload.php';
+require_once __DIR__ . '/vendor/autoload.php';
 
 // Safe locale and timezone
 setlocale(LC_ALL, 'C');
