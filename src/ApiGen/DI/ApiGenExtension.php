@@ -10,6 +10,7 @@ namespace ApiGen\DI;
 
 use ApiGen;
 use Nette\DI\CompilerExtension;
+use Nette\DI\Statement;
 
 
 class ApiGenExtension extends CompilerExtension
@@ -43,6 +44,7 @@ class ApiGenExtension extends CompilerExtension
 		'download' => FALSE,
 		'wipeout' => TRUE,
 		'debug' => FALSE,
+		'markup' => 'markdown',
 		// template
 		'templateConfig' => '',
 		'template' => array(
@@ -125,7 +127,7 @@ class ApiGenExtension extends CompilerExtension
 		$builder->addDefinition($this->prefix('charsetConvertor'))
 			->setClass('ApiGen\Charset\CharsetConvertor')
 			->addSetup('setCharset', array(
-				new \Nette\DI\Statement('(array) ?->?', array('@ApiGen\Configuration\Configuration', 'charset')))
+				new Statement('(array) ?->?', array('@ApiGen\Configuration\Configuration', 'charset')))
 			);
 
 		// generator
@@ -150,12 +152,21 @@ class ApiGenExtension extends CompilerExtension
 			->setClass('ApiGen\Generator\FshlSourceCodeHighlighter');
 
 		// markup
-		$builder->addDefinition($this->prefix('texy'))
-			->setClass('Texy');
+		if ($config['markup'] === 'markdown') {
+			$builder->addDefinition($this->prefix('markdown'))
+				->setClass('Michelf\MarkdownExtra');
 
-		$builder->addDefinition($this->prefix('markup'))
-			->setClass('ApiGen\Generator\TexyMarkup')
-			->addSetup('setup');
+			$builder->addDefinition($this->prefix('markdownMarkup'))
+				->setClass('ApiGen\Generator\Markups\MarkdownMarkup');
+
+		} else {
+			$builder->addDefinition($this->prefix('texy'))
+				->setClass('Texy');
+
+			$builder->addDefinition($this->prefix('texyMarkup'))
+				->setClass('ApiGen\Generator\Markups\TexyMarkup')
+				->addSetup('setup');
+		}
 
 		// template factory
 		$builder->addDefinition($this->prefix('templateFactory'))

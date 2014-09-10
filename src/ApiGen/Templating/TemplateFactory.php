@@ -10,7 +10,7 @@
 namespace ApiGen\Templating;
 
 use ApiGen\Configuration\Configuration;
-use ApiGen\Generator\Markup;
+use ApiGen\Generator\Markups\Markup;
 use ApiGen\Generator\SourceCodeHighlighter;
 use Nette;
 
