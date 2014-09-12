@@ -5,7 +5,8 @@
 [![Latest stable](https://img.shields.io/packagist/v/apigen/apigen.svg)](https://packagist.org/packages/apigen/apigen)
 
 
-**[WIP] In renewal process, stay tuned.**
+**[WIP] In renewal process, stay tuned. Use v2.8.1 as the last stable version.**
+
 
 So what's the output? Look at [Doctrine ORM API](http://www.doctrine-project.org/api/orm/2.4/), [Nette API](http://api.nette.org/) or [Kdyby API](https://api.kdyby.org).
 
@@ -37,7 +38,7 @@ So what's the output? Look at [Doctrine ORM API](http://www.doctrine-project.org
 The best way to install Apigen is via [Composer](https://getcomposer.org/):
 
 ```sh
-$ composer require apigen/apigen:~2.8
+$ composer require apigen/apigen:2.8.1
 ```
 
 ## Usage
