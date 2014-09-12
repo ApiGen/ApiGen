@@ -141,7 +141,7 @@ class Template extends Nette\Templating\FileTemplate
 					return $that->link($url, $description ?: $url);
 				case 'link':
 					list($url, $description) = $that->split($value);
-					if (Nette\Utils\Validators::isUrl($url)) {
+					if (Nette\Utils\Validators::isUri($url)) {
 						return $that->link($url, $description ?: $url);
 					}
 					break;
