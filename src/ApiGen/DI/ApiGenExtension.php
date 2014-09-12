@@ -42,7 +42,7 @@ class ApiGenExtension extends CompilerExtension
 		'todo' => FALSE,
 		'download' => FALSE,
 		'wipeout' => TRUE,
-		'debug' => FALSE,
+		'debug' => NULL, // placeholder
 		'markup' => 'markdown',
 		// template
 		'templateConfig' => '',
@@ -84,7 +84,10 @@ class ApiGenExtension extends CompilerExtension
 	{
 		$builder = $this->getContainerBuilder();
 
+		$this->defaults['debug'] = $builder->parameters['debugMode'];
+
 		// parameters (@todo: resolvers: default, cli, config?)
+
 		$config = $this->getConfig($this->defaults);
 		$config = $this->configurationComposer->addCliArguments($config);
 		$config = $this->configurationComposer->addConfigFileOptions($config, $this);

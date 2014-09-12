@@ -11,11 +11,25 @@
 namespace ApiGen;
 
 use Nette\Configurator;
-use TokenReflection;
 use Tracy\Debugger;
 
 
 require_once __DIR__ . '/../vendor/autoload.php';
+
+// Init debugger
+Debugger::$strictMode = TRUE;
+if (isset($_SERVER['argv']) && ($tmp = array_search('--debug', $_SERVER['argv'], TRUE))) {
+	Debugger::enable(Debugger::DEVELOPMENT);
+	unset($_SERVER['argv'][$tmp]);
+	$_SERVER['argv'] = array_values($_SERVER['argv']);
+	$_SERVER['argc']--;
+
+} else {
+	Debugger::enable(Debugger::PRODUCTION);
+	Debugger::$onFatalError[] = function() {;
+		echo "For more information turn on the debug mode using the --debug option.\n";
+	};
+}
 
 // Safe locale and timezone
 setlocale(LC_ALL, 'C');
@@ -26,29 +40,25 @@ if ( ! ini_get('date.timezone')) {
 // ApiGen root path
 define('APIGEN_ROOT_PATH', __DIR__ . '/../src');
 
-// Init debugger
-Debugger::$strictMode = TRUE;
-Debugger::enable(Debugger::PRODUCTION);
-
 
 // Build the DIC
 $tmp = __DIR__ . '/../_temp' . uniqid(); // @todo: or custom in memory container
 @mkdir($tmp, 0755, TRUE);
 
 $configurator = new Configurator;
+$configurator->setDebugMode(!Debugger::$productionMode);
 $configurator->setTempDirectory($tmp);
 $configurator->addConfig(__DIR__ . '/../src/ApiGen/DI/config.neon');
 $container = $configurator->createContainer();
 
-// Update debugger configuration if needed
-if ($container->getbyType('ApiGen\Configuration\Configuration')->debug) {
+// Enable debug mode if additionally enabled by configuration
+if (!$configurator->isDebugMode() && $container->getbyType('ApiGen\Configuration\Configuration')->debug) {
 	Debugger::enable(Debugger::DEVELOPMENT);
 	Debugger::$onFatalError[] = array();
 }
 
-
 // Let's rock
 $container->getByType('ApiGen\Application\Application')->run();
 
-// cleanup
+// Cleanup
 FileSystem::deleteDir($tmp);

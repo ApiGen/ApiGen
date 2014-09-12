@@ -159,7 +159,7 @@ download: false # default [true]
 wipeout: true # default [false]
 
 # display additional information (exception trace) in case of an error
-debug: false # default [true]
+debug: true # default [false]
 ```
 
 
