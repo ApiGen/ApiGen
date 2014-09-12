@@ -15,7 +15,15 @@ use TokenReflection;
 use Tracy\Debugger;
 
 
-require_once __DIR__ . '/../vendor/autoload.php';
+if (is_file($autoload = __DIR__ . '/../vendor/autoload.php')) {
+	require_once $autoload;
+} elseif (is_file($autoload = __DIR__ . '/../../../autoload.php')) { // composer global
+	require_once $autoload;
+} else {
+	echo "Missing autoload.php, update by the composer.\n";
+	exit(2);
+}
+unset($autoload);
 
 // Safe locale and timezone
 setlocale(LC_ALL, 'C');
