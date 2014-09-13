@@ -15,7 +15,12 @@ use TokenReflection;
 use Tracy\Debugger;
 
 
-require_once __DIR__ . '/../vendor/autoload.php';
+//check if is installed as composer component - taken from pdepend
+if (file_exists(__DIR__ . '/../../autoload.php')) {
+    require_once __DIR__ . '/../../autoload.php';
+} else {
+    require_once __DIR__ . '/../vendor/autoload.php';
+}
 
 // Safe locale and timezone
 setlocale(LC_ALL, 'C');
