@@ -15,20 +15,24 @@ use Nette;
 
 class Helper extends Nette\Object
 {
+
 	/**
 	 * The default configuration file name.
+	 *
 	 * @var string
 	 */
 	const DEFAULT_CONFIG_FILENAME = 'apigen.neon';
 
 	/**
 	 * The default template configuration file name.
+	 *
 	 * @var string
 	 */
 	const DEFAULT_TEMPLATE_CONFIG_FILENAME = 'default/config.neon';
 
 	/**
 	 * File or directory path options.
+	 *
 	 * @var array
 	 */
 	private $pathOptions = array(
@@ -43,6 +47,7 @@ class Helper extends Nette\Object
 
 	/**
 	 * Returns default configuration file path.
+	 *
 	 * @return string
 	 */
 	public static function getDefaultConfigPath()
@@ -53,6 +58,7 @@ class Helper extends Nette\Object
 
 	/**
 	 * Returns templates directory path.
+	 *
 	 * @return string
 	 */
 	public static function getTemplatesDir()
@@ -63,6 +69,7 @@ class Helper extends Nette\Object
 
 	/**
 	 * Checks if default configuration file exists.
+	 *
 	 * @return boolean
 	 */
 	public static function defaultConfigExists()
@@ -104,7 +111,7 @@ class Helper extends Nette\Object
 		// Process options that specify a filesystem path
 		foreach ($this->pathOptions as $option) {
 			if (is_array($config[$option])) {
-				array_walk($config[$option], function(&$value) {
+				array_walk($config[$option], function (&$value) {
 					if (file_exists($value)) {
 						$value = realpath($value);
 
@@ -125,7 +132,7 @@ class Helper extends Nette\Object
 		}
 
 		// Unify prefixes
-		$config['skipDocPrefix'] = array_map(function($prefix) {
+		$config['skipDocPrefix'] = array_map(function ($prefix) {
 			return ltrim($prefix, '\\');
 		}, $config['skipDocPrefix']);
 		usort($config['skipDocPrefix'], 'strcasecmp');

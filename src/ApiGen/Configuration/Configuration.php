@@ -19,6 +19,7 @@ use Traversable;
  */
 class Configuration implements \ArrayAccess, \Countable, \IteratorAggregate
 {
+
 	/**
 	 * @var ArrayHash
 	 */
@@ -41,7 +42,6 @@ class Configuration implements \ArrayAccess, \Countable, \IteratorAggregate
 
 
 	/********************* \ArrayAccess *********************/
-
 
 	/**
 	 * @param string $name
@@ -95,7 +95,6 @@ class Configuration implements \ArrayAccess, \Countable, \IteratorAggregate
 
 	/********************* \Countable *********************/
 
-
 	/**
 	 * @return int
 	 */
@@ -106,7 +105,6 @@ class Configuration implements \ArrayAccess, \Countable, \IteratorAggregate
 
 
 	/********************* \IteratorAggregate *********************/
-
 
 	/**
 	 * @return Traversable

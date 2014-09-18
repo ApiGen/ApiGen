@@ -16,6 +16,7 @@ use Kdyby\Events\Subscriber;
 
 class ProgressBarIncrement extends Nette\Object implements Subscriber
 {
+
 	/**
 	 * @var ProgressBar
 	 */
@@ -52,7 +53,7 @@ class ProgressBarIncrement extends Nette\Object implements Subscriber
 
 
 	/**
-	 * @param int $steps
+	 * @param int $size
 	 */
 	public function onProgress($size)
 	{

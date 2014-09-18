@@ -91,4 +91,5 @@ class Validator extends Nette\Object
  */
 class ConfigurationException extends \RuntimeException
 {
+
 }

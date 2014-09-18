@@ -18,20 +18,24 @@ use RuntimeException;
  */
 class Tree extends RecursiveTreeIterator
 {
+
 	/**
 	 * Has a sibling on the same level.
+	 *
 	 * @var string
 	 */
 	const HAS_NEXT = '1';
 
 	/**
 	 * Last item on the current level.
+	 *
 	 * @var string
 	 */
 	const LAST = '0';
 
 	/**
 	 * Reflections in the tree.
+	 *
 	 * @var \ArrayObject
 	 */
 	private $reflections;
@@ -59,24 +63,26 @@ class Tree extends RecursiveTreeIterator
 
 	/**
 	 * Returns if the current item has a sibling on the same level.
+	 *
 	 * @return boolean
 	 */
 	public function hasSibling()
 	{
 		$prefix = $this->getPrefix();
-		return !empty($prefix) && self::HAS_NEXT === substr($prefix, -1);
+		return ! empty($prefix) && self::HAS_NEXT === substr($prefix, -1);
 	}
 
 
 	/**
 	 * Returns the current reflection.
+	 *
 	 * @return \ApiGen\Reflection\ReflectionElement
 	 * @throws \UnexpectedValueException If current is not reflection array.
 	 */
 	public function current()
 	{
 		$className = $this->key();
-		if (!isset($this->reflections[$className])) {
+		if ( ! isset($this->reflections[$className])) {
 			throw new RuntimeException(sprintf('Class "%s" is not in the reflection array', $className));
 		}
 

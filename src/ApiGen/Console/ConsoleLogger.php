@@ -20,6 +20,7 @@ use Exception;
  */
 class ConsoleLogger implements Logger
 {
+
 	/**
 	 * @var Configuration
 	 */

@@ -16,6 +16,7 @@ use Kdyby\Events\Subscriber;
 
 class LogOnError extends Nette\Object implements Subscriber
 {
+
 	/**
 	 * @var LogErrorHandler
 	 */
@@ -28,6 +29,9 @@ class LogOnError extends Nette\Object implements Subscriber
 	}
 
 
+	/**
+	 * @return array
+	 */
 	public function getSubscribedEvents()
 	{
 		return array('ApiGen\Application\Application::onError');

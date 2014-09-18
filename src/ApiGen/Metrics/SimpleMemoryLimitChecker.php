@@ -21,20 +21,20 @@ class SimpleMemoryLimitChecker extends Nette\Object implements MemoryLimitChecke
 	public function check()
 	{
 		static $limit = NULL;
-		if (NULL === $limit) {
+		if ($limit === NULL) {
 			$value = ini_get('memory_limit');
 			$unit = substr($value, -1);
-			if ('-1' === $value) {
+			if ($value === '-1') {
 				$limit = 0;
 
-			} elseif ('G' === $unit) {
-				$limit = (int)$value * 1024 * 1024 * 1024;
+			} elseif ($unit === 'G') {
+				$limit = (int) $value * 1024 * 1024 * 1024;
 
-			} elseif ('M' === $unit) {
-				$limit = (int)$value * 1024 * 1024;
+			} elseif ($unit === 'M') {
+				$limit = (int) $value * 1024 * 1024;
 
 			} else {
-				$limit = (int)$value;
+				$limit = (int) $value;
 			}
 		}
 

@@ -15,7 +15,10 @@ use Nette;
 
 class FshlSourceCodeHighlighter extends Nette\Object implements SourceCodeHighlighter
 {
-	/** @var FSHL\Highlighter */
+
+	/**
+	 * @var FSHL\Highlighter
+	 */
 	private $highlighter;
 
 

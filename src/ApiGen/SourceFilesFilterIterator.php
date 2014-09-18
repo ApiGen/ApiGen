@@ -18,8 +18,10 @@ use RecursiveFilterIterator;
  */
 class SourceFilesFilterIterator extends RecursiveFilterIterator
 {
+
 	/**
 	 * File/directory exclude masks.
+	 *
 	 * @var array
 	 */
 	private $excludeMasks = array();
@@ -35,8 +37,10 @@ class SourceFilesFilterIterator extends RecursiveFilterIterator
 		$this->excludeMasks = $excludeMasks;
 	}
 
+
 	/**
 	 * Returns if the current file/directory should be processed.
+	 *
 	 * @return boolean
 	 */
 	public function accept()
@@ -46,7 +50,7 @@ class SourceFilesFilterIterator extends RecursiveFilterIterator
 
 		foreach ($this->excludeMasks as $mask) {
 			if (fnmatch($mask, $current->getPathName(), FNM_NOESCAPE)) {
-				return false;
+				return FALSE;
 			}
 		}
 
@@ -54,12 +58,13 @@ class SourceFilesFilterIterator extends RecursiveFilterIterator
 			throw new \InvalidArgumentException(sprintf('File/directory "%s" is not readable.', $current->getPathname()));
 		}
 
-		return true;
+		return TRUE;
 	}
 
 
 	/**
 	 * Returns the iterator of the current element's children.
+	 *
 	 * @return \ApiGen\SourceFilesFilterIterator
 	 */
 	public function getChildren()

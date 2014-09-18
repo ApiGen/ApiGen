@@ -9,7 +9,6 @@
 
 namespace ApiGen\Generator\Markups;
 
-use ApiGen\Configuration\Configuration;
 use ApiGen\Generator\SourceCodeHighlighter;
 use Texy;
 use TexyHtml;
@@ -18,6 +17,7 @@ use TexyParser;
 
 class TexyMarkup implements Markup
 {
+
 	/**
 	 * @var Texy
 	 */
@@ -58,7 +58,7 @@ class TexyMarkup implements Markup
 
 		$this->texy->registerBlockPattern(
 			function (TexyParser $parser, $matches, $name) use ($highlighter) {
-				if ('code' === $matches[1] || 'pre' === $matches[1]) {
+				if ($matches[1] === 'code' || $matches[1] === 'pre') {
 					$lines = array_filter(explode("\n", $matches[2]));
 					if ( ! empty($lines)) {
 						$firstLine = array_shift($lines);
@@ -68,7 +68,7 @@ class TexyMarkup implements Markup
 
 						while (isset($firstLine[$li]) && preg_match('~\s~', $firstLine[$li])) {
 							foreach ($lines as $line) {
-								if (!isset($line[$li]) || $firstLine[$li] !== $line[$li]) {
+								if ( ! isset($line[$li]) || $line[$li] !== $firstLine[$li]) {
 									break 2;
 								}
 							}
@@ -76,7 +76,7 @@ class TexyMarkup implements Markup
 							$indent .= $firstLine[$li++];
 						}
 
-						if (!empty($indent)) {
+						if ( ! empty($indent)) {
 							$matches[2] = str_replace(
 								"\n" . $indent,
 								"\n",

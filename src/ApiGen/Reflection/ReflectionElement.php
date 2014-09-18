@@ -14,11 +14,11 @@ use TokenReflection\ReflectionAnnotation;
 
 /**
  * Element reflection envelope.
- *
  * Alters TokenReflection\IReflection functionality for ApiGen.
  */
 abstract class ReflectionElement extends ReflectionBase
 {
+
 	/**
 	 * Cache for information if the element should be documented.
 	 *
@@ -33,16 +33,18 @@ abstract class ReflectionElement extends ReflectionBase
 	 */
 	protected $annotations;
 
+
 	/**
 	 * Returns the PHP extension reflection.
 	 *
-	 * @return \ApiGen\ReflectionExtension|null
+	 * @return ReflectionExtension|NULL
 	 */
 	public function getExtension()
 	{
 		$extension = $this->reflection->getExtension();
-		return null === $extension ? null : new ReflectionExtension($extension, self::$generator);
+		return $extension === NULL ? NULL : new ReflectionExtension($extension, self::$generator);
 	}
+
 
 	/**
 	 * Returns the PHP extension name.
@@ -54,6 +56,7 @@ abstract class ReflectionElement extends ReflectionBase
 		return $this->reflection->getExtensionName();
 	}
 
+
 	/**
 	 * Returns the start position in the file token stream.
 	 *
@@ -63,6 +66,7 @@ abstract class ReflectionElement extends ReflectionBase
 	{
 		return $this->reflection->getStartPosition();
 	}
+
 
 	/**
 	 * Returns the end position in the file token stream.
@@ -74,6 +78,7 @@ abstract class ReflectionElement extends ReflectionBase
 		return $this->reflection->getEndPosition();
 	}
 
+
 	/**
 	 * Returns if the element belongs to main project.
 	 *
@@ -81,8 +86,9 @@ abstract class ReflectionElement extends ReflectionBase
 	 */
 	public function isMain()
 	{
-		return empty(self::$config->main) || 0 === strpos($this->getName(), self::$config->main);
+		return empty(self::$config->main) || strpos($this->getName(), self::$config->main) === 0;
 	}
+
 
 	/**
 	 * Returns if the element should be documented.
@@ -91,24 +97,28 @@ abstract class ReflectionElement extends ReflectionBase
 	 */
 	public function isDocumented()
 	{
-		if (null === $this->isDocumented) {
+		if ($this->isDocumented === NULL) {
 			$this->isDocumented = $this->reflection->isTokenized() || $this->reflection->isInternal();
 
 			if ($this->isDocumented) {
-				if (!self::$config->php && $this->reflection->isInternal()) {
-					$this->isDocumented = false;
-				} elseif (!self::$config->deprecated && $this->reflection->isDeprecated()) {
-					$this->isDocumented = false;
-				} elseif (!self::$config->internal && ($internal = $this->reflection->getAnnotation('internal')) && empty($internal[0])) {
-					$this->isDocumented = false;
+				if ( ! self::$config->php && $this->reflection->isInternal()) {
+					$this->isDocumented = FALSE;
+
+				} elseif ( ! self::$config->deprecated && $this->reflection->isDeprecated()) {
+					$this->isDocumented = FALSE;
+
+				} elseif ( ! self::$config->internal && ($internal = $this->reflection->getAnnotation('internal')) && empty($internal[0])) {
+					$this->isDocumented = FALSE;
+
 				} elseif (count($this->reflection->getAnnotation('ignore')) > 0) {
-					$this->isDocumented = false;
+					$this->isDocumented = FALSE;
 				}
 			}
 		}
 
 		return $this->isDocumented;
 	}
+
 
 	/**
 	 * Returns if the element is deprecated.
@@ -118,7 +128,7 @@ abstract class ReflectionElement extends ReflectionBase
 	public function isDeprecated()
 	{
 		if ($this->reflection->isDeprecated()) {
-			return true;
+			return TRUE;
 		}
 
 		if (($this instanceof ReflectionMethod || $this instanceof ReflectionProperty || $this instanceof ReflectionConstant)
@@ -127,8 +137,9 @@ abstract class ReflectionElement extends ReflectionBase
 			return $class->isDeprecated();
 		}
 
-		return false;
+		return FALSE;
 	}
+
 
 	/**
 	 * Returns if the element is in package.
@@ -137,8 +148,9 @@ abstract class ReflectionElement extends ReflectionBase
 	 */
 	public function inPackage()
 	{
-		return '' !== $this->getPackageName();
+		return ($this->getPackageName() !== '');
 	}
+
 
 	/**
 	 * Returns element package name (including subpackage name).
@@ -159,8 +171,10 @@ abstract class ReflectionElement extends ReflectionBase
 				$subpackageName = preg_replace('~\s+.*~s', '', $subpackage[0]);
 				if (empty($subpackageName)) {
 					// Do nothing
+
 				} elseif (0 === strpos($subpackageName, $packageName)) {
 					$packageName = $subpackageName;
+
 				} else {
 					$packageName .= '\\' . $subpackageName;
 				}
@@ -168,7 +182,7 @@ abstract class ReflectionElement extends ReflectionBase
 			$packageName = strtr($packageName, '._/', '\\\\\\');
 
 			$lowerPackageName = strtolower($packageName);
-			if (!isset($packages[$lowerPackageName])) {
+			if ( ! isset($packages[$lowerPackageName])) {
 				$packages[$lowerPackageName] = $packageName;
 			}
 
@@ -178,9 +192,9 @@ abstract class ReflectionElement extends ReflectionBase
 		return '';
 	}
 
+
 	/**
 	 * Returns element package name (including subpackage name).
-	 *
 	 * For internal elements returns "PHP", for elements in global space returns "None".
 	 *
 	 * @return string
@@ -194,6 +208,7 @@ abstract class ReflectionElement extends ReflectionBase
 		return $this->getPackageName() ?: 'None';
 	}
 
+
 	/**
 	 * Returns if the element is defined within a namespace.
 	 *
@@ -203,6 +218,7 @@ abstract class ReflectionElement extends ReflectionBase
 	{
 		return '' !== $this->getNamespaceName();
 	}
+
 
 	/**
 	 * Returns element namespace name.
@@ -215,21 +231,21 @@ abstract class ReflectionElement extends ReflectionBase
 
 		$namespaceName = $this->reflection->getNamespaceName();
 
-		if (!$namespaceName) {
+		if ( ! $namespaceName) {
 			return $namespaceName;
 		}
 
 		$lowerNamespaceName = strtolower($namespaceName);
-		if (!isset($namespaces[$lowerNamespaceName])) {
+		if ( ! isset($namespaces[$lowerNamespaceName])) {
 			$namespaces[$lowerNamespaceName] = $namespaceName;
 		}
 
 		return $namespaces[$lowerNamespaceName];
 	}
 
+
 	/**
 	 * Returns element namespace name.
-	 *
 	 * For internal elements returns "PHP", for elements in global space returns "None".
 	 *
 	 * @return string
@@ -238,6 +254,7 @@ abstract class ReflectionElement extends ReflectionBase
 	{
 		return $this->isInternal() ? 'PHP' : $this->getNamespaceName() ?: 'None';
 	}
+
 
 	/**
 	 * Returns imported namespaces and aliases from the declaring namespace.
@@ -249,6 +266,7 @@ abstract class ReflectionElement extends ReflectionBase
 		return $this->reflection->getNamespaceAliases();
 	}
 
+
 	/**
 	 * Returns the short description.
 	 *
@@ -257,7 +275,7 @@ abstract class ReflectionElement extends ReflectionBase
 	public function getShortDescription()
 	{
 		$short = $this->reflection->getAnnotation(ReflectionAnnotation::SHORT_DESCRIPTION);
-		if (!empty($short)) {
+		if ( ! empty($short)) {
 			return $short;
 		}
 
@@ -269,6 +287,7 @@ abstract class ReflectionElement extends ReflectionBase
 		return $short;
 	}
 
+
 	/**
 	 * Returns the long description.
 	 *
@@ -279,12 +298,13 @@ abstract class ReflectionElement extends ReflectionBase
 		$short = $this->getShortDescription();
 		$long = $this->reflection->getAnnotation(ReflectionAnnotation::LONG_DESCRIPTION);
 
-		if (!empty($long)) {
+		if ( ! empty($long)) {
 			$short .= "\n\n" . $long;
 		}
 
 		return $short;
 	}
+
 
 	/**
 	 * Returns the appropriate docblock definition.
@@ -296,11 +316,10 @@ abstract class ReflectionElement extends ReflectionBase
 		return $this->reflection->getDocComment();
 	}
 
+
 	/**
 	 * Returns reflection element annotations.
-	 *
 	 * Removes the short and long description.
-	 *
 	 * In case of classes, functions and constants, @package, @subpackage, @author and @license annotations
 	 * are added from declaring files if not already present.
 	 *
@@ -308,16 +327,23 @@ abstract class ReflectionElement extends ReflectionBase
 	 */
 	public function getAnnotations()
 	{
-		if (null === $this->annotations) {
-			static $fileLevel = array('package' => true, 'subpackage' => true, 'author' => true, 'license' => true, 'copyright' => true);
+		if ($this->annotations === NULL) {
+			static $fileLevel = array(
+				'package' => TRUE,
+				'subpackage' => TRUE,
+				'author' => TRUE,
+				'license' => TRUE,
+				'copyright' => TRUE
+			);
 
 			$annotations = $this->reflection->getAnnotations();
-            		$annotations = array_change_key_case($annotations, CASE_LOWER);
+			$annotations = array_change_key_case($annotations, CASE_LOWER);
 
 			unset($annotations[ReflectionAnnotation::SHORT_DESCRIPTION]);
 			unset($annotations[ReflectionAnnotation::LONG_DESCRIPTION]);
 
-			if ($this->reflection instanceof \TokenReflectionClass || $this->reflection instanceof \TokenReflectionFunction || ($this->reflection instanceof \TokenReflectionConstant && null === $this->reflection->getDeclaringClassName())) {
+			// @todo: fix
+			if ($this->reflection instanceof \TokenReflectionClass || $this->reflection instanceof \TokenReflectionFunction || ($this->reflection instanceof \TokenReflectionConstant && $this->reflection->getDeclaringClassName() === NULL)) {
 				foreach ($this->reflection->getFileReflection()->getAnnotations() as $name => $value) {
 					if (isset($fileLevel[$name]) && empty($annotations[$name])) {
 						$annotations[$name] = $value;
@@ -331,22 +357,24 @@ abstract class ReflectionElement extends ReflectionBase
 		return $this->annotations;
 	}
 
+
 	/**
 	 * Returns reflection element annotation.
 	 *
-	 * @param string $annotation Annotation name
+	 * @param string $annotation
 	 * @return array
 	 */
 	public function getAnnotation($annotation)
 	{
 		$annotations = $this->getAnnotations();
-		return isset($annotations[$annotation]) ? $annotations[$annotation] : null;
+		return isset($annotations[$annotation]) ? $annotations[$annotation] : NULL;
 	}
+
 
 	/**
 	 * Checks if there is a particular annotation.
 	 *
-	 * @param string $annotation Annotation name
+	 * @param string $annotation
 	 * @return boolean
 	 */
 	public function hasAnnotation($annotation)
@@ -355,20 +383,22 @@ abstract class ReflectionElement extends ReflectionBase
 		return isset($annotations[$annotation]);
 	}
 
+
 	/**
 	 * Adds element annotation.
 	 *
-	 * @param string $annotation Annotation name
-	 * @param string $value Annotation value
-	 * @return \ApiGen\ReflectionElement
+	 * @param string $annotation
+	 * @param string $value
+	 * @return ReflectionElement
 	 */
 	public function addAnnotation($annotation, $value)
 	{
-		if (null === $this->annotations) {
+		if ($this->annotations === NULL) {
 			$this->getAnnotations();
 		}
 		$this->annotations[$annotation][] = $value;
 
 		return $this;
 	}
+
 }

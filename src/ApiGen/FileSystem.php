@@ -36,14 +36,16 @@ class FileSystem
 		return $path;
 	}
 
+
 	/**
 	 * Removes phar:// from the path.
+	 *
 	 * @param string $path Path
 	 * @return string
 	 */
 	public static function unPharPath($path)
 	{
-		if (0 === strpos($path, 'phar://')) {
+		if (strpos($path, 'phar://') === 0) {
 			$path = substr($path, 7);
 		}
 		return $path;
@@ -52,6 +54,7 @@ class FileSystem
 
 	/**
 	 * Adds phar:// to the path.
+	 *
 	 * @param string $path Path
 	 * @return string
 	 */
@@ -63,6 +66,7 @@ class FileSystem
 
 	/**
 	 * Ensures a directory is created.
+	 *
 	 * @param string $path
 	 * @return string
 	 */
@@ -86,18 +90,18 @@ class FileSystem
 		foreach (Nette\Utils\Finder::find('*')->from($path)->childFirst() as $item) {
 			/** @var \SplFileInfo $item */
 			if ($item->isDir()) {
-				if (!@rmdir($item)) {
+				if ( ! @rmdir($item)) {
 					return FALSE;
 				}
 
 			} elseif ($item->isFile()) {
-				if (!@unlink($item)) {
+				if ( ! @unlink($item)) {
 					return FALSE;
 				}
 			}
 		}
 
-		if (!@rmdir($path)) {
+		if ( ! @rmdir($path)) {
 			return FALSE;
 		}
 

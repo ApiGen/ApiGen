@@ -17,6 +17,7 @@ use Nette;
 
 class TemplateFactory extends Nette\Object
 {
+
 	/**
 	 * @var Markup
 	 */

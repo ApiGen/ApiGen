@@ -14,8 +14,10 @@ use Nette;
 
 class CharsetConvertor extends Nette\Object
 {
+
 	/**
 	 * List of possible character sets.
+	 *
 	 * @var array
 	 */
 	private $charsets = array();
@@ -58,6 +60,7 @@ class CharsetConvertor extends Nette\Object
 
 	/**
 	 * Converts content of the given file to UTF-8.
+	 *
 	 * @param string $filePath
 	 * @return string
 	 */

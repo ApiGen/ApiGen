@@ -2,6 +2,7 @@
 
 /**
  * This file is part of the ApiGen (http://apigen.org)
+ *
  * For the full copyright and license information, please view
  * the file license.md that was distributed with this source code.
  */
@@ -15,6 +16,7 @@ use Nette\DI\Statement;
 
 class ApiGenExtension extends CompilerExtension
 {
+
 	/**
 	 * @var array
 	 */
@@ -126,7 +128,7 @@ class ApiGenExtension extends CompilerExtension
 		$builder->addDefinition($this->prefix('charsetConvertor'))
 			->setClass('ApiGen\Charset\CharsetConvertor')
 			->addSetup('setCharset', array(
-				new Statement('(array) ?->?', array('@ApiGen\Configuration\Configuration', 'charset')))
+					new Statement('(array) ?->?', array('@ApiGen\Configuration\Configuration', 'charset')))
 			);
 
 		// generator

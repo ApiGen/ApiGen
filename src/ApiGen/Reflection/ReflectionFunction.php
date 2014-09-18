@@ -14,11 +14,11 @@ use ApiGen\FileSystem;
 
 /**
  * Function reflection envelope.
- *
  * Alters TokenReflection\IReflectionFunction functionality for ApiGen.
  */
 class ReflectionFunction extends ReflectionFunctionBase
 {
+
 	/**
 	 * Returns if the function is valid.
 	 *
@@ -27,11 +27,12 @@ class ReflectionFunction extends ReflectionFunctionBase
 	public function isValid()
 	{
 		if ($this->reflection instanceof \TokenReflection\Invalid\ReflectionFunction) {
-			return false;
+			return FALSE;
 		}
 
-		return true;
+		return TRUE;
 	}
+
 
 	/**
 	 * Returns if the function should be documented.
@@ -40,18 +41,18 @@ class ReflectionFunction extends ReflectionFunctionBase
 	 */
 	public function isDocumented()
 	{
-		if (null === $this->isDocumented && parent::isDocumented()) {
+		if ($this->isDocumented === NULL && parent::isDocumented()) {
 			$fileName = FileSystem::unPharPath($this->reflection->getFilename());
 			foreach (self::$config->skipDocPath as $mask) {
 				if (fnmatch($mask, $fileName, FNM_NOESCAPE)) {
-					$this->isDocumented = false;
+					$this->isDocumented = FALSE;
 					break;
 				}
 			}
-			if (true === $this->isDocumented) {
+			if ($this->isDocumented === TRUE) {
 				foreach (self::$config->skipDocPrefix as $prefix) {
-					if (0 === strpos($this->reflection->getName(), $prefix)) {
-						$this->isDocumented = false;
+					if (strpos($this->reflection->getName(), $prefix) === 0) {
+						$this->isDocumented = FALSE;
 						break;
 					}
 				}
@@ -60,4 +61,5 @@ class ReflectionFunction extends ReflectionFunctionBase
 
 		return $this->isDocumented;
 	}
+
 }

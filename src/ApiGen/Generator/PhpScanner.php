@@ -9,7 +9,6 @@
 
 namespace ApiGen\Generator;
 
-use ApiGen\Configuration\Configuration;
 use ApiGen\FileSystem;
 use ApiGen\SourceFilesFilterIterator;
 use Nette;
@@ -22,6 +21,7 @@ use RuntimeException;
  */
 class PhpScanner extends Nette\Object implements Scanner
 {
+
 	/**
 	 * @var array
 	 */
