@@ -130,6 +130,17 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
+	 * Returns the name (FQN).
+	 *
+	 * @return string
+	 */
+	public function getName()
+	{
+		return $this->reflection->getName();
+	}
+
+
+	/**
 	 * Returns the unqualified name (UQN).
 	 *
 	 * @return string

@@ -17,6 +17,19 @@ use TokenReflection\IReflection;
 /**
  * Envelope for magic properties that are defined
  * only as @property, @property-read or @property-write annotation.
+ *
+ * @method ReflectionPropertyMagic  setName(string $name)
+ * @method ReflectionPropertyMagic  setTypeHint()
+ * @method ReflectionPropertyMagic  setShortDescription()
+ * @method ReflectionPropertyMagic  setStartLine()
+ * @method ReflectionPropertyMagic  setEndLine()
+ * @method ReflectionPropertyMagic  setReadOnly()
+ * @method ReflectionPropertyMagic  setWriteOnly()
+ * @method ReflectionPropertyMagic  setDeclaringClass(ReflectionClass $declaringClass)
+ * @method string                   getTypeHint()
+ * @method bool                     isReadOnly()
+ * @method bool                     isWriteOnly()
+ * @method ReflectionClass          getDeclaringClass()
  */
 class ReflectionPropertyMagic extends ReflectionProperty
 {
@@ -73,7 +86,7 @@ class ReflectionPropertyMagic extends ReflectionProperty
 	/**
 	 * The declaring class.
 	 *
-	 * @var \ApiGen\ReflectionClass
+	 * @var ReflectionClass
 	 */
 	protected $declaringClass;
 
@@ -94,107 +107,58 @@ class ReflectionPropertyMagic extends ReflectionProperty
 
 
 	/**
-	 * Sets property name.
+	 * Returns the name.
+	 * Overrides parent method.
 	 *
-	 * @param string $name
-	 * @return \Apigen\ReflectionPropertyMagic
+	 * @return string
 	 */
-	public function setName($name)
+	public function getName()
 	{
-		$this->name = (string) $name;
-		return $this;
-
+		return $this->name;
 	}
 
 
 	/**
-	 * Sets type hint.
+	 * Overrides parent method.
 	 *
-	 * @param string $typeHint
-	 * @return \ApiGen\ReflectionParameterUnlimited
+	 * @return int
 	 */
-	public function setTypeHint($typeHint)
+	public function getStartLine()
 	{
-		$this->typeHint = (string) $typeHint;
-		return $this;
+		return $this->startLine;
 	}
 
 
 	/**
-	 * Sets short description.
+	 * Overrides parent method.
 	 *
-	 * @param string $shortDescription
-	 * @return \Apigen\ReflectionPropertyMagic
+	 * @return string
 	 */
-	public function setShortDescription($shortDescription)
+	public function getShortDescription()
 	{
-		$this->shortDescription = (string) $shortDescription;
-		return $this;
+		return $this->shortDescription;
 	}
 
 
 	/**
-	 * Sets start line.
+	 * Overrides parent method.
 	 *
-	 * @param integer $startLine
-	 * @return \Apigen\ReflectionPropertyMagic
+	 * @return string
 	 */
-	public function setStartLine($startLine)
+	public function getLongDescription()
 	{
-		$this->startLine = (int) $startLine;
-		return $this;
+		return $this->longDescription;
 	}
 
 
 	/**
-	 * Sets end line.
+	 * Overrides parent method.
 	 *
-	 * @param integer $endLine
-	 * @return \Apigen\ReflectionPropertyMagic
+	 * @return int
 	 */
-	public function setEndLine($endLine)
+	public function getEndLine()
 	{
-		$this->endLine = (int) $endLine;
-		return $this;
-	}
-
-
-	/**
-	 * Sets if the property is read-only.
-	 *
-	 * @param boolean $readOnly
-	 * @return \Apigen\ReflectionPropertyMagic
-	 */
-	public function setReadOnly($readOnly)
-	{
-		$this->readOnly = (bool) $readOnly;
-		return $this;
-	}
-
-
-	/**
-	 * Sets if the property is write only.
-	 *
-	 * @param boolean $writeOnly
-	 * @return \Apigen\ReflectionPropertyMagic
-	 */
-	public function setWriteOnly($writeOnly)
-	{
-		$this->writeOnly = (bool) $writeOnly;
-		return $this;
-	}
-
-
-	/**
-	 * Sets declaring class.
-	 *
-	 * @param \ApiGen\ReflectionClass $declaringClass
-	 * @return \ApiGen\ReflectionPropertyMagic
-	 */
-	public function setDeclaringClass(ReflectionClass $declaringClass)
-	{
-		$this->declaringClass = $declaringClass;
-		return $this;
+		return $this->endLine;
 	}
 
 
@@ -232,94 +196,6 @@ class ReflectionPropertyMagic extends ReflectionProperty
 
 
 	/**
-	 * Returns the name.
-	 *
-	 * @return string
-	 */
-	public function getName()
-	{
-		return $this->name;
-	}
-
-
-	/**
-	 * Returns the type hint.
-	 *
-	 * @return string
-	 */
-	public function getTypeHint()
-	{
-		return $this->typeHint;
-	}
-
-
-	/**
-	 * Returns the short description.
-	 *
-	 * @return string
-	 */
-	public function getShortDescription()
-	{
-		return $this->shortDescription;
-	}
-
-
-	/**
-	 * Returns the long description.
-	 *
-	 * @return string
-	 */
-	public function getLongDescription()
-	{
-		return $this->shortDescription;
-	}
-
-
-	/**
-	 * Returns the definition start line number in the file.
-	 *
-	 * @return integer
-	 */
-	public function getStartLine()
-	{
-		return $this->startLine;
-	}
-
-
-	/**
-	 * Returns the definition end line number in the file.
-	 *
-	 * @return integer
-	 */
-	public function getEndLine()
-	{
-		return $this->endLine;
-	}
-
-
-	/**
-	 * Returns if the property is read-only.
-	 *
-	 * @return boolean
-	 */
-	public function isReadOnly()
-	{
-		return $this->readOnly;
-	}
-
-
-	/**
-	 * Returns if the property is write-only.
-	 *
-	 * @return boolean
-	 */
-	public function isWriteOnly()
-	{
-		return $this->writeOnly;
-	}
-
-
-	/**
 	 * Returns if the property is magic.
 	 *
 	 * @return boolean
@@ -333,7 +209,7 @@ class ReflectionPropertyMagic extends ReflectionProperty
 	/**
 	 * Returns the PHP extension reflection.
 	 *
-	 * @return \ApiGen\ReflectionExtension|null
+	 * @return ReflectionExtension|NULL
 	 */
 	public function getExtension()
 	{
@@ -359,7 +235,7 @@ class ReflectionPropertyMagic extends ReflectionProperty
 	 */
 	public function isDocumented()
 	{
-		if (NULL === $this->isDocumented) {
+		if ($this->isDocumented === NULL) {
 			$this->isDocumented = self::$config->deprecated || ! $this->isDeprecated();
 		}
 
@@ -411,17 +287,6 @@ class ReflectionPropertyMagic extends ReflectionProperty
 			$this->annotations = array();
 		}
 		return $this->annotations;
-	}
-
-
-	/**
-	 * Returns the property declaring class.
-	 *
-	 * @return \ApiGen\ReflectionClass|null
-	 */
-	public function getDeclaringClass()
-	{
-		return $this->declaringClass;
 	}
 
 
@@ -514,7 +379,7 @@ class ReflectionPropertyMagic extends ReflectionProperty
 
 
 	/**
-	 * Returns if the poperty is static.
+	 * Returns if the property is static.
 	 *
 	 * @return boolean
 	 */
@@ -538,7 +403,7 @@ class ReflectionPropertyMagic extends ReflectionProperty
 	/**
 	 * Returns the property declaring trait.
 	 *
-	 * @return \ApiGen\ReflectionClass|null
+	 * @return ReflectionClass|NULL
 	 */
 	public function getDeclaringTrait()
 	{
@@ -549,7 +414,7 @@ class ReflectionPropertyMagic extends ReflectionProperty
 	/**
 	 * Returns the declaring trait name.
 	 *
-	 * @return string|null
+	 * @return string|NULL
 	 */
 	public function getDeclaringTraitName()
 	{
@@ -664,36 +529,6 @@ class ReflectionPropertyMagic extends ReflectionProperty
 			return $annotations[$name];
 		}
 		return NULL;
-	}
-
-
-	/**
-	 * @param string $name
-	 * @return mixed
-	 */
-	public function __get($name)
-	{
-		$key = ucfirst($name);
-		if (isset(self::$reflectionMethods[$this->reflectionType]['get' . $key])) {
-			return $this->{'get' . $key}();
-		}
-
-		if (isset(self::$reflectionMethods[$this->reflectionType]['is' . $key])) {
-			return $this->{'is' . $key}();
-		}
-
-		return NULL;
-	}
-
-
-	/**
-	 * @param mixed $name Property name
-	 * @return boolean
-	 */
-	public function __isset($name)
-	{
-		$key = ucfirst($name);
-		return isset(self::$reflectionMethods[$this->reflectionType]['get' . $key]) || isset(self::$reflectionMethods[$this->reflectionType]['is' . $key]);
 	}
 
 }

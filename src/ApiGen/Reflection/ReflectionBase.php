@@ -11,13 +11,14 @@ namespace ApiGen\Reflection;
 
 use ApiGen\Configuration\Configuration;
 use ApiGen\Generator\Generator;
+use Nette;
 use TokenReflection\IReflection;
 
 
 /**
  * Alters TokenReflection\IReflection functionality for ApiGen.
  */
-abstract class ReflectionBase
+abstract class ReflectionBase extends Nette\Object
 {
 
 	/**
@@ -68,7 +69,6 @@ abstract class ReflectionBase
 
 
 	/**
-	 * Constructor.
 	 * Sets the inspected reflection.
 	 *
 	 * @param \TokenReflection\IReflection $reflection Inspected reflection
@@ -90,44 +90,6 @@ abstract class ReflectionBase
 		}
 
 		$this->reflection = $reflection;
-	}
-
-
-	/**
-	 * Retrieves a property or method value.
-	 * First tries the envelope object's property storage, then its methods
-	 * and finally the inspected element reflection.
-	 *
-	 * @param string $name
-	 * @return mixed
-	 */
-	public function __get($name)
-	{
-		$key = ucfirst($name);
-		if (isset(self::$reflectionMethods[$this->reflectionType]['get' . $key])) {
-			return $this->{'get' . $key}();
-		}
-
-		if (isset(self::$reflectionMethods[$this->reflectionType]['is' . $key])) {
-			return $this->{'is' . $key}();
-		}
-
-		return $this->reflection->__get($name);
-	}
-
-
-	/**
-	 * Checks if the given property exists.
-	 * First tries the envelope object's property storage, then its methods
-	 * and finally the inspected element reflection.
-	 *
-	 * @param mixed $name
-	 * @return boolean
-	 */
-	public function __isset($name)
-	{
-		$key = ucfirst($name);
-		return isset(self::$reflectionMethods[$this->reflectionType]['get' . $key]) || isset(self::$reflectionMethods[$this->reflectionType]['is' . $key]) || $this->reflection->__isset($name);
 	}
 
 

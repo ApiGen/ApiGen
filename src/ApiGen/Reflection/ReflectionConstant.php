@@ -20,6 +20,17 @@ class ReflectionConstant extends ReflectionElement
 {
 
 	/**
+	 * Returns the name (FQN).
+	 *
+	 * @return string
+	 */
+	public function getName()
+	{
+		return $this->reflection->getName();
+	}
+
+
+	/**
 	 * Returns the unqualified name (UQN).
 	 *
 	 * @return string
@@ -137,7 +148,7 @@ class ReflectionConstant extends ReflectionElement
 					break;
 				}
 			}
-			if (TRUE === $this->isDocumented) {
+			if ($this->isDocumented === TRUE) {
 				foreach (self::$config->skipDocPrefix as $prefix) {
 					if (strpos($this->reflection->getName(), $prefix) === 0) {
 						$this->isDocumented = FALSE;

@@ -17,6 +17,14 @@ use TokenReflection\IReflection;
 
 /**
  * Envelope for magic methods that are defined only as @method annotation.
+ *
+ * @method  ReflectionMethodMagic   setName(string $name)
+ * @method  ReflectionMethodMagic   setShortDescription(string $shortDescription)
+ * @method  ReflectionMethodMagic   setStartLine(int $startLine)
+ * @method  ReflectionMethodMagic   setEndLine(int $endLine)
+ * @method  ReflectionMethodMagic   setReturnsReference(bool $returnsReference)
+ * @method  ReflectionMethodMagic   setParameters(array $parameters)
+ * @method  ReflectionMethodMagic   setDeclaringClass(ReflectionClass $declaringClass)
  */
 class ReflectionMethodMagic extends ReflectionMethod
 {
@@ -70,84 +78,6 @@ class ReflectionMethodMagic extends ReflectionMethod
 
 
 	/**
-	 * @param string $name
-	 * @return ReflectionMethodMagic
-	 */
-	public function setName($name)
-	{
-		$this->name = (string) $name;
-		return $this;
-
-	}
-
-
-	/**
-	 * @param string $shortDescription
-	 * @return ReflectionMethodMagic
-	 */
-	public function setShortDescription($shortDescription)
-	{
-		$this->shortDescription = (string) $shortDescription;
-		return $this;
-	}
-
-
-	/**
-	 * @param integer $startLine
-	 * @return ReflectionMethodMagic
-	 */
-	public function setStartLine($startLine)
-	{
-		$this->startLine = (int) $startLine;
-		return $this;
-	}
-
-
-	/**
-	 * @param integer $endLine
-	 * @return ReflectionMethodMagic
-	 */
-	public function setEndLine($endLine)
-	{
-		$this->endLine = (int) $endLine;
-		return $this;
-	}
-
-
-	/**
-	 * @param boolean $returnsReference
-	 * @return ReflectionMethodMagic
-	 */
-	public function setReturnsReference($returnsReference)
-	{
-		$this->returnsReference = (bool) $returnsReference;
-		return $this;
-	}
-
-
-	/**
-	 * @param array $parameters
-	 * @return ReflectionMethodMagic
-	 */
-	public function setParameters(array $parameters)
-	{
-		$this->parameters = $parameters;
-		return $this;
-	}
-
-
-	/**
-	 * @param ReflectionClass $declaringClass
-	 * @return ReflectionMethodMagic
-	 */
-	public function setDeclaringClass(ReflectionClass $declaringClass)
-	{
-		$this->declaringClass = $declaringClass;
-		return $this;
-	}
-
-
-	/**
 	 * Returns the reflection broker used by this reflection object.
 	 *
 	 * @return Broker
@@ -181,6 +111,8 @@ class ReflectionMethodMagic extends ReflectionMethod
 
 
 	/**
+     * Overrides parent method.
+	 *
 	 * @return string
 	 */
 	public function getName()
@@ -718,38 +650,6 @@ class ReflectionMethodMagic extends ReflectionMethod
 			return $annotations[$name];
 		}
 		return NULL;
-	}
-
-
-	/**
-	 * Retrieves a property or method value.
-	 *
-	 * @param string $name
-	 * @return mixed
-	 */
-	public function __get($name)
-	{
-		$key = ucfirst($name);
-		if (isset(self::$reflectionMethods[$this->reflectionType]['get' . $key])) {
-			return $this->{'get' . $key}();
-		}
-
-		if (isset(self::$reflectionMethods[$this->reflectionType]['is' . $key])) {
-			return $this->{'is' . $key}();
-		}
-
-		return NULL;
-	}
-
-
-	/**
-	 * @param mixed $name
-	 * @return boolean
-	 */
-	public function __isset($name)
-	{
-		$key = ucfirst($name);
-		return isset(self::$reflectionMethods[$this->reflectionType]['get' . $key]) || isset(self::$reflectionMethods[$this->reflectionType]['is' . $key]);
 	}
 
 }
