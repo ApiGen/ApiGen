@@ -30,16 +30,16 @@ class Backend extends Broker\Backend\Memory
 {
 
 	/**
-	 * @var Generator
-	 */
-	private $generator;
-
-	/**
 	 * Cache of processed token streams.
 	 *
 	 * @var array
 	 */
 	private $fileCache = array();
+
+	/**
+	 * @var Generator
+	 */
+	private $generator;
 
 
 	/**
@@ -155,7 +155,7 @@ class Backend extends Broker\Backend\Memory
 	 */
 	private function processFunction(array $declared, array $allClasses, $function)
 	{
-		static $parsedAnnotations = array('param', 'return', 'throws');
+		$parsedAnnotations = array('param', 'return', 'throws');
 
 		$annotations = $function->getAnnotations();
 		foreach ($parsedAnnotations as $annotation) {

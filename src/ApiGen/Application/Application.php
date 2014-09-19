@@ -28,21 +28,6 @@ class Application extends Object
 {
 
 	/**
-	 * @var Logger
-	 */
-	private $logger;
-
-	/**
-	 * @var Configuration
-	 */
-	private $config;
-
-	/**
-	 * @var Generator
-	 */
-	private $generator;
-
-	/**
 	 * Callbacks performed on application startup.
 	 *
 	 * @var array
@@ -62,6 +47,21 @@ class Application extends Object
 	 * @var array
 	 */
 	public $onError = array();
+
+	/**
+	 * @var Logger
+	 */
+	private $logger;
+
+	/**
+	 * @var Configuration
+	 */
+	private $config;
+
+	/**
+	 * @var Generator
+	 */
+	private $generator;
 
 
 	public function __construct(Configuration $config, Logger $logger, Generator $generator)

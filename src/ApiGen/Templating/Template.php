@@ -27,6 +27,7 @@ use Nette;
 /**
  * Customized ApiGen template class.
  * Adds ApiGen helpers to the Nette\Templating\FileTemplate parent class.
+ *
  * @method Template setGenerator(object)
  */
 class Template extends Nette\Templating\FileTemplate
