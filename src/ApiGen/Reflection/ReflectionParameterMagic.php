@@ -16,6 +16,14 @@ use TokenReflection\IReflection;
 
 /**
  * Envelope for parameters that are defined only in @param or @method annotation.
+ *
+ * @method ReflectionParameterMagic setName(string $name)
+ * @method ReflectionParameterMagic setTypeHint(string $typeHint)
+ * @method ReflectionParameterMagic setPosition(int $position)
+ * @method ReflectionParameterMagic setDefaultValueDefinition(string $defaultValueDefinition)   Sets the part of the source code defining the parameter default value.
+ * @method ReflectionParameterMagic setUnlimited(bool $unlimited)   Sets if the parameter can be used unlimited times.
+ * @method ReflectionParameterMagic setPassedByReference(bool $state)   Sets if the parameter value is passed by reference.
+ * @method ReflectionParameterMagic setDeclaringFunction(ReflectionFunctionBase $declaringFunction)
  */
 class ReflectionParameterMagic extends ReflectionParameter
 {
@@ -80,92 +88,6 @@ class ReflectionParameterMagic extends ReflectionParameter
 
 
 	/**
-	 * @param string $name
-	 * @return ReflectionParameterMagic
-	 */
-	public function setName($name)
-	{
-		$this->name = (string) $name;
-		return $this;
-	}
-
-
-	/**
-	 * @param string $typeHint
-	 * @return ReflectionParameterMagic
-	 */
-	public function setTypeHint($typeHint)
-	{
-		$this->typeHint = (string) $typeHint;
-		return $this;
-	}
-
-
-	/**
-	 * Sets position of the parameter in the function/method.
-	 *
-	 * @param integer $position
-	 * @return \ApiGen\ReflectionParameterMagic
-	 */
-	public function setPosition($position)
-	{
-		$this->position = (int) $position;
-		return $this;
-	}
-
-
-	/**
-	 * Sets the part of the source code defining the parameter default value.
-	 *
-	 * @param string|null $defaultValueDefinition
-	 * @return ReflectionParameterMagic
-	 */
-	public function setDefaultValueDefinition($defaultValueDefinition)
-	{
-		$this->defaultValueDefinition = $defaultValueDefinition;
-		return $this;
-	}
-
-
-	/**
-	 * Sets if the parameter can be used unlimited times.
-	 *
-	 * @param boolean $unlimited
-	 * @return ReflectionParameterMagic
-	 */
-	public function setUnlimited($unlimited)
-	{
-		$this->unlimited = (bool) $unlimited;
-		return $this;
-	}
-
-
-	/**
-	 * Sets if the parameter value is passed by reference.
-	 *
-	 * @param boolean $passedByReference
-	 * @return ReflectionParameterMagic
-	 */
-	public function setPassedByReference($passedByReference)
-	{
-		$this->passedByReference = (bool) $passedByReference;
-		return $this;
-	}
-
-
-	/**
-	 * Sets declaring function.
-	 *
-	 * @return ReflectionParameterMagic
-	 */
-	public function setDeclaringFunction(ReflectionFunctionBase $declaringFunction)
-	{
-		$this->declaringFunction = $declaringFunction;
-		return $this;
-	}
-
-
-	/**
 	 * Returns the reflection broker used by this reflection object.
 	 *
 	 * @return TokenReflection\Broker
@@ -178,6 +100,7 @@ class ReflectionParameterMagic extends ReflectionParameter
 
 	/**
 	 * Returns the name.
+	 * Overrides parent method.
 	 *
 	 * @return string
 	 */
@@ -370,13 +293,13 @@ class ReflectionParameterMagic extends ReflectionParameter
 	 */
 	public function isArray()
 	{
-		return TokenReflectionParameter::ARRAY_TYPE_HINT === $this->typeHint;
+		return TokenReflection\ReflectionParameter::ARRAY_TYPE_HINT === $this->typeHint;
 	}
 
 
 	public function isCallable()
 	{
-		return TokenReflectionParameter::CALLABLE_TYPE_HINT === $this->typeHint;
+		return TokenReflection\ReflectionParameter::CALLABLE_TYPE_HINT === $this->typeHint;
 	}
 
 
@@ -467,36 +390,6 @@ class ReflectionParameterMagic extends ReflectionParameter
 	public function isUnlimited()
 	{
 		return $this->unlimited;
-	}
-
-
-	/**
-	 * @param string $name
-	 * @return mixed
-	 */
-	public function __get($name)
-	{
-		$key = ucfirst($name);
-		if (isset(self::$reflectionMethods[$this->reflectionType]['get' . $key])) {
-			return $this->{'get' . $key}();
-		}
-
-		if (isset(self::$reflectionMethods[$this->reflectionType]['is' . $key])) {
-			return $this->{'is' . $key}();
-		}
-
-		return NULL;
-	}
-
-
-	/**
-	 * @param mixed $name
-	 * @return boolean
-	 */
-	public function __isset($name)
-	{
-		$key = ucfirst($name);
-		return isset(self::$reflectionMethods[$this->reflectionType]['get' . $key]) || isset(self::$reflectionMethods[$this->reflectionType]['is' . $key]);
 	}
 
 }
