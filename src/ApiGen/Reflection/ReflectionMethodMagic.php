@@ -11,16 +11,27 @@ namespace ApiGen\Reflection;
 
 use ApiGen\Generator\Generator;
 use ReflectionProperty as InternalReflectionMethod;
+use TokenReflection\Broker;
 use TokenReflection\IReflection;
 
 
 /**
  * Envelope for magic methods that are defined only as @method annotation.
+ *
+ * @method  ReflectionMethodMagic   setName(string $name)
+ * @method  ReflectionMethodMagic   setShortDescription(string $shortDescription)
+ * @method  ReflectionMethodMagic   setStartLine(int $startLine)
+ * @method  ReflectionMethodMagic   setEndLine(int $endLine)
+ * @method  ReflectionMethodMagic   setReturnsReference(bool $returnsReference)
+ * @method  ReflectionMethodMagic   setParameters(array $parameters)
+ * @method  ReflectionMethodMagic   setDeclaringClass(ReflectionClass $declaringClass)
  */
 class ReflectionMethodMagic extends ReflectionMethod
 {
+
 	/**
 	 * Method name.
+	 *
 	 * @var string
 	 */
 	protected $name;
@@ -32,18 +43,21 @@ class ReflectionMethodMagic extends ReflectionMethod
 
 	/**
 	 * Start line number in the file.
+	 *
 	 * @var integer
 	 */
 	protected $startLine;
 
 	/**
 	 * End line number in the file.
+	 *
 	 * @var integer
 	 */
 	protected $endLine;
 
 	/**
 	 * If the method returns reference.
+	 *
 	 * @var boolean
 	 */
 	protected $returnsReference;
@@ -64,89 +78,9 @@ class ReflectionMethodMagic extends ReflectionMethod
 
 
 	/**
-	 * Sets method name.
-	 * @param string $name
-	 * @return ReflectionMethodMagic
-	 */
-	public function setName($name)
-	{
-		$this->name = (string)$name;
-		return $this;
-
-	}
-
-
-	/**
-	 * Sets short description.
-	 * @param string $shortDescription
-	 * @return ReflectionMethodMagic
-	 */
-	public function setShortDescription($shortDescription)
-	{
-		$this->shortDescription = (string)$shortDescription;
-		return $this;
-	}
-
-
-	/**
-	 * @param integer $startLine
-	 * @return ReflectionMethodMagic
-	 */
-	public function setStartLine($startLine)
-	{
-		$this->startLine = (int)$startLine;
-		return $this;
-	}
-
-
-	/**
-	 * @param integer $endLine
-	 * @return ReflectionMethodMagic
-	 */
-	public function setEndLine($endLine)
-	{
-		$this->endLine = (int)$endLine;
-		return $this;
-	}
-
-
-	/**
-	 * @param boolean $returnsReference
-	 * @return ReflectionMethodMagic
-	 */
-	public function setReturnsReference($returnsReference)
-	{
-		$this->returnsReference = (bool)$returnsReference;
-		return $this;
-	}
-
-
-	/**
-	 * Sets parameters.
-	 * @param array $parameters
-	 * @return ReflectionMethodMagic
-	 */
-	public function setParameters(array $parameters)
-	{
-		$this->parameters = $parameters;
-		return $this;
-	}
-
-
-	/**
-	 * @param ReflectionClass $declaringClass
-	 * @return ReflectionMethodMagic
-	 */
-	public function setDeclaringClass(ReflectionClass $declaringClass)
-	{
-		$this->declaringClass = $declaringClass;
-		return $this;
-	}
-
-
-	/**
 	 * Returns the reflection broker used by this reflection object.
-	 * @return \TokenReflection\Broker
+	 *
+	 * @return Broker
 	 */
 	public function getBroker()
 	{
@@ -156,6 +90,7 @@ class ReflectionMethodMagic extends ReflectionMethod
 
 	/**
 	 * Returns the start position in the file token stream.
+	 *
 	 * @return integer
 	 */
 	public function getStartPosition()
@@ -166,6 +101,7 @@ class ReflectionMethodMagic extends ReflectionMethod
 
 	/**
 	 * Returns the end position in the file token stream.
+	 *
 	 * @return integer
 	 */
 	public function getEndPosition()
@@ -175,6 +111,8 @@ class ReflectionMethodMagic extends ReflectionMethod
 
 
 	/**
+     * Overrides parent method.
+	 *
 	 * @return string
 	 */
 	public function getName()
@@ -194,6 +132,7 @@ class ReflectionMethodMagic extends ReflectionMethod
 
 	/**
 	 * Returns the long description.
+	 *
 	 * @return string
 	 */
 	public function getLongDescription()
@@ -204,6 +143,7 @@ class ReflectionMethodMagic extends ReflectionMethod
 
 	/**
 	 * Returns the definition start line number in the file.
+	 *
 	 * @return integer
 	 */
 	public function getStartLine()
@@ -214,6 +154,7 @@ class ReflectionMethodMagic extends ReflectionMethod
 
 	/**
 	 * Returns the definition end line number in the file.
+	 *
 	 * @return integer
 	 */
 	public function getEndLine()
@@ -224,6 +165,7 @@ class ReflectionMethodMagic extends ReflectionMethod
 
 	/**
 	 * Returns if the function/method returns its value as reference.
+	 *
 	 * @return boolean
 	 */
 	public function returnsReference()
@@ -234,6 +176,7 @@ class ReflectionMethodMagic extends ReflectionMethod
 
 	/**
 	 * Returns if the property is magic.
+	 *
 	 * @return boolean
 	 */
 	public function isMagic()
@@ -244,6 +187,7 @@ class ReflectionMethodMagic extends ReflectionMethod
 
 	/**
 	 * Returns the unqualified name (UQN).
+	 *
 	 * @return string
 	 */
 	public function getShortName()
@@ -254,6 +198,7 @@ class ReflectionMethodMagic extends ReflectionMethod
 
 	/**
 	 * Returns the PHP extension reflection.
+	 *
 	 * @return ReflectionExtension|NULL
 	 */
 	public function getExtension()
@@ -264,6 +209,7 @@ class ReflectionMethodMagic extends ReflectionMethod
 
 	/**
 	 * Returns the PHP extension name.
+	 *
 	 * @return boolean
 	 */
 	public function getExtensionName()
@@ -274,12 +220,13 @@ class ReflectionMethodMagic extends ReflectionMethod
 
 	/**
 	 * Returns if the method should be documented.
+	 *
 	 * @return boolean
 	 */
 	public function isDocumented()
 	{
 		if (NULL === $this->isDocumented) {
-			$this->isDocumented = self::$config->deprecated ||  ! $this->isDeprecated();
+			$this->isDocumented = self::$config->deprecated || ! $this->isDeprecated();
 		}
 
 		return $this->isDocumented;
@@ -288,6 +235,7 @@ class ReflectionMethodMagic extends ReflectionMethod
 
 	/**
 	 * Returns if the property is deprecated.
+	 *
 	 * @return boolean
 	 */
 	public function isDeprecated()
@@ -298,6 +246,7 @@ class ReflectionMethodMagic extends ReflectionMethod
 
 	/**
 	 * Returns property package name (including subpackage name).
+	 *
 	 * @return string
 	 */
 	public function getPackageName()
@@ -308,6 +257,7 @@ class ReflectionMethodMagic extends ReflectionMethod
 
 	/**
 	 * Returns property namespace name.
+	 *
 	 * @return string
 	 */
 	public function getNamespaceName()
@@ -318,6 +268,7 @@ class ReflectionMethodMagic extends ReflectionMethod
 
 	/**
 	 * Returns property annotations.
+	 *
 	 * @return array
 	 */
 	public function getAnnotations()
@@ -331,6 +282,7 @@ class ReflectionMethodMagic extends ReflectionMethod
 
 	/**
 	 * Returns the method declaring class.
+	 *
 	 * @return \ApiGen\ReflectionClass|null
 	 */
 	public function getDeclaringClass()
@@ -341,6 +293,7 @@ class ReflectionMethodMagic extends ReflectionMethod
 
 	/**
 	 * Returns the declaring class name.
+	 *
 	 * @return string|null
 	 */
 	public function getDeclaringClassName()
@@ -351,6 +304,7 @@ class ReflectionMethodMagic extends ReflectionMethod
 
 	/**
 	 * Returns method modifiers.
+	 *
 	 * @return integer
 	 */
 	public function getModifiers()
@@ -361,6 +315,7 @@ class ReflectionMethodMagic extends ReflectionMethod
 
 	/**
 	 * Returns if the method is abstract.
+	 *
 	 * @return boolean
 	 */
 	public function isAbstract()
@@ -371,6 +326,7 @@ class ReflectionMethodMagic extends ReflectionMethod
 
 	/**
 	 * Returns if the method is final.
+	 *
 	 * @return boolean
 	 */
 	public function isFinal()
@@ -381,6 +337,7 @@ class ReflectionMethodMagic extends ReflectionMethod
 
 	/**
 	 * Returns if the method is private.
+	 *
 	 * @return boolean
 	 */
 	public function isPrivate()
@@ -391,6 +348,7 @@ class ReflectionMethodMagic extends ReflectionMethod
 
 	/**
 	 * Returns if the method is protected.
+	 *
 	 * @return boolean
 	 */
 	public function isProtected()
@@ -401,6 +359,7 @@ class ReflectionMethodMagic extends ReflectionMethod
 
 	/**
 	 * Returns if the method is public.
+	 *
 	 * @return boolean
 	 */
 	public function isPublic()
@@ -411,6 +370,7 @@ class ReflectionMethodMagic extends ReflectionMethod
 
 	/**
 	 * Returns if the method is static.
+	 *
 	 * @return boolean
 	 */
 	public function isStatic()
@@ -421,6 +381,7 @@ class ReflectionMethodMagic extends ReflectionMethod
 
 	/**
 	 * Returns if the property is internal.
+	 *
 	 * @return boolean
 	 */
 	public function isInternal()
@@ -431,6 +392,7 @@ class ReflectionMethodMagic extends ReflectionMethod
 
 	/**
 	 * Returns if the method is a constructor.
+	 *
 	 * @return boolean
 	 */
 	public function isConstructor()
@@ -441,6 +403,7 @@ class ReflectionMethodMagic extends ReflectionMethod
 
 	/**
 	 * Returns if the method is a destructor.
+	 *
 	 * @return boolean
 	 */
 	public function isDestructor()
@@ -451,6 +414,7 @@ class ReflectionMethodMagic extends ReflectionMethod
 
 	/**
 	 * Returns the method declaring trait.
+	 *
 	 * @return \ApiGen\ReflectionClass|null
 	 */
 	public function getDeclaringTrait()
@@ -461,6 +425,7 @@ class ReflectionMethodMagic extends ReflectionMethod
 
 	/**
 	 * Returns the declaring trait name.
+	 *
 	 * @return string|null
 	 */
 	public function getDeclaringTraitName()
@@ -474,6 +439,7 @@ class ReflectionMethodMagic extends ReflectionMethod
 
 	/**
 	 * Returns the overridden method.
+	 *
 	 * @return \ApiGen\ReflectionMethod|null
 	 */
 	public function getImplementedMethod()
@@ -484,17 +450,18 @@ class ReflectionMethodMagic extends ReflectionMethod
 
 	/**
 	 * Returns the overridden method.
+	 *
 	 * @return \ApiGen\ReflectionMethod|null
 	 */
 	public function getOverriddenMethod()
 	{
 		$parent = $this->declaringClass->getParentClass();
-		if (NULL === $parent) {
+		if ($parent === NULL) {
 			return NULL;
 		}
 
 		foreach ($parent->getMagicMethods() as $method) {
-			if ($this->name === $method->getName()) {
+			if ($method->getName() === $this->name) {
 				return $method;
 			}
 		}
@@ -505,7 +472,8 @@ class ReflectionMethodMagic extends ReflectionMethod
 
 	/**
 	 * Returns the original name when importing from a trait.
-	 * @return string|null
+	 *
+	 * @return string|NULL
 	 */
 	public function getOriginalName()
 	{
@@ -515,7 +483,8 @@ class ReflectionMethodMagic extends ReflectionMethod
 
 	/**
 	 * Returns the original modifiers value when importing from a trait.
-	 * @return integer|null
+	 *
+	 * @return integer|NULL
 	 */
 	public function getOriginalModifiers()
 	{
@@ -525,7 +494,8 @@ class ReflectionMethodMagic extends ReflectionMethod
 
 	/**
 	 * Returns the original method when importing from a trait.
-	 * @return \ApiGen\ReflectionMethod|null
+	 *
+	 * @return ReflectionMethod|NULL
 	 */
 	public function getOriginal()
 	{
@@ -535,6 +505,7 @@ class ReflectionMethodMagic extends ReflectionMethod
 
 	/**
 	 * Returns a list of method parameters.
+	 *
 	 * @return array
 	 */
 	public function getParameters()
@@ -545,6 +516,7 @@ class ReflectionMethodMagic extends ReflectionMethod
 
 	/**
 	 * Returns the number of parameters.
+	 *
 	 * @return integer
 	 */
 	public function getNumberOfParameters()
@@ -555,6 +527,7 @@ class ReflectionMethodMagic extends ReflectionMethod
 
 	/**
 	 * Returns the number of required parameters.
+	 *
 	 * @return integer
 	 */
 	public function getNumberOfRequiredParameters()
@@ -571,6 +544,7 @@ class ReflectionMethodMagic extends ReflectionMethod
 
 	/**
 	 * Returns imported namespaces and aliases from the declaring namespace.
+	 *
 	 * @return array
 	 */
 	public function getNamespaceAliases()
@@ -581,6 +555,7 @@ class ReflectionMethodMagic extends ReflectionMethod
 
 	/**
 	 * Returns an property pretty (docblock compatible) name.
+	 *
 	 * @return string
 	 */
 	public function getPrettyName()
@@ -591,6 +566,7 @@ class ReflectionMethodMagic extends ReflectionMethod
 
 	/**
 	 * Returns the file name the method is defined in.
+	 *
 	 * @return string
 	 */
 	public function getFileName()
@@ -601,6 +577,7 @@ class ReflectionMethodMagic extends ReflectionMethod
 
 	/**
 	 * Returns if the method is user defined.
+	 *
 	 * @return boolean
 	 */
 	public function isUserDefined()
@@ -611,6 +588,7 @@ class ReflectionMethodMagic extends ReflectionMethod
 
 	/**
 	 * Returns if the method comes from a tokenized source.
+	 *
 	 * @return boolean
 	 */
 	public function isTokenized()
@@ -621,6 +599,7 @@ class ReflectionMethodMagic extends ReflectionMethod
 
 	/**
 	 * Returns the appropriate docblock definition.
+	 *
 	 * @return string|boolean
 	 */
 	public function getDocComment()
@@ -650,8 +629,7 @@ class ReflectionMethodMagic extends ReflectionMethod
 
 
 	/**
-	 * Checks if there is a particular annotation.
-	 * @param string $name Annotation name
+	 * @param string $name
 	 * @return boolean
 	 */
 	public function hasAnnotation($name)
@@ -662,9 +640,8 @@ class ReflectionMethodMagic extends ReflectionMethod
 
 
 	/**
-	 * Returns a particular annotation value.
-	 * @param string $name Annotation name
-	 * @return string|array|null
+	 * @param string $name
+	 * @return string|array|NULL
 	 */
 	public function getAnnotation($name)
 	{
@@ -673,38 +650,6 @@ class ReflectionMethodMagic extends ReflectionMethod
 			return $annotations[$name];
 		}
 		return NULL;
-	}
-
-
-	/**
-	 * Retrieves a property or method value.
-	 * @param string $name Property name
-	 * @return mixed
-	 */
-	public function __get($name)
-	{
-		$key = ucfirst($name);
-		if (isset(self::$reflectionMethods[$this->reflectionType]['get' . $key])) {
-			return $this->{'get' . $key}();
-		}
-
-		if (isset(self::$reflectionMethods[$this->reflectionType]['is' . $key])) {
-			return $this->{'is' . $key}();
-		}
-
-		return NULL;
-	}
-
-
-	/**
-	 * Checks if the given property exists.
-	 * @param mixed $name Property name
-	 * @return boolean
-	 */
-	public function __isset($name)
-	{
-		$key = ucfirst($name);
-		return isset(self::$reflectionMethods[$this->reflectionType]['get' . $key]) || isset(self::$reflectionMethods[$this->reflectionType]['is' . $key]);
 	}
 
 }

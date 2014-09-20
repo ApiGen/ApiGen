@@ -12,6 +12,7 @@ namespace ApiGen;
 
 class ApiGen
 {
+
 	const NAME = 'ApiGen';
 	const VERSION = '3.0.0';
 

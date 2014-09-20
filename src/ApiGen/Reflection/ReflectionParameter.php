@@ -9,13 +9,14 @@
 
 namespace ApiGen\Reflection;
 
+
 /**
  * Parameter reflection envelope.
- *
  * Alters TokenReflection\IReflectionParameter functionality for ApiGen.
  */
 class ReflectionParameter extends ReflectionBase
 {
+
 	/**
 	 * Returns parameter type hint.
 	 *
@@ -25,14 +26,17 @@ class ReflectionParameter extends ReflectionBase
 	{
 		if ($this->isArray()) {
 			return 'array';
+
 		} elseif ($this->isCallable()) {
 			return 'callable';
+
 		} elseif ($className = $this->getClassName()) {
 			return $className;
+
 		} elseif ($annotations = $this->getDeclaringFunction()->getAnnotation('param')) {
-			if (!empty($annotations[$this->getPosition()])) {
+			if ( ! empty($annotations[$this->getPosition()])) {
 				list($types) = preg_split('~\s+|$~', $annotations[$this->getPosition()], 2);
-				if (!empty($types) && '$' !== $types[0]) {
+				if ( ! empty($types) && $types[0] !== '$') {
 					return $types;
 				}
 			}
@@ -40,6 +44,7 @@ class ReflectionParameter extends ReflectionBase
 
 		return 'mixed';
 	}
+
 
 	/**
 	 * Returns parameter description.
@@ -57,6 +62,7 @@ class ReflectionParameter extends ReflectionBase
 		return preg_replace('~^(\\$' . $this->getName() . '(?:,\\.{3})?)(\\s+|$)~i', '\\2', $description, 1);
 	}
 
+
 	/**
 	 * Returns the part of the source code defining the parameter default value.
 	 *
@@ -66,6 +72,7 @@ class ReflectionParameter extends ReflectionBase
 	{
 		return $this->reflection->getDefaultValueDefinition();
 	}
+
 
 	/**
 	 * Retutns if a default value for the parameter is available.
@@ -77,6 +84,7 @@ class ReflectionParameter extends ReflectionBase
 		return $this->reflection->isDefaultValueAvailable();
 	}
 
+
 	/**
 	 * Returns the position within all parameters.
 	 *
@@ -86,6 +94,7 @@ class ReflectionParameter extends ReflectionBase
 	{
 		return $this->reflection->position;
 	}
+
 
 	/**
 	 * Returns if the parameter expects an array.
@@ -97,6 +106,7 @@ class ReflectionParameter extends ReflectionBase
 		return $this->reflection->isArray();
 	}
 
+
 	/**
 	 * Returns if the parameter expects a callback.
 	 *
@@ -107,26 +117,29 @@ class ReflectionParameter extends ReflectionBase
 		return $this->reflection->isCallable();
 	}
 
+
 	/**
 	 * Returns reflection of the required class of the parameter.
 	 *
-	 * @return \ApiGen\ReflectionClass|null
+	 * @return ReflectionClass|NULL
 	 */
 	public function getClass()
 	{
 		$className = $this->reflection->getClassName();
-		return null === $className ? null : self::$parsedClasses[$className];
+		return $className === NULL ? NULL : self::$parsedClasses[$className];
 	}
+
 
 	/**
 	 * Returns the required class name of the value.
 	 *
-	 * @return string|null
+	 * @return string|NULL
 	 */
 	public function getClassName()
 	{
 		return $this->reflection->getClassName();
 	}
+
 
 	/**
 	 * Returns if the the parameter allows NULL.
@@ -138,6 +151,7 @@ class ReflectionParameter extends ReflectionBase
 		return $this->reflection->allowsNull();
 	}
 
+
 	/**
 	 * Returns if the parameter is optional.
 	 *
@@ -147,6 +161,7 @@ class ReflectionParameter extends ReflectionBase
 	{
 		return $this->reflection->isOptional();
 	}
+
 
 	/**
 	 * Returns if the parameter value is passed by reference.
@@ -158,6 +173,7 @@ class ReflectionParameter extends ReflectionBase
 		return $this->reflection->isPassedByReference();
 	}
 
+
 	/**
 	 * Returns if the paramter value can be passed by value.
 	 *
@@ -168,10 +184,11 @@ class ReflectionParameter extends ReflectionBase
 		return $this->reflection->canBePassedByValue();
 	}
 
+
 	/**
 	 * Returns the declaring function.
 	 *
-	 * @return \ApiGen\ReflectionFunctionBase
+	 * @return ReflectionFunctionBase
 	 */
 	public function getDeclaringFunction()
 	{
@@ -179,10 +196,12 @@ class ReflectionParameter extends ReflectionBase
 
 		if ($className = $this->reflection->getDeclaringClassName()) {
 			return self::$parsedClasses[$className]->getMethod($functionName);
+
 		} else {
 			return self::$parsedFunctions[$functionName];
 		}
 	}
+
 
 	/**
 	 * Returns the declaring function name.
@@ -194,26 +213,29 @@ class ReflectionParameter extends ReflectionBase
 		return $this->reflection->getDeclaringFunctionName();
 	}
 
+
 	/**
 	 * Returns the function/method declaring class.
 	 *
-	 * @return \ApiGen\ReflectionClass|null
+	 * @return ReflectionClass|NULL
 	 */
 	public function getDeclaringClass()
 	{
 		$className = $this->reflection->getDeclaringClassName();
-		return null === $className ? null : self::$parsedClasses[$className];
+		return $className === NULL ? NULL : self::$parsedClasses[$className];
 	}
+
 
 	/**
 	 * Returns the declaring class name.
 	 *
-	 * @return string|null
+	 * @return string|NULL
 	 */
 	public function getDeclaringClassName()
 	{
 		return $this->reflection->getDeclaringClassName();
 	}
+
 
 	/**
 	 * If the parameter can be used unlimited.
@@ -222,6 +244,7 @@ class ReflectionParameter extends ReflectionBase
 	 */
 	public function isUnlimited()
 	{
-		return false;
+		return FALSE;
 	}
+
 }

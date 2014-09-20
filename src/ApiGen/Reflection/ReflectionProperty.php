@@ -9,13 +9,14 @@
 
 namespace ApiGen\Reflection;
 
+
 /**
  * Property reflection envelope.
- *
  * Alters TokenReflection\IReflectionProperty functionality for ApiGen.
  */
 class ReflectionProperty extends ReflectionElement
 {
+
 	/**
 	 * Returns if the property is read-only.
 	 *
@@ -23,8 +24,9 @@ class ReflectionProperty extends ReflectionElement
 	 */
 	public function isReadOnly()
 	{
-		return false;
+		return FALSE;
 	}
+
 
 	/**
 	 * Returns if the property is write-only.
@@ -33,8 +35,9 @@ class ReflectionProperty extends ReflectionElement
 	 */
 	public function isWriteOnly()
 	{
-		return false;
+		return FALSE;
 	}
+
 
 	/**
 	 * Returns if the property is magic.
@@ -43,8 +46,9 @@ class ReflectionProperty extends ReflectionElement
 	 */
 	public function isMagic()
 	{
-		return false;
+		return FALSE;
 	}
+
 
 	/**
 	 * Returns property type hint.
@@ -55,22 +59,24 @@ class ReflectionProperty extends ReflectionElement
 	{
 		if ($annotations = $this->getAnnotation('var')) {
 			list($types) = preg_split('~\s+|$~', $annotations[0], 2);
-			if (!empty($types) && '$' !== $types[0]) {
+			if ( ! empty($types) && '$' !== $types[0]) {
 				return $types;
 			}
 		}
 
 		try {
 			$type = gettype($this->getDefaultValue());
-			if ('null' !== strtolower($type)) {
+			if (strtolower($type) !== 'null') {
 				return $type;
 			}
+
 		} catch (\Exception $e) {
 			// Nothing
 		}
 
 		return 'mixed';
 	}
+
 
 	/**
 	 * Returns the property declaring class.
@@ -80,8 +86,9 @@ class ReflectionProperty extends ReflectionElement
 	public function getDeclaringClass()
 	{
 		$className = $this->reflection->getDeclaringClassName();
-		return null === $className ? null : self::$parsedClasses[$className];
+		return $className === NULL ? NULL : self::$parsedClasses[$className];
 	}
+
 
 	/**
 	 * Returns the name of the declaring class.
@@ -93,6 +100,7 @@ class ReflectionProperty extends ReflectionElement
 		return $this->reflection->getDeclaringClassName();
 	}
 
+
 	/**
 	 * Returns the property default value.
 	 *
@@ -102,6 +110,7 @@ class ReflectionProperty extends ReflectionElement
 	{
 		return $this->reflection->getDefaultValue();
 	}
+
 
 	/**
 	 * Returns the part of the source code defining the property default value.
@@ -113,6 +122,7 @@ class ReflectionProperty extends ReflectionElement
 		return $this->reflection->getDefaultValueDefinition();
 	}
 
+
 	/**
 	 * Returns if the property was created at compile time.
 	 *
@@ -122,6 +132,7 @@ class ReflectionProperty extends ReflectionElement
 	{
 		return $this->reflection->isDefault();
 	}
+
 
 	/**
 	 * Returns property modifiers.
@@ -133,6 +144,7 @@ class ReflectionProperty extends ReflectionElement
 		return $this->reflection->getModifiers();
 	}
 
+
 	/**
 	 * Returns if the property is private.
 	 *
@@ -142,6 +154,7 @@ class ReflectionProperty extends ReflectionElement
 	{
 		return $this->reflection->isPrivate();
 	}
+
 
 	/**
 	 * Returns if the property is protected.
@@ -153,6 +166,7 @@ class ReflectionProperty extends ReflectionElement
 		return $this->reflection->isProtected();
 	}
 
+
 	/**
 	 * Returns if the property is public.
 	 *
@@ -162,6 +176,7 @@ class ReflectionProperty extends ReflectionElement
 	{
 		return $this->reflection->isPublic();
 	}
+
 
 	/**
 	 * Returns if the poperty is static.
@@ -173,6 +188,7 @@ class ReflectionProperty extends ReflectionElement
 		return $this->reflection->isStatic();
 	}
 
+
 	/**
 	 * Returns the property declaring trait.
 	 *
@@ -181,8 +197,9 @@ class ReflectionProperty extends ReflectionElement
 	public function getDeclaringTrait()
 	{
 		$traitName = $this->reflection->getDeclaringTraitName();
-		return null === $traitName ? null : self::$parsedClasses[$traitName];
+		return $traitName === NULL ? NULL : self::$parsedClasses[$traitName];
 	}
+
 
 	/**
 	 * Returns the declaring trait name.
@@ -193,6 +210,7 @@ class ReflectionProperty extends ReflectionElement
 	{
 		return $this->reflection->getDeclaringTraitName();
 	}
+
 
 	/**
 	 * Returns if the property is valid.
@@ -205,6 +223,7 @@ class ReflectionProperty extends ReflectionElement
 			return $class->isValid();
 		}
 
-		return true;
+		return TRUE;
 	}
+
 }

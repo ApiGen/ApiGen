@@ -9,11 +9,13 @@
 
 namespace ApiGen;
 
-use Nette\Latte\Macros\MacroSet as NetteMacroSet;
+use Latte\Macros\MacroSet as LatteMacroSet;
+
 
 /**
  * Macro set base class.
  */
-abstract class MacroSet extends NetteMacroSet
+abstract class MacroSet extends LatteMacroSet
 {
+
 }

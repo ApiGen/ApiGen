@@ -12,6 +12,7 @@ use Nette\DI\CompilerExtension;
  */
 class Composer extends Nette\Object
 {
+
 	/** @var Helper */
 	private $helper;
 
@@ -28,6 +29,7 @@ class Composer extends Nette\Object
 
 	/**
 	 * @param array $config
+	 * @throws \Exception
 	 * @return array
 	 */
 	public function addCliArguments($config)
@@ -35,7 +37,7 @@ class Composer extends Nette\Object
 		// Command line arguments
 		$cliArguments = array();
 		foreach ($this->consoleHelper->getCliArguments() as $name => $value) {
-			$newName = preg_replace_callback( '~-([a-z])~', function($matches) {
+			$newName = preg_replace_callback('~-([a-z])~', function ($matches) {
 				return ucfirst($matches[1]);
 			}, $name);
 
@@ -77,7 +79,7 @@ class Composer extends Nette\Object
 
 
 	/**
-	 * @param $config
+	 * @param array $config
 	 * @param CompilerExtension $extension
 	 * @return array
 	 */

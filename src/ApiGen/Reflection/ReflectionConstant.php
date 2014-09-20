@@ -14,11 +14,22 @@ use ApiGen\FileSystem;
 
 /**
  * Constant reflection envelope.
- *
  * Alters TokenReflection\IReflectionConstant functionality for ApiGen.
  */
 class ReflectionConstant extends ReflectionElement
 {
+
+	/**
+	 * Returns the name (FQN).
+	 *
+	 * @return string
+	 */
+	public function getName()
+	{
+		return $this->reflection->getName();
+	}
+
+
 	/**
 	 * Returns the unqualified name (UQN).
 	 *
@@ -29,6 +40,7 @@ class ReflectionConstant extends ReflectionElement
 		return $this->reflection->getShortName();
 	}
 
+
 	/**
 	 * Returns constant type hint.
 	 *
@@ -38,16 +50,17 @@ class ReflectionConstant extends ReflectionElement
 	{
 		if ($annotations = $this->getAnnotation('var')) {
 			list($types) = preg_split('~\s+|$~', $annotations[0], 2);
-			if (!empty($types)) {
+			if ( ! empty($types)) {
 				return $types;
 			}
 		}
 
 		try {
 			$type = gettype($this->getValue());
-			if ('null' !== strtolower($type)) {
+			if (strtolower($type) !== 'null') {
 				return $type;
 			}
+
 		} catch (\Exception $e) {
 			// Nothing
 		}
@@ -55,26 +68,29 @@ class ReflectionConstant extends ReflectionElement
 		return 'mixed';
 	}
 
+
 	/**
 	 * Returns the constant declaring class.
 	 *
-	 * @return \ApiGen\ReflectionClass|null
+	 * @return ReflectionClass|NULL
 	 */
 	public function getDeclaringClass()
 	{
 		$className = $this->reflection->getDeclaringClassName();
-		return null === $className ? null : self::$parsedClasses[$className];
+		return $className === NULL ? NULL : self::$parsedClasses[$className];
 	}
+
 
 	/**
 	 * Returns the name of the declaring class.
 	 *
-	 * @return string|null
+	 * @return string|NULL
 	 */
 	public function getDeclaringClassName()
 	{
 		return $this->reflection->getDeclaringClassName();
 	}
+
 
 	/**
 	 * Returns the constant value.
@@ -86,6 +102,7 @@ class ReflectionConstant extends ReflectionElement
 		return $this->reflection->getValue();
 	}
 
+
 	/**
 	 * Returns the constant value definition.
 	 *
@@ -96,6 +113,7 @@ class ReflectionConstant extends ReflectionElement
 		return $this->reflection->getValueDefinition();
 	}
 
+
 	/**
 	 * Returns if the constant is valid.
 	 *
@@ -104,15 +122,16 @@ class ReflectionConstant extends ReflectionElement
 	public function isValid()
 	{
 		if ($this->reflection instanceof \TokenReflection\Invalid\ReflectionConstant) {
-			return false;
+			return FALSE;
 		}
 
 		if ($class = $this->getDeclaringClass()) {
 			return $class->isValid();
 		}
 
-		return true;
+		return TRUE;
 	}
+
 
 	/**
 	 * Returns if the constant should be documented.
@@ -121,18 +140,18 @@ class ReflectionConstant extends ReflectionElement
 	 */
 	public function isDocumented()
 	{
-		if (null === $this->isDocumented && parent::isDocumented() && null === $this->reflection->getDeclaringClassName()) {
+		if ($this->isDocumented === NULL && parent::isDocumented() && $this->reflection->getDeclaringClassName() === NULL) {
 			$fileName = FileSystem::unPharPath($this->reflection->getFilename());
 			foreach (self::$config->skipDocPath as $mask) {
 				if (fnmatch($mask, $fileName, FNM_NOESCAPE)) {
-					$this->isDocumented = false;
+					$this->isDocumented = FALSE;
 					break;
 				}
 			}
-			if (true === $this->isDocumented) {
+			if ($this->isDocumented === TRUE) {
 				foreach (self::$config->skipDocPrefix as $prefix) {
-					if (0 === strpos($this->reflection->getName(), $prefix)) {
-						$this->isDocumented = false;
+					if (strpos($this->reflection->getName(), $prefix) === 0) {
+						$this->isDocumented = FALSE;
 						break;
 					}
 				}
@@ -141,4 +160,5 @@ class ReflectionConstant extends ReflectionElement
 
 		return $this->isDocumented;
 	}
+
 }

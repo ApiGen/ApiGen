@@ -12,19 +12,21 @@ namespace ApiGen\Reflection;
 use TokenReflection;
 use InvalidArgumentException;
 
+
 /**
  * Function/method reflection envelope parent class.
- *
  * Alters TokenReflection\IReflectionFunctionBase functionality for ApiGen.
  */
 abstract class ReflectionFunctionBase extends ReflectionElement
 {
+
 	/**
 	 * Cache for list of parameters.
 	 *
 	 * @var array
 	 */
 	protected $parameters;
+
 
 	/**
 	 * Returns the unqualified name (UQN).
@@ -36,6 +38,7 @@ abstract class ReflectionFunctionBase extends ReflectionElement
 		return $this->reflection->getShortName();
 	}
 
+
 	/**
 	 * Returns if the function/method returns its value as reference.
 	 *
@@ -46,6 +49,7 @@ abstract class ReflectionFunctionBase extends ReflectionElement
 		return $this->reflection->returnsReference();
 	}
 
+
 	/**
 	 * Returns a list of function/method parameters.
 	 *
@@ -53,21 +57,21 @@ abstract class ReflectionFunctionBase extends ReflectionElement
 	 */
 	public function getParameters()
 	{
-		if (null === $this->parameters) {
+		if ($this->parameters === NULL) {
 			$generator = self::$generator;
-			$this->parameters = array_map(function(TokenReflection\IReflectionParameter $parameter) use ($generator) {
-			return new ReflectionParameter($parameter, $generator);
+			$this->parameters = array_map(function (TokenReflection\IReflectionParameter $parameter) use ($generator) {
+				return new ReflectionParameter($parameter, $generator);
 			}, $this->reflection->getParameters());
 
 			$annotations = $this->getAnnotation('param');
-			if (null !== $annotations) {
+			if (NULL !== $annotations) {
 				foreach ($annotations as $position => $annotation) {
 					if (isset($parameters[$position])) {
 						// Standard parameter
 						continue;
 					}
 
-					if (!preg_match('~^(?:([\\w\\\\]+(?:\\|[\\w\\\\]+)*)\\s+)?\\$(\\w+),\\.{3}(?:\\s+(.*))?($)~s', $annotation, $matches)) {
+					if ( ! preg_match('~^(?:([\\w\\\\]+(?:\\|[\\w\\\\]+)*)\\s+)?\\$(\\w+),\\.{3}(?:\\s+(.*))?($)~s', $annotation, $matches)) {
 						// Wrong annotation format
 						continue;
 					}
@@ -78,14 +82,13 @@ abstract class ReflectionFunctionBase extends ReflectionElement
 						$typeHint = 'mixed';
 					}
 
-					$parameter = new ReflectionParameterMagic(null, self::$generator);
-					$parameter
-						->setName($name)
+					$parameter = new ReflectionParameterMagic(NULL, self::$generator);
+					$parameter->setName($name)
 						->setPosition($position)
 						->setTypeHint($typeHint)
-						->setDefaultValueDefinition(null)
-						->setUnlimited(true)
-						->setPassedByReference(false)
+						->setDefaultValueDefinition(NULL)
+						->setUnlimited(TRUE)
+						->setPassedByReference(FALSE)
 						->setDeclaringFunction($this);
 
 					$this->parameters[$position] = $parameter;
@@ -96,11 +99,12 @@ abstract class ReflectionFunctionBase extends ReflectionElement
 		return $this->parameters;
 	}
 
+
 	/**
 	 * Returns a particular function/method parameter.
 	 *
 	 * @param integer|string $parameterName Parameter name or position
-	 * @return \ApiGen\ReflectionParameter
+	 * @return ReflectionParameter
 	 * @throws \InvalidArgumentException If there is no parameter of the given name.
 	 * @throws \InvalidArgumentException If there is no parameter at the given position.
 	 */
@@ -114,6 +118,7 @@ abstract class ReflectionFunctionBase extends ReflectionElement
 			}
 
 			throw new InvalidArgumentException(sprintf('There is no parameter at position "%d" in function/method "%s"', $parameterName, $this->getName()), Exception\Runtime::DOES_NOT_EXIST);
+
 		} else {
 			foreach ($parameters as $parameter) {
 				if ($parameter->getName() === $parameterName) {
@@ -125,6 +130,7 @@ abstract class ReflectionFunctionBase extends ReflectionElement
 		}
 	}
 
+
 	/**
 	 * Returns the number of parameters.
 	 *
@@ -135,6 +141,7 @@ abstract class ReflectionFunctionBase extends ReflectionElement
 		return $this->reflection->getNumberOfParameters();
 	}
 
+
 	/**
 	 * Returns the number of required parameters.
 	 *
@@ -144,4 +151,5 @@ abstract class ReflectionFunctionBase extends ReflectionElement
 	{
 		return $this->reflection->getNumberOfRequiredParameters();
 	}
+
 }

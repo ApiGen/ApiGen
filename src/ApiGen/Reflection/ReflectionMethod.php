@@ -9,13 +9,14 @@
 
 namespace ApiGen\Reflection;
 
+
 /**
  * Method reflection envelope.
- *
  * Alters TokenReflection\IReflectionMethod functionality for ApiGen.
  */
 class ReflectionMethod extends ReflectionFunctionBase
 {
+
 	/**
 	 * Returns if the method is magic.
 	 *
@@ -23,29 +24,32 @@ class ReflectionMethod extends ReflectionFunctionBase
 	 */
 	public function isMagic()
 	{
-		return false;
+		return FALSE;
 	}
+
 
 	/**
 	 * Returns the method declaring class.
 	 *
-	 * @return \ApiGen\ReflectionClass|null
+	 * @return ReflectionClass|NULL
 	 */
 	public function getDeclaringClass()
 	{
 		$className = $this->reflection->getDeclaringClassName();
-		return null === $className ? null : self::$parsedClasses[$className];
+		return $className === NULL ? NULL : self::$parsedClasses[$className];
 	}
+
 
 	/**
 	 * Returns the declaring class name.
 	 *
-	 * @return string|null
+	 * @return string|NULL
 	 */
 	public function getDeclaringClassName()
 	{
 		return $this->reflection->getDeclaringClassName();
 	}
+
 
 	/**
 	 * Returns method modifiers.
@@ -57,6 +61,7 @@ class ReflectionMethod extends ReflectionFunctionBase
 		return $this->reflection->getModifiers();
 	}
 
+
 	/**
 	 * Returns if the method is abstract.
 	 *
@@ -66,6 +71,7 @@ class ReflectionMethod extends ReflectionFunctionBase
 	{
 		return $this->reflection->isAbstract();
 	}
+
 
 	/**
 	 * Returns if the method is final.
@@ -77,6 +83,7 @@ class ReflectionMethod extends ReflectionFunctionBase
 		return $this->reflection->isFinal();
 	}
 
+
 	/**
 	 * Returns if the method is private.
 	 *
@@ -86,6 +93,7 @@ class ReflectionMethod extends ReflectionFunctionBase
 	{
 		return $this->reflection->isPrivate();
 	}
+
 
 	/**
 	 * Returns if the method is protected.
@@ -97,6 +105,7 @@ class ReflectionMethod extends ReflectionFunctionBase
 		return $this->reflection->isProtected();
 	}
 
+
 	/**
 	 * Returns if the method is public.
 	 *
@@ -106,6 +115,7 @@ class ReflectionMethod extends ReflectionFunctionBase
 	{
 		return $this->reflection->isPublic();
 	}
+
 
 	/**
 	 * Returns if the method is static.
@@ -117,6 +127,7 @@ class ReflectionMethod extends ReflectionFunctionBase
 		return $this->reflection->isStatic();
 	}
 
+
 	/**
 	 * Returns if the method is a constructor.
 	 *
@@ -126,6 +137,7 @@ class ReflectionMethod extends ReflectionFunctionBase
 	{
 		return $this->reflection->isConstructor();
 	}
+
 
 	/**
 	 * Returns if the method is a destructor.
@@ -137,31 +149,34 @@ class ReflectionMethod extends ReflectionFunctionBase
 		return $this->reflection->isDestructor();
 	}
 
+
 	/**
 	 * Returns the method declaring trait.
 	 *
-	 * @return \ApiGen\ReflectionClass|null
+	 * @return ReflectionClass|NULL
 	 */
 	public function getDeclaringTrait()
 	{
 		$traitName = $this->reflection->getDeclaringTraitName();
-		return null === $traitName ? null : self::$parsedClasses[$traitName];
+		return $traitName === NULL ? NULL : self::$parsedClasses[$traitName];
 	}
+
 
 	/**
 	 * Returns the declaring trait name.
 	 *
-	 * @return string|null
+	 * @return string|NULL
 	 */
 	public function getDeclaringTraitName()
 	{
 		return $this->reflection->getDeclaringTraitName();
 	}
 
+
 	/**
 	 * Returns the overridden method.
 	 *
-	 * @return \ApiGen\ReflectionMethod|null
+	 * @return ReflectionMethod|NULL
 	 */
 	public function getImplementedMethod()
 	{
@@ -171,33 +186,36 @@ class ReflectionMethod extends ReflectionFunctionBase
 			}
 		}
 
-		return null;
+		return NULL;
 	}
+
 
 	/**
 	 * Returns the overridden method.
 	 *
-	 * @return \ApiGen\ReflectionMethod|null
+	 * @return ReflectionMethod|NULL
 	 */
 	public function getOverriddenMethod()
 	{
 		$parent = $this->getDeclaringClass()->getParentClass();
-		if (null === $parent) {
-			return null;
+		if ($parent === NULL) {
+			return NULL;
 		}
 
 		foreach ($parent->getMethods() as $method) {
-			if ($this->getName() === $method->getName()) {
-				if (!$method->isPrivate() && !$method->isAbstract()) {
+			if ($method->getName() === $this->getName()) {
+				if ( ! $method->isPrivate() && ! $method->isAbstract()) {
 					return $method;
+
 				} else {
-					return null;
+					return NULL;
 				}
 			}
 		}
 
-		return null;
+		return NULL;
 	}
+
 
 	/**
 	 * Returns the original name when importing from a trait.
@@ -209,6 +227,7 @@ class ReflectionMethod extends ReflectionFunctionBase
 		return $this->reflection->getOriginalName();
 	}
 
+
 	/**
 	 * Returns the original modifiers value when importing from a trait.
 	 *
@@ -219,16 +238,18 @@ class ReflectionMethod extends ReflectionFunctionBase
 		return $this->reflection->getOriginalModifiers();
 	}
 
+
 	/**
 	 * Returns the original method when importing from a trait.
 	 *
-	 * @return \ApiGen\ReflectionMethod|null
+	 * @return ReflectionMethod|NULL
 	 */
 	public function getOriginal()
 	{
 		$originalName = $this->reflection->getOriginalName();
-		return null === $originalName ? null : self::$parsedClasses[$this->reflection->getOriginal()->getDeclaringClassName()]->getMethod($originalName);
+		return $originalName === NULL ? NULL : self::$parsedClasses[$this->reflection->getOriginal()->getDeclaringClassName()]->getMethod($originalName);
 	}
+
 
 	/**
 	 * Returns if the method is valid.
@@ -241,6 +262,7 @@ class ReflectionMethod extends ReflectionFunctionBase
 			return $class->isValid();
 		}
 
-		return true;
+		return TRUE;
 	}
+
 }

@@ -9,30 +9,36 @@
 
 namespace ApiGen\Reflection;
 
+use TokenReflection\IReflectionClass;
+use TokenReflection\IReflectionConstant;
+use TokenReflection\IReflectionFunction;
+
+
 /**
  * Extension reflection envelope.
- *
  * Alters TokenReflection\IReflectionExtension functionality for ApiGen.
  */
 class ReflectionExtension extends ReflectionBase
 {
+
 	/**
 	 * Returns a class reflection.
 	 *
-	 * @param string $name Class name
-	 * @return \ApiGen\ReflectionClass|null
+	 * @param string $name
+	 * @return ReflectionClass|NULL
 	 */
 	public function getClass($name)
 	{
 		$class = $this->reflection->getClass($name);
-		if (null === $class) {
-			return null;
+		if ($class === NULL) {
+			return NULL;
 		}
 		if (isset(self::$parsedClasses[$name])) {
 			return self::$parsedClasses[$name];
 		}
 		return new ReflectionClass($class, self::$generator);
 	}
+
 
 	/**
 	 * Returns classes defined by this extension.
@@ -43,33 +49,36 @@ class ReflectionExtension extends ReflectionBase
 	{
 		$generator = self::$generator;
 		$classes = self::$parsedClasses;
-		return array_map(function(TokenReflection\IReflectionClass $class) use ($generator, $classes) {
+		return array_map(function (IReflectionClass $class) use ($generator, $classes) {
 			return isset($classes[$class->getName()]) ? $classes[$class->getName()] : new ReflectionClass($class, $generator);
 		}, $this->reflection->getClasses());
 	}
 
+
 	/**
 	 * Returns a constant reflection.
 	 *
-	 * @param string $name Constant name
-	 * @return ReflectionConstant|null
+	 * @param string $name
+	 * @return ReflectionConstant|NULL
 	 */
 	public function getConstant($name)
 	{
 		return $this->getConstantReflection($name);
 	}
 
+
 	/**
 	 * Returns a constant reflection.
 	 *
-	 * @param string $name Constant name
-	 * @return ReflectionConstant|null
+	 * @param string $name
+	 * @return ReflectionConstant|NULL
 	 */
 	public function getConstantReflection($name)
 	{
 		$constant = $this->reflection->getConstantReflection($name);
-		return null === $constant ? null : new ReflectionConstant($constant, self::$generator);
+		return $constant === NULL ? NULL : new ReflectionConstant($constant, self::$generator);
 	}
+
 
 	/**
 	 * Returns reflections of defined constants.
@@ -81,6 +90,7 @@ class ReflectionExtension extends ReflectionBase
 		return $this->getConstantReflections();
 	}
 
+
 	/**
 	 * Returns reflections of defined constants.
 	 *
@@ -89,22 +99,24 @@ class ReflectionExtension extends ReflectionBase
 	public function getConstantReflections()
 	{
 		$generator = self::$generator;
-		return array_map(function(TokenReflection\IReflectionConstant $constant) use ($generator) {
+		return array_map(function (IReflectionConstant $constant) use ($generator) {
 			return new ReflectionConstant($constant, $generator);
 		}, $this->reflection->getConstantReflections());
 	}
+
 
 	/**
 	 * Returns a function reflection.
 	 *
 	 * @param string $name Function name
-	 * @return \ApiGen\ReflectionFunction
+	 * @return ReflectionFunction
 	 */
 	public function getFunction($name)
 	{
 		$function = $this->reflection->getFunction($name);
-		return null === $function ? null : new ReflectionFunction($function, self::$generator);
+		return NULL === $function ? NULL : new ReflectionFunction($function, self::$generator);
 	}
+
 
 	/**
 	 * Returns functions defined by this extension.
@@ -114,10 +126,11 @@ class ReflectionExtension extends ReflectionBase
 	public function getFunctions()
 	{
 		$generator = self::$generator;
-		return array_map(function(TokenReflection\IReflectionFunction $function) use ($generator) {
+		return array_map(function (IReflectionFunction $function) use ($generator) {
 			return new ReflectionFunction($function, $generator);
 		}, $this->reflection->getFunctions());
 	}
+
 
 	/**
 	 * Returns names of functions defined by this extension.
@@ -128,4 +141,5 @@ class ReflectionExtension extends ReflectionBase
 	{
 		return $this->reflection->getFunctionNames();
 	}
+
 }

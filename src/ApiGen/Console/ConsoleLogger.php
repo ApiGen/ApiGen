@@ -20,6 +20,7 @@ use Exception;
  */
 class ConsoleLogger implements Logger
 {
+
 	/**
 	 * @var Configuration
 	 */
@@ -62,6 +63,7 @@ class ConsoleLogger implements Logger
 				do {
 					$this->log(sprintf("\n%s(%d): %s", $e->getFile(), $e->getLine(), $e->getMessage()));
 					$trace = $e->getTraceAsString();
+
 				} while ($e = $e->getPrevious());
 
 				$this->log(printf("\n\n%s\n", $trace));

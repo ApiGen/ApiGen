@@ -14,6 +14,7 @@ use Exception;
 
 class LogErrorHandler implements ErrorHandler
 {
+
 	/**
 	 * @var Logger
 	 */

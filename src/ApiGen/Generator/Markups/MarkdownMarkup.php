@@ -15,6 +15,7 @@ use Michelf\MarkdownExtra;
 
 class MarkdownMarkup implements Markup
 {
+
 	/**
 	 * @var MarkdownExtra
 	 */

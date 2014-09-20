@@ -16,30 +16,36 @@ class SimpleMemoryLimitChecker extends Nette\Object implements MemoryLimitChecke
 {
 
 	/**
+	 * @var int
+	 */
+	private $limit;
+
+
+	/**
 	 * {@inheritdoc}
 	 */
 	public function check()
 	{
-		static $limit = NULL;
-		if (NULL === $limit) {
+		if ($this->limit === NULL) {
 			$value = ini_get('memory_limit');
 			$unit = substr($value, -1);
-			if ('-1' === $value) {
-				$limit = 0;
+			if ($value === '-1') {
+				$this->limit = 0;
 
-			} elseif ('G' === $unit) {
-				$limit = (int)$value * 1024 * 1024 * 1024;
+			} elseif ($unit === 'G') {
+				$this->limit = (int) $value * 1024 * 1024 * 1024;
 
-			} elseif ('M' === $unit) {
-				$limit = (int)$value * 1024 * 1024;
+			} elseif ($unit === 'M') {
+				$this->limit = (int) $value * 1024 * 1024;
 
 			} else {
-				$limit = (int)$value;
+				$this->limit = (int) $value;
 			}
 		}
 
-		if ($limit && memory_get_usage(TRUE) / $limit >= 0.9) {
-			throw new \RuntimeException(sprintf('Used %d %% of the current memory limit, please increase the limit to generate the whole documentation.', round(memory_get_usage(TRUE) / $limit * 100)));
+		if ($this->limit && memory_get_usage(TRUE) / $this->limit >= 0.9) {
+			$relative = round(memory_get_usage(TRUE) / $this->limit * 100);
+			throw new \RuntimeException(sprintf('Used %d %% of the current memory limit, please increase the limit to generate the whole documentation.', $relative));
 		}
 	}
 

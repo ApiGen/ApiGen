@@ -9,11 +9,13 @@
 
 namespace ApiGen;
 
+
 /**
  * Helper set interface.
  */
 interface IHelperSet
 {
+
 	/**
 	 * Tries to load the requested helper.
 	 *
@@ -21,4 +23,5 @@ interface IHelperSet
 	 * @return \Nette\Callback
 	 */
 	public function loader($helperName);
+
 }

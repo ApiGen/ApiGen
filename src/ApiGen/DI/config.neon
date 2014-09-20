@@ -5,5 +5,4 @@ services:
 
 extensions:
 	apigen: ApiGen\DI\ApiGenExtension
-	plugin: ApiGen\DI\PluginExtension
 	events: Kdyby\Events\DI\EventsExtension

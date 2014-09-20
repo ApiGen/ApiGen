@@ -21,6 +21,7 @@ interface Scanner
 
 	/**
 	 * Scans sources and return found files
+	 *
 	 * @param array $sources
 	 * @param array $exclude
 	 * @param array $extensions

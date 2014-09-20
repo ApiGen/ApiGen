@@ -11,14 +11,16 @@ namespace ApiGen\Reflection;
 
 use ApiGen\Configuration\Configuration;
 use ApiGen\Generator\Generator;
+use Nette;
 use TokenReflection\IReflection;
 
 
 /**
  * Alters TokenReflection\IReflection functionality for ApiGen.
  */
-abstract class ReflectionBase
+abstract class ReflectionBase extends Nette\Object
 {
+
 	/**
 	 * @var \ArrayObject
 	 */
@@ -46,32 +48,35 @@ abstract class ReflectionBase
 
 	/**
 	 * Class methods cache.
+	 *
 	 * @var array
 	 */
 	protected static $reflectionMethods = array();
 
 	/**
 	 * Reflection type (reflection class).
+	 *
 	 * @var string
 	 */
 	protected $reflectionType;
 
 	/**
 	 * Inspected class reflection.
+	 *
 	 * @var \TokenReflection\IReflectionClass
 	 */
 	protected $reflection;
 
 
 	/**
-	 * Constructor.
 	 * Sets the inspected reflection.
+	 *
 	 * @param \TokenReflection\IReflection $reflection Inspected reflection
-	 * @param \ApiGen\Generator $generator ApiGen generator
+	 * @param Generator $generator
 	 */
 	public function __construct(IReflection $reflection, Generator $generator)
 	{
-		if (NULL === self::$generator) {
+		if (self::$generator === NULL) {
 			self::$generator = $generator;
 			self::$config = $generator->getConfig();
 			self::$parsedClasses = $generator->getParsedClasses();
@@ -80,7 +85,7 @@ abstract class ReflectionBase
 		}
 
 		$this->reflectionType = get_class($this);
-		if (!isset(self::$reflectionMethods[$this->reflectionType])) {
+		if ( ! isset(self::$reflectionMethods[$this->reflectionType])) {
 			self::$reflectionMethods[$this->reflectionType] = array_flip(get_class_methods($this));
 		}
 
@@ -89,43 +94,8 @@ abstract class ReflectionBase
 
 
 	/**
-	 * Retrieves a property or method value.
-	 * First tries the envelope object's property storage, then its methods
-	 * and finally the inspected element reflection.
-	 * @param string $name
-	 * @return mixed
-	 */
-	public function __get($name)
-	{
-		$key = ucfirst($name);
-		if (isset(self::$reflectionMethods[$this->reflectionType]['get' . $key])) {
-			return $this->{'get' . $key}();
-		}
-
-		if (isset(self::$reflectionMethods[$this->reflectionType]['is' . $key])) {
-			return $this->{'is' . $key}();
-		}
-
-		return $this->reflection->__get($name);
-	}
-
-
-	/**
-	 * Checks if the given property exists.
-	 * First tries the envelope object's property storage, then its methods
-	 * and finally the inspected element reflection.
-	 * @param mixed $name
-	 * @return boolean
-	 */
-	public function __isset($name)
-	{
-		$key = ucfirst($name);
-		return isset(self::$reflectionMethods[$this->reflectionType]['get' . $key]) || isset(self::$reflectionMethods[$this->reflectionType]['is' . $key]) || $this->reflection->__isset($name);
-	}
-
-
-	/**
 	 * Returns the reflection broker used by this reflection object.
+	 *
 	 * @return \TokenReflection\Broker
 	 */
 	public function getBroker()
@@ -136,6 +106,7 @@ abstract class ReflectionBase
 
 	/**
 	 * Returns the name (FQN).
+	 *
 	 * @return string
 	 */
 	public function getName()
@@ -146,6 +117,7 @@ abstract class ReflectionBase
 
 	/**
 	 * Returns an element pretty (docblock compatible) name.
+	 *
 	 * @return string
 	 */
 	public function getPrettyName()
@@ -156,6 +128,7 @@ abstract class ReflectionBase
 
 	/**
 	 * Returns if the reflection object is internal.
+	 *
 	 * @return boolean
 	 */
 	public function isInternal()
@@ -166,6 +139,7 @@ abstract class ReflectionBase
 
 	/**
 	 * Returns if the reflection object is user defined.
+	 *
 	 * @return boolean
 	 */
 	public function isUserDefined()
@@ -176,6 +150,7 @@ abstract class ReflectionBase
 
 	/**
 	 * Returns if the current reflection comes from a tokenized source.
+	 *
 	 * @return boolean
 	 */
 	public function isTokenized()
@@ -186,6 +161,7 @@ abstract class ReflectionBase
 
 	/**
 	 * Returns the file name the reflection object is defined in.
+	 *
 	 * @return string
 	 */
 	public function getFileName()
@@ -196,6 +172,7 @@ abstract class ReflectionBase
 
 	/**
 	 * Returns the definition start line number in the file.
+	 *
 	 * @return integer
 	 */
 	public function getStartLine()
@@ -212,6 +189,7 @@ abstract class ReflectionBase
 
 	/**
 	 * Returns the definition end line number in the file.
+	 *
 	 * @return integer
 	 */
 	public function getEndLine()

@@ -16,15 +16,24 @@ use TokenReflection\IReflection;
 
 /**
  * Envelope for parameters that are defined only in @param or @method annotation.
+ *
+ * @method ReflectionParameterMagic setName(string $name)
+ * @method ReflectionParameterMagic setTypeHint(string $typeHint)
+ * @method ReflectionParameterMagic setPosition(int $position)
+ * @method ReflectionParameterMagic setDefaultValueDefinition(string $defaultValueDefinition)   Sets the part of the source code defining the parameter default value.
+ * @method ReflectionParameterMagic setUnlimited(bool $unlimited)   Sets if the parameter can be used unlimited times.
+ * @method ReflectionParameterMagic setPassedByReference(bool $state)   Sets if the parameter value is passed by reference.
+ * @method ReflectionParameterMagic setDeclaringFunction(ReflectionFunctionBase $declaringFunction)
  */
 class ReflectionParameterMagic extends ReflectionParameter
 {
+
 	/**
 	 * Parameter name.
 	 *
 	 * @var string
 	 */
-	 protected $name;
+	protected $name;
 
 	/**
 	 * Defines a type hint of parameter values.
@@ -69,110 +78,29 @@ class ReflectionParameterMagic extends ReflectionParameter
 	protected $declaringFunction;
 
 
-	public function __construct(IReflection $reflection = null, Generator $generator = null)
+	public function __construct(IReflection $reflection = NULL, Generator $generator = NULL)
 	{
 		$this->reflectionType = get_class($this);
-		if (!isset(self::$reflectionMethods[$this->reflectionType])) {
+		if ( ! isset(self::$reflectionMethods[$this->reflectionType])) {
 			self::$reflectionMethods[$this->reflectionType] = array_flip(get_class_methods($this));
 		}
 	}
 
-	/**
-	 * Sets parameter name.
-	 *
-	 * @param string $name
-	 * @return \ApiGen\ReflectionParameterMagic
-	 */
-	public function setName($name)
-	{
-		$this->name = (string) $name;
-		return $this;
-	}
-
-	/**
-	 * Sets type hint.
-	 *
-	 * @param string $typeHint
-	 * @return \ApiGen\ReflectionParameterMagic
-	 */
-	public function setTypeHint($typeHint)
-	{
-		$this->typeHint = (string) $typeHint;
-		return $this;
-	}
-
-	/**
-	 * Sets position of the parameter in the function/method.
-	 *
-	 * @param integer $position
-	 * @return \ApiGen\ReflectionParameterMagic
-	 */
-	public function setPosition($position)
-	{
-		$this->position = (int) $position;
-		return $this;
-	}
-
-	/**
-	 * Sets the part of the source code defining the parameter default value.
-	 *
-	 * @param string|null $defaultValueDefinition
-	 * @return \ApiGen\ReflectionParameterMagic
-	 */
-	public function setDefaultValueDefinition($defaultValueDefinition)
-	{
-		$this->defaultValueDefinition = $defaultValueDefinition;
-		return $this;
-	}
-
-	/**
-	 * Sets if the parameter can be used unlimited times.
-	 *
-	 * @param boolean $unlimited
-	 * @return \ApiGen\ReflectionParameterMagic
-	 */
-	public function setUnlimited($unlimited)
-	{
-		$this->unlimited = (bool) $unlimited;
-		return $this;
-	}
-
-	/**
-	 * Sets if the parameter value is passed by reference.
-	 *
-	 * @param boolean $passedByReference
-	 * @return \ApiGen\ReflectionParameterMagic
-	 */
-	public function setPassedByReference($passedByReference)
-	{
-		$this->passedByReference = (bool) $passedByReference;
-		return $this;
-	}
-
-	/**
-	 * Sets declaring function.
-	 *
-	 * @param \ApiGen\ReflectionFunctionBase $declaringFunction
-	 * @return \ApiGen\ReflectionParameterMagic
-	 */
-	public function setDeclaringFunction(ReflectionFunctionBase $declaringFunction)
-	{
-		$this->declaringFunction = $declaringFunction;
-		return $this;
-	}
 
 	/**
 	 * Returns the reflection broker used by this reflection object.
 	 *
-	 * @return \TokenReflection\Broker
+	 * @return TokenReflection\Broker
 	 */
 	public function getBroker()
 	{
 		return $this->declaringFunction->getBroker();
 	}
 
+
 	/**
 	 * Returns the name.
+	 * Overrides parent method.
 	 *
 	 * @return string
 	 */
@@ -180,6 +108,7 @@ class ReflectionParameterMagic extends ReflectionParameter
 	{
 		return $this->name;
 	}
+
 
 	/**
 	 * Returns the type hint.
@@ -191,6 +120,7 @@ class ReflectionParameterMagic extends ReflectionParameter
 		return $this->typeHint;
 	}
 
+
 	/**
 	 * Returns the file name the parameter is defined in.
 	 *
@@ -201,6 +131,7 @@ class ReflectionParameterMagic extends ReflectionParameter
 		return $this->declaringFunction->getFileName();
 	}
 
+
 	/**
 	 * Returns if the reflection object is internal.
 	 *
@@ -208,8 +139,9 @@ class ReflectionParameterMagic extends ReflectionParameter
 	 */
 	public function isInternal()
 	{
-		return false;
+		return FALSE;
 	}
+
 
 	/**
 	 * Returns if the reflection object is user defined.
@@ -218,8 +150,9 @@ class ReflectionParameterMagic extends ReflectionParameter
 	 */
 	public function isUserDefined()
 	{
-		return true;
+		return TRUE;
 	}
+
 
 	/**
 	 * Returns if the current reflection comes from a tokenized source.
@@ -228,8 +161,9 @@ class ReflectionParameterMagic extends ReflectionParameter
 	 */
 	public function isTokenized()
 	{
-		return true;
+		return TRUE;
 	}
+
 
 	/**
 	 * Returns an element pretty (docblock compatible) name.
@@ -241,15 +175,17 @@ class ReflectionParameterMagic extends ReflectionParameter
 		return str_replace('()', '($' . $this->name . ')', $this->declaringFunction->getPrettyName());
 	}
 
+
 	/**
 	 * Returns the declaring class.
 	 *
-	 * @return \Apigen\ReflectionClass|null
+	 * @return ReflectionClass|null
 	 */
 	public function getDeclaringClass()
 	{
 		return $this->declaringFunction->getDeclaringClass();
 	}
+
 
 	/**
 	 * Returns the declaring class name.
@@ -261,6 +197,7 @@ class ReflectionParameterMagic extends ReflectionParameter
 		return $this->declaringFunction->getDeclaringClassName();
 	}
 
+
 	/**
 	 * Returns the declaring function.
 	 *
@@ -270,6 +207,7 @@ class ReflectionParameterMagic extends ReflectionParameter
 	{
 		return $this->declaringFunction;
 	}
+
 
 	/**
 	 * Returns the declaring function name.
@@ -281,6 +219,7 @@ class ReflectionParameterMagic extends ReflectionParameter
 		return $this->declaringFunction->getName();
 	}
 
+
 	/**
 	 * Returns the definition start line number in the file.
 	 *
@@ -290,6 +229,7 @@ class ReflectionParameterMagic extends ReflectionParameter
 	{
 		return $this->declaringFunction->getStartLine();
 	}
+
 
 	/**
 	 * Returns the definition end line number in the file.
@@ -301,6 +241,7 @@ class ReflectionParameterMagic extends ReflectionParameter
 		return $this->declaringFunction->getEndLine();
 	}
 
+
 	/**
 	 * Returns the appropriate docblock definition.
 	 *
@@ -308,8 +249,9 @@ class ReflectionParameterMagic extends ReflectionParameter
 	 */
 	public function getDocComment()
 	{
-		return false;
+		return FALSE;
 	}
+
 
 	/**
 	 * Returns the part of the source code defining the parameter default value.
@@ -321,6 +263,7 @@ class ReflectionParameterMagic extends ReflectionParameter
 		return $this->defaultValueDefinition;
 	}
 
+
 	/**
 	 * Returns if a default value for the parameter is available.
 	 *
@@ -330,6 +273,7 @@ class ReflectionParameterMagic extends ReflectionParameter
 	{
 		return (bool) $this->defaultValueDefinition;
 	}
+
 
 	/**
 	 * Returns the position within all parameters.
@@ -341,6 +285,7 @@ class ReflectionParameterMagic extends ReflectionParameter
 		return $this->position;
 	}
 
+
 	/**
 	 * Returns if the parameter expects an array.
 	 *
@@ -348,42 +293,46 @@ class ReflectionParameterMagic extends ReflectionParameter
 	 */
 	public function isArray()
 	{
-		return TokenReflectionParameter::ARRAY_TYPE_HINT === $this->typeHint;
+		return TokenReflection\ReflectionParameter::ARRAY_TYPE_HINT === $this->typeHint;
 	}
+
 
 	public function isCallable()
 	{
-		return TokenReflectionParameter::CALLABLE_TYPE_HINT === $this->typeHint;
+		return TokenReflection\ReflectionParameter::CALLABLE_TYPE_HINT === $this->typeHint;
 	}
+
 
 	/**
 	 * Returns reflection of the required class of the value.
 	 *
-	 * @return \ApiGen\ReflectionClass|null
+	 * @return ReflectionClass|null
 	 */
 	public function getClass()
 	{
 		$className = $this->getClassName();
-		return null === $className ? null : self::$parsedClasses[$className];
+		return $className === NULL ? NULL : self::$parsedClasses[$className];
 	}
+
 
 	/**
 	 * Returns the required class name of the value.
 	 *
-	 * @return string|null
+	 * @return string|NULL
 	 */
 	public function getClassName()
 	{
 		if ($this->isArray() || $this->isCallable()) {
-			return null;
+			return NULL;
 		}
 
 		if (isset(self::$parsedClasses[$this->typeHint])) {
-			return $typeHint;
+			return $this->typeHint; // todo: check fix
 		}
 
-		return null;
+		return NULL;
 	}
+
 
 	/**
 	 * Returns if the the parameter allows NULL.
@@ -393,11 +342,12 @@ class ReflectionParameterMagic extends ReflectionParameter
 	public function allowsNull()
 	{
 		if ($this->isArray() || $this->isCallable()) {
-			return 'null' === strtolower($this->defaultValueDefinition);
+			return strtolower($this->defaultValueDefinition) === 'null';
 		}
 
-		return !empty($this->defaultValueDefinition);
+		return ! empty($this->defaultValueDefinition);
 	}
+
 
 	/**
 	 * Returns if the parameter is optional.
@@ -409,6 +359,7 @@ class ReflectionParameterMagic extends ReflectionParameter
 		return $this->isDefaultValueAvailable();
 	}
 
+
 	/**
 	 * Returns if the parameter value is passed by reference.
 	 *
@@ -419,6 +370,7 @@ class ReflectionParameterMagic extends ReflectionParameter
 		return $this->passedByReference;
 	}
 
+
 	/**
 	 * Returns if the parameter value can be passed by value.
 	 *
@@ -426,8 +378,9 @@ class ReflectionParameterMagic extends ReflectionParameter
 	 */
 	public function canBePassedByValue()
 	{
-		return false;
+		return FALSE;
 	}
+
 
 	/**
 	 * Returns if the parameter can be used unlimited times.
@@ -439,35 +392,4 @@ class ReflectionParameterMagic extends ReflectionParameter
 		return $this->unlimited;
 	}
 
-	/**
-	 * Retrieves a property or method value.
-	 *
-	 * @param string $name Property name
-	 * @return mixed
-	 */
-	public function __get($name)
-	{
-		$key = ucfirst($name);
-		if (isset(self::$reflectionMethods[$this->reflectionType]['get' . $key])) {
-			return $this->{'get' . $key}();
-		}
-
-		if (isset(self::$reflectionMethods[$this->reflectionType]['is' . $key])) {
-			return $this->{'is' . $key}();
-		}
-
-		return null;
-	}
-
-	/**
-	 * Checks if the given property exists.
-	 *
-	 * @param mixed $name Property name
-	 * @return boolean
-	 */
-	public function __isset($name)
-	{
-		$key = ucfirst($name);
-		return isset(self::$reflectionMethods[$this->reflectionType]['get' . $key]) || isset(self::$reflectionMethods[$this->reflectionType]['is' . $key]);
-	}
 }

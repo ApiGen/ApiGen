@@ -20,14 +20,34 @@ use TokenReflection;
 
 
 /**
- * Resposible for the documentation generator run.
- *
  * @method  Application   onStartup(Application $app)
  * @method  Application   onShutdown(Application $app)
  * @method  Application   onError(\Exception $e)
  */
 class Application extends Object
 {
+
+	/**
+	 * Callbacks performed on application startup.
+	 *
+	 * @var array
+	 */
+	public $onStartup = array();
+
+	/**
+	 * Callbacks performed on application shutdown.
+	 *
+	 * @var array
+	 */
+	public $onShutdown = array();
+
+	/**
+	 * Callbacks performed on application error.
+	 *
+	 * @var array
+	 */
+	public $onError = array();
+
 	/**
 	 * @var Logger
 	 */
@@ -42,24 +62,6 @@ class Application extends Object
 	 * @var Generator
 	 */
 	private $generator;
-
-	/**
-	 * Callbacks performed on application startup.
-	 * @var array
-	 */
-	public $onStartup = array();
-
-	/**
-	 * Callbacks performed on application shutdown.
-	 * @var array
-	 */
-	public $onShutdown = array();
-
-	/**
-	 * Callbacks performed on application error.
-	 * @var array
-	 */
-	public $onError = array();
 
 
 	public function __construct(Configuration $config, Logger $logger, Generator $generator)
@@ -120,7 +122,6 @@ class Application extends Object
 
 	protected function parse()
 	{
-		// Scan
 		if (count($this->config->source) > 1) {
 			$this->logger->log(sprintf("Scanning\n %s\n", implode("\n ", $this->config->source)));
 
@@ -150,7 +151,7 @@ class Application extends Object
 
 						$token = $e->getToken();
 						$sender = $e->getSender();
-						if (!empty($token)) {
+						if ( ! empty($token)) {
 							$this->logger->log(
 								sprintf(
 									"The cause of the exception \"%s\" was the %s token (line %d) in following part of %s source code:\n\n",
@@ -208,6 +209,7 @@ class Application extends Object
 
 	/**
 	 * Wipes out the destination directory.
+	 *
 	 * @throws Exception
 	 */
 	protected function wipeout()

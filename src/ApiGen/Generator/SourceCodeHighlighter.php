@@ -15,6 +15,7 @@ interface SourceCodeHighlighter
 
 	/**
 	 * Highlights passed code
+	 *
 	 * @param string $sourceCode
 	 * @param bool $lines
 	 */

@@ -17,6 +17,7 @@ use Kdyby\Events\Subscriber;
 
 class MemoryLimitCheckerOnProgress extends Nette\Object implements Subscriber
 {
+
 	/**
 	 * @var MemoryLimitChecker
 	 */

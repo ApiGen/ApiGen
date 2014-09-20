@@ -10,6 +10,9 @@
 namespace ApiGen;
 
 use ApiGen\Generator\Generator;
+use ApiGen\Reflection\ReflectionClass;
+use ApiGen\Reflection\ReflectionFunction;
+use ApiGen\Reflection\ReflectionParameter;
 use TokenReflection;
 use TokenReflection\IReflectionConstant;
 use TokenReflection\IReflectionFunction;
@@ -20,22 +23,23 @@ use InvalidArgumentException, RuntimeException;
 
 /**
  * Customized TokenReflection broker backend.
- *
  * Adds internal classes from @param, @var, @return, @throws annotations as well
  * as parent classes to the overall class list.
  */
 class Backend extends Broker\Backend\Memory
 {
+
+	/**
+	 * Cache of processed token streams.
+	 *
+	 * @var array
+	 */
+	private $fileCache = array();
+
 	/**
 	 * @var Generator
 	 */
 	private $generator;
-
-	/**
-	 * Cache of processed token streams.
-	 * @var array
-	 */
-	private $fileCache = array();
 
 
 	/**
@@ -45,6 +49,7 @@ class Backend extends Broker\Backend\Memory
 	{
 		$this->generator = $generator;
 	}
+
 
 	/**
 	 * Deletes all cached token streams.
@@ -59,6 +64,7 @@ class Backend extends Broker\Backend\Memory
 
 	/**
 	 * Prepares and returns used class lists.
+	 *
 	 * @return array
 	 */
 	protected function parseClassLists()
@@ -72,6 +78,7 @@ class Backend extends Broker\Backend\Memory
 		$declared = array_flip(array_merge(get_declared_classes(), get_declared_interfaces()));
 
 		foreach ($this->getNamespaces() as $namespace) {
+			/** @var TokenReflection\ReflectionNamespace $namespace */
 			foreach ($namespace->getClasses() as $name => $trClass) {
 				$class = new Reflection\ReflectionClass($trClass, $this->generator);
 				$allClasses[self::TOKENIZED_CLASSES][$name] = $class;
@@ -79,11 +86,14 @@ class Backend extends Broker\Backend\Memory
 					continue;
 				}
 
+				/** @var TokenReflection\ReflectionClass $trClass */
 				foreach (array_merge($trClass->getParentClasses(), $trClass->getInterfaces()) as $parentName => $parent) {
+					/** @var TokenReflection\ReflectionClass $parent */
 					if ($parent->isInternal()) {
 						if ( ! isset($allClasses[self::INTERNAL_CLASSES][$parentName])) {
 							$allClasses[self::INTERNAL_CLASSES][$parentName] = $parent;
 						}
+
 					} elseif ( ! $parent->isTokenized()) {
 						if ( ! isset($allClasses[self::NONEXISTENT_CLASSES][$parentName])) {
 							$allClasses[self::NONEXISTENT_CLASSES][$parentName] = $parent;
@@ -93,6 +103,7 @@ class Backend extends Broker\Backend\Memory
 			}
 		}
 
+		/** @var ReflectionClass $class */
 		foreach ($allClasses[self::TOKENIZED_CLASSES] as $class) {
 			if ( ! $class->isDocumented()) {
 				continue;
@@ -124,7 +135,7 @@ class Backend extends Broker\Backend\Memory
 			$allClasses = $this->processFunction($declared, $allClasses, $function);
 		}
 
-		array_walk_recursive($allClasses, function(&$reflection, $name, Generator $generator) {
+		array_walk_recursive($allClasses, function (&$reflection, $name, Generator $generator) {
 			if ( ! $reflection instanceof Reflection\ReflectionClass) {
 				$reflection = new Reflection\ReflectionClass($reflection, $generator);
 			}
@@ -136,14 +147,15 @@ class Backend extends Broker\Backend\Memory
 
 	/**
 	 * Processes a function/method and adds classes from annotations to the overall class array.
+	 *
 	 * @param array $declared
 	 * @param array $allClasses
-	 * @param \ApiGen\Reflection\ReflectionFunction|\TokenReflection\IReflectionFunctionBase $function
+	 * @param ReflectionFunction|\TokenReflection\IReflectionFunctionBase $function
 	 * @return array
 	 */
 	private function processFunction(array $declared, array $allClasses, $function)
 	{
-		static $parsedAnnotations = array('param', 'return', 'throws');
+		$parsedAnnotations = array('param', 'return', 'throws');
 
 		$annotations = $function->getAnnotations();
 		foreach ($parsedAnnotations as $annotation) {
@@ -161,6 +173,7 @@ class Backend extends Broker\Backend\Memory
 			}
 		}
 
+		/** @var ReflectionParameter $param */
 		foreach ($function->getParameters() as $param) {
 			if ($hint = $param->getClassName()) {
 				$allClasses = $this->addClass($declared, $allClasses, $hint);
@@ -173,6 +186,7 @@ class Backend extends Broker\Backend\Memory
 
 	/**
 	 * Adds a class to list of classes.
+	 *
 	 * @param array $declared
 	 * @param array $allClasses
 	 * @param string $name
@@ -197,7 +211,7 @@ class Backend extends Broker\Backend\Memory
 				}
 			}
 
-		} elseif ( ! $parameterClass->isTokenized() &&  ! isset($allClasses[self::NONEXISTENT_CLASSES][$name])) {
+		} elseif ( ! $parameterClass->isTokenized() && ! isset($allClasses[self::NONEXISTENT_CLASSES][$name])) {
 			$allClasses[self::NONEXISTENT_CLASSES][$name] = $parameterClass;
 		}
 
@@ -207,12 +221,13 @@ class Backend extends Broker\Backend\Memory
 
 	/**
 	 * Returns all constants from all namespaces.
+	 *
 	 * @return array
 	 */
 	public function getConstants()
 	{
 		$generator = $this->generator;
-		return array_map(function(IReflectionConstant $constant) use ($generator) {
+		return array_map(function (IReflectionConstant $constant) use ($generator) {
 			return new Reflection\ReflectionConstant($constant, $generator);
 		}, parent::getConstants());
 	}
@@ -220,12 +235,13 @@ class Backend extends Broker\Backend\Memory
 
 	/**
 	 * Returns all functions from all namespaces.
+	 *
 	 * @return array
 	 */
 	public function getFunctions()
 	{
 		$generator = $this->generator;
-		return array_map(function(IReflectionFunction $function) use ($generator) {
+		return array_map(function (IReflectionFunction $function) use ($generator) {
 			return new Reflection\ReflectionFunction($function, $generator);
 		}, parent::getFunctions());
 	}
