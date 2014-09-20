@@ -1,2 +1,3 @@
-source: ../Project
+source:
+	- ../Project
 destination: ../../../tmp/api

@@ -7,7 +7,6 @@
 namespace ApiGenTests\ApiGen;
 
 use Tester\Assert;
-use Tester\Helpers;
 use Tester\TestCase;
 
 
@@ -19,13 +18,14 @@ class HelloWorldTest extends TestCase
 
 	public function testInit()
 	{
-		Assert::true(class_exists('ApiGen\Generator'));
+		Assert::true(interface_exists('ApiGen\Generator\Generator'));
 	}
 
 
 	public function testBasicGeneration()
 	{
-		exec('php ../../../apigen --config=config/apigen.neon');
+		$config = atomicConfig(__DIR__ . '/config/apigen.neon');
+		passthru(APIGEN_BIN . " --config=$config");
 		Assert::true(file_exists(API_DIR . '/index.html'));
 
 		$fooClassFile = API_DIR . '/source-class-ApiGenTests.ApiGen.Project.Foo.html';
