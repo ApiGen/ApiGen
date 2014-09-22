@@ -9,9 +9,9 @@
 
 namespace ApiGen\Templating;
 
+use ApiGen\ApiGen;
 use ApiGen\Configuration\Configuration;
-use ApiGen\Generator\Markups\Markup;
-use ApiGen\Generator\SourceCodeHighlighter;
+use Latte;
 use Nette;
 
 
@@ -19,14 +19,9 @@ class TemplateFactory extends Nette\Object
 {
 
 	/**
-	 * @var Markup
+	 * @var Latte\Engine
 	 */
-	private $markup;
-
-	/**
-	 * @var SourceCodeHighlighter
-	 */
-	private $highlighter;
+	private $latteEngine;
 
 	/**
 	 * @var Configuration
@@ -34,10 +29,9 @@ class TemplateFactory extends Nette\Object
 	private $configuration;
 
 
-	public function __construct(Markup $markup, SourceCodeHighlighter $highlighter, Configuration $configuration)
+	public function __construct(Latte\Engine $latteEngine, Configuration $configuration)
 	{
-		$this->markup = $markup;
-		$this->highlighter = $highlighter;
+		$this->latteEngine = $latteEngine;
 		$this->configuration = $configuration;
 	}
 
@@ -47,7 +41,11 @@ class TemplateFactory extends Nette\Object
 	 */
 	public function create()
 	{
-		$template = new Template($this->markup, $this->highlighter, $this->configuration);
+		$template = new Template($this->latteEngine);
+		$template->generator = ApiGen::NAME;
+		$template->version = ApiGen::VERSION;
+		$template->config = $this->configuration;
+		$template->basePath = dirname($this->configuration->templateConfig);
 		return $template;
 	}
 
