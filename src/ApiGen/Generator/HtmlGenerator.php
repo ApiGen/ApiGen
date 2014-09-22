@@ -9,42 +9,49 @@
 
 namespace ApiGen\Generator;
 
-use ApiGen\ApiGen;
 use ApiGen\Backend;
 use ApiGen\Charset\CharsetConvertor;
+use ApiGen\Generator\Resolvers\RelativePathResolver;
 use ApiGen\Reflection\ReflectionClass;
 use ApiGen\Reflection\ReflectionConstant;
 use ApiGen\Reflection\ReflectionElement;
 use ApiGen\Reflection\ReflectionFunction;
 use ApiGen\Reflection\ReflectionMethod;
-use ApiGen\Reflection\ReflectionParameter;
 use ApiGen\Reflection\ReflectionProperty;
+use ApiGen\Templating\Template;
 use ApiGen\Templating\TemplateFactory;
 use ApiGen\Tree;
 use ApiGen\Configuration\Configuration;
 use ApiGen\FileSystem;
 use ApiGen\Reflection;
-use ApiGen\Templating\Template;
 use ArrayObject;
 use InvalidArgumentException;
 use Nette;
 use RuntimeException;
 use TokenReflection\Broker;
-use TokenReflection\Resolver;
 
 
 /**
  * Generates a HTML API documentation.
+ *
  * @method ArrayObject      getParsedClasses()
  * @method ArrayObject      getParsedConstants()
  * @method ArrayObject      getParsedFunctions()
+ * @method array            getSymlinks()
+ * @method HtmlGenerator    onScanFinish(HtmlGenerator $htmlGenerator)
  * @method HtmlGenerator    onParseStart($steps)
  * @method HtmlGenerator    onParseProgress($size)
+ * @method HtmlGenerator    onParseFinish(HtmlGenerator $htmlGenerator)
  * @method HtmlGenerator    onGenerateStart($steps)
  * @method HtmlGenerator    onGenerateProgress($size)
  */
 class HtmlGenerator extends Nette\Object implements Generator
 {
+
+	/**
+	 * @var array
+	 */
+	public $onScanFinish = array();
 
 	/**
 	 * @var array
@@ -59,6 +66,11 @@ class HtmlGenerator extends Nette\Object implements Generator
 	/**
 	 * @var array
 	 */
+	public $onParseFinish = array();
+
+	/**
+	 * @var array
+	 */
 	public $onGenerateStart = array();
 
 	/**
@@ -67,24 +79,24 @@ class HtmlGenerator extends Nette\Object implements Generator
 	public $onGenerateProgress = array();
 
 	/**
-	 * @var Configuration
+	 * @var Configuration|\stdClass
 	 */
 	private $config;
 
 	/**
 	 * @var ArrayObject
 	 */
-	private $parsedClasses = NULL;
+	private $parsedClasses;
 
 	/**
 	 * @var ArrayObject
 	 */
-	private $parsedConstants = NULL;
+	private $parsedConstants;
 
 	/**
 	 * @var ArrayObject
 	 */
-	private $parsedFunctions = NULL;
+	private $parsedFunctions;
 
 	/**
 	 * @var array
@@ -156,9 +168,15 @@ class HtmlGenerator extends Nette\Object implements Generator
 	 */
 	private $templateFactory;
 
+	/**
+	 * @var RelativePathResolver
+	 */
+	private $relativePathResolver;
+
 
 	public function __construct(Configuration $config, CharsetConvertor $charsetConvertor, Scanner $scanner,
-	                            SourceCodeHighlighter $sourceCodeHighlighter, TemplateFactory $templateFactory)
+	                            SourceCodeHighlighter $sourceCodeHighlighter, TemplateFactory $templateFactory,
+								RelativePathResolver $relativePathResolver)
 	{
 		$this->parsedClasses = new ArrayObject;
 		$this->parsedConstants = new ArrayObject;
@@ -168,6 +186,7 @@ class HtmlGenerator extends Nette\Object implements Generator
 		$this->scanner = $scanner;
 		$this->sourceCodeHighlighter = $sourceCodeHighlighter;
 		$this->templateFactory = $templateFactory;
+		$this->relativePathResolver = $relativePathResolver;
 	}
 
 
@@ -183,6 +202,8 @@ class HtmlGenerator extends Nette\Object implements Generator
 	{
 		$this->files = $this->scanner->scan($sources, $exclude, $extensions);
 		$this->symlinks = $this->scanner->getSymlinks();
+
+		$this->onScanFinish($this);
 	}
 
 
@@ -202,8 +223,6 @@ class HtmlGenerator extends Nette\Object implements Generator
 			new Backend($this),
 			Broker::OPTION_DEFAULT & ~(Broker::OPTION_PARSE_FUNCTION_BODY | Broker::OPTION_SAVE_TOKEN_STREAM)
 		);
-
-		// @todo: should be service
 
 		$errors = array();
 
@@ -233,8 +252,11 @@ class HtmlGenerator extends Nette\Object implements Generator
 		$this->parsedFunctions->uksort('strcasecmp');
 
 		$documentedCounter = function ($count, $element) {
+			/** @var ReflectionElement $element */
 			return $count += (int) $element->isDocumented();
 		};
+
+		$this->onParseFinish($this);
 
 		return (object) array(
 			'classes' => count($broker->getClasses(Backend::TOKENIZED_CLASSES)),
@@ -341,15 +363,6 @@ class HtmlGenerator extends Nette\Object implements Generator
 		@mkdir($tmp, 0755, TRUE);
 
 		$template = $this->templateFactory->create();
-		$template->setGenerator($this);
-		$template->setup();
-		$template->setCacheStorage(new Nette\Caching\Storages\PhpFileStorage($tmp));
-		$template->generator = ApiGen::NAME;
-		$template->version = ApiGen::VERSION;
-		$template->config = $this->config;
-		$template->basePath = dirname($this->config->templateConfig);
-
-		$this->registerCustomTemplateMacros($template);
 
 		// Common files
 		$this->generateCommon($template);
@@ -388,63 +401,6 @@ class HtmlGenerator extends Nette\Object implements Generator
 
 		// Delete temporary directory
 		FileSystem::deleteDir($tmp);
-	}
-
-
-	/**
-	 * Loads template-specific macro and helper libraries.
-	 *
-	 * @param Template $template
-	 * @throws \Exception
-	 */
-	private function registerCustomTemplateMacros(Template $template)
-	{
-		$latte = new Nette\Latte\Engine;
-
-		if ( ! empty($this->config->template['options']['extensions'])) {
-			$this->output("Loading custom template macro and helper libraries\n");
-			$broker = new Broker(new Broker\Backend\Memory(), 0);
-
-			$baseDir = dirname($this->config->template['config']);
-			foreach ((array) $this->config->template['options']['extensions'] as $fileName) {
-				$pathName = $baseDir . DIRECTORY_SEPARATOR . $fileName;
-				if (is_file($pathName)) {
-					try {
-						$reflectionFile = $broker->processFile($pathName, TRUE);
-
-						foreach ($reflectionFile->getNamespaces() as $namespace) {
-							foreach ($namespace->getClasses() as $class) {
-								if ($class->isSubclassOf('ApiGen\\MacroSet')) {
-									// Macro set
-
-									include $pathName;
-									call_user_func(array($class->getName(), 'install'), $latte->compiler);
-
-									$this->output(sprintf("  %s (macro set)\n", $class->getName()));
-
-								} elseif ($class->implementsInterface('ApiGen\\IHelperSet')) {
-									// Helpers set
-
-									include $pathName;
-									$className = $class->getName();
-									$template->registerHelperLoader(callback(new $className($template), 'loader'));
-
-									$this->output(sprintf("  %s (helper set)\n", $class->getName()));
-								}
-							}
-						}
-
-					} catch (\Exception $e) {
-						throw new \Exception(sprintf('Could not load macros and helpers from file "%s"', $pathName), 0, $e);
-					}
-
-				} else {
-					throw new \Exception(sprintf('Helper file "%s" does not exist.', $pathName));
-				}
-			}
-		}
-
-		$template->registerFilter($latte);
 	}
 
 
@@ -956,7 +912,7 @@ class HtmlGenerator extends Nette\Object implements Generator
 			$template->constants = $namespace['constants'];
 			$template->functions = $namespace['functions'];
 			$template->setFile($this->getTemplatePath('namespace'))
-				->save($this->config->destination . DIRECTORY_SEPARATOR . $template->getNamespaceUrl($namespaceName));
+				->save($this->config->destination . DIRECTORY_SEPARATOR . $template->namespaceUrl($namespaceName));
 
 			$this->onGenerateProgress(1);
 		}
@@ -992,6 +948,7 @@ class HtmlGenerator extends Nette\Object implements Generator
 						array_values($parentElement->getOwnProperties())
 					);
 				}
+				/** @var ReflectionElement $element */
 				foreach ($elements as $element) {
 					$uses = $element->getAnnotation('uses');
 					if ($uses === NULL) {
@@ -1062,32 +1019,32 @@ class HtmlGenerator extends Nette\Object implements Generator
 					$template->class = $element;
 
 					$template->setFile($this->getTemplatePath('class'))
-						->save($this->config->destination . DIRECTORY_SEPARATOR . $template->getClassUrl($element));
+						->save($this->config->destination . DIRECTORY_SEPARATOR . $template->classUrl($element));
 
 				} elseif ($element instanceof ReflectionConstant) {
 					// Constant
 					$template->constant = $element;
 
 					$template->setFile($this->getTemplatePath('constant'))
-						->save($this->config->destination . DIRECTORY_SEPARATOR . $template->getConstantUrl($element));
+						->save($this->config->destination . DIRECTORY_SEPARATOR . $template->constantUrl($element));
 
 				} elseif ($element instanceof ReflectionFunction) {
 					// Function
 					$template->function = $element;
 
 					$template->setFile($this->getTemplatePath('function'))
-						->save($this->config->destination . DIRECTORY_SEPARATOR . $template->getFunctionUrl($element));
+						->save($this->config->destination . DIRECTORY_SEPARATOR . $template->functionUrl($element));
 				}
 
 				$this->onGenerateProgress(1);
 
 				// Generate source codes
 				if ($element->isTokenized()) {
-					$template->fileName = $this->getRelativePath($element->getFileName());
+					$template->fileName = $this->relativePathResolver->getRelativePath($element->getFileName());
 					$content = $this->charsetConvertor->convertFile($element->getFileName());
 					$template->source = $this->sourceCodeHighlighter->highlight($content);
 					$template->setFile($this->getTemplatePath('source'))
-						->save($this->config->destination . DIRECTORY_SEPARATOR . $template->getSourceUrl($element, FALSE));
+						->save($this->config->destination . DIRECTORY_SEPARATOR . $template->sourceUrl($element, FALSE));
 
 					$this->onGenerateProgress(1);
 				}
@@ -1127,215 +1084,6 @@ class HtmlGenerator extends Nette\Object implements Generator
 		}
 
 		$this->onGenerateProgress(1);
-	}
-
-
-	/**
-	 * Tries to resolve string as class, interface or exception name.
-	 *
-	 * @param string $className
-	 * @param string $namespace
-	 * @return ReflectionClass
-	 */
-	public function getClass($className, $namespace = '')
-	{
-		if (isset($this->parsedClasses[$namespace . '\\' . $className])) {
-			$class = $this->parsedClasses[$namespace . '\\' . $className];
-
-		} elseif (isset($this->parsedClasses[ltrim($className, '\\')])) {
-			$class = $this->parsedClasses[ltrim($className, '\\')];
-
-		} else {
-			return NULL;
-		}
-
-		// Class is not "documented"
-		if ( ! $class->isDocumented()) {
-			return NULL;
-		}
-
-		return $class;
-	}
-
-
-	/**
-	 * Tries to resolve type as constant name.
-	 *
-	 * @param string $constantName
-	 * @param string $namespace
-	 * @return ReflectionConstant
-	 */
-	public function getConstant($constantName, $namespace = '')
-	{
-		if (isset($this->parsedConstants[$namespace . '\\' . $constantName])) {
-			$constant = $this->parsedConstants[$namespace . '\\' . $constantName];
-
-		} elseif (isset($this->parsedConstants[ltrim($constantName, '\\')])) {
-			$constant = $this->parsedConstants[ltrim($constantName, '\\')];
-
-		} else {
-			return NULL;
-		}
-
-		// Constant is not "documented"
-		if ( ! $constant->isDocumented()) {
-			return NULL;
-		}
-
-		return $constant;
-	}
-
-
-	/**
-	 * Tries to resolve type as function name.
-	 *
-	 * @param string $functionName
-	 * @param string $namespace
-	 * @return ReflectionFunction
-	 */
-	public function getFunction($functionName, $namespace = '')
-	{
-		if (isset($this->parsedFunctions[$namespace . '\\' . $functionName])) {
-			$function = $this->parsedFunctions[$namespace . '\\' . $functionName];
-
-		} elseif (isset($this->parsedFunctions[ltrim($functionName, '\\')])) {
-			$function = $this->parsedFunctions[ltrim($functionName, '\\')];
-
-		} else {
-			return NULL;
-		}
-
-		// Function is not "documented"
-		if ( ! $function->isDocumented()) {
-			return NULL;
-		}
-
-		return $function;
-	}
-
-
-	/**
-	 * Tries to parse a definition of a class/method/property/constant/function and returns the appropriate instance if successful.
-
-	 *
-*@param string $definition Definition
-	 * @param ReflectionElement|ReflectionParameter $context Link context
-	 * @param string $expectedName
-	 * @return ReflectionElement|NULL
-	 */
-	public function resolveElement($definition, $context, &$expectedName = NULL)
-	{
-		// No simple type resolving
-		static $types = array(
-			'boolean' => 1, 'integer' => 1, 'float' => 1, 'string' => 1,
-			'array' => 1, 'object' => 1, 'resource' => 1, 'callback' => 1,
-			'callable' => 1, 'NULL' => 1, 'false' => 1, 'true' => 1, 'mixed' => 1
-		);
-
-		if (empty($definition) || isset($types[$definition])) {
-			return NULL;
-		}
-
-		$originalContext = $context;
-
-		if ($context instanceof ReflectionParameter && NULL === $context->getDeclaringClassName()) {
-			// Parameter of function in namespace or global space
-			$context = $this->getFunction($context->getDeclaringFunctionName());
-
-		} elseif ($context instanceof ReflectionMethod || $context instanceof ReflectionParameter
-			|| ($context instanceof ReflectionConstant && NULL !== $context->getDeclaringClassName())
-			|| $context instanceof ReflectionProperty
-		) {
-			// Member of a class
-			$context = $this->getClass($context->getDeclaringClassName());
-		}
-
-		if ($context === NULL) {
-			return NULL;
-		}
-
-		// self, $this references
-		if ($definition === 'self' || $definition === '$this') {
-			return $context instanceof ReflectionClass ? $context : NULL;
-		}
-
-		$definitionBase = substr($definition, 0, strcspn($definition, '\\:'));
-		$namespaceAliases = $context->getNamespaceAliases();
-		$className = Resolver::resolveClassFQN($definition, $namespaceAliases, $context->getNamespaceName());
-		if ( ! empty($definitionBase) && isset($namespaceAliases[$definitionBase]) && $definition !== $className) {
-			// Aliased class
-			$expectedName = $className;
-
-			if (strpos($className, ':') === FALSE) {
-				return $this->getClass($className, $context->getNamespaceName());
-
-			} else {
-				$definition = $className;
-			}
-
-		} elseif ($class = $this->getClass($definition, $context->getNamespaceName())) {
-			// Class
-			return $class;
-
-		} elseif ($constant = $this->getConstant($definition, $context->getNamespaceName())) {
-			// Constant
-			return $constant;
-
-		} elseif (($function = $this->getFunction($definition, $context->getNamespaceName()))
-			|| (substr($definition, -2) === '()' && ($function = $this->getFunction(substr($definition, 0, -2), $context->getNamespaceName())))
-		) {
-			// Function
-			return $function;
-		}
-
-		if (($pos = strpos($definition, '::')) || ($pos = strpos($definition, '->'))) {
-			// Class::something or Class->something
-			if (strpos($definition, 'parent::') === 0 && ($parentClassName = $context->getParentClassName())) {
-				$context = $this->getClass($parentClassName);
-
-			} elseif (strpos($definition, 'self::') !== 0) {
-				$class = $this->getClass(substr($definition, 0, $pos), $context->getNamespaceName());
-
-				if ($class === NULL) {
-					$class = $this->getClass(Resolver::resolveClassFQN(substr($definition, 0, $pos), $context->getNamespaceAliases(), $context->getNamespaceName()));
-				}
-
-				$context = $class;
-			}
-
-			$definition = substr($definition, $pos + 2);
-
-		} elseif ($originalContext instanceof ReflectionParameter) {
-			return NULL;
-		}
-
-		// No usable context
-		if ($context === NULL || $context instanceof ReflectionConstant || $context instanceof ReflectionFunction) {
-			return NULL;
-		}
-
-		if ($context->hasProperty($definition)) {
-			// Class property
-			return $context->getProperty($definition);
-
-		} elseif ($definition{0} === '$' && $context->hasProperty(substr($definition, 1))) {
-			// Class $property
-			return $context->getProperty(substr($definition, 1));
-
-		} elseif ($context->hasMethod($definition)) {
-			// Class method
-			return $context->getMethod($definition);
-
-		} elseif (substr($definition, -2) === '()' && $context->hasMethod(substr($definition, 0, -2))) {
-			// Class method()
-			return $context->getMethod(substr($definition, 0, -2));
-
-		} elseif ($context->hasConstant($definition)) {
-			// Class constant
-			return $context->getConstant($definition);
-		}
-
-		return NULL;
 	}
 
 
@@ -1450,31 +1198,6 @@ class HtmlGenerator extends Nette\Object implements Generator
 	{
 		$name = trim(sprintf('%s API documentation', $this->config->title));
 		return $this->config->destination . DIRECTORY_SEPARATOR . Nette\Utils\Strings::webalize($name) . '.zip';
-	}
-
-
-	/**
-	 * Returns filename relative path to the source directory.
-	 *
-	 * @param string $fileName
-	 * @return string
-	 * @throws \InvalidArgumentException If relative path could not be determined.
-	 */
-	public function getRelativePath($fileName)
-	{
-		if (isset($this->symlinks[$fileName])) {
-			$fileName = $this->symlinks[$fileName];
-		}
-		foreach ($this->config->source as $source) {
-			if (FileSystem::isPhar($source)) {
-				$source = FileSystem::pharPath($source);
-			}
-			if (strpos($fileName, $source) === 0) {
-				return is_dir($source) ? str_replace('\\', '/', substr($fileName, strlen($source) + 1)) : basename($fileName);
-			}
-		}
-
-		throw new InvalidArgumentException(sprintf('Could not determine "%s" relative path', $fileName));
 	}
 
 
