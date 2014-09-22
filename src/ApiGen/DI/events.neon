@@ -1,0 +1,5 @@
+- ApiGen\Events\LogOnError
+- ApiGen\Events\ProgressBarIncrement
+- ApiGen\Events\MemoryLimitCheckerOnProgress
+- ApiGen\Events\LoadElementResolver
+- ApiGen\Events\LoadRelativePathResolver

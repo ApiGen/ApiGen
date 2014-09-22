@@ -1,0 +1,7 @@
+- ApiGen\Templating\Filters\AnnotationFilters
+- ApiGen\Templating\Filters\DescriptionFilters
+- ApiGen\Templating\Filters\PathFilters
+- ApiGen\Templating\Filters\PhpManualFilters
+- ApiGen\Templating\Filters\ResolverFilters
+- ApiGen\Templating\Filters\SourceFilters
+- ApiGen\Templating\Filters\UrlFilters
