@@ -14,7 +14,7 @@ Tracy\Debugger::$logDirectory = TEMP_DIR;
 
 
 define('API_DIR', TEMP_DIR . DIRECTORY_SEPARATOR . 'api');
-define('APIGEN_BIN', 'php ' . realpath(__DIR__ . '/../../apigen'));
+define('APIGEN_BIN', realpath(__DIR__ . '/../../bin/apigen'));
 
 
 /** @return string */

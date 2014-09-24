@@ -1116,7 +1116,7 @@ class HtmlGenerator extends Nette\Object implements Generator
 	 */
 	private function isRobotsEnabled()
 	{
-		return ! empty($this->config->baseUrl) && $this->templateExists('robots', 'optional');
+		return $this->config->baseUrl && $this->templateExists('robots', 'optional');
 	}
 
 

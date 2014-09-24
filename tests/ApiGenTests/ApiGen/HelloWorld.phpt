@@ -16,15 +16,14 @@ require_once __DIR__ . '/../bootstrap.php';
 class HelloWorldTest extends TestCase
 {
 
-	public function testInit()
-	{
-		Assert::true(interface_exists('ApiGen\Generator\Generator'));
-	}
-
-
 	public function testBasicGeneration()
 	{
-		$config = atomicConfig(__DIR__ . '/config/apigen.neon');
+		$configPath = __DIR__ . '/config/apigen.neon';
+		Assert::true(file_exists($configPath));
+
+		$config = atomicConfig($configPath);
+		Assert::true(file_exists($configPath));
+
 		passthru(APIGEN_BIN . " --config=$config");
 		Assert::true(file_exists(API_DIR . '/index.html'));
 

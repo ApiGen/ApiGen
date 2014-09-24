@@ -8,6 +8,9 @@
 
 namespace ApiGenTests\ApiGen;
 
+use ApiGen\Generator\Markups\MarkdownMarkup;
+use ApiGen\Generator\SourceCodeHighlighter;
+use Michelf\MarkdownExtra;
 use Tester\Assert;
 use Tester\TestCase;
 
@@ -15,26 +18,30 @@ use Tester\TestCase;
 require_once __DIR__ . '/../../../bootstrap.php';
 
 
-class DummyHighlighter implements \ApiGen\Generator\SourceCodeHighlighter
+class DummyHighlighter implements SourceCodeHighlighter
 {
+
 	public function highlight($src, $lines = FALSE)
 	{
 		return "{color}$src{/}";
 	}
+
 }
 
 
 class MarkdownMarkupTest extends TestCase
 {
 
-	/** @var \ApiGen\Generator\Markups\MarkdownMarkup */
+	/**
+	 * @var MarkdownMarkup
+	 */
 	private $markup;
 
 
 	protected function setUp()
 	{
-		$this->markup = new \ApiGen\Generator\Markups\MarkdownMarkup(
-			new \Michelf\MarkdownExtra,
+		$this->markup = new MarkdownMarkup(
+			new MarkdownExtra,
 			new DummyHighlighter
 		);
 	}
