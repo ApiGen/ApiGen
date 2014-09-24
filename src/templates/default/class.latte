@@ -281,7 +281,12 @@
 				{/foreach}
 			</div>
 		</td>
-		<td class="value"><div><a href="#{$constant->name}" class="anchor">#</a><code>{!$constant->valueDefinition|highlightValue:$class}</code></div></td>
+		<td class="value">
+			<div>
+				<a href="#{$constant->name}" class="anchor">#</a>
+				<code>{$constant->valueDefinition|highlightValue:$class|noescape}</code>
+			</div>
+		</td>
 	</tr>
 	</table>
 
@@ -329,7 +334,12 @@
 				{/foreach}
 			</div>
 		</td>
-		<td n:if="!$property->magic" class="value"><div><a href="#{if $property->magic}m{/if}${$property->name}" class="anchor">#</a><code>{!$property->defaultValueDefinition|highlightValue:$class}</code></div></td>
+		<td n:if="!$property->magic" class="value">
+			<div>
+				<a href="#{if $property->magic}m{/if}${$property->name}" class="anchor">#</a>
+				<code>{$property->defaultValueDefinition|highlightValue:$class|noescape}</code>
+			</div>
+		</td>
 	</tr>
 	{/define}
 

@@ -10,7 +10,9 @@
 namespace ApiGen\DI;
 
 use ApiGen;
+use Kdyby\Events\DI\EventsExtension;
 use Nette\DI\CompilerExtension;
+use Nette\DI\ServiceDefinition;
 use Nette\DI\Statement;
 
 
@@ -135,6 +137,12 @@ class ApiGenExtension extends CompilerExtension
 		$builder->addDefinition($this->prefix('generator'))
 			->setClass('ApiGen\Generator\HtmlGenerator');
 
+		$builder->addDefinition($this->prefix('elementResolver'))
+			->setClass('ApiGen\Generator\Resolvers\ElementResolver');
+
+		$builder->addDefinition($this->prefix('relativePathResolver'))
+			->setClass('ApiGen\Generator\Resolvers\RelativePathResolver');
+
 		$builder->addDefinition($this->prefix('scanner'))
 			->setClass('ApiGen\Generator\PhpScanner');
 
@@ -169,15 +177,52 @@ class ApiGenExtension extends CompilerExtension
 				->addSetup('setup');
 		}
 
-		// template factory
-		$builder->addDefinition($this->prefix('templateFactory'))
-			->setClass('ApiGen\Templating\TemplateFactory');
-
 		$builder->addDefinition($this->prefix('memoryLimitChecker'))
 			->setClass('ApiGen\Metrics\SimpleMemoryLimitChecker');
 
+		$this->setupEvents();
+		$this->setupTemplate();
+
 		// @todo: what for? removes system parameters!
 		// $builder->parameters = $config;
+	}
+
+
+	private function setupEvents()
+	{
+		$builder = $this->getContainerBuilder();
+
+		foreach ($this->loadFromFile(__DIR__ . '/events.neon') as $i => $class) {
+			$builder->addDefinition($this->prefix('event.' . $i))
+				->setClass($class)
+				->addTag(EventsExtension::TAG_SUBSCRIBER);
+		}
+	}
+
+
+	private function setupTemplate()
+	{
+		$builder = $this->getContainerBuilder();
+
+		$builder->addDefinition($this->prefix('templateFactory'))
+			->setClass('ApiGen\Templating\TemplateFactory');
+
+		$builder->addDefinition($this->prefix('textFormatter'))
+			->setClass('ApiGen\Templating\Filters\Helpers\TextFormatter');
+
+		$latteFactory = $builder->addDefinition($this->prefix('latteFactory'))
+			->setClass('Latte\Engine')
+			->addSetup('setTempDirectory', array($builder->expand('%tempDir%/cache/latte')));
+//			->addSetup('setAutoRefresh', array($this->compiler->parameters['debugMode']))
+//			->addSetup('setContentType', array($config['xhtml'] ? Latte\Compiler::CONTENT_XHTML : Latte\Compiler::CONTENT_HTML))
+//			->setImplement('Nette\Bridges\ApplicationLatte\ILatteFactory');
+
+		foreach ($this->loadFromFile(__DIR__ . '/filters.neon') as $i => $class) {
+			$filter = $builder->addDefinition($this->prefix('latte.filter.' . $i))
+				->setClass($class);
+
+			$latteFactory->addSetup('addFilter', array(NULL, array('@' . $filter->getClass(), 'loader')));
+		}
 	}
 
 }
