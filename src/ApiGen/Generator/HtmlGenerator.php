@@ -549,6 +549,7 @@ class HtmlGenerator extends Nette\Object implements Generator
 	/**
 	 * Generates common files.
 	 *
+	 * @param Template|\stdClass $template
 	 * @return Generator
 	 */
 	private function generateCommon(Template $template)
@@ -661,6 +662,7 @@ class HtmlGenerator extends Nette\Object implements Generator
 	/**
 	 * Generates list of deprecated elements.
 	 *
+	 * @param Template|\stdClass
 	 * @return Generator
 	 * @throws \RuntimeException If template is not set.
 	 */
@@ -719,6 +721,7 @@ class HtmlGenerator extends Nette\Object implements Generator
 	/**
 	 * Generates list of tasks.
 	 *
+	 * @param Template|\stdClass
 	 * @return Generator
 	 */
 	private function generateTodo(Template $template)
@@ -922,6 +925,7 @@ class HtmlGenerator extends Nette\Object implements Generator
 
 	/**
 	 * Generate classes, interfaces, traits, exceptions, constants and functions files.
+	 * @param Template|\stdClass
 	 */
 	private function generateElements(Template $template)
 	{
