@@ -166,6 +166,7 @@ debug: true # default [false]
 ## Detailed documentation
 
 - [list of supported annotations](doc/supported-annotations.md)
+- [built with ApiGen](doc/built-with-apigen.md)
 
 
 ### Performance
