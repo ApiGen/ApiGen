@@ -163,6 +163,11 @@ debug: true # default [false]
 ```
 
 
+## Detailed documentation
+
+- [list of supported annotations](doc/supported-annotations.md)
+
+
 ### Performance
 
 When generating documentation of large libraries, **not loading the Xdebug PHP extension**  will improve performance.
