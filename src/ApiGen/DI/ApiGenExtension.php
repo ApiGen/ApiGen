@@ -180,9 +180,7 @@ class ApiGenExtension extends CompilerExtension
 				->addSetup('setup');
 		}
 
-		$builder->addDefinition($this->prefix('memoryLimitChecker'))
-			->setClass('ApiGen\Metrics\SimpleMemoryLimitChecker');
-
+		$this->setupMetrics();
 		$this->setupEvents();
 		$this->setupTemplate();
 
@@ -216,9 +214,6 @@ class ApiGenExtension extends CompilerExtension
 		$latteFactory = $builder->addDefinition($this->prefix('latteFactory'))
 			->setClass('Latte\Engine')
 			->addSetup('setTempDirectory', array($builder->expand('%tempDir%/cache/latte')));
-//			->addSetup('setAutoRefresh', array($this->compiler->parameters['debugMode']))
-//			->addSetup('setContentType', array($config['xhtml'] ? Latte\Compiler::CONTENT_XHTML : Latte\Compiler::CONTENT_HTML))
-//			->setImplement('Nette\Bridges\ApplicationLatte\ILatteFactory');
 
 		foreach ($this->loadFromFile(__DIR__ . '/filters.neon') as $i => $class) {
 			$filter = $builder->addDefinition($this->prefix('latte.filter.' . $i))
@@ -226,6 +221,18 @@ class ApiGenExtension extends CompilerExtension
 
 			$latteFactory->addSetup('addFilter', array(NULL, array('@' . $filter->getClass(), 'loader')));
 		}
+	}
+
+
+	private function setupMetrics()
+	{
+		$builder = $this->getContainerBuilder();
+
+		$builder->addDefinition($this->prefix('memoryLimitChecker'))
+			->setClass('ApiGen\Metrics\SimpleMemoryLimitChecker');
+
+		$builder->addDefinition($this->prefix('elapsedTimeAndMemory'))
+			->setClass('ApiGen\Metrics\ElapsedTimeAndMemory');
 	}
 
 }

@@ -13,6 +13,7 @@ use ApiGen;
 use ApiGen\Configuration\Configuration;
 use ApiGen\Generator\Generator;
 use ApiGen\Logger;
+use ApiGen\Metrics\ElapsedTimeAndMemory;
 use DateTime;
 use Exception;
 use Nette\Object;
@@ -63,12 +64,19 @@ class Application extends Object
 	 */
 	private $generator;
 
+	/**
+	 * @var ElapsedTimeAndMemory
+	 */
+	private $elapsedTimeAndMemory;
 
-	public function __construct(Configuration $config, Logger $logger, Generator $generator)
+
+	public function __construct(Configuration $config, Logger $logger, Generator $generator,
+	                            ElapsedTimeAndMemory $elapsedTimeAndMemory)
 	{
 		$this->config = $config;
 		$this->logger = $logger;
 		$this->generator = $generator;
+		$this->elapsedTimeAndMemory = $elapsedTimeAndMemory;
 	}
 
 
@@ -98,7 +106,7 @@ class Application extends Object
 
 			$this->onShutdown($this);
 
-			$this->printElapsed($start, new DateTime());
+			$this->elapsedTimeAndMemory->printElapsed($start, new DateTime());
 
 		} catch (Exception $e) {
 			$this->onError($e);
@@ -238,36 +246,6 @@ class Application extends Object
 		}
 
 		$this->generator->generate();
-	}
-
-
-	/**
-	 * Prints the elapsed time.
-	 */
-	protected function printElapsed(DateTime $start, DateTime $end)
-	{
-		$interval = $end->diff($start);
-
-		$parts = array();
-		if ($interval->h > 0) {
-			$parts[] = sprintf('%d hours', $interval->h);
-		}
-
-		if ($interval->i > 0) {
-			$parts[] = sprintf('%d min', $interval->i);
-		}
-
-		if ($interval->s > 0) {
-			$parts[] = sprintf('%d sec', $interval->s);
-		}
-
-		if (empty($parts)) {
-			array_push($parts, ' %d sec', 1);
-		}
-
-		$duration = implode(' ', $parts);
-
-		$this->logger->log(sprintf("Done. Total time: %s, used: %d MB RAM\n", $duration, round(memory_get_peak_usage(TRUE) / 1024 / 1024)));
 	}
 
 }
