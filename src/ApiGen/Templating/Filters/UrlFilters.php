@@ -13,7 +13,6 @@ use ApiGen\Generator\Resolvers\ElementResolver;
 use ApiGen\Reflection\ReflectionClass;
 use ApiGen\Reflection\ReflectionFunction;
 use ApiGen\Templating\Filters\Helpers\Strings;
-use ApiGen\Templating\Filters\Helpers\TextFormatter;
 use Nette;
 use ApiGen\Configuration\Configuration;
 use ApiGen\Generator\Markups\Markup;
@@ -48,20 +47,14 @@ class UrlFilters extends Filters
 	 */
 	private $elementResolver;
 
-	/**
-	 * @var TextFormatter
-	 */
-	private $textFormatter;
-
 
 	public function __construct(Configuration $configuration, SourceCodeHighlighter $highlighter, Markup $markup,
-	                            ElementResolver $elementResolver, TextFormatter $textFormatter)
+	                            ElementResolver $elementResolver)
 	{
 		$this->configuration = $configuration;
 		$this->highlighter = $highlighter;
 		$this->markup = $markup;
 		$this->elementResolver = $elementResolver;
-		$this->textFormatter = $textFormatter;
 	}
 
 
@@ -389,7 +382,7 @@ class UrlFilters extends Filters
 
 			case 'throws':
 				$description = trim(strpbrk($value, "\n\r\t $")) ?: $value;
-				$description = $this->textFormatter->doc($description, $context);
+				$description = $this->doc($description, $context);
 				return sprintf('<code>%s</code>%s', $this->typeLinks($value, $context), $description ? '<br>' . $description : '');
 
 			case 'license':
@@ -410,7 +403,7 @@ class UrlFilters extends Filters
 						$doc[] = sprintf('<code>%s</code>', $this->typeLinks($link, $context));
 
 					} else {
-						$doc[] = $this->textFormatter->doc($link, $context);
+						$doc[] = $this->doc($link, $context);
 					}
 				}
 				return implode(', ', $doc);
@@ -429,7 +422,7 @@ class UrlFilters extends Filters
 		}
 
 		// Default
-		return $this->textFormatter->doc($value, $context);
+		return $this->doc($value, $context);
 	}
 
 
@@ -459,6 +452,119 @@ class UrlFilters extends Filters
 		}
 
 		return implode('|', $links);
+	}
+
+
+	/********************* description *********************/
+
+	/**
+	 * Docblock description
+	 */
+	public function description($annotation, $context)
+	{
+		$description = trim(strpbrk($annotation, "\n\r\t $")) ?: $annotation;
+		return $this->doc($description, $context);
+	}
+
+
+	/**
+	 * @param ReflectionElement $element
+	 * @param bool $block
+	 * @return mixed
+	 */
+	public function shortDescription($element, $block = FALSE)
+	{
+		return $this->doc($element->getShortDescription(), $element, $block);
+	}
+
+
+	/**
+	 * @param ReflectionElement $element
+	 * @return mixed
+	 */
+	public function longDescription($element)
+	{
+		$long = $element->getLongDescription();
+
+		// Merge lines
+		$long = preg_replace_callback('~(?:<(code|pre)>.+?</\1>)|([^<]*)~s', function ($matches) {
+			return ! empty($matches[2])
+				? preg_replace('~\n(?:\t|[ ])+~', ' ', $matches[2])
+				: $matches[0];
+		}, $long);
+
+		return $this->doc($long, $element, TRUE);
+	}
+
+
+	/********************* text formatter *********************/
+
+
+	/**
+	 * Formats text as documentation block or line.
+	 *
+	 * @param string $text
+	 * @param ReflectionElement $context
+	 * @param boolean $block Parse text as block
+	 * @return string
+	 */
+	public function doc($text, ReflectionElement $context, $block = FALSE)
+	{
+		// Resolve @internal
+		$text = $this->resolveInternal($text);
+
+		// Process markup
+		if ($block) {
+			$text = $this->markup->block($text);
+
+		} else {
+			$text = $this->markup->line($text);
+		}
+
+		// Resolve @link and @see
+		$text = $this->resolveLinks($text, $context);
+
+		return $text;
+	}
+
+
+	/**
+	 * Resolves links in documentation.
+	 *
+	 * @param string $text Processed documentation text
+	 * @param ReflectionElement $context Reflection object
+	 * @return string
+	 */
+	public function resolveLinks($text, ReflectionElement $context)
+	{
+		$that = $this;
+		return preg_replace_callback('~{@(?:link|see)\\s+([^}]+)}~', function ($matches) use ($context, $that) {
+			// Texy already added <a> so it has to be stripped
+			list($url, $description) = Strings::split(strip_tags($matches[1]));
+			if (Validators::isUri($url)) {
+				return Strings::link($url, $description ?: $url);
+			}
+			return $that->resolveLink($matches[1], $context) ?: $matches[1];
+		}, $text);
+	}
+
+
+	/**
+	 * Resolves internal annotation.
+	 *
+	 * @param string $text
+	 * @return string
+	 */
+	private function resolveInternal($text)
+	{
+		$internal = $this->configuration->internal;
+		return preg_replace_callback('~\\{@(\\w+)(?:(?:\\s+((?>(?R)|[^{}]+)*)\\})|\\})~', function ($matches) use ($internal) {
+			// Replace only internal
+			if ($matches[1] !== 'internal') {
+				return $matches[0];
+			}
+			return $internal && isset($matches[2]) ? $matches[2] : '';
+		}, $text);
 	}
 
 

@@ -10,6 +10,7 @@
 namespace ApiGen\Templating\Filters\Helpers;
 
 use Latte;
+use Latte\Runtime\Filters;
 use Nette;
 
 
@@ -40,10 +41,8 @@ class Strings extends Nette\Object
 	public static function link($url, $text, $escape = TRUE, array $classes = array())
 	{
 		$class = ! empty($classes) ? sprintf(' class="%s"', implode(' ', $classes)) : '';
-		return sprintf('<a href="%s"%s>%s</a>', $url, $class, $escape ? Latte\Runtime\Filters::escapeHtml($text) : $text);
+		return sprintf('<a href="%s"%s>%s</a>', $url, $class, $escape ? Filters::escapeHtml($text) : $text);
 		// @todo, use Html class
 	}
-
-
 
 }
