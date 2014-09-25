@@ -86,9 +86,6 @@ skipDocPath:
 skipDocPrefix:
     - Nette
 
-# markup that manages comments converting to html
-markup: markdown # default [texy]
-
 # character set of source files; if you use only one across your files, we recommend you name it
 charset:
 	# default

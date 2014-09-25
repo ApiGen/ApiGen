@@ -163,22 +163,11 @@ class ApiGenExtension extends CompilerExtension
 		$builder->addDefinition($this->prefix('sourceCodeHighlighter'))
 			->setClass('ApiGen\Generator\FshlSourceCodeHighlighter');
 
-		// markup
-		if ($config['markup'] === 'markdown') {
-			$builder->addDefinition($this->prefix('markdown'))
-				->setClass('Michelf\MarkdownExtra');
+		$builder->addDefinition($this->prefix('markdown'))
+			->setClass('Michelf\MarkdownExtra');
 
-			$builder->addDefinition($this->prefix('markdownMarkup'))
-				->setClass('ApiGen\Generator\Markups\MarkdownMarkup');
-
-		} else {
-			$builder->addDefinition($this->prefix('texy'))
-				->setClass('Texy');
-
-			$builder->addDefinition($this->prefix('texyMarkup'))
-				->setClass('ApiGen\Generator\Markups\TexyMarkup')
-				->addSetup('setup');
-		}
+		$builder->addDefinition($this->prefix('markdownMarkup'))
+			->setClass('ApiGen\Generator\Markups\MarkdownMarkup');
 
 		$this->setupMetrics();
 		$this->setupEvents();
@@ -207,9 +196,6 @@ class ApiGenExtension extends CompilerExtension
 
 		$builder->addDefinition($this->prefix('templateFactory'))
 			->setClass('ApiGen\Templating\TemplateFactory');
-
-		$builder->addDefinition($this->prefix('textFormatter'))
-			->setClass('ApiGen\Templating\Filters\Helpers\TextFormatter');
 
 		$latteFactory = $builder->addDefinition($this->prefix('latteFactory'))
 			->setClass('Latte\Engine')
