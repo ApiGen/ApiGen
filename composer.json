@@ -40,7 +40,8 @@
 		"ext-tokenizer": "*"
 	},
 	"require-dev": {
-		"nette/tester": "~1.2"
+		"nette/tester": "~1.2",
+		"jakub-onderka/php-parallel-lint": "~0.7"
 	},
 	"suggest": {
 		"ext-bz2": "*",

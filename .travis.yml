@@ -14,6 +14,7 @@ matrix:
 before_script:
   - composer self-update
   - composer install --no-interaction --prefer-source --dev
+  - vendor/bin/parallel-lint -e php,phpt --exclude vendor .
 
 script: vendor/bin/tester -p php -c tests/php-unix.ini tests/ApiGenTests
 
