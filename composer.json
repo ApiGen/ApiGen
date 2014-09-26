@@ -37,8 +37,7 @@
 		"ext-json": "*",
 		"ext-mbstring": "*",
 		"ext-iconv": "*",
-		"ext-tokenizer": "*",
-		"composer/composer": "@dev"
+		"ext-tokenizer": "*"
 	},
 	"require-dev": {
 		"nette/tester": "~1.2",
