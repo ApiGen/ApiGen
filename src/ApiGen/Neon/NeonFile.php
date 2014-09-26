@@ -91,7 +91,7 @@ class NeonFile extends Nette\Object
 		$retries = 3;
 		while ($retries--) {
 			try {
-				file_put_contents($this->path, Neon::encode($content, TRUE));
+				file_put_contents($this->path, Neon::encode($content, Neon::BLOCK));
 				break;
 
 			} catch (\Exception $e) {

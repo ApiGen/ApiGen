@@ -74,7 +74,7 @@ class Configuration extends Nette\Object
 	public function setDefaults(array $config)
 	{
 		foreach ($this->defaults as $key => $value) {
-			if ( ! isset($apigen[$key])) {
+			if ( ! isset($config[$key])) {
 				$config[$key] = $value;
 			}
 		}
