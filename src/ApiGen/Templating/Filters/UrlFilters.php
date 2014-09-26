@@ -24,13 +24,16 @@ use ApiGen\Reflection\ReflectionProperty;
 use Nette\Utils\Validators;
 
 
+/**
+ * @method UrlFilters setConfig(array $config)
+ */
 class UrlFilters extends Filters
 {
 
 	/**
-	 * @var Configuration|\stdClass
+	 * @var array
 	 */
-	private $configuration;
+	private $config;
 
 	/**
 	 * @var SourceCodeHighlighter
@@ -48,10 +51,9 @@ class UrlFilters extends Filters
 	private $elementResolver;
 
 
-	public function __construct(Configuration $configuration, SourceCodeHighlighter $highlighter, Markup $markup,
+	public function __construct(SourceCodeHighlighter $highlighter, Markup $markup,
 	                            ElementResolver $elementResolver)
 	{
-		$this->configuration = $configuration;
 		$this->highlighter = $highlighter;
 		$this->markup = $markup;
 		$this->elementResolver = $elementResolver;
@@ -160,7 +162,7 @@ class UrlFilters extends Filters
 	public function packageUrl($packageName)
 	{
 		return sprintf(
-			$this->configuration->template['templates']['main']['package']['filename'],
+			$this->config['template']['templates']['main']['package']['filename'],
 			$this->urlize($packageName)
 		);
 	}
@@ -191,7 +193,7 @@ class UrlFilters extends Filters
 	public function namespaceUrl($namespaceName)
 	{
 		return sprintf(
-			$this->configuration->template['templates']['main']['namespace']['filename'],
+			$this->config['template']['templates']['main']['namespace']['filename'],
 			$this->urlize($namespaceName)
 		);
 	}
@@ -207,7 +209,7 @@ class UrlFilters extends Filters
 	{
 		$className = $class instanceof ReflectionClass ? $class->getName() : $class;
 		return sprintf(
-			$this->configuration->template['templates']['main']['class']['filename'],
+			$this->config['template']['templates']['main']['class']['filename'],
 			$this->urlize($className)
 		);
 	}
@@ -251,7 +253,7 @@ class UrlFilters extends Filters
 		}
 		// Constant in namespace or global space
 		return sprintf(
-			$this->configuration->template['templates']['main']['constant']['filename'],
+			$this->config['template']['templates']['main']['constant']['filename'],
 			$this->urlize($constant->getName())
 		);
 	}
@@ -265,7 +267,7 @@ class UrlFilters extends Filters
 	public function functionUrl(ReflectionFunction $function)
 	{
 		return sprintf(
-			$this->configuration->template['templates']['main']['function']['filename'],
+			$this->config['template']['templates']['main']['function']['filename'],
 			$this->urlize($function->getName())
 		);
 	}
@@ -557,7 +559,7 @@ class UrlFilters extends Filters
 	 */
 	private function resolveInternal($text)
 	{
-		$internal = $this->configuration->internal;
+		$internal = $this->config->internal;
 		return preg_replace_callback('~\\{@(\\w+)(?:(?:\\s+((?>(?R)|[^{}]+)*)\\})|\\})~', function ($matches) use ($internal) {
 			// Replace only internal
 			if ($matches[1] !== 'internal') {

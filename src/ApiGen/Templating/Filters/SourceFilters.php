@@ -17,19 +17,16 @@ use ApiGen\Reflection\ReflectionFunction;
 use Nette;
 
 
+/**
+ * @method SourceFilters setConfig(array $config)
+ */
 class SourceFilters extends Filters
 {
 
 	/**
-	 * @var Configuration
+	 * @var array
 	 */
-	private $configuration;
-
-
-	public function __construct(Configuration $configuration)
-	{
-		$this->configuration = $configuration;
-	}
+	private $config;
 
 
 	/**
@@ -39,7 +36,7 @@ class SourceFilters extends Filters
 	public function staticFile($name)
 	{
 		$versions = array();
-		$filename = $this->configuration->destination . DIRECTORY_SEPARATOR . $name;
+		$filename = $this->config['destination'] . DS . $name;
 		if ( ! isset($versions[$filename]) && is_file($filename)) {
 			$versions[$filename] = sprintf('%u', crc32(file_get_contents($filename)));
 		}
@@ -126,7 +123,7 @@ class SourceFilters extends Filters
 			$lines = $element->getStartLine() !== $element->getEndLine() ? sprintf('%s-%s', $element->getStartLine(), $element->getEndLine()) : $element->getStartLine();
 		}
 
-		return sprintf($this->configuration->template['templates']['main']['source']['filename'], $file)
+		return sprintf($this->config['template']['templates']['main']['source']['filename'], $file)
 		. (NULL !== $lines ? '#' . $lines : '');
 	}
 

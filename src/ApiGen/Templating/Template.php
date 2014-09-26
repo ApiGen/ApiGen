@@ -9,6 +9,7 @@
 
 namespace ApiGen\Templating;
 
+use ApiGen\FileSystem\FileSystem;
 use Nette;
 
 
@@ -17,6 +18,7 @@ use Nette;
  *
  * @method Template setFile($file)
  * @method string   namespaceUrl(string $s)
+ * @method string   packageUrl(string $s)
  * @method string   classUrl(string $s)
  * @method string   constantUrl(string $s)
  * @method string   functionUrl(string $s)
@@ -32,6 +34,7 @@ class Template extends Nette\Bridges\ApplicationLatte\Template
 	 */
 	public function save($file)
 	{
+		FileSystem::forceDir($file);
 		if (file_put_contents($file, $this->__toString(TRUE)) === FALSE) {
 			throw new Nette\IOException("Unable to save file '$file'.");
 		}
@@ -45,7 +48,7 @@ class Template extends Nette\Bridges\ApplicationLatte\Template
 	 */
 	public function __call($name, $args)
 	{
-		$filters = array('namespaceUrl', 'classUrl', 'constantUrl', 'functionUrl', 'sourceUrl');
+		$filters = array('namespaceUrl', 'packageUrl', 'classUrl', 'constantUrl', 'functionUrl', 'sourceUrl');
 		if (in_array($name, $filters)) {
 			return $this->getLatte()->invokeFilter($name, $args);
 		}
