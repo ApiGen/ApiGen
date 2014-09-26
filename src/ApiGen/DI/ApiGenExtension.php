@@ -19,122 +19,23 @@ use Nette\DI\Statement;
 class ApiGenExtension extends CompilerExtension
 {
 
-	/**
-	 * @var array
-	 */
-	protected $defaults = array(
-		'config' => '',
-		'source' => array(),
-		'destination' => '',
-		'extensions' => array('php'),
-		'exclude' => array(),
-		'skipDocPath' => array(),
-		'skipDocPrefix' => array(),
-		'charset' => array('auto'),
-		'main' => '',
-		'title' => '',
-		'baseUrl' => '',
-		'googleCseId' => '',
-		'googleAnalytics' => '',
-		'groups' => 'auto',
-		'autocomplete' => array('classes', 'constants', 'functions'),
-		'accessLevels' => array('public', 'protected'),
-		'internal' => FALSE,
-		'php' => TRUE,
-		'tree' => TRUE,
-		'deprecated' => FALSE,
-		'todo' => FALSE,
-		'download' => FALSE,
-		'wipeout' => TRUE,
-		'debug' => NULL, // placeholder
-		'markup' => 'markdown',
-		// template
-		'templateConfig' => '',
-		'template' => array(
-			'resources' => array(),
-			'templates' => array(
-				'common' => array(),
-				'optional' => array()
-			)
-		)
-	);
-
-	/**
-	 * @var ApiGen\Configuration\Validator
-	 */
-	protected $configurationValidator;
-
-	/**
-	 * @var ApiGen\Configuration\Composer
-	 */
-	protected $configurationComposer;
-
-	/**
-	 * @var ApiGen\Configuration\Helper
-	 */
-	private $configurationHelper;
-
-
-	public function __construct()
-	{
-		$this->configurationValidator = new ApiGen\Configuration\Validator;
-		$this->configurationComposer = new ApiGen\Configuration\Composer;
-		$this->configurationHelper = new ApiGen\Configuration\Helper;
-		$this->defaults['templateConfig'] = APIGEN_ROOT_PATH . '/templates/' . ApiGen\Configuration\Helper::DEFAULT_TEMPLATE_CONFIG_FILENAME;
-	}
-
-
 	public function loadConfiguration()
 	{
 		$builder = $this->getContainerBuilder();
 
-		$this->defaults['debug'] = $builder->parameters['debugMode'];
-
-		// parameters (@todo: resolvers: default, cli, config?)
-
-		$config = $this->getConfig($this->defaults);
-		$config = $this->configurationComposer->addCliArguments($config);
-		$config = $this->configurationComposer->addConfigFileOptions($config, $this);
-
-		// sanitize
-		$config = $this->configurationHelper->sanitizeConfigOptions($config);
-
-		// template
-		$config = $this->configurationComposer->addTemplateOptions($config, $this);
-
-		$this->configurationValidator->validateConfig($config);
-
 		// configuration
 		$builder->addDefinition($this->prefix('configuration'))
-			->setClass('ApiGen\Configuration\Configuration')
-			->setArguments(array($config));
-
-		// application
-		$builder->addDefinition($this->prefix('application'))
-			->setClass('ApiGen\Application\Application');
-
-		$builder->addDefinition($this->prefix('configurationHelper'))
-			->setClass('ApiGen\Configuration\Helper');
-
-		// console
-		$builder->addDefinition($this->prefix('console.logger'))
-			->setClass('ApiGen\Console\ConsoleLogger');
+			->setClass('ApiGen\Configuration\Configuration');
 
 		$builder->addDefinition($this->prefix('console.progressBar'))
-			->setClass('ApiGen\Console\SimpleProgressBar');
-
-		$builder->addDefinition($this->prefix('console.helper'))
-			->setClass('ApiGen\Console\Helper');
-
-		$builder->addDefinition($this->prefix('errorHandler'))
-			->setClass('ApiGen\LogErrorHandler');
+			->setClass('ApiGen\Console\ProgressBar');
 
 		// charset
 		$builder->addDefinition($this->prefix('charsetConvertor'))
-			->setClass('ApiGen\Charset\CharsetConvertor')
-			->addSetup('setCharset', array(
-					new Statement('(array) ?->?', array('@ApiGen\Configuration\Configuration', 'charset')))
-			);
+			->setClass('ApiGen\Charset\CharsetConvertor');
+//			->addSetup('setCharset', array(
+//					new Statement('(array) ?->?', array('@ApiGen\Configuration\Configuration', 'charset')))
+//			);
 
 		// generator
 		$builder->addDefinition($this->prefix('generator'))
@@ -169,12 +70,11 @@ class ApiGenExtension extends CompilerExtension
 		$builder->addDefinition($this->prefix('markdownMarkup'))
 			->setClass('ApiGen\Generator\Markups\MarkdownMarkup');
 
+		$this->setupConsole();
 		$this->setupMetrics();
 		$this->setupEvents();
 		$this->setupTemplate();
-
-		// @todo: what for? removes system parameters!
-		// $builder->parameters = $config;
+		$this->setupFileSystem();
 	}
 
 
@@ -216,9 +116,40 @@ class ApiGenExtension extends CompilerExtension
 
 		$builder->addDefinition($this->prefix('memoryLimitChecker'))
 			->setClass('ApiGen\Metrics\SimpleMemoryLimitChecker');
+	}
 
-		$builder->addDefinition($this->prefix('elapsedTimeAndMemory'))
-			->setClass('ApiGen\Metrics\ElapsedTimeAndMemory');
+
+	private function setupFileSystem()
+	{
+		$builder = $this->getContainerBuilder();
+
+		$builder->addDefinition($this->prefix('finder'))
+			->setClass('ApiGen\FileSystem\Finder');
+
+		$builder->addDefinition($this->prefix('zip'))
+			->setClass('ApiGen\FileSystem\Zip');
+
+		$builder->addDefinition($this->prefix('wiper'))
+			->setClass('ApiGen\FileSystem\Wiper');
+	}
+
+
+	private function setupConsole()
+	{
+		$builder = $this->getContainerBuilder();
+
+		$application = $builder->addDefinition($this->prefix('application'))
+			->setClass('ApiGen\Console\Application');
+
+		foreach ($this->loadFromFile(__DIR__ . '/commands.neon') as $i => $class) {
+			$command = $builder->addDefinition($this->prefix('command.' . $i))
+				->setClass($class);
+
+			$application->addSetup('add', array('@' . $command->getClass()));
+		}
+
+		$builder->addDefinition($this->prefix('consoleOutput'))
+			->setClass('Symfony\Component\Console\Output\ConsoleOutput');
 	}
 
 }
