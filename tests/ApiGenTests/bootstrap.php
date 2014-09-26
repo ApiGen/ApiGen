@@ -9,11 +9,17 @@ date_default_timezone_set('Europe/Prague');
 Tester\Environment::setup();
 
 
+if ( ! defined('DS')) {
+	define('DS', DIRECTORY_SEPARATOR);
+}
+
+
 define('TEMP_DIR', createTempDir());
 Tracy\Debugger::$logDirectory = TEMP_DIR;
 
 
-define('API_DIR', TEMP_DIR . DIRECTORY_SEPARATOR . 'api');
+define('PROJECT_DIR', __DIR__ . DS . 'ApiGen/Project');
+define('API_DIR', TEMP_DIR . DS . 'api');
 define('APIGEN_BIN', realpath(__DIR__ . '/../../bin/apigen'));
 
 
@@ -24,30 +30,6 @@ function createTempDir() {
 	Tester\Helpers::purge($tempDir);
 
 	return realpath($tempDir);
-}
-
-
-/**
- * Moves config file to temp directory and replaces paths in it.
- *
- * @param  string
- * @return string
- */
-function atomicConfig($original) {
-	if (!is_file($original)) {
-		Tester\Assert::fail("Configuration file '$original' does not exist.");
-	}
-
-	$config = Nette\Neon\Neon::decode(file_get_contents($original));
-	if (isset($config['source'])) {
-		$config['source'] = array(__DIR__ . '/ApiGen/Project');
-	}
-	if (isset($config['destination'])) {
-		$config['destination'] = API_DIR;
-	}
-
-	file_put_contents($new = TEMP_DIR . DIRECTORY_SEPARATOR . basename($original), Nette\Neon\Neon::encode($config, Nette\Neon\Encoder::BLOCK));
-	return $new;
 }
 
 

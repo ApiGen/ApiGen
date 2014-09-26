@@ -6,6 +6,7 @@
 
 namespace ApiGenTests\ApiGen;
 
+use ApiGen\Neon\NeonFile;
 use Tester\Assert;
 use Tester\TestCase;
 
@@ -16,15 +17,17 @@ require_once __DIR__ . '/../bootstrap.php';
 class HelloWorldTest extends TestCase
 {
 
+	protected function setUp()
+	{
+		file_put_contents(__DIR__ . '/apigen.neon', '');
+	}
+
+
 	public function testBasicGeneration()
 	{
-		$configPath = __DIR__ . '/config/apigen.neon';
-		Assert::true(file_exists($configPath));
+		$this->prepareConfig();
 
-		$config = atomicConfig($configPath);
-		Assert::true(file_exists($configPath));
-
-		passthru(APIGEN_BIN . " --config=$config");
+		passthru(APIGEN_BIN . ' generate');
 		Assert::true(file_exists(API_DIR . '/index.html'));
 
 		$fooClassFile = API_DIR . '/source-class-ApiGenTests.ApiGen.Project.Foo.html';
@@ -32,6 +35,22 @@ class HelloWorldTest extends TestCase
 
 		$fooClassFileSource = file_get_contents($fooClassFile);
 		Assert::true(strlen($fooClassFileSource) > 1);
+	}
+
+
+	private function prepareConfig()
+	{
+		$neonFile = new NeonFile(__DIR__ . '/apigen.neon');
+		$config = $neonFile->read();
+		$config['source'] = array(__DIR__ . DS . 'Project');
+		$config['destination'] = API_DIR;
+		$neonFile->write($config);
+	}
+
+
+	protected function tearDown()
+	{
+		@unlink(__DIR__ . '/apigen.neon');
 	}
 
 }
