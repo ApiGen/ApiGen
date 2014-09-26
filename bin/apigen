@@ -8,21 +8,28 @@
  * the file license.md that was distributed with this source code.
  */
 
-namespace ApiGen;
-
+use ApiGen\FileSystem\FileSystem;
 use Nette\Configurator;
 use Tracy\Debugger;
 
 
+if ( ! defined('DS')) {
+	define('DS', DIRECTORY_SEPARATOR);
+}
+
+
 if (is_file($autoload = __DIR__ . '/../vendor/autoload.php')) {
 	require_once $autoload;
+
 } elseif (is_file($autoload = __DIR__ . '/../../../autoload.php')) { // composer global
 	require_once $autoload;
+
 } else {
 	echo "Missing autoload.php, update by the composer.\n";
 	exit(2);
 }
 unset($autoload);
+
 
 // Init debugger
 Debugger::$strictMode = TRUE;
@@ -31,6 +38,7 @@ if (isset($_SERVER['argv']) && ($tmp = array_search('--debug', $_SERVER['argv'],
 	unset($_SERVER['argv'][$tmp]);
 	$_SERVER['argv'] = array_values($_SERVER['argv']);
 	$_SERVER['argc']--;
+	define('LOG_DIRECTORY', __DIR__ . '/../apigen-log/');
 
 } else {
 	Debugger::enable(Debugger::PRODUCTION);
@@ -54,19 +62,13 @@ $tmp = __DIR__ . '/../_temp' . uniqid(); // @todo: or custom in memory container
 @mkdir($tmp, 0755, TRUE);
 
 $configurator = new Configurator;
-$configurator->setDebugMode(!Debugger::$productionMode);
+$configurator->setDebugMode( ! Debugger::$productionMode);
 $configurator->setTempDirectory($tmp);
 $configurator->addConfig(__DIR__ . '/../src/ApiGen/DI/config.neon');
 $container = $configurator->createContainer();
 
-// Enable debug mode if additionally enabled by configuration
-if (!$configurator->isDebugMode() && $container->getbyType('ApiGen\Configuration\Configuration')->debug) {
-	Debugger::enable(Debugger::DEVELOPMENT);
-	Debugger::$onFatalError[] = array();
-}
-
 // Let's rock
-$container->getByType('ApiGen\Application\Application')->run();
+$container->getByType('ApiGen\Console\Application')->run();
 
 // Cleanup
 FileSystem::deleteDir($tmp);
