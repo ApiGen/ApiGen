@@ -31,7 +31,7 @@ class FileSystem
 	 */
 	public static function normalizePath($path)
 	{
-		$path = str_replace(array('/', '\\'), DIRECTORY_SEPARATOR, $path);
+		$path = str_replace(array('/', '\\'), DS, $path);
 		$path = str_replace('phar:\\\\', 'phar://', $path);
 		return $path;
 	}
@@ -121,7 +121,7 @@ class FileSystem
 		}
 
 		foreach ($baseDirectories as $directory) {
-			$fileName = $directory . DIRECTORY_SEPARATOR . $relativePath;
+			$fileName = $directory . DS . $relativePath;
 			if (is_file($fileName)) {
 				return realpath($fileName);
 			}

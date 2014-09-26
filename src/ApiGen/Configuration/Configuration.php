@@ -176,7 +176,7 @@ class Configuration extends Nette\Object
 					throw new ConfigurationException("Template for $type is not defined");
 				}
 
-				if ( ! is_file(dirname($config['templateConfig']) . DIRECTORY_SEPARATOR . $configSection['template'])) {
+				if ( ! is_file(dirname($config['templateConfig']) . DS . $configSection['template'])) {
 					throw new ConfigurationException("Template for $type does not exist");
 				}
 			}
@@ -201,7 +201,7 @@ class Configuration extends Nette\Object
 						$value = realpath($value);
 
 					} else {
-						$value = str_replace(array('/', '\\'), DIRECTORY_SEPARATOR, $value);
+						$value = str_replace(array('/', '\\'), DS, $value);
 					}
 				});
 				usort($config[$option], 'strcasecmp');
@@ -211,7 +211,7 @@ class Configuration extends Nette\Object
 					$config[$option] = realpath($config[$option]);
 
 				} else {
-					$config[$option] = str_replace(array('/', '\\'), DIRECTORY_SEPARATOR, $config[$option]);
+					$config[$option] = str_replace(array('/', '\\'), DS, $config[$option]);
 				}
 			}
 		}
