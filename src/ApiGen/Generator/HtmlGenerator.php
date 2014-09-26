@@ -9,9 +9,9 @@
 
 namespace ApiGen\Generator;
 
-use ApiGen\ApiGen;
 use ApiGen\Backend;
 use ApiGen\Charset\CharsetConvertor;
+use ApiGen\Generator\Resolvers\ElementResolver;
 use ApiGen\Generator\Resolvers\RelativePathResolver;
 use ApiGen\Reflection\ReflectionClass;
 use ApiGen\Reflection\ReflectionConstant;
@@ -19,14 +19,12 @@ use ApiGen\Reflection\ReflectionElement;
 use ApiGen\Reflection\ReflectionFunction;
 use ApiGen\Reflection\ReflectionMethod;
 use ApiGen\Reflection\ReflectionProperty;
-use ApiGen\Templating\Template;
 use ApiGen\Templating\TemplateFactory;
 use ApiGen\Tree;
-use ApiGen\Configuration\Configuration;
 use ApiGen\FileSystem;
+use ApiGen\FileSystem\FileSystem as FS;
 use ApiGen\Reflection;
 use ArrayObject;
-use InvalidArgumentException;
 use Nette;
 use RuntimeException;
 use TokenReflection\Broker;
@@ -39,12 +37,14 @@ use TokenReflection\Broker;
  * @method ArrayObject      getParsedConstants()
  * @method ArrayObject      getParsedFunctions()
  * @method array            getSymlinks()
+ * @method array            getConfig()
  * @method HtmlGenerator    onScanFinish(HtmlGenerator $htmlGenerator)
  * @method HtmlGenerator    onParseStart($steps)
  * @method HtmlGenerator    onParseProgress($size)
  * @method HtmlGenerator    onParseFinish(HtmlGenerator $htmlGenerator)
  * @method HtmlGenerator    onGenerateStart($steps)
  * @method HtmlGenerator    onGenerateProgress($size)
+ * @method HtmlGenerator    setConfig(array $config)
  */
 class HtmlGenerator extends Nette\Object implements Generator
 {
@@ -80,7 +80,7 @@ class HtmlGenerator extends Nette\Object implements Generator
 	public $onGenerateProgress = array();
 
 	/**
-	 * @var Configuration|\stdClass
+	 * @var array
 	 */
 	private $config;
 
@@ -174,20 +174,37 @@ class HtmlGenerator extends Nette\Object implements Generator
 	 */
 	private $relativePathResolver;
 
+	/**
+	 * @var FileSystem\Finder
+	 */
+	private $finder;
 
-	public function __construct(Configuration $config, CharsetConvertor $charsetConvertor, Scanner $scanner,
+	/**
+	 * @var ElementResolver
+	 */
+	private $elementResolver;
+
+	/**
+	 * @var FileSystem\Zip
+	 */
+	private $zip;
+
+
+	public function __construct(CharsetConvertor $charsetConvertor, Scanner $scanner, FileSystem\Zip $zip,
 	                            SourceCodeHighlighter $sourceCodeHighlighter, TemplateFactory $templateFactory,
-								RelativePathResolver $relativePathResolver)
+								RelativePathResolver $relativePathResolver, FileSystem\Finder $finder, ElementResolver $elementResolver)
 	{
 		$this->parsedClasses = new ArrayObject;
 		$this->parsedConstants = new ArrayObject;
 		$this->parsedFunctions = new ArrayObject;
-		$this->config = $config;
 		$this->charsetConvertor = $charsetConvertor;
 		$this->scanner = $scanner;
 		$this->sourceCodeHighlighter = $sourceCodeHighlighter;
 		$this->templateFactory = $templateFactory;
 		$this->relativePathResolver = $relativePathResolver;
+		$this->finder = $finder;
+		$this->elementResolver = $elementResolver;
+		$this->zip = $zip;
 	}
 
 
@@ -274,52 +291,25 @@ class HtmlGenerator extends Nette\Object implements Generator
 
 
 	/**
-	 * Wipes out the destination directory.
-	 *
-	 * @return boolean
-	 */
-	public function wipeOutDestination()
-	{
-		foreach ($this->getGeneratedFiles() as $path) {
-			if (is_file($path) && ! @unlink($path)) {
-				return FALSE;
-			}
-		}
-
-		$archive = $this->getArchivePath();
-		if (is_file($archive) && ! @unlink($archive)) {
-			return FALSE;
-		}
-
-		return TRUE;
-	}
-
-
-	/**
 	 * Generates API documentation.
 	 *
 	 * @throws \RuntimeException If destination directory is not writable.
 	 */
 	public function generate()
 	{
-		@mkdir($this->config->destination, 0755, TRUE);
-		if ( ! is_dir($this->config->destination) || ! is_writable($this->config->destination)) {
-			throw new RuntimeException(sprintf('Directory "%s" isn\'t writable', $this->config->destination));
-		}
-
 		// Copy resources
-		foreach ($this->config->template['resources'] as $resourceSource => $resourceDestination) {
+		foreach ($this->config['template']['resources'] as $resourceSource => $resourceDestination) {
 			// File
-			$resourcePath = $this->getTemplateDir() . DIRECTORY_SEPARATOR . $resourceSource;
+			$resourcePath = $this->getTemplateDir() . DS . $resourceSource;
 			if (is_file($resourcePath)) {
-				copy($resourcePath, FileSystem::forceDir($this->config->destination . DIRECTORY_SEPARATOR . $resourceDestination));
+				copy($resourcePath, FS::forceDir($this->config['destination']  . DS . $resourceDestination));
 				continue;
 			}
 
 			// Dir
 			$iterator = Nette\Utils\Finder::findFiles('*')->from($resourcePath)->getIterator();
 			foreach ($iterator as $item) {
-				copy($item->getPathName(), FileSystem::forceDir($this->config->destination . DIRECTORY_SEPARATOR . $resourceDestination . DIRECTORY_SEPARATOR . $iterator->getSubPathName()));
+				copy($item->getPathName(), FS::forceDir($this->config['destination']  . DS . $resourceDestination . DS . $iterator->getSubPathName()));
 			}
 		}
 
@@ -335,11 +325,11 @@ class HtmlGenerator extends Nette\Object implements Generator
 			+ count($this->exceptions)
 			+ count($this->constants)
 			+ count($this->functions)
-			+ count($this->config->template['templates']['common'])
-			+ (int) $this->config->tree
-			+ (int) $this->config->deprecated
-			+ (int) $this->config->todo
-			+ (int) $this->config->download
+			+ count($this->config['template']['templates']['common'])
+			+ (int) $this->config['tree']
+			+ (int) $this->config['deprecated']
+			+ (int) $this->config['todo']
+			+ (int) $this->config['download']
 			+ (int) $this->isSitemapEnabled()
 			+ (int) $this->isOpensearchEnabled()
 			+ (int) $this->isRobotsEnabled();
@@ -357,58 +347,54 @@ class HtmlGenerator extends Nette\Object implements Generator
 
 		$this->onGenerateStart($steps);
 
-		// Prepare template, @todo: move to factory
-		$tmp = $this->config->destination . DIRECTORY_SEPARATOR . '_' . uniqid();
+		$tmp = $this->config['destination'] . DS . '_' . uniqid();
 
-		FileSystem::deleteDir($tmp);
+		FS::deleteDir($tmp);
 		@mkdir($tmp, 0755, TRUE);
 
-		$template = $this->templateFactory->create();
-
 		// Common files
-		$this->generateCommon($template);
+		$this->generateCommon();
 
 		// Optional files
-		$this->generateOptional($template);
+		$this->generateOptional();
 
 		// List of deprecated elements
-		if ($this->config->deprecated) {
-			$this->generateDeprecated($template);
+		if ($this->config['deprecated']) {
+			$this->generateDeprecated();
 		}
 
 		// List of tasks
-		if ($this->config->todo) {
-			$this->generateTodo($template);
+		if ($this->config['todo']) {
+			$this->generateTodo();
 		}
 
 		// Classes/interfaces/traits/exceptions tree
-		if ($this->config->tree) {
-			$this->generateTree($template);
+		if ($this->config['tree']) {
+			$this->generateTree();
 		}
 
 		// Generate packages summary
-		$this->generatePackages($template);
+		$this->generatePackages();
 
 		// Generate namespaces summary
-		$this->generateNamespaces($template);
+		$this->generateNamespaces();
 
 		// Generate classes, interfaces, traits, exceptions, constants and functions files
-		$this->generateElements($template);
+		$this->generateElements();
 
 		// Generate ZIP archive
-		if ($this->config->download) {
-			$this->generateArchive();
+		if ($this->config['download']) {
+			$this->zip->generate();
+			$this->onGenerateProgress(1);
 		}
 
 		// Delete temporary directory
-		FileSystem::deleteDir($tmp);
+		FS::deleteDir($tmp);
 	}
 
 
 	/**
 	 * Categorizes by packages and namespaces.
-	 *
-	 * @return Generator
 	 */
 	private function categorize()
 	{
@@ -461,8 +447,8 @@ class HtmlGenerator extends Nette\Object implements Generator
 		$userPackagesCount = count(array_diff(array_keys($this->packages), array('PHP', 'None')));
 		$userNamespacesCount = count(array_diff(array_keys($this->namespaces), array('PHP', 'None')));
 
-		$namespacesEnabled = ('auto' === $this->config->groups && ($userNamespacesCount > 0 || 0 === $userPackagesCount)) || 'namespaces' === $this->config->groups;
-		$packagesEnabled = ('auto' === $this->config->groups && ! $namespacesEnabled) || 'packages' === $this->config->groups;
+		$namespacesEnabled = ('auto' === $this->config['groups'] && ($userNamespacesCount > 0 || 0 === $userPackagesCount)) || 'namespaces' === $this->config['groups'];
+		$packagesEnabled = ('auto' === $this->config['groups'] && ! $namespacesEnabled) || 'packages' === $this->config['groups'];
 
 		if ($namespacesEnabled) {
 			$this->packages = array();
@@ -476,8 +462,6 @@ class HtmlGenerator extends Nette\Object implements Generator
 			$this->namespaces = array();
 			$this->packages = array();
 		}
-
-		return $this;
 	}
 
 
@@ -525,7 +509,7 @@ class HtmlGenerator extends Nette\Object implements Generator
 			}
 		}
 
-		$main = $this->config->main;
+		$main = $this->config['main'];
 		uksort($groups, function ($one, $two) use ($main) {
 			// \ as separator has to be first
 			$one = str_replace('\\', ' ', $one);
@@ -549,12 +533,10 @@ class HtmlGenerator extends Nette\Object implements Generator
 
 	/**
 	 * Generates common files.
-	 *
-	 * @param Template|\stdClass $template
-	 * @return Generator
 	 */
-	private function generateCommon(Template $template)
+	private function generateCommon()
 	{
+		$template = $this->templateFactory->create();
 		$template->namespace = NULL;
 		$template->namespaces = array_keys($this->namespaces);
 		$template->package = NULL;
@@ -568,11 +550,11 @@ class HtmlGenerator extends Nette\Object implements Generator
 		$template->constants = array_filter($this->constants, $this->getMainFilter());
 		$template->function = NULL;
 		$template->functions = array_filter($this->functions, $this->getMainFilter());
-		$template->archive = basename($this->getArchivePath());
+		$template->archive = basename($this->zip->getArchivePath());
 
 		// Elements for autocomplete
 		$elements = array();
-		$autocomplete = array_flip((array) $this->config->autocomplete);
+		$autocomplete = array_flip($this->config['autocomplete']);
 		foreach ($this->getElementTypes() as $type) {
 			foreach ($this->$type as $element) {
 				if ($element instanceof ReflectionClass) {
@@ -615,63 +597,56 @@ class HtmlGenerator extends Nette\Object implements Generator
 		});
 		$template->elements = $elements;
 
-		foreach ($this->config->template['templates']['common'] as $source => $destination) {
-			$template->setFile($this->getTemplateDir() . DIRECTORY_SEPARATOR . $source)
-				->save(FileSystem::forceDir($this->config->destination . DIRECTORY_SEPARATOR . $destination));
+		foreach ($this->config['template']['templates']['common'] as $source => $destination) {
+			$template->setFile($this->getTemplateDir() . DS . $source)
+				->save($this->config['destination'] . DS . $destination);
 
 			$this->onGenerateProgress(1);
 		}
 
 		unset($template->elements);
-
-		return $this;
 	}
 
 
 	/**
 	 * Generates optional files.
-	 *
-	 * @return Generator
 	 */
-	private function generateOptional(Template $template)
+	private function generateOptional()
 	{
+		$template = $this->templateFactory->create();
 		if ($this->isSitemapEnabled()) {
 			$template->setFile($this->getTemplatePath('sitemap', 'optional'))
-				->save(FileSystem::forceDir($this->getTemplateFileName('sitemap', 'optional')));
+				->save($this->getTemplateFileName('sitemap', 'optional'));
 
 			$this->onGenerateProgress(1);
 		}
 
 		if ($this->isOpensearchEnabled()) {
 			$template->setFile($this->getTemplatePath('opensearch', 'optional'))
-				->save(FileSystem::forceDir($this->getTemplateFileName('opensearch', 'optional')));
+				->save($this->getTemplateFileName('opensearch', 'optional'));
 
 			$this->onGenerateProgress(1);
 		}
 
 		if ($this->isRobotsEnabled()) {
 			$template->setFile($this->getTemplatePath('robots', 'optional'))
-				->save(FileSystem::forceDir($this->getTemplateFileName('robots', 'optional')));
+				->save($this->getTemplateFileName('robots', 'optional'));
 
 			$this->onGenerateProgress(1);
 		}
-
-		return $this;
 	}
 
 
 	/**
 	 * Generates list of deprecated elements.
-	 *
-	 * @param Template|\stdClass
-	 * @return Generator
-	 * @throws \RuntimeException If template is not set.
 	 */
-	private function generateDeprecated(Template $template)
+	private function generateDeprecated()
 	{
+		$template = $this->templateFactory->create();
 		$this->prepareTemplate('deprecated');
 
 		$deprecatedFilter = function ($element) {
+			/** @var ReflectionElement $element */
 			return $element->isDeprecated();
 		};
 
@@ -686,6 +661,7 @@ class HtmlGenerator extends Nette\Object implements Generator
 			}
 
 			foreach ($this->$type as $class) {
+				/** @var ReflectionClass $class */
 				if ( ! $class->isMain()) {
 					continue;
 				}
@@ -705,7 +681,7 @@ class HtmlGenerator extends Nette\Object implements Generator
 		usort($template->deprecatedProperties, array($this, 'sortProperties'));
 
 		$template->setFile($this->getTemplatePath('deprecated'))
-			->save(FileSystem::forceDir($this->getTemplateFileName('deprecated')));
+			->save($this->getTemplateFileName('deprecated'));
 
 		foreach ($this->getElementTypes() as $type) {
 			unset($template->{'deprecated' . ucfirst($type)});
@@ -714,22 +690,20 @@ class HtmlGenerator extends Nette\Object implements Generator
 		unset($template->deprecatedProperties);
 
 		$this->onGenerateProgress(1);
-
-		return $this;
 	}
 
 
 	/**
 	 * Generates list of tasks.
-	 *
-	 * @param Template|\stdClass
-	 * @return Generator
 	 */
-	private function generateTodo(Template $template)
+	private function generateTodo()
 	{
+		$template = $this->templateFactory->create();
+
 		$this->prepareTemplate('todo');
 
 		$todoFilter = function ($element) {
+			/** @var ReflectionElement $element */
 			return $element->hasAnnotation('todo');
 		};
 
@@ -744,6 +718,7 @@ class HtmlGenerator extends Nette\Object implements Generator
 			}
 
 			foreach ($this->$type as $class) {
+				/** @var ReflectionClass $class */
 				if ( ! $class->isMain()) {
 					continue;
 				}
@@ -759,7 +734,7 @@ class HtmlGenerator extends Nette\Object implements Generator
 		usort($template->todoProperties, array($this, 'sortProperties'));
 
 		$template->setFile($this->getTemplatePath('todo'))
-			->save(FileSystem::forceDir($this->getTemplateFileName('todo')));
+			->save($this->getTemplateFileName('todo'));
 
 		foreach ($this->getElementTypes() as $type) {
 			unset($template->{'todo' . ucfirst($type)});
@@ -768,16 +743,16 @@ class HtmlGenerator extends Nette\Object implements Generator
 		unset($template->todoProperties);
 
 		$this->onGenerateProgress(1);
-
-		return $this;
 	}
 
 
 	/**
 	 * @return Generator
 	 */
-	private function generateTree(Template $template)
+	private function generateTree()
 	{
+		$template = $this->templateFactory->create();
+
 		$this->prepareTemplate('tree');
 
 		$classTree = array();
@@ -847,7 +822,7 @@ class HtmlGenerator extends Nette\Object implements Generator
 		$template->exceptionTree = new Tree($exceptionTree, $this->parsedClasses);
 
 		$template->setFile($this->getTemplatePath('tree'))
-			->save(FileSystem::forceDir($this->getTemplateFileName('tree')));
+			->save($this->getTemplateFileName('tree'));
 
 		unset($template->classTree);
 		unset($template->interfaceTree);
@@ -861,11 +836,13 @@ class HtmlGenerator extends Nette\Object implements Generator
 	/**
 	 * Generates packages summary.
 	 */
-	private function generatePackages(Template $template)
+	private function generatePackages()
 	{
 		if (empty($this->packages)) {
-			return $this;
+			return;
 		}
+
+		$template = $this->templateFactory->create();
 
 		$this->prepareTemplate('package');
 
@@ -883,7 +860,7 @@ class HtmlGenerator extends Nette\Object implements Generator
 			$template->constants = $package['constants'];
 			$template->functions = $package['functions'];
 			$template->setFile($this->getTemplatePath('package'))
-				->save($this->config->destination . DIRECTORY_SEPARATOR . $template->getPackageUrl($packageName));
+				->save($this->config['destination'] . DS . $template->packageUrl($packageName));
 
 			$this->onGenerateProgress(1);
 		}
@@ -894,11 +871,13 @@ class HtmlGenerator extends Nette\Object implements Generator
 	/**
 	 * Generates namespaces summary.
 	 */
-	private function generateNamespaces(Template $template)
+	private function generateNamespaces()
 	{
 		if (empty($this->namespaces)) {
-			return $this;
+			return;
 		}
+
+		$template = $this->templateFactory->create();
 
 		$this->prepareTemplate('namespace');
 
@@ -916,7 +895,7 @@ class HtmlGenerator extends Nette\Object implements Generator
 			$template->constants = $namespace['constants'];
 			$template->functions = $namespace['functions'];
 			$template->setFile($this->getTemplatePath('namespace'))
-				->save($this->config->destination . DIRECTORY_SEPARATOR . $template->namespaceUrl($namespaceName));
+				->save($this->config['destination'] . DS . $template->namespaceUrl($namespaceName));
 
 			$this->onGenerateProgress(1);
 		}
@@ -926,10 +905,11 @@ class HtmlGenerator extends Nette\Object implements Generator
 
 	/**
 	 * Generate classes, interfaces, traits, exceptions, constants and functions files.
-	 * @param Template|\stdClass
 	 */
-	private function generateElements(Template $template)
+	private function generateElements()
 	{
+		$template = $this->templateFactory->create();
+
 		if ( ! empty($this->classes) || ! empty($this->interfaces) || ! empty($this->traits) || ! empty($this->exceptions)) {
 			$this->prepareTemplate('class');
 		}
@@ -961,7 +941,7 @@ class HtmlGenerator extends Nette\Object implements Generator
 					}
 					foreach ($uses as $value) {
 						list($link, $description) = preg_split('~\s+|$~', $value, 2);
-						$resolved = $this->resolveElement($link, $element);
+						$resolved = $this->elementResolver->resolveElement($link, $element);
 						if ($resolved !== NULL) {
 							$resolved->addAnnotation('usedby', $element->getPrettyName() . ' ' . $description);
 						}
@@ -1003,6 +983,7 @@ class HtmlGenerator extends Nette\Object implements Generator
 				$template->constant = NULL;
 				$template->function = NULL;
 				if ($element instanceof ReflectionClass) {
+					/** @var ReflectionClass $element */
 					// Class
 					$template->tree = array_merge(array_reverse($element->getParentClasses()), array($element));
 
@@ -1024,21 +1005,21 @@ class HtmlGenerator extends Nette\Object implements Generator
 					$template->class = $element;
 
 					$template->setFile($this->getTemplatePath('class'))
-						->save($this->config->destination . DIRECTORY_SEPARATOR . $template->classUrl($element));
+						->save($this->config['destination'] . DS . $template->classUrl($element));
 
 				} elseif ($element instanceof ReflectionConstant) {
 					// Constant
 					$template->constant = $element;
 
 					$template->setFile($this->getTemplatePath('constant'))
-						->save($this->config->destination . DIRECTORY_SEPARATOR . $template->constantUrl($element));
+						->save($this->config['destination'] . DS . $template->constantUrl($element));
 
 				} elseif ($element instanceof ReflectionFunction) {
 					// Function
 					$template->function = $element;
 
 					$template->setFile($this->getTemplatePath('function'))
-						->save($this->config->destination . DIRECTORY_SEPARATOR . $template->functionUrl($element));
+						->save($this->config['destination'] . DS . $template->functionUrl($element));
 				}
 
 				$this->onGenerateProgress(1);
@@ -1049,46 +1030,12 @@ class HtmlGenerator extends Nette\Object implements Generator
 					$content = $this->charsetConvertor->convertFile($element->getFileName());
 					$template->source = $this->sourceCodeHighlighter->highlight($content);
 					$template->setFile($this->getTemplatePath('source'))
-						->save($this->config->destination . DIRECTORY_SEPARATOR . $template->sourceUrl($element, FALSE));
+						->save($this->config['destination'] . DS . $template->sourceUrl($element, FALSE));
 
 					$this->onGenerateProgress(1);
 				}
 			}
 		}
-	}
-
-
-	/**
-	 * Creates ZIP archive.
-	 *
-	 * @throws \RuntimeException If something went wrong.
-	 */
-	private function generateArchive()
-	{
-		if ( ! extension_loaded('zip')) {
-			throw new RuntimeException('Extension zip is not loaded');
-		}
-
-		$archive = new \ZipArchive;
-		if ($archive->open($this->getArchivePath() !== TRUE, \ZipArchive::CREATE)) {
-			throw new RuntimeException('Could not open ZIP archive');
-		}
-
-		$archive->setArchiveComment(trim(sprintf('%s API documentation generated by %s %s on %s', $this->config->title, ApiGen::NAME, ApiGen::VERSION, date('Y-m-d H:i:s'))));
-
-		$directory = Nette\Utils\Strings::webalize(trim(sprintf('%s API documentation', $this->config->title)), NULL, FALSE);
-		$destinationLength = strlen($this->config->destination);
-		foreach ($this->getGeneratedFiles() as $file) {
-			if (is_file($file)) {
-				$archive->addFile($file, $directory . DIRECTORY_SEPARATOR . substr($file, $destinationLength + 1));
-			}
-		}
-
-		if ($archive->close() === FALSE) {
-			throw new RuntimeException('Could not save ZIP archive');
-		}
-
-		$this->onGenerateProgress(1);
 	}
 
 
@@ -1099,7 +1046,7 @@ class HtmlGenerator extends Nette\Object implements Generator
 	 */
 	private function isSitemapEnabled()
 	{
-		return ! empty($this->config->baseUrl) && $this->templateExists('sitemap', 'optional');
+		return ! empty($this->config['baseUrl']) && $this->templateExists('sitemap', 'optional');
 	}
 
 
@@ -1110,7 +1057,7 @@ class HtmlGenerator extends Nette\Object implements Generator
 	 */
 	private function isOpensearchEnabled()
 	{
-		return ! empty($this->config->googleCseId) && ! empty($this->config->baseUrl) && $this->templateExists('opensearch', 'optional');
+		return ! empty($this->config['googleCseId']) && ! empty($this->config['baseUrl']) && $this->templateExists('opensearch', 'optional');
 	}
 
 
@@ -1121,7 +1068,7 @@ class HtmlGenerator extends Nette\Object implements Generator
 	 */
 	private function isRobotsEnabled()
 	{
-		return $this->config->baseUrl && $this->templateExists('robots', 'optional');
+		return $this->config['baseUrl'] && $this->templateExists('robots', 'optional');
 	}
 
 
@@ -1189,20 +1136,9 @@ class HtmlGenerator extends Nette\Object implements Generator
 	private function getMainFilter()
 	{
 		return function ($element) {
+			/** @var ReflectionElement $element */
 			return $element->isMain();
 		};
-	}
-
-
-	/**
-	 * Returns ZIP archive path.
-	 *
-	 * @return string
-	 */
-	private function getArchivePath()
-	{
-		$name = trim(sprintf('%s API documentation', $this->config->title));
-		return $this->config->destination . DIRECTORY_SEPARATOR . Nette\Utils\Strings::webalize($name) . '.zip';
 	}
 
 
@@ -1211,7 +1147,7 @@ class HtmlGenerator extends Nette\Object implements Generator
 	 */
 	private function getTemplateDir()
 	{
-		return dirname($this->config->templateConfig);
+		return dirname($this->config['templateConfig']);
 	}
 
 
@@ -1222,7 +1158,7 @@ class HtmlGenerator extends Nette\Object implements Generator
 	 */
 	private function getTemplatePath($name, $type = 'main')
 	{
-		return $this->getTemplateDir() . DIRECTORY_SEPARATOR . $this->config->template['templates'][$type][$name]['template'];
+		return $this->getTemplateDir() . DS . $this->config['template']['templates'][$type][$name]['template'];
 	}
 
 
@@ -1233,7 +1169,7 @@ class HtmlGenerator extends Nette\Object implements Generator
 	 */
 	private function getTemplateFileName($name, $type = 'main')
 	{
-		return $this->config->destination . DIRECTORY_SEPARATOR . $this->config->template['templates'][$type][$name]['filename'];
+		return $this->config['destination'] . DS . $this->config['template']['templates'][$type][$name]['filename'];
 	}
 
 
@@ -1244,7 +1180,7 @@ class HtmlGenerator extends Nette\Object implements Generator
 	 */
 	private function templateExists($name, $type = 'main')
 	{
-		return isset($this->config->template['templates'][$type][$name]);
+		return isset($this->config['template']['templates'][$type][$name]);
 	}
 
 
@@ -1252,81 +1188,15 @@ class HtmlGenerator extends Nette\Object implements Generator
 	 * Checks if template exists and creates dir.
 	 *
 	 * @param string $name
-	 * @throws \RuntimeException If template is not set.
+	 * @throws \RuntimeException
 	 */
 	private function prepareTemplate($name)
 	{
 		if ( ! $this->templateExists($name)) {
-			throw new RuntimeException(sprintf('Template for "%s" is not set', $name));
+			throw new RuntimeException("Template for $name is not set");
 		}
 
-		FileSystem::forceDir($this->getTemplateFileName($name));
-	}
-
-
-	/**
-	 * Returns list of all generated files.
-	 *
-	 * @return array
-	 */
-	private function getGeneratedFiles()
-	{
-		$files = array();
-
-		// Resources
-		foreach ($this->config->template['resources'] as $item) {
-			$path = $this->getTemplateDir() . DIRECTORY_SEPARATOR . $item;
-			if (is_dir($path)) {
-				$iterator = Nette\Utils\Finder::findFiles('*')->from($path)->getIterator();
-				foreach ($iterator as $innerItem) {
-					$files[] = $this->config->destination . DIRECTORY_SEPARATOR . $item . DIRECTORY_SEPARATOR . $iterator->getSubPathName();
-				}
-
-			} else {
-				$files[] = $this->config->destination . DIRECTORY_SEPARATOR . $item;
-			}
-		}
-
-		// Common files
-		foreach ($this->config->template['templates']['common'] as $item) {
-			$files[] = $this->config->destination . DIRECTORY_SEPARATOR . $item;
-		}
-
-		// Optional files
-		foreach ($this->config->template['templates']['optional'] as $optional) {
-			$files[] = $this->config->destination . DIRECTORY_SEPARATOR . $optional['filename'];
-		}
-
-		// Main files
-		$masks = array_map(function ($config) {
-			return preg_replace('~%[^%]*?s~', '*', $config['filename']);
-		}, (array) $this->config->template['templates']['main']);
-
-		$filter = function ($item) use ($masks) {
-			/** @var \SplFileInfo $item */
-			foreach ($masks as $mask) {
-				if (fnmatch($mask, $item->getFilename())) {
-					return TRUE;
-				}
-			}
-			return FALSE;
-		};
-
-		foreach (Nette\Utils\Finder::findFiles('*')->filter($filter)->from($this->config->destination) as $item) {
-			/** @var \SplFileInfo $item */
-			$files[] = $item->getPathName();
-		}
-
-		return $files;
-	}
-
-
-	/**
-	 * @return Generator
-	 */
-	public function getConfig()
-	{
-		return $this->config;
+		FS::forceDir($this->getTemplateFileName($name));
 	}
 
 }
