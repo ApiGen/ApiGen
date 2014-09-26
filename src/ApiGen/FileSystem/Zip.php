@@ -15,7 +15,7 @@ use RuntimeException;
 
 
 /**
- * @method setConfig(array $config)
+ * @method Zip setConfig(array $config)
  */
 class Zip extends Nette\Object
 {

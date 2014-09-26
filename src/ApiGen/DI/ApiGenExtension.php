@@ -27,15 +27,9 @@ class ApiGenExtension extends CompilerExtension
 		$builder->addDefinition($this->prefix('configuration'))
 			->setClass('ApiGen\Configuration\Configuration');
 
-		$builder->addDefinition($this->prefix('console.progressBar'))
-			->setClass('ApiGen\Console\ProgressBar');
-
 		// charset
 		$builder->addDefinition($this->prefix('charsetConvertor'))
 			->setClass('ApiGen\Charset\CharsetConvertor');
-//			->addSetup('setCharset', array(
-//					new Statement('(array) ?->?', array('@ApiGen\Configuration\Configuration', 'charset')))
-//			);
 
 		// generator
 		$builder->addDefinition($this->prefix('generator'))
@@ -148,8 +142,8 @@ class ApiGenExtension extends CompilerExtension
 			$application->addSetup('add', array('@' . $command->getClass()));
 		}
 
-		$builder->addDefinition($this->prefix('consoleOutput'))
-			->setClass('Symfony\Component\Console\Output\ConsoleOutput');
+		$builder->addDefinition($this->prefix('console.progressBar'))
+			->setClass('ApiGen\Console\ProgressBar');
 	}
 
 }
