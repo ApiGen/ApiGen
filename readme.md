@@ -47,7 +47,7 @@ First, we create `apigen.neon` and set required parameters.
 
 If you haven't heard about .neon yet, [go check it](http://ne-on.org). It's similar to .yaml, just nicer.
 
-### Minimal configuration
+### Minimal config
 
 ```yaml
 source:
@@ -65,7 +65,7 @@ bin/apigen --config apigen.neon
 That's it!
 
 
-### Optional configuration
+### Optional config
 
 ```sh
 # list of allowed extensions
@@ -151,12 +151,6 @@ todo: false # default [true]
 
 # add link to ZIP archive of documentation
 download: false # default [true]
-
-# delete files generated in the previous run.
-wipeout: true # default [false]
-
-# display additional information (exception trace) in case of an error
-debug: true # default [false]
 ```
 
 
