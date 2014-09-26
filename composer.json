@@ -1,4 +1,4 @@
-{
+C{
 	"name": "apigen/apigen",
 	"description": "PHP source code API generator",
 	"type": "project",
@@ -33,10 +33,12 @@
 		"andrewsville/php-token-reflection": "~1.4",
 		"michelf/php-markdown": "~1.4",
 		"kdyby/events": "~2.0",
+		"kdyby/console": "~2.0",
 		"ext-json": "*",
 		"ext-mbstring": "*",
 		"ext-iconv": "*",
-		"ext-tokenizer": "*"
+		"ext-tokenizer": "*",
+		"composer/composer": "@dev"
 	},
 	"require-dev": {
 		"nette/tester": "~1.2",
