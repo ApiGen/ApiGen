@@ -32,7 +32,7 @@ class TitleTest extends TestCase
 		passthru(APIGEN_BIN . ' generate');
 
 		Assert::match(
-			'%A%<title>' . self::TITLE. '</title>%A%',
+			'%A%<title>' . self::TITLE . '</title>%A%',
 			file_get_contents(API_DIR . '/index.html')
 		);
 	}
