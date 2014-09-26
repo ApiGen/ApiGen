@@ -12,6 +12,7 @@ namespace ApiGen\Reflection;
 use ApiGen\Configuration\Configuration;
 use ApiGen\Generator\Generator;
 use Nette;
+use Nette\Utils\ArrayHash;
 use TokenReflection\IReflection;
 
 
@@ -78,7 +79,7 @@ abstract class ReflectionBase extends Nette\Object
 	{
 		if (self::$generator === NULL) {
 			self::$generator = $generator;
-			self::$config = $generator->getConfig();
+			self::$config = ArrayHash::from($generator->getConfig());
 			self::$parsedClasses = $generator->getParsedClasses();
 			self::$parsedConstants = $generator->getParsedConstants();
 			self::$parsedFunctions = $generator->getParsedFunctions();

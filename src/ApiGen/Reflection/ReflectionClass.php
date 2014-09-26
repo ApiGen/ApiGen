@@ -9,7 +9,7 @@
 
 namespace ApiGen\Reflection;
 
-use ApiGen\FileSystem;
+use ApiGen\FileSystem\FileSystem;
 use ApiGen\Generator\Generator;
 use InvalidArgumentException;
 use ReflectionMethod as InternalReflectionMethod;
