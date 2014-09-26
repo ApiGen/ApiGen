@@ -7,7 +7,7 @@
  * the file license.md that was distributed with this source code.
  */
 
-namespace ApiGen;
+namespace ApiGen\FileSystem;
 
 use Nette;
 
@@ -106,6 +106,28 @@ class FileSystem
 		}
 
 		return TRUE;
+	}
+
+
+	/**
+	 * @param string $relativePath
+	 * @param array $baseDirectories List of base directories
+	 * @return string|NULL
+	 */
+	public static function getAbsolutePath($relativePath, array $baseDirectories)
+	{
+		if (preg_match('~/|[a-z]:~Ai', $relativePath)) { // absolute path already
+			return $relativePath;
+		}
+
+		foreach ($baseDirectories as $directory) {
+			$fileName = $directory . DIRECTORY_SEPARATOR . $relativePath;
+			if (is_file($fileName)) {
+				return realpath($fileName);
+			}
+		}
+
+		return NULL;
 	}
 
 }
