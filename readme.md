@@ -51,15 +51,15 @@ If you haven't heard about .neon yet, [go check it](http://ne-on.org). It's simi
 
 ```yaml
 source:
-    - src # directory API is generated for
-    - tests/ApiGen/Generator.php # or file
+    - src
+    - tests/ApiGen/Generator.php
 destination: api # target dir for documentation
 ```
 
 Then run ApiGen passing your config:
 
 ```sh
-bin/apigen --config apigen.neon
+bin/apigen generate
 ```
 
 That's it!
