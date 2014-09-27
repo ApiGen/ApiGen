@@ -1,9 +1,11 @@
 <?php
 
-if (@!include __DIR__ . '/../../vendor/autoload.php') {
+if (@ ! include_once __DIR__ . '/../../vendor/autoload.php') {
 	echo 'Install Nette Tester using `composer update --dev`';
 	exit(1);
 }
+
+include_once 'TestCase.php';
 
 date_default_timezone_set('Europe/Prague');
 Tester\Environment::setup();

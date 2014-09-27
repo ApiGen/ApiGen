@@ -7,8 +7,8 @@
 namespace ApiGenTests\ApiGen;
 
 use ApiGen\Neon\NeonFile;
+use ApiGenTests\TestCase;
 use Tester\Assert;
-use Tester\TestCase;
 
 
 require_once __DIR__ . '/../bootstrap.php';
@@ -17,10 +17,6 @@ require_once __DIR__ . '/../bootstrap.php';
 class HelloWorldTest extends TestCase
 {
 
-	protected function setUp()
-	{
-		file_put_contents(__DIR__ . '/apigen.neon', '');
-	}
 
 
 	public function testBasicGeneration()
@@ -45,12 +41,6 @@ class HelloWorldTest extends TestCase
 		$config['source'] = array(__DIR__ . DS . 'Project');
 		$config['destination'] = API_DIR;
 		$neonFile->write($config);
-	}
-
-
-	protected function tearDown()
-	{
-		@unlink(__DIR__ . '/apigen.neon');
 	}
 
 }

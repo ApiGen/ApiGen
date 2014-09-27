@@ -7,8 +7,8 @@
 namespace ApiGenTests\ApiGen\Configuration;
 
 use ApiGen\Neon\NeonFile;
+use ApiGenTests\TestCase;
 use Tester\Assert;
-use Tester\TestCase;
 
 
 require_once __DIR__ . '/../../bootstrap.php';
@@ -18,12 +18,6 @@ class TitleTest extends TestCase
 {
 
 	const TITLE = 'Project API';
-
-
-	protected function setUp()
-	{
-		file_put_contents(__DIR__ . '/apigen.neon', '');
-	}
 
 
 	public function testConfig()
@@ -46,12 +40,6 @@ class TitleTest extends TestCase
 		$config['destination'] = API_DIR;
 		$config['title'] = self::TITLE;
 		$neonFile->write($config);
-	}
-
-
-	protected function tearDown()
-	{
-		@unlink(__DIR__ . '/apigen.neon');
 	}
 
 }

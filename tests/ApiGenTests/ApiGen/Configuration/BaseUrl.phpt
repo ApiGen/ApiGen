@@ -7,9 +7,8 @@
 namespace ApiGenTests\ApiGen\Configuration;
 
 use ApiGen\Neon\NeonFile;
+use ApiGenTests\TestCase;
 use Tester\Assert;
-use Tester\Helpers;
-use Tester\TestCase;
 
 
 require_once __DIR__ . '/../../bootstrap.php';
@@ -19,12 +18,6 @@ class BaseUrlTest extends TestCase
 {
 
 	const BASE_URL = 'http://nette.org';
-
-
-	protected function setUp()
-	{
-		file_put_contents(__DIR__ . '/apigen.neon', '');
-	}
 
 
 	public function testConfig()
@@ -49,12 +42,6 @@ class BaseUrlTest extends TestCase
 		$config['destination'] = API_DIR;
 		$config['baseUrl'] = self::BASE_URL;
 		$neonFile->write($config);
-	}
-
-
-	protected function tearDown()
-	{
-		@unlink(__DIR__ . '/apigen.neon');
 	}
 
 }
