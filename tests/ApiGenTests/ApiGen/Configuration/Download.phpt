@@ -9,7 +9,6 @@ namespace ApiGenTests\ApiGen\Configuration;
 use ApiGen\Neon\NeonFile;
 use ApiGenTests\TestCase;
 use Tester\Assert;
-use Tester\Environment;
 
 
 require_once __DIR__ . '/../../bootstrap.php';
