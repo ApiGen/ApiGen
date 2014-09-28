@@ -15,6 +15,9 @@ use ApiGen\Generator\Resolvers\ElementResolver;
 use Nette;
 
 
+/**
+ * @method AnnotationFilters setConfig(array $config)
+ */
 class AnnotationFilters extends Filters
 {
 
@@ -67,9 +70,9 @@ class AnnotationFilters extends Filters
 	);
 
 	/**
-	 * @var Configuration|\stdClass
+	 * @var array
 	 */
-	private $configuration;
+	private $config;
 
 	/**
 	 * @var ElementResolver
@@ -77,9 +80,8 @@ class AnnotationFilters extends Filters
 	private $elementResolver;
 
 
-	public function __construct(Configuration $configuration, ElementResolver $elementResolver)
+	public function __construct(ElementResolver $elementResolver)
 	{
-		$this->configuration = $configuration;
 		$this->elementResolver = $elementResolver;
 	}
 
@@ -117,12 +119,12 @@ class AnnotationFilters extends Filters
 		}
 
 		// Show/hide internal
-		if ( ! $this->configuration->internal) {
+		if ( ! $this->config['internal']) {
 			unset($annotations['internal']);
 		}
 
 		// Show/hide tasks
-		if ( ! $this->configuration->todo) {
+		if ( ! $this->config['todo']) {
 			unset($annotations['todo']);
 		}
 

@@ -14,37 +14,41 @@ use Tester\Assert;
 require_once __DIR__ . '/../../bootstrap.php';
 
 
-class BaseUrlTest extends TestCase
+class TreeTest extends TestCase
 {
-
-	const BASE_URL = 'http://nette.org';
-
 
 	public function testConfig()
 	{
 		$this->prepareConfig();
 		passthru(APIGEN_BIN . ' generate');
+		Assert::true(file_exists(API_DIR . '/tree.html'));
 
-		Assert::true(file_exists(API_DIR . '/index.html'));
-		Assert::true(file_exists(API_DIR . '/robots.txt'));
-		Assert::match(
-			'%A%Sitemap: ' . self::BASE_URL . '%A%',
-			file_get_contents(API_DIR . '/robots.txt'
-		));
+		$this->prepareConfig(FALSE);
+		passthru(APIGEN_BIN . ' generate');
+		Assert::false(file_exists(API_DIR . '/tree.html'));
+
+		$this->prepareConfig(TRUE);
+		passthru(APIGEN_BIN . ' generate');
+		Assert::true(file_exists(API_DIR . '/tree.html'));
 	}
 
 
-	private function prepareConfig()
+	/**
+	 * @param bool $treeState
+	 */
+	private function prepareConfig($treeState = NULL)
 	{
 		$neonFile = new NeonFile(__DIR__ . '/apigen.neon');
 		$config = $neonFile->read();
 		$config['source'] = array(PROJECT_DIR);
 		$config['destination'] = API_DIR;
-		$config['baseUrl'] = self::BASE_URL;
+		if ($treeState !== NULL) {
+			$config['tree'] = $treeState;
+		}
 		$neonFile->write($config);
 	}
 
 }
 
 
-\run(new BaseUrlTest);
+\run(new TreeTest);

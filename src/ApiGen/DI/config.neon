@@ -1,3 +1,4 @@
 extensions:
 	apigen: ApiGen\DI\ApiGenExtension
 	events: Kdyby\Events\DI\EventsExtension
+	console: Kdyby\Console\DI\ConsoleExtension

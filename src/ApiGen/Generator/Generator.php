@@ -9,7 +9,10 @@
 
 namespace ApiGen\Generator;
 
-
+/**
+ * @method Generator setConfig(array $config)
+ * @method Generator getConfig()
+ */
 interface Generator
 {
 
@@ -22,11 +25,12 @@ interface Generator
 	/**
 	 * Scans sources for PHP files.
 	 *
-	 * @param array $sources
-	 * @param array $exclude
+	 * @param array $sources List of sources to be scanned (folder or files).
+	 * @param array $exclude Excluded files.
+	 * @param array $extensions File extensions to be scanned (e.g. php, phpt).
 	 * @return array
 	 */
-	public function scan($sources, $exclude = array());
+	public function scan($sources, $exclude = array(), $extensions = array());
 
 
 	/**
@@ -35,21 +39,5 @@ interface Generator
 	 * @return array
 	 */
 	public function parse();
-
-
-	/**
-	 * Wipes out the destination directory.
-	 *
-	 * @return boolean
-	 */
-	public function wipeOutDestination();
-
-
-	/**
-	 * Returns configuration
-	 *
-	 * @return Generator
-	 */
-	public function getConfig();
 
 }

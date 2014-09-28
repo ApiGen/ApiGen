@@ -9,109 +9,232 @@
 
 namespace ApiGen\Configuration;
 
+use ApiGen\Factory;
+use ApiGen\FileSystem\FileSystem;
+use ApiGen\Neon\NeonFile;
 use Nette;
-use Nette\Utils\ArrayHash;
-use Traversable;
+use Nette\Utils\AssertionException;
+use Nette\Utils\Validators;
 
 
 /**
- * @method ArrayHash getParameters()
+ * @method Configuration onSuccessValidate(array $config)
  */
-class Configuration implements \ArrayAccess, \Countable, \IteratorAggregate
+class Configuration extends Nette\Object
 {
 
 	/**
-	 * @var ArrayHash
+	 * @var array
 	 */
-	private $parameters;
+	public $onSuccessValidate = array();
 
+	/**
+	 * @var array
+	 */
+	private $defaults = array(
+		'extensions' => array('php'),
+		'exclude' => array(),
+		'skipDocPath' => array(),
+		'skipDocPrefix' => array(),
+		'charset' => array('auto'),
+		'main' => '',
+		'title' => '',
+		'baseUrl' => '',
+		'googleCseId' => '',
+		'googleAnalytics' => '',
+		'groups' => 'auto',
+		'autocomplete' => array('classes', 'constants', 'functions'),
+		'accessLevels' => array('public', 'protected'),
+		'internal' => FALSE,
+		'php' => TRUE,
+		'tree' => TRUE,
+		'deprecated' => FALSE,
+		'todo' => FALSE,
+		'download' => FALSE,
+	);
 
-	public function __construct(array $parameters = array())
-	{
-		$this->parameters = ArrayHash::from($parameters);
-	}
+	/**
+	 * File or directory path options.
+	 *
+	 * @var array
+	 */
+	private $pathOptions = array(
+		'source',
+		'destination',
+		'templateConfig',
+		'exclude',
+		'skipDocPath'
+	);
 
 
 	/**
+	 * @param array $config
 	 * @return array
 	 */
-	public function toArray()
+	public function setDefaults(array $config)
 	{
-		return (array) $this->parameters;
-	}
+		foreach ($this->defaults as $key => $value) {
+			if ( ! isset($config[$key])) {
+				$config[$key] = $value;
+			}
+		}
 
+		if ( ! isset($config['templateConfig'])) {
+			$configPath = Factory::getDefaultTemplateConfig();
 
-	/********************* \ArrayAccess *********************/
+			// template defaults
+			$config['templateConfig'] = FileSystem::getAbsolutePath($configPath, array(
+				getcwd(),
+				Factory::getTemplatesDir(),
+				APIGEN_ROOT_PATH . '/src/templates'
+			));
+		}
 
-	/**
-	 * @param string $name
-	 * @return mixed
-	 */
-	public function __get($name)
-	{
-		return $this->offsetGet($name);
-	}
+		// template data
+		if ( ! isset($config['template'])) {
+			// Merge template configuration
+			$templateConfigFile = new NeonFile($config['templateConfig']);
+			$config = array_merge_recursive($config, array(
+				'template' => $templateConfigFile->read()
+			));
+		}
 
+		$this->validate($config);
+		$this->sanitaze($config);
 
-	/**
-	 * @param mixed $offset
-	 * @return boolean
-	 */
-	public function offsetExists($offset)
-	{
-		return isset($this->parameters[$offset]);
-	}
-
-
-	/**
-	 * @param mixed $offset
-	 * @return mixed
-	 */
-	public function offsetGet($offset)
-	{
-		return $this->parameters[$offset];
-	}
-
-
-	/**
-	 * @param mixed $offset
-	 * @param mixed $value
-	 */
-	public function offsetSet($offset, $value)
-	{
-		throw new Nette\InvalidStateException('Application configuration is read-only.');
+		return $config;
 	}
 
 
 	/**
-	 * @param mixed $offset
-	 * @return void
+	 * @param array $config
+	 * @throws AssertionException
 	 */
-	public function offsetUnset($offset)
+	private function validate(array $config)
 	{
-		throw new Nette\InvalidStateException('Application configuration is read-only.');
+		Validators::assertField($config, 'exclude', 'list');
+		Validators::assertField($config, 'skipDocPath', 'list');
+		Validators::assertField($config, 'skipDocPrefix', 'list');
+		Validators::assertField($config, 'charset', 'list');
+		Validators::assertField($config, 'main', 'string');
+		Validators::assertField($config, 'title', 'string');
+		Validators::assertField($config, 'baseUrl', 'string');
+		Validators::assertField($config, 'googleCseId', 'string');
+		Validators::assertField($config, 'googleAnalytics', 'string');
+		Validators::assertField($config, 'autocomplete', 'list');
+		Validators::assertField($config, 'accessLevels', 'list');
+		Validators::assertField($config, 'internal', 'bool');
+		Validators::assertField($config, 'php', 'bool');
+		Validators::assertField($config, 'tree', 'bool');
+		Validators::assertField($config, 'deprecated', 'bool');
+		Validators::assertField($config, 'todo', 'bool');
+		Validators::assertField($config, 'download', 'bool');
+
+		// destination
+		Validators::assertField($config, 'destination', 'string');
+		@mkdir($config['destination'], 0755, TRUE);
+		if ( ! is_dir($config['destination']) || ! is_writable($config['destination'])) {
+			throw new \RuntimeException('Directory ' . $config['destination'] . ' is not writable.');
+		}
+
+		// source
+		Validators::assertField($config, 'source', 'array');
+		foreach ($config['source'] as $source) {
+			if ( ! file_exists($source)) {
+				throw new ConfigurationException("Source $source does not exist");
+			}
+		}
+
+		// extensions
+		Validators::assertField($config, 'extensions', 'array');
+		foreach ($config['extensions'] as $extension) {
+			Validators::assert($extension, 'string', 'file extension');
+		}
+
+		$this->validateTemplateConfig($config);
+
+		$this->onSuccessValidate($config);
 	}
 
-
-	/********************* \Countable *********************/
 
 	/**
-	 * @return int
+	 * @param array $config
 	 */
-	public function count()
+	private function validateTemplateConfig($config)
 	{
-		return count($this->parameters);
+		if ( ! is_file($config['templateConfig'])) {
+			throw new ConfigurationException($config['templateConfig'] . ' was not found. Fix templateConfig option');
+		}
+
+		foreach (array('main', 'optional') as $section) {
+			foreach ($config['template']['templates'][$section] as $type => $configSection) {
+				if ( ! isset($configSection['filename'])) {
+					throw new ConfigurationException("Filename for $type is not defined");
+				}
+
+				if ( ! isset($configSection['template'])) {
+					throw new ConfigurationException("Template for $type is not defined");
+				}
+
+				if ( ! is_file(dirname($config['templateConfig']) . DS . $configSection['template'])) {
+					throw new ConfigurationException("Template for $type does not exist");
+				}
+			}
+		}
 	}
 
-
-	/********************* \IteratorAggregate *********************/
 
 	/**
-	 * @return Traversable
+	 * @param array $config
+	 * @return array
 	 */
-	public function getIterator()
+	private function sanitaze(array $config)
 	{
-		return $this->parameters;
+		// Unify character sets
+		$config['charset'] = array_map('strtoupper', $config['charset']);
+
+		// Process options that specify a filesystem path
+		foreach ($this->pathOptions as $option) {
+			if (is_array($config[$option])) {
+				array_walk($config[$option], function (&$value) {
+					if (file_exists($value)) {
+						$value = realpath($value);
+
+					} else {
+						$value = str_replace(array('/', '\\'), DS, $value);
+					}
+				});
+				usort($config[$option], 'strcasecmp');
+
+			} else {
+				if (file_exists($config[$option])) {
+					$config[$option] = realpath($config[$option]);
+
+				} else {
+					$config[$option] = str_replace(array('/', '\\'), DS, $config[$option]);
+				}
+			}
+		}
+
+		// Unify prefixes
+		$config['skipDocPrefix'] = array_map(function ($prefix) {
+			return ltrim($prefix, '\\');
+		}, $config['skipDocPrefix']);
+		usort($config['skipDocPrefix'], 'strcasecmp');
+
+		// Base url without slash at the end
+		$config['baseUrl'] = rtrim($config['baseUrl'], '/');
+
+		return $config;
 	}
+
+}
+
+
+/**
+ * Thrown when an invalid configuration is detected.
+ */
+class ConfigurationException extends \RuntimeException
+{
 
 }

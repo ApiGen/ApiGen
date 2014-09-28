@@ -14,6 +14,6 @@ class ApiGen
 {
 
 	const NAME = 'ApiGen';
-	const VERSION = '3.0.0';
+	const VERSION = '4.0.0-dev';
 
 }

@@ -9,8 +9,8 @@
 
 namespace ApiGen\Generator;
 
-use ApiGen\FileSystem;
-use ApiGen\SourceFilesFilterIterator;
+use ApiGen\FileSystem\FileSystem;
+use ApiGen\FileSystem\SourceFilesFilterIterator;
 use Nette;
 use RecursiveDirectoryIterator as RDI;
 use RuntimeException;

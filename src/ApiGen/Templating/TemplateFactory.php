@@ -13,10 +13,19 @@ use ApiGen\ApiGen;
 use ApiGen\Configuration\Configuration;
 use Latte;
 use Nette;
+use Nette\Utils\ArrayHash;
 
 
+/**
+ * @method TemplateFactory setConfig(array $config)
+ */
 class TemplateFactory extends Nette\Object
 {
+
+	/**
+	 * @var array
+	 */
+	private $config;
 
 	/**
 	 * @var Latte\Engine
@@ -37,15 +46,16 @@ class TemplateFactory extends Nette\Object
 
 
 	/**
-	 * @return Template
+	 * @return Template|\stdClass
 	 */
 	public function create()
 	{
+		/** @var Template|\stdClass $template */
 		$template = new Template($this->latteEngine);
 		$template->generator = ApiGen::NAME;
 		$template->version = ApiGen::VERSION;
-		$template->config = $this->configuration;
-		$template->basePath = dirname($this->configuration->templateConfig);
+		$template->config = ArrayHash::from($this->config);
+		$template->basePath = dirname($this->config['templateConfig']);
 		return $template;
 	}
 

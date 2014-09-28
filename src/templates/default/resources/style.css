@@ -95,6 +95,7 @@ code a b {
 
 .deprecated {
 	text-decoration: line-through;
+	opacity: .5;
 }
 
 .invalid {

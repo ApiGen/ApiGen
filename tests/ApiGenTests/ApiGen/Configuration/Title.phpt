@@ -14,10 +14,10 @@ use Tester\Assert;
 require_once __DIR__ . '/../../bootstrap.php';
 
 
-class BaseUrlTest extends TestCase
+class TitleTest extends TestCase
 {
 
-	const BASE_URL = 'http://nette.org';
+	const TITLE = 'Project API';
 
 
 	public function testConfig()
@@ -25,12 +25,10 @@ class BaseUrlTest extends TestCase
 		$this->prepareConfig();
 		passthru(APIGEN_BIN . ' generate');
 
-		Assert::true(file_exists(API_DIR . '/index.html'));
-		Assert::true(file_exists(API_DIR . '/robots.txt'));
 		Assert::match(
-			'%A%Sitemap: ' . self::BASE_URL . '%A%',
-			file_get_contents(API_DIR . '/robots.txt'
-		));
+			'%A%<title>' . self::TITLE . '</title>%A%',
+			file_get_contents(API_DIR . '/index.html')
+		);
 	}
 
 
@@ -40,11 +38,11 @@ class BaseUrlTest extends TestCase
 		$config = $neonFile->read();
 		$config['source'] = array(PROJECT_DIR);
 		$config['destination'] = API_DIR;
-		$config['baseUrl'] = self::BASE_URL;
+		$config['title'] = self::TITLE;
 		$neonFile->write($config);
 	}
 
 }
 
 
-\run(new BaseUrlTest);
+\run(new TitleTest);

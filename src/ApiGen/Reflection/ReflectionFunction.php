@@ -9,7 +9,7 @@
 
 namespace ApiGen\Reflection;
 
-use ApiGen\FileSystem;
+use ApiGen\FileSystem\FileSystem;
 
 
 /**

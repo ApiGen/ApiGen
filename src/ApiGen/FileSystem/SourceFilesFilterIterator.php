@@ -7,7 +7,7 @@
  * the file license.md that was distributed with this source code.
  */
 
-namespace ApiGen;
+namespace ApiGen\FileSystem;
 
 use RecursiveDirectoryIterator;
 use RecursiveFilterIterator;
@@ -27,10 +27,6 @@ class SourceFilesFilterIterator extends RecursiveFilterIterator
 	private $excludeMasks = array();
 
 
-	/**
-	 * @param \RecursiveDirectoryIterator $iterator
-	 * @param array $excludeMasks
-	 */
 	public function __construct(RecursiveDirectoryIterator $iterator, $excludeMasks = array())
 	{
 		parent::__construct($iterator);
@@ -65,7 +61,7 @@ class SourceFilesFilterIterator extends RecursiveFilterIterator
 	/**
 	 * Returns the iterator of the current element's children.
 	 *
-	 * @return \ApiGen\SourceFilesFilterIterator
+	 * @return SourceFilesFilterIterator
 	 */
 	public function getChildren()
 	{

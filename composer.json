@@ -33,6 +33,7 @@
 		"andrewsville/php-token-reflection": "~1.4",
 		"michelf/php-markdown": "~1.4",
 		"kdyby/events": "~2.0",
+		"kdyby/console": "~2.0",
 		"ext-json": "*",
 		"ext-mbstring": "*",
 		"ext-iconv": "*",

@@ -9,10 +9,7 @@
 
 namespace ApiGen\Events;
 
-use ApiGen\Console\ProgressBar;
-use ApiGen\Generator\Generator;
 use ApiGen\Generator\HtmlGenerator;
-use ApiGen\Generator\Resolvers\ElementResolver;
 use ApiGen\Generator\Resolvers\RelativePathResolver;
 use Nette;
 use Kdyby\Events\Subscriber;
