@@ -28,12 +28,20 @@
 	],
 	"require": {
 		"php": ">=5.3.1",
-		"nette/nette": "~2.2",
+		"nette/bootstrap": "~2.2",
+		"nette/di": "~2.2",
+		"nette/mail": "~2.2",
+		"nette/robot-loader": "~2.2",
+		"nette/safe-stream": "~2.2",
+		"latte/latte": "~2.2",
+		"tracy/tracy": "~2.2",
+
 		"kukulich/fshl": "~2.1",
 		"andrewsville/php-token-reflection": "~1.4",
 		"michelf/php-markdown": "~1.4",
 		"kdyby/events": "~2.0",
 		"kdyby/console": "~2.0",
+
 		"ext-json": "*",
 		"ext-mbstring": "*",
 		"ext-iconv": "*",
