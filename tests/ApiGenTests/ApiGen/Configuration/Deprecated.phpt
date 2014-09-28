@@ -31,7 +31,6 @@ class DeprecatedTest extends TestCase
 		$this->prepareConfig(TRUE);
 		passthru(APIGEN_BIN . ' generate');
 		Assert::true(file_exists(API_DIR . DS . 'deprecated.html'));
-
 	}
 
 
