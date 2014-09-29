@@ -22,7 +22,7 @@ Tracy\Debugger::$logDirectory = TEMP_DIR;
 
 define('PROJECT_DIR', __DIR__ . DS . 'ApiGen/Project');
 define('API_DIR', TEMP_DIR . DS . 'api');
-define('APIGEN_BIN', realpath(__DIR__ . '/../../bin/apigen'));
+define('APIGEN_BIN', 'php ' . realpath(__DIR__ . '/../../src/apigen.php'));
 
 
 /** @return string */
