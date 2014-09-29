@@ -11,21 +11,20 @@ namespace ApiGen;
 
 use Nette;
 use Nette\Utils\Finder;
-use Nette\Utils\Strings;
 use Phar;
 use SplFileInfo;
-use Symfony\Component\Process\Process;
 
 
 /**
  * Compiles apigen into a phar.
- *
- * @author Fabien Potencier <fabien@symfony.com>
- * @author Jordi Boggiano <j.boggiano@seld.be>
- * @author Tomas Votruba <tomas.vot@gmail.com>
  */
 class Compiler extends Nette\Object
 {
+
+	/**
+	 * @var string
+	 */
+	private $repoDir;
 
 	/**
 	 * @var string
@@ -35,143 +34,62 @@ class Compiler extends Nette\Object
 	/**
 	 * @var string
 	 */
-	private $versionDate;
+	private $releaseDate;
 
 
 	/**
+	 * @param string $repoDir  path to Apigen source dir
+	 * @throws \LogicException
 	 * @throws \RuntimeException
-	 * @param string $pharFile
 	 */
-	public function compile($pharFile = 'apigen.phar')
+	public function __construct($repoDir)
 	{
+		if ( ! is_dir($repoDir)) {
+			throw new \LogicException("Path '$repoDir' is not a directory.");
+
+		} elseif ( ! is_file("$repoDir/src/ApiGen/ApiGen.php")) {
+			throw new \LogicException("Directory '$repoDir' does not contain ApiGen source code.");
+		}
+		$this->repoDir = realpath($repoDir);
+
+		if ($this->execute('git describe --tags HEAD', $repoDir, $output) === 0) {
+			$this->version = trim($output);
+
+		} elseif ($this->execute('git log --pretty="%H" -n1 HEAD', $repoDir, $output) === 0) {
+			$this->version = trim($output);
+
+		} else {
+			throw new \RuntimeException('Cannot run git log to find ApiGen version. Ensure that compile runs from cloned ApiGen git repository and the git command is available.');
+		}
+
+		if ($this->execute('git log -n1 --format=%cD HEAD', $repoDir, $output) !== 0) {
+			throw new \RuntimeException('Unable to run git log to find release date.');
+		}
+		$this->releaseDate = \DateTime::createFromFormat(\DateTime::RFC2822, trim($output))
+			->setTimezone(new \DateTimeZone('UTC'))
+			->format('Y-m-d H:i:s');
+	}
+
+
+	/**
+	 * @param string $pharFile  output PHAR file name
+	 * @param string $sourceDir  apigen source directory
+	 * @throws \RuntimeException
+	 */
+	public function compile($pharFile)
+	{
+		if ( ! class_exists('Phar') || ini_get('phar.readonly')) {
+			throw new \RuntimeException("Enable PHAR extension and set directive 'phar.readonly' to 'off'.");
+		}
+
 		if (file_exists($pharFile)) {
 			unlink($pharFile);
 		}
 
-		$process = new Process('git log --pretty="%H" -n1 HEAD', __DIR__);
-		if ($process->run() != 0) {
-			throw new \RuntimeException('Can\'t run git log. You must ensure to run compile from Apigen git repository clone and that git binary is available.');
-		}
-		$this->version = trim($process->getOutput());
+		$phar = new Phar($pharFile);
 
-		$process = new Process('git log -n1 --pretty=%ci HEAD', __DIR__);
-		if ($process->run() != 0) {
-			throw new \RuntimeException('Can\'t run git log. You must ensure to run compile from Apigen git repository clone and that git binary is available.');
-		}
-		$date = new \DateTime(trim($process->getOutput()));
-		$date->setTimezone(new \DateTimeZone('UTC'));
-		$this->versionDate = $date->format('Y-m-d H:i:s');
-
-		$process = new Process('git describe --tags HEAD');
-		if ($process->run() == 0) {
-			$this->version = trim($process->getOutput());
-		}
-
-		$phar = new Phar($pharFile, 0, 'apigen.phar');
-		$phar->setSignatureAlgorithm(Phar::SHA1);
-
-		$phar->startBuffering();
-
-		foreach (Finder::findFiles('*.php', '*.neon')->from(__DIR__ . '/../../src') as $file) {
-			$this->addFile($phar, $file);
-		}
-
-		foreach (Finder::findFiles('*.php')->from(__DIR__ . '/../../vendor') as $file) {
-			$this->addFile($phar, $file);
-		}
-
-		$this->addBin($phar);
-
-		$phar->setStub($this->getStub());
-
-		$phar->stopBuffering();
-
-		$this->addFile($phar, new SplFileInfo(__DIR__ . '/../../license.md'), FALSE);
-
-		unset($phar);
-	}
-
-
-	/**
-	 * @param Phar $phar
-	 * @param SplFileInfo $file
-	 * @param bool $strip
-	 */
-	private function addFile(Phar $phar, SplFileInfo $file, $strip = TRUE)
-	{
-		$path = strtr(str_replace(dirname(dirname(__DIR__)) . DS, '', $file->getRealPath()), '\\', '/');
-
-		$content = file_get_contents($file);
-		if ($strip) {
-			$content = $this->stripWhitespace($content);
-
-		} elseif (basename($file) === 'license') {
-			$content = PHP_EOL . $content . PHP_EOL;
-		}
-
-		if ($path === 'src/ApiGen/ApiGen.php') {
-			$content = str_replace('@package_version@', $this->version, $content);
-			$content = str_replace('@release_date@', $this->versionDate, $content);
-		}
-
-		$phar->addFromString($path, $content);
-	}
-
-
-	private function addBin(Phar $phar)
-	{
-		$content = file_get_contents(__DIR__ . '/../../bin/apigen');
-		$content = preg_replace('{^#!/usr/bin/env php\s*}', '', $content);
-		$phar->addFromString('bin/apigen', $content);
-	}
-
-
-	/**
-	 * Removes whitespace from a PHP source string while preserving line numbers.
-	 * Keeps docblocks with @method annotations.
-	 *
-	 * @param  string $source A PHP string
-	 * @return string The PHP string with the whitespace removed
-	 */
-	private function stripWhitespace($source)
-	{
-		if ( ! function_exists('token_get_all')) {
-			return $source;
-		}
-
-		$output = '';
-		foreach (token_get_all($source) as $token) {
-			if (is_string($token)) {
-				$output .= $token;
-
-			} elseif (in_array($token[0], array(T_COMMENT, T_DOC_COMMENT)) && ! Strings::contains($token[1], '@method')) {
-				$output .= str_repeat(PHP_EOL, substr_count($token[1], PHP_EOL));
-
-			} elseif ($token[0] === T_WHITESPACE) {
-				// reduce wide spaces
-				$whitespace = preg_replace('{[ \t]+}', ' ', $token[1]);
-				// normalize newlines to \n
-				$whitespace = preg_replace('{(?:\r\n|\r|\n)}', "\n", $whitespace);
-				// trim leading spaces
-				$whitespace = preg_replace('{\n +}', "\n", $whitespace);
-				$output .= $whitespace;
-
-			} else {
-				$output .= $token[1];
-			}
-		}
-
-		return $output;
-	}
-
-
-	/**
-	 * @return string
-	 */
-	private function getStub()
-	{
-		$stub = <<<'EOF'
-#!/usr/bin/env php
+		$phar->setStub(
+"#!/usr/bin/env php
 <?php
 
 /**
@@ -181,15 +99,111 @@ class Compiler extends Nette\Object
  * the file license.md that was distributed with this source code.
  */
 
-Phar::mapPhar('apigen.phar');
-
-EOF;
-
-		return $stub . <<<'EOF'
-require 'phar://apigen.phar/bin/apigen';
-
+require 'phar://' . __FILE__ . '/src/apigen.php';
 __HALT_COMPILER();
-EOF;
+");
+
+		$phar->startBuffering();
+
+		foreach (Finder::findFiles('*')->from("$this->repoDir/src") as $file) {
+			$this->addFile($phar, $file);
+		}
+
+		$exclude = array(
+			'nette/tester',
+			'jakub-onderka/php-parallel-lint',
+			'symfony/*/*/Tests',
+		);
+		foreach (Finder::findFiles('*.php')->from("$this->repoDir/vendor")->exclude($exclude) as $file) {
+			$this->addFile($phar, $file);
+		}
+
+		$phar['license.md'] = file_get_contents("$this->repoDir/license.md");
+
+		$phar->stopBuffering();
+		$phar->compressFiles(Phar::GZ);
+		unset($phar);
+
+		chmod($pharFile, 0755);
+	}
+
+
+	/**
+	 * Executes shell command.
+	 * @param string $command
+	 * @param string $cwd
+	 * @param string $output
+	 * @return int
+	 */
+	private function execute($command, $cwd, & $output)
+	{
+		$oldCwd = getcwd();
+		chdir($cwd);
+		exec($command, $tmp, $exitCode);
+		chdir($oldCwd);
+		$output = implode("\n", $tmp);
+
+		return $exitCode;
+	}
+
+
+	/**
+	 * @param Phar $phar
+	 * @param SplFileInfo $file
+	 */
+	private function addFile(Phar $phar, SplFileInfo $file)
+	{
+		$content = file_get_contents($file);
+		if ($file->getExtension() === 'php') {
+			$content = $this->stripWhitespaces($content);
+		}
+
+		$path = str_replace($this->repoDir . DIRECTORY_SEPARATOR, '', $file->getRealPath());
+		$path = strtr($path, DIRECTORY_SEPARATOR, '/');
+
+		if ($path === 'src/ApiGen/ApiGen.php') {
+			$content = strtr($content, array(
+				'@package_version@' => $this->version,
+				'@release_date@' => $this->releaseDate,
+			));
+		}
+
+		$phar[$path] = $content;
+	}
+
+
+	/**
+	 * Minifies PHP source. Preserves line numbers and @method annotations.
+	 *
+	 * @param string $code
+	 * @return string
+	 */
+	private function stripWhitespaces($code)
+	{
+		$output = '';
+		foreach (token_get_all($code) as $token) {
+			if (is_string($token)) {
+				$output .= $token;
+
+			} elseif ($token[0] === T_COMMENT) {
+				$output .= str_repeat("\n", substr_count($token[1], "\n"));
+
+			} elseif ($token[0] === T_DOC_COMMENT && strpos($token[1], '@method') === FALSE) {
+				$output .= str_repeat("\n", substr_count($token[1], "\n"));
+
+			} elseif ($token[0] === T_WHITESPACE) {
+				if (strpos($token[1], "\n") === FALSE) {
+					$output .= ' ';
+				} else {
+					$output .= str_repeat("\n", substr_count($token[1], "\n"));
+				}
+
+			} else {
+				$output .= $token[1];
+			}
+		}
+
+		return $output;
 	}
 
 }
