@@ -10,13 +10,13 @@
 
 require __DIR__ . '/../src/bootstrap.php';
 
-use ApiGen\Compiler;
+use ApiGen\PharCompiler;
 
 error_reporting(-1);
 ini_set('display_errors', 1);
 
 try {
-	$compiler = new Compiler(__DIR__ . '/..');
+	$compiler = new PharCompiler(__DIR__ . '/..');
 	echo 'Creating apigen.phar...';
 	$compiler->compile('apigen.phar');
 	echo "done.\n";

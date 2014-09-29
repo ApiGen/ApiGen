@@ -16,9 +16,9 @@ use SplFileInfo;
 
 
 /**
- * Compiles apigen into a phar.
+ * Creates PHAR from ApiGen source.
  */
-class Compiler extends Nette\Object
+class PharCompiler extends Nette\Object
 {
 
 	/**
