@@ -1,4 +1,3 @@
-#!/usr/bin/env php
 <?php
 
 /**
@@ -8,14 +7,12 @@
  * the file license.md that was distributed with this source code.
  */
 
-namespace ApiGen;
-
 use ApiGen\FileSystem\FileSystem;
 use Nette\Configurator;
 use Tracy\Debugger;
 
 
-require __DIR__ . '/../src/bootstrap.php';
+require __DIR__ . '/bootstrap.php';
 
 
 // Create temp dir
@@ -52,14 +49,14 @@ if ( ! ini_get('date.timezone')) {
 }
 
 // ApiGen root path
-define('APIGEN_ROOT_PATH', __DIR__ . '/../src');
+define('APIGEN_ROOT_PATH', __DIR__);
 
 
 // Build the DIC
 $configurator = new Configurator;
 $configurator->setDebugMode( ! Debugger::$productionMode);
 $configurator->setTempDirectory($tempDir);
-$configurator->addConfig(__DIR__ . '/../src/ApiGen/DI/config.neon');
+$configurator->addConfig(__DIR__ . '/ApiGen/DI/config.neon');
 $container = $configurator->createContainer();
 
 // Let's rock
