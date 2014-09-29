@@ -8,27 +8,24 @@
  * the file license.md that was distributed with this source code.
  */
 
+namespace ApiGen;
+
 use ApiGen\FileSystem\FileSystem;
 use Nette\Configurator;
 use Tracy\Debugger;
 
 
-if ( ! defined('DS')) {
-	define('DS', DIRECTORY_SEPARATOR);
-}
+require __DIR__ . '/../src/bootstrap.php';
 
 
-if (is_file($autoload = __DIR__ . '/../vendor/autoload.php')) {
-	require_once $autoload;
+// Create temp dir
+$tempDir = getcwd() . '/_apigen.temp';
+mkdir($tempDir, 0755, TRUE);
 
-} elseif (is_file($autoload = __DIR__ . '/../../../autoload.php')) { // composer global
-	require_once $autoload;
-
-} else {
-	echo "Missing autoload.php, update by the composer.\n";
-	exit(2);
-}
-unset($autoload);
+// Delete on error
+Debugger::$onFatalError[] = function() use ($tempDir) {
+	FileSystem::deleteDir($tempDir);
+};
 
 
 // Init debugger
@@ -42,10 +39,11 @@ if (isset($_SERVER['argv']) && ($tmp = array_search('--debug', $_SERVER['argv'],
 
 } else {
 	Debugger::enable(Debugger::PRODUCTION);
-	Debugger::$onFatalError[] = function() {;
+	Debugger::$onFatalError[] = function() use ($tempDir) {
 		echo "For more information turn on the debug mode using the --debug option.\n";
 	};
 }
+
 
 // Safe locale and timezone
 setlocale(LC_ALL, 'C');
@@ -58,17 +56,14 @@ define('APIGEN_ROOT_PATH', __DIR__ . '/../src');
 
 
 // Build the DIC
-$tmp = __DIR__ . '/../_temp' . uniqid(); // @todo: or custom in memory container
-@mkdir($tmp, 0755, TRUE);
-
 $configurator = new Configurator;
 $configurator->setDebugMode( ! Debugger::$productionMode);
-$configurator->setTempDirectory($tmp);
+$configurator->setTempDirectory($tempDir);
 $configurator->addConfig(__DIR__ . '/../src/ApiGen/DI/config.neon');
 $container = $configurator->createContainer();
 
 // Let's rock
 $container->getByType('ApiGen\Console\Application')->run();
 
-// Cleanup
-FileSystem::deleteDir($tmp);
+// Remove temp dir
+FileSystem::deleteDir($tempDir);

@@ -41,6 +41,7 @@
 		"michelf/php-markdown": "~1.4",
 		"kdyby/events": "~2.0",
 		"kdyby/console": "~2.0",
+		"symfony/process": "~2.5",
 
 		"ext-json": "*",
 		"ext-mbstring": "*",
