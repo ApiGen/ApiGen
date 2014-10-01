@@ -23,6 +23,9 @@ use Nette\Utils\Validators;
 class Configuration extends Nette\Object
 {
 
+	const TEMPLATE_THEME_DEFAULT = 'default';
+	const TEMPLATE_THEME_BOOTSTRAP = 'bootstrap';
+
 	/**
 	 * @var array
 	 */
@@ -51,6 +54,8 @@ class Configuration extends Nette\Object
 		'deprecated' => FALSE,
 		'todo' => FALSE,
 		'download' => FALSE,
+		// templates
+		'templateTheme' => self::TEMPLATE_THEME_DEFAULT
 	);
 
 	/**
@@ -79,24 +84,25 @@ class Configuration extends Nette\Object
 			}
 		}
 
+		// Set template theme path
+		$isThemeUsed = FALSE;
 		if ( ! isset($config['templateConfig'])) {
-			$configPath = Factory::getDefaultTemplateConfig();
+			if ($config['templateTheme'] === self::TEMPLATE_THEME_DEFAULT) {
+				$config['templateConfig'] = APIGEN_ROOT_PATH . '/templates/default/config.neon';
 
-			// template defaults
-			$config['templateConfig'] = FileSystem::getAbsolutePath($configPath, array(
-				getcwd(),
-				Factory::getTemplatesDir(),
-				APIGEN_ROOT_PATH . '/src/templates'
-			));
+			} elseif ($config['templateTheme'] === self::TEMPLATE_THEME_DEFAULT) {
+				$config['templateConfig'] = APIGEN_ROOT_PATH . '/templates/bootstrap/config.neon';
+			}
+			$isThemeUsed = TRUE;
 		}
 
-		// template data
-		if ( ! isset($config['template'])) {
-			// Merge template configuration
-			$templateConfigFile = new NeonFile($config['templateConfig']);
-			$config = array_merge_recursive($config, array(
-				'template' => $templateConfigFile->read()
-			));
+		// Merge template configuration
+		$templateConfigFile = new NeonFile($config['templateConfig']);
+		$config['template'] = $templateConfigFile->read();
+
+		// Fix paths for themes
+		if ($isThemeUsed) {
+			$config = $this->correctThemeTemplatePaths($config);
 		}
 
 		$this->validate($config);
@@ -224,6 +230,24 @@ class Configuration extends Nette\Object
 
 		// Base url without slash at the end
 		$config['baseUrl'] = rtrim($config['baseUrl'], '/');
+
+		return $config;
+	}
+
+
+	/**
+	 * @param array $config
+	 * @return array
+	 */
+	private function correctThemeTemplatePaths(array $config)
+	{
+		$templateDir = dirname($config['templateConfig']);
+
+		foreach (array('main', 'optional') as $section) {
+			foreach ($config['template']['templates'][$section] as $type => $configSection) {
+				$configSection['template'] = $templateDir . DS . $configSection['template'];
+			}
+		}
 
 		return $config;
 	}

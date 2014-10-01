@@ -23,26 +23,4 @@ class Factory extends Nette\Object
 		return getcwd() . '/apigen.neon';
 	}
 
-
-	/**
-	 * Returns templates directory path.
-	 *
-	 * @return string
-	 */
-	public static function getTemplatesDir()
-	{
-		return realpath(APIGEN_ROOT_PATH . '/templates/');
-	}
-
-
-	/**
-	 * The default template configuration file path.
-	 *
-	 * @return string
-	 */
-	public static function getDefaultTemplateConfig()
-	{
-		return self::getTemplatesDir() . '/default/config.neon';
-	}
-
 }
