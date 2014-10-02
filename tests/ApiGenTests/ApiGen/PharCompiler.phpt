@@ -7,6 +7,7 @@
 namespace ApiGenTests\ApiGen;
 
 use ApiGen\Neon\NeonFile;
+use ApiGen\PharCompiler;
 use ApiGenTests\TestCase;
 use Tester\Assert;
 
@@ -14,14 +15,18 @@ use Tester\Assert;
 require_once __DIR__ . '/../bootstrap.php';
 
 
-class HelloWorldTest extends TestCase
+class PharCompilerTest extends TestCase
 {
 
 	public function testBasicGeneration()
 	{
 		$this->prepareConfig();
 
-		passthru(APIGEN_BIN . ' generate');
+		$compiler = new PharCompiler(__DIR__ . '/../../..');
+		$compiler->compile(TEMP_DIR . '/apigen.phar');
+		Assert::true(file_exists(TEMP_DIR . '/apigen.phar'));
+
+		passthru('php ' . TEMP_DIR . '/apigen.phar generate');
 		Assert::true(file_exists(API_DIR . '/index.html'));
 
 		$fooClassFile = API_DIR . '/source-class-ApiGenTests.ApiGen.Project.Foo.html';
@@ -44,4 +49,4 @@ class HelloWorldTest extends TestCase
 }
 
 
-\run(new HelloWorldTest);
+\run(new PharCompilerTest);
