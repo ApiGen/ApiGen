@@ -27,12 +27,6 @@ abstract class Filters extends Nette\Object
 	public function loader($name)
 	{
 		if (method_exists($this, $name)) {
-
-//			$args = array_slice(func_get_args(), 1);
-//			$test = call_user_func_array(array($this, $name), $args);
-//			die;
-//			var_dump($test, $args);
-
 			$args = array_slice(func_get_args(), 1);
 			return call_user_func_array(array($this, $name), $args);
 		}
