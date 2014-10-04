@@ -5,46 +5,37 @@
 [![Latest stable](https://img.shields.io/packagist/v/apigen/apigen.svg)](https://packagist.org/packages/apigen/apigen)
 
 
-**[WIP] In renewal process, stay tuned. Use v2.8.1 as the last stable version.**
+ApiGen generates nice looking and user-friendly documentation. 
+Just look at [Doctrine ORM API](http://www.doctrine-project.org/api/orm/2.4/) or [Nette API](http://api.nette.org/).
 
 
-So what's the output? Look at [Doctrine ORM API](http://www.doctrine-project.org/api/orm/2.4/), [Nette API](http://api.nette.org/) or [Kdyby API](https://api.kdyby.org).
+## Features 
 
-
-## Features
-
-* Detailed documentation of classes, functions and constants
-* [Highlighted source code](http://api.nette.org/source-Application.UI.Form.php.html)
-* Experimental support of [traits](https://api.kdyby.org/class-Nextras.Application.UI.SecuredLinksControlTrait.html).
-* A page with:
+- Detailed documentation of classes, functions and constants
+- [Highlighted source code](http://api.nette.org/source-Application.UI.Form.php.html)
+- Support of [traits](https://api.kdyby.org/class-Nextras.Application.UI.SecuredLinksControlTrait.html)
+- A page with:
     - [trees of classes, interfaces, traits and exceptions](https://api.kdyby.org/tree.html)
 	- [list of deprecated elements](http://api.nette.org/deprecated.html)
 	- Todo tasks
-* Support for:
-    - docblock templates
-	- @inheritdoc
-	- {@link}
-* Active links in @see and @uses tags.
-* Links to internal PHP classes and PHP documentation.
-* [Links to the start line](http://api.nette.org/2.2.3/Nette.Application.UI.Control.html#_redrawControl) in the highlighted source code for every described element.
-* [List of known subclasses and implementers](https://api.kdyby.org/class-Kdyby.Doctrine.EntityRepository.html)
-* Google CSE support with suggest.
-* Google Analytics support.
-* Support for custom templates.
+- Support for docblock templates flavored with Markdown
+- [Links to the start line](http://api.nette.org/2.2.3/Nette.Application.UI.Control.html#_redrawControl) in the highlighted source code for every described element
+- [List of known subclasses and implementers](https://api.kdyby.org/class-Kdyby.Doctrine.EntityRepository.html)
+- Support for custom templates
 
 
 ## Installation
 
-The best way to install Apigen is via [Composer](https://getcomposer.org/):
+### As a PHAR (recommended)
+
+1. Download `apigen.phar` via installer:
 
 ```sh
-$ composer require apigen/apigen
+$ curl -sS http://apigen.org/installer | php
 ```
 
-## Usage
-
-First, we create `apigen.neon` and set required parameters. As you can see, it uses [Neon](http://ne-on.org) syntax.
-
+2. Create `apigen.neon` file in your project. This is basic example only with all required items. The file uses [Neon](http://ne-on.org) syntax.
+ 
 ```yaml
 source:
     - src
@@ -52,18 +43,50 @@ source:
 destination: api
 ```
 
-Then run ApiGen passing your config:
+3. Run ApiGen: 
 
 ```sh
-vendor/bin/apigen generate
+php apigen.phar generate
 ```
 
-That's it!
+For global installation, see [documentation](doc/installation.md).
 
 
-### Other configurable options
+### Using Composer globally
+
+Alternatively, you can install ApiGen via composer global .
+   
+```sh
+composer global require apigen/apigen 
+```
+
+Run:
 
 ```sh
+~/.composer/vendor/bin/apigen
+```
+
+If you add `~/.composer/vendor/bin` to your `PATH`, you can run `bin/apigen` instead.
+
+
+### Using Composer as dependency of your project
+
+Install package:
+
+```sh
+composer require apigen/apigen --dev 
+```
+
+Run: 
+
+```sh
+php vendor/bin/apigen
+```
+
+
+## Options 
+
+```yaml
 # list of scanned file extensions (e.g. php5, phpt...)
 extensions:
 	- php # default
@@ -152,10 +175,10 @@ download: false # default [true]
 
 ## Detailed documentation
 
-- [list of supported annotations](doc/supported-annotations.md)
-- [built with ApiGen](doc/built-with-apigen.md)
+- [list of all supported annotations](doc/supported-annotations.md)
+- [online apps built with ApiGen](doc/built-with-apigen.md)
 
 
-### Performance
+## Performance
 
 When generating documentation of large libraries, **not loading the Xdebug PHP extension**  will improve performance.
