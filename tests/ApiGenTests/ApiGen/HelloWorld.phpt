@@ -32,11 +32,14 @@ class HelloWorldTest extends TestCase
 	}
 
 
+	/**
+	 * Self apigen itself
+	 */
 	private function prepareConfig()
 	{
-		$neonFile = new NeonFile(__DIR__ . '/apigen.neon');
+		$neonFile = new NeonFile(__DIR__ . DS . 'apigen.neon');
 		$config = $neonFile->read();
-		$config['source'] = array(__DIR__ . DS . 'Project');
+		$config['source'] = array(__DIR__ . DS . '../../../src', __DIR__ . DS . '../../../vendor');
 		$config['destination'] = API_DIR;
 		$neonFile->write($config);
 	}
