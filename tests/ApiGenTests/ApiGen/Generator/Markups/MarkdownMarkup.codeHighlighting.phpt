@@ -21,9 +21,14 @@ require_once __DIR__ . '/../../../bootstrap.php';
 class DummyHighlighter implements SourceCodeHighlighter
 {
 
-	public function highlight($src, $lines = FALSE)
+	public function highlight($src)
 	{
 		return "{color}$src{/}";
+	}
+
+
+	public function highlightAndAddLineNumbers($src)
+	{
 	}
 
 }

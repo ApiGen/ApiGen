@@ -17,8 +17,17 @@ interface SourceCodeHighlighter
 	 * Highlights passed code
 	 *
 	 * @param string $sourceCode
-	 * @param bool $lines
+	 * @return string
 	 */
-	public function highlight($sourceCode, $lines = FALSE);
+	function highlight($sourceCode);
+
+
+	/**
+	 * Highlights passed code an adds line number at the beginning.
+	 *
+	 * @param string $sourceCode
+	 * @return string
+	 */
+	function highlightAndAddLineNumbers($sourceCode);
 
 }

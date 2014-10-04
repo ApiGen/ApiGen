@@ -10,6 +10,7 @@
 namespace ApiGen\Generator;
 
 use FSHL;
+use FSHL\Highlighter;
 use Nette;
 
 
@@ -17,12 +18,12 @@ class FshlSourceCodeHighlighter extends Nette\Object implements SourceCodeHighli
 {
 
 	/**
-	 * @var FSHL\Highlighter
+	 * @var Highlighter
 	 */
 	private $highlighter;
 
 
-	public function __construct(FSHL\Highlighter $highlighter)
+	public function __construct(Highlighter $highlighter)
 	{
 		$this->highlighter = $highlighter;
 	}
@@ -30,19 +31,22 @@ class FshlSourceCodeHighlighter extends Nette\Object implements SourceCodeHighli
 
 	/**
 	 * @param string $sourceCode
-	 * @param bool $lines
 	 * @return string
 	 */
-	public function highlight($sourceCode, $lines = TRUE)
+	public function highlight($sourceCode)
 	{
-		$options = FSHL\Highlighter::OPTION_TAB_INDENT;
+		$this->highlighter->setOptions(Highlighter::OPTION_TAB_INDENT);
+		return $this->highlighter->highlight($sourceCode);
+	}
 
-		if ($lines) {
-			$options |= FSHL\Highlighter::OPTION_LINE_COUNTER;
-		}
 
-		$this->highlighter->setOptions($options);
-
+	/**
+	 * @param string $sourceCode
+	 * @return string
+	 */
+	public function highlightAndAddLineNumbers($sourceCode)
+	{
+		$this->highlighter->setOptions(Highlighter::OPTION_TAB_INDENT | Highlighter::OPTION_LINE_COUNTER);
 		return $this->highlighter->highlight($sourceCode);
 	}
 
