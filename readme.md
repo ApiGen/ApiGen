@@ -30,24 +30,24 @@ Just look at [Doctrine ORM API](http://www.doctrine-project.org/api/orm/2.4/) or
 
 1. Download `apigen.phar` via installer:
 
-```sh
-$ curl -sS http://apigen.org/installer | php
-```
+	```sh
+	$ curl -sS http://apigen.org/installer | php
+	```
 
 2. Create `apigen.neon` file in your project. This is basic example only with all required items. The file uses [Neon](http://ne-on.org) syntax.
  
-```yaml
-source:
-    - src
-
-destination: api
-```
+	```yaml
+	source:
+	    - src
+	
+	destination: api
+	```
 
 3. Run ApiGen: 
 
-```sh
-php apigen.phar generate
-```
+	```sh
+	php apigen.phar generate
+	```
 
 For global installation, see [documentation](doc/installation.md).
 
