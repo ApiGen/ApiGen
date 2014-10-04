@@ -19,6 +19,7 @@ use ApiGen\Reflection\ReflectionElement;
 use ApiGen\Reflection\ReflectionFunction;
 use ApiGen\Reflection\ReflectionMethod;
 use ApiGen\Reflection\ReflectionProperty;
+use ApiGen\Templating\Template;
 use ApiGen\Templating\TemplateFactory;
 use ApiGen\Tree;
 use ApiGen\FileSystem;
@@ -537,20 +538,7 @@ class HtmlGenerator extends Nette\Object implements Generator
 	private function generateCommon()
 	{
 		$template = $this->templateFactory->create();
-		$template->namespace = NULL;
-		$template->namespaces = array_keys($this->namespaces);
-		$template->package = NULL;
-		$template->packages = array_keys($this->packages);
-		$template->class = NULL;
-		$template->classes = array_filter($this->classes, $this->getMainFilter());
-		$template->interfaces = array_filter($this->interfaces, $this->getMainFilter());
-		$template->traits = array_filter($this->traits, $this->getMainFilter());
-		$template->exceptions = array_filter($this->exceptions, $this->getMainFilter());
-		$template->constant = NULL;
-		$template->constants = array_filter($this->constants, $this->getMainFilter());
-		$template->function = NULL;
-		$template->functions = array_filter($this->functions, $this->getMainFilter());
-		$template->archive = basename($this->zip->getArchivePath());
+		$template = $this->addBaseVariablesToTemplate($template);
 
 		// Elements for autocomplete
 		$elements = array();
@@ -614,6 +602,8 @@ class HtmlGenerator extends Nette\Object implements Generator
 	private function generateOptional()
 	{
 		$template = $this->templateFactory->create();
+		$template = $this->addBaseVariablesToTemplate($template);
+
 		if ($this->isSitemapEnabled()) {
 			$template->setFile($this->getTemplatePath('sitemap', 'optional'))
 				->save($this->getTemplateFileName('sitemap', 'optional'));
@@ -643,6 +633,7 @@ class HtmlGenerator extends Nette\Object implements Generator
 	private function generateDeprecated()
 	{
 		$template = $this->templateFactory->create();
+		$template = $this->addBaseVariablesToTemplate($template);
 		$this->prepareTemplate('deprecated');
 
 		$deprecatedFilter = function ($element) {
@@ -699,7 +690,7 @@ class HtmlGenerator extends Nette\Object implements Generator
 	private function generateTodo()
 	{
 		$template = $this->templateFactory->create();
-
+		$template = $this->addBaseVariablesToTemplate($template);
 		$this->prepareTemplate('todo');
 
 		$todoFilter = function ($element) {
@@ -752,7 +743,7 @@ class HtmlGenerator extends Nette\Object implements Generator
 	private function generateTree()
 	{
 		$template = $this->templateFactory->create();
-
+		$template = $this->addBaseVariablesToTemplate($template);
 		$this->prepareTemplate('tree');
 
 		$classTree = array();
@@ -843,7 +834,7 @@ class HtmlGenerator extends Nette\Object implements Generator
 		}
 
 		$template = $this->templateFactory->create();
-
+		$template = $this->addBaseVariablesToTemplate($template);
 		$this->prepareTemplate('package');
 
 		$template->namespace = NULL;
@@ -878,7 +869,7 @@ class HtmlGenerator extends Nette\Object implements Generator
 		}
 
 		$template = $this->templateFactory->create();
-
+		$template = $this->addBaseVariablesToTemplate($template);
 		$this->prepareTemplate('namespace');
 
 		$template->package = NULL;
@@ -909,6 +900,7 @@ class HtmlGenerator extends Nette\Object implements Generator
 	private function generateElements()
 	{
 		$template = $this->templateFactory->create();
+		$template = $this->addBaseVariablesToTemplate($template);
 
 		if ( ! empty($this->classes) || ! empty($this->interfaces) || ! empty($this->traits) || ! empty($this->exceptions)) {
 			$this->prepareTemplate('class');
@@ -1197,6 +1189,30 @@ class HtmlGenerator extends Nette\Object implements Generator
 		}
 
 		FS::forceDir($this->getTemplateFileName($name));
+	}
+
+
+	/**
+	 * @param Template|\stdClass $template
+	 * @return Template|\stdClass
+	 */
+	private function addBaseVariablesToTemplate(Template $template)
+	{
+		$template->namespace = NULL;
+		$template->namespaces = array_keys($this->namespaces);
+		$template->package = NULL;
+		$template->packages = array_keys($this->packages);
+		$template->class = NULL;
+		$template->classes = array_filter($this->classes, $this->getMainFilter());
+		$template->interfaces = array_filter($this->interfaces, $this->getMainFilter());
+		$template->traits = array_filter($this->traits, $this->getMainFilter());
+		$template->exceptions = array_filter($this->exceptions, $this->getMainFilter());
+		$template->constant = NULL;
+		$template->constants = array_filter($this->constants, $this->getMainFilter());
+		$template->function = NULL;
+		$template->functions = array_filter($this->functions, $this->getMainFilter());
+		$template->archive = basename($this->zip->getArchivePath());
+		return $template;
 	}
 
 }
