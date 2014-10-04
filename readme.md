@@ -38,37 +38,33 @@ So what's the output? Look at [Doctrine ORM API](http://www.doctrine-project.org
 The best way to install Apigen is via [Composer](https://getcomposer.org/):
 
 ```sh
-$ composer require apigen/apigen:2.8.1
+$ composer require apigen/apigen
 ```
 
 ## Usage
 
-First, we create `apigen.neon` and set required parameters.
-
-If you haven't heard about .neon yet, [go check it](http://ne-on.org). It's similar to .yaml, just nicer.
-
-### Minimal config
+First, we create `apigen.neon` and set required parameters. As you can see, it uses [Neon](http://ne-on.org) syntax.
 
 ```yaml
 source:
     - src
-    - tests/ApiGen/Generator.php
-destination: api # target dir for documentation
+
+destination: api
 ```
 
 Then run ApiGen passing your config:
 
 ```sh
-bin/apigen generate
+vendor/bin/apigen generate
 ```
 
 That's it!
 
 
-### Optional config
+### Other configurable options
 
 ```sh
-# list of allowed extensions
+# list of scanned file extensions (e.g. php5, phpt...)
 extensions:
 	- php # default
 
@@ -101,7 +97,7 @@ main: ApiGen
 title: ApiGen API
 
 # base url used for sitemap (useful for public doc)
-baseUrl: http://nette.org
+baseUrl: http://api.apigen.org
 
 # custom search engine id, will be used by search box
 googleCseId: 011549293477758430224
