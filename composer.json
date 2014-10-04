@@ -1,7 +1,6 @@
 {
 	"name": "apigen/apigen",
 	"description": "PHP source code API generator",
-	"type": "project",
 	"keywords": ["documentation", "phpdoc", "generator", "api"],
 	"homepage": "http://apigen.org/",
 	"license": "MIT",
@@ -48,7 +47,7 @@
 		"ext-tokenizer": "*"
 	},
 	"require-dev": {
-		"nette/tester": "~1.2",
+		"nette/tester": "~1.3",
 		"jakub-onderka/php-parallel-lint": "~0.7"
 	},
 	"suggest": {
