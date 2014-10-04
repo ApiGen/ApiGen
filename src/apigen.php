@@ -36,7 +36,7 @@ if (isset($_SERVER['argv']) && ($tmp = array_search('--debug', $_SERVER['argv'],
 
 } else {
 	Debugger::enable(Debugger::PRODUCTION);
-	Debugger::$onFatalError[] = function() use ($tempDir) {
+	Debugger::$onFatalError[] = function() {
 		echo "For more information turn on the debug mode using the --debug option.\n";
 	};
 }
