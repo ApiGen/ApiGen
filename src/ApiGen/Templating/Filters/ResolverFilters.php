@@ -32,11 +32,31 @@ class ResolverFilters extends Filters
 	/**
 	 * @param string $className
 	 * @param string|NULL $namespace
-	 * @return ReflectionClass
+	 * @return ReflectionClass|FALSE
 	 */
 	public function getClass($className, $namespace = NULL)
 	{
-		return $this->elementResolver->getClass($className, $namespace);
+		$reflection = $this->elementResolver->getClass($className, $namespace);
+		if ($reflection) {
+			return $reflection;
+		}
+		return FALSE;
+	}
+
+
+	/**
+	 * @param $definition
+	 * @param $context
+	 * @param null $expectedName
+	 * @return \ApiGen\Reflection\ReflectionElement|bool|NULL
+	 */
+	public function resolveElement($definition, $context, &$expectedName = NULL)
+	{
+		$reflection = $this->elementResolver->resolveElement($definition, $context, $expectedName);
+		if ($reflection) {
+			return $reflection;
+		}
+		return FALSE;
 	}
 
 }

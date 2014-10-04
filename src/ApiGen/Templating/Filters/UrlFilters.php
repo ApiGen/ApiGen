@@ -559,7 +559,7 @@ class UrlFilters extends Filters
 	 */
 	private function resolveInternal($text)
 	{
-		$internal = $this->config->internal;
+		$internal = $this->config['internal'];
 		return preg_replace_callback('~\\{@(\\w+)(?:(?:\\s+((?>(?R)|[^{}]+)*)\\})|\\})~', function ($matches) use ($internal) {
 			// Replace only internal
 			if ($matches[1] !== 'internal') {
