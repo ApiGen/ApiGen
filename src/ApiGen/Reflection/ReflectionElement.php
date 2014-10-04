@@ -9,6 +9,7 @@
 
 namespace ApiGen\Reflection;
 
+use TokenReflection\Exception\BaseException;
 use TokenReflection\ReflectionAnnotation;
 
 
@@ -32,6 +33,13 @@ abstract class ReflectionElement extends ReflectionBase
 	 * @var array
 	 */
 	protected $annotations;
+
+	/**
+	 * Reasons why this element's reflection is invalid.
+	 *
+	 * @var array
+	 */
+	private $reasons = array();
 
 
 	/**
@@ -399,6 +407,42 @@ abstract class ReflectionElement extends ReflectionBase
 		$this->annotations[$annotation][] = $value;
 
 		return $this;
+	}
+
+
+	/**
+	 * Adds a reason why this element's reflection is invalid.
+	 *
+	 * @param \TokenReflection\Exception\BaseException $reason Reason
+	 * @return \TokenReflection\Invalid\ReflectionElement
+	 */
+	public function addReason(BaseException $reason)
+	{
+		$this->reasons[] = $reason;
+
+		return $this;
+	}
+
+
+	/**
+	 * Returns a list of reasons why this element's reflection is invalid.
+	 *
+	 * @return array
+	 */
+	public function getReasons()
+	{
+		return $this->reasons;
+	}
+
+
+	/**
+	 * Returns if there are any known reasons why this element's reflection is invalid.
+	 *
+	 * @return boolean
+	 */
+	public function hasReasons()
+	{
+		return ! empty($this->reasons);
 	}
 
 }

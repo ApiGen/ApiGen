@@ -49,11 +49,14 @@ class ReflectionPropertyMagic extends ReflectionProperty
 	protected $typeHint;
 
 	/**
-	 * Short description.
-	 *
 	 * @var string
 	 */
 	protected $shortDescription;
+
+	/**
+	 * @var string
+	 */
+	protected $longDescription;
 
 	/**
 	 * Start line number in the file.
