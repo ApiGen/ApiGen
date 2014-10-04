@@ -90,7 +90,7 @@ class GenerateCommand extends Command
 			return 0;
 
 		} catch (\Exception $e) {
-			$output->writeln('<error>' . $e->getMessage() . '</error>');
+			$output->writeln(PHP_EOL . '<error>' . $e->getMessage() . '</error>');
 			return 1;
 		}
 	}
@@ -119,7 +119,7 @@ class GenerateCommand extends Command
 
 		// get errors! // todo: move to comnand?
 		if (count($parseInfo->errors)) {
-			$output->writeln('<error>Found ' . count($parseInfo->errors) . ' errors');
+			$output->writeln(PHP_EOL . '<error>Found ' . count($parseInfo->errors) . ' errors</error>');
 
 			foreach ($parseInfo->errors as $e) {
 				if ($apigen['debug']) {
