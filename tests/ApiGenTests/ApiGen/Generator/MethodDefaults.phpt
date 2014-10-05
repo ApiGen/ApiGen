@@ -38,7 +38,7 @@ class MethodDefaultsTests extends TestCase
 	{
 		$neonFile = new NeonFile(__DIR__ . '/apigen.neon');
 		$config = $neonFile->read();
-		$config['source'] = array(__DIR__ . DS . '../Project');
+		$config['source'] = array(PROJECT_DIR);
 		$config['destination'] = API_DIR;
 		$neonFile->write($config);
 	}
