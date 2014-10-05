@@ -52,8 +52,6 @@ class TemplateFactory extends Nette\Object
 	{
 		/** @var Template|\stdClass $template */
 		$template = new Template($this->latteEngine);
-		$template->generator = ApiGen::NAME;
-		$template->version = ApiGen::VERSION;
 		$template->config = ArrayHash::from($this->config);
 		$template->basePath = dirname($this->config['templateConfig']);
 		return $template;
