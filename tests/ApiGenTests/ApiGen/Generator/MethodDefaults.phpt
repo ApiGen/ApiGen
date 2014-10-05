@@ -24,7 +24,7 @@ class MethodDefaultsTests extends TestCase
 		passthru(APIGEN_BIN . ' generate');
 		Assert::true(file_exists(API_DIR . '/index.html'));
 
-		$methodFile = API_DIR . '/class-ApiGenTests.ApiGen.Project.Method.html';
+		$methodFile = API_DIR . '/class-Project.Method.html';
 		Assert::true(file_exists($methodFile));
 
 		Assert::match(

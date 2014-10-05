@@ -1,6 +1,6 @@
 <?php
 
-namespace ApiGenTests\ApiGen\Project;
+namespace Project;
 
 
 class Foo

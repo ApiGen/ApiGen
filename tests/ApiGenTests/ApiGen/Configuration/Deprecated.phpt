@@ -51,7 +51,7 @@ class DeprecatedTest extends TestCase
 			$content
 		);
 		Assert::match(
-			'%A%ApiGenTests\ApiGen\Project\Deprecated%A%',
+			'%A%Project\Deprecated%A%',
 			$content
 		);
 
@@ -61,7 +61,7 @@ class DeprecatedTest extends TestCase
 			$content
 		);
 		Assert::match(
-			'%A%ApiGenTests\ApiGen\Project\DeprecatedMethod%A%',
+			'%A%Project\DeprecatedMethod%A%',
 			$content
 		);
 	}
@@ -75,7 +75,7 @@ class DeprecatedTest extends TestCase
 		// has class="deprecated" attribute
 		Assert::match(
 			'%A%<h1 class="deprecated">Class Deprecated</h1>%A%',
-			file_get_contents(API_DIR . DS . 'class-ApiGenTests.ApiGen.Project.Deprecated.html')
+			file_get_contents(API_DIR . DS . 'class-Project.Deprecated.html')
 		);
 	}
 
@@ -88,7 +88,7 @@ class DeprecatedTest extends TestCase
 		// has class="deprecated" attribute
 		Assert::match(
 			'%A%id="_getDrink" class="deprecated"%A%',
-			file_get_contents(API_DIR . DS . 'class-ApiGenTests.ApiGen.Project.DeprecatedMethod.html')
+			file_get_contents(API_DIR . DS . 'class-Project.DeprecatedMethod.html')
 		);
 	}
 

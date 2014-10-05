@@ -50,7 +50,7 @@ class TodoTest extends TestCase
 			$content
 		);
 		Assert::match(
-			'%A%ApiGenTests\ApiGen\Project\Todo%A%',
+			'%A%Project\Todo%A%',
 			$content
 		);
 		Assert::match(
@@ -64,7 +64,7 @@ class TodoTest extends TestCase
 			$content
 		);
 		Assert::match(
-			'%A%ApiGenTests\ApiGen\Project\TodoMethod%A%',
+			'%A%Project\TodoMethod%A%',
 			$content
 		);
 		Assert::match(
