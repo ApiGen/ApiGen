@@ -9,7 +9,7 @@
 
 namespace ApiGen\Console;
 
-use ApiGen;
+use ApiGen\ApiGen;
 use Kdyby;
 
 
@@ -17,12 +17,21 @@ class Application extends Kdyby\Console\Application
 {
 
 	/**
-	 * @param string $name
-	 * @param string $version
+	 * {@inheritDoc}
 	 */
-	public function __construct($name = ApiGen\ApiGen::NAME, $version = ApiGen\ApiGen::VERSION)
+	public function __construct()
 	{
-		parent::__construct($name, $version);
+		parent::__construct('ApiGen', ApiGen::VERSION);
 	}
+
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function getLongVersion()
+	{
+		return parent::getLongVersion() . ' ' . ApiGen::RELEASE_DATE;
+	}
+
 
 }
