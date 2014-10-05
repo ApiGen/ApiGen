@@ -9,7 +9,6 @@
 
 namespace ApiGen\Templating;
 
-use ApiGen\ApiGen;
 use ApiGen\Configuration\Configuration;
 use Latte;
 use Nette;
