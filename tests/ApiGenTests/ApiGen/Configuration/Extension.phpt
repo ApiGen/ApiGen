@@ -17,8 +17,8 @@ require_once __DIR__ . '/../../bootstrap.php';
 class ExtensionTest extends TestCase
 {
 
-	const PHP5_EXTENSION = 'class-ApiGenTests.ApiGen.Project.Bar.html';
-	const PHP_EXTENSION = 'class-ApiGenTests.ApiGen.Project.Foo.html';
+	const PHP5_EXTENSION = 'class-Project.Bar.html';
+	const PHP_EXTENSION = 'class-Project.Foo.html';
 
 
 	public function testConfig()

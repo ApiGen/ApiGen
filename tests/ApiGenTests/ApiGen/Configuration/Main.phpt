@@ -4,7 +4,7 @@
  * @testCase
  */
 
-namespace ApiGenTests\ApiGen;
+namespace ApiGenTests\ApiGen\Configuration;
 
 use ApiGen\Neon\NeonFile;
 use ApiGenTests\TestCase;
@@ -14,22 +14,20 @@ use Tester\Assert;
 require_once __DIR__ . '/../../bootstrap.php';
 
 
-class MethodDefaultsTests extends TestCase
+class MainTest extends TestCase
 {
 
-	public function testBasicGeneration()
+	const TITLE = 'Project API';
+
+
+	public function testConfig()
 	{
 		$this->prepareConfig();
-
 		passthru(APIGEN_BIN . ' generate');
-		Assert::true(file_exists(API_DIR . '/index.html'));
-
-		$methodFile = API_DIR . '/class-Project.Method.html';
-		Assert::true(file_exists($methodFile));
 
 		Assert::match(
-			file_get_contents(__DIR__ . '/MethodDefaults.html'),
-			file_get_contents($methodFile)
+			file_get_contents(__DIR__ . '/Main.html'),
+			file_get_contents(API_DIR . '/index.html')
 		);
 	}
 
@@ -38,12 +36,13 @@ class MethodDefaultsTests extends TestCase
 	{
 		$neonFile = new NeonFile(__DIR__ . '/apigen.neon');
 		$config = $neonFile->read();
-		$config['source'] = array(PROJECT_DIR);
+		$config['source'] = array(PROJECT_DIR, dirname(PROJECT_DIR) . '/ProjectBeta');
 		$config['destination'] = API_DIR;
+		$config['main'] = 'ProjectBeta';
 		$neonFile->write($config);
 	}
 
 }
 
 
-\run(new MethodDefaultsTests);
+\run(new MainTest);

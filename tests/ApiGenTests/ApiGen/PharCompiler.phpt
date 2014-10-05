@@ -29,7 +29,7 @@ class PharCompilerTest extends TestCase
 		passthru('php ' . TEMP_DIR . '/apigen.phar generate');
 		Assert::true(file_exists(API_DIR . '/index.html'));
 
-		$fooClassFile = API_DIR . '/source-class-ApiGenTests.ApiGen.Project.Foo.html';
+		$fooClassFile = API_DIR . '/source-class-Project.Foo.html';
 		Assert::true(file_exists($fooClassFile));
 
 		$fooClassFileSource = file_get_contents($fooClassFile);
@@ -41,7 +41,7 @@ class PharCompilerTest extends TestCase
 	{
 		$neonFile = new NeonFile(__DIR__ . '/apigen.neon');
 		$config = $neonFile->read();
-		$config['source'] = array(__DIR__ . DS . 'Project');
+		$config['source'] =  array(PROJECT_DIR);
 		$config['destination'] = API_DIR;
 		$neonFile->write($config);
 	}
