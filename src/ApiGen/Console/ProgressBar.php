@@ -30,7 +30,7 @@ class ProgressBar extends Nette\Object
 	{
 		$output = new ConsoleOutput;
 		$this->bar = new ProgressBarHelper($output, $maximum);
-		$this->bar->setFormat('%percent% % [%bar%] %elapsed:4s%, %memory:d% MB RAM');
+		$this->bar->setFormat('%percent:4s% %, %memory:2d% MB RAM');
 		$this->bar->start();
 	}
 
