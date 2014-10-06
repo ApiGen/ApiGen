@@ -96,6 +96,7 @@ extensions:
 exclude:
 	- */tests/*
 	- */vendor/*
+	- *Factory.php*
 
 # this files will be included in class tree, but will not create a link to their documentation
 # either files
