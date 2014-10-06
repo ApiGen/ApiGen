@@ -318,7 +318,7 @@ h2.switchable {
 	white-space: nowrap;
 }
 
-.value, .value code {
+.value code {
 	white-space: pre-wrap;
 }
 

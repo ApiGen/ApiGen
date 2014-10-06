@@ -399,7 +399,7 @@ dl.tree dd {
 	white-space: nowrap;
 }
 
-.value {
+.value code {
 	white-space: pre-wrap;
 }
 
