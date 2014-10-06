@@ -74,9 +74,6 @@ class ExcludeTest extends TestCase
 	}
 
 
-	/**
-	 * @throws \Exception
-	 */
 	private function prepareConfig(array $exclude = array())
 	{
 		$neonFile = new NeonFile(__DIR__ . '/apigen.neon');
