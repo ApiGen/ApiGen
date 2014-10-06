@@ -1,4 +1,4 @@
-<?php
+<?php // lint >= 5.4
 
 namespace ProjectBeta;
 
