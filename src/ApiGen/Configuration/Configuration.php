@@ -90,7 +90,7 @@ class Configuration extends Nette\Object
 			if ($config['templateTheme'] === self::TEMPLATE_THEME_DEFAULT) {
 				$config['templateConfig'] = APIGEN_ROOT_PATH . '/templates/default/config.neon';
 
-			} elseif ($config['templateTheme'] === self::TEMPLATE_THEME_DEFAULT) {
+			} elseif ($config['templateTheme'] === self::TEMPLATE_THEME_BOOTSTRAP) {
 				$config['templateConfig'] = APIGEN_ROOT_PATH . '/templates/bootstrap/config.neon';
 			}
 			$isThemeUsed = TRUE;
