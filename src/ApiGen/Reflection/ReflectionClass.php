@@ -1363,7 +1363,7 @@ class ReflectionClass extends ReflectionElement
 		}, $this->getOwnMagicProperties()));
 
 		foreach ($this->getTraits() as $trait) {
-			if ( ! is_object($trait)) {
+			if ( ! $trait instanceof ReflectionClass) {
 				continue;
 			}
 
