@@ -64,10 +64,10 @@ composer global require apigen/apigen
 Run:
 
 ```sh
-~/.composer/vendor/bin/apigen
+~/.composer/vendor/bin/apigen generate
 ```
 
-If you add `~/.composer/vendor/bin` to your `PATH`, you can run `bin/apigen` instead.
+If you add `~/.composer/vendor/bin` to your `PATH`, you can run `bin/apigen generate` instead.
 
 
 ### Using Composer as dependency of your project
@@ -81,7 +81,7 @@ composer require apigen/apigen --dev
 Run: 
 
 ```sh
-php vendor/bin/apigen
+php vendor/bin/apigen generate
 ```
 
 
