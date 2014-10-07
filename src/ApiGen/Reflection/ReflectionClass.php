@@ -286,6 +286,10 @@ class ReflectionClass extends ReflectionElement
 		}
 
 		foreach ($this->getTraits() as $trait) {
+			if ( ! $trait instanceof ReflectionClass) {
+				continue;
+			}
+
 			foreach ($trait->getOwnMagicMethods() as $method) {
 				if (isset($methods[$method->getName()])) {
 					continue;
@@ -456,7 +460,6 @@ class ReflectionClass extends ReflectionElement
 				if (isset($properties[$property->getName()])) {
 					continue;
 				}
-
 				if ( ! $this->isDocumented() || $property->isDocumented()) {
 					$properties[$property->getName()] = $property;
 				}
@@ -465,6 +468,10 @@ class ReflectionClass extends ReflectionElement
 		}
 
 		foreach ($this->getTraits() as $trait) {
+			if ( ! $trait instanceof ReflectionClass) {
+				continue;
+			}
+
 			foreach ($trait->getOwnMagicProperties() as $property) {
 				if (isset($properties[$property->getName()])) {
 					continue;
@@ -856,13 +863,18 @@ class ReflectionClass extends ReflectionElement
 	/**
 	 * Returns all traits reflections encapsulated by this class.
 	 *
-	 * @return ReflectionClass[]|array
+	 * @return ReflectionClass[]|string[]
 	 */
 	public function getTraits()
 	{
 		$classes = self::$parsedClasses;
 		return array_map(function (IReflectionClass $class) use ($classes) {
-			return $classes[$class->getName()];
+			if ( ! isset($classes[$class->getName()])) {
+				return $class->getName();
+
+			} else {
+				return $classes[$class->getName()];
+			}
 		}, $this->reflection->getTraits());
 	}
 
@@ -903,16 +915,18 @@ class ReflectionClass extends ReflectionElement
 	/**
 	 * Returns all traits used by the inspected class and not its parents.
 	 *
-	 * @return array
+	 * @return ReflectionClass[]|string[]
 	 */
 	public function getOwnTraits()
 	{
 		$classes = self::$parsedClasses;
 		return array_map(function (IReflectionClass $class) use ($classes) {
 			if ( ! isset($classes[$class->getName()])) {
-				throw new InvalidArgumentException(sprintf('The class %s is in use but has not been found in the defined sources.', $class->getName()));
+				return $class->getName();
+
+			} else {
+				return $classes[$class->getName()];
 			}
-			return $classes[$class->getName()];
 		}, $this->reflection->getOwnTraits());
 	}
 
@@ -1313,6 +1327,10 @@ class ReflectionClass extends ReflectionElement
 		}, $this->getOwnProperties()));
 
 		foreach ($this->getTraits() as $trait) {
+			if ( ! $trait instanceof ReflectionClass) {
+				continue;
+			}
+
 			$usedProperties = array();
 			foreach ($trait->getOwnProperties() as $property) {
 				if ( ! array_key_exists($property->getName(), $allProperties)) {
@@ -1345,6 +1363,10 @@ class ReflectionClass extends ReflectionElement
 		}, $this->getOwnMagicProperties()));
 
 		foreach ($this->getTraits() as $trait) {
+			if ( ! is_object($trait)) {
+				continue;
+			}
+
 			$usedProperties = array();
 			foreach ($trait->getOwnMagicProperties() as $property) {
 				if ( ! array_key_exists($property->getName(), $allProperties)) {

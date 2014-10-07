@@ -25,7 +25,12 @@
 			{/foreach}{/if}
 			{var $itemOwnTraits = $item->ownTraits}
 			{if $itemOwnTraits} uses {foreach $itemOwnTraits as $trait}
-				<a href="{$trait|classUrl}" n:tag-if="$trait->documented"><span n:class="$trait->deprecated ? deprecated, !$trait->valid ? invalid">{$trait->name}</span></a>{sep}, {/sep}
+				{if is_string($trait)}
+					{$trait} (not available)
+
+				{else}
+					<a href="{$trait|classUrl}" n:tag-if="$trait->documented"><span n:class="$trait->deprecated ? deprecated, !$trait->valid ? invalid">{$trait->name}</span></a>{sep}, {/sep}
+				{/}
 			{/foreach}{/if}
 		</dd>
 	</dl>
