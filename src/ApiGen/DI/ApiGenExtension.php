@@ -133,7 +133,8 @@ class ApiGenExtension extends CompilerExtension
 		$builder = $this->getContainerBuilder();
 
 		$application = $builder->addDefinition($this->prefix('application'))
-			->setClass('ApiGen\Console\Application');
+			->setClass('ApiGen\Console\Application')
+			->addSetup('injectServiceLocator');
 
 		foreach ($this->loadFromFile(__DIR__ . '/commands.neon') as $i => $class) {
 			$command = $builder->addDefinition($this->prefix('command.' . $i))
