@@ -6,7 +6,7 @@
  * @testCase
  */
 
-namespace ApiGenTests\ApiGen;
+namespace ApiGenTests\ApiGen\Generator\Markups;
 
 use ApiGen\Generator\Markups\MarkdownMarkup;
 use ApiGen\Generator\SourceCodeHighlighter;
