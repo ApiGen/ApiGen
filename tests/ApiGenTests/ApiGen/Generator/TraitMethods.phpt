@@ -14,7 +14,7 @@ use Tester\Assert;
 require_once __DIR__ . '/../../bootstrap.php';
 
 
-class TraitMethodsTests extends TestCase
+class TraitMethodsTest extends TestCase
 {
 
 	public function testBasicGeneration()
@@ -62,4 +62,4 @@ class TraitMethodsTests extends TestCase
 }
 
 
-\run(new TraitMethodsTests);
+\run(new TraitMethodsTest);
