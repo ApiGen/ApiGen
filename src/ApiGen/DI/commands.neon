@@ -1,1 +1,2 @@
 - ApiGen\Command\GenerateCommand
+- ApiGen\Command\SelfUpdateCommand

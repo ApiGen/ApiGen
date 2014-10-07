@@ -44,19 +44,9 @@ class ApiGenExtension extends CompilerExtension
 		$builder->addDefinition($this->prefix('scanner'))
 			->setClass('ApiGen\Generator\PhpScanner');
 
-		// source code highlighter
-		$builder->addDefinition($this->prefix('fshl.output'))
-			->setClass('FSHL\Output\Html');
+		$this->setupFshl();
 
-		$builder->addDefinition($this->prefix('fshl.lexter'))
-			->setClass('FSHL\Lexer\Php');
 
-		$builder->addDefinition($this->prefix('fshl.highlighter'))
-			->setClass('FSHL\Highlighter')
-			->addSetup('setLexer', array('@FSHL\Lexer\Php'));
-
-		$builder->addDefinition($this->prefix('sourceCodeHighlighter'))
-			->setClass('ApiGen\Generator\FshlSourceCodeHighlighter');
 
 		$builder->addDefinition($this->prefix('markdown'))
 			->setClass('Michelf\MarkdownExtra');
@@ -137,6 +127,10 @@ class ApiGenExtension extends CompilerExtension
 			->addSetup('injectServiceLocator');
 
 		foreach ($this->loadFromFile(__DIR__ . '/commands.neon') as $i => $class) {
+			if ( ! $this->isPhar() && $class === 'ApiGen\Command\SelfUpdateCommand') {
+				continue;
+			}
+
 			$command = $builder->addDefinition($this->prefix('command.' . $i))
 				->setClass($class);
 
@@ -145,6 +139,34 @@ class ApiGenExtension extends CompilerExtension
 
 		$builder->addDefinition($this->prefix('console.progressBar'))
 			->setClass('ApiGen\Console\ProgressBar');
+	}
+
+
+	private function setupFshl()
+	{
+		$builder = $this->getContainerBuilder();
+
+		$builder->addDefinition($this->prefix('fshl.output'))
+			->setClass('FSHL\Output\Html');
+
+		$builder->addDefinition($this->prefix('fshl.lexter'))
+			->setClass('FSHL\Lexer\Php');
+
+		$builder->addDefinition($this->prefix('fshl.highlighter'))
+			->setClass('FSHL\Highlighter')
+			->addSetup('setLexer', array('@FSHL\Lexer\Php'));
+
+		$builder->addDefinition($this->prefix('sourceCodeHighlighter'))
+			->setClass('ApiGen\Generator\FshlSourceCodeHighlighter');
+	}
+
+
+	/**
+	 * @return bool
+	 */
+	private function isPhar()
+	{
+		return 'phar:' === substr(__FILE__, 0, 5);
 	}
 
 }
