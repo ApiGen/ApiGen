@@ -33,5 +33,4 @@ class Application extends Kdyby\Console\Application
 		return parent::getLongVersion() . ' ' . ApiGen::RELEASE_DATE;
 	}
 
-
 }
