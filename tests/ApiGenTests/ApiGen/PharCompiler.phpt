@@ -34,6 +34,11 @@ class PharCompilerTest extends TestCase
 
 		$fooClassFileSource = file_get_contents($fooClassFile);
 		Assert::true(strlen($fooClassFileSource) > 1);
+
+		// issue #386
+		rename(TEMP_DIR . '/apigen.phar', TEMP_DIR . '/apigen');
+		passthru('php ' . TEMP_DIR . '/apigen', $exitCode);
+		Assert::same(0, $exitCode);
 	}
 
 

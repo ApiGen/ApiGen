@@ -99,7 +99,8 @@ class PharCompiler extends Nette\Object
  * the file license.md that was distributed with this source code.
  */
 
-require 'phar://' . __FILE__ . '/src/apigen.php';
+Phar::mapPhar('apigen.phar');
+require 'phar://apigen.phar/src/apigen.php';
 __HALT_COMPILER();
 ");
 
