@@ -2,6 +2,7 @@
 
 /**
  * @testCase
+ * @see Project\Implementor
  */
 
 namespace ApiGenTests\ApiGen\Reflections;
@@ -14,7 +15,7 @@ use Tester\Assert;
 require_once __DIR__ . '/../../bootstrap.php';
 
 
-class ImplementsTests extends TestCase
+class ImplementsTest extends TestCase
 {
 
 	public function testBasicGeneration()
@@ -27,26 +28,24 @@ class ImplementsTests extends TestCase
 		$implementorClass = API_DIR . '/class-Project.Implementor.html';
 		Assert::true(file_exists($implementorClass));
 
-		$implementorClassContent = file_get_contents($implementorClass);
-		$implementorClassContentOneLine = preg_replace('/\s+/', ' ', $implementorClassContent);
-		$implementorClassContentOneLine = preg_replace('/(?<=>)\s+|\s+(?=<)/', '', $implementorClassContentOneLine);
+		$implementorClassContent = $this->getFileContentInOneLine($implementorClass);
 
 		// {@inheritDoc} annotation, for php internal interface
 		Assert::match(
 			'%A%<code>public</code>%A%',
-			$implementorClassContentOneLine
+			$implementorClassContent
 		);
 
 		// {@inheritDoc} annotation for our interface
 		Assert::match(
 			'%A%<code>public array</code>%A%',
-			$implementorClassContentOneLine
+			$implementorClassContent
 		);
 
 		// @inheritDoc annotation for our interface
 		Assert::match(
 			'%A%<code>public integer</code>%A%',
-			$implementorClassContentOneLine
+			$implementorClassContent
 		);
 
 	}
@@ -64,4 +63,4 @@ class ImplementsTests extends TestCase
 }
 
 
-\run(new ImplementsTests);
+\run(new ImplementsTest);
