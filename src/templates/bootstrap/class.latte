@@ -166,7 +166,7 @@
 					<h4>Throws</h4>
 					<div class="list">
 					{foreach $annotations['throws'] as $description}
-						{$description|annotation:'throws':$method|noescape}<br>
+						{$description|annotation:'throws':$method|noescape}{sep}<br>{/}
 					{/foreach}
 					</div>
 				{/ifset}

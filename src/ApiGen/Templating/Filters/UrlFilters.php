@@ -382,10 +382,16 @@ class UrlFilters extends Filters
 			case 'throws':
 				$description = trim(strpbrk($value, "\n\r\t $")) ?: NULL;
 				if ($description) {
-					$description = $this->doc($description, $context);
+					$description = '<br>' . $this->doc($description, $context);
 				}
 				$typeLinks = $this->typeLinks($value, $context);
-				return sprintf('<code>%s</code>%s', $typeLinks, $description ? '<br>' . $description : NULL);
+
+				if ($name === 'throws') {
+					return $typeLinks . $description;
+
+				} else {
+					return sprintf('<code>%s</code>%s', $typeLinks, $description);
+				}
 
 			case 'license':
 				list($url, $description) = Strings::split($value);
