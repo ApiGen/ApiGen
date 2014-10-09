@@ -34,7 +34,7 @@ class TestCase extends Tester\TestCase
 
 
 	/**
-	 * @param $file
+	 * @param string $file
 	 * @return string
 	 */
 	protected function getFileContentInOneLine($file)
