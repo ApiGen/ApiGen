@@ -32,4 +32,17 @@ class TestCase extends Tester\TestCase
 		unlink('apigen.neon');
 	}
 
+
+	/**
+	 * @param string $file
+	 * @return string
+	 */
+	protected function getFileContentInOneLine($file)
+	{
+		$content = file_get_contents($file);
+		$content = preg_replace('/\s+/', ' ', $content);
+		$content = preg_replace('/(?<=>)\s+|\s+(?=<)/', '', $content);
+		return $content;
+	}
+
 }

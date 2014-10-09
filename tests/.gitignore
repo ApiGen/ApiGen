@@ -1,2 +1,4 @@
 /ApiGenTests/*/*/output
+/ApiGenTests/*/*/*/output
+/ApiGenTests/*/*/*/*/output
 /tmp

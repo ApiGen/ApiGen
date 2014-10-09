@@ -13,8 +13,6 @@ use ApiGen\Generator\Resolvers\ElementResolver;
 use ApiGen\Reflection\ReflectionClass;
 use ApiGen\Reflection\ReflectionFunction;
 use ApiGen\Templating\Filters\Helpers\Strings;
-use Nette;
-use ApiGen\Configuration\Configuration;
 use ApiGen\Generator\Markups\Markup;
 use ApiGen\Generator\SourceCodeHighlighter;
 use ApiGen\Reflection\ReflectionConstant;
@@ -51,8 +49,7 @@ class UrlFilters extends Filters
 	private $elementResolver;
 
 
-	public function __construct(SourceCodeHighlighter $highlighter, Markup $markup,
-	                            ElementResolver $elementResolver)
+	public function __construct(SourceCodeHighlighter $highlighter, Markup $markup, ElementResolver $elementResolver)
 	{
 		$this->highlighter = $highlighter;
 		$this->markup = $markup;
@@ -383,9 +380,18 @@ class UrlFilters extends Filters
 			case 'return':
 
 			case 'throws':
-				$description = trim(strpbrk($value, "\n\r\t $")) ?: $value;
-				$description = $this->doc($description, $context);
-				return sprintf('<code>%s</code>%s', $this->typeLinks($value, $context), $description ? '<br>' . $description : '');
+				$description = trim(strpbrk($value, "\n\r\t $")) ?: NULL;
+				if ($description) {
+					$description = '<br>' . $this->doc($description, $context);
+				}
+				$typeLinks = $this->typeLinks($value, $context);
+
+				if ($name === 'throws') {
+					return $typeLinks . $description;
+
+				} else {
+					return sprintf('<code>%s</code>%s', $typeLinks, $description);
+				}
 
 			case 'license':
 				list($url, $description) = Strings::split($value);
