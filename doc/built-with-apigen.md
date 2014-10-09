@@ -11,3 +11,4 @@
 - [Kdyby API](https://api.kdyby.org/)
 - [Nette API](https://api.nette.org/)
 - [Doctrine ORM Api](http://www.doctrine-project.org/api/orm/2.4/)
+- [CakePHP API](http://api.cakephp.org)
