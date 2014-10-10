@@ -31,8 +31,6 @@ class MarkdownMarkup implements Markup
 	{
 		$this->markdown = $markdown;
 		$this->highlighter = $highlighter;
-		
-		$this->markdown->no_markup = TRUE;
 	}
 
 
