@@ -83,7 +83,7 @@ EOT
 	{
 		$output->writeln('<info>Checking file checksum...</info>');
 		if ($item->sha1 !== sha1_file($this->getTempFilename())) {
-			unlink($this->getLocalFilename());
+			unlink($this->getTempFilename());
 			throw new \Exception('The download file was corrupted.');
 		}
 	}
