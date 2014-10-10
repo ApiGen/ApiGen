@@ -132,10 +132,6 @@ class UrlFilters extends Filters
 	 */
 	public function namespaceLinks($namespace, $last = TRUE)
 	{
-		if (empty($this->namespaces)) {
-			return $namespace;
-		}
-
 		$links = array();
 
 		$parent = '';
@@ -169,15 +165,19 @@ class UrlFilters extends Filters
 	 * Returns a link to a group summary file.
 	 *
 	 * @param string $groupName Group name
+	 * @param string $grouped_by group option
 	 * @return string
 	 */
-	public function groupUrl($groupName)
+	public function groupUrl($groupName, $grouped_by = "")
 	{
-		if ( ! empty($this->packages)) {
-			return $this->packageUrl($groupName);
+		if( $grouped_by == 'namespace' ) {
+				return $this->namespaceUrl( $groupName );
+		
+		} elseif( $grouped_by == 'package' ) {
+				return $this->packageUrl( $groupName );
+		} else {
+			return "";
 		}
-
-		return $this->namespaceUrl($groupName);
 	}
 
 
@@ -348,10 +348,6 @@ class UrlFilters extends Filters
 	 */
 	public function getPackageLinks($package, $last = TRUE)
 	{
-		if (empty($this->packages)) {
-			return $package;
-		}
-
 		$links = array();
 
 		$parent = '';
