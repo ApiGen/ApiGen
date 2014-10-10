@@ -39,7 +39,7 @@ EOT
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
 		try {
-			$manifest = file_get_contents('http://apigen.org/manifest.json');
+			$manifest = file_get_contents(self::MANIFEST_URL);
 			$item = json_decode($manifest);
 
 			if (ApiGen::VERSION === $item->version) {
