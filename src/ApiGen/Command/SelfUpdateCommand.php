@@ -66,7 +66,7 @@ EOT
 	 */
 	private function downloadFile(OutputInterface $output, $item)
 	{
-		$output->writeln('<info>Downloading ApiGen v' . $item->version . '...</info>');
+		$output->writeln('<info>Downloading ApiGen ' . $item->version . '...</info>');
 		file_put_contents($this->getTempFilename(), file_get_contents($item->url));
 		$this->validateFileChecksum($output, $item);
 		rename($this->getTempFilename(), $this->getLocalFilename());
