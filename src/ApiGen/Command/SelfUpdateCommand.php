@@ -39,7 +39,7 @@ EOT
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
 		try {
-			$manifest = file_get_contents('http://apigen.org/manifest.json');
+			$manifest = file_get_contents(self::MANIFEST_URL);
 			$item = json_decode($manifest);
 
 			if (ApiGen::VERSION === $item->version) {
@@ -83,7 +83,7 @@ EOT
 	{
 		$output->writeln('<info>Checking file checksum...</info>');
 		if ($item->sha1 !== sha1_file($this->getTempFilename())) {
-			unlink($this->getLocalFilename());
+			unlink($this->getTempFilename());
 			throw new \Exception('The download file was corrupted.');
 		}
 	}
