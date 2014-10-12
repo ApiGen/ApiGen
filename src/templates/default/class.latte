@@ -142,7 +142,7 @@
 				<div class="list"><dl>
 				{foreach $method->parameters as $parameter}
 					<dt><var>${$parameter->name}</var>{if $parameter->unlimited},…{/if}</dt>
-					<dd>{$parameter->description|description:$method}</dd>
+					<dd>{$parameter->description|description:$method|noescape}</dd>
 				{/foreach}
 				</dl></div>
 			{/if}
