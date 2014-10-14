@@ -6,6 +6,7 @@
 namespace ApiGenTest\ApiGen\Configuration;
 
 use ApiGen\Neon\NeonFile;
+use ApiGen\Templating\Filters;
 use ApiGenTests\TestCase;
 use Tester\Assert;
 
@@ -13,36 +14,7 @@ require_once __DIR__ . '/../../bootstrap.php';
 
 class GroupsTest extends TestCase {
 	const NAMESPACE_NAME = "Project";
-	const GROUP_NAME = "Package-Group";
-	
-	// public function testConfigDefault() {
-		/// @todo
-	// }
-	
-	// public function testConfigAuto() {
-		// $this->prepareConfig();
-		// passthru( APIGEN_BIN . ' generate' );
-	// }
-	
-	public function testConfigNamespaces() {
-		$this->prepareConfig( 'namespaces' );
-		passthru( APIGEN_BIN . ' generate' );
-		
-		Assert::true( file_exists( API_DIR . '/index.html' ));
-		$index_file = $this->getFileContentInOneLine( API_DIR . '/index.html' );
-		Assert::match( '%A%<h3>Namespaces</h3>%A%', $index_file );
-		Assert::match( '%A%<li><a href="namespace-' . str_replace( '-', '.', self::NAMESPACE_NAME ) . '.html">' . self::NAMESPACE_NAME . '</a></li>%A%', $index_file );
-	}
-	
-	public function testConfigPackages() {
-		$this->prepareConfig( 'packages' );
-		passthru( APIGEN_BIN . ' generate' );
-		
-		Assert::true( file_exists( API_DIR . '/index.html' ));
-		$index_file = $this->getFileContentInOneLine( API_DIR . '/index.html' );
-		Assert::match( '%A%<h3>Packages</h3>%A%', $index_file );
-		Assert::match( '%A%<li><a href="package-' . str_replace( '-', '.', self::GROUP_NAME ) . '.html">' . self::GROUP_NAME . '</a></li>%A%', $index_file );
-	}
+	const PACKAGE_NAME = "Package-Group";
 	
 	private function prepareConfig( $groups = "" ) {
 		$neonFile = new NeonFile( __DIR__ . '/apigen.neon' );
@@ -54,7 +26,40 @@ class GroupsTest extends TestCase {
 			$config['groups'] = $groups;
 		}
 			
-		$neonFile->write($config);
+		$neonFile->write( $config );
+	}
+	
+	private function urlize( $format, $string ) {
+		$string =  preg_replace( '~[^\w]~', '.', $string );
+		return sprintf( $format, $string );
+	}
+	
+	public function getLoopArgs() {
+		return array(
+			array( "Namespaces", "namespaces", "namespace-%s.html", self::NAMESPACE_NAME ),
+			array( "Packages", "packages", "package-%s.html", self::PACKAGE_NAME ),
+		);
+	}
+	
+	/**
+	 *  @dataProvider getLoopArgs
+	 */
+	public function testConfig( $header, $group, $format, $name ) {
+		$this->prepareConfig( $group );
+		passthru( APIGEN_BIN . ' generate' );
+		$url = $this->urlize( $format, $name );
+		$index_file = $this->getFileContentInOneLine( API_DIR . '/index.html' );
+		
+		Assert::true( file_exists( API_DIR . '/index.html' ));
+		Assert::match(
+			'%A%<h3>' . $header . '</h3>%A%',
+			$index_file );
+		Assert::match(
+			'%A%<li><a href="' . $url . '">' . $name . '</a></li>%A%',
+			$index_file );
+		Assert::match(
+			'%A%<td class="name"><a href="' . $url . '">' . $name . '</a></td>%A%',
+			$index_file );
 	}
 }
 
