@@ -130,8 +130,11 @@ googleCseId: 011549293477758430224
 # Google Analytics tracking code
 googleAnalytics: UA-35236-5
 
-# path to template config file
-templateConfig: .. # default @todo
+# choose apigen own template theme
+templateTheme: default # default [other options: bootstrap]
+
+# want to use individual templates, higher priority than option templateTheme
+templateConfig: path/to/individual/template-folder/config.neon
 
 # the way elements are grouped in menu
 groups: auto # default [other options: namespace, packages, none], auto will detect namespace first, than packages
