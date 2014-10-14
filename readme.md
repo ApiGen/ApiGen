@@ -133,8 +133,8 @@ googleAnalytics: UA-35236-5
 # choose apigen own template theme
 templateTheme: default # default [other options: bootstrap]
 
-# for individual templates use
-# templateConfig: path/to/template-folder/config.neon
+# want to use individual templates, higher priority than option templateTheme
+templateConfig: path/to/individual/template-folder/config.neon
 
 # the way elements are grouped in menu
 groups: auto # default [other options: namespace, packages, none], auto will detect namespace first, than packages
