@@ -130,7 +130,7 @@ googleCseId: 011549293477758430224
 # Google Analytics tracking code
 googleAnalytics: UA-35236-5
 
-# choose apigen own template theme
+# choose ApiGen own template theme
 templateTheme: default # default [other options: bootstrap]
 
 # want to use individual templates, higher priority than option templateTheme
