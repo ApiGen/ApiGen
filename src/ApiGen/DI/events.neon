@@ -3,3 +3,4 @@
 - ApiGen\Events\LoadElementResolver
 - ApiGen\Events\LoadRelativePathResolver
 - ApiGen\Events\InjectConfig
+- ApiGen\Events\SetIoOnConsoleRun

@@ -124,7 +124,11 @@ class ApiGenExtension extends CompilerExtension
 
 		$application = $builder->addDefinition($this->prefix('application'))
 			->setClass('ApiGen\Console\Application')
-			->addSetup('injectServiceLocator');
+			->addSetup('injectServiceLocator')
+			->addSetup('setEventManager');
+
+		$builder->addDefinition($this->prefix('consoleIO'))
+			->setClass('ApiGen\Console\IO');
 
 		foreach ($this->loadFromFile(__DIR__ . '/commands.neon') as $i => $class) {
 			if ( ! $this->isPhar() && $class === 'ApiGen\Command\SelfUpdateCommand') {
