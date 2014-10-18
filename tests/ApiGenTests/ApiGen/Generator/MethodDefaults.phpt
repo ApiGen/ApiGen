@@ -4,7 +4,7 @@
  * @testCase
  */
 
-namespace ApiGenTests\ApiGen;
+namespace ApiGenTests\ApiGen\Generator;
 
 use ApiGen\Neon\NeonFile;
 use ApiGenTests\TestCase;

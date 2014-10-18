@@ -9,13 +9,24 @@
 
 namespace ApiGen\Console;
 
+use ApiGen\Console;
 use Nette;
-use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Helper\ProgressBar as ProgressBarHelper;
 
 
 class ProgressBar extends Nette\Object
 {
+
+	/**
+	 * @var Console\IO
+	 */
+	private $consoleIO;
+
+
+	public function __construct(Console\IO $consoleIO)
+	{
+		$this->consoleIO = $consoleIO;
+	}
 
 	/**
 	 * @var ProgressBarHelper
@@ -28,9 +39,9 @@ class ProgressBar extends Nette\Object
 	 */
 	public function init($maximum = 1)
 	{
-		$output = new ConsoleOutput;
-		$this->bar = new ProgressBarHelper($output, $maximum);
+		$this->bar = new ProgressBarHelper($this->consoleIO->getOutput(), $maximum);
 		$this->bar->setFormat('%percent:4s% %, %memory:2d% MB RAM');
+		$this->bar->setRedrawFrequency(10);
 		$this->bar->start();
 	}
 
