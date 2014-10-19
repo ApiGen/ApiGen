@@ -195,6 +195,7 @@ __HALT_COMPILER();
 			} elseif ($token[0] === T_WHITESPACE) {
 				if (strpos($token[1], "\n") === FALSE) {
 					$output .= ' ';
+
 				} else {
 					$output .= str_repeat("\n", substr_count($token[1], "\n"));
 				}

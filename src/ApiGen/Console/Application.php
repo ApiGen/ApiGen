@@ -91,7 +91,11 @@ class Application extends Kdyby\Console\Application
 	protected function getDefaultInputDefinition()
 	{
 		$definition = parent::getDefaultInputDefinition();
-		$definition->addOption(new InputOption('--working-dir', '-wd', InputOption::VALUE_REQUIRED, 'If specified, use the given directory as working directory.'));
+		$definition->addOption(
+			new InputOption('--working-dir', '-wd', InputOption::VALUE_REQUIRED,
+				'If specified, use the given directory as working directory.'
+			)
+		);
 		return $definition;
 	}
 

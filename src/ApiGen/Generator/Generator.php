@@ -9,6 +9,7 @@
 
 namespace ApiGen\Generator;
 
+
 /**
  * @method Generator setConfig(array $config)
  * @method Generator getConfig()
@@ -19,7 +20,7 @@ interface Generator
 	/**
 	 * Generates API documentation.
 	 */
-	public function generate();
+	function generate();
 
 
 	/**
@@ -30,7 +31,7 @@ interface Generator
 	 * @param array $extensions File extensions to be scanned (e.g. php, phpt).
 	 * @return array
 	 */
-	public function scan($sources, $exclude = array(), $extensions = array());
+	function scan($sources, $exclude = array(), $extensions = array());
 
 
 	/**
@@ -38,6 +39,6 @@ interface Generator
 	 *
 	 * @return array
 	 */
-	public function parse();
+	function parse();
 
 }

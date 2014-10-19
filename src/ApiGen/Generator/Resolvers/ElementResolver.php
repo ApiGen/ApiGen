@@ -94,7 +94,7 @@ class ElementResolver extends Nette\Object
 		}
 
 		/** @var ReflectionClass $class */
-		if ( ! $class->isDocumented())  { // class is not "documented"
+		if ( ! $class->isDocumented()) { // class is not "documented"
 			return NULL;
 		}
 
@@ -148,7 +148,6 @@ class ElementResolver extends Nette\Object
 		} else {
 			return NULL;
 		}
-
 
 		/** @var ReflectionFunction $function */
 		if ( ! $function->isDocumented()) { // function is not "documented"

@@ -17,13 +17,13 @@ interface Markup
 	 * @param string $text
 	 * @return string
 	 */
-	public function line($text);
+	function line($text);
 
 
 	/**
 	 * @param string $text
 	 * @return string
 	 */
-	public function block($text);
+	function block($text);
 
 }

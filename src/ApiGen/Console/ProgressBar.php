@@ -23,15 +23,16 @@ class ProgressBar extends Nette\Object
 	private $consoleIO;
 
 
-	public function __construct(Console\IO $consoleIO)
-	{
-		$this->consoleIO = $consoleIO;
-	}
-
 	/**
 	 * @var ProgressBarHelper
 	 */
 	private $bar;
+
+
+	public function __construct(Console\IO $consoleIO)
+	{
+		$this->consoleIO = $consoleIO;
+	}
 
 
 	/**

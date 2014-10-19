@@ -46,8 +46,6 @@ class ApiGenExtension extends CompilerExtension
 
 		$this->setupFshl();
 
-
-
 		$builder->addDefinition($this->prefix('markdown'))
 			->setClass('Michelf\MarkdownExtra');
 

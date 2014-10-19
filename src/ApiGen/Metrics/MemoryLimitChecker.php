@@ -21,6 +21,6 @@ interface MemoryLimitChecker
 	 *
 	 * @throws \Nette\InvalidStateException If there is no enough free memory left
 	 */
-	public function check();
+	function check();
 
 }

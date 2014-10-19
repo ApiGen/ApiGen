@@ -110,6 +110,7 @@ class UrlFilters extends Filters
 		return implode('\\', $links);
 	}
 
+
 	/**
 	 * @param string $groupName
 	 * @return string
@@ -339,6 +340,7 @@ class UrlFilters extends Filters
 		return sprintf('<code>%s</code>', $link . $suffix);
 	}
 
+
 	/**
 	 * Returns links for package/namespace and its parent packages.
 	 *
@@ -423,9 +425,6 @@ class UrlFilters extends Filters
 				if ($this->elementResolver->resolveElement($link, $context) !== NULL) {
 					return sprintf('<code>%s</code>%s%s', $this->typeLinks($link, $context), $separator, $description);
 				}
-				break;
-
-			default:
 				break;
 		}
 

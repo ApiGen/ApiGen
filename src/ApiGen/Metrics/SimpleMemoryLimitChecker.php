@@ -45,7 +45,9 @@ class SimpleMemoryLimitChecker extends Nette\Object implements MemoryLimitChecke
 
 		if ($this->limit && memory_get_usage(TRUE) / $this->limit >= 0.9) {
 			$relative = round(memory_get_usage(TRUE) / $this->limit * 100);
-			throw new \RuntimeException(sprintf('Used %d %% of the current memory limit, please increase the limit to generate the whole documentation.', $relative));
+			throw new \RuntimeException(sprintf(
+				'Used %d %% of the current memory limit, please increase the limit to generate the whole documentation.', $relative)
+			);
 		}
 	}
 

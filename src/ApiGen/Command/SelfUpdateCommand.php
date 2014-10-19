@@ -124,7 +124,8 @@ EOT
 		$tmpDir = dirname($localFilename);
 
 		if ( ! is_writable($tmpDir)) {
-			throw new \Exception('ApiGen update failed: the "' . $tmpDir . '" directory used to download the temp file could not be written');
+			throw new \Exception('ApiGen update failed: the "' . $tmpDir . '" directory used to download the'
+				. 'temp file could not be written');
 		}
 		if ( ! is_writable($localFilename)) {
 			throw new \Exception('ApiGen update failed: the "' . $localFilename . '" file could not be written');

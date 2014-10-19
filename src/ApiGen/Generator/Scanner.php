@@ -27,6 +27,6 @@ interface Scanner
 	 * @param array $extensions
 	 * @return array
 	 */
-	public function scan($sources, $exclude = array(), $extensions = array());
+	function scan($sources, $exclude = array(), $extensions = array());
 
 }

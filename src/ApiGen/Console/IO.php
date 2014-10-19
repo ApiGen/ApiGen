@@ -28,7 +28,6 @@ class IO extends Nette\Object
 	 */
 	private $input;
 
-
 	/**
 	 * @var OutputInterface
 	 */
