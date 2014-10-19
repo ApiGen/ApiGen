@@ -53,7 +53,7 @@ abstract class ReflectionFunctionBase extends ReflectionElement
 	/**
 	 * Returns a list of function/method parameters.
 	 *
-	 * @return array
+	 * @return ReflectionParameter[]
 	 */
 	public function getParameters()
 	{

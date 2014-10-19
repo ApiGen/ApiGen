@@ -14,6 +14,7 @@ use Kdyby\Events\DI\EventsExtension;
 use Nette\DI\CompilerExtension;
 use Nette\DI\ServiceDefinition;
 use Nette\DI\Statement;
+use TokenReflection\Broker;
 
 
 class ApiGenExtension extends CompilerExtension
@@ -44,10 +45,6 @@ class ApiGenExtension extends CompilerExtension
 		$builder->addDefinition($this->prefix('scanner'))
 			->setClass('ApiGen\Generator\PhpScanner');
 
-		$this->setupFshl();
-
-
-
 		$builder->addDefinition($this->prefix('markdown'))
 			->setClass('Michelf\MarkdownExtra');
 
@@ -55,10 +52,12 @@ class ApiGenExtension extends CompilerExtension
 			->setClass('ApiGen\Generator\Markups\MarkdownMarkup');
 
 		$this->setupConsole();
-		$this->setupMetrics();
 		$this->setupEvents();
-		$this->setupTemplate();
 		$this->setupFileSystem();
+		$this->setupFshl();
+		$this->setupMetrics();
+		$this->setupParser();
+		$this->setupTemplate();
 	}
 
 
@@ -71,50 +70,6 @@ class ApiGenExtension extends CompilerExtension
 				->setClass($class)
 				->addTag(EventsExtension::TAG_SUBSCRIBER);
 		}
-	}
-
-
-	private function setupTemplate()
-	{
-		$builder = $this->getContainerBuilder();
-
-		$builder->addDefinition($this->prefix('templateFactory'))
-			->setClass('ApiGen\Templating\TemplateFactory');
-
-		$latteFactory = $builder->addDefinition($this->prefix('latteFactory'))
-			->setClass('Latte\Engine')
-			->addSetup('setTempDirectory', array($builder->expand('%tempDir%/cache/latte')));
-
-		foreach ($this->loadFromFile(__DIR__ . '/filters.neon') as $i => $class) {
-			$filter = $builder->addDefinition($this->prefix('latte.filter.' . $i))
-				->setClass($class);
-
-			$latteFactory->addSetup('addFilter', array(NULL, array('@' . $filter->getClass(), 'loader')));
-		}
-	}
-
-
-	private function setupMetrics()
-	{
-		$builder = $this->getContainerBuilder();
-
-		$builder->addDefinition($this->prefix('memoryLimitChecker'))
-			->setClass('ApiGen\Metrics\SimpleMemoryLimitChecker');
-	}
-
-
-	private function setupFileSystem()
-	{
-		$builder = $this->getContainerBuilder();
-
-		$builder->addDefinition($this->prefix('finder'))
-			->setClass('ApiGen\FileSystem\Finder');
-
-		$builder->addDefinition($this->prefix('zip'))
-			->setClass('ApiGen\FileSystem\Zip');
-
-		$builder->addDefinition($this->prefix('wiper'))
-			->setClass('ApiGen\FileSystem\Wiper');
 	}
 
 
@@ -146,6 +101,21 @@ class ApiGenExtension extends CompilerExtension
 	}
 
 
+	private function setupFileSystem()
+	{
+		$builder = $this->getContainerBuilder();
+
+		$builder->addDefinition($this->prefix('finder'))
+			->setClass('ApiGen\FileSystem\Finder');
+
+		$builder->addDefinition($this->prefix('zip'))
+			->setClass('ApiGen\FileSystem\Zip');
+
+		$builder->addDefinition($this->prefix('wiper'))
+			->setClass('ApiGen\FileSystem\Wiper');
+	}
+
+
 	private function setupFshl()
 	{
 		$builder = $this->getContainerBuilder();
@@ -162,6 +132,53 @@ class ApiGenExtension extends CompilerExtension
 
 		$builder->addDefinition($this->prefix('sourceCodeHighlighter'))
 			->setClass('ApiGen\Generator\FshlSourceCodeHighlighter');
+	}
+
+
+	private function setupMetrics()
+	{
+		$builder = $this->getContainerBuilder();
+
+		$builder->addDefinition($this->prefix('memoryLimitChecker'))
+			->setClass('ApiGen\Metrics\SimpleMemoryLimitChecker');
+	}
+
+
+	private function setupParser()
+	{
+		$builder = $this->getContainerBuilder();
+
+		$builder->addDefinition($this->prefix('parser'))
+			->setClass('ApiGen\Parser\Parser');
+
+		$backend = $builder->addDefinition($this->prefix('parser.backend'))
+			->setClass('ApiGen\Parser\Broker\Backend');
+
+		$builder->addDefinition($this->prefix('parser.broker'))
+			->setClass('TokenReflection\Broker')
+			->setArguments(array($backend,
+				Broker::OPTION_DEFAULT & ~(Broker::OPTION_PARSE_FUNCTION_BODY | Broker::OPTION_SAVE_TOKEN_STREAM)
+			));
+	}
+
+
+	private function setupTemplate()
+	{
+		$builder = $this->getContainerBuilder();
+
+		$builder->addDefinition($this->prefix('templateFactory'))
+			->setClass('ApiGen\Templating\TemplateFactory');
+
+		$latteFactory = $builder->addDefinition($this->prefix('latteFactory'))
+			->setClass('Latte\Engine')
+			->addSetup('setTempDirectory', array($builder->expand('%tempDir%/cache/latte')));
+
+		foreach ($this->loadFromFile(__DIR__ . '/filters.neon') as $i => $class) {
+			$filter = $builder->addDefinition($this->prefix('latte.filter.' . $i))
+				->setClass($class);
+
+			$latteFactory->addSetup('addFilter', array(NULL, array('@' . $filter->getClass(), 'loader')));
+		}
 	}
 
 

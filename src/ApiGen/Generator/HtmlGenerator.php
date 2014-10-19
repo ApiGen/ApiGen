@@ -9,10 +9,11 @@
 
 namespace ApiGen\Generator;
 
-use ApiGen\Backend;
 use ApiGen\Charset\CharsetConvertor;
 use ApiGen\Generator\Resolvers\ElementResolver;
 use ApiGen\Generator\Resolvers\RelativePathResolver;
+use ApiGen\Parser\Broker\Backend;
+use ApiGen\Parser\Parser;
 use ApiGen\Reflection\ReflectionClass;
 use ApiGen\Reflection\ReflectionConstant;
 use ApiGen\Reflection\ReflectionElement;
@@ -40,7 +41,7 @@ use TokenReflection\Broker;
  * @method array            getSymlinks()
  * @method array            getConfig()
  * @method HtmlGenerator    onScanFinish(HtmlGenerator $htmlGenerator)
- * @method HtmlGenerator    onParseStart($steps)
+ * @method HtmlGenerator    onParseStart($steps, HtmlGenerator $htmlGenerator)
  * @method HtmlGenerator    onParseProgress($size)
  * @method HtmlGenerator    onParseFinish(HtmlGenerator $htmlGenerator)
  * @method HtmlGenerator    onGenerateStart($steps)
@@ -190,10 +191,21 @@ class HtmlGenerator extends Nette\Object implements Generator
 	 */
 	private $zip;
 
+	/**
+	 * @var Parser
+	 */
+	private $parser;
+
+	/**
+	 * @var Broker
+	 */
+	private $broker;
+
 
 	public function __construct(CharsetConvertor $charsetConvertor, Scanner $scanner, FileSystem\Zip $zip,
 	                            SourceCodeHighlighter $sourceCodeHighlighter, TemplateFactory $templateFactory,
-								RelativePathResolver $relativePathResolver, FileSystem\Finder $finder, ElementResolver $elementResolver)
+								RelativePathResolver $relativePathResolver, FileSystem\Finder $finder,
+								ElementResolver $elementResolver, Parser $parser, Broker $broker)
 	{
 		$this->parsedClasses = new ArrayObject;
 		$this->parsedConstants = new ArrayObject;
@@ -206,6 +218,8 @@ class HtmlGenerator extends Nette\Object implements Generator
 		$this->finder = $finder;
 		$this->elementResolver = $elementResolver;
 		$this->zip = $zip;
+		$this->parser = $parser;
+		$this->broker = $broker;
 	}
 
 
@@ -234,22 +248,18 @@ class HtmlGenerator extends Nette\Object implements Generator
 	 */
 	public function parse()
 	{
+//		$this->parser = 'parse';
+
 		$files = $this->files;
 
-		$this->onParseStart(array_sum($this->files));
-
-		$broker = new Broker(
-			new Backend($this),
-			Broker::OPTION_DEFAULT & ~(Broker::OPTION_PARSE_FUNCTION_BODY | Broker::OPTION_SAVE_TOKEN_STREAM)
-		);
+		$this->onParseStart(array_sum($this->files), $this);
 
 		$errors = array();
-
 		foreach ($files as $filePath => $size) {
 			$content = $this->charsetConvertor->convertFile($filePath);
 
 			try {
-				$broker->processString($content, $filePath);
+				$this->broker->processString($content, $filePath);
 
 			} catch (\Exception $e) {
 				$errors[] = $e;
@@ -259,15 +269,15 @@ class HtmlGenerator extends Nette\Object implements Generator
 		}
 
 		// Classes
-		$this->parsedClasses->exchangeArray($broker->getClasses(Backend::TOKENIZED_CLASSES | Backend::INTERNAL_CLASSES | Backend::NONEXISTENT_CLASSES));
+		$this->parsedClasses->exchangeArray($this->broker->getClasses(Backend::TOKENIZED_CLASSES | Backend::INTERNAL_CLASSES | Backend::NONEXISTENT_CLASSES));
 		$this->parsedClasses->uksort('strcasecmp');
 
 		// Constants
-		$this->parsedConstants->exchangeArray($broker->getConstants());
+		$this->parsedConstants->exchangeArray($this->broker->getConstants());
 		$this->parsedConstants->uksort('strcasecmp');
 
 		// Functions
-		$this->parsedFunctions->exchangeArray($broker->getFunctions());
+		$this->parsedFunctions->exchangeArray($this->broker->getFunctions());
 		$this->parsedFunctions->uksort('strcasecmp');
 
 		$documentedCounter = function ($count, $element) {
@@ -278,14 +288,14 @@ class HtmlGenerator extends Nette\Object implements Generator
 		$this->onParseFinish($this);
 
 		return (object) array(
-			'classes' => count($broker->getClasses(Backend::TOKENIZED_CLASSES)),
+			'classes' => count($this->broker->getClasses(Backend::TOKENIZED_CLASSES)),
 			'constants' => count($this->parsedConstants),
 			'functions' => count($this->parsedFunctions),
-			'internalClasses' => count($broker->getClasses(Backend::INTERNAL_CLASSES)),
-			'documentedClasses' => array_reduce($broker->getClasses(Backend::TOKENIZED_CLASSES), $documentedCounter),
+			'internalClasses' => count($this->broker->getClasses(Backend::INTERNAL_CLASSES)),
+			'documentedClasses' => array_reduce($this->broker->getClasses(Backend::TOKENIZED_CLASSES), $documentedCounter),
 			'documentedConstants' => array_reduce($this->parsedConstants->getArrayCopy(), $documentedCounter),
 			'documentedFunctions' => array_reduce($this->parsedFunctions->getArrayCopy(), $documentedCounter),
-			'documentedInternalClasses' => array_reduce($broker->getClasses(Backend::INTERNAL_CLASSES), $documentedCounter),
+			'documentedInternalClasses' => array_reduce($this->broker->getClasses(Backend::INTERNAL_CLASSES), $documentedCounter),
 			'errors' => $errors
 		);
 	}
