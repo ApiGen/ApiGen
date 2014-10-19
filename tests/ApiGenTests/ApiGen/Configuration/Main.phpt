@@ -25,9 +25,9 @@ class MainTest extends TestCase
 		$this->prepareConfig();
 		passthru(APIGEN_BIN . ' generate');
 
-		Assert::match(
-			file_get_contents(__DIR__ . '/Main.html'),
-			file_get_contents(API_DIR . '/index.html')
+		Assert::contains(
+			'<li class="main"><a href="namespace-ProjectBeta.html">ProjectBeta</a>',
+			$this->getFileContentInOneLine(API_DIR . '/index.html')
 		);
 	}
 
