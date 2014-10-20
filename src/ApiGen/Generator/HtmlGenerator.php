@@ -12,7 +12,6 @@ namespace ApiGen\Generator;
 use ApiGen\Charset\CharsetConvertor;
 use ApiGen\Generator\Resolvers\ElementResolver;
 use ApiGen\Generator\Resolvers\RelativePathResolver;
-use ApiGen\Parser\ParserResult;
 use ApiGen\Reflection\ReflectionClass;
 use ApiGen\Reflection\ReflectionConstant;
 use ApiGen\Reflection\ReflectionElement;
@@ -33,26 +32,15 @@ use RuntimeException;
 /**
  * Generates a HTML API documentation.
  *
- * @method ArrayObject      getParsedClasses()
- * @method ArrayObject      getParsedConstants()
- * @method ArrayObject      getParsedFunctions()
  * @method HtmlGenerator    setParsedClasses(ArrayObject|object)
  * @method HtmlGenerator    setParsedConstants(ArrayObject|object)
  * @method HtmlGenerator    setParsedFunctions(ArrayObject|object)
- * @method array            getSymlinks()
- * @method HtmlGenerator    onScanFinish(HtmlGenerator $htmlGenerator)
  * @method HtmlGenerator    onGenerateStart($steps)
  * @method HtmlGenerator    onGenerateProgress($size)
  * @method HtmlGenerator    setConfig(array $config)
  */
 class HtmlGenerator extends Nette\Object implements Generator
 {
-
-	/**
-	 * @var array
-	 */
-	public $onScanFinish = array();
-
 	/**
 	 * @var array
 	 */
@@ -124,16 +112,6 @@ class HtmlGenerator extends Nette\Object implements Generator
 	private $functions = array();
 
 	/**
-	 * @var array
-	 */
-	private $symlinks = array();
-
-	/**
-	 * @var Scanner
-	 */
-	private $scanner;
-
-	/**
 	 * @var CharsetConvertor
 	 */
 	private $charsetConvertor;
@@ -169,13 +147,12 @@ class HtmlGenerator extends Nette\Object implements Generator
 	private $zip;
 
 
-	public function __construct(CharsetConvertor $charsetConvertor, Scanner $scanner, FileSystem\Zip $zip,
+	public function __construct(CharsetConvertor $charsetConvertor, FileSystem\Zip $zip,
 	                            SourceCodeHighlighter $sourceCodeHighlighter, TemplateFactory $templateFactory,
 								RelativePathResolver $relativePathResolver, FileSystem\Finder $finder,
 								ElementResolver $elementResolver)
 	{
 		$this->charsetConvertor = $charsetConvertor;
-		$this->scanner = $scanner;
 		$this->sourceCodeHighlighter = $sourceCodeHighlighter;
 		$this->templateFactory = $templateFactory;
 		$this->relativePathResolver = $relativePathResolver;
@@ -186,27 +163,6 @@ class HtmlGenerator extends Nette\Object implements Generator
 		$this->parsedClasses = new ArrayObject;
 		$this->parsedConstants = new ArrayObject;
 		$this->parsedFunctions = new ArrayObject;
-	}
-
-
-	/**
-	 * Scans sources for PHP files.
-	 *
-	 * @param array $sources
-	 * @param array $exclude
-	 * @param array $extensions
-	 * @return array|void
-	 */
-	public function scan($sources, $exclude = array(), $extensions = array())
-	{
-		$files = $this->scanner->scan($sources, $exclude, $extensions);
-
-		// todo: separé!
-		$this->symlinks = $this->scanner->getSymlinks();
-
-		$this->onScanFinish($this);
-
-		return $files;
 	}
 
 

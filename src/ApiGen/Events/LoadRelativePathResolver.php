@@ -9,8 +9,8 @@
 
 namespace ApiGen\Events;
 
-use ApiGen\Generator\HtmlGenerator;
 use ApiGen\Generator\Resolvers\RelativePathResolver;
+use ApiGen\Scanner\Scanner;
 use Nette;
 use Kdyby\Events\Subscriber;
 
@@ -36,15 +36,14 @@ class LoadRelativePathResolver extends Nette\Object implements Subscriber
 	public function getSubscribedEvents()
 	{
 		return array(
-			'ApiGen\Generator\HtmlGenerator::onScanFinish' => 'onFinish',
+			'ApiGen\Scanner\PhpScanner::onScanFinish' => 'onFinish',
 		);
 	}
 
 
-	public function onFinish(HtmlGenerator $generator)
+	public function onFinish(Scanner $scanner)
 	{
-		// todo: replace by scanner!
-		$this->relativePathResolver->setSymlinks($generator->getSymlinks());
+		$this->relativePathResolver->setSymlinks($scanner->getSymlinks());
 	}
 
 }

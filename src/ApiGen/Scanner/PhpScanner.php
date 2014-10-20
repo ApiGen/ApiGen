@@ -7,7 +7,7 @@
  * the file license.md that was distributed with this source code.
  */
 
-namespace ApiGen\Generator;
+namespace ApiGen\Scanner;
 
 use ApiGen\FileSystem\FileSystem;
 use ApiGen\FileSystem\SourceFilesFilterIterator;
@@ -17,10 +17,16 @@ use RuntimeException;
 
 
 /**
- * @method array getSymlinks()
+ * @method PhpScanner   onScanFinish(PhpScanner $phpScanner)
+ * @method array        getSymlinks()
  */
 class PhpScanner extends Nette\Object implements Scanner
 {
+
+	/**
+	 * @var array
+	 */
+	public $onScanFinish = array();
 
 	/**
 	 * @var array
@@ -87,6 +93,8 @@ class PhpScanner extends Nette\Object implements Scanner
 		if (empty($files)) {
 			throw new RuntimeException('No PHP files found');
 		}
+
+		$this->onScanFinish($this);
 
 		return $files;
 	}

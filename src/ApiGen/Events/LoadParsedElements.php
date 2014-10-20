@@ -62,7 +62,6 @@ class LoadParsedElements extends Nette\Object implements Subscriber
 		$this->generator->setParsedClasses($parser->getClasses());
 		$this->generator->setParsedConstants($parser->getConstants());
 		$this->generator->setParsedFunctions($parser->getFunctions());
-
 	}
 
 }

@@ -15,6 +15,7 @@ use ApiGen\FileSystem\Wiper;
 use ApiGen\Generator\Generator;
 use ApiGen\Neon\NeonFile;
 use ApiGen\Parser\Parser;
+use ApiGen\Scanner\Scanner;
 use InvalidArgumentException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -49,14 +50,20 @@ class GenerateCommand extends Command
 	 * @var Parser
 	 */
 	private $parser;
+	/**
+	 * @var Scanner
+	 */
+	private $scanner;
 
 
-	public function __construct(Generator $generator, Wiper $wiper, Configuration $configuration, Parser $parser)
+	public function __construct(Generator $generator, Wiper $wiper, Configuration $configuration, Scanner $scanner,
+	                            Parser $parser)
 	{
 		parent::__construct();
 		$this->generator = $generator;
 		$this->wiper = $wiper;
 		$this->configuration = $configuration;
+		$this->scanner = $scanner;
 		$this->parser = $parser;
 	}
 
@@ -119,7 +126,7 @@ class GenerateCommand extends Command
 			$output->writeln("<info>Excluding $exclude</info>");
 		}
 
-		return $this->generator->scan($apigen['source'], $apigen['exclude'], $apigen['extensions']);
+		return $this->scanner->scan($apigen['source'], $apigen['exclude'], $apigen['extensions']);
 	}
 
 

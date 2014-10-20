@@ -67,14 +67,7 @@ abstract class ReflectionBase extends Nette\Object
 	 */
 	public function __construct(IReflection $reflection)
 	{
-//		if (self::$generator === NULL || ! count(self::$parsedClasses)) {
-//			self::$generator = $generator;
-			self::$config = Configuration::$config;// ArrayHash::from($generator->getConfig());
-//			self::$parsedClasses = $generator->getParsedClasses();
-//			self::$parsedConstants = $generator->getParsedConstants();
-//			self::$parsedFunctions = $generator->getParsedFunctions();
-//		}
-
+		self::$config = Configuration::$config;
 		$this->reflectionType = get_class($this);
 		if ( ! isset(self::$reflectionMethods[$this->reflectionType])) {
 			self::$reflectionMethods[$this->reflectionType] = array_flip(get_class_methods($this));
