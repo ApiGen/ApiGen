@@ -170,7 +170,10 @@ class Backend extends Broker\Backend\Memory
 	}
 
 
-	private function loadParentClassesAndInterfacesFromClassReflection(TokenReflection\ReflectionClass $ref)
+	/**
+	 * @param TokenReflection\ReflectionClass|TokenReflection\Invalid\ReflectionClass $ref
+	 */
+	private function loadParentClassesAndInterfacesFromClassReflection($ref)
 	{
 		foreach (array_merge($ref->getParentClasses(), $ref->getInterfaces()) as $parentName => $parentReflection) {
 			/** @var TokenReflection\ReflectionClass $parentReflection */
