@@ -9,7 +9,6 @@
 
 namespace ApiGen\Parser\Broker;
 
-use ApiGen\Generator\Generator;
 use ApiGen\Reflection\ReflectionClass;
 use ApiGen\Reflection\ReflectionConstant;
 use ApiGen\Reflection\ReflectionFunction;
@@ -45,44 +44,29 @@ class Backend extends Broker\Backend\Memory
 	 */
 	private $declared = array();
 
-	/**
-	 * @var Generator
-	 */
-	private $generator;
-
-
-	public function setGenerator(Generator $generator)
-	{
-		$this->generator = $generator;
-	}
-
 
 	/**
 	 * Returns all constants from all namespaces.
-	 * Load with generator...
 	 *
 	 * @return ReflectionConstant[]
 	 */
 	public function getConstants()
 	{
-		$generator = $this->generator;
-		return array_map(function (IReflectionConstant $constant) use ($generator) {
-			return new ReflectionConstant($constant, $generator);
+		return array_map(function (IReflectionConstant $constant) {
+			return new ReflectionConstant($constant);
 		}, parent::getConstants());
 	}
 
 
 	/**
 	 * Returns all functions from all namespaces.
-	 * Load with generator...
 	 *
 	 * @return ReflectionFunction[]
 	 */
 	public function getFunctions()
 	{
-		$generator = $this->generator;
-		return array_map(function (IReflectionFunction $function) use ($generator) {
-			return new ReflectionFunction($function, $generator);
+		return array_map(function (IReflectionFunction $function) {
+			return new ReflectionFunction($function);
 		}, parent::getFunctions());
 	}
 
@@ -98,7 +82,7 @@ class Backend extends Broker\Backend\Memory
 
 		foreach ($this->getNamespaces() as $namespace) {
 			foreach ($namespace->getClasses() as $name => $ref) {
-				$class = new ReflectionClass($ref, $this->generator);
+				$class = new ReflectionClass($ref);
 				$this->allClasses[self::TOKENIZED_CLASSES][$name] = $class;
 				if ( ! $class->isDocumented()) {
 					continue;
@@ -127,11 +111,11 @@ class Backend extends Broker\Backend\Memory
 			$this->processFunction($function);
 		}
 
-		array_walk_recursive($this->allClasses, function (&$reflection, $name, Generator $generator) {
+		array_walk_recursive($this->allClasses, function (&$reflection, $name) {
 			if ( ! $reflection instanceof ReflectionClass) {
-				$reflection = new ReflectionClass($reflection, $generator);
+				$reflection = new ReflectionClass($reflection);
 			}
-		}, $this->generator);
+		});
 
 		return $this->allClasses;
 	}

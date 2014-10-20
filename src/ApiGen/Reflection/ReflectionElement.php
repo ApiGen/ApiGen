@@ -9,6 +9,7 @@
 
 namespace ApiGen\Reflection;
 
+use ApiGen\Configuration\Configuration;
 use TokenReflection\Exception\BaseException;
 use TokenReflection\ReflectionAnnotation;
 
@@ -50,7 +51,7 @@ abstract class ReflectionElement extends ReflectionBase
 	public function getExtension()
 	{
 		$extension = $this->reflection->getExtension();
-		return $extension === NULL ? NULL : new ReflectionExtension($extension, self::$generator);
+		return $extension === NULL ? NULL : new ReflectionExtension($extension);
 	}
 
 

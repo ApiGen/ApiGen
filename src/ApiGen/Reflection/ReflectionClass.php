@@ -9,9 +9,11 @@
 
 namespace ApiGen\Reflection;
 
+use ApiGen\Configuration\Configuration;
 use ApiGen\FileSystem\FileSystem;
-use ApiGen\Generator\Generator;
+use ApiGen\Parser\ParserResult;
 use InvalidArgumentException;
+use Nette\Utils\ArrayHash;
 use ReflectionMethod as InternalReflectionMethod;
 use ReflectionProperty as InternalReflectionProperty;
 use TokenReflection;
@@ -99,32 +101,13 @@ class ReflectionClass extends ReflectionElement
 	private $constants;
 
 
-	public function __construct(IReflectionClass $reflection, Generator $generator)
+	public function __construct(IReflectionClass $reflection)
 	{
-		parent::__construct($reflection, $generator);
+		parent::__construct($reflection);
 
 		if (self::$methodAccessLevels === NULL) {
 			self::$methodAccessLevels = 0;
 			self::$propertyAccessLevels = 0;
-
-			foreach (self::$config->accessLevels as $level) {
-				switch (strtolower($level)) {
-					case 'public':
-						self::$methodAccessLevels |= InternalReflectionMethod::IS_PUBLIC;
-						self::$propertyAccessLevels |= InternalReflectionProperty::IS_PUBLIC;
-						break;
-					case 'protected':
-						self::$methodAccessLevels |= InternalReflectionMethod::IS_PROTECTED;
-						self::$propertyAccessLevels |= InternalReflectionProperty::IS_PROTECTED;
-						break;
-					case 'private':
-						self::$methodAccessLevels |= InternalReflectionMethod::IS_PRIVATE;
-						self::$propertyAccessLevels |= InternalReflectionProperty::IS_PRIVATE;
-						break;
-					default:
-						break;
-				}
-			}
 		}
 	}
 
@@ -225,6 +208,8 @@ class ReflectionClass extends ReflectionElement
 	 */
 	public function getMethods()
 	{
+		$this->init();
+
 		if ($this->methods === NULL) {
 			$this->methods = $this->getOwnMethods();
 			foreach ($this->reflection->getMethods(self::$methodAccessLevels) as $method) {
@@ -232,7 +217,7 @@ class ReflectionClass extends ReflectionElement
 				if (isset($this->methods[$method->getName()])) {
 					continue;
 				}
-				$apiMethod = new ReflectionMethod($method, self::$generator);
+				$apiMethod = new ReflectionMethod($method);
 				if ( ! $this->isDocumented() || $apiMethod->isDocumented()) {
 					$this->methods[$method->getName()] = $apiMethod;
 				}
@@ -252,7 +237,7 @@ class ReflectionClass extends ReflectionElement
 		if ($this->ownMethods === NULL) {
 			$this->ownMethods = array();
 			foreach ($this->reflection->getOwnMethods(self::$methodAccessLevels) as $method) {
-				$apiMethod = new ReflectionMethod($method, self::$generator);
+				$apiMethod = new ReflectionMethod($method);
 				if ( ! $this->isDocumented() || $apiMethod->isDocumented()) {
 					$this->ownMethods[$method->getName()] = $apiMethod;
 				}
@@ -341,7 +326,7 @@ class ReflectionClass extends ReflectionElement
 				$startLine = $this->getStartLine() + substr_count(substr($doc, 0, strpos($doc, $tmp)), "\n");
 				$endLine = $startLine + substr_count($annotation, "\n");
 
-				$method = new ReflectionMethodMagic(NULL, self::$generator);
+				$method = new ReflectionMethodMagic(NULL);
 				$method->setName($name)
 					->setShortDescription(str_replace("\n", ' ', $shortDescription))
 					->setStartLine($startLine)
@@ -365,7 +350,7 @@ class ReflectionClass extends ReflectionElement
 						$typeHint = 'mixed';
 					}
 
-					$parameter = new ReflectionParameterMagic(NULL, self::$generator);
+					$parameter = new ReflectionParameterMagic(NULL);
 					$parameter->setName($name)
 						->setPosition($position)
 						->setTypeHint($typeHint)
@@ -394,7 +379,7 @@ class ReflectionClass extends ReflectionElement
 	{
 		$methods = array();
 		foreach ($this->reflection->getTraitMethods(self::$methodAccessLevels) as $method) {
-			$apiMethod = new ReflectionMethod($method, self::$generator);
+			$apiMethod = new ReflectionMethod($method);
 			if ( ! $this->isDocumented() || $apiMethod->isDocumented()) {
 				/** @var ReflectionElement $method */
 				$methods[$method->getName()] = $apiMethod;
@@ -435,7 +420,7 @@ class ReflectionClass extends ReflectionElement
 				if (isset($this->properties[$property->getName()])) {
 					continue;
 				}
-				$apiProperty = new ReflectionProperty($property, self::$generator);
+				$apiProperty = new ReflectionProperty($property);
 				if ( ! $this->isDocumented() || $apiProperty->isDocumented()) {
 					$this->properties[$property->getName()] = $apiProperty;
 				}
@@ -497,7 +482,7 @@ class ReflectionClass extends ReflectionElement
 		if ($this->ownProperties === NULL) {
 			$this->ownProperties = array();
 			foreach ($this->reflection->getOwnProperties(self::$propertyAccessLevels) as $property) {
-				$apiProperty = new ReflectionProperty($property, self::$generator);
+				$apiProperty = new ReflectionProperty($property);
 				if ( ! $this->isDocumented() || $apiProperty->isDocumented()) {
 					/** @var ReflectionElement $property */
 					$this->ownProperties[$property->getName()] = $apiProperty;
@@ -549,7 +534,7 @@ class ReflectionClass extends ReflectionElement
 					$startLine = $this->getStartLine() + substr_count(substr($doc, 0, strpos($doc, $tmp)), "\n");
 					$endLine = $startLine + substr_count($annotation, "\n");
 
-					$magicProperty = new ReflectionPropertyMagic(NULL, self::$generator);
+					$magicProperty = new ReflectionPropertyMagic(NULL);
 					$magicProperty->setName($name)
 						->setTypeHint($typeHint)
 						->setShortDescription(str_replace("\n", ' ', $shortDescription))
@@ -578,7 +563,7 @@ class ReflectionClass extends ReflectionElement
 	{
 		$properties = array();
 		foreach ($this->reflection->getTraitProperties(self::$propertyAccessLevels) as $property) {
-			$apiProperty = new ReflectionProperty($property, self::$generator);
+			$apiProperty = new ReflectionProperty($property);
 			if ( ! $this->isDocumented() || $apiProperty->isDocumented()) {
 				/** @var ReflectionElement $property */
 				$properties[$property->getName()] = $apiProperty;
@@ -615,7 +600,7 @@ class ReflectionClass extends ReflectionElement
 		if ($this->constants === NULL) {
 			$this->constants = array();
 			foreach ($this->reflection->getConstantReflections() as $constant) {
-				$apiConstant = new ReflectionConstant($constant, self::$generator);
+				$apiConstant = new ReflectionConstant($constant);
 				if ( ! $this->isDocumented() || $apiConstant->isDocumented()) {
 					/** @var ReflectionElement $constant */
 					$this->constants[$constant->getName()] = $apiConstant;
@@ -753,7 +738,7 @@ class ReflectionClass extends ReflectionElement
 	public function getParentClass()
 	{
 		if ($className = $this->reflection->getParentClassName()) {
-			return self::$parsedClasses[$className];
+			return $this->getParsedClasses()[$className];
 		}
 		return $className;
 	}
@@ -778,7 +763,7 @@ class ReflectionClass extends ReflectionElement
 	public function getParentClasses()
 	{
 		if ($this->parentClasses === NULL) {
-			$classes = self::$parsedClasses;
+			$classes = ParserResult::$classes;
 			$this->parentClasses = array_map(function (IReflectionClass $class) use ($classes) {
 				return $classes[$class->getName()];
 			}, $this->reflection->getParentClasses());
@@ -817,7 +802,7 @@ class ReflectionClass extends ReflectionElement
 	 */
 	public function getInterfaces()
 	{
-		$classes = self::$parsedClasses;
+		$classes = ParserResult::$classes;
 		return array_map(function (IReflectionClass $class) use ($classes) {
 			return $classes[$class->getName()];
 		}, $this->reflection->getInterfaces());
@@ -842,7 +827,7 @@ class ReflectionClass extends ReflectionElement
 	 */
 	public function getOwnInterfaces()
 	{
-		$classes = self::$parsedClasses;
+		$classes = ParserResult::$classes;
 		return array_map(function (IReflectionClass $class) use ($classes) {
 			return $classes[$class->getName()];
 		}, $this->reflection->getOwnInterfaces());
@@ -867,7 +852,7 @@ class ReflectionClass extends ReflectionElement
 	 */
 	public function getTraits()
 	{
-		$classes = self::$parsedClasses;
+		$classes = ParserResult::$classes;
 		return array_map(function (IReflectionClass $class) use ($classes) {
 			if ( ! isset($classes[$class->getName()])) {
 				return $class->getName();
@@ -919,7 +904,7 @@ class ReflectionClass extends ReflectionElement
 	 */
 	public function getOwnTraits()
 	{
-		$classes = self::$parsedClasses;
+		$classes = ParserResult::$classes;
 		return array_map(function (IReflectionClass $class) use ($classes) {
 			if ( ! isset($classes[$class->getName()])) {
 				return $class->getName();
@@ -963,7 +948,7 @@ class ReflectionClass extends ReflectionElement
 	{
 		$subClasses = array();
 		$name = $this->reflection->getName();
-		foreach (self::$parsedClasses as $class) {
+		foreach ($this->getParsedClasses() as $class) {
 			if ( ! $class->isDocumented()) {
 				continue;
 			}
@@ -984,7 +969,7 @@ class ReflectionClass extends ReflectionElement
 	{
 		$subClasses = array();
 		$name = $this->reflection->getName();
-		foreach (self::$parsedClasses as $class) {
+		foreach ($this->getParsedClasses() as $class) {
 			if ( ! $class->isDocumented()) {
 				continue;
 			}
@@ -1009,7 +994,7 @@ class ReflectionClass extends ReflectionElement
 
 		$implementers = array();
 		$name = $this->reflection->getName();
-		foreach (self::$parsedClasses as $class) {
+		foreach ($this->getParsedClasses() as $class) {
 			if ( ! $class->isDocumented()) {
 				continue;
 			}
@@ -1034,7 +1019,7 @@ class ReflectionClass extends ReflectionElement
 
 		$implementers = array();
 		$name = $this->reflection->getName();
-		foreach (self::$parsedClasses as $class) {
+		foreach ($this->getParsedClasses() as $class) {
 			if ( ! $class->isDocumented()) {
 				continue;
 			}
@@ -1059,7 +1044,7 @@ class ReflectionClass extends ReflectionElement
 
 		$users = array();
 		$name = $this->reflection->getName();
-		foreach (self::$parsedClasses as $class) {
+		foreach ($this->getParsedClasses() as $class) {
 			if ( ! $class->isDocumented()) {
 				continue;
 			}
@@ -1085,7 +1070,7 @@ class ReflectionClass extends ReflectionElement
 
 		$users = array();
 		$name = $this->reflection->getName();
-		foreach (self::$parsedClasses as $class) {
+		foreach ($this->getParsedClasses() as $class) {
 			if ( ! $class->isDocumented()) {
 				continue;
 			}
@@ -1516,6 +1501,53 @@ class ReflectionClass extends ReflectionElement
 		}
 
 		return $this->isDocumented;
+	}
+
+
+	/**
+	 * @return ArrayHash
+	 */
+	public function getConfig()
+	{
+		if (self::$config === NULL || ! count(self::$config)) {
+			self::$config = Configuration::$config;
+		}
+		return self::$config;
+	}
+
+
+	private function init()
+	{
+		foreach ($this->getConfig()->accessLevels as $level) {
+			switch (strtolower($level)) {
+				case 'public':
+					self::$methodAccessLevels |= InternalReflectionMethod::IS_PUBLIC;
+					self::$propertyAccessLevels |= InternalReflectionProperty::IS_PUBLIC;
+					break;
+				case 'protected':
+					self::$methodAccessLevels |= InternalReflectionMethod::IS_PROTECTED;
+					self::$propertyAccessLevels |= InternalReflectionProperty::IS_PROTECTED;
+					break;
+				case 'private':
+					self::$methodAccessLevels |= InternalReflectionMethod::IS_PRIVATE;
+					self::$propertyAccessLevels |= InternalReflectionProperty::IS_PRIVATE;
+					break;
+				default:
+					break;
+			}
+		}
+	}
+
+
+	/**
+	 * @return \ArrayObject
+	 */
+	private function getParsedClasses()
+	{
+		if (self::$parsedClasses === NULL) {
+			self::$parsedClasses = ParserResult::$classes;
+		}
+		return self::$parsedClasses;
 	}
 
 }

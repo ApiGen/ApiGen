@@ -9,7 +9,6 @@
 
 namespace ApiGen\Reflection;
 
-use ApiGen\Generator\Generator;
 use ReflectionProperty as InternalReflectionMethod;
 use TokenReflection\Broker;
 use TokenReflection\IReflection;
@@ -68,7 +67,7 @@ class ReflectionMethodMagic extends ReflectionMethod
 	protected $declaringClass;
 
 
-	public function __construct(IReflection $reflection = NULL, Generator $generator = NULL)
+	public function __construct(IReflection $reflection = NULL)
 	{
 		$this->reflectionType = get_class($this);
 		if ( ! isset(self::$reflectionMethods[$this->reflectionType])) {

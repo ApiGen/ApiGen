@@ -58,9 +58,8 @@ abstract class ReflectionFunctionBase extends ReflectionElement
 	public function getParameters()
 	{
 		if ($this->parameters === NULL) {
-			$generator = self::$generator;
-			$this->parameters = array_map(function (TokenReflection\IReflectionParameter $parameter) use ($generator) {
-				return new ReflectionParameter($parameter, $generator);
+			$this->parameters = array_map(function (TokenReflection\IReflectionParameter $parameter) {
+				return new ReflectionParameter($parameter);
 			}, $this->reflection->getParameters());
 
 			$annotations = $this->getAnnotation('param');
@@ -82,7 +81,7 @@ abstract class ReflectionFunctionBase extends ReflectionElement
 						$typeHint = 'mixed';
 					}
 
-					$parameter = new ReflectionParameterMagic(NULL, self::$generator);
+					$parameter = new ReflectionParameterMagic(NULL);
 					$parameter->setName($name)
 						->setPosition($position)
 						->setTypeHint($typeHint)

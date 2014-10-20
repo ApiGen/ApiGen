@@ -10,9 +10,7 @@
 namespace ApiGen\Reflection;
 
 use ApiGen\Configuration\Configuration;
-use ApiGen\Generator\Generator;
 use Nette;
-use Nette\Utils\ArrayHash;
 use TokenReflection\IReflection;
 
 
@@ -36,11 +34,6 @@ abstract class ReflectionBase extends Nette\Object
 	 * @var \ArrayObject
 	 */
 	protected static $parsedFunctions;
-
-	/**
-	 * @var Generator
-	 */
-	protected static $generator = NULL;
 
 	/**
 	 * @var Configuration
@@ -71,19 +64,16 @@ abstract class ReflectionBase extends Nette\Object
 
 	/**
 	 * Sets the inspected reflection.
-	 *
-	 * @param \TokenReflection\IReflection $reflection Inspected reflection
-	 * @param Generator $generator
 	 */
-	public function __construct(IReflection $reflection, Generator $generator)
+	public function __construct(IReflection $reflection)
 	{
-		if (self::$generator === NULL) {
-			self::$generator = $generator;
-			self::$config = ArrayHash::from($generator->getConfig());
-			self::$parsedClasses = $generator->getParsedClasses();
-			self::$parsedConstants = $generator->getParsedConstants();
-			self::$parsedFunctions = $generator->getParsedFunctions();
-		}
+//		if (self::$generator === NULL || ! count(self::$parsedClasses)) {
+//			self::$generator = $generator;
+			self::$config = Configuration::$config;// ArrayHash::from($generator->getConfig());
+//			self::$parsedClasses = $generator->getParsedClasses();
+//			self::$parsedConstants = $generator->getParsedConstants();
+//			self::$parsedFunctions = $generator->getParsedFunctions();
+//		}
 
 		$this->reflectionType = get_class($this);
 		if ( ! isset(self::$reflectionMethods[$this->reflectionType])) {

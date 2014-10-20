@@ -36,7 +36,7 @@ class ReflectionExtension extends ReflectionBase
 		if (isset(self::$parsedClasses[$name])) {
 			return self::$parsedClasses[$name];
 		}
-		return new ReflectionClass($class, self::$generator);
+		return new ReflectionClass($class);
 	}
 
 
@@ -47,10 +47,9 @@ class ReflectionExtension extends ReflectionBase
 	 */
 	public function getClasses()
 	{
-		$generator = self::$generator;
 		$classes = self::$parsedClasses;
-		return array_map(function (IReflectionClass $class) use ($generator, $classes) {
-			return isset($classes[$class->getName()]) ? $classes[$class->getName()] : new ReflectionClass($class, $generator);
+		return array_map(function (IReflectionClass $class) use ($classes) {
+			return isset($classes[$class->getName()]) ? $classes[$class->getName()] : new ReflectionClass($class);
 		}, $this->reflection->getClasses());
 	}
 
@@ -76,7 +75,7 @@ class ReflectionExtension extends ReflectionBase
 	public function getConstantReflection($name)
 	{
 		$constant = $this->reflection->getConstantReflection($name);
-		return $constant === NULL ? NULL : new ReflectionConstant($constant, self::$generator);
+		return $constant === NULL ? NULL : new ReflectionConstant($constant);
 	}
 
 
@@ -98,9 +97,8 @@ class ReflectionExtension extends ReflectionBase
 	 */
 	public function getConstantReflections()
 	{
-		$generator = self::$generator;
-		return array_map(function (IReflectionConstant $constant) use ($generator) {
-			return new ReflectionConstant($constant, $generator);
+		return array_map(function (IReflectionConstant $constant) {
+			return new ReflectionConstant($constant);
 		}, $this->reflection->getConstantReflections());
 	}
 
@@ -114,7 +112,7 @@ class ReflectionExtension extends ReflectionBase
 	public function getFunction($name)
 	{
 		$function = $this->reflection->getFunction($name);
-		return NULL === $function ? NULL : new ReflectionFunction($function, self::$generator);
+		return NULL === $function ? NULL : new ReflectionFunction($function);
 	}
 
 
@@ -125,9 +123,8 @@ class ReflectionExtension extends ReflectionBase
 	 */
 	public function getFunctions()
 	{
-		$generator = self::$generator;
-		return array_map(function (IReflectionFunction $function) use ($generator) {
-			return new ReflectionFunction($function, $generator);
+		return array_map(function (IReflectionFunction $function) {
+			return new ReflectionFunction($function);
 		}, $this->reflection->getFunctions());
 	}
 

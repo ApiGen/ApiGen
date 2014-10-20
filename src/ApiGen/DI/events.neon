@@ -1,7 +1,6 @@
 - ApiGen\Events\ProgressBarIncrement
 - ApiGen\Events\MemoryLimitCheckerOnProgress
-- ApiGen\Events\LoadElementResolver
+- ApiGen\Events\LoadParsedElements
 - ApiGen\Events\LoadRelativePathResolver
 - ApiGen\Events\InjectConfig
 - ApiGen\Events\SetIoOnConsoleRun
-- ApiGen\Events\SetGeneratorOnParseStart
