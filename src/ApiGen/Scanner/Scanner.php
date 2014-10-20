@@ -44,10 +44,9 @@ class Scanner extends Nette\Object
 	 * @throws RuntimeException
 	 * @return array
 	 */
-	public function scan($sources, $exclude = array(), $extensions = array('php'))
+	public function scan(array $sources, array $exclude = array(), array $extensions = array('php'))
 	{
 		$files = array();
-
 		foreach ($sources as $source) {
 			$entries = $this->getEntriesFromSource($source, $exclude);
 
