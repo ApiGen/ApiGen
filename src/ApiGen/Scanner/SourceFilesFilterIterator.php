@@ -7,7 +7,7 @@
  * the file license.md that was distributed with this source code.
  */
 
-namespace ApiGen\FileSystem;
+namespace ApiGen\Scanner;
 
 use RecursiveDirectoryIterator;
 use RecursiveFilterIterator;
@@ -20,8 +20,6 @@ class SourceFilesFilterIterator extends RecursiveFilterIterator
 {
 
 	/**
-	 * File/directory exclude masks.
-	 *
 	 * @var array
 	 */
 	private $excludeMasks = array();
@@ -51,7 +49,9 @@ class SourceFilesFilterIterator extends RecursiveFilterIterator
 		}
 
 		if ( ! is_readable($current->getPathname())) {
-			throw new \InvalidArgumentException(sprintf('File/directory "%s" is not readable.', $current->getPathname()));
+			throw new \InvalidArgumentException(
+				sprintf('File/directory "%s" is not readable.', $current->getPathname())
+			);
 		}
 
 		return TRUE;

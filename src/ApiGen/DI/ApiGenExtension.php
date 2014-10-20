@@ -43,7 +43,7 @@ class ApiGenExtension extends CompilerExtension
 			->setClass('ApiGen\Generator\Resolvers\RelativePathResolver');
 
 		$builder->addDefinition($this->prefix('scanner'))
-			->setClass('ApiGen\Scanner\PhpScanner');
+			->setClass('ApiGen\Scanner\Scanner');
 
 		$builder->addDefinition($this->prefix('markdown'))
 			->setClass('Michelf\MarkdownExtra');
