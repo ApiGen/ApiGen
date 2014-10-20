@@ -21,8 +21,6 @@ abstract class ReflectionFunctionBase extends ReflectionElement
 {
 
 	/**
-	 * Cache for list of parameters.
-	 *
 	 * @var array
 	 */
 	protected $parameters;

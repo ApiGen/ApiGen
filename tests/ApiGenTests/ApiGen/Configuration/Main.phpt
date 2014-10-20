@@ -27,7 +27,7 @@ class MainTest extends TestCase
 
 		Assert::match(
 			file_get_contents(__DIR__ . '/Main.html'),
-			file_get_contents(API_DIR . '/index.html')
+			$this->getFileContentInOneLine(API_DIR . '/index.html')
 		);
 	}
 

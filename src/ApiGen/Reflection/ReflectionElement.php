@@ -9,7 +9,6 @@
 
 namespace ApiGen\Reflection;
 
-use ApiGen\Configuration\Configuration;
 use TokenReflection\Exception\BaseException;
 use TokenReflection\ReflectionAnnotation;
 
@@ -56,8 +55,6 @@ abstract class ReflectionElement extends ReflectionBase
 
 
 	/**
-	 * Returns the PHP extension name.
-	 *
 	 * @return boolean
 	 */
 	public function getExtensionName()
@@ -67,8 +64,6 @@ abstract class ReflectionElement extends ReflectionBase
 
 
 	/**
-	 * Returns the start position in the file token stream.
-	 *
 	 * @return integer
 	 */
 	public function getStartPosition()
@@ -78,8 +73,6 @@ abstract class ReflectionElement extends ReflectionBase
 
 
 	/**
-	 * Returns the end position in the file token stream.
-	 *
 	 * @return integer
 	 */
 	public function getEndPosition()

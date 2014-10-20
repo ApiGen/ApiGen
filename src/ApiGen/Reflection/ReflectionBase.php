@@ -10,35 +10,39 @@
 namespace ApiGen\Reflection;
 
 use ApiGen\Configuration\Configuration;
+use ArrayObject;
 use Nette;
+use Nette\Utils\ArrayHash;
+use TokenReflection\Broker;
 use TokenReflection\IReflection;
+use TokenReflection\IReflectionClass;
 
 
 /**
  * Alters TokenReflection\IReflection functionality for ApiGen.
  */
-abstract class ReflectionBase extends Nette\Object
+abstract class ReflectionBase extends Nette\Object implements IReflection
 {
 
 	/**
-	 * @var \ArrayObject
+	 * @var ArrayObject
 	 */
 	protected static $parsedClasses;
 
 	/**
-	 * @var \ArrayObject
+	 * @var ArrayObject
 	 */
 	protected static $parsedConstants;
 
 	/**
-	 * @var \ArrayObject
+	 * @var ArrayObject
 	 */
 	protected static $parsedFunctions;
 
 	/**
-	 * @var Configuration
+	 * @var ArrayHash
 	 */
-	protected static $config = NULL;
+	protected static $config;
 
 	/**
 	 * Class methods cache.
@@ -48,23 +52,16 @@ abstract class ReflectionBase extends Nette\Object
 	protected static $reflectionMethods = array();
 
 	/**
-	 * Reflection type (reflection class).
-	 *
 	 * @var string
 	 */
 	protected $reflectionType;
 
 	/**
-	 * Inspected class reflection.
-	 *
-	 * @var \TokenReflection\IReflectionClass
+	 * @var IReflectionClass
 	 */
 	protected $reflection;
 
 
-	/**
-	 * Sets the inspected reflection.
-	 */
 	public function __construct(IReflection $reflection)
 	{
 		self::$config = Configuration::$config;
@@ -78,9 +75,7 @@ abstract class ReflectionBase extends Nette\Object
 
 
 	/**
-	 * Returns the reflection broker used by this reflection object.
-	 *
-	 * @return \TokenReflection\Broker
+	 * @return Broker
 	 */
 	public function getBroker()
 	{
@@ -89,7 +84,7 @@ abstract class ReflectionBase extends Nette\Object
 
 
 	/**
-	 * Returns the name (FQN).
+	 * Returns FQN name.
 	 *
 	 * @return string
 	 */
@@ -111,8 +106,6 @@ abstract class ReflectionBase extends Nette\Object
 
 
 	/**
-	 * Returns if the reflection object is internal.
-	 *
 	 * @return boolean
 	 */
 	public function isInternal()
@@ -122,8 +115,6 @@ abstract class ReflectionBase extends Nette\Object
 
 
 	/**
-	 * Returns if the reflection object is user defined.
-	 *
 	 * @return boolean
 	 */
 	public function isUserDefined()
@@ -133,8 +124,6 @@ abstract class ReflectionBase extends Nette\Object
 
 
 	/**
-	 * Returns if the current reflection comes from a tokenized source.
-	 *
 	 * @return boolean
 	 */
 	public function isTokenized()
@@ -144,8 +133,6 @@ abstract class ReflectionBase extends Nette\Object
 
 
 	/**
-	 * Returns the file name the reflection object is defined in.
-	 *
 	 * @return string
 	 */
 	public function getFileName()
