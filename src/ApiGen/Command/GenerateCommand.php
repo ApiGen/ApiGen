@@ -50,6 +50,7 @@ class GenerateCommand extends Command
 	 * @var Parser
 	 */
 	private $parser;
+
 	/**
 	 * @var Scanner
 	 */
