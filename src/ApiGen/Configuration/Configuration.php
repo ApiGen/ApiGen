@@ -27,6 +27,13 @@ class Configuration extends Nette\Object
 	const TEMPLATE_THEME_BOOTSTRAP = 'bootstrap';
 
 	/**
+	 * Static access for reflections
+	 *
+	 * @var Nette\Utils\ArrayHash
+	 */
+	public static $config;
+
+	/**
 	 * @var array
 	 */
 	public $onSuccessValidate = array();

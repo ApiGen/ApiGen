@@ -10,6 +10,7 @@
 namespace ApiGen\Events;
 
 use ApiGen\Charset\CharsetConvertor;
+use ApiGen\Configuration\Configuration;
 use ApiGen\FileSystem\Finder;
 use ApiGen\FileSystem\Zip;
 use ApiGen\Generator\Generator;
@@ -20,6 +21,7 @@ use ApiGen\Templating\Filters\UrlFilters;
 use ApiGen\Templating\TemplateFactory;
 use Nette;
 use Kdyby\Events\Subscriber;
+use Nette\Utils\ArrayHash;
 
 
 class InjectConfig extends Nette\Object implements Subscriber
@@ -103,6 +105,8 @@ class InjectConfig extends Nette\Object implements Subscriber
 	 */
 	public function onSuccessValidate($config)
 	{
+		Configuration::$config = ArrayHash::from($config);
+
 		$this->generator->setConfig($config);
 		$this->templateFactory->setConfig($config);
 		$this->relativePathResolver->setConfig($config);
