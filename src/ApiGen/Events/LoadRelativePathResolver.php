@@ -43,6 +43,7 @@ class LoadRelativePathResolver extends Nette\Object implements Subscriber
 
 	public function onFinish(HtmlGenerator $generator)
 	{
+		// todo: replace by scanner!
 		$this->relativePathResolver->setSymlinks($generator->getSymlinks());
 	}
 
