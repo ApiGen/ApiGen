@@ -46,8 +46,6 @@ class Backend extends Broker\Backend\Memory
 
 
 	/**
-	 * Returns all constants from all namespaces.
-	 *
 	 * @return ReflectionConstant[]
 	 */
 	public function getConstants()
@@ -59,8 +57,6 @@ class Backend extends Broker\Backend\Memory
 
 
 	/**
-	 * Returns all functions from all namespaces.
-	 *
 	 * @return ReflectionFunction[]
 	 */
 	public function getFunctions()

@@ -15,6 +15,8 @@ use Nette;
 class CharsetConvertor extends Nette\Object
 {
 
+	const AUTO = 'AUTO';
+
 	/**
 	 * List of possible character sets.
 	 *
@@ -26,13 +28,12 @@ class CharsetConvertor extends Nette\Object
 	public function setCharset(array $charsets)
 	{
 		$firstValue = array_pop($charsets);
-
-		if (count($charsets) === 1 && $firstValue !== 'AUTO') {
+		if (count($charsets) === 1 && $firstValue !== self::AUTO) {
 			// One character set
 			$this->charsets = $charsets;
 
 		} else {
-			if (count($charsets) === 1 && $firstValue === 'AUTO') {
+			if (count($charsets) === 1 && $firstValue === self::AUTO) {
 				// Autodetection
 				$this->charsets = array(
 					'Windows-1251', 'Windows-1252', 'ISO-8859-2', 'ISO-8859-1', 'ISO-8859-3', 'ISO-8859-4', 'ISO-8859-5',
@@ -68,22 +69,22 @@ class CharsetConvertor extends Nette\Object
 	{
 		$content = file_get_contents($filePath);
 
-		static $cache = array();
+		$cache = array();
 		if ( ! isset($cache[$filePath])) {
-			if (count($this->charsets) === 1) {
+			if (count($this->getCharsets()) === 1) {
 				// One character set
-				$charset = $this->charsets[0];
+				$charset = $this->getCharsets();
+				$charset = $charset[0];
 
 			} else {
 				// Detection
-				$charset = mb_detect_encoding($content, $this->charsets);
+				$charset = mb_detect_encoding($content, $this->getCharsets());
 
 				// The previous function can not handle WINDOWS-1250 and returns ISO-8859-2 instead
 				if ($charset === 'ISO-8859-2' && preg_match('~[\x7F-\x9F\xBC]~', $content)) {
 					$charset = 'WINDOWS-1250';
 				}
 			}
-
 			$cache[$filePath] = $charset;
 
 		} else {
@@ -95,6 +96,18 @@ class CharsetConvertor extends Nette\Object
 		}
 
 		return @iconv($charset, 'UTF-8//TRANSLIT//IGNORE', $content);
+	}
+
+
+	/**
+	 * @return array
+	 */
+	private function getCharsets()
+	{
+		if ( ! count($this->charsets)) {
+			$this->setCharset(array(self::AUTO));
+		}
+		return $this->charsets;
 	}
 
 }
