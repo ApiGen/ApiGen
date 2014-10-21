@@ -20,8 +20,8 @@ define('TEMP_DIR', createTempDir());
 Tracy\Debugger::$logDirectory = TEMP_DIR;
 
 
-define('PROJECT_DIR', realpath( __DIR__ . DS . '../Project' ));
-define('PROJECT_BETA_DIR', realpath( __DIR__ . DS . '../ProjectBeta' ));
+define('PROJECT_DIR', __DIR__ . DS . '../Project');
+define('PROJECT_BETA_DIR', __DIR__ . DS . '../ProjectBeta');
 define('API_DIR', TEMP_DIR . DS . 'api');
 define('APIGEN_BIN', 'php ' . realpath(__DIR__ . '/../../src/apigen.php'));
 

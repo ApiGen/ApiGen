@@ -47,9 +47,6 @@ class RelativePathResolver extends Nette\Object
 			$fileName = $this->symlinks[$fileName];
 		}
 		foreach ($this->config['source'] as $source) {
-			if (FileSystem::isPhar($source)) {
-				$source = FileSystem::pharPath($source);
-			}
 			if (strpos($fileName, $source) === 0) {
 				return is_dir($source) ? str_replace('\\', '/', substr($fileName, strlen($source) + 1)) : basename($fileName);
 			}
@@ -58,4 +55,15 @@ class RelativePathResolver extends Nette\Object
 		throw new \InvalidArgumentException(sprintf('Could not determine "%s" relative path', $fileName));
 	}
 
+	public function setConfig(array $config)
+	{
+		$this->config = $config;
+		
+		foreach ($this->config['source'] as &$source) {
+			if (FileSystem::isPhar($source)) {
+				$source = FileSystem::pharPath($source);
+			}
+			$source = str_replace( '/', DS, $source );
+		}
+	}
 }
