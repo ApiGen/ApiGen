@@ -6,6 +6,7 @@
 
 namespace ApiGenTests\ApiGen\Scanner;
 
+use ApiGen\PharCompiler;
 use ApiGen\Scanner\Scanner;
 use Tester\TestCase;
 use Tester\Assert;
@@ -41,13 +42,13 @@ class ScannerTest extends TestCase
 	public function testScanFiles()
 	{
 		$files = $this->scanner->scan(array(PROJECT_DIR));
-		Assert::count(13, $files);
+		Assert::equal(13, iterator_count($files));
 
 		$files = $this->scanner->scan(array(PROJECT_DIR), array('*Annotation*'));
-		Assert::count(12, $files);
+		Assert::equal(12, iterator_count($files));
 
 		$files = $this->scanner->scan(array(PROJECT_DIR), array(), array('php5'));
-		Assert::count(1, $files);
+		Assert::equal(1, iterator_count($files));
 	}
 
 
@@ -55,6 +56,26 @@ class ScannerTest extends TestCase
 	{
 		$this->scanner->scan(array(PROJECT_DIR));
 		Assert::count(13, $this->scanner->getSymlinks());
+	}
+
+
+	/**
+	 * @throws \RuntimeException
+	 */
+	public function testNoFound()
+	{
+		$this->scanner->scan(array(PROJECT_DIR), array(), array('php6'));
+	}
+
+
+	public function testPhar()
+	{
+		$compiler = new PharCompiler(__DIR__ . '/../../../..');
+		$compiler->compile(TEMP_DIR . '/apigen.phar');
+		Assert::true(file_exists(TEMP_DIR . '/apigen.phar'));
+
+		$files = $this->scanner->scan(array(TEMP_DIR . '/apigen.phar'));
+		Assert::true(iterator_count($files) > 400);
 	}
 
 }

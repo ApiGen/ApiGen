@@ -111,7 +111,6 @@ __HALT_COMPILER();
 		}
 
 		$exclude = array(
-			'nette/tester',
 			'jakub-onderka/php-parallel-lint',
 			'symfony/*/*/Tests',
 			'squizlabs',

@@ -11,10 +11,10 @@ namespace ApiGen\Scanner;
 
 use ApiGen\FileSystem\FileSystem;
 use Nette;
+use Nette\Utils\Finder;
 use RecursiveDirectoryIterator as RDI;
-use RecursiveIterator;
-use RecursiveIteratorIterator;
 use RuntimeException;
+use Tester\Helpers;
 
 
 /**
@@ -36,40 +36,24 @@ class Scanner extends Nette\Object
 
 
 	/**
-	 * Scans sources and return found files
-	 *
 	 * @param array $sources List of sources to be scanned (folder or files).
-	 * @param array $exclude Excluded files.
+	 * @param array $exclude Masks for folders/files to be excluded.
 	 * @param array $extensions File extensions to be scanned (e.g. php, phpt).
 	 * @throws RuntimeException
-	 * @return array
+	 * @return Finder
 	 */
 	public function scan(array $sources, array $exclude = array(), array $extensions = array('php'))
 	{
-		$files = array();
-		foreach ($sources as $source) {
-			$entries = $this->getEntriesFromSource($source, $exclude);
+		$sources = $this->extractPharSources($sources);
+		$fileMasks = $this->turnExtensionsToMask($extensions);
+		$files = Finder::findFiles($fileMasks)->exclude($exclude)
+			->from($sources)->exclude($exclude);
 
-			$regexp = '~\\.' . implode('|', $extensions) . '$~i';
-
-			/** @var \SplFileInfo $entry */
-			foreach ($entries as $entry) {
-				if ( ! preg_match($regexp, $entry->getFilename())) {
-					continue;
-				}
-
-				$pathName = FileSystem::normalizePath($entry->getPathName());
-				$files[$pathName] = $entry->getSize();
-				if ($entry->getRealPath() !== FALSE && $entry->getRealPath() !== $pathName) {
-					$this->symlinks[$entry->getRealPath()] = $pathName;
-				}
-			}
-		}
-
-		if (empty($files)) {
+		if (iterator_count($files) === 0) {
 			throw new RuntimeException('No PHP files found');
 		}
 
+		$this->symlinks = $this->getSymlinksFromFiles($files);
 		$this->onScanFinish($this);
 
 		return $files;
@@ -77,52 +61,53 @@ class Scanner extends Nette\Object
 
 
 	/**
-	 * @param string $source
-	 * @param array $exclude
 	 * @return array
 	 */
-	private function getEntriesFromSource($source, $exclude = array())
+	private function turnExtensionsToMask(array $extensions)
 	{
-		if (is_dir($source)) {
-			$directoryIterator = new RDI($source, $this->getIteratorFlags());
-			$sourceFilesFilterIterator = new SourceFilesFilterIterator($directoryIterator, $exclude);
-			return $this->getFilesFromIterator($sourceFilesFilterIterator);
-
-		} elseif (FileSystem::isPhar($source)) {
-			if ( ! extension_loaded('phar')) {
-				throw new RuntimeException('Phar extension is not loaded');
-			}
-			$phar = new \Phar($source, $this->getIteratorFlags());
-			return $this->getFilesFromIterator($phar);
-
-		} else {
-			return array(new \SplFileInfo($source));
-		}
-	}
-
-
-	/**
-	 * @return int
-	 */
-	private function getIteratorFlags()
-	{
-		return RDI::CURRENT_AS_FILEINFO | RDI::SKIP_DOTS | RDI::FOLLOW_SYMLINKS;
+		array_walk($extensions, function (&$value) {
+			$value = '*.' . $value;
+		});
+		return $extensions;
 	}
 
 
 	/**
 	 * @return array
 	 */
-	private function getFilesFromIterator(RecursiveIterator $iterator)
+	private function getSymlinksFromFiles(Finder $finder)
 	{
-		$files = array();
-		foreach (new RecursiveIteratorIterator($iterator) as $entry) {
-			if ( ! $entry->isFile()) {
-				continue;
+		$symlinks = array();
+		foreach ($finder->getIterator() as $file) {
+			$pathName = FileSystem::normalizePath($file->getPathName());
+			$files[$pathName] = $file->getSize();
+			if ($file->getRealPath() !== FALSE && $file->getRealPath() !== $pathName) {
+				$symlinks[$file->getRealPath()] = $pathName;
 			}
-			$files[] = $entry;
 		}
-		return $files;
+		return $symlinks;
+	}
+
+
+	/**
+	 * @return array
+	 */
+	private function extractPharSources(array $sources)
+	{
+		foreach ($sources as $i => $source) {
+			if (FileSystem::isPhar($source)) {
+				if ( ! extension_loaded('phar')) {
+					throw new RuntimeException('Phar extension is not loaded');
+				}
+
+				$dir = sys_get_temp_dir() . DS . '_apigen_temp' . DS . 'phar_' . $i;
+				Helpers::purge($dir);
+				$phar = new \Phar($source, RDI::CURRENT_AS_FILEINFO | RDI::SKIP_DOTS | RDI::FOLLOW_SYMLINKS);
+				$phar->extractTo($dir);
+				$sources[$i] = $dir;
+			}
+		}
+		return $sources;
 	}
 
 }
