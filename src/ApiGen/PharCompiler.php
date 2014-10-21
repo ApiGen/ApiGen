@@ -114,6 +114,8 @@ __HALT_COMPILER();
 			'nette/tester',
 			'jakub-onderka/php-parallel-lint',
 			'symfony/*/*/Tests',
+			'squizlabs',
+			'zenify/coding-standard'
 		);
 		foreach (Finder::findFiles('*.php')->from("$this->repoDir/vendor")->exclude($exclude) as $file) {
 			$this->addFile($phar, $file);

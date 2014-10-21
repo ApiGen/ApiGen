@@ -20,11 +20,11 @@ class PharCompilerTest extends TestCase
 
 	public function testBasicGeneration()
 	{
-		$this->prepareConfig();
-
 		$compiler = new PharCompiler(__DIR__ . '/../../..');
 		$compiler->compile(TEMP_DIR . '/apigen.phar');
 		Assert::true(file_exists(TEMP_DIR . '/apigen.phar'));
+
+		$this->prepareConfig();
 
 		passthru('php ' . TEMP_DIR . '/apigen.phar generate');
 		Assert::true(file_exists(API_DIR . '/index.html'));
