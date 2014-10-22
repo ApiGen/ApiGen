@@ -17,60 +17,45 @@ require_once __DIR__ . '/../../bootstrap.php';
 class ExcludeTest extends TestCase
 {
 
-	public function testConfig()
+	public function testFileMask()
 	{
-		$this->prepareConfig(array('*/Project/*'));
+		$this->prepareConfig(array('Package*'));
 		passthru(APIGEN_BIN . ' generate');
-		Assert::false(file_exists(API_DIR . '/namespace-Project.html'));
-		Assert::false(file_exists(API_DIR . '/class-Project.Foo.html'));
-		Assert::true(file_exists(API_DIR . '/namespace-ProjectBeta.html'));
-		Assert::true(file_exists(API_DIR . '/class-ProjectBeta.QueueFactory.html'));
+		Assert::false(file_exists(API_DIR . '/class-ProjectBeta.PackageA.html'));
+		Assert::false(file_exists(API_DIR . '/class-ProjectBeta.PackageB.html'));
 
-		$this->prepareConfig(array('*/ProjectBeta/*'));
+		$this->prepareConfig(array('*QueueFactory*'));
 		passthru(APIGEN_BIN . ' generate');
-		Assert::true(file_exists(API_DIR . '/namespace-Project.html'));
-		Assert::true(file_exists(API_DIR . '/class-Project.Foo.html'));
-		Assert::false(file_exists(API_DIR . '/namespace-ProjectBeta.html'));
 		Assert::false(file_exists(API_DIR . '/class-ProjectBeta.QueueFactory.html'));
 
+		$this->prepareConfig(array('*/Category*'));
+		passthru(APIGEN_BIN . ' generate');
+		Assert::false(file_exists(API_DIR . '/class-ProjectBeta.Entities.Category.html'));
+	}
+
+
+	public function fileMaskWithSuffix()
+	{
 		$this->prepareConfig(array('*/QueueFactory.php'));
 		passthru(APIGEN_BIN . ' generate');
 		Assert::false(file_exists(API_DIR . '/class-ProjectBeta.QueueFactory.html'));
+	}
 
-		$this->prepareConfig(array('*/QueueFactory*'));
-		passthru(APIGEN_BIN . ' generate');
-		Assert::false(file_exists(API_DIR . '/class-ProjectBeta.QueueFactory.html'));
 
-		$this->prepareConfig(array('*Factory*'));
+	public function textDirExclude()
+	{
+		$this->prepareConfig(array('Entities'));
 		passthru(APIGEN_BIN . ' generate');
-		Assert::false(file_exists(API_DIR . '/class-ProjectBeta.QueueFactory.html'));
-
-		$this->prepareConfig(array('*Deprecated*'));
-		passthru(APIGEN_BIN . ' generate');
-		Assert::false(file_exists(API_DIR . '/class-Project.DeprecatedMethod.html'));
-		Assert::false(file_exists(API_DIR . '/class-Project.Deprecated.html'));
-		Assert::true(file_exists(API_DIR . '/namespace-Project.html'));
-		Assert::true(file_exists(API_DIR . '/class-Project.Foo.html'));
-		Assert::true(file_exists(API_DIR . '/namespace-ProjectBeta.html'));
-		Assert::true(file_exists(API_DIR . '/class-ProjectBeta.QueueFactory.html'));
+		Assert::false(file_exists(API_DIR . '/namespace-ProjectBeta.Entities.html'));
+		Assert::false(file_exists(API_DIR . '/class-ProjectBeta.Entities.Category.html'));
 	}
 
 
 	public function testNoneFound()
 	{
-		$this->prepareConfig(array('*/Project/*', '*/ProjectBeta/*'));
+		$this->prepareConfig(array('*'));
 		passthru(APIGEN_BIN . ' generate', $output);
 		Assert::same(0, $output);
-		Assert::false(file_exists(API_DIR . '/index.html'));
-		Assert::false(file_exists(API_DIR . '/namespace-Project.html'));
-		Assert::false(file_exists(API_DIR . '/namespace-ProjectBeta.html'));
-
-		$this->prepareConfig(array('*/Project*'));
-		passthru(APIGEN_BIN . ' generate', $output);
-		Assert::same(0, $output);
-		Assert::false(file_exists(API_DIR . '/index.html'));
-		Assert::false(file_exists(API_DIR . '/namespace-Project.html'));
-		Assert::false(file_exists(API_DIR . '/namespace-ProjectBeta.html'));
 	}
 
 

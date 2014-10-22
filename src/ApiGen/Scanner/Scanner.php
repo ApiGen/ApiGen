@@ -14,12 +14,12 @@ use Nette;
 use Nette\Utils\Finder;
 use RecursiveDirectoryIterator as RDI;
 use RuntimeException;
-use Tester\Helpers;
+use SplFileInfo;
 
 
 /**
- * @method Scanner  onScanFinish(Scanner $scanner)
  * @method array    getSymlinks()
+ * @method Scanner  onScanFinish(Scanner $scanner)
  */
 class Scanner extends Nette\Object
 {
@@ -36,20 +36,21 @@ class Scanner extends Nette\Object
 
 
 	/**
-	 * @param array $sources List of sources to be scanned (folder or files).
-	 * @param array $exclude Masks for folders/files to be excluded.
-	 * @param array $extensions File extensions to be scanned (e.g. php, phpt).
+	 * @param array $sources
+	 * @param array $exclude
+	 * @param array $extensions
 	 * @throws RuntimeException
-	 * @return Finder
+	 * @return SplFileInfo[]
 	 */
 	public function scan(array $sources, array $exclude = array(), array $extensions = array('php'))
 	{
-		$sources = $this->extractPharSources($sources);
 		$fileMasks = $this->turnExtensionsToMask($extensions);
-		$files = Finder::findFiles($fileMasks)->exclude($exclude)
+		$sources = $this->extractPharSources($sources);
+		$finder = Finder::findFiles($fileMasks)->exclude($exclude)
 			->from($sources)->exclude($exclude);
+		$files = $this->convertFinderToArray($finder);
 
-		if (iterator_count($files) === 0) {
+		if (count($files) === 0) {
 			throw new RuntimeException('No PHP files found');
 		}
 
@@ -73,12 +74,13 @@ class Scanner extends Nette\Object
 
 
 	/**
+	 * @param SplFileInfo[] $files
 	 * @return array
 	 */
-	private function getSymlinksFromFiles(Finder $finder)
+	private function getSymlinksFromFiles(array $files)
 	{
 		$symlinks = array();
-		foreach ($finder->getIterator() as $file) {
+		foreach ($files as $file) {
 			$pathName = FileSystem::normalizePath($file->getPathName());
 			$files[$pathName] = $file->getSize();
 			if ($file->getRealPath() !== FALSE && $file->getRealPath() !== $pathName) {
@@ -107,6 +109,15 @@ class Scanner extends Nette\Object
 			}
 		}
 		return $sources;
+	}
+
+
+	/**
+	 * @return SplFileInfo[]
+	 */
+	private function convertFinderToArray(Finder $finder)
+	{
+		return iterator_to_array($finder->getIterator());
 	}
 
 }

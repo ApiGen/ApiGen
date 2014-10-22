@@ -52,8 +52,9 @@ class ParserTest extends TestCase
 	public function testParseClasses()
 	{
 		$files = $this->getFilesFromDir(PROJECT_DIR);
-		$this->parser->parse($files);
+		Assert::count(13, $files);
 
+		$this->parser->parse($files);
 		$classes = $this->parser->getClasses();
 		Assert::count(17, $classes);
 	}
@@ -67,8 +68,7 @@ class ParserTest extends TestCase
 	{
 		$files = array();
 		foreach (Finder::find('*.php')->in($dir) as $splFile) {
-			/** @var \SplFileInfo $splFile */
-			$files[$dir . DS . $splFile->getFilename()] = $splFile->getSize();
+			$files[] = $splFile;
 		}
 		return $files;
 	}

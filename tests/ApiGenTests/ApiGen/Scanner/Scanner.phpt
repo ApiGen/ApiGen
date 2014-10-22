@@ -42,13 +42,13 @@ class ScannerTest extends TestCase
 	public function testScanFiles()
 	{
 		$files = $this->scanner->scan(array(PROJECT_DIR));
-		Assert::equal(13, iterator_count($files));
+		Assert::equal(13, count($files));
 
 		$files = $this->scanner->scan(array(PROJECT_DIR), array('*Annotation*'));
-		Assert::equal(12, iterator_count($files));
+		Assert::equal(12, count($files));
 
 		$files = $this->scanner->scan(array(PROJECT_DIR), array(), array('php5'));
-		Assert::equal(1, iterator_count($files));
+		Assert::equal(1, count($files));
 	}
 
 
@@ -75,7 +75,7 @@ class ScannerTest extends TestCase
 		Assert::true(file_exists(TEMP_DIR . '/apigen.phar'));
 
 		$files = $this->scanner->scan(array(TEMP_DIR . '/apigen.phar'));
-		Assert::true(iterator_count($files) > 400);
+		Assert::true(count($files) > 400);
 	}
 
 
@@ -85,7 +85,7 @@ class ScannerTest extends TestCase
 	public function testExcludeAppliedOnlyOnSourcesPath()
 	{
 		$files = $this->scanner->scan(array(PROJECT_DIR), array('*tests*', '*/tests/*'));
-		Assert::same(13, iterator_count($files));
+		Assert::same(13, count($files));
 	}
 
 }

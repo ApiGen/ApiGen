@@ -17,6 +17,7 @@ use ApiGen\Neon\NeonFile;
 use ApiGen\Parser\Parser;
 use ApiGen\Scanner\Scanner;
 use InvalidArgumentException;
+use SplFileInfo;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -115,7 +116,7 @@ class GenerateCommand extends Command
 	/**
 	 * @param array $apigen
 	 * @param OutputInterface $output
-	 * @return array
+	 * @return SplFileInfo[]
 	 */
 	private function scan(array $apigen, OutputInterface $output)
 	{

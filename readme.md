@@ -94,9 +94,9 @@ extensions:
 
 # directories and files matching this file mask will not be parsed
 exclude:
-	- */tests/*
-	- */vendor/*
-	- *Factory.php*
+	- tests/
+	- vendor/
+	- *Factory.php
 
 # this files will be included in class tree, but will not create a link to their documentation
 # either files

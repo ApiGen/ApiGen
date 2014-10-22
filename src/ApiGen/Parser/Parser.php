@@ -14,6 +14,7 @@ use ApiGen\Parser\Broker\Backend;
 use ApiGen\Reflection\ReflectionElement;
 use ArrayObject;
 use Nette;
+use SplFileInfo;
 use TokenReflection\Broker;
 
 
@@ -92,20 +93,23 @@ class Parser extends Nette\Object
 	}
 
 
-	public function parse(array $files)
+	/**
+	 * @param SplFileInfo[] $files
+	 */
+	public function parse($files)
 	{
-		$this->onParseStart(array_sum($files));
+		$this->onParseStart($this->getFilesTotalSize($files));
 
-		foreach ($files as $filePath => $size) {
-			$content = $this->charsetConvertor->convertFile($filePath);
+		foreach ($files as $file) {
+			$content = $this->charsetConvertor->convertFile($file->getPathname());
 			try {
-				$this->broker->processString($content, $filePath);
+				$this->broker->processString($content, $file->getPathname());
 
 			} catch (\Exception $e) {
 				$this->errors[] = $e;
 			}
 
-			$this->onParseProgress($size);
+			$this->onParseProgress($file->getSize());
 		}
 
 		$allFoundClasses = $this->broker->getClasses(Backend::TOKENIZED_CLASSES | Backend::INTERNAL_CLASSES
@@ -148,6 +152,20 @@ class Parser extends Nette\Object
 			$count += (int) $element->isDocumented();
 		}
 		return $count;
+	}
+
+
+	/**
+	 * @param SplFileInfo[] $files
+	 * @return int
+	 */
+	private function getFilesTotalSize($files)
+	{
+		$size = 0;
+		foreach ($files as $file) {
+			$size += $file->getSize();
+		}
+		return $size;
 	}
 
 }
