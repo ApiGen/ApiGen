@@ -101,9 +101,8 @@ class Scanner extends Nette\Object
 				}
 
 				$dir = sys_get_temp_dir() . DS . '_apigen_temp' . DS . 'phar_' . $i;
-				Helpers::purge($dir);
 				$phar = new \Phar($source, RDI::CURRENT_AS_FILEINFO | RDI::SKIP_DOTS | RDI::FOLLOW_SYMLINKS);
-				$phar->extractTo($dir);
+				$phar->extractTo($dir, NULL, TRUE);
 				$sources[$i] = $dir;
 			}
 		}
