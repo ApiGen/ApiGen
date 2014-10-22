@@ -218,7 +218,8 @@ class ElementResolver extends Nette\Object
 			return $constant;
 
 		} elseif (($function = $this->getFunction($definition, $context->getNamespaceName()))
-			|| (substr($definition, -2) === '()' && ($function = $this->getFunction(substr($definition, 0, -2), $context->getNamespaceName())))
+			|| (substr($definition, -2) === '()'
+				&& ($function = $this->getFunction(substr($definition, 0, -2), $context->getNamespaceName())))
 		) {
 			return $function;
 		}

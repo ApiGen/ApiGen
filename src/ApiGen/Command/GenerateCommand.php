@@ -60,7 +60,8 @@ class GenerateCommand extends Command
 			->setDescription('Generate API documentation')
 			->setDefinition(array(
 				new InputArgument('destination', InputArgument::OPTIONAL, 'Target dir for documentation.', NULL),
-				new InputArgument('source', InputArgument::IS_ARRAY | InputArgument::OPTIONAL, 'Dir(s) or file(s) documentation is generated for (separate multiple items with a space).', NULL),
+				new InputArgument('source', InputArgument::IS_ARRAY | InputArgument::OPTIONAL,
+					'Dir(s) or file(s) documentation is generated for (separate multiple items with a space).', NULL),
 				new InputOption('debug', 'd', InputArgument::OPTIONAL, 'Turn on debug mode.', FALSE)
 			));
 	}

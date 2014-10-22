@@ -22,7 +22,6 @@ class ProgressBar extends Nette\Object
 	 */
 	private $consoleIO;
 
-
 	/**
 	 * @var ProgressBarHelper
 	 */

@@ -191,7 +191,6 @@ class Configuration extends Nette\Object
 
 
 	/**
-	 * @param array $config
 	 * @return array
 	 */
 	private function sanitaze(array $config)
