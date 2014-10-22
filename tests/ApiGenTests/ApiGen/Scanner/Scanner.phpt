@@ -78,6 +78,16 @@ class ScannerTest extends TestCase
 		Assert::true(iterator_count($files) > 400);
 	}
 
+
+	/**
+	 * Issue #412
+	 */
+	public function testExcludeAppliedOnlyOnSourcesPath()
+	{
+		$files = $this->scanner->scan(array(PROJECT_DIR), array('*tests*', '*/tests/*'));
+		Assert::same(13, iterator_count($files));
+	}
+
 }
 
 
