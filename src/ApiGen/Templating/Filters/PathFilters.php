@@ -29,7 +29,7 @@ class PathFilters extends Filters
 
 
 	/**
-	 * @param string $name
+	 * @param string $fileName
 	 * @return string
 	 */
 	public function relativePath($fileName)
