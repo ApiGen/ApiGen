@@ -84,7 +84,7 @@ class ScannerTest extends TestCase
 	 */
 	public function testExcludeAppliedOnlyOnSourcesPath()
 	{
-		$files = $this->scanner->scan(array(PROJECT_DIR), array('*tests*', '*/tests/*'));
+		$files = $this->scanner->scan(array(PROJECT_DIR), array('tests', '*tests*', '*/tests/*'));
 		Assert::same(13, count($files));
 	}
 
