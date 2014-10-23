@@ -55,7 +55,6 @@ class ApiGenExtension extends CompilerExtension
 		$this->setupEvents();
 		$this->setupFileSystem();
 		$this->setupFshl();
-		$this->setupMetrics();
 		$this->setupParser();
 		$this->setupTemplate();
 	}
@@ -132,15 +131,6 @@ class ApiGenExtension extends CompilerExtension
 
 		$builder->addDefinition($this->prefix('sourceCodeHighlighter'))
 			->setClass('ApiGen\Generator\FshlSourceCodeHighlighter');
-	}
-
-
-	private function setupMetrics()
-	{
-		$builder = $this->getContainerBuilder();
-
-		$builder->addDefinition($this->prefix('memoryLimitChecker'))
-			->setClass('ApiGen\Metrics\SimpleMemoryLimitChecker');
 	}
 
 
