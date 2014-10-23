@@ -30,16 +30,14 @@ use RuntimeException;
 
 
 /**
- * Generates a HTML API documentation.
- *
- * @method HtmlGenerator    setParsedClasses(ArrayObject|object)
- * @method HtmlGenerator    setParsedConstants(ArrayObject|object)
- * @method HtmlGenerator    setParsedFunctions(ArrayObject|object)
- * @method HtmlGenerator    onGenerateStart($steps)
- * @method HtmlGenerator    onGenerateProgress($size)
- * @method HtmlGenerator    setConfig(array $config)
+ * @method Generator setParsedClasses(object)
+ * @method Generator setParsedConstants(object)
+ * @method Generator setParsedFunctions(object)
+ * @method Generator setConfig()
+ * @method Generator onGenerateStart(int $steps)
+ * @method Generator onGenerateProgress(int $size)
  */
-class HtmlGenerator extends Nette\Object implements Generator
+class Generator extends Nette\Object
 {
 	/**
 	 * @var array
@@ -1089,6 +1087,8 @@ class HtmlGenerator extends Nette\Object implements Generator
 		$template->class = NULL;
 		$template->constant = NULL;
 		$template->function = NULL;
+
+		$template->gitVersions = $this->config['git']['versions'];
 
 		$template->namespaces = array_keys($this->namespaces);
 		$template->packages = array_keys($this->packages);

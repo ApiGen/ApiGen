@@ -9,7 +9,7 @@
 
 namespace ApiGen\Events;
 
-use ApiGen\Generator\HtmlGenerator;
+use ApiGen\Generator\Generator;
 use ApiGen\Generator\Resolvers\ElementResolver;
 use ApiGen\Parser\Parser;
 use ApiGen\Parser\ParserResult;
@@ -31,7 +31,7 @@ class LoadParsedElements extends Nette\Object implements Subscriber
 	private $generator;
 
 
-	public function __construct(ElementResolver $elementResolver, HtmlGenerator $generator)
+	public function __construct(ElementResolver $elementResolver, Generator $generator)
 	{
 		$this->elementResolver = $elementResolver;
 		$this->generator = $generator;

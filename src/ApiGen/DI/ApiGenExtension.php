@@ -34,7 +34,7 @@ class ApiGenExtension extends CompilerExtension
 
 		// generator
 		$builder->addDefinition($this->prefix('generator'))
-			->setClass('ApiGen\Generator\HtmlGenerator');
+			->setClass('ApiGen\Generator\Generator');
 
 		$builder->addDefinition($this->prefix('elementResolver'))
 			->setClass('ApiGen\Generator\Resolvers\ElementResolver');

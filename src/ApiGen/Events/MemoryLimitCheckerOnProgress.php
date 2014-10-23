@@ -37,7 +37,7 @@ class MemoryLimitCheckerOnProgress extends Nette\Object implements Subscriber
 	{
 		return array(
 			'ApiGen\Parser\Parser::onParseProgress' => 'onProgress',
-			'ApiGen\Generator\HtmlGenerator::onGenerateProgress' => 'onProgress'
+			'ApiGen\Generator\Generator::onGenerateProgress' => 'onProgress'
 		);
 	}
 
