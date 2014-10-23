@@ -78,7 +78,7 @@ class GenerateCommand extends Command
 				new InputArgument('destination', InputArgument::OPTIONAL, 'Target dir for documentation.', NULL),
 				new InputArgument('source', InputArgument::IS_ARRAY | InputArgument::OPTIONAL,
 					'Dir(s) or file(s) documentation is generated for (separate multiple items with a space).', NULL),
-				new InputOption('debug', 'd', InputArgument::OPTIONAL, 'Turn on debug mode.', FALSE)
+				new InputOption('debug', 'd', InputOption::VALUE_NONE, 'Turn on debug mode.')
 			));
 	}
 
@@ -114,8 +114,6 @@ class GenerateCommand extends Command
 
 
 	/**
-	 * @param array $apigen
-	 * @param OutputInterface $output
 	 * @return SplFileInfo[]
 	 */
 	private function scan(array $apigen, OutputInterface $output)
@@ -139,15 +137,19 @@ class GenerateCommand extends Command
 		$this->parser->parse($files);
 
 		if (count($this->parser->getErrors())) {
-			$output->writeln(PHP_EOL . '<error>Found ' . count($this->parser->getErrors()) . ' errors</error>');
-
-
-			foreach ($this->parser->getErrors() as $e) {
-				if ($apigen['debug']) {
-					Debugger::$logDirectory = LOG_DIRECTORY;
+			if ($apigen['debug']) {
+				if ( ! is_dir(LOG_DIRECTORY)) {
+					mkdir(LOG_DIRECTORY);
+				}
+				Debugger::$logDirectory = LOG_DIRECTORY;
+				foreach ($this->parser->getErrors() as $e) {
 					$logName = Debugger::log($e);
 					$output->writeln("<error>Parse error occurred, exception was stored info $logName</error>");
 				}
+
+			} else {
+				$output->writeln(PHP_EOL . '<error>Found ' . count($this->parser->getErrors()) . ' errors.'
+					. ' For more details add --debug option</error>');
 			}
 		}
 
@@ -161,7 +163,6 @@ class GenerateCommand extends Command
 
 	private function generate(array $apigen, OutputInterface $output)
 	{
-		// wipeout first
 		$output->writeln('<info>Wiping out destination directory</info>');
 		$this->wiper->wipOutDestination();
 

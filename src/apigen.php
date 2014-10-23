@@ -29,9 +29,6 @@ Debugger::$onFatalError[] = function() use ($tempDir) {
 Debugger::$strictMode = TRUE;
 if (isset($_SERVER['argv']) && ($tmp = array_search('--debug', $_SERVER['argv'], TRUE))) {
 	Debugger::enable(Debugger::DEVELOPMENT);
-	unset($_SERVER['argv'][$tmp]);
-	$_SERVER['argv'] = array_values($_SERVER['argv']);
-	$_SERVER['argc']--;
 	define('LOG_DIRECTORY', __DIR__ . '/../apigen-log/');
 
 } else {
