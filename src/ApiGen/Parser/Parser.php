@@ -98,7 +98,7 @@ class Parser extends Nette\Object
 	 */
 	public function parse($files)
 	{
-		$this->onParseStart($this->getFilesTotalSize($files));
+		$this->onParseStart(count($files));
 
 		foreach ($files as $file) {
 			$content = $this->charsetConvertor->convertFile($file->getPathname());
@@ -109,7 +109,7 @@ class Parser extends Nette\Object
 				$this->errors[] = $e;
 			}
 
-			$this->onParseProgress($file->getSize());
+			$this->onParseProgress(1);
 		}
 
 		$allFoundClasses = $this->broker->getClasses(Backend::TOKENIZED_CLASSES | Backend::INTERNAL_CLASSES
@@ -152,20 +152,6 @@ class Parser extends Nette\Object
 			$count += (int) $element->isDocumented();
 		}
 		return $count;
-	}
-
-
-	/**
-	 * @param SplFileInfo[] $files
-	 * @return int
-	 */
-	private function getFilesTotalSize($files)
-	{
-		$size = 0;
-		foreach ($files as $file) {
-			$size += $file->getSize();
-		}
-		return $size;
 	}
 
 }
