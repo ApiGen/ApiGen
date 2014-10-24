@@ -7,7 +7,7 @@
  * the file license.md that was distributed with this source code.
  */
 
-namespace ApiGen\Charset;
+namespace ApiGen\Parser;
 
 use Nette;
 

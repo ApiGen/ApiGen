@@ -29,8 +29,6 @@ class ApiGenExtension extends CompilerExtension
 			->setClass('ApiGen\Configuration\Configuration');
 
 		// charset
-		$builder->addDefinition($this->prefix('charsetConvertor'))
-			->setClass('ApiGen\Charset\CharsetConvertor');
 
 		// generator
 		$builder->addDefinition($this->prefix('generator'))
@@ -151,6 +149,9 @@ class ApiGenExtension extends CompilerExtension
 		$builder->addDefinition($this->prefix('parser'))
 			->setClass('ApiGen\Parser\Parser');
 
+		$builder->addDefinition($this->prefix('charsetConvertor'))
+			->setClass('ApiGen\Parser\CharsetConvertor');
+
 		$backend = $builder->addDefinition($this->prefix('parser.backend'))
 			->setClass('ApiGen\Parser\Broker\Backend');
 
@@ -192,5 +193,4 @@ class ApiGenExtension extends CompilerExtension
 	{
 		return 'phar:' === substr(__FILE__, 0, 5);
 	}
-
 }
