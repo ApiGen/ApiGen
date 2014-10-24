@@ -9,7 +9,7 @@
 
 namespace ApiGen\Parser;
 
-use ApiGen\Charset\CharsetConvertor;
+use ApiGen\Parser\CharsetConvertor;
 use ApiGen\Parser\Broker\Backend;
 use ApiGen\Reflection\ReflectionElement;
 use ArrayObject;
@@ -23,6 +23,7 @@ use TokenReflection\Broker;
  * @method ArrayObject  getConstants()
  * @method ArrayObject  getFunctions()
  * @method array        getErrors()
+ * @method array        getDocumentedStats()
  * @method Parser       onParseStart($steps)
  * @method Parser       onParseProgress($size)
  * @method Parser       onParseFinish(Parser $parser)
@@ -80,6 +81,13 @@ class Parser extends Nette\Object
 	 */
 	private $errors;
 
+	/**
+	 * @var array
+	 */
+	private $documentedStats;
+
+
+	// todo: add custom broker with clear method
 
 	public function __construct(Broker $broker, CharsetConvertor $charsetConvertor)
 	{
@@ -123,21 +131,9 @@ class Parser extends Nette\Object
 		$this->constants->uksort('strcasecmp');
 		$this->functions->uksort('strcasecmp');
 
+		$this->setDocumentedStats();
+
 		$this->onParseFinish($this);
-	}
-
-
-	/**
-	 * @return array
-	 */
-	public function getDocumentedStats()
-	{
-		return array(
-			'classes' => $this->getDocumentedElementsCount($this->broker->getClasses(Backend::TOKENIZED_CLASSES)),
-			'constants' => $this->getDocumentedElementsCount($this->constants->getArrayCopy()),
-			'functions' => $this->getDocumentedElementsCount($this->functions->getArrayCopy()),
-			'internalClasses' => $this->getDocumentedElementsCount($this->internalClasses->getArrayCopy())
-		);
 	}
 
 
@@ -152,6 +148,17 @@ class Parser extends Nette\Object
 			$count += (int) $element->isDocumented();
 		}
 		return $count;
+	}
+
+
+	private function setDocumentedStats()
+	{
+		$this->documentedStats = array(
+			'classes' => $this->getDocumentedElementsCount($this->broker->getClasses(Backend::TOKENIZED_CLASSES)),
+			'constants' => $this->getDocumentedElementsCount($this->constants->getArrayCopy()),
+			'functions' => $this->getDocumentedElementsCount($this->functions->getArrayCopy()),
+			'internalClasses' => $this->getDocumentedElementsCount($this->internalClasses->getArrayCopy())
+		);
 	}
 
 }
