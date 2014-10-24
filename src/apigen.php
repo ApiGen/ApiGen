@@ -7,7 +7,6 @@
  * the file license.md that was distributed with this source code.
  */
 
-use ApiGen\FileSystem\FileSystem;
 use Nette\Configurator;
 use Tracy\Debugger;
 
@@ -16,13 +15,8 @@ require __DIR__ . '/bootstrap.php';
 
 
 // Create temp dir
-$tempDir = getcwd() . '/_apigen.temp';
-mkdir($tempDir, 0755, TRUE);
-
-// Delete on error
-Debugger::$onFatalError[] = function() use ($tempDir) {
-	FileSystem::deleteDir($tempDir);
-};
+$tempDir = sys_get_temp_dir() . '/_apigen.temp';
+@mkdir($tempDir, 0755, TRUE); // @ - dir may exists
 
 
 // Init debugger
@@ -58,6 +52,3 @@ $container = $configurator->createContainer();
 
 // Let's rock
 $container->getByType('ApiGen\Console\Application')->run();
-
-// Remove temp dir
-FileSystem::deleteDir($tempDir);
