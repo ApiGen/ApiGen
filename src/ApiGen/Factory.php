@@ -20,7 +20,7 @@ class Factory extends Nette\Object
 	 */
 	public static function getApiGenFile()
 	{
-		return getcwd() . '/apigen.neon';
+		return getcwd() . DS . 'apigen.neon';
 	}
 
 }
