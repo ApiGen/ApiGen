@@ -57,4 +57,5 @@ class RelativePathResolver extends Nette\Object
 
 		throw new \InvalidArgumentException(sprintf('Could not determine "%s" relative path', $fileName));
 	}
+
 }

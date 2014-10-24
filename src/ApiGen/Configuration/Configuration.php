@@ -189,6 +189,7 @@ class Configuration extends Nette\Object
 		}
 	}
 
+
 	/**
 	 *  @param string $path
 	 *  @return string
@@ -197,15 +198,15 @@ class Configuration extends Nette\Object
 	{
 		$path = FileSystem::normalizePath($path);
 
-		if((strpos($path, 'phar://') !== 0) && file_exists($path)) {
+		if ((strpos($path, 'phar://') !== 0) && file_exists($path)) {
 			$path = realpath($path);
 		}
 
 		return $path;
 	}
 
+
 	/**
-	 * @param array $config
 	 * @return array
 	 */
 	private function sanitaze(array $config)
