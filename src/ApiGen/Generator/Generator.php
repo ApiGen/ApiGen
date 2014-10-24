@@ -9,7 +9,7 @@
 
 namespace ApiGen\Generator;
 
-use ApiGen\Charset\CharsetConvertor;
+use ApiGen\Parser\CharsetConvertor;
 use ApiGen\Generator\Resolvers\ElementResolver;
 use ApiGen\Generator\Resolvers\RelativePathResolver;
 use ApiGen\Reflection\ReflectionClass;
