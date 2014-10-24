@@ -26,4 +26,9 @@ if ( ! ($loader = includeIfExists(__DIR__ . '/../vendor/autoload.php'))
 	exit(2);
 }
 
+
+include __DIR__ . DS . 'memory.php';
+
+setMemoryLimitTo('512M');
+
 return $loader;

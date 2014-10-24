@@ -1,5 +1,4 @@
 - ApiGen\Events\ProgressBarIncrement
-- ApiGen\Events\MemoryLimitCheckerOnProgress
 - ApiGen\Events\LoadParsedElements
 - ApiGen\Events\LoadRelativePathResolver
 - ApiGen\Events\InjectConfig
