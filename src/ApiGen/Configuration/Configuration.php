@@ -198,8 +198,8 @@ class Configuration extends Nette\Object
 
 
 	/**
-	 *  @param string $path
-	 *  @return string
+	 * @param string $path
+	 * @return string
 	 */
 	private function sanitazePathHelper(&$path)
 	{
