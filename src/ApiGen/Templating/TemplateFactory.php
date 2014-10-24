@@ -49,10 +49,15 @@ class TemplateFactory extends Nette\Object
 	 */
 	public function create()
 	{
+		foreach (array('webalize') as $name) {
+			$this->latteEngine->addFilter($name, 'Nette\Utils\Strings::' . $name);
+		}
+
 		/** @var Template|\stdClass $template */
 		$template = new Template($this->latteEngine);
 		$template->config = ArrayHash::from($this->config);
 		$template->basePath = dirname($this->config['templateConfig']);
+
 		return $template;
 	}
 

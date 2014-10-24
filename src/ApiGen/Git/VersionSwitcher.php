@@ -61,7 +61,7 @@ class VersionSwitcher extends Nette\Object
 	private function checkIfRepoIsClean()
 	{
 		exec('git status --porcelain | grep -v ' . $this->source . ' | wc -l', $output);
-		if ($output[0] > 0) {
+		if ($output[0] > 1) {
 			throw new RuntimeException('Unable to switch version as the repository is not clean.');
 		}
 	}
