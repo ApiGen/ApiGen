@@ -112,8 +112,8 @@ class Configuration extends Nette\Object
 			$config = $this->correctThemeTemplatePaths($config);
 		}
 
+		$config = $this->sanitaze($config);
 		$this->validate($config);
-		$this->sanitaze($config);
 
 		return $config;
 	}
@@ -198,7 +198,22 @@ class Configuration extends Nette\Object
 
 
 	/**
-	 * @param array $config
+	 *  @param string $path
+	 *  @return string
+	 */
+	private function sanitazePathHelper(&$path)
+	{
+		$path = FileSystem::normalizePath($path);
+
+		if ((strpos($path, 'phar://') !== 0) && file_exists($path)) {
+			$path = realpath($path);
+		}
+
+		return $path;
+	}
+
+
+	/**
 	 * @return array
 	 */
 	private function sanitaze(array $config)
@@ -209,23 +224,11 @@ class Configuration extends Nette\Object
 		// Process options that specify a filesystem path
 		foreach ($this->pathOptions as $option) {
 			if (is_array($config[$option])) {
-				array_walk($config[$option], function (&$value) {
-					if (file_exists($value)) {
-						$value = realpath($value);
-
-					} else {
-						$value = str_replace(array('/', '\\'), DS, $value);
-					}
-				});
+				array_walk($config[$option], array($this, 'sanitazePathHelper'));
 				usort($config[$option], 'strcasecmp');
 
 			} else {
-				if (file_exists($config[$option])) {
-					$config[$option] = realpath($config[$option]);
-
-				} else {
-					$config[$option] = str_replace(array('/', '\\'), DS, $config[$option]);
-				}
+				$config[$option] = $this->sanitazePathHelper($config[$option]);
 			}
 		}
 
