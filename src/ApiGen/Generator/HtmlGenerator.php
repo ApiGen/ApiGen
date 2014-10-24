@@ -964,8 +964,8 @@ class HtmlGenerator extends Nette\Object implements Generator
 	 */
 	private function sortConstants(ReflectionConstant $one, ReflectionConstant $two)
 	{
-		return strcasecmp((
-			$one->getDeclaringClassName() ?: $one->getNamespaceName()) . '\\' . $one->getName(),
+		return strcasecmp(
+			($one->getDeclaringClassName() ?: $one->getNamespaceName()) . '\\' . $one->getName(),
 			($two->getDeclaringClassName() ?: $two->getNamespaceName()) . '\\' . $two->getName()
 		);
 	}
