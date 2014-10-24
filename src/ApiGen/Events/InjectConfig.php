@@ -9,7 +9,7 @@
 
 namespace ApiGen\Events;
 
-use ApiGen\Charset\CharsetConvertor;
+use ApiGen\Parser\CharsetConvertor;
 use ApiGen\Configuration\Configuration;
 use ApiGen\FileSystem\Finder;
 use ApiGen\FileSystem\Zip;
