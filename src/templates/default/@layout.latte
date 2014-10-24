@@ -113,6 +113,14 @@
 	</form>
 
 	<div id="navigation">
+		<div class="version-picker" n:if="count($gitVersions)">
+			<ul>
+				<li n:foreach="$gitVersions as $version">
+					<a href="../{$version|webalize}">{$version}</a>
+				</li>
+			</ul>
+		</div>
+
 		<ul>
 			<li n:class="'overview' === $active ? active">
 				<a n:tag-if="'overview' !== $active" href="index.html" title="Overview"><span>Overview</span></a>

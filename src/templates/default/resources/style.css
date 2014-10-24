@@ -354,7 +354,7 @@ dl.tree dd {
 .summary td {
 	border: 1px solid #cccccc;
 	margin: 0;
-	padding: 3px 10px;
+	padding: .4em 10px;
 	font-size: 1em;
 	vertical-align: top;
 }
@@ -397,6 +397,7 @@ dl.tree dd {
 
 .name, .attributes {
 	white-space: nowrap;
+	width: 1%;
 }
 
 .value code {
@@ -603,4 +604,37 @@ span.l a.l:hover, span.l a.l:active, span.l a.l:focus {
 }
 .right, .summary td.right {
 	text-align: right;
+}
+
+
+/**
+ * Version picker in the nav bar.
+ */
+.version-picker {
+	float: right;
+	position: relative;
+}
+.version-picker a {
+	display: block;
+	width: 100px;
+	margin: 0;
+}
+/* Active link for button */
+.version-picker > a:after {
+	content: ' \25BE';
+}
+.version-picker ul {
+	display: none;
+	position: absolute;
+	top: 100%;
+	background: #BD8A5D;
+	z-index: 10;
+}
+.version-picker:hover ul {
+	display: block;
+}
+.version-picker li {
+	display: block;
+	margin: 0;
+	padding: 0;
 }

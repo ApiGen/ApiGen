@@ -1,4 +1,11 @@
 source:
 	- src/ApiGen
-
+	
 destination: api-test
+git:
+	versions:
+		- v4.0.0-RC3
+		- v4.0.0-RC2
+		- v4.0.0-RC1
+		
+	

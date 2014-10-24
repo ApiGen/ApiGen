@@ -13,12 +13,12 @@ use ApiGen\Configuration\Configuration;
 use ApiGen\Factory;
 use ApiGen\FileSystem\Wiper;
 use ApiGen\Generator\Generator;
+use ApiGen\Git\VersionSwitcher;
 use ApiGen\Neon\NeonFile;
 use ApiGen\Parser\Parser;
 use ApiGen\Scanner\Scanner;
-use InvalidArgumentException;
+use Nette\Utils\Strings;
 use SplFileInfo;
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -57,9 +57,19 @@ class GenerateCommand extends Command
 	 */
 	private $scanner;
 
+	/**
+	 * @var OutputInterface
+	 */
+	private $output;
+
+	/**
+	 * @var VersionSwitcher
+	 */
+	private $gitVersionSwitcher;
+
 
 	public function __construct(Generator $generator, Wiper $wiper, Configuration $configuration, Scanner $scanner,
-	                            Parser $parser)
+	                            Parser $parser, VersionSwitcher $gitVersionSwitcher)
 	{
 		parent::__construct();
 		$this->generator = $generator;
@@ -67,6 +77,7 @@ class GenerateCommand extends Command
 		$this->configuration = $configuration;
 		$this->scanner = $scanner;
 		$this->parser = $parser;
+		$this->gitVersionSwitcher = $gitVersionSwitcher;
 	}
 
 
@@ -86,24 +97,39 @@ class GenerateCommand extends Command
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
 		try {
+			$this->output = $output;
 			$file = Factory::getApiGenFile();
 
 			$neonFile = new NeonFile($file);
 			$neonFile->validate();
 			$apigen = $neonFile->read();
 
-			$apigen['destination'] = $this->getArgumentValue($input, $apigen, 'destination');
-			$apigen['source'] = $this->getArgumentValue($input, $apigen, 'source');
+			$apigen['destination'] = $this->getValueFromArgumentOrConfig($input, $apigen, 'destination');
+			$apigen['source'] = $this->getValueFromArgumentOrConfig($input, $apigen, 'source');
 
 			$neonFile->write($apigen);
 
-			$apigen['debug'] = $this->getOptionValue($input, $apigen, 'debug');
+			$apigen['debug'] = $this->getValueFromOptionOrConfig($input, $apigen, 'debug');
 
-			$apigen = $this->configuration->setDefaults($apigen);
+			if (count($apigen['git']['versions'])) {
+				$this->gitVersionSwitcher->setSource($apigen['source'][0]);
 
-			$files = $this->scan($apigen, $output);
-			$this->parse($apigen, $output, $files);
-			$this->generate($apigen, $output);
+				$destination = $apigen['destination'];
+				foreach ($apigen['git']['versions'] as $version) {
+					$apigen['destination'] = $destination . DS . Strings::webalize($version) . DS;
+					$apigen = $this->configuration->setDefaults($apigen);
+					$this->gitVersionSwitcher->switchToVersion($version);
+					$output->writeln('<comment>Generating for git version ' . $version . '</comment>');
+					$this->runGeneration($apigen);
+				}
+
+				$this->gitVersionSwitcher->restoreInitBranch();
+
+			} else {
+				$apigen = $this->configuration->setDefaults($apigen);
+				$this->runGeneration($apigen);
+			}
+
 			return 0;
 
 		} catch (\Exception $e) {
@@ -116,23 +142,23 @@ class GenerateCommand extends Command
 	/**
 	 * @return SplFileInfo[]
 	 */
-	private function scan(array $apigen, OutputInterface $output)
+	private function scan(array $apigen)
 	{
 		foreach ($apigen['source'] as $source) {
-			$output->writeln("<info>Scanning $source</info>");
+			$this->output->writeln("<info>Scanning $source</info>");
 		}
 
 		foreach ($apigen['exclude'] as $exclude) {
-			$output->writeln("<info>Excluding $exclude</info>");
+			$this->output->writeln("<info>Excluding $exclude</info>");
 		}
 
 		return $this->scanner->scan($apigen['source'], $apigen['exclude'], $apigen['extensions']);
 	}
 
 
-	private function parse(array $apigen, OutputInterface $output, array $files)
+	private function parse(array $apigen, array $files)
 	{
-		$output->writeln("<info>Parsing...</info>");
+		$this->output->writeln("<info>Parsing...</info>");
 
 		$this->parser->parse($files);
 
@@ -144,74 +170,45 @@ class GenerateCommand extends Command
 				Debugger::$logDirectory = LOG_DIRECTORY;
 				foreach ($this->parser->getErrors() as $e) {
 					$logName = Debugger::log($e);
-					$output->writeln("<error>Parse error occurred, exception was stored info $logName</error>");
+					$this->output->writeln("<error>Parse error occurred, exception was stored info $logName</error>");
 				}
 
 			} else {
-				$output->writeln(PHP_EOL . '<error>Found ' . count($this->parser->getErrors()) . ' errors.'
+				$this->output->writeln(PHP_EOL . '<error>Found ' . count($this->parser->getErrors()) . ' errors.'
 					. ' For more details add --debug option</error>');
 			}
 		}
 
 		$stats = $this->parser->getDocumentedStats();
-		$output->writeln(PHP_EOL . sprintf(
+		$this->output->writeln(PHP_EOL . sprintf(
 			'Generating documentation for %d classes, %d constants, %d functions and %d PHP internal classes.',
 			$stats['classes'], $stats['constants'], $stats['functions'], $stats['internalClasses']
 		));
 	}
 
 
-	private function generate(array $apigen, OutputInterface $output)
+	private function generate(array $apigen)
 	{
-		$output->writeln('<info>Wiping out destination directory</info>');
+		$this->output->writeln('<info>Wiping out destination directory</info>');
 		$this->wiper->wipOutDestination();
 
-		$output->writeln('<info>Generating to directory \'' . $apigen['destination'] . '\'</info>');
+		$this->output->writeln('<info>Generating to directory \'' . $apigen['destination'] . '\'</info>');
 		$skipping = array_merge($apigen['skipDocPath'], $apigen['skipDocPrefix']); // @todo better merge
 		foreach ($skipping as $skip) {
-			$output->writeln("<info>Will not generate documentation for  $skip</info>");
+			$this->output->writeln("<info>Will not generate documentation for  $skip</info>");
 		}
 
 		$this->generator->generate();
 
-		$output->writeln(PHP_EOL . '<info>Api was successfully generated!</info>');
+		$this->output->writeln(PHP_EOL . '<info>Api was successfully generated!</info>');
 	}
 
 
-	/**
-	 * Gets value primary from input, secondary from config file.
-	 *
-	 * @throws InvalidArgumentException
-	 * @param InputInterface $input
-	 * @param array $apigen
-	 * @param string $key
-	 */
-	private function getArgumentValue(InputInterface $input, array $apigen, $key)
+	private function runGeneration(array $apigen)
 	{
-		if ($input->getArgument($key) === NULL && ! isset($apigen[$key])) {
-			throw new InvalidArgumentException(ucfirst($key) . " is missing. Add it via apigen.neon or '$key' argument.");
-		}
-
-		return $input->getArgument($key) ?: $apigen[$key];
-	}
-
-
-	/**
-	 * Gets value primary from input, secondary from config file.
-	 *
-	 * @throws InvalidArgumentException
-	 * @param InputInterface $input
-	 * @param array $apigen
-	 * @param string $key
-	 * @return mixed
-	 */
-	private function getOptionValue(InputInterface $input, array $apigen, $key)
-	{
-		if ($input->getOption($key) === NULL && ! isset($apigen[$key])) {
-			throw new InvalidArgumentException(ucfirst($key) . " is missing. Add it via apigen.neon or '--$key' option.");
-		}
-
-		return ($input->getOption($key) !== NULL) ? $input->getOption($key) : $apigen[$key];
+		$files = $this->scan($apigen);
+		$this->parse($apigen, $files);
+		$this->generate($apigen);
 	}
 
 }

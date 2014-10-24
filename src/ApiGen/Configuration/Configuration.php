@@ -62,7 +62,10 @@ class Configuration extends Nette\Object
 		'todo' => FALSE,
 		'download' => FALSE,
 		// templates
-		'templateTheme' => self::TEMPLATE_THEME_DEFAULT
+		'templateTheme' => self::TEMPLATE_THEME_DEFAULT,
+		'git' => array(
+			'versions' => array()
+		)
 	);
 
 	/**
@@ -142,6 +145,8 @@ class Configuration extends Nette\Object
 		Validators::assertField($config, 'deprecated', 'bool');
 		Validators::assertField($config, 'todo', 'bool');
 		Validators::assertField($config, 'download', 'bool');
+		Validators::assertField($config, 'git', 'array');
+		Validators::assertField($config['git'], 'versions', 'array');
 
 		// destination
 		Validators::assertField($config, 'destination', 'string');

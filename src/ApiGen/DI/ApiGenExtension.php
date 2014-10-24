@@ -12,8 +12,6 @@ namespace ApiGen\DI;
 use ApiGen;
 use Kdyby\Events\DI\EventsExtension;
 use Nette\DI\CompilerExtension;
-use Nette\DI\ServiceDefinition;
-use Nette\DI\Statement;
 use TokenReflection\Broker;
 
 
@@ -27,8 +25,6 @@ class ApiGenExtension extends CompilerExtension
 		// configuration
 		$builder->addDefinition($this->prefix('configuration'))
 			->setClass('ApiGen\Configuration\Configuration');
-
-		// charset
 
 		// generator
 		$builder->addDefinition($this->prefix('generator'))
@@ -53,6 +49,7 @@ class ApiGenExtension extends CompilerExtension
 		$this->setupEvents();
 		$this->setupFileSystem();
 		$this->setupFshl();
+		$this->setupGit();
 		$this->setupMetrics();
 		$this->setupParser();
 		$this->setupTemplate();
@@ -130,6 +127,15 @@ class ApiGenExtension extends CompilerExtension
 
 		$builder->addDefinition($this->prefix('sourceCodeHighlighter'))
 			->setClass('ApiGen\Generator\FshlSourceCodeHighlighter');
+	}
+
+
+	private function setupGit()
+	{
+		$builder = $this->getContainerBuilder();
+
+		$builder->addDefinition($this->prefix('git.versionSwitcher'))
+			->setClass('ApiGen\Git\VersionSwitcher');
 	}
 
 

@@ -11,6 +11,7 @@ namespace ApiGen\Events;
 
 use ApiGen\Generator\Generator;
 use ApiGen\Generator\Resolvers\ElementResolver;
+use ApiGen\Parser\Broker\Backend;
 use ApiGen\Parser\Parser;
 use ApiGen\Parser\ParserResult;
 use Nette;
@@ -30,11 +31,17 @@ class LoadParsedElements extends Nette\Object implements Subscriber
 	 */
 	private $generator;
 
+	/**
+	 * @var Backend
+	 */
+	private $backend;
 
-	public function __construct(ElementResolver $elementResolver, Generator $generator)
+
+	public function __construct(ElementResolver $elementResolver, Generator $generator, Backend $backend)
 	{
 		$this->elementResolver = $elementResolver;
 		$this->generator = $generator;
+		$this->backend = $backend;
 	}
 
 
@@ -62,6 +69,8 @@ class LoadParsedElements extends Nette\Object implements Subscriber
 		$this->generator->setParsedClasses($parser->getClasses());
 		$this->generator->setParsedConstants($parser->getConstants());
 		$this->generator->setParsedFunctions($parser->getFunctions());
+
+		$this->backend->clear();
 	}
 
 }

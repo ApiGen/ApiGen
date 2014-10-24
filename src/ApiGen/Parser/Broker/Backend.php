@@ -13,6 +13,7 @@ use ApiGen\Reflection\ReflectionClass;
 use ApiGen\Reflection\ReflectionConstant;
 use ApiGen\Reflection\ReflectionFunction;
 use ApiGen\Reflection\ReflectionMethod;
+use Nette\Reflection\Property;
 use TokenReflection;
 use TokenReflection\IReflectionConstant;
 use TokenReflection\IReflectionFunction;
@@ -64,6 +65,25 @@ class Backend extends Broker\Backend\Memory
 		return array_map(function (IReflectionFunction $function) {
 			return new ReflectionFunction($function);
 		}, parent::getFunctions());
+	}
+
+
+	public function clear()
+	{
+		foreach ($this->allClasses as $class) {
+			$class = NULL;
+			unset($class);
+		}
+		$this->allClasses = array();
+		unset($this->allClasses);
+
+		// set null to private parent property
+		$propertiesToNull = array('files', 'namespaces');
+		foreach ($propertiesToNull as $propertyName) {
+			$property = new Property('TokenReflection\Broker\Backend\Memory', $propertyName);
+			$property->setAccessible(TRUE);
+			$property->setValue($this, NULL);
+		}
 	}
 
 
