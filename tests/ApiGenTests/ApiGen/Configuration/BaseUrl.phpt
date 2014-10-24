@@ -29,8 +29,8 @@ class BaseUrlTest extends TestCase
 		Assert::true(file_exists(API_DIR . '/robots.txt'));
 		Assert::match(
 			'%A%Sitemap: ' . self::BASE_URL . '%A%',
-			file_get_contents(API_DIR . '/robots.txt'
-		));
+			file_get_contents(API_DIR . '/robots.txt')
+		);
 	}
 
 

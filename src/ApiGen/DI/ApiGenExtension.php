@@ -14,6 +14,7 @@ use Kdyby\Events\DI\EventsExtension;
 use Nette\DI\CompilerExtension;
 use Nette\DI\ServiceDefinition;
 use Nette\DI\Statement;
+use TokenReflection\Broker;
 
 
 class ApiGenExtension extends CompilerExtension
@@ -42,11 +43,7 @@ class ApiGenExtension extends CompilerExtension
 			->setClass('ApiGen\Generator\Resolvers\RelativePathResolver');
 
 		$builder->addDefinition($this->prefix('scanner'))
-			->setClass('ApiGen\Generator\PhpScanner');
-
-		$this->setupFshl();
-
-
+			->setClass('ApiGen\Scanner\Scanner');
 
 		$builder->addDefinition($this->prefix('markdown'))
 			->setClass('Michelf\MarkdownExtra');
@@ -55,10 +52,12 @@ class ApiGenExtension extends CompilerExtension
 			->setClass('ApiGen\Generator\Markups\MarkdownMarkup');
 
 		$this->setupConsole();
-		$this->setupMetrics();
 		$this->setupEvents();
-		$this->setupTemplate();
 		$this->setupFileSystem();
+		$this->setupFshl();
+		$this->setupMetrics();
+		$this->setupParser();
+		$this->setupTemplate();
 	}
 
 
@@ -71,6 +70,98 @@ class ApiGenExtension extends CompilerExtension
 				->setClass($class)
 				->addTag(EventsExtension::TAG_SUBSCRIBER);
 		}
+	}
+
+
+	private function setupConsole()
+	{
+		$builder = $this->getContainerBuilder();
+
+		$application = $builder->addDefinition($this->prefix('application'))
+			->setClass('ApiGen\Console\Application')
+			->addSetup('injectServiceLocator')
+			->addSetup('setEventManager');
+
+		$builder->addDefinition($this->prefix('consoleIO'))
+			->setClass('ApiGen\Console\IO');
+
+		foreach ($this->loadFromFile(__DIR__ . '/commands.neon') as $i => $class) {
+			if ( ! $this->isPhar() && $class === 'ApiGen\Command\SelfUpdateCommand') {
+				continue;
+			}
+
+			$command = $builder->addDefinition($this->prefix('command.' . $i))
+				->setClass($class);
+
+			$application->addSetup('add', array('@' . $command->getClass()));
+		}
+
+		$builder->addDefinition($this->prefix('console.progressBar'))
+			->setClass('ApiGen\Console\ProgressBar');
+	}
+
+
+	private function setupFileSystem()
+	{
+		$builder = $this->getContainerBuilder();
+
+		$builder->addDefinition($this->prefix('finder'))
+			->setClass('ApiGen\FileSystem\Finder');
+
+		$builder->addDefinition($this->prefix('zip'))
+			->setClass('ApiGen\FileSystem\Zip');
+
+		$builder->addDefinition($this->prefix('wiper'))
+			->setClass('ApiGen\FileSystem\Wiper');
+	}
+
+
+	private function setupFshl()
+	{
+		$builder = $this->getContainerBuilder();
+
+		$builder->addDefinition($this->prefix('fshl.output'))
+			->setClass('FSHL\Output\Html');
+
+		$builder->addDefinition($this->prefix('fshl.lexter'))
+			->setClass('FSHL\Lexer\Php');
+
+		$builder->addDefinition($this->prefix('fshl.highlighter'))
+			->setClass('FSHL\Highlighter')
+			->addSetup('setLexer', array('@FSHL\Lexer\Php'));
+
+		$builder->addDefinition($this->prefix('sourceCodeHighlighter'))
+			->setClass('ApiGen\Generator\FshlSourceCodeHighlighter');
+	}
+
+
+	private function setupMetrics()
+	{
+		$builder = $this->getContainerBuilder();
+
+		$builder->addDefinition($this->prefix('memoryLimitChecker'))
+			->setClass('ApiGen\Metrics\SimpleMemoryLimitChecker');
+	}
+
+
+	private function setupParser()
+	{
+		$builder = $this->getContainerBuilder();
+
+		$builder->addDefinition($this->prefix('parser'))
+			->setClass('ApiGen\Parser\Parser');
+
+		$backend = $builder->addDefinition($this->prefix('parser.backend'))
+			->setClass('ApiGen\Parser\Broker\Backend');
+
+		$builder->addDefinition($this->prefix('parser.broker'))
+			->setClass('TokenReflection\Broker')
+			->setArguments(array($backend,
+				Broker::OPTION_DEFAULT & ~(Broker::OPTION_PARSE_FUNCTION_BODY | Broker::OPTION_SAVE_TOKEN_STREAM)
+			));
+
+		$builder->addDefinition($this->prefix('parser.result'))
+			->setClass('ApiGen\Parser\ParserResult');
 	}
 
 
@@ -91,73 +182,6 @@ class ApiGenExtension extends CompilerExtension
 
 			$latteFactory->addSetup('addFilter', array(NULL, array('@' . $filter->getClass(), 'loader')));
 		}
-	}
-
-
-	private function setupMetrics()
-	{
-		$builder = $this->getContainerBuilder();
-
-		$builder->addDefinition($this->prefix('memoryLimitChecker'))
-			->setClass('ApiGen\Metrics\SimpleMemoryLimitChecker');
-	}
-
-
-	private function setupFileSystem()
-	{
-		$builder = $this->getContainerBuilder();
-
-		$builder->addDefinition($this->prefix('finder'))
-			->setClass('ApiGen\FileSystem\Finder');
-
-		$builder->addDefinition($this->prefix('zip'))
-			->setClass('ApiGen\FileSystem\Zip');
-
-		$builder->addDefinition($this->prefix('wiper'))
-			->setClass('ApiGen\FileSystem\Wiper');
-	}
-
-
-	private function setupConsole()
-	{
-		$builder = $this->getContainerBuilder();
-
-		$application = $builder->addDefinition($this->prefix('application'))
-			->setClass('ApiGen\Console\Application')
-			->addSetup('injectServiceLocator');
-
-		foreach ($this->loadFromFile(__DIR__ . '/commands.neon') as $i => $class) {
-			if ( ! $this->isPhar() && $class === 'ApiGen\Command\SelfUpdateCommand') {
-				continue;
-			}
-
-			$command = $builder->addDefinition($this->prefix('command.' . $i))
-				->setClass($class);
-
-			$application->addSetup('add', array('@' . $command->getClass()));
-		}
-
-		$builder->addDefinition($this->prefix('console.progressBar'))
-			->setClass('ApiGen\Console\ProgressBar');
-	}
-
-
-	private function setupFshl()
-	{
-		$builder = $this->getContainerBuilder();
-
-		$builder->addDefinition($this->prefix('fshl.output'))
-			->setClass('FSHL\Output\Html');
-
-		$builder->addDefinition($this->prefix('fshl.lexter'))
-			->setClass('FSHL\Lexer\Php');
-
-		$builder->addDefinition($this->prefix('fshl.highlighter'))
-			->setClass('FSHL\Highlighter')
-			->addSetup('setLexer', array('@FSHL\Lexer\Php'));
-
-		$builder->addDefinition($this->prefix('sourceCodeHighlighter'))
-			->setClass('ApiGen\Generator\FshlSourceCodeHighlighter');
 	}
 
 

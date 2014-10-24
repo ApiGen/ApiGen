@@ -50,13 +50,11 @@ abstract class ReflectionElement extends ReflectionBase
 	public function getExtension()
 	{
 		$extension = $this->reflection->getExtension();
-		return $extension === NULL ? NULL : new ReflectionExtension($extension, self::$generator);
+		return $extension === NULL ? NULL : new ReflectionExtension($extension);
 	}
 
 
 	/**
-	 * Returns the PHP extension name.
-	 *
 	 * @return boolean
 	 */
 	public function getExtensionName()
@@ -66,8 +64,6 @@ abstract class ReflectionElement extends ReflectionBase
 
 
 	/**
-	 * Returns the start position in the file token stream.
-	 *
 	 * @return integer
 	 */
 	public function getStartPosition()
@@ -77,8 +73,6 @@ abstract class ReflectionElement extends ReflectionBase
 
 
 	/**
-	 * Returns the end position in the file token stream.
-	 *
 	 * @return integer
 	 */
 	public function getEndPosition()

@@ -10,42 +10,39 @@
 namespace ApiGen\Reflection;
 
 use ApiGen\Configuration\Configuration;
-use ApiGen\Generator\Generator;
+use ArrayObject;
 use Nette;
 use Nette\Utils\ArrayHash;
+use TokenReflection\Broker;
 use TokenReflection\IReflection;
+use TokenReflection\IReflectionClass;
 
 
 /**
  * Alters TokenReflection\IReflection functionality for ApiGen.
  */
-abstract class ReflectionBase extends Nette\Object
+abstract class ReflectionBase extends Nette\Object implements IReflection
 {
 
 	/**
-	 * @var \ArrayObject
+	 * @var ArrayObject
 	 */
 	protected static $parsedClasses;
 
 	/**
-	 * @var \ArrayObject
+	 * @var ArrayObject
 	 */
 	protected static $parsedConstants;
 
 	/**
-	 * @var \ArrayObject
+	 * @var ArrayObject
 	 */
 	protected static $parsedFunctions;
 
 	/**
-	 * @var Generator
+	 * @var ArrayHash
 	 */
-	protected static $generator = NULL;
-
-	/**
-	 * @var Configuration
-	 */
-	protected static $config = NULL;
+	protected static $config;
 
 	/**
 	 * Class methods cache.
@@ -55,36 +52,19 @@ abstract class ReflectionBase extends Nette\Object
 	protected static $reflectionMethods = array();
 
 	/**
-	 * Reflection type (reflection class).
-	 *
 	 * @var string
 	 */
 	protected $reflectionType;
 
 	/**
-	 * Inspected class reflection.
-	 *
-	 * @var \TokenReflection\IReflectionClass
+	 * @var IReflectionClass
 	 */
 	protected $reflection;
 
 
-	/**
-	 * Sets the inspected reflection.
-	 *
-	 * @param \TokenReflection\IReflection $reflection Inspected reflection
-	 * @param Generator $generator
-	 */
-	public function __construct(IReflection $reflection, Generator $generator)
+	public function __construct(IReflection $reflection)
 	{
-		if (self::$generator === NULL) {
-			self::$generator = $generator;
-			self::$config = ArrayHash::from($generator->getConfig());
-			self::$parsedClasses = $generator->getParsedClasses();
-			self::$parsedConstants = $generator->getParsedConstants();
-			self::$parsedFunctions = $generator->getParsedFunctions();
-		}
-
+		self::$config = Configuration::$config;
 		$this->reflectionType = get_class($this);
 		if ( ! isset(self::$reflectionMethods[$this->reflectionType])) {
 			self::$reflectionMethods[$this->reflectionType] = array_flip(get_class_methods($this));
@@ -95,9 +75,7 @@ abstract class ReflectionBase extends Nette\Object
 
 
 	/**
-	 * Returns the reflection broker used by this reflection object.
-	 *
-	 * @return \TokenReflection\Broker
+	 * @return Broker
 	 */
 	public function getBroker()
 	{
@@ -106,7 +84,7 @@ abstract class ReflectionBase extends Nette\Object
 
 
 	/**
-	 * Returns the name (FQN).
+	 * Returns FQN name.
 	 *
 	 * @return string
 	 */
@@ -128,8 +106,6 @@ abstract class ReflectionBase extends Nette\Object
 
 
 	/**
-	 * Returns if the reflection object is internal.
-	 *
 	 * @return boolean
 	 */
 	public function isInternal()
@@ -139,8 +115,6 @@ abstract class ReflectionBase extends Nette\Object
 
 
 	/**
-	 * Returns if the reflection object is user defined.
-	 *
 	 * @return boolean
 	 */
 	public function isUserDefined()
@@ -150,8 +124,6 @@ abstract class ReflectionBase extends Nette\Object
 
 
 	/**
-	 * Returns if the current reflection comes from a tokenized source.
-	 *
 	 * @return boolean
 	 */
 	public function isTokenized()
@@ -161,8 +133,6 @@ abstract class ReflectionBase extends Nette\Object
 
 
 	/**
-	 * Returns the file name the reflection object is defined in.
-	 *
 	 * @return string
 	 */
 	public function getFileName()

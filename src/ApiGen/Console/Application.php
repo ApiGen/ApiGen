@@ -11,6 +11,8 @@ namespace ApiGen\Console;
 
 use ApiGen\ApiGen;
 use Kdyby;
+use Kdyby\Events\EventArgsList;
+use Kdyby\Events\EventManager;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -18,6 +20,17 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class Application extends Kdyby\Console\Application
 {
+
+	/**
+	 * @var array
+	 */
+	public $onRun = array();
+
+	/**
+	 * @var EventManager
+	 */
+	private $eventManager;
+
 
 	/**
 	 * {@inheritDoc}
@@ -42,6 +55,8 @@ class Application extends Kdyby\Console\Application
 	 */
 	public function doRun(InputInterface $input, OutputInterface $output)
 	{
+		$this->onRun($input, $output);
+
 		// Switch working dir
 		if ($newWorkDir = $this->getNewWorkingDir($input)) {
 			$oldWorkingDir = getcwd();
@@ -55,6 +70,18 @@ class Application extends Kdyby\Console\Application
 		}
 
 		return $result;
+	}
+
+
+	public function setEventManager(EventManager $eventManager)
+	{
+		$this->eventManager = $eventManager;
+	}
+
+
+	public function onRun(InputInterface $input, OutputInterface $output)
+	{
+		$this->eventManager->dispatchEvent(__METHOD__, new EventArgsList(array($input, $output)));
 	}
 
 

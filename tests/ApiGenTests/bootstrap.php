@@ -39,3 +39,13 @@ function createTempDir() {
 function run(Tester\TestCase $testCase) {
 	$testCase->run();
 }
+
+
+/** @return Nette\DI\Container */
+function createContainer() {
+	$configurator = new Nette\Configurator();
+	$configurator->setDebugMode( ! \Tracy\Debugger::$productionMode);
+	$configurator->setTempDirectory(TEMP_DIR);
+	$configurator->addConfig(__DIR__ . '/config.neon');
+	return $configurator->createContainer();
+}

@@ -166,22 +166,6 @@ class UrlFilters extends Filters
 
 
 	/**
-	 * Returns a link to a group summary file.
-	 *
-	 * @param string $groupName Group name
-	 * @return string
-	 */
-	public function groupUrl($groupName)
-	{
-		if ( ! empty($this->packages)) {
-			return $this->packageUrl($groupName);
-		}
-
-		return $this->namespaceUrl($groupName);
-	}
-
-
-	/**
 	 * Returns a link to a namespace summary file.
 	 *
 	 * @param string $namespaceName Namespace name

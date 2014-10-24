@@ -14,7 +14,10 @@ use ApiGen\Factory;
 use ApiGen\FileSystem\Wiper;
 use ApiGen\Generator\Generator;
 use ApiGen\Neon\NeonFile;
+use ApiGen\Parser\Parser;
+use ApiGen\Scanner\Scanner;
 use InvalidArgumentException;
+use SplFileInfo;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -44,13 +47,26 @@ class GenerateCommand extends Command
 	 */
 	private $wiper;
 
+	/**
+	 * @var Parser
+	 */
+	private $parser;
 
-	public function __construct(Generator $generator, Wiper $wiper, Configuration $configuration)
+	/**
+	 * @var Scanner
+	 */
+	private $scanner;
+
+
+	public function __construct(Generator $generator, Wiper $wiper, Configuration $configuration, Scanner $scanner,
+	                            Parser $parser)
 	{
 		parent::__construct();
 		$this->generator = $generator;
 		$this->wiper = $wiper;
 		$this->configuration = $configuration;
+		$this->scanner = $scanner;
+		$this->parser = $parser;
 	}
 
 
@@ -60,8 +76,9 @@ class GenerateCommand extends Command
 			->setDescription('Generate API documentation')
 			->setDefinition(array(
 				new InputArgument('destination', InputArgument::OPTIONAL, 'Target dir for documentation.', NULL),
-				new InputArgument('source', InputArgument::IS_ARRAY | InputArgument::OPTIONAL, 'Dir(s) or file(s) documentation is generated for (separate multiple items with a space).', NULL),
-				new InputOption('debug', 'd', InputArgument::OPTIONAL, 'Turn on debug mode.', FALSE)
+				new InputArgument('source', InputArgument::IS_ARRAY | InputArgument::OPTIONAL,
+					'Dir(s) or file(s) documentation is generated for (separate multiple items with a space).', NULL),
+				new InputOption('debug', 'd', InputOption::VALUE_NONE, 'Turn on debug mode.')
 			));
 	}
 
@@ -84,8 +101,8 @@ class GenerateCommand extends Command
 
 			$apigen = $this->configuration->setDefaults($apigen);
 
-			$this->scan($apigen, $output);
-			$this->parse($apigen, $output);
+			$files = $this->scan($apigen, $output);
+			$this->parse($apigen, $output, $files);
 			$this->generate($apigen, $output);
 			return 0;
 
@@ -96,6 +113,9 @@ class GenerateCommand extends Command
 	}
 
 
+	/**
+	 * @return SplFileInfo[]
+	 */
 	private function scan(array $apigen, OutputInterface $output)
 	{
 		foreach ($apigen['source'] as $source) {
@@ -106,43 +126,43 @@ class GenerateCommand extends Command
 			$output->writeln("<info>Excluding $exclude</info>");
 		}
 
-		$this->generator->scan($apigen['source'], $apigen['exclude'], $apigen['extensions']);
+		return $this->scanner->scan($apigen['source'], $apigen['exclude'], $apigen['extensions']);
 	}
 
 
-	private function parse(array $apigen, OutputInterface $output)
+	private function parse(array $apigen, OutputInterface $output, array $files)
 	{
 		$output->writeln("<info>Parsing...</info>");
 
-		/** @var \stdClass $parseInfo */
-		$parseInfo = $this->generator->parse();
+		$this->parser->parse($files);
 
-		// get errors! // todo: move to comnand?
-		if (count($parseInfo->errors)) {
-			$output->writeln(PHP_EOL . '<error>Found ' . count($parseInfo->errors) . ' errors</error>');
-
-			foreach ($parseInfo->errors as $e) {
-				if ($apigen['debug']) {
-					Debugger::$logDirectory = LOG_DIRECTORY;
+		if (count($this->parser->getErrors())) {
+			if ($apigen['debug']) {
+				if ( ! is_dir(LOG_DIRECTORY)) {
+					mkdir(LOG_DIRECTORY);
+				}
+				Debugger::$logDirectory = LOG_DIRECTORY;
+				foreach ($this->parser->getErrors() as $e) {
 					$logName = Debugger::log($e);
 					$output->writeln("<error>Parse error occurred, exception was stored info $logName</error>");
 				}
+
+			} else {
+				$output->writeln(PHP_EOL . '<error>Found ' . count($this->parser->getErrors()) . ' errors.'
+					. ' For more details add --debug option</error>');
 			}
 		}
 
+		$stats = $this->parser->getDocumentedStats();
 		$output->writeln(PHP_EOL . sprintf(
-			'Documentation for %d classes, %d constants, %d functions and other %d used PHP internal classes will be generated.',
-			$parseInfo->documentedClasses,
-			$parseInfo->documentedConstants,
-			$parseInfo->documentedFunctions,
-			$parseInfo->documentedInternalClasses
+			'Generating documentation for %d classes, %d constants, %d functions and %d PHP internal classes.',
+			$stats['classes'], $stats['constants'], $stats['functions'], $stats['internalClasses']
 		));
 	}
 
 
 	private function generate(array $apigen, OutputInterface $output)
 	{
-		// wipeout first
 		$output->writeln('<info>Wiping out destination directory</info>');
 		$this->wiper->wipOutDestination();
 

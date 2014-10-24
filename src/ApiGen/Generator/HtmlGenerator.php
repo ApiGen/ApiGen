@@ -9,7 +9,6 @@
 
 namespace ApiGen\Generator;
 
-use ApiGen\Backend;
 use ApiGen\Charset\CharsetConvertor;
 use ApiGen\Generator\Resolvers\ElementResolver;
 use ApiGen\Generator\Resolvers\RelativePathResolver;
@@ -28,48 +27,20 @@ use ApiGen\Reflection;
 use ArrayObject;
 use Nette;
 use RuntimeException;
-use TokenReflection\Broker;
 
 
 /**
  * Generates a HTML API documentation.
  *
- * @method ArrayObject      getParsedClasses()
- * @method ArrayObject      getParsedConstants()
- * @method ArrayObject      getParsedFunctions()
- * @method array            getSymlinks()
- * @method array            getConfig()
- * @method HtmlGenerator    onScanFinish(HtmlGenerator $htmlGenerator)
- * @method HtmlGenerator    onParseStart($steps)
- * @method HtmlGenerator    onParseProgress($size)
- * @method HtmlGenerator    onParseFinish(HtmlGenerator $htmlGenerator)
+ * @method HtmlGenerator    setParsedClasses(ArrayObject|object)
+ * @method HtmlGenerator    setParsedConstants(ArrayObject|object)
+ * @method HtmlGenerator    setParsedFunctions(ArrayObject|object)
  * @method HtmlGenerator    onGenerateStart($steps)
  * @method HtmlGenerator    onGenerateProgress($size)
  * @method HtmlGenerator    setConfig(array $config)
  */
 class HtmlGenerator extends Nette\Object implements Generator
 {
-
-	/**
-	 * @var array
-	 */
-	public $onScanFinish = array();
-
-	/**
-	 * @var array
-	 */
-	public $onParseStart = array();
-
-	/**
-	 * @var array
-	 */
-	public $onParseProgress = array();
-
-	/**
-	 * @var array
-	 */
-	public $onParseFinish = array();
-
 	/**
 	 * @var array
 	 */
@@ -141,21 +112,6 @@ class HtmlGenerator extends Nette\Object implements Generator
 	private $functions = array();
 
 	/**
-	 * @var array
-	 */
-	private $symlinks = array();
-
-	/**
-	 * @var array
-	 */
-	private $files;
-
-	/**
-	 * @var Scanner
-	 */
-	private $scanner;
-
-	/**
 	 * @var CharsetConvertor
 	 */
 	private $charsetConvertor;
@@ -191,103 +147,22 @@ class HtmlGenerator extends Nette\Object implements Generator
 	private $zip;
 
 
-	public function __construct(CharsetConvertor $charsetConvertor, Scanner $scanner, FileSystem\Zip $zip,
+	public function __construct(CharsetConvertor $charsetConvertor, FileSystem\Zip $zip,
 	                            SourceCodeHighlighter $sourceCodeHighlighter, TemplateFactory $templateFactory,
-								RelativePathResolver $relativePathResolver, FileSystem\Finder $finder, ElementResolver $elementResolver)
+								RelativePathResolver $relativePathResolver, FileSystem\Finder $finder,
+								ElementResolver $elementResolver)
 	{
-		$this->parsedClasses = new ArrayObject;
-		$this->parsedConstants = new ArrayObject;
-		$this->parsedFunctions = new ArrayObject;
 		$this->charsetConvertor = $charsetConvertor;
-		$this->scanner = $scanner;
 		$this->sourceCodeHighlighter = $sourceCodeHighlighter;
 		$this->templateFactory = $templateFactory;
 		$this->relativePathResolver = $relativePathResolver;
 		$this->finder = $finder;
 		$this->elementResolver = $elementResolver;
 		$this->zip = $zip;
-	}
 
-
-	/**
-	 * Scans sources for PHP files.
-	 *
-	 * @param array $sources
-	 * @param array $exclude
-	 * @param array $extensions
-	 * @return array|void
-	 */
-	public function scan($sources, $exclude = array(), $extensions = array())
-	{
-		$this->files = $this->scanner->scan($sources, $exclude, $extensions);
-		$this->symlinks = $this->scanner->getSymlinks();
-
-		$this->onScanFinish($this);
-	}
-
-
-	/**
-	 * Parses PHP files.
-	 *
-	 * @return array
-	 * @throws \RuntimeException If no PHP files have been found.
-	 */
-	public function parse()
-	{
-		$files = $this->files;
-
-		$this->onParseStart(array_sum($this->files));
-
-		$broker = new Broker(
-			new Backend($this),
-			Broker::OPTION_DEFAULT & ~(Broker::OPTION_PARSE_FUNCTION_BODY | Broker::OPTION_SAVE_TOKEN_STREAM)
-		);
-
-		$errors = array();
-
-		foreach ($files as $filePath => $size) {
-			$content = $this->charsetConvertor->convertFile($filePath);
-
-			try {
-				$broker->processString($content, $filePath);
-
-			} catch (\Exception $e) {
-				$errors[] = $e;
-			}
-
-			$this->onParseProgress($size);
-		}
-
-		// Classes
-		$this->parsedClasses->exchangeArray($broker->getClasses(Backend::TOKENIZED_CLASSES | Backend::INTERNAL_CLASSES | Backend::NONEXISTENT_CLASSES));
-		$this->parsedClasses->uksort('strcasecmp');
-
-		// Constants
-		$this->parsedConstants->exchangeArray($broker->getConstants());
-		$this->parsedConstants->uksort('strcasecmp');
-
-		// Functions
-		$this->parsedFunctions->exchangeArray($broker->getFunctions());
-		$this->parsedFunctions->uksort('strcasecmp');
-
-		$documentedCounter = function ($count, $element) {
-			/** @var ReflectionElement $element */
-			return $count += (int) $element->isDocumented();
-		};
-
-		$this->onParseFinish($this);
-
-		return (object) array(
-			'classes' => count($broker->getClasses(Backend::TOKENIZED_CLASSES)),
-			'constants' => count($this->parsedConstants),
-			'functions' => count($this->parsedFunctions),
-			'internalClasses' => count($broker->getClasses(Backend::INTERNAL_CLASSES)),
-			'documentedClasses' => array_reduce($broker->getClasses(Backend::TOKENIZED_CLASSES), $documentedCounter),
-			'documentedConstants' => array_reduce($this->parsedConstants->getArrayCopy(), $documentedCounter),
-			'documentedFunctions' => array_reduce($this->parsedFunctions->getArrayCopy(), $documentedCounter),
-			'documentedInternalClasses' => array_reduce($broker->getClasses(Backend::INTERNAL_CLASSES), $documentedCounter),
-			'errors' => $errors
-		);
+		$this->parsedClasses = new ArrayObject;
+		$this->parsedConstants = new ArrayObject;
+		$this->parsedFunctions = new ArrayObject;
 	}
 
 
@@ -310,7 +185,9 @@ class HtmlGenerator extends Nette\Object implements Generator
 			// Dir
 			$iterator = Nette\Utils\Finder::findFiles('*')->from($resourcePath)->getIterator();
 			foreach ($iterator as $item) {
-				copy($item->getPathName(), FS::forceDir($this->config['destination']  . DS . $resourceDestination . DS . $iterator->getSubPathName()));
+				copy($item->getPathName(), FS::forceDir($this->config['destination']
+					. DS . $resourceDestination
+					. DS . $iterator->getSubPathName()));
 			}
 		}
 
@@ -757,6 +634,7 @@ class HtmlGenerator extends Nette\Object implements Generator
 				continue;
 			}
 
+			/** @var ReflectionClass $reflection */
 			if ($reflection->getParentClassName() === NULL) {
 				// No parent classes
 				if ($reflection->isInterface()) {
@@ -806,6 +684,7 @@ class HtmlGenerator extends Nette\Object implements Generator
 			$processed[$className] = TRUE;
 			unset($t);
 		}
+
 
 		$template->classTree = new Tree($classTree, $this->parsedClasses);
 		$template->interfaceTree = new Tree($interfaceTree, $this->parsedClasses);
@@ -1071,7 +950,10 @@ class HtmlGenerator extends Nette\Object implements Generator
 	 */
 	private function sortMethods(ReflectionMethod $one, ReflectionMethod $two)
 	{
-		return strcasecmp($one->getDeclaringClassName() . '::' . $one->getName(), $two->getDeclaringClassName() . '::' . $two->getName());
+		return strcasecmp(
+			$one->getDeclaringClassName() . '::' . $one->getName(),
+			$two->getDeclaringClassName() . '::' . $two->getName()
+		);
 	}
 
 
@@ -1082,7 +964,10 @@ class HtmlGenerator extends Nette\Object implements Generator
 	 */
 	private function sortConstants(ReflectionConstant $one, ReflectionConstant $two)
 	{
-		return strcasecmp(($one->getDeclaringClassName() ?: $one->getNamespaceName()) . '\\' . $one->getName(), ($two->getDeclaringClassName() ?: $two->getNamespaceName()) . '\\' . $two->getName());
+		return strcasecmp(
+			($one->getDeclaringClassName() ?: $one->getNamespaceName()) . '\\' . $one->getName(),
+			($two->getDeclaringClassName() ?: $two->getNamespaceName()) . '\\' . $two->getName()
+		);
 	}
 
 
@@ -1093,7 +978,10 @@ class HtmlGenerator extends Nette\Object implements Generator
 	 */
 	private function sortFunctions(ReflectionFunction $one, ReflectionFunction $two)
 	{
-		return strcasecmp($one->getNamespaceName() . '\\' . $one->getName(), $two->getNamespaceName() . '\\' . $two->getName());
+		return strcasecmp(
+			$one->getNamespaceName() . '\\' . $one->getName(),
+			$two->getNamespaceName() . '\\' . $two->getName()
+		);
 	}
 
 
@@ -1104,25 +992,23 @@ class HtmlGenerator extends Nette\Object implements Generator
 	 */
 	private function sortProperties(ReflectionProperty $one, ReflectionProperty $two)
 	{
-		return strcasecmp($one->getDeclaringClassName() . '::' . $one->getName(), $two->getDeclaringClassName() . '::' . $two->getName());
+		return strcasecmp(
+			$one->getDeclaringClassName() . '::' . $one->getName(),
+			$two->getDeclaringClassName() . '::' . $two->getName()
+		);
 	}
 
 
 	/**
-	 * Returns list of element types.
-	 *
 	 * @return array
 	 */
 	private function getElementTypes()
 	{
-		static $types = array('classes', 'interfaces', 'traits', 'exceptions', 'constants', 'functions');
-		return $types;
+		return array('classes', 'interfaces', 'traits', 'exceptions', 'constants', 'functions');
 	}
 
 
 	/**
-	 * Returns main filter.
-	 *
 	 * @return \Closure
 	 */
 	private function getMainFilter()
@@ -1199,17 +1085,18 @@ class HtmlGenerator extends Nette\Object implements Generator
 	private function addBaseVariablesToTemplate(Template $template)
 	{
 		$template->namespace = NULL;
-		$template->namespaces = array_keys($this->namespaces);
 		$template->package = NULL;
-		$template->packages = array_keys($this->packages);
 		$template->class = NULL;
+		$template->constant = NULL;
+		$template->function = NULL;
+
+		$template->namespaces = array_keys($this->namespaces);
+		$template->packages = array_keys($this->packages);
 		$template->classes = array_filter($this->classes, $this->getMainFilter());
 		$template->interfaces = array_filter($this->interfaces, $this->getMainFilter());
 		$template->traits = array_filter($this->traits, $this->getMainFilter());
 		$template->exceptions = array_filter($this->exceptions, $this->getMainFilter());
-		$template->constant = NULL;
 		$template->constants = array_filter($this->constants, $this->getMainFilter());
-		$template->function = NULL;
 		$template->functions = array_filter($this->functions, $this->getMainFilter());
 		$template->archive = basename($this->zip->getArchivePath());
 		return $template;

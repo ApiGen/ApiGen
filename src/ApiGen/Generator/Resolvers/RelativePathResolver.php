@@ -51,11 +51,24 @@ class RelativePathResolver extends Nette\Object
 				$source = FileSystem::pharPath($source);
 			}
 			if (strpos($fileName, $source) === 0) {
-				return is_dir($source) ? str_replace('\\', '/', substr($fileName, strlen($source) + 1)) : basename($fileName);
+				return $this->getFileNameWithoutSourcePath($fileName, $source);
 			}
 		}
 
 		throw new \InvalidArgumentException(sprintf('Could not determine "%s" relative path', $fileName));
+	}
+
+
+	/**
+	 * @param string $fileName
+	 * @param string $source
+	 * @return string
+	 */
+	private function getFileNameWithoutSourcePath($fileName, $source)
+	{
+		$source = rtrim($source, '/');
+		$fileName = substr($fileName, strlen($source) + 1);
+		return str_replace('\\', '/', $fileName);
 	}
 
 }

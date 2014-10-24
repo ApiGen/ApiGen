@@ -16,7 +16,7 @@ class FileSystem
 {
 
 	/**
-	 * @param $file
+	 * @param string $file
 	 * @return bool
 	 */
 	public static function isPhar($file)
@@ -38,9 +38,7 @@ class FileSystem
 
 
 	/**
-	 * Removes phar:// from the path.
-	 *
-	 * @param string $path Path
+	 * @param string $path
 	 * @return string
 	 */
 	public static function unPharPath($path)
@@ -53,8 +51,6 @@ class FileSystem
 
 
 	/**
-	 * Adds phar:// to the path.
-	 *
 	 * @param string $path Path
 	 * @return string
 	 */
@@ -65,8 +61,6 @@ class FileSystem
 
 
 	/**
-	 * Ensures a directory is created.
-	 *
 	 * @param string $path
 	 * @return string
 	 */

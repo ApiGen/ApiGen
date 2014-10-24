@@ -33,7 +33,11 @@
 			<ul>
 				{foreach $groups as $group}
 				{var $nextLevel = substr_count($iterator->nextValue, '\\') > substr_count($group, '\\')}
-				<li n:class="$actualGroup === $group || 0 === strpos($actualGroup, $group . '\\') ? active, $config->main && 0 === strpos($group, $config->main) ? main"><a href="{$group|groupUrl}">{$group|subgroupName}{if $nextLevel}<span></span>{/if}</a>
+				<li n:class="$actualGroup === $group || 0 === strpos($actualGroup, $group . '\\') ? active, $config->main && 0 === strpos($group, $config->main) ? main">
+					<a href="{if $groupBy === 'package'}{$group|packageUrl}{else}{$group|namespaceUrl}{/if}">
+						{$group|subgroupName}<span n:tag-if="$nextLevel"></span>
+					</a>
+
 					{if $nextLevel}
 						<ul>
 					{else}
@@ -48,11 +52,11 @@
 
 		<div id="groups">
 			{if $namespaces}
-			<h3>Namespaces</h3>
-			{include group, groups => $namespaces, actualGroup => $namespace}
+				<h3>Namespaces</h3>
+				{include group, groups => $namespaces, actualGroup => $namespace, groupBy => 'namespace'}
 			{elseif $packages}
-			<h3>Packages</h3>
-			{include group, groups => $packages, actualGroup => $package}
+				<h3>Packages</h3>
+				{include group, groups => $packages, actualGroup => $package, groupBy => 'package'}
 			{/if}
 		</div>
 
