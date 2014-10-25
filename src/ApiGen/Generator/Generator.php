@@ -9,6 +9,7 @@
 
 namespace ApiGen\Generator;
 
+
 /**
  * @method Generator setConfig(array $config)
  */
@@ -18,6 +19,6 @@ interface Generator
 	/**
 	 * Generates API documentation.
 	 */
-	public function generate();
+	function generate();
 
 }

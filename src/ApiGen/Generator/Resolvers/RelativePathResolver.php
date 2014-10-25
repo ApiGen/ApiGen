@@ -33,7 +33,6 @@ class RelativePathResolver extends Nette\Object
 	private $config;
 
 
-
 	/**
 	 * Returns filename relative path to the source directory.
 	 *

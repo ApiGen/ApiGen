@@ -48,7 +48,9 @@
 	},
 	"require-dev": {
 		"nette/tester": "~1.3",
-		"jakub-onderka/php-parallel-lint": "~0.8"
+		"jakub-onderka/php-parallel-lint": "~0.8",
+		"zenify/coding-standard": "~0.1",
+		"squizlabs/php_codesniffer": "2.0.0RC2"
 	},
 	"suggest": {
 		"ext-bz2": "*",
@@ -66,7 +68,7 @@
 	],
 	"extra": {
 		"branch-alias": {
-			"dev-develop": "3.0.0-dev"
+			"dev-develop": "4.0.0-dev"
 		}
 	}
 }

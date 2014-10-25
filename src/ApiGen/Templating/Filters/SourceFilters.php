@@ -54,28 +54,30 @@ class SourceFilters extends Filters
 	 */
 	public function sourceAnchors($source)
 	{
-		// Classes, interfaces, traits and exceptions
-		$source = preg_replace_callback('~(<span\\s+class="php-keyword1">(?:class|interface|trait)</span>\\s+)(\\w+)~i', function ($matches) {
+		$classInterfaceTraitMask = '~(<span\\s+class="php-keyword1">(?:class|interface|trait)</span>\\s+)(\\w+)~i';
+		$source = preg_replace_callback($classInterfaceTraitMask, function ($matches) {
 			$link = sprintf('<a id="%1$s" href="#%1$s">%1$s</a>', $matches[2]);
 			return $matches[1] . $link;
 		}, $source);
 
-		// Methods and functions
-		$source = preg_replace_callback('~(<span\\s+class="php-keyword1">function</span>\\s+)(\\w+)~i', function ($matches) {
+		$methodFunctionMask = '~(<span\\s+class="php-keyword1">function</span>\\s+)(\\w+)~i';
+		$source = preg_replace_callback($methodFunctionMask, function ($matches) {
 			$link = sprintf('<a id="_%1$s" href="#_%1$s">%1$s</a>', $matches[2]);
 			return $matches[1] . $link;
 		}, $source);
 
-		// Constants
-		$source = preg_replace_callback('~(<span class="php-keyword1">const</span>)(.*?)(;)~is', function ($matches) {
+		$constantMask = '~(<span class="php-keyword1">const</span>)(.*?)(;)~is';
+		$source = preg_replace_callback($constantMask, function ($matches) {
 			$links = preg_replace_callback('~(\\s|,)([A-Z_]+)(\\s+=)~', function ($matches) {
 				return $matches[1] . sprintf('<a id="%1$s" href="#%1$s">%1$s</a>', $matches[2]) . $matches[3];
 			}, $matches[2]);
 			return $matches[1] . $links . $matches[3];
 		}, $source);
 
-		// Properties
-		$source = preg_replace_callback('~(<span\\s+class="php-keyword1">(?:private|protected|public|var|static)</span>\\s+)(<span\\s+class="php-var">.*?)(;)~is', function ($matches) {
+		$propertyMask = '~(<span\\s+class="php-keyword1">'
+			. '(?:private|protected|public|var|static)</span>\\s+)(<span\\s+class="php-var">.*?)'
+			. '(;)~is';
+		$source = preg_replace_callback($propertyMask, function ($matches) {
 			$links = preg_replace_callback('~(<span\\s+class="php-var">)(\\$\\w+)~i', function ($matches) {
 				return $matches[1] . sprintf('<a id="%1$s" href="#%1$s">%1$s</a>', $matches[2]);
 			}, $matches[2]);
@@ -120,11 +122,12 @@ class SourceFilters extends Filters
 
 		$lines = NULL;
 		if ($withLine) {
-			$lines = $element->getStartLine() !== $element->getEndLine() ? sprintf('%s-%s', $element->getStartLine(), $element->getEndLine()) : $element->getStartLine();
+			$lines = $element->getStartLine() !== $element->getEndLine()
+				? sprintf('%s-%s', $element->getStartLine(), $element->getEndLine()) : $element->getStartLine();
 		}
 
 		return sprintf($this->config['template']['templates']['main']['source']['filename'], $file)
-		. (NULL !== $lines ? '#' . $lines : '');
+			. (NULL !== $lines ? '#' . $lines : '');
 	}
 
 }

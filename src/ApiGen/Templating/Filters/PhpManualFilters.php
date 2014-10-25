@@ -9,12 +9,11 @@
 
 namespace ApiGen\Templating\Filters;
 
-use ApiGen\Reflection\ReflectionBase;
 use ApiGen\Reflection\ReflectionClass;
 use ApiGen\Reflection\ReflectionConstant;
+use ApiGen\Reflection\ReflectionElement;
 use ApiGen\Reflection\ReflectionExtension;
 use ApiGen\Reflection\ReflectionMethod;
-use ApiGen\Reflection\ReflectionParameter;
 use ApiGen\Reflection\ReflectionProperty;
 use Nette;
 
@@ -25,7 +24,7 @@ class PhpManualFilters extends Filters
 	/**
 	 * Returns a link to a element documentation at php.net.
 	 *
-	 * @param ReflectionBase|ReflectionExtension|ReflectionConstant|ReflectionMethod|ReflectionProperty|ReflectionParameter $element
+	 * @param ReflectionElement|ReflectionExtension|ReflectionMethod $element
 	 * @return string
 	 */
 	public function manualUrl($element)

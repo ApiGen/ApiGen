@@ -16,34 +16,28 @@ use TokenReflection\IReflection;
 /**
  * Envelope for parameters that are defined only in @param or @method annotation.
  *
- * @method ReflectionParameterMagic setName(string $name)
- * @method ReflectionParameterMagic setTypeHint(string $typeHint)
- * @method ReflectionParameterMagic setPosition(int $position)
- * @method ReflectionParameterMagic setDefaultValueDefinition(string $defaultValueDefinition)   Sets the part of the source code defining the parameter default value.
- * @method ReflectionParameterMagic setUnlimited(bool $unlimited)   Sets if the parameter can be used unlimited times.
- * @method ReflectionParameterMagic setPassedByReference(bool $state)   Sets if the parameter value is passed by reference.
+ * @method ReflectionParameterMagic setName()
+ * @method ReflectionParameterMagic setTypeHint()
+ * @method ReflectionParameterMagic setPosition()
+ * @method ReflectionParameterMagic setDefaultValueDefinition()
+ * @method ReflectionParameterMagic setUnlimited()
+ * @method ReflectionParameterMagic setPassedByReference()
  * @method ReflectionParameterMagic setDeclaringFunction(ReflectionFunctionBase $declaringFunction)
  */
 class ReflectionParameterMagic extends ReflectionParameter
 {
 
 	/**
-	 * Parameter name.
-	 *
 	 * @var string
 	 */
 	protected $name;
 
 	/**
-	 * Defines a type hint of parameter values.
-	 *
 	 * @var string
 	 */
 	protected $typeHint;
 
 	/**
-	 * Position of the parameter in the function/method.
-	 *
 	 * @var integer
 	 */
 	protected $position;
@@ -63,16 +57,12 @@ class ReflectionParameterMagic extends ReflectionParameter
 	protected $unlimited;
 
 	/**
-	 * If the parameter value is passed by reference.
-	 *
 	 * @var boolean
 	 */
 	protected $passedByReference;
 
 	/**
-	 * The declaring function.
-	 *
-	 * @var \ApiGen\ReflectionFunctionBase
+	 * @var ReflectionFunctionBase
 	 */
 	protected $declaringFunction;
 
@@ -143,8 +133,6 @@ class ReflectionParameterMagic extends ReflectionParameter
 
 
 	/**
-	 * Returns if the reflection object is user defined.
-	 *
 	 * @return boolean
 	 */
 	public function isUserDefined()
@@ -176,8 +164,6 @@ class ReflectionParameterMagic extends ReflectionParameter
 
 
 	/**
-	 * Returns the declaring class.
-	 *
 	 * @return ReflectionClass|null
 	 */
 	public function getDeclaringClass()
@@ -187,8 +173,6 @@ class ReflectionParameterMagic extends ReflectionParameter
 
 
 	/**
-	 * Returns the declaring class name.
-	 *
 	 * @return string|null
 	 */
 	public function getDeclaringClassName()
@@ -198,9 +182,7 @@ class ReflectionParameterMagic extends ReflectionParameter
 
 
 	/**
-	 * Returns the declaring function.
-	 *
-	 * @return \ApiGen\ReflectionFunctionBase
+	 * @return ReflectionFunctionBase
 	 */
 	public function getDeclaringFunction()
 	{
@@ -209,8 +191,6 @@ class ReflectionParameterMagic extends ReflectionParameter
 
 
 	/**
-	 * Returns the declaring function name.
-	 *
 	 * @return string
 	 */
 	public function getDeclaringFunctionName()
@@ -264,8 +244,6 @@ class ReflectionParameterMagic extends ReflectionParameter
 
 
 	/**
-	 * Returns if a default value for the parameter is available.
-	 *
 	 * @return boolean
 	 */
 	public function isDefaultValueAvailable()
@@ -286,8 +264,6 @@ class ReflectionParameterMagic extends ReflectionParameter
 
 
 	/**
-	 * Returns if the parameter expects an array.
-	 *
 	 * @return boolean
 	 */
 	public function isArray()
@@ -296,6 +272,9 @@ class ReflectionParameterMagic extends ReflectionParameter
 	}
 
 
+	/**
+	 * @return boolean
+	 */
 	public function isCallable()
 	{
 		return TokenReflection\ReflectionParameter::CALLABLE_TYPE_HINT === $this->typeHint;
@@ -334,8 +313,6 @@ class ReflectionParameterMagic extends ReflectionParameter
 
 
 	/**
-	 * Returns if the the parameter allows NULL.
-	 *
 	 * @return boolean
 	 */
 	public function allowsNull()
@@ -349,8 +326,6 @@ class ReflectionParameterMagic extends ReflectionParameter
 
 
 	/**
-	 * Returns if the parameter is optional.
-	 *
 	 * @return boolean
 	 */
 	public function isOptional()
@@ -360,8 +335,6 @@ class ReflectionParameterMagic extends ReflectionParameter
 
 
 	/**
-	 * Returns if the parameter value is passed by reference.
-	 *
 	 * @return boolean
 	 */
 	public function isPassedByReference()
@@ -371,8 +344,6 @@ class ReflectionParameterMagic extends ReflectionParameter
 
 
 	/**
-	 * Returns if the parameter value can be passed by value.
-	 *
 	 * @return boolean
 	 */
 	public function canBePassedByValue()

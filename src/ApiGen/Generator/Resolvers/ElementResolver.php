@@ -94,7 +94,7 @@ class ElementResolver extends Nette\Object
 		}
 
 		/** @var ReflectionClass $class */
-		if ( ! $class->isDocumented())  { // class is not "documented"
+		if ( ! $class->isDocumented()) { // class is not "documented"
 			return NULL;
 		}
 
@@ -148,7 +148,6 @@ class ElementResolver extends Nette\Object
 		} else {
 			return NULL;
 		}
-
 
 		/** @var ReflectionFunction $function */
 		if ( ! $function->isDocumented()) { // function is not "documented"
@@ -219,7 +218,8 @@ class ElementResolver extends Nette\Object
 			return $constant;
 
 		} elseif (($function = $this->getFunction($definition, $context->getNamespaceName()))
-			|| (substr($definition, -2) === '()' && ($function = $this->getFunction(substr($definition, 0, -2), $context->getNamespaceName())))
+			|| (substr($definition, -2) === '()'
+				&& ($function = $this->getFunction(substr($definition, 0, -2), $context->getNamespaceName())))
 		) {
 			return $function;
 		}
