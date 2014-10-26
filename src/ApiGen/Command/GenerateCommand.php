@@ -58,9 +58,13 @@ class GenerateCommand extends Command
 	private $scanner;
 
 
-	public function __construct(Generator $generator, Wiper $wiper, Configuration $configuration, Scanner $scanner,
-	                            Parser $parser)
-	{
+	public function __construct(
+		Generator $generator,
+		Wiper $wiper,
+		Configuration $configuration,
+		Scanner $scanner,
+		Parser $parser
+	) {
 		parent::__construct();
 		$this->generator = $generator;
 		$this->wiper = $wiper;

@@ -11,6 +11,7 @@ namespace ApiGen\Reflection;
 
 use TokenReflection;
 use InvalidArgumentException;
+use TokenReflection\Exception\RuntimeException;
 
 
 /**
@@ -56,19 +57,18 @@ abstract class ReflectionFunctionBase extends ReflectionElement
 	public function getParameters()
 	{
 		if ($this->parameters === NULL) {
-			$this->parameters = array_map(function (TokenReflection\IReflectionParameter $parameter) {
-				return new ReflectionParameter($parameter);
-			}, $this->reflection->getParameters());
+			$this->prepareParameters();
 
 			$annotations = $this->getAnnotation('param');
-			if (NULL !== $annotations) {
+			if ($annotations !== NULL) {
 				foreach ($annotations as $position => $annotation) {
 					if (isset($parameters[$position])) {
 						// Standard parameter
 						continue;
 					}
 
-					if ( ! preg_match('~^(?:([\\w\\\\]+(?:\\|[\\w\\\\]+)*)\\s+)?\\$(\\w+),\\.{3}(?:\\s+(.*))?($)~s', $annotation, $matches)) {
+					$annotationFormat = '~^(?:([\\w\\\\]+(?:\\|[\\w\\\\]+)*)\\s+)?\\$(\\w+),\\.{3}(?:\\s+(.*))?($)~s';
+					if ( ! preg_match($annotationFormat, $annotation, $matches)) {
 						// Wrong annotation format
 						continue;
 					}
@@ -114,7 +114,8 @@ abstract class ReflectionFunctionBase extends ReflectionElement
 				return $parameters[$parameterName];
 			}
 
-			throw new InvalidArgumentException(sprintf('There is no parameter at position "%d" in function/method "%s"', $parameterName, $this->getName()), Exception\Runtime::DOES_NOT_EXIST);
+			throw new InvalidArgumentException(sprintf('There is no parameter at position "%d" in function/method "%s"',
+				$parameterName, $this->getName()), RuntimeException::DOES_NOT_EXIST);
 
 		} else {
 			foreach ($parameters as $parameter) {
@@ -123,7 +124,8 @@ abstract class ReflectionFunctionBase extends ReflectionElement
 				}
 			}
 
-			throw new InvalidArgumentException(sprintf('There is no parameter "%s" in function/method "%s"', $parameterName, $this->getName()), Exception\Runtime::DOES_NOT_EXIST);
+			throw new InvalidArgumentException(sprintf('There is no parameter "%s" in function/method "%s"',
+				$parameterName, $this->getName()), RuntimeException::DOES_NOT_EXIST);
 		}
 	}
 
@@ -147,6 +149,14 @@ abstract class ReflectionFunctionBase extends ReflectionElement
 	public function getNumberOfRequiredParameters()
 	{
 		return $this->reflection->getNumberOfRequiredParameters();
+	}
+
+
+	private function prepareParameters()
+	{
+		$this->parameters = array_map(function (TokenReflection\IReflectionParameter $parameter) {
+			return new ReflectionParameter($parameter);
+		}, $this->reflection->getParameters());
 	}
 
 }

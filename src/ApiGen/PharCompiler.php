@@ -59,7 +59,8 @@ class PharCompiler extends Nette\Object
 			$this->version = trim($output);
 
 		} else {
-			throw new \RuntimeException('Cannot run git log to find ApiGen version. Ensure that compile runs from cloned ApiGen git repository and the git command is available.');
+			throw new \RuntimeException('Cannot run git log to find ApiGen version. Ensure that compile runs'
+				. ' from cloned ApiGen git repository and the git command is available.');
 		}
 
 		if ($this->execute('git log -n1 --format=%cD HEAD', $repoDir, $output) !== 0) {

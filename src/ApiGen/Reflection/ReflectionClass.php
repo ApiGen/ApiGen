@@ -266,7 +266,9 @@ class ReflectionClass extends ReflectionElement
 		if ($this->ownMagicMethods === NULL) {
 			$this->ownMagicMethods = array();
 
-			if ( ! (self::$methodAccessLevels & InternalReflectionMethod::IS_PUBLIC) || FALSE === $this->getDocComment()) {
+			if ( ! (self::$methodAccessLevels & InternalReflectionMethod::IS_PUBLIC)
+				|| FALSE === $this->getDocComment()
+			) {
 				return $this->ownMagicMethods;
 			}
 
@@ -276,8 +278,8 @@ class ReflectionClass extends ReflectionElement
 			}
 
 			foreach ($annotations as $annotation) {
-				if ( ! preg_match('~^(?:([\\w\\\\]+(?:\\|[\\w\\\\]+)*)\\s+)?(&)?\\s*(\\w+)\\s*\\(\\s*(.*)\\s*\\)\\s*(.*|$)~s', $annotation, $matches)) {
-					// Wrong annotation format
+				$matches = $this->matchMagicMethodAnnotation($annotation);
+				if ( ! $matches) {
 					continue;
 				}
 
@@ -305,8 +307,8 @@ class ReflectionClass extends ReflectionElement
 
 				$parameters = array();
 				foreach (array_filter(preg_split('~\\s*,\\s*~', $args)) as $position => $arg) {
-					if ( ! preg_match('~^(?:([\\w\\\\]+(?:\\|[\\w\\\\]+)*)\\s+)?(&)?\\s*\\$(\\w+)(?:\\s*=\\s*(.*))?($)~s', $arg, $matches)) {
-						// Wrong annotation format
+					$matches = $this->matchMagicPropertyAnnotation($arg);
+					if ( ! $matches) {
 						continue;
 					}
 
@@ -356,11 +358,9 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * Returns a method reflection.
-	 *
-	 * @param string $name Method name
+	 * @param string $name
 	 * @return ReflectionMethod
-	 * @throws \InvalidArgumentException If required method does not exist.
+	 * @throws InvalidArgumentException If required method does not exist.
 	 */
 	public function getMethod($name)
 	{
@@ -368,7 +368,11 @@ class ReflectionClass extends ReflectionElement
 			return $this->methods[$name];
 		}
 
-		throw new InvalidArgumentException(sprintf('Method %s does not exist in class %s', $name, $this->reflection->getName()));
+		throw new InvalidArgumentException(sprintf(
+			'Method %s does not exist in class %s',
+			$name,
+			$this->reflection->getName()
+		));
 	}
 
 
@@ -552,7 +556,11 @@ class ReflectionClass extends ReflectionElement
 			return $this->properties[$name];
 		}
 
-		throw new InvalidArgumentException(sprintf('Property %s does not exist in class %s', $name, $this->reflection->getName()));
+		throw new InvalidArgumentException(sprintf(
+			'Property %s does not exist in class %s',
+			$name,
+			$this->reflection->getName()
+		));
 	}
 
 
@@ -615,7 +623,11 @@ class ReflectionClass extends ReflectionElement
 			return $this->constants[$name];
 		}
 
-		throw new InvalidArgumentException(sprintf('Constant %s does not exist in class %s', $name, $this->reflection->getName()));
+		throw new InvalidArgumentException(sprintf(
+			'Constant %s does not exist in class %s',
+			$name,
+			$this->reflection->getName()
+		));
 	}
 
 
@@ -680,7 +692,11 @@ class ReflectionClass extends ReflectionElement
 			return $this->ownConstants[$name];
 		}
 
-		throw new InvalidArgumentException(sprintf('Constant %s does not exist in class %s', $name, $this->reflection->getName()));
+		throw new InvalidArgumentException(sprintf(
+			'Constant %s does not exist in class %s',
+			$name,
+			$this->reflection->getName()
+		));
 	}
 
 
@@ -1490,6 +1506,34 @@ class ReflectionClass extends ReflectionElement
 			self::$parsedClasses = ParserResult::$classes;
 		}
 		return self::$parsedClasses;
+	}
+
+
+	/**
+	 * @param string $s
+	 * @return bool|array
+	 */
+	private function matchMagicMethodAnnotation($s)
+	{
+		$mask = '~^(?:([\\w\\\\]+(?:\\|[\\w\\\\]+)*)\\s+)?(&)?\\s*(\\w+)\\s*\\(\\s*(.*)\\s*\\)\\s*(.*|$)~s';
+		if (preg_match($mask, $s, $matches)) {
+			return $matches;
+		}
+		return FALSE;
+	}
+
+
+	/**
+	 * @param string $s
+	 * @return bool
+	 */
+	private function matchMagicPropertyAnnotation($s)
+	{
+		$mask = '~^(?:([\\w\\\\]+(?:\\|[\\w\\\\]+)*)\\s+)?(&)?\\s*\\$(\\w+)(?:\\s*=\\s*(.*))?($)~s';
+		if (preg_match($mask, $s, $matches)) {
+			return $matches;
+		}
+		return FALSE;
 	}
 
 }

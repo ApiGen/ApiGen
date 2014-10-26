@@ -10,12 +10,17 @@
 namespace ApiGen\Reflection;
 
 use TokenReflection\Exception\BaseException;
+use TokenReflection\Php\ReflectionConstant;
 use TokenReflection\ReflectionAnnotation;
+use TokenReflection\ReflectionClass;
+use TokenReflection\ReflectionFunction;
 
 
 /**
  * Element reflection envelope.
  * Alters TokenReflection\IReflection functionality for ApiGen.
+ *
+ * @method BaseException[] getReasons()
  */
 abstract class ReflectionElement extends ReflectionBase
 {
@@ -37,7 +42,7 @@ abstract class ReflectionElement extends ReflectionBase
 	/**
 	 * Reasons why this element's reflection is invalid.
 	 *
-	 * @var array
+	 * @var array|BaseException[]
 	 */
 	private $reasons = array();
 
@@ -109,7 +114,9 @@ abstract class ReflectionElement extends ReflectionBase
 				} elseif ( ! self::$config->deprecated && $this->reflection->isDeprecated()) {
 					$this->isDocumented = FALSE;
 
-				} elseif ( ! self::$config->internal && ($internal = $this->reflection->getAnnotation('internal')) && empty($internal[0])) {
+				} elseif ( ! self::$config->internal && ($internal = $this->reflection->getAnnotation('internal'))
+					&& empty($internal[0])
+				) {
 					$this->isDocumented = FALSE;
 
 				} elseif (count($this->reflection->getAnnotation('ignore')) > 0) {
@@ -133,8 +140,8 @@ abstract class ReflectionElement extends ReflectionBase
 			return TRUE;
 		}
 
-		if (($this instanceof ReflectionMethod || $this instanceof ReflectionProperty || $this instanceof ReflectionConstant)
-			&& $class = $this->getDeclaringClass()
+		if (($this instanceof ReflectionMethod || $this instanceof ReflectionProperty
+			|| $this instanceof ReflectionConstant) && $class = $this->getDeclaringClass()
 		) {
 			return $class->isDeprecated();
 		}
@@ -171,14 +178,13 @@ abstract class ReflectionElement extends ReflectionBase
 
 			if ($subpackage = $this->getAnnotation('subpackage')) {
 				$subpackageName = preg_replace('~\s+.*~s', '', $subpackage[0]);
-				if (empty($subpackageName)) {
-					// Do nothing
+				if ($subpackageName) {
+					if (strpos($subpackageName, $packageName) === 0) {
+						$packageName = $subpackageName;
 
-				} elseif (0 === strpos($subpackageName, $packageName)) {
-					$packageName = $subpackageName;
-
-				} else {
-					$packageName .= '\\' . $subpackageName;
+					} else {
+						$packageName .= '\\' . $subpackageName;
+					}
 				}
 			}
 			$packageName = strtr($packageName, '._/', '\\\\\\');
@@ -344,8 +350,10 @@ abstract class ReflectionElement extends ReflectionBase
 			unset($annotations[ReflectionAnnotation::SHORT_DESCRIPTION]);
 			unset($annotations[ReflectionAnnotation::LONG_DESCRIPTION]);
 
-			// @todo: fix
-			if ($this->reflection instanceof \TokenReflectionClass || $this->reflection instanceof \TokenReflectionFunction || ($this->reflection instanceof \TokenReflectionConstant && $this->reflection->getDeclaringClassName() === NULL)) {
+			if ($this->reflection instanceof ReflectionClass || $this->reflection instanceof ReflectionFunction
+				|| ($this->reflection instanceof ReflectionConstant
+				&& $this->reflection->getDeclaringClassName() === NULL)
+			) {
 				foreach ($this->reflection->getFileReflection()->getAnnotations() as $name => $value) {
 					if (isset($fileLevel[$name]) && empty($annotations[$name])) {
 						$annotations[$name] = $value;
@@ -415,17 +423,6 @@ abstract class ReflectionElement extends ReflectionBase
 		$this->reasons[] = $reason;
 
 		return $this;
-	}
-
-
-	/**
-	 * Returns a list of reasons why this element's reflection is invalid.
-	 *
-	 * @return array
-	 */
-	public function getReasons()
-	{
-		return $this->reasons;
 	}
 
 

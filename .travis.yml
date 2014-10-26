@@ -16,7 +16,10 @@ before_script:
   - composer install --no-interaction --prefer-source --dev
   - vendor/bin/parallel-lint -e php,phpt --exclude vendor .
 
-script: vendor/bin/tester -p php -c tests/php-unix.ini tests/ApiGenTests
+script:
+  - vendor/bin/tester -p php -c tests/php-unix.ini tests/ApiGenTests
+  - vendor/bin/phpcs -p src/ApiGen --standard=vendor/zenify/coding-standard/src/ZenifyCodingStandard/ruleset.xml --warning-severity=10
+  - vendor/bin/phpcs -p test/ApiGenTests --standard=vendor/zenify/coding-standard/src/ZenifyCodingStandard/ruleset.xml --warning-severity=10
 
 after_failure:
   - for i in $(find ./tests -name \*.actual); do echo "--- $i"; cat $i; echo; echo; done

@@ -117,7 +117,7 @@
 				{/if}
 				{foreach $method->parameters as $parameter}
 					<span>{$parameter->typeHint|typeLinks:$method|noescape}
-					<var>{if $parameter->passedByReference}&amp; {/if}${$parameter->name}</var>{if $parameter->defaultValueAvailable} = {$parameter->defaultValueDefinition|highlightPHP:$class|noescape}{elseif $parameter->unlimited},…{/if}</span>{sep}, {/sep}
+					<var>{if $parameter->passedByReference}&amp; {/if}${$parameter->name}</var>{if $parameter->defaultValueAvailable} = {$parameter->defaultValueDefinition|highlightPhp:$class|noescape}{elseif $parameter->unlimited},…{/if}</span>{sep}, {/sep}
 				{/foreach}
 			){/block}</code>
 
