@@ -7,15 +7,13 @@
  * the file license.md that was distributed with this source code.
  */
 
-namespace ApiGen\Generator;
+namespace ApiGen\Generator\Highlighter;
 
 
 interface SourceCodeHighlighter
 {
 
 	/**
-	 * Highlights passed code
-	 *
 	 * @param string $sourceCode
 	 * @return string
 	 */
@@ -23,8 +21,6 @@ interface SourceCodeHighlighter
 
 
 	/**
-	 * Highlights passed code an adds line number at the beginning.
-	 *
 	 * @param string $sourceCode
 	 * @return string
 	 */
