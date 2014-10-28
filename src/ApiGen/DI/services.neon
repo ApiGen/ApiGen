@@ -1,0 +1,79 @@
+services:
+	- ApiGen\Charset\CharsetConvertor
+
+	# configuration
+	- ApiGen\Configuration\Configuration
+	- ApiGen\Configuration\TemplateConfiguration
+
+	# console
+	-
+		class: ApiGen\Console\Application
+		setup:
+			- injectServiceLocator
+			- setEventManager
+	- ApiGen\Console\IO
+	- ApiGen\Console\ProgressBar
+	- ApiGen\Command\GenerateCommand
+	- ApiGen\Command\SelfUpdateCommand
+
+	# events
+	- ApiGen\Events\ProgressBarIncrement
+	- ApiGen\Events\LoadParsedElements
+	- ApiGen\Events\LoadRelativePathResolver
+	- ApiGen\Events\SetIoOnConsoleRun
+
+	# scanner
+	- ApiGen\Scanner\Scanner
+
+	# parser
+	- ApiGen\Parser\Parser
+	- ApiGen\Parser\ParserStorage
+
+	# elements
+	- ApiGen\Elements\AutocompleteElements
+	- ApiGen\Elements\ElementSorter
+	- ApiGen\Elements\ElementList
+	- ApiGen\Elements\ElementFilter
+	- ApiGen\Elements\ElementStorage
+
+	# generators
+	- ApiGen\Generator\Generator
+	- ApiGen\Generator\SourceCodeGenerator
+	- ApiGen\Generator\TodoTemplateGenerator
+	- ApiGen\Generator\DeprecatedTemplateGenerator
+	- ApiGen\Generator\NamespaceTemplateGenerator
+	- ApiGen\Generator\PackageTemplateGenerator
+	- ApiGen\Generator\SitemapTemplateGenerator
+	- ApiGen\Generator\OpensearchTemplateGenerator
+	- ApiGen\Generator\RobotsTemplateGenerator
+	- ApiGen\Generator\Resolvers\ElementResolver
+	- ApiGen\Generator\Resolvers\RelativePathResolver
+
+	# templating
+	- ApiGen\Templating\TemplateFactory
+	- ApiGen\Templating\TemplateNavigator
+	- ApiGen\Templating\Filters\AnnotationFilters
+	- ApiGen\Templating\Filters\PathFilters
+	- ApiGen\Templating\Filters\PhpManualFilters
+	- ApiGen\Templating\Filters\ResolverFilters
+	- ApiGen\Templating\Filters\SourceFilters
+	- ApiGen\Templating\Filters\UrlFilters
+
+	# fast syntax highlighter
+	- FSHL\Output\Html
+	- FSHL\Lexer\Php
+	-
+		class: FSHL\Highlighter
+		setup:
+			- setLexer(@FSHL\Lexer\Php)
+	- ApiGen\Generator\Highlighter\FshlSourceCodeHighlighter
+
+	# markdown markup
+	- ApiGen\Generator\Markups\MarkdownMarkup
+	- Michelf\MarkdownExtra
+
+	# file system
+	- ApiGen\FileSystem\Finder
+	- ApiGen\FileSystem\Wiper
+	- ApiGen\FileSystem\Zip
+	- Symfony\Component\Filesystem\Filesystem
