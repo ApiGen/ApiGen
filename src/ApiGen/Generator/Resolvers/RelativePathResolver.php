@@ -9,6 +9,7 @@
 
 namespace ApiGen\Generator\Resolvers;
 
+use ApiGen\Configuration\Configuration;
 use ApiGen\FileSystem\FileSystem;
 use Nette;
 
@@ -17,7 +18,6 @@ use Nette;
  * Resolves relative path to elements extracted by Generator.
  *
  * @method  RelativePathResolver setSymlinks(array $symlinks)
- * @method  RelativePathResolver setConfig(array $config)
  */
 class RelativePathResolver extends Nette\Object
 {
@@ -28,9 +28,15 @@ class RelativePathResolver extends Nette\Object
 	private $symlinks;
 
 	/**
-	 * @var array
+	 * @var Configuration
 	 */
-	private $config;
+	private $configuration;
+
+
+	public function __construct(Configuration $configuration)
+	{
+		$this->configuration = $configuration;
+	}
 
 
 	/**
@@ -45,7 +51,8 @@ class RelativePathResolver extends Nette\Object
 		if (isset($this->symlinks[$fileName])) {
 			$fileName = $this->symlinks[$fileName];
 		}
-		foreach ($this->config['source'] as $source) {
+		$options = $this->configuration->getOptions();
+		foreach ($options['source'] as $source) {
 			if (FileSystem::isPhar($source)) {
 				$source = FileSystem::pharPath($source);
 			}
