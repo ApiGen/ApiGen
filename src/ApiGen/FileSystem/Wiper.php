@@ -10,44 +10,31 @@
 namespace ApiGen\FileSystem;
 
 use Nette;
+use Symfony\Component\Filesystem\Filesystem;
 
 
 class Wiper extends Nette\Object
 {
 
 	/**
-	 * @var Finder
+	 * @var Filesystem
 	 */
-	private $finder;
-
-	/**
-	 * @var Zip
-	 */
-	private $zip;
+	private $filesystem;
 
 
-	public function __construct(Finder $finder, Zip $zip)
+	public function __construct(Filesystem $filesystem)
 	{
-		$this->finder = $finder;
-		$this->zip = $zip;
+		$this->filesystem = $filesystem;
 	}
 
 
 	/**
-	 * Wipes out the destination directory.
+	 * @param string $dir
 	 */
-	public function wipOutDestination()
+	public function wipeOutDir($dir)
 	{
-		foreach ($this->finder->findGeneratedFiles() as $path) {
-			if (is_file($path) && ! @unlink($path)) {
-				throw new \Exception('Cannot wipe out destination directory');
-			}
-		}
-
-		$archive = $this->zip->getArchivePath();
-		if (is_file($archive) && ! @unlink($archive)) {
-			throw new \Exception('Cannot wipe out destination directory');
-		}
+		$this->filesystem->remove($dir);
+		$this->filesystem->mkdir($dir);
 	}
 
 }
