@@ -29,8 +29,6 @@ class ReflectionMethodMagic extends ReflectionMethod
 {
 
 	/**
-	 * Method name.
-	 *
 	 * @var string
 	 */
 	protected $name;
@@ -130,8 +128,6 @@ class ReflectionMethodMagic extends ReflectionMethod
 
 
 	/**
-	 * Returns the long description.
-	 *
 	 * @return string
 	 */
 	public function getLongDescription()
@@ -224,8 +220,9 @@ class ReflectionMethodMagic extends ReflectionMethod
 	 */
 	public function isDocumented()
 	{
-		if (NULL === $this->isDocumented) {
-			$this->isDocumented = self::$config->deprecated || ! $this->isDeprecated();
+		if ($this->isDocumented === NULL) {
+			$deprecated = $this->configuration->getOption('deprecated');
+			$this->isDocumented = $deprecated || ! $this->isDeprecated();
 		}
 
 		return $this->isDocumented;
@@ -233,8 +230,6 @@ class ReflectionMethodMagic extends ReflectionMethod
 
 
 	/**
-	 * Returns if the property is deprecated.
-	 *
 	 * @return boolean
 	 */
 	public function isDeprecated()
@@ -255,8 +250,6 @@ class ReflectionMethodMagic extends ReflectionMethod
 
 
 	/**
-	 * Returns property namespace name.
-	 *
 	 * @return string
 	 */
 	public function getNamespaceName()
@@ -266,13 +259,11 @@ class ReflectionMethodMagic extends ReflectionMethod
 
 
 	/**
-	 * Returns property annotations.
-	 *
 	 * @return array
 	 */
 	public function getAnnotations()
 	{
-		if (NULL === $this->annotations) {
+		if ($this->annotations === NULL) {
 			$this->annotations = array();
 		}
 		return $this->annotations;

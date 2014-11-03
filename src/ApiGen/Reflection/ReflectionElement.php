@@ -10,6 +10,7 @@
 namespace ApiGen\Reflection;
 
 use TokenReflection\Exception\BaseException;
+use TokenReflection\IReflection;
 use TokenReflection\Php\ReflectionConstant;
 use TokenReflection\ReflectionAnnotation;
 use TokenReflection\ReflectionClass;
@@ -18,11 +19,10 @@ use TokenReflection\ReflectionFunction;
 
 /**
  * Element reflection envelope.
- * Alters TokenReflection\IReflection functionality for ApiGen.
  *
  * @method BaseException[] getReasons()
  */
-abstract class ReflectionElement extends ReflectionBase
+abstract class ReflectionElement extends ReflectionBase implements IReflection
 {
 
 	/**
@@ -33,8 +33,6 @@ abstract class ReflectionElement extends ReflectionBase
 	protected $isDocumented;
 
 	/**
-	 * Reflection elements annotations.
-	 *
 	 * @var array
 	 */
 	protected $annotations;
@@ -87,13 +85,12 @@ abstract class ReflectionElement extends ReflectionBase
 
 
 	/**
-	 * Returns if the element belongs to main project.
-	 *
 	 * @return boolean
 	 */
 	public function isMain()
 	{
-		return empty(self::$config->main) || strpos($this->getName(), self::$config->main) === 0;
+		$main = $this->configuration->getOption('main');
+		return empty($main) || strpos($this->getName(), $main) === 0;
 	}
 
 
@@ -108,13 +105,15 @@ abstract class ReflectionElement extends ReflectionBase
 			$this->isDocumented = $this->reflection->isTokenized() || $this->reflection->isInternal();
 
 			if ($this->isDocumented) {
-				if ( ! self::$config->php && $this->reflection->isInternal()) {
+				$options = $this->configuration->getOptions();
+
+				if ( ! $options['php'] && $this->reflection->isInternal()) {
 					$this->isDocumented = FALSE;
 
-				} elseif ( ! self::$config->deprecated && $this->reflection->isDeprecated()) {
+				} elseif ( ! $options['deprecated'] && $this->reflection->isDeprecated()) {
 					$this->isDocumented = FALSE;
 
-				} elseif ( ! self::$config->internal && ($internal = $this->reflection->getAnnotation('internal'))
+				} elseif ( ! $options['internal'] && ($internal = $this->reflection->getAnnotation('internal'))
 					&& empty($internal[0])
 				) {
 					$this->isDocumented = FALSE;
@@ -168,7 +167,7 @@ abstract class ReflectionElement extends ReflectionBase
 	 */
 	public function getPackageName()
 	{
-		static $packages = array();
+		$packages = array();
 
 		if ($package = $this->getAnnotation('package')) {
 			$packageName = preg_replace('~\s+.*~s', '', $package[0]);
@@ -224,19 +223,16 @@ abstract class ReflectionElement extends ReflectionBase
 	 */
 	public function inNamespace()
 	{
-		return '' !== $this->getNamespaceName();
+		return $this->getNamespaceName() !== '';
 	}
 
 
 	/**
-	 * Returns element namespace name.
-	 *
 	 * @return string
 	 */
 	public function getNamespaceName()
 	{
-		static $namespaces = array();
-
+		$namespaces = array();
 		$namespaceName = $this->reflection->getNamespaceName();
 
 		if ( ! $namespaceName) {
@@ -276,8 +272,6 @@ abstract class ReflectionElement extends ReflectionBase
 
 
 	/**
-	 * Returns the short description.
-	 *
 	 * @return string
 	 */
 	public function getShortDescription()
@@ -297,8 +291,6 @@ abstract class ReflectionElement extends ReflectionBase
 
 
 	/**
-	 * Returns the long description.
-	 *
 	 * @return string
 	 */
 	public function getLongDescription()
@@ -315,8 +307,6 @@ abstract class ReflectionElement extends ReflectionBase
 
 
 	/**
-	 * Returns the appropriate docblock definition.
-	 *
 	 * @return string|boolean
 	 */
 	public function getDocComment()
@@ -336,7 +326,7 @@ abstract class ReflectionElement extends ReflectionBase
 	public function getAnnotations()
 	{
 		if ($this->annotations === NULL) {
-			static $fileLevel = array(
+			$fileLevel = array(
 				'package' => TRUE,
 				'subpackage' => TRUE,
 				'author' => TRUE,
@@ -369,8 +359,6 @@ abstract class ReflectionElement extends ReflectionBase
 
 
 	/**
-	 * Returns reflection element annotation.
-	 *
 	 * @param string $annotation
 	 * @return array
 	 */
@@ -382,8 +370,6 @@ abstract class ReflectionElement extends ReflectionBase
 
 
 	/**
-	 * Checks if there is a particular annotation.
-	 *
 	 * @param string $annotation
 	 * @return boolean
 	 */
@@ -395,8 +381,6 @@ abstract class ReflectionElement extends ReflectionBase
 
 
 	/**
-	 * Adds element annotation.
-	 *
 	 * @param string $annotation
 	 * @param string $value
 	 * @return ReflectionElement

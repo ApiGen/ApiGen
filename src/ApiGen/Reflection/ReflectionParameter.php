@@ -9,17 +9,16 @@
 
 namespace ApiGen\Reflection;
 
+use TokenReflection\IReflectionParameter;
+
 
 /**
- * Parameter reflection envelope.
- * Alters TokenReflection\IReflectionParameter functionality for ApiGen.
+ * Parameter reflection envelope
  */
-class ReflectionParameter extends ReflectionBase
+class ReflectionParameter extends ReflectionBase implements IReflectionParameter
 {
 
 	/**
-	 * Returns parameter type hint.
-	 *
 	 * @return string
 	 */
 	public function getTypeHint()
@@ -47,8 +46,6 @@ class ReflectionParameter extends ReflectionBase
 
 
 	/**
-	 * Returns parameter description.
-	 *
 	 * @return string
 	 */
 	public function getDescription()
@@ -92,13 +89,11 @@ class ReflectionParameter extends ReflectionBase
 	 */
 	public function getPosition()
 	{
-		return $this->reflection->position;
+		return $this->reflection->getPosition();
 	}
 
 
 	/**
-	 * Returns if the parameter expects an array.
-	 *
 	 * @return boolean
 	 */
 	public function isArray()
@@ -108,8 +103,6 @@ class ReflectionParameter extends ReflectionBase
 
 
 	/**
-	 * Returns if the parameter expects a callback.
-	 *
 	 * @return boolean
 	 */
 	public function isCallable()
@@ -126,13 +119,12 @@ class ReflectionParameter extends ReflectionBase
 	public function getClass()
 	{
 		$className = $this->reflection->getClassName();
-		return $className === NULL ? NULL : self::$parsedClasses[$className];
+		$parsedClasses = $this->getParsedClasses();
+		return $className === NULL ?: $parsedClasses[$className];
 	}
 
 
 	/**
-	 * Returns the required class name of the value.
-	 *
 	 * @return string|NULL
 	 */
 	public function getClassName()
@@ -153,8 +145,6 @@ class ReflectionParameter extends ReflectionBase
 
 
 	/**
-	 * Returns if the parameter is optional.
-	 *
 	 * @return boolean
 	 */
 	public function isOptional()
@@ -164,8 +154,6 @@ class ReflectionParameter extends ReflectionBase
 
 
 	/**
-	 * Returns if the parameter value is passed by reference.
-	 *
 	 * @return boolean
 	 */
 	public function isPassedByReference()
@@ -175,8 +163,6 @@ class ReflectionParameter extends ReflectionBase
 
 
 	/**
-	 * Returns if the paramter value can be passed by value.
-	 *
 	 * @return boolean
 	 */
 	public function canBePassedByValue()
@@ -186,26 +172,22 @@ class ReflectionParameter extends ReflectionBase
 
 
 	/**
-	 * Returns the declaring function.
-	 *
 	 * @return ReflectionFunctionBase
 	 */
 	public function getDeclaringFunction()
 	{
 		$functionName = $this->reflection->getDeclaringFunctionName();
-
+		$parsedClasses = $this->getParsedClasses();
 		if ($className = $this->reflection->getDeclaringClassName()) {
-			return self::$parsedClasses[$className]->getMethod($functionName);
+			return $parsedClasses[$className]->getMethod($functionName);
 
 		} else {
-			return self::$parsedFunctions[$functionName];
+			return $parsedClasses[$functionName];
 		}
 	}
 
 
 	/**
-	 * Returns the declaring function name.
-	 *
 	 * @return string
 	 */
 	public function getDeclaringFunctionName()
@@ -222,13 +204,12 @@ class ReflectionParameter extends ReflectionBase
 	public function getDeclaringClass()
 	{
 		$className = $this->reflection->getDeclaringClassName();
-		return $className === NULL ? NULL : self::$parsedClasses[$className];
+		$parsedClasses = $this->getParsedClasses();
+		return $className === NULL ?: $parsedClasses[$className];
 	}
 
 
 	/**
-	 * Returns the declaring class name.
-	 *
 	 * @return string|NULL
 	 */
 	public function getDeclaringClassName()
@@ -245,6 +226,36 @@ class ReflectionParameter extends ReflectionBase
 	public function isUnlimited()
 	{
 		return FALSE;
+	}
+
+
+	public function getDocComment()
+	{
+		throw new \Exception('Not implemented nor required');
+	}
+
+
+	public function getDefaultValue()
+	{
+		throw new \Exception('Not implemented nor required');
+	}
+
+
+	public function isDefaultValueConstant()
+	{
+		throw new \Exception('Not implemented nor required');
+	}
+
+
+	public function getDefaultValueConstantName()
+	{
+		throw new \Exception('Not implemented nor required');
+	}
+
+
+	public function __toString()
+	{
+		throw new \Exception('Not implemented nor required');
 	}
 
 }

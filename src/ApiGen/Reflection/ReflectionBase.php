@@ -9,40 +9,45 @@
 
 namespace ApiGen\Reflection;
 
+use ApiGen\Bridge\TokenReflectionBridge\ApiGenReflectionFactory;
 use ApiGen\Configuration\Configuration;
+use ApiGen\Elements\Elements;
+use ApiGen\Parser\ParserStorage;
 use ArrayObject;
 use Nette;
-use Nette\Utils\ArrayHash;
 use TokenReflection\Broker;
 use TokenReflection\IReflection;
 use TokenReflection\IReflectionClass;
+use TokenReflection\IReflectionExtension;
+use TokenReflection\IReflectionFunction;
+use TokenReflection\IReflectionMethod;
+use TokenReflection\IReflectionParameter;
 
 
 /**
  * Alters TokenReflection\IReflection functionality for ApiGen.
+ *
+ * @method setConfiguration(object)
+ * @method setParserStorage(object)
+ * @method setApiGenReflectionFactory(object)
  */
 abstract class ReflectionBase extends Nette\Object implements IReflection
 {
 
 	/**
-	 * @var ArrayObject
+	 * @var Configuration
 	 */
-	protected static $parsedClasses;
+	protected $configuration;
 
 	/**
-	 * @var ArrayObject
+	 * @var ParserStorage
 	 */
-	protected static $parsedConstants;
+	protected $parserStorage;
 
 	/**
-	 * @var ArrayObject
+	 * @var ApiGenReflectionFactory
 	 */
-	protected static $parsedFunctions;
-
-	/**
-	 * @var ArrayHash
-	 */
-	protected static $config;
+	protected $apiGenReflectionFactory;
 
 	/**
 	 * Class methods cache.
@@ -57,16 +62,15 @@ abstract class ReflectionBase extends Nette\Object implements IReflection
 	protected $reflectionType;
 
 	/**
-	 * @var IReflectionClass|ReflectionMethod
+	 * @var IReflectionClass|IReflectionMethod|IReflectionFunction|IReflectionClass|IReflectionExtension|IReflectionParameter
 	 */
 	protected $reflection;
 
 
 	public function __construct(IReflection $reflection)
 	{
-		self::$config = Configuration::$config;
 		$this->reflectionType = get_class($this);
-		if ( ! isset(self::$reflectionMethods[$this->reflectionType])) {
+		if ( ! isset( self::$reflectionMethods[$this->reflectionType])) {
 			self::$reflectionMethods[$this->reflectionType] = array_flip(get_class_methods($this));
 		}
 
@@ -166,6 +170,20 @@ abstract class ReflectionBase extends Nette\Object implements IReflection
 	public function getEndLine()
 	{
 		return $this->reflection->getEndLine();
+	}
+
+
+	/**
+	 * @return ArrayObject
+	 */
+	protected function getParsedClasses()
+	{
+		if ($this->parserStorage === NULL) {
+			dump($this);
+			dump($this->getName());
+			die;
+		}
+		return $this->parserStorage->getElementsByType(Elements::CLASSES);
 	}
 
 }

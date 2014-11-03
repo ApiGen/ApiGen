@@ -11,21 +11,19 @@ namespace ApiGen\Reflection;
 
 use TokenReflection\IReflectionClass;
 use TokenReflection\IReflectionConstant;
+use TokenReflection\IReflectionExtension;
 use TokenReflection\IReflectionFunction;
 
 
 /**
- * Extension reflection envelope.
- * Alters TokenReflection\IReflectionExtension functionality for ApiGen.
+ * Extension reflection envelope
  */
-class ReflectionExtension extends ReflectionBase
+class ReflectionExtension extends ReflectionBase implements IReflectionExtension
 {
 
 	/**
-	 * Returns a class reflection.
-	 *
 	 * @param string $name
-	 * @return ReflectionClass|NULL
+	 * @return ReflectionClass
 	 */
 	public function getClass($name)
 	{
@@ -33,21 +31,22 @@ class ReflectionExtension extends ReflectionBase
 		if ($class === NULL) {
 			return NULL;
 		}
-		if (isset(self::$parsedClasses[$name])) {
-			return self::$parsedClasses[$name];
+
+		$parsedClasses = $this->getParsedClasses();
+		if (isset($parsedClasses[$name])) {
+			return $parsedClasses[$name];
 		}
-		return new ReflectionClass($class);
+
+		return $this->apiGenReflectionFactory->createFromReflection($class);
 	}
 
 
 	/**
-	 * Returns classes defined by this extension.
-	 *
 	 * @return array
 	 */
 	public function getClasses()
 	{
-		$classes = self::$parsedClasses;
+		$classes = $this->getParsedClasses();
 		return array_map(function (IReflectionClass $class) use ($classes) {
 			return isset($classes[$class->getName()]) ? $classes[$class->getName()] : new ReflectionClass($class);
 		}, $this->reflection->getClasses());
@@ -74,14 +73,15 @@ class ReflectionExtension extends ReflectionBase
 	 */
 	public function getConstantReflection($name)
 	{
-		$constant = $this->reflection->getConstantReflection($name);
-		return $constant === NULL ? NULL : new ReflectionConstant($constant);
+		if ($constant = $this->reflection->getConstantReflection($name)) {
+			return $this->apiGenReflectionFactory->createFromReflection($constant);
+		}
+
+		return NULL;
 	}
 
 
 	/**
-	 * Returns reflections of defined constants.
-	 *
 	 * @return array
 	 */
 	public function getConstants()
@@ -98,7 +98,7 @@ class ReflectionExtension extends ReflectionBase
 	public function getConstantReflections()
 	{
 		return array_map(function (IReflectionConstant $constant) {
-			return new ReflectionConstant($constant);
+			return $this->apiGenReflectionFactory->createFromReflection($constant);
 		}, $this->reflection->getConstantReflections());
 	}
 
@@ -111,8 +111,10 @@ class ReflectionExtension extends ReflectionBase
 	 */
 	public function getFunction($name)
 	{
-		$function = $this->reflection->getFunction($name);
-		return NULL === $function ? NULL : new ReflectionFunction($function);
+		if ($function = $this->reflection->getFunction($name)) {
+			return $this->apiGenReflectionFactory->createFromReflection($function);
+		}
+		return NULL;
 	}
 
 
@@ -124,19 +126,37 @@ class ReflectionExtension extends ReflectionBase
 	public function getFunctions()
 	{
 		return array_map(function (IReflectionFunction $function) {
-			return new ReflectionFunction($function);
+			return $this->apiGenReflectionFactory->createFromReflection($function);
 		}, $this->reflection->getFunctions());
 	}
 
 
 	/**
-	 * Returns names of functions defined by this extension.
-	 *
 	 * @return array
 	 */
 	public function getFunctionNames()
 	{
 		return $this->reflection->getFunctionNames();
+	}
+
+
+	/**
+	 * Returns class names defined by this extension.
+	 *
+	 * @return array
+	 */
+	public function getClassNames()
+	{
+		// TODO: Implement getClassNames() method.
+	}
+
+
+	/**
+	 * @return string
+	 */
+	public function __toString()
+	{
+		return (string) $this->getName();
 	}
 
 }

@@ -9,12 +9,13 @@
 
 namespace ApiGen\Reflection;
 
+use TokenReflection\IReflectionMethod;
+
 
 /**
- * Method reflection envelope.
- * Alters TokenReflection\IReflectionMethod functionality for ApiGen.
+ * Method reflection envelope
  */
-class ReflectionMethod extends ReflectionFunctionBase
+class ReflectionMethod extends ReflectionFunctionBase implements IReflectionMethod
 {
 
 	/**
@@ -36,7 +37,8 @@ class ReflectionMethod extends ReflectionFunctionBase
 	public function getDeclaringClass()
 	{
 		$className = $this->reflection->getDeclaringClassName();
-		return $className === NULL ? NULL : self::$parsedClasses[$className];
+		$parsedClasses = $this->getParsedClasses();
+		return $className === NULL ? NULL : $parsedClasses[$className];
 	}
 
 
@@ -158,7 +160,8 @@ class ReflectionMethod extends ReflectionFunctionBase
 	public function getDeclaringTrait()
 	{
 		$traitName = $this->reflection->getDeclaringTraitName();
-		return $traitName === NULL ? NULL : self::$parsedClasses[$traitName];
+		$parsedClasses = $this->getParsedClasses();
+		return $traitName === NULL ? NULL : $parsedClasses[$traitName];
 	}
 
 
@@ -251,7 +254,8 @@ class ReflectionMethod extends ReflectionFunctionBase
 			return NULL;
 		}
 		$originalDeclaringClassName = $this->reflection->getOriginal()->getDeclaringClassName();
-		return self::$parsedClasses[$originalDeclaringClassName]->getMethod($originalName);
+		$parsedClasses = $this->getParsedClasses();
+		return $parsedClasses[$originalDeclaringClassName]->getMethod($originalName);
 	}
 
 
@@ -265,6 +269,54 @@ class ReflectionMethod extends ReflectionFunctionBase
 		}
 
 		return TRUE;
+	}
+
+
+	public function isClosure()
+	{
+		throw new \Exception('Not implemented nor required');
+	}
+
+
+	public function getStaticVariables()
+	{
+		throw new \Exception('Not implemented nor required');
+	}
+
+
+	public function is($filter = NULL)
+	{
+		throw new \Exception('Not implemented nor required');
+	}
+
+
+	public function getPrototype()
+	{
+		throw new \Exception('Not implemented nor required');
+	}
+
+
+	public function invoke($object, $args)
+	{
+		throw new \Exception('Not implemented nor required');
+	}
+
+
+	public function invokeArgs($object, array $args)
+	{
+		throw new \Exception('Not implemented nor required');
+	}
+
+
+	public function setAccessible($accessible)
+	{
+		throw new \Exception('Not implemented nor required');
+	}
+
+
+	public function getClosure($object)
+	{
+		throw new \Exception('Not implemented nor required');
 	}
 
 }

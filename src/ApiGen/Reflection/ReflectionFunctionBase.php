@@ -15,10 +15,9 @@ use TokenReflection\Exception\RuntimeException;
 
 
 /**
- * Function/method reflection envelope parent class.
- * Alters TokenReflection\IReflectionFunctionBase functionality for ApiGen.
+ * Function/method reflection envelope parent class
  */
-abstract class ReflectionFunctionBase extends ReflectionElement
+abstract class ReflectionFunctionBase extends ReflectionElement implements TokenReflection\IReflectionFunctionBase
 {
 
 	/**
@@ -28,7 +27,7 @@ abstract class ReflectionFunctionBase extends ReflectionElement
 
 
 	/**
-	 * Returns the unqualified name (UQN).
+	 * Returns the unqualified name
 	 *
 	 * @return string
 	 */
@@ -79,8 +78,8 @@ abstract class ReflectionFunctionBase extends ReflectionElement
 						$typeHint = 'mixed';
 					}
 
-					$parameter = new ReflectionParameterMagic(NULL);
-					$parameter->setName($name)
+					$parameter = $this->apiGenReflectionFactory->createParameterMagic()
+						->setName($name)
 						->setPosition($position)
 						->setTypeHint($typeHint)
 						->setDefaultValueDefinition(NULL)
@@ -131,8 +130,6 @@ abstract class ReflectionFunctionBase extends ReflectionElement
 
 
 	/**
-	 * Returns the number of parameters.
-	 *
 	 * @return integer
 	 */
 	public function getNumberOfParameters()
@@ -142,8 +139,6 @@ abstract class ReflectionFunctionBase extends ReflectionElement
 
 
 	/**
-	 * Returns the number of required parameters.
-	 *
 	 * @return integer
 	 */
 	public function getNumberOfRequiredParameters()
@@ -155,7 +150,7 @@ abstract class ReflectionFunctionBase extends ReflectionElement
 	private function prepareParameters()
 	{
 		$this->parameters = array_map(function (TokenReflection\IReflectionParameter $parameter) {
-			return new ReflectionParameter($parameter);
+			return $this->apiGenReflectionFactory->createFromReflection($parameter);
 		}, $this->reflection->getParameters());
 	}
 

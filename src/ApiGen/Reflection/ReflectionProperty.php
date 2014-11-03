@@ -9,17 +9,16 @@
 
 namespace ApiGen\Reflection;
 
+use TokenReflection\IReflectionProperty;
+
 
 /**
- * Property reflection envelope.
- * Alters TokenReflection\IReflectionProperty functionality for ApiGen.
+ * Property reflection envelope
  */
-class ReflectionProperty extends ReflectionElement
+class ReflectionProperty extends ReflectionElement implements IReflectionProperty
 {
 
 	/**
-	 * Returns if the property is read-only.
-	 *
 	 * @return boolean
 	 */
 	public function isReadOnly()
@@ -29,8 +28,6 @@ class ReflectionProperty extends ReflectionElement
 
 
 	/**
-	 * Returns if the property is write-only.
-	 *
 	 * @return boolean
 	 */
 	public function isWriteOnly()
@@ -40,8 +37,6 @@ class ReflectionProperty extends ReflectionElement
 
 
 	/**
-	 * Returns if the property is magic.
-	 *
 	 * @return boolean
 	 */
 	public function isMagic()
@@ -51,8 +46,6 @@ class ReflectionProperty extends ReflectionElement
 
 
 	/**
-	 * Returns property type hint.
-	 *
 	 * @return string
 	 */
 	public function getTypeHint()
@@ -79,20 +72,17 @@ class ReflectionProperty extends ReflectionElement
 
 
 	/**
-	 * Returns the property declaring class.
-	 *
 	 * @return ReflectionClass|null
 	 */
 	public function getDeclaringClass()
 	{
 		$className = $this->reflection->getDeclaringClassName();
-		return $className === NULL ? NULL : self::$parsedClasses[$className];
+		$parsedClasses = $this->getParsedClasses();
+		return $className === NULL ? NULL : $parsedClasses[$className];
 	}
 
 
 	/**
-	 * Returns the name of the declaring class.
-	 *
 	 * @return string
 	 */
 	public function getDeclaringClassName()
@@ -102,8 +92,6 @@ class ReflectionProperty extends ReflectionElement
 
 
 	/**
-	 * Returns the property default value.
-	 *
 	 * @return mixed
 	 */
 	public function getDefaultValue()
@@ -135,8 +123,6 @@ class ReflectionProperty extends ReflectionElement
 
 
 	/**
-	 * Returns property modifiers.
-	 *
 	 * @return integer
 	 */
 	public function getModifiers()
@@ -146,8 +132,6 @@ class ReflectionProperty extends ReflectionElement
 
 
 	/**
-	 * Returns if the property is private.
-	 *
 	 * @return boolean
 	 */
 	public function isPrivate()
@@ -157,8 +141,6 @@ class ReflectionProperty extends ReflectionElement
 
 
 	/**
-	 * Returns if the property is protected.
-	 *
 	 * @return boolean
 	 */
 	public function isProtected()
@@ -168,8 +150,6 @@ class ReflectionProperty extends ReflectionElement
 
 
 	/**
-	 * Returns if the property is public.
-	 *
 	 * @return boolean
 	 */
 	public function isPublic()
@@ -179,8 +159,6 @@ class ReflectionProperty extends ReflectionElement
 
 
 	/**
-	 * Returns if the poperty is static.
-	 *
 	 * @return boolean
 	 */
 	public function isStatic()
@@ -190,20 +168,17 @@ class ReflectionProperty extends ReflectionElement
 
 
 	/**
-	 * Returns the property declaring trait.
-	 *
 	 * @return ReflectionClass|null
 	 */
 	public function getDeclaringTrait()
 	{
 		$traitName = $this->reflection->getDeclaringTraitName();
-		return $traitName === NULL ? NULL : self::$parsedClasses[$traitName];
+		$parsedClasses = $this->getParsedClasses();
+		return $traitName === NULL ? NULL : $parsedClasses[$traitName];
 	}
 
 
 	/**
-	 * Returns the declaring trait name.
-	 *
 	 * @return string|null
 	 */
 	public function getDeclaringTraitName()
@@ -213,8 +188,6 @@ class ReflectionProperty extends ReflectionElement
 
 
 	/**
-	 * Returns if the property is valid.
-	 *
 	 * @return boolean
 	 */
 	public function isValid()
@@ -224,6 +197,37 @@ class ReflectionProperty extends ReflectionElement
 		}
 
 		return TRUE;
+	}
+
+
+	public function getValue($object)
+	{
+		throw new \Exception('Not implemented nor required');
+	}
+
+
+	public function setAccessible($accessible)
+	{
+		throw new \Exception('Not implemented nor required');
+	}
+
+
+	public function isAccessible()
+	{
+		throw new \Exception('Not implemented nor required');
+	}
+
+
+	public function setValue($object, $value)
+	{
+		throw new \Exception('Not implemented nor required');
+	}
+
+
+	public function __toString()
+	{
+		throw new \Exception('Not implemented nor required');
+		return '';
 	}
 
 }

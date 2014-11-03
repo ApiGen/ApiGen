@@ -10,18 +10,16 @@
 namespace ApiGen\Reflection;
 
 use ApiGen\FileSystem\FileSystem;
+use TokenReflection\IReflectionFunction;
 
 
 /**
- * Function reflection envelope.
- * Alters TokenReflection\IReflectionFunction functionality for ApiGen.
+ * Function reflection envelope
  */
-class ReflectionFunction extends ReflectionFunctionBase
+class ReflectionFunction extends ReflectionFunctionBase implements IReflectionFunction
 {
 
 	/**
-	 * Returns if the function is valid.
-	 *
 	 * @return boolean
 	 */
 	public function isValid()
@@ -43,14 +41,15 @@ class ReflectionFunction extends ReflectionFunctionBase
 	{
 		if ($this->isDocumented === NULL && parent::isDocumented()) {
 			$fileName = FileSystem::unPharPath($this->reflection->getFilename());
-			foreach (self::$config->skipDocPath as $mask) {
+			$options = $this->configuration->getOptions();
+			foreach ($options['skipDocPath'] as $mask) {
 				if (fnmatch($mask, $fileName, FNM_NOESCAPE)) {
 					$this->isDocumented = FALSE;
 					break;
 				}
 			}
 			if ($this->isDocumented === TRUE) {
-				foreach (self::$config->skipDocPrefix as $prefix) {
+				foreach ($options['skipDocPrefix'] as $prefix) {
 					if (strpos($this->reflection->getName(), $prefix) === 0) {
 						$this->isDocumented = FALSE;
 						break;
@@ -60,6 +59,36 @@ class ReflectionFunction extends ReflectionFunctionBase
 		}
 
 		return $this->isDocumented;
+	}
+
+
+	public function isDisabled()
+	{
+		throw new \Exception('Not implemented nor required');
+	}
+
+
+	public function invokeArgs(array $args = array())
+	{
+		throw new \Exception('Not implemented nor required');
+	}
+
+
+	public function getClosure()
+	{
+		throw new \Exception('Not implemented nor required');
+	}
+
+
+	public function isClosure()
+	{
+		throw new \Exception('Not implemented nor required');
+	}
+
+
+	public function getStaticVariables()
+	{
+		throw new \Exception('Not implemented nor required');
 	}
 
 }
