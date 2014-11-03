@@ -9,36 +9,26 @@
 
 namespace ApiGen\Templating;
 
-use ApiGen\FileSystem\FileSystem;
 use Nette;
 
 
 /**
- * Customized ApiGen template class.
- *
+ * @method string   namespaceUrl()
+ * @method string   packageUrl()
+ * @method string   classUrl()
+ * @method string   constantUrl()
+ * @method string   functionUrl()
+ * @method string   sourceUrl()
  * @method Template setFile($file)
- * @method string   namespaceUrl(string $s)
- * @method string   packageUrl(string $s)
- * @method string   classUrl(string $s)
- * @method string   constantUrl(string $s)
- * @method string   functionUrl(string $s)
- * @method string   sourceUrl(string $s)
+ * @method Template setSavePath()
  */
 class Template extends Nette\Bridges\ApplicationLatte\Template
 {
 
 	/**
-	 * Renders template to file.
-	 *
-	 * @param string $file
+	 * @var string
 	 */
-	public function save($file)
-	{
-		FileSystem::forceDir($file);
-		if (file_put_contents($file, $this->__toString(TRUE)) === FALSE) {
-			throw new Nette\IOException("Unable to save file '$file'.");
-		}
-	}
+	private $savePath;
 
 
 	/**
@@ -54,6 +44,34 @@ class Template extends Nette\Bridges\ApplicationLatte\Template
 		}
 
 		return parent::__call($name, $args);
+	}
+
+
+	public function save()
+	{
+		if (file_put_contents($this->savePath, $this->__toString(TRUE)) === FALSE) {
+			throw new Nette\IOException('Unable to save file to ' . $this->savePath);
+		}
+
+		$this->clear();
+	}
+
+
+	private function clear()
+	{
+//		foreach ($this->elementTypes as $type) {
+//			unset($template->{'todo' . ucfirst($type)});
+//		}
+		// run with foreach?
+
+		unset($this->classTree);
+		unset($this->interfaceTree);
+		unset($this->traitTree);
+		unset($this->exceptionTree);
+
+		unset($this->todoConstants);
+		unset($this->todoMethods);
+		unset($this->todoProperties);
 	}
 
 }

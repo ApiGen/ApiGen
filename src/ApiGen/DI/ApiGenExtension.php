@@ -46,6 +46,22 @@ class ApiGenExtension extends CompilerExtension
 			$builder->getDefinition($event)
 				->addTag(EventsExtension::TAG_SUBSCRIBER);
 		}
+
+		$this->setupGeneratorQueue();
+		$this->setupTemplateFilters();
+	}
+
+
+	private function setupGeneratorQueue()
+	{
+		$builder = $this->getContainerBuilder();
+
+		// note: consider prioritization
+
+		$generator = $builder->getDefinition($builder->getByType('ApiGen\Generator\Generator'));
+		foreach ($builder->findByType('ApiGen\Generator\TemplateGenerator') as $templateGenerator) {
+			$generator->addSetup('?->processQueue[] = ?', array('@self', '@' . $templateGenerator));
+		}
 	}
 
 
@@ -69,9 +85,17 @@ class ApiGenExtension extends CompilerExtension
 	{
 		$builder = $this->getContainerBuilder();
 
-		$latteFactory = $builder->addDefinition($this->prefix('latteFactory'))
+		$builder->addDefinition($this->prefix('latteFactory'))
 			->setClass('Latte\Engine')
 			->addSetup('setTempDirectory', array($builder->expand('%tempDir%/cache/latte')));
+	}
+
+
+	private function setupTemplateFilters()
+	{
+		$builder = $this->getContainerBuilder();
+
+		$latteFactory = $builder->getDefinition($this->prefix('latteFactory'));
 
 		foreach ($builder->findByType('ApiGen\Templating\Filters\Filters') as $filter) {
 			$latteFactory->addSetup('addFilter', array(NULL, array('@' . $filter, 'loader')));

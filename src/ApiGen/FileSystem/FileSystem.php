@@ -10,6 +10,7 @@
 namespace ApiGen\FileSystem;
 
 use Nette;
+use Tester\Helpers;
 
 
 class FileSystem
@@ -21,7 +22,8 @@ class FileSystem
 	 */
 	public static function isPhar($file)
 	{
-		return (bool) preg_match('~\\.phar(?:\\.zip|\\.tar|(?:(?:\\.tar)?(?:\\.gz|\\.bz2))|$)~i', $file);
+		$pharMask = '~\\.phar(?:\\.zip|\\.tar|(?:(?:\\.tar)?(?:\\.gz|\\.bz2))|$)~i';
+		return (bool) preg_match($pharMask, $file);
 	}
 
 
@@ -51,7 +53,7 @@ class FileSystem
 
 
 	/**
-	 * @param string $path Path
+	 * @param string $path
 	 * @return string
 	 */
 	public static function pharPath($path)
@@ -62,44 +64,23 @@ class FileSystem
 
 	/**
 	 * @param string $path
-	 * @return string
 	 */
-	public static function forceDir($path)
+	public static function createDirForPath($path)
 	{
-		@mkdir(dirname($path), 0755, TRUE);
-		return $path;
+		$dir = dirname($path);
+		if ( ! is_dir($dir)) {
+			mkdir($dir, 0755, TRUE);
+		}
 	}
 
 
 	/**
-	 * @param string $path
-	 * @return bool
+	 * @param string $dir
 	 */
-	public static function deleteDir($path)
+	public static function deleteDir($dir)
 	{
-		if ( ! is_dir($path)) {
-			return TRUE;
-		}
-
-		foreach (Nette\Utils\Finder::find('*')->from($path)->childFirst() as $item) {
-			/** @var \SplFileInfo $item */
-			if ($item->isDir()) {
-				if ( ! @rmdir($item)) {
-					return FALSE;
-				}
-
-			} elseif ($item->isFile()) {
-				if ( ! @unlink($item)) {
-					return FALSE;
-				}
-			}
-		}
-
-		if ( ! @rmdir($path)) {
-			return FALSE;
-		}
-
-		return TRUE;
+		Helpers::purge($dir);
+		rmdir($dir);
 	}
 
 
@@ -108,17 +89,24 @@ class FileSystem
 	 * @param array $baseDirectories List of base directories
 	 * @return string|NULL
 	 */
-	public static function getAbsolutePath($relativePath, array $baseDirectories)
+	public static function getAbsolutePath($relativePath, array $baseDirectories = array())
 	{
 		if (preg_match('~/|[a-z]:~Ai', $relativePath)) { // absolute path already
 			return $relativePath;
 		}
 
-		foreach ($baseDirectories as $directory) {
-			$fileName = $directory . DS . $relativePath;
-			if (is_file($fileName)) {
-				return realpath($fileName);
+		if (count($baseDirectories)) {
+			foreach ($baseDirectories as $directory) {
+				$fileName = $directory . DS . $relativePath;
+				if (is_file($fileName)) {
+					return realpath($fileName);
+				}
 			}
+		}
+
+		$path = FileSystem::normalizePath($relativePath);
+		if ((strpos($path, 'phar://') !== 0) && file_exists($path)) {
+			return realpath($path);
 		}
 
 		return NULL;

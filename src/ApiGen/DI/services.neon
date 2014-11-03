@@ -3,7 +3,7 @@ services:
 
 	# configuration
 	- ApiGen\Configuration\Configuration
-	- ApiGen\Configuration\TemplateConfiguration
+	- ApiGen\Configuration\Theme\ThemeConfigFactory
 
 	# console
 	-
@@ -29,22 +29,31 @@ services:
 	- ApiGen\Parser\Parser
 	- ApiGen\Parser\ParserStorage
 
+	# reflections
+	- ApiGen\Bridge\TokenReflectionBridge\ApiGenReflectionFactory
+	- ApiGen\Bridge\TokenReflectionBridge\ReflectionCrateBridge
+
 	# elements
 	- ApiGen\Elements\AutocompleteElements
 	- ApiGen\Elements\ElementSorter
-	- ApiGen\Elements\ElementList
 	- ApiGen\Elements\ElementFilter
+	- ApiGen\Elements\Elements
 	- ApiGen\Elements\ElementStorage
+	- ApiGen\Elements\GroupSorter
 
 	# generators
 	- ApiGen\Generator\Generator
+	- ApiGen\Generator\CommonTemplateGenerator # todo, split to shit
 	- ApiGen\Generator\SourceCodeGenerator
+	- ApiGen\Generator\ElementsTemplateGenerator
 	- ApiGen\Generator\TodoTemplateGenerator
+	- ApiGen\Generator\TreeTemplateGenerator
 	- ApiGen\Generator\DeprecatedTemplateGenerator
-	- ApiGen\Generator\NamespaceTemplateGenerator
-	- ApiGen\Generator\PackageTemplateGenerator
+	- ApiGen\Generator\NamespacesTemplateGenerator
+	- ApiGen\Generator\PackagesTemplateGenerator
 	- ApiGen\Generator\SitemapTemplateGenerator
 	- ApiGen\Generator\OpensearchTemplateGenerator
+	- ApiGen\Generator\ZipGenerator
 	- ApiGen\Generator\RobotsTemplateGenerator
 	- ApiGen\Generator\Resolvers\ElementResolver
 	- ApiGen\Generator\Resolvers\RelativePathResolver
@@ -73,7 +82,6 @@ services:
 	- Michelf\MarkdownExtra
 
 	# file system
-	- ApiGen\FileSystem\Finder
 	- ApiGen\FileSystem\Wiper
 	- ApiGen\FileSystem\Zip
 	- Symfony\Component\Filesystem\Filesystem
