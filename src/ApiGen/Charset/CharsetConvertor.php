@@ -9,6 +9,7 @@
 
 namespace ApiGen\Charset;
 
+use ApiGen\Configuration\Configuration;
 use Nette;
 
 
@@ -18,11 +19,20 @@ class CharsetConvertor extends Nette\Object
 	const AUTO = 'AUTO';
 
 	/**
-	 * List of possible character sets.
-	 *
 	 * @var array
 	 */
 	private $charsets = array();
+
+	/**
+	 * @var Configuration
+	 */
+	private $configuration;
+
+
+	public function __construct(Configuration $configuration)
+	{
+		$this->configuration = $configuration;
+	}
 
 
 	public function setCharset(array $charsets)
@@ -105,7 +115,8 @@ class CharsetConvertor extends Nette\Object
 	private function getCharsets()
 	{
 		if ( ! count($this->charsets)) {
-			$this->setCharset(array(self::AUTO));
+			$options = $this->configuration->getOptions();
+			$this->setCharset($options['charset']);
 		}
 		return $this->charsets;
 	}

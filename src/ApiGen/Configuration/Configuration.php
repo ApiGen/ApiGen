@@ -9,257 +9,285 @@
 
 namespace ApiGen\Configuration;
 
-use ApiGen\Factory;
+use ApiGen\Charset\CharsetConvertor;
+use ApiGen\Configuration\Theme\ThemeConfigFactory;
 use ApiGen\FileSystem\FileSystem;
-use ApiGen\Neon\NeonFile;
 use Nette;
-use Nette\Utils\AssertionException;
-use Nette\Utils\Validators;
+use ReflectionMethod;
+use ReflectionProperty;
+use Symfony\Component\OptionsResolver\Options;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 
 /**
- * @method Configuration onSuccessValidate(array $config)
+ * @method array getOptions()
  */
 class Configuration extends Nette\Object
 {
 
+	const AL_PROTECTED = 'protected';
+	const AL_PRIVATE = 'private';
+	const AL_PUBLIC = 'public';
+	const GROUPS_AUTO = 'auto';
+	const GROUPS_NAMESPACES = 'namespaces';
+	const GROUPS_PACKAGES = 'packages';
 	const TEMPLATE_THEME_DEFAULT = 'default';
 	const TEMPLATE_THEME_BOOTSTRAP = 'bootstrap';
 
-	/**
-	 * Static access for reflections
-	 *
-	 * @var Nette\Utils\ArrayHash
-	 */
-	public static $config;
-
-	/**
-	 * @var array
-	 */
-	public $onSuccessValidate = array();
 
 	/**
 	 * @var array
 	 */
 	private $defaults = array(
-		'extensions' => array('php'),
-		'exclude' => array(),
-		'skipDocPath' => array(),
-		'skipDocPrefix' => array(),
-		'charset' => array('auto'),
-		'main' => '',
-		'title' => '',
+		'autocomplete' => array('classes', 'constants', 'functions'),
+		'accessLevels' => array(self::AL_PUBLIC, self::AL_PROTECTED),
 		'baseUrl' => '',
+		'debug' => FALSE,
+		'deprecated' => FALSE,
+		'destination' => NULL,
+		'download' => FALSE,
+		'exclude' => array(),
+		'extensions' => array('php'),
 		'googleCseId' => '',
 		'googleAnalytics' => '',
 		'groups' => 'auto',
-		'autocomplete' => array('classes', 'constants', 'functions'),
-		'accessLevels' => array('public', 'protected'),
+		'charset' => array(CharsetConvertor::AUTO),
+		'main' => '',
 		'internal' => FALSE,
 		'php' => TRUE,
-		'tree' => TRUE,
-		'deprecated' => FALSE,
+		'skipDocPath' => array(),
+		'skipDocPrefix' => array(),
+		'source' => array(),
+		'template' => NULL,
+		'templateConfig' => NULL,
+		'templateTheme' => self::TEMPLATE_THEME_DEFAULT,
+		'title' => '',
 		'todo' => FALSE,
-		'download' => FALSE,
-		// templates
-		'templateTheme' => self::TEMPLATE_THEME_DEFAULT
+		'tree' => TRUE,
+		// helpers
+		'methodsAccessLevels' => array(),
+		'propertyAccessLevels' => array()
 	);
 
 	/**
-	 * File or directory path options.
-	 *
 	 * @var array
 	 */
-	private $pathOptions = array(
-		'source',
-		'destination',
-		'templateConfig',
-		'exclude',
-		'skipDocPath'
-	);
-
+	private $options;
 
 	/**
-	 * @param array $config
-	 * @return array
+	 * @var ThemeConfigFactory
 	 */
-	public function setDefaults(array $config)
+	private $themeConfigFactory;
+
+
+	public function __construct(ThemeConfigFactory $themeConfigFactory)
 	{
-		foreach ($this->defaults as $key => $value) {
-			if ( ! isset($config[$key])) {
-				$config[$key] = $value;
-			}
-		}
-
-		// Set template theme path
-		$isThemeUsed = FALSE;
-		if ( ! isset($config['templateConfig'])) {
-			if ($config['templateTheme'] === self::TEMPLATE_THEME_DEFAULT) {
-				$config['templateConfig'] = APIGEN_ROOT_PATH . '/templates/default/config.neon';
-
-			} elseif ($config['templateTheme'] === self::TEMPLATE_THEME_BOOTSTRAP) {
-				$config['templateConfig'] = APIGEN_ROOT_PATH . '/templates/bootstrap/config.neon';
-			}
-			$isThemeUsed = TRUE;
-		}
-
-		// Merge template configuration
-		$templateConfigFile = new NeonFile($config['templateConfig']);
-		$config['template'] = $templateConfigFile->read();
-
-		// Fix paths for themes
-		if ($isThemeUsed) {
-			$config = $this->correctThemeTemplatePaths($config);
-		}
-
-		$config = $this->sanitaze($config);
-		$this->validate($config);
-
-		return $config;
+		$this->themeConfigFactory = $themeConfigFactory;
 	}
 
 
 	/**
-	 * @param array $config
-	 * @throws AssertionException
+	 * @param string $key
+	 * @return mixed
 	 */
-	private function validate(array $config)
+	public function getOption($key)
 	{
-		Validators::assertField($config, 'exclude', 'list');
-		Validators::assertField($config, 'skipDocPath', 'list');
-		Validators::assertField($config, 'skipDocPrefix', 'list');
-		Validators::assertField($config, 'charset', 'list');
-		Validators::assertField($config, 'main', 'string');
-		Validators::assertField($config, 'title', 'string');
-		Validators::assertField($config, 'baseUrl', 'string');
-		Validators::assertField($config, 'googleCseId', 'string');
-		Validators::assertField($config, 'googleAnalytics', 'string');
-		Validators::assertField($config, 'autocomplete', 'list');
-		Validators::assertField($config, 'accessLevels', 'list');
-		Validators::assertField($config, 'internal', 'bool');
-		Validators::assertField($config, 'php', 'bool');
-		Validators::assertField($config, 'tree', 'bool');
-		Validators::assertField($config, 'deprecated', 'bool');
-		Validators::assertField($config, 'todo', 'bool');
-		Validators::assertField($config, 'download', 'bool');
-
-		// destination
-		Validators::assertField($config, 'destination', 'string');
-		@mkdir($config['destination'], 0755, TRUE);
-		if ( ! is_dir($config['destination']) || ! is_writable($config['destination'])) {
-			throw new \RuntimeException('Directory ' . $config['destination'] . ' is not writable.');
-		}
-
-		// source
-		Validators::assertField($config, 'source', 'array');
-		foreach ($config['source'] as $source) {
-			if ( ! file_exists($source)) {
-				throw new ConfigurationException("Source $source does not exist");
-			}
-		}
-
-		// extensions
-		Validators::assertField($config, 'extensions', 'array');
-		foreach ($config['extensions'] as $extension) {
-			Validators::assert($extension, 'string', 'file extension');
-		}
-
-		$this->validateTemplateConfig($config);
-
-		$this->onSuccessValidate($config);
-	}
-
-
-	/**
-	 * @param array $config
-	 */
-	private function validateTemplateConfig($config)
-	{
-		if ( ! is_file($config['templateConfig'])) {
-			throw new ConfigurationException($config['templateConfig'] . ' was not found. Fix templateConfig option');
-		}
-
-		foreach (array('main', 'optional') as $section) {
-			foreach ($config['template']['templates'][$section] as $type => $configSection) {
-				if ( ! isset($configSection['filename'])) {
-					throw new ConfigurationException("Filename for $type is not defined");
-				}
-
-				if ( ! isset($configSection['template'])) {
-					throw new ConfigurationException("Template for $type is not defined");
-				}
-
-				if ( ! is_file(dirname($config['templateConfig']) . DS . $configSection['template'])) {
-					throw new ConfigurationException("Template for $type does not exist");
-				}
-			}
-		}
-	}
-
-
-	/**
-	 * @param string $path
-	 * @return string
-	 */
-	private function sanitazePathHelper(&$path)
-	{
-		$path = FileSystem::normalizePath($path);
-
-		if ((strpos($path, 'phar://') !== 0) && file_exists($path)) {
-			$path = realpath($path);
-		}
-
-		return $path;
+		return $this->options[$key];
 	}
 
 
 	/**
 	 * @return array
 	 */
-	private function sanitaze(array $config)
+	public function setValues(array $config)
 	{
-		// Unify character sets
-		$config['charset'] = array_map('strtoupper', $config['charset']);
+		$resolver = new OptionsResolver;
+		$resolver->setDefaults($this->defaults);
+		$resolver->setDefaults(array(
+			'templateConfig' => function (Options $options, $previousValue) {
+				if ($previousValue === NULL) {
+					if ($options['templateTheme'] === self::TEMPLATE_THEME_DEFAULT) {
+						return APIGEN_ROOT_PATH . '/templates/default/config.neon';
 
-		// Process options that specify a filesystem path
-		foreach ($this->pathOptions as $option) {
-			if (is_array($config[$option])) {
-				array_walk($config[$option], array($this, 'sanitazePathHelper'));
-				usort($config[$option], 'strcasecmp');
-
-			} else {
-				$config[$option] = $this->sanitazePathHelper($config[$option]);
+					} elseif ($options['templateTheme'] === self::TEMPLATE_THEME_BOOTSTRAP) {
+						return APIGEN_ROOT_PATH . '/templates/bootstrap/config.neon';
+					}
+				}
+			},
+			'template' => function (Options $options) {
+				$templateConfig = $this->themeConfigFactory->create();
+				$templateConfig->setPath($options['templateConfig']);
+				return $templateConfig->getOptions();
 			}
-		}
+		));
 
-		// Unify prefixes
-		$config['skipDocPrefix'] = array_map(function ($prefix) {
-			return ltrim($prefix, '\\');
-		}, $config['skipDocPrefix']);
-		usort($config['skipDocPrefix'], 'strcasecmp');
+		$resolver->replaceDefaults(array(
+			'methodAccessLevels' => function (Options $options) {
+				return $this->getAccessLevelForReflections($options['accessLevels'], 'method');
+			},
+			'propertyAccessLevels' => function (Options $options) {
+				return $this->getAccessLevelForReflections($options['accessLevels'], 'property');
+			}
+		));
 
-		// Base url without slash at the end
-		$config['baseUrl'] = rtrim($config['baseUrl'], '/');
+		$resolver->setAllowedTypes(array(
+			'autocomplete' => 'array',
+			'accessLevels' => 'array',
+			'baseUrl' => 'string',
+			'debug' => 'bool',
+			'deprecated' => 'bool',
+			'destination' => 'string',
+			'download' => 'bool',
+			'exclude' => 'array',
+			'extensions' => 'array',
+			'googleCseId' => 'string',
+			'googleAnalytics' => 'string',
+			'groups' => 'string',
+			'charset' => 'array',
+			'main' => 'string',
+			'internal' => 'bool',
+			'php' => 'bool',
+			'skipDocPath' => 'array',
+			'skipDocPrefix' => 'array',
+			'source' => 'array',
+			'templateConfig' => 'string',
+			'title' => 'string',
+			'todo' => 'bool',
+			'tree' => 'bool'
+		));
 
-		return $config;
+		$resolver->setAllowedValues(array(
+			'destination' => function ($value) {
+				if ( ! is_dir($value)) {
+					mkdir($value, 0755, TRUE);
+				}
+				if ( ! is_dir($value) || ! is_writable($value)) {
+					throw new ConfigurationException("Destination '$value' is not writeable");
+				}
+				return TRUE;
+			},
+			'source' => function ($value) {
+				foreach ($value as $source) {
+					if ( ! file_exists($source)) {
+						throw new ConfigurationException("Source '$source' does not exist");
+					}
+				}
+				return TRUE;
+			},
+			'templateConfig' => function ($value) {
+				if ( ! is_file($value)) {
+					throw new ConfigurationException("Template config '$value' was not found");
+				}
+				return TRUE;
+			}
+		));
+
+		$resolver->setNormalizers(array(
+			'autocomplete' => function (Options $options, $value) {
+				return array_flip($value);
+			},
+			'destination' => function (Options $options, $value) {
+				return FileSystem::getAbsolutePath($value);
+			},
+			'charset' => function (Options $options, $value) {
+				return array_map('strtoupper', $value);
+			},
+			'baseUrl' => function (Options $options, $value) {
+				return rtrim($value, '/');
+			},
+			'exclude' => function (Options $options, $value) {
+				foreach ($value as $key => $source) {
+					$value[$key] = FileSystem::getAbsolutePath($source);
+				}
+				return $value;
+			},
+			'skipDocPath' => function (Options $options, $value) {
+				foreach ($value as $key => $source) {
+					$value[$key] = FileSystem::getAbsolutePath($source);
+				}
+				return $value;
+			},
+			'skipDocPrefix' => function (Options $options, $value) {
+				$value = array_map(function ($prefix) {
+					return ltrim($prefix, '\\');
+				}, $value);
+				usort($value, 'strcasecmp');
+				return $value;
+			},
+			'source' => function (Options $options, $value) {
+				foreach ($value as $key => $source) {
+					$value[$key] = FileSystem::getAbsolutePath($source);
+				}
+				return $value;
+			},
+			'templateConfig' => function (Options $options, $value) {
+				return FileSystem::getAbsolutePath($value);
+			},
+		));
+
+		$resolver->setRequired(array('source', 'destination'));
+
+		$this->options = $resolver->resolve($config);
 	}
 
 
 	/**
-	 * @param array $config
-	 * @return array
+	 * @param int $namespaceCount
+	 * @param int $packageCount
+	 * @return bool
 	 */
-	private function correctThemeTemplatePaths(array $config)
+	public function areNamespacesEnabled($namespaceCount, $packageCount)
 	{
-		$templateDir = dirname($config['templateConfig']);
-
-		foreach (array('main', 'optional') as $section) {
-			foreach ($config['template']['templates'][$section] as $type => $configSection) {
-				$configSection['template'] = $templateDir . DS . $configSection['template'];
-			}
+		if ($this->getOption('groups') === self::GROUPS_NAMESPACES) {
+			return TRUE;
 		}
 
-		return $config;
+		if ($this->getOption('groups') === self::GROUPS_AUTO && ($namespaceCount > 0 || $packageCount === 0)) {
+			return TRUE;
+		}
+
+		return FALSE;
+	}
+
+
+	/**
+	 * @param bool $areNamespacesEnabled
+	 * @return bool
+	 */
+	public function arePackagesEnabled($areNamespacesEnabled)
+	{
+		if ($this->getOption('groups') === self::GROUPS_PACKAGES) {
+			return TRUE;
+
+		} elseif ($this->getOption('groups') === self::GROUPS_AUTO && ($areNamespacesEnabled === FALSE)) {
+			return TRUE;
+		}
+
+		return TRUE;
+	}
+
+
+	/**
+	 * @param array$options
+	 * @param string $type
+	 * @return int
+	 */
+	private function getAccessLevelForReflections($options, $type)
+	{
+		$accessLevel = NULL;
+		if (in_array(self::AL_PUBLIC, $options)) {
+			$accessLevel |= ($type === 'property' ? ReflectionProperty::IS_PUBLIC : ReflectionMethod::IS_PUBLIC);
+		}
+
+		if (in_array(self::AL_PROTECTED, $options)) {
+			$accessLevel |= ($type === 'property' ? ReflectionProperty::IS_PROTECTED : ReflectionMethod::IS_PROTECTED);
+		}
+
+		if (in_array(self::AL_PRIVATE, $options)) {
+			$accessLevel |= ($type === 'property' ? ReflectionProperty::IS_PRIVATE : ReflectionMethod::IS_PRIVATE);
+		}
+
+		return $accessLevel;
 	}
 
 }

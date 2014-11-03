@@ -9,6 +9,8 @@
 
 namespace ApiGen\Templating\Filters;
 
+use ApiGen\Configuration\Configuration;
+use ApiGen\Configuration\TemplateConfiguration;
 use ApiGen\Generator\Resolvers\ElementResolver;
 use ApiGen\Reflection\ReflectionClass;
 use ApiGen\Reflection\ReflectionFunction;
@@ -22,16 +24,8 @@ use ApiGen\Reflection\ReflectionProperty;
 use Nette\Utils\Validators;
 
 
-/**
- * @method UrlFilters setConfig(array $config)
- */
 class UrlFilters extends Filters
 {
-
-	/**
-	 * @var array
-	 */
-	private $config;
 
 	/**
 	 * @var SourceCodeHighlighter
@@ -48,12 +42,22 @@ class UrlFilters extends Filters
 	 */
 	private $elementResolver;
 
+	/**
+	 * @var Configuration
+	 */
+	private $configuration;
 
-	public function __construct(SourceCodeHighlighter $highlighter, Markup $markup, ElementResolver $elementResolver)
-	{
+
+	public function __construct(
+		SourceCodeHighlighter $highlighter,
+		Markup $markup,
+		ElementResolver $elementResolver,
+		Configuration $configuration
+	) {
 		$this->highlighter = $highlighter;
 		$this->markup = $markup;
 		$this->elementResolver = $elementResolver;
+		$this->configuration = $configuration;
 	}
 
 
@@ -159,8 +163,9 @@ class UrlFilters extends Filters
 	 */
 	public function packageUrl($packageName)
 	{
+		$options = $this->configuration->getOptions();
 		return sprintf(
-			$this->config['template']['templates']['main']['package']['filename'],
+			$options['template']['templates']['package']['filename'],
 			$this->urlize($packageName)
 		);
 	}
@@ -174,8 +179,9 @@ class UrlFilters extends Filters
 	 */
 	public function namespaceUrl($namespaceName)
 	{
+		$options = $this->configuration->getOptions();
 		return sprintf(
-			$this->config['template']['templates']['main']['namespace']['filename'],
+			$options['template']['templates']['namespace']['filename'],
 			$this->urlize($namespaceName)
 		);
 	}
@@ -190,8 +196,9 @@ class UrlFilters extends Filters
 	public function classUrl($class)
 	{
 		$className = $class instanceof ReflectionClass ? $class->getName() : $class;
+		$options = $this->configuration->getOptions();
 		return sprintf(
-			$this->config['template']['templates']['main']['class']['filename'],
+			$options['template']['templates']['class']['filename'],
 			$this->urlize($className)
 		);
 	}
@@ -234,8 +241,9 @@ class UrlFilters extends Filters
 			return $this->classUrl($className) . '#' . $constant->getName();
 		}
 		// Constant in namespace or global space
+		$options = $this->configuration->getOptions();
 		return sprintf(
-			$this->config['template']['templates']['main']['constant']['filename'],
+			$options['template']['templates']['constant']['filename'],
 			$this->urlize($constant->getName())
 		);
 	}
@@ -248,8 +256,9 @@ class UrlFilters extends Filters
 	 */
 	public function functionUrl(ReflectionFunction $function)
 	{
+		$options = $this->configuration->getOptions();
 		return sprintf(
-			$this->config['template']['templates']['main']['function']['filename'],
+			$options['template']['templates']['function']['filename'],
 			$this->urlize($function->getName())
 		);
 	}
@@ -547,7 +556,8 @@ class UrlFilters extends Filters
 	 */
 	private function resolveInternal($text)
 	{
-		$internal = $this->config['internal'];
+		$options = $this->configuration->getOptions();
+		$internal = $options['internal'];
 		$annotationsMask = '~\\{@(\\w+)(?:(?:\\s+((?>(?R)|[^{}]+)*)\\})|\\})~';
 		return preg_replace_callback($annotationsMask, function ($matches) use ($internal) {
 			// Replace only internal
