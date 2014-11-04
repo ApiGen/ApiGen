@@ -9,6 +9,7 @@
 
 namespace ApiGen\Generator;
 
+use ApiGen\Configuration\Configuration;
 use ApiGen\Templating\TemplateFactory;
 use Nette;
 
@@ -21,10 +22,23 @@ class SitemapTemplateGenerator extends Nette\Object implements TemplateGenerator
 	 */
 	private $templateFactory;
 
+	/**
+	 * @var Configuration
+	 */
+	private $configuration;
 
-	public function __construct(TemplateFactory $templateFactory)
+
+	public function __construct(TemplateFactory $templateFactory, Configuration $configuration)
 	{
 		$this->templateFactory = $templateFactory;
+		$this->configuration = $configuration;
+	}
+
+
+	public function generate()
+	{
+		$template = $this->templateFactory->create('sitemap', 'optional');
+		$template->save();
 	}
 
 
@@ -33,15 +47,7 @@ class SitemapTemplateGenerator extends Nette\Object implements TemplateGenerator
 	 */
 	public function isAllowed()
 	{
-		return ! empty($this->config['baseUrl']);
-	}
-
-
-	public function generate()
-	{
-		$template = $this->templateFactory->create('sitemap', 'optional');
-//		$template = $this->addBaseVariablesToTemplate($template);
-		$template->save();
+		return (bool) $this->configuration->getOption('baseUrl');
 	}
 
 }

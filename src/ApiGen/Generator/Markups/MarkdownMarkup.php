@@ -57,6 +57,9 @@ class MarkdownMarkup implements Markup
 	}
 
 
+	/**
+	 * @return string
+	 */
 	private function highlightCb(array $match)
 	{
 		$highlighted = $this->highlighter->highlight(trim(isset($match[3]) ? $match[3] : $match[2]));

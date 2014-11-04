@@ -9,6 +9,7 @@
 
 namespace ApiGen\Generator;
 
+use ApiGen\Configuration\Configuration;
 use ApiGen\Templating\TemplateFactory;
 use Nette;
 
@@ -21,10 +22,16 @@ class RobotsTemplateGenerator extends Nette\Object implements TemplateGenerator
 	 */
 	private $templateFactory;
 
+	/**
+	 * @var Configuration
+	 */
+	private $configuration;
 
-	public function __construct(TemplateFactory $templateFactory)
+
+	public function __construct(TemplateFactory $templateFactory, Configuration $configuration)
 	{
 		$this->templateFactory = $templateFactory;
+		$this->configuration = $configuration;
 	}
 
 
@@ -40,8 +47,7 @@ class RobotsTemplateGenerator extends Nette\Object implements TemplateGenerator
 	 */
 	public function isAllowed()
 	{
-		return (bool) $this->config['baseUrl'];
-
+		return (bool) $this->configuration->getOption('baseUrl');
 	}
 
 }

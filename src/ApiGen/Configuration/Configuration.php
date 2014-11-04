@@ -195,12 +195,6 @@ class Configuration extends Nette\Object
 			'baseUrl' => function (Options $options, $value) {
 				return rtrim($value, '/');
 			},
-			'exclude' => function (Options $options, $value) {
-				foreach ($value as $key => $source) {
-					$value[$key] = FileSystem::getAbsolutePath($source);
-				}
-				return $value;
-			},
 			'skipDocPath' => function (Options $options, $value) {
 				foreach ($value as $key => $source) {
 					$value[$key] = FileSystem::getAbsolutePath($source);

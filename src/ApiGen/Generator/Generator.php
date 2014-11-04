@@ -64,7 +64,9 @@ class Generator extends Nette\Object
 		$this->onGenerateStart($this->elementStorage->getElementCount());
 
 		foreach ($this->processQueue as $generator) {
-			$generator->generate();
+			if ($generator->isAllowed()) {
+				$generator->generate();
+			}
 		}
 
 		$this->templateNavigator->removeTempDir();

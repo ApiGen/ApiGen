@@ -123,7 +123,7 @@ class TodoTemplateGenerator extends Nette\Object implements TemplateGenerator
 	 */
 	public function isAllowed()
 	{
-		return $this->configuration->getOptions('todo');
+		return $this->configuration->getOption('todo');
 	}
 
 }
