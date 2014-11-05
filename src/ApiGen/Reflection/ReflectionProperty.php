@@ -78,7 +78,7 @@ class ReflectionProperty extends ReflectionElement implements IReflectionPropert
 	{
 		$className = $this->reflection->getDeclaringClassName();
 		$parsedClasses = $this->getParsedClasses();
-		return $className === NULL ? NULL : $parsedClasses[$className];
+		return $className === NULL ?: $parsedClasses[$className];
 	}
 
 
