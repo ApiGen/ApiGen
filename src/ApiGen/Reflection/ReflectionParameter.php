@@ -120,7 +120,7 @@ class ReflectionParameter extends ReflectionBase implements IReflectionParameter
 	{
 		$className = $this->reflection->getClassName();
 		$parsedClasses = $this->getParsedClasses();
-		return $className === NULL ?: $parsedClasses[$className];
+		return $className === NULL ? NULL : $parsedClasses[$className];
 	}
 
 
@@ -205,7 +205,7 @@ class ReflectionParameter extends ReflectionBase implements IReflectionParameter
 	{
 		$className = $this->reflection->getDeclaringClassName();
 		$parsedClasses = $this->getParsedClasses();
-		return $className === NULL ?: $parsedClasses[$className];
+		return $className === NULL ? NULL : $parsedClasses[$className];
 	}
 
 
