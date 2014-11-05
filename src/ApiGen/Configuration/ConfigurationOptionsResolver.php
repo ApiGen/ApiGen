@@ -63,11 +63,6 @@ class ConfigurationOptionsResolver extends Nette\Object
 	);
 
 	/**
-	 * @var array
-	 */
-	private $options;
-
-	/**
 	 * @var ThemeConfigFactory
 	 */
 	private $themeConfigFactory;

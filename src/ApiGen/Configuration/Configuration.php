@@ -44,11 +44,11 @@ class Configuration extends Nette\Object
 	/**
 	 * @return array
 	 */
-	public function setValues(array $config)
+	public function resolveOptions(array $options)
 	{
-		$this->options = $this->configurationOptionsResolver->resolve($config);
+		$this->options = $this->configurationOptionsResolver->resolve($options);
+		return $this->options;
 	}
-
 
 
 	/**

@@ -18,6 +18,6 @@ interface OptionsResolverFactory
 	/**
 	 * @return OptionsResolver
 	 */
-	public function create();
+	function create();
 
 }

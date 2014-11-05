@@ -103,8 +103,7 @@ class GenerateCommand extends Command
 
 			$apigen['debug'] = $this->getOptionValue($input, $apigen, 'debug');
 
-			$this->configuration->setValues($apigen);
-			$apigen = $this->configuration->getOptions();
+			$apigen = $this->configuration->resolveOptions($apigen);
 
 			$files = $this->scan($apigen, $output);
 			$this->parse($apigen, $output, $files);
