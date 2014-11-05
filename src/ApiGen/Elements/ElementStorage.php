@@ -245,13 +245,26 @@ class ElementStorage extends Nette\Object
 	}
 
 
-	/**
-	 * @return int
-	 */
-	private function getPackageCount()
+	private function sortNamespacesAndPackages()
 	{
-		$nonDefaultPackages = array_diff(array_keys($this->packages), array('PHP', 'None'));
-		return count($nonDefaultPackages);
+		$areNamespacesEnabled = $this->configuration->areNamespacesEnabled(
+			$this->getNamespaceCount(),
+			$this->getPackageCount()
+		);
+		$arePackagesEnabled = $this->configuration->arePackagesEnabled($areNamespacesEnabled);
+
+		if ($areNamespacesEnabled) {
+			$this->namespaces = $this->groupSorter->sort($this->namespaces);
+			$this->packages = array();
+
+		} elseif ($arePackagesEnabled) {
+			$this->namespaces = array();
+			$this->packages = $this->groupSorter->sort($this->packages);
+
+		} else {
+			$this->namespaces = array();
+			$this->packages = array();
+		}
 	}
 
 
@@ -265,20 +278,13 @@ class ElementStorage extends Nette\Object
 	}
 
 
-	private function sortNamespacesAndPackages()
+	/**
+	 * @return int
+	 */
+	private function getPackageCount()
 	{
-		$areNamespacesEnabled = $this->configuration->areNamespacesEnabled(
-			$this->getNamespaceCount(),
-			$this->getPackageCount()
-		);
-		$arePackagesEnabled = $this->configuration->arePackagesEnabled($areNamespacesEnabled);
-
-		if ($areNamespacesEnabled) {
-			$this->namespaces = $this->groupSorter->sort($this->namespaces);
-
-		} elseif ($arePackagesEnabled) {
-			$this->packages = $this->groupSorter->sort($this->packages);
-		}
+		$nonDefaultPackages = array_diff(array_keys($this->packages), array('PHP', 'None'));
+		return count($nonDefaultPackages);
 	}
 
 

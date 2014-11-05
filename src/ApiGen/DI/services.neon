@@ -43,7 +43,8 @@ services:
 
 	# generators
 	- ApiGen\Generator\Generator
-	- ApiGen\Generator\CommonTemplateGenerator # todo, split to shit
+	- ApiGen\Generator\ZipGenerator
+	- ApiGen\Generator\CommonTemplateGenerator
 	- ApiGen\Generator\SourceCodeGenerator
 	- ApiGen\Generator\ElementsTemplateGenerator
 	- ApiGen\Generator\TodoTemplateGenerator
@@ -53,7 +54,6 @@ services:
 	- ApiGen\Generator\PackagesTemplateGenerator
 	- ApiGen\Generator\SitemapTemplateGenerator
 	- ApiGen\Generator\OpensearchTemplateGenerator
-	- ApiGen\Generator\ZipGenerator
 	- ApiGen\Generator\RobotsTemplateGenerator
 	- ApiGen\Generator\Resolvers\ElementResolver
 	- ApiGen\Generator\Resolvers\RelativePathResolver

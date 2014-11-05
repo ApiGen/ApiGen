@@ -46,7 +46,7 @@ class ZipGenerator extends Nette\Object implements TemplateGenerator
 	 */
 	public function isAllowed()
 	{
-		return $this->configuration->getOption('zip');
+		return $this->configuration->getOption('download');
 	}
 
 }

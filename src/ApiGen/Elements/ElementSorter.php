@@ -26,7 +26,7 @@ class ElementSorter extends Nette\Object
 	public function sortElementsByFqn($elements)
 	{
 		if (count($elements)) {
-			$firstElement = $elements[0];
+			$firstElement = $this->getFirstElementOfArray($elements);
 			if ($firstElement instanceof ReflectionConstant) {
 				return $this->sortConstantsByFqn($elements);
 
@@ -42,6 +42,17 @@ class ElementSorter extends Nette\Object
 		}
 
 		return $elements;
+	}
+
+
+	/**
+	 * @return mixed
+	 */
+	private function getFirstElementOfArray(array $elements)
+	{
+		$arrayValues = array_values($elements);
+		$firstElement = array_shift($arrayValues);
+		return $firstElement;
 	}
 
 

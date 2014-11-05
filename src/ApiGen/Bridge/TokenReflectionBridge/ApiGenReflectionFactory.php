@@ -14,6 +14,7 @@ use ApiGen\Parser\ParserStorage;
 use ApiGen\Reflection\ReflectionBase;
 use ApiGen\Reflection\ReflectionClass;
 use ApiGen\Reflection\ReflectionConstant;
+use ApiGen\Reflection\ReflectionFunction;
 use ApiGen\Reflection\ReflectionMethod;
 use ApiGen\Reflection\ReflectionMethodMagic;
 use ApiGen\Reflection\ReflectionParameter;
@@ -94,6 +95,9 @@ class ApiGenReflectionFactory extends Nette\Object
 
 		} elseif ($reflection instanceof IReflectionConstant) {
 			return new ReflectionConstant($reflection);
+
+		} elseif ($reflection instanceof IReflectionFunction) {
+			return new ReflectionFunction($reflection);
 
 		} elseif ($reflection instanceof IReflectionMethod) {
 			return new ReflectionMethod($reflection);

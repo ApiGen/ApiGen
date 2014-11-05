@@ -62,8 +62,18 @@ class GroupSorter extends Nette\Object
 			$this->addMissingElementTypes($groupName);
 		}
 
-		$main = $this->configuration->getOption('main');
+		$groups = $this->orderByNameAndMain($groups);
 
+		return $groups;
+	}
+
+
+	/**
+	 * @return array
+	 */
+	private function orderByNameAndMain(array $groups)
+	{
+		$main = $this->configuration->getOption('main');
 		uksort($groups, function ($one, $two) use ($main) {
 			// \ as separator has to be first
 			$one = str_replace('\\', ' ', $one);
@@ -90,7 +100,6 @@ class GroupSorter extends Nette\Object
 	 */
 	private function isNoneGroupOnly(array $groups)
 	{
-
 		if (count($groups) === 1 && isset($groups['None'])) {
 			return TRUE;
 		}

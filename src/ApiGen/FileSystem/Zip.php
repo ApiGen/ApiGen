@@ -14,6 +14,7 @@ use Nette;
 use Nette\Utils\Finder;
 use Nette\Utils\Strings;
 use RuntimeException;
+use ZipArchive;
 
 
 class Zip extends Nette\Object
@@ -37,8 +38,8 @@ class Zip extends Nette\Object
 			throw new RuntimeException('Extension zip is not loaded');
 		}
 
-		$archive = new \ZipArchive;
-		if ($archive->open($this->getArchivePath(), \ZipArchive::CREATE) !== TRUE) {
+		$archive = new ZipArchive;
+		if ($archive->open($this->getArchivePath(), ZipArchive::CREATE) !== TRUE) {
 			throw new RuntimeException('Could not open ZIP archive');
 		}
 

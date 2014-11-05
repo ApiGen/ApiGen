@@ -154,8 +154,8 @@ class TemplateFactory extends Nette\Object
 		$template->constant = NULL;
 		$template->function = NULL;
 
-		$template->namespaces = array_keys($this->elementStorage->getPackages());
-		$template->packages = array_keys($this->elementStorage->getNamespaces());
+		$template->namespaces = array_keys($this->elementStorage->getNamespaces());
+		$template->packages = array_keys($this->elementStorage->getPackages());
 		$template->archive = basename($this->zip->getArchivePath());
 
 		$elements = $this->elementStorage->getElements();
@@ -182,4 +182,5 @@ class TemplateFactory extends Nette\Object
 			return $element->isMain();
 		};
 	}
+
 }

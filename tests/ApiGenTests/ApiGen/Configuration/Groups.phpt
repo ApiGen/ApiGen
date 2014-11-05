@@ -53,8 +53,8 @@ class GroupsTest extends TestCase
 		passthru(APIGEN_BIN . ' generate');
 
 		$indexContent = $this->getFileContentInOneLine(API_DIR . '/index.html');
-		Assert::match(
-			'%A%<li><a href="package-A.html">A</a>%A%',
+		Assert::contains(
+			'<li><a href="package-A.html">A</a>',
 			$indexContent
 		);
 		Assert::match(

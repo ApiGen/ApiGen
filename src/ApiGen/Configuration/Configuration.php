@@ -50,7 +50,7 @@ class Configuration extends Nette\Object
 		'extensions' => array('php'),
 		'googleCseId' => '',
 		'googleAnalytics' => '',
-		'groups' => 'auto',
+		'groups' => self::GROUPS_AUTO,
 		'charset' => array(CharsetConvertor::AUTO),
 		'main' => '',
 		'internal' => FALSE,
@@ -113,6 +113,7 @@ class Configuration extends Nette\Object
 						return APIGEN_ROOT_PATH . '/templates/bootstrap/config.neon';
 					}
 				}
+				return $previousValue;
 			},
 			'template' => function (Options $options) {
 				$templateConfig = $this->themeConfigFactory->create();
@@ -162,7 +163,7 @@ class Configuration extends Nette\Object
 					mkdir($value, 0755, TRUE);
 				}
 				if ( ! is_dir($value) || ! is_writable($value)) {
-					throw new ConfigurationException("Destination '$value' is not writeable");
+					throw new ConfigurationException("Destination '$value' is not writable");
 				}
 				return TRUE;
 			},
@@ -257,7 +258,7 @@ class Configuration extends Nette\Object
 			return TRUE;
 		}
 
-		return TRUE;
+		return FALSE;
 	}
 
 

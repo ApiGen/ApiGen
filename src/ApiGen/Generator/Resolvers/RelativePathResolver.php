@@ -17,7 +17,7 @@ use Nette;
 /**
  * Resolves relative path to elements extracted by Generator.
  *
- * @method  RelativePathResolver setSymlinks(array $symlinks)
+ * @method setSymlinks()
  */
 class RelativePathResolver extends Nette\Object
 {
@@ -51,11 +51,13 @@ class RelativePathResolver extends Nette\Object
 		if (isset($this->symlinks[$fileName])) {
 			$fileName = $this->symlinks[$fileName];
 		}
+
 		$options = $this->configuration->getOptions();
 		foreach ($options['source'] as $source) {
 			if (FileSystem::isPhar($source)) {
 				$source = FileSystem::pharPath($source);
 			}
+
 			if (strpos($fileName, $source) === 0) {
 				return $this->getFileNameWithoutSourcePath($fileName, $source);
 			}
@@ -72,9 +74,9 @@ class RelativePathResolver extends Nette\Object
 	 */
 	private function getFileNameWithoutSourcePath($fileName, $source)
 	{
-		$source = rtrim($source, '/');
+		$source = rtrim($source, DS);
 		$fileName = substr($fileName, strlen($source) + 1);
-		return str_replace('\\', '/', $fileName);
+		return str_replace('\\', DS, $fileName);
 	}
 
 }
