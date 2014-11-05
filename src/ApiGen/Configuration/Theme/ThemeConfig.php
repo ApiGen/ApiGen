@@ -194,4 +194,3 @@ class ThemeConfig extends Nette\Object
 	}
 
 }
-

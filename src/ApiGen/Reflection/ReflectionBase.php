@@ -110,7 +110,7 @@ abstract class ReflectionBase extends Nette\Object implements IReflection
 
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isInternal()
 	{
@@ -119,7 +119,7 @@ abstract class ReflectionBase extends Nette\Object implements IReflection
 
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isUserDefined()
 	{
@@ -128,7 +128,7 @@ abstract class ReflectionBase extends Nette\Object implements IReflection
 
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isTokenized()
 	{

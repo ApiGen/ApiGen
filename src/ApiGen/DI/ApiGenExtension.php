@@ -108,7 +108,7 @@ class ApiGenExtension extends CompilerExtension
 	 */
 	private function isPhar()
 	{
-		return 'phar:' === substr(__FILE__, 0, 5);
+		return substr(__FILE__, 0, 5) === 'phar:';
 	}
 
 }

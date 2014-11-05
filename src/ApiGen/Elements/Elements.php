@@ -61,12 +61,4 @@ class Elements
 		return $emptyList;
 	}
 
-//	/**
-//	 * @return string[]
-//	 */
-//	public function getTypes()
-//	{
-//		return array('classes', 'interfaces', 'traits', 'exceptions', 'constants', 'functions');
-//	}
-
 }

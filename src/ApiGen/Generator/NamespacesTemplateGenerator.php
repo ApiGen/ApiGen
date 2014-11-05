@@ -59,6 +59,7 @@ class NamespacesTemplateGenerator extends Nette\Object implements TemplateGenera
 		}
 	}
 
+
 	/**
 	 * @param Template|\stdClass $template
 	 * @param string $name

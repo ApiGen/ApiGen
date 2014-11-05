@@ -74,7 +74,7 @@ class ReflectionParameter extends ReflectionBase implements IReflectionParameter
 	/**
 	 * Retutns if a default value for the parameter is available.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isDefaultValueAvailable()
 	{
@@ -94,7 +94,7 @@ class ReflectionParameter extends ReflectionBase implements IReflectionParameter
 
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isArray()
 	{
@@ -103,7 +103,7 @@ class ReflectionParameter extends ReflectionBase implements IReflectionParameter
 
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isCallable()
 	{
@@ -136,7 +136,7 @@ class ReflectionParameter extends ReflectionBase implements IReflectionParameter
 	/**
 	 * Returns if the the parameter allows NULL.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function allowsNull()
 	{
@@ -145,7 +145,7 @@ class ReflectionParameter extends ReflectionBase implements IReflectionParameter
 
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isOptional()
 	{
@@ -154,7 +154,7 @@ class ReflectionParameter extends ReflectionBase implements IReflectionParameter
 
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isPassedByReference()
 	{
@@ -163,7 +163,7 @@ class ReflectionParameter extends ReflectionBase implements IReflectionParameter
 
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	public function canBePassedByValue()
 	{
@@ -221,7 +221,7 @@ class ReflectionParameter extends ReflectionBase implements IReflectionParameter
 	/**
 	 * If the parameter can be used unlimited.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isUnlimited()
 	{

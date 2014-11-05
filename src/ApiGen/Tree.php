@@ -63,7 +63,7 @@ class Tree extends RecursiveTreeIterator
 
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasSibling()
 	{

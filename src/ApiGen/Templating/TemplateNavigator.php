@@ -62,7 +62,7 @@ class TemplateNavigator extends Nette\Object
 	{
 		$this->prepareTemplate($name);
 		$options = $this->configuration->getOptions();
-		return /*$this->getTemplateDir() . DS .*/ $options['template']['templates'][$name]['template']; // todo: this should be already absolute
+		return $options['template']['templates'][$name]['template']; // note: should be already absolute
 	}
 
 
@@ -230,4 +230,5 @@ class TemplateNavigator extends Nette\Object
 		$config = $this->configuration->getOption('templateConfig');
 		return dirname($config);
 	}
+
 }

@@ -92,8 +92,6 @@ class ElementsTemplateGenerator extends Nette\Object implements TemplateGenerato
 					$template->save($template->functionUrl($element));
 				}
 
-
-
 				// todo: split to source code generator
 
 				// Generate source codes
@@ -101,11 +99,6 @@ class ElementsTemplateGenerator extends Nette\Object implements TemplateGenerato
 					// todo: create new template
 					$this->sourceCodeGenerator->generateForElement($template, $element);
 				}
-
-
-
-
-
 			}
 		}
 	}

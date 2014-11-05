@@ -90,9 +90,7 @@ class TreeTemplateGenerator extends Nette\Object implements TemplateGenerator
 
 		$processed = array();
 
-
 		$classes = $this->parserStorage->getElementsByType(Elements::CLASSES);
-//		$classes = $this->elementStorage->getElementsByType(Elements::CLASSES);
 		foreach ($classes as $className => $reflection) {
 			if ( ! $reflection->isMain() || ! $reflection->isDocumented() || isset($processed[$className])) {
 				continue;

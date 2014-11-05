@@ -19,7 +19,7 @@ class ReflectionProperty extends ReflectionElement implements IReflectionPropert
 {
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isReadOnly()
 	{
@@ -28,7 +28,7 @@ class ReflectionProperty extends ReflectionElement implements IReflectionPropert
 
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isWriteOnly()
 	{
@@ -37,7 +37,7 @@ class ReflectionProperty extends ReflectionElement implements IReflectionPropert
 
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isMagic()
 	{
@@ -114,7 +114,7 @@ class ReflectionProperty extends ReflectionElement implements IReflectionPropert
 	/**
 	 * Returns if the property was created at compile time.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isDefault()
 	{
@@ -132,7 +132,7 @@ class ReflectionProperty extends ReflectionElement implements IReflectionPropert
 
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isPrivate()
 	{
@@ -141,7 +141,7 @@ class ReflectionProperty extends ReflectionElement implements IReflectionPropert
 
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isProtected()
 	{
@@ -150,7 +150,7 @@ class ReflectionProperty extends ReflectionElement implements IReflectionPropert
 
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isPublic()
 	{
@@ -159,7 +159,7 @@ class ReflectionProperty extends ReflectionElement implements IReflectionPropert
 
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isStatic()
 	{
@@ -188,7 +188,7 @@ class ReflectionProperty extends ReflectionElement implements IReflectionPropert
 
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isValid()
 	{

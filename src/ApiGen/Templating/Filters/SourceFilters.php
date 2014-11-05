@@ -98,7 +98,7 @@ class SourceFilters extends Filters
 	 * Returns a link to a element source code.
 	 *
 	 * @param ReflectionElement $element
-	 * @param boolean $withLine Include file line number into the link
+	 * @param bool $withLine Include file line number into the link
 	 * @return string
 	 */
 	public function sourceUrl(ReflectionElement $element, $withLine = TRUE)

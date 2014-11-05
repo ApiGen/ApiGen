@@ -116,7 +116,6 @@ class Parser extends Nette\Object
 		$allFoundClasses = $this->broker->getClasses(Backend::TOKENIZED_CLASSES | Backend::INTERNAL_CLASSES
 			| Backend::NONEXISTENT_CLASSES);
 
-
 		$this->classes->exchangeArray($allFoundClasses);
 		$this->constants->exchangeArray($this->broker->getConstants());
 		$this->functions->exchangeArray($this->broker->getFunctions());

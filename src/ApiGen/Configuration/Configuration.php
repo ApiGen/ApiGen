@@ -34,7 +34,6 @@ class Configuration extends Nette\Object
 	const TEMPLATE_THEME_DEFAULT = 'default';
 	const TEMPLATE_THEME_BOOTSTRAP = 'bootstrap';
 
-
 	/**
 	 * @var array
 	 */

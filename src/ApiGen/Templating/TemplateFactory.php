@@ -110,13 +110,13 @@ class TemplateFactory extends Nette\Object
 		if ($name === 'source') {
 			$template->setSavePath($this->templateNavigator->getTemplatePathForSourceElement($element));
 
- 		} elseif ($name === 'class') {
+		} elseif ($name === 'class') {
 			$template->setSavePath($this->templateNavigator->getTemplatePathForClass($element));
 
- 		} elseif ($name === 'constant') {
+		} elseif ($name === 'constant') {
 			$template->setSavePath($this->templateNavigator->getTemplatePathForConstant($element));
 
- 		} elseif ($name === 'function') {
+		} elseif ($name === 'function') {
 			$template->setSavePath($this->templateNavigator->getTemplatePathForFunction($element));
 		}
 

@@ -66,7 +66,6 @@ class AnnotationFilters extends Filters
 		'todo' => 14
 	);
 
-
 	/**
 	 * @var ElementResolver
 	 */

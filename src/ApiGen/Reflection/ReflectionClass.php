@@ -101,7 +101,7 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isAbstract()
 	{
@@ -110,7 +110,7 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isFinal()
 	{
@@ -119,7 +119,7 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isInterface()
 	{
@@ -128,7 +128,7 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isException()
 	{
@@ -138,7 +138,7 @@ class ReflectionClass extends ReflectionElement
 
 	/**
 	 * @param string $class
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isSubclassOf($class)
 	{
@@ -489,8 +489,8 @@ class ReflectionClass extends ReflectionElement
 						->setShortDescription(str_replace("\n", ' ', $shortDescription))
 						->setStartLine($startLine)
 						->setEndLine($endLine)
-						->setReadOnly('property-read' === $annotationName)
-						->setWriteOnly('property-write' === $annotationName)
+						->setReadOnly($annotationName === 'property-read')
+						->setWriteOnly($annotationName === 'property-write')
 						->setDeclaringClass($this)
 						->addAnnotation('var', $typeHint);
 
@@ -619,7 +619,7 @@ class ReflectionClass extends ReflectionElement
 
 	/**
 	 * @param string $constantName
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasConstant($constantName)
 	{
@@ -633,7 +633,7 @@ class ReflectionClass extends ReflectionElement
 
 	/**
 	 * @param string $constantName
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasOwnConstant($constantName)
 	{
@@ -729,7 +729,7 @@ class ReflectionClass extends ReflectionElement
 
 	/**
 	 * @param string|object $interface Interface name or reflection object
-	 * @return boolean
+	 * @return bool
 	 */
 	public function implementsInterface($interface)
 	{
@@ -851,7 +851,7 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isTrait()
 	{
@@ -861,7 +861,7 @@ class ReflectionClass extends ReflectionElement
 
 	/**
 	 * @param string $trait
-	 * @return boolean
+	 * @return bool
 	 */
 	public function usesTrait($trait)
 	{
@@ -1097,13 +1097,14 @@ class ReflectionClass extends ReflectionElement
 	{
 		$usedMethods = array();
 		foreach ($this->getMethods() as $method) {
-			if ($method->getDeclaringTraitName() === NULL || $method->getDeclaringTraitName() === $this->getName()) {
+			$traitName = $method->getDeclaringTraitName();
+			if ($traitName === NULL || $traitName === $this->getName()) {
 				continue;
 			}
 
-			$usedMethods[$method->getDeclaringTraitName()][$method->getName()]['method'] = $method;
+			$usedMethods[$traitName][$method->getName()]['method'] = $method;
 			if ($method->getOriginalName() !== NULL && $method->getOriginalName() !== $method->getName()) {
-				$usedMethods[$method->getDeclaringTraitName()][$method->getName()]['aliases'][$method->getName()] = $method;
+				$usedMethods[$traitName][$method->getName()]['aliases'][$method->getName()] = $method;
 			}
 		}
 
@@ -1132,11 +1133,12 @@ class ReflectionClass extends ReflectionElement
 		$usedMethods = array();
 
 		foreach ($this->getMagicMethods() as $method) {
-			if (NULL === $method->getDeclaringTraitName() || $this->getName() === $method->getDeclaringTraitName()) {
+			$traitName = $method->getDeclaringTraitName();
+			if ($traitName === NULL || $traitName === $this->getName()) {
 				continue;
 			}
 
-			$usedMethods[$method->getDeclaringTraitName()][$method->getName()]['method'] = $method;
+			$usedMethods[$traitName][$method->getName()]['method'] = $method;
 		}
 
 		// Sort
@@ -1312,7 +1314,7 @@ class ReflectionClass extends ReflectionElement
 
 	/**
 	 * @param string $propertyName
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasProperty($propertyName)
 	{
@@ -1325,7 +1327,7 @@ class ReflectionClass extends ReflectionElement
 
 	/**
 	 * @param string $propertyName
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasOwnProperty($propertyName)
 	{
@@ -1338,7 +1340,7 @@ class ReflectionClass extends ReflectionElement
 
 	/**
 	 * @param string $propertyName
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasTraitProperty($propertyName)
 	{
@@ -1349,11 +1351,11 @@ class ReflectionClass extends ReflectionElement
 
 	/**
 	 * @param string $methodName
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasMethod($methodName)
 	{
-		if (NULL === $this->methods) {
+		if ($this->methods === NULL) {
 			$this->getMethods();
 		}
 		return isset($this->methods[$methodName]);
@@ -1362,7 +1364,7 @@ class ReflectionClass extends ReflectionElement
 
 	/**
 	 * @param string $methodName
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasOwnMethod($methodName)
 	{
@@ -1375,7 +1377,7 @@ class ReflectionClass extends ReflectionElement
 
 	/**
 	 * @param string $methodName Method name
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasTraitMethod($methodName)
 	{
@@ -1385,7 +1387,7 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isValid()
 	{
@@ -1400,7 +1402,7 @@ class ReflectionClass extends ReflectionElement
 	/**
 	 * Returns if the class should be documented.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isDocumented()
 	{

@@ -23,6 +23,7 @@ class LoadParsedElements extends Nette\Object implements Subscriber
 	 * @var ElementResolver
 	 */
 	private $elementResolver;
+
 	/**
 	 * @var ParserStorage
 	 */

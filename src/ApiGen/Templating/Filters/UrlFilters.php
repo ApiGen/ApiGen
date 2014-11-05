@@ -92,7 +92,7 @@ class UrlFilters extends Filters
 	 * Returns links for package/namespace and its parent packages.
 	 *
 	 * @param string $package
-	 * @param boolean $last
+	 * @param bool $last
 	 * @return string
 	 */
 	public function packageLinks($package, $last = TRUE)
@@ -132,7 +132,7 @@ class UrlFilters extends Filters
 	 * Returns links for namespace and its parent namespaces.
 	 *
 	 * @param string $namespace
-	 * @param boolean $last
+	 * @param bool $last
 	 * @return string
 	 */
 	public function namespaceLinks($namespace, $last = TRUE)
@@ -338,7 +338,7 @@ class UrlFilters extends Filters
 	 * Returns links for package/namespace and its parent packages.
 	 *
 	 * @param string $package
-	 * @param boolean $last
+	 * @param bool $last
 	 * @return string
 	 */
 	public function getPackageLinks($package, $last = TRUE)
@@ -504,7 +504,7 @@ class UrlFilters extends Filters
 	 *
 	 * @param string $text
 	 * @param ReflectionElement $context
-	 * @param boolean $block Parse text as block
+	 * @param bool $block Parse text as block
 	 * @return string
 	 */
 	public function doc($text, ReflectionElement $context, $block = FALSE)

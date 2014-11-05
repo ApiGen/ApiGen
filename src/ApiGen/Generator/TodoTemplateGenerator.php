@@ -77,7 +77,6 @@ class TodoTemplateGenerator extends Nette\Object implements TemplateGenerator
 		$elements[Elements::METHODS] = array();
 		$elements[Elements::PROPERTIES] = array();
 		foreach ($this->elementStorage->getElements() as $type => $elementList) {
-
 			// this repeats!
 			$elementsForMain = $this->elementFilter->filterForMain($elementList);
 			$elements[$type] = $this->elementFilter->filterByAnnotation($elementsForMain, 'todo');
