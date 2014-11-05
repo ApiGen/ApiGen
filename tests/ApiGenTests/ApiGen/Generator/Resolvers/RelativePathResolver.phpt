@@ -56,14 +56,14 @@ class RelativePathResolverTest extends TestCase
 
 		$fileName = PROJECT_BETA_DIR . '/entities/Category.php';
 
-		$configuration->setValues(array(
+		$configuration->resolveOptions(array(
 			'source' => array(PROJECT_BETA_DIR . DS),
 			'destination' => API_DIR
 		));
 		$relativePath = $this->relativePathResolver->getRelativePath($fileName);
 		Assert::same('entities/Category.php', $relativePath);
 
-		$configuration->setValues(array(
+		$configuration->resolveOptions(array(
 			'source' => array(PROJECT_BETA_DIR),
 			'destination' => API_DIR
 		));

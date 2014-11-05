@@ -79,7 +79,7 @@ class ParserTest extends TestCase
 		$configuration = $this->container->getByType('ApiGen\Configuration\Configuration');
 		$defaults['source'] = array(PROJECT_DIR);
 		$defaults['destination'] = API_DIR;
-		$configuration->setValues($defaults);
+		$configuration->resolveOptions($defaults);
 	}
 }
 
