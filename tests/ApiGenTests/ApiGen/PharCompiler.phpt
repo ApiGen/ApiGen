@@ -26,7 +26,7 @@ class PharCompilerTest extends TestCase
 
 		$this->prepareConfig();
 
-		passthru('php ' . TEMP_DIR . '/apigen.phar generate --debug');
+		passthru('php ' . TEMP_DIR . '/apigen.phar generate');
 		Assert::true(file_exists(API_DIR . '/index.html'));
 
 		$fooClassFile = API_DIR . '/source-class-Project.Foo.html';
