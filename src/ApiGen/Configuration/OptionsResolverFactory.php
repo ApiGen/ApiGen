@@ -7,16 +7,17 @@
  * the file license.md that was distributed with this source code.
  */
 
-namespace ApiGen\Configuration\Theme;
+namespace ApiGen\Configuration;
+
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 
-interface ThemeConfigFactory
+interface OptionsResolverFactory
 {
 
 	/**
-	 * @param string $path
-	 * @return ThemeConfig
+	 * @return OptionsResolver
 	 */
-	function create($path);
+	public function create();
 
 }

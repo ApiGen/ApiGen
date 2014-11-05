@@ -3,7 +3,12 @@ services:
 
 	# configuration
 	- ApiGen\Configuration\Configuration
-	- ApiGen\Configuration\Theme\ThemeConfigFactory
+	- ApiGen\Configuration\ConfigurationOptionsResolver
+	- ApiGen\Configuration\OptionsResolverFactory
+	- implement: ApiGen\Configuration\Theme\ThemeConfigFactory
+	  parameters: [path]
+	  arguments: [%path%]
+	- ApiGen\Configuration\Theme\ThemeConfigOptionsResolver
 
 	# console
 	-
