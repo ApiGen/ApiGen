@@ -16,6 +16,6 @@ interface ThemeConfigFactory
 	/**
 	 * @return ThemeConfig
 	 */
-	public function create();
+	function create();
 
 }

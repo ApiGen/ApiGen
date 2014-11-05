@@ -40,7 +40,7 @@ abstract class ReflectionFunctionBase extends ReflectionElement implements Token
 	/**
 	 * Returns if the function/method returns its value as reference.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function returnsReference()
 	{

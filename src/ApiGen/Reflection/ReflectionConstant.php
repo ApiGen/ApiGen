@@ -108,7 +108,7 @@ class ReflectionConstant extends ReflectionElement implements IReflectionConstan
 
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isValid()
 	{
@@ -127,7 +127,7 @@ class ReflectionConstant extends ReflectionElement implements IReflectionConstan
 	/**
 	 * Returns if the constant should be documented.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isDocumented()
 	{

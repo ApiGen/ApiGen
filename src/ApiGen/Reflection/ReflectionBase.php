@@ -62,7 +62,7 @@ abstract class ReflectionBase extends Nette\Object implements IReflection
 	protected $reflectionType;
 
 	/**
-	 * @var IReflectionClass|IReflectionMethod|IReflectionFunction|IReflectionClass|IReflectionExtension|IReflectionParameter
+	 * @var IReflectionClass|IReflectionMethod|IReflectionFunction|IReflectionExtension|IReflectionParameter
 	 */
 	protected $reflection;
 

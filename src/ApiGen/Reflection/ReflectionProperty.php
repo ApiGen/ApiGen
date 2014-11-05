@@ -52,7 +52,7 @@ class ReflectionProperty extends ReflectionElement implements IReflectionPropert
 	{
 		if ($annotations = $this->getAnnotation('var')) {
 			list($types) = preg_split('~\s+|$~', $annotations[0], 2);
-			if ( ! empty($types) && '$' !== $types[0]) {
+			if ( ! empty($types) && $types[0] !=== '$') {
 				return $types;
 			}
 		}

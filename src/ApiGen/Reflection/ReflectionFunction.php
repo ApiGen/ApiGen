@@ -20,7 +20,7 @@ class ReflectionFunction extends ReflectionFunctionBase implements IReflectionFu
 {
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isValid()
 	{
@@ -35,7 +35,7 @@ class ReflectionFunction extends ReflectionFunctionBase implements IReflectionFu
 	/**
 	 * Returns if the function should be documented.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isDocumented()
 	{

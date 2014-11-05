@@ -271,13 +271,12 @@ class ReflectionClass extends ReflectionElement
 				$startLine = $this->getStartLine() + substr_count(substr($doc, 0, strpos($doc, $tmp)), "\n");
 				$endLine = $startLine + substr_count($annotation, "\n");
 
-
 				$method = $this->apiGenReflectionFactory->createMethodMagic()
 					->setName($name)
 					->setShortDescription(str_replace("\n", ' ', $shortDescription))
 					->setStartLine($startLine)
 					->setEndLine($endLine)
-					->setReturnsReference('&' === $returnsReference)
+					->setReturnsReference($returnsReference === '&')
 					->setDeclaringClass($this)
 					->addAnnotation('return', $returnTypeHint);
 
@@ -302,7 +301,7 @@ class ReflectionClass extends ReflectionElement
 						->setTypeHint($typeHint)
 						->setDefaultValueDefinition($defaultValueDefinition)
 						->setUnlimited(FALSE)
-						->setPassedByReference('&' === $passedByReference)
+						->setPassedByReference($passedByReference === '&')
 						->setDeclaringFunction($method);
 
 					$parameters[$name] = $parameter;
@@ -452,7 +451,9 @@ class ReflectionClass extends ReflectionElement
 		if ($this->ownMagicProperties === NULL) {
 			$this->ownMagicProperties = array();
 
-			if ( ! ($this->getPropertyAccessLevels() & InternalReflectionProperty::IS_PUBLIC) || $this->getDocComment() === FALSE) {
+			if ( ! ($this->getPropertyAccessLevels() & InternalReflectionProperty::IS_PUBLIC)
+				|| $this->getDocComment() === FALSE
+			) {
 				return $this->ownMagicProperties;
 			}
 

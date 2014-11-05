@@ -28,7 +28,7 @@ abstract class ReflectionElement extends ReflectionBase implements IReflection
 	/**
 	 * Cache for information if the element should be documented.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $isDocumented;
 
@@ -58,7 +58,7 @@ abstract class ReflectionElement extends ReflectionBase implements IReflection
 
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	public function getExtensionName()
 	{
@@ -85,7 +85,7 @@ abstract class ReflectionElement extends ReflectionBase implements IReflection
 
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isMain()
 	{
@@ -97,7 +97,7 @@ abstract class ReflectionElement extends ReflectionBase implements IReflection
 	/**
 	 * Returns if the element should be documented.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isDocumented()
 	{
@@ -131,7 +131,7 @@ abstract class ReflectionElement extends ReflectionBase implements IReflection
 	/**
 	 * Returns if the element is deprecated.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isDeprecated()
 	{
@@ -152,7 +152,7 @@ abstract class ReflectionElement extends ReflectionBase implements IReflection
 	/**
 	 * Returns if the element is in package.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function inPackage()
 	{
@@ -219,7 +219,7 @@ abstract class ReflectionElement extends ReflectionBase implements IReflection
 	/**
 	 * Returns if the element is defined within a namespace.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function inNamespace()
 	{
@@ -307,7 +307,7 @@ abstract class ReflectionElement extends ReflectionBase implements IReflection
 
 
 	/**
-	 * @return string|boolean
+	 * @return string|bool
 	 */
 	public function getDocComment()
 	{
@@ -371,7 +371,7 @@ abstract class ReflectionElement extends ReflectionBase implements IReflection
 
 	/**
 	 * @param string $annotation
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasAnnotation($annotation)
 	{
@@ -413,7 +413,7 @@ abstract class ReflectionElement extends ReflectionBase implements IReflection
 	/**
 	 * Returns if there are any known reasons why this element's reflection is invalid.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasReasons()
 	{
