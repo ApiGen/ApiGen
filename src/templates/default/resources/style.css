@@ -185,7 +185,7 @@ code a b {
 	overflow: auto;
 	margin-left: 275px;
 	height: 100%;
-	position: fixed;
+	position: relative;
 	left: 0;
 	right: 0;
 }
