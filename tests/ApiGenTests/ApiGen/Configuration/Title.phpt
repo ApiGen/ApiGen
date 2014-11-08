@@ -27,7 +27,7 @@ class TitleTest extends TestCase
 
 		Assert::match(
 			'%A%<title>' . self::TITLE . '</title>%A%',
-			file_get_contents(API_DIR . '/index.html')
+			$this->getFileContentInOneLine(API_DIR . '/index.html')
 		);
 	}
 

@@ -58,9 +58,13 @@ class GenerateCommand extends Command
 	private $scanner;
 
 
-	public function __construct(Generator $generator, Wiper $wiper, Configuration $configuration, Scanner $scanner,
-	                            Parser $parser)
-	{
+	public function __construct(
+		Generator $generator,
+		Wiper $wiper,
+		Configuration $configuration,
+		Scanner $scanner,
+		Parser $parser
+	) {
 		parent::__construct();
 		$this->generator = $generator;
 		$this->wiper = $wiper;
@@ -99,7 +103,7 @@ class GenerateCommand extends Command
 
 			$apigen['debug'] = $this->getOptionValue($input, $apigen, 'debug');
 
-			$apigen = $this->configuration->setDefaults($apigen);
+			$apigen = $this->configuration->resolveOptions($apigen);
 
 			$files = $this->scan($apigen, $output);
 			$this->parse($apigen, $output, $files);
@@ -155,7 +159,8 @@ class GenerateCommand extends Command
 
 		$stats = $this->parser->getDocumentedStats();
 		$output->writeln(PHP_EOL . sprintf(
-			'Generating documentation for %d classes, %d constants, %d functions and %d PHP internal classes.',
+			'Documenting <comment>%d classes</comment>, <comment>%d constants</comment>, '
+			. '<comment>%d functions</comment> and <comment>%d PHP internal classes</comment>.',
 			$stats['classes'], $stats['constants'], $stats['functions'], $stats['internalClasses']
 		));
 	}
@@ -163,8 +168,7 @@ class GenerateCommand extends Command
 
 	private function generate(array $apigen, OutputInterface $output)
 	{
-		$output->writeln('<info>Wiping out destination directory</info>');
-		$this->wiper->wipOutDestination();
+		$this->wiper->wipeOutDir($apigen['destination']);
 
 		$output->writeln('<info>Generating to directory \'' . $apigen['destination'] . '\'</info>');
 		$skipping = array_merge($apigen['skipDocPath'], $apigen['skipDocPrefix']); // @todo better merge

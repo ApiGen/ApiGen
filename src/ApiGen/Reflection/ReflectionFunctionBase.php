@@ -11,13 +11,13 @@ namespace ApiGen\Reflection;
 
 use TokenReflection;
 use InvalidArgumentException;
+use TokenReflection\Exception\RuntimeException;
 
 
 /**
- * Function/method reflection envelope parent class.
- * Alters TokenReflection\IReflectionFunctionBase functionality for ApiGen.
+ * Function/method reflection envelope parent class
  */
-abstract class ReflectionFunctionBase extends ReflectionElement
+abstract class ReflectionFunctionBase extends ReflectionElement implements TokenReflection\IReflectionFunctionBase
 {
 
 	/**
@@ -27,7 +27,7 @@ abstract class ReflectionFunctionBase extends ReflectionElement
 
 
 	/**
-	 * Returns the unqualified name (UQN).
+	 * Returns the unqualified name
 	 *
 	 * @return string
 	 */
@@ -40,7 +40,7 @@ abstract class ReflectionFunctionBase extends ReflectionElement
 	/**
 	 * Returns if the function/method returns its value as reference.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function returnsReference()
 	{
@@ -56,19 +56,18 @@ abstract class ReflectionFunctionBase extends ReflectionElement
 	public function getParameters()
 	{
 		if ($this->parameters === NULL) {
-			$this->parameters = array_map(function (TokenReflection\IReflectionParameter $parameter) {
-				return new ReflectionParameter($parameter);
-			}, $this->reflection->getParameters());
+			$this->prepareParameters();
 
 			$annotations = $this->getAnnotation('param');
-			if (NULL !== $annotations) {
+			if ($annotations !== NULL) {
 				foreach ($annotations as $position => $annotation) {
 					if (isset($parameters[$position])) {
 						// Standard parameter
 						continue;
 					}
 
-					if ( ! preg_match('~^(?:([\\w\\\\]+(?:\\|[\\w\\\\]+)*)\\s+)?\\$(\\w+),\\.{3}(?:\\s+(.*))?($)~s', $annotation, $matches)) {
+					$annotationFormat = '~^(?:([\\w\\\\]+(?:\\|[\\w\\\\]+)*)\\s+)?\\$(\\w+),\\.{3}(?:\\s+(.*))?($)~s';
+					if ( ! preg_match($annotationFormat, $annotation, $matches)) {
 						// Wrong annotation format
 						continue;
 					}
@@ -79,8 +78,8 @@ abstract class ReflectionFunctionBase extends ReflectionElement
 						$typeHint = 'mixed';
 					}
 
-					$parameter = new ReflectionParameterMagic(NULL);
-					$parameter->setName($name)
+					$parameter = $this->apiGenReflectionFactory->createParameterMagic()
+						->setName($name)
 						->setPosition($position)
 						->setTypeHint($typeHint)
 						->setDefaultValueDefinition(NULL)
@@ -114,7 +113,8 @@ abstract class ReflectionFunctionBase extends ReflectionElement
 				return $parameters[$parameterName];
 			}
 
-			throw new InvalidArgumentException(sprintf('There is no parameter at position "%d" in function/method "%s"', $parameterName, $this->getName()), Exception\Runtime::DOES_NOT_EXIST);
+			throw new InvalidArgumentException(sprintf('There is no parameter at position "%d" in function/method "%s"',
+				$parameterName, $this->getName()), RuntimeException::DOES_NOT_EXIST);
 
 		} else {
 			foreach ($parameters as $parameter) {
@@ -123,14 +123,13 @@ abstract class ReflectionFunctionBase extends ReflectionElement
 				}
 			}
 
-			throw new InvalidArgumentException(sprintf('There is no parameter "%s" in function/method "%s"', $parameterName, $this->getName()), Exception\Runtime::DOES_NOT_EXIST);
+			throw new InvalidArgumentException(sprintf('There is no parameter "%s" in function/method "%s"',
+				$parameterName, $this->getName()), RuntimeException::DOES_NOT_EXIST);
 		}
 	}
 
 
 	/**
-	 * Returns the number of parameters.
-	 *
 	 * @return integer
 	 */
 	public function getNumberOfParameters()
@@ -140,13 +139,19 @@ abstract class ReflectionFunctionBase extends ReflectionElement
 
 
 	/**
-	 * Returns the number of required parameters.
-	 *
 	 * @return integer
 	 */
 	public function getNumberOfRequiredParameters()
 	{
 		return $this->reflection->getNumberOfRequiredParameters();
+	}
+
+
+	private function prepareParameters()
+	{
+		$this->parameters = array_map(function (TokenReflection\IReflectionParameter $parameter) {
+			return $this->apiGenReflectionFactory->createFromReflection($parameter);
+		}, $this->reflection->getParameters());
 	}
 
 }

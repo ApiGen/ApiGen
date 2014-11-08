@@ -74,14 +74,14 @@ class ReflectionPropertyMagic extends ReflectionProperty
 	/**
 	 * If the property is read-only.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $readOnly;
 
 	/**
 	 * If the property is write-only.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $writeOnly;
 
@@ -194,7 +194,7 @@ class ReflectionPropertyMagic extends ReflectionProperty
 	/**
 	 * Returns if the property is magic.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isMagic()
 	{
@@ -216,7 +216,7 @@ class ReflectionPropertyMagic extends ReflectionProperty
 	/**
 	 * Returns the PHP extension name.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function getExtensionName()
 	{
@@ -227,7 +227,7 @@ class ReflectionPropertyMagic extends ReflectionProperty
 	/**
 	 * Returns if the property should be documented.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isDocumented()
 	{
@@ -242,7 +242,7 @@ class ReflectionPropertyMagic extends ReflectionProperty
 	/**
 	 * Returns if the property is deprecated.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isDeprecated()
 	{
@@ -322,7 +322,7 @@ class ReflectionPropertyMagic extends ReflectionProperty
 	/**
 	 * Returns if the property was created at compile time.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isDefault()
 	{
@@ -344,7 +344,7 @@ class ReflectionPropertyMagic extends ReflectionProperty
 	/**
 	 * Returns if the property is private.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isPrivate()
 	{
@@ -355,7 +355,7 @@ class ReflectionPropertyMagic extends ReflectionProperty
 	/**
 	 * Returns if the property is protected.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isProtected()
 	{
@@ -366,7 +366,7 @@ class ReflectionPropertyMagic extends ReflectionProperty
 	/**
 	 * Returns if the property is public.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isPublic()
 	{
@@ -377,7 +377,7 @@ class ReflectionPropertyMagic extends ReflectionProperty
 	/**
 	 * Returns if the property is static.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isStatic()
 	{
@@ -388,7 +388,7 @@ class ReflectionPropertyMagic extends ReflectionProperty
 	/**
 	 * Returns if the property is internal.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isInternal()
 	{
@@ -457,7 +457,7 @@ class ReflectionPropertyMagic extends ReflectionProperty
 	/**
 	 * Returns if the property is user defined.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isUserDefined()
 	{
@@ -468,7 +468,7 @@ class ReflectionPropertyMagic extends ReflectionProperty
 	/**
 	 * Returns if the property comes from a tokenized source.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isTokenized()
 	{
@@ -479,7 +479,7 @@ class ReflectionPropertyMagic extends ReflectionProperty
 	/**
 	 * Returns the appropriate docblock definition.
 	 *
-	 * @return string|boolean
+	 * @return string|bool
 	 */
 	public function getDocComment()
 	{
@@ -503,7 +503,7 @@ class ReflectionPropertyMagic extends ReflectionProperty
 	 * Checks if there is a particular annotation.
 	 *
 	 * @param string $name
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasAnnotation($name)
 	{

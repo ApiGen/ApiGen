@@ -9,10 +9,9 @@
 
 namespace ApiGen\Events;
 
-use ApiGen\Generator\HtmlGenerator;
 use ApiGen\Generator\Resolvers\ElementResolver;
 use ApiGen\Parser\Parser;
-use ApiGen\Parser\ParserResult;
+use ApiGen\Parser\ParserStorage;
 use Nette;
 use Kdyby\Events\Subscriber;
 
@@ -26,15 +25,15 @@ class LoadParsedElements extends Nette\Object implements Subscriber
 	private $elementResolver;
 
 	/**
-	 * @var Generator
+	 * @var ParserStorage
 	 */
-	private $generator;
+	private $parserStorage;
 
 
-	public function __construct(ElementResolver $elementResolver, HtmlGenerator $generator)
+	public function __construct(ElementResolver $elementResolver, ParserStorage $parserStorage)
 	{
 		$this->elementResolver = $elementResolver;
-		$this->generator = $generator;
+		$this->parserStorage = $parserStorage;
 	}
 
 
@@ -49,19 +48,15 @@ class LoadParsedElements extends Nette\Object implements Subscriber
 	}
 
 
-	public function onFinish(Parser $parser)
+	public function onFinish($classes, $constants, $functions)
 	{
-		ParserResult::$classes = $parser->getClasses();
-		ParserResult::$constants = $parser->getConstants();
-		ParserResult::$functions = $parser->getFunctions();
+		$this->parserStorage->setClasses($classes);
+		$this->parserStorage->setConstants($constants);
+		$this->parserStorage->setFunctions($functions);
 
-		$this->elementResolver->setParsedClasses($parser->getClasses());
-		$this->elementResolver->setParsedConstants($parser->getConstants());
-		$this->elementResolver->setParsedFunctions($parser->getFunctions());
-
-		$this->generator->setParsedClasses($parser->getClasses());
-		$this->generator->setParsedConstants($parser->getConstants());
-		$this->generator->setParsedFunctions($parser->getFunctions());
+		$this->elementResolver->setParsedClasses($classes);
+		$this->elementResolver->setParsedConstants($constants);
+		$this->elementResolver->setParsedFunctions($functions);
 	}
 
 }

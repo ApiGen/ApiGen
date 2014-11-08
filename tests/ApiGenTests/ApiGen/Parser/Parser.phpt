@@ -9,7 +9,6 @@ namespace ApiGenTests\ApiGen\Parser;
 use ApiGen\Configuration\Configuration;
 use ApiGen\Parser\Parser;
 use Nette\DI\Container;
-use Nette\Utils\ArrayHash;
 use Nette\Utils\Finder;
 use Tester\TestCase;
 use Tester\Assert;
@@ -76,15 +75,11 @@ class ParserTest extends TestCase
 
 	private function setupConfigDefaults()
 	{
-		// ApiGen root path
-		define('APIGEN_ROOT_PATH', __DIR__ . '/../../../../src');
-
 		/** @var Configuration $configuration */
 		$configuration = $this->container->getByType('ApiGen\Configuration\Configuration');
 		$defaults['source'] = array(PROJECT_DIR);
 		$defaults['destination'] = API_DIR;
-		$defaults = $configuration->setDefaults($defaults);
-		Configuration::$config = ArrayHash::from($defaults);
+		$configuration->resolveOptions($defaults);
 	}
 }
 

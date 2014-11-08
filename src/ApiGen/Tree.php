@@ -9,6 +9,7 @@
 
 namespace ApiGen;
 
+use ApiGen\Reflection\ReflectionElement;
 use RecursiveTreeIterator;
 use RuntimeException;
 
@@ -62,9 +63,7 @@ class Tree extends RecursiveTreeIterator
 
 
 	/**
-	 * Returns if the current item has a sibling on the same level.
-	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasSibling()
 	{
@@ -74,9 +73,7 @@ class Tree extends RecursiveTreeIterator
 
 
 	/**
-	 * Returns the current reflection.
-	 *
-	 * @return \ApiGen\Reflection\ReflectionElement
+	 * @return ReflectionElement
 	 * @throws \UnexpectedValueException If current is not reflection array.
 	 */
 	public function current()

@@ -9,7 +9,7 @@
 
 namespace ApiGen\Generator\Markups;
 
-use ApiGen\Generator\SourceCodeHighlighter;
+use ApiGen\Generator\Highlighter\SourceCodeHighlighter;
 use Michelf\MarkdownExtra;
 
 
@@ -57,6 +57,9 @@ class MarkdownMarkup implements Markup
 	}
 
 
+	/**
+	 * @return string
+	 */
 	private function highlightCb(array $match)
 	{
 		$highlighted = $this->highlighter->highlight(trim(isset($match[3]) ? $match[3] : $match[2]));

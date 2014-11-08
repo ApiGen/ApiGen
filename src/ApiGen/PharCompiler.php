@@ -59,7 +59,8 @@ class PharCompiler extends Nette\Object
 			$this->version = trim($output);
 
 		} else {
-			throw new \RuntimeException('Cannot run git log to find ApiGen version. Ensure that compile runs from cloned ApiGen git repository and the git command is available.');
+			throw new \RuntimeException('Cannot run git log to find ApiGen version. Ensure that compile runs'
+				. ' from cloned ApiGen git repository and the git command is available.');
 		}
 
 		if ($this->execute('git log -n1 --format=%cD HEAD', $repoDir, $output) !== 0) {
@@ -188,17 +189,17 @@ __HALT_COMPILER();
 				$output .= $token;
 
 			} elseif ($token[0] === T_COMMENT) {
-				$output .= str_repeat("\n", substr_count($token[1], "\n"));
+				$output .= $this->replaceNewLinesByEmptyLines($token[1]);
 
-			} elseif ($token[0] === T_DOC_COMMENT && strpos($token[1], '@method') === FALSE) {
-				$output .= str_repeat("\n", substr_count($token[1], "\n"));
+			} elseif ($this->isCommentWithoutAnnotations($token, array('@return', '@method'))) {
+				$output .= $this->replaceNewLinesByEmptyLines($token[1]);
 
 			} elseif ($token[0] === T_WHITESPACE) {
 				if (strpos($token[1], "\n") === FALSE) {
 					$output .= ' ';
 
 				} else {
-					$output .= str_repeat("\n", substr_count($token[1], "\n"));
+					$output .= $this->replaceNewLinesByEmptyLines($token[1]);
 				}
 
 			} else {
@@ -207,6 +208,35 @@ __HALT_COMPILER();
 		}
 
 		return $output;
+	}
+
+
+	/**
+	 * @param string $s
+	 * @return string
+	 */
+	private function replaceNewLinesByEmptyLines($s)
+	{
+		return str_repeat("\n", substr_count($s, "\n"));
+	}
+
+
+	/**
+	 * @return bool
+	 */
+	private function isCommentWithoutAnnotations(array $token, array $annotationList)
+	{
+		if ($token[0] !== T_DOC_COMMENT) {
+			return FALSE;
+		}
+
+		foreach ($annotationList as $annotation) {
+			if (strpos($token[1], $annotation) !== FALSE) {
+				return FALSE;
+			}
+		}
+
+		return TRUE;
 	}
 
 }

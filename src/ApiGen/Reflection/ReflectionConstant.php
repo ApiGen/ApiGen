@@ -10,17 +10,17 @@
 namespace ApiGen\Reflection;
 
 use ApiGen\FileSystem\FileSystem;
+use TokenReflection\IReflectionConstant;
 
 
 /**
- * Constant reflection envelope.
- * Alters TokenReflection\IReflectionConstant functionality for ApiGen.
+ * Constant reflection envelope
  */
-class ReflectionConstant extends ReflectionElement
+class ReflectionConstant extends ReflectionElement implements IReflectionConstant
 {
 
 	/**
-	 * Returns the name (FQN).
+	 * Returns the FQN name.
 	 *
 	 * @return string
 	 */
@@ -31,7 +31,7 @@ class ReflectionConstant extends ReflectionElement
 
 
 	/**
-	 * Returns the unqualified name (UQN).
+	 * Returns the unqualified name.
 	 *
 	 * @return string
 	 */
@@ -70,20 +70,17 @@ class ReflectionConstant extends ReflectionElement
 
 
 	/**
-	 * Returns the constant declaring class.
-	 *
 	 * @return ReflectionClass|NULL
 	 */
 	public function getDeclaringClass()
 	{
 		$className = $this->reflection->getDeclaringClassName();
-		return $className === NULL ? NULL : self::$parsedClasses[$className];
+		$parsedClasses = $this->getParsedClasses();
+		return $className === NULL ? NULL : $parsedClasses[$className];
 	}
 
 
 	/**
-	 * Returns the name of the declaring class.
-	 *
 	 * @return string|NULL
 	 */
 	public function getDeclaringClassName()
@@ -93,8 +90,6 @@ class ReflectionConstant extends ReflectionElement
 
 
 	/**
-	 * Returns the constant value.
-	 *
 	 * @return mixed
 	 */
 	public function getValue()
@@ -104,8 +99,6 @@ class ReflectionConstant extends ReflectionElement
 
 
 	/**
-	 * Returns the constant value definition.
-	 *
 	 * @return string
 	 */
 	public function getValueDefinition()
@@ -115,9 +108,7 @@ class ReflectionConstant extends ReflectionElement
 
 
 	/**
-	 * Returns if the constant is valid.
-	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isValid()
 	{
@@ -136,13 +127,15 @@ class ReflectionConstant extends ReflectionElement
 	/**
 	 * Returns if the constant should be documented.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isDocumented()
 	{
+		$options = $this->configuration->getOptions();
+
 		if ($this->isDocumented === NULL && parent::isDocumented() && $this->reflection->getDeclaringClassName() === NULL) {
 			$fileName = FileSystem::unPharPath($this->reflection->getFilename());
-			foreach (self::$config->skipDocPath as $mask) {
+			foreach ($options['skipDocPath'] as $mask) {
 				if (fnmatch($mask, $fileName, FNM_NOESCAPE)) {
 					$this->isDocumented = FALSE;
 					break;
@@ -151,7 +144,7 @@ class ReflectionConstant extends ReflectionElement
 		}
 
 		if ($this->isDocumented === TRUE) {
-			foreach (self::$config->skipDocPrefix as $prefix) {
+			foreach ($options['skipDocPrefix'] as $prefix) {
 				if (strpos($this->reflection->getName(), $prefix) === 0) {
 					$this->isDocumented = FALSE;
 					break;
@@ -160,6 +153,15 @@ class ReflectionConstant extends ReflectionElement
 		}
 
 		return $this->isDocumented;
+	}
+
+
+	/**
+	 * @return string
+	 */
+	public function __toString()
+	{
+		return (string) $this->getName();
 	}
 
 }

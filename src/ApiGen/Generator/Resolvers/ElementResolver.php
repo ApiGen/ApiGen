@@ -94,7 +94,7 @@ class ElementResolver extends Nette\Object
 		}
 
 		/** @var ReflectionClass $class */
-		if ( ! $class->isDocumented()) { // class is not "documented"
+		if ( ! $class->isDocumented()) {
 			return NULL;
 		}
 
@@ -122,7 +122,7 @@ class ElementResolver extends Nette\Object
 		}
 
 		/** @var ReflectionConstant $constant */
-		if ( ! $constant->isDocumented()) { // constant is not "documented"
+		if ( ! $constant->isDocumented()) {
 			return NULL;
 		}
 
@@ -150,7 +150,7 @@ class ElementResolver extends Nette\Object
 		}
 
 		/** @var ReflectionFunction $function */
-		if ( ! $function->isDocumented()) { // function is not "documented"
+		if ( ! $function->isDocumented()) {
 			return NULL;
 		}
 
@@ -175,19 +175,7 @@ class ElementResolver extends Nette\Object
 		}
 
 		$originalContext = $context;
-
-		if ($context instanceof ReflectionParameter && NULL === $context->getDeclaringClassName()) {
-			// Parameter of function in namespace or global space
-			$context = $this->getFunction($context->getDeclaringFunctionName());
-
-		} elseif ($context instanceof ReflectionMethod || $context instanceof ReflectionParameter
-			|| ($context instanceof ReflectionConstant && NULL !== $context->getDeclaringClassName())
-			|| $context instanceof ReflectionProperty
-		) {
-			// Member of a class
-			$context = $this->getClass($context->getDeclaringClassName());
-		}
-
+		$context = $this->correctContextForParameterOrClassMember($context);
 		if ($context === NULL) {
 			return NULL;
 		}
@@ -219,7 +207,7 @@ class ElementResolver extends Nette\Object
 
 		} elseif (($function = $this->getFunction($definition, $context->getNamespaceName()))
 			|| (substr($definition, -2) === '()'
-				&& ($function = $this->getFunction(substr($definition, 0, -2), $context->getNamespaceName())))
+			&& ($function = $this->getFunction(substr($definition, 0, -2), $context->getNamespaceName())))
 		) {
 			return $function;
 		}
@@ -230,14 +218,7 @@ class ElementResolver extends Nette\Object
 				$context = $this->getClass($parentClassName);
 
 			} elseif (strpos($definition, 'self::') !== 0) {
-				$class = $this->getClass(substr($definition, 0, $pos), $context->getNamespaceName());
-				if ($class === NULL) {
-					$class = $this->getClass(Resolver::resolveClassFQN(
-						substr($definition, 0, $pos), $context->getNamespaceAliases(), $context->getNamespaceName()
-					));
-				}
-
-				$context = $class;
+				$context = $this->resolveContextForSelfProperty($definition, $pos, $context);
 			}
 
 			$definition = substr($definition, $pos + 2);
@@ -268,6 +249,46 @@ class ElementResolver extends Nette\Object
 		}
 
 		return NULL;
+	}
+
+
+	/**
+	 * @param string $definition
+	 * @param int $pos
+	 * @param ReflectionElement|ReflectionParameter $context Link context
+	 * @return ReflectionClass
+	 */
+	private function resolveContextForSelfProperty($definition, $pos, $context)
+	{
+		$className = substr($definition, 0, $pos);
+		$class = $this->getClass($className, $context->getNamespaceName());
+		if ($class === NULL) {
+			$class = $this->getClass(Resolver::resolveClassFQN(
+				$className, $context->getNamespaceAliases(), $context->getNamespaceName()
+			));
+		}
+		return $class;
+	}
+
+
+	/**
+ 	 * @param ReflectionElement|ReflectionParameter $context
+	 * @return ReflectionClass|ReflectionFunction
+	 */
+	private function correctContextForParameterOrClassMember($context)
+	{
+		if ($context instanceof ReflectionParameter && $context->getDeclaringClassName() === NULL) {
+			// Parameter of function in namespace or global space
+			return $this->getFunction($context->getDeclaringFunctionName());
+
+		} elseif ($context instanceof ReflectionMethod || $context instanceof ReflectionParameter
+			|| ($context instanceof ReflectionConstant && $context->getDeclaringClassName() !== NULL)
+			|| $context instanceof ReflectionProperty
+		) {
+			// Member of a class
+			return $this->getClass($context->getDeclaringClassName());
+		}
+		return $context;
 	}
 
 }

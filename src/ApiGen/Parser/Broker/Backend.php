@@ -9,13 +9,13 @@
 
 namespace ApiGen\Parser\Broker;
 
+use ApiGen\Bridge\TokenReflectionBridge\ApiGenReflectionFactory;
+use ApiGen\Bridge\TokenReflectionBridge\ReflectionCrateBridge;
 use ApiGen\Reflection\ReflectionClass;
 use ApiGen\Reflection\ReflectionConstant;
 use ApiGen\Reflection\ReflectionFunction;
 use ApiGen\Reflection\ReflectionMethod;
 use TokenReflection;
-use TokenReflection\IReflectionConstant;
-use TokenReflection\IReflectionFunction;
 use TokenReflection\Broker;
 use TokenReflection\Resolver;
 
@@ -44,15 +44,32 @@ class Backend extends Broker\Backend\Memory
 	 */
 	private $declared = array();
 
+	/**
+	 * @var ReflectionCrateBridge
+	 */
+	private $reflectionCrateBridge;
+
+	/**
+	 * @var ApiGenReflectionFactory
+	 */
+	private $apiGenReflectionFactory;
+
+
+	public function __construct(
+		ApiGenReflectionFactory $apiGenReflectionFactory,
+		ReflectionCrateBridge $reflectionCrateBridge
+	) {
+		$this->apiGenReflectionFactory = $apiGenReflectionFactory;
+		$this->reflectionCrateBridge = $reflectionCrateBridge;
+	}
+
 
 	/**
 	 * @return ReflectionConstant[]
 	 */
 	public function getConstants()
 	{
-		return array_map(function (IReflectionConstant $constant) {
-			return new ReflectionConstant($constant);
-		}, parent::getConstants());
+		return $this->reflectionCrateBridge->crossConstantReflections(parent::getConstants());
 	}
 
 
@@ -61,9 +78,7 @@ class Backend extends Broker\Backend\Memory
 	 */
 	public function getFunctions()
 	{
-		return array_map(function (IReflectionFunction $function) {
-			return new ReflectionFunction($function);
-		}, parent::getFunctions());
+		return $this->reflectionCrateBridge->crossFunctionReflections(parent::getFunctions());
 	}
 
 
@@ -77,14 +92,14 @@ class Backend extends Broker\Backend\Memory
 		$this->declared = array_flip(array_merge(get_declared_classes(), get_declared_interfaces()));
 
 		foreach ($this->getNamespaces() as $namespace) {
-			foreach ($namespace->getClasses() as $name => $ref) {
-				$class = new ReflectionClass($ref);
+			foreach ($namespace->getClasses() as $name => $reflection) {
+				$class = $this->apiGenReflectionFactory->createFromReflection($reflection);
 				$this->allClasses[self::TOKENIZED_CLASSES][$name] = $class;
 				if ( ! $class->isDocumented()) {
 					continue;
 				}
 
-				$this->loadParentClassesAndInterfacesFromClassReflection($ref);
+				$this->loadParentClassesAndInterfacesFromClassReflection($reflection);
 			}
 		}
 
@@ -107,12 +122,7 @@ class Backend extends Broker\Backend\Memory
 			$this->processFunction($function);
 		}
 
-		array_walk_recursive($this->allClasses, function (&$reflection, $name) {
-			if ( ! $reflection instanceof ReflectionClass) {
-				$reflection = new ReflectionClass($reflection);
-			}
-		});
-
+		$this->allClasses = $this->reflectionCrateBridge->crossClassReflections($this->allClasses);
 		return $this->allClasses;
 	}
 
@@ -152,7 +162,12 @@ class Backend extends Broker\Backend\Memory
 
 		if ($parameterClass->isInternal()) {
 			$this->allClasses[self::INTERNAL_CLASSES][$name] = $parameterClass;
-			foreach (array_merge($parameterClass->getInterfaces(), $parameterClass->getParentClasses()) as $parentClass) {
+
+			$interfacesAndParentClasses = array_merge(
+				$parameterClass->getInterfaces(),
+				$parameterClass->getParentClasses()
+			);
+			foreach ($interfacesAndParentClasses as $parentClass) {
 				if ( ! isset($this->allClasses[self::INTERNAL_CLASSES][$parentName = $parentClass->getName()])) {
 					$this->allClasses[self::INTERNAL_CLASSES][$parentName] = $parentClass;
 				}
@@ -204,7 +219,7 @@ class Backend extends Broker\Backend\Memory
 	 * @param array $annotations
 	 * @param string $name
 	 */
-	private function loadAnnotationFromReflection($reflection, $annotations = array(), $name)
+	private function loadAnnotationFromReflection($reflection, array $annotations, $name)
 	{
 		if ( ! isset($annotations[$name])) {
 			return;
@@ -213,7 +228,7 @@ class Backend extends Broker\Backend\Memory
 		foreach ($annotations[$name] as $doc) {
 			foreach (explode('|', preg_replace('~\\s.*~', '', $doc)) as $name) {
 				if ($name = rtrim($name, '[]')) {
-					$name = $this->getClassFQN($name, $reflection);
+					$name = $this->getClassFqn($name, $reflection);
 					$this->addClass($name);
 				}
 			}
@@ -226,7 +241,7 @@ class Backend extends Broker\Backend\Memory
 	 * @param ReflectionClass|ReflectionMethod $reflection
 	 * @return string
 	 */
-	private function getClassFQN($name, $reflection)
+	private function getClassFqn($name, $reflection)
 	{
 		return Resolver::resolveClassFQN($name, $reflection->getNamespaceAliases(), $reflection->getNamespaceName());
 	}

@@ -10,6 +10,7 @@
 namespace ApiGen\Templating\Filters;
 
 use ApiGen\Configuration\Configuration;
+use ApiGen\Configuration\TemplateConfiguration;
 use ApiGen\Reflection\ReflectionClass;
 use ApiGen\Reflection\ReflectionConstant;
 use ApiGen\Reflection\ReflectionElement;
@@ -17,16 +18,19 @@ use ApiGen\Reflection\ReflectionFunction;
 use Nette;
 
 
-/**
- * @method SourceFilters setConfig(array $config)
- */
 class SourceFilters extends Filters
 {
 
 	/**
-	 * @var array
+	 * @var Configuration
 	 */
-	private $config;
+	private $configuration;
+
+
+	public function __construct(Configuration $configuration)
+	{
+		$this->configuration = $configuration;
+	}
 
 
 	/**
@@ -35,8 +39,10 @@ class SourceFilters extends Filters
 	 */
 	public function staticFile($name)
 	{
+		$destination = $this->configuration->getOption('destination');
+
 		$versions = array();
-		$filename = $this->config['destination'] . DS . $name;
+		$filename =  $destination . DS . $name;
 		if ( ! isset($versions[$filename]) && is_file($filename)) {
 			$versions[$filename] = sprintf('%u', crc32(file_get_contents($filename)));
 		}
@@ -92,7 +98,7 @@ class SourceFilters extends Filters
 	 * Returns a link to a element source code.
 	 *
 	 * @param ReflectionElement $element
-	 * @param boolean $withLine Include file line number into the link
+	 * @param bool $withLine Include file line number into the link
 	 * @return string
 	 */
 	public function sourceUrl(ReflectionElement $element, $withLine = TRUE)
@@ -126,8 +132,10 @@ class SourceFilters extends Filters
 				? sprintf('%s-%s', $element->getStartLine(), $element->getEndLine()) : $element->getStartLine();
 		}
 
-		return sprintf($this->config['template']['templates']['main']['source']['filename'], $file)
-			. (NULL !== $lines ? '#' . $lines : '');
+		$options = $this->configuration->getOptions();
+		$sourceFilename = $options['template']['templates']['source']['filename'];
+
+		return sprintf($sourceFilename, $file) . ($lines !== NULL ? '#' . $lines : '');
 	}
 
 }

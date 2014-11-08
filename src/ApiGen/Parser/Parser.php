@@ -23,9 +23,9 @@ use TokenReflection\Broker;
  * @method ArrayObject  getConstants()
  * @method ArrayObject  getFunctions()
  * @method array        getErrors()
- * @method Parser       onParseStart($steps)
- * @method Parser       onParseProgress($size)
- * @method Parser       onParseFinish(Parser $parser)
+ * @method Parser       onParseStart()
+ * @method Parser       onParseProgress()
+ * @method Parser       onParseFinish()
  */
 class Parser extends Nette\Object
 {
@@ -86,6 +86,7 @@ class Parser extends Nette\Object
 		$this->broker = $broker;
 		$this->charsetConvertor = $charsetConvertor;
 
+		// todo: parser storage...
 		$this->classes = new ArrayObject;
 		$this->constants = new ArrayObject;
 		$this->functions = new ArrayObject;
@@ -114,16 +115,18 @@ class Parser extends Nette\Object
 
 		$allFoundClasses = $this->broker->getClasses(Backend::TOKENIZED_CLASSES | Backend::INTERNAL_CLASSES
 			| Backend::NONEXISTENT_CLASSES);
+
 		$this->classes->exchangeArray($allFoundClasses);
 		$this->constants->exchangeArray($this->broker->getConstants());
 		$this->functions->exchangeArray($this->broker->getFunctions());
-		$this->internalClasses->exchangeArray($this->broker->getClasses(Backend::INTERNAL_CLASSES));
+		$internalClasses = $this->broker->getClasses(Backend::INTERNAL_CLASSES);
+		$this->internalClasses->exchangeArray($internalClasses);
 
 		$this->classes->uksort('strcasecmp');
 		$this->constants->uksort('strcasecmp');
 		$this->functions->uksort('strcasecmp');
 
-		$this->onParseFinish($this);
+		$this->onParseFinish($this->classes, $this->constants, $this->functions);
 	}
 
 
@@ -149,7 +152,9 @@ class Parser extends Nette\Object
 	{
 		$count = 0;
 		foreach ($result as $element) {
-			$count += (int) $element->isDocumented();
+			if ($element->isDocumented()) {
+				$count++;
+			}
 		}
 		return $count;
 	}

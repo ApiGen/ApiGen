@@ -28,7 +28,7 @@ class TodoTest extends TestCase
 		Assert::false(file_exists(API_DIR . DS . 'todo.html'));
 
 		$this->prepareConfig(TRUE);
-		passthru(APIGEN_BIN . ' generate');
+		passthru(APIGEN_BIN . ' generate --debug');
 		Assert::true(file_exists(API_DIR . DS . 'todo.html'));
 	}
 
@@ -37,7 +37,7 @@ class TodoTest extends TestCase
 	{
 		$this->prepareConfig(TRUE);
 		passthru(APIGEN_BIN . ' generate');
-		$content = file_get_contents(API_DIR . DS . 'todo.html');
+		$content = $this->getFileContentInOneLine(API_DIR . DS . 'todo.html');
 
 		Assert::match(
 			'%A%<span>Todo</span>%A%',

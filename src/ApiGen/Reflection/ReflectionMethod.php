@@ -9,18 +9,19 @@
 
 namespace ApiGen\Reflection;
 
+use TokenReflection\IReflectionMethod;
+
 
 /**
- * Method reflection envelope.
- * Alters TokenReflection\IReflectionMethod functionality for ApiGen.
+ * Method reflection envelope
  */
-class ReflectionMethod extends ReflectionFunctionBase
+class ReflectionMethod extends ReflectionFunctionBase implements IReflectionMethod
 {
 
 	/**
 	 * Returns if the method is magic.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isMagic()
 	{
@@ -36,7 +37,8 @@ class ReflectionMethod extends ReflectionFunctionBase
 	public function getDeclaringClass()
 	{
 		$className = $this->reflection->getDeclaringClassName();
-		return $className === NULL ? NULL : self::$parsedClasses[$className];
+		$parsedClasses = $this->getParsedClasses();
+		return $className === NULL ? NULL : $parsedClasses[$className];
 	}
 
 
@@ -65,7 +67,7 @@ class ReflectionMethod extends ReflectionFunctionBase
 	/**
 	 * Returns if the method is abstract.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isAbstract()
 	{
@@ -76,7 +78,7 @@ class ReflectionMethod extends ReflectionFunctionBase
 	/**
 	 * Returns if the method is final.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isFinal()
 	{
@@ -87,7 +89,7 @@ class ReflectionMethod extends ReflectionFunctionBase
 	/**
 	 * Returns if the method is private.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isPrivate()
 	{
@@ -98,7 +100,7 @@ class ReflectionMethod extends ReflectionFunctionBase
 	/**
 	 * Returns if the method is protected.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isProtected()
 	{
@@ -109,7 +111,7 @@ class ReflectionMethod extends ReflectionFunctionBase
 	/**
 	 * Returns if the method is public.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isPublic()
 	{
@@ -120,7 +122,7 @@ class ReflectionMethod extends ReflectionFunctionBase
 	/**
 	 * Returns if the method is static.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isStatic()
 	{
@@ -131,7 +133,7 @@ class ReflectionMethod extends ReflectionFunctionBase
 	/**
 	 * Returns if the method is a constructor.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isConstructor()
 	{
@@ -142,7 +144,7 @@ class ReflectionMethod extends ReflectionFunctionBase
 	/**
 	 * Returns if the method is a destructor.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isDestructor()
 	{
@@ -158,7 +160,8 @@ class ReflectionMethod extends ReflectionFunctionBase
 	public function getDeclaringTrait()
 	{
 		$traitName = $this->reflection->getDeclaringTraitName();
-		return $traitName === NULL ? NULL : self::$parsedClasses[$traitName];
+		$parsedClasses = $this->getParsedClasses();
+		return $traitName === NULL ? NULL : $parsedClasses[$traitName];
 	}
 
 
@@ -251,12 +254,13 @@ class ReflectionMethod extends ReflectionFunctionBase
 			return NULL;
 		}
 		$originalDeclaringClassName = $this->reflection->getOriginal()->getDeclaringClassName();
-		return self::$parsedClasses[$originalDeclaringClassName]->getMethod($originalName);
+		$parsedClasses = $this->getParsedClasses();
+		return $parsedClasses[$originalDeclaringClassName]->getMethod($originalName);
 	}
 
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isValid()
 	{
@@ -265,6 +269,54 @@ class ReflectionMethod extends ReflectionFunctionBase
 		}
 
 		return TRUE;
+	}
+
+
+	public function isClosure()
+	{
+		throw new \Exception('Not implemented nor required');
+	}
+
+
+	public function getStaticVariables()
+	{
+		throw new \Exception('Not implemented nor required');
+	}
+
+
+	public function is($filter = NULL)
+	{
+		throw new \Exception('Not implemented nor required');
+	}
+
+
+	public function getPrototype()
+	{
+		throw new \Exception('Not implemented nor required');
+	}
+
+
+	public function invoke($object, $args)
+	{
+		throw new \Exception('Not implemented nor required');
+	}
+
+
+	public function invokeArgs($object, array $args)
+	{
+		throw new \Exception('Not implemented nor required');
+	}
+
+
+	public function setAccessible($accessible)
+	{
+		throw new \Exception('Not implemented nor required');
+	}
+
+
+	public function getClosure($object)
+	{
+		throw new \Exception('Not implemented nor required');
 	}
 
 }

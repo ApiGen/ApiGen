@@ -12,8 +12,6 @@ namespace ApiGen\DI;
 use ApiGen;
 use Kdyby\Events\DI\EventsExtension;
 use Nette\DI\CompilerExtension;
-use Nette\DI\ServiceDefinition;
-use Nette\DI\Statement;
 use TokenReflection\Broker;
 
 
@@ -24,113 +22,46 @@ class ApiGenExtension extends CompilerExtension
 	{
 		$builder = $this->getContainerBuilder();
 
-		// configuration
-		$builder->addDefinition($this->prefix('configuration'))
-			->setClass('ApiGen\Configuration\Configuration');
+		$services = $this->loadFromFile(__DIR__ . DS . 'services.neon');
+		$this->compiler->parseServices($builder, $services);
 
-		// charset
-		$builder->addDefinition($this->prefix('charsetConvertor'))
-			->setClass('ApiGen\Charset\CharsetConvertor');
-
-		// generator
-		$builder->addDefinition($this->prefix('generator'))
-			->setClass('ApiGen\Generator\HtmlGenerator');
-
-		$builder->addDefinition($this->prefix('elementResolver'))
-			->setClass('ApiGen\Generator\Resolvers\ElementResolver');
-
-		$builder->addDefinition($this->prefix('relativePathResolver'))
-			->setClass('ApiGen\Generator\Resolvers\RelativePathResolver');
-
-		$builder->addDefinition($this->prefix('scanner'))
-			->setClass('ApiGen\Scanner\Scanner');
-
-		$builder->addDefinition($this->prefix('markdown'))
-			->setClass('Michelf\MarkdownExtra');
-
-		$builder->addDefinition($this->prefix('markdownMarkup'))
-			->setClass('ApiGen\Generator\Markups\MarkdownMarkup');
-
-		$this->setupConsole();
-		$this->setupEvents();
-		$this->setupFileSystem();
-		$this->setupFshl();
 		$this->setupParser();
-		$this->setupTemplate();
+		$this->setupTemplating();
 	}
 
 
-	private function setupEvents()
+	public function beforeCompile()
 	{
 		$builder = $this->getContainerBuilder();
 
-		foreach ($this->loadFromFile(__DIR__ . '/events.neon') as $i => $class) {
-			$builder->addDefinition($this->prefix('event.' . $i))
-				->setClass($class)
-				->addTag(EventsExtension::TAG_SUBSCRIBER);
-		}
-	}
-
-
-	private function setupConsole()
-	{
-		$builder = $this->getContainerBuilder();
-
-		$application = $builder->addDefinition($this->prefix('application'))
-			->setClass('ApiGen\Console\Application')
-			->addSetup('injectServiceLocator')
-			->addSetup('setEventManager');
-
-		$builder->addDefinition($this->prefix('consoleIO'))
-			->setClass('ApiGen\Console\IO');
-
-		foreach ($this->loadFromFile(__DIR__ . '/commands.neon') as $i => $class) {
-			if ( ! $this->isPhar() && $class === 'ApiGen\Command\SelfUpdateCommand') {
+		$application = $builder->getDefinition($builder->getByType('ApiGen\Console\Application'));
+		foreach ($builder->findByType('Symfony\Component\Console\Command\Command') as $command) {
+			if ( ! $this->isPhar() && $command === 'ApiGen\Command\SelfUpdateCommand') {
 				continue;
 			}
-
-			$command = $builder->addDefinition($this->prefix('command.' . $i))
-				->setClass($class);
-
-			$application->addSetup('add', array('@' . $command->getClass()));
+			$application->addSetup('add', array('@' . $command));
 		}
 
-		$builder->addDefinition($this->prefix('console.progressBar'))
-			->setClass('ApiGen\Console\ProgressBar');
+		foreach ($builder->findByType('Kdyby\Events\Subscriber') as $event) {
+			$builder->getDefinition($event)
+				->addTag(EventsExtension::TAG_SUBSCRIBER);
+		}
+
+		$this->setupGeneratorQueue();
+		$this->setupTemplateFilters();
 	}
 
 
-	private function setupFileSystem()
+	private function setupGeneratorQueue()
 	{
 		$builder = $this->getContainerBuilder();
 
-		$builder->addDefinition($this->prefix('finder'))
-			->setClass('ApiGen\FileSystem\Finder');
+		// note: consider prioritization
 
-		$builder->addDefinition($this->prefix('zip'))
-			->setClass('ApiGen\FileSystem\Zip');
-
-		$builder->addDefinition($this->prefix('wiper'))
-			->setClass('ApiGen\FileSystem\Wiper');
-	}
-
-
-	private function setupFshl()
-	{
-		$builder = $this->getContainerBuilder();
-
-		$builder->addDefinition($this->prefix('fshl.output'))
-			->setClass('FSHL\Output\Html');
-
-		$builder->addDefinition($this->prefix('fshl.lexter'))
-			->setClass('FSHL\Lexer\Php');
-
-		$builder->addDefinition($this->prefix('fshl.highlighter'))
-			->setClass('FSHL\Highlighter')
-			->addSetup('setLexer', array('@FSHL\Lexer\Php'));
-
-		$builder->addDefinition($this->prefix('sourceCodeHighlighter'))
-			->setClass('ApiGen\Generator\FshlSourceCodeHighlighter');
+		$generator = $builder->getDefinition($builder->getByType('ApiGen\Generator\Generator'));
+		foreach ($builder->findByType('ApiGen\Generator\TemplateGenerator') as $templateGenerator) {
+			$generator->addSetup('?->processQueue[] = ?', array('@self', '@' . $templateGenerator));
+		}
 	}
 
 
@@ -138,39 +69,36 @@ class ApiGenExtension extends CompilerExtension
 	{
 		$builder = $this->getContainerBuilder();
 
-		$builder->addDefinition($this->prefix('parser'))
-			->setClass('ApiGen\Parser\Parser');
-
 		$backend = $builder->addDefinition($this->prefix('parser.backend'))
 			->setClass('ApiGen\Parser\Broker\Backend');
 
 		$builder->addDefinition($this->prefix('parser.broker'))
 			->setClass('TokenReflection\Broker')
-			->setArguments(array($backend,
+			->setArguments(array(
+				$backend,
 				Broker::OPTION_DEFAULT & ~(Broker::OPTION_PARSE_FUNCTION_BODY | Broker::OPTION_SAVE_TOKEN_STREAM)
 			));
-
-		$builder->addDefinition($this->prefix('parser.result'))
-			->setClass('ApiGen\Parser\ParserResult');
 	}
 
 
-	private function setupTemplate()
+	private function setupTemplating()
 	{
 		$builder = $this->getContainerBuilder();
 
-		$builder->addDefinition($this->prefix('templateFactory'))
-			->setClass('ApiGen\Templating\TemplateFactory');
-
-		$latteFactory = $builder->addDefinition($this->prefix('latteFactory'))
+		$builder->addDefinition($this->prefix('latteFactory'))
 			->setClass('Latte\Engine')
 			->addSetup('setTempDirectory', array($builder->expand('%tempDir%/cache/latte')));
+	}
 
-		foreach ($this->loadFromFile(__DIR__ . '/filters.neon') as $i => $class) {
-			$filter = $builder->addDefinition($this->prefix('latte.filter.' . $i))
-				->setClass($class);
 
-			$latteFactory->addSetup('addFilter', array(NULL, array('@' . $filter->getClass(), 'loader')));
+	private function setupTemplateFilters()
+	{
+		$builder = $this->getContainerBuilder();
+
+		$latteFactory = $builder->getDefinition($this->prefix('latteFactory'));
+
+		foreach ($builder->findByType('ApiGen\Templating\Filters\Filters') as $filter) {
+			$latteFactory->addSetup('addFilter', array(NULL, array('@' . $filter, 'loader')));
 		}
 	}
 
@@ -180,7 +108,7 @@ class ApiGenExtension extends CompilerExtension
 	 */
 	private function isPhar()
 	{
-		return 'phar:' === substr(__FILE__, 0, 5);
+		return substr(__FILE__, 0, 5) === 'phar:';
 	}
 
 }
