@@ -16,7 +16,7 @@ require __DIR__ . '/bootstrap.php';
 
 // Create temp dir
 $tempDir = sys_get_temp_dir() . '/_apigen.temp';
-@mkdir($tempDir, 0755, TRUE); // @ - dir may exists
+Tester\Helpers::purge($tempDir); // clean old cache
 
 
 // Init debugger
