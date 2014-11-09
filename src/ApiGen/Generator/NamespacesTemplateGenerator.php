@@ -25,14 +25,14 @@ class NamespacesTemplateGenerator extends Nette\Object implements TemplateGenera
 {
 
 	/**
-	 * @var TemplateNavigator
-	 */
-	private $templateNavigator;
-
-	/**
 	 * @var ElementStorage
 	 */
 	private $elementStorage;
+
+	/**
+	 * @var TemplateNavigator
+	 */
+	private $templateNavigator;
 
 	/**
 	 * @var TemplateFactory
@@ -41,32 +41,31 @@ class NamespacesTemplateGenerator extends Nette\Object implements TemplateGenera
 
 
 	public function __construct(
-		TemplateNavigator $templateNavigator,
 		ElementStorage $elementStorage,
-		TemplateFactory $templateFactory
+		TemplateFactory $templateFactory,
+		TemplateNavigator $templateNavigator
 	) {
-		$this->templateNavigator = $templateNavigator;
 		$this->elementStorage = $elementStorage;
 		$this->templateFactory = $templateFactory;
+		$this->templateNavigator = $templateNavigator;
 	}
 
 
 	public function generate()
 	{
-		$template = $this->templateFactory->create('namespace');
 		foreach ($this->elementStorage->getNamespaces() as $name => $namespace) {
-			$this->generateForNamespace($template, $name, $namespace);
+			$this->generateForNamespace($name, $namespace);
 		}
 	}
 
 
 	/**
-	 * @param Template|\stdClass $template
 	 * @param string $name
 	 * @param array $namespace
 	 */
-	private function generateForNamespace(Template $template, $name, $namespace)
+	private function generateForNamespace($name, $namespace)
 	{
+		$template = $this->templateFactory->createNamedForElement('namespace', $namespace);
 		$template->namespace = $name;
 		$template->subnamespaces = $this->getSubnamespacesForNamespace($template->namespaces, $name);
 
@@ -77,8 +76,6 @@ class NamespacesTemplateGenerator extends Nette\Object implements TemplateGenera
 		$template->constants = $namespace['constants'];
 		$template->functions = $namespace['functions'];
 
-		$savePath = $this->templateNavigator->getTemplatePathForNamespace($name);
-		$template->setSavePath($savePath);
 		$template->save();
 	}
 

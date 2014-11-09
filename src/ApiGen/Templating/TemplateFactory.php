@@ -10,7 +10,6 @@
 namespace ApiGen\Templating;
 
 use ApiGen\Configuration\Configuration;
-use ApiGen\Configuration\TemplateConfiguration;
 use ApiGen\Elements\AutocompleteElements;
 use ApiGen\Elements\Elements;
 use ApiGen\Elements\ElementStorage;
@@ -90,8 +89,7 @@ class TemplateFactory extends Nette\Object
 	{
 		$template = $this->buildTemplate();
 		if ($name) {
-			$template->setFile($this->templateNavigator->getTemplatePath($name));
-			$template->setSavePath($this->templateNavigator->getTemplateFileName($name));
+			return $this->createNamed($name);
 		}
 		return $template;
 	}
@@ -99,7 +97,21 @@ class TemplateFactory extends Nette\Object
 
 	/**
 	 * @param string $name
-	 * @param ReflectionElement|string $element
+	 * @return Template|stdClass
+	 */
+	public function createNamed($name)
+	{
+		$template = $this->buildTemplate();
+		$template->setFile($this->templateNavigator->getTemplatePath($name));
+		$template->setSavePath($this->templateNavigator->getTemplateFileName($name));
+		return $template;
+	}
+
+
+	/**
+	 * @param string $name
+	 * @param ReflectionElement|array|string $element
+	 * @throws \Exception
 	 * @return Template|stdClass
 	 */
 	public function createNamedForElement($name, $element)
@@ -118,6 +130,15 @@ class TemplateFactory extends Nette\Object
 
 		} elseif ($name === 'function') {
 			$template->setSavePath($this->templateNavigator->getTemplatePathForFunction($element));
+
+		} elseif ($name === 'namespace') {
+			$template->setSavePath($this->templateNavigator->getTemplatePathForNamespace($element));
+
+		} elseif ($name === 'package') {
+			$template->setSavePath($this->templateNavigator->getTemplatePathForPackage($element));
+
+		} else {
+			throw new \Exception($name . ' is not supported template type.');
 		}
 
 		return $template;

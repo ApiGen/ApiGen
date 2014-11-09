@@ -49,22 +49,22 @@ class PackagesTemplateGenerator extends Nette\Object implements TemplateGenerato
 
 	public function generate()
 	{
-		$template = $this->templateFactory->create('package');
 		foreach ($this->elementStorage->getPackages() as $name => $package) {
-			$this->generateForPackage($template, $name, $package);
+			$this->generateForPackage($name, $package);
 		}
 	}
 
 
 	/**
-	 * @param Template|\stdClass $template
 	 * @param string $name
 	 * @param array $package
 	 */
-	private function generateForPackage(Template $template, $name, $package)
+	private function generateForPackage($name, $package)
 	{
+		$template = $this->templateFactory->createNamedForElement('package', $package);
 		$template->package = $name;
 		$template->subpackages = $this->getSubpackagesForPackage($template->packages, $name);
+
 		$template->classes = $package['classes'];
 		$template->interfaces = $package['interfaces'];
 		$template->traits = $package['traits'];
@@ -72,8 +72,6 @@ class PackagesTemplateGenerator extends Nette\Object implements TemplateGenerato
 		$template->constants = $package['constants'];
 		$template->functions = $package['functions'];
 
-		$savePath = $this->templateNavigator->getTemplatePathForPackage($name);
-		$template->setSavePath($savePath);
 		$template->save();
 	}
 

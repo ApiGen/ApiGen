@@ -10,6 +10,7 @@
 namespace ApiGen\Templating;
 
 use Nette;
+use Nette\Utils\ObjectMixin;
 
 
 /**
@@ -19,6 +20,7 @@ use Nette;
  * @method string   constantUrl()
  * @method string   functionUrl()
  * @method string   sourceUrl()
+ * @method string   getSavePath()
  * @method Template setFile($file)
  * @method Template setSavePath()
  */
@@ -43,7 +45,7 @@ class Template extends Nette\Bridges\ApplicationLatte\Template
 			return $this->getLatte()->invokeFilter($name, $args);
 		}
 
-		return parent::__call($name, $args);
+		return ObjectMixin::call($this, $name, $args);
 	}
 
 
@@ -52,7 +54,6 @@ class Template extends Nette\Bridges\ApplicationLatte\Template
 		if (file_put_contents($this->savePath, $this->__toString(TRUE)) === FALSE) {
 			throw new Nette\IOException('Unable to save file to ' . $this->savePath);
 		}
-
 		$this->clear();
 	}
 

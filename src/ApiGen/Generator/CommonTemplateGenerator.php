@@ -39,7 +39,7 @@ class CommonTemplateGenerator extends Nette\Object implements TemplateGenerator
 	{
 		$commonTemplates = array('overview', 'combined', 'elementlist', '404');
 		foreach ($commonTemplates as $type) {
-			$this->templateFactory->create($type)->save();
+			$this->templateFactory->createNamed($type)->save();
 		}
 	}
 
