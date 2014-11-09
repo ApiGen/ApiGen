@@ -107,6 +107,10 @@ skipDocPath:
 skipDocPrefix:
     - Nette
 
+# include highlighted source code
+sourceCode:
+    - true # default
+
 # character set of source files; if you use only one across your files, we recommend you name it
 charset:
 	# by default will choose from all supported (starting with UTF-8), slow and not 100% reliable

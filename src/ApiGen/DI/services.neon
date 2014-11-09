@@ -50,20 +50,22 @@ services:
 
 	# generators
 	- ApiGen\Generator\Generator
-	- ApiGen\Generator\ZipGenerator
-	- ApiGen\Generator\CommonTemplateGenerator
-	- ApiGen\Generator\SourceCodeGenerator
-	- ApiGen\Generator\ElementsTemplateGenerator
-	- ApiGen\Generator\TodoTemplateGenerator
-	- ApiGen\Generator\TreeTemplateGenerator
-	- ApiGen\Generator\DeprecatedTemplateGenerator
-	- ApiGen\Generator\NamespacesTemplateGenerator
-	- ApiGen\Generator\PackagesTemplateGenerator
-	- ApiGen\Generator\SitemapTemplateGenerator
-	- ApiGen\Generator\OpensearchTemplateGenerator
-	- ApiGen\Generator\RobotsTemplateGenerator
 	- ApiGen\Generator\Resolvers\ElementResolver
 	- ApiGen\Generator\Resolvers\RelativePathResolver
+	- ApiGen\Generator\ZipGenerator
+
+	# template generators
+	- ApiGen\Generator\CommonTemplateGenerator
+	- ApiGen\Generator\DeprecatedTemplateGenerator
+	- ApiGen\Generator\ElementsTemplateGenerator
+	- ApiGen\Generator\NamespacesTemplateGenerator
+	- ApiGen\Generator\PackagesTemplateGenerator
+	- ApiGen\Generator\OpensearchTemplateGenerator
+	- ApiGen\Generator\RobotsTemplateGenerator
+	- ApiGen\Generator\SitemapTemplateGenerator
+	- ApiGen\Generator\SourceCodeTemplateGenerator
+	- ApiGen\Generator\TodoTemplateGenerator
+	- ApiGen\Generator\TreeTemplateGenerator
 
 	# templating
 	- ApiGen\Templating\TemplateFactory

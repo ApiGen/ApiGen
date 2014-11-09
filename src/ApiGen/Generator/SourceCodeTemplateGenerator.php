@@ -10,16 +10,17 @@
 namespace ApiGen\Generator;
 
 use ApiGen\Charset\CharsetConvertor;
+use ApiGen\Configuration\Configuration;
+use ApiGen\Elements\ElementStorage;
 use ApiGen\Generator\Highlighter\SourceCodeHighlighter;
 use ApiGen\Generator\Resolvers\RelativePathResolver;
 use ApiGen\Reflection\ReflectionElement;
-use ApiGen\Templating\Template;
+use ApiGen\Templating\TemplateFactory;
 use ApiGen\Templating\TemplateNavigator;
 use Nette;
-use stdClass;
 
 
-class SourceCodeGenerator extends Nette\Object
+class SourceCodeTemplateGenerator extends Nette\Object implements TemplateGenerator
 {
 
 	/**
@@ -42,33 +43,70 @@ class SourceCodeGenerator extends Nette\Object
 	 */
 	private $templateNavigator;
 
+	/**
+	 * @var Configuration
+	 */
+	private $configuration;
+
+	/**
+	 * @var TemplateFactory
+	 */
+	private $templateFactory;
+
+	/**
+	 * @var ElementStorage
+	 */
+	private $elementStorage;
+
 
 	public function __construct(
+		Configuration $configuration,
 		CharsetConvertor $charsetConvertor,
+		ElementStorage $elementStorage,
 		RelativePathResolver $relativePathResolver,
 		SourceCodeHighlighter $sourceCodeHighlighter,
-		TemplateNavigator $templateNavigator
+		TemplateNavigator $templateNavigator,
+		TemplateFactory $templateFactory
 	) {
+		$this->configuration = $configuration;
 		$this->charsetConvertor = $charsetConvertor;
+		$this->elementStorage = $elementStorage;
 		$this->relativePathResolver = $relativePathResolver;
 		$this->sourceCodeHighlighter = $sourceCodeHighlighter;
 		$this->templateNavigator = $templateNavigator;
+		$this->templateFactory = $templateFactory;
+	}
+
+
+	public function generate()
+	{
+		foreach ($this->elementStorage->getElements() as $type => $elementList) {
+			foreach ($elementList as $element) {
+				/** @var ReflectionElement $element */
+				if ($element->isTokenized()) {
+					$this->generateForElement($element);
+				}
+			}
+		}
+	}
+
+
+	private function generateForElement(ReflectionElement $element)
+	{
+		$template = $this->templateFactory->createNamedForElement('source', $element);
+		$template->fileName = $this->relativePathResolver->getRelativePath($element->getFileName());
+		$content = $this->charsetConvertor->convertFileToUtf($element->getFileName());
+		$template->source = $this->sourceCodeHighlighter->highlightAndAddLineNumbers($content);
+		$template->save();
 	}
 
 
 	/**
-	 * @param Template|stdClass $template
-	 * @param ReflectionElement $element
+	 * @return bool
 	 */
-	public function generateForElement(Template $template, $element)
+	public function isAllowed()
 	{
-		$template->fileName = $this->relativePathResolver->getRelativePath($element->getFileName());
-		$content = $this->charsetConvertor->convertFileToUtf($element->getFileName());
-		$template->source = $this->sourceCodeHighlighter->highlightAndAddLineNumbers($content);
-
-		$template->setFile($this->templateNavigator->getTemplatePath('source'))
-			->setSavePath($this->templateNavigator->getTemplatePathForSourceElement($element))
-			->save();
+		return $this->configuration->getOption('sourceCode');
 	}
 
 }

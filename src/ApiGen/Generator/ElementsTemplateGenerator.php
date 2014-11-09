@@ -35,26 +35,16 @@ class ElementsTemplateGenerator extends Nette\Object implements TemplateGenerato
 	private $templateFactory;
 
 	/**
-	 * @var SourceCodeGenerator
-	 */
-	private $sourceCodeGenerator;
-
-	/**
 	 * @var Elements
 	 */
 	private $elements;
 
 
-	public function __construct(
-		Elements $elements,
-		ElementStorage $elementStorage,
-		TemplateFactory $templateFactory,
-		SourceCodeGenerator $sourceCodeGenerator
-	) {
-		$this->templateFactory = $templateFactory;
-		$this->elementStorage = $elementStorage;
-		$this->sourceCodeGenerator = $sourceCodeGenerator;
+	public function __construct(Elements $elements, ElementStorage $elementStorage, TemplateFactory $templateFactory)
+	{
 		$this->elements = $elements;
+		$this->elementStorage = $elementStorage;
+		$this->templateFactory = $templateFactory;
 	}
 
 
@@ -90,14 +80,6 @@ class ElementsTemplateGenerator extends Nette\Object implements TemplateGenerato
 					// Function
 					$template->function = $element;
 					$template->save($template->functionUrl($element));
-				}
-
-				// todo: split to source code generator
-
-				// Generate source codes
-				if ($element->isTokenized()) {
-					// todo: create new template
-					$this->sourceCodeGenerator->generateForElement($template, $element);
 				}
 			}
 		}
