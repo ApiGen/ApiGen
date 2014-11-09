@@ -20,7 +20,7 @@ class SelfUpdateCommandTest extends TestCase
 
 	public function testCommand()
 	{
-		$this->prepareConfig(array('public'));
+		$this->prepareConfig();
 
 		$compiler = new PharCompiler(__DIR__ . '/../../../..');
 

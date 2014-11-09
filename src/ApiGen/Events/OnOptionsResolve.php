@@ -44,8 +44,7 @@ class OnOptionsResolve extends Nette\Object implements Subscriber
 
 	public function onOptionsResolve(Configuration $configuration)
 	{
-		$charsets = $configuration->getOption('charsets');
-		$this->charsetConvertor->setCharsets($charsets);
+		$this->charsetConvertor->setCharsets($configuration->getOption('charset'));
 	}
 
 }

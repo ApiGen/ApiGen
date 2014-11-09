@@ -107,7 +107,6 @@ class CharsetOptionsResolver extends Nette\Object
 	 */
 	private function replaceWin1250WithIso(array $charsets)
 	{
-		var_dump($charsets);
 		if (($key = array_search(Encoding::WIN_1250, $charsets)) !== FALSE) {
 			$charsets[$key] = Encoding::ISO_8859_1;
 		}
