@@ -81,6 +81,7 @@ class ParserTest extends TestCase
 		$defaults['destination'] = API_DIR;
 		$configuration->resolveOptions($defaults);
 	}
+
 }
 
 
