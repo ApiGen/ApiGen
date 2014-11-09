@@ -13,7 +13,6 @@ use Nette;
 
 
 /**
- * @method array getOptions()
  * @method onOptionsResolve(object)
  */
 class Configuration extends Nette\Object
@@ -62,10 +61,25 @@ class Configuration extends Nette\Object
 	 */
 	public function getOption($key)
 	{
+		if ($this->options === NULL) {
+			$this->options = $this->resolveOptions(array());
+		}
 		if ( ! isset($this->options[$key])) {
 			throw new ConfigurationException("Option '$key' not found");
 		}
 		return $this->options[$key];
+	}
+
+
+	/**
+	 * @return array
+	 */
+	public function getOptions()
+	{
+		if ($this->options === NULL) {
+			$this->options = $this->resolveOptions(array());
+		}
+		return $this->options;
 	}
 
 
