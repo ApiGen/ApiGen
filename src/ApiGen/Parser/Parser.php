@@ -102,7 +102,7 @@ class Parser extends Nette\Object
 		$this->onParseStart(count($files));
 
 		foreach ($files as $file) {
-			$content = $this->charsetConvertor->convertFile($file->getPathname());
+			$content = $this->charsetConvertor->convertFileToUtf($file->getPathname());
 			try {
 				$this->broker->processString($content, $file->getPathname());
 

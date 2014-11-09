@@ -63,7 +63,7 @@ class SourceCodeGenerator extends Nette\Object
 	public function generateForElement(Template $template, $element)
 	{
 		$template->fileName = $this->relativePathResolver->getRelativePath($element->getFileName());
-		$content = $this->charsetConvertor->convertFile($element->getFileName());
+		$content = $this->charsetConvertor->convertFileToUtf($element->getFileName());
 		$template->source = $this->sourceCodeHighlighter->highlightAndAddLineNumbers($content);
 
 		$template->setFile($this->templateNavigator->getTemplatePath('source'))
