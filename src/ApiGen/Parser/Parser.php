@@ -19,9 +19,6 @@ use TokenReflection\Broker;
 
 
 /**
- * @method ArrayObject  getClasses()
- * @method ArrayObject  getConstants()
- * @method ArrayObject  getFunctions()
  * @method array        getErrors()
  * @method Parser       onParseStart()
  * @method Parser       onParseProgress()
