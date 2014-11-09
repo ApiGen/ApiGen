@@ -73,33 +73,32 @@ class FileSystem
 
 	/**
 	 * @param string $path
-	 * @return bool
 	 */
 	public static function deleteDir($path)
 	{
+		self::purgeDir($path);
+		rmdir($path);
+	}
+
+
+	/**
+	 * @param string $path
+	 */
+	public static function purgeDir($path)
+	{
 		if ( ! is_dir($path)) {
-			return TRUE;
+			mkdir($path, 0755, TRUE);
 		}
 
 		foreach (Nette\Utils\Finder::find('*')->from($path)->childFirst() as $item) {
 			/** @var \SplFileInfo $item */
 			if ($item->isDir()) {
-				if ( ! @rmdir($item)) {
-					return FALSE;
-				}
+				rmdir($item);
 
 			} elseif ($item->isFile()) {
-				if ( ! @unlink($item)) {
-					return FALSE;
-				}
+				unlink($item);
 			}
 		}
-
-		if ( ! @rmdir($path)) {
-			return FALSE;
-		}
-
-		return TRUE;
 	}
 
 
