@@ -9,6 +9,7 @@
 
 namespace ApiGen;
 
+use ApiGen\Command\SelfUpdateCommand;
 use Nette;
 use Nette\Utils\Finder;
 use Phar;
@@ -112,8 +113,11 @@ __HALT_COMPILER();
 
 		$exclude = array(
 			'jakub-onderka/php-parallel-lint',
-			'symfony/*/*/Tests',
+			'nette/*/Tests',
+			'nette/tester',
+			'mikulas',
 			'squizlabs',
+			'symfony/*/*/Tests',
 			'zenify/coding-standard'
 		);
 		foreach (Finder::findFiles('*.php')->from("$this->repoDir/vendor")->exclude($exclude) as $file) {
