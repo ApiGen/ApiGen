@@ -35,6 +35,7 @@ class CharsetConvertor extends Nette\Object
 	public function __construct(CharsetOptionsResolver $charsetOptionsResolver)
 	{
 		$this->charsetOptionsResolver = $charsetOptionsResolver;
+		$this->charsets = $this->charsetOptionsResolver->resolve();
 	}
 
 
@@ -51,10 +52,6 @@ class CharsetConvertor extends Nette\Object
 	 */
 	public function convertFileToUtf($filePath)
 	{
-		if ($this->charsets === array()) {
-			$this->charsets = $this->charsetOptionsResolver->resolve();
-		}
-
 		$fileEncoding = $this->getFileEncoding($filePath);
 		$content = file_get_contents($filePath);
 

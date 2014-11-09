@@ -6,6 +6,7 @@
 
 namespace ApiGenTests\ApiGen\Command;
 
+use ApiGen\Command\SelfUpdateCommand;
 use ApiGen\Neon\NeonFile;
 use ApiGen\PharCompiler;
 use ApiGenTests\TestCase;
@@ -28,12 +29,14 @@ class SelfUpdateCommandTest extends TestCase
 		$compiler->compile($apigenPharFile);
 		Assert::true(file_exists($apigenPharFile));
 
-		$generatedFileHash = sha1_file($apigenPharFile);
 		passthru($apigenPharFile . ' self-update', $output);
 		Assert::same(0, $output);
 
 		$downloadedFileHash = sha1_file($apigenPharFile);
-		Assert::notSame($generatedFileHash, $downloadedFileHash);
+
+		$manifest = file_get_contents(SelfUpdateCommand::MANIFEST_URL);
+		$item = json_decode($manifest);
+		Assert::same($item->sha1, $downloadedFileHash);
 	}
 
 

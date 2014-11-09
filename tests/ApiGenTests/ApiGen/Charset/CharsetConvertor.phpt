@@ -61,7 +61,6 @@ class CharsetConvertorTest extends TestCase
 	public function testConvertFileToUtf()
 	{
 		$filePath = __DIR__ . '/files/WINDOWS_1250.php';
-		$this->charsetConvertor->setCharsets(array(Encoding::WIN_1250));
 		$convertedFileContent = $this->charsetConvertor->convertFileToUtf($filePath);
 
 		Assert::match(
