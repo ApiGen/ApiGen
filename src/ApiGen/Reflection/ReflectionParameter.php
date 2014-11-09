@@ -9,13 +9,8 @@
 
 namespace ApiGen\Reflection;
 
-use TokenReflection\IReflectionParameter;
 
-
-/**
- * Parameter reflection envelope
- */
-class ReflectionParameter extends ReflectionBase implements IReflectionParameter
+class ReflectionParameter extends ReflectionBase
 {
 
 	/**
@@ -197,8 +192,6 @@ class ReflectionParameter extends ReflectionBase implements IReflectionParameter
 
 
 	/**
-	 * Returns the function/method declaring class.
-	 *
 	 * @return ReflectionClass|NULL
 	 */
 	public function getDeclaringClass()
@@ -219,43 +212,11 @@ class ReflectionParameter extends ReflectionBase implements IReflectionParameter
 
 
 	/**
-	 * If the parameter can be used unlimited.
-	 *
 	 * @return bool
 	 */
 	public function isUnlimited()
 	{
 		return FALSE;
-	}
-
-
-	public function getDocComment()
-	{
-		throw new \Exception('Not implemented nor required');
-	}
-
-
-	public function getDefaultValue()
-	{
-		throw new \Exception('Not implemented nor required');
-	}
-
-
-	public function isDefaultValueConstant()
-	{
-		throw new \Exception('Not implemented nor required');
-	}
-
-
-	public function getDefaultValueConstantName()
-	{
-		throw new \Exception('Not implemented nor required');
-	}
-
-
-	public function __toString()
-	{
-		throw new \Exception('Not implemented nor required');
 	}
 
 }

@@ -10,6 +10,7 @@
 namespace ApiGen\Reflection;
 
 use ReflectionProperty as InternalReflectionProperty;
+use TokenReflection\Broker;
 use TokenReflection\IReflection;
 
 
@@ -17,14 +18,14 @@ use TokenReflection\IReflection;
  * Envelope for magic properties that are defined
  * only as @property, @property-read or @property-write annotation.
  *
- * @method ReflectionPropertyMagic  setName(string $name)
+ * @method ReflectionPropertyMagic  setName()
  * @method ReflectionPropertyMagic  setTypeHint()
  * @method ReflectionPropertyMagic  setShortDescription()
  * @method ReflectionPropertyMagic  setStartLine()
  * @method ReflectionPropertyMagic  setEndLine()
  * @method ReflectionPropertyMagic  setReadOnly()
  * @method ReflectionPropertyMagic  setWriteOnly()
- * @method ReflectionPropertyMagic  setDeclaringClass(ReflectionClass $declaringClass)
+ * @method ReflectionPropertyMagic  setDeclaringClass(object)
  * @method string                   getTypeHint()
  * @method bool                     isReadOnly()
  * @method bool                     isWriteOnly()
@@ -34,63 +35,51 @@ class ReflectionPropertyMagic extends ReflectionProperty
 {
 
 	/**
-	 * Property name.
-	 *
 	 * @var string
 	 */
-	protected $name;
-
-	/**
-	 * Defines a type hint of parameter values.
-	 *
-	 * @var string
-	 */
-	protected $typeHint;
+	private $name;
 
 	/**
 	 * @var string
 	 */
-	protected $shortDescription;
+	private $typeHint;
 
 	/**
 	 * @var string
 	 */
-	protected $longDescription;
+	private $shortDescription;
 
 	/**
-	 * Start line number in the file.
-	 *
-	 * @var integer
+	 * @var string
 	 */
-	protected $startLine;
+	private $longDescription;
 
 	/**
-	 * End line number in the file.
-	 *
-	 * @var integer
+	 * @var int
 	 */
-	protected $endLine;
+	private $startLine;
+
+	/**
+	 * @var int
+	 */
+	private $endLine;
 
 	/**
 	 * If the property is read-only.
 	 *
 	 * @var bool
 	 */
-	protected $readOnly;
+	private $readOnly;
 
 	/**
-	 * If the property is write-only.
-	 *
 	 * @var bool
 	 */
-	protected $writeOnly;
+	private $writeOnly;
 
 	/**
-	 * The declaring class.
-	 *
 	 * @var ReflectionClass
 	 */
-	protected $declaringClass;
+	private $declaringClass;
 
 
 	public function __construct(IReflection $reflection = NULL)
@@ -159,9 +148,7 @@ class ReflectionPropertyMagic extends ReflectionProperty
 
 
 	/**
-	 * Returns the reflection broker used by this reflection object.
-	 *
-	 * @return \TokenReflection\Broker
+	 * @return Broker
 	 */
 	public function getBroker()
 	{
@@ -170,9 +157,7 @@ class ReflectionPropertyMagic extends ReflectionProperty
 
 
 	/**
-	 * Returns the start position in the file token stream.
-	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getStartPosition()
 	{
@@ -181,8 +166,6 @@ class ReflectionPropertyMagic extends ReflectionProperty
 
 
 	/**
-	 * Returns the end position in the file token stream.
-	 *
 	 * @return integer
 	 */
 	public function getEndPosition()
@@ -192,8 +175,6 @@ class ReflectionPropertyMagic extends ReflectionProperty
 
 
 	/**
-	 * Returns if the property is magic.
-	 *
 	 * @return bool
 	 */
 	public function isMagic()
@@ -232,7 +213,8 @@ class ReflectionPropertyMagic extends ReflectionProperty
 	public function isDocumented()
 	{
 		if ($this->isDocumented === NULL) {
-			$this->isDocumented = self::$config->deprecated || ! $this->isDeprecated();
+			$deprecated = $this->configuration->getOption('deprecated');
+			$this->isDocumented = $deprecated || ! $this->isDeprecated();
 		}
 
 		return $this->isDocumented;
@@ -240,8 +222,6 @@ class ReflectionPropertyMagic extends ReflectionProperty
 
 
 	/**
-	 * Returns if the property is deprecated.
-	 *
 	 * @return bool
 	 */
 	public function isDeprecated()
@@ -251,7 +231,7 @@ class ReflectionPropertyMagic extends ReflectionProperty
 
 
 	/**
-	 * Returns property package name (including subpackage name).
+	 * Returns package name including subpackage name.
 	 *
 	 * @return string
 	 */
@@ -262,8 +242,6 @@ class ReflectionPropertyMagic extends ReflectionProperty
 
 
 	/**
-	 * Returns property namespace name.
-	 *
 	 * @return string
 	 */
 	public function getNamespaceName()
@@ -273,22 +251,15 @@ class ReflectionPropertyMagic extends ReflectionProperty
 
 
 	/**
-	 * Returns property annotations.
-	 *
 	 * @return array
 	 */
 	public function getAnnotations()
 	{
-		if ($this->annotations === NULL) {
-			$this->annotations = array();
-		}
 		return $this->annotations;
 	}
 
 
 	/**
-	 * Returns the name of the declaring class.
-	 *
 	 * @return string
 	 */
 	public function getDeclaringClassName()
@@ -298,8 +269,6 @@ class ReflectionPropertyMagic extends ReflectionProperty
 
 
 	/**
-	 * Returns the property default value.
-	 *
 	 * @return mixed
 	 */
 	public function getDefaultValue()
@@ -331,9 +300,7 @@ class ReflectionPropertyMagic extends ReflectionProperty
 
 
 	/**
-	 * Returns property modifiers.
-	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getModifiers()
 	{
@@ -342,8 +309,6 @@ class ReflectionPropertyMagic extends ReflectionProperty
 
 
 	/**
-	 * Returns if the property is private.
-	 *
 	 * @return bool
 	 */
 	public function isPrivate()
@@ -353,8 +318,6 @@ class ReflectionPropertyMagic extends ReflectionProperty
 
 
 	/**
-	 * Returns if the property is protected.
-	 *
 	 * @return bool
 	 */
 	public function isProtected()
@@ -364,8 +327,6 @@ class ReflectionPropertyMagic extends ReflectionProperty
 
 
 	/**
-	 * Returns if the property is public.
-	 *
 	 * @return bool
 	 */
 	public function isPublic()
@@ -375,8 +336,6 @@ class ReflectionPropertyMagic extends ReflectionProperty
 
 
 	/**
-	 * Returns if the property is static.
-	 *
 	 * @return bool
 	 */
 	public function isStatic()
@@ -386,8 +345,6 @@ class ReflectionPropertyMagic extends ReflectionProperty
 
 
 	/**
-	 * Returns if the property is internal.
-	 *
 	 * @return bool
 	 */
 	public function isInternal()
@@ -397,8 +354,6 @@ class ReflectionPropertyMagic extends ReflectionProperty
 
 
 	/**
-	 * Returns the property declaring trait.
-	 *
 	 * @return ReflectionClass|NULL
 	 */
 	public function getDeclaringTrait()
@@ -408,8 +363,6 @@ class ReflectionPropertyMagic extends ReflectionProperty
 
 
 	/**
-	 * Returns the declaring trait name.
-	 *
 	 * @return string|NULL
 	 */
 	public function getDeclaringTraitName()
@@ -422,8 +375,6 @@ class ReflectionPropertyMagic extends ReflectionProperty
 
 
 	/**
-	 * Returns imported namespaces and aliases from the declaring namespace.
-	 *
 	 * @return array
 	 */
 	public function getNamespaceAliases()
@@ -433,7 +384,7 @@ class ReflectionPropertyMagic extends ReflectionProperty
 
 
 	/**
-	 * Returns an property pretty (docblock compatible) name.
+	 * Returns an property docblock compatible name.
 	 *
 	 * @return string
 	 */
@@ -444,8 +395,6 @@ class ReflectionPropertyMagic extends ReflectionProperty
 
 
 	/**
-	 * Returns the file name the property is defined in.
-	 *
 	 * @return string
 	 */
 	public function getFileName()
@@ -455,8 +404,6 @@ class ReflectionPropertyMagic extends ReflectionProperty
 
 
 	/**
-	 * Returns if the property is user defined.
-	 *
 	 * @return bool
 	 */
 	public function isUserDefined()
@@ -466,8 +413,6 @@ class ReflectionPropertyMagic extends ReflectionProperty
 
 
 	/**
-	 * Returns if the property comes from a tokenized source.
-	 *
 	 * @return bool
 	 */
 	public function isTokenized()
@@ -477,8 +422,6 @@ class ReflectionPropertyMagic extends ReflectionProperty
 
 
 	/**
-	 * Returns the appropriate docblock definition.
-	 *
 	 * @return string|bool
 	 */
 	public function getDocComment()
@@ -500,8 +443,6 @@ class ReflectionPropertyMagic extends ReflectionProperty
 
 
 	/**
-	 * Checks if there is a particular annotation.
-	 *
 	 * @param string $name
 	 * @return bool
 	 */
@@ -513,8 +454,6 @@ class ReflectionPropertyMagic extends ReflectionProperty
 
 
 	/**
-	 * Returns a particular annotation value.
-	 *
 	 * @param string $name
 	 * @return string|array|NULL
 	 */

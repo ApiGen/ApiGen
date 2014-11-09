@@ -10,14 +10,11 @@
 namespace ApiGen\Reflection;
 
 use InvalidArgumentException;
-use TokenReflection;
 use TokenReflection\Exception\RuntimeException;
+use TokenReflection\IReflectionParameter;
 
 
-/**
- * Function/method reflection envelope parent class
- */
-abstract class ReflectionFunctionBase extends ReflectionElement implements TokenReflection\IReflectionFunctionBase
+abstract class ReflectionFunctionBase extends ReflectionElement
 {
 
 	/**
@@ -97,12 +94,9 @@ abstract class ReflectionFunctionBase extends ReflectionElement implements Token
 
 
 	/**
-	 * Returns a particular function/method parameter.
-	 *
-	 * @param integer|string $parameterName Parameter name or position
+	 * @param int|string $parameterName
 	 * @return ReflectionParameter
-	 * @throws \InvalidArgumentException If there is no parameter of the given name.
-	 * @throws \InvalidArgumentException If there is no parameter at the given position.
+	 * @throws InvalidArgumentException If there is no parameter of the given name|position.
 	 */
 	public function getParameter($parameterName)
 	{
@@ -130,7 +124,7 @@ abstract class ReflectionFunctionBase extends ReflectionElement implements Token
 
 
 	/**
-	 * @return integer
+	 * @return int
 	 */
 	public function getNumberOfParameters()
 	{
@@ -139,7 +133,7 @@ abstract class ReflectionFunctionBase extends ReflectionElement implements Token
 
 
 	/**
-	 * @return integer
+	 * @return int
 	 */
 	public function getNumberOfRequiredParameters()
 	{
@@ -149,7 +143,7 @@ abstract class ReflectionFunctionBase extends ReflectionElement implements Token
 
 	private function prepareParameters()
 	{
-		$this->parameters = array_map(function (TokenReflection\IReflectionParameter $parameter) {
+		$this->parameters = array_map(function (IReflectionParameter $parameter) {
 			return $this->apiGenReflectionFactory->createFromReflection($parameter);
 		}, $this->reflection->getParameters());
 	}

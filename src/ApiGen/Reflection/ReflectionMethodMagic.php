@@ -17,13 +17,13 @@ use TokenReflection\IReflection;
 /**
  * Envelope for magic methods that are defined only as @method annotation.
  *
- * @method  ReflectionMethodMagic   setName(string $name)
- * @method  ReflectionMethodMagic   setShortDescription(string $shortDescription)
- * @method  ReflectionMethodMagic   setStartLine(int $startLine)
- * @method  ReflectionMethodMagic   setEndLine(int $endLine)
- * @method  ReflectionMethodMagic   setReturnsReference(bool $returnsReference)
- * @method  ReflectionMethodMagic   setParameters(array $parameters)
- * @method  ReflectionMethodMagic   setDeclaringClass(ReflectionClass $declaringClass)
+ * @method  ReflectionMethodMagic   setName()
+ * @method  ReflectionMethodMagic   setShortDescription()
+ * @method  ReflectionMethodMagic   setStartLine()
+ * @method  ReflectionMethodMagic   setEndLine()
+ * @method  ReflectionMethodMagic   setReturnsReference()
+ * @method  ReflectionMethodMagic   setParameters()
+ * @method  ReflectionMethodMagic   setDeclaringClass(object)
  */
 class ReflectionMethodMagic extends ReflectionMethod
 {

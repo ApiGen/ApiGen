@@ -25,13 +25,11 @@ use TokenReflection\IReflectionParameter;
 
 
 /**
- * Alters TokenReflection\IReflection functionality for ApiGen.
- *
  * @method setConfiguration(object)
  * @method setParserStorage(object)
  * @method setApiGenReflectionFactory(object)
  */
-abstract class ReflectionBase extends Nette\Object implements IReflection
+abstract class ReflectionBase extends Nette\Object
 {
 
 	/**
@@ -62,7 +60,7 @@ abstract class ReflectionBase extends Nette\Object implements IReflection
 	protected $reflectionType;
 
 	/**
-	 * @var IReflectionClass|IReflectionMethod|IReflectionFunction|IReflectionExtension|IReflectionParameter
+	 * @var IReflection|IReflectionClass|IReflectionMethod|IReflectionFunction|IReflectionExtension|IReflectionParameter
 	 */
 	protected $reflection;
 
@@ -146,15 +144,12 @@ abstract class ReflectionBase extends Nette\Object implements IReflection
 
 
 	/**
-	 * Returns the definition start line number in the file.
-	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getStartLine()
 	{
 		$startLine = $this->reflection->getStartLine();
-
-		if ($doc = $this->getDocComment()) {
+		if ($doc = $this->reflection->getDocComment()) {
 			$startLine -= substr_count($doc, "\n") + 1;
 		}
 
@@ -163,9 +158,7 @@ abstract class ReflectionBase extends Nette\Object implements IReflection
 
 
 	/**
-	 * Returns the definition end line number in the file.
-	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getEndLine()
 	{

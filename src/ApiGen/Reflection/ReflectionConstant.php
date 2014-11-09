@@ -10,13 +10,9 @@
 namespace ApiGen\Reflection;
 
 use ApiGen\FileSystem\FileSystem;
-use TokenReflection\IReflectionConstant;
 
 
-/**
- * Constant reflection envelope
- */
-class ReflectionConstant extends ReflectionElement implements IReflectionConstant
+class ReflectionConstant extends ReflectionElement
 {
 
 	/**
@@ -153,15 +149,6 @@ class ReflectionConstant extends ReflectionElement implements IReflectionConstan
 		}
 
 		return $this->isDocumented;
-	}
-
-
-	/**
-	 * @return string
-	 */
-	public function __toString()
-	{
-		return (string) $this->getName();
 	}
 
 }

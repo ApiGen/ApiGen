@@ -22,7 +22,7 @@ use TokenReflection\IReflection;
  * @method ReflectionParameterMagic setDefaultValueDefinition()
  * @method ReflectionParameterMagic setUnlimited()
  * @method ReflectionParameterMagic setPassedByReference()
- * @method ReflectionParameterMagic setDeclaringFunction(ReflectionFunctionBase $declaringFunction)
+ * @method ReflectionParameterMagic setDeclaringFunction(object)
  */
 class ReflectionParameterMagic extends ReflectionParameter
 {
@@ -35,36 +35,34 @@ class ReflectionParameterMagic extends ReflectionParameter
 	/**
 	 * @var string
 	 */
-	protected $typeHint;
+	private $typeHint;
 
 	/**
 	 * @var integer
 	 */
-	protected $position;
+	private $position;
 
 	/**
 	 * The part of the source code defining the parameter default value.
 	 *
 	 * @var bool
 	 */
-	protected $defaultValueDefinition;
-
-	/**
-	 * If the parameter can be used unlimited times.
-	 *
-	 * @var bool
-	 */
-	protected $unlimited;
+	private $defaultValueDefinition;
 
 	/**
 	 * @var bool
 	 */
-	protected $passedByReference;
+	private $unlimited;
 
 	/**
-	 * @var ReflectionFunctionBase
+	 * @var bool
 	 */
-	protected $declaringFunction;
+	private $passedByReference;
+
+	/**
+	 * @var TokenReflection\IReflectionMethod
+	 */
+	private $declaringFunction;
 
 
 	public function __construct(IReflection $reflection = NULL)
@@ -77,8 +75,6 @@ class ReflectionParameterMagic extends ReflectionParameter
 
 
 	/**
-	 * Returns the reflection broker used by this reflection object.
-	 *
 	 * @return TokenReflection\Broker
 	 */
 	public function getBroker()
@@ -100,8 +96,6 @@ class ReflectionParameterMagic extends ReflectionParameter
 
 
 	/**
-	 * Returns the type hint.
-	 *
 	 * @return string
 	 */
 	public function getTypeHint()
@@ -111,8 +105,6 @@ class ReflectionParameterMagic extends ReflectionParameter
 
 
 	/**
-	 * Returns the file name the parameter is defined in.
-	 *
 	 * @return string
 	 */
 	public function getFileName()
@@ -122,8 +114,6 @@ class ReflectionParameterMagic extends ReflectionParameter
 
 
 	/**
-	 * Returns if the reflection object is internal.
-	 *
 	 * @return bool
 	 */
 	public function isInternal()
@@ -142,8 +132,6 @@ class ReflectionParameterMagic extends ReflectionParameter
 
 
 	/**
-	 * Returns if the current reflection comes from a tokenized source.
-	 *
 	 * @return bool
 	 */
 	public function isTokenized()
@@ -153,7 +141,7 @@ class ReflectionParameterMagic extends ReflectionParameter
 
 
 	/**
-	 * Returns an element pretty (docblock compatible) name.
+	 * Returns an element docblock compatible name.
 	 *
 	 * @return string
 	 */
@@ -164,7 +152,7 @@ class ReflectionParameterMagic extends ReflectionParameter
 
 
 	/**
-	 * @return ReflectionClass|null
+	 * @return ReflectionClass|NULL
 	 */
 	public function getDeclaringClass()
 	{
@@ -284,12 +272,13 @@ class ReflectionParameterMagic extends ReflectionParameter
 	/**
 	 * Returns reflection of the required class of the value.
 	 *
-	 * @return ReflectionClass|null
+	 * @return ReflectionClass|NULL
 	 */
 	public function getClass()
 	{
 		$className = $this->getClassName();
-		return $className === NULL ? NULL : self::$parsedClasses[$className];
+		$parsedClasses = $this->getParsedClasses();
+		return $className === NULL ? NULL : $parsedClasses[$className];
 	}
 
 
@@ -304,8 +293,9 @@ class ReflectionParameterMagic extends ReflectionParameter
 			return NULL;
 		}
 
-		if (isset(self::$parsedClasses[$this->typeHint])) {
-			return $this->typeHint; // todo: check fix
+		$parsedClasses = $this->getParsedClasses();
+		if (isset($parsedClasses[$this->typeHint])) {
+			return $this->typeHint;
 		}
 
 		return NULL;
@@ -353,8 +343,6 @@ class ReflectionParameterMagic extends ReflectionParameter
 
 
 	/**
-	 * Returns if the parameter can be used unlimited times.
-	 *
 	 * @return bool
 	 */
 	public function isUnlimited()

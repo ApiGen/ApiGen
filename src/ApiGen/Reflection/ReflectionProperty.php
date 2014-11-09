@@ -9,13 +9,8 @@
 
 namespace ApiGen\Reflection;
 
-use TokenReflection\IReflectionProperty;
 
-
-/**
- * Property reflection envelope
- */
-class ReflectionProperty extends ReflectionElement implements IReflectionProperty
+class ReflectionProperty extends ReflectionElement
 {
 
 	/**
@@ -123,7 +118,7 @@ class ReflectionProperty extends ReflectionElement implements IReflectionPropert
 
 
 	/**
-	 * @return integer
+	 * @return int
 	 */
 	public function getModifiers()
 	{
@@ -168,7 +163,7 @@ class ReflectionProperty extends ReflectionElement implements IReflectionPropert
 
 
 	/**
-	 * @return ReflectionClass|null
+	 * @return ReflectionClass|NULL
 	 */
 	public function getDeclaringTrait()
 	{
@@ -179,7 +174,7 @@ class ReflectionProperty extends ReflectionElement implements IReflectionPropert
 
 
 	/**
-	 * @return string|null
+	 * @return string|NULL
 	 */
 	public function getDeclaringTraitName()
 	{
@@ -197,37 +192,6 @@ class ReflectionProperty extends ReflectionElement implements IReflectionPropert
 		}
 
 		return TRUE;
-	}
-
-
-	public function getValue($object)
-	{
-		throw new \Exception('Not implemented nor required');
-	}
-
-
-	public function setAccessible($accessible)
-	{
-		throw new \Exception('Not implemented nor required');
-	}
-
-
-	public function isAccessible()
-	{
-		throw new \Exception('Not implemented nor required');
-	}
-
-
-	public function setValue($object, $value)
-	{
-		throw new \Exception('Not implemented nor required');
-	}
-
-
-	public function __toString()
-	{
-		throw new \Exception('Not implemented nor required');
-		return '';
 	}
 
 }

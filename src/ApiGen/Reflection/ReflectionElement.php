@@ -10,7 +10,6 @@
 namespace ApiGen\Reflection;
 
 use TokenReflection\Exception\BaseException;
-use TokenReflection\IReflection;
 use TokenReflection\Php\ReflectionConstant;
 use TokenReflection\ReflectionAnnotation;
 use TokenReflection\ReflectionClass;
@@ -18,15 +17,13 @@ use TokenReflection\ReflectionFunction;
 
 
 /**
- * Element reflection envelope.
- *
  * @method BaseException[] getReasons()
  */
-abstract class ReflectionElement extends ReflectionBase implements IReflection
+abstract class ReflectionElement extends ReflectionBase
 {
 
 	/**
-	 * Cache for information if the element should be documented.
+	 * Should be documented.
 	 *
 	 * @var bool
 	 */
@@ -35,7 +32,7 @@ abstract class ReflectionElement extends ReflectionBase implements IReflection
 	/**
 	 * @var array
 	 */
-	protected $annotations;
+	protected $annotations = array();
 
 	/**
 	 * Reasons why this element's reflection is invalid.

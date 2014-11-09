@@ -9,18 +9,11 @@
 
 namespace ApiGen\Reflection;
 
-use TokenReflection\IReflectionMethod;
 
-
-/**
- * Method reflection envelope
- */
-class ReflectionMethod extends ReflectionFunctionBase implements IReflectionMethod
+class ReflectionMethod extends ReflectionFunctionBase
 {
 
 	/**
-	 * Returns if the method is magic.
-	 *
 	 * @return bool
 	 */
 	public function isMagic()
@@ -30,8 +23,6 @@ class ReflectionMethod extends ReflectionFunctionBase implements IReflectionMeth
 
 
 	/**
-	 * Returns the method declaring class.
-	 *
 	 * @return ReflectionClass|NULL
 	 */
 	public function getDeclaringClass()
@@ -43,8 +34,6 @@ class ReflectionMethod extends ReflectionFunctionBase implements IReflectionMeth
 
 
 	/**
-	 * Returns the declaring class name.
-	 *
 	 * @return string|NULL
 	 */
 	public function getDeclaringClassName()
@@ -54,8 +43,6 @@ class ReflectionMethod extends ReflectionFunctionBase implements IReflectionMeth
 
 
 	/**
-	 * Returns method modifiers.
-	 *
 	 * @return integer
 	 */
 	public function getModifiers()
@@ -65,8 +52,6 @@ class ReflectionMethod extends ReflectionFunctionBase implements IReflectionMeth
 
 
 	/**
-	 * Returns if the method is abstract.
-	 *
 	 * @return bool
 	 */
 	public function isAbstract()
@@ -76,8 +61,6 @@ class ReflectionMethod extends ReflectionFunctionBase implements IReflectionMeth
 
 
 	/**
-	 * Returns if the method is final.
-	 *
 	 * @return bool
 	 */
 	public function isFinal()
@@ -87,8 +70,6 @@ class ReflectionMethod extends ReflectionFunctionBase implements IReflectionMeth
 
 
 	/**
-	 * Returns if the method is private.
-	 *
 	 * @return bool
 	 */
 	public function isPrivate()
@@ -98,8 +79,6 @@ class ReflectionMethod extends ReflectionFunctionBase implements IReflectionMeth
 
 
 	/**
-	 * Returns if the method is protected.
-	 *
 	 * @return bool
 	 */
 	public function isProtected()
@@ -109,8 +88,6 @@ class ReflectionMethod extends ReflectionFunctionBase implements IReflectionMeth
 
 
 	/**
-	 * Returns if the method is public.
-	 *
 	 * @return bool
 	 */
 	public function isPublic()
@@ -120,8 +97,6 @@ class ReflectionMethod extends ReflectionFunctionBase implements IReflectionMeth
 
 
 	/**
-	 * Returns if the method is static.
-	 *
 	 * @return bool
 	 */
 	public function isStatic()
@@ -131,8 +106,6 @@ class ReflectionMethod extends ReflectionFunctionBase implements IReflectionMeth
 
 
 	/**
-	 * Returns if the method is a constructor.
-	 *
 	 * @return bool
 	 */
 	public function isConstructor()
@@ -142,8 +115,6 @@ class ReflectionMethod extends ReflectionFunctionBase implements IReflectionMeth
 
 
 	/**
-	 * Returns if the method is a destructor.
-	 *
 	 * @return bool
 	 */
 	public function isDestructor()
@@ -153,8 +124,6 @@ class ReflectionMethod extends ReflectionFunctionBase implements IReflectionMeth
 
 
 	/**
-	 * Returns the method declaring trait.
-	 *
 	 * @return ReflectionClass|NULL
 	 */
 	public function getDeclaringTrait()
@@ -166,8 +135,6 @@ class ReflectionMethod extends ReflectionFunctionBase implements IReflectionMeth
 
 
 	/**
-	 * Returns the declaring trait name.
-	 *
 	 * @return string|NULL
 	 */
 	public function getDeclaringTraitName()
@@ -177,8 +144,6 @@ class ReflectionMethod extends ReflectionFunctionBase implements IReflectionMeth
 
 
 	/**
-	 * Returns the overridden method.
-	 *
 	 * @return ReflectionMethod|NULL
 	 */
 	public function getImplementedMethod()
@@ -194,8 +159,6 @@ class ReflectionMethod extends ReflectionFunctionBase implements IReflectionMeth
 
 
 	/**
-	 * Returns the overridden method.
-	 *
 	 * @return ReflectionMethod|NULL
 	 */
 	public function getOverriddenMethod()
@@ -221,9 +184,7 @@ class ReflectionMethod extends ReflectionFunctionBase implements IReflectionMeth
 
 
 	/**
-	 * Returns the original name when importing from a trait.
-	 *
-	 * @return string|null
+	 * @return string|NULL
 	 */
 	public function getOriginalName()
 	{
@@ -232,9 +193,7 @@ class ReflectionMethod extends ReflectionFunctionBase implements IReflectionMeth
 
 
 	/**
-	 * Returns the original modifiers value when importing from a trait.
-	 *
-	 * @return integer|null
+	 * @return int|NULL
 	 */
 	public function getOriginalModifiers()
 	{
@@ -243,8 +202,6 @@ class ReflectionMethod extends ReflectionFunctionBase implements IReflectionMeth
 
 
 	/**
-	 * Returns the original method when importing from a trait.
-	 *
 	 * @return ReflectionMethod|NULL
 	 */
 	public function getOriginal()
@@ -269,54 +226,6 @@ class ReflectionMethod extends ReflectionFunctionBase implements IReflectionMeth
 		}
 
 		return TRUE;
-	}
-
-
-	public function isClosure()
-	{
-		throw new \Exception('Not implemented nor required');
-	}
-
-
-	public function getStaticVariables()
-	{
-		throw new \Exception('Not implemented nor required');
-	}
-
-
-	public function is($filter = NULL)
-	{
-		throw new \Exception('Not implemented nor required');
-	}
-
-
-	public function getPrototype()
-	{
-		throw new \Exception('Not implemented nor required');
-	}
-
-
-	public function invoke($object, $args)
-	{
-		throw new \Exception('Not implemented nor required');
-	}
-
-
-	public function invokeArgs($object, array $args)
-	{
-		throw new \Exception('Not implemented nor required');
-	}
-
-
-	public function setAccessible($accessible)
-	{
-		throw new \Exception('Not implemented nor required');
-	}
-
-
-	public function getClosure($object)
-	{
-		throw new \Exception('Not implemented nor required');
 	}
 
 }

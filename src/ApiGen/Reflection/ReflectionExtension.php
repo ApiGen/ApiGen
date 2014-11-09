@@ -11,14 +11,10 @@ namespace ApiGen\Reflection;
 
 use TokenReflection\IReflectionClass;
 use TokenReflection\IReflectionConstant;
-use TokenReflection\IReflectionExtension;
 use TokenReflection\IReflectionFunction;
 
 
-/**
- * Extension reflection envelope
- */
-class ReflectionExtension extends ReflectionBase implements IReflectionExtension
+class ReflectionExtension extends ReflectionBase
 {
 
 	/**
@@ -54,8 +50,6 @@ class ReflectionExtension extends ReflectionBase implements IReflectionExtension
 
 
 	/**
-	 * Returns a constant reflection.
-	 *
 	 * @param string $name
 	 * @return ReflectionConstant|NULL
 	 */
@@ -66,8 +60,6 @@ class ReflectionExtension extends ReflectionBase implements IReflectionExtension
 
 
 	/**
-	 * Returns a constant reflection.
-	 *
 	 * @param string $name
 	 * @return ReflectionConstant|NULL
 	 */
@@ -91,8 +83,6 @@ class ReflectionExtension extends ReflectionBase implements IReflectionExtension
 
 
 	/**
-	 * Returns reflections of defined constants.
-	 *
 	 * @return array
 	 */
 	public function getConstantReflections()
@@ -104,10 +94,8 @@ class ReflectionExtension extends ReflectionBase implements IReflectionExtension
 
 
 	/**
-	 * Returns a function reflection.
-	 *
-	 * @param string $name Function name
-	 * @return ReflectionFunction
+	 * @param string $name
+	 * @return ReflectionFunction|NULL
 	 */
 	public function getFunction($name)
 	{
@@ -137,26 +125,6 @@ class ReflectionExtension extends ReflectionBase implements IReflectionExtension
 	public function getFunctionNames()
 	{
 		return $this->reflection->getFunctionNames();
-	}
-
-
-	/**
-	 * Returns class names defined by this extension.
-	 *
-	 * @return array
-	 */
-	public function getClassNames()
-	{
-		// TODO: Implement getClassNames() method.
-	}
-
-
-	/**
-	 * @return string
-	 */
-	public function __toString()
-	{
-		return (string) $this->getName();
 	}
 
 }

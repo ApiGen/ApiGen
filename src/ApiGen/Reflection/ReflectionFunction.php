@@ -13,10 +13,7 @@ use ApiGen\FileSystem\FileSystem;
 use TokenReflection\IReflectionFunction;
 
 
-/**
- * Function reflection envelope
- */
-class ReflectionFunction extends ReflectionFunctionBase implements IReflectionFunction
+class ReflectionFunction extends ReflectionFunctionBase
 {
 
 	/**
@@ -59,36 +56,6 @@ class ReflectionFunction extends ReflectionFunctionBase implements IReflectionFu
 		}
 
 		return $this->isDocumented;
-	}
-
-
-	public function isDisabled()
-	{
-		throw new \Exception('Not implemented nor required');
-	}
-
-
-	public function invokeArgs(array $args = array())
-	{
-		throw new \Exception('Not implemented nor required');
-	}
-
-
-	public function getClosure()
-	{
-		throw new \Exception('Not implemented nor required');
-	}
-
-
-	public function isClosure()
-	{
-		throw new \Exception('Not implemented nor required');
-	}
-
-
-	public function getStaticVariables()
-	{
-		throw new \Exception('Not implemented nor required');
 	}
 
 }
