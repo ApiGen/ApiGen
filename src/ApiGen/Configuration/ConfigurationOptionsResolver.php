@@ -44,7 +44,7 @@ class ConfigurationOptionsResolver extends Nette\Object
 		'googleCseId' => '',
 		'googleAnalytics' => '',
 		'groups' => Configuration::GROUPS_AUTO,
-		'charset' => array(CharsetConvertor::AUTO),
+		'charset' => array(),
 		'main' => '',
 		'internal' => FALSE,
 		'php' => TRUE,
@@ -237,7 +237,10 @@ class ConfigurationOptionsResolver extends Nette\Object
 				return FileSystem::getAbsolutePath($value);
 			},
 			'charset' => function (Options $options, $value) {
-				return array_map('strtoupper', $value);
+				if ($value === array('auto')) {
+					return array();
+				}
+				return $value;
 			},
 			'baseUrl' => function (Options $options, $value) {
 				return rtrim($value, '/');
