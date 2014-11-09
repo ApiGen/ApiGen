@@ -1,5 +1,6 @@
 services:
 	- ApiGen\Charset\CharsetConvertor
+	- ApiGen\Charset\Configuration\CharsetOptionsResolver
 
 	# configuration
 	- ApiGen\Configuration\Configuration
@@ -22,9 +23,10 @@ services:
 	- ApiGen\Command\SelfUpdateCommand
 
 	# events
-	- ApiGen\Events\ProgressBarIncrement
 	- ApiGen\Events\LoadParsedElements
 	- ApiGen\Events\LoadRelativePathResolver
+	- ApiGen\Events\OnOptionsResolve
+	- ApiGen\Events\ProgressBarIncrement
 	- ApiGen\Events\SetIoOnConsoleRun
 
 	# scanner

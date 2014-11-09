@@ -9,13 +9,12 @@
 
 namespace ApiGen\Configuration;
 
-use ApiGen\Charset\CharsetConvertor;
-use ApiGen\FileSystem\FileSystem;
 use Nette;
 
 
 /**
  * @method array getOptions()
+ * @method onOptionsResolve(object)
  */
 class Configuration extends Nette\Object
 {
@@ -23,6 +22,11 @@ class Configuration extends Nette\Object
 	const GROUPS_AUTO = 'auto';
 	const GROUPS_NAMESPACES = 'namespaces';
 	const GROUPS_PACKAGES = 'packages';
+
+	/**
+	 * @var array
+	 */
+	public $onOptionsResolve = array();
 
 	/**
 	 * @var array
@@ -47,6 +51,7 @@ class Configuration extends Nette\Object
 	public function resolveOptions(array $options)
 	{
 		$this->options = $this->configurationOptionsResolver->resolve($options);
+		$this->onOptionsResolve($this);
 		return $this->options;
 	}
 
