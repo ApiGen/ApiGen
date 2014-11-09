@@ -10,10 +10,9 @@
 namespace ApiGen\Events;
 
 use ApiGen\Generator\Resolvers\ElementResolver;
-use ApiGen\Parser\Parser;
 use ApiGen\Parser\ParserStorage;
-use Nette;
 use Kdyby\Events\Subscriber;
+use Nette;
 
 
 class LoadParsedElements extends Nette\Object implements Subscriber

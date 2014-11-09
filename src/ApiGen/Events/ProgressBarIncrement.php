@@ -10,8 +10,8 @@
 namespace ApiGen\Events;
 
 use ApiGen\Console\ProgressBar;
-use Nette;
 use Kdyby\Events\Subscriber;
+use Nette;
 
 
 class ProgressBarIncrement extends Nette\Object implements Subscriber

@@ -9,8 +9,8 @@
 
 namespace ApiGen\Reflection;
 
-use TokenReflection;
 use InvalidArgumentException;
+use TokenReflection;
 use TokenReflection\Exception\RuntimeException;
 
 

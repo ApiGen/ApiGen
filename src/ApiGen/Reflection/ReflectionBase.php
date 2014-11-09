@@ -178,11 +178,6 @@ abstract class ReflectionBase extends Nette\Object implements IReflection
 	 */
 	protected function getParsedClasses()
 	{
-		if ($this->parserStorage === NULL) {
-			dump($this);
-			dump($this->getName());
-			die;
-		}
 		return $this->parserStorage->getElementsByType(Elements::CLASSES);
 	}
 
