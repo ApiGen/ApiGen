@@ -9,8 +9,6 @@
 
 namespace ApiGen\Bridge\TokenReflectionBridge;
 
-use ApiGen\Configuration\Configuration;
-use ApiGen\Parser\ParserStorage;
 use ApiGen\Reflection\ReflectionClass;
 use ApiGen\Reflection\ReflectionConstant;
 use ApiGen\Reflection\ReflectionFunction;
