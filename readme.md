@@ -109,8 +109,7 @@ skipDocPrefix:
 
 # character set of source files; if you use only one across your files, we recommend you name it
 charset:
-	# default
-    - auto # will choose from all supported (starting with UTF-8), slow and not 100% reliable
+	# by default will choose from all supported (starting with UTF-8), slow and not 100% reliable
     # e.g.
     - UTF-8
     - Windows-1252
