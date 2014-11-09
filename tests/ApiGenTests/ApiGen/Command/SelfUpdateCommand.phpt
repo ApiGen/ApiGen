@@ -21,7 +21,7 @@ class SelfUpdateCommandTest extends TestCase
 
 	public function testCommand()
 	{
-		$this->prepareConfig(array('public'));
+		$this->prepareConfig();
 
 		$compiler = new PharCompiler(__DIR__ . '/../../../..');
 
@@ -29,13 +29,19 @@ class SelfUpdateCommandTest extends TestCase
 		$compiler->compile($apigenPharFile);
 		Assert::true(file_exists($apigenPharFile));
 
+		$generatedFileHash = sha1_file($apigenPharFile);
 		passthru($apigenPharFile . ' self-update', $output);
 		Assert::same(0, $output);
 
+		$downloadedFileHash = sha1_file($apigenPharFile);
+
 		$manifest = file_get_contents(SelfUpdateCommand::MANIFEST_URL);
 		$item = json_decode($manifest);
-		$downloadedFileHash = sha1_file($apigenPharFile);
-		Assert::same($item->sha1, $downloadedFileHash);
+
+		$isLastVersion = ($item->sha1 === $generatedFileHash);
+		if ( ! $isLastVersion) {
+			Assert::same($generatedFileHash, $downloadedFileHash);
+		}
 	}
 
 

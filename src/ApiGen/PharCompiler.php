@@ -9,7 +9,6 @@
 
 namespace ApiGen;
 
-use ApiGen\Command\SelfUpdateCommand;
 use Nette;
 use Nette\Utils\Finder;
 use Phar;
@@ -115,7 +114,7 @@ __HALT_COMPILER();
 			'jakub-onderka/php-parallel-lint',
 			'nette/*/Tests',
 			'nette/tester',
-			'mikulas',
+			'mikulas/code-sniffs',
 			'squizlabs',
 			'symfony/*/*/Tests',
 			'zenify/coding-standard'
