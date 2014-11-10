@@ -21,7 +21,7 @@ Change to your `PATH` directory  and run the install snippet to download apigen.
 
 ```sh
 C:\Users\username>cd C:\bin
-C:\bin>php -r "readfile('https://apigen.org/installer');" | php
+C:\bin>php -r "readfile('http://apigen.org/installer');" | php
 ```
 
 Create a new `apigen.bat` file alongside `apigen.phar`:
