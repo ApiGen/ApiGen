@@ -34,6 +34,15 @@ class ReflectionCrateBridge extends Nette\Object
 
 
 	/**
+	 * @return ReflectionClass
+	 */
+	public function crossClassReflection(IReflectionClass $classReflection)
+	{
+		return $this->apiGenReflectionFactory->createFromReflection($classReflection);
+	}
+
+
+	/**
 	 * @param IReflectionClass[] $tokenReflectionClasses
 	 * @return ReflectionClass[]
 	 */

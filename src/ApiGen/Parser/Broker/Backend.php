@@ -65,6 +65,20 @@ class Backend extends Broker\Backend\Memory
 
 
 	/**
+	 * @param string $className
+	 * @return ReflectionClass
+	 */
+	public function getClass($className)
+	{
+		$reflectionClass = parent::getClass($className);
+		if ( ! $reflectionClass instanceof ReflectionClass) {
+			$reflectionClass = $this->reflectionCrateBridge->crossClassReflection($reflectionClass);
+		}
+		return $reflectionClass;
+	}
+
+
+	/**
 	 * @return ReflectionConstant[]
 	 */
 	public function getConstants()

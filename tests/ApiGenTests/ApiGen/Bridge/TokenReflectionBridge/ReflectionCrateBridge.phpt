@@ -8,6 +8,10 @@ namespace ApiGenTests\ApiGen\Bridge\TokenReflectionBridge;
 
 use ApiGen\Bridge\TokenReflectionBridge\ReflectionCrateBridge;
 use ApiGen\Configuration\Configuration;
+use ApiGen\Reflection\ReflectionClass;
+use ApiGen\Reflection\ReflectionConstant;
+use ApiGen\Reflection\ReflectionFunction;
+use ApiGen\Reflection\ReflectionMethod;
 use Tester\Assert;
 use Tester\TestCase;
 use TokenReflection\Broker;
@@ -44,45 +48,90 @@ class ReflectionCrateBridgeTest extends TestCase
 			'source' => array(__DIR__ . DS . 'source'),
 			'destination' => API_DIR
 		));
-	}
 
-
-	public function testInstance()
-	{
-		Assert::type(
-			self::CRATE_CLASS,
-			$this->reflectionCrateBridge
-		);
-
-		Assert::type(
-			'TokenReflection\Broker',
-			$this->broker
-		);
-	}
-
-
-	public function testClassReflectionCrossing()
-	{
 		$filePath = __DIR__ . DS . 'source' . DS . 'ClassToBeParsed.php';
 		$this->broker->processString(file_get_contents($filePath), $filePath);
-		$classes = $this->broker->getClasses(Broker\Backend::TOKENIZED_CLASSES);
-		Assert::count(1, $classes);
+	}
 
-		foreach ($classes as $class) {
-			Assert::type('ApiGen\Reflection\ReflectionClass', $class);
+
+	public function testInstances()
+	{
+		Assert::type(self::CRATE_CLASS, $this->reflectionCrateBridge);
+		Assert::type('TokenReflection\Broker', $this->broker);
+	}
+
+
+	public function testSingleClassReflectionCrossing()
+	{
+		$class = $this->broker->getClass('ClassToBeParsed');
+		Assert::type(
+			'ApiGen\Reflection\ReflectionClass',
+			$class
+		);
+	}
+
+
+	public function testMultiClassReflectionCrossing()
+	{
+		$reflectionCount = 0;
+		foreach ($this->broker->getClasses() as $class) {
+			if ($class instanceof ReflectionClass) {
+				$reflectionCount++;
+			}
 		}
+		Assert::same(1, $reflectionCount);
 	}
 
 
-	public function testFunctionReflectionCrossing()
+	public function testSingleConstantReflectionCrossing()
 	{
-		// todo
+		/** @var ReflectionClass $class */
+		$class = $this->broker->getClass('ClassToBeParsed');
+		$constant = $class->getConstant('LOW_PRIORITY');
+		Assert::type(
+			'ApiGen\Reflection\ReflectionConstant',
+			$constant
+		);
 	}
 
 
-	public function testConstantReflectionCrossing()
+	public function testMultiConstantReflectionCrossing()
 	{
-		// todo
+		/** @var ReflectionClass $class */
+		$class = $this->broker->getClass('ClassToBeParsed');
+		$reflectionCount = 0;
+		foreach ($class->getConstants() as $constant) {
+			if ($constant instanceof ReflectionConstant) {
+				$reflectionCount++;
+			}
+		}
+		Assert::same(1, $reflectionCount);
+	}
+
+
+	public function testSingleFunctionReflectionCrossing()
+	{
+		/** @var ReflectionClass $class */
+		$class = $this->broker->getClass('ClassToBeParsed');
+		$method = $class->getMethod('goOut');
+		Assert::type(
+			'ApiGen\Reflection\ReflectionMethod',
+			$method
+		);
+	}
+
+
+	public function testMultiFunctionReflectionCrossing()
+	{
+		/** @var ReflectionClass $class */
+		$class = $this->broker->getClass('ClassToBeParsed');
+		$reflectionCount = 0;
+		foreach ($class->getMethods() as $method) {
+			if ($method instanceof ReflectionMethod) {
+				$reflectionCount++;
+			}
+		}
+		Assert::same(1, $reflectionCount);
 	}
 
 }
