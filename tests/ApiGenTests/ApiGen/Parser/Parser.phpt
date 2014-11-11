@@ -52,7 +52,7 @@ class ParserTest extends TestCase
 	public function testParseClasses()
 	{
 		$files = $this->getFilesFromDir(PROJECT_DIR);
-		Assert::count(13, $files);
+		Assert::count(14, $files);
 
 		$this->parser->parse($files);
 		$classes = $this->parser->getClasses();
