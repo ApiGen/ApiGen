@@ -10,6 +10,7 @@
 namespace ApiGen\Configuration;
 
 use Nette;
+use ApiGen\Configuration\ConfigurationOptions as CO;
 
 
 /**
@@ -90,11 +91,11 @@ class Configuration extends Nette\Object
 	 */
 	public function areNamespacesEnabled($namespaceCount, $packageCount)
 	{
-		if ($this->getOption('groups') === self::GROUPS_NAMESPACES) {
+		if ($this->getOption(CO::GROUPS) === self::GROUPS_NAMESPACES) {
 			return TRUE;
 		}
 
-		if ($this->getOption('groups') === self::GROUPS_AUTO && ($namespaceCount > 0 || $packageCount === 0)) {
+		if ($this->getOption(CO::GROUPS) === self::GROUPS_AUTO && ($namespaceCount > 0 || $packageCount === 0)) {
 			return TRUE;
 		}
 
@@ -108,10 +109,10 @@ class Configuration extends Nette\Object
 	 */
 	public function arePackagesEnabled($areNamespacesEnabled)
 	{
-		if ($this->getOption('groups') === self::GROUPS_PACKAGES) {
+		if ($this->getOption(CO::GROUPS) === self::GROUPS_PACKAGES) {
 			return TRUE;
 
-		} elseif ($this->getOption('groups') === self::GROUPS_AUTO && ($areNamespacesEnabled === FALSE)) {
+		} elseif ($this->getOption(CO::GROUPS) === self::GROUPS_AUTO && ($areNamespacesEnabled === FALSE)) {
 			return TRUE;
 		}
 
