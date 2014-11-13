@@ -48,8 +48,8 @@ class NeonFile extends Nette\Object
 	 */
 	public function validate()
 	{
-		if ( ! file_exists($this->path) && ! file_put_contents($this->path, "{\n}\n")) {
-			throw new \Exception($this->path . ' could not be created');
+		if ( ! file_exists($this->path)) {
+			throw new \Exception($this->path . ' could not be found');
 		}
 
 		if ( ! is_readable($this->path)) {
