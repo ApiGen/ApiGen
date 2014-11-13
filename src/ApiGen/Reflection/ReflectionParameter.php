@@ -9,6 +9,8 @@
 
 namespace ApiGen\Reflection;
 
+use ApiGen\Parser\ParserResult;
+use ArrayObject;
 
 /**
  * Parameter reflection envelope.
@@ -198,7 +200,8 @@ class ReflectionParameter extends ReflectionBase
 			return self::$parsedClasses[$className]->getMethod($functionName);
 
 		} else {
-			return self::$parsedFunctions[$functionName];
+			$parsedFunctions = $this->getParsedFunctions();
+			return $parsedFunctions[$functionName];
 		}
 	}
 
@@ -247,4 +250,17 @@ class ReflectionParameter extends ReflectionBase
 		return FALSE;
 	}
 
+	/**
+	 * Returns the parsed funnctions.
+	 *
+	 * @return ArrayObject
+	 */
+	private function getParsedFunctions()
+	{
+		if ( self::$parsedFunctions === NULL ) {
+			self::$parsedFunctions = ParserResult::$functions;
+		}
+
+		return self::$parsedFunctions;
+	}
 }
