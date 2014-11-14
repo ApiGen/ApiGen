@@ -96,8 +96,8 @@ class Application extends Kdyby\Console\Application
 			new InputArgument('command', InputArgument::REQUIRED, 'The command to execute'),
 			new InputOption('help', 'h', InputOption::VALUE_NONE, 'Display this help message.'),
 			new InputOption('quiet', 'q', InputOption::VALUE_NONE, 'Do not output any message.'),
-			new InputOption('version', 'V', InputOption::VALUE_NONE, 'Display this application version.'),
-			new InputOption('working-dir', 'wd', InputOption::VALUE_REQUIRED,
+			new InputOption('version', NULL, InputOption::VALUE_NONE, 'Display this application version.'),
+			new InputOption('working-dir', NULL, InputOption::VALUE_REQUIRED,
 				'If specified, use the given directory as working directory.'
 			)
 		));
@@ -110,7 +110,7 @@ class Application extends Kdyby\Console\Application
 	 */
 	private function getNewWorkingDir(InputInterface $input)
 	{
-		$workingDir = $input->getParameterOption(array('--working-dir', '-d'));
+		$workingDir = $input->getParameterOption(array('working-dir'));
 		if ($workingDir !== FALSE && ! is_dir($workingDir)) {
 			throw new \RuntimeException('Invalid working directory specified.');
 		}
