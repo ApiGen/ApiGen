@@ -11,6 +11,7 @@ namespace ApiGen\Command;
 
 use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions as CO;
+use ApiGen\Configuration\ConfigurationOptionsResolver as COR;
 use ApiGen\FileSystem\Wiper;
 use ApiGen\Generator\Generator;
 use ApiGen\Neon\NeonFile;
@@ -81,23 +82,26 @@ class GenerateCommand extends Command
 				new InputOption(CO::SOURCE, 's', InputArgument::IS_ARRAY | InputArgument::OPTIONAL,
 					'Dir(s) or file(s) documentation is generated for (separate multiple items with a space).', NULL),
 				new InputOption(CO::AUTOCOMPLETE, NULL, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_OPTIONAL,
-					'Element supported by autocomplete in search input.'),
+					'Element supported by autocomplete in search input.',
+					array(COR::AC_CLASSES, COR::AC_CONSTANTS, COR::AC_FUNCTIONS)),
+				new InputOption(CO::ACCESS_LEVELS, NULL, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_OPTIONAL,
+					'Access levels of included method and properties', array(COR::AL_PUBLIC, COR::AL_PROTECTED)),
 				new InputOption(CO::BASE_URL, NULL, InputOption::VALUE_OPTIONAL,
 					'Base url used for sitemap (useful for public doc.'),
 				new InputOption(CO::CONFIG, NULL, InputOption::VALUE_OPTIONAL,
-					'Custom path to apigen.neon config file.'),
+					'Custom path to apigen.neon config file.', getcwd() . DS . 'apigen.neon'),
 				new InputOption(CO::GOOGLE_CSE_ID, NULL, InputOption::VALUE_OPTIONAL,
 					'Custom google search engine id (for search box).'),
 				new InputOption(CO::GOOGLE_ANALYTICS, NULL, InputOption::VALUE_OPTIONAL,
 					'Google Analytics tracking code..'),
-				new InputOption(CO::DEBUG, NULL, InputOption::VALUE_NONE,
-					'Turn on debug mode.'),
+				new InputOption(CO::DEBUG, NULL, InputOption::VALUE_OPTIONAL,
+					'Turn on debug mode.', FALSE),
 				new InputOption(CO::DEPRECATED, NULL, InputOption::VALUE_OPTIONAL,
 					'Generate documentation for elements marked as @deprecated.', FALSE),
 				new InputOption(CO::DOWNLOAD, NULL, InputOption::VALUE_OPTIONAL,
 					'Add link to ZIP archive of documentation.', FALSE),
 				new InputOption(CO::EXTENSIONS, NULL, InputOption::VALUE_IS_ARRAY | InputArgument::OPTIONAL,
-					'Scanned file extensions.'),
+					'Scanned file extensions.', array('php')),
 				new InputOption(CO::EXCLUDE, NULL, InputOption::VALUE_IS_ARRAY | InputArgument::OPTIONAL,
 					'Directories and files matching this mask will not be parsed.'),
 				new InputOption(CO::GROUPS, NULL, InputOption::VALUE_OPTIONAL,
@@ -111,19 +115,19 @@ class GenerateCommand extends Command
 				new InputOption(CO::PHP, NULL, InputOption::VALUE_OPTIONAL,
 					'Generate documentation for PHP internal classes.', TRUE),
 				new InputOption(CO::SKIP_DOC_PATH, NULL, InputOption::VALUE_IS_ARRAY | InputArgument::OPTIONAL,
-					'Files matching this mask will be included in class tree,
-					but will not create a link to their documentation.'),
+					'Files matching this mask will be included in class tree,'
+					. ' but will not create a link to their documentation.'),
 				new InputOption(CO::SKIP_DOC_PREFIX, NULL, InputOption::VALUE_IS_ARRAY | InputArgument::OPTIONAL,
-					'Files starting this name will be included in class tree,
-					but will not create a link to their documentation.'),
+					'Files starting this name will be included in class tree,'
+					. 'but will not create a link to their documentation.'),
 				new InputOption(CO::TEMPLATE_THEME, NULL, InputOption::VALUE_OPTIONAL,
 					'ApiGen template theme name.', 'default'),
 				new InputOption(CO::TEMPLATE_CONFIG, NULL, InputOption::VALUE_OPTIONAL,
 					'Your own template config, has higher priority ' . CO::TEMPLATE_THEME . '.'),
 				new InputOption(CO::TITLE, NULL, InputOption::VALUE_OPTIONAL,
 					'Title of generated documentation.'),
-				new InputOption(CO::TODO, NULL, NULL,
-					'Generate documentation for elements marked as @todo.'),
+				new InputOption(CO::TODO, NULL, InputOption::VALUE_OPTIONAL,
+					'Generate documentation for elements marked as @todo.', FALSE),
 				new InputOption(CO::TREE, NULL, InputOption::VALUE_OPTIONAL,
 					'Generate tree view of classes, interfaces, traits and exceptions.', TRUE)
 			));
@@ -221,24 +225,10 @@ class GenerateCommand extends Command
 	 */
 	private function getConfigFileOptions(InputInterface $input)
 	{
-		$file = $this->getConfigFilePath($input);
+		$file = $input->getOption(CO::CONFIG);
 		$neonFile = new NeonFile($file);
 		$neonFile->validate();
 		return $neonFile->read();
-	}
-
-
-	/**
-	 * @return string
-	 */
-	private function getConfigFilePath(InputInterface $input)
-	{
-		if ($path = $input->getOption(CO::CONFIG)) {
-			return $path;
-
-		} else {
-			return getcwd() . DS . 'apigen.neon';
-		}
 	}
 
 

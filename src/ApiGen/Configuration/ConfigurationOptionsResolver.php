@@ -22,6 +22,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class ConfigurationOptionsResolver extends Nette\Object
 {
 
+	const AC_CLASSES = 'classes';
+	const AC_CONSTANTS = 'constants';
+	const AC_FUNCTIONS = 'functions';
 	const AL_PROTECTED = 'protected';
 	const AL_PRIVATE = 'private';
 	const AL_PUBLIC = 'public';
@@ -32,8 +35,8 @@ class ConfigurationOptionsResolver extends Nette\Object
 	 * @var array
 	 */
 	private $defaults = array(
-		CO::AUTOCOMPLETE => array('classes', 'constants', 'functions'),
-		CO::ACCESS_LEVELS => array(self::AL_PUBLIC, self::AL_PROTECTED),
+		CO::AUTOCOMPLETE => array(),
+		CO::ACCESS_LEVELS => array(),
 		CO::BASE_URL => '',
 		CO::CONFIG => '',
 		CO::DEBUG => FALSE,
@@ -41,10 +44,10 @@ class ConfigurationOptionsResolver extends Nette\Object
 		CO::DESTINATION => NULL,
 		CO::DOWNLOAD => FALSE,
 		CO::EXCLUDE => array(),
-		CO::EXTENSIONS => array('php'),
+		CO::EXTENSIONS => array(),
 		CO::GOOGLE_CSE_ID => '',
 		CO::GOOGLE_ANALYTICS => '',
-		CO::GROUPS => Configuration::GROUPS_AUTO,
+		CO::GROUPS => '',
 		CO::CHARSET => array(),
 		CO::MAIN => '',
 		CO::INTERNAL => FALSE,
@@ -55,7 +58,7 @@ class ConfigurationOptionsResolver extends Nette\Object
 		CO::SOURCE_CODE => TRUE,
 		CO::TEMPLATE => NULL,
 		CO::TEMPLATE_CONFIG => NULL,
-		CO::TEMPLATE_THEME => self::TEMPLATE_THEME_DEFAULT,
+		CO::TEMPLATE_THEME => '',
 		CO::TITLE => '',
 		CO::TODO => FALSE,
 		CO::TREE => TRUE,
