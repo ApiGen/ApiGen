@@ -12,5 +12,5 @@ REM
 IF EXIST "@php_bin@" (
 	"@php_bin@" "@bin_dir@\apigen" %*
 ) ELSE (
-	"php.exe" "%~dp0apigen.php" %*
+	"php.exe" "%~dp0bin\apigen" %*
 )
