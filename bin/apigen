@@ -58,7 +58,7 @@ if (false === strpos('@php_dir@', '@php_dir')) {
 
 	spl_autoload_register(function($class) {
 		$class = trim($class, '\\');
-		require sprintf('%s.php', str_replace('\\', DIRECTORY_SEPARATOR, $class));
+		@include sprintf('%s.php', str_replace('\\', DIRECTORY_SEPARATOR, $class));
 	});
 }
 
