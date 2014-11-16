@@ -41,7 +41,7 @@ class MarkdownMarkup implements Markup
 	public function line($text)
 	{
 		$text = $this->block($text);
-		return preg_replace('/<p[^>]*>(.*)<\/p[^>]*>/i', '$1', $text);
+		return preg_replace('/^<p[^>]*>(.*)<\/p[^>]*>$/i', '$1', $text);
 	}
 
 
