@@ -28,7 +28,6 @@ interface Generator
 	 * @param array $sources List of sources to be scanned (folder or files).
 	 * @param array $exclude Excluded files.
 	 * @param array $extensions File extensions to be scanned (e.g. php, phpt).
-	 * @return array
 	 */
 	public function scan($sources, $exclude = array(), $extensions = array());
 

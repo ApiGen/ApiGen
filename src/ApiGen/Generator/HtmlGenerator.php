@@ -215,7 +215,6 @@ class HtmlGenerator extends Nette\Object implements Generator
 	 * @param array $sources
 	 * @param array $exclude
 	 * @param array $extensions
-	 * @return array|void
 	 */
 	public function scan($sources, $exclude = array(), $extensions = array())
 	{
