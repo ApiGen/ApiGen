@@ -33,15 +33,26 @@ class SelfUpdateCommandTest extends TestCase
 		passthru($apigenPharFile . ' self-update', $output);
 		Assert::same(0, $output);
 
+		$lastReleasedVersionHash = $this->getLastReleasedVersionHash();
 		$downloadedFileHash = sha1_file($apigenPharFile);
 
+		if ($lastReleasedVersionHash === $generatedFileHash) {
+			Assert::same($lastReleasedVersionHash, $generatedFileHash);
+
+		} else {
+			Assert::same($lastReleasedVersionHash, $downloadedFileHash);
+		}
+	}
+
+
+	/**
+	 * @return string
+	 */
+	private function getLastReleasedVersionHash()
+	{
 		$manifest = file_get_contents(SelfUpdateCommand::MANIFEST_URL);
 		$item = json_decode($manifest);
-
-		$isLastVersion = ($item->sha1 === $generatedFileHash);
-		if ( ! $isLastVersion) {
-			Assert::same($generatedFileHash, $downloadedFileHash);
-		}
+		return $item->sha1;
 	}
 
 
