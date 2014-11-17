@@ -14,59 +14,60 @@ use InvalidArgumentException;
 use ReflectionMethod as InternalReflectionMethod;
 use ReflectionProperty as InternalReflectionProperty;
 use TokenReflection;
-use TokenReflection\IReflectionClass;
 
 
-/**
- * Alters TokenReflection\IReflectionClass functionality for ApiGen.
- */
 class ReflectionClass extends ReflectionElement
 {
 
 	/**
 	 * @var array
 	 */
-	private $parentClasses;
+	private $parentClasses = array();
 
 	/**
 	 * @var array
 	 */
-	private $ownMethods;
+	private $ownMethods = array();
 
 	/**
 	 * @var array
 	 */
-	private $ownMagicMethods;
+	private $ownMagicMethods = array();
 
 	/**
 	 * @var array
 	 */
-	private $ownProperties;
+	private $ownProperties = array();
 
 	/**
 	 * @var array
 	 */
-	private $ownMagicProperties;
+	private $ownMagicProperties = array();
 
 	/**
 	 * @var array
 	 */
-	private $ownConstants;
+	private $ownConstants = array();
 
 	/**
 	 * @var array
 	 */
-	private $methods;
+	private $methods = array();
 
 	/**
 	 * @var array
 	 */
-	private $properties;
+	private $properties = array();
 
 	/**
 	 * @var array
 	 */
-	private $constants;
+	private $constants = array();
+
+	/**
+	 * @var array
+	 */
+	private $interfaces = array();
 
 
 	/**
@@ -709,13 +710,7 @@ class ReflectionClass extends ReflectionElement
 	 */
 	public function getParentClasses()
 	{
-		if ($this->parentClasses === NULL) {
-			$classes = $this->getParsedClasses();
-			$this->parentClasses = array_map(function (IReflectionClass $class) use ($classes) {
-				return $classes[$class->getName()];
-			}, $this->reflection->getParentClasses());
-		}
-		return $this->parentClasses;
+		return $this->reflection->getParentClasses();
 	}
 
 
@@ -743,10 +738,13 @@ class ReflectionClass extends ReflectionElement
 	 */
 	public function getInterfaces()
 	{
-		$classes = $this->getParsedClasses();
-		return array_map(function (IReflectionClass $class) use ($classes) {
-			return $classes[$class->getName()];
-		}, $this->reflection->getInterfaces());
+		if ( ! $this->interfaces) {
+			$classes = $this->getParsedClasses();
+			$this->interfaces = array_map(function (ReflectionClass $class) use ($classes) {
+				return $classes[$class->getName()];
+			}, $this->reflection->getInterfaces());
+		}
+		return $this->interfaces;
 	}
 
 
@@ -767,7 +765,7 @@ class ReflectionClass extends ReflectionElement
 	public function getOwnInterfaces()
 	{
 		$classes = $this->getParsedClasses();
-		return array_map(function (IReflectionClass $class) use ($classes) {
+		return array_map(function (ReflectionClass $class) use ($classes) {
 			return $classes[$class->getName()];
 		}, $this->reflection->getOwnInterfaces());
 	}
@@ -792,7 +790,7 @@ class ReflectionClass extends ReflectionElement
 	public function getTraits()
 	{
 		$classes = $this->getParsedClasses();
-		return array_map(function (IReflectionClass $class) use ($classes) {
+		return array_map(function (ReflectionClass $class) use ($classes) {
 			if ( ! isset($classes[$class->getName()])) {
 				return $class->getName();
 
@@ -840,7 +838,7 @@ class ReflectionClass extends ReflectionElement
 	public function getOwnTraits()
 	{
 		$classes = $this->getParsedClasses();
-		return array_map(function (IReflectionClass $class) use ($classes) {
+		return array_map(function (ReflectionClass $class) use ($classes) {
 			if ( ! isset($classes[$class->getName()])) {
 				return $class->getName();
 
@@ -1395,8 +1393,16 @@ class ReflectionClass extends ReflectionElement
 		if ($this->reflection instanceof TokenReflection\Invalid\ReflectionClass) {
 			return FALSE;
 		}
-
 		return TRUE;
+	}
+
+
+	/**
+	 * @return bool
+	 */
+	public function isComplete()
+	{
+		return $this->reflection->isComplete();
 	}
 
 
