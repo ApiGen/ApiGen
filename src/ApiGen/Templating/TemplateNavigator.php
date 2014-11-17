@@ -143,10 +143,9 @@ class TemplateNavigator extends Nette\Object
 	public function copyResourcesToDestination()
 	{
 		$destination = $this->configuration->getOption('destination');
-		$templateOptions = $this->configuration->getOptions();
-		foreach ($templateOptions['template']['resources'] as $resourceSource => $resourceDestination) {
-			// todo: symfony FS
+		$templateOptions = $this->configuration->getOption('template');
 
+		foreach ($templateOptions['resources'] as $resourceSource => $resourceDestination) {
 			// File
 			$resourcePath = $this->getTemplateDir() . DS . $resourceSource;
 			if (is_file($resourcePath)) {
@@ -155,8 +154,6 @@ class TemplateNavigator extends Nette\Object
 				copy($resourcePath, $path);
 				continue;
 			}
-
-			// Dir
 
 			/** @var RecursiveDirectoryIterator $iterator  */
 			$iterator = Finder::findFiles('*')->from($resourcePath)->getIterator();

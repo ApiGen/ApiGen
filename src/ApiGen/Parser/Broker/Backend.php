@@ -137,6 +137,7 @@ class Backend extends Broker\Backend\Memory
 		}
 
 		$this->allClasses = $this->reflectionCrateBridge->crossClassReflections($this->allClasses);
+
 		return $this->allClasses;
 	}
 
@@ -181,6 +182,7 @@ class Backend extends Broker\Backend\Memory
 				$parameterClass->getInterfaces(),
 				$parameterClass->getParentClasses()
 			);
+
 			foreach ($interfacesAndParentClasses as $parentClass) {
 				if ( ! isset($this->allClasses[self::INTERNAL_CLASSES][$parentName = $parentClass->getName()])) {
 					$this->allClasses[self::INTERNAL_CLASSES][$parentName] = $parentClass;
@@ -195,10 +197,7 @@ class Backend extends Broker\Backend\Memory
 	}
 
 
-	/**
-	 * @param TokenReflection\ReflectionClass|TokenReflection\Invalid\ReflectionClass $ref
-	 */
-	private function loadParentClassesAndInterfacesFromClassReflection($ref)
+	private function loadParentClassesAndInterfacesFromClassReflection(TokenReflection\IReflectionClass $ref)
 	{
 		foreach (array_merge($ref->getParentClasses(), $ref->getInterfaces()) as $parentName => $parentReflection) {
 			/** @var TokenReflection\ReflectionClass $parentReflection */
