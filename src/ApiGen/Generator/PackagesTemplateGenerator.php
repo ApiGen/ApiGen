@@ -61,7 +61,7 @@ class PackagesTemplateGenerator extends Nette\Object implements TemplateGenerato
 	 */
 	private function generateForPackage($name, $package)
 	{
-		$template = $this->templateFactory->createNamedForElement('package', $package);
+		$template = $this->templateFactory->createNamedForElement('package', $name);
 		$template->package = $name;
 		$template->subpackages = $this->getSubpackagesForPackage($template->packages, $name);
 

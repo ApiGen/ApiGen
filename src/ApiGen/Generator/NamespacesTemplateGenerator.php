@@ -65,7 +65,7 @@ class NamespacesTemplateGenerator extends Nette\Object implements TemplateGenera
 	 */
 	private function generateForNamespace($name, $namespace)
 	{
-		$template = $this->templateFactory->createNamedForElement('namespace', $namespace);
+		$template = $this->templateFactory->createNamedForElement('namespace', $name);
 		$template->namespace = $name;
 		$template->subnamespaces = $this->getSubnamespacesForNamespace($template->namespaces, $name);
 
