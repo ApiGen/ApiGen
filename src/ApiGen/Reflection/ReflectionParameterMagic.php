@@ -68,9 +68,7 @@ class ReflectionParameterMagic extends ReflectionParameter
 	public function __construct(IReflection $reflection = NULL)
 	{
 		$this->reflectionType = get_class($this);
-		if ( ! isset(self::$reflectionMethods[$this->reflectionType])) {
-			self::$reflectionMethods[$this->reflectionType] = array_flip(get_class_methods($this));
-		}
+		$this->setReflectionMethodsByType($this->reflectionType, $this);
 	}
 
 

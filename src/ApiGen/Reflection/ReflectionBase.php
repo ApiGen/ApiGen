@@ -52,7 +52,7 @@ abstract class ReflectionBase extends Nette\Object
 	 *
 	 * @var array
 	 */
-	protected static $reflectionMethods = array();
+	protected $reflectionMethods = array();
 
 	/**
 	 * @var string
@@ -67,12 +67,9 @@ abstract class ReflectionBase extends Nette\Object
 
 	public function __construct(IReflection $reflection)
 	{
-		$this->reflectionType = get_class($this);
-		if ( ! isset( self::$reflectionMethods[$this->reflectionType])) {
-			self::$reflectionMethods[$this->reflectionType] = array_flip(get_class_methods($this));
-		}
-
 		$this->reflection = $reflection;
+		$this->reflectionType = get_class($this);
+		$this->setReflectionMethodsByType($this->reflectionType, $this);
 	}
 
 
@@ -172,6 +169,18 @@ abstract class ReflectionBase extends Nette\Object
 	protected function getParsedClasses()
 	{
 		return $this->parserStorage->getElementsByType(Elements::CLASSES);
+	}
+
+
+	/**
+	 * @param string $reflectionType
+	 * @param object $class
+	 */
+	protected function setReflectionMethodsByType($reflectionType, $class)
+	{
+		if ( ! isset($this->reflectionMethods[$reflectionType])) {
+			$this->reflectionMethods[$reflectionType] = array_flip(get_class_methods($class));
+		}
 	}
 
 }
