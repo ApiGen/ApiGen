@@ -65,7 +65,7 @@ class Configuration extends Nette\Object
 		if ($this->options === NULL) {
 			$this->options = $this->resolveOptions(array());
 		}
-		if ( ! isset($this->options[$key])) {
+		if ( ! array_key_exists($key, $this->options)) {
 			throw new ConfigurationException("Option '$key' not found");
 		}
 		return $this->options[$key];

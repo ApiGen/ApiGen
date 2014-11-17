@@ -40,7 +40,7 @@ class ConfigurationOptions
 	const TITLE = 'title';
 	const TODO = 'todo';
 	const TREE = 'tree';
-	const METHODS_ACCESS_LEVELS = 'methodsAccessLevels';
+	const METHOD_ACCESS_LEVELS = 'methodAccessLevels';
 	const PROPERTY_ACCESS_LEVELS = 'propertyAccessLevels';
 
 }

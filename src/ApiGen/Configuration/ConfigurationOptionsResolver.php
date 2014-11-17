@@ -63,7 +63,7 @@ class ConfigurationOptionsResolver extends Nette\Object
 		CO::TODO => FALSE,
 		CO::TREE => TRUE,
 		// helpers
-		CO::METHODS_ACCESS_LEVELS => array(),
+		CO::METHOD_ACCESS_LEVELS => array(),
 		CO::PROPERTY_ACCESS_LEVELS => array()
 	);
 
@@ -115,7 +115,7 @@ class ConfigurationOptionsResolver extends Nette\Object
 	private function replaceDefaults()
 	{
 		$this->resolver->replaceDefaults(array(
-			CO::METHODS_ACCESS_LEVELS => function (Options $options) {
+			CO::METHOD_ACCESS_LEVELS => function (Options $options) {
 				return $this->getAccessLevelForReflections($options[CO::ACCESS_LEVELS], 'method');
 			},
 			CO::PROPERTY_ACCESS_LEVELS => function (Options $options) {
