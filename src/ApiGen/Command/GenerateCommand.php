@@ -80,7 +80,7 @@ class GenerateCommand extends Command
 				new InputOption(CO::DESTINATION, 'd', NULL,
 					'Target dir for documentation.'),
 				new InputOption(CO::SOURCE, 's', InputArgument::IS_ARRAY | InputArgument::OPTIONAL,
-					'Dir(s) or file(s) documentation is generated for (separate multiple items with a space).', NULL),
+					'Dirs documentation is generated for (separate multiple items with a space).', NULL),
 				new InputOption(CO::AUTOCOMPLETE, NULL, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_OPTIONAL,
 					'Element supported by autocomplete in search input.',
 					array(COR::AC_CLASSES, COR::AC_CONSTANTS, COR::AC_FUNCTIONS)),
