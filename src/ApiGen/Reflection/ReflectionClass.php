@@ -178,8 +178,7 @@ class ReflectionClass extends ReflectionElement
 	 */
 	public function getOwnMethods()
 	{
-		if ($this->ownMethods === NULL) {
-			$this->ownMethods = array();
+		if ( ! $this->ownMethods) {
 			foreach ($this->reflection->getOwnMethods($this->getMethodAccessLevels()) as $method) {
 				$apiMethod = $this->apiGenReflectionFactory->createFromReflection($method);
 				if ( ! $this->isDocumented() || $apiMethod->isDocumented()) {
@@ -241,9 +240,7 @@ class ReflectionClass extends ReflectionElement
 	 */
 	public function getOwnMagicMethods()
 	{
-		if ($this->ownMagicMethods === NULL) {
-			$this->ownMagicMethods = array();
-
+		if ( ! $this->ownMagicMethods) {
 			if ( ! ($this->getMethodAccessLevels() & InternalReflectionMethod::IS_PUBLIC)
 				|| $this->getDocComment() === FALSE
 			) {
@@ -346,11 +343,7 @@ class ReflectionClass extends ReflectionElement
 			return $this->methods[$name];
 		}
 
-		throw new InvalidArgumentException(sprintf(
-			'Method %s does not exist in class %s',
-			$name,
-			$this->reflection->getName()
-		));
+		throw new InvalidArgumentException("Method $name not found in class " . $this->reflection->getName());
 	}
 
 
@@ -361,7 +354,7 @@ class ReflectionClass extends ReflectionElement
 	 */
 	public function getProperties()
 	{
-		if ($this->properties === NULL) {
+		if ( ! $this->properties) {
 			$this->properties = $this->getOwnProperties();
 			foreach ($this->reflection->getProperties($this->getPropertyAccessLevels()) as $property) {
 				/** @var ReflectionElement $property */
@@ -428,8 +421,7 @@ class ReflectionClass extends ReflectionElement
 	 */
 	public function getOwnProperties()
 	{
-		if ($this->ownProperties === NULL) {
-			$this->ownProperties = array();
+		if ( ! $this->ownProperties) {
 			foreach ($this->reflection->getOwnProperties($this->getPropertyAccessLevels()) as $property) {
 				$apiProperty = $this->apiGenReflectionFactory->createFromReflection($property);
 				if ( ! $this->isDocumented() || $apiProperty->isDocumented()) {
@@ -449,9 +441,7 @@ class ReflectionClass extends ReflectionElement
 	 */
 	public function getOwnMagicProperties()
 	{
-		if ($this->ownMagicProperties === NULL) {
-			$this->ownMagicProperties = array();
-
+		if ( ! $this->ownMagicProperties) {
 			if ( ! ($this->getPropertyAccessLevels() & InternalReflectionProperty::IS_PUBLIC)
 				|| $this->getDocComment() === FALSE
 			) {
@@ -535,11 +525,7 @@ class ReflectionClass extends ReflectionElement
 			return $this->properties[$name];
 		}
 
-		throw new InvalidArgumentException(sprintf(
-			'Property %s does not exist in class %s',
-			$name,
-			$this->reflection->getName()
-		));
+		throw new InvalidArgumentException("Property $name does not exist in class " . $this->reflection->getName());
 	}
 
 
@@ -550,8 +536,7 @@ class ReflectionClass extends ReflectionElement
 	 */
 	public function getConstants()
 	{
-		if ($this->constants === NULL) {
-			$this->constants = array();
+		if ( ! $this->constants) {
 			foreach ($this->reflection->getConstantReflections() as $constant) {
 				$apiConstant = $this->apiGenReflectionFactory->createFromReflection($constant);
 				if ( ! $this->isDocumented() || $apiConstant->isDocumented()) {
@@ -566,14 +551,22 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
+	 * @return array
+	 */
+	public function getConstantReflections()
+	{
+		return $this->reflection->getConstantReflections();
+	}
+
+
+	/**
 	 * Returns constants declared by inspected class.
 	 *
 	 * @return ReflectionConstant[]|array
 	 */
 	public function getOwnConstants()
 	{
-		if ($this->ownConstants === NULL) {
-			$this->ownConstants = array();
+		if ( ! $this->ownConstants) {
 			$className = $this->reflection->getName();
 			foreach ($this->getConstants() as $constantName => $constant) {
 				if ($className === $constant->getDeclaringClassName()) {
@@ -592,19 +585,11 @@ class ReflectionClass extends ReflectionElement
 	 */
 	public function getConstantReflection($name)
 	{
-		if ($this->constants === NULL) {
-			$this->getConstants();
-		}
-
-		if (isset($this->constants[$name])) {
+		if ($this->hasConstant($name)) {
 			return $this->constants[$name];
 		}
 
-		throw new InvalidArgumentException(sprintf(
-			'Constant %s does not exist in class %s',
-			$name,
-			$this->reflection->getName()
-		));
+		throw new InvalidArgumentException("Constant $name does not exist in class " . $this->reflection->getName());
 	}
 
 
@@ -625,7 +610,7 @@ class ReflectionClass extends ReflectionElement
 	 */
 	public function hasConstant($constantName)
 	{
-		if ($this->constants === NULL) {
+		if ( ! $this->constants) {
 			$this->getConstants();
 		}
 
@@ -639,7 +624,7 @@ class ReflectionClass extends ReflectionElement
 	 */
 	public function hasOwnConstant($constantName)
 	{
-		if ($this->ownConstants === NULL) {
+		if ( ! $this->ownConstants) {
 			$this->getOwnConstants();
 		}
 
@@ -654,19 +639,11 @@ class ReflectionClass extends ReflectionElement
 	 */
 	public function getOwnConstantReflection($name)
 	{
-		if ($this->ownConstants === NULL) {
-			$this->getOwnConstants();
-		}
-
-		if (isset($this->ownConstants[$name])) {
+		if ($this->hasOwnConstant($name)) {
 			return $this->ownConstants[$name];
 		}
 
-		throw new InvalidArgumentException(sprintf(
-			'Constant %s does not exist in class %s',
-			$name,
-			$this->reflection->getName()
-		));
+		throw new InvalidArgumentException("Constant $name does not exist in class " . $this->reflection->getName());
 	}
 
 
@@ -1312,65 +1289,65 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * @param string $propertyName
+	 * @param string $name
 	 * @return bool
 	 */
-	public function hasProperty($propertyName)
+	public function hasProperty($name)
 	{
-		if ($this->properties === NULL) {
+		if ( ! $this->properties) {
 			$this->getProperties();
 		}
-		return isset($this->properties[$propertyName]);
+		return isset($this->properties[$name]);
 	}
 
 
 	/**
-	 * @param string $propertyName
+	 * @param string $name
 	 * @return bool
 	 */
-	public function hasOwnProperty($propertyName)
+	public function hasOwnProperty($name)
 	{
-		if ($this->ownProperties === NULL) {
+		if ( ! $this->ownProperties) {
 			$this->getOwnProperties();
 		}
-		return isset($this->ownProperties[$propertyName]);
+		return isset($this->ownProperties[$name]);
 	}
 
 
 	/**
-	 * @param string $propertyName
+	 * @param string $name
 	 * @return bool
 	 */
-	public function hasTraitProperty($propertyName)
+	public function hasTraitProperty($name)
 	{
 		$properties = $this->getTraitProperties();
-		return isset($properties[$propertyName]);
+		return isset($properties[$name]);
 	}
 
 
 	/**
-	 * @param string $methodName
+	 * @param string $name
 	 * @return bool
 	 */
-	public function hasMethod($methodName)
+	public function hasMethod($name)
 	{
-		if ($this->methods === NULL) {
+		if ( ! $this->methods) {
 			$this->getMethods();
 		}
-		return isset($this->methods[$methodName]);
+		return isset($this->methods[$name]);
 	}
 
 
 	/**
-	 * @param string $methodName
+	 * @param string $name
 	 * @return bool
 	 */
-	public function hasOwnMethod($methodName)
+	public function hasOwnMethod($name)
 	{
-		if ($this->ownMethods === NULL) {
+		if ( ! $this->ownMethods) {
 			$this->getOwnMethods();
 		}
-		return isset($this->ownMethods[$methodName]);
+		return isset($this->ownMethods[$name]);
 	}
 
 
