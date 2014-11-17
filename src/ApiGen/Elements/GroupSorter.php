@@ -10,6 +10,7 @@
 namespace ApiGen\Elements;
 
 use ApiGen\Configuration\Configuration;
+use ApiGen\Configuration\ConfigurationOptions as CO;
 use Nette;
 
 
@@ -73,7 +74,7 @@ class GroupSorter extends Nette\Object
 	 */
 	private function orderByNameAndMain(array $groups)
 	{
-		$main = $this->configuration->getOption('main');
+		$main = $this->configuration->getOption(CO::MAIN);
 		uksort($groups, function ($one, $two) use ($main) {
 			// \ as separator has to be first
 			$one = str_replace('\\', ' ', $one);
