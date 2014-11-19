@@ -11,18 +11,13 @@ date_default_timezone_set('Europe/Prague');
 Tester\Environment::setup();
 
 
-if ( ! defined('DS')) {
-	define('DS', DIRECTORY_SEPARATOR);
-}
-
-
 define('TEMP_DIR', createTempDir());
 Tracy\Debugger::$logDirectory = TEMP_DIR;
 
 
-define('PROJECT_DIR', __DIR__ . DS . '../Project');
-define('PROJECT_BETA_DIR', __DIR__ . DS . '../ProjectBeta');
-define('API_DIR', TEMP_DIR . DS . 'api');
+define('PROJECT_DIR', __DIR__ . '/../Project');
+define('PROJECT_BETA_DIR', __DIR__ . '/../ProjectBeta');
+define('API_DIR', TEMP_DIR . '/api');
 define('APIGEN_BIN', 'php ' . realpath(__DIR__ . '/../../src/apigen.php'));
 
 

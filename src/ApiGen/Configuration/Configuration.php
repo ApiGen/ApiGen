@@ -189,7 +189,7 @@ class Configuration extends Nette\Object
 					throw new ConfigurationException("Template for $type is not defined");
 				}
 
-				if ( ! is_file(dirname($config['templateConfig']) . DS . $configSection['template'])) {
+				if ( ! is_file(dirname($config['templateConfig']) . '/' . $configSection['template'])) {
 					throw new ConfigurationException("Template for $type does not exist");
 				}
 			}
@@ -255,7 +255,7 @@ class Configuration extends Nette\Object
 
 		foreach (array('main', 'optional') as $section) {
 			foreach ($config['template']['templates'][$section] as $type => $configSection) {
-				$configSection['template'] = $templateDir . DS . $configSection['template'];
+				$configSection['template'] = $templateDir . '/' . $configSection['template'];
 			}
 		}
 

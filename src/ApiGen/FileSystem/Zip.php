@@ -57,7 +57,7 @@ class Zip extends Nette\Object
 		$destinationLength = strlen($this->config['destination']);
 		foreach ($this->finder->findGeneratedFiles() as $file) {
 			if (is_file($file)) {
-				$archive->addFile($file, $directory . DS . substr($file, $destinationLength + 1));
+				$archive->addFile($file, $directory . '/' . substr($file, $destinationLength + 1));
 			}
 		}
 
@@ -75,7 +75,7 @@ class Zip extends Nette\Object
 	public function getArchivePath()
 	{
 		$name = trim($this->config['title'] . ' API documentation');
-		return $this->config['destination'] . DS . Strings::webalize($name) . '.zip';
+		return $this->config['destination'] . '/' . Strings::webalize($name) . '.zip';
 	}
 
 }

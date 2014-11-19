@@ -26,26 +26,26 @@ class ExtensionTest extends TestCase
 		$this->prepareConfig();
 		passthru(APIGEN_BIN . ' generate');
 
-		Assert::false(file_exists(API_DIR . DS . self::PHP5_EXTENSION));
-		Assert::true(file_exists(API_DIR . DS . self::PHP_EXTENSION));
+		Assert::false(file_exists(API_DIR . '/' . self::PHP5_EXTENSION));
+		Assert::true(file_exists(API_DIR . '/' . self::PHP_EXTENSION));
 
 		$this->prepareConfig(array('php5'));
 		passthru(APIGEN_BIN . ' generate');
 
-		Assert::true(file_exists(API_DIR . DS . self::PHP5_EXTENSION));
-		Assert::false(file_exists(API_DIR . DS . self::PHP_EXTENSION));
+		Assert::true(file_exists(API_DIR . '/' . self::PHP5_EXTENSION));
+		Assert::false(file_exists(API_DIR . '/' . self::PHP_EXTENSION));
 
 		$this->prepareConfig(array('php'));
 		passthru(APIGEN_BIN . ' generate');
 
-		Assert::false(file_exists(API_DIR . DS . self::PHP5_EXTENSION));
-		Assert::true(file_exists(API_DIR . DS .self::PHP_EXTENSION));
+		Assert::false(file_exists(API_DIR . '/' . self::PHP5_EXTENSION));
+		Assert::true(file_exists(API_DIR . '/' . self::PHP_EXTENSION));
 
 		$this->prepareConfig(array('php', 'php5'));
 		passthru(APIGEN_BIN . ' generate');
 
-		Assert::true(file_exists(API_DIR . DS . self::PHP5_EXTENSION));
-		Assert::true(file_exists(API_DIR . DS . self::PHP_EXTENSION));
+		Assert::true(file_exists(API_DIR . '/' . self::PHP5_EXTENSION));
+		Assert::true(file_exists(API_DIR . '/' . self::PHP_EXTENSION));
 	}
 
 

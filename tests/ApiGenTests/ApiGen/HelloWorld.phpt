@@ -31,9 +31,9 @@ class HelloWorldTest extends TestCase
 	 */
 	private function prepareConfig()
 	{
-		$neonFile = new NeonFile(__DIR__ . DS . 'apigen.neon');
+		$neonFile = new NeonFile(__DIR__ . '/apigen.neon');
 		$config = $neonFile->read();
-		$config['source'] = array(__DIR__ . DS . '../../../src', __DIR__ . DS . '../../../vendor/nette');
+		$config['source'] = array(__DIR__ . '/../../../src', __DIR__ . '/../../../vendor/nette');
 		$config['destination'] = API_DIR;
 		$neonFile->write($config);
 	}

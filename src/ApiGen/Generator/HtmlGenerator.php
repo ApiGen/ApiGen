@@ -176,9 +176,9 @@ class HtmlGenerator extends Nette\Object implements Generator
 		// Copy resources
 		foreach ($this->config['template']['resources'] as $resourceSource => $resourceDestination) {
 			// File
-			$resourcePath = $this->getTemplateDir() . DS . $resourceSource;
+			$resourcePath = $this->getTemplateDir() . '/' . $resourceSource;
 			if (is_file($resourcePath)) {
-				copy($resourcePath, FS::forceDir($this->config['destination']  . DS . $resourceDestination));
+				copy($resourcePath, FS::forceDir($this->config['destination']  . '/' . $resourceDestination));
 				continue;
 			}
 
@@ -186,8 +186,8 @@ class HtmlGenerator extends Nette\Object implements Generator
 			$iterator = Nette\Utils\Finder::findFiles('*')->from($resourcePath)->getIterator();
 			foreach ($iterator as $item) {
 				copy($item->getPathName(), FS::forceDir($this->config['destination']
-					. DS . $resourceDestination
-					. DS . $iterator->getSubPathName()));
+					. '/' . $resourceDestination
+					. '/' . $iterator->getSubPathName()));
 			}
 		}
 
@@ -225,7 +225,7 @@ class HtmlGenerator extends Nette\Object implements Generator
 
 		$this->onGenerateStart($steps);
 
-		$tmp = $this->config['destination'] . DS . '_' . uniqid();
+		$tmp = $this->config['destination'] . '/' . '_' . uniqid();
 
 		FS::deleteDir($tmp);
 		@mkdir($tmp, 0755, TRUE);
@@ -463,8 +463,8 @@ class HtmlGenerator extends Nette\Object implements Generator
 		$template->elements = $elements;
 
 		foreach ($this->config['template']['templates']['common'] as $source => $destination) {
-			$template->setFile($this->getTemplateDir() . DS . $source)
-				->save($this->config['destination'] . DS . $destination);
+			$template->setFile($this->getTemplateDir() . '/' . $source)
+				->save($this->config['destination'] . '/' . $destination);
 
 			$this->onGenerateProgress(1);
 		}
@@ -730,7 +730,7 @@ class HtmlGenerator extends Nette\Object implements Generator
 			$template->constants = $package['constants'];
 			$template->functions = $package['functions'];
 			$template->setFile($this->getTemplatePath('package'))
-				->save($this->config['destination'] . DS . $template->packageUrl($packageName));
+				->save($this->config['destination'] . '/' . $template->packageUrl($packageName));
 
 			$this->onGenerateProgress(1);
 		}
@@ -765,7 +765,7 @@ class HtmlGenerator extends Nette\Object implements Generator
 			$template->constants = $namespace['constants'];
 			$template->functions = $namespace['functions'];
 			$template->setFile($this->getTemplatePath('namespace'))
-				->save($this->config['destination'] . DS . $template->namespaceUrl($namespaceName));
+				->save($this->config['destination'] . '/' . $template->namespaceUrl($namespaceName));
 
 			$this->onGenerateProgress(1);
 		}
@@ -876,21 +876,21 @@ class HtmlGenerator extends Nette\Object implements Generator
 					$template->class = $element;
 
 					$template->setFile($this->getTemplatePath('class'))
-						->save($this->config['destination'] . DS . $template->classUrl($element));
+						->save($this->config['destination'] . '/' . $template->classUrl($element));
 
 				} elseif ($element instanceof ReflectionConstant) {
 					// Constant
 					$template->constant = $element;
 
 					$template->setFile($this->getTemplatePath('constant'))
-						->save($this->config['destination'] . DS . $template->constantUrl($element));
+						->save($this->config['destination'] . '/' . $template->constantUrl($element));
 
 				} elseif ($element instanceof ReflectionFunction) {
 					// Function
 					$template->function = $element;
 
 					$template->setFile($this->getTemplatePath('function'))
-						->save($this->config['destination'] . DS . $template->functionUrl($element));
+						->save($this->config['destination'] . '/' . $template->functionUrl($element));
 				}
 
 				$this->onGenerateProgress(1);
@@ -901,7 +901,7 @@ class HtmlGenerator extends Nette\Object implements Generator
 					$content = $this->charsetConvertor->convertFile($element->getFileName());
 					$template->source = $this->sourceCodeHighlighter->highlightAndAddLineNumbers($content);
 					$template->setFile($this->getTemplatePath('source'))
-						->save($this->config['destination'] . DS . $template->sourceUrl($element, FALSE));
+						->save($this->config['destination'] . '/' . $template->sourceUrl($element, FALSE));
 
 					$this->onGenerateProgress(1);
 				}
@@ -1036,7 +1036,7 @@ class HtmlGenerator extends Nette\Object implements Generator
 	 */
 	private function getTemplatePath($name, $type = 'main')
 	{
-		return $this->getTemplateDir() . DS . $this->config['template']['templates'][$type][$name]['template'];
+		return $this->getTemplateDir() . '/' . $this->config['template']['templates'][$type][$name]['template'];
 	}
 
 
@@ -1047,7 +1047,7 @@ class HtmlGenerator extends Nette\Object implements Generator
 	 */
 	private function getTemplateFileName($name, $type = 'main')
 	{
-		return $this->config['destination'] . DS . $this->config['template']['templates'][$type][$name]['filename'];
+		return $this->config['destination'] . '/' . $this->config['template']['templates'][$type][$name]['filename'];
 	}
 
 

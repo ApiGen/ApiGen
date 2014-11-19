@@ -22,15 +22,15 @@ class DeprecatedTest extends TestCase
 	{
 		$this->prepareConfig();
 		passthru(APIGEN_BIN . ' generate');
-		Assert::false(file_exists(API_DIR . DS . 'deprecated.html'));
+		Assert::false(file_exists(API_DIR . '/deprecated.html'));
 
 		$this->prepareConfig(FALSE);
 		passthru(APIGEN_BIN . ' generate');
-		Assert::false(file_exists(API_DIR . DS . 'deprecated.html'));
+		Assert::false(file_exists(API_DIR . '/deprecated.html'));
 
 		$this->prepareConfig(TRUE);
 		passthru(APIGEN_BIN . ' generate');
-		Assert::true(file_exists(API_DIR . DS . 'deprecated.html'));
+		Assert::true(file_exists(API_DIR . '/deprecated.html'));
 	}
 
 
@@ -38,7 +38,7 @@ class DeprecatedTest extends TestCase
 	{
 		$this->prepareConfig(TRUE);
 		passthru(APIGEN_BIN . ' generate');
-		$content = file_get_contents(API_DIR . DS . 'deprecated.html');
+		$content = file_get_contents(API_DIR . '/deprecated.html');
 
 		Assert::match(
 			'%A%<span>Deprecated</span>%A%',
@@ -75,7 +75,7 @@ class DeprecatedTest extends TestCase
 		// has class="deprecated" attribute
 		Assert::match(
 			'%A%<h1 class="deprecated">Class Deprecated</h1>%A%',
-			file_get_contents(API_DIR . DS . 'class-Project.Deprecated.html')
+			file_get_contents(API_DIR . '/class-Project.Deprecated.html')
 		);
 	}
 
@@ -88,7 +88,7 @@ class DeprecatedTest extends TestCase
 		// has class="deprecated" attribute
 		Assert::match(
 			'%A%id="_getDrink" class="deprecated"%A%',
-			file_get_contents(API_DIR . DS . 'class-Project.DeprecatedMethod.html')
+			file_get_contents(API_DIR . '/class-Project.DeprecatedMethod.html')
 		);
 	}
 

@@ -35,27 +35,27 @@ class Finder extends Nette\Object
 
 		// Resources
 		foreach ($this->config['template']['resources'] as $item) {
-			$path = dirname($this->config['templateConfig']) . DS . $item;
+			$path = dirname($this->config['templateConfig']) . '/' . $item;
 			if (is_dir($path)) {
 				$iterator = Nette\Utils\Finder::findFiles('*')->from($path)->getIterator();
 				foreach ($iterator as $innerItem) {
 					/** @var \RecursiveDirectoryIterator $iterator */
-					$files[] = $this->config['destination'] . DS . $item . DS . $iterator->getSubPathName();
+					$files[] = $this->config['destination'] . '/' . $item . '/' . $iterator->getSubPathName();
 				}
 
 			} else {
-				$files[] = $this->config['destination'] . DS . $item;
+				$files[] = $this->config['destination'] . '/' . $item;
 			}
 		}
 
 		// Common files
 		foreach ($this->config['template']['templates']['common'] as $item) {
-			$files[] = $this->config['destination'] . DS . $item;
+			$files[] = $this->config['destination'] . '/' . $item;
 		}
 
 		// Optional files
 		foreach ($this->config['template']['templates']['optional'] as $optional) {
-			$files[] = $this->config['destination'] . DS . $optional['filename'];
+			$files[] = $this->config['destination'] . '/' . $optional['filename'];
 		}
 
 		// Main files

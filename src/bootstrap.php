@@ -8,11 +8,6 @@
  */
 
 
-if ( ! defined('DS')) {
-	define('DS', DIRECTORY_SEPARATOR);
-}
-
-
 function includeIfExists($file)
 {
 	return is_file($file) ? include $file : FALSE;
@@ -27,7 +22,7 @@ if ( ! ($loader = includeIfExists(__DIR__ . '/../vendor/autoload.php'))
 }
 
 
-include __DIR__ . DS . 'memory.php';
+include __DIR__ . '/memory.php';
 
 setMemoryLimitTo('512M');
 

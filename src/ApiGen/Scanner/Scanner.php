@@ -102,7 +102,7 @@ class Scanner extends Nette\Object
 					throw new RuntimeException('Phar extension is not loaded');
 				}
 
-				$dir = sys_get_temp_dir() . DS . '_apigen_temp' . DS . 'phar_' . $i;
+				$dir = sys_get_temp_dir() . '/_apigen_temp/phar_' . $i;
 				$phar = new \Phar($source, RDI::CURRENT_AS_FILEINFO | RDI::SKIP_DOTS | RDI::FOLLOW_SYMLINKS);
 				$phar->extractTo($dir, NULL, TRUE);
 				$sources[$i] = $dir;
