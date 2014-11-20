@@ -115,7 +115,9 @@ abstract class ReflectionFunctionBase extends ReflectionElement
 				return $parameters[$parameterName];
 			}
 
-			throw new InvalidArgumentException(sprintf('There is no parameter at position "%d" in function/method "%s"', $parameterName, $this->getName()), Exception\Runtime::DOES_NOT_EXIST);
+			throw new InvalidArgumentException(sprintf(
+				'There is no parameter at position "%d" in function/method "%s"', $parameterName, $this->getName()
+			), Exception\Runtime::DOES_NOT_EXIST);
 
 		} else {
 			foreach ($parameters as $parameter) {

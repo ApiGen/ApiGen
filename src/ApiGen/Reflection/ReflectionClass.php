@@ -372,7 +372,9 @@ class ReflectionClass extends ReflectionElement
 			return $this->methods[$name];
 		}
 
-		throw new InvalidArgumentException(sprintf('Method %s does not exist in class %s', $name, $this->reflection->getName()));
+		throw new InvalidArgumentException(sprintf(
+			'Method %s does not exist in class %s', $name, $this->reflection->getName()
+		));
 	}
 
 

@@ -410,6 +410,7 @@ class UrlFilters extends Filters
 				}
 				break;
 			default:
+				// see bellow
 				break;
 		}
 
