@@ -1,0 +1,59 @@
+services:
+	# commands
+	- ApiGen\Command\GenerateCommand
+	- ApiGen\Command\SelfUpdateCommand
+
+	# configuration
+	- ApiGen\Configuration\Configuration
+
+	# console
+	-
+		class: ApiGen\Console\Application
+		setup:
+			- injectServiceLocator
+			- setEventManager
+	- ApiGen\Console\IO
+	- ApiGen\Console\ProgressBar
+
+	# elements
+	- ApiGen\Generator\Resolvers\ElementResolver
+	- ApiGen\Generator\Resolvers\RelativePathResolver
+
+	# events
+	- ApiGen\Events\ProgressBarIncrement
+	- ApiGen\Events\LoadParsedElements
+	- ApiGen\Events\LoadRelativePathResolver
+	- ApiGen\Events\InjectConfig
+	- ApiGen\Events\SetIoOnConsoleRun
+
+	# filesystem
+	- ApiGen\FileSystem\Finder
+	- ApiGen\FileSystem\Wiper
+	- ApiGen\FileSystem\Zip
+
+	# generator
+	- ApiGen\Scanner\Scanner
+	- ApiGen\Generator\HtmlGenerator
+	- ApiGen\Generator\Markups\MarkdownMarkup
+	- Michelf\MarkdownExtra
+
+	# charset
+	- ApiGen\Charset\CharsetConvertor
+
+	# templating
+	- ApiGen\Templating\TemplateFactory
+	- ApiGen\Templating\Filters\AnnotationFilters
+	- ApiGen\Templating\Filters\PathFilters
+	- ApiGen\Templating\Filters\PhpManualFilters
+	- ApiGen\Templating\Filters\ResolverFilters
+	- ApiGen\Templating\Filters\SourceFilters
+	- ApiGen\Templating\Filters\UrlFilters
+
+	# syntax highlighter
+	- ApiGen\Generator\FshlSourceCodeHighlighter
+	- FSHL\Output\Html
+	- FSHL\Lexer\Php
+	-
+		class: FSHL\Highlighter
+		setup:
+			- setLexer(@FSHL\Lexer\Php)
