@@ -95,8 +95,6 @@ class GenerateCommand extends Command
 			$apigen['destination'] = $this->getArgumentValue($input, $apigen, 'destination');
 			$apigen['source'] = $this->getArgumentValue($input, $apigen, 'source');
 
-			$neonFile->write($apigen);
-
 			$apigen['debug'] = $this->getOptionValue($input, $apigen, 'debug');
 
 			$apigen = $this->configuration->setDefaults($apigen);
