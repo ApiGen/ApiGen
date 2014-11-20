@@ -19,8 +19,8 @@ use ApiGen\Templating\Filters\AnnotationFilters;
 use ApiGen\Templating\Filters\SourceFilters;
 use ApiGen\Templating\Filters\UrlFilters;
 use ApiGen\Templating\TemplateFactory;
-use Nette;
 use Kdyby\Events\Subscriber;
+use Nette;
 use Nette\Utils\ArrayHash;
 
 

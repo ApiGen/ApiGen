@@ -14,9 +14,9 @@ use ApiGen\Reflection\ReflectionConstant;
 use ApiGen\Reflection\ReflectionFunction;
 use ApiGen\Reflection\ReflectionMethod;
 use TokenReflection;
+use TokenReflection\Broker;
 use TokenReflection\IReflectionConstant;
 use TokenReflection\IReflectionFunction;
-use TokenReflection\Broker;
 use TokenReflection\Resolver;
 
 

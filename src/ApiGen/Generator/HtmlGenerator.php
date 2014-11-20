@@ -10,8 +10,11 @@
 namespace ApiGen\Generator;
 
 use ApiGen\Charset\CharsetConvertor;
+use ApiGen\FileSystem;
+use ApiGen\FileSystem\FileSystem as FS;
 use ApiGen\Generator\Resolvers\ElementResolver;
 use ApiGen\Generator\Resolvers\RelativePathResolver;
+use ApiGen\Reflection;
 use ApiGen\Reflection\ReflectionClass;
 use ApiGen\Reflection\ReflectionConstant;
 use ApiGen\Reflection\ReflectionElement;
@@ -21,9 +24,6 @@ use ApiGen\Reflection\ReflectionProperty;
 use ApiGen\Templating\Template;
 use ApiGen\Templating\TemplateFactory;
 use ApiGen\Tree;
-use ApiGen\FileSystem;
-use ApiGen\FileSystem\FileSystem as FS;
-use ApiGen\Reflection;
 use ArrayObject;
 use Nette;
 use RuntimeException;

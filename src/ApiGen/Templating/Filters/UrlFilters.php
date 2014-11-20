@@ -9,16 +9,16 @@
 
 namespace ApiGen\Templating\Filters;
 
-use ApiGen\Generator\Resolvers\ElementResolver;
-use ApiGen\Reflection\ReflectionClass;
-use ApiGen\Reflection\ReflectionFunction;
-use ApiGen\Templating\Filters\Helpers\Strings;
 use ApiGen\Generator\Markups\Markup;
+use ApiGen\Generator\Resolvers\ElementResolver;
 use ApiGen\Generator\SourceCodeHighlighter;
+use ApiGen\Reflection\ReflectionClass;
 use ApiGen\Reflection\ReflectionConstant;
 use ApiGen\Reflection\ReflectionElement;
+use ApiGen\Reflection\ReflectionFunction;
 use ApiGen\Reflection\ReflectionMethod;
 use ApiGen\Reflection\ReflectionProperty;
+use ApiGen\Templating\Filters\Helpers\Strings;
 use Nette\Utils\Validators;
 
 

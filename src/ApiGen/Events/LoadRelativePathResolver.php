@@ -11,8 +11,8 @@ namespace ApiGen\Events;
 
 use ApiGen\Generator\Resolvers\RelativePathResolver;
 use ApiGen\Scanner\Scanner;
-use Nette;
 use Kdyby\Events\Subscriber;
+use Nette;
 
 
 class LoadRelativePathResolver extends Nette\Object implements Subscriber
