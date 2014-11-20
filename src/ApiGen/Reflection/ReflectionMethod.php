@@ -20,7 +20,7 @@ class ReflectionMethod extends ReflectionFunctionBase
 	/**
 	 * Returns if the method is magic.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isMagic()
 	{
@@ -65,7 +65,7 @@ class ReflectionMethod extends ReflectionFunctionBase
 	/**
 	 * Returns if the method is abstract.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isAbstract()
 	{
@@ -76,7 +76,7 @@ class ReflectionMethod extends ReflectionFunctionBase
 	/**
 	 * Returns if the method is final.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isFinal()
 	{
@@ -87,7 +87,7 @@ class ReflectionMethod extends ReflectionFunctionBase
 	/**
 	 * Returns if the method is private.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isPrivate()
 	{
@@ -98,7 +98,7 @@ class ReflectionMethod extends ReflectionFunctionBase
 	/**
 	 * Returns if the method is protected.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isProtected()
 	{
@@ -109,7 +109,7 @@ class ReflectionMethod extends ReflectionFunctionBase
 	/**
 	 * Returns if the method is public.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isPublic()
 	{
@@ -120,7 +120,7 @@ class ReflectionMethod extends ReflectionFunctionBase
 	/**
 	 * Returns if the method is static.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isStatic()
 	{
@@ -131,7 +131,7 @@ class ReflectionMethod extends ReflectionFunctionBase
 	/**
 	 * Returns if the method is a constructor.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isConstructor()
 	{
@@ -142,7 +142,7 @@ class ReflectionMethod extends ReflectionFunctionBase
 	/**
 	 * Returns if the method is a destructor.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isDestructor()
 	{
@@ -256,7 +256,7 @@ class ReflectionMethod extends ReflectionFunctionBase
 
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isValid()
 	{

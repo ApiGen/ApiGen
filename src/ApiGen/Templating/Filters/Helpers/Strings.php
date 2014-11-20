@@ -34,7 +34,7 @@ class Strings extends Nette\Object
 	 *
 	 * @param string $url
 	 * @param string $text
-	 * @param boolean $escape If the text should be escaped
+	 * @param bool $escape If the text should be escaped
 	 * @param array $classes List of classes
 	 * @return string
 	 */

@@ -64,7 +64,7 @@ class Tree extends RecursiveTreeIterator
 	/**
 	 * Returns if the current item has a sibling on the same level.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasSibling()
 	{

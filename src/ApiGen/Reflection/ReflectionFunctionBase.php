@@ -40,7 +40,7 @@ abstract class ReflectionFunctionBase extends ReflectionElement
 	/**
 	 * Returns if the function/method returns its value as reference.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function returnsReference()
 	{
@@ -61,14 +61,15 @@ abstract class ReflectionFunctionBase extends ReflectionElement
 			}, $this->reflection->getParameters());
 
 			$annotations = $this->getAnnotation('param');
-			if (NULL !== $annotations) {
+			if ($annotations !== NULL) {
 				foreach ($annotations as $position => $annotation) {
 					if (isset($parameters[$position])) {
 						// Standard parameter
 						continue;
 					}
 
-					if ( ! preg_match('~^(?:([\\w\\\\]+(?:\\|[\\w\\\\]+)*)\\s+)?\\$(\\w+),\\.{3}(?:\\s+(.*))?($)~s', $annotation, $matches)) {
+					$pattern = '~^(?:([\\w\\\\]+(?:\\|[\\w\\\\]+)*)\\s+)?\\$(\\w+),\\.{3}(?:\\s+(.*))?($)~s';
+					if ( ! preg_match($pattern, $annotation, $matches)) {
 						// Wrong annotation format
 						continue;
 					}
@@ -123,7 +124,9 @@ abstract class ReflectionFunctionBase extends ReflectionElement
 				}
 			}
 
-			throw new InvalidArgumentException(sprintf('There is no parameter "%s" in function/method "%s"', $parameterName, $this->getName()), Exception\Runtime::DOES_NOT_EXIST);
+			throw new InvalidArgumentException(sprintf(
+				'There is no parameter "%s" in function/method "%s"', $parameterName, $this->getName()
+			), Exception\Runtime::DOES_NOT_EXIST);
 		}
 	}
 

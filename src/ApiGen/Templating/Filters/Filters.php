@@ -39,7 +39,7 @@ abstract class Filters extends Nette\Object
 	 * Returns unified type value definition (class name or member data type).
 	 *
 	 * @param string $name
-	 * @param boolean $trimNamespaceSeparator
+	 * @param bool $trimNamespaceSeparator
 	 * @return string
 	 */
 	protected function getTypeName($name, $trimNamespaceSeparator = TRUE)
@@ -70,7 +70,7 @@ abstract class Filters extends Nette\Object
 	 *
 	 * @param string $url
 	 * @param string $text
-	 * @param boolean $escape If the text should be escaped
+	 * @param bool $escape If the text should be escaped
 	 * @param array $classes List of classes
 	 * @return string
 	 */

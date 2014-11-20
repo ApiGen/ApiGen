@@ -23,7 +23,7 @@ abstract class ReflectionElement extends ReflectionBase
 	/**
 	 * Cache for information if the element should be documented.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $isDocumented;
 
@@ -55,7 +55,7 @@ abstract class ReflectionElement extends ReflectionBase
 
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	public function getExtensionName()
 	{
@@ -84,7 +84,7 @@ abstract class ReflectionElement extends ReflectionBase
 	/**
 	 * Returns if the element belongs to main project.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isMain()
 	{
@@ -95,7 +95,7 @@ abstract class ReflectionElement extends ReflectionBase
 	/**
 	 * Returns if the element should be documented.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isDocumented()
 	{
@@ -109,7 +109,9 @@ abstract class ReflectionElement extends ReflectionBase
 				} elseif ( ! self::$config->deprecated && $this->reflection->isDeprecated()) {
 					$this->isDocumented = FALSE;
 
-				} elseif ( ! self::$config->internal && ($internal = $this->reflection->getAnnotation('internal')) && empty($internal[0])) {
+				} elseif ( ! self::$config->internal && ($internal = $this->reflection->getAnnotation('internal'))
+					&& empty($internal[0])
+				) {
 					$this->isDocumented = FALSE;
 
 				} elseif (count($this->reflection->getAnnotation('ignore')) > 0) {
@@ -125,7 +127,7 @@ abstract class ReflectionElement extends ReflectionBase
 	/**
 	 * Returns if the element is deprecated.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isDeprecated()
 	{
@@ -146,7 +148,7 @@ abstract class ReflectionElement extends ReflectionBase
 	/**
 	 * Returns if the element is in package.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function inPackage()
 	{
@@ -171,10 +173,7 @@ abstract class ReflectionElement extends ReflectionBase
 
 			if ($subpackage = $this->getAnnotation('subpackage')) {
 				$subpackageName = preg_replace('~\s+.*~s', '', $subpackage[0]);
-				if (empty($subpackageName)) {
-					// Do nothing
-
-				} elseif (0 === strpos($subpackageName, $packageName)) {
+				if ( (! empty($subpackageName)) && (strpos($subpackageName, $packageName) === 0)) {
 					$packageName = $subpackageName;
 
 				} else {
@@ -214,11 +213,11 @@ abstract class ReflectionElement extends ReflectionBase
 	/**
 	 * Returns if the element is defined within a namespace.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function inNamespace()
 	{
-		return '' !== $this->getNamespaceName();
+		return $this->getNamespaceName() !== '';
 	}
 
 
@@ -345,7 +344,11 @@ abstract class ReflectionElement extends ReflectionBase
 			unset($annotations[ReflectionAnnotation::LONG_DESCRIPTION]);
 
 			// @todo: fix
-			if ($this->reflection instanceof \TokenReflectionClass || $this->reflection instanceof \TokenReflectionFunction || ($this->reflection instanceof \TokenReflectionConstant && $this->reflection->getDeclaringClassName() === NULL)) {
+			if ($this->reflection instanceof \TokenReflectionClass
+				|| $this->reflection instanceof \TokenReflectionFunction
+				|| ($this->reflection instanceof \TokenReflectionConstant
+				&& $this->reflection->getDeclaringClassName() === NULL)
+			) {
 				foreach ($this->reflection->getFileReflection()->getAnnotations() as $name => $value) {
 					if (isset($fileLevel[$name]) && empty($annotations[$name])) {
 						$annotations[$name] = $value;
@@ -377,7 +380,7 @@ abstract class ReflectionElement extends ReflectionBase
 	 * Checks if there is a particular annotation.
 	 *
 	 * @param string $annotation
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasAnnotation($annotation)
 	{
@@ -432,7 +435,7 @@ abstract class ReflectionElement extends ReflectionBase
 	/**
 	 * Returns if there are any known reasons why this element's reflection is invalid.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasReasons()
 	{

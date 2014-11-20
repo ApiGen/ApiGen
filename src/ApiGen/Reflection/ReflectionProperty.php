@@ -20,7 +20,7 @@ class ReflectionProperty extends ReflectionElement
 	/**
 	 * Returns if the property is read-only.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isReadOnly()
 	{
@@ -31,7 +31,7 @@ class ReflectionProperty extends ReflectionElement
 	/**
 	 * Returns if the property is write-only.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isWriteOnly()
 	{
@@ -42,7 +42,7 @@ class ReflectionProperty extends ReflectionElement
 	/**
 	 * Returns if the property is magic.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isMagic()
 	{
@@ -59,7 +59,7 @@ class ReflectionProperty extends ReflectionElement
 	{
 		if ($annotations = $this->getAnnotation('var')) {
 			list($types) = preg_split('~\s+|$~', $annotations[0], 2);
-			if ( ! empty($types) && '$' !== $types[0]) {
+			if ( ! empty($types) && $types[0] !== '$') {
 				return $types;
 			}
 		}
@@ -126,7 +126,7 @@ class ReflectionProperty extends ReflectionElement
 	/**
 	 * Returns if the property was created at compile time.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isDefault()
 	{
@@ -148,7 +148,7 @@ class ReflectionProperty extends ReflectionElement
 	/**
 	 * Returns if the property is private.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isPrivate()
 	{
@@ -159,7 +159,7 @@ class ReflectionProperty extends ReflectionElement
 	/**
 	 * Returns if the property is protected.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isProtected()
 	{
@@ -170,7 +170,7 @@ class ReflectionProperty extends ReflectionElement
 	/**
 	 * Returns if the property is public.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isPublic()
 	{
@@ -181,7 +181,7 @@ class ReflectionProperty extends ReflectionElement
 	/**
 	 * Returns if the poperty is static.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isStatic()
 	{
@@ -215,7 +215,7 @@ class ReflectionProperty extends ReflectionElement
 	/**
 	 * Returns if the property is valid.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isValid()
 	{

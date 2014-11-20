@@ -74,15 +74,15 @@ class InjectConfig extends Nette\Object implements Subscriber
 
 
 	public function __construct(
-					Generator $generator,
-					TemplateFactory $templateFactory,
-					CharsetConvertor $charsetConvertor,
-					SourceFilters $sourceFilters,
-					UrlFilters $urlFilters,
-					Finder $finder,
-					Zip $zip,
-					AnnotationFilters $annotationFilters,
-					RelativePathResolver $relativePathResolver
+		Generator $generator,
+		TemplateFactory $templateFactory,
+		CharsetConvertor $charsetConvertor,
+		SourceFilters $sourceFilters,
+		UrlFilters $urlFilters,
+		Finder $finder,
+		Zip $zip,
+		AnnotationFilters $annotationFilters,
+		RelativePathResolver $relativePathResolver
 	) {
 		$this->generator = $generator;
 		$this->templateFactory = $templateFactory;

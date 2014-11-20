@@ -57,7 +57,7 @@ class ReflectionMethodMagic extends ReflectionMethod
 	/**
 	 * If the method returns reference.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $returnsReference;
 
@@ -165,7 +165,7 @@ class ReflectionMethodMagic extends ReflectionMethod
 	/**
 	 * Returns if the function/method returns its value as reference.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function returnsReference()
 	{
@@ -176,7 +176,7 @@ class ReflectionMethodMagic extends ReflectionMethod
 	/**
 	 * Returns if the property is magic.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isMagic()
 	{
@@ -209,7 +209,7 @@ class ReflectionMethodMagic extends ReflectionMethod
 	/**
 	 * Returns the PHP extension name.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function getExtensionName()
 	{
@@ -220,11 +220,11 @@ class ReflectionMethodMagic extends ReflectionMethod
 	/**
 	 * Returns if the method should be documented.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isDocumented()
 	{
-		if (NULL === $this->isDocumented) {
+		if ($this->isDocumented === NULL) {
 			$this->isDocumented = self::$config->deprecated || ! $this->isDeprecated();
 		}
 
@@ -235,7 +235,7 @@ class ReflectionMethodMagic extends ReflectionMethod
 	/**
 	 * Returns if the property is deprecated.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isDeprecated()
 	{
@@ -272,7 +272,7 @@ class ReflectionMethodMagic extends ReflectionMethod
 	 */
 	public function getAnnotations()
 	{
-		if (NULL === $this->annotations) {
+		if ($this->annotations === NULL) {
 			$this->annotations = array();
 		}
 		return $this->annotations;
@@ -315,7 +315,7 @@ class ReflectionMethodMagic extends ReflectionMethod
 	/**
 	 * Returns if the method is abstract.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isAbstract()
 	{
@@ -326,7 +326,7 @@ class ReflectionMethodMagic extends ReflectionMethod
 	/**
 	 * Returns if the method is final.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isFinal()
 	{
@@ -337,7 +337,7 @@ class ReflectionMethodMagic extends ReflectionMethod
 	/**
 	 * Returns if the method is private.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isPrivate()
 	{
@@ -348,7 +348,7 @@ class ReflectionMethodMagic extends ReflectionMethod
 	/**
 	 * Returns if the method is protected.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isProtected()
 	{
@@ -359,7 +359,7 @@ class ReflectionMethodMagic extends ReflectionMethod
 	/**
 	 * Returns if the method is public.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isPublic()
 	{
@@ -370,7 +370,7 @@ class ReflectionMethodMagic extends ReflectionMethod
 	/**
 	 * Returns if the method is static.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isStatic()
 	{
@@ -381,7 +381,7 @@ class ReflectionMethodMagic extends ReflectionMethod
 	/**
 	 * Returns if the property is internal.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isInternal()
 	{
@@ -392,7 +392,7 @@ class ReflectionMethodMagic extends ReflectionMethod
 	/**
 	 * Returns if the method is a constructor.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isConstructor()
 	{
@@ -403,7 +403,7 @@ class ReflectionMethodMagic extends ReflectionMethod
 	/**
 	 * Returns if the method is a destructor.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isDestructor()
 	{
@@ -577,7 +577,7 @@ class ReflectionMethodMagic extends ReflectionMethod
 	/**
 	 * Returns if the method is user defined.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isUserDefined()
 	{
@@ -588,7 +588,7 @@ class ReflectionMethodMagic extends ReflectionMethod
 	/**
 	 * Returns if the method comes from a tokenized source.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isTokenized()
 	{
@@ -629,7 +629,7 @@ class ReflectionMethodMagic extends ReflectionMethod
 
 	/**
 	 * @param string $name
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasAnnotation($name)
 	{

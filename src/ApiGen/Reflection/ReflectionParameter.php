@@ -78,9 +78,9 @@ class ReflectionParameter extends ReflectionBase
 
 
 	/**
-	 * Retutns if a default value for the parameter is available.
+	 * Returns if a default value for the parameter is available.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isDefaultValueAvailable()
 	{
@@ -102,7 +102,7 @@ class ReflectionParameter extends ReflectionBase
 	/**
 	 * Returns if the parameter expects an array.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isArray()
 	{
@@ -113,7 +113,7 @@ class ReflectionParameter extends ReflectionBase
 	/**
 	 * Returns if the parameter expects a callback.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isCallable()
 	{
@@ -147,7 +147,7 @@ class ReflectionParameter extends ReflectionBase
 	/**
 	 * Returns if the the parameter allows NULL.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function allowsNull()
 	{
@@ -158,7 +158,7 @@ class ReflectionParameter extends ReflectionBase
 	/**
 	 * Returns if the parameter is optional.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isOptional()
 	{
@@ -169,7 +169,7 @@ class ReflectionParameter extends ReflectionBase
 	/**
 	 * Returns if the parameter value is passed by reference.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isPassedByReference()
 	{
@@ -180,7 +180,7 @@ class ReflectionParameter extends ReflectionBase
 	/**
 	 * Returns if the paramter value can be passed by value.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function canBePassedByValue()
 	{
@@ -244,12 +244,13 @@ class ReflectionParameter extends ReflectionBase
 	/**
 	 * If the parameter can be used unlimited.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isUnlimited()
 	{
 		return FALSE;
 	}
+
 
 	/**
 	 * @return ArrayObject
