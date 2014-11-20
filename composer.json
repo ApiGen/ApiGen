@@ -36,8 +36,7 @@
 	"require-dev": {
 		"nette/tester": "~1.3",
 		"jakub-onderka/php-parallel-lint": "~0.8",
-		"zenify/coding-standard": "~0.1",
-		"squizlabs/php_codesniffer": "2.0.0RC2"
+		"zenify/coding-standard": "~1.0"
 	},
 	"suggest": {
 		"ext-bz2": "*",
