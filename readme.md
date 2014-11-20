@@ -5,12 +5,12 @@
 [![Latest stable](https://img.shields.io/packagist/v/apigen/apigen.svg)](https://packagist.org/packages/apigen/apigen)
 
 
-ApiGen generates nice looking and user-friendly documentation. 
+ApiGen generates nice looking and user-friendly documentation.
 
 Just look at [Doctrine ORM API](http://www.doctrine-project.org/api/orm/2.4/) or [Nette API](http://api.nette.org/).
 
 
-## Features 
+## Features
 
 - Detailed documentation of classes, functions and constants
 - [Highlighted source code](http://api.nette.org/source-Application.UI.Form.php.html)
@@ -36,15 +36,15 @@ Just look at [Doctrine ORM API](http://www.doctrine-project.org/api/orm/2.4/) or
 	```
 
 2. Create `apigen.neon` file in your project. This is basic example only with all required items. The file uses [Neon](http://ne-on.org) syntax.
- 
+
 	```yaml
 	source:
 	    - src
-	
+
 	destination: api
 	```
 
-3. Run ApiGen: 
+3. Run ApiGen:
 
 	```sh
 	php apigen.phar generate
@@ -56,9 +56,9 @@ For global installation, see [documentation](doc/installation.md).
 ### Using Composer globally
 
 Alternatively, you can install ApiGen via composer global .
-   
+
 ```sh
-composer global require apigen/apigen 
+composer global require apigen/apigen
 ```
 
 Run:
@@ -75,17 +75,17 @@ If you add `~/.composer/vendor/bin` to your `PATH`, you can run `bin/apigen gene
 Install package:
 
 ```sh
-composer require apigen/apigen --dev 
+composer require apigen/apigen --dev
 ```
 
-Run: 
+Run:
 
 ```sh
 php vendor/bin/apigen generate
 ```
 
 
-## Options 
+## Options
 
 ```yaml
 # list of scanned file extensions (e.g. php5, phpt...)
