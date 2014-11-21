@@ -363,6 +363,10 @@ dl.tree dd {
 	text-align: right;
 }
 
+.summary td hr {
+	margin: 3px -10px;
+}
+
 #packages.summary td:first-child, #namespaces.summary td:first-child, .inherited.summary td:first-child, .used.summary td:first-child {
 	text-align: left;
 }
