@@ -44,8 +44,6 @@ class ReflectionParameter extends ReflectionBase
 				}
 			}
 		}
-
-		return 'mixed';
 	}
 
 

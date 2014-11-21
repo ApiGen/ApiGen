@@ -73,8 +73,6 @@ class ReflectionProperty extends ReflectionElement
 		} catch (\Exception $e) {
 			// Nothing
 		}
-
-		return 'mixed';
 	}
 
 
