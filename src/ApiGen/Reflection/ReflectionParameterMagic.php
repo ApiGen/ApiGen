@@ -45,19 +45,19 @@ class ReflectionParameterMagic extends ReflectionParameter
 	/**
 	 * The part of the source code defining the parameter default value.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $defaultValueDefinition;
 
 	/**
 	 * If the parameter can be used unlimited times.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $unlimited;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $passedByReference;
 
@@ -124,7 +124,7 @@ class ReflectionParameterMagic extends ReflectionParameter
 	/**
 	 * Returns if the reflection object is internal.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isInternal()
 	{
@@ -133,7 +133,7 @@ class ReflectionParameterMagic extends ReflectionParameter
 
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isUserDefined()
 	{
@@ -144,7 +144,7 @@ class ReflectionParameterMagic extends ReflectionParameter
 	/**
 	 * Returns if the current reflection comes from a tokenized source.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isTokenized()
 	{
@@ -244,7 +244,7 @@ class ReflectionParameterMagic extends ReflectionParameter
 
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isDefaultValueAvailable()
 	{
@@ -264,7 +264,7 @@ class ReflectionParameterMagic extends ReflectionParameter
 
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isArray()
 	{
@@ -273,7 +273,7 @@ class ReflectionParameterMagic extends ReflectionParameter
 
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isCallable()
 	{
@@ -313,7 +313,7 @@ class ReflectionParameterMagic extends ReflectionParameter
 
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	public function allowsNull()
 	{
@@ -326,7 +326,7 @@ class ReflectionParameterMagic extends ReflectionParameter
 
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isOptional()
 	{
@@ -335,7 +335,7 @@ class ReflectionParameterMagic extends ReflectionParameter
 
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isPassedByReference()
 	{
@@ -344,7 +344,7 @@ class ReflectionParameterMagic extends ReflectionParameter
 
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	public function canBePassedByValue()
 	{
@@ -355,7 +355,7 @@ class ReflectionParameterMagic extends ReflectionParameter
 	/**
 	 * Returns if the parameter can be used unlimited times.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isUnlimited()
 	{

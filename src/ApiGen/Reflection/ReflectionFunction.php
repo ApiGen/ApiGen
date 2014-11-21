@@ -22,7 +22,7 @@ class ReflectionFunction extends ReflectionFunctionBase
 	/**
 	 * Returns if the function is valid.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isValid()
 	{
@@ -37,7 +37,7 @@ class ReflectionFunction extends ReflectionFunctionBase
 	/**
 	 * Returns if the function should be documented.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isDocumented()
 	{

@@ -122,7 +122,7 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isAbstract()
 	{
@@ -131,7 +131,7 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isFinal()
 	{
@@ -140,7 +140,7 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isInterface()
 	{
@@ -151,7 +151,7 @@ class ReflectionClass extends ReflectionElement
 	/**
 	 * Returns if the class is an exception or its descendant.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isException()
 	{
@@ -161,7 +161,7 @@ class ReflectionClass extends ReflectionElement
 
 	/**
 	 * @param string $class
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isSubclassOf($class)
 	{
@@ -266,7 +266,9 @@ class ReflectionClass extends ReflectionElement
 		if ($this->ownMagicMethods === NULL) {
 			$this->ownMagicMethods = array();
 
-			if ( ! (self::$methodAccessLevels & InternalReflectionMethod::IS_PUBLIC) || FALSE === $this->getDocComment()) {
+			if ( ! (self::$methodAccessLevels & InternalReflectionMethod::IS_PUBLIC)
+				|| $this->getDocComment() === FALSE
+			) {
 				return $this->ownMagicMethods;
 			}
 
@@ -276,7 +278,8 @@ class ReflectionClass extends ReflectionElement
 			}
 
 			foreach ($annotations as $annotation) {
-				if ( ! preg_match('~^(?:([\\w\\\\]+(?:\\|[\\w\\\\]+)*)\\s+)?(&)?\\s*(\\w+)\\s*\\(\\s*(.*)\\s*\\)\\s*(.*|$)~s', $annotation, $matches)) {
+				$pattern = '~^(?:([\\w\\\\]+(?:\\|[\\w\\\\]+)*)\\s+)?(&)?\\s*(\\w+)\\s*\\(\\s*(.*)\\s*\\)\\s*(.*|$)~s';
+				if ( ! preg_match($pattern, $annotation, $matches)) {
 					// Wrong annotation format
 					continue;
 				}
@@ -297,7 +300,7 @@ class ReflectionClass extends ReflectionElement
 					->setShortDescription(str_replace("\n", ' ', $shortDescription))
 					->setStartLine($startLine)
 					->setEndLine($endLine)
-					->setReturnsReference('&' === $returnsReference)
+					->setReturnsReference($returnsReference === '&')
 					->setDeclaringClass($this)
 					->addAnnotation('return', $returnTypeHint);
 
@@ -305,7 +308,8 @@ class ReflectionClass extends ReflectionElement
 
 				$parameters = array();
 				foreach (array_filter(preg_split('~\\s*,\\s*~', $args)) as $position => $arg) {
-					if ( ! preg_match('~^(?:([\\w\\\\]+(?:\\|[\\w\\\\]+)*)\\s+)?(&)?\\s*\\$(\\w+)(?:\\s*=\\s*(.*))?($)~s', $arg, $matches)) {
+					$pattern = '~^(?:([\\w\\\\]+(?:\\|[\\w\\\\]+)*)\\s+)?(&)?\\s*\\$(\\w+)(?:\\s*=\\s*(.*))?($)~s';
+					if ( ! preg_match($pattern, $arg, $matches)) {
 						// Wrong annotation format
 						continue;
 					}
@@ -318,7 +322,7 @@ class ReflectionClass extends ReflectionElement
 						->setTypeHint($typeHint)
 						->setDefaultValueDefinition($defaultValueDefinition)
 						->setUnlimited(FALSE)
-						->setPassedByReference('&' === $passedByReference)
+						->setPassedByReference($passedByReference === '&')
 						->setDeclaringFunction($method);
 
 					$parameters[$name] = $parameter;
@@ -364,7 +368,9 @@ class ReflectionClass extends ReflectionElement
 			return $this->methods[$name];
 		}
 
-		throw new InvalidArgumentException(sprintf('Method %s does not exist in class %s', $name, $this->reflection->getName()));
+		throw new InvalidArgumentException(sprintf(
+			'Method %s does not exist in class %s', $name, $this->reflection->getName()
+		));
 	}
 
 
@@ -498,8 +504,8 @@ class ReflectionClass extends ReflectionElement
 						->setShortDescription(str_replace("\n", ' ', $shortDescription))
 						->setStartLine($startLine)
 						->setEndLine($endLine)
-						->setReadOnly('property-read' === $annotationName)
-						->setWriteOnly('property-write' === $annotationName)
+						->setReadOnly($annotationName === 'property-read')
+						->setWriteOnly($annotationName === 'property-write')
 						->setDeclaringClass($this)
 						->addAnnotation('var', $typeHint);
 
@@ -544,7 +550,9 @@ class ReflectionClass extends ReflectionElement
 			return $this->properties[$name];
 		}
 
-		throw new InvalidArgumentException(sprintf('Property %s does not exist in class %s', $name, $this->reflection->getName()));
+		throw new InvalidArgumentException(sprintf(
+			'Property %s does not exist in class %s', $name, $this->reflection->getName()
+		));
 	}
 
 
@@ -607,7 +615,9 @@ class ReflectionClass extends ReflectionElement
 			return $this->constants[$name];
 		}
 
-		throw new InvalidArgumentException(sprintf('Constant %s does not exist in class %s', $name, $this->reflection->getName()));
+		throw new InvalidArgumentException(sprintf(
+			'Constant %s does not exist in class %s', $name, $this->reflection->getName()
+		));
 	}
 
 
@@ -627,7 +637,7 @@ class ReflectionClass extends ReflectionElement
 	 * Checks if there is a constant of the given name.
 	 *
 	 * @param string $constantName
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasConstant($constantName)
 	{
@@ -643,7 +653,7 @@ class ReflectionClass extends ReflectionElement
 	 * Checks if there is a constant of the given name.
 	 *
 	 * @param string $constantName
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasOwnConstant($constantName)
 	{
@@ -672,7 +682,9 @@ class ReflectionClass extends ReflectionElement
 			return $this->ownConstants[$name];
 		}
 
-		throw new InvalidArgumentException(sprintf('Constant %s does not exist in class %s', $name, $this->reflection->getName()));
+		throw new InvalidArgumentException(sprintf(
+			'Constant %s does not exist in class %s', $name, $this->reflection->getName()
+		));
 	}
 
 
@@ -746,7 +758,7 @@ class ReflectionClass extends ReflectionElement
 	 * Returns if the class implements the given interface.
 	 *
 	 * @param string|object $interface Interface name or reflection object
-	 * @return boolean
+	 * @return bool
 	 */
 	public function implementsInterface($interface)
 	{
@@ -878,7 +890,7 @@ class ReflectionClass extends ReflectionElement
 	/**
 	 * Returns if the class is a trait.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isTrait()
 	{
@@ -890,7 +902,7 @@ class ReflectionClass extends ReflectionElement
 	 * Returns if the class uses a particular trait.
 	 *
 	 * @param string $trait Trait name
-	 * @return boolean
+	 * @return bool
 	 */
 	public function usesTrait($trait)
 	{
@@ -1151,7 +1163,7 @@ class ReflectionClass extends ReflectionElement
 		$usedMethods = array();
 
 		foreach ($this->getMagicMethods() as $method) {
-			if (NULL === $method->getDeclaringTraitName() || $this->getName() === $method->getDeclaringTraitName()) {
+			if ($method->getDeclaringTraitName() === NULL || $method->getDeclaringTraitName() === $this->getName()) {
 				continue;
 			}
 
@@ -1331,7 +1343,7 @@ class ReflectionClass extends ReflectionElement
 
 	/**
 	 * @param string $propertyName
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasProperty($propertyName)
 	{
@@ -1344,7 +1356,7 @@ class ReflectionClass extends ReflectionElement
 
 	/**
 	 * @param string $propertyName
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasOwnProperty($propertyName)
 	{
@@ -1357,7 +1369,7 @@ class ReflectionClass extends ReflectionElement
 
 	/**
 	 * @param string $propertyName
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasTraitProperty($propertyName)
 	{
@@ -1368,11 +1380,11 @@ class ReflectionClass extends ReflectionElement
 
 	/**
 	 * @param string $methodName
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasMethod($methodName)
 	{
-		if (NULL === $this->methods) {
+		if ($this->methods === NULL) {
 			$this->getMethods();
 		}
 		return isset($this->methods[$methodName]);
@@ -1381,7 +1393,7 @@ class ReflectionClass extends ReflectionElement
 
 	/**
 	 * @param string $methodName
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasOwnMethod($methodName)
 	{
@@ -1394,7 +1406,7 @@ class ReflectionClass extends ReflectionElement
 
 	/**
 	 * @param string $methodName Method name
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasTraitMethod($methodName)
 	{
@@ -1404,7 +1416,7 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isValid()
 	{
@@ -1419,7 +1431,7 @@ class ReflectionClass extends ReflectionElement
 	/**
 	 * Returns if the class should be documented.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isDocumented()
 	{

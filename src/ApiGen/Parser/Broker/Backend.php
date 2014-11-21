@@ -14,9 +14,9 @@ use ApiGen\Reflection\ReflectionConstant;
 use ApiGen\Reflection\ReflectionFunction;
 use ApiGen\Reflection\ReflectionMethod;
 use TokenReflection;
+use TokenReflection\Broker;
 use TokenReflection\IReflectionConstant;
 use TokenReflection\IReflectionFunction;
-use TokenReflection\Broker;
 use TokenReflection\Resolver;
 
 
@@ -204,7 +204,7 @@ class Backend extends Broker\Backend\Memory
 	 * @param array $annotations
 	 * @param string $name
 	 */
-	private function loadAnnotationFromReflection($reflection, $annotations = array(), $name)
+	private function loadAnnotationFromReflection($reflection, array $annotations, $name)
 	{
 		if ( ! isset($annotations[$name])) {
 			return;
@@ -213,7 +213,7 @@ class Backend extends Broker\Backend\Memory
 		foreach ($annotations[$name] as $doc) {
 			foreach (explode('|', preg_replace('~\\s.*~', '', $doc)) as $name) {
 				if ($name = rtrim($name, '[]')) {
-					$name = $this->getClassFQN($name, $reflection);
+					$name = $this->getClassFqn($name, $reflection);
 					$this->addClass($name);
 				}
 			}
@@ -226,9 +226,9 @@ class Backend extends Broker\Backend\Memory
 	 * @param ReflectionClass|ReflectionMethod $reflection
 	 * @return string
 	 */
-	private function getClassFQN($name, $reflection)
+	private function getClassFqn($name, $reflection)
 	{
-		return Resolver::resolveClassFQN($name, $reflection->getNamespaceAliases(), $reflection->getNamespaceName());
+		return Resolver::resolveClassFqn($name, $reflection->getNamespaceAliases(), $reflection->getNamespaceName());
 	}
 
 }

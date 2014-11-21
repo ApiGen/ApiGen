@@ -9,16 +9,16 @@
 
 namespace ApiGen\Templating\Filters;
 
-use ApiGen\Generator\Resolvers\ElementResolver;
-use ApiGen\Reflection\ReflectionClass;
-use ApiGen\Reflection\ReflectionFunction;
-use ApiGen\Templating\Filters\Helpers\Strings;
 use ApiGen\Generator\Markups\Markup;
+use ApiGen\Generator\Resolvers\ElementResolver;
 use ApiGen\Generator\SourceCodeHighlighter;
+use ApiGen\Reflection\ReflectionClass;
 use ApiGen\Reflection\ReflectionConstant;
 use ApiGen\Reflection\ReflectionElement;
+use ApiGen\Reflection\ReflectionFunction;
 use ApiGen\Reflection\ReflectionMethod;
 use ApiGen\Reflection\ReflectionProperty;
+use ApiGen\Templating\Filters\Helpers\Strings;
 use Nette\Utils\Validators;
 
 
@@ -88,7 +88,7 @@ class UrlFilters extends Filters
 	 * Returns links for package/namespace and its parent packages.
 	 *
 	 * @param string $package
-	 * @param boolean $last
+	 * @param bool $last
 	 * @return string
 	 */
 	public function packageLinks($package, $last = TRUE)
@@ -128,7 +128,7 @@ class UrlFilters extends Filters
 	 * Returns links for namespace and its parent namespaces.
 	 *
 	 * @param string $namespace
-	 * @param boolean $last
+	 * @param bool $last
 	 * @return string
 	 */
 	public function namespaceLinks($namespace, $last = TRUE)
@@ -329,7 +329,7 @@ class UrlFilters extends Filters
 	 * Returns links for package/namespace and its parent packages.
 	 *
 	 * @param string $package
-	 * @param boolean $last
+	 * @param bool $last
 	 * @return string
 	 */
 	public function getPackageLinks($package, $last = TRUE)
@@ -364,7 +364,6 @@ class UrlFilters extends Filters
 	{
 		switch ($name) {
 			case 'return':
-
 			case 'throws':
 				$description = trim(strpbrk($value, "\n\r\t $")) ?: NULL;
 				if ($description) {
@@ -409,6 +408,9 @@ class UrlFilters extends Filters
 				if ($this->elementResolver->resolveElement($link, $context) !== NULL) {
 					return sprintf('<code>%s</code>%s%s', $this->typeLinks($link, $context), $separator, $description);
 				}
+				break;
+			default:
+				// see bellow
 				break;
 		}
 
@@ -492,7 +494,7 @@ class UrlFilters extends Filters
 	 *
 	 * @param string $text
 	 * @param ReflectionElement $context
-	 * @param boolean $block Parse text as block
+	 * @param bool $block Parse text as block
 	 * @return string
 	 */
 	public function doc($text, ReflectionElement $context, $block = FALSE)
@@ -545,7 +547,8 @@ class UrlFilters extends Filters
 	private function resolveInternal($text)
 	{
 		$internal = $this->config['internal'];
-		return preg_replace_callback('~\\{@(\\w+)(?:(?:\\s+((?>(?R)|[^{}]+)*)\\})|\\})~', function ($matches) use ($internal) {
+		$pattern = '~\\{@(\\w+)(?:(?:\\s+((?>(?R)|[^{}]+)*)\\})|\\})~';
+		return preg_replace_callback($pattern, function ($matches) use ($internal) {
 			// Replace only internal
 			if ($matches[1] !== 'internal') {
 				return $matches[0];
@@ -562,7 +565,7 @@ class UrlFilters extends Filters
 	 * @param mixed $context
 	 * @return mixed
 	 */
-	public function highlightPHP($source, $context)
+	public function highlightPhp($source, $context)
 	{
 		return $this->resolveLink($this->getTypeName($source), $context) ?: $this->highlighter->highlight((string) $source);
 	}
@@ -575,7 +578,7 @@ class UrlFilters extends Filters
 	 */
 	public function highlightValue($definition, $context)
 	{
-		return $this->highlightPHP(preg_replace('~^(?:[ ]{4}|\t)~m', '', $definition), $context);
+		return $this->highlightPhp(preg_replace('~^(?:[ ]{4}|\t)~m', '', $definition), $context);
 	}
 
 }

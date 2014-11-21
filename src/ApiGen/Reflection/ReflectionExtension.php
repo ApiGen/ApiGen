@@ -112,7 +112,7 @@ class ReflectionExtension extends ReflectionBase
 	public function getFunction($name)
 	{
 		$function = $this->reflection->getFunction($name);
-		return NULL === $function ? NULL : new ReflectionFunction($function);
+		return $function === NULL ? NULL : new ReflectionFunction($function);
 	}
 
 

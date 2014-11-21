@@ -1,4 +1,5 @@
 extensions:
-	apigen: ApiGen\DI\ApiGenExtension
-	events: Kdyby\Events\DI\EventsExtension
-	console: Kdyby\Console\DI\ConsoleExtension
+	- ApiGen\DI\ApiGenExtension
+	- ApiGen\DI\ParserExtension
+	- Kdyby\Events\DI\EventsExtension
+	- Kdyby\Console\DI\ConsoleExtension

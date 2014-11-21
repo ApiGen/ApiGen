@@ -5,30 +5,17 @@
 	"homepage": "http://apigen.org/",
 	"license": "MIT",
 	"authors": [
-		{
-			"name": "Tomáš Votruba",
-			"email": "tomas.vot@gmail.com"
-		},
-		{
-			"name": "Olivier Laviale",
-			"homepage": "https://github.com/olvlvl"
-		},
-		{	"name": "Jaroslav Hanslík",
-			"homepage": "https://github.com/kukulich"
-		},
-		{
-			"name": "Ondřej Nešpor",
-			"homepage": "https://github.com/andrewsville"
-		},
-		{
-			"name": "David Grudl",
-			"homepage": "http://davidgrudl.com"
-		}
+		{ "name": "Tomáš Votruba", "email": "tomas.vot@gmail.com" },
+		{ "name": "Olivier Laviale", "homepage": "https://github.com/olvlvl" },
+		{ "name": "Jaroslav Hanslík", "homepage": "https://github.com/kukulich" },
+		{ "name": "Ondřej Nešpor", "homepage": "https://github.com/andrewsville" },
+		{ "name": "David Grudl",  "homepage": "http://davidgrudl.com" }
 	],
 	"require": {
 		"php": ">=5.3.1",
 		"nette/bootstrap": "~2.2",
-		"nette/di": "~2.2",
+		"nette/di": "~2.3@dev",
+		"nette/neon": "~2.3@dev",
 		"nette/mail": "~2.2",
 		"nette/robot-loader": "~2.2",
 		"nette/safe-stream": "~2.2",
@@ -49,8 +36,7 @@
 	"require-dev": {
 		"nette/tester": "~1.3",
 		"jakub-onderka/php-parallel-lint": "~0.8",
-		"zenify/coding-standard": "~0.1",
-		"squizlabs/php_codesniffer": "2.0.0RC2"
+		"zenify/coding-standard": "~1.0"
 	},
 	"suggest": {
 		"ext-bz2": "*",

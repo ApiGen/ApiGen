@@ -19,8 +19,8 @@ use ApiGen\Templating\Filters\AnnotationFilters;
 use ApiGen\Templating\Filters\SourceFilters;
 use ApiGen\Templating\Filters\UrlFilters;
 use ApiGen\Templating\TemplateFactory;
-use Nette;
 use Kdyby\Events\Subscriber;
+use Nette;
 use Nette\Utils\ArrayHash;
 
 
@@ -74,15 +74,15 @@ class InjectConfig extends Nette\Object implements Subscriber
 
 
 	public function __construct(
-					Generator $generator,
-					TemplateFactory $templateFactory,
-					CharsetConvertor $charsetConvertor,
-					SourceFilters $sourceFilters,
-					UrlFilters $urlFilters,
-					Finder $finder,
-					Zip $zip,
-					AnnotationFilters $annotationFilters,
-					RelativePathResolver $relativePathResolver
+		Generator $generator,
+		TemplateFactory $templateFactory,
+		CharsetConvertor $charsetConvertor,
+		SourceFilters $sourceFilters,
+		UrlFilters $urlFilters,
+		Finder $finder,
+		Zip $zip,
+		AnnotationFilters $annotationFilters,
+		RelativePathResolver $relativePathResolver
 	) {
 		$this->generator = $generator;
 		$this->templateFactory = $templateFactory;

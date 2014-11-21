@@ -13,8 +13,8 @@ use ApiGen\Generator\HtmlGenerator;
 use ApiGen\Generator\Resolvers\ElementResolver;
 use ApiGen\Parser\Parser;
 use ApiGen\Parser\ParserResult;
-use Nette;
 use Kdyby\Events\Subscriber;
+use Nette;
 
 
 class LoadParsedElements extends Nette\Object implements Subscriber

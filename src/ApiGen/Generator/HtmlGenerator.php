@@ -10,8 +10,11 @@
 namespace ApiGen\Generator;
 
 use ApiGen\Charset\CharsetConvertor;
+use ApiGen\FileSystem;
+use ApiGen\FileSystem\FileSystem as FS;
 use ApiGen\Generator\Resolvers\ElementResolver;
 use ApiGen\Generator\Resolvers\RelativePathResolver;
+use ApiGen\Reflection;
 use ApiGen\Reflection\ReflectionClass;
 use ApiGen\Reflection\ReflectionConstant;
 use ApiGen\Reflection\ReflectionElement;
@@ -21,9 +24,6 @@ use ApiGen\Reflection\ReflectionProperty;
 use ApiGen\Templating\Template;
 use ApiGen\Templating\TemplateFactory;
 use ApiGen\Tree;
-use ApiGen\FileSystem;
-use ApiGen\FileSystem\FileSystem as FS;
-use ApiGen\Reflection;
 use ArrayObject;
 use Nette;
 use RuntimeException;
@@ -41,6 +41,7 @@ use RuntimeException;
  */
 class HtmlGenerator extends Nette\Object implements Generator
 {
+
 	/**
 	 * @var array
 	 */
@@ -147,11 +148,15 @@ class HtmlGenerator extends Nette\Object implements Generator
 	private $zip;
 
 
-	public function __construct(CharsetConvertor $charsetConvertor, FileSystem\Zip $zip,
-	                            SourceCodeHighlighter $sourceCodeHighlighter, TemplateFactory $templateFactory,
-								RelativePathResolver $relativePathResolver, FileSystem\Finder $finder,
-								ElementResolver $elementResolver)
-	{
+	public function __construct(
+		CharsetConvertor $charsetConvertor,
+		FileSystem\Zip $zip,
+		SourceCodeHighlighter $sourceCodeHighlighter,
+		TemplateFactory $templateFactory,
+		RelativePathResolver $relativePathResolver,
+		FileSystem\Finder $finder,
+		ElementResolver $elementResolver
+	) {
 		$this->charsetConvertor = $charsetConvertor;
 		$this->sourceCodeHighlighter = $sourceCodeHighlighter;
 		$this->templateFactory = $templateFactory;
@@ -325,8 +330,12 @@ class HtmlGenerator extends Nette\Object implements Generator
 		$userPackagesCount = count(array_diff(array_keys($this->packages), array('PHP', 'None')));
 		$userNamespacesCount = count(array_diff(array_keys($this->namespaces), array('PHP', 'None')));
 
-		$namespacesEnabled = ('auto' === $this->config['groups'] && ($userNamespacesCount > 0 || 0 === $userPackagesCount)) || 'namespaces' === $this->config['groups'];
-		$packagesEnabled = ('auto' === $this->config['groups'] && ! $namespacesEnabled) || 'packages' === $this->config['groups'];
+		$namespacesEnabled = ($this->config['groups'] === 'auto'
+			&& ($userNamespacesCount > 0 || $userPackagesCount === 0))
+			|| $this->config['groups'] === 'namespaces';
+
+		$packagesEnabled = ($this->config['groups'] === 'auto' && ! $namespacesEnabled)
+			|| $this->config['groups'] === 'packages';
 
 		if ($namespacesEnabled) {
 			$this->packages = array();
@@ -522,7 +531,10 @@ class HtmlGenerator extends Nette\Object implements Generator
 		$template->deprecatedConstants = array();
 		$template->deprecatedProperties = array();
 		foreach (array_reverse($this->getElementTypes()) as $type) {
-			$template->{'deprecated' . ucfirst($type)} = array_filter(array_filter($this->$type, $this->getMainFilter()), $deprecatedFilter);
+			$template->{'deprecated' . ucfirst($type)} = array_filter(
+				array_filter($this->$type, $this->getMainFilter()),
+				$deprecatedFilter
+			);
 
 			if ($type === 'constants' || $type === 'functions') {
 				continue;
@@ -538,9 +550,18 @@ class HtmlGenerator extends Nette\Object implements Generator
 					continue;
 				}
 
-				$template->deprecatedMethods = array_merge($template->deprecatedMethods, array_values(array_filter($class->getOwnMethods(), $deprecatedFilter)));
-				$template->deprecatedConstants = array_merge($template->deprecatedConstants, array_values(array_filter($class->getOwnConstants(), $deprecatedFilter)));
-				$template->deprecatedProperties = array_merge($template->deprecatedProperties, array_values(array_filter($class->getOwnProperties(), $deprecatedFilter)));
+				$template->deprecatedMethods = array_merge(
+					$template->deprecatedMethods,
+					array_values(array_filter($class->getOwnMethods(), $deprecatedFilter))
+				);
+				$template->deprecatedConstants = array_merge(
+					$template->deprecatedConstants,
+					array_values(array_filter($class->getOwnConstants(), $deprecatedFilter))
+				);
+				$template->deprecatedProperties = array_merge(
+					$template->deprecatedProperties,
+					array_values(array_filter($class->getOwnProperties(), $deprecatedFilter))
+				);
 			}
 		}
 		usort($template->deprecatedMethods, array($this, 'sortMethods'));
@@ -591,9 +612,18 @@ class HtmlGenerator extends Nette\Object implements Generator
 					continue;
 				}
 
-				$template->todoMethods = array_merge($template->todoMethods, array_values(array_filter($class->getOwnMethods(), $todoFilter)));
-				$template->todoConstants = array_merge($template->todoConstants, array_values(array_filter($class->getOwnConstants(), $todoFilter)));
-				$template->todoProperties = array_merge($template->todoProperties, array_values(array_filter($class->getOwnProperties(), $todoFilter)));
+				$template->todoMethods = array_merge(
+					$template->todoMethods,
+					array_values(array_filter($class->getOwnMethods(), $todoFilter))
+				);
+				$template->todoConstants = array_merge(
+					$template->todoConstants,
+					array_values(array_filter($class->getOwnConstants(), $todoFilter))
+				);
+				$template->todoProperties = array_merge(
+					$template->todoProperties,
+					array_values(array_filter($class->getOwnProperties(), $todoFilter))
+				);
 			}
 		}
 		usort($template->todoMethods, array($this, 'sortMethods'));
@@ -684,7 +714,6 @@ class HtmlGenerator extends Nette\Object implements Generator
 			$processed[$className] = TRUE;
 			unset($t);
 		}
-
 
 		$template->classTree = new Tree($classTree, $this->parsedClasses);
 		$template->interfaceTree = new Tree($interfaceTree, $this->parsedClasses);
@@ -913,7 +942,7 @@ class HtmlGenerator extends Nette\Object implements Generator
 	/**
 	 * Checks if sitemap.xml is enabled.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	private function isSitemapEnabled()
 	{
@@ -924,18 +953,20 @@ class HtmlGenerator extends Nette\Object implements Generator
 	/**
 	 * Checks if opensearch.xml is enabled.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	private function isOpensearchEnabled()
 	{
-		return ! empty($this->config['googleCseId']) && ! empty($this->config['baseUrl']) && $this->templateExists('opensearch', 'optional');
+		return ! empty($this->config['googleCseId'])
+			&& ! empty($this->config['baseUrl'])
+			&& $this->templateExists('opensearch', 'optional');
 	}
 
 
 	/**
 	 * Checks if robots.txt is enabled.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	private function isRobotsEnabled()
 	{
