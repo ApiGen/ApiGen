@@ -120,6 +120,8 @@ class GenerateCommand extends Command
 				new InputOption(CO::SKIP_DOC_PREFIX, NULL, InputOption::VALUE_IS_ARRAY | InputArgument::OPTIONAL,
 					'Files starting this name will be included in class tree,'
 					. ' but will not create a link to their documentation.'),
+				new InputOption(CO::SOURCE_CODE, NULL, InputOption::VALUE_REQUIRED,
+					'Generate highlighted source code for elements.', TRUE),
 				new InputOption(CO::TEMPLATE_THEME, NULL, InputOption::VALUE_OPTIONAL,
 					'ApiGen template theme name.', 'default'),
 				new InputOption(CO::TEMPLATE_CONFIG, NULL, InputOption::VALUE_OPTIONAL,
