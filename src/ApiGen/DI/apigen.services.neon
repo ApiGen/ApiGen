@@ -5,11 +5,12 @@ services:
 
 	# configuration
 	- ApiGen\Configuration\Configuration
+	- ApiGen\Configuration\ConfigurationOptionsResolver
+	- ApiGen\Configuration\OptionsResolverFactory
 	-
 	 	implement: ApiGen\Configuration\Theme\ThemeConfigFactory
 	 	parameters: [filePath]
 	 	arguments: [%filePath%]
-	- ApiGen\Configuration\OptionsResolverFactory
 	- ApiGen\Configuration\Theme\ThemeConfigOptionsResolver
 
 	# console
