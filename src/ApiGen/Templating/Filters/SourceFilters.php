@@ -126,7 +126,7 @@ class SourceFilters extends Filters
 				? sprintf('%s-%s', $element->getStartLine(), $element->getEndLine()) : $element->getStartLine();
 		}
 
-		return sprintf($this->config['template']['templates']['main']['source']['filename'], $file)
+		return sprintf($this->config['template']['templates']['source']['filename'], $file)
 			. ($lines !== NULL ? '#' . $lines : '');
 	}
 

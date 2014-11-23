@@ -49,19 +49,14 @@ class Finder extends Nette\Object
 		}
 
 		// Common files
-		foreach ($this->config['template']['templates']['common'] as $item) {
-			$files[] = $this->config['destination'] . '/' . $item;
-		}
-
-		// Optional files
-		foreach ($this->config['template']['templates']['optional'] as $optional) {
-			$files[] = $this->config['destination'] . '/' . $optional['filename'];
+		foreach ($this->config['template']['templates'] as $item) {
+			$files[] = $this->config['destination'] . '/' . $item['filename'];
 		}
 
 		// Main files
 		$masks = array_map(function ($config) {
 			return preg_replace('~%[^%]*?s~', '*', $config['filename']);
-		}, (array) $this->config['template']['templates']['main']);
+		}, (array) $this->config['template']['templates']);
 
 		$filter = function ($item) use ($masks) {
 			/** @var \SplFileInfo $item */

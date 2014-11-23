@@ -160,7 +160,7 @@ class UrlFilters extends Filters
 	public function packageUrl($packageName)
 	{
 		return sprintf(
-			$this->config['template']['templates']['main']['package']['filename'],
+			$this->config['template']['templates']['package']['filename'],
 			$this->urlize($packageName)
 		);
 	}
@@ -175,7 +175,7 @@ class UrlFilters extends Filters
 	public function namespaceUrl($namespaceName)
 	{
 		return sprintf(
-			$this->config['template']['templates']['main']['namespace']['filename'],
+			$this->config['template']['templates']['namespace']['filename'],
 			$this->urlize($namespaceName)
 		);
 	}
@@ -191,7 +191,7 @@ class UrlFilters extends Filters
 	{
 		$className = $class instanceof ReflectionClass ? $class->getName() : $class;
 		return sprintf(
-			$this->config['template']['templates']['main']['class']['filename'],
+			$this->config['template']['templates']['class']['filename'],
 			$this->urlize($className)
 		);
 	}
@@ -235,7 +235,7 @@ class UrlFilters extends Filters
 		}
 		// Constant in namespace or global space
 		return sprintf(
-			$this->config['template']['templates']['main']['constant']['filename'],
+			$this->config['template']['templates']['constant']['filename'],
 			$this->urlize($constant->getName())
 		);
 	}
@@ -249,7 +249,7 @@ class UrlFilters extends Filters
 	public function functionUrl(ReflectionFunction $function)
 	{
 		return sprintf(
-			$this->config['template']['templates']['main']['function']['filename'],
+			$this->config['template']['templates']['function']['filename'],
 			$this->urlize($function->getName())
 		);
 	}

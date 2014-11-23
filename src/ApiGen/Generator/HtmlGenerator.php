@@ -208,7 +208,7 @@ class HtmlGenerator extends Nette\Object implements Generator
 			+ count($this->exceptions)
 			+ count($this->constants)
 			+ count($this->functions)
-			+ count($this->config['template']['templates']['common'])
+			+ 4 // todo wip: 4 common template files
 			+ (int) $this->config['tree']
 			+ (int) $this->config['deprecated']
 			+ (int) $this->config['todo']
@@ -418,9 +418,6 @@ class HtmlGenerator extends Nette\Object implements Generator
 	}
 
 
-	/**
-	 * Generates common files.
-	 */
 	private function generateCommon()
 	{
 		$template = $this->templateFactory->create();
@@ -471,10 +468,18 @@ class HtmlGenerator extends Nette\Object implements Generator
 		});
 		$template->elements = $elements;
 
-		foreach ($this->config['template']['templates']['common'] as $source => $destination) {
-			$template->setFile($this->getTemplateDir() . '/' . $source)
-				->save($this->config['destination'] . '/' . $destination);
+		// todo: wip
+		$themeTemplates = $this->config['template']['templates'];
+		$commonTemplates = [
+			$themeTemplates['overview'],
+			$themeTemplates['combined'],
+			$themeTemplates['elementlist'],
+			$themeTemplates['404']
+		];
 
+		foreach ($commonTemplates as $templateInfo) {
+			$template->setFile($templateInfo['template'])
+				->save($this->config['destination'] . '/' . $templateInfo['filename']);
 			$this->onGenerateProgress(1);
 		}
 
@@ -482,31 +487,28 @@ class HtmlGenerator extends Nette\Object implements Generator
 	}
 
 
-	/**
-	 * Generates optional files.
-	 */
 	private function generateOptional()
 	{
 		$template = $this->templateFactory->create();
 		$template = $this->addBaseVariablesToTemplate($template);
 
 		if ($this->isSitemapEnabled()) {
-			$template->setFile($this->getTemplatePath('sitemap', 'optional'))
-				->save($this->getTemplateFileName('sitemap', 'optional'));
+			$template->setFile($this->getTemplatePath('sitemap'))
+				->save($this->getTemplateFileName('sitemap'));
 
 			$this->onGenerateProgress(1);
 		}
 
 		if ($this->isOpensearchEnabled()) {
-			$template->setFile($this->getTemplatePath('opensearch', 'optional'))
-				->save($this->getTemplateFileName('opensearch', 'optional'));
+			$template->setFile($this->getTemplatePath('opensearch'))
+				->save($this->getTemplateFileName('opensearch'));
 
 			$this->onGenerateProgress(1);
 		}
 
 		if ($this->isRobotsEnabled()) {
-			$template->setFile($this->getTemplatePath('robots', 'optional'))
-				->save($this->getTemplateFileName('robots', 'optional'));
+			$template->setFile($this->getTemplatePath('robots'))
+				->save($this->getTemplateFileName('robots'));
 
 			$this->onGenerateProgress(1);
 		}
@@ -1062,34 +1064,31 @@ class HtmlGenerator extends Nette\Object implements Generator
 
 	/**
 	 * @param string $name
-	 * @param string $type
 	 * @return string
 	 */
-	private function getTemplatePath($name, $type = 'main')
+	private function getTemplatePath($name)
 	{
-		return $this->getTemplateDir() . '/' . $this->config['template']['templates'][$type][$name]['template'];
+		return $this->config['template']['templates'][$name]['template'];
 	}
 
 
 	/**
 	 * @param string $name
-	 * @param string $type
 	 * @return string
 	 */
-	private function getTemplateFileName($name, $type = 'main')
+	private function getTemplateFileName($name)
 	{
-		return $this->config['destination'] . '/' . $this->config['template']['templates'][$type][$name]['filename'];
+		return $this->config['destination'] . '/' . $this->config['template']['templates'][$name]['filename'];
 	}
 
 
 	/**
 	 * @param string $name
-	 * @param string $type
 	 * @return string
 	 */
-	private function templateExists($name, $type = 'main')
+	private function templateExists($name)
 	{
-		return isset($this->config['template']['templates'][$type][$name]);
+		return isset($this->config['template']['templates'][$name]);
 	}
 
 
