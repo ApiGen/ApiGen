@@ -42,8 +42,6 @@ class ReflectionConstant extends ReflectionElement
 
 
 	/**
-	 * Returns constant type hint.
-	 *
 	 * @return string
 	 */
 	public function getTypeHint()
@@ -68,8 +66,6 @@ class ReflectionConstant extends ReflectionElement
 
 
 	/**
-	 * Returns the constant declaring class.
-	 *
 	 * @return ReflectionClass|NULL
 	 */
 	public function getDeclaringClass()
@@ -80,8 +76,6 @@ class ReflectionConstant extends ReflectionElement
 
 
 	/**
-	 * Returns the name of the declaring class.
-	 *
 	 * @return string|NULL
 	 */
 	public function getDeclaringClassName()
@@ -91,8 +85,6 @@ class ReflectionConstant extends ReflectionElement
 
 
 	/**
-	 * Returns the constant value.
-	 *
 	 * @return mixed
 	 */
 	public function getValue()

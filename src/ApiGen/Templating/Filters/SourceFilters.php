@@ -35,7 +35,7 @@ class SourceFilters extends Filters
 	 */
 	public function staticFile($name)
 	{
-		$versions = array();
+		$versions = [];
 		$filename = $this->config['destination'] . '/' . $name;
 		if ( ! isset($versions[$filename]) && is_file($filename)) {
 			$versions[$filename] = sprintf('%u', crc32(file_get_contents($filename)));
@@ -126,7 +126,7 @@ class SourceFilters extends Filters
 				? sprintf('%s-%s', $element->getStartLine(), $element->getEndLine()) : $element->getStartLine();
 		}
 
-		return sprintf($this->config['template']['templates']['main']['source']['filename'], $file)
+		return sprintf($this->config['template']['templates']['source']['filename'], $file)
 			. ($lines !== NULL ? '#' . $lines : '');
 	}
 

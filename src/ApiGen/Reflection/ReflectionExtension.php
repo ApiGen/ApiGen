@@ -41,22 +41,19 @@ class ReflectionExtension extends ReflectionBase
 
 
 	/**
-	 * Returns classes defined by this extension.
-	 *
 	 * @return array
 	 */
 	public function getClasses()
 	{
-		$classes = self::$parsedClasses;
-		return array_map(function (IReflectionClass $class) use ($classes) {
-			return isset($classes[$class->getName()]) ? $classes[$class->getName()] : new ReflectionClass($class);
+		return array_map(function (IReflectionClass $class) {
+			return isset(self::$parsedClasses[$class->getName()])
+				? self::$parsedClasses[$class->getName()]
+				: new ReflectionClass($class);
 		}, $this->reflection->getClasses());
 	}
 
 
 	/**
-	 * Returns a constant reflection.
-	 *
 	 * @param string $name
 	 * @return ReflectionConstant|NULL
 	 */
@@ -67,8 +64,6 @@ class ReflectionExtension extends ReflectionBase
 
 
 	/**
-	 * Returns a constant reflection.
-	 *
 	 * @param string $name
 	 * @return ReflectionConstant|NULL
 	 */
@@ -80,8 +75,6 @@ class ReflectionExtension extends ReflectionBase
 
 
 	/**
-	 * Returns reflections of defined constants.
-	 *
 	 * @return array
 	 */
 	public function getConstants()
@@ -91,8 +84,6 @@ class ReflectionExtension extends ReflectionBase
 
 
 	/**
-	 * Returns reflections of defined constants.
-	 *
 	 * @return array
 	 */
 	public function getConstantReflections()
@@ -104,10 +95,8 @@ class ReflectionExtension extends ReflectionBase
 
 
 	/**
-	 * Returns a function reflection.
-	 *
-	 * @param string $name Function name
-	 * @return ReflectionFunction
+	 * @param string $name
+	 * @return ReflectionFunction|NULL
 	 */
 	public function getFunction($name)
 	{

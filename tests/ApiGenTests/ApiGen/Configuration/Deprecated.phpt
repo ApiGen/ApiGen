@@ -100,7 +100,7 @@ class DeprecatedTest extends TestCase
 	{
 		$neonFile = new NeonFile(__DIR__ . '/apigen.neon');
 		$config = $neonFile->read();
-		$config['source'] = array(PROJECT_DIR);
+		$config['source'] = [PROJECT_DIR];
 		$config['destination'] = API_DIR;
 		if ($deprecatedState !== NULL) {
 			$config['deprecated'] = $deprecatedState;
@@ -111,4 +111,4 @@ class DeprecatedTest extends TestCase
 }
 
 
-\run(new DeprecatedTest);
+(new DeprecatedTest)->run();

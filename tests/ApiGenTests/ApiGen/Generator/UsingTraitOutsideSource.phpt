@@ -19,7 +19,7 @@ class UsingTraitOutsideSourceTest extends TestCase
 
 	public function testGenerate()
 	{
-		$this->prepareConfig(array(PROJECT_DIR));
+		$this->prepareConfig([PROJECT_DIR]);
 
 		passthru(APIGEN_BIN . ' generate', $output);
 		$traitOutsideFile = API_DIR . '/class-Project.TraitOutside.html';
@@ -35,7 +35,7 @@ class UsingTraitOutsideSourceTest extends TestCase
 
 	public function testGenerateInSource()
 	{
-		$this->prepareConfig(array(PROJECT_DIR, PROJECT_BETA_DIR));
+		$this->prepareConfig([PROJECT_DIR, PROJECT_BETA_DIR]);
 
 		passthru(APIGEN_BIN . ' generate', $output);
 		$traitOutsideFile = API_DIR . '/class-Project.TraitOutside.html';
@@ -70,4 +70,4 @@ class UsingTraitOutsideSourceTest extends TestCase
 }
 
 
-\run(new UsingTraitOutsideSourceTest);
+(new UsingTraitOutsideSourceTest)->run();

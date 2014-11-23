@@ -273,7 +273,7 @@ class ReflectionMethodMagic extends ReflectionMethod
 	public function getAnnotations()
 	{
 		if ($this->annotations === NULL) {
-			$this->annotations = array();
+			$this->annotations = [];
 		}
 		return $this->annotations;
 	}

@@ -23,17 +23,17 @@ class RelativePathResolverTest extends TestCase
 	public function testEndingSlash()
 	{
 		$relativePathResolver = new RelativePathResolver;
-		$config = array(
-			'source' => array('ProjectBeta/')
-		);
+		$config = [
+			'source' => ['ProjectBeta/']
+		];
 		$relativePathResolver->setConfig($config);
 		$fileName = 'ProjectBeta/entities/Category.php';
 		$relativePath = $relativePathResolver->getRelativePath($fileName);
 		Assert::same('entities/Category.php', $relativePath);
 
-		$config = array(
-			'source' => array('ProjectBeta')
-		);
+		$config = [
+			'source' => ['ProjectBeta']
+		];
 		$relativePathResolver->setConfig($config);
 		$fileName = 'ProjectBeta/entities/Category.php';
 		$relativePath2 = $relativePathResolver->getRelativePath($fileName);
@@ -43,4 +43,4 @@ class RelativePathResolverTest extends TestCase
 }
 
 
-\run(new RelativePathResolverTest);
+(new RelativePathResolverTest)->run();

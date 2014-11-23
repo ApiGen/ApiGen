@@ -38,7 +38,7 @@ class Strings extends Nette\Object
 	 * @param array $classes List of classes
 	 * @return string
 	 */
-	public static function link($url, $text, $escape = TRUE, array $classes = array())
+	public static function link($url, $text, $escape = TRUE, array $classes = [])
 	{
 		$class = ! empty($classes) ? sprintf(' class="%s"', implode(' ', $classes)) : '';
 		return sprintf('<a href="%s"%s>%s</a>', $url, $class, $escape ? Filters::escapeHtml($text) : $text);

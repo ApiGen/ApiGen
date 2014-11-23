@@ -9,6 +9,7 @@
 
 namespace ApiGen\Configuration;
 
+use ApiGen\Configuration\Theme\ThemeConfigFactory;
 use ApiGen\Factory;
 use ApiGen\FileSystem\FileSystem;
 use ApiGen\Neon\NeonFile;
@@ -36,25 +37,25 @@ class Configuration extends Nette\Object
 	/**
 	 * @var array
 	 */
-	public $onSuccessValidate = array();
+	public $onSuccessValidate = [];
 
 	/**
-	 * @var array
+	 * @var mixed[]
 	 */
-	private $defaults = array(
-		'extensions' => array('php'),
-		'exclude' => array(),
-		'skipDocPath' => array(),
-		'skipDocPrefix' => array(),
-		'charset' => array('auto'),
+	private $defaults = [
+		'extensions' => ['php'],
+		'exclude' => [],
+		'skipDocPath' => [],
+		'skipDocPrefix' => [],
+		'charset' => ['auto'],
 		'main' => '',
 		'title' => '',
 		'baseUrl' => '',
 		'googleCseId' => '',
 		'googleAnalytics' => '',
 		'groups' => 'auto',
-		'autocomplete' => array('classes', 'constants', 'functions'),
-		'accessLevels' => array('public', 'protected'),
+		'autocomplete' => ['classes', 'constants', 'functions'],
+		'accessLevels' => ['public', 'protected'],
 		'internal' => FALSE,
 		'php' => TRUE,
 		'tree' => TRUE,
@@ -62,25 +63,35 @@ class Configuration extends Nette\Object
 		'todo' => FALSE,
 		'download' => FALSE,
 		// templates
-		'templateTheme' => self::TEMPLATE_THEME_DEFAULT
-	);
+		'templateTheme' => self::TEMPLATE_THEME_DEFAULT,
+		'template' => NULL
+	];
 
 	/**
 	 * File or directory path options.
 	 *
-	 * @var array
+	 * @var string[]
 	 */
-	private $pathOptions = array(
+	private $pathOptions = [
 		'source',
 		'destination',
-		'templateConfig',
 		'exclude',
 		'skipDocPath'
-	);
+	];
+
+	/**
+	 * @var ThemeConfigFactory
+	 */
+	private $themeConfigFactory;
+
+
+	public function __construct(ThemeConfigFactory $themeConfigFactory)
+	{
+		$this->themeConfigFactory = $themeConfigFactory;
+	}
 
 
 	/**
-	 * @param array $config
 	 * @return array
 	 */
 	public function setDefaults(array $config)
@@ -91,26 +102,10 @@ class Configuration extends Nette\Object
 			}
 		}
 
-		// Set template theme path
-		$isThemeUsed = FALSE;
 		if ( ! isset($config['templateConfig'])) {
-			if ($config['templateTheme'] === self::TEMPLATE_THEME_DEFAULT) {
-				$config['templateConfig'] = APIGEN_ROOT_PATH . '/templates/default/config.neon';
-
-			} elseif ($config['templateTheme'] === self::TEMPLATE_THEME_BOOTSTRAP) {
-				$config['templateConfig'] = APIGEN_ROOT_PATH . '/templates/bootstrap/config.neon';
-			}
-			$isThemeUsed = TRUE;
+			$config['templateConfig'] = $this->getTemplateConfigPathFromTheme($config['templateTheme']);
 		}
-
-		// Merge template configuration
-		$templateConfigFile = new NeonFile($config['templateConfig']);
-		$config['template'] = $templateConfigFile->read();
-
-		// Fix paths for themes
-		if ($isThemeUsed) {
-			$config = $this->correctThemeTemplatePaths($config);
-		}
+		$config['template'] = $this->themeConfigFactory->create($config['templateConfig'])->getOptions();
 
 		$config = $this->sanitaze($config);
 		$this->validate($config);
@@ -120,7 +115,22 @@ class Configuration extends Nette\Object
 
 
 	/**
-	 * @param array $config
+	 * @param string $theme
+	 * @return string
+	 */
+	private function getTemplateConfigPathFromTheme($theme)
+	{
+		if ($theme === self::TEMPLATE_THEME_DEFAULT) {
+			return APIGEN_ROOT_PATH . '/templates/default/config.neon';
+
+		} elseif ($theme === self::TEMPLATE_THEME_BOOTSTRAP) {
+			return APIGEN_ROOT_PATH . '/templates/bootstrap/config.neon';
+		}
+		throw new ConfigurationException('Template theme  ' . $theme . ' is not supported.');
+	}
+
+
+	/**
 	 * @throws AssertionException
 	 */
 	private function validate(array $config)
@@ -164,36 +174,7 @@ class Configuration extends Nette\Object
 			Validators::assert($extension, 'string', 'file extension');
 		}
 
-		$this->validateTemplateConfig($config);
-
 		$this->onSuccessValidate($config);
-	}
-
-
-	/**
-	 * @param array $config
-	 */
-	private function validateTemplateConfig($config)
-	{
-		if ( ! is_file($config['templateConfig'])) {
-			throw new ConfigurationException($config['templateConfig'] . ' was not found. Fix templateConfig option');
-		}
-
-		foreach (array('main', 'optional') as $section) {
-			foreach ($config['template']['templates'][$section] as $type => $configSection) {
-				if ( ! isset($configSection['filename'])) {
-					throw new ConfigurationException("Filename for $type is not defined");
-				}
-
-				if ( ! isset($configSection['template'])) {
-					throw new ConfigurationException("Template for $type is not defined");
-				}
-
-				if ( ! is_file(dirname($config['templateConfig']) . '/' . $configSection['template'])) {
-					throw new ConfigurationException("Template for $type does not exist");
-				}
-			}
-		}
 	}
 
 
@@ -224,7 +205,7 @@ class Configuration extends Nette\Object
 		// Process options that specify a filesystem path
 		foreach ($this->pathOptions as $option) {
 			if (is_array($config[$option])) {
-				array_walk($config[$option], array($this, 'sanitazePathHelper'));
+				array_walk($config[$option], [$this, 'sanitazePathHelper']);
 				usort($config[$option], 'strcasecmp');
 
 			} else {
@@ -240,24 +221,6 @@ class Configuration extends Nette\Object
 
 		// Base url without slash at the end
 		$config['baseUrl'] = rtrim($config['baseUrl'], '/');
-
-		return $config;
-	}
-
-
-	/**
-	 * @param array $config
-	 * @return array
-	 */
-	private function correctThemeTemplatePaths(array $config)
-	{
-		$templateDir = dirname($config['templateConfig']);
-
-		foreach (array('main', 'optional') as $section) {
-			foreach ($config['template']['templates'][$section] as $type => $configSection) {
-				$configSection['template'] = $templateDir . '/' . $configSection['template'];
-			}
-		}
 
 		return $config;
 	}

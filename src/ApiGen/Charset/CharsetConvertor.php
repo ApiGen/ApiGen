@@ -20,9 +20,9 @@ class CharsetConvertor extends Nette\Object
 	/**
 	 * List of possible character sets.
 	 *
-	 * @var array
+	 * @var string[]
 	 */
-	private $charsets = array();
+	private $charsets = [];
 
 
 	public function setCharset(array $charsets)
@@ -35,11 +35,11 @@ class CharsetConvertor extends Nette\Object
 		} else {
 			if (count($charsets) === 1 && $firstValue === self::AUTO) {
 				// Autodetection
-				$this->charsets = array(
+				$this->charsets = [
 					'Windows-1251', 'Windows-1252', 'ISO-8859-2', 'ISO-8859-1', 'ISO-8859-3', 'ISO-8859-4', 'ISO-8859-5',
 					'ISO-8859-6', 'ISO-8859-7', 'ISO-8859-8', 'ISO-8859-9', 'ISO-8859-10', 'ISO-8859-13', 'ISO-8859-14',
 					'ISO-8859-15'
-				);
+				];
 
 			} else {
 				// More character sets
@@ -69,12 +69,11 @@ class CharsetConvertor extends Nette\Object
 	{
 		$content = file_get_contents($filePath);
 
-		$cache = array();
+		$cache = [];
 		if ( ! isset($cache[$filePath])) {
 			if (count($this->getCharsets()) === 1) {
 				// One character set
-				$charset = $this->getCharsets();
-				$charset = $charset[0];
+				$charset = $this->getCharsets()[0];
 
 			} else {
 				// Detection
@@ -100,12 +99,12 @@ class CharsetConvertor extends Nette\Object
 
 
 	/**
-	 * @return array
+	 * @return string[]
 	 */
 	private function getCharsets()
 	{
 		if ( ! count($this->charsets)) {
-			$this->setCharset(array(self::AUTO));
+			$this->setCharset([self::AUTO]);
 		}
 		return $this->charsets;
 	}

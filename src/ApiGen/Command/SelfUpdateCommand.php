@@ -24,7 +24,7 @@ class SelfUpdateCommand extends Command
 	protected function configure()
 	{
 		$this->setName('self-update')
-			->setAliases(array('selfupdate'))
+			->setAliases(['selfupdate'])
 			->setDescription('Updates apigen.phar to the latest version')
 			->setHelp(<<<EOT
 The <info>self-update</info> command checks apigen.org for newer
