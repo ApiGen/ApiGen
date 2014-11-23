@@ -101,6 +101,7 @@ class ConfigurationOptionsResolver extends Nette\Object
 		$this->setRequired();
 		$this->setAllowedTypes();
 		$this->setAllowedValues();
+		$this->setTypeCorrectors();
 		$this->setNormalizers();
 		return $this->resolver->resolve($options);
 	}
@@ -266,16 +267,23 @@ class ConfigurationOptionsResolver extends Nette\Object
 				}
 				return $value;
 			},
-			CO::SOURCE_CODE => function (Options $options, $value) {
-				return (bool) $value;
-			},
 			CO::TEMPLATE_CONFIG => function (Options $options, $value) {
 				return FileSystem::getAbsolutePath($value);
-			},
-			CO::TREE => function (Options $options, $value) {
-				return (bool) $value;
 			}
 		]);
+	}
+
+
+	public function setTypeCorrectors()
+	{
+		$boolConfigurationOptions = [CO::DEPRECATED, CO::INTERNAL, CO::PHP, CO::SOURCE_CODE, CO::TREE, CO::TREE];
+		foreach ($boolConfigurationOptions as $optionName) {
+			$this->resolver->setNormalizers([
+				$optionName => function (Options $options, $value) {
+					return (bool) $value;
+				}
+			]);
+		}
 	}
 
 
