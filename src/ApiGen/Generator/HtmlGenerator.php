@@ -470,12 +470,12 @@ class HtmlGenerator extends Nette\Object implements Generator
 
 		// todo: wip
 		$themeTemplates = $this->config['template']['templates'];
-		$commonTemplates = [
+		$commonTemplates = array(
 			$themeTemplates['overview'],
 			$themeTemplates['combined'],
 			$themeTemplates['elementlist'],
 			$themeTemplates['404']
-		];
+		);
 
 		foreach ($commonTemplates as $templateInfo) {
 			$template->setFile($templateInfo['template'])

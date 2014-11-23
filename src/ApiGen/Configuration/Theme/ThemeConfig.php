@@ -128,7 +128,6 @@ class ThemeConfig extends Nette\Object
 	}
 
 
-
 	/**
 	 * @return array
 	 */
@@ -152,9 +151,10 @@ class ThemeConfig extends Nette\Object
 				}
 			));
 
+			$themeUsed = $this->isThemeUsed();
 			$resolver->setNormalizers(array(
-				'templates' => function (Options $options, $value) {
-					if ($this->isThemeUsed()) {
+				'templates' => function (Options $options, $value) use ($themeUsed) {
+					if ($themeUsed) {
 						foreach ($value as $type => $settings) {
 							$value[$type]['template'] = $options['templatesPath'] . '/' . $settings['template'];
 						}
