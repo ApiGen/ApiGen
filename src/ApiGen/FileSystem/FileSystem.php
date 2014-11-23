@@ -102,25 +102,43 @@ class FileSystem
 	}
 
 
-	/**
-	 * @param string $relativePath
-	 * @param array $baseDirectories List of base directories
-	 * @return string|NULL
-	 */
-	public static function getAbsolutePath($relativePath, array $baseDirectories)
-	{
-		if (preg_match('~/|[a-z]:~Ai', $relativePath)) { // absolute path already
-			return $relativePath;
-		}
 
-		foreach ($baseDirectories as $directory) {
-			$fileName = $directory . '/' . $relativePath;
-			if (is_file($fileName)) {
-				return realpath($fileName);
+	/**
+	 * @param string $path
+	 * @param array $baseDirectories List of base directories
+	 * @return string
+	 */
+	public static function getAbsolutePath($path, array $baseDirectories = array())
+	{
+		if (self::isAbsolutePath($path)) {
+			return $path;
+		}
+		if (count($baseDirectories)) {
+			foreach ($baseDirectories as $directory) {
+				$fileName = $directory . '/' . $path;
+				if (is_file($fileName)) {
+					return realpath($fileName);
+				}
 			}
 		}
+		$path = FileSystem::normalizePath($path);
+		if ((strpos($path, 'phar://') !== 0) && file_exists($path)) {
+			return realpath($path);
+		}
+		return $path;
+	}
 
-		return NULL;
+
+	/**
+	 * @param string $path
+	 * @return bool
+	 */
+	private static function isAbsolutePath($path)
+	{
+		if (preg_match('~/|[a-z]:~Ai', $path)) {
+			return TRUE;
+		}
+		return FALSE;
 	}
 
 }
