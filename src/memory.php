@@ -11,7 +11,7 @@
 /**
  * @param string $newMemoryLimit
  */
-function setMemoryLimitTo($newMemoryLimit = '512M')
+function setMemoryLimitTo($newMemoryLimit)
 {
 	if (function_exists('ini_set')) {
 		$memoryLimit = trim(ini_get('memory_limit'));

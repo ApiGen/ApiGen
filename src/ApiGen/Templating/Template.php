@@ -48,7 +48,7 @@ class Template extends Nette\Bridges\ApplicationLatte\Template
 	 */
 	public function __call($name, $args)
 	{
-		$filters = array('namespaceUrl', 'packageUrl', 'classUrl', 'constantUrl', 'functionUrl', 'sourceUrl');
+		$filters = ['namespaceUrl', 'packageUrl', 'classUrl', 'constantUrl', 'functionUrl', 'sourceUrl'];
 		if (in_array($name, $filters)) {
 			return $this->getLatte()->invokeFilter($name, $args);
 		}

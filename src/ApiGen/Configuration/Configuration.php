@@ -19,7 +19,7 @@ use Nette\Utils\Validators;
 
 
 /**
- * @method Configuration onSuccessValidate(array $config)
+ * @method Configuration onOptionsResolve(array $config)
  */
 class Configuration extends Nette\Object
 {
@@ -34,7 +34,7 @@ class Configuration extends Nette\Object
 	/**
 	 * @var array
 	 */
-	public $onSuccessValidate = [];
+	public $onOptionsResolve = [];
 
 	/**
 	 * @var ConfigurationOptionsResolver
@@ -51,10 +51,10 @@ class Configuration extends Nette\Object
 	/**
 	 * @return array
 	 */
-	public function setDefaults(array $options)
+	public function resolveOptions(array $options)
 	{
 		self::$config = $options = $this->configurationOptionsResolver->resolve($options);
-		$this->onSuccessValidate($options);
+		$this->onOptionsResolve($options);
 		return $options;
 	}
 

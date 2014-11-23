@@ -9,9 +9,9 @@
 
 namespace ApiGen\Configuration;
 
+use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Configuration\Theme\ThemeConfigFactory;
 use ApiGen\FileSystem\FileSystem;
-use ApiGen\Configuration\ConfigurationOptions as CO;
 use Nette;
 use ReflectionMethod;
 use ReflectionProperty;
@@ -101,6 +101,7 @@ class ConfigurationOptionsResolver extends Nette\Object
 		$this->setRequired();
 		$this->setAllowedTypes();
 		$this->setAllowedValues();
+		$this->setTypeCorrectors();
 		$this->setNormalizers();
 		return $this->resolver->resolve($options);
 	}
@@ -190,11 +191,11 @@ class ConfigurationOptionsResolver extends Nette\Object
 			CO::SKIP_DOC_PATH => 'array',
 			CO::SKIP_DOC_PREFIX => 'array',
 			CO::SOURCE => 'array',
-			CO::SOURCE_CODE => 'bool',
+			CO::SOURCE_CODE => ['string', 'bool'],
 			CO::TEMPLATE_CONFIG => 'string',
 			CO::TITLE => ['null', 'string'],
 			CO::TODO => 'bool',
-			CO::TREE => 'bool'
+			CO::TREE => ['string', 'bool']
 		]);
 	}
 
@@ -270,6 +271,19 @@ class ConfigurationOptionsResolver extends Nette\Object
 				return FileSystem::getAbsolutePath($value);
 			}
 		]);
+	}
+
+
+	public function setTypeCorrectors()
+	{
+		$boolConfigurationOptions = [CO::DEPRECATED, CO::INTERNAL, CO::PHP, CO::SOURCE_CODE, CO::TREE, CO::TREE];
+		foreach ($boolConfigurationOptions as $optionName) {
+			$this->resolver->setNormalizers([
+				$optionName => function (Options $options, $value) {
+					return (bool) $value;
+				}
+			]);
+		}
 	}
 
 

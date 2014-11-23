@@ -9,7 +9,7 @@
 
 namespace ApiGen\Templating\Filters;
 
-use ApiGen\Configuration\Configuration;
+use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Reflection\ReflectionClass;
 use ApiGen\Reflection\ReflectionConstant;
 use ApiGen\Reflection\ReflectionElement;
@@ -36,7 +36,7 @@ class SourceFilters extends Filters
 	public function staticFile($name)
 	{
 		$versions = [];
-		$filename = $this->config['destination'] . '/' . $name;
+		$filename = $this->config[CO::DESTINATION] . '/' . $name;
 		if ( ! isset($versions[$filename]) && is_file($filename)) {
 			$versions[$filename] = sprintf('%u', crc32(file_get_contents($filename)));
 		}
@@ -126,7 +126,7 @@ class SourceFilters extends Filters
 				? sprintf('%s-%s', $element->getStartLine(), $element->getEndLine()) : $element->getStartLine();
 		}
 
-		return sprintf($this->config['template']['templates']['source']['filename'], $file)
+		return sprintf($this->config[CO::TEMPLATE]['templates']['source']['filename'], $file)
 			. ($lines !== NULL ? '#' . $lines : '');
 	}
 

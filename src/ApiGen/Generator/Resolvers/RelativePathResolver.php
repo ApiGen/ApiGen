@@ -9,6 +9,7 @@
 
 namespace ApiGen\Generator\Resolvers;
 
+use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\FileSystem\FileSystem;
 use Nette;
 
@@ -45,7 +46,7 @@ class RelativePathResolver extends Nette\Object
 		if (isset($this->symlinks[$fileName])) {
 			$fileName = $this->symlinks[$fileName];
 		}
-		foreach ($this->config['source'] as $source) {
+		foreach ($this->config[CO::SOURCE] as $source) {
 			if (FileSystem::isPhar($source)) {
 				$source = FileSystem::pharPath($source);
 			}

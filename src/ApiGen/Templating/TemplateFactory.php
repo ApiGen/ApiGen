@@ -10,6 +10,7 @@
 namespace ApiGen\Templating;
 
 use ApiGen\Configuration\Configuration;
+use ApiGen\Configuration\ConfigurationOptions as CO;
 use Latte;
 use Nette;
 use Nette\Utils\ArrayHash;
@@ -52,7 +53,7 @@ class TemplateFactory extends Nette\Object
 		/** @var Template|\stdClass $template */
 		$template = new Template($this->latteEngine);
 		$template->config = ArrayHash::from($this->config);
-		$template->basePath = $this->config['template']['templatesPath'];
+		$template->basePath = $this->config[CO::TEMPLATE]['templatesPath'];
 		return $template;
 	}
 

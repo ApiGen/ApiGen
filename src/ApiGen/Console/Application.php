@@ -13,6 +13,8 @@ use ApiGen\ApiGen;
 use Kdyby;
 use Kdyby\Events\EventArgsList;
 use Kdyby\Events\EventManager;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -56,20 +58,7 @@ class Application extends Kdyby\Console\Application
 	public function doRun(InputInterface $input, OutputInterface $output)
 	{
 		$this->onRun($input, $output);
-
-		// Switch working dir
-		if ($newWorkDir = $this->getNewWorkingDir($input)) {
-			$oldWorkingDir = getcwd();
-			chdir($newWorkDir);
-		}
-
-		$result = parent::doRun($input, $output);
-
-		if (isset($oldWorkingDir)) {
-			chdir($oldWorkingDir);
-		}
-
-		return $result;
+		return parent::doRun($input, $output);
 	}
 
 
@@ -79,38 +68,23 @@ class Application extends Kdyby\Console\Application
 	}
 
 
-	public function onRun(InputInterface $input, OutputInterface $output)
-	{
-		$this->eventManager->dispatchEvent(__METHOD__, new EventArgsList([$input, $output]));
-	}
-
-
 	/**
 	 * {@inheritDoc}
 	 */
 	protected function getDefaultInputDefinition()
 	{
-		$definition = parent::getDefaultInputDefinition();
-		$definition->addOption(
-			new InputOption('--working-dir', '-wd', InputOption::VALUE_REQUIRED,
-				'If specified, use the given directory as working directory.'
-			)
-		);
-		return $definition;
+		return new InputDefinition([
+			new InputArgument('command', InputArgument::REQUIRED, 'The command to execute'),
+			new InputOption('help', 'h', InputOption::VALUE_NONE, 'Display this help message.'),
+			new InputOption('quiet', 'q', InputOption::VALUE_NONE, 'Do not output any message.'),
+			new InputOption('version', NULL, InputOption::VALUE_NONE, 'Display this application version.')
+		]);
 	}
 
 
-	/**
-	 * @return string
-	 * @throws \RuntimeException
-	 */
-	private function getNewWorkingDir(InputInterface $input)
+	private function onRun(InputInterface $input, OutputInterface $output)
 	{
-		$workingDir = $input->getParameterOption(['--working-dir', '-d']);
-		if ($workingDir !== FALSE && ! is_dir($workingDir)) {
-			throw new \RuntimeException('Invalid working directory specified.');
-		}
-		return $workingDir;
+		$this->eventManager->dispatchEvent(__METHOD__, new EventArgsList([$input, $output]));
 	}
 
 }
