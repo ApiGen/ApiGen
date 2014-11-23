@@ -31,18 +31,18 @@ class Backend extends Broker\Backend\Memory
 {
 
 	/**
-	 * @var array
+	 * @var array[]
 	 */
-	private $allClasses = array(
-		self::TOKENIZED_CLASSES => array(),
-		self::INTERNAL_CLASSES => array(),
-		self::NONEXISTENT_CLASSES => array()
-	);
+	private $allClasses = [
+		self::TOKENIZED_CLASSES => [],
+		self::INTERNAL_CLASSES => [],
+		self::NONEXISTENT_CLASSES => []
+	];
 
 	/**
 	 * @var array
 	 */
-	private $declared = array();
+	private $declared = [];
 
 
 	/**
@@ -125,7 +125,7 @@ class Backend extends Broker\Backend\Memory
 	private function processFunction($reflection)
 	{
 		$annotations = $reflection->getAnnotations();
-		foreach (array('param', 'return', 'throws') as $annotation) {
+		foreach (['param', 'return', 'throws'] as $annotation) {
 			$this->loadAnnotationFromReflection($reflection, $annotations, $annotation);
 		}
 

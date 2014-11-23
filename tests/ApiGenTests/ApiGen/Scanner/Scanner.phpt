@@ -41,20 +41,20 @@ class ScannerTest extends TestCase
 
 	public function testScanFiles()
 	{
-		$files = $this->scanner->scan(array(PROJECT_DIR));
+		$files = $this->scanner->scan([PROJECT_DIR]);
 		Assert::equal(14, count($files));
 
-		$files = $this->scanner->scan(array(PROJECT_DIR), array('*Annotation*'));
+		$files = $this->scanner->scan([PROJECT_DIR], ['*Annotation*']);
 		Assert::equal(13, count($files));
 
-		$files = $this->scanner->scan(array(PROJECT_DIR), array(), array('php5'));
+		$files = $this->scanner->scan([PROJECT_DIR], [], ['php5']);
 		Assert::equal(1, count($files));
 	}
 
 
 	public function testSymlinks()
 	{
-		$this->scanner->scan(array(PROJECT_DIR));
+		$this->scanner->scan([PROJECT_DIR]);
 		Assert::count(14, $this->scanner->getSymlinks());
 	}
 
@@ -64,7 +64,7 @@ class ScannerTest extends TestCase
 	 */
 	public function testNoFound()
 	{
-		$this->scanner->scan(array(PROJECT_DIR), array(), array('php6'));
+		$this->scanner->scan([PROJECT_DIR], [], ['php6']);
 	}
 
 
@@ -74,7 +74,7 @@ class ScannerTest extends TestCase
 		$compiler->compile(TEMP_DIR . '/apigen.phar');
 		Assert::true(file_exists(TEMP_DIR . '/apigen.phar'));
 
-		$files = $this->scanner->scan(array(TEMP_DIR . '/apigen.phar'));
+		$files = $this->scanner->scan([TEMP_DIR . '/apigen.phar']);
 		Assert::true(count($files) > 400);
 	}
 
@@ -84,11 +84,11 @@ class ScannerTest extends TestCase
 	 */
 	public function testExcludeAppliedOnlyOnSourcesPath()
 	{
-		$files = $this->scanner->scan(array(PROJECT_DIR), array('tests', '*tests*', '*/tests/*'));
+		$files = $this->scanner->scan([PROJECT_DIR], ['tests', '*tests*', '*/tests/*']);
 		Assert::same(14, count($files));
 	}
 
 }
 
 
-\run(new ScannerTest);
+(new ScannerTest)->run();

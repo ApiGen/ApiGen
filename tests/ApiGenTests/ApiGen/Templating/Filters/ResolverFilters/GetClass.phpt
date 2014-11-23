@@ -28,7 +28,7 @@ class FilterTests extends TestCase
 
 		/** @var Latte\Engine $latte */
 		$latte = $container->getByType('Latte\Engine');
-		$result = $latte->invokeFilter('getClass', array('foo'));
+		$result = $latte->invokeFilter('getClass', ['foo']);
 		Assert::false($result);
 	}
 
@@ -47,4 +47,4 @@ class FilterTests extends TestCase
 }
 
 
-\run(new FilterTests);
+(new FilterTests)->run();

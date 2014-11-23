@@ -88,7 +88,6 @@ class ReflectionParameterMagic extends ReflectionParameter
 
 
 	/**
-	 * Returns the name.
 	 * Overrides parent method.
 	 *
 	 * @return string
@@ -100,8 +99,6 @@ class ReflectionParameterMagic extends ReflectionParameter
 
 
 	/**
-	 * Returns the type hint.
-	 *
 	 * @return string
 	 */
 	public function getTypeHint()
@@ -111,8 +108,6 @@ class ReflectionParameterMagic extends ReflectionParameter
 
 
 	/**
-	 * Returns the file name the parameter is defined in.
-	 *
 	 * @return string
 	 */
 	public function getFileName()
@@ -122,8 +117,6 @@ class ReflectionParameterMagic extends ReflectionParameter
 
 
 	/**
-	 * Returns if the reflection object is internal.
-	 *
 	 * @return bool
 	 */
 	public function isInternal()
@@ -142,8 +135,6 @@ class ReflectionParameterMagic extends ReflectionParameter
 
 
 	/**
-	 * Returns if the current reflection comes from a tokenized source.
-	 *
 	 * @return bool
 	 */
 	public function isTokenized()
@@ -200,8 +191,6 @@ class ReflectionParameterMagic extends ReflectionParameter
 
 
 	/**
-	 * Returns the definition start line number in the file.
-	 *
 	 * @return integer
 	 */
 	public function getStartLine()
@@ -211,8 +200,6 @@ class ReflectionParameterMagic extends ReflectionParameter
 
 
 	/**
-	 * Returns the definition end line number in the file.
-	 *
 	 * @return integer
 	 */
 	public function getEndLine()
@@ -222,8 +209,6 @@ class ReflectionParameterMagic extends ReflectionParameter
 
 
 	/**
-	 * Returns the appropriate docblock definition.
-	 *
 	 * @return string|boolean
 	 */
 	public function getDocComment()
@@ -233,8 +218,6 @@ class ReflectionParameterMagic extends ReflectionParameter
 
 
 	/**
-	 * Returns the part of the source code defining the parameter default value.
-	 *
 	 * @return string
 	 */
 	public function getDefaultValueDefinition()
@@ -253,8 +236,6 @@ class ReflectionParameterMagic extends ReflectionParameter
 
 
 	/**
-	 * Returns the position within all parameters.
-	 *
 	 * @return integer
 	 */
 	public function getPosition()
@@ -282,8 +263,6 @@ class ReflectionParameterMagic extends ReflectionParameter
 
 
 	/**
-	 * Returns reflection of the required class of the value.
-	 *
 	 * @return ReflectionClass|null
 	 */
 	public function getClass()
@@ -294,8 +273,6 @@ class ReflectionParameterMagic extends ReflectionParameter
 
 
 	/**
-	 * Returns the required class name of the value.
-	 *
 	 * @return string|NULL
 	 */
 	public function getClassName()
@@ -353,8 +330,6 @@ class ReflectionParameterMagic extends ReflectionParameter
 
 
 	/**
-	 * Returns if the parameter can be used unlimited times.
-	 *
 	 * @return bool
 	 */
 	public function isUnlimited()

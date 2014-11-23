@@ -49,7 +49,7 @@ abstract class ReflectionBase extends Nette\Object implements IReflection
 	 *
 	 * @var array
 	 */
-	protected static $reflectionMethods = array();
+	protected static $reflectionMethods = [];
 
 	/**
 	 * @var string
@@ -142,8 +142,6 @@ abstract class ReflectionBase extends Nette\Object implements IReflection
 
 
 	/**
-	 * Returns the definition start line number in the file.
-	 *
 	 * @return integer
 	 */
 	public function getStartLine()
@@ -159,8 +157,6 @@ abstract class ReflectionBase extends Nette\Object implements IReflection
 
 
 	/**
-	 * Returns the definition end line number in the file.
-	 *
 	 * @return integer
 	 */
 	public function getEndLine()

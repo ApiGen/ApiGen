@@ -37,25 +37,25 @@ class Configuration extends Nette\Object
 	/**
 	 * @var array
 	 */
-	public $onSuccessValidate = array();
+	public $onSuccessValidate = [];
 
 	/**
-	 * @var array
+	 * @var mixed[]
 	 */
-	private $defaults = array(
-		'extensions' => array('php'),
-		'exclude' => array(),
-		'skipDocPath' => array(),
-		'skipDocPrefix' => array(),
-		'charset' => array('auto'),
+	private $defaults = [
+		'extensions' => ['php'],
+		'exclude' => [],
+		'skipDocPath' => [],
+		'skipDocPrefix' => [],
+		'charset' => ['auto'],
 		'main' => '',
 		'title' => '',
 		'baseUrl' => '',
 		'googleCseId' => '',
 		'googleAnalytics' => '',
 		'groups' => 'auto',
-		'autocomplete' => array('classes', 'constants', 'functions'),
-		'accessLevels' => array('public', 'protected'),
+		'autocomplete' => ['classes', 'constants', 'functions'],
+		'accessLevels' => ['public', 'protected'],
 		'internal' => FALSE,
 		'php' => TRUE,
 		'tree' => TRUE,
@@ -65,19 +65,19 @@ class Configuration extends Nette\Object
 		// templates
 		'templateTheme' => self::TEMPLATE_THEME_DEFAULT,
 		'template' => NULL
-	);
+	];
 
 	/**
 	 * File or directory path options.
 	 *
-	 * @var array
+	 * @var string[]
 	 */
-	private $pathOptions = array(
+	private $pathOptions = [
 		'source',
 		'destination',
 		'exclude',
 		'skipDocPath'
-	);
+	];
 
 	/**
 	 * @var ThemeConfigFactory
@@ -92,7 +92,6 @@ class Configuration extends Nette\Object
 
 
 	/**
-	 * @param array $config
 	 * @return array
 	 */
 	public function setDefaults(array $config)
@@ -132,7 +131,6 @@ class Configuration extends Nette\Object
 
 
 	/**
-	 * @param array $config
 	 * @throws AssertionException
 	 */
 	private function validate(array $config)
@@ -207,7 +205,7 @@ class Configuration extends Nette\Object
 		// Process options that specify a filesystem path
 		foreach ($this->pathOptions as $option) {
 			if (is_array($config[$option])) {
-				array_walk($config[$option], array($this, 'sanitazePathHelper'));
+				array_walk($config[$option], [$this, 'sanitazePathHelper']);
 				usort($config[$option], 'strcasecmp');
 
 			} else {

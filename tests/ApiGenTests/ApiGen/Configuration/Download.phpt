@@ -31,7 +31,7 @@ class DownloadTest extends TestCase
 	{
 		$neonFile = new NeonFile(__DIR__ . '/apigen.neon');
 		$config = $neonFile->read();
-		$config['source'] = array(PROJECT_DIR);
+		$config['source'] = [PROJECT_DIR];
 		$config['destination'] = API_DIR;
 		$config['download'] = TRUE;
 		$neonFile->write($config);
@@ -40,4 +40,4 @@ class DownloadTest extends TestCase
 }
 
 
-\run(new DownloadTest);
+(new DownloadTest)->run();

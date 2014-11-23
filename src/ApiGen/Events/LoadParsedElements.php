@@ -43,9 +43,7 @@ class LoadParsedElements extends Nette\Object implements Subscriber
 	 */
 	public function getSubscribedEvents()
 	{
-		return array(
-			'ApiGen\Parser\Parser::onParseFinish' => 'onFinish',
-		);
+		return ['ApiGen\Parser\Parser::onParseFinish' => 'onFinish'];
 	}
 
 

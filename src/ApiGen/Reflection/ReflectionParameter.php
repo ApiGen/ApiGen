@@ -87,8 +87,6 @@ class ReflectionParameter extends ReflectionBase
 
 
 	/**
-	 * Returns the position within all parameters.
-	 *
 	 * @return integer
 	 */
 	public function getPosition()
@@ -98,8 +96,6 @@ class ReflectionParameter extends ReflectionBase
 
 
 	/**
-	 * Returns if the parameter expects an array.
-	 *
 	 * @return bool
 	 */
 	public function isArray()
@@ -109,8 +105,6 @@ class ReflectionParameter extends ReflectionBase
 
 
 	/**
-	 * Returns if the parameter expects a callback.
-	 *
 	 * @return bool
 	 */
 	public function isCallable()
@@ -120,8 +114,6 @@ class ReflectionParameter extends ReflectionBase
 
 
 	/**
-	 * Returns reflection of the required class of the parameter.
-	 *
 	 * @return ReflectionClass|NULL
 	 */
 	public function getClass()
@@ -132,8 +124,6 @@ class ReflectionParameter extends ReflectionBase
 
 
 	/**
-	 * Returns the required class name of the value.
-	 *
 	 * @return string|NULL
 	 */
 	public function getClassName()
@@ -143,8 +133,6 @@ class ReflectionParameter extends ReflectionBase
 
 
 	/**
-	 * Returns if the the parameter allows NULL.
-	 *
 	 * @return bool
 	 */
 	public function allowsNull()
@@ -154,8 +142,6 @@ class ReflectionParameter extends ReflectionBase
 
 
 	/**
-	 * Returns if the parameter is optional.
-	 *
 	 * @return bool
 	 */
 	public function isOptional()
@@ -165,8 +151,6 @@ class ReflectionParameter extends ReflectionBase
 
 
 	/**
-	 * Returns if the parameter value is passed by reference.
-	 *
 	 * @return bool
 	 */
 	public function isPassedByReference()
@@ -176,8 +160,6 @@ class ReflectionParameter extends ReflectionBase
 
 
 	/**
-	 * Returns if the paramter value can be passed by value.
-	 *
 	 * @return bool
 	 */
 	public function canBePassedByValue()
@@ -187,8 +169,6 @@ class ReflectionParameter extends ReflectionBase
 
 
 	/**
-	 * Returns the declaring function.
-	 *
 	 * @return ReflectionFunctionBase
 	 */
 	public function getDeclaringFunction()
@@ -199,15 +179,12 @@ class ReflectionParameter extends ReflectionBase
 			return self::$parsedClasses[$className]->getMethod($functionName);
 
 		} else {
-			$parsedFunctions = $this->getParsedFunctions();
-			return $parsedFunctions[$functionName];
+			return $this->getParsedFunctions()[$functionName];
 		}
 	}
 
 
 	/**
-	 * Returns the declaring function name.
-	 *
 	 * @return string
 	 */
 	public function getDeclaringFunctionName()
@@ -217,8 +194,6 @@ class ReflectionParameter extends ReflectionBase
 
 
 	/**
-	 * Returns the function/method declaring class.
-	 *
 	 * @return ReflectionClass|NULL
 	 */
 	public function getDeclaringClass()
@@ -229,8 +204,6 @@ class ReflectionParameter extends ReflectionBase
 
 
 	/**
-	 * Returns the declaring class name.
-	 *
 	 * @return string|NULL
 	 */
 	public function getDeclaringClassName()
@@ -240,8 +213,6 @@ class ReflectionParameter extends ReflectionBase
 
 
 	/**
-	 * If the parameter can be used unlimited.
-	 *
 	 * @return bool
 	 */
 	public function isUnlimited()

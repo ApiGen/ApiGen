@@ -62,4 +62,4 @@ class MarkdownMarkupTest extends TestCase
 }
 
 
-\run(new MarkdownMarkupTest);
+(new MarkdownMarkupTest)->run();

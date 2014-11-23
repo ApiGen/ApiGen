@@ -88,7 +88,7 @@ class GroupsTest extends TestCase
 	{
 		$neonFile = new NeonFile(__DIR__ . '/apigen.neon');
 		$config = $neonFile->read();
-		$config['source'] = array(PROJECT_BETA_DIR);
+		$config['source'] = [PROJECT_BETA_DIR];
 		$config['destination'] = API_DIR;
 		if ($group !== NULL) {
 			$config['groups'] = $group;
@@ -99,4 +99,4 @@ class GroupsTest extends TestCase
 }
 
 
-\run(new GroupsTest);
+(new GroupsTest)->run();

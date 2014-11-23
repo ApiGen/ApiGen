@@ -40,7 +40,7 @@ class TreeTest extends TestCase
 	{
 		$neonFile = new NeonFile(__DIR__ . '/apigen.neon');
 		$config = $neonFile->read();
-		$config['source'] = array(PROJECT_DIR);
+		$config['source'] = [PROJECT_DIR];
 		$config['destination'] = API_DIR;
 		if ($treeState !== NULL) {
 			$config['tree'] = $treeState;
@@ -51,4 +51,4 @@ class TreeTest extends TestCase
 }
 
 
-\run(new TreeTest);
+(new TreeTest)->run();

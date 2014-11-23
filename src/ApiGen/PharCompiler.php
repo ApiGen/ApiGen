@@ -111,7 +111,7 @@ __HALT_COMPILER();
 			$this->addFile($phar, $file);
 		}
 
-		$exclude = array(
+		$exclude = [
 			'jakub-onderka/php-parallel-lint',
 			'nette/*/Tests',
 			'nette/tester',
@@ -119,7 +119,7 @@ __HALT_COMPILER();
 			'squizlabs',
 			'symfony/*/*/Tests',
 			'zenify/coding-standard'
-		);
+		];
 		foreach (Finder::findFiles('*.php')->from("$this->repoDir/vendor")->exclude($exclude) as $file) {
 			$this->addFile($phar, $file);
 		}
@@ -168,10 +168,10 @@ __HALT_COMPILER();
 		$path = strtr($path, DIRECTORY_SEPARATOR, '/');
 
 		if ($path === 'src/ApiGen/ApiGen.php') {
-			$content = strtr($content, array(
+			$content = strtr($content, [
 				'@package_version@' => $this->version,
 				'@release_date@' => $this->releaseDate,
-			));
+			]);
 		}
 
 		$phar[$path] = $content;
@@ -194,7 +194,7 @@ __HALT_COMPILER();
 			} elseif ($token[0] === T_COMMENT) {
 				$output .= str_repeat("\n", substr_count($token[1], "\n"));
 
-			} elseif ($this->isCommentWithoutAnnotations($token, array('@return', '@method'))) {
+			} elseif ($this->isCommentWithoutAnnotations($token, ['@return', '@method'])) {
 				$output .= str_repeat("\n", substr_count($token[1], "\n"));
 
 			} elseif ($token[0] === T_WHITESPACE) {

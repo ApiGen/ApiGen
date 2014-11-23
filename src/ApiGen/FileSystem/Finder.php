@@ -31,7 +31,7 @@ class Finder extends Nette\Object
 	 */
 	public function findGeneratedFiles()
 	{
-		$files = array();
+		$files = [];
 
 		// Resources
 		foreach ($this->config['template']['resources'] as $item) {

@@ -30,7 +30,7 @@ class PhpManualFilters extends Filters
 	public function manualUrl($element)
 	{
 		$manual = 'http://php.net/manual';
-		$reservedClasses = array('stdClass', 'Closure', 'Directory');
+		$reservedClasses = ['stdClass', 'Closure', 'Directory'];
 
 		// Extension
 		if ($element instanceof ReflectionExtension) {

@@ -97,13 +97,11 @@ class InjectConfig extends Nette\Object implements Subscriber
 
 
 	/**
-	 * @return array
+	 * @return string[]
 	 */
 	public function getSubscribedEvents()
 	{
-		return array(
-			'ApiGen\Configuration\Configuration::onSuccessValidate'
-		);
+		return ['ApiGen\Configuration\Configuration::onSuccessValidate'];
 	}
 
 

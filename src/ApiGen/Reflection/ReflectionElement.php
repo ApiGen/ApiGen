@@ -39,7 +39,7 @@ abstract class ReflectionElement extends ReflectionBase
 	 *
 	 * @var array
 	 */
-	private $reasons = array();
+	private $reasons = [];
 
 
 	/**
@@ -163,7 +163,7 @@ abstract class ReflectionElement extends ReflectionBase
 	 */
 	public function getPackageName()
 	{
-		static $packages = array();
+		static $packages = [];
 
 		if ($package = $this->getAnnotation('package')) {
 			$packageName = preg_replace('~\s+.*~s', '', $package[0]);
@@ -228,7 +228,7 @@ abstract class ReflectionElement extends ReflectionBase
 	 */
 	public function getNamespaceName()
 	{
-		static $namespaces = array();
+		static $namespaces = [];
 
 		$namespaceName = $this->reflection->getNamespaceName();
 
@@ -329,13 +329,13 @@ abstract class ReflectionElement extends ReflectionBase
 	public function getAnnotations()
 	{
 		if ($this->annotations === NULL) {
-			static $fileLevel = array(
+			static $fileLevel = [
 				'package' => TRUE,
 				'subpackage' => TRUE,
 				'author' => TRUE,
 				'license' => TRUE,
 				'copyright' => TRUE
-			);
+			];
 
 			$annotations = $this->reflection->getAnnotations();
 			$annotations = array_change_key_case($annotations, CASE_LOWER);

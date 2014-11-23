@@ -31,7 +31,7 @@ class FileSystem
 	 */
 	public static function normalizePath($path)
 	{
-		$path = str_replace(array('\\'), '/', $path);
+		$path = str_replace(['\\'], '/', $path);
 		$path = str_replace('phar:\\\\', 'phar://', $path);
 		return $path;
 	}

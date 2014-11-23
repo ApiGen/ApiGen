@@ -35,9 +35,7 @@ class LoadRelativePathResolver extends Nette\Object implements Subscriber
 	 */
 	public function getSubscribedEvents()
 	{
-		return array(
-			'ApiGen\Scanner\Scanner::onScanFinish' => 'onFinish',
-		);
+		return ['ApiGen\Scanner\Scanner::onScanFinish' => 'onFinish'];
 	}
 
 

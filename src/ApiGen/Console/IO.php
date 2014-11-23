@@ -17,8 +17,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * @method InputInterface   getInput()
  * @method OutputInterface  getOutput()
- * @method IO        setInput(object)
- * @method IO        setOutput(object)
+ * @method IO               setInput(object)
+ * @method IO               setOutput(object)
  */
 class IO extends Nette\Object
 {

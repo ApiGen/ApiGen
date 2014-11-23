@@ -45,12 +45,12 @@ class HtmlGenerator extends Nette\Object implements Generator
 	/**
 	 * @var array
 	 */
-	public $onGenerateStart = array();
+	public $onGenerateStart = [];
 
 	/**
 	 * @var array
 	 */
-	public $onGenerateProgress = array();
+	public $onGenerateProgress = [];
 
 	/**
 	 * @var array
@@ -75,42 +75,42 @@ class HtmlGenerator extends Nette\Object implements Generator
 	/**
 	 * @var array
 	 */
-	private $packages = array();
+	private $packages = [];
 
 	/**
 	 * @var array
 	 */
-	private $namespaces = array();
+	private $namespaces = [];
 
 	/**
 	 * @var array
 	 */
-	private $classes = array();
+	private $classes = [];
 
 	/**
 	 * @var array
 	 */
-	private $interfaces = array();
+	private $interfaces = [];
 
 	/**
 	 * @var array
 	 */
-	private $traits = array();
+	private $traits = [];
 
 	/**
 	 * @var array
 	 */
-	private $exceptions = array();
+	private $exceptions = [];
 
 	/**
 	 * @var array
 	 */
-	private $constants = array();
+	private $constants = [];
 
 	/**
 	 * @var array
 	 */
-	private $functions = array();
+	private $functions = [];
 
 	/**
 	 * @var CharsetConvertor
@@ -281,7 +281,7 @@ class HtmlGenerator extends Nette\Object implements Generator
 	 */
 	private function categorize()
 	{
-		foreach (array('classes', 'constants', 'functions') as $type) {
+		foreach (['classes', 'constants', 'functions'] as $type) {
 			foreach ($this->{'parsed' . ucfirst($type)} as $elementName => $element) {
 				/** @var ReflectionClass|ReflectionElement $element */
 				if ( ! $element->isDocumented()) {
@@ -327,8 +327,8 @@ class HtmlGenerator extends Nette\Object implements Generator
 		}
 
 		// Select only packages or namespaces
-		$userPackagesCount = count(array_diff(array_keys($this->packages), array('PHP', 'None')));
-		$userNamespacesCount = count(array_diff(array_keys($this->namespaces), array('PHP', 'None')));
+		$userPackagesCount = count(array_diff(array_keys($this->packages), ['PHP', 'None']));
+		$userNamespacesCount = count(array_diff(array_keys($this->namespaces), ['PHP', 'None']));
 
 		$namespacesEnabled = ($this->config['groups'] === 'auto'
 			&& ($userNamespacesCount > 0 || $userPackagesCount === 0))
@@ -338,16 +338,16 @@ class HtmlGenerator extends Nette\Object implements Generator
 			|| $this->config['groups'] === 'packages';
 
 		if ($namespacesEnabled) {
-			$this->packages = array();
+			$this->packages = [];
 			$this->namespaces = $this->sortGroups($this->namespaces);
 
 		} elseif ($packagesEnabled) {
-			$this->namespaces = array();
+			$this->namespaces = [];
 			$this->packages = $this->sortGroups($this->packages);
 
 		} else {
-			$this->namespaces = array();
-			$this->packages = array();
+			$this->namespaces = [];
+			$this->packages = [];
 		}
 	}
 
@@ -361,17 +361,17 @@ class HtmlGenerator extends Nette\Object implements Generator
 	{
 		// Don't generate only 'None' groups
 		if (count($groups) === 1 && isset($groups['None'])) {
-			return array();
+			return [];
 		}
 
-		$emptyList = array(
-			'classes' => array(),
-			'interfaces' => array(),
-			'traits' => array(),
-			'exceptions' => array(),
-			'constants' => array(),
-			'functions' => array()
-		);
+		$emptyList = [
+			'classes' => [],
+			'interfaces' => [],
+			'traits' => [],
+			'exceptions' => [],
+			'constants' => [],
+			'functions' => []
+		];
 
 		$groupNames = array_keys($groups);
 		$lowerGroupNames = array_flip(array_map(function ($y) {
@@ -391,7 +391,7 @@ class HtmlGenerator extends Nette\Object implements Generator
 			// Add missing element types
 			foreach ($this->getElementTypes() as $type) {
 				if ( ! isset($groups[$groupName][$type])) {
-					$groups[$groupName][$type] = array();
+					$groups[$groupName][$type] = [];
 				}
 			}
 		}
@@ -424,42 +424,42 @@ class HtmlGenerator extends Nette\Object implements Generator
 		$template = $this->addBaseVariablesToTemplate($template);
 
 		// Elements for autocomplete
-		$elements = array();
+		$elements = [];
 		$autocomplete = array_flip($this->config['autocomplete']);
 		foreach ($this->getElementTypes() as $type) {
 			foreach ($this->$type as $element) {
 				if ($element instanceof ReflectionClass) {
 					/** @var ReflectionClass $element */
 					if (isset($autocomplete['classes'])) {
-						$elements[] = array('c', $element->getPrettyName());
+						$elements[] = ['c', $element->getPrettyName()];
 					}
 					if (isset($autocomplete['methods'])) {
 						foreach ($element->getOwnMethods() as $method) {
-							$elements[] = array('m', $method->getPrettyName());
+							$elements[] = ['m', $method->getPrettyName()];
 						}
 						foreach ($element->getOwnMagicMethods() as $method) {
-							$elements[] = array('mm', $method->getPrettyName());
+							$elements[] = ['mm', $method->getPrettyName()];
 						}
 					}
 					if (isset($autocomplete['properties'])) {
 						foreach ($element->getOwnProperties() as $property) {
-							$elements[] = array('p', $property->getPrettyName());
+							$elements[] = ['p', $property->getPrettyName()];
 						}
 						foreach ($element->getOwnMagicProperties() as $property) {
-							$elements[] = array('mp', $property->getPrettyName());
+							$elements[] = ['mp', $property->getPrettyName()];
 						}
 					}
 					if (isset($autocomplete['classconstants'])) {
 						foreach ($element->getOwnConstants() as $constant) {
-							$elements[] = array('cc', $constant->getPrettyName());
+							$elements[] = ['cc', $constant->getPrettyName()];
 						}
 					}
 
 				} elseif ($element instanceof ReflectionConstant && isset($autocomplete['constants'])) {
-					$elements[] = array('co', $element->getPrettyName());
+					$elements[] = ['co', $element->getPrettyName()];
 
 				} elseif ($element instanceof ReflectionFunction && isset($autocomplete['functions'])) {
-					$elements[] = array('f', $element->getPrettyName());
+					$elements[] = ['f', $element->getPrettyName()];
 				}
 			}
 		}
@@ -470,12 +470,12 @@ class HtmlGenerator extends Nette\Object implements Generator
 
 		// todo: wip
 		$themeTemplates = $this->config['template']['templates'];
-		$commonTemplates = array(
+		$commonTemplates = [
 			$themeTemplates['overview'],
 			$themeTemplates['combined'],
 			$themeTemplates['elementlist'],
 			$themeTemplates['404']
-		);
+		];
 
 		foreach ($commonTemplates as $templateInfo) {
 			$template->setFile($templateInfo['template'])
@@ -529,9 +529,9 @@ class HtmlGenerator extends Nette\Object implements Generator
 			return $element->isDeprecated();
 		};
 
-		$template->deprecatedMethods = array();
-		$template->deprecatedConstants = array();
-		$template->deprecatedProperties = array();
+		$template->deprecatedMethods = [];
+		$template->deprecatedConstants = [];
+		$template->deprecatedProperties = [];
 		foreach (array_reverse($this->getElementTypes()) as $type) {
 			$template->{'deprecated' . ucfirst($type)} = array_filter(
 				array_filter($this->$type, $this->getMainFilter()),
@@ -566,10 +566,10 @@ class HtmlGenerator extends Nette\Object implements Generator
 				);
 			}
 		}
-		usort($template->deprecatedMethods, array($this, 'sortMethods'));
-		usort($template->deprecatedConstants, array($this, 'sortConstants'));
-		usort($template->deprecatedFunctions, array($this, 'sortFunctions'));
-		usort($template->deprecatedProperties, array($this, 'sortProperties'));
+		usort($template->deprecatedMethods, [$this, 'sortMethods']);
+		usort($template->deprecatedConstants, [$this, 'sortConstants']);
+		usort($template->deprecatedFunctions, [$this, 'sortFunctions']);
+		usort($template->deprecatedProperties, [$this, 'sortProperties']);
 
 		$template->setFile($this->getTemplatePath('deprecated'))
 			->save($this->getTemplateFileName('deprecated'));
@@ -598,9 +598,9 @@ class HtmlGenerator extends Nette\Object implements Generator
 			return $element->hasAnnotation('todo');
 		};
 
-		$template->todoMethods = array();
-		$template->todoConstants = array();
-		$template->todoProperties = array();
+		$template->todoMethods = [];
+		$template->todoConstants = [];
+		$template->todoProperties = [];
 		foreach (array_reverse($this->getElementTypes()) as $type) {
 			$template->{'todo' . ucfirst($type)} = array_filter(array_filter($this->$type, $this->getMainFilter()), $todoFilter);
 
@@ -628,10 +628,10 @@ class HtmlGenerator extends Nette\Object implements Generator
 				);
 			}
 		}
-		usort($template->todoMethods, array($this, 'sortMethods'));
-		usort($template->todoConstants, array($this, 'sortConstants'));
-		usort($template->todoFunctions, array($this, 'sortFunctions'));
-		usort($template->todoProperties, array($this, 'sortProperties'));
+		usort($template->todoMethods, [$this, 'sortMethods']);
+		usort($template->todoConstants, [$this, 'sortConstants']);
+		usort($template->todoFunctions, [$this, 'sortFunctions']);
+		usort($template->todoProperties, [$this, 'sortProperties']);
 
 		$template->setFile($this->getTemplatePath('todo'))
 			->save($this->getTemplateFileName('todo'));
@@ -655,12 +655,12 @@ class HtmlGenerator extends Nette\Object implements Generator
 		$template = $this->addBaseVariablesToTemplate($template);
 		$this->prepareTemplate('tree');
 
-		$classTree = array();
-		$interfaceTree = array();
-		$traitTree = array();
-		$exceptionTree = array();
+		$classTree = [];
+		$interfaceTree = [];
+		$traitTree = [];
+		$exceptionTree = [];
 
-		$processed = array();
+		$processed = [];
 		foreach ($this->parsedClasses as $className => $reflection) {
 			if ( ! $reflection->isMain() || ! $reflection->isDocumented() || isset($processed[$className])) {
 				continue;
@@ -703,7 +703,7 @@ class HtmlGenerator extends Nette\Object implements Generator
 					$parentName = $parent->getName();
 
 					if ( ! isset($t[$parentName])) {
-						$t[$parentName] = array();
+						$t[$parentName] = [];
 						$processed[$parentName] = TRUE;
 						ksort($t, SORT_STRING);
 					}
@@ -711,7 +711,7 @@ class HtmlGenerator extends Nette\Object implements Generator
 					$t = &$t[$parentName];
 				}
 			}
-			$t[$className] = array();
+			$t[$className] = [];
 			ksort($t, SORT_STRING);
 			$processed[$className] = TRUE;
 			unset($t);
@@ -826,7 +826,7 @@ class HtmlGenerator extends Nette\Object implements Generator
 		// Add @usedby annotation
 		foreach ($this->getElementTypes() as $type) {
 			foreach ($this->$type as $parentElement) {
-				$elements = array($parentElement);
+				$elements = [$parentElement];
 				if ($parentElement instanceof ReflectionClass) {
 					$elements = array_merge(
 						$elements,
@@ -887,7 +887,7 @@ class HtmlGenerator extends Nette\Object implements Generator
 				if ($element instanceof ReflectionClass) {
 					/** @var ReflectionClass $element */
 					// Class
-					$template->tree = array_merge(array_reverse($element->getParentClasses()), array($element));
+					$template->tree = array_merge(array_reverse($element->getParentClasses()), [$element]);
 
 					$template->directSubClasses = $element->getDirectSubClasses();
 					uksort($template->directSubClasses, 'strcasecmp');
@@ -1033,11 +1033,11 @@ class HtmlGenerator extends Nette\Object implements Generator
 
 
 	/**
-	 * @return array
+	 * @return string[]
 	 */
 	private function getElementTypes()
 	{
-		return array('classes', 'interfaces', 'traits', 'exceptions', 'constants', 'functions');
+		return ['classes', 'interfaces', 'traits', 'exceptions', 'constants', 'functions'];
 	}
 
 
