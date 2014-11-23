@@ -9,9 +9,9 @@
 
 namespace ApiGen\Configuration;
 
+use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Configuration\Theme\ThemeConfigFactory;
 use ApiGen\FileSystem\FileSystem;
-use ApiGen\Configuration\ConfigurationOptions as CO;
 use Nette;
 use ReflectionMethod;
 use ReflectionProperty;

@@ -102,7 +102,6 @@ class FileSystem
 	}
 
 
-
 	/**
 	 * @param string $path
 	 * @param array $baseDirectories List of base directories
