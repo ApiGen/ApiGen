@@ -190,11 +190,11 @@ class ConfigurationOptionsResolver extends Nette\Object
 			CO::SKIP_DOC_PATH => 'array',
 			CO::SKIP_DOC_PREFIX => 'array',
 			CO::SOURCE => 'array',
-			CO::SOURCE_CODE => 'bool',
+			CO::SOURCE_CODE => ['string', 'bool'],
 			CO::TEMPLATE_CONFIG => 'string',
 			CO::TITLE => ['null', 'string'],
 			CO::TODO => 'bool',
-			CO::TREE => 'bool'
+			CO::TREE => ['string', 'bool']
 		]);
 	}
 
@@ -266,8 +266,14 @@ class ConfigurationOptionsResolver extends Nette\Object
 				}
 				return $value;
 			},
+			CO::SOURCE_CODE => function (Options $options, $value) {
+				return (bool) $value;
+			},
 			CO::TEMPLATE_CONFIG => function (Options $options, $value) {
 				return FileSystem::getAbsolutePath($value);
+			},
+			CO::TREE => function (Options $options, $value) {
+				return (bool) $value;
 			}
 		]);
 	}

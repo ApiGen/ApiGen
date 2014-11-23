@@ -10,6 +10,7 @@
 namespace ApiGen\Generator;
 
 use ApiGen\Charset\CharsetConvertor;
+use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\FileSystem;
 use ApiGen\FileSystem\FileSystem as FS;
 use ApiGen\Generator\Resolvers\ElementResolver;
@@ -201,16 +202,19 @@ class HtmlGenerator extends Nette\Object implements Generator
 			+ (int) $this->isOpensearchEnabled()
 			+ (int) $this->isRobotsEnabled();
 
-		$tokenizedFilter = function (ReflectionClass $class) {
-			return $class->isTokenized();
-		};
-		$steps += count(array_filter($this->classes, $tokenizedFilter))
-			+ count(array_filter($this->interfaces, $tokenizedFilter))
-			+ count(array_filter($this->traits, $tokenizedFilter))
-			+ count(array_filter($this->exceptions, $tokenizedFilter))
-			+ count($this->constants)
-			+ count($this->functions);
-		unset($tokenizedFilter);
+		if ($this->config[CO::SOURCE_CODE]) {
+			$tokenizedFilter = function (ReflectionClass $class) {
+				return $class->isTokenized();
+			};
+
+			$steps += count(array_filter($this->classes, $tokenizedFilter))
+				+ count(array_filter($this->interfaces, $tokenizedFilter))
+				+ count(array_filter($this->traits, $tokenizedFilter))
+				+ count(array_filter($this->exceptions, $tokenizedFilter))
+				+ count($this->constants)
+				+ count($this->functions);
+			unset($tokenizedFilter);
+		}
 
 		$this->onGenerateStart($steps);
 
@@ -903,7 +907,7 @@ class HtmlGenerator extends Nette\Object implements Generator
 				$this->onGenerateProgress(1);
 
 				// Generate source codes
-				if ($element->isTokenized()) {
+				if ($this->config[CO::SOURCE_CODE] && $element->isTokenized()) {
 					$template->fileName = $this->relativePathResolver->getRelativePath($element->getFileName());
 					$content = $this->charsetConvertor->convertFile($element->getFileName());
 					$template->source = $this->sourceCodeHighlighter->highlightAndAddLineNumbers($content);

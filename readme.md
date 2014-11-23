@@ -164,6 +164,9 @@ internal: false # default [true]
 # generate documentation for PHP internal classes
 php: true # default [false]
 
+# generate highlighted source code for elements
+sourceCode: true # default [false]
+
 # generate tree view of classes, interfaces, traits and exceptions
 tree: true # default [false]
 
