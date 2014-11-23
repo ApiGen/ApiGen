@@ -194,7 +194,7 @@ __HALT_COMPILER();
 			} elseif ($token[0] === T_COMMENT) {
 				$output .= str_repeat("\n", substr_count($token[1], "\n"));
 
-			} elseif ($token[0] === T_DOC_COMMENT && strpos($token[1], '@method') === FALSE) {
+			} elseif ($this->isCommentWithoutAnnotations($token, array('@return', '@method'))) {
 				$output .= str_repeat("\n", substr_count($token[1], "\n"));
 
 			} elseif ($token[0] === T_WHITESPACE) {
@@ -211,6 +211,23 @@ __HALT_COMPILER();
 		}
 
 		return $output;
+	}
+
+
+	/**
+	 * @return bool
+	 */
+	private function isCommentWithoutAnnotations(array $token, array $annotationList)
+	{
+		if ($token[0] !== T_DOC_COMMENT) {
+			return FALSE;
+		}
+		foreach ($annotationList as $annotation) {
+			if (strpos($token[1], $annotation) !== FALSE) {
+				return FALSE;
+			}
+		}
+		return TRUE;
 	}
 
 }
