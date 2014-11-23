@@ -9,8 +9,8 @@
 
 namespace ApiGen\Generator;
 
-use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Charset\CharsetConvertor;
+use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\FileSystem;
 use ApiGen\FileSystem\FileSystem as FS;
 use ApiGen\Generator\Resolvers\ElementResolver;
