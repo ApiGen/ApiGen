@@ -33,17 +33,17 @@ class Parser extends Nette\Object
 	/**
 	 * @var array
 	 */
-	public $onParseStart = array();
+	public $onParseStart = [];
 
 	/**
 	 * @var array
 	 */
-	public $onParseProgress = array();
+	public $onParseProgress = [];
 
 	/**
 	 * @var array
 	 */
-	public $onParseFinish = array();
+	public $onParseFinish = [];
 
 	/**
 	 * @var Broker
@@ -132,12 +132,12 @@ class Parser extends Nette\Object
 	 */
 	public function getDocumentedStats()
 	{
-		return array(
+		return [
 			'classes' => $this->getDocumentedElementsCount($this->broker->getClasses(Backend::TOKENIZED_CLASSES)),
 			'constants' => $this->getDocumentedElementsCount($this->constants->getArrayCopy()),
 			'functions' => $this->getDocumentedElementsCount($this->functions->getArrayCopy()),
 			'internalClasses' => $this->getDocumentedElementsCount($this->internalClasses->getArrayCopy())
-		);
+		];
 	}
 
 

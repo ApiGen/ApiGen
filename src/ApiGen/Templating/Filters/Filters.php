@@ -28,7 +28,7 @@ abstract class Filters extends Nette\Object
 	{
 		if (method_exists($this, $name)) {
 			$args = array_slice(func_get_args(), 1);
-			return call_user_func_array(array($this, $name), $args);
+			return call_user_func_array([$this, $name], $args);
 		}
 
 		return NULL;
@@ -44,7 +44,7 @@ abstract class Filters extends Nette\Object
 	 */
 	protected function getTypeName($name, $trimNamespaceSeparator = TRUE)
 	{
-		$names = array(
+		$names = [
 			'int' => 'integer',
 			'bool' => 'boolean',
 			'double' => 'float',
@@ -53,7 +53,7 @@ abstract class Filters extends Nette\Object
 			'TRUE' => 'true',
 			'NULL' => 'null',
 			'callback' => 'callable'
-		);
+		];
 
 		// Simple type
 		if (isset($names[$name])) {
@@ -74,7 +74,7 @@ abstract class Filters extends Nette\Object
 	 * @param array $classes List of classes
 	 * @return string
 	 */
-	protected function link($url, $text, $escape = TRUE, array $classes = array())
+	protected function link($url, $text, $escape = TRUE, array $classes = [])
 	{
 		return Strings::link($url, $text, $escape, $classes);
 	}

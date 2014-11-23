@@ -66,7 +66,7 @@ class ParserTest extends TestCase
 	 */
 	private function getFilesFromDir($dir)
 	{
-		$files = array();
+		$files = [];
 		foreach (Finder::find('*.php')->in($dir) as $splFile) {
 			$files[] = $splFile;
 		}
@@ -81,7 +81,7 @@ class ParserTest extends TestCase
 
 		/** @var Configuration $configuration */
 		$configuration = $this->container->getByType('ApiGen\Configuration\Configuration');
-		$defaults['source'] = array(PROJECT_DIR);
+		$defaults['source'] = [PROJECT_DIR];
 		$defaults['destination'] = API_DIR;
 		$defaults = $configuration->setDefaults($defaults);
 		Configuration::$config = ArrayHash::from($defaults);
@@ -89,4 +89,4 @@ class ParserTest extends TestCase
 }
 
 
-\run(new ParserTest);
+(new ParserTest)->run();

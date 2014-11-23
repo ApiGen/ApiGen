@@ -20,7 +20,7 @@ class AccessLevelsTest extends TestCase
 
 	public function testPublic()
 	{
-		$this->prepareConfig(array('public'));
+		$this->prepareConfig(['public']);
 		passthru(APIGEN_BIN . ' generate');
 		$classFile = API_DIR . '/class-Project.AccessLevels.html';
 		Assert::true(file_exists($classFile));
@@ -38,7 +38,7 @@ class AccessLevelsTest extends TestCase
 
 	public function testPrivate()
 	{
-		$this->prepareConfig(array('private'));
+		$this->prepareConfig(['private']);
 		passthru(APIGEN_BIN . ' generate');
 		$classFile = API_DIR . '/class-Project.AccessLevels.html';
 		Assert::true(file_exists($classFile));
@@ -64,7 +64,7 @@ class AccessLevelsTest extends TestCase
 
 	public function testPublicProtectedPrivate()
 	{
-		$this->prepareConfig(array('public', 'private', 'protected'));
+		$this->prepareConfig(['public', 'private', 'protected']);
 		passthru(APIGEN_BIN . ' generate');
 		$classFile = API_DIR . '/class-Project.AccessLevels.html';
 		Assert::true(file_exists($classFile));
@@ -91,11 +91,11 @@ class AccessLevelsTest extends TestCase
 	/**
 	 * @param array $accessLevels
 	 */
-	private function prepareConfig($accessLevels = array())
+	private function prepareConfig($accessLevels = [])
 	{
 		$neonFile = new NeonFile(__DIR__ . '/apigen.neon');
 		$config = $neonFile->read();
-		$config['source'] = array(PROJECT_DIR);
+		$config['source'] = [PROJECT_DIR];
 		$config['destination'] = API_DIR;
 		$config['accessLevels'] = $accessLevels;
 		$neonFile->write($config);
@@ -104,4 +104,4 @@ class AccessLevelsTest extends TestCase
 }
 
 
-\run(new AccessLevelsTest);
+(new AccessLevelsTest)->run();

@@ -29,19 +29,19 @@ class ExtensionTest extends TestCase
 		Assert::false(file_exists(API_DIR . '/' . self::PHP5_EXTENSION));
 		Assert::true(file_exists(API_DIR . '/' . self::PHP_EXTENSION));
 
-		$this->prepareConfig(array('php5'));
+		$this->prepareConfig(['php5']);
 		passthru(APIGEN_BIN . ' generate');
 
 		Assert::true(file_exists(API_DIR . '/' . self::PHP5_EXTENSION));
 		Assert::false(file_exists(API_DIR . '/' . self::PHP_EXTENSION));
 
-		$this->prepareConfig(array('php'));
+		$this->prepareConfig(['php']);
 		passthru(APIGEN_BIN . ' generate');
 
 		Assert::false(file_exists(API_DIR . '/' . self::PHP5_EXTENSION));
 		Assert::true(file_exists(API_DIR . '/' . self::PHP_EXTENSION));
 
-		$this->prepareConfig(array('php', 'php5'));
+		$this->prepareConfig(['php', 'php5']);
 		passthru(APIGEN_BIN . ' generate');
 
 		Assert::true(file_exists(API_DIR . '/' . self::PHP5_EXTENSION));
@@ -49,11 +49,11 @@ class ExtensionTest extends TestCase
 	}
 
 
-	private function prepareConfig(array $extensions = array())
+	private function prepareConfig(array $extensions = [])
 	{
 		$neonFile = new NeonFile(__DIR__ . '/apigen.neon');
 		$config = $neonFile->read();
-		$config['source'] = array(PROJECT_DIR);
+		$config['source'] = [PROJECT_DIR];
 		$config['destination'] = API_DIR;
 		if ($extensions) {
 			$config['extensions'] = $extensions;
@@ -64,4 +64,4 @@ class ExtensionTest extends TestCase
 }
 
 
-\run(new ExtensionTest);
+(new ExtensionTest)->run();

@@ -35,7 +35,7 @@ class SourceFilters extends Filters
 	 */
 	public function staticFile($name)
 	{
-		$versions = array();
+		$versions = [];
 		$filename = $this->config['destination'] . '/' . $name;
 		if ( ! isset($versions[$filename]) && is_file($filename)) {
 			$versions[$filename] = sprintf('%u', crc32(file_get_contents($filename)));

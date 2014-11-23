@@ -32,13 +32,11 @@ class SetIoOnConsoleRun extends Nette\Object implements Subscriber
 
 
 	/**
-	 * @return array
+	 * @return string[]
 	 */
 	public function getSubscribedEvents()
 	{
-		return array(
-			'ApiGen\Console\Application::onRun'
-		);
+		return ['ApiGen\Console\Application::onRun'];
 	}
 
 

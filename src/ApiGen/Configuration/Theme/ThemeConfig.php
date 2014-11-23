@@ -18,7 +18,7 @@ class ThemeConfig extends Nette\Object
 {
 
 	/**
-	 * @var array
+	 * @var mixed[]
 	 */
 	private $options;
 
@@ -47,7 +47,7 @@ class ThemeConfig extends Nette\Object
 
 
 	/**
-	 * @return array
+	 * @return mixed[]
 	 */
 	public function getOptions()
 	{

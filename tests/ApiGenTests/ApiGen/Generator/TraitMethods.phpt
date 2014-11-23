@@ -54,7 +54,7 @@ class TraitMethodsTest extends TestCase
 	{
 		$neonFile = new NeonFile(__DIR__ . '/apigen.neon');
 		$config = $neonFile->read();
-		$config['source'] = array(PROJECT_BETA_DIR);
+		$config['source'] = [PROJECT_BETA_DIR];
 		$config['destination'] = API_DIR;
 		$neonFile->write($config);
 	}
@@ -62,4 +62,4 @@ class TraitMethodsTest extends TestCase
 }
 
 
-\run(new TraitMethodsTest);
+(new TraitMethodsTest)->run();

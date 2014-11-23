@@ -78,12 +78,12 @@ class GenerateCommand extends Command
 	{
 		$this->setName('generate')
 			->setDescription('Generate API documentation')
-			->setDefinition(array(
+			->setDefinition([
 				new InputArgument('destination', InputArgument::OPTIONAL, 'Target dir for documentation.', NULL),
 				new InputArgument('source', InputArgument::IS_ARRAY | InputArgument::OPTIONAL,
 					'Dir(s) or file(s) documentation is generated for (separate multiple items with a space).', NULL),
 				new InputOption('debug', 'd', InputOption::VALUE_NONE, 'Turn on debug mode.')
-			));
+			]);
 	}
 
 
@@ -183,7 +183,6 @@ class GenerateCommand extends Command
 	/**
 	 * Gets value primary from input, secondary from config file.
 	 *
-	 * @throws InvalidArgumentException
 	 * @param InputInterface $input
 	 * @param array $apigen
 	 * @param string $key

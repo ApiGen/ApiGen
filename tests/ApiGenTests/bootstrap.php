@@ -31,11 +31,6 @@ function createTempDir() {
 }
 
 
-function run(Tester\TestCase $testCase) {
-	$testCase->run();
-}
-
-
 /** @return Nette\DI\Container */
 function createContainer() {
 	$configurator = new Nette\Configurator();

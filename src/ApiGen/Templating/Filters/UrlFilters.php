@@ -97,7 +97,7 @@ class UrlFilters extends Filters
 			return $package;
 		}
 
-		$links = array();
+		$links = [];
 
 		$parent = '';
 		foreach (explode('\\', $package) as $part) {
@@ -137,7 +137,7 @@ class UrlFilters extends Filters
 			return $namespace;
 		}
 
-		$links = array();
+		$links = [];
 
 		$parent = '';
 		foreach (explode('\\', $namespace) as $part) {
@@ -280,7 +280,7 @@ class UrlFilters extends Filters
 			return $expectedName;
 		}
 
-		$classes = array();
+		$classes = [];
 		if ($element->isDeprecated()) {
 			$classes[] = 'deprecated';
 		}
@@ -338,7 +338,7 @@ class UrlFilters extends Filters
 			return $package;
 		}
 
-		$links = array();
+		$links = [];
 
 		$parent = '';
 		foreach (explode('\\', $package) as $part) {
@@ -390,7 +390,7 @@ class UrlFilters extends Filters
 				break;
 
 			case 'see':
-				$doc = array();
+				$doc = [];
 				foreach (preg_split('~\\s*,\\s*~', $value) as $link) {
 					if ($this->elementResolver->resolveElement($link, $context) !== NULL) {
 						$doc[] = sprintf('<code>%s</code>', $this->typeLinks($link, $context));
@@ -428,7 +428,7 @@ class UrlFilters extends Filters
 	 */
 	public function typeLinks($annotation, ReflectionElement $context)
 	{
-		$links = array();
+		$links = [];
 
 		list($types) = Strings::split($annotation);
 		if ( ! empty($types) && $types{0} === '$') {
@@ -526,14 +526,13 @@ class UrlFilters extends Filters
 	 */
 	public function resolveLinks($text, ReflectionElement $context)
 	{
-		$that = $this;
-		return preg_replace_callback('~{@(?:link|see)\\s+([^}]+)}~', function ($matches) use ($context, $that) {
+		return preg_replace_callback('~{@(?:link|see)\\s+([^}]+)}~', function ($matches) use ($context) {
 			// Texy already added <a> so it has to be stripped
 			list($url, $description) = Strings::split(strip_tags($matches[1]));
 			if (Validators::isUri($url)) {
 				return Strings::link($url, $description ?: $url);
 			}
-			return $that->resolveLink($matches[1], $context) ?: $matches[1];
+			return $this->resolveLink($matches[1], $context) ?: $matches[1];
 		}, $text);
 	}
 
@@ -546,14 +545,13 @@ class UrlFilters extends Filters
 	 */
 	private function resolveInternal($text)
 	{
-		$internal = $this->config['internal'];
 		$pattern = '~\\{@(\\w+)(?:(?:\\s+((?>(?R)|[^{}]+)*)\\})|\\})~';
-		return preg_replace_callback($pattern, function ($matches) use ($internal) {
+		return preg_replace_callback($pattern, function ($matches) {
 			// Replace only internal
 			if ($matches[1] !== 'internal') {
 				return $matches[0];
 			}
-			return $internal && isset($matches[2]) ? $matches[2] : '';
+			return $this->config['internal'] && isset($matches[2]) ? $matches[2] : '';
 		}, $text);
 	}
 

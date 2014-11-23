@@ -40,7 +40,7 @@ class ApiGenExtension extends CompilerExtension
 
 		$builder->addDefinition($this->prefix('latteFactory'))
 			->setClass('Latte\Engine')
-			->addSetup('setTempDirectory', array($builder->expand('%tempDir%/cache/latte')));
+			->addSetup('setTempDirectory', [$builder->expand('%tempDir%/cache/latte')]);
 	}
 
 
@@ -53,7 +53,7 @@ class ApiGenExtension extends CompilerExtension
 			if ( ! $this->isPhar() && $command === 'ApiGen\Command\SelfUpdateCommand') {
 				continue;
 			}
-			$application->addSetup('add', array('@' . $command));
+			$application->addSetup('add', ['@' . $command]);
 		}
 	}
 
@@ -84,7 +84,7 @@ class ApiGenExtension extends CompilerExtension
 
 		$latteFactory = $builder->getDefinition($builder->getByType('Latte\Engine'));
 		foreach ($builder->findByType('ApiGen\Templating\Filters\Filters') as $filter) {
-			$latteFactory->addSetup('addFilter', array(NULL, array('@' . $filter, 'loader')));
+			$latteFactory->addSetup('addFilter', [NULL, ['@' . $filter, 'loader']]);
 		}
 	}
 

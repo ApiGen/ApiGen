@@ -49,7 +49,7 @@ class ElementResolver extends Nette\Object
 	/**
 	 * @var array
 	 */
-	private $simpleTypes = array(
+	private $simpleTypes = [
 		'boolean' => 1,
 		'integer' => 1,
 		'float' => 1,
@@ -63,7 +63,7 @@ class ElementResolver extends Nette\Object
 		'false' => 1,
 		'true' => 1,
 		'mixed' => 1
-	);
+	];
 
 
 	public function __construct()

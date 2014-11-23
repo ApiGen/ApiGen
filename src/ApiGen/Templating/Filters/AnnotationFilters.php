@@ -24,14 +24,14 @@ class AnnotationFilters extends Filters
 	/**
 	 * @var array
 	 */
-	private $rename = array(
+	private $rename = [
 		'usedby' => 'Used by'
-	);
+	];
 
 	/**
 	 * @var array
 	 */
-	private $remove = array(
+	private $remove = [
 		'package',
 		'subpackage',
 		'property',
@@ -46,12 +46,12 @@ class AnnotationFilters extends Filters
 		'name',
 		'static',
 		'staticvar'
-	);
+	];
 
 	/**
 	 * @var array
 	 */
-	private $order = array(
+	private $order = [
 		'deprecated' => 0,
 		'category' => 1,
 		'copyright' => 2,
@@ -67,7 +67,7 @@ class AnnotationFilters extends Filters
 		'example' => 12,
 		'tutorial' => 13,
 		'todo' => 14
-	);
+	];
 
 	/**
 	 * @var array
@@ -107,7 +107,7 @@ class AnnotationFilters extends Filters
 	 * @param array $filter
 	 * @return array
 	 */
-	public function annotationFilter(array $annotations, array $filter = array())
+	public function annotationFilter(array $annotations, array $filter = [])
 	{
 		foreach ($this->remove as $annotation) {
 			unset($annotations[$annotation]);
@@ -137,15 +137,14 @@ class AnnotationFilters extends Filters
 	 */
 	public function annotationSort(array $annotations)
 	{
-		$order = $this->order;
-		uksort($annotations, function ($one, $two) use ($order) {
-			if (isset($order[$one], $order[$two])) {
-				return $order[$one] - $order[$two];
+		uksort($annotations, function ($one, $two) {
+			if (isset($this->order[$one], $this->order[$two])) {
+				return $this->order[$one] - $this->order[$two];
 
-			} elseif (isset($order[$one])) {
+			} elseif (isset($this->order[$one])) {
 				return -1;
 
-			} elseif (isset($order[$two])) {
+			} elseif (isset($this->order[$two])) {
 				return 1;
 
 			} else {

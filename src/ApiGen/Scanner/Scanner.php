@@ -27,12 +27,12 @@ class Scanner extends Nette\Object
 	/**
 	 * @var array
 	 */
-	public $onScanFinish = array();
+	public $onScanFinish = [];
 
 	/**
 	 * @var array
 	 */
-	private $symlinks = array();
+	private $symlinks = [];
 
 
 	/**
@@ -42,7 +42,7 @@ class Scanner extends Nette\Object
 	 * @throws RuntimeException
 	 * @return SplFileInfo[]
 	 */
-	public function scan(array $sources, array $exclude = array(), array $extensions = array('php'))
+	public function scan(array $sources, array $exclude = [], array $extensions = ['php'])
 	{
 		$fileMasks = $this->turnExtensionsToMask($extensions);
 		$sources = $this->extractPharSources($sources);
@@ -79,7 +79,7 @@ class Scanner extends Nette\Object
 	 */
 	private function getSymlinksFromFiles(array $files)
 	{
-		$symlinks = array();
+		$symlinks = [];
 		foreach ($files as $file) {
 			$pathName = FileSystem::normalizePath($file->getPathName());
 			$files[$pathName] = $file->getSize();

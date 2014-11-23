@@ -19,16 +19,16 @@ class ExcludeTest extends TestCase
 
 	public function testFileMask()
 	{
-		$this->prepareConfig(array('Package*'));
+		$this->prepareConfig(['Package*']);
 		passthru(APIGEN_BIN . ' generate');
 		Assert::false(file_exists(API_DIR . '/class-ProjectBeta.PackageA.html'));
 		Assert::false(file_exists(API_DIR . '/class-ProjectBeta.PackageB.html'));
 
-		$this->prepareConfig(array('*QueueFactory*'));
+		$this->prepareConfig(['*QueueFactory*']);
 		passthru(APIGEN_BIN . ' generate');
 		Assert::false(file_exists(API_DIR . '/class-ProjectBeta.QueueFactory.html'));
 
-		$this->prepareConfig(array('*/Category*'));
+		$this->prepareConfig(['*/Category*']);
 		passthru(APIGEN_BIN . ' generate');
 		Assert::false(file_exists(API_DIR . '/class-ProjectBeta.Entities.Category.html'));
 	}
@@ -36,7 +36,7 @@ class ExcludeTest extends TestCase
 
 	public function fileMaskWithSuffix()
 	{
-		$this->prepareConfig(array('*/QueueFactory.php'));
+		$this->prepareConfig(['*/QueueFactory.php']);
 		passthru(APIGEN_BIN . ' generate');
 		Assert::false(file_exists(API_DIR . '/class-ProjectBeta.QueueFactory.html'));
 	}
@@ -44,7 +44,7 @@ class ExcludeTest extends TestCase
 
 	public function textDirExclude()
 	{
-		$this->prepareConfig(array('Entities'));
+		$this->prepareConfig(['Entities']);
 		passthru(APIGEN_BIN . ' generate');
 		Assert::false(file_exists(API_DIR . '/namespace-ProjectBeta.Entities.html'));
 		Assert::false(file_exists(API_DIR . '/class-ProjectBeta.Entities.Category.html'));
@@ -53,17 +53,17 @@ class ExcludeTest extends TestCase
 
 	public function testNoneFound()
 	{
-		$this->prepareConfig(array('*'));
+		$this->prepareConfig(['*']);
 		passthru(APIGEN_BIN . ' generate', $output);
 		Assert::same(0, $output);
 	}
 
 
-	private function prepareConfig(array $exclude = array())
+	private function prepareConfig(array $exclude = [])
 	{
 		$neonFile = new NeonFile(__DIR__ . '/apigen.neon');
 		$config = $neonFile->read();
-		$config['source'] = array(PROJECT_DIR, PROJECT_BETA_DIR);
+		$config['source'] = [PROJECT_DIR, PROJECT_BETA_DIR];
 		$config['destination'] = API_DIR;
 		if ($exclude) {
 			$config['exclude'] = $exclude;
@@ -74,4 +74,4 @@ class ExcludeTest extends TestCase
 }
 
 
-\run(new ExcludeTest);
+(new ExcludeTest)->run();

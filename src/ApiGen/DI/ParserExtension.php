@@ -31,10 +31,10 @@ class ParserExtension extends CompilerExtension
 
 		$builder->addDefinition($this->prefix('broker'))
 			->setClass('TokenReflection\Broker')
-			->setArguments(array(
+			->setArguments([
 				$backend,
 				Broker::OPTION_DEFAULT & ~(Broker::OPTION_PARSE_FUNCTION_BODY | Broker::OPTION_SAVE_TOKEN_STREAM)
-			));
+			]);
 	}
 
 }

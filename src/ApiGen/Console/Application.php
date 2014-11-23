@@ -24,7 +24,7 @@ class Application extends Kdyby\Console\Application
 	/**
 	 * @var array
 	 */
-	public $onRun = array();
+	public $onRun = [];
 
 	/**
 	 * @var EventManager
@@ -81,7 +81,7 @@ class Application extends Kdyby\Console\Application
 
 	public function onRun(InputInterface $input, OutputInterface $output)
 	{
-		$this->eventManager->dispatchEvent(__METHOD__, new EventArgsList(array($input, $output)));
+		$this->eventManager->dispatchEvent(__METHOD__, new EventArgsList([$input, $output]));
 	}
 
 
@@ -106,7 +106,7 @@ class Application extends Kdyby\Console\Application
 	 */
 	private function getNewWorkingDir(InputInterface $input)
 	{
-		$workingDir = $input->getParameterOption(array('--working-dir', '-d'));
+		$workingDir = $input->getParameterOption(['--working-dir', '-d']);
 		if ($workingDir !== FALSE && ! is_dir($workingDir)) {
 			throw new \RuntimeException('Invalid working directory specified.');
 		}

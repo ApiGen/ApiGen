@@ -22,83 +22,83 @@ class ThemeConfigOptionsResolver extends Nette\Object
 	/**
 	 * @var array
 	 */
-	private $defaults = array(
+	private $defaults = [
 		'name' => '',
-		'options' => array(
+		'options' => [
 			'elementDetailsCollapsed' => TRUE,
 			'elementsOrder' => 'natural' # or: alphabetical
-		),
-		'resources' => array(
+		],
+		'resources' => [
 			'resources' => 'resources'
-		),
-		'templates' => array(
-			'overview' => array(
+		],
+		'templates' => [
+			'overview' => [
 				'filename' => 'index.html',
 				'template' => 'overview.latte'
-			),
-			'combined' => array(
+			],
+			'combined' => [
 				'filename' => 'resources/combined.js',
 				'template' => 'combined.js.latte'
-			),
-			'elementlist' => array(
+			],
+			'elementlist' => [
 				'filename' => 'elementlist.js',
 				'template' => 'elementlist.js.latte'
-			),
-			'404' => array(
+			],
+			'404' => [
 				'filename' => '404.html',
 				'template' => '404.latte'
-			),
-			'package' => array(
+			],
+			'package' => [
 				'filename' => 'package-%s.html',
 				'template' => 'package.latte'
-			),
-			'namespace' => array(
+			],
+			'namespace' => [
 				'filename' => 'namespace-%s.html',
 				'template' => 'namespace.latte'
-			),
-			'class' => array(
+			],
+			'class' => [
 				'filename' => 'class-%s.html',
 				'template' => 'class.latte'
-			),
-			'constant' => array(
+			],
+			'constant' => [
 				'filename' => 'constant-%s.html',
 				'template' => 'constant.latte'
-			),
-			'function' => array(
+			],
+			'function' => [
 				'filename' => 'function-%s.html',
 				'template' => 'function.latte'
-			),
-			'source' => array(
+			],
+			'source' => [
 				'filename' => 'source-%s.html',
 				'template' => 'source.latte'
-			),
-			'tree' => array(
+			],
+			'tree' => [
 				'filename' => 'tree.html',
 				'template' => 'tree.latte'
-			),
-			'deprecated' => array(
+			],
+			'deprecated' => [
 				'filename' => 'deprecated.html',
 				'template' => 'deprecated.latte'
-			),
-			'todo' => array(
+			],
+			'todo' => [
 				'filename' => 'todo.html',
 				'template' => 'todo.latte'
-			),
-			'sitemap' => array(
+			],
+			'sitemap' => [
 				'filename' => 'sitemap.xml',
 				'template' => 'sitemap.xml.latte'
-			),
-			'opensearch' => array(
+			],
+			'opensearch' => [
 				'filename' => 'opensearch.xml',
 				'template' => 'opensearch.xml.latte'
-			),
-			'robots' => array(
+			],
+			'robots' => [
 				'filename' => 'robots.txt',
 				'template' => 'robots.txt.latte'
-			)
-		),
+			]
+		],
 		'templatesPath' => ''
-	);
+	];
 
 	/**
 	 * @var OptionsResolver
@@ -138,14 +138,14 @@ class ThemeConfigOptionsResolver extends Nette\Object
 
 	private function setAllowedValues()
 	{
-		$this->resolver->setAllowedValues(array(
+		$this->resolver->setAllowedValues([
 			'templates' => function ($value) {
 				foreach ($value as $type => $settings) {
 					$this->validateFileExistence($settings['template'], $type);
 				}
 				return TRUE;
 			}
-		));
+		]);
 	}
 
 
@@ -163,11 +163,11 @@ class ThemeConfigOptionsResolver extends Nette\Object
 
 	private function setNormalizers()
 	{
-		$this->resolver->setNormalizers(array(
+		$this->resolver->setNormalizers([
 			'templates' => function (Options $options, $value) {
 				return $this->makeTemplatePathsAbsolute($value, $options);
 			}
-		));
+		]);
 	}
 
 

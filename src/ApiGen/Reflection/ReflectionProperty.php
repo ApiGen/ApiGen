@@ -18,8 +18,6 @@ class ReflectionProperty extends ReflectionElement
 {
 
 	/**
-	 * Returns if the property is read-only.
-	 *
 	 * @return bool
 	 */
 	public function isReadOnly()
@@ -29,8 +27,6 @@ class ReflectionProperty extends ReflectionElement
 
 
 	/**
-	 * Returns if the property is write-only.
-	 *
 	 * @return bool
 	 */
 	public function isWriteOnly()
@@ -40,8 +36,6 @@ class ReflectionProperty extends ReflectionElement
 
 
 	/**
-	 * Returns if the property is magic.
-	 *
 	 * @return bool
 	 */
 	public function isMagic()
@@ -51,8 +45,6 @@ class ReflectionProperty extends ReflectionElement
 
 
 	/**
-	 * Returns property type hint.
-	 *
 	 * @return string
 	 */
 	public function getTypeHint()
@@ -77,8 +69,6 @@ class ReflectionProperty extends ReflectionElement
 
 
 	/**
-	 * Returns the property declaring class.
-	 *
 	 * @return ReflectionClass|null
 	 */
 	public function getDeclaringClass()
@@ -89,8 +79,6 @@ class ReflectionProperty extends ReflectionElement
 
 
 	/**
-	 * Returns the name of the declaring class.
-	 *
 	 * @return string
 	 */
 	public function getDeclaringClassName()
@@ -100,8 +88,6 @@ class ReflectionProperty extends ReflectionElement
 
 
 	/**
-	 * Returns the property default value.
-	 *
 	 * @return mixed
 	 */
 	public function getDefaultValue()
@@ -111,8 +97,6 @@ class ReflectionProperty extends ReflectionElement
 
 
 	/**
-	 * Returns the part of the source code defining the property default value.
-	 *
 	 * @return string
 	 */
 	public function getDefaultValueDefinition()
@@ -122,8 +106,6 @@ class ReflectionProperty extends ReflectionElement
 
 
 	/**
-	 * Returns if the property was created at compile time.
-	 *
 	 * @return bool
 	 */
 	public function isDefault()
@@ -133,8 +115,6 @@ class ReflectionProperty extends ReflectionElement
 
 
 	/**
-	 * Returns property modifiers.
-	 *
 	 * @return integer
 	 */
 	public function getModifiers()
@@ -144,8 +124,6 @@ class ReflectionProperty extends ReflectionElement
 
 
 	/**
-	 * Returns if the property is private.
-	 *
 	 * @return bool
 	 */
 	public function isPrivate()
@@ -155,8 +133,6 @@ class ReflectionProperty extends ReflectionElement
 
 
 	/**
-	 * Returns if the property is protected.
-	 *
 	 * @return bool
 	 */
 	public function isProtected()
@@ -166,8 +142,6 @@ class ReflectionProperty extends ReflectionElement
 
 
 	/**
-	 * Returns if the property is public.
-	 *
 	 * @return bool
 	 */
 	public function isPublic()
@@ -177,8 +151,6 @@ class ReflectionProperty extends ReflectionElement
 
 
 	/**
-	 * Returns if the poperty is static.
-	 *
 	 * @return bool
 	 */
 	public function isStatic()
@@ -188,8 +160,6 @@ class ReflectionProperty extends ReflectionElement
 
 
 	/**
-	 * Returns the property declaring trait.
-	 *
 	 * @return ReflectionClass|null
 	 */
 	public function getDeclaringTrait()
@@ -200,8 +170,6 @@ class ReflectionProperty extends ReflectionElement
 
 
 	/**
-	 * Returns the declaring trait name.
-	 *
 	 * @return string|null
 	 */
 	public function getDeclaringTraitName()
@@ -211,8 +179,6 @@ class ReflectionProperty extends ReflectionElement
 
 
 	/**
-	 * Returns if the property is valid.
-	 *
 	 * @return bool
 	 */
 	public function isValid()

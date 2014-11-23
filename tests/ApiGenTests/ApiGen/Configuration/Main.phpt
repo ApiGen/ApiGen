@@ -36,7 +36,7 @@ class MainTest extends TestCase
 	{
 		$neonFile = new NeonFile(__DIR__ . '/apigen.neon');
 		$config = $neonFile->read();
-		$config['source'] = array(PROJECT_DIR, PROJECT_BETA_DIR);
+		$config['source'] = [PROJECT_DIR, PROJECT_BETA_DIR];
 		$config['destination'] = API_DIR;
 		$config['main'] = 'ProjectBeta';
 		$neonFile->write($config);
@@ -45,4 +45,4 @@ class MainTest extends TestCase
 }
 
 
-\run(new MainTest);
+(new MainTest)->run();
