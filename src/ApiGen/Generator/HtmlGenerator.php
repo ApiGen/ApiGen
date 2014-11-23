@@ -26,15 +26,15 @@ use ApiGen\Templating\TemplateFactory;
 use ApiGen\Tree;
 use ArrayObject;
 use Nette;
+use RecursiveDirectoryIterator;
 use RuntimeException;
+use SplFileInfo;
 
 
 /**
- * Generates a HTML API documentation.
- *
- * @method HtmlGenerator    setParsedClasses(ArrayObject|object)
- * @method HtmlGenerator    setParsedConstants(ArrayObject|object)
- * @method HtmlGenerator    setParsedFunctions(ArrayObject|object)
+ * @method HtmlGenerator    setParsedClasses(object)
+ * @method HtmlGenerator    setParsedConstants(object)
+ * @method HtmlGenerator    setParsedFunctions(object)
  * @method HtmlGenerator    onGenerateStart($steps)
  * @method HtmlGenerator    onGenerateProgress($size)
  * @method HtmlGenerator    setConfig(array $config)
@@ -178,23 +178,7 @@ class HtmlGenerator extends Nette\Object implements Generator
 	 */
 	public function generate()
 	{
-		// Copy resources
-		foreach ($this->config['template']['resources'] as $resourceSource => $resourceDestination) {
-			// File
-			$resourcePath = $this->getTemplateDir() . '/' . $resourceSource;
-			if (is_file($resourcePath)) {
-				copy($resourcePath, FS::forceDir($this->config['destination']  . '/' . $resourceDestination));
-				continue;
-			}
-
-			// Dir
-			$iterator = Nette\Utils\Finder::findFiles('*')->from($resourcePath)->getIterator();
-			foreach ($iterator as $item) {
-				copy($item->getPathName(), FS::forceDir($this->config['destination']
-					. '/' . $resourceDestination
-					. '/' . $iterator->getSubPathName()));
-			}
-		}
+		$this->copyResources();
 
 		// Categorize by packages and namespaces
 		$this->categorize();
@@ -229,11 +213,6 @@ class HtmlGenerator extends Nette\Object implements Generator
 		unset($tokenizedFilter);
 
 		$this->onGenerateStart($steps);
-
-		$tmp = $this->config['destination'] . '/' . '_' . uniqid();
-
-		FS::deleteDir($tmp);
-		@mkdir($tmp, 0755, TRUE);
 
 		// Common files
 		$this->generateCommon();
@@ -270,9 +249,6 @@ class HtmlGenerator extends Nette\Object implements Generator
 			$this->zip->generate();
 			$this->onGenerateProgress(1);
 		}
-
-		// Delete temporary directory
-		FS::deleteDir($tmp);
 	}
 
 
@@ -1130,6 +1106,28 @@ class HtmlGenerator extends Nette\Object implements Generator
 		$template->functions = array_filter($this->functions, $this->getMainFilter());
 		$template->archive = basename($this->zip->getArchivePath());
 		return $template;
+	}
+
+
+	private function copyResources()
+	{
+		foreach ($this->config['template']['resources'] as $resourceSource => $resourceDestination) {
+			// File
+			if (is_file($resourceSource)) {
+				copy($resourceSource, FS::forceDir($this->config['destination']  . '/' . $resourceDestination));
+				continue;
+			}
+
+			// Dir
+			/** @var RecursiveDirectoryIterator $iterator */
+			$iterator = Nette\Utils\Finder::findFiles('*')->from($resourceSource)->getIterator();
+			foreach ($iterator as $item) {
+				/** @var SplFileInfo $item */
+				copy($item->getPathName(), FS::forceDir($this->config['destination']
+					. '/' . $resourceDestination
+					. '/' . $iterator->getSubPathName()));
+			}
+		}
 	}
 
 }
