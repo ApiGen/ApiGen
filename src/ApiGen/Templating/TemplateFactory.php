@@ -52,7 +52,7 @@ class TemplateFactory extends Nette\Object
 		/** @var Template|\stdClass $template */
 		$template = new Template($this->latteEngine);
 		$template->config = ArrayHash::from($this->config);
-		$template->basePath = dirname($this->config['templateConfig']);
+		$template->basePath = $this->config['template']['templatesPath'];
 		return $template;
 	}
 
