@@ -322,7 +322,7 @@ h2.switchable {
 	white-space: pre-wrap;
 }
 
-td.attributes {
+td.name, td.attributes {
 	width: 1%;
 }
 
