@@ -13,6 +13,8 @@ use ApiGen\ApiGen;
 use Kdyby;
 use Kdyby\Events\EventArgsList;
 use Kdyby\Events\EventManager;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -90,14 +92,17 @@ class Application extends Kdyby\Console\Application
 	 */
 	protected function getDefaultInputDefinition()
 	{
-		$definition = parent::getDefaultInputDefinition();
-		$definition->addOption(
-			new InputOption('--working-dir', '-wd', InputOption::VALUE_REQUIRED,
+		return new InputDefinition([
+			new InputArgument('command', InputArgument::REQUIRED, 'The command to execute'),
+			new InputOption('help', 'h', InputOption::VALUE_NONE, 'Display this help message.'),
+			new InputOption('quiet', 'q', InputOption::VALUE_NONE, 'Do not output any message.'),
+			new InputOption('version', NULL, InputOption::VALUE_NONE, 'Display this application version.'),
+			new InputOption('working-dir', NULL, InputOption::VALUE_REQUIRED,
 				'If specified, use the given directory as working directory.'
 			)
-		);
-		return $definition;
+		]);
 	}
+
 
 
 	/**
@@ -106,7 +111,7 @@ class Application extends Kdyby\Console\Application
 	 */
 	private function getNewWorkingDir(InputInterface $input)
 	{
-		$workingDir = $input->getParameterOption(['--working-dir', '-d']);
+		$workingDir = $input->getParameterOption(['working-dir']);
 		if ($workingDir !== FALSE && ! is_dir($workingDir)) {
 			throw new \RuntimeException('Invalid working directory specified.');
 		}
