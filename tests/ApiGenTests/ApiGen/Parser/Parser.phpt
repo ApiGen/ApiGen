@@ -56,7 +56,7 @@ class ParserTest extends TestCase
 
 		$this->parser->parse($files);
 		$classes = $this->parser->getClasses();
-		Assert::count(17, $classes);
+		Assert::count(16, $classes);
 	}
 
 
@@ -83,7 +83,7 @@ class ParserTest extends TestCase
 		$configuration = $this->container->getByType('ApiGen\Configuration\Configuration');
 		$defaults['source'] = [PROJECT_DIR];
 		$defaults['destination'] = API_DIR;
-		$defaults = $configuration->setDefaults($defaults);
+		$defaults = $configuration->resolveOptions($defaults);
 		Configuration::$config = ArrayHash::from($defaults);
 	}
 }

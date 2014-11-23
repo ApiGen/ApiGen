@@ -101,14 +101,11 @@ class InjectConfig extends Nette\Object implements Subscriber
 	 */
 	public function getSubscribedEvents()
 	{
-		return ['ApiGen\Configuration\Configuration::onSuccessValidate'];
+		return ['ApiGen\Configuration\Configuration::onOptionsResolve'];
 	}
 
 
-	/**
-	 * @param array $config Validated config.
-	 */
-	public function onSuccessValidate($config)
+	public function onOptionsResolve(array $config)
 	{
 		Configuration::$config = ArrayHash::from($config);
 

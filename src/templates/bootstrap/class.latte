@@ -85,7 +85,12 @@
 				{$value|annotation:$annotation:$class|noescape}<br>
 			{/foreach}
 		{/foreach}
-		{if $class->internal}<b>Documented at</b> <a href="{$class|manualUrl}" title="Go to PHP documentation">php.net</a>{else}<b>Located at</b> <a href="{$class|sourceUrl}" title="Go to source code">{$class->fileName|relativePath}</a>{/if}<br>
+		{if $class->internal}
+			<b>Documented at</b> <a href="{$class|manualUrl}" title="Go to PHP documentation">php.net</a>
+		{else}
+			<b>Located at</b> <a n:tag-if="$config->sourceCode" href="{$class|sourceUrl}" title="Go to source code">{$class->fileName|relativePath}</a>
+		{/if}
+		<br>
 	</div>
 
 	{var $ownMethods = $class->ownMethods}
@@ -113,7 +118,7 @@
 				{if $class->internal}
 					<a href="{$method|manualUrl}" title="Go to PHP documentation">{$method->name}</a>(
 				{else}
-					<a href="{$method|sourceUrl}" title="Go to source code">{$method->name}</a>(
+					<a n:tag-if="$config->sourceCode" href="{$method|sourceUrl}" title="Go to source code">{$method->name}</a>(
 				{/if}
 				{foreach $method->parameters as $parameter}
 					<span>{$parameter->typeHint|typeLinks:$method|noescape}
@@ -265,7 +270,7 @@
 				{if $class->internal}
 					<a href="{$constant|manualUrl}" title="Go to PHP documentation"><b>{$constant->name}</b></a>
 				{else}
-					<a href="{$constant|sourceUrl}" title="Go to source code"><b>{$constant->name}</b></a>
+					<a n:tag-if="$config->sourceCode" href="{$constant|sourceUrl}" title="Go to source code"><b>{$constant->name}</b></a>
 				{/if}
 				</code>
 
@@ -326,7 +331,7 @@
 				{if $class->internal}
 					<a href="{$property|manualUrl}" title="Go to PHP documentation"><var>${$property->name}</var></a>
 				{else}
-					<a href="{$property|sourceUrl}" title="Go to source code"><var>${$property->name}</var></a>
+					<a n:tag-if="$config->sourceCode" href="{$property|sourceUrl}" title="Go to source code"><var>${$property->name}</var></a>
 				{/if}
 
 				<div n:if="$config->template['options']['elementDetailsCollapsed']" class="description short">

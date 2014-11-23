@@ -20,7 +20,7 @@ class Implementor implements \Countable, Subscriber
 	 */
 	public function getHooks()
 	{
-		return array('onCreate');
+		return ['onCreate'];
 	}
 
 

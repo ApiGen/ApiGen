@@ -9,6 +9,7 @@
 
 namespace ApiGen\Templating\Filters;
 
+use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Generator\Markups\Markup;
 use ApiGen\Generator\Resolvers\ElementResolver;
 use ApiGen\Generator\SourceCodeHighlighter;
@@ -160,7 +161,7 @@ class UrlFilters extends Filters
 	public function packageUrl($packageName)
 	{
 		return sprintf(
-			$this->config['template']['templates']['package']['filename'],
+			$this->config[CO::TEMPLATE]['templates']['package']['filename'],
 			$this->urlize($packageName)
 		);
 	}
@@ -175,7 +176,7 @@ class UrlFilters extends Filters
 	public function namespaceUrl($namespaceName)
 	{
 		return sprintf(
-			$this->config['template']['templates']['namespace']['filename'],
+			$this->config[CO::TEMPLATE]['templates']['namespace']['filename'],
 			$this->urlize($namespaceName)
 		);
 	}
@@ -191,7 +192,7 @@ class UrlFilters extends Filters
 	{
 		$className = $class instanceof ReflectionClass ? $class->getName() : $class;
 		return sprintf(
-			$this->config['template']['templates']['class']['filename'],
+			$this->config[CO::TEMPLATE]['templates']['class']['filename'],
 			$this->urlize($className)
 		);
 	}
@@ -235,7 +236,7 @@ class UrlFilters extends Filters
 		}
 		// Constant in namespace or global space
 		return sprintf(
-			$this->config['template']['templates']['constant']['filename'],
+			$this->config[CO::TEMPLATE]['templates']['constant']['filename'],
 			$this->urlize($constant->getName())
 		);
 	}
@@ -249,7 +250,7 @@ class UrlFilters extends Filters
 	public function functionUrl(ReflectionFunction $function)
 	{
 		return sprintf(
-			$this->config['template']['templates']['function']['filename'],
+			$this->config[CO::TEMPLATE]['templates']['function']['filename'],
 			$this->urlize($function->getName())
 		);
 	}
@@ -551,7 +552,7 @@ class UrlFilters extends Filters
 			if ($matches[1] !== 'internal') {
 				return $matches[0];
 			}
-			return $this->config['internal'] && isset($matches[2]) ? $matches[2] : '';
+			return $this->config[CO::INTERNAL] && isset($matches[2]) ? $matches[2] : '';
 		}, $text);
 	}
 

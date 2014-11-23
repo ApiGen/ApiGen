@@ -10,7 +10,7 @@
 namespace ApiGen\Templating\Filters;
 
 use ApiGen;
-use ApiGen\Configuration\Configuration;
+use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Generator\Resolvers\ElementResolver;
 use Nette;
 
@@ -87,7 +87,7 @@ class AnnotationFilters extends Filters
 
 
 	/**
-	 * @param string $annotation
+	 * @param string $name
 	 * @return string
 	 */
 	public function annotationBeautify($name)
@@ -119,12 +119,12 @@ class AnnotationFilters extends Filters
 		}
 
 		// Show/hide internal
-		if ( ! $this->config['internal']) {
+		if ( ! $this->config[CO::INTERNAL]) {
 			unset($annotations['internal']);
 		}
 
 		// Show/hide tasks
-		if ( ! $this->config['todo']) {
+		if ( ! $this->config[CO::TODO]) {
 			unset($annotations['todo']);
 		}
 
