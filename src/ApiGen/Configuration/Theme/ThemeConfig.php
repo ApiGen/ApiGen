@@ -12,8 +12,6 @@ namespace ApiGen\Configuration\Theme;
 use ApiGen\Configuration\ConfigurationException;
 use ApiGen\Neon\NeonFile;
 use Nette;
-use Symfony\Component\OptionsResolver\Options;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
 
 class ThemeConfig extends Nette\Object
