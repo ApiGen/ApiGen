@@ -10,6 +10,7 @@
 namespace ApiGen\Configuration\Theme;
 
 use ApiGen\Configuration\ConfigurationException;
+use ApiGen\Configuration\Theme\ThemeConfigOptions as TCO;
 use ApiGen\Configuration\OptionsResolverFactory;
 use Nette;
 use Symfony\Component\OptionsResolver\Options;
@@ -32,72 +33,72 @@ class ThemeConfigOptionsResolver extends Nette\Object
 			'resources' => 'resources'
 		],
 		'templates' => [
-			'overview' => [
+			TCO::OVERVIEW => [
 				'filename' => 'index.html',
 				'template' => 'overview.latte'
 			],
-			'combined' => [
+			TCO::COMBINED => [
 				'filename' => 'resources/combined.js',
 				'template' => 'combined.js.latte'
 			],
-			'elementlist' => [
+			TCO::ELEMENT_LIST => [
 				'filename' => 'elementlist.js',
 				'template' => 'elementlist.js.latte'
 			],
-			'404' => [
+			TCO::E404 => [
 				'filename' => '404.html',
 				'template' => '404.latte'
 			],
-			'package' => [
+			TCO::PACKAGE => [
 				'filename' => 'package-%s.html',
 				'template' => 'package.latte'
 			],
-			'namespace' => [
+			TCO::T_NAMESPACE => [
 				'filename' => 'namespace-%s.html',
 				'template' => 'namespace.latte'
 			],
-			'class' => [
+			TCO::T_CLASS => [
 				'filename' => 'class-%s.html',
 				'template' => 'class.latte'
 			],
-			'constant' => [
+			TCO::T_CONSTANT => [
 				'filename' => 'constant-%s.html',
 				'template' => 'constant.latte'
 			],
-			'function' => [
+			TCO::T_FUNCTION => [
 				'filename' => 'function-%s.html',
 				'template' => 'function.latte'
 			],
-			'source' => [
+			TCO::SOURCE => [
 				'filename' => 'source-%s.html',
 				'template' => 'source.latte'
 			],
-			'tree' => [
+			TCO::TREE => [
 				'filename' => 'tree.html',
 				'template' => 'tree.latte'
 			],
-			'deprecated' => [
+			TCO::DEPRECATED => [
 				'filename' => 'deprecated.html',
 				'template' => 'deprecated.latte'
 			],
-			'todo' => [
+			TCO::TODO => [
 				'filename' => 'todo.html',
 				'template' => 'todo.latte'
 			],
-			'sitemap' => [
+			TCO::SITEMAP => [
 				'filename' => 'sitemap.xml',
 				'template' => 'sitemap.xml.latte'
 			],
-			'opensearch' => [
+			TCO::OPENSEARCH => [
 				'filename' => 'opensearch.xml',
 				'template' => 'opensearch.xml.latte'
 			],
-			'robots' => [
+			TCO::ROBOTS => [
 				'filename' => 'robots.txt',
 				'template' => 'robots.txt.latte'
 			]
 		],
-		'templatesPath' => ''
+		TCO::TEMPLATES_PATH => ''
 	];
 
 	/**
