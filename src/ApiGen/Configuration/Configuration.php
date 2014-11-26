@@ -37,6 +37,11 @@ class Configuration extends Nette\Object
 	public $onOptionsResolve = [];
 
 	/**
+	 * @var array
+	 */
+	private $options = [];
+
+	/**
 	 * @var ConfigurationOptionsResolver
 	 */
 	private $configurationOptionsResolver;
@@ -53,9 +58,34 @@ class Configuration extends Nette\Object
 	 */
 	public function resolveOptions(array $options)
 	{
-		self::$config = $options = $this->configurationOptionsResolver->resolve($options);
+		self::$config = $this->options = $options = $this->configurationOptionsResolver->resolve($options);
 		$this->onOptionsResolve($options);
 		return $options;
+	}
+
+
+	/**
+	 * @param string $name
+	 * @return mixed|NULL
+	 */
+	public function getOption($name)
+	{
+		if (isset($this->getOptions()[$name])) {
+			return $this->getOptions()[$name];
+		}
+		return NULL;
+	}
+
+
+	/**
+	 * @return array
+	 */
+	public function getOptions()
+	{
+		if ($this->options === NULL) {
+			$this->resolveOptions([]);
+		}
+		return $this->options;
 	}
 
 }
