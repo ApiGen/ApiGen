@@ -9,7 +9,7 @@
 
 namespace ApiGen\Generator\Markups;
 
-use ApiGen\Generator\SourceCodeHighlighter;
+use ApiGen\Generator\SourceCodeHighlighter\SourceCodeHighlighter;
 use Michelf\MarkdownExtra;
 
 

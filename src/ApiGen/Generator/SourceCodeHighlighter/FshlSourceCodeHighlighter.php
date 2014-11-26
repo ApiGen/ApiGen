@@ -7,7 +7,7 @@
  * the file license.md that was distributed with this source code.
  */
 
-namespace ApiGen\Generator;
+namespace ApiGen\Generator\SourceCodeHighlighter;
 
 use FSHL;
 use FSHL\Highlighter;
