@@ -732,7 +732,6 @@ class Generator extends Nette\Object
 
 		$template = $this->templateFactory->create();
 		$template = $this->addBaseVariablesToTemplate($template);
-//		$this->prepareTemplate('package');
 
 		$template->namespace = NULL;
 
@@ -918,13 +917,11 @@ class Generator extends Nette\Object
 
 
 	/**
-	 * Checks if sitemap.xml is enabled.
-	 *
 	 * @return bool
 	 */
 	private function isSitemapEnabled()
 	{
-		return ! empty($this->config[CO::BASE_URL]); // && $this->templateExists('sitemap');
+		return ! empty($this->config[CO::BASE_URL]);
 	}
 
 
