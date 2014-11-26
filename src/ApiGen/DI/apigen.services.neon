@@ -44,9 +44,6 @@ services:
 	- ApiGen\Generator\Markups\MarkdownMarkup
 	- Michelf\MarkdownExtra
 
-	# charset
-	- ApiGen\Charset\CharsetConvertor
-
 	# templating
 	- ApiGen\Templating\TemplateFactory
 	- ApiGen\Templating\Filters\AnnotationFilters

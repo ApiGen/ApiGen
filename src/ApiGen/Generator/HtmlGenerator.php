@@ -909,7 +909,7 @@ class HtmlGenerator extends Nette\Object implements Generator
 				// Generate source codes
 				if ($this->config[CO::SOURCE_CODE] && $element->isTokenized()) {
 					$template->fileName = $this->relativePathResolver->getRelativePath($element->getFileName());
-					$content = $this->charsetConvertor->convertFile($element->getFileName());
+					$content = $this->charsetConvertor->convertFileToUtf($element->getFileName());
 					$template->source = $this->sourceCodeHighlighter->highlightAndAddLineNumbers($content);
 					$template->setFile($this->getTemplatePath('source'))
 						->save($this->config[CO::DESTINATION] . '/' . $template->sourceUrl($element, FALSE));

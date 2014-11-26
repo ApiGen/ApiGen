@@ -9,104 +9,50 @@
 
 namespace ApiGen\Charset;
 
-use Nette;
 
-
-class CharsetConvertor extends Nette\Object
+class CharsetConvertor
 {
 
-	const AUTO = 'AUTO';
+	const ICONV_UTF_CHARSET = 'UTF-8//TRANSLIT//IGNORE';
 
 	/**
-	 * List of possible character sets.
-	 *
-	 * @var string[]
+	 * @var CharsetDetector
 	 */
-	private $charsets = [];
+	private $charsetDetector;
 
 
-	public function setCharset(array $charsets)
+	public function __construct(CharsetDetector $charsetDetector)
 	{
-		$firstValue = array_pop($charsets);
-		if (count($charsets) === 1 && $firstValue !== self::AUTO) {
-			// One character set
-			$this->charsets = $charsets;
-
-		} else {
-			if (count($charsets) === 1 && $firstValue === self::AUTO) {
-				// Autodetection
-				$this->charsets = [
-					'Windows-1251', 'Windows-1252', 'ISO-8859-2', 'ISO-8859-1', 'ISO-8859-3', 'ISO-8859-4', 'ISO-8859-5',
-					'ISO-8859-6', 'ISO-8859-7', 'ISO-8859-8', 'ISO-8859-9', 'ISO-8859-10', 'ISO-8859-13', 'ISO-8859-14',
-					'ISO-8859-15'
-				];
-
-			} else {
-				// More character sets
-				$this->charsets = $charsets;
-				if (($key = array_search('WINDOWS-1250', $this->charsets)) !== FALSE) {
-					// WINDOWS-1250 is not supported
-					$this->charsets[$key] = 'ISO-8859-2';
-				}
-			}
-
-			// Only supported character sets
-			$this->charsets = array_intersect($this->charsets, mb_list_encodings());
-
-			// UTF-8 has to be first
-			array_unshift($this->charsets, 'UTF-8');
-		}
+		$this->charsetDetector = $charsetDetector;
 	}
 
 
 	/**
-	 * Converts content of the given file to UTF-8.
-	 *
 	 * @param string $filePath
 	 * @return string
 	 */
-	public function convertFile($filePath)
+	public function convertFileToUtf($filePath)
 	{
+		$fileEncoding = $this->charsetDetector->detectForFilePath($filePath);
 		$content = file_get_contents($filePath);
 
-		$cache = [];
-		if ( ! isset($cache[$filePath])) {
-			if (count($this->getCharsets()) === 1) {
-				// One character set
-				$charset = $this->getCharsets()[0];
-
-			} else {
-				// Detection
-				$charset = mb_detect_encoding($content, $this->getCharsets());
-
-				// The previous function can not handle WINDOWS-1250 and returns ISO-8859-2 instead
-				if ($charset === 'ISO-8859-2' && preg_match('~[\x7F-\x9F\xBC]~', $content)) {
-					$charset = 'WINDOWS-1250';
-				}
-			}
-			$cache[$filePath] = $charset;
+		if ($fileEncoding === Encoding::UTF_8) {
+			return $content;
 
 		} else {
-			$charset = $cache[$filePath];
+			return $this->convertContentToUtf($content, $fileEncoding);
 		}
-
-		if ($charset === 'UTF-8') {
-			return $content;
-		}
-
-		return @iconv($charset, 'UTF-8//TRANSLIT//IGNORE', $content);
 	}
 
 
 	/**
-	 * @return string[]
+	 * @param string $content
+	 * @param string $fileEncoding
+	 * @return string
 	 */
-	private function getCharsets()
+	private function convertContentToUtf($content, $fileEncoding)
 	{
-		if ( ! count($this->charsets)) {
-			$this->setCharset([self::AUTO]);
-		}
-		return $this->charsets;
+		return @iconv($fileEncoding, self::ICONV_UTF_CHARSET, $content);
 	}
 
 }
