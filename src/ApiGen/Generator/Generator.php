@@ -11,6 +11,7 @@ namespace ApiGen\Generator;
 
 use ApiGen\Charset\CharsetConvertor;
 use ApiGen\Configuration\ConfigurationOptions as CO;
+use ApiGen\Configuration\Theme\ThemeConfigOptions as TCO;
 use ApiGen\FileSystem;
 use ApiGen\FileSystem\FileSystem as FS;
 use ApiGen\Generator\Resolvers\ElementResolver;
@@ -25,6 +26,7 @@ use ApiGen\Reflection\ReflectionMethod;
 use ApiGen\Reflection\ReflectionProperty;
 use ApiGen\Templating\Template;
 use ApiGen\Templating\TemplateFactory;
+use ApiGen\Templating\TemplateNavigator;
 use ApiGen\Tree;
 use ArrayObject;
 use Nette;
@@ -149,6 +151,11 @@ class Generator extends Nette\Object
 	 */
 	private $zip;
 
+	/**
+	  * @var TemplateNavigator
+	 */
+	private $templateNavigator;
+
 
 	public function __construct(
 		CharsetConvertor $charsetConvertor,
@@ -157,7 +164,8 @@ class Generator extends Nette\Object
 		TemplateFactory $templateFactory,
 		RelativePathResolver $relativePathResolver,
 		FileSystem\Finder $finder,
-		ElementResolver $elementResolver
+		ElementResolver $elementResolver,
+		TemplateNavigator $templateNavigator
 	) {
 		$this->charsetConvertor = $charsetConvertor;
 		$this->sourceCodeHighlighter = $sourceCodeHighlighter;
@@ -170,6 +178,7 @@ class Generator extends Nette\Object
 		$this->parsedClasses = new ArrayObject;
 		$this->parsedConstants = new ArrayObject;
 		$this->parsedFunctions = new ArrayObject;
+		$this->templateNavigator = $templateNavigator;
 	}
 
 
@@ -452,15 +461,15 @@ class Generator extends Nette\Object
 		// todo: wip
 		$themeTemplates = $this->config[CO::TEMPLATE]['templates'];
 		$commonTemplates = [
-			$themeTemplates['overview'],
-			$themeTemplates['combined'],
-			$themeTemplates['elementlist'],
-			$themeTemplates['404']
+			$themeTemplates[TCO::OVERVIEW],
+			$themeTemplates[TCO::COMBINED],
+			$themeTemplates[TCO::ELEMENT_LIST],
+			$themeTemplates[TCO::E404]
 		];
 
 		foreach ($commonTemplates as $templateInfo) {
 			$template->setFile($templateInfo['template'])
-				->save($this->config['destination'] . '/' . $templateInfo['filename']);
+				->save($this->config[CO::DESTINATION] . '/' . $templateInfo['filename']);
 			$this->onGenerateProgress(1);
 		}
 
@@ -474,22 +483,22 @@ class Generator extends Nette\Object
 		$template = $this->addBaseVariablesToTemplate($template);
 
 		if ($this->isSitemapEnabled()) {
-			$template->setFile($this->getTemplatePath('sitemap'))
-				->save($this->getTemplateFileName('sitemap'));
+			$template->setFile($this->templateNavigator->getTemplatePath(TCO::SITEMAP))
+				->save($this->templateNavigator->getTemplateFileName(TCO::SITEMAP));
 
 			$this->onGenerateProgress(1);
 		}
 
 		if ($this->isOpensearchEnabled()) {
-			$template->setFile($this->getTemplatePath('opensearch'))
-				->save($this->getTemplateFileName('opensearch'));
+			$template->setFile($this->templateNavigator->getTemplatePath(TCO::OPENSEARCH))
+				->save($this->templateNavigator->getTemplateFileName(TCO::OPENSEARCH));
 
 			$this->onGenerateProgress(1);
 		}
 
 		if ($this->isRobotsEnabled()) {
-			$template->setFile($this->getTemplatePath('robots'))
-				->save($this->getTemplateFileName('robots'));
+			$template->setFile($this->templateNavigator->getTemplatePath(TCO::ROBOTS))
+				->save($this->templateNavigator->getTemplateFileName(TCO::ROBOTS));
 
 			$this->onGenerateProgress(1);
 		}
@@ -503,7 +512,6 @@ class Generator extends Nette\Object
 	{
 		$template = $this->templateFactory->create();
 		$template = $this->addBaseVariablesToTemplate($template);
-		$this->prepareTemplate('deprecated');
 
 		$deprecatedFilter = function ($element) {
 			/** @var ReflectionElement $element */
@@ -552,8 +560,8 @@ class Generator extends Nette\Object
 		usort($template->deprecatedFunctions, [$this, 'sortFunctions']);
 		usort($template->deprecatedProperties, [$this, 'sortProperties']);
 
-		$template->setFile($this->getTemplatePath('deprecated'))
-			->save($this->getTemplateFileName('deprecated'));
+		$template->setFile($this->templateNavigator->getTemplatePath(TCO::DEPRECATED))
+			->save($this->templateNavigator->getTemplateFileName(TCO::DEPRECATED));
 
 		foreach ($this->getElementTypes() as $type) {
 			unset($template->{'deprecated' . ucfirst($type)});
@@ -572,7 +580,6 @@ class Generator extends Nette\Object
 	{
 		$template = $this->templateFactory->create();
 		$template = $this->addBaseVariablesToTemplate($template);
-		$this->prepareTemplate('todo');
 
 		$todoFilter = function ($element) {
 			/** @var ReflectionElement $element */
@@ -614,8 +621,8 @@ class Generator extends Nette\Object
 		usort($template->todoFunctions, [$this, 'sortFunctions']);
 		usort($template->todoProperties, [$this, 'sortProperties']);
 
-		$template->setFile($this->getTemplatePath('todo'))
-			->save($this->getTemplateFileName('todo'));
+		$template->setFile($this->templateNavigator->getTemplatePath(TCO::TODO))
+			->save($this->templateNavigator->getTemplateFileName(TCO::TODO));
 
 		foreach ($this->getElementTypes() as $type) {
 			unset($template->{'todo' . ucfirst($type)});
@@ -634,7 +641,6 @@ class Generator extends Nette\Object
 	{
 		$template = $this->templateFactory->create();
 		$template = $this->addBaseVariablesToTemplate($template);
-		$this->prepareTemplate('tree');
 
 		$classTree = [];
 		$interfaceTree = [];
@@ -703,8 +709,8 @@ class Generator extends Nette\Object
 		$template->traitTree = new Tree($traitTree, $this->parsedClasses);
 		$template->exceptionTree = new Tree($exceptionTree, $this->parsedClasses);
 
-		$template->setFile($this->getTemplatePath('tree'))
-			->save($this->getTemplateFileName('tree'));
+		$template->setFile($this->templateNavigator->getTemplatePath(TCO::TREE))
+			->save($this->templateNavigator->getTemplateFileName(TCO::TREE));
 
 		unset($template->classTree);
 		unset($template->interfaceTree);
@@ -726,7 +732,7 @@ class Generator extends Nette\Object
 
 		$template = $this->templateFactory->create();
 		$template = $this->addBaseVariablesToTemplate($template);
-		$this->prepareTemplate('package');
+//		$this->prepareTemplate('package');
 
 		$template->namespace = NULL;
 
@@ -741,7 +747,7 @@ class Generator extends Nette\Object
 			$template->exceptions = $package['exceptions'];
 			$template->constants = $package['constants'];
 			$template->functions = $package['functions'];
-			$template->setFile($this->getTemplatePath('package'))
+			$template->setFile($this->templateNavigator->getTemplatePath(TCO::PACKAGE))
 				->save($this->config[CO::DESTINATION] . '/' . $template->packageUrl($packageName));
 
 			$this->onGenerateProgress(1);
@@ -761,7 +767,7 @@ class Generator extends Nette\Object
 
 		$template = $this->templateFactory->create();
 		$template = $this->addBaseVariablesToTemplate($template);
-		$this->prepareTemplate('namespace');
+//		$this->prepareTemplate('namespace');
 
 		$template->package = NULL;
 
@@ -776,7 +782,7 @@ class Generator extends Nette\Object
 			$template->exceptions = $namespace['exceptions'];
 			$template->constants = $namespace['constants'];
 			$template->functions = $namespace['functions'];
-			$template->setFile($this->getTemplatePath('namespace'))
+			$template->setFile($this->templateNavigator->getTemplatePath(TCO::T_NAMESPACE))
 				->save($this->config[CO::DESTINATION] . '/' . $template->namespaceUrl($namespaceName));
 
 			$this->onGenerateProgress(1);
@@ -792,17 +798,6 @@ class Generator extends Nette\Object
 	{
 		$template = $this->templateFactory->create();
 		$template = $this->addBaseVariablesToTemplate($template);
-
-		if ( ! empty($this->classes) || ! empty($this->interfaces) || ! empty($this->traits) || ! empty($this->exceptions)) {
-			$this->prepareTemplate('class');
-		}
-		if ( ! empty($this->constants)) {
-			$this->prepareTemplate('constant');
-		}
-		if ( ! empty($this->functions)) {
-			$this->prepareTemplate('function');
-		}
-		$this->prepareTemplate('source');
 
 		// Add @usedby annotation
 		foreach ($this->getElementTypes() as $type) {
@@ -887,21 +882,21 @@ class Generator extends Nette\Object
 
 					$template->class = $element;
 
-					$template->setFile($this->getTemplatePath('class'))
+					$template->setFile($this->templateNavigator->getTemplatePath(TCO::T_CLASS))
 						->save($this->config[CO::DESTINATION] . '/' . $template->classUrl($element));
 
 				} elseif ($element instanceof ReflectionConstant) {
 					// Constant
 					$template->constant = $element;
 
-					$template->setFile($this->getTemplatePath('constant'))
+					$template->setFile($this->templateNavigator->getTemplatePath(TCO::T_CLASS))
 						->save($this->config[CO::DESTINATION] . '/' . $template->constantUrl($element));
 
 				} elseif ($element instanceof ReflectionFunction) {
 					// Function
 					$template->function = $element;
 
-					$template->setFile($this->getTemplatePath('function'))
+					$template->setFile($this->templateNavigator->getTemplatePath(TCO::T_FUNCTION))
 						->save($this->config[CO::DESTINATION] . '/' . $template->functionUrl($element));
 				}
 
@@ -912,7 +907,7 @@ class Generator extends Nette\Object
 					$template->fileName = $this->relativePathResolver->getRelativePath($element->getFileName());
 					$content = $this->charsetConvertor->convertFile($element->getFileName());
 					$template->source = $this->sourceCodeHighlighter->highlightAndAddLineNumbers($content);
-					$template->setFile($this->getTemplatePath('source'))
+					$template->setFile($this->templateNavigator->getTemplatePath(TCO::SOURCE))
 						->save($this->config[CO::DESTINATION] . '/' . $template->sourceUrl($element, FALSE));
 
 					$this->onGenerateProgress(1);
@@ -929,31 +924,25 @@ class Generator extends Nette\Object
 	 */
 	private function isSitemapEnabled()
 	{
-		return ! empty($this->config[CO::BASE_URL]) && $this->templateExists('sitemap');
+		return ! empty($this->config[CO::BASE_URL]); // && $this->templateExists('sitemap');
 	}
 
 
 	/**
-	 * Checks if opensearch.xml is enabled.
-	 *
 	 * @return bool
 	 */
 	private function isOpensearchEnabled()
 	{
-		return ! empty($this->config[CO::GOOGLE_CSE_ID])
-			&& ! empty($this->config[CO::BASE_URL])
-			&& $this->templateExists('opensearch');
+		return ! empty($this->config[CO::GOOGLE_CSE_ID]) && ! empty($this->config[CO::BASE_URL]);
 	}
 
 
 	/**
-	 * Checks if robots.txt is enabled.
-	 *
 	 * @return bool
 	 */
 	private function isRobotsEnabled()
 	{
-		return (bool) $this->config[CO::BASE_URL] && $this->templateExists('robots');
+		return (bool) $this->config[CO::BASE_URL];
 	}
 
 
@@ -1031,52 +1020,6 @@ class Generator extends Nette\Object
 			/** @var ReflectionElement $element */
 			return $element->isMain();
 		};
-	}
-
-
-	/**
-	 * @param string $name
-	 * @return string
-	 */
-	private function getTemplatePath($name)
-	{
-		return $this->config[CO::TEMPLATE]['templates'][$name]['template'];
-	}
-
-
-	/**
-	 * @param string $name
-	 * @return string
-	 */
-	private function getTemplateFileName($name)
-	{
-		return $this->config[CO::DESTINATION] . '/' . $this->config[CO::TEMPLATE]['templates'][$name]['filename'];
-	}
-
-
-	/**
-	 * @param string $name
-	 * @return string
-	 */
-	private function templateExists($name)
-	{
-		return isset($this->config[CO::TEMPLATE]['templates'][$name]);
-	}
-
-
-	/**
-	 * Checks if template exists and creates dir.
-	 *
-	 * @param string $name
-	 * @throws \RuntimeException
-	 */
-	private function prepareTemplate($name)
-	{
-		if ( ! $this->templateExists($name)) {
-			throw new RuntimeException("Template for $name is not set");
-		}
-
-		FS::forceDir($this->getTemplateFileName($name));
 	}
 
 
