@@ -9,7 +9,8 @@
 
 namespace ApiGen\Events;
 
-use ApiGen\Charset\CharsetConvertor;
+use ApiGen\Charset\CharsetDetector;
+use ApiGen\Charset\Configuration\CharsetOptionsResolver;
 use ApiGen\Configuration\Configuration;
 use ApiGen\FileSystem\Finder;
 use ApiGen\FileSystem\Zip;
@@ -38,9 +39,9 @@ class InjectConfig extends Nette\Object implements Subscriber
 	private $templateFactory;
 
 	/**
-	 * @var CharsetConvertor
+	 * @var CharsetDetector
 	 */
-	private $charsetConvertor;
+	private $charsetDetector;
 
 	/**
 	 * @var SourceFilters
@@ -76,7 +77,7 @@ class InjectConfig extends Nette\Object implements Subscriber
 	public function __construct(
 		Generator $generator,
 		TemplateFactory $templateFactory,
-		CharsetConvertor $charsetConvertor,
+		CharsetDetector $charsetDetector,
 		SourceFilters $sourceFilters,
 		UrlFilters $urlFilters,
 		Finder $finder,
@@ -86,7 +87,7 @@ class InjectConfig extends Nette\Object implements Subscriber
 	) {
 		$this->generator = $generator;
 		$this->templateFactory = $templateFactory;
-		$this->charsetConvertor = $charsetConvertor;
+		$this->charsetDetector = $charsetDetector;
 		$this->sourceFilters = $sourceFilters;
 		$this->urlFilters = $urlFilters;
 		$this->finder = $finder;
@@ -113,7 +114,7 @@ class InjectConfig extends Nette\Object implements Subscriber
 		$this->templateFactory->setConfig($config);
 		$this->relativePathResolver->setConfig($config);
 
-		$this->charsetConvertor->setCharset($config['charset']);
+		$this->charsetDetector->setCharsets($config['charset']);
 		$this->finder->setConfig($config);
 		$this->zip->setConfig($config);
 

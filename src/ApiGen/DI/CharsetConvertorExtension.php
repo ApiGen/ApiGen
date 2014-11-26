@@ -18,8 +18,15 @@ class CharsetConvertorExtension extends CompilerExtension
 	public function loadConfiguration()
 	{
 		$builder = $this->getContainerBuilder();
-		$builder->addDefinition($this->prefix('charsetConvertor'))
+
+		$builder->addDefinition($this->prefix('convertor'))
 			->setClass('ApiGen\Charset\CharsetConvertor');
+
+		$builder->addDefinition($this->prefix('detector'))
+			->setClass('ApiGen\Charset\CharsetDetector');
+
+		$builder->addDefinition($this->prefix('charsetOptionsResolver'))
+			->setClass('ApiGen\Charset\Configuration\CharsetOptionsResolver');
 	}
 
 }
