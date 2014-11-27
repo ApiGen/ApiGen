@@ -10,6 +10,7 @@
 namespace ApiGen\Generator;
 
 use ApiGen\Charset\CharsetConvertor;
+use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Configuration\Theme\ThemeConfigOptions as TCO;
 use ApiGen\FileSystem;
@@ -162,6 +163,11 @@ class Generator extends Nette\Object
 	 */
 	private $themeResources;
 
+	/**
+	 * @var Configuration
+	 */
+	private $configuration;
+
 
 	public function __construct(
 		CharsetConvertor $charsetConvertor,
@@ -172,7 +178,8 @@ class Generator extends Nette\Object
 		FileSystem\Finder $finder,
 		ElementResolver $elementResolver,
 		TemplateNavigator $templateNavigator,
-		ThemeResources $themeResources
+		ThemeResources $themeResources,
+		Configuration $configuration
 	) {
 		$this->charsetConvertor = $charsetConvertor;
 		$this->sourceCodeHighlighter = $sourceCodeHighlighter;
@@ -187,6 +194,7 @@ class Generator extends Nette\Object
 		$this->parsedFunctions = new ArrayObject;
 		$this->templateNavigator = $templateNavigator;
 		$this->themeResources = $themeResources;
+		$this->configuration = $configuration;
 	}
 
 
@@ -216,9 +224,9 @@ class Generator extends Nette\Object
 			+ (int) $this->config[CO::DEPRECATED]
 			+ (int) $this->config[CO::TODO]
 			+ (int) $this->config[CO::DOWNLOAD]
-			+ (int) $this->isSitemapEnabled()
-			+ (int) $this->isOpensearchEnabled()
-			+ (int) $this->isRobotsEnabled();
+			+ (int) $this->configuration->isSitemapEnabled()
+			+ (int) $this->configuration->isOpensearchEnabled()
+			+ (int) $this->configuration->isRobotsEnabled();
 
 		if ($this->config[CO::SOURCE_CODE]) {
 			$tokenizedFilter = function (ReflectionClass $class) {
@@ -490,21 +498,21 @@ class Generator extends Nette\Object
 		$template = $this->templateFactory->create();
 		$template = $this->addBaseVariablesToTemplate($template);
 
-		if ($this->isSitemapEnabled()) {
+		if ($this->configuration->isSitemapEnabled()) {
 			$template->setFile($this->templateNavigator->getTemplatePath(TCO::SITEMAP))
 				->save($this->templateNavigator->getTemplateFileName(TCO::SITEMAP));
 
 			$this->onGenerateProgress(1);
 		}
 
-		if ($this->isOpensearchEnabled()) {
+		if ($this->configuration->isOpensearchEnabled()) {
 			$template->setFile($this->templateNavigator->getTemplatePath(TCO::OPENSEARCH))
 				->save($this->templateNavigator->getTemplateFileName(TCO::OPENSEARCH));
 
 			$this->onGenerateProgress(1);
 		}
 
-		if ($this->isRobotsEnabled()) {
+		if ($this->configuration->isRobotsEnabled()) {
 			$template->setFile($this->templateNavigator->getTemplatePath(TCO::ROBOTS))
 				->save($this->templateNavigator->getTemplateFileName(TCO::ROBOTS));
 
@@ -774,7 +782,6 @@ class Generator extends Nette\Object
 
 		$template = $this->templateFactory->create();
 		$template = $this->addBaseVariablesToTemplate($template);
-//		$this->prepareTemplate('namespace');
 
 		$template->package = NULL;
 
@@ -921,33 +928,6 @@ class Generator extends Nette\Object
 				}
 			}
 		}
-	}
-
-
-	/**
-	 * @return bool
-	 */
-	private function isSitemapEnabled()
-	{
-		return ! empty($this->config[CO::BASE_URL]);
-	}
-
-
-	/**
-	 * @return bool
-	 */
-	private function isOpensearchEnabled()
-	{
-		return ! empty($this->config[CO::GOOGLE_CSE_ID]) && ! empty($this->config[CO::BASE_URL]);
-	}
-
-
-	/**
-	 * @return bool
-	 */
-	private function isRobotsEnabled()
-	{
-		return (bool) $this->config[CO::BASE_URL];
 	}
 
 

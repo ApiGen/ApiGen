@@ -9,13 +9,8 @@
 
 namespace ApiGen\Configuration;
 
-use ApiGen\Configuration\Theme\ThemeConfigFactory;
-use ApiGen\Factory;
-use ApiGen\FileSystem\FileSystem;
-use ApiGen\Neon\NeonFile;
+use ApiGen\Configuration\ConfigurationOptions as CO;
 use Nette;
-use Nette\Utils\AssertionException;
-use Nette\Utils\Validators;
 
 
 /**
@@ -86,6 +81,33 @@ class Configuration extends Nette\Object
 			$this->resolveOptions([]);
 		}
 		return $this->options;
+	}
+
+
+	/**
+	 * @return bool
+	 */
+	public function isSitemapEnabled()
+	{
+		return ! empty($this->options[CO::BASE_URL]);
+	}
+
+
+	/**
+	 * @return bool
+	 */
+	public function isOpensearchEnabled()
+	{
+		return ! empty($this->options[CO::GOOGLE_CSE_ID]) && ! empty($this->options[CO::BASE_URL]);
+	}
+
+
+	/**
+	 * @return bool
+	 */
+	public function isRobotsEnabled()
+	{
+		return (bool) $this->options[CO::BASE_URL];
 	}
 
 }
