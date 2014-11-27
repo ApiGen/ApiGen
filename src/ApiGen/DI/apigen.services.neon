@@ -57,6 +57,9 @@ services:
 	- ApiGen\Templating\Filters\SourceFilters
 	- ApiGen\Templating\Filters\UrlFilters
 
+	# theme
+	- ApiGen\Theme\ThemeResources
+
 	# syntax highlighter
 	- ApiGen\Generator\SourceCodeHighlighter\FshlSourceCodeHighlighter
 	- FSHL\Output\Html

@@ -27,6 +27,7 @@ use ApiGen\Reflection\ReflectionProperty;
 use ApiGen\Templating\Template;
 use ApiGen\Templating\TemplateFactory;
 use ApiGen\Templating\TemplateNavigator;
+use ApiGen\Theme\ThemeResources;
 use ApiGen\Tree;
 use ArrayObject;
 use Nette;
@@ -156,6 +157,11 @@ class Generator extends Nette\Object
 	 */
 	private $templateNavigator;
 
+	/**
+	 * @var ThemeResources
+	 */
+	private $themeResources;
+
 
 	public function __construct(
 		CharsetConvertor $charsetConvertor,
@@ -165,7 +171,8 @@ class Generator extends Nette\Object
 		RelativePathResolver $relativePathResolver,
 		FileSystem\Finder $finder,
 		ElementResolver $elementResolver,
-		TemplateNavigator $templateNavigator
+		TemplateNavigator $templateNavigator,
+		ThemeResources $themeResources
 	) {
 		$this->charsetConvertor = $charsetConvertor;
 		$this->sourceCodeHighlighter = $sourceCodeHighlighter;
@@ -179,6 +186,7 @@ class Generator extends Nette\Object
 		$this->parsedConstants = new ArrayObject;
 		$this->parsedFunctions = new ArrayObject;
 		$this->templateNavigator = $templateNavigator;
+		$this->themeResources = $themeResources;
 	}
 
 
@@ -189,7 +197,7 @@ class Generator extends Nette\Object
 	 */
 	public function generate()
 	{
-		$this->copyResources();
+		$this->themeResources->copyToDestination($this->config[CO::DESTINATION]);
 
 		// Categorize by packages and namespaces
 		$this->categorize();
@@ -1042,28 +1050,6 @@ class Generator extends Nette\Object
 		$template->functions = array_filter($this->functions, $this->getMainFilter());
 		$template->archive = basename($this->zip->getArchivePath());
 		return $template;
-	}
-
-
-	private function copyResources()
-	{
-		foreach ($this->config[CO::TEMPLATE]['resources'] as $resourceSource => $resourceDestination) {
-			// File
-			if (is_file($resourceSource)) {
-				copy($resourceSource, FS::forceDir($this->config[CO::DESTINATION]  . '/' . $resourceDestination));
-				continue;
-			}
-
-			// Dir
-			/** @var RecursiveDirectoryIterator $iterator */
-			$iterator = Nette\Utils\Finder::findFiles('*')->from($resourceSource)->getIterator();
-			foreach ($iterator as $item) {
-				/** @var SplFileInfo $item */
-				copy($item->getPathName(), FS::forceDir($this->config[CO::DESTINATION]
-					. '/' . $resourceDestination
-					. '/' . $iterator->getSubPathName()));
-			}
-		}
 	}
 
 }
