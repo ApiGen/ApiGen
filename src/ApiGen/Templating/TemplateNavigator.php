@@ -15,8 +15,6 @@ use ApiGen\Reflection\ReflectionElement;
 use ApiGen\Templating\Filters\SourceFilters;
 use ApiGen\Templating\Filters\UrlFilters;
 use Nette;
-use Nette\Utils\Finder;
-use RecursiveDirectoryIterator;
 
 
 class TemplateNavigator extends Nette\Object
@@ -38,11 +36,8 @@ class TemplateNavigator extends Nette\Object
 	private $urlFilters;
 
 
-	public function __construct(
-		Configuration $configuration,
-		SourceFilters $sourceFilters,
-		UrlFilters $urlFilters
-	) {
+	public function __construct(Configuration $configuration, SourceFilters $sourceFilters, UrlFilters $urlFilters)
+	{
 		$this->configuration = $configuration;
 		$this->sourceFilters = $sourceFilters;
 		$this->urlFilters = $urlFilters;
@@ -128,43 +123,12 @@ class TemplateNavigator extends Nette\Object
 	}
 
 
-	public function copyResourcesToDestination()
-	{
-		// todo: move somewhere else?
-		// theme resources prepare
-		$destination = $this->configuration->getOption(CO::DESTINATION);
-		$templateOptions = $this->configuration->getOptions();
-		foreach ($templateOptions['template']['resources'] as $resourceSource => $resourceDestination) {
-			// File
-			$resourcePath = $this->getTemplateDir() . '/' . $resourceSource;
-			if (is_file($resourcePath)) {
-				$path = $destination . '/' . $resourceDestination;
-				FileSystem::createDirForPath($path);
-				copy($resourcePath, $path);
-				continue;
-			}
-
-			// Dir
-
-			/** @var RecursiveDirectoryIterator $iterator  */
-			$iterator = Finder::findFiles('*')->from($resourcePath)->getIterator();
-			foreach ($iterator as $item) {
-				$path = $destination . '/' . $resourceDestination . '/' . $iterator->getSubPathName();
-				FileSystem::createDirForPath($path);
-				copy($item->getPathName(), $path);
-			}
-		}
-	}
-
-
 	/**
-	 * @param string $name
 	 * @return string
 	 */
-	public function templateExists($name)
+	private function getDestination()
 	{
-		$options = $this->configuration->getOptions();
-		return isset($options['template']['templates'][$name]);
+		return $this->configuration->getOption(CO::DESTINATION);
 	}
 
 
@@ -188,26 +152,13 @@ class TemplateNavigator extends Nette\Object
 
 
 	/**
+	 * @param string $name
 	 * @return string
 	 */
-	private function getTemplateDir()
+	private function templateExists($name)
 	{
-		// todo: this should be in options!
-		$config = $this->configuration->getOption('templateConfig');
-		$doh = $this->configuration->getOption('template');
-		dump($doh['templatePath']);
-		die;
-
-		return dirname($config);
-	}
-
-
-	/**
-	 * @return string
-	 */
-	private function getDestination()
-	{
-		return $this->configuration->getOption(CO::DESTINATION);
+		$options = $this->configuration->getOptions();
+		return isset($options[CO::TEMPLATE]['templates'][$name]);
 	}
 
 }
