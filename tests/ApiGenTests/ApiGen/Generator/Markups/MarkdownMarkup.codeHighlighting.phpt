@@ -9,7 +9,7 @@
 namespace ApiGenTests\ApiGen\Generator\Markups;
 
 use ApiGen\Generator\Markups\MarkdownMarkup;
-use ApiGen\Generator\SourceCodeHighlighter;
+use ApiGen\Generator\SourceCodeHighlighter\SourceCodeHighlighter;
 use Michelf\MarkdownExtra;
 use Tester\Assert;
 use Tester\TestCase;

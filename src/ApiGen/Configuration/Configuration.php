@@ -9,13 +9,8 @@
 
 namespace ApiGen\Configuration;
 
-use ApiGen\Configuration\Theme\ThemeConfigFactory;
-use ApiGen\Factory;
-use ApiGen\FileSystem\FileSystem;
-use ApiGen\Neon\NeonFile;
+use ApiGen\Configuration\ConfigurationOptions as CO;
 use Nette;
-use Nette\Utils\AssertionException;
-use Nette\Utils\Validators;
 
 
 /**
@@ -37,6 +32,11 @@ class Configuration extends Nette\Object
 	public $onOptionsResolve = [];
 
 	/**
+	 * @var array
+	 */
+	private $options = [];
+
+	/**
 	 * @var ConfigurationOptionsResolver
 	 */
 	private $configurationOptionsResolver;
@@ -53,9 +53,61 @@ class Configuration extends Nette\Object
 	 */
 	public function resolveOptions(array $options)
 	{
-		self::$config = $options = $this->configurationOptionsResolver->resolve($options);
+		self::$config = $this->options = $options = $this->configurationOptionsResolver->resolve($options);
 		$this->onOptionsResolve($options);
 		return $options;
+	}
+
+
+	/**
+	 * @param string $name
+	 * @return mixed|NULL
+	 */
+	public function getOption($name)
+	{
+		if (isset($this->getOptions()[$name])) {
+			return $this->getOptions()[$name];
+		}
+		return NULL;
+	}
+
+
+	/**
+	 * @return array
+	 */
+	public function getOptions()
+	{
+		if ($this->options === NULL) {
+			$this->resolveOptions([]);
+		}
+		return $this->options;
+	}
+
+
+	/**
+	 * @return bool
+	 */
+	public function isSitemapEnabled()
+	{
+		return ! empty($this->options[CO::BASE_URL]);
+	}
+
+
+	/**
+	 * @return bool
+	 */
+	public function isOpensearchEnabled()
+	{
+		return ! empty($this->options[CO::GOOGLE_CSE_ID]) && ! empty($this->options[CO::BASE_URL]);
+	}
+
+
+	/**
+	 * @return bool
+	 */
+	public function isRobotsEnabled()
+	{
+		return (bool) $this->options[CO::BASE_URL];
 	}
 
 }

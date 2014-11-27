@@ -40,12 +40,13 @@ services:
 
 	# generator
 	- ApiGen\Scanner\Scanner
-	- ApiGen\Generator\HtmlGenerator
+	- ApiGen\Generator\Generator
 	- ApiGen\Generator\Markups\MarkdownMarkup
 	- Michelf\MarkdownExtra
 
 	# templating
 	- ApiGen\Templating\TemplateFactory
+	- ApiGen\Templating\TemplateNavigator
 	- ApiGen\Templating\Filters\AnnotationFilters
 	- ApiGen\Templating\Filters\PathFilters
 	- ApiGen\Templating\Filters\PhpManualFilters
@@ -53,8 +54,11 @@ services:
 	- ApiGen\Templating\Filters\SourceFilters
 	- ApiGen\Templating\Filters\UrlFilters
 
+	# theme
+	- ApiGen\Theme\ThemeResources
+
 	# syntax highlighter
-	- ApiGen\Generator\FshlSourceCodeHighlighter
+	- ApiGen\Generator\SourceCodeHighlighter\FshlSourceCodeHighlighter
 	- FSHL\Output\Html
 	- FSHL\Lexer\Php
 	-
