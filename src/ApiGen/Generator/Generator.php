@@ -17,6 +17,7 @@ use ApiGen\FileSystem;
 use ApiGen\Generator\Resolvers\ElementResolver;
 use ApiGen\Generator\Resolvers\RelativePathResolver;
 use ApiGen\Generator\SourceCodeHighlighter\SourceCodeHighlighter;
+use ApiGen\Parser\Elements\ElementSorter;
 use ApiGen\Parser\Elements\GroupSorter;
 use ApiGen\Reflection;
 use ApiGen\Reflection\ReflectionClass;
@@ -171,6 +172,11 @@ class Generator extends Nette\Object
 	 */
 	private $groupSorter;
 
+	/**
+	 * @var ElementSorter
+	 */
+	private $elementSorter;
+
 
 	public function __construct(
 		CharsetConvertor $charsetConvertor,
@@ -183,7 +189,8 @@ class Generator extends Nette\Object
 		TemplateNavigator $templateNavigator,
 		ThemeResources $themeResources,
 		Configuration $configuration,
-		GroupSorter $groupSorter
+		GroupSorter $groupSorter,
+		ElementSorter $elementSorter
 	) {
 		$this->charsetConvertor = $charsetConvertor;
 		$this->sourceCodeHighlighter = $sourceCodeHighlighter;
@@ -200,6 +207,7 @@ class Generator extends Nette\Object
 		$this->themeResources = $themeResources;
 		$this->configuration = $configuration;
 		$this->groupSorter = $groupSorter;
+		$this->elementSorter = $elementSorter;
 	}
 
 
@@ -510,10 +518,10 @@ class Generator extends Nette\Object
 				);
 			}
 		}
-		usort($template->deprecatedMethods, [$this, 'sortMethods']);
-		usort($template->deprecatedConstants, [$this, 'sortConstants']);
-		usort($template->deprecatedFunctions, [$this, 'sortFunctions']);
-		usort($template->deprecatedProperties, [$this, 'sortProperties']);
+		usort($template->deprecatedMethods, [$this->elementSorter, 'sortElementsByFqn']);
+		usort($template->deprecatedConstants, [$this->elementSorter, 'sortElementsByFqn']);
+		usort($template->deprecatedFunctions, [$this->elementSorter, 'sortElementsByFqn']);
+		usort($template->deprecatedProperties, [$this->elementSorter, 'sortElementsByFqn']);
 
 		$template->setFile($this->templateNavigator->getTemplatePath(TCO::DEPRECATED))
 			->save($this->templateNavigator->getTemplateFileName(TCO::DEPRECATED));
@@ -571,10 +579,10 @@ class Generator extends Nette\Object
 				);
 			}
 		}
-		usort($template->todoMethods, [$this, 'sortMethods']);
-		usort($template->todoConstants, [$this, 'sortConstants']);
-		usort($template->todoFunctions, [$this, 'sortFunctions']);
-		usort($template->todoProperties, [$this, 'sortProperties']);
+		usort($template->todoMethods, [$this->elementSorter, 'sortElementsByFqn']);
+		usort($template->todoConstants, [$this->elementSorter, 'sortElementsByFqn']);
+		usort($template->todoFunctions, [$this->elementSorter, 'sortElementsByFqn']);
+		usort($template->todoProperties, [$this->elementSorter, 'sortElementsByFqn']);
 
 		$template->setFile($this->templateNavigator->getTemplatePath(TCO::TODO))
 			->save($this->templateNavigator->getTemplateFileName(TCO::TODO));
@@ -867,62 +875,6 @@ class Generator extends Nette\Object
 				}
 			}
 		}
-	}
-
-
-	/**
-	 * Sorts methods by FQN.
-	 *
-	 * @return integer
-	 */
-	private function sortMethods(ReflectionMethod $one, ReflectionMethod $two)
-	{
-		return strcasecmp(
-			$one->getDeclaringClassName() . '::' . $one->getName(),
-			$two->getDeclaringClassName() . '::' . $two->getName()
-		);
-	}
-
-
-	/**
-	 * Sorts constants by FQN.
-	 *
-	 * @return integer
-	 */
-	private function sortConstants(ReflectionConstant $one, ReflectionConstant $two)
-	{
-		return strcasecmp(
-			($one->getDeclaringClassName() ?: $one->getNamespaceName()) . '\\' . $one->getName(),
-			($two->getDeclaringClassName() ?: $two->getNamespaceName()) . '\\' . $two->getName()
-		);
-	}
-
-
-	/**
-	 * Sorts functions by FQN.
-	 *
-	 * @return integer
-	 */
-	private function sortFunctions(ReflectionFunction $one, ReflectionFunction $two)
-	{
-		return strcasecmp(
-			$one->getNamespaceName() . '\\' . $one->getName(),
-			$two->getNamespaceName() . '\\' . $two->getName()
-		);
-	}
-
-
-	/**
-	 * Sorts functions by FQN.
-	 *
-	 * @return integer
-	 */
-	private function sortProperties(ReflectionProperty $one, ReflectionProperty $two)
-	{
-		return strcasecmp(
-			$one->getDeclaringClassName() . '::' . $one->getName(),
-			$two->getDeclaringClassName() . '::' . $two->getName()
-		);
 	}
 
 
