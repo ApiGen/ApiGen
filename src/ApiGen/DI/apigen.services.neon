@@ -41,6 +41,7 @@ services:
 	# generator
 	- ApiGen\Scanner\Scanner
 	- ApiGen\Generator\Generator
+	- ApiGen\Generator\GeneratorQueue
 	- ApiGen\Generator\Markups\MarkdownMarkup
 	- Michelf\MarkdownExtra
 

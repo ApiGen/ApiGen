@@ -14,6 +14,7 @@ use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Configuration\ConfigurationOptionsResolver as COR;
 use ApiGen\FileSystem\Wiper;
 use ApiGen\Generator\Generator;
+use ApiGen\Generator\GeneratorQueue;
 use ApiGen\Neon\NeonFile;
 use ApiGen\Parser\Parser;
 use ApiGen\Scanner\Scanner;
@@ -55,13 +56,19 @@ class GenerateCommand extends Command
 	 */
 	private $scanner;
 
+	/**
+	 * @var GeneratorQueue
+	 */
+	private $generatorQueue;
+
 
 	public function __construct(
 		Generator $generator,
 		Wiper $wiper,
 		Configuration $configuration,
 		Scanner $scanner,
-		Parser $parser
+		Parser $parser,
+		GeneratorQueue $generatorQueue
 	) {
 		parent::__construct();
 		$this->generator = $generator;
@@ -69,6 +76,7 @@ class GenerateCommand extends Command
 		$this->configuration = $configuration;
 		$this->scanner = $scanner;
 		$this->parser = $parser;
+		$this->generatorQueue = $generatorQueue;
 	}
 
 
@@ -218,6 +226,7 @@ class GenerateCommand extends Command
 		}
 
 		$this->generator->generate();
+		$this->generatorQueue->run();
 
 		$output->writeln(PHP_EOL . '<info>Api was successfully generated!</info>');
 	}
