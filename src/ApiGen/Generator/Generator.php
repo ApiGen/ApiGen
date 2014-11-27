@@ -17,6 +17,7 @@ use ApiGen\FileSystem;
 use ApiGen\Generator\Resolvers\ElementResolver;
 use ApiGen\Generator\Resolvers\RelativePathResolver;
 use ApiGen\Generator\SourceCodeHighlighter\SourceCodeHighlighter;
+use ApiGen\Parser\Elements\GroupSorter;
 use ApiGen\Reflection;
 use ApiGen\Reflection\ReflectionClass;
 use ApiGen\Reflection\ReflectionConstant;
@@ -165,6 +166,11 @@ class Generator extends Nette\Object
 	 */
 	private $configuration;
 
+	/**
+	 * @var GroupSorter
+	 */
+	private $groupSorter;
+
 
 	public function __construct(
 		CharsetConvertor $charsetConvertor,
@@ -176,7 +182,8 @@ class Generator extends Nette\Object
 		ElementResolver $elementResolver,
 		TemplateNavigator $templateNavigator,
 		ThemeResources $themeResources,
-		Configuration $configuration
+		Configuration $configuration,
+		GroupSorter $groupSorter
 	) {
 		$this->charsetConvertor = $charsetConvertor;
 		$this->sourceCodeHighlighter = $sourceCodeHighlighter;
@@ -192,6 +199,7 @@ class Generator extends Nette\Object
 		$this->templateNavigator = $templateNavigator;
 		$this->themeResources = $themeResources;
 		$this->configuration = $configuration;
+		$this->groupSorter = $groupSorter;
 	}
 
 
@@ -342,82 +350,16 @@ class Generator extends Nette\Object
 
 		if ($namespacesEnabled) {
 			$this->packages = [];
-			$this->namespaces = $this->sortGroups($this->namespaces);
+			$this->namespaces = $this->groupSorter->sort($this->namespaces);
 
 		} elseif ($packagesEnabled) {
 			$this->namespaces = [];
-			$this->packages = $this->sortGroups($this->packages);
+			$this->packages = $this->groupSorter->sort($this->packages);
 
 		} else {
 			$this->namespaces = [];
 			$this->packages = [];
 		}
-	}
-
-
-	/**
-	 * Sorts and filters groups.
-	 *
-	 * @return array
-	 */
-	private function sortGroups(array $groups)
-	{
-		// Don't generate only 'None' groups
-		if (count($groups) === 1 && isset($groups['None'])) {
-			return [];
-		}
-
-		$emptyList = [
-			'classes' => [],
-			'interfaces' => [],
-			'traits' => [],
-			'exceptions' => [],
-			'constants' => [],
-			'functions' => []
-		];
-
-		$groupNames = array_keys($groups);
-		$lowerGroupNames = array_flip(array_map(function ($y) {
-			return strtolower($y);
-		}, $groupNames));
-
-		foreach ($groupNames as $groupName) {
-			// Add missing parent groups
-			$parent = '';
-			foreach (explode('\\', $groupName) as $part) {
-				$parent = ltrim($parent . '\\' . $part, '\\');
-				if ( ! isset($lowerGroupNames[strtolower($parent)])) {
-					$groups[$parent] = $emptyList;
-				}
-			}
-
-			// Add missing element types
-			foreach ($this->getElementTypes() as $type) {
-				if ( ! isset($groups[$groupName][$type])) {
-					$groups[$groupName][$type] = [];
-				}
-			}
-		}
-
-		$main = $this->config[CO::MAIN];
-		uksort($groups, function ($one, $two) use ($main) {
-			// \ as separator has to be first
-			$one = str_replace('\\', ' ', $one);
-			$two = str_replace('\\', ' ', $two);
-
-			if ($main) {
-				if (strpos($one, $main) === 0 && strpos($two, $main) !== 0) {
-					return -1;
-
-				} elseif (strpos($one, $main) !== 0 && strpos($two, $main) === 0) {
-					return 1;
-				}
-			}
-
-			return strcasecmp($one, $two);
-		});
-
-		return $groups;
 	}
 
 
