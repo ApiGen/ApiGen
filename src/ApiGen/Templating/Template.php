@@ -14,9 +14,8 @@ use Nette;
 
 
 /**
- * Customized ApiGen template class.
- *
  * @method Template setFile($file)
+ * @method Template setSavePath()
  * @method string   namespaceUrl(string $s)
  * @method string   packageUrl(string $s)
  * @method string   classUrl(string $s)
@@ -28,14 +27,18 @@ class Template extends Nette\Bridges\ApplicationLatte\Template
 {
 
 	/**
-	 * Renders template to file.
-	 *
+	 * @var string
+	 */
+	private $savePath;
+
+
+	/**
 	 * @param string $file
 	 */
-	public function save($file)
+	public function save($file = NULL)
 	{
-		FileSystem::forceDir($file);
-		if (file_put_contents($file, $this->__toString(TRUE)) === FALSE) {
+		$this->savePath = $file ?: $this->savePath;
+		if (file_put_contents($this->savePath, $this->__toString(TRUE)) === FALSE) {
 			throw new Nette\IOException("Unable to save file '$file'.");
 		}
 	}

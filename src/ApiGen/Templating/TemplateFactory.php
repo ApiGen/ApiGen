@@ -11,9 +11,11 @@ namespace ApiGen\Templating;
 
 use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions as CO;
+use ApiGen\Configuration\Theme\ThemeConfigOptions as TCO;
 use Latte;
 use Nette;
 use Nette\Utils\ArrayHash;
+use stdClass;
 
 
 /**
@@ -37,23 +39,54 @@ class TemplateFactory extends Nette\Object
 	 */
 	private $configuration;
 
+	/**
+	 * @var TemplateNavigator
+	 */
+	private $templateNavigator;
 
-	public function __construct(Latte\Engine $latteEngine, Configuration $configuration)
-	{
+
+	public function __construct(
+		Latte\Engine $latteEngine,
+		Configuration $configuration,
+		TemplateNavigator $templateNavigator
+	) {
 		$this->latteEngine = $latteEngine;
 		$this->configuration = $configuration;
+		$this->templateNavigator = $templateNavigator;
 	}
 
 
 	/**
-	 * @return Template|\stdClass
+	 * @return Template|stdClass
 	 */
 	public function create()
 	{
-		/** @var Template|\stdClass $template */
+		return $template = $this->buildTemplate();
+	}
+
+
+	/**
+	 * @param string $type
+	 * @return Template|stdClass
+	 */
+	public function createForType($type)
+	{
+		$template = $this->buildTemplate();
+		$template->setFile($this->templateNavigator->getTemplatePath($type));
+		$template->setSavePath($this->templateNavigator->getTemplateFileName($type));
+		return $template;
+	}
+
+
+	/**
+	 * @return Template|stdClass
+	 */
+	private function buildTemplate()
+	{
+		/** @var Template|stdClass $template */
 		$template = new Template($this->latteEngine);
 		$template->config = ArrayHash::from($this->config);
-		$template->basePath = $this->config[CO::TEMPLATE]['templatesPath'];
+		$template->basePath = $this->config[CO::TEMPLATE][TCO::TEMPLATES_PATH];
 		return $template;
 	}
 
