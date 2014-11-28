@@ -18,7 +18,7 @@ class GeneratorQueue extends Nette\Object
 	/**
 	 * @var TemplateGenerator[]
 	 */
-	private $queue;
+	private $queue = [];
 
 
 	public function run()
