@@ -65,7 +65,7 @@ class GroupSorter extends Nette\Object
 
 		$main = $this->configuration->getOption(CO::MAIN);
 
-		uksort($groups, function ($one, $two) use ($main) {
+		uksort($this->groups, function ($one, $two) use ($main) {
 			// \ as separator has to be first
 			$one = str_replace('\\', ' ', $one);
 			$two = str_replace('\\', ' ', $two);
@@ -82,7 +82,7 @@ class GroupSorter extends Nette\Object
 			return strcasecmp($one, $two);
 		});
 
-		return $groups;
+		return $this->groups;
 	}
 
 
@@ -122,6 +122,7 @@ class GroupSorter extends Nette\Object
 		$parent = '';
 		foreach (explode('\\', $groupName) as $part) {
 			$parent = ltrim($parent . '\\' . $part, '\\');
+
 			if ( ! isset($this->lowercasedGroupNames[strtolower($parent)])) {
 				$this->groups[$parent] = $this->elements->getEmptyList();
 			}
