@@ -37,7 +37,7 @@
 		<td class="value"><code>{block|strip}
 			<var>{if $parameter->passedByReference}&amp; {/if}${$parameter->name}</var>{if $parameter->defaultValueAvailable} = {$parameter->defaultValueDefinition|highlightPHP:$function|noescape}{elseif $parameter->unlimited},…{/if}
 		{/block}</code></td>
-		<td>{$parameter->description|description:$function}</td>
+		<td>{$parameter->description|description:$function|noescape}</td>
 	</tr>
 	</table>
 
