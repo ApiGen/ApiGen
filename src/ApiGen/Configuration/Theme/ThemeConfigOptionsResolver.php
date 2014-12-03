@@ -29,10 +29,10 @@ class ThemeConfigOptionsResolver extends Nette\Object
 			'elementDetailsCollapsed' => TRUE,
 			'elementsOrder' => 'natural' # or: alphabetical
 		],
-		'resources' => [
+		TCO::RESOURCES => [
 			'resources' => 'resources'
 		],
-		'templates' => [
+		TCO::TEMPLATES => [
 			TCO::OVERVIEW => [
 				'filename' => 'index.html',
 				'template' => 'overview.latte'
@@ -125,7 +125,6 @@ class ThemeConfigOptionsResolver extends Nette\Object
 	{
 		$this->resolver = $this->optionsResolverFactory->create();
 		$this->setDefaults();
-		$this->setAllowedValues();
 		$this->setNormalizers();
 		return $this->resolver->resolve($options);
 	}
@@ -137,35 +136,10 @@ class ThemeConfigOptionsResolver extends Nette\Object
 	}
 
 
-	private function setAllowedValues()
-	{
-		$this->resolver->setAllowedValues([
-			'templates' => function ($value) {
-				foreach ($value as $type => $settings) {
-					$this->validateFileExistence($settings['template'], $type);
-				}
-				return TRUE;
-			}
-		]);
-	}
-
-
-	/**
-	 * @param string $file
-	 * @param string $type
-	 */
-	private function validateFileExistence($file, $type)
-	{
-		if ( ! is_file($file)) {
-			throw new ConfigurationException("Template for $type was not found in $file");
-		}
-	}
-
-
 	private function setNormalizers()
 	{
 		$this->resolver->setNormalizers([
-			'resources' => function (Options $options, $resources) { // todo: make same logic as for templates
+			TCO::RESOURCES => function (Options $options, $resources) { // todo: make same logic as for templates
 				$absolutizedResources = array();
 				foreach ($resources as $key => $resource) {
 					$key = $options['templatesPath'] . '/' . $key;
@@ -173,7 +147,7 @@ class ThemeConfigOptionsResolver extends Nette\Object
 				}
 				return $absolutizedResources;
 			},
-			'templates' => function (Options $options, $value) {
+			TCO::TEMPLATES => function (Options $options, $value) {
 				return $this->makeTemplatePathsAbsolute($value, $options);
 			}
 		]);
@@ -186,9 +160,23 @@ class ThemeConfigOptionsResolver extends Nette\Object
 	private function makeTemplatePathsAbsolute(array $value, Options $options)
 	{
 		foreach ($value as $type => $settings) {
-			$value[$type]['template'] = $options['templatesPath'] . '/' . $settings['template'];
+			$filePath = $options[TCO::TEMPLATES_PATH] . '/' . $settings['template'];
+			$value[$type]['template'] = $filePath;
+			$this->validateFileExistence($filePath, $type);
 		}
 		return $value;
+	}
+
+
+	/**
+	 * @param string $file
+	 * @param string $type
+	 */
+	private function validateFileExistence($file, $type)
+	{
+		if ( ! is_file($file)) {
+			throw new ConfigurationException("Template for $type was not found in $file");
+		}
 	}
 
 }

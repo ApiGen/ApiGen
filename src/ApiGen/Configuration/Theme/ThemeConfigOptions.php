@@ -30,5 +30,7 @@ class ThemeConfigOptions
 	const OPENSEARCH = 'opensearch';
 	const ROBOTS = 'robots';
 	const TEMPLATES_PATH = 'templatesPath';
+	const RESOURCES = 'resources';
+	const TEMPLATES = 'templates';
 
 }

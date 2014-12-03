@@ -97,7 +97,6 @@ class ConfigurationOptionsResolver extends Nette\Object
 	{
 		$this->resolver = $this->optionsResolverFactory->create();
 		$this->setDefaults();
-		$this->replaceDefaults();
 		$this->setRequired();
 		$this->setAllowedTypes();
 		$this->setAllowedValues();
@@ -110,12 +109,7 @@ class ConfigurationOptionsResolver extends Nette\Object
 	private function setDefaults()
 	{
 		$this->resolver->setDefaults($this->defaults);
-	}
-
-
-	private function replaceDefaults()
-	{
-		$this->resolver->replaceDefaults([
+		$this->resolver->setDefaults([
 			CO::METHOD_ACCESS_LEVELS => function (Options $options) {
 				return $this->getAccessLevelForReflections($options[CO::ACCESS_LEVELS], 'method');
 			},
@@ -173,7 +167,7 @@ class ConfigurationOptionsResolver extends Nette\Object
 		$this->resolver->setAllowedTypes([
 			CO::AUTOCOMPLETE => 'array',
 			CO::ACCESS_LEVELS => 'array',
-			CO::BASE_URL => 'string',
+			CO::BASE_URL => ['null', 'string'],
 			CO::CONFIG => 'string',
 			CO::DEBUG => 'bool',
 			CO::DEPRECATED => 'bool',
@@ -192,7 +186,7 @@ class ConfigurationOptionsResolver extends Nette\Object
 			CO::SKIP_DOC_PREFIX => 'array',
 			CO::SOURCE => 'array',
 			CO::SOURCE_CODE => ['string', 'bool'],
-			CO::TEMPLATE_CONFIG => 'string',
+			CO::TEMPLATE_CONFIG => ['null', 'string'],
 			CO::TITLE => ['null', 'string'],
 			CO::TODO => 'bool',
 			CO::TREE => ['string', 'bool']
@@ -276,7 +270,7 @@ class ConfigurationOptionsResolver extends Nette\Object
 
 	public function setTypeCorrectors()
 	{
-		$boolConfigurationOptions = [CO::DEPRECATED, CO::INTERNAL, CO::PHP, CO::SOURCE_CODE, CO::TREE, CO::TREE];
+		$boolConfigurationOptions = [CO::DEPRECATED, CO::INTERNAL, CO::PHP, CO::SOURCE_CODE, CO::TODO, CO::TREE];
 		foreach ($boolConfigurationOptions as $optionName) {
 			$this->resolver->setNormalizers([
 				$optionName => function (Options $options, $value) {
