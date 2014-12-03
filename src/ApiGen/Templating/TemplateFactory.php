@@ -61,7 +61,7 @@ class TemplateFactory extends Nette\Object
 	 */
 	public function create()
 	{
-		return $template = $this->buildTemplate();
+		return $this->buildTemplate();
 	}
 
 

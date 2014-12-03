@@ -59,7 +59,6 @@ class Elements
 			$emptyList[$type] = [];
 		}
 
-		dump($emptyList);
 		return $emptyList;
 	}
 
