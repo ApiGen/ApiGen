@@ -10,12 +10,13 @@
 namespace ApiGen\Generator;
 
 
-interface TemplateGenerator
+interface ConditionalTemplateGenerator extends TemplateGenerator
 {
 
+
 	/**
-	 * Generate template to file
+	 * @return bool
 	 */
-	function generate();
+	function isAllowed();
 
 }

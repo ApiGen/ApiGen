@@ -21,10 +21,21 @@ class GeneratorQueue extends Nette\Object
 	private $queue = [];
 
 
+	public function addToQueue(TemplateGenerator $templateGenerator)
+	{
+		$this->queue[] = $templateGenerator;
+	}
+
+
 	public function run()
 	{
 		foreach ($this->queue as $generator) {
-			if ($generator->isAllowed()) {
+			if ($generator instanceof ConditionalTemplateGenerator) {
+				if ($generator->isAllowed()) {
+					$generator->generate();
+				}
+
+			} else {
 				$generator->generate();
 			}
 		}

@@ -101,15 +101,6 @@ class Configuration extends Nette\Object
 		return ! empty($this->options[CO::GOOGLE_CSE_ID]) && ! empty($this->options[CO::BASE_URL]);
 	}
 
-
-	/**
-	 * @return bool
-	 */
-	public function isRobotsEnabled()
-	{
-		return (bool) $this->options[CO::BASE_URL];
-	}
-
 }
 
 

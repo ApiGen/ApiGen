@@ -24,8 +24,6 @@ use ApiGen\Reflection\ReflectionClass;
 use ApiGen\Reflection\ReflectionConstant;
 use ApiGen\Reflection\ReflectionElement;
 use ApiGen\Reflection\ReflectionFunction;
-use ApiGen\Reflection\ReflectionMethod;
-use ApiGen\Reflection\ReflectionProperty;
 use ApiGen\Templating\Template;
 use ApiGen\Templating\TemplateFactory;
 use ApiGen\Templating\TemplateNavigator;
@@ -238,8 +236,7 @@ class Generator extends Nette\Object
 			+ (int) $this->config[CO::TODO]
 			+ (int) $this->config[CO::DOWNLOAD]
 			+ (int) $this->configuration->isSitemapEnabled()
-			+ (int) $this->configuration->isOpensearchEnabled()
-			+ (int) $this->configuration->isRobotsEnabled();
+			+ (int) $this->configuration->isOpensearchEnabled();
 
 		if ($this->config[CO::SOURCE_CODE]) {
 			$tokenizedFilter = function (ReflectionClass $class) {
@@ -356,6 +353,7 @@ class Generator extends Nette\Object
 		$packagesEnabled = ($this->config[CO::GROUPS] === 'auto' && ! $namespacesEnabled)
 			|| $this->config[CO::GROUPS] === 'packages';
 
+
 		if ($namespacesEnabled) {
 			$this->packages = [];
 			$this->namespaces = $this->groupSorter->sort($this->namespaces);
@@ -455,13 +453,6 @@ class Generator extends Nette\Object
 		if ($this->configuration->isOpensearchEnabled()) {
 			$template->setFile($this->templateNavigator->getTemplatePath(TCO::OPENSEARCH))
 				->save($this->templateNavigator->getTemplateFileName(TCO::OPENSEARCH));
-
-			$this->onGenerateProgress(1);
-		}
-
-		if ($this->configuration->isRobotsEnabled()) {
-			$template->setFile($this->templateNavigator->getTemplatePath(TCO::ROBOTS))
-				->save($this->templateNavigator->getTemplateFileName(TCO::ROBOTS));
 
 			$this->onGenerateProgress(1);
 		}

@@ -31,6 +31,7 @@ class ApiGenExtension extends CompilerExtension
 		$this->setupConsole();
 		$this->setupEvents();
 		$this->setupTemplatingFilters();
+		$this->setupGeneratorQueue();
 	}
 
 
@@ -85,6 +86,16 @@ class ApiGenExtension extends CompilerExtension
 		$latteFactory = $builder->getDefinition($builder->getByType('Latte\Engine'));
 		foreach ($builder->findByType('ApiGen\Templating\Filters\Filters') as $filter) {
 			$latteFactory->addSetup('addFilter', [NULL, ['@' . $filter, 'loader']]);
+		}
+	}
+
+
+	private function setupGeneratorQueue()
+	{
+		$builder = $this->getContainerBuilder();
+		$generator = $builder->getDefinition($builder->getByType('ApiGen\Generator\GeneratorQueue'));
+		foreach ($builder->findByType('ApiGen\Generator\TemplateGenerator') as $templateGenerator) {
+			$generator->addSetup('addToQueue', ['@' . $templateGenerator]);
 		}
 	}
 
