@@ -15,7 +15,6 @@ use Nette;
 
 /**
  * @method Template setFile($file)
- * @method Template setSavePath()
  * @method string   namespaceUrl(string $s)
  * @method string   packageUrl(string $s)
  * @method string   classUrl(string $s)
@@ -33,18 +32,6 @@ class Template extends Nette\Bridges\ApplicationLatte\Template
 
 
 	/**
-	 * @param string $file
-	 */
-	public function save($file = NULL)
-	{
-		$this->savePath = $file ?: $this->savePath;
-		if (file_put_contents($this->savePath, $this->__toString(TRUE)) === FALSE) {
-			throw new Nette\IOException("Unable to save file '$file'.");
-		}
-	}
-
-
-	/**
 	 * @param string $name
 	 * @param array $args
 	 * @return mixed
@@ -57,6 +44,27 @@ class Template extends Nette\Bridges\ApplicationLatte\Template
 		}
 
 		return parent::__call($name, $args);
+	}
+
+
+	/**
+	 * @param string $file
+	 */
+	public function save($file = NULL)
+	{
+		$this->savePath = $file ?: $this->savePath;
+		if (file_put_contents($this->savePath, $this->__toString(TRUE)) === FALSE) {
+			throw new Nette\IOException("Unable to save file '$file'.");
+		}
+	}
+
+
+	/**
+	 * @param string $savePath
+	 */
+	public function setSavePath($savePath)
+	{
+		$this->savePath = $savePath;
 	}
 
 }
