@@ -170,7 +170,6 @@ class ConfigurationOptionsResolver extends Nette\Object
 			CO::BASE_URL => ['null', 'string'],
 			CO::CONFIG => 'string',
 			CO::DEBUG => 'bool',
-			CO::DEPRECATED => 'bool',
 			CO::DESTINATION => 'string',
 			CO::DOWNLOAD => 'bool',
 			CO::EXCLUDE => 'array',
@@ -180,16 +179,11 @@ class ConfigurationOptionsResolver extends Nette\Object
 			CO::GROUPS => 'string',
 			CO::CHARSET => 'array',
 			CO::MAIN => ['null', 'string'],
-			CO::INTERNAL => 'bool',
-			CO::PHP => 'bool',
 			CO::SKIP_DOC_PATH => 'array',
 			CO::SKIP_DOC_PREFIX => 'array',
 			CO::SOURCE => 'array',
-			CO::SOURCE_CODE => ['string', 'bool'],
 			CO::TEMPLATE_CONFIG => ['null', 'string'],
-			CO::TITLE => ['null', 'string'],
-			CO::TODO => 'bool',
-			CO::TREE => ['string', 'bool']
+			CO::TITLE => ['null', 'string']
 		]);
 	}
 
@@ -270,7 +264,10 @@ class ConfigurationOptionsResolver extends Nette\Object
 
 	public function setTypeCorrectors()
 	{
-		$boolConfigurationOptions = [CO::DEPRECATED, CO::INTERNAL, CO::PHP, CO::SOURCE_CODE, CO::TODO, CO::TREE];
+		$boolConfigurationOptions = [
+			CO::DEPRECATED, CO::INTERNAL, CO::PHP, CO::SOURCE_CODE, CO::TODO, CO::TREE, CO::DEBUG, CO::DOWNLOAD
+		];
+
 		foreach ($boolConfigurationOptions as $optionName) {
 			$this->resolver->setNormalizers([
 				$optionName => function (Options $options, $value) {
