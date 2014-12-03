@@ -241,7 +241,6 @@ class Generator extends Nette\Object
 			+ 4 // todo wip: 4 common template files
 			+ (int) $this->config[CO::TREE]
 			+ (int) $this->config[CO::DEPRECATED]
-			+ (int) $this->config[CO::TODO]
 			+ (int) $this->config[CO::DOWNLOAD];
 
 		if ($this->config[CO::SOURCE_CODE]) {
@@ -276,11 +275,6 @@ class Generator extends Nette\Object
 		// List of deprecated elements
 		if ($this->config[CO::DEPRECATED]) {
 			$this->generateDeprecated();
-		}
-
-		// List of tasks
-		if ($this->config[CO::TODO]) {
-			$this->generateTodo();
 		}
 
 		// Classes/interfaces/traits/exceptions tree
@@ -365,7 +359,6 @@ class Generator extends Nette\Object
 
 		$packagesEnabled = ($this->config[CO::GROUPS] === 'auto' && ! $namespacesEnabled)
 			|| $this->config[CO::GROUPS] === 'packages';
-
 
 		if ($namespacesEnabled) {
 			$this->packages = [];
@@ -514,67 +507,6 @@ class Generator extends Nette\Object
 		}
 		unset($template->deprecatedMethods);
 		unset($template->deprecatedProperties);
-
-		$this->onGenerateProgress(1);
-	}
-
-
-	/**
-	 * Generates list of tasks.
-	 */
-	private function generateTodo()
-	{
-		$template = $this->templateFactory->create();
-		$template = $this->addBaseVariablesToTemplate($template);
-
-		$todoFilter = function ($element) {
-			/** @var ReflectionElement $element */
-			return $element->hasAnnotation('todo');
-		};
-
-		$template->todoMethods = [];
-		$template->todoConstants = [];
-		$template->todoProperties = [];
-		foreach (array_reverse($this->getElementTypes()) as $type) {
-			$template->{'todo' . ucfirst($type)} = array_filter(array_filter($this->$type, $this->getMainFilter()), $todoFilter);
-
-			if ($type === 'constants' || $type === 'functions') {
-				continue;
-			}
-
-			foreach ($this->$type as $class) {
-				/** @var ReflectionClass $class */
-				if ( ! $class->isMain()) {
-					continue;
-				}
-
-				$template->todoMethods = array_merge(
-					$template->todoMethods,
-					array_values(array_filter($class->getOwnMethods(), $todoFilter))
-				);
-				$template->todoConstants = array_merge(
-					$template->todoConstants,
-					array_values(array_filter($class->getOwnConstants(), $todoFilter))
-				);
-				$template->todoProperties = array_merge(
-					$template->todoProperties,
-					array_values(array_filter($class->getOwnProperties(), $todoFilter))
-				);
-			}
-		}
-		usort($template->todoMethods, [$this->elementSorter, 'sortElementsByFqn']);
-		usort($template->todoConstants, [$this->elementSorter, 'sortElementsByFqn']);
-		usort($template->todoFunctions, [$this->elementSorter, 'sortElementsByFqn']);
-		usort($template->todoProperties, [$this->elementSorter, 'sortElementsByFqn']);
-
-		$template->setFile($this->templateNavigator->getTemplatePath(TCO::TODO))
-			->save($this->templateNavigator->getTemplateFileName(TCO::TODO));
-
-		foreach ($this->getElementTypes() as $type) {
-			unset($template->{'todo' . ucfirst($type)});
-		}
-		unset($template->todoMethods);
-		unset($template->todoProperties);
 
 		$this->onGenerateProgress(1);
 	}

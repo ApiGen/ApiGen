@@ -26,7 +26,7 @@ class ElementSorter extends Nette\Object
 	public function sortElementsByFqn($elements)
 	{
 		if (count($elements)) {
-			$firstElement = $elements[0];
+			$firstElement = array_values($elements)[0];
 			if ($firstElement instanceof ReflectionConstant) {
 				return $this->sortConstantsByFqn($elements);
 

@@ -73,4 +73,21 @@ class ElementStorage extends Nette\Object
 	 */
 	private $functions = [];
 
+
+	/**
+	 * @return array[]
+	 */
+	public function getElements()
+	{
+		$elements = [
+			Elements::CLASSES => $this->classes,
+			Elements::CONSTANTS => $this->constants,
+			Elements::FUNCTIONS => $this->functions,
+			Elements::INTERFACES => $this->interfaces,
+			Elements::TRAITS => $this->traits,
+			Elements::EXCEPTIONS => $this->exceptions
+		];
+		return $elements;
+	}
+
 }
