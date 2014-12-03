@@ -18,6 +18,7 @@ use ApiGen\Generator\Resolvers\ElementResolver;
 use ApiGen\Generator\Resolvers\RelativePathResolver;
 use ApiGen\Generator\SourceCodeHighlighter\SourceCodeHighlighter;
 use ApiGen\Parser\Elements\ElementSorter;
+use ApiGen\Parser\Elements\ElementStorage;
 use ApiGen\Parser\Elements\GroupSorter;
 use ApiGen\Reflection;
 use ApiGen\Reflection\ReflectionClass;
@@ -175,6 +176,11 @@ class Generator extends Nette\Object
 	 */
 	private $elementSorter;
 
+	/**
+	 * @var ElementStorage
+	 */
+	private $elementStorage;
+
 
 	public function __construct(
 		CharsetConvertor $charsetConvertor,
@@ -188,7 +194,8 @@ class Generator extends Nette\Object
 		ThemeResources $themeResources,
 		Configuration $configuration,
 		GroupSorter $groupSorter,
-		ElementSorter $elementSorter
+		ElementSorter $elementSorter,
+		ElementStorage $elementStorage
 	) {
 		$this->charsetConvertor = $charsetConvertor;
 		$this->sourceCodeHighlighter = $sourceCodeHighlighter;
@@ -206,6 +213,7 @@ class Generator extends Nette\Object
 		$this->configuration = $configuration;
 		$this->groupSorter = $groupSorter;
 		$this->elementSorter = $elementSorter;
+		$this->elementStorage = $elementStorage;
 	}
 
 
@@ -235,7 +243,6 @@ class Generator extends Nette\Object
 			+ (int) $this->config[CO::DEPRECATED]
 			+ (int) $this->config[CO::TODO]
 			+ (int) $this->config[CO::DOWNLOAD]
-			+ (int) $this->configuration->isSitemapEnabled()
 			+ (int) $this->configuration->isOpensearchEnabled();
 
 		if ($this->config[CO::SOURCE_CODE]) {
@@ -253,6 +260,16 @@ class Generator extends Nette\Object
 		}
 
 		$this->onGenerateStart($steps);
+
+		// Set elements to storage
+		$this->elementStorage->setNamespaces($this->namespaces);
+		$this->elementStorage->setPackages($this->packages);
+		$this->elementStorage->setClasses($this->classes);
+		$this->elementStorage->setInterfaces($this->interfaces);
+		$this->elementStorage->setTraits($this->traits);
+		$this->elementStorage->setExceptions($this->exceptions);
+		$this->elementStorage->setConstants($this->constants);
+		$this->elementStorage->setFunctions($this->functions);
 
 		// Common files
 		$this->generateCommon();
@@ -442,13 +459,6 @@ class Generator extends Nette\Object
 	{
 		$template = $this->templateFactory->create();
 		$template = $this->addBaseVariablesToTemplate($template);
-
-		if ($this->configuration->isSitemapEnabled()) {
-			$template->setFile($this->templateNavigator->getTemplatePath(TCO::SITEMAP))
-				->save($this->templateNavigator->getTemplateFileName(TCO::SITEMAP));
-
-			$this->onGenerateProgress(1);
-		}
 
 		if ($this->configuration->isOpensearchEnabled()) {
 			$template->setFile($this->templateNavigator->getTemplatePath(TCO::OPENSEARCH))

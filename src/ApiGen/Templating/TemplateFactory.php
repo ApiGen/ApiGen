@@ -44,15 +44,22 @@ class TemplateFactory extends Nette\Object
 	 */
 	private $templateNavigator;
 
+	/**
+	 * @var TemplateElementsLoader
+	 */
+	private $templateElementsLoader;
+
 
 	public function __construct(
 		Latte\Engine $latteEngine,
 		Configuration $configuration,
-		TemplateNavigator $templateNavigator
+		TemplateNavigator $templateNavigator,
+		TemplateElementsLoader $templateElementsLoader
 	) {
 		$this->latteEngine = $latteEngine;
 		$this->configuration = $configuration;
 		$this->templateNavigator = $templateNavigator;
+		$this->templateElementsLoader = $templateElementsLoader;
 	}
 
 
@@ -87,6 +94,7 @@ class TemplateFactory extends Nette\Object
 		$template = new Template($this->latteEngine);
 		$template->config = ArrayHash::from($this->config);
 		$template->basePath = $this->config[CO::TEMPLATE][TCO::TEMPLATES_PATH];
+		$template = $this->templateElementsLoader->addElementsToTemplate($template);
 		return $template;
 	}
 

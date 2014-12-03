@@ -45,6 +45,9 @@ class ParserExtension extends CompilerExtension
 		$builder->addDefinition('elementSorter')
 			->setClass('ApiGen\Parser\Elements\ElementSorter');
 
+		$builder->addDefinition('elementStorage')
+			->setClass('ApiGen\Parser\Elements\ElementStorage');
+
 		$builder->addDefinition('groupSorter')
 			->setClass('ApiGen\Parser\Elements\GroupSorter');
 	}
