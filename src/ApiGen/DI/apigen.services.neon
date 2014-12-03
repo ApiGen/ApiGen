@@ -42,6 +42,7 @@ services:
 	- ApiGen\Scanner\Scanner
 	- ApiGen\Generator\Generator
 	- ApiGen\Generator\GeneratorQueue
+	- ApiGen\Generator\TemplateGenerators\OpensearchGenerator
 	- ApiGen\Generator\TemplateGenerators\SitemapGenerator
 	- ApiGen\Generator\TemplateGenerators\RobotsGenerator
 	- ApiGen\Generator\Markups\MarkdownMarkup

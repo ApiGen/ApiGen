@@ -83,24 +83,6 @@ class Configuration extends Nette\Object
 		return $this->options;
 	}
 
-
-	/**
-	 * @return bool
-	 */
-	public function isSitemapEnabled()
-	{
-		return ! empty($this->options[CO::BASE_URL]);
-	}
-
-
-	/**
-	 * @return bool
-	 */
-	public function isOpensearchEnabled()
-	{
-		return ! empty($this->options[CO::GOOGLE_CSE_ID]) && ! empty($this->options[CO::BASE_URL]);
-	}
-
 }
 
 

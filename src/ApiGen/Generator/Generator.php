@@ -242,8 +242,7 @@ class Generator extends Nette\Object
 			+ (int) $this->config[CO::TREE]
 			+ (int) $this->config[CO::DEPRECATED]
 			+ (int) $this->config[CO::TODO]
-			+ (int) $this->config[CO::DOWNLOAD]
-			+ (int) $this->configuration->isOpensearchEnabled();
+			+ (int) $this->config[CO::DOWNLOAD];
 
 		if ($this->config[CO::SOURCE_CODE]) {
 			$tokenizedFilter = function (ReflectionClass $class) {
@@ -273,9 +272,6 @@ class Generator extends Nette\Object
 
 		// Common files
 		$this->generateCommon();
-
-		// Optional files
-		$this->generateOptional();
 
 		// List of deprecated elements
 		if ($this->config[CO::DEPRECATED]) {
@@ -452,20 +448,6 @@ class Generator extends Nette\Object
 		}
 
 		unset($template->elements);
-	}
-
-
-	private function generateOptional()
-	{
-		$template = $this->templateFactory->create();
-		$template = $this->addBaseVariablesToTemplate($template);
-
-		if ($this->configuration->isOpensearchEnabled()) {
-			$template->setFile($this->templateNavigator->getTemplatePath(TCO::OPENSEARCH))
-				->save($this->templateNavigator->getTemplateFileName(TCO::OPENSEARCH));
-
-			$this->onGenerateProgress(1);
-		}
 	}
 
 
