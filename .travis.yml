@@ -16,7 +16,7 @@ before_script:
   - vendor/bin/parallel-lint -e php,phpt --exclude vendor .
 
 script:
-  - vendor/bin/tester -p php -c tests/php-unix.ini tests/ApiGenTests
+  - vendor/bin/tester -p php -c tests/php.ini-unix tests/ApiGenTests
   - vendor/bin/phpcs -p src/ApiGen --standard=vendor/zenify/coding-standard/src/ZenifyCodingStandard/ruleset.xml --warning-severity=10
   - vendor/bin/phpcs -p tests/ApiGenTests/ApiGen --standard=vendor/zenify/coding-standard/src/ZenifyCodingStandard/ruleset.xml --warning-severity=10
   - vendor/bin/phpcs -p src/ApiGen --standard=vendor/mikulas/code-sniffs/cs/ruleset.xml --sniffs=cs.Debug.DebugFunctionCall,cs.Formatting.UseInAlphabeticalOrder,cs.Formatting.UseWithoutStartingSeparator
