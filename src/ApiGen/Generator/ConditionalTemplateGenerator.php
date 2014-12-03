@@ -13,7 +13,6 @@ namespace ApiGen\Generator;
 interface ConditionalTemplateGenerator extends TemplateGenerator
 {
 
-
 	/**
 	 * @return bool
 	 */

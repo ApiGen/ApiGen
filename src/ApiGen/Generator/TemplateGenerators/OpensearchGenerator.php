@@ -13,7 +13,6 @@ use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Configuration\Theme\ThemeConfigOptions as TCO;
 use ApiGen\Generator\ConditionalTemplateGenerator;
-use ApiGen\Generator\TemplateGenerator;
 use ApiGen\Templating\TemplateFactory;
 
 
