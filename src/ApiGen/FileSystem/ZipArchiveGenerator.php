@@ -12,8 +12,10 @@ namespace ApiGen\FileSystem;
 use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions as CO;
 use Nette;
+use Nette\Utils\Finder;
 use Nette\Utils\Strings;
 use RuntimeException;
+use SplFileInfo;
 use ZipArchive;
 
 
@@ -40,19 +42,16 @@ class ZipArchiveGenerator
 
 		$archive = new ZipArchive;
 		if ($archive->open($this->getArchivePath(), ZipArchive::CREATE) !== TRUE) {
-			throw new RuntimeException('Could not open ZIP archive');
+			throw new RuntimeException('Could not create ZIP archive');
 		}
 
 		$destination = $this->configuration->getOption(CO::DESTINATION);
 		$directory = $this->getWebalizedTitle();
-		$destinationLength = strlen($destination);
 
-
-		foreach (Nette\Utils\Finder::find('*')->in($destination) as $file) {
-//		foreach ($this->finder->findGeneratedFiles() as $file) {
-			if (is_file($file)) {
-				$archive->addFile($file, $directory . '/' . substr($file, $destinationLength + 1));
-			}
+		/** @var SplFileInfo $file */
+		foreach (Finder::find('*')->from($destination) as $file) {
+			$relativePath = Strings::substring($file->getRealPath(), strlen($destination) + 1);
+			$archive->addFile($file, $directory . '/' . $relativePath);
 		}
 
 		if ($archive->close() === FALSE) {
