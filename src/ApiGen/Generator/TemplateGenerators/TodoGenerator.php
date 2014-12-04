@@ -54,7 +54,7 @@ class TodoGenerator implements ConditionalTemplateGenerator
 	public function generate()
 	{
 		$template = $this->templateFactory->createForType(TCO::TODO);
-		$template = $this->setTodoElementToTemplate($template);
+		$template = $this->setTodoElementsToTemplate($template);
 		$template->save();
 	}
 
@@ -71,7 +71,7 @@ class TodoGenerator implements ConditionalTemplateGenerator
 	/**
 	 * @return Template
 	 */
-	private function setTodoElementToTemplate(Template $template)
+	private function setTodoElementsToTemplate(Template $template)
 	{
 		$todoElements = $this->elementExtractor->extractElementsByAnnotation(self::TODO);
 

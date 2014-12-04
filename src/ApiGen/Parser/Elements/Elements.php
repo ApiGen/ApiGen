@@ -58,7 +58,6 @@ class Elements
 		foreach ($this->getAll() as $type) {
 			$emptyList[$type] = [];
 		}
-
 		return $emptyList;
 	}
 

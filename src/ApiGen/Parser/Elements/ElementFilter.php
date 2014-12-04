@@ -31,26 +31,6 @@ class ElementFilter extends Nette\Object
 
 	/**
 	 * @param array $elements
-	 * @return mixed
-	 */
-	public function filterElementsByTodoAnnotation($elements)
-	{
-		return $this->filterByAnnotation($elements, 'todo');
-	}
-
-
-	/**
-	 * @param array $elements
-	 * @return mixed
-	 */
-	public function filterByDeprecatedAnnotation($elements)
-	{
-		return $this->filterByAnnotation($elements, 'deprecated');
-	}
-
-
-	/**
-	 * @param array $elements
 	 * @param $annotation
 	 * @return mixed
 	 */
