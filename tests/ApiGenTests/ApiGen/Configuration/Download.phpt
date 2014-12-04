@@ -23,7 +23,7 @@ class DownloadTest extends TestCase
 		passthru(APIGEN_BIN . ' generate');
 
 		Assert::true(file_exists(API_DIR . '/index.html'));
-		Assert::true(file_exists(API_DIR . '/api-documentation.zip'));
+		Assert::true(file_exists(API_DIR . '/API-documentation.zip'));
 	}
 
 
