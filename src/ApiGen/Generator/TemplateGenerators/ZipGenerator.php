@@ -38,8 +38,8 @@ class ZipGenerator implements ConditionalTemplateGenerator
 	public function __construct(
 		Configuration $configuration,
 		TemplateFactory $templateFactory,
-		ZipArchiveGenerator $zipArchiveGenerator)
-	{
+		ZipArchiveGenerator $zipArchiveGenerator
+	) {
 		$this->configuration = $configuration;
 		$this->templateFactory = $templateFactory;
 		$this->zipArchiveGenerator = $zipArchiveGenerator;
