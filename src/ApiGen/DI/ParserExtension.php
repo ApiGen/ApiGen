@@ -39,6 +39,9 @@ class ParserExtension extends CompilerExtension
 		$builder->addDefinition('elements')
 			->setClass('ApiGen\Parser\Elements\Elements');
 
+		$builder->addDefinition('elementExtractor')
+			->setClass('ApiGen\Parser\Elements\ElementExtractor');
+
 		$builder->addDefinition('elementFilter')
 			->setClass('ApiGen\Parser\Elements\ElementFilter');
 

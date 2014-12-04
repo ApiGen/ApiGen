@@ -13,18 +13,12 @@ use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Configuration\Theme\ThemeConfigOptions as TCO;
 use ApiGen\Generator\ConditionalTemplateGenerator;
-use ApiGen\Parser\Elements\ElementFilter;
+use ApiGen\Parser\Elements\ElementExtractor;
 use ApiGen\Parser\Elements\Elements;
-use ApiGen\Parser\Elements\ElementSorter;
-use ApiGen\Parser\Elements\ElementStorage;
-use ApiGen\Reflection\ReflectionClass;
 use ApiGen\Templating\Template;
 use ApiGen\Templating\TemplateFactory;
 
 
-/**
- * @todo
- */
 class TodoGenerator implements ConditionalTemplateGenerator
 {
 
@@ -41,40 +35,19 @@ class TodoGenerator implements ConditionalTemplateGenerator
 	private $templateFactory;
 
 	/**
-	 * @var Elements
+	 * @var ElementExtractor
 	 */
-	private $elements;
-
-	/**
-	 * @var ElementStorage
-	 */
-	private $elementStorage;
-
-	/**
-	 * @var ElementFilter
-	 */
-	private $elementFilter;
-
-	/**
-	 * @var ElementSorter
-	 */
-	private $elementSorter;
+	private $elementExtractor;
 
 
 	public function __construct(
 		Configuration $configuration,
 		TemplateFactory $templateFactory,
-		Elements $elements,
-		ElementFilter $elementFilter,
-		ElementSorter $elementSorter,
-		ElementStorage $elementStorage
+		ElementExtractor $elementExtractor
 	) {
 		$this->configuration = $configuration;
 		$this->templateFactory = $templateFactory;
-		$this->elements = $elements;
-		$this->elementStorage = $elementStorage;
-		$this->elementFilter = $elementFilter;
-		$this->elementSorter = $elementSorter;
+		$this->elementExtractor = $elementExtractor;
 	}
 
 
@@ -100,41 +73,17 @@ class TodoGenerator implements ConditionalTemplateGenerator
 	 */
 	private function setTodoElementToTemplate(Template $template)
 	{
-		$elements = $this->elements->getEmptyList();
-		$elements[Elements::METHODS] = array();
-		$elements[Elements::PROPERTIES] = array();
-		foreach ($this->elementStorage->getElements() as $type => $elementList) {
-			// this repeats!
-			$elementsForMain = $this->elementFilter->filterForMain($elementList);
-			$elements[$type] = $this->elementFilter->filterByAnnotation($elementsForMain, self::TODO);
-			if ($type === Elements::CONSTANTS || $type === Elements::FUNCTIONS) {
-				continue;
-			}
-			foreach ($elementList as $class) {
-				/** @var ReflectionClass $class */
-				if ( ! $class->isMain()) {
-					continue;
-				}
-
-				// this repeats, only annotation has changed!
-				$classTodoMethods = $this->elementFilter->filterByAnnotation($class->getOwnMethods(), self::TODO);
-				$elements[Elements::METHODS] = array_merge($elements[Elements::METHODS], array_values($classTodoMethods));
-				$classTodoConstants = $this->elementFilter->filterByAnnotation($class->getOwnConstants(), self::TODO);
-				$elements[Elements::CONSTANTS] = array_merge($elements[Elements::CONSTANTS], array_values($classTodoConstants));
-				$classTodoProperties = $this->elementFilter->filterByAnnotation($class->getOwnProperties(), self::TODO);
-				$elements[Elements::PROPERTIES] = array_merge($elements[Elements::PROPERTIES], array_values($classTodoProperties));
-			}
-		}
+		$todoElements = $this->elementExtractor->extractElementsByAnnotation(self::TODO);
 
 		$template->setParameters([
-			'todoClasses' => $this->elementSorter->sortElementsByFqn($elements[Elements::CLASSES]),
-			'todoInterfaces' => $this->elementSorter->sortElementsByFqn($elements[Elements::INTERFACES]),
-			'todoTraits' => $this->elementSorter->sortElementsByFqn($elements[Elements::TRAITS]),
-			'todoExceptions' => $this->elementSorter->sortElementsByFqn($elements[Elements::EXCEPTIONS]),
-			'todoConstants' => $this->elementSorter->sortElementsByFqn($elements[Elements::CONSTANTS]),
-			'todoMethods' => $this->elementSorter->sortElementsByFqn($elements[Elements::METHODS]),
-			'todoFunctions' => $this->elementSorter->sortElementsByFqn($elements[Elements::FUNCTIONS]),
-			'todoProperties' => $this->elementSorter->sortElementsByFqn($elements[Elements::PROPERTIES])
+			'todoClasses' => $todoElements[Elements::CLASSES],
+			'todoInterfaces' => $todoElements[Elements::INTERFACES],
+			'todoTraits' => $todoElements[Elements::TRAITS],
+			'todoExceptions' => $todoElements[Elements::EXCEPTIONS],
+			'todoConstants' => $todoElements[Elements::CONSTANTS],
+			'todoMethods' => $todoElements[Elements::METHODS],
+			'todoFunctions' => $todoElements[Elements::FUNCTIONS],
+			'todoProperties' => $todoElements[Elements::PROPERTIES]
 		]);
 
 		return $template;
