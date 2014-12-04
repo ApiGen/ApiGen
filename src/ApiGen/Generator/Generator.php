@@ -240,7 +240,6 @@ class Generator extends Nette\Object
 			+ count($this->functions)
 			+ 4 // todo wip: 4 common template files
 			+ (int) $this->config[CO::TREE]
-			+ (int) $this->config[CO::DEPRECATED]
 			+ (int) $this->config[CO::DOWNLOAD];
 
 		if ($this->config[CO::SOURCE_CODE]) {
@@ -271,11 +270,6 @@ class Generator extends Nette\Object
 
 		// Common files
 		$this->generateCommon();
-
-		// List of deprecated elements
-		if ($this->config[CO::DEPRECATED]) {
-			$this->generateDeprecated();
-		}
 
 		// Classes/interfaces/traits/exceptions tree
 		if ($this->config[CO::TREE]) {
@@ -441,74 +435,6 @@ class Generator extends Nette\Object
 		}
 
 		unset($template->elements);
-	}
-
-
-	/**
-	 * Generates list of deprecated elements.
-	 */
-	private function generateDeprecated()
-	{
-		$template = $this->templateFactory->create();
-		$template = $this->addBaseVariablesToTemplate($template);
-
-		$deprecatedFilter = function ($element) {
-			/** @var ReflectionElement $element */
-			return $element->isDeprecated();
-		};
-
-		$template->deprecatedMethods = [];
-		$template->deprecatedConstants = [];
-		$template->deprecatedProperties = [];
-		foreach (array_reverse($this->getElementTypes()) as $type) {
-			$template->{'deprecated' . ucfirst($type)} = array_filter(
-				array_filter($this->$type, $this->getMainFilter()),
-				$deprecatedFilter
-			);
-
-			if ($type === 'constants' || $type === 'functions') {
-				continue;
-			}
-
-			foreach ($this->$type as $class) {
-				/** @var ReflectionClass $class */
-				if ( ! $class->isMain()) {
-					continue;
-				}
-
-				if ($class->isDeprecated()) {
-					continue;
-				}
-
-				$template->deprecatedMethods = array_merge(
-					$template->deprecatedMethods,
-					array_values(array_filter($class->getOwnMethods(), $deprecatedFilter))
-				);
-				$template->deprecatedConstants = array_merge(
-					$template->deprecatedConstants,
-					array_values(array_filter($class->getOwnConstants(), $deprecatedFilter))
-				);
-				$template->deprecatedProperties = array_merge(
-					$template->deprecatedProperties,
-					array_values(array_filter($class->getOwnProperties(), $deprecatedFilter))
-				);
-			}
-		}
-		usort($template->deprecatedMethods, [$this->elementSorter, 'sortElementsByFqn']);
-		usort($template->deprecatedConstants, [$this->elementSorter, 'sortElementsByFqn']);
-		usort($template->deprecatedFunctions, [$this->elementSorter, 'sortElementsByFqn']);
-		usort($template->deprecatedProperties, [$this->elementSorter, 'sortElementsByFqn']);
-
-		$template->setFile($this->templateNavigator->getTemplatePath(TCO::DEPRECATED))
-			->save($this->templateNavigator->getTemplateFileName(TCO::DEPRECATED));
-
-		foreach ($this->getElementTypes() as $type) {
-			unset($template->{'deprecated' . ucfirst($type)});
-		}
-		unset($template->deprecatedMethods);
-		unset($template->deprecatedProperties);
-
-		$this->onGenerateProgress(1);
 	}
 
 
