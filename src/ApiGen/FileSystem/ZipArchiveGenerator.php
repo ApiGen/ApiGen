@@ -25,15 +25,9 @@ class ZipArchiveGenerator
 	 */
 	private $configuration;
 
-	/**
-	 * @var Finder
-	 */
-	private $finder;
 
-
-	public function __construct(Configuration $configuration,  Finder $finder)
+	public function __construct(Configuration $configuration)
 	{
-		$this->finder = $finder;
 		$this->configuration = $configuration;
 	}
 
@@ -49,9 +43,13 @@ class ZipArchiveGenerator
 			throw new RuntimeException('Could not open ZIP archive');
 		}
 
+		$destination = $this->configuration->getOption(CO::DESTINATION);
 		$directory = $this->getWebalizedTitle();
-		$destinationLength = strlen($this->configuration->getOption(CO::DESTINATION));
-		foreach ($this->finder->findGeneratedFiles() as $file) {
+		$destinationLength = strlen($destination);
+
+
+		foreach (Nette\Utils\Finder::find('*')->in($destination) as $file) {
+//		foreach ($this->finder->findGeneratedFiles() as $file) {
 			if (is_file($file)) {
 				$archive->addFile($file, $directory . '/' . substr($file, $destinationLength + 1));
 			}

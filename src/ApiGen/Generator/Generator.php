@@ -137,11 +137,6 @@ class Generator extends Nette\Object
 	private $relativePathResolver;
 
 	/**
-	 * @var FileSystem\Finder
-	 */
-	private $finder;
-
-	/**
 	 * @var ElementResolver
 	 */
 	private $elementResolver;
@@ -182,7 +177,6 @@ class Generator extends Nette\Object
 		SourceCodeHighlighter $sourceCodeHighlighter,
 		TemplateFactory $templateFactory,
 		RelativePathResolver $relativePathResolver,
-		FileSystem\Finder $finder,
 		ElementResolver $elementResolver,
 		TemplateNavigator $templateNavigator,
 		ThemeResources $themeResources,
@@ -195,7 +189,6 @@ class Generator extends Nette\Object
 		$this->sourceCodeHighlighter = $sourceCodeHighlighter;
 		$this->templateFactory = $templateFactory;
 		$this->relativePathResolver = $relativePathResolver;
-		$this->finder = $finder;
 		$this->elementResolver = $elementResolver;
 
 		$this->parsedClasses = new ArrayObject;

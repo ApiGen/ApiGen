@@ -12,6 +12,7 @@ namespace ApiGen\Command;
 use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Configuration\ConfigurationOptionsResolver as COR;
+use ApiGen\FileSystem\FileSystem;
 use ApiGen\FileSystem\Wiper;
 use ApiGen\Generator\Generator;
 use ApiGen\Generator\GeneratorQueue;
@@ -61,22 +62,27 @@ class GenerateCommand extends Command
 	 */
 	private $generatorQueue;
 
+	/**
+	 * @var FileSystem
+	 */
+	private $fileSystem;
+
 
 	public function __construct(
 		Generator $generator,
-		Wiper $wiper,
 		Configuration $configuration,
 		Scanner $scanner,
 		Parser $parser,
-		GeneratorQueue $generatorQueue
+		GeneratorQueue $generatorQueue,
+		FileSystem $fileSystem
 	) {
 		parent::__construct();
 		$this->generator = $generator;
-		$this->wiper = $wiper;
 		$this->configuration = $configuration;
 		$this->scanner = $scanner;
 		$this->parser = $parser;
 		$this->generatorQueue = $generatorQueue;
+		$this->fileSystem = $fileSystem;
 	}
 
 
@@ -217,7 +223,7 @@ class GenerateCommand extends Command
 	private function generate(array $options, OutputInterface $output)
 	{
 		$output->writeln('<info>Wiping out destination directory</info>');
-		$this->wiper->wipOutDestination();
+		$this->fileSystem->purgeDir($options[CO::DESTINATION]);
 
 		$output->writeln('<info>Generating to directory ' . $options[CO::DESTINATION] . '</info>');
 		$skipping = array_merge($options[CO::SKIP_DOC_PATH], $options[CO::SKIP_DOC_PREFIX]); // @todo better merge

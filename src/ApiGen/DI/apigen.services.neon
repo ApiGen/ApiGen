@@ -34,8 +34,7 @@ services:
 	- ApiGen\Events\SetIoOnConsoleRun
 
 	# filesystem
-	- ApiGen\FileSystem\Finder
-	- ApiGen\FileSystem\Wiper
+	- ApiGen\FileSystem\FileSystem
 	- ApiGen\FileSystem\ZipArchiveGenerator
 
 	# generator
