@@ -213,8 +213,10 @@ class GenerateCommand extends Command
 		}
 
 		$stats = $this->parser->getDocumentedStats();
+
 		$output->writeln(PHP_EOL . sprintf(
-			'Generating documentation for %d classes, %d constants, %d functions and %d PHP internal classes.',
+			'Generating documentation for <comment>%d classes</comment>, <comment>%d constants</comment>, '
+				. '<comment>%d functions</comment> and <comment>%d PHP internal classes</comment>.',
 			$stats['classes'], $stats['constants'], $stats['functions'], $stats['internalClasses']
 		));
 	}
