@@ -21,12 +21,12 @@ class Wiper extends Nette\Object
 	private $finder;
 
 	/**
-	 * @var Zip
+	 * @var ZipArchiveGenerator
 	 */
 	private $zip;
 
 
-	public function __construct(Finder $finder, Zip $zip)
+	public function __construct(Finder $finder, ZipArchiveGenerator $zip)
 	{
 		$this->finder = $finder;
 		$this->zip = $zip;

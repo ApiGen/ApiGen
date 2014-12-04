@@ -171,7 +171,6 @@ class ConfigurationOptionsResolver extends Nette\Object
 			CO::CONFIG => 'string',
 			CO::DEBUG => 'bool',
 			CO::DESTINATION => 'string',
-			CO::DOWNLOAD => 'bool',
 			CO::EXCLUDE => 'array',
 			CO::EXTENSIONS => 'array',
 			CO::GOOGLE_CSE_ID => ['null', 'string'],

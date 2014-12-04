@@ -147,11 +147,6 @@ class Generator extends Nette\Object
 	private $elementResolver;
 
 	/**
-	 * @var FileSystem\Zip
-	 */
-	private $zip;
-
-	/**
 	  * @var TemplateNavigator
 	 */
 	private $templateNavigator;
@@ -184,7 +179,6 @@ class Generator extends Nette\Object
 
 	public function __construct(
 		CharsetConvertor $charsetConvertor,
-		FileSystem\Zip $zip,
 		SourceCodeHighlighter $sourceCodeHighlighter,
 		TemplateFactory $templateFactory,
 		RelativePathResolver $relativePathResolver,
@@ -203,7 +197,6 @@ class Generator extends Nette\Object
 		$this->relativePathResolver = $relativePathResolver;
 		$this->finder = $finder;
 		$this->elementResolver = $elementResolver;
-		$this->zip = $zip;
 
 		$this->parsedClasses = new ArrayObject;
 		$this->parsedConstants = new ArrayObject;
@@ -239,8 +232,7 @@ class Generator extends Nette\Object
 			+ count($this->constants)
 			+ count($this->functions)
 			+ 4 // todo wip: 4 common template files
-			+ (int) $this->config[CO::TREE]
-			+ (int) $this->config[CO::DOWNLOAD];
+			+ (int) $this->config[CO::TREE];
 
 		if ($this->config[CO::SOURCE_CODE]) {
 			$tokenizedFilter = function (ReflectionClass $class) {
@@ -285,11 +277,6 @@ class Generator extends Nette\Object
 		// Generate classes, interfaces, traits, exceptions, constants and functions files
 		$this->generateElements();
 
-		// Generate ZIP archive
-		if ($this->config[CO::DOWNLOAD]) {
-			$this->zip->generate();
-			$this->onGenerateProgress(1);
-		}
 	}
 
 
@@ -760,7 +747,7 @@ class Generator extends Nette\Object
 		$template->exceptions = array_filter($this->exceptions, $this->getMainFilter());
 		$template->constants = array_filter($this->constants, $this->getMainFilter());
 		$template->functions = array_filter($this->functions, $this->getMainFilter());
-		$template->archive = basename($this->zip->getArchivePath());
+		$template->archive = '#temp-error'; // solved in TemplateElementLoader
 		return $template;
 	}
 

@@ -13,7 +13,7 @@ use ApiGen\Charset\CharsetDetector;
 use ApiGen\Charset\Configuration\CharsetOptionsResolver;
 use ApiGen\Configuration\Configuration;
 use ApiGen\FileSystem\Finder;
-use ApiGen\FileSystem\Zip;
+use ApiGen\FileSystem\ZipArchiveGenerator;
 use ApiGen\Generator\Generator;
 use ApiGen\Generator\Resolvers\RelativePathResolver;
 use ApiGen\Templating\Filters\AnnotationFilters;
@@ -59,11 +59,6 @@ class InjectConfig extends Nette\Object implements Subscriber
 	private $finder;
 
 	/**
-	 * @var Zip
-	 */
-	private $zip;
-
-	/**
 	 * @var AnnotationFilters
 	 */
 	private $annotationFilters;
@@ -81,7 +76,6 @@ class InjectConfig extends Nette\Object implements Subscriber
 		SourceFilters $sourceFilters,
 		UrlFilters $urlFilters,
 		Finder $finder,
-		Zip $zip,
 		AnnotationFilters $annotationFilters,
 		RelativePathResolver $relativePathResolver
 	) {
@@ -91,7 +85,6 @@ class InjectConfig extends Nette\Object implements Subscriber
 		$this->sourceFilters = $sourceFilters;
 		$this->urlFilters = $urlFilters;
 		$this->finder = $finder;
-		$this->zip = $zip;
 		$this->annotationFilters = $annotationFilters;
 		$this->relativePathResolver = $relativePathResolver;
 	}
@@ -116,7 +109,6 @@ class InjectConfig extends Nette\Object implements Subscriber
 
 		$this->charsetDetector->setCharsets($config['charset']);
 		$this->finder->setConfig($config);
-		$this->zip->setConfig($config);
 
 		$this->sourceFilters->setConfig($config);
 		$this->urlFilters->setConfig($config);

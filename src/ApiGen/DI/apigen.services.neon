@@ -36,12 +36,13 @@ services:
 	# filesystem
 	- ApiGen\FileSystem\Finder
 	- ApiGen\FileSystem\Wiper
-	- ApiGen\FileSystem\Zip
+	- ApiGen\FileSystem\ZipArchiveGenerator
 
 	# generator
 	- ApiGen\Scanner\Scanner
 	- ApiGen\Generator\Generator
 	- ApiGen\Generator\GeneratorQueue
+	- ApiGen\Generator\TemplateGenerators\ZipGenerator # intentionally first to collect output from other generators
 	- ApiGen\Generator\TemplateGenerators\DeprecatedGenerator
 	- ApiGen\Generator\TemplateGenerators\OpensearchGenerator
 	- ApiGen\Generator\TemplateGenerators\SitemapGenerator
