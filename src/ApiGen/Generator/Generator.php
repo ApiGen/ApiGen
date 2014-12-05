@@ -17,6 +17,7 @@ use ApiGen\FileSystem;
 use ApiGen\Generator\Resolvers\ElementResolver;
 use ApiGen\Generator\Resolvers\RelativePathResolver;
 use ApiGen\Generator\SourceCodeHighlighter\SourceCodeHighlighter;
+use ApiGen\Parser\Elements\AutocompleteElements;
 use ApiGen\Parser\Elements\ElementSorter;
 use ApiGen\Parser\Elements\ElementStorage;
 use ApiGen\Parser\Elements\GroupSorter;
@@ -170,6 +171,11 @@ class Generator extends Nette\Object
 	 */
 	private $elementStorage;
 
+	/**
+	 * @var AutocompleteElements
+	 */
+	private $autocompleteElements;
+
 
 	public function __construct(
 		CharsetConvertor $charsetConvertor,
@@ -182,7 +188,8 @@ class Generator extends Nette\Object
 		Configuration $configuration,
 		GroupSorter $groupSorter,
 		ElementSorter $elementSorter,
-		ElementStorage $elementStorage
+		ElementStorage $elementStorage,
+		AutocompleteElements $autocompleteElements
 	) {
 		$this->charsetConvertor = $charsetConvertor;
 		$this->sourceCodeHighlighter = $sourceCodeHighlighter;
@@ -199,6 +206,7 @@ class Generator extends Nette\Object
 		$this->groupSorter = $groupSorter;
 		$this->elementSorter = $elementSorter;
 		$this->elementStorage = $elementStorage;
+		$this->autocompleteElements = $autocompleteElements;
 	}
 
 
@@ -345,51 +353,7 @@ class Generator extends Nette\Object
 	{
 		$template = $this->templateFactory->create();
 		$template = $this->addBaseVariablesToTemplate($template);
-
-		// Elements for autocomplete
-		$elements = [];
-		$autocomplete = array_flip($this->config[CO::AUTOCOMPLETE]);
-		foreach ($this->getElementTypes() as $type) {
-			foreach ($this->$type as $element) {
-				if ($element instanceof ReflectionClass) {
-					/** @var ReflectionClass $element */
-					if (isset($autocomplete['classes'])) {
-						$elements[] = ['c', $element->getPrettyName()];
-					}
-					if (isset($autocomplete['methods'])) {
-						foreach ($element->getOwnMethods() as $method) {
-							$elements[] = ['m', $method->getPrettyName()];
-						}
-						foreach ($element->getOwnMagicMethods() as $method) {
-							$elements[] = ['mm', $method->getPrettyName()];
-						}
-					}
-					if (isset($autocomplete['properties'])) {
-						foreach ($element->getOwnProperties() as $property) {
-							$elements[] = ['p', $property->getPrettyName()];
-						}
-						foreach ($element->getOwnMagicProperties() as $property) {
-							$elements[] = ['mp', $property->getPrettyName()];
-						}
-					}
-					if (isset($autocomplete['classconstants'])) {
-						foreach ($element->getOwnConstants() as $constant) {
-							$elements[] = ['cc', $constant->getPrettyName()];
-						}
-					}
-
-				} elseif ($element instanceof ReflectionConstant && isset($autocomplete['constants'])) {
-					$elements[] = ['co', $element->getPrettyName()];
-
-				} elseif ($element instanceof ReflectionFunction && isset($autocomplete['functions'])) {
-					$elements[] = ['f', $element->getPrettyName()];
-				}
-			}
-		}
-		usort($elements, function ($one, $two) {
-			return strcasecmp($one[1], $two[1]);
-		});
-		$template->elements = $elements;
+		$template->elements = $this->autocompleteElements->getElements();
 
 		// todo: wip
 		$themeTemplates = $this->config[CO::TEMPLATE]['templates'];

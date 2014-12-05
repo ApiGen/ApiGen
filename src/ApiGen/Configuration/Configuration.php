@@ -9,7 +9,6 @@
 
 namespace ApiGen\Configuration;
 
-use ApiGen\Configuration\ConfigurationOptions as CO;
 use Nette;
 
 
