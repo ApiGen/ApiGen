@@ -20,7 +20,7 @@ class DownloadTest extends TestCase
 	public function testConfig()
 	{
 		$this->prepareConfig();
-		passthru(APIGEN_BIN . ' generate');
+		passthru(APIGEN_BIN . ' generate --debug');
 
 		Assert::true(file_exists(API_DIR . '/index.html'));
 		Assert::true(file_exists(API_DIR . '/API-documentation.zip'));
