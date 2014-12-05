@@ -17,7 +17,6 @@ use ApiGen\FileSystem;
 use ApiGen\Generator\Resolvers\ElementResolver;
 use ApiGen\Generator\Resolvers\RelativePathResolver;
 use ApiGen\Generator\SourceCodeHighlighter\SourceCodeHighlighter;
-use ApiGen\Parser\Elements\AutocompleteElements;
 use ApiGen\Parser\Elements\ElementSorter;
 use ApiGen\Parser\Elements\ElementStorage;
 use ApiGen\Parser\Elements\GroupSorter;
@@ -171,11 +170,6 @@ class Generator extends Nette\Object
 	 */
 	private $elementStorage;
 
-	/**
-	 * @var AutocompleteElements
-	 */
-	private $autocompleteElements;
-
 
 	public function __construct(
 		CharsetConvertor $charsetConvertor,
@@ -188,8 +182,7 @@ class Generator extends Nette\Object
 		Configuration $configuration,
 		GroupSorter $groupSorter,
 		ElementSorter $elementSorter,
-		ElementStorage $elementStorage,
-		AutocompleteElements $autocompleteElements
+		ElementStorage $elementStorage
 	) {
 		$this->charsetConvertor = $charsetConvertor;
 		$this->sourceCodeHighlighter = $sourceCodeHighlighter;
@@ -206,7 +199,6 @@ class Generator extends Nette\Object
 		$this->groupSorter = $groupSorter;
 		$this->elementSorter = $elementSorter;
 		$this->elementStorage = $elementStorage;
-		$this->autocompleteElements = $autocompleteElements;
 	}
 
 
@@ -257,9 +249,6 @@ class Generator extends Nette\Object
 		$this->elementStorage->setExceptions($this->exceptions);
 		$this->elementStorage->setConstants($this->constants);
 		$this->elementStorage->setFunctions($this->functions);
-
-		// Common files
-		$this->generateCommon();
 
 		// Generate packages summary
 		$this->generatePackages();
@@ -346,31 +335,6 @@ class Generator extends Nette\Object
 			$this->namespaces = [];
 			$this->packages = [];
 		}
-	}
-
-
-	private function generateCommon()
-	{
-		$template = $this->templateFactory->create();
-		$template = $this->addBaseVariablesToTemplate($template);
-		$template->elements = $this->autocompleteElements->getElements();
-
-		// todo: wip
-		$themeTemplates = $this->config[CO::TEMPLATE]['templates'];
-		$commonTemplates = [
-			$themeTemplates[TCO::OVERVIEW],
-			$themeTemplates[TCO::COMBINED],
-			$themeTemplates[TCO::ELEMENT_LIST],
-			$themeTemplates[TCO::E404]
-		];
-
-		foreach ($commonTemplates as $templateInfo) {
-			$template->setFile($templateInfo['template'])
-				->save($this->config[CO::DESTINATION] . '/' . $templateInfo['filename']);
-			$this->onGenerateProgress(1);
-		}
-
-		unset($template->elements);
 	}
 
 

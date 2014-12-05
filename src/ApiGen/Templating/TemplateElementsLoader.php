@@ -12,6 +12,7 @@ namespace ApiGen\Templating;
 use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\FileSystem\ZipArchiveGenerator;
+use ApiGen\Parser\Elements\AutocompleteElements;
 use ApiGen\Parser\Elements\ElementStorage;
 use ApiGen\Reflection\ReflectionElement;
 use Nette;
@@ -35,12 +36,22 @@ class TemplateElementsLoader
 	 */
 	private $zip;
 
+	/**
+	 * @var AutocompleteElements
+	 */
+	private $autocompleteElements;
 
-	public function __construct(ElementStorage $elementStorage, Configuration $configuration, ZipArchiveGenerator $zip)
-	{
+
+	public function __construct(
+		ElementStorage $elementStorage,
+		Configuration $configuration,
+		ZipArchiveGenerator $zip,
+		AutocompleteElements $autocompleteElements
+	) {
 		$this->elementStorage = $elementStorage;
 		$this->configuration = $configuration;
 		$this->zip = $zip;
+		$this->autocompleteElements = $autocompleteElements;
 	}
 
 
@@ -63,6 +74,7 @@ class TemplateElementsLoader
 			'exceptions' => array_filter($this->elementStorage->getExceptions(), $this->getMainFilter()),
 			'constants' => array_filter($this->elementStorage->getConstants(), $this->getMainFilter()),
 			'functions' => array_filter($this->elementStorage->getFunctions(), $this->getMainFilter()),
+			'elements' => $this->autocompleteElements->getElements()
 		]);
 
 		if ($this->configuration->getOption(CO::DOWNLOAD)) {
