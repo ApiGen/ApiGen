@@ -42,7 +42,7 @@ class ProgressBar
 	{
 		$this->bar = new ProgressBarHelper($this->getOutput(), $maximum);
 		$this->bar->setFormat('%percent:4s% %');
-		$this->bar->setRedrawFrequency(10);
+		$this->bar->setRedrawFrequency($maximum / 20);
 		$this->bar->start();
 	}
 
