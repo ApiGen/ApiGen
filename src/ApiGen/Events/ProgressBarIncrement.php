@@ -35,8 +35,6 @@ class ProgressBarIncrement extends Nette\Object implements Subscriber
 	public function getSubscribedEvents()
 	{
 		return [
-			'ApiGen\Parser\Parser::onParseStart' => 'onStart',
-			'ApiGen\Parser\Parser::onParseProgress' => 'onProgress',
 			'ApiGen\Generator\Generator::onGenerateStart' => 'onStart',
 			'ApiGen\Generator\Generator::onGenerateProgress' => 'onProgress'
 		];

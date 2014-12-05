@@ -13,13 +13,11 @@ use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Configuration\ConfigurationOptionsResolver as COR;
 use ApiGen\FileSystem\FileSystem;
-use ApiGen\FileSystem\Wiper;
 use ApiGen\Generator\Generator;
 use ApiGen\Generator\GeneratorQueue;
 use ApiGen\Neon\NeonFile;
 use ApiGen\Parser\Parser;
 use ApiGen\Scanner\Scanner;
-use InvalidArgumentException;
 use SplFileInfo;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -214,7 +212,7 @@ class GenerateCommand extends Command
 
 		$stats = $this->parser->getDocumentedStats();
 
-		$output->writeln(PHP_EOL . sprintf(
+		$output->writeln(sprintf(
 			'Generating documentation for <comment>%d classes</comment>, <comment>%d constants</comment>, '
 				. '<comment>%d functions</comment> and <comment>%d PHP internal classes</comment>.',
 			$stats['classes'], $stats['constants'], $stats['functions'], $stats['internalClasses']

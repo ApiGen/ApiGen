@@ -98,8 +98,6 @@ class Parser extends Nette\Object
 	 */
 	public function parse($files)
 	{
-		$this->onParseStart(count($files));
-
 		foreach ($files as $file) {
 			$content = $this->charsetConvertor->convertFileToUtf($file->getPathname());
 			try {
@@ -108,8 +106,6 @@ class Parser extends Nette\Object
 			} catch (\Exception $e) {
 				$this->errors[] = $e;
 			}
-
-			$this->onParseProgress(1);
 		}
 
 		$allFoundClasses = $this->broker->getClasses(Backend::TOKENIZED_CLASSES | Backend::INTERNAL_CLASSES
