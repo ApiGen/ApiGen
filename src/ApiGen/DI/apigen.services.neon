@@ -46,6 +46,7 @@ services:
 	- ApiGen\Generator\TemplateGenerators\OpensearchGenerator
 	- ApiGen\Generator\TemplateGenerators\SitemapGenerator
 	- ApiGen\Generator\TemplateGenerators\TodoGenerator
+	- ApiGen\Generator\TemplateGenerators\TreeGenerator
 	- ApiGen\Generator\TemplateGenerators\RobotsGenerator
 	- ApiGen\Generator\Markups\MarkdownMarkup
 	- Michelf\MarkdownExtra

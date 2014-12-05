@@ -29,7 +29,6 @@ use ApiGen\Templating\Template;
 use ApiGen\Templating\TemplateFactory;
 use ApiGen\Templating\TemplateNavigator;
 use ApiGen\Theme\ThemeResources;
-use ApiGen\Tree;
 use ArrayObject;
 use Nette;
 use RuntimeException;
@@ -223,9 +222,7 @@ class Generator extends Nette\Object
 			+ count($this->traits)
 			+ count($this->exceptions)
 			+ count($this->constants)
-			+ count($this->functions)
-			+ 4 // todo wip: 4 common template files
-			+ (int) $this->config[CO::TREE];
+			+ count($this->functions);
 
 		if ($this->config[CO::SOURCE_CODE]) {
 			$tokenizedFilter = function (ReflectionClass $class) {
@@ -255,11 +252,6 @@ class Generator extends Nette\Object
 
 		// Common files
 		$this->generateCommon();
-
-		// Classes/interfaces/traits/exceptions tree
-		if ($this->config[CO::TREE]) {
-			$this->generateTree();
-		}
 
 		// Generate packages summary
 		$this->generatePackages();
@@ -415,93 +407,6 @@ class Generator extends Nette\Object
 		}
 
 		unset($template->elements);
-	}
-
-
-	/**
-	 * @return Generator
-	 */
-	private function generateTree()
-	{
-		$template = $this->templateFactory->create();
-		$template = $this->addBaseVariablesToTemplate($template);
-
-		$classTree = [];
-		$interfaceTree = [];
-		$traitTree = [];
-		$exceptionTree = [];
-
-		$processed = [];
-		foreach ($this->parsedClasses as $className => $reflection) {
-			if ( ! $reflection->isMain() || ! $reflection->isDocumented() || isset($processed[$className])) {
-				continue;
-			}
-
-			/** @var ReflectionClass $reflection */
-			if ($reflection->getParentClassName() === NULL) {
-				// No parent classes
-				if ($reflection->isInterface()) {
-					$t = &$interfaceTree;
-
-				} elseif ($reflection->isTrait()) {
-					$t = &$traitTree;
-
-				} elseif ($reflection->isException()) {
-					$t = &$exceptionTree;
-
-				} else {
-					$t = &$classTree;
-				}
-
-			} else {
-				foreach (array_values(array_reverse($reflection->getParentClasses())) as $level => $parent) {
-					if ($level === 0) {
-						// The topmost parent decides about the reflection type
-						/** @var ReflectionClass $parent */
-						if ($parent->isInterface()) {
-							$t = &$interfaceTree;
-
-						} elseif ($parent->isTrait()) {
-							$t = &$traitTree;
-
-						} elseif ($parent->isException()) {
-							$t = &$exceptionTree;
-
-						} else {
-							$t = &$classTree;
-						}
-					}
-					$parentName = $parent->getName();
-
-					if ( ! isset($t[$parentName])) {
-						$t[$parentName] = [];
-						$processed[$parentName] = TRUE;
-						ksort($t, SORT_STRING);
-					}
-
-					$t = &$t[$parentName];
-				}
-			}
-			$t[$className] = [];
-			ksort($t, SORT_STRING);
-			$processed[$className] = TRUE;
-			unset($t);
-		}
-
-		$template->classTree = new Tree($classTree, $this->parsedClasses);
-		$template->interfaceTree = new Tree($interfaceTree, $this->parsedClasses);
-		$template->traitTree = new Tree($traitTree, $this->parsedClasses);
-		$template->exceptionTree = new Tree($exceptionTree, $this->parsedClasses);
-
-		$template->setFile($this->templateNavigator->getTemplatePath(TCO::TREE))
-			->save($this->templateNavigator->getTemplateFileName(TCO::TREE));
-
-		unset($template->classTree);
-		unset($template->interfaceTree);
-		unset($template->traitTree);
-		unset($template->exceptionTree);
-
-		$this->onGenerateProgress(1);
 	}
 
 
