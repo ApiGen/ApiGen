@@ -9,16 +9,37 @@
 
 namespace ApiGen\Generator;
 
-use Nette;
+use ApiGen\Console\ProgressBar;
 
 
-class GeneratorQueue extends Nette\Object
+class GeneratorQueue
 {
+
+	/**
+	 * @var ProgressBar
+	 */
+	private $progressBar;
+
+
+	public function __construct(ProgressBar $progressBar)
+	{
+		$this->progressBar = $progressBar;
+	}
+
 
 	/**
 	 * @var TemplateGenerator[]
 	 */
 	private $queue = [];
+
+
+	public function run()
+	{
+		$this->progressBar->init($this->getStepCount());
+		foreach ($this->getAllowedQueue() as $templateGenerator) {
+			$templateGenerator->generate();
+		}
+	}
 
 
 	public function addToQueue(TemplateGenerator $templateGenerator)
@@ -27,18 +48,43 @@ class GeneratorQueue extends Nette\Object
 	}
 
 
-	public function run()
+	/**
+	 * @return TemplateGenerator[]
+	 */
+	public function getQueue()
 	{
-		foreach ($this->queue as $generator) {
+		return $this->queue;
+	}
+
+
+	/**
+	 * @return TemplateGenerator[]
+	 */
+	private function getAllowedQueue()
+	{
+		return array_filter($this->queue, function (TemplateGenerator $generator) {
 			if ($generator instanceof ConditionalTemplateGenerator) {
-				if ($generator->isAllowed()) {
-					$generator->generate();
-				}
+				return $generator->isAllowed();
 
 			} else {
-				$generator->generate();
+				return TRUE;
+			}
+		});
+	}
+
+
+	/**
+	 * @return int
+	 */
+	private function getStepCount()
+	{
+		$steps = 0;
+		foreach ($this->getAllowedQueue() as $templateGenerator) {
+			if ($templateGenerator instanceof StepCounter) {
+				$steps += $templateGenerator->getStepCount();
 			}
 		}
+		return $steps;
 	}
 
 }
