@@ -57,7 +57,7 @@ class ZipGenerator implements ConditionalTemplateGenerator
 	 */
 	public function isAllowed()
 	{
-		return $this->configuration->getOption(CO::DOWNLOAD);
+		return (bool) $this->configuration->getOption(CO::DOWNLOAD);
 	}
 
 }

@@ -31,8 +31,8 @@ class E404Generator implements TemplateGenerator
 
 	public function generate()
 	{
-		$template = $this->templateFactory->createForType(TCO::E404);
-		$template->save();
+		$this->templateFactory->createForType(TCO::E404)
+			->save();
 	}
 
 }

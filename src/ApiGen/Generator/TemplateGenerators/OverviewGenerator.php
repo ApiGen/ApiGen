@@ -31,8 +31,8 @@ class OverviewGenerator implements TemplateGenerator
 
 	public function generate()
 	{
-		$template = $this->templateFactory->createForType(TCO::OVERVIEW);
-		$template->save();
+		$this->templateFactory->createForType(TCO::OVERVIEW)
+			->save();
 	}
 
 }

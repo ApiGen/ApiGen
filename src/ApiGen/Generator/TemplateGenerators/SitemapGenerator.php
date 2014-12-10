@@ -39,8 +39,8 @@ class SitemapGenerator implements ConditionalTemplateGenerator
 
 	public function generate()
 	{
-		$template = $this->templateFactory->createForType(TCO::SITEMAP);
-		$template->save();
+		$this->templateFactory->createForType(TCO::SITEMAP)
+			->save();
 	}
 
 

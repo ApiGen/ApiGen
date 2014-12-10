@@ -31,8 +31,8 @@ class ElementListGenerator implements TemplateGenerator
 
 	public function generate()
 	{
-		$template = $this->templateFactory->createForType(TCO::ELEMENT_LIST);
-		$template->save();
+		$this->templateFactory->createForType(TCO::ELEMENT_LIST)
+			->save();
 	}
 
 }

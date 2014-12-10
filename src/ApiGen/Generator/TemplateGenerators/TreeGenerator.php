@@ -51,11 +51,27 @@ class TreeGenerator implements ConditionalTemplateGenerator
 		Elements::EXCEPTIONS => []
 	];
 
+	/**
+	 * @var ElementStorage
+	 */
+	private $elementStorage;
 
-	public function __construct(Configuration $configuration, TemplateFactory $templateFactory)
-	{
+	/**
+	 * @var ParserResult
+	 */
+	private $parserResult;
+
+
+	public function __construct(
+		Configuration $configuration,
+		TemplateFactory $templateFactory,
+		ElementStorage $elementStorage,
+		ParserResult $parserResult
+	) {
 		$this->configuration = $configuration;
 		$this->templateFactory = $templateFactory;
+		$this->elementStorage = $elementStorage;
+		$this->parserResult = $parserResult;
 	}
 
 
@@ -63,7 +79,8 @@ class TreeGenerator implements ConditionalTemplateGenerator
 	{
 		$template = $this->templateFactory->createForType(TCO::TREE);
 
-		foreach (ParserResult::$classes as $className => $reflection) {
+		$classes = $this->parserResult->getClasses();
+		foreach ($classes as $className => $reflection) {
 			if ($this->canBeProcessed($reflection)) {
 				$this->addToTreeByReflection($reflection);
 			}
@@ -72,10 +89,10 @@ class TreeGenerator implements ConditionalTemplateGenerator
 		$this->sortTreeStorageElements();
 
 		$template->setParameters([
-			'classTree' => new Tree($this->treeStorage[Elements::CLASSES], ParserResult::$classes),
-			'interfaceTree' => new Tree($this->treeStorage[Elements::INTERFACES], ParserResult::$classes),
-			'traitTree' => new Tree($this->treeStorage[Elements::TRAITS], ParserResult::$classes),
-			'exceptionTree' => new Tree($this->treeStorage[Elements::EXCEPTIONS], ParserResult::$classes)
+			'classTree' => new Tree($this->treeStorage[Elements::CLASSES], $classes),
+			'interfaceTree' => new Tree($this->treeStorage[Elements::INTERFACES], $classes),
+			'traitTree' => new Tree($this->treeStorage[Elements::TRAITS], $classes),
+			'exceptionTree' => new Tree($this->treeStorage[Elements::EXCEPTIONS], $classes)
 		]);
 
 		$template->save();

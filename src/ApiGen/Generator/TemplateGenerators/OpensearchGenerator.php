@@ -39,8 +39,8 @@ class OpensearchGenerator implements ConditionalTemplateGenerator
 
 	public function generate()
 	{
-		$template = $this->templateFactory->createForType(TCO::OPENSEARCH);
-		$template->save();
+		$this->templateFactory->createForType(TCO::OPENSEARCH)
+			->save();
 	}
 
 
@@ -50,7 +50,7 @@ class OpensearchGenerator implements ConditionalTemplateGenerator
 	public function isAllowed()
 	{
 		$options = $this->configuration->getOptions();
-		return (bool) $options[CO::GOOGLE_CSE_ID] && $options[CO::BASE_URL];
+		return $options[CO::GOOGLE_CSE_ID] && $options[CO::BASE_URL];
 	}
 
 }

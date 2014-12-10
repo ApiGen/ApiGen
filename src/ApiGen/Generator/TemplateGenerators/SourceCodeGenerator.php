@@ -21,10 +21,19 @@ use ApiGen\Parser\Elements\ElementStorage;
 use ApiGen\Reflection\ReflectionClass;
 use ApiGen\Reflection\ReflectionElement;
 use ApiGen\Templating\TemplateFactory;
+use Nette;
 
 
-class SourceCodeGenerator implements ConditionalTemplateGenerator, StepCounter
+/**
+ * @method onGenerateProgress()
+ */
+class SourceCodeGenerator extends Nette\Object implements ConditionalTemplateGenerator, StepCounter
 {
+
+	/**
+	 * @var array
+	 */
+	public $onGenerateProgress = [];
 
 	/**
 	 * @var Configuration
@@ -81,6 +90,7 @@ class SourceCodeGenerator implements ConditionalTemplateGenerator, StepCounter
 				/** @var ReflectionElement $element */
 				if ($element->isTokenized()) {
 					$this->generateForElement($element);
+					$this->onGenerateProgress(1);
 				}
 			}
 		}
@@ -119,8 +129,10 @@ class SourceCodeGenerator implements ConditionalTemplateGenerator, StepCounter
 	private function generateForElement(ReflectionElement $element)
 	{
 		$template = $this->templateFactory->createNamedForElement(TCO::SOURCE, $element);
-		$template->fileName = $this->relativePathResolver->getRelativePath($element->getFileName());
-		$template->source = $this->getHighlightedCodeFromElement($element);
+		$template->setParameters([
+			'fileName' => $this->relativePathResolver->getRelativePath($element->getFileName()),
+			'source' => $this->getHighlightedCodeFromElement($element)
+		]);
 		$template->save();
 	}
 

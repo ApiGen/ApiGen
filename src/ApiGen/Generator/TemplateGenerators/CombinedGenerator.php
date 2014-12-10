@@ -31,8 +31,8 @@ class CombinedGenerator implements TemplateGenerator
 
 	public function generate()
 	{
-		$template = $this->templateFactory->createForType(TCO::COMBINED);
-		$template->save();
+		$this->templateFactory->createForType(TCO::COMBINED)
+			->save();
 	}
 
 }

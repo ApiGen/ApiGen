@@ -39,8 +39,8 @@ class RobotsGenerator implements ConditionalTemplateGenerator
 
 	public function generate()
 	{
-		$template = $this->templateFactory->createForType(TCO::ROBOTS);
-		$template->save();
+		$this->templateFactory->createForType(TCO::ROBOTS)
+			->save();
 	}
 
 
