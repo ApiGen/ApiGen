@@ -13,11 +13,11 @@ use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Configuration\ConfigurationOptionsResolver as COR;
 use ApiGen\FileSystem\FileSystem;
-use ApiGen\Generator\Generator;
 use ApiGen\Generator\GeneratorQueue;
 use ApiGen\Neon\NeonFile;
 use ApiGen\Parser\Parser;
 use ApiGen\Scanner\Scanner;
+use ApiGen\Theme\ThemeResources;
 use SplFileInfo;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -31,19 +31,9 @@ class GenerateCommand extends Command
 {
 
 	/**
-	 * @var Generator
-	 */
-	private $generator;
-
-	/**
 	 * @var Configuration
 	 */
 	private $configuration;
-
-	/**
-	 * @var Wiper
-	 */
-	private $wiper;
 
 	/**
 	 * @var Parser
@@ -65,22 +55,27 @@ class GenerateCommand extends Command
 	 */
 	private $fileSystem;
 
+	/**
+	 * @var ThemeResources
+	 */
+	private $themeResources;
+
 
 	public function __construct(
-		Generator $generator,
 		Configuration $configuration,
 		Scanner $scanner,
 		Parser $parser,
 		GeneratorQueue $generatorQueue,
-		FileSystem $fileSystem
+		FileSystem $fileSystem,
+		ThemeResources $themeResources
 	) {
 		parent::__construct();
-		$this->generator = $generator;
 		$this->configuration = $configuration;
 		$this->scanner = $scanner;
 		$this->parser = $parser;
 		$this->generatorQueue = $generatorQueue;
 		$this->fileSystem = $fileSystem;
+		$this->themeResources = $themeResources;
 	}
 
 
@@ -151,15 +146,14 @@ class GenerateCommand extends Command
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
 		try {
-			$configFileOptions = $this->getConfigFileOptions($input);
+			$configFile = $input->getOption(CO::CONFIG);
+			$configFileOptions = (new NeonFile($configFile))->read();
 
 			// cli has priority over config file
 			$options = array_merge($input->getOptions(), $configFileOptions);
-			$options = $this->unsetConsoleOptions($options);
 			$options = $this->configuration->resolveOptions($options);
 
-			$files = $this->scan($options, $output);
-			$this->parse($options, $output, $files);
+			$this->scanAndParse($options, $output);
 			$this->generate($options, $output);
 			return 0;
 
@@ -170,51 +164,19 @@ class GenerateCommand extends Command
 	}
 
 
-	/**
-	 * @return SplFileInfo[]
-	 */
-	private function scan(array $options, OutputInterface $output)
+	private function scanAndParse(array $options, OutputInterface $output)
 	{
-		foreach ($options[CO::SOURCE] as $source) {
-			$output->writeln("<info>Scanning $source</info>");
-		}
+		$output->writeln('<info>Scanning sources and parsing</info>');
 
-		foreach ($options[CO::EXCLUDE] as $exclude) {
-			$output->writeln("<info>Excluding $exclude</info>");
-		}
-
-		return $this->scanner->scan($options[CO::SOURCE], $options[CO::EXCLUDE], $options[CO::EXTENSIONS]);
-	}
-
-
-	private function parse(array $options, OutputInterface $output, array $files)
-	{
-		$output->writeln("<info>Parsing...</info>");
-
+		$files = $this->scanner->scan($options[CO::SOURCE], $options[CO::EXCLUDE], $options[CO::EXTENSIONS]);
 		$this->parser->parse($files);
 
-		if (count($this->parser->getErrors())) {
-			if ($options[CO::DEBUG]) {
-				if ( ! is_dir(LOG_DIRECTORY)) {
-					mkdir(LOG_DIRECTORY);
-				}
-				Debugger::$logDirectory = LOG_DIRECTORY;
-				foreach ($this->parser->getErrors() as $e) {
-					$logName = Debugger::log($e);
-					$output->writeln("<error>Parse error occurred, exception was stored info $logName</error>");
-				}
-
-			} else {
-				$output->writeln(PHP_EOL . '<error>Found ' . count($this->parser->getErrors()) . ' errors.'
-					. ' For more details add --debug option</error>');
-			}
-		}
+		$this->reportParserErrors($options, $this->parser->getErrors(), $output);
 
 		$stats = $this->parser->getDocumentedStats();
-
 		$output->writeln(sprintf(
-			'Generating documentation for <comment>%d classes</comment>, <comment>%d constants</comment>, '
-				. '<comment>%d functions</comment> and <comment>%d PHP internal classes</comment>.',
+			'Found <comment>%d classes</comment>, <comment>%d constants</comment>, '
+				. '<comment>%d functions</comment> and <comment>%d PHP internal classes</comment>',
 			$stats['classes'], $stats['constants'], $stats['functions'], $stats['internalClasses']
 		));
 	}
@@ -222,41 +184,32 @@ class GenerateCommand extends Command
 
 	private function generate(array $options, OutputInterface $output)
 	{
-		$output->writeln('<info>Wiping out destination directory</info>');
 		$this->fileSystem->purgeDir($options[CO::DESTINATION]);
+		$this->themeResources->copyToDestination($options[CO::DESTINATION]);
 
-		$output->writeln('<info>Generating to directory ' . $options[CO::DESTINATION] . '</info>');
-		$skipping = array_merge($options[CO::SKIP_DOC_PATH], $options[CO::SKIP_DOC_PREFIX]); // @todo better merge
-		foreach ($skipping as $skip) {
-			$output->writeln("<info>Will not generate documentation for  $skip</info>");
-		}
-
-		$this->generator->generate();
+		$output->writeln('<info>Generating API documentation</info>');
 		$this->generatorQueue->run();
-
-		$output->writeln(PHP_EOL . '<info>Api was successfully generated!</info>');
 	}
 
 
-	/**
-	 * @return array
-	 */
-	private function getConfigFileOptions(InputInterface $input)
+	private function reportParserErrors(array $options, array $errors, OutputInterface $output)
 	{
-		$file = $input->getOption(CO::CONFIG);
-		$neonFile = new NeonFile($file);
-		$neonFile->validate();
-		return $neonFile->read();
-	}
+		if (count($errors)) {
+			if ($options[CO::DEBUG]) {
+				if ( ! is_dir(LOG_DIRECTORY)) {
+					mkdir(LOG_DIRECTORY);
+				}
+				Debugger::$logDirectory = LOG_DIRECTORY;
+				foreach ($errors as $error) {
+					$logName = Debugger::log($error);
+					$output->writeln("<error>Parse error occurred, exception was stored info $logName</error>");
+				}
 
-
-	/**
-	 * @return array
-	 */
-	private function unsetConsoleOptions(array $options)
-	{
-		unset($options[CO::CONFIG], $options['help'], $options['version'], $options['quiet'], $options['working-dir']);
-		return $options;
+			} else {
+				$output->writeln(PHP_EOL . '<error>Found ' . count($errors) . ' errors.'
+					. ' For more details add --debug option</error>');
+			}
+		}
 	}
 
 }
