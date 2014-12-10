@@ -9,27 +9,16 @@
 
 namespace ApiGen\Parser\Elements;
 
+use ApiGen\Configuration\Configuration;
+use ApiGen\Generator\Resolvers\ElementResolver;
+use ApiGen\Parser\ParserResult;
+use ApiGen\Reflection\ReflectionClass;
+use ApiGen\Reflection\ReflectionElement;
 use Nette;
+use TokenReflection\Php\ReflectionConstant;
+use TokenReflection\ReflectionFunction;
 
 
-/**
- * @method getNamespaces()
- * @method getPackages()
- * @method getClasses()
- * @method getInterfaces()
- * @method getTraits()
- * @method getExceptions()
- * @method getConstants()
- * @method getFunctions()
- * @method setNamespaces()
- * @method setPackages()
- * @method setClasses()
- * @method setInterfaces()
- * @method setTraits()
- * @method setExceptions()
- * @method setConstants()
- * @method setFunctions()
- */
 class ElementStorage extends Nette\Object
 {
 
@@ -73,12 +62,150 @@ class ElementStorage extends Nette\Object
 	 */
 	private $functions = [];
 
+	/**
+	 * @var bool
+	 */
+	private $areElementsCategorized = FALSE;
+
+	/**
+	 * @var ParserResult
+	 */
+	private $parserResult;
+
+	/**
+	 * @var Configuration
+	 */
+	private $configuration;
+
+	/**
+	 * @var GroupSorter
+	 */
+	private $groupSorter;
+
+	/**
+	 * @var Elements
+	 */
+	private $elements;
+
+	/**
+	 * @var ElementResolver
+	 */
+	private $elementResolver;
+
+
+	public function __construct(
+		ParserResult $parserResult,
+		Configuration $configuration,
+		GroupSorter $groupSorter,
+		Elements $elements,
+		ElementResolver $elementResolver
+	) {
+		$this->parserResult = $parserResult;
+		$this->configuration = $configuration;
+		$this->groupSorter = $groupSorter;
+		$this->elements = $elements;
+		$this->elementResolver = $elementResolver;
+	}
+
+
+	/**
+	 * @return ReflectionClass[]
+	 */
+	public function getClasses()
+	{
+		$this->ensureCategorization();
+		return $this->classes;
+	}
+
+
+	/**
+	 * @return array
+	 */
+	public function getNamespaces()
+	{
+		$this->ensureCategorization();
+		 return $this->namespaces;
+	}
+
+
+	/**
+	 * @return array
+	 */
+	public function getPackages()
+	{
+		$this->ensureCategorization();
+		return $this->packages;
+	}
+
+
+	/**
+	 * @return array
+	 */
+	public function getInterfaces()
+	{
+		$this->ensureCategorization();
+		return $this->interfaces;
+	}
+
+
+	/**
+	 * @return array
+	 */
+	public function getTraits()
+	{
+		$this->ensureCategorization();
+		return $this->traits;
+	}
+
+
+	/**
+	 * @return array
+	 */
+	public function getExceptions()
+	{
+		$this->ensureCategorization();
+		return $this->exceptions;
+	}
+
+
+	/**
+	 * @return array
+	 */
+	public function getConstants()
+	{
+		$this->ensureCategorization();
+		return $this->constants;
+	}
+
+
+	/**
+	 * @return array
+	 */
+	public function getFunctions()
+	{
+		 $this->ensureCategorization();
+		 return $this->functions;
+	}
+
+
+	/**
+	 * @return ReflectionClass[]
+	 */
+	public function getClassElements()
+	{
+		return array_merge($this->getClasses(), $this->getTraits(), $this->getInterfaces(), $this->getExceptions());
+	}
+
 
 	/**
 	 * @return array[]
 	 */
 	public function getElements()
 	{
+		if ($this->areElementsCategorized === FALSE) {
+			$this->categorizeParsedElements();
+		}
+
 		$elements = [
 			Elements::CLASSES => $this->classes,
 			Elements::CONSTANTS => $this->constants,
@@ -88,6 +215,151 @@ class ElementStorage extends Nette\Object
 			Elements::EXCEPTIONS => $this->exceptions
 		];
 		return $elements;
+	}
+
+
+
+	private function categorizeParsedElements()
+	{
+		foreach ($this->parserResult->getTypes() as $type) {
+			$elements = $this->parserResult->getElementsByType($type);
+			foreach ($elements as $elementName => $element) {
+				if ( ! $element->isDocumented()) {
+					continue;
+				}
+				if ($element instanceof ReflectionConstant) {
+					$elementType = Elements::CONSTANTS;
+					$this->constants[$elementName] = $element;
+
+				} elseif ($element instanceof ReflectionFunction) {
+					$elementType = Elements::FUNCTIONS;
+					$this->functions[$elementName] = $element;
+
+				} elseif ($element->isInterface()) {
+					$elementType = Elements::INTERFACES;
+					$this->interfaces[$elementName] = $element;
+
+				} elseif ($element->isTrait()) {
+					$elementType = Elements::TRAITS;
+					$this->traits[$elementName] = $element;
+
+				} elseif ($element->isException()) {
+					$elementType = Elements::INTERFACES;
+					$this->exceptions[$elementName] = $element;
+
+				} else {
+					$elementType = Elements::CLASSES;
+					$this->classes[$elementName] = $element;
+				}
+				$this->categorizeElementToNamespaceAndPackage($elementName, $elementType, $element);
+			}
+			$this->areElementsCategorized = TRUE;
+		}
+		$this->sortNamespacesAndPackages();
+		$this->addUsedByAnnotation();
+	}
+
+
+	/**
+	 * @param string $elementName
+	 * @param string $elementType
+	 * @param ReflectionElement|ReflectionClass $element
+	 */
+	private function categorizeElementToNamespaceAndPackage($elementName, $elementType, $element)
+	{
+		$packageName = $element->getPseudoPackageName();
+		$namespaceName = $element->getPseudoNamespaceName();
+		if ( ! isset($this->packages[$packageName])) {
+			$this->packages[$packageName] = $this->elements->getEmptyList();
+		}
+		if ( ! isset($this->namespaces[$namespaceName])) {
+			$this->namespaces[$namespaceName] = $this->elements->getEmptyList();
+		}
+		$this->packages[$packageName][$elementType][$elementName] = $element;
+		$this->namespaces[$namespaceName][$elementType][$element->getShortName()] = $element;
+	}
+
+
+	private function sortNamespacesAndPackages()
+	{
+		$areNamespacesEnabled = $this->configuration->areNamespacesEnabled(
+			$this->getNamespaceCount(),
+			$this->getPackageCount()
+		);
+		$arePackagesEnabled = $this->configuration->arePackagesEnabled($areNamespacesEnabled);
+		if ($areNamespacesEnabled) {
+			$this->namespaces = $this->groupSorter->sort($this->namespaces);
+			$this->packages = [];
+
+		} elseif ($arePackagesEnabled) {
+			$this->namespaces = [];
+			$this->packages = $this->groupSorter->sort($this->packages);
+
+		} else {
+			$this->namespaces = [];
+			$this->packages = [];
+		}
+	}
+
+
+
+	/**
+	 * @return int
+	 */
+	private function getNamespaceCount()
+	{
+		$nonDefaultNamespaces = array_diff(array_keys($this->namespaces), ['PHP', 'None']);
+		return count($nonDefaultNamespaces);
+	}
+
+
+	/**
+	 * @return int
+	 */
+	private function getPackageCount()
+	{
+		$nonDefaultPackages = array_diff(array_keys($this->packages), ['PHP', 'None']);
+		return count($nonDefaultPackages);
+	}
+
+
+	private function addUsedByAnnotation()
+	{
+		foreach ($this->getElements() as $elementList) {
+			foreach ($elementList as $parentElement) {
+				$elements = [$parentElement];
+				if ($parentElement instanceof ReflectionClass) {
+					$elements = array_merge(
+						$elements,
+						array_values($parentElement->getOwnMethods()),
+						array_values($parentElement->getOwnConstants()),
+						array_values($parentElement->getOwnProperties())
+					);
+				}
+				/** @var ReflectionElement $element */
+				foreach ($elements as $element) {
+					$uses = $element->getAnnotation('uses');
+					if ($uses === NULL) {
+						continue;
+					}
+					foreach ($uses as $value) {
+						list($link, $description) = preg_split('~\s+|$~', $value, 2);
+						$resolved = $this->elementResolver->resolveElement($link, $element);
+						if ($resolved !== NULL) {
+							$resolved->addAnnotation('usedby', $element->getPrettyName() . ' ' . $description);
+						}
+					}
+				}
+			}
+		}
+	}
+
+
+	private function ensureCategorization()
+	{
+		if ($this->areElementsCategorized === FALSE) {
+			$this->categorizeParsedElements();
+		}
 	}
 
 }
