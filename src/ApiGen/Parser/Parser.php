@@ -13,15 +13,11 @@ use ApiGen\Charset\CharsetConvertor;
 use ApiGen\Parser\Broker\Backend;
 use ApiGen\Reflection\ReflectionElement;
 use ArrayObject;
-use Nette;
 use SplFileInfo;
 use TokenReflection\Broker;
 
 
-/**
- * @method array        getErrors()
- */
-class Parser extends Nette\Object
+class Parser
 {
 
 	/**
@@ -57,7 +53,7 @@ class Parser extends Nette\Object
 	/**
 	 * @var array
 	 */
-	private $errors;
+	private $errors = [];
 
 	/**
 	 * @var ParserResult
@@ -126,6 +122,15 @@ class Parser extends Nette\Object
 
 
 	/**
+	 * @return array
+	 */
+	public function getErrors()
+	{
+		return $this->errors;
+	}
+
+
+	/**
 	 * @param ReflectionElement[] $result
 	 * @return int
 	 */
@@ -144,6 +149,11 @@ class Parser extends Nette\Object
 		$this->parserResult->setClasses($this->classes);
 		$this->parserResult->setConstants($this->constants);
 		$this->parserResult->setFunctions($this->functions);
+
+		// temporary workaround for reflections
+		ParserResult::$classesStatic = $this->classes;
+		ParserResult::$constantsStatic = $this->constants;
+		ParserResult::$functionsStatic = $this->functions;
 	}
 
 }

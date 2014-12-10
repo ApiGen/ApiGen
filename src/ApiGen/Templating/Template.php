@@ -53,6 +53,11 @@ class Template extends Nette\Bridges\ApplicationLatte\Template
 	public function save($file = NULL)
 	{
 		$this->savePath = $file ?: $this->savePath;
+		$dir = dirname($this->savePath);
+		if ( ! is_dir($dir)) {
+			mkdir($dir, 0755, TRUE);
+		}
+
 		if (file_put_contents($this->savePath, $this->__toString(TRUE)) === FALSE) {
 			throw new Nette\IOException("Unable to save file '$file'.");
 		}

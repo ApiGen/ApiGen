@@ -153,9 +153,7 @@ class UrlFilters extends Filters
 
 
 	/**
-	 * Returns a link to a package summary file.
-	 *
-	 * @param string $packageName Package name
+	 * @param string $packageName
 	 * @return string
 	 */
 	public function packageUrl($packageName)
@@ -168,9 +166,7 @@ class UrlFilters extends Filters
 
 
 	/**
-	 * Returns a link to a namespace summary file.
-	 *
-	 * @param string $namespaceName Namespace name
+	 * @param string $namespaceName
 	 * @return string
 	 */
 	public function namespaceUrl($namespaceName)
@@ -183,9 +179,7 @@ class UrlFilters extends Filters
 
 
 	/**
-	 * Returns a link to class summary file.
-	 *
-	 * @param string|ReflectionClass $class Class reflection or name
+	 * @param string|ReflectionClass $class
 	 * @return string
 	 */
 	public function classUrl($class)
@@ -199,8 +193,6 @@ class UrlFilters extends Filters
 
 
 	/**
-	 * Returns a link to method in class summary file.
-	 *
 	 * @return string
 	 */
 	public function methodUrl(ReflectionMethod $method, ReflectionClass $class = NULL)
@@ -212,8 +204,6 @@ class UrlFilters extends Filters
 
 
 	/**
-	 * Returns a link to property in class summary file.
-	 *
 	 * @return string
 	 */
 	public function propertyUrl(ReflectionProperty $property, ReflectionClass $class = NULL)
@@ -224,8 +214,6 @@ class UrlFilters extends Filters
 
 
 	/**
-	 * Returns a link to constant in class summary file or to constant summary file.
-	 *
 	 * @return string
 	 */
 	public function constantUrl(ReflectionConstant $constant)
@@ -243,8 +231,6 @@ class UrlFilters extends Filters
 
 
 	/**
-	 * Returns a link to function summary file.
-	 *
 	 * @return string
 	 */
 	public function functionUrl(ReflectionFunction $function)

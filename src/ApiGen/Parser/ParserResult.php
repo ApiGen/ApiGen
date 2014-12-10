@@ -42,6 +42,21 @@ class ParserResult extends Nette\Object
 	private $functions;
 
 	/**
+	 * @var ArrayObject
+	 */
+	public static $classesStatic;
+
+	/**
+	 * @var ArrayObject
+	 */
+	public static $constantsStatic;
+
+	/**
+	 * @var ArrayObject
+	 */
+	public static $functionsStatic;
+
+	/**
 	 * @var array
 	 */
 	private $types = array(Elements::CLASSES, Elements::CONSTANTS, Elements::FUNCTIONS);

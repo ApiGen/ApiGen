@@ -734,7 +734,7 @@ class ReflectionClass extends ReflectionElement
 	{
 		if ($this->parentClasses === NULL) {
 			$this->parentClasses = array_map(function (IReflectionClass $class) {
-				return ParserResult::$classes[$class->getName()];
+				return ParserResult::$classesStatic[$class->getName()];
 			}, $this->reflection->getParentClasses());
 		}
 		return $this->parentClasses;
@@ -770,7 +770,7 @@ class ReflectionClass extends ReflectionElement
 	public function getInterfaces()
 	{
 		return array_map(function (IReflectionClass $class) {
-			return ParserResult::$classes[$class->getName()];
+			return ParserResult::$classesStatic[$class->getName()];
 		}, $this->reflection->getInterfaces());
 	}
 
@@ -790,7 +790,7 @@ class ReflectionClass extends ReflectionElement
 	public function getOwnInterfaces()
 	{
 		return array_map(function (IReflectionClass $class) {
-			return ParserResult::$classes[$class->getName()];
+			return ParserResult::$classesStatic[$class->getName()];
 		}, $this->reflection->getOwnInterfaces());
 	}
 
@@ -812,11 +812,11 @@ class ReflectionClass extends ReflectionElement
 	public function getTraits()
 	{
 		return array_map(function (IReflectionClass $class) {
-			if ( ! isset(ParserResult::$classes[$class->getName()])) {
+			if ( ! isset(ParserResult::$classesStatic[$class->getName()])) {
 				return $class->getName();
 
 			} else {
-				return ParserResult::$classes[$class->getName()];
+				return ParserResult::$classesStatic[$class->getName()];
 			}
 		}, $this->reflection->getTraits());
 	}
@@ -855,11 +855,11 @@ class ReflectionClass extends ReflectionElement
 	public function getOwnTraits()
 	{
 		return array_map(function (IReflectionClass $class) {
-			if ( ! isset(ParserResult::$classes[$class->getName()])) {
+			if ( ! isset(ParserResult::$classesStatic[$class->getName()])) {
 				return $class->getName();
 
 			} else {
-				return ParserResult::$classes[$class->getName()];
+				return ParserResult::$classesStatic[$class->getName()];
 			}
 		}, $this->reflection->getOwnTraits());
 	}
@@ -899,6 +899,7 @@ class ReflectionClass extends ReflectionElement
 				$subClasses[] = $class;
 			}
 		}
+		uksort($subClasses, 'strcasecmp');
 		return $subClasses;
 	}
 
@@ -918,6 +919,7 @@ class ReflectionClass extends ReflectionElement
 				$subClasses[] = $class;
 			}
 		}
+		uksort($subClasses, 'strcasecmp');
 		return $subClasses;
 	}
 
@@ -941,6 +943,7 @@ class ReflectionClass extends ReflectionElement
 				$implementers[] = $class;
 			}
 		}
+		uksort($implementers, 'strcasecmp');
 		return $implementers;
 	}
 
@@ -964,6 +967,7 @@ class ReflectionClass extends ReflectionElement
 				$implementers[] = $class;
 			}
 		}
+		uksort($implementers, 'strcasecmp');
 		return $implementers;
 	}
 
@@ -988,6 +992,7 @@ class ReflectionClass extends ReflectionElement
 				$users[] = $class;
 			}
 		}
+		uksort($users, 'strcasecmp');
 		return $users;
 	}
 
@@ -1011,6 +1016,7 @@ class ReflectionClass extends ReflectionElement
 				$users[] = $class;
 			}
 		}
+		uksort($users, 'strcasecmp');
 		return $users;
 	}
 
@@ -1443,7 +1449,7 @@ class ReflectionClass extends ReflectionElement
 	private function getParsedClasses()
 	{
 		if (self::$parsedClasses === NULL) {
-			self::$parsedClasses = ParserResult::$classes;
+			self::$parsedClasses = ParserResult::$classesStatic;
 		}
 		return self::$parsedClasses;
 	}

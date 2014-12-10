@@ -14,7 +14,6 @@ use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Reflection\ReflectionClass;
 use ApiGen\Reflection\ReflectionConstant;
 use ApiGen\Reflection\ReflectionFunction;
-use Nette;
 
 
 class AutocompleteElements
@@ -37,6 +36,7 @@ class AutocompleteElements
 	 */
 	private $elements;
 
+
 	public function __construct(Configuration $configuration, ElementStorage $elementStorage)
 	{
 		$this->configuration = $configuration;
@@ -53,7 +53,6 @@ class AutocompleteElements
 		foreach ($this->elementStorage->getElements() as $type => $elementList) {
 			foreach ($elementList as $element) {
 				if ($element instanceof ReflectionClass) {
-					/** @var ReflectionClass $element */
 					if (isset($autocomplete[Elements::CLASSES])) {
 						$this->elements[] = ['c', $element->getPrettyName()];
 					}
