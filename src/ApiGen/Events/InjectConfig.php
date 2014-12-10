@@ -11,29 +11,16 @@ namespace ApiGen\Events;
 
 use ApiGen\Charset\CharsetDetector;
 use ApiGen\Configuration\Configuration;
-use ApiGen\Generator\Generator;
 use ApiGen\Generator\Resolvers\RelativePathResolver;
 use ApiGen\Templating\Filters\AnnotationFilters;
 use ApiGen\Templating\Filters\SourceFilters;
 use ApiGen\Templating\Filters\UrlFilters;
-use ApiGen\Templating\TemplateFactory;
 use Kdyby\Events\Subscriber;
-use Nette;
 use Nette\Utils\ArrayHash;
 
 
-class InjectConfig extends Nette\Object implements Subscriber
+class InjectConfig implements Subscriber
 {
-
-	/**
-	 * @var Generator
-	 */
-	private $generator;
-
-	/**
-	 * @var TemplateFactory
-	 */
-	private $templateFactory;
 
 	/**
 	 * @var CharsetDetector
@@ -62,16 +49,12 @@ class InjectConfig extends Nette\Object implements Subscriber
 
 
 	public function __construct(
-		Generator $generator,
-		TemplateFactory $templateFactory,
 		CharsetDetector $charsetDetector,
 		SourceFilters $sourceFilters,
 		UrlFilters $urlFilters,
 		AnnotationFilters $annotationFilters,
 		RelativePathResolver $relativePathResolver
 	) {
-		$this->generator = $generator;
-		$this->templateFactory = $templateFactory;
 		$this->charsetDetector = $charsetDetector;
 		$this->sourceFilters = $sourceFilters;
 		$this->urlFilters = $urlFilters;
@@ -93,8 +76,6 @@ class InjectConfig extends Nette\Object implements Subscriber
 	{
 		Configuration::$config = ArrayHash::from($config);
 
-		$this->generator->setConfig($config);
-		$this->templateFactory->setConfig($config);
 		$this->relativePathResolver->setConfig($config);
 
 		$this->charsetDetector->setCharsets($config['charset']);
