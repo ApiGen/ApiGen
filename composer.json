@@ -46,8 +46,8 @@
 		"ext-zlib": "*"
 	},
 	"autoload": {
-		"psr-0": {
-			"ApiGen": "src/"
+		"psr-4": {
+			"ApiGen\\": "src/ApiGen"
 		}
 	},
 	"bin": [
