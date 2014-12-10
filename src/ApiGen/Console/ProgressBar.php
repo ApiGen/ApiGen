@@ -10,6 +10,7 @@
 namespace ApiGen\Console;
 
 use ApiGen\Console;
+use Symfony\Component\Console\Helper\FormatterHelper;
 use Symfony\Component\Console\Helper\ProgressBar as ProgressBarHelper;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -41,8 +42,8 @@ class ProgressBar
 	public function init($maximum = 1)
 	{
 		$this->bar = new ProgressBarHelper($this->getOutput(), $maximum);
-		$this->bar->setFormat('%percent:4s% %');
 		$this->bar->setRedrawFrequency($maximum / 20);
+		$this->bar->setFormat('<comment>%percent:3s% %</comment>');
 		$this->bar->start();
 	}
 
@@ -53,6 +54,9 @@ class ProgressBar
 	public function increment($increment = 1)
 	{
 		$this->bar->advance($increment);
+		if ($this->bar->getProgress() === $this->bar->getMaxSteps()) {
+			$this->consoleIO->getOutput()->writeln(' - Finished!');
+		}
 	}
 
 
