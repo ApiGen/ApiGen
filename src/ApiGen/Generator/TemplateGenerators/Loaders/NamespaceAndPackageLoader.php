@@ -33,8 +33,6 @@ class NamespaceAndPackageLoader
 
 
 	/**
-	 * @param Template $template
-	 * @param ReflectionElement $element
 	 * @return Template
 	 */
 	public function loadTemplateWithElementNamespaceOrPackage(Template $template, ReflectionElement $element)

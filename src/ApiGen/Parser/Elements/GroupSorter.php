@@ -64,7 +64,6 @@ class GroupSorter extends Nette\Object
 		}
 
 		$main = $this->configuration->getOption(CO::MAIN);
-
 		uksort($this->groups, function ($one, $two) use ($main) {
 			// \ as separator has to be first
 			$one = str_replace('\\', ' ', $one);
@@ -136,7 +135,7 @@ class GroupSorter extends Nette\Object
 	private function addMissingElementTypes($groupName)
 	{
 		foreach ($this->elements->getAll() as $type) {
-			if ( ! isset($groups[$groupName][$type])) {
+			if ( ! isset($this->groups[$groupName][$type])) {
 				$this->groups[$groupName][$type] = [];
 			}
 		}

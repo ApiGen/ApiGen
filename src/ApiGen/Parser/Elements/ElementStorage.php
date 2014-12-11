@@ -124,7 +124,7 @@ class ElementStorage extends Nette\Object
 	public function getNamespaces()
 	{
 		$this->ensureCategorization();
-		 return $this->namespaces;
+		return $this->namespaces;
 	}
 
 
@@ -202,9 +202,7 @@ class ElementStorage extends Nette\Object
 	 */
 	public function getElements()
 	{
-		if ($this->areElementsCategorized === FALSE) {
-			$this->categorizeParsedElements();
-		}
+		$this->ensureCategorization();
 
 		$elements = [
 			Elements::CLASSES => $this->classes,
@@ -252,9 +250,9 @@ class ElementStorage extends Nette\Object
 				}
 				$this->categorizeElementToNamespaceAndPackage($elementName, $elementType, $element);
 			}
-			$this->areElementsCategorized = TRUE;
 		}
 		$this->sortNamespacesAndPackages();
+		$this->areElementsCategorized = TRUE;
 		$this->addUsedByAnnotation();
 	}
 
@@ -267,14 +265,9 @@ class ElementStorage extends Nette\Object
 	private function categorizeElementToNamespaceAndPackage($elementName, $elementType, $element)
 	{
 		$packageName = $element->getPseudoPackageName();
-		$namespaceName = $element->getPseudoNamespaceName();
-		if ( ! isset($this->packages[$packageName])) {
-			$this->packages[$packageName] = $this->elements->getEmptyList();
-		}
-		if ( ! isset($this->namespaces[$namespaceName])) {
-			$this->namespaces[$namespaceName] = $this->elements->getEmptyList();
-		}
 		$this->packages[$packageName][$elementType][$elementName] = $element;
+
+		$namespaceName = $element->getPseudoNamespaceName();
 		$this->namespaces[$namespaceName][$elementType][$element->getShortName()] = $element;
 	}
 
@@ -285,7 +278,9 @@ class ElementStorage extends Nette\Object
 			$this->getNamespaceCount(),
 			$this->getPackageCount()
 		);
+
 		$arePackagesEnabled = $this->configuration->arePackagesEnabled($areNamespacesEnabled);
+
 		if ($areNamespacesEnabled) {
 			$this->namespaces = $this->groupSorter->sort($this->namespaces);
 			$this->packages = [];
@@ -325,6 +320,8 @@ class ElementStorage extends Nette\Object
 	{
 		foreach ($this->getElements() as $elementList) {
 			foreach ($elementList as $parentElement) {
+
+
 				$elements = [$parentElement];
 				if ($parentElement instanceof ReflectionClass) {
 					$elements = array_merge(
@@ -334,6 +331,7 @@ class ElementStorage extends Nette\Object
 						array_values($parentElement->getOwnProperties())
 					);
 				}
+
 				/** @var ReflectionElement $element */
 				foreach ($elements as $element) {
 					$uses = $element->getAnnotation('uses');
