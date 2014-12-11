@@ -18,7 +18,6 @@ use ApiGen\Neon\NeonFile;
 use ApiGen\Parser\Parser;
 use ApiGen\Scanner\Scanner;
 use ApiGen\Theme\ThemeResources;
-use SplFileInfo;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -100,13 +99,13 @@ class GenerateCommand extends Command
 				new InputOption(CO::GOOGLE_CSE_ID, NULL, InputOption::VALUE_OPTIONAL,
 					'Custom google search engine id (for search box).'),
 				new InputOption(CO::GOOGLE_ANALYTICS, NULL, InputOption::VALUE_OPTIONAL,
-					'Google Analytics tracking code..'),
-				new InputOption(CO::DEBUG, NULL, InputOption::VALUE_OPTIONAL,
-					'Turn on debug mode.', FALSE),
-				new InputOption(CO::DEPRECATED, NULL, InputOption::VALUE_OPTIONAL,
-					'Generate documentation for elements marked as @deprecated.', FALSE),
-				new InputOption(CO::DOWNLOAD, NULL, InputOption::VALUE_OPTIONAL,
-					'Add link to ZIP archive of documentation.', FALSE),
+					'Google Analytics tracking code.'),
+				new InputOption(CO::DEBUG, NULL, InputOption::VALUE_NONE,
+					'Turn on debug mode.'),
+				new InputOption(CO::DEPRECATED, NULL, InputOption::VALUE_NONE,
+					'Generate documentation for elements marked as @deprecated'),
+				new InputOption(CO::DOWNLOAD, NULL, InputOption::VALUE_NONE,
+					'Add link to ZIP archive of documentation.'),
 				new InputOption(CO::EXTENSIONS, NULL, InputOption::VALUE_IS_ARRAY | InputArgument::OPTIONAL,
 					'Scanned file extensions.', ['php']),
 				new InputOption(CO::EXCLUDE, NULL, InputOption::VALUE_IS_ARRAY | InputArgument::OPTIONAL,
@@ -117,8 +116,8 @@ class GenerateCommand extends Command
 					'Charset of scanned files.'),
 				new InputOption(CO::MAIN, NULL, InputOption::VALUE_OPTIONAL,
 					'Elements with this name prefix will be first in tree.'),
-				new InputOption(CO::INTERNAL, NULL, InputOption::VALUE_OPTIONAL,
-					'Include elements marked as @internal.', FALSE),
+				new InputOption(CO::INTERNAL, NULL, InputOption::VALUE_NONE,
+					'Include elements marked as @internal.'),
 				new InputOption(CO::PHP, NULL, InputOption::VALUE_OPTIONAL,
 					'Generate documentation for PHP internal classes.', TRUE),
 				new InputOption(CO::SKIP_DOC_PATH, NULL, InputOption::VALUE_IS_ARRAY | InputArgument::OPTIONAL,
@@ -135,10 +134,10 @@ class GenerateCommand extends Command
 					'Your own template config, has higher priority ' . CO::TEMPLATE_THEME . '.'),
 				new InputOption(CO::TITLE, NULL, InputOption::VALUE_OPTIONAL,
 					'Title of generated documentation.'),
-				new InputOption(CO::TODO, NULL, InputOption::VALUE_OPTIONAL,
-					'Generate documentation for elements marked as @todo.', FALSE),
-				new InputOption(CO::TREE, NULL, InputOption::VALUE_OPTIONAL,
-					'Generate tree view of classes, interfaces, traits and exceptions.', TRUE)
+				new InputOption(CO::TODO, NULL, InputOption::VALUE_NONE,
+					'Generate documentation for elements marked as @todo.'),
+				new InputOption(CO::TREE, NULL, InputOption::VALUE_NONE,
+					'Generate tree view of classes, interfaces, traits and exceptions.')
 			]);
 	}
 
