@@ -166,18 +166,12 @@ class ElementResolver extends Nette\Object
 			return NULL;
 		}
 
-//		dump($definition, $context);
 		$originalContext = $context;
 
-		if ($context instanceof ReflectionElement) {
-			$context = $this->correctContextForParameterOrClassMember($context);
-		}
+		$context = $this->correctContextForParameterOrClassMember($context);
 		if ($context === NULL) {
 			return NULL;
 		}
-
-//		dump($definition);
-//		die;
 
 		// self, $this references
 		if ($definition === 'self' || $definition === '$this') {
