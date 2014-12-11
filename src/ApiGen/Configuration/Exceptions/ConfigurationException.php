@@ -7,13 +7,15 @@
  * the file license.md that was distributed with this source code.
  */
 
-namespace ApiGen\Configuration;
+namespace ApiGen\Configuration\Exceptions;
+
+use RuntimeException;
 
 
 /**
  * Thrown when an invalid configuration is detected.
  */
-class ConfigurationException extends \RuntimeException
+class ConfigurationException extends RuntimeException
 {
 
 }
