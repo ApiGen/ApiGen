@@ -21,6 +21,8 @@ before_script:
   - vendor/bin/parallel-lint -e php,phpt --exclude vendor .
   # php code sniffer
   - vendor/bin/phpcs src tests/ApiGenTests --standard=vendor/zenify/coding-standard/src/ZenifyCodingStandard/code-sniffer-ruleset.xml --ignore=bootstrap --extensions=php
+  # php mess detector - too many errors at the moment
+  # - vendor/bin/phpmd src,tests/ApiGenTests text vendor/zenify/coding-standard/src/ZenifyCodingStandard/mess-detector-ruleset.xml --exclude bootstrap
 
 script:
   - vendor/bin/tester -p php -c tests/php.ini-unix tests/ApiGenTests
