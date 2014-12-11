@@ -278,58 +278,7 @@ class ReflectionClass extends ReflectionElement
 			}
 
 			foreach ($annotations as $annotation) {
-				$pattern = '~^(?:([\\w\\\\]+(?:\\|[\\w\\\\]+)*)\\s+)?(&)?\\s*(\\w+)\\s*\\(\\s*(.*)\\s*\\)\\s*(.*|$)~s';
-				if ( ! preg_match($pattern, $annotation, $matches)) {
-					// Wrong annotation format
-					continue;
-				}
-
-				list(, $returnTypeHint, $returnsReference, $name, $args, $shortDescription) = $matches;
-
-				$doc = $this->getDocComment();
-				$tmp = $annotation;
-				if ($delimiter = strpos($annotation, "\n")) {
-					$tmp = substr($annotation, 0, $delimiter);
-				}
-
-				$startLine = $this->getStartLine() + substr_count(substr($doc, 0, strpos($doc, $tmp)), "\n");
-				$endLine = $startLine + substr_count($annotation, "\n");
-
-				$method = new ReflectionMethodMagic(NULL);
-				$method->setName($name)
-					->setShortDescription(str_replace("\n", ' ', $shortDescription))
-					->setStartLine($startLine)
-					->setEndLine($endLine)
-					->setReturnsReference($returnsReference === '&')
-					->setDeclaringClass($this)
-					->addAnnotation('return', $returnTypeHint);
-
-				$this->ownMagicMethods[$name] = $method;
-
-				$parameters = [];
-				foreach (array_filter(preg_split('~\\s*,\\s*~', $args)) as $position => $arg) {
-					$pattern = '~^(?:([\\w\\\\]+(?:\\|[\\w\\\\]+)*)\\s+)?(&)?\\s*\\$(\\w+)(?:\\s*=\\s*(.*))?($)~s';
-					if ( ! preg_match($pattern, $arg, $matches)) {
-						// Wrong annotation format
-						continue;
-					}
-
-					list(, $typeHint, $passedByReference, $name, $defaultValueDefinition) = $matches;
-
-					$parameter = new ReflectionParameterMagic(NULL);
-					$parameter->setName($name)
-						->setPosition($position)
-						->setTypeHint($typeHint)
-						->setDefaultValueDefinition($defaultValueDefinition)
-						->setUnlimited(FALSE)
-						->setPassedByReference($passedByReference === '&')
-						->setDeclaringFunction($method);
-
-					$parameters[$name] = $parameter;
-
-					$method->addAnnotation('param', ltrim(sprintf('%s $%s', $typeHint, $name)));
-				}
-				$method->setParameters($parameters);
+				$this->processAnnotation($annotation);
 			}
 		}
 		return $this->ownMagicMethods;
@@ -482,34 +431,7 @@ class ReflectionClass extends ReflectionElement
 				}
 
 				foreach ($annotations as $annotation) {
-					if ( ! preg_match('~^(?:([\\w\\\\]+(?:\\|[\\w\\\\]+)*)\\s+)?\\$(\\w+)(?:\\s+(.*))?($)~s', $annotation, $matches)) {
-						// Wrong annotation format
-						continue;
-					}
-
-					list(, $typeHint, $name, $shortDescription) = $matches;
-
-					$doc = $this->getDocComment();
-					$tmp = $annotation;
-					if ($delimiter = strpos($annotation, "\n")) {
-						$tmp = substr($annotation, 0, $delimiter);
-					}
-
-					$startLine = $this->getStartLine() + substr_count(substr($doc, 0, strpos($doc, $tmp)), "\n");
-					$endLine = $startLine + substr_count($annotation, "\n");
-
-					$magicProperty = new ReflectionPropertyMagic(NULL);
-					$magicProperty->setName($name)
-						->setTypeHint($typeHint)
-						->setShortDescription(str_replace("\n", ' ', $shortDescription))
-						->setStartLine($startLine)
-						->setEndLine($endLine)
-						->setReadOnly($annotationName === 'property-read')
-						->setWriteOnly($annotationName === 'property-write')
-						->setDeclaringClass($this)
-						->addAnnotation('var', $typeHint);
-
-					$this->ownMagicProperties[$name] = $magicProperty;
+					$this->processMagicPropertyAnnotation($annotation, $annotationName);
 				}
 			}
 		}
@@ -1452,6 +1374,104 @@ class ReflectionClass extends ReflectionElement
 			self::$parsedClasses = ParserResult::$classesStatic;
 		}
 		return self::$parsedClasses;
+	}
+
+
+	/**
+	 * @param string $annotation
+	 */
+	private function processAnnotation($annotation)
+	{
+		$pattern = '~^(?:([\\w\\\\]+(?:\\|[\\w\\\\]+)*)\\s+)?(&)?\\s*(\\w+)\\s*\\(\\s*(.*)\\s*\\)\\s*(.*|$)~s';
+		if ( ! preg_match($pattern, $annotation, $matches)) {
+			// Wrong annotation format
+			return;
+		}
+
+		list(, $returnTypeHint, $returnsReference, $name, $args, $shortDescription) = $matches;
+
+		$doc = $this->getDocComment();
+		$tmp = $annotation;
+		if ($delimiter = strpos($annotation, "\n")) {
+			$tmp = substr($annotation, 0, $delimiter);
+		}
+
+		$startLine = $this->getStartLine() + substr_count(substr($doc, 0, strpos($doc, $tmp)), "\n");
+		$endLine = $startLine + substr_count($annotation, "\n");
+
+		$method = new ReflectionMethodMagic(NULL);
+		$method->setName($name)
+			->setShortDescription(str_replace("\n", ' ', $shortDescription))
+			->setStartLine($startLine)
+			->setEndLine($endLine)
+			->setReturnsReference($returnsReference === '&')
+			->setDeclaringClass($this)
+			->addAnnotation('return', $returnTypeHint);
+
+		$this->ownMagicMethods[$name] = $method;
+
+		$parameters = [];
+		foreach (array_filter(preg_split('~\\s*,\\s*~', $args)) as $position => $arg) {
+			$pattern = '~^(?:([\\w\\\\]+(?:\\|[\\w\\\\]+)*)\\s+)?(&)?\\s*\\$(\\w+)(?:\\s*=\\s*(.*))?($)~s';
+			if ( ! preg_match($pattern, $arg, $matches)) {
+				// Wrong annotation format
+				continue;
+			}
+
+			list(, $typeHint, $passedByReference, $name, $defaultValueDefinition) = $matches;
+
+			$parameter = new ReflectionParameterMagic(NULL);
+			$parameter->setName($name)
+				->setPosition($position)
+				->setTypeHint($typeHint)
+				->setDefaultValueDefinition($defaultValueDefinition)
+				->setUnlimited(FALSE)
+				->setPassedByReference($passedByReference === '&')
+				->setDeclaringFunction($method);
+
+			$parameters[$name] = $parameter;
+
+			$method->addAnnotation('param', ltrim(sprintf('%s $%s', $typeHint, $name)));
+		}
+		$method->setParameters($parameters);
+	}
+
+
+	/**
+	 * @param string $annotation
+	 * @param string $annotationName
+	 */
+	private function processMagicPropertyAnnotation($annotation, $annotationName)
+	{
+		$pattern = '~^(?:([\\w\\\\]+(?:\\|[\\w\\\\]+)*)\\s+)?\\$(\\w+)(?:\\s+(.*))?($)~s';
+		if ( ! preg_match($pattern, $annotation, $matches)) {
+			// Wrong annotation format
+			return;
+		}
+
+		list(, $typeHint, $name, $shortDescription) = $matches;
+
+		$doc = $this->getDocComment();
+		$tmp = $annotation;
+		if ($delimiter = strpos($annotation, "\n")) {
+			$tmp = substr($annotation, 0, $delimiter);
+		}
+
+		$startLine = $this->getStartLine() + substr_count(substr($doc, 0, strpos($doc, $tmp)), "\n");
+		$endLine = $startLine + substr_count($annotation, "\n");
+
+		$magicProperty = new ReflectionPropertyMagic(NULL);
+		$magicProperty->setName($name)
+			->setTypeHint($typeHint)
+			->setShortDescription(str_replace("\n", ' ', $shortDescription))
+			->setStartLine($startLine)
+			->setEndLine($endLine)
+			->setReadOnly($annotationName === 'property-read')
+			->setWriteOnly($annotationName === 'property-write')
+			->setDeclaringClass($this)
+			->addAnnotation('var', $typeHint);
+
+		$this->ownMagicProperties[$name] = $magicProperty;
 	}
 
 }

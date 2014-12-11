@@ -161,13 +161,11 @@ class ElementResolver extends Nette\Object
 	 */
 	public function resolveElement($definition, $context, &$expectedName = NULL)
 	{
-		// No simple type resolving
-		if (empty($definition) || isset($this->simpleTypes[$definition])) {
+		if ($this->isSimpleType($definition)) {
 			return NULL;
 		}
 
 		$originalContext = $context;
-
 		$context = $this->correctContextForParameterOrClassMember($context);
 		if ($context === NULL) {
 			return NULL;
@@ -182,6 +180,10 @@ class ElementResolver extends Nette\Object
 		$namespaceAliases = $context->getNamespaceAliases();
 		$className = Resolver::resolveClassFqn($definition, $namespaceAliases, $context->getNamespaceName());
 
+		if ($resolved = $this->resolveIfParsed($definition, $context)) {
+			return $resolved;
+		}
+
 		if ( ! empty($definitionBase) && isset($namespaceAliases[$definitionBase]) && $definition !== $className) {
 			// Aliased class
 			$expectedName = $className;
@@ -192,57 +194,21 @@ class ElementResolver extends Nette\Object
 			} else {
 				$definition = $className;
 			}
-
-		} elseif ($class = $this->getClass($definition, $context->getNamespaceName())) {
-			return $class;
-
-		} elseif ($constant = $this->getConstant($definition, $context->getNamespaceName())) {
-			return $constant;
-
-		} elseif (($function = $this->getFunction($definition, $context->getNamespaceName()))
-			|| (substr($definition, -2) === '()'
-			&& ($function = $this->getFunction(substr($definition, 0, -2), $context->getNamespaceName())))
-		) {
-			return $function;
 		}
 
 		if (($pos = strpos($definition, '::')) || ($pos = strpos($definition, '->'))) {
-			// Class::something or Class->something
-			if (strpos($definition, 'parent::') === 0 && ($parentClassName = $context->getParentClassName())) {
-				$context = $this->getClass($parentClassName);
-
-			} elseif (strpos($definition, 'self::') !== 0) {
-				$context = $this->resolveContextForSelfProperty($definition, $pos, $context);
-			}
-
+			$context = $this->resolveContextForClassProperty($definition, $context, $pos);
 			$definition = substr($definition, $pos + 2);
 
 		} elseif ($originalContext instanceof ReflectionParameter) {
 			return NULL;
 		}
 
-		// No usable context
-		if ($context === NULL || $context instanceof ReflectionConstant || $context instanceof ReflectionFunction) {
+		if ( ! $this->isContextUsable($context)) {
 			return NULL;
 		}
 
-		if ($context->hasProperty($definition)) {
-			return $context->getProperty($definition);
-
-		} elseif ($definition{0} === '$' && $context->hasProperty(substr($definition, 1))) {
-			return $context->getProperty(substr($definition, 1));
-
-		} elseif ($context->hasMethod($definition)) {
-			return $context->getMethod($definition);
-
-		} elseif (substr($definition, -2) === '()' && $context->hasMethod(substr($definition, 0, -2))) {
-			return $context->getMethod(substr($definition, 0, -2));
-
-		} elseif ($context->hasConstant($definition)) {
-			return $context->getConstant($definition);
-		}
-
-		return NULL;
+		return $this->resolveIfInContext($definition, $context);
 	}
 
 
@@ -282,6 +248,122 @@ class ElementResolver extends Nette\Object
 			));
 		}
 		return $class;
+	}
+
+
+	/**
+	 * @param string $definition
+	 * @return bool
+	 */
+	private function isSimpleType($definition)
+	{
+		if (empty($definition) || isset($this->simpleTypes[$definition])) {
+			return TRUE;
+		}
+
+		return FALSE;
+	}
+
+
+	/**
+	 * @param string $definition
+	 * @param ReflectionFunction $context
+	 * @return ReflectionClass|ReflectionConstant|ReflectionFunction|NULL
+	 */
+	private function resolveIfParsed($definition, $context)
+	{
+		$definition = $this->removeEndBrackets($definition);
+		if ($class = $this->getClass($definition, $context->getNamespaceName())) {
+			return $class;
+
+		} elseif ($constant = $this->getConstant($definition, $context->getNamespaceName())) {
+			return $constant;
+
+		} elseif ($function = $this->getFunction($definition, $context->getNamespaceName())) {
+			return $function;
+		}
+		return NULL;
+	}
+
+
+	/**
+	 * @param $definition
+	 * @param ReflectionClass $context
+	 * @return ReflectionConstant|ReflectionMethod|ReflectionProperty|NULL
+	 */
+	private function resolveIfInContext($definition, ReflectionClass $context)
+	{
+		$definition = $this->removeEndBrackets($definition);
+		$definition = $this->removeStartDollar($definition);
+
+		if ($context->hasProperty($definition)) {
+			return $context->getProperty($definition);
+
+		} elseif ($context->hasMethod($definition)) {
+			return $context->getMethod($definition);
+
+		} elseif ($context->hasConstant($definition)) {
+			return $context->getConstant($definition);
+		}
+		return NULL;
+	}
+
+
+	/**
+	 * @param string $definition
+	 * @return string
+	 */
+	private function removeEndBrackets($definition)
+	{
+		if (substr($definition, -2) === '()') {
+			return substr($definition, 0, -2);
+		}
+		return $definition;
+	}
+
+
+	/**
+	 * @param string $definition
+	 * @return string
+	 */
+	private function removeStartDollar($definition)
+	{
+		if ($definition{0} === '$') {
+			return substr($definition, 1);
+		}
+		return $definition;
+	}
+
+
+	/**
+	 * @param string $definition
+	 * @param ReflectionClass $context
+	 * @param int $pos
+	 * @return ReflectionClass
+	 */
+	private function resolveContextForClassProperty($definition, ReflectionClass $context, $pos)
+	{
+		// Class::something or Class->something
+		if (strpos($definition, 'parent::') === 0 && ($parentClassName = $context->getParentClassName())) {
+			return $this->getClass($parentClassName);
+
+		} elseif (strpos($definition, 'self::') !== 0) {
+			return $this->resolveContextForSelfProperty($definition, $pos, $context);
+		}
+		return $context;
+	}
+
+
+	/**
+	 * @param mixed $context
+	 * @return bool
+	 */
+	private function isContextUsable($context)
+	{
+		if ($context === NULL || $context instanceof ReflectionConstant || $context instanceof ReflectionFunction) {
+			return FALSE;
+		}
+		return TRUE;
 	}
 
 }
