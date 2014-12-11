@@ -55,4 +55,36 @@ class NeonFile
 		return Neon::decode($json);
 	}
 
+
+	/**
+	 * @deprecated Only for current tests. Will be removed in 4.0.0.
+	 * @param array $content
+	 * @throws \Exception
+	 */
+	public function write(array $content)
+	{
+		$dir = dirname($this->path);
+		if ( ! is_dir($dir)) {
+			if (file_exists($dir)) {
+				throw new \UnexpectedValueException($dir . ' exists and is not a directory.');
+			}
+			if ( ! @mkdir($dir, 0777, TRUE)) {
+				throw new \UnexpectedValueException($dir . ' does not exist and could not be created.');
+			}
+		}
+		$retries = 3;
+		while ($retries--) {
+			try {
+				file_put_contents($this->path, Neon::encode($content, Neon::BLOCK));
+				break;
+			} catch (\Exception $e) {
+				if ($retries) {
+					usleep(500000);
+					continue;
+				}
+				throw $e;
+			}
+		}
+	}
+
 }
