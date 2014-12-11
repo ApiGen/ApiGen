@@ -99,7 +99,6 @@ class ConfigurationOptionsResolver extends Nette\Object
 		$this->setDefaults();
 		$this->setRequired();
 		$this->setAllowedValues();
-		$this->setTypeCorrectors();
 		$this->setNormalizers();
 		return $this->resolver->resolve($options);
 	}
@@ -232,20 +231,6 @@ class ConfigurationOptionsResolver extends Nette\Object
 				return FileSystem::getAbsolutePath($value);
 			}
 		]);
-	}
-
-
-	public function setTypeCorrectors()
-	{
-		$boolConfigurationOptions = [
-			CO::DEBUG, CO::DEPRECATED, CO::DOWNLOAD, CO::INTERNAL, CO::PHP, CO::SOURCE_CODE, CO::TODO, CO::TREE
-		];
-
-		foreach ($boolConfigurationOptions as $optionName) {
-			$this->resolver->setNormalizer($optionName, function (Options $options, $value) {
-				return (bool) $value;
-			});
-		}
 	}
 
 
