@@ -6,7 +6,6 @@
 
 namespace ApiGenTests\ApiGen\Configuration;
 
-use ApiGen\Neon\NeonFile;
 use ApiGenTests\TestCase;
 use Tester\Assert;
 use Tester\DomQuery;
@@ -20,8 +19,8 @@ class AccessLevelsTest extends TestCase
 
 	public function testPublic()
 	{
-		$this->prepareConfig(['public']);
-		passthru(APIGEN_BIN . ' generate');
+		$this->runGenerateCommand('--accessLevels=public');
+
 		$classFile = API_DIR . '/class-Project.AccessLevels.html';
 		Assert::true(file_exists($classFile));
 
@@ -38,8 +37,8 @@ class AccessLevelsTest extends TestCase
 
 	public function testPrivate()
 	{
-		$this->prepareConfig(['private']);
-		passthru(APIGEN_BIN . ' generate');
+		$this->runGenerateCommand('--accessLevels=private');
+
 		$classFile = API_DIR . '/class-Project.AccessLevels.html';
 		Assert::true(file_exists($classFile));
 
@@ -64,8 +63,8 @@ class AccessLevelsTest extends TestCase
 
 	public function testPublicProtectedPrivate()
 	{
-		$this->prepareConfig(['public', 'private', 'protected']);
-		passthru(APIGEN_BIN . ' generate');
+		$this->runGenerateCommand('--accessLevels=public,private,protected');
+
 		$classFile = API_DIR . '/class-Project.AccessLevels.html';
 		Assert::true(file_exists($classFile));
 
@@ -85,20 +84,6 @@ class AccessLevelsTest extends TestCase
 			'%A%protected%A%',
 			file_get_contents($classFile)
 		);
-	}
-
-
-	/**
-	 * @param array $accessLevels
-	 */
-	private function prepareConfig($accessLevels = [])
-	{
-		$neonFile = new NeonFile(__DIR__ . '/apigen.neon');
-		$config = $neonFile->read();
-		$config['source'] = [PROJECT_DIR];
-		$config['destination'] = API_DIR;
-		$config['accessLevels'] = $accessLevels;
-		$neonFile->write($config);
 	}
 
 }

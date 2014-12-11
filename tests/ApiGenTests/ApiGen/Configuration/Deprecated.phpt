@@ -6,10 +6,8 @@
 
 namespace ApiGenTests\ApiGen\Configuration;
 
-use ApiGen\Neon\NeonFile;
 use ApiGenTests\TestCase;
 use Tester\Assert;
-use Tester\DomQuery;
 
 
 require_once __DIR__ . '/../../bootstrap.php';
@@ -18,26 +16,20 @@ require_once __DIR__ . '/../../bootstrap.php';
 class DeprecatedTest extends TestCase
 {
 
+
 	public function testConfig()
 	{
-		$this->prepareConfig();
-		passthru(APIGEN_BIN . ' generate');
+		$this->runGenerateCommand();
 		Assert::false(file_exists(API_DIR . '/deprecated.html'));
 
-		$this->prepareConfig(FALSE);
-		passthru(APIGEN_BIN . ' generate');
-		Assert::false(file_exists(API_DIR . '/deprecated.html'));
-
-		$this->prepareConfig(TRUE);
-		passthru(APIGEN_BIN . ' generate');
+		$this->runGenerateCommand('--deprecated');
 		Assert::true(file_exists(API_DIR . '/deprecated.html'));
 	}
 
 
 	public function testDeprecatedContent()
 	{
-		$this->prepareConfig(TRUE);
-		passthru(APIGEN_BIN . ' generate');
+		$this->runGenerateCommand('--deprecated');
 		$content = file_get_contents(API_DIR . '/deprecated.html');
 
 		Assert::match(
@@ -69,8 +61,7 @@ class DeprecatedTest extends TestCase
 
 	public function testDeprecatedClassContent()
 	{
-		$this->prepareConfig(TRUE);
-		passthru(APIGEN_BIN . ' generate');
+		$this->runGenerateCommand('--deprecated');
 
 		// has class="deprecated" attribute
 		Assert::match(
@@ -82,30 +73,13 @@ class DeprecatedTest extends TestCase
 
 	public function testDeprecatedMethodContent()
 	{
-		$this->prepareConfig(TRUE);
-		passthru(APIGEN_BIN . ' generate');
+		$this->runGenerateCommand('--deprecated');
 
 		// has class="deprecated" attribute
 		Assert::match(
 			'%A%id="_getDrink" class="deprecated"%A%',
 			file_get_contents(API_DIR . '/class-Project.DeprecatedMethod.html')
 		);
-	}
-
-
-	/**
-	 * @param bool $deprecatedState
-	 */
-	private function prepareConfig($deprecatedState = NULL)
-	{
-		$neonFile = new NeonFile(__DIR__ . '/apigen.neon');
-		$config = $neonFile->read();
-		$config['source'] = [PROJECT_DIR];
-		$config['destination'] = API_DIR;
-		if ($deprecatedState !== NULL) {
-			$config['deprecated'] = $deprecatedState;
-		}
-		$neonFile->write($config);
 	}
 
 }

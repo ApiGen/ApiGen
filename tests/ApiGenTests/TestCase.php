@@ -45,4 +45,20 @@ class TestCase extends Tester\TestCase
 		return $content;
 	}
 
+
+	/**
+	 * @param string $options
+	 * @param string $source
+	 * @param string $bin
+	 * @return mixed
+	 */
+	protected function runGenerateCommand($options = NULL, $source = NULL, $bin = NULL)
+	{
+		$cliInput = $bin ?: APIGEN_BIN . ' generate -s ' . $source ?: PROJECT_DIR . ' -d ' . API_DIR;
+		$cliInput .= ($options ? ' ' . $options : NULL);
+
+		passthru($cliInput, $output);
+		return $output;
+	}
+
 }

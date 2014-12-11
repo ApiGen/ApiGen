@@ -6,7 +6,6 @@
 
 namespace ApiGenTests\ApiGen\Console;
 
-use ApiGen\Neon\NeonFile;
 use ApiGenTests\TestCase;
 use Tester\Assert;
 
@@ -19,26 +18,15 @@ class IOTest extends TestCase
 
 	public function testNotQuiet()
 	{
-		$this->prepareConfig();
-		exec(APIGEN_BIN . ' generate', $output);
-		Assert::notSame(array(), $output);
+		$output = $this->runGenerateCommand();
+		Assert::notSame([], $output);
 	}
 
 
 	public function testQuiet()
 	{
-		exec(APIGEN_BIN . ' generate -q', $output);
+		$output = $this->runGenerateCommand('-q');
 		Assert::same([], $output);
-	}
-
-
-	private function prepareConfig()
-	{
-		$neonFile = new NeonFile(__DIR__ . '/apigen.neon');
-		$config = $neonFile->read();
-		$config['source'] = [PROJECT_DIR];
-		$config['destination'] = API_DIR;
-		$neonFile->write($config);
 	}
 
 }

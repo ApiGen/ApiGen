@@ -6,7 +6,6 @@
 
 namespace ApiGenTests\ApiGen\Generator;
 
-use ApiGen\Neon\NeonFile;
 use ApiGenTests\TestCase;
 use Tester\Assert;
 
@@ -19,9 +18,7 @@ class TraitMethodsTest extends TestCase
 
 	public function testBasicGeneration()
 	{
-		$this->prepareConfig();
-
-		passthru(APIGEN_BIN . ' generate');
+		$this->runGenerateCommand();
 		Assert::true(file_exists(API_DIR . '/index.html'));
 
 		$articleFile = API_DIR . '/class-ProjectBeta.Article.html';
@@ -47,16 +44,6 @@ class TraitMethodsTest extends TestCase
 			'%A%getMagicMethod()%A%',
 			file_get_contents($articleFile)
 		);
-	}
-
-
-	private function prepareConfig()
-	{
-		$neonFile = new NeonFile(__DIR__ . '/apigen.neon');
-		$config = $neonFile->read();
-		$config['source'] = [PROJECT_BETA_DIR];
-		$config['destination'] = API_DIR;
-		$neonFile->write($config);
 	}
 
 }

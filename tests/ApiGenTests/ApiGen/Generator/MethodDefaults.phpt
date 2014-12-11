@@ -6,7 +6,6 @@
 
 namespace ApiGenTests\ApiGen\Generator;
 
-use ApiGen\Neon\NeonFile;
 use ApiGenTests\TestCase;
 use Tester\Assert;
 
@@ -19,9 +18,7 @@ class MethodDefaultsTests extends TestCase
 
 	public function testBasicGeneration()
 	{
-		$this->prepareConfig();
-
-		passthru(APIGEN_BIN . ' generate');
+		$this->runGenerateCommand();
 		Assert::true(file_exists(API_DIR . '/index.html'));
 
 		$methodFile = API_DIR . '/class-Project.Method.html';
@@ -31,16 +28,6 @@ class MethodDefaultsTests extends TestCase
 			file_get_contents(__DIR__ . '/MethodDefaults.html'),
 			file_get_contents($methodFile)
 		);
-	}
-
-
-	private function prepareConfig()
-	{
-		$neonFile = new NeonFile(__DIR__ . '/apigen.neon');
-		$config = $neonFile->read();
-		$config['source'] = [PROJECT_DIR];
-		$config['destination'] = API_DIR;
-		$neonFile->write($config);
 	}
 
 }
