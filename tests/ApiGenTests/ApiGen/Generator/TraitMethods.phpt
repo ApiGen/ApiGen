@@ -18,7 +18,7 @@ class TraitMethodsTest extends TestCase
 
 	public function testBasicGeneration()
 	{
-		$this->runGenerateCommand();
+		$this->runGenerateCommand(NULL, PROJECT_BETA_DIR);
 		Assert::true(file_exists(API_DIR . '/index.html'));
 
 		$articleFile = API_DIR . '/class-ProjectBeta.Article.html';

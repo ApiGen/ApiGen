@@ -7,7 +7,6 @@
 
 namespace ApiGenTests\ApiGen\Reflections;
 
-use ApiGen\Neon\NeonFile;
 use ApiGenTests\TestCase;
 use Tester\Assert;
 
@@ -20,9 +19,7 @@ class ImplementsTest extends TestCase
 
 	public function testBasicGeneration()
 	{
-		$this->prepareConfig();
-
-		passthru(APIGEN_BIN . ' generate');
+		$this->runGenerateCommand();
 		Assert::true(file_exists(API_DIR . '/index.html'));
 
 		$implementorClass = API_DIR . '/class-Project.Implementor.html';
@@ -48,16 +45,6 @@ class ImplementsTest extends TestCase
 			$implementorClassContent
 		);
 
-	}
-
-
-	private function prepareConfig()
-	{
-		$neonFile = new NeonFile(__DIR__ . '/apigen.neon');
-		$config = $neonFile->read();
-		$config['source'] = [PROJECT_DIR];
-		$config['destination'] = API_DIR;
-		$neonFile->write($config);
 	}
 
 }

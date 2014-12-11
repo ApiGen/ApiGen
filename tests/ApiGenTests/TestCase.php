@@ -45,14 +45,8 @@ class TestCase extends Tester\TestCase
 	{
 		$cliInput = ($bin ?: APIGEN_BIN) . ' generate -s ' . ($source ?: PROJECT_DIR) . ' -d ' . API_DIR;
 		$cliInput .= ($options ? ' ' . $options : NULL);
-
-		var_dump($cliInput);
 		exec($cliInput, $cliOutput);
-
 		return $cliOutput;
 	}
-
-
-
 
 }
