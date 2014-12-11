@@ -110,7 +110,7 @@ class ReflectionMethodMagic extends ReflectionMethod
 
 
 	/**
-     * Overrides parent method.
+	 * Overrides parent method.
 	 *
 	 * @return string
 	 */

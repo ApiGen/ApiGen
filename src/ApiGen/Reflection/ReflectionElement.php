@@ -9,8 +9,12 @@
 
 namespace ApiGen\Reflection;
 
+use TokenReflection;
 use TokenReflection\Exception\BaseException;
 use TokenReflection\ReflectionAnnotation;
+use TokenReflection\ReflectionClass;
+use TokenReflection\ReflectionConstant;
+use TokenReflection\ReflectionFunction;
 
 
 /**
@@ -21,15 +25,11 @@ abstract class ReflectionElement extends ReflectionBase
 {
 
 	/**
-	 * Cache for information if the element should be documented.
-	 *
 	 * @var bool
 	 */
 	protected $isDocumented;
 
 	/**
-	 * Reflection elements annotations.
-	 *
 	 * @var array
 	 */
 	protected $annotations;
@@ -82,8 +82,6 @@ abstract class ReflectionElement extends ReflectionBase
 
 
 	/**
-	 * Returns if the element belongs to main project.
-	 *
 	 * @return bool
 	 */
 	public function isMain()
@@ -93,8 +91,6 @@ abstract class ReflectionElement extends ReflectionBase
 
 
 	/**
-	 * Returns if the element should be documented.
-	 *
 	 * @return bool
 	 */
 	public function isDocumented()
@@ -125,8 +121,6 @@ abstract class ReflectionElement extends ReflectionBase
 
 
 	/**
-	 * Returns if the element is deprecated.
-	 *
 	 * @return bool
 	 */
 	public function isDeprecated()
@@ -146,8 +140,6 @@ abstract class ReflectionElement extends ReflectionBase
 
 
 	/**
-	 * Returns if the element is in package.
-	 *
 	 * @return bool
 	 */
 	public function inPackage()
@@ -211,8 +203,6 @@ abstract class ReflectionElement extends ReflectionBase
 
 
 	/**
-	 * Returns if the element is defined within a namespace.
-	 *
 	 * @return bool
 	 */
 	public function inNamespace()
@@ -222,8 +212,6 @@ abstract class ReflectionElement extends ReflectionBase
 
 
 	/**
-	 * Returns element namespace name.
-	 *
 	 * @return string
 	 */
 	public function getNamespaceName()
@@ -258,8 +246,6 @@ abstract class ReflectionElement extends ReflectionBase
 
 
 	/**
-	 * Returns imported namespaces and aliases from the declaring namespace.
-	 *
 	 * @return array
 	 */
 	public function getNamespaceAliases()
@@ -269,8 +255,6 @@ abstract class ReflectionElement extends ReflectionBase
 
 
 	/**
-	 * Returns the short description.
-	 *
 	 * @return string
 	 */
 	public function getShortDescription()
@@ -290,8 +274,6 @@ abstract class ReflectionElement extends ReflectionBase
 
 
 	/**
-	 * Returns the long description.
-	 *
 	 * @return string
 	 */
 	public function getLongDescription()
@@ -308,8 +290,6 @@ abstract class ReflectionElement extends ReflectionBase
 
 
 	/**
-	 * Returns the appropriate docblock definition.
-	 *
 	 * @return string|boolean
 	 */
 	public function getDocComment()
@@ -329,32 +309,13 @@ abstract class ReflectionElement extends ReflectionBase
 	public function getAnnotations()
 	{
 		if ($this->annotations === NULL) {
-			static $fileLevel = [
-				'package' => TRUE,
-				'subpackage' => TRUE,
-				'author' => TRUE,
-				'license' => TRUE,
-				'copyright' => TRUE
-			];
-
 			$annotations = $this->reflection->getAnnotations();
 			$annotations = array_change_key_case($annotations, CASE_LOWER);
 
 			unset($annotations[ReflectionAnnotation::SHORT_DESCRIPTION]);
 			unset($annotations[ReflectionAnnotation::LONG_DESCRIPTION]);
 
-			// @todo: fix
-			if ($this->reflection instanceof \TokenReflectionClass
-				|| $this->reflection instanceof \TokenReflectionFunction
-				|| ($this->reflection instanceof \TokenReflectionConstant
-				&& $this->reflection->getDeclaringClassName() === NULL)
-			) {
-				foreach ($this->reflection->getFileReflection()->getAnnotations() as $name => $value) {
-					if (isset($fileLevel[$name]) && empty($annotations[$name])) {
-						$annotations[$name] = $value;
-					}
-				}
-			}
+			$annotations += $this->getAnnotationsFromReflection($this->reflection);
 
 			$this->annotations = $annotations;
 		}
@@ -440,6 +401,34 @@ abstract class ReflectionElement extends ReflectionBase
 	public function hasReasons()
 	{
 		return ! empty($this->reasons);
+	}
+
+
+	/**
+	 * @param mixed
+	 * @return array
+	 */
+	private function getAnnotationsFromReflection($reflection)
+	{
+		$fileLevel = [
+			'package' => TRUE,
+			'subpackage' => TRUE,
+			'author' => TRUE,
+			'license' => TRUE,
+			'copyright' => TRUE
+		];
+
+		$annotations = [];
+		if ($reflection instanceof ReflectionClass || $reflection instanceof ReflectionFunction
+			|| ($reflection instanceof ReflectionConstant  && $reflection->getDeclaringClassName() === NULL)
+		) {
+			foreach ($reflection->getFileReflection()->getAnnotations() as $name => $value) {
+				if (isset($fileLevel[$name]) && empty($annotations[$name])) {
+					$annotations[$name] = $value;
+				}
+			}
+		}
+		return $annotations;
 	}
 
 }

@@ -10,6 +10,7 @@
 namespace ApiGen\Reflection;
 
 use ApiGen\FileSystem\FileSystem;
+use TokenReflection;
 
 
 /**
@@ -20,13 +21,11 @@ class ReflectionFunction extends ReflectionFunctionBase
 {
 
 	/**
-	 * Returns if the function is valid.
-	 *
 	 * @return bool
 	 */
 	public function isValid()
 	{
-		if ($this->reflection instanceof \TokenReflection\Invalid\ReflectionFunction) {
+		if ($this->reflection instanceof TokenReflection\Invalid\ReflectionFunction) {
 			return FALSE;
 		}
 
@@ -35,8 +34,6 @@ class ReflectionFunction extends ReflectionFunctionBase
 
 
 	/**
-	 * Returns if the function should be documented.
-	 *
 	 * @return bool
 	 */
 	public function isDocumented()

@@ -11,6 +11,7 @@ namespace ApiGen\Parser\Elements;
 
 use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions as CO;
+use ApiGen\Reflection\ReflectionBase;
 use ApiGen\Reflection\ReflectionClass;
 use ApiGen\Reflection\ReflectionConstant;
 use ApiGen\Reflection\ReflectionFunction;
@@ -49,41 +50,9 @@ class AutocompleteElements
 	 */
 	public function getElements()
 	{
-		$autocomplete = $this->configuration->getOption(CO::AUTOCOMPLETE);
 		foreach ($this->elementStorage->getElements() as $type => $elementList) {
 			foreach ($elementList as $element) {
-				if ($element instanceof ReflectionClass) {
-					if (isset($autocomplete[Elements::CLASSES])) {
-						$this->elements[] = ['c', $element->getPrettyName()];
-					}
-					if (isset($autocomplete[Elements::METHODS])) {
-						foreach ($element->getOwnMethods() as $method) {
-							$this->elements[] = ['m', $method->getPrettyName()];
-						}
-						foreach ($element->getOwnMagicMethods() as $method) {
-							$this->elements[] = ['mm', $method->getPrettyName()];
-						}
-					}
-					if (isset($autocomplete[Elements::PROPERTIES])) {
-						foreach ($element->getOwnProperties() as $property) {
-							$this->elements[] = ['p', $property->getPrettyName()];
-						}
-						foreach ($element->getOwnMagicProperties() as $property) {
-							$this->elements[] = ['mp', $property->getPrettyName()];
-						}
-					}
-					if (isset($autocomplete[self::CLASS_CONSTANTS])) {
-						foreach ($element->getOwnConstants() as $constant) {
-							$this->elements[] = ['cc', $constant->getPrettyName()];
-						}
-					}
-
-				} elseif ($element instanceof ReflectionConstant && isset($autocomplete[Elements::CONSTANTS])) {
-					$this->elements[] = ['co', $element->getPrettyName()];
-
-				} elseif ($element instanceof ReflectionFunction && isset($autocomplete[Elements::FUNCTIONS])) {
-					$this->elements[] = ['f', $element->getPrettyName()];
-				}
+				$this->processElement($element);
 			}
 		}
 
@@ -98,6 +67,47 @@ class AutocompleteElements
 		usort($this->elements, function ($one, $two) {
 			return strcasecmp($one[1], $two[1]);
 		});
+	}
+
+
+	private function processElement(ReflectionBase $element)
+	{
+		$autocomplete = $this->configuration->getOption(CO::AUTOCOMPLETE);
+
+		if ($element instanceof ReflectionClass) {
+			if (isset($autocomplete[Elements::CLASSES])) {
+				$this->elements[] = ['c', $element->getPrettyName()];
+			}
+			if (isset($autocomplete[Elements::METHODS])) {
+				foreach ($element->getOwnMethods() as $method) {
+					$this->elements[] = ['m', $method->getPrettyName()];
+				}
+				foreach ($element->getOwnMagicMethods() as $method) {
+					$this->elements[] = ['mm', $method->getPrettyName()];
+				}
+			}
+
+			if (isset($autocomplete[Elements::PROPERTIES])) {
+				foreach ($element->getOwnProperties() as $property) {
+					$this->elements[] = ['p', $property->getPrettyName()];
+				}
+				foreach ($element->getOwnMagicProperties() as $property) {
+					$this->elements[] = ['mp', $property->getPrettyName()];
+				}
+			}
+
+			if (isset($autocomplete[self::CLASS_CONSTANTS])) {
+				foreach ($element->getOwnConstants() as $constant) {
+					$this->elements[] = ['cc', $constant->getPrettyName()];
+				}
+			}
+
+		} elseif ($element instanceof ReflectionConstant && isset($autocomplete[Elements::CONSTANTS])) {
+			$this->elements[] = ['co', $element->getPrettyName()];
+
+		} elseif ($element instanceof ReflectionFunction && isset($autocomplete[Elements::FUNCTIONS])) {
+			$this->elements[] = ['f', $element->getPrettyName()];
+		}
 	}
 
 }

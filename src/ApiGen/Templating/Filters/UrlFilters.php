@@ -277,37 +277,7 @@ class UrlFilters extends Filters
 			$classes[] = 'invalid';
 		}
 
-		if ($element instanceof ReflectionClass) {
-			$link = $this->link($this->classUrl($element), $element->getName(), TRUE, $classes);
-
-		} elseif ($element instanceof ReflectionConstant && $element->getDeclaringClassName() === NULL) {
-			$text = $element->inNamespace()
-				? $this->escapeHtml($element->getNamespaceName()) . '\\<b>' . $this->escapeHtml($element->getShortName()) . '</b>'
-				: '<b>' . $this->escapeHtml($element->getName()) . '</b>';
-			$link = $this->link($this->constantUrl($element), $text, FALSE, $classes);
-
-		} elseif ($element instanceof ReflectionFunction) {
-			$link = $this->link($this->functionUrl($element), $element->getName() . '()', TRUE, $classes);
-
-		} else {
-			$url = '';
-			$text = $this->escapeHtml($element->getDeclaringClassName());
-			if ($element instanceof ReflectionProperty) {
-				$url = $this->propertyUrl($element);
-				$text .= '::<var>$' . $this->escapeHtml($element->getName()) . '</var>';
-
-			} elseif ($element instanceof ReflectionMethod) {
-				$url = $this->methodUrl($element);
-				$text .= '::' . $this->escapeHtml($element->getName()) . '()';
-
-			} elseif ($element instanceof ReflectionConstant) {
-				$url = $this->constantUrl($element);
-				$text .= '::<b>' . $this->escapeHtml($element->getName()) . '</b>';
-			}
-
-			$link = $this->link($url, $text, FALSE, $classes);
-		}
-
+		$link = $this->createLinkForElement($element, $classes);
 		return sprintf('<code>%s</code>', $link . $suffix);
 	}
 
@@ -566,4 +536,64 @@ class UrlFilters extends Filters
 		return $this->highlightPhp(preg_replace('~^(?:[ ]{4}|\t)~m', '', $definition), $context);
 	}
 
+
+	/**
+	 * @param ReflectionElement $element
+	 * @param array $classes
+	 * @return string
+	 */
+	private function createLinkForElement($element, array $classes)
+	{
+		if ($element instanceof ReflectionClass) {
+			return $this->link($this->classUrl($element), $element->getName(), TRUE, $classes);
+
+		} elseif ($element instanceof ReflectionConstant && $element->getDeclaringClassName() === NULL) {
+			return $this->createLinkForGlobalConstant($element, $classes);
+
+		} elseif ($element instanceof ReflectionFunction) {
+			return $this->link($this->functionUrl($element), $element->getName() . '()', TRUE, $classes);
+
+		} else {
+			return $this->createLinkForPropertyMethodOrConstants($element, $classes);
+		}
+	}
+
+
+	/**
+	 * @return string
+	 */
+	private function createLinkForGlobalConstant(ReflectionConstant $element, array $classes)
+	{
+		$text = $element->inNamespace()
+			? $this->escapeHtml($element->getNamespaceName()) . '\\<b>' . $this->escapeHtml($element->getShortName()) . '</b>'
+			: '<b>' . $this->escapeHtml($element->getName()) . '</b>';
+
+		return $this->link($this->constantUrl($element), $text, FALSE, $classes);
+	}
+
+
+	/**
+	 * @param ReflectionMethod|ReflectionProperty|ReflectionConstant $element
+	 * @param array $classes
+	 * @return string
+	 */
+	private function createLinkForPropertyMethodOrConstants($element, array $classes)
+	{
+		$url = '';
+		$text = $this->escapeHtml($element->getDeclaringClassName());
+		if ($element instanceof ReflectionProperty) {
+			$url = $this->propertyUrl($element);
+			$text .= '::<var>$' . $this->escapeHtml($element->getName()) . '</var>';
+
+		} elseif ($element instanceof ReflectionMethod) {
+			$url = $this->methodUrl($element);
+			$text .= '::' . $this->escapeHtml($element->getName()) . '()';
+
+		} elseif ($element instanceof ReflectionConstant) {
+			$url = $this->constantUrl($element);
+			$text .= '::<b>' . $this->escapeHtml($element->getName()) . '</b>';
+		}
+
+		return $this->link($url, $text, FALSE, $classes);
+	}
 }

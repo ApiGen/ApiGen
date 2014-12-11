@@ -9,6 +9,8 @@
 
 namespace ApiGen;
 
+use DateTime;
+use DateTimeZone;
 use LogicException;
 use Nette;
 use Nette\Utils\Finder;
@@ -68,8 +70,8 @@ class PharCompiler extends Nette\Object
 		if ($this->execute('git log -n1 --format=%cD HEAD', $repoDir, $output) !== 0) {
 			throw new RuntimeException('Unable to run git log to find release date.');
 		}
-		$this->releaseDate = \DateTime::createFromFormat(\DateTime::RFC2822, trim($output))
-			->setTimezone(new \DateTimeZone('UTC'))
+		$this->releaseDate = DateTime::createFromFormat(DateTime::RFC2822, trim($output))
+			->setTimezone(new DateTimeZone('UTC'))
 			->format('Y-m-d H:i:s');
 	}
 
@@ -117,7 +119,6 @@ __HALT_COMPILER();
 			'jakub-onderka/php-parallel-lint',
 			'nette/*/Tests',
 			'nette/tester',
-			'mikulas/code-sniffs',
 			'squizlabs',
 			'symfony/*/*/Tests',
 			'zenify/coding-standard'
