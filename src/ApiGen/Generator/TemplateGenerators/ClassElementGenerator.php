@@ -50,8 +50,7 @@ class ClassElementGenerator extends Nette\Object implements TemplateGenerator, S
 		TemplateFactory $templateFactory,
 		ElementStorage $elementStorage,
 		NamespaceAndPackageLoader $namespaceAndPackageLoader
-	)
-	{
+	) {
 		$this->templateFactory = $templateFactory;
 		$this->elementStorage = $elementStorage;
 		$this->namespaceAndPackageLoader = $namespaceAndPackageLoader;

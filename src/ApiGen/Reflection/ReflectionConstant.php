@@ -10,6 +10,7 @@
 namespace ApiGen\Reflection;
 
 use ApiGen\FileSystem\FileSystem;
+use TokenReflection;
 
 
 /**
@@ -111,7 +112,7 @@ class ReflectionConstant extends ReflectionElement
 	 */
 	public function isValid()
 	{
-		if ($this->reflection instanceof \TokenReflection\Invalid\ReflectionConstant) {
+		if ($this->reflection instanceof TokenReflection\Invalid\ReflectionConstant) {
 			return FALSE;
 		}
 

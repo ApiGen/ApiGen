@@ -11,6 +11,8 @@ namespace ApiGen;
 
 use ApiGen\Reflection\ReflectionElement;
 use ArrayObject;
+use RecursiveArrayIterator;
+use RecursiveIteratorIterator;
 use RecursiveTreeIterator;
 use RuntimeException;
 
@@ -41,10 +43,10 @@ class Tree extends RecursiveTreeIterator
 	public function __construct(array $treePart, ArrayObject $reflections)
 	{
 		parent::__construct(
-			new \RecursiveArrayIterator($treePart),
+			new RecursiveArrayIterator($treePart),
 			RecursiveTreeIterator::BYPASS_KEY,
 			NULL,
-			\RecursiveIteratorIterator::SELF_FIRST
+			RecursiveIteratorIterator::SELF_FIRST
 		);
 		$this->setPrefixPart(RecursiveTreeIterator::PREFIX_END_HAS_NEXT, self::HAS_NEXT);
 		$this->setPrefixPart(RecursiveTreeIterator::PREFIX_END_LAST, self::LAST);

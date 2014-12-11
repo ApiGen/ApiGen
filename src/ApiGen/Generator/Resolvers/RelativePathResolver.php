@@ -11,6 +11,7 @@ namespace ApiGen\Generator\Resolvers;
 
 use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\FileSystem\FileSystem;
+use InvalidArgumentException;
 use Nette;
 
 
@@ -38,7 +39,7 @@ class RelativePathResolver extends Nette\Object
 	 * Returns filename relative path to the source directory.
 	 *
 	 * @param string $fileName
-	 * @throws \InvalidArgumentException
+	 * @throws InvalidArgumentException
 	 * @return string
 	 */
 	public function getRelativePath($fileName)
@@ -55,7 +56,7 @@ class RelativePathResolver extends Nette\Object
 			}
 		}
 
-		throw new \InvalidArgumentException(sprintf('Could not determine "%s" relative path', $fileName));
+		throw new InvalidArgumentException(sprintf('Could not determine "%s" relative path', $fileName));
 	}
 
 

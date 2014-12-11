@@ -9,9 +9,11 @@
 
 namespace ApiGen;
 
+use LogicException;
 use Nette;
 use Nette\Utils\Finder;
 use Phar;
+use RuntimeException;
 use SplFileInfo;
 
 
@@ -39,16 +41,16 @@ class PharCompiler extends Nette\Object
 
 	/**
 	 * @param string $repoDir  path to Apigen source dir
-	 * @throws \LogicException
-	 * @throws \RuntimeException
+	 * @throws LogicException
+	 * @throws RuntimeException
 	 */
 	public function __construct($repoDir)
 	{
 		if ( ! is_dir($repoDir)) {
-			throw new \LogicException("Path '$repoDir' is not a directory.");
+			throw new LogicException("Path '$repoDir' is not a directory.");
 
 		} elseif ( ! is_file("$repoDir/src/ApiGen/ApiGen.php")) {
-			throw new \LogicException("Directory '$repoDir' does not contain ApiGen source code.");
+			throw new LogicException("Directory '$repoDir' does not contain ApiGen source code.");
 		}
 		$this->repoDir = realpath($repoDir);
 
@@ -59,12 +61,12 @@ class PharCompiler extends Nette\Object
 			$this->version = trim($output);
 
 		} else {
-			throw new \RuntimeException('Cannot run git log to find ApiGen version. '
+			throw new RuntimeException('Cannot run git log to find ApiGen version. '
 				. 'Ensure that compile runs from cloned ApiGen git repository and the git command is available.');
 		}
 
 		if ($this->execute('git log -n1 --format=%cD HEAD', $repoDir, $output) !== 0) {
-			throw new \RuntimeException('Unable to run git log to find release date.');
+			throw new RuntimeException('Unable to run git log to find release date.');
 		}
 		$this->releaseDate = \DateTime::createFromFormat(\DateTime::RFC2822, trim($output))
 			->setTimezone(new \DateTimeZone('UTC'))
@@ -75,12 +77,12 @@ class PharCompiler extends Nette\Object
 	/**
 	 * @param string $pharFile  output PHAR file name
 	 * @param string $sourceDir  apigen source directory
-	 * @throws \RuntimeException
+	 * @throws RuntimeException
 	 */
 	public function compile($pharFile)
 	{
 		if ( ! class_exists('Phar') || ini_get('phar.readonly')) {
-			throw new \RuntimeException("Enable PHAR extension and set directive 'phar.readonly' to 'off'.");
+			throw new RuntimeException("Enable PHAR extension and set directive 'phar.readonly' to 'off'.");
 		}
 
 		if (file_exists($pharFile)) {

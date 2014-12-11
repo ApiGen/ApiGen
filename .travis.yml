@@ -10,17 +10,20 @@ matrix:
   allow_failures:
     - php: hhvm
 
-before_script:
+before_install:
   - composer self-update
-  - composer install --no-interaction --prefer-source --dev
+
+install:
+  - composer install --prefer-source
+
+before_script:
+  # php linter
   - vendor/bin/parallel-lint -e php,phpt --exclude vendor .
+  # php code sniffer
+  vendor/bin/phpcs src tests/ApiGenTests --standard=vendor/zenify/coding-standard/src/ZenifyCodingStandard/code-sniffer-ruleset.xml --ignore=bootstrap --extensions=php
 
 script:
   - vendor/bin/tester -p php -c tests/php.ini-unix tests/ApiGenTests
-  - vendor/bin/phpcs -p src/ApiGen --standard=vendor/zenify/coding-standard/src/ZenifyCodingStandard/ruleset.xml --warning-severity=10
-  - vendor/bin/phpcs -p tests/ApiGenTests/ApiGen --standard=vendor/zenify/coding-standard/src/ZenifyCodingStandard/ruleset.xml --warning-severity=10
-  - vendor/bin/phpcs -p src/ApiGen --standard=vendor/mikulas/code-sniffs/cs/ruleset.xml --sniffs=cs.Debug.DebugFunctionCall,cs.Formatting.UseInAlphabeticalOrder,cs.Formatting.UseWithoutStartingSeparator
-  - vendor/bin/phpcs -p tests/ApiGenTests/ApiGen --standard=vendor/mikulas/code-sniffs/cs/ruleset.xml --sniffs=cs.Debug.DebugFunctionCall,cs.Formatting.UseInAlphabeticalOrder,cs.Formatting.UseWithoutStartingSeparator
 
 after_failure:
   - for i in $(find ./tests -name \*.actual); do echo "--- $i"; cat $i; echo; echo; done

@@ -89,7 +89,6 @@ class Configuration extends Nette\Object
 	}
 
 
-
 	/**
 	 * @param int $namespaceCount
 	 * @param int $packageCount

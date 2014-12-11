@@ -218,7 +218,6 @@ class ElementStorage extends Nette\Object
 	}
 
 
-
 	private function categorizeParsedElements()
 	{
 		foreach ($this->parserResult->getTypes() as $type) {
@@ -300,7 +299,6 @@ class ElementStorage extends Nette\Object
 			$this->packages = [];
 		}
 	}
-
 
 
 	/**

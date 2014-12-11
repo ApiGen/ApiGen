@@ -50,8 +50,7 @@ class ConstantElementGenerator extends Nette\Object implements TemplateGenerator
 		TemplateFactory $templateFactory,
 		ElementStorage $elementStorage,
 		NamespaceAndPackageLoader $namespaceAndPackageLoader
-	)
-	{
+	) {
 		$this->templateFactory = $templateFactory;
 		$this->elementStorage = $elementStorage;
 		$this->namespaceAndPackageLoader = $namespaceAndPackageLoader;

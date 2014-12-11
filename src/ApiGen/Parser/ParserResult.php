@@ -59,7 +59,7 @@ class ParserResult extends Nette\Object
 	/**
 	 * @var array
 	 */
-	private $types = array(Elements::CLASSES, Elements::CONSTANTS, Elements::FUNCTIONS);
+	private $types = [Elements::CLASSES, Elements::CONSTANTS, Elements::FUNCTIONS];
 
 
 	public function __construct()

@@ -20,17 +20,16 @@ class GeneratorQueue
 	 */
 	private $progressBar;
 
+	/**
+	 * @var TemplateGenerator[]
+	 */
+	private $queue = [];
+
 
 	public function __construct(ProgressBar $progressBar)
 	{
 		$this->progressBar = $progressBar;
 	}
-
-
-	/**
-	 * @var TemplateGenerator[]
-	 */
-	private $queue = [];
 
 
 	public function run()

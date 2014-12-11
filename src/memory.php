@@ -15,7 +15,7 @@ function setMemoryLimitTo($newMemoryLimit)
 {
 	if (function_exists('ini_set')) {
 		$memoryLimit = trim(ini_get('memory_limit'));
-		if ($memoryLimit != -1 && getMemoryInBytes($memoryLimit) < 512 * 1024 * 1024) {
+		if ($memoryLimit !== -1 && getMemoryInBytes($memoryLimit) < 512 * 1024 * 1024) {
 			@ini_set('memory_limit', $newMemoryLimit);
 		}
 		unset($memoryInBytes, $memoryLimit);
