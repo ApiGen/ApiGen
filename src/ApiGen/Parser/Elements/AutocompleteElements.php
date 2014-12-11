@@ -75,32 +75,7 @@ class AutocompleteElements
 		$autocomplete = $this->configuration->getOption(CO::AUTOCOMPLETE);
 
 		if ($element instanceof ReflectionClass) {
-			if (isset($autocomplete[Elements::CLASSES])) {
-				$this->elements[] = ['c', $element->getPrettyName()];
-			}
-			if (isset($autocomplete[Elements::METHODS])) {
-				foreach ($element->getOwnMethods() as $method) {
-					$this->elements[] = ['m', $method->getPrettyName()];
-				}
-				foreach ($element->getOwnMagicMethods() as $method) {
-					$this->elements[] = ['mm', $method->getPrettyName()];
-				}
-			}
-
-			if (isset($autocomplete[Elements::PROPERTIES])) {
-				foreach ($element->getOwnProperties() as $property) {
-					$this->elements[] = ['p', $property->getPrettyName()];
-				}
-				foreach ($element->getOwnMagicProperties() as $property) {
-					$this->elements[] = ['mp', $property->getPrettyName()];
-				}
-			}
-
-			if (isset($autocomplete[self::CLASS_CONSTANTS])) {
-				foreach ($element->getOwnConstants() as $constant) {
-					$this->elements[] = ['cc', $constant->getPrettyName()];
-				}
-			}
+			$this->addClassElements($element);
 
 		} elseif ($element instanceof ReflectionConstant && isset($autocomplete[Elements::CONSTANTS])) {
 			$this->elements[] = ['co', $element->getPrettyName()];
@@ -108,6 +83,48 @@ class AutocompleteElements
 		} elseif ($element instanceof ReflectionFunction && isset($autocomplete[Elements::FUNCTIONS])) {
 			$this->elements[] = ['f', $element->getPrettyName()];
 		}
+	}
+
+
+	private function addClassElements(ReflectionClass $element)
+	{
+		$autocompleteOption = $this->getAutocompleteOption();
+		if (isset($autocompleteOption[Elements::CLASSES])) {
+			$this->elements[] = ['c', $element->getPrettyName()];
+		}
+
+		if (isset($autocompleteOption[Elements::METHODS])) {
+			foreach ($element->getOwnMethods() as $method) {
+				$this->elements[] = ['m', $method->getPrettyName()];
+			}
+			foreach ($element->getOwnMagicMethods() as $method) {
+				$this->elements[] = ['mm', $method->getPrettyName()];
+			}
+		}
+
+		if (isset($autocompleteOption[Elements::PROPERTIES])) {
+			foreach ($element->getOwnProperties() as $property) {
+				$this->elements[] = ['p', $property->getPrettyName()];
+			}
+			foreach ($element->getOwnMagicProperties() as $property) {
+				$this->elements[] = ['mp', $property->getPrettyName()];
+			}
+		}
+
+		if (isset($autocompleteOption[self::CLASS_CONSTANTS])) {
+			foreach ($element->getOwnConstants() as $constant) {
+				$this->elements[] = ['cc', $constant->getPrettyName()];
+			}
+		}
+	}
+
+
+	/**
+	 * @return string
+	 */
+	private function getAutocompleteOption()
+	{
+		return $this->configuration->getOption(CO::AUTOCOMPLETE);
 	}
 
 }

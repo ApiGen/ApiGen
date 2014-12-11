@@ -310,8 +310,6 @@ class UrlFilters extends Filters
 
 
 	/**
-	 * Individual annotations processing
-	 *
 	 * @param string $value
 	 * @param string $name
 	 * @param ReflectionElement $context
@@ -319,59 +317,20 @@ class UrlFilters extends Filters
 	 */
 	public function annotation($value, $name, ReflectionElement $context)
 	{
-		switch ($name) {
-			case 'return':
-			case 'throws':
-				$description = trim(strpbrk($value, "\n\r\t $")) ?: NULL;
-				if ($description) {
-					$description = '<br>' . $this->doc($description, $context);
-				}
-				$typeLinks = $this->typeLinks($value, $context);
+		$annotationProcessors = [
+			'return' => $this->processReturnAnnotations($value, $context),
+			'throws' => $this->processThrowsAnnotations($value, $context),
+			'license' => $this->processLicenseAnnotations($value, $context),
+			'link' => $this->processLinkAnnotations($value, $context),
+			'see' => $this->processSeeAnnotations($value, $context),
+			'uses' => $this->processUsesAndUsedbyAnnotations($value, $context),
+			'usedby' => $this->processUsesAndUsedbyAnnotations($value, $context),
+		];
 
-				if ($name === 'throws') {
-					return $typeLinks . $description;
-
-				} else {
-					return sprintf('<code>%s</code>%s', $typeLinks, $description);
-				}
-
-			case 'license':
-				list($url, $description) = Strings::split($value);
-				return Strings::link($url, $description ?: $url);
-
-			case 'link':
-				list($url, $description) = Strings::split($value);
-				if (Validators::isUri($url)) {
-					return Strings::link($url, $description ?: $url);
-				}
-				break;
-
-			case 'see':
-				$doc = [];
-				foreach (preg_split('~\\s*,\\s*~', $value) as $link) {
-					if ($this->elementResolver->resolveElement($link, $context) !== NULL) {
-						$doc[] = sprintf('<code>%s</code>', $this->typeLinks($link, $context));
-
-					} else {
-						$doc[] = $this->doc($link, $context);
-					}
-				}
-				return implode(', ', $doc);
-
-			case 'uses':
-			case 'usedby':
-				list($link, $description) = Strings::split($value);
-				$separator = $context instanceof ReflectionClass || ! $description ? ' ' : '<br>';
-				if ($this->elementResolver->resolveElement($link, $context) !== NULL) {
-					return sprintf('<code>%s</code>%s%s', $this->typeLinks($link, $context), $separator, $description);
-				}
-				break;
-			default:
-				// see bellow
-				break;
+		if (isset($annotationProcessors[$name])) {
+			return $annotationProcessors[$name];
 		}
 
-		// Default
 		return $this->doc($value, $context);
 	}
 
@@ -596,4 +555,107 @@ class UrlFilters extends Filters
 
 		return $this->link($url, $text, FALSE, $classes);
 	}
+
+
+	/**
+	 * @param mixed $value
+	 * @param ReflectionElement $context
+	 * @return string
+	 */
+	private function processReturnAnnotations($value, ReflectionElement $context)
+	{
+		$description = $this->getDescriptionFromValue($value, $context);
+		$typeLinks = $this->typeLinks($value, $context);
+		return sprintf('<code>%s</code>%s', $typeLinks, $description);
+	}
+
+
+	/**
+	 * @param mixed $value
+	 * @param ReflectionElement $context
+	 * @return string
+	 */
+	private function processThrowsAnnotations($value, ReflectionElement $context)
+	{
+		$description = $this->getDescriptionFromValue($value, $context);
+		$typeLinks = $this->typeLinks($value, $context);
+		return $typeLinks . $description;
+	}
+
+
+	/**
+	 * @param mixed $value
+	 * @param ReflectionElement $context
+	 * @return string
+	 */
+	private function getDescriptionFromValue($value, ReflectionElement $context)
+	{
+		$description = trim(strpbrk($value, "\n\r\t $")) ?: NULL;
+		if ($description) {
+			$description = '<br>' . $this->doc($description, $context);
+		}
+		return $description;
+	}
+
+
+	/**
+	 * @param string $value
+	 * @return string
+	 */
+	private function processLicenseAnnotations($value)
+	{
+		list($url, $description) = Strings::split($value);
+		return Strings::link($url, $description ?: $url);
+	}
+
+
+	/**
+	 * @param string $value
+	 * @return string
+	 */
+	private function processLinkAnnotations($value)
+	{
+		list($url, $description) = Strings::split($value);
+		if (Validators::isUri($url)) {
+			return Strings::link($url, $description ?: $url);
+		}
+		return NULL;
+	}
+
+
+	/**
+	 * @param string $value
+	 * @param ReflectionElement $context
+	 * @return string
+	 */
+	private function processSeeAnnotations($value, ReflectionElement $context)
+	{
+		$doc = [];
+		foreach (preg_split('~\\s*,\\s*~', $value) as $link) {
+			if ($this->elementResolver->resolveElement($link, $context) !== NULL) {
+				$doc[] = sprintf('<code>%s</code>', $this->typeLinks($link, $context));
+
+			} else {
+				$doc[] = $this->doc($link, $context);
+			}
+		}
+		return implode(', ', $doc);
+	}
+
+
+	/**
+	 * @param string $value
+	 * @param ReflectionElement $context
+	 * @return string
+	 */
+	private function processUsesAndUsedbyAnnotations($value, ReflectionElement $context)
+	{
+		list($link, $description) = Strings::split($value);
+		$separator = $context instanceof ReflectionClass || ! $description ? ' ' : '<br>';
+		if ($this->elementResolver->resolveElement($link, $context) !== NULL) {
+			return sprintf('<code>%s</code>%s%s', $this->typeLinks($link, $context), $separator, $description);
+		}
+		return NULL;
+	}
+
 }

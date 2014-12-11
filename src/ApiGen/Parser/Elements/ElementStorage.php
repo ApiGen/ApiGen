@@ -320,29 +320,11 @@ class ElementStorage extends Nette\Object
 	{
 		foreach ($this->getElements() as $elementList) {
 			foreach ($elementList as $parentElement) {
-				$elements = [$parentElement];
-				if ($parentElement instanceof ReflectionClass) {
-					$elements = array_merge(
-						$elements,
-						array_values($parentElement->getOwnMethods()),
-						array_values($parentElement->getOwnConstants()),
-						array_values($parentElement->getOwnProperties())
-					);
-				}
+				$elements = $this->getSubElements($parentElement);
 
 				/** @var ReflectionElement $element */
 				foreach ($elements as $element) {
-					$uses = $element->getAnnotation('uses');
-					if ($uses === NULL) {
-						continue;
-					}
-					foreach ($uses as $value) {
-						list($link, $description) = preg_split('~\s+|$~', $value, 2);
-						$resolved = $this->elementResolver->resolveElement($link, $element);
-						if ($resolved !== NULL) {
-							$resolved->addAnnotation('usedby', $element->getPrettyName() . ' ' . $description);
-						}
-					}
+					$this->loadUsesToReferencedElementUsedby($element);
 				}
 			}
 		}
@@ -353,6 +335,41 @@ class ElementStorage extends Nette\Object
 	{
 		if ($this->areElementsCategorized === FALSE) {
 			$this->categorizeParsedElements();
+		}
+	}
+
+
+	/**
+	 * @return array
+	 */
+	private function getSubElements(ReflectionElement $parentElement)
+	{
+		$elements = [$parentElement];
+		if ($parentElement instanceof ReflectionClass) {
+			$elements = array_merge(
+				$elements,
+				array_values($parentElement->getOwnMethods()),
+				array_values($parentElement->getOwnConstants()),
+				array_values($parentElement->getOwnProperties())
+			);
+		}
+		return $elements;
+	}
+
+
+	private function loadUsesToReferencedElementUsedby(ReflectionElement $element)
+	{
+		$uses = $element->getAnnotation('uses');
+		if ($uses === NULL) {
+			return;
+		}
+
+		foreach ($uses as $value) {
+			list($link, $description) = preg_split('~\s+|$~', $value, 2);
+			$resolved = $this->elementResolver->resolveElement($link, $element);
+			if ($resolved) {
+				$resolved->addAnnotation('usedby', $element->getPrettyName() . ' ' . $description);
+			}
 		}
 	}
 

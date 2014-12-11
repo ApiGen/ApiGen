@@ -405,7 +405,7 @@ abstract class ReflectionElement extends ReflectionBase
 
 
 	/**
-	 * @param mixed
+	 * @param mixed $reflection
 	 * @return array
 	 */
 	private function getAnnotationsFromReflection($reflection)
