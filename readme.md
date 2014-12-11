@@ -99,13 +99,8 @@ exclude:
 	- *Factory.php
 
 # this files will be included in class tree, but will not create a link to their documentation
-# either files
 skipDocPath:
-    - * <mask>``` # mask
-
-# or with certain name prefix
-skipDocPrefix:
-    - Nette
+    - *<mask>``` # mask
 
 # character set of source files; if you use only one across your files, we recommend you name it
 charset:

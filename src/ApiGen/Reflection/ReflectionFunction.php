@@ -49,16 +49,7 @@ class ReflectionFunction extends ReflectionFunctionBase
 					break;
 				}
 			}
-			if ($this->isDocumented === TRUE) {
-				foreach (self::$config->skipDocPrefix as $prefix) {
-					if (strpos($this->reflection->getName(), $prefix) === 0) {
-						$this->isDocumented = FALSE;
-						break;
-					}
-				}
-			}
 		}
-
 		return $this->isDocumented;
 	}
 

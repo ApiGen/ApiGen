@@ -54,7 +54,6 @@ class ConfigurationOptionsResolver extends Nette\Object
 		CO::INTERNAL => FALSE,
 		CO::PHP => TRUE,
 		CO::SKIP_DOC_PATH => [],
-		CO::SKIP_DOC_PREFIX => [],
 		CO::SOURCE => [],
 		CO::SOURCE_CODE => TRUE,
 		CO::TEMPLATE => NULL,
@@ -222,13 +221,6 @@ class ConfigurationOptionsResolver extends Nette\Object
 				foreach ($value as $key => $source) {
 					$value[$key] = FileSystem::getAbsolutePath($source);
 				}
-				return $value;
-			},
-			CO::SKIP_DOC_PREFIX => function (Options $options, $value) {
-				$value = array_map(function ($prefix) {
-					return ltrim($prefix, '\\');
-				}, $value);
-				usort($value, 'strcasecmp');
 				return $value;
 			},
 			CO::SOURCE => function (Options $options, $value) {
