@@ -9,6 +9,7 @@
 
 namespace ApiGen\Generator\Resolvers;
 
+use ApiGen\Parser\ParserResult;
 use ApiGen\Reflection\ReflectionClass;
 use ApiGen\Reflection\ReflectionConstant;
 use ApiGen\Reflection\ReflectionElement;
@@ -32,21 +33,6 @@ class ElementResolver extends Nette\Object
 {
 
 	/**
-	 * @var ArrayObject
-	 */
-	private $parsedClasses;
-
-	/**
-	 * @var ArrayObject
-	 */
-	private $parsedConstants;
-
-	/**
-	 * @var ArrayObject
-	 */
-	private $parsedFunctions;
-
-	/**
 	 * @var array
 	 */
 	private $simpleTypes = [
@@ -65,12 +51,15 @@ class ElementResolver extends Nette\Object
 		'mixed' => 1
 	];
 
+	/**
+	 * @var ParserResult
+	 */
+	private $parserResult;
 
-	public function __construct()
+
+	public function __construct(ParserResult $parserResult)
 	{
-		$this->parsedClasses = new ArrayObject;
-		$this->parsedFunctions = new ArrayObject;
-		$this->parsedConstants = new ArrayObject;
+		$this->parserResult = $parserResult;
 	}
 
 
@@ -83,11 +72,12 @@ class ElementResolver extends Nette\Object
 	 */
 	public function getClass($className, $namespace = '')
 	{
-		if (isset($this->parsedClasses[$namespace . '\\' . $className])) {
-			$class = $this->parsedClasses[$namespace . '\\' . $className];
+		$parsedClasses = $this->parserResult->getClasses();
+		if (isset($parsedClasses[$namespace . '\\' . $className])) {
+			$class = $parsedClasses[$namespace . '\\' . $className];
 
-		} elseif (isset($this->parsedClasses[ltrim($className, '\\')])) {
-			$class = $this->parsedClasses[ltrim($className, '\\')];
+		} elseif (isset($parsedClasses[ltrim($className, '\\')])) {
+			$class = $parsedClasses[ltrim($className, '\\')];
 
 		} else {
 			return NULL;
@@ -111,11 +101,12 @@ class ElementResolver extends Nette\Object
 	 */
 	public function getConstant($constantName, $namespace = '')
 	{
-		if (isset($this->parsedConstants[$namespace . '\\' . $constantName])) {
-			$constant = $this->parsedConstants[$namespace . '\\' . $constantName];
+		$parsedConstants = $this->parserResult->getConstants();
+		if (isset($parsedConstants[$namespace . '\\' . $constantName])) {
+			$constant = $parsedConstants[$namespace . '\\' . $constantName];
 
-		} elseif (isset($this->parsedConstants[ltrim($constantName, '\\')])) {
-			$constant = $this->parsedConstants[ltrim($constantName, '\\')];
+		} elseif (isset($parsedConstants[ltrim($constantName, '\\')])) {
+			$constant = $parsedConstants[ltrim($constantName, '\\')];
 
 		} else {
 			return NULL;
@@ -139,11 +130,12 @@ class ElementResolver extends Nette\Object
 	 */
 	public function getFunction($functionName, $namespace = '')
 	{
-		if (isset($this->parsedFunctions[$namespace . '\\' . $functionName])) {
-			$function = $this->parsedFunctions[$namespace . '\\' . $functionName];
+		$parsedFunctions = $this->parserResult->getFunctions();
+		if (isset($parsedFunctions[$namespace . '\\' . $functionName])) {
+			$function = $parsedFunctions[$namespace . '\\' . $functionName];
 
-		} elseif (isset($this->parsedFunctions[ltrim($functionName, '\\')])) {
-			$function = $this->parsedFunctions[ltrim($functionName, '\\')];
+		} elseif (isset($parsedFunctions[ltrim($functionName, '\\')])) {
+			$function = $parsedFunctions[ltrim($functionName, '\\')];
 
 		} else {
 			return NULL;
@@ -174,12 +166,18 @@ class ElementResolver extends Nette\Object
 			return NULL;
 		}
 
+//		dump($definition, $context);
 		$originalContext = $context;
 
-		$context = $this->correctContextForParameterOrClassMember($context);
+		if ($context instanceof ReflectionElement) {
+			$context = $this->correctContextForParameterOrClassMember($context);
+		}
 		if ($context === NULL) {
 			return NULL;
 		}
+
+//		dump($definition);
+//		die;
 
 		// self, $this references
 		if ($definition === 'self' || $definition === '$this') {
@@ -189,6 +187,7 @@ class ElementResolver extends Nette\Object
 		$definitionBase = substr($definition, 0, strcspn($definition, '\\:'));
 		$namespaceAliases = $context->getNamespaceAliases();
 		$className = Resolver::resolveClassFqn($definition, $namespaceAliases, $context->getNamespaceName());
+
 		if ( ! empty($definitionBase) && isset($namespaceAliases[$definitionBase]) && $definition !== $className) {
 			// Aliased class
 			$expectedName = $className;

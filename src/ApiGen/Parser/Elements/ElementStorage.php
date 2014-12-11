@@ -13,10 +13,10 @@ use ApiGen\Configuration\Configuration;
 use ApiGen\Generator\Resolvers\ElementResolver;
 use ApiGen\Parser\ParserResult;
 use ApiGen\Reflection\ReflectionClass;
+use ApiGen\Reflection\ReflectionConstant;
 use ApiGen\Reflection\ReflectionElement;
+use ApiGen\Reflection\ReflectionFunction;
 use Nette;
-use TokenReflection\Php\ReflectionConstant;
-use TokenReflection\ReflectionFunction;
 
 
 class ElementStorage extends Nette\Object
@@ -320,8 +320,6 @@ class ElementStorage extends Nette\Object
 	{
 		foreach ($this->getElements() as $elementList) {
 			foreach ($elementList as $parentElement) {
-
-
 				$elements = [$parentElement];
 				if ($parentElement instanceof ReflectionClass) {
 					$elements = array_merge(
