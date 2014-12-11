@@ -92,23 +92,7 @@ class PharCompiler extends Nette\Object
 		}
 
 		$phar = new Phar($pharFile);
-
-		$phar->setStub(
-"#!/usr/bin/env php
-<?php
-
-/**
- * This file is part of the ApiGen (http://apigen.org)
- *
- * For the full copyright and license information, please view
- * the file license.md that was distributed with this source code.
- */
-
-Phar::mapPhar('apigen.phar');
-require 'phar://apigen.phar/src/apigen.php';
-__HALT_COMPILER();
-");
-
+		$phar->setStub($this->getStub());
 		$phar->startBuffering();
 
 		foreach (Finder::findFiles('*')->from("$this->repoDir/src") as $file) {
@@ -116,11 +100,17 @@ __HALT_COMPILER();
 		}
 
 		$exclude = [
-			'jakub-onderka/php-parallel-lint',
+			'jakub-onderka',
 			'nette/*/Tests',
 			'nette/tester',
-			'squizlabs',
+			'pdepend/pdepend',
+			'phpmd/phpmd',
+			'phpunit/php-timer',
+			'sebastian/*',
+			'squizlabs/*',
+			'symfony/dependency-injection',
 			'symfony/*/*/Tests',
+			'theseer/fdomdocument',
 			'zenify/coding-standard'
 		];
 		foreach (Finder::findFiles('*.php')->from("$this->repoDir/vendor")->exclude($exclude) as $file) {
@@ -231,6 +221,30 @@ __HALT_COMPILER();
 			}
 		}
 		return TRUE;
+	}
+
+
+	/**
+	 * @return string
+	 */
+	private function getStub()
+	{
+		$stub = <<<EOF
+#!/usr/bin/env php
+<?php
+
+/**
+ * This file is part of the ApiGen (http://apigen.org)
+ *
+ * For the full copyright and license information, please view
+ * the file license.md that was distributed with this source code.
+ */
+
+Phar::mapPhar('apigen.phar');
+require 'phar://apigen.phar/src/apigen.php';
+__HALT_COMPILER();
+EOF;
+		return $stub;
 	}
 
 }

@@ -35,7 +35,7 @@ class PharCompilerTest extends TestCase
 		// issue #386
 		rename(TEMP_DIR . '/apigen.phar', TEMP_DIR . '/apigen');
 		$output = $this->runGenerateCommand(NULL, PROJECT_DIR, 'php ' . TEMP_DIR . '/apigen');
-		Assert::same(0, $output);
+		Assert::notSame([], $output);
 	}
 
 }

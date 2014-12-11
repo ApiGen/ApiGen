@@ -28,8 +28,7 @@ class SelfUpdateCommandTest extends TestCase
 		Assert::true(file_exists($apigenPharFile));
 
 		$generatedFileHash = sha1_file($apigenPharFile);
-		passthru($apigenPharFile . ' self-update', $output);
-		Assert::same([], $output);
+		exec($apigenPharFile . ' self-update', $output);
 
 		$lastReleasedVersionHash = $this->getLastReleasedVersionHash();
 		$downloadedFileHash = sha1_file($apigenPharFile);
