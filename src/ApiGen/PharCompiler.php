@@ -181,7 +181,7 @@ __HALT_COMPILER();
 
 
 	/**
-	 * Minifies PHP source. Preserves line numbers and @method annotations.
+	 * Minimizes PHP source. Preserves line numbers, @return and @method annotations.
 	 *
 	 * @param string $code
 	 * @return string
