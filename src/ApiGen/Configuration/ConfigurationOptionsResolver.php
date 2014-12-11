@@ -10,6 +10,7 @@
 namespace ApiGen\Configuration;
 
 use ApiGen\Configuration\ConfigurationOptions as CO;
+use ApiGen\Configuration\Exceptions\ConfigurationException;
 use ApiGen\Configuration\Theme\ThemeConfigFactory;
 use ApiGen\FileSystem\FileSystem;
 use Nette;
@@ -164,6 +165,9 @@ class ConfigurationOptionsResolver extends Nette\Object
 	{
 		$this->resolver->setAllowedValues([
 			CO::DESTINATION => function ($value) {
+				if ( ! $value) {
+					throw new ConfigurationException("Destination is not set. Use '-d <dir>' or config to set it");
+				}
 				if ( ! is_dir($value)) {
 					mkdir($value, 0755, TRUE);
 				}
@@ -173,6 +177,12 @@ class ConfigurationOptionsResolver extends Nette\Object
 				return TRUE;
 			},
 			CO::SOURCE => function ($value) {
+				if ( ! $value) {
+					throw new ConfigurationException("Source is not set. Use '-s <dir>' or config to set it");
+				}
+				if ( ! is_array($value)) {
+					$value = [$value];
+				}
 				foreach ($value as $source) {
 					if ( ! file_exists($source)) {
 						throw new ConfigurationException("Source '$source' does not exist");
@@ -222,6 +232,9 @@ class ConfigurationOptionsResolver extends Nette\Object
 				return $value;
 			},
 			CO::SOURCE => function (Options $options, $value) {
+				if ( ! is_array($value)) {
+					$value = [$value];
+				}
 				foreach ($value as $key => $source) {
 					$value[$key] = FileSystem::getAbsolutePath($source);
 				}

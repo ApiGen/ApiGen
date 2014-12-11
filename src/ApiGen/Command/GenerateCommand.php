@@ -83,10 +83,10 @@ class GenerateCommand extends Command
 		$this->setName('generate')
 			->setDescription('Generate API documentation')
 			->setDefinition([
-				new InputOption(CO::DESTINATION, 'd', NULL,
-					'Target dir for documentation.'),
 				new InputOption(CO::SOURCE, 's', InputArgument::IS_ARRAY | InputArgument::OPTIONAL,
-					'Dirs documentation is generated for (separate multiple items with a space).', NULL),
+					'Dirs documentation is generated for (separate multiple items with a space).'),
+				new InputOption(CO::DESTINATION, 'd', InputArgument::OPTIONAL,
+					'Target dir for documentation.'),
 				new InputOption(CO::AUTOCOMPLETE, NULL, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_OPTIONAL,
 					'Element supported by autocomplete in search input.',
 					[COR::AC_CLASSES, COR::AC_CONSTANTS, COR::AC_FUNCTIONS]),
@@ -146,10 +146,13 @@ class GenerateCommand extends Command
 	{
 		try {
 			$configFile = $input->getOption(CO::CONFIG);
-			$configFileOptions = (new NeonFile($configFile))->read();
+			$configFileOptions = [];
+			if (file_exists($configFile)) {
+				$configFileOptions = (new NeonFile($configFile))->read();
+			}
 
 			// cli has priority over config file
-			$options = array_merge($input->getOptions(), $configFileOptions);
+			$options = $input->getOptions() + $configFileOptions;
 			$options = $this->configuration->resolveOptions($options);
 
 			$this->scanAndParse($options, $output);
@@ -166,7 +169,6 @@ class GenerateCommand extends Command
 	private function scanAndParse(array $options, OutputInterface $output)
 	{
 		$output->writeln('<info>Scanning sources and parsing</info>');
-
 		$files = $this->scanner->scan($options[CO::SOURCE], $options[CO::EXCLUDE], $options[CO::EXTENSIONS]);
 		$this->parser->parse($files);
 
