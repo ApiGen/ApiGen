@@ -98,7 +98,6 @@ class ConfigurationOptionsResolver extends Nette\Object
 		$this->resolver = $this->optionsResolverFactory->create();
 		$this->setDefaults();
 		$this->setRequired();
-		$this->setAllowedTypes();
 		$this->setAllowedValues();
 		$this->setTypeCorrectors();
 		$this->setNormalizers();
@@ -158,30 +157,6 @@ class ConfigurationOptionsResolver extends Nette\Object
 		$this->resolver->setRequired([
 			CO::SOURCE,
 			CO::DESTINATION
-		]);
-	}
-
-
-	private function setAllowedTypes()
-	{
-		$this->resolver->setAllowedTypes([
-			CO::AUTOCOMPLETE => 'array',
-			CO::ACCESS_LEVELS => 'array',
-			CO::BASE_URL => ['null', 'string'],
-			CO::CONFIG => 'string',
-			CO::DESTINATION => 'string',
-			CO::EXCLUDE => 'array',
-			CO::EXTENSIONS => 'array',
-			CO::GOOGLE_CSE_ID => ['null', 'string'],
-			CO::GOOGLE_ANALYTICS => ['null', 'string'],
-			CO::GROUPS => 'string',
-			CO::CHARSET => 'array',
-			CO::MAIN => ['null', 'string'],
-			CO::SKIP_DOC_PATH => 'array',
-			CO::SKIP_DOC_PREFIX => 'array',
-			CO::SOURCE => 'array',
-			CO::TEMPLATE_CONFIG => ['null', 'string'],
-			CO::TITLE => ['null', 'string']
 		]);
 	}
 
