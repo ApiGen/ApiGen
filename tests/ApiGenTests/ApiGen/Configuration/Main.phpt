@@ -21,9 +21,9 @@ class MainTest extends TestCase
 
 	public function testConfig()
 	{
-		$this->runGenerateCommand('--main=ProjectBeta');
+		$this->runGenerateCommand('--main=ProjectBeta', PROJECT_DIR . ' -s ' . PROJECT_BETA_DIR);
 		Assert::contains(
-			'<li class="main"><a href="namespace-ProjectBeta.html">ProjectBeta',
+			'<li class="active main"><a href="namespace-ProjectBeta.html">ProjectBeta',
 			$this->getFileContentInOneLine(API_DIR . '/index.html')
 		);
 	}

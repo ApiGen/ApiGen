@@ -16,20 +16,16 @@ require_once __DIR__ . '/../../bootstrap.php';
 class TodoTest extends TestCase
 {
 
-	protected function setUp()
-	{
-		$this->runGenerateCommand('--todo');
-	}
-
-
 	public function testConfig()
 	{
+		$this->runGenerateCommand('--todo');
 		Assert::true(file_exists(API_DIR . '/todo.html'));
 	}
 
 
 	public function testTodoContent()
 	{
+		$this->runGenerateCommand('--todo');
 		$content = file_get_contents(API_DIR . '/todo.html');
 
 		Assert::match(

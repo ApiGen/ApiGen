@@ -26,15 +26,11 @@ class ExtensionTest extends TestCase
 		Assert::false(file_exists(API_DIR . '/' . self::PHP5_EXTENSION));
 		Assert::true(file_exists(API_DIR . '/' . self::PHP_EXTENSION));
 
-		$this->runGenerateCommand('--extensions="php5"');
+		$this->runGenerateCommand('--extensions=php5');
 		Assert::true(file_exists(API_DIR . '/' . self::PHP5_EXTENSION));
 		Assert::false(file_exists(API_DIR . '/' . self::PHP_EXTENSION));
 
-		$this->runGenerateCommand('--extensions="php"');
-		Assert::false(file_exists(API_DIR . '/' . self::PHP5_EXTENSION));
-		Assert::true(file_exists(API_DIR . '/' . self::PHP_EXTENSION));
-
-		$this->runGenerateCommand('--extensions="php,php5"');
+		$this->runGenerateCommand('--extensions=php --extensions=php5');
 		Assert::true(file_exists(API_DIR . '/' . self::PHP5_EXTENSION));
 		Assert::true(file_exists(API_DIR . '/' . self::PHP_EXTENSION));
 	}

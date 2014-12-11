@@ -19,7 +19,7 @@ class AccessLevelsTest extends TestCase
 
 	public function testPublic()
 	{
-		$this->runGenerateCommand('--accessLevels=public');
+		$this->runGenerateCommand('--accessLevels=public --debug');
 
 		$classFile = API_DIR . '/class-Project.AccessLevels.html';
 		Assert::true(file_exists($classFile));
@@ -63,7 +63,7 @@ class AccessLevelsTest extends TestCase
 
 	public function testPublicProtectedPrivate()
 	{
-		$this->runGenerateCommand('--accessLevels=public,private,protected');
+		$this->runGenerateCommand('--accessLevels=public --accessLevels=protected --accessLevels=private');
 
 		$classFile = API_DIR . '/class-Project.AccessLevels.html';
 		Assert::true(file_exists($classFile));

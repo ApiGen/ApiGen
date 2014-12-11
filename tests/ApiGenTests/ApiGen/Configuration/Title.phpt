@@ -21,7 +21,7 @@ class TitleTest extends TestCase
 
 	public function testConfig()
 	{
-		$this->runGenerateCommand('--title=' . self::TITLE);
+		$this->runGenerateCommand('--title="' . self::TITLE . '"');
 		Assert::match(
 			'%A%<title>' . self::TITLE . '</title>%A%',
 			file_get_contents(API_DIR . '/index.html')

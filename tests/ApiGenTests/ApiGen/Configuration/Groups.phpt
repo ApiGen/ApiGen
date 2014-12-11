@@ -18,7 +18,7 @@ class GroupsTest extends TestCase
 
 	public function testDefault()
 	{
-		$this->runGenerateCommand();
+		$this->runGenerateCommand(NULL, PROJECT_DIR . ' -s ' . PROJECT_BETA_DIR);
 		$indexContent = $this->getFileContentInOneLine(API_DIR . '/index.html');
 		Assert::match(
 			'%A%<a href="namespace-ProjectBeta.html">ProjectBeta</a>%A%',
@@ -29,7 +29,7 @@ class GroupsTest extends TestCase
 
 	public function testNone()
 	{
-		$this->runGenerateCommand('--groups=none');
+		$this->runGenerateCommand('--groups=none', PROJECT_DIR . ' -s ' . PROJECT_BETA_DIR);
 		$indexContent = $this->getFileContentInOneLine(API_DIR . '/index.html');
 		Assert::notContains(
 			'<a href="namespace-ProjectBeta.html">ProjectBeta</a>',
@@ -44,7 +44,7 @@ class GroupsTest extends TestCase
 
 	public function testPackages()
 	{
-		$this->runGenerateCommand('--groups=packages');
+		$this->runGenerateCommand('--groups=packages', PROJECT_DIR . ' -s ' . PROJECT_BETA_DIR);
 		$indexContent = $this->getFileContentInOneLine(API_DIR . '/index.html');
 		Assert::match(
 			'%A%<li><a href="package-A.html">A</a>%A%',
@@ -59,7 +59,7 @@ class GroupsTest extends TestCase
 
 	public function testNamespace()
 	{
-		$this->runGenerateCommand('--groups=namespaces');
+		$this->runGenerateCommand('--groups=namespaces', PROJECT_DIR . ' -s ' . PROJECT_BETA_DIR);
 		$indexContent = $this->getFileContentInOneLine(API_DIR . '/index.html');
 		Assert::match(
 			'%A%<a href="namespace-ProjectBeta.html">ProjectBeta</a>%A%',
