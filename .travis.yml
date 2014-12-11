@@ -20,7 +20,7 @@ before_script:
   # php linter
   - vendor/bin/parallel-lint -e php,phpt --exclude vendor .
   # php code sniffer
-  vendor/bin/phpcs src tests/ApiGenTests --standard=vendor/zenify/coding-standard/src/ZenifyCodingStandard/code-sniffer-ruleset.xml --ignore=bootstrap --extensions=php
+  - vendor/bin/phpcs src tests/ApiGenTests --standard=vendor/zenify/coding-standard/src/ZenifyCodingStandard/code-sniffer-ruleset.xml --ignore=bootstrap --extensions=php
 
 script:
   - vendor/bin/tester -p php -c tests/php.ini-unix tests/ApiGenTests
