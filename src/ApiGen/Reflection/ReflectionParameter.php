@@ -227,7 +227,7 @@ class ReflectionParameter extends ReflectionBase
 	private function getParsedFunctions()
 	{
 		if (self::$parsedFunctions === NULL) {
-			self::$parsedFunctions = ParserResult::$functions;
+			self::$parsedFunctions = ParserResult::$functionsStatic;
 		}
 		return self::$parsedFunctions;
 	}
