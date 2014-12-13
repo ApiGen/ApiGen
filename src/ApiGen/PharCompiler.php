@@ -9,9 +9,13 @@
 
 namespace ApiGen;
 
+use DateTime;
+use DateTimeZone;
+use LogicException;
 use Nette;
 use Nette\Utils\Finder;
 use Phar;
+use RuntimeException;
 use SplFileInfo;
 
 
@@ -39,16 +43,16 @@ class PharCompiler extends Nette\Object
 
 	/**
 	 * @param string $repoDir  path to Apigen source dir
-	 * @throws \LogicException
-	 * @throws \RuntimeException
+	 * @throws LogicException
+	 * @throws RuntimeException
 	 */
 	public function __construct($repoDir)
 	{
 		if ( ! is_dir($repoDir)) {
-			throw new \LogicException("Path '$repoDir' is not a directory.");
+			throw new LogicException("Path '$repoDir' is not a directory.");
 
 		} elseif ( ! is_file("$repoDir/src/ApiGen/ApiGen.php")) {
-			throw new \LogicException("Directory '$repoDir' does not contain ApiGen source code.");
+			throw new LogicException("Directory '$repoDir' does not contain ApiGen source code.");
 		}
 		$this->repoDir = realpath($repoDir);
 
@@ -59,15 +63,15 @@ class PharCompiler extends Nette\Object
 			$this->version = trim($output);
 
 		} else {
-			throw new \RuntimeException('Cannot run git log to find ApiGen version. '
+			throw new RuntimeException('Cannot run git log to find ApiGen version. '
 				. 'Ensure that compile runs from cloned ApiGen git repository and the git command is available.');
 		}
 
 		if ($this->execute('git log -n1 --format=%cD HEAD', $repoDir, $output) !== 0) {
-			throw new \RuntimeException('Unable to run git log to find release date.');
+			throw new RuntimeException('Unable to run git log to find release date.');
 		}
-		$this->releaseDate = \DateTime::createFromFormat(\DateTime::RFC2822, trim($output))
-			->setTimezone(new \DateTimeZone('UTC'))
+		$this->releaseDate = DateTime::createFromFormat(DateTime::RFC2822, trim($output))
+			->setTimezone(new DateTimeZone('UTC'))
 			->format('Y-m-d H:i:s');
 	}
 
@@ -75,12 +79,12 @@ class PharCompiler extends Nette\Object
 	/**
 	 * @param string $pharFile  output PHAR file name
 	 * @param string $sourceDir  apigen source directory
-	 * @throws \RuntimeException
+	 * @throws RuntimeException
 	 */
 	public function compile($pharFile)
 	{
 		if ( ! class_exists('Phar') || ini_get('phar.readonly')) {
-			throw new \RuntimeException("Enable PHAR extension and set directive 'phar.readonly' to 'off'.");
+			throw new RuntimeException("Enable PHAR extension and set directive 'phar.readonly' to 'off'.");
 		}
 
 		if (file_exists($pharFile)) {
@@ -88,23 +92,7 @@ class PharCompiler extends Nette\Object
 		}
 
 		$phar = new Phar($pharFile);
-
-		$phar->setStub(
-"#!/usr/bin/env php
-<?php
-
-/**
- * This file is part of the ApiGen (http://apigen.org)
- *
- * For the full copyright and license information, please view
- * the file license.md that was distributed with this source code.
- */
-
-Phar::mapPhar('apigen.phar');
-require 'phar://apigen.phar/src/apigen.php';
-__HALT_COMPILER();
-");
-
+		$phar->setStub($this->getStub());
 		$phar->startBuffering();
 
 		foreach (Finder::findFiles('*')->from("$this->repoDir/src") as $file) {
@@ -112,12 +100,17 @@ __HALT_COMPILER();
 		}
 
 		$exclude = [
-			'jakub-onderka/php-parallel-lint',
+			'jakub-onderka',
 			'nette/*/Tests',
 			'nette/tester',
-			'mikulas/code-sniffs',
-			'squizlabs',
+			'pdepend/pdepend',
+			'phpmd/phpmd',
+			'phpunit/php-timer',
+			'sebastian/*',
+			'squizlabs/*',
+			'symfony/dependency-injection',
 			'symfony/*/*/Tests',
+			'theseer/fdomdocument',
 			'zenify/coding-standard'
 		];
 		foreach (Finder::findFiles('*.php')->from("$this->repoDir/vendor")->exclude($exclude) as $file) {
@@ -179,7 +172,7 @@ __HALT_COMPILER();
 
 
 	/**
-	 * Minifies PHP source. Preserves line numbers and @method annotations.
+	 * Minimizes PHP source. Preserves line numbers, @return and @method annotations.
 	 *
 	 * @param string $code
 	 * @return string
@@ -228,6 +221,30 @@ __HALT_COMPILER();
 			}
 		}
 		return TRUE;
+	}
+
+
+	/**
+	 * @return string
+	 */
+	private function getStub()
+	{
+		$stub = <<<EOF
+#!/usr/bin/env php
+<?php
+
+/**
+ * This file is part of the ApiGen (http://apigen.org)
+ *
+ * For the full copyright and license information, please view
+ * the file license.md that was distributed with this source code.
+ */
+
+Phar::mapPhar('apigen.phar');
+require 'phar://apigen.phar/src/apigen.php';
+__HALT_COMPILER();
+EOF;
+		return $stub;
 	}
 
 }

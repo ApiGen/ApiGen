@@ -12,7 +12,6 @@ namespace ApiGen\Scanner;
 use ApiGen\FileSystem\FileSystem;
 use Nette;
 use Nette\Utils\Finder;
-use RecursiveDirectoryIterator as RDI;
 use RuntimeException;
 use SplFileInfo;
 
@@ -45,7 +44,6 @@ class Scanner extends Nette\Object
 	public function scan(array $sources, array $exclude = [], array $extensions = ['php'])
 	{
 		$fileMasks = $this->turnExtensionsToMask($extensions);
-		$sources = $this->extractPharSources($sources);
 		$finder = Finder::findFiles($fileMasks)->exclude($exclude)
 			->from($sources)->exclude($exclude);
 		$files = $this->convertFinderToArray($finder);
@@ -88,27 +86,6 @@ class Scanner extends Nette\Object
 			}
 		}
 		return $symlinks;
-	}
-
-
-	/**
-	 * @return array
-	 */
-	private function extractPharSources(array $sources)
-	{
-		foreach ($sources as $i => $source) {
-			if (FileSystem::isPhar($source)) {
-				if ( ! extension_loaded('phar')) {
-					throw new RuntimeException('Phar extension is not loaded');
-				}
-
-				$dir = sys_get_temp_dir() . '/_apigen_temp/phar_' . $i;
-				$phar = new \Phar($source, RDI::CURRENT_AS_FILEINFO | RDI::SKIP_DOTS | RDI::FOLLOW_SYMLINKS);
-				$phar->extractTo($dir, NULL, TRUE);
-				$sources[$i] = $dir;
-			}
-		}
-		return $sources;
 	}
 
 

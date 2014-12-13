@@ -10,6 +10,7 @@
 namespace ApiGen\Reflection;
 
 use ApiGen\FileSystem\FileSystem;
+use TokenReflection;
 
 
 /**
@@ -111,7 +112,7 @@ class ReflectionConstant extends ReflectionElement
 	 */
 	public function isValid()
 	{
-		if ($this->reflection instanceof \TokenReflection\Invalid\ReflectionConstant) {
+		if ($this->reflection instanceof TokenReflection\Invalid\ReflectionConstant) {
 			return FALSE;
 		}
 
@@ -139,16 +140,6 @@ class ReflectionConstant extends ReflectionElement
 				}
 			}
 		}
-
-		if ($this->isDocumented === TRUE) {
-			foreach (self::$config->skipDocPrefix as $prefix) {
-				if (strpos($this->reflection->getName(), $prefix) === 0) {
-					$this->isDocumented = FALSE;
-					break;
-				}
-			}
-		}
-
 		return $this->isDocumented;
 	}
 

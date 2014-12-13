@@ -13,23 +13,12 @@ use Tester;
 use Tester\Environment;
 
 
-/**
- * Basic test case that prepares and removed apigen.neon,
- * which is required for some commands.
- */
 class TestCase extends Tester\TestCase
 {
 
 	protected function setUp()
 	{
 		Environment::lock('config', dirname(TEMP_DIR));
-		file_put_contents('apigen.neon', '');
-	}
-
-
-	protected function tearDown()
-	{
-		unlink('apigen.neon');
 	}
 
 
@@ -43,6 +32,21 @@ class TestCase extends Tester\TestCase
 		$content = preg_replace('/\s+/', ' ', $content);
 		$content = preg_replace('/(?<=>)\s+|\s+(?=<)/', '', $content);
 		return $content;
+	}
+
+
+	/**
+	 * @param string $options
+	 * @param string $source
+	 * @param string $bin
+	 * @return mixed
+	 */
+	protected function runGenerateCommand($options = NULL, $source = NULL, $bin = NULL)
+	{
+		$cliInput = ($bin ?: APIGEN_BIN) . ' generate -s ' . ($source ?: PROJECT_DIR) . ' -d ' . API_DIR;
+		$cliInput .= ($options ? ' ' . $options : NULL);
+		exec($cliInput, $cliOutput);
+		return $cliOutput;
 	}
 
 }

@@ -12,13 +12,12 @@ namespace ApiGen\Command;
 use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Configuration\ConfigurationOptionsResolver as COR;
-use ApiGen\FileSystem\Wiper;
-use ApiGen\Generator\Generator;
+use ApiGen\FileSystem\FileSystem;
+use ApiGen\Generator\GeneratorQueue;
 use ApiGen\Neon\NeonFile;
 use ApiGen\Parser\Parser;
 use ApiGen\Scanner\Scanner;
-use InvalidArgumentException;
-use SplFileInfo;
+use ApiGen\Theme\ThemeResources;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -31,19 +30,9 @@ class GenerateCommand extends Command
 {
 
 	/**
-	 * @var Generator
-	 */
-	private $generator;
-
-	/**
 	 * @var Configuration
 	 */
 	private $configuration;
-
-	/**
-	 * @var Wiper
-	 */
-	private $wiper;
 
 	/**
 	 * @var Parser
@@ -55,20 +44,37 @@ class GenerateCommand extends Command
 	 */
 	private $scanner;
 
+	/**
+	 * @var GeneratorQueue
+	 */
+	private $generatorQueue;
+
+	/**
+	 * @var FileSystem
+	 */
+	private $fileSystem;
+
+	/**
+	 * @var ThemeResources
+	 */
+	private $themeResources;
+
 
 	public function __construct(
-		Generator $generator,
-		Wiper $wiper,
 		Configuration $configuration,
 		Scanner $scanner,
-		Parser $parser
+		Parser $parser,
+		GeneratorQueue $generatorQueue,
+		FileSystem $fileSystem,
+		ThemeResources $themeResources
 	) {
 		parent::__construct();
-		$this->generator = $generator;
-		$this->wiper = $wiper;
 		$this->configuration = $configuration;
 		$this->scanner = $scanner;
 		$this->parser = $parser;
+		$this->generatorQueue = $generatorQueue;
+		$this->fileSystem = $fileSystem;
+		$this->themeResources = $themeResources;
 	}
 
 
@@ -77,15 +83,15 @@ class GenerateCommand extends Command
 		$this->setName('generate')
 			->setDescription('Generate API documentation')
 			->setDefinition([
-				new InputOption(CO::DESTINATION, 'd', NULL,
-					'Target dir for documentation.'),
 				new InputOption(CO::SOURCE, 's', InputArgument::IS_ARRAY | InputArgument::OPTIONAL,
-					'Dirs documentation is generated for (separate multiple items with a space).', NULL),
+					'Dirs documentation is generated for (separate multiple items with a space).'),
+				new InputOption(CO::DESTINATION, 'd', InputArgument::OPTIONAL,
+					'Target dir for documentation.'),
 				new InputOption(CO::AUTOCOMPLETE, NULL, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_OPTIONAL,
 					'Element supported by autocomplete in search input.',
-					array(COR::AC_CLASSES, COR::AC_CONSTANTS, COR::AC_FUNCTIONS)),
+					[COR::AC_CLASSES, COR::AC_CONSTANTS, COR::AC_FUNCTIONS]),
 				new InputOption(CO::ACCESS_LEVELS, NULL, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_OPTIONAL,
-					'Access levels of included method and properties', array(COR::AL_PUBLIC, COR::AL_PROTECTED)),
+					'Access levels of included method and properties', [COR::AL_PUBLIC, COR::AL_PROTECTED]),
 				new InputOption(CO::BASE_URL, NULL, InputOption::VALUE_OPTIONAL,
 					'Base url used for sitemap (useful for public doc.'),
 				new InputOption(CO::CONFIG, NULL, InputOption::VALUE_OPTIONAL,
@@ -93,15 +99,15 @@ class GenerateCommand extends Command
 				new InputOption(CO::GOOGLE_CSE_ID, NULL, InputOption::VALUE_OPTIONAL,
 					'Custom google search engine id (for search box).'),
 				new InputOption(CO::GOOGLE_ANALYTICS, NULL, InputOption::VALUE_OPTIONAL,
-					'Google Analytics tracking code..'),
-				new InputOption(CO::DEBUG, NULL, InputOption::VALUE_OPTIONAL,
-					'Turn on debug mode.', FALSE),
-				new InputOption(CO::DEPRECATED, NULL, InputOption::VALUE_OPTIONAL,
-					'Generate documentation for elements marked as @deprecated.', FALSE),
-				new InputOption(CO::DOWNLOAD, NULL, InputOption::VALUE_OPTIONAL,
-					'Add link to ZIP archive of documentation.', FALSE),
+					'Google Analytics tracking code.'),
+				new InputOption(CO::DEBUG, NULL, InputOption::VALUE_NONE,
+					'Turn on debug mode.'),
+				new InputOption(CO::DEPRECATED, NULL, InputOption::VALUE_NONE,
+					'Generate documentation for elements marked as @deprecated'),
+				new InputOption(CO::DOWNLOAD, NULL, InputOption::VALUE_NONE,
+					'Add link to ZIP archive of documentation.'),
 				new InputOption(CO::EXTENSIONS, NULL, InputOption::VALUE_IS_ARRAY | InputArgument::OPTIONAL,
-					'Scanned file extensions.', array('php')),
+					'Scanned file extensions.', ['php']),
 				new InputOption(CO::EXCLUDE, NULL, InputOption::VALUE_IS_ARRAY | InputArgument::OPTIONAL,
 					'Directories and files matching this mask will not be parsed.'),
 				new InputOption(CO::GROUPS, NULL, InputOption::VALUE_OPTIONAL,
@@ -110,15 +116,12 @@ class GenerateCommand extends Command
 					'Charset of scanned files.'),
 				new InputOption(CO::MAIN, NULL, InputOption::VALUE_OPTIONAL,
 					'Elements with this name prefix will be first in tree.'),
-				new InputOption(CO::INTERNAL, NULL, InputOption::VALUE_OPTIONAL,
-					'Include elements marked as @internal.', FALSE),
+				new InputOption(CO::INTERNAL, NULL, InputOption::VALUE_NONE,
+					'Include elements marked as @internal.'),
 				new InputOption(CO::PHP, NULL, InputOption::VALUE_OPTIONAL,
 					'Generate documentation for PHP internal classes.', TRUE),
 				new InputOption(CO::SKIP_DOC_PATH, NULL, InputOption::VALUE_IS_ARRAY | InputArgument::OPTIONAL,
 					'Files matching this mask will be included in class tree,'
-					. ' but will not create a link to their documentation.'),
-				new InputOption(CO::SKIP_DOC_PREFIX, NULL, InputOption::VALUE_IS_ARRAY | InputArgument::OPTIONAL,
-					'Files starting this name will be included in class tree,'
 					. ' but will not create a link to their documentation.'),
 				new InputOption(CO::SOURCE_CODE, NULL, InputOption::VALUE_REQUIRED,
 					'Generate highlighted source code for elements.', TRUE),
@@ -128,10 +131,10 @@ class GenerateCommand extends Command
 					'Your own template config, has higher priority ' . CO::TEMPLATE_THEME . '.'),
 				new InputOption(CO::TITLE, NULL, InputOption::VALUE_OPTIONAL,
 					'Title of generated documentation.'),
-				new InputOption(CO::TODO, NULL, InputOption::VALUE_OPTIONAL,
-					'Generate documentation for elements marked as @todo.', FALSE),
-				new InputOption(CO::TREE, NULL, InputOption::VALUE_OPTIONAL,
-					'Generate tree view of classes, interfaces, traits and exceptions.', TRUE)
+				new InputOption(CO::TODO, NULL, InputOption::VALUE_NONE,
+					'Generate documentation for elements marked as @todo.'),
+				new InputOption(CO::TREE, NULL, InputOption::VALUE_NONE,
+					'Generate tree view of classes, interfaces, traits and exceptions.')
 			]);
 	}
 
@@ -139,15 +142,17 @@ class GenerateCommand extends Command
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
 		try {
-			$configFileOptions = $this->getConfigFileOptions($input);
+			$configFile = $input->getOption(CO::CONFIG);
+			$configFileOptions = [];
+			if (file_exists($configFile)) {
+				$configFileOptions = (new NeonFile($configFile))->read();
+			}
 
 			// cli has priority over config file
-			$options = array_merge($input->getOptions(), $configFileOptions);
-			$options = $this->unsetConsoleOptions($options);
+			$options = $input->getOptions() + $configFileOptions;
 			$options = $this->configuration->resolveOptions($options);
 
-			$files = $this->scan($options, $output);
-			$this->parse($options, $output, $files);
+			$this->scanAndParse($options, $output);
 			$this->generate($options, $output);
 			return 0;
 
@@ -158,49 +163,18 @@ class GenerateCommand extends Command
 	}
 
 
-	/**
-	 * @return SplFileInfo[]
-	 */
-	private function scan(array $options, OutputInterface $output)
+	private function scanAndParse(array $options, OutputInterface $output)
 	{
-		foreach ($options[CO::SOURCE] as $source) {
-			$output->writeln("<info>Scanning $source</info>");
-		}
-
-		foreach ($options[CO::EXCLUDE] as $exclude) {
-			$output->writeln("<info>Excluding $exclude</info>");
-		}
-
-		return $this->scanner->scan($options[CO::SOURCE], $options[CO::EXCLUDE], $options[CO::EXTENSIONS]);
-	}
-
-
-	private function parse(array $options, OutputInterface $output, array $files)
-	{
-		$output->writeln("<info>Parsing...</info>");
-
+		$output->writeln('<info>Scanning sources and parsing</info>');
+		$files = $this->scanner->scan($options[CO::SOURCE], $options[CO::EXCLUDE], $options[CO::EXTENSIONS]);
 		$this->parser->parse($files);
 
-		if (count($this->parser->getErrors())) {
-			if ($options[CO::DEBUG]) {
-				if ( ! is_dir(LOG_DIRECTORY)) {
-					mkdir(LOG_DIRECTORY);
-				}
-				Debugger::$logDirectory = LOG_DIRECTORY;
-				foreach ($this->parser->getErrors() as $e) {
-					$logName = Debugger::log($e);
-					$output->writeln("<error>Parse error occurred, exception was stored info $logName</error>");
-				}
-
-			} else {
-				$output->writeln(PHP_EOL . '<error>Found ' . count($this->parser->getErrors()) . ' errors.'
-					. ' For more details add --debug option</error>');
-			}
-		}
+		$this->reportParserErrors($options, $this->parser->getErrors(), $output);
 
 		$stats = $this->parser->getDocumentedStats();
-		$output->writeln(PHP_EOL . sprintf(
-			'Generating documentation for %d classes, %d constants, %d functions and %d PHP internal classes.',
+		$output->writeln(sprintf(
+			'Found <comment>%d classes</comment>, <comment>%d constants</comment>, '
+				. '<comment>%d functions</comment> and <comment>%d PHP internal classes</comment>',
 			$stats['classes'], $stats['constants'], $stats['functions'], $stats['internalClasses']
 		));
 	}
@@ -208,40 +182,32 @@ class GenerateCommand extends Command
 
 	private function generate(array $options, OutputInterface $output)
 	{
-		$output->writeln('<info>Wiping out destination directory</info>');
-		$this->wiper->wipOutDestination();
+		$this->fileSystem->purgeDir($options[CO::DESTINATION]);
+		$this->themeResources->copyToDestination($options[CO::DESTINATION]);
 
-		$output->writeln('<info>Generating to directory ' . $options[CO::DESTINATION] . '</info>');
-		$skipping = array_merge($options[CO::SKIP_DOC_PATH], $options[CO::SKIP_DOC_PREFIX]); // @todo better merge
-		foreach ($skipping as $skip) {
-			$output->writeln("<info>Will not generate documentation for  $skip</info>");
+		$output->writeln('<info>Generating API documentation</info>');
+		$this->generatorQueue->run();
+	}
+
+
+	private function reportParserErrors(array $options, array $errors, OutputInterface $output)
+	{
+		if (count($errors)) {
+			if ($options[CO::DEBUG]) {
+				if ( ! is_dir(LOG_DIRECTORY)) {
+					mkdir(LOG_DIRECTORY);
+				}
+				Debugger::$logDirectory = LOG_DIRECTORY;
+				foreach ($errors as $error) {
+					$logName = Debugger::log($error);
+					$output->writeln("<error>Parse error occurred, exception was stored info $logName</error>");
+				}
+
+			} else {
+				$output->writeln(PHP_EOL . '<error>Found ' . count($errors) . ' errors.'
+					. ' For more details add --debug option</error>');
+			}
 		}
-
-		$this->generator->generate();
-
-		$output->writeln(PHP_EOL . '<info>Api was successfully generated!</info>');
-	}
-
-
-	/**
-	 * @return array
-	 */
-	private function getConfigFileOptions(InputInterface $input)
-	{
-		$file = $input->getOption(CO::CONFIG);
-		$neonFile = new NeonFile($file);
-		$neonFile->validate();
-		return $neonFile->read();
-	}
-
-
-	/**
-	 * @return array
-	 */
-	private function unsetConsoleOptions(array $options)
-	{
-		unset($options[CO::CONFIG], $options['help'], $options['version'], $options['quiet'], $options['working-dir']);
-		return $options;
 	}
 
 }

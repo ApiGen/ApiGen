@@ -38,8 +38,6 @@ abstract class ReflectionFunctionBase extends ReflectionElement
 
 
 	/**
-	 * Returns if the function/method returns its value as reference.
-	 *
 	 * @return bool
 	 */
 	public function returnsReference()
@@ -49,8 +47,6 @@ abstract class ReflectionFunctionBase extends ReflectionElement
 
 
 	/**
-	 * Returns a list of function/method parameters.
-	 *
 	 * @return ReflectionParameter[]
 	 */
 	public function getParameters()
@@ -60,33 +56,14 @@ abstract class ReflectionFunctionBase extends ReflectionElement
 				return new ReflectionParameter($parameter);
 			}, $this->reflection->getParameters());
 
-			$annotations = $this->getAnnotation('param');
-			if ($annotations !== NULL) {
-				foreach ($annotations as $position => $annotation) {
-					if (isset($parameters[$position])) {
-						// Standard parameter
-						continue;
-					}
-
-					$pattern = '~^(?:([\\w\\\\]+(?:\\|[\\w\\\\]+)*)\\s+)?\\$(\\w+),\\.{3}(?:\\s+(.*))?($)~s';
-					if ( ! preg_match($pattern, $annotation, $matches)) {
-						// Wrong annotation format
-						continue;
-					}
-
-					list(, $typeHint, $name) = $matches;
-
-					$parameter = new ReflectionParameterMagic(NULL);
-					$parameter->setName($name)
-						->setPosition($position)
-						->setTypeHint($typeHint)
-						->setDefaultValueDefinition(NULL)
-						->setUnlimited(TRUE)
-						->setPassedByReference(FALSE)
-						->setDeclaringFunction($this);
-
-					$this->parameters[$position] = $parameter;
+			$annotations = (array) $this->getAnnotation('param');
+			foreach ($annotations as $position => $annotation) {
+				if (isset($parameters[$position])) {
+					// Standard parameter
+					continue;
 				}
+
+				$this->processAnnotation($annotation, $position);
 			}
 		}
 
@@ -95,8 +72,6 @@ abstract class ReflectionFunctionBase extends ReflectionElement
 
 
 	/**
-	 * Returns a particular function/method parameter.
-	 *
 	 * @param integer|string $parameterName Parameter name or position
 	 * @return ReflectionParameter
 	 * @throws \InvalidArgumentException If there is no parameter of the given name.
@@ -113,7 +88,7 @@ abstract class ReflectionFunctionBase extends ReflectionElement
 
 			throw new InvalidArgumentException(sprintf(
 				'There is no parameter at position "%d" in function/method "%s"', $parameterName, $this->getName()
-			), Exception\Runtime::DOES_NOT_EXIST);
+			));
 
 		} else {
 			foreach ($parameters as $parameter) {
@@ -124,7 +99,7 @@ abstract class ReflectionFunctionBase extends ReflectionElement
 
 			throw new InvalidArgumentException(sprintf(
 				'There is no parameter "%s" in function/method "%s"', $parameterName, $this->getName()
-			), Exception\Runtime::DOES_NOT_EXIST);
+			));
 		}
 	}
 
@@ -148,6 +123,33 @@ abstract class ReflectionFunctionBase extends ReflectionElement
 	public function getNumberOfRequiredParameters()
 	{
 		return $this->reflection->getNumberOfRequiredParameters();
+	}
+
+
+	/**
+	 * @param string $annotation
+	 * @param int $position
+	 */
+	private function processAnnotation($annotation, $position)
+	{
+		$pattern = '~^(?:([\\w\\\\]+(?:\\|[\\w\\\\]+)*)\\s+)?\\$(\\w+),\\.{3}(?:\\s+(.*))?($)~s';
+		if ( ! preg_match($pattern, $annotation, $matches)) {
+			// Wrong annotation format
+			return;
+		}
+
+		list(, $typeHint, $name) = $matches;
+
+		$parameter = new ReflectionParameterMagic(NULL);
+		$parameter->setName($name)
+			->setPosition($position)
+			->setTypeHint($typeHint)
+			->setDefaultValueDefinition(NULL)
+			->setUnlimited(TRUE)
+			->setPassedByReference(FALSE)
+			->setDeclaringFunction($this);
+
+		$this->parameters[$position] = $parameter;
 	}
 
 }

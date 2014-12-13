@@ -19,6 +19,10 @@ use Nette;
 class Configuration extends Nette\Object
 {
 
+	const GROUPS_AUTO = 'auto';
+	const GROUPS_NAMESPACES = 'namespaces';
+	const GROUPS_PACKAGES = 'packages';
+
 	/**
 	 * Static access for reflections
 	 *
@@ -53,6 +57,7 @@ class Configuration extends Nette\Object
 	 */
 	public function resolveOptions(array $options)
 	{
+		$options = $this->unsetConsoleOptions($options);
 		self::$config = $this->options = $options = $this->configurationOptionsResolver->resolve($options);
 		$this->onOptionsResolve($options);
 		return $options;
@@ -85,38 +90,45 @@ class Configuration extends Nette\Object
 
 
 	/**
+	 * @param int $namespaceCount
+	 * @param int $packageCount
 	 * @return bool
 	 */
-	public function isSitemapEnabled()
+	public function areNamespacesEnabled($namespaceCount, $packageCount)
 	{
-		return ! empty($this->options[CO::BASE_URL]);
+		if ($this->getOption(CO::GROUPS) === self::GROUPS_NAMESPACES) {
+			return TRUE;
+		}
+		if ($this->getOption(CO::GROUPS) === self::GROUPS_AUTO && ($namespaceCount > 0 || $packageCount === 0)) {
+			return TRUE;
+		}
+		return FALSE;
 	}
 
 
 	/**
+	 * @param bool $areNamespacesEnabled
 	 * @return bool
 	 */
-	public function isOpensearchEnabled()
+	public function arePackagesEnabled($areNamespacesEnabled)
 	{
-		return ! empty($this->options[CO::GOOGLE_CSE_ID]) && ! empty($this->options[CO::BASE_URL]);
+		if ($this->getOption(CO::GROUPS) === self::GROUPS_PACKAGES) {
+			return TRUE;
+
+		} elseif ($this->getOption(CO::GROUPS) === self::GROUPS_AUTO && ($areNamespacesEnabled === FALSE)) {
+			return TRUE;
+		}
+		return FALSE;
 	}
 
 
 	/**
-	 * @return bool
+	 * @return array
 	 */
-	public function isRobotsEnabled()
+	private function unsetConsoleOptions(array $options)
 	{
-		return (bool) $this->options[CO::BASE_URL];
+		unset($options[CO::CONFIG], $options['help'], $options['version'], $options['quiet']);
+		return $options;
 	}
-
-}
-
-
-/**
- * Thrown when an invalid configuration is detected.
- */
-class ConfigurationException extends \RuntimeException
-{
 
 }

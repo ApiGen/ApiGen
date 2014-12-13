@@ -7,7 +7,6 @@
 
 namespace ApiGenTests\ApiGen\Generator\Annotations;
 
-use ApiGen\Neon\NeonFile;
 use ApiGenTests\TestCase;
 use Tester\Assert;
 
@@ -20,9 +19,7 @@ class ExceptionTest extends TestCase
 
 	public function testBasicGeneration()
 	{
-		$this->prepareConfig();
-
-		passthru(APIGEN_BIN . ' generate');
+		$this->runGenerateCommand();
 		Assert::true(file_exists(API_DIR . '/index.html'));
 
 		$exceptionManagerClass = API_DIR . '/class-Project.ExceptionManager.html';
@@ -42,16 +39,6 @@ class ExceptionTest extends TestCase
 			'%A%<code><a href="class-RuntimeException.html">RuntimeException</a></code><br>One comment.<br><code><a href="class-Project.ForbiddenCallException.html">Project\ForbiddenCallException</a></code><br>Another comment.%A%',
 			$exceptionManagerClassContent
 		);
-	}
-
-
-	private function prepareConfig()
-	{
-		$neonFile = new NeonFile(__DIR__ . '/apigen.neon');
-		$config = $neonFile->read();
-		$config['source'] = [PROJECT_DIR];
-		$config['destination'] = API_DIR;
-		$neonFile->write($config);
 	}
 
 }

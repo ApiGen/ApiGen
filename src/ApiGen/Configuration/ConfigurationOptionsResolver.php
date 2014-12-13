@@ -10,6 +10,7 @@
 namespace ApiGen\Configuration;
 
 use ApiGen\Configuration\ConfigurationOptions as CO;
+use ApiGen\Configuration\Exceptions\ConfigurationException;
 use ApiGen\Configuration\Theme\ThemeConfigFactory;
 use ApiGen\FileSystem\FileSystem;
 use Nette;
@@ -53,7 +54,6 @@ class ConfigurationOptionsResolver extends Nette\Object
 		CO::INTERNAL => FALSE,
 		CO::PHP => TRUE,
 		CO::SKIP_DOC_PATH => [],
-		CO::SKIP_DOC_PREFIX => [],
 		CO::SOURCE => [],
 		CO::SOURCE_CODE => TRUE,
 		CO::TEMPLATE => NULL,
@@ -97,11 +97,8 @@ class ConfigurationOptionsResolver extends Nette\Object
 	{
 		$this->resolver = $this->optionsResolverFactory->create();
 		$this->setDefaults();
-		$this->replaceDefaults();
 		$this->setRequired();
-		$this->setAllowedTypes();
 		$this->setAllowedValues();
-		$this->setTypeCorrectors();
 		$this->setNormalizers();
 		return $this->resolver->resolve($options);
 	}
@@ -110,12 +107,7 @@ class ConfigurationOptionsResolver extends Nette\Object
 	private function setDefaults()
 	{
 		$this->resolver->setDefaults($this->defaults);
-	}
-
-
-	private function replaceDefaults()
-	{
-		$this->resolver->replaceDefaults([
+		$this->resolver->setDefaults([
 			CO::METHOD_ACCESS_LEVELS => function (Options $options) {
 				return $this->getAccessLevelForReflections($options[CO::ACCESS_LEVELS], 'method');
 			},
@@ -168,42 +160,13 @@ class ConfigurationOptionsResolver extends Nette\Object
 	}
 
 
-	private function setAllowedTypes()
-	{
-		$this->resolver->setAllowedTypes([
-			CO::AUTOCOMPLETE => 'array',
-			CO::ACCESS_LEVELS => 'array',
-			CO::BASE_URL => 'string',
-			CO::CONFIG => 'string',
-			CO::DEBUG => 'bool',
-			CO::DEPRECATED => 'bool',
-			CO::DESTINATION => 'string',
-			CO::DOWNLOAD => 'bool',
-			CO::EXCLUDE => 'array',
-			CO::EXTENSIONS => 'array',
-			CO::GOOGLE_CSE_ID => ['null', 'string'],
-			CO::GOOGLE_ANALYTICS => ['null', 'string'],
-			CO::GROUPS => 'string',
-			CO::CHARSET => 'array',
-			CO::MAIN => ['null', 'string'],
-			CO::INTERNAL => 'bool',
-			CO::PHP => 'bool',
-			CO::SKIP_DOC_PATH => 'array',
-			CO::SKIP_DOC_PREFIX => 'array',
-			CO::SOURCE => 'array',
-			CO::SOURCE_CODE => ['string', 'bool'],
-			CO::TEMPLATE_CONFIG => 'string',
-			CO::TITLE => ['null', 'string'],
-			CO::TODO => 'bool',
-			CO::TREE => ['string', 'bool']
-		]);
-	}
-
-
 	private function setAllowedValues()
 	{
 		$this->resolver->setAllowedValues([
 			CO::DESTINATION => function ($value) {
+				if ( ! $value) {
+					throw new ConfigurationException("Destination is not set. Use '-d <dir>' or config to set it");
+				}
 				if ( ! is_dir($value)) {
 					mkdir($value, 0755, TRUE);
 				}
@@ -213,6 +176,12 @@ class ConfigurationOptionsResolver extends Nette\Object
 				return TRUE;
 			},
 			CO::SOURCE => function ($value) {
+				if ( ! $value) {
+					throw new ConfigurationException("Source is not set. Use '-s <dir>' or config to set it");
+				}
+				if ( ! is_array($value)) {
+					$value = [$value];
+				}
 				foreach ($value as $source) {
 					if ( ! file_exists($source)) {
 						throw new ConfigurationException("Source '$source' does not exist");
@@ -254,14 +223,10 @@ class ConfigurationOptionsResolver extends Nette\Object
 				}
 				return $value;
 			},
-			CO::SKIP_DOC_PREFIX => function (Options $options, $value) {
-				$value = array_map(function ($prefix) {
-					return ltrim($prefix, '\\');
-				}, $value);
-				usort($value, 'strcasecmp');
-				return $value;
-			},
 			CO::SOURCE => function (Options $options, $value) {
+				if ( ! is_array($value)) {
+					$value = [$value];
+				}
 				foreach ($value as $key => $source) {
 					$value[$key] = FileSystem::getAbsolutePath($source);
 				}
@@ -271,19 +236,6 @@ class ConfigurationOptionsResolver extends Nette\Object
 				return FileSystem::getAbsolutePath($value);
 			}
 		]);
-	}
-
-
-	public function setTypeCorrectors()
-	{
-		$boolConfigurationOptions = [CO::DEPRECATED, CO::INTERNAL, CO::PHP, CO::SOURCE_CODE, CO::TREE, CO::TREE];
-		foreach ($boolConfigurationOptions as $optionName) {
-			$this->resolver->setNormalizers([
-				$optionName => function (Options $options, $value) {
-					return (bool) $value;
-				}
-			]);
-		}
 	}
 
 

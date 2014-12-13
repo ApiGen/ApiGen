@@ -6,7 +6,6 @@
 
 namespace ApiGenTests\ApiGen\Configuration;
 
-use ApiGen\Neon\NeonFile;
 use ApiGenTests\TestCase;
 use Tester\Assert;
 
@@ -19,9 +18,7 @@ class GroupsTest extends TestCase
 
 	public function testDefault()
 	{
-		$this->prepareConfig();
-		passthru(APIGEN_BIN . ' generate');
-
+		$this->runGenerateCommand(NULL, PROJECT_DIR . ' -s ' . PROJECT_BETA_DIR);
 		$indexContent = $this->getFileContentInOneLine(API_DIR . '/index.html');
 		Assert::match(
 			'%A%<a href="namespace-ProjectBeta.html">ProjectBeta</a>%A%',
@@ -32,9 +29,7 @@ class GroupsTest extends TestCase
 
 	public function testNone()
 	{
-		$this->prepareConfig('none');
-		passthru(APIGEN_BIN . ' generate');
-
+		$this->runGenerateCommand('--groups=none', PROJECT_DIR . ' -s ' . PROJECT_BETA_DIR);
 		$indexContent = $this->getFileContentInOneLine(API_DIR . '/index.html');
 		Assert::notContains(
 			'<a href="namespace-ProjectBeta.html">ProjectBeta</a>',
@@ -49,9 +44,7 @@ class GroupsTest extends TestCase
 
 	public function testPackages()
 	{
-		$this->prepareConfig('packages');
-		passthru(APIGEN_BIN . ' generate');
-
+		$this->runGenerateCommand('--groups=packages', PROJECT_DIR . ' -s ' . PROJECT_BETA_DIR);
 		$indexContent = $this->getFileContentInOneLine(API_DIR . '/index.html');
 		Assert::match(
 			'%A%<li><a href="package-A.html">A</a>%A%',
@@ -66,9 +59,7 @@ class GroupsTest extends TestCase
 
 	public function testNamespace()
 	{
-		$this->prepareConfig('namespaces');
-		passthru(APIGEN_BIN . ' generate');
-
+		$this->runGenerateCommand('--groups=namespaces', PROJECT_DIR . ' -s ' . PROJECT_BETA_DIR);
 		$indexContent = $this->getFileContentInOneLine(API_DIR . '/index.html');
 		Assert::match(
 			'%A%<a href="namespace-ProjectBeta.html">ProjectBeta</a>%A%',
@@ -78,22 +69,6 @@ class GroupsTest extends TestCase
 			'<li><a href="package-A.html">A</a>',
 			$indexContent
 		);
-	}
-
-
-	/**
-	 * @param string $group
-	 */
-	private function prepareConfig($group = NULL)
-	{
-		$neonFile = new NeonFile(__DIR__ . '/apigen.neon');
-		$config = $neonFile->read();
-		$config['source'] = [PROJECT_BETA_DIR];
-		$config['destination'] = API_DIR;
-		if ($group !== NULL) {
-			$config['groups'] = $group;
-		}
-		$neonFile->write($config);
 	}
 
 }

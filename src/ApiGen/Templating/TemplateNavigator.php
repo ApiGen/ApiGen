@@ -11,13 +11,13 @@ namespace ApiGen\Templating;
 
 use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions as CO;
+use ApiGen\Configuration\Theme\ThemeConfigOptions as TCO;
 use ApiGen\Reflection\ReflectionElement;
 use ApiGen\Templating\Filters\SourceFilters;
 use ApiGen\Templating\Filters\UrlFilters;
-use Nette;
 
 
-class TemplateNavigator extends Nette\Object
+class TemplateNavigator
 {
 
 	/**
@@ -50,9 +50,8 @@ class TemplateNavigator extends Nette\Object
 	 */
 	public function getTemplatePath($name)
 	{
-		$this->prepareTemplate($name);
 		$options = $this->configuration->getOptions();
-		return $options[CO::TEMPLATE]['templates'][$name]['template'];
+		return $options[CO::TEMPLATE][TCO::TEMPLATES][$name]['template'];
 	}
 
 
@@ -63,7 +62,7 @@ class TemplateNavigator extends Nette\Object
 	public function getTemplateFileName($name)
 	{
 		$options = $this->configuration->getOptions();
-		return $this->getDestination() . '/' . $options[CO::TEMPLATE]['templates'][$name]['filename'];
+		return $this->getDestination() . '/' . $options[CO::TEMPLATE][TCO::TEMPLATES][$name]['filename'];
 	}
 
 
@@ -129,36 +128,6 @@ class TemplateNavigator extends Nette\Object
 	private function getDestination()
 	{
 		return $this->configuration->getOption(CO::DESTINATION);
-	}
-
-
-	/**
-	 * Checks if template exists and creates dir for it.
-	 *
-	 * @param string $name
-	 * @throws \RuntimeException
-	 */
-	private function prepareTemplate($name)
-	{
-		if ( ! $this->templateExists($name)) {
-			throw new \RuntimeException('Template for ' . $name . ' does not exist or is missing in config');
-		}
-
-		$dir = dirname($this->getTemplateFileName($name));
-		if ( ! is_dir($dir)) {
-			mkdir($dir, 0755, TRUE);
-		}
-	}
-
-
-	/**
-	 * @param string $name
-	 * @return string
-	 */
-	private function templateExists($name)
-	{
-		$options = $this->configuration->getOptions();
-		return isset($options[CO::TEMPLATE]['templates'][$name]);
 	}
 
 }

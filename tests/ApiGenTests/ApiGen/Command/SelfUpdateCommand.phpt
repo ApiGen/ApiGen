@@ -21,8 +21,6 @@ class SelfUpdateCommandTest extends TestCase
 
 	public function testCommand()
 	{
-		$this->prepareConfig();
-
 		$compiler = new PharCompiler(__DIR__ . '/../../../..');
 
 		$apigenPharFile = TEMP_DIR . '/apigen.phar';
@@ -30,8 +28,7 @@ class SelfUpdateCommandTest extends TestCase
 		Assert::true(file_exists($apigenPharFile));
 
 		$generatedFileHash = sha1_file($apigenPharFile);
-		passthru($apigenPharFile . ' self-update', $output);
-		Assert::same(0, $output);
+		exec($apigenPharFile . ' self-update', $output);
 
 		$lastReleasedVersionHash = $this->getLastReleasedVersionHash();
 		$downloadedFileHash = sha1_file($apigenPharFile);
@@ -53,16 +50,6 @@ class SelfUpdateCommandTest extends TestCase
 		$manifest = file_get_contents(SelfUpdateCommand::MANIFEST_URL);
 		$item = json_decode($manifest);
 		return $item->sha1;
-	}
-
-
-	private function prepareConfig()
-	{
-		$neonFile = new NeonFile(__DIR__ . '/apigen.neon');
-		$config = $neonFile->read();
-		$config['source'] = [PROJECT_DIR];
-		$config['destination'] = API_DIR;
-		$neonFile->write($config);
 	}
 
 }

@@ -11,10 +11,9 @@ namespace ApiGen\Events;
 
 use ApiGen\Console\ProgressBar;
 use Kdyby\Events\Subscriber;
-use Nette;
 
 
-class ProgressBarIncrement extends Nette\Object implements Subscriber
+class ProgressBarIncrement implements Subscriber
 {
 
 	/**
@@ -30,32 +29,25 @@ class ProgressBarIncrement extends Nette\Object implements Subscriber
 
 
 	/**
-	 * @return array
+	 * @return string[]
 	 */
 	public function getSubscribedEvents()
 	{
 		return [
-			'ApiGen\Parser\Parser::onParseStart' => 'onStart',
-			'ApiGen\Parser\Parser::onParseProgress' => 'onProgress',
-			'ApiGen\Generator\Generator::onGenerateStart' => 'onStart',
-			'ApiGen\Generator\Generator::onGenerateProgress' => 'onProgress'
+			'ApiGen\Generator\TemplateGenerators\NamespaceGenerator::onGenerateProgress',
+			'ApiGen\Generator\TemplateGenerators\PackageGenerator::onGenerateProgress',
+			'ApiGen\Generator\TemplateGenerators\ClassElementGenerator::onGenerateProgress',
+			'ApiGen\Generator\TemplateGenerators\ConstantElementGenerator::onGenerateProgress',
+			'ApiGen\Generator\TemplateGenerators\FunctionElementGenerator::onGenerateProgress',
+			'ApiGen\Generator\TemplateGenerators\SourceCodeGenerator::onGenerateProgress'
 		];
-	}
-
-
-	/**
-	 * @param int $steps
-	 */
-	public function onStart($steps)
-	{
-		$this->progressBar->init($steps);
 	}
 
 
 	/**
 	 * @param int $size
 	 */
-	public function onProgress($size)
+	public function onGenerateProgress($size)
 	{
 		$this->progressBar->increment($size);
 	}

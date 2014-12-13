@@ -27,7 +27,7 @@
 		"michelf/php-markdown": "~1.4",
 		"kdyby/events": "~2.0",
 		"kdyby/console": "~2.0",
-		"symfony/options-resolver": "~2.5",
+		"symfony/options-resolver": "~2.6.1",
 
 		"ext-json": "*",
 		"ext-mbstring": "*",
@@ -37,7 +37,7 @@
 	"require-dev": {
 		"nette/tester": "~1.3",
 		"jakub-onderka/php-parallel-lint": "~0.8",
-		"zenify/coding-standard": "~1.0"
+		"zenify/coding-standard": "~2.0"
 	},
 	"suggest": {
 		"ext-bz2": "*",
@@ -46,8 +46,8 @@
 		"ext-zlib": "*"
 	},
 	"autoload": {
-		"psr-0": {
-			"ApiGen": "src/"
+		"psr-4": {
+			"ApiGen\\": "src/ApiGen"
 		}
 	},
 	"bin": [

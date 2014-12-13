@@ -153,9 +153,7 @@ class UrlFilters extends Filters
 
 
 	/**
-	 * Returns a link to a package summary file.
-	 *
-	 * @param string $packageName Package name
+	 * @param string $packageName
 	 * @return string
 	 */
 	public function packageUrl($packageName)
@@ -168,9 +166,7 @@ class UrlFilters extends Filters
 
 
 	/**
-	 * Returns a link to a namespace summary file.
-	 *
-	 * @param string $namespaceName Namespace name
+	 * @param string $namespaceName
 	 * @return string
 	 */
 	public function namespaceUrl($namespaceName)
@@ -183,9 +179,7 @@ class UrlFilters extends Filters
 
 
 	/**
-	 * Returns a link to class summary file.
-	 *
-	 * @param string|ReflectionClass $class Class reflection or name
+	 * @param string|ReflectionClass $class
 	 * @return string
 	 */
 	public function classUrl($class)
@@ -199,8 +193,6 @@ class UrlFilters extends Filters
 
 
 	/**
-	 * Returns a link to method in class summary file.
-	 *
 	 * @return string
 	 */
 	public function methodUrl(ReflectionMethod $method, ReflectionClass $class = NULL)
@@ -212,8 +204,6 @@ class UrlFilters extends Filters
 
 
 	/**
-	 * Returns a link to property in class summary file.
-	 *
 	 * @return string
 	 */
 	public function propertyUrl(ReflectionProperty $property, ReflectionClass $class = NULL)
@@ -224,8 +214,6 @@ class UrlFilters extends Filters
 
 
 	/**
-	 * Returns a link to constant in class summary file or to constant summary file.
-	 *
 	 * @return string
 	 */
 	public function constantUrl(ReflectionConstant $constant)
@@ -243,8 +231,6 @@ class UrlFilters extends Filters
 
 
 	/**
-	 * Returns a link to function summary file.
-	 *
 	 * @return string
 	 */
 	public function functionUrl(ReflectionFunction $function)
@@ -291,37 +277,7 @@ class UrlFilters extends Filters
 			$classes[] = 'invalid';
 		}
 
-		if ($element instanceof ReflectionClass) {
-			$link = $this->link($this->classUrl($element), $element->getName(), TRUE, $classes);
-
-		} elseif ($element instanceof ReflectionConstant && $element->getDeclaringClassName() === NULL) {
-			$text = $element->inNamespace()
-				? $this->escapeHtml($element->getNamespaceName()) . '\\<b>' . $this->escapeHtml($element->getShortName()) . '</b>'
-				: '<b>' . $this->escapeHtml($element->getName()) . '</b>';
-			$link = $this->link($this->constantUrl($element), $text, FALSE, $classes);
-
-		} elseif ($element instanceof ReflectionFunction) {
-			$link = $this->link($this->functionUrl($element), $element->getName() . '()', TRUE, $classes);
-
-		} else {
-			$url = '';
-			$text = $this->escapeHtml($element->getDeclaringClassName());
-			if ($element instanceof ReflectionProperty) {
-				$url = $this->propertyUrl($element);
-				$text .= '::<var>$' . $this->escapeHtml($element->getName()) . '</var>';
-
-			} elseif ($element instanceof ReflectionMethod) {
-				$url = $this->methodUrl($element);
-				$text .= '::' . $this->escapeHtml($element->getName()) . '()';
-
-			} elseif ($element instanceof ReflectionConstant) {
-				$url = $this->constantUrl($element);
-				$text .= '::<b>' . $this->escapeHtml($element->getName()) . '</b>';
-			}
-
-			$link = $this->link($url, $text, FALSE, $classes);
-		}
-
+		$link = $this->createLinkForElement($element, $classes);
 		return sprintf('<code>%s</code>', $link . $suffix);
 	}
 
@@ -354,8 +310,6 @@ class UrlFilters extends Filters
 
 
 	/**
-	 * Individual annotations processing
-	 *
 	 * @param string $value
 	 * @param string $name
 	 * @param ReflectionElement $context
@@ -363,59 +317,20 @@ class UrlFilters extends Filters
 	 */
 	public function annotation($value, $name, ReflectionElement $context)
 	{
-		switch ($name) {
-			case 'return':
-			case 'throws':
-				$description = trim(strpbrk($value, "\n\r\t $")) ?: NULL;
-				if ($description) {
-					$description = '<br>' . $this->doc($description, $context);
-				}
-				$typeLinks = $this->typeLinks($value, $context);
+		$annotationProcessors = [
+			'return' => $this->processReturnAnnotations($value, $context),
+			'throws' => $this->processThrowsAnnotations($value, $context),
+			'license' => $this->processLicenseAnnotations($value, $context),
+			'link' => $this->processLinkAnnotations($value, $context),
+			'see' => $this->processSeeAnnotations($value, $context),
+			'uses' => $this->processUsesAndUsedbyAnnotations($value, $context),
+			'usedby' => $this->processUsesAndUsedbyAnnotations($value, $context),
+		];
 
-				if ($name === 'throws') {
-					return $typeLinks . $description;
-
-				} else {
-					return sprintf('<code>%s</code>%s', $typeLinks, $description);
-				}
-
-			case 'license':
-				list($url, $description) = Strings::split($value);
-				return Strings::link($url, $description ?: $url);
-
-			case 'link':
-				list($url, $description) = Strings::split($value);
-				if (Validators::isUri($url)) {
-					return Strings::link($url, $description ?: $url);
-				}
-				break;
-
-			case 'see':
-				$doc = [];
-				foreach (preg_split('~\\s*,\\s*~', $value) as $link) {
-					if ($this->elementResolver->resolveElement($link, $context) !== NULL) {
-						$doc[] = sprintf('<code>%s</code>', $this->typeLinks($link, $context));
-
-					} else {
-						$doc[] = $this->doc($link, $context);
-					}
-				}
-				return implode(', ', $doc);
-
-			case 'uses':
-			case 'usedby':
-				list($link, $description) = Strings::split($value);
-				$separator = $context instanceof ReflectionClass || ! $description ? ' ' : '<br>';
-				if ($this->elementResolver->resolveElement($link, $context) !== NULL) {
-					return sprintf('<code>%s</code>%s%s', $this->typeLinks($link, $context), $separator, $description);
-				}
-				break;
-			default:
-				// see bellow
-				break;
+		if (isset($annotationProcessors[$name])) {
+			return $annotationProcessors[$name];
 		}
 
-		// Default
 		return $this->doc($value, $context);
 	}
 
@@ -578,6 +493,169 @@ class UrlFilters extends Filters
 	public function highlightValue($definition, $context)
 	{
 		return $this->highlightPhp(preg_replace('~^(?:[ ]{4}|\t)~m', '', $definition), $context);
+	}
+
+
+	/**
+	 * @param ReflectionElement $element
+	 * @param array $classes
+	 * @return string
+	 */
+	private function createLinkForElement($element, array $classes)
+	{
+		if ($element instanceof ReflectionClass) {
+			return $this->link($this->classUrl($element), $element->getName(), TRUE, $classes);
+
+		} elseif ($element instanceof ReflectionConstant && $element->getDeclaringClassName() === NULL) {
+			return $this->createLinkForGlobalConstant($element, $classes);
+
+		} elseif ($element instanceof ReflectionFunction) {
+			return $this->link($this->functionUrl($element), $element->getName() . '()', TRUE, $classes);
+
+		} else {
+			return $this->createLinkForPropertyMethodOrConstants($element, $classes);
+		}
+	}
+
+
+	/**
+	 * @return string
+	 */
+	private function createLinkForGlobalConstant(ReflectionConstant $element, array $classes)
+	{
+		$text = $element->inNamespace()
+			? $this->escapeHtml($element->getNamespaceName()) . '\\<b>' . $this->escapeHtml($element->getShortName()) . '</b>'
+			: '<b>' . $this->escapeHtml($element->getName()) . '</b>';
+
+		return $this->link($this->constantUrl($element), $text, FALSE, $classes);
+	}
+
+
+	/**
+	 * @param ReflectionMethod|ReflectionProperty|ReflectionConstant $element
+	 * @param array $classes
+	 * @return string
+	 */
+	private function createLinkForPropertyMethodOrConstants($element, array $classes)
+	{
+		$url = '';
+		$text = $this->escapeHtml($element->getDeclaringClassName());
+		if ($element instanceof ReflectionProperty) {
+			$url = $this->propertyUrl($element);
+			$text .= '::<var>$' . $this->escapeHtml($element->getName()) . '</var>';
+
+		} elseif ($element instanceof ReflectionMethod) {
+			$url = $this->methodUrl($element);
+			$text .= '::' . $this->escapeHtml($element->getName()) . '()';
+
+		} elseif ($element instanceof ReflectionConstant) {
+			$url = $this->constantUrl($element);
+			$text .= '::<b>' . $this->escapeHtml($element->getName()) . '</b>';
+		}
+
+		return $this->link($url, $text, FALSE, $classes);
+	}
+
+
+	/**
+	 * @param mixed $value
+	 * @param ReflectionElement $context
+	 * @return string
+	 */
+	private function processReturnAnnotations($value, ReflectionElement $context)
+	{
+		$description = $this->getDescriptionFromValue($value, $context);
+		$typeLinks = $this->typeLinks($value, $context);
+		return sprintf('<code>%s</code>%s', $typeLinks, $description);
+	}
+
+
+	/**
+	 * @param mixed $value
+	 * @param ReflectionElement $context
+	 * @return string
+	 */
+	private function processThrowsAnnotations($value, ReflectionElement $context)
+	{
+		$description = $this->getDescriptionFromValue($value, $context);
+		$typeLinks = $this->typeLinks($value, $context);
+		return $typeLinks . $description;
+	}
+
+
+	/**
+	 * @param mixed $value
+	 * @param ReflectionElement $context
+	 * @return string
+	 */
+	private function getDescriptionFromValue($value, ReflectionElement $context)
+	{
+		$description = trim(strpbrk($value, "\n\r\t $")) ?: NULL;
+		if ($description) {
+			$description = '<br>' . $this->doc($description, $context);
+		}
+		return $description;
+	}
+
+
+	/**
+	 * @param string $value
+	 * @return string
+	 */
+	private function processLicenseAnnotations($value)
+	{
+		list($url, $description) = Strings::split($value);
+		return Strings::link($url, $description ?: $url);
+	}
+
+
+	/**
+	 * @param string $value
+	 * @return string
+	 */
+	private function processLinkAnnotations($value)
+	{
+		list($url, $description) = Strings::split($value);
+		if (Validators::isUri($url)) {
+			return Strings::link($url, $description ?: $url);
+		}
+		return NULL;
+	}
+
+
+	/**
+	 * @param string $value
+	 * @param ReflectionElement $context
+	 * @return string
+	 */
+	private function processSeeAnnotations($value, ReflectionElement $context)
+	{
+		$doc = [];
+		foreach (preg_split('~\\s*,\\s*~', $value) as $link) {
+			if ($this->elementResolver->resolveElement($link, $context) !== NULL) {
+				$doc[] = sprintf('<code>%s</code>', $this->typeLinks($link, $context));
+
+			} else {
+				$doc[] = $this->doc($link, $context);
+			}
+		}
+		return implode(', ', $doc);
+	}
+
+
+	/**
+	 * @param string $value
+	 * @param ReflectionElement $context
+	 * @return string
+	 */
+	private function processUsesAndUsedbyAnnotations($value, ReflectionElement $context)
+	{
+		list($link, $description) = Strings::split($value);
+		$separator = $context instanceof ReflectionClass || ! $description ? ' ' : '<br>';
+		if ($this->elementResolver->resolveElement($link, $context) !== NULL) {
+			return sprintf('<code>%s</code>%s%s', $this->typeLinks($link, $context), $separator, $description);
+		}
+		return NULL;
 	}
 
 }

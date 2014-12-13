@@ -10,6 +10,7 @@
 namespace ApiGen\Command;
 
 use ApiGen\ApiGen;
+use Phar;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -92,7 +93,7 @@ EOT
 	private function validatePhar()
 	{
 		if ( ! ini_get('phar.readonly')) {
-			$phar = new \Phar($this->getLocalFilename());
+			$phar = new Phar($this->getLocalFilename());
 			unset($phar);
 		}
 	}

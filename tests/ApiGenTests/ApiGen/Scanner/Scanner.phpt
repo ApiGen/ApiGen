@@ -68,17 +68,6 @@ class ScannerTest extends TestCase
 	}
 
 
-	public function testPhar()
-	{
-		$compiler = new PharCompiler(__DIR__ . '/../../../..');
-		$compiler->compile(TEMP_DIR . '/apigen.phar');
-		Assert::true(file_exists(TEMP_DIR . '/apigen.phar'));
-
-		$files = $this->scanner->scan([TEMP_DIR . '/apigen.phar']);
-		Assert::true(count($files) > 400);
-	}
-
-
 	/**
 	 * Issue #412
 	 */

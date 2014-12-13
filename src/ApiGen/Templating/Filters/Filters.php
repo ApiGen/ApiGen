@@ -101,4 +101,14 @@ abstract class Filters extends Nette\Object
 		return preg_replace('~[^\w]~', '.', $string);
 	}
 
+
+	/**
+	 * @param string $url
+	 * @return string
+	 */
+	private function url($url)
+	{
+		return rawurlencode($url);
+	}
+
 }

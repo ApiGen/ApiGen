@@ -107,7 +107,7 @@ class FileSystem
 	 * @param array $baseDirectories List of base directories
 	 * @return string
 	 */
-	public static function getAbsolutePath($path, array $baseDirectories = array())
+	public static function getAbsolutePath($path, array $baseDirectories = [])
 	{
 		if (self::isAbsolutePath($path)) {
 			return $path;

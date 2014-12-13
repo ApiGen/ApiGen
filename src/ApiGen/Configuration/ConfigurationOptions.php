@@ -31,7 +31,6 @@ class ConfigurationOptions
 	const INTERNAL = 'internal';
 	const PHP = 'php';
 	const SKIP_DOC_PATH = 'skipDocPath';
-	const SKIP_DOC_PREFIX = 'skipDocPrefix';
 	const SOURCE = 'source';
 	const SOURCE_CODE = 'sourceCode';
 	const TEMPLATE = 'template';

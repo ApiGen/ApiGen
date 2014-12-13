@@ -1,11 +1,9 @@
 <?php
 
-if (@ ! include_once __DIR__ . '/../../vendor/autoload.php') {
-	echo 'Install Nette Tester using `composer update --dev`';
-	exit(1);
-}
+/** @var Composer\Autoload\ClassLoader $classLoader */
+$classLoader = include_once __DIR__ . '/../../vendor/autoload.php';
+$classLoader->addPsr4('ApiGenTests\\', __DIR__);
 
-include_once 'TestCase.php';
 
 date_default_timezone_set('Europe/Prague');
 Tester\Environment::setup();
@@ -26,7 +24,6 @@ function createTempDir() {
 	@mkdir(__DIR__ . '/../tmp'); // @ - directory may exists
 	@mkdir($tempDir = __DIR__ . '/../tmp/' . (isset($_SERVER['argv']) ? md5(serialize($_SERVER['argv'])) : getmypid()));
 	Tester\Helpers::purge($tempDir);
-
 	return realpath($tempDir);
 }
 

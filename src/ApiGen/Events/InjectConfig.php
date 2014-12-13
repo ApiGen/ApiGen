@@ -10,33 +10,17 @@
 namespace ApiGen\Events;
 
 use ApiGen\Charset\CharsetDetector;
-use ApiGen\Charset\Configuration\CharsetOptionsResolver;
 use ApiGen\Configuration\Configuration;
-use ApiGen\FileSystem\Finder;
-use ApiGen\FileSystem\Zip;
-use ApiGen\Generator\Generator;
 use ApiGen\Generator\Resolvers\RelativePathResolver;
 use ApiGen\Templating\Filters\AnnotationFilters;
 use ApiGen\Templating\Filters\SourceFilters;
 use ApiGen\Templating\Filters\UrlFilters;
-use ApiGen\Templating\TemplateFactory;
 use Kdyby\Events\Subscriber;
-use Nette;
 use Nette\Utils\ArrayHash;
 
 
-class InjectConfig extends Nette\Object implements Subscriber
+class InjectConfig implements Subscriber
 {
-
-	/**
-	 * @var Generator
-	 */
-	private $generator;
-
-	/**
-	 * @var TemplateFactory
-	 */
-	private $templateFactory;
 
 	/**
 	 * @var CharsetDetector
@@ -54,16 +38,6 @@ class InjectConfig extends Nette\Object implements Subscriber
 	private $urlFilters;
 
 	/**
-	 * @var Finder
-	 */
-	private $finder;
-
-	/**
-	 * @var Zip
-	 */
-	private $zip;
-
-	/**
 	 * @var AnnotationFilters
 	 */
 	private $annotationFilters;
@@ -75,23 +49,15 @@ class InjectConfig extends Nette\Object implements Subscriber
 
 
 	public function __construct(
-		Generator $generator,
-		TemplateFactory $templateFactory,
 		CharsetDetector $charsetDetector,
 		SourceFilters $sourceFilters,
 		UrlFilters $urlFilters,
-		Finder $finder,
-		Zip $zip,
 		AnnotationFilters $annotationFilters,
 		RelativePathResolver $relativePathResolver
 	) {
-		$this->generator = $generator;
-		$this->templateFactory = $templateFactory;
 		$this->charsetDetector = $charsetDetector;
 		$this->sourceFilters = $sourceFilters;
 		$this->urlFilters = $urlFilters;
-		$this->finder = $finder;
-		$this->zip = $zip;
 		$this->annotationFilters = $annotationFilters;
 		$this->relativePathResolver = $relativePathResolver;
 	}
@@ -110,13 +76,9 @@ class InjectConfig extends Nette\Object implements Subscriber
 	{
 		Configuration::$config = ArrayHash::from($config);
 
-		$this->generator->setConfig($config);
-		$this->templateFactory->setConfig($config);
 		$this->relativePathResolver->setConfig($config);
 
 		$this->charsetDetector->setCharsets($config['charset']);
-		$this->finder->setConfig($config);
-		$this->zip->setConfig($config);
 
 		$this->sourceFilters->setConfig($config);
 		$this->urlFilters->setConfig($config);

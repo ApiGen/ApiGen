@@ -6,7 +6,6 @@
 
 namespace ApiGenTests\ApiGen\Generator;
 
-use ApiGen\Neon\NeonFile;
 use ApiGenTests\TestCase;
 use Tester\Assert;
 
@@ -54,19 +53,8 @@ class FormattingTest extends TestCase
 	 */
 	private function getGeneratedAnnotationsFileContents()
 	{
-		$this->prepareConfig();
-		passthru(APIGEN_BIN . ' generate', $output);
+		$this->runGenerateCommand();
 		return $this->getFileContentInOneLine(API_DIR . '/class-Project.Annotations.html');
-	}
-
-
-	private function prepareConfig()
-	{
-		$neonFile = new NeonFile(__DIR__ . '/apigen.neon');
-		$config = $neonFile->read();
-		$config['source'] = [PROJECT_DIR];
-		$config['destination'] = API_DIR;
-		$neonFile->write($config);
 	}
 
 }

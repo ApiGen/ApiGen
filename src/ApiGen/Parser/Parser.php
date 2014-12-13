@@ -13,37 +13,12 @@ use ApiGen\Charset\CharsetConvertor;
 use ApiGen\Parser\Broker\Backend;
 use ApiGen\Reflection\ReflectionElement;
 use ArrayObject;
-use Nette;
 use SplFileInfo;
 use TokenReflection\Broker;
 
 
-/**
- * @method ArrayObject  getClasses()
- * @method ArrayObject  getConstants()
- * @method ArrayObject  getFunctions()
- * @method array        getErrors()
- * @method Parser       onParseStart($steps)
- * @method Parser       onParseProgress($size)
- * @method Parser       onParseFinish(Parser $parser)
- */
-class Parser extends Nette\Object
+class Parser
 {
-
-	/**
-	 * @var array
-	 */
-	public $onParseStart = [];
-
-	/**
-	 * @var array
-	 */
-	public $onParseProgress = [];
-
-	/**
-	 * @var array
-	 */
-	public $onParseFinish = [];
 
 	/**
 	 * @var Broker
@@ -78,13 +53,19 @@ class Parser extends Nette\Object
 	/**
 	 * @var array
 	 */
-	private $errors;
+	private $errors = [];
+
+	/**
+	 * @var ParserResult
+	 */
+	private $parserResult;
 
 
-	public function __construct(Broker $broker, CharsetConvertor $charsetConvertor)
+	public function __construct(Broker $broker, CharsetConvertor $charsetConvertor, ParserResult $parserResult)
 	{
 		$this->broker = $broker;
 		$this->charsetConvertor = $charsetConvertor;
+		$this->parserResult = $parserResult;
 
 		$this->classes = new ArrayObject;
 		$this->constants = new ArrayObject;
@@ -98,8 +79,6 @@ class Parser extends Nette\Object
 	 */
 	public function parse($files)
 	{
-		$this->onParseStart(count($files));
-
 		foreach ($files as $file) {
 			$content = $this->charsetConvertor->convertFileToUtf($file->getPathname());
 			try {
@@ -108,12 +87,13 @@ class Parser extends Nette\Object
 			} catch (\Exception $e) {
 				$this->errors[] = $e;
 			}
-
-			$this->onParseProgress(1);
 		}
 
-		$allFoundClasses = $this->broker->getClasses(Backend::TOKENIZED_CLASSES | Backend::INTERNAL_CLASSES
-			| Backend::NONEXISTENT_CLASSES);
+		$allFoundClasses = $this->broker->getClasses(
+			Backend::TOKENIZED_CLASSES
+			| Backend::INTERNAL_CLASSES
+			| Backend::NONEXISTENT_CLASSES
+		);
 		$this->classes->exchangeArray($allFoundClasses);
 		$this->constants->exchangeArray($this->broker->getConstants());
 		$this->functions->exchangeArray($this->broker->getFunctions());
@@ -123,7 +103,7 @@ class Parser extends Nette\Object
 		$this->constants->uksort('strcasecmp');
 		$this->functions->uksort('strcasecmp');
 
-		$this->onParseFinish($this);
+		$this->loadToParserResult();
 	}
 
 
@@ -142,6 +122,15 @@ class Parser extends Nette\Object
 
 
 	/**
+	 * @return array
+	 */
+	public function getErrors()
+	{
+		return $this->errors;
+	}
+
+
+	/**
 	 * @param ReflectionElement[] $result
 	 * @return int
 	 */
@@ -152,6 +141,19 @@ class Parser extends Nette\Object
 			$count += (int) $element->isDocumented();
 		}
 		return $count;
+	}
+
+
+	private function loadToParserResult()
+	{
+		$this->parserResult->setClasses($this->classes);
+		$this->parserResult->setConstants($this->constants);
+		$this->parserResult->setFunctions($this->functions);
+
+		// temporary workaround for reflections
+		ParserResult::$classesStatic = $this->classes;
+		ParserResult::$constantsStatic = $this->constants;
+		ParserResult::$functionsStatic = $this->functions;
 	}
 
 }

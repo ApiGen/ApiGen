@@ -6,7 +6,6 @@
 
 namespace ApiGenTests\ApiGen\Configuration;
 
-use ApiGen\Neon\NeonFile;
 use ApiGenTests\TestCase;
 use Tester\Assert;
 
@@ -19,24 +18,14 @@ class TodoTest extends TestCase
 
 	public function testConfig()
 	{
-		$this->prepareConfig();
-		passthru(APIGEN_BIN . ' generate');
-		Assert::false(file_exists(API_DIR . '/todo.html'));
-
-		$this->prepareConfig(FALSE);
-		passthru(APIGEN_BIN . ' generate');
-		Assert::false(file_exists(API_DIR . '/todo.html'));
-
-		$this->prepareConfig(TRUE);
-		passthru(APIGEN_BIN . ' generate');
+		$this->runGenerateCommand('--todo');
 		Assert::true(file_exists(API_DIR . '/todo.html'));
 	}
 
 
 	public function testTodoContent()
 	{
-		$this->prepareConfig(TRUE);
-		passthru(APIGEN_BIN . ' generate');
+		$this->runGenerateCommand('--todo');
 		$content = file_get_contents(API_DIR . '/todo.html');
 
 		Assert::match(
@@ -75,22 +64,6 @@ class TodoTest extends TestCase
 			'%A%Update return values to the newest state.%A%',
 			$content
 		);
-	}
-
-
-	/**
-	 * @param bool $todoStatus
-	 */
-	private function prepareConfig($todoStatus = NULL)
-	{
-		$neonFile = new NeonFile(__DIR__ . '/apigen.neon');
-		$config = $neonFile->read();
-		$config['source'] = [PROJECT_DIR];
-		$config['destination'] = API_DIR;
-		if ($todoStatus !== NULL) {
-			$config['todo'] = $todoStatus;
-		}
-		$neonFile->write($config);
 	}
 
 }

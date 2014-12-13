@@ -9,13 +9,14 @@
 
 namespace ApiGen;
 
+use ApiGen\Reflection\ReflectionElement;
+use ArrayObject;
+use RecursiveArrayIterator;
+use RecursiveIteratorIterator;
 use RecursiveTreeIterator;
 use RuntimeException;
 
 
-/**
- * Customized recursive tree iterator.
- */
 class Tree extends RecursiveTreeIterator
 {
 
@@ -34,24 +35,18 @@ class Tree extends RecursiveTreeIterator
 	const LAST = '0';
 
 	/**
-	 * Reflections in the tree.
-	 *
-	 * @var \ArrayObject
+	 * @var ArrayObject
 	 */
 	private $reflections;
 
 
-	/**
-	 * @param array $treePart Part of the tree
-	 * @param \ArrayObject $reflections Array of reflections in the tree part
-	 */
-	public function __construct(array $treePart, \ArrayObject $reflections)
+	public function __construct(array $treePart, ArrayObject $reflections)
 	{
 		parent::__construct(
-			new \RecursiveArrayIterator($treePart),
+			new RecursiveArrayIterator($treePart),
 			RecursiveTreeIterator::BYPASS_KEY,
 			NULL,
-			\RecursiveIteratorIterator::SELF_FIRST
+			RecursiveIteratorIterator::SELF_FIRST
 		);
 		$this->setPrefixPart(RecursiveTreeIterator::PREFIX_END_HAS_NEXT, self::HAS_NEXT);
 		$this->setPrefixPart(RecursiveTreeIterator::PREFIX_END_LAST, self::LAST);
@@ -62,22 +57,17 @@ class Tree extends RecursiveTreeIterator
 
 
 	/**
-	 * Returns if the current item has a sibling on the same level.
-	 *
 	 * @return bool
 	 */
 	public function hasSibling()
 	{
 		$prefix = $this->getPrefix();
-		return ! empty($prefix) && self::HAS_NEXT === substr($prefix, -1);
+		return ! empty($prefix) && substr($prefix, -1) === self::HAS_NEXT;
 	}
 
 
 	/**
-	 * Returns the current reflection.
-	 *
-	 * @return \ApiGen\Reflection\ReflectionElement
-	 * @throws \UnexpectedValueException If current is not reflection array.
+	 * @return ReflectionElement
 	 */
 	public function current()
 	{
@@ -85,7 +75,6 @@ class Tree extends RecursiveTreeIterator
 		if ( ! isset($this->reflections[$className])) {
 			throw new RuntimeException(sprintf('Class "%s" is not in the reflection array', $className));
 		}
-
 		return $this->reflections[$className];
 	}
 

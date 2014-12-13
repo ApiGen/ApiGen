@@ -6,7 +6,6 @@
 
 namespace ApiGenTests\ApiGen\Configuration;
 
-use ApiGen\Neon\NeonFile;
 use ApiGenTests\TestCase;
 use Tester\Assert;
 
@@ -22,24 +21,11 @@ class MainTest extends TestCase
 
 	public function testConfig()
 	{
-		$this->prepareConfig();
-		passthru(APIGEN_BIN . ' generate');
-
+		$this->runGenerateCommand('--main=ProjectBeta', PROJECT_DIR . ' -s ' . PROJECT_BETA_DIR);
 		Assert::contains(
-			'<li class="main"><a href="namespace-ProjectBeta.html">ProjectBeta',
+			'<li class="active main"><a href="namespace-ProjectBeta.html">ProjectBeta',
 			$this->getFileContentInOneLine(API_DIR . '/index.html')
 		);
-	}
-
-
-	private function prepareConfig()
-	{
-		$neonFile = new NeonFile(__DIR__ . '/apigen.neon');
-		$config = $neonFile->read();
-		$config['source'] = [PROJECT_DIR, PROJECT_BETA_DIR];
-		$config['destination'] = API_DIR;
-		$config['main'] = 'ProjectBeta';
-		$neonFile->write($config);
 	}
 
 }

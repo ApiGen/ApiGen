@@ -8,6 +8,7 @@ namespace ApiGenTests\ApiGen\Parser;
 
 use ApiGen\Configuration\Configuration;
 use ApiGen\Parser\Parser;
+use ApiGen\Parser\ParserResult;
 use Nette\DI\Container;
 use Nette\Utils\ArrayHash;
 use Nette\Utils\Finder;
@@ -22,30 +23,27 @@ class ParserTest extends TestCase
 {
 
 	/**
+	 * @var Container
+	 */
+	private $container;
+
+	/**
 	 * @var Parser
 	 */
 	private $parser;
 
 	/**
-	 * @var Container
+	 * @var ParserResult
 	 */
-	private $container;
+	private $parserResult;
 
 
 	protected function setUp()
 	{
 		$this->container = createContainer();
 		$this->parser = $this->container->getByType('ApiGen\Parser\Parser');
-		$this->setupConfigDefaults();
-	}
-
-
-	public function testType()
-	{
-		Assert::type(
-			'ApiGen\Parser\Parser',
-			$this->parser
-		);
+		$this->parserResult = $this->container->getByType('ApiGen\Parser\ParserResult');
+		$this->setupConfigDefaults(); // required by Broker
 	}
 
 
@@ -54,9 +52,9 @@ class ParserTest extends TestCase
 		$files = $this->getFilesFromDir(PROJECT_DIR);
 		Assert::count(14, $files);
 
+		Assert::count(0, $this->parserResult->getClasses());
 		$this->parser->parse($files);
-		$classes = $this->parser->getClasses();
-		Assert::count(16, $classes);
+		Assert::count(16, $this->parserResult->getClasses());
 	}
 
 
