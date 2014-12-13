@@ -14,8 +14,6 @@ use TokenReflection\IReflection;
 
 
 /**
- * Envelope for parameters that are defined only in @param or @method annotation.
- *
  * @method ReflectionParameterMagic setName()
  * @method ReflectionParameterMagic setTypeHint()
  * @method ReflectionParameterMagic setPosition()
@@ -50,8 +48,6 @@ class ReflectionParameterMagic extends ReflectionParameter
 	protected $defaultValueDefinition;
 
 	/**
-	 * If the parameter can be used unlimited times.
-	 *
 	 * @var bool
 	 */
 	protected $unlimited;
@@ -77,8 +73,6 @@ class ReflectionParameterMagic extends ReflectionParameter
 
 
 	/**
-	 * Returns the reflection broker used by this reflection object.
-	 *
 	 * @return TokenReflection\Broker
 	 */
 	public function getBroker()
@@ -88,8 +82,6 @@ class ReflectionParameterMagic extends ReflectionParameter
 
 
 	/**
-	 * Overrides parent method.
-	 *
 	 * @return string
 	 */
 	public function getName()

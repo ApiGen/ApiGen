@@ -21,9 +21,6 @@ use TokenReflection;
 use TokenReflection\IReflectionClass;
 
 
-/**
- * Alters TokenReflection\IReflectionClass functionality for ApiGen.
- */
 class ReflectionClass extends ReflectionElement
 {
 
@@ -149,8 +146,6 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * Returns if the class is an exception or its descendant.
-	 *
 	 * @return bool
 	 */
 	public function isException()
@@ -170,8 +165,6 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * Returns visible methods.
-	 *
 	 * @return ReflectionMethod[]|array
 	 */
 	public function getMethods()
@@ -194,8 +187,6 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * Returns visible methods declared by inspected class.
-	 *
 	 * @return ReflectionMethod[]|array
 	 */
 	public function getOwnMethods()
@@ -214,8 +205,6 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * Returns visible magic methods.
-	 *
 	 * @return ReflectionMethod[]|array
 	 */
 	public function getMagicMethods()
@@ -257,8 +246,6 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * Returns visible magic methods declared by inspected class.
-	 *
 	 * @return ReflectionMethod[]|array
 	 */
 	public function getOwnMagicMethods()
@@ -286,8 +273,6 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * Returns visible methods declared by traits.
-	 *
 	 * @return array
 	 */
 	public function getTraitMethods()
@@ -305,8 +290,6 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * Returns a method reflection.
-	 *
 	 * @param string $name Method name
 	 * @return ReflectionMethod
 	 * @throws \InvalidArgumentException If required method does not exist.
@@ -324,8 +307,6 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * Returns visible properties.
-	 *
 	 * @return array
 	 */
 	public function getProperties()
@@ -348,8 +329,6 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * Returns visible magic properties.
-	 *
 	 * @return array
 	 */
 	public function getMagicProperties()
@@ -390,8 +369,6 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * Returns visible properties declared by inspected class.
-	 *
 	 * @return ReflectionProperty[]|array
 	 */
 	public function getOwnProperties()
@@ -411,8 +388,6 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * Returns visible properties magicly declared by inspected class.
-	 *
 	 * @return ReflectionProperty[]|array
 	 */
 	public function getOwnMagicProperties()
@@ -441,8 +416,6 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * Returns visible properties declared by traits.
-	 *
 	 * @return array
 	 */
 	public function getTraitProperties()
@@ -460,8 +433,6 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * Returns a method property.
-	 *
 	 * @param string $name Method name
 	 * @return ReflectionProperty
 	 * @throws \InvalidArgumentException If required property does not exist.
@@ -479,8 +450,6 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * Returns visible properties.
-	 *
 	 * @return ReflectionConstant[]|array
 	 */
 	public function getConstants()
@@ -501,8 +470,6 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * Returns constants declared by inspected class.
-	 *
 	 * @return ReflectionConstant[]|array
 	 */
 	public function getOwnConstants()
@@ -521,9 +488,7 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * Returns a constant reflection.
-	 *
-	 * @param string $name Constant name
+	 * @param string $name
 	 * @return ReflectionConstant
 	 * @throws \InvalidArgumentException If required constant does not exist.
 	 */
@@ -544,9 +509,7 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * Returns a constant reflection.
-	 *
-	 * @param string $name Constant name
+	 * @param string $name
 	 * @return ReflectionConstant
 	 */
 	public function getConstant($name)
@@ -556,8 +519,6 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * Checks if there is a constant of the given name.
-	 *
 	 * @param string $constantName
 	 * @return bool
 	 */
@@ -572,8 +533,6 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * Checks if there is a constant of the given name.
-	 *
 	 * @param string $constantName
 	 * @return bool
 	 */
@@ -588,8 +547,6 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * Returns a constant reflection.
-	 *
 	 * @param string $name
 	 * @return ReflectionConstant
 	 * @throws \InvalidArgumentException If required constant does not exist.
@@ -611,8 +568,6 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * Returns a constant reflection.
-	 *
 	 * @param string $name
 	 * @return ReflectionConstant
 	 */
@@ -623,8 +578,6 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * Returns a parent class reflection encapsulated by this class.
-	 *
 	 * @return ReflectionClass
 	 */
 	public function getParentClass()
@@ -637,8 +590,6 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * Returns the parent class name.
-	 *
 	 * @return string|NULL
 	 */
 	public function getParentClassName()
@@ -648,8 +599,6 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * Returns all parent classes reflections encapsulated by this class.
-	 *
 	 * @return ReflectionClass[]|array
 	 */
 	public function getParentClasses()
@@ -664,8 +613,6 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * Returns the parent classes names.
-	 *
 	 * @return array
 	 */
 	public function getParentClassNameList()
@@ -675,9 +622,7 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * Returns if the class implements the given interface.
-	 *
-	 * @param string|object $interface Interface name or reflection object
+	 * @param string|object $interface
 	 * @return bool
 	 */
 	public function implementsInterface($interface)
@@ -727,8 +672,6 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * Returns all traits reflections encapsulated by this class.
-	 *
 	 * @return ReflectionClass[]|string[]
 	 */
 	public function getTraits()

@@ -144,8 +144,6 @@ class ReflectionPropertyMagic extends ReflectionProperty
 
 
 	/**
-	 * Returns the reflection broker used by this reflection object.
-	 *
 	 * @return \TokenReflection\Broker
 	 */
 	public function getBroker()
@@ -306,8 +304,6 @@ class ReflectionPropertyMagic extends ReflectionProperty
 
 
 	/**
-	 * Returns if the property is protected.
-	 *
 	 * @return bool
 	 */
 	public function isProtected()
@@ -412,8 +408,6 @@ class ReflectionPropertyMagic extends ReflectionProperty
 
 
 	/**
-	 * Returns the appropriate docblock definition.
-	 *
 	 * @return string|boolean
 	 */
 	public function getDocComment()

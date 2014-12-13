@@ -10,10 +10,6 @@
 namespace ApiGen\Reflection;
 
 
-/**
- * Property reflection envelope.
- * Alters TokenReflection\IReflectionProperty functionality for ApiGen.
- */
 class ReflectionProperty extends ReflectionElement
 {
 

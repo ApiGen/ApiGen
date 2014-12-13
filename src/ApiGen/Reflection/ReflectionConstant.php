@@ -13,10 +13,6 @@ use ApiGen\FileSystem\FileSystem;
 use TokenReflection;
 
 
-/**
- * Constant reflection envelope.
- * Alters TokenReflection\IReflectionConstant functionality for ApiGen.
- */
 class ReflectionConstant extends ReflectionElement
 {
 
@@ -95,8 +91,6 @@ class ReflectionConstant extends ReflectionElement
 
 
 	/**
-	 * Returns the constant value definition.
-	 *
 	 * @return string
 	 */
 	public function getValueDefinition()
@@ -106,8 +100,6 @@ class ReflectionConstant extends ReflectionElement
 
 
 	/**
-	 * Returns if the constant is valid.
-	 *
 	 * @return bool
 	 */
 	public function isValid()
@@ -125,8 +117,6 @@ class ReflectionConstant extends ReflectionElement
 
 
 	/**
-	 * Returns if the constant should be documented.
-	 *
 	 * @return bool
 	 */
 	public function isDocumented()

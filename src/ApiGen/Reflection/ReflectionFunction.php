@@ -13,10 +13,6 @@ use ApiGen\FileSystem\FileSystem;
 use TokenReflection;
 
 
-/**
- * Function reflection envelope.
- * Alters TokenReflection\IReflectionFunction functionality for ApiGen.
- */
 class ReflectionFunction extends ReflectionFunctionBase
 {
 

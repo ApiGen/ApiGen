@@ -10,16 +10,10 @@
 namespace ApiGen\Reflection;
 
 
-/**
- * Method reflection envelope.
- * Alters TokenReflection\IReflectionMethod functionality for ApiGen.
- */
 class ReflectionMethod extends ReflectionFunctionBase
 {
 
 	/**
-	 * Returns if the method is magic.
-	 *
 	 * @return bool
 	 */
 	public function isMagic()
@@ -29,8 +23,6 @@ class ReflectionMethod extends ReflectionFunctionBase
 
 
 	/**
-	 * Returns the method declaring class.
-	 *
 	 * @return ReflectionClass|NULL
 	 */
 	public function getDeclaringClass()
@@ -41,8 +33,6 @@ class ReflectionMethod extends ReflectionFunctionBase
 
 
 	/**
-	 * Returns the declaring class name.
-	 *
 	 * @return string|NULL
 	 */
 	public function getDeclaringClassName()
@@ -52,8 +42,6 @@ class ReflectionMethod extends ReflectionFunctionBase
 
 
 	/**
-	 * Returns method modifiers.
-	 *
 	 * @return integer
 	 */
 	public function getModifiers()
@@ -63,8 +51,6 @@ class ReflectionMethod extends ReflectionFunctionBase
 
 
 	/**
-	 * Returns if the method is abstract.
-	 *
 	 * @return bool
 	 */
 	public function isAbstract()
@@ -74,8 +60,6 @@ class ReflectionMethod extends ReflectionFunctionBase
 
 
 	/**
-	 * Returns if the method is final.
-	 *
 	 * @return bool
 	 */
 	public function isFinal()
@@ -85,8 +69,6 @@ class ReflectionMethod extends ReflectionFunctionBase
 
 
 	/**
-	 * Returns if the method is private.
-	 *
 	 * @return bool
 	 */
 	public function isPrivate()
@@ -96,8 +78,6 @@ class ReflectionMethod extends ReflectionFunctionBase
 
 
 	/**
-	 * Returns if the method is protected.
-	 *
 	 * @return bool
 	 */
 	public function isProtected()
@@ -107,8 +87,6 @@ class ReflectionMethod extends ReflectionFunctionBase
 
 
 	/**
-	 * Returns if the method is public.
-	 *
 	 * @return bool
 	 */
 	public function isPublic()
@@ -118,8 +96,6 @@ class ReflectionMethod extends ReflectionFunctionBase
 
 
 	/**
-	 * Returns if the method is static.
-	 *
 	 * @return bool
 	 */
 	public function isStatic()
@@ -129,8 +105,6 @@ class ReflectionMethod extends ReflectionFunctionBase
 
 
 	/**
-	 * Returns if the method is a constructor.
-	 *
 	 * @return bool
 	 */
 	public function isConstructor()
@@ -140,8 +114,6 @@ class ReflectionMethod extends ReflectionFunctionBase
 
 
 	/**
-	 * Returns if the method is a destructor.
-	 *
 	 * @return bool
 	 */
 	public function isDestructor()
@@ -151,8 +123,6 @@ class ReflectionMethod extends ReflectionFunctionBase
 
 
 	/**
-	 * Returns the method declaring trait.
-	 *
 	 * @return ReflectionClass|NULL
 	 */
 	public function getDeclaringTrait()
@@ -163,8 +133,6 @@ class ReflectionMethod extends ReflectionFunctionBase
 
 
 	/**
-	 * Returns the declaring trait name.
-	 *
 	 * @return string|NULL
 	 */
 	public function getDeclaringTraitName()
@@ -174,8 +142,6 @@ class ReflectionMethod extends ReflectionFunctionBase
 
 
 	/**
-	 * Returns the overridden method.
-	 *
 	 * @return ReflectionMethod|NULL
 	 */
 	public function getImplementedMethod()
@@ -191,8 +157,6 @@ class ReflectionMethod extends ReflectionFunctionBase
 
 
 	/**
-	 * Returns the overridden method.
-	 *
 	 * @return ReflectionMethod|NULL
 	 */
 	public function getOverriddenMethod()
@@ -218,8 +182,6 @@ class ReflectionMethod extends ReflectionFunctionBase
 
 
 	/**
-	 * Returns the original name when importing from a trait.
-	 *
 	 * @return string|null
 	 */
 	public function getOriginalName()
@@ -229,8 +191,6 @@ class ReflectionMethod extends ReflectionFunctionBase
 
 
 	/**
-	 * Returns the original modifiers value when importing from a trait.
-	 *
 	 * @return integer|null
 	 */
 	public function getOriginalModifiers()
@@ -240,8 +200,6 @@ class ReflectionMethod extends ReflectionFunctionBase
 
 
 	/**
-	 * Returns the original method when importing from a trait.
-	 *
 	 * @return ReflectionMethod|NULL
 	 */
 	public function getOriginal()

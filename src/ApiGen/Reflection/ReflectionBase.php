@@ -18,9 +18,6 @@ use TokenReflection\IReflection;
 use TokenReflection\IReflectionClass;
 
 
-/**
- * Alters TokenReflection\IReflection functionality for ApiGen.
- */
 abstract class ReflectionBase extends Nette\Object implements IReflection
 {
 

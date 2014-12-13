@@ -17,10 +17,6 @@ use TokenReflection\ReflectionConstant;
 use TokenReflection\ReflectionFunction;
 
 
-/**
- * Element reflection envelope.
- * Alters TokenReflection\IReflection functionality for ApiGen.
- */
 abstract class ReflectionElement extends ReflectionBase
 {
 
@@ -43,8 +39,6 @@ abstract class ReflectionElement extends ReflectionBase
 
 
 	/**
-	 * Returns the PHP extension reflection.
-	 *
 	 * @return ReflectionExtension|NULL
 	 */
 	public function getExtension()
@@ -149,8 +143,6 @@ abstract class ReflectionElement extends ReflectionBase
 
 
 	/**
-	 * Returns element package name (including subpackage name).
-	 *
 	 * @return string
 	 */
 	public function getPackageName()
@@ -325,8 +317,6 @@ abstract class ReflectionElement extends ReflectionBase
 
 
 	/**
-	 * Returns reflection element annotation.
-	 *
 	 * @param string $annotation
 	 * @return array
 	 */
@@ -338,8 +328,6 @@ abstract class ReflectionElement extends ReflectionBase
 
 
 	/**
-	 * Checks if there is a particular annotation.
-	 *
 	 * @param string $annotation
 	 * @return bool
 	 */
@@ -351,8 +339,6 @@ abstract class ReflectionElement extends ReflectionBase
 
 
 	/**
-	 * Adds element annotation.
-	 *
 	 * @param string $annotation
 	 * @param string $value
 	 * @return ReflectionElement

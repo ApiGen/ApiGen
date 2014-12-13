@@ -13,10 +13,6 @@ use InvalidArgumentException;
 use TokenReflection;
 
 
-/**
- * Function/method reflection envelope parent class.
- * Alters TokenReflection\IReflectionFunctionBase functionality for ApiGen.
- */
 abstract class ReflectionFunctionBase extends ReflectionElement
 {
 
@@ -72,7 +68,7 @@ abstract class ReflectionFunctionBase extends ReflectionElement
 
 
 	/**
-	 * @param integer|string $parameterName Parameter name or position
+	 * @param integer|string $parameterName
 	 * @return ReflectionParameter
 	 * @throws \InvalidArgumentException If there is no parameter of the given name.
 	 * @throws \InvalidArgumentException If there is no parameter at the given position.
@@ -105,8 +101,6 @@ abstract class ReflectionFunctionBase extends ReflectionElement
 
 
 	/**
-	 * Returns the number of parameters.
-	 *
 	 * @return integer
 	 */
 	public function getNumberOfParameters()
@@ -116,8 +110,6 @@ abstract class ReflectionFunctionBase extends ReflectionElement
 
 
 	/**
-	 * Returns the number of required parameters.
-	 *
 	 * @return integer
 	 */
 	public function getNumberOfRequiredParameters()

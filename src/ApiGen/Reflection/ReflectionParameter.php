@@ -13,16 +13,10 @@ use ApiGen\Parser\ParserResult;
 use ArrayObject;
 
 
-/**
- * Parameter reflection envelope.
- * Alters TokenReflection\IReflectionParameter functionality for ApiGen.
- */
 class ReflectionParameter extends ReflectionBase
 {
 
 	/**
-	 * Returns parameter type hint.
-	 *
 	 * @return string
 	 */
 	public function getTypeHint()
@@ -48,8 +42,6 @@ class ReflectionParameter extends ReflectionBase
 
 
 	/**
-	 * Returns parameter description.
-	 *
 	 * @return string
 	 */
 	public function getDescription()
@@ -76,8 +68,6 @@ class ReflectionParameter extends ReflectionBase
 
 
 	/**
-	 * Returns if a default value for the parameter is available.
-	 *
 	 * @return bool
 	 */
 	public function isDefaultValueAvailable()

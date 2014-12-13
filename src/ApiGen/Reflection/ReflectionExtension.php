@@ -14,10 +14,6 @@ use TokenReflection\IReflectionConstant;
 use TokenReflection\IReflectionFunction;
 
 
-/**
- * Extension reflection envelope.
- * Alters TokenReflection\IReflectionExtension functionality for ApiGen.
- */
 class ReflectionExtension extends ReflectionBase
 {
 
@@ -106,8 +102,6 @@ class ReflectionExtension extends ReflectionBase
 
 
 	/**
-	 * Returns functions defined by this extension.
-	 *
 	 * @return array
 	 */
 	public function getFunctions()
@@ -119,8 +113,6 @@ class ReflectionExtension extends ReflectionBase
 
 
 	/**
-	 * Returns names of functions defined by this extension.
-	 *
 	 * @return array
 	 */
 	public function getFunctionNames()
