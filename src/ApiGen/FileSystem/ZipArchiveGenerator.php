@@ -49,7 +49,7 @@ class ZipArchiveGenerator
 		$directory = $this->getWebalizedTitle();
 
 		/** @var SplFileInfo $file */
-		foreach (Finder::find('*')->from($destination) as $file) {
+		foreach (Finder::findFiles('*')->from($destination) as $file) {
 			$relativePath = Strings::substring($file->getRealPath(), strlen($destination) + 1);
 			$archive->addFile($file, $directory . '/' . $relativePath);
 		}
