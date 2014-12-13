@@ -60,9 +60,10 @@ class ElementExtractor extends Nette\Object
 		$elements = $this->elements->getEmptyList();
 		$elements[Elements::METHODS] = [];
 		$elements[Elements::PROPERTIES] = [];
+
 		foreach ($this->elementStorage->getElements() as $type => $elementList) {
 			$elementsForMain = $this->elementFilter->filterForMain($elementList);
-			$elements[$type] = $this->elementFilter->filterByAnnotation($elementsForMain, $annotation);
+			$elements[$type] += $this->elementFilter->filterByAnnotation($elementsForMain, $annotation);
 
 			if ($type === Elements::CONSTANTS || $type === Elements::FUNCTIONS) {
 				continue;
@@ -85,7 +86,6 @@ class ElementExtractor extends Nette\Object
 				$elements[Elements::CONSTANTS] = $this->extractByAnnotationAndMerge(
 					$class->getOwnConstants(), $annotation, $elements[Elements::CONSTANTS]
 				);
-
 				$elements[Elements::PROPERTIES] = $this->extractByAnnotationAndMerge(
 					$class->getOwnProperties(), $annotation, $elements[Elements::PROPERTIES]
 				);
