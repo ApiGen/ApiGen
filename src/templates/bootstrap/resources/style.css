@@ -282,6 +282,10 @@ h2.switchable {
 	text-align: right;
 }
 
+.summary td hr {
+	margin: 8px -8px;
+}
+
 #packages.summary td:first-child, #namespaces.summary td:first-child, .inherited.summary td:first-child, .used.summary td:first-child {
 	text-align: left;
 }
