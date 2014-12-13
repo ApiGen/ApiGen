@@ -9,19 +9,18 @@
 
 namespace ApiGen\Generator\TemplateGenerators;
 
-use ApiGen\Configuration\Theme\ThemeConfigOptions as TCO;
 use ApiGen\Generator\ConditionalTemplateGenerator;
 use ApiGen\Generator\StepCounter;
 use ApiGen\Generator\TemplateGenerators\Loaders\NamespaceAndPackageLoader;
 use ApiGen\Parser\Elements\ElementStorage;
-use ApiGen\Templating\Template;
 use ApiGen\Templating\TemplateFactory;
+use Nette;
 
 
 /**
  * @method onGenerateProgress()
  */
-class PackageGenerator implements ConditionalTemplateGenerator, StepCounter
+class PackageGenerator extends Nette\Object implements ConditionalTemplateGenerator, StepCounter
 {
 
 	/**
