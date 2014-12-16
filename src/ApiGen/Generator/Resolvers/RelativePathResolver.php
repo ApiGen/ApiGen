@@ -48,9 +48,6 @@ class RelativePathResolver extends Nette\Object
 			$fileName = $this->symlinks[$fileName];
 		}
 		foreach ($this->config[CO::SOURCE] as $source) {
-			if (FileSystem::isPhar($source)) {
-				$source = FileSystem::pharPath($source);
-			}
 			if (strpos($fileName, $source) === 0) {
 				return $this->getFileNameWithoutSourcePath($fileName, $source);
 			}

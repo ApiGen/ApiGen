@@ -245,11 +245,12 @@ class ConfigurationOptionsResolver extends Nette\Object
 	 */
 	private function getTemplateConfigPathFromTheme($theme)
 	{
+		$rootPath = defined('APIGEN_ROOT_PATH') ? APIGEN_ROOT_PATH : getcwd() . '/src';
 		if ($theme === self::TEMPLATE_THEME_DEFAULT) {
-			return APIGEN_ROOT_PATH . '/templates/default/config.neon';
+			return $rootPath . '/templates/default/config.neon';
 
 		} elseif ($theme === self::TEMPLATE_THEME_BOOTSTRAP) {
-			return APIGEN_ROOT_PATH . '/templates/bootstrap/config.neon';
+			return $rootPath . '/templates/bootstrap/config.neon';
 		}
 
 		throw new ConfigurationException(CO::TEMPLATE_THEME . ' ' . $theme . ' is not supported.');

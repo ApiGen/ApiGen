@@ -41,7 +41,8 @@ class MarkdownMarkup implements Markup
 	public function line($text)
 	{
 		$text = $this->block($text);
-		return preg_replace('/^<p[^>]*>(.*)<\/p[^>]*>$/i', '$1', $text);
+		$text = preg_replace('/^<p[^>]*>(.*)<\/p[^>]*>$/i', '$1', $text);
+		return trim($text);
 	}
 
 
@@ -53,10 +54,14 @@ class MarkdownMarkup implements Markup
 	{
 		$pattern = '~<(code|pre)>(.+?)</\1>|```php\s(.+?)\n```~s';
 		$highlighted = preg_replace_callback($pattern, [$this, 'highlightCb'], $text);
-		return $this->markdown->transform($highlighted);
+		$text = $this->markdown->transform($highlighted);
+		return trim($text);
 	}
 
 
+	/**
+	 * @return string
+	 */
 	private function highlightCb(array $match)
 	{
 		$highlighted = $this->highlighter->highlight(trim(isset($match[3]) ? $match[3] : $match[2]));

@@ -34,57 +34,28 @@ class ZipArchiveGenerator
 	}
 
 
-	public function generate()
+	/**
+	 * @param string $source
+	 * @param string $zipFile
+	 */
+	public function zipDirToFile($source, $zipFile)
 	{
 		if ( ! extension_loaded('zip')) {
 			throw new RuntimeException('Extension zip is not loaded');
 		}
 
 		$archive = new ZipArchive;
-		if ($archive->open($this->getArchivePath(), ZipArchive::CREATE) !== TRUE) {
-			throw new RuntimeException('Could not create ZIP archive');
-		}
+		$archive->open($zipFile, ZipArchive::CREATE);
 
-		$destination = $this->configuration->getOption(CO::DESTINATION);
-		$directory = $this->getWebalizedTitle();
+		$directory = basename($zipFile, '.zip');
 
 		/** @var SplFileInfo $file */
-		foreach (Finder::findFiles('*')->from($destination) as $file) {
-			$relativePath = Strings::substring($file->getRealPath(), strlen($destination) + 1);
+		foreach (Finder::findFiles('*')->from($source) as $file) {
+			$relativePath = Strings::substring($file->getRealPath(), strlen($source) + 1);
 			$archive->addFile($file, $directory . '/' . $relativePath);
 		}
 
-		if ($archive->close() === FALSE) {
-			throw new RuntimeException('Could not save ZIP archive');
-		}
-	}
-
-
-	/**
-	 * @return string
-	 */
-	public function getArchivePath()
-	{
-		return $this->configuration->getOption(CO::DESTINATION) . '/' . $this->getWebalizedTitle() . '.zip';
-	}
-
-
-	/**
-	 * @return string
-	 */
-	private function getWebalizedTitle()
-	{
-		return Strings::webalize($this->getTitle(), NULL, FALSE);
-	}
-
-
-	/**
-	 * @return string
-	 */
-	private function getTitle()
-	{
-		$title = $this->configuration->getOption(CO::TITLE);
-		return $title . ' API documentation';
+		$archive->close();
 	}
 
 }

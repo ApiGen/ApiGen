@@ -16,47 +16,12 @@ class FileSystem
 {
 
 	/**
-	 * @param string $file
-	 * @return bool
-	 */
-	public static function isPhar($file)
-	{
-		return (bool) preg_match('~\\.phar(?:\\.zip|\\.tar|(?:(?:\\.tar)?(?:\\.gz|\\.bz2))|$)~i', $file);
-	}
-
-
-	/**
 	 * @param string $path
 	 * @return string
 	 */
 	public static function normalizePath($path)
 	{
-		$path = str_replace(['\\'], '/', $path);
-		$path = str_replace('phar:\\\\', 'phar://', $path);
-		return $path;
-	}
-
-
-	/**
-	 * @param string $path
-	 * @return string
-	 */
-	public static function unPharPath($path)
-	{
-		if (strpos($path, 'phar://') === 0) {
-			$path = substr($path, 7);
-		}
-		return $path;
-	}
-
-
-	/**
-	 * @param string $path Path
-	 * @return string
-	 */
-	public static function pharPath($path)
-	{
-		return 'phar://' . $path;
+		return str_replace(['\\'], '/', $path);
 	}
 
 
@@ -121,7 +86,7 @@ class FileSystem
 			}
 		}
 		$path = FileSystem::normalizePath($path);
-		if ((strpos($path, 'phar://') !== 0) && file_exists($path)) {
+		if (file_exists($path)) {
 			return realpath($path);
 		}
 		return $path;

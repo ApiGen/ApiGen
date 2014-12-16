@@ -11,6 +11,7 @@ namespace ApiGen\Configuration;
 
 use ApiGen\Configuration\ConfigurationOptions as CO;
 use Nette;
+use Nette\Utils\Strings;
 
 
 /**
@@ -119,6 +120,15 @@ class Configuration extends Nette\Object
 			return TRUE;
 		}
 		return FALSE;
+	}
+
+
+	/**
+	 * @return string
+	 */
+	public function getWebalizedTitle()
+	{
+		return Strings::webalize($this->getOption(CO::TITLE), NULL, FALSE);
 	}
 
 
