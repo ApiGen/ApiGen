@@ -82,7 +82,6 @@ class ElementExtractor extends Nette\Object
 				$elements[Elements::METHODS] = $this->extractByAnnotationAndMerge(
 					$class->getOwnMethods(), $annotation, $elements[Elements::METHODS]
 				);
-
 				$elements[Elements::CONSTANTS] = $this->extractByAnnotationAndMerge(
 					$class->getOwnConstants(), $annotation, $elements[Elements::CONSTANTS]
 				);

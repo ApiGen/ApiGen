@@ -171,6 +171,7 @@ class ReflectionClass extends ReflectionElement
 	{
 		if ($this->methods === NULL) {
 			$this->methods = $this->getOwnMethods();
+
 			foreach ($this->reflection->getMethods(self::$methodAccessLevels) as $method) {
 				/** @var ReflectionElement|TokenReflection\Php\IReflection $method */
 				if (isset($this->methods[$method->getName()])) {
@@ -193,6 +194,7 @@ class ReflectionClass extends ReflectionElement
 	{
 		if ($this->ownMethods === NULL) {
 			$this->ownMethods = [];
+
 			foreach ($this->reflection->getOwnMethods(self::$methodAccessLevels) as $method) {
 				$apiMethod = new ReflectionMethod($method);
 				if ( ! $this->isDocumented() || $apiMethod->isDocumented()) {
@@ -1259,7 +1261,7 @@ class ReflectionClass extends ReflectionElement
 	public function isDocumented()
 	{
 		if ($this->isDocumented === NULL && parent::isDocumented()) {
-			$fileName = FileSystem::unPharPath($this->reflection->getFilename());
+			$fileName = $this->reflection->getFilename();
 			foreach (self::$config->skipDocPath as $mask) {
 				if (fnmatch($mask, $fileName, FNM_NOESCAPE)) {
 					$this->isDocumented = FALSE;
@@ -1274,20 +1276,8 @@ class ReflectionClass extends ReflectionElement
 
 	private function setAccessLevels()
 	{
-		foreach (Configuration::$config->accessLevels as $level) {
-			if ($level === 'public') {
-				self::$methodAccessLevels |= InternalReflectionMethod::IS_PUBLIC;
-				self::$propertyAccessLevels |= InternalReflectionProperty::IS_PUBLIC;
-
-			} elseif ($level === 'protected') {
-				self::$methodAccessLevels |= InternalReflectionMethod::IS_PROTECTED;
-				self::$propertyAccessLevels |= InternalReflectionProperty::IS_PROTECTED;
-
-			} elseif ($level === 'private') {
-				self::$methodAccessLevels |= InternalReflectionMethod::IS_PRIVATE;
-				self::$propertyAccessLevels |= InternalReflectionProperty::IS_PRIVATE;
-			}
-		}
+		self::$propertyAccessLevels = Configuration::$config->propertyAccessLevels;
+		self::$methodAccessLevels = Configuration::$config->methodAccessLevels;
 	}
 
 

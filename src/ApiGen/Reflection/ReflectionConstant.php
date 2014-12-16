@@ -122,7 +122,7 @@ class ReflectionConstant extends ReflectionElement
 	public function isDocumented()
 	{
 		if ($this->isDocumented === NULL && parent::isDocumented() && $this->reflection->getDeclaringClassName() === NULL) {
-			$fileName = FileSystem::unPharPath($this->reflection->getFilename());
+			$fileName = $this->reflection->getFilename();
 			foreach (self::$config->skipDocPath as $mask) {
 				if (fnmatch($mask, $fileName, FNM_NOESCAPE)) {
 					$this->isDocumented = FALSE;

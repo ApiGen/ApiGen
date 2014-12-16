@@ -48,7 +48,10 @@ class ZipGenerator implements ConditionalTemplateGenerator
 
 	public function generate()
 	{
-		$this->zipArchiveGenerator->generate();
+		$destination = $this->configuration->getOption(CO::DESTINATION);
+		$title = ($this->configuration->getWebalizedTitle() ? '-' : '') . 'API-documentation';
+		$zipFile = $destination . '/' . $title . '.zip';
+		$this->zipArchiveGenerator->zipDirToFile($destination, $zipFile);
 	}
 
 

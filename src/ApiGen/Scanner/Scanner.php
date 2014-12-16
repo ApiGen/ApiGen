@@ -35,14 +35,15 @@ class Scanner extends Nette\Object
 
 
 	/**
-	 * @param array $sources
+	 * @param array|string $source
 	 * @param array $exclude
 	 * @param array $extensions
 	 * @throws RuntimeException
 	 * @return SplFileInfo[]
 	 */
-	public function scan(array $sources, array $exclude = [], array $extensions = ['php'])
+	public function scan($source, array $exclude = [], array $extensions = ['php'])
 	{
+		$sources = $this->turnToIterator($source);
 		$fileMasks = $this->turnExtensionsToMask($extensions);
 		$finder = Finder::findFiles($fileMasks)->exclude($exclude)
 			->from($sources)->exclude($exclude);
@@ -56,6 +57,19 @@ class Scanner extends Nette\Object
 		$this->onScanFinish($this);
 
 		return $files;
+	}
+
+
+	/**
+	 * @param array|string $source
+	 * @return array
+	 */
+	private function turnToIterator($source)
+	{
+		if ( ! is_array($source)) {
+			return [$source];
+		}
+		return $source;
 	}
 
 

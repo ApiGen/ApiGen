@@ -9,7 +9,7 @@
 
 namespace ApiGen\Configuration\Theme;
 
-use ApiGen\Configuration\ConfigurationException;
+use ApiGen\Configuration\Exceptions\ConfigurationException;
 use ApiGen\Neon\NeonFile;
 use Nette;
 

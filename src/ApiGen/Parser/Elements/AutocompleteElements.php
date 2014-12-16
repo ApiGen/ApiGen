@@ -35,7 +35,7 @@ class AutocompleteElements
 	/**
 	 * @var array
 	 */
-	private $elements;
+	private $elements = [];
 
 
 	public function __construct(Configuration $configuration, ElementStorage $elementStorage)
