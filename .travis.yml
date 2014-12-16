@@ -25,4 +25,9 @@ before_script:
   # - vendor/bin/phpmd src,tests text vendor/zenify/coding-standard/src/ZenifyCodingStandard/mess-detector-ruleset.xml --exclude bootstrap
 
 script:
-  - vendor/bin/phpunit
+  - vendor/bin/phpunit --coverage-clover=coverage.clover
+
+after_script:
+   # move code coverage
+   - wget https://scrutinizer-ci.com/ocular.phar
+   - php ocular.phar code-coverage:upload --format=php-clover coverage.clover
