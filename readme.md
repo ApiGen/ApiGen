@@ -1,8 +1,10 @@
 # ApiGen - PHP source code API generator
 
-[![Build Status](https://travis-ci.org/apigen/apigen.svg?branch=master)](https://travis-ci.org/apigen/apigen)
-[![Downloads this Month](https://img.shields.io/packagist/dm/apigen/apigen.svg)](https://packagist.org/packages/apigen/apigen)
-[![Latest stable](https://img.shields.io/packagist/v/apigen/apigen.svg)](https://packagist.org/packages/apigen/apigen)
+[![Build Status](https://img.shields.io/travis/apigen/apigen.svg?style=flat-square)](https://travis-ci.org/apigen/apigen)
+[![Quality Score](https://img.shields.io/scrutinizer/g/ApiGen/ApiGen.svg?style=flat-square)](https://scrutinizer-ci.com/g/ApiGen/ApiGen)
+[![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/ApiGen/ApiGen.svg?style=flat-square)](https://scrutinizer-ci.com/g/ApiGen/ApiGen)
+[![Downloads this Month](https://img.shields.io/packagist/dm/apigen/apigen.svg?style=flat-square)](https://packagist.org/packages/apigen/apigen)
+[![Latest stable](https://img.shields.io/packagist/v/apigen/apigen.svg?style=flat-square)](https://packagist.org/packages/apigen/apigen)
 
 
 ApiGen generates nice looking and user-friendly documentation.
