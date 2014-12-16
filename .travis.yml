@@ -18,14 +18,11 @@ install:
 
 before_script:
   # php linter
-  - vendor/bin/parallel-lint -e php,phpt --exclude vendor .
+  - vendor/bin/parallel-lint -e php --exclude vendor .
   # php code sniffer
-  - vendor/bin/phpcs src tests/ApiGenTests --standard=vendor/zenify/coding-standard/src/ZenifyCodingStandard/code-sniffer-ruleset.xml --ignore=bootstrap --extensions=php
+  - vendor/bin/phpcs src tests --extensions=php --ignore=bootstrap --standard=vendor/zenify/coding-standard/src/ZenifyCodingStandard/code-sniffer-ruleset.xml
   # php mess detector - too many errors at the moment
-  # - vendor/bin/phpmd src,tests/ApiGenTests text vendor/zenify/coding-standard/src/ZenifyCodingStandard/mess-detector-ruleset.xml --exclude bootstrap
+  # - vendor/bin/phpmd src,tests text vendor/zenify/coding-standard/src/ZenifyCodingStandard/mess-detector-ruleset.xml --exclude bootstrap
 
 script:
-  - vendor/bin/tester -p php -c tests/php.ini-unix tests/ApiGenTests
-
-after_failure:
-  - for i in $(find ./tests -name \*.actual); do echo "--- $i"; cat $i; echo; echo; done
+  - vendor/bin/phpunit

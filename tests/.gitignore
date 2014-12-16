@@ -1,6 +1,1 @@
-/ApiGenTests/*/*/output
-/ApiGenTests/*/*/*/output
-/ApiGenTests/*/*/*/*/output
-/ApiGenTests/*/apigen.neon
-/ApiGenTests/*/*/apigen.neon
 /tmp

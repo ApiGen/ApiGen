@@ -1,6 +1,0 @@
-[PHP]
-extension=json.so
-extension=phar.so
-
-[Phar]
-phar.readonly=off
