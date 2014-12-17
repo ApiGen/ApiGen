@@ -46,11 +46,6 @@ class Parser
 		$this->broker = $broker;
 		$this->charsetConvertor = $charsetConvertor;
 		$this->parserResult = $parserResult;
-
-		$this->classes = new ArrayObject;
-		$this->constants = new ArrayObject;
-		$this->functions = new ArrayObject;
-		$this->internalClasses = new ArrayObject;
 	}
 
 
