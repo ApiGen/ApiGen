@@ -92,17 +92,18 @@ class GenerateCommand extends Command
 		$this->setName('generate')
 			->setDescription('Generate API documentation')
 			->setDefinition([
-				new InputOption(CO::SOURCE, 's', InputArgument::IS_ARRAY | InputArgument::OPTIONAL,
-					'Dirs documentation is generated for (separate multiple items with a space).'),
-				new InputOption(CO::DESTINATION, 'd', InputArgument::OPTIONAL,
+				new InputOption(CO::SOURCE, 's', InputOption::VALUE_IS_ARRAY | InputOption::VALUE_OPTIONAL,
+					'Dirs documentation is generated for (can be specified multiple times).'),
+				new InputOption(CO::DESTINATION, 'd', InputOption::VALUE_OPTIONAL,
 					'Target dir for documentation.'),
 				new InputOption(CO::AUTOCOMPLETE, NULL, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_OPTIONAL,
-					'Element supported by autocomplete in search input.',
+					'Element supported by autocomplete in search input (can be specified multiple times).',
 					[COR::AC_CLASSES, COR::AC_CONSTANTS, COR::AC_FUNCTIONS]),
 				new InputOption(CO::ACCESS_LEVELS, NULL, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_OPTIONAL,
-					'Access levels of included method and properties', [COR::AL_PUBLIC, COR::AL_PROTECTED]),
+					'Access levels of included method and properties (can be specified multiple times).',
+					[COR::AL_PUBLIC, COR::AL_PROTECTED]),
 				new InputOption(CO::BASE_URL, NULL, InputOption::VALUE_OPTIONAL,
-					'Base url used for sitemap (useful for public doc.'),
+					'Base url used for sitemap (useful for public doc).'),
 				new InputOption(CO::CONFIG, NULL, InputOption::VALUE_OPTIONAL,
 					'Custom path to apigen.neon config file.', getcwd() . '/apigen.neon'),
 				new InputOption(CO::GOOGLE_CSE_ID, NULL, InputOption::VALUE_OPTIONAL,
@@ -116,13 +117,13 @@ class GenerateCommand extends Command
 				new InputOption(CO::DOWNLOAD, NULL, InputOption::VALUE_NONE,
 					'Add link to ZIP archive of documentation.'),
 				new InputOption(CO::EXTENSIONS, NULL, InputOption::VALUE_IS_ARRAY | InputArgument::OPTIONAL,
-					'Scanned file extensions.', ['php']),
+					'Scanned file extensions (can be specified multiple times).', ['php']),
 				new InputOption(CO::EXCLUDE, NULL, InputOption::VALUE_IS_ARRAY | InputArgument::OPTIONAL,
-					'Directories and files matching this mask will not be parsed.'),
+					'Directories and files matching this mask will not be parsed (can be specified multiple times).'),
 				new InputOption(CO::GROUPS, NULL, InputOption::VALUE_OPTIONAL,
 					'The way elements are grouped in menu.', 'auto'),
 				new InputOption(CO::CHARSET, NULL, InputOption::VALUE_IS_ARRAY | InputArgument::OPTIONAL,
-					'Charset of scanned files.'),
+					'Charset of scanned files (can be specified multiple times).'),
 				new InputOption(CO::MAIN, NULL, InputOption::VALUE_OPTIONAL,
 					'Elements with this name prefix will be first in tree.'),
 				new InputOption(CO::INTERNAL, NULL, InputOption::VALUE_NONE,
@@ -131,7 +132,7 @@ class GenerateCommand extends Command
 					'Generate documentation for PHP internal classes.', TRUE),
 				new InputOption(CO::SKIP_DOC_PATH, NULL, InputOption::VALUE_IS_ARRAY | InputArgument::OPTIONAL,
 					'Files matching this mask will be included in class tree,'
-					. ' but will not create a link to their documentation.'),
+					. ' but will not create a link to their documentation (can be specified multiple times).'),
 				new InputOption(CO::SOURCE_CODE, NULL, InputOption::VALUE_REQUIRED,
 					'Generate highlighted source code for elements.', TRUE),
 				new InputOption(CO::TEMPLATE_THEME, NULL, InputOption::VALUE_OPTIONAL,
@@ -175,6 +176,7 @@ class GenerateCommand extends Command
 	private function scanAndParse(array $options, OutputInterface $output)
 	{
 		$output->writeln('<info>Scanning sources and parsing</info>');
+
 		$files = $this->scanner->scan($options[CO::SOURCE], $options[CO::EXCLUDE], $options[CO::EXTENSIONS]);
 		$this->parser->parse($files);
 
