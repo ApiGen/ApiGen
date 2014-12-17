@@ -9,8 +9,8 @@
 
 namespace ApiGen\Console;
 
-use ApiGen\Console;
 use ApiGen\Configuration\ConfigurationOptions as CO;
+use ApiGen\Console;
 use Symfony\Component\Console\Helper\ProgressBar as ProgressBarHelper;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\OutputInterface;
