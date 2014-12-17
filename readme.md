@@ -55,26 +55,9 @@ Just look at [Doctrine ORM API](http://www.doctrine-project.org/api/orm/2.4/) or
 For global installation, see [documentation](doc/installation.md).
 
 
-### Using Composer globally
-
-Alternatively, you can install ApiGen via composer global .
-
-```sh
-composer global require apigen/apigen
-```
-
-Run:
-
-```sh
-~/.composer/vendor/bin/apigen generate
-```
-
-If you add `~/.composer/vendor/bin` to your `PATH`, you can run `bin/apigen generate` instead.
-
-
 ### Using Composer as dependency of your project
 
-Install package:
+Alternatively, you can install ApiGen via composer:
 
 ```sh
 composer require apigen/apigen --dev
