@@ -31,26 +31,23 @@ Just look at [Doctrine ORM API](http://www.doctrine-project.org/api/orm/2.4/) or
 
 ### As a PHAR (recommended)
 
-1. Download `apigen.phar` via installer:
+1. Download [ApiGen RC5](http://apigen.org/apigen.phar)
 
-	```sh
-	$ curl -sS http://apigen.org/installer | php
-	```
+2. Run ApiGen with source and destination options:
 
-2. Create `apigen.neon` file in your project. This is basic example only with all required items. The file uses [Neon](http://ne-on.org) syntax.
+```sh
+php apigen.phar generate -s src -d ../my-project-api
+```
+	
+To omit cli options just create `apigen.neon` file in your project using [Neon](http://ne-on.org) syntax.
 
-	```yaml
-	source:
-	    - src
+```yaml
+source:
+    - src
 
-	destination: api
-	```
+destination: ../my-project-api
+```
 
-3. Run ApiGen:
-
-	```sh
-	php apigen.phar generate
-	```
 
 For global installation, see [documentation](doc/installation.md).
 
@@ -63,10 +60,10 @@ Alternatively, you can install ApiGen via composer:
 composer require apigen/apigen --dev
 ```
 
-Run:
+Run with options as above:
 
 ```sh
-php vendor/bin/apigen generate
+php vendor/bin/apigen generate -s -src -d ../my/project-api
 ```
 
 

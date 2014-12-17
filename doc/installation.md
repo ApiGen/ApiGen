@@ -1,12 +1,6 @@
 # Installation on *nix
 
-Downloading executable phar.
-
-```sh
-$ curl -sS http://apigen.org/installer | php
-```
-
-Move file to your `PATH`, so you can access it globally.
+After downloading phar file, move it to your `PATH`, so you can access it globally.
 
 ```sh
 $ mv apigen.phar /usr/local/bin/apigen
@@ -17,11 +11,10 @@ Now you can simply run `apigen` instead of `php apigen.phar`.
 
 # Installation on Windows
 
-Change to your `PATH` directory  and run the install snippet to download apigen.phar:
+Move phar file to your `PATH` directory.
 
 ```sh
 C:\Users\username>cd C:\bin
-C:\bin>php -r "readfile('https://apigen.org/installer');" | php
 ```
 
 Create a new `apigen.bat` file alongside `apigen.phar`:
