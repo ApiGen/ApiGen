@@ -100,24 +100,25 @@ class PharCompiler extends Nette\Object
 		}
 
 		$exclude = [
-			'jakub-onderka',
-			'nette/*/Tests',
-			'nette/tester',
-			'pdepend/pdepend',
-			'phpmd/phpmd',
-			'phpunit/php-timer',
+			'jakub-onderka/*',
+			'nette/tester/*',
+			'pdepend/pdepend/*',
+			'mockery/mockery/*',
+			'phpmd/phpmd/*',
+			'phpunit/*',
 			'sebastian/*',
 			'squizlabs/*',
 			'symfony/dependency-injection',
-			'symfony/*/*/Tests',
-			'theseer/fdomdocument',
-			'zenify/coding-standard'
+			'Tests',
+			'tests',
+			'theseer/fdomdocument/*',
+			'zenify/coding-standard/*'
 		];
-		foreach (Finder::findFiles('*.php')->from("$this->repoDir/vendor")->exclude($exclude) as $file) {
+		foreach (Finder::findFiles('*.php')->from($this->repoDir . '/vendor')->exclude($exclude) as $file) {
 			$this->addFile($phar, $file);
 		}
 
-		$phar['license.md'] = file_get_contents("$this->repoDir/license.md");
+		$phar['license.md'] = file_get_contents($this->repoDir . '/license.md');
 
 		$phar->stopBuffering();
 		$phar->compressFiles(Phar::GZ);
