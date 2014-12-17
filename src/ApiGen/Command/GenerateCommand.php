@@ -16,6 +16,7 @@ use ApiGen\FileSystem\FileSystem;
 use ApiGen\Generator\GeneratorQueue;
 use ApiGen\Neon\NeonFile;
 use ApiGen\Parser\Parser;
+use ApiGen\Parser\ParserResult;
 use ApiGen\Scanner\Scanner;
 use ApiGen\Theme\ThemeResources;
 use Symfony\Component\Console\Command\Command;
@@ -23,6 +24,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use TokenReflection\Exception\FileProcessingException;
 use Tracy\Debugger;
 
 
@@ -38,6 +40,11 @@ class GenerateCommand extends Command
 	 * @var Parser
 	 */
 	private $parser;
+
+	/**
+	 * @var ParserResult
+	 */
+	private $parserResult;
 
 	/**
 	 * @var Scanner
@@ -64,6 +71,7 @@ class GenerateCommand extends Command
 		Configuration $configuration,
 		Scanner $scanner,
 		Parser $parser,
+		ParserResult $parserResult,
 		GeneratorQueue $generatorQueue,
 		FileSystem $fileSystem,
 		ThemeResources $themeResources
@@ -72,6 +80,7 @@ class GenerateCommand extends Command
 		$this->configuration = $configuration;
 		$this->scanner = $scanner;
 		$this->parser = $parser;
+		$this->parserResult = $parserResult;
 		$this->generatorQueue = $generatorQueue;
 		$this->fileSystem = $fileSystem;
 		$this->themeResources = $themeResources;
@@ -169,9 +178,9 @@ class GenerateCommand extends Command
 		$files = $this->scanner->scan($options[CO::SOURCE], $options[CO::EXCLUDE], $options[CO::EXTENSIONS]);
 		$this->parser->parse($files);
 
-		$this->reportParserErrors($options, $this->parser->getErrors(), $output);
+		$this->reportParserErrors($this->parser->getErrors(), $output);
 
-		$stats = $this->parser->getDocumentedStats();
+		$stats = $this->parserResult->getDocumentedStats();
 		$output->writeln(sprintf(
 			'Found <comment>%d classes</comment>, <comment>%d constants</comment>, '
 				. '<comment>%d functions</comment> and <comment>%d PHP internal classes</comment>',
@@ -190,22 +199,14 @@ class GenerateCommand extends Command
 	}
 
 
-	private function reportParserErrors(array $options, array $errors, OutputInterface $output)
+	private function reportParserErrors(array $errors, OutputInterface $output)
 	{
-		if (count($errors)) {
-			if ($options[CO::DEBUG]) {
-				if ( ! is_dir(LOG_DIRECTORY)) {
-					mkdir(LOG_DIRECTORY);
-				}
-				Debugger::$logDirectory = LOG_DIRECTORY;
-				foreach ($errors as $error) {
-					$logName = Debugger::log($error);
-					$output->writeln("<error>Parse error occurred, exception was stored info $logName</error>");
-				}
-
-			} else {
-				$output->writeln(PHP_EOL . '<error>Found ' . count($errors) . ' errors.'
-					. ' For more details add --debug option</error>');
+		/** @var FileProcessingException[] $errors */
+		foreach ($errors as $error) {
+			/** @var \Exception[] $reasons */
+			$reasons = $error->getReasons();
+			if (count($reasons) && isset($reasons[0])) {
+				$output->writeln("<error>Parse error: " . $reasons[0]->getMessage() . "</error>");
 			}
 		}
 	}

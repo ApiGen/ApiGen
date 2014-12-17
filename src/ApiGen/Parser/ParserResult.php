@@ -10,6 +10,7 @@
 namespace ApiGen\Parser;
 
 use ApiGen\Parser\Elements\Elements;
+use ApiGen\Reflection\ReflectionElement;
 use ArrayObject;
 use Nette;
 
@@ -18,6 +19,8 @@ use Nette;
  * @method setClasses(object)
  * @method setConstants(object)
  * @method setFunctions(object)
+ * @method setInternalClasses(object)
+ * @method setTokenizedClasses(object)
  * @method getClasses(object)
  * @method getConstants(object)
  * @method getFunctions(object)
@@ -40,6 +43,16 @@ class ParserResult extends Nette\Object
 	 * @var ArrayObject
 	 */
 	private $functions;
+
+	/**
+	 * @var ArrayObject
+	 */
+	private $internalClasses;
+
+	/**
+	 * @var ArrayObject
+	 */
+	private $tokenizedClasses;
 
 	/**
 	 * @var ArrayObject
@@ -67,6 +80,8 @@ class ParserResult extends Nette\Object
 		$this->classes = new ArrayObject;
 		$this->constants = new ArrayObject;
 		$this->functions = new ArrayObject;
+		$this->internalClasses = new ArrayObject;
+		$this->tokenizedClasses = new ArrayObject;
 	}
 
 
@@ -87,6 +102,34 @@ class ParserResult extends Nette\Object
 		}
 
 		return FALSE;
+	}
+
+
+	/**
+	 * @return array
+	 */
+	public function getDocumentedStats()
+	{
+		return [
+			'classes' => $this->getDocumentedElementsCount($this->tokenizedClasses),
+			'constants' => $this->getDocumentedElementsCount($this->constants),
+			'functions' => $this->getDocumentedElementsCount($this->functions),
+			'internalClasses' => $this->getDocumentedElementsCount($this->internalClasses)
+		];
+	}
+
+
+	/**
+	 * @param ReflectionElement[]|ArrayObject $result
+	 * @return int
+	 */
+	private function getDocumentedElementsCount(ArrayObject $result)
+	{
+		$count = 0;
+		foreach ($result as $element) {
+			$count += (int) $element->isDocumented();
+		}
+		return $count;
 	}
 
 }
