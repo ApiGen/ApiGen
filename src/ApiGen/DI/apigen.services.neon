@@ -17,7 +17,6 @@ services:
 	-
 		class: ApiGen\Console\Application
 		setup:
-			- injectServiceLocator
 			- setEventManager
 	- ApiGen\Console\IO
 	- ApiGen\Console\ProgressBar
