@@ -3,4 +3,3 @@ extensions:
 	- ApiGen\DI\CharsetConvertorExtension
 	- ApiGen\DI\ParserExtension
 	- Kdyby\Events\DI\EventsExtension
-	- Kdyby\Console\DI\ConsoleExtension
