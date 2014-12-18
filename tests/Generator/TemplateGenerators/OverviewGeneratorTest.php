@@ -40,7 +40,7 @@ class OverviewGeneratorTest extends PHPUnit_Framework_TestCase
 	{
 		$templateMock = Mockery::mock('ApiGen\Templating\Template');
 		$templateMock->shouldReceive('setSavePath')->withAnyArgs();
-		$templateMock->shouldReceive('save')->andReturn(file_put_contents(TEMP_DIR . '/api/index.html', '...'));
+		$templateMock->shouldReceive('save')->andReturn(file_put_contents(TEMP_DIR . '/index.html', '...'));
 		return $templateMock;
 	}
 
