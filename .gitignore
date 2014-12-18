@@ -1,7 +1,3 @@
-.idea
 vendor
 composer.lock
-log
-temp
-apigen.neon
-apigen.phar
+tests/temp
