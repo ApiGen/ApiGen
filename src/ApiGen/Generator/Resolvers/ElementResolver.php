@@ -17,19 +17,10 @@ use ApiGen\Reflection\ReflectionFunction;
 use ApiGen\Reflection\ReflectionMethod;
 use ApiGen\Reflection\ReflectionParameter;
 use ApiGen\Reflection\ReflectionProperty;
-use ArrayObject;
-use Nette;
 use TokenReflection\Resolver;
 
 
-/**
- * Gets variables extracted by Generator.
- *
- * @method  ElementResolver setParsedClasses(object)
- * @method  ElementResolver setParsedConstants(object)
- * @method  ElementResolver setParsedFunctions(object)
- */
-class ElementResolver extends Nette\Object
+class ElementResolver
 {
 
 	/**
@@ -93,8 +84,6 @@ class ElementResolver extends Nette\Object
 
 
 	/**
-	 * Tries to resolve type as constant name.
-	 *
 	 * @param string $constantName
 	 * @param string $namespace
 	 * @return ReflectionConstant
@@ -122,8 +111,6 @@ class ElementResolver extends Nette\Object
 
 
 	/**
-	 * Tries to resolve type as function name.
-	 *
 	 * @param string $functionName
 	 * @param string $namespace
 	 * @return ReflectionFunction
@@ -152,7 +139,6 @@ class ElementResolver extends Nette\Object
 
 	/**
 	 * Tries to parse a definition of a class/method/property/constant/function
-	 * and returns the appropriate instance if successful.
 	 *
 	 * @param string $definition
 	 * @param ReflectionElement|ReflectionParameter $context Link context
@@ -213,10 +199,9 @@ class ElementResolver extends Nette\Object
 
 
 	/**
-	 * @param ReflectionElement $context
 	 * @return ReflectionClass|ReflectionFunction
 	 */
-	private function correctContextForParameterOrClassMember($context)
+	private function correctContextForParameterOrClassMember(ReflectionElement $context)
 	{
 		if ($context instanceof ReflectionParameter && $context->getDeclaringClassName() === NULL) {
 			// Parameter of function in namespace or global space
