@@ -126,9 +126,10 @@ class Configuration extends Nette\Object
 	/**
 	 * @return string
 	 */
-	public function getWebalizedTitle()
+	public function getZipFileName()
 	{
-		return Strings::webalize($this->getOption(CO::TITLE), NULL, FALSE);
+		$webalizedTitle = Strings::webalize($this->getOption(CO::TITLE), NULL, FALSE);
+		return ($webalizedTitle ? '-' : '') . 'API-documentation.zip';
 	}
 
 
