@@ -1,7 +1,7 @@
 services:
 	# commands
-	- ApiGen\Command\GenerateCommand
-	- ApiGen\Command\SelfUpdateCommand
+	- {class: ApiGen\Command\GenerateCommand, tags: [console.command]}
+	- {class: ApiGen\Command\SelfUpdateCommand, tags: [console.command]}
 
 	# configuration
 	- ApiGen\Configuration\Configuration
@@ -26,10 +26,10 @@ services:
 	- ApiGen\Generator\Resolvers\RelativePathResolver
 
 	# events
-	- ApiGen\Events\ProgressBarIncrement
-	- ApiGen\Events\LoadRelativePathResolver
-	- ApiGen\Events\InjectConfig
-	- ApiGen\Events\SetIoOnConsoleRun
+	- {class: ApiGen\Events\ProgressBarIncrement, tags: [kdyby.subscriber]}
+	- {class: ApiGen\Events\LoadRelativePathResolver, tags: [kdyby.subscriber]}
+	- {class: ApiGen\Events\InjectConfig, tags: [kdyby.subscriber]}
+	- {class: ApiGen\Events\SetIoOnConsoleRun, tags: [kdyby.subscriber]}
 
 	# filesystem
 	- ApiGen\FileSystem\FileSystem
@@ -38,25 +38,25 @@ services:
 	# generator
 	- ApiGen\Scanner\Scanner
 	- ApiGen\Generator\GeneratorQueue
-	- ApiGen\Generator\TemplateGenerators\ZipGenerator # intentionally first to collect output from other generators
-	- ApiGen\Generator\TemplateGenerators\CombinedGenerator
-	- ApiGen\Generator\TemplateGenerators\DeprecatedGenerator
-	- ApiGen\Generator\TemplateGenerators\E404Generator
-	- ApiGen\Generator\TemplateGenerators\ElementListGenerator
-	- ApiGen\Generator\TemplateGenerators\OpensearchGenerator
-	- ApiGen\Generator\TemplateGenerators\OverviewGenerator
-	- ApiGen\Generator\TemplateGenerators\SitemapGenerator
-	- ApiGen\Generator\TemplateGenerators\SourceCodeGenerator
-	- ApiGen\Generator\TemplateGenerators\TodoGenerator
-	- ApiGen\Generator\TemplateGenerators\TreeGenerator
-	- ApiGen\Generator\TemplateGenerators\RobotsGenerator
+	# intentionally first to collect output from other generators
+	- {class: ApiGen\Generator\TemplateGenerators\ZipGenerator, tags: [template.generator]}
+	- {class: ApiGen\Generator\TemplateGenerators\DeprecatedGenerator, tags: [template.generator]}
+	- {class: ApiGen\Generator\TemplateGenerators\E404Generator, tags: [template.generator]}
+	- {class: ApiGen\Generator\TemplateGenerators\ElementListGenerator, tags: [template.generator]}
+	- {class: ApiGen\Generator\TemplateGenerators\OpensearchGenerator, tags: [template.generator]}
+	- {class: ApiGen\Generator\TemplateGenerators\OverviewGenerator, tags: [template.generator]}
+	- {class: ApiGen\Generator\TemplateGenerators\SitemapGenerator, tags: [template.generator]}
+	- {class: ApiGen\Generator\TemplateGenerators\SourceCodeGenerator, tags: [template.generator]}
+	- {class: ApiGen\Generator\TemplateGenerators\TodoGenerator, tags: [template.generator]}
+	- {class: ApiGen\Generator\TemplateGenerators\TreeGenerator, tags: [template.generator]}
+	- {class: ApiGen\Generator\TemplateGenerators\RobotsGenerator, tags: [template.generator]}
 	# elements
-	- ApiGen\Generator\TemplateGenerators\ClassElementGenerator
-	- ApiGen\Generator\TemplateGenerators\ConstantElementGenerator
-	- ApiGen\Generator\TemplateGenerators\FunctionElementGenerator
-	- ApiGen\Generator\TemplateGenerators\NamespaceGenerator
-	- ApiGen\Generator\TemplateGenerators\PackageGenerator
-	- ApiGen\Generator\TemplateGenerators\Loaders\NamespaceAndPackageLoader
+	- {class: ApiGen\Generator\TemplateGenerators\ClassElementGenerator, tags: [template.generator]}
+	- {class: ApiGen\Generator\TemplateGenerators\ConstantElementGenerator, tags: [template.generator]}
+	- {class: ApiGen\Generator\TemplateGenerators\FunctionElementGenerator, tags: [template.generator]}
+	- {class: ApiGen\Generator\TemplateGenerators\NamespaceGenerator, tags: [template.generator]}
+	- {class: ApiGen\Generator\TemplateGenerators\PackageGenerator, tags: [template.generator]}
+	- {class: ApiGen\Generator\TemplateGenerators\Loaders\NamespaceAndPackageLoader, tags: [template.generator]}
 	- ApiGen\Generator\Markups\MarkdownMarkup
 	- Michelf\MarkdownExtra
 
@@ -64,12 +64,12 @@ services:
 	- ApiGen\Templating\TemplateElementsLoader
 	- ApiGen\Templating\TemplateFactory
 	- ApiGen\Templating\TemplateNavigator
-	- ApiGen\Templating\Filters\AnnotationFilters
-	- ApiGen\Templating\Filters\PathFilters
-	- ApiGen\Templating\Filters\PhpManualFilters
-	- ApiGen\Templating\Filters\ResolverFilters
-	- ApiGen\Templating\Filters\SourceFilters
-	- ApiGen\Templating\Filters\UrlFilters
+	- {class: ApiGen\Templating\Filters\AnnotationFilters, tags: [latte.filter]}
+	- {class: ApiGen\Templating\Filters\PathFilters, tags: [latte.filter]}
+	- {class: ApiGen\Templating\Filters\PhpManualFilters, tags: [latte.filter]}
+	- {class: ApiGen\Templating\Filters\ResolverFilters, tags: [latte.filter]}
+	- {class: ApiGen\Templating\Filters\SourceFilters, tags: [latte.filter]}
+	- {class: ApiGen\Templating\Filters\UrlFilters, tags: [latte.filter]}
 
 	# theme
 	- ApiGen\Theme\ThemeResources

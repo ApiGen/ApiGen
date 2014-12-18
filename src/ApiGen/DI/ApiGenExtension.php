@@ -9,12 +9,16 @@
 
 namespace ApiGen\DI;
 
-use Kdyby\Events\DI\EventsExtension;
 use Nette\DI\CompilerExtension;
 
 
 class ApiGenExtension extends CompilerExtension
 {
+
+	const TAG_CONSOLE_COMMAND = 'console.command';
+	const TAG_LATTE_FILTER = 'latte.filter';
+	const TAG_TEMPLATE_GENERATOR = 'template.generator';
+
 
 	public function loadConfiguration()
 	{
@@ -28,8 +32,9 @@ class ApiGenExtension extends CompilerExtension
 
 	public function beforeCompile()
 	{
+		$builder = $this->getContainerBuilder();
+		$builder->prepareClassList();
 		$this->setupConsole();
-		$this->setupEvents();
 		$this->setupTemplatingFilters();
 		$this->setupGeneratorQueue();
 	}
@@ -38,7 +43,6 @@ class ApiGenExtension extends CompilerExtension
 	private function setupTemplating()
 	{
 		$builder = $this->getContainerBuilder();
-
 		$builder->addDefinition($this->prefix('latteFactory'))
 			->setClass('Latte\Engine')
 			->addSetup('setTempDirectory', [$builder->expand('%tempDir%/cache/latte')]);
@@ -50,11 +54,13 @@ class ApiGenExtension extends CompilerExtension
 		$builder = $this->getContainerBuilder();
 
 		$application = $builder->getDefinition($builder->getByType('ApiGen\Console\Application'));
-		foreach ($builder->findByType('Symfony\Component\Console\Command\Command') as $command) {
-			if ( ! $this->isPhar() && $command === 'ApiGen\Command\SelfUpdateCommand') {
+
+		foreach (array_keys($builder->findByTag(self::TAG_CONSOLE_COMMAND)) as $serviceName) {
+			$className = $builder->getDefinition($serviceName)->getClass();
+			if ( ! $this->isPhar() && $className === 'ApiGen\Command\SelfUpdateCommand') {
 				continue;
 			}
-			$application->addSetup('add', ['@' . $command]);
+			$application->addSetup('add', ['@' . $serviceName]);
 		}
 	}
 
@@ -68,24 +74,12 @@ class ApiGenExtension extends CompilerExtension
 	}
 
 
-	private function setupEvents()
-	{
-		$builder = $this->getContainerBuilder();
-
-		foreach ($builder->findByType('Kdyby\Events\Subscriber') as $event) {
-			$builder->getDefinition($event)
-				->addTag(EventsExtension::TAG_SUBSCRIBER);
-		}
-	}
-
-
 	private function setupTemplatingFilters()
 	{
 		$builder = $this->getContainerBuilder();
-
 		$latteFactory = $builder->getDefinition($builder->getByType('Latte\Engine'));
-		foreach ($builder->findByType('ApiGen\Templating\Filters\Filters') as $filter) {
-			$latteFactory->addSetup('addFilter', [NULL, ['@' . $filter, 'loader']]);
+		foreach (array_keys($builder->findByTag(self::TAG_LATTE_FILTER)) as $serviceName) {
+			$latteFactory->addSetup('addFilter', [NULL, ['@' . $serviceName, 'loader']]);
 		}
 	}
 
@@ -94,8 +88,8 @@ class ApiGenExtension extends CompilerExtension
 	{
 		$builder = $this->getContainerBuilder();
 		$generator = $builder->getDefinition($builder->getByType('ApiGen\Generator\GeneratorQueue'));
-		foreach ($builder->findByType('ApiGen\Generator\TemplateGenerator') as $templateGenerator) {
-			$generator->addSetup('addToQueue', ['@' . $templateGenerator]);
+		foreach (array_keys($builder->findByTag(self::TAG_TEMPLATE_GENERATOR)) as $serviceName) {
+			$generator->addSetup('addToQueue', ['@' . $serviceName]);
 		}
 	}
 
