@@ -79,7 +79,7 @@ class TemplateElementsLoader
 
 		if ($this->configuration->getOption(CO::DOWNLOAD)) {
 			$template->setParameters([
-				'archive' => basename($this->zip->getArchivePath())
+				'archive' => basename($this->configuration->getZipFileName())
 			]);
 		}
 

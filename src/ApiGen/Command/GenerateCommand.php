@@ -128,8 +128,8 @@ class GenerateCommand extends Command
 					'Elements with this name prefix will be first in tree.'),
 				new InputOption(CO::INTERNAL, NULL, InputOption::VALUE_NONE,
 					'Include elements marked as @internal.'),
-				new InputOption(CO::PHP, NULL, InputOption::VALUE_OPTIONAL,
-					'Generate documentation for PHP internal classes.', TRUE),
+				new InputOption(CO::PHP, NULL, InputOption::VALUE_NONE,
+					'Generate documentation for PHP internal classes.'),
 				new InputOption(CO::SKIP_DOC_PATH, NULL, InputOption::VALUE_IS_ARRAY | InputArgument::OPTIONAL,
 					'Files matching this mask will be included in class tree,'
 					. ' but will not create a link to their documentation (can be specified multiple times).'),
