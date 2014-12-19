@@ -62,69 +62,86 @@ class AutocompleteElements
 	}
 
 
-	private function sortElements()
-	{
-		usort($this->elements, function ($one, $two) {
-			return strcasecmp($one[1], $two[1]);
-		});
-	}
-
-
 	private function processElement(ReflectionBase $element)
 	{
 		$autocomplete = $this->configuration->getOption(CO::AUTOCOMPLETE);
 
-		if ($element instanceof ReflectionClass) {
-			$this->addClassElements($element);
-
-		} elseif ($element instanceof ReflectionConstant && isset($autocomplete[Elements::CONSTANTS])) {
+		if ($element instanceof ReflectionConstant && isset($autocomplete[Elements::CONSTANTS])) {
 			$this->elements[] = ['co', $element->getPrettyName()];
 
 		} elseif ($element instanceof ReflectionFunction && isset($autocomplete[Elements::FUNCTIONS])) {
 			$this->elements[] = ['f', $element->getPrettyName()];
+
+		} elseif ($element instanceof ReflectionClass) {
+			if (isset($autocompleteOption[Elements::CLASSES])) {
+				$this->elements[] = ['c', $element->getPrettyName()];
+			}
+			$this->processClassElements($element);
 		}
 	}
 
 
-	private function addClassElements(ReflectionClass $element)
+	private function processClassElements(ReflectionClass $classReflection)
 	{
 		$autocompleteOption = $this->getAutocompleteOption();
-		if (isset($autocompleteOption[Elements::CLASSES])) {
-			$this->elements[] = ['c', $element->getPrettyName()];
-		}
-
 		if (isset($autocompleteOption[Elements::METHODS])) {
-			foreach ($element->getOwnMethods() as $method) {
-				$this->elements[] = ['m', $method->getPrettyName()];
-			}
-			foreach ($element->getOwnMagicMethods() as $method) {
-				$this->elements[] = ['mm', $method->getPrettyName()];
-			}
+			$this->processClassMethods($classReflection);
 		}
 
 		if (isset($autocompleteOption[Elements::PROPERTIES])) {
-			foreach ($element->getOwnProperties() as $property) {
-				$this->elements[] = ['p', $property->getPrettyName()];
-			}
-			foreach ($element->getOwnMagicProperties() as $property) {
-				$this->elements[] = ['mp', $property->getPrettyName()];
-			}
+			$this->processClassProperties($classReflection);
 		}
 
 		if (isset($autocompleteOption[self::CLASS_CONSTANTS])) {
-			foreach ($element->getOwnConstants() as $constant) {
-				$this->elements[] = ['cc', $constant->getPrettyName()];
-			}
+			$this->processClassConstants($classReflection);
 		}
 	}
 
 
 	/**
-	 * @return string
+	 * @return array
 	 */
 	private function getAutocompleteOption()
 	{
 		return $this->configuration->getOption(CO::AUTOCOMPLETE);
+	}
+
+
+	private function processClassMethods(ReflectionClass $classReflection)
+	{
+		foreach ($classReflection->getOwnMethods() as $method) {
+			$this->elements[] = ['m', $method->getPrettyName()];
+		}
+		foreach ($classReflection->getOwnMagicMethods() as $method) {
+			$this->elements[] = ['mm', $method->getPrettyName()];
+		}
+	}
+
+
+	private function processClassProperties(ReflectionClass $classReflection)
+	{
+		foreach ($classReflection->getOwnProperties() as $property) {
+			$this->elements[] = ['p', $property->getPrettyName()];
+		}
+		foreach ($classReflection->getOwnMagicProperties() as $property) {
+			$this->elements[] = ['mp', $property->getPrettyName()];
+		}
+	}
+
+
+	private function processClassConstants(ReflectionClass $classReflection)
+	{
+		foreach ($classReflection->getOwnConstants() as $constant) {
+			$this->elements[] = ['cc', $constant->getPrettyName()];
+		}
+	}
+
+
+	private function sortElements()
+	{
+		usort($this->elements, function ($one, $two) {
+			return strcasecmp($one[1], $two[1]);
+		});
 	}
 
 }

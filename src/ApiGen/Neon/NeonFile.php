@@ -32,6 +32,7 @@ class NeonFile
 
 
 	/**
+	 * @param string $path
 	 * @throws \Exception
 	 */
 	private function validatePath($path)
