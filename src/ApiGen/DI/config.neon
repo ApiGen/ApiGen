@@ -2,5 +2,4 @@ extensions:
 	- ApiGen\DI\ApiGenExtension
 	- ApiGen\DI\CharsetConvertorExtension
 	- ApiGen\DI\ParserExtension
-	- Kdyby\Console\DI\ConsoleExtension
 	- Kdyby\Events\DI\EventsExtension

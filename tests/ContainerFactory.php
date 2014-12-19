@@ -27,8 +27,8 @@ class ContainerFactory
 	 */
 	private function createAndReturnTempDir()
 	{
-		@mkdir(__DIR__ . '/tmp'); // @ - directory may exists
-		@mkdir($tempDir = __DIR__ . '/tmp/' . (isset($_SERVER['argv']) ? md5(serialize($_SERVER['argv'])) : getmypid()));
+		@mkdir(__DIR__ . '/temp'); // @ - directory may exists
+		@mkdir($tempDir = __DIR__ . '/temp/' . (isset($_SERVER['argv']) ? md5(serialize($_SERVER['argv'])) : getmypid()));
 		FileSystem::purgeDir($tempDir);
 		return realpath($tempDir);
 	}

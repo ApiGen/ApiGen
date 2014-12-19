@@ -13,9 +13,10 @@
 	],
 	"require": {
 		"php": ">=5.4",
+		"nette/application": "~2.2",
 		"nette/bootstrap": "~2.2",
-		"nette/di": "~2.3@dev",
-		"nette/neon": "~2.3@dev",
+		"nette/di": "~2.2",
+		"nette/neon": "~2.2",
 		"nette/mail": "~2.2",
 		"nette/robot-loader": "~2.2",
 		"nette/safe-stream": "~2.2",
@@ -26,7 +27,6 @@
 		"andrewsville/php-token-reflection": "~1.4",
 		"michelf/php-markdown": "~1.4",
 		"kdyby/events": "~2.0",
-		"kdyby/console": "~2.0",
 		"symfony/options-resolver": "~2.6.1",
 
 		"ext-json": "*",
