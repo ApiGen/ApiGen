@@ -10,10 +10,9 @@
 namespace ApiGen\Parser\Elements;
 
 use ApiGen\Reflection\ReflectionElement;
-use Nette;
 
 
-class ElementFilter extends Nette\Object
+class ElementFilter
 {
 
 	/**
@@ -31,7 +30,7 @@ class ElementFilter extends Nette\Object
 
 	/**
 	 * @param array $elements
-	 * @param $annotation
+	 * @param string $annotation
 	 * @return mixed
 	 */
 	public function filterByAnnotation($elements, $annotation)

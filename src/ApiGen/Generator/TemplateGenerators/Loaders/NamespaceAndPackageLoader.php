@@ -11,10 +11,8 @@ namespace ApiGen\Generator\TemplateGenerators\Loaders;
 
 use ApiGen\Parser\Elements\Elements;
 use ApiGen\Parser\Elements\ElementStorage;
-use ApiGen\Reflection\ReflectionBase;
 use ApiGen\Reflection\ReflectionElement;
 use ApiGen\Templating\Template;
-use TokenReflection\ReflectionClass;
 
 
 class NamespaceAndPackageLoader
