@@ -13,64 +13,136 @@ use ApiGen\Reflection\ReflectionClass;
 use ApiGen\Reflection\ReflectionConstant;
 use ApiGen\Reflection\ReflectionElement;
 use ApiGen\Reflection\ReflectionExtension;
+use ApiGen\Reflection\ReflectionFunction;
 use ApiGen\Reflection\ReflectionMethod;
 use ApiGen\Reflection\ReflectionProperty;
-use Nette;
 
 
+/**
+ * Builds links to a element documentation at php.net
+ */
 class PhpManualFilters extends Filters
 {
 
+	const PHP_MANUAL_URL = 'http://php.net/manual/en';
+
+
 	/**
-	 * Returns a link to a element documentation at php.net.
-	 *
 	 * @param ReflectionElement|ReflectionExtension|ReflectionMethod $element
 	 * @return string
 	 */
 	public function manualUrl($element)
 	{
-		$manual = 'http://php.net/manual';
-		$reservedClasses = ['stdClass', 'Closure', 'Directory'];
-
-		// Extension
 		if ($element instanceof ReflectionExtension) {
-			$extensionName = strtolower($element->getName());
-			if ($extensionName === 'core') {
-				return $manual;
-			}
-
-			if ($extensionName === 'date') {
-				$extensionName = 'datetime';
-			}
-
-			return sprintf('%s/book.%s.php', $manual, $extensionName);
+			return $this->createExtensionUrl($element);
 		}
 
-		// Class and its members
 		$class = $element instanceof ReflectionClass ? $element : $element->getDeclaringClass();
+		if ($this->isReservedClass($class)) {
+			return self::PHP_MANUAL_URL . '/reserved.classes.php';
 
-		if (in_array($class->getName(), $reservedClasses)) {
-			return $manual . '/reserved.classes.php';
-		}
-
-		$className = strtolower($class->getName());
-		$classUrl = sprintf('%s/class.%s.php', $manual, $className);
-		$elementName = strtolower(strtr(ltrim($element->getName(), '_'), '_', '-'));
-
-		if ($element instanceof ReflectionClass) {
-			return $classUrl;
+		} elseif ($element instanceof ReflectionClass) {
+			return $this->createClassUrl($class);
 
 		} elseif ($element instanceof ReflectionMethod) {
-			return sprintf('%s/%s.%s.php', $manual, $className, $elementName);
+			return $this->createMethodUrl($class, $element);
+
+		} elseif ($element instanceof ReflectionFunction) {
+			return $this->createFunctionUrl($element);
 
 		} elseif ($element instanceof ReflectionProperty) {
-			return sprintf('%s#%s.props.%s', $classUrl, $className, $elementName);
+			return $this->createPropertyUrl($class, $element);
 
 		} elseif ($element instanceof ReflectionConstant) {
-			return sprintf('%s#%s.constants.%s', $classUrl, $className, $elementName);
+			return $this->createConstantUrl($class, $element);
 		}
 
 		return '';
+	}
+
+
+	/**
+	 * @return string
+	 */
+	private function createExtensionUrl(ReflectionExtension $reflectionExtension)
+	{
+		$extensionName = strtolower($reflectionExtension->getName());
+		if ($extensionName === 'core') {
+			return self::PHP_MANUAL_URL;
+		}
+
+		if ($extensionName === 'date') {
+			$extensionName = 'datetime';
+		}
+
+		return self::PHP_MANUAL_URL . '/book.' . $extensionName . '.php';
+	}
+
+
+	/**
+	 * @return string
+	 */
+	private function createClassUrl(ReflectionClass $classReflection)
+	{
+		return self::PHP_MANUAL_URL . '/class.' . strtolower($classReflection->getName()) . '.php';
+	}
+
+
+	/**
+	 * @return string
+	 */
+	private function createConstantUrl(ReflectionClass $classReflection, ReflectionConstant $reflectionConstant)
+	{
+		return $this->createClassUrl($classReflection) . '#' . strtolower($classReflection->getName()) .
+			'.constants.' . $this->getElementName($reflectionConstant);
+	}
+
+
+	/**
+	 * @return string
+	 */
+	private function createPropertyUrl(ReflectionClass $classReflection, ReflectionProperty $reflectionProperty)
+	{
+		return $this->createClassUrl($classReflection) . '#' . strtolower($classReflection->getName()) .
+			'.props.' . $this->getElementName($reflectionProperty);
+	}
+
+
+	/**
+	 * @return string
+	 */
+	private function createMethodUrl(ReflectionClass $reflectionClass, ReflectionMethod $reflectionMethod)
+	{
+		return self::PHP_MANUAL_URL . '/' . strtolower($reflectionClass->getName()) . '.' .
+			$this->getElementName($reflectionMethod) . '.php';
+	}
+
+
+	/**
+	 * @return string
+	 */
+	private function createFunctionUrl(ReflectionElement $reflectionElement)
+	{
+		return self::PHP_MANUAL_URL . '/function.' . strtolower($reflectionElement->getName()) . '.php';
+	}
+
+
+	/**
+	 * @return bool
+	 */
+	private function isReservedClass(ReflectionClass $class)
+	{
+		$reservedClasses = ['stdClass', 'Closure', 'Directory'];
+		return (in_array($class->getName(), $reservedClasses));
+	}
+
+
+	/**
+	 * @return string
+	 */
+	private function getElementName(ReflectionElement $element)
+	{
+		return strtolower(strtr(ltrim($element->getName(), '_'), '_', '-'));
 	}
 
 }

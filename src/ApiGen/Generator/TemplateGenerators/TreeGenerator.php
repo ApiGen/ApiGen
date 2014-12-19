@@ -13,12 +13,10 @@ use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Configuration\Theme\ThemeConfigOptions as TCO;
 use ApiGen\Generator\ConditionalTemplateGenerator;
-use ApiGen\Parser\Elements\ElementExtractor;
 use ApiGen\Parser\Elements\Elements;
 use ApiGen\Parser\Elements\ElementStorage;
 use ApiGen\Parser\ParserResult;
 use ApiGen\Reflection\ReflectionClass;
-use ApiGen\Templating\Template;
 use ApiGen\Templating\TemplateFactory;
 use ApiGen\Tree;
 

@@ -9,7 +9,6 @@
 
 namespace ApiGen\Templating;
 
-use ApiGen\FileSystem\FileSystem;
 use Nette;
 
 

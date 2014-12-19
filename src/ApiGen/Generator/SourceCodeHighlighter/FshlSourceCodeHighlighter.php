@@ -9,12 +9,10 @@
 
 namespace ApiGen\Generator\SourceCodeHighlighter;
 
-use FSHL;
 use FSHL\Highlighter;
-use Nette;
 
 
-class FshlSourceCodeHighlighter extends Nette\Object implements SourceCodeHighlighter
+class FshlSourceCodeHighlighter implements SourceCodeHighlighter
 {
 
 	/**

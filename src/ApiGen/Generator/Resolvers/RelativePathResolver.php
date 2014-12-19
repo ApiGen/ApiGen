@@ -10,7 +10,6 @@
 namespace ApiGen\Generator\Resolvers;
 
 use ApiGen\Configuration\ConfigurationOptions as CO;
-use ApiGen\FileSystem\FileSystem;
 use InvalidArgumentException;
 use Nette;
 
