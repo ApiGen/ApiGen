@@ -113,7 +113,7 @@ class PhpManualFilters extends Filters
 	 */
 	private function createMethodUrl(ReflectionClass $reflectionClass, ReflectionMethod $reflectionMethod)
 	{
-		return self::PHP_MANUAL_URL . '/' . strtolower($reflectionClass->getName()). '.' .
+		return self::PHP_MANUAL_URL . '/' . strtolower($reflectionClass->getName()) . '.' .
 			$this->getElementName($reflectionMethod) . '.php';
 	}
 
