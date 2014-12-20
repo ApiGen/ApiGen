@@ -44,6 +44,7 @@ class RelativePathResolver extends Nette\Object
 	 */
 	public function getRelativePath($fileName)
 	{
+        $fileName = str_replace('\\', '/', $fileName);
 		if (isset($this->symlinks[$fileName])) {
 			$fileName = $this->symlinks[$fileName];
 		}
