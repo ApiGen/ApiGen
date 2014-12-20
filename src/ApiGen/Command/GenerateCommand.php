@@ -25,7 +25,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use TokenReflection\Exception\FileProcessingException;
-use Tracy\Debugger;
 
 
 class GenerateCommand extends Command
@@ -152,22 +151,13 @@ class GenerateCommand extends Command
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
 		try {
-			$configFile = $input->getOption(CO::CONFIG);
-			$configFileOptions = [];
-			if (file_exists($configFile)) {
-				$configFileOptions = (new NeonFile($configFile))->read();
-			}
-
-			// cli has priority over config file
-			$options = $input->getOptions() + $configFileOptions;
-			$options = $this->configuration->resolveOptions($options);
-
+			$options = $this->prepareOptions($input->getOptions());
 			$this->scanAndParse($options, $output);
 			$this->generate($options, $output);
 			return 0;
 
 		} catch (\Exception $e) {
-			$output->writeln(PHP_EOL . '<error>' . $e->getMessage() . '</error>');
+			$output->writeln('<error>' . $e->getMessage() . '</error>');
 			return 1;
 		}
 	}
@@ -211,6 +201,24 @@ class GenerateCommand extends Command
 				$output->writeln("<error>Parse error: " . $reasons[0]->getMessage() . "</error>");
 			}
 		}
+	}
+
+
+	/**
+	 * @return array
+	 */
+	private function prepareOptions(array $cliInputOptions)
+	{
+		$configFile = $cliInputOptions[CO::CONFIG];
+
+		$configFileOptions = [];
+		if (file_exists($configFile)) {
+			$configFileOptions = (new NeonFile($configFile))->read();
+		}
+
+		// cli has priority over config file
+		$options = $cliInputOptions + $configFileOptions;
+		return $this->configuration->resolveOptions($options);
 	}
 
 }
