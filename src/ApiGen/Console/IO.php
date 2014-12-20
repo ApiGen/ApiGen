@@ -9,18 +9,13 @@
 
 namespace ApiGen\Console;
 
-use Nette;
+use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 
 
-/**
- * @method InputInterface   getInput()
- * @method OutputInterface  getOutput()
- * @method IO               setInput(object)
- * @method IO               setOutput(object)
- */
-class IO extends Nette\Object
+class IO
 {
 
 	/**
@@ -32,5 +27,42 @@ class IO extends Nette\Object
 	 * @var OutputInterface
 	 */
 	private $output;
+
+
+	public function __construct()
+	{
+		$this->input = new ArrayInput([]);
+		$this->output = new NullOutput;
+	}
+
+
+	/**
+	 * @return InputInterface
+	 */
+	public function getInput()
+	{
+		return $this->input;
+	}
+
+
+	public function setInput(InputInterface $input)
+	{
+		$this->input = $input;
+	}
+
+
+	/**
+	 * @return OutputInterface
+	 */
+	public function getOutput()
+	{
+		return $this->output;
+	}
+
+
+	public function setOutput(OutputInterface $output)
+	{
+		$this->output = $output;
+	}
 
 }
