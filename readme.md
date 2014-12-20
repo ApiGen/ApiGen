@@ -63,7 +63,7 @@ composer require apigen/apigen --dev
 Run with options as above:
 
 ```sh
-php vendor/bin/apigen generate -s -src -d ../my/project-api
+php vendor/bin/apigen generate -s src -d ../my/project-api
 ```
 
 
