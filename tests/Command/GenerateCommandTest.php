@@ -6,6 +6,7 @@ use ApiGen\Command\GenerateCommand;
 use ApiGen\Tests\ContainerAwareTestCase;
 use ApiGen\Tests\MethodInvoker;
 use Mockery;
+use TokenReflection\Exception\FileProcessingException;
 
 
 class GenerateCommandTest extends ContainerAwareTestCase
@@ -23,22 +24,22 @@ class GenerateCommandTest extends ContainerAwareTestCase
 	}
 
 
-	public function testExecute()
+	public function testReportParseErrors()
 	{
-		$this->assertFileNotExists(TEMP_DIR . '/Api/index.html');
+		$errors = [
+			new FileProcessingException([new \Exception('Some error')])
+		];
 
-		$inputMock = Mockery::mock('Symfony\Component\Console\Input\InputInterface');
-		$inputMock->shouldReceive('getOptions')->andReturn([
-			'config' => NULL,
-			'destination' => TEMP_DIR . '/Api',
-			'source' => __DIR__ . '/Source'
-		]);
 		$outputMock = Mockery::mock('Symfony\Component\Console\Output\OutputInterface');
-		$outputMock->shouldReceive('writeln')->andReturnNull();
-		$result = MethodInvoker::callMethodOnObject($this->generateCommand, 'execute', [$inputMock, $outputMock]);
-		$this->assertSame(0, $result);
+		$outputMock->shouldReceive('writeln')->andReturnUsing(function ($args) {
+			echo $args;
+		});
 
-		$this->assertFileExists(TEMP_DIR . '/Api/index.html');
+		ob_start();
+		MethodInvoker::callMethodOnObject($this->generateCommand, 'reportParserErrors', [$errors, $outputMock]);
+		$output = ob_get_clean();
+
+		$this->assertSame('<error>Parse error: Some error</error>', $output);
 	}
 
 }
