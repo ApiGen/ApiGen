@@ -10,18 +10,10 @@
 namespace ApiGen\Generator\Resolvers;
 
 use ApiGen\Configuration\ConfigurationOptions as CO;
-use ApiGen\FileSystem\FileSystem;
 use InvalidArgumentException;
-use Nette;
 
 
-/**
- * Resolves relative path to elements extracted by Generator.
- *
- * @method  RelativePathResolver setSymlinks(array $symlinks)
- * @method  RelativePathResolver setConfig(array $config)
- */
-class RelativePathResolver extends Nette\Object
+class RelativePathResolver
 {
 
 	/**
@@ -35,15 +27,27 @@ class RelativePathResolver extends Nette\Object
 	private $config;
 
 
+	public function setConfig(array $config)
+	{
+		$this->config = $config;
+	}
+
+
+	public function setSymlinks(array $symlinks)
+	{
+		$this->symlinks = $symlinks;
+	}
+
+
 	/**
 	 * Returns filename relative path to the source directory.
 	 *
 	 * @param string $fileName
-	 * @throws InvalidArgumentException
 	 * @return string
 	 */
 	public function getRelativePath($fileName)
 	{
+		$fileName = $this->uniteSlashes($fileName);
 		if (isset($this->symlinks[$fileName])) {
 			$fileName = $this->symlinks[$fileName];
 		}
@@ -66,7 +70,17 @@ class RelativePathResolver extends Nette\Object
 	{
 		$source = rtrim($source, '/');
 		$fileName = substr($fileName, strlen($source) + 1);
-		return str_replace('\\', '/', $fileName);
+		return $this->uniteSlashes($fileName);
+	}
+
+
+	/**
+	 * @param string $path
+	 * @return string
+	 */
+	private function uniteSlashes($path)
+	{
+		return str_replace('\\', '/', $path);
 	}
 
 }
