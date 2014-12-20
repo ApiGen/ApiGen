@@ -2,7 +2,6 @@
 
 namespace ApiGen\Tests;
 
-use ApiGen\FileSystem\FileSystem;
 use Nette\Configurator;
 use Nette\DI\Container;
 
@@ -16,21 +15,9 @@ class ContainerFactory
 	public function create()
 	{
 		$configurator = new Configurator;
-		$configurator->setTempDirectory($this->createAndReturnTempDir());
+		$configurator->setTempDirectory(TEMP_DIR);
 		$configurator->addConfig(__DIR__ . '/config/default.neon');
 		return $configurator->createContainer();
-	}
-
-
-	/**
-	 * @return string
-	 */
-	private function createAndReturnTempDir()
-	{
-		@mkdir(__DIR__ . '/temp'); // @ - directory may exists
-		@mkdir($tempDir = __DIR__ . '/temp/' . (isset($_SERVER['argv']) ? md5(serialize($_SERVER['argv'])) : getmypid()));
-		FileSystem::purgeDir($tempDir);
-		return realpath($tempDir);
 	}
 
 }
