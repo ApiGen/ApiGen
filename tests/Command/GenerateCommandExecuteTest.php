@@ -2,7 +2,6 @@
 
 namespace ApiGen\Tests\Command;
 
-use ApiGen\Command\GenerateCommand;
 use ApiGen\Tests\ContainerAwareTestCase;
 use ApiGen\Tests\MethodInvoker;
 use Mockery;
@@ -24,9 +23,9 @@ class GenerateCommandExecuteTest extends ContainerAwareTestCase
 
 
 	/**
-	 * @covers GenerateCommand::execute()
-	 * @covers GenerateCommand::scanAndParse()
-	 * @covers GenerateCommand::generate()
+	 * @covers ApiGen\Command\GenerateCommand::execute()
+	 * @covers ApiGen\Command\GenerateCommand::scanAndParse()
+	 * @covers ApiGen\Command\GenerateCommand::generate()
 	 */
 	public function testExecute()
 	{
