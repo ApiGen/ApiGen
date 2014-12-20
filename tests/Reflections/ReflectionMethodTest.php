@@ -49,7 +49,7 @@ class ReflectionMethodTest extends ContainerAwareTestCase
 	private function setConfiguration()
 	{
 		$this->configuration->resolveOptions([
-			'destination' => '...',
+			'destination' => TEMP_DIR . '/api',
 			'source' => '...'
 		]);
 	}

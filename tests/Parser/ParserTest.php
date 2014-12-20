@@ -63,7 +63,7 @@ class ParserTest extends ContainerAwareTestCase
 	private function setupConfigDefaults()
 	{
 		$defaults['source'] = '...';
-		$defaults['destination'] = '...';
+		$defaults['destination'] = TEMP_DIR . '/api';
 		$this->configuration->resolveOptions($defaults);
 	}
 

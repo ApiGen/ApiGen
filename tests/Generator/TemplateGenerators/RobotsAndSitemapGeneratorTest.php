@@ -46,7 +46,7 @@ class RobotsAndSitemapGeneratorTest extends ContainerAwareTestCase
 	public function testBaseUrl()
 	{
 		$options = $this->configuration->resolveOptions([
-			'destination' => '...',
+			'destination' => TEMP_DIR . '/api',
 			'source' => '...',
 			'baseUrl' => self::BASE_URL
 		]);

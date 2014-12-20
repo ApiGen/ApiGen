@@ -62,7 +62,7 @@ class ReflectionClassTest extends ContainerAwareTestCase
 	private function setConfigurationAccessLevelOption(array $values)
 	{
 		$this->configuration->resolveOptions([
-			'destination' => '...',
+			'destination' => TEMP_DIR . '/api',
 			'source' => '...',
 			'accessLevels' => $values
 		]);
