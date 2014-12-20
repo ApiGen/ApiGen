@@ -56,7 +56,7 @@ services:
 	- {class: ApiGen\Generator\TemplateGenerators\FunctionElementGenerator, tags: [template.generator]}
 	- {class: ApiGen\Generator\TemplateGenerators\NamespaceGenerator, tags: [template.generator]}
 	- {class: ApiGen\Generator\TemplateGenerators\PackageGenerator, tags: [template.generator]}
-	- {class: ApiGen\Generator\TemplateGenerators\Loaders\NamespaceAndPackageLoader, tags: [template.generator]}
+	- ApiGen\Generator\TemplateGenerators\Loaders\NamespaceAndPackageLoader
 	- ApiGen\Generator\Markups\MarkdownMarkup
 	- Michelf\MarkdownExtra
 
