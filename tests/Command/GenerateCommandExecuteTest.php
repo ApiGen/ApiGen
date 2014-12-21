@@ -2,6 +2,7 @@
 
 namespace ApiGen\Tests\Command;
 
+use ApiGen\Command\GenerateCommand;
 use ApiGen\Tests\ContainerAwareTestCase;
 use ApiGen\Tests\MethodInvoker;
 use Mockery;
@@ -50,6 +51,7 @@ class GenerateCommandExecuteTest extends ContainerAwareTestCase
 	public function testExecuteWithError()
 	{
 		$inputMock = Mockery::mock('Symfony\Component\Console\Input\InputInterface');
+
 		$this->assertSame(
 			1, // failure
 			MethodInvoker::callMethodOnObject($this->generateCommand, 'execute', [$inputMock, $this->getOutputMock()])
