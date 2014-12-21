@@ -11,11 +11,10 @@ namespace ApiGen\Templating;
 
 use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions as CO;
-use ApiGen\FileSystem\ZipArchiveGenerator;
 use ApiGen\Parser\Elements\AutocompleteElements;
 use ApiGen\Parser\Elements\ElementStorage;
 use ApiGen\Reflection\ReflectionElement;
-use Nette;
+use Closure;
 
 
 class TemplateElementsLoader
@@ -32,11 +31,6 @@ class TemplateElementsLoader
 	private $configuration;
 
 	/**
-	 * @var ZipArchiveGenerator
-	 */
-	private $zip;
-
-	/**
 	 * @var AutocompleteElements
 	 */
 	private $autocompleteElements;
@@ -45,12 +39,10 @@ class TemplateElementsLoader
 	public function __construct(
 		ElementStorage $elementStorage,
 		Configuration $configuration,
-		ZipArchiveGenerator $zip,
 		AutocompleteElements $autocompleteElements
 	) {
 		$this->elementStorage = $elementStorage;
 		$this->configuration = $configuration;
-		$this->zip = $zip;
 		$this->autocompleteElements = $autocompleteElements;
 	}
 
@@ -88,12 +80,11 @@ class TemplateElementsLoader
 
 
 	/**
-	 * @return \Closure
+	 * @return Closure
 	 */
 	private function getMainFilter()
 	{
-		return function ($element) {
-			/** @var ReflectionElement $element */
+		return function (ReflectionElement $element) {
 			return $element->isMain();
 		};
 	}
