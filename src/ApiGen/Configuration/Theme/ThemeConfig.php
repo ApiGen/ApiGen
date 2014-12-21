@@ -11,10 +11,9 @@ namespace ApiGen\Configuration\Theme;
 
 use ApiGen\Configuration\Exceptions\ConfigurationException;
 use ApiGen\Neon\NeonFile;
-use Nette;
 
 
-class ThemeConfig extends Nette\Object
+class ThemeConfig
 {
 
 	/**
