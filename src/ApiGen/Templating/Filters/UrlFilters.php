@@ -48,8 +48,12 @@ class UrlFilters extends Filters
 	private $configuration;
 
 
-	public function __construct(Configuration $configuration, SourceCodeHighlighter $highlighter, Markup $markup, ElementResolver $elementResolver)
-	{
+	public function __construct(
+		Configuration $configuration,
+		SourceCodeHighlighter $highlighter,
+		Markup $markup,
+		ElementResolver $elementResolver
+	) {
 		$this->highlighter = $highlighter;
 		$this->markup = $markup;
 		$this->elementResolver = $elementResolver;
