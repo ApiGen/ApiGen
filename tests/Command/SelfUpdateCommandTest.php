@@ -32,11 +32,4 @@ class SelfUpdateCommandTest extends ContainerAwareTestCase
 		$this->assertObjectHasAttribute('version', $item);
 	}
 
-
-	public function testGetTempFilename()
-	{
-		$tempFile = MethodInvoker::callMethodOnObject($this->selfUpdateCommand, 'getTempFileName');
-		$this->assertStringEndsWith('-temp.phar', $tempFile);
-	}
-
 }
