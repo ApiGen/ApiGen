@@ -59,9 +59,9 @@ class ConstantElementGenerator extends Nette\Object implements TemplateGenerator
 
 	public function generate()
 	{
-		foreach ($this->elementStorage->getConstants() as $name => $constant) {
-			$template = $this->templateFactory->createNamedForElement(TemplateFactory::ELEMENT_CONSTANT, $constant);
-			$template = $this->loadTemplateWithParameters($template, $constant);
+		foreach ($this->elementStorage->getConstants() as $name => $reflectionConstant) {
+			$template = $this->templateFactory->createForReflection($reflectionConstant);
+			$template = $this->loadTemplateWithParameters($template, $reflectionConstant);
 			$template->save();
 			$this->onGenerateProgress(1);
 		}

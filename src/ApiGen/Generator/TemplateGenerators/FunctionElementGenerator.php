@@ -59,9 +59,9 @@ class FunctionElementGenerator extends Nette\Object implements TemplateGenerator
 
 	public function generate()
 	{
-		foreach ($this->elementStorage->getFunctions() as $name => $function) {
-			$template = $this->templateFactory->createNamedForElement(TemplateFactory::ELEMENT_FUNCTION, $function);
-			$template = $this->loadTemplateWithParameters($template, $function);
+		foreach ($this->elementStorage->getFunctions() as $name => $reflectionFunction) {
+			$template = $this->templateFactory->createForReflection($reflectionFunction);
+			$template = $this->loadTemplateWithParameters($template, $reflectionFunction);
 			$template->save();
 			$this->onGenerateProgress(1);
 		}

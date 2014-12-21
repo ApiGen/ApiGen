@@ -12,21 +12,21 @@ namespace ApiGen\Templating;
 use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Configuration\Theme\ThemeConfigOptions as TCO;
+use ApiGen\Reflection\ReflectionClass;
+use ApiGen\Reflection\ReflectionConstant;
 use ApiGen\Reflection\ReflectionElement;
+use ApiGen\Reflection\ReflectionFunction;
+use ApiGen\Templating\Exceptions\UnsupportedElementException;
 use Latte;
-use Nette;
 use Nette\Utils\ArrayHash;
 
 
 class TemplateFactory
 {
 
-	const ELEMENT_CLASS = 'class';
 	const ELEMENT_SOURCE = 'source';
 	const ELEMENT_PACKAGE = 'package';
 	const ELEMENT_NAMESPACE = 'namespace';
-	const ELEMENT_CONSTANT = 'constant';
-	const ELEMENT_FUNCTION = 'function';
 
 	/**
 	 * @var Latte\Engine
@@ -103,15 +103,6 @@ class TemplateFactory
 		if ($name === self::ELEMENT_SOURCE) {
 			$template->setSavePath($this->templateNavigator->getTemplatePathForSourceElement($element));
 
-		} elseif ($name === self::ELEMENT_CLASS) {
-			$template->setSavePath($this->templateNavigator->getTemplatePathForClass($element));
-
-		} elseif ($name === self::ELEMENT_CONSTANT) {
-			$template->setSavePath($this->templateNavigator->getTemplatePathForConstant($element));
-
-		} elseif ($name === self::ELEMENT_FUNCTION) {
-			$template->setSavePath($this->templateNavigator->getTemplatePathForFunction($element));
-
 		} elseif ($name === self::ELEMENT_NAMESPACE) {
 			$template->setSavePath($this->templateNavigator->getTemplatePathForNamespace($element));
 
@@ -119,8 +110,33 @@ class TemplateFactory
 			$template->setSavePath($this->templateNavigator->getTemplatePathForPackage($element));
 
 		} else {
-			throw new \Exception($name . ' is not supported template type.');
+			throw new UnsupportedElementException($name . ' is not supported template type.');
 		}
+		return $template;
+	}
+
+
+	/**
+	 * @param ReflectionElement $element
+	 * @return Template
+	 */
+	public function createForReflection($element)
+	{
+		$template = $this->buildTemplate();
+
+		if ($element instanceof ReflectionClass) {
+			$template->setFile($this->templateNavigator->getTemplatePath('class'));
+			$template->setSavePath($this->templateNavigator->getTemplatePathForClass($element));
+
+		} elseif ($element instanceof ReflectionConstant) {
+			$template->setFile($this->templateNavigator->getTemplatePath('constant'));
+			$template->setSavePath($this->templateNavigator->getTemplatePathForConstant($element));
+
+		} elseif ($element instanceof ReflectionFunction) {
+			$template->setFile($this->templateNavigator->getTemplatePath('function'));
+			$template->setSavePath($this->templateNavigator->getTemplatePathForFunction($element));
+		}
+
 		return $template;
 	}
 

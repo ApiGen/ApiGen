@@ -59,9 +59,9 @@ class ClassElementGenerator extends Nette\Object implements TemplateGenerator, S
 
 	public function generate()
 	{
-		foreach ($this->elementStorage->getClassElements() as $name => $class) {
-			$template = $this->templateFactory->createNamedForElement(TemplateFactory::ELEMENT_CLASS, $class);
-			$template = $this->loadTemplateWithParameters($template, $class);
+		foreach ($this->elementStorage->getClassElements() as $name => $reflectionClass) {
+			$template = $this->templateFactory->createForReflection($reflectionClass);
+			$template = $this->loadTemplateWithParameters($template, $reflectionClass);
 			$template->save();
 			$this->onGenerateProgress(1);
 		}
