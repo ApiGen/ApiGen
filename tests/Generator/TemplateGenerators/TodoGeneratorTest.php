@@ -46,12 +46,16 @@ class TodoGeneratorTest extends ContainerAwareTestCase
 			'destination' => TEMP_DIR . '/api'
 		]);
 		$this->assertFalse($this->todoGenerator->isAllowed());
-		$this->configuration->resolveOptions([
-			'source' => TEMP_DIR,
-			'destination' => TEMP_DIR . '/api',
-			'todo' => TRUE
-		]);
+		$this->setCorrectConfiguration();
 		$this->assertTrue($this->todoGenerator->isAllowed());
+	}
+
+
+	public function testGenerate()
+	{
+		$this->setCorrectConfiguration();
+		$this->todoGenerator->generate();
+		$this->assertFileExists(TEMP_DIR . '/api/todo.html');
 	}
 
 
@@ -69,11 +73,7 @@ class TodoGeneratorTest extends ContainerAwareTestCase
 
 	private function prepareTodoGeneratorRequirements()
 	{
-		$this->configuration->resolveOptions([
-			'source' => __DIR__ . '/TodoSources',
-			'destination' => TEMP_DIR . '/api',
-			'todo' => TRUE
-		]);
+		$this->setCorrectConfiguration();
 
 		$files = [];
 		foreach (Finder::findFiles('*')->in(__DIR__ . '/TodoSources')->getIterator() as $file) {
@@ -93,6 +93,16 @@ class TodoGeneratorTest extends ContainerAwareTestCase
 		$methodReflection = $classReflection->getMethod('setTodoElementsToTemplate');
 		$methodReflection->setAccessible(TRUE);
 		return $methodReflection->invokeArgs($this->todoGenerator, [$template]);
+	}
+
+
+	private function setCorrectConfiguration()
+	{
+		$this->configuration->resolveOptions([
+			'source' => TEMP_DIR,
+			'destination' => TEMP_DIR . '/api',
+			'todo' => TRUE
+		]);
 	}
 
 }
