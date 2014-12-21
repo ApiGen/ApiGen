@@ -40,12 +40,12 @@ class TreeGeneratorTest extends ContainerAwareTestCase
 	public function testIsAllowed()
 	{
 		$this->configuration->resolveOptions([
-			'source' => '...',
+			'source' => TEMP_DIR,
 			'destination' => TEMP_DIR . '/api'
 		]);
 		$this->assertTrue($this->treeGenerator->isAllowed());
 		$this->configuration->resolveOptions([
-			'source' => '...',
+			'source' => TEMP_DIR,
 			'destination' => TEMP_DIR . '/api',
 			'tree' => FALSE
 		]);
@@ -64,7 +64,7 @@ class TreeGeneratorTest extends ContainerAwareTestCase
 	private function prepareTreeGeneratorRequirements()
 	{
 		$this->configuration->resolveOptions([
-			'source' => '...',
+			'source' => TEMP_DIR,
 			'destination' => $this->destinationDir
 		]);
 

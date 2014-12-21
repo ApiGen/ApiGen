@@ -42,12 +42,12 @@ class TodoGeneratorTest extends ContainerAwareTestCase
 	public function testIsAllowed()
 	{
 		$this->configuration->resolveOptions([
-			'source' => '...',
+			'source' => TEMP_DIR,
 			'destination' => TEMP_DIR . '/api'
 		]);
 		$this->assertFalse($this->todoGenerator->isAllowed());
 		$this->configuration->resolveOptions([
-			'source' => '...',
+			'source' => TEMP_DIR,
 			'destination' => TEMP_DIR . '/api',
 			'todo' => TRUE
 		]);

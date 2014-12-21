@@ -132,8 +132,8 @@ class GenerateCommand extends Command
 				new InputOption(CO::SKIP_DOC_PATH, NULL, InputOption::VALUE_IS_ARRAY | InputArgument::OPTIONAL,
 					'Files matching this mask will be included in class tree,'
 					. ' but will not create a link to their documentation (can be specified multiple times).'),
-				new InputOption(CO::SOURCE_CODE, NULL, InputOption::VALUE_REQUIRED,
-					'Generate highlighted source code for elements.', TRUE),
+				new InputOption(CO::NO_SOURCE_CODE, NULL, InputOption::VALUE_NONE,
+					'Do not generate highlighted source code for elements.'),
 				new InputOption(CO::TEMPLATE_THEME, NULL, InputOption::VALUE_OPTIONAL,
 					'ApiGen template theme name.', 'default'),
 				new InputOption(CO::TEMPLATE_CONFIG, NULL, InputOption::VALUE_OPTIONAL,

@@ -50,7 +50,7 @@ class ReflectionMethodTest extends ContainerAwareTestCase
 	{
 		$this->configuration->resolveOptions([
 			'destination' => TEMP_DIR . '/api',
-			'source' => '...'
+			'source' => TEMP_DIR
 		]);
 	}
 
