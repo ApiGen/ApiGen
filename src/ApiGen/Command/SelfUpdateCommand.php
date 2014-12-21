@@ -10,7 +10,6 @@
 namespace ApiGen\Command;
 
 use ApiGen\ApiGen;
-use Phar;
 use stdClass;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -68,14 +67,13 @@ EOT
 
 
 	/**
-	 * @param $item
 	 * @return string
 	 */
-	private function downloadFileAndReturnPath($item)
+	private function downloadFileAndReturnPath(stdClass $item)
 	{
 		$this->output->writeln('<info>Downloading ApiGen ' . $item->version . '...</info>');
 		file_put_contents($this->getTempFilename(), file_get_contents($item->url));
-		$this->validateFileChecksum($this->output, $item);
+		$this->validateFileChecksum($item);
 		rename($this->getTempFilename(), $this->getLocalFilename());
 		return $this->getLocalFilename();
 	}
@@ -92,10 +90,9 @@ EOT
 
 
 	/**
-	 * @param $item
 	 * @throws \Exception
 	 */
-	private function validateFileChecksum($item)
+	private function validateFileChecksum(stdClass $item)
 	{
 		if ($item->sha1 !== sha1_file($this->getTempFilename())) {
 			unlink($this->getTempFilename());

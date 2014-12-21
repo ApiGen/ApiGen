@@ -13,14 +13,13 @@ use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Configuration\Exceptions\ConfigurationException;
 use ApiGen\Configuration\Theme\ThemeConfigFactory;
 use ApiGen\FileSystem\FileSystem;
-use Nette;
 use ReflectionMethod;
 use ReflectionProperty;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 
-class ConfigurationOptionsResolver extends Nette\Object
+class ConfigurationOptionsResolver
 {
 
 	const AC_CLASSES = 'classes';
@@ -233,7 +232,7 @@ class ConfigurationOptionsResolver extends Nette\Object
 				}
 				return $value;
 			},
-			CO::SOURCE_CODE => function (Options $options, $value) {
+			CO::SOURCE_CODE => function (Options $options) {
 				return ! $options[CO::NO_SOURCE_CODE];
 			},
 			CO::TEMPLATE_CONFIG => function (Options $options, $value) {
