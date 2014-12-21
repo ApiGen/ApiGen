@@ -74,7 +74,9 @@ class SourceCodeGeneratorTest extends ContainerAwareTestCase
 	{
 		$this->prepareSourceCodeGenerator();
 		$this->sourceCodeGenerator->generate();
-		$this->assertFileExists(TEMP_DIR . '/api/source-class-ApiGen.Tests.Generator.TemplateGenerators.SourceCodeSource.SomeClass.html');
+		$this->assertFileExists(
+			TEMP_DIR . '/api/source-class-ApiGen.Tests.Generator.TemplateGenerators.SourceCodeSource.SomeClass.html'
+		);
 	}
 
 
@@ -85,7 +87,9 @@ class SourceCodeGeneratorTest extends ContainerAwareTestCase
 		$classElement = array_pop($classes);
 
 		MethodInvoker::callMethodOnObject($this->sourceCodeGenerator, 'generateForElement', [$classElement]);
-		$this->assertFileExists(TEMP_DIR . '/api/source-class-ApiGen.Tests.Generator.TemplateGenerators.SourceCodeSource.SomeClass.html');
+		$this->assertFileExists(
+			TEMP_DIR . '/api/source-class-ApiGen.Tests.Generator.TemplateGenerators.SourceCodeSource.SomeClass.html'
+		);
 	}
 
 
