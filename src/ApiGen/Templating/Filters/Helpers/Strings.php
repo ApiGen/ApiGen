@@ -11,10 +11,9 @@ namespace ApiGen\Templating\Filters\Helpers;
 
 use Latte;
 use Latte\Runtime\Filters;
-use Nette;
 
 
-class Strings extends Nette\Object
+class Strings
 {
 
 	/**
