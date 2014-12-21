@@ -9,6 +9,7 @@
 
 namespace ApiGen\Templating\Filters;
 
+use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Reflection\ReflectionClass;
 use ApiGen\Reflection\ReflectionConstant;
@@ -17,16 +18,19 @@ use ApiGen\Reflection\ReflectionFunction;
 use Nette;
 
 
-/**
- * @method SourceFilters setConfig(array $config)
- */
 class SourceFilters extends Filters
 {
 
 	/**
-	 * @var array
+	 * @var Configuration
 	 */
-	private $config;
+	private $configuration;
+
+
+	public function __construct(Configuration $configuration)
+	{
+		$this->configuration = $configuration;
+	}
 
 
 	/**
@@ -36,7 +40,7 @@ class SourceFilters extends Filters
 	public function staticFile($name)
 	{
 		$versions = [];
-		$filename = $this->config[CO::DESTINATION] . '/' . $name;
+		$filename = $this->configuration->getOption(CO::DESTINATION) . '/' . $name;
 		if ( ! isset($versions[$filename]) && is_file($filename)) {
 			$versions[$filename] = sprintf('%u', crc32(file_get_contents($filename)));
 		}
@@ -126,7 +130,7 @@ class SourceFilters extends Filters
 				? sprintf('%s-%s', $element->getStartLine(), $element->getEndLine()) : $element->getStartLine();
 		}
 
-		return sprintf($this->config[CO::TEMPLATE]['templates']['source']['filename'], $file)
+		return sprintf($this->configuration->getOption(CO::TEMPLATE)['templates']['source']['filename'], $file)
 			. ($lines !== NULL ? '#' . $lines : '');
 	}
 

@@ -10,14 +10,12 @@
 namespace ApiGen\Templating\Filters;
 
 use ApiGen;
+use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Generator\Resolvers\ElementResolver;
 use Nette;
 
 
-/**
- * @method AnnotationFilters setConfig(array $config)
- */
 class AnnotationFilters extends Filters
 {
 
@@ -70,19 +68,20 @@ class AnnotationFilters extends Filters
 	];
 
 	/**
-	 * @var array
-	 */
-	private $config;
-
-	/**
 	 * @var ElementResolver
 	 */
 	private $elementResolver;
 
+	/**
+	 * @var Configuration
+	 */
+	private $configuration;
 
-	public function __construct(ElementResolver $elementResolver)
+
+	public function __construct(Configuration $configuration, ElementResolver $elementResolver)
 	{
 		$this->elementResolver = $elementResolver;
+		$this->configuration = $configuration;
 	}
 
 
@@ -118,13 +117,15 @@ class AnnotationFilters extends Filters
 			unset($annotations[$annotation]);
 		}
 
+		$options = $this->configuration->getOptions();
+
 		// Show/hide internal
-		if ( ! $this->config[CO::INTERNAL]) {
+		if ( ! $options[CO::INTERNAL]) {
 			unset($annotations['internal']);
 		}
 
 		// Show/hide tasks
-		if ( ! $this->config[CO::TODO]) {
+		if ( ! $options[CO::TODO]) {
 			unset($annotations['todo']);
 		}
 
