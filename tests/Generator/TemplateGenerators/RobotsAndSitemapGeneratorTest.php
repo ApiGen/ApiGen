@@ -31,15 +31,9 @@ class RobotsAndSitemapGeneratorTest extends ContainerAwareTestCase
 
 	protected function setUp()
 	{
-		$this->configuration = $this->container->getByType(
-			'ApiGen\Configuration\Configuration'
-		);
-		$this->sitemapGenerator = $this->container->getByType(
-			'ApiGen\Generator\TemplateGenerators\SitemapGenerator'
-		);
-		$this->robotsGenerator = $this->container->getByType(
-			'ApiGen\Generator\TemplateGenerators\RobotsGenerator'
-		);
+		$this->configuration = $this->container->getByType('ApiGen\Configuration\Configuration');
+		$this->sitemapGenerator = $this->container->getByType('ApiGen\Generator\TemplateGenerators\SitemapGenerator');
+		$this->robotsGenerator = $this->container->getByType('ApiGen\Generator\TemplateGenerators\RobotsGenerator');
 	}
 
 
