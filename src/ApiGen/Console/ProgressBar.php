@@ -66,11 +66,25 @@ class ProgressBar
 	 */
 	private function getBarFormat()
 	{
-		if ($this->consoleIO->getInput() ? $this->consoleIO->getInput()->getOption(CO::DEBUG) : FALSE) {
+		if ($this->getDebugOption()) {
 			return 'debug';
 
 		} else {
 			return '<comment>%percent:3s% %</comment>';
+		}
+	}
+
+
+	/**
+	 * @return bool
+	 */
+	private function getDebugOption()
+	{
+		if ($this->consoleIO->getInput() && $this->consoleIO->getInput()->hasOption(CO::DEBUG)) {
+			return $this->consoleIO->getInput()->getOption(CO::DEBUG);
+
+		} else {
+			return FALSE;
 		}
 	}
 
