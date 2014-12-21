@@ -66,7 +66,7 @@ class ProgressBar
 	 */
 	private function getBarFormat()
 	{
-		if ($this->consoleIO->getInput() ?: $this->consoleIO->getInput()->getOption(CO::DEBUG)) {
+		if ($this->consoleIO->getInput() ? $this->consoleIO->getInput()->getOption(CO::DEBUG) : FALSE) {
 			return 'debug';
 
 		} else {
