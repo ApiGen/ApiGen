@@ -51,7 +51,6 @@ class DeprecatedGeneratorTest extends ContainerAwareTestCase
 	}
 
 
-
 	public function testGenerate()
 	{
 		$this->setCorrectConfiguration();
