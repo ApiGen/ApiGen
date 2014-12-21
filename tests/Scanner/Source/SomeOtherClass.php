@@ -1,6 +1,6 @@
 <?php
 
-namespace ApiGen\Tests\ApiGen\Scanner\Source;
+namespace ApiGen\Tests\Scanner\Source;
 
 
 class SomeOtherClass

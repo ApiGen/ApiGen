@@ -1,6 +1,6 @@
 <?php
 
-namespace ApiGen\Tests\ApiGen\Generator\Resolvers;
+namespace ApiGen\Tests\Generator\Resolvers;
 
 use ApiGen\Generator\Resolvers\RelativePathResolver;
 use PHPUnit_Framework_TestCase;

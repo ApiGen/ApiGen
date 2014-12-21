@@ -1,6 +1,6 @@
 <?php
 
-namespace ApiGen\Tests\ApiGen\Parser;
+namespace ApiGen\Tests\Parser;
 
 use ApiGen\Configuration\Configuration;
 use ApiGen\Parser\Parser;
