@@ -11,6 +11,7 @@ namespace ApiGen\Command;
 
 use ApiGen\ApiGen;
 use Phar;
+use stdClass;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -20,6 +21,11 @@ class SelfUpdateCommand extends Command
 {
 
 	const MANIFEST_URL = 'http://apigen.org/manifest.json';
+
+	/**
+	 * @var OutputInterface
+	 */
+	private $output;
 
 
 	protected function configure()
@@ -39,17 +45,17 @@ EOT
 
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
-		try {
-			$manifest = file_get_contents(self::MANIFEST_URL);
-			$item = json_decode($manifest);
+		$this->output = $output;
 
+		try {
+			$item = $this->getManifestItem();
 			if (ApiGen::VERSION === $item->version) {
 				$output->writeln('<info>You are already using most recent ApiGen version</info>');
 				return 0;
 			}
 
-			$this->downloadFile($output, $item);
-			$this->makeFileExecutable($output);
+			$this->downloadFileAndReturnPath($item);
+			$this->makeFileExecutable();
 
 			$output->writeln('<info>ApiGen updated!</info>');
 			return 0;
@@ -62,27 +68,35 @@ EOT
 
 
 	/**
-	 * @param OutputInterface $output
 	 * @param $item
+	 * @return string
 	 */
-	private function downloadFile(OutputInterface $output, $item)
+	private function downloadFileAndReturnPath($item)
 	{
-		$output->writeln('<info>Downloading ApiGen ' . $item->version . '...</info>');
+		$this->output->writeln('<info>Downloading ApiGen ' . $item->version . '...</info>');
 		file_put_contents($this->getTempFilename(), file_get_contents($item->url));
-		$this->validateFileChecksum($output, $item);
+		$this->validateFileChecksum($this->output, $item);
 		rename($this->getTempFilename(), $this->getLocalFilename());
-		$this->validatePhar();
+		return $this->getLocalFilename();
 	}
 
 
 	/**
-	 * @param OutputInterface $output
+	 * @return stdClass
+	 */
+	private function getManifestItem()
+	{
+		$manifest = file_get_contents(self::MANIFEST_URL);
+		return json_decode($manifest);
+	}
+
+
+	/**
 	 * @param $item
 	 * @throws \Exception
 	 */
-	private function validateFileChecksum(OutputInterface $output, $item)
+	private function validateFileChecksum($item)
 	{
-		$output->writeln('<info>Checking file checksum...</info>');
 		if ($item->sha1 !== sha1_file($this->getTempFilename())) {
 			unlink($this->getTempFilename());
 			throw new \Exception('The download file was corrupted.');
@@ -90,18 +104,8 @@ EOT
 	}
 
 
-	private function validatePhar()
+	private function makeFileExecutable()
 	{
-		if ( ! ini_get('phar.readonly')) {
-			$phar = new Phar($this->getLocalFilename());
-			unset($phar);
-		}
-	}
-
-
-	private function makeFileExecutable(OutputInterface $output)
-	{
-		$output->writeln('<info>Making ApiGen executable...</info>');
 		@chmod($this->getLocalFilename(), 0755);
 	}
 
@@ -127,12 +131,10 @@ EOT
 		if ( ! is_writable($tmpDir)) {
 			throw new \Exception('ApiGen update failed: the "' . $tmpDir . '" directory used to download'
 				. ' the temp file could not be written');
-		}
-		if ( ! is_writable($localFilename)) {
+
+		} elseif ( ! is_writable($localFilename)) {
 			throw new \Exception('ApiGen update failed: the "' . $localFilename . '" file could not be written');
 		}
-
-		return $localFilename;
 	}
 
 }

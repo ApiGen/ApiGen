@@ -50,6 +50,10 @@ class ProgressBar
 	 */
 	public function increment($increment = 1)
 	{
+		if ($this->bar === NULL) {
+			return;
+		}
+
 		$this->bar->advance($increment);
 		if ($this->bar->getProgress() === $this->bar->getMaxSteps()) {
 			$this->consoleIO->getOutput()->writeln(' - Finished!');
