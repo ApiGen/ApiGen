@@ -107,9 +107,6 @@ templateConfig: my/template/config.neon
 # the way elements are grouped in menu
 groups: auto # also: namespace, packages, none; auto will detect namespace first, than packages
 
-# element supported by autocomplete in search input
-autocomplete: [classes, constants, functions] # also [methods, properties]
-
 # access levels of included method and properties
 accessLevels: [public, protected] # also [private]
 

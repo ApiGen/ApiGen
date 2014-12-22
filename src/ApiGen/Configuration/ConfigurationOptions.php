@@ -13,7 +13,6 @@ namespace ApiGen\Configuration;
 class ConfigurationOptions
 {
 
-	const AUTOCOMPLETE = 'autocomplete';
 	const ACCESS_LEVELS = 'accessLevels';
 	const CONFIG = 'config';
 	const BASE_URL = 'baseUrl';

@@ -20,7 +20,9 @@ class SourceFiltersTest extends PHPUnit_Framework_TestCase
 	{
 		$configurationMock = Mockery::mock('ApiGen\Configuration\Configuration');
 		$configurationMock->shouldReceive('getOption')->with('destination')->andReturn(TEMP_DIR);
-		$configurationMock->shouldReceive('getOption')->with('template')->andReturn(['templates' => ['source' => ['filename' => 'source-file-%s.html']]]);
+		$configurationMock->shouldReceive('getOption')->with('template')->andReturn(
+			['templates' => ['source' => ['filename' => 'source-file-%s.html']]
+		]);
 		$this->sourceFilters = new SourceFilters($configurationMock);
 	}
 

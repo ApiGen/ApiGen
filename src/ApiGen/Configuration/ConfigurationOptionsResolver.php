@@ -22,9 +22,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class ConfigurationOptionsResolver
 {
 
-	const AC_CLASSES = 'classes';
-	const AC_CONSTANTS = 'constants';
-	const AC_FUNCTIONS = 'functions';
 	const AL_PROTECTED = 'protected';
 	const AL_PRIVATE = 'private';
 	const AL_PUBLIC = 'public';
@@ -35,7 +32,6 @@ class ConfigurationOptionsResolver
 	 * @var array
 	 */
 	private $defaults = [
-		CO::AUTOCOMPLETE => [],
 		CO::ACCESS_LEVELS => [],
 		CO::BASE_URL => '',
 		CO::CONFIG => '',
@@ -202,17 +198,8 @@ class ConfigurationOptionsResolver
 	private function setNormalizers()
 	{
 		$this->resolver->setNormalizers([
-			CO::AUTOCOMPLETE => function (Options $options, $value) {
-				return array_flip($value);
-			},
 			CO::DESTINATION => function (Options $options, $value) {
 				return FileSystem::getAbsolutePath($value);
-			},
-			CO::CHARSET => function (Options $options, $value) {
-				if ($value === ['auto']) {
-					return [];
-				}
-				return $value;
 			},
 			CO::BASE_URL => function (Options $options, $value) {
 				return rtrim($value, '/');
