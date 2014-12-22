@@ -48,18 +48,15 @@ class SourceFilters extends Filters
 
 
 	/**
-	 * @param ReflectionElement $element
+	 * @param ReflectionElement|ReflectionConstant $element
 	 * @param bool $withLine Include file line number into the link
 	 * @return string
 	 */
 	public function sourceUrl(ReflectionElement $element, $withLine = TRUE)
 	{
 		$file = '';
-		if ($element instanceof ReflectionClass || $element instanceof ReflectionFunction
-			|| ($element instanceof ReflectionConstant && $element->getDeclaringClassName() === NULL)
-		) {
+		if ($this->isDirectUrl($element)) {
 			$elementName = $element->getName();
-
 			if ($element instanceof ReflectionClass) {
 				$file = 'class-';
 
@@ -77,14 +74,39 @@ class SourceFilters extends Filters
 
 		$file .= $this->urlize($elementName);
 
-		$lines = NULL;
+		$url = sprintf($this->configuration->getOption(CO::TEMPLATE)['templates']['source']['filename'], $file);
 		if ($withLine) {
-			$lines = $element->getStartLine() !== $element->getEndLine()
-				? sprintf('%s-%s', $element->getStartLine(), $element->getEndLine()) : $element->getStartLine();
+			$url .= $this->getElementLinesAnchor($element);
 		}
+		return $url;
+	}
 
-		return sprintf($this->configuration->getOption(CO::TEMPLATE)['templates']['source']['filename'], $file)
-			. ($lines !== NULL ? '#' . $lines : '');
+
+	/**
+	 * @return bool
+	 */
+	private function isDirectUrl(ReflectionElement $element)
+	{
+		if ($element instanceof ReflectionClass || $element instanceof ReflectionFunction
+			|| ($element instanceof ReflectionConstant && $element->getDeclaringClassName() === NULL)
+		) {
+			return TRUE;
+		}
+		return FALSE;
+	}
+
+
+	/**
+	 * @param ReflectionElement $element
+	 * @return string
+	 */
+	private function getElementLinesAnchor(ReflectionElement $element)
+	{
+		$anchor = '#' . $element->getStartLine();
+		if ($element->getStartLine() !== $element->getEndLine()) {
+			$anchor .= '-' . $element->getEndLine();
+		}
+		return $anchor;
 	}
 
 }

@@ -3,6 +3,7 @@
 namespace ApiGen\Tests\Templating\Filters;
 
 use ApiGen\Templating\Filters\SourceFilters;
+use ApiGen\Tests\MethodInvoker;
 use Mockery;
 use PHPUnit_Framework_TestCase;
 
@@ -71,6 +72,22 @@ class SourceFiltersTest extends PHPUnit_Framework_TestCase
 	}
 
 
+	public function testGetElementLinesAnchor()
+	{
+		$elementMock = $this->buildReflectionElement(NULL, 20, 40);
+		$this->assertSame(
+			'#20-40',
+			MethodInvoker::callMethodOnObject($this->sourceFilters, 'getElementLinesAnchor', [$elementMock])
+		);
+
+		$elementMock = $this->buildReflectionElement(NULL, 20, 20);
+		$this->assertSame(
+			'#20',
+			MethodInvoker::callMethodOnObject($this->sourceFilters, 'getElementLinesAnchor', [$elementMock])
+		);
+	}
+
+
 	/**
 	 * @return Mockery\MockInterface
 	 */
@@ -122,6 +139,22 @@ class SourceFiltersTest extends PHPUnit_Framework_TestCase
 		$reflectionConstant->shouldReceive('getStartLine')->andReturn(80);
 		$reflectionConstant->shouldReceive('getEndLine')->andReturn(80);
 		return $reflectionConstant;
+	}
+
+
+	/**
+	 * @param string $name
+	 * @param int $start
+	 * @param int $end
+	 * @return Mockery\MockInterface
+	 */
+	private function buildReflectionElement($name, $start, $end)
+	{
+		$reflectionElement = Mockery::mock('ApiGen\Reflection\ReflectionElement');
+		$reflectionElement->shouldReceive('getName')->andReturn($name);
+		$reflectionElement->shouldReceive('getStartLine')->andReturn($start);
+		$reflectionElement->shouldReceive('getEndLine')->andReturn($end);
+		return $reflectionElement;
 	}
 
 }

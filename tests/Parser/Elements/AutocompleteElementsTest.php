@@ -19,14 +19,9 @@ class AutocompleteElementsTest extends PHPUnit_Framework_TestCase
 
 	protected function setUp()
 	{
-		$methodReflectionMock = Mockery::mock('ApiGen\Reflection\ReflectionMethod');
-		$methodReflectionMock->shouldReceive('getPrettyName')->andReturn('MethodPrettyName');
-
 		$classReflectionMock = Mockery::mock('ApiGen\Reflection\ReflectionClass');
 		$classReflectionMock->shouldReceive('getPrettyName')->andReturn('ClassPrettyName');
 		$classReflectionMock->shouldReceive('getOwnConstants')->andReturn([]);
-		$classReflectionMock->shouldReceive('getOwnMethods')->andReturn([$methodReflectionMock]);
-		$classReflectionMock->shouldReceive('getOwnMagicMethods')->andReturn([]);
 
 		$constantReflectionMock = Mockery::mock('ApiGen\Reflection\ReflectionConstant');
 		$constantReflectionMock->shouldReceive('getPrettyName')->andReturn('ConstantPrettyName');
