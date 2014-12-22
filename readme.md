@@ -71,8 +71,7 @@ php vendor/bin/apigen generate -s src -d ../my/project-api
 
 ```yaml
 # list of scanned file extensions (e.g. php5, phpt...)
-extensions:
-	- php # default
+extensions: [php]
 
 # directories and files matching this file mask will not be parsed
 exclude:
@@ -85,12 +84,7 @@ skipDocPath:
     - *<mask>``` # mask
 
 # character set of source files; if you use only one across your files, we recommend you name it
-charset:
-	# default
-    - auto # will choose from all supported (starting with UTF-8), slow and not 100% reliable
-    # e.g.
-    - UTF-8
-    - Windows-1252
+charset: [UTF-8]
 
 # elements with this name prefix will be considered as the "main project" (the rest will be considered as libraries)
 main: ApiGen
@@ -108,53 +102,40 @@ googleCseId: 011549293477758430224
 googleAnalytics: UA-35236-5
 
 # choose ApiGen own template theme
-templateTheme: default # default [other options: bootstrap]
+templateTheme: default # or: bootstrap
 
 # want to use individual templates, higher priority than option templateTheme
-templateConfig: path/to/individual/template-folder/config.neon
+templateConfig: my/template/config.neon
 
 # the way elements are grouped in menu
 groups: auto # default [other options: namespace, packages, none], auto will detect namespace first, than packages
 
 # element supported by autocomplete in search input
-autocomplete:
-	# default
-	- classes
-	- constants
-	- functions
-	# other
-	- methods
-	- properties
-	- classconstants
+autocomplete: [classes, constants, functions] # also [methods, properties]
 
 # access levels of included method and properties
-accessLevels:
-	# default
-	- public
-	- protected
-	# other
-	- private
+accessLevels: [public, protected] # also [private]
 
 # include elements marked as @internal/{@internal}
-internal: false # default [true]
+internal: false
 
 # generate documentation for PHP internal classes
-php: true # default [false]
+php: true
 
 # generate highlighted source code for elements
-sourceCode: true # default [false]
+sourceCode: true
 
 # generate tree view of classes, interfaces, traits and exceptions
-tree: true # default [false]
+tree: true
 
 # generate documentation for deprecated elements
-deprecated: false # default [false]
+deprecated: false
 
 # generate list of tasks with @todo annotation
-todo: false # default [true]
+todo: false
 
 # add link to ZIP archive of documentation
-download: false # default [true]
+download: false
 ```
 
 
