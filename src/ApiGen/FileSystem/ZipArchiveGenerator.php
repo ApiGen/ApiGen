@@ -10,8 +10,6 @@
 namespace ApiGen\FileSystem;
 
 use ApiGen\Configuration\Configuration;
-use ApiGen\Configuration\ConfigurationOptions as CO;
-use Nette;
 use Nette\Utils\Finder;
 use Nette\Utils\Strings;
 use RuntimeException;

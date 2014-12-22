@@ -42,13 +42,13 @@ class DeprecatedGeneratorTest extends ContainerAwareTestCase
 	public function testIsAllowed()
 	{
 		$this->configuration->resolveOptions([
-			'source' => '...',
-			'destination' => '...'
+			'source' => __DIR__ . '/Source',
+			'destination' => TEMP_DIR . '/api'
 		]);
 		$this->assertFalse($this->deprecatedGenerator->isAllowed());
 		$this->configuration->resolveOptions([
-			'source' => '...',
-			'destination' => '...',
+			'source' => __DIR__ . '/Source',
+			'destination' => TEMP_DIR . '/api',
 			'deprecated' => TRUE
 		]);
 		$this->assertTrue($this->deprecatedGenerator->isAllowed());
@@ -70,8 +70,8 @@ class DeprecatedGeneratorTest extends ContainerAwareTestCase
 	private function prepareDeprecatedGeneratorRequirements()
 	{
 		$this->configuration->resolveOptions([
-			'source' => '...',
-			'destination' => '...',
+			'source' => __DIR__ . '/Source',
+			'destination' => TEMP_DIR . '/api',
 			'deprecated' => TRUE
 		]);
 

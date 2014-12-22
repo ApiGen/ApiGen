@@ -13,14 +13,13 @@ use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Configuration\Exceptions\ConfigurationException;
 use ApiGen\Configuration\Theme\ThemeConfigFactory;
 use ApiGen\FileSystem\FileSystem;
-use Nette;
 use ReflectionMethod;
 use ReflectionProperty;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 
-class ConfigurationOptionsResolver extends Nette\Object
+class ConfigurationOptionsResolver
 {
 
 	const AC_CLASSES = 'classes';
@@ -166,11 +165,11 @@ class ConfigurationOptionsResolver extends Nette\Object
 			CO::DESTINATION => function ($value) {
 				if ( ! $value) {
 					throw new ConfigurationException("Destination is not set. Use '-d <dir>' or config to set it");
-				}
-				if ( ! is_dir($value)) {
+
+				} elseif ( ! is_dir($value)) {
 					mkdir($value, 0755, TRUE);
-				}
-				if ( ! is_dir($value) || ! is_writable($value)) {
+
+				} elseif ( ! is_writable($value)) {
 					throw new ConfigurationException("Destination '$value' is not writable");
 				}
 				return TRUE;
@@ -178,8 +177,8 @@ class ConfigurationOptionsResolver extends Nette\Object
 			CO::SOURCE => function ($value) {
 				if ( ! $value) {
 					throw new ConfigurationException("Source is not set. Use '-s <dir>' or config to set it");
-				}
-				if ( ! is_array($value)) {
+
+				} elseif ( ! is_array($value)) {
 					$value = [$value];
 				}
 				foreach ($value as $source) {

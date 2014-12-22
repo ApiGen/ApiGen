@@ -43,13 +43,13 @@ class ZipGeneratorTest extends ContainerAwareTestCase
 	public function testIsAllowed()
 	{
 		$this->configuration->resolveOptions([
-			'source' => '...',
-			'destination' => '...'
+			'source' => __DIR__ . '/Source',
+			'destination' => TEMP_DIR . '/api'
 		]);
 		$this->assertFalse($this->zipGenerator->isAllowed());
 		$this->configuration->resolveOptions([
-			'source' => '...',
-			'destination' => '...',
+			'source' => __DIR__ . '/Source',
+			'destination' => TEMP_DIR . '/api',
 			'download' => TRUE
 		]);
 		$this->assertTrue($this->zipGenerator->isAllowed());

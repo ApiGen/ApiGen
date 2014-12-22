@@ -10,7 +10,6 @@
 namespace ApiGen\Reflection;
 
 use ApiGen\Configuration\Configuration;
-use ApiGen\FileSystem\FileSystem;
 use ApiGen\Parser\ParserResult;
 use ArrayObject;
 use InvalidArgumentException;
