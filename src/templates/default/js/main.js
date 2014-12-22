@@ -1,14 +1,3 @@
-/*!
- * ApiGen 2.8.0 - API documentation generator for PHP 5.3+
- *
- * Copyright (c) 2010-2011 David Grudl (http://davidgrudl.com)
- * Copyright (c) 2011-2012 Jaroslav Hanslík (https://github.com/kukulich)
- * Copyright (c) 2011-2012 Ondřej Nešpor (https://github.com/Andrewsville)
- *
- * For the full copyright and license information, please view
- * the file LICENSE.md that was distributed with this source code.
- */
-
 $(window).load(function() {
 	var $document = $(document);
 	var $left = $('#left');
@@ -235,7 +224,7 @@ $(window).load(function() {
 
 	// Save selected lines
 	var lastLine;
-	$('a.l').click(function(event) {
+	$('.l a').click(function(event) {
 		event.preventDefault();
 
 		var $selectedLine = $(this).parent();

@@ -234,7 +234,7 @@ $(window).load(function() {
 
 	// Save selected lines
 	var lastLine;
-	$('a.l').click(function(event) {
+	$('.l a').click(function(event) {
 		event.preventDefault();
 
 		var $selectedLine = $(this).parent();

@@ -48,46 +48,6 @@ class SourceFilters extends Filters
 
 
 	/**
-	 * @param string $source
-	 * @return string
-	 */
-	public function sourceAnchors($source)
-	{
-		$classInterfaceTraitMask = '~(<span\\s+class="php-keyword1">(?:class|interface|trait)</span>\\s+)(\\w+)~i';
-		$source = preg_replace_callback($classInterfaceTraitMask, function ($matches) {
-			$link = sprintf('<a id="%1$s" href="#%1$s">%1$s</a>', $matches[2]);
-			return $matches[1] . $link;
-		}, $source);
-
-		$methodFunctionMask = '~(<span\\s+class="php-keyword1">function</span>\\s+)(\\w+)~i';
-		$source = preg_replace_callback($methodFunctionMask, function ($matches) {
-			$link = sprintf('<a id="_%1$s" href="#_%1$s">%1$s</a>', $matches[2]);
-			return $matches[1] . $link;
-		}, $source);
-
-		$constantMask = '~(<span class="php-keyword1">const</span>)(.*?)(;)~is';
-		$source = preg_replace_callback($constantMask, function ($matches) {
-			$links = preg_replace_callback('~(\\s|,)([A-Z_]+)(\\s+=)~', function ($matches) {
-				return $matches[1] . sprintf('<a id="%1$s" href="#%1$s">%1$s</a>', $matches[2]) . $matches[3];
-			}, $matches[2]);
-			return $matches[1] . $links . $matches[3];
-		}, $source);
-
-		$propertyMask = '~(<span\\s+class="php-keyword1">'
-			. '(?:private|protected|public|var|static)</span>\\s+)(<span\\s+class="php-var">.*?)'
-			. '(;)~is';
-		$source = preg_replace_callback($propertyMask, function ($matches) {
-			$links = preg_replace_callback('~(<span\\s+class="php-var">)(\\$\\w+)~i', function ($matches) {
-				return $matches[1] . sprintf('<a id="%1$s" href="#%1$s">%1$s</a>', $matches[2]);
-			}, $matches[2]);
-			return $matches[1] . $links . $matches[3];
-		}, $source);
-
-		return $source;
-	}
-
-
-	/**
 	 * Returns a link to a element source code.
 	 *
 	 * @param ReflectionElement $element
