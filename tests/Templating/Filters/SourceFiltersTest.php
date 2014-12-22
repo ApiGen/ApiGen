@@ -111,6 +111,9 @@ class SourceFiltersTest extends PHPUnit_Framework_TestCase
 	}
 
 
+	/**
+	 * @return Mockery\MockInterface
+	 */
 	private function getReflectionConstantWithoutClass()
 	{
 		$reflectionConstant = Mockery::mock('ApiGen\Reflection\ReflectionConstant');
