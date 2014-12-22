@@ -9,6 +9,8 @@
 
 namespace ApiGen\Neon;
 
+use ApiGen\Neon\Exceptions\FileNotReadableException;
+use ApiGen\Neon\Exceptions\MissingFileException;
 use Nette\Neon\Neon;
 
 
@@ -37,11 +39,11 @@ class NeonFile
 	private function validatePath($path)
 	{
 		if ( ! file_exists($path)) {
-			throw new \Exception($path . ' could not be found');
+			throw new MissingFileException($path . ' could not be found');
 		}
 
 		if ( ! is_readable($path)) {
-			throw new \Exception ($path . ' is not readable.');
+			throw new FileNotReadableException($path . ' is not readable.');
 		}
 	}
 
