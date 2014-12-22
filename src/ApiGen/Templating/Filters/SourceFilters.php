@@ -39,14 +39,9 @@ class SourceFilters extends Filters
 	 */
 	public function staticFile($name)
 	{
-		$versions = [];
 		$filename = $this->configuration->getOption(CO::DESTINATION) . '/' . $name;
-		if ( ! isset($versions[$filename]) && is_file($filename)) {
-			$versions[$filename] = sprintf('%u', crc32(file_get_contents($filename)));
-		}
-
-		if (isset($versions[$filename])) {
-			$name .= '?' . $versions[$filename];
+		if (is_file($filename)) {
+			$name .= '?' . sha1_file($filename);
 		}
 		return $name;
 	}
