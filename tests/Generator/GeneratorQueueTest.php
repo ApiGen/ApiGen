@@ -26,7 +26,6 @@ class GeneratorQueueTest extends PHPUnit_Framework_TestCase
 	}
 
 
-
 	public function testRun()
 	{
 		$templateGeneratorMock = Mockery::mock('ApiGen\Generator\TemplateGenerator');
