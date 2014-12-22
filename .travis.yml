@@ -16,8 +16,6 @@ before_script:
   - vendor/bin/parallel-lint -e php --exclude vendor .
   # php code sniffer
   - vendor/bin/phpcs src tests --extensions=php --ignore=bootstrap --standard=vendor/zenify/coding-standard/src/ZenifyCodingStandard/code-sniffer-ruleset.xml
-  # php mess detector - too many errors at the moment
-  # - vendor/bin/phpmd src,tests text vendor/zenify/coding-standard/src/ZenifyCodingStandard/mess-detector-ruleset.xml --exclude bootstrap
 
 script:
   - vendor/bin/phpunit --coverage-clover=coverage.clover
