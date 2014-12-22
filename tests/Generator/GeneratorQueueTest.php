@@ -3,9 +3,10 @@
 namespace ApiGen\Tests\Generator;
 
 use ApiGen\Generator\GeneratorQueue;
+
+use ApiGen\Tests\MethodInvoker;
 use Mockery;
 use PHPUnit_Framework_TestCase;
-use ReflectionClass;
 
 
 class GeneratorQueueTest extends PHPUnit_Framework_TestCase
@@ -25,6 +26,18 @@ class GeneratorQueueTest extends PHPUnit_Framework_TestCase
 	}
 
 
+
+	public function testRun()
+	{
+		$templateGeneratorMock = Mockery::mock('ApiGen\Generator\TemplateGenerator');
+		$templateGeneratorMock->shouldReceive('generate')->andReturn(file_put_contents(TEMP_DIR . '/file.txt', '...'));
+		$this->generatorQueue->addToQueue($templateGeneratorMock);
+		$this->generatorQueue->run();
+
+		$this->assertFileExists(TEMP_DIR . '/file.txt');
+	}
+
+
 	public function testAddToQueueAndGetQueue()
 	{
 		$templateGeneratorMock = Mockery::mock('ApiGen\Generator\TemplateGenerator');
@@ -33,40 +46,26 @@ class GeneratorQueueTest extends PHPUnit_Framework_TestCase
 	}
 
 
+	public function testGetAllowedQueue()
+	{
+		$templateGeneratorMock = Mockery::mock('ApiGen\Generator\TemplateGenerator');
+		$this->generatorQueue->addToQueue($templateGeneratorMock);
+
+		$templateGeneratorConditionalMock = Mockery::mock('ApiGen\Generator\ConditionalTemplateGenerator');
+		$templateGeneratorConditionalMock->shouldReceive('isAllowed')->andReturn(FALSE);
+		$this->generatorQueue->addToQueue($templateGeneratorConditionalMock);
+
+		$this->assertCount(1, MethodInvoker::callMethodOnObject($this->generatorQueue, 'getAllowedQueue'));
+	}
+
+
 	public function testGetStepCount()
 	{
 		$templateGeneratorMock = Mockery::mock('ApiGen\Generator\TemplateGenerator', 'ApiGen\Generator\StepCounter');
 		$templateGeneratorMock->shouldReceive('getStepCount')->andReturn(50);
 		$this->generatorQueue->addToQueue($templateGeneratorMock);
-		$this->assertSame(50, $this->invokePrivateMethodOnObject($this->generatorQueue, 'getStepCount'));
-	}
 
-
-	public function testGetAllowedQueue()
-	{
-		$templateGeneratorMock = Mockery::mock('ApiGen\Generator\ConditionalTemplateGenerator');
-		$templateGeneratorMock->shouldReceive('isAllowed')->andReturn(TRUE);
-		$this->generatorQueue->addToQueue($templateGeneratorMock);
-		$templateGeneratorMockNotAllowed = Mockery::mock('ApiGen\Generator\ConditionalTemplateGenerator');
-		$templateGeneratorMockNotAllowed->shouldReceive('isAllowed')->andReturn(FALSE);
-		$this->generatorQueue->addToQueue($templateGeneratorMockNotAllowed);
-
-		$allowedQueue = $this->invokePrivateMethodOnObject($this->generatorQueue, 'getAllowedQueue');
-		$this->assertCount(1, $allowedQueue);
-	}
-
-
-	/**
-	 * @param object $object
-	 * @param string $method
-	 * @return mixed
-	 */
-	private function invokePrivateMethodOnObject($object, $method)
-	{
-		$objectReflection = new ReflectionClass($object);
-		$methodReflection = $objectReflection->getMethod($method);
-		$methodReflection->setAccessible(TRUE);
-		return $methodReflection->invokeArgs($object, []);
+		$this->assertSame(50, MethodInvoker::callMethodOnObject($this->generatorQueue, 'getStepCount'));
 	}
 
 }

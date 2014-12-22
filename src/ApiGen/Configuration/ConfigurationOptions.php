@@ -32,7 +32,7 @@ class ConfigurationOptions
 	const PHP = 'php';
 	const SKIP_DOC_PATH = 'skipDocPath';
 	const SOURCE = 'source';
-	const SOURCE_CODE = 'sourceCode';
+	const NO_SOURCE_CODE = 'noSourceCode';
 	const TEMPLATE = 'template';
 	const TEMPLATE_CONFIG = 'templateConfig';
 	const TEMPLATE_THEME = 'templateTheme';
@@ -41,5 +41,6 @@ class ConfigurationOptions
 	const TREE = 'tree';
 	const METHOD_ACCESS_LEVELS = 'methodAccessLevels';
 	const PROPERTY_ACCESS_LEVELS = 'propertyAccessLevels';
+	const SOURCE_CODE = 'sourceCode';
 
 }

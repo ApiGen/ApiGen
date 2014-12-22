@@ -50,6 +50,10 @@ class ProgressBar
 	 */
 	public function increment($increment = 1)
 	{
+		if ($this->bar === NULL) {
+			return;
+		}
+
 		$this->bar->advance($increment);
 		if ($this->bar->getProgress() === $this->bar->getMaxSteps()) {
 			$this->consoleIO->getOutput()->writeln(' - Finished!');
@@ -62,11 +66,25 @@ class ProgressBar
 	 */
 	private function getBarFormat()
 	{
-		if ($this->consoleIO->getInput() ?: $this->consoleIO->getInput()->getOption(CO::DEBUG)) {
+		if ($this->getDebugOption()) {
 			return 'debug';
 
 		} else {
 			return '<comment>%percent:3s% %</comment>';
+		}
+	}
+
+
+	/**
+	 * @return bool
+	 */
+	private function getDebugOption()
+	{
+		if ($this->consoleIO->getInput() && $this->consoleIO->getInput()->hasOption(CO::DEBUG)) {
+			return $this->consoleIO->getInput()->getOption(CO::DEBUG);
+
+		} else {
+			return FALSE;
 		}
 	}
 

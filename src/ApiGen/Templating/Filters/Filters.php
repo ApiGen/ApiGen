@@ -11,10 +11,9 @@ namespace ApiGen\Templating\Filters;
 
 use ApiGen\Templating\Filters\Helpers\Strings;
 use Latte;
-use Nette;
 
 
-abstract class Filters extends Nette\Object
+abstract class Filters
 {
 
 	/**
@@ -66,8 +65,6 @@ abstract class Filters extends Nette\Object
 
 
 	/**
-	 * Builds a link.
-	 *
 	 * @param string $url
 	 * @param string $text
 	 * @param bool $escape If the text should be escaped
@@ -81,18 +78,16 @@ abstract class Filters extends Nette\Object
 
 
 	/**
-	 * @param string $s
+	 * @param string $html
 	 * @return string
 	 */
-	protected function escapeHtml($s)
+	protected function escapeHtml($html)
 	{
-		return Latte\Runtime\Filters::escapeHtml($s);
+		return Latte\Runtime\Filters::escapeHtml($html);
 	}
 
 
 	/**
-	 * Converts string to url safe characters.
-	 *
 	 * @param string $string
 	 * @return string
 	 */

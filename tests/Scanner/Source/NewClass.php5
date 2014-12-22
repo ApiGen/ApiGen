@@ -1,6 +1,6 @@
 <?php
 
-namespace ApiGen\Tests\ApiGen\Parser\Source;
+namespace ApiGen\Tests\Parser\Source;
 
 
 class NewClass

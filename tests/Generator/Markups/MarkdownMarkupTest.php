@@ -1,6 +1,6 @@
 <?php
 
-namespace ApiGen\Tests\ApiGen\Generator\Markups;
+namespace ApiGen\Tests\Generator\Markups;
 
 use ApiGen\Generator\Markups\MarkdownMarkup;
 use Michelf\MarkdownExtra;

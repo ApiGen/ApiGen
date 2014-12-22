@@ -3,8 +3,6 @@
 namespace ApiGen\Tests\ApiGen\Generator\TemplateGenerators;
 
 use ApiGen\Generator\TemplateGenerators\OverviewGenerator;
-use ApiGen\Templating\Template;
-use ApiGen\Templating\TemplateFactory;
 use Mockery;
 use PHPUnit_Framework_TestCase;
 

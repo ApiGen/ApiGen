@@ -1,6 +1,6 @@
 <?php
 
-namespace ApiGen\Tests\ApiGen\Generator\TemplateGenerators;
+namespace ApiGen\Tests\Generator\TemplateGenerators;
 
 use ApiGen\Configuration\Configuration;
 use ApiGen\Generator\TemplateGenerators\DeprecatedGenerator;
@@ -42,16 +42,20 @@ class DeprecatedGeneratorTest extends ContainerAwareTestCase
 	public function testIsAllowed()
 	{
 		$this->configuration->resolveOptions([
-			'source' => __DIR__ . '/Source',
+			'source' => TEMP_DIR,
 			'destination' => TEMP_DIR . '/api'
 		]);
 		$this->assertFalse($this->deprecatedGenerator->isAllowed());
-		$this->configuration->resolveOptions([
-			'source' => __DIR__ . '/Source',
-			'destination' => TEMP_DIR . '/api',
-			'deprecated' => TRUE
-		]);
+		$this->setCorrectConfiguration();
 		$this->assertTrue($this->deprecatedGenerator->isAllowed());
+	}
+
+
+	public function testGenerate()
+	{
+		$this->setCorrectConfiguration();
+		$this->deprecatedGenerator->generate();
+		$this->assertFileExists(TEMP_DIR . '/api/deprecated.html');
 	}
 
 
@@ -69,11 +73,7 @@ class DeprecatedGeneratorTest extends ContainerAwareTestCase
 
 	private function prepareDeprecatedGeneratorRequirements()
 	{
-		$this->configuration->resolveOptions([
-			'source' => __DIR__ . '/Source',
-			'destination' => TEMP_DIR . '/api',
-			'deprecated' => TRUE
-		]);
+		$this->setCorrectConfiguration();
 
 		$files = [];
 		foreach (Finder::findFiles('*')->in(__DIR__ . '/DeprecatedSources')->getIterator() as $file) {
@@ -93,6 +93,16 @@ class DeprecatedGeneratorTest extends ContainerAwareTestCase
 		$methodReflection = $classReflection->getMethod('setDeprecatedElementsToTemplate');
 		$methodReflection->setAccessible(TRUE);
 		return $methodReflection->invokeArgs($this->deprecatedGenerator, [$template]);
+	}
+
+
+	private function setCorrectConfiguration()
+	{
+		$this->configuration->resolveOptions([
+			'source' => TEMP_DIR,
+			'destination' => TEMP_DIR . '/api',
+			'deprecated' => TRUE
+		]);
 	}
 
 }

@@ -12,7 +12,10 @@ namespace ApiGen\Templating;
 use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Configuration\Theme\ThemeConfigOptions as TCO;
+use ApiGen\Reflection\ReflectionClass;
+use ApiGen\Reflection\ReflectionConstant;
 use ApiGen\Reflection\ReflectionElement;
+use ApiGen\Reflection\ReflectionFunction;
 use ApiGen\Templating\Filters\SourceFilters;
 use ApiGen\Templating\Filters\UrlFilters;
 
@@ -89,7 +92,7 @@ class TemplateNavigator
 	/**
 	 * @return string
 	 */
-	public function getTemplatePathForClass(ReflectionElement $element)
+	public function getTemplatePathForClass(ReflectionClass $element)
 	{
 		return $this->getDestination() . '/' . $this->urlFilters->classUrl($element);
 	}
@@ -98,7 +101,7 @@ class TemplateNavigator
 	/**
 	 * @return string
 	 */
-	public function getTemplatePathForConstant(ReflectionElement $element)
+	public function getTemplatePathForConstant(ReflectionConstant $element)
 	{
 		return $this->getDestination() . '/' . $this->urlFilters->constantUrl($element);
 	}
@@ -107,7 +110,7 @@ class TemplateNavigator
 	/**
 	 * @return string
 	 */
-	public function getTemplatePathForFunction(ReflectionElement $element)
+	public function getTemplatePathForFunction(ReflectionFunction $element)
 	{
 		return $this->getDestination() . '/' . $this->urlFilters->functionUrl($element);
 	}

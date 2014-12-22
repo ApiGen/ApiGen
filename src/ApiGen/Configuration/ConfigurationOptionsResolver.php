@@ -51,10 +51,10 @@ class ConfigurationOptionsResolver
 		CO::CHARSET => [],
 		CO::MAIN => '',
 		CO::INTERNAL => FALSE,
-		CO::PHP => TRUE,
+		CO::PHP => FALSE,
 		CO::SKIP_DOC_PATH => [],
 		CO::SOURCE => [],
-		CO::SOURCE_CODE => TRUE,
+		CO::NO_SOURCE_CODE => FALSE,
 		CO::TEMPLATE => NULL,
 		CO::TEMPLATE_CONFIG => NULL,
 		CO::TEMPLATE_THEME => self::TEMPLATE_THEME_DEFAULT,
@@ -63,7 +63,8 @@ class ConfigurationOptionsResolver
 		CO::TREE => TRUE,
 		// helpers
 		CO::METHOD_ACCESS_LEVELS => [],
-		CO::PROPERTY_ACCESS_LEVELS => []
+		CO::PROPERTY_ACCESS_LEVELS => [],
+		CO::SOURCE_CODE => ''
 	];
 
 	/**
@@ -230,6 +231,9 @@ class ConfigurationOptionsResolver
 					$value[$key] = FileSystem::getAbsolutePath($source);
 				}
 				return $value;
+			},
+			CO::SOURCE_CODE => function (Options $options) {
+				return ! $options[CO::NO_SOURCE_CODE];
 			},
 			CO::TEMPLATE_CONFIG => function (Options $options, $value) {
 				return FileSystem::getAbsolutePath($value);

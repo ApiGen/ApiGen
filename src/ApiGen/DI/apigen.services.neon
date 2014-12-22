@@ -40,6 +40,7 @@ services:
 	- ApiGen\Generator\GeneratorQueue
 	# intentionally first to collect output from other generators
 	- {class: ApiGen\Generator\TemplateGenerators\ZipGenerator, tags: [template.generator]}
+	- {class: ApiGen\Generator\TemplateGenerators\CombinedGenerator, tags: [template.generator]}
 	- {class: ApiGen\Generator\TemplateGenerators\DeprecatedGenerator, tags: [template.generator]}
 	- {class: ApiGen\Generator\TemplateGenerators\E404Generator, tags: [template.generator]}
 	- {class: ApiGen\Generator\TemplateGenerators\ElementListGenerator, tags: [template.generator]}

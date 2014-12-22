@@ -9,6 +9,7 @@
 
 namespace ApiGen\Templating\Filters;
 
+use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Generator\Markups\Markup;
 use ApiGen\Generator\Resolvers\ElementResolver;
@@ -23,16 +24,8 @@ use ApiGen\Templating\Filters\Helpers\Strings;
 use Nette\Utils\Validators;
 
 
-/**
- * @method UrlFilters setConfig(array $config)
- */
 class UrlFilters extends Filters
 {
-
-	/**
-	 * @var array
-	 */
-	private $config;
 
 	/**
 	 * @var SourceCodeHighlighter
@@ -49,12 +42,22 @@ class UrlFilters extends Filters
 	 */
 	private $elementResolver;
 
+	/**
+	 * @var Configuration
+	 */
+	private $configuration;
 
-	public function __construct(SourceCodeHighlighter $highlighter, Markup $markup, ElementResolver $elementResolver)
-	{
+
+	public function __construct(
+		Configuration $configuration,
+		SourceCodeHighlighter $highlighter,
+		Markup $markup,
+		ElementResolver $elementResolver
+	) {
 		$this->highlighter = $highlighter;
 		$this->markup = $markup;
 		$this->elementResolver = $elementResolver;
+		$this->configuration = $configuration;
 	}
 
 
@@ -159,7 +162,7 @@ class UrlFilters extends Filters
 	public function packageUrl($packageName)
 	{
 		return sprintf(
-			$this->config[CO::TEMPLATE]['templates']['package']['filename'],
+			$this->configuration->getOptions()[CO::TEMPLATE]['templates']['package']['filename'],
 			$this->urlize($packageName)
 		);
 	}
@@ -172,7 +175,7 @@ class UrlFilters extends Filters
 	public function namespaceUrl($namespaceName)
 	{
 		return sprintf(
-			$this->config[CO::TEMPLATE]['templates']['namespace']['filename'],
+			$this->configuration->getOptions()[CO::TEMPLATE]['templates']['namespace']['filename'],
 			$this->urlize($namespaceName)
 		);
 	}
@@ -186,7 +189,7 @@ class UrlFilters extends Filters
 	{
 		$className = $class instanceof ReflectionClass ? $class->getName() : $class;
 		return sprintf(
-			$this->config[CO::TEMPLATE]['templates']['class']['filename'],
+			$this->configuration->getOptions()[CO::TEMPLATE]['templates']['class']['filename'],
 			$this->urlize($className)
 		);
 	}
@@ -224,7 +227,7 @@ class UrlFilters extends Filters
 		}
 		// Constant in namespace or global space
 		return sprintf(
-			$this->config[CO::TEMPLATE]['templates']['constant']['filename'],
+			$this->configuration->getOptions()[CO::TEMPLATE]['templates']['constant']['filename'],
 			$this->urlize($constant->getName())
 		);
 	}
@@ -236,7 +239,7 @@ class UrlFilters extends Filters
 	public function functionUrl(ReflectionFunction $function)
 	{
 		return sprintf(
-			$this->config[CO::TEMPLATE]['templates']['function']['filename'],
+			$this->configuration->getOptions()[CO::TEMPLATE]['templates']['function']['filename'],
 			$this->urlize($function->getName())
 		);
 	}
@@ -454,8 +457,6 @@ class UrlFilters extends Filters
 
 
 	/**
-	 * Resolves internal annotation.
-	 *
 	 * @param string $text
 	 * @return string
 	 */
@@ -467,7 +468,7 @@ class UrlFilters extends Filters
 			if ($matches[1] !== 'internal') {
 				return $matches[0];
 			}
-			return $this->config[CO::INTERNAL] && isset($matches[2]) ? $matches[2] : '';
+			return $this->configuration->getOptions()[CO::INTERNAL] && isset($matches[2]) ? $matches[2] : '';
 		}, $text);
 	}
 

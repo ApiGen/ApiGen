@@ -1,6 +1,6 @@
 <?php
 
-namespace ApiGen\Tests\ApiGen\Scanner;
+namespace ApiGen\Tests\Scanner;
 
 use ApiGen\Scanner\Scanner;
 use ApiGen\Tests\ContainerAwareTestCase;

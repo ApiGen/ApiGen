@@ -1,6 +1,6 @@
 <?php
 
-namespace ApiGen\Tests\ApiGen\Charset;
+namespace ApiGen\Tests\Charset;
 
 use ApiGen\Charset\Configuration\CharsetOptionsResolver;
 use ApiGen\Charset\Encoding;

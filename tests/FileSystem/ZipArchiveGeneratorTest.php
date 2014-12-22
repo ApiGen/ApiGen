@@ -1,6 +1,6 @@
 <?php
 
-namespace ApiGen\Tests\ApiGen\FileSystem;
+namespace ApiGen\Tests\FileSystem;
 
 use ApiGen\FileSystem\ZipArchiveGenerator;
 use ApiGen\Tests\ContainerAwareTestCase;
