@@ -22,30 +22,6 @@ class CharsetOptionsResolver extends Nette\Object
 	const CHARSETS = 'charsets';
 
 	/**
-	 * @var array[]
-	 */
-	private $defaults = [
-		self::CHARSETS => [
-			Encoding::UTF_8,
-			Encoding::WIN_1251,
-			Encoding::WIN_1252,
-			Encoding::ISO_8859_1,
-			Encoding::ISO_8859_2,
-			Encoding::ISO_8859_3,
-			Encoding::ISO_8859_4,
-			Encoding::ISO_8859_5,
-			Encoding::ISO_8859_6,
-			Encoding::ISO_8859_7,
-			Encoding::ISO_8859_8,
-			Encoding::ISO_8859_9,
-			Encoding::ISO_8859_10,
-			Encoding::ISO_8859_13,
-			Encoding::ISO_8859_14,
-			Encoding::ISO_8859_15
-		]
-	];
-
-	/**
 	 * @var OptionsResolverFactory
 	 */
 	private $optionsResolverFactory;
@@ -67,11 +43,12 @@ class CharsetOptionsResolver extends Nette\Object
 	 */
 	public function getDefaults()
 	{
-		return $this->defaults[self::CHARSETS];
+		return [self::CHARSETS => [Encoding::UTF_8]];
 	}
 
 
 	/**
+	 * @param string[] $options
 	 * @return string[]
 	 */
 	public function resolve(array $options = [])
@@ -88,7 +65,7 @@ class CharsetOptionsResolver extends Nette\Object
 
 	private function setDefaults()
 	{
-		$this->resolver->setDefaults($this->defaults);
+		$this->resolver->setDefaults($this->getDefaults());
 	}
 
 

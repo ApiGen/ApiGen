@@ -34,7 +34,7 @@ class CharsetDetector
 	public function __construct(CharsetOptionsResolver $charsetOptionsResolver)
 	{
 		$this->charsetOptionsResolver = $charsetOptionsResolver;
-		$this->charsets = $this->charsetOptionsResolver->getDefaults();
+		$this->charsets = [Encoding::UTF_8];
 	}
 
 
