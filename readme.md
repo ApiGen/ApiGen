@@ -29,7 +29,7 @@ Just look at [Doctrine ORM API](http://www.doctrine-project.org/api/orm/2.4/) or
 
 ## Installation
 
-### As a PHAR (recommended)
+### 1. As a PHAR (recommended)
 
 1. Download [ApiGen RC5](http://apigen.org/apigen.phar)
 
@@ -48,19 +48,16 @@ source:
 destination: ../my-project-api
 ```
 
-
 For global installation, see [documentation](doc/installation.md).
 
 
-### Using Composer as dependency of your project
-
-Alternatively, you can install ApiGen via composer:
+### 2. Using Composer as dependency of your project
 
 ```sh
 composer require apigen/apigen --dev
 ```
 
-Run with options as above:
+Then run with options as above:
 
 ```sh
 php vendor/bin/apigen generate -s src -d ../my/project-api
@@ -79,9 +76,9 @@ exclude:
 	- vendor/
 	- *Factory.php
 
-# this files will be included in class tree, but will not create a link to their documentation
+# similar to above, but this files will be included in class tree
 skipDocPath:
-    - *<mask>``` # mask
+    - *Component\Console
 
 # character set of source files; if you use only one across your files, we recommend you name it
 charset: [UTF-8]
@@ -101,14 +98,14 @@ googleCseId: 011549293477758430224
 # Google Analytics tracking code
 googleAnalytics: UA-35236-5
 
-# choose ApiGen own template theme
+# choose ApiGen template theme
 templateTheme: default # or: bootstrap
 
 # want to use individual templates, higher priority than option templateTheme
 templateConfig: my/template/config.neon
 
 # the way elements are grouped in menu
-groups: auto # default [other options: namespace, packages, none], auto will detect namespace first, than packages
+groups: auto # also: namespace, packages, none; auto will detect namespace first, than packages
 
 # element supported by autocomplete in search input
 autocomplete: [classes, constants, functions] # also [methods, properties]
