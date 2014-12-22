@@ -20,8 +20,6 @@ use ApiGen\Reflection\ReflectionFunction;
 class AutocompleteElements
 {
 
-	const CLASS_CONSTANTS = 'classconstants';
-
 	/**
 	 * @var Configuration
 	 */
@@ -92,7 +90,7 @@ class AutocompleteElements
 			$this->processClassProperties($classReflection);
 		}
 
-		if (isset($autocompleteOption[self::CLASS_CONSTANTS])) {
+		if (isset($autocompleteOption[Elements::CONSTANTS])) {
 			$this->processClassConstants($classReflection);
 		}
 	}
