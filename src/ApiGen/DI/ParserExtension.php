@@ -59,9 +59,6 @@ class ParserExtension extends CompilerExtension
 
 		$builder->addDefinition($this->prefix('reflectionFactory'))
 			->setClass('ApiGen\Reflection\TokenReflection\ReflectionFactory');
-
-		$builder->addDefinition($this->prefix('reflectionCrateBridge'))
-			->setClass('ApiGen\Reflection\TokenReflection\ReflectionCrateBridge');
 	}
 
 }
