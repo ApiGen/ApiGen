@@ -20,6 +20,7 @@ use ApiGen\Reflection\ReflectionMethodMagic;
 use ApiGen\Reflection\ReflectionParameter;
 use ApiGen\Reflection\ReflectionParameterMagic;
 use ApiGen\Reflection\ReflectionProperty;
+use RuntimeException;
 use TokenReflection\IReflectionClass;
 use TokenReflection\IReflectionConstant;
 use TokenReflection\IReflectionFunction;
@@ -106,7 +107,7 @@ class ReflectionFactory
 			return new ReflectionFunction($reflection);
 		}
 
-		throw new \RuntimeException('Invalid reflection class type ' . get_class($reflection));
+		throw new RuntimeException('Invalid reflection class type ' . get_class($reflection));
 	}
 
 
