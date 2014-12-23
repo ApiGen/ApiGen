@@ -13,6 +13,7 @@ use ApiGen\Reflection\ReflectionClass;
 use ApiGen\Reflection\ReflectionConstant;
 use ApiGen\Reflection\ReflectionFunction;
 use ApiGen\Reflection\ReflectionMethod;
+use ApiGen\Reflection\TokenReflection\ReflectionFactory;
 use TokenReflection;
 use TokenReflection\Broker;
 use TokenReflection\IReflectionConstant;
@@ -44,6 +45,17 @@ class Backend extends Broker\Backend\Memory
 	 */
 	private $declared = [];
 
+	/**
+	 * @var ReflectionFactory
+	 */
+	private $reflectionFactory;
+
+
+	public function __construct(ReflectionFactory $reflectionFactory)
+	{
+		$this->reflectionFactory = $reflectionFactory;
+	}
+
 
 	/**
 	 * @return ReflectionConstant[]
@@ -51,7 +63,7 @@ class Backend extends Broker\Backend\Memory
 	public function getConstants()
 	{
 		return array_map(function (IReflectionConstant $constant) {
-			return new ReflectionConstant($constant);
+			return $this->reflectionFactory->createFromReflection($constant);
 		}, parent::getConstants());
 	}
 
@@ -62,7 +74,7 @@ class Backend extends Broker\Backend\Memory
 	public function getFunctions()
 	{
 		return array_map(function (IReflectionFunction $function) {
-			return new ReflectionFunction($function);
+			return $this->reflectionFactory->createFromReflection($function);
 		}, parent::getFunctions());
 	}
 
@@ -78,7 +90,8 @@ class Backend extends Broker\Backend\Memory
 
 		foreach ($this->getNamespaces() as $namespace) {
 			foreach ($namespace->getClasses() as $name => $ref) {
-				$class = new ReflectionClass($ref);
+				$class = $this->reflectionFactory->createFromReflection($ref);
+
 				$this->allClasses[self::TOKENIZED_CLASSES][$name] = $class;
 				if ( ! $class->isDocumented()) {
 					continue;
@@ -109,7 +122,7 @@ class Backend extends Broker\Backend\Memory
 
 		array_walk_recursive($this->allClasses, function (&$reflection, $name) {
 			if ( ! $reflection instanceof ReflectionClass) {
-				$reflection = new ReflectionClass($reflection);
+				$reflection = $this->reflectionFactory->createFromReflection($reflection);
 			}
 		});
 
