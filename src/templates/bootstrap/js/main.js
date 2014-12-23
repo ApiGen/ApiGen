@@ -77,7 +77,7 @@ $(window).load(function() {
 			var location = window.location.href.split('/');
 			location.pop();
 			var parts = data[1].split(/::|$/);
-			var file = $.sprintf(ApiGen.config.templates.main[autocompleteFiles[data[0]]].filename, parts[0].replace(/\(\)/, '').replace(/[^\w]/g, '.'));
+			var file = $.sprintf(ApiGen.config.templates[autocompleteFiles[data[0]]].filename, parts[0].replace(/\(\)/, '').replace(/[^\w]/g, '.'));
 			if (parts[1]) {
 				file += '#' + ('mm' === data[0] || 'mp' === data[0] ? 'm' : '') + parts[1].replace(/([\w]+)\(\)/, '_$1');
 			}
@@ -234,7 +234,7 @@ $(window).load(function() {
 
 	// Save selected lines
 	var lastLine;
-	$('a.l').click(function(event) {
+	$('.l a').click(function(event) {
 		event.preventDefault();
 
 		var $selectedLine = $(this).parent();

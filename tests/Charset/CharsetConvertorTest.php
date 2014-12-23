@@ -3,11 +3,12 @@
 namespace ApiGen\Tests\Charset;
 
 use ApiGen\Charset\CharsetConvertor;
-use ApiGen\Tests\ContainerAwareTestCase;
-use Nette\DI\Container;
+use ApiGen\Charset\Encoding;
+use Mockery;
+use PHPUnit_Framework_TestCase;
 
 
-class CharsetConvertorTest extends ContainerAwareTestCase
+class CharsetConvertorTest extends PHPUnit_Framework_TestCase
 {
 
 	/**
@@ -18,7 +19,9 @@ class CharsetConvertorTest extends ContainerAwareTestCase
 
 	protected function setUp()
 	{
-		$this->charsetConvertor = $this->container->getByType('ApiGen\Charset\CharsetConvertor');
+		$charsetDetectorMock = Mockery::mock('ApiGen\Charset\CharsetDetector');
+		$charsetDetectorMock->shouldReceive('detectForFilePath')->andReturn(Encoding::WIN_1250);
+		$this->charsetConvertor = new CharsetConvertor($charsetDetectorMock);
 	}
 
 

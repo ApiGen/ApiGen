@@ -1,14 +1,3 @@
-/*!
- * ApiGen 2.8.0 - API documentation generator for PHP 5.3+
- *
- * Copyright (c) 2010-2011 David Grudl (http://davidgrudl.com)
- * Copyright (c) 2011-2012 Jaroslav Hanslík (https://github.com/kukulich)
- * Copyright (c) 2011-2012 Ondřej Nešpor (https://github.com/Andrewsville)
- *
- * For the full copyright and license information, please view
- * the file LICENSE.md that was distributed with this source code.
- */
-
 $(window).load(function() {
 	var $document = $(document);
 	var $left = $('#left');
@@ -88,7 +77,7 @@ $(window).load(function() {
 			var location = window.location.href.split('/');
 			location.pop();
 			var parts = data[1].split(/::|$/);
-			var file = $.sprintf(ApiGen.config.templates.main[autocompleteFiles[data[0]]].filename, parts[0].replace(/\(\)/, '').replace(/[^\w]/g, '.'));
+			var file = $.sprintf(ApiGen.config.templates[autocompleteFiles[data[0]]].filename, parts[0].replace(/\(\)/, '').replace(/[^\w]/g, '.'));
 			if (parts[1]) {
 				file += '#' + ('mm' === data[0] || 'mp' === data[0] ? 'm' : '') + parts[1].replace(/([\w]+)\(\)/, '_$1');
 			}
@@ -235,7 +224,7 @@ $(window).load(function() {
 
 	// Save selected lines
 	var lastLine;
-	$('a.l').click(function(event) {
+	$('.l a').click(function(event) {
 		event.preventDefault();
 
 		var $selectedLine = $(this).parent();

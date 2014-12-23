@@ -6,7 +6,7 @@ use Nette\DI\Container;
 use PHPUnit_Framework_TestCase;
 
 
-class ContainerAwareTestCase extends PHPUnit_Framework_TestCase
+abstract class ContainerAwareTestCase extends PHPUnit_Framework_TestCase
 {
 
 	/**

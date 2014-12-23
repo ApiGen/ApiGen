@@ -3,6 +3,7 @@
 namespace ApiGen\Tests\Templating\Filters;
 
 use ApiGen\Templating\Filters\SourceFilters;
+use ApiGen\Tests\MethodInvoker;
 use Mockery;
 use PHPUnit_Framework_TestCase;
 
@@ -20,6 +21,9 @@ class SourceFiltersTest extends PHPUnit_Framework_TestCase
 	{
 		$configurationMock = Mockery::mock('ApiGen\Configuration\Configuration');
 		$configurationMock->shouldReceive('getOption')->with('destination')->andReturn(TEMP_DIR);
+		$configurationMock->shouldReceive('getOption')->with('template')->andReturn(
+			['templates' => ['source' => ['filename' => 'source-file-%s.html']]
+		]);
 		$this->sourceFilters = new SourceFilters($configurationMock);
 	}
 
@@ -32,49 +36,125 @@ class SourceFiltersTest extends PHPUnit_Framework_TestCase
 	}
 
 
-	public function testSourceAnchorFunction()
+	public function testSourceUrlFunction()
 	{
-		$source = '<span class="php-keyword1">function</span> someFunction';
-		$link = $this->sourceFilters->sourceAnchors($source);
 		$this->assertSame(
-			'<span class="php-keyword1">function</span> <a id="_someFunction" href="#_someFunction">someFunction</a>',
-			$link
+			'source-file-function-someFunction.html#15-25',
+			$this->sourceFilters->sourceUrl($this->getReflectionFunction())
 		);
 	}
 
 
-	public function testSourceAnchorProperty()
+	public function testSourceUrlClass()
 	{
-		$source = '<span class="php-keyword1">public</span> <span class="php-var">$someProperty</span>;';
-		$link = $this->sourceFilters->sourceAnchors($source);
 		$this->assertSame(
-			'<span class="php-keyword1">public</span> <span class="php-var">'
-				. '<a id="$someProperty" href="#$someProperty">$someProperty</a></span>;',
-			$link
+			'source-file-class-someClass.html#10-100',
+			$this->sourceFilters->sourceUrl($this->getReflectionClass())
 		);
 	}
 
 
-	public function testSourceAnchorConstant()
+	public function testSourceUrlConstant()
 	{
-		$source = '<span class="php-keyword1">const</span> SOME_CONSTANT = "...";';
-		$link = $this->sourceFilters->sourceAnchors($source);
 		$this->assertSame(
-			'<span class="php-keyword1">const</span> '
-				. '<a id="SOME_CONSTANT" href="#SOME_CONSTANT">SOME_CONSTANT</a> = "...";',
-			$link
+			'source-file-class-someClass.html#20',
+			$this->sourceFilters->sourceUrl($this->getReflectionConstant())
 		);
 	}
 
 
-	public function testSourceAnchorClass()
+	public function testSourceUrlConstantWithoutClass()
 	{
-		$source = '<span class="php-keyword1">class</span> SomeClass';
-		$link = $this->sourceFilters->sourceAnchors($source);
 		$this->assertSame(
-			'<span class="php-keyword1">class</span> <a id="SomeClass" href="#SomeClass">SomeClass</a>',
-			$link
+			'source-file-constant-someConstant.html#80',
+			$this->sourceFilters->sourceUrl($this->getReflectionConstantWithoutClass())
 		);
+	}
+
+
+	public function testGetElementLinesAnchor()
+	{
+		$elementMock = $this->buildReflectionElement(NULL, 20, 40);
+		$this->assertSame(
+			'#20-40',
+			MethodInvoker::callMethodOnObject($this->sourceFilters, 'getElementLinesAnchor', [$elementMock])
+		);
+
+		$elementMock = $this->buildReflectionElement(NULL, 20, 20);
+		$this->assertSame(
+			'#20',
+			MethodInvoker::callMethodOnObject($this->sourceFilters, 'getElementLinesAnchor', [$elementMock])
+		);
+	}
+
+
+	/**
+	 * @return Mockery\MockInterface
+	 */
+	private function getReflectionFunction()
+	{
+		$reflectionFunction = Mockery::mock('ApiGen\Reflection\ReflectionFunction');
+		$reflectionFunction->shouldReceive('getName')->andReturn('someFunction');
+		$reflectionFunction->shouldReceive('getStartLine')->andReturn(15);
+		$reflectionFunction->shouldReceive('getEndLine')->andReturn(25);
+		return $reflectionFunction;
+	}
+
+
+	/**
+	 * @return Mockery\MockInterface
+	 */
+	private function getReflectionClass()
+	{
+		$reflectionClass = Mockery::mock('ApiGen\Reflection\ReflectionClass');
+		$reflectionClass->shouldReceive('getName')->andReturn('someClass');
+		$reflectionClass->shouldReceive('getStartLine')->andReturn(10);
+		$reflectionClass->shouldReceive('getEndLine')->andReturn(100);
+		return $reflectionClass;
+	}
+
+
+	/**
+	 * @return Mockery\MockInterface
+	 */
+	private function getReflectionConstant()
+	{
+		$reflectionConstant = Mockery::mock('ApiGen\Reflection\ReflectionConstant');
+		$reflectionConstant->shouldReceive('getName')->andReturn('someConstant');
+		$reflectionConstant->shouldReceive('getDeclaringClassName')->andReturn('someClass');
+		$reflectionConstant->shouldReceive('getStartLine')->andReturn(20);
+		$reflectionConstant->shouldReceive('getEndLine')->andReturn(20);
+		return $reflectionConstant;
+	}
+
+
+	/**
+	 * @return Mockery\MockInterface
+	 */
+	private function getReflectionConstantWithoutClass()
+	{
+		$reflectionConstant = Mockery::mock('ApiGen\Reflection\ReflectionConstant');
+		$reflectionConstant->shouldReceive('getName')->andReturn('someConstant');
+		$reflectionConstant->shouldReceive('getDeclaringClassName')->andReturn(NULL);
+		$reflectionConstant->shouldReceive('getStartLine')->andReturn(80);
+		$reflectionConstant->shouldReceive('getEndLine')->andReturn(80);
+		return $reflectionConstant;
+	}
+
+
+	/**
+	 * @param string $name
+	 * @param int $start
+	 * @param int $end
+	 * @return Mockery\MockInterface
+	 */
+	private function buildReflectionElement($name, $start, $end)
+	{
+		$reflectionElement = Mockery::mock('ApiGen\Reflection\ReflectionElement');
+		$reflectionElement->shouldReceive('getName')->andReturn($name);
+		$reflectionElement->shouldReceive('getStartLine')->andReturn($start);
+		$reflectionElement->shouldReceive('getEndLine')->andReturn($end);
+		return $reflectionElement;
 	}
 
 }

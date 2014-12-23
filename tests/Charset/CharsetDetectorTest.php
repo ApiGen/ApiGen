@@ -3,12 +3,15 @@
 namespace ApiGen\Tests\Charset;
 
 use ApiGen\Charset\CharsetDetector;
+use ApiGen\Charset\Configuration\CharsetOptionsResolver;
 use ApiGen\Charset\Encoding;
-use ApiGen\Tests\ContainerAwareTestCase;
+use Mockery;
+use PHPUnit_Framework_TestCase;
 use ReflectionClass;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 
-class CharsetDetectorTest extends ContainerAwareTestCase
+class CharsetDetectorTest extends PHPUnit_Framework_TestCase
 {
 
 	/**
@@ -19,7 +22,11 @@ class CharsetDetectorTest extends ContainerAwareTestCase
 
 	protected function setUp()
 	{
-		$this->charsetDetector = $this->container->getByType('ApiGen\Charset\CharsetDetector');
+		$optionsResolverFactoryMock = Mockery::mock('ApiGen\Configuration\OptionsResolverFactory');
+		$optionsResolverFactoryMock->shouldReceive('create')->andReturn(new OptionsResolver);
+		$charsetOptionsResolver = new CharsetOptionsResolver($optionsResolverFactoryMock);
+		$this->charsetDetector = new CharsetDetector($charsetOptionsResolver);
+		$this->charsetDetector->setCharsets([Encoding::UTF_8, Encoding::WIN_1250]);
 	}
 
 

@@ -37,14 +37,14 @@ class CharsetOptionsResolverTest extends ContainerAwareTestCase
 		$resolvedOptions = $this->charsetOptionsResolver->resolve(['charsets' => [Encoding::WIN_1250]]);
 		$this->assertNotContains(Encoding::WIN_1250, $resolvedOptions);
 		$this->assertContains(Encoding::ISO_8859_1, $resolvedOptions);
-		$this->assertNotContains(Encoding::ISO_8859_2, $resolvedOptions);
+		$this->assertNotContains('ISO-8859-2', $resolvedOptions);
 	}
 
 
 	public function testUppercase()
 	{
 		$resolvedOptions = $this->charsetOptionsResolver->resolve(['charsets' => ['iso-8859-15']]);
-		$this->assertSame(Encoding::ISO_8859_15, $resolvedOptions[1]);
+		$this->assertSame('ISO-8859-15', $resolvedOptions[1]);
 	}
 
 
@@ -61,7 +61,7 @@ class CharsetOptionsResolverTest extends ContainerAwareTestCase
 		$resolvedOptions = $this->charsetOptionsResolver->resolve([]);
 		$this->assertSame(Encoding::UTF_8, $resolvedOptions[0]);
 
-		$resolvedOptions = $this->charsetOptionsResolver->resolve(['charsets' => [Encoding::ISO_8859_15]]);
+		$resolvedOptions = $this->charsetOptionsResolver->resolve(['charsets' => ['ISO-8859-15']]);
 		$this->assertSame(Encoding::UTF_8, $resolvedOptions[0]);
 	}
 
