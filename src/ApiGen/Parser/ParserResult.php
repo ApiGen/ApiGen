@@ -55,21 +55,6 @@ class ParserResult extends Nette\Object
 	private $tokenizedClasses;
 
 	/**
-	 * @var ArrayObject
-	 */
-	public static $classesStatic;
-
-	/**
-	 * @var ArrayObject
-	 */
-	public static $constantsStatic;
-
-	/**
-	 * @var ArrayObject
-	 */
-	public static $functionsStatic;
-
-	/**
 	 * @var array
 	 */
 	private $types = [Elements::CLASSES, Elements::CONSTANTS, Elements::FUNCTIONS];

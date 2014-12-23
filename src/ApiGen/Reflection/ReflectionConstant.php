@@ -9,7 +9,7 @@
 
 namespace ApiGen\Reflection;
 
-use ApiGen\FileSystem\FileSystem;
+use ApiGen\Configuration\ConfigurationOptions as CO;
 use TokenReflection;
 
 
@@ -123,7 +123,8 @@ class ReflectionConstant extends ReflectionElement
 	{
 		if ($this->isDocumented === NULL && parent::isDocumented() && $this->reflection->getDeclaringClassName() === NULL) {
 			$fileName = $this->reflection->getFilename();
-			foreach (self::$config->skipDocPath as $mask) {
+			$skipDocPath = $this->configuration->getOption(CO::SKIP_DOC_PATH);
+			foreach ($skipDocPath as $mask) {
 				if (fnmatch($mask, $fileName, FNM_NOESCAPE)) {
 					$this->isDocumented = FALSE;
 					break;

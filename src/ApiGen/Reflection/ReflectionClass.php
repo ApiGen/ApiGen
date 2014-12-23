@@ -590,7 +590,7 @@ class ReflectionClass extends ReflectionElement
 	{
 		if ($this->parentClasses === NULL) {
 			$this->parentClasses = array_map(function (IReflectionClass $class) {
-				return ParserResult::$classesStatic[$class->getName()];
+				return $this->getParsedClasses()[$class->getName()];
 			}, $this->reflection->getParentClasses());
 		}
 		return $this->parentClasses;
@@ -622,7 +622,7 @@ class ReflectionClass extends ReflectionElement
 	public function getInterfaces()
 	{
 		return array_map(function (IReflectionClass $class) {
-			return ParserResult::$classesStatic[$class->getName()];
+			return $this->getParsedClasses()[$class->getName()];
 		}, $this->reflection->getInterfaces());
 	}
 
@@ -642,7 +642,7 @@ class ReflectionClass extends ReflectionElement
 	public function getOwnInterfaces()
 	{
 		return array_map(function (IReflectionClass $class) {
-			return ParserResult::$classesStatic[$class->getName()];
+			return $this->getParsedClasses()[$class->getName()];
 		}, $this->reflection->getOwnInterfaces());
 	}
 
@@ -662,11 +662,11 @@ class ReflectionClass extends ReflectionElement
 	public function getTraits()
 	{
 		return array_map(function (IReflectionClass $class) {
-			if ( ! isset(ParserResult::$classesStatic[$class->getName()])) {
+			if ( ! isset($this->getParsedClasses()[$class->getName()])) {
 				return $class->getName();
 
 			} else {
-				return ParserResult::$classesStatic[$class->getName()];
+				return $this->getParsedClasses()[$class->getName()];
 			}
 		}, $this->reflection->getTraits());
 	}
@@ -705,11 +705,11 @@ class ReflectionClass extends ReflectionElement
 	public function getOwnTraits()
 	{
 		return array_map(function (IReflectionClass $class) {
-			if ( ! isset(ParserResult::$classesStatic[$class->getName()])) {
+			if ( ! isset($this->getParsedClasses()[$class->getName()])) {
 				return $class->getName();
 
 			} else {
-				return ParserResult::$classesStatic[$class->getName()];
+				return $this->getParsedClasses()[$class->getName()];
 			}
 		}, $this->reflection->getOwnTraits());
 	}

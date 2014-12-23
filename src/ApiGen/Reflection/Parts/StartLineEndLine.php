@@ -26,10 +26,12 @@ trait StartLineEndLine
 
 	/**
 	 * @param int $startLine
+	 * @return $this
 	 */
 	public function setStartLine($startLine)
 	{
 		$this->startLine = $startLine;
+		return $this;
 	}
 
 
@@ -44,10 +46,12 @@ trait StartLineEndLine
 
 	/**
 	 * @param int $endLine
+	 * @return $this
 	 */
 	public function setEndLine($endLine)
 	{
 		$this->endLine = $endLine;
+		return $this;
 	}
 
 

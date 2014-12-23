@@ -28,7 +28,7 @@ class ReflectionMethod extends ReflectionFunctionBase
 	public function getDeclaringClass()
 	{
 		$className = $this->reflection->getDeclaringClassName();
-		return $className === NULL ? NULL : self::$parsedClasses[$className];
+		return $className === NULL ? NULL : $this->getParsedClasses()[$className];
 	}
 
 
@@ -128,7 +128,7 @@ class ReflectionMethod extends ReflectionFunctionBase
 	public function getDeclaringTrait()
 	{
 		$traitName = $this->reflection->getDeclaringTraitName();
-		return $traitName === NULL ? NULL : self::$parsedClasses[$traitName];
+		return $traitName === NULL ? NULL : $this->getParsedClasses()[$traitName];
 	}
 
 
@@ -209,7 +209,7 @@ class ReflectionMethod extends ReflectionFunctionBase
 			return NULL;
 		}
 		$originalDeclaringClassName = $this->reflection->getOriginal()->getDeclaringClassName();
-		return self::$parsedClasses[$originalDeclaringClassName]->getMethod($originalName);
+		return $this->getParsedClasses()[$originalDeclaringClassName]->getMethod($originalName);
 	}
 
 

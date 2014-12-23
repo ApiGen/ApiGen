@@ -25,13 +25,6 @@ class Configuration extends Nette\Object
 	const GROUPS_PACKAGES = 'packages';
 
 	/**
-	 * Static access for reflections
-	 *
-	 * @var Nette\Utils\ArrayHash
-	 */
-	public static $config;
-
-	/**
 	 * @var array
 	 */
 	public $onOptionsResolve = [];
@@ -59,7 +52,7 @@ class Configuration extends Nette\Object
 	public function resolveOptions(array $options)
 	{
 		$options = $this->unsetConsoleOptions($options);
-		self::$config = $this->options = $options = $this->configurationOptionsResolver->resolve($options);
+		$this->options = $options = $this->configurationOptionsResolver->resolve($options);
 		$this->onOptionsResolve($options);
 		return $options;
 	}

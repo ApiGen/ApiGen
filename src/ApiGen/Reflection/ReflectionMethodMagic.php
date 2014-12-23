@@ -9,6 +9,7 @@
 
 namespace ApiGen\Reflection;
 
+use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Reflection\Parts\StartLineEndLine;
 use TokenReflection\Broker;
 use TokenReflection\IReflection;
@@ -165,7 +166,8 @@ class ReflectionMethodMagic extends ReflectionMethod
 	public function isDocumented()
 	{
 		if ($this->isDocumented === NULL) {
-			$this->isDocumented = self::$config->deprecated || ! $this->isDeprecated();
+			$deprecated = $this->configuration->getOption(CO::DEPRECATED);
+			$this->isDocumented = $deprecated || ! $this->isDeprecated();
 		}
 
 		return $this->isDocumented;
