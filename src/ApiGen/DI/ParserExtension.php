@@ -20,13 +20,13 @@ class ParserExtension extends CompilerExtension
 	{
 		$builder = $this->getContainerBuilder();
 
-		$builder->addDefinition('parser')
+		$builder->addDefinition($this->prefix('parser'))
 			->setClass('ApiGen\Parser\Parser');
 
-		$builder->addDefinition('parserResult')
+		$builder->addDefinition($this->prefix('parserResult'))
 			->setClass('ApiGen\Parser\ParserResult');
 
-		$backend = $builder->addDefinition('backend')
+		$backend = $builder->addDefinition($this->prefix('backend'))
 			->setClass('ApiGen\Parser\Broker\Backend');
 
 		$builder->addDefinition($this->prefix('broker'))
@@ -36,26 +36,32 @@ class ParserExtension extends CompilerExtension
 				Broker::OPTION_DEFAULT & ~(Broker::OPTION_PARSE_FUNCTION_BODY | Broker::OPTION_SAVE_TOKEN_STREAM)
 			]);
 
-		$builder->addDefinition('elements')
+		$builder->addDefinition($this->prefix('elements'))
 			->setClass('ApiGen\Parser\Elements\Elements');
 
-		$builder->addDefinition('autocopmlete')
+		$builder->addDefinition($this->prefix('autocopmlete'))
 			->setClass('ApiGen\Parser\Elements\AutocompleteElements');
 
-		$builder->addDefinition('elementExtractor')
+		$builder->addDefinition($this->prefix('elementExtractor'))
 			->setClass('ApiGen\Parser\Elements\ElementExtractor');
 
-		$builder->addDefinition('elementFilter')
+		$builder->addDefinition($this->prefix('elementFilter'))
 			->setClass('ApiGen\Parser\Elements\ElementFilter');
 
-		$builder->addDefinition('elementSorter')
+		$builder->addDefinition($this->prefix('elementSorter'))
 			->setClass('ApiGen\Parser\Elements\ElementSorter');
 
-		$builder->addDefinition('elementStorage')
+		$builder->addDefinition($this->prefix('elementStorage'))
 			->setClass('ApiGen\Parser\Elements\ElementStorage');
 
-		$builder->addDefinition('groupSorter')
+		$builder->addDefinition($this->prefix('groupSorter'))
 			->setClass('ApiGen\Parser\Elements\GroupSorter');
+
+		$builder->addDefinition($this->prefix('reflectionFactory'))
+			->setClass('ApiGen\Reflection\TokenReflection\ReflectionFactory');
+
+		$builder->addDefinition($this->prefix('reflectionCrateBridge'))
+			->setClass('ApiGen\Reflection\TokenReflection\ReflectionCrateBridge');
 	}
 
 }
