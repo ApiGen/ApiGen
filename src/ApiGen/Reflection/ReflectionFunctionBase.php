@@ -49,7 +49,7 @@ abstract class ReflectionFunctionBase extends ReflectionElement
 	{
 		if ($this->parameters === NULL) {
 			$this->parameters = array_map(function (TokenReflection\IReflectionParameter $parameter) {
-				return new ReflectionParameter($parameter);
+				return $this->reflectionFactory->createFromReflection($parameter);
 			}, $this->reflection->getParameters());
 
 			$annotations = (array) $this->getAnnotation('param');
@@ -132,7 +132,7 @@ abstract class ReflectionFunctionBase extends ReflectionElement
 
 		list(, $typeHint, $name) = $matches;
 
-		$parameter = new ReflectionParameterMagic(NULL);
+		$parameter = $this->reflectionFactory->createParameterMagic();
 		$parameter->setName($name)
 			->setPosition($position)
 			->setTypeHint($typeHint)

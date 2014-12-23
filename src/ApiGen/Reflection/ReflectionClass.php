@@ -10,10 +10,9 @@
 namespace ApiGen\Reflection;
 
 use ApiGen\Configuration\Configuration;
+use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Parser\ParserResult;
-use ArrayObject;
 use InvalidArgumentException;
-use Nette\Utils\ArrayHash;
 use ReflectionMethod as InternalReflectionMethod;
 use ReflectionProperty as InternalReflectionProperty;
 use TokenReflection;
@@ -22,16 +21,6 @@ use TokenReflection\IReflectionClass;
 
 class ReflectionClass extends ReflectionElement
 {
-
-	/**
-	 * @var integer
-	 */
-	private static $methodAccessLevels = 0;
-
-	/**
-	 * @var integer
-	 */
-	private static $propertyAccessLevels = 0;
 
 	/**
 	 * @var array
@@ -77,14 +66,6 @@ class ReflectionClass extends ReflectionElement
 	 * @var array
 	 */
 	private $constants;
-
-
-	public function __construct(IReflectionClass $reflection)
-	{
-		parent::__construct($reflection);
-		self::$propertyAccessLevels = Configuration::$config->propertyAccessLevels;
-		self::$methodAccessLevels = Configuration::$config->methodAccessLevels;
-	}
 
 
 	/**
@@ -172,12 +153,12 @@ class ReflectionClass extends ReflectionElement
 		if ($this->methods === NULL) {
 			$this->methods = $this->getOwnMethods();
 
-			foreach ($this->reflection->getMethods(self::$methodAccessLevels) as $method) {
+			foreach ($this->reflection->getMethods($this->getPropertyOrMethodAccessLevel()) as $method) {
 				/** @var ReflectionElement|TokenReflection\Php\IReflection $method */
 				if (isset($this->methods[$method->getName()])) {
 					continue;
 				}
-				$apiMethod = new ReflectionMethod($method);
+				$apiMethod = $this->reflectionFactory->createFromReflection($method);
 				if ( ! $this->isDocumented() || $apiMethod->isDocumented()) {
 					$this->methods[$method->getName()] = $apiMethod;
 				}
@@ -195,8 +176,8 @@ class ReflectionClass extends ReflectionElement
 		if ($this->ownMethods === NULL) {
 			$this->ownMethods = [];
 
-			foreach ($this->reflection->getOwnMethods(self::$methodAccessLevels) as $method) {
-				$apiMethod = new ReflectionMethod($method);
+			foreach ($this->reflection->getOwnMethods($this->getPropertyOrMethodAccessLevel()) as $method) {
+				$apiMethod = $this->reflectionFactory->createFromReflection($method);
 				if ( ! $this->isDocumented() || $apiMethod->isDocumented()) {
 					$this->ownMethods[$method->getName()] = $apiMethod;
 				}
@@ -255,7 +236,7 @@ class ReflectionClass extends ReflectionElement
 		if ($this->ownMagicMethods === NULL) {
 			$this->ownMagicMethods = [];
 
-			if ( ! (self::$methodAccessLevels & InternalReflectionMethod::IS_PUBLIC)
+			if ( ! ($this->getPropertyOrMethodAccessLevel() & InternalReflectionMethod::IS_PUBLIC)
 				|| $this->getDocComment() === FALSE
 			) {
 				return $this->ownMagicMethods;
@@ -280,8 +261,8 @@ class ReflectionClass extends ReflectionElement
 	public function getTraitMethods()
 	{
 		$methods = [];
-		foreach ($this->reflection->getTraitMethods(self::$methodAccessLevels) as $method) {
-			$apiMethod = new ReflectionMethod($method);
+		foreach ($this->reflection->getTraitMethods($this->getPropertyOrMethodAccessLevel()) as $method) {
+			$apiMethod = $this->reflectionFactory->createFromReflection($method);
 			if ( ! $this->isDocumented() || $apiMethod->isDocumented()) {
 				/** @var ReflectionElement $method */
 				$methods[$method->getName()] = $apiMethod;
@@ -315,12 +296,12 @@ class ReflectionClass extends ReflectionElement
 	{
 		if ($this->properties === NULL) {
 			$this->properties = $this->getOwnProperties();
-			foreach ($this->reflection->getProperties(self::$propertyAccessLevels) as $property) {
+			foreach ($this->reflection->getProperties($this->getPropertyOrMethodAccessLevel()) as $property) {
 				/** @var ReflectionElement $property */
 				if (isset($this->properties[$property->getName()])) {
 					continue;
 				}
-				$apiProperty = new ReflectionProperty($property);
+				$apiProperty =  $this->reflectionFactory->createFromReflection($property);
 				if ( ! $this->isDocumented() || $apiProperty->isDocumented()) {
 					$this->properties[$property->getName()] = $apiProperty;
 				}
@@ -377,8 +358,8 @@ class ReflectionClass extends ReflectionElement
 	{
 		if ($this->ownProperties === NULL) {
 			$this->ownProperties = [];
-			foreach ($this->reflection->getOwnProperties(self::$propertyAccessLevels) as $property) {
-				$apiProperty = new ReflectionProperty($property);
+			foreach ($this->reflection->getOwnProperties($this->getPropertyOrMethodAccessLevel()) as $property) {
+				$apiProperty = $this->reflectionFactory->createFromReflection($property);
 				if ( ! $this->isDocumented() || $apiProperty->isDocumented()) {
 					/** @var ReflectionElement $property */
 					$this->ownProperties[$property->getName()] = $apiProperty;
@@ -397,7 +378,9 @@ class ReflectionClass extends ReflectionElement
 		if ($this->ownMagicProperties === NULL) {
 			$this->ownMagicProperties = [];
 
-			if ( ! (self::$propertyAccessLevels & InternalReflectionProperty::IS_PUBLIC) || $this->getDocComment() === FALSE) {
+			if ( ! ($this->getPropertyOrMethodAccessLevel() && InternalReflectionProperty::IS_PUBLIC)
+				|| $this->getDocComment() === FALSE
+			) {
 				return $this->ownMagicProperties;
 			}
 
@@ -423,8 +406,8 @@ class ReflectionClass extends ReflectionElement
 	public function getTraitProperties()
 	{
 		$properties = [];
-		foreach ($this->reflection->getTraitProperties(self::$propertyAccessLevels) as $property) {
-			$apiProperty = new ReflectionProperty($property);
+		foreach ($this->reflection->getTraitProperties($this->getPropertyOrMethodAccessLevel()) as $property) {
+			$apiProperty = $this->reflectionFactory->createFromReflection($property);
 			if ( ! $this->isDocumented() || $apiProperty->isDocumented()) {
 				/** @var ReflectionElement $property */
 				$properties[$property->getName()] = $apiProperty;
@@ -459,7 +442,7 @@ class ReflectionClass extends ReflectionElement
 		if ($this->constants === NULL) {
 			$this->constants = [];
 			foreach ($this->reflection->getConstantReflections() as $constant) {
-				$apiConstant = new ReflectionConstant($constant);
+				$apiConstant = $this->reflectionFactory->createFromReflection($constant);
 				if ( ! $this->isDocumented() || $apiConstant->isDocumented()) {
 					/** @var ReflectionElement $constant */
 					$this->constants[$constant->getName()] = $apiConstant;
@@ -1262,7 +1245,8 @@ class ReflectionClass extends ReflectionElement
 	{
 		if ($this->isDocumented === NULL && parent::isDocumented()) {
 			$fileName = $this->reflection->getFilename();
-			foreach (self::$config->skipDocPath as $mask) {
+			$skipDocPath = $this->configuration->getOption(CO::SKIP_DOC_PATH);
+			foreach ($skipDocPath as $mask) {
 				if (fnmatch($mask, $fileName, FNM_NOESCAPE)) {
 					$this->isDocumented = FALSE;
 					break;
@@ -1271,27 +1255,6 @@ class ReflectionClass extends ReflectionElement
 		}
 
 		return $this->isDocumented;
-	}
-
-
-	/**
-	 * @return ArrayHash
-	 */
-	public function getConfig()
-	{
-		return Configuration::$config;
-	}
-
-
-	/**
-	 * @return ArrayObject
-	 */
-	private function getParsedClasses()
-	{
-		if (self::$parsedClasses === NULL) {
-			self::$parsedClasses = ParserResult::$classesStatic;
-		}
-		return self::$parsedClasses;
 	}
 
 
@@ -1317,7 +1280,7 @@ class ReflectionClass extends ReflectionElement
 		$startLine = $this->getStartLine() + substr_count(substr($doc, 0, strpos($doc, $tmp)), "\n");
 		$endLine = $startLine + substr_count($annotation, "\n");
 
-		$method = new ReflectionMethodMagic(NULL);
+		$method = $this->reflectionFactory->createMethodMagic();
 		$method->setName($name)
 			->setShortDescription(str_replace("\n", ' ', $shortDescription))
 			->setStartLine($startLine)
@@ -1338,7 +1301,7 @@ class ReflectionClass extends ReflectionElement
 
 			list(, $typeHint, $passedByReference, $name, $defaultValueDefinition) = $matches;
 
-			$parameter = new ReflectionParameterMagic(NULL);
+			$parameter = $this->reflectionFactory->createParameterMagic();
 			$parameter->setName($name)
 				->setPosition($position)
 				->setTypeHint($typeHint)
@@ -1390,6 +1353,15 @@ class ReflectionClass extends ReflectionElement
 			->addAnnotation('var', $typeHint);
 
 		$this->ownMagicProperties[$name] = $magicProperty;
+	}
+
+
+	/**
+	 * @return int
+	 */
+	private function getPropertyOrMethodAccessLevel()
+	{
+		return $this->configuration->getOption(CO::PROPERTY_ACCESS_LEVELS);
 	}
 
 }

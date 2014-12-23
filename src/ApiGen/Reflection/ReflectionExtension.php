@@ -29,10 +29,10 @@ class ReflectionExtension extends ReflectionBase
 		if ($class === NULL) {
 			return NULL;
 		}
-		if (isset(self::$parsedClasses[$name])) {
-			return self::$parsedClasses[$name];
+		if (isset($this->getParsedClasses()[$name])) {
+			return $this->getParsedClasses()[$name];
 		}
-		return new ReflectionClass($class);
+		return $this->reflectionFactory->createFromReflection($class);
 	}
 
 
@@ -42,9 +42,9 @@ class ReflectionExtension extends ReflectionBase
 	public function getClasses()
 	{
 		return array_map(function (IReflectionClass $class) {
-			return isset(self::$parsedClasses[$class->getName()])
-				? self::$parsedClasses[$class->getName()]
-				: new ReflectionClass($class);
+			return isset($this->getParsedClasses()[$class->getName()])
+				? $this->getParsedClasses()[$class->getName()]
+				: $this->reflectionFactory->createFromReflection($class);
 		}, $this->reflection->getClasses());
 	}
 
@@ -66,7 +66,7 @@ class ReflectionExtension extends ReflectionBase
 	public function getConstantReflection($name)
 	{
 		$constant = $this->reflection->getConstantReflection($name);
-		return $constant === NULL ? NULL : new ReflectionConstant($constant);
+		return $constant === NULL ? NULL : $this->reflectionFactory->createFromReflection($constant);
 	}
 
 
@@ -85,7 +85,7 @@ class ReflectionExtension extends ReflectionBase
 	public function getConstantReflections()
 	{
 		return array_map(function (IReflectionConstant $constant) {
-			return new ReflectionConstant($constant);
+			return $this->reflectionFactory->createFromReflection($constant);
 		}, $this->reflection->getConstantReflections());
 	}
 
@@ -97,7 +97,7 @@ class ReflectionExtension extends ReflectionBase
 	public function getFunction($name)
 	{
 		$function = $this->reflection->getFunction($name);
-		return $function === NULL ? NULL : new ReflectionFunction($function);
+		return $function === NULL ? NULL : $this->reflectionFactory->createFromReflection($function);
 	}
 
 
@@ -107,7 +107,7 @@ class ReflectionExtension extends ReflectionBase
 	public function getFunctions()
 	{
 		return array_map(function (IReflectionFunction $function) {
-			return new ReflectionFunction($function);
+			return $this->reflectionFactory->createFromReflection($function);
 		}, $this->reflection->getFunctions());
 	}
 

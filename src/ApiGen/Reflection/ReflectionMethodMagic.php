@@ -36,7 +36,6 @@ class ReflectionMethodMagic extends ReflectionMethod
 	 */
 	protected $shortDescription;
 
-
 	/**
 	 * @var bool
 	 */

@@ -87,7 +87,6 @@ class ReflectionFactory
 	 */
 	private function createByReflectionType($reflection)
 	{
-		$reflectionHashTable = [];
 		if ($reflection instanceof IReflectionClass) {
 			return new ReflectionClass($reflection);
 
