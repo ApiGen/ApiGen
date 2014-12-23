@@ -9,6 +9,7 @@
 
 namespace ApiGen\Reflection;
 
+use ApiGen\Reflection\Parts\StartLineEndLine;
 use ReflectionProperty as InternalReflectionProperty;
 use TokenReflection\IReflection;
 
@@ -20,8 +21,6 @@ use TokenReflection\IReflection;
  * @method ReflectionPropertyMagic  setName(string $name)
  * @method ReflectionPropertyMagic  setTypeHint()
  * @method ReflectionPropertyMagic  setShortDescription()
- * @method ReflectionPropertyMagic  setStartLine()
- * @method ReflectionPropertyMagic  setEndLine()
  * @method ReflectionPropertyMagic  setReadOnly()
  * @method ReflectionPropertyMagic  setWriteOnly()
  * @method ReflectionPropertyMagic  setDeclaringClass(ReflectionClass $declaringClass)
@@ -32,6 +31,8 @@ use TokenReflection\IReflection;
  */
 class ReflectionPropertyMagic extends ReflectionProperty
 {
+
+	use StartLineEndLine;
 
 	/**
 	 * @var string
@@ -52,16 +53,6 @@ class ReflectionPropertyMagic extends ReflectionProperty
 	 * @var string
 	 */
 	protected $longDescription;
-
-	/**
-	 * @var integer
-	 */
-	protected $startLine;
-
-	/**
-	 * @var integer
-	 */
-	protected $endLine;
 
 	/**
 	 * @var bool
@@ -102,17 +93,6 @@ class ReflectionPropertyMagic extends ReflectionProperty
 	/**
 	 * Overrides parent method.
 	 *
-	 * @return int
-	 */
-	public function getStartLine()
-	{
-		return $this->startLine;
-	}
-
-
-	/**
-	 * Overrides parent method.
-	 *
 	 * @return string
 	 */
 	public function getShortDescription()
@@ -129,17 +109,6 @@ class ReflectionPropertyMagic extends ReflectionProperty
 	public function getLongDescription()
 	{
 		return $this->longDescription;
-	}
-
-
-	/**
-	 * Overrides parent method.
-	 *
-	 * @return int
-	 */
-	public function getEndLine()
-	{
-		return $this->endLine;
 	}
 
 

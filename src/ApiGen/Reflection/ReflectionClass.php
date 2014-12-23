@@ -82,7 +82,8 @@ class ReflectionClass extends ReflectionElement
 	public function __construct(IReflectionClass $reflection)
 	{
 		parent::__construct($reflection);
-		$this->setAccessLevels();
+		self::$propertyAccessLevels = Configuration::$config->propertyAccessLevels;
+		self::$methodAccessLevels = Configuration::$config->methodAccessLevels;
 	}
 
 
@@ -1270,13 +1271,6 @@ class ReflectionClass extends ReflectionElement
 		}
 
 		return $this->isDocumented;
-	}
-
-
-	private function setAccessLevels()
-	{
-		self::$propertyAccessLevels = Configuration::$config->propertyAccessLevels;
-		self::$methodAccessLevels = Configuration::$config->methodAccessLevels;
 	}
 
 

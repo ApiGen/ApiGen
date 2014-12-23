@@ -9,7 +9,7 @@
 
 namespace ApiGen\Reflection;
 
-use ReflectionProperty as InternalReflectionMethod;
+use ApiGen\Reflection\Parts\StartLineEndLine;
 use TokenReflection\Broker;
 use TokenReflection\IReflection;
 
@@ -17,14 +17,14 @@ use TokenReflection\IReflection;
 /**
  * @method  ReflectionMethodMagic   setName(string $name)
  * @method  ReflectionMethodMagic   setShortDescription(string $shortDescription)
- * @method  ReflectionMethodMagic   setStartLine(int $startLine)
- * @method  ReflectionMethodMagic   setEndLine(int $endLine)
  * @method  ReflectionMethodMagic   setReturnsReference(bool $returnsReference)
  * @method  ReflectionMethodMagic   setParameters(array $parameters)
  * @method  ReflectionMethodMagic   setDeclaringClass(ReflectionClass $declaringClass)
  */
 class ReflectionMethodMagic extends ReflectionMethod
 {
+
+	use StartLineEndLine;
 
 	/**
 	 * @var string
@@ -36,15 +36,6 @@ class ReflectionMethodMagic extends ReflectionMethod
 	 */
 	protected $shortDescription;
 
-	/**
-	 * @var integer
-	 */
-	protected $startLine;
-
-	/**
-	 * @var integer
-	 */
-	protected $endLine;
 
 	/**
 	 * @var bool
@@ -119,24 +110,6 @@ class ReflectionMethodMagic extends ReflectionMethod
 	public function getLongDescription()
 	{
 		return $this->shortDescription;
-	}
-
-
-	/**
-	 * @return integer
-	 */
-	public function getStartLine()
-	{
-		return $this->startLine;
-	}
-
-
-	/**
-	 * @return integer
-	 */
-	public function getEndLine()
-	{
-		return $this->endLine;
 	}
 
 
