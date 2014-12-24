@@ -91,15 +91,6 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * @return array
-	 */
-	public function getModifiers()
-	{
-		return $this->reflection->getModifiers();
-	}
-
-
-	/**
 	 * @return bool
 	 */
 	public function isAbstract()
@@ -1361,7 +1352,7 @@ class ReflectionClass extends ReflectionElement
 	 */
 	private function getPropertyOrMethodAccessLevel()
 	{
-		return $this->configuration->getOption(CO::PROPERTY_ACCESS_LEVELS);
+		return $this->configuration->getOption(CO::PROPERTY_AND_METHOD_ACCESS_LEVELS);
 	}
 
 }

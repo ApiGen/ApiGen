@@ -42,15 +42,6 @@ class ReflectionMethod extends ReflectionFunctionBase
 
 
 	/**
-	 * @return integer
-	 */
-	public function getModifiers()
-	{
-		return $this->reflection->getModifiers();
-	}
-
-
-	/**
 	 * @return bool
 	 */
 	public function isAbstract()
@@ -151,7 +142,6 @@ class ReflectionMethod extends ReflectionFunctionBase
 				return $interface->getMethod($this->getName());
 			}
 		}
-
 		return NULL;
 	}
 
@@ -182,24 +172,6 @@ class ReflectionMethod extends ReflectionFunctionBase
 
 
 	/**
-	 * @return string|null
-	 */
-	public function getOriginalName()
-	{
-		return $this->reflection->getOriginalName();
-	}
-
-
-	/**
-	 * @return integer|null
-	 */
-	public function getOriginalModifiers()
-	{
-		return $this->reflection->getOriginalModifiers();
-	}
-
-
-	/**
 	 * @return ReflectionMethod|NULL
 	 */
 	public function getOriginal()
@@ -210,6 +182,15 @@ class ReflectionMethod extends ReflectionFunctionBase
 		}
 		$originalDeclaringClassName = $this->reflection->getOriginal()->getDeclaringClassName();
 		return $this->getParsedClasses()[$originalDeclaringClassName]->getMethod($originalName);
+	}
+
+
+	/**
+	 * @return string|NULL
+	 */
+	public function getOriginalName()
+	{
+		return $this->reflection->getOriginalName();
 	}
 
 

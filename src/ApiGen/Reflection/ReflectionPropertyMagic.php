@@ -257,15 +257,6 @@ class ReflectionPropertyMagic extends ReflectionProperty
 
 
 	/**
-	 * @return integer
-	 */
-	public function getModifiers()
-	{
-		return InternalReflectionProperty::IS_PUBLIC;
-	}
-
-
-	/**
 	 * @return bool
 	 */
 	public function isPrivate()

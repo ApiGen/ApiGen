@@ -232,15 +232,6 @@ class ReflectionMethodMagic extends ReflectionMethod
 
 
 	/**
-	 * @return integer
-	 */
-	public function getModifiers()
-	{
-		return InternalReflectionMethod::IS_PUBLIC;
-	}
-
-
-	/**
 	 * @return bool
 	 */
 	public function isAbstract()
@@ -377,15 +368,6 @@ class ReflectionMethodMagic extends ReflectionMethod
 	public function getOriginalName()
 	{
 		return $this->getName();
-	}
-
-
-	/**
-	 * @return integer|NULL
-	 */
-	public function getOriginalModifiers()
-	{
-		return $this->getModifiers();
 	}
 
 

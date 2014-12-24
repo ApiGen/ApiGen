@@ -2,72 +2,171 @@
 
 namespace ApiGen\Tests\Reflection;
 
-use ApiGen\Configuration\Configuration;
-use ApiGen\Parser\Parser;
-use ApiGen\Parser\ParserResult;
+use ApiGen\Parser\Broker\Backend;
 use ApiGen\Reflection\ReflectionClass;
 use ApiGen\Reflection\ReflectionMethod;
-use ApiGen\Tests\ContainerAwareTestCase;
-use Nette\Utils\Finder;
+use ApiGen\Reflection\TokenReflection\ReflectionFactory;
+use Mockery;
+use PHPUnit_Framework_TestCase;
+use TokenReflection\Broker;
 
 
-class ReflectionMethodTest extends ContainerAwareTestCase
+class ReflectionMethodTest extends PHPUnit_Framework_TestCase
 {
 
 	/**
-	 * @var Parser
+	 * @var ReflectionMethod
 	 */
-	private $parser;
+	private $reflectionMethod;
 
 	/**
-	 * @var ParserResult
+	 * @var ReflectionClass
 	 */
-	private $parserResult;
-
-	/**
-	 * @var Configuration
-	 */
-	private $configuration;
+	private $reflectionClass;
 
 
 	protected function setUp()
 	{
-		$this->parser = $this->container->getByType('ApiGen\Parser\Parser');
-		$this->parserResult = $this->container->getByType('ApiGen\Parser\ParserResult');
-		$this->configuration = $this->container->getByType('ApiGen\Configuration\Configuration');
+		$backend = new Backend($this->getReflectionFactory());
+		$broker = new Broker($backend);
+		$broker->processDirectory(__DIR__ . '/ReflectionMethodSource');
+
+		$this->reflectionClass = $backend->getClasses()['Project\ReflectionMethod'];
+		$this->reflectionMethod = $this->reflectionClass->getMethod('methodWithArgs');
 	}
 
 
-	public function testMethodDefaultParameters()
+	public function testGetDeclaringClass()
 	{
-		$this->setConfiguration();
-		$reflectionMethod = $this->getReflectionMethod();
-		$this->assertCount(3, $reflectionMethod->getParameters());
+		$this->isInstanceOf('ApiGen\Reflection\ReflectionClass', $this->reflectionMethod->getDeclaringClass());
 	}
 
 
-	private function setConfiguration()
+	public function testGetDeclaringClassName()
 	{
-		$this->configuration->resolveOptions([
-			'source' => __DIR__ . '/ReflectionMethodSource',
-			'destination' => TEMP_DIR . '/api'
-		]);
+		$this->assertSame('Project\ReflectionMethod', $this->reflectionMethod->getDeclaringClassName());
+	}
+
+
+	public function testIsAbstract()
+	{
+		$this->assertFalse($this->reflectionMethod->isAbstract());
+	}
+
+
+	public function testIsFinal()
+	{
+		$this->assertFalse($this->reflectionMethod->isFinal());
+	}
+
+
+	public function testIsPrivate()
+	{
+		$this->assertFalse($this->reflectionMethod->isPrivate());
+	}
+
+
+	public function testIsProtected()
+	{
+		$this->assertFalse($this->reflectionMethod->isProtected());
+	}
+
+
+	public function testIsPublic()
+	{
+		$this->assertTrue($this->reflectionMethod->isPublic());
+	}
+
+
+	public function testIsConstructor()
+	{
+		$this->assertFalse($this->reflectionMethod->isConstructor());
+	}
+
+
+	public function testIsDestructor()
+	{
+		$this->assertFalse($this->reflectionMethod->isDestructor());
+	}
+
+
+	public function testGetDeclaringTrait()
+	{
+		$this->assertNull($this->reflectionMethod->getDeclaringTrait());
+	}
+
+
+	public function testGetDeclaringTraitName()
+	{
+		$this->assertNull($this->reflectionMethod->getDeclaringTraitName());
+	}
+
+
+	public function testGetImplementedMethod()
+	{
+		$this->assertNull($this->reflectionMethod->getImplementedMethod());
+	}
+
+
+	public function testGetOverriddenMethod()
+	{
+		$this->assertNull($this->reflectionMethod->getOverriddenMethod());
+	}
+
+
+	public function testGetOriginal()
+	{
+		$this->assertNull($this->reflectionMethod->getOriginal());
+	}
+
+
+	public function testGetOriginalName()
+	{
+		$this->assertNull($this->reflectionMethod->getOriginalName());
+	}
+
+
+	public function testIsValid()
+	{
+		$this->assertTrue($this->reflectionMethod->isValid());
+	}
+
+
+	/** ReflectionFunctionBase methods */
+
+	public function testGetParameters()
+	{
+		$this->assertCount(3, $this->reflectionMethod->getParameters());
 	}
 
 
 	/**
-	 * @return ReflectionMethod
+	 * @return Mockery\MockInterface
 	 */
-	private function getReflectionMethod()
+	private function getReflectionFactory()
 	{
-		$files = Finder::findFiles('*')->in(__DIR__ . '/ReflectionMethodSource')->getIterator();
+		$parserResultMock = Mockery::mock('ApiGen\Parser\ParserResult');
+		$parserResultMock->shouldReceive('getElementsByType')->andReturnUsing(function ($arg) {
+			if ($arg) {
+				return ['Project\ReflectionMethod' => $this->reflectionClass];
+			}
+		});
+		return new ReflectionFactory($this->getConfigurationMock(), $parserResultMock);
+	}
 
-		$this->parser->parse($files);
-		/** @var ReflectionClass $reflectionClass */
-		$reflectionClass = $this->parserResult->getClasses()['Project\ReflectionMethod'];
-		$reflectionMethod = $reflectionClass->getMethod('methodWithArgs');
-		$this->assertInstanceOf('ApiGen\Reflection\ReflectionMethod', $reflectionMethod);
-		return $reflectionMethod;
+
+	/**
+	 * @return Mockery\MockInterface
+	 */
+	private function getConfigurationMock()
+	{
+		$configurationMock = Mockery::mock('ApiGen\Configuration\Configuration');
+		$configurationMock->shouldReceive('getOption')->with('php')->andReturn(FALSE);
+		$configurationMock->shouldReceive('getOption')->with('deprecated')->andReturn(FALSE);
+		$configurationMock->shouldReceive('getOption')->with('internal')->andReturn(FALSE);
+		$configurationMock->shouldReceive('getOption')->with('skipDocPath')->andReturn(['*SomeConstant.php*']);
+		$configurationMock->shouldReceive('getOption')->with('propertyAndMethodAccessLevels')->andReturn(256);
+		return $configurationMock;
 	}
 
 }

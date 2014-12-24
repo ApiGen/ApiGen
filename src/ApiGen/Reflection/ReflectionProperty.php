@@ -111,15 +111,6 @@ class ReflectionProperty extends ReflectionElement
 
 
 	/**
-	 * @return integer
-	 */
-	public function getModifiers()
-	{
-		return $this->reflection->getModifiers();
-	}
-
-
-	/**
 	 * @return bool
 	 */
 	public function isPrivate()

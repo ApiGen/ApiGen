@@ -6,7 +6,6 @@ use ApiGen\Reflection\TokenReflection\ReflectionFactory;
 use Mockery;
 use PHPUnit_Framework_Assert;
 use PHPUnit_Framework_TestCase;
-use TokenReflection\Php\ReflectionClass;
 
 
 class ReflectionFactoryTest extends PHPUnit_Framework_TestCase
