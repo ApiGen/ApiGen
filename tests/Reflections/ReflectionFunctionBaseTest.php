@@ -118,7 +118,7 @@ class ReflectionFunctionBaseTest extends PHPUnit_Framework_TestCase
 	}
 
 
-	public function testGetParametersAnnotationMathingRealCount()
+	public function testGetParametersAnnotationMatchingRealCount()
 	{
 		$reflectionFunction = $this->backend->getFunctions()['getMemoryInBytes'];
 
