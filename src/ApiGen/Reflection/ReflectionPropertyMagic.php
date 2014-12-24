@@ -150,24 +150,6 @@ class ReflectionPropertyMagic extends ReflectionProperty
 
 
 	/**
-	 * @return ReflectionExtension|NULL
-	 */
-	public function getExtension()
-	{
-		return NULL;
-	}
-
-
-	/**
-	 * @return bool
-	 */
-	public function getExtensionName()
-	{
-		return FALSE;
-	}
-
-
-	/**
 	 * @return bool
 	 */
 	public function isDocumented()

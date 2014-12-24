@@ -95,6 +95,15 @@ class ReflectionFactoryTest extends PHPUnit_Framework_TestCase
 	}
 
 
+	public function testCreateFromReflectionExtension()
+	{
+		$tokenReflectionExtensionMock = Mockery::mock('TokenReflection\IReflectionExtension', 'Nette\Object');
+		$reflectionExtension = $this->reflectionFactory->createFromReflection($tokenReflectionExtensionMock);
+		$this->assertInstanceOf('ApiGen\Reflection\ReflectionExtension', $reflectionExtension);
+		$this->checkLoadedProperties($reflectionExtension);
+	}
+
+
 	private function checkLoadedProperties($object)
 	{
 		$this->assertInstanceOf(

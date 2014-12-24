@@ -14,6 +14,7 @@ use ApiGen\Parser\ParserResult;
 use ApiGen\Reflection\ReflectionBase;
 use ApiGen\Reflection\ReflectionClass;
 use ApiGen\Reflection\ReflectionConstant;
+use ApiGen\Reflection\ReflectionExtension;
 use ApiGen\Reflection\ReflectionFunction;
 use ApiGen\Reflection\ReflectionMethod;
 use ApiGen\Reflection\ReflectionMethodMagic;
@@ -23,6 +24,7 @@ use ApiGen\Reflection\ReflectionProperty;
 use RuntimeException;
 use TokenReflection\IReflectionClass;
 use TokenReflection\IReflectionConstant;
+use TokenReflection\IReflectionExtension;
 use TokenReflection\IReflectionFunction;
 use TokenReflection\IReflectionMethod;
 use TokenReflection\IReflectionParameter;
@@ -104,6 +106,9 @@ class ReflectionFactory
 
 		} elseif ($reflection instanceof IReflectionFunction) {
 			return new ReflectionFunction($reflection);
+
+		} elseif ($reflection instanceof IReflectionExtension) {
+			return new ReflectionExtension($reflection);
 		}
 
 		throw new RuntimeException('Invalid reflection class type ' . get_class($reflection));
