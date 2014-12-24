@@ -37,7 +37,7 @@
 	},
 	"require-dev": {
 		"jakub-onderka/php-parallel-lint": "~0.8",
-		"zenify/coding-standard": "~2.0",
+		"zenify/coding-standard": "~3.0",
 		"phpunit/phpunit": "~4.4",
 		"mockery/mockery": "~0.9"
 	},
