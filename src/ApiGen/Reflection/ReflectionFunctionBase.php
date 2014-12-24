@@ -10,11 +10,16 @@
 namespace ApiGen\Reflection;
 
 use InvalidArgumentException;
-use TokenReflection;
+use TokenReflection\IReflectionParameter;
 
 
 abstract class ReflectionFunctionBase extends ReflectionElement
 {
+
+	/**
+	 * @var string Matches "array $arg"
+	 */
+	const PARAM_ANNOTATION_PATTERN = '~^(?:([\\w\\\\]+(?:\\|[\\w\\\\]+)*)\\s+)?\\$(\\w+)(?:\\s+(.*))?($)~s';
 
 	/**
 	 * @var array
@@ -23,8 +28,6 @@ abstract class ReflectionFunctionBase extends ReflectionElement
 
 
 	/**
-	 * Returns the unqualified name (UQN).
-	 *
 	 * @return string
 	 */
 	public function getShortName()
@@ -48,13 +51,15 @@ abstract class ReflectionFunctionBase extends ReflectionElement
 	public function getParameters()
 	{
 		if ($this->parameters === NULL) {
-			$this->parameters = array_map(function (TokenReflection\IReflectionParameter $parameter) {
+			$this->parameters = array_map(function (IReflectionParameter $parameter) {
 				return $this->reflectionFactory->createFromReflection($parameter);
 			}, $this->reflection->getParameters());
 
 			$annotations = (array) $this->getAnnotation('param');
+
+
 			foreach ($annotations as $position => $annotation) {
-				if (isset($parameters[$position])) {
+				if (isset($this->parameters[$position])) {
 					// Standard parameter
 					continue;
 				}
@@ -68,49 +73,43 @@ abstract class ReflectionFunctionBase extends ReflectionElement
 
 
 	/**
-	 * @param integer|string $parameterName
+	 * @param int|string $key
 	 * @return ReflectionParameter
-	 * @throws \InvalidArgumentException If there is no parameter of the given name.
-	 * @throws \InvalidArgumentException If there is no parameter at the given position.
 	 */
-	public function getParameter($parameterName)
+	public function getParameter($key)
 	{
 		$parameters = $this->getParameters();
 
-		if (is_numeric($parameterName)) {
-			if (isset($parameters[$parameterName])) {
-				return $parameters[$parameterName];
+		if (is_numeric($key)) {
+			if (isset($parameters[$key])) {
+				return $parameters[$key];
 			}
-
-			throw new InvalidArgumentException(sprintf(
-				'There is no parameter at position "%d" in function/method "%s"', $parameterName, $this->getName()
-			));
 
 		} else {
 			foreach ($parameters as $parameter) {
-				if ($parameter->getName() === $parameterName) {
+				if ($parameter->getName() === $key) {
 					return $parameter;
 				}
 			}
-
-			throw new InvalidArgumentException(sprintf(
-				'There is no parameter "%s" in function/method "%s"', $parameterName, $this->getName()
-			));
 		}
+
+		throw new InvalidArgumentException(sprintf(
+			'There is no parameter with name/position "%s" in function/method "%s"', $key, $this->getName()
+		));
 	}
 
 
 	/**
-	 * @return integer
+	 * @return int
 	 */
 	public function getNumberOfParameters()
 	{
-		return $this->reflection->getNumberOfParameters();
+		return count($this->getParameters());
 	}
 
 
 	/**
-	 * @return integer
+	 * @return int
 	 */
 	public function getNumberOfRequiredParameters()
 	{
@@ -124,9 +123,7 @@ abstract class ReflectionFunctionBase extends ReflectionElement
 	 */
 	private function processAnnotation($annotation, $position)
 	{
-		$pattern = '~^(?:([\\w\\\\]+(?:\\|[\\w\\\\]+)*)\\s+)?\\$(\\w+),\\.{3}(?:\\s+(.*))?($)~s';
-		if ( ! preg_match($pattern, $annotation, $matches)) {
-			// Wrong annotation format
+		if ( ! preg_match(self::PARAM_ANNOTATION_PATTERN, $annotation, $matches)) {
 			return;
 		}
 
