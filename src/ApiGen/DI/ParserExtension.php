@@ -31,6 +31,6 @@ class ParserExtension extends CompilerExtension
 				$backend,
 				Broker::OPTION_DEFAULT & ~(Broker::OPTION_PARSE_FUNCTION_BODY | Broker::OPTION_SAVE_TOKEN_STREAM)
 			]);
-		}
+	}
 
 }
