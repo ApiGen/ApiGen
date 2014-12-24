@@ -58,8 +58,7 @@ class ConfigurationOptionsResolver
 		CO::TODO => FALSE,
 		CO::TREE => TRUE,
 		// helpers
-		CO::METHOD_ACCESS_LEVELS => [],
-		CO::PROPERTY_ACCESS_LEVELS => [],
+		CO::PROPERTY_AND_METHOD_ACCESS_LEVELS => [],
 		CO::SOURCE_CODE => ''
 	];
 
@@ -104,11 +103,8 @@ class ConfigurationOptionsResolver
 	{
 		$this->resolver->setDefaults($this->defaults);
 		$this->resolver->setDefaults([
-			CO::METHOD_ACCESS_LEVELS => function (Options $options) {
-				return $this->getAccessLevelForReflections($options[CO::ACCESS_LEVELS], 'method');
-			},
-			CO::PROPERTY_ACCESS_LEVELS => function (Options $options) {
-				return $this->getAccessLevelForReflections($options[CO::ACCESS_LEVELS], 'property');
+			CO::PROPERTY_AND_METHOD_ACCESS_LEVELS => function (Options $options) {
+				return $this->getAccessLevelForReflections($options[CO::ACCESS_LEVELS]);
 			},
 			CO::TEMPLATE => function (Options $options) {
 				if ( ! $options[CO::TEMPLATE_CONFIG]) {
@@ -124,23 +120,21 @@ class ConfigurationOptionsResolver
 
 
 	/**
-	 * @param array $options
-	 * @param string $type
 	 * @return int
 	 */
-	private function getAccessLevelForReflections($options, $type)
+	private function getAccessLevelForReflections(array $options)
 	{
 		$accessLevel = NULL;
 		if (in_array(self::AL_PUBLIC, $options)) {
-			$accessLevel |= ($type === 'property' ? ReflectionProperty::IS_PUBLIC : ReflectionMethod::IS_PUBLIC);
+			$accessLevel |= ReflectionProperty::IS_PUBLIC;
 		}
 
 		if (in_array(self::AL_PROTECTED, $options)) {
-			$accessLevel |= ($type === 'property' ? ReflectionProperty::IS_PROTECTED : ReflectionMethod::IS_PROTECTED);
+			$accessLevel |= ReflectionProperty::IS_PROTECTED;
 		}
 
 		if (in_array(self::AL_PRIVATE, $options)) {
-			$accessLevel |= ($type === 'property' ? ReflectionProperty::IS_PRIVATE : ReflectionMethod::IS_PRIVATE);
+			$accessLevel |= ReflectionProperty::IS_PRIVATE;
 		}
 
 		return $accessLevel;

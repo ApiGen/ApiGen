@@ -38,8 +38,7 @@ class ConfigurationOptions
 	const TITLE = 'title';
 	const TODO = 'todo';
 	const TREE = 'tree';
-	const METHOD_ACCESS_LEVELS = 'methodAccessLevels';
-	const PROPERTY_ACCESS_LEVELS = 'propertyAccessLevels';
+	const PROPERTY_AND_METHOD_ACCESS_LEVELS = 'propertyAndMethodAccessLevels';
 	const SOURCE_CODE = 'sourceCode';
 
 }
