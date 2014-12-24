@@ -11,7 +11,7 @@ use PHPUnit_Framework_TestCase;
 use TokenReflection\Broker;
 
 
-class ReflectionParameterTest extends PHPUnit_Framework_TestCase
+class ReflectionPropertyTest extends PHPUnit_Framework_TestCase
 {
 
 	/**
@@ -135,7 +135,7 @@ class ReflectionParameterTest extends PHPUnit_Framework_TestCase
 
 	public function testGetDeclaringClass()
 	{
-		$this->assertInstanceOf(			'ApiGen\Reflection\ReflectionClass', $this->reflectionParameter->getDeclaringClass());
+		$this->assertInstanceOf('ApiGen\Reflection\ReflectionClass', $this->reflectionParameter->getDeclaringClass());
 	}
 
 

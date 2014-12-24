@@ -154,7 +154,7 @@ class GenerateCommand extends Command
 			return 0;
 
 		} catch (\Exception $e) {
-			$output->writeln('<error>' . $e->getMessage() . '</error>');
+			$output->writeln(PHP_EOL . '<error>' . $e->getMessage() . '</error>');
 			return 1;
 		}
 	}
