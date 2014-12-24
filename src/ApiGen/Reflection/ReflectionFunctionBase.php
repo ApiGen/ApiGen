@@ -56,8 +56,6 @@ abstract class ReflectionFunctionBase extends ReflectionElement
 			}, $this->reflection->getParameters());
 
 			$annotations = (array) $this->getAnnotation('param');
-
-
 			foreach ($annotations as $position => $annotation) {
 				if (isset($this->parameters[$position])) {
 					// Standard parameter
