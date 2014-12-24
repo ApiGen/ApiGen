@@ -260,7 +260,7 @@ class ReflectionParameterMagic extends ReflectionParameter
 	public function getClass()
 	{
 		$className = $this->getClassName();
-		return $className === NULL ? NULL : self::$parsedClasses[$className];
+		return $className === NULL ? NULL : $this->getParsedClasses()[$className];
 	}
 
 
@@ -273,7 +273,7 @@ class ReflectionParameterMagic extends ReflectionParameter
 			return NULL;
 		}
 
-		if (isset(self::$parsedClasses[$this->typeHint])) {
+		if (isset($this->getParsedClasses()[$this->typeHint])) {
 			return $this->typeHint; // todo: check fix
 		}
 
