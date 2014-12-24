@@ -14,18 +14,13 @@ use PHPUnit_Framework_TestCase;
 use TokenReflection\Broker;
 
 
-class ReflectionFunctionBaseTest extends PHPUnit_Framework_TestCase
+class ReflectionParameterBaseTest extends PHPUnit_Framework_TestCase
 {
 
 	/**
 	 * @var ReflectionFunction
 	 */
 	private $reflectionFunction;
-
-	/**
-	 * @var ReflectionFunction
-	 */
-	private $reflectionFunctionWithMagicParameters;
 
 	/**
 	 * @var Backend

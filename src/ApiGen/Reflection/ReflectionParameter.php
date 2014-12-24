@@ -54,8 +54,6 @@ class ReflectionParameter extends ReflectionBase
 
 
 	/**
-	 * Returns the part of the source code defining the parameter default value.
-	 *
 	 * @return string
 	 */
 	public function getDefaultValueDefinition()
@@ -74,11 +72,11 @@ class ReflectionParameter extends ReflectionBase
 
 
 	/**
-	 * @return integer
+	 * @return int
 	 */
 	public function getPosition()
 	{
-		return $this->reflection->position;
+		return $this->reflection->getPosition();
 	}
 
 
