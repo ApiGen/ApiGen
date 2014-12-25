@@ -1352,7 +1352,7 @@ class ReflectionClass extends ReflectionElement
 	 */
 	private function getPropertyOrMethodAccessLevel()
 	{
-		return $this->configuration->getOption(CO::PROPERTY_AND_METHOD_ACCESS_LEVELS);
+		return $this->configuration->getOption(CO::VISIBILITY_LEVELS);
 	}
 
 }

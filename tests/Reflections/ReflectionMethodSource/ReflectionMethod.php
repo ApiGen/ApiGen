@@ -5,6 +5,9 @@ namespace Project;
 
 /**
  * @property-read int $skillCounter
+ * @method string getName() This is some short description.
+ *
+ * @package Some_Package
  */
 class ReflectionMethod
 {

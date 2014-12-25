@@ -38,7 +38,7 @@ class ConfigurationOptions
 	const TITLE = 'title';
 	const TODO = 'todo';
 	const TREE = 'tree';
-	const PROPERTY_AND_METHOD_ACCESS_LEVELS = 'propertyAndMethodAccessLevels';
+	const VISIBILITY_LEVELS = 'visibilityLevels';
 	const SOURCE_CODE = 'sourceCode';
 
 }

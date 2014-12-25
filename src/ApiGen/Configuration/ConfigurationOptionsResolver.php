@@ -58,7 +58,7 @@ class ConfigurationOptionsResolver
 		CO::TODO => FALSE,
 		CO::TREE => TRUE,
 		// helpers
-		CO::PROPERTY_AND_METHOD_ACCESS_LEVELS => [],
+		CO::VISIBILITY_LEVELS => [],
 		CO::SOURCE_CODE => ''
 	];
 
@@ -103,7 +103,7 @@ class ConfigurationOptionsResolver
 	{
 		$this->resolver->setDefaults($this->defaults);
 		$this->resolver->setDefaults([
-			CO::PROPERTY_AND_METHOD_ACCESS_LEVELS => function (Options $options) {
+			CO::VISIBILITY_LEVELS => function (Options $options) {
 				return $this->getAccessLevelForReflections($options[CO::ACCESS_LEVELS]);
 			},
 			CO::TEMPLATE => function (Options $options) {

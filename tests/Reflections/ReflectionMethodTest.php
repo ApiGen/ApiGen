@@ -2,6 +2,7 @@
 
 namespace ApiGen\Tests\Reflection;
 
+use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Parser\Broker\Backend;
 use ApiGen\Reflection\ReflectionClass;
 use ApiGen\Reflection\ReflectionMethod;
@@ -171,7 +172,7 @@ class ReflectionMethodTest extends PHPUnit_Framework_TestCase
 		$configurationMock->shouldReceive('getOption')->with('deprecated')->andReturn(FALSE);
 		$configurationMock->shouldReceive('getOption')->with('internal')->andReturn(FALSE);
 		$configurationMock->shouldReceive('getOption')->with('skipDocPath')->andReturn(['*SomeConstant.php*']);
-		$configurationMock->shouldReceive('getOption')->with('propertyAndMethodAccessLevels')->andReturn(256);
+		$configurationMock->shouldReceive('getOption')->with(CO::VISIBILITY_LEVELS)->andReturn(256);
 		return $configurationMock;
 	}
 
