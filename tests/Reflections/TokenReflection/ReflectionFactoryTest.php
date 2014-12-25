@@ -27,7 +27,10 @@ class ReflectionFactoryTest extends PHPUnit_Framework_TestCase
 
 	public function testCreateMethodMagic()
 	{
-		$methodMagic = $this->reflectionFactory->createMethodMagic();
+		$methodMagic = $this->reflectionFactory->createMethodMagic([
+			'name' => '', 'shortDescription' => '', 'startLine' => '', 'endLine' => '', 'returnsReference' => '',
+			'declaringClass' => '', 'annotations' => ''
+		]);
 		$this->assertInstanceOf('ApiGen\Reflection\ReflectionMethodMagic', $methodMagic);
 		$this->checkLoadedProperties($methodMagic);
 	}

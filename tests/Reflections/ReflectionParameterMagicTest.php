@@ -78,7 +78,9 @@ class ReflectionParameterMagicTest extends PHPUnit_Framework_TestCase
 
 	public function testGetDeclaringClass()
 	{
-		$this->assertInstanceOf('ApiGen\Reflection\ReflectionClass', $this->reflectionParameterMagic->getDeclaringClass());
+		$this->assertInstanceOf(
+			'ApiGen\Reflection\ReflectionClass', $this->reflectionParameterMagic->getDeclaringClass()
+		);
 	}
 
 

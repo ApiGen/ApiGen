@@ -1271,15 +1271,15 @@ class ReflectionClass extends ReflectionElement
 		$startLine = $this->getStartLine() + substr_count(substr($doc, 0, strpos($doc, $tmp)), "\n");
 		$endLine = $startLine + substr_count($annotation, "\n");
 
-		$method = $this->reflectionFactory->createMethodMagic();
-		$method->setName($name)
-			->setShortDescription(str_replace("\n", ' ', $shortDescription))
-			->setStartLine($startLine)
-			->setEndLine($endLine)
-			->setReturnsReference($returnsReference === '&')
-			->setDeclaringClass($this)
-			->addAnnotation('return', $returnTypeHint);
-
+		$method = $this->reflectionFactory->createMethodMagic([
+			'name' => $name,
+			'shortDescription' => str_replace("\n", ' ', $shortDescription),
+			'startLine' => $startLine,
+			'endLine' => $endLine,
+			'returnsReference' => ($returnsReference === '&'),
+			'declaringClass' => $this,
+			'annotations' => ['return' => [0 => $returnTypeHint]]
+		]);
 		$this->ownMagicMethods[$name] = $method;
 
 		$parameters = [];

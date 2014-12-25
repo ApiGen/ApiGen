@@ -67,9 +67,9 @@ class ReflectionFactory
 	/**
 	 * @return ReflectionMethodMagic
 	 */
-	public function createMethodMagic()
+	public function createMethodMagic(array $settings)
 	{
-		$reflection = new ReflectionMethodMagic;
+		$reflection = new ReflectionMethodMagic($settings);
 		return $this->setDependencies($reflection);
 	}
 

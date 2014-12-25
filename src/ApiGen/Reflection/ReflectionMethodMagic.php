@@ -12,7 +12,6 @@ namespace ApiGen\Reflection;
 use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Reflection\Parts\StartLineEndLine;
 use ApiGen\Reflection\Parts\StartPositionEndPositionMagic;
-use TokenReflection\IReflection;
 
 
 class ReflectionMethodMagic extends ReflectionMethod
@@ -42,8 +41,16 @@ class ReflectionMethodMagic extends ReflectionMethod
 	private $declaringClass;
 
 
-	public function __construct(IReflection $reflection = NULL)
+	public function __construct(array $settings)
 	{
+		$this->name = $settings['name'];
+		$this->shortDescription = $settings['shortDescription'];
+		$this->startLine = $settings['startLine'];
+		$this->endLine = $settings['endLine'];
+		$this->returnsReference = $settings['returnsReference'];
+		$this->declaringClass = $settings['declaringClass'];
+		$this->annotations = $settings['annotations'];
+
 		$this->reflectionType = get_class($this);
 		if ( ! isset(self::$reflectionMethods[$this->reflectionType])) {
 			self::$reflectionMethods[$this->reflectionType] = array_flip(get_class_methods($this));
@@ -61,33 +68,11 @@ class ReflectionMethodMagic extends ReflectionMethod
 
 
 	/**
-	 * @param string $name
-	 * @return $this
-	 */
-	public function setName($name)
-	{
-		$this->name = $name;
-		return $this;
-	}
-
-
-	/**
 	 * @return string
 	 */
 	public function getShortDescription()
 	{
 		return $this->shortDescription;
-	}
-
-
-	/**
-	 * @param string $shortDescription
-	 * @return $this
-	 */
-	public function setShortDescription($shortDescription)
-	{
-		$this->shortDescription = $shortDescription;
-		return $this;
 	}
 
 
@@ -106,17 +91,6 @@ class ReflectionMethodMagic extends ReflectionMethod
 	public function returnsReference()
 	{
 		return $this->returnsReference;
-	}
-
-
-	/**
-	 * @param bool $returnsReference
-	 * @return $this
-	 */
-	public function setReturnsReference($returnsReference)
-	{
-		$this->returnsReference = $returnsReference;
-		return $this;
 	}
 
 
@@ -203,17 +177,7 @@ class ReflectionMethodMagic extends ReflectionMethod
 
 
 	/**
-	 * @return $this
-	 */
-	public function setDeclaringClass(ReflectionClass $declaringClass)
-	{
-		$this->declaringClass = $declaringClass;
-		return $this;
-	}
-
-
-	/**
-	 * @return string|null
+	 * @return string|NULL
 	 */
 	public function getDeclaringClassName()
 	{
@@ -294,7 +258,7 @@ class ReflectionMethodMagic extends ReflectionMethod
 
 
 	/**
-	 * @return ReflectionClass|null
+	 * @return ReflectionClass|NULL
 	 */
 	public function getDeclaringTrait()
 	{
@@ -303,7 +267,7 @@ class ReflectionMethodMagic extends ReflectionMethod
 
 
 	/**
-	 * @return string|null
+	 * @return string|NULL
 	 */
 	public function getDeclaringTraitName()
 	{
@@ -315,7 +279,7 @@ class ReflectionMethodMagic extends ReflectionMethod
 
 
 	/**
-	 * @return ReflectionMethod|null
+	 * @return ReflectionMethod|NULL
 	 */
 	public function getImplementedMethod()
 	{
@@ -324,7 +288,7 @@ class ReflectionMethodMagic extends ReflectionMethod
 
 
 	/**
-	 * @return ReflectionMethod|null
+	 * @return ReflectionMethod|NULL
 	 */
 	public function getOverriddenMethod()
 	{
@@ -370,13 +334,9 @@ class ReflectionMethodMagic extends ReflectionMethod
 	}
 
 
-	/**
-	 * @return $this
-	 */
 	public function setParameters(array $parameters)
 	{
 		$this->parameters = $parameters;
-		return $this;
 	}
 
 
