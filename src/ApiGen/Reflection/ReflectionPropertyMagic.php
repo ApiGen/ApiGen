@@ -11,6 +11,7 @@ namespace ApiGen\Reflection;
 
 use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Reflection\Parts\StartLineEndLine;
+use ApiGen\Reflection\Parts\StartPositionEndPositionMagic;
 use TokenReflection\IReflection;
 
 
@@ -22,6 +23,7 @@ class ReflectionPropertyMagic extends ReflectionProperty
 {
 
 	use StartLineEndLine;
+	use StartPositionEndPositionMagic;
 
 	/**
 	 * @var string
@@ -174,24 +176,6 @@ class ReflectionPropertyMagic extends ReflectionProperty
 	{
 		$this->readOnly = $readOnly;
 		return $this;
-	}
-
-
-	/**
-	 * @return int
-	 */
-	public function getStartPosition()
-	{
-		return $this->declaringClass->getStartPosition();
-	}
-
-
-	/**
-	 * @return int
-	 */
-	public function getEndPosition()
-	{
-		return $this->declaringClass->getEndPosition();
 	}
 
 

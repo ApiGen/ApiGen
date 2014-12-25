@@ -11,7 +11,7 @@ namespace ApiGen\Reflection;
 
 use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Reflection\Parts\StartLineEndLine;
-//use TokenReflection\Broker;
+use ApiGen\Reflection\Parts\StartPositionEndPositionMagic;
 use TokenReflection\IReflection;
 
 
@@ -26,6 +26,7 @@ class ReflectionMethodMagic extends ReflectionMethod
 {
 
 	use StartLineEndLine;
+	use StartPositionEndPositionMagic;
 
 	/**
 	 * @var string
@@ -54,24 +55,6 @@ class ReflectionMethodMagic extends ReflectionMethod
 		if ( ! isset(self::$reflectionMethods[$this->reflectionType])) {
 			self::$reflectionMethods[$this->reflectionType] = array_flip(get_class_methods($this));
 		}
-	}
-
-
-	/**
-	 * @return integer
-	 */
-	public function getStartPosition()
-	{
-		return $this->declaringClass->getStartPosition();
-	}
-
-
-	/**
-	 * @return integer
-	 */
-	public function getEndPosition()
-	{
-		return $this->declaringClass->getEndPosition();
 	}
 
 
