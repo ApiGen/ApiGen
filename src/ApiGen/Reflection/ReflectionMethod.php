@@ -9,9 +9,13 @@
 
 namespace ApiGen\Reflection;
 
+use ApiGen\Reflection\Parts\Visibility;
+
 
 class ReflectionMethod extends ReflectionFunctionBase
 {
+
+	use Visibility;
 
 	/**
 	 * @return bool
@@ -56,33 +60,6 @@ class ReflectionMethod extends ReflectionFunctionBase
 	public function isFinal()
 	{
 		return $this->reflection->isFinal();
-	}
-
-
-	/**
-	 * @return bool
-	 */
-	public function isPrivate()
-	{
-		return $this->reflection->isPrivate();
-	}
-
-
-	/**
-	 * @return bool
-	 */
-	public function isProtected()
-	{
-		return $this->reflection->isProtected();
-	}
-
-
-	/**
-	 * @return bool
-	 */
-	public function isPublic()
-	{
-		return $this->reflection->isPublic();
 	}
 
 

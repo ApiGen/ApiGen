@@ -9,9 +9,13 @@
 
 namespace ApiGen\Reflection;
 
+use ApiGen\Reflection\Parts\Visibility;
+
 
 class ReflectionProperty extends ReflectionElement
 {
+
+	use Visibility;
 
 	/**
 	 * @return bool
@@ -107,33 +111,6 @@ class ReflectionProperty extends ReflectionElement
 	public function isDefault()
 	{
 		return $this->reflection->isDefault();
-	}
-
-
-	/**
-	 * @return bool
-	 */
-	public function isPrivate()
-	{
-		return $this->reflection->isPrivate();
-	}
-
-
-	/**
-	 * @return bool
-	 */
-	public function isProtected()
-	{
-		return $this->reflection->isProtected();
-	}
-
-
-	/**
-	 * @return bool
-	 */
-	public function isPublic()
-	{
-		return $this->reflection->isPublic();
 	}
 
 
