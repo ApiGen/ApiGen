@@ -61,7 +61,7 @@ class PackageGenerator extends Nette\Object implements ConditionalTemplateGenera
 			$template = $this->templateFactory->createNamedForElement(TemplateFactory::ELEMENT_PACKAGE, $name);
 			$template = $this->namespaceAndPackageLoader->loadTemplateWithPackage($template, $name, $package);
 			$template->save();
-			$this->onGenerateProgress(1);
+			$this->onGenerateProgress();
 		}
 	}
 

@@ -120,7 +120,7 @@ class Backend extends Broker\Backend\Memory
 			$this->processFunction($function);
 		}
 
-		array_walk_recursive($this->allClasses, function (&$reflection, $name) {
+		array_walk_recursive($this->allClasses, function (&$reflection) {
 			if ( ! $reflection instanceof ReflectionClass) {
 				$reflection = $this->reflectionFactory->createFromReflection($reflection);
 			}

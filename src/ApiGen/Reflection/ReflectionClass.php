@@ -9,9 +9,7 @@
 
 namespace ApiGen\Reflection;
 
-use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions as CO;
-use ApiGen\Parser\ParserResult;
 use InvalidArgumentException;
 use ReflectionMethod as InternalReflectionMethod;
 use ReflectionProperty as InternalReflectionProperty;

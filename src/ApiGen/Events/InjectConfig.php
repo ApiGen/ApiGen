@@ -10,10 +10,8 @@
 namespace ApiGen\Events;
 
 use ApiGen\Charset\CharsetDetector;
-use ApiGen\Configuration\Configuration;
 use ApiGen\Generator\Resolvers\RelativePathResolver;
 use Kdyby\Events\Subscriber;
-use Nette\Utils\ArrayHash;
 
 
 class InjectConfig implements Subscriber

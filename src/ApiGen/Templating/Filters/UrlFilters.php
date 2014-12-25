@@ -323,8 +323,8 @@ class UrlFilters extends Filters
 		$annotationProcessors = [
 			'return' => $this->processReturnAnnotations($value, $context),
 			'throws' => $this->processThrowsAnnotations($value, $context),
-			'license' => $this->processLicenseAnnotations($value, $context),
-			'link' => $this->processLinkAnnotations($value, $context),
+			'license' => $this->processLicenseAnnotations($value),
+			'link' => $this->processLinkAnnotations($value),
 			'see' => $this->processSeeAnnotations($value, $context),
 			'uses' => $this->processUsesAndUsedbyAnnotations($value, $context),
 			'usedby' => $this->processUsesAndUsedbyAnnotations($value, $context),
@@ -378,7 +378,7 @@ class UrlFilters extends Filters
 	/**
 	 * @param ReflectionElement $element
 	 * @param bool $block
-	 * @return mixed
+	 * @return string
 	 */
 	public function shortDescription($element, $block = FALSE)
 	{
@@ -388,7 +388,7 @@ class UrlFilters extends Filters
 
 	/**
 	 * @param ReflectionElement $element
-	 * @return mixed
+	 * @return string
 	 */
 	public function longDescription($element)
 	{
@@ -478,7 +478,7 @@ class UrlFilters extends Filters
 	/**
 	 * @param string $source
 	 * @param mixed $context
-	 * @return mixed
+	 * @return string
 	 */
 	public function highlightPhp($source, $context)
 	{
@@ -489,7 +489,7 @@ class UrlFilters extends Filters
 	/**
 	 * @param string $definition
 	 * @param mixed $context
-	 * @return mixed
+	 * @return string
 	 */
 	public function highlightValue($definition, $context)
 	{
@@ -559,7 +559,7 @@ class UrlFilters extends Filters
 
 
 	/**
-	 * @param mixed $value
+	 * @param string $value
 	 * @param ReflectionElement $context
 	 * @return string
 	 */
@@ -572,7 +572,7 @@ class UrlFilters extends Filters
 
 
 	/**
-	 * @param mixed $value
+	 * @param string $value
 	 * @param ReflectionElement $context
 	 * @return string
 	 */

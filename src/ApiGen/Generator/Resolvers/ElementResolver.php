@@ -10,6 +10,7 @@
 namespace ApiGen\Generator\Resolvers;
 
 use ApiGen\Parser\ParserResult;
+use ApiGen\Reflection\ReflectionBase;
 use ApiGen\Reflection\ReflectionClass;
 use ApiGen\Reflection\ReflectionConstant;
 use ApiGen\Reflection\ReflectionElement;
@@ -199,9 +200,10 @@ class ElementResolver
 
 
 	/**
+	 * @param ReflectionClass|ReflectionFunction|ReflectionElement $context
 	 * @return ReflectionClass|ReflectionFunction
 	 */
-	private function correctContextForParameterOrClassMember(ReflectionElement $context)
+	private function correctContextForParameterOrClassMember($context)
 	{
 		if ($context instanceof ReflectionParameter && $context->getDeclaringClassName() === NULL) {
 			// Parameter of function in namespace or global space

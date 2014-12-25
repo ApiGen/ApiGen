@@ -55,7 +55,6 @@ class CharsetOptionsResolver extends Nette\Object
 	{
 		$this->resolver = $this->optionsResolverFactory->create();
 		$this->setDefaults();
-		$this->setAllowedTypes();
 		$this->setNormalizers();
 		$options = $this->normalizeInput($options);
 		$options = $this->resolver->resolve($options);
@@ -66,14 +65,6 @@ class CharsetOptionsResolver extends Nette\Object
 	private function setDefaults()
 	{
 		$this->resolver->setDefaults($this->getDefaults());
-	}
-
-
-	private function setAllowedTypes()
-	{
-		$this->resolver->setAllowedTypes([
-			self::CHARSETS => 'array'
-		]);
 	}
 
 

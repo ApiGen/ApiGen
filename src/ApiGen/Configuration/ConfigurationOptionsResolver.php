@@ -13,7 +13,6 @@ use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Configuration\Exceptions\ConfigurationException;
 use ApiGen\Configuration\Theme\ThemeConfigFactory;
 use ApiGen\FileSystem\FileSystem;
-use ReflectionMethod;
 use ReflectionProperty;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;

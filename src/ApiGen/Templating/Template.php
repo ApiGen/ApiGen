@@ -37,12 +37,10 @@ class Template extends Nette\Bridges\ApplicationLatte\Template
 	 */
 	public function __call($name, $args)
 	{
-		$filters = ['namespaceUrl', 'packageUrl', 'classUrl', 'constantUrl', 'functionUrl', 'sourceUrl'];
+		$filters = ['urlize', 'namespaceUrl', 'packageUrl', 'classUrl', 'constantUrl', 'functionUrl', 'sourceUrl'];
 		if (in_array($name, $filters)) {
 			return $this->getLatte()->invokeFilter($name, $args);
 		}
-
-		return parent::__call($name, $args);
 	}
 
 
@@ -57,7 +55,7 @@ class Template extends Nette\Bridges\ApplicationLatte\Template
 			mkdir($dir, 0755, TRUE);
 		}
 
-		file_put_contents($this->savePath, $this->__toString(TRUE));
+		file_put_contents($this->savePath, $this->__toString());
 	}
 
 

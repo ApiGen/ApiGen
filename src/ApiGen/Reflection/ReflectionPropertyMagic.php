@@ -12,7 +12,6 @@ namespace ApiGen\Reflection;
 use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Reflection\Parts\StartLineEndLine;
 use ApiGen\Reflection\Parts\StartPositionEndPositionMagic;
-use TokenReflection\IReflection;
 
 
 /**
@@ -89,7 +88,7 @@ class ReflectionPropertyMagic extends ReflectionProperty
 
 
 	/**
-	 * @return mixed
+	 * @return string
 	 */
 	public function getTypeHint()
 	{
@@ -346,7 +345,7 @@ class ReflectionPropertyMagic extends ReflectionProperty
 
 
 	/**
-	 * @return string|boolean
+	 * @return string
 	 */
 	public function getDocComment()
 	{

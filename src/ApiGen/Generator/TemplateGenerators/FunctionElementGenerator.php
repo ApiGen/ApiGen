@@ -63,7 +63,7 @@ class FunctionElementGenerator extends Nette\Object implements TemplateGenerator
 			$template = $this->templateFactory->createForReflection($reflectionFunction);
 			$template = $this->loadTemplateWithParameters($template, $reflectionFunction);
 			$template->save();
-			$this->onGenerateProgress(1);
+			$this->onGenerateProgress();
 		}
 	}
 

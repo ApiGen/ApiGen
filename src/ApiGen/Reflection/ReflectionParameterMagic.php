@@ -10,7 +10,6 @@
 namespace ApiGen\Reflection;
 
 use TokenReflection;
-use TokenReflection\IReflection;
 
 
 class ReflectionParameterMagic extends ReflectionParameter
@@ -115,7 +114,7 @@ class ReflectionParameterMagic extends ReflectionParameter
 
 
 	/**
-	 * @return ReflectionClass|NULL
+	 * @return ReflectionClass
 	 */
 	public function getDeclaringClass()
 	{
@@ -124,7 +123,7 @@ class ReflectionParameterMagic extends ReflectionParameter
 
 
 	/**
-	 * @return string|null
+	 * @return string
 	 */
 	public function getDeclaringClassName()
 	{
@@ -169,7 +168,7 @@ class ReflectionParameterMagic extends ReflectionParameter
 
 
 	/**
-	 * @return string|bool
+	 * @return bool
 	 */
 	public function getDocComment()
 	{

@@ -363,21 +363,17 @@ abstract class ReflectionElement extends ReflectionBase
 	/**
 	 * Adds a reason why this element's reflection is invalid.
 	 *
-	 * @param \TokenReflection\Exception\BaseException $reason Reason
-	 * @return \TokenReflection\Invalid\ReflectionElement
+	 * @return TokenReflection\Invalid\ReflectionElement
 	 */
 	public function addReason(BaseException $reason)
 	{
 		$this->reasons[] = $reason;
-
 		return $this;
 	}
 
 
 	/**
-	 * Returns a list of reasons why this element's reflection is invalid.
-	 *
-	 * @return array
+	 * @return array|TokenReflection\Invalid\ReflectionElement
 	 */
 	public function getReasons()
 	{
@@ -386,8 +382,6 @@ abstract class ReflectionElement extends ReflectionBase
 
 
 	/**
-	 * Returns if there are any known reasons why this element's reflection is invalid.
-	 *
 	 * @return bool
 	 */
 	public function hasReasons()
