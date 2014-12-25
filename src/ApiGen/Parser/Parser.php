@@ -109,11 +109,6 @@ class Parser
 		$this->parserResult->setFunctions($functions);
 		$this->parserResult->setInternalClasses($internalClasses);
 		$this->parserResult->setTokenizedClasses($tokenizedClasses);
-
-		// temporary workaround for reflections
-		ParserResult::$classesStatic = $classes;
-		ParserResult::$constantsStatic = $constants;
-		ParserResult::$functionsStatic = $functions;
 	}
 
 }

@@ -10,40 +10,24 @@
 namespace ApiGen\Reflection;
 
 use ApiGen\Configuration\Configuration;
+use ApiGen\Parser\Elements\Elements;
+use ApiGen\Parser\ParserResult;
+use ApiGen\Reflection\TokenReflection\Reflection;
+use ApiGen\Reflection\TokenReflection\ReflectionFactory;
 use ArrayObject;
 use Nette;
-use Nette\Utils\ArrayHash;
-use TokenReflection\Broker;
 use TokenReflection\IReflection;
 use TokenReflection\IReflectionClass;
+use TokenReflection\IReflectionFunction;
+use TokenReflection\IReflectionMethod;
+use TokenReflection\IReflectionParameter;
+use TokenReflection\IReflectionProperty;
 
 
-abstract class ReflectionBase extends Nette\Object implements IReflection
+abstract class ReflectionBase extends Nette\Object implements Reflection
 {
 
 	/**
-	 * @var ArrayObject
-	 */
-	protected static $parsedClasses;
-
-	/**
-	 * @var ArrayObject
-	 */
-	protected static $parsedConstants;
-
-	/**
-	 * @var ArrayObject
-	 */
-	protected static $parsedFunctions;
-
-	/**
-	 * @var ArrayHash
-	 */
-	protected static $config;
-
-	/**
-	 * Class methods cache.
-	 *
 	 * @var array
 	 */
 	protected static $reflectionMethods = [];
@@ -54,29 +38,33 @@ abstract class ReflectionBase extends Nette\Object implements IReflection
 	protected $reflectionType;
 
 	/**
-	 * @var IReflectionClass
+	 * @var IReflectionClass|IReflectionFunction|IReflectionMethod|IReflectionParameter|IReflectionProperty
 	 */
 	protected $reflection;
+
+	/**
+	 * @var Configuration
+	 */
+	protected $configuration;
+
+	/**
+	 * @var ParserResult
+	 */
+	protected $parserResult;
+
+	/**
+	 * @var ReflectionFactory
+	 */
+	protected $reflectionFactory;
 
 
 	public function __construct(IReflection $reflection)
 	{
-		self::$config = Configuration::$config;
 		$this->reflectionType = get_class($this);
 		if ( ! isset(self::$reflectionMethods[$this->reflectionType])) {
 			self::$reflectionMethods[$this->reflectionType] = array_flip(get_class_methods($this));
 		}
-
 		$this->reflection = $reflection;
-	}
-
-
-	/**
-	 * @return Broker
-	 */
-	public function getBroker()
-	{
-		return $this->reflection->getBroker();
 	}
 
 
@@ -159,6 +147,33 @@ abstract class ReflectionBase extends Nette\Object implements IReflection
 	public function getEndLine()
 	{
 		return $this->reflection->getEndLine();
+	}
+
+
+	public function setConfiguration(Configuration $configuration)
+	{
+		$this->configuration = $configuration;
+	}
+
+
+	public function setParserResult(ParserResult $parserResult)
+	{
+		$this->parserResult = $parserResult;
+	}
+
+
+	public function setReflectionFactory(ReflectionFactory $reflectionFactory)
+	{
+		$this->reflectionFactory = $reflectionFactory;
+	}
+
+
+	/**
+	 * @return ArrayObject
+	 */
+	protected function getParsedClasses()
+	{
+		return $this->parserResult->getElementsByType(Elements::CLASSES);
 	}
 
 }

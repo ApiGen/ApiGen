@@ -19,14 +19,10 @@ class ParserExtension extends CompilerExtension
 	public function loadConfiguration()
 	{
 		$builder = $this->getContainerBuilder();
+		$config = $this->loadFromFile(__DIR__ . '/parser.services.neon');
+		$this->compiler->parseServices($builder, $config);
 
-		$builder->addDefinition('parser')
-			->setClass('ApiGen\Parser\Parser');
-
-		$builder->addDefinition('parserResult')
-			->setClass('ApiGen\Parser\ParserResult');
-
-		$backend = $builder->addDefinition('backend')
+		$backend = $builder->addDefinition($this->prefix('backend'))
 			->setClass('ApiGen\Parser\Broker\Backend');
 
 		$builder->addDefinition($this->prefix('broker'))
@@ -35,27 +31,6 @@ class ParserExtension extends CompilerExtension
 				$backend,
 				Broker::OPTION_DEFAULT & ~(Broker::OPTION_PARSE_FUNCTION_BODY | Broker::OPTION_SAVE_TOKEN_STREAM)
 			]);
-
-		$builder->addDefinition('elements')
-			->setClass('ApiGen\Parser\Elements\Elements');
-
-		$builder->addDefinition('autocopmlete')
-			->setClass('ApiGen\Parser\Elements\AutocompleteElements');
-
-		$builder->addDefinition('elementExtractor')
-			->setClass('ApiGen\Parser\Elements\ElementExtractor');
-
-		$builder->addDefinition('elementFilter')
-			->setClass('ApiGen\Parser\Elements\ElementFilter');
-
-		$builder->addDefinition('elementSorter')
-			->setClass('ApiGen\Parser\Elements\ElementSorter');
-
-		$builder->addDefinition('elementStorage')
-			->setClass('ApiGen\Parser\Elements\ElementStorage');
-
-		$builder->addDefinition('groupSorter')
-			->setClass('ApiGen\Parser\Elements\GroupSorter');
 	}
 
 }

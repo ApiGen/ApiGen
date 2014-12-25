@@ -9,56 +9,48 @@
 
 namespace ApiGen\Reflection;
 
-use ReflectionProperty as InternalReflectionMethod;
-use TokenReflection\Broker;
-use TokenReflection\IReflection;
+use ApiGen\Configuration\ConfigurationOptions as CO;
+use ApiGen\Reflection\Parts\StartLineEndLine;
+use ApiGen\Reflection\Parts\StartPositionEndPositionMagic;
 
 
-/**
- * @method  ReflectionMethodMagic   setName(string $name)
- * @method  ReflectionMethodMagic   setShortDescription(string $shortDescription)
- * @method  ReflectionMethodMagic   setStartLine(int $startLine)
- * @method  ReflectionMethodMagic   setEndLine(int $endLine)
- * @method  ReflectionMethodMagic   setReturnsReference(bool $returnsReference)
- * @method  ReflectionMethodMagic   setParameters(array $parameters)
- * @method  ReflectionMethodMagic   setDeclaringClass(ReflectionClass $declaringClass)
- */
 class ReflectionMethodMagic extends ReflectionMethod
 {
 
-	/**
-	 * @var string
-	 */
-	protected $name;
+	use StartLineEndLine;
+	use StartPositionEndPositionMagic;
 
 	/**
 	 * @var string
 	 */
-	protected $shortDescription;
+	private $name;
 
 	/**
-	 * @var integer
+	 * @var string
 	 */
-	protected $startLine;
-
-	/**
-	 * @var integer
-	 */
-	protected $endLine;
+	private $shortDescription;
 
 	/**
 	 * @var bool
 	 */
-	protected $returnsReference;
+	private $returnsReference;
 
 	/**
 	 * @var ReflectionClass
 	 */
-	protected $declaringClass;
+	private $declaringClass;
 
 
-	public function __construct(IReflection $reflection = NULL)
+	public function __construct(array $settings)
 	{
+		$this->name = $settings['name'];
+		$this->shortDescription = $settings['shortDescription'];
+		$this->startLine = $settings['startLine'];
+		$this->endLine = $settings['endLine'];
+		$this->returnsReference = $settings['returnsReference'];
+		$this->declaringClass = $settings['declaringClass'];
+		$this->annotations = $settings['annotations'];
+
 		$this->reflectionType = get_class($this);
 		if ( ! isset(self::$reflectionMethods[$this->reflectionType])) {
 			self::$reflectionMethods[$this->reflectionType] = array_flip(get_class_methods($this));
@@ -67,35 +59,6 @@ class ReflectionMethodMagic extends ReflectionMethod
 
 
 	/**
-	 * @return Broker
-	 */
-	public function getBroker()
-	{
-		return $this->declaringClass->getBroker();
-	}
-
-
-	/**
-	 * @return integer
-	 */
-	public function getStartPosition()
-	{
-		return $this->declaringClass->getStartPosition();
-	}
-
-
-	/**
-	 * @return integer
-	 */
-	public function getEndPosition()
-	{
-		return $this->declaringClass->getEndPosition();
-	}
-
-
-	/**
-	 * Overrides parent method.
-	 *
 	 * @return string
 	 */
 	public function getName()
@@ -119,24 +82,6 @@ class ReflectionMethodMagic extends ReflectionMethod
 	public function getLongDescription()
 	{
 		return $this->shortDescription;
-	}
-
-
-	/**
-	 * @return integer
-	 */
-	public function getStartLine()
-	{
-		return $this->startLine;
-	}
-
-
-	/**
-	 * @return integer
-	 */
-	public function getEndLine()
-	{
-		return $this->endLine;
 	}
 
 
@@ -170,30 +115,13 @@ class ReflectionMethodMagic extends ReflectionMethod
 
 
 	/**
-	 * @return ReflectionExtension|NULL
-	 */
-	public function getExtension()
-	{
-		return NULL;
-	}
-
-
-	/**
-	 * @return bool
-	 */
-	public function getExtensionName()
-	{
-		return FALSE;
-	}
-
-
-	/**
 	 * @return bool
 	 */
 	public function isDocumented()
 	{
 		if ($this->isDocumented === NULL) {
-			$this->isDocumented = self::$config->deprecated || ! $this->isDeprecated();
+			$deprecated = $this->configuration->getOption(CO::DEPRECATED);
+			$this->isDocumented = $deprecated || ! $this->isDeprecated();
 		}
 
 		return $this->isDocumented;
@@ -240,7 +168,7 @@ class ReflectionMethodMagic extends ReflectionMethod
 
 
 	/**
-	 * @return ReflectionClass|null
+	 * @return ReflectionClass|NULL
 	 */
 	public function getDeclaringClass()
 	{
@@ -249,20 +177,11 @@ class ReflectionMethodMagic extends ReflectionMethod
 
 
 	/**
-	 * @return string|null
+	 * @return string|NULL
 	 */
 	public function getDeclaringClassName()
 	{
 		return $this->declaringClass->getName();
-	}
-
-
-	/**
-	 * @return integer
-	 */
-	public function getModifiers()
-	{
-		return InternalReflectionMethod::IS_PUBLIC;
 	}
 
 
@@ -323,15 +242,6 @@ class ReflectionMethodMagic extends ReflectionMethod
 	/**
 	 * @return bool
 	 */
-	public function isInternal()
-	{
-		return FALSE;
-	}
-
-
-	/**
-	 * @return bool
-	 */
 	public function isConstructor()
 	{
 		return FALSE;
@@ -348,7 +258,7 @@ class ReflectionMethodMagic extends ReflectionMethod
 
 
 	/**
-	 * @return ReflectionClass|null
+	 * @return ReflectionClass|NULL
 	 */
 	public function getDeclaringTrait()
 	{
@@ -357,7 +267,7 @@ class ReflectionMethodMagic extends ReflectionMethod
 
 
 	/**
-	 * @return string|null
+	 * @return string|NULL
 	 */
 	public function getDeclaringTraitName()
 	{
@@ -369,7 +279,7 @@ class ReflectionMethodMagic extends ReflectionMethod
 
 
 	/**
-	 * @return ReflectionMethod|null
+	 * @return ReflectionMethod|NULL
 	 */
 	public function getImplementedMethod()
 	{
@@ -378,7 +288,7 @@ class ReflectionMethodMagic extends ReflectionMethod
 
 
 	/**
-	 * @return ReflectionMethod|null
+	 * @return ReflectionMethod|NULL
 	 */
 	public function getOverriddenMethod()
 	{
@@ -407,15 +317,6 @@ class ReflectionMethodMagic extends ReflectionMethod
 
 
 	/**
-	 * @return integer|NULL
-	 */
-	public function getOriginalModifiers()
-	{
-		return $this->getModifiers();
-	}
-
-
-	/**
 	 * @return ReflectionMethod|NULL
 	 */
 	public function getOriginal()
@@ -433,8 +334,14 @@ class ReflectionMethodMagic extends ReflectionMethod
 	}
 
 
+	public function setParameters(array $parameters)
+	{
+		$this->parameters = $parameters;
+	}
+
+
 	/**
-	 * @return integer
+	 * @return int
 	 */
 	public function getNumberOfParameters()
 	{
@@ -443,7 +350,7 @@ class ReflectionMethodMagic extends ReflectionMethod
 
 
 	/**
-	 * @return integer
+	 * @return int
 	 */
 	public function getNumberOfRequiredParameters()
 	{
@@ -485,15 +392,6 @@ class ReflectionMethodMagic extends ReflectionMethod
 	public function getFileName()
 	{
 		return $this->declaringClass->getFileName();
-	}
-
-
-	/**
-	 * @return bool
-	 */
-	public function isUserDefined()
-	{
-		return TRUE;
 	}
 
 

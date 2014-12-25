@@ -9,9 +9,6 @@
 
 namespace ApiGen\Reflection;
 
-use ApiGen\Parser\ParserResult;
-use ArrayObject;
-
 
 class ReflectionParameter extends ReflectionBase
 {
@@ -57,8 +54,6 @@ class ReflectionParameter extends ReflectionBase
 
 
 	/**
-	 * Returns the part of the source code defining the parameter default value.
-	 *
 	 * @return string
 	 */
 	public function getDefaultValueDefinition()
@@ -77,11 +72,11 @@ class ReflectionParameter extends ReflectionBase
 
 
 	/**
-	 * @return integer
+	 * @return int
 	 */
 	public function getPosition()
 	{
-		return $this->reflection->position;
+		return $this->reflection->getPosition();
 	}
 
 
@@ -109,7 +104,7 @@ class ReflectionParameter extends ReflectionBase
 	public function getClass()
 	{
 		$className = $this->reflection->getClassName();
-		return $className === NULL ? NULL : self::$parsedClasses[$className];
+		return $className === NULL ? NULL : $this->getParsedClasses()[$className];
 	}
 
 
@@ -166,10 +161,10 @@ class ReflectionParameter extends ReflectionBase
 		$functionName = $this->reflection->getDeclaringFunctionName();
 
 		if ($className = $this->reflection->getDeclaringClassName()) {
-			return self::$parsedClasses[$className]->getMethod($functionName);
+			return $this->getParsedClasses()[$className]->getMethod($functionName);
 
 		} else {
-			return $this->getParsedFunctions()[$functionName];
+			return $this->parserResult->getFunctions()[$functionName];
 		}
 	}
 
@@ -189,7 +184,7 @@ class ReflectionParameter extends ReflectionBase
 	public function getDeclaringClass()
 	{
 		$className = $this->reflection->getDeclaringClassName();
-		return $className === NULL ? NULL : self::$parsedClasses[$className];
+		return $className === NULL ? NULL : $this->getParsedClasses()[$className];
 	}
 
 
@@ -208,18 +203,6 @@ class ReflectionParameter extends ReflectionBase
 	public function isUnlimited()
 	{
 		return FALSE;
-	}
-
-
-	/**
-	 * @return ArrayObject
-	 */
-	private function getParsedFunctions()
-	{
-		if (self::$parsedFunctions === NULL) {
-			self::$parsedFunctions = ParserResult::$functionsStatic;
-		}
-		return self::$parsedFunctions;
 	}
 
 }

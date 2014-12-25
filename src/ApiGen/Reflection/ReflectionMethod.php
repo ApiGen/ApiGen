@@ -9,9 +9,13 @@
 
 namespace ApiGen\Reflection;
 
+use ApiGen\Reflection\Parts\Visibility;
+
 
 class ReflectionMethod extends ReflectionFunctionBase
 {
+
+	use Visibility;
 
 	/**
 	 * @return bool
@@ -28,7 +32,7 @@ class ReflectionMethod extends ReflectionFunctionBase
 	public function getDeclaringClass()
 	{
 		$className = $this->reflection->getDeclaringClassName();
-		return $className === NULL ? NULL : self::$parsedClasses[$className];
+		return $className === NULL ? NULL : $this->getParsedClasses()[$className];
 	}
 
 
@@ -38,15 +42,6 @@ class ReflectionMethod extends ReflectionFunctionBase
 	public function getDeclaringClassName()
 	{
 		return $this->reflection->getDeclaringClassName();
-	}
-
-
-	/**
-	 * @return integer
-	 */
-	public function getModifiers()
-	{
-		return $this->reflection->getModifiers();
 	}
 
 
@@ -65,33 +60,6 @@ class ReflectionMethod extends ReflectionFunctionBase
 	public function isFinal()
 	{
 		return $this->reflection->isFinal();
-	}
-
-
-	/**
-	 * @return bool
-	 */
-	public function isPrivate()
-	{
-		return $this->reflection->isPrivate();
-	}
-
-
-	/**
-	 * @return bool
-	 */
-	public function isProtected()
-	{
-		return $this->reflection->isProtected();
-	}
-
-
-	/**
-	 * @return bool
-	 */
-	public function isPublic()
-	{
-		return $this->reflection->isPublic();
 	}
 
 
@@ -128,7 +96,7 @@ class ReflectionMethod extends ReflectionFunctionBase
 	public function getDeclaringTrait()
 	{
 		$traitName = $this->reflection->getDeclaringTraitName();
-		return $traitName === NULL ? NULL : self::$parsedClasses[$traitName];
+		return $traitName === NULL ? NULL : $this->getParsedClasses()[$traitName];
 	}
 
 
@@ -151,7 +119,6 @@ class ReflectionMethod extends ReflectionFunctionBase
 				return $interface->getMethod($this->getName());
 			}
 		}
-
 		return NULL;
 	}
 
@@ -182,24 +149,6 @@ class ReflectionMethod extends ReflectionFunctionBase
 
 
 	/**
-	 * @return string|null
-	 */
-	public function getOriginalName()
-	{
-		return $this->reflection->getOriginalName();
-	}
-
-
-	/**
-	 * @return integer|null
-	 */
-	public function getOriginalModifiers()
-	{
-		return $this->reflection->getOriginalModifiers();
-	}
-
-
-	/**
 	 * @return ReflectionMethod|NULL
 	 */
 	public function getOriginal()
@@ -209,7 +158,16 @@ class ReflectionMethod extends ReflectionFunctionBase
 			return NULL;
 		}
 		$originalDeclaringClassName = $this->reflection->getOriginal()->getDeclaringClassName();
-		return self::$parsedClasses[$originalDeclaringClassName]->getMethod($originalName);
+		return $this->getParsedClasses()[$originalDeclaringClassName]->getMethod($originalName);
+	}
+
+
+	/**
+	 * @return string|NULL
+	 */
+	public function getOriginalName()
+	{
+		return $this->reflection->getOriginalName();
 	}
 
 

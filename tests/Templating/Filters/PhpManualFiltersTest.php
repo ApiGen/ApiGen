@@ -48,12 +48,12 @@ class PhpManualFiltersTest extends PHPUnit_Framework_TestCase
 
 	public function testManualUrlForClass()
 	{
-		$reflectionExtension = Mockery::mock('ApiGen\Reflection\ReflectionClass');
-		$reflectionExtension->shouldReceive('getName')->andReturn('splFileInfo');
+		$reflectionClass = Mockery::mock('ApiGen\Reflection\ReflectionClass');
+		$reflectionClass->shouldReceive('getName')->andReturn('splFileInfo');
 
 		$this->assertSame(
 			'http://php.net/manual/en/class.splfileinfo.php',
-			$this->phpManualFilters->manualUrl($reflectionExtension)
+			$this->phpManualFilters->manualUrl($reflectionClass)
 		);
 	}
 

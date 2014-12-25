@@ -13,71 +13,59 @@ use TokenReflection;
 use TokenReflection\IReflection;
 
 
-/**
- * @method ReflectionParameterMagic setName()
- * @method ReflectionParameterMagic setTypeHint()
- * @method ReflectionParameterMagic setPosition()
- * @method ReflectionParameterMagic setDefaultValueDefinition()
- * @method ReflectionParameterMagic setUnlimited()
- * @method ReflectionParameterMagic setPassedByReference()
- * @method ReflectionParameterMagic setDeclaringFunction(ReflectionFunctionBase $declaringFunction)
- */
 class ReflectionParameterMagic extends ReflectionParameter
 {
 
 	/**
 	 * @var string
 	 */
-	protected $name;
+	private $name;
 
 	/**
 	 * @var string
 	 */
-	protected $typeHint;
+	private $typeHint;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
-	protected $position;
-
-	/**
-	 * The part of the source code defining the parameter default value.
-	 *
-	 * @var bool
-	 */
-	protected $defaultValueDefinition;
+	private $position;
 
 	/**
 	 * @var bool
 	 */
-	protected $unlimited;
+	private $defaultValueDefinition;
 
 	/**
 	 * @var bool
 	 */
-	protected $passedByReference;
+	private $unlimited;
 
 	/**
-	 * @var ReflectionFunctionBase
+	 * @var bool
 	 */
-	protected $declaringFunction;
+	private $passedByReference;
+
+	/**
+	 * @var ReflectionMethodMagic
+	 */
+	private $declaringFunction;
 
 
-	public function __construct(IReflection $reflection = NULL)
+	public function __construct(array $settings)
 	{
+		$this->name = $settings['name'];
+		$this->position = $settings['position'];
+		$this->typeHint = $settings['typeHint'];
+		$this->defaultValueDefinition = $settings['defaultValueDefinition'];
+		$this->unlimited = $settings['unlimited'];
+		$this->passedByReference = $settings['passedByReference'];
+		$this->declaringFunction = $settings['declaringFunction'];
+
 		$this->reflectionType = get_class($this);
 		if ( ! isset(self::$reflectionMethods[$this->reflectionType])) {
 			self::$reflectionMethods[$this->reflectionType] = array_flip(get_class_methods($this));
 		}
-	}
-
-
-	/**
-	 * @return TokenReflection\Broker
-	 */
-	public function getBroker()
-	{
-		return $this->declaringFunction->getBroker();
 	}
 
 
@@ -111,24 +99,6 @@ class ReflectionParameterMagic extends ReflectionParameter
 	/**
 	 * @return bool
 	 */
-	public function isInternal()
-	{
-		return FALSE;
-	}
-
-
-	/**
-	 * @return bool
-	 */
-	public function isUserDefined()
-	{
-		return TRUE;
-	}
-
-
-	/**
-	 * @return bool
-	 */
 	public function isTokenized()
 	{
 		return TRUE;
@@ -136,8 +106,6 @@ class ReflectionParameterMagic extends ReflectionParameter
 
 
 	/**
-	 * Returns an element pretty (docblock compatible) name.
-	 *
 	 * @return string
 	 */
 	public function getPrettyName()
@@ -147,7 +115,7 @@ class ReflectionParameterMagic extends ReflectionParameter
 
 
 	/**
-	 * @return ReflectionClass|null
+	 * @return ReflectionClass|NULL
 	 */
 	public function getDeclaringClass()
 	{
@@ -165,7 +133,7 @@ class ReflectionParameterMagic extends ReflectionParameter
 
 
 	/**
-	 * @return ReflectionFunctionBase
+	 * @return ReflectionMethod
 	 */
 	public function getDeclaringFunction()
 	{
@@ -183,7 +151,7 @@ class ReflectionParameterMagic extends ReflectionParameter
 
 
 	/**
-	 * @return integer
+	 * @return int
 	 */
 	public function getStartLine()
 	{
@@ -192,7 +160,7 @@ class ReflectionParameterMagic extends ReflectionParameter
 
 
 	/**
-	 * @return integer
+	 * @return int
 	 */
 	public function getEndLine()
 	{
@@ -201,7 +169,7 @@ class ReflectionParameterMagic extends ReflectionParameter
 
 
 	/**
-	 * @return string|boolean
+	 * @return string|bool
 	 */
 	public function getDocComment()
 	{
@@ -228,7 +196,7 @@ class ReflectionParameterMagic extends ReflectionParameter
 
 
 	/**
-	 * @return integer
+	 * @return int
 	 */
 	public function getPosition()
 	{
@@ -255,12 +223,12 @@ class ReflectionParameterMagic extends ReflectionParameter
 
 
 	/**
-	 * @return ReflectionClass|null
+	 * @return ReflectionClass|NULL
 	 */
 	public function getClass()
 	{
 		$className = $this->getClassName();
-		return $className === NULL ? NULL : self::$parsedClasses[$className];
+		return $className === NULL ? NULL : $this->getParsedClasses()[$className];
 	}
 
 
@@ -272,8 +240,7 @@ class ReflectionParameterMagic extends ReflectionParameter
 		if ($this->isArray() || $this->isCallable()) {
 			return NULL;
 		}
-
-		if (isset(self::$parsedClasses[$this->typeHint])) {
+		if (isset($this->getParsedClasses()[$this->typeHint])) {
 			return $this->typeHint; // todo: check fix
 		}
 

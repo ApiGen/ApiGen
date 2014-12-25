@@ -48,7 +48,6 @@ class InjectConfig implements Subscriber
 
 	public function onOptionsResolve(array $config)
 	{
-		Configuration::$config = ArrayHash::from($config);
 		$this->relativePathResolver->setConfig($config);
 		$this->charsetDetector->setCharsets($config['charset']);
 	}

@@ -9,78 +9,69 @@
 
 namespace ApiGen\Reflection;
 
-use ReflectionProperty as InternalReflectionProperty;
+use ApiGen\Configuration\ConfigurationOptions as CO;
+use ApiGen\Reflection\Parts\StartLineEndLine;
+use ApiGen\Reflection\Parts\StartPositionEndPositionMagic;
 use TokenReflection\IReflection;
 
 
 /**
  * Envelope for magic properties that are defined
  * only as @property, @property-read or @property-write annotation.
- *
- * @method ReflectionPropertyMagic  setName(string $name)
- * @method ReflectionPropertyMagic  setTypeHint()
- * @method ReflectionPropertyMagic  setShortDescription()
- * @method ReflectionPropertyMagic  setStartLine()
- * @method ReflectionPropertyMagic  setEndLine()
- * @method ReflectionPropertyMagic  setReadOnly()
- * @method ReflectionPropertyMagic  setWriteOnly()
- * @method ReflectionPropertyMagic  setDeclaringClass(ReflectionClass $declaringClass)
- * @method string                   getTypeHint()
- * @method bool                     isReadOnly()
- * @method bool                     isWriteOnly()
- * @method ReflectionClass          getDeclaringClass()
  */
 class ReflectionPropertyMagic extends ReflectionProperty
 {
 
-	/**
-	 * @var string
-	 */
-	protected $name;
+	use StartLineEndLine;
+	use StartPositionEndPositionMagic;
 
 	/**
 	 * @var string
 	 */
-	protected $typeHint;
+	private $name;
 
 	/**
 	 * @var string
 	 */
-	protected $shortDescription;
+	private $typeHint;
 
 	/**
 	 * @var string
 	 */
-	protected $longDescription;
+	private $shortDescription;
 
 	/**
-	 * @var integer
+	 * @var string
 	 */
-	protected $startLine;
-
-	/**
-	 * @var integer
-	 */
-	protected $endLine;
+	private $longDescription;
 
 	/**
 	 * @var bool
 	 */
-	protected $readOnly;
+	private $readOnly;
 
 	/**
 	 * @var bool
 	 */
-	protected $writeOnly;
+	private $writeOnly;
 
 	/**
 	 * @var ReflectionClass
 	 */
-	protected $declaringClass;
+	private $declaringClass;
 
 
-	public function __construct(IReflection $reflection = NULL)
+	public function __construct(array $options)
 	{
+		$this->name = $options['name'];
+		$this->typeHint = $options['typeHint'];
+		$this->shortDescription = $options['shortDescription'];
+		$this->startLine = $options['startLine'];
+		$this->endLine = $options['endLine'];
+		$this->readOnly = $options['readOnly'];
+		$this->writeOnly = $options['writeOnly'];
+		$this->declaringClass = $options['declaringClass'];
+		$this->addAnnotation('var', $options['typeHint']);
 		$this->reflectionType = get_class($this);
 		if ( ! isset(self::$reflectionMethods[$this->reflectionType])) {
 			self::$reflectionMethods[$this->reflectionType] = array_flip(get_class_methods($this));
@@ -89,8 +80,6 @@ class ReflectionPropertyMagic extends ReflectionProperty
 
 
 	/**
-	 * Overrides parent method.
-	 *
 	 * @return string
 	 */
 	public function getName()
@@ -100,19 +89,24 @@ class ReflectionPropertyMagic extends ReflectionProperty
 
 
 	/**
-	 * Overrides parent method.
-	 *
-	 * @return int
+	 * @return mixed
 	 */
-	public function getStartLine()
+	public function getTypeHint()
 	{
-		return $this->startLine;
+		return $this->typeHint;
 	}
 
 
 	/**
-	 * Overrides parent method.
-	 *
+	 * @return bool
+	 */
+	public function getWriteOnly()
+	{
+		return $this->writeOnly;
+	}
+
+
+	/**
 	 * @return string
 	 */
 	public function getShortDescription()
@@ -122,8 +116,6 @@ class ReflectionPropertyMagic extends ReflectionProperty
 
 
 	/**
-	 * Overrides parent method.
-	 *
 	 * @return string
 	 */
 	public function getLongDescription()
@@ -133,40 +125,11 @@ class ReflectionPropertyMagic extends ReflectionProperty
 
 
 	/**
-	 * Overrides parent method.
-	 *
-	 * @return int
+	 * @return bool
 	 */
-	public function getEndLine()
+	public function isReadOnly()
 	{
-		return $this->endLine;
-	}
-
-
-	/**
-	 * @return \TokenReflection\Broker
-	 */
-	public function getBroker()
-	{
-		return $this->declaringClass->getBroker();
-	}
-
-
-	/**
-	 * @return integer
-	 */
-	public function getStartPosition()
-	{
-		return $this->declaringClass->getStartPosition();
-	}
-
-
-	/**
-	 * @return integer
-	 */
-	public function getEndPosition()
-	{
-		return $this->declaringClass->getEndPosition();
+		return $this->readOnly;
 	}
 
 
@@ -180,30 +143,13 @@ class ReflectionPropertyMagic extends ReflectionProperty
 
 
 	/**
-	 * @return ReflectionExtension|NULL
-	 */
-	public function getExtension()
-	{
-		return NULL;
-	}
-
-
-	/**
-	 * @return bool
-	 */
-	public function getExtensionName()
-	{
-		return FALSE;
-	}
-
-
-	/**
 	 * @return bool
 	 */
 	public function isDocumented()
 	{
 		if ($this->isDocumented === NULL) {
-			$this->isDocumented = self::$config->deprecated || ! $this->isDeprecated();
+			$deprecated = $this->configuration->getOption(CO::DEPRECATED);
+			$this->isDocumented = $deprecated || ! $this->isDeprecated();
 		}
 
 		return $this->isDocumented;
@@ -259,6 +205,25 @@ class ReflectionPropertyMagic extends ReflectionProperty
 
 
 	/**
+	 * @return ReflectionClass
+	 */
+	public function getDeclaringClass()
+	{
+		return $this->declaringClass;
+	}
+
+
+	/**
+	 * @return $this
+	 */
+	public function setDeclaringClass(ReflectionClass $declaringClass)
+	{
+		$this->declaringClass = $declaringClass;
+		return $this;
+	}
+
+
+	/**
 	 * @return mixed
 	 */
 	public function getDefaultValue()
@@ -282,15 +247,6 @@ class ReflectionPropertyMagic extends ReflectionProperty
 	public function isDefault()
 	{
 		return FALSE;
-	}
-
-
-	/**
-	 * @return integer
-	 */
-	public function getModifiers()
-	{
-		return InternalReflectionProperty::IS_PUBLIC;
 	}
 
 
@@ -325,15 +281,6 @@ class ReflectionPropertyMagic extends ReflectionProperty
 	 * @return bool
 	 */
 	public function isStatic()
-	{
-		return FALSE;
-	}
-
-
-	/**
-	 * @return bool
-	 */
-	public function isInternal()
 	{
 		return FALSE;
 	}
@@ -386,15 +333,6 @@ class ReflectionPropertyMagic extends ReflectionProperty
 	public function getFileName()
 	{
 		return $this->declaringClass->getFileName();
-	}
-
-
-	/**
-	 * @return bool
-	 */
-	public function isUserDefined()
-	{
-		return TRUE;
 	}
 
 

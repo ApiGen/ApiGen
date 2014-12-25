@@ -9,9 +9,13 @@
 
 namespace ApiGen\Reflection;
 
+use ApiGen\Reflection\Parts\Visibility;
+
 
 class ReflectionProperty extends ReflectionElement
 {
+
+	use Visibility;
 
 	/**
 	 * @return bool
@@ -70,7 +74,7 @@ class ReflectionProperty extends ReflectionElement
 	public function getDeclaringClass()
 	{
 		$className = $this->reflection->getDeclaringClassName();
-		return $className === NULL ? NULL : self::$parsedClasses[$className];
+		return $className === NULL ? NULL : $this->getParsedClasses()[$className];
 	}
 
 
@@ -111,42 +115,6 @@ class ReflectionProperty extends ReflectionElement
 
 
 	/**
-	 * @return integer
-	 */
-	public function getModifiers()
-	{
-		return $this->reflection->getModifiers();
-	}
-
-
-	/**
-	 * @return bool
-	 */
-	public function isPrivate()
-	{
-		return $this->reflection->isPrivate();
-	}
-
-
-	/**
-	 * @return bool
-	 */
-	public function isProtected()
-	{
-		return $this->reflection->isProtected();
-	}
-
-
-	/**
-	 * @return bool
-	 */
-	public function isPublic()
-	{
-		return $this->reflection->isPublic();
-	}
-
-
-	/**
 	 * @return bool
 	 */
 	public function isStatic()
@@ -161,7 +129,7 @@ class ReflectionProperty extends ReflectionElement
 	public function getDeclaringTrait()
 	{
 		$traitName = $this->reflection->getDeclaringTraitName();
-		return $traitName === NULL ? NULL : self::$parsedClasses[$traitName];
+		return $traitName === NULL ? NULL : $this->getParsedClasses()[$traitName];
 	}
 
 

@@ -9,6 +9,7 @@
 
 namespace ApiGen\Reflection;
 
+use ApiGen\Configuration\ConfigurationOptions as CO;
 use TokenReflection;
 use TokenReflection\Exception\BaseException;
 use TokenReflection\ReflectionAnnotation;
@@ -44,7 +45,7 @@ abstract class ReflectionElement extends ReflectionBase
 	public function getExtension()
 	{
 		$extension = $this->reflection->getExtension();
-		return $extension === NULL ? NULL : new ReflectionExtension($extension);
+		return $extension === NULL ? NULL : $this->reflectionFactory->createFromReflection($extension);
 	}
 
 
@@ -58,7 +59,7 @@ abstract class ReflectionElement extends ReflectionBase
 
 
 	/**
-	 * @return integer
+	 * @return int
 	 */
 	public function getStartPosition()
 	{
@@ -67,7 +68,7 @@ abstract class ReflectionElement extends ReflectionBase
 
 
 	/**
-	 * @return integer
+	 * @return int
 	 */
 	public function getEndPosition()
 	{
@@ -80,7 +81,8 @@ abstract class ReflectionElement extends ReflectionBase
 	 */
 	public function isMain()
 	{
-		return empty(self::$config->main) || strpos($this->getName(), self::$config->main) === 0;
+		$main = $this->configuration->getOption(CO::MAIN);
+		return empty($main) || strpos($this->getName(), $main) === 0;
 	}
 
 
@@ -93,13 +95,17 @@ abstract class ReflectionElement extends ReflectionBase
 			$this->isDocumented = $this->reflection->isTokenized() || $this->reflection->isInternal();
 
 			if ($this->isDocumented) {
-				if ( ! self::$config->php && $this->reflection->isInternal()) {
+				$php = $this->configuration->getOption(CO::PHP);
+				$deprecated = $this->configuration->getOption(CO::DEPRECATED);
+				$internal = $this->configuration->getOption(CO::INTERNAL);
+
+				if ( ! $php && $this->reflection->isInternal()) {
 					$this->isDocumented = FALSE;
 
-				} elseif ( ! self::$config->deprecated && $this->reflection->isDeprecated()) {
+				} elseif ( ! $deprecated && $this->reflection->isDeprecated()) {
 					$this->isDocumented = FALSE;
 
-				} elseif ( ! self::$config->internal && ($internal = $this->reflection->getAnnotation('internal'))
+				} elseif ( ! $internal && ($internal = $this->reflection->getAnnotation('internal'))
 					&& empty($internal[0])
 				) {
 					$this->isDocumented = FALSE;
