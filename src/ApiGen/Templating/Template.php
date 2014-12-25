@@ -41,7 +41,7 @@ class Template extends Nette\Bridges\ApplicationLatte\Template
 		if (in_array($name, $filters)) {
 			return $this->getLatte()->invokeFilter($name, $args);
 		}
- 	}
+	}
 
 
 	/**
