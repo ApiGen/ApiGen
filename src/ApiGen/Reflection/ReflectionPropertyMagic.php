@@ -61,8 +61,17 @@ class ReflectionPropertyMagic extends ReflectionProperty
 	private $declaringClass;
 
 
-	public function __construct(IReflection $reflection = NULL)
+	public function __construct(array $options)
 	{
+		$this->name = $options['name'];
+		$this->typeHint = $options['typeHint'];
+		$this->shortDescription = $options['shortDescription'];
+		$this->startLine = $options['startLine'];
+		$this->endLine = $options['endLine'];
+		$this->readOnly = $options['readOnly'];
+		$this->writeOnly = $options['writeOnly'];
+		$this->declaringClass = $options['declaringClass'];
+		$this->addAnnotation('var', $options['typeHint']);
 		$this->reflectionType = get_class($this);
 		if ( ! isset(self::$reflectionMethods[$this->reflectionType])) {
 			self::$reflectionMethods[$this->reflectionType] = array_flip(get_class_methods($this));
@@ -80,33 +89,11 @@ class ReflectionPropertyMagic extends ReflectionProperty
 
 
 	/**
-	 * @param string $name
-	 * @return $this
-	 */
-	public function setName($name)
-	{
-		$this->name = $name;
-		return $this;
-	}
-
-
-	/**
 	 * @return mixed
 	 */
 	public function getTypeHint()
 	{
 		return $this->typeHint;
-	}
-
-
-	/**
-	 * @param mixed $typeHint
-	 * @return $this
-	 */
-	public function setTypeHint($typeHint)
-	{
-		$this->typeHint = $typeHint;
-		return $this;
 	}
 
 
@@ -120,33 +107,11 @@ class ReflectionPropertyMagic extends ReflectionProperty
 
 
 	/**
-	 * @param bool $writeOnly
-	 * @return $this
-	 */
-	public function setWriteOnly($writeOnly)
-	{
-		$this->writeOnly = $writeOnly;
-		return $this;
-	}
-
-
-	/**
 	 * @return string
 	 */
 	public function getShortDescription()
 	{
 		return $this->shortDescription;
-	}
-
-
-	/**
-	 * @param string $shortDescription
-	 * @return $this
-	 */
-	public function setShortDescription($shortDescription)
-	{
-		$this->shortDescription = $shortDescription;
-		return $this;
 	}
 
 
@@ -165,17 +130,6 @@ class ReflectionPropertyMagic extends ReflectionProperty
 	public function isReadOnly()
 	{
 		return $this->readOnly;
-	}
-
-
-	/**
-	 * @param bool $readOnly
-	 * @return $this
-	 */
-	public function setReadOnly($readOnly)
-	{
-		$this->readOnly = $readOnly;
-		return $this;
 	}
 
 
