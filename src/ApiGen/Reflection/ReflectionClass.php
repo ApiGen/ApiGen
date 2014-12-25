@@ -10,6 +10,8 @@
 namespace ApiGen\Reflection;
 
 use ApiGen\Configuration\ConfigurationOptions as CO;
+use ApiGen\Reflection\Extractors\MagicMethodExtractor;
+use ApiGen\Reflection\Extractors\MagicPropertyExtractor;
 use InvalidArgumentException;
 use ReflectionProperty as Visibility;
 use TokenReflection;
@@ -177,35 +179,14 @@ class ReflectionClass extends ReflectionElement
 	public function getMagicMethods()
 	{
 		$methods = $this->getOwnMagicMethods();
+		$magicMethodExtractor = new MagicMethodExtractor;
 
-		$parent = $this->getParentClass();
-		while ($parent) {
-			foreach ($parent->getOwnMagicMethods() as $method) {
-				if (isset($methods[$method->getName()])) {
-					continue;
-				}
-
-				if ( ! $this->isDocumented() || $method->isDocumented()) {
-					$methods[$method->getName()] = $method;
-				}
-			}
-			$parent = $parent->getParentClass();
+		if ($parentClass = $this->getParentClass()) {
+			$methods += $magicMethodExtractor->extractFromParentClass($parentClass, $this->isDocumented());
 		}
 
-		foreach ($this->getTraits() as $trait) {
-			if ( ! $trait instanceof ReflectionClass) {
-				continue;
-			}
-
-			foreach ($trait->getOwnMagicMethods() as $method) {
-				if (isset($methods[$method->getName()])) {
-					continue;
-				}
-
-				if ( ! $this->isDocumented() || $method->isDocumented()) {
-					$methods[$method->getName()] = $method;
-				}
-			}
+		if ($traits = $this->getTraits()) {
+			$methods += $magicMethodExtractor->extractFromTraits($traits, $this->isDocumented());
 		}
 
 		return $methods;
@@ -298,34 +279,14 @@ class ReflectionClass extends ReflectionElement
 	public function getMagicProperties()
 	{
 		$properties = $this->getOwnMagicProperties();
+		$magicPropertyExtractor = new MagicPropertyExtractor;
 
-		$parent = $this->getParentClass();
-		while ($parent) {
-			foreach ($parent->getOwnMagicProperties() as $property) {
-				if (isset($properties[$property->getName()])) {
-					continue;
-				}
-				if ( ! $this->isDocumented() || $property->isDocumented()) {
-					$properties[$property->getName()] = $property;
-				}
-			}
-			$parent = $parent->getParentClass();
+		if ($parentClass = $this->getParentClass()) {
+			$properties += $magicPropertyExtractor->extractFromParentClass($parentClass, $this->isDocumented());
 		}
 
-		foreach ($this->getTraits() as $trait) {
-			if ( ! $trait instanceof ReflectionClass) {
-				continue;
-			}
-
-			foreach ($trait->getOwnMagicProperties() as $property) {
-				if (isset($properties[$property->getName()])) {
-					continue;
-				}
-
-				if ( ! $this->isDocumented() || $property->isDocumented()) {
-					$properties[$property->getName()] = $property;
-				}
-			}
+		if ($traits = $this->getTraits()) {
+			$properties += $magicPropertyExtractor->extractFromTraits($traits, $this->isDocumented());
 		}
 
 		return $properties;
@@ -931,7 +892,6 @@ class ReflectionClass extends ReflectionElement
 	public function getUsedMagicMethods()
 	{
 		$usedMethods = [];
-
 		foreach ($this->getMagicMethods() as $method) {
 			if ($method->getDeclaringTraitName() === NULL || $method->getDeclaringTraitName() === $this->getName()) {
 				continue;

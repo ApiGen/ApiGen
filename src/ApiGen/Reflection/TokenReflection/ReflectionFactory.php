@@ -89,7 +89,9 @@ class ReflectionFactory
 	 */
 	public function createPropertyMagic(array $settings)
 	{
-		return new ReflectionPropertyMagic($settings);
+		$reflection = new ReflectionPropertyMagic($settings);
+		return $this->setDependencies($reflection);
+
 	}
 
 

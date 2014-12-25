@@ -10,6 +10,8 @@ namespace Project;
 class AccessLevels extends ParentClass
 {
 
+	use SomeTrait;
+
 	const LEVEL = 5;
 
 	public $publicProperty;

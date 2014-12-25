@@ -25,14 +25,20 @@ class ReflectionClassTest extends PHPUnit_Framework_TestCase
 	 */
 	private $reflectionClassOfParent;
 
+	/**
+	 * @var ReflectionClass
+	 */
+	private $reflectionClassOfTrait;
+
 
 	protected function setUp()
 	{
 		$backend = new Backend($this->getReflectionFactory());
 		$broker = new Broker($backend);
 		$broker->processDirectory(__DIR__ . '/ReflectionClassSource');
-		$this->reflectionClassOfParent = $backend->getClasses()['Project\ParentClass'];
 		$this->reflectionClass = $backend->getClasses()['Project\AccessLevels'];
+		$this->reflectionClassOfParent = $backend->getClasses()['Project\ParentClass'];
+		$this->reflectionClassOfTrait = $backend->getClasses()['Project\SomeTrait'];
 	}
 
 
@@ -127,7 +133,7 @@ class ReflectionClassTest extends PHPUnit_Framework_TestCase
 
 	public function testGetMagicProperties()
 	{
-		$this->assertCount(1, $this->reflectionClass->getMagicProperties());
+		$this->assertCount(2, $this->reflectionClass->getMagicProperties());
 	}
 
 
@@ -151,7 +157,9 @@ class ReflectionClassTest extends PHPUnit_Framework_TestCase
 
 	public function testGetMagicMethods()
 	{
-		$this->assertCount(1, $this->reflectionClass->getMagicMethods());
+		$this->assertCount(3, $this->reflectionClass->getMagicMethods());
+		$magicMethod = $this->reflectionClass->getMagicMethods()['getSome'];
+		$this->assertInstanceOf('ApiGen\Reflection\ReflectionMethodMagic', $magicMethod);
 	}
 
 
@@ -163,13 +171,13 @@ class ReflectionClassTest extends PHPUnit_Framework_TestCase
 
 	public function testGetTraits()
 	{
-		$this->assertCount(0, $this->reflectionClass->getTraits());
+		$this->assertCount(1, $this->reflectionClass->getTraits());
 	}
 
 
 	public function testGetTraitNames()
 	{
-		$this->assertCount(0, $this->reflectionClass->getTraitNames());
+		$this->assertSame(['Project\SomeTrait'], $this->reflectionClass->getTraitNames());
 	}
 
 
@@ -211,7 +219,10 @@ class ReflectionClassTest extends PHPUnit_Framework_TestCase
 		$parserResultMock = Mockery::mock('ApiGen\Parser\ParserResult');
 		$parserResultMock->shouldReceive('getElementsByType')->andReturnUsing(function ($arg) {
 			if ($arg) {
-				return ['Project\ParentClass' => $this->reflectionClassOfParent];
+				return [
+					'Project\ParentClass' => $this->reflectionClassOfParent,
+					'Project\SomeTrait' => $this->reflectionClassOfTrait
+				];
 			}
 		});
 		return new ReflectionFactory($this->getConfigurationMock(), $parserResultMock);
