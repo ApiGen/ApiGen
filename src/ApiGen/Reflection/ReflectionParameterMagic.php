@@ -13,13 +13,6 @@ use TokenReflection;
 use TokenReflection\IReflection;
 
 
-/**
- * @method ReflectionParameterMagic setPosition()
- * @method ReflectionParameterMagic setDefaultValueDefinition()
- * @method ReflectionParameterMagic setUnlimited()
- * @method ReflectionParameterMagic setPassedByReference()
- * @method ReflectionParameterMagic setDeclaringFunction(ReflectionFunctionBase $declaringFunction)
- */
 class ReflectionParameterMagic extends ReflectionParameter
 {
 
@@ -39,8 +32,6 @@ class ReflectionParameterMagic extends ReflectionParameter
 	private $position;
 
 	/**
-	 * The part of the source code defining the parameter default value.
-	 *
 	 * @var bool
 	 */
 	private $defaultValueDefinition;
@@ -61,8 +52,16 @@ class ReflectionParameterMagic extends ReflectionParameter
 	private $declaringFunction;
 
 
-	public function __construct(IReflection $reflection = NULL)
+	public function __construct(array $settings)
 	{
+		$this->name = $settings['name'];
+		$this->position = $settings['position'];
+		$this->typeHint = $settings['typeHint'];
+		$this->defaultValueDefinition = $settings['defaultValueDefinition'];
+		$this->unlimited = $settings['unlimited'];
+		$this->passedByReference = $settings['passedByReference'];
+		$this->declaringFunction = $settings['declaringFunction'];
+
 		$this->reflectionType = get_class($this);
 		if ( ! isset(self::$reflectionMethods[$this->reflectionType])) {
 			self::$reflectionMethods[$this->reflectionType] = array_flip(get_class_methods($this));
@@ -80,33 +79,11 @@ class ReflectionParameterMagic extends ReflectionParameter
 
 
 	/**
-	 * @param string $name
-	 * @return $this
-	 */
-	public function setName($name)
-	{
-		$this->name = $name;
-		return $this;
-	}
-
-
-	/**
 	 * @return string
 	 */
 	public function getTypeHint()
 	{
 		return $this->typeHint;
-	}
-
-
-	/**
-	 * @param string $typeHint
-	 * @return $this
-	 */
-	public function setTypeHint($typeHint)
-	{
-		$this->typeHint = $typeHint;
-		return $this;
 	}
 
 

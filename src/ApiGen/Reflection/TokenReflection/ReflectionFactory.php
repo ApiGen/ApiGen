@@ -21,6 +21,7 @@ use ApiGen\Reflection\ReflectionMethodMagic;
 use ApiGen\Reflection\ReflectionParameter;
 use ApiGen\Reflection\ReflectionParameterMagic;
 use ApiGen\Reflection\ReflectionProperty;
+use ApiGen\Reflection\ReflectionPropertyMagic;
 use RuntimeException;
 use TokenReflection\IReflectionClass;
 use TokenReflection\IReflectionConstant;
@@ -76,10 +77,19 @@ class ReflectionFactory
 	/**
 	 * @return ReflectionParameterMagic
 	 */
-	public function createParameterMagic()
+	public function createParameterMagic(array $settings)
 	{
-		$reflection = new ReflectionParameterMagic;
+		$reflection = new ReflectionParameterMagic($settings);
 		return $this->setDependencies($reflection);
+	}
+
+
+	/**
+	 * @return ReflectionPropertyMagic
+	 */
+	public function createPropertyMagic(array $settings)
+	{
+		return new ReflectionPropertyMagic($settings);
 	}
 
 
@@ -125,5 +135,4 @@ class ReflectionFactory
 		$reflection->setReflectionFactory($this);
 		return $reflection;
 	}
-
 }

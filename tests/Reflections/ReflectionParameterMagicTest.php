@@ -122,7 +122,7 @@ class ReflectionParameterMagicTest extends PHPUnit_Framework_TestCase
 
 	public function testGetDefaultValueDefinition()
 	{
-		$this->assertFalse($this->reflectionParameterMagic->getDefaultValueDefinition());
+		$this->assertSame('', $this->reflectionParameterMagic->getDefaultValueDefinition());
 	}
 
 

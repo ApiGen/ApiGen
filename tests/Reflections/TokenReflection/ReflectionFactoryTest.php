@@ -35,7 +35,10 @@ class ReflectionFactoryTest extends PHPUnit_Framework_TestCase
 
 	public function testCreateParameterMagic()
 	{
-		$parameterMagic = $this->reflectionFactory->createParameterMagic();
+		$parameterMagic = $this->reflectionFactory->createParameterMagic([
+			'name' => '', 'position' => '', 'typeHint' => '', 'defaultValueDefinition' => '',
+			'unlimited' => '', 'passedByReference' => '', 'declaringFunction' => ''
+		]);
 		$this->assertInstanceOf('ApiGen\Reflection\ReflectionParameterMagic', $parameterMagic);
 		$this->checkLoadedProperties($parameterMagic);
 	}

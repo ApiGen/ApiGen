@@ -1292,17 +1292,15 @@ class ReflectionClass extends ReflectionElement
 
 			list(, $typeHint, $passedByReference, $name, $defaultValueDefinition) = $matches;
 
-			$parameter = $this->reflectionFactory->createParameterMagic();
-			$parameter->setName($name)
-				->setPosition($position)
-				->setTypeHint($typeHint)
-				->setDefaultValueDefinition($defaultValueDefinition)
-				->setUnlimited(FALSE)
-				->setPassedByReference($passedByReference === '&')
-				->setDeclaringFunction($method);
-
-			$parameters[$name] = $parameter;
-
+			$parameters[$name] = $this->reflectionFactory->createParameterMagic([
+				'name' => $name,
+				'position' => $position,
+				'typeHint' => $typeHint,
+				'defaultValueDefinition' => $defaultValueDefinition,
+				'unlimited' => FALSE,
+				'passedByReference' => ($passedByReference === '&'),
+				'declaringFunction' => $method
+			]);
 			$method->addAnnotation('param', ltrim(sprintf('%s $%s', $typeHint, $name)));
 		}
 		$method->setParameters($parameters);
@@ -1330,7 +1328,8 @@ class ReflectionClass extends ReflectionElement
 		}
 
 		$startLine = $this->getStartLine() + substr_count(substr($doc, 0, strpos($doc, $tmp)), "\n");
-		$this->ownMagicProperties[$name] = new ReflectionPropertyMagic([
+
+		$this->ownMagicProperties[$name] = $this->reflectionFactory->createPropertyMagic([
 			'name' => $name,
 			'typeHint' => $typeHint,
 			'shortDescription' => str_replace("\n", ' ', $shortDescription),

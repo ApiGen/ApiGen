@@ -127,16 +127,15 @@ abstract class ReflectionFunctionBase extends ReflectionElement
 
 		list(, $typeHint, $name) = $matches;
 
-		$parameter = $this->reflectionFactory->createParameterMagic();
-		$parameter->setName($name)
-			->setPosition($position)
-			->setTypeHint($typeHint)
-			->setDefaultValueDefinition(NULL)
-			->setUnlimited(TRUE)
-			->setPassedByReference(FALSE)
-			->setDeclaringFunction($this);
-
-		$this->parameters[$position] = $parameter;
+		$this->parameters[$position] = $this->reflectionFactory->createParameterMagic([
+			'name' => $name,
+			'position' => $position,
+			'typeHint' => $typeHint,
+			'defaultValueDefinition' => NULL,
+			'unlimited' => TRUE,
+			'passedByReference' => FALSE,
+			'declaringFunction' => $this
+		]);
 	}
 
 }
