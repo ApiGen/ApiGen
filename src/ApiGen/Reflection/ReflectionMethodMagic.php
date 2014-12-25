@@ -15,13 +15,6 @@ use ApiGen\Reflection\Parts\StartPositionEndPositionMagic;
 use TokenReflection\IReflection;
 
 
-/**
- * @method  ReflectionMethodMagic   setName(string $name)
- * @method  ReflectionMethodMagic   setShortDescription(string $shortDescription)
- * @method  ReflectionMethodMagic   setReturnsReference(bool $returnsReference)
- * @method  ReflectionMethodMagic   setParameters(array $parameters)
- * @method  ReflectionMethodMagic   setDeclaringClass(ReflectionClass $declaringClass)
- */
 class ReflectionMethodMagic extends ReflectionMethod
 {
 
@@ -31,22 +24,22 @@ class ReflectionMethodMagic extends ReflectionMethod
 	/**
 	 * @var string
 	 */
-	protected $name;
+	private $name;
 
 	/**
 	 * @var string
 	 */
-	protected $shortDescription;
+	private $shortDescription;
 
 	/**
 	 * @var bool
 	 */
-	protected $returnsReference;
+	private $returnsReference;
 
 	/**
 	 * @var ReflectionClass
 	 */
-	protected $declaringClass;
+	private $declaringClass;
 
 
 	public function __construct(IReflection $reflection = NULL)
@@ -59,8 +52,6 @@ class ReflectionMethodMagic extends ReflectionMethod
 
 
 	/**
-	 * Overrides parent method.
-	 *
 	 * @return string
 	 */
 	public function getName()
@@ -70,11 +61,33 @@ class ReflectionMethodMagic extends ReflectionMethod
 
 
 	/**
+	 * @param string $name
+	 * @return $this
+	 */
+	public function setName($name)
+	{
+		$this->name = $name;
+		return $this;
+	}
+
+
+	/**
 	 * @return string
 	 */
 	public function getShortDescription()
 	{
 		return $this->shortDescription;
+	}
+
+
+	/**
+	 * @param string $shortDescription
+	 * @return $this
+	 */
+	public function setShortDescription($shortDescription)
+	{
+		$this->shortDescription = $shortDescription;
+		return $this;
 	}
 
 
@@ -93,6 +106,17 @@ class ReflectionMethodMagic extends ReflectionMethod
 	public function returnsReference()
 	{
 		return $this->returnsReference;
+	}
+
+
+	/**
+	 * @param bool $returnsReference
+	 * @return $this
+	 */
+	public function setReturnsReference($returnsReference)
+	{
+		$this->returnsReference = $returnsReference;
+		return $this;
 	}
 
 
@@ -170,11 +194,21 @@ class ReflectionMethodMagic extends ReflectionMethod
 
 
 	/**
-	 * @return ReflectionClass|null
+	 * @return ReflectionClass|NULL
 	 */
 	public function getDeclaringClass()
 	{
 		return $this->declaringClass;
+	}
+
+
+	/**
+	 * @return $this
+	 */
+	public function setDeclaringClass(ReflectionClass $declaringClass)
+	{
+		$this->declaringClass = $declaringClass;
+		return $this;
 	}
 
 
@@ -337,7 +371,17 @@ class ReflectionMethodMagic extends ReflectionMethod
 
 
 	/**
-	 * @return integer
+	 * @return $this
+	 */
+	public function setParameters(array $parameters)
+	{
+		$this->parameters = $parameters;
+		return $this;
+	}
+
+
+	/**
+	 * @return int
 	 */
 	public function getNumberOfParameters()
 	{
@@ -346,7 +390,7 @@ class ReflectionMethodMagic extends ReflectionMethod
 
 
 	/**
-	 * @return integer
+	 * @return int
 	 */
 	public function getNumberOfRequiredParameters()
 	{
