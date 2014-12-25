@@ -168,7 +168,7 @@ class ReflectionMethodMagic extends ReflectionMethod
 
 
 	/**
-	 * @return ReflectionClass|NULL
+	 * @return ReflectionClass
 	 */
 	public function getDeclaringClass()
 	{
@@ -177,7 +177,7 @@ class ReflectionMethodMagic extends ReflectionMethod
 
 
 	/**
-	 * @return string|NULL
+	 * @return string
 	 */
 	public function getDeclaringClassName()
 	{
@@ -308,7 +308,7 @@ class ReflectionMethodMagic extends ReflectionMethod
 
 
 	/**
-	 * @return string|NULL
+	 * @return string
 	 */
 	public function getOriginalName()
 	{
@@ -405,7 +405,7 @@ class ReflectionMethodMagic extends ReflectionMethod
 
 
 	/**
-	 * @return string|boolean
+	 * @return string
 	 */
 	public function getDocComment()
 	{
