@@ -196,7 +196,6 @@ class ReflectionMethodMagicTest extends PHPUnit_Framework_TestCase
 	}
 
 
-
 	/**
 	 * @return Mockery\MockInterface
 	 */
