@@ -73,15 +73,6 @@ class ReflectionParameterMagic extends ReflectionParameter
 
 
 	/**
-	 * @return TokenReflection\Broker
-	 */
-	public function getBroker()
-	{
-		return $this->declaringFunction->getBroker();
-	}
-
-
-	/**
 	 * @return string
 	 */
 	public function getName()
@@ -105,24 +96,6 @@ class ReflectionParameterMagic extends ReflectionParameter
 	public function getFileName()
 	{
 		return $this->declaringFunction->getFileName();
-	}
-
-
-	/**
-	 * @return bool
-	 */
-	public function isInternal()
-	{
-		return FALSE;
-	}
-
-
-	/**
-	 * @return bool
-	 */
-	public function isUserDefined()
-	{
-		return TRUE;
 	}
 
 
@@ -260,6 +233,7 @@ class ReflectionParameterMagic extends ReflectionParameter
 	public function getClass()
 	{
 		$className = $this->getClassName();
+
 		return $className === NULL ? NULL : $this->getParsedClasses()[$className];
 	}
 
@@ -272,7 +246,6 @@ class ReflectionParameterMagic extends ReflectionParameter
 		if ($this->isArray() || $this->isCallable()) {
 			return NULL;
 		}
-
 		if (isset($this->getParsedClasses()[$this->typeHint])) {
 			return $this->typeHint; // todo: check fix
 		}

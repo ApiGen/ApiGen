@@ -11,7 +11,7 @@ namespace ApiGen\Reflection;
 
 use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Reflection\Parts\StartLineEndLine;
-use TokenReflection\Broker;
+//use TokenReflection\Broker;
 use TokenReflection\IReflection;
 
 
@@ -54,15 +54,6 @@ class ReflectionMethodMagic extends ReflectionMethod
 		if ( ! isset(self::$reflectionMethods[$this->reflectionType])) {
 			self::$reflectionMethods[$this->reflectionType] = array_flip(get_class_methods($this));
 		}
-	}
-
-
-	/**
-	 * @return Broker
-	 */
-	public function getBroker()
-	{
-		return $this->declaringClass->getBroker();
 	}
 
 
@@ -270,15 +261,6 @@ class ReflectionMethodMagic extends ReflectionMethod
 	/**
 	 * @return bool
 	 */
-	public function isInternal()
-	{
-		return FALSE;
-	}
-
-
-	/**
-	 * @return bool
-	 */
 	public function isConstructor()
 	{
 		return FALSE;
@@ -423,15 +405,6 @@ class ReflectionMethodMagic extends ReflectionMethod
 	public function getFileName()
 	{
 		return $this->declaringClass->getFileName();
-	}
-
-
-	/**
-	 * @return bool
-	 */
-	public function isUserDefined()
-	{
-		return TRUE;
 	}
 
 

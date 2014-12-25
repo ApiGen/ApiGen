@@ -12,22 +12,19 @@ namespace ApiGen\Reflection;
 use ApiGen\Configuration\Configuration;
 use ApiGen\Parser\Elements\Elements;
 use ApiGen\Parser\ParserResult;
+use ApiGen\Reflection\TokenReflection\Reflection;
 use ApiGen\Reflection\TokenReflection\ReflectionFactory;
 use ArrayObject;
 use Nette;
-use Nette\Utils\ArrayHash;
-use TokenReflection\Broker;
 use TokenReflection\IReflection;
 use TokenReflection\IReflectionClass;
-use TokenReflection\IReflectionExtension;
 use TokenReflection\IReflectionFunction;
-use TokenReflection\IReflectionFunctionBase;
 use TokenReflection\IReflectionMethod;
 use TokenReflection\IReflectionParameter;
 use TokenReflection\IReflectionProperty;
 
 
-abstract class ReflectionBase extends Nette\Object implements IReflection
+abstract class ReflectionBase extends Nette\Object implements Reflection
 {
 
 	/**
@@ -68,15 +65,6 @@ abstract class ReflectionBase extends Nette\Object implements IReflection
 			self::$reflectionMethods[$this->reflectionType] = array_flip(get_class_methods($this));
 		}
 		$this->reflection = $reflection;
-	}
-
-
-	/**
-	 * @return Broker
-	 */
-	public function getBroker()
-	{
-		return $this->reflection->getBroker();
 	}
 
 

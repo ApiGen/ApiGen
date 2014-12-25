@@ -11,24 +11,12 @@ namespace ApiGen\Reflection;
 
 use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Reflection\Parts\StartLineEndLine;
-use ReflectionProperty as InternalReflectionProperty;
 use TokenReflection\IReflection;
 
 
 /**
  * Envelope for magic properties that are defined
  * only as @property, @property-read or @property-write annotation.
- *
- * @method ReflectionPropertyMagic  setName(string $name)
- * @method ReflectionPropertyMagic  setTypeHint()
- * @method ReflectionPropertyMagic  setShortDescription()
- * @method ReflectionPropertyMagic  setReadOnly()
- * @method ReflectionPropertyMagic  setWriteOnly()
- * @method ReflectionPropertyMagic  setDeclaringClass(ReflectionClass $declaringClass)
- * @method string                   getTypeHint()
- * @method bool                     isReadOnly()
- * @method bool                     isWriteOnly()
- * @method ReflectionClass          getDeclaringClass()
  */
 class ReflectionPropertyMagic extends ReflectionProperty
 {
@@ -38,37 +26,37 @@ class ReflectionPropertyMagic extends ReflectionProperty
 	/**
 	 * @var string
 	 */
-	protected $name;
+	private $name;
 
 	/**
 	 * @var string
 	 */
-	protected $typeHint;
+	private $typeHint;
 
 	/**
 	 * @var string
 	 */
-	protected $shortDescription;
+	private $shortDescription;
 
 	/**
 	 * @var string
 	 */
-	protected $longDescription;
+	private $longDescription;
 
 	/**
 	 * @var bool
 	 */
-	protected $readOnly;
+	private $readOnly;
 
 	/**
 	 * @var bool
 	 */
-	protected $writeOnly;
+	private $writeOnly;
 
 	/**
 	 * @var ReflectionClass
 	 */
-	protected $declaringClass;
+	private $declaringClass;
 
 
 	public function __construct(IReflection $reflection = NULL)
@@ -81,8 +69,6 @@ class ReflectionPropertyMagic extends ReflectionProperty
 
 
 	/**
-	 * Overrides parent method.
-	 *
 	 * @return string
 	 */
 	public function getName()
@@ -92,8 +78,57 @@ class ReflectionPropertyMagic extends ReflectionProperty
 
 
 	/**
-	 * Overrides parent method.
-	 *
+	 * @param string $name
+	 * @return $this
+	 */
+	public function setName($name)
+	{
+		$this->name = $name;
+		return $this;
+	}
+
+
+	/**
+	 * @return mixed
+	 */
+	public function getTypeHint()
+	{
+		return $this->typeHint;
+	}
+
+
+	/**
+	 * @param mixed $typeHint
+	 * @return $this
+	 */
+	public function setTypeHint($typeHint)
+	{
+		$this->typeHint = $typeHint;
+		return $this;
+	}
+
+
+	/**
+	 * @return bool
+	 */
+	public function getWriteOnly()
+	{
+		return $this->writeOnly;
+	}
+
+
+	/**
+	 * @param bool $writeOnly
+	 * @return $this
+	 */
+	public function setWriteOnly($writeOnly)
+	{
+		$this->writeOnly = $writeOnly;
+		return $this;
+	}
+
+
+	/**
 	 * @return string
 	 */
 	public function getShortDescription()
@@ -103,8 +138,17 @@ class ReflectionPropertyMagic extends ReflectionProperty
 
 
 	/**
-	 * Overrides parent method.
-	 *
+	 * @param string $shortDescription
+	 * @return $this
+	 */
+	public function setShortDescription($shortDescription)
+	{
+		$this->shortDescription = $shortDescription;
+		return $this;
+	}
+
+
+	/**
 	 * @return string
 	 */
 	public function getLongDescription()
@@ -114,16 +158,27 @@ class ReflectionPropertyMagic extends ReflectionProperty
 
 
 	/**
-	 * @return \TokenReflection\Broker
+	 * @return bool
 	 */
-	public function getBroker()
+	public function isReadOnly()
 	{
-		return $this->declaringClass->getBroker();
+		return $this->readOnly;
 	}
 
 
 	/**
-	 * @return integer
+	 * @param bool $readOnly
+	 * @return $this
+	 */
+	public function setReadOnly($readOnly)
+	{
+		$this->readOnly = $readOnly;
+		return $this;
+	}
+
+
+	/**
+	 * @return int
 	 */
 	public function getStartPosition()
 	{
@@ -132,7 +187,7 @@ class ReflectionPropertyMagic extends ReflectionProperty
 
 
 	/**
-	 * @return integer
+	 * @return int
 	 */
 	public function getEndPosition()
 	{
@@ -212,6 +267,25 @@ class ReflectionPropertyMagic extends ReflectionProperty
 
 
 	/**
+	 * @return ReflectionClass
+	 */
+	public function getDeclaringClass()
+	{
+		return $this->declaringClass;
+	}
+
+
+	/**
+	 * @return $this
+	 */
+	public function setDeclaringClass(ReflectionClass $declaringClass)
+	{
+		$this->declaringClass = $declaringClass;
+		return $this;
+	}
+
+
+	/**
 	 * @return mixed
 	 */
 	public function getDefaultValue()
@@ -275,15 +349,6 @@ class ReflectionPropertyMagic extends ReflectionProperty
 
 
 	/**
-	 * @return bool
-	 */
-	public function isInternal()
-	{
-		return FALSE;
-	}
-
-
-	/**
 	 * @return ReflectionClass|NULL
 	 */
 	public function getDeclaringTrait()
@@ -330,15 +395,6 @@ class ReflectionPropertyMagic extends ReflectionProperty
 	public function getFileName()
 	{
 		return $this->declaringClass->getFileName();
-	}
-
-
-	/**
-	 * @return bool
-	 */
-	public function isUserDefined()
-	{
-		return TRUE;
 	}
 
 

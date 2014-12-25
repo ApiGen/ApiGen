@@ -3,6 +3,9 @@
 namespace Project;
 
 
+/**
+ * @property-read int $skillCounter
+ */
 class ReflectionMethod
 {
 
