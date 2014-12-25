@@ -178,18 +178,7 @@ class ReflectionClass extends ReflectionElement
 	 */
 	public function getMagicMethods()
 	{
-		$methods = $this->getOwnMagicMethods();
-		$magicMethodExtractor = new MagicMethodExtractor;
-
-		if ($parentClass = $this->getParentClass()) {
-			$methods += $magicMethodExtractor->extractFromParentClass($parentClass, $this->isDocumented());
-		}
-
-		if ($traits = $this->getTraits()) {
-			$methods += $magicMethodExtractor->extractFromTraits($traits, $this->isDocumented());
-		}
-
-		return $methods;
+		return $this->getOwnMagicMethods() + $this->getMagicMethodExtractor()->extractFromClass($this);
 	}
 
 
@@ -278,18 +267,7 @@ class ReflectionClass extends ReflectionElement
 	 */
 	public function getMagicProperties()
 	{
-		$properties = $this->getOwnMagicProperties();
-		$magicPropertyExtractor = new MagicPropertyExtractor;
-
-		if ($parentClass = $this->getParentClass()) {
-			$properties += $magicPropertyExtractor->extractFromParentClass($parentClass, $this->isDocumented());
-		}
-
-		if ($traits = $this->getTraits()) {
-			$properties += $magicPropertyExtractor->extractFromTraits($traits, $this->isDocumented());
-		}
-
-		return $properties;
+		return $this->getOwnMagicProperties() + $this->getMagicPropertyExtractor()->extractFromClass($this);
 	}
 
 
@@ -1269,6 +1247,24 @@ class ReflectionClass extends ReflectionElement
 	private function getVisibilityLevel()
 	{
 		return $this->configuration->getOption(CO::VISIBILITY_LEVELS);
+	}
+
+
+	/**
+	 * @return MagicMethodExtractor
+	 */
+	private function getMagicMethodExtractor()
+	{
+		return new MagicMethodExtractor;
+	}
+
+
+	/**
+	 * @return MagicPropertyExtractor
+	 */
+	private function getMagicPropertyExtractor()
+	{
+		return new MagicPropertyExtractor;
 	}
 
 }

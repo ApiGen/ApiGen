@@ -17,15 +17,32 @@ class MagicPropertyExtractor
 {
 
 	/**
+	 * @return ReflectionPropertyMagic[]|array
+	 */
+	public function extractFromClass(ReflectionClass $reflectionClass)
+	{
+		$properties = [];
+		if ($parentClass = $reflectionClass->getParentClass()) {
+			$properties += $this->extractFromParentClass($parentClass, $reflectionClass->isDocumented());
+		}
+
+		if ($traits = $reflectionClass->getTraits()) {
+			$properties += $this->extractFromTraits($traits, $reflectionClass->isDocumented());
+		}
+		return $properties;
+	}
+
+
+	/**
 	 * @param ReflectionClass $parent
 	 * @param bool $isDocumented
 	 * @return ReflectionPropertyMagic[]
 	 */
-	public function extractFromParentClass(ReflectionClass $parent, $isDocumented)
+	private function extractFromParentClass(ReflectionClass $parent, $isDocumented)
 	{
 		$properties = [];
 		while ($parent) {
-			$properties = $this->extractFromClass($parent, $isDocumented, $properties);
+			$properties = $this->extractOwnFromClass($parent, $isDocumented, $properties);
 			$parent = $parent->getParentClass();
 		}
 		return $properties;
@@ -37,14 +54,14 @@ class MagicPropertyExtractor
 	 * @param $isDocumented
 	 * @return ReflectionPropertyMagic[]
 	 */
-	public function extractFromTraits($traits, $isDocumented)
+	private function extractFromTraits($traits, $isDocumented)
 	{
 		$properties = [];
 		foreach ($traits as $trait) {
 			if ( ! $trait instanceof ReflectionClass) {
 				continue;
 			}
-			$properties = $this->extractFromClass($trait, $isDocumented, $properties);
+			$properties = $this->extractOwnFromClass($trait, $isDocumented, $properties);
 		}
 		return $properties;
 	}
@@ -56,13 +73,10 @@ class MagicPropertyExtractor
 	 * @param array $properties
 	 * @return ReflectionPropertyMagic[]
 	 */
-	private function extractFromClass(ReflectionClass $reflectionClass, $isDocumented, array $properties)
+	private function extractOwnFromClass(ReflectionClass $reflectionClass, $isDocumented, array $properties)
 	{
 		foreach ($reflectionClass->getOwnMagicProperties() as $property) {
-			if (isset($properties[$property->getName()])) {
-				continue;
-			}
-			if ( ! $isDocumented || $property->isDocumented()) {
+			if (isset($properties[$property->getName()]) && ( ! $isDocumented || $property->isDocumented())) {
 				$properties[$property->getName()] = $property;
 			}
 		}

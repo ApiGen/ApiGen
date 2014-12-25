@@ -17,15 +17,32 @@ class MagicMethodExtractor
 {
 
 	/**
+	 * @return ReflectionMethodMagic[]|array
+	 */
+	public function extractFromClass(ReflectionClass $reflectionClass)
+	{
+		$methods = [];
+		if ($parentClass = $reflectionClass->getParentClass()) {
+			$methods += $this->extractFromParentClass($parentClass, $reflectionClass->isDocumented());
+		}
+
+		if ($traits = $reflectionClass->getTraits()) {
+			$methods += $this->extractFromTraits($traits, $reflectionClass->isDocumented());
+		}
+		return $methods;
+	}
+
+
+	/**
 	 * @param ReflectionClass $parent
 	 * @param bool $isDocumented
 	 * @return ReflectionMethodMagic[]
 	 */
-	public function extractFromParentClass(ReflectionClass $parent, $isDocumented)
+	private function extractFromParentClass(ReflectionClass $parent, $isDocumented)
 	{
 		$methods = [];
 		while ($parent) {
-			$methods = $this->extractFromClass($parent, $isDocumented, $methods);
+			$methods = $this->extractOwnFromClass($parent, $isDocumented, $methods);
 			$parent = $parent->getParentClass();
 		}
 		return $methods;
@@ -37,14 +54,14 @@ class MagicMethodExtractor
 	 * @param $isDocumented
 	 * @return ReflectionMethodMagic[]
 	 */
-	public function extractFromTraits($traits, $isDocumented)
+	private function extractFromTraits($traits, $isDocumented)
 	{
 		$methods = [];
 		foreach ($traits as $trait) {
 			if ( ! $trait instanceof ReflectionClass) {
 				continue;
 			}
-			$methods = $this->extractFromClass($trait, $isDocumented, $methods);
+			$methods = $this->extractOwnFromClass($trait, $isDocumented, $methods);
 		}
 		return $methods;
 	}
@@ -56,13 +73,10 @@ class MagicMethodExtractor
 	 * @param array $methods
 	 * @return ReflectionMethodMagic[]
 	 */
-	private function extractFromClass(ReflectionClass $reflectionClass, $isDocumented, array $methods)
+	private function extractOwnFromClass(ReflectionClass $reflectionClass, $isDocumented, array $methods)
 	{
 		foreach ($reflectionClass->getOwnMagicMethods() as $method) {
-			if (isset($methods[$method->getName()])) {
-				continue;
-			}
-			if ( ! $isDocumented || $method->isDocumented()) {
+			if (isset($methods[$method->getName()]) && ( ! $isDocumented || $method->isDocumented())) {
 				$methods[$method->getName()] = $method;
 			}
 		}
