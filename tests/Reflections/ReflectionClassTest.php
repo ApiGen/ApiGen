@@ -65,6 +65,7 @@ class ReflectionClassTest extends PHPUnit_Framework_TestCase
 		$this->assertFalse($this->reflectionClass->isFinal());
 	}
 
+
 	public function testIsInterface()
 	{
 		$this->assertFalse($this->reflectionClass->isInterface());
@@ -190,7 +191,6 @@ class ReflectionClassTest extends PHPUnit_Framework_TestCase
 	}
 
 
-
 	public function testVisibility()
 	{
 		$this->assertTrue($this->reflectionClass->hasMethod('publicMethod'));
@@ -231,6 +231,5 @@ class ReflectionClassTest extends PHPUnit_Framework_TestCase
 		$configurationMock->shouldReceive('getOption')->with(CO::VISIBILITY_LEVELS)->andReturn(256 | 512);
 		return $configurationMock;
 	}
-
 
 }
