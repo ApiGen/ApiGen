@@ -177,7 +177,7 @@ class ReflectionParameterMagic extends ReflectionParameter
 
 
 	/**
-	 * @return mixed
+	 * @return string
 	 */
 	public function getDefaultValueDefinition()
 	{

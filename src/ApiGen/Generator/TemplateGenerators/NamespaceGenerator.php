@@ -61,7 +61,7 @@ class NamespaceGenerator extends Nette\Object implements ConditionalTemplateGene
 			$template = $this->templateFactory->createNamedForElement(TemplateFactory::ELEMENT_NAMESPACE, $name);
 			$template = $this->namespaceAndPackageLoader->loadTemplateWithNamespace($template, $name, $namespace);
 			$template->save();
-			$this->onGenerateProgress(1);
+			$this->onGenerateProgress();
 		}
 	}
 

@@ -63,7 +63,7 @@ class ConstantElementGenerator extends Nette\Object implements TemplateGenerator
 			$template = $this->templateFactory->createForReflection($reflectionConstant);
 			$template = $this->loadTemplateWithParameters($template, $reflectionConstant);
 			$template->save();
-			$this->onGenerateProgress(1);
+			$this->onGenerateProgress();
 		}
 	}
 

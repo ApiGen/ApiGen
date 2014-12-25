@@ -12,21 +12,9 @@ namespace ApiGen\Parser;
 use ApiGen\Parser\Elements\Elements;
 use ApiGen\Reflection\ReflectionElement;
 use ArrayObject;
-use Nette;
 
 
-/**
- * @method setClasses(object)
- * @method setConstants(object)
- * @method setFunctions(object)
- * @method setInternalClasses(object)
- * @method setTokenizedClasses(object)
- * @method getClasses(object)
- * @method getConstants(object)
- * @method getFunctions(object)
- * @method getTypes()
- */
-class ParserResult extends Nette\Object
+class ParserResult
 {
 
 	/**
@@ -86,7 +74,7 @@ class ParserResult extends Nette\Object
 			return $this->functions;
 		}
 
-		return FALSE;
+		throw new \Exception("'$type' is not supported element type");
 	}
 
 
@@ -101,6 +89,72 @@ class ParserResult extends Nette\Object
 			'functions' => $this->getDocumentedElementsCount($this->functions),
 			'internalClasses' => $this->getDocumentedElementsCount($this->internalClasses)
 		];
+	}
+
+
+	/**
+	 * @return ArrayObject
+	 */
+	public function getClasses()
+	{
+		return $this->classes;
+	}
+
+
+	/**
+	 * @return ArrayObject
+	 */
+	public function getConstants()
+	{
+		return $this->constants;
+	}
+
+
+	/**
+	 * @return ArrayObject
+	 */
+	public function getFunctions()
+	{
+		return $this->functions;
+	}
+
+
+	/**
+	 * @return array
+	 */
+	public function getTypes()
+	{
+		return $this->types;
+	}
+
+
+	public function setClasses(ArrayObject $classes)
+	{
+		$this->classes = $classes;
+	}
+
+
+	public function setConstants(ArrayObject $constants)
+	{
+		$this->constants = $constants;
+	}
+
+
+	public function setFunctions(ArrayObject $functions)
+	{
+		$this->functions = $functions;
+	}
+
+
+	public function setInternalClasses(ArrayObject $internalClasses)
+	{
+		$this->internalClasses = $internalClasses;
+	}
+
+
+	public function setTokenizedClasses(ArrayObject $tokenizedClasses)
+	{
+		$this->tokenizedClasses = $tokenizedClasses;
 	}
 
 

@@ -63,7 +63,7 @@ class ClassElementGenerator extends Nette\Object implements TemplateGenerator, S
 			$template = $this->templateFactory->createForReflection($reflectionClass);
 			$template = $this->loadTemplateWithParameters($template, $reflectionClass);
 			$template->save();
-			$this->onGenerateProgress(1);
+			$this->onGenerateProgress();
 		}
 	}
 

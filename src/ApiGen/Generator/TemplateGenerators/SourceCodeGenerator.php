@@ -90,7 +90,7 @@ class SourceCodeGenerator extends Nette\Object implements ConditionalTemplateGen
 				/** @var ReflectionElement $element */
 				if ($element->isTokenized()) {
 					$this->generateForElement($element);
-					$this->onGenerateProgress(1);
+					$this->onGenerateProgress();
 				}
 			}
 		}

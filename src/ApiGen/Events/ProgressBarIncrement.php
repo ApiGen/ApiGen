@@ -47,7 +47,7 @@ class ProgressBarIncrement implements Subscriber
 	/**
 	 * @param int $size
 	 */
-	public function onGenerateProgress($size)
+	public function onGenerateProgress($size = 1)
 	{
 		$this->progressBar->increment($size);
 	}

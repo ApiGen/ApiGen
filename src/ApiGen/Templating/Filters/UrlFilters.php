@@ -323,8 +323,8 @@ class UrlFilters extends Filters
 		$annotationProcessors = [
 			'return' => $this->processReturnAnnotations($value, $context),
 			'throws' => $this->processThrowsAnnotations($value, $context),
-			'license' => $this->processLicenseAnnotations($value, $context),
-			'link' => $this->processLinkAnnotations($value, $context),
+			'license' => $this->processLicenseAnnotations($value),
+			'link' => $this->processLinkAnnotations($value),
 			'see' => $this->processSeeAnnotations($value, $context),
 			'uses' => $this->processUsesAndUsedbyAnnotations($value, $context),
 			'usedby' => $this->processUsesAndUsedbyAnnotations($value, $context),
