@@ -34,7 +34,7 @@ class ReflectionParameterMagicTest extends PHPUnit_Framework_TestCase
 
 		$this->reflectionClass = $backend->getClasses()['Project\ReflectionMethod'];
 		$reflectionMethodMagic = $this->reflectionClass->getMagicMethods()['doAnOperation'];
-		$this->reflectionParameterMagic =$reflectionMethodMagic->getParameters()['data'];
+		$this->reflectionParameterMagic = $reflectionMethodMagic->getParameters()['data'];
 	}
 
 
@@ -58,7 +58,9 @@ class ReflectionParameterMagicTest extends PHPUnit_Framework_TestCase
 
 	public function testGetFileName()
 	{
-		$this->assertStringEndsWith('ReflectionMethodSource/ReflectionMethod.php', $this->reflectionParameterMagic->getFileName());
+		$this->assertSame(
+			__DIR__ . 'ReflectionMethodSource/ReflectionMethod.php', $this->reflectionParameterMagic->getFileName()
+		);
 	}
 
 
@@ -88,7 +90,9 @@ class ReflectionParameterMagicTest extends PHPUnit_Framework_TestCase
 
 	public function testGetDeclaringFunction()
 	{
-		$this->assertInstanceOf('ApiGen\Reflection\ReflectionMethodMagic', $this->reflectionParameterMagic->getDeclaringFunction());
+		$this->assertInstanceOf(
+			'ApiGen\Reflection\ReflectionMethodMagic', $this->reflectionParameterMagic->getDeclaringFunction()
+		);
 	}
 
 
