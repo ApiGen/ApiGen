@@ -3,8 +3,21 @@
 namespace Project;
 
 
-class AccessLevels
+/**
+ * @property $someMagicProperty
+ * @method getSome()
+ */
+class AccessLevels extends ParentClass
 {
+
+	const LEVEL = 5;
+
+	public $publicProperty;
+
+	protected $protectedProperty;
+
+	private $privateProperty;
+
 
 	public function publicMethod()
 	{

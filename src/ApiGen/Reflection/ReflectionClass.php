@@ -11,8 +11,7 @@ namespace ApiGen\Reflection;
 
 use ApiGen\Configuration\ConfigurationOptions as CO;
 use InvalidArgumentException;
-use ReflectionMethod as InternalReflectionMethod;
-use ReflectionProperty as InternalReflectionProperty;
+use ReflectionProperty as Visibility;
 use TokenReflection;
 use TokenReflection\IReflectionClass;
 
@@ -21,54 +20,52 @@ class ReflectionClass extends ReflectionElement
 {
 
 	/**
-	 * @var array
+	 * @var ReflectionClass[]
 	 */
 	private $parentClasses;
 
 	/**
-	 * @var array
-	 */
-	private $ownMethods;
-
-	/**
-	 * @var array
-	 */
-	private $ownMagicMethods;
-
-	/**
-	 * @var array
-	 */
-	private $ownProperties;
-
-	/**
-	 * @var array
-	 */
-	private $ownMagicProperties;
-
-	/**
-	 * @var array
-	 */
-	private $ownConstants;
-
-	/**
-	 * @var array
-	 */
-	private $methods;
-
-	/**
-	 * @var array
+	 * @var ReflectionProperty[]
 	 */
 	private $properties;
 
 	/**
-	 * @var array
+	 * @var ReflectionProperty[]
+	 */
+	private $ownProperties;
+
+	/**
+	 * @var ReflectionPropertyMagic[]
+	 */
+	private $ownMagicProperties;
+
+	/**
+	 * @var ReflectionConstant[]
 	 */
 	private $constants;
 
+	/**
+	 * @var ReflectionConstant[]
+	 */
+	private $ownConstants;
 
 	/**
-	 * Returns FQN name.
-	 *
+	 * @var ReflectionMethod[]
+	 */
+	private $methods;
+
+	/**
+	 * @var ReflectionMethod[]
+	 */
+	private $ownMethods;
+
+	/**
+	 * @var ReflectionMethodMagic[]
+	 */
+	private $ownMagicMethods;
+
+
+	/**
 	 * @return string
 	 */
 	public function getName()
@@ -78,8 +75,6 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * Returns the unqualified name (UQN).
-	 *
 	 * @return string
 	 */
 	public function getShortName()
@@ -135,7 +130,7 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * @return ReflectionMethod[]|array
+	 * @return ReflectionMethod[]
 	 */
 	public function getMethods()
 	{
@@ -158,7 +153,7 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * @return ReflectionMethod[]|array
+	 * @return ReflectionMethod[]
 	 */
 	public function getOwnMethods()
 	{
@@ -177,7 +172,7 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * @return ReflectionMethod[]|array
+	 * @return ReflectionMethodMagic[]
 	 */
 	public function getMagicMethods()
 	{
@@ -218,16 +213,14 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * @return ReflectionMethod[]|array
+	 * @return ReflectionMethodMagic[]
 	 */
 	public function getOwnMagicMethods()
 	{
 		if ($this->ownMagicMethods === NULL) {
 			$this->ownMagicMethods = [];
 
-			if ( ! ($this->getVisibilityLevel() & InternalReflectionMethod::IS_PUBLIC)
-				|| $this->getDocComment() === FALSE
-			) {
+			if ( ! ($this->getVisibilityLevel() & Visibility::IS_PUBLIC) || $this->getDocComment() === FALSE) {
 				return $this->ownMagicMethods;
 			}
 
@@ -245,7 +238,7 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * @return array
+	 * @return ReflectionMethod[]
 	 */
 	public function getTraitMethods()
 	{
@@ -262,9 +255,8 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * @param string $name Method name
+	 * @param string $name
 	 * @return ReflectionMethod
-	 * @throws \InvalidArgumentException If required method does not exist.
 	 */
 	public function getMethod($name)
 	{
@@ -279,7 +271,7 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * @return array
+	 * @return ReflectionProperty[]
 	 */
 	public function getProperties()
 	{
@@ -301,7 +293,7 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * @return array
+	 * @return ReflectionPropertyMagic[]
 	 */
 	public function getMagicProperties()
 	{
@@ -341,7 +333,7 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * @return ReflectionProperty[]|array
+	 * @return ReflectionProperty[]
 	 */
 	public function getOwnProperties()
 	{
@@ -360,16 +352,14 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * @return ReflectionProperty[]|array
+	 * @return ReflectionPropertyMagic[]
 	 */
 	public function getOwnMagicProperties()
 	{
 		if ($this->ownMagicProperties === NULL) {
 			$this->ownMagicProperties = [];
 
-			if ( ! ($this->getVisibilityLevel() && InternalReflectionProperty::IS_PUBLIC)
-				|| $this->getDocComment() === FALSE
-			) {
+			if ( ! ($this->getVisibilityLevel() & Visibility::IS_PUBLIC) || $this->getDocComment() === FALSE) {
 				return $this->ownMagicProperties;
 			}
 
@@ -390,7 +380,7 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * @return array
+	 * @return ReflectionProperty[]
 	 */
 	public function getTraitProperties()
 	{
@@ -407,9 +397,8 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * @param string $name Method name
+	 * @param string $name
 	 * @return ReflectionProperty
-	 * @throws \InvalidArgumentException If required property does not exist.
 	 */
 	public function getProperty($name)
 	{
@@ -424,7 +413,7 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * @return ReflectionConstant[]|array
+	 * @return ReflectionConstant[]
 	 */
 	public function getConstants()
 	{
@@ -464,16 +453,11 @@ class ReflectionClass extends ReflectionElement
 	/**
 	 * @param string $name
 	 * @return ReflectionConstant
-	 * @throws \InvalidArgumentException If required constant does not exist.
 	 */
 	public function getConstantReflection($name)
 	{
-		if ($this->constants === NULL) {
-			$this->getConstants();
-		}
-
-		if (isset($this->constants[$name])) {
-			return $this->constants[$name];
+		if (isset($this->getConstants()[$name])) {
+			return $this->getConstants()[$name];
 		}
 
 		throw new InvalidArgumentException(sprintf(
@@ -493,46 +477,33 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * @param string $constantName
+	 * @param string $name
 	 * @return bool
 	 */
-	public function hasConstant($constantName)
+	public function hasConstant($name)
 	{
-		if ($this->constants === NULL) {
-			$this->getConstants();
-		}
-
-		return isset($this->constants[$constantName]);
+		return isset($this->getConstants()[$name]);
 	}
 
 
 	/**
-	 * @param string $constantName
+	 * @param string $name
 	 * @return bool
 	 */
-	public function hasOwnConstant($constantName)
+	public function hasOwnConstant($name)
 	{
-		if ($this->ownConstants === NULL) {
-			$this->getOwnConstants();
-		}
-
-		return isset($this->ownConstants[$constantName]);
+		return isset($this->getOwnConstants()[$name]);
 	}
 
 
 	/**
 	 * @param string $name
 	 * @return ReflectionConstant
-	 * @throws \InvalidArgumentException If required constant does not exist.
 	 */
 	public function getOwnConstantReflection($name)
 	{
-		if ($this->ownConstants === NULL) {
-			$this->getOwnConstants();
-		}
-
-		if (isset($this->ownConstants[$name])) {
-			return $this->ownConstants[$name];
+		if (isset($this->getOwnConstants()[$name])) {
+			return $this->getOwnConstants()[$name];
 		}
 
 		throw new InvalidArgumentException(sprintf(
@@ -573,7 +544,7 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * @return ReflectionClass[]|array
+	 * @return ReflectionClass[]
 	 */
 	public function getParentClasses()
 	{
@@ -1139,28 +1110,28 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * @param string $propertyName
+	 * @param string $name
 	 * @return bool
 	 */
-	public function hasProperty($propertyName)
+	public function hasProperty($name)
 	{
 		if ($this->properties === NULL) {
 			$this->getProperties();
 		}
-		return isset($this->properties[$propertyName]);
+		return isset($this->properties[$name]);
 	}
 
 
 	/**
-	 * @param string $propertyName
+	 * @param string $name
 	 * @return bool
 	 */
-	public function hasOwnProperty($propertyName)
+	public function hasOwnProperty($name)
 	{
 		if ($this->ownProperties === NULL) {
 			$this->getOwnProperties();
 		}
-		return isset($this->ownProperties[$propertyName]);
+		return isset($this->ownProperties[$name]);
 	}
 
 
@@ -1176,28 +1147,22 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * @param string $methodName
+	 * @param string $name
 	 * @return bool
 	 */
-	public function hasMethod($methodName)
+	public function hasMethod($name)
 	{
-		if ($this->methods === NULL) {
-			$this->getMethods();
-		}
-		return isset($this->methods[$methodName]);
+		return isset($this->getMethods()[$name]);
 	}
 
 
 	/**
-	 * @param string $methodName
+	 * @param string $name
 	 * @return bool
 	 */
-	public function hasOwnMethod($methodName)
+	public function hasOwnMethod($name)
 	{
-		if ($this->ownMethods === NULL) {
-			$this->getOwnMethods();
-		}
-		return isset($this->ownMethods[$methodName]);
+		return isset($this->getOwnMethods()[$name]);
 	}
 
 
@@ -1226,8 +1191,6 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * Returns if the class should be documented.
-	 *
 	 * @return bool
 	 */
 	public function isDocumented()
