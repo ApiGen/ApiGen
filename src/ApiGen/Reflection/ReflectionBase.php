@@ -21,8 +21,10 @@ use TokenReflection\IReflection;
 use TokenReflection\IReflectionClass;
 use TokenReflection\IReflectionExtension;
 use TokenReflection\IReflectionFunction;
+use TokenReflection\IReflectionFunctionBase;
 use TokenReflection\IReflectionMethod;
 use TokenReflection\IReflectionParameter;
+use TokenReflection\IReflectionProperty;
 
 
 abstract class ReflectionBase extends Nette\Object implements IReflection
@@ -39,7 +41,7 @@ abstract class ReflectionBase extends Nette\Object implements IReflection
 	protected $reflectionType;
 
 	/**
-	 * @var IReflectionClass|IReflectionMethod|IReflectionFunction|IReflectionExtension|IReflectionParameter
+	 * @var IReflectionClass|IReflectionFunction|IReflectionMethod|IReflectionParameter|IReflectionProperty
 	 */
 	protected $reflection;
 

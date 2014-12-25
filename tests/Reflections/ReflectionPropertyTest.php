@@ -4,7 +4,7 @@ namespace ApiGen\Tests\Reflection;
 
 use ApiGen\Parser\Broker\Backend;
 use ApiGen\Reflection\ReflectionClass;
-use ApiGen\Reflection\ReflectionParameter;
+use ApiGen\Reflection\ReflectionProperty;
 use ApiGen\Reflection\TokenReflection\ReflectionFactory;
 use Mockery;
 use PHPUnit_Framework_TestCase;
@@ -20,9 +20,9 @@ class ReflectionPropertyTest extends PHPUnit_Framework_TestCase
 	private $reflectionClass;
 
 	/**
-	 * @var ReflectionParameter
+	 * @var ReflectionProperty
 	 */
-	private $reflectionParameter;
+	private $reflectionProperty;
 
 
 	protected function setUp()
@@ -32,122 +32,109 @@ class ReflectionPropertyTest extends PHPUnit_Framework_TestCase
 		$broker->processDirectory(__DIR__ . '/ReflectionMethodSource');
 
 		$this->reflectionClass = $backend->getClasses()['Project\ReflectionMethod'];
-		$reflectionMethod = $this->reflectionClass->getMethod('methodWithArgs');
-		$this->reflectionParameter = $reflectionMethod->getParameter(0);
+		$this->reflectionProperty = $this->reflectionClass->getProperty('memberCount');
 	}
 
 
 	public function testInstance()
 	{
-		$this->assertInstanceOf('ApiGen\Reflection\ReflectionParameter', $this->reflectionParameter);
+		$this->assertInstanceOf('ApiGen\Reflection\ReflectionProperty', $this->reflectionProperty);
+	}
+
+
+	public function testIsReadOnly()
+	{
+		$this->assertFalse($this->reflectionProperty->isReadOnly());
+	}
+
+
+	public function testIsWriteOnly()
+	{
+		$this->assertFalse($this->reflectionProperty->isWriteOnly());
+	}
+
+
+	public function testIsMagic()
+	{
+		$this->assertFalse($this->reflectionProperty->isMagic());
 	}
 
 
 	public function testGetTypeHint()
 	{
-		$this->assertSame('int|string', $this->reflectionParameter->getTypeHint());
-	}
-
-
-	public function testGetDescription()
-	{
-		$this->assertSame(' the URL of the API endpoint', $this->reflectionParameter->getDescription());
-	}
-
-
-	public function testGetDefaultValueDefinition()
-	{
-		$this->assertSame('1', $this->reflectionParameter->getDefaultValueDefinition());
-	}
-
-
-	public function testIsDefaultValueAvailable()
-	{
-		$this->assertTrue($this->reflectionParameter->isDefaultValueAvailable());
-	}
-
-
-	public function testGetPosition()
-	{
-		$this->assertSame(0, $this->reflectionParameter->getPosition());
-	}
-
-
-	public function testIsArray()
-	{
-		$this->assertFalse($this->reflectionParameter->isArray());
-	}
-
-
-	public function testIsCallable()
-	{
-		$this->assertFalse($this->reflectionParameter->isCallable());
-	}
-
-
-	public function testGetClass()
-	{
-		$this->assertNull($this->reflectionParameter->getClass());
-	}
-
-
-	public function testGetClassName()
-	{
-		$this->assertNull($this->reflectionParameter->getClassName());
-	}
-
-
-	public function testAllowsNull()
-	{
-		$this->assertTrue($this->reflectionParameter->allowsNull());
-	}
-
-
-	public function testIsOptional()
-	{
-		$this->assertTrue($this->reflectionParameter->isOptional());
-	}
-
-
-	public function testIsPassedByReference()
-	{
-		$this->assertFalse($this->reflectionParameter->isPassedByReference());
-	}
-
-
-	public function testCanBePassedByValue()
-	{
-		$this->assertTrue($this->reflectionParameter->canBePassedByValue());
-	}
-
-
-	public function testGetDeclaringFunction()
-	{
-		$this->assertInstanceOf('ApiGen\Reflection\ReflectionMethod', $this->reflectionParameter->getDeclaringFunction());
-	}
-
-
-	public function testGetDeclaringFunctionName()
-	{
-		$this->assertSame('methodWithArgs', $this->reflectionParameter->getDeclaringFunctionName());
+		$this->assertSame('integer', $this->reflectionProperty->getTypeHint());
 	}
 
 
 	public function testGetDeclaringClass()
 	{
-		$this->assertInstanceOf('ApiGen\Reflection\ReflectionClass', $this->reflectionParameter->getDeclaringClass());
+		$this->assertInstanceOf('ApiGen\Reflection\ReflectionClass', $this->reflectionProperty->getDeclaringClass());
 	}
 
 
 	public function testGetDeclaringClassName()
 	{
-		$this->assertSame('Project\ReflectionMethod', $this->reflectionParameter->getDeclaringClassName());
+		$this->assertSame('Project\ReflectionMethod', $this->reflectionProperty->getDeclaringClassName());
 	}
 
 
-	public function testIsUnlimited()
+	public function testGetDefaultValue()
 	{
-		$this->assertFalse($this->reflectionParameter->isUnlimited());
+		$this->assertSame(52, $this->reflectionProperty->getDefaultValue());
+	}
+
+
+	public function testGetDefaultValueDefinition()
+	{
+		$this->assertSame('52', $this->reflectionProperty->getDefaultValueDefinition());
+	}
+
+
+	public function testIsDefault()
+	{
+		$this->assertTrue($this->reflectionProperty->isDefault());
+	}
+
+
+	public function testIsPrivate()
+	{
+		$this->assertFalse($this->reflectionProperty->isPrivate());
+	}
+
+
+	public function testIsProtected()
+	{
+		$this->assertFalse($this->reflectionProperty->isProtected());
+	}
+
+
+	public function testIsPublic()
+	{
+		$this->assertTrue($this->reflectionProperty->isPublic());
+	}
+
+
+	public function testIsStatic()
+	{
+		$this->assertFalse($this->reflectionProperty->isStatic());
+	}
+
+
+	public function testGetDeclaringTrait()
+	{
+		$this->assertNull($this->reflectionProperty->getDeclaringTrait());
+	}
+
+
+	public function testGetDeclaringTraitName()
+	{
+		$this->assertNull($this->reflectionProperty->getDeclaringTraitName());
+	}
+
+
+	public function testIsValid()
+	{
+		$this->assertTrue($this->reflectionProperty->isValid());
 	}
 
 

@@ -78,6 +78,12 @@ class ReflectionMethodTest extends PHPUnit_Framework_TestCase
 	}
 
 
+	public function testIsStatic()
+	{
+		$this->assertFalse($this->reflectionMethod->isStatic());
+	}
+
+
 	public function testIsConstructor()
 	{
 		$this->assertFalse($this->reflectionMethod->isConstructor());

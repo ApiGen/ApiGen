@@ -292,7 +292,7 @@ class ReflectionClass extends ReflectionElement
 				if (isset($this->properties[$property->getName()])) {
 					continue;
 				}
-				$apiProperty =  $this->reflectionFactory->createFromReflection($property);
+				$apiProperty = $this->reflectionFactory->createFromReflection($property);
 				if ( ! $this->isDocumented() || $apiProperty->isDocumented()) {
 					$this->properties[$property->getName()] = $apiProperty;
 				}

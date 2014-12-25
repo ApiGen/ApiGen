@@ -30,7 +30,6 @@ class ReflectionExtensionTest extends PHPUnit_Framework_TestCase
 		/** @var ReflectionClass $reflectionClass */
 		$reflectionClass = $broker->getClasses(Backend::INTERNAL_CLASSES)['Countable'];
 		$this->reflectionExtension = $reflectionClass->getExtension();
-		$this->reflectionExtension = $reflectionClass->getExtension();
 	}
 
 
