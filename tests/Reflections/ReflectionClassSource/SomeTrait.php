@@ -10,4 +10,11 @@ namespace Project;
 trait SomeTrait
 {
 
+	public $publicTraitProperty;
+
+
+	public function publicTraitMethod()
+	{
+	}
+
 }

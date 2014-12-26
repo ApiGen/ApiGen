@@ -28,7 +28,7 @@ class PropertiesTest extends TestCase
 
 	public function testGetProperties()
 	{
-		$this->assertCount(3, $this->reflectionClass->getProperties());
+		$this->assertCount(4, $this->reflectionClass->getProperties());
 	}
 
 

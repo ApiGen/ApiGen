@@ -51,6 +51,15 @@ class ConstantsTest extends TestCase
 	/**
 	 * @expectedException InvalidArgumentException
 	 */
+	public function testGetOwnConstantNonExisting()
+	{
+		$this->reflectionClass->getOwnConstant('NON_EXISTING');
+	}
+
+
+	/**
+	 * @expectedException InvalidArgumentException
+	 */
 	public function testGetConstantNonExisting()
 	{
 		$this->reflectionClass->getConstant('NON_EXISTING');

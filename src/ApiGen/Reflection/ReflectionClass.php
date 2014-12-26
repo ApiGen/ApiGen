@@ -503,15 +503,6 @@ class ReflectionClass extends ReflectionElement
 	/**
 	 * @return array
 	 */
-	public function getInterfaceNames()
-	{
-		return $this->reflection->getInterfaceNames();
-	}
-
-
-	/**
-	 * @return array
-	 */
 	public function getOwnInterfaces()
 	{
 		return array_map(function (IReflectionClass $class) {
@@ -662,6 +653,7 @@ class ReflectionClass extends ReflectionElement
 			if ( ! $class->isDocumented()) {
 				continue;
 			}
+
 			if (in_array($name, $class->getOwnInterfaceNames())) {
 				$implementers[] = $class;
 			}
@@ -1038,55 +1030,11 @@ class ReflectionClass extends ReflectionElement
 	 * @param string $name
 	 * @return bool
 	 */
-	public function hasOwnProperty($name)
-	{
-		if ($this->ownProperties === NULL) {
-			$this->getOwnProperties();
-		}
-		return isset($this->ownProperties[$name]);
-	}
-
-
-	/**
-	 * @param string $propertyName
-	 * @return bool
-	 */
-	public function hasTraitProperty($propertyName)
-	{
-		$properties = $this->getTraitProperties();
-		return isset($properties[$propertyName]);
-	}
-
-
-	/**
-	 * @param string $name
-	 * @return bool
-	 */
 	public function hasMethod($name)
 	{
 		return isset($this->getMethods()[$name]);
 	}
 
-
-	/**
-	 * @param string $name
-	 * @return bool
-	 */
-	public function hasOwnMethod($name)
-	{
-		return isset($this->getOwnMethods()[$name]);
-	}
-
-
-	/**
-	 * @param string $methodName Method name
-	 * @return bool
-	 */
-	public function hasTraitMethod($methodName)
-	{
-		$methods = $this->getTraitMethods();
-		return isset($methods[$methodName]);
-	}
 
 
 	/**

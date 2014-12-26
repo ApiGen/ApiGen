@@ -29,6 +29,11 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
 	 */
 	protected $reflectionClassOfTrait;
 
+	/**
+	 * @var ReflectionClass
+	 */
+	protected $reflectionClassOfInterface;
+
 
 	protected function setUp()
 	{
@@ -38,6 +43,7 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
 		$this->reflectionClass = $backend->getClasses()['Project\AccessLevels'];
 		$this->reflectionClassOfParent = $backend->getClasses()['Project\ParentClass'];
 		$this->reflectionClassOfTrait = $backend->getClasses()['Project\SomeTrait'];
+		$this->reflectionClassOfInterface = $backend->getClasses()['Project\RichInterface'];
 	}
 
 
@@ -51,7 +57,8 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
 			if ($arg) {
 				return [
 					'Project\ParentClass' => $this->reflectionClassOfParent,
-					'Project\SomeTrait' => $this->reflectionClassOfTrait
+					'Project\SomeTrait' => $this->reflectionClassOfTrait,
+					'Project\RichInterface' => $this->reflectionClassOfInterface
 				];
 			}
 		});

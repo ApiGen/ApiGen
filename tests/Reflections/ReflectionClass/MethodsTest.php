@@ -28,7 +28,7 @@ class MethodsTest extends TestCase
 
 	public function testGetMethods()
 	{
-		$this->assertCount(3, $this->reflectionClass->getMethods());
+		$this->assertCount(5, $this->reflectionClass->getMethods());
 	}
 
 

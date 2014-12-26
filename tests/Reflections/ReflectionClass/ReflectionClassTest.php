@@ -36,12 +36,6 @@ class ReflectionClassTest extends TestCase
 	}
 
 
-	public function testIsInterface()
-	{
-		$this->assertFalse($this->reflectionClass->isInterface());
-	}
-
-
 	public function testIsException()
 	{
 		$this->assertFalse($this->reflectionClass->isException());
@@ -52,6 +46,18 @@ class ReflectionClassTest extends TestCase
 	{
 		$this->assertTrue($this->reflectionClass->isSubclassOf('Project\ParentClass'));
 		$this->assertFalse($this->reflectionClass->isSubclassOf('ArrayAccess'));
+	}
+
+
+	public function testIsValid()
+	{
+		$this->assertTrue($this->reflectionClass->isValid());
+	}
+
+
+	public function testIsDocumented()
+	{
+		$this->assertTrue($this->reflectionClass->isDocumented());
 	}
 
 
