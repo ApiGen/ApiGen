@@ -1,0 +1,115 @@
+<?php
+
+namespace ApiGen\Tests\Templating\Filters;
+
+use ApiGen\Templating\Filters\Filters;
+use ApiGen\Tests\MethodInvoker;
+use ApiGen\Tests\Templating\Filters\FiltersSource\FooFilters;
+use PHPUnit_Framework_TestCase;
+
+
+class FiltersTest extends PHPUnit_Framework_TestCase
+{
+
+	/**
+	 * @var Filters
+	 */
+	private $filters;
+
+
+	protected function setUp()
+	{
+		$this->filters = new FooFilters;
+	}
+
+
+	public function testLoader()
+	{
+		$this->assertSame('Filtered: foo', $this->filters->loader('bazFilter', 'foo'));
+		$this->assertNull($this->filters->loader('nonExisting'));
+	}
+
+
+	/**
+	 * @dataProvider typeNameProvider
+	 */
+	public function testGetTypeName($name, $expectedName)
+	{
+		$this->assertSame(
+			$expectedName,
+			MethodInvoker::callMethodOnObject($this->filters, 'getTypeName', [$name])
+		);
+	}
+
+
+	/**
+	 * @return array[]
+	 */
+	public function typeNameProvider()
+	{
+		return [
+			['bool', 'boolean'],
+			['double', 'float'],
+			['void', ''],
+			['FALSE', 'false'],
+			['TRUE', 'true'],
+			['NULL', 'null'],
+			['callback', 'callable'],
+			['integer', 'integer'],
+			['boolean', 'boolean'],
+			['My\\Class', 'My\\Class'],
+			['\\My\\Class', 'My\\Class']
+		];
+	}
+
+
+	public function testGetTypeNameWithTrimOff()
+	{
+		$this->assertSame(
+			'\\Namespace',
+			MethodInvoker::callMethodOnObject($this->filters, 'getTypeName', ['\\Namespace', FALSE])
+		);
+	}
+
+
+	public function testLink()
+	{
+		$this->assertSame(
+			'<a href="url">text</a>',
+			MethodInvoker::callMethodOnObject($this->filters, 'link', ['url', 'text'])
+		);
+
+		$this->assertSame(
+			'<a href="url" class="class">text</a>',
+			MethodInvoker::callMethodOnObject($this->filters, 'link', ['url', 'text', FALSE, ['class']])
+		);
+	}
+
+
+	public function testEscapeHtml()
+	{
+		$this->assertSame(
+			'&lt;p&gt;',
+			MethodInvoker::callMethodOnObject($this->filters, 'escapeHtml', ['<p>'])
+		);
+	}
+
+
+	public function testUrlize()
+	{
+		$this->assertSame(
+			'Some.class',
+			MethodInvoker::callMethodOnObject($this->filters, 'urlize', ['Some class'])
+		);
+	}
+
+
+	public function testUrl()
+	{
+		$this->assertSame(
+			'Some%20class',
+			MethodInvoker::callMethodOnObject($this->filters, 'url', ['Some class'])
+		);
+	}
+
+}

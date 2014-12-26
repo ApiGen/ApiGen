@@ -449,7 +449,7 @@ class UrlFilters extends Filters
 			// Texy already added <a> so it has to be stripped
 			list($url, $description) = Strings::split(strip_tags($matches[1]));
 			if (Validators::isUri($url)) {
-				return Strings::link($url, $description ?: $url);
+				return $this->link($url, $description ?: $url);
 			}
 			return $this->resolveLink($matches[1], $context) ?: $matches[1];
 		}, $text);
@@ -606,7 +606,7 @@ class UrlFilters extends Filters
 	private function processLicenseAnnotations($value)
 	{
 		list($url, $description) = Strings::split($value);
-		return Strings::link($url, $description ?: $url);
+		return $this->link($url, $description ?: $url);
 	}
 
 
@@ -618,7 +618,7 @@ class UrlFilters extends Filters
 	{
 		list($url, $description) = Strings::split($value);
 		if (Validators::isUri($url)) {
-			return Strings::link($url, $description ?: $url);
+			return $this->link($url, $description ?: $url);
 		}
 		return NULL;
 	}

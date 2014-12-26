@@ -23,27 +23,15 @@ class AnnotationFilters extends Filters
 	 * @var array
 	 */
 	private $rename = [
-		'usedby' => 'Used by'
+		'usedby' => 'used by'
 	];
 
 	/**
-	 * @var array
+	 * @var string[]
 	 */
 	private $remove = [
-		'package',
-		'subpackage',
-		'property',
-		'property-read',
-		'property-write',
-		'method',
-		'abstract',
-		'access',
-		'final',
-		'filesource',
-		'global',
-		'name',
-		'static',
-		'staticvar'
+		'package', 'subpackage', 'property', 'property-read', 'property-write', 'method', 'abstract', 'access',
+		'final', 'filesource', 'global', 'name', 'static', 'staticvar'
 	];
 
 	/**
@@ -92,40 +80,25 @@ class AnnotationFilters extends Filters
 	public function annotationBeautify($name)
 	{
 		if (isset($this->rename[$name])) {
-			return $this->rename[$name];
+			$name = $this->rename[$name];
 		}
-
 		return Nette\Utils\Strings::firstUpper($name);
 	}
 
 
 	/**
-	 * Filter out unsupported or deprecated annotations
-	 *
-	 * @param array $annotations
-	 * @param array $filter
 	 * @return array
 	 */
-	public function annotationFilter(array $annotations, array $filter = [])
+	public function annotationFilter(array $annotations, array $customToRemove = [])
 	{
-		foreach ($this->remove as $annotation) {
-			unset($annotations[$annotation]);
-		}
+		$annotations = $this->filterOut($annotations, $this->remove);
+		$annotations = $this->filterOut($annotations, $customToRemove);
 
-		// Custom filter
-		foreach ($filter as $annotation) {
-			unset($annotations[$annotation]);
-		}
-
-		$options = $this->configuration->getOptions();
-
-		// Show/hide internal
-		if ( ! $options[CO::INTERNAL]) {
+		if ( ! $this->configuration->getOption(CO::INTERNAL)) {
 			unset($annotations['internal']);
 		}
 
-		// Show/hide tasks
-		if ( ! $options[CO::TODO]) {
+		if ( ! $this->configuration->getOption(CO::TODO)) {
 			unset($annotations['todo']);
 		}
 
@@ -153,6 +126,18 @@ class AnnotationFilters extends Filters
 			}
 		});
 
+		return $annotations;
+	}
+
+
+	/**
+	 * @return array
+	 */
+	private function filterOut(array $annotations, array $toRemove)
+	{
+		foreach ($toRemove as $annotation) {
+			unset($annotations[$annotation]);
+		}
 		return $annotations;
 	}
 

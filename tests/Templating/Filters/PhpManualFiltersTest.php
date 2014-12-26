@@ -34,6 +34,30 @@ class PhpManualFiltersTest extends PHPUnit_Framework_TestCase
 	}
 
 
+	public function testManualUrlForDateExtension()
+	{
+		$reflectionExtension = Mockery::mock('ApiGen\Reflection\ReflectionExtension');
+		$reflectionExtension->shouldReceive('getName')->andReturn('date');
+
+		$this->assertSame(
+			'http://php.net/manual/en/book.datetime.php',
+			$this->phpManualFilters->manualUrl($reflectionExtension)
+		);
+	}
+
+
+	public function testManualUrlForCoreExtension()
+	{
+		$reflectionExtension = Mockery::mock('ApiGen\Reflection\ReflectionExtension');
+		$reflectionExtension->shouldReceive('getName')->andReturn('core');
+
+		$this->assertSame(
+			'http://php.net/manual/en',
+			$this->phpManualFilters->manualUrl($reflectionExtension)
+		);
+	}
+
+
 	public function testManualUrlForReservedClass()
 	{
 		$reflectionClass = Mockery::mock('ApiGen\Reflection\ReflectionClass');
@@ -103,6 +127,34 @@ class PhpManualFiltersTest extends PHPUnit_Framework_TestCase
 			'http://php.net/manual/en/function.json-decode.php',
 			$this->phpManualFilters->manualUrl($reflectionFunction)
 		);
+	}
+
+
+	public function testManualUrlForConstant()
+	{
+		$reflectionClass = Mockery::mock('ApiGen\Reflection\ReflectionClass');
+		$reflectionClass->shouldReceive('getName')->andReturn('ReflectionProperty');
+
+		$reflectionConstant = Mockery::mock('ApiGen\Reflection\ReflectionConstant');
+		$reflectionConstant->shouldReceive('getName')->andReturn('IS_STATIC');
+		$reflectionConstant->shouldReceive('getDeclaringClass')->andReturn($reflectionClass);
+
+		$this->assertSame(
+			'http://php.net/manual/en/class.reflectionproperty.php#reflectionproperty.constants.is-static',
+			$this->phpManualFilters->manualUrl($reflectionConstant)
+		);
+	}
+
+
+	public function testManualUrlForNonExisting()
+	{
+		$reflectionClass = Mockery::mock('ApiGen\Reflection\ReflectionClass');
+		$reflectionClass->shouldReceive('getName')->andReturn();
+
+		$reflectionMagicProperty = Mockery::mock('ApiGen\Reflection\ReflectionMagicProperty');
+		$reflectionMagicProperty->shouldReceive('getDeclaringClass')->andReturn($reflectionClass);
+
+		$this->assertSame('', $this->phpManualFilters->manualUrl($reflectionMagicProperty));
 	}
 
 }

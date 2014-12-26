@@ -11,6 +11,7 @@ namespace ApiGen\Templating\Filters;
 
 use ApiGen\Templating\Filters\Helpers\Strings;
 use Latte;
+use Nette\Utils\Html;
 
 
 abstract class Filters
@@ -29,7 +30,6 @@ abstract class Filters
 			$args = array_slice(func_get_args(), 1);
 			return call_user_func_array([$this, $name], $args);
 		}
-
 		return NULL;
 	}
 
@@ -67,13 +67,16 @@ abstract class Filters
 	/**
 	 * @param string $url
 	 * @param string $text
-	 * @param bool $escape If the text should be escaped
-	 * @param array $classes List of classes
+	 * @param bool $escape
+	 * @param array $classes
 	 * @return string
 	 */
 	protected function link($url, $text, $escape = TRUE, array $classes = [])
 	{
-		return Strings::link($url, $text, $escape, $classes);
+		$link = Html::el('a')->href($url)
+			->setText($escape ? self::escapeHtml($text) : $text)
+			->addAttributes(['class' => $classes]);
+		return (string) $link;
 	}
 
 

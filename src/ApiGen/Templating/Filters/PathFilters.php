@@ -10,7 +10,6 @@
 namespace ApiGen\Templating\Filters;
 
 use ApiGen\Generator\Resolvers\RelativePathResolver;
-use Nette;
 
 
 class PathFilters extends Filters
