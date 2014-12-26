@@ -34,7 +34,7 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
 	{
 		$backend = new Backend($this->getReflectionFactory());
 		$broker = new Broker($backend);
-		$broker->processDirectory(__DIR__ . '/ReflectionClassSource');
+		$broker->processDirectory(__DIR__ . '/../ReflectionClassSource');
 		$this->reflectionClass = $backend->getClasses()['Project\AccessLevels'];
 		$this->reflectionClassOfParent = $backend->getClasses()['Project\ParentClass'];
 		$this->reflectionClassOfTrait = $backend->getClasses()['Project\SomeTrait'];
