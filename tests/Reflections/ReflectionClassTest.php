@@ -78,6 +78,12 @@ class ReflectionClassTest extends PHPUnit_Framework_TestCase
 	}
 
 
+	public function testIsException()
+	{
+		$this->assertFalse($this->reflectionClass->isException());
+	}
+
+
 	public function testIsSubclassOf()
 	{
 		$this->assertTrue($this->reflectionClass->isSubclassOf('Project\ParentClass'));
@@ -107,6 +113,15 @@ class ReflectionClassTest extends PHPUnit_Framework_TestCase
 	public function testGetConstant()
 	{
 		$this->assertInstanceOf('ApiGen\Reflection\ReflectionConstant', $this->reflectionClass->getConstant('LEVEL'));
+	}
+
+
+	public function testGetOwnConstant()
+	{
+		$this->assertInstanceOf(
+			'ApiGen\Reflection\ReflectionConstant',
+			$this->reflectionClass->getOwnConstant('LEVEL')
+		);
 	}
 
 

@@ -22,6 +22,7 @@ class MagicMethodExtractor
 	public function extractFromClass(ReflectionClass $reflectionClass)
 	{
 		$methods = [];
+
 		if ($parentClass = $reflectionClass->getParentClass()) {
 			$methods += $this->extractFromParentClass($parentClass, $reflectionClass->isDocumented());
 		}
@@ -76,7 +77,7 @@ class MagicMethodExtractor
 	private function extractOwnFromClass(ReflectionClass $reflectionClass, $isDocumented, array $methods)
 	{
 		foreach ($reflectionClass->getOwnMagicMethods() as $method) {
-			if (isset($methods[$method->getName()]) && ( ! $isDocumented || $method->isDocumented())) {
+			if ( ! isset($methods[$method->getName()]) && ( ! $isDocumented || $method->isDocumented())) {
 				$methods[$method->getName()] = $method;
 			}
 		}

@@ -10,6 +10,8 @@
 namespace ApiGen\Reflection;
 
 use ApiGen\Configuration\ConfigurationOptions as CO;
+use ApiGen\Reflection\Extractors\AnnotationMethodExtractor;
+use ApiGen\Reflection\Extractors\AnnotationPropertyExtractor;
 use ApiGen\Reflection\Extractors\MagicMethodExtractor;
 use ApiGen\Reflection\Extractors\MagicPropertyExtractor;
 use InvalidArgumentException;
@@ -178,7 +180,7 @@ class ReflectionClass extends ReflectionElement
 	 */
 	public function getMagicMethods()
 	{
-		return $this->getOwnMagicMethods() + $this->getMagicMethodExtractor()->extractFromClass($this);
+		return $this->getOwnMagicMethods() + (new MagicMethodExtractor)->extractFromClass($this);
 	}
 
 
@@ -190,17 +192,9 @@ class ReflectionClass extends ReflectionElement
 		if ($this->ownMagicMethods === NULL) {
 			$this->ownMagicMethods = [];
 
-			if ( ! ($this->getVisibilityLevel() & Visibility::IS_PUBLIC) || $this->getDocComment() === FALSE) {
-				return $this->ownMagicMethods;
-			}
-
-			$annotations = $this->getAnnotation('method');
-			if ($annotations === NULL) {
-				return $this->ownMagicMethods;
-			}
-
-			foreach ($annotations as $annotation) {
-				$this->processAnnotation($annotation);
+			if ($this->isVisibilityLevelPublic() && $this->getDocComment()) {
+				$extractor = new AnnotationMethodExtractor($this->reflectionFactory);
+				$this->ownMagicMethods += $extractor->extractFromReflection($this);
 			}
 		}
 		return $this->ownMagicMethods;
@@ -267,7 +261,25 @@ class ReflectionClass extends ReflectionElement
 	 */
 	public function getMagicProperties()
 	{
-		return $this->getOwnMagicProperties() + $this->getMagicPropertyExtractor()->extractFromClass($this);
+		return $this->getOwnMagicProperties() + (new MagicPropertyExtractor)->extractFromClass($this);
+	}
+
+
+	/**
+	 * @return ReflectionPropertyMagic[]|array
+	 */
+	public function getOwnMagicProperties()
+	{
+		if ($this->ownMagicProperties === NULL) {
+			$this->ownMagicProperties = [];
+
+			if ($this->isVisibilityLevelPublic() && $this->getDocComment()) {
+				$extractor = new AnnotationPropertyExtractor($this->reflectionFactory);
+				$this->ownMagicProperties += $extractor->extractFromReflection($this);
+			}
+		}
+
+		return $this->ownMagicProperties;
 	}
 
 
@@ -287,34 +299,6 @@ class ReflectionClass extends ReflectionElement
 			}
 		}
 		return $this->ownProperties;
-	}
-
-
-	/**
-	 * @return ReflectionPropertyMagic[]
-	 */
-	public function getOwnMagicProperties()
-	{
-		if ($this->ownMagicProperties === NULL) {
-			$this->ownMagicProperties = [];
-
-			if ( ! ($this->getVisibilityLevel() & Visibility::IS_PUBLIC) || $this->getDocComment() === FALSE) {
-				return $this->ownMagicProperties;
-			}
-
-			foreach (['property', 'property-read', 'property-write'] as $annotationName) {
-				$annotations = $this->getAnnotation($annotationName);
-				if ($annotations === NULL) {
-					continue;
-				}
-
-				foreach ($annotations as $annotation) {
-					$this->processMagicPropertyAnnotation($annotation, $annotationName);
-				}
-			}
-		}
-
-		return $this->ownMagicProperties;
 	}
 
 
@@ -1149,99 +1133,6 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * @param string $annotation
-	 */
-	private function processAnnotation($annotation)
-	{
-		$pattern = '~^(?:([\\w\\\\]+(?:\\|[\\w\\\\]+)*)\\s+)?(&)?\\s*(\\w+)\\s*\\(\\s*(.*)\\s*\\)\\s*(.*|$)~s';
-		if ( ! preg_match($pattern, $annotation, $matches)) {
-			// Wrong annotation format
-			return;
-		}
-
-		list(, $returnTypeHint, $returnsReference, $name, $args, $shortDescription) = $matches;
-
-		$doc = $this->getDocComment();
-		$tmp = $annotation;
-		if ($delimiter = strpos($annotation, "\n")) {
-			$tmp = substr($annotation, 0, $delimiter);
-		}
-
-		$startLine = $this->getStartLine() + substr_count(substr($doc, 0, strpos($doc, $tmp)), "\n");
-		$endLine = $startLine + substr_count($annotation, "\n");
-
-		$method = $this->reflectionFactory->createMethodMagic([
-			'name' => $name,
-			'shortDescription' => str_replace("\n", ' ', $shortDescription),
-			'startLine' => $startLine,
-			'endLine' => $endLine,
-			'returnsReference' => ($returnsReference === '&'),
-			'declaringClass' => $this,
-			'annotations' => ['return' => [0 => $returnTypeHint]]
-		]);
-		$this->ownMagicMethods[$name] = $method;
-
-		$parameters = [];
-		foreach (array_filter(preg_split('~\\s*,\\s*~', $args)) as $position => $arg) {
-			$pattern = '~^(?:([\\w\\\\]+(?:\\|[\\w\\\\]+)*)\\s+)?(&)?\\s*\\$(\\w+)(?:\\s*=\\s*(.*))?($)~s';
-			if ( ! preg_match($pattern, $arg, $matches)) {
-				// Wrong annotation format
-				continue;
-			}
-
-			list(, $typeHint, $passedByReference, $name, $defaultValueDefinition) = $matches;
-
-			$parameters[$name] = $this->reflectionFactory->createParameterMagic([
-				'name' => $name,
-				'position' => $position,
-				'typeHint' => $typeHint,
-				'defaultValueDefinition' => $defaultValueDefinition,
-				'unlimited' => FALSE,
-				'passedByReference' => ($passedByReference === '&'),
-				'declaringFunction' => $method
-			]);
-			$method->addAnnotation('param', ltrim(sprintf('%s $%s', $typeHint, $name)));
-		}
-		$method->setParameters($parameters);
-	}
-
-
-	/**
-	 * @param string $annotation
-	 * @param string $annotationName
-	 */
-	private function processMagicPropertyAnnotation($annotation, $annotationName)
-	{
-		$pattern = '~^(?:([\\w\\\\]+(?:\\|[\\w\\\\]+)*)\\s+)?\\$(\\w+)(?:\\s+(.*))?($)~s';
-		if ( ! preg_match($pattern, $annotation, $matches)) {
-			// Wrong annotation format
-			return;
-		}
-
-		list(, $typeHint, $name, $shortDescription) = $matches;
-
-		$doc = $this->getDocComment();
-		$tmp = $annotation;
-		if ($delimiter = strpos($annotation, "\n")) {
-			$tmp = substr($annotation, 0, $delimiter);
-		}
-
-		$startLine = $this->getStartLine() + substr_count(substr($doc, 0, strpos($doc, $tmp)), "\n");
-
-		$this->ownMagicProperties[$name] = $this->reflectionFactory->createPropertyMagic([
-			'name' => $name,
-			'typeHint' => $typeHint,
-			'shortDescription' => str_replace("\n", ' ', $shortDescription),
-			'startLine' => $startLine,
-			'endLine' => $startLine + substr_count($annotation, "\n"),
-			'readOnly' => ($annotationName === 'property-read'),
-			'writeOnly' => ($annotationName === 'property-write'),
-			'declaringClass' => $this
-		]);
-	}
-
-
-	/**
 	 * @return int
 	 */
 	private function getVisibilityLevel()
@@ -1251,20 +1142,11 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * @return MagicMethodExtractor
+	 * @return bool
 	 */
-	private function getMagicMethodExtractor()
+	private function isVisibilityLevelPublic()
 	{
-		return new MagicMethodExtractor;
-	}
-
-
-	/**
-	 * @return MagicPropertyExtractor
-	 */
-	private function getMagicPropertyExtractor()
-	{
-		return new MagicPropertyExtractor;
+		return $this->getVisibilityLevel() & Visibility::IS_PUBLIC;
 	}
 
 }

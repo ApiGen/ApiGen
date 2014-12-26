@@ -76,7 +76,7 @@ class MagicPropertyExtractor
 	private function extractOwnFromClass(ReflectionClass $reflectionClass, $isDocumented, array $properties)
 	{
 		foreach ($reflectionClass->getOwnMagicProperties() as $property) {
-			if (isset($properties[$property->getName()]) && ( ! $isDocumented || $property->isDocumented())) {
+			if ( ! isset($properties[$property->getName()]) && ( ! $isDocumented || $property->isDocumented())) {
 				$properties[$property->getName()] = $property;
 			}
 		}
