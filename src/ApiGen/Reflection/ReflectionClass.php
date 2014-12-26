@@ -423,7 +423,7 @@ class ReflectionClass extends ReflectionElement
 	 * @param string $name
 	 * @return ReflectionConstant
 	 */
-	public function getOwnConstantReflection($name)
+	public function getOwnConstant($name)
 	{
 		if (isset($this->getOwnConstants()[$name])) {
 			return $this->getOwnConstants()[$name];
@@ -432,16 +432,6 @@ class ReflectionClass extends ReflectionElement
 		throw new InvalidArgumentException(sprintf(
 			'Constant %s does not exist in class %s', $name, $this->reflection->getName()
 		));
-	}
-
-
-	/**
-	 * @param string $name
-	 * @return ReflectionConstant
-	 */
-	public function getOwnConstant($name)
-	{
-		return $this->getOwnConstantReflection($name);
 	}
 
 
