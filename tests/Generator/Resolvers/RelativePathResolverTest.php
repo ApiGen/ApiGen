@@ -3,34 +3,64 @@
 namespace ApiGen\Tests\Generator\Resolvers;
 
 use ApiGen\Generator\Resolvers\RelativePathResolver;
+use InvalidArgumentException;
+use Mockery;
 use PHPUnit_Framework_TestCase;
 
 
 class RelativePathResolverTest extends PHPUnit_Framework_TestCase
 {
 
+	public function testGetRelativePath()
+	{
+		$configuration = Mockery::mock('ApiGen\Configuration\Configuration');
+		$configuration->shouldReceive('getOption')->with('source')->andReturn([TEMP_DIR]);
+		$relativePathResolver = new RelativePathResolver($configuration);
+
+		$this->assertSame('some-file.txt', $relativePathResolver->getRelativePath(TEMP_DIR . '/some-file.txt'));
+		$this->assertSame('some/dir/some-file.txt', $relativePathResolver->getRelativePath(TEMP_DIR . '/some/dir/some-file.txt'));
+	}
+
+
+	public function testGetRelativePathWithSymlink()
+	{
+		$configuration = Mockery::mock('ApiGen\Configuration\Configuration');
+		$configuration->shouldReceive('getOption')->with('source')->andReturn([TEMP_DIR]);
+		$relativePathResolver = new RelativePathResolver($configuration);
+		$relativePathResolver->setSymlinks(['some-file.txt' => TEMP_DIR . '/symlink-file.txt']);
+
+		$this->assertSame('symlink-file.txt', $relativePathResolver->getRelativePath('some-file.txt'));
+	}
+
+
+	/**
+	 * @expectedException InvalidArgumentException
+	 */
+	public function testGetRelativePathInvalid()
+	{
+		$configuration = Mockery::mock('ApiGen\Configuration\Configuration');
+		$configuration->shouldReceive('getOption')->with('source')->andReturn([TEMP_DIR]);
+		$relativePathResolver = new RelativePathResolver($configuration);
+
+		$relativePathResolver->getRelativePath('/var/dir/some-strange-file.txt');
+	}
+
+
 	/**
 	 * Issue #408
 	 */
-	public function testEndingSlash()
+	public function testGetRelativePathWithSourceEndingSlash()
 	{
-		$relativePathResolver = new RelativePathResolver;
-		$config = [
-			'source' => ['ProjectBeta/']
-		];
-		$relativePathResolver->setConfig($config);
-		$fileName = 'ProjectBeta/entities/Category.php';
-		$relativePath = $relativePathResolver->getRelativePath($fileName);
+		$configuration = Mockery::mock('ApiGen\Configuration\Configuration');
+		$configuration->shouldReceive('getOption')->with('source')->once()->andReturn(['ProjectBeta']);
+		$configuration->shouldReceive('getOption')->with('source')->twice()->andReturn(['ProjectBeta/']);
+		$relativePathResolver = new RelativePathResolver($configuration);
 
-		$this->assertSame('entities/Category.php', $relativePath);
-
-		$config = [
-			'source' => ['ProjectBeta']
-		];
-		$relativePathResolver->setConfig($config);
 		$fileName = 'ProjectBeta/entities/Category.php';
-		$relativePath2 = $relativePathResolver->getRelativePath($fileName);
-		$this->assertSame($relativePath, $relativePath2);
+		$this->assertSame('entities/Category.php', $relativePathResolver->getRelativePath($fileName));
+
+		$fileName = 'ProjectBeta/entities/Category.php';
+		$this->assertSame('entities/Category.php', $relativePathResolver->getRelativePath($fileName));
 	}
 
 }

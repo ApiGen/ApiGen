@@ -11,12 +11,11 @@ namespace ApiGen\Events;
 
 use ApiGen\Console;
 use Kdyby\Events\Subscriber;
-use Nette;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 
-class SetIoOnConsoleRun extends Nette\Object implements Subscriber
+class SetIoOnConsoleRun implements Subscriber
 {
 
 	/**
