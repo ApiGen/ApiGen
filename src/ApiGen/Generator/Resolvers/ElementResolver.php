@@ -18,6 +18,7 @@ use ApiGen\Reflection\ReflectionFunction;
 use ApiGen\Reflection\ReflectionMethod;
 use ApiGen\Reflection\ReflectionParameter;
 use ApiGen\Reflection\ReflectionProperty;
+use ArrayObject;
 use TokenReflection\Resolver;
 
 
@@ -56,85 +57,53 @@ class ElementResolver
 
 
 	/**
-	 * Tries to resolve string as class, interface or exception name.
-	 *
-	 * @param string $className
+	 * @param string $name
 	 * @param string $namespace
-	 * @return ReflectionClass
+	 * @return ReflectionClass|NULL
 	 */
-	public function getClass($className, $namespace = '')
+	public function getClass($name, $namespace = '')
 	{
 		$parsedClasses = $this->parserResult->getClasses();
-		if (isset($parsedClasses[$namespace . '\\' . $className])) {
-			$class = $parsedClasses[$namespace . '\\' . $className];
-
-		} elseif (isset($parsedClasses[ltrim($className, '\\')])) {
-			$class = $parsedClasses[ltrim($className, '\\')];
-
-		} else {
-			return NULL;
+		$class = $this->findElementByNameAndNamespace($parsedClasses, $name, $namespace);
+		if ($class && $class->isDocumented()) {
+			return $class;
 		}
 
-		/** @var ReflectionClass $class */
-		if ( ! $class->isDocumented()) {
-			return NULL;
-		}
-
-		return $class;
+		return NULL;
 	}
 
 
 	/**
-	 * @param string $constantName
+	 * @param string $name
 	 * @param string $namespace
-	 * @return ReflectionConstant
+	 * @return ReflectionConstant|NULL
 	 */
-	public function getConstant($constantName, $namespace = '')
+	public function getConstant($name, $namespace = '')
 	{
 		$parsedConstants = $this->parserResult->getConstants();
-		if (isset($parsedConstants[$namespace . '\\' . $constantName])) {
-			$constant = $parsedConstants[$namespace . '\\' . $constantName];
-
-		} elseif (isset($parsedConstants[ltrim($constantName, '\\')])) {
-			$constant = $parsedConstants[ltrim($constantName, '\\')];
-
-		} else {
-			return NULL;
+		$constant = $this->findElementByNameAndNamespace($parsedConstants, $name, $namespace);
+		if ($constant && $constant->isDocumented()) {
+			return $constant;
 		}
 
-		/** @var ReflectionConstant $constant */
-		if ( ! $constant->isDocumented()) {
-			return NULL;
-		}
-
-		return $constant;
+		return NULL;
 	}
 
 
 	/**
-	 * @param string $functionName
+	 * @param string $name
 	 * @param string $namespace
-	 * @return ReflectionFunction
+	 * @return ReflectionFunction|NULL
 	 */
-	public function getFunction($functionName, $namespace = '')
+	public function getFunction($name, $namespace = '')
 	{
 		$parsedFunctions = $this->parserResult->getFunctions();
-		if (isset($parsedFunctions[$namespace . '\\' . $functionName])) {
-			$function = $parsedFunctions[$namespace . '\\' . $functionName];
-
-		} elseif (isset($parsedFunctions[ltrim($functionName, '\\')])) {
-			$function = $parsedFunctions[ltrim($functionName, '\\')];
-
-		} else {
-			return NULL;
+		$function = $this->findElementByNameAndNamespace($parsedFunctions, $name, $namespace);
+		if ($function && $function->isDocumented()) {
+			return $function;
 		}
 
-		/** @var ReflectionFunction $function */
-		if ( ! $function->isDocumented()) {
-			return NULL;
-		}
-
-		return $function;
+		return NULL;
 	}
 
 
@@ -351,6 +320,28 @@ class ElementResolver
 			return FALSE;
 		}
 		return TRUE;
+	}
+
+
+	/**
+	 * @param array|ArrayObject $elements
+	 * @param string $name
+	 * @param string $namespace
+	 * @return ReflectionClass|NULL
+	 */
+	private function findElementByNameAndNamespace($elements, $name, $namespace)
+	{
+		$namespacedName = $namespace . '\\' . $name;
+		if (isset($elements[$namespacedName])) {
+			return $elements[$namespacedName];
+		}
+
+		$shortName = ltrim($name, '\\');
+		if (isset($elements[$shortName])) {
+			return $elements[$shortName];
+		}
+
+		return NULL;
 	}
 
 }
