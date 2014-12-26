@@ -56,6 +56,17 @@ class ReflectionFactoryTest extends PHPUnit_Framework_TestCase
 	}
 
 
+	public function testCreatePropertyMagic()
+	{
+		$propertyMagic = $this->reflectionFactory->createPropertyMagic([
+			'name' => '', 'typeHint' => '', 'shortDescription' => '', 'startLine' => '',
+			'endLine' => '', 'readOnly' => '', 'writeOnly' => '', 'declaringClass' => ''
+		]);
+		$this->assertInstanceOf('ApiGen\Reflection\ReflectionPropertyMagic', $propertyMagic);
+		$this->checkLoadedProperties($propertyMagic);
+	}
+
+
 	public function testCreateFromReflectionFunction()
 	{
 		$tokenReflectionFunctionMock = Mockery::mock('TokenReflection\IReflectionFunction', 'Nette\Object');

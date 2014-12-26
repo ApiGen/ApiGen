@@ -10,9 +10,12 @@
 namespace ApiGen\Reflection;
 
 use ApiGen\Configuration\ConfigurationOptions as CO;
+use ApiGen\Reflection\Extractors\AnnotationMethodExtractor;
+use ApiGen\Reflection\Extractors\AnnotationPropertyExtractor;
+use ApiGen\Reflection\Extractors\MagicMethodExtractor;
+use ApiGen\Reflection\Extractors\MagicPropertyExtractor;
 use InvalidArgumentException;
-use ReflectionMethod as InternalReflectionMethod;
-use ReflectionProperty as InternalReflectionProperty;
+use ReflectionProperty as Visibility;
 use TokenReflection;
 use TokenReflection\IReflectionClass;
 
@@ -21,54 +24,52 @@ class ReflectionClass extends ReflectionElement
 {
 
 	/**
-	 * @var array
+	 * @var ReflectionClass[]
 	 */
 	private $parentClasses;
 
 	/**
-	 * @var array
-	 */
-	private $ownMethods;
-
-	/**
-	 * @var array
-	 */
-	private $ownMagicMethods;
-
-	/**
-	 * @var array
-	 */
-	private $ownProperties;
-
-	/**
-	 * @var array
-	 */
-	private $ownMagicProperties;
-
-	/**
-	 * @var array
-	 */
-	private $ownConstants;
-
-	/**
-	 * @var array
-	 */
-	private $methods;
-
-	/**
-	 * @var array
+	 * @var ReflectionProperty[]
 	 */
 	private $properties;
 
 	/**
-	 * @var array
+	 * @var ReflectionProperty[]
+	 */
+	private $ownProperties;
+
+	/**
+	 * @var ReflectionPropertyMagic[]
+	 */
+	private $ownMagicProperties;
+
+	/**
+	 * @var ReflectionConstant[]
 	 */
 	private $constants;
 
+	/**
+	 * @var ReflectionConstant[]
+	 */
+	private $ownConstants;
 
 	/**
-	 * Returns FQN name.
-	 *
+	 * @var ReflectionMethod[]
+	 */
+	private $methods;
+
+	/**
+	 * @var ReflectionMethod[]
+	 */
+	private $ownMethods;
+
+	/**
+	 * @var ReflectionMethodMagic[]
+	 */
+	private $ownMagicMethods;
+
+
+	/**
 	 * @return string
 	 */
 	public function getName()
@@ -78,8 +79,6 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * Returns the unqualified name (UQN).
-	 *
 	 * @return string
 	 */
 	public function getShortName()
@@ -135,7 +134,7 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * @return ReflectionMethod[]|array
+	 * @return ReflectionMethod[]
 	 */
 	public function getMethods()
 	{
@@ -158,7 +157,7 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * @return ReflectionMethod[]|array
+	 * @return ReflectionMethod[]
 	 */
 	public function getOwnMethods()
 	{
@@ -177,67 +176,25 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * @return ReflectionMethod[]|array
+	 * @return ReflectionMethodMagic[]
 	 */
 	public function getMagicMethods()
 	{
-		$methods = $this->getOwnMagicMethods();
-
-		$parent = $this->getParentClass();
-		while ($parent) {
-			foreach ($parent->getOwnMagicMethods() as $method) {
-				if (isset($methods[$method->getName()])) {
-					continue;
-				}
-
-				if ( ! $this->isDocumented() || $method->isDocumented()) {
-					$methods[$method->getName()] = $method;
-				}
-			}
-			$parent = $parent->getParentClass();
-		}
-
-		foreach ($this->getTraits() as $trait) {
-			if ( ! $trait instanceof ReflectionClass) {
-				continue;
-			}
-
-			foreach ($trait->getOwnMagicMethods() as $method) {
-				if (isset($methods[$method->getName()])) {
-					continue;
-				}
-
-				if ( ! $this->isDocumented() || $method->isDocumented()) {
-					$methods[$method->getName()] = $method;
-				}
-			}
-		}
-
-		return $methods;
+		return $this->getOwnMagicMethods() + (new MagicMethodExtractor)->extractFromClass($this);
 	}
 
 
 	/**
-	 * @return ReflectionMethod[]|array
+	 * @return ReflectionMethodMagic[]
 	 */
 	public function getOwnMagicMethods()
 	{
 		if ($this->ownMagicMethods === NULL) {
 			$this->ownMagicMethods = [];
 
-			if ( ! ($this->getVisibilityLevel() & InternalReflectionMethod::IS_PUBLIC)
-				|| $this->getDocComment() === FALSE
-			) {
-				return $this->ownMagicMethods;
-			}
-
-			$annotations = $this->getAnnotation('method');
-			if ($annotations === NULL) {
-				return $this->ownMagicMethods;
-			}
-
-			foreach ($annotations as $annotation) {
-				$this->processAnnotation($annotation);
+			if ($this->isVisibilityLevelPublic() && $this->getDocComment()) {
+				$extractor = new AnnotationMethodExtractor($this->reflectionFactory);
+				$this->ownMagicMethods += $extractor->extractFromReflection($this);
 			}
 		}
 		return $this->ownMagicMethods;
@@ -245,7 +202,7 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * @return array
+	 * @return ReflectionMethod[]
 	 */
 	public function getTraitMethods()
 	{
@@ -262,9 +219,8 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * @param string $name Method name
+	 * @param string $name
 	 * @return ReflectionMethod
-	 * @throws \InvalidArgumentException If required method does not exist.
 	 */
 	public function getMethod($name)
 	{
@@ -279,7 +235,7 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * @return array
+	 * @return ReflectionProperty[]
 	 */
 	public function getProperties()
 	{
@@ -301,47 +257,34 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * @return array
+	 * @return ReflectionPropertyMagic[]
 	 */
 	public function getMagicProperties()
 	{
-		$properties = $this->getOwnMagicProperties();
-
-		$parent = $this->getParentClass();
-		while ($parent) {
-			foreach ($parent->getOwnMagicProperties() as $property) {
-				if (isset($properties[$property->getName()])) {
-					continue;
-				}
-				if ( ! $this->isDocumented() || $property->isDocumented()) {
-					$properties[$property->getName()] = $property;
-				}
-			}
-			$parent = $parent->getParentClass();
-		}
-
-		foreach ($this->getTraits() as $trait) {
-			if ( ! $trait instanceof ReflectionClass) {
-				continue;
-			}
-
-			foreach ($trait->getOwnMagicProperties() as $property) {
-				if (isset($properties[$property->getName()])) {
-					continue;
-				}
-
-				if ( ! $this->isDocumented() || $property->isDocumented()) {
-					$properties[$property->getName()] = $property;
-				}
-			}
-		}
-
-		return $properties;
+		return $this->getOwnMagicProperties() + (new MagicPropertyExtractor)->extractFromClass($this);
 	}
 
 
 	/**
-	 * @return ReflectionProperty[]|array
+	 * @return ReflectionPropertyMagic[]|array
+	 */
+	public function getOwnMagicProperties()
+	{
+		if ($this->ownMagicProperties === NULL) {
+			$this->ownMagicProperties = [];
+
+			if ($this->isVisibilityLevelPublic() && $this->getDocComment()) {
+				$extractor = new AnnotationPropertyExtractor($this->reflectionFactory);
+				$this->ownMagicProperties += $extractor->extractFromReflection($this);
+			}
+		}
+
+		return $this->ownMagicProperties;
+	}
+
+
+	/**
+	 * @return ReflectionProperty[]
 	 */
 	public function getOwnProperties()
 	{
@@ -360,37 +303,7 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * @return ReflectionProperty[]|array
-	 */
-	public function getOwnMagicProperties()
-	{
-		if ($this->ownMagicProperties === NULL) {
-			$this->ownMagicProperties = [];
-
-			if ( ! ($this->getVisibilityLevel() && InternalReflectionProperty::IS_PUBLIC)
-				|| $this->getDocComment() === FALSE
-			) {
-				return $this->ownMagicProperties;
-			}
-
-			foreach (['property', 'property-read', 'property-write'] as $annotationName) {
-				$annotations = $this->getAnnotation($annotationName);
-				if ($annotations === NULL) {
-					continue;
-				}
-
-				foreach ($annotations as $annotation) {
-					$this->processMagicPropertyAnnotation($annotation, $annotationName);
-				}
-			}
-		}
-
-		return $this->ownMagicProperties;
-	}
-
-
-	/**
-	 * @return array
+	 * @return ReflectionProperty[]
 	 */
 	public function getTraitProperties()
 	{
@@ -407,9 +320,8 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * @param string $name Method name
+	 * @param string $name
 	 * @return ReflectionProperty
-	 * @throws \InvalidArgumentException If required property does not exist.
 	 */
 	public function getProperty($name)
 	{
@@ -424,7 +336,7 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * @return ReflectionConstant[]|array
+	 * @return ReflectionConstant[]
 	 */
 	public function getConstants()
 	{
@@ -464,16 +376,11 @@ class ReflectionClass extends ReflectionElement
 	/**
 	 * @param string $name
 	 * @return ReflectionConstant
-	 * @throws \InvalidArgumentException If required constant does not exist.
 	 */
 	public function getConstantReflection($name)
 	{
-		if ($this->constants === NULL) {
-			$this->getConstants();
-		}
-
-		if (isset($this->constants[$name])) {
-			return $this->constants[$name];
+		if (isset($this->getConstants()[$name])) {
+			return $this->getConstants()[$name];
 		}
 
 		throw new InvalidArgumentException(sprintf(
@@ -493,51 +400,22 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * @param string $constantName
+	 * @param string $name
 	 * @return bool
 	 */
-	public function hasConstant($constantName)
+	public function hasConstant($name)
 	{
-		if ($this->constants === NULL) {
-			$this->getConstants();
-		}
-
-		return isset($this->constants[$constantName]);
-	}
-
-
-	/**
-	 * @param string $constantName
-	 * @return bool
-	 */
-	public function hasOwnConstant($constantName)
-	{
-		if ($this->ownConstants === NULL) {
-			$this->getOwnConstants();
-		}
-
-		return isset($this->ownConstants[$constantName]);
+		return isset($this->getConstants()[$name]);
 	}
 
 
 	/**
 	 * @param string $name
-	 * @return ReflectionConstant
-	 * @throws \InvalidArgumentException If required constant does not exist.
+	 * @return bool
 	 */
-	public function getOwnConstantReflection($name)
+	public function hasOwnConstant($name)
 	{
-		if ($this->ownConstants === NULL) {
-			$this->getOwnConstants();
-		}
-
-		if (isset($this->ownConstants[$name])) {
-			return $this->ownConstants[$name];
-		}
-
-		throw new InvalidArgumentException(sprintf(
-			'Constant %s does not exist in class %s', $name, $this->reflection->getName()
-		));
+		return isset($this->getOwnConstants()[$name]);
 	}
 
 
@@ -547,7 +425,13 @@ class ReflectionClass extends ReflectionElement
 	 */
 	public function getOwnConstant($name)
 	{
-		return $this->getOwnConstantReflection($name);
+		if (isset($this->getOwnConstants()[$name])) {
+			return $this->getOwnConstants()[$name];
+		}
+
+		throw new InvalidArgumentException(sprintf(
+			'Constant %s does not exist in class %s', $name, $this->reflection->getName()
+		));
 	}
 
 
@@ -573,7 +457,7 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * @return ReflectionClass[]|array
+	 * @return ReflectionClass[]
 	 */
 	public function getParentClasses()
 	{
@@ -613,15 +497,6 @@ class ReflectionClass extends ReflectionElement
 		return array_map(function (IReflectionClass $class) {
 			return $this->getParsedClasses()[$class->getName()];
 		}, $this->reflection->getInterfaces());
-	}
-
-
-	/**
-	 * @return array
-	 */
-	public function getInterfaceNames()
-	{
-		return $this->reflection->getInterfaceNames();
 	}
 
 
@@ -724,17 +599,13 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * @return array
+	 * @return ReflectionClass[]|array
 	 */
 	public function getDirectSubClasses()
 	{
 		$subClasses = [];
-		$name = $this->reflection->getName();
 		foreach ($this->getParsedClasses() as $class) {
-			if ( ! $class->isDocumented()) {
-				continue;
-			}
-			if ($name === $class->getParentClassName()) {
+			if ($class->isDocumented() && $this->getName() === $class->getParentClassName()) {
 				$subClasses[] = $class;
 			}
 		}
@@ -744,17 +615,15 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * @return array
+	 * @return ReflectionClass[]|array
 	 */
 	public function getIndirectSubClasses()
 	{
 		$subClasses = [];
-		$name = $this->reflection->getName();
 		foreach ($this->getParsedClasses() as $class) {
-			if ( ! $class->isDocumented()) {
-				continue;
-			}
-			if ($name !== $class->getParentClassName() && $class->isSubclassOf($name)) {
+			if ($class->isDocumented() && $this->getName() !== $class->getParentClassName()
+				&& $class->isSubclassOf($this->getName())
+			) {
 				$subClasses[] = $class;
 			}
 		}
@@ -778,6 +647,7 @@ class ReflectionClass extends ReflectionElement
 			if ( ! $class->isDocumented()) {
 				continue;
 			}
+
 			if (in_array($name, $class->getOwnInterfaceNames())) {
 				$implementers[] = $class;
 			}
@@ -960,7 +830,6 @@ class ReflectionClass extends ReflectionElement
 	public function getUsedMagicMethods()
 	{
 		$usedMethods = [];
-
 		foreach ($this->getMagicMethods() as $method) {
 			if ($method->getDeclaringTraitName() === NULL || $method->getDeclaringTraitName() === $this->getName()) {
 				continue;
@@ -1139,76 +1008,25 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * @param string $propertyName
+	 * @param string $name
 	 * @return bool
 	 */
-	public function hasProperty($propertyName)
+	public function hasProperty($name)
 	{
 		if ($this->properties === NULL) {
 			$this->getProperties();
 		}
-		return isset($this->properties[$propertyName]);
+		return isset($this->properties[$name]);
 	}
 
 
 	/**
-	 * @param string $propertyName
+	 * @param string $name
 	 * @return bool
 	 */
-	public function hasOwnProperty($propertyName)
+	public function hasMethod($name)
 	{
-		if ($this->ownProperties === NULL) {
-			$this->getOwnProperties();
-		}
-		return isset($this->ownProperties[$propertyName]);
-	}
-
-
-	/**
-	 * @param string $propertyName
-	 * @return bool
-	 */
-	public function hasTraitProperty($propertyName)
-	{
-		$properties = $this->getTraitProperties();
-		return isset($properties[$propertyName]);
-	}
-
-
-	/**
-	 * @param string $methodName
-	 * @return bool
-	 */
-	public function hasMethod($methodName)
-	{
-		if ($this->methods === NULL) {
-			$this->getMethods();
-		}
-		return isset($this->methods[$methodName]);
-	}
-
-
-	/**
-	 * @param string $methodName
-	 * @return bool
-	 */
-	public function hasOwnMethod($methodName)
-	{
-		if ($this->ownMethods === NULL) {
-			$this->getOwnMethods();
-		}
-		return isset($this->ownMethods[$methodName]);
-	}
-
-
-	/**
-	 * @param string $methodName Method name
-	 * @return bool
-	 */
-	public function hasTraitMethod($methodName)
-	{
-		$methods = $this->getTraitMethods();
-		return isset($methods[$methodName]);
+		return isset($this->getMethods()[$name]);
 	}
 
 
@@ -1226,8 +1044,6 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * Returns if the class should be documented.
-	 *
 	 * @return bool
 	 */
 	public function isDocumented()
@@ -1248,104 +1064,20 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * @param string $annotation
-	 */
-	private function processAnnotation($annotation)
-	{
-		$pattern = '~^(?:([\\w\\\\]+(?:\\|[\\w\\\\]+)*)\\s+)?(&)?\\s*(\\w+)\\s*\\(\\s*(.*)\\s*\\)\\s*(.*|$)~s';
-		if ( ! preg_match($pattern, $annotation, $matches)) {
-			// Wrong annotation format
-			return;
-		}
-
-		list(, $returnTypeHint, $returnsReference, $name, $args, $shortDescription) = $matches;
-
-		$doc = $this->getDocComment();
-		$tmp = $annotation;
-		if ($delimiter = strpos($annotation, "\n")) {
-			$tmp = substr($annotation, 0, $delimiter);
-		}
-
-		$startLine = $this->getStartLine() + substr_count(substr($doc, 0, strpos($doc, $tmp)), "\n");
-		$endLine = $startLine + substr_count($annotation, "\n");
-
-		$method = $this->reflectionFactory->createMethodMagic([
-			'name' => $name,
-			'shortDescription' => str_replace("\n", ' ', $shortDescription),
-			'startLine' => $startLine,
-			'endLine' => $endLine,
-			'returnsReference' => ($returnsReference === '&'),
-			'declaringClass' => $this,
-			'annotations' => ['return' => [0 => $returnTypeHint]]
-		]);
-		$this->ownMagicMethods[$name] = $method;
-
-		$parameters = [];
-		foreach (array_filter(preg_split('~\\s*,\\s*~', $args)) as $position => $arg) {
-			$pattern = '~^(?:([\\w\\\\]+(?:\\|[\\w\\\\]+)*)\\s+)?(&)?\\s*\\$(\\w+)(?:\\s*=\\s*(.*))?($)~s';
-			if ( ! preg_match($pattern, $arg, $matches)) {
-				// Wrong annotation format
-				continue;
-			}
-
-			list(, $typeHint, $passedByReference, $name, $defaultValueDefinition) = $matches;
-
-			$parameters[$name] = $this->reflectionFactory->createParameterMagic([
-				'name' => $name,
-				'position' => $position,
-				'typeHint' => $typeHint,
-				'defaultValueDefinition' => $defaultValueDefinition,
-				'unlimited' => FALSE,
-				'passedByReference' => ($passedByReference === '&'),
-				'declaringFunction' => $method
-			]);
-			$method->addAnnotation('param', ltrim(sprintf('%s $%s', $typeHint, $name)));
-		}
-		$method->setParameters($parameters);
-	}
-
-
-	/**
-	 * @param string $annotation
-	 * @param string $annotationName
-	 */
-	private function processMagicPropertyAnnotation($annotation, $annotationName)
-	{
-		$pattern = '~^(?:([\\w\\\\]+(?:\\|[\\w\\\\]+)*)\\s+)?\\$(\\w+)(?:\\s+(.*))?($)~s';
-		if ( ! preg_match($pattern, $annotation, $matches)) {
-			// Wrong annotation format
-			return;
-		}
-
-		list(, $typeHint, $name, $shortDescription) = $matches;
-
-		$doc = $this->getDocComment();
-		$tmp = $annotation;
-		if ($delimiter = strpos($annotation, "\n")) {
-			$tmp = substr($annotation, 0, $delimiter);
-		}
-
-		$startLine = $this->getStartLine() + substr_count(substr($doc, 0, strpos($doc, $tmp)), "\n");
-
-		$this->ownMagicProperties[$name] = $this->reflectionFactory->createPropertyMagic([
-			'name' => $name,
-			'typeHint' => $typeHint,
-			'shortDescription' => str_replace("\n", ' ', $shortDescription),
-			'startLine' => $startLine,
-			'endLine' => $startLine + substr_count($annotation, "\n"),
-			'readOnly' => ($annotationName === 'property-read'),
-			'writeOnly' => ($annotationName === 'property-write'),
-			'declaringClass' => $this
-		]);
-	}
-
-
-	/**
 	 * @return int
 	 */
 	private function getVisibilityLevel()
 	{
 		return $this->configuration->getOption(CO::VISIBILITY_LEVELS);
+	}
+
+
+	/**
+	 * @return bool
+	 */
+	private function isVisibilityLevelPublic()
+	{
+		return $this->getVisibilityLevel() & Visibility::IS_PUBLIC;
 	}
 
 }
