@@ -18,7 +18,10 @@ class RelativePathResolverTest extends PHPUnit_Framework_TestCase
 		$relativePathResolver = new RelativePathResolver($configuration);
 
 		$this->assertSame('some-file.txt', $relativePathResolver->getRelativePath(TEMP_DIR . '/some-file.txt'));
-		$this->assertSame('some/dir/some-file.txt', $relativePathResolver->getRelativePath(TEMP_DIR . '/some/dir/some-file.txt'));
+		$this->assertSame(
+			'some/dir/some-file.txt',
+			$relativePathResolver->getRelativePath(TEMP_DIR . '/some/dir/some-file.txt')
+		);
 	}
 
 

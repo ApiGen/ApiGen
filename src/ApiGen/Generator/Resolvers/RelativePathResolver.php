@@ -23,7 +23,6 @@ class RelativePathResolver
 	 */
 	private $configuration;
 
-
 	/**
 	 * @var array
 	 */
