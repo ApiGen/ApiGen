@@ -10,7 +10,7 @@ class ConstantsTest extends TestCase
 
 	public function testGetConstants()
 	{
-		$this->assertCount(1, $this->reflectionClass->getConstants());
+		$this->assertCount(2, $this->reflectionClass->getConstants());
 	}
 
 
@@ -63,6 +63,12 @@ class ConstantsTest extends TestCase
 	public function testGetConstantNonExisting()
 	{
 		$this->reflectionClass->getConstant('NON_EXISTING');
+	}
+
+
+	public function testGetInheritedConstants()
+	{
+		$this->assertCount(1, $this->reflectionClass->getInheritedConstants());
 	}
 
 }

@@ -49,4 +49,28 @@ class PropertiesTest extends TestCase
 		$this->assertCount(1, $this->reflectionClass->getOwnMagicProperties());
 	}
 
+
+	public function testGetInheritedProperties()
+	{
+		$this->assertCount(1, $this->reflectionClass->getInheritedProperties());
+	}
+
+
+	public function testGetInheritedMagicProperties()
+	{
+		$this->assertCount(0, $this->reflectionClass->getInheritedMagicProperties());
+	}
+
+
+	public function testGetUsedProperties()
+	{
+		$this->assertCount(1, $this->reflectionClass->getUsedProperties());
+	}
+
+
+	public function testGetUsedMagicProperties()
+	{
+		$this->assertCount(1, $this->reflectionClass->getUsedMagicProperties());
+	}
+
 }

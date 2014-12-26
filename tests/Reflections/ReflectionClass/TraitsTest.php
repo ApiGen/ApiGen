@@ -78,4 +78,16 @@ class TraitsTest extends TestCase
 		$this->assertTrue($this->reflectionClass->usesTrait('Project\SomeTraitNotPresentHere'));
 	}
 
+
+	public function testGetDirectUsers()
+	{
+		$this->assertCount(1, $this->reflectionClassOfTrait->getDirectUsers());
+	}
+
+
+	public function testGetIndirectUsers()
+	{
+		$this->assertCount(0, $this->reflectionClassOfTrait->getIndirectUsers());
+	}
+
 }

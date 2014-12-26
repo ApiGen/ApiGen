@@ -599,17 +599,13 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * @return array
+	 * @return ReflectionClass[]|array
 	 */
 	public function getDirectSubClasses()
 	{
 		$subClasses = [];
-		$name = $this->reflection->getName();
 		foreach ($this->getParsedClasses() as $class) {
-			if ( ! $class->isDocumented()) {
-				continue;
-			}
-			if ($name === $class->getParentClassName()) {
+			if ($class->isDocumented() && $this->getName() === $class->getParentClassName()) {
 				$subClasses[] = $class;
 			}
 		}
@@ -619,17 +615,15 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * @return array
+	 * @return ReflectionClass[]|array
 	 */
 	public function getIndirectSubClasses()
 	{
 		$subClasses = [];
-		$name = $this->reflection->getName();
 		foreach ($this->getParsedClasses() as $class) {
-			if ( ! $class->isDocumented()) {
-				continue;
-			}
-			if ($name !== $class->getParentClassName() && $class->isSubclassOf($name)) {
+			if ($class->isDocumented() && $this->getName() !== $class->getParentClassName()
+				&& $class->isSubclassOf($this->getName())
+			) {
 				$subClasses[] = $class;
 			}
 		}

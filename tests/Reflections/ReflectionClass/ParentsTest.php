@@ -31,4 +31,16 @@ class ParentsTest extends TestCase
 		$this->assertSame(['Project\ParentClass'], $this->reflectionClass->getParentClassNameList());
 	}
 
+
+	public function testGetDirectSubClasses()
+	{
+		$this->assertCount(1, $this->reflectionClassOfParent->getDirectSubClasses());
+	}
+
+
+	public function testIndirectSubClasses()
+	{
+		$this->assertCount(0, $this->reflectionClassOfParent->getIndirectSubClasses());
+	}
+
 }

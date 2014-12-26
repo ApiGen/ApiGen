@@ -9,6 +9,8 @@ namespace Project;
 class ParentClass
 {
 
+	const SOME_PARENT_CONSTANT = 123;
+
 	protected $someParentProperty;
 
 

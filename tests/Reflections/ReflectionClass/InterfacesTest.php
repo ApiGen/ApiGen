@@ -45,8 +45,7 @@ class InterfacesTest extends TestCase
 
 	public function testGetDirectImplementers()
 	{
-		$directImplementers = $this->reflectionClassOfInterface->getDirectImplementers();
-		$this->assertSame([], $directImplementers);
+		$this->assertCount(1, $this->reflectionClassOfInterface->getDirectImplementers());
 	}
 
 

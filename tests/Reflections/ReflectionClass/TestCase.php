@@ -56,6 +56,7 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
 		$parserResultMock->shouldReceive('getElementsByType')->andReturnUsing(function ($arg) {
 			if ($arg) {
 				return [
+					'Project\AccessLevels' => $this->reflectionClass,
 					'Project\ParentClass' => $this->reflectionClassOfParent,
 					'Project\SomeTrait' => $this->reflectionClassOfTrait,
 					'Project\RichInterface' => $this->reflectionClassOfInterface

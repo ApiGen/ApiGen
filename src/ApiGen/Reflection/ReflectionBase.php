@@ -169,7 +169,7 @@ abstract class ReflectionBase extends Nette\Object implements Reflection
 
 
 	/**
-	 * @return ArrayObject
+	 * @return ArrayObject|ReflectionClass[]
 	 */
 	protected function getParsedClasses()
 	{

@@ -51,4 +51,28 @@ class MethodsTest extends TestCase
 		$this->assertCount(1, $this->reflectionClass->getOwnMagicMethods());
 	}
 
+
+	public function testGetInheritedMethods()
+	{
+		$this->assertCount(2, $this->reflectionClass->getInheritedMethods());
+	}
+
+
+	public function testGetInheritedMagicMethods()
+	{
+		$this->assertCount(1, $this->reflectionClass->getInheritedMagicMethods());
+	}
+
+
+	public function testGetUsedMethods()
+	{
+		$this->assertCount(1, $this->reflectionClass->getUsedMethods());
+	}
+
+
+	public function testGetUsedMagicMethods()
+	{
+		$this->assertCount(1, $this->reflectionClass->getUsedMagicMethods());
+	}
+
 }
