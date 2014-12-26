@@ -62,9 +62,6 @@ class ReflectionParameterMagic extends ReflectionParameter
 		$this->declaringFunction = $settings['declaringFunction'];
 
 		$this->reflectionType = get_class($this);
-		if ( ! isset(self::$reflectionMethods[$this->reflectionType])) {
-			self::$reflectionMethods[$this->reflectionType] = array_flip(get_class_methods($this));
-		}
 	}
 
 

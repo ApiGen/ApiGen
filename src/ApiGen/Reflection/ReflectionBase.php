@@ -28,11 +28,6 @@ abstract class ReflectionBase extends Nette\Object implements Reflection
 {
 
 	/**
-	 * @var array
-	 */
-	protected static $reflectionMethods = [];
-
-	/**
 	 * @var string
 	 */
 	protected $reflectionType;
@@ -61,16 +56,11 @@ abstract class ReflectionBase extends Nette\Object implements Reflection
 	public function __construct(IReflection $reflection)
 	{
 		$this->reflectionType = get_class($this);
-		if ( ! isset(self::$reflectionMethods[$this->reflectionType])) {
-			self::$reflectionMethods[$this->reflectionType] = array_flip(get_class_methods($this));
-		}
 		$this->reflection = $reflection;
 	}
 
 
 	/**
-	 * Returns FQN name.
-	 *
 	 * @return string
 	 */
 	public function getName()
@@ -80,8 +70,6 @@ abstract class ReflectionBase extends Nette\Object implements Reflection
 
 
 	/**
-	 * Returns an element pretty (docblock compatible) name.
-	 *
 	 * @return string
 	 */
 	public function getPrettyName()
