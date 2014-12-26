@@ -72,15 +72,6 @@ class ReflectionClass extends ReflectionElement
 	/**
 	 * @return string
 	 */
-	public function getName()
-	{
-		return $this->reflection->getName();
-	}
-
-
-	/**
-	 * @return string
-	 */
 	public function getShortName()
 	{
 		return $this->reflection->getShortName();

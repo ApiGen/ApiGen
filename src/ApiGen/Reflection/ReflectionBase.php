@@ -24,6 +24,9 @@ use TokenReflection\IReflectionParameter;
 use TokenReflection\IReflectionProperty;
 
 
+/**
+ * @method string getDocComment()
+ */
 abstract class ReflectionBase extends Nette\Object implements Reflection
 {
 
@@ -90,15 +93,6 @@ abstract class ReflectionBase extends Nette\Object implements Reflection
 	/**
 	 * @return bool
 	 */
-	public function isUserDefined()
-	{
-		return $this->reflection->isUserDefined();
-	}
-
-
-	/**
-	 * @return bool
-	 */
 	public function isTokenized()
 	{
 		return $this->reflection->isTokenized();
@@ -115,22 +109,20 @@ abstract class ReflectionBase extends Nette\Object implements Reflection
 
 
 	/**
-	 * @return integer
+	 * @return int
 	 */
 	public function getStartLine()
 	{
 		$startLine = $this->reflection->getStartLine();
-
 		if ($doc = $this->getDocComment()) {
 			$startLine -= substr_count($doc, "\n") + 1;
 		}
-
 		return $startLine;
 	}
 
 
 	/**
-	 * @return integer
+	 * @return int
 	 */
 	public function getEndLine()
 	{
