@@ -21,7 +21,7 @@ class FileSystem
 	 */
 	public static function normalizePath($path)
 	{
-		return str_replace(['\\'], '/', $path);
+		return str_replace('\\', '/', $path);
 	}
 
 
@@ -69,7 +69,7 @@ class FileSystem
 
 	/**
 	 * @param string $path
-	 * @param array $baseDirectories List of base directories
+	 * @param array $baseDirectories
 	 * @return string
 	 */
 	public static function getAbsolutePath($path, array $baseDirectories = [])
@@ -77,14 +77,14 @@ class FileSystem
 		if (self::isAbsolutePath($path)) {
 			return $path;
 		}
-		if (count($baseDirectories)) {
-			foreach ($baseDirectories as $directory) {
-				$fileName = $directory . '/' . $path;
-				if (is_file($fileName)) {
-					return realpath($fileName);
-				}
+
+		foreach ($baseDirectories as $directory) {
+			$fileName = $directory . '/' . $path;
+			if (is_file($fileName)) {
+				return realpath($fileName);
 			}
 		}
+
 		$path = FileSystem::normalizePath($path);
 		if (file_exists($path)) {
 			return realpath($path);
