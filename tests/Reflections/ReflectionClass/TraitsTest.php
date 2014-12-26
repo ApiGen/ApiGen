@@ -22,6 +22,7 @@ class TraitsTest extends TestCase
 		$this->assertSame('Project\SomeTraitNotPresentHere', $traits['Project\SomeTraitNotPresentHere']);
 	}
 
+
 	public function testGetOwnTraits()
 	{
 		$traits = $this->reflectionClass->getOwnTraits();

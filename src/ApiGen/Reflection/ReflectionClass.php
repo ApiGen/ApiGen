@@ -1030,7 +1030,6 @@ class ReflectionClass extends ReflectionElement
 	}
 
 
-
 	/**
 	 * @return bool
 	 */
