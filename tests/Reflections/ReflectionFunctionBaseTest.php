@@ -5,6 +5,7 @@ namespace ApiGen\Tests\Reflection;
 use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Parser\Broker\Backend;
 use ApiGen\Reflection\ReflectionFunction;
+use ApiGen\Reflection\ReflectionFunctionBase;
 use ApiGen\Reflection\ReflectionParameter;
 use ApiGen\Reflection\TokenReflection\ReflectionFactory;
 use ApiGen\Tests\MethodInvoker;
@@ -18,7 +19,7 @@ class ReflectionParameterBaseTest extends PHPUnit_Framework_TestCase
 {
 
 	/**
-	 * @var ReflectionFunction
+	 * @var ReflectionFunctionBase
 	 */
 	private $reflectionFunction;
 

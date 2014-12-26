@@ -4,6 +4,7 @@ namespace ApiGen\Tests\Reflection;
 
 use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Parser\Broker\Backend;
+use ApiGen\Reflection\ReflectionBase;
 use ApiGen\Reflection\ReflectionClass;
 use ApiGen\Reflection\ReflectionMethod;
 use ApiGen\Reflection\TokenReflection\ReflectionFactory;
@@ -17,7 +18,7 @@ class ReflectionBaseTest extends PHPUnit_Framework_TestCase
 {
 
 	/**
-	 * @var ReflectionClass
+	 * @var ReflectionBase
 	 */
 	private $reflectionClass;
 
@@ -64,13 +65,13 @@ class ReflectionBaseTest extends PHPUnit_Framework_TestCase
 
 	public function testGetStartLine()
 	{
-		$this->assertSame(6, $this->reflectionClass->getStartLine());
+		$this->assertSame(12, $this->reflectionClass->getStartLine());
 	}
 
 
 	public function testGetEndLine()
 	{
-		$this->assertSame(33, $this->reflectionClass->getEndLine());
+		$this->assertSame(41, $this->reflectionClass->getEndLine());
 	}
 
 

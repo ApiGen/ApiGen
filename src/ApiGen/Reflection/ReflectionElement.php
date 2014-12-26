@@ -110,7 +110,7 @@ abstract class ReflectionElement extends ReflectionBase
 				) {
 					$this->isDocumented = FALSE;
 
-				} elseif (count($this->reflection->getAnnotation('ignore')) > 0) {
+				} elseif ($this->reflection->hasAnnotation('ignore')) {
 					$this->isDocumented = FALSE;
 				}
 			}
@@ -244,7 +244,7 @@ abstract class ReflectionElement extends ReflectionBase
 
 
 	/**
-	 * @return array
+	 * @return string[]
 	 */
 	public function getNamespaceAliases()
 	{
@@ -288,7 +288,7 @@ abstract class ReflectionElement extends ReflectionBase
 
 
 	/**
-	 * @return string|boolean
+	 * @return string|bool
 	 */
 	public function getDocComment()
 	{
@@ -314,7 +314,6 @@ abstract class ReflectionElement extends ReflectionBase
 			unset($annotations[ReflectionAnnotation::LONG_DESCRIPTION]);
 
 			$annotations += $this->getAnnotationsFromReflection($this->reflection);
-
 			$this->annotations = $annotations;
 		}
 
@@ -361,8 +360,6 @@ abstract class ReflectionElement extends ReflectionBase
 
 
 	/**
-	 * Adds a reason why this element's reflection is invalid.
-	 *
 	 * @return TokenReflection\Invalid\ReflectionElement
 	 */
 	public function addReason(BaseException $reason)
@@ -373,7 +370,7 @@ abstract class ReflectionElement extends ReflectionBase
 
 
 	/**
-	 * @return array|TokenReflection\Invalid\ReflectionElement
+	 * @return TokenReflection\Invalid\ReflectionElement
 	 */
 	public function getReasons()
 	{
