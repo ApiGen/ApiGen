@@ -52,7 +52,7 @@ class MagicMethodExtractor
 
 	/**
 	 * @param array $traits
-	 * @param $isDocumented
+	 * @param bool $isDocumented
 	 * @return ReflectionMethodMagic[]
 	 */
 	private function extractFromTraits($traits, $isDocumented)

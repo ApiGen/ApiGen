@@ -67,6 +67,7 @@ class AnnotationPropertyExtractor
 		list(, $typeHint, $name, $shortDescription) = $matches;
 
 		$startLine = $this->getStartLine($annotation);
+		$properties = [];
 		$properties[$name] = $this->reflectionFactory->createPropertyMagic([
 			'name' => $name,
 			'typeHint' => $typeHint,

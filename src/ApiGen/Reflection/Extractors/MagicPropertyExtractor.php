@@ -51,7 +51,7 @@ class MagicPropertyExtractor
 
 	/**
 	 * @param array $traits
-	 * @param $isDocumented
+	 * @param bool $isDocumented
 	 * @return ReflectionPropertyMagic[]
 	 */
 	private function extractFromTraits($traits, $isDocumented)

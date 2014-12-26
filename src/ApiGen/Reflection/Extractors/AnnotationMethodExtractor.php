@@ -71,6 +71,7 @@ class AnnotationMethodExtractor
 		$startLine = $this->getStartLine($annotation);
 		$endLine = $startLine + substr_count($annotation, "\n");
 
+		$methods = [];
 		$methods[$name] = $method = $this->reflectionFactory->createMethodMagic([
 			'name' => $name,
 			'shortDescription' => str_replace("\n", ' ', $shortDescription),
@@ -87,7 +88,7 @@ class AnnotationMethodExtractor
 
 	/**
 	 * @param string $annotation
-	 * @return array
+	 * @return int
 	 */
 	private function getStartLine($annotation)
 	{
