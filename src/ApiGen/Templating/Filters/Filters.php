@@ -41,8 +41,6 @@ abstract class Filters
 
 
 	/**
-	 * Returns unified type value definition (class name or member data type).
-	 *
 	 * @param string $name
 	 * @param bool $trimNamespaceSeparator
 	 * @return string

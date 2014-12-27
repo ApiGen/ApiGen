@@ -171,32 +171,34 @@ class UrlFilters extends Filters
 
 	/********************* description *********************/
 
+
 	/**
-	 * Docblock description
+	 * @param string $annotation
+	 * @param ReflectionElement $reflectionElement
+	 * @return string
 	 */
-	public function description($annotation, $context)
+	public function description($annotation, ReflectionElement $reflectionElement)
 	{
 		$description = trim(strpbrk($annotation, "\n\r\t $")) ?: $annotation;
-		return $this->doc($description, $context);
+		return $this->doc($description, $reflectionElement);
 	}
 
 
 	/**
-	 * @param ReflectionElement $element
+	 * @param ReflectionElement $reflectionElement
 	 * @param bool $block
 	 * @return string
 	 */
-	public function shortDescription($element, $block = FALSE)
+	public function shortDescription(ReflectionElement $reflectionElement, $block = FALSE)
 	{
-		return $this->doc($element->getShortDescription(), $element, $block);
+		return $this->doc($reflectionElement->getShortDescription(), $reflectionElement, $block);
 	}
 
 
 	/**
-	 * @param ReflectionElement $element
 	 * @return string
 	 */
-	public function longDescription($element)
+	public function longDescription(ReflectionElement $element)
 	{
 		$long = $element->getLongDescription();
 
@@ -216,7 +218,7 @@ class UrlFilters extends Filters
 
 	/**
 	 * @param string $text
-	 * @param ReflectionElement $context
+	 * @param ReflectionElement $reflectionElement
 	 * @param bool $block
 	 * @return string
 	 */
@@ -259,10 +261,10 @@ class UrlFilters extends Filters
 
 	/**
 	 * @param string $text
-	 * @param ReflectionElement $reflection
+	 * @param ReflectionElement $reflectionElement
 	 * @return string
 	 */
-	public function resolveLinkAndSeeAnnotation($text, ReflectionElement $reflectionElement)
+	private function resolveLinkAndSeeAnnotation($text, ReflectionElement $reflectionElement)
 	{
 		return preg_replace_callback('~{@(?:link|see)\\s+([^}]+)}~', function ($matches) use ($reflectionElement) {
 			list($url, $description) = Strings::split($matches[1]);
@@ -281,6 +283,7 @@ class UrlFilters extends Filters
 
 
 	/********************* highlight *********************/
+
 
 	/**
 	 * @param string $source

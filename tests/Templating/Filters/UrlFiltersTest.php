@@ -102,6 +102,66 @@ class UrlFiltersTest extends PHPUnit_Framework_TestCase
 	}
 
 
+	public function testDescription()
+	{
+		$docBlock = <<<DOC
+/**
+ * Some annotation
+ * with more rows
+ */
+DOC;
+
+		$reflectionElementMock = Mockery::mock('ApiGen\Reflection\ReflectionElement');
+		$expected = <<<EXP
+Markupped line: * Some annotation
+ * with more rows
+ */
+EXP;
+		$this->assertSame($expected, $this->urlFilters->description($docBlock, $reflectionElementMock));
+	}
+
+
+	public function testShortDescription()
+	{
+		$reflectionElementMock = Mockery::mock('ApiGen\Reflection\ReflectionElement');
+		$reflectionElementMock->shouldReceive('getShortDescription')->andReturn('Some short description');
+
+		$this->assertSame(
+			'Markupped line: Some short description',
+			$this->urlFilters->shortDescription($reflectionElementMock)
+		);
+
+		$this->assertSame(
+			'Markupped: Some short description',
+			$this->urlFilters->shortDescription($reflectionElementMock, TRUE)
+		);
+	}
+
+
+	public function testLongDescription()
+	{
+		$reflectionElementMock = Mockery::mock('ApiGen\Reflection\ReflectionElement');
+		$reflectionElementMock->shouldReceive('getLongDescription')->andReturn(
+<<<DOC
+Some long description with example:
+<code>echo "hi";</code>
+DOC
+		);
+
+		$this->assertSame(<<<EXPECTED
+Markupped: Some long description with example:
+<code>echo "hi";</code>
+EXPECTED
+		, $this->urlFilters->longDescription($reflectionElementMock));
+	}
+
+
+	public function testCreateLinkForElement()
+	{
+		// delegate to elementUrlFactory/elementLinkBuilder
+	}
+
+
 	/**
 	 * @return Mockery\MockInterface
 	 */
