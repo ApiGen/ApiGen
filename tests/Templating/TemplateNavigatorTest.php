@@ -42,18 +42,18 @@ class TemplateNavigatorTest extends ContainerAwareTestCase
 			return 'package-' . $args . '.html';
 		});
 
-		$urlFiltersMock = Mockery::mock('ApiGen\Templating\Filters\UrlFilters');
-		$urlFiltersMock->shouldReceive('classUrl')->andReturnUsing(function ($args) {
+		$elementUrlFactoryMock = Mockery::mock('ApiGen\Templating\Filters\Helpers\ElementUrlFactory');
+		$elementUrlFactoryMock->shouldReceive('createForClass')->andReturnUsing(function ($args) {
 			return 'class-' . $args->getName() . '.html';
 		});
-		$urlFiltersMock->shouldReceive('constantUrl')->andReturnUsing(function ($args) {
+		$elementUrlFactoryMock->shouldReceive('createForConstant')->andReturnUsing(function ($args) {
 			return 'constant-' . $args->getName() . '.html';
 		});
-		$urlFiltersMock->shouldReceive('functionUrl')->andReturnUsing(function ($args) {
+		$elementUrlFactoryMock->shouldReceive('createForFunction')->andReturnUsing(function ($args) {
 			return 'function-' . $args->getName() . '.html';
 		});
 		$this->templateNavigator = new TemplateNavigator(
-			$this->configuration, $sourceFiltersMock, $urlFiltersMock, $namespaceAndPackageUrlFiltersMock
+			$this->configuration, $sourceFiltersMock, $elementUrlFactoryMock, $namespaceAndPackageUrlFiltersMock
 		);
 	}
 

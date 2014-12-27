@@ -65,6 +65,7 @@ services:
 	- ApiGen\Templating\TemplateElementsLoader
 	- ApiGen\Templating\TemplateFactory
 	- ApiGen\Templating\TemplateNavigator
+	- ApiGen\Templating\Filters\Helpers\ElementUrlFactory
 	- ApiGen\Templating\Filters\Helpers\LinkBuilder
 	- {class: ApiGen\Templating\Filters\AnnotationFilters, tags: [latte.filter]}
 	- {class: ApiGen\Templating\Filters\PathFilters, tags: [latte.filter]}
@@ -73,6 +74,7 @@ services:
 	- {class: ApiGen\Templating\Filters\SourceFilters, tags: [latte.filter]}
 	- {class: ApiGen\Templating\Filters\UrlFilters, tags: [latte.filter]}
 	- {class: ApiGen\Templating\Filters\NamespaceAndPackageUrlFilters, tags: [latte.filter]}
+	- {class: ApiGen\Templating\Filters\ElementUrlFilters, tags: [latte.filter]}
 
 	# theme
 	- ApiGen\Theme\ThemeResources

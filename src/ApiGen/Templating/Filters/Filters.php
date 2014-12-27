@@ -35,6 +35,16 @@ abstract class Filters
 
 
 	/**
+	 * @param string $string
+	 * @return string
+	 */
+	public static function urlize($string)
+	{
+		return preg_replace('~[^\w]~', '.', $string);
+	}
+
+
+	/**
 	 * Returns unified type value definition (class name or member data type).
 	 *
 	 * @param string $name
@@ -61,16 +71,6 @@ abstract class Filters
 
 		// Class, constant or function
 		return $trimNamespaceSeparator ? ltrim($name, '\\') : $name;
-	}
-
-
-	/**
-	 * @param string $string
-	 * @return string
-	 */
-	protected function urlize($string)
-	{
-		return preg_replace('~[^\w]~', '.', $string);
 	}
 
 

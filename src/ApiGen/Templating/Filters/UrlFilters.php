@@ -20,6 +20,7 @@ use ApiGen\Reflection\ReflectionElement;
 use ApiGen\Reflection\ReflectionFunction;
 use ApiGen\Reflection\ReflectionMethod;
 use ApiGen\Reflection\ReflectionProperty;
+use ApiGen\Templating\Filters\Helpers\ElementUrlFactory;
 use ApiGen\Templating\Filters\Helpers\LinkBuilder;
 use ApiGen\Templating\Filters\Helpers\Strings;
 use Latte\Runtime\Filters as LatteFilters;
@@ -54,110 +55,26 @@ class UrlFilters extends Filters
 	 */
 	private $linkBuilder;
 
+	/**
+	 * @var ElementUrlFactory
+	 */
+	private $elementUrlFactory;
+
 
 	public function __construct(
 		Configuration $configuration,
 		SourceCodeHighlighter $highlighter,
 		Markup $markup,
 		ElementResolver $elementResolver,
-		LinkBuilder $linkBuilder
+		LinkBuilder $linkBuilder,
+		ElementUrlFactory $elementUrlFactory
 	) {
 		$this->highlighter = $highlighter;
 		$this->markup = $markup;
 		$this->elementResolver = $elementResolver;
 		$this->configuration = $configuration;
 		$this->linkBuilder = $linkBuilder;
-	}
-
-
-	/**
-	 * Returns a link to element summary file.
-	 *
-	 * @return string
-	 */
-	public function elementUrl(ReflectionElement $element)
-	{
-		if ($element instanceof ReflectionClass) {
-			return $this->classUrl($element);
-
-		} elseif ($element instanceof ReflectionMethod) {
-			return $this->methodUrl($element);
-
-		} elseif ($element instanceof ReflectionProperty) {
-			return $this->propertyUrl($element);
-
-		} elseif ($element instanceof ReflectionConstant) {
-			return $this->constantUrl($element);
-
-		} elseif ($element instanceof ReflectionFunction) {
-			return $this->functionUrl($element);
-		}
-
-		return NULL;
-	}
-
-
-	/**
-	 * @param string|ReflectionClass $class
-	 * @return string
-	 */
-	public function classUrl($class)
-	{
-		$className = $class instanceof ReflectionClass ? $class->getName() : $class;
-		return sprintf(
-			$this->configuration->getOption(CO::TEMPLATE)['templates']['class']['filename'],
-			$this->urlize($className)
-		);
-	}
-
-
-	/**
-	 * @return string
-	 */
-	public function methodUrl(ReflectionMethod $method, ReflectionClass $class = NULL)
-	{
-		$className = $class !== NULL ? $class->getName() : $method->getDeclaringClassName();
-		return $this->classUrl($className) . '#' . ($method->isMagic() ? 'm' : '') . '_'
-			. ($method->getOriginalName() ?: $method->getName());
-	}
-
-
-	/**
-	 * @return string
-	 */
-	public function propertyUrl(ReflectionProperty $property, ReflectionClass $class = NULL)
-	{
-		$className = $class !== NULL ? $class->getName() : $property->getDeclaringClassName();
-		return $this->classUrl($className) . '#' . ($property->isMagic() ? 'm' : '') . '$' . $property->getName();
-	}
-
-
-	/**
-	 * @return string
-	 */
-	public function constantUrl(ReflectionConstant $constant)
-	{
-		// Class constant
-		if ($className = $constant->getDeclaringClassName()) {
-			return $this->classUrl($className) . '#' . $constant->getName();
-		}
-		// Constant in namespace or global space
-		return sprintf(
-			$this->configuration->getOption(CO::TEMPLATE)['templates']['constant']['filename'],
-			$this->urlize($constant->getName())
-		);
-	}
-
-
-	/**
-	 * @return string
-	 */
-	public function functionUrl(ReflectionFunction $function)
-	{
-		return sprintf(
-			$this->configuration->getOption(CO::TEMPLATE)['templates']['function']['filename'],
-			$this->urlize($function->getName())
-		);
+		$this->elementUrlFactory = $elementUrlFactory;
 	}
 
 
@@ -394,13 +311,17 @@ class UrlFilters extends Filters
 	private function createLinkForElement($element, array $classes)
 	{
 		if ($element instanceof ReflectionClass) {
-			return $this->linkBuilder->build($this->classUrl($element), $element->getName(), TRUE, $classes);
+			return $this->linkBuilder->build(
+				$this->elementUrlFactory->createForClass($element), $element->getName(), TRUE, $classes
+			);
 
 		} elseif ($element instanceof ReflectionConstant && $element->getDeclaringClassName() === NULL) {
 			return $this->createLinkForGlobalConstant($element, $classes);
 
 		} elseif ($element instanceof ReflectionFunction) {
-			return $this->linkBuilder->build($this->functionUrl($element), $element->getName() . '()', TRUE, $classes);
+			return $this->linkBuilder->build(
+				$this->elementUrlFactory->createForFunction($element), $element->getName() . '()', TRUE, $classes
+			);
 
 		} else {
 			return $this->createLinkForPropertyMethodOrConstants($element, $classes);
@@ -418,7 +339,7 @@ class UrlFilters extends Filters
 			. LatteFilters::escapeHtml($element->getShortName()) . '</b>'
 			: '<b>' . LatteFilters::escapeHtml($element->getName()) . '</b>';
 
-		return $this->linkBuilder->build($this->constantUrl($element), $text, FALSE, $classes);
+		return $this->linkBuilder->build($this->elementUrlFactory->createForConstant($element), $text, FALSE, $classes);
 	}
 
 
@@ -432,11 +353,11 @@ class UrlFilters extends Filters
 		$url = '';
 		$text = LatteFilters::escapeHtml($element->getDeclaringClassName());
 		if ($element instanceof ReflectionProperty) {
-			$url = $this->propertyUrl($element);
+			$url = $this->elementUrlFactory->createForProperty($element);
 			$text .= '::<var>$' . LatteFilters::escapeHtml($element->getName()) . '</var>';
 
 		} elseif ($element instanceof ReflectionMethod) {
-			$url = $this->methodUrl($element);
+			$url = $this->elementUrlFactory->createForMethod($element);
 			$text .= '::' . LatteFilters::escapeHtml($element->getName()) . '()';
 
 		} elseif ($element instanceof ReflectionConstant) {
