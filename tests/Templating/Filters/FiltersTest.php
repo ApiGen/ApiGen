@@ -72,29 +72,6 @@ class FiltersTest extends PHPUnit_Framework_TestCase
 	}
 
 
-	public function testLink()
-	{
-		$this->assertSame(
-			'<a href="url">text</a>',
-			MethodInvoker::callMethodOnObject($this->filters, 'link', ['url', 'text'])
-		);
-
-		$this->assertSame(
-			'<a href="url" class="class">text</a>',
-			MethodInvoker::callMethodOnObject($this->filters, 'link', ['url', 'text', FALSE, ['class']])
-		);
-	}
-
-
-	public function testEscapeHtml()
-	{
-		$this->assertSame(
-			'&lt;p&gt;',
-			MethodInvoker::callMethodOnObject($this->filters, 'escapeHtml', ['<p>'])
-		);
-	}
-
-
 	public function testUrlize()
 	{
 		$this->assertSame(
