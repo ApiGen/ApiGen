@@ -36,7 +36,7 @@ class ElementUrlFactory
 
 
 	/**
-	 * @param ReflectionElement|string $element
+	 * @param ReflectionElement $element
 	 * @return string|NULL
 	 */
 	public function createForElement($element)

@@ -215,17 +215,14 @@ class UrlFilters extends Filters
 
 
 	/**
-	 * Formats text as documentation block or line.
-	 *
 	 * @param string $text
 	 * @param ReflectionElement $context
-	 * @param bool $block Parse text as block
+	 * @param bool $block
 	 * @return string
 	 */
-	public function doc($text, ReflectionElement $context, $block = FALSE)
+	public function doc($text, ReflectionElement $reflectionElement, $block = FALSE)
 	{
-		// Resolve @internal
-		$text = $this->resolveInternal($text);
+		$text = $this->resolveInternalAnnotation($text);
 
 		// Process markup
 		if ($block) {
@@ -235,30 +232,7 @@ class UrlFilters extends Filters
 			$text = $this->markup->line($text);
 		}
 
-		// Resolve @link and @see
-		$text = $this->resolveLinks($text, $context);
-
-		return $text;
-	}
-
-
-	/**
-	 * Resolves links in documentation.
-	 *
-	 * @param string $text Processed documentation text
-	 * @param ReflectionElement $context Reflection object
-	 * @return string
-	 */
-	public function resolveLinks($text, ReflectionElement $context)
-	{
-		return preg_replace_callback('~{@(?:link|see)\\s+([^}]+)}~', function ($matches) use ($context) {
-			// Texy already added <a> so it has to be stripped
-			list($url, $description) = Strings::split(strip_tags($matches[1]));
-			if (Validators::isUri($url)) {
-				return $this->linkBuilder->build($url, $description ?: $url);
-			}
-			return $this->resolveLink($matches[1], $context) ?: $matches[1];
-		}, $text);
+		return $this->resolveLinkAndSeeAnnotation($text, $reflectionElement);
 	}
 
 
@@ -266,15 +240,42 @@ class UrlFilters extends Filters
 	 * @param string $text
 	 * @return string
 	 */
-	private function resolveInternal($text)
+	private function resolveInternalAnnotation($text)
 	{
 		$pattern = '~\\{@(\\w+)(?:(?:\\s+((?>(?R)|[^{}]+)*)\\})|\\})~';
 		return preg_replace_callback($pattern, function ($matches) {
-			// Replace only internal
 			if ($matches[1] !== 'internal') {
 				return $matches[0];
 			}
-			return $this->configuration->getOptions()[CO::INTERNAL] && isset($matches[2]) ? $matches[2] : '';
+
+			if ($this->configuration->getOption(CO::INTERNAL) && isset($matches[2])) {
+				return $matches[2];
+			}
+
+			return '';
+		}, $text);
+	}
+
+
+	/**
+	 * @param string $text
+	 * @param ReflectionElement $reflection
+	 * @return string
+	 */
+	public function resolveLinkAndSeeAnnotation($text, ReflectionElement $reflectionElement)
+	{
+		return preg_replace_callback('~{@(?:link|see)\\s+([^}]+)}~', function ($matches) use ($reflectionElement) {
+			list($url, $description) = Strings::split($matches[1]);
+
+			if (Validators::isUri($url)) {
+				return $this->linkBuilder->build($url, $description ?: $url);
+			}
+
+			if ($link = $this->resolveLink($matches[1], $reflectionElement)) {
+				return $link;
+			}
+
+			return $matches[1];
 		}, $text);
 	}
 
@@ -361,7 +362,7 @@ class UrlFilters extends Filters
 			$text .= '::' . LatteFilters::escapeHtml($element->getName()) . '()';
 
 		} elseif ($element instanceof ReflectionConstant) {
-			$url = $this->constantUrl($element);
+			$url = $this->elementUrlFactory->createForConstant($element);
 			$text .= '::<b>' . LatteFilters::escapeHtml($element->getName()) . '</b>';
 		}
 

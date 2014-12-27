@@ -9,10 +9,6 @@
 
 namespace ApiGen\Templating\Filters;
 
-use ApiGen\Templating\Filters\Helpers\Strings;
-use Latte;
-use Nette\Utils\Html;
-
 
 abstract class Filters
 {
