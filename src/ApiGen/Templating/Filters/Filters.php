@@ -65,32 +65,6 @@ abstract class Filters
 
 
 	/**
-	 * @param string $url
-	 * @param string $text
-	 * @param bool $escape
-	 * @param array $classes
-	 * @return string
-	 */
-	protected function link($url, $text, $escape = TRUE, array $classes = [])
-	{
-		$link = Html::el('a')->href($url)
-			->setText($escape ? self::escapeHtml($text) : $text)
-			->addAttributes(['class' => $classes]);
-		return (string) $link;
-	}
-
-
-	/**
-	 * @param string $html
-	 * @return string
-	 */
-	protected function escapeHtml($html)
-	{
-		return Latte\Runtime\Filters::escapeHtml($html);
-	}
-
-
-	/**
 	 * @param string $string
 	 * @return string
 	 */

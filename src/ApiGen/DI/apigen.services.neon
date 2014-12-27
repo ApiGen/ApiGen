@@ -65,12 +65,14 @@ services:
 	- ApiGen\Templating\TemplateElementsLoader
 	- ApiGen\Templating\TemplateFactory
 	- ApiGen\Templating\TemplateNavigator
+	- ApiGen\Templating\Filters\Helpers\LinkBuilder
 	- {class: ApiGen\Templating\Filters\AnnotationFilters, tags: [latte.filter]}
 	- {class: ApiGen\Templating\Filters\PathFilters, tags: [latte.filter]}
 	- {class: ApiGen\Templating\Filters\PhpManualFilters, tags: [latte.filter]}
 	- {class: ApiGen\Templating\Filters\ResolverFilters, tags: [latte.filter]}
 	- {class: ApiGen\Templating\Filters\SourceFilters, tags: [latte.filter]}
 	- {class: ApiGen\Templating\Filters\UrlFilters, tags: [latte.filter]}
+	- {class: ApiGen\Templating\Filters\NamespaceAndPackageUrlFilters, tags: [latte.filter]}
 
 	# theme
 	- ApiGen\Theme\ThemeResources
