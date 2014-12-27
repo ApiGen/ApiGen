@@ -17,10 +17,7 @@ use ApiGen\Generator\SourceCodeHighlighter\SourceCodeHighlighter;
 use ApiGen\Reflection\ReflectionClass;
 use ApiGen\Reflection\ReflectionConstant;
 use ApiGen\Reflection\ReflectionElement;
-use ApiGen\Reflection\ReflectionFunction;
-use ApiGen\Reflection\ReflectionMethod;
-use ApiGen\Reflection\ReflectionProperty;
-use ApiGen\Templating\Filters\Helpers\ElementUrlFactory;
+use ApiGen\Templating\Filters\Helpers\ElementLinkFactory;
 use ApiGen\Templating\Filters\Helpers\LinkBuilder;
 use ApiGen\Templating\Filters\Helpers\Strings;
 use Latte\Runtime\Filters as LatteFilters;
@@ -56,9 +53,9 @@ class UrlFilters extends Filters
 	private $linkBuilder;
 
 	/**
-	 * @var ElementUrlFactory
+	 * @var ElementLinkFactory
 	 */
-	private $elementUrlFactory;
+	private $elementLinkFactory;
 
 
 	public function __construct(
@@ -67,14 +64,14 @@ class UrlFilters extends Filters
 		Markup $markup,
 		ElementResolver $elementResolver,
 		LinkBuilder $linkBuilder,
-		ElementUrlFactory $elementUrlFactory
+		ElementLinkFactory $elementLinkFactory
 	) {
 		$this->highlighter = $highlighter;
 		$this->markup = $markup;
 		$this->elementResolver = $elementResolver;
 		$this->configuration = $configuration;
 		$this->linkBuilder = $linkBuilder;
-		$this->elementUrlFactory = $elementUrlFactory;
+		$this->elementLinkFactory = $elementLinkFactory;
 	}
 
 
@@ -308,68 +305,11 @@ class UrlFilters extends Filters
 
 
 	/**
-	 * @param ReflectionElement $element
-	 * @param array $classes
 	 * @return string
 	 */
-	private function createLinkForElement($element, array $classes)
+	private function createLinkForElement($reflectionElement, array $classes)
 	{
-		if ($element instanceof ReflectionClass) {
-			return $this->linkBuilder->build(
-				$this->elementUrlFactory->createForClass($element), $element->getName(), TRUE, $classes
-			);
-
-		} elseif ($element instanceof ReflectionConstant && $element->getDeclaringClassName() === NULL) {
-			return $this->createLinkForGlobalConstant($element, $classes);
-
-		} elseif ($element instanceof ReflectionFunction) {
-			return $this->linkBuilder->build(
-				$this->elementUrlFactory->createForFunction($element), $element->getName() . '()', TRUE, $classes
-			);
-
-		} else {
-			return $this->createLinkForPropertyMethodOrConstants($element, $classes);
-		}
-	}
-
-
-	/**
-	 * @return string
-	 */
-	private function createLinkForGlobalConstant(ReflectionConstant $element, array $classes)
-	{
-		$text = $element->inNamespace()
-			? LatteFilters::escapeHtml($element->getNamespaceName()) . '\\<b>'
-			. LatteFilters::escapeHtml($element->getShortName()) . '</b>'
-			: '<b>' . LatteFilters::escapeHtml($element->getName()) . '</b>';
-
-		return $this->linkBuilder->build($this->elementUrlFactory->createForConstant($element), $text, FALSE, $classes);
-	}
-
-
-	/**
-	 * @param ReflectionMethod|ReflectionProperty|ReflectionConstant $element
-	 * @param array $classes
-	 * @return string
-	 */
-	private function createLinkForPropertyMethodOrConstants($element, array $classes)
-	{
-		$url = '';
-		$text = LatteFilters::escapeHtml($element->getDeclaringClassName());
-		if ($element instanceof ReflectionProperty) {
-			$url = $this->elementUrlFactory->createForProperty($element);
-			$text .= '::<var>$' . LatteFilters::escapeHtml($element->getName()) . '</var>';
-
-		} elseif ($element instanceof ReflectionMethod) {
-			$url = $this->elementUrlFactory->createForMethod($element);
-			$text .= '::' . LatteFilters::escapeHtml($element->getName()) . '()';
-
-		} elseif ($element instanceof ReflectionConstant) {
-			$url = $this->elementUrlFactory->createForConstant($element);
-			$text .= '::<b>' . LatteFilters::escapeHtml($element->getName()) . '</b>';
-		}
-
-		return $this->linkBuilder->build($url, $text, FALSE, $classes);
+		return $this->elementLinkFactory->createForElement($reflectionElement, $classes);
 	}
 
 

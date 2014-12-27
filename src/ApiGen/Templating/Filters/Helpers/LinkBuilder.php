@@ -26,7 +26,7 @@ class LinkBuilder
 	public function build($url, $text, $escape = TRUE, array $classes = [])
 	{
 		$link = Html::el('a')->href($url)
-			->setText($escape ? Filters::escapeHtml($text) : $text)
+			->setHtml($escape ? Filters::escapeHtml($text) : $text)
 			->addAttributes(['class' => $classes]);
 		return (string) $link;
 	}

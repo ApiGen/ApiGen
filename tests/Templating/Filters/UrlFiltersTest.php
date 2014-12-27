@@ -4,6 +4,11 @@ namespace ApiGen\Tests\Templating\Filters;
 
 use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Reflection\ReflectionClass;
+use ApiGen\Reflection\ReflectionConstant;
+use ApiGen\Reflection\ReflectionFunction;
+use ApiGen\Reflection\ReflectionMethod;
+use ApiGen\Reflection\ReflectionProperty;
+use ApiGen\Templating\Filters\Helpers\LinkBuilder;
 use ApiGen\Templating\Filters\UrlFilters;
 use ApiGen\Tests\MethodInvoker;
 use Mockery;
@@ -25,19 +30,17 @@ class UrlFiltersTest extends PHPUnit_Framework_TestCase
 		$sourceCodeHighlighterMock = Mockery::mock('ApiGen\Generator\SourceCodeHighlighter\SourceCodeHighlighter');
 		$elementResolverMock = $this->getElementResolverMock();
 
-		$linkBuilderMock = Mockery::mock('ApiGen\Templating\Filters\Helpers\LinkBuilder');
-		$linkBuilderMock->shouldReceive('build')->andReturnUsing(function ($url, $description) {
-			return '<a href="' . $url . '">' . $description . '</a>';
-		});
-
-		$elementUrlFactoryMock = Mockery::mock('ApiGen\Templating\Filters\Helpers\ElementUrlFactory');
-		$elementUrlFactoryMock->shouldReceive('createForClass')->andReturnUsing( function (ReflectionClass $reflectionClass) {
-			return 'class-link-' . $reflectionClass->getName();
-		});
+		$elementLinkFactoryMock = Mockery::mock('ApiGen\Templating\Filters\Helpers\ElementLinkFactory');
+		$elementLinkFactoryMock->shouldReceive('createForElement')->andReturnUsing(
+			function (ReflectionClass $reflectionClass) {
+				$name = $reflectionClass->getName();
+				return '<a href="class-link-' . $name . '">' . $name . '</a>';
+			}
+		);
 
 		$this->urlFilters = new UrlFilters(
 			$this->getConfigurationMock(), $sourceCodeHighlighterMock, $markupMock, $elementResolverMock,
-			$linkBuilderMock, $elementUrlFactoryMock
+			new LinkBuilder, $elementLinkFactoryMock
 		);
 	}
 
@@ -140,25 +143,18 @@ EXP;
 
 	public function testLongDescription()
 	{
-		$reflectionElementMock = Mockery::mock('ApiGen\Reflection\ReflectionElement');
-		$reflectionElementMock->shouldReceive('getLongDescription')->andReturn(
-<<<DOC
+		$longDescription = <<<DOC
 Some long description with example:
 <code>echo "hi";</code>
-DOC
-		);
+DOC;
+		$reflectionElementMock = Mockery::mock('ApiGen\Reflection\ReflectionElement');
+		$reflectionElementMock->shouldReceive('getLongDescription')->andReturn($longDescription);
 
-		$this->assertSame(<<<EXPECTED
+		$expected = <<<EXPECTED
 Markupped: Some long description with example:
 <code>echo "hi";</code>
-EXPECTED
-		, $this->urlFilters->longDescription($reflectionElementMock));
-	}
-
-
-	public function testCreateLinkForElement()
-	{
-		// delegate to elementUrlFactory/elementLinkBuilder
+EXPECTED;
+		$this->assertSame($expected, $this->urlFilters->longDescription($reflectionElementMock));
 	}
 
 
