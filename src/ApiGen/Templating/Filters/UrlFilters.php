@@ -20,7 +20,9 @@ use ApiGen\Reflection\ReflectionElement;
 use ApiGen\Reflection\ReflectionFunction;
 use ApiGen\Reflection\ReflectionMethod;
 use ApiGen\Reflection\ReflectionProperty;
+use ApiGen\Templating\Filters\Helpers\LinkBuilder;
 use ApiGen\Templating\Filters\Helpers\Strings;
+use Latte\Runtime\Filters as LatteFilters;
 use Nette\Utils\Validators;
 
 
@@ -47,17 +49,24 @@ class UrlFilters extends Filters
 	 */
 	private $configuration;
 
+	/**
+	 * @var LinkBuilder
+	 */
+	private $linkBuilder;
+
 
 	public function __construct(
 		Configuration $configuration,
 		SourceCodeHighlighter $highlighter,
 		Markup $markup,
-		ElementResolver $elementResolver
+		ElementResolver $elementResolver,
+		LinkBuilder $linkBuilder
 	) {
 		$this->highlighter = $highlighter;
 		$this->markup = $markup;
 		$this->elementResolver = $elementResolver;
 		$this->configuration = $configuration;
+		$this->linkBuilder = $linkBuilder;
 	}
 
 
@@ -85,99 +94,6 @@ class UrlFilters extends Filters
 		}
 
 		return NULL;
-	}
-
-
-	/**
-	 * Returns links for package/namespace and its parent packages.
-	 *
-	 * @param string $package
-	 * @param bool $last
-	 * @return string
-	 */
-	public function packageLinks($package, $last = TRUE)
-	{
-		if (empty($this->packages)) {
-			return $package;
-		}
-
-		$links = [];
-
-		$parent = '';
-		foreach (explode('\\', $package) as $part) {
-			$parent = ltrim($parent . '\\' . $part, '\\');
-			$links[] = $last || $parent !== $package
-				? $this->link($this->packageUrl($parent), $part)
-				: $this->escapeHtml($part);
-		}
-
-		return implode('\\', $links);
-	}
-
-
-	/**
-	 * @param string $groupName
-	 * @return string
-	 */
-	public function subgroupName($groupName)
-	{
-		if ($pos = strrpos($groupName, '\\')) {
-			return substr($groupName, $pos + 1);
-		}
-		return $groupName;
-	}
-
-
-	/**
-	 * Returns links for namespace and its parent namespaces.
-	 *
-	 * @param string $namespace
-	 * @param bool $last
-	 * @return string
-	 */
-	public function namespaceLinks($namespace, $last = TRUE)
-	{
-		if (empty($this->namespaces)) {
-			return $namespace;
-		}
-
-		$links = [];
-
-		$parent = '';
-		foreach (explode('\\', $namespace) as $part) {
-			$parent = ltrim($parent . '\\' . $part, '\\');
-			$links[] = $last || $parent !== $namespace
-				? $this->link($this->namespaceUrl($parent), $part)
-				: $this->escapeHtml($part);
-		}
-
-		return implode('\\', $links);
-	}
-
-
-	/**
-	 * @param string $packageName
-	 * @return string
-	 */
-	public function packageUrl($packageName)
-	{
-		return sprintf(
-			$this->configuration->getOptions()[CO::TEMPLATE]['templates']['package']['filename'],
-			$this->urlize($packageName)
-		);
-	}
-
-
-	/**
-	 * @param string $namespaceName
-	 * @return string
-	 */
-	public function namespaceUrl($namespaceName)
-	{
-		return sprintf(
-			$this->configuration->getOptions()[CO::TEMPLATE]['templates']['namespace']['filename'],
-			$this->urlize($namespaceName)
-		);
 	}
 
 
@@ -286,33 +202,6 @@ class UrlFilters extends Filters
 
 
 	/**
-	 * Returns links for package/namespace and its parent packages.
-	 *
-	 * @param string $package
-	 * @param bool $last
-	 * @return string
-	 */
-	public function getPackageLinks($package, $last = TRUE)
-	{
-		if (empty($this->packages)) {
-			return $package;
-		}
-
-		$links = [];
-
-		$parent = '';
-		foreach (explode('\\', $package) as $part) {
-			$parent = ltrim($parent . '\\' . $part, '\\');
-			$links[] = $last || $parent !== $package
-				? $this->link($this->packageUrl($parent), $part)
-				: $this->escapeHtml($part);
-		}
-
-		return implode('\\', $links);
-	}
-
-
-	/**
 	 * @param string $value
 	 * @param string $name
 	 * @param ReflectionElement $context
@@ -356,7 +245,7 @@ class UrlFilters extends Filters
 
 		foreach (explode('|', $types) as $type) {
 			$type = $this->getTypeName($type, FALSE);
-			$links[] = $this->resolveLink($type, $context) ?: $this->escapeHtml(ltrim($type, '\\'));
+			$links[] = $this->resolveLink($type, $context) ?: LatteFilters::escapeHtml(ltrim($type, '\\'));
 		}
 
 		return implode('|', $links);
@@ -449,7 +338,7 @@ class UrlFilters extends Filters
 			// Texy already added <a> so it has to be stripped
 			list($url, $description) = Strings::split(strip_tags($matches[1]));
 			if (Validators::isUri($url)) {
-				return $this->link($url, $description ?: $url);
+				return $this->linkBuilder->build($url, $description ?: $url);
 			}
 			return $this->resolveLink($matches[1], $context) ?: $matches[1];
 		}, $text);
@@ -505,13 +394,13 @@ class UrlFilters extends Filters
 	private function createLinkForElement($element, array $classes)
 	{
 		if ($element instanceof ReflectionClass) {
-			return $this->link($this->classUrl($element), $element->getName(), TRUE, $classes);
+			return $this->linkBuilder->build($this->classUrl($element), $element->getName(), TRUE, $classes);
 
 		} elseif ($element instanceof ReflectionConstant && $element->getDeclaringClassName() === NULL) {
 			return $this->createLinkForGlobalConstant($element, $classes);
 
 		} elseif ($element instanceof ReflectionFunction) {
-			return $this->link($this->functionUrl($element), $element->getName() . '()', TRUE, $classes);
+			return $this->linkBuilder->build($this->functionUrl($element), $element->getName() . '()', TRUE, $classes);
 
 		} else {
 			return $this->createLinkForPropertyMethodOrConstants($element, $classes);
@@ -525,10 +414,11 @@ class UrlFilters extends Filters
 	private function createLinkForGlobalConstant(ReflectionConstant $element, array $classes)
 	{
 		$text = $element->inNamespace()
-			? $this->escapeHtml($element->getNamespaceName()) . '\\<b>' . $this->escapeHtml($element->getShortName()) . '</b>'
-			: '<b>' . $this->escapeHtml($element->getName()) . '</b>';
+			? LatteFilters::escapeHtml($element->getNamespaceName()) . '\\<b>'
+			. LatteFilters::escapeHtml($element->getShortName()) . '</b>'
+			: '<b>' . LatteFilters::escapeHtml($element->getName()) . '</b>';
 
-		return $this->link($this->constantUrl($element), $text, FALSE, $classes);
+		return $this->linkBuilder->build($this->constantUrl($element), $text, FALSE, $classes);
 	}
 
 
@@ -540,21 +430,21 @@ class UrlFilters extends Filters
 	private function createLinkForPropertyMethodOrConstants($element, array $classes)
 	{
 		$url = '';
-		$text = $this->escapeHtml($element->getDeclaringClassName());
+		$text = LatteFilters::escapeHtml($element->getDeclaringClassName());
 		if ($element instanceof ReflectionProperty) {
 			$url = $this->propertyUrl($element);
-			$text .= '::<var>$' . $this->escapeHtml($element->getName()) . '</var>';
+			$text .= '::<var>$' . LatteFilters::escapeHtml($element->getName()) . '</var>';
 
 		} elseif ($element instanceof ReflectionMethod) {
 			$url = $this->methodUrl($element);
-			$text .= '::' . $this->escapeHtml($element->getName()) . '()';
+			$text .= '::' . LatteFilters::escapeHtml($element->getName()) . '()';
 
 		} elseif ($element instanceof ReflectionConstant) {
 			$url = $this->constantUrl($element);
-			$text .= '::<b>' . $this->escapeHtml($element->getName()) . '</b>';
+			$text .= '::<b>' . LatteFilters::escapeHtml($element->getName()) . '</b>';
 		}
 
-		return $this->link($url, $text, FALSE, $classes);
+		return $this->linkBuilder->build($url, $text, FALSE, $classes);
 	}
 
 
@@ -606,7 +496,7 @@ class UrlFilters extends Filters
 	private function processLicenseAnnotations($value)
 	{
 		list($url, $description) = Strings::split($value);
-		return $this->link($url, $description ?: $url);
+		return $this->linkBuilder->build($url, $description ?: $url);
 	}
 
 
@@ -618,7 +508,7 @@ class UrlFilters extends Filters
 	{
 		list($url, $description) = Strings::split($value);
 		if (Validators::isUri($url)) {
-			return $this->link($url, $description ?: $url);
+			return $this->linkBuilder->build($url, $description ?: $url);
 		}
 		return NULL;
 	}
