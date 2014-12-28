@@ -316,7 +316,9 @@ class ElementResolver
 	 */
 	private function isContextUsable($reflectionElement)
 	{
-		if ($reflectionElement === NULL || $reflectionElement instanceof ReflectionConstant || $reflectionElement instanceof ReflectionFunction) {
+		if ($reflectionElement === NULL || $reflectionElement instanceof ReflectionConstant
+			|| $reflectionElement instanceof ReflectionFunction
+		) {
 			return FALSE;
 		}
 		return TRUE;
