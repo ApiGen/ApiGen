@@ -2,69 +2,140 @@
 
 namespace ApiGen\Tests\Parser;
 
-use ApiGen\Configuration\Configuration;
-use ApiGen\Parser\Parser;
+use ApiGen\Parser\Elements\Elements;
 use ApiGen\Parser\ParserResult;
-use ApiGen\Tests\ContainerAwareTestCase;
-use Nette\Utils\Finder;
+use ApiGen\Tests\MethodInvoker;
+use ArrayObject;
+use Exception;
+use Mockery;
+use PHPUnit_Framework_Assert;
+use PHPUnit_Framework_TestCase;
 
 
-class ParserTest extends ContainerAwareTestCase
+class ParserResultTest extends PHPUnit_Framework_TestCase
 {
-
-	/**
-	 * @var Parser
-	 */
-	private $parser;
 
 	/**
 	 * @var ParserResult
 	 */
 	private $parserResult;
 
-	/**
-	 * @var Configuration
-	 */
-	private $configuration;
-
 
 	protected function setUp()
 	{
-		$this->parser = $this->container->getByType('ApiGen\Parser\Parser');
-		$this->parserResult = $this->container->getByType('ApiGen\Parser\ParserResult');
-		$this->configuration = $this->container->getByType('ApiGen\Configuration\Configuration');
-		$this->setupConfigDefaults(); // required by Broker
+		$this->parserResult = new ParserResult;
 	}
 
 
-	public function testParseClasses()
+	public function testDefaultsOnConstruct()
 	{
-		$this->assertCount(0, $this->parserResult->getClasses());
+		$this->assertInstanceOf('ArrayObject', $this->parserResult->getClasses());
+		$this->assertInstanceOf('ArrayObject', $this->parserResult->getConstants());
+		$this->assertInstanceOf('ArrayObject', $this->parserResult->getFunctions());
+		$this->assertInstanceOf('ArrayObject', PHPUnit_Framework_Assert::getObjectAttribute(
+			$this->parserResult, 'internalClasses'
+		));
+		$this->assertInstanceOf('ArrayObject', PHPUnit_Framework_Assert::getObjectAttribute(
+			$this->parserResult, 'tokenizedClasses'
+		));
+	}
 
-		$this->parser->parse($this->getFilesFromDir(__DIR__ . '/Source'));
-		$this->assertCount(3, $this->parserResult->getClasses());
+
+	public function testSettersAndGetters()
+	{
+		$classes = new ArrayObject([1]);
+		$this->parserResult->setClasses($classes);
+		$this->assertSame($classes, $this->parserResult->getClasses());
+
+		$constants = new ArrayObject([2]);
+		$this->parserResult->setConstants($constants);
+		$this->assertSame($constants, $this->parserResult->getConstants());
+
+		$functions = new ArrayObject([3]);
+		$this->parserResult->setFunctions($functions);
+		$this->assertSame($functions, $this->parserResult->getFunctions());
+	}
+
+
+	public function testGetElementsByType()
+	{
+		$classes = new ArrayObject([1]);
+		$this->parserResult->setClasses($classes);
+		$this->assertSame($classes, $this->parserResult->getElementsByType(Elements::CLASSES));
+
+		$constants = new ArrayObject([2]);
+		$this->parserResult->setConstants($constants);
+		$this->assertSame($constants, $this->parserResult->getElementsByType(Elements::CONSTANTS));
+
+		$functions = new ArrayObject([3]);
+		$this->parserResult->setFunctions($functions);
+		$this->assertSame($functions, $this->parserResult->getElementsByType(Elements::FUNCTIONS));
+
+		$internalClasses = new ArrayObject([4]);
+		$this->parserResult->setInternalClasses($internalClasses);
+		$this->assertSame($internalClasses, PHPUnit_Framework_Assert::getObjectAttribute(
+			$this->parserResult, 'internalClasses'
+		));
+
+		$tokenizedClasses = new ArrayObject([5]);
+		$this->parserResult->setTokenizedClasses($tokenizedClasses);
+		$this->assertSame($tokenizedClasses, PHPUnit_Framework_Assert::getObjectAttribute(
+			$this->parserResult, 'tokenizedClasses'
+		));
 	}
 
 
 	/**
-	 * @param string $dir
-	 * @return array { filePath => size }
+	 * @expectedException Exception
 	 */
-	private function getFilesFromDir($dir)
+	public function testGetElementsByTypeWithUnknownType()
 	{
-		$files = [];
-		foreach (Finder::find('*.php')->in($dir) as $splFile) {
-			$files[] = $splFile;
-		}
-		return $files;
+		$this->parserResult->getElementsByType('elements');
 	}
 
 
-	private function setupConfigDefaults()
+	public function testGetTypes()
 	{
-		$defaults['source'] = __DIR__ . '/Source';
-		$defaults['destination'] = TEMP_DIR . '/api';
-		$this->configuration->resolveOptions($defaults);
+		$this->assertSame(
+			[Elements::CLASSES, Elements::CONSTANTS, Elements::FUNCTIONS],
+			$this->parserResult->getTypes()
+		);
+	}
+
+
+	public function testGetDocumentedStats()
+	{
+		$this->parserResult->setInternalClasses($this->getReflectionElementsArrayObject());
+		$documentedStats = $this->parserResult->getDocumentedStats();
+		$this->assertInternalType('array', $documentedStats);
+		$this->assertArrayHasKey('classes', $documentedStats);
+		$this->assertArrayHasKey('constants', $documentedStats);
+		$this->assertArrayHasKey('functions', $documentedStats);
+		$this->assertArrayHasKey('internalClasses', $documentedStats);
+		$this->assertSame(1, $documentedStats['internalClasses']);
+	}
+
+
+	public function testGetDocumentedElementsCount()
+	{
+		$reflectionElements = $this->getReflectionElementsArrayObject();
+		$this->assertSame(1, MethodInvoker::callMethodOnObject(
+			$this->parserResult, 'getDocumentedElementsCount', [$reflectionElements]
+		));
+	}
+
+
+	/**
+	 * @return ArrayObject
+	 */
+	private function getReflectionElementsArrayObject()
+	{
+		$reflectionElementMock = Mockery::mock('ApiGen\Reflection\ReflectionElement');
+		$reflectionElementMock->shouldReceive('isDocumented')->andReturn(TRUE);
+		$reflectionElementMock2 = Mockery::mock('ApiGen\Reflection\ReflectionElement');
+		$reflectionElementMock2->shouldReceive('isDocumented')->andReturn(FALSE);
+		$reflectionElements = new ArrayObject([$reflectionElementMock, $reflectionElementMock2]);
+		return $reflectionElements;
 	}
 
 }
