@@ -25,4 +25,4 @@ script:
 after_script:
   # move code coverage
   - if [[ $TRAVIS_PHP_VERSION == '5.6' ]]; then wget https://scrutinizer-ci.com/ocular.phar; fi
-  - if [[ $TRAVIS_PHP_VERSION == '5.6' ]]; php ocular.phar code-coverage:upload --format=php-clover coverage.clover; fi
+  - if [[ $TRAVIS_PHP_VERSION == '5.6' ]]; then php ocular.phar code-coverage:upload --format=php-clover coverage.clover; fi
