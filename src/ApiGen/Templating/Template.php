@@ -31,20 +31,6 @@ class Template extends Nette\Bridges\ApplicationLatte\Template
 
 
 	/**
-	 * @param string $name
-	 * @param array $args
-	 * @return mixed
-	 */
-	public function __call($name, $args)
-	{
-		$filters = ['urlize', 'namespaceUrl', 'packageUrl', 'classUrl', 'constantUrl', 'functionUrl', 'sourceUrl'];
-		if (in_array($name, $filters)) {
-			return $this->getLatte()->invokeFilter($name, $args);
-		}
-	}
-
-
-	/**
 	 * @param string $file
 	 */
 	public function save($file = NULL)
