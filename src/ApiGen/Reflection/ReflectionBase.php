@@ -24,13 +24,11 @@ use TokenReflection\IReflectionParameter;
 use TokenReflection\IReflectionProperty;
 
 
+/**
+ * @method string getDocComment()
+ */
 abstract class ReflectionBase extends Nette\Object implements Reflection
 {
-
-	/**
-	 * @var array
-	 */
-	protected static $reflectionMethods = [];
 
 	/**
 	 * @var string
@@ -61,16 +59,11 @@ abstract class ReflectionBase extends Nette\Object implements Reflection
 	public function __construct(IReflection $reflection)
 	{
 		$this->reflectionType = get_class($this);
-		if ( ! isset(self::$reflectionMethods[$this->reflectionType])) {
-			self::$reflectionMethods[$this->reflectionType] = array_flip(get_class_methods($this));
-		}
 		$this->reflection = $reflection;
 	}
 
 
 	/**
-	 * Returns FQN name.
-	 *
 	 * @return string
 	 */
 	public function getName()
@@ -80,8 +73,6 @@ abstract class ReflectionBase extends Nette\Object implements Reflection
 
 
 	/**
-	 * Returns an element pretty (docblock compatible) name.
-	 *
 	 * @return string
 	 */
 	public function getPrettyName()
@@ -96,15 +87,6 @@ abstract class ReflectionBase extends Nette\Object implements Reflection
 	public function isInternal()
 	{
 		return $this->reflection->isInternal();
-	}
-
-
-	/**
-	 * @return bool
-	 */
-	public function isUserDefined()
-	{
-		return $this->reflection->isUserDefined();
 	}
 
 
@@ -127,22 +109,20 @@ abstract class ReflectionBase extends Nette\Object implements Reflection
 
 
 	/**
-	 * @return integer
+	 * @return int
 	 */
 	public function getStartLine()
 	{
 		$startLine = $this->reflection->getStartLine();
-
 		if ($doc = $this->getDocComment()) {
 			$startLine -= substr_count($doc, "\n") + 1;
 		}
-
 		return $startLine;
 	}
 
 
 	/**
-	 * @return integer
+	 * @return int
 	 */
 	public function getEndLine()
 	{

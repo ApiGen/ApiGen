@@ -16,8 +16,9 @@ use ApiGen\Reflection\ReflectionClass;
 use ApiGen\Reflection\ReflectionConstant;
 use ApiGen\Reflection\ReflectionElement;
 use ApiGen\Reflection\ReflectionFunction;
+use ApiGen\Templating\Filters\Helpers\ElementUrlFactory;
+use ApiGen\Templating\Filters\NamespaceAndPackageUrlFilters;
 use ApiGen\Templating\Filters\SourceFilters;
-use ApiGen\Templating\Filters\UrlFilters;
 
 
 class TemplateNavigator
@@ -34,16 +35,26 @@ class TemplateNavigator
 	private $sourceFilters;
 
 	/**
-	 * @var Filters\UrlFilters
+	 * @var ElementUrlFactory
 	 */
-	private $urlFilters;
+	private $elementUrlFactory;
+
+	/**
+	 * @var NamespaceAndPackageUrlFilters
+	 */
+	private $namespaceAndPackageUrlFilters;
 
 
-	public function __construct(Configuration $configuration, SourceFilters $sourceFilters, UrlFilters $urlFilters)
-	{
+	public function __construct(
+		Configuration $configuration,
+		SourceFilters $sourceFilters,
+		ElementUrlFactory $elementUrlFactory,
+		NamespaceAndPackageUrlFilters $namespaceAndPackageUrlFilters
+	) {
 		$this->configuration = $configuration;
 		$this->sourceFilters = $sourceFilters;
-		$this->urlFilters = $urlFilters;
+		$this->elementUrlFactory = $elementUrlFactory;
+		$this->namespaceAndPackageUrlFilters = $namespaceAndPackageUrlFilters;
 	}
 
 
@@ -75,7 +86,7 @@ class TemplateNavigator
 	 */
 	public function getTemplatePathForNamespace($namespace)
 	{
-		return $this->getDestination() . '/' . $this->urlFilters->namespaceUrl($namespace);
+		return $this->getDestination() . '/' . $this->namespaceAndPackageUrlFilters->namespaceUrl($namespace);
 	}
 
 
@@ -85,7 +96,7 @@ class TemplateNavigator
 	 */
 	public function getTemplatePathForPackage($package)
 	{
-		return $this->getDestination() . '/' . $this->urlFilters->packageUrl($package);
+		return $this->getDestination() . '/' . $this->namespaceAndPackageUrlFilters->packageUrl($package);
 	}
 
 
@@ -94,7 +105,7 @@ class TemplateNavigator
 	 */
 	public function getTemplatePathForClass(ReflectionClass $element)
 	{
-		return $this->getDestination() . '/' . $this->urlFilters->classUrl($element);
+		return $this->getDestination() . '/' . $this->elementUrlFactory->createForClass($element);
 	}
 
 
@@ -103,7 +114,7 @@ class TemplateNavigator
 	 */
 	public function getTemplatePathForConstant(ReflectionConstant $element)
 	{
-		return $this->getDestination() . '/' . $this->urlFilters->constantUrl($element);
+		return $this->getDestination() . '/' . $this->elementUrlFactory->createForConstant($element);
 	}
 
 
@@ -112,7 +123,7 @@ class TemplateNavigator
 	 */
 	public function getTemplatePathForFunction(ReflectionFunction $element)
 	{
-		return $this->getDestination() . '/' . $this->urlFilters->functionUrl($element);
+		return $this->getDestination() . '/' . $this->elementUrlFactory->createForFunction($element);
 	}
 
 

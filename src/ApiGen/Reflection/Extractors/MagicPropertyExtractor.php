@@ -76,11 +76,29 @@ class MagicPropertyExtractor
 	private function extractOwnFromClass(ReflectionClass $reflectionClass, $isDocumented, array $properties)
 	{
 		foreach ($reflectionClass->getOwnMagicProperties() as $property) {
-			if ( ! isset($properties[$property->getName()]) && ( ! $isDocumented || $property->isDocumented())) {
+			if ($this->canBeExtracted($isDocumented, $properties, $property)) {
 				$properties[$property->getName()] = $property;
 			}
 		}
 		return $properties;
+	}
+
+
+	/**
+	 * @param bool $isDocumented
+	 * @param array $properties
+	 * @param ReflectionPropertyMagic $property
+	 * @return bool
+	 */
+	private function canBeExtracted($isDocumented, array $properties, ReflectionPropertyMagic $property)
+	{
+		if (isset($properties[$property->getName()])) {
+			return FALSE;
+		}
+		if ($isDocumented && ! $property->isDocumented()) {
+			return FALSE;
+		}
+		return TRUE;
 	}
 
 }

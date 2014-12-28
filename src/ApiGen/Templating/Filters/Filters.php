@@ -9,9 +9,6 @@
 
 namespace ApiGen\Templating\Filters;
 
-use ApiGen\Templating\Filters\Helpers\Strings;
-use Latte;
-
 
 abstract class Filters
 {
@@ -29,14 +26,21 @@ abstract class Filters
 			$args = array_slice(func_get_args(), 1);
 			return call_user_func_array([$this, $name], $args);
 		}
-
 		return NULL;
 	}
 
 
 	/**
-	 * Returns unified type value definition (class name or member data type).
-	 *
+	 * @param string $string
+	 * @return string
+	 */
+	public static function urlize($string)
+	{
+		return preg_replace('~[^\w]~', '.', $string);
+	}
+
+
+	/**
 	 * @param string $name
 	 * @param bool $trimNamespaceSeparator
 	 * @return string
@@ -61,39 +65,6 @@ abstract class Filters
 
 		// Class, constant or function
 		return $trimNamespaceSeparator ? ltrim($name, '\\') : $name;
-	}
-
-
-	/**
-	 * @param string $url
-	 * @param string $text
-	 * @param bool $escape If the text should be escaped
-	 * @param array $classes List of classes
-	 * @return string
-	 */
-	protected function link($url, $text, $escape = TRUE, array $classes = [])
-	{
-		return Strings::link($url, $text, $escape, $classes);
-	}
-
-
-	/**
-	 * @param string $html
-	 * @return string
-	 */
-	protected function escapeHtml($html)
-	{
-		return Latte\Runtime\Filters::escapeHtml($html);
-	}
-
-
-	/**
-	 * @param string $string
-	 * @return string
-	 */
-	protected function urlize($string)
-	{
-		return preg_replace('~[^\w]~', '.', $string);
 	}
 
 

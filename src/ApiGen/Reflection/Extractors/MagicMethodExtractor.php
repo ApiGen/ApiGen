@@ -77,11 +77,29 @@ class MagicMethodExtractor
 	private function extractOwnFromClass(ReflectionClass $reflectionClass, $isDocumented, array $methods)
 	{
 		foreach ($reflectionClass->getOwnMagicMethods() as $method) {
-			if ( ! isset($methods[$method->getName()]) && ( ! $isDocumented || $method->isDocumented())) {
+			if ($this->canBeExtracted($isDocumented, $methods, $method)) {
 				$methods[$method->getName()] = $method;
 			}
 		}
 		return $methods;
+	}
+
+
+	/**
+	 * @param bool $isDocumented
+	 * @param array $methods
+	 * @param ReflectionMethodMagic $method
+	 * @return bool
+	 */
+	private function canBeExtracted($isDocumented, array $methods, ReflectionMethodMagic $method)
+	{
+		if (isset($methods[$method->getName()])) {
+			return FALSE;
+		}
+		if ($isDocumented && ! $method->isDocumented()) {
+			return FALSE;
+		}
+		return TRUE;
 	}
 
 }

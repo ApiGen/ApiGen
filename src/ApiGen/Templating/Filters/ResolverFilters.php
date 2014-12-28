@@ -11,7 +11,7 @@ namespace ApiGen\Templating\Filters;
 
 use ApiGen\Generator\Resolvers\ElementResolver;
 use ApiGen\Reflection\ReflectionClass;
-use Nette;
+use ApiGen\Reflection\ReflectionElement;
 
 
 class ResolverFilters extends Filters
@@ -45,10 +45,10 @@ class ResolverFilters extends Filters
 
 
 	/**
-	 * @param $definition
-	 * @param $context
-	 * @param null $expectedName
-	 * @return \ApiGen\Reflection\ReflectionElement|bool|NULL
+	 * @param string $definition
+	 * @param ReflectionElement $context
+	 * @param NULL $expectedName
+	 * @return ReflectionElement|bool|NULL
 	 */
 	public function resolveElement($definition, $context, &$expectedName = NULL)
 	{

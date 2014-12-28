@@ -1,9 +1,17 @@
 <?php
 
+/**
+ * @author ApiGen
+ * @licence MIT
+ * @copyright 2015
+ */
+
 namespace Project;
 
 
 /**
+ * This is some description
+ *
  * @property-read int $skillCounter
  * @method string getName() This is some short description.
  * @method string doAnOperation(\stdClass $data, $type) This also some description.

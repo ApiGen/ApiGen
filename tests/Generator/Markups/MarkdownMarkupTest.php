@@ -24,6 +24,7 @@ class MarkdownMarkupTest extends PHPUnit_Framework_TestCase
 			->andReturnUsing(function($args) {
 				return $args;
 			});
+
 		$highlighterMock->shouldReceive('highlightAndAddLineNumbers')
 			->andReturnUsing(function($args) {
 				return $args;

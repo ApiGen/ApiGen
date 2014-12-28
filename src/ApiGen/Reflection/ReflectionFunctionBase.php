@@ -19,7 +19,7 @@ abstract class ReflectionFunctionBase extends ReflectionElement
 	/**
 	 * @var string Matches "array $arg"
 	 */
-	const PARAM_ANNOTATION_PATTERN = '~^(?:([\\w\\\\]+(?:\\|[\\w\\\\]+)*)\\s+)?\\$(\\w+)(?:\\s+(.*))?($)~s';
+	const PARAM_ANNOTATION = '~^(?:([\\w\\\\]+(?:\\|[\\w\\\\]+)*)\\s+)?\\$(\\w+)(?:\\s+(.*))?($)~s';
 
 	/**
 	 * @var array
@@ -78,16 +78,13 @@ abstract class ReflectionFunctionBase extends ReflectionElement
 	{
 		$parameters = $this->getParameters();
 
-		if (is_numeric($key)) {
-			if (isset($parameters[$key])) {
-				return $parameters[$key];
-			}
+		if (isset($parameters[$key])) {
+			return $parameters[$key];
+		}
 
-		} else {
-			foreach ($parameters as $parameter) {
-				if ($parameter->getName() === $key) {
-					return $parameter;
-				}
+		foreach ($parameters as $parameter) {
+			if ($parameter->getName() === $key) {
+				return $parameter;
 			}
 		}
 
@@ -121,7 +118,7 @@ abstract class ReflectionFunctionBase extends ReflectionElement
 	 */
 	private function processAnnotation($annotation, $position)
 	{
-		if ( ! preg_match(self::PARAM_ANNOTATION_PATTERN, $annotation, $matches)) {
+		if ( ! preg_match(self::PARAM_ANNOTATION, $annotation, $matches)) {
 			return;
 		}
 

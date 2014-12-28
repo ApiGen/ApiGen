@@ -10,7 +10,6 @@
 namespace ApiGen\Events;
 
 use ApiGen\Charset\CharsetDetector;
-use ApiGen\Generator\Resolvers\RelativePathResolver;
 use Kdyby\Events\Subscriber;
 
 
@@ -22,16 +21,10 @@ class InjectConfig implements Subscriber
 	 */
 	private $charsetDetector;
 
-	/**
-	 * @var RelativePathResolver
-	 */
-	private $relativePathResolver;
 
-
-	public function __construct(CharsetDetector $charsetDetector, RelativePathResolver $relativePathResolver)
+	public function __construct(CharsetDetector $charsetDetector)
 	{
 		$this->charsetDetector = $charsetDetector;
-		$this->relativePathResolver = $relativePathResolver;
 	}
 
 
@@ -46,7 +39,6 @@ class InjectConfig implements Subscriber
 
 	public function onOptionsResolve(array $config)
 	{
-		$this->relativePathResolver->setConfig($config);
 		$this->charsetDetector->setCharsets($config['charset']);
 	}
 

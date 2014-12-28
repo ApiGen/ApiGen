@@ -34,23 +34,27 @@ class TemplateNavigatorTest extends ContainerAwareTestCase
 		$sourceFiltersMock->shouldReceive('sourceUrl')->andReturnUsing(function ($args) {
 			return 'source-code-' . $args->getName() . '.html';
 		});
-		$urlFiltersMock = Mockery::mock('ApiGen\Templating\Filters\UrlFilters');
-		$urlFiltersMock->shouldReceive('namespaceUrl')->andReturnUsing(function ($args) {
+		$namespaceAndPackageUrlFiltersMock = Mockery::mock('ApiGen\Templating\Filters\NamespaceAndPackageUrlFilters');
+		$namespaceAndPackageUrlFiltersMock->shouldReceive('namespaceUrl')->andReturnUsing(function ($args) {
 			return 'namespace-' . $args . '.html';
 		});
-		$urlFiltersMock->shouldReceive('packageUrl')->andReturnUsing(function ($args) {
+		$namespaceAndPackageUrlFiltersMock->shouldReceive('packageUrl')->andReturnUsing(function ($args) {
 			return 'package-' . $args . '.html';
 		});
-		$urlFiltersMock->shouldReceive('classUrl')->andReturnUsing(function ($args) {
+
+		$elementUrlFactoryMock = Mockery::mock('ApiGen\Templating\Filters\Helpers\ElementUrlFactory');
+		$elementUrlFactoryMock->shouldReceive('createForClass')->andReturnUsing(function ($args) {
 			return 'class-' . $args->getName() . '.html';
 		});
-		$urlFiltersMock->shouldReceive('constantUrl')->andReturnUsing(function ($args) {
+		$elementUrlFactoryMock->shouldReceive('createForConstant')->andReturnUsing(function ($args) {
 			return 'constant-' . $args->getName() . '.html';
 		});
-		$urlFiltersMock->shouldReceive('functionUrl')->andReturnUsing(function ($args) {
+		$elementUrlFactoryMock->shouldReceive('createForFunction')->andReturnUsing(function ($args) {
 			return 'function-' . $args->getName() . '.html';
 		});
-		$this->templateNavigator = new TemplateNavigator($this->configuration, $sourceFiltersMock, $urlFiltersMock);
+		$this->templateNavigator = new TemplateNavigator(
+			$this->configuration, $sourceFiltersMock, $elementUrlFactoryMock, $namespaceAndPackageUrlFiltersMock
+		);
 	}
 
 

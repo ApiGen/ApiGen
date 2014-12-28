@@ -52,9 +52,6 @@ class ReflectionMethodMagic extends ReflectionMethod
 		$this->annotations = $settings['annotations'];
 
 		$this->reflectionType = get_class($this);
-		if ( ! isset(self::$reflectionMethods[$this->reflectionType])) {
-			self::$reflectionMethods[$this->reflectionType] = array_flip(get_class_methods($this));
-		}
 	}
 
 

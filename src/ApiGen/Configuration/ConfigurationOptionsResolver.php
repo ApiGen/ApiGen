@@ -151,40 +151,20 @@ class ConfigurationOptionsResolver
 
 	private function setAllowedValues()
 	{
-		$this->resolver->setAllowedValues([
-			CO::DESTINATION => function ($value) {
-				if ( ! $value) {
-					throw new ConfigurationException("Destination is not set. Use '-d <dir>' or config to set it");
+		$this->resolver->addAllowedValues(CO::DESTINATION, function ($destination) {
+			return $this->allowedValuesForDestination($destination);
+		});
 
-				} elseif ( ! is_dir($value)) {
-					mkdir($value, 0755, TRUE);
+		$this->resolver->addAllowedValues(CO::SOURCE, function ($source) {
+			return $this->allowedValuesForSource($source);
+		});
 
-				} elseif ( ! is_writable($value)) {
-					throw new ConfigurationException("Destination '$value' is not writable");
-				}
-				return TRUE;
-			},
-			CO::SOURCE => function ($value) {
-				if ( ! $value) {
-					throw new ConfigurationException("Source is not set. Use '-s <dir>' or config to set it");
-
-				} elseif ( ! is_array($value)) {
-					$value = [$value];
-				}
-				foreach ($value as $source) {
-					if ( ! file_exists($source)) {
-						throw new ConfigurationException("Source '$source' does not exist");
-					}
-				}
-				return TRUE;
-			},
-			CO::TEMPLATE_CONFIG => function ($value) {
-				if ($value && ! is_file($value)) {
-					throw new ConfigurationException("Template config '$value' was not found");
-				}
-				return TRUE;
+		$this->resolver->addAllowedValues(CO::TEMPLATE_CONFIG, function ($value) {
+			if ($value && ! is_file($value)) {
+				throw new ConfigurationException("Template config '$value' was not found");
 			}
-		]);
+			return TRUE;
+		});
 	}
 
 
@@ -237,6 +217,48 @@ class ConfigurationOptionsResolver
 		}
 
 		throw new ConfigurationException(CO::TEMPLATE_THEME . ' ' . $theme . ' is not supported.');
+	}
+
+
+	/**
+	 * @param string $destination
+	 * @return bool
+	 */
+	private function allowedValuesForDestination($destination)
+	{
+		if ( ! $destination) {
+			throw new ConfigurationException("Destination is not set. Use '-d <dir>' or config to set it");
+
+		} elseif ( ! is_dir($destination)) {
+			mkdir($destination, 0755, TRUE);
+		}
+
+		if ( ! is_writable($destination)) {
+			throw new ConfigurationException("Destination '$destination' is not writable");
+		}
+		return TRUE;
+	}
+
+
+	/**
+	 * @param string|array $source
+	 * @return bool
+	 */
+	private function allowedValuesForSource($source)
+	{
+		if ( ! $source) {
+			throw new ConfigurationException("Source is not set. Use '-s <dir>' or config to set it");
+
+		} elseif ( ! is_array($source)) {
+			$source = [$source];
+		}
+
+		foreach ($source as $dir) {
+			if ( ! file_exists($dir)) {
+				throw new ConfigurationException("Source '$dir' does not exist");
+			}
+		}
+		return TRUE;
 	}
 
 }

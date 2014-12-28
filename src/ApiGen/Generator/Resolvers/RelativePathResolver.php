@@ -9,7 +9,9 @@
 
 namespace ApiGen\Generator\Resolvers;
 
+use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions as CO;
+use ApiGen\FileSystem\FileSystem;
 use InvalidArgumentException;
 
 
@@ -17,19 +19,19 @@ class RelativePathResolver
 {
 
 	/**
-	 * @var array
+	 * @var Configuration
 	 */
-	private $symlinks;
+	private $configuration;
 
 	/**
 	 * @var array
 	 */
-	private $config;
+	private $symlinks;
 
 
-	public function setConfig(array $config)
+	public function __construct(Configuration $configuration)
 	{
-		$this->config = $config;
+		$this->configuration = $configuration;
 	}
 
 
@@ -40,20 +42,19 @@ class RelativePathResolver
 
 
 	/**
-	 * Returns filename relative path to the source directory.
-	 *
 	 * @param string $fileName
 	 * @return string
 	 */
 	public function getRelativePath($fileName)
 	{
-		$fileName = $this->uniteSlashes($fileName);
+		$fileName = FileSystem::normalizePath($fileName);
+
 		if (isset($this->symlinks[$fileName])) {
 			$fileName = $this->symlinks[$fileName];
 		}
-		foreach ($this->config[CO::SOURCE] as $source) {
-			if (strpos($fileName, $source) === 0) {
-				return $this->getFileNameWithoutSourcePath($fileName, $source);
+		foreach ($this->configuration->getOption(CO::SOURCE) as $directory) {
+			if (strpos($fileName, $directory) === 0) {
+				return $this->getFileNameWithoutSourcePath($fileName, $directory);
 			}
 		}
 
@@ -63,24 +64,14 @@ class RelativePathResolver
 
 	/**
 	 * @param string $fileName
-	 * @param string $source
+	 * @param string $directory
 	 * @return string
 	 */
-	private function getFileNameWithoutSourcePath($fileName, $source)
+	private function getFileNameWithoutSourcePath($fileName, $directory)
 	{
-		$source = rtrim($source, '/');
-		$fileName = substr($fileName, strlen($source) + 1);
-		return $this->uniteSlashes($fileName);
-	}
-
-
-	/**
-	 * @param string $path
-	 * @return string
-	 */
-	private function uniteSlashes($path)
-	{
-		return str_replace('\\', '/', $path);
+		$directory = rtrim($directory, '/');
+		$fileName = substr($fileName, strlen($directory) + 1);
+		return FileSystem::normalizePath($fileName);
 	}
 
 }
