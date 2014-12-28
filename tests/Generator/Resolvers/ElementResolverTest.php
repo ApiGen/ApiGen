@@ -128,6 +128,7 @@ class ElementResolverTest extends PHPUnit_Framework_TestCase
 		$reflectionMethodMock->shouldReceive('getDeclaringFunctionName')->andReturn('SomeFunction');
 		$reflectionMethodMock->shouldReceive('getNamespaceName')->andReturnNull();
 
+
 		$this->assertInstanceOf(
 			'ApiGen\Reflection\ReflectionElement',
 			MI::callMethodOnObject($this->elementResolver, 'resolveIfParsed', ['SomeFunction', $reflectionMethodMock])
