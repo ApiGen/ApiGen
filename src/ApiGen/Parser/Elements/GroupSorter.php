@@ -11,10 +11,9 @@ namespace ApiGen\Parser\Elements;
 
 use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions as CO;
-use Nette;
 
 
-class GroupSorter extends Nette\Object
+class GroupSorter
 {
 
 	/**
@@ -63,22 +62,8 @@ class GroupSorter extends Nette\Object
 			$this->addMissingElementTypes($groupName);
 		}
 
-		$main = $this->configuration->getOption(CO::MAIN);
-		uksort($this->groups, function ($one, $two) use ($main) {
-			// \ as separator has to be first
-			$one = str_replace('\\', ' ', $one);
-			$two = str_replace('\\', ' ', $two);
-
-			if ($main) {
-				if (strpos($one, $main) === 0 && strpos($two, $main) !== 0) {
-					return -1;
-
-				} elseif (strpos($one, $main) !== 0 && strpos($two, $main) === 0) {
-					return 1;
-				}
-			}
-
-			return strcasecmp($one, $two);
+		uksort($this->groups, function ($one, $two) {
+			return $this->compareGroups($one, $two, $this->configuration->getOption(CO::MAIN));
 		});
 
 		return $this->groups;
@@ -90,11 +75,9 @@ class GroupSorter extends Nette\Object
 	 */
 	private function isNoneGroupOnly(array $groups)
 	{
-
 		if (count($groups) === 1 && isset($groups['None'])) {
 			return TRUE;
 		}
-
 		return FALSE;
 	}
 
@@ -139,6 +122,31 @@ class GroupSorter extends Nette\Object
 				$this->groups[$groupName][$type] = [];
 			}
 		}
+	}
+
+
+	/**
+	 * @param string $one
+	 * @param string $two
+	 * @param string $main
+	 * @return int
+	 */
+	private function compareGroups($one, $two, $main)
+	{
+		// \ as separator has to be first
+		$one = str_replace('\\', ' ', $one);
+		$two = str_replace('\\', ' ', $two);
+
+		if ($main) {
+			if (strpos($one, $main) === 0 && strpos($two, $main) !== 0) {
+				return -1;
+
+			} elseif (strpos($one, $main) !== 0 && strpos($two, $main) === 0) {
+				return 1;
+			}
+		}
+
+		return strcasecmp($one, $two);
 	}
 
 }

@@ -16,27 +16,25 @@ class ElementFilter
 {
 
 	/**
-	 * @param array $elements
-	 * @return array
+	 * @param ReflectionElement[] $elements
+	 * @return ReflectionElement[]
 	 */
-	public function filterForMain($elements)
+	public function filterForMain(array $elements)
 	{
-		return array_filter($elements, function ($element) {
-			/** @var ReflectionElement $element */
+		return array_filter($elements, function (ReflectionElement $element) {
 			return $element->isMain();
 		});
 	}
 
 
 	/**
-	 * @param array $elements
+	 * @param ReflectionElement[] $elements
 	 * @param string $annotation
-	 * @return mixed
+	 * @return ReflectionElement[]
 	 */
-	public function filterByAnnotation($elements, $annotation)
+	public function filterByAnnotation(array $elements, $annotation)
 	{
-		return array_filter($elements, function ($element) use ($annotation) {
-			/** @var ReflectionElement $element */
+		return array_filter($elements, function (ReflectionElement $element) use ($annotation) {
 			return $element->hasAnnotation($annotation);
 		});
 	}

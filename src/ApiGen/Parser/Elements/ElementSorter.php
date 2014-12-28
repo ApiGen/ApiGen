@@ -13,17 +13,16 @@ use ApiGen\Reflection\ReflectionConstant;
 use ApiGen\Reflection\ReflectionFunction;
 use ApiGen\Reflection\ReflectionMethod;
 use ApiGen\Reflection\ReflectionProperty;
-use Nette;
 
 
-class ElementSorter extends Nette\Object
+class ElementSorter
 {
 
 	/**
 	 * @param ReflectionConstant[]|ReflectionFunction[]|ReflectionMethod[]|ReflectionProperty[] $elements
 	 * @return ReflectionConstant[]|ReflectionFunction[]|ReflectionMethod[]|ReflectionProperty[]
 	 */
-	public function sortElementsByFqn($elements)
+	public function sortElementsByFqn(array $elements)
 	{
 		if (count($elements)) {
 			$firstElement = array_values($elements)[0];
@@ -33,90 +32,75 @@ class ElementSorter extends Nette\Object
 			} elseif ($firstElement instanceof ReflectionFunction) {
 				return $this->sortFunctionsByFqn($elements);
 
-			} elseif ($firstElement instanceof ReflectionMethod) {
-				return $this->sortMethodsByFqn($elements);
-
-			} elseif ($firstElement instanceof ReflectionProperty) {
-				return $this->sortPropertiesByFqn($elements);
+			} elseif ($firstElement instanceof ReflectionMethod || $firstElement instanceof ReflectionProperty) {
+				return $this->sortPropertiesOrMethodsByFqn($elements);
 			}
 		}
-
 		return $elements;
 	}
 
 
 	/**
-	 * @param ReflectionConstant[] $constants
+	 * @param ReflectionConstant[] $reflectionConstants
 	 * @return ReflectionConstant[]
 	 */
-	private function sortConstantsByFqn($constants)
+	private function sortConstantsByFqn($reflectionConstants)
 	{
-		usort($constants, [$this, 'compareConstantsByFqn']);
-		return $constants;
+		usort($reflectionConstants, function ($a, $b) {
+			return $this->compareConstantsByFqn($a, $b);
+		});
+		return $reflectionConstants;
 	}
 
 
 	/**
-	 * @param ReflectionFunction[] $functions
+	 * @param ReflectionFunction[] $reflectionFunctions
 	 * @return ReflectionFunction[]
 	 */
-	private function sortFunctionsByFqn($functions)
+	private function sortFunctionsByFqn($reflectionFunctions)
 	{
-		usort($functions, [$this, 'compareFunctionsByFqn']);
-		return $functions;
+		usort($reflectionFunctions, function ($a, $b) {
+			return $this->compareFunctionsByFqn($a, $b);
+		});
+		return $reflectionFunctions;
 	}
 
 
 	/**
-	 * @param ReflectionMethod[] $methods
+	 * @param ReflectionMethod[]|ReflectionProperty[] $reflectionElements
 	 * @return ReflectionMethod[]
 	 */
-	private function sortMethodsByFqn($methods)
+	private function sortPropertiesOrMethodsByFqn($reflectionElements)
 	{
-		usort($methods, [$this, 'compareMethodsOrPropertiesByFqn']);
-		return $methods;
+		usort($reflectionElements, function ($a, $b) {
+			return $this->compareMethodsOrPropertiesByFqn($a, $b);
+		});
+		return $reflectionElements;
 	}
 
 
 	/**
-	 * @param ReflectionProperty[] $properties
-	 * @return ReflectionProperty[]
-	 */
-	private function sortPropertiesByFqn($properties)
-	{
-		usort($properties, [$this, 'compareMethodsOrPropertiesByFqn']);
-		return $properties;
-	}
-
-
-	/**
-	 * @return integer
+	 * @return int
 	 */
 	private function compareConstantsByFqn(ReflectionConstant $reflection1, ReflectionConstant $reflection2)
 	{
-		return strcasecmp(
-			$this->getConstantFqnName($reflection1),
-			$this->getConstantFqnName($reflection2)
-		);
+		return strcasecmp($this->getConstantFqnName($reflection1), $this->getConstantFqnName($reflection2));
 	}
 
 
 	/**
-	 * @return integer
+	 * @return int
 	 */
 	private function compareFunctionsByFqn(ReflectionFunction $reflection1, ReflectionFunction $reflection2)
 	{
-		return strcasecmp(
-			$this->getFunctionFqnName($reflection1),
-			$this->getFunctionFqnName($reflection2)
-		);
+		return strcasecmp($this->getFunctionFqnName($reflection1), $this->getFunctionFqnName($reflection2));
 	}
 
 
 	/**
 	 * @param ReflectionMethod|ReflectionProperty $reflection1
 	 * @param ReflectionMethod|ReflectionProperty $reflection2
-	 * @return integer
+	 * @return int
 	 */
 	private function compareMethodsOrPropertiesByFqn($reflection1, $reflection2)
 	{

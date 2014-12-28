@@ -38,14 +38,7 @@ class Elements
 	 */
 	public function getAll()
 	{
-		return [
-			self::CLASSES,
-			self::CONSTANTS,
-			self::EXCEPTIONS,
-			self::FUNCTIONS,
-			self::INTERFACES,
-			self::TRAITS
-		];
+		return [self::CLASSES, self::CONSTANTS, self::EXCEPTIONS, self::FUNCTIONS, self::INTERFACES, self::TRAITS];
 	}
 
 
