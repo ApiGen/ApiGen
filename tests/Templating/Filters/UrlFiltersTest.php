@@ -4,10 +4,6 @@ namespace ApiGen\Tests\Templating\Filters;
 
 use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Reflection\ReflectionClass;
-use ApiGen\Reflection\ReflectionConstant;
-use ApiGen\Reflection\ReflectionFunction;
-use ApiGen\Reflection\ReflectionMethod;
-use ApiGen\Reflection\ReflectionProperty;
 use ApiGen\Templating\Filters\Helpers\LinkBuilder;
 use ApiGen\Templating\Filters\UrlFilters;
 use ApiGen\Tests\MethodInvoker;
@@ -17,6 +13,8 @@ use PHPUnit_Framework_TestCase;
 
 class UrlFiltersTest extends PHPUnit_Framework_TestCase
 {
+
+	const APIGEN_LINK = '<code><a href="class-link-ApiGen\ApiGen" class="deprecated invalid">ApiGen\ApiGen</a></code>';
 
 	/**
 	 * @var UrlFilters
@@ -28,13 +26,19 @@ class UrlFiltersTest extends PHPUnit_Framework_TestCase
 	{
 		$markupMock = $this->getMarkupMock();
 		$sourceCodeHighlighterMock = Mockery::mock('ApiGen\Generator\SourceCodeHighlighter\SourceCodeHighlighter');
+		$sourceCodeHighlighterMock->shouldReceive('highlight')->andReturnUsing(function ($arg) {
+			return 'Highlighted: ' . $arg;
+		});
 		$elementResolverMock = $this->getElementResolverMock();
 
 		$elementLinkFactoryMock = Mockery::mock('ApiGen\Templating\Filters\Helpers\ElementLinkFactory');
 		$elementLinkFactoryMock->shouldReceive('createForElement')->andReturnUsing(
-			function (ReflectionClass $reflectionClass) {
+			function (ReflectionClass $reflectionClass, $classes = '') {
 				$name = $reflectionClass->getName();
-				return '<a href="class-link-' . $name . '">' . $name . '</a>';
+				if ($classes) {
+					$classes = ' class="' . implode($classes, ' ') . '"';
+				}
+				return '<a href="class-link-' . $name . '"' . $classes . '>' . $name . '</a>';
 			}
 		);
 
@@ -99,8 +103,11 @@ class UrlFiltersTest extends PHPUnit_Framework_TestCase
 			['{@link http://apigen.org Description}', '<a href="http://apigen.org">Description</a>'],
 			['{@link http://apigen.org}', '<a href="http://apigen.org">http://apigen.org</a>'],
 			['{@see http://php.net/manual/en PHP Manual}', '<a href="http://php.net/manual/en">PHP Manual</a>'],
-			['{@see ApiGen\ApiGen}', '<code><a href="class-link-ApiGen\ApiGen">ApiGen\ApiGen</a></code>'],
-			['{@see NotActiveClass}', 'NotActiveClass']
+			['{@see NotActiveClass}', 'NotActiveClass'],
+			[
+				'{@see ApiGen\ApiGen}',
+				self::APIGEN_LINK
+			]
 		];
 	}
 
@@ -158,6 +165,112 @@ EXPECTED;
 	}
 
 
+	public function testHighlightPhp()
+	{
+		$reflectionClassMock = Mockery::mock('ApiGen\Reflection\ReflectionClass');
+		$this->assertSame(
+			'Highlighted: ...',
+			$this->urlFilters->highlightPhp('...', $reflectionClassMock)
+		);
+	}
+
+
+	public function testHighlightValue()
+	{
+		$reflectionClassMock = Mockery::mock('ApiGen\Reflection\ReflectionClass');
+		$this->assertSame(
+			'Highlighted: ...',
+			$this->urlFilters->highlightValue('...', $reflectionClassMock)
+		);
+	}
+
+
+	/**
+	 * @dataProvider getTypeLinksData()
+	 */
+	public function testTypeLinks($annotation, $expected)
+	{
+		$reflectionClass = Mockery::mock('ApiGen\Reflection\ReflectionClass');
+		$this->assertSame($expected, $this->urlFilters->typeLinks($annotation, $reflectionClass));
+	}
+
+
+	/**
+	 * @return array[]
+	 */
+	public function getTypeLinksData()
+	{
+		return [
+			['int|string', 'integer|string'],
+			['string|$this', 'string|$this'],
+			['$this', ''],
+			[
+				'ApiGen\ApiGen',
+				self::APIGEN_LINK
+			],
+			[
+				'ApiGen\ApiGen|string',
+				'<code><a href="class-link-ApiGen\ApiGen" class="deprecated invalid">ApiGen\ApiGen</a></code>|string'
+			]
+		];
+	}
+
+
+	/**
+	 * @dataProvider getResolveLinksData()
+	 */
+	public function testResolveLink($definition, $expected)
+	{
+		$reflectionClass = Mockery::mock('ApiGen\Reflection\ReflectionClass');
+		$this->assertSame($expected, $this->urlFilters->resolveLink($definition, $reflectionClass));
+	}
+
+
+	/**
+	 * @return array[]
+	 */
+	public function getResolveLinksData()
+	{
+		return [
+			['int', NULL],
+			[
+				'ApiGen\ApiGen[]',
+				'<code><a href="class-link-ApiGen\ApiGen" class="deprecated invalid">ApiGen\ApiGen</a>[]</code>'
+			]
+		];
+	}
+
+
+	/**
+	 * @dataProvider getAnnotationData()
+	 */
+	public function testAnnotation($annotation, $name, $expected)
+	{
+		$reflectionClassMock = Mockery::mock('ApiGen\Reflection\ReflectionClass');
+		$this->assertSame($expected, $this->urlFilters->annotation($annotation, $name, $reflectionClassMock));
+	}
+
+
+	/**
+	 * @return array[]
+	 */
+	public function getAnnotationData()
+	{
+		return [
+			['ApiGen\ApiGen', 'return', self::APIGEN_LINK],
+			['ApiGen\ApiGen special class', 'return', self::APIGEN_LINK . '<br>Markupped line: special class'],
+			['ApiGen\ApiGen', 'throws', self::APIGEN_LINK],
+			['...', 'return', '...'],
+			['http://licence.com MIT', 'license', '<a href="http://licence.com">MIT</a>'],
+			['http://licence.com MIT', 'link', '<a href="http://licence.com">MIT</a>'],
+			['ApiGen\ApiGen', 'link', 'Markupped line: ApiGen\ApiGen'],
+			['ApiGen\ApiGen', 'see', self::APIGEN_LINK],
+			['ApiGen\ApiGen', 'uses', self::APIGEN_LINK],
+			['ApiGen\ApiGen', 'usedby', self::APIGEN_LINK]
+		];
+	}
+
+
 	/**
 	 * @return Mockery\MockInterface
 	 */
@@ -165,11 +278,11 @@ EXPECTED;
 	{
 		$elementResolverMock = Mockery::mock('ApiGen\Generator\Resolvers\ElementResolver');
 		$elementResolverMock->shouldReceive('resolveElement')->andReturnUsing(function ($arg) {
-			if ($arg === 'ApiGen\\ApiGen') {
+			if ($arg === 'ApiGen\ApiGen') {
 				$reflectionClassMock = Mockery::mock('ApiGen\Reflection\ReflectionClass');
-				$reflectionClassMock->shouldReceive('getName')->andReturn('ApiGen\\ApiGen');
+				$reflectionClassMock->shouldReceive('getName')->andReturn('ApiGen\ApiGen');
 				$reflectionClassMock->shouldReceive('isDeprecated')->andReturn(TRUE);
-				$reflectionClassMock->shouldReceive('isValid')->andReturn(TRUE);
+				$reflectionClassMock->shouldReceive('isValid')->andReturn(FALSE);
 				return $reflectionClassMock;
 
 			} else {
