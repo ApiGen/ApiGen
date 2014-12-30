@@ -203,18 +203,32 @@ class GenerateCommand extends Command
 	/**
 	 * @return array
 	 */
-	private function prepareOptions(array $cliInputOptions)
+	private function prepareOptions(array $cliOptions)
 	{
-		$configFile = $cliInputOptions[CO::CONFIG];
+		$configFile = $cliOptions[CO::CONFIG];
+		$options = $cliOptions;
 
-		$configFileOptions = [];
 		if (file_exists($configFile)) {
 			$configFileOptions = (new NeonFile($configFile))->read();
+			foreach ($configFileOptions as $key => $value) {
+				if ($this->canOptionValueBeSet($options, $key)) {
+					$options[$key] = $value;
+				}
+			}
 		}
 
-		// cli has priority over config file
-		$options = $cliInputOptions + $configFileOptions;
 		return $this->configuration->resolveOptions($options);
+	}
+
+
+	/**
+	 * @param array $options
+	 * @param string $key
+	 * @return bool
+	 */
+	private function canOptionValueBeSet(array $options, $key)
+	{
+		return ! isset($options[$key]) || ($options[$key] === NULL || $options[$key] === []);
 	}
 
 }

@@ -2,6 +2,7 @@
 
 namespace ApiGen\Tests\Command;
 
+use ApiGen;
 use ApiGen\Command\GenerateCommand;
 use ApiGen\Tests\ContainerAwareTestCase;
 use ApiGen\Tests\MethodInvoker;
@@ -23,7 +24,7 @@ class GenerateCommandPrepareOptionsTest extends ContainerAwareTestCase
 
 
 	/**
-	 * @expectedException \ApiGen\Configuration\Exceptions\ConfigurationException
+	 * @expectedException ApiGen\Configuration\Exceptions\ConfigurationException
 	 * @expectedExceptionMessageRegExp /Destination is not set/
 	 */
 	public function testPrepareOptionsDestinationNotSet()
@@ -59,26 +60,34 @@ class GenerateCommandPrepareOptionsTest extends ContainerAwareTestCase
 	}
 
 
-	public function testPrepareOptionsWithConfig()
+	public function testPrepareOptionsCliPriority()
 	{
-		$options = MethodInvoker::callMethodOnObject($this->generateCommand, 'prepareOptions', [[
+		$configAndDestinationOptions = [
 			'config' => __DIR__ . '/apigen.neon',
 			'destination' => TEMP_DIR . '/api'
-		]]);
+		];
 
+		$options = MethodInvoker::callMethodOnObject($this->generateCommand, 'prepareOptions', [
+			$configAndDestinationOptions + ['source' => []]
+		]);
 		$this->assertContains('src', $options['source'][0]);
+
+		$options = MethodInvoker::callMethodOnObject($this->generateCommand, 'prepareOptions', [
+			$configAndDestinationOptions + ['source' => __DIR__]
+		]);
+		$this->assertSame(__DIR__, $options['source'][0]);
 	}
 
 
-	public function testPrepareOptionsWithCli()
+	public function testPrepareOptionsWithConfigBool()
 	{
 		$options = MethodInvoker::callMethodOnObject($this->generateCommand, 'prepareOptions', [[
 			'config' => __DIR__ . '/apigen.neon',
 			'destination' => TEMP_DIR . '/api',
-			'source' => __DIR__
+			'tree' => FALSE
 		]]);
 
-		$this->assertSame(__DIR__, $options['source'][0]);
+		$this->assertFalse($options['tree']);
 	}
 
 }
