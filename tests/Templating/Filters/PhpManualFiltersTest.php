@@ -2,6 +2,12 @@
 
 namespace ApiGen\Tests\Templating\Filters;
 
+use ApiGen\Reflection\ReflectionClass;
+use ApiGen\Reflection\ReflectionConstant;
+use ApiGen\Reflection\ReflectionExtension;
+use ApiGen\Reflection\ReflectionFunction;
+use ApiGen\Reflection\ReflectionMethod;
+use ApiGen\Reflection\ReflectionProperty;
 use ApiGen\Templating\Filters\PhpManualFilters;
 use Mockery;
 use PHPUnit_Framework_TestCase;
@@ -24,8 +30,9 @@ class PhpManualFiltersTest extends PHPUnit_Framework_TestCase
 
 	public function testManualUrlForExtension()
 	{
-		$reflectionExtension = Mockery::mock('ApiGen\Reflection\ReflectionExtension');
-		$reflectionExtension->shouldReceive('getName')->andReturn('pdf');
+		$reflectionMock = Mockery::mock('TokenReflection\IReflectionExtension', 'Nette\Object');
+		$reflectionMock->shouldReceive('getName')->andReturn('pdf');
+		$reflectionExtension = new ReflectionExtension($reflectionMock);
 
 		$this->assertSame(
 			'http://php.net/manual/en/book.pdf.php',
@@ -36,8 +43,9 @@ class PhpManualFiltersTest extends PHPUnit_Framework_TestCase
 
 	public function testManualUrlForDateExtension()
 	{
-		$reflectionExtension = Mockery::mock('ApiGen\Reflection\ReflectionExtension');
-		$reflectionExtension->shouldReceive('getName')->andReturn('date');
+		$reflectionMock = Mockery::mock('TokenReflection\IReflectionExtension', 'Nette\Object');
+		$reflectionMock->shouldReceive('getName')->andReturn('date');
+		$reflectionExtension = new ReflectionExtension($reflectionMock);
 
 		$this->assertSame(
 			'http://php.net/manual/en/book.datetime.php',
@@ -72,8 +80,9 @@ class PhpManualFiltersTest extends PHPUnit_Framework_TestCase
 
 	public function testManualUrlForClass()
 	{
-		$reflectionClass = Mockery::mock('ApiGen\Reflection\ReflectionClass');
-		$reflectionClass->shouldReceive('getName')->andReturn('splFileInfo');
+		$reflectionMock = Mockery::mock('TokenReflection\IReflectionExtension', 'Nette\Object');
+		$reflectionMock->shouldReceive('getName')->andReturn('splFileInfo');
+		$reflectionClass = new ReflectionClass($reflectionMock);
 
 		$this->assertSame(
 			'http://php.net/manual/en/class.splfileinfo.php',
@@ -84,12 +93,21 @@ class PhpManualFiltersTest extends PHPUnit_Framework_TestCase
 
 	public function testManualUrlForProperty()
 	{
-		$reflectionClass = Mockery::mock('ApiGen\Reflection\ReflectionClass');
-		$reflectionClass->shouldReceive('getName')->andReturn('ZipArchive');
+		$reflectionMock = Mockery::mock('TokenReflection\IReflectionExtension', 'Nette\Object');
+		$reflectionMock->shouldReceive('getName')->andReturn('ZipArchive');
+		$reflectionClass = new ReflectionClass($reflectionMock);
 
-		$reflectionProperty = Mockery::mock('ApiGen\Reflection\ReflectionProperty');
-		$reflectionProperty->shouldReceive('getName')->andReturn('status');
-		$reflectionProperty->shouldReceive('getDeclaringClass')->andReturn($reflectionClass);
+		$parserResultMock = Mockery::mock('ApiGen\Parser\ParserResult');
+		$parserResultMock->shouldReceive('getElementsByType')->andReturn(['ZipArchive' => $reflectionClass]);
+		$reflectionClass->setParserResult($parserResultMock);
+
+		$reflectionMock = Mockery::mock('TokenReflection\IReflectionExtension', 'Nette\Object');
+		$reflectionMock->shouldReceive('getName')->andReturn('status');
+		$reflectionMock->shouldReceive('getDeclaringClass')->andReturn($reflectionClass);
+		$reflectionMock->shouldReceive('getDeclaringClassName')->andReturn($reflectionClass->getName());
+
+		$reflectionProperty = new ReflectionProperty($reflectionMock);
+		$reflectionProperty->setParserResult($parserResultMock);
 
 		$this->assertSame(
 			'http://php.net/manual/en/class.ziparchive.php#ziparchive.props.status',
@@ -103,9 +121,16 @@ class PhpManualFiltersTest extends PHPUnit_Framework_TestCase
 		$reflectionClass = Mockery::mock('ApiGen\Reflection\ReflectionClass');
 		$reflectionClass->shouldReceive('getName')->andReturn('splFileInfo');
 
-		$reflectionMethod = Mockery::mock('ApiGen\Reflection\ReflectionMethod');
-		$reflectionMethod->shouldReceive('getName')->andReturn('isLink');
-		$reflectionMethod->shouldReceive('getDeclaringClass')->andReturn($reflectionClass);
+		$parserResultMock = Mockery::mock('ApiGen\Parser\ParserResult');
+		$parserResultMock->shouldReceive('getElementsByType')->andReturn(['splFileInfo' => $reflectionClass]);
+
+		$reflectionMock = Mockery::mock('TokenReflection\IReflectionMethod', 'Nette\Object');
+		$reflectionMock->shouldReceive('getName')->andReturn('isLink');
+		$reflectionMock->shouldReceive('getDeclaringClass')->andReturn($reflectionClass);
+		$reflectionMock->shouldReceive('getDeclaringClassName')->andReturn('splFileInfo');
+
+		$reflectionMethod = new ReflectionMethod($reflectionMock);
+		$reflectionMethod ->setParserResult($parserResultMock);
 
 		$this->assertSame(
 			'http://php.net/manual/en/splfileinfo.islink.php',
@@ -119,9 +144,14 @@ class PhpManualFiltersTest extends PHPUnit_Framework_TestCase
 		$reflectionClass = Mockery::mock('ApiGen\Reflection\ReflectionClass');
 		$reflectionClass->shouldReceive('getName')->andReturn('');
 
-		$reflectionFunction = Mockery::mock('ApiGen\Reflection\ReflectionFunction');
-		$reflectionFunction->shouldReceive('getName')->andReturn('json-decode');
-		$reflectionFunction->shouldReceive('getDeclaringClass')->andReturn($reflectionClass);
+		$parserResultMock = Mockery::mock('ApiGen\Parser\ParserResult');
+		$parserResultMock->shouldReceive('getElementsByType')->andReturn(['json-decode' => $reflectionClass]);
+
+		$reflectionMock = Mockery::mock('TokenReflection\IReflectionFunction', 'Nette\Object');
+		$reflectionMock->shouldReceive('getName')->andReturn('json-decode');
+
+		$reflectionFunction = new ReflectionFunction($reflectionMock);
+		$reflectionFunction->setParserResult($parserResultMock);
 
 		$this->assertSame(
 			'http://php.net/manual/en/function.json-decode.php',
@@ -135,9 +165,15 @@ class PhpManualFiltersTest extends PHPUnit_Framework_TestCase
 		$reflectionClass = Mockery::mock('ApiGen\Reflection\ReflectionClass');
 		$reflectionClass->shouldReceive('getName')->andReturn('ReflectionProperty');
 
-		$reflectionConstant = Mockery::mock('ApiGen\Reflection\ReflectionConstant');
-		$reflectionConstant->shouldReceive('getName')->andReturn('IS_STATIC');
-		$reflectionConstant->shouldReceive('getDeclaringClass')->andReturn($reflectionClass);
+		$parserResultMock = Mockery::mock('ApiGen\Parser\ParserResult');
+		$parserResultMock->shouldReceive('getElementsByType')->andReturn(['reflection' => $reflectionClass]);
+
+		$reflectionMock = Mockery::mock('TokenReflection\IReflectionConstant', 'Nette\Object');
+		$reflectionMock->shouldReceive('getName')->andReturn('IS_STATIC');
+		$reflectionMock->shouldReceive('getDeclaringClassName')->andReturn('reflection');
+
+		$reflectionConstant = new ReflectionConstant($reflectionMock);
+		$reflectionConstant->setParserResult($parserResultMock);
 
 		$this->assertSame(
 			'http://php.net/manual/en/class.reflectionproperty.php#reflectionproperty.constants.is-static',

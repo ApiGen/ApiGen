@@ -26,6 +26,17 @@ class PhpManualFilters extends Filters
 
 	const PHP_MANUAL_URL = 'http://php.net/manual/en';
 
+	/**
+	 * @var array [ className => callback ]
+	 */
+	private $assignments = [];
+
+
+	public function __construct()
+	{
+		$this->prepareAssignments();
+	}
+
 
 	/**
 	 * @param ReflectionElement|ReflectionExtension|ReflectionMethod $element
@@ -37,26 +48,15 @@ class PhpManualFilters extends Filters
 			return $this->createExtensionUrl($element);
 		}
 
-		$class = $element instanceof ReflectionClass ? $element : $element->getDeclaringClass();
-		if ($this->isReservedClass($class)) {
+		$class = $this->detectClass($element);
+		if ($class && $this->isReservedClass($class)) {
 			return self::PHP_MANUAL_URL . '/reserved.classes.php';
-
-		} elseif ($element instanceof ReflectionClass) {
-			return $this->createClassUrl($class);
-
-		} elseif ($element instanceof ReflectionMethod) {
-			return $this->createMethodUrl($class, $element);
-
-		} elseif ($element instanceof ReflectionFunction) {
-			return $this->createFunctionUrl($element);
-
-		} elseif ($element instanceof ReflectionProperty) {
-			return $this->createPropertyUrl($class, $element);
-
-		} elseif ($element instanceof ReflectionConstant) {
-			return $this->createConstantUrl($class, $element);
 		}
 
+		$className = get_class($element);
+		if (isset($this->assignments[$className])) {
+			return $this->assignments[$className]($element, $class);
+		}
 		return '';
 	}
 
@@ -80,6 +80,29 @@ class PhpManualFilters extends Filters
 
 
 	/**
+	 * @return array
+	 */
+	private function prepareAssignments()
+	{
+		$this->assignments['ApiGen\Reflection\ReflectionClass'] = function ($element, $class) {
+			return $this->createClassUrl($class);
+		};
+		$this->assignments['ApiGen\Reflection\ReflectionMethod'] = function ($element, $class) {
+			return $this->createMethodUrl($element, $class);
+		};
+		$this->assignments['ApiGen\Reflection\ReflectionFunction'] = function ($element, $class) {
+			return $this->createFunctionUrl($element);
+		};
+		$this->assignments['ApiGen\Reflection\ReflectionProperty'] = function ($element, $class) {
+			return $this->createPropertyUrl($element, $class);
+		};
+		$this->assignments['ApiGen\Reflection\ReflectionConstant'] = function ($element, $class) {
+			return $this->createConstantUrl($element, $class);
+		};
+	}
+
+
+	/**
 	 * @return string
 	 */
 	private function createClassUrl(ReflectionClass $classReflection)
@@ -91,7 +114,7 @@ class PhpManualFilters extends Filters
 	/**
 	 * @return string
 	 */
-	private function createConstantUrl(ReflectionClass $classReflection, ReflectionConstant $reflectionConstant)
+	private function createConstantUrl(ReflectionConstant $reflectionConstant, ReflectionClass $classReflection)
 	{
 		return $this->createClassUrl($classReflection) . '#' . strtolower($classReflection->getName()) .
 			'.constants.' . $this->getElementName($reflectionConstant);
@@ -101,7 +124,7 @@ class PhpManualFilters extends Filters
 	/**
 	 * @return string
 	 */
-	private function createPropertyUrl(ReflectionClass $classReflection, ReflectionProperty $reflectionProperty)
+	private function createPropertyUrl(ReflectionProperty $reflectionProperty, ReflectionClass $classReflection)
 	{
 		return $this->createClassUrl($classReflection) . '#' . strtolower($classReflection->getName()) .
 			'.props.' . $this->getElementName($reflectionProperty);
@@ -111,7 +134,7 @@ class PhpManualFilters extends Filters
 	/**
 	 * @return string
 	 */
-	private function createMethodUrl(ReflectionClass $reflectionClass, ReflectionMethod $reflectionMethod)
+	private function createMethodUrl(ReflectionMethod $reflectionMethod, ReflectionClass $reflectionClass)
 	{
 		return self::PHP_MANUAL_URL . '/' . strtolower($reflectionClass->getName()) . '.' .
 			$this->getElementName($reflectionMethod) . '.php';
@@ -143,6 +166,26 @@ class PhpManualFilters extends Filters
 	private function getElementName(ReflectionElement $element)
 	{
 		return strtolower(strtr(ltrim($element->getName(), '_'), '_', '-'));
+	}
+
+
+	/**
+	 * @param ReflectionElement|string $element
+	 * @return string
+	 */
+	private function detectClass($element)
+	{
+		if ($element instanceof ReflectionClass) {
+			return $element;
+		}
+
+		if ($element instanceof ReflectionMethod || $element instanceof ReflectionProperty
+			|| $element instanceof ReflectionConstant
+		) {
+			return $element->getDeclaringClass();
+		}
+
+		return '';
 	}
 
 }

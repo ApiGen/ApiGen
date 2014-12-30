@@ -10,7 +10,9 @@
 namespace ApiGen\Parser;
 
 use ApiGen\Parser\Elements\Elements;
+use ApiGen\Reflection\ReflectionClass;
 use ApiGen\Reflection\ReflectionElement;
+use ApiGen\Reflection\TokenReflection\Reflection;
 use ArrayObject;
 
 
@@ -155,6 +157,68 @@ class ParserResult
 	public function setTokenizedClasses(ArrayObject $tokenizedClasses)
 	{
 		$this->tokenizedClasses = $tokenizedClasses;
+	}
+
+
+	/**
+	 * @return ReflectionClass[]|array
+	 */
+	public function getDirectImplementersOfInterface(ReflectionClass $reflectionClass)
+	{
+		$implementers = [];
+		foreach ($this->classes as $class) {
+			if ($this->isAllowedDirectImplementer($class, $reflectionClass->getName())) {
+				$implementers[] = $class;
+			}
+		}
+		uksort($implementers, 'strcasecmp');
+		return $implementers;
+	}
+
+
+	/**
+	 * @return ReflectionClass[]|array
+	 */
+	public function getIndirectImplementersOfInterface(ReflectionClass $reflectionClass)
+	{
+		$implementers = [];
+		foreach ($this->classes as $class) {
+			if ($this->isAllowedIndirectImplementer($class, $reflectionClass->getName())) {
+				$implementers[] = $class;
+			}
+		}
+		uksort($implementers, 'strcasecmp');
+		return $implementers;
+	}
+
+
+	/**
+	 * @param ReflectionClass $class
+	 * @param string $name
+	 * @return bool
+	 */
+	private function isAllowedDirectImplementer(ReflectionClass $class, $name)
+	{
+		if ($class->isDocumented() && in_array($name, $class->getOwnInterfaceNames())) {
+			return TRUE;
+		}
+		return FALSE;
+	}
+
+
+	/**
+	 * @param ReflectionClass $class
+	 * @param string $name
+	 * @return bool
+	 */
+	private function isAllowedIndirectImplementer(ReflectionClass $class, $name)
+	{
+		if ($class->isDocumented() && $class->implementsInterface($name)
+			&& ! in_array($name, $class->getOwnInterfaceNames())
+		) {
+			return TRUE;
+		}
+		return FALSE;
 	}
 
 

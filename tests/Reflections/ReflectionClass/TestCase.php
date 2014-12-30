@@ -53,6 +53,8 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
 	private function getReflectionFactory()
 	{
 		$parserResultMock = Mockery::mock('ApiGen\Parser\ParserResult');
+		$parserResultMock->shouldReceive('getDirectImplementersOfInterface')->andReturn([1]);
+		$parserResultMock->shouldReceive('getIndirectImplementersOfInterface')->andReturn([]);
 		$parserResultMock->shouldReceive('getElementsByType')->andReturnUsing(function ($arg) {
 			if ($arg) {
 				return [

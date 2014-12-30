@@ -631,20 +631,7 @@ class ReflectionClass extends ReflectionElement
 		if ( ! $this->isInterface()) {
 			return [];
 		}
-
-		$implementers = [];
-		$name = $this->reflection->getName();
-		foreach ($this->getParsedClasses() as $class) {
-			if ( ! $class->isDocumented()) {
-				continue;
-			}
-
-			if (in_array($name, $class->getOwnInterfaceNames())) {
-				$implementers[] = $class;
-			}
-		}
-		uksort($implementers, 'strcasecmp');
-		return $implementers;
+		return $this->parserResult->getDirectImplementersOfInterface($this);
 	}
 
 
@@ -656,19 +643,7 @@ class ReflectionClass extends ReflectionElement
 		if ( ! $this->isInterface()) {
 			return [];
 		}
-
-		$implementers = [];
-		$name = $this->reflection->getName();
-		foreach ($this->getParsedClasses() as $class) {
-			if ( ! $class->isDocumented()) {
-				continue;
-			}
-			if ($class->implementsInterface($name) && ! in_array($name, $class->getOwnInterfaceNames())) {
-				$implementers[] = $class;
-			}
-		}
-		uksort($implementers, 'strcasecmp');
-		return $implementers;
+		return $this->parserResult->getIndirectImplementersOfInterface($this);
 	}
 
 
