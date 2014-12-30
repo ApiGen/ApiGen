@@ -12,7 +12,6 @@ namespace ApiGen;
 use DateTime;
 use DateTimeZone;
 use LogicException;
-use Nette;
 use Nette\Utils\Finder;
 use Phar;
 use RuntimeException;
@@ -22,23 +21,13 @@ use SplFileInfo;
 /**
  * Creates PHAR from ApiGen source.
  */
-class PharCompiler extends Nette\Object
+class PharCompiler
 {
 
 	/**
 	 * @var string
 	 */
 	private $repoDir;
-
-	/**
-	 * @var string
-	 */
-	private $version;
-
-	/**
-	 * @var string
-	 */
-	private $releaseDate;
 
 
 	/**
@@ -55,24 +44,6 @@ class PharCompiler extends Nette\Object
 			throw new LogicException("Directory '$repoDir' does not contain ApiGen source code.");
 		}
 		$this->repoDir = realpath($repoDir);
-
-		if ($this->execute('git describe --tags HEAD', $repoDir, $output) === 0) {
-			$this->version = trim($output);
-
-		} elseif ($this->execute('git log --pretty="%H" -n1 HEAD', $repoDir, $output) === 0) {
-			$this->version = trim($output);
-
-		} else {
-			throw new RuntimeException('Cannot run git log to find ApiGen version. '
-				. 'Ensure that compile runs from cloned ApiGen git repository and the git command is available.');
-		}
-
-		if ($this->execute('git log -n1 --format=%cD HEAD', $repoDir, $output) !== 0) {
-			throw new RuntimeException('Unable to run git log to find release date.');
-		}
-		$this->releaseDate = DateTime::createFromFormat(DateTime::RFC2822, trim($output))
-			->setTimezone(new DateTimeZone('UTC'))
-			->format('Y-m-d H:i:s');
 	}
 
 
@@ -114,7 +85,7 @@ class PharCompiler extends Nette\Object
 			'theseer/fdomdocument/*',
 			'zenify/coding-standard/*'
 		];
-		foreach (Finder::findFiles('*.php')->from($this->repoDir . '/vendor')->exclude($exclude) as $file) {
+		foreach (Finder::findFiles(['*.php', '*.json'])->from($this->repoDir . '/vendor')->exclude($exclude) as $file) {
 			$this->addFile($phar, $file);
 		}
 
@@ -125,25 +96,6 @@ class PharCompiler extends Nette\Object
 		unset($phar);
 
 		chmod($pharFile, 0755);
-	}
-
-
-	/**
-	 * Executes shell command.
-	 * @param string $command
-	 * @param string $cwd
-	 * @param string $output
-	 * @return int
-	 */
-	private function execute($command, $cwd, & $output)
-	{
-		$oldCwd = getcwd();
-		chdir($cwd);
-		exec($command, $tmp, $exitCode);
-		chdir($oldCwd);
-		$output = implode("\n", $tmp);
-
-		return $exitCode;
 	}
 
 
@@ -160,14 +112,6 @@ class PharCompiler extends Nette\Object
 
 		$path = str_replace($this->repoDir . DIRECTORY_SEPARATOR, '', $file->getRealPath());
 		$path = strtr($path, DIRECTORY_SEPARATOR, '/');
-
-		if ($path === 'src/ApiGen/ApiGen.php') {
-			$content = strtr($content, [
-				'@package_version@' => $this->version,
-				'@release_date@' => $this->releaseDate,
-			]);
-		}
-
 		$phar[$path] = $content;
 	}
 
