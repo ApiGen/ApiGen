@@ -20,7 +20,6 @@ use ApiGen\Parser\ParserResult;
 use ApiGen\Scanner\Scanner;
 use ApiGen\Theme\ThemeResources;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -91,20 +90,20 @@ class GenerateCommand extends Command
 		$this->setName('generate')
 			->setDescription('Generate API documentation')
 			->setDefinition([
-				new InputOption(CO::SOURCE, 's', InputOption::VALUE_IS_ARRAY | InputOption::VALUE_OPTIONAL,
+				new InputOption(CO::SOURCE, 's', InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
 					'Dirs documentation is generated for (can be specified multiple times).'),
-				new InputOption(CO::DESTINATION, 'd', InputOption::VALUE_OPTIONAL,
+				new InputOption(CO::DESTINATION, 'd', InputOption::VALUE_REQUIRED,
 					'Target dir for documentation.'),
-				new InputOption(CO::ACCESS_LEVELS, NULL, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_OPTIONAL,
+				new InputOption(CO::ACCESS_LEVELS, NULL, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
 					'Access levels of included method and properties (can be specified multiple times).',
 					[COR::AL_PUBLIC, COR::AL_PROTECTED]),
-				new InputOption(CO::BASE_URL, NULL, InputOption::VALUE_OPTIONAL,
+				new InputOption(CO::BASE_URL, NULL, InputOption::VALUE_REQUIRED,
 					'Base url used for sitemap (useful for public doc).'),
-				new InputOption(CO::CONFIG, NULL, InputOption::VALUE_OPTIONAL,
+				new InputOption(CO::CONFIG, NULL, InputOption::VALUE_REQUIRED,
 					'Custom path to apigen.neon config file.', getcwd() . '/apigen.neon'),
-				new InputOption(CO::GOOGLE_CSE_ID, NULL, InputOption::VALUE_OPTIONAL,
+				new InputOption(CO::GOOGLE_CSE_ID, NULL, InputOption::VALUE_REQUIRED,
 					'Custom google search engine id (for search box).'),
-				new InputOption(CO::GOOGLE_ANALYTICS, NULL, InputOption::VALUE_OPTIONAL,
+				new InputOption(CO::GOOGLE_ANALYTICS, NULL, InputOption::VALUE_REQUIRED,
 					'Google Analytics tracking code.'),
 				new InputOption(CO::DEBUG, NULL, InputOption::VALUE_NONE,
 					'Turn on debug mode.'),
@@ -112,13 +111,13 @@ class GenerateCommand extends Command
 					'Generate documentation for elements marked as @deprecated'),
 				new InputOption(CO::DOWNLOAD, NULL, InputOption::VALUE_NONE,
 					'Add link to ZIP archive of documentation.'),
-				new InputOption(CO::EXTENSIONS, NULL, InputOption::VALUE_IS_ARRAY | InputArgument::OPTIONAL,
+				new InputOption(CO::EXTENSIONS, NULL, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
 					'Scanned file extensions (can be specified multiple times).', ['php']),
-				new InputOption(CO::EXCLUDE, NULL, InputOption::VALUE_IS_ARRAY | InputArgument::OPTIONAL,
+				new InputOption(CO::EXCLUDE, NULL, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
 					'Directories and files matching this mask will not be parsed (can be specified multiple times).'),
-				new InputOption(CO::GROUPS, NULL, InputOption::VALUE_OPTIONAL,
+				new InputOption(CO::GROUPS, NULL, InputOption::VALUE_REQUIRED,
 					'The way elements are grouped in menu.', 'auto'),
-				new InputOption(CO::CHARSET, NULL, InputOption::VALUE_IS_ARRAY | InputArgument::OPTIONAL,
+				new InputOption(CO::CHARSET, NULL, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
 					'Charset of scanned files (can be specified multiple times).'),
 				new InputOption(CO::MAIN, NULL, InputOption::VALUE_REQUIRED,
 					'Elements with this name prefix will be first in tree.'),
