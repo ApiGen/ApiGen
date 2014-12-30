@@ -9,8 +9,6 @@
 
 namespace ApiGen;
 
-use DateTime;
-use DateTimeZone;
 use LogicException;
 use Nette\Utils\Finder;
 use Phar;
