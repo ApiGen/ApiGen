@@ -110,7 +110,7 @@ class BackendTest extends PHPUnit_Framework_TestCase
 	}
 
 
-        public function atestPhp56Namespaces()
+        public function testPhp56Namespaces()
 	{
 		$this->broker->processDirectory(__DIR__ . '/BackendSourcePhp56Namespaces');
 
@@ -133,7 +133,7 @@ class BackendTest extends PHPUnit_Framework_TestCase
 	}
 
 
-        public function atestPhp56VariadicFunctions()
+        public function testPhp56VariadicFunctions()
 	{
 		$this->broker->processDirectory(__DIR__ . '/BackendSourcePhp56VariadicFunctions');
 		$functions = $this->backend->getFunctions();
