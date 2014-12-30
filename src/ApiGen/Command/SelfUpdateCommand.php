@@ -41,9 +41,13 @@ class SelfUpdateCommand extends Command
 		try {
 			$updateManager = $this->createUpdateManager();
 			$version = $this->getApplication()->getVersion();
-			$updateManager->update($version, TRUE, TRUE);
+			if ($updateManager->update($version, FALSE, TRUE)) {
+				$output->writeln('<info>Updated to latest version.</info>');
 
-			$output->writeln('<info>ApiGen updated!</info>');
+			} else {
+				$output->writeln('<comment>Already up-to-date.</comment>');
+			}
+
 			return 0;
 
 		} catch (\Exception $e) {
