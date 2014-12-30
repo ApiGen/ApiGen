@@ -29,24 +29,13 @@
 		"kdyby/events": "~2.0",
 		"symfony/options-resolver": "~2.6.1",
 		"symfony/console": "~2.6",
-		"herrera-io/phar-update": "~2.0",
-
-		"ext-json": "*",
-		"ext-mbstring": "*",
-		"ext-iconv": "*",
-		"ext-tokenizer": "*"
+		"herrera-io/phar-update": "~2.0"
 	},
 	"require-dev": {
 		"jakub-onderka/php-parallel-lint": "~0.8",
 		"zenify/coding-standard": "~3.0",
 		"phpunit/phpunit": "~4.4",
 		"mockery/mockery": "~0.9"
-	},
-	"suggest": {
-		"ext-bz2": "*",
-		"ext-phar": "*",
-		"ext-zip": "*",
-		"ext-zlib": "*"
 	},
 	"autoload": {
 		"psr-4": {
