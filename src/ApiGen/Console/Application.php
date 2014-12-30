@@ -44,16 +44,7 @@ class Application extends Symfony\Component\Console\Application
 
 
 	/**
-	 * {@inheritDoc}
-	 */
-	public function getLongVersion()
-	{
-		return parent::getLongVersion() . ' ' . ApiGen::RELEASE_DATE;
-	}
-
-
-	/**
-	 * {@inheritDoc}
+	 * {@inheritdoc}
 	 */
 	public function doRun(InputInterface $input, OutputInterface $output)
 	{
@@ -69,7 +60,7 @@ class Application extends Symfony\Component\Console\Application
 
 
 	/**
-	 * {@inheritDoc}
+	 * {@inheritdoc}
 	 */
 	protected function getDefaultInputDefinition()
 	{
@@ -77,7 +68,7 @@ class Application extends Symfony\Component\Console\Application
 			new InputArgument('command', InputArgument::REQUIRED, 'The command to execute'),
 			new InputOption('help', 'h', InputOption::VALUE_NONE, 'Display this help message.'),
 			new InputOption('quiet', 'q', InputOption::VALUE_NONE, 'Do not output any message.'),
-			new InputOption('version', NULL, InputOption::VALUE_NONE, 'Display this application version.')
+			new InputOption('version', 'V', InputOption::VALUE_NONE, 'Display this application version.')
 		]);
 	}
 
