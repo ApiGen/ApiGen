@@ -47,7 +47,6 @@ class PharCompiler
 
 	/**
 	 * @param string $pharFile  output PHAR file name
-	 * @param string $sourceDir  apigen source directory
 	 * @throws RuntimeException
 	 */
 	public function compile($pharFile)
