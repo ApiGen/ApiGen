@@ -214,7 +214,7 @@ class GenerateCommand extends Command
 		}
 
 		// cli has priority over config file
-		$options = $cliInputOptions + $configFileOptions;
+		$options = array_merge($cliInputOptions, $configFileOptions);
 		return $this->configuration->resolveOptions($options);
 	}
 
