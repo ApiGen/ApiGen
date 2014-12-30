@@ -78,6 +78,74 @@ class BackendTest extends PHPUnit_Framework_TestCase
 	}
 
 
+        public function testPhp56DefaultArguments()
+	{
+		$this->broker->processDirectory(__DIR__ . '/BackendSourcePhp56DefaultArguments');
+
+		$functions = $this->backend->getFunctions();
+		$this->assertCount(2, $functions);
+
+                foreach ($functions as $function) {
+                    $this->assertInstanceOf('ApiGen\Reflection\ReflectionFunction', $function);
+                    $this->checkLoadedProperties($function);
+                }
+
+		$constants = $this->backend->getConstants();
+                $this->assertCount(1, $constants);
+
+                foreach ($constants as $constant)
+                {
+                    $this->assertInstanceOf('ApiGen\Reflection\ReflectionConstant', $constant);
+                    $this->checkLoadedProperties($constant);
+                }
+
+                $classes = $this->backend->getClasses();
+                $this->assertCount(1, $classes);
+
+                foreach ($classes as $class)
+                {
+                    $this->assertInstanceOf('ApiGen\Reflection\ReflectionConstant', $constant);
+                    $this->checkLoadedProperties($constant);
+                }
+	}
+
+
+        public function atestPhp56Namespaces()
+	{
+		$this->broker->processDirectory(__DIR__ . '/BackendSourcePhp56Namespaces');
+
+		$functions = $this->backend->getFunctions();
+		$this->assertCount(3, $functions);
+
+                foreach ($functions as $function) {
+                    $this->assertInstanceOf('ApiGen\Reflection\ReflectionFunction', $function);
+                    $this->checkLoadedProperties($function);
+                }
+
+		$constants = $this->backend->getConstants();
+                $this->assertCount(2, $constants);
+
+                foreach ($constants as $constant)
+                {
+                    $this->assertInstanceOf('ApiGen\Reflection\ReflectionConstant', $constant);
+                    $this->checkLoadedProperties($constant);
+                }
+	}
+
+
+        public function atestPhp56VariadicFunctions()
+	{
+		$this->broker->processDirectory(__DIR__ . '/BackendSourcePhp56VariadicFunctions');
+		$functions = $this->backend->getFunctions();
+		$this->assertCount(2, $functions);
+
+		$function = array_pop($functions);
+		$this->assertInstanceOf('ApiGen\Reflection\ReflectionFunction', $function);
+
+		$this->checkLoadedProperties($function);
+	}
+
+
 	private function checkLoadedProperties($object)
 	{
 		$this->assertInstanceOf(
