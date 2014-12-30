@@ -11,12 +11,12 @@ namespace ApiGen\Command;
 
 use Herrera\Phar\Update\Manager;
 use Herrera\Phar\Update\Manifest;
-use Symfony\Component\Console\Command\Command;
+use Symfony;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 
-class SelfUpdateCommand extends Command
+class SelfUpdateCommand extends Symfony\Component\Console\Command\Command
 {
 
 	/**

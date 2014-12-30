@@ -19,7 +19,6 @@ use ApiGen\Parser\Parser;
 use ApiGen\Parser\ParserResult;
 use ApiGen\Scanner\Scanner;
 use ApiGen\Theme\ThemeResources;
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -89,58 +88,48 @@ class GenerateCommand extends Command
 	{
 		$this->setName('generate')
 			->setDescription('Generate API documentation')
-			->setDefinition([
-				new InputOption(CO::SOURCE, 's', InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
-					'Dirs documentation is generated for (can be specified multiple times).'),
-				new InputOption(CO::DESTINATION, 'd', InputOption::VALUE_REQUIRED,
-					'Target dir for documentation.'),
-				new InputOption(CO::ACCESS_LEVELS, NULL, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
-					'Access levels of included method and properties (can be specified multiple times).',
-					[COR::AL_PUBLIC, COR::AL_PROTECTED]),
-				new InputOption(CO::BASE_URL, NULL, InputOption::VALUE_REQUIRED,
-					'Base url used for sitemap (useful for public doc).'),
-				new InputOption(CO::CONFIG, NULL, InputOption::VALUE_REQUIRED,
-					'Custom path to apigen.neon config file.', getcwd() . '/apigen.neon'),
-				new InputOption(CO::GOOGLE_CSE_ID, NULL, InputOption::VALUE_REQUIRED,
-					'Custom google search engine id (for search box).'),
-				new InputOption(CO::GOOGLE_ANALYTICS, NULL, InputOption::VALUE_REQUIRED,
-					'Google Analytics tracking code.'),
-				new InputOption(CO::DEBUG, NULL, InputOption::VALUE_NONE,
-					'Turn on debug mode.'),
-				new InputOption(CO::DEPRECATED, NULL, InputOption::VALUE_NONE,
-					'Generate documentation for elements marked as @deprecated'),
-				new InputOption(CO::DOWNLOAD, NULL, InputOption::VALUE_NONE,
-					'Add link to ZIP archive of documentation.'),
-				new InputOption(CO::EXTENSIONS, NULL, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
-					'Scanned file extensions (can be specified multiple times).', ['php']),
-				new InputOption(CO::EXCLUDE, NULL, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
-					'Directories and files matching this mask will not be parsed (can be specified multiple times).'),
-				new InputOption(CO::GROUPS, NULL, InputOption::VALUE_REQUIRED,
-					'The way elements are grouped in menu.', 'auto'),
-				new InputOption(CO::CHARSET, NULL, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
-					'Charset of scanned files (can be specified multiple times).'),
-				new InputOption(CO::MAIN, NULL, InputOption::VALUE_REQUIRED,
-					'Elements with this name prefix will be first in tree.'),
-				new InputOption(CO::INTERNAL, NULL, InputOption::VALUE_NONE,
-					'Include elements marked as @internal.'),
-				new InputOption(CO::PHP, NULL, InputOption::VALUE_NONE,
-					'Generate documentation for PHP internal classes.'),
-				new InputOption(CO::SKIP_DOC_PATH, NULL, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
-					'Files matching this mask will be included in class tree,'
-					. ' but will not create a link to their documentation (can be specified multiple times).'),
-				new InputOption(CO::NO_SOURCE_CODE, NULL, InputOption::VALUE_NONE,
-					'Do not generate highlighted source code for elements.'),
-				new InputOption(CO::TEMPLATE_THEME, NULL, InputOption::VALUE_REQUIRED,
-					'ApiGen template theme name.', 'default'),
-				new InputOption(CO::TEMPLATE_CONFIG, NULL, InputOption::VALUE_REQUIRED,
-					'Your own template config, has higher priority ' . CO::TEMPLATE_THEME . '.'),
-				new InputOption(CO::TITLE, NULL, InputOption::VALUE_REQUIRED,
-					'Title of generated documentation.'),
-				new InputOption(CO::TODO, NULL, InputOption::VALUE_NONE,
-					'Generate documentation for elements marked as @todo.'),
-				new InputOption(CO::TREE, NULL, InputOption::VALUE_NONE,
-					'Generate tree view of classes, interfaces, traits and exceptions.')
-			]);
+			->addOption(CO::SOURCE, 's', InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
+				'Dirs documentation is generated for (can be specified multiple times).')
+			->addOption(CO::DESTINATION, 'd', InputOption::VALUE_REQUIRED, 'Target dir for documentation.')
+			->addOption(CO::ACCESS_LEVELS, NULL, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
+				'Access levels of included method and properties (can be specified multiple times).',
+				[COR::AL_PUBLIC, COR::AL_PROTECTED])
+			->addOption(CO::BASE_URL, NULL, InputOption::VALUE_REQUIRED,
+				'Base url used for sitemap (useful for public doc).')
+			->addOption(CO::CONFIG, NULL, InputOption::VALUE_REQUIRED,
+				'Custom path to apigen.neon config file.', getcwd() . '/apigen.neon')
+			->addOption(CO::GOOGLE_CSE_ID, NULL, InputOption::VALUE_REQUIRED,
+				'Custom google search engine id (for search box).')
+			->addOption(CO::GOOGLE_ANALYTICS, NULL, InputOption::VALUE_REQUIRED, 'Google Analytics tracking code.')
+			->addOption(CO::DEBUG, NULL, InputOption::VALUE_NONE, 'Turn on debug mode.')
+			->addOption(CO::DEPRECATED, NULL, InputOption::VALUE_NONE,
+				'Generate documentation for elements marked as @deprecated')
+			->addOption(CO::DOWNLOAD, NULL, InputOption::VALUE_NONE,
+				'Add link to ZIP archive of documentation.')
+			->addOption(CO::EXTENSIONS, NULL, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
+				'Scanned file extensions (can be specified multiple times).', ['php'])
+			->addOption(CO::EXCLUDE, NULL, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
+				'Directories and files matching this mask will not be parsed (can be specified multiple times).')
+			->addOption(CO::GROUPS, NULL, InputOption::VALUE_REQUIRED,
+				'The way elements are grouped in menu.', 'auto')
+			->addOption(CO::CHARSET, NULL, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
+				'Charset of scanned files (can be specified multiple times).')
+			->addOption(CO::MAIN, NULL, InputOption::VALUE_REQUIRED,
+				'Elements with this name prefix will be first in tree.')
+			->addOption(CO::INTERNAL, NULL, InputOption::VALUE_NONE, 'Include elements marked as @internal.')
+			->addOption(CO::PHP, NULL, InputOption::VALUE_NONE, 'Generate documentation for PHP internal classes.')
+			->addOption(CO::SKIP_DOC_PATH, NULL, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
+				'Files matching this mask will be included in class tree,'
+				. ' but will not create a link to their documentation (can be specified multiple times).')
+			->addOption(CO::NO_SOURCE_CODE, NULL, InputOption::VALUE_NONE,
+				'Do not generate highlighted source code for elements.')
+			->addOption(CO::TEMPLATE_THEME, NULL, InputOption::VALUE_REQUIRED, 'ApiGen template theme name.', 'default')
+			->addOption(CO::TEMPLATE_CONFIG, NULL, InputOption::VALUE_REQUIRED,
+				'Your own template config, has higher priority ' . CO::TEMPLATE_THEME . '.')
+			->addOption(CO::TITLE, NULL, InputOption::VALUE_REQUIRED, 'Title of generated documentation.')
+			->addOption(CO::TODO, NULL, InputOption::VALUE_NONE, 'Generate documentation for elements marked as @todo.')
+			->addOption(CO::TREE, NULL, InputOption::VALUE_NONE,
+				'Generate tree view of classes, interfaces, traits and exceptions.');
 	}
 
 
@@ -205,6 +194,7 @@ class GenerateCommand extends Command
 	 */
 	private function prepareOptions(array $cliOptions)
 	{
+		$cliOptions = $this->convertDashKeysToCamel($cliOptions);
 		$configFile = $cliOptions[CO::CONFIG];
 		$options = $cliOptions;
 
@@ -218,6 +208,34 @@ class GenerateCommand extends Command
 		}
 
 		return $this->configuration->resolveOptions($options);
+	}
+
+
+	/**
+	 * @return array
+	 */
+	private function convertDashKeysToCamel(array $options)
+	{
+		foreach ($options as $key => $value) {
+			$camelKey = $this->camelFormat($key);
+			if ($key !== $camelKey) {
+				$options[$camelKey] = $value;
+				unset($options[$key]);
+			}
+		}
+		return $options;
+	}
+
+
+	/**
+	 * @param string $name
+	 * @return string
+	 */
+	private function camelFormat($name)
+	{
+		return preg_replace_callback('~-([a-z])~', function($matches) {
+			return strtoupper($matches[1]);
+		}, $name);
 	}
 
 
