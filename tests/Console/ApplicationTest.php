@@ -2,6 +2,7 @@
 
 namespace ApiGen\Tests\Console;
 
+use ApiGen\ApiGen;
 use ApiGen\Console\Application;
 use ApiGen\Tests\MethodInvoker;
 use Mockery;
@@ -43,7 +44,7 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
 	public function testGetLongVersion()
 	{
 		$this->assertSame(
-			'<info>ApiGen</info> version <comment>@package_version@</comment> @release_date@',
+			'<info>ApiGen</info> version <comment>' . ApiGen::VERSION . '</comment>',
 			$this->application->getLongVersion()
 		);
 	}
