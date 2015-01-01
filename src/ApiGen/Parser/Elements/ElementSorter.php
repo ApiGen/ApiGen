@@ -10,6 +10,7 @@
 namespace ApiGen\Parser\Elements;
 
 use ApiGen\Reflection\ReflectionConstant;
+use ApiGen\Reflection\ReflectionElement;
 use ApiGen\Reflection\ReflectionFunction;
 use ApiGen\Reflection\ReflectionMethod;
 use ApiGen\Reflection\ReflectionProperty;
@@ -134,7 +135,7 @@ class ElementSorter
 	 * @param ReflectionMethod|ReflectionProperty $reflection
 	 * @return string
 	 */
-	private function getPropertyOrMethodFqnName($reflection)
+	private function getPropertyOrMethodFqnName(ReflectionElement $reflection)
 	{
 		return $reflection->getDeclaringClassName() . '::' . $reflection->getName();
 	}

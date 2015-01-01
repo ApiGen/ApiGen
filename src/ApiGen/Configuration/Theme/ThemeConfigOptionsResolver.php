@@ -140,7 +140,6 @@ class ThemeConfigOptionsResolver extends Nette\Object
 	{
 		$this->resolver->setNormalizers([
 			TCO::RESOURCES => function (Options $options, $resources) {
-				// todo: make same logic as for templates
 				$absolutizedResources = [];
 				foreach ($resources as $key => $resource) {
 					$key = $options['templatesPath'] . '/' . $key;

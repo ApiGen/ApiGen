@@ -184,7 +184,6 @@ $.Autocompleter = function(input, options) {
   		}
 		}
 	}).bind("search", function() {
-		// TODO why not just specifying both arguments?
 		var fn = (arguments.length > 1) ? arguments[1] : null;
 		function findValueCallback(q, data) {
 			var result;
@@ -239,7 +238,6 @@ $.Autocompleter = function(input, options) {
 					progress += seperator;
 				});
 				words[wordAt] = v;
-				// TODO this should set the cursor to the right position, but it gets overriden somewhere
 				//$.Autocompleter.Selection(input, progress + seperator, progress + seperator);
 				v = words.join( options.multipleSeparator );
 			}

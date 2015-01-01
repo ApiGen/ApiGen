@@ -35,7 +35,7 @@ class MemoryLimit
 	private function getMemoryInBytes($value)
 	{
 		$unit = strtolower(substr($value, -1, 1));
-		$value = (int)$value;
+		$value = (int) $value;
 		if ($unit === 'g') {
 			return $value * 1024 * 1024 * 1024;
 		}

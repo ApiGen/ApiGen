@@ -226,7 +226,7 @@ class ElementResolver
 	 * @param ReflectionElement $reflectionElement
 	 * @return ReflectionClass|ReflectionConstant|ReflectionFunction|NULL
 	 */
-	private function resolveIfParsed($definition, $reflectionElement)
+	private function resolveIfParsed($definition, ReflectionElement $reflectionElement)
 	{
 		$definition = $this->removeEndBrackets($definition);
 		if ($class = $this->getClass($definition, $reflectionElement->getNamespaceName())) {

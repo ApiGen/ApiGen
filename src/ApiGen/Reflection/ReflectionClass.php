@@ -702,8 +702,7 @@ class ReflectionClass extends ReflectionElement
 	public function getInheritedMethods()
 	{
 		$methods = [];
-		$allMethods = array_flip(array_map(function ($method) {
-			/** @var ReflectionMethod $method */
+		$allMethods = array_flip(array_map(function (ReflectionMethod $method) {
 			return $method->getName();
 		}, $this->getOwnMethods()));
 
@@ -733,8 +732,7 @@ class ReflectionClass extends ReflectionElement
 	public function getInheritedMagicMethods()
 	{
 		$methods = [];
-		$allMethods = array_flip(array_map(function ($method) {
-			/** @var ReflectionMethod $method */
+		$allMethods = array_flip(array_map(function (ReflectionMethod $method) {
 			return $method->getName();
 		}, $this->getOwnMagicMethods()));
 
@@ -775,18 +773,7 @@ class ReflectionClass extends ReflectionElement
 			}
 		}
 
-		// Sort
-		array_walk($usedMethods, function (&$methods) {
-			ksort($methods);
-			array_walk($methods, function (&$aliasedMethods) {
-				if ( ! isset($aliasedMethods['aliases'])) {
-					$aliasedMethods['aliases'] = [];
-				}
-				ksort($aliasedMethods['aliases']);
-			});
-		});
-
-		return $usedMethods;
+		return $this->sortUsedMethods($usedMethods);
 	}
 
 
@@ -804,18 +791,7 @@ class ReflectionClass extends ReflectionElement
 			$usedMethods[$method->getDeclaringTraitName()][$method->getName()]['method'] = $method;
 		}
 
-		// Sort
-		array_walk($usedMethods, function (&$methods) {
-			ksort($methods);
-			array_walk($methods, function (&$aliasedMethods) {
-				if ( ! isset($aliasedMethods['aliases'])) {
-					$aliasedMethods['aliases'] = [];
-				}
-				ksort($aliasedMethods['aliases']);
-			});
-		});
-
-		return $usedMethods;
+		return $this->sortUsedMethods($usedMethods);
 	}
 
 
@@ -845,8 +821,7 @@ class ReflectionClass extends ReflectionElement
 	public function getInheritedProperties()
 	{
 		$properties = [];
-		$allProperties = array_flip(array_map(function ($property) {
-			/** @var ReflectionProperty $property */
+		$allProperties = array_flip(array_map(function (ReflectionProperty $property) {
 			return $property->getName();
 		}, $this->getOwnProperties()));
 
@@ -877,8 +852,7 @@ class ReflectionClass extends ReflectionElement
 	public function getInheritedMagicProperties()
 	{
 		$properties = [];
-		$allProperties = array_flip(array_map(function ($property) {
-			/** @var ReflectionProperty $property */
+		$allProperties = array_flip(array_map(function (ReflectionProperty $property) {
 			return $property->getName();
 		}, $this->getOwnMagicProperties()));
 
@@ -909,8 +883,7 @@ class ReflectionClass extends ReflectionElement
 	public function getUsedProperties()
 	{
 		$properties = [];
-		$allProperties = array_flip(array_map(function ($property) {
-			/** @var ReflectionProperty $property */
+		$allProperties = array_flip(array_map(function (ReflectionProperty $property) {
 			return $property->getName();
 		}, $this->getOwnProperties()));
 
@@ -945,8 +918,7 @@ class ReflectionClass extends ReflectionElement
 	public function getUsedMagicProperties()
 	{
 		$properties = [];
-		$allProperties = array_flip(array_map(function ($property) {
-			/** @var ReflectionProperty $property */
+		$allProperties = array_flip(array_map(function (ReflectionProperty $property) {
 			return $property->getName();
 		}, $this->getOwnMagicProperties()));
 
@@ -1044,6 +1016,25 @@ class ReflectionClass extends ReflectionElement
 	private function isVisibilityLevelPublic()
 	{
 		return $this->getVisibilityLevel() & Visibility::IS_PUBLIC;
+	}
+
+
+	/**
+	 * @return array
+	 */
+	private function sortUsedMethods(array $usedMethods)
+	{
+		array_walk($usedMethods, function (&$methods) {
+			ksort($methods);
+			array_walk($methods, function (&$aliasedMethods) {
+				if ( ! isset($aliasedMethods['aliases'])) {
+					$aliasedMethods['aliases'] = [];
+				}
+				ksort($aliasedMethods['aliases']);
+			});
+		});
+
+		return $usedMethods;
 	}
 
 }

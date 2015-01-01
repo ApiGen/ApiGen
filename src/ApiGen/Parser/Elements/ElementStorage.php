@@ -254,7 +254,7 @@ class ElementStorage
 	 * @param string $elementType
 	 * @param ReflectionElement|ReflectionClass $element
 	 */
-	private function categorizeElementToNamespaceAndPackage($elementName, $elementType, $element)
+	private function categorizeElementToNamespaceAndPackage($elementName, $elementType, ReflectionElement $element)
 	{
 		$packageName = $element->getPseudoPackageName();
 		$this->packages[$packageName][$elementType][$elementName] = $element;
