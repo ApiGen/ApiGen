@@ -116,7 +116,7 @@ class ReflectionParameterMagicTest extends PHPUnit_Framework_TestCase
 
 	public function testGetDocComment()
 	{
-		$this->assertFalse($this->reflectionParameterMagic->getDocComment());
+		$this->assertSame('', $this->reflectionParameterMagic->getDocComment());
 	}
 
 

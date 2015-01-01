@@ -165,11 +165,11 @@ class ReflectionParameterMagic extends ReflectionParameter
 
 
 	/**
-	 * @return bool
+	 * {@inheritdoc}
 	 */
 	public function getDocComment()
 	{
-		return FALSE;
+		return '';
 	}
 
 
