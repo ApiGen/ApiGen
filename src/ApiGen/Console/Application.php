@@ -10,6 +10,7 @@
 namespace ApiGen\Console;
 
 use ApiGen\ApiGen;
+use ApiGen\MemoryLimit;
 use Kdyby\Events\EventArgsList;
 use Kdyby\Events\EventManager;
 use Symfony;
@@ -40,6 +41,7 @@ class Application extends Symfony\Component\Console\Application
 	public function __construct()
 	{
 		parent::__construct('ApiGen', ApiGen::VERSION);
+		(new MemoryLimit)->setMemoryLimitTo('1024M');
 	}
 
 
