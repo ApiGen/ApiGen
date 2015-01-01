@@ -16,23 +16,8 @@ use RuntimeException;
 use SplFileInfo;
 
 
-/**
- * @method array    getSymlinks()
- * @method Scanner  onScanFinish(Scanner $scanner)
- */
-class Scanner extends Nette\Object
+class Scanner
 {
-
-	/**
-	 * @var array
-	 */
-	public $onScanFinish = [];
-
-	/**
-	 * @var array
-	 */
-	private $symlinks = [];
-
 
 	/**
 	 * @param array|string $source
@@ -52,9 +37,6 @@ class Scanner extends Nette\Object
 		if (count($files) === 0) {
 			throw new RuntimeException('No PHP files found');
 		}
-
-		$this->symlinks = $this->getSymlinksFromFiles($files);
-		$this->onScanFinish($this);
 
 		return $files;
 	}
@@ -82,24 +64,6 @@ class Scanner extends Nette\Object
 			$value = '*.' . $value;
 		});
 		return $extensions;
-	}
-
-
-	/**
-	 * @param SplFileInfo[] $files
-	 * @return array
-	 */
-	private function getSymlinksFromFiles(array $files)
-	{
-		$symlinks = [];
-		foreach ($files as $file) {
-			$pathName = FileSystem::normalizePath($file->getPathName());
-			$files[$pathName] = $file->getSize();
-			if ($file->getRealPath() !== FALSE && $file->getRealPath() !== $pathName) {
-				$symlinks[$file->getRealPath()] = $pathName;
-			}
-		}
-		return $symlinks;
 	}
 
 

@@ -58,9 +58,7 @@ class ReflectionParameterMagicTest extends PHPUnit_Framework_TestCase
 
 	public function testGetFileName()
 	{
-		$this->assertSame(
-			__DIR__ . '/ReflectionMethodSource/ReflectionMethod.php', $this->reflectionParameterMagic->getFileName()
-		);
+		$this->assertStringEndsWith('ReflectionMethod.php', $this->reflectionParameterMagic->getFileName());
 	}
 
 

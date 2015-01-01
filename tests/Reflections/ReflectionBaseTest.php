@@ -59,7 +59,7 @@ class ReflectionBaseTest extends PHPUnit_Framework_TestCase
 
 	public function testGetFileName()
 	{
-		$this->assertStringEndsWith('ReflectionMethodSource/ReflectionMethod.php', $this->reflectionClass->getFileName());
+		$this->assertStringEndsWith('ReflectionMethod.php', $this->reflectionClass->getFileName());
 	}
 
 

@@ -25,14 +25,14 @@ class RelativePathResolverTest extends PHPUnit_Framework_TestCase
 	}
 
 
-	public function testGetRelativePathWithSymlink()
+	public function testGetRelativePathWithWindowsPath()
 	{
 		$configuration = Mockery::mock('ApiGen\Configuration\Configuration');
-		$configuration->shouldReceive('getOption')->with('source')->andReturn([TEMP_DIR]);
+		$configuration->shouldReceive('getOption')->with('source')->andReturn(['C:\some\dir']);
 		$relativePathResolver = new RelativePathResolver($configuration);
-		$relativePathResolver->setSymlinks(['some-file.txt' => TEMP_DIR . '/symlink-file.txt']);
 
-		$this->assertSame('symlink-file.txt', $relativePathResolver->getRelativePath('some-file.txt'));
+		$this->assertSame('file.txt', $relativePathResolver->getRelativePath('C:\some\dir\file.txt'));
+		$this->assertSame('more-dir/file.txt', $relativePathResolver->getRelativePath('C:\some\dir\more-dir\file.txt'));
 	}
 
 

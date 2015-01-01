@@ -21,7 +21,7 @@ class FileSystem
 	 */
 	public static function normalizePath($path)
 	{
-		return str_replace('\\', '/', $path);
+		return str_replace(DIRECTORY_SEPARATOR, '/', $path);
 	}
 
 
@@ -81,13 +81,12 @@ class FileSystem
 		foreach ($baseDirectories as $directory) {
 			$fileName = $directory . '/' . $path;
 			if (is_file($fileName)) {
-				return realpath($fileName);
+				return self::normalizePath(realpath($fileName));
 			}
 		}
 
-		$path = FileSystem::normalizePath($path);
 		if (file_exists($path)) {
-			return realpath($path);
+			return self::normalizePath(realpath($path));
 		}
 		return $path;
 	}

@@ -81,7 +81,7 @@ class FileSystemTest extends PHPUnit_Framework_TestCase
 
 	public function testGetAbsolutePath()
 	{
-		$absoluteDir = TEMP_DIR . '/relative-dir';
+		$absoluteDir = FileSystem::normalizePath(TEMP_DIR . '/relative-dir');
 		mkdir($absoluteDir);
 		$this->assertTrue(file_exists($absoluteDir));
 

@@ -47,11 +47,6 @@ class RelativePathResolver
 	 */
 	public function getRelativePath($fileName)
 	{
-		$fileName = FileSystem::normalizePath($fileName);
-
-		if (isset($this->symlinks[$fileName])) {
-			$fileName = $this->symlinks[$fileName];
-		}
 		foreach ($this->configuration->getOption(CO::SOURCE) as $directory) {
 			if (strpos($fileName, $directory) === 0) {
 				return $this->getFileNameWithoutSourcePath($fileName, $directory);

@@ -34,13 +34,6 @@ class ScannerTest extends ContainerAwareTestCase
 	}
 
 
-	public function testGetSymlinks()
-	{
-		$this->scanner->scan(__DIR__ . '/Source');
-		$this->assertCount(0, $this->scanner->getSymlinks());
-	}
-
-
 	/**
 	 * @expectedException \RuntimeException
 	 */

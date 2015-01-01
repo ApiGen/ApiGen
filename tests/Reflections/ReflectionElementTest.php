@@ -133,18 +133,16 @@ class ReflectionElementTest extends PHPUnit_Framework_TestCase
 
 	public function testGetDocComment()
 	{
-		$docComment = <<<COMMENT
-/**
- * This is some description
- *
- * @property-read int \$skillCounter
- * @method string getName() This is some short description.
- * @method string doAnOperation(\stdClass \$data, \$type) This also some description.
- *
- * @package Some_Package
- */
-COMMENT;
-		$this->assertSame($docComment, $this->reflectionClass->getDocComment());
+		$docCommentParts = [];
+		$docCommentParts[] = ' * This is some description';
+		$docCommentParts[] = ' * @property-read int $skillCounter';
+		$docCommentParts[] = ' * @method string getName() This is some short description.';
+		$docCommentParts[] = ' * @method string doAnOperation(\stdClass $data, $type) This also some description.';
+		$docCommentParts[] = ' * @package Some_Package';
+
+		foreach ($docCommentParts as $part) {
+			$this->assertContains($part, $this->reflectionClass->getDocComment());
+		}
 	}
 
 
