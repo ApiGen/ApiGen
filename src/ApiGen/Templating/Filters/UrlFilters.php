@@ -15,7 +15,6 @@ use ApiGen\Generator\Markups\Markup;
 use ApiGen\Generator\Resolvers\ElementResolver;
 use ApiGen\Generator\SourceCodeHighlighter\SourceCodeHighlighter;
 use ApiGen\Reflection\ReflectionClass;
-use ApiGen\Reflection\ReflectionConstant;
 use ApiGen\Reflection\ReflectionElement;
 use ApiGen\Reflection\ReflectionFunction;
 use ApiGen\Templating\Filters\Helpers\ElementLinkFactory;

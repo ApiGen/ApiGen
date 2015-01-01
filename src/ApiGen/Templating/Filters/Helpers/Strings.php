@@ -9,9 +9,6 @@
 
 namespace ApiGen\Templating\Filters\Helpers;
 
-use Latte;
-use Latte\Runtime\Filters;
-
 
 class Strings
 {

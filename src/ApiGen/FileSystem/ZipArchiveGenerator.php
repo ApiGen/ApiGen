@@ -9,7 +9,6 @@
 
 namespace ApiGen\FileSystem;
 
-use ApiGen\Configuration\Configuration;
 use Nette\Utils\Finder;
 use Nette\Utils\Strings;
 use RuntimeException;
@@ -19,18 +18,6 @@ use ZipArchive;
 
 class ZipArchiveGenerator
 {
-
-	/**
-	 * @var Configuration
-	 */
-	private $configuration;
-
-
-	public function __construct(Configuration $configuration)
-	{
-		$this->configuration = $configuration;
-	}
-
 
 	/**
 	 * @param string $source

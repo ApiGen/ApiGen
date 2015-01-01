@@ -12,7 +12,6 @@ namespace ApiGen\Parser;
 use ApiGen\Parser\Elements\Elements;
 use ApiGen\Reflection\ReflectionClass;
 use ApiGen\Reflection\ReflectionElement;
-use ApiGen\Reflection\TokenReflection\Reflection;
 use ArrayObject;
 
 

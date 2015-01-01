@@ -12,7 +12,6 @@ namespace ApiGen\Templating\Filters;
 use ApiGen;
 use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions as CO;
-use ApiGen\Generator\Resolvers\ElementResolver;
 use Nette;
 
 
@@ -56,19 +55,13 @@ class AnnotationFilters extends Filters
 	];
 
 	/**
-	 * @var ElementResolver
-	 */
-	private $elementResolver;
-
-	/**
 	 * @var Configuration
 	 */
 	private $configuration;
 
 
-	public function __construct(Configuration $configuration, ElementResolver $elementResolver)
+	public function __construct(Configuration $configuration)
 	{
-		$this->elementResolver = $elementResolver;
 		$this->configuration = $configuration;
 	}
 

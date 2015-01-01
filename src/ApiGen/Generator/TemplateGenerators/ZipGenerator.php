@@ -13,7 +13,6 @@ use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\FileSystem\ZipArchiveGenerator;
 use ApiGen\Generator\ConditionalTemplateGenerator;
-use ApiGen\Templating\TemplateFactory;
 
 
 class ZipGenerator implements ConditionalTemplateGenerator
@@ -25,23 +24,14 @@ class ZipGenerator implements ConditionalTemplateGenerator
 	private $configuration;
 
 	/**
-	 * @var TemplateFactory
-	 */
-	private $templateFactory;
-
-	/**
 	 * @var ZipArchiveGenerator
 	 */
 	private $zipArchiveGenerator;
 
 
-	public function __construct(
-		Configuration $configuration,
-		TemplateFactory $templateFactory,
-		ZipArchiveGenerator $zipArchiveGenerator
-	) {
+	public function __construct(Configuration $configuration, ZipArchiveGenerator $zipArchiveGenerator)
+	{
 		$this->configuration = $configuration;
-		$this->templateFactory = $templateFactory;
 		$this->zipArchiveGenerator = $zipArchiveGenerator;
 	}
 

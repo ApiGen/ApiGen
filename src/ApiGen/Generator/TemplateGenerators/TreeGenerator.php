@@ -14,7 +14,6 @@ use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Configuration\Theme\ThemeConfigOptions as TCO;
 use ApiGen\Generator\ConditionalTemplateGenerator;
 use ApiGen\Parser\Elements\Elements;
-use ApiGen\Parser\Elements\ElementStorage;
 use ApiGen\Parser\ParserResult;
 use ApiGen\Reflection\ReflectionClass;
 use ApiGen\Templating\TemplateFactory;
@@ -50,11 +49,6 @@ class TreeGenerator implements ConditionalTemplateGenerator
 	];
 
 	/**
-	 * @var ElementStorage
-	 */
-	private $elementStorage;
-
-	/**
 	 * @var ParserResult
 	 */
 	private $parserResult;
@@ -63,12 +57,10 @@ class TreeGenerator implements ConditionalTemplateGenerator
 	public function __construct(
 		Configuration $configuration,
 		TemplateFactory $templateFactory,
-		ElementStorage $elementStorage,
 		ParserResult $parserResult
 	) {
 		$this->configuration = $configuration;
 		$this->templateFactory = $templateFactory;
-		$this->elementStorage = $elementStorage;
 		$this->parserResult = $parserResult;
 	}
 

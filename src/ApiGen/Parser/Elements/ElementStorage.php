@@ -82,11 +82,6 @@ class ElementStorage
 	private $groupSorter;
 
 	/**
-	 * @var Elements
-	 */
-	private $elements;
-
-	/**
 	 * @var ElementResolver
 	 */
 	private $elementResolver;
@@ -96,13 +91,11 @@ class ElementStorage
 		ParserResult $parserResult,
 		Configuration $configuration,
 		GroupSorter $groupSorter,
-		Elements $elements,
 		ElementResolver $elementResolver
 	) {
 		$this->parserResult = $parserResult;
 		$this->configuration = $configuration;
 		$this->groupSorter = $groupSorter;
-		$this->elements = $elements;
 		$this->elementResolver = $elementResolver;
 	}
 

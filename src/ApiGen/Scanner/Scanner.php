@@ -9,7 +9,6 @@
 
 namespace ApiGen\Scanner;
 
-use ApiGen\FileSystem\FileSystem;
 use Nette;
 use Nette\Utils\Finder;
 use RuntimeException;

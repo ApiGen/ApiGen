@@ -15,7 +15,6 @@ use ApiGen\Reflection\ReflectionClass;
 use ApiGen\Reflection\ReflectionConstant;
 use ApiGen\Reflection\ReflectionElement;
 use ApiGen\Reflection\ReflectionFunction;
-use Nette;
 
 
 class SourceFilters extends Filters
