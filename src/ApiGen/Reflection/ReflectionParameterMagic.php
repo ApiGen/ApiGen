@@ -237,7 +237,7 @@ class ReflectionParameterMagic extends ReflectionParameter
 			return NULL;
 		}
 		if (isset($this->getParsedClasses()[$this->typeHint])) {
-			return $this->typeHint; // todo: check fix
+			return $this->typeHint;
 		}
 
 		return NULL;

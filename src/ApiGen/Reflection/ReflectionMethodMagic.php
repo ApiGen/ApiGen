@@ -10,6 +10,7 @@
 namespace ApiGen\Reflection;
 
 use ApiGen\Configuration\ConfigurationOptions as CO;
+use ApiGen\Reflection\Parts\IsDocumentedMagic;
 use ApiGen\Reflection\Parts\StartLineEndLine;
 use ApiGen\Reflection\Parts\StartPositionEndPositionMagic;
 
@@ -17,6 +18,7 @@ use ApiGen\Reflection\Parts\StartPositionEndPositionMagic;
 class ReflectionMethodMagic extends ReflectionMethod
 {
 
+	use IsDocumentedMagic;
 	use StartLineEndLine;
 	use StartPositionEndPositionMagic;
 
@@ -108,20 +110,6 @@ class ReflectionMethodMagic extends ReflectionMethod
 	public function getShortName()
 	{
 		return $this->name;
-	}
-
-
-	/**
-	 * @return bool
-	 */
-	public function isDocumented()
-	{
-		if ($this->isDocumented === NULL) {
-			$deprecated = $this->configuration->getOption(CO::DEPRECATED);
-			$this->isDocumented = $deprecated || ! $this->isDeprecated();
-		}
-
-		return $this->isDocumented;
 	}
 
 
