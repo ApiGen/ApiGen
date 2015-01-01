@@ -23,21 +23,10 @@ class RelativePathResolver
 	 */
 	private $configuration;
 
-	/**
-	 * @var array
-	 */
-	private $symlinks;
-
 
 	public function __construct(Configuration $configuration)
 	{
 		$this->configuration = $configuration;
-	}
-
-
-	public function setSymlinks(array $symlinks)
-	{
-		$this->symlinks = $symlinks;
 	}
 
 
