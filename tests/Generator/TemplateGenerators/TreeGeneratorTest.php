@@ -34,8 +34,6 @@ class TreeGeneratorTest extends PHPUnit_Framework_TestCase
 		$templateMock->shouldReceive('save');
 		$templateFactoryMock->shouldReceive('createForType')->andReturn($templateMock);
 
-		$elementStorageMock = Mockery::mock('ApiGen\Parser\Elements\ElementStorage');
-
 		$reflectionClassMock = Mockery::mock('ApiGen\Reflection\ReflectionClass');
 		$reflectionClassMock->shouldReceive('isMain')->andReturn(TRUE);
 		$reflectionClassMock->shouldReceive('isDocumented')->andReturn(TRUE);
@@ -47,7 +45,7 @@ class TreeGeneratorTest extends PHPUnit_Framework_TestCase
 		$parserResultMock->shouldReceive('getClasses')->andReturn(new ArrayObject([$reflectionClassMock]));
 
 		$this->treeGenerator = new TreeGenerator(
-			$configurationMock, $templateFactoryMock, $elementStorageMock, $parserResultMock
+			$configurationMock, $templateFactoryMock, $parserResultMock
 		);
 	}
 

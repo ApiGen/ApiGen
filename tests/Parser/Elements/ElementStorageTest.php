@@ -5,7 +5,6 @@ namespace ApiGen\Tests\Parser\Elements;
 use ApiGen\Configuration\Configuration;
 use ApiGen\Parser\Elements\ElementStorage;
 use ApiGen\Reflection\ReflectionClass;
-use ApiGen\Reflection\ReflectionElement;
 use ApiGen\Tests\MethodInvoker;
 use Mockery;
 use PHPUnit_Framework_TestCase;
@@ -116,8 +115,6 @@ class ElementStorageTest extends PHPUnit_Framework_TestCase
 			return $elements;
 		});
 
-		$elementsMock = Mockery::mock('ApiGen\Parser\Elements\Elements');
-
 		$iReflectionClassMock = Mockery::mock('TokenReflection\IReflection', 'Nette\Object');
 		$iReflectionClassMock->shouldReceive('getAnnotations')->andReturn([]);
 
@@ -126,7 +123,7 @@ class ElementStorageTest extends PHPUnit_Framework_TestCase
 		$elementResolverMock->shouldReceive('resolveElement')->andReturn($this->reflectionClass);
 
 		return new ElementStorage(
-			$parserResultMock, $configurationMock, $groupSorterMock, $elementsMock, $elementResolverMock
+			$parserResultMock, $configurationMock, $groupSorterMock, $elementResolverMock
 		);
 	}
 
