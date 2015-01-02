@@ -10,10 +10,12 @@
 namespace ApiGen\Console;
 
 use ApiGen\ApiGen;
+use ApiGen\Console\Input\LiberalFormatArgvInput;
 use ApiGen\MemoryLimit;
 use Kdyby\Events\EventArgsList;
 use Kdyby\Events\EventManager;
 use Symfony;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputInterface;
@@ -52,6 +54,15 @@ class Application extends Symfony\Component\Console\Application
 	{
 		$this->onRun($input, $output);
 		return parent::doRun($input, $output);
+	}
+
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function run(InputInterface $input = NULL, OutputInterface $output = NULL)
+	{
+		return parent::run(new LiberalFormatArgvInput, $output);
 	}
 
 
