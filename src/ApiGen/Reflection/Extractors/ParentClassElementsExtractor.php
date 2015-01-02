@@ -10,10 +10,8 @@
 namespace ApiGen\Reflection\Extractors;
 
 use ApiGen\Reflection\ReflectionClass;
-use ApiGen\Reflection\ReflectionElement;
 use ApiGen\Reflection\ReflectionMethod;
 use ApiGen\Reflection\ReflectionProperty;
-use TokenReflection;
 
 
 class ParentClassElementsExtractor
