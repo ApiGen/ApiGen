@@ -112,7 +112,7 @@ class ClassTraitElementsExtractor
 
 
 	/**
- 	 * @return array {[ traitName => ReflectionProperty[] ]}
+	 * @return array {[ traitName => ReflectionProperty[] ]}
 	 */
 	public function getUsedProperties()
 	{
