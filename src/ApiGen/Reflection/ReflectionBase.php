@@ -151,7 +151,7 @@ abstract class ReflectionBase extends Nette\Object implements Reflection
 	/**
 	 * @return ArrayObject|ReflectionClass[]
 	 */
-	protected function getParsedClasses()
+	public function getParsedClasses()
 	{
 		return $this->parserResult->getElementsByType(Elements::CLASSES);
 	}
