@@ -85,6 +85,7 @@ class TemplateFactory
 		$template = $this->buildTemplate();
 		$template->setFile($this->templateNavigator->getTemplatePath($type));
 		$template->setSavePath($this->templateNavigator->getTemplateFileName($type));
+		$template = $this->setEmptyDefaults($template);
 		return $template;
 	}
 
@@ -156,6 +157,19 @@ class TemplateFactory
 			$this->builtTemplate = $this->templateElementsLoader->addElementsToTemplate($template);
 		}
 		return $this->builtTemplate;
+	}
+
+
+	/**
+	 * @return Template
+	 */
+	private function setEmptyDefaults(Template $template)
+	{
+		$template->setParameters([
+			'namespace' => NULL,
+			'packages' => NULL
+		]);
+		return $template;
 	}
 
 }
