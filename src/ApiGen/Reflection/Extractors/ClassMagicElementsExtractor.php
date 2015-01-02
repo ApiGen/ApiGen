@@ -197,11 +197,11 @@ class ClassMagicElementsExtractor
 	/**
 	 * @return array
 	 */
-	private function sortElements(array $elements, array $allElements, ReflectionClass $reflectionElement)
+	private function sortElements(array $elements, array $allElements, ReflectionClass $reflectionClass)
 	{
 		if ( ! empty($elements)) {
 			ksort($elements);
-			$allElements[$reflectionElement->getName()] = array_values($elements);
+			$allElements[$reflectionClass->getName()] = array_values($elements);
 		}
 		return $allElements;
 	}

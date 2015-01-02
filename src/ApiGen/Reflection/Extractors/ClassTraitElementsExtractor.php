@@ -24,7 +24,7 @@ class ClassTraitElementsExtractor
 	private $reflectionClass;
 
 	/**
-	 * @var TokenReflection\ReflectionClass
+	 * @var TokenReflection\IReflection|ReflectionClass
 	 */
 	private $originalReflection;
 

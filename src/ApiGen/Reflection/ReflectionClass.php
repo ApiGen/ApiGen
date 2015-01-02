@@ -12,6 +12,7 @@ namespace ApiGen\Reflection;
 use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Reflection\Extractors\ClassMagicElementsExtractor;
 use ApiGen\Reflection\Extractors\ClassTraitElementsExtractor;
+use ApiGen\Reflection\Extractors\ParentClassElementsExtractor;
 use ApiGen\Reflection\TokenReflection\ReflectionFactory;
 use InvalidArgumentException;
 use ReflectionProperty as Visibility;
@@ -67,12 +68,18 @@ class ReflectionClass extends ReflectionElement
 	 */
 	private $classTraitElementExtractor;
 
+	/**
+	 * @var ParentClassElementsExtractor
+	 */
+	private $parentClassElementExtractor;
+
 
 	public function __construct($reflectionClass)
 	{
 		parent::__construct($reflectionClass);
 		$this->classMagicElementExtractor = new ClassMagicElementsExtractor($this);
 		$this->classTraitElementExtractor = new ClassTraitElementsExtractor($this, $reflectionClass);
+		$this->parentClassElementExtractor = new ParentClassElementsExtractor($this);
 	}
 
 
@@ -646,32 +653,11 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * @return array
+	 * @return array {[ className => ReflectionMethod[] ]}
 	 */
 	public function getInheritedMethods()
 	{
-		$methods = [];
-		$allMethods = array_flip(array_map(function (ReflectionMethod $method) {
-			return $method->getName();
-		}, $this->getOwnMethods()));
-
-		foreach (array_merge($this->getParentClasses(), $this->getInterfaces()) as $class) {
-			/** @var ReflectionClass $class */
-			$inheritedMethods = [];
-			foreach ($class->getOwnMethods() as $method) {
-				if ( ! array_key_exists($method->getName(), $allMethods) && ! $method->isPrivate()) {
-					$inheritedMethods[$method->getName()] = $method;
-					$allMethods[$method->getName()] = NULL;
-				}
-			}
-
-			if ( ! empty($inheritedMethods)) {
-				ksort($inheritedMethods);
-				$methods[$class->getName()] = array_values($inheritedMethods);
-			}
-		}
-
-		return $methods;
+		return $this->parentClassElementExtractor->getInheritedMethods();
 	}
 
 
@@ -709,47 +695,16 @@ class ReflectionClass extends ReflectionElement
 	 */
 	public function getInheritedConstants()
 	{
-		return array_filter(
-			array_map(
-				function (ReflectionClass $class) {
-					$reflections = $class->getOwnConstants();
-					ksort($reflections);
-					return $reflections;
-				},
-				array_merge($this->getParentClasses(), $this->getInterfaces())
-			)
-		);
+		return $this->parentClassElementExtractor->getInheritedConstants();
 	}
 
 
 	/**
-	 * Returns an array of inherited properties from parent classes grouped by the declaring class name.
-	 *
-	 * @return array
+	 * @return array {[ className => ReflectionProperty[] ]}
 	 */
 	public function getInheritedProperties()
 	{
-		$properties = [];
-		$allProperties = array_flip(array_map(function (ReflectionProperty $property) {
-			return $property->getName();
-		}, $this->getOwnProperties()));
-
-		foreach ($this->getParentClasses() as $class) {
-			$inheritedProperties = [];
-			foreach ($class->getOwnProperties() as $property) {
-				if ( ! array_key_exists($property->getName(), $allProperties) && ! $property->isPrivate()) {
-					$inheritedProperties[$property->getName()] = $property;
-					$allProperties[$property->getName()] = NULL;
-				}
-			}
-
-			if ( ! empty($inheritedProperties)) {
-				ksort($inheritedProperties);
-				$properties[$class->getName()] = array_values($inheritedProperties);
-			}
-		}
-
-		return $properties;
+		return $this->parentClassElementExtractor->getInheritedProperties();
 	}
 
 
