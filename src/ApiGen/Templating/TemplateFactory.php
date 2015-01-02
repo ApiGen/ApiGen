@@ -167,7 +167,7 @@ class TemplateFactory
 	{
 		$template->setParameters([
 			'namespace' => NULL,
-			'packages' => NULL
+			'package' => NULL
 		]);
 		return $template;
 	}
