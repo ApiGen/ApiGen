@@ -10,10 +10,10 @@
 namespace ApiGen\Reflection;
 
 use ApiGen\Configuration\ConfigurationOptions as CO;
-use ApiGen\Reflection\Extractors\AnnotationMethodExtractor;
-use ApiGen\Reflection\Extractors\AnnotationPropertyExtractor;
-use ApiGen\Reflection\Extractors\MagicMethodExtractor;
-use ApiGen\Reflection\Extractors\MagicPropertyExtractor;
+use ApiGen\Reflection\Extractors\ClassMagicElementsExtractor;
+use ApiGen\Reflection\Extractors\ClassTraitElementsExtractor;
+use ApiGen\Reflection\Extractors\ParentClassElementsExtractor;
+use ApiGen\Reflection\TokenReflection\ReflectionFactory;
 use InvalidArgumentException;
 use ReflectionProperty as Visibility;
 use TokenReflection;
@@ -39,11 +39,6 @@ class ReflectionClass extends ReflectionElement
 	private $ownProperties;
 
 	/**
-	 * @var ReflectionPropertyMagic[]
-	 */
-	private $ownMagicProperties;
-
-	/**
 	 * @var ReflectionConstant[]
 	 */
 	private $constants;
@@ -64,9 +59,28 @@ class ReflectionClass extends ReflectionElement
 	private $ownMethods;
 
 	/**
-	 * @var ReflectionMethodMagic[]
+	 * @var ClassMagicElementsExtractor
 	 */
-	private $ownMagicMethods;
+	private $classMagicElementExtractor;
+
+	/**
+	 * @var ClassTraitElementsExtractor
+	 */
+	private $classTraitElementExtractor;
+
+	/**
+	 * @var ParentClassElementsExtractor
+	 */
+	private $parentClassElementExtractor;
+
+
+	public function __construct($reflectionClass)
+	{
+		parent::__construct($reflectionClass);
+		$this->classMagicElementExtractor = new ClassMagicElementsExtractor($this);
+		$this->classTraitElementExtractor = new ClassTraitElementsExtractor($this, $reflectionClass);
+		$this->parentClassElementExtractor = new ParentClassElementsExtractor($this);
+	}
 
 
 	/**
@@ -171,7 +185,7 @@ class ReflectionClass extends ReflectionElement
 	 */
 	public function getMagicMethods()
 	{
-		return $this->getOwnMagicMethods() + (new MagicMethodExtractor)->extractFromClass($this);
+		return $this->classMagicElementExtractor->getMagicMethods();
 	}
 
 
@@ -180,15 +194,7 @@ class ReflectionClass extends ReflectionElement
 	 */
 	public function getOwnMagicMethods()
 	{
-		if ($this->ownMagicMethods === NULL) {
-			$this->ownMagicMethods = [];
-
-			if ($this->isVisibilityLevelPublic() && $this->getDocComment()) {
-				$extractor = new AnnotationMethodExtractor($this->reflectionFactory);
-				$this->ownMagicMethods += $extractor->extractFromReflection($this);
-			}
-		}
-		return $this->ownMagicMethods;
+		return $this->classMagicElementExtractor->getOwnMagicMethods();
 	}
 
 
@@ -197,15 +203,7 @@ class ReflectionClass extends ReflectionElement
 	 */
 	public function getTraitMethods()
 	{
-		$methods = [];
-		foreach ($this->reflection->getTraitMethods($this->getVisibilityLevel()) as $method) {
-			$apiMethod = $this->reflectionFactory->createFromReflection($method);
-			if ( ! $this->isDocumented() || $apiMethod->isDocumented()) {
-				/** @var ReflectionElement $method */
-				$methods[$method->getName()] = $apiMethod;
-			}
-		}
-		return $methods;
+		return $this->classTraitElementExtractor->getTraitMethods();
 	}
 
 
@@ -252,25 +250,16 @@ class ReflectionClass extends ReflectionElement
 	 */
 	public function getMagicProperties()
 	{
-		return $this->getOwnMagicProperties() + (new MagicPropertyExtractor)->extractFromClass($this);
+		return $this->classMagicElementExtractor->getMagicProperties();
 	}
 
 
 	/**
-	 * @return ReflectionPropertyMagic[]|array
+	 * @return ReflectionPropertyMagic[]
 	 */
 	public function getOwnMagicProperties()
 	{
-		if ($this->ownMagicProperties === NULL) {
-			$this->ownMagicProperties = [];
-
-			if ($this->isVisibilityLevelPublic() && $this->getDocComment()) {
-				$extractor = new AnnotationPropertyExtractor($this->reflectionFactory);
-				$this->ownMagicProperties += $extractor->extractFromReflection($this);
-			}
-		}
-
-		return $this->ownMagicProperties;
+		return $this->classMagicElementExtractor->getOwnMagicProperties();
 	}
 
 
@@ -298,15 +287,7 @@ class ReflectionClass extends ReflectionElement
 	 */
 	public function getTraitProperties()
 	{
-		$properties = [];
-		foreach ($this->reflection->getTraitProperties($this->getVisibilityLevel()) as $property) {
-			$apiProperty = $this->reflectionFactory->createFromReflection($property);
-			if ( ! $this->isDocumented() || $apiProperty->isDocumented()) {
-				/** @var ReflectionElement $property */
-				$properties[$property->getName()] = $apiProperty;
-			}
-		}
-		return $properties;
+		return $this->classTraitElementExtractor->getTraitProperties();
 	}
 
 
@@ -481,7 +462,7 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * @return array
+	 * @return ReflectionClass[]|array
 	 */
 	public function getInterfaces()
 	{
@@ -492,7 +473,7 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * @return array
+	 * @return ReflectionClass[]|array
 	 */
 	public function getOwnInterfaces()
 	{
@@ -503,7 +484,7 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * @return array
+	 * @return string[]
 	 */
 	public function getOwnInterfaceNames()
 	{
@@ -648,81 +629,35 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * @return array
+	 * @return ReflectionClass[]|array
 	 */
 	public function getDirectUsers()
 	{
 		if ( ! $this->isTrait()) {
 			return [];
 		}
-
-		$users = [];
-		$name = $this->reflection->getName();
-		foreach ($this->getParsedClasses() as $class) {
-			if ( ! $class->isDocumented()) {
-				continue;
-			}
-
-			if (in_array($name, $class->getOwnTraitNames())) {
-				$users[] = $class;
-			}
-		}
-		uksort($users, 'strcasecmp');
-		return $users;
+		return $this->classTraitElementExtractor->getDirectUsers();
 	}
 
 
 	/**
-	 * @return array
+	 * @return ReflectionClass[]|array
 	 */
 	public function getIndirectUsers()
 	{
 		if ( ! $this->isTrait()) {
 			return [];
 		}
-
-		$users = [];
-		$name = $this->reflection->getName();
-		foreach ($this->getParsedClasses() as $class) {
-			if ( ! $class->isDocumented()) {
-				continue;
-			}
-			if ($class->usesTrait($name) && ! in_array($name, $class->getOwnTraitNames())) {
-				$users[] = $class;
-			}
-		}
-		uksort($users, 'strcasecmp');
-		return $users;
+		return $this->classTraitElementExtractor->getIndirectUsers();
 	}
 
 
 	/**
-	 * @return array
+	 * @return array {[ className => ReflectionMethod[] ]}
 	 */
 	public function getInheritedMethods()
 	{
-		$methods = [];
-		$allMethods = array_flip(array_map(function (ReflectionMethod $method) {
-			return $method->getName();
-		}, $this->getOwnMethods()));
-
-		foreach (array_merge($this->getParentClasses(), $this->getInterfaces()) as $class) {
-			/** @var ReflectionClass $class */
-			$inheritedMethods = [];
-			foreach ($class->getOwnMethods() as $method) {
-				if ( ! array_key_exists($method->getName(), $allMethods) && ! $method->isPrivate()) {
-					$inheritedMethods[$method->getName()] = $method;
-					$allMethods[$method->getName()] = NULL;
-				}
-			}
-
-			if ( ! empty($inheritedMethods)) {
-				ksort($inheritedMethods);
-				$methods[$class->getName()] = array_values($inheritedMethods);
-			}
-		}
-
-		return $methods;
+		return $this->parentClassElementExtractor->getInheritedMethods();
 	}
 
 
@@ -731,28 +666,7 @@ class ReflectionClass extends ReflectionElement
 	 */
 	public function getInheritedMagicMethods()
 	{
-		$methods = [];
-		$allMethods = array_flip(array_map(function (ReflectionMethod $method) {
-			return $method->getName();
-		}, $this->getOwnMagicMethods()));
-
-		foreach (array_merge($this->getParentClasses(), $this->getInterfaces()) as $class) {
-			/** @var ReflectionClass $class */
-			$inheritedMethods = [];
-			foreach ($class->getOwnMagicMethods() as $method) {
-				if ( ! array_key_exists($method->getName(), $allMethods)) {
-					$inheritedMethods[$method->getName()] = $method;
-					$allMethods[$method->getName()] = NULL;
-				}
-			}
-
-			if ( ! empty($inheritedMethods)) {
-				ksort($inheritedMethods);
-				$methods[$class->getName()] = array_values($inheritedMethods);
-			}
-		}
-
-		return $methods;
+		return $this->classMagicElementExtractor->getInheritedMagicMethods();
 	}
 
 
@@ -761,18 +675,7 @@ class ReflectionClass extends ReflectionElement
 	 */
 	public function getUsedMethods()
 	{
-		$usedMethods = [];
-		foreach ($this->getMethods() as $method) {
-			if ($method->getDeclaringTraitName() === NULL || $method->getDeclaringTraitName() === $this->getName()) {
-				continue;
-			}
-
-			$usedMethods[$method->getDeclaringTraitName()][$method->getName()]['method'] = $method;
-			if ($method->getOriginalName() !== NULL && $method->getOriginalName() !== $method->getName()) {
-				$usedMethods[$method->getDeclaringTraitName()][$method->getName()]['aliases'][$method->getName()] = $method;
-			}
-		}
-
+		$usedMethods = $this->classTraitElementExtractor->getUsedMethods();
 		return $this->sortUsedMethods($usedMethods);
 	}
 
@@ -782,15 +685,7 @@ class ReflectionClass extends ReflectionElement
 	 */
 	public function getUsedMagicMethods()
 	{
-		$usedMethods = [];
-		foreach ($this->getMagicMethods() as $method) {
-			if ($method->getDeclaringTraitName() === NULL || $method->getDeclaringTraitName() === $this->getName()) {
-				continue;
-			}
-
-			$usedMethods[$method->getDeclaringTraitName()][$method->getName()]['method'] = $method;
-		}
-
+		$usedMethods = $this->classMagicElementExtractor->getUsedMagicMethods();
 		return $this->sortUsedMethods($usedMethods);
 	}
 
@@ -800,148 +695,43 @@ class ReflectionClass extends ReflectionElement
 	 */
 	public function getInheritedConstants()
 	{
-		return array_filter(
-			array_map(
-				function (ReflectionClass $class) {
-					$reflections = $class->getOwnConstants();
-					ksort($reflections);
-					return $reflections;
-				},
-				array_merge($this->getParentClasses(), $this->getInterfaces())
-			)
-		);
+		return $this->parentClassElementExtractor->getInheritedConstants();
 	}
 
 
 	/**
-	 * Returns an array of inherited properties from parent classes grouped by the declaring class name.
-	 *
-	 * @return array
+	 * @return array {[ className => ReflectionProperty[] ]}
 	 */
 	public function getInheritedProperties()
 	{
-		$properties = [];
-		$allProperties = array_flip(array_map(function (ReflectionProperty $property) {
-			return $property->getName();
-		}, $this->getOwnProperties()));
-
-		foreach ($this->getParentClasses() as $class) {
-			$inheritedProperties = [];
-			foreach ($class->getOwnProperties() as $property) {
-				if ( ! array_key_exists($property->getName(), $allProperties) && ! $property->isPrivate()) {
-					$inheritedProperties[$property->getName()] = $property;
-					$allProperties[$property->getName()] = NULL;
-				}
-			}
-
-			if ( ! empty($inheritedProperties)) {
-				ksort($inheritedProperties);
-				$properties[$class->getName()] = array_values($inheritedProperties);
-			}
-		}
-
-		return $properties;
+		return $this->parentClassElementExtractor->getInheritedProperties();
 	}
 
 
 	/**
-	 * Returns an array of inherited magic properties from parent classes grouped by the declaring class name.
-	 *
-	 * @return array
+	 * @return ReflectionPropertyMagic[]|array
 	 */
 	public function getInheritedMagicProperties()
 	{
-		$properties = [];
-		$allProperties = array_flip(array_map(function (ReflectionProperty $property) {
-			return $property->getName();
-		}, $this->getOwnMagicProperties()));
-
-		foreach ($this->getParentClasses() as $class) {
-			$inheritedProperties = [];
-			foreach ($class->getOwnMagicProperties() as $property) {
-				if ( ! array_key_exists($property->getName(), $allProperties)) {
-					$inheritedProperties[$property->getName()] = $property;
-					$allProperties[$property->getName()] = NULL;
-				}
-			}
-
-			if ( ! empty($inheritedProperties)) {
-				ksort($inheritedProperties);
-				$properties[$class->getName()] = array_values($inheritedProperties);
-			}
-		}
-
-		return $properties;
+		return $this->classMagicElementExtractor->getInheritedMagicProperties();
 	}
 
 
 	/**
-	 * Returns an array of used properties from used traits grouped by the declaring trait name.
-	 *
-	 * @return array
+	 * @return array {[ traitName => ReflectionProperty[] ]}
 	 */
 	public function getUsedProperties()
 	{
-		$properties = [];
-		$allProperties = array_flip(array_map(function (ReflectionProperty $property) {
-			return $property->getName();
-		}, $this->getOwnProperties()));
-
-		foreach ($this->getTraits() as $trait) {
-			if ( ! $trait instanceof ReflectionClass) {
-				continue;
-			}
-
-			$usedProperties = [];
-			foreach ($trait->getOwnProperties() as $property) {
-				if ( ! array_key_exists($property->getName(), $allProperties)) {
-					$usedProperties[$property->getName()] = $property;
-					$allProperties[$property->getName()] = NULL;
-				}
-			}
-
-			if ( ! empty($usedProperties)) {
-				ksort($usedProperties);
-				$properties[$trait->getName()] = array_values($usedProperties);
-			}
-		}
-
-		return $properties;
+		return $this->classTraitElementExtractor->getUsedProperties();
 	}
 
 
 	/**
-	 * Returns an array of used magic properties from used traits grouped by the declaring trait name.
-	 *
 	 * @return array
 	 */
 	public function getUsedMagicProperties()
 	{
-		$properties = [];
-		$allProperties = array_flip(array_map(function (ReflectionProperty $property) {
-			return $property->getName();
-		}, $this->getOwnMagicProperties()));
-
-		foreach ($this->getTraits() as $trait) {
-			if ( ! $trait instanceof ReflectionClass) {
-				continue;
-			}
-
-			$usedProperties = [];
-			foreach ($trait->getOwnMagicProperties() as $property) {
-				if ( ! array_key_exists($property->getName(), $allProperties)) {
-					$usedProperties[$property->getName()] = $property;
-					$allProperties[$property->getName()] = NULL;
-				}
-			}
-
-			if ( ! empty($usedProperties)) {
-				ksort($usedProperties);
-				$properties[$trait->getName()] = array_values($usedProperties);
-			}
-		}
-
-		return $properties;
+		return $this->classMagicElementExtractor->getUsedMagicProperties();
 	}
 
 
@@ -1002,20 +792,29 @@ class ReflectionClass extends ReflectionElement
 
 
 	/**
-	 * @return int
+	 * @return bool
 	 */
-	private function getVisibilityLevel()
+	public function isVisibilityLevelPublic()
 	{
-		return $this->configuration->getOption(CO::VISIBILITY_LEVELS);
+		return $this->getVisibilityLevel() & Visibility::IS_PUBLIC;
 	}
 
 
 	/**
-	 * @return bool
+	 * @return ReflectionFactory
 	 */
-	private function isVisibilityLevelPublic()
+	public function getReflectionFactory()
 	{
-		return $this->getVisibilityLevel() & Visibility::IS_PUBLIC;
+		return $this->reflectionFactory;
+	}
+
+
+	/**
+	 * @return int
+	 */
+	public function getVisibilityLevel()
+	{
+		return $this->configuration->getOption(CO::VISIBILITY_LEVELS);
 	}
 
 
