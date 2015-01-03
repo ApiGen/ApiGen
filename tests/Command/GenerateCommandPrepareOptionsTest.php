@@ -3,8 +3,8 @@
 namespace ApiGen\Tests\Command;
 
 use ApiGen;
-use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Command\GenerateCommand;
+use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Tests\ContainerAwareTestCase;
 use ApiGen\Tests\MethodInvoker;
 
