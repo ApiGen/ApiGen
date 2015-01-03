@@ -200,11 +200,7 @@ class GenerateCommand extends Command
 
 		if (file_exists($configFile)) {
 			$configFileOptions = (new NeonFile($configFile))->read();
-			foreach ($configFileOptions as $key => $value) {
-				if ($this->canOptionValueBeSet($options, $key)) {
-					$options[$key] = $value;
-				}
-			}
+			$options = array_merge($options, $configFileOptions);
 		}
 
 		return $this->configuration->resolveOptions($options);
@@ -236,17 +232,6 @@ class GenerateCommand extends Command
 		return preg_replace_callback('~-([a-z])~', function($matches) {
 			return strtoupper($matches[1]);
 		}, $name);
-	}
-
-
-	/**
-	 * @param array $options
-	 * @param string $key
-	 * @return bool
-	 */
-	private function canOptionValueBeSet(array $options, $key)
-	{
-		return ! isset($options[$key]) || ($options[$key] === NULL || $options[$key] === []);
 	}
 
 }

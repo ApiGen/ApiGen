@@ -3,6 +3,7 @@
 namespace ApiGen\Tests\Command;
 
 use ApiGen;
+use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Command\GenerateCommand;
 use ApiGen\Tests\ContainerAwareTestCase;
 use ApiGen\Tests\MethodInvoker;
@@ -36,7 +37,7 @@ class GenerateCommandPrepareOptionsTest extends ContainerAwareTestCase
 
 
 	/**
-	 * @expectedException \ApiGen\Configuration\Exceptions\ConfigurationException
+	 * @expectedException ApiGen\Configuration\Exceptions\ConfigurationException
 	 * @expectedExceptionMessageRegExp /Source is not set/
 	 */
 	public function testPrepareOptionsSourceNotSet()
@@ -60,34 +61,36 @@ class GenerateCommandPrepareOptionsTest extends ContainerAwareTestCase
 	}
 
 
-	public function testPrepareOptionsCliPriority()
+	public function testPrepareOptionsConfigPriority()
 	{
 		$configAndDestinationOptions = [
 			'config' => __DIR__ . '/apigen.neon',
-			'destination' => TEMP_DIR . '/api'
+			'destination' => TEMP_DIR . '/api',
+			'source' => __DIR__
 		];
 
 		$options = MethodInvoker::callMethodOnObject($this->generateCommand, 'prepareOptions', [
-			$configAndDestinationOptions + ['source' => []]
+			$configAndDestinationOptions
 		]);
-		$this->assertContains('src', $options['source'][0]);
-
-		$options = MethodInvoker::callMethodOnObject($this->generateCommand, 'prepareOptions', [
-			$configAndDestinationOptions + ['source' => __DIR__]
-		]);
-		$this->assertSame(__DIR__, $options['source'][0]);
+		$this->assertSame(realpath(__DIR__ . '/../../src'), $options['source'][0]);
 	}
 
 
-	public function testPrepareOptionsWithConfigBool()
+	public function testPrepareOptionsMergeIsCorrect()
 	{
 		$options = MethodInvoker::callMethodOnObject($this->generateCommand, 'prepareOptions', [[
 			'config' => __DIR__ . '/apigen.neon',
 			'destination' => TEMP_DIR . '/api',
-			'tree' => FALSE
+			'download' => FALSE
 		]]);
 
-		$this->assertFalse($options['tree']);
+		$this->assertSame(['public', 'protected', 'private'], $options[CO::ACCESS_LEVELS]);
+		$this->assertSame('http://apigen.org', $options[CO::BASE_URL]);
+		$this->assertTrue($options[CO::DEPRECATED]);
+		$this->assertTrue($options[CO::DOWNLOAD]);
+		$this->assertSame('packages', $options[CO::GROUPS]);
+		$this->assertTrue($options[CO::TODO]);
+		$this->assertTrue($options[CO::TREE]);
 	}
 
 }

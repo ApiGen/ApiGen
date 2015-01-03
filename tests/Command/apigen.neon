@@ -1,2 +1,9 @@
 source: src
 tree: true
+accessLevels: [public, protected, private]
+baseUrl: http://apigen.org
+download: true
+deprecated: true
+groups: packages
+php: true
+todo: true
