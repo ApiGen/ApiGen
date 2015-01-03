@@ -19,7 +19,7 @@ try {
 	$compiler = new PharCompiler(__DIR__ . '/..');
 	echo 'Creating apigen.phar...';
 	$compiler->compile('apigen.phar');
-	echo "done.\n";
+	echo "done. Sha1 of file: ". sha1_file(__DIR__. '/../apigen.phar') . "\n";
 
 } catch (\Exception $e) {
 	echo 'Failed to compile phar: [' . get_class($e) . '] ' . $e->getMessage() . ' at ' . $e->getFile() . ':' . $e->getLine();
