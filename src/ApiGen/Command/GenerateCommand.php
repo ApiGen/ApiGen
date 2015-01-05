@@ -89,10 +89,10 @@ class GenerateCommand extends Command
 		$this->setName('generate')
 			->setDescription('Generate API documentation')
 			->addOption(CO::SOURCE, 's', InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
-				'Dirs documentation is generated for (can be specified multiple times).')
+				'Dirs documentation is generated for.')
 			->addOption(CO::DESTINATION, 'd', InputOption::VALUE_REQUIRED, 'Target dir for documentation.')
 			->addOption(CO::ACCESS_LEVELS, NULL, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
-				'Access levels of included method and properties (can be specified multiple times).',
+				'Access levels of included method and properties.',
 				[COR::AL_PUBLIC, COR::AL_PROTECTED])
 			->addOption(CO::BASE_URL, NULL, InputOption::VALUE_REQUIRED,
 				'Base url used for sitemap (useful for public doc).')
@@ -107,20 +107,20 @@ class GenerateCommand extends Command
 			->addOption(CO::DOWNLOAD, NULL, InputOption::VALUE_NONE,
 				'Add link to ZIP archive of documentation.')
 			->addOption(CO::EXTENSIONS, NULL, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
-				'Scanned file extensions (can be specified multiple times).', ['php'])
+				'Scanned file extensions.', ['php'])
 			->addOption(CO::EXCLUDE, NULL, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
-				'Directories and files matching this mask will not be parsed (can be specified multiple times).')
+				'Directories and files matching this mask will not be parsed.')
 			->addOption(CO::GROUPS, NULL, InputOption::VALUE_REQUIRED,
 				'The way elements are grouped in menu.', 'auto')
 			->addOption(CO::CHARSET, NULL, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
-				'Charset of scanned files (can be specified multiple times).')
+				'Charset of scanned files.')
 			->addOption(CO::MAIN, NULL, InputOption::VALUE_REQUIRED,
 				'Elements with this name prefix will be first in tree.')
 			->addOption(CO::INTERNAL, NULL, InputOption::VALUE_NONE, 'Include elements marked as @internal.')
 			->addOption(CO::PHP, NULL, InputOption::VALUE_NONE, 'Generate documentation for PHP internal classes.')
 			->addOption(CO::SKIP_DOC_PATH, NULL, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
 				'Files matching this mask will be included in class tree,'
-				. ' but will not create a link to their documentation (can be specified multiple times).')
+				. ' but will not create a link to their documentation.')
 			->addOption(CO::NO_SOURCE_CODE, NULL, InputOption::VALUE_NONE,
 				'Do not generate highlighted source code for elements.')
 			->addOption(CO::TEMPLATE_THEME, NULL, InputOption::VALUE_REQUIRED, 'ApiGen template theme name.', 'default')
