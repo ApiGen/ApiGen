@@ -36,14 +36,12 @@ if ( ! ini_get('date.timezone')) {
 	date_default_timezone_set('UTC');
 }
 
-// ApiGen root path
-define('APIGEN_ROOT_PATH', __DIR__);
-
 
 $configurator = new Nette\Configurator;
 $configurator->setDebugMode( ! Tracy\Debugger::$productionMode);
 $configurator->setTempDirectory($tempDir);
 $configurator->addConfig(__DIR__ . '/ApiGen/DI/config.neon');
+$configurator->addParameters(['rootDir' => __DIR__]);
 $container = $configurator->createContainer();
 
 
