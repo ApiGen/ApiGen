@@ -70,7 +70,7 @@ class TemplateNavigatorTest extends ContainerAwareTestCase
 	public function testGetTemplatePath()
 	{
 		$this->assertStringEndsWith(
-			'/templates/default/overview.latte',
+			'/overview.latte',
 			$this->templateNavigator->getTemplatePath('overview')
 		);
 	}
