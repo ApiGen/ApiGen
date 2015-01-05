@@ -9,7 +9,6 @@
 
 namespace ApiGen\Theme;
 
-
 use ApiGen\Configuration\Exceptions\ConfigurationException;
 
 
