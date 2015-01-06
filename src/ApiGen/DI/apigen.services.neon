@@ -78,6 +78,7 @@ services:
 
 	# theme
 	- ApiGen\Theme\ThemeResources
+	- ApiGen\Theme\ThemeConfigPathResolver(%rootDir%)
 
 	# syntax highlighter
 	- ApiGen\Generator\SourceCodeHighlighter\FshlSourceCodeHighlighter

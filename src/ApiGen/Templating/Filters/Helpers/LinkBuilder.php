@@ -18,17 +18,17 @@ class LinkBuilder
 
 	/**
 	 * @param string $url
-	 * @param string $text
+	 * @param Html|string $text
 	 * @param bool $escape
 	 * @param array $classes
 	 * @return string
 	 */
 	public function build($url, $text, $escape = TRUE, array $classes = [])
 	{
-		$link = Html::el('a')->href($url)
+		return Html::el('a')->href($url)
 			->setHtml($escape ? Filters::escapeHtml($text) : $text)
-			->addAttributes(['class' => $classes]);
-		return (string) $link;
+			->addAttributes(['class' => $classes])
+			->render();
 	}
 
 }
