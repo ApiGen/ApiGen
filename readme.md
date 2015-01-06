@@ -1,6 +1,6 @@
 # ApiGen - PHP source code API generator
 
-[![Build Status](https://img.shields.io/travis/apigen/apigen.svg?style=flat-square)](https://travis-ci.org/apigen/apigen)
+[![Build Status](https://img.shields.io/travis/apigen/apigen/master.svg?style=flat-square)](https://travis-ci.org/apigen/apigen)
 [![Quality Score](https://img.shields.io/scrutinizer/g/ApiGen/ApiGen.svg?style=flat-square)](https://scrutinizer-ci.com/g/ApiGen/ApiGen)
 [![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/ApiGen/ApiGen.svg?style=flat-square)](https://scrutinizer-ci.com/g/ApiGen/ApiGen)
 [![Downloads this Month](https://img.shields.io/packagist/dm/apigen/apigen.svg?style=flat-square)](https://packagist.org/packages/apigen/apigen)
@@ -38,7 +38,7 @@ Just look at [Doctrine ORM API](http://www.doctrine-project.org/api/orm/2.4/) or
 ```sh
 php apigen.phar generate -s src -d ../my-project-api
 ```
-	
+
 To omit cli options just create `apigen.neon` file in your project using [Neon](http://ne-on.org) syntax.
 
 ```yaml
