@@ -18,9 +18,9 @@ before_script:
   - vendor/bin/phpcs src tests --extensions=php --ignore=bootstrap --standard=vendor/zenify/coding-standard/src/ZenifyCodingStandard/ruleset.xml
 
 script:
-  - if [[ $TRAVIS_PHP_VERSION != '5.6' ]]; then vendor/bin/phpunit; fi
+  - if [[ $TRAVIS_PHP_VERSION != '5.6' ]]; then phpunit; fi
   # generate coverage only with latest PHP
-  - if [[ $TRAVIS_PHP_VERSION == '5.6' ]]; then vendor/bin/phpunit --coverage-clover=coverage.clover; fi
+  - if [[ $TRAVIS_PHP_VERSION == '5.6' ]]; then phpunit --coverage-clover=coverage.clover; fi
 
 after_script:
   # move code coverage
