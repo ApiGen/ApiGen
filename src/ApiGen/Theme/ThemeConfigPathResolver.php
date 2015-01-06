@@ -41,7 +41,7 @@ class ThemeConfigPathResolver
 			return $absolutePath;
 		}
 
-		throw new ConfigurationException('Config "' . $path . "' was not found");
+		throw new ConfigurationException('Config "' . $path . "' was not found in '" . $absolutePath . "'");
 	}
 
 }
