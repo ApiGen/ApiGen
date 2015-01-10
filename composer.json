@@ -46,10 +46,5 @@
 	},
 	"bin": [
 		"bin/apigen"
-	],
-	"extra": {
-		"branch-alias": {
-			"dev-master": "2.8-dev"
-		}
-	}
+	]
 }
