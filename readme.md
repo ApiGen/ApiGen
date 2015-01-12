@@ -1,6 +1,6 @@
 # ApiGen - PHP source code API generator
 
-[![Build Status](https://img.shields.io/travis/apigen/apigen/master.svg?style=flat-square)](https://travis-ci.org/apigen/apigen)
+[![Build Status](https://img.shields.io/travis/apigen/ApiGen/master.svg?style=flat-square)](https://travis-ci.org/apigen/ApiGen)
 [![Quality Score](https://img.shields.io/scrutinizer/g/ApiGen/ApiGen.svg?style=flat-square)](https://scrutinizer-ci.com/g/ApiGen/ApiGen)
 [![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/ApiGen/ApiGen.svg?style=flat-square)](https://scrutinizer-ci.com/g/ApiGen/ApiGen)
 [![Downloads this Month](https://img.shields.io/packagist/dm/apigen/apigen.svg?style=flat-square)](https://packagist.org/packages/apigen/apigen)
