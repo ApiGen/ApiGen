@@ -31,7 +31,7 @@ Just look at [Doctrine ORM API](http://www.doctrine-project.org/api/orm/2.4/) or
 
 ### 1. As a PHAR (recommended)
 
-1. Download [ApiGen RC5](http://apigen.org/apigen.phar)
+1. Download [ApiGen](http://apigen.org/apigen.phar)
 
 2. Run ApiGen with source and destination options:
 
