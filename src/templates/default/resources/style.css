@@ -1,3 +1,39 @@
+@keyframes highlightTargetBackground {
+	0% {
+		background:inherit;
+	}
+	50% {
+		background:#7fb4f5;
+	}
+	100% {
+		background:inherit;
+	}
+}
+
+@-webkit-keyframes highlightTargetBackground {
+	0% {
+		background:inherit;
+	}
+	50% {
+		background:#7fb4f5;
+	}
+	100% {
+		background:inherit;
+	}
+}
+
+@-moz-keyframes highlightTargetBackground {
+	0% {
+		background:inherit;
+	}
+	50% {
+		background:#7fb4f5;
+	}
+	100% {
+		background:inherit;
+	}
+}
+
 body {
 	font: 13px/1.5 Verdana, 'Geneva CE', lucida, sans-serif;
 	margin: 0;
@@ -349,6 +385,12 @@ dl.tree dd {
 .summary caption.switchable {
 	background: #ecede5 url('sort.png') no-repeat center right;
 	cursor: pointer;
+}
+
+.summary tr:target {
+	-webkit-animation: highlightTargetBackground 1s ease-in-out 0.2s;
+	-moz-animation: highlightTargetBackground 1s ease-in-out 0.2s;
+	animation: highlightTargetBackground 1s ease-in-out 0.2s;
 }
 
 .summary td {
