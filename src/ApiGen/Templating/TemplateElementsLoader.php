@@ -61,7 +61,7 @@ class TemplateElementsLoader
 			'namespaces' => array_keys($this->elementStorage->getNamespaces()),
 			'packages' => array_keys($this->elementStorage->getPackages()),
 			'classes' => array_filter($this->elementStorage->getClasses(), $this->getMainFilter()),
-			'interfaces' => array_filter($this->elementStorage->getClasses(), $this->getMainFilter()),
+			'interfaces' => array_filter($this->elementStorage->getInterfaces(), $this->getMainFilter()),
 			'traits' => array_filter($this->elementStorage->getTraits(), $this->getMainFilter()),
 			'exceptions' => array_filter($this->elementStorage->getExceptions(), $this->getMainFilter()),
 			'constants' => array_filter($this->elementStorage->getConstants(), $this->getMainFilter()),
