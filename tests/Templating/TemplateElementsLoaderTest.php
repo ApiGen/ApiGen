@@ -71,7 +71,7 @@ class TemplateElementsLoaderTest extends PHPUnit_Framework_TestCase
 		$elementStorageMock->shouldReceive('getNamespaces')->andReturn([]);
 		$elementStorageMock->shouldReceive('getPackages')->andReturn([]);
 		$elementStorageMock->shouldReceive('getClasses')->andReturn([]);
-		$elementStorageMock->shouldReceive('getClasses')->andReturn([]);
+		$elementStorageMock->shouldReceive('getInterfaces')->andReturn([]);
 		$elementStorageMock->shouldReceive('getTraits')->andReturn([]);
 		$elementStorageMock->shouldReceive('getExceptions')->andReturn([]);
 		$elementStorageMock->shouldReceive('getConstants')->andReturn([]);
