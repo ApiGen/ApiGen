@@ -130,11 +130,19 @@ $(window).load(function() {
 
 	// Open details
 	if (ApiGen.config.options.elementDetailsCollapsed) {
+		var trCollapsed = true;
 		$('tr', $content).filter(':has(.detailed)')
 			.click(function() {
 				var $this = $(this);
-				$('.short', $this).hide();
-				$('.detailed', $this).show();
+				if (trCollapsed) {
+					$('.short', $this).hide();
+					$('.detailed', $this).show();
+					trCollapsed = false;
+				} else {					
+					$('.short', $this).show();
+					$('.detailed', $this).hide();
+					trCollapsed = true;
+				}
 			});
 	}
 
