@@ -233,7 +233,7 @@ class ElementStorage
 					$this->traits[$elementName] = $element;
 
 				} elseif ($element->isException()) {
-					$elementType = Elements::INTERFACES;
+					$elementType = Elements::EXCEPTIONS;
 					$this->exceptions[$elementName] = $element;
 
 				} else {
