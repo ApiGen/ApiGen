@@ -116,8 +116,8 @@ internal: false
 # generate documentation for PHP internal classes
 php: true
 
-# generate highlighted source code for elements
-sourceCode: true
+# disable generation of highlighted source code for elements
+noSourceCode: true
 
 # generate tree view of classes, interfaces, traits and exceptions
 tree: true
