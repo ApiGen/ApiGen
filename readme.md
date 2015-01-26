@@ -27,6 +27,11 @@ Just look at [Doctrine ORM API](http://www.doctrine-project.org/api/orm/2.4/) or
 - Support for custom templates
 
 
+## Requirements
+
+- PHP 5.4
+
+
 ## Installation
 
 ### 1. As a PHAR (recommended)
