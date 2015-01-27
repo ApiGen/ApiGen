@@ -74,9 +74,9 @@ To see all available options with it's description and default values, just run:
 apigen generate --help
 ```
 
-*Note: in `apigen.neon` is prefer camel case (`accessLevel`) over dash-case in CLI (`--access-level`).* 
+*Note: in `apigen.neon` is prefered camel case (`accessLevel`) over dash-case in CLI (`--access-level`).* 
 
-If you want to know, what annotations do we support, [here is the list](doc/supported-annotations.md).
+If you want to know what annotations do we support, [here is the list](doc/supported-annotations.md).
 
 
 ## Testing
