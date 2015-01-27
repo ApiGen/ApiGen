@@ -13,7 +13,7 @@ install:
   - composer install --prefer-source
 
 before_script:
-  - vendor/bin/phpcs src tests --extensions=php --ignore=bootstrap --standard=vendor/zenify/coding-standard/src/ZenifyCodingStandard/ruleset.xml
+  - vendor/bin/phpcs src tests --extensions=php --ignore=bootstrap --standard=vendor/zenify/coding-standard/src/ZenifyCodingStandard/ruleset.xml -p
 
 script:
   - phpunit $PHPUNIT_FLAGS
