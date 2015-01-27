@@ -1,6 +1,12 @@
 # Upgrade from 2.x to 4.0 
 
 
+## Version
+
+- Version 3.0 was skipped, because master branch had 3.0-dev alias with code base similar to 2.8.
+  Since then there were many BC breaks, there for naming it 4.0.  
+
+
 ## PHP version
 
 - Min PHP version was raised:
