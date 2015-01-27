@@ -13,9 +13,7 @@ install:
   - composer install --prefer-source
 
 before_script:
-  # php code sniffer
   - vendor/bin/phpcs src tests --extensions=php --ignore=bootstrap --standard=vendor/zenify/coding-standard/src/ZenifyCodingStandard/ruleset.xml
-  # generate coverage only once
 
 script:
   - phpunit $PHPUNIT_FLAGS
