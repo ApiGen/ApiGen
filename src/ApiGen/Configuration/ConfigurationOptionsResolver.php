@@ -13,6 +13,7 @@ use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Configuration\Exceptions\ConfigurationException;
 use ApiGen\Configuration\Theme\ThemeConfigFactory;
 use ApiGen\FileSystem\FileSystem;
+use ApiGen\Theme\ThemeConfigPathResolver;
 use ReflectionProperty;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -76,11 +77,20 @@ class ConfigurationOptionsResolver
 	 */
 	private $optionsResolverFactory;
 
+	/**
+	 * @var ThemeConfigPathResolver
+	 */
+	private $themeConfigPathResolver;
 
-	public function __construct(ThemeConfigFactory $themeConfigFactory, OptionsResolverFactory $optionsResolverFactory)
-	{
+
+	public function __construct(
+		ThemeConfigFactory $themeConfigFactory,
+		OptionsResolverFactory $optionsResolverFactory,
+		ThemeConfigPathResolver $themeConfigPathResolver
+	) {
 		$this->themeConfigFactory = $themeConfigFactory;
 		$this->optionsResolverFactory = $optionsResolverFactory;
+		$this->themeConfigPathResolver = $themeConfigPathResolver;
 	}
 
 
@@ -208,12 +218,11 @@ class ConfigurationOptionsResolver
 	 */
 	private function getTemplateConfigPathFromTheme($theme)
 	{
-		$rootPath = defined('APIGEN_ROOT_PATH') ? APIGEN_ROOT_PATH : getcwd() . '/src';
 		if ($theme === self::TEMPLATE_THEME_DEFAULT) {
-			return $rootPath . '/templates/default/config.neon';
+			return $this->themeConfigPathResolver->resolve('/vendor/apigen/theme-default/src/config.neon');
 
 		} elseif ($theme === self::TEMPLATE_THEME_BOOTSTRAP) {
-			return $rootPath . '/templates/bootstrap/config.neon';
+			return $this->themeConfigPathResolver->resolve('/vendor/apigen/theme-bootstrap/src/config.neon');
 		}
 
 		throw new ConfigurationException(CO::TEMPLATE_THEME . ' ' . $theme . ' is not supported.');

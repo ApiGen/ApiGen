@@ -17,6 +17,7 @@ class ContainerFactory
 		$configurator = new Configurator;
 		$configurator->setTempDirectory(TEMP_DIR);
 		$configurator->addConfig(__DIR__ . '/config/default.neon');
+		$configurator->addParameters(['rootDir' => __DIR__ . '/..']);
 		return $configurator->createContainer();
 	}
 

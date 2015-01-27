@@ -82,11 +82,16 @@ class PharCompiler
 			'theseer/fdomdocument/*',
 			'zenify/coding-standard/*'
 		];
-		foreach (Finder::findFiles(['*.php', '*.json'])->from($this->repoDir . '/vendor')->exclude($exclude) as $file) {
+
+		$finder = Finder::findFiles(['*.php', '*.json', '*.latte', '*.neon', '*.js', '*.css', '*.png'])
+			->from($this->repoDir . '/vendor')
+			->exclude($exclude);
+
+		foreach ($finder as $file) {
 			$this->addFile($phar, $file);
 		}
 
-		$phar['license.md'] = file_get_contents($this->repoDir . '/license.md');
+		$phar['LICENSE'] = file_get_contents($this->repoDir . '/LICENSE');
 
 		$phar->stopBuffering();
 		$phar->compressFiles(Phar::GZ);
