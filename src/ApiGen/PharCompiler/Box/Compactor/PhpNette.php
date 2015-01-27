@@ -19,12 +19,6 @@ class PhpNette implements CompactorInterface
 {
 
 	/**
-	 * @var array
-	 */
-	protected $extensions = ['php'];
-
-
-	/**
 	 * {@inheritdoc}
 	 */
 	public function compact($contents)
@@ -58,6 +52,15 @@ class PhpNette implements CompactorInterface
 
 
 	/**
+	 * {@inheritdoc}
+	 */
+	public function supports($file)
+	{
+		return (pathinfo($file, PATHINFO_EXTENSION) === 'php');
+	}
+
+
+	/**
 	 * @return string
 	 */
 	private function preserveLineNumbers(array $token)
@@ -80,19 +83,6 @@ class PhpNette implements CompactorInterface
 			}
 		}
 		return TRUE;
-	}
-
-
-	/**
-	 * Checks if the file is supported.
-	 *
-	 * @param string $file The file name.
-	 *
-	 * @return boolean TRUE if it is supported, FALSE if not.
-	 */
-	public function supports($file)
-	{
-		return (pathinfo($file, PATHINFO_EXTENSION) === 'php');
 	}
 
 }
