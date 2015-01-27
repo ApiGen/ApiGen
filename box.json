@@ -1,4 +1,5 @@
 {
+	"bootstrap": "src/ApiGen/PharCompiler/Box/Compactor/PhpNette.php",
 	"output": "apigen.phar",
 	"chmod": "0755",
 	"compactors": [
@@ -9,20 +10,15 @@
 	"main": "bin/apigen",
 	"files": [
 		"vendor/autoload.php",
-		"license.md"
+		"LICENSE"
 	],
 	"finder": [
 		{
 			"in": "src"
 		},
 		{
-			"name": ["*.php", "*.json", "*.latte", "*.neon"],
-			"exclude": [
-				"test",
-				"Test",
-				"Tests",
-				"tests"
-			],
+			"name": ["*.php", "*.json", "*.latte", "*.neon", "*.css", "*.js", "*.png"],
+			"exclude": ["test", "Test", "Tests", "tests" ],
 			"in": [
 				"vendor/andrewsville",
 				"vendor/apigen",
