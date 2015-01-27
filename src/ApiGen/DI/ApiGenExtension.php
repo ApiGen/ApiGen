@@ -97,4 +97,5 @@ class ApiGenExtension extends CompilerExtension
 			$generator->addSetup('addToQueue', ['@' . $serviceName]);
 		}
 	}
+
 }

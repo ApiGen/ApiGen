@@ -94,6 +94,7 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
 		$this->assertSame('ApiGen\Templating\Filters\AnnotationFilters', $command->getClass());
 	}
 
+
 	public function testSetupGeneratorQueue()
 	{
 		$extension = $this->getExtension();
