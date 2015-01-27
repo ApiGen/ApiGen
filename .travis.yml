@@ -6,6 +6,7 @@ php:
   - 5.6
 
 before_install:
+  - if [ $TRAVIS_PHP_VERSION = '5.6' ]; then PHPUNIT_FLAGS="--coverage-clover=coverage.clover"; else PHPUNIT_FLAGS="" && phpenv config-rm xdebug.ini; fi
   - composer self-update
 
 install:
@@ -15,7 +16,6 @@ before_script:
   # php code sniffer
   - vendor/bin/phpcs src tests --extensions=php --ignore=bootstrap --standard=vendor/zenify/coding-standard/src/ZenifyCodingStandard/ruleset.xml
   # generate coverage only once
-  - if [ $TRAVIS_PHP_VERSION = '5.6' ]; then PHPUNIT_FLAGS="--coverage-clover=coverage.clover"; else PHPUNIT_FLAGS="" && phpenv config-rm xdebug.ini; fi
 
 script:
   - phpunit $PHPUNIT_FLAGS
