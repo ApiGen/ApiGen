@@ -12,8 +12,6 @@ install:
   - composer install --prefer-source
 
 before_script:
-  # php linter
-  - vendor/bin/parallel-lint -e php --exclude vendor .
   # php code sniffer
   - vendor/bin/phpcs src tests --extensions=php --ignore=bootstrap --standard=vendor/zenify/coding-standard/src/ZenifyCodingStandard/ruleset.xml
   # generate coverage only once
