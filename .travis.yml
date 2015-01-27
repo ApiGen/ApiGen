@@ -18,7 +18,7 @@ before_script:
   - if [ $TRAVIS_PHP_VERSION = '5.6' ]; then PHPUNIT_FLAGS="--coverage-clover=coverage.clover"; else PHPUNIT_FLAGS="" && phpenv config-rm xdebug.ini; fi
 
 script:
-  - vendor/bin/phpunit $PHPUNIT_FLAGS
+  - phpunit $PHPUNIT_FLAGS
 
 after_script:
   - if [ $TRAVIS_PHP_VERSION = '5.6' ]; then wget https://scrutinizer-ci.com/ocular.phar; php ocular.phar code-coverage:upload --format=php-clover coverage.clover; fi
