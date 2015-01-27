@@ -16,13 +16,11 @@ before_script:
   - vendor/bin/parallel-lint -e php --exclude vendor .
   # php code sniffer
   - vendor/bin/phpcs src tests --extensions=php --ignore=bootstrap --standard=vendor/zenify/coding-standard/src/ZenifyCodingStandard/ruleset.xml
+  # generate coverage only once
+  - if [ $TRAVIS_PHP_VERSION = '5.6' ]; then PHPUNIT_FLAGS="--coverage-clover=coverage.clover"; else PHPUNIT_FLAGS=""; fi
 
 script:
-  - if [[ $TRAVIS_PHP_VERSION != '5.6' ]]; then vendor/bin/phpunit; fi
-  # generate coverage only with latest PHP
-  - if [[ $TRAVIS_PHP_VERSION == '5.6' ]]; then vendor/bin/phpunit --coverage-clover=coverage.clover; fi
+  - vendor/bin/phpunit $PHPUNIT_FLAGS
 
 after_script:
-  # move code coverage
-  - if [[ $TRAVIS_PHP_VERSION == '5.6' ]]; then wget https://scrutinizer-ci.com/ocular.phar; fi
-  - if [[ $TRAVIS_PHP_VERSION == '5.6' ]]; then php ocular.phar code-coverage:upload --format=php-clover coverage.clover; fi
+  - if [ $TRAVIS_PHP_VERSION = '5.6' ]; then wget https://scrutinizer-ci.com/ocular.phar; php ocular.phar code-coverage:upload --format=php-clover coverage.clover; fi
