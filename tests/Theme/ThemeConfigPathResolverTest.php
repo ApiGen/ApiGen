@@ -12,7 +12,7 @@ class ThemeConfigPathResolverTest extends PHPUnit_Framework_TestCase
 
 	public function testResolve()
 	{
-		$themeConfigPathResolver = new ThemeConfigPathResolver(__DIR__ . '/ThemeConfigPathResolverSource/src');
+		$themeConfigPathResolver = new ThemeConfigPathResolver(__DIR__ . '/ThemeConfigPathResolverSource');
 
 		$configPath = $themeConfigPathResolver->resolve('/config.neon');
 		$this->assertSame(__DIR__  . '/ThemeConfigPathResolverSource/config.neon', $configPath);

@@ -36,7 +36,7 @@ class ThemeConfigPathResolver
 	 */
 	public function resolve($path)
 	{
-		$absolutePath = $this->rootDir . '/../' . ltrim($path, DIRECTORY_SEPARATOR);
+		$absolutePath = $this->rootDir . '/' . ltrim($path, DIRECTORY_SEPARATOR);
 		if (file_exists($absolutePath)) {
 			return realpath($absolutePath);
 		}

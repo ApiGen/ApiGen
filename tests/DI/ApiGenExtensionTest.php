@@ -132,7 +132,7 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
 	{
 		$compiler = new Compiler(new ContainerBuilder);
 		$compiler->compile(['parameters' => [
-			'rootDir' => __DIR__,
+			'rootDir' => __DIR__ . '/..',
 			'tempDir' => __DIR__ . '/../temp'
 		]], NULL, NULL);
 		return $compiler;
