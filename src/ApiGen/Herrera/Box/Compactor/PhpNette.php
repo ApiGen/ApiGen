@@ -7,19 +7,20 @@
  * the file license.md that was distributed with this source code.
  */
 
-namespace ApiGen\PharCompiler\Box\Compactor;
-
-use Herrera\Box\Compactor\CompactorInterface;
+namespace ApiGen\Herrera\Box\Compactor;
 
 
 /**
  * Keeps Nette system annotations "method" and "return", minimizes PHP source and preserves line numbers.
  */
-class PhpNette implements CompactorInterface
+class PhpNette
 {
 
 	/**
-	 * {@inheritdoc}
+	 * Compacts the file contents.
+	 *
+	 * @param string $contents
+	 * @return string
 	 */
 	public function compact($contents)
 	{
@@ -52,7 +53,10 @@ class PhpNette implements CompactorInterface
 
 
 	/**
-	 * {@inheritdoc}
+	 * Checks if the file is supported.
+	 *
+	 * @param string $file
+	 * @return bool
 	 */
 	public function supports($file)
 	{
