@@ -38,7 +38,7 @@ class ThemeConfigPathResolver
 	{
 		$absolutePath = $this->rootDir . '/' . ltrim($path, DIRECTORY_SEPARATOR);
 		if (file_exists($absolutePath)) {
-			return realpath($absolutePath);
+			return $absolutePath;
 		}
 
 		throw new ConfigurationException('Config "' . $path . "' was not found");
