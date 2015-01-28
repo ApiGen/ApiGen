@@ -40,7 +40,7 @@
 	},
 	"autoload": {
 		"psr-4": {
-			"ApiGen\\": "src/ApiGen"
+			"ApiGen\\": "src"
 		}
 	},
 	"autoload-dev": {
