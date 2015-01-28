@@ -1,6 +1,6 @@
 # Smart and Readable Documentation for your PHP project
 
-[![Build Status](https://img.shields.io/travis/apigen/ApiGen/master.svg?style=flat-square)](https://travis-ci.org/apigen/ApiGen)
+[![Build Status](https://img.shields.io/travis/ApiGen/ApiGen/master.svg?style=flat-square)](https://travis-ci.org/ApiGen/ApiGen)
 [![Quality Score](https://img.shields.io/scrutinizer/g/ApiGen/ApiGen.svg?style=flat-square)](https://scrutinizer-ci.com/g/ApiGen/ApiGen)
 [![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/ApiGen/ApiGen.svg?style=flat-square)](https://scrutinizer-ci.com/g/ApiGen/ApiGen)
 [![Downloads this Month](https://img.shields.io/packagist/dm/apigen/apigen.svg?style=flat-square)](https://packagist.org/packages/apigen/apigen)
