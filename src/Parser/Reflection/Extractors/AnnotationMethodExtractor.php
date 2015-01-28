@@ -19,7 +19,8 @@ use ApiGen\Parser\Reflection\TokenReflection\ReflectionFactory;
 class AnnotationMethodExtractor implements AnnotationMethodExtractorInterface
 {
 
-	const PATTERN_METHOD = '~^(?:(static)\\s+)?(?:([\\w\\\\]+(?:\\|[\\w\\\\]+)*)\\s+)?(&)?\\s*(\\w+)\\s*\\(\\s*(.*)\\s*\\)\\s*(.*|$)~s';
+	const PATTERN_METHOD
+		= '~^(?:(static)\\s+)?(?:([\\w\\\\]+(?:\\|[\\w\\\\]+)*)\\s+)?(&)?\\s*(\\w+)\\s*\\(\\s*(.*)\\s*\\)\\s*(.*|$)~s';
 	const PATTERN_PARAMETER = '~^(?:([\\w\\\\]+(?:\\|[\\w\\\\]+)*)\\s+)?(&)?\\s*\\$(\\w+)(?:\\s*=\\s*(.*))?($)~s';
 
 	/**

@@ -182,6 +182,27 @@ class ReflectionMethodMagicTest extends PHPUnit_Framework_TestCase
 	}
 
 
+	public function testStaticMethod()
+	{
+		$method = $this->reflectionClass->getMagicMethods()['doAnStaticOperation'];
+		$this->assertTrue($method->isStatic());
+	}
+
+
+	public function testStaticMethodReturnType()
+	{
+		$method = $this->reflectionClass->getMagicMethods()['doAnStaticOperation'];
+		$this->assertSame('string', current($method->getAnnotation('return')));
+	}
+
+
+	public function testVoidStaticMethod()
+	{
+		$method = $this->reflectionClass->getMagicMethods()['doAnVoidStaticOperation'];
+		$this->assertEmpty(current($method->getAnnotation('return')));
+	}
+
+
 	/**
 	 * @return ReflectionFactoryInterface|ParserStorageInterface
 	 */

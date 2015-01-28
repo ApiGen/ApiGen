@@ -15,6 +15,8 @@ namespace Project;
  * @property-read int $skillCounter
  * @method string getName() This is some short description.
  * @method string doAnOperation(\stdClass $data, $type) This also some description.
+ * @method static string doAnStaticOperation(\stdClass $data, $type) This also some description.
+ * @method static doAnVoidStaticOperation(\stdClass $data, $type) This also some description.
  *
  * @package Some_Package
  */
