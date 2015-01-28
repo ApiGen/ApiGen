@@ -9,6 +9,7 @@
 	"extract": false,
 	"main": "bin/apigen",
 	"files": [
+		"bin/bootstrap.php",
 		"vendor/autoload.php",
 		"LICENSE"
 	],
