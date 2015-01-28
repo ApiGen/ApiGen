@@ -19,7 +19,7 @@ use ApiGen\Parser\Reflection\TokenReflection\ReflectionFactory;
 class AnnotationMethodExtractor implements AnnotationMethodExtractorInterface
 {
 
-	const PATTERN_METHOD = '~^(?:([\\w\\\\]+(?:\\|[\\w\\\\]+)*)\\s+)?(&)?\\s*(\\w+)\\s*\\(\\s*(.*)\\s*\\)\\s*(.*|$)~s';
+	const PATTERN_METHOD = '~^(?:(static)\\s+)?(?:([\\w\\\\]+(?:\\|[\\w\\\\]+)*)\\s+)?(&)?\\s*(\\w+)\\s*\\(\\s*(.*)\\s*\\)\\s*(.*|$)~s';
 	const PATTERN_PARAMETER = '~^(?:([\\w\\\\]+(?:\\|[\\w\\\\]+)*)\\s+)?(&)?\\s*\\$(\\w+)(?:\\s*=\\s*(.*))?($)~s';
 
 	/**
@@ -67,7 +67,7 @@ class AnnotationMethodExtractor implements AnnotationMethodExtractorInterface
 			return [];
 		}
 
-		list(, $returnTypeHint, $returnsReference, $name, $args, $shortDescription) = $matches;
+		list(, $static, $returnTypeHint, $returnsReference, $name, $args, $shortDescription) = $matches;
 
 		$startLine = $this->getStartLine($annotation);
 		$endLine = $startLine + substr_count($annotation, "\n");
@@ -80,7 +80,8 @@ class AnnotationMethodExtractor implements AnnotationMethodExtractorInterface
 			'endLine' => $endLine,
 			'returnsReference' => ($returnsReference === '&'),
 			'declaringClass' => $this->reflectionClass,
-			'annotations' => ['return' => [0 => $returnTypeHint]]
+			'annotations' => ['return' => [0 => $returnTypeHint]],
+			'static' => ($static === 'static')
 		]);
 		$this->attachMethodParameters($method, $args);
 		return $methods;
