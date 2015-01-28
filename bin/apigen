@@ -36,5 +36,5 @@ $application = $container->getByType('ApiGen\Console\Application');
 $application->run();
 
 
-// remove temp data
+// Remove temp data
 ApiGen\FileSystem\FileSystem::deleteDir($tempDir);
