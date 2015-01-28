@@ -7,3 +7,4 @@
 phpunit.xml export-ignore
 README.md export-ignore
 CONTRIBUTING.md export-ignore
+UPGRADE-4.0 export-ignore
