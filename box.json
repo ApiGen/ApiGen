@@ -1,5 +1,5 @@
 {
-	"bootstrap": "src/ApiGen/Herrera/Box/Compactor/PhpNette.php",
+	"bootstrap": "src/Herrera/Box/Compactor/PhpNette.php",
 	"output": "apigen.phar",
 	"chmod": "0755",
 	"compactors": [

@@ -9,18 +9,17 @@
 
 namespace ApiGen\Herrera\Box\Compactor;
 
+use Herrera\Box\Compactor\CompactorInterface;
+
 
 /**
  * Keeps Nette system annotations "method" and "return", minimizes PHP source and preserves line numbers.
  */
-class PhpNette
+class PhpNette implements CompactorInterface
 {
 
 	/**
-	 * Compacts the file contents.
-	 *
-	 * @param string $contents
-	 * @return string
+	 * {@inheritdoc}
 	 */
 	public function compact($contents)
 	{
@@ -53,10 +52,7 @@ class PhpNette
 
 
 	/**
-	 * Checks if the file is supported.
-	 *
-	 * @param string $file
-	 * @return bool
+	 * {@inheritdoc}
 	 */
 	public function supports($file)
 	{
