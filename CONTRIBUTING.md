@@ -6,7 +6,7 @@ Contributions are **welcome** and will be fully **credited**.
 ## Posting Issues
 
 
-- **Provide detailed log** - If a command is failing, post the full output you get when running the command, with the --debug flag.
+- **Provide detailed log** - If a command is failing, post the full output you get when running the command, with the `--debug` flag.
 
 
 ## Pull Requests
