@@ -3,6 +3,12 @@
 Contributions are **welcome** and will be fully **credited**.
 
 
+## Posting Issues
+
+
+- **Provide detailed log** - If a command is failing, post the full output you get when running the command, with the `--debug` flag.
+
+
 ## Pull Requests
 
 - **Document any change in behaviour** - Make sure the `README.md` and any other relevant documentation are kept up-to-date.
