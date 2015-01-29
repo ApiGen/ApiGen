@@ -11,6 +11,7 @@ namespace ApiGen\Templating\Filters\Helpers;
 
 use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions as CO;
+use ApiGen\Configuration\Theme\ThemeConfigOptions as TCO;
 use ApiGen\Reflection\ReflectionClass;
 use ApiGen\Reflection\ReflectionConstant;
 use ApiGen\Reflection\ReflectionElement;
@@ -122,6 +123,19 @@ class ElementUrlFactory
 		return sprintf(
 			$this->configuration->getOption(CO::TEMPLATE)['templates']['function']['filename'],
 			Filters::urlize($function->getName())
+		);
+	}
+
+
+	/**
+	 * @param string $name
+	 * @return string
+	 */
+	public function createForAnnotationGroup($name)
+	{
+		return sprintf(
+			$this->configuration->getOption(CO::TEMPLATE)['templates'][TCO::ANNOTATION_GROUP]['filename'],
+			Filters::urlize($name)
 		);
 	}
 

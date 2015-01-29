@@ -23,6 +23,7 @@ class TemplateElementsLoaderTest extends PHPUnit_Framework_TestCase
 		$elementStorageMock = $this->getElementStorageMock();
 		$configurationMock = Mockery::mock('ApiGen\Configuration\Configuration');
 		$configurationMock->shouldReceive('getOption')->with(CO::DOWNLOAD)->andReturn(TRUE);
+		$configurationMock->shouldReceive('getOption')->with(CO::ANNOTATION_GROUPS)->andReturn(['todo']);
 		$configurationMock->shouldReceive('getZipFileName')->andReturn('file.zip');
 
 		$autocompleteElementsMock = Mockery::mock('ApiGen\Parser\Elements\AutocompleteElements');
@@ -59,6 +60,7 @@ class TemplateElementsLoaderTest extends PHPUnit_Framework_TestCase
 		$this->assertArrayHasKey('elements', $parameters);
 
 		$this->assertSame('file.zip', $parameters['archive']);
+		$this->assertSame(['todo'], $parameters['annotationGroups']);
 	}
 
 

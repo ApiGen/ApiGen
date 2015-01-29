@@ -40,14 +40,13 @@ services:
 	# intentionally first to collect output from other generators
 	- {class: ApiGen\Generator\TemplateGenerators\ZipGenerator, tags: [template.generator]}
 	- {class: ApiGen\Generator\TemplateGenerators\CombinedGenerator, tags: [template.generator]}
-	- {class: ApiGen\Generator\TemplateGenerators\DeprecatedGenerator, tags: [template.generator]}
+	- {class: ApiGen\Generator\TemplateGenerators\AnnotationGroupsGenerator, tags: [template.generator]}
 	- {class: ApiGen\Generator\TemplateGenerators\E404Generator, tags: [template.generator]}
 	- {class: ApiGen\Generator\TemplateGenerators\ElementListGenerator, tags: [template.generator]}
 	- {class: ApiGen\Generator\TemplateGenerators\OpensearchGenerator, tags: [template.generator]}
 	- {class: ApiGen\Generator\TemplateGenerators\OverviewGenerator, tags: [template.generator]}
 	- {class: ApiGen\Generator\TemplateGenerators\SitemapGenerator, tags: [template.generator]}
 	- {class: ApiGen\Generator\TemplateGenerators\SourceCodeGenerator, tags: [template.generator]}
-	- {class: ApiGen\Generator\TemplateGenerators\TodoGenerator, tags: [template.generator]}
 	- {class: ApiGen\Generator\TemplateGenerators\TreeGenerator, tags: [template.generator]}
 	- {class: ApiGen\Generator\TemplateGenerators\RobotsGenerator, tags: [template.generator]}
 	# elements

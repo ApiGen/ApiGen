@@ -14,6 +14,7 @@ class ConfigurationOptions
 {
 
 	const ACCESS_LEVELS = 'accessLevels';
+	const ANNOTATION_GROUPS = 'annotationGroups';
 	const CONFIG = 'config';
 	const BASE_URL = 'baseUrl';
 	const DEBUG = 'debug';

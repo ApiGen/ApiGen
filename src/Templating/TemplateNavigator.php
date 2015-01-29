@@ -137,11 +137,20 @@ class TemplateNavigator
 
 
 	/**
+	 * @param string $element
+	 * @return string
+	 */
+	public function getTemplatePathForAnnotationGroup($element)
+	{
+		return $this->getDestination() . '/' . $this->elementUrlFactory->createForAnnotationGroup($element);
+	}
+
+
+	/**
 	 * @return string
 	 */
 	private function getDestination()
 	{
 		return $this->configuration->getOption(CO::DESTINATION);
 	}
-
 }

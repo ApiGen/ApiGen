@@ -32,6 +32,7 @@ class ConfigurationOptionsResolver
 	 * @var array
 	 */
 	private $defaults = [
+		CO::ANNOTATION_GROUPS => [],
 		CO::ACCESS_LEVELS => [],
 		CO::BASE_URL => '',
 		CO::CONFIG => '',
@@ -181,6 +182,15 @@ class ConfigurationOptionsResolver
 	private function setNormalizers()
 	{
 		$this->resolver->setNormalizers([
+			CO::ANNOTATION_GROUPS => function (Options $options, $value) {
+				if ($options[CO::DEPRECATED]) {
+					$value[] = CO::DEPRECATED;
+				}
+				if ($options[CO::TODO]) {
+					$value[] = CO::TODO;
+				}
+				return array_unique($value);
+			},
 			CO::DESTINATION => function (Options $options, $value) {
 				return FileSystem::getAbsolutePath($value);
 			},
