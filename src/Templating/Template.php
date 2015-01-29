@@ -14,12 +14,6 @@ use Nette;
 
 /**
  * @method Template setFile($file)
- * @method string   namespaceUrl(string $s)
- * @method string   packageUrl(string $s)
- * @method string   classUrl(string $s)
- * @method string   constantUrl(string $s)
- * @method string   functionUrl(string $s)
- * @method string   sourceUrl(string $s)
  */
 class Template extends Nette\Bridges\ApplicationLatte\Template
 {

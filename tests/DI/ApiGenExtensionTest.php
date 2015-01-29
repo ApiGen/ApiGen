@@ -9,7 +9,7 @@ use Nette\DI\ContainerBuilder;
 use PHPUnit_Framework_TestCase;
 
 
-class ApplicationTest extends PHPUnit_Framework_TestCase
+class ApiGenExtensionTest extends PHPUnit_Framework_TestCase
 {
 
 	/**
@@ -110,7 +110,7 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
 
 		$filterService = $definition->getSetup()[1]->arguments[0];
 		$command = $builder->getDefinition($builder->getServiceName($filterService));
-		$this->assertSame('ApiGen\Generator\TemplateGenerators\CombinedGenerator', $command->getClass());
+		$this->assertSame('ApiGen\Generator\TemplateGenerators\ClassElementGenerator', $command->getClass());
 	}
 
 
