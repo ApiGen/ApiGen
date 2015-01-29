@@ -8,9 +8,9 @@ services:
 	- ApiGen\Configuration\ConfigurationOptionsResolver
 	- ApiGen\Configuration\OptionsResolverFactory
 	-
-	 	implement: ApiGen\Configuration\Theme\ThemeConfigFactory
-	 	parameters: [filePath]
-	 	arguments: [%filePath%]
+		implement: ApiGen\Configuration\Theme\ThemeConfigFactory
+		parameters: [filePath]
+		arguments: [%filePath%]
 	- ApiGen\Configuration\Theme\ThemeConfigOptionsResolver
 
 	# console
