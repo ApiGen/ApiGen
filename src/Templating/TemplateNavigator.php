@@ -153,4 +153,5 @@ class TemplateNavigator
 	{
 		return $this->configuration->getOption(CO::DESTINATION);
 	}
+
 }
