@@ -81,14 +81,6 @@ class ThemeConfigOptionsResolver extends Nette\Object
 				'filename' => 'tree.html',
 				'template' => 'tree.latte'
 			],
-			TCO::DEPRECATED => [
-				'filename' => 'deprecated.html',
-				'template' => 'deprecated.latte'
-			],
-			TCO::TODO => [
-				'filename' => 'todo.html',
-				'template' => 'todo.latte'
-			],
 			TCO::SITEMAP => [
 				'filename' => 'sitemap.xml',
 				'template' => 'sitemap.xml.latte'

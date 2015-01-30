@@ -25,8 +25,6 @@ class ThemeConfigOptions
 	const ANNOTATION_GROUP = 'annotationGroup';
 	const SOURCE = 'source';
 	const TREE = 'tree';
-	const DEPRECATED = 'deprecated';
-	const TODO = 'todo';
 	const SITEMAP = 'sitemap';
 	const OPENSEARCH = 'opensearch';
 	const ROBOTS = 'robots';
