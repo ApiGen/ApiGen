@@ -70,6 +70,7 @@ class AnnotationGroupsGenerator implements TemplateGenerator
 
 		$template->setParameters([
 			'annotation' => $annotation,
+			'hasElements' => (bool) count(array_filter($elements, 'count')),
 			'annotationClasses' => $elements[Elements::CLASSES],
 			'annotationInterfaces' => $elements[Elements::INTERFACES],
 			'annotationTraits' => $elements[Elements::TRAITS],
