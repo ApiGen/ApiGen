@@ -183,6 +183,7 @@ class ConfigurationOptionsResolver
 	{
 		$this->resolver->setNormalizers([
 			CO::ANNOTATION_GROUPS => function (Options $options, $value) {
+				$value = (array) $value;
 				if ($options[CO::DEPRECATED]) {
 					$value[] = CO::DEPRECATED;
 				}
