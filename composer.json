@@ -31,8 +31,8 @@
 		"symfony/console": "~2.6",
 		"herrera-io/phar-update": "~2.0",
 
-		"apigen/theme-default": "0.1.*",
-		"apigen/theme-bootstrap": "0.1.*"
+		"apigen/theme-default": "~1.0",
+		"apigen/theme-bootstrap": "~1.0"
 	},
 	"require-dev": {
 		"zenify/coding-standard": "~3.0",

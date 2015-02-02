@@ -22,10 +22,9 @@ class ThemeConfigOptions
 	const T_CLASS = 'class';
 	const T_CONSTANT = 'constant';
 	const T_FUNCTION = 'function';
+	const ANNOTATION_GROUP = 'annotationGroup';
 	const SOURCE = 'source';
 	const TREE = 'tree';
-	const DEPRECATED = 'deprecated';
-	const TODO = 'todo';
 	const SITEMAP = 'sitemap';
 	const OPENSEARCH = 'opensearch';
 	const ROBOTS = 'robots';

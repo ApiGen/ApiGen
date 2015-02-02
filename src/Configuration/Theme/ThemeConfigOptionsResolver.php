@@ -69,6 +69,10 @@ class ThemeConfigOptionsResolver extends Nette\Object
 				'filename' => 'function-%s.html',
 				'template' => 'function.latte'
 			],
+			TCO::ANNOTATION_GROUP => [
+				'filename' => 'annotation-group-%s.html',
+				'template' => 'annotation-group.latte'
+			],
 			TCO::SOURCE => [
 				'filename' => 'source-%s.html',
 				'template' => 'source.latte'
@@ -76,14 +80,6 @@ class ThemeConfigOptionsResolver extends Nette\Object
 			TCO::TREE => [
 				'filename' => 'tree.html',
 				'template' => 'tree.latte'
-			],
-			TCO::DEPRECATED => [
-				'filename' => 'deprecated.html',
-				'template' => 'deprecated.latte'
-			],
-			TCO::TODO => [
-				'filename' => 'todo.html',
-				'template' => 'todo.latte'
 			],
 			TCO::SITEMAP => [
 				'filename' => 'sitemap.xml',

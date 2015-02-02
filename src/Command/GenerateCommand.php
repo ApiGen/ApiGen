@@ -94,6 +94,8 @@ class GenerateCommand extends Command
 			->addOption(CO::ACCESS_LEVELS, NULL, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
 				'Access levels of included method and properties.',
 				[COR::AL_PUBLIC, COR::AL_PROTECTED])
+			->addOption(CO::ANNOTATION_GROUPS, NULL, InputOption::VALUE_REQUIRED,
+				'Generate page with elements with specific annotation.')
 			->addOption(CO::BASE_URL, NULL, InputOption::VALUE_REQUIRED,
 				'Base url used for sitemap (useful for public doc).')
 			->addOption(CO::CONFIG, NULL, InputOption::VALUE_REQUIRED,

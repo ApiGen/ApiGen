@@ -27,6 +27,7 @@ class TemplateFactory
 	const ELEMENT_SOURCE = 'source';
 	const ELEMENT_PACKAGE = 'package';
 	const ELEMENT_NAMESPACE = 'namespace';
+	const ELEMENT_ANNOTATION_GROUP = 'annotationGroup';
 
 	/**
 	 * @var Latte\Engine
@@ -109,6 +110,9 @@ class TemplateFactory
 
 		} elseif ($name === self::ELEMENT_PACKAGE) {
 			$template->setSavePath($this->templateNavigator->getTemplatePathForPackage($element));
+
+		} elseif ($name === self::ELEMENT_ANNOTATION_GROUP) {
+			$template->setSavePath($this->templateNavigator->getTemplatePathForAnnotationGroup($element));
 
 		} else {
 			throw new UnsupportedElementException($name . ' is not supported template type.');

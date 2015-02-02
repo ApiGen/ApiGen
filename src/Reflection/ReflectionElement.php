@@ -96,13 +96,9 @@ abstract class ReflectionElement extends ReflectionBase
 
 			if ($this->isDocumented) {
 				$php = $this->configuration->getOption(CO::PHP);
-				$deprecated = $this->configuration->getOption(CO::DEPRECATED);
 				$internal = $this->configuration->getOption(CO::INTERNAL);
 
 				if ( ! $php && $this->reflection->isInternal()) {
-					$this->isDocumented = FALSE;
-
-				} elseif ( ! $deprecated && $this->reflection->isDeprecated()) {
 					$this->isDocumented = FALSE;
 
 				} elseif ( ! $internal && ($internal = $this->reflection->getAnnotation('internal'))

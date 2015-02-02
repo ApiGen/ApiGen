@@ -75,6 +75,10 @@ class TemplateElementsLoader
 			]);
 		}
 
+		$template->setParameters([
+			'annotationGroups' => $this->configuration->getOption(CO::ANNOTATION_GROUPS)
+		]);
+
 		return $template;
 	}
 
