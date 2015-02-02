@@ -35,6 +35,11 @@ class TemplateElementsLoader
 	 */
 	private $autocompleteElements;
 
+	/**
+	 * @var array
+	 */
+	private $parameters;
+
 
 	public function __construct(
 		ElementStorage $elementStorage,
@@ -52,34 +57,7 @@ class TemplateElementsLoader
 	 */
 	public function addElementsToTemplate(Template $template)
 	{
-		$template->setParameters([
-			'namespace' => NULL,
-			'package' => NULL,
-			'class' => NULL,
-			'constant' => NULL,
-			'function' => NULL,
-			'namespaces' => array_keys($this->elementStorage->getNamespaces()),
-			'packages' => array_keys($this->elementStorage->getPackages()),
-			'classes' => array_filter($this->elementStorage->getClasses(), $this->getMainFilter()),
-			'interfaces' => array_filter($this->elementStorage->getInterfaces(), $this->getMainFilter()),
-			'traits' => array_filter($this->elementStorage->getTraits(), $this->getMainFilter()),
-			'exceptions' => array_filter($this->elementStorage->getExceptions(), $this->getMainFilter()),
-			'constants' => array_filter($this->elementStorage->getConstants(), $this->getMainFilter()),
-			'functions' => array_filter($this->elementStorage->getFunctions(), $this->getMainFilter()),
-			'elements' => $this->autocompleteElements->getElements()
-		]);
-
-		if ($this->configuration->getOption(CO::DOWNLOAD)) {
-			$template->setParameters([
-				'archive' => basename($this->configuration->getZipFileName())
-			]);
-		}
-
-		$template->setParameters([
-			'annotationGroups' => $this->configuration->getOption(CO::ANNOTATION_GROUPS)
-		]);
-
-		return $template;
+		return $template->setParameters($this->getParameters());
 	}
 
 
@@ -91,6 +69,40 @@ class TemplateElementsLoader
 		return function (ReflectionElement $element) {
 			return $element->isMain();
 		};
+	}
+
+
+	/**
+	 * @return array
+	 */
+	private function getParameters()
+	{
+		if ($this->parameters === NULL) {
+			$parameters = [
+				'annotationGroups' => $this->configuration->getOption(CO::ANNOTATION_GROUPS),
+				'namespace' => NULL,
+				'package' => NULL,
+				'class' => NULL,
+				'constant' => NULL,
+				'function' => NULL,
+				'namespaces' => array_keys($this->elementStorage->getNamespaces()),
+				'packages' => array_keys($this->elementStorage->getPackages()),
+				'classes' => array_filter($this->elementStorage->getClasses(), $this->getMainFilter()),
+				'interfaces' => array_filter($this->elementStorage->getInterfaces(), $this->getMainFilter()),
+				'traits' => array_filter($this->elementStorage->getTraits(), $this->getMainFilter()),
+				'exceptions' => array_filter($this->elementStorage->getExceptions(), $this->getMainFilter()),
+				'constants' => array_filter($this->elementStorage->getConstants(), $this->getMainFilter()),
+				'functions' => array_filter($this->elementStorage->getFunctions(), $this->getMainFilter()),
+				'elements' => $this->autocompleteElements->getElements()
+			];
+
+			if ($this->configuration->getOption(CO::DOWNLOAD)) {
+				$parameters['archive'] = basename($this->configuration->getZipFileName());
+			}
+
+			$this->parameters = $parameters;
+		}
+		return $this->parameters;
 	}
 
 }
