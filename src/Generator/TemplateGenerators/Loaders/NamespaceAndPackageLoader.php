@@ -91,7 +91,7 @@ class NamespaceAndPackageLoader
 	 */
 	private function loadTemplateWithElements(Template $template, $elements)
 	{
-		$template->setParameters([
+		return $template->setParameters([
 			Elements::CLASSES => $elements[Elements::CLASSES],
 			Elements::INTERFACES => $elements[Elements::INTERFACES],
 			Elements::TRAITS => $elements[Elements::TRAITS],
@@ -99,7 +99,6 @@ class NamespaceAndPackageLoader
 			Elements::CONSTANTS => $elements[Elements::CONSTANTS],
 			Elements::FUNCTIONS => $elements[Elements::FUNCTIONS]
 		]);
-		return $template;
 	}
 
 

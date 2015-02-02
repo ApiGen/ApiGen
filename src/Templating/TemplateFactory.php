@@ -158,9 +158,9 @@ class TemplateFactory
 				'config' => ArrayHash::from($options),
 				'basePath' => $options[CO::TEMPLATE][TCO::TEMPLATES_PATH]
 			]);
-			$this->builtTemplate = $this->templateElementsLoader->addElementsToTemplate($template);
+			$this->builtTemplate = $template;
 		}
-		return $this->builtTemplate;
+		return $this->templateElementsLoader->addElementsToTemplate($this->builtTemplate);
 	}
 
 
@@ -169,11 +169,10 @@ class TemplateFactory
 	 */
 	private function setEmptyDefaults(Template $template)
 	{
-		$template->setParameters([
+		return $template->setParameters([
 			'namespace' => NULL,
 			'package' => NULL
 		]);
-		return $template;
 	}
 
 }
