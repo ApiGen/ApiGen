@@ -30,7 +30,7 @@
 
   Before:
   
-  `apigen -s source -d destionatino`
+  `apigen -s source -d destination`
   
   After:
   
@@ -49,7 +49,7 @@
 
 ## Cli options
 
-- Bool options are off when not present, on when present.
+- Bool options are off when absent, on when present.
   
   Before:
   
@@ -63,7 +63,7 @@
 
    `... # tree => false`
 
-- Options with values now accepts multiple formats:
+- Options with values now accept multiple formats:
 
   Before:
   
@@ -82,18 +82,18 @@
  `... --access-levels public --access-levels protected`
   
 
-- Some options were dropped. To find what are current one, just run `apigen genearte --help`.
+- Some options were dropped. To see what the available ones are, just run `apigen generate --help`.
 
   - `--skip-doc-prefix` was dropped, use `--skip-doc-path` instead
   - `--allowed-html` was dropped
-  - `--autocomplete` was dropped; now autocomplete works for classes, constants and functions by default
+  - `--autocomplete` was dropped; autocomplete now works for classes, constants and functions by default
   - `--report`; use [Php_CodeSniffer](https://github.com/squizlabs/PHP_CodeSniffer) for any custom checkstyle
   - `--wipeout`; now wipes out everytime
   - `--progressbar`; now always present
   - `--colors`; now always colors
   - `--update-check`; now always colors
   
-- Some were renamed and reversed.
+- Some options were renamed and reversed.
   
   - `--source-code` was off by default, now it on by default; to turn it off, add `--no-source-code`  
 
