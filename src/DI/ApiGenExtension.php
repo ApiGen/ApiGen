@@ -15,11 +15,6 @@ use Nette\DI\CompilerExtension;
 class ApiGenExtension extends CompilerExtension
 {
 
-	const TAG_CONSOLE_COMMAND = 'console.command';
-	const TAG_LATTE_FILTER = 'latte.filter';
-	const TAG_TEMPLATE_GENERATOR = 'template.generator';
-
-
 	public function loadConfiguration()
 	{
 		$this->loadServicesFromConfig();
@@ -59,13 +54,11 @@ class ApiGenExtension extends CompilerExtension
 		$builder = $this->getContainerBuilder();
 
 		$application = $builder->getDefinition($builder->getByType('ApiGen\Console\Application'));
-
-		foreach (array_keys($builder->findByTag(self::TAG_CONSOLE_COMMAND)) as $serviceName) {
-			$className = $builder->getDefinition($serviceName)->getClass();
-			if ( ! $this->isPhar() && $className === 'ApiGen\Command\SelfUpdateCommand') {
+		foreach ($builder->findByType('Symfony\Component\Console\Command\Command') as $definition) {
+			if ( ! $this->isPhar() && $definition->getClass() === 'ApiGen\Command\SelfUpdateCommand') {
 				continue;
 			}
-			$application->addSetup('add', ['@' . $serviceName]);
+			$application->addSetup('add', ['@' . $definition->getClass()]);
 		}
 	}
 
@@ -83,8 +76,8 @@ class ApiGenExtension extends CompilerExtension
 	{
 		$builder = $this->getContainerBuilder();
 		$latteFactory = $builder->getDefinition($builder->getByType('Latte\Engine'));
-		foreach (array_keys($builder->findByTag(self::TAG_LATTE_FILTER)) as $serviceName) {
-			$latteFactory->addSetup('addFilter', [NULL, ['@' . $serviceName, 'loader']]);
+		foreach ($builder->findByType('ApiGen\Templating\Filters\Filters') as $definition) {
+			$latteFactory->addSetup('addFilter', [NULL, ['@' . $definition->getClass(), 'loader']]);
 		}
 	}
 
@@ -93,8 +86,8 @@ class ApiGenExtension extends CompilerExtension
 	{
 		$builder = $this->getContainerBuilder();
 		$generator = $builder->getDefinition($builder->getByType('ApiGen\Generator\GeneratorQueue'));
-		foreach (array_keys($builder->findByTag(self::TAG_TEMPLATE_GENERATOR)) as $serviceName) {
-			$generator->addSetup('addToQueue', ['@' . $serviceName]);
+		foreach ($builder->findByType('ApiGen\Generator\TemplateGenerator') as $definition) {
+			$generator->addSetup('addToQueue', ['@' . $definition->getClass()]);
 		}
 	}
 
