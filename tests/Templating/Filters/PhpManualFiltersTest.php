@@ -2,12 +2,14 @@
 
 namespace ApiGen\Tests\Templating\Filters;
 
+use ApiGen\Parser\ParserResult;
 use ApiGen\Reflection\ReflectionClass;
 use ApiGen\Reflection\ReflectionConstant;
 use ApiGen\Reflection\ReflectionExtension;
 use ApiGen\Reflection\ReflectionFunction;
 use ApiGen\Reflection\ReflectionMethod;
 use ApiGen\Reflection\ReflectionProperty;
+use ApiGen\Reflection\ReflectionPropertyMagic;
 use ApiGen\Templating\Filters\PhpManualFilters;
 use Mockery;
 use PHPUnit_Framework_TestCase;
@@ -56,7 +58,7 @@ class PhpManualFiltersTest extends PHPUnit_Framework_TestCase
 
 	public function testManualUrlForCoreExtension()
 	{
-		$reflectionExtension = Mockery::mock('ApiGen\Reflection\ReflectionExtension');
+		$reflectionExtension = Mockery::mock(ReflectionExtension::class);
 		$reflectionExtension->shouldReceive('getName')->andReturn('core');
 
 		$this->assertSame(
@@ -68,7 +70,7 @@ class PhpManualFiltersTest extends PHPUnit_Framework_TestCase
 
 	public function testManualUrlForReservedClass()
 	{
-		$reflectionClass = Mockery::mock('ApiGen\Reflection\ReflectionClass');
+		$reflectionClass = Mockery::mock(ReflectionClass::class);
 		$reflectionClass->shouldReceive('getName')->andReturn('stdClass');
 
 		$this->assertSame(
@@ -118,10 +120,10 @@ class PhpManualFiltersTest extends PHPUnit_Framework_TestCase
 
 	public function testManualUrlForMethod()
 	{
-		$reflectionClass = Mockery::mock('ApiGen\Reflection\ReflectionClass');
+		$reflectionClass = Mockery::mock(ReflectionClass::class);
 		$reflectionClass->shouldReceive('getName')->andReturn('splFileInfo');
 
-		$parserResultMock = Mockery::mock('ApiGen\Parser\ParserResult');
+		$parserResultMock = Mockery::mock(ParserResult::class);
 		$parserResultMock->shouldReceive('getElementsByType')->andReturn(['splFileInfo' => $reflectionClass]);
 
 		$reflectionMock = Mockery::mock('TokenReflection\IReflectionMethod', 'Nette\Object');
@@ -141,10 +143,10 @@ class PhpManualFiltersTest extends PHPUnit_Framework_TestCase
 
 	public function testManualUrlForFunction()
 	{
-		$reflectionClass = Mockery::mock('ApiGen\Reflection\ReflectionClass');
+		$reflectionClass = Mockery::mock(ReflectionClass::class);
 		$reflectionClass->shouldReceive('getName')->andReturn('');
 
-		$parserResultMock = Mockery::mock('ApiGen\Parser\ParserResult');
+		$parserResultMock = Mockery::mock(ParserResult::class);
 		$parserResultMock->shouldReceive('getElementsByType')->andReturn(['json-decode' => $reflectionClass]);
 
 		$reflectionMock = Mockery::mock('TokenReflection\IReflectionFunction', 'Nette\Object');
@@ -162,10 +164,10 @@ class PhpManualFiltersTest extends PHPUnit_Framework_TestCase
 
 	public function testManualUrlForConstant()
 	{
-		$reflectionClass = Mockery::mock('ApiGen\Reflection\ReflectionClass');
+		$reflectionClass = Mockery::mock(ReflectionClass::class);
 		$reflectionClass->shouldReceive('getName')->andReturn('ReflectionProperty');
 
-		$parserResultMock = Mockery::mock('ApiGen\Parser\ParserResult');
+		$parserResultMock = Mockery::mock(ParserResult::class);
 		$parserResultMock->shouldReceive('getElementsByType')->andReturn(['reflection' => $reflectionClass]);
 
 		$reflectionMock = Mockery::mock('TokenReflection\IReflectionConstant', 'Nette\Object');
@@ -184,10 +186,10 @@ class PhpManualFiltersTest extends PHPUnit_Framework_TestCase
 
 	public function testManualUrlForNonExisting()
 	{
-		$reflectionClass = Mockery::mock('ApiGen\Reflection\ReflectionClass');
+		$reflectionClass = Mockery::mock(ReflectionClass::class);
 		$reflectionClass->shouldReceive('getName')->andReturn();
 
-		$reflectionMagicProperty = Mockery::mock('ApiGen\Reflection\ReflectionMagicProperty');
+		$reflectionMagicProperty = Mockery::mock(ReflectionPropertyMagic::class);
 		$reflectionMagicProperty->shouldReceive('getDeclaringClass')->andReturn($reflectionClass);
 
 		$this->assertSame('', $this->phpManualFilters->manualUrl($reflectionMagicProperty));

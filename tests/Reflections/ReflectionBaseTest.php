@@ -2,8 +2,10 @@
 
 namespace ApiGen\Tests\Reflection;
 
+use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Parser\Broker\Backend;
+use ApiGen\Parser\ParserResult;
 use ApiGen\Reflection\ReflectionBase;
 use ApiGen\Reflection\ReflectionClass;
 use ApiGen\Reflection\ReflectionMethod;
@@ -87,7 +89,7 @@ class ReflectionBaseTest extends PHPUnit_Framework_TestCase
 	 */
 	private function getReflectionFactory()
 	{
-		$parserResultMock = Mockery::mock('ApiGen\Parser\ParserResult');
+		$parserResultMock = Mockery::mock(ParserResult::class);
 		$parserResultMock->shouldReceive('getElementsByType')->andReturn(['...']);
 		return new ReflectionFactory($this->getConfigurationMock(), $parserResultMock);
 	}
@@ -98,7 +100,7 @@ class ReflectionBaseTest extends PHPUnit_Framework_TestCase
 	 */
 	private function getConfigurationMock()
 	{
-		$configurationMock = Mockery::mock('ApiGen\Configuration\Configuration');
+		$configurationMock = Mockery::mock(Configuration::class);
 		$configurationMock->shouldReceive('getOption')->with('php')->andReturn(FALSE);
 		$configurationMock->shouldReceive('getOption')->with('deprecated')->andReturn(FALSE);
 		$configurationMock->shouldReceive('getOption')->with('internal')->andReturn(FALSE);

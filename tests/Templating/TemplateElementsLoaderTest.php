@@ -2,9 +2,13 @@
 
 namespace ApiGen\Tests\Templating;
 
+use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions as CO;
+use ApiGen\Parser\Elements\AutocompleteElements;
+use ApiGen\Parser\Elements\ElementStorage;
 use ApiGen\Templating\Template;
 use ApiGen\Templating\TemplateElementsLoader;
+use Latte\Engine;
 use Mockery;
 use PHPUnit_Framework_TestCase;
 
@@ -21,12 +25,12 @@ class TemplateElementsLoaderTest extends PHPUnit_Framework_TestCase
 	protected function setUp()
 	{
 		$elementStorageMock = $this->getElementStorageMock();
-		$configurationMock = Mockery::mock('ApiGen\Configuration\Configuration');
+		$configurationMock = Mockery::mock(Configuration::class);
 		$configurationMock->shouldReceive('getOption')->with(CO::DOWNLOAD)->andReturn(TRUE);
 		$configurationMock->shouldReceive('getOption')->with(CO::ANNOTATION_GROUPS)->andReturn(['todo']);
 		$configurationMock->shouldReceive('getZipFileName')->andReturn('file.zip');
 
-		$autocompleteElementsMock = Mockery::mock('ApiGen\Parser\Elements\AutocompleteElements');
+		$autocompleteElementsMock = Mockery::mock(AutocompleteElements::class);
 		$autocompleteElementsMock->shouldReceive('getElements')->andReturn([]);
 
 		$this->templateElementsLoader = new TemplateElementsLoader(
@@ -37,10 +41,10 @@ class TemplateElementsLoaderTest extends PHPUnit_Framework_TestCase
 
 	public function testAddElementToTemplate()
 	{
-		$latteEngineMock = Mockery::mock('Latte\Engine');
+		$latteEngineMock = Mockery::mock(Engine::class);
 		$template = new Template($latteEngineMock);
 		$template = $this->templateElementsLoader->addElementsToTemplate($template);
-		$this->assertInstanceOf('ApiGen\Templating\Template', $template);
+		$this->assertInstanceOf(Template::class, $template);
 
 		$parameters = $template->getParameters();
 		$this->assertArrayHasKey('namespace', $parameters);
@@ -69,7 +73,7 @@ class TemplateElementsLoaderTest extends PHPUnit_Framework_TestCase
 	 */
 	private function getElementStorageMock()
 	{
-		$elementStorageMock = Mockery::mock('ApiGen\Parser\Elements\ElementStorage');
+		$elementStorageMock = Mockery::mock(ElementStorage::class);
 		$elementStorageMock->shouldReceive('getNamespaces')->andReturn([]);
 		$elementStorageMock->shouldReceive('getPackages')->andReturn([]);
 		$elementStorageMock->shouldReceive('getClasses')->andReturn([]);

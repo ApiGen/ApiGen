@@ -2,8 +2,10 @@
 
 namespace ApiGen\Tests\Reflections\ReflectionClass;
 
+use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Parser\Broker\Backend;
+use ApiGen\Parser\ParserResult;
 use ApiGen\Reflection\ReflectionClass;
 use ApiGen\Reflection\TokenReflection\ReflectionFactory;
 use Mockery;
@@ -52,7 +54,7 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
 	 */
 	private function getReflectionFactory()
 	{
-		$parserResultMock = Mockery::mock('ApiGen\Parser\ParserResult');
+		$parserResultMock = Mockery::mock(ParserResult::class);
 		$parserResultMock->shouldReceive('getDirectImplementersOfInterface')->andReturn([1]);
 		$parserResultMock->shouldReceive('getIndirectImplementersOfInterface')->andReturn([]);
 		$parserResultMock->shouldReceive('getElementsByType')->andReturnUsing(function ($arg) {
@@ -74,7 +76,7 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
 	 */
 	private function getConfigurationMock()
 	{
-		$configurationMock = Mockery::mock('ApiGen\Configuration\Configuration');
+		$configurationMock = Mockery::mock(Configuration::class);
 		$configurationMock->shouldReceive('getOption')->with('php')->andReturn(FALSE);
 		$configurationMock->shouldReceive('getOption')->with('deprecated')->andReturn(FALSE);
 		$configurationMock->shouldReceive('getOption')->with('internal')->andReturn(FALSE);

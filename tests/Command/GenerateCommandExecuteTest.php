@@ -6,6 +6,7 @@ use ApiGen\Command\GenerateCommand;
 use ApiGen\Tests\ContainerAwareTestCase;
 use ApiGen\Tests\MethodInvoker;
 use Mockery;
+use Symfony\Component\Console\Input\InputInterface;
 
 
 class GenerateCommandExecuteTest extends ContainerAwareTestCase
@@ -19,7 +20,7 @@ class GenerateCommandExecuteTest extends ContainerAwareTestCase
 
 	protected function setUp()
 	{
-		$this->generateCommand = $this->container->getByType('ApiGen\Command\GenerateCommand');
+		$this->generateCommand = $this->container->getByType(GenerateCommand::class);
 	}
 
 
@@ -32,7 +33,7 @@ class GenerateCommandExecuteTest extends ContainerAwareTestCase
 	{
 		$this->assertFileNotExists(TEMP_DIR . '/Api/index.html');
 
-		$inputMock = Mockery::mock('Symfony\Component\Console\Input\InputInterface');
+		$inputMock = Mockery::mock(InputInterface::class);
 		$inputMock->shouldReceive('getOptions')->andReturn([
 			'config' => NULL,
 			'destination' => TEMP_DIR . '/Api',
@@ -50,7 +51,7 @@ class GenerateCommandExecuteTest extends ContainerAwareTestCase
 
 	public function testExecuteWithError()
 	{
-		$inputMock = Mockery::mock('Symfony\Component\Console\Input\InputInterface');
+		$inputMock = Mockery::mock(InputInterface::class);
 
 		$this->assertSame(
 			1, // failure

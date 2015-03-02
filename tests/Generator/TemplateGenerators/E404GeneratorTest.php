@@ -23,8 +23,8 @@ class E404GeneratorTest extends ContainerAwareTestCase
 
 	protected function setUp()
 	{
-		$this->configuration = $this->container->getByType('ApiGen\Configuration\Configuration');
-		$this->e404Generator = $this->container->getByType('ApiGen\Generator\TemplateGenerators\E404Generator');
+		$this->configuration = $this->container->getByType(Configuration::class);
+		$this->e404Generator = $this->container->getByType(E404Generator::class);
 	}
 
 

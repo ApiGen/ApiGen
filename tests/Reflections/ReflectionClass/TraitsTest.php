@@ -2,6 +2,7 @@
 
 namespace ApiGen\Tests\Reflections\ReflectionClass;
 
+use ApiGen\Reflection\ReflectionClass;
 use TokenReflection;
 
 
@@ -18,7 +19,7 @@ class TraitsTest extends TestCase
 	{
 		$traits = $this->reflectionClass->getTraits();
 		$this->assertCount(2, $traits);
-		$this->assertInstanceOf('ApiGen\Reflection\ReflectionClass', $traits['Project\SomeTrait']);
+		$this->assertInstanceOf(ReflectionClass::class, $traits['Project\SomeTrait']);
 		$this->assertSame('Project\SomeTraitNotPresentHere', $traits['Project\SomeTraitNotPresentHere']);
 	}
 

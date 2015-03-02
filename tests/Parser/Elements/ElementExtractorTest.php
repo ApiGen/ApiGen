@@ -3,7 +3,10 @@
 namespace ApiGen\Tests\Parser\Elements;
 
 use ApiGen\Parser\Elements\ElementExtractor;
+use ApiGen\Parser\Elements\ElementFilter;
 use ApiGen\Parser\Elements\Elements;
+use ApiGen\Parser\Elements\ElementSorter;
+use ApiGen\Parser\Elements\ElementStorage;
 use ApiGen\Reflection\ReflectionClass;
 use ApiGen\Reflection\ReflectionElement;
 use Mockery;
@@ -21,7 +24,7 @@ class ElementExtractorTest extends PHPUnit_Framework_TestCase
 
 	protected function setUp()
 	{
-		$elementFilterMock = Mockery::mock('ApiGen\Parser\Elements\ElementFilter');
+		$elementFilterMock = Mockery::mock(ElementFilter::class);
 		$elementFilterMock->shouldReceive('filterForMain')->andReturnUsing(function ($elements) {
 			return $elements;
 		});
@@ -29,13 +32,13 @@ class ElementExtractorTest extends PHPUnit_Framework_TestCase
 			return $elements;
 		});
 
-		$elementStorageMock = Mockery::mock('ApiGen\Parser\Elements\ElementStorage');
+		$elementStorageMock = Mockery::mock(ElementStorage::class);
 		$elementStorageMock->shouldReceive('getElements')->andReturn([
 			'classes' => $this->getReflectionClassMocks(),
 			'constants' => []
 		]);
 
-		$elementSorterMock = Mockery::mock('ApiGen\Parser\Elements\ElementSorter');
+		$elementSorterMock = Mockery::mock(ElementSorter::class);
 		$elementSorterMock->shouldReceive('sortElementsByFqn')->andReturnUsing(function ($elements) {
 			return $elements;
 		});
@@ -81,7 +84,7 @@ class ElementExtractorTest extends PHPUnit_Framework_TestCase
 	 */
 	private function getReflectionClassMocks()
 	{
-		$reflectionClassMock = Mockery::mock('ApiGen\Reflection\ReflectionClass');
+		$reflectionClassMock = Mockery::mock(ReflectionClass::class);
 		$reflectionClassMock->shouldReceive('getOwnConstants')->andReturn([]);
 		$reflectionClassMock->shouldReceive('getOwnProperties')->andReturn([]);
 

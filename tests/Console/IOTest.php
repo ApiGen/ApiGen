@@ -5,8 +5,13 @@ namespace ApiGen\Tests\Console;
 use ApiGen\Console\IO;
 use Mockery;
 use PHPUnit_Framework_TestCase;
+<<<<<<< HEAD
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Helper\QuestionHelper;
+=======
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
+>>>>>>> use ::class
 
 
 class IOTest extends PHPUnit_Framework_TestCase
@@ -28,23 +33,17 @@ class IOTest extends PHPUnit_Framework_TestCase
 
 	public function testSetInputGetInput()
 	{
-		$inputMock = Mockery::mock('Symfony\Component\Console\Input\InputInterface');
+		$inputMock = Mockery::mock(InputInterface::class);
 		$this->io->setInput($inputMock);
-		$this->assertInstanceOf(
-			'Symfony\Component\Console\Input\InputInterface',
-			$this->io->getInput()
-		);
+		$this->assertInstanceOf(InputInterface::class, $this->io->getInput());
 	}
 
 
 	public function testSetOutputGetOutput()
 	{
-		$outputMock = Mockery::mock('Symfony\Component\Console\Output\OutputInterface');
+		$outputMock = Mockery::mock(OutputInterface::class);
 		$this->io->setOutput($outputMock);
-		$this->assertInstanceOf(
-			'Symfony\Component\Console\Output\OutputInterface',
-			$this->io->getOutput()
-		);
+		$this->assertInstanceOf(OutputInterface::class, $this->io->getOutput());
 	}
 
 
