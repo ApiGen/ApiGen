@@ -2,8 +2,10 @@
 
 namespace ApiGen\Tests\Reflection;
 
+use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Parser\Broker\Backend;
+use ApiGen\Parser\ParserResult;
 use ApiGen\Reflection\ReflectionClass;
 use ApiGen\Reflection\ReflectionConstant;
 use ApiGen\Reflection\TokenReflection\ReflectionFactory;
@@ -46,15 +48,15 @@ class ReflectionConstantTest extends PHPUnit_Framework_TestCase
 
 	public function testInstance()
 	{
-		$this->assertInstanceOf('ApiGen\Reflection\ReflectionConstant', $this->constantReflection);
-		$this->assertInstanceOf('ApiGen\Reflection\ReflectionConstant', $this->constantReflectionInClass);
+		$this->assertInstanceOf(ReflectionConstant::class, $this->constantReflection);
+		$this->assertInstanceOf(ReflectionConstant::class, $this->constantReflectionInClass);
 	}
 
 
 	public function testGetDeclaringClass()
 	{
 		$this->assertNull($this->constantReflection->getDeclaringClass());
-		$this->assertInstanceOf('ApiGen\Reflection\ReflectionClass', $this->constantReflectionInClass->getDeclaringClass());
+		$this->assertInstanceOf(ReflectionClass::class, $this->constantReflectionInClass->getDeclaringClass());
 	}
 
 
@@ -119,7 +121,7 @@ class ReflectionConstantTest extends PHPUnit_Framework_TestCase
 	 */
 	private function getReflectionFactory()
 	{
-		$parserResultMock = Mockery::mock('ApiGen\Parser\ParserResult');
+		$parserResultMock = Mockery::mock(ParserResult::class);
 		$parserResultMock->shouldReceive('getElementsByType')->andReturnUsing(function ($arg) {
 			if ($arg) {
 				return ['ConstantInClass' => $this->reflectionClass];
@@ -134,7 +136,7 @@ class ReflectionConstantTest extends PHPUnit_Framework_TestCase
 	 */
 	private function getConfigurationMock()
 	{
-		$configurationMock = Mockery::mock('ApiGen\Configuration\Configuration');
+		$configurationMock = Mockery::mock(Configuration::class);
 		$configurationMock->shouldReceive('getOption')->with('php')->andReturn(FALSE);
 		$configurationMock->shouldReceive('getOption')->with('deprecated')->andReturn(FALSE);
 		$configurationMock->shouldReceive('getOption')->with('internal')->andReturn(FALSE);

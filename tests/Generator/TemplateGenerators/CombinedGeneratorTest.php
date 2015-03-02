@@ -23,8 +23,8 @@ class CombinedGeneratorTest extends ContainerAwareTestCase
 
 	protected function setUp()
 	{
-		$this->configuration = $this->container->getByType('ApiGen\Configuration\Configuration');
-		$this->combinedGenerator = $this->container->getByType('ApiGen\Generator\TemplateGenerators\CombinedGenerator');
+		$this->configuration = $this->container->getByType(Configuration::class);
+		$this->combinedGenerator = $this->container->getByType(CombinedGenerator::class);
 	}
 
 

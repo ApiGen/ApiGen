@@ -34,11 +34,9 @@ class AnnotationGroupsGeneratorTest extends ContainerAwareTestCase
 
 	protected function setUp()
 	{
-		$this->configuration = $this->container->getByType('ApiGen\Configuration\Configuration');
-		$this->parser = $this->container->getByType('ApiGen\Parser\Parser');
-		$this->annotationGroupsGenerator = $this->container->getByType(
-			'ApiGen\Generator\TemplateGenerators\AnnotationGroupsGenerator'
-		);
+		$this->configuration = $this->container->getByType(Configuration::class);
+		$this->parser = $this->container->getByType(Parser::class);
+		$this->annotationGroupsGenerator = $this->container->getByType(AnnotationGroupsGenerator::class);
 	}
 
 

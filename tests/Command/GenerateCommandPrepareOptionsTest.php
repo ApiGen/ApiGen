@@ -20,7 +20,7 @@ class GenerateCommandPrepareOptionsTest extends ContainerAwareTestCase
 
 	protected function setUp()
 	{
-		$this->generateCommand = $this->container->getByType('ApiGen\Command\GenerateCommand');
+		$this->generateCommand = $this->container->getByType(GenerateCommand::class);
 	}
 
 

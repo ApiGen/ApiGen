@@ -9,6 +9,9 @@
 
 namespace ApiGen\DI;
 
+use ApiGen\Charset\CharsetConvertor;
+use ApiGen\Charset\CharsetDetector;
+use ApiGen\Charset\Configuration\CharsetOptionsResolver;
 use Nette\DI\CompilerExtension;
 
 
@@ -20,13 +23,13 @@ class CharsetConvertorExtension extends CompilerExtension
 		$builder = $this->getContainerBuilder();
 
 		$builder->addDefinition($this->prefix('convertor'))
-			->setClass('ApiGen\Charset\CharsetConvertor');
+			->setClass(CharsetConvertor::class);
 
 		$builder->addDefinition($this->prefix('detector'))
-			->setClass('ApiGen\Charset\CharsetDetector');
+			->setClass(CharsetDetector::class);
 
 		$builder->addDefinition($this->prefix('charsetOptionsResolver'))
-			->setClass('ApiGen\Charset\Configuration\CharsetOptionsResolver');
+			->setClass(CharsetOptionsResolver::class);
 	}
 
 }

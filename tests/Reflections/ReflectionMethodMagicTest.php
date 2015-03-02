@@ -2,13 +2,16 @@
 
 namespace ApiGen\Tests\Reflection;
 
+use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Parser\Broker\Backend;
+use ApiGen\Parser\ParserResult;
 use ApiGen\Reflection\ReflectionClass;
 use ApiGen\Reflection\ReflectionMethodMagic;
 use ApiGen\Reflection\TokenReflection\ReflectionFactory;
 use Mockery;
 use PHPUnit_Framework_TestCase;
+use Project\ReflectionMethod;
 use TokenReflection\Broker;
 
 
@@ -39,19 +42,19 @@ class ReflectionMethodMagicTest extends PHPUnit_Framework_TestCase
 
 	public function testInstance()
 	{
-		$this->assertInstanceOf('ApiGen\Reflection\ReflectionMethodMagic', $this->reflectionMethodMagic);
+		$this->assertInstanceOf(ReflectionMethodMagic::class, $this->reflectionMethodMagic);
 	}
 
 
 	public function testGetDeclaringClass()
 	{
-		$this->isInstanceOf('ApiGen\Reflection\ReflectionClass', $this->reflectionMethodMagic->getDeclaringClass());
+		$this->isInstanceOf(ReflectionClass::class, $this->reflectionMethodMagic->getDeclaringClass());
 	}
 
 
 	public function testGetDeclaringClassName()
 	{
-		$this->assertSame('Project\ReflectionMethod', $this->reflectionMethodMagic->getDeclaringClassName());
+		$this->assertSame(ReflectionMethod::class, $this->reflectionMethodMagic->getDeclaringClassName());
 	}
 
 
@@ -201,7 +204,7 @@ class ReflectionMethodMagicTest extends PHPUnit_Framework_TestCase
 	 */
 	private function getReflectionFactory()
 	{
-		$parserResultMock = Mockery::mock('ApiGen\Parser\ParserResult');
+		$parserResultMock = Mockery::mock(ParserResult::class);
 		$parserResultMock->shouldReceive('getElementsByType')->andReturnUsing(function ($arg) {
 			if ($arg) {
 				return ['Project\ReflectionMethod' => $this->reflectionClass];
@@ -216,7 +219,7 @@ class ReflectionMethodMagicTest extends PHPUnit_Framework_TestCase
 	 */
 	private function getConfigurationMock()
 	{
-		$configurationMock = Mockery::mock('ApiGen\Configuration\Configuration');
+		$configurationMock = Mockery::mock(Configuration::class);
 		$configurationMock->shouldReceive('getOption')->with('php')->andReturn(FALSE);
 		$configurationMock->shouldReceive('getOption')->with('deprecated')->andReturn(FALSE);
 		$configurationMock->shouldReceive('getOption')->with('internal')->andReturn(FALSE);

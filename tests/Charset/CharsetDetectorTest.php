@@ -5,6 +5,7 @@ namespace ApiGen\Tests\Charset;
 use ApiGen\Charset\CharsetDetector;
 use ApiGen\Charset\Configuration\CharsetOptionsResolver;
 use ApiGen\Charset\Encoding;
+use ApiGen\Configuration\OptionsResolverFactory;
 use Mockery;
 use PHPUnit_Framework_TestCase;
 use ReflectionClass;
@@ -22,7 +23,7 @@ class CharsetDetectorTest extends PHPUnit_Framework_TestCase
 
 	protected function setUp()
 	{
-		$optionsResolverFactoryMock = Mockery::mock('ApiGen\Configuration\OptionsResolverFactory');
+		$optionsResolverFactoryMock = Mockery::mock(OptionsResolverFactory::class);
 		$optionsResolverFactoryMock->shouldReceive('create')->andReturn(new OptionsResolver);
 		$charsetOptionsResolver = new CharsetOptionsResolver($optionsResolverFactoryMock);
 		$this->charsetDetector = new CharsetDetector($charsetOptionsResolver);

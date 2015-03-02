@@ -3,6 +3,10 @@
 namespace ApiGen\Tests\Parser\Elements;
 
 use ApiGen\Parser\Elements\AutocompleteElements;
+use ApiGen\Parser\Elements\ElementStorage;
+use ApiGen\Reflection\ReflectionClass;
+use ApiGen\Reflection\ReflectionConstant;
+use ApiGen\Reflection\ReflectionFunction;
 use ApiGen\Tests\MethodInvoker;
 use Mockery;
 use PHPUnit_Framework_TestCase;
@@ -19,17 +23,17 @@ class AutocompleteElementsTest extends PHPUnit_Framework_TestCase
 
 	protected function setUp()
 	{
-		$classReflectionMock = Mockery::mock('ApiGen\Reflection\ReflectionClass');
+		$classReflectionMock = Mockery::mock(ReflectionClass::class);
 		$classReflectionMock->shouldReceive('getPrettyName')->andReturn('ClassPrettyName');
 		$classReflectionMock->shouldReceive('getOwnConstants')->andReturn([]);
 
-		$constantReflectionMock = Mockery::mock('ApiGen\Reflection\ReflectionConstant');
+		$constantReflectionMock = Mockery::mock(ReflectionConstant::class);
 		$constantReflectionMock->shouldReceive('getPrettyName')->andReturn('ConstantPrettyName');
 
-		$functionReflectionMock = Mockery::mock('ApiGen\Reflection\ReflectionFunction');
+		$functionReflectionMock = Mockery::mock(ReflectionFunction::class);
 		$functionReflectionMock->shouldReceive('getPrettyName')->andReturn('FunctionPrettyName');
 
-		$elementsStorageMock = Mockery::mock('ApiGen\Parser\Elements\ElementStorage');
+		$elementsStorageMock = Mockery::mock(ElementStorage::class);
 		$elementsStorageMock->shouldReceive('getElements')->andReturn([
 			'classes' => [$classReflectionMock],
 			'constants' => [$constantReflectionMock],

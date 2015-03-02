@@ -7,6 +7,9 @@ use ApiGen\Parser\Parser;
 use ApiGen\Parser\ParserResult;
 use ApiGen\Reflection\ReflectionClass;
 use ApiGen\Tests\ContainerAwareTestCase;
+use ApiGen\Tests\Parser\ParserResultImplementers\ChildInterface;
+use ApiGen\Tests\Parser\ParserResultImplementers\ParentInterface;
+use ApiGen\Tests\Parser\ParserResultImplementers\SomeClass;
 use Nette\Utils\Finder;
 
 
@@ -30,19 +33,19 @@ class ParserResultImplementersTest extends ContainerAwareTestCase
 		$files = iterator_to_array($finder->getIterator());
 
 		/** @var Configuration $configuration */
-		$configuration = $this->container->getByType('ApiGen\Configuration\Configuration');
+		$configuration = $this->container->getByType(Configuration::class);
 		$configuration->resolveOptions([
 			'source' => 'src',
 			'destination' => TEMP_DIR . '/api'
 		]);
 
 		/** @var Parser $parser */
-		$parser = $this->container->getByType('ApiGen\Parser\Parser');
+		$parser = $this->container->getByType(Parser::class);
 		$parser->parse($files);
 
-		$this->parserResult = $this->container->getByType('ApiGen\Parser\ParserResult');
+		$this->parserResult = $this->container->getByType(ParserResult::class);
 		$classes = $this->parserResult->getClasses();
-		$this->parentInterfaceReflection = $classes['ApiGen\Tests\Parser\ParserResultImplementers\ParentInterface'];
+		$this->parentInterfaceReflection = $classes[ParentInterface::class];
 	}
 
 
@@ -52,8 +55,8 @@ class ParserResultImplementersTest extends ContainerAwareTestCase
 		$this->assertCount(1, $implementers);
 
 		$implementer = $implementers[0];
-		$this->assertInstanceOf('ApiGen\Reflection\ReflectionClass', $implementer);
-		$this->assertSame('ApiGen\Tests\Parser\ParserResultImplementers\ChildInterface', $implementer->getName());
+		$this->assertInstanceOf(ReflectionClass::class, $implementer);
+		$this->assertSame(ChildInterface::class, $implementer->getName());
 	}
 
 
@@ -63,8 +66,8 @@ class ParserResultImplementersTest extends ContainerAwareTestCase
 		$this->assertCount(1, $implementers);
 
 		$implementer = $implementers[0];
-		$this->assertInstanceOf('ApiGen\Reflection\ReflectionClass', $implementer);
-		$this->assertSame('ApiGen\Tests\Parser\ParserResultImplementers\SomeClass', $implementer->getName());
+		$this->assertInstanceOf(ReflectionClass::class, $implementer);
+		$this->assertSame(SomeClass::class, $implementer->getName());
 	}
 
 }

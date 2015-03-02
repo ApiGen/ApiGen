@@ -3,6 +3,10 @@
 namespace ApiGen\Tests\Parser\Elements;
 
 use ApiGen\Parser\Elements\ElementSorter;
+use ApiGen\Reflection\ReflectionClass;
+use ApiGen\Reflection\ReflectionConstant;
+use ApiGen\Reflection\ReflectionFunction;
+use ApiGen\Reflection\ReflectionMethod;
 use Mockery;
 use PHPUnit_Framework_TestCase;
 
@@ -24,11 +28,11 @@ class ElementSorterTest extends PHPUnit_Framework_TestCase
 
 	public function testSortElementsByFqnConstants()
 	{
-		$reflectionConstantMock = Mockery::mock('ApiGen\Reflection\ReflectionConstant');
+		$reflectionConstantMock = Mockery::mock(ReflectionConstant::class);
 		$reflectionConstantMock->shouldReceive('getDeclaringClassName')->andReturn('B');
 		$reflectionConstantMock->shouldReceive('getName')->andReturn('C');
 
-		$reflectionConstantMock2 = Mockery::mock('ApiGen\Reflection\ReflectionConstant');
+		$reflectionConstantMock2 = Mockery::mock(ReflectionConstant::class);
 		$reflectionConstantMock2->shouldReceive('getDeclaringClassName')->andReturn('A');
 		$reflectionConstantMock2->shouldReceive('getName')->andReturn('D');
 
@@ -43,11 +47,11 @@ class ElementSorterTest extends PHPUnit_Framework_TestCase
 
 	public function testSortElementsByFqnFunctions()
 	{
-		$reflectionFunctionMock = Mockery::mock('ApiGen\Reflection\ReflectionFunction');
+		$reflectionFunctionMock = Mockery::mock(ReflectionFunction::class);
 		$reflectionFunctionMock->shouldReceive('getNamespaceName')->andReturn('B');
 		$reflectionFunctionMock->shouldReceive('getName')->andReturn('C');
 
-		$reflectionFunctionMock2 = Mockery::mock('ApiGen\Reflection\ReflectionFunction');
+		$reflectionFunctionMock2 = Mockery::mock(ReflectionFunction::class);
 		$reflectionFunctionMock2->shouldReceive('getNamespaceName')->andReturn('A');
 		$reflectionFunctionMock2->shouldReceive('getName')->andReturn('D');
 
@@ -62,11 +66,11 @@ class ElementSorterTest extends PHPUnit_Framework_TestCase
 
 	public function testSortElementsByFqnMethod()
 	{
-		$reflectionMethodMock = Mockery::mock('ApiGen\Reflection\ReflectionMethod');
+		$reflectionMethodMock = Mockery::mock(ReflectionMethod::class);
 		$reflectionMethodMock->shouldReceive('getDeclaringClassName')->andReturn('B');
 		$reflectionMethodMock->shouldReceive('getName')->andReturn('C');
 
-		$reflectionMethodMock2 = Mockery::mock('ApiGen\Reflection\ReflectionMethod');
+		$reflectionMethodMock2 = Mockery::mock(ReflectionMethod::class);
 		$reflectionMethodMock2->shouldReceive('getDeclaringClassName')->andReturn('A');
 		$reflectionMethodMock2->shouldReceive('getName')->andReturn('D');
 
@@ -81,11 +85,11 @@ class ElementSorterTest extends PHPUnit_Framework_TestCase
 
 	public function testSortElementsByFqnProperties()
 	{
-		$reflectionMethodMock = Mockery::mock('ApiGen\Reflection\ReflectionMethod');
+		$reflectionMethodMock = Mockery::mock(ReflectionMethod::class);
 		$reflectionMethodMock->shouldReceive('getDeclaringClassName')->andReturn('B');
 		$reflectionMethodMock->shouldReceive('getName')->andReturn('C');
 
-		$reflectionMethodMock2 = Mockery::mock('ApiGen\Reflection\ReflectionMethod');
+		$reflectionMethodMock2 = Mockery::mock(ReflectionMethod::class);
 		$reflectionMethodMock2->shouldReceive('getDeclaringClassName')->andReturn('A');
 		$reflectionMethodMock2->shouldReceive('getName')->andReturn('D');
 
@@ -100,7 +104,7 @@ class ElementSorterTest extends PHPUnit_Framework_TestCase
 
 	public function testSortElementsByFqnNonSupportedType()
 	{
-		$reflectionClassMock = Mockery::mock('ApiGen\Reflection\ReflectionClass');
+		$reflectionClassMock = Mockery::mock(ReflectionClass::class);
 		$sortedElements = $this->elementSorter->sortElementsByFqn([$reflectionClassMock]);
 		$this->assertSame([$reflectionClassMock], $sortedElements);
 	}

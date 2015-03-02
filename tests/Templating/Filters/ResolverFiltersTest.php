@@ -2,6 +2,8 @@
 
 namespace ApiGen\Tests\Templating\Filters;
 
+use ApiGen\Generator\Resolvers\ElementResolver;
+use ApiGen\Reflection\ReflectionElement;
 use ApiGen\Templating\Filters\ResolverFilters;
 use Mockery;
 use PHPUnit_Framework_TestCase;
@@ -18,7 +20,7 @@ class ResolverFiltersTest extends PHPUnit_Framework_TestCase
 
 	protected function setUp()
 	{
-		$elementResolverMock = Mockery::mock('ApiGen\Generator\Resolvers\ElementResolver');
+		$elementResolverMock = Mockery::mock(ElementResolver::class);
 		$elementResolverMock->shouldReceive('getClass')->andReturnUsing(function ($arg) {
 			return ($arg === 'SomeClass') ? 'ResolvedClass' : NULL;
 		});
@@ -44,7 +46,7 @@ class ResolverFiltersTest extends PHPUnit_Framework_TestCase
 
 	public function testResolveElement()
 	{
-		$reflectionElementMock = Mockery::mock('ApiGen\Reflection\ReflectionElement');
+		$reflectionElementMock = Mockery::mock(ReflectionElement::class);
 		$this->assertSame(
 			'ResolvedElement',
 			$this->resolverFilters->resolveElement('SomeElement', $reflectionElementMock)
@@ -55,7 +57,7 @@ class ResolverFiltersTest extends PHPUnit_Framework_TestCase
 
 	public function testResolveElementForNonExistingElement()
 	{
-		$reflectionElementMock = Mockery::mock('ApiGen\Reflection\ReflectionElement');
+		$reflectionElementMock = Mockery::mock(ReflectionElement::class);
 		$this->assertFalse($this->resolverFilters->resolveElement('NonExistingElement', $reflectionElementMock));
 	}
 

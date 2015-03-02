@@ -2,8 +2,11 @@
 
 namespace ApiGen\Tests\Generator;
 
+use ApiGen\Console\ProgressBar;
+use ApiGen\Generator\ConditionalTemplateGenerator;
 use ApiGen\Generator\GeneratorQueue;
-
+use ApiGen\Generator\StepCounter;
+use ApiGen\Generator\TemplateGenerator;
 use ApiGen\Tests\MethodInvoker;
 use Mockery;
 use PHPUnit_Framework_TestCase;
@@ -20,7 +23,7 @@ class GeneratorQueueTest extends PHPUnit_Framework_TestCase
 
 	protected function setUp()
 	{
-		$progressBarMock = Mockery::mock('ApiGen\Console\ProgressBar');
+		$progressBarMock = Mockery::mock(ProgressBar::class);
 		$progressBarMock->shouldReceive('init');
 		$this->generatorQueue = new GeneratorQueue($progressBarMock);
 	}
@@ -28,7 +31,7 @@ class GeneratorQueueTest extends PHPUnit_Framework_TestCase
 
 	public function testRun()
 	{
-		$templateGeneratorMock = Mockery::mock('ApiGen\Generator\TemplateGenerator');
+		$templateGeneratorMock = Mockery::mock(TemplateGenerator::class);
 		$templateGeneratorMock->shouldReceive('generate')->andReturn(file_put_contents(TEMP_DIR . '/file.txt', '...'));
 		$this->generatorQueue->addToQueue($templateGeneratorMock);
 		$this->generatorQueue->run();
@@ -39,7 +42,7 @@ class GeneratorQueueTest extends PHPUnit_Framework_TestCase
 
 	public function testAddToQueueAndGetQueue()
 	{
-		$templateGeneratorMock = Mockery::mock('ApiGen\Generator\TemplateGenerator');
+		$templateGeneratorMock = Mockery::mock(TemplateGenerator::class);
 		$this->generatorQueue->addToQueue($templateGeneratorMock);
 		$this->assertCount(1, $this->generatorQueue->getQueue());
 	}
@@ -47,10 +50,10 @@ class GeneratorQueueTest extends PHPUnit_Framework_TestCase
 
 	public function testGetAllowedQueue()
 	{
-		$templateGeneratorMock = Mockery::mock('ApiGen\Generator\TemplateGenerator');
+		$templateGeneratorMock = Mockery::mock(TemplateGenerator::class);
 		$this->generatorQueue->addToQueue($templateGeneratorMock);
 
-		$templateGeneratorConditionalMock = Mockery::mock('ApiGen\Generator\ConditionalTemplateGenerator');
+		$templateGeneratorConditionalMock = Mockery::mock(ConditionalTemplateGenerator::class);
 		$templateGeneratorConditionalMock->shouldReceive('isAllowed')->andReturn(FALSE);
 		$this->generatorQueue->addToQueue($templateGeneratorConditionalMock);
 
@@ -60,7 +63,7 @@ class GeneratorQueueTest extends PHPUnit_Framework_TestCase
 
 	public function testGetStepCount()
 	{
-		$templateGeneratorMock = Mockery::mock('ApiGen\Generator\TemplateGenerator', 'ApiGen\Generator\StepCounter');
+		$templateGeneratorMock = Mockery::mock(TemplateGenerator::class, StepCounter::class);
 		$templateGeneratorMock->shouldReceive('getStepCount')->andReturn(50);
 		$this->generatorQueue->addToQueue($templateGeneratorMock);
 

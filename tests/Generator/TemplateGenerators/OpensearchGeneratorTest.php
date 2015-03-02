@@ -24,8 +24,8 @@ class OpensearchGeneratorTest extends ContainerAwareTestCase
 
 	protected function setUp()
 	{
-		$this->configuration = $this->container->getByType('ApiGen\Configuration\Configuration');
-		$this->opensearchGenerator = $this->container->getByType('ApiGen\Generator\TemplateGenerators\OpensearchGenerator');
+		$this->configuration = $this->container->getByType(Configuration::class);
+		$this->opensearchGenerator = $this->container->getByType(OpensearchGenerator::class);
 	}
 
 

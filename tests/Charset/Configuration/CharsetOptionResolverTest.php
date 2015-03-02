@@ -18,9 +18,7 @@ class CharsetOptionsResolverTest extends ContainerAwareTestCase
 
 	protected function setUp()
 	{
-		$this->charsetOptionsResolver = $this->container->getByType(
-			'ApiGen\Charset\Configuration\CharsetOptionsResolver'
-		);
+		$this->charsetOptionsResolver = $this->container->getByType(CharsetOptionsResolver::class);
 	}
 
 

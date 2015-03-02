@@ -10,7 +10,6 @@ use PHPUnit_Framework_Assert;
 use PHPUnit_Framework_TestCase;
 use Symfony;
 use Symfony\Component\Console\Input\ArgvInput;
-use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputOption;
 
@@ -38,7 +37,7 @@ class ProgressBarTest extends PHPUnit_Framework_TestCase
 
 		/** @var Symfony\Component\Console\Helper\ProgressBar $bar */
 		$bar = PHPUnit_Framework_Assert::readAttribute($this->progressBar, 'bar');
-		$this->assertInstanceOf('Symfony\Component\Console\Helper\ProgressBar', $bar);
+		$this->assertInstanceOf(Symfony\Component\Console\Helper\ProgressBar::class, $bar);
 		$this->assertSame(50, $bar->getMaxSteps());
 	}
 

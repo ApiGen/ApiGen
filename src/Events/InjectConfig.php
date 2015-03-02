@@ -10,6 +10,7 @@
 namespace ApiGen\Events;
 
 use ApiGen\Charset\CharsetDetector;
+use ApiGen\Configuration\Configuration;
 use Kdyby\Events\Subscriber;
 
 
@@ -33,7 +34,7 @@ class InjectConfig implements Subscriber
 	 */
 	public function getSubscribedEvents()
 	{
-		return ['ApiGen\Configuration\Configuration::onOptionsResolve'];
+		return [Configuration::class . '::onOptionsResolve'];
 	}
 
 
