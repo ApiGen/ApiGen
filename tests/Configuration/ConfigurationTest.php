@@ -61,7 +61,7 @@ class ConfigurationTest extends PHPUnit_Framework_TestCase
 	 */
 	private function getMockedConfigurationOptionsResolver()
 	{
-		$resolver = Mockery::mock('ApiGen\Configuration\ConfigurationOptionsResolver');
+		$resolver = Mockery::mock(ConfigurationOptionsResolver::class);
 		$resolver->shouldReceive('resolve')
 			->withAnyArgs()
 			->andReturnUsing(function($args) {

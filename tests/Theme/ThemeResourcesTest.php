@@ -2,6 +2,7 @@
 
 namespace ApiGen\Tests\Theme;
 
+use ApiGen\Configuration\Configuration;
 use ApiGen\Theme\ThemeResources;
 use Mockery;
 use PHPUnit_Framework_TestCase;
@@ -16,7 +17,7 @@ class ThemeResourcesTest extends PHPUnit_Framework_TestCase
 		$sourceFile = TEMP_DIR . '/other-source/other-file.txt';
 		$destinationDir = TEMP_DIR . '/destination';
 
-		$configurationMock = Mockery::mock('ApiGen\Configuration\Configuration');
+		$configurationMock = Mockery::mock(Configuration::class);
 		$configurationMock->shouldReceive('getOption')->with('template')->andReturn([
 			'resources' => [
 				$sourceFile => 'other-file-renamed.txt',

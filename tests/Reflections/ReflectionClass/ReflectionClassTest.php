@@ -2,13 +2,15 @@
 
 namespace ApiGen\Tests\Reflections\ReflectionClass;
 
+use ApiGen\Reflection\ReflectionClass;
+
 
 class ReflectionClassTest extends TestCase
 {
 
 	public function testInterface()
 	{
-		$this->assertInstanceOf('ApiGen\Reflection\ReflectionClass', $this->reflectionClass);
+		$this->assertInstanceOf(ReflectionClass::class, $this->reflectionClass);
 	}
 
 

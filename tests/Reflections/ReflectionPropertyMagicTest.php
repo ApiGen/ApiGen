@@ -2,8 +2,10 @@
 
 namespace ApiGen\Tests\Reflection;
 
+use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Parser\Broker\Backend;
+use ApiGen\Parser\ParserResult;
 use ApiGen\Reflection\ReflectionClass;
 use ApiGen\Reflection\ReflectionPropertyMagic;
 use ApiGen\Reflection\TokenReflection\ReflectionFactory;
@@ -40,7 +42,7 @@ class ReflectionPropertyMagicTest extends PHPUnit_Framework_TestCase
 
 	public function testInstance()
 	{
-		$this->assertInstanceOf('ApiGen\Reflection\ReflectionPropertyMagic', $this->reflectionPropertyMagic);
+		$this->assertInstanceOf(ReflectionPropertyMagic::class, $this->reflectionPropertyMagic);
 	}
 
 
@@ -70,7 +72,7 @@ class ReflectionPropertyMagicTest extends PHPUnit_Framework_TestCase
 
 	public function testGetDeclaringClass()
 	{
-		$this->assertInstanceOf('ApiGen\Reflection\ReflectionClass', $this->reflectionPropertyMagic->getDeclaringClass());
+		$this->assertInstanceOf(ReflectionClass::class, $this->reflectionPropertyMagic->getDeclaringClass());
 	}
 
 
@@ -145,7 +147,7 @@ class ReflectionPropertyMagicTest extends PHPUnit_Framework_TestCase
 	 */
 	private function getReflectionFactory()
 	{
-		$parserResultMock = Mockery::mock('ApiGen\Parser\ParserResult');
+		$parserResultMock = Mockery::mock(ParserResult::class);
 		$parserResultMock->shouldReceive('getElementsByType')->andReturnUsing(function ($arg) {
 			if ($arg) {
 				return ['Project\ReflectionMethod' => $this->reflectionClass];
@@ -160,7 +162,7 @@ class ReflectionPropertyMagicTest extends PHPUnit_Framework_TestCase
 	 */
 	private function getConfigurationMock()
 	{
-		$configurationMock = Mockery::mock('ApiGen\Configuration\Configuration');
+		$configurationMock = Mockery::mock(Configuration::class);
 		$configurationMock->shouldReceive('getOption')->with('php')->andReturn(FALSE);
 		$configurationMock->shouldReceive('getOption')->with('deprecated')->andReturn(FALSE);
 		$configurationMock->shouldReceive('getOption')->with('internal')->andReturn(FALSE);

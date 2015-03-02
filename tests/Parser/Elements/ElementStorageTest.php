@@ -3,11 +3,18 @@
 namespace ApiGen\Tests\Parser\Elements;
 
 use ApiGen\Configuration\Configuration;
+use ApiGen\Generator\Resolvers\ElementResolver;
 use ApiGen\Parser\Elements\ElementStorage;
+use ApiGen\Parser\ParserResult;
 use ApiGen\Reflection\ReflectionClass;
+use ApiGen\Reflection\ReflectionConstant;
+use ApiGen\Reflection\ReflectionElement;
+use ApiGen\Reflection\ReflectionFunction;
 use ApiGen\Tests\MethodInvoker;
 use Mockery;
+use Nette\Object;
 use PHPUnit_Framework_TestCase;
+use TokenReflection\IReflection;
 
 
 class ElementStorageTest extends PHPUnit_Framework_TestCase
@@ -21,7 +28,7 @@ class ElementStorageTest extends PHPUnit_Framework_TestCase
 
 	public function testEnsureCategorization()
 	{
-		$configurationMock = Mockery::mock('ApiGen\Configuration\Configuration');
+		$configurationMock = Mockery::mock(Configuration::class);
 		$configurationMock->shouldReceive('areNamespacesEnabled')->andReturn(TRUE);
 		$configurationMock->shouldReceive('arePackagesEnabled')->andReturn(FALSE);
 		$elementStorage = $this->prepareElementStorage($configurationMock);
@@ -44,7 +51,7 @@ class ElementStorageTest extends PHPUnit_Framework_TestCase
 
 	public function testEnsureCategorizationPackagesEnabled()
 	{
-		$configurationMock = Mockery::mock('ApiGen\Configuration\Configuration');
+		$configurationMock = Mockery::mock(Configuration::class);
 		$configurationMock->shouldReceive('areNamespacesEnabled')->andReturn(FALSE);
 		$configurationMock->shouldReceive('arePackagesEnabled')->andReturn(TRUE);
 		$elementStorage = $this->prepareElementStorage($configurationMock);
@@ -57,7 +64,7 @@ class ElementStorageTest extends PHPUnit_Framework_TestCase
 
 	public function testEnsureCategorizationPackagesNorNamespacesEnabled()
 	{
-		$configurationMock = Mockery::mock('ApiGen\Configuration\Configuration');
+		$configurationMock = Mockery::mock(Configuration::class);
 		$configurationMock->shouldReceive('areNamespacesEnabled')->andReturn(FALSE);
 		$configurationMock->shouldReceive('arePackagesEnabled')->andReturn(FALSE);
 		$elementStorage = $this->prepareElementStorage($configurationMock);
@@ -70,12 +77,12 @@ class ElementStorageTest extends PHPUnit_Framework_TestCase
 
 	public function testLoadUsesToReferencedElementUsedBy()
 	{
-		$configurationMock = Mockery::mock('ApiGen\Configuration\Configuration');
+		$configurationMock = Mockery::mock(Configuration::class);
 		$configurationMock->shouldReceive('areNamespacesEnabled')->andReturn(TRUE);
 		$configurationMock->shouldReceive('arePackagesEnabled')->andReturn(FALSE);
 		$elementStorage = $this->prepareElementStorage($configurationMock);
 
-		$reflectionElementMock = Mockery::mock('ApIGen\Reflection\ReflectionElement');
+		$reflectionElementMock = Mockery::mock(ReflectionElement::class);
 		$reflectionElementMock->shouldReceive('getAnnotation')->with('uses')->once()->andReturnNull();
 		$reflectionElementMock->shouldReceive('getAnnotation')->with('uses')->twice()->andReturn(['ApiGen\ApiGen']);
 		$reflectionElementMock->shouldReceive('getPrettyName')->andReturn('PrettyName');
@@ -99,7 +106,7 @@ class ElementStorageTest extends PHPUnit_Framework_TestCase
 	 */
 	private function prepareElementStorage($configurationMock)
 	{
-		$parserResultMock = Mockery::mock('ApiGen\Parser\ParserResult');
+		$parserResultMock = Mockery::mock(ParserResult::class);
 		$parserResultMock->shouldReceive('getTypes')->andReturn(['classes', 'functions', 'constants']);
 		$parserResultMock->shouldReceive('getElementsByType')->with('classes')
 			->andReturn($this->getReflectionClassMocks());
@@ -115,11 +122,11 @@ class ElementStorageTest extends PHPUnit_Framework_TestCase
 			return $elements;
 		});
 
-		$iReflectionClassMock = Mockery::mock('TokenReflection\IReflection', 'Nette\Object');
+		$iReflectionClassMock = Mockery::mock(IReflection::class, Object::class);
 		$iReflectionClassMock->shouldReceive('getAnnotations')->andReturn([]);
 
 		$this->reflectionClass = new ReflectionClass($iReflectionClassMock);
-		$elementResolverMock = Mockery::mock('ApiGen\Generator\Resolvers\ElementResolver');
+		$elementResolverMock = Mockery::mock(ElementResolver::class);
 		$elementResolverMock->shouldReceive('resolveElement')->andReturn($this->reflectionClass);
 
 		return new ElementStorage(
@@ -174,7 +181,7 @@ class ElementStorageTest extends PHPUnit_Framework_TestCase
 	 */
 	private function getReflectionClassMock()
 	{
-		$reflectionClassMock = Mockery::mock('ApiGen\Reflection\ReflectionClass');
+		$reflectionClassMock = Mockery::mock(ReflectionClass::class);
 		$reflectionClassMock->shouldReceive('getPseudoPackageName')->andReturn('SomePackage');
 		$reflectionClassMock->shouldReceive('getPseudoNamespaceName')->andReturn('SomeNamespace');
 		$reflectionClassMock->shouldReceive('getShortName')->andReturn('SomeShortClass');
@@ -191,7 +198,7 @@ class ElementStorageTest extends PHPUnit_Framework_TestCase
 	 */
 	private function getReflectionFunctionMock()
 	{
-		$reflectionFunctionMock = Mockery::mock('ApiGen\Reflection\ReflectionFunction');
+		$reflectionFunctionMock = Mockery::mock(ReflectionFunction::class);
 		$reflectionFunctionMock->shouldReceive('isDocumented')->andReturn(TRUE);
 		$reflectionFunctionMock->shouldReceive('getPseudoPackageName')->andReturn('SomePackage');
 		$reflectionFunctionMock->shouldReceive('getPseudoNamespaceName')->andReturn('SomeNamespace');
@@ -206,7 +213,7 @@ class ElementStorageTest extends PHPUnit_Framework_TestCase
 	 */
 	private function getReflectionConstantMock()
 	{
-		$reflectionConstantMock = Mockery::mock('ApiGen\Reflection\ReflectionConstant');
+		$reflectionConstantMock = Mockery::mock(ReflectionConstant::class);
 		$reflectionConstantMock->shouldReceive('isDocumented')->andReturn(TRUE);
 		$reflectionConstantMock->shouldReceive('getPseudoPackageName')->andReturn('SomePackage');
 		$reflectionConstantMock->shouldReceive('getPseudoNamespaceName')->andReturn('SomeNamespace');

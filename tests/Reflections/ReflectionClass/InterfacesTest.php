@@ -2,6 +2,7 @@
 
 namespace ApiGen\Tests\Reflections\ReflectionClass;
 
+use ApiGen\Reflection\ReflectionClass;
 use TokenReflection;
 
 
@@ -25,7 +26,7 @@ class InterfacesTest extends TestCase
 	{
 		$interfaces = $this->reflectionClass->getInterfaces();
 		$this->assertCount(1, $interfaces);
-		$this->assertInstanceOf('ApiGen\Reflection\ReflectionClass', $interfaces['Project\RichInterface']);
+		$this->assertInstanceOf(ReflectionClass::class, $interfaces['Project\RichInterface']);
 	}
 
 
@@ -33,7 +34,7 @@ class InterfacesTest extends TestCase
 	{
 		$interfaces = $this->reflectionClass->getOwnInterfaces();
 		$this->assertCount(1, $interfaces);
-		$this->assertInstanceOf('ApiGen\Reflection\ReflectionClass', $interfaces['Project\RichInterface']);
+		$this->assertInstanceOf(ReflectionClass::class, $interfaces['Project\RichInterface']);
 	}
 
 

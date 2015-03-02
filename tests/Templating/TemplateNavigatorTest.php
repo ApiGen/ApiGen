@@ -3,6 +3,12 @@
 namespace ApiGen\Tests\Templating;
 
 use ApiGen\Configuration\Configuration;
+use ApiGen\Reflection\ReflectionClass;
+use ApiGen\Reflection\ReflectionConstant;
+use ApiGen\Reflection\ReflectionFunction;
+use ApiGen\Templating\Filters\Helpers\ElementUrlFactory;
+use ApiGen\Templating\Filters\NamespaceAndPackageUrlFilters;
+use ApiGen\Templating\Filters\SourceFilters;
 use ApiGen\Templating\TemplateNavigator;
 use ApiGen\Tests\ContainerAwareTestCase;
 use Mockery;
@@ -24,17 +30,17 @@ class TemplateNavigatorTest extends ContainerAwareTestCase
 
 	protected function setUp()
 	{
-		$this->configuration = $this->container->getByType('ApiGen\Configuration\Configuration');
+		$this->configuration = $this->container->getByType(Configuration::class);
 		$this->configuration->resolveOptions([
 			'source' => __DIR__,
 			'destination' => TEMP_DIR . '/api'
 		]);
 
-		$sourceFiltersMock = Mockery::mock('ApiGen\Templating\Filters\SourceFilters');
+		$sourceFiltersMock = Mockery::mock(SourceFilters::class);
 		$sourceFiltersMock->shouldReceive('sourceUrl')->andReturnUsing(function ($args) {
 			return 'source-code-' . $args->getName() . '.html';
 		});
-		$namespaceAndPackageUrlFiltersMock = Mockery::mock('ApiGen\Templating\Filters\NamespaceAndPackageUrlFilters');
+		$namespaceAndPackageUrlFiltersMock = Mockery::mock(NamespaceAndPackageUrlFilters::class);
 		$namespaceAndPackageUrlFiltersMock->shouldReceive('namespaceUrl')->andReturnUsing(function ($args) {
 			return 'namespace-' . $args . '.html';
 		});
@@ -42,7 +48,7 @@ class TemplateNavigatorTest extends ContainerAwareTestCase
 			return 'package-' . $args . '.html';
 		});
 
-		$elementUrlFactoryMock = Mockery::mock('ApiGen\Templating\Filters\Helpers\ElementUrlFactory');
+		$elementUrlFactoryMock = Mockery::mock(ElementUrlFactory::class);
 		$elementUrlFactoryMock->shouldReceive('createForClass')->andReturnUsing(function ($args) {
 			return 'class-' . $args->getName() . '.html';
 		});
@@ -96,7 +102,7 @@ class TemplateNavigatorTest extends ContainerAwareTestCase
 
 	public function testGetTemplatePathForClass()
 	{
-		$classReflectionMock = Mockery::mock('ApiGen\Reflection\ReflectionClass');
+		$classReflectionMock = Mockery::mock(ReflectionClass::class);
 		$classReflectionMock->shouldReceive('getName')->andReturn('SomeClass');
 
 		$this->assertSame(
@@ -108,7 +114,7 @@ class TemplateNavigatorTest extends ContainerAwareTestCase
 
 	public function testGetTemplatePathForConstant()
 	{
-		$constantReflectionMock = Mockery::mock('ApiGen\Reflection\ReflectionConstant');
+		$constantReflectionMock = Mockery::mock(ReflectionConstant::class);
 		$constantReflectionMock->shouldReceive('getName')->andReturn('SomeConstant');
 
 		$this->assertSame(
@@ -120,7 +126,7 @@ class TemplateNavigatorTest extends ContainerAwareTestCase
 
 	public function testGetTemplatePathForFunction()
 	{
-		$functionReflectionMock = Mockery::mock('ApiGen\Reflection\ReflectionFunction');
+		$functionReflectionMock = Mockery::mock(ReflectionFunction::class);
 		$functionReflectionMock->shouldReceive('getName')->andReturn('SomeFunction');
 
 		$this->assertSame(
@@ -132,7 +138,7 @@ class TemplateNavigatorTest extends ContainerAwareTestCase
 
 	public function testGetTemplatePathForMethod()
 	{
-		$classReflectionMock = Mockery::mock('ApiGen\Reflection\ReflectionClass');
+		$classReflectionMock = Mockery::mock(ReflectionClass::class);
 		$classReflectionMock->shouldReceive('getName')->andReturn('SomeClass');
 
 		$this->assertSame(

@@ -2,15 +2,15 @@
 
 namespace ApiGen\Tests\Reflections\ReflectionClass;
 
+use ApiGen\Reflection\ReflectionClass;
+
 
 class ParentsTest extends TestCase
 {
 
 	public function testGetParentClass()
 	{
-		$this->assertInstanceOf(
-			'ApiGen\Reflection\ReflectionClass', $this->reflectionClass->getParentClass()
-		);
+		$this->assertInstanceOf(ReflectionClass::class, $this->reflectionClass->getParentClass());
 	}
 
 

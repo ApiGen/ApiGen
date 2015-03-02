@@ -9,8 +9,13 @@
 
 namespace ApiGen\Tests\Parser\Broker;
 
+use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Parser\Broker\Backend;
+use ApiGen\Parser\ParserResult;
+use ApiGen\Reflection\ReflectionClass;
+use ApiGen\Reflection\ReflectionConstant;
+use ApiGen\Reflection\ReflectionFunction;
 use ApiGen\Reflection\TokenReflection\ReflectionFactory;
 use Mockery;
 use PHPUnit_Framework_Assert;
@@ -46,7 +51,7 @@ class BackendTest extends PHPUnit_Framework_TestCase
 		$this->assertCount(1, $classes);
 
 		$class = array_pop($classes);
-		$this->assertInstanceOf('ApiGen\Reflection\ReflectionClass', $class);
+		$this->assertInstanceOf(ReflectionClass::class, $class);
 
 		$this->checkLoadedProperties($class);
 	}
@@ -59,7 +64,7 @@ class BackendTest extends PHPUnit_Framework_TestCase
 		$this->assertCount(1, $functions);
 
 		$function = array_pop($functions);
-		$this->assertInstanceOf('ApiGen\Reflection\ReflectionFunction', $function);
+		$this->assertInstanceOf(ReflectionFunction::class, $function);
 
 		$this->checkLoadedProperties($function);
 	}
@@ -72,7 +77,7 @@ class BackendTest extends PHPUnit_Framework_TestCase
 		$this->assertCount(1, $constants);
 
 		$constant = array_pop($constants);
-		$this->assertInstanceOf('ApiGen\Reflection\ReflectionConstant', $constant);
+		$this->assertInstanceOf(ReflectionConstant::class, $constant);
 
 		$this->checkLoadedProperties($constant);
 	}
@@ -81,17 +86,17 @@ class BackendTest extends PHPUnit_Framework_TestCase
 	private function checkLoadedProperties($object)
 	{
 		$this->assertInstanceOf(
-			'ApiGen\Configuration\Configuration',
+			Configuration::class,
 			PHPUnit_Framework_Assert::getObjectAttribute($object, 'configuration')
 		);
 
 		$this->assertInstanceOf(
-			'ApiGen\Parser\ParserResult',
+			ParserResult::class,
 			PHPUnit_Framework_Assert::getObjectAttribute($object, 'parserResult')
 		);
 
 		$this->assertInstanceOf(
-			'ApiGen\Reflection\TokenReflection\ReflectionFactory',
+			ReflectionFactory::class,
 			PHPUnit_Framework_Assert::getObjectAttribute($object, 'reflectionFactory')
 		);
 	}
@@ -102,7 +107,7 @@ class BackendTest extends PHPUnit_Framework_TestCase
 	 */
 	private function getReflectionFactory()
 	{
-		$parserResultMock = Mockery::mock('ApiGen\Parser\ParserResult');
+		$parserResultMock = Mockery::mock(ParserResult::class);
 		return new ReflectionFactory($this->getConfigurationMock(), $parserResultMock);
 	}
 
@@ -112,7 +117,7 @@ class BackendTest extends PHPUnit_Framework_TestCase
 	 */
 	private function getConfigurationMock()
 	{
-		$configurationMock = Mockery::mock('ApiGen\Configuration\Configuration');
+		$configurationMock = Mockery::mock(Configuration::class);
 		$configurationMock->shouldReceive('getOption')->with('php')->andReturn(FALSE);
 		$configurationMock->shouldReceive('getOption')->with('deprecated')->andReturn(FALSE);
 		$configurationMock->shouldReceive('getOption')->with('internal')->andReturn(FALSE);

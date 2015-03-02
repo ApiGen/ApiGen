@@ -6,6 +6,7 @@ use ApiGen\Command\GenerateCommand;
 use ApiGen\Tests\ContainerAwareTestCase;
 use ApiGen\Tests\MethodInvoker;
 use Mockery;
+use Symfony\Component\Console\Output\OutputInterface;
 use TokenReflection\Exception\FileProcessingException;
 
 
@@ -20,7 +21,7 @@ class GenerateCommandTest extends ContainerAwareTestCase
 
 	protected function setUp()
 	{
-		$this->generateCommand = $this->container->getByType('ApiGen\Command\GenerateCommand');
+		$this->generateCommand = $this->container->getByType(GenerateCommand::class);
 	}
 
 
@@ -30,7 +31,7 @@ class GenerateCommandTest extends ContainerAwareTestCase
 			new FileProcessingException([new \Exception('Some error')])
 		];
 
-		$outputMock = Mockery::mock('Symfony\Component\Console\Output\OutputInterface');
+		$outputMock = Mockery::mock(OutputInterface::class);
 		$outputMock->shouldReceive('writeln')->andReturnUsing(function ($args) {
 			echo $args;
 		});

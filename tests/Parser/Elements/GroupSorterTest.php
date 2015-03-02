@@ -2,6 +2,7 @@
 
 namespace ApiGen\Tests\Parser\Elements;
 
+use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Parser\Elements\Elements;
 use ApiGen\Parser\Elements\GroupSorter;
@@ -22,7 +23,7 @@ class GroupSorterTest extends PHPUnit_Framework_TestCase
 
 	protected function setUp()
 	{
-		$configurationMock = Mockery::mock('ApiGen\Configuration\Configuration');
+		$configurationMock = Mockery::mock(Configuration::class);
 		$configurationMock->shouldReceive('getOption')->with(CO::MAIN)->andReturn('One');
 		$this->groupSorter = new GroupSorter(new Elements, $configurationMock);
 	}

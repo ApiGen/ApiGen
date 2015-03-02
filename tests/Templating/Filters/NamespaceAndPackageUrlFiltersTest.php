@@ -2,6 +2,8 @@
 
 namespace ApiGen\Tests\Templating\Filters;
 
+use ApiGen\Configuration\Configuration;
+use ApiGen\Parser\Elements\ElementStorage;
 use ApiGen\Templating\Filters\Helpers\LinkBuilder;
 use ApiGen\Templating\Filters\NamespaceAndPackageUrlFilters;
 use Mockery;
@@ -103,7 +105,7 @@ class NamespaceAndPackageUrlFiltersTest extends PHPUnit_Framework_TestCase
 	 */
 	private function getConfigurationMock()
 	{
-		$configurationMock = Mockery::mock('ApiGen\Configuration\Configuration');
+		$configurationMock = Mockery::mock(Configuration::class);
 		$configurationMock->shouldReceive('getOption')->with('template')->andReturn([
 			'templates' => [
 				'package' => ['filename' => 'package-%s'],
@@ -119,7 +121,7 @@ class NamespaceAndPackageUrlFiltersTest extends PHPUnit_Framework_TestCase
 	 */
 	private function getElementStorageMock($packageCount, $namespaceCount)
 	{
-		$elementStorageMock = Mockery::mock('ApiGen\Parser\Elements\ElementStorage');
+		$elementStorageMock = Mockery::mock(ElementStorage::class);
 		$elementStorageMock->shouldReceive('getPackages')->andReturn($packageCount);
 		$elementStorageMock->shouldReceive('getNamespaces')->andReturn($namespaceCount);
 		return $elementStorageMock;
