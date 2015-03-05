@@ -64,7 +64,7 @@ class ConfigurationTest extends PHPUnit_Framework_TestCase
 		$resolver = Mockery::mock('ApiGen\Configuration\ConfigurationOptionsResolver');
 		$resolver->shouldReceive('resolve')
 			->withAnyArgs()
-			->andReturnUsing(function($args) {
+			->andReturnUsing(function ($args) {
 				return $args;
 			});
 
