@@ -26,7 +26,6 @@ class ConfigurationOptions
 	const GOOGLE_CSE_ID = 'googleCseId';
 	const GOOGLE_ANALYTICS = 'googleAnalytics';
 	const GROUPS = 'groups';
-	const CHARSET = 'charset';
 	const MAIN = 'main';
 	const INTERNAL = 'internal';
 	const PHP = 'php';
