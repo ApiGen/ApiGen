@@ -50,7 +50,7 @@ source:
 destination: ../my-project-api
 ```
 
-For global installation, see [documentation](doc/installation.md).
+For global installation, see [documentation](https://github.com/ApiGen/ApiGen/wiki#installation).
 
 
 ### 2. Using Composer as dependency of your project
