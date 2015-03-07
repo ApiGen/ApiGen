@@ -5,6 +5,7 @@ namespace ApiGen\Tests\Console;
 use ApiGen\Console\IO;
 use Mockery;
 use PHPUnit_Framework_TestCase;
+use Symfony\Component\Console\Helper\HelperSet;
 
 
 class IOTest extends PHPUnit_Framework_TestCase
@@ -18,7 +19,7 @@ class IOTest extends PHPUnit_Framework_TestCase
 
 	protected function setUp()
 	{
-		$this->io = new IO;
+		$this->io = new IO(new HelperSet);
 	}
 
 
