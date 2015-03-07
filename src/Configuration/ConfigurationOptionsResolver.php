@@ -272,9 +272,9 @@ class ConfigurationOptionsResolver
 			$source = [$source];
 		}
 
-		foreach ($source as $dir) {
-			if ( ! file_exists($dir)) {
-				throw new ConfigurationException("Source '$dir' does not exist");
+		foreach ($source as $singleSource) {
+			if ( ! file_exists($singleSource)) {
+				throw new ConfigurationException("Source '$singleSource' does not exist");
 			}
 		}
 		return TRUE;

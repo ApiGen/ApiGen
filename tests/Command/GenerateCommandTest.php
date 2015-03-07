@@ -23,7 +23,6 @@ class GenerateCommandTest extends ContainerAwareTestCase
 	{
 		$this->generateCommand = $this->container->getByType('ApiGen\Command\GenerateCommand');
 		$this->setupOutputToIo();
-
 	}
 
 

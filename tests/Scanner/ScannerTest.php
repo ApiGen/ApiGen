@@ -24,13 +24,20 @@ class ScannerTest extends ContainerAwareTestCase
 	public function testScan()
 	{
 		$files = $this->scanner->scan(__DIR__ . '/Source');
-		$this->assertEquals(3, count($files));
+		$this->assertCount(3, $files);
 
 		$files = $this->scanner->scan(__DIR__ . '/Source', ['*Another*']);
-		$this->assertEquals(2, count($files));
+		$this->assertCount(2, $files);
 
 		$files = $this->scanner->scan(__DIR__ . '/Source', [], ['php5']);
-		$this->assertEquals(1, count($files));
+		$this->assertCount(1, $files);
+	}
+
+
+	public function testScanSingleFile()
+	{
+		$files = $this->scanner->scan(__DIR__ . '/Source/SomeClass.php');
+		$this->assertCount(1, $files);
 	}
 
 
