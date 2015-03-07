@@ -114,8 +114,6 @@ class GenerateCommand extends Command
 				'Directories and files matching this mask will not be parsed.')
 			->addOption(CO::GROUPS, NULL, InputOption::VALUE_REQUIRED,
 				'The way elements are grouped in menu.', 'auto')
-			->addOption(CO::CHARSET, NULL, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
-				'Charset of scanned files.')
 			->addOption(CO::MAIN, NULL, InputOption::VALUE_REQUIRED,
 				'Elements with this name prefix will be first in tree.')
 			->addOption(CO::INTERNAL, NULL, InputOption::VALUE_NONE, 'Include elements marked as @internal.')

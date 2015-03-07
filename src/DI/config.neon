@@ -1,5 +1,4 @@
 extensions:
 	- ApiGen\DI\ApiGenExtension
-	- ApiGen\DI\CharsetConvertorExtension
 	- ApiGen\DI\ParserExtension
 	- Kdyby\Events\DI\EventsExtension
