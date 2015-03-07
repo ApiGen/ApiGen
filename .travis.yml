@@ -11,17 +11,16 @@ env:
     secure: wF9OH7etvUeZNveEsFPhyibrGuR9Rj9zY64rMKwkBWSjvsnQ8Cj/Vbe7PL2dAFfypuox8rkfTJ/nUSgkyJXh/5/fmgD3VVeg8PEB1WSMYnkGexbKYLQ5u6a34RRLtMtrwnAmHscl/0RkgyNk8GUKLJWWKjunIYFzpVeBbjSKpxM=
 
 before_install:
-  - if [ $TRAVIS_PHP_VERSION = '5.6' ]; then PHPUNIT_FLAGS="--coverage-clover=coverage.clover"; fi
+  - travis/before_install.sh
 
 install:
   - composer install --prefer-source
 
 before_script:
-  - vendor/bin/phpcs src tests --extensions=php --ignore=bootstrap,expected.php,source.php --standard=vendor/zenify/coding-standard/src/ZenifyCodingStandard/ruleset.xml -p
+  - travis/before_script.sh
 
 script:
   - phpunit $PHPUNIT_FLAGS
 
 after_script:
-  - if [ $TRAVIS_PHP_VERSION = '5.6' ]; then wget https://scrutinizer-ci.com/ocular.phar && php ocular.phar code-coverage:upload --format=php-clover coverage.clover; fi
-  - if [ $TRAVIS_PHP_VERSION = '5.6' ]; then sh generate-api.sh; fi
+  - travis/after_script.sh
