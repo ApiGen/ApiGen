@@ -34,10 +34,6 @@ class Scanner
 			$files = array_merge($files, $this->getFilesFromSource($source, $exclude, $fileMasks));
 		}
 
-		if (count($files) === 0) {
-			throw new RuntimeException('No PHP files found');
-		}
-
 		return $files;
 	}
 

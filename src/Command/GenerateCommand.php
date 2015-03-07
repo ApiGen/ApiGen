@@ -119,7 +119,7 @@ class GenerateCommand extends Command
 			->addOption(CO::EXTENSIONS, NULL, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
 				'Scanned file extensions.', ['php'])
 			->addOption(CO::EXCLUDE, NULL, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
-				'Directories and files matching this mask will not be parsed.')
+				'Directories and files matching this mask will not be parsed (e.g. */tests/*).')
 			->addOption(CO::GROUPS, NULL, InputOption::VALUE_REQUIRED,
 				'The way elements are grouped in menu.', 'auto')
 			->addOption(CO::MAIN, NULL, InputOption::VALUE_REQUIRED,
