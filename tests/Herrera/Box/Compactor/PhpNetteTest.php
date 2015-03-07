@@ -21,12 +21,51 @@ class PhpNetteTest extends PHPUnit_Framework_TestCase
 	}
 
 
-	public function testCompact()
+	public function testCompactCommon()
 	{
-		$this->assertSame(
-			file_get_contents(__DIR__ . '/Source/expected.php'),
-			$this->phpNetteCompactor->compact(file_get_contents(__DIR__ . '/Source/source.php'))
-		);
+		$input = <<<INPUT
+<?php
+
+/**
+ * Some comment
+ */
+function getSome()
+INPUT;
+		$expected = <<<COMPACT
+<?php
+
+
+
+
+function getSome()
+COMPACT;
+		$this->assertSame($expected, $this->phpNetteCompactor->compact($input));
+	}
+
+
+	public function testCompactMethodAndReturnAnnotations()
+	{
+		$input = <<<INPUT
+<?php
+
+/**
+ * @author ApiGen
+ * @method getThis()
+ * @return That
+ */
+function getSomeMore()
+INPUT;
+		$expected = <<<COMPACT
+<?php
+
+/**
+ * @author ApiGen
+ * @method getThis()
+ * @return That
+ */
+function getSomeMore()
+COMPACT;
+		$this->assertSame($expected, $this->phpNetteCompactor->compact($input));
 	}
 
 
