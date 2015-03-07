@@ -167,9 +167,10 @@ class GenerateCommand extends Command
 
 		$stats = $this->parserResult->getDocumentedStats();
 		$this->io->writeln(sprintf(
-			'Found <comment>%d classes</comment>, <comment>%d constants</comment>, '
-				. '<comment>%d functions</comment> and <comment>%d PHP internal classes</comment>',
-			$stats['classes'], $stats['constants'], $stats['functions'], $stats['internalClasses']
+			'Found <comment>%d classes</comment>, <comment>%d constants</comment> and <comment>%d functions</comment>',
+			$stats['classes'],
+			$stats['constants'],
+			$stats['functions']
 		));
 	}
 
