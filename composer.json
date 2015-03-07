@@ -35,7 +35,6 @@
 		"apigen/theme-bootstrap": "~1.0"
 	},
 	"require-dev": {
-		"zenify/coding-standard": "~3.0",
 		"mockery/mockery": "~0.9",
 		"herrera-io/box": "~1.6"
 	},
