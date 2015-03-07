@@ -12,6 +12,7 @@ namespace ApiGen\Command;
 use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Configuration\ConfigurationOptionsResolver as COR;
+use ApiGen\Console\IO;
 use ApiGen\FileSystem\FileSystem;
 use ApiGen\Generator\GeneratorQueue;
 use ApiGen\Neon\NeonFile;
@@ -63,6 +64,11 @@ class GenerateCommand extends Command
 	 */
 	private $themeResources;
 
+	/**
+	 * @var IO
+	 */
+	private $io;
+
 
 	public function __construct(
 		Configuration $configuration,
@@ -71,7 +77,8 @@ class GenerateCommand extends Command
 		ParserResult $parserResult,
 		GeneratorQueue $generatorQueue,
 		FileSystem $fileSystem,
-		ThemeResources $themeResources
+		ThemeResources $themeResources,
+		IO $io
 	) {
 		parent::__construct();
 		$this->configuration = $configuration;
@@ -81,6 +88,7 @@ class GenerateCommand extends Command
 		$this->generatorQueue = $generatorQueue;
 		$this->fileSystem = $fileSystem;
 		$this->themeResources = $themeResources;
+		$this->io = $io;
 	}
 
 
@@ -137,8 +145,8 @@ class GenerateCommand extends Command
 	{
 		try {
 			$options = $this->prepareOptions($input->getOptions());
-			$this->scanAndParse($options, $output);
-			$this->generate($options, $output);
+			$this->scanAndParse($options);
+			$this->generate($options);
 			return 0;
 
 		} catch (\Exception $e) {
@@ -148,17 +156,17 @@ class GenerateCommand extends Command
 	}
 
 
-	private function scanAndParse(array $options, OutputInterface $output)
+	private function scanAndParse(array $options)
 	{
-		$output->writeln('<info>Scanning sources and parsing</info>');
+		$this->io->writeln('<info>Scanning sources and parsing</info>');
 
 		$files = $this->scanner->scan($options[CO::SOURCE], $options[CO::EXCLUDE], $options[CO::EXTENSIONS]);
 		$this->parser->parse($files);
 
-		$this->reportParserErrors($this->parser->getErrors(), $output);
+		$this->reportParserErrors($this->parser->getErrors());
 
 		$stats = $this->parserResult->getDocumentedStats();
-		$output->writeln(sprintf(
+		$this->io->writeln(sprintf(
 			'Found <comment>%d classes</comment>, <comment>%d constants</comment>, '
 				. '<comment>%d functions</comment> and <comment>%d PHP internal classes</comment>',
 			$stats['classes'], $stats['constants'], $stats['functions'], $stats['internalClasses']
@@ -166,24 +174,22 @@ class GenerateCommand extends Command
 	}
 
 
-	private function generate(array $options, OutputInterface $output)
+	private function generate(array $options)
 	{
-		$this->fileSystem->purgeDir($options[CO::DESTINATION]);
-		$this->themeResources->copyToDestination($options[CO::DESTINATION]);
-
-		$output->writeln('<info>Generating API documentation</info>');
+		$this->prepareDestination($options[CO::DESTINATION]);
+		$this->io->writeln('<info>Generating API documentation</info>');
 		$this->generatorQueue->run();
 	}
 
 
-	private function reportParserErrors(array $errors, OutputInterface $output)
+	private function reportParserErrors(array $errors)
 	{
 		/** @var FileProcessingException[] $errors */
 		foreach ($errors as $error) {
 			/** @var \Exception[] $reasons */
 			$reasons = $error->getReasons();
 			if (count($reasons) && isset($reasons[0])) {
-				$output->writeln("<error>Parse error: " . $reasons[0]->getMessage() . "</error>");
+				$this->io->writeln("<error>Parse error: " . $reasons[0]->getMessage() . "</error>");
 			}
 		}
 	}
@@ -232,6 +238,29 @@ class GenerateCommand extends Command
 		return preg_replace_callback('~-([a-z])~', function ($matches) {
 			return strtoupper($matches[1]);
 		}, $name);
+	}
+
+
+	/**
+	 * @param string $destination
+	 */
+	private function prepareDestination($destination)
+	{
+		$this->cleanDestinationWithCaution($destination);
+		$this->themeResources->copyToDestination($destination);
+	}
+
+
+	/**
+	 * @param string $destination
+	 */
+	private function cleanDestinationWithCaution($destination)
+	{
+		if ( ! $this->fileSystem->isDirEmpty($destination)) {
+			if ($this->io->ask('Destination is not empty. Do you want to erase it?', TRUE)) {
+				$this->fileSystem->purgeDir($destination);
+			}
+		}
 	}
 
 }
