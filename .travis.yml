@@ -10,17 +10,16 @@ env:
   global:
     secure: wF9OH7etvUeZNveEsFPhyibrGuR9Rj9zY64rMKwkBWSjvsnQ8Cj/Vbe7PL2dAFfypuox8rkfTJ/nUSgkyJXh/5/fmgD3VVeg8PEB1WSMYnkGexbKYLQ5u6a34RRLtMtrwnAmHscl/0RkgyNk8GUKLJWWKjunIYFzpVeBbjSKpxM=
 
-before_install:
-  - travis/before_install.sh
-
 install:
+  - composer create-project --prefer-source --dev --no-interaction zenify/ci vendor/ci @dev
+  - . vendor/ci/travis/coverage-init.sh
   - composer install --prefer-source
 
 before_script:
-  - travis/before_script.sh
+  - . vendor/ci/travis/static-analysis.sh
 
 script:
   - phpunit $PHPUNIT_FLAGS
 
 after_script:
-  - travis/after_script.sh
+  - . vendor/ci/travis/coverage-send.sh
