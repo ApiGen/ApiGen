@@ -5,13 +5,10 @@ namespace ApiGen\Tests\Console;
 use ApiGen\Console\IO;
 use Mockery;
 use PHPUnit_Framework_TestCase;
-<<<<<<< HEAD
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Helper\QuestionHelper;
-=======
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
->>>>>>> use ::class
 
 
 class IOTest extends PHPUnit_Framework_TestCase
