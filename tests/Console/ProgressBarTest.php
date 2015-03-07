@@ -9,6 +9,7 @@ use Mockery;
 use PHPUnit_Framework_Assert;
 use PHPUnit_Framework_TestCase;
 use Symfony;
+use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputDefinition;
@@ -26,7 +27,8 @@ class ProgressBarTest extends PHPUnit_Framework_TestCase
 
 	protected function setUp()
 	{
-		$this->progressBar = new ProgressBar(new IO);
+		$io = new IO(new HelperSet);
+		$this->progressBar = new ProgressBar($io);
 	}
 
 
@@ -66,7 +68,7 @@ class ProgressBarTest extends PHPUnit_Framework_TestCase
 			MethodInvoker::callMethodOnObject($this->progressBar, 'getBarFormat')
 		);
 
-		$io = new IO;
+		$io = new IO(new HelperSet);
 		$arrayInput = new ArgvInput([], new InputDefinition([new InputOption('debug')]));
 		$arrayInput->setOption('debug', TRUE);
 		$io->setInput($arrayInput);
