@@ -61,7 +61,6 @@ class ReflectionFunctionTest extends PHPUnit_Framework_TestCase
 		$configurationMock->shouldReceive('getOption')->with('php')->andReturn(FALSE);
 		$configurationMock->shouldReceive('getOption')->with('deprecated')->andReturn(FALSE);
 		$configurationMock->shouldReceive('getOption')->with('internal')->andReturn(FALSE);
-		$configurationMock->shouldReceive('getOption')->with('skipDocPath')->andReturn([]);
 		$configurationMock->shouldReceive('getOption')->with(CO::VISIBILITY_LEVELS)->andReturn(256);
 		return $configurationMock;
 	}
