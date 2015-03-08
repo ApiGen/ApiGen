@@ -30,7 +30,6 @@ class ConfigurationOptions
 	const MAIN = 'main';
 	const INTERNAL = 'internal';
 	const PHP = 'php';
-	const SKIP_DOC_PATH = 'skipDocPath';
 	const SOURCE = 'source';
 	const NO_SOURCE_CODE = 'noSourceCode';
 	const TEMPLATE = 'template';

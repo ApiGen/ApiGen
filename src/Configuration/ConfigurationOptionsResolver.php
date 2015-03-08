@@ -49,7 +49,6 @@ class ConfigurationOptionsResolver
 		CO::MAIN => '',
 		CO::INTERNAL => FALSE,
 		CO::PHP => FALSE,
-		CO::SKIP_DOC_PATH => [],
 		CO::SOURCE => [],
 		CO::NO_SOURCE_CODE => FALSE,
 		CO::TEMPLATE => NULL,
@@ -197,12 +196,6 @@ class ConfigurationOptionsResolver
 			},
 			CO::BASE_URL => function (Options $options, $value) {
 				return rtrim($value, '/');
-			},
-			CO::SKIP_DOC_PATH => function (Options $options, $value) {
-				foreach ($value as $key => $source) {
-					$value[$key] = FileSystem::getAbsolutePath($source);
-				}
-				return $value;
 			},
 			CO::SOURCE => function (Options $options, $value) {
 				if ( ! is_array($value)) {
