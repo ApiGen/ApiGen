@@ -42,4 +42,12 @@ class ScannerExcludeTest extends PHPUnit_Framework_TestCase
 		$this->assertCount(1, $this->scanner->scan($source, ['src/Core/smarty_cache']));
 	}
 
+
+	public function testExcludeFile()
+	{
+		$source = __DIR__ . '/ScannerExcludeSource/src';
+		$this->assertCount(0, $this->scanner->scan($source, ['ShouldBeExcluded.php']));
+		$this->assertCount(0, $this->scanner->scan($source, ['*ShouldBeExcluded*']));
+	}
+
 }
