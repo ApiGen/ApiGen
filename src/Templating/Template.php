@@ -53,7 +53,8 @@ class Template
 			mkdir($dir, 0755, TRUE);
 		}
 
-		file_put_contents($this->savePath, $this->render());
+		$content = $this->latte->renderToString($this->file, $this->parameters);
+		file_put_contents($this->savePath, $content);
 	}
 
 
@@ -91,17 +92,6 @@ class Template
 	{
 		$this->parameters = $parameters + $this->parameters;
 		return $this;
-	}
-
-
-	/**
-	 * @return string
-	 */
-	public function render()
-	{
-		ob_start();
-		$this->latte->render($this->file, $this->parameters);
-		ob_end_clean();
 	}
 
 }
