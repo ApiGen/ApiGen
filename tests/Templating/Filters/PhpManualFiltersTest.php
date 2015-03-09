@@ -32,7 +32,7 @@ class PhpManualFiltersTest extends PHPUnit_Framework_TestCase
 	{
 		$reflectionMock = Mockery::mock('TokenReflection\IReflectionExtension', 'Nette\Object');
 		$reflectionMock->shouldReceive('getName')->andReturn('pdf');
-		$reflectionExtension = new \ApiGen\Parser\Reflection\ReflectionExtension($reflectionMock);
+		$reflectionExtension = new ReflectionExtension($reflectionMock);
 
 		$this->assertSame(
 			'http://php.net/manual/en/book.pdf.php',
