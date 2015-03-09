@@ -178,6 +178,7 @@ class ConfigurationOptionsResolver
 				return rtrim($value, '/');
 			},
 			CO::SKIP_DOC_PATH => function (Options $options, $value) {
+				$value = (array) $value;
 				foreach ($value as $key => $source) {
 					$value[$key] = FileSystem::getAbsolutePath($source);
 				}
