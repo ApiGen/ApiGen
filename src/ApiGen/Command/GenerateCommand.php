@@ -229,7 +229,7 @@ class GenerateCommand extends Command
 	 */
 	private function camelFormat($name)
 	{
-		return preg_replace_callback('~-([a-z])~', function($matches) {
+		return preg_replace_callback('~-([a-z])~', function ($matches) {
 			return strtoupper($matches[1]);
 		}, $name);
 	}

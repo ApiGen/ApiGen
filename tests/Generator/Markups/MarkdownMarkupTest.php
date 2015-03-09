@@ -21,12 +21,12 @@ class MarkdownMarkupTest extends PHPUnit_Framework_TestCase
 	{
 		$highlighterMock = Mockery::mock('ApiGen\Generator\SourceCodeHighlighter\SourceCodeHighlighter');
 		$highlighterMock->shouldReceive('highlight')
-			->andReturnUsing(function($args) {
+			->andReturnUsing(function ($args) {
 				return $args;
 			});
 
 		$highlighterMock->shouldReceive('highlightAndAddLineNumbers')
-			->andReturnUsing(function($args) {
+			->andReturnUsing(function ($args) {
 				return $args;
 			});
 
