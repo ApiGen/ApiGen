@@ -50,7 +50,7 @@ class TemplateFactoryTest extends PHPUnit_Framework_TestCase
 
 	public function testCreateNamedForElement()
 	{
-		$reflectionClassMock = Mockery::mock('ApiGen\Reflection\ReflectionClass');
+		$reflectionClassMock = Mockery::mock('ApiGen\Parser\Reflection\ReflectionClass');
 
 		$this->assertInstanceOf(
 			'ApiGen\Templating\Template',
@@ -74,7 +74,7 @@ class TemplateFactoryTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testCreateNamedForElementNonExisting()
 	{
-		$reflectionClassMock = Mockery::mock('ApiGen\Reflection\ReflectionClass');
+		$reflectionClassMock = Mockery::mock('ApiGen\Parser\Reflection\ReflectionClass');
 		$this->assertInstanceOf(
 			'ApiGen\Templating\Template',
 			$this->templateFactory->createNamedForElement('notExisting', $reflectionClassMock)
@@ -84,15 +84,15 @@ class TemplateFactoryTest extends PHPUnit_Framework_TestCase
 
 	public function testCreateForReflection()
 	{
-		$reflectionClassMock = Mockery::mock('ApiGen\Reflection\ReflectionClass');
+		$reflectionClassMock = Mockery::mock('ApiGen\Parser\Reflection\ReflectionClass');
 		$template = $this->templateFactory->createForReflection($reflectionClassMock);
 		$this->assertInstanceOf('ApiGen\Templating\Template', $template);
 
-		$reflectionConstantMock = Mockery::mock('ApiGen\Reflection\ReflectionConstant');
+		$reflectionConstantMock = Mockery::mock('ApiGen\Parser\Reflection\ReflectionConstant');
 		$template = $this->templateFactory->createForReflection($reflectionConstantMock);
 		$this->assertInstanceOf('ApiGen\Templating\Template', $template);
 
-		$reflectionFunctionMock = Mockery::mock('ApiGen\Reflection\ReflectionFunction');
+		$reflectionFunctionMock = Mockery::mock('ApiGen\Parser\Reflection\ReflectionFunction');
 		$template = $this->templateFactory->createForReflection($reflectionFunctionMock);
 		$this->assertInstanceOf('ApiGen\Templating\Template', $template);
 	}

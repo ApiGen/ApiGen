@@ -96,7 +96,7 @@ class TemplateNavigatorTest extends ContainerAwareTestCase
 
 	public function testGetTemplatePathForClass()
 	{
-		$classReflectionMock = Mockery::mock('ApiGen\Reflection\ReflectionClass');
+		$classReflectionMock = Mockery::mock('ApiGen\Parser\Reflection\ReflectionClass');
 		$classReflectionMock->shouldReceive('getName')->andReturn('SomeClass');
 
 		$this->assertSame(
@@ -108,7 +108,7 @@ class TemplateNavigatorTest extends ContainerAwareTestCase
 
 	public function testGetTemplatePathForConstant()
 	{
-		$constantReflectionMock = Mockery::mock('ApiGen\Reflection\ReflectionConstant');
+		$constantReflectionMock = Mockery::mock('ApiGen\Parser\Reflection\ReflectionConstant');
 		$constantReflectionMock->shouldReceive('getName')->andReturn('SomeConstant');
 
 		$this->assertSame(
@@ -120,7 +120,7 @@ class TemplateNavigatorTest extends ContainerAwareTestCase
 
 	public function testGetTemplatePathForFunction()
 	{
-		$functionReflectionMock = Mockery::mock('ApiGen\Reflection\ReflectionFunction');
+		$functionReflectionMock = Mockery::mock('ApiGen\Parser\Reflection\ReflectionFunction');
 		$functionReflectionMock->shouldReceive('getName')->andReturn('SomeFunction');
 
 		$this->assertSame(
@@ -132,7 +132,7 @@ class TemplateNavigatorTest extends ContainerAwareTestCase
 
 	public function testGetTemplatePathForMethod()
 	{
-		$classReflectionMock = Mockery::mock('ApiGen\Reflection\ReflectionClass');
+		$classReflectionMock = Mockery::mock('ApiGen\Parser\Reflection\ReflectionClass');
 		$classReflectionMock->shouldReceive('getName')->andReturn('SomeClass');
 
 		$this->assertSame(

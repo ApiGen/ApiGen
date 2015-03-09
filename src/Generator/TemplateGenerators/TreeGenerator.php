@@ -15,7 +15,7 @@ use ApiGen\Configuration\Theme\ThemeConfigOptions as TCO;
 use ApiGen\Generator\ConditionalTemplateGenerator;
 use ApiGen\Parser\Elements\Elements;
 use ApiGen\Parser\ParserResult;
-use ApiGen\Reflection\ReflectionClass;
+use ApiGen\Parser\Reflection\ReflectionClass;
 use ApiGen\Templating\TemplateFactory;
 use ApiGen\Tree;
 

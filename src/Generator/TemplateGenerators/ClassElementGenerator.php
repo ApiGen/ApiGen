@@ -13,7 +13,7 @@ use ApiGen\Generator\StepCounter;
 use ApiGen\Generator\TemplateGenerator;
 use ApiGen\Generator\TemplateGenerators\Loaders\NamespaceAndPackageLoader;
 use ApiGen\Parser\Elements\ElementStorage;
-use ApiGen\Reflection\ReflectionClass;
+use ApiGen\Parser\Reflection\ReflectionClass;
 use ApiGen\Templating\Template;
 use ApiGen\Templating\TemplateFactory;
 use Nette;

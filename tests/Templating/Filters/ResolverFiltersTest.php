@@ -44,7 +44,7 @@ class ResolverFiltersTest extends PHPUnit_Framework_TestCase
 
 	public function testResolveElement()
 	{
-		$reflectionElementMock = Mockery::mock('ApiGen\Reflection\ReflectionElement');
+		$reflectionElementMock = Mockery::mock('ApiGen\Parser\Reflection\ReflectionElement');
 		$this->assertSame(
 			'ResolvedElement',
 			$this->resolverFilters->resolveElement('SomeElement', $reflectionElementMock)
@@ -55,7 +55,7 @@ class ResolverFiltersTest extends PHPUnit_Framework_TestCase
 
 	public function testResolveElementForNonExistingElement()
 	{
-		$reflectionElementMock = Mockery::mock('ApiGen\Reflection\ReflectionElement');
+		$reflectionElementMock = Mockery::mock('ApiGen\Parser\Reflection\ReflectionElement');
 		$this->assertFalse($this->resolverFilters->resolveElement('NonExistingElement', $reflectionElementMock));
 	}
 

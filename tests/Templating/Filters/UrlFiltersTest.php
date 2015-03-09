@@ -3,7 +3,7 @@
 namespace ApiGen\Tests\Templating\Filters;
 
 use ApiGen\Configuration\ConfigurationOptions as CO;
-use ApiGen\Reflection\ReflectionClass;
+use ApiGen\Parser\Reflection\ReflectionClass;
 use ApiGen\Templating\Filters\Helpers\LinkBuilder;
 use ApiGen\Templating\Filters\UrlFilters;
 use ApiGen\Tests\MethodInvoker;
@@ -51,7 +51,7 @@ class UrlFiltersTest extends PHPUnit_Framework_TestCase
 
 	public function testDoc()
 	{
-		$reflectionClassMock = Mockery::mock('ApiGen\Reflection\ReflectionClass');
+		$reflectionClassMock = Mockery::mock('ApiGen\Parser\Reflection\ReflectionClass');
 		$this->assertSame('Markupped: ...', $this->urlFilters->doc('...', $reflectionClassMock, TRUE));
 		$this->assertSame('Markupped line: ...', $this->urlFilters->doc('...', $reflectionClassMock));
 	}
@@ -84,7 +84,7 @@ class UrlFiltersTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testResolveLinkAndSeeAnnotation($docBlock, $expectedLink)
 	{
-		$reflectionElementMock = Mockery::mock('ApiGen\Reflection\ReflectionElement');
+		$reflectionElementMock = Mockery::mock('ApiGen\Parser\Reflection\ReflectionElement');
 		$this->assertSame(
 			$expectedLink,
 			MethodInvoker::callMethodOnObject($this->urlFilters, 'resolveLinkAndSeeAnnotation', [
@@ -121,7 +121,7 @@ class UrlFiltersTest extends PHPUnit_Framework_TestCase
  */
 DOC;
 
-		$reflectionElementMock = Mockery::mock('ApiGen\Reflection\ReflectionElement');
+		$reflectionElementMock = Mockery::mock('ApiGen\Parser\Reflection\ReflectionElement');
 		$expected = <<<EXP
 Markupped line: * Some annotation
  * with more rows
@@ -133,7 +133,7 @@ EXP;
 
 	public function testShortDescription()
 	{
-		$reflectionElementMock = Mockery::mock('ApiGen\Reflection\ReflectionElement');
+		$reflectionElementMock = Mockery::mock('ApiGen\Parser\Reflection\ReflectionElement');
 		$reflectionElementMock->shouldReceive('getShortDescription')->andReturn('Some short description');
 
 		$this->assertSame(
@@ -154,7 +154,7 @@ EXP;
 Some long description with example:
 <code>echo "hi";</code>
 DOC;
-		$reflectionElementMock = Mockery::mock('ApiGen\Reflection\ReflectionElement');
+		$reflectionElementMock = Mockery::mock('ApiGen\Parser\Reflection\ReflectionElement');
 		$reflectionElementMock->shouldReceive('getLongDescription')->andReturn($longDescription);
 
 		$expected = <<<EXPECTED
@@ -167,7 +167,7 @@ EXPECTED;
 
 	public function testHighlightPhp()
 	{
-		$reflectionClassMock = Mockery::mock('ApiGen\Reflection\ReflectionClass');
+		$reflectionClassMock = Mockery::mock('ApiGen\Parser\Reflection\ReflectionClass');
 		$this->assertSame(
 			'Highlighted: ...',
 			$this->urlFilters->highlightPhp('...', $reflectionClassMock)
@@ -177,7 +177,7 @@ EXPECTED;
 
 	public function testHighlightValue()
 	{
-		$reflectionClassMock = Mockery::mock('ApiGen\Reflection\ReflectionClass');
+		$reflectionClassMock = Mockery::mock('ApiGen\Parser\Reflection\ReflectionClass');
 		$this->assertSame(
 			'Highlighted: ...',
 			$this->urlFilters->highlightValue('...', $reflectionClassMock)
@@ -190,7 +190,7 @@ EXPECTED;
 	 */
 	public function testTypeLinks($annotation, $expected)
 	{
-		$reflectionClass = Mockery::mock('ApiGen\Reflection\ReflectionClass');
+		$reflectionClass = Mockery::mock('ApiGen\Parser\Reflection\ReflectionClass');
 		$this->assertSame($expected, $this->urlFilters->typeLinks($annotation, $reflectionClass));
 	}
 
@@ -221,7 +221,7 @@ EXPECTED;
 	 */
 	public function testResolveLink($definition, $expected)
 	{
-		$reflectionClass = Mockery::mock('ApiGen\Reflection\ReflectionClass');
+		$reflectionClass = Mockery::mock('ApiGen\Parser\Reflection\ReflectionClass');
 		$this->assertSame($expected, $this->urlFilters->resolveLink($definition, $reflectionClass));
 	}
 
@@ -246,7 +246,7 @@ EXPECTED;
 	 */
 	public function testAnnotation($annotation, $name, $expected)
 	{
-		$reflectionClassMock = Mockery::mock('ApiGen\Reflection\ReflectionClass');
+		$reflectionClassMock = Mockery::mock('ApiGen\Parser\Reflection\ReflectionClass');
 		$this->assertSame($expected, $this->urlFilters->annotation($annotation, $name, $reflectionClassMock));
 	}
 
@@ -279,7 +279,7 @@ EXPECTED;
 		$elementResolverMock = Mockery::mock('ApiGen\Generator\Resolvers\ElementResolver');
 		$elementResolverMock->shouldReceive('resolveElement')->andReturnUsing(function ($arg) {
 			if ($arg === 'ApiGen\ApiGen') {
-				$reflectionClassMock = Mockery::mock('ApiGen\Reflection\ReflectionClass');
+				$reflectionClassMock = Mockery::mock('ApiGen\Parser\Reflection\ReflectionClass');
 				$reflectionClassMock->shouldReceive('getName')->andReturn('ApiGen\ApiGen');
 				$reflectionClassMock->shouldReceive('isDeprecated')->andReturn(TRUE);
 				$reflectionClassMock->shouldReceive('isValid')->andReturn(FALSE);

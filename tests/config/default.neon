@@ -1,4 +1,4 @@
 extensions:
 	- ApiGen\DI\ApiGenExtension
-	- ApiGen\DI\ParserExtension
+	- ApiGen\Parser\DI\ParserExtension
 	- Kdyby\Events\DI\EventsExtension

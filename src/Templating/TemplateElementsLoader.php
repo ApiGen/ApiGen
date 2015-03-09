@@ -13,7 +13,7 @@ use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Parser\Elements\AutocompleteElements;
 use ApiGen\Parser\Elements\ElementStorage;
-use ApiGen\Reflection\ReflectionElement;
+use ApiGen\Parser\Reflection\ReflectionElement;
 use Closure;
 
 

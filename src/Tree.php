@@ -9,7 +9,7 @@
 
 namespace ApiGen;
 
-use ApiGen\Reflection\ReflectionElement;
+use ApiGen\Parser\Reflection\ReflectionElement;
 use ArrayObject;
 use RecursiveArrayIterator;
 use RecursiveIteratorIterator;

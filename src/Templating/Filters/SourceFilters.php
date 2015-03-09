@@ -11,10 +11,10 @@ namespace ApiGen\Templating\Filters;
 
 use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions as CO;
-use ApiGen\Reflection\ReflectionClass;
-use ApiGen\Reflection\ReflectionConstant;
-use ApiGen\Reflection\ReflectionElement;
-use ApiGen\Reflection\ReflectionFunction;
+use ApiGen\Parser\Reflection\ReflectionClass;
+use ApiGen\Parser\Reflection\ReflectionConstant;
+use ApiGen\Parser\Reflection\ReflectionElement;
+use ApiGen\Parser\Reflection\ReflectionFunction;
 
 
 class SourceFilters extends Filters

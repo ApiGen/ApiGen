@@ -19,10 +19,10 @@ class ElementResolverTest extends PHPUnit_Framework_TestCase
 
 	protected function setUp()
 	{
-		$elementReflection = Mockery::mock('ApiGen\Reflection\ReflectionElement');
+		$elementReflection = Mockery::mock('ApiGen\Parser\Reflection\ReflectionElement');
 		$elementReflection->shouldReceive('getName')->andReturn('NiceName');
 		$elementReflection->shouldReceive('isDocumented')->andReturn(TRUE);
-		$notDocumentedElementReflection = Mockery::mock('ApiGen\Reflection\ReflectionElement');
+		$notDocumentedElementReflection = Mockery::mock('ApiGen\Parser\Reflection\ReflectionElement');
 		$notDocumentedElementReflection->shouldReceive('isDocumented')->andReturn(FALSE);
 		$parserResultMock = Mockery::mock('ApiGen\Parser\ParserResult');
 		$parserResultMock->shouldReceive('getClasses')->andReturn([
@@ -43,7 +43,7 @@ class ElementResolverTest extends PHPUnit_Framework_TestCase
 
 	public function testResolveElement()
 	{
-		$reflectionClassMock = Mockery::mock('ApiGen\Reflection\ReflectionClass');
+		$reflectionClassMock = Mockery::mock('ApiGen\Parser\Reflection\ReflectionClass');
 		$reflectionClassMock->shouldReceive('getNamespaceAliases')->andReturn([]);
 		$reflectionClassMock->shouldReceive('getNamespaceName')->andReturn('SomeNamespace');
 		$reflectionClassMock->shouldReceive('hasProperty')->andReturn(FALSE);
@@ -63,10 +63,10 @@ class ElementResolverTest extends PHPUnit_Framework_TestCase
 	public function testGetClass()
 	{
 		$element = $this->elementResolver->getClass('SomeClass');
-		$this->assertInstanceOf('ApiGen\Reflection\ReflectionElement', $element);
+		$this->assertInstanceOf('ApiGen\Parser\Reflection\ReflectionElement', $element);
 		$this->assertTrue($element->isDocumented());
 		$element = $this->elementResolver->getClass('SomeClass', 'SomeNamespace');
-		$this->assertInstanceOf('ApiGen\Reflection\ReflectionElement', $element);
+		$this->assertInstanceOf('ApiGen\Parser\Reflection\ReflectionElement', $element);
 		$this->assertTrue($element->isDocumented());
 	}
 
@@ -86,7 +86,7 @@ class ElementResolverTest extends PHPUnit_Framework_TestCase
 	public function testGetConstant()
 	{
 		$element = $this->elementResolver->getConstant('SomeConstant');
-		$this->assertInstanceOf('ApiGen\Reflection\ReflectionElement', $element);
+		$this->assertInstanceOf('ApiGen\Parser\Reflection\ReflectionElement', $element);
 		$this->assertTrue($element->isDocumented());
 	}
 
@@ -100,7 +100,7 @@ class ElementResolverTest extends PHPUnit_Framework_TestCase
 	public function testGetFunction()
 	{
 		$element = $this->elementResolver->getFunction('SomeFunction');
-		$this->assertInstanceOf('ApiGen\Reflection\ReflectionElement', $element);
+		$this->assertInstanceOf('ApiGen\Parser\Reflection\ReflectionElement', $element);
 		$this->assertTrue($element->isDocumented());
 	}
 
@@ -123,23 +123,23 @@ class ElementResolverTest extends PHPUnit_Framework_TestCase
 
 	public function testResolveIfParsed()
 	{
-		$reflectionMethodMock = Mockery::mock('ApiGen\Reflection\ReflectionMethod');
+		$reflectionMethodMock = Mockery::mock('ApiGen\Parser\Reflection\ReflectionMethod');
 		$reflectionMethodMock->shouldReceive('getDeclaringClassName')->andReturnNull();
 		$reflectionMethodMock->shouldReceive('getDeclaringFunctionName')->andReturn('SomeFunction');
 		$reflectionMethodMock->shouldReceive('getNamespaceName')->andReturnNull();
 
 		$this->assertInstanceOf(
-			'ApiGen\Reflection\ReflectionElement',
+			'ApiGen\Parser\Reflection\ReflectionElement',
 			MI::callMethodOnObject($this->elementResolver, 'resolveIfParsed', ['SomeFunction', $reflectionMethodMock])
 		);
 
 		$this->assertInstanceOf(
-			'ApiGen\Reflection\ReflectionElement',
+			'ApiGen\Parser\Reflection\ReflectionElement',
 			MI::callMethodOnObject($this->elementResolver, 'resolveIfParsed', ['SomeClass', $reflectionMethodMock])
 		);
 
 		$this->assertInstanceOf(
-			'ApiGen\Reflection\ReflectionElement',
+			'ApiGen\Parser\Reflection\ReflectionElement',
 			MI::callMethodOnObject($this->elementResolver, 'resolveIfParsed', ['SomeConstant', $reflectionMethodMock])
 		);
 
@@ -153,7 +153,7 @@ class ElementResolverTest extends PHPUnit_Framework_TestCase
 
 	public function testResolveIfInContext()
 	{
-		$reflectionClassMock = Mockery::mock('ApiGen\Reflection\ReflectionClass');
+		$reflectionClassMock = Mockery::mock('ApiGen\Parser\Reflection\ReflectionClass');
 		$reflectionClassMock->shouldReceive('hasProperty')->with('someProperty')->andReturn(TRUE);
 		$reflectionClassMock->shouldReceive('hasProperty')->andReturn(FALSE);
 		$reflectionClassMock->shouldReceive('getProperty')->andReturn(TRUE);
@@ -202,7 +202,7 @@ class ElementResolverTest extends PHPUnit_Framework_TestCase
 
 	public function testCorrectContextForParameterOrClassMemberWithClass()
 	{
-		$reflectionClassMock = Mockery::mock('ApiGen\Reflection\ReflectionClass');
+		$reflectionClassMock = Mockery::mock('ApiGen\Parser\Reflection\ReflectionClass');
 		$this->assertSame(
 			$reflectionClassMock,
 			MI::callMethodOnObject(
@@ -214,73 +214,73 @@ class ElementResolverTest extends PHPUnit_Framework_TestCase
 
 	public function testCorrectContextForParameterOrClassMemberWithParameter()
 	{
-		$reflectionParameterMock = Mockery::mock('ApiGen\Reflection\ReflectionParameter');
+		$reflectionParameterMock = Mockery::mock('ApiGen\Parser\Reflection\ReflectionParameter');
 		$reflectionParameterMock->shouldReceive('getDeclaringClassName')->andReturn('SomeClass');
 		$resolvedElement = MI::callMethodOnObject(
 			$this->elementResolver, 'correctContextForParameterOrClassMember', [$reflectionParameterMock]
 		);
 
-		$this->assertInstanceOf('ApiGen\Reflection\ReflectionElement', $resolvedElement);
+		$this->assertInstanceOf('ApiGen\Parser\Reflection\ReflectionElement', $resolvedElement);
 		$this->assertSame('NiceName', $resolvedElement->getName());
 	}
 
 
 	public function testCorrectContextForParameterOrClassMemberWithParameterAndNoClass()
 	{
-		$reflectionParameterMock = Mockery::mock('ApiGen\Reflection\ReflectionParameter');
+		$reflectionParameterMock = Mockery::mock('ApiGen\Parser\Reflection\ReflectionParameter');
 		$reflectionParameterMock->shouldReceive('getDeclaringClassName')->andReturnNull();
 		$reflectionParameterMock->shouldReceive('getDeclaringFunctionName')->andReturn('SomeFunction');
 
 		$resolvedElement = MI::callMethodOnObject(
 			$this->elementResolver, 'correctContextForParameterOrClassMember', [$reflectionParameterMock]
 		);
-		$this->assertInstanceOf('ApiGen\Reflection\ReflectionElement', $resolvedElement);
+		$this->assertInstanceOf('ApiGen\Parser\Reflection\ReflectionElement', $resolvedElement);
 		$this->assertSame('NiceName', $resolvedElement->getName());
 	}
 
 
 	public function testCorrectContextForParameterOrClassMemberWithMethod()
 	{
-		$reflectionMethodMock = Mockery::mock('ApiGen\Reflection\ReflectionMethod');
+		$reflectionMethodMock = Mockery::mock('ApiGen\Parser\Reflection\ReflectionMethod');
 		$reflectionMethodMock->shouldReceive('getDeclaringClassName')->andReturn('SomeClass');
 		$resolvedElement = MI::callMethodOnObject(
 			$this->elementResolver, 'correctContextForParameterOrClassMember', [$reflectionMethodMock]
 		);
 
-		$this->assertInstanceOf('ApiGen\Reflection\ReflectionElement', $resolvedElement);
+		$this->assertInstanceOf('ApiGen\Parser\Reflection\ReflectionElement', $resolvedElement);
 		$this->assertSame('NiceName', $resolvedElement->getName());
 	}
 
 
 	public function testResolveContextForClassPropertyInParent()
 	{
-		$reflectionClassMock = Mockery::mock('ApiGen\Reflection\ReflectionClass');
+		$reflectionClassMock = Mockery::mock('ApiGen\Parser\Reflection\ReflectionClass');
 		$reflectionClassMock->shouldReceive('getParentClassName')->andReturn('SomeClass');
 
 		$resolvedElement = MI::callMethodOnObject($this->elementResolver, 'resolveContextForClassProperty', [
 			'parent::$start', $reflectionClassMock, 5
 		]);
 
-		$this->assertInstanceOf('ApiGen\Reflection\ReflectionElement', $resolvedElement);
+		$this->assertInstanceOf('ApiGen\Parser\Reflection\ReflectionElement', $resolvedElement);
 	}
 
 
 	public function testResolveContextForClassPropertyInSelf()
 	{
-		$reflectionClassMock = Mockery::mock('ApiGen\Reflection\ReflectionClass');
+		$reflectionClassMock = Mockery::mock('ApiGen\Parser\Reflection\ReflectionClass');
 		$reflectionClassMock->shouldReceive('getParentClassName')->andReturn('SomeClass');
 
 		$resolvedElement = MI::callMethodOnObject($this->elementResolver, 'resolveContextForClassProperty', [
 			'self::$start', $reflectionClassMock, 25
 		]);
 
-		$this->assertInstanceOf('ApiGen\Reflection\ReflectionClass', $resolvedElement);
+		$this->assertInstanceOf('ApiGen\Parser\Reflection\ReflectionClass', $resolvedElement);
 	}
 
 
 	public function testResolveContextForClassPropertyForNonExisting()
 	{
-		$reflectionClassMock = Mockery::mock('ApiGen\Reflection\ReflectionClass');
+		$reflectionClassMock = Mockery::mock('ApiGen\Parser\Reflection\ReflectionClass');
 		$reflectionClassMock->shouldReceive('getParentClassName')->andReturn('SomeClass');
 		$reflectionClassMock->shouldReceive('getNamespaceName')->andReturn('SomeNamespace');
 		$reflectionClassMock->shouldReceive('getNamespaceAliases')->andReturn([]);
@@ -294,7 +294,7 @@ class ElementResolverTest extends PHPUnit_Framework_TestCase
 
 	public function testResolveContextForSelfProperty()
 	{
-		$reflectionClassMock = Mockery::mock('ApiGen\Reflection\ReflectionClass');
+		$reflectionClassMock = Mockery::mock('ApiGen\Parser\Reflection\ReflectionClass');
 		$reflectionClassMock->shouldReceive('getParentClassName')->andReturn('SomeClass');
 		$reflectionClassMock->shouldReceive('getNamespaceName')->andReturn('SomeNamespace');
 		$reflectionClassMock->shouldReceive('getNamespaceAliases')->andReturn([]);
@@ -302,14 +302,14 @@ class ElementResolverTest extends PHPUnit_Framework_TestCase
 		$class = MI::callMethodOnObject(
 			$this->elementResolver, 'resolveContextForSelfProperty', ['SomeClass::$property', 9, $reflectionClassMock]
 		);
-		$this->assertInstanceOf('ApiGen\Reflection\ReflectionElement', $class);
+		$this->assertInstanceOf('ApiGen\Parser\Reflection\ReflectionElement', $class);
 
 		$class = MI::callMethodOnObject(
 			$this->elementResolver,
 			'resolveContextForSelfProperty',
 			['SomeOtherClass::$property', 14, $reflectionClassMock]
 		);
-		$this->assertInstanceOf('ApiGen\Reflection\ReflectionElement', $class);
+		$this->assertInstanceOf('ApiGen\Parser\Reflection\ReflectionElement', $class);
 
 		$this->assertNull(
 			MI::callMethodOnObject(
@@ -327,17 +327,17 @@ class ElementResolverTest extends PHPUnit_Framework_TestCase
 			MI::callMethodOnObject($this->elementResolver, 'isContextUsable', [NULL])
 		);
 
-		$reflectionConstantMock = Mockery::mock('ApiGen\Reflection\ReflectionConstant');
+		$reflectionConstantMock = Mockery::mock('ApiGen\Parser\Reflection\ReflectionConstant');
 		$this->assertFalse(
 			MI::callMethodOnObject($this->elementResolver, 'isContextUsable', [$reflectionConstantMock])
 		);
 
-		$reflectionFunctionMock = Mockery::mock('ApiGen\Reflection\ReflectionFunction');
+		$reflectionFunctionMock = Mockery::mock('ApiGen\Parser\Reflection\ReflectionFunction');
 		$this->assertFalse(
 			MI::callMethodOnObject($this->elementResolver, 'isContextUsable', [$reflectionFunctionMock])
 		);
 
-		$reflectionClassMock = Mockery::mock('ApiGen\Reflection\ReflectionClass');
+		$reflectionClassMock = Mockery::mock('ApiGen\Parser\Reflection\ReflectionClass');
 		$this->assertTrue(
 			MI::callMethodOnObject($this->elementResolver, 'isContextUsable', [$reflectionClassMock])
 		);

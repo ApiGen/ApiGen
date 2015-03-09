@@ -17,8 +17,8 @@ use ApiGen\Generator\Resolvers\RelativePathResolver;
 use ApiGen\Generator\SourceCodeHighlighter\SourceCodeHighlighter;
 use ApiGen\Generator\StepCounter;
 use ApiGen\Parser\Elements\ElementStorage;
-use ApiGen\Reflection\ReflectionClass;
-use ApiGen\Reflection\ReflectionElement;
+use ApiGen\Parser\Reflection\ReflectionClass;
+use ApiGen\Parser\Reflection\ReflectionElement;
 use ApiGen\Templating\TemplateFactory;
 use Nette;
 

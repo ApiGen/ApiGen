@@ -93,7 +93,7 @@ class SourceFiltersTest extends PHPUnit_Framework_TestCase
 	 */
 	private function getReflectionFunction()
 	{
-		$reflectionFunction = Mockery::mock('ApiGen\Reflection\ReflectionFunction');
+		$reflectionFunction = Mockery::mock('ApiGen\Parser\Reflection\ReflectionFunction');
 		$reflectionFunction->shouldReceive('getName')->andReturn('someFunction');
 		$reflectionFunction->shouldReceive('getStartLine')->andReturn(15);
 		$reflectionFunction->shouldReceive('getEndLine')->andReturn(25);
@@ -106,7 +106,7 @@ class SourceFiltersTest extends PHPUnit_Framework_TestCase
 	 */
 	private function getReflectionClass()
 	{
-		$reflectionClass = Mockery::mock('ApiGen\Reflection\ReflectionClass');
+		$reflectionClass = Mockery::mock('ApiGen\Parser\Reflection\ReflectionClass');
 		$reflectionClass->shouldReceive('getName')->andReturn('someClass');
 		$reflectionClass->shouldReceive('getStartLine')->andReturn(10);
 		$reflectionClass->shouldReceive('getEndLine')->andReturn(100);
@@ -119,7 +119,7 @@ class SourceFiltersTest extends PHPUnit_Framework_TestCase
 	 */
 	private function getReflectionConstant()
 	{
-		$reflectionConstant = Mockery::mock('ApiGen\Reflection\ReflectionConstant');
+		$reflectionConstant = Mockery::mock('ApiGen\Parser\Reflection\ReflectionConstant');
 		$reflectionConstant->shouldReceive('getName')->andReturn('someConstant');
 		$reflectionConstant->shouldReceive('getDeclaringClassName')->andReturn('someClass');
 		$reflectionConstant->shouldReceive('getStartLine')->andReturn(20);
@@ -133,7 +133,7 @@ class SourceFiltersTest extends PHPUnit_Framework_TestCase
 	 */
 	private function getReflectionConstantWithoutClass()
 	{
-		$reflectionConstant = Mockery::mock('ApiGen\Reflection\ReflectionConstant');
+		$reflectionConstant = Mockery::mock('ApiGen\Parser\Reflection\ReflectionConstant');
 		$reflectionConstant->shouldReceive('getName')->andReturn('someConstant');
 		$reflectionConstant->shouldReceive('getDeclaringClassName')->andReturn(NULL);
 		$reflectionConstant->shouldReceive('getStartLine')->andReturn(80);
@@ -150,7 +150,7 @@ class SourceFiltersTest extends PHPUnit_Framework_TestCase
 	 */
 	private function buildReflectionElement($name, $start, $end)
 	{
-		$reflectionElement = Mockery::mock('ApiGen\Reflection\ReflectionElement');
+		$reflectionElement = Mockery::mock('ApiGen\Parser\Reflection\ReflectionElement');
 		$reflectionElement->shouldReceive('getName')->andReturn($name);
 		$reflectionElement->shouldReceive('getStartLine')->andReturn($start);
 		$reflectionElement->shouldReceive('getEndLine')->andReturn($end);

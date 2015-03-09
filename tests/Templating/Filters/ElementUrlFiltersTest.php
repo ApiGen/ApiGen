@@ -2,7 +2,7 @@
 
 namespace ApiGen\Tests\Templating\Filters;
 
-use ApiGen\Reflection\ReflectionElement;
+use ApiGen\Parser\Reflection\ReflectionElement;
 use ApiGen\Templating\Filters\ElementUrlFilters;
 use Mockery;
 use PHPUnit_Framework_TestCase;
@@ -25,7 +25,7 @@ class ElementUrlFiltersTest extends PHPUnit_Framework_TestCase
 
 	public function testElementUrl()
 	{
-		$reflectionElementMock = Mockery::mock('ApiGen\Reflection\ReflectionElement');
+		$reflectionElementMock = Mockery::mock('ApiGen\Parser\Reflection\ReflectionElement');
 		$reflectionElementMock->shouldReceive('getName')->andReturn('ReflectionElement');
 		$this->assertSame('url-for-ReflectionElement', $this->elementUrlFilters->elementUrl($reflectionElementMock));
 	}
@@ -33,7 +33,7 @@ class ElementUrlFiltersTest extends PHPUnit_Framework_TestCase
 
 	public function testClassUrl()
 	{
-		$reflectionClassMock = Mockery::mock('ApiGen\Reflection\ReflectionClass');
+		$reflectionClassMock = Mockery::mock('ApiGen\Parser\Reflection\ReflectionClass');
 		$reflectionClassMock->shouldReceive('getName')->andReturn('ReflectionClass');
 		$this->assertSame('url-for-ReflectionClass', $this->elementUrlFilters->classUrl($reflectionClassMock));
 	}
@@ -41,7 +41,7 @@ class ElementUrlFiltersTest extends PHPUnit_Framework_TestCase
 
 	public function testMethodUrl()
 	{
-		$reflectionMethodMock = Mockery::mock('ApiGen\Reflection\ReflectionMethod');
+		$reflectionMethodMock = Mockery::mock('ApiGen\Parser\Reflection\ReflectionMethod');
 		$reflectionMethodMock->shouldReceive('getName')->andReturn('ReflectionMethod');
 		$this->assertSame('url-for-ReflectionMethod', $this->elementUrlFilters->methodUrl($reflectionMethodMock));
 	}
@@ -49,7 +49,7 @@ class ElementUrlFiltersTest extends PHPUnit_Framework_TestCase
 
 	public function testPropertyUrl()
 	{
-		$reflectionPropertyMock = Mockery::mock('ApiGen\Reflection\ReflectionProperty');
+		$reflectionPropertyMock = Mockery::mock('ApiGen\Parser\Reflection\ReflectionProperty');
 		$reflectionPropertyMock->shouldReceive('getName')->andReturn('ReflectionProperty');
 		$this->assertSame('url-for-ReflectionProperty', $this->elementUrlFilters->propertyUrl($reflectionPropertyMock));
 	}
@@ -57,7 +57,7 @@ class ElementUrlFiltersTest extends PHPUnit_Framework_TestCase
 
 	public function testConstantUrl()
 	{
-		$reflectionConstantMock = Mockery::mock('ApiGen\Reflection\ReflectionConstant');
+		$reflectionConstantMock = Mockery::mock('ApiGen\Parser\Reflection\ReflectionConstant');
 		$reflectionConstantMock->shouldReceive('getName')->andReturn('ReflectionConstant');
 		$this->assertSame('url-for-ReflectionConstant', $this->elementUrlFilters->constantUrl($reflectionConstantMock));
 	}
@@ -65,7 +65,7 @@ class ElementUrlFiltersTest extends PHPUnit_Framework_TestCase
 
 	public function testFunctionUrl()
 	{
-		$reflectionFunctionMock = Mockery::mock('ApiGen\Reflection\ReflectionFunction');
+		$reflectionFunctionMock = Mockery::mock('ApiGen\Parser\Reflection\ReflectionFunction');
 		$reflectionFunctionMock->shouldReceive('getName')->andReturn('ReflectionFunction');
 		$this->assertSame('url-for-ReflectionFunction', $this->elementUrlFilters->functionUrl($reflectionFunctionMock));
 	}

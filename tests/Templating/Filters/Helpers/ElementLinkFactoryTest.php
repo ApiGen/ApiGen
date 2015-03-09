@@ -2,11 +2,11 @@
 
 namespace ApiGen\Tests\Templating\Filters\Helpers;
 
-use ApiGen\Reflection\ReflectionClass;
-use ApiGen\Reflection\ReflectionConstant;
-use ApiGen\Reflection\ReflectionFunction;
-use ApiGen\Reflection\ReflectionMethod;
-use ApiGen\Reflection\ReflectionProperty;
+use ApiGen\Parser\Reflection\ReflectionClass;
+use ApiGen\Parser\Reflection\ReflectionConstant;
+use ApiGen\Parser\Reflection\ReflectionFunction;
+use ApiGen\Parser\Reflection\ReflectionMethod;
+use ApiGen\Parser\Reflection\ReflectionProperty;
 use ApiGen\Templating\Filters\Helpers\ElementLinkFactory;
 use ApiGen\Templating\Filters\Helpers\LinkBuilder;
 use Mockery;
@@ -31,7 +31,7 @@ class ElementLinkFactoryTest extends PHPUnit_Framework_TestCase
 
 	public function testCreateForElementClass()
 	{
-		$reflectionClass = Mockery::mock('ApiGen\Reflection\ReflectionClass');
+		$reflectionClass = Mockery::mock('ApiGen\Parser\Reflection\ReflectionClass');
 		$reflectionClass->shouldReceive('getName')->andReturn('SomeClass');
 		$reflectionClass->shouldReceive('getDeclaringClassName')->andReturn('declaringClass');
 
@@ -44,7 +44,7 @@ class ElementLinkFactoryTest extends PHPUnit_Framework_TestCase
 
 	public function testCreateForFunction()
 	{
-		$reflectionFunction = Mockery::mock('ApiGen\Reflection\ReflectionFunction');
+		$reflectionFunction = Mockery::mock('ApiGen\Parser\Reflection\ReflectionFunction');
 		$reflectionFunction->shouldReceive('getName')->andReturn('getSome');
 		$reflectionFunction->shouldReceive('getDeclaringClassName')->andReturn('DeclaringClass');
 
@@ -57,7 +57,7 @@ class ElementLinkFactoryTest extends PHPUnit_Framework_TestCase
 
 	public function testCreateForConstant()
 	{
-		$reflectionConstant = Mockery::mock('ApiGen\Reflection\ReflectionConstant');
+		$reflectionConstant = Mockery::mock('ApiGen\Parser\Reflection\ReflectionConstant');
 		$reflectionConstant->shouldReceive('getName')->andReturn('SOME_CONSTANT');
 		$reflectionConstant->shouldReceive('getDeclaringClassName')->andReturnNull();
 		$reflectionConstant->shouldReceive('inNamespace')->andReturn(FALSE);
@@ -71,7 +71,7 @@ class ElementLinkFactoryTest extends PHPUnit_Framework_TestCase
 
 	public function testCreateForConstantInClass()
 	{
-		$reflectionConstant = Mockery::mock('ApiGen\Reflection\ReflectionConstant');
+		$reflectionConstant = Mockery::mock('ApiGen\Parser\Reflection\ReflectionConstant');
 		$reflectionConstant->shouldReceive('getName')->andReturn('SOME_CONSTANT');
 		$reflectionConstant->shouldReceive('getDeclaringClassName')->andReturn('DeclaringClass');
 
@@ -84,7 +84,7 @@ class ElementLinkFactoryTest extends PHPUnit_Framework_TestCase
 
 	public function testCreateForElementConstantInNamespace()
 	{
-		$reflectionConstant = Mockery::mock('ApiGen\Reflection\ReflectionConstant');
+		$reflectionConstant = Mockery::mock('ApiGen\Parser\Reflection\ReflectionConstant');
 		$reflectionConstant->shouldReceive('getName')->andReturn('SOME_CONSTANT');
 		$reflectionConstant->shouldReceive('getShortName')->andReturn('SHORT_SOME_CONSTANT');
 		$reflectionConstant->shouldReceive('getDeclaringClassName')->andReturnNull();
@@ -100,7 +100,7 @@ class ElementLinkFactoryTest extends PHPUnit_Framework_TestCase
 
 	public function testCreateForProperty()
 	{
-		$reflectionProperty = Mockery::mock('ApiGen\Reflection\ReflectionProperty');
+		$reflectionProperty = Mockery::mock('ApiGen\Parser\Reflection\ReflectionProperty');
 		$reflectionProperty->shouldReceive('getName')->andReturn('property');
 		$reflectionProperty->shouldReceive('getDeclaringClassName')->andReturn('SomeClass');
 
@@ -113,7 +113,7 @@ class ElementLinkFactoryTest extends PHPUnit_Framework_TestCase
 
 	public function testCreateForMethod()
 	{
-		$reflectionMethod = Mockery::mock('ApiGen\Reflection\ReflectionMethod');
+		$reflectionMethod = Mockery::mock('ApiGen\Parser\Reflection\ReflectionMethod');
 		$reflectionMethod->shouldReceive('getName')->andReturn('method');
 		$reflectionMethod->shouldReceive('getDeclaringClassName')->andReturn('SomeClass');
 
@@ -129,14 +129,14 @@ class ElementLinkFactoryTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testCreateForElementOfUnspecificType()
 	{
-		$reflectionElement = Mockery::mock('ApiGen\Reflection\ReflectionElement');
+		$reflectionElement = Mockery::mock('ApiGen\Parser\Reflection\ReflectionElement');
 		$this->elementLinkFactory->createForElement($reflectionElement);
 	}
 
 
 	public function testCreateForElementWithCssClasses()
 	{
-		$reflectionClass = Mockery::mock('ApiGen\Reflection\ReflectionClass');
+		$reflectionClass = Mockery::mock('ApiGen\Parser\Reflection\ReflectionClass');
 		$reflectionClass->shouldReceive('getName')->andReturn('SomeClass');
 		$reflectionClass->shouldReceive('getDeclaringClassName')->andReturn('someElement');
 

@@ -34,7 +34,7 @@ class TreeGeneratorTest extends PHPUnit_Framework_TestCase
 		$templateMock->shouldReceive('save');
 		$templateFactoryMock->shouldReceive('createForType')->andReturn($templateMock);
 
-		$reflectionClassMock = Mockery::mock('ApiGen\Reflection\ReflectionClass');
+		$reflectionClassMock = Mockery::mock('ApiGen\Parser\Reflection\ReflectionClass');
 		$reflectionClassMock->shouldReceive('isMain')->andReturn(TRUE);
 		$reflectionClassMock->shouldReceive('isDocumented')->andReturn(TRUE);
 		$reflectionClassMock->shouldReceive('getName')->andReturn('SomeClass');
@@ -65,7 +65,7 @@ class TreeGeneratorTest extends PHPUnit_Framework_TestCase
 
 	public function testCanBeProcessed()
 	{
-		$reflectionClassMock = Mockery::mock('ApiGen\Reflection\ReflectionClass');
+		$reflectionClassMock = Mockery::mock('ApiGen\Parser\Reflection\ReflectionClass');
 		$reflectionClassMock->shouldReceive('isMain')->once()->andReturn(FALSE);
 		$reflectionClassMock->shouldReceive('isMain')->andReturn(TRUE);
 		$reflectionClassMock->shouldReceive('isDocumented')->once()->andReturn(FALSE);
@@ -83,10 +83,10 @@ class TreeGeneratorTest extends PHPUnit_Framework_TestCase
 
 	public function testAddToTreeByReflection()
 	{
-		$reflectionClassParentMock = Mockery::mock('ApiGen\Reflection\ReflectionClass');
+		$reflectionClassParentMock = Mockery::mock('ApiGen\Parser\Reflection\ReflectionClass');
 		$reflectionClassParentMock->shouldReceive('getName')->andReturn('ParentClassName');
 
-		$reflectionClassMock = Mockery::mock('ApiGen\Reflection\ReflectionClass');
+		$reflectionClassMock = Mockery::mock('ApiGen\Parser\Reflection\ReflectionClass');
 		$reflectionClassMock->shouldReceive('getName')->andReturn('someClass');
 		$reflectionClassMock->shouldReceive('getParentClassName')->once()->andReturn(NULL);
 		$reflectionClassMock->shouldReceive('getParentClassName')->andReturn('ParentClassName');
@@ -105,7 +105,7 @@ class TreeGeneratorTest extends PHPUnit_Framework_TestCase
 
 	public function testGetTypeByReflection()
 	{
-		$reflectionClassMock = Mockery::mock('ApiGen\Reflection\ReflectionClass');
+		$reflectionClassMock = Mockery::mock('ApiGen\Parser\Reflection\ReflectionClass');
 		$reflectionClassMock->shouldReceive('isInterface')->once()->andReturn(TRUE);
 		$reflectionClassMock->shouldReceive('isInterface')->andReturn(FALSE);
 		$reflectionClassMock->shouldReceive('isTrait')->once()->andReturn(TRUE);

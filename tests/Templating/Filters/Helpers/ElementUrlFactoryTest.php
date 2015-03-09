@@ -65,7 +65,7 @@ class ElementUrlFactoryTest extends PHPUnit_Framework_TestCase
 			$this->elementUrlFactory->createForElement($this->getReflectionFunctionMock())
 		);
 
-		$reflectionElementMock = Mockery::mock('ApiGen\Reflection\ReflectionElement');
+		$reflectionElementMock = Mockery::mock('ApiGen\Parser\Reflection\ReflectionElement');
 		$this->assertNull($this->elementUrlFactory->createForElement($reflectionElementMock));
 	}
 
@@ -194,7 +194,7 @@ class ElementUrlFactoryTest extends PHPUnit_Framework_TestCase
 	 */
 	private function getReflectionMethodMock()
 	{
-		$reflectionMethodMock = Mockery::mock('ApiGen\Reflection\ReflectionMethod');
+		$reflectionMethodMock = Mockery::mock('ApiGen\Parser\Reflection\ReflectionMethod');
 		$reflectionMethodMock->shouldReceive('getName')->andReturn('getSomeMethod');
 		$reflectionMethodMock->shouldReceive('getDeclaringClassName')->andReturn('SomeClass');
 		return $reflectionMethodMock;
@@ -206,7 +206,7 @@ class ElementUrlFactoryTest extends PHPUnit_Framework_TestCase
 	 */
 	private function getReflectionClassMock()
 	{
-		$reflectionClassMock = Mockery::mock('ApiGen\Reflection\ReflectionClass');
+		$reflectionClassMock = Mockery::mock('ApiGen\Parser\Reflection\ReflectionClass');
 		$reflectionClassMock->shouldReceive('getName')->andReturn('SomeNamespace\\SomeClass');
 		return $reflectionClassMock;
 	}
@@ -217,7 +217,7 @@ class ElementUrlFactoryTest extends PHPUnit_Framework_TestCase
 	 */
 	private function getReflectionPropertyMock()
 	{
-		$reflectionPropertyMock = Mockery::mock('ApiGen\Reflection\ReflectionProperty');
+		$reflectionPropertyMock = Mockery::mock('ApiGen\Parser\Reflection\ReflectionProperty');
 		$reflectionPropertyMock->shouldReceive('getName')->andReturn('someProperty');
 		$reflectionPropertyMock->shouldReceive('getDeclaringClassName')->andReturn('SomeClass');
 		return $reflectionPropertyMock;
@@ -229,7 +229,7 @@ class ElementUrlFactoryTest extends PHPUnit_Framework_TestCase
 	 */
 	private function getReflectionConstantMock()
 	{
-		$reflectionConstantMock = Mockery::mock('ApiGen\Reflection\ReflectionConstant');
+		$reflectionConstantMock = Mockery::mock('ApiGen\Parser\Reflection\ReflectionConstant');
 		$reflectionConstantMock->shouldReceive('getName')->andReturn('someConstant');
 		return $reflectionConstantMock;
 	}
@@ -240,7 +240,7 @@ class ElementUrlFactoryTest extends PHPUnit_Framework_TestCase
 	 */
 	private function getReflectionFunctionMock()
 	{
-		$reflectionFunctionMock = Mockery::mock('ApiGen\Reflection\ReflectionFunction');
+		$reflectionFunctionMock = Mockery::mock('ApiGen\Parser\Reflection\ReflectionFunction');
 		$reflectionFunctionMock->shouldReceive('getName')->andReturn('someFunction');
 		$reflectionFunctionMock->shouldReceive('getDeclaringClassName')->andReturn('SomeClass');
 		return $reflectionFunctionMock;

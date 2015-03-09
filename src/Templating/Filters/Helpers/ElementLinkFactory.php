@@ -9,12 +9,12 @@
 
 namespace ApiGen\Templating\Filters\Helpers;
 
-use ApiGen\Reflection\ReflectionClass;
-use ApiGen\Reflection\ReflectionConstant;
-use ApiGen\Reflection\ReflectionElement;
-use ApiGen\Reflection\ReflectionFunction;
-use ApiGen\Reflection\ReflectionMethod;
-use ApiGen\Reflection\ReflectionProperty;
+use ApiGen\Parser\Reflection\ReflectionClass;
+use ApiGen\Parser\Reflection\ReflectionConstant;
+use ApiGen\Parser\Reflection\ReflectionElement;
+use ApiGen\Parser\Reflection\ReflectionFunction;
+use ApiGen\Parser\Reflection\ReflectionMethod;
+use ApiGen\Parser\Reflection\ReflectionProperty;
 use Nette\Utils\Html;
 use UnexpectedValueException;
 
@@ -62,7 +62,7 @@ class ElementLinkFactory
 		}
 
 		throw new UnexpectedValueException(
-			'Descendant of ApiGen\Reflection\Reflection class expected. Got "'
+			'Descendant of ApiGen\Parser\Reflection\Reflection class expected. Got "'
 			. get_class($element) . ' class".'
 		);
 	}

@@ -11,7 +11,7 @@ namespace ApiGen\Generator\TemplateGenerators\Loaders;
 
 use ApiGen\Parser\Elements\Elements;
 use ApiGen\Parser\Elements\ElementStorage;
-use ApiGen\Reflection\ReflectionElement;
+use ApiGen\Parser\Reflection\ReflectionElement;
 use ApiGen\Templating\Template;
 
 

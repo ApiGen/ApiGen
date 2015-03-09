@@ -9,12 +9,12 @@
 
 namespace ApiGen\Templating\Filters;
 
-use ApiGen\Reflection\ReflectionClass;
-use ApiGen\Reflection\ReflectionConstant;
-use ApiGen\Reflection\ReflectionElement;
-use ApiGen\Reflection\ReflectionExtension;
-use ApiGen\Reflection\ReflectionMethod;
-use ApiGen\Reflection\ReflectionProperty;
+use ApiGen\Parser\Reflection\ReflectionClass;
+use ApiGen\Parser\Reflection\ReflectionConstant;
+use ApiGen\Parser\Reflection\ReflectionElement;
+use ApiGen\Parser\Reflection\ReflectionExtension;
+use ApiGen\Parser\Reflection\ReflectionMethod;
+use ApiGen\Parser\Reflection\ReflectionProperty;
 
 
 /**
@@ -83,19 +83,19 @@ class PhpManualFilters extends Filters
 	 */
 	private function prepareAssignments()
 	{
-		$this->assignments['ApiGen\Reflection\ReflectionClass'] = function ($element, $class) {
+		$this->assignments['ApiGen\Parser\Reflection\ReflectionClass'] = function ($element, $class) {
 			return $this->createClassUrl($class);
 		};
-		$this->assignments['ApiGen\Reflection\ReflectionMethod'] = function ($element, $class) {
+		$this->assignments['ApiGen\Parser\Reflection\ReflectionMethod'] = function ($element, $class) {
 			return $this->createMethodUrl($element, $class);
 		};
-		$this->assignments['ApiGen\Reflection\ReflectionFunction'] = function ($element, $class) {
+		$this->assignments['ApiGen\Parser\Reflection\ReflectionFunction'] = function ($element, $class) {
 			return $this->createFunctionUrl($element);
 		};
-		$this->assignments['ApiGen\Reflection\ReflectionProperty'] = function ($element, $class) {
+		$this->assignments['ApiGen\Parser\Reflection\ReflectionProperty'] = function ($element, $class) {
 			return $this->createPropertyUrl($element, $class);
 		};
-		$this->assignments['ApiGen\Reflection\ReflectionConstant'] = function ($element, $class) {
+		$this->assignments['ApiGen\Parser\Reflection\ReflectionConstant'] = function ($element, $class) {
 			return $this->createConstantUrl($element, $class);
 		};
 	}

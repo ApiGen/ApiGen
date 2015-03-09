@@ -10,18 +10,19 @@
 namespace ApiGen\Generator\Resolvers;
 
 use ApiGen\Parser\ParserResult;
-use ApiGen\Reflection\ReflectionClass;
-use ApiGen\Reflection\ReflectionConstant;
-use ApiGen\Reflection\ReflectionElement;
-use ApiGen\Reflection\ReflectionFunction;
-use ApiGen\Reflection\ReflectionMethod;
-use ApiGen\Reflection\ReflectionParameter;
-use ApiGen\Reflection\ReflectionProperty;
+use ApiGen\Parser\Resolvers\ElementResolverInterface;
+use ApiGen\Parser\Reflection\ReflectionClass;
+use ApiGen\Parser\Reflection\ReflectionConstant;
+use ApiGen\Parser\Reflection\ReflectionElement;
+use ApiGen\Parser\Reflection\ReflectionFunction;
+use ApiGen\Parser\Reflection\ReflectionMethod;
+use ApiGen\Parser\Reflection\ReflectionParameter;
+use ApiGen\Parser\Reflection\ReflectionProperty;
 use ArrayObject;
 use TokenReflection\Resolver;
 
 
-class ElementResolver
+class ElementResolver implements ElementResolverInterface
 {
 
 	/**
