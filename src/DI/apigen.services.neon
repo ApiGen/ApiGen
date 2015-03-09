@@ -1,4 +1,7 @@
 services:
+	# bridges
+	- ApiGen\Bridges\ApiGenParser\ParserConfiguration
+
 	# commands
 	- ApiGen\Command\GenerateCommand
 	- ApiGen\Command\SelfUpdateCommand
