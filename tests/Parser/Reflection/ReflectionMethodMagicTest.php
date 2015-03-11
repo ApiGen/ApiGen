@@ -184,7 +184,7 @@ class ReflectionMethodMagicTest extends PHPUnit_Framework_TestCase
 
 	public function testStaticMethod()
 	{
-		$method = $this->reflectionClass->getMagicMethods()['doAnStaticOperation'];
+		$method = $this->reflectionClass->getMagicMethods()['doAStaticOperation'];
 		$this->assertTrue($method->isStatic());
 	}
 
