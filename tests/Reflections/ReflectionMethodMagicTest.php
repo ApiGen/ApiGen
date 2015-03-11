@@ -205,14 +205,14 @@ class ReflectionMethodMagicTest extends PHPUnit_Framework_TestCase
 
 	public function testStaticMethodReturnType()
 	{
-		$method = $this->reflectionClass->getMagicMethods()['doAnStaticOperation'];
+		$method = $this->reflectionClass->getMagicMethods()['doAStaticOperation'];
 		$this->assertSame('string', current($method->getAnnotation('return')));
 	}
 
 
 	public function testVoidStaticMethod()
 	{
-		$method = $this->reflectionClass->getMagicMethods()['doAnVoidStaticOperation'];
+		$method = $this->reflectionClass->getMagicMethods()['doAVoidStaticOperation'];
 		$this->assertEmpty(current($method->getAnnotation('return')));
 	}
 
