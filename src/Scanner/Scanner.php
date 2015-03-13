@@ -28,15 +28,33 @@ class Scanner
 	{
 		$sources = $this->turnToIterator($source);
 		$fileMasks = $this->turnExtensionsToMask($extensions);
-		$finder = Finder::findFiles($fileMasks)->exclude($exclude)
-			->from($sources)->exclude($exclude);
-		$files = $this->convertFinderToArray($finder);
 
-		if (count($files) === 0) {
-			throw new RuntimeException('No PHP files found');
+		$files = [];
+		foreach ($sources as $source) {
+			$files = array_merge($files, $this->getFilesFromSource($source, $exclude, $fileMasks));
 		}
 
 		return $files;
+	}
+
+
+	/**
+	 * @param string $source
+	 * @param array $exclude
+	 * @param string $fileMasks
+	 * @return SplFileInfo[]
+	 */
+	private function getFilesFromSource($source, array $exclude, $fileMasks)
+	{
+		if (is_file($source)) {
+			$foundFiles[$source] = new SplFileInfo($source);
+			return $foundFiles;
+
+		} else {
+			$finder = Finder::findFiles($fileMasks)->exclude($exclude)
+				->from($source)->exclude($exclude);
+			return $this->convertFinderToArray($finder);
+		}
 	}
 
 

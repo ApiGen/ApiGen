@@ -97,6 +97,19 @@ class FileSystem
 	 * @param string $path
 	 * @return bool
 	 */
+	public function isDirEmpty($path)
+	{
+		if (count(glob($path . "/*"))) {
+			return FALSE;
+		}
+		return TRUE;
+	}
+
+
+	/**
+	 * @param string $path
+	 * @return bool
+	 */
 	private static function isAbsolutePath($path)
 	{
 		if (preg_match('~/|[a-z]:~Ai', $path)) {

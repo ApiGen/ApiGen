@@ -78,7 +78,6 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
 		$configurationMock->shouldReceive('getOption')->with('php')->andReturn(FALSE);
 		$configurationMock->shouldReceive('getOption')->with('deprecated')->andReturn(FALSE);
 		$configurationMock->shouldReceive('getOption')->with('internal')->andReturn(FALSE);
-		$configurationMock->shouldReceive('getOption')->with('skipDocPath')->andReturn(['*SomeConstant.php*']);
 		$configurationMock->shouldReceive('getOption')->with(CO::VISIBILITY_LEVELS)->andReturn(256 | 512);
 		return $configurationMock;
 	}

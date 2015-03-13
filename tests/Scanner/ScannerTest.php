@@ -3,10 +3,10 @@
 namespace ApiGen\Tests\Scanner;
 
 use ApiGen\Scanner\Scanner;
-use ApiGen\Tests\ContainerAwareTestCase;
+use PHPUnit_Framework_TestCase;
 
 
-class ScannerTest extends ContainerAwareTestCase
+class ScannerTest extends PHPUnit_Framework_TestCase
 {
 
 	/**
@@ -24,32 +24,26 @@ class ScannerTest extends ContainerAwareTestCase
 	public function testScan()
 	{
 		$files = $this->scanner->scan(__DIR__ . '/Source');
-		$this->assertEquals(3, count($files));
+		$this->assertCount(4, $files);
 
 		$files = $this->scanner->scan(__DIR__ . '/Source', ['*Another*']);
-		$this->assertEquals(2, count($files));
+		$this->assertCount(3, $files);
 
 		$files = $this->scanner->scan(__DIR__ . '/Source', [], ['php5']);
-		$this->assertEquals(1, count($files));
+		$this->assertCount(1, $files);
 	}
 
 
-	/**
-	 * @expectedException \RuntimeException
-	 */
+	public function testScanSingleFile()
+	{
+		$files = $this->scanner->scan(__DIR__ . '/Source/SomeClass.php');
+		$this->assertCount(1, $files);
+	}
+
+
 	public function testNoFound()
 	{
-		$this->scanner->scan(__DIR__ . '/Source', [], ['php6']);
-	}
-
-
-	/**
-	 * Issue #412
-	 */
-	public function testExcludeAppliedOnlyOnSourcesPath()
-	{
-		$files = $this->scanner->scan(__DIR__ . '/Source', ['tests']);
-		$this->assertEquals(3, count($files));
+		$this->assertCount(0, $this->scanner->scan(__DIR__ . '/Source', [], ['php6']));
 	}
 
 }

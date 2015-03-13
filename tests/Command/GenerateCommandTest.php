@@ -3,6 +3,7 @@
 namespace ApiGen\Tests\Command;
 
 use ApiGen\Command\GenerateCommand;
+use ApiGen\Console\IO;
 use ApiGen\Tests\ContainerAwareTestCase;
 use ApiGen\Tests\MethodInvoker;
 use Mockery;
@@ -21,6 +22,7 @@ class GenerateCommandTest extends ContainerAwareTestCase
 	protected function setUp()
 	{
 		$this->generateCommand = $this->container->getByType('ApiGen\Command\GenerateCommand');
+		$this->setupOutputToIo();
 	}
 
 
@@ -30,16 +32,24 @@ class GenerateCommandTest extends ContainerAwareTestCase
 			new FileProcessingException([new \Exception('Some error')])
 		];
 
+		ob_start();
+		MethodInvoker::callMethodOnObject($this->generateCommand, 'reportParserErrors', [$errors]);
+		$output = ob_get_clean();
+
+		$this->assertSame('<error>Parse error: Some error</error>', $output);
+	}
+
+
+	private function setupOutputToIo()
+	{
+		/** @var IO $io */
+		$io = $this->container->getByType('ApiGen\Console\IO');
+
 		$outputMock = Mockery::mock('Symfony\Component\Console\Output\OutputInterface');
 		$outputMock->shouldReceive('writeln')->andReturnUsing(function ($args) {
 			echo $args;
 		});
-
-		ob_start();
-		MethodInvoker::callMethodOnObject($this->generateCommand, 'reportParserErrors', [$errors, $outputMock]);
-		$output = ob_get_clean();
-
-		$this->assertSame('<error>Parse error: Some error</error>', $output);
+		$io->setOutput($outputMock);
 	}
 
 }

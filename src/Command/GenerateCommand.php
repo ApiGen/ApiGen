@@ -12,6 +12,7 @@ namespace ApiGen\Command;
 use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Configuration\ConfigurationOptionsResolver as COR;
+use ApiGen\Console\IO;
 use ApiGen\FileSystem\FileSystem;
 use ApiGen\Generator\GeneratorQueue;
 use ApiGen\Neon\NeonFile;
@@ -63,6 +64,11 @@ class GenerateCommand extends Command
 	 */
 	private $themeResources;
 
+	/**
+	 * @var IO
+	 */
+	private $io;
+
 
 	public function __construct(
 		Configuration $configuration,
@@ -71,7 +77,8 @@ class GenerateCommand extends Command
 		ParserResult $parserResult,
 		GeneratorQueue $generatorQueue,
 		FileSystem $fileSystem,
-		ThemeResources $themeResources
+		ThemeResources $themeResources,
+		IO $io
 	) {
 		parent::__construct();
 		$this->configuration = $configuration;
@@ -81,6 +88,7 @@ class GenerateCommand extends Command
 		$this->generatorQueue = $generatorQueue;
 		$this->fileSystem = $fileSystem;
 		$this->themeResources = $themeResources;
+		$this->io = $io;
 	}
 
 
@@ -89,7 +97,7 @@ class GenerateCommand extends Command
 		$this->setName('generate')
 			->setDescription('Generate API documentation')
 			->addOption(CO::SOURCE, 's', InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
-				'Dirs documentation is generated for.')
+				'Dirs or files documentation is generated for.')
 			->addOption(CO::DESTINATION, 'd', InputOption::VALUE_REQUIRED, 'Target dir for documentation.')
 			->addOption(CO::ACCESS_LEVELS, NULL, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
 				'Access levels of included method and properties.',
@@ -111,16 +119,13 @@ class GenerateCommand extends Command
 			->addOption(CO::EXTENSIONS, NULL, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
 				'Scanned file extensions.', ['php'])
 			->addOption(CO::EXCLUDE, NULL, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
-				'Directories and files matching this mask will not be parsed.')
+				'Directories and files matching this mask will not be parsed (e.g. */tests/*).')
 			->addOption(CO::GROUPS, NULL, InputOption::VALUE_REQUIRED,
 				'The way elements are grouped in menu.', 'auto')
 			->addOption(CO::MAIN, NULL, InputOption::VALUE_REQUIRED,
 				'Elements with this name prefix will be first in tree.')
 			->addOption(CO::INTERNAL, NULL, InputOption::VALUE_NONE, 'Include elements marked as @internal.')
 			->addOption(CO::PHP, NULL, InputOption::VALUE_NONE, 'Generate documentation for PHP internal classes.')
-			->addOption(CO::SKIP_DOC_PATH, NULL, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
-				'Files matching this mask will be included in class tree,'
-				. ' but will not create a link to their documentation.')
 			->addOption(CO::NO_SOURCE_CODE, NULL, InputOption::VALUE_NONE,
 				'Do not generate highlighted source code for elements.')
 			->addOption(CO::TEMPLATE_THEME, NULL, InputOption::VALUE_REQUIRED, 'ApiGen template theme name.', 'default')
@@ -137,8 +142,8 @@ class GenerateCommand extends Command
 	{
 		try {
 			$options = $this->prepareOptions($input->getOptions());
-			$this->scanAndParse($options, $output);
-			$this->generate($options, $output);
+			$this->scanAndParse($options);
+			$this->generate($options);
 			return 0;
 
 		} catch (\Exception $e) {
@@ -148,42 +153,41 @@ class GenerateCommand extends Command
 	}
 
 
-	private function scanAndParse(array $options, OutputInterface $output)
+	private function scanAndParse(array $options)
 	{
-		$output->writeln('<info>Scanning sources and parsing</info>');
+		$this->io->writeln('<info>Scanning sources and parsing</info>');
 
 		$files = $this->scanner->scan($options[CO::SOURCE], $options[CO::EXCLUDE], $options[CO::EXTENSIONS]);
 		$this->parser->parse($files);
 
-		$this->reportParserErrors($this->parser->getErrors(), $output);
+		$this->reportParserErrors($this->parser->getErrors());
 
 		$stats = $this->parserResult->getDocumentedStats();
-		$output->writeln(sprintf(
-			'Found <comment>%d classes</comment>, <comment>%d constants</comment>, '
-				. '<comment>%d functions</comment> and <comment>%d PHP internal classes</comment>',
-			$stats['classes'], $stats['constants'], $stats['functions'], $stats['internalClasses']
+		$this->io->writeln(sprintf(
+			'Found <comment>%d classes</comment>, <comment>%d constants</comment> and <comment>%d functions</comment>',
+			$stats['classes'],
+			$stats['constants'],
+			$stats['functions']
 		));
 	}
 
 
-	private function generate(array $options, OutputInterface $output)
+	private function generate(array $options)
 	{
-		$this->fileSystem->purgeDir($options[CO::DESTINATION]);
-		$this->themeResources->copyToDestination($options[CO::DESTINATION]);
-
-		$output->writeln('<info>Generating API documentation</info>');
+		$this->prepareDestination($options[CO::DESTINATION]);
+		$this->io->writeln('<info>Generating API documentation</info>');
 		$this->generatorQueue->run();
 	}
 
 
-	private function reportParserErrors(array $errors, OutputInterface $output)
+	private function reportParserErrors(array $errors)
 	{
 		/** @var FileProcessingException[] $errors */
 		foreach ($errors as $error) {
 			/** @var \Exception[] $reasons */
 			$reasons = $error->getReasons();
 			if (count($reasons) && isset($reasons[0])) {
-				$output->writeln("<error>Parse error: " . $reasons[0]->getMessage() . "</error>");
+				$this->io->writeln("<error>Parse error: " . $reasons[0]->getMessage() . "</error>");
 			}
 		}
 	}
@@ -232,6 +236,29 @@ class GenerateCommand extends Command
 		return preg_replace_callback('~-([a-z])~', function ($matches) {
 			return strtoupper($matches[1]);
 		}, $name);
+	}
+
+
+	/**
+	 * @param string $destination
+	 */
+	private function prepareDestination($destination)
+	{
+		$this->cleanDestinationWithCaution($destination);
+		$this->themeResources->copyToDestination($destination);
+	}
+
+
+	/**
+	 * @param string $destination
+	 */
+	private function cleanDestinationWithCaution($destination)
+	{
+		if ( ! $this->fileSystem->isDirEmpty($destination)) {
+			if ($this->io->ask('Destination is not empty. Do you want to erase it?', TRUE)) {
+				$this->fileSystem->purgeDir($destination);
+			}
+		}
 	}
 
 }
