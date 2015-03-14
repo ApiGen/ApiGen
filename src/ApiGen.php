@@ -9,10 +9,24 @@
 
 namespace ApiGen;
 
+use ApiGen\Console\Bridges\ApiGen\ApiGenVersionInterface;
 
-class ApiGen
+
+class ApiGen implements ApiGenVersionInterface
 {
 
+	/**
+	 * @var string
+	 */
 	const VERSION = '4.2.0-dev';
+
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function getVersion()
+	{
+		return self::VERSION;
+	}
 
 }

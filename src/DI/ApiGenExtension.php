@@ -10,6 +10,7 @@
 namespace ApiGen\DI;
 
 use Nette\DI\CompilerExtension;
+use Nette\DI\ServiceDefinition;
 
 
 class ApiGenExtension extends CompilerExtension
@@ -26,16 +27,16 @@ class ApiGenExtension extends CompilerExtension
 	{
 		$builder = $this->getContainerBuilder();
 		$builder->prepareClassList();
-		$this->setupConsole();
 		$this->setupTemplatingFilters();
 		$this->setupGeneratorQueue();
+		$this->setupConsole();
 	}
 
 
 	private function loadServicesFromConfig()
 	{
 		$builder = $this->getContainerBuilder();
-		$config = $this->loadFromFile(__DIR__ . '/apigen.services.neon');
+		$config = $this->loadFromFile(__DIR__ . '/services.neon');
 		$this->compiler->parseServices($builder, $config);
 	}
 
@@ -46,29 +47,6 @@ class ApiGenExtension extends CompilerExtension
 		$builder->addDefinition($this->prefix('latteFactory'))
 			->setClass('Latte\Engine')
 			->addSetup('setTempDirectory', [$builder->expand('%tempDir%/cache/latte')]);
-	}
-
-
-	private function setupConsole()
-	{
-		$builder = $this->getContainerBuilder();
-
-		$application = $builder->getDefinition($builder->getByType('ApiGen\Console\Application'));
-		foreach ($builder->findByType('Symfony\Component\Console\Command\Command') as $definition) {
-			if ( ! $this->isPhar() && $definition->getClass() === 'ApiGen\Command\SelfUpdateCommand') {
-				continue;
-			}
-			$application->addSetup('add', ['@' . $definition->getClass()]);
-		}
-	}
-
-
-	/**
-	 * @return bool
-	 */
-	private function isPhar()
-	{
-		return substr(__FILE__, 0, 5) === 'phar:';
 	}
 
 
@@ -89,6 +67,18 @@ class ApiGenExtension extends CompilerExtension
 		foreach ($builder->findByType('ApiGen\Generator\TemplateGenerator') as $definition) {
 			$generator->addSetup('addToQueue', ['@' . $definition->getClass()]);
 		}
+	}
+
+
+	private function setupConsole()
+	{
+		$builder = $this->getContainerBuilder();
+
+//		$parser = $builder->getDefinition($builder->getByType('ApiGen\Parser\Parser'));
+//		$parser->setImplement('ApiGen\Parser\Parser');
+
+		$generator = $builder->getDefinition($builder->getByType('ApiGen\Generator\GeneratorQueue'));
+		$generator->setClass('ApiGen\Console\Bridges\ApiGenGenerators\GeneratorQueueInterface');
 	}
 
 }

@@ -9,7 +9,7 @@
 
 namespace ApiGen\Events;
 
-use ApiGen\Console\ProgressBar;
+use ApiGen\Console\Helper\ProgressBar;
 use Kdyby\Events\Subscriber;
 
 

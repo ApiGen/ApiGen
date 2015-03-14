@@ -9,7 +9,7 @@
 
 namespace ApiGen\Generator;
 
-use ApiGen\Console\ProgressBar;
+use ApiGen\Console\Helper\ProgressBar;
 
 
 class GeneratorQueue

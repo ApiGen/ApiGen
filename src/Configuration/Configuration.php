@@ -10,6 +10,7 @@
 namespace ApiGen\Configuration;
 
 use ApiGen\Configuration\ConfigurationOptions as CO;
+use ApiGen\Console\Configuration\ApiGenConfigurationInterface;
 use Nette;
 use Nette\Utils\Strings;
 
@@ -17,7 +18,7 @@ use Nette\Utils\Strings;
 /**
  * @method Configuration onOptionsResolve(array $config)
  */
-class Configuration extends Nette\Object
+class Configuration extends Nette\Object implements ApiGenConfigurationInterface
 {
 
 	const GROUPS_AUTO = 'auto';

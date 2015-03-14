@@ -11,6 +11,7 @@ namespace ApiGen\Generator\Resolvers;
 
 use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions as CO;
+use ApiGen\Console\Configuration\ApiGenConfigurationInterface;
 use ApiGen\FileSystem\FileSystem;
 use InvalidArgumentException;
 
@@ -24,7 +25,7 @@ class RelativePathResolver
 	private $configuration;
 
 
-	public function __construct(Configuration $configuration)
+	public function __construct(ApiGenConfigurationInterface $configuration)
 	{
 		$this->configuration = $configuration;
 	}
