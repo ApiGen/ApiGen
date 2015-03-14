@@ -39,7 +39,9 @@ class SourceCodeGeneratorTest extends ContainerAwareTestCase
 	{
 		$this->configuration = $this->container->getByType ('ApiGen\Configuration\Configuration');
 		$this->parser = $this->container->getByType('ApiGen\Parser\Parser');
-		$this->sourceCodeGenerator = $this->container->getByType('ApiGen\Generator\TemplateGenerators\SourceCodeGenerator');
+		$this->sourceCodeGenerator = $this->container->getByType(
+			'ApiGen\Generator\TemplateGenerators\SourceCodeGenerator'
+		);
 		$this->elementStorage = $this->container->getByType('ApiGen\Parser\Elements\ElementStorage');
 	}
 

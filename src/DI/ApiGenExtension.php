@@ -10,7 +10,6 @@
 namespace ApiGen\DI;
 
 use Nette\DI\CompilerExtension;
-use Nette\DI\ServiceDefinition;
 
 
 class ApiGenExtension extends CompilerExtension
@@ -29,7 +28,6 @@ class ApiGenExtension extends CompilerExtension
 		$builder->prepareClassList();
 		$this->setupTemplatingFilters();
 		$this->setupGeneratorQueue();
-		$this->setupConsole();
 	}
 
 
@@ -67,18 +65,6 @@ class ApiGenExtension extends CompilerExtension
 		foreach ($builder->findByType('ApiGen\Generator\TemplateGenerator') as $definition) {
 			$generator->addSetup('addToQueue', ['@' . $definition->getClass()]);
 		}
-	}
-
-
-	private function setupConsole()
-	{
-		$builder = $this->getContainerBuilder();
-
-//		$parser = $builder->getDefinition($builder->getByType('ApiGen\Parser\Parser'));
-//		$parser->setImplement('ApiGen\Parser\Parser');
-
-		$generator = $builder->getDefinition($builder->getByType('ApiGen\Generator\GeneratorQueue'));
-		$generator->setClass('ApiGen\Console\Bridges\ApiGenGenerators\GeneratorQueueInterface');
 	}
 
 }

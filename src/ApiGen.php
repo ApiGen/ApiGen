@@ -9,10 +9,10 @@
 
 namespace ApiGen;
 
-use ApiGen\Console\Bridges\ApiGen\ApiGenVersionInterface;
+use ApiGen\Bridge\ApiGen\VersionInterface;
 
 
-class ApiGen implements ApiGenVersionInterface
+class ApiGen implements VersionInterface
 {
 
 	/**
