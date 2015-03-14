@@ -9,6 +9,7 @@
 
 namespace ApiGen\Generator\Resolvers;
 
+use ApiGen\Bridge\ApiGen\ConfigurationInterface;
 use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\FileSystem\FileSystem;
@@ -24,7 +25,7 @@ class RelativePathResolver
 	private $configuration;
 
 
-	public function __construct(Configuration $configuration)
+	public function __construct(ConfigurationInterface $configuration)
 	{
 		$this->configuration = $configuration;
 	}

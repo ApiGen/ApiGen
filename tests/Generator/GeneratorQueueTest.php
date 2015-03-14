@@ -20,7 +20,7 @@ class GeneratorQueueTest extends PHPUnit_Framework_TestCase
 
 	protected function setUp()
 	{
-		$progressBarMock = Mockery::mock('ApiGen\Console\ProgressBar');
+		$progressBarMock = Mockery::mock('ApiGen\Console\Helper\ProgressBar');
 		$progressBarMock->shouldReceive('init');
 		$this->generatorQueue = new GeneratorQueue($progressBarMock);
 	}

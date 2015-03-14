@@ -9,10 +9,11 @@
 
 namespace ApiGen\Generator;
 
-use ApiGen\Console\ProgressBar;
+use ApiGen\Bridge\Generator\GeneratorQueueInterface;
+use ApiGen\Console\Helper\ProgressBar;
 
 
-class GeneratorQueue
+class GeneratorQueue implements GeneratorQueueInterface
 {
 
 	/**

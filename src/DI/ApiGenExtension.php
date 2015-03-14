@@ -26,7 +26,6 @@ class ApiGenExtension extends CompilerExtension
 	{
 		$builder = $this->getContainerBuilder();
 		$builder->prepareClassList();
-		$this->setupConsole();
 		$this->setupTemplatingFilters();
 		$this->setupGeneratorQueue();
 	}
@@ -35,7 +34,7 @@ class ApiGenExtension extends CompilerExtension
 	private function loadServicesFromConfig()
 	{
 		$builder = $this->getContainerBuilder();
-		$config = $this->loadFromFile(__DIR__ . '/apigen.services.neon');
+		$config = $this->loadFromFile(__DIR__ . '/services.neon');
 		$this->compiler->parseServices($builder, $config);
 	}
 
@@ -46,29 +45,6 @@ class ApiGenExtension extends CompilerExtension
 		$builder->addDefinition($this->prefix('latteFactory'))
 			->setClass('Latte\Engine')
 			->addSetup('setTempDirectory', [$builder->expand('%tempDir%/cache/latte')]);
-	}
-
-
-	private function setupConsole()
-	{
-		$builder = $this->getContainerBuilder();
-
-		$application = $builder->getDefinition($builder->getByType('ApiGen\Console\Application'));
-		foreach ($builder->findByType('Symfony\Component\Console\Command\Command') as $definition) {
-			if ( ! $this->isPhar() && $definition->getClass() === 'ApiGen\Command\SelfUpdateCommand') {
-				continue;
-			}
-			$application->addSetup('add', ['@' . $definition->getClass()]);
-		}
-	}
-
-
-	/**
-	 * @return bool
-	 */
-	private function isPhar()
-	{
-		return substr(__FILE__, 0, 5) === 'phar:';
 	}
 
 
