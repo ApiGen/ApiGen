@@ -29,12 +29,14 @@
 		"kdyby/events": "~2.0",
 		"symfony/options-resolver": "~2.6.1",
 		"symfony/console": "~2.6",
+        "symfony/yaml": "~2.6",
 		"herrera-io/phar-update": "~2.0",
 
 		"apigen/theme-default": "~1.0",
 		"apigen/theme-bootstrap": "~1.0"
 	},
 	"require-dev": {
+        "phpunit/phpunit": "~4.5",
 		"mockery/mockery": "~0.9",
 		"herrera-io/box": "~1.6"
 	},
