@@ -7,20 +7,19 @@
  * the file license.md that was distributed with this source code.
  */
 
-namespace ApiGen\Neon;
+namespace ApiGen\Configuration\Readers;
 
-use ApiGen\Neon\Exceptions\FileNotReadableException;
-use ApiGen\Neon\Exceptions\MissingFileException;
-use Nette\Neon\Neon;
+use ApiGen\Configuration\Readers\Exceptions\FileNotReadableException;
+use ApiGen\Configuration\Readers\Exceptions\MissingFileException;
 
 
-class NeonFile
+abstract class AbstractFile
 {
 
 	/**
 	 * @var string
 	 */
-	private $path;
+	protected $path;
 
 
 	/**
@@ -37,7 +36,7 @@ class NeonFile
 	 * @param string $path
 	 * @throws \Exception
 	 */
-	private function validatePath($path)
+	protected function validatePath($path)
 	{
 		if ( ! file_exists($path)) {
 			throw new MissingFileException($path . ' could not be found');
@@ -46,16 +45,6 @@ class NeonFile
 		if ( ! is_readable($path)) {
 			throw new FileNotReadableException($path . ' is not readable.');
 		}
-	}
-
-
-	/**
-	 * @return array
-	 */
-	public function read()
-	{
-		$json = file_get_contents($this->path);
-		return (array) Neon::decode($json);
 	}
 
 }

@@ -7,12 +7,12 @@
  * the file license.md that was distributed with this source code.
  */
 
-namespace ApiGen\Neon\Exceptions;
+namespace ApiGen\Configuration\Readers\Exceptions;
 
-use RuntimeException;
+use InvalidArgumentException;
 
 
-class FileNotReadableException extends RuntimeException
+class MissingFileException extends InvalidArgumentException
 {
 
 }
