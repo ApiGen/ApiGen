@@ -93,20 +93,21 @@ class GenerateCommandPrepareOptionsTest extends ContainerAwareTestCase
 		$this->assertTrue($options[CO::TREE]);
 	}
 
-    public function testPrepareOptionsMergeIsCorrectFromYamlConfig()
-    {
-        $optionsYaml = MethodInvoker::callMethodOnObject($this->generateCommand, 'prepareOptions', [[
-            'config' => __DIR__ . '/apigen.yml',
-            'destination' => TEMP_DIR . '/api',
-            'download' => FALSE
-        ]]);
 
-        $optionsNeon = MethodInvoker::callMethodOnObject($this->generateCommand, 'prepareOptions', [[
-            'config' => __DIR__ . '/apigen.neon',
-            'destination' => TEMP_DIR . '/api',
-            'download' => FALSE
-        ]]);
+	public function testPrepareOptionsMergeIsCorrectFromYamlConfig()
+	{
+		$optionsYaml = MethodInvoker::callMethodOnObject($this->generateCommand, 'prepareOptions', [[
+			'config' => __DIR__ . '/apigen.yml',
+			'destination' => TEMP_DIR . '/api',
+			'download' => FALSE
+		]]);
 
-        $this->assertSame($optionsNeon, $optionsYaml);
+		$optionsNeon = MethodInvoker::callMethodOnObject($this->generateCommand, 'prepareOptions', [[
+			'config' => __DIR__ . '/apigen.neon',
+			'destination' => TEMP_DIR . '/api',
+			'download' => FALSE
+		]]);
+
+		$this->assertSame($optionsNeon, $optionsYaml);
     }
 }

@@ -198,10 +198,11 @@ class GenerateCommand extends Command
 		}
 	}
 
-    /**
-     * @param array $cliOptions
-     * @return array
-     */
+
+	/**
+	 * @param array $cliOptions
+	 * @return array
+	 */
 	private function prepareOptions(array $cliOptions)
 	{
 		$cliOptions = $this->convertDashKeysToCamel($cliOptions);
@@ -210,8 +211,9 @@ class GenerateCommand extends Command
 		$configFileExt = pathinfo($configFile, PATHINFO_EXTENSION);
 
 		if (file_exists($configFile)) {
-			if ($configFileExt != 'yaml' && $configFileExt != 'yml') {
+			if ($configFileExt !== 'yaml' && $configFileExt !== 'yml') {
 				$configFileOptions = (new NeonFile($configFile))->read();
+
 			} else {
 				$configFileOptions = Yaml::parse(file_get_contents($configFile));
 			}
