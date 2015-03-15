@@ -207,14 +207,14 @@ class GenerateCommand extends Command
 		$cliOptions = $this->convertDashKeysToCamel($cliOptions);
 		$configFile = $cliOptions[CO::CONFIG];
 		$options = $cliOptions;
-        $configFileExt = pathinfo($configFile, PATHINFO_EXTENSION);
+		$configFileExt = pathinfo($configFile, PATHINFO_EXTENSION);
 
 		if (file_exists($configFile)) {
-            if ($configFileExt != 'yaml' && $configFileExt != 'yml') {
-                $configFileOptions = (new NeonFile($configFile))->read();
-            } else {
-                $configFileOptions = Yaml::parse(file_get_contents($configFile));
-            }
+			if ($configFileExt != 'yaml' && $configFileExt != 'yml') {
+				$configFileOptions = (new NeonFile($configFile))->read();
+			} else {
+				$configFileOptions = Yaml::parse(file_get_contents($configFile));
+			}
 			$options = array_merge($options, $configFileOptions);
 		}
 
