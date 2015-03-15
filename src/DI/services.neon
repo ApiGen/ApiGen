@@ -18,12 +18,7 @@ services:
 	# events
 	- {class: ApiGen\Events\ProgressBarIncrement, tags: [kdyby.subscriber]}
 
-	# filesystem
-	- ApiGen\FileSystem\FileSystem
-	- ApiGen\FileSystem\ZipArchiveGenerator
-
 	# generator
-	- ApiGen\Scanner\Scanner
 	- ApiGen\Generator\GeneratorQueue
 	# intentionally first to collect output from other generators
 	- ApiGen\Generator\TemplateGenerators\ZipGenerator

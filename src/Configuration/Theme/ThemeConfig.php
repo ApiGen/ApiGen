@@ -10,7 +10,7 @@
 namespace ApiGen\Configuration\Theme;
 
 use ApiGen\Configuration\Exceptions\ConfigurationException;
-use ApiGen\Neon\NeonFile;
+use ApiGen\Utils\Neon\NeonFile;
 
 
 class ThemeConfig

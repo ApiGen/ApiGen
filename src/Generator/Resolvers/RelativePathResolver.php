@@ -12,7 +12,7 @@ namespace ApiGen\Generator\Resolvers;
 use ApiGen\Bridge\ApiGen\ConfigurationInterface;
 use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions as CO;
-use ApiGen\FileSystem\FileSystem;
+use ApiGen\Utils\FileSystem;
 use InvalidArgumentException;
 
 
@@ -24,10 +24,16 @@ class RelativePathResolver
 	 */
 	private $configuration;
 
+	/**
+	 * @var FileSystem
+	 */
+	private $fileSystem;
 
-	public function __construct(ConfigurationInterface $configuration)
+
+	public function __construct(ConfigurationInterface $configuration, FileSystem $fileSystem)
 	{
 		$this->configuration = $configuration;
+		$this->fileSystem = $fileSystem;
 	}
 
 
@@ -56,7 +62,7 @@ class RelativePathResolver
 	{
 		$directory = rtrim($directory, '/');
 		$fileName = substr($fileName, strlen($directory) + 1);
-		return FileSystem::normalizePath($fileName);
+		return $this->fileSystem->normalizePath($fileName);
 	}
 
 }

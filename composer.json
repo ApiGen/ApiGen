@@ -31,6 +31,7 @@
 		"apigen/theme-bootstrap": "~1.0",
 		"apigen/parser": "0.1.*",
 		"apigen/console": "0.1.*",
+		"apigen/utils": "0.1.*",
 		"apigen/bridge": "0.1.*"
 	},
 	"require-dev": {
