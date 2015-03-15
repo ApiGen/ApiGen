@@ -23,6 +23,7 @@ use ApiGen\Theme\ThemeResources;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Yaml\Yaml;
 use TokenReflection\Exception\FileProcessingException;
 
 
@@ -197,18 +198,23 @@ class GenerateCommand extends Command
 		}
 	}
 
-
-	/**
-	 * @return array
-	 */
+    /**
+     * @param array $cliOptions
+     * @return array
+     */
 	private function prepareOptions(array $cliOptions)
 	{
 		$cliOptions = $this->convertDashKeysToCamel($cliOptions);
 		$configFile = $cliOptions[CO::CONFIG];
 		$options = $cliOptions;
+        $configFileExt = pathinfo($configFile, PATHINFO_EXTENSION);
 
 		if (file_exists($configFile)) {
-			$configFileOptions = (new NeonFile($configFile))->read();
+            if ($configFileExt != 'yaml' && $configFileExt != 'yml') {
+                $configFileOptions = (new NeonFile($configFile))->read();
+            } else {
+                $configFileOptions = Yaml::parse(file_get_contents($configFile));
+            }
 			$options = array_merge($options, $configFileOptions);
 		}
 
