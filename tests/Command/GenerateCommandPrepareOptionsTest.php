@@ -109,5 +109,6 @@ class GenerateCommandPrepareOptionsTest extends ContainerAwareTestCase
 		]]);
 
 		$this->assertSame($optionsNeon, $optionsYaml);
-    }
+	}
+
 }
