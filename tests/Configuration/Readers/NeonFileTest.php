@@ -1,9 +1,9 @@
 <?php
 
-namespace ApiGen\Tests\Neon;
+namespace ApiGen\Tests\Configuration\Readers;
 
 use ApiGen;
-use ApiGen\Neon\NeonFile;
+use ApiGen\Configuration\Readers\NeonFile;
 use PHPUnit_Framework_TestCase;
 
 
@@ -21,7 +21,7 @@ class NeonFileTest extends PHPUnit_Framework_TestCase
 
 
 	/**
-	 * @expectedException ApiGen\Neon\Exceptions\MissingFileException
+	 * @expectedException ApiGen\Configuration\Readers\Exceptions\MissingFileException
 	 */
 	public function testCreateNotExisting()
 	{
