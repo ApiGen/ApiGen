@@ -12,10 +12,10 @@ namespace ApiGen\Command;
 use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Configuration\ConfigurationOptionsResolver as COR;
+use ApiGen\Configuration\Readers\ReaderFactory as ConfigurationReader;
 use ApiGen\Console\IO;
 use ApiGen\FileSystem\FileSystem;
 use ApiGen\Generator\GeneratorQueue;
-use ApiGen\Neon\NeonFile;
 use ApiGen\Parser\Parser;
 use ApiGen\Parser\ParserResult;
 use ApiGen\Scanner\Scanner;
@@ -23,7 +23,6 @@ use ApiGen\Theme\ThemeResources;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Yaml\Yaml;
 use TokenReflection\Exception\FileProcessingException;
 
 
@@ -200,7 +199,6 @@ class GenerateCommand extends Command
 
 
 	/**
-	 * @param array $cliOptions
 	 * @return array
 	 */
 	private function prepareOptions(array $cliOptions)
@@ -208,15 +206,10 @@ class GenerateCommand extends Command
 		$cliOptions = $this->convertDashKeysToCamel($cliOptions);
 		$configFile = $cliOptions[CO::CONFIG];
 		$options = $cliOptions;
-		$configFileExt = pathinfo($configFile, PATHINFO_EXTENSION);
 
 		if (file_exists($configFile)) {
-			if ($configFileExt !== 'yaml' && $configFileExt !== 'yml') {
-				$configFileOptions = (new NeonFile($configFile))->read();
-
-			} else {
-				$configFileOptions = Yaml::parse(file_get_contents($configFile));
-			}
+			// get reader by file extension
+			$configFileOptions = ConfigurationReader::getReader($configFile)->read();
 			$options = array_merge($options, $configFileOptions);
 		}
 

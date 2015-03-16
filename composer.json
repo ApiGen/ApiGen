@@ -36,7 +36,6 @@
 		"apigen/theme-bootstrap": "~1.0"
 	},
 	"require-dev": {
-		"phpunit/phpunit": "~4.5",
 		"mockery/mockery": "~0.9",
 		"herrera-io/box": "~1.6"
 	},
