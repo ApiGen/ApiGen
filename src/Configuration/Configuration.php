@@ -9,8 +9,8 @@
 
 namespace ApiGen\Configuration;
 
-use ApiGen\Bridge\ApiGen\ConfigurationInterface;
 use ApiGen\Configuration\ConfigurationOptions as CO;
+use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use Nette;
 use Nette\Utils\Strings;
 

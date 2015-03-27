@@ -9,7 +9,7 @@
 
 namespace ApiGen;
 
-use ApiGen\Bridge\ApiGen\VersionInterface;
+use ApiGen\Contracts\VersionInterface;
 
 
 class ApiGen implements VersionInterface

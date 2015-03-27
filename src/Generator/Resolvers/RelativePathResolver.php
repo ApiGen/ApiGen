@@ -9,9 +9,9 @@
 
 namespace ApiGen\Generator\Resolvers;
 
-use ApiGen\Bridge\ApiGen\ConfigurationInterface;
 use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions as CO;
+use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Utils\FileSystem;
 use InvalidArgumentException;
 

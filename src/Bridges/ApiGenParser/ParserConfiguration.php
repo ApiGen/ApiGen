@@ -11,7 +11,7 @@ namespace ApiGen\Bridges\ApiGenParser;
 
 use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions as CO;
-use ApiGen\Parser\Configuration\ParserConfigurationInterface;
+use ApiGen\Contracts\Parser\Configuration\ParserConfigurationInterface;
 
 
 class ParserConfiguration implements ParserConfigurationInterface
