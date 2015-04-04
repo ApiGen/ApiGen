@@ -24,6 +24,7 @@
 				"vendor/andrewsville",
 				"vendor/apigen",
 				"vendor/composer",
+				"vendor/hamcrest",
 				"vendor/herrera-io",
 				"vendor/justinrainbow",
 				"vendor/kdyby",
