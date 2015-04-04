@@ -7,12 +7,15 @@
  * the file license.md that was distributed with this source code.
  */
 
-namespace ApiGen\Neon\Exceptions;
-
-use InvalidArgumentException;
+namespace ApiGen\Configuration\Readers;
 
 
-class MissingFileException extends InvalidArgumentException
+interface ReaderInterface
 {
+
+	/**
+	 * @return array
+	 */
+	function read();
 
 }

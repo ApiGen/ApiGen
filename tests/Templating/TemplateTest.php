@@ -20,6 +20,7 @@ class TemplateTest extends PHPUnit_Framework_TestCase
 	{
 		$latteEngineMock = Mockery::mock('Latte\Engine');
 		$latteEngineMock->shouldReceive('render')->andReturn('...');
+		$latteEngineMock->shouldReceive('renderToString')->andReturn('...');
 		$this->template = new Template($latteEngineMock);
 	}
 
