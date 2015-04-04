@@ -12,10 +12,10 @@ namespace ApiGen\Command;
 use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Configuration\ConfigurationOptionsResolver as COR;
+use ApiGen\Configuration\Readers\ReaderFactory as ConfigurationReader;
 use ApiGen\Console\IO;
 use ApiGen\FileSystem\FileSystem;
 use ApiGen\Generator\GeneratorQueue;
-use ApiGen\Neon\NeonFile;
 use ApiGen\Parser\Parser;
 use ApiGen\Parser\ParserResult;
 use ApiGen\Scanner\Scanner;
@@ -208,7 +208,8 @@ class GenerateCommand extends Command
 		$options = $cliOptions;
 
 		if (file_exists($configFile)) {
-			$configFileOptions = (new NeonFile($configFile))->read();
+			// get reader by file extension
+			$configFileOptions = ConfigurationReader::getReader($configFile)->read();
 			$options = array_merge($options, $configFileOptions);
 		}
 
