@@ -9,7 +9,6 @@
 
 namespace ApiGen\Parser;
 
-use ApiGen\Charset\CharsetConvertor;
 use ApiGen\Parser\Broker\Backend;
 use ArrayObject;
 use SplFileInfo;
@@ -26,11 +25,6 @@ class Parser
 	private $broker;
 
 	/**
-	 * @var CharsetConvertor
-	 */
-	private $charsetConvertor;
-
-	/**
 	 * @var array
 	 */
 	private $errors = [];
@@ -41,10 +35,9 @@ class Parser
 	private $parserResult;
 
 
-	public function __construct(Broker $broker, CharsetConvertor $charsetConvertor, ParserResult $parserResult)
+	public function __construct(Broker $broker, ParserResult $parserResult)
 	{
 		$this->broker = $broker;
-		$this->charsetConvertor = $charsetConvertor;
 		$this->parserResult = $parserResult;
 	}
 
@@ -55,9 +48,8 @@ class Parser
 	public function parse($files)
 	{
 		foreach ($files as $file) {
-			$content = $this->charsetConvertor->convertFileToUtf($file->getPathname());
 			try {
-				$this->broker->processString($content, $file->getPathname());
+				$this->broker->processFile($file->getPathname());
 
 			} catch (FileProcessingException $exception) {
 				$this->errors[] = $exception;
