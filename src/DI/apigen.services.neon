@@ -34,7 +34,6 @@ services:
 
 	# events
 	- {class: ApiGen\Events\ProgressBarIncrement, tags: [kdyby.subscriber]}
-	- {class: ApiGen\Events\InjectConfig, tags: [kdyby.subscriber]}
 	- {class: ApiGen\Events\SetIoOnConsoleRun, tags: [kdyby.subscriber]}
 
 	# filesystem

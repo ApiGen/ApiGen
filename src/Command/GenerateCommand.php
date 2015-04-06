@@ -122,8 +122,6 @@ class GenerateCommand extends Command
 				'Directories and files matching this mask will not be parsed (e.g. */tests/*).')
 			->addOption(CO::GROUPS, NULL, InputOption::VALUE_REQUIRED,
 				'The way elements are grouped in menu.', 'auto')
-			->addOption(CO::CHARSET, NULL, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
-				'Charset of scanned files.')
 			->addOption(CO::MAIN, NULL, InputOption::VALUE_REQUIRED,
 				'Elements with this name prefix will be first in tree.')
 			->addOption(CO::INTERNAL, NULL, InputOption::VALUE_NONE, 'Include elements marked as @internal.')
@@ -139,7 +137,13 @@ class GenerateCommand extends Command
 			->addOption(CO::TITLE, NULL, InputOption::VALUE_REQUIRED, 'Title of generated documentation.')
 			->addOption(CO::TODO, NULL, InputOption::VALUE_NONE, 'Generate documentation for elements marked as @todo.')
 			->addOption(CO::TREE, NULL, InputOption::VALUE_NONE,
-				'Generate tree view of classes, interfaces, traits and exceptions.');
+				'Generate tree view of classes, interfaces, traits and exceptions.')
+
+			/**
+			 * @deprecated since version 4.2, to be removed in 5.0
+			 */
+			->addOption('charset', NULL, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
+				'Charset of scanned files (deprecated, only present for BC).');
 	}
 
 
@@ -213,6 +217,9 @@ class GenerateCommand extends Command
 			$options = array_merge($options, $configFileOptions);
 		}
 
+		$this->checkDeprecatedOptions($options);
+		$options = $this->unsetDeprecatedOptions($options);
+
 		return $this->configuration->resolveOptions($options);
 	}
 
@@ -265,6 +272,29 @@ class GenerateCommand extends Command
 				$this->fileSystem->purgeDir($destination);
 			}
 		}
+	}
+
+
+	/**
+	 * @deprecated since version 4.2, to be removed in 5.0
+	 */
+	private function checkDeprecatedOptions(array $options)
+	{
+		if (isset($options['charset']) && $options['charset']) {
+			$this->io->writeln('<error>You are using the deprecated option "charset". UTF-8 is now standard.</error>');
+		}
+	}
+
+
+	/**
+	 * @deprecated since version 4.2, to be removed in 5.0
+	 *
+	 * @return array
+	 */
+	private function unsetDeprecatedOptions(array $options)
+	{
+		unset($options['charset']);
+		return $options;
 	}
 
 }

@@ -9,7 +9,6 @@
 
 namespace ApiGen\Generator\TemplateGenerators;
 
-use ApiGen\Charset\CharsetConvertor;
 use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Configuration\Theme\ThemeConfigOptions as TCO;
@@ -56,11 +55,6 @@ class SourceCodeGenerator extends Nette\Object implements ConditionalTemplateGen
 	private $relativePathResolver;
 
 	/**
-	 * @var CharsetConvertor
-	 */
-	private $charsetConvertor;
-
-	/**
 	 * @var SourceCodeHighlighter
 	 */
 	private $sourceCodeHighlighter;
@@ -71,14 +65,12 @@ class SourceCodeGenerator extends Nette\Object implements ConditionalTemplateGen
 		ElementStorage $elementStorage,
 		TemplateFactory $templateFactory,
 		RelativePathResolver $relativePathResolver,
-		CharsetConvertor $charsetConvertor,
 		SourceCodeHighlighter $sourceCodeHighlighter
 	) {
 		$this->configuration = $configuration;
 		$this->elementStorage = $elementStorage;
 		$this->templateFactory = $templateFactory;
 		$this->relativePathResolver = $relativePathResolver;
-		$this->charsetConvertor = $charsetConvertor;
 		$this->sourceCodeHighlighter = $sourceCodeHighlighter;
 	}
 
@@ -142,7 +134,7 @@ class SourceCodeGenerator extends Nette\Object implements ConditionalTemplateGen
 	 */
 	private function getHighlightedCodeFromElement(ReflectionElement $element)
 	{
-		$content = $this->charsetConvertor->convertFileToUtf($element->getFileName());
+		$content = file_get_contents($element->getFileName());
 		return $this->sourceCodeHighlighter->highlightAndAddLineNumbers($content);
 	}
 
