@@ -16,7 +16,6 @@ class ThemeConfigOptions
 	const OVERVIEW = 'overview';
 	const COMBINED = 'combined';
 	const ELEMENT_LIST = 'elementlist';
-	const E404 = '404';
 	const PACKAGE = 'package';
 	const T_NAMESPACE = 'namespace';
 	const T_CLASS = 'class';
@@ -25,9 +24,7 @@ class ThemeConfigOptions
 	const ANNOTATION_GROUP = 'annotationGroup';
 	const SOURCE = 'source';
 	const TREE = 'tree';
-	const SITEMAP = 'sitemap';
 	const OPENSEARCH = 'opensearch';
-	const ROBOTS = 'robots';
 	const TEMPLATES_PATH = 'templatesPath';
 	const RESOURCES = 'resources';
 	const TEMPLATES = 'templates';

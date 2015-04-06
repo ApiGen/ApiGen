@@ -104,12 +104,12 @@ class GenerateCommand extends Command
 				[COR::AL_PUBLIC, COR::AL_PROTECTED])
 			->addOption(CO::ANNOTATION_GROUPS, NULL, InputOption::VALUE_REQUIRED,
 				'Generate page with elements with specific annotation.')
-			->addOption(CO::BASE_URL, NULL, InputOption::VALUE_REQUIRED,
-				'Base url used for sitemap (useful for public doc).')
 			->addOption(CO::CONFIG, NULL, InputOption::VALUE_REQUIRED,
 				'Custom path to apigen.neon config file.', getcwd() . '/apigen.neon')
 			->addOption(CO::GOOGLE_CSE_ID, NULL, InputOption::VALUE_REQUIRED,
 				'Custom google search engine id (for search box).')
+			->addOption(CO::BASE_URL, NULL, InputOption::VALUE_REQUIRED,
+				'Base url used for sitemap (for search box).')
 			->addOption(CO::GOOGLE_ANALYTICS, NULL, InputOption::VALUE_REQUIRED, 'Google Analytics tracking code.')
 			->addOption(CO::DEBUG, NULL, InputOption::VALUE_NONE, 'Turn on debug mode.')
 			->addOption(CO::DEPRECATED, NULL, InputOption::VALUE_NONE,
