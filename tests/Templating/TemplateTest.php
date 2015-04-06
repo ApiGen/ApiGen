@@ -3,7 +3,7 @@
 namespace ApiGen\Tests\Templating;
 
 use ApiGen\Templating\Template;
-use Mockery;
+use Latte\Engine;
 use PHPUnit_Framework_TestCase;
 
 
@@ -18,17 +18,18 @@ class TemplateTest extends PHPUnit_Framework_TestCase
 
 	protected function setUp()
 	{
-		$latteEngineMock = Mockery::mock('Latte\Engine');
-		$latteEngineMock->shouldReceive('render')->andReturn('...');
-		$latteEngineMock->shouldReceive('renderToString')->andReturn('...');
-		$this->template = new Template($latteEngineMock);
+		$this->template = new Template(new Engine);
 	}
 
 
-	public function testSave()
+	public function testFileIsSavedWithContent()
 	{
-		$this->template->save(TEMP_DIR . '/dir/file.txt');
-		$this->assertFileExists(TEMP_DIR . '/dir/file.txt');
+		$this->template->setFile(__DIR__ . '/TemplateSource/template.latte');
+		$this->template->setParameters(['name' => 'World!']);
+		$this->template->save(TEMP_DIR . '/dir/hello-world.html');
+		$this->assertFileExists(TEMP_DIR . '/dir/hello-world.html');
+		$generatedContent = file_get_contents(TEMP_DIR . '/dir/hello-world.html');
+		$this->assertSame('Hello World!', trim($generatedContent));
 	}
 
 }

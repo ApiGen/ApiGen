@@ -1,7 +1,7 @@
 services:
 	# commands
-	- {class: ApiGen\Command\GenerateCommand, tags: [console.command]}
-	- {class: ApiGen\Command\SelfUpdateCommand, tags: [console.command]}
+	- ApiGen\Command\GenerateCommand
+	- ApiGen\Command\SelfUpdateCommand
 
 	# configuration
 	- ApiGen\Configuration\Configuration
@@ -44,23 +44,23 @@ services:
 	- ApiGen\Scanner\Scanner
 	- ApiGen\Generator\GeneratorQueue
 	# intentionally first to collect output from other generators
-	- {class: ApiGen\Generator\TemplateGenerators\ZipGenerator, tags: [template.generator]}
-	- {class: ApiGen\Generator\TemplateGenerators\CombinedGenerator, tags: [template.generator]}
-	- {class: ApiGen\Generator\TemplateGenerators\AnnotationGroupsGenerator, tags: [template.generator]}
-	- {class: ApiGen\Generator\TemplateGenerators\E404Generator, tags: [template.generator]}
-	- {class: ApiGen\Generator\TemplateGenerators\ElementListGenerator, tags: [template.generator]}
-	- {class: ApiGen\Generator\TemplateGenerators\OpensearchGenerator, tags: [template.generator]}
-	- {class: ApiGen\Generator\TemplateGenerators\OverviewGenerator, tags: [template.generator]}
-	- {class: ApiGen\Generator\TemplateGenerators\SitemapGenerator, tags: [template.generator]}
-	- {class: ApiGen\Generator\TemplateGenerators\SourceCodeGenerator, tags: [template.generator]}
-	- {class: ApiGen\Generator\TemplateGenerators\TreeGenerator, tags: [template.generator]}
-	- {class: ApiGen\Generator\TemplateGenerators\RobotsGenerator, tags: [template.generator]}
+	- ApiGen\Generator\TemplateGenerators\ZipGenerator
+	- ApiGen\Generator\TemplateGenerators\CombinedGenerator
+	- ApiGen\Generator\TemplateGenerators\AnnotationGroupsGenerator
+	- ApiGen\Generator\TemplateGenerators\E404Generator
+	- ApiGen\Generator\TemplateGenerators\ElementListGenerator
+	- ApiGen\Generator\TemplateGenerators\OpensearchGenerator
+	- ApiGen\Generator\TemplateGenerators\OverviewGenerator
+	- ApiGen\Generator\TemplateGenerators\SitemapGenerator
+	- ApiGen\Generator\TemplateGenerators\SourceCodeGenerator
+	- ApiGen\Generator\TemplateGenerators\TreeGenerator
+	- ApiGen\Generator\TemplateGenerators\RobotsGenerator
 	# elements
-	- {class: ApiGen\Generator\TemplateGenerators\ClassElementGenerator, tags: [template.generator]}
-	- {class: ApiGen\Generator\TemplateGenerators\ConstantElementGenerator, tags: [template.generator]}
-	- {class: ApiGen\Generator\TemplateGenerators\FunctionElementGenerator, tags: [template.generator]}
-	- {class: ApiGen\Generator\TemplateGenerators\NamespaceGenerator, tags: [template.generator]}
-	- {class: ApiGen\Generator\TemplateGenerators\PackageGenerator, tags: [template.generator]}
+	- ApiGen\Generator\TemplateGenerators\ClassElementGenerator
+	- ApiGen\Generator\TemplateGenerators\ConstantElementGenerator
+	- ApiGen\Generator\TemplateGenerators\FunctionElementGenerator
+	- ApiGen\Generator\TemplateGenerators\NamespaceGenerator
+	- ApiGen\Generator\TemplateGenerators\PackageGenerator
 	- ApiGen\Generator\TemplateGenerators\Loaders\NamespaceAndPackageLoader
 	- ApiGen\Generator\Markups\MarkdownMarkup
 	- Michelf\MarkdownExtra
@@ -72,14 +72,14 @@ services:
 	- ApiGen\Templating\Filters\Helpers\ElementLinkFactory
 	- ApiGen\Templating\Filters\Helpers\ElementUrlFactory
 	- ApiGen\Templating\Filters\Helpers\LinkBuilder
-	- {class: ApiGen\Templating\Filters\AnnotationFilters, tags: [latte.filter]}
-	- {class: ApiGen\Templating\Filters\PathFilters, tags: [latte.filter]}
-	- {class: ApiGen\Templating\Filters\PhpManualFilters, tags: [latte.filter]}
-	- {class: ApiGen\Templating\Filters\ResolverFilters, tags: [latte.filter]}
-	- {class: ApiGen\Templating\Filters\SourceFilters, tags: [latte.filter]}
-	- {class: ApiGen\Templating\Filters\UrlFilters, tags: [latte.filter]}
-	- {class: ApiGen\Templating\Filters\NamespaceAndPackageUrlFilters, tags: [latte.filter]}
-	- {class: ApiGen\Templating\Filters\ElementUrlFilters, tags: [latte.filter]}
+	- ApiGen\Templating\Filters\AnnotationFilters
+	- ApiGen\Templating\Filters\PathFilters
+	- ApiGen\Templating\Filters\PhpManualFilters
+	- ApiGen\Templating\Filters\ResolverFilters
+	- ApiGen\Templating\Filters\SourceFilters
+	- ApiGen\Templating\Filters\UrlFilters
+	- ApiGen\Templating\Filters\NamespaceAndPackageUrlFilters
+	- ApiGen\Templating\Filters\ElementUrlFilters
 
 	# theme
 	- ApiGen\Theme\ThemeResources
