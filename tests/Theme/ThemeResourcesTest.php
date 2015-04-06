@@ -3,6 +3,7 @@
 namespace ApiGen\Tests\Theme;
 
 use ApiGen\Theme\ThemeResources;
+use ApiGen\Utils\FileSystem;
 use Mockery;
 use PHPUnit_Framework_TestCase;
 
@@ -25,7 +26,7 @@ class ThemeResourcesTest extends PHPUnit_Framework_TestCase
 		]);
 		$this->prepareSources($sourceFile, $sourceDir);
 
-		$themeResources = new ThemeResources($configurationMock);
+		$themeResources = new ThemeResources($configurationMock, new FileSystem);
 		$themeResources->copyToDestination($destinationDir);
 
 		$this->assertFileExists($destinationDir . '/assets/file.txt');

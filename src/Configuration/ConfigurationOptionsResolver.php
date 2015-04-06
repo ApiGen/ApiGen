@@ -12,8 +12,8 @@ namespace ApiGen\Configuration;
 use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Configuration\Exceptions\ConfigurationException;
 use ApiGen\Configuration\Theme\ThemeConfigFactory;
-use ApiGen\FileSystem\FileSystem;
 use ApiGen\Theme\ThemeConfigPathResolver;
+use ApiGen\Utils\FileSystem;
 use ReflectionProperty;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -81,15 +81,22 @@ class ConfigurationOptionsResolver
 	 */
 	private $themeConfigPathResolver;
 
+	/**
+	 * @var FileSystem
+	 */
+	private $fileSystem;
+
 
 	public function __construct(
 		ThemeConfigFactory $themeConfigFactory,
 		OptionsResolverFactory $optionsResolverFactory,
-		ThemeConfigPathResolver $themeConfigPathResolver
+		ThemeConfigPathResolver $themeConfigPathResolver,
+		FileSystem $fileSystem
 	) {
 		$this->themeConfigFactory = $themeConfigFactory;
 		$this->optionsResolverFactory = $optionsResolverFactory;
 		$this->themeConfigPathResolver = $themeConfigPathResolver;
+		$this->fileSystem = $fileSystem;
 	}
 
 
@@ -191,7 +198,7 @@ class ConfigurationOptionsResolver
 				return array_unique($value);
 			},
 			CO::DESTINATION => function (Options $options, $value) {
-				return FileSystem::getAbsolutePath($value);
+				return $this->fileSystem->getAbsolutePath($value);
 			},
 			CO::BASE_URL => function (Options $options, $value) {
 				return rtrim($value, '/');
@@ -201,7 +208,7 @@ class ConfigurationOptionsResolver
 					$value = [$value];
 				}
 				foreach ($value as $key => $source) {
-					$value[$key] = FileSystem::getAbsolutePath($source);
+					$value[$key] = $this->fileSystem->getAbsolutePath($source);
 				}
 				return $value;
 			},
@@ -209,7 +216,7 @@ class ConfigurationOptionsResolver
 				return ! $options[CO::NO_SOURCE_CODE];
 			},
 			CO::TEMPLATE_CONFIG => function (Options $options, $value) {
-				return FileSystem::getAbsolutePath($value);
+				return $this->fileSystem->getAbsolutePath($value);
 			}
 		]);
 	}

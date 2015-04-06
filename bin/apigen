@@ -6,7 +6,8 @@ require __DIR__ . '/bootstrap.php';
 
 // Create temp dir
 $tempDir = sys_get_temp_dir() . '/_apigen';
-ApiGen\FileSystem\FileSystem::purgeDir($tempDir);
+$fileSystem = new ApiGen\Utils\FileSystem;
+$fileSystem->purgeDir($tempDir);
 
 
 // Init debugger
@@ -16,9 +17,9 @@ if (isset($_SERVER['argv']) && ($tmp = array_search('--debug', $_SERVER['argv'],
 
 } else {
 	Tracy\Debugger::enable(Tracy\Debugger::PRODUCTION);
-	Tracy\Debugger::$onFatalError[] = function() use ($tempDir) {
+	Tracy\Debugger::$onFatalError[] = function() use ($fileSystem, $tempDir) {
 		echo "For more information turn on the debug mode using the --debug option.\n";
-		ApiGen\FileSystem\FileSystem::deleteDir($tempDir);
+		$fileSystem->deleteDir($tempDir);
 	};
 }
 
@@ -37,4 +38,4 @@ $application->run();
 
 
 // Remove temp data
-ApiGen\FileSystem\FileSystem::deleteDir($tempDir);
+$fileSystem->deleteDir($tempDir);
