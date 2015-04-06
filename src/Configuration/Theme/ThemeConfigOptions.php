@@ -16,7 +16,6 @@ class ThemeConfigOptions
 	const OVERVIEW = 'overview';
 	const COMBINED = 'combined';
 	const ELEMENT_LIST = 'elementlist';
-	const E404 = '404';
 	const PACKAGE = 'package';
 	const T_NAMESPACE = 'namespace';
 	const T_CLASS = 'class';

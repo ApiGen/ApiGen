@@ -45,10 +45,6 @@ class ThemeConfigOptionsResolver extends Nette\Object
 				'filename' => 'elementlist.js',
 				'template' => 'elementlist.js.latte'
 			],
-			TCO::E404 => [
-				'filename' => '404.html',
-				'template' => '404.latte'
-			],
 			TCO::PACKAGE => [
 				'filename' => 'package-%s.html',
 				'template' => 'package.latte'

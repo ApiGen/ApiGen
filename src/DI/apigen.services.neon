@@ -47,7 +47,6 @@ services:
 	- ApiGen\Generator\TemplateGenerators\ZipGenerator
 	- ApiGen\Generator\TemplateGenerators\CombinedGenerator
 	- ApiGen\Generator\TemplateGenerators\AnnotationGroupsGenerator
-	- ApiGen\Generator\TemplateGenerators\E404Generator
 	- ApiGen\Generator\TemplateGenerators\ElementListGenerator
 	- ApiGen\Generator\TemplateGenerators\OpensearchGenerator
 	- ApiGen\Generator\TemplateGenerators\OverviewGenerator
