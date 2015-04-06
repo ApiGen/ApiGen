@@ -84,10 +84,6 @@ class ThemeConfigOptionsResolver extends Nette\Object
 			TCO::OPENSEARCH => [
 				'filename' => 'opensearch.xml',
 				'template' => 'opensearch.xml.latte'
-			],
-			TCO::ROBOTS => [
-				'filename' => 'robots.txt',
-				'template' => 'robots.txt.latte'
 			]
 		],
 		TCO::TEMPLATES_PATH => ''

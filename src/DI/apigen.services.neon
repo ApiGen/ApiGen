@@ -53,7 +53,6 @@ services:
 	- ApiGen\Generator\TemplateGenerators\SitemapGenerator
 	- ApiGen\Generator\TemplateGenerators\SourceCodeGenerator
 	- ApiGen\Generator\TemplateGenerators\TreeGenerator
-	- ApiGen\Generator\TemplateGenerators\RobotsGenerator
 	# elements
 	- ApiGen\Generator\TemplateGenerators\ClassElementGenerator
 	- ApiGen\Generator\TemplateGenerators\ConstantElementGenerator
