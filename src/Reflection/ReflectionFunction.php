@@ -9,7 +9,6 @@
 
 namespace ApiGen\Reflection;
 
-use ApiGen\Configuration\ConfigurationOptions as CO;
 use TokenReflection;
 
 
@@ -26,25 +25,6 @@ class ReflectionFunction extends ReflectionFunctionBase
 		}
 
 		return TRUE;
-	}
-
-
-	/**
-	 * @return bool
-	 */
-	public function isDocumented()
-	{
-		if ($this->isDocumented === NULL && parent::isDocumented()) {
-			$fileName = $this->reflection->getFilename();
-			$skipDocPath = $this->configuration->getOption(CO::SKIP_DOC_PATH);
-			foreach ($skipDocPath as $mask) {
-				if (fnmatch($mask, $fileName, FNM_NOESCAPE)) {
-					$this->isDocumented = FALSE;
-					break;
-				}
-			}
-		}
-		return $this->isDocumented;
 	}
 
 }
