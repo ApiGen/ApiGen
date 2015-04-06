@@ -9,6 +9,7 @@
 
 namespace ApiGen\DI;
 
+use ApiGen\Parser\Broker\Backend;
 use Nette\DI\CompilerExtension;
 use TokenReflection\Broker;
 
@@ -23,10 +24,10 @@ class ParserExtension extends CompilerExtension
 		$this->compiler->parseServices($builder, $config);
 
 		$backend = $builder->addDefinition($this->prefix('backend'))
-			->setClass('ApiGen\Parser\Broker\Backend');
+			->setClass(Backend::class);
 
 		$builder->addDefinition($this->prefix('broker'))
-			->setClass('TokenReflection\Broker')
+			 ->setClass(Broker::class)
 			->setArguments([
 				$backend,
 				Broker::OPTION_DEFAULT & ~(Broker::OPTION_PARSE_FUNCTION_BODY | Broker::OPTION_SAVE_TOKEN_STREAM)

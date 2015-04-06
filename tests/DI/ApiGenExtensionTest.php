@@ -2,8 +2,15 @@
 
 namespace ApiGen\Tests\DI;
 
+use ApiGen\Command\GenerateCommand;
+use ApiGen\Console\Application;
 use ApiGen\DI\ApiGenExtension;
+use ApiGen\Generator\GeneratorQueue;
+use ApiGen\Generator\Resolvers\ElementResolver;
+use ApiGen\Generator\TemplateGenerators\ClassElementGenerator;
+use ApiGen\Templating\Filters\AnnotationFilters;
 use ApiGen\Tests\MethodInvoker;
+use Latte\Engine;
 use Nette\DI\Compiler;
 use Nette\DI\ContainerBuilder;
 use PHPUnit_Framework_TestCase;
@@ -23,11 +30,11 @@ class ApiGenExtensionTest extends PHPUnit_Framework_TestCase
 		$builder = $extension->getContainerBuilder();
 		$builder->prepareClassList();
 
-		$definition = $builder->getDefinition($builder->getByType('ApiGen\Generator\GeneratorQueue'));
-		$this->assertSame('ApiGen\Generator\GeneratorQueue', $definition->getClass());
+		$definition = $builder->getDefinition($builder->getByType(GeneratorQueue::class));
+		$this->assertSame(GeneratorQueue::class, $definition->getClass());
 
-		$definition = $builder->getDefinition($builder->getByType('ApiGen\Generator\Resolvers\ElementResolver'));
-		$this->assertSame('ApiGen\Generator\Resolvers\ElementResolver', $definition->getClass());
+		$definition = $builder->getDefinition($builder->getByType(ElementResolver::class));
+		$this->assertSame(ElementResolver::class, $definition->getClass());
 
 		return $extension;
 	}
@@ -41,8 +48,8 @@ class ApiGenExtensionTest extends PHPUnit_Framework_TestCase
 		$builder = $extension->getContainerBuilder();
 		$builder->prepareClassList();
 
-		$definition = $builder->getDefinition($builder->getByType('Latte\Engine'));
-		$this->assertSame('Latte\Engine', $definition->getClass());
+		$definition = $builder->getDefinition($builder->getByType(Engine::class));
+		$this->assertSame(Engine::class, $definition->getClass());
 
 		$this->assertSame(
 			__DIR__ . '/../temp/cache/latte',
@@ -60,12 +67,12 @@ class ApiGenExtensionTest extends PHPUnit_Framework_TestCase
 
 		$builder = $extension->getContainerBuilder();
 
-		$definition = $builder->getDefinition($builder->getByType('ApiGen\Console\Application'));
-		$this->assertSame('ApiGen\Console\Application', $definition->getClass());
+		$definition = $builder->getDefinition($builder->getByType(Application::class));
+		$this->assertSame(Application::class, $definition->getClass());
 
 		$commandService = $definition->getSetup()[1]->arguments[0];
 		$command = $builder->getDefinition($builder->getServiceName($commandService));
-		$this->assertSame('ApiGen\Command\GenerateCommand', $command->getClass());
+		$this->assertSame(GenerateCommand::class, $command->getClass());
 	}
 
 
@@ -86,12 +93,12 @@ class ApiGenExtensionTest extends PHPUnit_Framework_TestCase
 
 		MethodInvoker::callMethodOnObject($extension, 'setupTemplatingFilters');
 
-		$definition = $builder->getDefinition($builder->getByType('Latte\Engine'));
-		$this->assertSame('Latte\Engine', $definition->getClass());
+		$definition = $builder->getDefinition($builder->getByType(Engine::class));
+		$this->assertSame(Engine::class, $definition->getClass());
 
 		$filterService = $definition->getSetup()[1]->arguments[1][0];
 		$command = $builder->getDefinition($builder->getServiceName($filterService));
-		$this->assertSame('ApiGen\Templating\Filters\AnnotationFilters', $command->getClass());
+		$this->assertSame(AnnotationFilters::class, $command->getClass());
 	}
 
 
@@ -105,12 +112,12 @@ class ApiGenExtensionTest extends PHPUnit_Framework_TestCase
 
 		MethodInvoker::callMethodOnObject($extension, 'setupGeneratorQueue');
 
-		$definition = $builder->getDefinition($builder->getByType('ApiGen\Generator\GeneratorQueue'));
-		$this->assertSame('ApiGen\Generator\GeneratorQueue', $definition->getClass());
+		$definition = $builder->getDefinition($builder->getByType(GeneratorQueue::class));
+		$this->assertSame(GeneratorQueue::class, $definition->getClass());
 
 		$filterService = $definition->getSetup()[1]->arguments[0];
 		$command = $builder->getDefinition($builder->getServiceName($filterService));
-		$this->assertSame('ApiGen\Generator\TemplateGenerators\ClassElementGenerator', $command->getClass());
+		$this->assertSame(ClassElementGenerator::class, $command->getClass());
 	}
 
 

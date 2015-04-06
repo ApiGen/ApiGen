@@ -2,11 +2,14 @@
 
 namespace ApiGen\Tests\Reflection;
 
+use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Parser\Broker\Backend;
+use ApiGen\Parser\ParserResult;
 use ApiGen\Reflection\ReflectionFunction;
 use ApiGen\Reflection\ReflectionFunctionBase;
 use ApiGen\Reflection\ReflectionParameter;
+use ApiGen\Reflection\ReflectionParameterMagic;
 use ApiGen\Reflection\TokenReflection\ReflectionFactory;
 use ApiGen\Tests\MethodInvoker;
 use InvalidArgumentException;
@@ -57,34 +60,30 @@ class ReflectionParameterBaseTest extends PHPUnit_Framework_TestCase
 
 		/** @var ReflectionParameter $parameter */
 		$parameter = $parameters[0];
-		$this->assertInstanceOf('ApiGen\Reflection\ReflectionParameter', $parameter);
+		$this->assertInstanceOf(ReflectionParameter::class, $parameter);
 	}
 
 
 	public function testGetParameter()
 	{
 		$parameter = $this->reflectionFunction->getParameter('arg');
-		$this->assertInstanceOf('ApiGen\Reflection\ReflectionParameter', $parameter);
+		$this->assertInstanceOf(ReflectionParameter::class, $parameter);
 
 		$parameter = $this->reflectionFunction->getParameter(0);
-		$this->assertInstanceOf('ApiGen\Reflection\ReflectionParameter', $parameter);
+		$this->assertInstanceOf(ReflectionParameter::class, $parameter);
 	}
 
 
-	/**
-	 * @expectedException InvalidArgumentException
-	 */
 	public function testGetParameterNotExistingName()
 	{
+		$this->setExpectedException(InvalidArgumentException::class);
 		$this->reflectionFunction->getParameter('notHere');
 	}
 
 
-	/**
-	 * @expectedException InvalidArgumentException
-	 */
 	public function testGetParameterNotExistingPosition()
 	{
+		$this->setExpectedException(InvalidArgumentException::class);
 		$this->reflectionFunction->getParameter(1);
 	}
 
@@ -109,8 +108,8 @@ class ReflectionParameterBaseTest extends PHPUnit_Framework_TestCase
 		$this->assertCount(2, $parameters);
 		$this->assertSame(2, $reflectionFunction->getNumberOfParameters());
 
-		$this->assertInstanceOf('ApiGen\Reflection\ReflectionParameterMagic', $parameters[0]);
-		$this->assertInstanceOf('ApiGen\Reflection\ReflectionParameterMagic', $parameters[1]);
+		$this->assertInstanceOf(ReflectionParameterMagic::class, $parameters[0]);
+		$this->assertInstanceOf(ReflectionParameterMagic::class, $parameters[1]);
 	}
 
 
@@ -132,7 +131,7 @@ class ReflectionParameterBaseTest extends PHPUnit_Framework_TestCase
 	 */
 	private function getReflectionFactory()
 	{
-		$parserResultMock = Mockery::mock('ApiGen\Parser\ParserResult');
+		$parserResultMock = Mockery::mock(ParserResult::class);
 		return new ReflectionFactory($this->getConfigurationMock(), $parserResultMock);
 	}
 
@@ -142,7 +141,7 @@ class ReflectionParameterBaseTest extends PHPUnit_Framework_TestCase
 	 */
 	private function getConfigurationMock()
 	{
-		$configurationMock = Mockery::mock('ApiGen\Configuration\Configuration');
+		$configurationMock = Mockery::mock(Configuration::class);
 		$configurationMock->shouldReceive('getOption')->with('php')->andReturn(FALSE);
 		$configurationMock->shouldReceive('getOption')->with('deprecated')->andReturn(FALSE);
 		$configurationMock->shouldReceive('getOption')->with('internal')->andReturn(FALSE);

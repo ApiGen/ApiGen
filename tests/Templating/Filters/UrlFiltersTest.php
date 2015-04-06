@@ -3,7 +3,10 @@
 namespace ApiGen\Tests\Templating\Filters;
 
 use ApiGen\Configuration\ConfigurationOptions as CO;
+use ApiGen\Generator\SourceCodeHighlighter\SourceCodeHighlighter;
 use ApiGen\Reflection\ReflectionClass;
+use ApiGen\Reflection\ReflectionElement;
+use ApiGen\Templating\Filters\Helpers\ElementLinkFactory;
 use ApiGen\Templating\Filters\Helpers\LinkBuilder;
 use ApiGen\Templating\Filters\UrlFilters;
 use ApiGen\Tests\MethodInvoker;
@@ -25,13 +28,13 @@ class UrlFiltersTest extends PHPUnit_Framework_TestCase
 	protected function setUp()
 	{
 		$markupMock = $this->getMarkupMock();
-		$sourceCodeHighlighterMock = Mockery::mock('ApiGen\Generator\SourceCodeHighlighter\SourceCodeHighlighter');
+		$sourceCodeHighlighterMock = Mockery::mock(SourceCodeHighlighter::class);
 		$sourceCodeHighlighterMock->shouldReceive('highlight')->andReturnUsing(function ($arg) {
 			return 'Highlighted: ' . $arg;
 		});
 		$elementResolverMock = $this->getElementResolverMock();
 
-		$elementLinkFactoryMock = Mockery::mock('ApiGen\Templating\Filters\Helpers\ElementLinkFactory');
+		$elementLinkFactoryMock = Mockery::mock(ElementLinkFactory::class);
 		$elementLinkFactoryMock->shouldReceive('createForElement')->andReturnUsing(
 			function (ReflectionClass $reflectionClass, $classes = '') {
 				$name = $reflectionClass->getName();
@@ -51,7 +54,7 @@ class UrlFiltersTest extends PHPUnit_Framework_TestCase
 
 	public function testDoc()
 	{
-		$reflectionClassMock = Mockery::mock('ApiGen\Reflection\ReflectionClass');
+		$reflectionClassMock = Mockery::mock(ReflectionClass::class);
 		$this->assertSame('Markupped: ...', $this->urlFilters->doc('...', $reflectionClassMock, TRUE));
 		$this->assertSame('Markupped line: ...', $this->urlFilters->doc('...', $reflectionClassMock));
 	}
@@ -84,7 +87,7 @@ class UrlFiltersTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testResolveLinkAndSeeAnnotation($docBlock, $expectedLink)
 	{
-		$reflectionElementMock = Mockery::mock('ApiGen\Reflection\ReflectionElement');
+		$reflectionElementMock = Mockery::mock(ReflectionElement::class);
 		$this->assertSame(
 			$expectedLink,
 			MethodInvoker::callMethodOnObject($this->urlFilters, 'resolveLinkAndSeeAnnotation', [

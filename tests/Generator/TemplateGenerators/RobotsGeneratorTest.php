@@ -25,8 +25,8 @@ class RobotsGeneratorTest extends ContainerAwareTestCase
 
 	protected function setUp()
 	{
-		$this->configuration = $this->container->getByType('ApiGen\Configuration\Configuration');
-		$this->robotsGenerator = $this->container->getByType('ApiGen\Generator\TemplateGenerators\RobotsGenerator');
+		$this->configuration = $this->container->getByType(Configuration::class);
+		$this->robotsGenerator = $this->container->getByType(RobotsGenerator::class);
 	}
 
 

@@ -2,6 +2,7 @@
 
 namespace ApiGen\Tests\Templating\Filters;
 
+use ApiGen\Generator\Resolvers\RelativePathResolver;
 use ApiGen\Templating\Filters\PathFilters;
 use Mockery;
 use PHPUnit_Framework_TestCase;
@@ -18,7 +19,7 @@ class PathFiltersTest extends PHPUnit_Framework_TestCase
 
 	protected function setUp()
 	{
-		$relativePathResolverMock = Mockery::mock('ApiGen\Generator\Resolvers\RelativePathResolver');
+		$relativePathResolverMock = Mockery::mock(RelativePathResolver::class);
 		$relativePathResolverMock->shouldReceive('getRelativePath')->andReturnUsing(function ($arg) {
 			return '../' . $arg;
 		});

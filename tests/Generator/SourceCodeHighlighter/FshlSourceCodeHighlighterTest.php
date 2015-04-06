@@ -2,13 +2,10 @@
 
 namespace ApiGen\Tests\Generator\SourceCodeHighlighter;
 
-use ApiGen\Generator\GeneratorQueue;
 use ApiGen\Generator\SourceCodeHighlighter\FshlSourceCodeHighlighter;
-use ApiGen\Tests\MethodInvoker;
 use FSHL\Highlighter;
 use FSHL\Lexer\Php;
 use FSHL\Output\Html;
-use Mockery;
 use PHPUnit_Framework_TestCase;
 
 

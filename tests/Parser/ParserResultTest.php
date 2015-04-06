@@ -4,6 +4,7 @@ namespace ApiGen\Tests\Parser;
 
 use ApiGen\Parser\Elements\Elements;
 use ApiGen\Parser\ParserResult;
+use ApiGen\Reflection\ReflectionElement;
 use ApiGen\Tests\MethodInvoker;
 use ArrayObject;
 use Exception;
@@ -29,13 +30,13 @@ class ParserResultTest extends PHPUnit_Framework_TestCase
 
 	public function testDefaultsOnConstruct()
 	{
-		$this->assertInstanceOf('ArrayObject', $this->parserResult->getClasses());
-		$this->assertInstanceOf('ArrayObject', $this->parserResult->getConstants());
-		$this->assertInstanceOf('ArrayObject', $this->parserResult->getFunctions());
-		$this->assertInstanceOf('ArrayObject', PHPUnit_Framework_Assert::getObjectAttribute(
+		$this->assertInstanceOf(ArrayObject::class, $this->parserResult->getClasses());
+		$this->assertInstanceOf(ArrayObject::class, $this->parserResult->getConstants());
+		$this->assertInstanceOf(ArrayObject::class, $this->parserResult->getFunctions());
+		$this->assertInstanceOf(ArrayObject::class, PHPUnit_Framework_Assert::getObjectAttribute(
 			$this->parserResult, 'internalClasses'
 		));
-		$this->assertInstanceOf('ArrayObject', PHPUnit_Framework_Assert::getObjectAttribute(
+		$this->assertInstanceOf(ArrayObject::class, PHPUnit_Framework_Assert::getObjectAttribute(
 			$this->parserResult, 'tokenizedClasses'
 		));
 	}
@@ -85,11 +86,9 @@ class ParserResultTest extends PHPUnit_Framework_TestCase
 	}
 
 
-	/**
-	 * @expectedException Exception
-	 */
 	public function testGetElementsByTypeWithUnknownType()
 	{
+		$this->setExpectedException(Exception::class);
 		$this->parserResult->getElementsByType('elements');
 	}
 
@@ -130,10 +129,12 @@ class ParserResultTest extends PHPUnit_Framework_TestCase
 	 */
 	private function getReflectionElementsArrayObject()
 	{
-		$reflectionElementMock = Mockery::mock('ApiGen\Reflection\ReflectionElement');
+		$reflectionElementMock = Mockery::mock(ReflectionElement::class);
 		$reflectionElementMock->shouldReceive('isDocumented')->andReturn(TRUE);
-		$reflectionElementMock2 = Mockery::mock('ApiGen\Reflection\ReflectionElement');
+
+		$reflectionElementMock2 = Mockery::mock(ReflectionElement::class);
 		$reflectionElementMock2->shouldReceive('isDocumented')->andReturn(FALSE);
+
 		$reflectionElements = new ArrayObject([$reflectionElementMock, $reflectionElementMock2]);
 		return $reflectionElements;
 	}

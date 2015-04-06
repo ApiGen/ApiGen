@@ -3,6 +3,7 @@
 namespace ApiGen\Tests\Generator\Markups;
 
 use ApiGen\Generator\Markups\MarkdownMarkup;
+use ApiGen\Generator\SourceCodeHighlighter\SourceCodeHighlighter;
 use Michelf\MarkdownExtra;
 use Mockery;
 use PHPUnit_Framework_TestCase;
@@ -19,7 +20,7 @@ class MarkdownMarkupTest extends PHPUnit_Framework_TestCase
 
 	protected function setUp()
 	{
-		$highlighterMock = Mockery::mock('ApiGen\Generator\SourceCodeHighlighter\SourceCodeHighlighter');
+		$highlighterMock = Mockery::mock(SourceCodeHighlighter::class);
 		$highlighterMock->shouldReceive('highlight')
 			->andReturnUsing(function ($args) {
 				return $args;

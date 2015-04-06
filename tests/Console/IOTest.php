@@ -7,6 +7,8 @@ use Mockery;
 use PHPUnit_Framework_TestCase;
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Helper\QuestionHelper;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 
 class IOTest extends PHPUnit_Framework_TestCase
@@ -28,10 +30,10 @@ class IOTest extends PHPUnit_Framework_TestCase
 
 	public function testSetInputGetInput()
 	{
-		$inputMock = Mockery::mock('Symfony\Component\Console\Input\InputInterface');
+		$inputMock = Mockery::mock(InputInterface::class);
 		$this->io->setInput($inputMock);
 		$this->assertInstanceOf(
-			'Symfony\Component\Console\Input\InputInterface',
+			InputInterface::class,
 			$this->io->getInput()
 		);
 	}
@@ -39,18 +41,15 @@ class IOTest extends PHPUnit_Framework_TestCase
 
 	public function testSetOutputGetOutput()
 	{
-		$outputMock = Mockery::mock('Symfony\Component\Console\Output\OutputInterface');
+		$outputMock = Mockery::mock(OutputInterface::class);
 		$this->io->setOutput($outputMock);
-		$this->assertInstanceOf(
-			'Symfony\Component\Console\Output\OutputInterface',
-			$this->io->getOutput()
-		);
+		$this->assertInstanceOf(OutputInterface::class, $this->io->getOutput());
 	}
 
 
 	public function testWriteln()
 	{
-		$outputMock = Mockery::mock('Symfony\Component\Console\Output\OutputInterface');
+		$outputMock = Mockery::mock(OutputInterface::class);
 		$outputMock->shouldReceive('writeln')->andReturnUsing(function ($args) {
 			return $args;
 		});

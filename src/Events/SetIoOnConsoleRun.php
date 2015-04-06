@@ -10,6 +10,7 @@
 namespace ApiGen\Events;
 
 use ApiGen\Console;
+use ApiGen\Console\Application;
 use Kdyby\Events\Subscriber;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -35,7 +36,7 @@ class SetIoOnConsoleRun implements Subscriber
 	 */
 	public function getSubscribedEvents()
 	{
-		return ['ApiGen\Console\Application::onRun'];
+		return [Application::class . '::onRun'];
 	}
 
 

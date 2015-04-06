@@ -2,6 +2,7 @@
 
 namespace ApiGen\Tests\Generator\Resolvers;
 
+use ApiGen\Configuration\Configuration;
 use ApiGen\Generator\Resolvers\RelativePathResolver;
 use InvalidArgumentException;
 use Mockery;
@@ -13,7 +14,7 @@ class RelativePathResolverTest extends PHPUnit_Framework_TestCase
 
 	public function testGetRelativePath()
 	{
-		$configuration = Mockery::mock('ApiGen\Configuration\Configuration');
+		$configuration = Mockery::mock(Configuration::class);
 		$configuration->shouldReceive('getOption')->with('source')->andReturn([TEMP_DIR]);
 		$relativePathResolver = new RelativePathResolver($configuration);
 
@@ -27,7 +28,7 @@ class RelativePathResolverTest extends PHPUnit_Framework_TestCase
 
 	public function testGetRelativePathWithWindowsPath()
 	{
-		$configuration = Mockery::mock('ApiGen\Configuration\Configuration');
+		$configuration = Mockery::mock(Configuration::class);
 		$configuration->shouldReceive('getOption')->with('source')->andReturn(['C:\some\dir']);
 		$relativePathResolver = new RelativePathResolver($configuration);
 
@@ -36,15 +37,13 @@ class RelativePathResolverTest extends PHPUnit_Framework_TestCase
 	}
 
 
-	/**
-	 * @expectedException InvalidArgumentException
-	 */
 	public function testGetRelativePathInvalid()
 	{
-		$configuration = Mockery::mock('ApiGen\Configuration\Configuration');
+		$configuration = Mockery::mock(Configuration::class);
 		$configuration->shouldReceive('getOption')->with('source')->andReturn([TEMP_DIR]);
 		$relativePathResolver = new RelativePathResolver($configuration);
 
+		$this->setExpectedException(InvalidArgumentException::class);
 		$relativePathResolver->getRelativePath('/var/dir/some-strange-file.txt');
 	}
 
@@ -54,7 +53,7 @@ class RelativePathResolverTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testGetRelativePathWithSourceEndingSlash()
 	{
-		$configuration = Mockery::mock('ApiGen\Configuration\Configuration');
+		$configuration = Mockery::mock(Configuration::class);
 		$configuration->shouldReceive('getOption')->with('source')->once()->andReturn(['ProjectBeta']);
 		$configuration->shouldReceive('getOption')->with('source')->twice()->andReturn(['ProjectBeta/']);
 		$relativePathResolver = new RelativePathResolver($configuration);

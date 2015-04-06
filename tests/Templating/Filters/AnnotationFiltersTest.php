@@ -2,6 +2,7 @@
 
 namespace ApiGen\Tests\Templating\Filters;
 
+use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Templating\Filters\AnnotationFilters;
 use Mockery;
@@ -19,7 +20,7 @@ class AnnotationFiltersTest extends PHPUnit_Framework_TestCase
 
 	protected function setUp()
 	{
-		$configurationMock = Mockery::mock('ApiGen\Configuration\Configuration');
+		$configurationMock = Mockery::mock(Configuration::class);
 		$configurationMock->shouldReceive('getOption')->with(CO::INTERNAL)->andReturn(FALSE);
 		$configurationMock->shouldReceive('getOption')->with(CO::TODO)->andReturn(FALSE);
 		$elementResolverMock = Mockery::mock('ApiGen\Generator\Resolvers\ElementResolver');

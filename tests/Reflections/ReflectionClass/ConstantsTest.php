@@ -2,6 +2,7 @@
 
 namespace ApiGen\Tests\Reflections\ReflectionClass;
 
+use ApiGen\Reflection\ReflectionConstant;
 use InvalidArgumentException;
 
 
@@ -29,7 +30,7 @@ class ConstantsTest extends TestCase
 
 	public function testGetConstant()
 	{
-		$this->assertInstanceOf('ApiGen\Reflection\ReflectionConstant', $this->reflectionClass->getConstant('LEVEL'));
+		$this->assertInstanceOf(ReflectionConstant::class, $this->reflectionClass->getConstant('LEVEL'));
 	}
 
 
@@ -41,27 +42,20 @@ class ConstantsTest extends TestCase
 
 	public function testGetOwnConstant()
 	{
-		$this->assertInstanceOf(
-			'ApiGen\Reflection\ReflectionConstant',
-			$this->reflectionClass->getOwnConstant('LEVEL')
-		);
+		$this->assertInstanceOf(ReflectionConstant::class, $this->reflectionClass->getOwnConstant('LEVEL'));
 	}
 
 
-	/**
-	 * @expectedException InvalidArgumentException
-	 */
 	public function testGetOwnConstantNonExisting()
 	{
+		$this->setExpectedException(InvalidArgumentException::class);
 		$this->reflectionClass->getOwnConstant('NON_EXISTING');
 	}
 
 
-	/**
-	 * @expectedException InvalidArgumentException
-	 */
 	public function testGetConstantNonExisting()
 	{
+		$this->setExpectedException(InvalidArgumentException::class);
 		$this->reflectionClass->getConstant('NON_EXISTING');
 	}
 
