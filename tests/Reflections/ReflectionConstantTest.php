@@ -109,7 +109,7 @@ class ReflectionConstantTest extends PHPUnit_Framework_TestCase
 
 	public function testIsDocumented()
 	{
-		$this->assertFalse($this->constantReflection->isDocumented());
+		$this->assertTrue($this->constantReflection->isDocumented());
 		$this->assertTrue($this->constantReflectionInClass->isDocumented());
 	}
 

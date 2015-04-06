@@ -126,9 +126,6 @@ class GenerateCommand extends Command
 				'Elements with this name prefix will be first in tree.')
 			->addOption(CO::INTERNAL, NULL, InputOption::VALUE_NONE, 'Include elements marked as @internal.')
 			->addOption(CO::PHP, NULL, InputOption::VALUE_NONE, 'Generate documentation for PHP internal classes.')
-			->addOption(CO::SKIP_DOC_PATH, NULL, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
-				'Files matching this mask will be included in class tree,'
-				. ' but will not create a link to their documentation.')
 			->addOption(CO::NO_SOURCE_CODE, NULL, InputOption::VALUE_NONE,
 				'Do not generate highlighted source code for elements.')
 			->addOption(CO::TEMPLATE_THEME, NULL, InputOption::VALUE_REQUIRED, 'ApiGen template theme name.', 'default')
@@ -143,7 +140,10 @@ class GenerateCommand extends Command
 			 * @deprecated since version 4.2, to be removed in 5.0
 			 */
 			->addOption('charset', NULL, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
-				'Charset of scanned files (deprecated, only present for BC).');
+				'Charset of scanned files (deprecated, only present for BC).')
+			->addOption('skip-doc-path', NULL, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
+				'Files matching this mask will be included in class tree,'
+				. ' but will not create a link to their documentation (deprecated, only present for BC).');
 	}
 
 
@@ -283,6 +283,12 @@ class GenerateCommand extends Command
 		if (isset($options['charset']) && $options['charset']) {
 			$this->io->writeln('<error>You are using the deprecated option "charset". UTF-8 is now standard.</error>');
 		}
+
+		if (isset($options['skipDocPath']) && $options['skipDocPath']) {
+			$this->io->writeln(
+				'<error>You are using the deprecated option "skipDocPath". Use "exclude" instead.</error>'
+			);
+		}
 	}
 
 
@@ -293,7 +299,7 @@ class GenerateCommand extends Command
 	 */
 	private function unsetDeprecatedOptions(array $options)
 	{
-		unset($options['charset']);
+		unset($options['charset'], $options['skipDocPath']);
 		return $options;
 	}
 
