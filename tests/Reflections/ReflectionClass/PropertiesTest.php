@@ -2,6 +2,7 @@
 
 namespace ApiGen\Tests\Reflections\ReflectionClass;
 
+use ApiGen\Reflection\ReflectionProperty;
 use InvalidArgumentException;
 
 
@@ -10,18 +11,13 @@ class PropertiesTest extends TestCase
 
 	public function testGetProperty()
 	{
-		$this->assertInstanceOf(
-			'ApiGen\Reflection\ReflectionProperty',
-			$this->reflectionClass->getProperty('publicProperty')
-		);
+		$this->assertInstanceOf(ReflectionProperty::class, $this->reflectionClass->getProperty('publicProperty'));
 	}
 
 
-	/**
-	 * @expectedException InvalidArgumentException
-	 */
 	public function testGetPropertyNonExisting()
 	{
+		$this->setExpectedException(InvalidArgumentException::class);
 		$this->reflectionClass->getProperty('notPresentProperty');
 	}
 

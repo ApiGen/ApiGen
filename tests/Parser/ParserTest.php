@@ -30,9 +30,9 @@ class ParserTest extends ContainerAwareTestCase
 
 	protected function setUp()
 	{
-		$this->parser = $this->container->getByType('ApiGen\Parser\Parser');
-		$this->parserResult = $this->container->getByType('ApiGen\Parser\ParserResult');
-		$this->configuration = $this->container->getByType('ApiGen\Configuration\Configuration');
+		$this->parser = $this->container->getByType(Parser::class);
+		$this->parserResult = $this->container->getByType(ParserResult::class);
+		$this->configuration = $this->container->getByType(Configuration::class);
 		$this->setupConfigDefaults(); // required by Broker
 	}
 

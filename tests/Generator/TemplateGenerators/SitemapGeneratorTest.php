@@ -23,8 +23,8 @@ class SitemapGeneratorTest extends ContainerAwareTestCase
 
 	protected function setUp()
 	{
-		$this->configuration = $this->container->getByType('ApiGen\Configuration\Configuration');
-		$this->sitemapGenerator = $this->container->getByType('ApiGen\Generator\TemplateGenerators\SitemapGenerator');
+		$this->configuration = $this->container->getByType(Configuration::class);
+		$this->sitemapGenerator = $this->container->getByType(SitemapGenerator::class);
 	}
 
 

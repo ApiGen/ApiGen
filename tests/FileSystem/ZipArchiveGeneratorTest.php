@@ -17,7 +17,7 @@ class ZipArchiveGeneratorTest extends ContainerAwareTestCase
 
 	protected function setUp()
 	{
-		$this->zipArchiveGenerator = $this->container->getByType('ApiGen\FileSystem\ZipArchiveGenerator');
+		$this->zipArchiveGenerator = $this->container->getByType(ZipArchiveGenerator::class);
 		if ( ! file_exists($this->destinationDir)) {
 			mkdir($this->destinationDir);
 		}

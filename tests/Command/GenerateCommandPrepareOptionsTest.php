@@ -2,9 +2,9 @@
 
 namespace ApiGen\Tests\Command;
 
-use ApiGen;
 use ApiGen\Command\GenerateCommand;
 use ApiGen\Configuration\ConfigurationOptions as CO;
+use ApiGen\Configuration\Exceptions\ConfigurationException;
 use ApiGen\Tests\ContainerAwareTestCase;
 use ApiGen\Tests\MethodInvoker;
 
@@ -20,28 +20,23 @@ class GenerateCommandPrepareOptionsTest extends ContainerAwareTestCase
 
 	protected function setUp()
 	{
-		$this->generateCommand = $this->container->getByType('ApiGen\Command\GenerateCommand');
+		$this->generateCommand = $this->container->getByType(GenerateCommand::class);
 	}
 
 
-	/**
-	 * @expectedException ApiGen\Configuration\Exceptions\ConfigurationException
-	 * @expectedExceptionMessageRegExp /Destination is not set/
-	 */
 	public function testPrepareOptionsDestinationNotSet()
 	{
+		$this->setExpectedException(ConfigurationException::class, 'Destination is not set');
 		MethodInvoker::callMethodOnObject($this->generateCommand, 'prepareOptions', [[
 			'config' => '...'
 		]]);
 	}
 
 
-	/**
-	 * @expectedException ApiGen\Configuration\Exceptions\ConfigurationException
-	 * @expectedExceptionMessageRegExp /Source is not set/
-	 */
 	public function testPrepareOptionsSourceNotSet()
 	{
+
+		$this->setExpectedException(ConfigurationException::class, 'Source is not set');
 		MethodInvoker::callMethodOnObject($this->generateCommand, 'prepareOptions', [[
 			'config' => '...',
 			'destination' => TEMP_DIR . '/api'

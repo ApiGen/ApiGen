@@ -2,13 +2,17 @@
 
 namespace ApiGen\Tests\Reflection;
 
+use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Parser\Broker\Backend;
+use ApiGen\Parser\ParserResult;
 use ApiGen\Reflection\ReflectionClass;
+use ApiGen\Reflection\ReflectionMethod;
 use ApiGen\Reflection\ReflectionParameter;
 use ApiGen\Reflection\TokenReflection\ReflectionFactory;
 use Mockery;
 use PHPUnit_Framework_TestCase;
+use Project;
 use TokenReflection\Broker;
 
 
@@ -32,7 +36,7 @@ class ReflectionParameterTest extends PHPUnit_Framework_TestCase
 		$broker = new Broker($backend);
 		$broker->processDirectory(__DIR__ . '/ReflectionMethodSource');
 
-		$this->reflectionClass = $backend->getClasses()['Project\ReflectionMethod'];
+		$this->reflectionClass = $backend->getClasses()[Project\ReflectionMethod::class];
 		$reflectionMethod = $this->reflectionClass->getMethod('methodWithArgs');
 		$this->reflectionParameter = $reflectionMethod->getParameter(0);
 	}
@@ -40,7 +44,7 @@ class ReflectionParameterTest extends PHPUnit_Framework_TestCase
 
 	public function testInstance()
 	{
-		$this->assertInstanceOf('ApiGen\Reflection\ReflectionParameter', $this->reflectionParameter);
+		$this->assertInstanceOf(ReflectionParameter::class, $this->reflectionParameter);
 	}
 
 
@@ -124,7 +128,7 @@ class ReflectionParameterTest extends PHPUnit_Framework_TestCase
 
 	public function testGetDeclaringFunction()
 	{
-		$this->assertInstanceOf('ApiGen\Reflection\ReflectionMethod', $this->reflectionParameter->getDeclaringFunction());
+		$this->assertInstanceOf(ReflectionMethod::class, $this->reflectionParameter->getDeclaringFunction());
 	}
 
 
@@ -136,13 +140,13 @@ class ReflectionParameterTest extends PHPUnit_Framework_TestCase
 
 	public function testGetDeclaringClass()
 	{
-		$this->assertInstanceOf(			'ApiGen\Reflection\ReflectionClass', $this->reflectionParameter->getDeclaringClass());
+		$this->assertInstanceOf(ReflectionClass::class, $this->reflectionParameter->getDeclaringClass());
 	}
 
 
 	public function testGetDeclaringClassName()
 	{
-		$this->assertSame('Project\ReflectionMethod', $this->reflectionParameter->getDeclaringClassName());
+		$this->assertSame(Project\ReflectionMethod::class, $this->reflectionParameter->getDeclaringClassName());
 	}
 
 
@@ -157,10 +161,10 @@ class ReflectionParameterTest extends PHPUnit_Framework_TestCase
 	 */
 	private function getReflectionFactory()
 	{
-		$parserResultMock = Mockery::mock('ApiGen\Parser\ParserResult');
+		$parserResultMock = Mockery::mock(ParserResult::class);
 		$parserResultMock->shouldReceive('getElementsByType')->andReturnUsing(function ($arg) {
 			if ($arg) {
-				return ['Project\ReflectionMethod' => $this->reflectionClass];
+				return [Project\ReflectionMethod::class => $this->reflectionClass];
 			}
 		});
 		return new ReflectionFactory($this->getConfigurationMock(), $parserResultMock);
@@ -172,7 +176,7 @@ class ReflectionParameterTest extends PHPUnit_Framework_TestCase
 	 */
 	private function getConfigurationMock()
 	{
-		$configurationMock = Mockery::mock('ApiGen\Configuration\Configuration');
+		$configurationMock = Mockery::mock(Configuration::class);
 		$configurationMock->shouldReceive('getOption')->with('php')->andReturn(FALSE);
 		$configurationMock->shouldReceive('getOption')->with('deprecated')->andReturn(FALSE);
 		$configurationMock->shouldReceive('getOption')->with('internal')->andReturn(FALSE);

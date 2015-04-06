@@ -2,13 +2,16 @@
 
 namespace ApiGen\Tests\Reflection;
 
+use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Parser\Broker\Backend;
+use ApiGen\Parser\ParserResult;
 use ApiGen\Reflection\ReflectionClass;
 use ApiGen\Reflection\ReflectionMethod;
 use ApiGen\Reflection\TokenReflection\ReflectionFactory;
 use Mockery;
 use PHPUnit_Framework_TestCase;
+use Project;
 use TokenReflection\Broker;
 
 
@@ -32,20 +35,20 @@ class ReflectionMethodTest extends PHPUnit_Framework_TestCase
 		$broker = new Broker($backend);
 		$broker->processDirectory(__DIR__ . '/ReflectionMethodSource');
 
-		$this->reflectionClass = $backend->getClasses()['Project\ReflectionMethod'];
+		$this->reflectionClass = $backend->getClasses()[Project\ReflectionMethod::class];
 		$this->reflectionMethod = $this->reflectionClass->getMethod('methodWithArgs');
 	}
 
 
 	public function testGetDeclaringClass()
 	{
-		$this->isInstanceOf('ApiGen\Reflection\ReflectionClass', $this->reflectionMethod->getDeclaringClass());
+		$this->isInstanceOf(ReflectionClass::class, $this->reflectionMethod->getDeclaringClass());
 	}
 
 
 	public function testGetDeclaringClassName()
 	{
-		$this->assertSame('Project\ReflectionMethod', $this->reflectionMethod->getDeclaringClassName());
+		$this->assertSame(Project\ReflectionMethod::class, $this->reflectionMethod->getDeclaringClassName());
 	}
 
 
@@ -152,10 +155,10 @@ class ReflectionMethodTest extends PHPUnit_Framework_TestCase
 	 */
 	private function getReflectionFactory()
 	{
-		$parserResultMock = Mockery::mock('ApiGen\Parser\ParserResult');
+		$parserResultMock = Mockery::mock(ParserResult::class);
 		$parserResultMock->shouldReceive('getElementsByType')->andReturnUsing(function ($arg) {
 			if ($arg) {
-				return ['Project\ReflectionMethod' => $this->reflectionClass];
+				return [Project\ReflectionMethod::class => $this->reflectionClass];
 			}
 		});
 		return new ReflectionFactory($this->getConfigurationMock(), $parserResultMock);
@@ -167,7 +170,7 @@ class ReflectionMethodTest extends PHPUnit_Framework_TestCase
 	 */
 	private function getConfigurationMock()
 	{
-		$configurationMock = Mockery::mock('ApiGen\Configuration\Configuration');
+		$configurationMock = Mockery::mock(Configuration::class);
 		$configurationMock->shouldReceive('getOption')->with('php')->andReturn(FALSE);
 		$configurationMock->shouldReceive('getOption')->with('deprecated')->andReturn(FALSE);
 		$configurationMock->shouldReceive('getOption')->with('internal')->andReturn(FALSE);

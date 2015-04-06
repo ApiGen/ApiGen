@@ -4,12 +4,19 @@
  * This file is part of the ApiGen (http://apigen.org)
  *
  * For the full copyright and license information, please view
- * the file license.md that was distributed with this source code.
+ * the file LICENSE that was distributed with this source code.
  */
 
 namespace ApiGen\DI;
 
+use ApiGen\Command\SelfUpdateCommand;
+use ApiGen\Console\Application;
+use ApiGen\Generator\GeneratorQueue;
+use ApiGen\Generator\TemplateGenerator;
+use ApiGen\Templating\Filters\Filters;
+use Latte\Engine;
 use Nette\DI\CompilerExtension;
+use Symfony\Component\Console\Command\Command;
 
 
 class ApiGenExtension extends CompilerExtension
@@ -44,7 +51,7 @@ class ApiGenExtension extends CompilerExtension
 	{
 		$builder = $this->getContainerBuilder();
 		$builder->addDefinition($this->prefix('latteFactory'))
-			->setClass('Latte\Engine')
+			->setClass(Engine::class)
 			->addSetup('setTempDirectory', [$builder->expand('%tempDir%/cache/latte')]);
 	}
 
@@ -53,10 +60,10 @@ class ApiGenExtension extends CompilerExtension
 	{
 		$builder = $this->getContainerBuilder();
 
-		$application = $builder->getDefinition($builder->getByType('ApiGen\Console\Application'));
+		$application = $builder->getDefinition($builder->getByType(Application::class));
 
-		foreach ($builder->findByType('Symfony\Component\Console\Command\Command') as $definition) {
-			if ( ! $this->isPhar() && $definition->getClass() === 'ApiGen\Command\SelfUpdateCommand') {
+		foreach ($builder->findByType(Command::class) as $definition) {
+			if ( ! $this->isPhar() && $definition->getClass() === SelfUpdateCommand::class) {
 				continue;
 			}
 			$application->addSetup('add', ['@' . $definition->getClass()]);
@@ -76,8 +83,8 @@ class ApiGenExtension extends CompilerExtension
 	private function setupTemplatingFilters()
 	{
 		$builder = $this->getContainerBuilder();
-		$latteFactory = $builder->getDefinition($builder->getByType('Latte\Engine'));
-		foreach ($builder->findByType('ApiGen\Templating\Filters\Filters') as $definition) {
+		$latteFactory = $builder->getDefinition($builder->getByType(Engine::class));
+		foreach ($builder->findByType(Filters::class) as $definition) {
 			$latteFactory->addSetup('addFilter', [NULL, ['@' . $definition->getClass(), 'loader']]);
 		}
 	}
@@ -86,8 +93,8 @@ class ApiGenExtension extends CompilerExtension
 	private function setupGeneratorQueue()
 	{
 		$builder = $this->getContainerBuilder();
-		$generator = $builder->getDefinition($builder->getByType('ApiGen\Generator\GeneratorQueue'));
-		foreach ($builder->findByType('ApiGen\Generator\TemplateGenerator') as $definition) {
+		$generator = $builder->getDefinition($builder->getByType(GeneratorQueue::class));
+		foreach ($builder->findByType(TemplateGenerator::class) as $definition) {
 			$generator->addSetup('addToQueue', ['@' . $definition->getClass()]);
 		}
 	}

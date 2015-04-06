@@ -4,12 +4,18 @@
  * This file is part of the ApiGen (http://apigen.org)
  *
  * For the full copyright and license information, please view
- * the file license.md that was distributed with this source code.
+ * the file LICENSE that was distributed with this source code.
  */
 
 namespace ApiGen\Events;
 
 use ApiGen\Console\ProgressBar;
+use ApiGen\Generator\TemplateGenerators\ClassElementGenerator;
+use ApiGen\Generator\TemplateGenerators\ConstantElementGenerator;
+use ApiGen\Generator\TemplateGenerators\FunctionElementGenerator;
+use ApiGen\Generator\TemplateGenerators\NamespaceGenerator;
+use ApiGen\Generator\TemplateGenerators\PackageGenerator;
+use ApiGen\Generator\TemplateGenerators\SourceCodeGenerator;
 use Kdyby\Events\Subscriber;
 
 
@@ -34,12 +40,12 @@ class ProgressBarIncrement implements Subscriber
 	public function getSubscribedEvents()
 	{
 		return [
-			'ApiGen\Generator\TemplateGenerators\NamespaceGenerator::onGenerateProgress',
-			'ApiGen\Generator\TemplateGenerators\PackageGenerator::onGenerateProgress',
-			'ApiGen\Generator\TemplateGenerators\ClassElementGenerator::onGenerateProgress',
-			'ApiGen\Generator\TemplateGenerators\ConstantElementGenerator::onGenerateProgress',
-			'ApiGen\Generator\TemplateGenerators\FunctionElementGenerator::onGenerateProgress',
-			'ApiGen\Generator\TemplateGenerators\SourceCodeGenerator::onGenerateProgress'
+			NamespaceGenerator::class . '::onGenerateProgress',
+			PackageGenerator::class . '::onGenerateProgress',
+			ClassElementGenerator::class . '::onGenerateProgress',
+			ConstantElementGenerator::class . '::onGenerateProgress',
+			FunctionElementGenerator::class . '::onGenerateProgress',
+			SourceCodeGenerator::class . '::onGenerateProgress'
 		];
 	}
 

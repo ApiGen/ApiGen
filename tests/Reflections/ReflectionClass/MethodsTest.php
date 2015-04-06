@@ -2,6 +2,8 @@
 
 namespace ApiGen\Tests\Reflections\ReflectionClass;
 
+use ApiGen\Reflection\ReflectionMethod;
+use ApiGen\Reflection\ReflectionMethodMagic;
 use InvalidArgumentException;
 
 
@@ -10,18 +12,13 @@ class MethodsTest extends TestCase
 
 	public function testGetMethod()
 	{
-		$this->assertInstanceOf(
-			'ApiGen\Reflection\ReflectionMethod',
-			$this->reflectionClass->getMethod('publicMethod')
-		);
+		$this->assertInstanceOf(ReflectionMethod::class, $this->reflectionClass->getMethod('publicMethod'));
 	}
 
 
-	/**
-	 * @expectedException InvalidArgumentException
-	 */
 	public function testGetMethodNonExisting()
 	{
+		$this->setExpectedException(InvalidArgumentException::class);
 		$this->reflectionClass->getMethod('notPresentMethod');
 	}
 
@@ -42,7 +39,7 @@ class MethodsTest extends TestCase
 	{
 		$this->assertCount(3, $this->reflectionClass->getMagicMethods());
 		$magicMethod = $this->reflectionClass->getMagicMethods()['getSome'];
-		$this->assertInstanceOf('ApiGen\Reflection\ReflectionMethodMagic', $magicMethod);
+		$this->assertInstanceOf(ReflectionMethodMagic::class, $magicMethod);
 	}
 
 

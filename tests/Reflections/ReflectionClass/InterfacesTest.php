@@ -2,6 +2,8 @@
 
 namespace ApiGen\Tests\Reflections\ReflectionClass;
 
+use ApiGen\Reflection\ReflectionClass;
+use Project\RichInterface;
 use TokenReflection;
 
 
@@ -17,7 +19,7 @@ class InterfacesTest extends TestCase
 	public function testImplementsInterface()
 	{
 		$this->assertFalse($this->reflectionClass->implementsInterface('NoInterface'));
-		$this->assertTrue($this->reflectionClass->implementsInterface('Project\RichInterface'));
+		$this->assertTrue($this->reflectionClass->implementsInterface(RichInterface::class));
 	}
 
 
@@ -25,7 +27,7 @@ class InterfacesTest extends TestCase
 	{
 		$interfaces = $this->reflectionClass->getInterfaces();
 		$this->assertCount(1, $interfaces);
-		$this->assertInstanceOf('ApiGen\Reflection\ReflectionClass', $interfaces['Project\RichInterface']);
+		$this->assertInstanceOf(ReflectionClass::class, $interfaces[RichInterface::class]);
 	}
 
 
@@ -33,13 +35,13 @@ class InterfacesTest extends TestCase
 	{
 		$interfaces = $this->reflectionClass->getOwnInterfaces();
 		$this->assertCount(1, $interfaces);
-		$this->assertInstanceOf('ApiGen\Reflection\ReflectionClass', $interfaces['Project\RichInterface']);
+		$this->assertInstanceOf(ReflectionClass::class, $interfaces[RichInterface::class]);
 	}
 
 
 	public function testGetOwnInterfaceNames()
 	{
-		$this->assertSame(['Project\RichInterface'], $this->reflectionClass->getOwnInterfaceNames());
+		$this->assertSame([RichInterface::class], $this->reflectionClass->getOwnInterfaceNames());
 	}
 
 

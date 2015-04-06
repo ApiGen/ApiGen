@@ -2,19 +2,23 @@
 
 namespace ApiGen\Tests\Reflections\ReflectionClass;
 
+use ApiGen\Reflection\ReflectionClass;
+use Project\AccessLevels;
+use Project\ParentClass;
+
 
 class ReflectionClassTest extends TestCase
 {
 
 	public function testInterface()
 	{
-		$this->assertInstanceOf('ApiGen\Reflection\ReflectionClass', $this->reflectionClass);
+		$this->assertInstanceOf(ReflectionClass::class, $this->reflectionClass);
 	}
 
 
 	public function testGetName()
 	{
-		$this->assertSame('Project\AccessLevels', $this->reflectionClass->getName());
+		$this->assertSame(AccessLevels::class, $this->reflectionClass->getName());
 	}
 
 
@@ -44,7 +48,7 @@ class ReflectionClassTest extends TestCase
 
 	public function testIsSubclassOf()
 	{
-		$this->assertTrue($this->reflectionClass->isSubclassOf('Project\ParentClass'));
+		$this->assertTrue($this->reflectionClass->isSubclassOf(ParentClass::class));
 		$this->assertFalse($this->reflectionClass->isSubclassOf('ArrayAccess'));
 	}
 

@@ -7,6 +7,7 @@ use ApiGen\Console\IO;
 use ApiGen\Tests\ContainerAwareTestCase;
 use ApiGen\Tests\MethodInvoker;
 use Mockery;
+use Symfony\Component\Console\Output\OutputInterface;
 use TokenReflection\Exception\FileProcessingException;
 
 
@@ -21,7 +22,7 @@ class GenerateCommandTest extends ContainerAwareTestCase
 
 	protected function setUp()
 	{
-		$this->generateCommand = $this->container->getByType('ApiGen\Command\GenerateCommand');
+		$this->generateCommand = $this->container->getByType(GenerateCommand::class);
 		$this->setupOutputToIo();
 	}
 
@@ -43,9 +44,9 @@ class GenerateCommandTest extends ContainerAwareTestCase
 	private function setupOutputToIo()
 	{
 		/** @var IO $io */
-		$io = $this->container->getByType('ApiGen\Console\IO');
+		$io = $this->container->getByType(IO::class);
 
-		$outputMock = Mockery::mock('Symfony\Component\Console\Output\OutputInterface');
+		$outputMock = Mockery::mock(OutputInterface::class);
 		$outputMock->shouldReceive('writeln')->andReturnUsing(function ($args) {
 			echo $args;
 		});

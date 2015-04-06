@@ -2,16 +2,16 @@
 
 namespace ApiGen\Tests\Reflection;
 
+use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Parser\Broker\Backend;
-use ApiGen\Reflection\ReflectionClass;
+use ApiGen\Parser\ParserResult;
 use ApiGen\Reflection\ReflectionElement;
-use ApiGen\Reflection\ReflectionMethod;
 use ApiGen\Reflection\TokenReflection\ReflectionFactory;
 use ApiGen\Tests\MethodInvoker;
 use Mockery;
-use Nette\Neon\Exception;
 use PHPUnit_Framework_TestCase;
+use Project;
 use TokenReflection\Broker;
 use TokenReflection\Exception\FileProcessingException;
 
@@ -31,7 +31,7 @@ class ReflectionElementTest extends PHPUnit_Framework_TestCase
 		$broker = new Broker($backend);
 		$broker->processDirectory(__DIR__ . '/ReflectionMethodSource');
 
-		$this->reflectionClass = $backend->getClasses()['Project\ReflectionMethod'];
+		$this->reflectionClass = $backend->getClasses()[Project\ReflectionMethod::class];
 	}
 
 
@@ -210,7 +210,7 @@ class ReflectionElementTest extends PHPUnit_Framework_TestCase
 	 */
 	private function getReflectionFactory()
 	{
-		$parserResultMock = Mockery::mock('ApiGen\Parser\ParserResult');
+		$parserResultMock = Mockery::mock(ParserResult::class);
 		$parserResultMock->shouldReceive('getElementsByType')->andReturn(['...']);
 		return new ReflectionFactory($this->getConfigurationMock(), $parserResultMock);
 	}
@@ -221,7 +221,7 @@ class ReflectionElementTest extends PHPUnit_Framework_TestCase
 	 */
 	private function getConfigurationMock()
 	{
-		$configurationMock = Mockery::mock('ApiGen\Configuration\Configuration');
+		$configurationMock = Mockery::mock(Configuration::class);
 		$configurationMock->shouldReceive('getOption')->with('php')->andReturn(FALSE);
 		$configurationMock->shouldReceive('getOption')->with('deprecated')->andReturn(FALSE);
 		$configurationMock->shouldReceive('getOption')->with('internal')->andReturn(FALSE);

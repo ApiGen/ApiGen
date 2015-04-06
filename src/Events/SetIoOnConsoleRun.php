@@ -4,12 +4,13 @@
  * This file is part of the ApiGen (http://apigen.org)
  *
  * For the full copyright and license information, please view
- * the file license.md that was distributed with this source code.
+ * the file LICENSE that was distributed with this source code.
  */
 
 namespace ApiGen\Events;
 
 use ApiGen\Console;
+use ApiGen\Console\Application;
 use Kdyby\Events\Subscriber;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -35,7 +36,7 @@ class SetIoOnConsoleRun implements Subscriber
 	 */
 	public function getSubscribedEvents()
 	{
-		return ['ApiGen\Console\Application::onRun'];
+		return [Application::class . '::onRun'];
 	}
 
 

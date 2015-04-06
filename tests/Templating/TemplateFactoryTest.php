@@ -3,8 +3,16 @@
 namespace ApiGen\Tests\Templating;
 
 use ApiGen;
+use ApiGen\Configuration\Configuration;
+use ApiGen\Reflection\ReflectionClass;
+use ApiGen\Reflection\ReflectionConstant;
+use ApiGen\Reflection\ReflectionFunction;
+use ApiGen\Templating\Exceptions\UnsupportedElementException;
+use ApiGen\Templating\Template;
 use ApiGen\Templating\TemplateFactory;
+use ApiGen\Templating\TemplateNavigator;
 use ApiGen\Tests\MethodInvoker;
+use Latte\Engine;
 use Mockery;
 use PHPUnit_Framework_TestCase;
 
@@ -20,12 +28,12 @@ class TemplateFactoryTest extends PHPUnit_Framework_TestCase
 
 	protected function setUp()
 	{
-		$latteEngineMock = Mockery::mock('Latte\Engine');
+		$latteEngineMock = Mockery::mock(Engine::class);
 
-		$configurationMock = Mockery::mock('ApiGen\Configuration\Configuration');
+		$configurationMock = Mockery::mock(Configuration::class);
 		$configurationMock->shouldReceive('getOptions')->andReturn(['template' => ['templatesPath' => '...']]);
 
-		$templateElementsLoaderMock = Mockery::mock('ApiGen\Templating\TemplateElementsLoader');
+		$templateElementsLoaderMock = Mockery::mock(ApiGen\Templating\TemplateElementsLoader::class);
 		$templateElementsLoaderMock->shouldReceive('addElementsToTemplate')->andReturnUsing(function ($args) {
 			return $args;
 		});
@@ -38,42 +46,41 @@ class TemplateFactoryTest extends PHPUnit_Framework_TestCase
 
 	public function testCreate()
 	{
-		$this->assertInstanceOf('ApiGen\Templating\Template', $this->templateFactory->create());
+		$this->assertInstanceOf(Template::class, $this->templateFactory->create());
 	}
 
 
 	public function testCreateForType()
 	{
-		$this->assertInstanceOf('ApiGen\Templating\Template', $this->templateFactory->createForType('overview'));
+		$this->assertInstanceOf(Template::class, $this->templateFactory->createForType('overview'));
 	}
 
 
 	public function testCreateNamedForElement()
 	{
-		$reflectionClassMock = Mockery::mock('ApiGen\Reflection\ReflectionClass');
+		$reflectionClassMock = Mockery::mock(ReflectionClass::class);
 
 		$this->assertInstanceOf(
-			'ApiGen\Templating\Template',
+			Template::class,
 			$this->templateFactory->createNamedForElement(TemplateFactory::ELEMENT_SOURCE, $reflectionClassMock)
 		);
 
 		$this->assertInstanceOf(
-			'ApiGen\Templating\Template',
+			Template::class,
 			$this->templateFactory->createNamedForElement(TemplateFactory::ELEMENT_NAMESPACE, $reflectionClassMock)
 		);
 
 		$this->assertInstanceOf(
-			'ApiGen\Templating\Template',
+			Template::class,
 			$this->templateFactory->createNamedForElement(TemplateFactory::ELEMENT_PACKAGE, $reflectionClassMock)
 		);
 	}
 
 
-	/**
-	 * @expectedException ApiGen\Templating\Exceptions\UnsupportedElementException
-	 */
 	public function testCreateNamedForElementNonExisting()
 	{
+		$this->setExpectedException(UnsupportedElementException::class);
+
 		$reflectionClassMock = Mockery::mock('ApiGen\Reflection\ReflectionClass');
 		$this->assertInstanceOf(
 			'ApiGen\Templating\Template',
@@ -84,17 +91,17 @@ class TemplateFactoryTest extends PHPUnit_Framework_TestCase
 
 	public function testCreateForReflection()
 	{
-		$reflectionClassMock = Mockery::mock('ApiGen\Reflection\ReflectionClass');
+		$reflectionClassMock = Mockery::mock(ReflectionClass::class);
 		$template = $this->templateFactory->createForReflection($reflectionClassMock);
-		$this->assertInstanceOf('ApiGen\Templating\Template', $template);
+		$this->assertInstanceOf(Template::class, $template);
 
-		$reflectionConstantMock = Mockery::mock('ApiGen\Reflection\ReflectionConstant');
+		$reflectionConstantMock = Mockery::mock(ReflectionConstant::class);
 		$template = $this->templateFactory->createForReflection($reflectionConstantMock);
-		$this->assertInstanceOf('ApiGen\Templating\Template', $template);
+		$this->assertInstanceOf(Template::class, $template);
 
-		$reflectionFunctionMock = Mockery::mock('ApiGen\Reflection\ReflectionFunction');
+		$reflectionFunctionMock = Mockery::mock(ReflectionFunction::class);
 		$template = $this->templateFactory->createForReflection($reflectionFunctionMock);
-		$this->assertInstanceOf('ApiGen\Templating\Template', $template);
+		$this->assertInstanceOf(Template::class, $template);
 	}
 
 
@@ -111,7 +118,7 @@ class TemplateFactoryTest extends PHPUnit_Framework_TestCase
 	 */
 	private function getTemplateNavigatorMock()
 	{
-		$templateNavigatorMock = Mockery::mock('ApiGen\Templating\TemplateNavigator');
+		$templateNavigatorMock = Mockery::mock(TemplateNavigator::class);
 		$templateNavigatorMock->shouldReceive('getTemplatePath')->andReturnUsing(function ($arg) {
 			return $arg . '-template-path.latte';
 		});

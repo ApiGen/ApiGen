@@ -2,13 +2,17 @@
 
 namespace ApiGen\Tests\Reflection;
 
+use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Parser\Broker\Backend;
+use ApiGen\Parser\ParserResult;
 use ApiGen\Reflection\ReflectionClass;
+use ApiGen\Reflection\ReflectionMethodMagic;
 use ApiGen\Reflection\ReflectionParameterMagic;
 use ApiGen\Reflection\TokenReflection\ReflectionFactory;
 use Mockery;
 use PHPUnit_Framework_TestCase;
+use Project;
 use TokenReflection\Broker;
 
 
@@ -32,7 +36,7 @@ class ReflectionParameterMagicTest extends PHPUnit_Framework_TestCase
 		$broker = new Broker($backend);
 		$broker->processDirectory(__DIR__ . '/ReflectionMethodSource');
 
-		$this->reflectionClass = $backend->getClasses()['Project\ReflectionMethod'];
+		$this->reflectionClass = $backend->getClasses()[Project\ReflectionMethod::class];
 		$reflectionMethodMagic = $this->reflectionClass->getMagicMethods()['doAnOperation'];
 		$this->reflectionParameterMagic = $reflectionMethodMagic->getParameters()['data'];
 	}
@@ -40,7 +44,7 @@ class ReflectionParameterMagicTest extends PHPUnit_Framework_TestCase
 
 	public function testInstance()
 	{
-		$this->assertInstanceOf('ApiGen\Reflection\ReflectionParameterMagic', $this->reflectionParameterMagic);
+		$this->assertInstanceOf(ReflectionParameterMagic::class, $this->reflectionParameterMagic);
 	}
 
 
@@ -76,23 +80,19 @@ class ReflectionParameterMagicTest extends PHPUnit_Framework_TestCase
 
 	public function testGetDeclaringClass()
 	{
-		$this->assertInstanceOf(
-			'ApiGen\Reflection\ReflectionClass', $this->reflectionParameterMagic->getDeclaringClass()
-		);
+		$this->assertInstanceOf(ReflectionClass::class, $this->reflectionParameterMagic->getDeclaringClass());
 	}
 
 
 	public function testGetDeclaringClassName()
 	{
-		$this->assertSame('Project\ReflectionMethod', $this->reflectionParameterMagic->getDeclaringClassName());
+		$this->assertSame(Project\ReflectionMethod::class, $this->reflectionParameterMagic->getDeclaringClassName());
 	}
 
 
 	public function testGetDeclaringFunction()
 	{
-		$this->assertInstanceOf(
-			'ApiGen\Reflection\ReflectionMethodMagic', $this->reflectionParameterMagic->getDeclaringFunction()
-		);
+		$this->assertInstanceOf(ReflectionMethodMagic::class, $this->reflectionParameterMagic->getDeclaringFunction());
 	}
 
 
@@ -197,7 +197,7 @@ class ReflectionParameterMagicTest extends PHPUnit_Framework_TestCase
 	 */
 	private function getReflectionFactory()
 	{
-		$parserResultMock = Mockery::mock('ApiGen\Parser\ParserResult');
+		$parserResultMock = Mockery::mock(ParserResult::class);
 		$parserResultMock->shouldReceive('getElementsByType')->andReturnUsing(function ($arg) {
 			if ($arg) {
 				return ['Project\ReflectionMethod' => $this->reflectionClass];
@@ -212,7 +212,7 @@ class ReflectionParameterMagicTest extends PHPUnit_Framework_TestCase
 	 */
 	private function getConfigurationMock()
 	{
-		$configurationMock = Mockery::mock('ApiGen\Configuration\Configuration');
+		$configurationMock = Mockery::mock(Configuration::class);
 		$configurationMock->shouldReceive('getOption')->with('php')->andReturn(FALSE);
 		$configurationMock->shouldReceive('getOption')->with('deprecated')->andReturn(FALSE);
 		$configurationMock->shouldReceive('getOption')->with('internal')->andReturn(FALSE);

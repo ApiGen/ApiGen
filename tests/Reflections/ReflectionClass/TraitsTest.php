@@ -2,7 +2,10 @@
 
 namespace ApiGen\Tests\Reflections\ReflectionClass;
 
+use ApiGen\Reflection\ReflectionClass;
+use Project\SomeTrait;
 use TokenReflection;
+use TokenReflection\Exception\RuntimeException;
 
 
 class TraitsTest extends TestCase
@@ -18,7 +21,7 @@ class TraitsTest extends TestCase
 	{
 		$traits = $this->reflectionClass->getTraits();
 		$this->assertCount(2, $traits);
-		$this->assertInstanceOf('ApiGen\Reflection\ReflectionClass', $traits['Project\SomeTrait']);
+		$this->assertInstanceOf(ReflectionClass::class, $traits[SomeTrait::class]);
 		$this->assertSame('Project\SomeTraitNotPresentHere', $traits['Project\SomeTraitNotPresentHere']);
 	}
 
@@ -33,7 +36,7 @@ class TraitsTest extends TestCase
 	public function testGetTraitNames()
 	{
 		$this->assertSame(
-			['Project\SomeTrait', 'Project\SomeTraitNotPresentHere'], $this->reflectionClass->getTraitNames()
+			[SomeTrait::class, 'Project\SomeTraitNotPresentHere'], $this->reflectionClass->getTraitNames()
 		);
 	}
 
@@ -41,7 +44,7 @@ class TraitsTest extends TestCase
 	public function testGetOwnTraitName()
 	{
 		$this->assertSame(
-			['Project\SomeTrait', 'Project\SomeTraitNotPresentHere'], $this->reflectionClass->getOwnTraitNames()
+			[SomeTrait::class, 'Project\SomeTraitNotPresentHere'], $this->reflectionClass->getOwnTraitNames()
 		);
 	}
 
@@ -66,16 +69,14 @@ class TraitsTest extends TestCase
 
 	public function testUsesTrait()
 	{
-		$this->assertTrue($this->reflectionClass->usesTrait('Project\SomeTrait'));
+		$this->assertTrue($this->reflectionClass->usesTrait(SomeTrait::class));
 		$this->assertFalse($this->reflectionClass->usesTrait('Project\NotActiveTrait'));
 	}
 
 
-	/**
-	 * @expectedException TokenReflection\Exception\RuntimeException
-	 */
 	public function testUsesTraitNotExisting()
 	{
+		$this->setExpectedException(RuntimeException::class);
 		$this->assertTrue($this->reflectionClass->usesTrait('Project\SomeTraitNotPresentHere'));
 	}
 

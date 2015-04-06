@@ -2,21 +2,22 @@
 
 namespace ApiGen\Tests\Reflections\ReflectionClass;
 
+use ApiGen\Reflection\ReflectionClass;
+use Project\ParentClass;
+
 
 class ParentsTest extends TestCase
 {
 
 	public function testGetParentClass()
 	{
-		$this->assertInstanceOf(
-			'ApiGen\Reflection\ReflectionClass', $this->reflectionClass->getParentClass()
-		);
+		$this->assertInstanceOf(ReflectionClass::class, $this->reflectionClass->getParentClass());
 	}
 
 
 	public function testGetParentClassName()
 	{
-		$this->assertSame('Project\ParentClass', $this->reflectionClass->getParentClassName());
+		$this->assertSame(ParentClass::class, $this->reflectionClass->getParentClassName());
 	}
 
 
@@ -28,7 +29,7 @@ class ParentsTest extends TestCase
 
 	public function testGetParentClassNameList()
 	{
-		$this->assertSame(['Project\ParentClass'], $this->reflectionClass->getParentClassNameList());
+		$this->assertSame([ParentClass::class], $this->reflectionClass->getParentClassNameList());
 	}
 
 
