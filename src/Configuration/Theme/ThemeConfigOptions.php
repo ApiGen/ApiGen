@@ -24,7 +24,6 @@ class ThemeConfigOptions
 	const ANNOTATION_GROUP = 'annotationGroup';
 	const SOURCE = 'source';
 	const TREE = 'tree';
-	const SITEMAP = 'sitemap';
 	const OPENSEARCH = 'opensearch';
 	const TEMPLATES_PATH = 'templatesPath';
 	const RESOURCES = 'resources';

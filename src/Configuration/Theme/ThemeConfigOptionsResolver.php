@@ -77,10 +77,6 @@ class ThemeConfigOptionsResolver extends Nette\Object
 				'filename' => 'tree.html',
 				'template' => 'tree.latte'
 			],
-			TCO::SITEMAP => [
-				'filename' => 'sitemap.xml',
-				'template' => 'sitemap.xml.latte'
-			],
 			TCO::OPENSEARCH => [
 				'filename' => 'opensearch.xml',
 				'template' => 'opensearch.xml.latte'
