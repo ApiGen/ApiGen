@@ -11,7 +11,7 @@ namespace ApiGen\Theme;
 
 use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions as CO;
-use ApiGen\FileSystem\FileSystem;
+use ApiGen\Utils\FileSystem;
 use Nette\Utils\Finder;
 use RecursiveDirectoryIterator;
 use SplFileInfo;
@@ -25,10 +25,16 @@ class ThemeResources
 	 */
 	private $configuration;
 
+	/**
+	 * @var FileSystem
+	 */
+	private $fileSystem;
 
-	public function __construct(Configuration $configuration)
+
+	public function __construct(Configuration $configuration, FileSystem $fileSystem)
 	{
 		$this->configuration = $configuration;
+		$this->fileSystem = $fileSystem;
 	}
 
 
@@ -41,7 +47,7 @@ class ThemeResources
 		foreach ($resources as $resourceSource => $resourceDestination) {
 			// File
 			if (is_file($resourceSource)) {
-				copy($resourceSource, FileSystem::forceDir($destination  . '/' . $resourceDestination));
+				copy($resourceSource, $this->fileSystem->forceDir($destination  . '/' . $resourceDestination));
 				continue;
 			}
 
@@ -50,7 +56,7 @@ class ThemeResources
 			$iterator = Finder::findFiles('*')->from($resourceSource)->getIterator();
 			foreach ($iterator as $item) {
 				/** @var SplFileInfo $item */
-				copy($item->getPathName(), FileSystem::forceDir($destination
+				copy($item->getPathName(), $this->fileSystem->forceDir($destination
 					. '/' . $resourceDestination
 					. '/' . $iterator->getSubPathName()));
 			}

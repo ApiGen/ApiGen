@@ -36,10 +36,6 @@ services:
 	- {class: ApiGen\Events\ProgressBarIncrement, tags: [kdyby.subscriber]}
 	- {class: ApiGen\Events\SetIoOnConsoleRun, tags: [kdyby.subscriber]}
 
-	# filesystem
-	- ApiGen\FileSystem\FileSystem
-	- ApiGen\FileSystem\ZipArchiveGenerator
-
 	# generator
 	- ApiGen\Scanner\Scanner
 	- ApiGen\Generator\GeneratorQueue
