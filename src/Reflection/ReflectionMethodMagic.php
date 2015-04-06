@@ -42,6 +42,11 @@ class ReflectionMethodMagic extends ReflectionMethod
 	 */
 	private $declaringClass;
 
+	/**
+	 * @var bool
+	 */
+	private $static;
+
 
 	public function __construct(array $settings)
 	{
@@ -52,6 +57,7 @@ class ReflectionMethodMagic extends ReflectionMethod
 		$this->returnsReference = $settings['returnsReference'];
 		$this->declaringClass = $settings['declaringClass'];
 		$this->annotations = $settings['annotations'];
+		$this->static = isset($settings['static']) ? $settings['static'] : FALSE;
 
 		$this->reflectionType = get_class($this);
 	}
@@ -220,7 +226,7 @@ class ReflectionMethodMagic extends ReflectionMethod
 	 */
 	public function isStatic()
 	{
-		return FALSE;
+		return $this->static;
 	}
 
 
