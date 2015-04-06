@@ -9,19 +9,74 @@
 
 namespace ApiGen\Templating;
 
-use Nette;
+use Latte\Engine;
 
 
-/**
- * @method Template setFile($file)
- */
-class Template extends Nette\Bridges\ApplicationLatte\Template
+class Template
 {
+
+	/**
+	 * @var Engine
+	 */
+	private $latteEngine;
 
 	/**
 	 * @var string
 	 */
 	private $savePath;
+
+	/**
+	 * @var string
+	 */
+	private $file;
+
+	/**
+	 * @var mixed[]
+	 */
+	private $parameters = [];
+
+
+	public function __construct(Engine $latteEngine)
+	{
+		$this->latteEngine = $latteEngine;
+	}
+
+
+	/**
+	 * @param string $file
+	 */
+	public function setFile($file)
+	{
+		$this->file = $file;
+	}
+
+
+	/**
+	 * @return mixed[]
+	 */
+	public function getParameters()
+	{
+		return $this->parameters;
+	}
+
+
+	/**
+	 * @return self
+	 */
+	public function setParameters(array $parameters)
+	{
+		$this->parameters = $parameters + $this->parameters;
+		return $this;
+	}
+
+
+	/**
+	 * @param string $savePath
+	 */
+	public function setSavePath($savePath)
+	{
+		$this->savePath = $savePath;
+	}
 
 
 	/**
@@ -35,16 +90,8 @@ class Template extends Nette\Bridges\ApplicationLatte\Template
 			mkdir($dir, 0755, TRUE);
 		}
 
-		file_put_contents($this->savePath, $this->__toString());
-	}
-
-
-	/**
-	 * @param string $savePath
-	 */
-	public function setSavePath($savePath)
-	{
-		$this->savePath = $savePath;
+		$content = $this->latteEngine->renderToString($this->file, $this->parameters);
+		file_put_contents($this->savePath, $content);
 	}
 
 }
