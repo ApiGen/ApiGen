@@ -13,6 +13,9 @@ namespace ApiGen;
 class ApiGen
 {
 
+	/**
+	 * @var string
+	 */
 	const VERSION = '4.2.0-dev';
 
 }
