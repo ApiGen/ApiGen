@@ -1,5 +1,5 @@
 {
-	"name": "apigen/apigen",
+	"name": "emulienfou/apigen-markdown",
 	"description": "PHP source code API generator",
 	"keywords": ["documentation", "phpdoc", "generator", "api"],
 	"homepage": "http://apigen.org/",
@@ -30,6 +30,7 @@
 
 		"apigen/theme-default": "~1.0.1",
 		"apigen/theme-bootstrap": "~1.1.2",
+		"emulienfou/theme-markdown": "dev-master",
 		"apigen/utils": "~0.1.3"
 	},
 	"require-dev": {
