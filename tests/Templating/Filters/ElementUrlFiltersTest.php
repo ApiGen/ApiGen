@@ -2,12 +2,13 @@
 
 namespace ApiGen\Tests\Templating\Filters;
 
-use ApiGen\Reflection\ReflectionClass;
-use ApiGen\Reflection\ReflectionConstant;
-use ApiGen\Reflection\ReflectionElement;
-use ApiGen\Reflection\ReflectionFunction;
-use ApiGen\Reflection\ReflectionMethod;
-use ApiGen\Reflection\ReflectionProperty;
+use ApiGen\Contracts\Parser\Reflection\Behavior\NamedInterface;
+use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
 use ApiGen\Templating\Filters\ElementUrlFilters;
 use ApiGen\Templating\Filters\Helpers\ElementUrlFactory;
 use Mockery;
@@ -31,7 +32,7 @@ class ElementUrlFiltersTest extends PHPUnit_Framework_TestCase
 
 	public function testElementUrl()
 	{
-		$reflectionElementMock = Mockery::mock(ReflectionElement::class);
+		$reflectionElementMock = Mockery::mock(ElementReflectionInterface::class);
 		$reflectionElementMock->shouldReceive('getName')->andReturn('ReflectionElement');
 		$this->assertSame('url-for-ReflectionElement', $this->elementUrlFilters->elementUrl($reflectionElementMock));
 	}
@@ -39,7 +40,7 @@ class ElementUrlFiltersTest extends PHPUnit_Framework_TestCase
 
 	public function testClassUrl()
 	{
-		$reflectionClassMock = Mockery::mock(ReflectionClass::class);
+		$reflectionClassMock = Mockery::mock(ClassReflectionInterface::class);
 		$reflectionClassMock->shouldReceive('getName')->andReturn('ReflectionClass');
 		$this->assertSame('url-for-ReflectionClass', $this->elementUrlFilters->classUrl($reflectionClassMock));
 	}
@@ -47,7 +48,7 @@ class ElementUrlFiltersTest extends PHPUnit_Framework_TestCase
 
 	public function testMethodUrl()
 	{
-		$reflectionMethodMock = Mockery::mock(ReflectionMethod::class);
+		$reflectionMethodMock = Mockery::mock(MethodReflectionInterface::class);
 		$reflectionMethodMock->shouldReceive('getName')->andReturn('ReflectionMethod');
 		$this->assertSame('url-for-ReflectionMethod', $this->elementUrlFilters->methodUrl($reflectionMethodMock));
 	}
@@ -55,7 +56,7 @@ class ElementUrlFiltersTest extends PHPUnit_Framework_TestCase
 
 	public function testPropertyUrl()
 	{
-		$reflectionPropertyMock = Mockery::mock(ReflectionProperty::class);
+		$reflectionPropertyMock = Mockery::mock(PropertyReflectionInterface::class);
 		$reflectionPropertyMock->shouldReceive('getName')->andReturn('ReflectionProperty');
 		$this->assertSame('url-for-ReflectionProperty', $this->elementUrlFilters->propertyUrl($reflectionPropertyMock));
 	}
@@ -63,7 +64,7 @@ class ElementUrlFiltersTest extends PHPUnit_Framework_TestCase
 
 	public function testConstantUrl()
 	{
-		$reflectionConstantMock = Mockery::mock(ReflectionConstant::class);
+		$reflectionConstantMock = Mockery::mock(ConstantReflectionInterface::class);
 		$reflectionConstantMock->shouldReceive('getName')->andReturn('ReflectionConstant');
 		$this->assertSame('url-for-ReflectionConstant', $this->elementUrlFilters->constantUrl($reflectionConstantMock));
 	}
@@ -71,7 +72,7 @@ class ElementUrlFiltersTest extends PHPUnit_Framework_TestCase
 
 	public function testFunctionUrl()
 	{
-		$reflectionFunctionMock = Mockery::mock(ReflectionFunction::class);
+		$reflectionFunctionMock = Mockery::mock(FunctionReflectionInterface::class);
 		$reflectionFunctionMock->shouldReceive('getName')->andReturn('ReflectionFunction');
 		$this->assertSame('url-for-ReflectionFunction', $this->elementUrlFilters->functionUrl($reflectionFunctionMock));
 	}
@@ -83,22 +84,22 @@ class ElementUrlFiltersTest extends PHPUnit_Framework_TestCase
 	private function getElementUrlFactoryMock()
 	{
 		$elementUrlFactoryMock = Mockery::mock(ElementUrlFactory::class);
-		$elementUrlFactoryMock->shouldReceive('createForElement')->andReturnUsing(function (ReflectionElement $arg) {
+		$elementUrlFactoryMock->shouldReceive('createForElement')->andReturnUsing(function (NamedInterface $arg) {
 			return 'url-for-' . $arg->getName();
 		});
-		$elementUrlFactoryMock->shouldReceive('createForClass')->andReturnUsing(function (ReflectionElement $arg) {
+		$elementUrlFactoryMock->shouldReceive('createForClass')->andReturnUsing(function (NamedInterface $arg) {
 			return 'url-for-' . $arg->getName();
 		});
-		$elementUrlFactoryMock->shouldReceive('createForMethod')->andReturnUsing(function (ReflectionElement $arg) {
+		$elementUrlFactoryMock->shouldReceive('createForMethod')->andReturnUsing(function (NamedInterface $arg) {
 			return 'url-for-' . $arg->getName();
 		});
-		$elementUrlFactoryMock->shouldReceive('createForProperty')->andReturnUsing(function (ReflectionElement $arg) {
+		$elementUrlFactoryMock->shouldReceive('createForProperty')->andReturnUsing(function (NamedInterface $arg) {
 			return 'url-for-' . $arg->getName();
 		});
-		$elementUrlFactoryMock->shouldReceive('createForConstant')->andReturnUsing(function (ReflectionElement $arg) {
+		$elementUrlFactoryMock->shouldReceive('createForConstant')->andReturnUsing(function (NamedInterface $arg) {
 			return 'url-for-' . $arg->getName();
 		});
-		$elementUrlFactoryMock->shouldReceive('createForFunction')->andReturnUsing(function (ReflectionElement $arg) {
+		$elementUrlFactoryMock->shouldReceive('createForFunction')->andReturnUsing(function (NamedInterface $arg) {
 			return 'url-for-' . $arg->getName();
 		});
 		return $elementUrlFactoryMock;

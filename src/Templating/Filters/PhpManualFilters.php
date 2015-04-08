@@ -9,12 +9,19 @@
 
 namespace ApiGen\Templating\Filters;
 
-use ApiGen\Reflection\ReflectionClass;
-use ApiGen\Reflection\ReflectionConstant;
-use ApiGen\Reflection\ReflectionElement;
-use ApiGen\Reflection\ReflectionExtension;
-use ApiGen\Reflection\ReflectionMethod;
-use ApiGen\Reflection\ReflectionProperty;
+use ApiGen\Contracts\Parser\Reflection\Behavior\InClassInterface;
+use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\ExtensionReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
+use ApiGen\Parser\Reflection\ReflectionClass;
+use ApiGen\Parser\Reflection\ReflectionConstant;
+use ApiGen\Parser\Reflection\ReflectionElement;
+use ApiGen\Parser\Reflection\ReflectionFunction;
+use ApiGen\Parser\Reflection\ReflectionMethod;
+use ApiGen\Parser\Reflection\ReflectionProperty;
 
 
 /**
@@ -38,12 +45,12 @@ class PhpManualFilters extends Filters
 
 
 	/**
-	 * @param ReflectionElement|ReflectionExtension|ReflectionMethod $element
+	 * @param ElementReflectionInterface|ExtensionReflectionInterface|MethodReflectionInterface $element
 	 * @return string
 	 */
 	public function manualUrl($element)
 	{
-		if ($element instanceof ReflectionExtension) {
+		if ($element instanceof ExtensionReflectionInterface) {
 			return $this->createExtensionUrl($element);
 		}
 
@@ -63,9 +70,9 @@ class PhpManualFilters extends Filters
 	/**
 	 * @return string
 	 */
-	private function createExtensionUrl(ReflectionExtension $reflectionExtension)
+	private function createExtensionUrl(ExtensionReflectionInterface $extensionReflection)
 	{
-		$extensionName = strtolower($reflectionExtension->getName());
+		$extensionName = strtolower($extensionReflection->getName());
 		if ($extensionName === 'core') {
 			return self::PHP_MANUAL_URL;
 		}
@@ -83,19 +90,19 @@ class PhpManualFilters extends Filters
 	 */
 	private function prepareAssignments()
 	{
-		$this->assignments['ApiGen\Reflection\ReflectionClass'] = function ($element, $class) {
+		$this->assignments[ReflectionClass::class] = function ($element, $class) {
 			return $this->createClassUrl($class);
 		};
-		$this->assignments['ApiGen\Reflection\ReflectionMethod'] = function ($element, $class) {
+		$this->assignments[ReflectionMethod::class] = function ($element, $class) {
 			return $this->createMethodUrl($element, $class);
 		};
-		$this->assignments['ApiGen\Reflection\ReflectionFunction'] = function ($element, $class) {
+		$this->assignments[ReflectionFunction::class] = function ($element, $class) {
 			return $this->createFunctionUrl($element);
 		};
-		$this->assignments['ApiGen\Reflection\ReflectionProperty'] = function ($element, $class) {
+		$this->assignments[ReflectionProperty::class] = function ($element, $class) {
 			return $this->createPropertyUrl($element, $class);
 		};
-		$this->assignments['ApiGen\Reflection\ReflectionConstant'] = function ($element, $class) {
+		$this->assignments[ReflectionConstant::class] = function ($element, $class) {
 			return $this->createConstantUrl($element, $class);
 		};
 	}
@@ -104,7 +111,7 @@ class PhpManualFilters extends Filters
 	/**
 	 * @return string
 	 */
-	private function createClassUrl(ReflectionClass $classReflection)
+	private function createClassUrl(ClassReflectionInterface $classReflection)
 	{
 		return self::PHP_MANUAL_URL . '/class.' . strtolower($classReflection->getName()) . '.php';
 	}
@@ -113,8 +120,10 @@ class PhpManualFilters extends Filters
 	/**
 	 * @return string
 	 */
-	private function createConstantUrl(ReflectionConstant $reflectionConstant, ReflectionClass $classReflection)
-	{
+	private function createConstantUrl(
+		ConstantReflectionInterface $reflectionConstant,
+		ClassReflectionInterface $classReflection
+	) {
 		return $this->createClassUrl($classReflection) . '#' . strtolower($classReflection->getName()) .
 			'.constants.' . $this->getElementName($reflectionConstant);
 	}
@@ -123,8 +132,10 @@ class PhpManualFilters extends Filters
 	/**
 	 * @return string
 	 */
-	private function createPropertyUrl(ReflectionProperty $reflectionProperty, ReflectionClass $classReflection)
-	{
+	private function createPropertyUrl(
+		PropertyReflectionInterface $reflectionProperty,
+		ClassReflectionInterface $classReflection
+	) {
 		return $this->createClassUrl($classReflection) . '#' . strtolower($classReflection->getName()) .
 			'.props.' . $this->getElementName($reflectionProperty);
 	}
@@ -133,8 +144,10 @@ class PhpManualFilters extends Filters
 	/**
 	 * @return string
 	 */
-	private function createMethodUrl(ReflectionMethod $reflectionMethod, ReflectionClass $reflectionClass)
-	{
+	private function createMethodUrl(
+		MethodReflectionInterface $reflectionMethod,
+		ClassReflectionInterface $reflectionClass
+	) {
 		return self::PHP_MANUAL_URL . '/' . strtolower($reflectionClass->getName()) . '.' .
 			$this->getElementName($reflectionMethod) . '.php';
 	}
@@ -143,8 +156,9 @@ class PhpManualFilters extends Filters
 	/**
 	 * @return string
 	 */
-	private function createFunctionUrl(ReflectionElement $reflectionElement)
-	{
+	private function createFunctionUrl(
+		ElementReflectionInterface $reflectionElement
+	) {
 		return self::PHP_MANUAL_URL . '/function.' . strtolower($reflectionElement->getName()) . '.php';
 	}
 
@@ -152,8 +166,9 @@ class PhpManualFilters extends Filters
 	/**
 	 * @return bool
 	 */
-	private function isReservedClass(ReflectionClass $class)
-	{
+	private function isReservedClass(
+		ClassReflectionInterface $class
+	) {
 		$reservedClasses = ['stdClass', 'Closure', 'Directory'];
 		return (in_array($class->getName(), $reservedClasses));
 	}
@@ -162,8 +177,9 @@ class PhpManualFilters extends Filters
 	/**
 	 * @return string
 	 */
-	private function getElementName(ReflectionElement $element)
-	{
+	private function getElementName(
+		ElementReflectionInterface $element
+	) {
 		return strtolower(strtr(ltrim($element->getName(), '_'), '_', '-'));
 	}
 
@@ -174,13 +190,11 @@ class PhpManualFilters extends Filters
 	 */
 	private function detectClass($element)
 	{
-		if ($element instanceof ReflectionClass) {
+		if ($element instanceof ClassReflectionInterface) {
 			return $element;
 		}
 
-		if ($element instanceof ReflectionMethod || $element instanceof ReflectionProperty
-			|| $element instanceof ReflectionConstant
-		) {
+		if ($element instanceof InClassInterface) {
 			return $element->getDeclaringClass();
 		}
 

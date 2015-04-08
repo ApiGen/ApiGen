@@ -93,12 +93,15 @@ class AnnotationGroupsGeneratorTest extends ContainerAwareTestCase
 
 	private function setCorrectConfiguration()
 	{
-		$this->configuration->resolveOptions([
+		$resolvedOptions = $this->configuration->resolveOptions([
 			'source' => TEMP_DIR,
 			'destination' => TEMP_DIR . '/api',
 			'deprecated' => TRUE,
 			'annotationGroups' => ['deprecated']
 		]);
+
+		// note: new api
+		$this->configuration->setOptions($resolvedOptions);
 	}
 
 }

@@ -10,6 +10,8 @@
 namespace ApiGen\Configuration;
 
 use ApiGen\Configuration\ConfigurationOptions as CO;
+use ApiGen\Contracts\Configuration\ConfigurationInterface;
+use ApiGen\Contracts\Parser\Configuration\ParserConfigurationInterface;
 use Nette;
 use Nette\Utils\Strings;
 
@@ -17,7 +19,7 @@ use Nette\Utils\Strings;
 /**
  * @method Configuration onOptionsResolve(array $config)
  */
-class Configuration extends Nette\Object
+class Configuration extends Nette\Object implements ConfigurationInterface, ParserConfigurationInterface
 {
 
 	const GROUPS_AUTO = 'auto';
@@ -84,35 +86,20 @@ class Configuration extends Nette\Object
 
 
 	/**
-	 * @param int $namespaceCount
-	 * @param int $packageCount
 	 * @return bool
 	 */
-	public function areNamespacesEnabled($namespaceCount, $packageCount)
+	public function areNamespacesEnabled()
 	{
-		if ($this->getOption(CO::GROUPS) === self::GROUPS_NAMESPACES) {
-			return TRUE;
-		}
-		if ($this->getOption(CO::GROUPS) === self::GROUPS_AUTO && ($namespaceCount > 0 || $packageCount === 0)) {
-			return TRUE;
-		}
-		return FALSE;
+		return $this->getOption(CO::GROUPS) === 'namespaces';
 	}
 
 
 	/**
-	 * @param bool $areNamespacesEnabled
 	 * @return bool
 	 */
-	public function arePackagesEnabled($areNamespacesEnabled)
+	public function arePackagesEnabled()
 	{
-		if ($this->getOption(CO::GROUPS) === self::GROUPS_PACKAGES) {
-			return TRUE;
-
-		} elseif ($this->getOption(CO::GROUPS) === self::GROUPS_AUTO && ($areNamespacesEnabled === FALSE)) {
-			return TRUE;
-		}
-		return FALSE;
+		return $this->getOption(CO::GROUPS) === 'packages';
 	}
 
 
@@ -127,12 +114,66 @@ class Configuration extends Nette\Object
 
 
 	/**
+	 * {@inheritdoc}
+	 */
+	public function getVisibilityLevel()
+	{
+		return $this->options['visibilityLevels'];
+	}
+
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function getMain()
+	{
+		return $this->getOption('main');
+	}
+
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function isPhpCoreDocumented()
+	{
+		return (bool) $this->getOption('php');
+	}
+
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function isInternalDocumented()
+	{
+		return (bool) $this->getOption('internal');
+	}
+
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function isDeprecatedDocumented()
+	{
+		return (bool) $this->getOption('deprecated');
+	}
+
+
+	/**
 	 * @return array
 	 */
 	private function unsetConsoleOptions(array $options)
 	{
 		unset($options[CO::CONFIG], $options['help'], $options['version'], $options['quiet']);
 		return $options;
+	}
+
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function setOptions(array $options)
+	{
+		$this->options = $options;
 	}
 
 }

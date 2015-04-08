@@ -9,6 +9,12 @@
 
 namespace ApiGen\Templating\Filters;
 
+use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
 use ApiGen\Reflection\ReflectionClass;
 use ApiGen\Reflection\ReflectionConstant;
 use ApiGen\Reflection\ReflectionElement;
@@ -36,7 +42,7 @@ class ElementUrlFilters extends Filters
 	/**
 	 * @return string
 	 */
-	public function elementUrl(ReflectionElement $element)
+	public function elementUrl(ElementReflectionInterface $element)
 	{
 		return $this->elementUrlFactory->createForElement($element);
 	}
@@ -55,7 +61,7 @@ class ElementUrlFilters extends Filters
 	/**
 	 * @return string
 	 */
-	public function methodUrl(ReflectionMethod $method, ReflectionClass $class = NULL)
+	public function methodUrl(MethodReflectionInterface $method, ClassReflectionInterface $class = NULL)
 	{
 		return $this->elementUrlFactory->createForMethod($method, $class);
 	}
@@ -64,7 +70,7 @@ class ElementUrlFilters extends Filters
 	/**
 	 * @return string
 	 */
-	public function propertyUrl(ReflectionProperty $property, ReflectionClass $class = NULL)
+	public function propertyUrl(PropertyReflectionInterface $property, ClassReflectionInterface $class = NULL)
 	{
 		return $this->elementUrlFactory->createForProperty($property, $class);
 	}
@@ -73,7 +79,7 @@ class ElementUrlFilters extends Filters
 	/**
 	 * @return string
 	 */
-	public function constantUrl(ReflectionConstant $constant)
+	public function constantUrl(ConstantReflectionInterface $constant)
 	{
 		return $this->elementUrlFactory->createForConstant($constant);
 	}
@@ -82,7 +88,7 @@ class ElementUrlFilters extends Filters
 	/**
 	 * @return string
 	 */
-	public function functionUrl(ReflectionFunction $function)
+	public function functionUrl(FunctionReflectionInterface $function)
 	{
 		return $this->elementUrlFactory->createForFunction($function);
 	}

@@ -9,8 +9,7 @@
 
 namespace ApiGen\Generator\TemplateGenerators;
 
-use ApiGen\Configuration\Configuration;
-use ApiGen\Configuration\ConfigurationOptions as CO;
+use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Generator\TemplateGenerator;
 use ApiGen\Parser\Elements\ElementExtractor;
 use ApiGen\Parser\Elements\Elements;
@@ -22,7 +21,7 @@ class AnnotationGroupsGenerator implements TemplateGenerator
 {
 
 	/**
-	 * @var Configuration
+	 * @var ConfigurationInterface
 	 */
 	private $configuration;
 
@@ -38,7 +37,7 @@ class AnnotationGroupsGenerator implements TemplateGenerator
 
 
 	public function __construct(
-		Configuration $configuration,
+		ConfigurationInterface $configuration,
 		TemplateFactory $templateFactory,
 		ElementExtractor $elementExtractor
 	) {
@@ -50,7 +49,7 @@ class AnnotationGroupsGenerator implements TemplateGenerator
 
 	public function generate()
 	{
-		$annotations = $this->configuration->getOption(CO::ANNOTATION_GROUPS);
+		$annotations = $this->configuration->getOption('annotationGroups');
 		foreach ($annotations as $annotation) {
 			$template = $this->templateFactory->createNamedForElement(TemplateFactory::ELEMENT_ANNOTATION_GROUP, $annotation);
 			$template = $this->setElementsWithAnnotationToTemplate($template, $annotation);

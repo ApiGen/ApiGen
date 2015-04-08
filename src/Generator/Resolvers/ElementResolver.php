@@ -9,7 +9,16 @@
 
 namespace ApiGen\Generator\Resolvers;
 
-use ApiGen\Parser\ParserResult;
+use ApiGen\Contracts\Generator\Resolvers\ElementResolverInterface;
+use ApiGen\Contracts\Parser\ParserStorageInterface;
+use ApiGen\Contracts\Parser\Reflection\Behavior\InClassInterface;
+use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\ParameterReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
 use ApiGen\Reflection\ReflectionClass;
 use ApiGen\Reflection\ReflectionConstant;
 use ApiGen\Reflection\ReflectionElement;
@@ -21,7 +30,7 @@ use ArrayObject;
 use TokenReflection\Resolver;
 
 
-class ElementResolver
+class ElementResolver implements ElementResolverInterface
 {
 
 	/**
@@ -44,25 +53,23 @@ class ElementResolver
 	];
 
 	/**
-	 * @var ParserResult
+	 * @var ParserStorageInterface
 	 */
-	private $parserResult;
+	private $parserStorage;
 
 
-	public function __construct(ParserResult $parserResult)
+	public function __construct(ParserStorageInterface $parserStorage)
 	{
-		$this->parserResult = $parserResult;
+		$this->parserStorage = $parserStorage;
 	}
 
 
 	/**
-	 * @param string $name
-	 * @param string $namespace
-	 * @return ReflectionClass|NULL
+	 * {@inheritdoc}
 	 */
 	public function getClass($name, $namespace = '')
 	{
-		$parsedClasses = $this->parserResult->getClasses();
+		$parsedClasses = $this->parserStorage->getClasses();
 		$class = $this->findElementByNameAndNamespace($parsedClasses, $name, $namespace);
 		if ($class && $class->isDocumented()) {
 			return $class;
@@ -73,13 +80,11 @@ class ElementResolver
 
 
 	/**
-	 * @param string $name
-	 * @param string $namespace
-	 * @return ReflectionConstant|NULL
+	 * {@inheritdoc}
 	 */
 	public function getConstant($name, $namespace = '')
 	{
-		$parsedConstants = $this->parserResult->getConstants();
+		$parsedConstants = $this->parserStorage->getConstants();
 		$constant = $this->findElementByNameAndNamespace($parsedConstants, $name, $namespace);
 		if ($constant && $constant->isDocumented()) {
 			return $constant;
@@ -90,13 +95,11 @@ class ElementResolver
 
 
 	/**
-	 * @param string $name
-	 * @param string $namespace
-	 * @return ReflectionFunction|NULL
+	 * {@inheritdoc}
 	 */
 	public function getFunction($name, $namespace = '')
 	{
-		$parsedFunctions = $this->parserResult->getFunctions();
+		$parsedFunctions = $this->parserStorage->getFunctions();
 		$function = $this->findElementByNameAndNamespace($parsedFunctions, $name, $namespace);
 		if ($function && $function->isDocumented()) {
 			return $function;
@@ -107,12 +110,7 @@ class ElementResolver
 
 
 	/**
-	 * Tries to parse a definition of a class/method/property/constant/function
-	 *
-	 * @param string $definition
-	 * @param ReflectionElement|ReflectionParameter $reflectionElement Link context
-	 * @param string $expectedName
-	 * @return ReflectionElement|NULL
+	 * {@inheritdoc}
 	 */
 	public function resolveElement($definition, $reflectionElement, &$expectedName = NULL)
 	{
@@ -128,7 +126,7 @@ class ElementResolver
 
 		// self, $this references
 		if ($definition === 'self' || $definition === '$this') {
-			return $reflectionElement instanceof ReflectionClass ? $reflectionElement : NULL;
+			return $reflectionElement instanceof ClassReflectionInterface ? $reflectionElement : NULL;
 		}
 
 		$definitionBase = substr($definition, 0, strcspn($definition, '\\:'));
@@ -155,7 +153,7 @@ class ElementResolver
 			$reflectionElement = $this->resolveContextForClassProperty($definition, $reflectionElement, $pos);
 			$definition = substr($definition, $pos + 2);
 
-		} elseif ($originalContext instanceof ReflectionParameter) {
+		} elseif ($originalContext instanceof ParameterReflectionInterface) {
 			return NULL;
 		}
 
@@ -168,19 +166,18 @@ class ElementResolver
 
 
 	/**
-	 * @param ReflectionClass|ReflectionParameter|ReflectionFunction|ReflectionElement $reflectionElement
-	 * @return ReflectionClass|ReflectionFunction
+	 * @param ClassReflectionInterface|ParameterReflectionInterface|FunctionReflectionInterface $reflectionElement
+	 * @return ClassReflectionInterface|FunctionReflectionInterface
 	 */
 	private function correctContextForParameterOrClassMember($reflectionElement)
 	{
-		if ($reflectionElement instanceof ReflectionParameter && $reflectionElement->getDeclaringClassName() === NULL) {
+		if ($reflectionElement instanceof ParameterReflectionInterface
+			&& $reflectionElement->getDeclaringClassName() === NULL
+		) {
 			// Parameter of function in namespace or global space
 			return $this->getFunction($reflectionElement->getDeclaringFunctionName());
 
-		} elseif ($reflectionElement instanceof ReflectionMethod || $reflectionElement instanceof ReflectionParameter
-			|| ($reflectionElement instanceof ReflectionConstant && $reflectionElement->getDeclaringClassName() !== NULL)
-			|| $reflectionElement instanceof ReflectionProperty
-		) {
+		} elseif ($reflectionElement instanceof InClassInterface) {
 			// Member of a class
 			return $this->getClass($reflectionElement->getDeclaringClassName());
 		}
@@ -191,10 +188,10 @@ class ElementResolver
 	/**
 	 * @param string $definition
 	 * @param int $pos
-	 * @param ReflectionElement $reflectionElement
-	 * @return ReflectionClass
+	 * @param ElementReflectionInterface $reflectionElement
+	 * @return ClassReflectionInterface
 	 */
-	private function resolveContextForSelfProperty($definition, $pos, ReflectionElement $reflectionElement)
+	private function resolveContextForSelfProperty($definition, $pos, ElementReflectionInterface $reflectionElement)
 	{
 		$class = $this->getClass(substr($definition, 0, $pos), $reflectionElement->getNamespaceName());
 		if ($class === NULL) {
@@ -223,10 +220,10 @@ class ElementResolver
 
 	/**
 	 * @param string $definition
-	 * @param ReflectionElement $reflectionElement
-	 * @return ReflectionClass|ReflectionConstant|ReflectionFunction|NULL
+	 * @param ElementReflectionInterface $reflectionElement
+	 * @return ClassReflectionInterface|ConstantReflectionInterface|FunctionReflectionInterface|NULL
 	 */
-	private function resolveIfParsed($definition, ReflectionElement $reflectionElement)
+	private function resolveIfParsed($definition, ElementReflectionInterface $reflectionElement)
 	{
 		$definition = $this->removeEndBrackets($definition);
 		if ($class = $this->getClass($definition, $reflectionElement->getNamespaceName())) {
@@ -244,10 +241,10 @@ class ElementResolver
 
 	/**
 	 * @param $definition
-	 * @param ReflectionClass $context
-	 * @return ReflectionConstant|ReflectionMethod|ReflectionProperty|NULL
+	 * @param ClassReflectionInterface $context
+	 * @return ConstantReflectionInterface|MethodReflectionInterface|PropertyReflectionInterface|NULL
 	 */
-	private function resolveIfInContext($definition, ReflectionClass $context)
+	private function resolveIfInContext($definition, ClassReflectionInterface $context)
 	{
 		$definition = $this->removeEndBrackets($definition);
 		$definition = $this->removeStartDollar($definition);
@@ -293,11 +290,11 @@ class ElementResolver
 
 	/**
 	 * @param string $definition
-	 * @param ReflectionClass $reflectionClass
+	 * @param ClassReflectionInterface $reflectionClass
 	 * @param int $pos
-	 * @return ReflectionClass
+	 * @return ClassReflectionInterface
 	 */
-	private function resolveContextForClassProperty($definition, ReflectionClass $reflectionClass, $pos)
+	private function resolveContextForClassProperty($definition, ClassReflectionInterface $reflectionClass, $pos)
 	{
 		// Class::something or Class->something
 		if (strpos($definition, 'parent::') === 0 && ($parentClassName = $reflectionClass->getParentClassName())) {
@@ -316,8 +313,8 @@ class ElementResolver
 	 */
 	private function isContextUsable($reflectionElement)
 	{
-		if ($reflectionElement === NULL || $reflectionElement instanceof ReflectionConstant
-			|| $reflectionElement instanceof ReflectionFunction
+		if ($reflectionElement === NULL || $reflectionElement instanceof ConstantReflectionInterface
+			|| $reflectionElement instanceof FunctionReflectionInterface
 		) {
 			return FALSE;
 		}

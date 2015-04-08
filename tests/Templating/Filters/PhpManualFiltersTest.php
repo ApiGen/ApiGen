@@ -2,14 +2,14 @@
 
 namespace ApiGen\Tests\Templating\Filters;
 
-use ApiGen\Parser\ParserResult;
-use ApiGen\Reflection\ReflectionClass;
-use ApiGen\Reflection\ReflectionConstant;
-use ApiGen\Reflection\ReflectionExtension;
-use ApiGen\Reflection\ReflectionFunction;
-use ApiGen\Reflection\ReflectionMethod;
-use ApiGen\Reflection\ReflectionProperty;
-use ApiGen\Reflection\ReflectionPropertyMagic;
+use ApiGen\Contracts\Parser\ParserStorageInterface;
+use ApiGen\Parser\Reflection\ReflectionClass;
+use ApiGen\Parser\Reflection\ReflectionConstant;
+use ApiGen\Parser\Reflection\ReflectionExtension;
+use ApiGen\Parser\Reflection\ReflectionFunction;
+use ApiGen\Parser\Reflection\ReflectionMethod;
+use ApiGen\Parser\Reflection\ReflectionProperty;
+use ApiGen\Parser\Reflection\ReflectionPropertyMagic;
 use ApiGen\Templating\Filters\PhpManualFilters;
 use Mockery;
 use Nette\Object;
@@ -104,7 +104,7 @@ class PhpManualFiltersTest extends PHPUnit_Framework_TestCase
 		$reflectionMock->shouldReceive('getName')->andReturn('ZipArchive');
 		$reflectionClass = new ReflectionClass($reflectionMock);
 
-		$parserResultMock = Mockery::mock(ParserResult::class);
+		$parserResultMock = Mockery::mock(ParserStorageInterface::class);
 		$parserResultMock->shouldReceive('getElementsByType')->andReturn(['ZipArchive' => $reflectionClass]);
 		$reflectionClass->setParserResult($parserResultMock);
 
@@ -128,7 +128,7 @@ class PhpManualFiltersTest extends PHPUnit_Framework_TestCase
 		$reflectionClass = Mockery::mock(ReflectionClass::class);
 		$reflectionClass->shouldReceive('getName')->andReturn('splFileInfo');
 
-		$parserResultMock = Mockery::mock(ParserResult::class);
+		$parserResultMock = Mockery::mock(ParserStorageInterface::class);
 		$parserResultMock->shouldReceive('getElementsByType')->andReturn(['splFileInfo' => $reflectionClass]);
 
 		$reflectionMock = Mockery::mock(IReflectionMethod::class, Object::class);
@@ -151,7 +151,7 @@ class PhpManualFiltersTest extends PHPUnit_Framework_TestCase
 		$reflectionClass = Mockery::mock(ReflectionClass::class);
 		$reflectionClass->shouldReceive('getName')->andReturn('');
 
-		$parserResultMock = Mockery::mock(ParserResult::class);
+		$parserResultMock = Mockery::mock(ParserStorageInterface::class);
 		$parserResultMock->shouldReceive('getElementsByType')->andReturn(['json-decode' => $reflectionClass]);
 
 		$reflectionMock = Mockery::mock(IReflectionFunction::class, Object::class);
@@ -172,7 +172,7 @@ class PhpManualFiltersTest extends PHPUnit_Framework_TestCase
 		$reflectionClass = Mockery::mock(ReflectionClass::class);
 		$reflectionClass->shouldReceive('getName')->andReturn('ReflectionProperty');
 
-		$parserResultMock = Mockery::mock(ParserResult::class);
+		$parserResultMock = Mockery::mock(ParserStorageInterface::class);
 		$parserResultMock->shouldReceive('getElementsByType')->andReturn(['reflection' => $reflectionClass]);
 
 		$reflectionMock = Mockery::mock(IReflectionConstant::class, Object::class);

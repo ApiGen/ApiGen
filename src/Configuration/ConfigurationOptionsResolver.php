@@ -33,7 +33,7 @@ class ConfigurationOptionsResolver
 	 */
 	private $defaults = [
 		CO::ANNOTATION_GROUPS => [],
-		CO::ACCESS_LEVELS => [],
+		CO::ACCESS_LEVELS => ['public'],
 		CO::BASE_URL => '',
 		CO::CONFIG => '',
 		CO::DEBUG => FALSE,
@@ -140,6 +140,7 @@ class ConfigurationOptionsResolver
 	private function getAccessLevelForReflections(array $options)
 	{
 		$accessLevel = NULL;
+
 		if (in_array(self::AL_PUBLIC, $options)) {
 			$accessLevel |= ReflectionProperty::IS_PUBLIC;
 		}

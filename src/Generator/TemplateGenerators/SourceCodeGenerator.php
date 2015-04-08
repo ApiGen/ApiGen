@@ -12,6 +12,8 @@ namespace ApiGen\Generator\TemplateGenerators;
 use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Configuration\Theme\ThemeConfigOptions as TCO;
+use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
 use ApiGen\Generator\ConditionalTemplateGenerator;
 use ApiGen\Generator\Resolvers\RelativePathResolver;
 use ApiGen\Generator\SourceCodeHighlighter\SourceCodeHighlighter;
@@ -79,7 +81,7 @@ class SourceCodeGenerator extends Nette\Object implements ConditionalTemplateGen
 	{
 		foreach ($this->elementStorage->getElements() as $type => $elementList) {
 			foreach ($elementList as $element) {
-				/** @var ReflectionElement $element */
+				/** @var ElementReflectionInterface $element */
 				if ($element->isTokenized()) {
 					$this->generateForElement($element);
 					$this->onGenerateProgress();
@@ -103,7 +105,7 @@ class SourceCodeGenerator extends Nette\Object implements ConditionalTemplateGen
 	 */
 	public function getStepCount()
 	{
-		$tokenizedFilter = function (ReflectionClass $class) {
+		$tokenizedFilter = function (ClassReflectionInterface $class) {
 			return $class->isTokenized();
 		};
 
@@ -118,7 +120,7 @@ class SourceCodeGenerator extends Nette\Object implements ConditionalTemplateGen
 	}
 
 
-	private function generateForElement(ReflectionElement $element)
+	private function generateForElement(ElementReflectionInterface $element)
 	{
 		$template = $this->templateFactory->createNamedForElement(TCO::SOURCE, $element);
 		$template->setParameters([
@@ -132,7 +134,7 @@ class SourceCodeGenerator extends Nette\Object implements ConditionalTemplateGen
 	/**
 	 * @return string
 	 */
-	private function getHighlightedCodeFromElement(ReflectionElement $element)
+	private function getHighlightedCodeFromElement(ElementReflectionInterface $element)
 	{
 		$content = file_get_contents($element->getFileName());
 		return $this->sourceCodeHighlighter->highlightAndAddLineNumbers($content);

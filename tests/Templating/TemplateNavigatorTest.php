@@ -3,9 +3,9 @@
 namespace ApiGen\Tests\Templating;
 
 use ApiGen\Configuration\Configuration;
-use ApiGen\Reflection\ReflectionClass;
-use ApiGen\Reflection\ReflectionConstant;
-use ApiGen\Reflection\ReflectionFunction;
+use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Templating\Filters\Helpers\ElementUrlFactory;
 use ApiGen\Templating\Filters\NamespaceAndPackageUrlFilters;
 use ApiGen\Templating\Filters\SourceFilters;
@@ -102,7 +102,7 @@ class TemplateNavigatorTest extends ContainerAwareTestCase
 
 	public function testGetTemplatePathForClass()
 	{
-		$classReflectionMock = Mockery::mock(ReflectionClass::class);
+		$classReflectionMock = Mockery::mock(ClassReflectionInterface::class);
 		$classReflectionMock->shouldReceive('getName')->andReturn('SomeClass');
 
 		$this->assertSame(
@@ -114,7 +114,7 @@ class TemplateNavigatorTest extends ContainerAwareTestCase
 
 	public function testGetTemplatePathForConstant()
 	{
-		$constantReflectionMock = Mockery::mock(ReflectionConstant::class);
+		$constantReflectionMock = Mockery::mock(ConstantReflectionInterface::class);
 		$constantReflectionMock->shouldReceive('getName')->andReturn('SomeConstant');
 
 		$this->assertSame(
@@ -126,7 +126,7 @@ class TemplateNavigatorTest extends ContainerAwareTestCase
 
 	public function testGetTemplatePathForFunction()
 	{
-		$functionReflectionMock = Mockery::mock(ReflectionFunction::class);
+		$functionReflectionMock = Mockery::mock(FunctionReflectionInterface::class);
 		$functionReflectionMock->shouldReceive('getName')->andReturn('SomeFunction');
 
 		$this->assertSame(
@@ -138,7 +138,7 @@ class TemplateNavigatorTest extends ContainerAwareTestCase
 
 	public function testGetTemplatePathForMethod()
 	{
-		$classReflectionMock = Mockery::mock(ReflectionClass::class);
+		$classReflectionMock = Mockery::mock(ClassReflectionInterface::class);
 		$classReflectionMock->shouldReceive('getName')->andReturn('SomeClass');
 
 		$this->assertSame(

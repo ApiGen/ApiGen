@@ -23,36 +23,21 @@ class ConfigurationTest extends PHPUnit_Framework_TestCase
 
 	public function testAreNamespacesEnabled()
 	{
-		$this->configuration->resolveOptions(['groups' => 'auto']);
-		$this->assertTrue($this->configuration->areNamespacesEnabled(5, 0));
-		$this->assertFalse($this->configuration->areNamespacesEnabled(0, 5));
-		$this->assertTrue($this->configuration->areNamespacesEnabled(5, 5));
-
 		$this->configuration->resolveOptions(['groups' => 'namespaces']);
-		$this->assertTrue($this->configuration->areNamespacesEnabled(5, 0));
-		$this->assertTrue($this->configuration->areNamespacesEnabled(0, 5));
-		$this->assertTrue($this->configuration->areNamespacesEnabled(5, 5));
+		$this->assertTrue($this->configuration->areNamespacesEnabled());
 
 		$this->configuration->resolveOptions(['groups' => 'packages']);
-		$this->assertFalse($this->configuration->areNamespacesEnabled(5, 0));
-		$this->assertFalse($this->configuration->areNamespacesEnabled(0, 5));
-		$this->assertFalse($this->configuration->areNamespacesEnabled(5, 5));
+		$this->assertFalse($this->configuration->areNamespacesEnabled());
 	}
 
 
 	public function testArePackagesEnabled()
 	{
-		$this->configuration->resolveOptions(['groups' => 'auto']);
-		$this->assertFalse($this->configuration->arePackagesEnabled(TRUE));
-		$this->assertTrue($this->configuration->arePackagesEnabled(FALSE));
+		$this->configuration->resolveOptions(['groups' => 'packages']);
+		$this->assertTrue($this->configuration->arePackagesEnabled());
 
 		$this->configuration->resolveOptions(['groups' => 'namespaces']);
-		$this->assertFalse($this->configuration->arePackagesEnabled(TRUE));
-		$this->assertFalse($this->configuration->arePackagesEnabled(FALSE));
-
-		$this->configuration->resolveOptions(['groups' => 'packages']);
-		$this->assertTrue($this->configuration->arePackagesEnabled(TRUE));
-		$this->assertTrue($this->configuration->arePackagesEnabled(FALSE));
+		$this->assertFalse($this->configuration->arePackagesEnabled());
 	}
 
 
