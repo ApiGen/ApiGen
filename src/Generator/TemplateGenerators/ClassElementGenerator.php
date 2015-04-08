@@ -9,11 +9,11 @@
 
 namespace ApiGen\Generator\TemplateGenerators;
 
+use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Generator\StepCounter;
 use ApiGen\Generator\TemplateGenerator;
 use ApiGen\Generator\TemplateGenerators\Loaders\NamespaceAndPackageLoader;
 use ApiGen\Parser\Elements\ElementStorage;
-use ApiGen\Reflection\ReflectionClass;
 use ApiGen\Templating\Template;
 use ApiGen\Templating\TemplateFactory;
 use Nette;
@@ -80,7 +80,7 @@ class ClassElementGenerator extends Nette\Object implements TemplateGenerator, S
 	/**
 	 * @return Template
 	 */
-	private function loadTemplateWithParameters(Template $template, ReflectionClass $class)
+	private function loadTemplateWithParameters(Template $template, ClassReflectionInterface $class)
 	{
 		$template = $this->namespaceAndPackageLoader->loadTemplateWithElementNamespaceOrPackage($template, $class);
 		$template->setParameters([

@@ -12,10 +12,14 @@ namespace ApiGen\Templating;
 use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Configuration\Theme\ThemeConfigOptions as TCO;
-use ApiGen\Reflection\ReflectionClass;
-use ApiGen\Reflection\ReflectionConstant;
-use ApiGen\Reflection\ReflectionElement;
-use ApiGen\Reflection\ReflectionFunction;
+use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
+use ApiGen\Parser\Reflection\ReflectionClass;
+use ApiGen\Parser\Reflection\ReflectionConstant;
+use ApiGen\Parser\Reflection\ReflectionElement;
+use ApiGen\Parser\Reflection\ReflectionFunction;
 use ApiGen\Templating\Filters\Helpers\ElementUrlFactory;
 use ApiGen\Templating\Filters\NamespaceAndPackageUrlFilters;
 use ApiGen\Templating\Filters\SourceFilters;
@@ -103,7 +107,7 @@ class TemplateNavigator
 	/**
 	 * @return string
 	 */
-	public function getTemplatePathForClass(ReflectionClass $element)
+	public function getTemplatePathForClass(ClassReflectionInterface $element)
 	{
 		return $this->getDestination() . '/' . $this->elementUrlFactory->createForClass($element);
 	}
@@ -112,7 +116,7 @@ class TemplateNavigator
 	/**
 	 * @return string
 	 */
-	public function getTemplatePathForConstant(ReflectionConstant $element)
+	public function getTemplatePathForConstant(ConstantReflectionInterface $element)
 	{
 		return $this->getDestination() . '/' . $this->elementUrlFactory->createForConstant($element);
 	}
@@ -121,7 +125,7 @@ class TemplateNavigator
 	/**
 	 * @return string
 	 */
-	public function getTemplatePathForFunction(ReflectionFunction $element)
+	public function getTemplatePathForFunction(FunctionReflectionInterface $element)
 	{
 		return $this->getDestination() . '/' . $this->elementUrlFactory->createForFunction($element);
 	}
@@ -130,7 +134,7 @@ class TemplateNavigator
 	/**
 	 * @return string
 	 */
-	public function getTemplatePathForSourceElement(ReflectionElement $element)
+	public function getTemplatePathForSourceElement(ElementReflectionInterface $element)
 	{
 		return $this->getDestination() . '/' . $this->sourceFilters->sourceUrl($element, FALSE);
 	}

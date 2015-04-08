@@ -86,6 +86,7 @@ class Template
 	{
 		$this->savePath = $file ?: $this->savePath;
 		$dir = dirname($this->savePath);
+
 		if ( ! is_dir($dir)) {
 			mkdir($dir, 0755, TRUE);
 		}

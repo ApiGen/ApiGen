@@ -12,11 +12,12 @@ namespace ApiGen\Generator\TemplateGenerators;
 use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Configuration\Theme\ThemeConfigOptions as TCO;
+use ApiGen\Contracts\Parser\Elements\ElementsInterface;
+use ApiGen\Contracts\Parser\ParserStorageInterface;
+use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
+use ApiGen\Contracts\Templating\TemplateFactory\TemplateFactoryInterface;
 use ApiGen\Generator\ConditionalTemplateGenerator;
-use ApiGen\Parser\Elements\Elements;
-use ApiGen\Parser\ParserResult;
 use ApiGen\Reflection\ReflectionClass;
-use ApiGen\Templating\TemplateFactory;
 use ApiGen\Tree;
 
 
@@ -29,7 +30,7 @@ class TreeGenerator implements ConditionalTemplateGenerator
 	private $configuration;
 
 	/**
-	 * @var TemplateFactory
+	 * @var TemplateFactoryInterface
 	 */
 	private $templateFactory;
 
@@ -42,26 +43,26 @@ class TreeGenerator implements ConditionalTemplateGenerator
 	 * @var array[]
 	 */
 	private $treeStorage = [
-		Elements::CLASSES => [],
-		Elements::INTERFACES => [],
-		Elements::TRAITS => [],
-		Elements::EXCEPTIONS => []
+		ElementsInterface::CLASSES => [],
+		ElementsInterface::INTERFACES => [],
+		ElementsInterface::TRAITS => [],
+		ElementsInterface::EXCEPTIONS => []
 	];
 
 	/**
-	 * @var ParserResult
+	 * @var ParserStorageInterface
 	 */
-	private $parserResult;
+	private $parserStorage;
 
 
 	public function __construct(
 		Configuration $configuration,
-		TemplateFactory $templateFactory,
-		ParserResult $parserResult
+		TemplateFactoryInterface $templateFactory,
+		ParserStorageInterface $parserStorage
 	) {
 		$this->configuration = $configuration;
 		$this->templateFactory = $templateFactory;
-		$this->parserResult = $parserResult;
+		$this->parserStorage = $parserStorage;
 	}
 
 
@@ -69,7 +70,7 @@ class TreeGenerator implements ConditionalTemplateGenerator
 	{
 		$template = $this->templateFactory->createForType(TCO::TREE);
 
-		$classes = $this->parserResult->getClasses();
+		$classes = $this->parserStorage->getClasses();
 		foreach ($classes as $className => $reflection) {
 			if ($this->canBeProcessed($reflection)) {
 				$this->addToTreeByReflection($reflection);
@@ -79,10 +80,10 @@ class TreeGenerator implements ConditionalTemplateGenerator
 		$this->sortTreeStorageElements();
 
 		$template->setParameters([
-			'classTree' => new Tree($this->treeStorage[Elements::CLASSES], $classes),
-			'interfaceTree' => new Tree($this->treeStorage[Elements::INTERFACES], $classes),
-			'traitTree' => new Tree($this->treeStorage[Elements::TRAITS], $classes),
-			'exceptionTree' => new Tree($this->treeStorage[Elements::EXCEPTIONS], $classes)
+			'classTree' => new Tree($this->treeStorage[ElementsInterface::CLASSES], $classes),
+			'interfaceTree' => new Tree($this->treeStorage[ElementsInterface::INTERFACES], $classes),
+			'traitTree' => new Tree($this->treeStorage[ElementsInterface::TRAITS], $classes),
+			'exceptionTree' => new Tree($this->treeStorage[ElementsInterface::EXCEPTIONS], $classes)
 		]);
 
 		$template->save();
@@ -101,7 +102,7 @@ class TreeGenerator implements ConditionalTemplateGenerator
 	/**
 	 * @return bool
 	 */
-	private function canBeProcessed(ReflectionClass $reflection)
+	private function canBeProcessed(ClassReflectionInterface $reflection)
 	{
 		if ( ! $reflection->isMain()) {
 			return FALSE;
@@ -116,7 +117,7 @@ class TreeGenerator implements ConditionalTemplateGenerator
 	}
 
 
-	private function addToTreeByReflection(ReflectionClass $reflection)
+	private function addToTreeByReflection(ClassReflectionInterface $reflection)
 	{
 		if ($reflection->getParentClassName() === NULL) {
 			$type = $this->getTypeByReflection($reflection);
@@ -143,19 +144,19 @@ class TreeGenerator implements ConditionalTemplateGenerator
 	/**
 	 * @return string
 	 */
-	private function getTypeByReflection(ReflectionClass $reflection)
+	private function getTypeByReflection(ClassReflectionInterface $reflection)
 	{
 		if ($reflection->isInterface()) {
-			return Elements::INTERFACES;
+			return ElementsInterface::INTERFACES;
 
 		} elseif ($reflection->isTrait()) {
-			return Elements::TRAITS;
+			return ElementsInterface::TRAITS;
 
 		} elseif ($reflection->isException()) {
-			return Elements::EXCEPTIONS;
+			return ElementsInterface::EXCEPTIONS;
 
 		} else {
-			return Elements::CLASSES;
+			return ElementsInterface::CLASSES;
 		}
 	}
 

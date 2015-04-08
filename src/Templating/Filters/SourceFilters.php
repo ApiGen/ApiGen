@@ -9,24 +9,29 @@
 
 namespace ApiGen\Templating\Filters;
 
-use ApiGen\Configuration\Configuration;
-use ApiGen\Configuration\ConfigurationOptions as CO;
-use ApiGen\Reflection\ReflectionClass;
-use ApiGen\Reflection\ReflectionConstant;
-use ApiGen\Reflection\ReflectionElement;
-use ApiGen\Reflection\ReflectionFunction;
+use ApiGen\Contracts\Configuration\ConfigurationInterface;
+use ApiGen\Contracts\Parser\Reflection\Behavior\InClassInterface;
+use ApiGen\Contracts\Parser\Reflection\Behavior\LinedInterface;
+use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
+use ApiGen\Parser\Reflection\ReflectionClass;
+use ApiGen\Parser\Reflection\ReflectionConstant;
+use ApiGen\Parser\Reflection\ReflectionElement;
+use ApiGen\Parser\Reflection\ReflectionFunction;
 
 
 class SourceFilters extends Filters
 {
 
 	/**
-	 * @var Configuration
+	 * @var ConfigurationInterface
 	 */
 	private $configuration;
 
 
-	public function __construct(Configuration $configuration)
+	public function __construct(ConfigurationInterface $configuration)
 	{
 		$this->configuration = $configuration;
 	}
@@ -38,7 +43,7 @@ class SourceFilters extends Filters
 	 */
 	public function staticFile($name)
 	{
-		$filename = $this->configuration->getOption(CO::DESTINATION) . '/' . $name;
+		$filename = $this->configuration->getOption('destination') . '/' . $name;
 		if (is_file($filename)) {
 			$name .= '?' . sha1_file($filename);
 		}
@@ -47,22 +52,22 @@ class SourceFilters extends Filters
 
 
 	/**
-	 * @param ReflectionElement|ReflectionConstant $element
+	 * @param ElementReflectionInterface $element
 	 * @param bool $withLine Include file line number into the link
 	 * @return string
 	 */
-	public function sourceUrl(ReflectionElement $element, $withLine = TRUE)
+	public function sourceUrl(ElementReflectionInterface $element, $withLine = TRUE)
 	{
 		$file = '';
 		if ($this->isDirectUrl($element)) {
 			$elementName = $element->getName();
-			if ($element instanceof ReflectionClass) {
+			if ($element instanceof ClassReflectionInterface) {
 				$file = 'class-';
 
-			} elseif ($element instanceof ReflectionConstant) {
+			} elseif ($element instanceof ConstantReflectionInterface) {
 				$file = 'constant-';
 
-			} elseif ($element instanceof ReflectionFunction) {
+			} elseif ($element instanceof FunctionReflectionInterface) {
 				$file = 'function-';
 			}
 
@@ -73,7 +78,7 @@ class SourceFilters extends Filters
 
 		$file .= $this->urlize($elementName);
 
-		$url = sprintf($this->configuration->getOption(CO::TEMPLATE)['templates']['source']['filename'], $file);
+		$url = sprintf($this->configuration->getOption('template')['templates']['source']['filename'], $file);
 		if ($withLine) {
 			$url .= $this->getElementLinesAnchor($element);
 		}
@@ -84,10 +89,11 @@ class SourceFilters extends Filters
 	/**
 	 * @return bool
 	 */
-	private function isDirectUrl(ReflectionElement $element)
+	private function isDirectUrl(ElementReflectionInterface $element)
 	{
-		if ($element instanceof ReflectionClass || $element instanceof ReflectionFunction
-			|| ($element instanceof ReflectionConstant && $element->getDeclaringClassName() === NULL)
+		if ($element instanceof ClassReflectionInterface
+			|| $element instanceof FunctionReflectionInterface
+			|| $element instanceof ConstantReflectionInterface
 		) {
 			return TRUE;
 		}
@@ -96,10 +102,10 @@ class SourceFilters extends Filters
 
 
 	/**
-	 * @param ReflectionElement $element
+	 * @param LinedInterface $element
 	 * @return string
 	 */
-	private function getElementLinesAnchor(ReflectionElement $element)
+	private function getElementLinesAnchor(LinedInterface $element)
 	{
 		$anchor = '#' . $element->getStartLine();
 		if ($element->getStartLine() !== $element->getEndLine()) {

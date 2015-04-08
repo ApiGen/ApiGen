@@ -9,9 +9,9 @@
 
 namespace ApiGen\Generator\TemplateGenerators\Loaders;
 
+use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
 use ApiGen\Parser\Elements\Elements;
 use ApiGen\Parser\Elements\ElementStorage;
-use ApiGen\Reflection\ReflectionElement;
 use ApiGen\Templating\Template;
 
 
@@ -33,7 +33,7 @@ class NamespaceAndPackageLoader
 	/**
 	 * @return Template
 	 */
-	public function loadTemplateWithElementNamespaceOrPackage(Template $template, ReflectionElement $element)
+	public function loadTemplateWithElementNamespaceOrPackage(Template $template, ElementReflectionInterface $element)
 	{
 		if ($namespaces = $this->elementStorage->getNamespaces()) {
 			$name = $element->getPseudoNamespaceName();

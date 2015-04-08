@@ -30,7 +30,8 @@
 
 		"apigen/theme-default": "~1.0.1",
 		"apigen/theme-bootstrap": "~1.1.2",
-		"apigen/utils": "~0.1.3"
+		"apigen/utils": "0.1.3",
+		"apigen/parser": "0.1.*"
 	},
 	"require-dev": {
 		"mockery/mockery": "~0.9",

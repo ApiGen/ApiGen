@@ -4,9 +4,9 @@ namespace ApiGen\Tests\Templating;
 
 use ApiGen;
 use ApiGen\Configuration\Configuration;
-use ApiGen\Reflection\ReflectionClass;
-use ApiGen\Reflection\ReflectionConstant;
-use ApiGen\Reflection\ReflectionFunction;
+use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Templating\Exceptions\UnsupportedElementException;
 use ApiGen\Templating\Template;
 use ApiGen\Templating\TemplateFactory;
@@ -58,7 +58,7 @@ class TemplateFactoryTest extends PHPUnit_Framework_TestCase
 
 	public function testCreateNamedForElement()
 	{
-		$reflectionClassMock = Mockery::mock(ReflectionClass::class);
+		$reflectionClassMock = Mockery::mock(ClassReflectionInterface::class);
 
 		$this->assertInstanceOf(
 			Template::class,
@@ -81,7 +81,7 @@ class TemplateFactoryTest extends PHPUnit_Framework_TestCase
 	{
 		$this->setExpectedException(UnsupportedElementException::class);
 
-		$reflectionClassMock = Mockery::mock('ApiGen\Reflection\ReflectionClass');
+		$reflectionClassMock = Mockery::mock(ClassReflectionInterface::class);
 		$this->assertInstanceOf(
 			'ApiGen\Templating\Template',
 			$this->templateFactory->createNamedForElement('notExisting', $reflectionClassMock)
@@ -91,15 +91,15 @@ class TemplateFactoryTest extends PHPUnit_Framework_TestCase
 
 	public function testCreateForReflection()
 	{
-		$reflectionClassMock = Mockery::mock(ReflectionClass::class);
+		$reflectionClassMock = Mockery::mock(ClassReflectionInterface::class);
 		$template = $this->templateFactory->createForReflection($reflectionClassMock);
 		$this->assertInstanceOf(Template::class, $template);
 
-		$reflectionConstantMock = Mockery::mock(ReflectionConstant::class);
+		$reflectionConstantMock = Mockery::mock(ConstantReflectionInterface::class);
 		$template = $this->templateFactory->createForReflection($reflectionConstantMock);
 		$this->assertInstanceOf(Template::class, $template);
 
-		$reflectionFunctionMock = Mockery::mock(ReflectionFunction::class);
+		$reflectionFunctionMock = Mockery::mock(FunctionReflectionInterface::class);
 		$template = $this->templateFactory->createForReflection($reflectionFunctionMock);
 		$this->assertInstanceOf(Template::class, $template);
 	}

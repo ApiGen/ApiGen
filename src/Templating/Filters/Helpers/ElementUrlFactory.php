@@ -12,12 +12,19 @@ namespace ApiGen\Templating\Filters\Helpers;
 use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Configuration\Theme\ThemeConfigOptions as TCO;
-use ApiGen\Reflection\ReflectionClass;
-use ApiGen\Reflection\ReflectionConstant;
-use ApiGen\Reflection\ReflectionElement;
-use ApiGen\Reflection\ReflectionFunction;
-use ApiGen\Reflection\ReflectionMethod;
-use ApiGen\Reflection\ReflectionProperty;
+use ApiGen\Contracts\Configuration\ConfigurationInterface;
+use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
+use ApiGen\Parser\Reflection\ReflectionClass;
+use ApiGen\Parser\Reflection\ReflectionConstant;
+use ApiGen\Parser\Reflection\ReflectionElement;
+use ApiGen\Parser\Reflection\ReflectionFunction;
+use ApiGen\Parser\Reflection\ReflectionMethod;
+use ApiGen\Parser\Reflection\ReflectionProperty;
 use ApiGen\Templating\Filters\Filters;
 
 
@@ -25,36 +32,36 @@ class ElementUrlFactory
 {
 
 	/**
-	 * @var Configuration
+	 * @var ConfigurationInterface
 	 */
 	private $configuration;
 
 
-	public function __construct(Configuration $configuration)
+	public function __construct(ConfigurationInterface $configuration)
 	{
 		$this->configuration = $configuration;
 	}
 
 
 	/**
-	 * @param ReflectionElement|string $element
+	 * @param ElementReflectionInterface|string $element
 	 * @return string|NULL
 	 */
 	public function createForElement($element)
 	{
-		if ($element instanceof ReflectionClass) {
+		if ($element instanceof ClassReflectionInterface) {
 			return $this->createForClass($element);
 
-		} elseif ($element instanceof ReflectionMethod) {
+		} elseif ($element instanceof MethodReflectionInterface) {
 			return $this->createForMethod($element);
 
-		} elseif ($element instanceof ReflectionProperty) {
+		} elseif ($element instanceof PropertyReflectionInterface) {
 			return $this->createForProperty($element);
 
-		} elseif ($element instanceof ReflectionConstant) {
+		} elseif ($element instanceof ConstantReflectionInterface) {
 			return $this->createForConstant($element);
 
-		} elseif ($element instanceof ReflectionFunction) {
+		} elseif ($element instanceof FunctionReflectionInterface) {
 			return $this->createForFunction($element);
 		}
 
@@ -63,12 +70,12 @@ class ElementUrlFactory
 
 
 	/**
-	 * @param string|ReflectionClass $class
+	 * @param string|ClassReflectionInterface $class
 	 * @return string
 	 */
 	public function createForClass($class)
 	{
-		$className = $class instanceof ReflectionClass ? $class->getName() : $class;
+		$className = $class instanceof ClassReflectionInterface ? $class->getName() : $class;
 		return sprintf(
 			$this->configuration->getOption(CO::TEMPLATE)['templates']['class']['filename'],
 			Filters::urlize($className)
@@ -79,7 +86,7 @@ class ElementUrlFactory
 	/**
 	 * @return string
 	 */
-	public function createForMethod(ReflectionMethod $method, ReflectionClass $class = NULL)
+	public function createForMethod(MethodReflectionInterface $method, ClassReflectionInterface $class = NULL)
 	{
 		$className = $class !== NULL ? $class->getName() : $method->getDeclaringClassName();
 		return $this->createForClass($className) . '#' . ($method->isMagic() ? 'm' : '') . '_'
@@ -90,7 +97,7 @@ class ElementUrlFactory
 	/**
 	 * @return string
 	 */
-	public function createForProperty(ReflectionProperty $property, ReflectionClass $class = NULL)
+	public function createForProperty(PropertyReflectionInterface $property, ClassReflectionInterface $class = NULL)
 	{
 		$className = $class !== NULL ? $class->getName() : $property->getDeclaringClassName();
 		return $this->createForClass($className) . '#' . ($property->isMagic() ? 'm' : '') . '$' . $property->getName();
@@ -100,7 +107,7 @@ class ElementUrlFactory
 	/**
 	 * @return string
 	 */
-	public function createForConstant(ReflectionConstant $constant)
+	public function createForConstant(ConstantReflectionInterface $constant)
 	{
 		// Class constant
 		if ($className = $constant->getDeclaringClassName()) {
@@ -118,7 +125,7 @@ class ElementUrlFactory
 	/**
 	 * @return string
 	 */
-	public function createForFunction(ReflectionFunction $function)
+	public function createForFunction(FunctionReflectionInterface $function)
 	{
 		return sprintf(
 			$this->configuration->getOption(CO::TEMPLATE)['templates']['function']['filename'],

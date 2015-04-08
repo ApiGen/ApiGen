@@ -4,9 +4,12 @@ namespace ApiGen\Tests\Generator\TemplateGenerators;
 
 use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions as CO;
+use ApiGen\Contracts\Parser\ParserStorageInterface;
+use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Generator\TemplateGenerators\TreeGenerator;
 use ApiGen\Parser\Elements\Elements;
 use ApiGen\Parser\ParserResult;
+use ApiGen\Parser\ParserStorage;
 use ApiGen\Reflection\ReflectionClass;
 use ApiGen\Templating\Template;
 use ApiGen\Templating\TemplateFactory;
@@ -39,18 +42,18 @@ class TreeGeneratorTest extends PHPUnit_Framework_TestCase
 		$templateMock->shouldReceive('save');
 		$templateFactoryMock->shouldReceive('createForType')->andReturn($templateMock);
 
-		$reflectionClassMock = Mockery::mock(ReflectionClass::class);
+		$reflectionClassMock = Mockery::mock(ClassReflectionInterface::class);
 		$reflectionClassMock->shouldReceive('isMain')->andReturn(TRUE);
 		$reflectionClassMock->shouldReceive('isDocumented')->andReturn(TRUE);
 		$reflectionClassMock->shouldReceive('getName')->andReturn('SomeClass');
 		$reflectionClassMock->shouldReceive('getParentClassName')->andReturn('');
 		$reflectionClassMock->shouldReceive('getParentClasses')->andReturn([]);
 
-		$parserResultMock = Mockery::mock(ParserResult::class);
-		$parserResultMock->shouldReceive('getClasses')->andReturn(new ArrayObject([$reflectionClassMock]));
+		$parserStorageMock = Mockery::mock(ParserStorageInterface::class);
+		$parserStorageMock->shouldReceive('getClasses')->andReturn(new ArrayObject([$reflectionClassMock]));
 
 		$this->treeGenerator = new TreeGenerator(
-			$configurationMock, $templateFactoryMock, $parserResultMock
+			$configurationMock, $templateFactoryMock, $parserStorageMock
 		);
 	}
 
@@ -70,7 +73,7 @@ class TreeGeneratorTest extends PHPUnit_Framework_TestCase
 
 	public function testCanBeProcessed()
 	{
-		$reflectionClassMock = Mockery::mock(ReflectionClass::class);
+		$reflectionClassMock = Mockery::mock(ClassReflectionInterface::class);
 		$reflectionClassMock->shouldReceive('isMain')->once()->andReturn(FALSE);
 		$reflectionClassMock->shouldReceive('isMain')->andReturn(TRUE);
 		$reflectionClassMock->shouldReceive('isDocumented')->once()->andReturn(FALSE);
@@ -88,10 +91,10 @@ class TreeGeneratorTest extends PHPUnit_Framework_TestCase
 
 	public function testAddToTreeByReflection()
 	{
-		$reflectionClassParentMock = Mockery::mock(ReflectionClass::class);
+		$reflectionClassParentMock = Mockery::mock(ClassReflectionInterface::class);
 		$reflectionClassParentMock->shouldReceive('getName')->andReturn('ParentClassName');
 
-		$reflectionClassMock = Mockery::mock(ReflectionClass::class);
+		$reflectionClassMock = Mockery::mock(ClassReflectionInterface::class);
 		$reflectionClassMock->shouldReceive('getName')->andReturn('someClass');
 		$reflectionClassMock->shouldReceive('getParentClassName')->once()->andReturn(NULL);
 		$reflectionClassMock->shouldReceive('getParentClassName')->andReturn('ParentClassName');
@@ -110,7 +113,7 @@ class TreeGeneratorTest extends PHPUnit_Framework_TestCase
 
 	public function testGetTypeByReflection()
 	{
-		$reflectionClassMock = Mockery::mock(ReflectionClass::class);
+		$reflectionClassMock = Mockery::mock(ClassReflectionInterface::class);
 		$reflectionClassMock->shouldReceive('isInterface')->once()->andReturn(TRUE);
 		$reflectionClassMock->shouldReceive('isInterface')->andReturn(FALSE);
 		$reflectionClassMock->shouldReceive('isTrait')->once()->andReturn(TRUE);

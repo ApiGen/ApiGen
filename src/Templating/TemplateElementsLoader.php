@@ -11,6 +11,8 @@ namespace ApiGen\Templating;
 
 use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions as CO;
+use ApiGen\Contracts\Parser\Elements\ElementStorageInterface;
+use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
 use ApiGen\Parser\Elements\AutocompleteElements;
 use ApiGen\Parser\Elements\ElementStorage;
 use ApiGen\Reflection\ReflectionElement;
@@ -21,7 +23,7 @@ class TemplateElementsLoader
 {
 
 	/**
-	 * @var ElementStorage
+	 * @var ElementStorageInterface
 	 */
 	private $elementStorage;
 
@@ -42,7 +44,7 @@ class TemplateElementsLoader
 
 
 	public function __construct(
-		ElementStorage $elementStorage,
+		ElementStorageInterface $elementStorage,
 		Configuration $configuration,
 		AutocompleteElements $autocompleteElements
 	) {
@@ -66,7 +68,7 @@ class TemplateElementsLoader
 	 */
 	private function getMainFilter()
 	{
-		return function (ReflectionElement $element) {
+		return function (ElementReflectionInterface $element) {
 			return $element->isMain();
 		};
 	}

@@ -14,9 +14,9 @@ use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Configuration\ConfigurationOptionsResolver as COR;
 use ApiGen\Configuration\Readers\ReaderFactory as ConfigurationReader;
 use ApiGen\Console\IO;
+use ApiGen\Contracts\Parser\ParserInterface;
+use ApiGen\Contracts\Parser\ParserStorageInterface;
 use ApiGen\Generator\GeneratorQueue;
-use ApiGen\Parser\Parser;
-use ApiGen\Parser\ParserResult;
 use ApiGen\Scanner\Scanner;
 use ApiGen\Theme\ThemeResources;
 use ApiGen\Utils\FileSystem;
@@ -35,12 +35,12 @@ class GenerateCommand extends Command
 	private $configuration;
 
 	/**
-	 * @var Parser
+	 * @var ParserInterface
 	 */
 	private $parser;
 
 	/**
-	 * @var ParserResult
+	 * @var ParserStorageInterface
 	 */
 	private $parserResult;
 
@@ -73,8 +73,8 @@ class GenerateCommand extends Command
 	public function __construct(
 		Configuration $configuration,
 		Scanner $scanner,
-		Parser $parser,
-		ParserResult $parserResult,
+		ParserInterface $parser,
+		ParserStorageInterface $parserResult,
 		GeneratorQueue $generatorQueue,
 		FileSystem $fileSystem,
 		ThemeResources $themeResources,

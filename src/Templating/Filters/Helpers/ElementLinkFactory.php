@@ -9,12 +9,12 @@
 
 namespace ApiGen\Templating\Filters\Helpers;
 
-use ApiGen\Reflection\ReflectionClass;
-use ApiGen\Reflection\ReflectionConstant;
-use ApiGen\Reflection\ReflectionElement;
-use ApiGen\Reflection\ReflectionFunction;
-use ApiGen\Reflection\ReflectionMethod;
-use ApiGen\Reflection\ReflectionProperty;
+use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
 use Nette\Utils\Html;
 use UnexpectedValueException;
 
@@ -43,21 +43,21 @@ class ElementLinkFactory
 	/**
 	 * @return string
 	 */
-	public function createForElement(ReflectionElement $element, array $classes = [])
+	public function createForElement(ElementReflectionInterface $element, array $classes = [])
 	{
-		if ($element instanceof ReflectionClass) {
+		if ($element instanceof ClassReflectionInterface) {
 			return $this->createForClass($element, $classes);
 
-		} elseif ($element instanceof ReflectionMethod) {
+		} elseif ($element instanceof MethodReflectionInterface) {
 			return $this->createForMethod($element, $classes);
 
-		} elseif ($element instanceof ReflectionProperty) {
+		} elseif ($element instanceof PropertyReflectionInterface) {
 			return $this->createForProperty($element, $classes);
 
-		} elseif ($element instanceof ReflectionConstant) {
+		} elseif ($element instanceof ConstantReflectionInterface) {
 			return $this->createForConstant($element, $classes);
 
-		} elseif ($element instanceof ReflectionFunction) {
+		} elseif ($element instanceof FunctionReflectionInterface) {
 			return $this->createForFunction($element, $classes);
 		}
 
@@ -71,7 +71,7 @@ class ElementLinkFactory
 	/**
 	 * @return string
 	 */
-	private function createForClass(ReflectionClass $reflectionClass, array $classes)
+	private function createForClass(ClassReflectionInterface $reflectionClass, array $classes)
 	{
 		return $this->linkBuilder->build(
 			$this->elementUrlFactory->createForClass($reflectionClass),
@@ -85,7 +85,7 @@ class ElementLinkFactory
 	/**
 	 * @return string
 	 */
-	private function createForMethod(ReflectionMethod $reflectionMethod, array $classes)
+	private function createForMethod(MethodReflectionInterface $reflectionMethod, array $classes)
 	{
 		return $this->linkBuilder->build(
 			$this->elementUrlFactory->createForMethod($reflectionMethod),
@@ -99,7 +99,7 @@ class ElementLinkFactory
 	/**
 	 * @return string
 	 */
-	private function createForProperty(ReflectionProperty $reflectionProperty, array $classes)
+	private function createForProperty(PropertyReflectionInterface $reflectionProperty, array $classes)
 	{
 		$text = $reflectionProperty->getDeclaringClassName() . '::' .
 			Html::el('var')->setText('$' . $reflectionProperty->getName());
@@ -116,7 +116,7 @@ class ElementLinkFactory
 	/**
 	 * @return string
 	 */
-	private function createForConstant(ReflectionConstant $reflectionConstant, array $classes)
+	private function createForConstant(ConstantReflectionInterface $reflectionConstant, array $classes)
 	{
 		$url = $this->elementUrlFactory->createForConstant($reflectionConstant);
 
@@ -135,7 +135,7 @@ class ElementLinkFactory
 	/**
 	 * @return string
 	 */
-	private function createForFunction(ReflectionFunction $reflectionFunction, array $classes)
+	private function createForFunction(FunctionReflectionInterface $reflectionFunction, array $classes)
 	{
 		return $this->linkBuilder->build(
 			$this->elementUrlFactory->createForFunction($reflectionFunction),
@@ -149,7 +149,7 @@ class ElementLinkFactory
 	/**
 	 * @return string
 	 */
-	private function getGlobalConstantName(ReflectionConstant $reflectionConstant)
+	private function getGlobalConstantName(ConstantReflectionInterface $reflectionConstant)
 	{
 		if ($reflectionConstant->inNamespace()) {
 			return $reflectionConstant->getNamespaceName() . '\\' .
