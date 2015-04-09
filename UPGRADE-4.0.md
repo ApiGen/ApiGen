@@ -91,7 +91,7 @@
   - `--wipeout`; now wipes out everytime
   - `--progressbar`; now always present
   - `--colors`; now always colors
-  - `--update-check`; now always colors
+  - `--update-check`; update manually by `apigen self-update` (new version is released every ~ 2 months)
   
 - Some options were renamed and reversed.
   
