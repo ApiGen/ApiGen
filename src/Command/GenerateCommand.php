@@ -11,9 +11,8 @@ namespace ApiGen\Command;
 
 use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions as CO;
-use ApiGen\Configuration\ConfigurationOptionsResolver as COR;
 use ApiGen\Configuration\Readers\ReaderFactory as ConfigurationReader;
-use ApiGen\Console\IO;
+use ApiGen\Console\IOInterface;
 use ApiGen\Contracts\Parser\ParserInterface;
 use ApiGen\Contracts\Parser\ParserStorageInterface;
 use ApiGen\Generator\GeneratorQueue;
@@ -65,7 +64,7 @@ class GenerateCommand extends Command
 	private $themeResources;
 
 	/**
-	 * @var IO
+	 * @var IOInterface
 	 */
 	private $io;
 
@@ -78,7 +77,7 @@ class GenerateCommand extends Command
 		GeneratorQueue $generatorQueue,
 		FileSystem $fileSystem,
 		ThemeResources $themeResources,
-		IO $io
+		IOInterface $io
 	) {
 		parent::__construct();
 		$this->configuration = $configuration;
@@ -100,8 +99,8 @@ class GenerateCommand extends Command
 				'Dirs or files documentation is generated for.')
 			->addOption(CO::DESTINATION, 'd', InputOption::VALUE_REQUIRED, 'Target dir for documentation.')
 			->addOption(CO::ACCESS_LEVELS, NULL, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
-				'Access levels of included method and properties.',
-				[COR::AL_PUBLIC, COR::AL_PROTECTED])
+				'Access levels of included method and properties [options: public, protected, private].',
+				['public', 'protected'])
 			->addOption(CO::ANNOTATION_GROUPS, NULL, InputOption::VALUE_REQUIRED,
 				'Generate page with elements with specific annotation.')
 			->addOption(CO::CONFIG, NULL, InputOption::VALUE_REQUIRED,
@@ -112,8 +111,6 @@ class GenerateCommand extends Command
 				'Base url used for sitemap (for search box).')
 			->addOption(CO::GOOGLE_ANALYTICS, NULL, InputOption::VALUE_REQUIRED, 'Google Analytics tracking code.')
 			->addOption(CO::DEBUG, NULL, InputOption::VALUE_NONE, 'Turn on debug mode.')
-			->addOption(CO::DEPRECATED, NULL, InputOption::VALUE_NONE,
-				'Generate documentation for elements marked as @deprecated')
 			->addOption(CO::DOWNLOAD, NULL, InputOption::VALUE_NONE,
 				'Add link to ZIP archive of documentation.')
 			->addOption(CO::EXTENSIONS, NULL, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
@@ -132,13 +129,16 @@ class GenerateCommand extends Command
 			->addOption(CO::TEMPLATE_CONFIG, NULL, InputOption::VALUE_REQUIRED,
 				'Your own template config, has higher priority ' . CO::TEMPLATE_THEME . '.')
 			->addOption(CO::TITLE, NULL, InputOption::VALUE_REQUIRED, 'Title of generated documentation.')
-			->addOption(CO::TODO, NULL, InputOption::VALUE_NONE, 'Generate documentation for elements marked as @todo.')
 			->addOption(CO::TREE, NULL, InputOption::VALUE_NONE,
 				'Generate tree view of classes, interfaces, traits and exceptions.')
 
 			/**
 			 * @deprecated since version 4.2, to be removed in 5.0
 			 */
+			->addOption('deprecated', NULL, InputOption::VALUE_NONE,
+				'Generate documentation for elements marked as @deprecated (deprecated, only present for BC).')
+			->addOption('todo', NULL, InputOption::VALUE_NONE,
+				'Generate documentation for elements marked as @todo (deprecated, only present for BC).')
 			->addOption('charset', NULL, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
 				'Charset of scanned files (deprecated, only present for BC).')
 			->addOption('skip-doc-path', NULL, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
@@ -282,6 +282,19 @@ class GenerateCommand extends Command
 	{
 		if (isset($options['charset']) && $options['charset']) {
 			$this->io->writeln('<warning>You are using the deprecated option "charset". UTF-8 is default now.</warning>');
+		}
+
+		if (isset($options['deprecated']) && $options['deprecated']) {
+			$this->io->writeln(
+				'<warning>You are using the deprecated option "deprecated". ' .
+				'Use "--annotation-groups=deprecated" instead</warning>'
+			);
+		}
+
+		if (isset($options['todo']) && $options['todo']) {
+			$this->io->writeln(
+				'<warning>You are using the deprecated option "todo". Use "--annotation-groups=todo" instead</warning>'
+			);
 		}
 
 		if (isset($options['skipDocPath']) && $options['skipDocPath']) {
