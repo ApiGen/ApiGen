@@ -21,7 +21,6 @@
 
 		"kukulich/fshl": "~2.1",
 		"michelf/php-markdown": "~1.4",
-		"kdyby/events": "~2.0",
 		"symfony/options-resolver": "~2.6.1",
 		"symfony/console": "~2.6",
 		"symfony/yaml": "~2.6",
@@ -29,8 +28,9 @@
 
 		"apigen/theme-default": "1.0.*",
 		"apigen/theme-bootstrap": "1.1.*",
-		"apigen/utils": "0.1.*",
-		"apigen/parser": "0.1.*"
+		"apigen/event-dispatcher": "0.1.*",
+		"apigen/parser": "0.1.*",
+		"apigen/utils": "0.1.*"
 	},
 	"require-dev": {
 		"mockery/mockery": "~0.9",

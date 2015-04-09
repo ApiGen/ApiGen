@@ -4,6 +4,7 @@ namespace ApiGen\Tests\Console;
 
 use ApiGen\ApiGen;
 use ApiGen\Console\Application;
+use ApiGen\MemoryLimit;
 use ApiGen\Tests\MethodInvoker;
 use Kdyby\Events\EventManager;
 use Mockery;
@@ -24,23 +25,7 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
 
 	protected function setUp()
 	{
-		$this->application = new Application;
-	}
-
-
-	public function testDoRun()
-	{
-		$inputMock = Mockery::mock(InputInterface::class);
-		$inputMock->shouldReceive('hasParameterOption');
-		$inputMock->shouldReceive('getFirstArgument');
-
-		$outputMock = Mockery::mock(OutputInterface::class);
-		$outputMock->shouldReceive('write');
-		$eventManagerMock = Mockery::mock(EventManager::class);
-		$eventManagerMock->shouldReceive('dispatchEvent');
-
-		$this->application->setEventManager($eventManagerMock);
-		$this->application->doRun($inputMock, $outputMock);
+		$this->application = new Application(new ApiGen, new MemoryLimit);
 	}
 
 
