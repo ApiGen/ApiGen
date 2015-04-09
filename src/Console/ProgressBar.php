@@ -9,16 +9,15 @@
 
 namespace ApiGen\Console;
 
-use ApiGen\Configuration\ConfigurationOptions as CO;
-use ApiGen\Console;
+use ApiGen\Contracts\Console\Helper\ProgressBarInterface;
 use Symfony\Component\Console\Helper\ProgressBar as ProgressBarHelper;
 
 
-class ProgressBar
+class ProgressBar implements ProgressBarInterface
 {
 
 	/**
-	 * @var Console\IO
+	 * @var IOInterface
 	 */
 	private $consoleIO;
 
@@ -28,14 +27,14 @@ class ProgressBar
 	private $bar;
 
 
-	public function __construct(Console\IO $consoleIO)
+	public function __construct(IOInterface $consoleIO)
 	{
 		$this->consoleIO = $consoleIO;
 	}
 
 
 	/**
-	 * @param int $maximum
+	 * {@inheritdoc}
 	 */
 	public function init($maximum = 1)
 	{
@@ -46,7 +45,7 @@ class ProgressBar
 
 
 	/**
-	 * @param int $increment
+	 * {@inheritdoc}
 	 */
 	public function increment($increment = 1)
 	{
@@ -80,8 +79,8 @@ class ProgressBar
 	 */
 	private function getDebugOption()
 	{
-		if ($this->consoleIO->getInput() && $this->consoleIO->getInput()->hasOption(CO::DEBUG)) {
-			return $this->consoleIO->getInput()->getOption(CO::DEBUG);
+		if ($this->consoleIO->getInput() && $this->consoleIO->getInput()->hasOption('debug')) {
+			return $this->consoleIO->getInput()->getOption('debug');
 
 		} else {
 			return FALSE;

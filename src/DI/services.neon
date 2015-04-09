@@ -34,10 +34,8 @@ services:
 	- ApiGen\Generator\Resolvers\ElementResolver
 	- ApiGen\Generator\Resolvers\RelativePathResolver
 
-	# events
-	- {class: ApiGen\Events\ProgressBarIncrement, tags: [kdyby.subscriber]}
-
 	# generator
+	- ApiGen\Generator\EventSubscriber\ProgressBarSubscriber
 	- ApiGen\Scanner\Scanner
 	- ApiGen\Generator\GeneratorQueue
 	# intentionally first to collect output from other generators

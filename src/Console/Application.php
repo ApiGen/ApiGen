@@ -11,6 +11,7 @@ namespace ApiGen\Console;
 
 use ApiGen\ApiGen;
 use ApiGen\Console\Input\LiberalFormatArgvInput;
+use ApiGen\Contracts\EventDispatcher\EventDispatcherInterface;
 use ApiGen\MemoryLimit;
 use Symfony\Component\Console\Application as BaseApplication;
 use Symfony\Component\Console\Formatter\OutputFormatter;
@@ -27,12 +28,19 @@ class Application extends BaseApplication
 {
 
 	/**
+	 * @var EventDispatcherInterface
+	 */
+	protected $dispatcher;
+
+
+	/**
 	 * {@inheritDoc}
 	 */
-	public function __construct(ApiGen $apiGen, MemoryLimit $memoryLimit)
+	public function __construct(ApiGen $apiGen, MemoryLimit $memoryLimit, EventDispatcherInterface $eventDispatcher)
 	{
 		parent::__construct('ApiGen', $apiGen->getVersion());
 		$memoryLimit->setMemoryLimitTo('1024M');
+		$this->dispatcher = $eventDispatcher;
 	}
 
 
@@ -42,10 +50,12 @@ class Application extends BaseApplication
 	public function run(InputInterface $input = NULL, OutputInterface $output = NULL)
 	{
 		if ($output === NULL) {
+			// todo: consider DI approach
 			$styles = $this->createAdditionalStyles();
 			$formatter = new OutputFormatter(NULL, $styles);
 			$output = new ConsoleOutput(ConsoleOutput::VERBOSITY_NORMAL, NULL, $formatter);
 		}
+
 		return parent::run(new LiberalFormatArgvInput, $output);
 	}
 
@@ -66,6 +76,7 @@ class Application extends BaseApplication
 	 */
 	protected function getDefaultInputDefinition()
 	{
+		// todo: consider DI approach
 		return new InputDefinition([
 			new InputArgument('command', InputArgument::REQUIRED, 'The command to execute'),
 			new InputOption('help', 'h', InputOption::VALUE_NONE, 'Display this help message.'),

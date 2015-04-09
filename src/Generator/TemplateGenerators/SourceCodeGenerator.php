@@ -12,29 +12,21 @@ namespace ApiGen\Generator\TemplateGenerators;
 use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Configuration\Theme\ThemeConfigOptions as TCO;
+use ApiGen\Contracts\EventDispatcher\EventDispatcherInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
 use ApiGen\Generator\ConditionalTemplateGenerator;
+use ApiGen\Generator\Event\GenerateProgressEvent;
+use ApiGen\Generator\Event\GeneratorEvents;
 use ApiGen\Generator\Resolvers\RelativePathResolver;
 use ApiGen\Generator\SourceCodeHighlighter\SourceCodeHighlighter;
 use ApiGen\Generator\StepCounter;
 use ApiGen\Parser\Elements\ElementStorage;
-use ApiGen\Reflection\ReflectionClass;
-use ApiGen\Reflection\ReflectionElement;
 use ApiGen\Templating\TemplateFactory;
-use Nette;
 
 
-/**
- * @method onGenerateProgress()
- */
-class SourceCodeGenerator extends Nette\Object implements ConditionalTemplateGenerator, StepCounter
+class SourceCodeGenerator implements ConditionalTemplateGenerator, StepCounter
 {
-
-	/**
-	 * @var array
-	 */
-	public $onGenerateProgress = [];
 
 	/**
 	 * @var Configuration
@@ -61,19 +53,26 @@ class SourceCodeGenerator extends Nette\Object implements ConditionalTemplateGen
 	 */
 	private $sourceCodeHighlighter;
 
+	/**
+	 * @var EventDispatcherInterface
+	 */
+	private $eventDispatcher;
+
 
 	public function __construct(
 		Configuration $configuration,
 		ElementStorage $elementStorage,
 		TemplateFactory $templateFactory,
 		RelativePathResolver $relativePathResolver,
-		SourceCodeHighlighter $sourceCodeHighlighter
+		SourceCodeHighlighter $sourceCodeHighlighter,
+		EventDispatcherInterface $eventDispatcher
 	) {
 		$this->configuration = $configuration;
 		$this->elementStorage = $elementStorage;
 		$this->templateFactory = $templateFactory;
 		$this->relativePathResolver = $relativePathResolver;
 		$this->sourceCodeHighlighter = $sourceCodeHighlighter;
+		$this->eventDispatcher = $eventDispatcher;
 	}
 
 
@@ -84,7 +83,8 @@ class SourceCodeGenerator extends Nette\Object implements ConditionalTemplateGen
 				/** @var ElementReflectionInterface $element */
 				if ($element->isTokenized()) {
 					$this->generateForElement($element);
-					$this->onGenerateProgress();
+
+					$this->eventDispatcher->dispatch(new GenerateProgressEvent(GeneratorEvents::ON_GENERATE_PROGRESS));
 				}
 			}
 		}

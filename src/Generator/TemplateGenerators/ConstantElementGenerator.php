@@ -9,20 +9,19 @@
 
 namespace ApiGen\Generator\TemplateGenerators;
 
+use ApiGen\Contracts\EventDispatcher\EventDispatcherInterface;
+use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
+use ApiGen\Generator\Event\GenerateProgressEvent;
+use ApiGen\Generator\Event\GeneratorEvents;
 use ApiGen\Generator\StepCounter;
 use ApiGen\Generator\TemplateGenerator;
 use ApiGen\Generator\TemplateGenerators\Loaders\NamespaceAndPackageLoader;
 use ApiGen\Parser\Elements\ElementStorage;
-use ApiGen\Reflection\ReflectionConstant;
 use ApiGen\Templating\Template;
 use ApiGen\Templating\TemplateFactory;
-use Nette;
 
 
-/**
- * @method onGenerateProgress()
- */
-class ConstantElementGenerator extends Nette\Object implements TemplateGenerator, StepCounter
+class ConstantElementGenerator implements TemplateGenerator, StepCounter
 {
 
 	/**
@@ -45,15 +44,22 @@ class ConstantElementGenerator extends Nette\Object implements TemplateGenerator
 	 */
 	private $namespaceAndPackageLoader;
 
+	/**
+	 * @var EventDispatcherInterface
+	 */
+	private $eventDispatcher;
+
 
 	public function __construct(
 		TemplateFactory $templateFactory,
 		ElementStorage $elementStorage,
-		NamespaceAndPackageLoader $namespaceAndPackageLoader
+		NamespaceAndPackageLoader $namespaceAndPackageLoader,
+		EventDispatcherInterface $eventDispatcher
 	) {
 		$this->templateFactory = $templateFactory;
 		$this->elementStorage = $elementStorage;
 		$this->namespaceAndPackageLoader = $namespaceAndPackageLoader;
+		$this->eventDispatcher = $eventDispatcher;
 	}
 
 
@@ -63,7 +69,8 @@ class ConstantElementGenerator extends Nette\Object implements TemplateGenerator
 			$template = $this->templateFactory->createForReflection($reflectionConstant);
 			$template = $this->loadTemplateWithParameters($template, $reflectionConstant);
 			$template->save();
-			$this->onGenerateProgress();
+
+			$this->eventDispatcher->dispatch(new GenerateProgressEvent(GeneratorEvents::ON_GENERATE_PROGRESS));
 		}
 	}
 
@@ -80,7 +87,7 @@ class ConstantElementGenerator extends Nette\Object implements TemplateGenerator
 	/**
 	 * @return Template
 	 */
-	private function loadTemplateWithParameters(Template $template, ReflectionConstant $constant)
+	private function loadTemplateWithParameters(Template $template, ConstantReflectionInterface $constant)
 	{
 		$template = $this->namespaceAndPackageLoader->loadTemplateWithElementNamespaceOrPackage($template, $constant);
 		$template->setParameters([

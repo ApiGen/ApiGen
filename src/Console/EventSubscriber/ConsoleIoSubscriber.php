@@ -9,10 +9,10 @@
 
 namespace ApiGen\Console\EventSubscriber;
 
-use ApiGen\Console\Event\ConsoleCommandEvent;
 use ApiGen\Console\IOInterface;
 use ApiGen\Contracts\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Console\ConsoleEvents;
+use Symfony\Component\Console\Event\ConsoleCommandEvent;
 
 
 class ConsoleIoSubscriber implements EventSubscriberInterface

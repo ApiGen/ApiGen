@@ -9,26 +9,20 @@
 
 namespace ApiGen\Generator\TemplateGenerators;
 
+use ApiGen\Contracts\EventDispatcher\EventDispatcherInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
+use ApiGen\Generator\Event\GenerateProgressEvent;
+use ApiGen\Generator\Event\GeneratorEvents;
 use ApiGen\Generator\StepCounter;
 use ApiGen\Generator\TemplateGenerator;
 use ApiGen\Generator\TemplateGenerators\Loaders\NamespaceAndPackageLoader;
 use ApiGen\Parser\Elements\ElementStorage;
 use ApiGen\Templating\Template;
 use ApiGen\Templating\TemplateFactory;
-use Nette;
 
 
-/**
- * @method onGenerateProgress()
- */
-class ClassElementGenerator extends Nette\Object implements TemplateGenerator, StepCounter
+class ClassElementGenerator implements TemplateGenerator, StepCounter
 {
-
-	/**
-	 * @var array
-	 */
-	public $onGenerateProgress = [];
 
 	/**
 	 * @var TemplateFactory
@@ -45,15 +39,22 @@ class ClassElementGenerator extends Nette\Object implements TemplateGenerator, S
 	 */
 	private $namespaceAndPackageLoader;
 
+	/**
+	 * @var EventDispatcherInterface
+	 */
+	private $eventDispatcher;
+
 
 	public function __construct(
 		TemplateFactory $templateFactory,
 		ElementStorage $elementStorage,
-		NamespaceAndPackageLoader $namespaceAndPackageLoader
+		NamespaceAndPackageLoader $namespaceAndPackageLoader,
+		EventDispatcherInterface $eventDispatcher
 	) {
 		$this->templateFactory = $templateFactory;
 		$this->elementStorage = $elementStorage;
 		$this->namespaceAndPackageLoader = $namespaceAndPackageLoader;
+		$this->eventDispatcher = $eventDispatcher;
 	}
 
 
@@ -63,7 +64,8 @@ class ClassElementGenerator extends Nette\Object implements TemplateGenerator, S
 			$template = $this->templateFactory->createForReflection($reflectionClass);
 			$template = $this->loadTemplateWithParameters($template, $reflectionClass);
 			$template->save();
-			$this->onGenerateProgress();
+
+			$this->eventDispatcher->dispatch(new GenerateProgressEvent(GeneratorEvents::ON_GENERATE_PROGRESS));
 		}
 	}
 

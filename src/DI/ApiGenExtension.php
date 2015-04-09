@@ -42,7 +42,7 @@ class ApiGenExtension extends CompilerExtension
 	private function loadServicesFromConfig()
 	{
 		$builder = $this->getContainerBuilder();
-		$config = $this->loadFromFile(__DIR__ . '/apigen.services.neon');
+		$config = $this->loadFromFile(__DIR__ . '/services.neon');
 		$this->compiler->parseServices($builder, $config);
 	}
 
