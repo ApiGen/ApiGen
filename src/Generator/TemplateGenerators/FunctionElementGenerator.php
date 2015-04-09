@@ -10,6 +10,7 @@
 namespace ApiGen\Generator\TemplateGenerators;
 
 use ApiGen\Contracts\EventDispatcher\EventDispatcherInterface;
+use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Generator\Event\GenerateProgressEvent;
 use ApiGen\Generator\Event\GeneratorEvents;
 use ApiGen\Generator\StepCounter;
@@ -81,7 +82,7 @@ class FunctionElementGenerator implements TemplateGenerator, StepCounter
 	/**
 	 * @return Template
 	 */
-	private function loadTemplateWithParameters(Template $template, ReflectionFunction $function)
+	private function loadTemplateWithParameters(Template $template, FunctionReflectionInterface $function)
 	{
 		$template = $this->namespaceAndPackageLoader->loadTemplateWithElementNamespaceOrPackage($template, $function);
 		$template->setParameters([
