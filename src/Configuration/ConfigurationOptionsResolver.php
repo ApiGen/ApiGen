@@ -187,39 +187,42 @@ class ConfigurationOptionsResolver
 
 	private function setNormalizers()
 	{
-		$this->resolver->setNormalizers([
-			CO::ANNOTATION_GROUPS => function (Options $options, $value) {
-				$value = (array) $value;
-				if ($options[CO::DEPRECATED]) {
-					$value[] = CO::DEPRECATED;
-				}
-				if ($options[CO::TODO]) {
-					$value[] = CO::TODO;
-				}
-				return array_unique($value);
-			},
-			CO::DESTINATION => function (Options $options, $value) {
-				return $this->fileSystem->getAbsolutePath($value);
-			},
-			CO::BASE_URL => function (Options $options, $value) {
-				return rtrim($value, '/');
-			},
-			CO::SOURCE => function (Options $options, $value) {
-				if ( ! is_array($value)) {
-					$value = [$value];
-				}
-				foreach ($value as $key => $source) {
-					$value[$key] = $this->fileSystem->getAbsolutePath($source);
-				}
-				return $value;
-			},
-			CO::SOURCE_CODE => function (Options $options) {
-				return ! $options[CO::NO_SOURCE_CODE];
-			},
-			CO::TEMPLATE_CONFIG => function (Options $options, $value) {
-				return $this->fileSystem->getAbsolutePath($value);
+		$this->resolver->setNormalizer(CO::ANNOTATION_GROUPS, function (Options $options, $value) {
+			$value = (array) $value;
+			if ($options[CO::DEPRECATED]) {
+				$value[] = CO::DEPRECATED;
 			}
-		]);
+			if ($options[CO::TODO]) {
+				$value[] = CO::TODO;
+			}
+			return array_unique($value);
+		});
+
+		$this->resolver->setNormalizer(CO::DESTINATION, function (Options $options, $value) {
+			return $this->fileSystem->getAbsolutePath($value);
+		});
+
+		$this->resolver->setNormalizer(CO::BASE_URL, function (Options $options, $value) {
+			return rtrim($value, '/');
+		});
+
+		$this->resolver->setNormalizer(CO::SOURCE, function (Options $options, $value) {
+			if ( ! is_array($value)) {
+				$value = [$value];
+			}
+			foreach ($value as $key => $source) {
+				$value[$key] = $this->fileSystem->getAbsolutePath($source);
+			}
+			return $value;
+		});
+
+		$this->resolver->setNormalizer(CO::SOURCE_CODE, function (Options $options) {
+			return ! $options[CO::NO_SOURCE_CODE];
+		});
+
+		$this->resolver->setNormalizer(CO::TEMPLATE_CONFIG, function (Options $options, $value) {
+			return $this->fileSystem->getAbsolutePath($value);
+		});
 	}
 
 
