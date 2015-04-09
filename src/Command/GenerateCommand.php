@@ -217,7 +217,7 @@ class GenerateCommand extends Command
 			$options = array_merge($options, $configFileOptions);
 		}
 
-		$this->checkDeprecatedOptions($options);
+		$this->warnAboutDeprecatedOptions($options);
 		$options = $this->unsetDeprecatedOptions($options);
 
 		return $this->configuration->resolveOptions($options);
@@ -278,7 +278,7 @@ class GenerateCommand extends Command
 	/**
 	 * @deprecated since version 4.2, to be removed in 5.0
 	 */
-	private function checkDeprecatedOptions(array $options)
+	private function warnAboutDeprecatedOptions(array $options)
 	{
 		if (isset($options['charset']) && $options['charset']) {
 			$this->io->writeln('<warning>You are using the deprecated option "charset". UTF-8 is default now.</warning>');
