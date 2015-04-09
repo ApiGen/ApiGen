@@ -1,7 +1,6 @@
 services:
-	# commands
-	- ApiGen\Command\GenerateCommand
-	- ApiGen\Command\SelfUpdateCommand
+	- ApiGen\ApiGen
+	- ApiGen\MemoryLimit
 
 	# configuration
 	- ApiGen\Configuration\Configuration
@@ -14,10 +13,9 @@ services:
 	- ApiGen\Configuration\Theme\ThemeConfigOptionsResolver
 
 	# console
-	-
-		class: ApiGen\Console\Application
-		setup:
-			- setEventManager
+	- ApiGen\Command\GenerateCommand
+	- ApiGen\Command\SelfUpdateCommand
+	- ApiGen\Console\Application
 	- ApiGen\Console\IO
 	- ApiGen\Console\ProgressBar
 	- Symfony\Component\Console\Helper\ProgressHelper
@@ -27,16 +25,14 @@ services:
 		setup:
 			- set(@Symfony\Component\Console\Helper\ProgressHelper, 'progress')
 			- set(@Symfony\Component\Console\Helper\QuestionHelper, 'question')
+	- ApiGen\Console\EventSubscriber\ConsoleIoSubscriber
 
 	# elements
 	- ApiGen\Generator\Resolvers\ElementResolver
 	- ApiGen\Generator\Resolvers\RelativePathResolver
 
-	# events
-	- {class: ApiGen\Events\ProgressBarIncrement, tags: [kdyby.subscriber]}
-	- {class: ApiGen\Events\SetIoOnConsoleRun, tags: [kdyby.subscriber]}
-
 	# generator
+	- ApiGen\Generator\EventSubscriber\ProgressBarSubscriber
 	- ApiGen\Scanner\Scanner
 	- ApiGen\Generator\GeneratorQueue
 	# intentionally first to collect output from other generators

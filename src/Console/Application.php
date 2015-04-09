@@ -11,10 +11,9 @@ namespace ApiGen\Console;
 
 use ApiGen\ApiGen;
 use ApiGen\Console\Input\LiberalFormatArgvInput;
+use ApiGen\Contracts\EventDispatcher\EventDispatcherInterface;
 use ApiGen\MemoryLimit;
-use Kdyby\Events\EventArgsList;
-use Kdyby\Events\EventManager;
-use Symfony;
+use Symfony\Component\Console\Application as BaseApplication;
 use Symfony\Component\Console\Formatter\OutputFormatter;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Input\InputArgument;
@@ -25,37 +24,23 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 
 
-class Application extends Symfony\Component\Console\Application
+class Application extends BaseApplication
 {
 
 	/**
-	 * @var array
+	 * @var EventDispatcherInterface
 	 */
-	public $onRun = [];
-
-	/**
-	 * @var EventManager
-	 */
-	private $eventManager;
+	protected $dispatcher;
 
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public function __construct()
+	public function __construct(ApiGen $apiGen, MemoryLimit $memoryLimit, EventDispatcherInterface $eventDispatcher)
 	{
-		parent::__construct('ApiGen', ApiGen::VERSION);
-		(new MemoryLimit)->setMemoryLimitTo('1024M');
-	}
-
-
-	/**
-	 * {@inheritdoc}
-	 */
-	public function doRun(InputInterface $input, OutputInterface $output)
-	{
-		$this->onRun($input, $output);
-		return parent::doRun($input, $output);
+		parent::__construct('ApiGen', $apiGen->getVersion());
+		$memoryLimit->setMemoryLimitTo('1024M');
+		$this->dispatcher = $eventDispatcher;
 	}
 
 
@@ -65,17 +50,13 @@ class Application extends Symfony\Component\Console\Application
 	public function run(InputInterface $input = NULL, OutputInterface $output = NULL)
 	{
 		if ($output === NULL) {
+			// todo: consider DI approach
 			$styles = $this->createAdditionalStyles();
 			$formatter = new OutputFormatter(NULL, $styles);
 			$output = new ConsoleOutput(ConsoleOutput::VERBOSITY_NORMAL, NULL, $formatter);
 		}
+
 		return parent::run(new LiberalFormatArgvInput, $output);
-	}
-
-
-	public function setEventManager(EventManager $eventManager)
-	{
-		$this->eventManager = $eventManager;
 	}
 
 
@@ -95,18 +76,13 @@ class Application extends Symfony\Component\Console\Application
 	 */
 	protected function getDefaultInputDefinition()
 	{
+		// todo: consider DI approach
 		return new InputDefinition([
 			new InputArgument('command', InputArgument::REQUIRED, 'The command to execute'),
 			new InputOption('help', 'h', InputOption::VALUE_NONE, 'Display this help message.'),
 			new InputOption('quiet', 'q', InputOption::VALUE_NONE, 'Do not output any message.'),
 			new InputOption('version', 'V', InputOption::VALUE_NONE, 'Display this application version.')
 		]);
-	}
-
-
-	private function onRun(InputInterface $input, OutputInterface $output)
-	{
-		$this->eventManager->dispatchEvent(__METHOD__, new EventArgsList([$input, $output]));
 	}
 
 }

@@ -9,24 +9,18 @@
 
 namespace ApiGen\Generator\TemplateGenerators;
 
+use ApiGen\Contracts\EventDispatcher\EventDispatcherInterface;
 use ApiGen\Generator\ConditionalTemplateGenerator;
+use ApiGen\Generator\Event\GenerateProgressEvent;
+use ApiGen\Generator\Event\GeneratorEvents;
 use ApiGen\Generator\StepCounter;
 use ApiGen\Generator\TemplateGenerators\Loaders\NamespaceAndPackageLoader;
 use ApiGen\Parser\Elements\ElementStorage;
 use ApiGen\Templating\TemplateFactory;
-use Nette;
 
 
-/**
- * @method onGenerateProgress()
- */
-class NamespaceGenerator extends Nette\Object implements ConditionalTemplateGenerator, StepCounter
+class NamespaceGenerator implements ConditionalTemplateGenerator, StepCounter
 {
-
-	/**
-	 * @var array
-	 */
-	public $onGenerateProgress = [];
 
 	/**
 	 * @var TemplateFactory
@@ -43,15 +37,22 @@ class NamespaceGenerator extends Nette\Object implements ConditionalTemplateGene
 	 */
 	private $namespaceAndPackageLoader;
 
+	/**
+	 * @var EventDispatcherInterface
+	 */
+	private $eventDispatcher;
+
 
 	public function __construct(
 		TemplateFactory $templateFactory,
 		ElementStorage $elementStorage,
-		NamespaceAndPackageLoader $namespaceAndPackageLoader
+		NamespaceAndPackageLoader $namespaceAndPackageLoader,
+		EventDispatcherInterface $eventDispatcher
 	) {
 		$this->templateFactory = $templateFactory;
 		$this->elementStorage = $elementStorage;
 		$this->namespaceAndPackageLoader = $namespaceAndPackageLoader;
+		$this->eventDispatcher = $eventDispatcher;
 	}
 
 
@@ -61,7 +62,8 @@ class NamespaceGenerator extends Nette\Object implements ConditionalTemplateGene
 			$template = $this->templateFactory->createNamedForElement(TemplateFactory::ELEMENT_NAMESPACE, $name);
 			$template = $this->namespaceAndPackageLoader->loadTemplateWithNamespace($template, $name, $namespace);
 			$template->save();
-			$this->onGenerateProgress();
+
+			$this->eventDispatcher->dispatch(new GenerateProgressEvent(GeneratorEvents::ON_GENERATE_PROGRESS));
 		}
 	}
 
