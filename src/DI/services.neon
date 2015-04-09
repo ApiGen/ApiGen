@@ -15,10 +15,7 @@ services:
 	# console
 	- ApiGen\Command\GenerateCommand
 	- ApiGen\Command\SelfUpdateCommand
-	-
-		class: ApiGen\Console\Application
-		setup:
-			- setDispatcher
+	- ApiGen\Console\Application
 	- ApiGen\Console\IO
 	- ApiGen\Console\ProgressBar
 	- Symfony\Component\Console\Helper\ProgressHelper

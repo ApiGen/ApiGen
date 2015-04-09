@@ -70,7 +70,7 @@ class ApiGenExtensionTest extends PHPUnit_Framework_TestCase
 		$definition = $builder->getDefinition($builder->getByType(Application::class));
 		$this->assertSame(Application::class, $definition->getClass());
 
-		$commandService = $definition->getSetup()[1]->arguments[0];
+		$commandService = $definition->getSetup()[0]->arguments[0];
 		$command = $builder->getDefinition($builder->getServiceName($commandService));
 		$this->assertSame(GenerateCommand::class, $command->getClass());
 	}
