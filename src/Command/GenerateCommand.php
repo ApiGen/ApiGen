@@ -268,7 +268,7 @@ class GenerateCommand extends Command
 	private function cleanDestinationWithCaution($destination)
 	{
 		if ( ! $this->fileSystem->isDirEmpty($destination)) {
-			if ($this->io->ask('Destination is not empty. Do you want to erase it?', TRUE)) {
+			if ($this->io->ask('<warning>Destination is not empty. Do you want to erase it?</warning>', TRUE)) {
 				$this->fileSystem->purgeDir($destination);
 			}
 		}
@@ -281,12 +281,12 @@ class GenerateCommand extends Command
 	private function checkDeprecatedOptions(array $options)
 	{
 		if (isset($options['charset']) && $options['charset']) {
-			$this->io->writeln('<error>You are using the deprecated option "charset". UTF-8 is now standard.</error>');
+			$this->io->writeln('<warning>You are using the deprecated option "charset". UTF-8 is default now.</warning>');
 		}
 
 		if (isset($options['skipDocPath']) && $options['skipDocPath']) {
 			$this->io->writeln(
-				'<error>You are using the deprecated option "skipDocPath". Use "exclude" instead.</error>'
+				'<warning>You are using the deprecated option "skipDocPath". Use "exclude" instead.</warning>'
 			);
 		}
 	}

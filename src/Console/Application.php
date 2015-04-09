@@ -15,10 +15,13 @@ use ApiGen\MemoryLimit;
 use Kdyby\Events\EventArgsList;
 use Kdyby\Events\EventManager;
 use Symfony;
+use Symfony\Component\Console\Formatter\OutputFormatter;
+use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 
 
@@ -61,6 +64,11 @@ class Application extends Symfony\Component\Console\Application
 	 */
 	public function run(InputInterface $input = NULL, OutputInterface $output = NULL)
 	{
+		if ($output === NULL) {
+			$styles = $this->createAdditionalStyles();
+			$formatter = new OutputFormatter(NULL, $styles);
+			$output = new ConsoleOutput(ConsoleOutput::VERBOSITY_NORMAL, NULL, $formatter);
+		}
 		return parent::run(new LiberalFormatArgvInput, $output);
 	}
 
@@ -68,6 +76,17 @@ class Application extends Symfony\Component\Console\Application
 	public function setEventManager(EventManager $eventManager)
 	{
 		$this->eventManager = $eventManager;
+	}
+
+
+	/**
+	 * @return array
+	 */
+	public function createAdditionalStyles()
+	{
+		return [
+			'warning' => new OutputFormatterStyle('black', 'yellow'),
+		];
 	}
 
 
