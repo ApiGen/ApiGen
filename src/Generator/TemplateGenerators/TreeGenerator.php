@@ -11,7 +11,6 @@ namespace ApiGen\Generator\TemplateGenerators;
 
 use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions as CO;
-use ApiGen\Configuration\Theme\ThemeConfigOptions as TCO;
 use ApiGen\Contracts\Generator\TemplateGenerators\ConditionalTemplateGeneratorInterface;
 use ApiGen\Contracts\Parser\Elements\ElementsInterface;
 use ApiGen\Contracts\Parser\ParserStorageInterface;
@@ -70,7 +69,7 @@ class TreeGenerator implements ConditionalTemplateGeneratorInterface
 	 */
 	public function generate()
 	{
-		$template = $this->templateFactory->createForType(TCO::TREE);
+		$template = $this->templateFactory->createForType('tree');
 
 		$classes = $this->parserStorage->getClasses();
 		foreach ($classes as $className => $reflection) {
