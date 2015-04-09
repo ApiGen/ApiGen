@@ -10,14 +10,14 @@
 namespace ApiGen\Generator\TemplateGenerators;
 
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
-use ApiGen\Generator\TemplateGenerator;
-use ApiGen\Parser\Elements\ElementExtractor;
+use ApiGen\Contracts\Generator\TemplateGenerators\TemplateGeneratorInterface;
+use ApiGen\Contracts\Parser\Elements\ElementExtractorInterface;
 use ApiGen\Parser\Elements\Elements;
 use ApiGen\Templating\Template;
 use ApiGen\Templating\TemplateFactory;
 
 
-class AnnotationGroupsGenerator implements TemplateGenerator
+class AnnotationGroupsGenerator implements TemplateGeneratorInterface
 {
 
 	/**
@@ -31,7 +31,7 @@ class AnnotationGroupsGenerator implements TemplateGenerator
 	private $templateFactory;
 
 	/**
-	 * @var ElementExtractor
+	 * @var ElementExtractorInterface
 	 */
 	private $elementExtractor;
 
@@ -39,7 +39,7 @@ class AnnotationGroupsGenerator implements TemplateGenerator
 	public function __construct(
 		ConfigurationInterface $configuration,
 		TemplateFactory $templateFactory,
-		ElementExtractor $elementExtractor
+		ElementExtractorInterface $elementExtractor
 	) {
 		$this->configuration = $configuration;
 		$this->templateFactory = $templateFactory;

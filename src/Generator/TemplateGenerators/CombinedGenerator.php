@@ -9,12 +9,11 @@
 
 namespace ApiGen\Generator\TemplateGenerators;
 
-use ApiGen\Configuration\Theme\ThemeConfigOptions as TCO;
-use ApiGen\Generator\TemplateGenerator;
+use ApiGen\Contracts\Generator\TemplateGenerators\TemplateGeneratorInterface;
 use ApiGen\Templating\TemplateFactory;
 
 
-class CombinedGenerator implements TemplateGenerator
+class CombinedGenerator implements TemplateGeneratorInterface
 {
 
 	/**
@@ -29,9 +28,12 @@ class CombinedGenerator implements TemplateGenerator
 	}
 
 
+	/**
+	 * {@inheritdoc}
+	 */
 	public function generate()
 	{
-		$this->templateFactory->createForType(TCO::COMBINED)
+		$this->templateFactory->createForType('combined')
 			->save();
 	}
 

@@ -9,29 +9,36 @@
 
 namespace ApiGen\Generator;
 
-use ApiGen\Console\ProgressBar;
+use ApiGen\Contracts\Console\Helper\ProgressBarInterface;
+use ApiGen\Contracts\Generator\GeneratorQueueInterface;
+use ApiGen\Contracts\Generator\StepCounterInterface;
+use ApiGen\Contracts\Generator\TemplateGenerators\ConditionalTemplateGeneratorInterface;
+use ApiGen\Contracts\Generator\TemplateGenerators\TemplateGeneratorInterface;
 
 
-class GeneratorQueue
+class GeneratorQueue implements GeneratorQueueInterface
 {
 
 	/**
-	 * @var ProgressBar
+	 * @var ProgressBarInterface
 	 */
 	private $progressBar;
 
 	/**
-	 * @var TemplateGenerator[]
+	 * @var TemplateGeneratorInterface[]
 	 */
 	private $queue = [];
 
 
-	public function __construct(ProgressBar $progressBar)
+	public function __construct(ProgressBarInterface $progressBar)
 	{
 		$this->progressBar = $progressBar;
 	}
 
 
+	/**
+	 * {@inheritdoc}
+	 */
 	public function run()
 	{
 		$this->progressBar->init($this->getStepCount());
@@ -41,14 +48,17 @@ class GeneratorQueue
 	}
 
 
-	public function addToQueue(TemplateGenerator $templateGenerator)
+	/**
+	 * {@inheritdoc}
+	 */
+	public function addToQueue(TemplateGeneratorInterface $templateGenerator)
 	{
 		$this->queue[] = $templateGenerator;
 	}
 
 
 	/**
-	 * @return TemplateGenerator[]
+	 * {@inheritdoc}
 	 */
 	public function getQueue()
 	{
@@ -61,8 +71,8 @@ class GeneratorQueue
 	 */
 	private function getAllowedQueue()
 	{
-		return array_filter($this->queue, function (TemplateGenerator $generator) {
-			if ($generator instanceof ConditionalTemplateGenerator) {
+		return array_filter($this->queue, function (TemplateGeneratorInterface $generator) {
+			if ($generator instanceof ConditionalTemplateGeneratorInterface) {
 				return $generator->isAllowed();
 
 			} else {
@@ -79,7 +89,7 @@ class GeneratorQueue
 	{
 		$steps = 0;
 		foreach ($this->getAllowedQueue() as $templateGenerator) {
-			if ($templateGenerator instanceof StepCounter) {
+			if ($templateGenerator instanceof StepCounterInterface) {
 				$steps += $templateGenerator->getStepCount();
 			}
 		}

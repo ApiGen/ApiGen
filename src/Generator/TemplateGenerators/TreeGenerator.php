@@ -12,16 +12,15 @@ namespace ApiGen\Generator\TemplateGenerators;
 use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Configuration\Theme\ThemeConfigOptions as TCO;
+use ApiGen\Contracts\Generator\TemplateGenerators\ConditionalTemplateGeneratorInterface;
 use ApiGen\Contracts\Parser\Elements\ElementsInterface;
 use ApiGen\Contracts\Parser\ParserStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Templating\TemplateFactory\TemplateFactoryInterface;
-use ApiGen\Generator\ConditionalTemplateGenerator;
-use ApiGen\Reflection\ReflectionClass;
 use ApiGen\Tree;
 
 
-class TreeGenerator implements ConditionalTemplateGenerator
+class TreeGenerator implements ConditionalTemplateGeneratorInterface
 {
 
 	/**
@@ -66,6 +65,9 @@ class TreeGenerator implements ConditionalTemplateGenerator
 	}
 
 
+	/**
+	 * {@inheritdoc}
+	 */
 	public function generate()
 	{
 		$template = $this->templateFactory->createForType(TCO::TREE);
@@ -91,7 +93,7 @@ class TreeGenerator implements ConditionalTemplateGenerator
 
 
 	/**
-	 * @return bool
+	 * {@inheritdoc}
 	 */
 	public function isAllowed()
 	{

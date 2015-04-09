@@ -11,21 +11,20 @@ namespace ApiGen\Generator\TemplateGenerators;
 
 use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions as CO;
-use ApiGen\Configuration\Theme\ThemeConfigOptions as TCO;
 use ApiGen\Contracts\EventDispatcher\EventDispatcherInterface;
+use ApiGen\Contracts\Generator\StepCounterInterface;
+use ApiGen\Contracts\Generator\TemplateGenerators\ConditionalTemplateGeneratorInterface;
+use ApiGen\Contracts\Parser\Elements\ElementStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
-use ApiGen\Generator\ConditionalTemplateGenerator;
 use ApiGen\Generator\Event\GenerateProgressEvent;
 use ApiGen\Generator\Event\GeneratorEvents;
 use ApiGen\Generator\Resolvers\RelativePathResolver;
 use ApiGen\Generator\SourceCodeHighlighter\SourceCodeHighlighter;
-use ApiGen\Generator\StepCounter;
-use ApiGen\Parser\Elements\ElementStorage;
 use ApiGen\Templating\TemplateFactory;
 
 
-class SourceCodeGenerator implements ConditionalTemplateGenerator, StepCounter
+class SourceCodeGenerator implements ConditionalTemplateGeneratorInterface, StepCounterInterface
 {
 
 	/**
@@ -34,7 +33,7 @@ class SourceCodeGenerator implements ConditionalTemplateGenerator, StepCounter
 	private $configuration;
 
 	/**
-	 * @var ElementStorage
+	 * @var ElementStorageInterface
 	 */
 	private $elementStorage;
 
@@ -61,7 +60,7 @@ class SourceCodeGenerator implements ConditionalTemplateGenerator, StepCounter
 
 	public function __construct(
 		Configuration $configuration,
-		ElementStorage $elementStorage,
+		ElementStorageInterface $elementStorage,
 		TemplateFactory $templateFactory,
 		RelativePathResolver $relativePathResolver,
 		SourceCodeHighlighter $sourceCodeHighlighter,
@@ -92,16 +91,7 @@ class SourceCodeGenerator implements ConditionalTemplateGenerator, StepCounter
 
 
 	/**
-	 * @return bool
-	 */
-	public function isAllowed()
-	{
-		return $this->configuration->getOption(CO::SOURCE_CODE);
-	}
-
-
-	/**
-	 * @return int
+	 * {@inheritdoc}
 	 */
 	public function getStepCount()
 	{
@@ -120,9 +110,18 @@ class SourceCodeGenerator implements ConditionalTemplateGenerator, StepCounter
 	}
 
 
+	/**
+	 * {@inheritdoc}
+	 */
+	public function isAllowed()
+	{
+		return $this->configuration->getOption(CO::SOURCE_CODE);
+	}
+
+
 	private function generateForElement(ElementReflectionInterface $element)
 	{
-		$template = $this->templateFactory->createNamedForElement(TCO::SOURCE, $element);
+		$template = $this->templateFactory->createNamedForElement('source', $element);
 		$template->setParameters([
 			'fileName' => $this->relativePathResolver->getRelativePath($element->getFileName()),
 			'source' => $this->getHighlightedCodeFromElement($element)

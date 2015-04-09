@@ -4,6 +4,7 @@ namespace ApiGen\Tests\DI;
 
 use ApiGen\Command\GenerateCommand;
 use ApiGen\Console\Application;
+use ApiGen\Contracts\Generator\GeneratorQueueInterface;
 use ApiGen\DI\ApiGenExtension;
 use ApiGen\Generator\GeneratorQueue;
 use ApiGen\Generator\Resolvers\ElementResolver;
@@ -112,7 +113,7 @@ class ApiGenExtensionTest extends PHPUnit_Framework_TestCase
 
 		MethodInvoker::callMethodOnObject($extension, 'setupGeneratorQueue');
 
-		$definition = $builder->getDefinition($builder->getByType(GeneratorQueue::class));
+		$definition = $builder->getDefinition($builder->getByType(GeneratorQueueInterface::class));
 		$this->assertSame(GeneratorQueue::class, $definition->getClass());
 
 		$filterService = $definition->getSetup()[1]->arguments[0];

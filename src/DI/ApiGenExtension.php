@@ -11,8 +11,8 @@ namespace ApiGen\DI;
 
 use ApiGen\Command\SelfUpdateCommand;
 use ApiGen\Console\Application;
-use ApiGen\Generator\GeneratorQueue;
-use ApiGen\Generator\TemplateGenerator;
+use ApiGen\Contracts\Generator\GeneratorQueueInterface;
+use ApiGen\Contracts\Generator\TemplateGenerators\TemplateGeneratorInterface;
 use ApiGen\Templating\Filters\Filters;
 use Latte\Engine;
 use Nette\DI\CompilerExtension;
@@ -93,8 +93,8 @@ class ApiGenExtension extends CompilerExtension
 	private function setupGeneratorQueue()
 	{
 		$builder = $this->getContainerBuilder();
-		$generator = $builder->getDefinition($builder->getByType(GeneratorQueue::class));
-		foreach ($builder->findByType(TemplateGenerator::class) as $definition) {
+		$generator = $builder->getDefinition($builder->getByType(GeneratorQueueInterface::class));
+		foreach ($builder->findByType(TemplateGeneratorInterface::class) as $definition) {
 			$generator->addSetup('addToQueue', ['@' . $definition->getClass()]);
 		}
 	}

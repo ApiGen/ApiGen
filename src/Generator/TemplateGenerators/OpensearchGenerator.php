@@ -11,12 +11,11 @@ namespace ApiGen\Generator\TemplateGenerators;
 
 use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions as CO;
-use ApiGen\Configuration\Theme\ThemeConfigOptions as TCO;
-use ApiGen\Generator\ConditionalTemplateGenerator;
+use ApiGen\Contracts\Generator\TemplateGenerators\ConditionalTemplateGeneratorInterface;
 use ApiGen\Templating\TemplateFactory;
 
 
-class OpensearchGenerator implements ConditionalTemplateGenerator
+class OpensearchGenerator implements ConditionalTemplateGeneratorInterface
 {
 
 	/**
@@ -37,15 +36,18 @@ class OpensearchGenerator implements ConditionalTemplateGenerator
 	}
 
 
+	/**
+	 * {@inheritdoc}
+	 */
 	public function generate()
 	{
-		$this->templateFactory->createForType(TCO::OPENSEARCH)
+		$this->templateFactory->createForType('opensearch')
 			->save();
 	}
 
 
 	/**
-	 * @return bool
+	 * {@inheritdoc}
 	 */
 	public function isAllowed()
 	{

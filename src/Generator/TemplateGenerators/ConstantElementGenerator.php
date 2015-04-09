@@ -9,60 +9,18 @@
 
 namespace ApiGen\Generator\TemplateGenerators;
 
-use ApiGen\Contracts\EventDispatcher\EventDispatcherInterface;
 use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
 use ApiGen\Generator\Event\GenerateProgressEvent;
 use ApiGen\Generator\Event\GeneratorEvents;
-use ApiGen\Generator\StepCounter;
-use ApiGen\Generator\TemplateGenerator;
-use ApiGen\Generator\TemplateGenerators\Loaders\NamespaceAndPackageLoader;
-use ApiGen\Parser\Elements\ElementStorage;
 use ApiGen\Templating\Template;
-use ApiGen\Templating\TemplateFactory;
 
 
-class ConstantElementGenerator implements TemplateGenerator, StepCounter
+class ConstantElementGenerator extends AbstractElementGenerator
 {
 
 	/**
-	 * @var array
+	 * {@inheritdoc}
 	 */
-	public $onGenerateProgress = [];
-
-	/**
-	 * @var TemplateFactory
-	 */
-	private $templateFactory;
-
-	/**
-	 * @var ElementStorage
-	 */
-	private $elementStorage;
-
-	/**
-	 * @var NamespaceAndPackageLoader
-	 */
-	private $namespaceAndPackageLoader;
-
-	/**
-	 * @var EventDispatcherInterface
-	 */
-	private $eventDispatcher;
-
-
-	public function __construct(
-		TemplateFactory $templateFactory,
-		ElementStorage $elementStorage,
-		NamespaceAndPackageLoader $namespaceAndPackageLoader,
-		EventDispatcherInterface $eventDispatcher
-	) {
-		$this->templateFactory = $templateFactory;
-		$this->elementStorage = $elementStorage;
-		$this->namespaceAndPackageLoader = $namespaceAndPackageLoader;
-		$this->eventDispatcher = $eventDispatcher;
-	}
-
-
 	public function generate()
 	{
 		foreach ($this->elementStorage->getConstants() as $name => $reflectionConstant) {
@@ -76,7 +34,7 @@ class ConstantElementGenerator implements TemplateGenerator, StepCounter
 
 
 	/**
-	 * @return int
+	 * {@inheritdoc}
 	 */
 	public function getStepCount()
 	{

@@ -10,17 +10,16 @@
 namespace ApiGen\Generator\TemplateGenerators;
 
 use ApiGen\Contracts\EventDispatcher\EventDispatcherInterface;
-use ApiGen\Generator\ConditionalTemplateGenerator;
+use ApiGen\Contracts\Generator\StepCounterInterface;
+use ApiGen\Contracts\Generator\TemplateGenerators\ConditionalTemplateGeneratorInterface;
+use ApiGen\Contracts\Parser\Elements\ElementStorageInterface;
 use ApiGen\Generator\Event\GenerateProgressEvent;
 use ApiGen\Generator\Event\GeneratorEvents;
-use ApiGen\Generator\StepCounter;
 use ApiGen\Generator\TemplateGenerators\Loaders\NamespaceAndPackageLoader;
-use ApiGen\Parser\Elements\ElementStorage;
 use ApiGen\Templating\TemplateFactory;
-use Nette;
 
 
-class PackageGenerator implements ConditionalTemplateGenerator, StepCounter
+class PackageGenerator implements ConditionalTemplateGeneratorInterface, StepCounterInterface
 {
 
 	/**
@@ -29,7 +28,7 @@ class PackageGenerator implements ConditionalTemplateGenerator, StepCounter
 	private $templateFactory;
 
 	/**
-	 * @var ElementStorage
+	 * @var ElementStorageInterface
 	 */
 	private $elementStorage;
 
@@ -46,7 +45,7 @@ class PackageGenerator implements ConditionalTemplateGenerator, StepCounter
 
 	public function __construct(
 		TemplateFactory $templateFactory,
-		ElementStorage $elementStorage,
+		ElementStorageInterface $elementStorage,
 		NamespaceAndPackageLoader $namespaceAndPackageLoader,
 		EventDispatcherInterface $eventDispatcher
 	) {
@@ -57,6 +56,9 @@ class PackageGenerator implements ConditionalTemplateGenerator, StepCounter
 	}
 
 
+	/**
+	 * {@inheritdoc}
+	 */
 	public function generate()
 	{
 		foreach ($this->elementStorage->getPackages() as $name => $package) {
@@ -70,7 +72,7 @@ class PackageGenerator implements ConditionalTemplateGenerator, StepCounter
 
 
 	/**
-	 * @return int
+	 * {@inheritdoc}
 	 */
 	public function getStepCount()
 	{
@@ -79,7 +81,7 @@ class PackageGenerator implements ConditionalTemplateGenerator, StepCounter
 
 
 	/**
-	 * @return bool
+	 * {@inheritdoc}
 	 */
 	public function isAllowed()
 	{

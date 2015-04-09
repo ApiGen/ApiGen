@@ -11,11 +11,11 @@ namespace ApiGen\Generator\TemplateGenerators;
 
 use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions as CO;
-use ApiGen\Generator\ConditionalTemplateGenerator;
+use ApiGen\Contracts\Generator\TemplateGenerators\ConditionalTemplateGeneratorInterface;
 use ApiGen\Utils\ZipArchiveGenerator;
 
 
-class ZipGenerator implements ConditionalTemplateGenerator
+class ZipGenerator implements ConditionalTemplateGeneratorInterface
 {
 
 	/**
@@ -36,6 +36,9 @@ class ZipGenerator implements ConditionalTemplateGenerator
 	}
 
 
+	/**
+	 * {@inheritdoc}
+	 */
 	public function generate()
 	{
 		$destination = $this->configuration->getOption(CO::DESTINATION);
@@ -45,7 +48,7 @@ class ZipGenerator implements ConditionalTemplateGenerator
 
 
 	/**
-	 * @return bool
+	 * {@inheritdoc}
 	 */
 	public function isAllowed()
 	{
