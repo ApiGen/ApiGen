@@ -22,10 +22,6 @@ use Nette\Utils\Strings;
 class Configuration extends Nette\Object implements ConfigurationInterface, ParserConfigurationInterface
 {
 
-	const GROUPS_AUTO = 'auto';
-	const GROUPS_NAMESPACES = 'namespaces';
-	const GROUPS_PACKAGES = 'packages';
-
 	/**
 	 * @var array
 	 */

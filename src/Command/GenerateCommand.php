@@ -121,7 +121,7 @@ class GenerateCommand extends Command
 			->addOption(CO::EXCLUDE, NULL, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
 				'Directories and files matching this mask will not be parsed (e.g. */tests/*).')
 			->addOption(CO::GROUPS, NULL, InputOption::VALUE_REQUIRED,
-				'The way elements are grouped in menu.', 'auto')
+				'The way elements are grouped in menu [options: namespaces, packages].', 'namespaces')
 			->addOption(CO::MAIN, NULL, InputOption::VALUE_REQUIRED,
 				'Elements with this name prefix will be first in tree.')
 			->addOption(CO::INTERNAL, NULL, InputOption::VALUE_NONE, 'Include elements marked as @internal.')
