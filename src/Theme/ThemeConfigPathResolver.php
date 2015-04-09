@@ -36,12 +36,19 @@ class ThemeConfigPathResolver
 	 */
 	public function resolve($path)
 	{
-		$absolutePath = $this->rootDir . '/' . ltrim($path, DIRECTORY_SEPARATOR);
-		if (file_exists($absolutePath)) {
-			return $absolutePath;
+		$allowedPaths = [
+			$this->rootDir,
+			$this->rootDir . '/../../..'
+		];
+
+		foreach ($allowedPaths as $allowedPath) {
+			$absolutePath = $allowedPath . '/' . ltrim($path, DIRECTORY_SEPARATOR);
+			if (file_exists($absolutePath)) {
+				return $absolutePath;
+			}
 		}
 
-		throw new ConfigurationException('Config "' . $path . "' was not found in '" . $absolutePath . "'");
+		throw new ConfigurationException(sprintf('Config "%s" was not found.', $path));
 	}
 
 }
