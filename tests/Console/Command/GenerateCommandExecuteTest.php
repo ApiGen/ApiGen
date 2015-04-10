@@ -47,12 +47,6 @@ class GenerateCommandExecuteTest extends ContainerAwareTestCase
 		$output->setAccessible(TRUE);
 		$output->setValue($io, new NullOutput);
 
-		$progressBar = $this->container->getByType(ProgressBarInterface::class);
-		$reflection = new ReflectionObject($progressBar);
-		$output = $reflection->getProperty('output');
-		$output->setAccessible(TRUE);
-		$output->setValue($progressBar, new NullOutput);
-
 		$this->assertSame(
 			0, // success
 			MethodInvoker::callMethodOnObject($this->generateCommand, 'execute', [$inputMock, $outputMock])
