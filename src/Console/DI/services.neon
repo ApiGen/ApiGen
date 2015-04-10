@@ -6,6 +6,7 @@ services:
 	- ApiGen\Console\Command\SelfUpdateCommand
 	- ApiGen\Console\Environment\MemoryLimit
 
+	- ApiGen\Console\Input\DefaultInputDefinitionFactory
 	- ApiGen\Console\Input\LiberalFormatArgvInput
 	- ApiGen\Console\Formatter\OutputFormatter
 	- Symfony\Component\Console\Output\ConsoleOutput
