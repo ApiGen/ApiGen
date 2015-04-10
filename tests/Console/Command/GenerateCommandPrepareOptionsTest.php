@@ -2,9 +2,9 @@
 
 namespace ApiGen\Tests\Command;
 
-use ApiGen\Command\GenerateCommand;
 use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Configuration\Exceptions\ConfigurationException;
+use ApiGen\Console\Command\GenerateCommand;
 use ApiGen\Tests\ContainerAwareTestCase;
 use ApiGen\Tests\MethodInvoker;
 
@@ -67,7 +67,7 @@ class GenerateCommandPrepareOptionsTest extends ContainerAwareTestCase
 		$options = MethodInvoker::callMethodOnObject($this->generateCommand, 'prepareOptions', [
 			$configAndDestinationOptions
 		]);
-		$this->assertSame(realpath(__DIR__ . '/../../src'), $options['source'][0]);
+		$this->assertSame(realpath(__DIR__ . '/../../../src'), $options['source'][0]);
 	}
 
 
@@ -79,13 +79,11 @@ class GenerateCommandPrepareOptionsTest extends ContainerAwareTestCase
 			'download' => FALSE
 		]]);
 
-		$this->assertSame(['public', 'protected', 'private'], $options[CO::ACCESS_LEVELS]);
-		$this->assertSame('http://apigen.org', $options[CO::BASE_URL]);
-		$this->assertTrue($options[CO::DEPRECATED]);
-		$this->assertTrue($options[CO::DOWNLOAD]);
-		$this->assertSame('packages', $options[CO::GROUPS]);
-		$this->assertTrue($options[CO::TODO]);
-		$this->assertTrue($options[CO::TREE]);
+		$this->assertSame(['public', 'protected', 'private'], $options['accessLevels']);
+		$this->assertSame('http://apigen.org', $options['baseUrl']);
+		$this->assertTrue($options['download']);
+		$this->assertSame('packages', $options['groups']);
+		$this->assertFalse($options['todo']);
 	}
 
 

@@ -1,5 +1,6 @@
 extensions:
 	- ApiGen\DI\ApiGenExtension
+	- ApiGen\Console\DI\ConsoleExtension
 	- ApiGen\EventDispatcher\DI\EventDispatcherExtension
 	- ApiGen\Parser\DI\ParserExtension
 	- ApiGen\Utils\DI\UtilsExtension

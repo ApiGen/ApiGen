@@ -7,9 +7,10 @@
  * the file LICENSE that was distributed with this source code.
  */
 
-namespace ApiGen\Console;
+namespace ApiGen\Console\Helper;
 
 use ApiGen\Contracts\Console\Helper\ProgressBarInterface;
+use ApiGen\Contracts\Console\IO\IOInterface;
 use Symfony\Component\Console\Helper\ProgressBar as ProgressBarHelper;
 
 

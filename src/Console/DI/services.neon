@@ -1,0 +1,18 @@
+services:
+	- ApiGen\Console\Application
+	- ApiGen\Console\IO\IO
+	- ApiGen\Console\Helper\ProgressBar
+	- ApiGen\Console\Command\GenerateCommand
+	- ApiGen\Console\Command\SelfUpdateCommand
+	- ApiGen\Console\Environment\MemoryLimit
+
+	- ApiGen\Console\Input\LiberalFormatArgvInput
+	- Symfony\Component\Console\Output\ConsoleOutput
+
+	- Symfony\Component\Console\Helper\ProgressHelper
+	- Symfony\Component\Console\Helper\QuestionHelper
+	-
+		class: Symfony\Component\Console\Helper\HelperSet
+		setup:
+			- set(@Symfony\Component\Console\Helper\ProgressHelper, 'progress')
+			- set(@Symfony\Component\Console\Helper\QuestionHelper, 'question')

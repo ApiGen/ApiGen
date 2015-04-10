@@ -33,7 +33,6 @@ class ApiGenExtension extends CompilerExtension
 	{
 		$builder = $this->getContainerBuilder();
 		$builder->prepareClassList();
-		$this->setupConsole();
 		$this->setupTemplatingFilters();
 		$this->setupGeneratorQueue();
 	}
@@ -53,30 +52,6 @@ class ApiGenExtension extends CompilerExtension
 		$builder->addDefinition($this->prefix('latteFactory'))
 			->setClass(Engine::class)
 			->addSetup('setTempDirectory', [$builder->expand('%tempDir%/cache/latte')]);
-	}
-
-
-	private function setupConsole()
-	{
-		$builder = $this->getContainerBuilder();
-
-		$application = $builder->getDefinition($builder->getByType(Application::class));
-
-		foreach ($builder->findByType(Command::class) as $definition) {
-			if ( ! $this->isPhar() && $definition->getClass() === SelfUpdateCommand::class) {
-				continue;
-			}
-			$application->addSetup('add', ['@' . $definition->getClass()]);
-		}
-	}
-
-
-	/**
-	 * @return bool
-	 */
-	private function isPhar()
-	{
-		return substr(__FILE__, 0, 5) === 'phar:';
 	}
 
 

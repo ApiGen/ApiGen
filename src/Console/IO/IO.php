@@ -7,14 +7,13 @@
  * the file LICENSE that was distributed with this source code.
  */
 
-namespace ApiGen\Console;
+namespace ApiGen\Console\IO;
 
 use ApiGen\Console\Question\ConfirmationQuestion;
+use ApiGen\Contracts\Console\IO\IOInterface;
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Helper\QuestionHelper;
-use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 
 
@@ -37,16 +36,16 @@ class IO implements IOInterface
 	private $helperSet;
 
 
-	public function __construct(HelperSet $helperSet)
+	public function __construct(HelperSet $helperSet, InputInterface $input, OutputInterface $output)
 	{
-		$this->input = new ArrayInput([]);
-		$this->output = new NullOutput;
 		$this->helperSet = $helperSet;
+		$this->input = $input;
+		$this->output = $output;
 	}
 
 
 	/**
-	 * @return InputInterface
+	 * {@inheritdoc}
 	 */
 	public function getInput()
 	{
@@ -54,24 +53,12 @@ class IO implements IOInterface
 	}
 
 
-	public function setInput(InputInterface $input)
-	{
-		$this->input = $input;
-	}
-
-
 	/**
-	 * @return OutputInterface
+	 * {@inheritdoc}
 	 */
 	public function getOutput()
 	{
 		return $this->output;
-	}
-
-
-	public function setOutput(OutputInterface $output)
-	{
-		$this->output = $output;
 	}
 
 

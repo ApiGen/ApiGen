@@ -59,31 +59,6 @@ class ApiGenExtensionTest extends PHPUnit_Framework_TestCase
 	}
 
 
-	/**
-	 * @depends testLoadServicesFromConfig
-	 */
-	public function testSetupConsole(ApiGenExtension $extension)
-	{
-		MethodInvoker::callMethodOnObject($extension, 'setupConsole');
-
-		$builder = $extension->getContainerBuilder();
-
-		$definition = $builder->getDefinition($builder->getByType(Application::class));
-		$this->assertSame(Application::class, $definition->getClass());
-
-		$commandService = $definition->getSetup()[0]->arguments[0];
-		$command = $builder->getDefinition($builder->getServiceName($commandService));
-		$this->assertSame(GenerateCommand::class, $command->getClass());
-	}
-
-
-	public function testIsPhar()
-	{
-		$extension = $this->getExtension();
-		$this->assertFalse(MethodInvoker::callMethodOnObject($extension, 'isPhar'));
-	}
-
-
 	public function testSetupTemplatingFilters()
 	{
 		$extension = $this->getExtension();

@@ -7,12 +7,12 @@
  * the file LICENSE that was distributed with this source code.
  */
 
-namespace ApiGen\Command;
+namespace ApiGen\Console\Command;
 
-use Symfony;
+use Symfony\Component\Console\Command\Command as BaseCommand;
 
 
-class Command extends Symfony\Component\Console\Command\Command
+abstract class AbstractCommand extends BaseCommand
 {
 
 	/**

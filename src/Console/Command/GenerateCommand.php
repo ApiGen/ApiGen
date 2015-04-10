@@ -7,15 +7,14 @@
  * the file LICENSE that was distributed with this source code.
  */
 
-namespace ApiGen\Command;
+namespace ApiGen\Console\Command;
 
 use ApiGen\Configuration\Configuration;
-use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Configuration\Readers\ReaderFactory as ConfigurationReader;
-use ApiGen\Console\IOInterface;
+use ApiGen\Contracts\Console\IO\IOInterface;
+use ApiGen\Contracts\Generator\GeneratorQueueInterface;
 use ApiGen\Contracts\Parser\ParserInterface;
 use ApiGen\Contracts\Parser\ParserStorageInterface;
-use ApiGen\Generator\GeneratorQueue;
 use ApiGen\Scanner\Scanner;
 use ApiGen\Theme\ThemeResources;
 use ApiGen\Utils\FileSystem;
@@ -25,7 +24,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use TokenReflection\Exception\FileProcessingException;
 
 
-class GenerateCommand extends Command
+class GenerateCommand extends AbstractCommand
 {
 
 	/**
@@ -49,7 +48,7 @@ class GenerateCommand extends Command
 	private $scanner;
 
 	/**
-	 * @var GeneratorQueue
+	 * @var GeneratorQueueInterface
 	 */
 	private $generatorQueue;
 
@@ -74,7 +73,7 @@ class GenerateCommand extends Command
 		Scanner $scanner,
 		ParserInterface $parser,
 		ParserStorageInterface $parserResult,
-		GeneratorQueue $generatorQueue,
+		GeneratorQueueInterface $generatorQueue,
 		FileSystem $fileSystem,
 		ThemeResources $themeResources,
 		IOInterface $io
@@ -95,41 +94,41 @@ class GenerateCommand extends Command
 	{
 		$this->setName('generate')
 			->setDescription('Generate API documentation')
-			->addOption(CO::SOURCE, 's', InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
+			->addOption('source', 's', InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
 				'Dirs or files documentation is generated for.')
-			->addOption(CO::DESTINATION, 'd', InputOption::VALUE_REQUIRED, 'Target dir for documentation.')
-			->addOption(CO::ACCESS_LEVELS, NULL, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
+			->addOption('destination', 'd', InputOption::VALUE_REQUIRED, 'Target dir for documentation.')
+			->addOption('accessLevels', NULL, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
 				'Access levels of included method and properties [options: public, protected, private].',
 				['public', 'protected'])
-			->addOption(CO::ANNOTATION_GROUPS, NULL, InputOption::VALUE_REQUIRED,
+			->addOption('annotationGroups', NULL, InputOption::VALUE_REQUIRED,
 				'Generate page with elements with specific annotation.')
-			->addOption(CO::CONFIG, NULL, InputOption::VALUE_REQUIRED,
+			->addOption('config', NULL, InputOption::VALUE_REQUIRED,
 				'Custom path to apigen.neon config file.', getcwd() . '/apigen.neon')
-			->addOption(CO::GOOGLE_CSE_ID, NULL, InputOption::VALUE_REQUIRED,
+			->addOption('googleCseId', NULL, InputOption::VALUE_REQUIRED,
 				'Custom google search engine id (for search box).')
-			->addOption(CO::BASE_URL, NULL, InputOption::VALUE_REQUIRED,
+			->addOption('baseUrl', NULL, InputOption::VALUE_REQUIRED,
 				'Base url used for sitemap (for search box).')
-			->addOption(CO::GOOGLE_ANALYTICS, NULL, InputOption::VALUE_REQUIRED, 'Google Analytics tracking code.')
-			->addOption(CO::DEBUG, NULL, InputOption::VALUE_NONE, 'Turn on debug mode.')
-			->addOption(CO::DOWNLOAD, NULL, InputOption::VALUE_NONE,
+			->addOption('googleAnalytics', NULL, InputOption::VALUE_REQUIRED, 'Google Analytics tracking code.')
+			->addOption('debug', NULL, InputOption::VALUE_NONE, 'Turn on debug mode.')
+			->addOption('download', NULL, InputOption::VALUE_NONE,
 				'Add link to ZIP archive of documentation.')
-			->addOption(CO::EXTENSIONS, NULL, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
+			->addOption('extensions', NULL, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
 				'Scanned file extensions.', ['php'])
-			->addOption(CO::EXCLUDE, NULL, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
+			->addOption('exclude', NULL, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
 				'Directories and files matching this mask will not be parsed (e.g. */tests/*).')
-			->addOption(CO::GROUPS, NULL, InputOption::VALUE_REQUIRED,
+			->addOption('groups', NULL, InputOption::VALUE_REQUIRED,
 				'The way elements are grouped in menu [options: namespaces, packages].', 'namespaces')
-			->addOption(CO::MAIN, NULL, InputOption::VALUE_REQUIRED,
+			->addOption('main', NULL, InputOption::VALUE_REQUIRED,
 				'Elements with this name prefix will be first in tree.')
-			->addOption(CO::INTERNAL, NULL, InputOption::VALUE_NONE, 'Include elements marked as @internal.')
-			->addOption(CO::PHP, NULL, InputOption::VALUE_NONE, 'Generate documentation for PHP internal classes.')
-			->addOption(CO::NO_SOURCE_CODE, NULL, InputOption::VALUE_NONE,
+			->addOption('internal', NULL, InputOption::VALUE_NONE, 'Include elements marked as @internal.')
+			->addOption('php', NULL, InputOption::VALUE_NONE, 'Generate documentation for PHP internal classes.')
+			->addOption('sourceCode', NULL, InputOption::VALUE_NONE,
 				'Do not generate highlighted source code for elements.')
-			->addOption(CO::TEMPLATE_THEME, NULL, InputOption::VALUE_REQUIRED, 'ApiGen template theme name.', 'default')
-			->addOption(CO::TEMPLATE_CONFIG, NULL, InputOption::VALUE_REQUIRED,
-				'Your own template config, has higher priority ' . CO::TEMPLATE_THEME . '.')
-			->addOption(CO::TITLE, NULL, InputOption::VALUE_REQUIRED, 'Title of generated documentation.')
-			->addOption(CO::TREE, NULL, InputOption::VALUE_NONE,
+			->addOption('templateTheme', NULL, InputOption::VALUE_REQUIRED, 'ApiGen template theme name.', 'default')
+			->addOption('templateConfig', NULL, InputOption::VALUE_REQUIRED,
+				'Your own template config, has higher priority then --template-theme.')
+			->addOption('title', NULL, InputOption::VALUE_REQUIRED, 'Title of generated documentation.')
+			->addOption('tree', NULL, InputOption::VALUE_NONE,
 				'Generate tree view of classes, interfaces, traits and exceptions.')
 
 			/**
@@ -156,7 +155,9 @@ class GenerateCommand extends Command
 			return 0;
 
 		} catch (\Exception $e) {
-			$output->writeln(PHP_EOL . '<error>' . $e->getMessage() . '</error>');
+			$output->writeln(
+				sprintf(PHP_EOL . '<error>%s</error>', $e->getMessage())
+			);
 			return 1;
 		}
 	}
@@ -166,7 +167,7 @@ class GenerateCommand extends Command
 	{
 		$this->io->writeln('<info>Scanning sources and parsing</info>');
 
-		$files = $this->scanner->scan($options[CO::SOURCE], $options[CO::EXCLUDE], $options[CO::EXTENSIONS]);
+		$files = $this->scanner->scan($options['source'], $options['exclude'], $options['extensions']);
 		$this->parser->parse($files);
 
 		$this->reportParserErrors($this->parser->getErrors());
@@ -183,7 +184,7 @@ class GenerateCommand extends Command
 
 	private function generate(array $options)
 	{
-		$this->prepareDestination($options[CO::DESTINATION]);
+		$this->prepareDestination($options['destination']);
 		$this->io->writeln('<info>Generating API documentation</info>');
 		$this->generatorQueue->run();
 	}
@@ -196,7 +197,9 @@ class GenerateCommand extends Command
 			/** @var \Exception[] $reasons */
 			$reasons = $error->getReasons();
 			if (count($reasons) && isset($reasons[0])) {
-				$this->io->writeln("<error>Parse error: " . $reasons[0]->getMessage() . "</error>");
+				$this->io->writeln(
+					sprintf('<error>Parse error: "%s"</error>', $reasons[0]->getMessage())
+				);
 			}
 		}
 	}
@@ -208,7 +211,7 @@ class GenerateCommand extends Command
 	private function prepareOptions(array $cliOptions)
 	{
 		$cliOptions = $this->convertDashKeysToCamel($cliOptions);
-		$configFile = $cliOptions[CO::CONFIG];
+		$configFile = $cliOptions['config'];
 		$options = $cliOptions;
 
 		if (file_exists($configFile)) {

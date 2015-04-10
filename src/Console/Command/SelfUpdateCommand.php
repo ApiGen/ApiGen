@@ -7,16 +7,17 @@
  * the file LICENSE that was distributed with this source code.
  */
 
-namespace ApiGen\Command;
+namespace ApiGen\Console\Command;
 
+use Exception;
 use Herrera\Phar\Update\Manager;
 use Herrera\Phar\Update\Manifest;
-use Symfony;
+use Symfony\Component\Console\Command\Command as BaseCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 
-class SelfUpdateCommand extends Symfony\Component\Console\Command\Command
+class SelfUpdateCommand extends BaseCommand
 {
 
 	/**
@@ -50,7 +51,7 @@ class SelfUpdateCommand extends Symfony\Component\Console\Command\Command
 
 			return 0;
 
-		} catch (\Exception $e) {
+		} catch (Exception $e) {
 			$output->writeln('<error>' . $e->getMessage() . '</error>');
 			return 1;
 		}
