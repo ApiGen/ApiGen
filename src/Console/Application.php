@@ -10,17 +10,13 @@
 namespace ApiGen\Console;
 
 use ApiGen\ApiGen;
-use ApiGen\Console\Input\LiberalFormatArgvInput;
-use ApiGen\Contracts\EventDispatcher\EventDispatcherInterface;
+use ApiGen\Contracts\Console\IO\IOInterface;
 use ApiGen\MemoryLimit;
 use Symfony\Component\Console\Application as BaseApplication;
-use Symfony\Component\Console\Formatter\OutputFormatter;
-use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 
 
@@ -28,19 +24,16 @@ class Application extends BaseApplication
 {
 
 	/**
-	 * @var EventDispatcherInterface
+	 * @var IOInterface
 	 */
-	protected $dispatcher;
+	private $io;
 
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public function __construct(ApiGen $apiGen, MemoryLimit $memoryLimit, EventDispatcherInterface $eventDispatcher)
+	public function __construct(ApiGen $apiGen, MemoryLimit $memoryLimit, IOInterface $io)
 	{
 		parent::__construct('ApiGen', $apiGen->getVersion());
 		$memoryLimit->setMemoryLimitTo('1024M');
-		$this->dispatcher = $eventDispatcher;
+		$this->io = $io;
 	}
 
 
@@ -49,25 +42,7 @@ class Application extends BaseApplication
 	 */
 	public function run(InputInterface $input = NULL, OutputInterface $output = NULL)
 	{
-		if ($output === NULL) {
-			// todo: consider DI approach
-			$styles = $this->createAdditionalStyles();
-			$formatter = new OutputFormatter(NULL, $styles);
-			$output = new ConsoleOutput(ConsoleOutput::VERBOSITY_NORMAL, NULL, $formatter);
-		}
-
-		return parent::run(new LiberalFormatArgvInput, $output);
-	}
-
-
-	/**
-	 * @return array
-	 */
-	public function createAdditionalStyles()
-	{
-		return [
-			'warning' => new OutputFormatterStyle('black', 'yellow'),
-		];
+		return parent::run($this->io->getInput(), $this->io->getOutput());
 	}
 
 
