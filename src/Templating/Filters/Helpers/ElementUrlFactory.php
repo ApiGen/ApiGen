@@ -19,12 +19,6 @@ use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
-use ApiGen\Parser\Reflection\ReflectionClass;
-use ApiGen\Parser\Reflection\ReflectionConstant;
-use ApiGen\Parser\Reflection\ReflectionElement;
-use ApiGen\Parser\Reflection\ReflectionFunction;
-use ApiGen\Parser\Reflection\ReflectionMethod;
-use ApiGen\Parser\Reflection\ReflectionProperty;
 use ApiGen\Templating\Filters\Filters;
 
 

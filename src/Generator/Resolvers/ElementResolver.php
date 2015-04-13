@@ -20,12 +20,7 @@ use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ParameterReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
 use ApiGen\Reflection\ReflectionClass;
-use ApiGen\Reflection\ReflectionConstant;
 use ApiGen\Reflection\ReflectionElement;
-use ApiGen\Reflection\ReflectionFunction;
-use ApiGen\Reflection\ReflectionMethod;
-use ApiGen\Reflection\ReflectionParameter;
-use ApiGen\Reflection\ReflectionProperty;
 use ArrayObject;
 use TokenReflection\Resolver;
 
