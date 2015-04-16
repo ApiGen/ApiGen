@@ -89,3 +89,7 @@ $ phpunit
 ## Contributing 
 
 Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/ApiGen/apigen/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
