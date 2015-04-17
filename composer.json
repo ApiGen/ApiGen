@@ -21,7 +21,7 @@
 
 		"kukulich/fshl": "~2.1",
 		"michelf/php-markdown": "~1.4",
-		"symfony/options-resolver": "~2.6.1",
+		"symfony/options-resolver": "^2.6.1",
 		"symfony/console": "~2.6",
 		"symfony/yaml": "~2.6",
 		"herrera-io/phar-update": "~2.0",
