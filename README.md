@@ -3,7 +3,7 @@
 [![Build Status](https://img.shields.io/travis/ApiGen/ApiGen/master.svg?style=flat-square)](https://travis-ci.org/ApiGen/ApiGen)
 [![Quality Score](https://img.shields.io/scrutinizer/g/ApiGen/ApiGen.svg?style=flat-square)](https://scrutinizer-ci.com/g/ApiGen/ApiGen)
 [![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/ApiGen/ApiGen.svg?style=flat-square)](https://scrutinizer-ci.com/g/ApiGen/ApiGen)
-[![Downloads this Month](https://img.shields.io/packagist/dm/apigen/apigen.svg?style=flat-square)](https://packagist.org/packages/apigen/apigen)
+[![Downloads](https://img.shields.io/packagist/dt/apigen/apigen.svg?style=flat-square)](https://packagist.org/packages/apigen/apigen)
 [![Latest stable](https://img.shields.io/packagist/v/apigen/apigen.svg?style=flat-square)](https://packagist.org/packages/apigen/apigen)
 
 
@@ -69,12 +69,12 @@ php vendor/bin/apigen generate -s src -d ../my/project-api
 ## Options
 
 To see all available options with it's description and default values, just run:
- 
-```sh 
+
+```sh
 apigen generate --help
 ```
 
-*Note: in `apigen.neon` is prefered camel case (`accessLevel`) over dash-case in CLI (`--access-level`).* 
+*Note: in `apigen.neon` is prefered camel case (`accessLevel`) over dash-case in CLI (`--access-level`).*
 
 If you want to know what annotations do we support, [here is the list](../../wiki/supported-annotations).
 
@@ -86,6 +86,6 @@ $ phpunit
 ```
 
 
-## Contributing 
+## Contributing
 
 Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
