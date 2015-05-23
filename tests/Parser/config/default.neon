@@ -1,0 +1,7 @@
+services:
+	- ApiGen\Parser\Tests\Configuration\ParserConfiguration
+	- ApiGen\Parser\Tests\Resolvers\ElementResolver
+
+
+extensions:
+	- ApiGen\Parser\DI\ParserExtension

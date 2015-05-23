@@ -1,0 +1,56 @@
+<?php
+
+namespace ApiGen\Parser\Tests\Reflection;
+
+use ApiGen\Contracts\Parser\ParserStorageInterface;
+use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\TokenReflection\ReflectionFactoryInterface;
+use ApiGen\Parser\Broker\Backend;
+use ApiGen\Parser\Reflection\TokenReflection\ReflectionFactory;
+use ApiGen\Parser\Tests\Configuration\ParserConfiguration;
+use Mockery;
+use PHPUnit_Framework_TestCase;
+use TokenReflection\Broker;
+
+
+class ReflectionFunctionTest extends PHPUnit_Framework_TestCase
+{
+
+	/**
+	 * @var FunctionReflectionInterface
+	 */
+	private $reflectionFunction;
+
+
+	protected function setUp()
+	{
+		$backend = new Backend($this->getReflectionFactory());
+		$broker = new Broker($backend);
+		$broker->processDirectory(__DIR__ . '/ReflectionFunctionSource');
+
+		$this->reflectionFunction = $backend->getFunctions()['getSomeData'];
+	}
+
+
+	public function testIsValid()
+	{
+		$this->assertTrue($this->reflectionFunction->isValid());
+	}
+
+
+	public function testIsDocumented()
+	{
+		$this->assertTrue($this->reflectionFunction->isDocumented());
+	}
+
+
+	/**
+	 * @return ReflectionFactoryInterface
+	 */
+	private function getReflectionFactory()
+	{
+		$parserStorageMock = Mockery::mock(ParserStorageInterface::class);
+		return new ReflectionFactory(new ParserConfiguration, $parserStorageMock);
+	}
+
+}
