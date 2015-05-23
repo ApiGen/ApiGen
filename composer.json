@@ -41,7 +41,8 @@
 	"autoload-dev": {
 		"psr-4": {
 			"ApiGen\\Tests\\": "tests",
-			"ApiGen\\EventDispatcher\\Tests\\": "tests/EventDispatcher"
+			"ApiGen\\EventDispatcher\\Tests\\": "tests/EventDispatcher",
+			"ApiGen\\Parser\\Tests\\": "tests/Parser"
 		}
 	},
 	"bin": [
