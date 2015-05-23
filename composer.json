@@ -28,9 +28,7 @@
 
 		"apigen/theme-default": "1.0.*",
 		"apigen/theme-bootstrap": "1.1.*",
-		"apigen/event-dispatcher": "0.1.*",
-		"apigen/parser": "0.1.*",
-		"apigen/utils": "0.1.*"
+		"apigen/parser": "0.1.*"
 	},
 	"require-dev": {
 		"mockery/mockery": "~0.9",
@@ -43,7 +41,8 @@
 	},
 	"autoload-dev": {
 		"psr-4": {
-			"ApiGen\\Tests\\": "tests"
+			"ApiGen\\Tests\\": "tests",
+			"ApiGen\\EventDispatcher\\Tests\\": "tests/EventDispatcher"
 		}
 	},
 	"bin": [
