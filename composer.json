@@ -12,7 +12,6 @@
 	],
 	"require": {
 		"php": ">=5.5",
-		"apigen/parser": "0.1.*",
 		"apigen/theme-bootstrap": "1.1.*",
 		"apigen/theme-default": "1.0.*",
 		"herrera-io/phar-update": "~2.0",
