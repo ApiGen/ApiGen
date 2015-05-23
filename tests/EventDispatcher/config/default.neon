@@ -1,0 +1,6 @@
+services:
+	- ApiGen\EventDispatcher\Tests\EventDispatcher\DispatchSource\Subscriber
+	- ApiGen\EventDispatcher\Tests\EventDispatcher\DispatchSource\SomeService
+
+extensions:
+	- ApiGen\EventDispatcher\DI\EventDispatcherExtension
