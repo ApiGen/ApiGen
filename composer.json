@@ -12,6 +12,7 @@
 	],
 	"require": {
 		"php": ">=5.5",
+		"andrewsville/php-token-reflection": "^1.4",
 		"apigen/theme-bootstrap": "1.1.*",
 		"apigen/theme-default": "1.0.*",
 		"herrera-io/phar-update": "~2.0",
