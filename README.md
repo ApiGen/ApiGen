@@ -10,20 +10,6 @@
 Just look at [Doctrine ORM API](http://www.doctrine-project.org/api/orm/2.4/).
 
 
-## Features
-
-- [Highlighted source code](http://api.nette.org/source-Application.UI.Form.php.html)
-- A page with:
-    - [trees of classes, interfaces, traits and exceptions](https://api.kdyby.org/tree.html)
-	- [list of deprecated elements](http://api.nette.org/deprecated.html)
-- Support for docblock templates flavored with **Markdown** *Markup*
-- [Links to the start line](http://api.nette.org/2.2.3/Nette.Application.UI.Control.html#_redrawControl) in the highlighted source code for every described element
-- [List of known subclasses and implementers](https://api.kdyby.org/class-Kdyby.Doctrine.EntityRepository.html)
-- Support for custom templates
-
-And much more...
-
-
 ## Requirements
 
 - PHP 5.4
@@ -53,7 +39,7 @@ destination: ../my-project-api
 For global installation, see [documentation](https://github.com/ApiGen/ApiGen/wiki#installation).
 
 
-### 2. Using Composer as dependency of your project
+### 2. Using Composer
 
 ```sh
 composer require apigen/apigen --dev
