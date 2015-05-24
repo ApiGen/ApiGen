@@ -18,7 +18,6 @@ services:
 
 	# generator
 	- ApiGen\Generator\EventSubscriber\ProgressBarSubscriber
-	- ApiGen\Scanner\Scanner
 	- ApiGen\Generator\GeneratorQueue
 	# intentionally first to collect output from other generators
 	- ApiGen\Generator\TemplateGenerators\ZipGenerator
