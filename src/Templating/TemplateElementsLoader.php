@@ -14,8 +14,6 @@ use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Contracts\Parser\Elements\ElementStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
 use ApiGen\Parser\Elements\AutocompleteElements;
-use ApiGen\Parser\Elements\ElementStorage;
-use ApiGen\Reflection\ReflectionElement;
 use Closure;
 
 

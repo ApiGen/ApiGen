@@ -14,13 +14,6 @@ use ApiGen\Contracts\EventDispatcher\EventSubscriberInterface;
 use ApiGen\Generator\Event\GenerateProgressEvent;
 use ApiGen\Generator\Event\GeneratorEvents;
 use ApiGen\Generator\Event\QueueRunEvent;
-use ApiGen\Generator\TemplateGenerators\ClassElementGenerator;
-use ApiGen\Generator\TemplateGenerators\ConstantElementGenerator;
-use ApiGen\Generator\TemplateGenerators\FunctionElementGenerator;
-use ApiGen\Generator\TemplateGenerators\NamespaceGenerator;
-use ApiGen\Generator\TemplateGenerators\PackageGenerator;
-use ApiGen\Generator\TemplateGenerators\SourceCodeGenerator;
-
 
 class ProgressBarSubscriber implements EventSubscriberInterface
 {

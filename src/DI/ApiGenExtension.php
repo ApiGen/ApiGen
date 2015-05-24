@@ -9,15 +9,11 @@
 
 namespace ApiGen\DI;
 
-use ApiGen\Command\SelfUpdateCommand;
-use ApiGen\Console\Application;
 use ApiGen\Contracts\Generator\GeneratorQueueInterface;
 use ApiGen\Contracts\Generator\TemplateGenerators\TemplateGeneratorInterface;
 use ApiGen\Templating\Filters\Filters;
 use Latte\Engine;
 use Nette\DI\CompilerExtension;
-use Symfony\Component\Console\Command\Command;
-
 
 class ApiGenExtension extends CompilerExtension
 {
