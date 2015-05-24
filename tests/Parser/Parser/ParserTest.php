@@ -2,17 +2,18 @@
 
 namespace ApiGen\Parser\Tests;
 
-use ApiGen\Contracts\Parser\Configuration\ParserConfigurationInterface;
+use ApiGen\Contracts\Configuration\ConfigurationInterface;
+use ApiGen\Contracts\Parser\ParserInterface;
 use ApiGen\Contracts\Parser\ParserStorageInterface;
-use ApiGen\Parser\Parser;
 use Nette\Utils\Finder;
+use ReflectionProperty;
 
 
 class ParserTest extends ContainerAwareTestCase
 {
 
 	/**
-	 * @var Parser
+	 * @var ParserInterface
 	 */
 	private $parser;
 
@@ -22,18 +23,19 @@ class ParserTest extends ContainerAwareTestCase
 	private $parserResult;
 
 	/**
-	 * @var ParserConfigurationInterface
+	 * @var ConfigurationInterface
 	 */
 	private $configuration;
 
 
 	protected function setUp()
 	{
-		$this->parser = $this->container->getByType('ApiGen\Contracts\Parser\ParserInterface');
-		$this->parserResult = $this->container->getByType('ApiGen\Contracts\Parser\ParserStorageInterface');
-		$this->configuration = $this->container->getByType(
-			'ApiGen\Contracts\Parser\Configuration\ParserConfigurationInterface'
-		);
+		$this->parser = $this->container->getByType(ParserInterface::class);
+		$this->parserResult = $this->container->getByType(ParserStorageInterface::class);
+		$this->configuration = $this->container->getByType(ConfigurationInterface::class);
+		/** @var ConfigurationInterface $configuration */
+		$configuration = $this->container->getByType(ConfigurationInterface::class);
+		$configuration->setOptions(['visibilityLevels' => ReflectionProperty::IS_PUBLIC]);
 	}
 
 

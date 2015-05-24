@@ -1,7 +1,10 @@
-services:
-	- ApiGen\Parser\Tests\Configuration\ParserConfiguration
-	- ApiGen\Parser\Tests\Resolvers\ElementResolver
+#services:
+#	- ApiGen\Parser\Tests\Resolvers\ElementResolver
 
 
 extensions:
+	- ApiGen\DI\ApiGenExtension
+	- ApiGen\Console\DI\ConsoleExtension
+	- ApiGen\Utils\DI\UtilsExtension
+	- ApiGen\EventDispatcher\DI\EventDispatcherExtension
 	- ApiGen\Parser\DI\ParserExtension

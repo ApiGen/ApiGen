@@ -2,6 +2,7 @@
 
 namespace ApiGen\Parser\Tests\Reflection;
 
+use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Parser\ParserStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
@@ -130,8 +131,13 @@ class ReflectionConstantTest extends PHPUnit_Framework_TestCase
 			}
 		});
 
-		$parserConfiguration = new ParserConfiguration(ReflectionProperty::IS_PUBLIC);
-		return new ReflectionFactory($parserConfiguration, $parserResultMock);
+		$configurationMock = Mockery::mock(ConfigurationInterface::class, [
+			'getVisibilityLevel' => ReflectionProperty::IS_PUBLIC,
+			'isInternalDocumented' => FALSE,
+			'isPhpCoreDocumented' => TRUE,
+			'getMain' => ''
+		]);
+		return new ReflectionFactory($configurationMock, $parserResultMock);
 	}
 
 }

@@ -9,10 +9,10 @@
 
 namespace ApiGen\Console\Command;
 
-use Symfony\Component\Console\Command\Command as BaseCommand;
+use Symfony\Component\Console\Command\Command;
 
 
-abstract class AbstractCommand extends BaseCommand
+abstract class AbstractCommand extends Command
 {
 
 	/**

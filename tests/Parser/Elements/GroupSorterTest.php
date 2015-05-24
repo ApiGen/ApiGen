@@ -2,9 +2,9 @@
 
 namespace ApiGen\Parser\Tests\Elements;
 
+use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Parser\Elements\Elements;
 use ApiGen\Parser\Elements\GroupSorter;
-use ApiGen\Parser\Tests\Configuration\ParserConfiguration;
 use ApiGen\Parser\Tests\MethodInvoker;
 use Mockery;
 use PHPUnit_Framework_Assert;
@@ -22,10 +22,10 @@ class GroupSorterTest extends PHPUnit_Framework_TestCase
 
 	protected function setUp()
 	{
-		$this->groupSorter = new GroupSorter(
-			new Elements,
-			new ParserConfiguration(NULL, 'One')
-		);
+		$configurationMock = Mockery::mock(ConfigurationInterface::class, [
+			'getMain' => ''
+		]);
+		$this->groupSorter = new GroupSorter(new Elements, $configurationMock);
 	}
 
 

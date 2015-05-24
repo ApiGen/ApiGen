@@ -2,6 +2,7 @@
 
 namespace ApiGen\Parser\Tests\Reflection\ReflectionClass;
 
+use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Parser\ParserStorageInterface;
 use ApiGen\Parser\Broker\Backend;
 use ApiGen\Parser\Reflection\ReflectionClass;
@@ -68,11 +69,13 @@ abstract class AbstractReflectionClassTestCase extends PHPUnit_Framework_TestCas
 			}
 		});
 
-		$parserConfiguration = new ParserConfiguration(
-			ReflectionProperty::IS_PUBLIC | ReflectionProperty::IS_PROTECTED
-		);
-
-		return new ReflectionFactory($parserConfiguration, $parserStorageMock);
+		$configurationMock = Mockery::mock(ConfigurationInterface::class, [
+			'getVisibilityLevel' => ReflectionProperty::IS_PUBLIC | ReflectionProperty::IS_PROTECTED,
+			'isInternalDocumented' => FALSE,
+			'isPhpCoreDocumented' => TRUE,
+			'isDeprecatedDocumented' => TRUE
+		]);
+		return new ReflectionFactory($configurationMock, $parserStorageMock);
 	}
 
 }

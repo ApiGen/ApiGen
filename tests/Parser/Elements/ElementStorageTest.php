@@ -2,8 +2,8 @@
 
 namespace ApiGen\Parser\Tests\Elements;
 
+use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Generator\Resolvers\ElementResolverInterface;
-use ApiGen\Contracts\Parser\Configuration\ParserConfigurationInterface;
 use ApiGen\Contracts\Parser\ParserStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
@@ -30,9 +30,10 @@ class ElementStorageTest extends PHPUnit_Framework_TestCase
 
 	public function testEnsureCategorization()
 	{
-		$configurationMock = Mockery::mock(ParserConfigurationInterface::class);
-		$configurationMock->shouldReceive('areNamespacesEnabled')->andReturn(TRUE);
-		$configurationMock->shouldReceive('arePackagesEnabled')->andReturn(FALSE);
+		$configurationMock = Mockery::mock(ConfigurationInterface::class, [
+			'areNamespacesEnabled' => TRUE,
+			'arePackagesEnabled' => FALSE
+		]);
 		$elementStorage = $this->prepareElementStorage($configurationMock);
 
 		MethodInvoker::callMethodOnObject($elementStorage, 'ensureCategorization');
@@ -53,10 +54,10 @@ class ElementStorageTest extends PHPUnit_Framework_TestCase
 
 	public function testEnsureCategorizationPackagesEnabled()
 	{
-		$configurationMock = Mockery::mock(ParserConfigurationInterface::class);
-		$configurationMock->shouldReceive('areNamespacesEnabled')->andReturn(FALSE);
-		$configurationMock->shouldReceive('arePackagesEnabled')->andReturn(TRUE);
-
+		$configurationMock = Mockery::mock(ConfigurationInterface::class, [
+			'areNamespacesEnabled' => FALSE,
+			'arePackagesEnabled' => TRUE
+		]);
 		$elementStorage = $this->prepareElementStorage($configurationMock);
 		MethodInvoker::callMethodOnObject($elementStorage, 'ensureCategorization');
 
@@ -67,9 +68,10 @@ class ElementStorageTest extends PHPUnit_Framework_TestCase
 
 	public function testEnsureCategorizationPackagesNorNamespacesEnabled()
 	{
-		$configurationMock = Mockery::mock(ParserConfigurationInterface::class);
-		$configurationMock->shouldReceive('areNamespacesEnabled')->andReturn(FALSE);
-		$configurationMock->shouldReceive('arePackagesEnabled')->andReturn(FALSE);
+		$configurationMock = Mockery::mock(ConfigurationInterface::class, [
+			'areNamespacesEnabled' => FALSE,
+			'arePackagesEnabled' => FALSE
+		]);
 		$elementStorage = $this->prepareElementStorage($configurationMock);
 
 		MethodInvoker::callMethodOnObject($elementStorage, 'ensureCategorization');
@@ -81,9 +83,10 @@ class ElementStorageTest extends PHPUnit_Framework_TestCase
 
 	public function testLoadUsesToReferencedElementUsedBy()
 	{
-		$configurationMock = Mockery::mock(ParserConfigurationInterface::class);
-		$configurationMock->shouldReceive('areNamespacesEnabled')->andReturn(TRUE);
-		$configurationMock->shouldReceive('arePackagesEnabled')->andReturn(FALSE);
+		$configurationMock = Mockery::mock(ConfigurationInterface::class, [
+			'areNamespacesEnabled' => TRUE,
+			'arePackagesEnabled' => FALSE
+		]);
 		$elementStorage = $this->prepareElementStorage($configurationMock);
 
 		$reflectionElementMock = Mockery::mock(ReflectionElement::class);
@@ -216,13 +219,13 @@ class ElementStorageTest extends PHPUnit_Framework_TestCase
 	 */
 	private function getReflectionConstantMock()
 	{
-		$reflectionConstantMock = Mockery::mock(ConstantReflectionInterface::class);
-		$reflectionConstantMock->shouldReceive('isDocumented')->andReturn(TRUE);
-		$reflectionConstantMock->shouldReceive('getPseudoPackageName')->andReturn('SomePackage');
-		$reflectionConstantMock->shouldReceive('getPseudoNamespaceName')->andReturn('SomeNamespace');
-		$reflectionConstantMock->shouldReceive('getShortName')->andReturn('SomeShortClass');
-		$reflectionConstantMock->shouldReceive('getAnnotation')->andReturn([]);
-		return $reflectionConstantMock;
+		return Mockery::mock(ConstantReflectionInterface::class, [
+			'isDocumented' => TRUE,
+			'getPseudoPackageName' => 'SomePackage',
+			'getPseudoNamespaceName' => 'SomeNamespace',
+			'getShortName' => 'SomeShortClass',
+			'getAnnotation' => []
+		]);
 	}
 
 }

@@ -9,7 +9,10 @@
 
 namespace ApiGen\Console\DI;
 
+use ApiGen\Console\Application;
+use ApiGen\Console\Command\SelfUpdateCommand;
 use Nette\DI\CompilerExtension;
+use Symfony\Component\Console\Command\Command;
 
 
 class ConsoleExtension extends CompilerExtension
@@ -28,9 +31,9 @@ class ConsoleExtension extends CompilerExtension
 		$builder = $this->getContainerBuilder();
 		$builder->prepareClassList();
 
-		$application = $builder->getDefinition($builder->getByType('ApiGen\Console\Application'));
-		foreach ($builder->findByType('Symfony\Component\Console\Command\Command') as $definition) {
-			if ( ! $this->isPhar() && $definition->getClass() === 'ApiGen\Console\Command\SelfUpdateCommand') {
+		$application = $builder->getDefinition($builder->getByType(Application::class));
+		foreach ($builder->findByType(Command::class) as $definition) {
+			if ( ! $this->isPhar() && $definition->getClass() === SelfUpdateCommand::class) {
 				continue;
 			}
 			$application->addSetup('add', ['@' . $definition->getClass()]);

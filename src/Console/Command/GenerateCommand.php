@@ -15,9 +15,9 @@ use ApiGen\Contracts\Console\IO\IOInterface;
 use ApiGen\Contracts\Generator\GeneratorQueueInterface;
 use ApiGen\Contracts\Parser\ParserInterface;
 use ApiGen\Contracts\Parser\ParserStorageInterface;
-use ApiGen\Scanner\Scanner;
 use ApiGen\Theme\ThemeResources;
 use ApiGen\Utils\FileSystem;
+use ApiGen\Utils\Finder\FinderInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -43,11 +43,6 @@ class GenerateCommand extends AbstractCommand
 	private $parserResult;
 
 	/**
-	 * @var Scanner
-	 */
-	private $scanner;
-
-	/**
 	 * @var GeneratorQueueInterface
 	 */
 	private $generatorQueue;
@@ -67,26 +62,31 @@ class GenerateCommand extends AbstractCommand
 	 */
 	private $io;
 
+	/**
+	 * @var FinderInterface
+	 */
+	private $finder;
+
 
 	public function __construct(
 		Configuration $configuration,
-		Scanner $scanner,
 		ParserInterface $parser,
 		ParserStorageInterface $parserResult,
 		GeneratorQueueInterface $generatorQueue,
 		FileSystem $fileSystem,
 		ThemeResources $themeResources,
-		IOInterface $io
+		IOInterface $io,
+		FinderInterface $finder
 	) {
 		parent::__construct();
 		$this->configuration = $configuration;
-		$this->scanner = $scanner;
 		$this->parser = $parser;
 		$this->parserResult = $parserResult;
 		$this->generatorQueue = $generatorQueue;
 		$this->fileSystem = $fileSystem;
 		$this->themeResources = $themeResources;
 		$this->io = $io;
+		$this->finder = $finder;
 	}
 
 
@@ -167,7 +167,7 @@ class GenerateCommand extends AbstractCommand
 	{
 		$this->io->writeln('<info>Scanning sources and parsing</info>');
 
-		$files = $this->scanner->scan($options['source'], $options['exclude'], $options['extensions']);
+		$files = $this->finder->find($options['source'], $options['exclude'], $options['extensions']);
 		$this->parser->parse($files);
 
 		$this->reportParserErrors($this->parser->getErrors());

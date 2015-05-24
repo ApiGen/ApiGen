@@ -2,7 +2,7 @@
 
 namespace ApiGen\Parser\Tests\Reflection;
 
-use ApiGen\Contracts\Parser\Configuration\ParserConfigurationInterface;
+use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Parser\ParserStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
@@ -135,14 +135,15 @@ class ReflectionMethodTest extends PHPUnit_Framework_TestCase
 
 
 	/**
-	 * @return Mockery\MockInterface|ParserConfigurationInterface
+	 * @return Mockery\MockInterface|ConfigurationInterface
 	 */
 	private function getConfigurationMock()
 	{
-		$configurationMock = Mockery::mock(ParserConfigurationInterface::class);
-		$configurationMock->shouldReceive('getVisibilityLevel')->andReturn(256);
-		$configurationMock->shouldReceive('isPhpCoreDocumented')->andReturn(TRUE);
-		$configurationMock->shouldReceive('isInternalDocumented')->andReturn(FALSE);
+		$configurationMock = Mockery::mock(ConfigurationInterface::class, [
+			'getVisibilityLevel' => 256,
+			'isPhpCoreDocumented' => TRUE,
+			'isInternalDocumented' => FALSE
+		]);
 		return $configurationMock;
 	}
 

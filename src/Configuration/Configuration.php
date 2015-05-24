@@ -9,23 +9,12 @@
 
 namespace ApiGen\Configuration;
 
-use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
-use ApiGen\Contracts\Parser\Configuration\ParserConfigurationInterface;
-use Nette;
 use Nette\Utils\Strings;
 
 
-/**
- * @method Configuration onOptionsResolve(array $config)
- */
-class Configuration extends Nette\Object implements ConfigurationInterface, ParserConfigurationInterface
+class Configuration implements ConfigurationInterface
 {
-
-	/**
-	 * @var array
-	 */
-	public $onOptionsResolve = [];
 
 	/**
 	 * @var array
@@ -45,20 +34,18 @@ class Configuration extends Nette\Object implements ConfigurationInterface, Pars
 
 
 	/**
-	 * @return array
+	 * {@inheritdoc}
 	 */
 	public function resolveOptions(array $options)
 	{
 		$options = $this->unsetConsoleOptions($options);
 		$this->options = $options = $this->configurationOptionsResolver->resolve($options);
-		$this->onOptionsResolve($options);
 		return $options;
 	}
 
 
 	/**
-	 * @param string $name
-	 * @return mixed|NULL
+	 * {@inheritdoc}
 	 */
 	public function getOption($name)
 	{
@@ -70,7 +57,7 @@ class Configuration extends Nette\Object implements ConfigurationInterface, Pars
 
 
 	/**
-	 * @return array
+	 * {@inheritdoc}
 	 */
 	public function getOptions()
 	{
@@ -82,29 +69,38 @@ class Configuration extends Nette\Object implements ConfigurationInterface, Pars
 
 
 	/**
-	 * @return bool
+	 * {@inheritdoc}
+	 */
+	public function setOptions(array $options)
+	{
+		$this->options = $options;
+	}
+
+
+	/**
+	 * {@inheritdoc}
 	 */
 	public function areNamespacesEnabled()
 	{
-		return $this->getOption(CO::GROUPS) === 'namespaces';
+		return $this->getOption('groups') === 'namespaces';
 	}
 
 
 	/**
-	 * @return bool
+	 * {@inheritdoc}
 	 */
 	public function arePackagesEnabled()
 	{
-		return $this->getOption(CO::GROUPS) === 'packages';
+		return $this->getOption('groups') === 'packages';
 	}
 
 
 	/**
-	 * @return string
+	 * {@inheritdoc}
 	 */
 	public function getZipFileName()
 	{
-		$webalizedTitle = Strings::webalize($this->getOption(CO::TITLE), NULL, FALSE);
+		$webalizedTitle = Strings::webalize($this->getOption('title'), NULL, FALSE);
 		return ($webalizedTitle ? '-' : '') . 'API-documentation.zip';
 	}
 
@@ -155,21 +151,111 @@ class Configuration extends Nette\Object implements ConfigurationInterface, Pars
 
 
 	/**
-	 * @return array
+	 * {@inheritdoc}
 	 */
-	private function unsetConsoleOptions(array $options)
+	public function getAnnotationGroups()
 	{
-		unset($options[CO::CONFIG], $options['help'], $options['version'], $options['quiet']);
-		return $options;
+		return $this->options['annotationGroups'];
 	}
 
 
 	/**
 	 * {@inheritdoc}
 	 */
-	public function setOptions(array $options)
+	public function isAvailableForDownload()
 	{
-		$this->options = $options;
+		return $this->options['download'];
+	}
+
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function isTreeAllowed()
+	{
+		return $this->options['tree'];
+	}
+
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function getDestination()
+	{
+		return $this->options['destination'];
+	}
+
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function getTitle()
+	{
+		return $this->options['title'];
+	}
+
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function getBaseUrl()
+	{
+		return $this->options['baseUrl'];
+	}
+
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function getGoogleCseId()
+	{
+		return $this->options['googleCseId'];
+	}
+
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function shouldGenerateSourceCode()
+	{
+		return $this->options['sourceCode'];
+	}
+
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function getSource()
+	{
+		return $this->options['source'];
+	}
+
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function getExclude()
+	{
+		return $this->options['exclude'];
+	}
+
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function getExtensions()
+	{
+		return $this->options['extensions'];
+	}
+
+
+	/**
+	 * @return array
+	 */
+	private function unsetConsoleOptions(array $options)
+	{
+		unset($options['config'], $options['help'], $options['version'], $options['quiet']);
+		return $options;
 	}
 
 }

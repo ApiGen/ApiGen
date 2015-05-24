@@ -9,7 +9,7 @@
 
 namespace ApiGen\Parser\Reflection\TokenReflection;
 
-use ApiGen\Contracts\Parser\Configuration\ParserConfigurationInterface;
+use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Parser\ParserStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\TokenReflection\ReflectionFactoryInterface;
 use ApiGen\Parser\Reflection\ReflectionBase;
@@ -37,7 +37,7 @@ class ReflectionFactory implements ReflectionFactoryInterface
 {
 
 	/**
-	 * @var ParserConfigurationInterface
+	 * @var ConfigurationInterface
 	 */
 	private $configuration;
 
@@ -47,7 +47,7 @@ class ReflectionFactory implements ReflectionFactoryInterface
 	private $parserStorage;
 
 
-	public function __construct(ParserConfigurationInterface $configuration, ParserStorageInterface $parserResult)
+	public function __construct(ConfigurationInterface $configuration, ParserStorageInterface $parserResult)
 	{
 		$this->configuration = $configuration;
 		$this->parserStorage = $parserResult;
