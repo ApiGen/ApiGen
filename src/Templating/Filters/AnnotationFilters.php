@@ -12,7 +12,7 @@ namespace ApiGen\Templating\Filters;
 use ApiGen;
 use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions as CO;
-use Nette;
+use Nette\Utils\Strings;
 
 
 class AnnotationFilters extends Filters
@@ -31,27 +31,6 @@ class AnnotationFilters extends Filters
 	private $remove = [
 		'package', 'subpackage', 'property', 'property-read', 'property-write', 'method', 'abstract', 'access',
 		'final', 'filesource', 'global', 'name', 'static', 'staticvar'
-	];
-
-	/**
-	 * @var array
-	 */
-	private $order = [
-		'deprecated' => 0,
-		'category' => 1,
-		'copyright' => 2,
-		'license' => 3,
-		'author' => 4,
-		'version' => 5,
-		'since' => 6,
-		'see' => 7,
-		'uses' => 8,
-		'usedby' => 9,
-		'link' => 10,
-		'internal' => 11,
-		'example' => 12,
-		'tutorial' => 13,
-		'todo' => 14
 	];
 
 	/**
@@ -75,7 +54,7 @@ class AnnotationFilters extends Filters
 		if (isset($this->rename[$name])) {
 			$name = $this->rename[$name];
 		}
-		return Nette\Utils\Strings::firstUpper($name);
+		return Strings::firstUpper($name);
 	}
 
 
@@ -100,25 +79,11 @@ class AnnotationFilters extends Filters
 
 
 	/**
+	 * @deprecated since 4.2. To be removed in 5.0.
 	 * @return array
 	 */
 	public function annotationSort(array $annotations)
 	{
-		uksort($annotations, function ($one, $two) {
-			if (isset($this->order[$one], $this->order[$two])) {
-				return $this->order[$one] - $this->order[$two];
-
-			} elseif (isset($this->order[$one])) {
-				return -1;
-
-			} elseif (isset($this->order[$two])) {
-				return 1;
-
-			} else {
-				return strcasecmp($one, $two);
-			}
-		});
-
 		return $annotations;
 	}
 
