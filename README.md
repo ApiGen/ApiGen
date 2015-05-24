@@ -17,7 +17,7 @@ Just look at [Doctrine ORM API](http://www.doctrine-project.org/api/orm/2.4/).
 
 ## Installation
 
-### 1. As a PHAR (recommended)
+### 1. As a PHAR
 
 1. Download [ApiGen](http://apigen.org/apigen.phar)
 
