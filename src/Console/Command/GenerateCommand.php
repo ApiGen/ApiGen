@@ -122,7 +122,7 @@ class GenerateCommand extends AbstractCommand
 				'Elements with this name prefix will be first in tree.')
 			->addOption('internal', NULL, InputOption::VALUE_NONE, 'Include elements marked as @internal.')
 			->addOption('php', NULL, InputOption::VALUE_NONE, 'Generate documentation for PHP internal classes.')
-			->addOption('sourceCode', NULL, InputOption::VALUE_NONE,
+			->addOption('noSourceCode', NULL, InputOption::VALUE_NONE,
 				'Do not generate highlighted source code for elements.')
 			->addOption('templateTheme', NULL, InputOption::VALUE_REQUIRED, 'ApiGen template theme name.', 'default')
 			->addOption('templateConfig', NULL, InputOption::VALUE_REQUIRED,
