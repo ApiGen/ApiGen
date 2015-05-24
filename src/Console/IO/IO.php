@@ -76,6 +76,10 @@ class IO implements IOInterface
 	 */
 	public function ask($question, $default = NULL)
 	{
+		if ($this->output->getVerbosity() === OutputInterface::VERBOSITY_QUIET) {
+			return FALSE;
+		}
+
 		/** @var QuestionHelper $helper */
 		$helper = $this->helperSet->get('question');
 		$question = new ConfirmationQuestion($question, $default);
