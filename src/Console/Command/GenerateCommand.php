@@ -10,7 +10,7 @@
 namespace ApiGen\Console\Command;
 
 use ApiGen\Configuration\Configuration;
-use ApiGen\Configuration\Readers\ReaderFactory as ConfigurationReader;
+use ApiGen\Configuration\Readers\ReaderFactory;
 use ApiGen\Contracts\Console\IO\IOInterface;
 use ApiGen\Contracts\Generator\GeneratorQueueInterface;
 use ApiGen\Contracts\Parser\ParserInterface;
@@ -210,15 +210,8 @@ class GenerateCommand extends AbstractCommand
 	 */
 	private function prepareOptions(array $cliOptions)
 	{
-		$cliOptions = $this->convertDashKeysToCamel($cliOptions);
-		$configFile = $cliOptions['config'];
-		$options = $cliOptions;
-
-		if (file_exists($configFile)) {
-			// get reader by file extension
-			$configFileOptions = ConfigurationReader::getReader($configFile)->read();
-			$options = array_merge($options, $configFileOptions);
-		}
+		$options = $this->convertDashKeysToCamel($cliOptions);
+		$options = $this->loadOptionsFromConfig($options);
 
 		$this->warnAboutDeprecatedOptions($options);
 		$options = $this->unsetDeprecatedOptions($options);
@@ -252,6 +245,30 @@ class GenerateCommand extends AbstractCommand
 		return preg_replace_callback('~-([a-z])~', function ($matches) {
 			return strtoupper($matches[1]);
 		}, $name);
+	}
+
+
+	/**
+	 * @return array
+	 */
+	private function loadOptionsFromConfig(array $options)
+	{
+		$configFilePaths = [
+			$options['config'],
+			getcwd() . '/apigen.neon',
+			getcwd() . '/apigen.yaml',
+			getcwd() . '/apigen.neon.dist',
+			getcwd() . '/apigen.yaml.dist'
+		];
+
+		foreach ($configFilePaths as $configFile) {
+			if (file_exists($configFile)) {
+				$configFileOptions = ReaderFactory::getReader($configFile)->read();
+				$options = array_merge($options, $configFileOptions);
+				break;
+			}
+		}
+		return $options;
 	}
 
 

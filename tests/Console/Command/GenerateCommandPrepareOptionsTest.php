@@ -4,6 +4,7 @@ namespace ApiGen\Tests\Command;
 
 use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Configuration\Exceptions\ConfigurationException;
+use ApiGen\Configuration\Readers\ReaderFactory;
 use ApiGen\Console\Command\GenerateCommand;
 use ApiGen\Tests\ContainerAwareTestCase;
 use ApiGen\Tests\MethodInvoker;
@@ -102,6 +103,21 @@ class GenerateCommandPrepareOptionsTest extends ContainerAwareTestCase
 		]]);
 
 		$this->assertSame($optionsNeon, $optionsYaml);
+	}
+
+
+	public function testLoadOptionsFromConfig()
+	{
+		$options['config'] = '...';
+		file_put_contents(getcwd() . '/apigen.neon.dist', 'debug: true');
+
+		$options = MethodInvoker::callMethodOnObject($this->generateCommand, 'loadOptionsFromConfig', [$options]);
+		$this->assertSame([
+			'config' => '...',
+			'debug' => TRUE
+		], $options);
+
+		unlink(getcwd() . '/apigen.neon.dist');
 	}
 
 }
