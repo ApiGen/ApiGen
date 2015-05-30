@@ -15,7 +15,7 @@ Just look at [Doctrine ORM API](http://www.doctrine-project.org/api/orm/2.4/).
 - PHP 5.5
 
 
-## Installation
+## Install
 
 The best way to install ApiGen is via composer:
 
