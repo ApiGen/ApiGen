@@ -2,15 +2,16 @@
 
 namespace ApiGen\Parser\Tests\Reflection;
 
+use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Parser\ParserStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\TokenReflection\ReflectionFactoryInterface;
 use ApiGen\Parser\Broker\Backend;
 use ApiGen\Parser\Reflection\ReflectionBase;
 use ApiGen\Parser\Reflection\TokenReflection\ReflectionFactory;
-use ApiGen\Parser\Tests\Configuration\ParserConfiguration;
 use ApiGen\Parser\Tests\MethodInvoker;
 use Mockery;
 use PHPUnit_Framework_TestCase;
+use ReflectionProperty;
 use TokenReflection\Broker;
 
 
@@ -87,9 +88,16 @@ class ReflectionBaseTest extends PHPUnit_Framework_TestCase
 	 */
 	private function getReflectionFactory()
 	{
-		$parserStorageMock = Mockery::mock(ParserStorageInterface::class);
-		$parserStorageMock->shouldReceive('getElementsByType')->andReturn(['...']);
-		return new ReflectionFactory(new ParserConfiguration, $parserStorageMock);
+		$parserStorageMock = Mockery::mock(ParserStorageInterface::class, [
+			'getElementsByType' => ['...']
+		]);
+
+		$configurationMock = Mockery::mock(ConfigurationInterface::class, [
+			'getVisibilityLevel' => ReflectionProperty::IS_PUBLIC,
+			'isInternalDocumented' => FALSE,
+			'isPhpCoreDocumented' => TRUE
+		]);
+		return new ReflectionFactory($configurationMock, $parserStorageMock);
 	}
 
 }

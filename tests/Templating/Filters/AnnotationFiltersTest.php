@@ -54,14 +54,4 @@ class AnnotationFiltersTest extends PHPUnit_Framework_TestCase
 		);
 	}
 
-
-	public function testAnnotationSort()
-	{
-		$annotations = ['method' => TRUE, 'see' => TRUE, 'package' => TRUE, 'property' => TRUE, 'deprecated' => TRUE];
-		$this->assertSame(
-			['deprecated' => TRUE, 'see' => TRUE, 'method' => TRUE, 'package' => TRUE, 'property' => TRUE],
-			$this->annotationFilters->annotationSort($annotations)
-		);
-	}
-
 }

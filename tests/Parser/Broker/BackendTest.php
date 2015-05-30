@@ -2,7 +2,7 @@
 
 namespace ApiGen\Parser\Tests\Broker;
 
-use ApiGen\Contracts\Parser\Configuration\ParserConfigurationInterface;
+use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Parser\ParserStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
@@ -81,7 +81,7 @@ class BackendTest extends PHPUnit_Framework_TestCase
 	private function checkLoadedProperties($object)
 	{
 		$this->assertInstanceOf(
-			ParserConfigurationInterface::class,
+			ConfigurationInterface::class,
 			PHPUnit_Framework_Assert::getObjectAttribute($object, 'configuration')
 		);
 
@@ -103,11 +103,12 @@ class BackendTest extends PHPUnit_Framework_TestCase
 	private function getReflectionFactory()
 	{
 		$parserStoragetMock = Mockery::mock(ParserStorageInterface::class);
-		$parserConfigurationMock = Mockery::mock(ParserConfigurationInterface::class);
-		$parserConfigurationMock->shouldReceive('isPhpCoreDocumented')->andReturn(TRUE);
-		$parserConfigurationMock->shouldReceive('isInternalDocumented')->andReturn(TRUE);
-		$parserConfigurationMock->shouldReceive('getVisibilityLevel')->andReturn(1);
-		return new ReflectionFactory($parserConfigurationMock, $parserStoragetMock);
+		$configurationMock = Mockery::mock(ConfigurationInterface::class, [
+			'isPhpCoreDocumented' => TRUE,
+			'isInternalDocumented' => TRUE,
+			'getVisibilityLevel' => 1
+		]);
+		return new ReflectionFactory($configurationMock, $parserStoragetMock);
 	}
 
 }

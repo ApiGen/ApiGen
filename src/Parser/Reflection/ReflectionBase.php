@@ -9,7 +9,7 @@
 
 namespace ApiGen\Parser\Reflection;
 
-use ApiGen\Contracts\Parser\Configuration\ParserConfigurationInterface;
+use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Parser\Elements\ElementsInterface;
 use ApiGen\Contracts\Parser\ParserStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
@@ -127,7 +127,7 @@ abstract class ReflectionBase extends Nette\Object implements ReflectionInterfac
 	}
 
 
-	public function setConfiguration(ParserConfigurationInterface $configuration)
+	public function setConfiguration(ConfigurationInterface $configuration)
 	{
 		$this->configuration = $configuration;
 	}

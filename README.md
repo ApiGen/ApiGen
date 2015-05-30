@@ -17,7 +17,7 @@ Just look at [Doctrine ORM API](http://www.doctrine-project.org/api/orm/2.4/).
 
 ## Installation
 
-### 1. As a PHAR (recommended)
+### 1. As a PHAR
 
 1. Download [ApiGen](http://apigen.org/apigen.phar)
 
@@ -27,7 +27,7 @@ Just look at [Doctrine ORM API](http://www.doctrine-project.org/api/orm/2.4/).
 php apigen.phar generate -s src -d ../my-project-api
 ```
 
-To omit cli options just create `apigen.neon` file in your project using [Neon](http://ne-on.org) syntax.
+To omit cli options just create `apigen.yaml` or `apigen.neon` file in your project.
 
 ```yaml
 source:

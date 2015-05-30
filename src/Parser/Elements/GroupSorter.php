@@ -9,7 +9,7 @@
 
 namespace ApiGen\Parser\Elements;
 
-use ApiGen\Contracts\Parser\Configuration\ParserConfigurationInterface;
+use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Parser\Elements\ElementsInterface;
 use ApiGen\Contracts\Parser\Elements\GroupSorterInterface;
 
@@ -28,7 +28,7 @@ class GroupSorter implements GroupSorterInterface
 	private $groups;
 
 	/**
-	 * @var ParserConfigurationInterface
+	 * @var ConfigurationInterface
 	 */
 	private $configuration;
 
@@ -38,7 +38,7 @@ class GroupSorter implements GroupSorterInterface
 	private $elements;
 
 
-	public function __construct(ElementsInterface $elements, ParserConfigurationInterface $configuration)
+	public function __construct(ElementsInterface $elements, ConfigurationInterface $configuration)
 	{
 		$this->elements = $elements;
 		$this->configuration = $configuration;

@@ -1,3 +1,2 @@
-vendor
+/vendor
 composer.lock
-tests/temp

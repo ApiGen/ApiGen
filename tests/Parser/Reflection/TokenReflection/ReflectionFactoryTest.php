@@ -2,7 +2,7 @@
 
 namespace ApiGen\Parser\Tests\Reflection\TokenReflection;
 
-use ApiGen\Contracts\Parser\Configuration\ParserConfigurationInterface;
+use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Parser\ParserStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
@@ -16,7 +16,6 @@ use ApiGen\Contracts\Parser\Reflection\ParameterReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\TokenReflection\ReflectionFactoryInterface;
 use ApiGen\Parser\Reflection\TokenReflection\ReflectionFactory;
-use ApiGen\Parser\Tests\Configuration\ParserConfiguration;
 use Mockery;
 use Nette\Object;
 use PHPUnit_Framework_Assert;
@@ -42,7 +41,8 @@ class ReflectionFactoryTest extends PHPUnit_Framework_TestCase
 	protected function setUp()
 	{
 		$parserStorageMock = Mockery::mock(ParserStorageInterface::class);
-		$this->reflectionFactory = new ReflectionFactory(new ParserConfiguration, $parserStorageMock);
+		$configurationMock = Mockery::mock(ConfigurationInterface::class);
+		$this->reflectionFactory = new ReflectionFactory($configurationMock, $parserStorageMock);
 	}
 
 
@@ -145,7 +145,7 @@ class ReflectionFactoryTest extends PHPUnit_Framework_TestCase
 	private function checkLoadedProperties($object)
 	{
 		$this->assertInstanceOf(
-			ParserConfigurationInterface::class,
+			ConfigurationInterface::class,
 			PHPUnit_Framework_Assert::getObjectAttribute($object, 'configuration')
 		);
 

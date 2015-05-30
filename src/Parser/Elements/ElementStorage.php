@@ -9,8 +9,8 @@
 
 namespace ApiGen\Parser\Elements;
 
+use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Generator\Resolvers\ElementResolverInterface;
-use ApiGen\Contracts\Parser\Configuration\ParserConfigurationInterface;
 use ApiGen\Contracts\Parser\Elements\ElementStorageInterface;
 use ApiGen\Contracts\Parser\Elements\GroupSorterInterface;
 use ApiGen\Contracts\Parser\ParserStorageInterface;
@@ -74,7 +74,7 @@ class ElementStorage implements ElementStorageInterface
 	private $parserStorage;
 
 	/**
-	 * @var ParserConfigurationInterface
+	 * @var ConfigurationInterface
 	 */
 	private $configuration;
 
@@ -91,7 +91,7 @@ class ElementStorage implements ElementStorageInterface
 
 	public function __construct(
 		ParserStorageInterface $parserResult,
-		ParserConfigurationInterface $configuration,
+		ConfigurationInterface $configuration,
 		GroupSorterInterface $groupSorter,
 		ElementResolverInterface $elementResolver
 	) {

@@ -2,6 +2,7 @@
 
 namespace ApiGen\Configuration;
 
+use ApiGen\Contracts\EventDispatcher\EventDispatcherInterface;
 use Mockery;
 use PHPUnit_Framework_TestCase;
 
@@ -17,7 +18,10 @@ class ConfigurationTest extends PHPUnit_Framework_TestCase
 
 	protected function setUp()
 	{
-		$this->configuration = new Configuration($this->getMockedConfigurationOptionsResolver());
+		$eventDispatcherMock = Mockery::mock(EventDispatcherInterface::class, [
+			'dispatch' => '...'
+		]);
+		$this->configuration = new Configuration($this->getMockedConfigurationOptionsResolver(), $eventDispatcherMock);
 	}
 
 

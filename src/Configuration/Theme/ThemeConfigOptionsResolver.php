@@ -122,19 +122,18 @@ class ThemeConfigOptionsResolver extends Nette\Object
 
 	private function setNormalizers()
 	{
-		$this->resolver->setNormalizers([
-			TCO::RESOURCES => function (Options $options, $resources) {
-				$absolutizedResources = [];
-				foreach ($resources as $key => $resource) {
-					$key = $options['templatesPath'] . '/' . $key;
-					$absolutizedResources[$key] = $resource;
-				}
-				return $absolutizedResources;
-			},
-			TCO::TEMPLATES => function (Options $options, $value) {
-				return $this->makeTemplatePathsAbsolute($value, $options);
+		$this->resolver->setNormalizer(TCO::TEMPLATES, function (Options $options, $value) {
+			return $this->makeTemplatePathsAbsolute($value, $options);
+		});
+
+		$this->resolver->setNormalizer(TCO::RESOURCES, function (Options $options, $resources) {
+			$absolutizedResources = [];
+			foreach ($resources as $key => $resource) {
+				$key = $options['templatesPath'] . '/' . $key;
+				$absolutizedResources[$key] = $resource;
 			}
-		]);
+			return $absolutizedResources;
+		});
 	}
 
 
