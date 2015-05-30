@@ -23,10 +23,10 @@
 		"nette/di": "^2.3",
 		"nette/neon": "^2.3",
 		"nette/reflection": "^2.3",
-		"symfony/console": "^2.6",
-		"symfony/event-dispatcher": "^2.6",
-		"symfony/options-resolver": "^2.6",
-		"symfony/yaml": "^2.6",
+		"symfony/console": "^2.7",
+		"symfony/event-dispatcher": "^2.7",
+		"symfony/options-resolver": "^2.7",
+		"symfony/yaml": "^2.7",
 		"tracy/tracy": "^2.3"
 	},
 	"require-dev": {
