@@ -15,6 +15,7 @@ use ApiGen\Templating\Filters\Filters;
 use Latte\Engine;
 use Nette\DI\CompilerExtension;
 
+
 class ApiGenExtension extends CompilerExtension
 {
 
