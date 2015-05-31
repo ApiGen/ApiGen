@@ -15,6 +15,7 @@
 		"andrewsville/php-token-reflection": "^1.4",
 		"apigen/theme-bootstrap": "1.1.*",
 		"apigen/theme-default": "1.0.*",
+		"herrera-io/phar-update": "~2.0",
 		"kukulich/fshl": "~2.1",
 		"latte/latte": "^2.3",
 		"michelf/php-markdown": "~1.4",
@@ -29,7 +30,8 @@
 		"tracy/tracy": "^2.3"
 	},
 	"require-dev": {
-		"mockery/mockery": "~0.9"
+		"mockery/mockery": "~0.9",
+		"herrera-io/box": "~1.6"
 	},
 	"autoload": {
 		"psr-4": {
