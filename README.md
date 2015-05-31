@@ -12,47 +12,44 @@ Just look at [Doctrine ORM API](http://www.doctrine-project.org/api/orm/2.4/).
 
 ## Requirements
 
-- PHP 5.5
+- PHP 5.4
 
 
 ## Install
 
-The best way to install ApiGen is via composer:
+### 1. As a PHAR
+
+1. Download [ApiGen](http://apigen.org/apigen.phar)
+
+2. Run ApiGen with source and destination options:
 
 ```sh
-composer require apigen/apigen --dev
+php apigen.phar generate -s src -d ../my-project-api
 ```
 
-Installation via `create-project` is also possible.
-
-
-## Usage
-
-Run ApiGen with source and destination options:
-
-```sh
-php bin/apigen generate -s src -d ../my-project-api
-```
-
-To omit cli options just create `apigen.yaml` (or `apigen.neon`) file in your project.
-`*.dist` versions are also supported.
+To omit cli options just create `apigen.yaml` or `apigen.neon` file in your project.
 
 ```yaml
 source:
-	- src
-	- vendor/some/package
+    - src
 
 destination: ../my-project-api
 ```
 
+For global installation, see [documentation](https://github.com/ApiGen/ApiGen/wiki#installation).
+
+
+### 2. Using Composer
+
+```sh
+composer require apigen/apigen --dev
+```
 
 Then run with options as above:
 
 ```sh
 php vendor/bin/apigen generate -s src -d ../my/project-api
 ```
-
-That's it!
 
 
 ## Options
