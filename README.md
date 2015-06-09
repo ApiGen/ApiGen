@@ -54,7 +54,7 @@ php vendor/bin/apigen generate -s src -d ../my/project-api
 
 ## Options
 
-To see all available options with it's description and default values, just run:
+To see all available options with its description and default values, just run:
 
 ```sh
 apigen generate --help
