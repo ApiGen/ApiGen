@@ -17,5 +17,5 @@ interface VersionInterface
      *
      * @return string
      */
-    function getVersion();
+    public function getVersion();
 }

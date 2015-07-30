@@ -16,11 +16,11 @@ interface InNamespaceInterface
      * @deprecated To be removed with ApiGen\ElementParser
      * @return string
      */
-    function getDeclaringClassName();
+    public function getDeclaringClassName();
 
 
     /**
      * @return string[]
      */
-    function getNamespaceAliases();
+    public function getNamespaceAliases();
 }

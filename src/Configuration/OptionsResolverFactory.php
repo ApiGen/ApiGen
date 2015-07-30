@@ -17,5 +17,5 @@ interface OptionsResolverFactory
     /**
      * @return OptionsResolver
      */
-    function create();
+    public function create();
 }

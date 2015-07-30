@@ -15,5 +15,5 @@ interface TemplateGeneratorInterface
     /**
      * Generate template to file
      */
-    function generate();
+    public function generate();
 }

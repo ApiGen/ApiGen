@@ -17,5 +17,5 @@ interface TemplateDecoratorInterface
     /**
      * @return TemplateInterface
      */
-    function decorate(TemplateInterface $template);
+    public function decorate(TemplateInterface $template);
 }

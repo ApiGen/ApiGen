@@ -15,11 +15,11 @@ interface ProgressBarFacadeInterface
     /**
      * @param int $maximum
      */
-    function init($maximum);
+    public function init($maximum);
 
 
     /**
      * @param int $step
      */
-    function advance($step = 1);
+    public function advance($step = 1);
 }

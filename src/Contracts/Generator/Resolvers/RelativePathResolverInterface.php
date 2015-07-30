@@ -16,5 +16,5 @@ interface RelativePathResolverInterface
      * @param string $file
      * @return string
      */
-    function getRelativePath($file);
+    public function getRelativePath($file);
 }

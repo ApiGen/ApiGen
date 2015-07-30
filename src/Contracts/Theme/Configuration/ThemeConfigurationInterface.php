@@ -30,13 +30,13 @@ interface ThemeConfigurationInterface
      *
      * @return string
      */
-    function getName();
+    public function getName();
 
 
     /**
      * @return bool
      */
-    function shouldElementDetailsCollapse();
+    public function shouldElementDetailsCollapse();
 
 
     /**
@@ -44,7 +44,7 @@ interface ThemeConfigurationInterface
      *
      * @return array {[ absoluteSource => relativeDestination ]}
      */
-    function getResources();
+    public function getResources();
 
 
     /**
@@ -52,7 +52,7 @@ interface ThemeConfigurationInterface
      *
      * @return string
      */
-    function getTemplatesPath();
+    public function getTemplatesPath();
 
 
     /**
@@ -60,7 +60,7 @@ interface ThemeConfigurationInterface
      *
      * @return string
      */
-    function getElementsOrder();
+    public function getElementsOrder();
 
 
     /**
@@ -68,7 +68,7 @@ interface ThemeConfigurationInterface
      *
      * @return string
      */
-    function getOverviewTemplate();
+    public function getOverviewTemplate();
 
 
     /**
@@ -76,7 +76,7 @@ interface ThemeConfigurationInterface
      *
      * @return string
      */
-    function getOverviewDestination();
+    public function getOverviewDestination();
 
 
     /**
@@ -84,7 +84,7 @@ interface ThemeConfigurationInterface
      *
         * @return string
      */
-    function getCombinedTemplate();
+    public function getCombinedTemplate();
 
 
     /**
@@ -92,7 +92,7 @@ interface ThemeConfigurationInterface
      *
      * @return string
      */
-    function getCombinedDestination();
+    public function getCombinedDestination();
 
 
     /**
@@ -100,7 +100,7 @@ interface ThemeConfigurationInterface
      *
      * @return string
      */
-    function getElementListTemplate();
+    public function getElementListTemplate();
 
 
     /**
@@ -108,7 +108,7 @@ interface ThemeConfigurationInterface
      *
      * @return string
      */
-    function getElementListDestination();
+    public function getElementListDestination();
 
 
     /**
@@ -116,7 +116,7 @@ interface ThemeConfigurationInterface
      *
      * @return string
      */
-    function getE404Template();
+    public function getE404Template();
 
 
     /**
@@ -124,7 +124,7 @@ interface ThemeConfigurationInterface
      *
      * @return string
      */
-    function getE404Destination();
+    public function getE404Destination();
 
 
     /**
@@ -132,7 +132,7 @@ interface ThemeConfigurationInterface
      *
      * @return string
      */
-    function getPackageTemplate();
+    public function getPackageTemplate();
 
 
     /**
@@ -140,7 +140,7 @@ interface ThemeConfigurationInterface
      *
      * @return string
      */
-    function getPackageDestination();
+    public function getPackageDestination();
 
 
     /**
@@ -148,7 +148,7 @@ interface ThemeConfigurationInterface
      *
      * @return string
      */
-    function getNamespaceTemplate();
+    public function getNamespaceTemplate();
 
 
     /**
@@ -156,7 +156,7 @@ interface ThemeConfigurationInterface
      *
      * @return string
      */
-    function getNamespaceDestination();
+    public function getNamespaceDestination();
 
 
     /**
@@ -164,7 +164,7 @@ interface ThemeConfigurationInterface
      *
      * @return string
      */
-    function getClassTemplate();
+    public function getClassTemplate();
 
 
     /**
@@ -172,7 +172,7 @@ interface ThemeConfigurationInterface
      *
      * @return string
      */
-    function getClassDestination();
+    public function getClassDestination();
 
 
     /**
@@ -180,7 +180,7 @@ interface ThemeConfigurationInterface
      *
      * @return string
      */
-    function getConstantTemplate();
+    public function getConstantTemplate();
 
 
     /**
@@ -188,7 +188,7 @@ interface ThemeConfigurationInterface
      *
      * @return string
      */
-    function getConstantDestination();
+    public function getConstantDestination();
 
 
     /**
@@ -196,7 +196,7 @@ interface ThemeConfigurationInterface
      *
      * @return string
      */
-    function getFunctionTemplate();
+    public function getFunctionTemplate();
 
 
     /**
@@ -204,7 +204,7 @@ interface ThemeConfigurationInterface
      *
      * @return string
      */
-    function getFunctionDestination();
+    public function getFunctionDestination();
 
 
     /**
@@ -212,7 +212,7 @@ interface ThemeConfigurationInterface
      *
      * @return string
      */
-    function getAnnotationGroupTemplate();
+    public function getAnnotationGroupTemplate();
 
 
     /**
@@ -220,7 +220,7 @@ interface ThemeConfigurationInterface
      *
      * @return string
      */
-    function getAnnotationGroupDestination();
+    public function getAnnotationGroupDestination();
 
 
     /**
@@ -228,7 +228,7 @@ interface ThemeConfigurationInterface
      *
      * @return string
      */
-    function getSourceTemplate();
+    public function getSourceTemplate();
 
 
     /**
@@ -236,7 +236,7 @@ interface ThemeConfigurationInterface
      *
      * @return string
      */
-    function getSourceDestination();
+    public function getSourceDestination();
 
 
     /**
@@ -244,7 +244,7 @@ interface ThemeConfigurationInterface
      *
      * @return string
      */
-    function getTreeTemplate();
+    public function getTreeTemplate();
 
 
     /**
@@ -252,7 +252,7 @@ interface ThemeConfigurationInterface
      *
      * @return string
      */
-    function getTreeDestination();
+    public function getTreeDestination();
 
 
     /**
@@ -260,7 +260,7 @@ interface ThemeConfigurationInterface
      *
      * @return string
      */
-    function getSitemapTemplate();
+    public function getSitemapTemplate();
 
 
     /**
@@ -268,7 +268,7 @@ interface ThemeConfigurationInterface
      *
      * @return string
      */
-    function getSitemapDestination();
+    public function getSitemapDestination();
 
 
     /**
@@ -276,7 +276,7 @@ interface ThemeConfigurationInterface
      *
      * @return string
      */
-    function getOpensearchTemplate();
+    public function getOpensearchTemplate();
 
 
     /**
@@ -284,7 +284,7 @@ interface ThemeConfigurationInterface
      *
      * @return string
      */
-    function getOpensearchDestination();
+    public function getOpensearchDestination();
 
 
     /**
@@ -292,12 +292,12 @@ interface ThemeConfigurationInterface
      *
      * @return string
      */
-    function getRobotsTemplate();
+    public function getRobotsTemplate();
 
 
     /**
      * Relative path to destination file, that can be opened in browser (*.html).
      * @return string
      */
-    function getRobotsDestination();
+    public function getRobotsDestination();
 }

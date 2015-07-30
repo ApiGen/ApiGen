@@ -15,5 +15,5 @@ interface GroupSorterInterface
     /**
      * @return array
      */
-    function sort(array $groups);
+    public function sort(array $groups);
 }

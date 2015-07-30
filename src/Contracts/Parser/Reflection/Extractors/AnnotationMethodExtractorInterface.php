@@ -18,5 +18,5 @@ interface AnnotationMethodExtractorInterface
     /**
      * @return MagicMethodReflectionInterface[]
      */
-    function extractFromReflection(ClassReflectionInterface $classReflection);
+    public function extractFromReflection(ClassReflectionInterface $classReflection);
 }

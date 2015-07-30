@@ -17,11 +17,11 @@ interface EventDispatcherInterface
     /**
      * Dispatches an event to all registered listeners.
      */
-    function dispatch(EventInterface $event);
+    public function dispatch(EventInterface $event);
 
 
     /**
      * Adds an event subscriber.
      */
-    function addSubscriber(EventSubscriberInterface $eventSubscriber);
+    public function addSubscriber(EventSubscriberInterface $eventSubscriber);
 }

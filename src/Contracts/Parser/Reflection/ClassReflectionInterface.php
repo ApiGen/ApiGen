@@ -20,395 +20,395 @@ interface ClassReflectionInterface extends ElementReflectionInterface, LinedInte
     /**
      * @return bool
      */
-    function isDocumented();
+    public function isDocumented();
 
 
     /**
      * @return bool
      */
-    function isValid();
+    public function isValid();
 
 
     /**
      * @return ClassReflectionInterface|NULL
      */
-    function getParentClass();
+    public function getParentClass();
 
 
     /**
      * @return string
      */
-    function getParentClassName();
+    public function getParentClassName();
 
 
     /**
      * @return ClassReflectionInterface[]
      */
-    function getParentClasses();
+    public function getParentClasses();
 
 
     /**
      * @return string[]
      */
-    function getParentClassNameList();
+    public function getParentClassNameList();
 
 
     /**
      * @return ClassReflectionInterface[]
      */
-    function getDirectSubClasses();
+    public function getDirectSubClasses();
 
 
     /**
      * @return ClassReflectionInterface[]
      */
-    function getIndirectSubClasses();
+    public function getIndirectSubClasses();
 
 
     /**
      * @return ClassReflectionInterface[]
      */
-    function getDirectImplementers();
+    public function getDirectImplementers();
 
 
     /**
      * @return ClassReflectionInterface[]
      */
-    function getIndirectImplementers();
+    public function getIndirectImplementers();
 
 
     /**
      * @return ClassReflectionInterface[]
      */
-    function getDirectUsers();
+    public function getDirectUsers();
 
 
     /**
      * @return ClassReflectionInterface[]
      */
-    function getIndirectUsers();
+    public function getIndirectUsers();
 
 
     /**
      * @param string $name
      * @return bool
      */
-    function implementsInterface($name);
+    public function implementsInterface($name);
 
 
     /**
      * @return ClassReflectionInterface[]
      */
-    function getInterfaces();
+    public function getInterfaces();
 
 
     /**
      * @return ClassReflectionInterface[]
      */
-    function getOwnInterfaces();
+    public function getOwnInterfaces();
 
 
     /**
      * @return string[]
      */
-    function getOwnInterfaceNames();
+    public function getOwnInterfaceNames();
 
 
     /**
      * @return MethodReflectionInterface[]
      */
-    function getMethods();
+    public function getMethods();
 
 
     /**
      * @return MethodReflectionInterface[]
      */
-    function getOwnMethods();
+    public function getOwnMethods();
 
 
     /**
      * @return array {[ className => MethodReflectionInterface[] ]}
      */
-    function getInheritedMethods();
+    public function getInheritedMethods();
 
 
     /**
      * @return array {[ className => MagicMethodReflectionInterface[] ]}
      */
-    function getInheritedMagicMethods();
+    public function getInheritedMagicMethods();
 
 
     /**
      * @return MethodReflectionInterface[]
      */
-    function getUsedMethods();
+    public function getUsedMethods();
 
 
     /**
      * @return MagicMethodReflectionInterface[]
      */
-    function getUsedMagicMethods();
+    public function getUsedMagicMethods();
 
 
     /**
      * @return MethodReflectionInterface[]
      */
-    function getTraitMethods();
+    public function getTraitMethods();
 
 
     /**
      * @return MagicMethodReflectionInterface[]
      */
-    function getOwnMagicMethods();
+    public function getOwnMagicMethods();
 
 
     /**
      * @param string $name
      * @return MethodReflectionInterface
      */
-    function getMethod($name);
+    public function getMethod($name);
 
 
     /**
      * @param string $name
      * @return bool
      */
-    function hasMethod($name);
+    public function hasMethod($name);
 
 
     /**
      * @return ClassConstantReflectionInterface[]
      */
-    function getConstants();
+    public function getConstants();
 
 
     /**
      * @return ClassConstantReflectionInterface[]
      */
-    function getOwnConstants();
+    public function getOwnConstants();
 
 
     /**
      * @return ClassConstantReflectionInterface[]
      */
-    function getInheritedConstants();
+    public function getInheritedConstants();
 
 
     /**
      * @param string $name
      * @return bool
      */
-    function hasConstant($name);
+    public function hasConstant($name);
 
 
     /**
      * @param string $name
      * @return bool
      */
-    function hasOwnConstant($name);
+    public function hasOwnConstant($name);
 
 
     /**
      * @param string $name
      * @return ClassConstantReflectionInterface
      */
-    function getConstant($name);
+    public function getConstant($name);
 
 
     /**
      * @param string $name
      * @return bool
      */
-    function getOwnConstant($name);
+    public function getOwnConstant($name);
 
 
     /**
      * @param string $name
      * @return ClassConstantReflectionInterface
      */
-    function getConstantReflection($name);
+    public function getConstantReflection($name);
 
 
     /**
      * @return string
      */
-    function getDocComment();
+    public function getDocComment();
 
 
     /**
      * @return bool
      */
-    function isVisibilityLevelPublic();
+    public function isVisibilityLevelPublic();
 
 
     /**
      * @return int
      */
-    function getVisibilityLevel();
+    public function getVisibilityLevel();
 
 
     /**
      * @return ReflectionFactoryInterface
      */
-    function getReflectionFactory();
+    public function getReflectionFactory();
 
 
     /**
      * @return ClassReflectionInterface[]|string[]
      */
-    function getTraits();
+    public function getTraits();
 
 
     /**
      * @return ClassReflectionInterface[]|string[]
      */
-    function getOwnTraits();
+    public function getOwnTraits();
 
 
     /**
      * @return string[]
      */
-    function getTraitNames();
+    public function getTraitNames();
 
 
     /**
      * @return string[]
      */
-    function getOwnTraitNames();
+    public function getOwnTraitNames();
 
 
     /**
      * @return string[]
      */
-    function getTraitAliases();
+    public function getTraitAliases();
 
 
     /**
      * @return PropertyReflectionInterface[]
      */
-    function getProperties();
+    public function getProperties();
 
 
     /**
      * @return PropertyReflectionInterface[]
      */
-    function getOwnProperties();
+    public function getOwnProperties();
 
 
     /**
      * @return array {[ className => PropertyReflectionInterface[] ]}
      */
-    function getInheritedProperties();
+    public function getInheritedProperties();
 
 
     /**
      * @return MagicPropertyReflectionInterface[]
      */
-    function getInheritedMagicProperties();
+    public function getInheritedMagicProperties();
 
 
     /**
      * @return MagicPropertyReflectionInterface[]
      */
-    function getMagicProperties();
+    public function getMagicProperties();
 
 
     /**
      * @return MagicPropertyReflectionInterface[]
      */
-    function getOwnMagicProperties();
+    public function getOwnMagicProperties();
 
 
     /**
      * @return PropertyReflectionInterface[]
      */
-    function getTraitProperties();
+    public function getTraitProperties();
 
 
     /**
      * @return array {[ traitName => PropertyReflectionInterface[] ]}
      */
-    function getUsedProperties();
+    public function getUsedProperties();
 
 
     /**
      * @return array {[ traitName => MagicPropertyReflectionInterface[] ]}
      */
-    function getUsedMagicProperties();
+    public function getUsedMagicProperties();
 
 
     /**
      * @param string $name
      * @return PropertyReflectionInterface
      */
-    function getProperty($name);
+    public function getProperty($name);
 
 
     /**
      * @param string $name
      * @return bool
      */
-    function hasProperty($name);
+    public function hasProperty($name);
 
 
     /**
      * @param string $name
      * @return bool
      */
-    function usesTrait($name);
+    public function usesTrait($name);
 
 
     /**
      * @return ClassReflectionInterface[]
      */
-    function getParsedClasses();
+    public function getParsedClasses();
 
 
     /**
      * @return int
      */
-    function getStartPosition();
+    public function getStartPosition();
 
 
     /**
      * @return int
      */
-    function getEndPosition();
+    public function getEndPosition();
 
 
     /**
      * @return bool
      */
-    function isAbstract();
+    public function isAbstract();
 
 
     /**
      * @return bool
      */
-    function isFinal();
+    public function isFinal();
 
 
     /**
      * @return bool
      */
-    function isInterface();
+    public function isInterface();
 
 
     /**
      * @return bool
      */
-    function isException();
+    public function isException();
 
 
     /**
      * @return bool
      */
-    function isTrait();
+    public function isTrait();
 
 
     /**
      * @param string $class
      * @return bool
      */
-    function isSubclassOf($class);
+    public function isSubclassOf($class);
 }

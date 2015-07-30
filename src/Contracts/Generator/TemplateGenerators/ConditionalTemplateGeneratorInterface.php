@@ -15,5 +15,5 @@ interface ConditionalTemplateGeneratorInterface extends TemplateGeneratorInterfa
     /**
      * @return bool
      */
-    function isAllowed();
+    public function isAllowed();
 }

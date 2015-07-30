@@ -15,12 +15,12 @@ interface FileReaderManagerInterface
     /**
      * @param FileReaderInterface $fileReader
      */
-    function addFileReader(FileReaderInterface $fileReader);
+    public function addFileReader(FileReaderInterface $fileReader);
 
 
     /**
      * @param string $path
      * @return array
      */
-    function read($path);
+    public function read($path);
 }

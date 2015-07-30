@@ -17,7 +17,7 @@ interface TemplateInterface
      *
      * @param string $file
      */
-    function save($file);
+    public function save($file);
 
 
     /**
@@ -25,7 +25,7 @@ interface TemplateInterface
      *
      * @param string $file
      */
-    function setFile($file);
+    public function setFile($file);
 
 
     /**
@@ -33,11 +33,11 @@ interface TemplateInterface
      *
      * @return array
      */
-    function getParameters();
+    public function getParameters();
 
 
     /**
      * Set parameters.
      */
-    function setParameters(array $parameters);
+    public function setParameters(array $parameters);
 }

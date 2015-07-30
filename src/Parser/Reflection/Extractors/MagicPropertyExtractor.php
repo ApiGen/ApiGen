@@ -90,8 +90,11 @@ class MagicPropertyExtractor implements MagicPropertyExtractorInterface
      * @param MagicPropertyReflectionInterface $propertyReflection
      * @return bool
      */
-    private function canBeExtracted($isDocumented, array $properties, MagicPropertyReflectionInterface $propertyReflection)
-    {
+    private function canBeExtracted(
+        $isDocumented,
+        array $properties,
+        MagicPropertyReflectionInterface $propertyReflection
+    ) {
         if (isset($properties[$propertyReflection->getName()])) {
             return false;
         }

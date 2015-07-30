@@ -15,5 +15,5 @@ interface ReaderInterface
     /**
      * @return array
      */
-    function read();
+    public function read();
 }

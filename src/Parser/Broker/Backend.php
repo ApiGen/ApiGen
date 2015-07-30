@@ -164,7 +164,8 @@ class Backend extends Broker\Backend\Memory implements BackendInterface
 
         if ($parameterClass->isInternal()) {
             $this->allClasses[self::INTERNAL_CLASSES][$name] = $parameterClass;
-            foreach (array_merge($parameterClass->getInterfaces(), $parameterClass->getParentClasses()) as $parentClass) {
+            $parentClasses = array_merge($parameterClass->getInterfaces(), $parameterClass->getParentClasses());
+            foreach ($parentClasses as $parentClass) {
                 if (! isset($this->allClasses[self::INTERNAL_CLASSES][$parentName = $parentClass->getName()])) {
                     $this->allClasses[self::INTERNAL_CLASSES][$parentName] = $parentClass;
                 }

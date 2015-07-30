@@ -15,11 +15,11 @@ interface ProgressBarInterface
     /**
      * @param int $maximum
      */
-    function init($maximum = 1);
+    public function init($maximum = 1);
 
 
     /**
      * @param int $increment
      */
-    function increment($steps = 1);
+    public function increment($steps = 1);
 }

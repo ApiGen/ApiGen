@@ -15,5 +15,5 @@ interface FileProcessingExceptionInterface
     /**
      * @return \Exception[]
      */
-    function getReasons();
+    public function getReasons();
 }

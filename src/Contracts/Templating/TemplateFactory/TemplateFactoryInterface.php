@@ -17,5 +17,5 @@ interface TemplateFactoryInterface
     /**
      * @return TemplateInterface
      */
-    function create();
+    public function create();
 }

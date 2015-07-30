@@ -17,7 +17,7 @@ interface ReflectionInterface
      *
      * @return string
      */
-    function getName();
+    public function getName();
 
 
     /**
@@ -25,7 +25,7 @@ interface ReflectionInterface
      *
      * @return bool
      */
-    function isInternal();
+    public function isInternal();
 
 
     /**
@@ -33,7 +33,7 @@ interface ReflectionInterface
      *
      * @return bool
      */
-    function isTokenized();
+    public function isTokenized();
 
 
     /**
@@ -41,5 +41,5 @@ interface ReflectionInterface
      *
      * @return string
      */
-    function getPrettyName();
+    public function getPrettyName();
 }

@@ -375,7 +375,10 @@ class GenerateCommand extends AbstractCommand
     private function warnAboutDeprecatedOptions(array $options)
     {
         if (isset($options['charset']) && $options['charset']) {
-            $this->io->writeln('<warning>You are using the deprecated option "charset". UTF-8 is default now.</warning>');
+            $this->io->writeln(
+                '<warning>You are using the deprecated option "charset". ' .
+                'UTF-8 is default now.</warning>'
+            );
         }
 
         if (isset($options['deprecated']) && $options['deprecated']) {

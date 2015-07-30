@@ -65,13 +65,13 @@ class ReflectionBaseTest extends PHPUnit_Framework_TestCase
 
     public function testGetStartLine()
     {
-        $this->assertSame(12, $this->reflectionClass->getStartLine());
+        $this->assertSame(11, $this->reflectionClass->getStartLine());
     }
 
 
     public function testGetEndLine()
     {
-        $this->assertSame(43, $this->reflectionClass->getEndLine());
+        $this->assertSame(41, $this->reflectionClass->getEndLine());
     }
 
 

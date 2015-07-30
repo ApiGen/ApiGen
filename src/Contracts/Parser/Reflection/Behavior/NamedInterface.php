@@ -15,12 +15,12 @@ interface NamedInterface
     /**
      * @return string
      */
-    function getName();
+    public function getName();
 
 
     /**
      * @return string
      * @todo dunno if this belongs here
      */
-    function getPrettyName();
+    public function getPrettyName();
 }

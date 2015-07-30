@@ -18,5 +18,5 @@ interface MagicMethodExtractorInterface
     /**
      * @return MagicMethodReflectionInterface[]
      */
-    function extractFromClass(ClassReflectionInterface $classReflection);
+    public function extractFromClass(ClassReflectionInterface $classReflection);
 }

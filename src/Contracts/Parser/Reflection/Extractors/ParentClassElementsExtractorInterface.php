@@ -19,17 +19,17 @@ interface ParentClassElementsExtractorInterface
     /**
      * @return ClassConstantReflectionInterface[]
      */
-    function getInheritedConstants();
+    public function getInheritedConstants();
 
 
     /**
      * @return PropertyReflectionInterface[][]
      */
-    function getInheritedProperties();
+    public function getInheritedProperties();
 
 
     /**
      * @return MethodReflectionInterface[]
      */
-    function getInheritedMethods();
+    public function getInheritedMethods();
 }

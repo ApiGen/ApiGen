@@ -15,5 +15,5 @@ interface ThemeResourcesInterface
     /**
      * @param string $destination
      */
-    function copyToDestination($destination);
+    public function copyToDestination($destination);
 }

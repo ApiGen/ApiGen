@@ -12,7 +12,7 @@ namespace ApiGen\Parser\Reflection\Extractors;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\Extractors\ClassTraitElementsExtractorInterface;
 use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
-use TokenReflection;
+use TokenReflection\IReflection;
 
 class ClassTraitElementsExtractor implements ClassTraitElementsExtractorInterface
 {
@@ -23,12 +23,12 @@ class ClassTraitElementsExtractor implements ClassTraitElementsExtractorInterfac
     private $classReflection;
 
     /**
-     * @var TokenReflection\IReflection|ClassReflectionInterface
+     * @var \TokenReflection\IReflection|\ClassReflectionInterface
      */
     private $originalReflection;
 
 
-    public function __construct(ClassReflectionInterface $classReflection, TokenReflection\IReflection $originalReflection)
+    public function __construct(ClassReflectionInterface $classReflection, IReflection $originalReflection)
     {
         $this->classReflection = $classReflection;
         $this->originalReflection = $originalReflection;
@@ -146,16 +146,16 @@ class ClassTraitElementsExtractor implements ClassTraitElementsExtractorInterfac
     public function getUsedMethods()
     {
         $usedMethods = [];
-        foreach ($this->classReflection->getMethods() as $method) {
-            if ($method->getDeclaringTraitName() === null
-                || $method->getDeclaringTraitName() === $this->classReflection->getName()
+        foreach ($this->classReflection->getMethods() as $m) {
+            if ($m->getDeclaringTraitName() === null
+                || $m->getDeclaringTraitName() === $this->classReflection->getName()
             ) {
                 continue;
             }
 
-            $usedMethods[$method->getDeclaringTraitName()][$method->getName()]['method'] = $method;
-            if ($method->getOriginalName() !== null && $method->getOriginalName() !== $method->getName()) {
-                $usedMethods[$method->getDeclaringTraitName()][$method->getName()]['aliases'][$method->getName()] = $method;
+            $usedMethods[$m->getDeclaringTraitName()][$m->getName()]['method'] = $m;
+            if ($m->getOriginalName() !== null && $m->getOriginalName() !== $m->getName()) {
+                $usedMethods[$m->getDeclaringTraitName()][$m->getName()]['aliases'][$m->getName()] = $m;
             }
         }
         return $usedMethods;

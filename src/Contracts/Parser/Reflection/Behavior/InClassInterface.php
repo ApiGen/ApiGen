@@ -17,29 +17,29 @@ interface InClassInterface extends InNamespaceInterface
     /**
      * @return ClassReflectionInterface
      */
-    function getDeclaringClass();
+    public function getDeclaringClass();
 
 
     /**
      * @return string
      */
-    function getPackageName();
+    public function getPackageName();
 
 
     /**
      * @return string
      */
-    function getNamespaceName();
+    public function getNamespaceName();
 
 
     /**
      * @return array
      */
-    function getAnnotations();
+    public function getAnnotations();
 
 
     /**
      * @return string[]
      */
-    function getNamespaceAliases();
+    public function getNamespaceAliases();
 }

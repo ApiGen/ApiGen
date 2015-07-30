@@ -15,5 +15,5 @@ interface InputOptionsProviderInterface
     /**
      * @return array
      */
-    function getOptions();
+    public function getOptions();
 }

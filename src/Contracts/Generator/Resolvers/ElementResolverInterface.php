@@ -22,7 +22,7 @@ interface ElementResolverInterface
      * @param string $namespace
      * @return ClassReflectionInterface|bool
      */
-    function getClass($className, $namespace = '');
+    public function getClass($className, $namespace = '');
 
 
     /**
@@ -30,7 +30,7 @@ interface ElementResolverInterface
      * @param string $namespace
      * @return ConstantReflectionInterface|bool
      */
-    function getConstant($className, $namespace = '');
+    public function getConstant($className, $namespace = '');
 
 
     /**
@@ -38,7 +38,7 @@ interface ElementResolverInterface
      * @param string $namespace
      * @return FunctionReflectionInterface|NULL
      */
-    function getFunction($name, $namespace = '');
+    public function getFunction($name, $namespace = '');
 
 
     /**
@@ -47,5 +47,5 @@ interface ElementResolverInterface
      * @param string $expectedName
      * @return ElementReflectionInterface|bool
      */
-    function resolveElement($definition, $context, &$expectedName = null);
+    public function resolveElement($definition, $context, &$expectedName = null);
 }

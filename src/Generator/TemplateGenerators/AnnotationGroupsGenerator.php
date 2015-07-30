@@ -50,7 +50,10 @@ class AnnotationGroupsGenerator implements TemplateGeneratorInterface
     {
         $annotations = $this->configuration->getOption('annotationGroups');
         foreach ($annotations as $annotation) {
-            $template = $this->templateFactory->createNamedForElement(TemplateFactory::ELEMENT_ANNOTATION_GROUP, $annotation);
+            $template = $this->templateFactory->createNamedForElement(
+                TemplateFactory::ELEMENT_ANNOTATION_GROUP,
+                $annotation
+            );
             $template = $this->setElementsWithAnnotationToTemplate($template, $annotation);
             $template->save();
         }

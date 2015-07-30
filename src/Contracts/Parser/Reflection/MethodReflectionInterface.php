@@ -23,47 +23,47 @@ interface MethodReflectionInterface extends
     /**
      * @return bool
      */
-    function isMagic();
+    public function isMagic();
 
 
     /**
      * @return bool
      */
-    function isAbstract();
+    public function isAbstract();
 
 
     /**
      * @return bool
      */
-    function isFinal();
+    public function isFinal();
 
 
     /**
      * @return bool
      */
-    function isStatic();
+    public function isStatic();
 
 
     /**
      * @return MethodReflectionInterface
      */
-    function getImplementedMethod();
+    public function getImplementedMethod();
 
 
     /**
      * @return MethodReflectionInterface
      */
-    function getOverriddenMethod();
+    public function getOverriddenMethod();
 
 
     /**
      * @return MethodReflectionInterface
      */
-    function getOriginal();
+    public function getOriginal();
 
 
     /**
      * @return string
      */
-    function getOriginalName();
+    public function getOriginalName();
 }

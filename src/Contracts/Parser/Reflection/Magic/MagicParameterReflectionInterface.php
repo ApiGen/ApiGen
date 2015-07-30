@@ -17,29 +17,29 @@ interface MagicParameterReflectionInterface extends ParameterReflectionInterface
     /**
      * @return string
      */
-    function getDocComment();
+    public function getDocComment();
 
 
     /**
      * @return int
      */
-    function getStartLine();
+    public function getStartLine();
 
 
     /**
      * @return int
      */
-    function getEndLine();
+    public function getEndLine();
 
 
     /**
      * @return string
      */
-    function getFileName();
+    public function getFileName();
 
 
     /**
      * @return bool
      */
-    function isTokenized();
+    public function isTokenized();
 }

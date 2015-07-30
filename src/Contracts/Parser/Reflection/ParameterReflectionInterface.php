@@ -17,107 +17,107 @@ interface ParameterReflectionInterface extends ReflectionInterface
     /**
      * @return string
      */
-    function getTypeHint();
+    public function getTypeHint();
 
 
     /**
      * @return string
      */
-    function getDescription();
+    public function getDescription();
 
 
     /**
      * @return string
      */
-    function getDefaultValueDefinition();
+    public function getDefaultValueDefinition();
 
 
     /**
      * @return bool
      */
-    function isDefaultValueAvailable();
+    public function isDefaultValueAvailable();
 
 
     /**
      * @return int
      */
-    function getPosition();
+    public function getPosition();
 
 
     /**
      * @return bool
      */
-    function isArray();
+    public function isArray();
 
 
     /**
      * @return bool
      */
-    function isCallable();
+    public function isCallable();
 
 
     /**
      * @return ClassReflectionInterface|NULL
      */
-    function getClass();
+    public function getClass();
 
 
     /**
      * @return string|NULL
      */
-    function getClassName();
+    public function getClassName();
 
 
     /**
      * @return bool
      */
-    function allowsNull();
+    public function allowsNull();
 
 
     /**
      * @return bool
      */
-    function isOptional();
+    public function isOptional();
 
 
     /**
      * @return bool
      */
-    function isPassedByReference();
+    public function isPassedByReference();
 
 
     /**
      * @return bool
      */
-    function canBePassedByValue();
+    public function canBePassedByValue();
 
 
     /**
      * @return AbstractFunctionMethodReflectionInterface
      */
-    function getDeclaringFunction();
+    public function getDeclaringFunction();
 
 
     /**
      * @return string
      */
-    function getDeclaringFunctionName();
+    public function getDeclaringFunctionName();
 
 
     /**
      * @return ClassReflectionInterface|NULL
      */
-    function getDeclaringClass();
+    public function getDeclaringClass();
 
 
     /**
      * @return string
      */
-    function getDeclaringClassName();
+    public function getDeclaringClassName();
 
 
     /**
      * @return bool
      */
-    function isUnlimited();
+    public function isUnlimited();
 }

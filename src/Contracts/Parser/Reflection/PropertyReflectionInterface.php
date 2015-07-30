@@ -24,61 +24,61 @@ interface PropertyReflectionInterface extends
     /**
      * @return bool
      */
-    function isValid();
+    public function isValid();
 
 
     /**
      * @return bool
      */
-    function isDefault();
+    public function isDefault();
 
 
     /**
      * @return bool
      */
-    function isStatic();
+    public function isStatic();
 
 
     /**
      * @return mixed
      */
-    function getDefaultValue();
+    public function getDefaultValue();
 
 
     /**
      * @return string
      */
-    function getTypeHint();
+    public function getTypeHint();
 
 
     /**
      * @return bool
      */
-    function isMagic();
+    public function isMagic();
 
 
     /**
      * @return bool
      */
-    function isReadOnly();
+    public function isReadOnly();
 
 
     /**
      * @return bool
      */
-    function isWriteOnly();
-
-
-    /**
-     * @param string $name
-     * @return bool
-     */
-    function hasAnnotation($name);
+    public function isWriteOnly();
 
 
     /**
      * @param string $name
      * @return bool
      */
-    function getAnnotation($name);
+    public function hasAnnotation($name);
+
+
+    /**
+     * @param string $name
+     * @return bool
+     */
+    public function getAnnotation($name);
 }

@@ -15,5 +15,5 @@ interface AutocompleteElementsInterface
     /**
      * @return array
      */
-    function getElements();
+    public function getElements();
 }

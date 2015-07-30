@@ -15,11 +15,11 @@ interface LinedInterface
     /**
      * @return int
      */
-    function getStartLine();
+    public function getStartLine();
 
 
     /**
      * @return int
      */
-    function getEndLine();
+    public function getEndLine();
 }

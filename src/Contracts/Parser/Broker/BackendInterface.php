@@ -22,7 +22,7 @@ interface BackendInterface
      * @param int $type Returned class types (multiple values may be OR-ed).
      * @return ClassReflectionInterface[]
      */
-    function getClasses($type);
+    public function getClasses($type);
 
 
     /**
@@ -30,7 +30,7 @@ interface BackendInterface
      *
      * @return ConstantReflectionInterface[]
      */
-    function getConstants();
+    public function getConstants();
 
 
     /**
@@ -38,5 +38,5 @@ interface BackendInterface
      *
      * @return FunctionReflectionInterface[]
      */
-    function getFunctions();
+    public function getFunctions();
 }

@@ -21,49 +21,49 @@ interface TemplateRouterInterface
      * @param string $name
      * @return string
      */
-    function getNamespaceRoute($name);
+    public function getNamespaceRoute($name);
 
 
     /**
      * @param string $name
      * @return string
      */
-    function getPackageRoute($name);
+    public function getPackageRoute($name);
 
 
     /**
      * @return string
      */
-    function getClassRoute(ClassReflectionInterface $classReflection);
+    public function getClassRoute(ClassReflectionInterface $classReflection);
 
 
     /**
      * @return string
      */
-    function getConstantRoute(ConstantReflectionInterface $constantReflection);
+    public function getConstantRoute(ConstantReflectionInterface $constantReflection);
 
 
     /**
      * @return string
      */
-    function getFunctionRoute(FunctionReflectionInterface $functionReflection);
+    public function getFunctionRoute(FunctionReflectionInterface $functionReflection);
 
 
     /**
      * @param string $name
      * @return string
      */
-    function getAnnotationGroupRoute($name);
+    public function getAnnotationGroupRoute($name);
 
 
     /**
      * @return string
      */
-    function getSourceCodeRoute(NamedInterface $element);
+    public function getSourceCodeRoute(NamedInterface $element);
 
 
     /**
      * @return string
      */
-    function getSourceCodeRouteWithAnchor(NamedInterface $element);
+    public function getSourceCodeRouteWithAnchor(NamedInterface $element);
 }

@@ -25,17 +25,17 @@ interface ElementsInterface
     /**
      * @return string[]
      */
-    function getClassTypeList();
+    public function getClassTypeList();
 
 
     /**
      * @return string[]
      */
-    function getAll();
+    public function getAll();
 
 
     /**
      * @return array[]
      */
-    function getEmptyList();
+    public function getEmptyList();
 }

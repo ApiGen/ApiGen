@@ -15,5 +15,5 @@ interface EventSubscriberInterface
     /**
      * @return array {[ eventName => callback ]}
      */
-    function getSubscribedEvents();
+    public function getSubscribedEvents();
 }

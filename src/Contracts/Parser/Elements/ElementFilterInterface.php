@@ -18,7 +18,7 @@ interface ElementFilterInterface
      * @param ElementReflectionInterface[] $elements
      * @return ElementReflectionInterface[]
      */
-    function filterForMain(array $elements);
+    public function filterForMain(array $elements);
 
 
     /**
@@ -26,5 +26,5 @@ interface ElementFilterInterface
      * @param string $annotation
      * @return ElementReflectionInterface[]
      */
-    function filterByAnnotation(array $elements, $annotation);
+    public function filterByAnnotation(array $elements, $annotation);
 }

@@ -15,12 +15,12 @@ interface FileReaderInterface
     /**
      * @return string[]
      */
-    function getExtensions();
+    public function getExtensions();
 
 
     /**
      * @param string $path
      * @return array
      */
-    function read($path);
+    public function read($path);
 }

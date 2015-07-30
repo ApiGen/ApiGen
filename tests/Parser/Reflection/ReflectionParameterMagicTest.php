@@ -108,13 +108,13 @@ class ReflectionParameterMagicTest extends PHPUnit_Framework_TestCase
 
     public function testStartLine()
     {
-        $this->assertSame(17, $this->reflectionParameterMagic->getStartLine());
+        $this->assertSame(16, $this->reflectionParameterMagic->getStartLine());
     }
 
 
     public function testEndLine()
     {
-        $this->assertSame(17, $this->reflectionParameterMagic->getEndLine());
+        $this->assertSame(16, $this->reflectionParameterMagic->getEndLine());
     }
 
 

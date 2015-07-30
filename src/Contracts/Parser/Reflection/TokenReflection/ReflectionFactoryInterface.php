@@ -23,23 +23,23 @@ interface ReflectionFactoryInterface
      * @param object $tokenReflection
      * @return ClassReflectionInterface|ConstantReflectionInterface|MethodReflectionInterface
      */
-    function createFromReflection($tokenReflection);
+    public function createFromReflection($tokenReflection);
 
 
     /**
      * @return MagicMethodReflectionInterface
      */
-    function createMethodMagic(array $settings);
+    public function createMethodMagic(array $settings);
 
 
     /**
      * @return MagicParameterReflectionInterface
      */
-    function createParameterMagic(array $settings);
+    public function createParameterMagic(array $settings);
 
 
     /**
      * @return MagicPropertyReflectionInterface
      */
-    function createPropertyMagic(array $settings);
+    public function createPropertyMagic(array $settings);
 }

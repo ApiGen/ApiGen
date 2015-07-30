@@ -17,11 +17,11 @@ interface GeneratorQueueInterface
     /**
      * Adds template generator to the queue.
      */
-    function addToQueue(TemplateGeneratorInterface $templateGenerator);
+    public function addToQueue(TemplateGeneratorInterface $templateGenerator);
 
 
     /**
      * Run generator queue.
      */
-    function run();
+    public function run();
 }

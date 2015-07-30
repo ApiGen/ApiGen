@@ -15,23 +15,23 @@ interface ConfigurationInterface
     /**
      * @return array
      */
-    function resolveOptions(array $options);
+    public function resolveOptions(array $options);
 
 
     /**
      * @param string $name
      * @return mixed|NULL
      */
-    function getOption($name);
+    public function getOption($name);
 
 
     /**
      * @return array
      */
-    function getOptions();
+    public function getOptions();
 
 
-    function setOptions(array $options);
+    public function setOptions(array $options);
 
 
     /**
@@ -39,7 +39,7 @@ interface ConfigurationInterface
      *
      * @return int
      */
-    function getVisibilityLevel();
+    public function getVisibilityLevel();
 
 
     /**
@@ -47,7 +47,7 @@ interface ConfigurationInterface
      *
      * @return string
      */
-    function getMain();
+    public function getMain();
 
 
     /**
@@ -55,7 +55,7 @@ interface ConfigurationInterface
      *
      * @return bool
      */
-    function isPhpCoreDocumented();
+    public function isPhpCoreDocumented();
 
 
     /**
@@ -63,7 +63,7 @@ interface ConfigurationInterface
      *
      * @return bool
      */
-    function isInternalDocumented();
+    public function isInternalDocumented();
 
 
     /**
@@ -71,7 +71,7 @@ interface ConfigurationInterface
      *
      * @return bool
      */
-    function isDeprecatedDocumented();
+    public function isDeprecatedDocumented();
 
 
     /**
@@ -79,7 +79,7 @@ interface ConfigurationInterface
      *
      * @return bool
      */
-    function areNamespacesEnabled();
+    public function areNamespacesEnabled();
 
 
     /**
@@ -87,13 +87,13 @@ interface ConfigurationInterface
      *
      * @return bool
      */
-    function arePackagesEnabled();
+    public function arePackagesEnabled();
 
 
     /**
      * @return string
      */
-    function getZipFileName();
+    public function getZipFileName();
 
 
     /**
@@ -101,7 +101,7 @@ interface ConfigurationInterface
      *
      * @return string[]
      */
-    function getAnnotationGroups();
+    public function getAnnotationGroups();
 
 
     /**
@@ -109,19 +109,19 @@ interface ConfigurationInterface
      *
      * @return bool
      */
-    function isAvailableForDownload();
+    public function isAvailableForDownload();
 
 
     /**
      * @return bool
      */
-    function isTreeAllowed();
+    public function isTreeAllowed();
 
 
     /**
      * @return string
      */
-    function getDestination();
+    public function getDestination();
 
 
     /**
@@ -129,7 +129,7 @@ interface ConfigurationInterface
      *
      * @return string
      */
-    function getTitle();
+    public function getTitle();
 
 
     /**
@@ -137,25 +137,25 @@ interface ConfigurationInterface
      *
      * @var string
      */
-    function getBaseUrl();
+    public function getBaseUrl();
 
 
     /**
      * @return string
      */
-    function getGoogleCseId();
+    public function getGoogleCseId();
 
 
     /**
      * @return bool
      */
-    function shouldGenerateSourceCode();
+    public function shouldGenerateSourceCode();
 
 
     /**
      * @return string[]
      */
-    function getSource();
+    public function getSource();
 
 
     /**
@@ -163,7 +163,7 @@ interface ConfigurationInterface
      *
      * @return string[]
      */
-    function getExclude();
+    public function getExclude();
 
 
     /**
@@ -171,5 +171,5 @@ interface ConfigurationInterface
      *
      * @return string[]
      */
-    function getExtensions();
+    public function getExtensions();
 }

@@ -21,41 +21,41 @@ interface MagicMethodReflectionInterface extends MethodReflectionInterface
     /**
      * @return bool
      */
-    function isPublic();
+    public function isPublic();
 
 
     /**
      * @return bool
      */
-    function isProtected();
+    public function isProtected();
 
 
     /**
      * @return bool
      */
-    function isPrivate();
+    public function isPrivate();
 
 
     /**
      * @return MagicParameterReflectionInterface[]
      */
-    function getParameters();
+    public function getParameters();
 
 
     /**
      * @param MagicParameterReflectionInterface[] $parameters
      */
-    function setParameters(array $parameters);
+    public function setParameters(array $parameters);
 
 
     /**
      * @return string
      */
-    function getFileName();
+    public function getFileName();
 
 
     /**
      * @return bool
      */
-    function isTokenized();
+    public function isTokenized();
 }

@@ -15,18 +15,18 @@ interface AbstractFunctionMethodReflectionInterface extends ElementReflectionInt
     /**
      * @return bool
      */
-    function returnsReference();
+    public function returnsReference();
 
 
     /**
      * @return ParameterReflectionInterface[]
      */
-    function getParameters();
+    public function getParameters();
 
 
     /**
      * @param int|string $key
      * @return ParameterReflectionInterface
      */
-    function getParameter($key);
+    public function getParameter($key);
 }

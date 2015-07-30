@@ -18,5 +18,5 @@ interface MagicPropertyExtractorInterface
     /**
      * @return MagicPropertyReflectionInterface[]
      */
-    function extractFromClass(ClassReflectionInterface $reflectionClass);
+    public function extractFromClass(ClassReflectionInterface $reflectionClass);
 }

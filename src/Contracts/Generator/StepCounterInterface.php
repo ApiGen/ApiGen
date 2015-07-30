@@ -15,5 +15,5 @@ interface StepCounterInterface
     /**
      * @return int
      */
-    function getStepCount();
+    public function getStepCount();
 }

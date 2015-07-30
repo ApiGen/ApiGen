@@ -17,5 +17,5 @@ interface DefaultInputDefinitionFactoryInterface
     /**
      * @return InputDefinition
      */
-    function create();
+    public function create();
 }

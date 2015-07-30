@@ -15,5 +15,5 @@ interface FileValidatorInterface
     /**
      * @param string $path
      */
-    function validate($path);
+    public function validate($path);
 }

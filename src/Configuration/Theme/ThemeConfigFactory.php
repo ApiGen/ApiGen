@@ -16,5 +16,5 @@ interface ThemeConfigFactory
      * @param string $filePath
      * @return ThemeConfig
      */
-    function create($filePath);
+    public function create($filePath);
 }

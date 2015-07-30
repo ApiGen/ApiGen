@@ -19,37 +19,37 @@ interface ElementReflectionInterface extends NamedInterface
     /**
      * @return bool
      */
-    function isMain();
+    public function isMain();
 
 
     /**
      * @return bool
      */
-    function isValid();
+    public function isValid();
 
 
     /**
      * @return bool
      */
-    function isDocumented();
+    public function isDocumented();
 
 
     /**
      * @return bool
      */
-    function isDeprecated();
+    public function isDeprecated();
 
 
     /**
      * @return bool
      */
-    function inPackage();
+    public function inPackage();
 
 
     /**
      * @return string
      */
-    function getPackageName();
+    public function getPackageName();
 
 
     /**
@@ -58,19 +58,19 @@ interface ElementReflectionInterface extends NamedInterface
      *
      * @return string
      */
-    function getPseudoPackageName();
+    public function getPseudoPackageName();
 
 
     /**
      * @return bool
      */
-    function inNamespace();
+    public function inNamespace();
 
 
     /**
      * @return string
      */
-    function getNamespaceName();
+    public function getNamespaceName();
 
 
     /**
@@ -79,13 +79,13 @@ interface ElementReflectionInterface extends NamedInterface
      *
      * @return string
      */
-    function getPseudoNamespaceName();
+    public function getPseudoNamespaceName();
 
 
     /**
      * @return string[]
      */
-    function getNamespaceAliases();
+    public function getNamespaceAliases();
 
 
     /**
@@ -96,21 +96,21 @@ interface ElementReflectionInterface extends NamedInterface
      *
      * @return array
      */
-    function getAnnotations();
+    public function getAnnotations();
 
 
     /**
      * @param string $name
      * @return array
      */
-    function getAnnotation($name);
+    public function getAnnotation($name);
 
 
     /**
      * @param string $name
      * @return bool
      */
-    function hasAnnotation($name);
+    public function hasAnnotation($name);
 
 
     /**
@@ -118,31 +118,31 @@ interface ElementReflectionInterface extends NamedInterface
      * @param mixed $value
      * @return self
      */
-    function addAnnotation($name, $value);
+    public function addAnnotation($name, $value);
 
 
     /**
      * @return string
      */
-    function getShortDescription();
+    public function getShortDescription();
 
 
     /**
      * @return string
      */
-    function getLongDescription();
+    public function getLongDescription();
 
 
     /**
      * @return string|bool
      */
-    function getDocComment();
+    public function getDocComment();
 
 
     /**
      * @return string
      */
-    function getPrettyName();
+    public function getPrettyName();
 
 
     /**
@@ -150,35 +150,35 @@ interface ElementReflectionInterface extends NamedInterface
      *
      * @return string
      */
-    function getShortName();
+    public function getShortName();
 
 
     /**
      * @return int
      */
-    function getStartPosition();
+    public function getStartPosition();
 
 
     /**
      * @return int
      */
-    function getEndPosition();
+    public function getEndPosition();
 
 
     /**
      * @return self
      */
-    function addReason(BaseException $reason);
+    public function addReason(BaseException $reason);
 
 
     /**
      * @return BaseException[]
      */
-    function getReasons();
+    public function getReasons();
 
 
     /**
      * @return bool
      */
-    function hasReasons();
+    public function hasReasons();
 }

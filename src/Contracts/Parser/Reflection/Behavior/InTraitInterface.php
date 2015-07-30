@@ -17,11 +17,11 @@ interface InTraitInterface extends InNamespaceInterface
     /**
      * @return ClassReflectionInterface
      */
-    function getDeclaringTrait();
+    public function getDeclaringTrait();
 
 
     /**
      * @return string|NULL
      */
-    function getDeclaringTraitName();
+    public function getDeclaringTraitName();
 }

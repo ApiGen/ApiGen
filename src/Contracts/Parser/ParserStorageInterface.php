@@ -19,7 +19,7 @@ interface ParserStorageInterface
      * @param string $type
      * @return ArrayObject
      */
-    function getElementsByType($type);
+    public function getElementsByType($type);
 
 
     /**
@@ -27,56 +27,56 @@ interface ParserStorageInterface
      *
      * @return array
      */
-    function getDocumentedStats();
+    public function getDocumentedStats();
 
 
     /**
      * @return ArrayObject
      */
-    function getClasses();
+    public function getClasses();
 
 
     /**
      * @return ArrayObject
      */
-    function getConstants();
+    public function getConstants();
 
 
     /**
      * @return ArrayObject
      */
-    function getFunctions();
+    public function getFunctions();
 
 
     /**
      * @return string[]
      */
-    function getTypes();
+    public function getTypes();
 
 
-    function setClasses(ArrayObject $classes);
+    public function setClasses(ArrayObject $classes);
 
 
-    function setConstants(ArrayObject $constants);
+    public function setConstants(ArrayObject $constants);
 
 
-    function setFunctions(ArrayObject $functions);
+    public function setFunctions(ArrayObject $functions);
 
 
-    function setInternalClasses(ArrayObject $internalClasses);
+    public function setInternalClasses(ArrayObject $internalClasses);
 
 
-    function setTokenizedClasses(ArrayObject $tokenizedClasses);
-
-
-    /**
-     * @return ClassReflectionInterface[]|array
-     */
-    function getDirectImplementersOfInterface(ClassReflectionInterface $reflectionClass);
+    public function setTokenizedClasses(ArrayObject $tokenizedClasses);
 
 
     /**
      * @return ClassReflectionInterface[]|array
      */
-    function getIndirectImplementersOfInterface(ClassReflectionInterface $reflectionClass);
+    public function getDirectImplementersOfInterface(ClassReflectionInterface $reflectionClass);
+
+
+    /**
+     * @return ClassReflectionInterface[]|array
+     */
+    public function getIndirectImplementersOfInterface(ClassReflectionInterface $reflectionClass);
 }

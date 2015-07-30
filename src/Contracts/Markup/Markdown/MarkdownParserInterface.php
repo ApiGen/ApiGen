@@ -16,5 +16,5 @@ interface MarkdownParserInterface
      * @param string $content
      * @return string
      */
-    function parse($content);
+    public function parse($content);
 }

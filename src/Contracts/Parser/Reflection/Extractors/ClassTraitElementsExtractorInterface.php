@@ -19,35 +19,35 @@ interface ClassTraitElementsExtractorInterface
     /**
      * @return ClassReflectionInterface[]
      */
-    function getDirectUsers();
+    public function getDirectUsers();
 
 
     /**
      * @return ClassReflectionInterface[]
      */
-    function getIndirectUsers();
+    public function getIndirectUsers();
 
 
     /**
      * @return PropertyReflectionInterface[]
      */
-    function getTraitProperties();
+    public function getTraitProperties();
 
 
     /**
      * @return PropertyReflectionInterface[][]
      */
-    function getUsedProperties();
+    public function getUsedProperties();
 
 
     /**
      * @return MethodReflectionInterface[]
      */
-    function getTraitMethods();
+    public function getTraitMethods();
 
 
     /**
      * @return MethodReflectionInterface[]
      */
-    function getUsedMethods();
+    public function getUsedMethods();
 }

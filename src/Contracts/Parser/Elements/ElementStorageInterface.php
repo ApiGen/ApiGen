@@ -19,59 +19,59 @@ interface ElementStorageInterface
     /**
      * @return array
      */
-    function getNamespaces();
+    public function getNamespaces();
 
 
     /**
      * @return array
      */
-    function getPackages();
+    public function getPackages();
 
 
     /**
      * @return ClassReflectionInterface[]
      */
-    function getClasses();
+    public function getClasses();
 
 
     /**
      * @return ClassReflectionInterface[]
      */
-    function getInterfaces();
+    public function getInterfaces();
 
 
     /**
      * @return ClassReflectionInterface[]
      */
-    function getTraits();
+    public function getTraits();
 
 
     /**
      * @return ClassReflectionInterface[]
      */
-    function getExceptions();
+    public function getExceptions();
 
 
     /**
      * @return ConstantReflectionInterface[]
      */
-    function getConstants();
+    public function getConstants();
 
 
     /**
      * @return FunctionReflectionInterface[]
      */
-    function getFunctions();
+    public function getFunctions();
 
 
     /**
      * @return ClassReflectionInterface[]
      */
-    function getClassElements();
+    public function getClassElements();
 
 
     /**
      * @return array[]
      */
-    function getElements();
+    public function getElements();
 }

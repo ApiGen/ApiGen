@@ -16,12 +16,12 @@ interface OptionValidatorInterface
      * @param array $source
      * @return bool
      */
-    function validateSource(array $source);
+    public function validateSource(array $source);
 
 
     /**
      * @param string $destination
      * @return bool
      */
-    function validateDestination($destination);
+    public function validateDestination($destination);
 }

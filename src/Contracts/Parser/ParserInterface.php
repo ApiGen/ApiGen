@@ -20,7 +20,7 @@ interface ParserInterface
      * @param SplFileInfo[] $files
      * @return ParserStorageInterface
      */
-    function parse(array $files);
+    public function parse(array $files);
 
 
     /**
@@ -28,5 +28,5 @@ interface ParserInterface
      *
      * @return array
      */
-    function getErrors();
+    public function getErrors();
 }

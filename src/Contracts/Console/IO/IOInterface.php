@@ -18,19 +18,19 @@ interface IOInterface
     /**
      * @return InputInterface
      */
-    function getInput();
+    public function getInput();
 
 
     /**
      * @return OutputInterface
      */
-    function getOutput();
+    public function getOutput();
 
 
     /**
      * @param string $message
      */
-    function writeln($message);
+    public function writeln($message);
 
 
     /**
@@ -38,5 +38,5 @@ interface IOInterface
      * @param NULL|string $default
      * @return string
      */
-    function ask($question, $default = null);
+    public function ask($question, $default = null);
 }

@@ -18,5 +18,5 @@ interface ElementSorterInterface
      * @param ElementReflectionInterface[]
      * @return ElementReflectionInterface[]
      */
-    function sortElementsByFqn(array $elements);
+    public function sortElementsByFqn(array $elements);
 }

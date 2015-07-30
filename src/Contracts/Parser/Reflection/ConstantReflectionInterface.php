@@ -23,17 +23,17 @@ interface ConstantReflectionInterface extends
     /**
      * @return string
      */
-    function getTypeHint();
+    public function getTypeHint();
 
 
     /**
      * @return mixed
      */
-    function getValue();
+    public function getValue();
 
 
     /**
      * @return string
      */
-    function getValueDefinition();
+    public function getValueDefinition();
 }

@@ -18,41 +18,41 @@ interface ClassMagicElementsExtractorInterface
     /**
      * @return MagicPropertyReflectionInterface[]
      */
-    function getMagicProperties();
+    public function getMagicProperties();
 
 
     /**
      * @return MagicPropertyReflectionInterface[]
      */
-    function getOwnMagicProperties();
+    public function getOwnMagicProperties();
 
 
     /**
      * @return array {[ declaringClassName => MagicMethodReflectionInterface[] ]}
      */
-    function getInheritedMagicProperties();
+    public function getInheritedMagicProperties();
 
 
     /**
      * @return array {[ declaringClassName => MagicMethodReflectionInterface[] ]}
      */
-    function getUsedMagicProperties();
+    public function getUsedMagicProperties();
 
 
     /**
      * @return MagicMethodReflectionInterface[]
      */
-    function getMagicMethods();
+    public function getMagicMethods();
 
 
     /**
      * @return MagicMethodReflectionInterface[]
      */
-    function getOwnMagicMethods();
+    public function getOwnMagicMethods();
 
 
     /**
      * @return MagicMethodReflectionInterface[]
      */
-    function getUsedMagicMethods();
+    public function getUsedMagicMethods();
 }

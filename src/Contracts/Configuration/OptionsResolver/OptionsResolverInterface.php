@@ -12,5 +12,5 @@ namespace ApiGen\Contracts\Configuration\OptionsResolver;
 interface OptionsResolverInterface
 {
 
-    function resolve(array $options);
+    public function resolve(array $options);
 }

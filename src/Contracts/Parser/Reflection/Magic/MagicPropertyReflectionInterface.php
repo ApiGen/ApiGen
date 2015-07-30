@@ -18,65 +18,65 @@ interface MagicPropertyReflectionInterface extends PropertyReflectionInterface
     /**
      * @return bool
      */
-    function isDocumented();
+    public function isDocumented();
 
 
     /**
      * @return string
      */
-    function getShortDescription();
+    public function getShortDescription();
 
 
     /**
      * @return string
      */
-    function getLongDescription();
+    public function getLongDescription();
 
 
     /**
      * @return string
      */
-    function getDocComment();
+    public function getDocComment();
 
 
     /**
      * @return bool
      */
-    function isDeprecated();
+    public function isDeprecated();
 
 
     /**
      * @return self
      */
-    function setDeclaringClass(ClassReflectionInterface $declaringClass);
+    public function setDeclaringClass(ClassReflectionInterface $declaringClass);
 
 
     /**
      * @return bool
      */
-    function isPrivate();
+    public function isPrivate();
 
 
     /**
      * @return bool
      */
-    function isProtected();
+    public function isProtected();
 
 
     /**
      * @return bool
      */
-    function isPublic();
+    public function isPublic();
 
 
     /**
      * @return string
      */
-    function getFileName();
+    public function getFileName();
 
 
     /**
      * @return bool
      */
-    function isTokenized();
+    public function isTokenized();
 }
