@@ -6,12 +6,11 @@
 class DeprecatedClass
 {
 
-	/**
-	 * @return string
-	 */
-	public function getDrink()
-	{
-		return 'Mojito';
-	}
-
+    /**
+     * @return string
+     */
+    public function getDrink()
+    {
+        return 'Mojito';
+    }
 }

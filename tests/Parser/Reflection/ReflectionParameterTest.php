@@ -15,161 +15,159 @@ use PHPUnit_Framework_TestCase;
 use ReflectionProperty;
 use TokenReflection\Broker;
 
-
 class ReflectionParameterTest extends PHPUnit_Framework_TestCase
 {
 
-	/**
-	 * @var ClassReflectionInterface
-	 */
-	private $reflectionClass;
+    /**
+     * @var ClassReflectionInterface
+     */
+    private $reflectionClass;
 
-	/**
-	 * @var ParameterReflectionInterface
-	 */
-	private $reflectionParameter;
-
-
-	protected function setUp()
-	{
-		$backend = new Backend($this->getReflectionFactory());
-		$broker = new Broker($backend);
-		$broker->processDirectory(__DIR__ . '/ReflectionMethodSource');
-
-		$this->reflectionClass = $backend->getClasses()['Project\ReflectionMethod'];
-		$reflectionMethod = $this->reflectionClass->getMethod('methodWithArgs');
-		$this->reflectionParameter = $reflectionMethod->getParameter(0);
-	}
+    /**
+     * @var ParameterReflectionInterface
+     */
+    private $reflectionParameter;
 
 
-	public function testInstance()
-	{
-		$this->assertInstanceOf('ApiGen\Parser\Reflection\ReflectionParameter', $this->reflectionParameter);
-	}
+    protected function setUp()
+    {
+        $backend = new Backend($this->getReflectionFactory());
+        $broker = new Broker($backend);
+        $broker->processDirectory(__DIR__ . '/ReflectionMethodSource');
+
+        $this->reflectionClass = $backend->getClasses()['Project\ReflectionMethod'];
+        $reflectionMethod = $this->reflectionClass->getMethod('methodWithArgs');
+        $this->reflectionParameter = $reflectionMethod->getParameter(0);
+    }
 
 
-	public function testGetTypeHint()
-	{
-		$this->assertSame('int|string', $this->reflectionParameter->getTypeHint());
-	}
+    public function testInstance()
+    {
+        $this->assertInstanceOf('ApiGen\Parser\Reflection\ReflectionParameter', $this->reflectionParameter);
+    }
 
 
-	public function testGetDescription()
-	{
-		$this->assertSame(' the URL of the API endpoint', $this->reflectionParameter->getDescription());
-	}
+    public function testGetTypeHint()
+    {
+        $this->assertSame('int|string', $this->reflectionParameter->getTypeHint());
+    }
 
 
-	public function testIsDefaultValueAvailable()
-	{
-		$this->assertTrue($this->reflectionParameter->isDefaultValueAvailable());
-	}
+    public function testGetDescription()
+    {
+        $this->assertSame(' the URL of the API endpoint', $this->reflectionParameter->getDescription());
+    }
 
 
-	public function testGetPosition()
-	{
-		$this->assertSame(0, $this->reflectionParameter->getPosition());
-	}
+    public function testIsDefaultValueAvailable()
+    {
+        $this->assertTrue($this->reflectionParameter->isDefaultValueAvailable());
+    }
 
 
-	public function testIsArray()
-	{
-		$this->assertFalse($this->reflectionParameter->isArray());
-	}
+    public function testGetPosition()
+    {
+        $this->assertSame(0, $this->reflectionParameter->getPosition());
+    }
 
 
-	public function testIsCallable()
-	{
-		$this->assertFalse($this->reflectionParameter->isCallable());
-	}
+    public function testIsArray()
+    {
+        $this->assertFalse($this->reflectionParameter->isArray());
+    }
 
 
-	public function testGetClass()
-	{
-		$this->assertNull($this->reflectionParameter->getClass());
-	}
+    public function testIsCallable()
+    {
+        $this->assertFalse($this->reflectionParameter->isCallable());
+    }
 
 
-	public function testGetClassName()
-	{
-		$this->assertNull($this->reflectionParameter->getClassName());
-	}
+    public function testGetClass()
+    {
+        $this->assertNull($this->reflectionParameter->getClass());
+    }
 
 
-	public function testAllowsNull()
-	{
-		$this->assertTrue($this->reflectionParameter->allowsNull());
-	}
+    public function testGetClassName()
+    {
+        $this->assertNull($this->reflectionParameter->getClassName());
+    }
 
 
-	public function testIsOptional()
-	{
-		$this->assertTrue($this->reflectionParameter->isOptional());
-	}
+    public function testAllowsNull()
+    {
+        $this->assertTrue($this->reflectionParameter->allowsNull());
+    }
 
 
-	public function testIsPassedByReference()
-	{
-		$this->assertFalse($this->reflectionParameter->isPassedByReference());
-	}
+    public function testIsOptional()
+    {
+        $this->assertTrue($this->reflectionParameter->isOptional());
+    }
 
 
-	public function testCanBePassedByValue()
-	{
-		$this->assertTrue($this->reflectionParameter->canBePassedByValue());
-	}
+    public function testIsPassedByReference()
+    {
+        $this->assertFalse($this->reflectionParameter->isPassedByReference());
+    }
 
 
-	public function testGetDeclaringFunction()
-	{
-		$this->assertInstanceOf(MethodReflectionInterface::class, $this->reflectionParameter->getDeclaringFunction());
-	}
+    public function testCanBePassedByValue()
+    {
+        $this->assertTrue($this->reflectionParameter->canBePassedByValue());
+    }
 
 
-	public function testGetDeclaringFunctionName()
-	{
-		$this->assertSame('methodWithArgs', $this->reflectionParameter->getDeclaringFunctionName());
-	}
+    public function testGetDeclaringFunction()
+    {
+        $this->assertInstanceOf(MethodReflectionInterface::class, $this->reflectionParameter->getDeclaringFunction());
+    }
 
 
-	public function testGetDeclaringClass()
-	{
-		$this->assertInstanceOf(
-			'ApiGen\Parser\Reflection\ReflectionClass',
-			$this->reflectionParameter->getDeclaringClass()
-		);
-	}
+    public function testGetDeclaringFunctionName()
+    {
+        $this->assertSame('methodWithArgs', $this->reflectionParameter->getDeclaringFunctionName());
+    }
 
 
-	public function testGetDeclaringClassName()
-	{
-		$this->assertSame('Project\ReflectionMethod', $this->reflectionParameter->getDeclaringClassName());
-	}
+    public function testGetDeclaringClass()
+    {
+        $this->assertInstanceOf(
+            'ApiGen\Parser\Reflection\ReflectionClass',
+            $this->reflectionParameter->getDeclaringClass()
+        );
+    }
 
 
-	public function testIsUnlimited()
-	{
-		$this->assertFalse($this->reflectionParameter->isUnlimited());
-	}
+    public function testGetDeclaringClassName()
+    {
+        $this->assertSame('Project\ReflectionMethod', $this->reflectionParameter->getDeclaringClassName());
+    }
 
 
-	/**
-	 * @return ReflectionFactoryInterface
-	 */
-	private function getReflectionFactory()
-	{
-		$parserStorageMock = Mockery::mock(ParserStorageInterface::class);
-		$parserStorageMock->shouldReceive('getElementsByType')->andReturnUsing(function ($arg) {
-			if ($arg) {
-				return ['Project\ReflectionMethod' => $this->reflectionClass];
-			}
-		});
-		$configurationMock = Mockery::mock(ConfigurationInterface::class, [
-			'getVisibilityLevel' => ReflectionProperty::IS_PUBLIC,
-			'isInternalDocumented' => FALSE,
-			'isPhpCoreDocumented' => TRUE
-		]);
-		return new ReflectionFactory($configurationMock, $parserStorageMock);
-	}
+    public function testIsUnlimited()
+    {
+        $this->assertFalse($this->reflectionParameter->isUnlimited());
+    }
 
+
+    /**
+     * @return ReflectionFactoryInterface
+     */
+    private function getReflectionFactory()
+    {
+        $parserStorageMock = Mockery::mock(ParserStorageInterface::class);
+        $parserStorageMock->shouldReceive('getElementsByType')->andReturnUsing(function ($arg) {
+            if ($arg) {
+                return ['Project\ReflectionMethod' => $this->reflectionClass];
+            }
+        });
+        $configurationMock = Mockery::mock(ConfigurationInterface::class, [
+            'getVisibilityLevel' => ReflectionProperty::IS_PUBLIC,
+            'isInternalDocumented' => false,
+            'isPhpCoreDocumented' => true
+        ]);
+        return new ReflectionFactory($configurationMock, $parserStorageMock);
+    }
 }

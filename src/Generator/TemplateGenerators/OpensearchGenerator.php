@@ -14,45 +14,43 @@ use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Contracts\Generator\TemplateGenerators\ConditionalTemplateGeneratorInterface;
 use ApiGen\Templating\TemplateFactory;
 
-
 class OpensearchGenerator implements ConditionalTemplateGeneratorInterface
 {
 
-	/**
-	 * @var Configuration
-	 */
-	private $configuration;
+    /**
+     * @var Configuration
+     */
+    private $configuration;
 
-	/**
-	 * @var TemplateFactory
-	 */
-	private $templateFactory;
-
-
-	public function __construct(Configuration $configuration, TemplateFactory $templateFactory)
-	{
-		$this->configuration = $configuration;
-		$this->templateFactory = $templateFactory;
-	}
+    /**
+     * @var TemplateFactory
+     */
+    private $templateFactory;
 
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function generate()
-	{
-		$this->templateFactory->createForType('opensearch')
-			->save();
-	}
+    public function __construct(Configuration $configuration, TemplateFactory $templateFactory)
+    {
+        $this->configuration = $configuration;
+        $this->templateFactory = $templateFactory;
+    }
 
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function isAllowed()
-	{
-		$options = $this->configuration->getOptions();
-		return $options[CO::GOOGLE_CSE_ID] && $options[CO::BASE_URL];
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function generate()
+    {
+        $this->templateFactory->createForType('opensearch')
+            ->save();
+    }
 
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isAllowed()
+    {
+        $options = $this->configuration->getOptions();
+        return $options[CO::GOOGLE_CSE_ID] && $options[CO::BASE_URL];
+    }
 }

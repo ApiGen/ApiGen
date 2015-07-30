@@ -17,213 +17,211 @@ use PHPUnit_Framework_TestCase;
 use ReflectionProperty;
 use TokenReflection\Broker;
 
-
 class ReflectionMethodMagicTest extends PHPUnit_Framework_TestCase
 {
 
-	/**
-	 * @var ReflectionMethodMagic
-	 */
-	private $reflectionMethodMagic;
+    /**
+     * @var ReflectionMethodMagic
+     */
+    private $reflectionMethodMagic;
 
-	/**
-	 * @var ReflectionClass
-	 */
-	private $reflectionClass;
-
-
-	protected function setUp()
-	{
-		$backend = new Backend($this->getReflectionFactory());
-		$broker = new Broker($backend);
-		$broker->processDirectory(__DIR__ . '/ReflectionMethodSource');
-
-		$this->reflectionClass = $backend->getClasses()['Project\ReflectionMethod'];
-		$this->reflectionMethodMagic = $this->reflectionClass->getMagicMethods()['getName'];
-	}
+    /**
+     * @var ReflectionClass
+     */
+    private $reflectionClass;
 
 
-	public function testInstance()
-	{
-		$this->assertInstanceOf(MagicMethodReflectionInterface::class, $this->reflectionMethodMagic);
-	}
+    protected function setUp()
+    {
+        $backend = new Backend($this->getReflectionFactory());
+        $broker = new Broker($backend);
+        $broker->processDirectory(__DIR__ . '/ReflectionMethodSource');
+
+        $this->reflectionClass = $backend->getClasses()['Project\ReflectionMethod'];
+        $this->reflectionMethodMagic = $this->reflectionClass->getMagicMethods()['getName'];
+    }
 
 
-	public function testGetDeclaringClass()
-	{
-		$this->isInstanceOf(ClassReflectionInterface::class, $this->reflectionMethodMagic->getDeclaringClass());
-	}
+    public function testInstance()
+    {
+        $this->assertInstanceOf(MagicMethodReflectionInterface::class, $this->reflectionMethodMagic);
+    }
 
 
-	public function testGetDeclaringClassName()
-	{
-		$this->assertSame('Project\ReflectionMethod', $this->reflectionMethodMagic->getDeclaringClassName());
-	}
+    public function testGetDeclaringClass()
+    {
+        $this->isInstanceOf(ClassReflectionInterface::class, $this->reflectionMethodMagic->getDeclaringClass());
+    }
 
 
-	public function testGetName()
-	{
-		$this->assertSame('getName', $this->reflectionMethodMagic->getName());
-	}
+    public function testGetDeclaringClassName()
+    {
+        $this->assertSame('Project\ReflectionMethod', $this->reflectionMethodMagic->getDeclaringClassName());
+    }
 
 
-	public function testGetShortDescription()
-	{
-		$this->assertSame('This is some short description.', $this->reflectionMethodMagic->getShortDescription());
-	}
+    public function testGetName()
+    {
+        $this->assertSame('getName', $this->reflectionMethodMagic->getName());
+    }
 
 
-	public function testGetLongDescription()
-	{
-		$this->assertSame('This is some short description.', $this->reflectionMethodMagic->getLongDescription());
-	}
+    public function testGetShortDescription()
+    {
+        $this->assertSame('This is some short description.', $this->reflectionMethodMagic->getShortDescription());
+    }
 
 
-	public function testReturnReference()
-	{
-		$this->assertFalse($this->reflectionMethodMagic->returnsReference());
-	}
+    public function testGetLongDescription()
+    {
+        $this->assertSame('This is some short description.', $this->reflectionMethodMagic->getLongDescription());
+    }
 
 
-	public function testIsMagic()
-	{
-		$this->assertTrue($this->reflectionMethodMagic->isMagic());
-	}
+    public function testReturnReference()
+    {
+        $this->assertFalse($this->reflectionMethodMagic->returnsReference());
+    }
 
 
-	public function testIsDocumented()
-	{
-		$this->assertTrue($this->reflectionMethodMagic->isDocumented());
-	}
+    public function testIsMagic()
+    {
+        $this->assertTrue($this->reflectionMethodMagic->isMagic());
+    }
 
 
-	public function testIsDeprecated()
-	{
-		$this->assertFalse($this->reflectionMethodMagic->isDeprecated());
-	}
+    public function testIsDocumented()
+    {
+        $this->assertTrue($this->reflectionMethodMagic->isDocumented());
+    }
 
 
-	public function testGetPackageName()
-	{
-		$this->assertSame('Some\Package', $this->reflectionMethodMagic->getPackageName());
-	}
+    public function testIsDeprecated()
+    {
+        $this->assertFalse($this->reflectionMethodMagic->isDeprecated());
+    }
 
 
-	public function testGetNamespaceName()
-	{
-		$this->assertSame('Project', $this->reflectionMethodMagic->getNamespaceName());
-	}
+    public function testGetPackageName()
+    {
+        $this->assertSame('Some\Package', $this->reflectionMethodMagic->getPackageName());
+    }
 
 
-	public function testGetAnnotations()
-	{
-		$this->assertSame(['return' => ['string']], $this->reflectionMethodMagic->getAnnotations());
-	}
+    public function testGetNamespaceName()
+    {
+        $this->assertSame('Project', $this->reflectionMethodMagic->getNamespaceName());
+    }
 
 
-	/** methods of parent ReflectionMethod */
+    public function testGetAnnotations()
+    {
+        $this->assertSame(['return' => ['string']], $this->reflectionMethodMagic->getAnnotations());
+    }
 
 
-	public function testIsAbstract()
-	{
-		$this->assertFalse($this->reflectionMethodMagic->isAbstract());
-	}
+    /** methods of parent ReflectionMethod */
 
 
-	public function testIsFinal()
-	{
-		$this->assertFalse($this->reflectionMethodMagic->isFinal());
-	}
+    public function testIsAbstract()
+    {
+        $this->assertFalse($this->reflectionMethodMagic->isAbstract());
+    }
 
 
-	public function testIsPrivate()
-	{
-		$this->assertFalse($this->reflectionMethodMagic->isPrivate());
-	}
+    public function testIsFinal()
+    {
+        $this->assertFalse($this->reflectionMethodMagic->isFinal());
+    }
 
 
-	public function testIsProtected()
-	{
-		$this->assertFalse($this->reflectionMethodMagic->isProtected());
-	}
+    public function testIsPrivate()
+    {
+        $this->assertFalse($this->reflectionMethodMagic->isPrivate());
+    }
 
 
-	public function testIsPublic()
-	{
-		$this->assertTrue($this->reflectionMethodMagic->isPublic());
-	}
+    public function testIsProtected()
+    {
+        $this->assertFalse($this->reflectionMethodMagic->isProtected());
+    }
 
 
-	public function testIsStatic()
-	{
-		$this->assertFalse($this->reflectionMethodMagic->isStatic());
-	}
+    public function testIsPublic()
+    {
+        $this->assertTrue($this->reflectionMethodMagic->isPublic());
+    }
 
 
-	public function testGetDeclaringTrait()
-	{
-		$this->assertNull($this->reflectionMethodMagic->getDeclaringTrait());
-	}
+    public function testIsStatic()
+    {
+        $this->assertFalse($this->reflectionMethodMagic->isStatic());
+    }
 
 
-	public function testGetDeclaringTraitName()
-	{
-		$this->assertNull($this->reflectionMethodMagic->getDeclaringTraitName());
-	}
+    public function testGetDeclaringTrait()
+    {
+        $this->assertNull($this->reflectionMethodMagic->getDeclaringTrait());
+    }
 
 
-	public function testGetOriginalName()
-	{
-		$this->assertSame('getName', $this->reflectionMethodMagic->getOriginalName());
-	}
+    public function testGetDeclaringTraitName()
+    {
+        $this->assertNull($this->reflectionMethodMagic->getDeclaringTraitName());
+    }
 
 
-	public function testIsValid()
-	{
-		$this->assertTrue($this->reflectionMethodMagic->isValid());
-	}
+    public function testGetOriginalName()
+    {
+        $this->assertSame('getName', $this->reflectionMethodMagic->getOriginalName());
+    }
 
 
-	public function testStaticMethod()
-	{
-		$method = $this->reflectionClass->getMagicMethods()['doAStaticOperation'];
-		$this->assertTrue($method->isStatic());
-	}
+    public function testIsValid()
+    {
+        $this->assertTrue($this->reflectionMethodMagic->isValid());
+    }
 
 
-	public function testStaticMethodReturnType()
-	{
-		$method = $this->reflectionClass->getMagicMethods()['doAStaticOperation'];
-		$this->assertSame('string', current($method->getAnnotation('return')));
-	}
+    public function testStaticMethod()
+    {
+        $method = $this->reflectionClass->getMagicMethods()['doAStaticOperation'];
+        $this->assertTrue($method->isStatic());
+    }
 
 
-	public function testVoidStaticMethod()
-	{
-		$method = $this->reflectionClass->getMagicMethods()['doAVoidStaticOperation'];
-		$this->assertEmpty(current($method->getAnnotation('return')));
-	}
+    public function testStaticMethodReturnType()
+    {
+        $method = $this->reflectionClass->getMagicMethods()['doAStaticOperation'];
+        $this->assertSame('string', current($method->getAnnotation('return')));
+    }
 
 
-	/**
-	 * @return ReflectionFactoryInterface|ParserStorageInterface
-	 */
-	private function getReflectionFactory()
-	{
-		$parserStorageMock = Mockery::mock(ParserStorageInterface::class);
-		$parserStorageMock->shouldReceive('getElementsByType')->andReturnUsing(function ($arg) {
-			if ($arg) {
-				return ['Project\ReflectionMethod' => $this->reflectionClass];
-			}
-		});
+    public function testVoidStaticMethod()
+    {
+        $method = $this->reflectionClass->getMagicMethods()['doAVoidStaticOperation'];
+        $this->assertEmpty(current($method->getAnnotation('return')));
+    }
 
-		$configurationMock = Mockery::mock(ConfigurationInterface::class, [
-			'getVisibilityLevel' => ReflectionProperty::IS_PUBLIC,
-			'isInternalDocumented' => FALSE,
-			'isPhpCoreDocumented' => TRUE,
-			'isDeprecatedDocumented' => FALSE
-		]);
-		return new ReflectionFactory($configurationMock, $parserStorageMock);
-	}
 
+    /**
+     * @return ReflectionFactoryInterface|ParserStorageInterface
+     */
+    private function getReflectionFactory()
+    {
+        $parserStorageMock = Mockery::mock(ParserStorageInterface::class);
+        $parserStorageMock->shouldReceive('getElementsByType')->andReturnUsing(function ($arg) {
+            if ($arg) {
+                return ['Project\ReflectionMethod' => $this->reflectionClass];
+            }
+        });
+
+        $configurationMock = Mockery::mock(ConfigurationInterface::class, [
+            'getVisibilityLevel' => ReflectionProperty::IS_PUBLIC,
+            'isInternalDocumented' => false,
+            'isPhpCoreDocumented' => true,
+            'isDeprecatedDocumented' => false
+        ]);
+        return new ReflectionFactory($configurationMock, $parserStorageMock);
+    }
 }

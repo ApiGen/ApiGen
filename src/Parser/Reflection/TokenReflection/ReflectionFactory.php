@@ -32,109 +32,107 @@ use TokenReflection\IReflectionMethod;
 use TokenReflection\IReflectionParameter;
 use TokenReflection\IReflectionProperty;
 
-
 class ReflectionFactory implements ReflectionFactoryInterface
 {
 
-	/**
-	 * @var ConfigurationInterface
-	 */
-	private $configuration;
+    /**
+     * @var ConfigurationInterface
+     */
+    private $configuration;
 
-	/**
-	 * @var ParserStorageInterface
-	 */
-	private $parserStorage;
-
-
-	public function __construct(ConfigurationInterface $configuration, ParserStorageInterface $parserResult)
-	{
-		$this->configuration = $configuration;
-		$this->parserStorage = $parserResult;
-	}
+    /**
+     * @var ParserStorageInterface
+     */
+    private $parserStorage;
 
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function createFromReflection($tokenReflection)
-	{
-		$reflection = $this->createByReflectionType($tokenReflection);
-		return $this->setDependencies($reflection);
-	}
+    public function __construct(ConfigurationInterface $configuration, ParserStorageInterface $parserResult)
+    {
+        $this->configuration = $configuration;
+        $this->parserStorage = $parserResult;
+    }
 
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function createMethodMagic(array $settings)
-	{
-		$reflection = new ReflectionMethodMagic($settings);
-		return $this->setDependencies($reflection);
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function createFromReflection($tokenReflection)
+    {
+        $reflection = $this->createByReflectionType($tokenReflection);
+        return $this->setDependencies($reflection);
+    }
 
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function createParameterMagic(array $settings)
-	{
-		$reflection = new ReflectionParameterMagic($settings);
-		return $this->setDependencies($reflection);
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function createMethodMagic(array $settings)
+    {
+        $reflection = new ReflectionMethodMagic($settings);
+        return $this->setDependencies($reflection);
+    }
 
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function createPropertyMagic(array $settings)
-	{
-		$reflection = new ReflectionPropertyMagic($settings);
-		return $this->setDependencies($reflection);
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function createParameterMagic(array $settings)
+    {
+        $reflection = new ReflectionParameterMagic($settings);
+        return $this->setDependencies($reflection);
+    }
 
 
-	/**
-	 * @param IReflectionClass|IReflectionConstant|IReflectionMethod $reflection
-	 * @return ReflectionClass|ReflectionConstant|ReflectionMethod
-	 */
-	private function createByReflectionType($reflection)
-	{
-		if ($reflection instanceof IReflectionClass) {
-			return new ReflectionClass($reflection);
-
-		} elseif ($reflection instanceof IReflectionConstant) {
-			return new ReflectionConstant($reflection);
-
-		} elseif ($reflection instanceof IReflectionMethod) {
-			return new ReflectionMethod($reflection);
-
-		} elseif ($reflection instanceof IReflectionProperty) {
-			return new ReflectionProperty($reflection);
-
-		} elseif ($reflection instanceof IReflectionParameter) {
-			return new ReflectionParameter($reflection);
-
-		} elseif ($reflection instanceof IReflectionFunction) {
-			return new ReflectionFunction($reflection);
-
-		} elseif ($reflection instanceof IReflectionExtension) {
-			return new ReflectionExtension($reflection);
-		}
-
-		throw new RuntimeException('Invalid reflection class type ' . get_class($reflection));
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function createPropertyMagic(array $settings)
+    {
+        $reflection = new ReflectionPropertyMagic($settings);
+        return $this->setDependencies($reflection);
+    }
 
 
-	/**
-	 * @return ReflectionBase
-	 */
-	private function setDependencies(ReflectionBase $reflection)
-	{
-		$reflection->setConfiguration($this->configuration);
-		$reflection->setParserResult($this->parserStorage);
-		$reflection->setReflectionFactory($this);
-		return $reflection;
-	}
+    /**
+     * @param IReflectionClass|IReflectionConstant|IReflectionMethod $reflection
+     * @return ReflectionClass|ReflectionConstant|ReflectionMethod
+     */
+    private function createByReflectionType($reflection)
+    {
+        if ($reflection instanceof IReflectionClass) {
+            return new ReflectionClass($reflection);
 
+        } elseif ($reflection instanceof IReflectionConstant) {
+            return new ReflectionConstant($reflection);
+
+        } elseif ($reflection instanceof IReflectionMethod) {
+            return new ReflectionMethod($reflection);
+
+        } elseif ($reflection instanceof IReflectionProperty) {
+            return new ReflectionProperty($reflection);
+
+        } elseif ($reflection instanceof IReflectionParameter) {
+            return new ReflectionParameter($reflection);
+
+        } elseif ($reflection instanceof IReflectionFunction) {
+            return new ReflectionFunction($reflection);
+
+        } elseif ($reflection instanceof IReflectionExtension) {
+            return new ReflectionExtension($reflection);
+        }
+
+        throw new RuntimeException('Invalid reflection class type ' . get_class($reflection));
+    }
+
+
+    /**
+     * @return ReflectionBase
+     */
+    private function setDependencies(ReflectionBase $reflection)
+    {
+        $reflection->setConfiguration($this->configuration);
+        $reflection->setParserResult($this->parserStorage);
+        $reflection->setReflectionFactory($this);
+        return $reflection;
+    }
 }

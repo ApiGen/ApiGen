@@ -9,21 +9,19 @@
 
 namespace ApiGen\Contracts\Configuration\Validator;
 
-
 interface OptionValidatorInterface
 {
 
-	/**
-	 * @param array $source
-	 * @return bool
-	 */
-	function validateSource(array $source);
+    /**
+     * @param array $source
+     * @return bool
+     */
+    public function validateSource(array $source);
 
 
-	/**
-	 * @param string $destination
-	 * @return bool
-	 */
-	function validateDestination($destination);
-
+    /**
+     * @param string $destination
+     * @return bool
+     */
+    public function validateDestination($destination);
 }

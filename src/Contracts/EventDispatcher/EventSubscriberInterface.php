@@ -9,13 +9,11 @@
 
 namespace ApiGen\Contracts\EventDispatcher;
 
-
 interface EventSubscriberInterface
 {
 
-	/**
-	 * @return array {[ eventName => callback ]}
-	 */
-	function getSubscribedEvents();
-
+    /**
+     * @return array {[ eventName => callback ]}
+     */
+    public function getSubscribedEvents();
 }

@@ -13,174 +13,172 @@ use ApiGen\Contracts\Parser\Reflection\Behavior\LinedInterface;
 use ApiGen\Contracts\Parser\Reflection\Behavior\NamedInterface;
 use TokenReflection\Exception\BaseException;
 
-
 interface ElementReflectionInterface extends NamedInterface
 {
 
-	/**
-	 * @return bool
-	 */
-	function isMain();
+    /**
+     * @return bool
+     */
+    public function isMain();
 
 
-	/**
-	 * @return bool
-	 */
-	function isValid();
+    /**
+     * @return bool
+     */
+    public function isValid();
 
 
-	/**
-	 * @return bool
-	 */
-	function isDocumented();
+    /**
+     * @return bool
+     */
+    public function isDocumented();
 
 
-	/**
-	 * @return bool
-	 */
-	function isDeprecated();
+    /**
+     * @return bool
+     */
+    public function isDeprecated();
 
 
-	/**
-	 * @return bool
-	 */
-	function inPackage();
+    /**
+     * @return bool
+     */
+    public function inPackage();
 
 
-	/**
-	 * @return string
-	 */
-	function getPackageName();
+    /**
+     * @return string
+     */
+    public function getPackageName();
 
 
-	/**
-	 * Returns element package name (including subpackage name).
-	 * For internal elements returns "PHP", for elements in global space returns "None".
-	 *
-	 * @return string
-	 */
-	function getPseudoPackageName();
+    /**
+     * Returns element package name (including subpackage name).
+     * For internal elements returns "PHP", for elements in global space returns "None".
+     *
+     * @return string
+     */
+    public function getPseudoPackageName();
 
 
-	/**
-	 * @return bool
-	 */
-	function inNamespace();
+    /**
+     * @return bool
+     */
+    public function inNamespace();
 
 
-	/**
-	 * @return string
-	 */
-	function getNamespaceName();
+    /**
+     * @return string
+     */
+    public function getNamespaceName();
 
 
-	/**
-	 * Returns element namespace name.
-	 * For internal elements returns "PHP", for elements in global space returns "None".
-	 *
-	 * @return string
-	 */
-	function getPseudoNamespaceName();
+    /**
+     * Returns element namespace name.
+     * For internal elements returns "PHP", for elements in global space returns "None".
+     *
+     * @return string
+     */
+    public function getPseudoNamespaceName();
 
 
-	/**
-	 * @return string[]
-	 */
-	function getNamespaceAliases();
+    /**
+     * @return string[]
+     */
+    public function getNamespaceAliases();
 
 
-	/**
-	 * Returns reflection element annotations.
-	 * Removes the short and long description.
-	 * In case of classes, functions and constants, @package, @subpackage, @author and @license annotations
-	 * are added from declaring files if not already present.
-	 *
-	 * @return array
-	 */
-	function getAnnotations();
+    /**
+     * Returns reflection element annotations.
+     * Removes the short and long description.
+     * In case of classes, functions and constants, @package, @subpackage, @author and @license annotations
+     * are added from declaring files if not already present.
+     *
+     * @return array
+     */
+    public function getAnnotations();
 
 
-	/**
-	 * @param string $name
-	 * @return array
-	 */
-	function getAnnotation($name);
+    /**
+     * @param string $name
+     * @return array
+     */
+    public function getAnnotation($name);
 
 
-	/**
-	 * @param string $name
-	 * @return bool
-	 */
-	function hasAnnotation($name);
+    /**
+     * @param string $name
+     * @return bool
+     */
+    public function hasAnnotation($name);
 
 
-	/**
-	 * @param string $name
-	 * @param mixed $value
-	 * @return self
-	 */
-	function addAnnotation($name, $value);
+    /**
+     * @param string $name
+     * @param mixed $value
+     * @return self
+     */
+    public function addAnnotation($name, $value);
 
 
-	/**
-	 * @return string
-	 */
-	function getShortDescription();
+    /**
+     * @return string
+     */
+    public function getShortDescription();
 
 
-	/**
-	 * @return string
-	 */
-	function getLongDescription();
+    /**
+     * @return string
+     */
+    public function getLongDescription();
 
 
-	/**
-	 * @return string|bool
-	 */
-	function getDocComment();
+    /**
+     * @return string|bool
+     */
+    public function getDocComment();
 
 
-	/**
-	 * @return string
-	 */
-	function getPrettyName();
+    /**
+     * @return string
+     */
+    public function getPrettyName();
 
 
-	/**
-	 * Returns the unqualified name (UQN).
-	 *
-	 * @return string
-	 */
-	function getShortName();
+    /**
+     * Returns the unqualified name (UQN).
+     *
+     * @return string
+     */
+    public function getShortName();
 
 
-	/**
-	 * @return int
-	 */
-	function getStartPosition();
+    /**
+     * @return int
+     */
+    public function getStartPosition();
 
 
-	/**
-	 * @return int
-	 */
-	function getEndPosition();
+    /**
+     * @return int
+     */
+    public function getEndPosition();
 
 
-	/**
-	 * @return self
-	 */
-	function addReason(BaseException $reason);
+    /**
+     * @return self
+     */
+    public function addReason(BaseException $reason);
 
 
-	/**
-	 * @return BaseException[]
-	 */
-	function getReasons();
+    /**
+     * @return BaseException[]
+     */
+    public function getReasons();
 
 
-	/**
-	 * @return bool
-	 */
-	function hasReasons();
-
+    /**
+     * @return bool
+     */
+    public function hasReasons();
 }

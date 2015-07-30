@@ -15,49 +15,47 @@ use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 
-
 interface MagicMethodReflectionInterface extends MethodReflectionInterface
 {
 
-	/**
-	 * @return bool
-	 */
-	function isPublic();
+    /**
+     * @return bool
+     */
+    public function isPublic();
 
 
-	/**
-	 * @return bool
-	 */
-	function isProtected();
+    /**
+     * @return bool
+     */
+    public function isProtected();
 
 
-	/**
-	 * @return bool
-	 */
-	function isPrivate();
+    /**
+     * @return bool
+     */
+    public function isPrivate();
 
 
-	/**
-	 * @return MagicParameterReflectionInterface[]
-	 */
-	function getParameters();
+    /**
+     * @return MagicParameterReflectionInterface[]
+     */
+    public function getParameters();
 
 
-	/**
-	 * @param MagicParameterReflectionInterface[] $parameters
-	 */
-	function setParameters(array $parameters);
+    /**
+     * @param MagicParameterReflectionInterface[] $parameters
+     */
+    public function setParameters(array $parameters);
 
 
-	/**
-	 * @return string
-	 */
-	function getFileName();
+    /**
+     * @return string
+     */
+    public function getFileName();
 
 
-	/**
-	 * @return bool
-	 */
-	function isTokenized();
-
+    /**
+     * @return bool
+     */
+    public function isTokenized();
 }

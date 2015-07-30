@@ -11,7 +11,6 @@ namespace ApiGen\Configuration\Exceptions;
 
 use RuntimeException;
 
-
 /**
  * Thrown when an invalid configuration is detected.
  */

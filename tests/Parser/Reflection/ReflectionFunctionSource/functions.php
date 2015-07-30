@@ -7,7 +7,7 @@
  */
 function getSomeData($arg)
 {
-	return $arg[0];
+    return $arg[0];
 }
 
 

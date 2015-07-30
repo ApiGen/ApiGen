@@ -21,123 +21,121 @@ use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
 use ApiGen\Templating\Filters\Filters;
 
-
 class ElementUrlFactory
 {
 
-	/**
-	 * @var ConfigurationInterface
-	 */
-	private $configuration;
+    /**
+     * @var ConfigurationInterface
+     */
+    private $configuration;
 
 
-	public function __construct(ConfigurationInterface $configuration)
-	{
-		$this->configuration = $configuration;
-	}
+    public function __construct(ConfigurationInterface $configuration)
+    {
+        $this->configuration = $configuration;
+    }
 
 
-	/**
-	 * @param ElementReflectionInterface|string $element
-	 * @return string|NULL
-	 */
-	public function createForElement($element)
-	{
-		if ($element instanceof ClassReflectionInterface) {
-			return $this->createForClass($element);
+    /**
+     * @param ElementReflectionInterface|string $element
+     * @return string|NULL
+     */
+    public function createForElement($element)
+    {
+        if ($element instanceof ClassReflectionInterface) {
+            return $this->createForClass($element);
 
-		} elseif ($element instanceof MethodReflectionInterface) {
-			return $this->createForMethod($element);
+        } elseif ($element instanceof MethodReflectionInterface) {
+            return $this->createForMethod($element);
 
-		} elseif ($element instanceof PropertyReflectionInterface) {
-			return $this->createForProperty($element);
+        } elseif ($element instanceof PropertyReflectionInterface) {
+            return $this->createForProperty($element);
 
-		} elseif ($element instanceof ConstantReflectionInterface) {
-			return $this->createForConstant($element);
+        } elseif ($element instanceof ConstantReflectionInterface) {
+            return $this->createForConstant($element);
 
-		} elseif ($element instanceof FunctionReflectionInterface) {
-			return $this->createForFunction($element);
-		}
+        } elseif ($element instanceof FunctionReflectionInterface) {
+            return $this->createForFunction($element);
+        }
 
-		return NULL;
-	}
-
-
-	/**
-	 * @param string|ClassReflectionInterface $class
-	 * @return string
-	 */
-	public function createForClass($class)
-	{
-		$className = $class instanceof ClassReflectionInterface ? $class->getName() : $class;
-		return sprintf(
-			$this->configuration->getOption(CO::TEMPLATE)['templates']['class']['filename'],
-			Filters::urlize($className)
-		);
-	}
+        return null;
+    }
 
 
-	/**
-	 * @return string
-	 */
-	public function createForMethod(MethodReflectionInterface $method, ClassReflectionInterface $class = NULL)
-	{
-		$className = $class !== NULL ? $class->getName() : $method->getDeclaringClassName();
-		return $this->createForClass($className) . '#' . ($method->isMagic() ? 'm' : '') . '_'
-		. ($method->getOriginalName() ?: $method->getName());
-	}
+    /**
+     * @param string|ClassReflectionInterface $class
+     * @return string
+     */
+    public function createForClass($class)
+    {
+        $className = $class instanceof ClassReflectionInterface ? $class->getName() : $class;
+        return sprintf(
+            $this->configuration->getOption(CO::TEMPLATE)['templates']['class']['filename'],
+            Filters::urlize($className)
+        );
+    }
 
 
-	/**
-	 * @return string
-	 */
-	public function createForProperty(PropertyReflectionInterface $property, ClassReflectionInterface $class = NULL)
-	{
-		$className = $class !== NULL ? $class->getName() : $property->getDeclaringClassName();
-		return $this->createForClass($className) . '#' . ($property->isMagic() ? 'm' : '') . '$' . $property->getName();
-	}
+    /**
+     * @return string
+     */
+    public function createForMethod(MethodReflectionInterface $method, ClassReflectionInterface $class = null)
+    {
+        $className = $class !== null ? $class->getName() : $method->getDeclaringClassName();
+        return $this->createForClass($className) . '#' . ($method->isMagic() ? 'm' : '') . '_'
+        . ($method->getOriginalName() ?: $method->getName());
+    }
 
 
-	/**
-	 * @return string
-	 */
-	public function createForConstant(ConstantReflectionInterface $constant)
-	{
-		// Class constant
-		if ($className = $constant->getDeclaringClassName()) {
-			return $this->createForClass($className) . '#' . $constant->getName();
-		}
-
-		// Constant in namespace or global space
-		return sprintf(
-			$this->configuration->getOption(CO::TEMPLATE)['templates']['constant']['filename'],
-			Filters::urlize($constant->getName())
-		);
-	}
+    /**
+     * @return string
+     */
+    public function createForProperty(PropertyReflectionInterface $property, ClassReflectionInterface $class = null)
+    {
+        $className = $class !== null ? $class->getName() : $property->getDeclaringClassName();
+        return $this->createForClass($className) . '#' . ($property->isMagic() ? 'm' : '') . '$' . $property->getName();
+    }
 
 
-	/**
-	 * @return string
-	 */
-	public function createForFunction(FunctionReflectionInterface $function)
-	{
-		return sprintf(
-			$this->configuration->getOption(CO::TEMPLATE)['templates']['function']['filename'],
-			Filters::urlize($function->getName())
-		);
-	}
+    /**
+     * @return string
+     */
+    public function createForConstant(ConstantReflectionInterface $constant)
+    {
+        // Class constant
+        if ($className = $constant->getDeclaringClassName()) {
+            return $this->createForClass($className) . '#' . $constant->getName();
+        }
+
+        // Constant in namespace or global space
+        return sprintf(
+            $this->configuration->getOption(CO::TEMPLATE)['templates']['constant']['filename'],
+            Filters::urlize($constant->getName())
+        );
+    }
 
 
-	/**
-	 * @param string $name
-	 * @return string
-	 */
-	public function createForAnnotationGroup($name)
-	{
-		return sprintf(
-			$this->configuration->getOption(CO::TEMPLATE)['templates'][TCO::ANNOTATION_GROUP]['filename'],
-			Filters::urlize($name)
-		);
-	}
+    /**
+     * @return string
+     */
+    public function createForFunction(FunctionReflectionInterface $function)
+    {
+        return sprintf(
+            $this->configuration->getOption(CO::TEMPLATE)['templates']['function']['filename'],
+            Filters::urlize($function->getName())
+        );
+    }
 
+
+    /**
+     * @param string $name
+     * @return string
+     */
+    public function createForAnnotationGroup($name)
+    {
+        return sprintf(
+            $this->configuration->getOption(CO::TEMPLATE)['templates'][TCO::ANNOTATION_GROUP]['filename'],
+            Filters::urlize($name)
+        );
+    }
 }

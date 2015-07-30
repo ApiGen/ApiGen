@@ -9,20 +9,18 @@
 
 namespace ApiGen\Contracts\Configuration\FileReader;
 
-
 interface FileReaderManagerInterface
 {
 
-	/**
-	 * @param FileReaderInterface $fileReader
-	 */
-	function addFileReader(FileReaderInterface $fileReader);
+    /**
+     * @param FileReaderInterface $fileReader
+     */
+    public function addFileReader(FileReaderInterface $fileReader);
 
 
-	/**
-	 * @param string $path
-	 * @return array
-	 */
-	function read($path);
-
+    /**
+     * @param string $path
+     * @return array
+     */
+    public function read($path);
 }

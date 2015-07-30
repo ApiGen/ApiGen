@@ -16,93 +16,91 @@ use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
 use ApiGen\Parser\Elements\AutocompleteElements;
 use Closure;
 
-
 class TemplateElementsLoader
 {
 
-	/**
-	 * @var ElementStorageInterface
-	 */
-	private $elementStorage;
+    /**
+     * @var ElementStorageInterface
+     */
+    private $elementStorage;
 
-	/**
-	 * @var Configuration
-	 */
-	private $configuration;
+    /**
+     * @var Configuration
+     */
+    private $configuration;
 
-	/**
-	 * @var AutocompleteElements
-	 */
-	private $autocompleteElements;
+    /**
+     * @var AutocompleteElements
+     */
+    private $autocompleteElements;
 
-	/**
-	 * @var array
-	 */
-	private $parameters;
-
-
-	public function __construct(
-		ElementStorageInterface $elementStorage,
-		Configuration $configuration,
-		AutocompleteElements $autocompleteElements
-	) {
-		$this->elementStorage = $elementStorage;
-		$this->configuration = $configuration;
-		$this->autocompleteElements = $autocompleteElements;
-	}
+    /**
+     * @var array
+     */
+    private $parameters;
 
 
-	/**
-	 * @return Template
-	 */
-	public function addElementsToTemplate(Template $template)
-	{
-		return $template->setParameters($this->getParameters());
-	}
+    public function __construct(
+        ElementStorageInterface $elementStorage,
+        Configuration $configuration,
+        AutocompleteElements $autocompleteElements
+    ) {
+        $this->elementStorage = $elementStorage;
+        $this->configuration = $configuration;
+        $this->autocompleteElements = $autocompleteElements;
+    }
 
 
-	/**
-	 * @return Closure
-	 */
-	private function getMainFilter()
-	{
-		return function (ElementReflectionInterface $element) {
-			return $element->isMain();
-		};
-	}
+    /**
+     * @return Template
+     */
+    public function addElementsToTemplate(Template $template)
+    {
+        return $template->setParameters($this->getParameters());
+    }
 
 
-	/**
-	 * @return array
-	 */
-	private function getParameters()
-	{
-		if ($this->parameters === NULL) {
-			$parameters = [
-				'annotationGroups' => $this->configuration->getOption(CO::ANNOTATION_GROUPS),
-				'namespace' => NULL,
-				'package' => NULL,
-				'class' => NULL,
-				'constant' => NULL,
-				'function' => NULL,
-				'namespaces' => array_keys($this->elementStorage->getNamespaces()),
-				'packages' => array_keys($this->elementStorage->getPackages()),
-				'classes' => array_filter($this->elementStorage->getClasses(), $this->getMainFilter()),
-				'interfaces' => array_filter($this->elementStorage->getInterfaces(), $this->getMainFilter()),
-				'traits' => array_filter($this->elementStorage->getTraits(), $this->getMainFilter()),
-				'exceptions' => array_filter($this->elementStorage->getExceptions(), $this->getMainFilter()),
-				'constants' => array_filter($this->elementStorage->getConstants(), $this->getMainFilter()),
-				'functions' => array_filter($this->elementStorage->getFunctions(), $this->getMainFilter()),
-				'elements' => $this->autocompleteElements->getElements()
-			];
+    /**
+     * @return Closure
+     */
+    private function getMainFilter()
+    {
+        return function (ElementReflectionInterface $element) {
+            return $element->isMain();
+        };
+    }
 
-			if ($this->configuration->getOption(CO::DOWNLOAD)) {
-				$parameters['archive'] = basename($this->configuration->getZipFileName());
-			}
 
-			$this->parameters = $parameters;
-		}
-		return $this->parameters;
-	}
+    /**
+     * @return array
+     */
+    private function getParameters()
+    {
+        if ($this->parameters === null) {
+            $parameters = [
+                'annotationGroups' => $this->configuration->getOption(CO::ANNOTATION_GROUPS),
+                'namespace' => null,
+                'package' => null,
+                'class' => null,
+                'constant' => null,
+                'function' => null,
+                'namespaces' => array_keys($this->elementStorage->getNamespaces()),
+                'packages' => array_keys($this->elementStorage->getPackages()),
+                'classes' => array_filter($this->elementStorage->getClasses(), $this->getMainFilter()),
+                'interfaces' => array_filter($this->elementStorage->getInterfaces(), $this->getMainFilter()),
+                'traits' => array_filter($this->elementStorage->getTraits(), $this->getMainFilter()),
+                'exceptions' => array_filter($this->elementStorage->getExceptions(), $this->getMainFilter()),
+                'constants' => array_filter($this->elementStorage->getConstants(), $this->getMainFilter()),
+                'functions' => array_filter($this->elementStorage->getFunctions(), $this->getMainFilter()),
+                'elements' => $this->autocompleteElements->getElements()
+            ];
 
+            if ($this->configuration->getOption(CO::DOWNLOAD)) {
+                $parameters['archive'] = basename($this->configuration->getZipFileName());
+            }
+
+            $this->parameters = $parameters;
+        }
+        return $this->parameters;
+    }
 }

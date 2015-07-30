@@ -18,39 +18,38 @@ use ApiGen\Generator\Event\QueueRunEvent;
 class ProgressBarSubscriber implements EventSubscriberInterface
 {
 
-	/**
-	 * @var ProgressBarInterface
-	 */
-	private $progressBar;
+    /**
+     * @var ProgressBarInterface
+     */
+    private $progressBar;
 
 
-	public function __construct(ProgressBarInterface $progressBar)
-	{
-		$this->progressBar = $progressBar;
-	}
+    public function __construct(ProgressBarInterface $progressBar)
+    {
+        $this->progressBar = $progressBar;
+    }
 
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getSubscribedEvents()
-	{
-		return [
-			GeneratorEvents::ON_QUEUE_RUN => 'initProgressBar',
-			GeneratorEvents::ON_GENERATE_PROGRESS => 'generateProgress'
-		];
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function getSubscribedEvents()
+    {
+        return [
+            GeneratorEvents::ON_QUEUE_RUN => 'initProgressBar',
+            GeneratorEvents::ON_GENERATE_PROGRESS => 'generateProgress'
+        ];
+    }
 
 
-	public function initProgressBar(QueueRunEvent $queueRunEvent)
-	{
-		$this->progressBar->init($queueRunEvent->getStepCount());
-	}
+    public function initProgressBar(QueueRunEvent $queueRunEvent)
+    {
+        $this->progressBar->init($queueRunEvent->getStepCount());
+    }
 
 
-	public function generateProgress(GenerateProgressEvent $generateProgressEvent)
-	{
-		$this->progressBar->increment(1);
-	}
-
+    public function generateProgress(GenerateProgressEvent $generateProgressEvent)
+    {
+        $this->progressBar->increment(1);
+    }
 }

@@ -16,41 +16,39 @@ use ApiGen\Contracts\Parser\Elements\ElementStorageInterface;
 use ApiGen\Generator\TemplateGenerators\Loaders\NamespaceAndPackageLoader;
 use ApiGen\Templating\TemplateFactory;
 
-
 abstract class AbstractElementGenerator implements TemplateGeneratorInterface, StepCounterInterface
 {
 
-	/**
-	 * @var TemplateFactory
-	 */
-	protected $templateFactory;
+    /**
+     * @var TemplateFactory
+     */
+    protected $templateFactory;
 
-	/**
-	 * @var ElementStorageInterface
-	 */
-	protected $elementStorage;
+    /**
+     * @var ElementStorageInterface
+     */
+    protected $elementStorage;
 
-	/**
-	 * @var NamespaceAndPackageLoader
-	 */
-	protected $namespaceAndPackageLoader;
+    /**
+     * @var NamespaceAndPackageLoader
+     */
+    protected $namespaceAndPackageLoader;
 
-	/**
-	 * @var EventDispatcherInterface
-	 */
-	protected $eventDispatcher;
+    /**
+     * @var EventDispatcherInterface
+     */
+    protected $eventDispatcher;
 
 
-	public function __construct(
-		TemplateFactory $templateFactory,
-		ElementStorageInterface $elementStorage,
-		NamespaceAndPackageLoader $namespaceAndPackageLoader,
-		EventDispatcherInterface $eventDispatcher
-	) {
-		$this->templateFactory = $templateFactory;
-		$this->elementStorage = $elementStorage;
-		$this->namespaceAndPackageLoader = $namespaceAndPackageLoader;
-		$this->eventDispatcher = $eventDispatcher;
-	}
-
+    public function __construct(
+        TemplateFactory $templateFactory,
+        ElementStorageInterface $elementStorage,
+        NamespaceAndPackageLoader $namespaceAndPackageLoader,
+        EventDispatcherInterface $eventDispatcher
+    ) {
+        $this->templateFactory = $templateFactory;
+        $this->elementStorage = $elementStorage;
+        $this->namespaceAndPackageLoader = $namespaceAndPackageLoader;
+        $this->eventDispatcher = $eventDispatcher;
+    }
 }

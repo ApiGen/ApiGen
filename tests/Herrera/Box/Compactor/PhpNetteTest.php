@@ -5,25 +5,24 @@ namespace ApiGen\Tests\Herrera\Box\Compactor;
 use ApiGen\Herrera\Box\Compactor\PhpNette;
 use PHPUnit_Framework_TestCase;
 
-
 class PhpNetteTest extends PHPUnit_Framework_TestCase
 {
 
-	/**
-	 * @var PhpNette
-	 */
-	private $phpNetteCompactor;
+    /**
+     * @var PhpNette
+     */
+    private $phpNetteCompactor;
 
 
-	protected function setUp()
-	{
-		$this->phpNetteCompactor = new PhpNette;
-	}
+    protected function setUp()
+    {
+        $this->phpNetteCompactor = new PhpNette;
+    }
 
 
-	public function testCompactCommon()
-	{
-		$input = <<<INPUT
+    public function testCompactCommon()
+    {
+        $input = <<<INPUT
 <?php
 
 /**
@@ -31,7 +30,7 @@ class PhpNetteTest extends PHPUnit_Framework_TestCase
  */
 function getSome()
 INPUT;
-		$expected = <<<COMPACT
+        $expected = <<<COMPACT
 <?php
 
 
@@ -39,13 +38,13 @@ INPUT;
 
 function getSome()
 COMPACT;
-		$this->assertSame($expected, $this->phpNetteCompactor->compact($input));
-	}
+        $this->assertSame($expected, $this->phpNetteCompactor->compact($input));
+    }
 
 
-	public function testCompactMethodAndReturnAnnotations()
-	{
-		$input = <<<INPUT
+    public function testCompactMethodAndReturnAnnotations()
+    {
+        $input = <<<INPUT
 <?php
 
 /**
@@ -55,7 +54,7 @@ COMPACT;
  */
 function getSomeMore()
 INPUT;
-		$expected = <<<COMPACT
+        $expected = <<<COMPACT
 <?php
 
 /**
@@ -65,14 +64,13 @@ INPUT;
  */
 function getSomeMore()
 COMPACT;
-		$this->assertSame($expected, $this->phpNetteCompactor->compact($input));
-	}
+        $this->assertSame($expected, $this->phpNetteCompactor->compact($input));
+    }
 
 
-	public function testSupports()
-	{
-		$this->assertTrue($this->phpNetteCompactor->supports('file.php'));
-		$this->assertFalse($this->phpNetteCompactor->supports('file.json'));
-	}
-
+    public function testSupports()
+    {
+        $this->assertTrue($this->phpNetteCompactor->supports('file.php'));
+        $this->assertFalse($this->phpNetteCompactor->supports('file.json'));
+    }
 }

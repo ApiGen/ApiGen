@@ -12,13 +12,11 @@ namespace ApiGen\Contracts\Parser\Reflection\Extractors;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\Magic\MagicMethodReflectionInterface;
 
-
 interface MagicMethodExtractorInterface
 {
 
-	/**
-	 * @return MagicMethodReflectionInterface[]
-	 */
-	function extractFromClass(ClassReflectionInterface $classReflection);
-
+    /**
+     * @return MagicMethodReflectionInterface[]
+     */
+    public function extractFromClass(ClassReflectionInterface $classReflection);
 }

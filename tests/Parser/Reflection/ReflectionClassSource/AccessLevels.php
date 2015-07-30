@@ -2,7 +2,6 @@
 
 namespace Project;
 
-
 /**
  * @property $someMagicProperty
  * @method getSome()
@@ -10,30 +9,29 @@ namespace Project;
 class AccessLevels extends ParentClass implements RichInterface
 {
 
-	use SomeTrait;
-	use SomeTraitNotPresentHere;
+    use SomeTrait;
+    use SomeTraitNotPresentHere;
 
-	const LEVEL = 5;
+    const LEVEL = 5;
 
-	public $publicProperty;
+    public $publicProperty;
 
-	protected $protectedProperty;
+    protected $protectedProperty;
 
-	private $privateProperty;
-
-
-	public function publicMethod()
-	{
-	}
+    private $privateProperty;
 
 
-	protected function protectedMethod()
-	{
-	}
+    public function publicMethod()
+    {
+    }
 
 
-	private function privateMethod()
-	{
-	}
+    protected function protectedMethod()
+    {
+    }
 
+
+    private function privateMethod()
+    {
+    }
 }

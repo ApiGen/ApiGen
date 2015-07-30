@@ -13,60 +13,58 @@ use ApiGen\Parser\Tests\ParserStorageImplementersSource\SomeClass;
 use Nette\Utils\Finder;
 use ReflectionProperty;
 
-
 class ImplementersTest extends ContainerAwareTestCase
 {
 
-	/**
-	 * @var ParserStorageInterface
-	 */
-	private $parserStorage;
+    /**
+     * @var ParserStorageInterface
+     */
+    private $parserStorage;
 
-	/**
-	 * @var ClassReflectionInterface
-	 */
-	private $parentInterfaceReflection;
-
-
-	protected function setUp()
-	{
-		$finder = Finder::find('*')->in(__DIR__ . '/ImplementersSource');
-		$files = iterator_to_array($finder->getIterator());
-
-		/** @var ConfigurationInterface $configuration */
-		$configuration = $this->container->getByType(ConfigurationInterface::class);
-		$configuration->setOptions(['visibilityLevels' => ReflectionProperty::IS_PUBLIC]);
-
-		/** @var ParserInterface $parser */
-		$parser = $this->container->getByType(ParserInterface::class);
-		$parser->parse($files);
-
-		$this->parserStorage = $this->container->getByType(ParserStorageInterface::class);
-		$classes = $this->parserStorage->getClasses();
-
-		$this->parentInterfaceReflection = $classes[ParentInterface::class];
-	}
+    /**
+     * @var ClassReflectionInterface
+     */
+    private $parentInterfaceReflection;
 
 
-	public function testGetDirectImplementersOfInterface()
-	{
-		$implementers = $this->parserStorage->getDirectImplementersOfInterface($this->parentInterfaceReflection);
-		$this->assertCount(1, $implementers);
+    protected function setUp()
+    {
+        $finder = Finder::find('*')->in(__DIR__ . '/ImplementersSource');
+        $files = iterator_to_array($finder->getIterator());
 
-		$implementer = $implementers[0];
-		$this->assertInstanceOf(ClassReflectionInterface::class, $implementer);
-		$this->assertSame(ChildInterface::class, $implementer->getName());
-	}
+        /** @var ConfigurationInterface $configuration */
+        $configuration = $this->container->getByType(ConfigurationInterface::class);
+        $configuration->setOptions(['visibilityLevels' => ReflectionProperty::IS_PUBLIC]);
+
+        /** @var ParserInterface $parser */
+        $parser = $this->container->getByType(ParserInterface::class);
+        $parser->parse($files);
+
+        $this->parserStorage = $this->container->getByType(ParserStorageInterface::class);
+        $classes = $this->parserStorage->getClasses();
+
+        $this->parentInterfaceReflection = $classes[ParentInterface::class];
+    }
 
 
-	public function testGetIndirectImplementersOfInterface()
-	{
-		$implementers = $this->parserStorage->getIndirectImplementersOfInterface($this->parentInterfaceReflection);
-		$this->assertCount(1, $implementers);
+    public function testGetDirectImplementersOfInterface()
+    {
+        $implementers = $this->parserStorage->getDirectImplementersOfInterface($this->parentInterfaceReflection);
+        $this->assertCount(1, $implementers);
 
-		$implementer = $implementers[0];
-		$this->assertInstanceOf(ClassReflectionInterface::class, $implementer);
-		$this->assertSame(SomeClass::class, $implementer->getName());
-	}
+        $implementer = $implementers[0];
+        $this->assertInstanceOf(ClassReflectionInterface::class, $implementer);
+        $this->assertSame(ChildInterface::class, $implementer->getName());
+    }
 
+
+    public function testGetIndirectImplementersOfInterface()
+    {
+        $implementers = $this->parserStorage->getIndirectImplementersOfInterface($this->parentInterfaceReflection);
+        $this->assertCount(1, $implementers);
+
+        $implementer = $implementers[0];
+        $this->assertInstanceOf(ClassReflectionInterface::class, $implementer);
+        $this->assertSame(SomeClass::class, $implementer->getName());
+    }
 }

@@ -11,37 +11,35 @@ namespace ApiGen\Contracts\Parser\Reflection\Behavior;
 
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 
-
 interface InClassInterface extends InNamespaceInterface
 {
 
-	/**
-	 * @return ClassReflectionInterface
-	 */
-	function getDeclaringClass();
+    /**
+     * @return ClassReflectionInterface
+     */
+    public function getDeclaringClass();
 
 
-	/**
-	 * @return string
-	 */
-	function getPackageName();
+    /**
+     * @return string
+     */
+    public function getPackageName();
 
 
-	/**
-	 * @return string
-	 */
-	function getNamespaceName();
+    /**
+     * @return string
+     */
+    public function getNamespaceName();
 
 
-	/**
-	 * @return array
-	 */
-	function getAnnotations();
+    /**
+     * @return array
+     */
+    public function getAnnotations();
 
 
-	/**
-	 * @return string[]
-	 */
-	function getNamespaceAliases();
-
+    /**
+     * @return string[]
+     */
+    public function getNamespaceAliases();
 }

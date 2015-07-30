@@ -14,50 +14,48 @@ use PHPUnit_Framework_TestCase;
 use ReflectionProperty;
 use TokenReflection\Broker;
 
-
 class ReflectionFunctionTest extends PHPUnit_Framework_TestCase
 {
 
-	/**
-	 * @var FunctionReflectionInterface
-	 */
-	private $reflectionFunction;
+    /**
+     * @var FunctionReflectionInterface
+     */
+    private $reflectionFunction;
 
 
-	protected function setUp()
-	{
-		$backend = new Backend($this->getReflectionFactory());
-		$broker = new Broker($backend);
-		$broker->processDirectory(__DIR__ . '/ReflectionFunctionSource');
+    protected function setUp()
+    {
+        $backend = new Backend($this->getReflectionFactory());
+        $broker = new Broker($backend);
+        $broker->processDirectory(__DIR__ . '/ReflectionFunctionSource');
 
-		$this->reflectionFunction = $backend->getFunctions()['getSomeData'];
-	}
-
-
-	public function testIsValid()
-	{
-		$this->assertTrue($this->reflectionFunction->isValid());
-	}
+        $this->reflectionFunction = $backend->getFunctions()['getSomeData'];
+    }
 
 
-	public function testIsDocumented()
-	{
-		$this->assertTrue($this->reflectionFunction->isDocumented());
-	}
+    public function testIsValid()
+    {
+        $this->assertTrue($this->reflectionFunction->isValid());
+    }
 
 
-	/**
-	 * @return ReflectionFactoryInterface
-	 */
-	private function getReflectionFactory()
-	{
-		$parserStorageMock = Mockery::mock(ParserStorageInterface::class);
-		$configurationMock = Mockery::mock(ConfigurationInterface::class, [
-			'getVisibilityLevel' => ReflectionProperty::IS_PUBLIC,
-			'isInternalDocumented' => FALSE,
-			'isPhpCoreDocumented' => TRUE,
-		]);
-		return new ReflectionFactory($configurationMock, $parserStorageMock);
-	}
+    public function testIsDocumented()
+    {
+        $this->assertTrue($this->reflectionFunction->isDocumented());
+    }
 
+
+    /**
+     * @return ReflectionFactoryInterface
+     */
+    private function getReflectionFactory()
+    {
+        $parserStorageMock = Mockery::mock(ParserStorageInterface::class);
+        $configurationMock = Mockery::mock(ConfigurationInterface::class, [
+            'getVisibilityLevel' => ReflectionProperty::IS_PUBLIC,
+            'isInternalDocumented' => false,
+            'isPhpCoreDocumented' => true,
+        ]);
+        return new ReflectionFactory($configurationMock, $parserStorageMock);
+    }
 }

@@ -6,7 +6,6 @@ const ONE = 1;
 
 namespace ApiGen\Parser\Tests\ErrorClass;
 
-
 class ErrorClass
 {
 

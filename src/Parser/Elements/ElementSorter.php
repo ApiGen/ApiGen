@@ -16,129 +16,127 @@ use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
 
-
 class ElementSorter implements ElementSorterInterface
 {
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function sortElementsByFqn(array $elements)
-	{
-		if (count($elements)) {
-			$firstElement = array_values($elements)[0];
-			if ($firstElement instanceof ConstantReflectionInterface) {
-				return $this->sortConstantsByFqn($elements);
+    /**
+     * {@inheritdoc}
+     */
+    public function sortElementsByFqn(array $elements)
+    {
+        if (count($elements)) {
+            $firstElement = array_values($elements)[0];
+            if ($firstElement instanceof ConstantReflectionInterface) {
+                return $this->sortConstantsByFqn($elements);
 
-			} elseif ($firstElement instanceof FunctionReflectionInterface) {
-				return $this->sortFunctionsByFqn($elements);
+            } elseif ($firstElement instanceof FunctionReflectionInterface) {
+                return $this->sortFunctionsByFqn($elements);
 
-			} elseif ($firstElement instanceof InClassInterface) {
-				return $this->sortPropertiesOrMethodsByFqn($elements);
-			}
-		}
-		return $elements;
-	}
-
-
-	/**
-	 * @param ConstantReflectionInterface[] $constantReflections
-	 * @return ConstantReflectionInterface[]
-	 */
-	private function sortConstantsByFqn($constantReflections)
-	{
-		usort($constantReflections, function ($a, $b) {
-			return $this->compareConstantsByFqn($a, $b);
-		});
-		return $constantReflections;
-	}
+            } elseif ($firstElement instanceof InClassInterface) {
+                return $this->sortPropertiesOrMethodsByFqn($elements);
+            }
+        }
+        return $elements;
+    }
 
 
-	/**
-	 * @param FunctionReflectionInterface[] $functionReflections
-	 * @return FunctionReflectionInterface[]
-	 */
-	private function sortFunctionsByFqn($functionReflections)
-	{
-		usort($functionReflections, function ($a, $b) {
-			return $this->compareFunctionsByFqn($a, $b);
-		});
-		return $functionReflections;
-	}
+    /**
+     * @param ConstantReflectionInterface[] $constantReflections
+     * @return ConstantReflectionInterface[]
+     */
+    private function sortConstantsByFqn($constantReflections)
+    {
+        usort($constantReflections, function ($a, $b) {
+            return $this->compareConstantsByFqn($a, $b);
+        });
+        return $constantReflections;
+    }
 
 
-	/**
-	 * @param InClassInterface[] $elementReflections
-	 * @return MethodReflectionInterface[]
-	 */
-	private function sortPropertiesOrMethodsByFqn($elementReflections)
-	{
-		usort($elementReflections, function ($a, $b) {
-			return $this->compareMethodsOrPropertiesByFqn($a, $b);
-		});
-		return $elementReflections;
-	}
+    /**
+     * @param FunctionReflectionInterface[] $functionReflections
+     * @return FunctionReflectionInterface[]
+     */
+    private function sortFunctionsByFqn($functionReflections)
+    {
+        usort($functionReflections, function ($a, $b) {
+            return $this->compareFunctionsByFqn($a, $b);
+        });
+        return $functionReflections;
+    }
 
 
-	/**
-	 * @return int
-	 */
-	private function compareConstantsByFqn(
-		ConstantReflectionInterface $reflection1,
-		ConstantReflectionInterface $reflection2
-	) {
-		return strcasecmp($this->getConstantFqnName($reflection1), $this->getConstantFqnName($reflection2));
-	}
+    /**
+     * @param InClassInterface[] $elementReflections
+     * @return MethodReflectionInterface[]
+     */
+    private function sortPropertiesOrMethodsByFqn($elementReflections)
+    {
+        usort($elementReflections, function ($a, $b) {
+            return $this->compareMethodsOrPropertiesByFqn($a, $b);
+        });
+        return $elementReflections;
+    }
 
 
-	/**
-	 * @return string
-	 */
-	private function getConstantFqnName(ConstantReflectionInterface $reflection)
-	{
-		$class = $reflection->getDeclaringClassName() ?: $reflection->getNamespaceName();
-		return $class . '\\' . $reflection->getName();
-	}
+    /**
+     * @return int
+     */
+    private function compareConstantsByFqn(
+        ConstantReflectionInterface $reflection1,
+        ConstantReflectionInterface $reflection2
+    ) {
+        return strcasecmp($this->getConstantFqnName($reflection1), $this->getConstantFqnName($reflection2));
+    }
 
 
-	/**
-	 * @return int
-	 */
-	private function compareFunctionsByFqn(
-		FunctionReflectionInterface $reflection1,
-		FunctionReflectionInterface $reflection2
-	) {
-		return strcasecmp($this->getFunctionFqnName($reflection1), $this->getFunctionFqnName($reflection2));
-	}
+    /**
+     * @return string
+     */
+    private function getConstantFqnName(ConstantReflectionInterface $reflection)
+    {
+        $class = $reflection->getDeclaringClassName() ?: $reflection->getNamespaceName();
+        return $class . '\\' . $reflection->getName();
+    }
 
 
-	/**
-	 * @return string
-	 */
-	private function getFunctionFqnName(FunctionReflectionInterface $reflection)
-	{
-		return $reflection->getNamespaceName() . '\\' . $reflection->getName();
-	}
+    /**
+     * @return int
+     */
+    private function compareFunctionsByFqn(
+        FunctionReflectionInterface $reflection1,
+        FunctionReflectionInterface $reflection2
+    ) {
+        return strcasecmp($this->getFunctionFqnName($reflection1), $this->getFunctionFqnName($reflection2));
+    }
 
 
-	/**
-	 * @return int
-	 */
-	private function compareMethodsOrPropertiesByFqn(InClassInterface $reflection1, InClassInterface $reflection2)
-	{
-		return strcasecmp(
-			$this->getPropertyOrMethodFqnName($reflection1),
-			$this->getPropertyOrMethodFqnName($reflection2)
-		);
-	}
+    /**
+     * @return string
+     */
+    private function getFunctionFqnName(FunctionReflectionInterface $reflection)
+    {
+        return $reflection->getNamespaceName() . '\\' . $reflection->getName();
+    }
 
 
-	/**
-	 * @return string
-	 */
-	private function getPropertyOrMethodFqnName(InClassInterface $reflection)
-	{
-		return $reflection->getDeclaringClassName() . '::' . $reflection->getName();
-	}
+    /**
+     * @return int
+     */
+    private function compareMethodsOrPropertiesByFqn(InClassInterface $reflection1, InClassInterface $reflection2)
+    {
+        return strcasecmp(
+            $this->getPropertyOrMethodFqnName($reflection1),
+            $this->getPropertyOrMethodFqnName($reflection2)
+        );
+    }
 
+
+    /**
+     * @return string
+     */
+    private function getPropertyOrMethodFqnName(InClassInterface $reflection)
+    {
+        return $reflection->getDeclaringClassName() . '::' . $reflection->getName();
+    }
 }

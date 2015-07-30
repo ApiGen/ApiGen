@@ -2,7 +2,6 @@
 
 namespace Project;
 
-
 /**
  * @method getSomeTraitMagic()
  * @property int $someTraitProperty
@@ -10,11 +9,10 @@ namespace Project;
 trait SomeTrait
 {
 
-	public $publicTraitProperty;
+    public $publicTraitProperty;
 
 
-	public function publicTraitMethod()
-	{
-	}
-
+    public function publicTraitMethod()
+    {
+    }
 }

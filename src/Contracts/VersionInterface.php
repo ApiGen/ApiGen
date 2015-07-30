@@ -9,15 +9,13 @@
 
 namespace ApiGen\Contracts;
 
-
 interface VersionInterface
 {
 
-	/**
-	 * Returns version number.
-	 *
-	 * @return string
-	 */
-	function getVersion();
-
+    /**
+     * Returns version number.
+     *
+     * @return string
+     */
+    public function getVersion();
 }

@@ -11,115 +11,113 @@ namespace ApiGen\Contracts\Parser\Reflection;
 
 use ApiGen\Parser\Reflection\TokenReflection\ReflectionInterface;
 
-
 interface ParameterReflectionInterface extends ReflectionInterface
 {
 
-	/**
-	 * @return string
-	 */
-	function getTypeHint();
+    /**
+     * @return string
+     */
+    public function getTypeHint();
 
 
-	/**
-	 * @return string
-	 */
-	function getDescription();
+    /**
+     * @return string
+     */
+    public function getDescription();
 
 
-	/**
-	 * @return string
-	 */
-	function getDefaultValueDefinition();
+    /**
+     * @return string
+     */
+    public function getDefaultValueDefinition();
 
 
-	/**
-	 * @return bool
-	 */
-	function isDefaultValueAvailable();
+    /**
+     * @return bool
+     */
+    public function isDefaultValueAvailable();
 
 
-	/**
-	 * @return int
-	 */
-	function getPosition();
+    /**
+     * @return int
+     */
+    public function getPosition();
 
 
-	/**
-	 * @return bool
-	 */
-	function isArray();
+    /**
+     * @return bool
+     */
+    public function isArray();
 
 
-	/**
-	 * @return bool
-	 */
-	function isCallable();
+    /**
+     * @return bool
+     */
+    public function isCallable();
 
 
-	/**
-	 * @return ClassReflectionInterface|NULL
-	 */
-	function getClass();
+    /**
+     * @return ClassReflectionInterface|NULL
+     */
+    public function getClass();
 
 
-	/**
-	 * @return string|NULL
-	 */
-	function getClassName();
+    /**
+     * @return string|NULL
+     */
+    public function getClassName();
 
 
-	/**
-	 * @return bool
-	 */
-	function allowsNull();
+    /**
+     * @return bool
+     */
+    public function allowsNull();
 
 
-	/**
-	 * @return bool
-	 */
-	function isOptional();
+    /**
+     * @return bool
+     */
+    public function isOptional();
 
 
-	/**
-	 * @return bool
-	 */
-	function isPassedByReference();
+    /**
+     * @return bool
+     */
+    public function isPassedByReference();
 
 
-	/**
-	 * @return bool
-	 */
-	function canBePassedByValue();
+    /**
+     * @return bool
+     */
+    public function canBePassedByValue();
 
 
-	/**
-	 * @return AbstractFunctionMethodReflectionInterface
-	 */
-	function getDeclaringFunction();
+    /**
+     * @return AbstractFunctionMethodReflectionInterface
+     */
+    public function getDeclaringFunction();
 
 
-	/**
-	 * @return string
-	 */
-	function getDeclaringFunctionName();
+    /**
+     * @return string
+     */
+    public function getDeclaringFunctionName();
 
 
-	/**
-	 * @return ClassReflectionInterface|NULL
-	 */
-	function getDeclaringClass();
+    /**
+     * @return ClassReflectionInterface|NULL
+     */
+    public function getDeclaringClass();
 
 
-	/**
-	 * @return string
-	 */
-	function getDeclaringClassName();
+    /**
+     * @return string
+     */
+    public function getDeclaringClassName();
 
 
-	/**
-	 * @return bool
-	 */
-	function isUnlimited();
-
+    /**
+     * @return bool
+     */
+    public function isUnlimited();
 }

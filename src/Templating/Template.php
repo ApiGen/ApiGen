@@ -11,88 +11,86 @@ namespace ApiGen\Templating;
 
 use Latte\Engine;
 
-
 class Template
 {
 
-	/**
-	 * @var Engine
-	 */
-	private $latteEngine;
+    /**
+     * @var Engine
+     */
+    private $latteEngine;
 
-	/**
-	 * @var string
-	 */
-	private $savePath;
+    /**
+     * @var string
+     */
+    private $savePath;
 
-	/**
-	 * @var string
-	 */
-	private $file;
+    /**
+     * @var string
+     */
+    private $file;
 
-	/**
-	 * @var mixed[]
-	 */
-	private $parameters = [];
-
-
-	public function __construct(Engine $latteEngine)
-	{
-		$this->latteEngine = $latteEngine;
-	}
+    /**
+     * @var mixed[]
+     */
+    private $parameters = [];
 
 
-	/**
-	 * @param string $file
-	 */
-	public function setFile($file)
-	{
-		$this->file = $file;
-	}
+    public function __construct(Engine $latteEngine)
+    {
+        $this->latteEngine = $latteEngine;
+    }
 
 
-	/**
-	 * @return mixed[]
-	 */
-	public function getParameters()
-	{
-		return $this->parameters;
-	}
+    /**
+     * @param string $file
+     */
+    public function setFile($file)
+    {
+        $this->file = $file;
+    }
 
 
-	/**
-	 * @return self
-	 */
-	public function setParameters(array $parameters)
-	{
-		$this->parameters = $parameters + $this->parameters;
-		return $this;
-	}
+    /**
+     * @return mixed[]
+     */
+    public function getParameters()
+    {
+        return $this->parameters;
+    }
 
 
-	/**
-	 * @param string $savePath
-	 */
-	public function setSavePath($savePath)
-	{
-		$this->savePath = $savePath;
-	}
+    /**
+     * @return self
+     */
+    public function setParameters(array $parameters)
+    {
+        $this->parameters = $parameters + $this->parameters;
+        return $this;
+    }
 
 
-	/**
-	 * @param string $file
-	 */
-	public function save($file = NULL)
-	{
-		$this->savePath = $file ?: $this->savePath;
-		$dir = dirname($this->savePath);
+    /**
+     * @param string $savePath
+     */
+    public function setSavePath($savePath)
+    {
+        $this->savePath = $savePath;
+    }
 
-		if ( ! is_dir($dir)) {
-			mkdir($dir, 0755, TRUE);
-		}
 
-		$content = $this->latteEngine->renderToString($this->file, $this->parameters);
-		file_put_contents($this->savePath, $content);
-	}
+    /**
+     * @param string $file
+     */
+    public function save($file = null)
+    {
+        $this->savePath = $file ?: $this->savePath;
+        $dir = dirname($this->savePath);
 
+        if (! is_dir($dir)) {
+            mkdir($dir, 0755, true);
+        }
+
+        $content = $this->latteEngine->renderToString($this->file, $this->parameters);
+        file_put_contents($this->savePath, $content);
+    }
 }

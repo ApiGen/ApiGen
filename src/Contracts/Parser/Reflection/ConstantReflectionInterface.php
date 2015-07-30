@@ -13,26 +13,27 @@ use ApiGen\Contracts\Parser\Reflection\Behavior\InClassInterface;
 use ApiGen\Contracts\Parser\Reflection\Behavior\InNamespaceInterface;
 use ApiGen\Contracts\Parser\Reflection\Behavior\LinedInterface;
 
-
-interface ConstantReflectionInterface extends ElementReflectionInterface, InNamespaceInterface, InClassInterface,
-	LinedInterface
+interface ConstantReflectionInterface extends
+    ElementReflectionInterface,
+    InNamespaceInterface,
+    InClassInterface,
+    LinedInterface
 {
 
-	/**
-	 * @return string
-	 */
-	function getTypeHint();
+    /**
+     * @return string
+     */
+    public function getTypeHint();
 
 
-	/**
-	 * @return mixed
-	 */
-	function getValue();
+    /**
+     * @return mixed
+     */
+    public function getValue();
 
 
-	/**
-	 * @return string
-	 */
-	function getValueDefinition();
-
+    /**
+     * @return string
+     */
+    public function getValueDefinition();
 }

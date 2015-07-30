@@ -5,20 +5,42 @@ php:
   - 5.6
   - 7.0
 
+sudo: false
+
 env:
   global:
-    secure: wF9OH7etvUeZNveEsFPhyibrGuR9Rj9zY64rMKwkBWSjvsnQ8Cj/Vbe7PL2dAFfypuox8rkfTJ/nUSgkyJXh/5/fmgD3VVeg8PEB1WSMYnkGexbKYLQ5u6a34RRLtMtrwnAmHscl/0RkgyNk8GUKLJWWKjunIYFzpVeBbjSKpxM=
+    - DEFAULT=1
 
-install:
-  - composer create-project --prefer-source --dev --no-interaction zenify/ci vendor/ci @dev
-  - . vendor/ci/travis/coverage-init.sh
-  - composer install --prefer-source
+matrix:
+  fast_finish: true
+
+  include:
+    - php: 5.5
+      env: COVERALLS=1 DEFAULT=0
+
+    - php: 7
+      env: PHPCS=1 DEFAULT=0
+
+  allow_failures:
+    - env: COVERALLS=1 DEFAULT=0
 
 before_script:
-  - . vendor/ci/travis/static-analysis.sh
+  - composer self-update
+  - composer install --prefer-dist --no-interaction
+
+  - sh -c "if [ '$COVERALLS' = '1' ]; then composer require --dev satooshi/php-coveralls:dev-master; fi"
+  - sh -c "if [ '$COVERALLS' = '1' ]; then mkdir -p build/logs; fi"
+
+  - phpenv rehash
+  - set +H
 
 script:
-  - phpunit $PHPUNIT_FLAGS
+  - sh -c "if [ '$DEFAULT' = '1' ]; then phpunit; fi"
 
-after_script:
-  - . vendor/ci/travis/coverage-send.sh
+  - sh -c "if [ '$PHPCS' = '1' ]; then vendor/bin/phpcs -p --extensions=php --standard=PSR2 ./src; fi"
+
+  - sh -c "if [ '$COVERALLS' = '1' ]; then phpunit --coverage-clover build/logs/clover.xml; fi"
+  - sh -c "if [ '$COVERALLS' = '1' ]; then vendor/bin/coveralls -c .coveralls.yml -v; fi"
+
+notifications:
+  email: false

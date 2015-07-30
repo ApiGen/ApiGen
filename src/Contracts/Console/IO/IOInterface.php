@@ -12,33 +12,31 @@ namespace ApiGen\Contracts\Console\IO;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-
 interface IOInterface
 {
 
-	/**
-	 * @return InputInterface
-	 */
-	function getInput();
+    /**
+     * @return InputInterface
+     */
+    public function getInput();
 
 
-	/**
-	 * @return OutputInterface
-	 */
-	function getOutput();
+    /**
+     * @return OutputInterface
+     */
+    public function getOutput();
 
 
-	/**
-	 * @param string $message
-	 */
-	function writeln($message);
+    /**
+     * @param string $message
+     */
+    public function writeln($message);
 
 
-	/**
-	 * @param string $question
-	 * @param NULL|string $default
-	 * @return string
-	 */
-	function ask($question, $default = NULL);
-
+    /**
+     * @param string $question
+     * @param NULL|string $default
+     * @return string
+     */
+    public function ask($question, $default = null);
 }

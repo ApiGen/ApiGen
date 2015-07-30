@@ -9,13 +9,11 @@
 
 namespace ApiGen\Contracts\Parser;
 
-
 interface FileProcessingExceptionInterface
 {
 
-	/**
-	 * @return \Exception[]
-	 */
-	function getReasons();
-
+    /**
+     * @return \Exception[]
+     */
+    public function getReasons();
 }

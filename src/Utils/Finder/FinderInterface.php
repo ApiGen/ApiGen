@@ -9,18 +9,14 @@
 
 namespace ApiGen\Utils\Finder;
 
-use SplFileInfo;
-
-
 interface FinderInterface
 {
 
-	/**
-	 * @param string|array $source
-	 * @param array $exclude
-	 * @param array $extensions
-	 * @return SplFileInfo[]
-	 */
-	function find($source, array $exclude = [], array $extensions = ['php']);
-
+    /**
+     * @param string|array $source
+     * @param array $exclude
+     * @param array $extensions
+     * @return \SplFileInfo
+     */
+    public function find($source, array $exclude = [], array $extensions = ['php']);
 }

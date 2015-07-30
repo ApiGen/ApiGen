@@ -9,13 +9,11 @@
 
 namespace ApiGen\Contracts\Parser\Elements;
 
-
 interface AutocompleteElementsInterface
 {
 
-	/**
-	 * @return array
-	 */
-	function getElements();
-
+    /**
+     * @return array
+     */
+    public function getElements();
 }

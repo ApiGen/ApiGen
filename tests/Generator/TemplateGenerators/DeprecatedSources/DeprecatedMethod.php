@@ -3,13 +3,12 @@
 class DeprecatedMethod
 {
 
-	/**
-	 * @deprecated
-	 * @return string
-	 */
-	public function getDrink()
-	{
-		return 'water';
-	}
-
+    /**
+     * @deprecated
+     * @return string
+     */
+    public function getDrink()
+    {
+        return 'water';
+    }
 }

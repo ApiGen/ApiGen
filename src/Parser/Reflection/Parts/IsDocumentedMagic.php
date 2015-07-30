@@ -11,7 +11,6 @@ namespace ApiGen\Parser\Reflection\Parts;
 
 use ApiGen\Contracts\Parser\Configuration\ParserConfigurationInterface;
 
-
 /**
  * @property-read $isDocumented
  * @property-read ParserConfigurationInterface $configuration
@@ -20,17 +19,16 @@ use ApiGen\Contracts\Parser\Configuration\ParserConfigurationInterface;
 trait IsDocumentedMagic
 {
 
-	/**
-	 * @return bool
-	 */
-	public function isDocumented()
-	{
-		if ($this->isDocumented === NULL) {
-			$deprecated = $this->configuration->isDeprecatedDocumented();
-			$this->isDocumented = $deprecated || ! $this->isDeprecated();
-		}
+    /**
+     * @return bool
+     */
+    public function isDocumented()
+    {
+        if ($this->isDocumented === null) {
+            $deprecated = $this->configuration->isDeprecatedDocumented();
+            $this->isDocumented = $deprecated || ! $this->isDeprecated();
+        }
 
-		return $this->isDocumented;
-	}
-
+        return $this->isDocumented;
+    }
 }

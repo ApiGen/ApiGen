@@ -13,29 +13,27 @@ use ApiGen\Configuration\Theme\ThemeConfigOptions as TCO;
 use ApiGen\Contracts\Generator\TemplateGenerators\TemplateGeneratorInterface;
 use ApiGen\Templating\TemplateFactory;
 
-
 class OverviewGenerator implements TemplateGeneratorInterface
 {
 
-	/**
-	 * @var TemplateFactory
-	 */
-	private $templateFactory;
+    /**
+     * @var TemplateFactory
+     */
+    private $templateFactory;
 
 
-	public function __construct(TemplateFactory $templateFactory)
-	{
-		$this->templateFactory = $templateFactory;
-	}
+    public function __construct(TemplateFactory $templateFactory)
+    {
+        $this->templateFactory = $templateFactory;
+    }
 
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function generate()
-	{
-		$this->templateFactory->createForType(TCO::OVERVIEW)
-			->save();
-	}
-
+    /**
+     * {@inheritdoc}
+     */
+    public function generate()
+    {
+        $this->templateFactory->createForType(TCO::OVERVIEW)
+            ->save();
+    }
 }

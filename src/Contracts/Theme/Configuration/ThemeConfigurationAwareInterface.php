@@ -11,10 +11,8 @@ namespace ApiGen\Contracts\Theme\Configuration;
 
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
 
-
 interface ThemeConfigurationAwareInterface
 {
 
-	function setThemeConfiguration(ThemeConfigurationInterface $themeConfiguration);
-
+    public function setThemeConfiguration(ThemeConfigurationInterface $themeConfiguration);
 }

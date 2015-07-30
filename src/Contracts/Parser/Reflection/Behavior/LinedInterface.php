@@ -9,19 +9,17 @@
 
 namespace ApiGen\Contracts\Parser\Reflection\Behavior;
 
-
 interface LinedInterface
 {
 
-	/**
-	 * @return int
-	 */
-	function getStartLine();
+    /**
+     * @return int
+     */
+    public function getStartLine();
 
 
-	/**
-	 * @return int
-	 */
-	function getEndLine();
-
+    /**
+     * @return int
+     */
+    public function getEndLine();
 }

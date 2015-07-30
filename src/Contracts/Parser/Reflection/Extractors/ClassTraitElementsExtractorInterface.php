@@ -13,43 +13,41 @@ use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
 
-
 interface ClassTraitElementsExtractorInterface
 {
 
-	/**
-	 * @return ClassReflectionInterface[]
-	 */
-	function getDirectUsers();
+    /**
+     * @return ClassReflectionInterface[]
+     */
+    public function getDirectUsers();
 
 
-	/**
-	 * @return ClassReflectionInterface[]
-	 */
-	function getIndirectUsers();
+    /**
+     * @return ClassReflectionInterface[]
+     */
+    public function getIndirectUsers();
 
 
-	/**
-	 * @return PropertyReflectionInterface[]
-	 */
-	function getTraitProperties();
+    /**
+     * @return PropertyReflectionInterface[]
+     */
+    public function getTraitProperties();
 
 
-	/**
-	 * @return PropertyReflectionInterface[][]
-	 */
-	function getUsedProperties();
+    /**
+     * @return PropertyReflectionInterface[][]
+     */
+    public function getUsedProperties();
 
 
-	/**
-	 * @return MethodReflectionInterface[]
-	 */
-	function getTraitMethods();
+    /**
+     * @return MethodReflectionInterface[]
+     */
+    public function getTraitMethods();
 
 
-	/**
-	 * @return MethodReflectionInterface[]
-	 */
-	function getUsedMethods();
-
+    /**
+     * @return MethodReflectionInterface[]
+     */
+    public function getUsedMethods();
 }

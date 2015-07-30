@@ -9,13 +9,11 @@
 
 namespace ApiGen\Contracts\Parser\Elements;
 
-
 interface GroupSorterInterface
 {
 
-	/**
-	 * @return array
-	 */
-	function sort(array $groups);
-
+    /**
+     * @return array
+     */
+    public function sort(array $groups);
 }

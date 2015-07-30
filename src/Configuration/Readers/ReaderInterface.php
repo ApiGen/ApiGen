@@ -9,13 +9,11 @@
 
 namespace ApiGen\Configuration\Readers;
 
-
 interface ReaderInterface
 {
 
-	/**
-	 * @return array
-	 */
-	function read();
-
+    /**
+     * @return array
+     */
+    public function read();
 }

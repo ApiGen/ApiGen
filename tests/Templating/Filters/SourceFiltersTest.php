@@ -14,90 +14,90 @@ use ApiGen\Tests\MethodInvoker;
 use Mockery;
 use PHPUnit_Framework_TestCase;
 
-
 class SourceFiltersTest extends PHPUnit_Framework_TestCase
 {
 
-	/**
-	 * @var SourceFilters
-	 */
-	private $sourceFilters;
+    /**
+     * @var SourceFilters
+     */
+    private $sourceFilters;
 
 
-	protected function setUp()
-	{
-		$configurationMock = Mockery::mock(Configuration::class);
-		$configurationMock->shouldReceive('getOption')->with('destination')->andReturn(TEMP_DIR);
-		$configurationMock->shouldReceive('getOption')->with('template')->andReturn(
-			['templates' => ['source' => ['filename' => 'source-file-%s.html']]
-		]);
-		$this->sourceFilters = new SourceFilters($configurationMock);
-	}
+    protected function setUp()
+    {
+        $configurationMock = Mockery::mock(Configuration::class);
+        $configurationMock->shouldReceive('getOption')->with('destination')->andReturn(TEMP_DIR);
+        $configurationMock->shouldReceive('getOption')->with('template')->andReturn(
+            ['templates' => ['source' => ['filename' => 'source-file-%s.html']]
+            ]
+        );
+            $this->sourceFilters = new SourceFilters($configurationMock);
+    }
 
 
-	public function testStaticFile()
-	{
-		file_put_contents(TEMP_DIR . '/some-file.txt', '...');
-		$link = $this->sourceFilters->staticFile('some-file.txt');
-		$this->assertSame('some-file.txt?6eae3a5b062c6d0d79f070c26e6d62486b40cb46', $link);
-	}
+    public function testStaticFile()
+    {
+        file_put_contents(TEMP_DIR . '/some-file.txt', '...');
+        $link = $this->sourceFilters->staticFile('some-file.txt');
+        $this->assertSame('some-file.txt?6eae3a5b062c6d0d79f070c26e6d62486b40cb46', $link);
+    }
 
 
-	public function testSourceUrlFunction()
-	{
-		$reflectionFunction = Mockery::mock(FunctionReflectionInterface::class);
-		$reflectionFunction->shouldReceive('getName')->andReturn('someFunction');
-		$reflectionFunction->shouldReceive('getStartLine')->andReturn(15);
-		$reflectionFunction->shouldReceive('getEndLine')->andReturn(25);
+    public function testSourceUrlFunction()
+    {
+        $reflectionFunction = Mockery::mock(FunctionReflectionInterface::class);
+        $reflectionFunction->shouldReceive('getName')->andReturn('someFunction');
+        $reflectionFunction->shouldReceive('getStartLine')->andReturn(15);
+        $reflectionFunction->shouldReceive('getEndLine')->andReturn(25);
 
-		$this->assertSame(
-			'source-file-function-someFunction.html#15-25',
-			$this->sourceFilters->sourceUrl($reflectionFunction)
-		);
-	}
-
-
-	public function testSourceUrlClass()
-	{
-		$reflectionClass = Mockery::mock(ClassReflectionInterface::class);
-		$reflectionClass->shouldReceive('getName')->andReturn('someClass');
-		$reflectionClass->shouldReceive('getStartLine')->andReturn(10);
-		$reflectionClass->shouldReceive('getEndLine')->andReturn(100);
-
-		$this->assertSame(
-			'source-file-class-someClass.html#10-100',
-			$this->sourceFilters->sourceUrl($reflectionClass)
-		);
-	}
+        $this->assertSame(
+            'source-file-function-someFunction.html#15-25',
+            $this->sourceFilters->sourceUrl($reflectionFunction)
+        );
+    }
 
 
-	public function testSourceUrlClassConstant()
-	{
-		$reflectionConstant = Mockery::mock(ClassConstantReflectionInterface::class);
-		$reflectionConstant->shouldReceive('getName')->andReturn('someConstant');
-		$reflectionConstant->shouldReceive('getDeclaringClassName')->andReturn('someClass');
-		$reflectionConstant->shouldReceive('getStartLine')->andReturn(20);
-		$reflectionConstant->shouldReceive('getEndLine')->andReturn(20);
+    public function testSourceUrlClass()
+    {
+        $reflectionClass = Mockery::mock(ClassReflectionInterface::class);
+        $reflectionClass->shouldReceive('getName')->andReturn('someClass');
+        $reflectionClass->shouldReceive('getStartLine')->andReturn(10);
+        $reflectionClass->shouldReceive('getEndLine')->andReturn(100);
 
-		$this->assertSame(
-			'source-file-class-someClass.html#20',
-			$this->sourceFilters->sourceUrl($reflectionConstant)
-		);
-	}
+        $this->assertSame(
+            'source-file-class-someClass.html#10-100',
+            $this->sourceFilters->sourceUrl($reflectionClass)
+        );
+    }
 
 
-	public function testSourceUrlConstant()
-	{
-		$reflectionConstant = Mockery::mock(ConstantReflectionInterface::class);
-		$reflectionConstant->shouldReceive('getName')->andReturn('someConstant');
-		$reflectionConstant->shouldReceive('getStartLine')->andReturn(20);
-		$reflectionConstant->shouldReceive('getEndLine')->andReturn(20);
+    public function testSourceUrlClassConstant()
+    {
+        $reflectionConstant = Mockery::mock(ClassConstantReflectionInterface::class);
+        $reflectionConstant->shouldReceive('getName')->andReturn('someConstant');
+        $reflectionConstant->shouldReceive('getDeclaringClassName')->andReturn('someClass');
+        $reflectionConstant->shouldReceive('getStartLine')->andReturn(20);
+        $reflectionConstant->shouldReceive('getEndLine')->andReturn(20);
 
-		$this->assertSame(
-			'source-file-constant-someConstant.html#20',
-			$this->sourceFilters->sourceUrl($reflectionConstant)
-		);
-	}
+        $this->assertSame(
+            'source-file-class-someClass.html#20',
+            $this->sourceFilters->sourceUrl($reflectionConstant)
+        );
+    }
+
+
+    public function testSourceUrlConstant()
+    {
+        $reflectionConstant = Mockery::mock(ConstantReflectionInterface::class);
+        $reflectionConstant->shouldReceive('getName')->andReturn('someConstant');
+        $reflectionConstant->shouldReceive('getStartLine')->andReturn(20);
+        $reflectionConstant->shouldReceive('getEndLine')->andReturn(20);
+
+        $this->assertSame(
+            'source-file-constant-someConstant.html#20',
+            $this->sourceFilters->sourceUrl($reflectionConstant)
+        );
+    }
 
 
 //	public function testGetElementLinesAnchor()
@@ -116,19 +116,18 @@ class SourceFiltersTest extends PHPUnit_Framework_TestCase
 //	}
 
 
-	/**
-	 * @param string $name
-	 * @param int $start
-	 * @param int $end
-	 * @return Mockery\MockInterface
-	 */
-	private function buildReflectionElement($name, $start, $end)
-	{
-		$reflectionElement = Mockery::mock(ElementReflectionInterface::class, LinedInterface::class);
-		$reflectionElement->shouldReceive('getName')->andReturn($name);
-		$reflectionElement->shouldReceive('getStartLine')->andReturn($start);
-		$reflectionElement->shouldReceive('getEndLine')->andReturn($end);
-		return $reflectionElement;
-	}
-
+    /**
+     * @param string $name
+     * @param int $start
+     * @param int $end
+     * @return Mockery\MockInterface
+     */
+    private function buildReflectionElement($name, $start, $end)
+    {
+        $reflectionElement = Mockery::mock(ElementReflectionInterface::class, LinedInterface::class);
+        $reflectionElement->shouldReceive('getName')->andReturn($name);
+        $reflectionElement->shouldReceive('getStartLine')->andReturn($start);
+        $reflectionElement->shouldReceive('getEndLine')->andReturn($end);
+        return $reflectionElement;
+    }
 }

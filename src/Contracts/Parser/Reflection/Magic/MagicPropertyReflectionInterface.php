@@ -12,73 +12,71 @@ namespace ApiGen\Contracts\Parser\Reflection\Magic;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
 
-
 interface MagicPropertyReflectionInterface extends PropertyReflectionInterface
 {
 
-	/**
-	 * @return bool
-	 */
-	function isDocumented();
+    /**
+     * @return bool
+     */
+    public function isDocumented();
 
 
-	/**
-	 * @return string
-	 */
-	function getShortDescription();
+    /**
+     * @return string
+     */
+    public function getShortDescription();
 
 
-	/**
-	 * @return string
-	 */
-	function getLongDescription();
+    /**
+     * @return string
+     */
+    public function getLongDescription();
 
 
-	/**
-	 * @return string
-	 */
-	function getDocComment();
+    /**
+     * @return string
+     */
+    public function getDocComment();
 
 
-	/**
-	 * @return bool
-	 */
-	function isDeprecated();
+    /**
+     * @return bool
+     */
+    public function isDeprecated();
 
 
-	/**
-	 * @return self
-	 */
-	function setDeclaringClass(ClassReflectionInterface $declaringClass);
+    /**
+     * @return self
+     */
+    public function setDeclaringClass(ClassReflectionInterface $declaringClass);
 
 
-	/**
-	 * @return bool
-	 */
-	function isPrivate();
+    /**
+     * @return bool
+     */
+    public function isPrivate();
 
 
-	/**
-	 * @return bool
-	 */
-	function isProtected();
+    /**
+     * @return bool
+     */
+    public function isProtected();
 
 
-	/**
-	 * @return bool
-	 */
-	function isPublic();
+    /**
+     * @return bool
+     */
+    public function isPublic();
 
 
-	/**
-	 * @return string
-	 */
-	function getFileName();
+    /**
+     * @return string
+     */
+    public function getFileName();
 
 
-	/**
-	 * @return bool
-	 */
-	function isTokenized();
-
+    /**
+     * @return bool
+     */
+    public function isTokenized();
 }

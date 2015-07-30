@@ -9,15 +9,13 @@
 
 namespace ApiGen\Contracts\Parser\Elements;
 
-
 interface ElementExtractorInterface
 {
 
-	/**
-	 * @param string $annotation
-	 * @param callable $skipClassCallback
-	 * @return array[]
-	 */
-	function extractElementsByAnnotation($annotation, callable $skipClassCallback = NULL);
-
+    /**
+     * @param string $annotation
+     * @param callable $skipClassCallback
+     * @return array[]
+     */
+    public function extractElementsByAnnotation($annotation, callable $skipClassCallback = null);
 }

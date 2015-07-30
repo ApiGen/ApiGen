@@ -9,58 +9,56 @@
 
 namespace ApiGen\Parser\Reflection\Parts;
 
-
 trait StartLineEndLine
 {
 
-	/**
-	 * @var int
-	 */
-	private $startLine;
+    /**
+     * @var int
+     */
+    private $startLine;
 
-	/**
-	 * @var int
-	 */
-	private $endLine;
-
-
-	/**
-	 * @param int $startLine
-	 * @return $this
-	 */
-	public function setStartLine($startLine)
-	{
-		$this->startLine = $startLine;
-		return $this;
-	}
+    /**
+     * @var int
+     */
+    private $endLine;
 
 
-	/**
-	 * @return int
-	 */
-	public function getStartLine()
-	{
-		return $this->startLine;
-	}
+    /**
+     * @param int $startLine
+     * @return $this
+     */
+    public function setStartLine($startLine)
+    {
+        $this->startLine = $startLine;
+        return $this;
+    }
 
 
-	/**
-	 * @param int $endLine
-	 * @return $this
-	 */
-	public function setEndLine($endLine)
-	{
-		$this->endLine = $endLine;
-		return $this;
-	}
+    /**
+     * @return int
+     */
+    public function getStartLine()
+    {
+        return $this->startLine;
+    }
 
 
-	/**
-	 * @return int
-	 */
-	public function getEndLine()
-	{
-		return $this->endLine;
-	}
+    /**
+     * @param int $endLine
+     * @return $this
+     */
+    public function setEndLine($endLine)
+    {
+        $this->endLine = $endLine;
+        return $this;
+    }
 
+
+    /**
+     * @return int
+     */
+    public function getEndLine()
+    {
+        return $this->endLine;
+    }
 }

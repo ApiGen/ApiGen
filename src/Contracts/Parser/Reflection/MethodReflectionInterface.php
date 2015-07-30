@@ -13,56 +13,57 @@ use ApiGen\Contracts\Parser\Reflection\Behavior\InClassInterface;
 use ApiGen\Contracts\Parser\Reflection\Behavior\InTraitInterface;
 use ApiGen\Contracts\Parser\Reflection\Behavior\LinedInterface;
 
-
-interface MethodReflectionInterface extends AbstractFunctionMethodReflectionInterface, InClassInterface,
-	InTraitInterface, LinedInterface
+interface MethodReflectionInterface extends
+    AbstractFunctionMethodReflectionInterface,
+    InClassInterface,
+    InTraitInterface,
+    LinedInterface
 {
 
-	/**
-	 * @return bool
-	 */
-	function isMagic();
+    /**
+     * @return bool
+     */
+    public function isMagic();
 
 
-	/**
-	 * @return bool
-	 */
-	function isAbstract();
+    /**
+     * @return bool
+     */
+    public function isAbstract();
 
 
-	/**
-	 * @return bool
-	 */
-	function isFinal();
+    /**
+     * @return bool
+     */
+    public function isFinal();
 
 
-	/**
-	 * @return bool
-	 */
-	function isStatic();
+    /**
+     * @return bool
+     */
+    public function isStatic();
 
 
-	/**
-	 * @return MethodReflectionInterface
-	 */
-	function getImplementedMethod();
+    /**
+     * @return MethodReflectionInterface
+     */
+    public function getImplementedMethod();
 
 
-	/**
-	 * @return MethodReflectionInterface
-	 */
-	function getOverriddenMethod();
+    /**
+     * @return MethodReflectionInterface
+     */
+    public function getOverriddenMethod();
 
 
-	/**
-	 * @return MethodReflectionInterface
-	 */
-	function getOriginal();
+    /**
+     * @return MethodReflectionInterface
+     */
+    public function getOriginal();
 
 
-	/**
-	 * @return string
-	 */
-	function getOriginalName();
-
+    /**
+     * @return string
+     */
+    public function getOriginalName();
 }

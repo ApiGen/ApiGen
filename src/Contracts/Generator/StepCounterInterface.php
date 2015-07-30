@@ -9,13 +9,11 @@
 
 namespace ApiGen\Contracts\Generator;
 
-
 interface StepCounterInterface
 {
 
-	/**
-	 * @return int
-	 */
-	function getStepCount();
-
+    /**
+     * @return int
+     */
+    public function getStepCount();
 }
