@@ -31,7 +31,8 @@
 	},
 	"require-dev": {
 		"mockery/mockery": "~0.9",
-		"herrera-io/box": "~1.6"
+		"herrera-io/box": "~1.6",
+		"squizlabs/php_codesniffer": "~2.0"
 	},
 	"autoload": {
 		"psr-4": {
