@@ -9,13 +9,11 @@
 
 namespace ApiGen\Contracts\Theme;
 
-
 interface ThemeResourcesInterface
 {
 
-	/**
-	 * @param string $destination
-	 */
-	function copyToDestination($destination);
-
+    /**
+     * @param string $destination
+     */
+    function copyToDestination($destination);
 }

@@ -13,25 +13,23 @@ use ApiGen\Contracts\Parser\Reflection\ClassConstantReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
 
-
 interface ParentClassElementsExtractorInterface
 {
 
-	/**
-	 * @return ClassConstantReflectionInterface[]
-	 */
-	function getInheritedConstants();
+    /**
+     * @return ClassConstantReflectionInterface[]
+     */
+    function getInheritedConstants();
 
 
-	/**
-	 * @return PropertyReflectionInterface[][]
-	 */
-	function getInheritedProperties();
+    /**
+     * @return PropertyReflectionInterface[][]
+     */
+    function getInheritedProperties();
 
 
-	/**
-	 * @return MethodReflectionInterface[]
-	 */
-	function getInheritedMethods();
-
+    /**
+     * @return MethodReflectionInterface[]
+     */
+    function getInheritedMethods();
 }

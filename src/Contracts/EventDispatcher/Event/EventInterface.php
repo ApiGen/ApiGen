@@ -9,13 +9,11 @@
 
 namespace ApiGen\Contracts\EventDispatcher\Event;
 
-
 interface EventInterface
 {
 
-	/**
-	 * @return string
-	 */
-	function getName();
-
+    /**
+     * @return string
+     */
+    function getName();
 }

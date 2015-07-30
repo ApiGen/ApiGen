@@ -14,146 +14,144 @@ use PHPUnit_Framework_TestCase;
 use ReflectionProperty;
 use TokenReflection\Broker;
 
-
 class ReflectionPropertyMagicTest extends PHPUnit_Framework_TestCase
 {
 
-	/**
-	 * @var ClassReflectionInterface
-	 */
-	private $reflectionClass;
+    /**
+     * @var ClassReflectionInterface
+     */
+    private $reflectionClass;
 
-	/**
-	 * @var MagicPropertyReflectionInterface
-	 */
-	private $reflectionPropertyMagic;
-
-
-	protected function setUp()
-	{
-		$backend = new Backend($this->getReflectionFactory());
-		$broker = new Broker($backend);
-		$broker->processDirectory(__DIR__ . '/ReflectionMethodSource');
-
-		$this->reflectionClass = $backend->getClasses()['Project\ReflectionMethod'];
-
-		$this->reflectionPropertyMagic = $this->reflectionClass->getMagicProperties()['skillCounter'];
-	}
+    /**
+     * @var MagicPropertyReflectionInterface
+     */
+    private $reflectionPropertyMagic;
 
 
-	public function testInstance()
-	{
-		$this->assertInstanceOf(MagicPropertyReflectionInterface::class, $this->reflectionPropertyMagic);
-	}
+    protected function setUp()
+    {
+        $backend = new Backend($this->getReflectionFactory());
+        $broker = new Broker($backend);
+        $broker->processDirectory(__DIR__ . '/ReflectionMethodSource');
+
+        $this->reflectionClass = $backend->getClasses()['Project\ReflectionMethod'];
+
+        $this->reflectionPropertyMagic = $this->reflectionClass->getMagicProperties()['skillCounter'];
+    }
 
 
-	public function testIsReadOnly()
-	{
-		$this->assertTrue($this->reflectionPropertyMagic->isReadOnly());
-	}
+    public function testInstance()
+    {
+        $this->assertInstanceOf(MagicPropertyReflectionInterface::class, $this->reflectionPropertyMagic);
+    }
 
 
-	public function testIsWriteOnly()
-	{
-		$this->assertFalse($this->reflectionPropertyMagic->isWriteOnly());
-	}
+    public function testIsReadOnly()
+    {
+        $this->assertTrue($this->reflectionPropertyMagic->isReadOnly());
+    }
 
 
-	public function testIsMagic()
-	{
-		$this->assertTrue($this->reflectionPropertyMagic->isMagic());
-	}
+    public function testIsWriteOnly()
+    {
+        $this->assertFalse($this->reflectionPropertyMagic->isWriteOnly());
+    }
 
 
-	public function testGetTypeHint()
-	{
-		$this->assertSame('int', $this->reflectionPropertyMagic->getTypeHint());
-	}
+    public function testIsMagic()
+    {
+        $this->assertTrue($this->reflectionPropertyMagic->isMagic());
+    }
 
 
-	public function testGetDeclaringClass()
-	{
-		$this->assertInstanceOf(ClassReflectionInterface::class, $this->reflectionPropertyMagic->getDeclaringClass());
-	}
+    public function testGetTypeHint()
+    {
+        $this->assertSame('int', $this->reflectionPropertyMagic->getTypeHint());
+    }
 
 
-	public function testGetDeclaringClassName()
-	{
-		$this->assertSame('Project\ReflectionMethod', $this->reflectionPropertyMagic->getDeclaringClassName());
-	}
+    public function testGetDeclaringClass()
+    {
+        $this->assertInstanceOf(ClassReflectionInterface::class, $this->reflectionPropertyMagic->getDeclaringClass());
+    }
 
 
-	public function testGetDefaultValue()
-	{
-		$this->assertNull($this->reflectionPropertyMagic->getDefaultValue());
-	}
+    public function testGetDeclaringClassName()
+    {
+        $this->assertSame('Project\ReflectionMethod', $this->reflectionPropertyMagic->getDeclaringClassName());
+    }
 
 
-	public function testIsDefault()
-	{
-		$this->assertFalse($this->reflectionPropertyMagic->isDefault());
-	}
+    public function testGetDefaultValue()
+    {
+        $this->assertNull($this->reflectionPropertyMagic->getDefaultValue());
+    }
 
 
-	public function testIsPrivate()
-	{
-		$this->assertFalse($this->reflectionPropertyMagic->isPrivate());
-	}
+    public function testIsDefault()
+    {
+        $this->assertFalse($this->reflectionPropertyMagic->isDefault());
+    }
 
 
-	public function testIsProtected()
-	{
-		$this->assertFalse($this->reflectionPropertyMagic->isProtected());
-	}
+    public function testIsPrivate()
+    {
+        $this->assertFalse($this->reflectionPropertyMagic->isPrivate());
+    }
 
 
-	public function testIsPublic()
-	{
-		$this->assertTrue($this->reflectionPropertyMagic->isPublic());
-	}
+    public function testIsProtected()
+    {
+        $this->assertFalse($this->reflectionPropertyMagic->isProtected());
+    }
 
 
-	public function testIsStatic()
-	{
-		$this->assertFalse($this->reflectionPropertyMagic->isStatic());
-	}
+    public function testIsPublic()
+    {
+        $this->assertTrue($this->reflectionPropertyMagic->isPublic());
+    }
 
 
-	public function testGetDeclaringTrait()
-	{
-		$this->assertNull($this->reflectionPropertyMagic->getDeclaringTrait());
-	}
+    public function testIsStatic()
+    {
+        $this->assertFalse($this->reflectionPropertyMagic->isStatic());
+    }
 
 
-	public function testGetDeclaringTraitName()
-	{
-		$this->assertNull($this->reflectionPropertyMagic->getDeclaringTraitName());
-	}
+    public function testGetDeclaringTrait()
+    {
+        $this->assertNull($this->reflectionPropertyMagic->getDeclaringTrait());
+    }
 
 
-	public function testIsValid()
-	{
-		$this->assertTrue($this->reflectionPropertyMagic->isValid());
-	}
+    public function testGetDeclaringTraitName()
+    {
+        $this->assertNull($this->reflectionPropertyMagic->getDeclaringTraitName());
+    }
 
 
-	/**
-	 * @return ReflectionFactoryInterface
-	 */
-	private function getReflectionFactory()
-	{
-		$parserStorageMock = Mockery::mock(ParserStorageInterface::class);
-		$parserStorageMock->shouldReceive('getElementsByType')->andReturnUsing(function ($arg) {
-			if ($arg) {
-				return ['Project\ReflectionMethod' => $this->reflectionClass];
-			}
-		});
-		$configurationMock = Mockery::mock(ConfigurationInterface::class, [
-			'getVisibilityLevel' => ReflectionProperty::IS_PUBLIC,
-			'isInternalDocumented' => FALSE,
-			'isPhpCoreDocumented' => TRUE
-		]);
-		return new ReflectionFactory($configurationMock, $parserStorageMock);
-	}
+    public function testIsValid()
+    {
+        $this->assertTrue($this->reflectionPropertyMagic->isValid());
+    }
 
+
+    /**
+     * @return ReflectionFactoryInterface
+     */
+    private function getReflectionFactory()
+    {
+        $parserStorageMock = Mockery::mock(ParserStorageInterface::class);
+        $parserStorageMock->shouldReceive('getElementsByType')->andReturnUsing(function ($arg) {
+            if ($arg) {
+                return ['Project\ReflectionMethod' => $this->reflectionClass];
+            }
+        });
+        $configurationMock = Mockery::mock(ConfigurationInterface::class, [
+            'getVisibilityLevel' => ReflectionProperty::IS_PUBLIC,
+            'isInternalDocumented' => false,
+            'isPhpCoreDocumented' => true
+        ]);
+        return new ReflectionFactory($configurationMock, $parserStorageMock);
+    }
 }

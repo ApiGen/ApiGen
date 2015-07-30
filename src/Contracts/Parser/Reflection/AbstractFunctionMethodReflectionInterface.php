@@ -9,26 +9,24 @@
 
 namespace ApiGen\Contracts\Parser\Reflection;
 
-
 interface AbstractFunctionMethodReflectionInterface extends ElementReflectionInterface
 {
 
-	/**
-	 * @return bool
-	 */
-	function returnsReference();
+    /**
+     * @return bool
+     */
+    function returnsReference();
 
 
-	/**
-	 * @return ParameterReflectionInterface[]
-	 */
-	function getParameters();
+    /**
+     * @return ParameterReflectionInterface[]
+     */
+    function getParameters();
 
 
-	/**
-	 * @param int|string $key
-	 * @return ParameterReflectionInterface
-	 */
-	function getParameter($key);
-
+    /**
+     * @param int|string $key
+     * @return ParameterReflectionInterface
+     */
+    function getParameter($key);
 }

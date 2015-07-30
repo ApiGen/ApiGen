@@ -12,49 +12,47 @@ namespace ApiGen\Contracts\Parser\Reflection\Extractors;
 use ApiGen\Contracts\Parser\Reflection\Magic\MagicMethodReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\Magic\MagicPropertyReflectionInterface;
 
-
 interface ClassMagicElementsExtractorInterface
 {
 
-	/**
-	 * @return MagicPropertyReflectionInterface[]
-	 */
-	function getMagicProperties();
+    /**
+     * @return MagicPropertyReflectionInterface[]
+     */
+    function getMagicProperties();
 
 
-	/**
-	 * @return MagicPropertyReflectionInterface[]
-	 */
-	function getOwnMagicProperties();
+    /**
+     * @return MagicPropertyReflectionInterface[]
+     */
+    function getOwnMagicProperties();
 
 
-	/**
-	 * @return array {[ declaringClassName => MagicMethodReflectionInterface[] ]}
-	 */
-	function getInheritedMagicProperties();
+    /**
+     * @return array {[ declaringClassName => MagicMethodReflectionInterface[] ]}
+     */
+    function getInheritedMagicProperties();
 
 
-	/**
-	 * @return array {[ declaringClassName => MagicMethodReflectionInterface[] ]}
-	 */
-	function getUsedMagicProperties();
+    /**
+     * @return array {[ declaringClassName => MagicMethodReflectionInterface[] ]}
+     */
+    function getUsedMagicProperties();
 
 
-	/**
-	 * @return MagicMethodReflectionInterface[]
-	 */
-	function getMagicMethods();
+    /**
+     * @return MagicMethodReflectionInterface[]
+     */
+    function getMagicMethods();
 
 
-	/**
-	 * @return MagicMethodReflectionInterface[]
-	 */
-	function getOwnMagicMethods();
+    /**
+     * @return MagicMethodReflectionInterface[]
+     */
+    function getOwnMagicMethods();
 
 
-	/**
-	 * @return MagicMethodReflectionInterface[]
-	 */
-	function getUsedMagicMethods();
-
+    /**
+     * @return MagicMethodReflectionInterface[]
+     */
+    function getUsedMagicMethods();
 }

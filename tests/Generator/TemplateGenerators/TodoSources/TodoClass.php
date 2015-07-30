@@ -6,12 +6,11 @@
 class TodoClass
 {
 
-	/**
-	 * @return array
-	 */
-	public function getMates()
-	{
-		return ['Pete', 'Johny'];
-	}
-
+    /**
+     * @return array
+     */
+    public function getMates()
+    {
+        return ['Pete', 'Johny'];
+    }
 }

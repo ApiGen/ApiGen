@@ -9,39 +9,37 @@
 
 namespace ApiGen\Parser\Reflection\TokenReflection;
 
-
 interface ReflectionInterface
 {
 
-	/**
-	 * Returns the name (FQN).
-	 *
-	 * @return string
-	 */
-	function getName();
+    /**
+     * Returns the name (FQN).
+     *
+     * @return string
+     */
+    function getName();
 
 
-	/**
-	 * Returns if the reflection object is internal.
-	 *
-	 * @return bool
-	 */
-	function isInternal();
+    /**
+     * Returns if the reflection object is internal.
+     *
+     * @return bool
+     */
+    function isInternal();
 
 
-	/**
-	 * Returns if the current reflection comes from a tokenized source.
-	 *
-	 * @return bool
-	 */
-	function isTokenized();
+    /**
+     * Returns if the current reflection comes from a tokenized source.
+     *
+     * @return bool
+     */
+    function isTokenized();
 
 
-	/**
-	 * Returns an element pretty (docblock compatible) name.
-	 *
-	 * @return string
-	 */
-	function getPrettyName();
-
+    /**
+     * Returns an element pretty (docblock compatible) name.
+     *
+     * @return string
+     */
+    function getPrettyName();
 }

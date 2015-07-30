@@ -20,63 +20,61 @@ use ApiGen\Parser\Reflection\ReflectionClass;
 use ApiGen\Parser\Reflection\ReflectionConstant;
 use ApiGen\Parser\Reflection\ReflectionFunction;
 
-
 class AutocompleteElements implements AutocompleteElementsInterface
 {
 
-	/**
-	 * @var ElementStorageInterface
-	 */
-	private $elementStorage;
+    /**
+     * @var ElementStorageInterface
+     */
+    private $elementStorage;
 
-	/**
-	 * @var array
-	 */
-	private $elements = [];
-
-
-	public function __construct(ElementStorageInterface $elementStorage)
-	{
-		$this->elementStorage = $elementStorage;
-	}
+    /**
+     * @var array
+     */
+    private $elements = [];
 
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getElements()
-	{
-		foreach ($this->elementStorage->getElements() as $type => $elementList) {
-			foreach ($elementList as $element) {
-				$this->processElement($element);
-			}
-		}
-
-		$this->sortElements();
-
-		return $this->elements;
-	}
+    public function __construct(ElementStorageInterface $elementStorage)
+    {
+        $this->elementStorage = $elementStorage;
+    }
 
 
-	private function processElement(ElementReflectionInterface $element)
-	{
-		if ($element instanceof ConstantReflectionInterface) {
-			$this->elements[] = ['co', $element->getPrettyName()];
+    /**
+     * {@inheritdoc}
+     */
+    public function getElements()
+    {
+        foreach ($this->elementStorage->getElements() as $type => $elementList) {
+            foreach ($elementList as $element) {
+                $this->processElement($element);
+            }
+        }
 
-		} elseif ($element instanceof FunctionReflectionInterface) {
-			$this->elements[] = ['f', $element->getPrettyName()];
+        $this->sortElements();
 
-		} elseif ($element instanceof ClassReflectionInterface) {
-			$this->elements[] = ['c', $element->getPrettyName()];
-		}
-	}
+        return $this->elements;
+    }
 
 
-	private function sortElements()
-	{
-		usort($this->elements, function ($one, $two) {
-			return strcasecmp($one[1], $two[1]);
-		});
-	}
+    private function processElement(ElementReflectionInterface $element)
+    {
+        if ($element instanceof ConstantReflectionInterface) {
+            $this->elements[] = ['co', $element->getPrettyName()];
 
+        } elseif ($element instanceof FunctionReflectionInterface) {
+            $this->elements[] = ['f', $element->getPrettyName()];
+
+        } elseif ($element instanceof ClassReflectionInterface) {
+            $this->elements[] = ['c', $element->getPrettyName()];
+        }
+    }
+
+
+    private function sortElements()
+    {
+        usort($this->elements, function ($one, $two) {
+            return strcasecmp($one[1], $two[1]);
+        });
+    }
 }

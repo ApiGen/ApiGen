@@ -11,18 +11,16 @@
 
 namespace ApiGen\Generator\Event;
 
-
 class GeneratorEvents
 {
 
-	/**
-	 * @var string
-	 */
-	const ON_QUEUE_RUN = 'onQueueRun';
+    /**
+     * @var string
+     */
+    const ON_QUEUE_RUN = 'onQueueRun';
 
-	/**
-	 * @var string
-	 */
-	const ON_GENERATE_PROGRESS = 'onProgress';
-
+    /**
+     * @var string
+     */
+    const ON_GENERATE_PROGRESS = 'onProgress';
 }

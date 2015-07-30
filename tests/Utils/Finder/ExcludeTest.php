@@ -5,49 +5,47 @@ namespace ApiGen\Utils\Tests\Finder;
 use ApiGen\Utils\Finder\NetteFinder;
 use PHPUnit_Framework_TestCase;
 
-
 class ExcludeTest extends PHPUnit_Framework_TestCase
 {
 
-	/**
-	 * @var NetteFinder
-	 */
-	private $scanner;
+    /**
+     * @var NetteFinder
+     */
+    private $scanner;
 
 
-	protected function setUp()
-	{
-		$this->scanner = new NetteFinder;
-	}
+    protected function setUp()
+    {
+        $this->scanner = new NetteFinder;
+    }
 
 
-	/**
-	 * Issue #412
-	 */
-	public function testExcludeAppliedOnlyOnSourcesPath()
-	{
-		$files = $this->scanner->find(__DIR__ . '/Source', ['tests']);
-		$this->assertCount(3, $files);
-	}
+    /**
+     * Issue #412
+     */
+    public function testExcludeAppliedOnlyOnSourcesPath()
+    {
+        $files = $this->scanner->find(__DIR__ . '/Source', ['tests']);
+        $this->assertCount(3, $files);
+    }
 
 
-	/**
-	 * Issue #529
-	 */
-	public function testExcludeDirRelativeToSource()
-	{
-		$source = __DIR__ . '/ScannerExcludeSource/src';
-		$this->assertCount(0, $this->scanner->find($source, ['Core/smarty_cache']));
-		$this->assertCount(0, $this->scanner->find($source, ['/Core/smarty_cache']));
-		$this->assertCount(1, $this->scanner->find($source, ['src/Core/smarty_cache']));
-	}
+    /**
+     * Issue #529
+     */
+    public function testExcludeDirRelativeToSource()
+    {
+        $source = __DIR__ . '/ScannerExcludeSource/src';
+        $this->assertCount(0, $this->scanner->find($source, ['Core/smarty_cache']));
+        $this->assertCount(0, $this->scanner->find($source, ['/Core/smarty_cache']));
+        $this->assertCount(1, $this->scanner->find($source, ['src/Core/smarty_cache']));
+    }
 
 
-	public function testExcludeFile()
-	{
-		$source = __DIR__ . '/ScannerExcludeSource/src';
-		$this->assertCount(0, $this->scanner->find($source, ['ShouldBeExcluded.php']));
-		$this->assertCount(0, $this->scanner->find($source, ['*ShouldBeExcluded*']));
-	}
-
+    public function testExcludeFile()
+    {
+        $source = __DIR__ . '/ScannerExcludeSource/src';
+        $this->assertCount(0, $this->scanner->find($source, ['ShouldBeExcluded.php']));
+        $this->assertCount(0, $this->scanner->find($source, ['*ShouldBeExcluded*']));
+    }
 }

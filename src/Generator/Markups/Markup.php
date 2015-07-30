@@ -9,21 +9,19 @@
 
 namespace ApiGen\Generator\Markups;
 
-
 interface Markup
 {
 
-	/**
-	 * @param string $text
-	 * @return string
-	 */
-	function line($text);
+    /**
+     * @param string $text
+     * @return string
+     */
+    function line($text);
 
 
-	/**
-	 * @param string $text
-	 * @return string
-	 */
-	function block($text);
-
+    /**
+     * @param string $text
+     * @return string
+     */
+    function block($text);
 }

@@ -9,13 +9,11 @@
 
 namespace ApiGen\Contracts\Generator\TemplateGenerators;
 
-
 interface ConditionalTemplateGeneratorInterface extends TemplateGeneratorInterface
 {
 
-	/**
-	 * @return bool
-	 */
-	function isAllowed();
-
+    /**
+     * @return bool
+     */
+    function isAllowed();
 }

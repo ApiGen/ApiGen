@@ -11,13 +11,11 @@ namespace ApiGen\Configuration;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-
 interface OptionsResolverFactory
 {
 
-	/**
-	 * @return OptionsResolver
-	 */
-	function create();
-
+    /**
+     * @return OptionsResolver
+     */
+    function create();
 }

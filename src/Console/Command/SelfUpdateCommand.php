@@ -16,54 +16,52 @@ use Symfony\Component\Console\Command\Command as BaseCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-
 class SelfUpdateCommand extends BaseCommand
 {
 
-	/**
-	 * @var string
-	 */
-	const MANIFEST_URL = 'http://apigen.org/manifest.json';
+    /**
+     * @var string
+     */
+    const MANIFEST_URL = 'http://apigen.org/manifest.json';
 
 
-	protected function configure()
-	{
-		$this->setName('self-update')
-			->setAliases(['selfupdate'])
-			->setDescription('Updates apigen.phar to the latest available version');
-	}
+    protected function configure()
+    {
+        $this->setName('self-update')
+            ->setAliases(['selfupdate'])
+            ->setDescription('Updates apigen.phar to the latest available version');
+    }
 
 
-	/**
-	 * @return int
-	 */
-	protected function execute(InputInterface $input, OutputInterface $output)
-	{
-		try {
-			$updateManager = $this->createUpdateManager();
-			$version = $this->getApplication()->getVersion();
-			if ($updateManager->update($version, FALSE, TRUE)) {
-				$output->writeln('<info>Updated to latest version.</info>');
+    /**
+     * @return int
+     */
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
+        try {
+            $updateManager = $this->createUpdateManager();
+            $version = $this->getApplication()->getVersion();
+            if ($updateManager->update($version, false, true)) {
+                $output->writeln('<info>Updated to latest version.</info>');
 
-			} else {
-				$output->writeln('<comment>Already up-to-date.</comment>');
-			}
+            } else {
+                $output->writeln('<comment>Already up-to-date.</comment>');
+            }
 
-			return 0;
+            return 0;
 
-		} catch (Exception $e) {
-			$output->writeln('<error>' . $e->getMessage() . '</error>');
-			return 1;
-		}
-	}
+        } catch (Exception $e) {
+            $output->writeln('<error>' . $e->getMessage() . '</error>');
+            return 1;
+        }
+    }
 
 
-	/**
-	 * @return Manager
-	 */
-	private function createUpdateManager()
-	{
-		return new Manager(Manifest::loadFile(self::MANIFEST_URL));
-	}
-
+    /**
+     * @return Manager
+     */
+    private function createUpdateManager()
+    {
+        return new Manager(Manifest::loadFile(self::MANIFEST_URL));
+    }
 }

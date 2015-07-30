@@ -13,79 +13,77 @@ use ApiGen\Contracts\Console\Helper\ProgressBarInterface;
 use ApiGen\Contracts\Console\IO\IOInterface;
 use Symfony\Component\Console\Helper\ProgressBar as ProgressBarHelper;
 
-
 class ProgressBar implements ProgressBarInterface
 {
 
-	/**
-	 * @var IOInterface
-	 */
-	private $consoleIO;
+    /**
+     * @var IOInterface
+     */
+    private $consoleIO;
 
-	/**
-	 * @var ProgressBarHelper
-	 */
-	private $bar;
-
-
-	public function __construct(IOInterface $consoleIO)
-	{
-		$this->consoleIO = $consoleIO;
-	}
+    /**
+     * @var ProgressBarHelper
+     */
+    private $bar;
 
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function init($maximum = 1)
-	{
-		$this->bar = new ProgressBarHelper($this->consoleIO->getOutput(), $maximum);
-		$this->bar->setFormat($this->getBarFormat());
-		$this->bar->start();
-	}
+    public function __construct(IOInterface $consoleIO)
+    {
+        $this->consoleIO = $consoleIO;
+    }
 
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function increment($increment = 1)
-	{
-		if ($this->bar === NULL) {
-			return;
-		}
-
-		$this->bar->advance($increment);
-		if ($this->bar->getProgress() === $this->bar->getMaxSteps()) {
-			$this->consoleIO->getOutput()->writeln(' - Finished!');
-		}
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function init($maximum = 1)
+    {
+        $this->bar = new ProgressBarHelper($this->consoleIO->getOutput(), $maximum);
+        $this->bar->setFormat($this->getBarFormat());
+        $this->bar->start();
+    }
 
 
-	/**
-	 * @return string
-	 */
-	private function getBarFormat()
-	{
-		if ($this->getDebugOption()) {
-			return 'debug';
+    /**
+     * {@inheritdoc}
+     */
+    public function increment($increment = 1)
+    {
+        if ($this->bar === null) {
+            return;
+        }
 
-		} else {
-			return '<comment>%percent:3s% %</comment>';
-		}
-	}
+        $this->bar->advance($increment);
+        if ($this->bar->getProgress() === $this->bar->getMaxSteps()) {
+            $this->consoleIO->getOutput()->writeln(' - Finished!');
+        }
+    }
 
 
-	/**
-	 * @return bool
-	 */
-	private function getDebugOption()
-	{
-		if ($this->consoleIO->getInput() && $this->consoleIO->getInput()->hasOption('debug')) {
-			return $this->consoleIO->getInput()->getOption('debug');
+    /**
+     * @return string
+     */
+    private function getBarFormat()
+    {
+        if ($this->getDebugOption()) {
+            return 'debug';
 
-		} else {
-			return FALSE;
-		}
-	}
+        } else {
+            return '<comment>%percent:3s% %</comment>';
+        }
+    }
 
+
+    /**
+     * @return bool
+     */
+    private function getDebugOption()
+    {
+        if ($this->consoleIO->getInput() && $this->consoleIO->getInput()->hasOption('debug')) {
+            return $this->consoleIO->getInput()->getOption('debug');
+
+        } else {
+            return false;
+        }
+    }
 }

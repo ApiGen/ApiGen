@@ -12,73 +12,71 @@ namespace ApiGen\Contracts\Parser;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ArrayObject;
 
-
 interface ParserStorageInterface
 {
 
-	/**
-	 * @param string $type
-	 * @return ArrayObject
-	 */
-	function getElementsByType($type);
+    /**
+     * @param string $type
+     * @return ArrayObject
+     */
+    function getElementsByType($type);
 
 
-	/**
-	 * Get stats for documented classes, functions and constants.
-	 *
-	 * @return array
-	 */
-	function getDocumentedStats();
+    /**
+     * Get stats for documented classes, functions and constants.
+     *
+     * @return array
+     */
+    function getDocumentedStats();
 
 
-	/**
-	 * @return ArrayObject
-	 */
-	function getClasses();
+    /**
+     * @return ArrayObject
+     */
+    function getClasses();
 
 
-	/**
-	 * @return ArrayObject
-	 */
-	function getConstants();
+    /**
+     * @return ArrayObject
+     */
+    function getConstants();
 
 
-	/**
-	 * @return ArrayObject
-	 */
-	function getFunctions();
+    /**
+     * @return ArrayObject
+     */
+    function getFunctions();
 
 
-	/**
-	 * @return string[]
-	 */
-	function getTypes();
+    /**
+     * @return string[]
+     */
+    function getTypes();
 
 
-	function setClasses(ArrayObject $classes);
+    function setClasses(ArrayObject $classes);
 
 
-	function setConstants(ArrayObject $constants);
+    function setConstants(ArrayObject $constants);
 
 
-	function setFunctions(ArrayObject $functions);
+    function setFunctions(ArrayObject $functions);
 
 
-	function setInternalClasses(ArrayObject $internalClasses);
+    function setInternalClasses(ArrayObject $internalClasses);
 
 
-	function setTokenizedClasses(ArrayObject $tokenizedClasses);
+    function setTokenizedClasses(ArrayObject $tokenizedClasses);
 
 
-	/**
-	 * @return ClassReflectionInterface[]|array
-	 */
-	function getDirectImplementersOfInterface(ClassReflectionInterface $reflectionClass);
+    /**
+     * @return ClassReflectionInterface[]|array
+     */
+    function getDirectImplementersOfInterface(ClassReflectionInterface $reflectionClass);
 
 
-	/**
-	 * @return ClassReflectionInterface[]|array
-	 */
-	function getIndirectImplementersOfInterface(ClassReflectionInterface $reflectionClass);
-
+    /**
+     * @return ClassReflectionInterface[]|array
+     */
+    function getIndirectImplementersOfInterface(ClassReflectionInterface $reflectionClass);
 }

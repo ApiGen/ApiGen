@@ -11,37 +11,35 @@ namespace ApiGen\Contracts\Parser\Reflection\Magic;
 
 use ApiGen\Contracts\Parser\Reflection\ParameterReflectionInterface;
 
-
 interface MagicParameterReflectionInterface extends ParameterReflectionInterface
 {
 
-	/**
-	 * @return string
-	 */
-	function getDocComment();
+    /**
+     * @return string
+     */
+    function getDocComment();
 
 
-	/**
-	 * @return int
-	 */
-	function getStartLine();
+    /**
+     * @return int
+     */
+    function getStartLine();
 
 
-	/**
-	 * @return int
-	 */
-	function getEndLine();
+    /**
+     * @return int
+     */
+    function getEndLine();
 
 
-	/**
-	 * @return string
-	 */
-	function getFileName();
+    /**
+     * @return string
+     */
+    function getFileName();
 
 
-	/**
-	 * @return bool
-	 */
-	function isTokenized();
-
+    /**
+     * @return bool
+     */
+    function isTokenized();
 }

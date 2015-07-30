@@ -11,13 +11,11 @@ namespace ApiGen\Contracts\Templating\TemplateFactory;
 
 use ApiGen\Contracts\Templating\Template\TemplateInterface;
 
-
 interface TemplateDecoratorInterface
 {
 
-	/**
-	 * @return TemplateInterface
-	 */
-	function decorate(TemplateInterface $template);
-
+    /**
+     * @return TemplateInterface
+     */
+    function decorate(TemplateInterface $template);
 }

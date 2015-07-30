@@ -14,58 +14,56 @@ use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 
-
 interface TemplateRouterInterface
 {
 
-	/**
-	 * @param string $name
-	 * @return string
-	 */
-	function getNamespaceRoute($name);
+    /**
+     * @param string $name
+     * @return string
+     */
+    function getNamespaceRoute($name);
 
 
-	/**
-	 * @param string $name
-	 * @return string
-	 */
-	function getPackageRoute($name);
+    /**
+     * @param string $name
+     * @return string
+     */
+    function getPackageRoute($name);
 
 
-	/**
-	 * @return string
-	 */
-	function getClassRoute(ClassReflectionInterface $classReflection);
+    /**
+     * @return string
+     */
+    function getClassRoute(ClassReflectionInterface $classReflection);
 
 
-	/**
-	 * @return string
-	 */
-	function getConstantRoute(ConstantReflectionInterface $constantReflection);
+    /**
+     * @return string
+     */
+    function getConstantRoute(ConstantReflectionInterface $constantReflection);
 
 
-	/**
-	 * @return string
-	 */
-	function getFunctionRoute(FunctionReflectionInterface $functionReflection);
+    /**
+     * @return string
+     */
+    function getFunctionRoute(FunctionReflectionInterface $functionReflection);
 
 
-	/**
-	 * @param string $name
-	 * @return string
-	 */
-	function getAnnotationGroupRoute($name);
+    /**
+     * @param string $name
+     * @return string
+     */
+    function getAnnotationGroupRoute($name);
 
 
-	/**
-	 * @return string
-	 */
-	function getSourceCodeRoute(NamedInterface $element);
+    /**
+     * @return string
+     */
+    function getSourceCodeRoute(NamedInterface $element);
 
 
-	/**
-	 * @return string
-	 */
-	function getSourceCodeRouteWithAnchor(NamedInterface $element);
-
+    /**
+     * @return string
+     */
+    function getSourceCodeRouteWithAnchor(NamedInterface $element);
 }

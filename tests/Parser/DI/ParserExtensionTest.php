@@ -11,44 +11,42 @@ use Nette\DI\ContainerBuilder;
 use PHPUnit_Framework_TestCase;
 use TokenReflection\Broker;
 
-
 class ParserExtensionTest extends PHPUnit_Framework_TestCase
 {
 
-	public function testLoadServicesFromConfig()
-	{
-		$extension = $this->getExtension();
-		MethodInvoker::callMethodOnObject($extension, 'loadServicesFromConfig');
+    public function testLoadServicesFromConfig()
+    {
+        $extension = $this->getExtension();
+        MethodInvoker::callMethodOnObject($extension, 'loadServicesFromConfig');
 
-		$builder = $extension->getContainerBuilder();
-		$builder->prepareClassList();
+        $builder = $extension->getContainerBuilder();
+        $builder->prepareClassList();
 
-		$elementResolverDefinition = $builder->getDefinition($builder->getByType(ElementSorter::class));
-		$this->assertSame(ElementSorter::class, $elementResolverDefinition->getClass());
-	}
-
-
-	public function testLoadConfiguration()
-	{
-		$extension = $this->getExtension();
-		$extension->loadConfiguration();
-
-		$builder = $extension->getContainerBuilder();
-		$builder->prepareClassList();
-
-		$brokerDefinition = $builder->getDefinition($builder->getByType(Broker::class));
-		$this->assertSame(Broker::class, $brokerDefinition->getClass());
-	}
+        $elementResolverDefinition = $builder->getDefinition($builder->getByType(ElementSorter::class));
+        $this->assertSame(ElementSorter::class, $elementResolverDefinition->getClass());
+    }
 
 
-	/**
-	 * @return ParserExtension
-	 */
-	private function getExtension()
-	{
-		$extension = new ParserExtension;
-		$extension->setCompiler(new Compiler(new ContainerBuilder), 'compiler');
-		return $extension;
-	}
+    public function testLoadConfiguration()
+    {
+        $extension = $this->getExtension();
+        $extension->loadConfiguration();
 
+        $builder = $extension->getContainerBuilder();
+        $builder->prepareClassList();
+
+        $brokerDefinition = $builder->getDefinition($builder->getByType(Broker::class));
+        $this->assertSame(Broker::class, $brokerDefinition->getClass());
+    }
+
+
+    /**
+     * @return ParserExtension
+     */
+    private function getExtension()
+    {
+        $extension = new ParserExtension;
+        $extension->setCompiler(new Compiler(new ContainerBuilder), 'compiler');
+        return $extension;
+    }
 }

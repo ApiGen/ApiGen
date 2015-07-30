@@ -14,101 +14,99 @@ use PHPUnit_Framework_Assert;
 use PHPUnit_Framework_TestCase;
 use TokenReflection\Broker;
 
-
 class BackendTest extends PHPUnit_Framework_TestCase
 {
 
-	/**
-	 * @var BackendInterface
-	 */
-	private $backend;
+    /**
+     * @var BackendInterface
+     */
+    private $backend;
 
-	/**
-	 * @var Broker
-	 */
-	private $broker;
-
-
-	protected function setUp()
-	{
-		$this->backend = new Backend($this->getReflectionFactory());
-		$this->broker = new Broker($this->backend);
-	}
+    /**
+     * @var Broker
+     */
+    private $broker;
 
 
-	public function testGetClasses()
-	{
-		$this->broker->processDirectory(__DIR__ . '/BackendSource');
-		$classes = $this->backend->getClasses();
-		$this->assertCount(1, $classes);
-
-		$class = array_pop($classes);
-		$this->assertInstanceOf(ClassReflectionInterface::class, $class);
-
-		$this->checkLoadedProperties($class);
-	}
+    protected function setUp()
+    {
+        $this->backend = new Backend($this->getReflectionFactory());
+        $this->broker = new Broker($this->backend);
+    }
 
 
-	public function testGetFunctions()
-	{
-		$this->broker->processDirectory(__DIR__ . '/BackendSource');
-		$functions = $this->backend->getFunctions();
-		$this->assertCount(1, $functions);
+    public function testGetClasses()
+    {
+        $this->broker->processDirectory(__DIR__ . '/BackendSource');
+        $classes = $this->backend->getClasses();
+        $this->assertCount(1, $classes);
 
-		$function = array_pop($functions);
-		$this->assertInstanceOf(FunctionReflectionInterface::class, $function);
+        $class = array_pop($classes);
+        $this->assertInstanceOf(ClassReflectionInterface::class, $class);
 
-		$this->checkLoadedProperties($function);
-	}
-
-
-	public function testGetConstants()
-	{
-		$this->broker->processDirectory(__DIR__ . '/BackendSource');
-		$constants = $this->backend->getConstants();
-		$this->assertCount(1, $constants);
-
-		$constant = array_pop($constants);
-		$this->assertInstanceOf('ApiGen\Parser\Reflection\ReflectionConstant', $constant);
-
-		$this->checkLoadedProperties($constant);
-	}
+        $this->checkLoadedProperties($class);
+    }
 
 
-	/**
-	 * @param object $object
-	 */
-	private function checkLoadedProperties($object)
-	{
-		$this->assertInstanceOf(
-			ConfigurationInterface::class,
-			PHPUnit_Framework_Assert::getObjectAttribute($object, 'configuration')
-		);
+    public function testGetFunctions()
+    {
+        $this->broker->processDirectory(__DIR__ . '/BackendSource');
+        $functions = $this->backend->getFunctions();
+        $this->assertCount(1, $functions);
 
-		$this->assertInstanceOf(
-			ParserStorageInterface::class,
-			PHPUnit_Framework_Assert::getObjectAttribute($object, 'parserResult')
-		);
+        $function = array_pop($functions);
+        $this->assertInstanceOf(FunctionReflectionInterface::class, $function);
 
-		$this->assertInstanceOf(
-			ReflectionFactoryInterface::class,
-			PHPUnit_Framework_Assert::getObjectAttribute($object, 'reflectionFactory')
-		);
-	}
+        $this->checkLoadedProperties($function);
+    }
 
 
-	/**
-	 * @return ReflectionFactory
-	 */
-	private function getReflectionFactory()
-	{
-		$parserStoragetMock = Mockery::mock(ParserStorageInterface::class);
-		$configurationMock = Mockery::mock(ConfigurationInterface::class, [
-			'isPhpCoreDocumented' => TRUE,
-			'isInternalDocumented' => TRUE,
-			'getVisibilityLevel' => 1
-		]);
-		return new ReflectionFactory($configurationMock, $parserStoragetMock);
-	}
+    public function testGetConstants()
+    {
+        $this->broker->processDirectory(__DIR__ . '/BackendSource');
+        $constants = $this->backend->getConstants();
+        $this->assertCount(1, $constants);
 
+        $constant = array_pop($constants);
+        $this->assertInstanceOf('ApiGen\Parser\Reflection\ReflectionConstant', $constant);
+
+        $this->checkLoadedProperties($constant);
+    }
+
+
+    /**
+     * @param object $object
+     */
+    private function checkLoadedProperties($object)
+    {
+        $this->assertInstanceOf(
+            ConfigurationInterface::class,
+            PHPUnit_Framework_Assert::getObjectAttribute($object, 'configuration')
+        );
+
+        $this->assertInstanceOf(
+            ParserStorageInterface::class,
+            PHPUnit_Framework_Assert::getObjectAttribute($object, 'parserResult')
+        );
+
+        $this->assertInstanceOf(
+            ReflectionFactoryInterface::class,
+            PHPUnit_Framework_Assert::getObjectAttribute($object, 'reflectionFactory')
+        );
+    }
+
+
+    /**
+     * @return ReflectionFactory
+     */
+    private function getReflectionFactory()
+    {
+        $parserStoragetMock = Mockery::mock(ParserStorageInterface::class);
+        $configurationMock = Mockery::mock(ConfigurationInterface::class, [
+            'isPhpCoreDocumented' => true,
+            'isInternalDocumented' => true,
+            'getVisibilityLevel' => 1
+        ]);
+        return new ReflectionFactory($configurationMock, $parserStoragetMock);
+    }
 }

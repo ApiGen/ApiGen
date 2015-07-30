@@ -11,19 +11,17 @@ namespace ApiGen\Contracts\Generator;
 
 use ApiGen\Contracts\Generator\TemplateGenerators\TemplateGeneratorInterface;
 
-
 interface GeneratorQueueInterface
 {
 
-	/**
-	 * Adds template generator to the queue.
-	 */
-	function addToQueue(TemplateGeneratorInterface $templateGenerator);
+    /**
+     * Adds template generator to the queue.
+     */
+    function addToQueue(TemplateGeneratorInterface $templateGenerator);
 
 
-	/**
-	 * Run generator queue.
-	 */
-	function run();
-
+    /**
+     * Run generator queue.
+     */
+    function run();
 }

@@ -20,138 +20,136 @@ use ApiGen\Templating\Filters\Helpers\ElementUrlFactory;
 use ApiGen\Templating\Filters\NamespaceAndPackageUrlFilters;
 use ApiGen\Templating\Filters\SourceFilters;
 
-
 class TemplateNavigator
 {
 
-	/**
-	 * @var Configuration
-	 */
-	private $configuration;
+    /**
+     * @var Configuration
+     */
+    private $configuration;
 
-	/**
-	 * @var SourceFilters
-	 */
-	private $sourceFilters;
+    /**
+     * @var SourceFilters
+     */
+    private $sourceFilters;
 
-	/**
-	 * @var ElementUrlFactory
-	 */
-	private $elementUrlFactory;
+    /**
+     * @var ElementUrlFactory
+     */
+    private $elementUrlFactory;
 
-	/**
-	 * @var NamespaceAndPackageUrlFilters
-	 */
-	private $namespaceAndPackageUrlFilters;
-
-
-	public function __construct(
-		Configuration $configuration,
-		SourceFilters $sourceFilters,
-		ElementUrlFactory $elementUrlFactory,
-		NamespaceAndPackageUrlFilters $namespaceAndPackageUrlFilters
-	) {
-		$this->configuration = $configuration;
-		$this->sourceFilters = $sourceFilters;
-		$this->elementUrlFactory = $elementUrlFactory;
-		$this->namespaceAndPackageUrlFilters = $namespaceAndPackageUrlFilters;
-	}
+    /**
+     * @var NamespaceAndPackageUrlFilters
+     */
+    private $namespaceAndPackageUrlFilters;
 
 
-	/**
-	 * @param string $name
-	 * @return string
-	 */
-	public function getTemplatePath($name)
-	{
-		$options = $this->configuration->getOptions();
-		return $options[CO::TEMPLATE][TCO::TEMPLATES][$name]['template'];
-	}
+    public function __construct(
+        Configuration $configuration,
+        SourceFilters $sourceFilters,
+        ElementUrlFactory $elementUrlFactory,
+        NamespaceAndPackageUrlFilters $namespaceAndPackageUrlFilters
+    ) {
+        $this->configuration = $configuration;
+        $this->sourceFilters = $sourceFilters;
+        $this->elementUrlFactory = $elementUrlFactory;
+        $this->namespaceAndPackageUrlFilters = $namespaceAndPackageUrlFilters;
+    }
 
 
-	/**
-	 * @param string $name
-	 * @return string
-	 */
-	public function getTemplateFileName($name)
-	{
-		$options = $this->configuration->getOptions();
-		return $this->getDestination() . '/' . $options[CO::TEMPLATE][TCO::TEMPLATES][$name]['filename'];
-	}
+    /**
+     * @param string $name
+     * @return string
+     */
+    public function getTemplatePath($name)
+    {
+        $options = $this->configuration->getOptions();
+        return $options[CO::TEMPLATE][TCO::TEMPLATES][$name]['template'];
+    }
 
 
-	/**
-	 * @param string $namespace
-	 * @return string
-	 */
-	public function getTemplatePathForNamespace($namespace)
-	{
-		return $this->getDestination() . '/' . $this->namespaceAndPackageUrlFilters->namespaceUrl($namespace);
-	}
+    /**
+     * @param string $name
+     * @return string
+     */
+    public function getTemplateFileName($name)
+    {
+        $options = $this->configuration->getOptions();
+        return $this->getDestination() . '/' . $options[CO::TEMPLATE][TCO::TEMPLATES][$name]['filename'];
+    }
 
 
-	/**
-	 * @param string $package
-	 * @return string
-	 */
-	public function getTemplatePathForPackage($package)
-	{
-		return $this->getDestination() . '/' . $this->namespaceAndPackageUrlFilters->packageUrl($package);
-	}
+    /**
+     * @param string $namespace
+     * @return string
+     */
+    public function getTemplatePathForNamespace($namespace)
+    {
+        return $this->getDestination() . '/' . $this->namespaceAndPackageUrlFilters->namespaceUrl($namespace);
+    }
 
 
-	/**
-	 * @return string
-	 */
-	public function getTemplatePathForClass(ClassReflectionInterface $element)
-	{
-		return $this->getDestination() . '/' . $this->elementUrlFactory->createForClass($element);
-	}
+    /**
+     * @param string $package
+     * @return string
+     */
+    public function getTemplatePathForPackage($package)
+    {
+        return $this->getDestination() . '/' . $this->namespaceAndPackageUrlFilters->packageUrl($package);
+    }
 
 
-	/**
-	 * @return string
-	 */
-	public function getTemplatePathForConstant(ConstantReflectionInterface $element)
-	{
-		return $this->getDestination() . '/' . $this->elementUrlFactory->createForConstant($element);
-	}
+    /**
+     * @return string
+     */
+    public function getTemplatePathForClass(ClassReflectionInterface $element)
+    {
+        return $this->getDestination() . '/' . $this->elementUrlFactory->createForClass($element);
+    }
 
 
-	/**
-	 * @return string
-	 */
-	public function getTemplatePathForFunction(FunctionReflectionInterface $element)
-	{
-		return $this->getDestination() . '/' . $this->elementUrlFactory->createForFunction($element);
-	}
+    /**
+     * @return string
+     */
+    public function getTemplatePathForConstant(ConstantReflectionInterface $element)
+    {
+        return $this->getDestination() . '/' . $this->elementUrlFactory->createForConstant($element);
+    }
 
 
-	/**
-	 * @return string
-	 */
-	public function getTemplatePathForSourceElement(ElementReflectionInterface $element)
-	{
-		return $this->getDestination() . '/' . $this->sourceFilters->sourceUrl($element, FALSE);
-	}
+    /**
+     * @return string
+     */
+    public function getTemplatePathForFunction(FunctionReflectionInterface $element)
+    {
+        return $this->getDestination() . '/' . $this->elementUrlFactory->createForFunction($element);
+    }
 
 
-	/**
-	 * @param string $element
-	 * @return string
-	 */
-	public function getTemplatePathForAnnotationGroup($element)
-	{
-		return $this->getDestination() . '/' . $this->elementUrlFactory->createForAnnotationGroup($element);
-	}
+    /**
+     * @return string
+     */
+    public function getTemplatePathForSourceElement(ElementReflectionInterface $element)
+    {
+        return $this->getDestination() . '/' . $this->sourceFilters->sourceUrl($element, false);
+    }
 
 
-	/**
-	 * @return string
-	 */
-	private function getDestination()
-	{
-		return $this->configuration->getOption(CO::DESTINATION);
-	}
+    /**
+     * @param string $element
+     * @return string
+     */
+    public function getTemplatePathForAnnotationGroup($element)
+    {
+        return $this->getDestination() . '/' . $this->elementUrlFactory->createForAnnotationGroup($element);
+    }
 
+
+    /**
+     * @return string
+     */
+    private function getDestination()
+    {
+        return $this->configuration->getOption(CO::DESTINATION);
+    }
 }

@@ -17,35 +17,33 @@ use Symfony\Component\Console\Application as BaseApplication;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-
 class Application extends BaseApplication
 {
 
-	/**
-	 * @var IOInterface
-	 */
-	private $io;
+    /**
+     * @var IOInterface
+     */
+    private $io;
 
 
-	public function __construct(
-		ApiGen $apiGen,
-		MemoryLimit $memoryLimit,
-		IOInterface $io,
-		DefaultInputDefinitionFactoryInterface $defaultInputDefinitionFactory
-	) {
-		parent::__construct('ApiGen', $apiGen->getVersion());
-		$memoryLimit->setMemoryLimitTo('1024M');
-		$this->io = $io;
-		$this->setDefinition($defaultInputDefinitionFactory->create());
-	}
+    public function __construct(
+        ApiGen $apiGen,
+        MemoryLimit $memoryLimit,
+        IOInterface $io,
+        DefaultInputDefinitionFactoryInterface $defaultInputDefinitionFactory
+    ) {
+        parent::__construct('ApiGen', $apiGen->getVersion());
+        $memoryLimit->setMemoryLimitTo('1024M');
+        $this->io = $io;
+        $this->setDefinition($defaultInputDefinitionFactory->create());
+    }
 
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function run(InputInterface $input = NULL, OutputInterface $output = NULL)
-	{
-		return parent::run($this->io->getInput(), $this->io->getOutput());
-	}
-
+    /**
+     * {@inheritdoc}
+     */
+    public function run(InputInterface $input = null, OutputInterface $output = null)
+    {
+        return parent::run($this->io->getInput(), $this->io->getOutput());
+    }
 }

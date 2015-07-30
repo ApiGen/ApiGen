@@ -13,59 +13,57 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 
-
 class GenerateCommandExecuteTest extends ContainerAwareTestCase
 {
 
-	/**
-	 * @var GenerateCommand
-	 */
-	private $generateCommand;
+    /**
+     * @var GenerateCommand
+     */
+    private $generateCommand;
 
 
-	protected function setUp()
-	{
-		$this->generateCommand = $this->container->getByType(GenerateCommand::class);
-	}
+    protected function setUp()
+    {
+        $this->generateCommand = $this->container->getByType(GenerateCommand::class);
+    }
 
 
-	public function testExecute()
-	{
-		$this->assertFileNotExists(TEMP_DIR . '/Api/index.html');
+    public function testExecute()
+    {
+        $this->assertFileNotExists(TEMP_DIR . '/Api/index.html');
 
-		$inputMock = Mockery::mock(InputInterface::class);
-		$inputMock->shouldReceive('getOptions')->andReturn([
-			'config' => NULL,
-			'destination' => TEMP_DIR . '/Api',
-			'source' => __DIR__ . '/Source'
-		]);
-		$outputMock = Mockery::mock(OutputInterface::class);
+        $inputMock = Mockery::mock(InputInterface::class);
+        $inputMock->shouldReceive('getOptions')->andReturn([
+            'config' => null,
+            'destination' => TEMP_DIR . '/Api',
+            'source' => __DIR__ . '/Source'
+        ]);
+        $outputMock = Mockery::mock(OutputInterface::class);
 
-		$io = $this->container->getByType(IOInterface::class);
-		$reflection = new ReflectionObject($io);
-		$output = $reflection->getProperty('output');
-		$output->setAccessible(TRUE);
-		$output->setValue($io, new NullOutput);
+        $io = $this->container->getByType(IOInterface::class);
+        $reflection = new ReflectionObject($io);
+        $output = $reflection->getProperty('output');
+        $output->setAccessible(true);
+        $output->setValue($io, new NullOutput);
 
-		$this->assertSame(
-			0, // success
-			MethodInvoker::callMethodOnObject($this->generateCommand, 'execute', [$inputMock, $outputMock])
-		);
+        $this->assertSame(
+            0, // success
+            MethodInvoker::callMethodOnObject($this->generateCommand, 'execute', [$inputMock, $outputMock])
+        );
 
-		$this->assertFileExists(TEMP_DIR . '/Api/index.html');
-	}
+        $this->assertFileExists(TEMP_DIR . '/Api/index.html');
+    }
 
 
-	public function testExecuteWithError()
-	{
-		$inputMock = Mockery::mock(InputInterface::class);
-		$outputMock = Mockery::mock(OutputInterface::class);
-		$outputMock->shouldReceive('writeln');
+    public function testExecuteWithError()
+    {
+        $inputMock = Mockery::mock(InputInterface::class);
+        $outputMock = Mockery::mock(OutputInterface::class);
+        $outputMock->shouldReceive('writeln');
 
-		$this->assertSame(
-			1, // failure
-			MethodInvoker::callMethodOnObject($this->generateCommand, 'execute', [$inputMock, $outputMock])
-		);
-	}
-
+        $this->assertSame(
+            1, // failure
+            MethodInvoker::callMethodOnObject($this->generateCommand, 'execute', [$inputMock, $outputMock])
+        );
+    }
 }

@@ -8,23 +8,21 @@ use Nette\DI\ContainerBuilder;
 use Nette\DI\ServiceDefinition;
 use PHPUnit_Framework_TestCase;
 
-
 class UtilsExtensionTest extends PHPUnit_Framework_TestCase
 {
 
-	public function testLoadConfiguration()
-	{
-		$utilsExtension = new UtilsExtension;
-		$utilsExtension->setCompiler(new Compiler(new ContainerBuilder), 'compiler');
-		$utilsExtension->loadConfiguration();
+    public function testLoadConfiguration()
+    {
+        $utilsExtension = new UtilsExtension;
+        $utilsExtension->setCompiler(new Compiler(new ContainerBuilder), 'compiler');
+        $utilsExtension->loadConfiguration();
 
-		$builder = $utilsExtension->getContainerBuilder();
-		$builder->prepareClassList();
+        $builder = $utilsExtension->getContainerBuilder();
+        $builder->prepareClassList();
 
-		$found = $builder->findByType('ApiGen\Utils\FileSystem');
-		/** @var ServiceDefinition $fileSystemDefinition */
-		$fileSystemDefinition = array_pop($found);
-		$this->assertSame('ApiGen\Utils\FileSystem', $fileSystemDefinition->getClass());
-	}
-
+        $found = $builder->findByType('ApiGen\Utils\FileSystem');
+        /** @var ServiceDefinition $fileSystemDefinition */
+        $fileSystemDefinition = array_pop($found);
+        $this->assertSame('ApiGen\Utils\FileSystem', $fileSystemDefinition->getClass());
+    }
 }

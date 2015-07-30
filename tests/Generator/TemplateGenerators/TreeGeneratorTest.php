@@ -19,154 +19,154 @@ use Mockery;
 use PHPUnit_Framework_Assert;
 use PHPUnit_Framework_TestCase;
 
-
 class TreeGeneratorTest extends PHPUnit_Framework_TestCase
 {
 
-	/**
-	 * @var TreeGenerator
-	 */
-	private $treeGenerator;
+    /**
+     * @var TreeGenerator
+     */
+    private $treeGenerator;
 
 
-	protected function setUp()
-	{
-		$configurationMock = Mockery::mock(Configuration::class);
-		$configurationMock->shouldReceive('getOption')->with(CO::TREE)->once()->andReturn(TRUE);
-		$configurationMock->shouldReceive('getOption')->with(CO::TREE)->once()->andReturn(FALSE);
+    protected function setUp()
+    {
+        $configurationMock = Mockery::mock(Configuration::class);
+        $configurationMock->shouldReceive('getOption')->with(CO::TREE)->once()->andReturn(true);
+        $configurationMock->shouldReceive('getOption')->with(CO::TREE)->once()->andReturn(false);
 
-		$templateFactoryMock = Mockery::mock(TemplateFactory::class);
+        $templateFactoryMock = Mockery::mock(TemplateFactory::class);
 
-		$templateMock = Mockery::mock(Template::class);
-		$templateMock->shouldReceive('setParameters');
-		$templateMock->shouldReceive('save');
-		$templateFactoryMock->shouldReceive('createForType')->andReturn($templateMock);
+        $templateMock = Mockery::mock(Template::class);
+        $templateMock->shouldReceive('setParameters');
+        $templateMock->shouldReceive('save');
+        $templateFactoryMock->shouldReceive('createForType')->andReturn($templateMock);
 
-		$reflectionClassMock = Mockery::mock(ClassReflectionInterface::class);
-		$reflectionClassMock->shouldReceive('isMain')->andReturn(TRUE);
-		$reflectionClassMock->shouldReceive('isDocumented')->andReturn(TRUE);
-		$reflectionClassMock->shouldReceive('getName')->andReturn('SomeClass');
-		$reflectionClassMock->shouldReceive('getParentClassName')->andReturn('');
-		$reflectionClassMock->shouldReceive('getParentClasses')->andReturn([]);
+        $reflectionClassMock = Mockery::mock(ClassReflectionInterface::class);
+        $reflectionClassMock->shouldReceive('isMain')->andReturn(true);
+        $reflectionClassMock->shouldReceive('isDocumented')->andReturn(true);
+        $reflectionClassMock->shouldReceive('getName')->andReturn('SomeClass');
+        $reflectionClassMock->shouldReceive('getParentClassName')->andReturn('');
+        $reflectionClassMock->shouldReceive('getParentClasses')->andReturn([]);
 
-		$parserStorageMock = Mockery::mock(ParserStorageInterface::class);
-		$parserStorageMock->shouldReceive('getClasses')->andReturn(new ArrayObject([$reflectionClassMock]));
+        $parserStorageMock = Mockery::mock(ParserStorageInterface::class);
+        $parserStorageMock->shouldReceive('getClasses')->andReturn(new ArrayObject([$reflectionClassMock]));
 
-		$this->treeGenerator = new TreeGenerator(
-			$configurationMock, $templateFactoryMock, $parserStorageMock
-		);
-	}
-
-
-	public function testGenerate()
-	{
-		$this->treeGenerator->generate();
-	}
+        $this->treeGenerator = new TreeGenerator(
+            $configurationMock,
+            $templateFactoryMock,
+            $parserStorageMock
+        );
+    }
 
 
-	public function testIsAllowed()
-	{
-		$this->assertTrue($this->treeGenerator->isAllowed());
-		$this->assertFalse($this->treeGenerator->isAllowed());
-	}
+    public function testGenerate()
+    {
+        $this->treeGenerator->generate();
+    }
 
 
-	public function testCanBeProcessed()
-	{
-		$reflectionClassMock = Mockery::mock(ClassReflectionInterface::class);
-		$reflectionClassMock->shouldReceive('isMain')->once()->andReturn(FALSE);
-		$reflectionClassMock->shouldReceive('isMain')->andReturn(TRUE);
-		$reflectionClassMock->shouldReceive('isDocumented')->once()->andReturn(FALSE);
-		$reflectionClassMock->shouldReceive('isDocumented')->andReturn(TRUE);
-		$reflectionClassMock->shouldReceive('getName')->andReturn('someClass');
-
-		$this->assertFalse(MI::callMethodOnObject($this->treeGenerator, 'canBeProcessed', [$reflectionClassMock]));
-		$this->assertFalse(MI::callMethodOnObject($this->treeGenerator, 'canBeProcessed', [$reflectionClassMock]));
-		$this->assertTrue(MI::callMethodOnObject($this->treeGenerator, 'canBeProcessed', [$reflectionClassMock]));
-
-		MI::callMethodOnObject($this->treeGenerator, 'addToTreeByTypeAndName', ['type', 'someClass']);
-		$this->assertFalse(MI::callMethodOnObject($this->treeGenerator, 'canBeProcessed', [$reflectionClassMock]));
-	}
+    public function testIsAllowed()
+    {
+        $this->assertTrue($this->treeGenerator->isAllowed());
+        $this->assertFalse($this->treeGenerator->isAllowed());
+    }
 
 
-	public function testAddToTreeByReflection()
-	{
-		$reflectionClassParentMock = Mockery::mock(ClassReflectionInterface::class);
-		$reflectionClassParentMock->shouldReceive('getName')->andReturn('ParentClassName');
+    public function testCanBeProcessed()
+    {
+        $reflectionClassMock = Mockery::mock(ClassReflectionInterface::class);
+        $reflectionClassMock->shouldReceive('isMain')->once()->andReturn(false);
+        $reflectionClassMock->shouldReceive('isMain')->andReturn(true);
+        $reflectionClassMock->shouldReceive('isDocumented')->once()->andReturn(false);
+        $reflectionClassMock->shouldReceive('isDocumented')->andReturn(true);
+        $reflectionClassMock->shouldReceive('getName')->andReturn('someClass');
 
-		$reflectionClassMock = Mockery::mock(ClassReflectionInterface::class);
-		$reflectionClassMock->shouldReceive('getName')->andReturn('someClass');
-		$reflectionClassMock->shouldReceive('getParentClassName')->once()->andReturn(NULL);
-		$reflectionClassMock->shouldReceive('getParentClassName')->andReturn('ParentClassName');
-		$reflectionClassMock->shouldReceive('getParentClasses')->andReturn([0 => $reflectionClassParentMock]);
-		$reflectionClassMock->shouldReceive('isInterface')->once()->andReturn(TRUE);
+        $this->assertFalse(MI::callMethodOnObject($this->treeGenerator, 'canBeProcessed', [$reflectionClassMock]));
+        $this->assertFalse(MI::callMethodOnObject($this->treeGenerator, 'canBeProcessed', [$reflectionClassMock]));
+        $this->assertTrue(MI::callMethodOnObject($this->treeGenerator, 'canBeProcessed', [$reflectionClassMock]));
 
-		MI::callMethodOnObject($this->treeGenerator, 'addToTreeByReflection', [$reflectionClassMock]);
-		$processed = PHPUnit_Framework_Assert::getObjectAttribute($this->treeGenerator, 'processed');
-		$this->arrayHasKey('someClass', $processed);
-
-		MI::callMethodOnObject($this->treeGenerator, 'addToTreeByReflection', [$reflectionClassMock]);
-		$processed = PHPUnit_Framework_Assert::getObjectAttribute($this->treeGenerator, 'processed');
-		$this->arrayHasKey('ParentClassName', $processed);
-	}
+        MI::callMethodOnObject($this->treeGenerator, 'addToTreeByTypeAndName', ['type', 'someClass']);
+        $this->assertFalse(MI::callMethodOnObject($this->treeGenerator, 'canBeProcessed', [$reflectionClassMock]));
+    }
 
 
-	public function testGetTypeByReflection()
-	{
-		$reflectionClassMock = Mockery::mock(ClassReflectionInterface::class);
-		$reflectionClassMock->shouldReceive('isInterface')->once()->andReturn(TRUE);
-		$reflectionClassMock->shouldReceive('isInterface')->andReturn(FALSE);
-		$reflectionClassMock->shouldReceive('isTrait')->once()->andReturn(TRUE);
-		$reflectionClassMock->shouldReceive('isTrait')->andReturn(FALSE);
-		$reflectionClassMock->shouldReceive('isException')->once()->andReturn(TRUE);
-		$reflectionClassMock->shouldReceive('isException')->andReturn(FALSE);
+    public function testAddToTreeByReflection()
+    {
+        $reflectionClassParentMock = Mockery::mock(ClassReflectionInterface::class);
+        $reflectionClassParentMock->shouldReceive('getName')->andReturn('ParentClassName');
 
-		$this->assertSame(
-			Elements::INTERFACES,
-			MI::callMethodOnObject($this->treeGenerator, 'getTypeByReflection', [$reflectionClassMock])
-		);
+        $reflectionClassMock = Mockery::mock(ClassReflectionInterface::class);
+        $reflectionClassMock->shouldReceive('getName')->andReturn('someClass');
+        $reflectionClassMock->shouldReceive('getParentClassName')->once()->andReturn(null);
+        $reflectionClassMock->shouldReceive('getParentClassName')->andReturn('ParentClassName');
+        $reflectionClassMock->shouldReceive('getParentClasses')->andReturn([0 => $reflectionClassParentMock]);
+        $reflectionClassMock->shouldReceive('isInterface')->once()->andReturn(true);
 
-		$this->assertSame(
-			Elements::TRAITS,
-			MI::callMethodOnObject($this->treeGenerator, 'getTypeByReflection', [$reflectionClassMock])
-		);
+        MI::callMethodOnObject($this->treeGenerator, 'addToTreeByReflection', [$reflectionClassMock]);
+        $processed = PHPUnit_Framework_Assert::getObjectAttribute($this->treeGenerator, 'processed');
+        $this->arrayHasKey('someClass', $processed);
 
-		$this->assertSame(
-			Elements::EXCEPTIONS,
-			MI::callMethodOnObject($this->treeGenerator, 'getTypeByReflection', [$reflectionClassMock])
-		);
-
-		$this->assertSame(
-			Elements::CLASSES,
-			MI::callMethodOnObject($this->treeGenerator, 'getTypeByReflection', [$reflectionClassMock])
-		);
-	}
+        MI::callMethodOnObject($this->treeGenerator, 'addToTreeByReflection', [$reflectionClassMock]);
+        $processed = PHPUnit_Framework_Assert::getObjectAttribute($this->treeGenerator, 'processed');
+        $this->arrayHasKey('ParentClassName', $processed);
+    }
 
 
-	public function testAddToTreeByTypeAndName()
-	{
-		MI::callMethodOnObject($this->treeGenerator, 'addToTreeByTypeAndName', ['type', 'name']);
+    public function testGetTypeByReflection()
+    {
+        $reflectionClassMock = Mockery::mock(ClassReflectionInterface::class);
+        $reflectionClassMock->shouldReceive('isInterface')->once()->andReturn(true);
+        $reflectionClassMock->shouldReceive('isInterface')->andReturn(false);
+        $reflectionClassMock->shouldReceive('isTrait')->once()->andReturn(true);
+        $reflectionClassMock->shouldReceive('isTrait')->andReturn(false);
+        $reflectionClassMock->shouldReceive('isException')->once()->andReturn(true);
+        $reflectionClassMock->shouldReceive('isException')->andReturn(false);
 
-		$treeStorage = PHPUnit_Framework_Assert::getObjectAttribute($this->treeGenerator, 'treeStorage');
-		$this->assertArrayHasKey('type', $treeStorage);
-		$this->assertArrayHasKey('name', $treeStorage['type']);
+        $this->assertSame(
+            Elements::INTERFACES,
+            MI::callMethodOnObject($this->treeGenerator, 'getTypeByReflection', [$reflectionClassMock])
+        );
 
-		$processed = PHPUnit_Framework_Assert::getObjectAttribute($this->treeGenerator, 'processed');
-		$this->assertArrayHasKey('name', $processed);
-	}
+        $this->assertSame(
+            Elements::TRAITS,
+            MI::callMethodOnObject($this->treeGenerator, 'getTypeByReflection', [$reflectionClassMock])
+        );
+
+        $this->assertSame(
+            Elements::EXCEPTIONS,
+            MI::callMethodOnObject($this->treeGenerator, 'getTypeByReflection', [$reflectionClassMock])
+        );
+
+        $this->assertSame(
+            Elements::CLASSES,
+            MI::callMethodOnObject($this->treeGenerator, 'getTypeByReflection', [$reflectionClassMock])
+        );
+    }
 
 
-	public function testSortTreeStorageElements()
-	{
-		MI::callMethodOnObject($this->treeGenerator, 'addToTreeByTypeAndName', ['type', 'b']);
-		MI::callMethodOnObject($this->treeGenerator, 'addToTreeByTypeAndName', ['type', 'a']);
+    public function testAddToTreeByTypeAndName()
+    {
+        MI::callMethodOnObject($this->treeGenerator, 'addToTreeByTypeAndName', ['type', 'name']);
 
-		$originalTreeStorage = PHPUnit_Framework_Assert::getObjectAttribute($this->treeGenerator, 'treeStorage');
-		$this->assertSame(['b' => [], 'a' => []], $originalTreeStorage['type']);
+        $treeStorage = PHPUnit_Framework_Assert::getObjectAttribute($this->treeGenerator, 'treeStorage');
+        $this->assertArrayHasKey('type', $treeStorage);
+        $this->assertArrayHasKey('name', $treeStorage['type']);
 
-		MI::callMethodOnObject($this->treeGenerator, 'sortTreeStorageElements');
-		$originalTreeStorage = PHPUnit_Framework_Assert::getObjectAttribute($this->treeGenerator, 'treeStorage');
-		$this->assertSame(['a' => [], 'b' => []], $originalTreeStorage['type']);
-	}
+        $processed = PHPUnit_Framework_Assert::getObjectAttribute($this->treeGenerator, 'processed');
+        $this->assertArrayHasKey('name', $processed);
+    }
 
+
+    public function testSortTreeStorageElements()
+    {
+        MI::callMethodOnObject($this->treeGenerator, 'addToTreeByTypeAndName', ['type', 'b']);
+        MI::callMethodOnObject($this->treeGenerator, 'addToTreeByTypeAndName', ['type', 'a']);
+
+        $originalTreeStorage = PHPUnit_Framework_Assert::getObjectAttribute($this->treeGenerator, 'treeStorage');
+        $this->assertSame(['b' => [], 'a' => []], $originalTreeStorage['type']);
+
+        MI::callMethodOnObject($this->treeGenerator, 'sortTreeStorageElements');
+        $originalTreeStorage = PHPUnit_Framework_Assert::getObjectAttribute($this->treeGenerator, 'treeStorage');
+        $this->assertSame(['a' => [], 'b' => []], $originalTreeStorage['type']);
+    }
 }

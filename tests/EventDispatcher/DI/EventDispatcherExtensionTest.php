@@ -11,54 +11,52 @@ use Nette\DI\ContainerBuilder;
 use Nette\DI\ServiceDefinition;
 use PHPUnit_Framework_TestCase;
 
-
 class EventDispatcherExtensionTest extends PHPUnit_Framework_TestCase
 {
 
-	public function testLoadConfiguration()
-	{
-		$consoleExtension = $this->createExtension();
-		$consoleExtension->loadConfiguration();
+    public function testLoadConfiguration()
+    {
+        $consoleExtension = $this->createExtension();
+        $consoleExtension->loadConfiguration();
 
-		$builder = $consoleExtension->getContainerBuilder();
-		$builder->prepareClassList();
+        $builder = $consoleExtension->getContainerBuilder();
+        $builder->prepareClassList();
 
-		/** @var ServiceDefinition $eventDispatcherDefinition*/
-		$eventDispatcherDefinition = $builder->getDefinition($builder->getByType(EventDispatcherInterface::class));
-		$this->assertSame(SymfonyEventDispatcher::class, $eventDispatcherDefinition->getClass());
-	}
-
-
-	public function testLoadSubscribers()
-	{
-		$consoleExtension = $this->createExtension();
-		$consoleExtension->loadConfiguration();
-
-		$builder = $consoleExtension->getContainerBuilder();
-		$builder->addDefinition('subscriber')
-			->setClass(SomeSubscriber::class);
-
-		$consoleExtension->beforeCompile();
-
-		$eventDispatcherDefinition = $builder->getDefinition($builder->getByType(EventDispatcherInterface::class));
-
-		$this->assertCount(1, $eventDispatcherDefinition->getSetup());
-		$this->assertSame('addSubscriber', $eventDispatcherDefinition->getSetup()[0]->getEntity());
-		$this->assertSame(
-			['@' . SomeSubscriber::class],
-			$eventDispatcherDefinition->getSetup()[0]->arguments
-		);
-	}
+        /** @var ServiceDefinition $eventDispatcherDefinition*/
+        $eventDispatcherDefinition = $builder->getDefinition($builder->getByType(EventDispatcherInterface::class));
+        $this->assertSame(SymfonyEventDispatcher::class, $eventDispatcherDefinition->getClass());
+    }
 
 
-	/**
-	 * @return EventDispatcherExtension
-	 */
-	private function createExtension()
-	{
-		$consoleExtension = new EventDispatcherExtension;
-		$consoleExtension->setCompiler(new Compiler(new ContainerBuilder), 'compiler');
-		return $consoleExtension;
-	}
+    public function testLoadSubscribers()
+    {
+        $consoleExtension = $this->createExtension();
+        $consoleExtension->loadConfiguration();
 
+        $builder = $consoleExtension->getContainerBuilder();
+        $builder->addDefinition('subscriber')
+            ->setClass(SomeSubscriber::class);
+
+        $consoleExtension->beforeCompile();
+
+        $eventDispatcherDefinition = $builder->getDefinition($builder->getByType(EventDispatcherInterface::class));
+
+        $this->assertCount(1, $eventDispatcherDefinition->getSetup());
+        $this->assertSame('addSubscriber', $eventDispatcherDefinition->getSetup()[0]->getEntity());
+        $this->assertSame(
+            ['@' . SomeSubscriber::class],
+            $eventDispatcherDefinition->getSetup()[0]->arguments
+        );
+    }
+
+
+    /**
+     * @return EventDispatcherExtension
+     */
+    private function createExtension()
+    {
+        $consoleExtension = new EventDispatcherExtension;
+        $consoleExtension->setCompiler(new Compiler(new ContainerBuilder), 'compiler');
+        return $consoleExtension;
+    }
 }

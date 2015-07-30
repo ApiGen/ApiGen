@@ -9,169 +9,167 @@
 
 namespace ApiGen\Contracts\Configuration;
 
-
 interface ConfigurationInterface
 {
 
-	/**
-	 * @return array
-	 */
-	function resolveOptions(array $options);
+    /**
+     * @return array
+     */
+    function resolveOptions(array $options);
 
 
-	/**
-	 * @param string $name
-	 * @return mixed|NULL
-	 */
-	function getOption($name);
+    /**
+     * @param string $name
+     * @return mixed|NULL
+     */
+    function getOption($name);
 
 
-	/**
-	 * @return array
-	 */
-	function getOptions();
+    /**
+     * @return array
+     */
+    function getOptions();
 
 
-	function setOptions(array $options);
+    function setOptions(array $options);
 
 
-	/**
-	 * Get property/method visibility level (public, protected or private, in binary code).
-	 *
-	 * @return int
-	 */
-	function getVisibilityLevel();
+    /**
+     * Get property/method visibility level (public, protected or private, in binary code).
+     *
+     * @return int
+     */
+    function getVisibilityLevel();
 
 
-	/**
-	 * Return name of main library
-	 *
-	 * @return string
-	 */
-	function getMain();
+    /**
+     * Return name of main library
+     *
+     * @return string
+     */
+    function getMain();
 
 
-	/**
-	 * Are PHP Core elements documented.
-	 *
-	 * @return bool
-	 */
-	function isPhpCoreDocumented();
+    /**
+     * Are PHP Core elements documented.
+     *
+     * @return bool
+     */
+    function isPhpCoreDocumented();
 
 
-	/**
-	 * Are elements marked as "@internal" documented.
-	 *
-	 * @return bool
-	 */
-	function isInternalDocumented();
+    /**
+     * Are elements marked as "@internal" documented.
+     *
+     * @return bool
+     */
+    function isInternalDocumented();
 
 
-	/**
-	 * Are elements marked as "@deprecated" documented.
-	 *
-	 * @return bool
-	 */
-	function isDeprecatedDocumented();
+    /**
+     * Are elements marked as "@deprecated" documented.
+     *
+     * @return bool
+     */
+    function isDeprecatedDocumented();
 
 
-	/**
-	 * Is grouping by namespaces enabled.
-	 *
-	 * @return bool
-	 */
-	function areNamespacesEnabled();
+    /**
+     * Is grouping by namespaces enabled.
+     *
+     * @return bool
+     */
+    function areNamespacesEnabled();
 
 
-	/**
-	 * Is grouping by packages enabled.
-	 *
-	 * @return bool
-	 */
-	function arePackagesEnabled();
+    /**
+     * Is grouping by packages enabled.
+     *
+     * @return bool
+     */
+    function arePackagesEnabled();
 
 
-	/**
-	 * @return string
-	 */
-	function getZipFileName();
+    /**
+     * @return string
+     */
+    function getZipFileName();
 
 
-	/**
-	 * List of annotations.
-	 *
-	 * @return string[]
-	 */
-	function getAnnotationGroups();
+    /**
+     * List of annotations.
+     *
+     * @return string[]
+     */
+    function getAnnotationGroups();
 
 
-	/**
-	 * Is documentation available for downloading.
-	 *
-	 * @return bool
-	 */
-	function isAvailableForDownload();
+    /**
+     * Is documentation available for downloading.
+     *
+     * @return bool
+     */
+    function isAvailableForDownload();
 
 
-	/**
-	 * @return bool
-	 */
-	function isTreeAllowed();
+    /**
+     * @return bool
+     */
+    function isTreeAllowed();
 
 
-	/**
-	 * @return string
-	 */
-	function getDestination();
+    /**
+     * @return string
+     */
+    function getDestination();
 
 
-	/**
-	 * Get title of the project.
-	 *
-	 * @return string
-	 */
-	function getTitle();
+    /**
+     * Get title of the project.
+     *
+     * @return string
+     */
+    function getTitle();
 
 
-	/**
-	 * Base url of application.
-	 *
-	 * @var string
-	 */
-	function getBaseUrl();
+    /**
+     * Base url of application.
+     *
+     * @var string
+     */
+    function getBaseUrl();
 
 
-	/**
-	 * @return string
-	 */
-	function getGoogleCseId();
+    /**
+     * @return string
+     */
+    function getGoogleCseId();
 
 
-	/**
-	 * @return bool
-	 */
-	function shouldGenerateSourceCode();
+    /**
+     * @return bool
+     */
+    function shouldGenerateSourceCode();
 
 
-	/**
-	 * @return string[]
-	 */
-	function getSource();
+    /**
+     * @return string[]
+     */
+    function getSource();
 
 
-	/**
-	 * Exclude masks for files/directories.
-	 *
-	 * @return string[]
-	 */
-	function getExclude();
+    /**
+     * Exclude masks for files/directories.
+     *
+     * @return string[]
+     */
+    function getExclude();
 
 
-	/**
-	 * File extensions to be taken in account.
-	 *
-	 * @return string[]
-	 */
-	function getExtensions();
-
+    /**
+     * File extensions to be taken in account.
+     *
+     * @return string[]
+     */
+    function getExtensions();
 }

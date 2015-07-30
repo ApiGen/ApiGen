@@ -9,10 +9,8 @@
 
 namespace ApiGen\Contracts\Configuration\OptionsResolver;
 
-
 interface OptionsResolverInterface
 {
 
-	function resolve(array $options);
-
+    function resolve(array $options);
 }

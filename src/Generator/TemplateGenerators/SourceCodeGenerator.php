@@ -23,120 +23,118 @@ use ApiGen\Generator\Resolvers\RelativePathResolver;
 use ApiGen\Generator\SourceCodeHighlighter\SourceCodeHighlighter;
 use ApiGen\Templating\TemplateFactory;
 
-
 class SourceCodeGenerator implements ConditionalTemplateGeneratorInterface, StepCounterInterface
 {
 
-	/**
-	 * @var Configuration
-	 */
-	private $configuration;
+    /**
+     * @var Configuration
+     */
+    private $configuration;
 
-	/**
-	 * @var ElementStorageInterface
-	 */
-	private $elementStorage;
+    /**
+     * @var ElementStorageInterface
+     */
+    private $elementStorage;
 
-	/**
-	 * @var TemplateFactory
-	 */
-	private $templateFactory;
+    /**
+     * @var TemplateFactory
+     */
+    private $templateFactory;
 
-	/**
-	 * @var RelativePathResolver
-	 */
-	private $relativePathResolver;
+    /**
+     * @var RelativePathResolver
+     */
+    private $relativePathResolver;
 
-	/**
-	 * @var SourceCodeHighlighter
-	 */
-	private $sourceCodeHighlighter;
+    /**
+     * @var SourceCodeHighlighter
+     */
+    private $sourceCodeHighlighter;
 
-	/**
-	 * @var EventDispatcherInterface
-	 */
-	private $eventDispatcher;
-
-
-	public function __construct(
-		Configuration $configuration,
-		ElementStorageInterface $elementStorage,
-		TemplateFactory $templateFactory,
-		RelativePathResolver $relativePathResolver,
-		SourceCodeHighlighter $sourceCodeHighlighter,
-		EventDispatcherInterface $eventDispatcher
-	) {
-		$this->configuration = $configuration;
-		$this->elementStorage = $elementStorage;
-		$this->templateFactory = $templateFactory;
-		$this->relativePathResolver = $relativePathResolver;
-		$this->sourceCodeHighlighter = $sourceCodeHighlighter;
-		$this->eventDispatcher = $eventDispatcher;
-	}
+    /**
+     * @var EventDispatcherInterface
+     */
+    private $eventDispatcher;
 
 
-	public function generate()
-	{
-		foreach ($this->elementStorage->getElements() as $type => $elementList) {
-			foreach ($elementList as $element) {
-				/** @var ElementReflectionInterface $element */
-				if ($element->isTokenized()) {
-					$this->generateForElement($element);
-
-					$this->eventDispatcher->dispatch(new GenerateProgressEvent(GeneratorEvents::ON_GENERATE_PROGRESS));
-				}
-			}
-		}
-	}
-
-
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getStepCount()
-	{
-		$tokenizedFilter = function (ClassReflectionInterface $class) {
-			return $class->isTokenized();
-		};
-
-		$count = count(array_filter($this->elementStorage->getClasses(), $tokenizedFilter))
-			+ count(array_filter($this->elementStorage->getInterfaces(), $tokenizedFilter))
-			+ count(array_filter($this->elementStorage->getTraits(), $tokenizedFilter))
-			+ count(array_filter($this->elementStorage->getExceptions(), $tokenizedFilter))
-			+ count($this->elementStorage->getConstants())
-			+ count($this->elementStorage->getFunctions());
-
-		return $count;
-	}
+    public function __construct(
+        Configuration $configuration,
+        ElementStorageInterface $elementStorage,
+        TemplateFactory $templateFactory,
+        RelativePathResolver $relativePathResolver,
+        SourceCodeHighlighter $sourceCodeHighlighter,
+        EventDispatcherInterface $eventDispatcher
+    ) {
+        $this->configuration = $configuration;
+        $this->elementStorage = $elementStorage;
+        $this->templateFactory = $templateFactory;
+        $this->relativePathResolver = $relativePathResolver;
+        $this->sourceCodeHighlighter = $sourceCodeHighlighter;
+        $this->eventDispatcher = $eventDispatcher;
+    }
 
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function isAllowed()
-	{
-		return $this->configuration->getOption(CO::SOURCE_CODE);
-	}
+    public function generate()
+    {
+        foreach ($this->elementStorage->getElements() as $type => $elementList) {
+            foreach ($elementList as $element) {
+                /** @var ElementReflectionInterface $element */
+                if ($element->isTokenized()) {
+                    $this->generateForElement($element);
+
+                    $this->eventDispatcher->dispatch(new GenerateProgressEvent(GeneratorEvents::ON_GENERATE_PROGRESS));
+                }
+            }
+        }
+    }
 
 
-	private function generateForElement(ElementReflectionInterface $element)
-	{
-		$template = $this->templateFactory->createNamedForElement('source', $element);
-		$template->setParameters([
-			'fileName' => $this->relativePathResolver->getRelativePath($element->getFileName()),
-			'source' => $this->getHighlightedCodeFromElement($element)
-		]);
-		$template->save();
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function getStepCount()
+    {
+        $tokenizedFilter = function (ClassReflectionInterface $class) {
+            return $class->isTokenized();
+        };
+
+        $count = count(array_filter($this->elementStorage->getClasses(), $tokenizedFilter))
+            + count(array_filter($this->elementStorage->getInterfaces(), $tokenizedFilter))
+            + count(array_filter($this->elementStorage->getTraits(), $tokenizedFilter))
+            + count(array_filter($this->elementStorage->getExceptions(), $tokenizedFilter))
+            + count($this->elementStorage->getConstants())
+            + count($this->elementStorage->getFunctions());
+
+        return $count;
+    }
 
 
-	/**
-	 * @return string
-	 */
-	private function getHighlightedCodeFromElement(ElementReflectionInterface $element)
-	{
-		$content = file_get_contents($element->getFileName());
-		return $this->sourceCodeHighlighter->highlightAndAddLineNumbers($content);
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function isAllowed()
+    {
+        return $this->configuration->getOption(CO::SOURCE_CODE);
+    }
 
+
+    private function generateForElement(ElementReflectionInterface $element)
+    {
+        $template = $this->templateFactory->createNamedForElement('source', $element);
+        $template->setParameters([
+            'fileName' => $this->relativePathResolver->getRelativePath($element->getFileName()),
+            'source' => $this->getHighlightedCodeFromElement($element)
+        ]);
+        $template->save();
+    }
+
+
+    /**
+     * @return string
+     */
+    private function getHighlightedCodeFromElement(ElementReflectionInterface $element)
+    {
+        $content = file_get_contents($element->getFileName());
+        return $this->sourceCodeHighlighter->highlightAndAddLineNumbers($content);
+    }
 }

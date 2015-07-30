@@ -16,32 +16,30 @@ use ApiGen\Contracts\Parser\Reflection\Magic\MagicParameterReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\Magic\MagicPropertyReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 
-
 interface ReflectionFactoryInterface
 {
 
-	/**
-	 * @param object $tokenReflection
-	 * @return ClassReflectionInterface|ConstantReflectionInterface|MethodReflectionInterface
-	 */
-	function createFromReflection($tokenReflection);
+    /**
+     * @param object $tokenReflection
+     * @return ClassReflectionInterface|ConstantReflectionInterface|MethodReflectionInterface
+     */
+    function createFromReflection($tokenReflection);
 
 
-	/**
-	 * @return MagicMethodReflectionInterface
-	 */
-	function createMethodMagic(array $settings);
+    /**
+     * @return MagicMethodReflectionInterface
+     */
+    function createMethodMagic(array $settings);
 
 
-	/**
-	 * @return MagicParameterReflectionInterface
-	 */
-	function createParameterMagic(array $settings);
+    /**
+     * @return MagicParameterReflectionInterface
+     */
+    function createParameterMagic(array $settings);
 
 
-	/**
-	 * @return MagicPropertyReflectionInterface
-	 */
-	function createPropertyMagic(array $settings);
-
+    /**
+     * @return MagicPropertyReflectionInterface
+     */
+    function createPropertyMagic(array $settings);
 }

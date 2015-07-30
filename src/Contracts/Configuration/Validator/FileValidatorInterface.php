@@ -9,13 +9,11 @@
 
 namespace ApiGen\Contracts\Configuration\Validator;
 
-
 interface FileValidatorInterface
 {
 
-	/**
-	 * @param string $path
-	 */
-	function validate($path);
-
+    /**
+     * @param string $path
+     */
+    function validate($path);
 }

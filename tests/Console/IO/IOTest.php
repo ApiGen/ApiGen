@@ -14,52 +14,50 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 
-
 class IOTest extends PHPUnit_Framework_TestCase
 {
 
-	public function testGetters()
-	{
-		$io = new IO(new HelperSet([]), new LiberalFormatArgvInput, new NullOutput);
-		$this->assertInstanceOf(InputInterface::class, $io->getInput());
-		$this->assertInstanceOf(OutputInterface::class, $io->getOutput());
-	}
+    public function testGetters()
+    {
+        $io = new IO(new HelperSet([]), new LiberalFormatArgvInput, new NullOutput);
+        $this->assertInstanceOf(InputInterface::class, $io->getInput());
+        $this->assertInstanceOf(OutputInterface::class, $io->getOutput());
+    }
 
 
-	public function testWriteln()
-	{
-		$outputMock = Mockery::mock(OutputInterface::class);
-		$outputMock->shouldReceive('writeln')->andReturnUsing(function ($args) {
-			return $args;
-		});
+    public function testWriteln()
+    {
+        $outputMock = Mockery::mock(OutputInterface::class);
+        $outputMock->shouldReceive('writeln')->andReturnUsing(function ($args) {
+            return $args;
+        });
 
-		$io = new IO(new HelperSet([]), new LiberalFormatArgvInput, $outputMock);
-		$this->assertSame('Some message', $io->writeln('Some message'));
-	}
-
-
-	public function testAsking()
-	{
-		$questionHelper = new QuestionHelper;
-		$questionHelper->setInputStream($this->getInputStream("Test\n"));
-		$io = new IO(new HelperSet(['question' => $questionHelper]), new LiberalFormatArgvInput, new ConsoleOutput);
-
-		$this->assertFalse($io->ask('Is this true', TRUE));
-		$this->setExpectedException(RuntimeException::class);
-		$this->assertTrue($io->ask('Is this true', FALSE));
-	}
+        $io = new IO(new HelperSet([]), new LiberalFormatArgvInput, $outputMock);
+        $this->assertSame('Some message', $io->writeln('Some message'));
+    }
 
 
-	/**
-	 * @param string $input
-	 * @return resource
-	 */
-	private function getInputStream($input)
-	{
-		$stream = fopen('php://memory', 'r+', FALSE);
-		fputs($stream, $input);
-		rewind($stream);
-		return $stream;
-	}
+    public function testAsking()
+    {
+        $questionHelper = new QuestionHelper;
+        $questionHelper->setInputStream($this->getInputStream("Test\n"));
+        $io = new IO(new HelperSet(['question' => $questionHelper]), new LiberalFormatArgvInput, new ConsoleOutput);
 
+        $this->assertFalse($io->ask('Is this true', true));
+        $this->setExpectedException(RuntimeException::class);
+        $this->assertTrue($io->ask('Is this true', false));
+    }
+
+
+    /**
+     * @param string $input
+     * @return resource
+     */
+    private function getInputStream($input)
+    {
+        $stream = fopen('php://memory', 'r+', false);
+        fputs($stream, $input);
+        rewind($stream);
+        return $stream;
+    }
 }

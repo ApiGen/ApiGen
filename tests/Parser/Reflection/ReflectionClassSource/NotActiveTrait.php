@@ -2,7 +2,6 @@
 
 namespace Project;
 
-
 trait NotActiveTrait
 {
 

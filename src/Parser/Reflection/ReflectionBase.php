@@ -23,134 +23,132 @@ use TokenReflection\IReflectionMethod;
 use TokenReflection\IReflectionParameter;
 use TokenReflection\IReflectionProperty;
 
-
 abstract class ReflectionBase extends Nette\Object implements ReflectionInterface
 {
 
-	/**
-	 * @var string
-	 */
-	protected $reflectionType;
+    /**
+     * @var string
+     */
+    protected $reflectionType;
 
-	/**
-	 * @var IReflectionClass|IReflectionFunction|IReflectionMethod|IReflectionParameter|IReflectionProperty
-	 */
-	protected $reflection;
+    /**
+     * @var IReflectionClass|IReflectionFunction|IReflectionMethod|IReflectionParameter|IReflectionProperty
+     */
+    protected $reflection;
 
-	/**
-	 * @var ParserConfigurationInterface
-	 */
-	protected $configuration;
+    /**
+     * @var ParserConfigurationInterface
+     */
+    protected $configuration;
 
-	/**
-	 * @var ParserStorageInterface
-	 */
-	protected $parserResult;
+    /**
+     * @var ParserStorageInterface
+     */
+    protected $parserResult;
 
-	/**
-	 * @var ReflectionFactoryInterface
-	 */
-	protected $reflectionFactory;
-
-
-	public function __construct(IReflection $reflection)
-	{
-		$this->reflectionType = get_class($this);
-		$this->reflection = $reflection;
-	}
+    /**
+     * @var ReflectionFactoryInterface
+     */
+    protected $reflectionFactory;
 
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getName()
-	{
-		return $this->reflection->getName();
-	}
+    public function __construct(IReflection $reflection)
+    {
+        $this->reflectionType = get_class($this);
+        $this->reflection = $reflection;
+    }
 
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getPrettyName()
-	{
-		return $this->reflection->getPrettyName();
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        return $this->reflection->getName();
+    }
 
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function isInternal()
-	{
-		return $this->reflection->isInternal();
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function getPrettyName()
+    {
+        return $this->reflection->getPrettyName();
+    }
 
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function isTokenized()
-	{
-		return $this->reflection->isTokenized();
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function isInternal()
+    {
+        return $this->reflection->isInternal();
+    }
 
 
-	/**
-	 * @return string
-	 */
-	public function getFileName()
-	{
-		return $this->reflection->getFileName();
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function isTokenized()
+    {
+        return $this->reflection->isTokenized();
+    }
 
 
-	/**
-	 * @return int
-	 */
-	public function getStartLine()
-	{
-		$startLine = $this->reflection->getStartLine();
-		if ($doc = $this->getDocComment()) {
-			$startLine -= substr_count($doc, "\n") + 1;
-		}
-		return $startLine;
-	}
+    /**
+     * @return string
+     */
+    public function getFileName()
+    {
+        return $this->reflection->getFileName();
+    }
 
 
-	/**
-	 * @return int
-	 */
-	public function getEndLine()
-	{
-		return $this->reflection->getEndLine();
-	}
+    /**
+     * @return int
+     */
+    public function getStartLine()
+    {
+        $startLine = $this->reflection->getStartLine();
+        if ($doc = $this->getDocComment()) {
+            $startLine -= substr_count($doc, "\n") + 1;
+        }
+        return $startLine;
+    }
 
 
-	public function setConfiguration(ConfigurationInterface $configuration)
-	{
-		$this->configuration = $configuration;
-	}
+    /**
+     * @return int
+     */
+    public function getEndLine()
+    {
+        return $this->reflection->getEndLine();
+    }
 
 
-	public function setParserResult(ParserStorageInterface $parserResult)
-	{
-		$this->parserResult = $parserResult;
-	}
+    public function setConfiguration(ConfigurationInterface $configuration)
+    {
+        $this->configuration = $configuration;
+    }
 
 
-	public function setReflectionFactory(ReflectionFactoryInterface $reflectionFactory)
-	{
-		$this->reflectionFactory = $reflectionFactory;
-	}
+    public function setParserResult(ParserStorageInterface $parserResult)
+    {
+        $this->parserResult = $parserResult;
+    }
 
 
-	/**
-	 * @return ClassReflectionInterface[]
-	 */
-	public function getParsedClasses()
-	{
-		return $this->parserResult->getElementsByType(ElementsInterface::CLASSES);
-	}
+    public function setReflectionFactory(ReflectionFactoryInterface $reflectionFactory)
+    {
+        $this->reflectionFactory = $reflectionFactory;
+    }
 
+
+    /**
+     * @return ClassReflectionInterface[]
+     */
+    public function getParsedClasses()
+    {
+        return $this->parserResult->getElementsByType(ElementsInterface::CLASSES);
+    }
 }

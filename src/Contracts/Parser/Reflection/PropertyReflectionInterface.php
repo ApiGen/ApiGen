@@ -14,70 +14,71 @@ use ApiGen\Contracts\Parser\Reflection\Behavior\InTraitInterface;
 use ApiGen\Contracts\Parser\Reflection\Behavior\LinedInterface;
 use ApiGen\Contracts\Parser\Reflection\Behavior\NamedInterface;
 
-
-interface PropertyReflectionInterface extends ElementReflectionInterface, InTraitInterface, InClassInterface,
-	LinedInterface
+interface PropertyReflectionInterface extends
+    ElementReflectionInterface,
+    InTraitInterface,
+    InClassInterface,
+    LinedInterface
 {
 
-	/**
-	 * @return bool
-	 */
-	function isValid();
+    /**
+     * @return bool
+     */
+    function isValid();
 
 
-	/**
-	 * @return bool
-	 */
-	function isDefault();
+    /**
+     * @return bool
+     */
+    function isDefault();
 
 
-	/**
-	 * @return bool
-	 */
-	function isStatic();
+    /**
+     * @return bool
+     */
+    function isStatic();
 
 
-	/**
-	 * @return mixed
-	 */
-	function getDefaultValue();
+    /**
+     * @return mixed
+     */
+    function getDefaultValue();
 
 
-	/**
-	 * @return string
-	 */
-	function getTypeHint();
+    /**
+     * @return string
+     */
+    function getTypeHint();
 
 
-	/**
-	 * @return bool
-	 */
-	function isMagic();
+    /**
+     * @return bool
+     */
+    function isMagic();
 
 
-	/**
-	 * @return bool
-	 */
-	function isReadOnly();
+    /**
+     * @return bool
+     */
+    function isReadOnly();
 
 
-	/**
-	 * @return bool
-	 */
-	function isWriteOnly();
+    /**
+     * @return bool
+     */
+    function isWriteOnly();
 
 
-	/**
-	 * @param string $name
-	 * @return bool
-	 */
-	function hasAnnotation($name);
+    /**
+     * @param string $name
+     * @return bool
+     */
+    function hasAnnotation($name);
 
 
-	/**
-	 * @param string $name
-	 * @return bool
-	 */
-	function getAnnotation($name);
-
+    /**
+     * @param string $name
+     * @return bool
+     */
+    function getAnnotation($name);
 }

@@ -13,138 +13,136 @@ use Mockery;
 use PHPUnit_Framework_TestCase;
 use TokenReflection\Broker;
 
-
 class ReflectionMethodTest extends PHPUnit_Framework_TestCase
 {
 
-	/**
-	 * @var MethodReflectionInterface
-	 */
-	private $reflectionMethod;
+    /**
+     * @var MethodReflectionInterface
+     */
+    private $reflectionMethod;
 
-	/**
-	 * @var ClassReflectionInterface
-	 */
-	private $reflectionClass;
-
-
-	protected function setUp()
-	{
-		$backend = new Backend($this->getReflectionFactory());
-		$broker = new Broker($backend);
-		$broker->processDirectory(__DIR__ . '/ReflectionMethodSource');
-
-		$this->reflectionClass = $backend->getClasses()['Project\ReflectionMethod'];
-		$this->reflectionMethod = $this->reflectionClass->getMethod('methodWithArgs');
-	}
+    /**
+     * @var ClassReflectionInterface
+     */
+    private $reflectionClass;
 
 
-	public function testGetDeclaringClass()
-	{
-		$this->isInstanceOf(ClassReflectionInterface::class, $this->reflectionMethod->getDeclaringClass());
-	}
+    protected function setUp()
+    {
+        $backend = new Backend($this->getReflectionFactory());
+        $broker = new Broker($backend);
+        $broker->processDirectory(__DIR__ . '/ReflectionMethodSource');
+
+        $this->reflectionClass = $backend->getClasses()['Project\ReflectionMethod'];
+        $this->reflectionMethod = $this->reflectionClass->getMethod('methodWithArgs');
+    }
 
 
-	public function testGetDeclaringClassName()
-	{
-		$this->assertSame('Project\ReflectionMethod', $this->reflectionMethod->getDeclaringClassName());
-	}
+    public function testGetDeclaringClass()
+    {
+        $this->isInstanceOf(ClassReflectionInterface::class, $this->reflectionMethod->getDeclaringClass());
+    }
 
 
-	public function testIsAbstract()
-	{
-		$this->assertFalse($this->reflectionMethod->isAbstract());
-	}
+    public function testGetDeclaringClassName()
+    {
+        $this->assertSame('Project\ReflectionMethod', $this->reflectionMethod->getDeclaringClassName());
+    }
 
 
-	public function testIsFinal()
-	{
-		$this->assertFalse($this->reflectionMethod->isFinal());
-	}
+    public function testIsAbstract()
+    {
+        $this->assertFalse($this->reflectionMethod->isAbstract());
+    }
 
 
-	public function testIsPrivate()
-	{
-		$this->assertFalse($this->reflectionMethod->isPrivate());
-	}
+    public function testIsFinal()
+    {
+        $this->assertFalse($this->reflectionMethod->isFinal());
+    }
 
 
-	public function testIsProtected()
-	{
-		$this->assertFalse($this->reflectionMethod->isProtected());
-	}
+    public function testIsPrivate()
+    {
+        $this->assertFalse($this->reflectionMethod->isPrivate());
+    }
 
 
-	public function testIsPublic()
-	{
-		$this->assertTrue($this->reflectionMethod->isPublic());
-	}
+    public function testIsProtected()
+    {
+        $this->assertFalse($this->reflectionMethod->isProtected());
+    }
 
 
-	public function testIsStatic()
-	{
-		$this->assertFalse($this->reflectionMethod->isStatic());
-	}
+    public function testIsPublic()
+    {
+        $this->assertTrue($this->reflectionMethod->isPublic());
+    }
 
 
-	public function testGetDeclaringTrait()
-	{
-		$this->assertNull($this->reflectionMethod->getDeclaringTrait());
-	}
+    public function testIsStatic()
+    {
+        $this->assertFalse($this->reflectionMethod->isStatic());
+    }
 
 
-	public function testGetDeclaringTraitName()
-	{
-		$this->assertNull($this->reflectionMethod->getDeclaringTraitName());
-	}
+    public function testGetDeclaringTrait()
+    {
+        $this->assertNull($this->reflectionMethod->getDeclaringTrait());
+    }
 
 
-	public function testGetOriginalName()
-	{
-		$this->assertNull($this->reflectionMethod->getOriginalName());
-	}
+    public function testGetDeclaringTraitName()
+    {
+        $this->assertNull($this->reflectionMethod->getDeclaringTraitName());
+    }
 
 
-	public function testIsValid()
-	{
-		$this->assertTrue($this->reflectionMethod->isValid());
-	}
+    public function testGetOriginalName()
+    {
+        $this->assertNull($this->reflectionMethod->getOriginalName());
+    }
 
 
-	/** ReflectionFunctionBase methods */
-
-	public function testGetParameters()
-	{
-		$this->assertCount(3, $this->reflectionMethod->getParameters());
-	}
+    public function testIsValid()
+    {
+        $this->assertTrue($this->reflectionMethod->isValid());
+    }
 
 
-	/**
-	 * @return ReflectionFactoryInterface
-	 */
-	private function getReflectionFactory()
-	{
-		$parserStorageMock = Mockery::mock(ParserStorageInterface::class);
-		$parserStorageMock->shouldReceive('getElementsByType')->andReturnUsing(function ($arg) {
-			if ($arg) {
-				return ['Project\ReflectionMethod' => $this->reflectionClass];
-			}
-		});
-		return new ReflectionFactory($this->getConfigurationMock(), $parserStorageMock);
-	}
+    /** ReflectionFunctionBase methods */
+
+    public function testGetParameters()
+    {
+        $this->assertCount(3, $this->reflectionMethod->getParameters());
+    }
 
 
-	/**
-	 * @return Mockery\MockInterface|ConfigurationInterface
-	 */
-	private function getConfigurationMock()
-	{
-		$configurationMock = Mockery::mock(ConfigurationInterface::class, [
-			'getVisibilityLevel' => 256,
-			'isPhpCoreDocumented' => TRUE,
-			'isInternalDocumented' => FALSE
-		]);
-		return $configurationMock;
-	}
+    /**
+     * @return ReflectionFactoryInterface
+     */
+    private function getReflectionFactory()
+    {
+        $parserStorageMock = Mockery::mock(ParserStorageInterface::class);
+        $parserStorageMock->shouldReceive('getElementsByType')->andReturnUsing(function ($arg) {
+            if ($arg) {
+                return ['Project\ReflectionMethod' => $this->reflectionClass];
+            }
+        });
+        return new ReflectionFactory($this->getConfigurationMock(), $parserStorageMock);
+    }
 
+
+    /**
+     * @return Mockery\MockInterface|ConfigurationInterface
+     */
+    private function getConfigurationMock()
+    {
+        $configurationMock = Mockery::mock(ConfigurationInterface::class, [
+            'getVisibilityLevel' => 256,
+            'isPhpCoreDocumented' => true,
+            'isInternalDocumented' => false
+        ]);
+        return $configurationMock;
+    }
 }
