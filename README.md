@@ -17,53 +17,62 @@ Just look at [CakePHP Framework](http://api.cakephp.org/3.0/) or [Doctrine ORM A
 
 ## Install
 
-### 1. As a PHAR
+### 1. Using Composer (preferred method)
 
-1. Download [ApiGen](http://apigen.org/apigen.phar)
+In your project's root folder:
 
-2. Run ApiGen with source and destination options:
-
-```sh
-php apigen.phar generate -s src -d ../my-project-api
+```
+composer require --dev apigen/apigen
 ```
 
-To omit cli options just create `apigen.yaml` or `apigen.neon` file in your project.
+Or if you want it globally:
+
+```
+composer global require --dev apigen/apigen
+```
+
+### 2. As a PHAR
+
+In your project's root folder:
+
+```
+curl -O https://github.com/ApiGen/ApiGen.github.io/raw/master/apigen.phar
+```
+
+(or just download it [here](https://github.com/ApiGen/ApiGen.github.io/raw/master/apigen.phar)).
+
+For global installation, just move the downloaded `apigen.phar` to your path.
+
+## Usage
+
+*NOTE: The above examples assume you have ApiGen installed in your path. You might need to change the
+`apigen` command to `vendor/bin/apigen` if installed locally through Composer or `php apigen.phar`
+if using the PHAR version.*
+
+Run ApiGen with source and destination options:
+
+```sh
+apigen generate -s ./src -d ./docs
+```
+
+To omit cli options just create `apigen.yaml` or `apigen.neon` file in your project's root folder:
 
 ```yaml
 source:
-    - src
+    - ./src
 
-destination: ../my-project-api
+destination: ./docs
 ```
 
-For global installation, see [documentation](https://github.com/ApiGen/ApiGen/wiki#installation).
-
-
-### 2. Using Composer
-
-```sh
-composer require apigen/apigen --dev
-```
-
-Then run with options as above:
-
-```sh
-php vendor/bin/apigen generate -s src -d ../my/project-api
-```
-
-
-## Options
-
-To see all available options with its description and default values, just run:
+For all available options, along with descriptions and default values, just run:
 
 ```sh
 apigen generate --help
 ```
 
-*Note: in `apigen.neon` is prefered camel case (`accessLevel`) over dash-case in CLI (`--access-level`).*
+*NOTE: In config files, options are camelCased (i.e. `accessLevel` for `--access-level`).*
 
-If you want to know what annotations do we support, [here is the list](../../wiki/supported-annotations).
-
+Refer to the [wiki](https://github.com/ApiGen/ApiGen/wiki/supported-annotations) for all supported annotations.
 
 ## Testing
 
@@ -71,7 +80,14 @@ If you want to know what annotations do we support, [here is the list](../../wik
 $ phpunit
 ```
 
+## Get Support!
+
+* [#apigen](http://webchat.freenode.net/?channels=#cakephp) on irc.freenode.net - Come chat with us, we have cake.
+
+* [GitHub Issues](https://github.com/ApiGen/ApiGen/issues) - Got issues? Please tell us!
+
+* [Roadmaps](https://github.com/ApiGen/ApiGen/wiki/Roadmaps) - Want to contribute? Get involved!
 
 ## Contributing
 
-Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
+Please refer to [CONTRIBUTING](https://github.com/apigen/apigen/blob/master/CONTRIBUTING.md) for details.
