@@ -7,7 +7,7 @@
 [![Latest stable](https://img.shields.io/packagist/v/apigen/apigen.svg?style=flat-square)](https://packagist.org/packages/apigen/apigen)
 
 
-Just look at [Doctrine ORM API](http://www.doctrine-project.org/api/orm/2.4/).
+Just look at [CakePHP Framework](http://api.cakephp.org/3.0/) or [Doctrine ORM API](http://www.doctrine-project.org/api/orm/2.4/).
 
 
 ## Requirements
