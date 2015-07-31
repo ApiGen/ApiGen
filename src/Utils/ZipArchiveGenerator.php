@@ -31,7 +31,7 @@ class ZipArchiveGenerator
         /** @var SplFileInfo $file */
         foreach (Finder::findFiles('*')->from($source) as $file) {
             $relativePath = Strings::substring($file->getRealPath(), strlen($source) + 1);
-            $archive->addFile($file, $directory . '/' . $relativePath);
+            $archive->addFile($file, $directory . DIRECTORY_SEPARATOR . $relativePath);
         }
 
         $archive->close();
