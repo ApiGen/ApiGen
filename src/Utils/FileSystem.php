@@ -20,7 +20,7 @@ class FileSystem
      */
     public function normalizePath($path)
     {
-        return str_replace('\\', '/', $path);
+        return str_replace(array('\\','/'), DIRECTORY_SEPARATOR, $path);
     }
 
 
@@ -74,7 +74,7 @@ class FileSystem
     public function getAbsolutePath($path, array $baseDirectories = [])
     {
         foreach ($baseDirectories as $directory) {
-            $fileName = $directory . '/' . $path;
+            $fileName = $directory . DIRECTORY_SEPARATOR . $path;
             if (is_file($fileName)) {
                 return self::normalizePath(realpath($fileName));
             }
@@ -109,7 +109,7 @@ class FileSystem
     {
         foreach ($source as $resourceSource => $resourceDestination) {
             if (is_file($resourceSource)) {
-                copy($resourceSource, FileSystem::forceDir($destination  . '/' . $resourceDestination));
+                copy($resourceSource, FileSystem::forceDir($destination  . DIRECTORY_SEPARATOR . $resourceDestination));
                 continue;
 
             } else {
@@ -118,8 +118,8 @@ class FileSystem
                 foreach ($iterator as $item) {
                     /** @var \SplFileInfo $item */
                     copy($item->getPathName(), FileSystem::forceDir($destination
-                        . '/' . $resourceDestination
-                        . '/' . $iterator->getSubPathName()));
+                        . DIRECTORY_SEPARATOR . $resourceDestination
+                        . DIRECTORY_SEPARATOR . $iterator->getSubPathName()));
                 }
             }
         }
