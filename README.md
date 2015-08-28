@@ -36,7 +36,7 @@ composer global require --dev apigen/apigen
 In your project's root folder:
 
 ```
-curl -O https://github.com/ApiGen/ApiGen.github.io/raw/master/apigen.phar
+curl -L -O https://github.com/ApiGen/ApiGen.github.io/raw/master/apigen.phar
 ```
 
 (or just download it [here](https://github.com/ApiGen/ApiGen.github.io/raw/master/apigen.phar)).
