@@ -82,7 +82,7 @@ $ phpunit
 
 ## Get Support!
 
-* [#apigen](http://webchat.freenode.net/?channels=#cakephp) on irc.freenode.net - Come chat with us, we have cake.
+* [#apigen](http://webchat.freenode.net/?channels=#apigen) on irc.freenode.net - Come chat with us, we have cake.
 
 * [GitHub Issues](https://github.com/ApiGen/ApiGen/issues) - Got issues? Please tell us!
 
