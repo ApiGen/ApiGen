@@ -38,6 +38,7 @@ $container = $configurator->createContainer();
 
 /** @var ApiGen\Console\Application $application */
 $application = $container->getByType(Application::class);
+$application->setAutoExit(false);
 $input = $container->getByType(InputInterface::class);
 $output = $container->getByType(OutputInterface::class);
 $application->run($input, $output);
