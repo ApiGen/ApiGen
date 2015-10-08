@@ -152,7 +152,8 @@ class ElementResolver
 		}
 
 		if (($reflectionElement instanceof ClassReflectionInterface)
-			&& ($pos = strpos($definition, '::') || $pos = strpos($definition, '->'))) {
+			&& ($pos = strpos($definition, '::') || $pos = strpos($definition, '->'))
+		) {
 			$reflectionElement = $this->resolveContextForClassProperty($definition, $reflectionElement, $pos);
 			$definition = substr($definition, $pos + 2);
 
