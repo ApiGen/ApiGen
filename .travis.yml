@@ -16,7 +16,7 @@ install:
   - composer install --prefer-source
 
 before_script:
-  - . vendor/ci/travis/static-analysis.sh
+  - # . vendor/ci/travis/static-analysis.sh
 
 script:
   - phpunit $PHPUNIT_FLAGS
