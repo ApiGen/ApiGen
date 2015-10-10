@@ -54,7 +54,7 @@ class FileSystem
             mkdir($path, 0755, true);
         }
 
-        foreach (Finder::find('*')->from($path)->childFirst() as $item) {
+        foreach (Finder::find('*')->from($path)->exclude('.git')->childFirst() as $item) {
             /** @var \SplFileInfo $item */
             if ($item->isDir()) {
                 rmdir($item);
