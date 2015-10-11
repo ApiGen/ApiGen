@@ -15,6 +15,7 @@ use ArrayObject;
 use TokenReflection\Broker;
 use TokenReflection\Broker\Backend;
 use TokenReflection\Exception\FileProcessingException;
+use TokenReflection\Exception\ParseException;
 
 class Parser implements ParserInterface
 {
@@ -50,7 +51,8 @@ class Parser implements ParserInterface
         foreach ($files as $file) {
             try {
                 $this->broker->processFile($file->getPathname());
-
+            } catch (ParseException $exception) {
+                $this->errors[] = new FileProcessingException([$exception]);
             } catch (FileProcessingException $exception) {
                 $this->errors[] = $exception;
             }
