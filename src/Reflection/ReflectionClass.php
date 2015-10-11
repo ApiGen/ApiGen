@@ -156,7 +156,30 @@ class ReflectionClass extends ReflectionElement
 					}
 				}
 			}
+
+			if (null !== $this->getParentClassName()) {
+				foreach ($this->getParentClass()->getMethods() as $parentMethod) {
+					if (!array_key_exists($parentMethod->getName(), $this->methods)) {
+						$this->methods[$parentMethod->getName()] = $parentMethod;
+					}
+				}
+			}
+
+			foreach ($this->getOwnInterfaces() as $interface) {
+				foreach ($interface->getMethods(null) as $parentMethod) {
+					if (!array_key_exists($parentMethod->getName(), $this->methods)) {
+						$this->methods[$parentMethod->getName()] = $parentMethod;
+					}
+				}
+			}
+
+			$this->methods = array_filter($this->methods, function(ReflectionMethod $method) {
+				$classVisibilityLevel = $this->getVisibilityLevel();
+				$methodVisibilityLevel = $method->configuration->getOption(CO::VISIBILITY_LEVELS);
+				return $classVisibilityLevel === $methodVisibilityLevel;
+			});
 		}
+
 		return $this->methods;
 	}
 
