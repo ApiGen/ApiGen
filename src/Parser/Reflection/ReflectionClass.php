@@ -150,6 +150,7 @@ class ReflectionClass extends ReflectionElement implements ClassReflectionInterf
     {
         if ($this->methods === null) {
             $this->methods = $this->getOwnMethods();
+
             foreach ($this->getOwnTraits() as $trait) {
                 if (!$trait instanceof ReflectionClass) {
                     continue;
@@ -171,6 +172,7 @@ class ReflectionClass extends ReflectionElement implements ClassReflectionInterf
                     }
                 }
             }
+
             foreach ($this->getOwnInterfaces() as $interface) {
                 foreach ($interface->getMethods(null) as $parentMethod) {
                     if (!isset($this->methods[$parentMethod->getName()])) {
@@ -178,13 +180,11 @@ class ReflectionClass extends ReflectionElement implements ClassReflectionInterf
                     }
                 }
             }
-            $this->methods = array_filter($this->methods, function(ReflectionMethod $method) {
-                $classVisibilityLevel = $this->getVisibilityLevel();
-                $methodVisibilityLevel = $method->configuration->getOption(CO::VISIBILITY_LEVELS);
-                return $classVisibilityLevel === $methodVisibilityLevel;
+
+            $this->methods = array_filter($this->methods, function (ReflectionMethod $method) {
+                return $method->configuration->getVisibilityLevel() === $this->getVisibilityLevel();
             });
         }
-
         return $this->methods;
     }
 

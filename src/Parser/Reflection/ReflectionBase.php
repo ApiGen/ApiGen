@@ -37,7 +37,7 @@ abstract class ReflectionBase extends Nette\Object implements ReflectionInterfac
     protected $reflection;
 
     /**
-     * @var ParserConfigurationInterface
+     * @var ConfigurationInterface
      */
     protected $configuration;
 
