@@ -126,7 +126,8 @@ abstract class ReflectionElement extends ReflectionBase implements ElementReflec
         }
 
         if ($this instanceof InClassInterface) {
-            return $this->getDeclaringClass()->isDeprecated();
+            $class = $this->getDeclaringClass();
+            return !is_null($class) && $class->isDeprecated();
         }
 
         return false;
