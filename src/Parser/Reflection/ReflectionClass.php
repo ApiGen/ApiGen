@@ -154,7 +154,7 @@ class ReflectionClass extends ReflectionElement implements ClassReflectionInterf
                     continue;
                 }
                 foreach ($trait->getOwnMethods() as $method) {
-                    if (array_key_exists($method->getName(), $this->methods)) {
+                    if (isset($this->methods[$method->getName()])) {
                         continue;
                     }
                     if (! $this->isDocumented() || $method->isDocumented()) {
@@ -165,14 +165,14 @@ class ReflectionClass extends ReflectionElement implements ClassReflectionInterf
 
             if (null !== $this->getParentClassName()) {
                 foreach ($this->getParentClass()->getMethods() as $parentMethod) {
-                    if (!array_key_exists($parentMethod->getName(), $this->methods)) {
+                    if (!isset($this->methods[$parentMethod->getName()])) {
                         $this->methods[$parentMethod->getName()] = $parentMethod;
                     }
                 }
             }
             foreach ($this->getOwnInterfaces() as $interface) {
                 foreach ($interface->getMethods(null) as $parentMethod) {
-                    if (!array_key_exists($parentMethod->getName(), $this->methods)) {
+                    if (!isset($this->methods[$parentMethod->getName()])) {
                         $this->methods[$parentMethod->getName()] = $parentMethod;
                     }
                 }
