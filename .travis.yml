@@ -32,3 +32,6 @@ deploy:
   on:
     repo: ApiGen/ApiGen
     branch: '4.1'
+
+after_deploy:
+  - ./generate-api.sh
