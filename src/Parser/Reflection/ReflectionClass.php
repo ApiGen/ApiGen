@@ -9,6 +9,7 @@
 
 namespace ApiGen\Parser\Reflection;
 
+use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Contracts\Parser\Reflection\ClassConstantReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\Extractors\ClassMagicElementsExtractorInterface;
