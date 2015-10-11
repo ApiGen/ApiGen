@@ -149,19 +149,14 @@ class ReflectionClass extends ReflectionElement implements ClassReflectionInterf
     {
         if ($this->methods === null) {
             $this->methods = $this->getOwnMethods();
-            try {
-                $reflectionMethods = $this->reflection->getMethods($this->getVisibilityLevel());
-            } catch (\RuntimeException $exception) {
-                return $this->methods;
-            }
-            foreach ($reflectionMethods as $method) {
-                /** @var ReflectionElement|TokenReflection\Php\IReflection $method */
-                if (isset($this->methods[$method->getName()])) {
-                    continue;
-                }
-                $apiMethod = $this->reflectionFactory->createFromReflection($method);
-                if (! $this->isDocumented() || $apiMethod->isDocumented()) {
-                    $this->methods[$method->getName()] = $apiMethod;
+            foreach ($this->getOwnTraits() as $trait) {
+                foreach ($trait->getOwnMethods() as $method) {
+                    if (array_key_exists($method->getName(), $this->methods)) {
+                        continue;
+                    }
+                    if (! $this->isDocumented() || $method->isDocumented()) {
+                        $this->methods[$method->getName()] = $method;
+                    }
                 }
             }
         }
