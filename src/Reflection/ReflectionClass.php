@@ -147,6 +147,9 @@ class ReflectionClass extends ReflectionElement
 			$this->methods = $this->getOwnMethods();
 
 			foreach ($this->getOwnTraits() as $trait) {
+				if (!$trait instanceof ReflectionClass) {
+					continue;
+				}
 				foreach ($trait->getOwnMethods() as $method) {
 					if (array_key_exists($method->getName(), $this->methods)) {
 						continue;
