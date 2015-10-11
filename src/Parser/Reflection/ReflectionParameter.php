@@ -59,7 +59,7 @@ class ReflectionParameter extends ReflectionBase implements ParameterReflectionI
      */
     public function getDefaultValueDefinition()
     {
-        return $this->reflection->getDefaultValueDefinition();
+        return $this->reflection === null ? null : $this->reflection->getDefaultValueDefinition();
     }
 
 
