@@ -146,17 +146,43 @@ class ReflectionClass extends ReflectionElement
 		if ($this->methods === NULL) {
 			$this->methods = $this->getOwnMethods();
 
-			foreach ($this->reflection->getMethods($this->getVisibilityLevel()) as $method) {
-				/** @var ReflectionElement|TokenReflection\Php\IReflection $method */
-				if (isset($this->methods[$method->getName()])) {
+			foreach ($this->getOwnTraits() as $trait) {
+				if (!$trait instanceof ReflectionClass) {
 					continue;
 				}
-				$apiMethod = $this->reflectionFactory->createFromReflection($method);
-				if ( ! $this->isDocumented() || $apiMethod->isDocumented()) {
-					$this->methods[$method->getName()] = $apiMethod;
+				foreach ($trait->getOwnMethods() as $method) {
+					if (isset($this->methods[$method->getName()])) {
+						continue;
+					}
+					if (! $this->isDocumented() || $method->isDocumented()) {
+						$this->methods[$method->getName()] = $method;
+					}
 				}
 			}
+
+			if (null !== $this->getParentClassName()) {
+				foreach ($this->getParentClass()->getMethods() as $parentMethod) {
+					if (!isset($this->methods[$parentMethod->getName()])) {
+						$this->methods[$parentMethod->getName()] = $parentMethod;
+					}
+				}
+			}
+
+			foreach ($this->getOwnInterfaces() as $interface) {
+				foreach ($interface->getMethods(null) as $parentMethod) {
+					if (!isset($this->methods[$parentMethod->getName()])) {
+						$this->methods[$parentMethod->getName()] = $parentMethod;
+					}
+				}
+			}
+
+			$this->methods = array_filter($this->methods, function(ReflectionMethod $method) {
+				$classVisibilityLevel = $this->getVisibilityLevel();
+				$methodVisibilityLevel = $method->configuration->getOption(CO::VISIBILITY_LEVELS);
+				return $classVisibilityLevel === $methodVisibilityLevel;
+			});
 		}
+
 		return $this->methods;
 	}
 
