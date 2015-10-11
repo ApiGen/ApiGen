@@ -145,8 +145,12 @@ class ReflectionClass extends ReflectionElement
 	{
 		if ($this->methods === NULL) {
 			$this->methods = $this->getOwnMethods();
-
-			foreach ($this->reflection->getMethods($this->getVisibilityLevel()) as $method) {
+			try {
+				$reflectionMethods = $this->reflection->getMethods($this->getVisibilityLevel());
+			} catch (\RuntimeException $exception) {
+				return $this->methods;
+			}
+			foreach ($reflectionMethods as $method) {
 				/** @var ReflectionElement|TokenReflection\Php\IReflection $method */
 				if (isset($this->methods[$method->getName()])) {
 					continue;
