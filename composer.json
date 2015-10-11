@@ -20,7 +20,7 @@
 		"nette/mail": "~2.2",
 		"nette/robot-loader": "~2.2",
 		"nette/safe-stream": "~2.2",
-		"latte/latte": "~2.2",
+		"latte/latte": ">=2.2.0,<2.3.5",
 		"tracy/tracy": "~2.2",
 
 		"kukulich/fshl": "~2.1",
