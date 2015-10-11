@@ -23,3 +23,12 @@ script:
 
 after_script:
   - . vendor/ci/travis/coverage-send.sh
+
+deploy:
+  provider: releases
+  api_key:
+    secure: qJHoOifor0HH2McbE4VJrIu/LtaG4IUyOE7mVA/4WIs6jhVEzIcLoPI39GvkfqdszUENJiCBysG/Wllo3lf0wTteclc3flt7aPpxaGt2S5L7yyYrCu3EOP6CnrUNd/2rVgRiLx8qRXXMZpRxtWTkoKBO6IxM5S8ASSzj9s2RjfM=
+  file: apigen.phar
+  on:
+    repo: ApiGen/ApiGen
+    branch: '4.1'
