@@ -268,12 +268,18 @@ class GenerateCommand extends AbstractCommand
     {
         /** @var FileProcessingException[] $errors */
         foreach ($errors as $error) {
-            /** @var \Exception[] $reasons */
-            $reasons = $error->getReasons();
-            if (count($reasons) && isset($reasons[0])) {
-                $this->io->writeln(
-                    sprintf('<error>Parse error: "%s"</error>', $reasons[0]->getMessage())
-                );
+            $output = null;
+            if ($this->configuration->getOption('debug')) {
+                $output = $error->getDetail();
+            } else {
+                /** @var \Exception[] $reasons */
+                $reasons = $error->getReasons();
+                if (isset($reasons[0]) && count($reasons)) {
+                    $output = $reasons[0]->getMessage();
+                }
+            }
+            if ($output) {
+                $this->io->writeln(sprintf('<error>Parse error: "%s"</error>', $output));
             }
         }
     }
