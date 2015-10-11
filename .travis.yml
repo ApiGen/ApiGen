@@ -24,6 +24,9 @@ script:
 after_script:
   - . vendor/ci/travis/coverage-send.sh
 
+before_deploy:
+      - sh -c "composer require --dev kherge/box && vendor/bin/box build"
+
 deploy:
   provider: releases
   api_key:
@@ -35,3 +38,4 @@ deploy:
 
 after_deploy:
   - ./generate-api.sh
+  - ./update-gh-page.sh
