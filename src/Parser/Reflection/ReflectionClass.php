@@ -9,6 +9,7 @@
 
 namespace ApiGen\Parser\Reflection;
 
+use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Contracts\Parser\Reflection\ClassConstantReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\Extractors\ClassMagicElementsExtractorInterface;
@@ -150,16 +151,39 @@ class ReflectionClass extends ReflectionElement implements ClassReflectionInterf
         if ($this->methods === null) {
             $this->methods = $this->getOwnMethods();
 
-            foreach ($this->reflection->getMethods($this->getVisibilityLevel()) as $method) {
-                /** @var ReflectionElement|TokenReflection\Php\IReflection $method */
-                if (isset($this->methods[$method->getName()])) {
+            foreach ($this->getOwnTraits() as $trait) {
+                if (!$trait instanceof ReflectionClass) {
                     continue;
                 }
-                $apiMethod = $this->reflectionFactory->createFromReflection($method);
-                if (! $this->isDocumented() || $apiMethod->isDocumented()) {
-                    $this->methods[$method->getName()] = $apiMethod;
+                foreach ($trait->getOwnMethods() as $method) {
+                    if (isset($this->methods[$method->getName()])) {
+                        continue;
+                    }
+                    if (! $this->isDocumented() || $method->isDocumented()) {
+                        $this->methods[$method->getName()] = $method;
+                    }
                 }
             }
+
+            if (null !== $this->getParentClassName()) {
+                foreach ($this->getParentClass()->getMethods() as $parentMethod) {
+                    if (!isset($this->methods[$parentMethod->getName()])) {
+                        $this->methods[$parentMethod->getName()] = $parentMethod;
+                    }
+                }
+            }
+
+            foreach ($this->getOwnInterfaces() as $interface) {
+                foreach ($interface->getMethods(null) as $parentMethod) {
+                    if (!isset($this->methods[$parentMethod->getName()])) {
+                        $this->methods[$parentMethod->getName()] = $parentMethod;
+                    }
+                }
+            }
+
+            $this->methods = array_filter($this->methods, function (ReflectionMethod $method) {
+                return $method->configuration->getVisibilityLevel() === $this->getVisibilityLevel();
+            });
         }
         return $this->methods;
     }
