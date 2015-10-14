@@ -1,6 +1,6 @@
 # How to contribute
 
-CakePHP loves to welcome your contributions. There are several ways to help out:
+ApiGen loves to welcome your contributions. There are several ways to help out:
 
 * Create an [issue](https://github.com/apigen/apigen/issues) on GitHub, if you have found a bug
 * Write test cases for open bug issues
@@ -46,12 +46,12 @@ chance of keeping on top of things.
 ## Submitting Changes
 
 * Push your changes to a topic branch in your fork of the repository.
-* Submit a pull request to the repository in the CakePHP organization, with the
+* Submit a pull request to the repository in the ApiGen organization, with the
   correct target branch.
 
 ## Test cases and codesniffer
 
-CakePHP tests requires [PHPUnit](http://www.phpunit.de/manual/current/en/installation.html).
+ApiGen tests requires [PHPUnit](http://www.phpunit.de/manual/current/en/installation.html).
 To run the test cases locally use the following command:
 
     vendor/bin/phpunit
