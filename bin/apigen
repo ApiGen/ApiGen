@@ -10,6 +10,9 @@ require __DIR__ . '/bootstrap.php';
 
 // Create temp dir
 $tempDir = sys_get_temp_dir() . '/_apigen';
+if (function_exists("posix_getuid")) {
+	$tempDir .= posix_getuid();
+}
 $fileSystem = new ApiGen\Utils\FileSystem;
 $fileSystem->purgeDir($tempDir);
 
