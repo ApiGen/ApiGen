@@ -13,8 +13,8 @@ GIT_AUTHOR_EMAIL=${GIT_AUTHOR_EMAIL:-"travis@travis-ci.org"}
 git clone "${REPOSITORY}" "${BUILD_DIR}" --branch "${BRANCH}" --depth 1
 yes | bin/apigen generate -s src -d "${BUILD_DIR}"
 
-# Force-push generated files
-cd "${BUILD_DIR}"
+# Commit & push
+cd "${BUILD_DIR}" || exit 1
 git add .
 git commit -m "Generate API"
 git push origin "${BRANCH}"
