@@ -38,5 +38,5 @@ deploy:
     tags: true
 
 after_deploy:
-  - ./update-gh-page.sh
+  - ./update-gh-pages.sh
   - ./generate-api.sh
