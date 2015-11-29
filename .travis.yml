@@ -25,7 +25,7 @@ after_script:
   - . vendor/ci/travis/coverage-send.sh
 
 before_deploy:
-      - sh -c "composer require --dev kherge/box && vendor/bin/box build"
+  - sh -c "curl -LSs http://box-project.github.io/box2/installer.php | php && php box.phar build"
 
 deploy:
   provider: releases
@@ -38,5 +38,5 @@ deploy:
     tags: true
 
 after_deploy:
-  - ./generate-api.sh
   - ./update-gh-page.sh
+  - ./generate-api.sh
