@@ -15,7 +15,7 @@ use Symfony\Component\Console\Helper\ProgressBar as SymfonyProgressBar;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\ConsoleOutput;
+use Symfony\Component\Console\Output\NullOutput;
 
 class ProgressBarTest extends PHPUnit_Framework_TestCase
 {
@@ -28,7 +28,7 @@ class ProgressBarTest extends PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $io = new IO(new HelperSet, new LiberalFormatArgvInput, new ConsoleOutput);
+        $io = new IO(new HelperSet, new LiberalFormatArgvInput, new NullOutput);
         $this->progressBar = new ProgressBar($io);
     }
 
@@ -71,7 +71,7 @@ class ProgressBarTest extends PHPUnit_Framework_TestCase
 
         $arrayInput = new ArgvInput([], new InputDefinition([new InputOption('debug')]));
         $arrayInput->setOption('debug', true);
-        $io = new IO(new HelperSet, $arrayInput, new ConsoleOutput);
+        $io = new IO(new HelperSet, $arrayInput, new NullOutput);
         $progressBar = new ProgressBar($io);
 
         $this->assertSame('debug', MethodInvoker::callMethodOnObject($progressBar, 'getBarFormat'));
