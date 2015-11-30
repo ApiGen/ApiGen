@@ -55,7 +55,7 @@ deploy:
   file: apigen.phar
   on:
     repo: ApiGen/ApiGen
-    branch: '4.1'
+    branch: 'master'
     tags: true
 
 after_deploy:
