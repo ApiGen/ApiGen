@@ -10,9 +10,9 @@ use RuntimeException;
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Output\StreamOutput;
 
 class IOTest extends PHPUnit_Framework_TestCase
 {
@@ -41,7 +41,7 @@ class IOTest extends PHPUnit_Framework_TestCase
     {
         $questionHelper = new QuestionHelper;
         $questionHelper->setInputStream($this->getInputStream("Test\n"));
-        $io = new IO(new HelperSet(['question' => $questionHelper]), new LiberalFormatArgvInput, new ConsoleOutput);
+        $io = new IO(new HelperSet(['question' => $questionHelper]), new LiberalFormatArgvInput, new StreamOutput(fopen('php://memory', 'w', false)));
 
         $this->assertFalse($io->ask('Is this true', true));
         $this->setExpectedException(RuntimeException::class);
