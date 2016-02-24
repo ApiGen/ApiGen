@@ -17,7 +17,7 @@
 		"apigen/theme-default": "1.0.*",
 		"herrera-io/phar-update": "~2.0",
 		"kukulich/fshl": "~2.1",
-		"latte/latte": ">=2.3.0,<2.3.5",
+		"latte/latte": "^2.3.6",
 		"michelf/php-markdown": "~1.4",
 		"nette/bootstrap": "^2.3",
 		"nette/di": "^2.3",
