@@ -118,8 +118,8 @@ class ElementResolver implements ElementResolverInterface
             return null;
         }
 
-        // self, $this references
-        if ($definition === 'self' || $definition === '$this') {
+        // self, static, $this references
+        if ($definition === 'self' || $definition === 'static' || $definition === '$this') {
             return $reflectionElement instanceof ClassReflectionInterface ? $reflectionElement : null;
         }
 
