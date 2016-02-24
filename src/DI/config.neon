@@ -4,6 +4,3 @@ extensions:
 	- ApiGen\EventDispatcher\DI\EventDispatcherExtension
 	- ApiGen\Parser\DI\ParserExtension
 	- ApiGen\Utils\DI\UtilsExtension
-
-application:
-	scanComposer: false
