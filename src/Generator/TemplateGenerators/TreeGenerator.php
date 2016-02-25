@@ -119,23 +119,18 @@ class TreeGenerator implements ConditionalTemplateGeneratorInterface
 
     private function addToTreeByReflection(ClassReflectionInterface $reflection)
     {
-        if ($reflection->getParentClassName() === null) {
-            $type = $this->getTypeByReflection($reflection);
-            $this->addToTreeByTypeAndName($type, $reflection->getName());
+        $line = array_values(array_reverse($reflection->getParentClasses()));
+        $line[] = $reflection;
+        $type = $this->getTypeByReflection($line[0]);
+        $cursor = & $this->treeStorage[$type];
 
-        } else {
-            foreach (array_values(array_reverse($reflection->getParentClasses())) as $level => $parent) {
-                $type = null;
-                if ($level === 0) {
-                    // The topmost parent decides about the reflection type
-                    $type = $this->getTypeByReflection($reflection);
-                }
-
-                /** @var ReflectionClass $parent */
-                $parentName = $parent->getName();
-                if (! isset($this->treeStorage[$type][$parentName])) {
-                    $this->addToTreeByTypeAndName($type, $parentName);
-                }
+        foreach ($line as $class) {
+            /** @var ReflectionClass $class */
+            $name = $class->getName();
+            $cursor = & $cursor[$name];
+            if (! $cursor) {
+                $cursor = [];
+                $this->processed[$name] = true;
             }
         }
     }
@@ -158,17 +153,6 @@ class TreeGenerator implements ConditionalTemplateGeneratorInterface
         } else {
             return ElementsInterface::CLASSES;
         }
-    }
-
-
-    /**
-     * @param string $type
-     * @param string $name
-     */
-    private function addToTreeByTypeAndName($type, $name)
-    {
-        $this->treeStorage[$type][$name] = [];
-        $this->processed[$name] = true;
     }
 
 

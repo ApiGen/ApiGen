@@ -88,7 +88,6 @@ class TreeGeneratorTest extends PHPUnit_Framework_TestCase
         $this->assertFalse(MI::callMethodOnObject($this->treeGenerator, 'canBeProcessed', [$reflectionClassMock]));
         $this->assertTrue(MI::callMethodOnObject($this->treeGenerator, 'canBeProcessed', [$reflectionClassMock]));
 
-        MI::callMethodOnObject($this->treeGenerator, 'addToTreeByTypeAndName', ['type', 'someClass']);
         $this->assertFalse(MI::callMethodOnObject($this->treeGenerator, 'canBeProcessed', [$reflectionClassMock]));
     }
 
@@ -146,30 +145,4 @@ class TreeGeneratorTest extends PHPUnit_Framework_TestCase
         );
     }
 
-
-    public function testAddToTreeByTypeAndName()
-    {
-        MI::callMethodOnObject($this->treeGenerator, 'addToTreeByTypeAndName', ['type', 'name']);
-
-        $treeStorage = PHPUnit_Framework_Assert::getObjectAttribute($this->treeGenerator, 'treeStorage');
-        $this->assertArrayHasKey('type', $treeStorage);
-        $this->assertArrayHasKey('name', $treeStorage['type']);
-
-        $processed = PHPUnit_Framework_Assert::getObjectAttribute($this->treeGenerator, 'processed');
-        $this->assertArrayHasKey('name', $processed);
-    }
-
-
-    public function testSortTreeStorageElements()
-    {
-        MI::callMethodOnObject($this->treeGenerator, 'addToTreeByTypeAndName', ['type', 'b']);
-        MI::callMethodOnObject($this->treeGenerator, 'addToTreeByTypeAndName', ['type', 'a']);
-
-        $originalTreeStorage = PHPUnit_Framework_Assert::getObjectAttribute($this->treeGenerator, 'treeStorage');
-        $this->assertSame(['b' => [], 'a' => []], $originalTreeStorage['type']);
-
-        MI::callMethodOnObject($this->treeGenerator, 'sortTreeStorageElements');
-        $originalTreeStorage = PHPUnit_Framework_Assert::getObjectAttribute($this->treeGenerator, 'treeStorage');
-        $this->assertSame(['a' => [], 'b' => []], $originalTreeStorage['type']);
-    }
 }
