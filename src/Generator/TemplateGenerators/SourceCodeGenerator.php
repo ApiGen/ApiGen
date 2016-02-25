@@ -21,6 +21,7 @@ use ApiGen\Generator\Event\GenerateProgressEvent;
 use ApiGen\Generator\Event\GeneratorEvents;
 use ApiGen\Generator\Resolvers\RelativePathResolver;
 use ApiGen\Generator\SourceCodeHighlighter\SourceCodeHighlighter;
+use ApiGen\Generator\TemplateGenerators\Loaders\NamespaceAndPackageLoader;
 use ApiGen\Templating\TemplateFactory;
 
 class SourceCodeGenerator implements ConditionalTemplateGeneratorInterface, StepCounterInterface
@@ -56,6 +57,11 @@ class SourceCodeGenerator implements ConditionalTemplateGeneratorInterface, Step
      */
     private $eventDispatcher;
 
+    /**
+     * @var NamespaceAndPackageLoader
+     */
+    protected $namespaceAndPackageLoader;
+
 
     public function __construct(
         Configuration $configuration,
@@ -63,7 +69,8 @@ class SourceCodeGenerator implements ConditionalTemplateGeneratorInterface, Step
         TemplateFactory $templateFactory,
         RelativePathResolver $relativePathResolver,
         SourceCodeHighlighter $sourceCodeHighlighter,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        NamespaceAndPackageLoader $namespaceAndPackageLoader
     ) {
         $this->configuration = $configuration;
         $this->elementStorage = $elementStorage;
@@ -71,6 +78,7 @@ class SourceCodeGenerator implements ConditionalTemplateGeneratorInterface, Step
         $this->relativePathResolver = $relativePathResolver;
         $this->sourceCodeHighlighter = $sourceCodeHighlighter;
         $this->eventDispatcher = $eventDispatcher;
+        $this->namespaceAndPackageLoader = $namespaceAndPackageLoader;
     }
 
 
@@ -121,6 +129,7 @@ class SourceCodeGenerator implements ConditionalTemplateGeneratorInterface, Step
     private function generateForElement(ElementReflectionInterface $element)
     {
         $template = $this->templateFactory->createNamedForElement('source', $element);
+        $template = $this->namespaceAndPackageLoader->loadTemplateWithElementNamespaceOrPackage($template, $element);
         $template->setParameters([
             'fileName' => $this->relativePathResolver->getRelativePath($element->getFileName()),
             'source' => $this->getHighlightedCodeFromElement($element)
