@@ -20,21 +20,21 @@ services:
 	- ApiGen\Generator\EventSubscriber\ProgressBarSubscriber
 	- ApiGen\Generator\GeneratorQueue
 	# intentionally first to collect output from other generators
-	- ApiGen\Generator\TemplateGenerators\ZipGenerator
-	- ApiGen\Generator\TemplateGenerators\CombinedGenerator
-	- ApiGen\Generator\TemplateGenerators\AnnotationGroupsGenerator
-	- ApiGen\Generator\TemplateGenerators\ElementListGenerator
-	- ApiGen\Generator\TemplateGenerators\OpensearchGenerator
-	- ApiGen\Generator\TemplateGenerators\OverviewGenerator
-	- ApiGen\Generator\TemplateGenerators\SourceCodeGenerator
-	- ApiGen\Generator\TemplateGenerators\TreeGenerator
+	g1: ApiGen\Generator\TemplateGenerators\ZipGenerator
+	g2: ApiGen\Generator\TemplateGenerators\CombinedGenerator
+	g3: ApiGen\Generator\TemplateGenerators\AnnotationGroupsGenerator
+	g4: ApiGen\Generator\TemplateGenerators\ElementListGenerator
+	g5: ApiGen\Generator\TemplateGenerators\OpensearchGenerator
+	g6: ApiGen\Generator\TemplateGenerators\OverviewGenerator
+	g7: ApiGen\Generator\TemplateGenerators\SourceCodeGenerator
+	g8: ApiGen\Generator\TemplateGenerators\TreeGenerator
 	# elements
-	- ApiGen\Generator\TemplateGenerators\ClassElementGenerator
-	- ApiGen\Generator\TemplateGenerators\ConstantElementGenerator
-	- ApiGen\Generator\TemplateGenerators\FunctionElementGenerator
-	- ApiGen\Generator\TemplateGenerators\NamespaceGenerator
-	- ApiGen\Generator\TemplateGenerators\PackageGenerator
-	- ApiGen\Generator\TemplateGenerators\Loaders\NamespaceAndPackageLoader
+	g9: ApiGen\Generator\TemplateGenerators\ClassElementGenerator
+	g10: ApiGen\Generator\TemplateGenerators\ConstantElementGenerator
+	g11: ApiGen\Generator\TemplateGenerators\FunctionElementGenerator
+	g12: ApiGen\Generator\TemplateGenerators\NamespaceGenerator
+	g13: ApiGen\Generator\TemplateGenerators\PackageGenerator
+	g14: ApiGen\Generator\TemplateGenerators\Loaders\NamespaceAndPackageLoader
 	- ApiGen\Generator\Markups\MarkdownMarkup
 	- Michelf\MarkdownExtra
 
