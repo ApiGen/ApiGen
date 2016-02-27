@@ -265,7 +265,7 @@ class UrlFilters extends Filters
         return preg_replace_callback('~{@(?:link|see)\\s+([^}]+)}~', function ($matches) use ($reflectionElement) {
             list($url, $description) = Strings::split($matches[1]);
 
-            if (Validators::isUri($url)) {
+            if (Validators::isUrl($url)) {
                 return $this->linkBuilder->build($url, $description ?: $url);
             }
 
@@ -372,7 +372,7 @@ class UrlFilters extends Filters
     private function processLinkAnnotations($value)
     {
         list($url, $description) = Strings::split($value);
-        if (Validators::isUri($url)) {
+        if (Validators::isUrl($url)) {
             return $this->linkBuilder->build($url, $description ?: $url);
         }
         return null;
