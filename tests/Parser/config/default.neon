@@ -1,4 +1,5 @@
-#services:
+services:
+	cacheStorage: Nette\Caching\Storages\DevNullStorage
 #	- ApiGen\Parser\Tests\Resolvers\ElementResolver
 
 

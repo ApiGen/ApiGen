@@ -66,3 +66,5 @@ services:
 		class: FSHL\Highlighter
 		setup:
 			- setLexer(@FSHL\Lexer\Php)
+
+	cacheStorage: Nette\Caching\Storages\DevNullStorage

@@ -4,3 +4,6 @@ extensions:
 	- ApiGen\EventDispatcher\DI\EventDispatcherExtension
 	- ApiGen\Parser\DI\ParserExtension
 	- ApiGen\Utils\DI\UtilsExtension
+
+services:
+	cacheStorage: Nette\Caching\Storages\DevNullStorage
