@@ -4,6 +4,7 @@ namespace ApiGen\Tests\Generator\TemplateGenerators;
 
 use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions as CO;
+use ApiGen\Contracts\Parser\Elements\ElementsInterface;
 use ApiGen\Contracts\Parser\ParserStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Generator\TemplateGenerators\TreeGenerator;
@@ -42,6 +43,9 @@ class TreeGeneratorTest extends PHPUnit_Framework_TestCase
         $templateFactoryMock->shouldReceive('createForType')->andReturn($templateMock);
 
         $reflectionClassMock = Mockery::mock(ClassReflectionInterface::class);
+        $reflectionClassMock->shouldReceive('isInterface')->andReturn(false);
+        $reflectionClassMock->shouldReceive('isTrait')->andReturn(false);
+        $reflectionClassMock->shouldReceive('isException')->andReturn(false);
         $reflectionClassMock->shouldReceive('isMain')->andReturn(true);
         $reflectionClassMock->shouldReceive('isDocumented')->andReturn(true);
         $reflectionClassMock->shouldReceive('getName')->andReturn('SomeClass');
@@ -84,8 +88,32 @@ class TreeGeneratorTest extends PHPUnit_Framework_TestCase
         $this->assertFalse(MI::callMethodOnObject($this->treeGenerator, 'canBeProcessed', [$reflectionClassMock]));
         $this->assertFalse(MI::callMethodOnObject($this->treeGenerator, 'canBeProcessed', [$reflectionClassMock]));
         $this->assertTrue(MI::callMethodOnObject($this->treeGenerator, 'canBeProcessed', [$reflectionClassMock]));
+    }
 
-        MI::callMethodOnObject($this->treeGenerator, 'addToTreeByTypeAndName', ['type', 'someClass']);
+
+    public function testCanBeProcessedNotDocumented()
+    {
+        $reflectionClassMock = Mockery::mock(ClassReflectionInterface::class);
+        $reflectionClassMock->shouldReceive('isMain')->andReturn(true);
+        $reflectionClassMock->shouldReceive('isDocumented')->andReturn(false);
+
+        $this->assertFalse(MI::callMethodOnObject($this->treeGenerator, 'canBeProcessed', [$reflectionClassMock]));
+    }
+
+
+    public function testCanBeProcessedDuplicate()
+    {
+        $reflectionClassMock = Mockery::mock(ClassReflectionInterface::class);
+        $reflectionClassMock->shouldReceive('isMain')->andReturn(true);
+        $reflectionClassMock->shouldReceive('isDocumented')->andReturn(true);
+        $reflectionClassMock->shouldReceive('isInterface')->andReturn(false);
+        $reflectionClassMock->shouldReceive('isTrait')->andReturn(false);
+        $reflectionClassMock->shouldReceive('isException')->andReturn(false);
+        $reflectionClassMock->shouldReceive('getName')->andReturn('MyClass');
+        $reflectionClassMock->shouldReceive('getParentClassName')->andReturn(null);
+
+        $this->assertTrue(MI::callMethodOnObject($this->treeGenerator, 'canBeProcessed', [$reflectionClassMock]));
+        MI::callMethodOnObject($this->treeGenerator, 'addToTreeByReflection', [$reflectionClassMock]);
         $this->assertFalse(MI::callMethodOnObject($this->treeGenerator, 'canBeProcessed', [$reflectionClassMock]));
     }
 
@@ -97,18 +125,32 @@ class TreeGeneratorTest extends PHPUnit_Framework_TestCase
 
         $reflectionClassMock = Mockery::mock(ClassReflectionInterface::class);
         $reflectionClassMock->shouldReceive('getName')->andReturn('someClass');
+        $reflectionClassMock->shouldReceive('isInterface')->andReturn(false);
+        $reflectionClassMock->shouldReceive('isTrait')->andReturn(false);
+        $reflectionClassMock->shouldReceive('isException')->andReturn(false);
         $reflectionClassMock->shouldReceive('getParentClassName')->once()->andReturn(null);
         $reflectionClassMock->shouldReceive('getParentClassName')->andReturn('ParentClassName');
         $reflectionClassMock->shouldReceive('getParentClasses')->andReturn([0 => $reflectionClassParentMock]);
-        $reflectionClassMock->shouldReceive('isInterface')->once()->andReturn(true);
 
         MI::callMethodOnObject($this->treeGenerator, 'addToTreeByReflection', [$reflectionClassMock]);
-        $processed = PHPUnit_Framework_Assert::getObjectAttribute($this->treeGenerator, 'processed');
-        $this->arrayHasKey('someClass', $processed);
-
         MI::callMethodOnObject($this->treeGenerator, 'addToTreeByReflection', [$reflectionClassMock]);
-        $processed = PHPUnit_Framework_Assert::getObjectAttribute($this->treeGenerator, 'processed');
-        $this->arrayHasKey('ParentClassName', $processed);
+
+        $this->assertAttributeSame(
+            ['someClass' => true, 'ParentClassName' => true],
+            'processed',
+            $this->treeGenerator
+        );
+
+        $expected = [
+            ElementsInterface::CLASSES => [
+                'ParentClassName' => ['someClass' => []],
+                'someClass' => [],
+            ],
+            ElementsInterface::INTERFACES => [],
+            ElementsInterface::TRAITS => [],
+            ElementsInterface::EXCEPTIONS => []
+        ];
+        $this->assertAttributeEquals($expected, 'treeStorage', $this->treeGenerator);
     }
 
 
@@ -144,29 +186,4 @@ class TreeGeneratorTest extends PHPUnit_Framework_TestCase
     }
 
 
-    public function testAddToTreeByTypeAndName()
-    {
-        MI::callMethodOnObject($this->treeGenerator, 'addToTreeByTypeAndName', ['type', 'name']);
-
-        $treeStorage = PHPUnit_Framework_Assert::getObjectAttribute($this->treeGenerator, 'treeStorage');
-        $this->assertArrayHasKey('type', $treeStorage);
-        $this->assertArrayHasKey('name', $treeStorage['type']);
-
-        $processed = PHPUnit_Framework_Assert::getObjectAttribute($this->treeGenerator, 'processed');
-        $this->assertArrayHasKey('name', $processed);
-    }
-
-
-    public function testSortTreeStorageElements()
-    {
-        MI::callMethodOnObject($this->treeGenerator, 'addToTreeByTypeAndName', ['type', 'b']);
-        MI::callMethodOnObject($this->treeGenerator, 'addToTreeByTypeAndName', ['type', 'a']);
-
-        $originalTreeStorage = PHPUnit_Framework_Assert::getObjectAttribute($this->treeGenerator, 'treeStorage');
-        $this->assertSame(['b' => [], 'a' => []], $originalTreeStorage['type']);
-
-        MI::callMethodOnObject($this->treeGenerator, 'sortTreeStorageElements');
-        $originalTreeStorage = PHPUnit_Framework_Assert::getObjectAttribute($this->treeGenerator, 'treeStorage');
-        $this->assertSame(['a' => [], 'b' => []], $originalTreeStorage['type']);
-    }
 }

@@ -119,24 +119,25 @@ class TreeGenerator implements ConditionalTemplateGeneratorInterface
 
     private function addToTreeByReflection(ClassReflectionInterface $reflection)
     {
+        $type = $this->getTypeByReflection($reflection);
         if ($reflection->getParentClassName() === null) {
-            $type = $this->getTypeByReflection($reflection);
-            $this->addToTreeByTypeAndName($type, $reflection->getName());
-
-        } else {
-            foreach (array_values(array_reverse($reflection->getParentClasses())) as $level => $parent) {
-                $type = null;
-                if ($level === 0) {
-                    // The topmost parent decides about the reflection type
-                    $type = $this->getTypeByReflection($reflection);
-                }
-
-                /** @var ReflectionClass $parent */
-                $parentName = $parent->getName();
-                if (! isset($this->treeStorage[$type][$parentName])) {
-                    $this->addToTreeByTypeAndName($type, $parentName);
-                }
+            $name = $reflection->getName();
+            $this->treeStorage[$type][$name] = [];
+            $this->processed[$name] = true;
+            return;
+        }
+        $parents = array_values(array_reverse($reflection->getParentClasses()));
+        $cursor =& $this->treeStorage[$type];
+        foreach ($parents as $level => $parent) {
+            $name = $parent->getName();
+            if (!isset($cursor[$name])) {
+                $cursor[$name] = [];
+                $this->processed[$name] = true;
             }
+            $cursor[$name][$reflection->getName()] = [];
+
+            // Traverse down the tree.
+            $cursor =& $cursor[$name];
         }
     }
 
@@ -158,17 +159,6 @@ class TreeGenerator implements ConditionalTemplateGeneratorInterface
         } else {
             return ElementsInterface::CLASSES;
         }
-    }
-
-
-    /**
-     * @param string $type
-     * @param string $name
-     */
-    private function addToTreeByTypeAndName($type, $name)
-    {
-        $this->treeStorage[$type][$name] = [];
-        $this->processed[$name] = true;
     }
 
 
