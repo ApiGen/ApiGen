@@ -67,6 +67,13 @@ class AutocompleteElements implements AutocompleteElementsInterface
 
         } elseif ($element instanceof ClassReflectionInterface) {
             $this->elements[] = ['c', $element->getPrettyName()];
+
+            foreach ($element->getOwnMethods() as $method) {
+                $this->elements[] = ['m', $method->getPrettyName()];
+            }
+            foreach ($element->getOwnProperties() as $property) {
+                $this->elements[] = ['p', $property->getPrettyName()];
+            }
         }
     }
 
