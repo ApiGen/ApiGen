@@ -35,6 +35,9 @@
 		"squizlabs/php_codesniffer": "~2.0",
 		"phpunit/phpunit": "~4.0"
 	},
+	"conflict": {
+		"nette/utils": "~2.4.0"
+	},
 	"autoload": {
 		"psr-4": {
 			"ApiGen\\": "src"
