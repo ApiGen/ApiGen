@@ -51,7 +51,7 @@ class MarkdownMarkup implements Markup
      */
     public function block($text)
     {
-        $pattern = '~<(code|pre)>(.+?)</\1>|```php\s(.+?)\n```~s';
+        $pattern = '~<(code|pre)>(.+?)</\1>|```(?:php)?\s(.+?)\n```~s';
         $highlighted = preg_replace_callback($pattern, [$this, 'highlightCb'], $text);
         $text = $this->markdown->transform($highlighted);
         return trim($text);
