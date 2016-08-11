@@ -201,7 +201,7 @@ class UrlFilters extends Filters
         // Merge lines
         $long = preg_replace_callback('~(?:<(code|pre)>.+?</\1>)|([^<]*)~s', function ($matches) {
             return ! empty($matches[2])
-                ? preg_replace('~\n(?:\t|[ ])+~', ' ', $matches[2])
+                ? preg_replace('~\n(?:(\s+\n){2,})+~', ' ', $matches[2])
                 : $matches[0];
         }, $long);
 

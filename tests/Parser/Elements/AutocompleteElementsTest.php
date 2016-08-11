@@ -7,6 +7,8 @@ use ApiGen\Parser\Elements\ElementStorage;
 use ApiGen\Parser\Reflection\ReflectionClass;
 use ApiGen\Parser\Reflection\ReflectionConstant;
 use ApiGen\Parser\Reflection\ReflectionFunction;
+use ApiGen\Parser\Reflection\ReflectionMethod;
+use ApiGen\Parser\Reflection\ReflectionProperty;
 use Mockery;
 use PHPUnit_Framework_TestCase;
 
@@ -24,6 +26,14 @@ class AutocompleteElementsTest extends PHPUnit_Framework_TestCase
         $classReflectionMock = Mockery::mock(ReflectionClass::class);
         $classReflectionMock->shouldReceive('getPrettyName')->andReturn('ClassPrettyName');
         $classReflectionMock->shouldReceive('getOwnConstants')->andReturn([]);
+
+        $methodReflection = Mockery::mock(ReflectionMethod::class);
+        $methodReflection->shouldReceive('getPrettyName')->andReturn('ClassPrettyName::methodName');
+        $classReflectionMock->shouldReceive('getOwnMethods')->andReturn([$methodReflection]);
+
+        $propertyReflection = Mockery::mock(ReflectionProperty::class);
+        $propertyReflection->shouldReceive('getPrettyName')->andReturn('ClassPrettyName::$propertyName');
+        $classReflectionMock->shouldReceive('getOwnProperties')->andReturn([$propertyReflection]);
 
         $constantReflectionMock = Mockery::mock(ReflectionConstant::class);
         $constantReflectionMock->shouldReceive('getPrettyName')->andReturn('ConstantPrettyName');
@@ -47,8 +57,10 @@ class AutocompleteElementsTest extends PHPUnit_Framework_TestCase
         $elements = $this->autocompleteElements->getElements();
         $this->assertSame([
             ['c', 'ClassPrettyName'],
+            ['p', 'ClassPrettyName::$propertyName'],
+            ['m', 'ClassPrettyName::methodName'],
             ['co', 'ConstantPrettyName'],
-            ['f', 'FunctionPrettyName']
+            ['f', 'FunctionPrettyName'],
         ], $elements);
     }
 }
