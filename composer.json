@@ -30,6 +30,7 @@
 		"tracy/tracy": "^2.3"
 	},
 	"require-dev": {
+		"ext-zip": "*",
 		"mockery/mockery": "~0.9",
 		"herrera-io/box": "~1.6",
 		"squizlabs/php_codesniffer": "~2.0",
