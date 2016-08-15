@@ -41,7 +41,6 @@ class RelativePathResolver
      */
     public function getRelativePath($fileName)
     {
-        $fileName = $this->fileSystem->normalizePath($fileName);
         foreach ($this->configuration->getOption(CO::SOURCE) as $directory) {
             if (strpos($fileName, $directory) === 0) {
                 return $this->getFileNameWithoutSourcePath($fileName, $directory);
@@ -59,7 +58,7 @@ class RelativePathResolver
      */
     private function getFileNameWithoutSourcePath($fileName, $directory)
     {
-        $directory = rtrim($directory, '/');
+        $directory = rtrim($directory, DIRECTORY_SEPARATOR);
         $fileName = substr($fileName, strlen($directory) + 1);
         return $this->fileSystem->normalizePath($fileName);
     }
