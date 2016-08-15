@@ -100,7 +100,7 @@ class Configuration implements ConfigurationInterface
     public function getZipFileName()
     {
         $webalizedTitle = Strings::webalize($this->getOption('title'), null, false);
-        return ($webalizedTitle ? '-' : '') . 'API-documentation.zip';
+        return ($webalizedTitle ? $webalizedTitle . '-' : '') . 'API-documentation.zip';
     }
 
 
