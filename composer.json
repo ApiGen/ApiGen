@@ -36,6 +36,7 @@
 		"phpunit/phpunit": "~4.0"
 	},
 	"conflict": {
+		"latte/latte": "~2.4.0",
 		"nette/utils": "~2.4.0"
 	},
 	"autoload": {
