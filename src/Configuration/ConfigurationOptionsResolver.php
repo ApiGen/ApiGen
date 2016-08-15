@@ -123,7 +123,6 @@ class ConfigurationOptionsResolver
             CO::TEMPLATE => function (Options $options) {
                 if (! $options[CO::TEMPLATE_CONFIG]) {
                     $config = $this->getTemplateConfigPathFromTheme($options[CO::TEMPLATE_THEME]);
-
                 } else {
                     $config = $options[CO::TEMPLATE_CONFIG];
                 }
@@ -233,7 +232,6 @@ class ConfigurationOptionsResolver
     {
         if ($theme === self::TEMPLATE_THEME_DEFAULT) {
             return $this->themeConfigPathResolver->resolve('/vendor/apigen/theme-default/src/config.neon');
-
         } elseif ($theme === self::TEMPLATE_THEME_BOOTSTRAP) {
             return $this->themeConfigPathResolver->resolve('/vendor/apigen/theme-bootstrap/src/config.neon');
         }
@@ -250,7 +248,6 @@ class ConfigurationOptionsResolver
     {
         if (! $destination) {
             throw new ConfigurationException("Destination is not set. Use '-d <dir>' or config to set it");
-
         } elseif (! is_dir($destination)) {
             mkdir($destination, 0755, true);
         }
@@ -270,7 +267,6 @@ class ConfigurationOptionsResolver
     {
         if (! $source) {
             throw new ConfigurationException("Source is not set. Use '-s <dir>' or config to set it");
-
         } elseif (! is_array($source)) {
             $source = [$source];
         }

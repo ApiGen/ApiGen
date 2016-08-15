@@ -61,10 +61,8 @@ class AutocompleteElements implements AutocompleteElementsInterface
     {
         if ($element instanceof ConstantReflectionInterface) {
             $this->elements[] = ['co', $element->getPrettyName()];
-
         } elseif ($element instanceof FunctionReflectionInterface) {
             $this->elements[] = ['f', $element->getPrettyName()];
-
         } elseif ($element instanceof ClassReflectionInterface) {
             $this->elements[] = ['c', $element->getPrettyName()];
 

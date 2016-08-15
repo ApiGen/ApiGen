@@ -43,13 +43,11 @@ class SelfUpdateCommand extends BaseCommand
             $version = $this->getApplication()->getVersion();
             if ($updateManager->update($version, false, true)) {
                 $output->writeln('<info>Updated to latest version.</info>');
-
             } else {
                 $output->writeln('<comment>Already up-to-date.</comment>');
             }
 
             return 0;
-
         } catch (Exception $e) {
             $output->writeln('<error>' . $e->getMessage() . '</error>');
             return 1;

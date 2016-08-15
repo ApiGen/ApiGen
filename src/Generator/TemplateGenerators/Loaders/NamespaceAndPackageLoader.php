@@ -37,7 +37,6 @@ class NamespaceAndPackageLoader
         if ($namespaces = $this->elementStorage->getNamespaces()) {
             $name = $element->getPseudoNamespaceName();
             $template = $this->loadTemplateWithNamespace($template, $name, $namespaces[$name]);
-
         } elseif ($packages = $this->elementStorage->getPackages()) {
             $name = $element->getPseudoPackageName();
             $template = $this->loadTemplateWithNamespace($template, $name, $packages[$name]);

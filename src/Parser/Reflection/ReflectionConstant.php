@@ -50,7 +50,6 @@ class ReflectionConstant extends ReflectionElement implements ConstantReflection
             if (strtolower($type) !== 'null') {
                 return $type;
             }
-
         } catch (\Exception $e) {
             return null;
         }

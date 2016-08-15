@@ -44,16 +44,12 @@ class ElementUrlFactory
     {
         if ($element instanceof ClassReflectionInterface) {
             return $this->createForClass($element);
-
         } elseif ($element instanceof MethodReflectionInterface) {
             return $this->createForMethod($element);
-
         } elseif ($element instanceof PropertyReflectionInterface) {
             return $this->createForProperty($element);
-
         } elseif ($element instanceof ConstantReflectionInterface) {
             return $this->createForConstant($element);
-
         } elseif ($element instanceof FunctionReflectionInterface) {
             return $this->createForFunction($element);
         }

@@ -100,12 +100,10 @@ abstract class ReflectionElement extends ReflectionBase implements ElementReflec
 
                 if (! $php && $this->reflection->isInternal()) {
                     $this->isDocumented = false;
-
                 } elseif (! $internal && ($internal = $this->reflection->getAnnotation('internal'))
                     && empty($internal[0])
                 ) {
                     $this->isDocumented = false;
-
                 } elseif ($this->reflection->hasAnnotation('ignore')) {
                     $this->isDocumented = false;
                 }
@@ -160,7 +158,6 @@ abstract class ReflectionElement extends ReflectionBase implements ElementReflec
                 $subpackageName = preg_replace('~\s+.*~s', '', $subpackage[0]);
                 if (! empty($subpackageName) && strpos($subpackageName, $packageName) === 0) {
                     $packageName = $subpackageName;
-
                 } else {
                     $packageName .= '\\' . $subpackageName;
                 }

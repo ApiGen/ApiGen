@@ -142,7 +142,6 @@ class ReflectionMethod extends ReflectionFunctionBase implements MethodReflectio
             if ($method->getName() === $this->getName()) {
                 if (! $method->isPrivate() && ! $method->isAbstract()) {
                     return $method;
-
                 } else {
                     return null;
                 }

@@ -227,7 +227,6 @@ class GenerateCommand extends AbstractCommand
             $this->scanAndParse($options);
             $this->generate($options);
             return 0;
-
         } catch (\Exception $e) {
             $output->writeln(
                 sprintf(PHP_EOL . '<error>%s</error>', $e->getMessage())

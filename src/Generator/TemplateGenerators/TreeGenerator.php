@@ -149,13 +149,10 @@ class TreeGenerator implements ConditionalTemplateGeneratorInterface
     {
         if ($reflection->isInterface()) {
             return ElementsInterface::INTERFACES;
-
         } elseif ($reflection->isTrait()) {
             return ElementsInterface::TRAITS;
-
         } elseif ($reflection->isException()) {
             return ElementsInterface::EXCEPTIONS;
-
         } else {
             return ElementsInterface::CLASSES;
         }

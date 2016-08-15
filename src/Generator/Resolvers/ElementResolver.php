@@ -137,7 +137,6 @@ class ElementResolver implements ElementResolverInterface
 
             if (strpos($className, ':') === false) {
                 return $this->getClass($className, $reflectionElement->getNamespaceName());
-
             } else {
                 $definition = $className;
             }
@@ -147,7 +146,6 @@ class ElementResolver implements ElementResolverInterface
             && ($pos = strpos($definition, '::') || $pos = strpos($definition, '->'))) {
             $reflectionElement = $this->resolveContextForClassProperty($definition, $reflectionElement, $pos);
             $definition = substr($definition, $pos + 2);
-
         } elseif ($originalContext instanceof ParameterReflectionInterface) {
             return null;
         }
@@ -171,7 +169,6 @@ class ElementResolver implements ElementResolverInterface
         ) {
             // Parameter of function in namespace or global space
             return $this->getFunction($reflectionElement->getDeclaringFunctionName());
-
         } elseif ($reflectionElement instanceof InClassInterface) {
             // Member of a class
             return $this->getClass($reflectionElement->getDeclaringClassName());
@@ -225,10 +222,8 @@ class ElementResolver implements ElementResolverInterface
         $definition = $this->removeEndBrackets($definition);
         if ($class = $this->getClass($definition, $reflectionElement->getNamespaceName())) {
             return $class;
-
         } elseif ($constant = $this->getConstant($definition, $reflectionElement->getNamespaceName())) {
             return $constant;
-
         } elseif ($function = $this->getFunction($definition, $reflectionElement->getNamespaceName())) {
             return $function;
         }
@@ -248,10 +243,8 @@ class ElementResolver implements ElementResolverInterface
 
         if ($context->hasProperty($definition)) {
             return $context->getProperty($definition);
-
         } elseif ($context->hasMethod($definition)) {
             return $context->getMethod($definition);
-
         } elseif ($context->hasConstant($definition)) {
             return $context->getConstant($definition);
         }
@@ -296,7 +289,6 @@ class ElementResolver implements ElementResolverInterface
         // Class::something or Class->something
         if (strpos($definition, 'parent::') === 0 && ($parentClassName = $reflectionClass->getParentClassName())) {
             return $this->getClass($parentClassName);
-
         } elseif (strpos($definition, 'self::') !== 0) {
             return $this->resolveContextForSelfProperty($definition, $pos, $reflectionClass);
         }

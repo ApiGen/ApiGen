@@ -49,7 +49,6 @@ class LiberalFormatArgvInput extends Symfony\Component\Console\Input\ArgvInput
             array_walk($value, function (&$singleValue) {
                 $singleValue = ltrim($singleValue, '=');
             });
-
         } else {
             $value = ltrim($value, '=');
         }
@@ -70,7 +69,6 @@ class LiberalFormatArgvInput extends Symfony\Component\Console\Input\ArgvInput
             if (count($value) && is_array($value[0])) {
                 return $value[0];
             }
-
         } else {
             $value = $this->splitByCommaIfHasAny($value);
         }

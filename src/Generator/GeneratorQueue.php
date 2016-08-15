@@ -73,7 +73,6 @@ class GeneratorQueue implements GeneratorQueueInterface
         return array_filter($this->queue, function (TemplateGeneratorInterface $generator) {
             if ($generator instanceof ConditionalTemplateGeneratorInterface) {
                 return $generator->isAllowed();
-
             } else {
                 return true;
             }

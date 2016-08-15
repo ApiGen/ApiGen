@@ -528,7 +528,6 @@ class ReflectionClass extends ReflectionElement implements ClassReflectionInterf
         return array_map(function (IReflectionClass $class) {
             if (! isset($this->getParsedClasses()[$class->getName()])) {
                 return $class->getName();
-
             } else {
                 return $this->getParsedClasses()[$class->getName()];
             }
@@ -571,7 +570,6 @@ class ReflectionClass extends ReflectionElement implements ClassReflectionInterf
         return array_map(function (IReflectionClass $class) {
             if (! isset($this->getParsedClasses()[$class->getName()])) {
                 return $class->getName();
-
             } else {
                 return $this->getParsedClasses()[$class->getName()];
             }

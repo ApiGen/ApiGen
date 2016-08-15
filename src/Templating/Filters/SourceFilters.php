@@ -57,14 +57,11 @@ class SourceFilters extends Filters
             $elementName = $element->getName();
             if ($element instanceof ClassReflectionInterface) {
                 $file = 'class-';
-
             } elseif ($element instanceof ConstantReflectionInterface) {
                 $file = 'constant-';
-
             } elseif ($element instanceof FunctionReflectionInterface) {
                 $file = 'function-';
             }
-
         } else {
             $elementName = $element->getDeclaringClassName();
             $file = 'class-';

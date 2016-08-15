@@ -62,7 +62,6 @@ class ReflectionProperty extends ReflectionElement implements PropertyReflection
             if (strtolower($type) !== 'null') {
                 return $type;
             }
-
         } catch (\Exception $e) {
             return;
         }

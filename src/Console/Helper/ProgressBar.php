@@ -67,7 +67,6 @@ class ProgressBar implements ProgressBarInterface
     {
         if ($this->getDebugOption()) {
             return 'debug';
-
         } else {
             return '<comment>%percent:3s% %</comment>';
         }
@@ -81,7 +80,6 @@ class ProgressBar implements ProgressBarInterface
     {
         if ($this->consoleIO->getInput() && $this->consoleIO->getInput()->hasOption('debug')) {
             return $this->consoleIO->getInput()->getOption('debug');
-
         } else {
             return false;
         }

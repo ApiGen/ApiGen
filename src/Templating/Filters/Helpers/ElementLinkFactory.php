@@ -46,16 +46,12 @@ class ElementLinkFactory
     {
         if ($element instanceof ClassReflectionInterface) {
             return $this->createForClass($element, $classes);
-
         } elseif ($element instanceof MethodReflectionInterface) {
             return $this->createForMethod($element, $classes);
-
         } elseif ($element instanceof PropertyReflectionInterface) {
             return $this->createForProperty($element, $classes);
-
         } elseif ($element instanceof ConstantReflectionInterface) {
             return $this->createForConstant($element, $classes);
-
         } elseif ($element instanceof FunctionReflectionInterface) {
             return $this->createForFunction($element, $classes);
         }
@@ -122,7 +118,6 @@ class ElementLinkFactory
         if ($reflectionConstant->getDeclaringClassName()) {
             $text = $reflectionConstant->getDeclaringClassName() . '::' .
                 Html::el('b')->setText($reflectionConstant->getName());
-
         } else {
             $text = $this->getGlobalConstantName($reflectionConstant);
         }
@@ -153,7 +148,6 @@ class ElementLinkFactory
         if ($reflectionConstant->inNamespace()) {
             return $reflectionConstant->getNamespaceName() . '\\' .
                 Html::el('b')->setText($reflectionConstant->getShortName());
-
         } else {
             return Html::el('b')->setText($reflectionConstant->getName());
         }
