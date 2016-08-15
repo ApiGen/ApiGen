@@ -90,7 +90,7 @@ class ApiGenExtensionTest extends PHPUnit_Framework_TestCase
         $definition = $builder->getDefinition($builder->getByType(GeneratorQueueInterface::class));
         $this->assertSame(GeneratorQueue::class, $definition->getClass());
 
-        $filterService = $definition->getSetup()[1]->arguments[0];
+        $filterService = $definition->getSetup()[8]->arguments[0];
         $command = $builder->getDefinition($builder->getServiceName($filterService));
         $this->assertSame(ClassElementGenerator::class, $command->getClass());
     }

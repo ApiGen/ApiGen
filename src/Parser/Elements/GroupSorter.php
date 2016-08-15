@@ -140,7 +140,6 @@ class GroupSorter implements GroupSorterInterface
         if ($main) {
             if (strpos($one, $main) === 0 && strpos($two, $main) !== 0) {
                 return -1;
-
             } elseif (strpos($one, $main) !== 0 && strpos($two, $main) === 0) {
                 return 1;
             }

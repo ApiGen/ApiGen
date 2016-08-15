@@ -21,13 +21,10 @@ class ReflectionParameter extends ReflectionBase implements ParameterReflectionI
     {
         if ($this->isArray()) {
             return 'array';
-
         } elseif ($this->isCallable()) {
             return 'callable';
-
         } elseif ($className = $this->getClassName()) {
             return $className;
-
         } elseif ($annotations = $this->getDeclaringFunction()->getAnnotation('param')) {
             if (! empty($annotations[$this->getPosition()])) {
                 list($types) = preg_split('~\s+|$~', $annotations[$this->getPosition()], 2);
@@ -163,7 +160,6 @@ class ReflectionParameter extends ReflectionBase implements ParameterReflectionI
 
         if ($className = $this->reflection->getDeclaringClassName()) {
             return $this->getParsedClasses()[$className]->getMethod($functionName);
-
         } else {
             return $this->parserResult->getFunctions()[$functionName];
         }

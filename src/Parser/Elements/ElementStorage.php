@@ -220,23 +220,18 @@ class ElementStorage implements ElementStorageInterface
                 if ($element instanceof ConstantReflectionInterface) {
                     $elementType = Elements::CONSTANTS;
                     $this->constants[$elementName] = $element;
-
                 } elseif ($element instanceof FunctionReflectionInterface) {
                     $elementType = Elements::FUNCTIONS;
                     $this->functions[$elementName] = $element;
-
                 } elseif ($element->isInterface()) {
                     $elementType = Elements::INTERFACES;
                     $this->interfaces[$elementName] = $element;
-
                 } elseif ($element->isTrait()) {
                     $elementType = Elements::TRAITS;
                     $this->traits[$elementName] = $element;
-
                 } elseif ($element->isException()) {
                     $elementType = Elements::EXCEPTIONS;
                     $this->exceptions[$elementName] = $element;
-
                 } else {
                     $elementType = Elements::CLASSES;
                     $this->classes[$elementName] = $element;
@@ -280,11 +275,9 @@ class ElementStorage implements ElementStorageInterface
         if ($areNamespacesEnabled) {
             $this->namespaces = $this->groupSorter->sort($this->namespaces);
             $this->packages = [];
-
         } elseif ($arePackagesEnabled) {
             $this->namespaces = [];
             $this->packages = $this->groupSorter->sort($this->packages);
-
         } else {
             $this->namespaces = [];
             $this->packages = [];

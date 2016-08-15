@@ -170,7 +170,6 @@ class Backend extends Broker\Backend\Memory implements BackendInterface
                     $this->allClasses[self::INTERNAL_CLASSES][$parentName] = $parentClass;
                 }
             }
-
         } elseif (! $parameterClass->isTokenized()) {
             if (! isset($this->allClasses[self::NONEXISTENT_CLASSES][$name])) {
                 $this->allClasses[self::NONEXISTENT_CLASSES][$name] = $parameterClass;
@@ -191,7 +190,6 @@ class Backend extends Broker\Backend\Memory implements BackendInterface
                 if (! isset($this->allClasses[self::INTERNAL_CLASSES][$parentName])) {
                     $this->allClasses[self::INTERNAL_CLASSES][$parentName] = $parentReflection;
                 }
-
             } elseif (! $parentReflection->isTokenized()) {
                 if (! isset($this->allClasses[self::NONEXISTENT_CLASSES][$parentName])) {
                     $this->allClasses[self::NONEXISTENT_CLASSES][$parentName] = $parentReflection;

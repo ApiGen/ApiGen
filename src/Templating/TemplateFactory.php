@@ -103,16 +103,12 @@ class TemplateFactory implements TemplateFactoryInterface
 
         if ($name === self::ELEMENT_SOURCE) {
             $template->setSavePath($this->templateNavigator->getTemplatePathForSourceElement($element));
-
         } elseif ($name === self::ELEMENT_NAMESPACE) {
             $template->setSavePath($this->templateNavigator->getTemplatePathForNamespace($element));
-
         } elseif ($name === self::ELEMENT_PACKAGE) {
             $template->setSavePath($this->templateNavigator->getTemplatePathForPackage($element));
-
         } elseif ($name === self::ELEMENT_ANNOTATION_GROUP) {
             $template->setSavePath($this->templateNavigator->getTemplatePathForAnnotationGroup($element));
-
         } else {
             throw new UnsupportedElementException($name . ' is not supported template type.');
         }
@@ -131,11 +127,9 @@ class TemplateFactory implements TemplateFactoryInterface
         if ($element instanceof ClassReflectionInterface) {
             $template->setFile($this->templateNavigator->getTemplatePath('class'));
             $template->setSavePath($this->templateNavigator->getTemplatePathForClass($element));
-
         } elseif ($element instanceof ConstantReflectionInterface) {
             $template->setFile($this->templateNavigator->getTemplatePath('constant'));
             $template->setSavePath($this->templateNavigator->getTemplatePathForConstant($element));
-
         } elseif ($element instanceof FunctionReflectionInterface) {
             $template->setFile($this->templateNavigator->getTemplatePath('function'));
             $template->setSavePath($this->templateNavigator->getTemplatePathForFunction($element));

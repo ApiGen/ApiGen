@@ -28,10 +28,8 @@ class ElementSorter implements ElementSorterInterface
             $firstElement = array_values($elements)[0];
             if ($firstElement instanceof ConstantReflectionInterface) {
                 return $this->sortConstantsByFqn($elements);
-
             } elseif ($firstElement instanceof FunctionReflectionInterface) {
                 return $this->sortFunctionsByFqn($elements);
-
             } elseif ($firstElement instanceof InClassInterface) {
                 return $this->sortPropertiesOrMethodsByFqn($elements);
             }

@@ -73,7 +73,6 @@ class ParentClassElementsExtractor implements ParentClassElementsExtractorInterf
         }
 
         return $properties;
-
     }
 
 

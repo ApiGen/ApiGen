@@ -30,12 +30,14 @@
 		"tracy/tracy": "^2.3"
 	},
 	"require-dev": {
+		"ext-zip": "*",
 		"mockery/mockery": "~0.9",
 		"herrera-io/box": "~1.6",
 		"squizlabs/php_codesniffer": "~2.0",
 		"phpunit/phpunit": "~4.0"
 	},
 	"conflict": {
+		"latte/latte": "~2.4.0",
 		"nette/utils": "~2.4.0"
 	},
 	"autoload": {

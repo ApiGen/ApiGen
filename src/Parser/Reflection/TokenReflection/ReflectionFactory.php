@@ -101,22 +101,16 @@ class ReflectionFactory implements ReflectionFactoryInterface
     {
         if ($reflection instanceof IReflectionClass) {
             return new ReflectionClass($reflection);
-
         } elseif ($reflection instanceof IReflectionConstant) {
             return new ReflectionConstant($reflection);
-
         } elseif ($reflection instanceof IReflectionMethod) {
             return new ReflectionMethod($reflection);
-
         } elseif ($reflection instanceof IReflectionProperty) {
             return new ReflectionProperty($reflection);
-
         } elseif ($reflection instanceof IReflectionParameter) {
             return new ReflectionParameter($reflection);
-
         } elseif ($reflection instanceof IReflectionFunction) {
             return new ReflectionFunction($reflection);
-
         } elseif ($reflection instanceof IReflectionExtension) {
             return new ReflectionExtension($reflection);
         }

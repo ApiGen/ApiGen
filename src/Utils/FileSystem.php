@@ -58,7 +58,6 @@ class FileSystem
             /** @var \SplFileInfo $item */
             if ($item->isDir()) {
                 rmdir($item);
-
             } else {
                 unlink($item);
             }
@@ -111,7 +110,6 @@ class FileSystem
             if (is_file($resourceSource)) {
                 copy($resourceSource, FileSystem::forceDir($destination  . '/' . $resourceDestination));
                 continue;
-
             } else {
                 /** @var \RecursiveDirectoryIterator $iterator */
                 $iterator = Finder::findFiles('*')->from($resourceSource)->getIterator();

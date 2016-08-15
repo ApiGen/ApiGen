@@ -26,21 +26,16 @@ class PhpNette implements CompactorInterface
         foreach (token_get_all($contents) as $token) {
             if (is_string($token)) {
                 $output .= $token;
-
             } elseif ($token[0] === T_COMMENT) {
                 $output .= $this->preserveLineNumbers($token);
-
             } elseif ($this->isCommentWithoutAnnotations($token, ['@return', '@method'])) {
                 $output .= $this->preserveLineNumbers($token);
-
             } elseif ($token[0] === T_WHITESPACE) {
                 if (strpos($token[1], "\n") === false) {
                     $output .= ' ';
-
                 } else {
                     $output .= $this->preserveLineNumbers($token);
                 }
-
             } else {
                 $output .= $token[1];
             }

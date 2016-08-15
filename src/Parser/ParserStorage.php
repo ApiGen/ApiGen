@@ -66,10 +66,8 @@ class ParserStorage implements ParserStorageInterface
     {
         if ($type === ElementsInterface::CLASSES) {
             return $this->classes;
-
         } elseif ($type === ElementsInterface::CONSTANTS) {
             return $this->constants;
-
         } elseif ($type === ElementsInterface::FUNCTIONS) {
             return $this->functions;
         }

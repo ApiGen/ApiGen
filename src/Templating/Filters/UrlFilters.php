@@ -225,7 +225,6 @@ class UrlFilters extends Filters
         // Process markup
         if ($block) {
             $text = $this->markup->block($text);
-
         } else {
             $text = $this->markup->line($text);
         }
@@ -390,7 +389,6 @@ class UrlFilters extends Filters
         foreach (preg_split('~\\s*,\\s*~', $value) as $link) {
             if ($this->elementResolver->resolveElement($link, $reflectionElement) !== null) {
                 $doc[] = $this->typeLinks($link, $reflectionElement);
-
             } else {
                 $doc[] = $this->doc($link, $reflectionElement);
             }

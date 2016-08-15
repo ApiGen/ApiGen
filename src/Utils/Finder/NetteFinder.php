@@ -43,7 +43,6 @@ class NetteFinder implements FinderInterface
         if (is_file($source)) {
             $foundFiles[$source] = new SplFileInfo($source);
             return $foundFiles;
-
         } else {
             $finder = Finder::findFiles($fileMasks)->exclude($exclude)
                 ->from($source)->exclude($exclude);
