@@ -17,7 +17,7 @@ use ApiGen\Contracts\Parser\Reflection\TokenReflection\ReflectionFactoryInterfac
 class AnnotationPropertyExtractor implements AnnotationPropertyExtractorInterface
 {
 
-    const PATTERN_PROPERTY = '~^(?:([\\w\\\\]+(?:\\|[\\w\\\\]+)*)\\s+)?\\$(\\w+)(?:\\s+(.*))?($)~s';
+    const PATTERN_PROPERTY = '~^(?:([\\w\\\\]+(?:\\[\\])*(?:\\|[\\w\\\\]+(?:\\[\\])*)*)\\s+)?\\$(\\w+)(?:\\s+(.*))?($)~s';
 
     /**
      * @var ReflectionFactoryInterface

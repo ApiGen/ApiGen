@@ -4,6 +4,7 @@ namespace Project;
 
 /**
  * @property $someMagicProperty
+ * @property \stdClass[] $issue696
  * @method getSome()
  */
 class AccessLevels extends ParentClass implements RichInterface
