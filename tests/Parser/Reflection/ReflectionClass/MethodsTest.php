@@ -36,7 +36,7 @@ class MethodsTest extends AbstractReflectionClassTestCase
 
     public function testGetMagicMethods()
     {
-        $this->assertCount(3, $this->reflectionClass->getMagicMethods());
+        $this->assertCount(4, $this->reflectionClass->getMagicMethods());
         $magicMethod = $this->reflectionClass->getMagicMethods()['getSome'];
         $this->assertInstanceOf(MagicMethodReflectionInterface::class, $magicMethod);
     }
@@ -44,7 +44,7 @@ class MethodsTest extends AbstractReflectionClassTestCase
 
     public function testGetOwnMagicMethods()
     {
-        $this->assertCount(1, $this->reflectionClass->getOwnMagicMethods());
+        $this->assertCount(2, $this->reflectionClass->getOwnMagicMethods());
     }
 
 
