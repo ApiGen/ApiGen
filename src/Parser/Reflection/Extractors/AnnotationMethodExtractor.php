@@ -33,16 +33,21 @@ class AnnotationMethodExtractor implements AnnotationMethodExtractorInterface
             # list of arguments
             \\s*
             (
-                # argument typehint
-                (?:(?:[\\w\\\\]+(?:\\[\\])?(?:\\|[\\w\\\\]+(?:\\[\\])?)*)\\s+)?
-                # pass by reference?
-                &?
-                \\s*
-                # argument name
-                \\$\\w+
-                # default value
-                (?:\\s*=\\s*.*)?
-            )?
+                # argument begin
+                (?:
+                    # argument typehint
+                    (?:(?:[\\w\\\\]+(?:\\[\\])?(?:\\|[\\w\\\\]+(?:\\[\\])?)*)\\s+)?
+                    # pass by reference?
+                    &?
+                    \\s*
+                    # argument name
+                    \\$\\w+
+                    # default value
+                    (?:\\s*=\\s*.*)?
+                    # optional comma
+                    ,?
+                )*
+            )?    
             \\s*
         \\)                                              
         \\s*
