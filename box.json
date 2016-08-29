@@ -21,7 +21,6 @@
 			"name": ["*.php", "*.json", "*.latte", "*.neon", "*.css", "*.js", "*.png"],
 			"exclude": ["test", "Test", "Tests", "tests" ],
 			"in": [
-				"vendor/andrewsville",
 				"vendor/apigen",
 				"vendor/composer",
 				"vendor/hamcrest",
@@ -31,6 +30,7 @@
 				"vendor/latte",
 				"vendor/michelf",
 				"vendor/nette",
+				"vendor/popsul",
 				"vendor/seld",
 				"vendor/symfony",
 				"vendor/tracy"
