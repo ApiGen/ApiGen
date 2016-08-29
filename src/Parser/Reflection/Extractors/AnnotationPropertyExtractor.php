@@ -17,7 +17,19 @@ use ApiGen\Contracts\Parser\Reflection\TokenReflection\ReflectionFactoryInterfac
 class AnnotationPropertyExtractor implements AnnotationPropertyExtractorInterface
 {
 
-    const PATTERN_PROPERTY = '~^(?:([\\w\\\\]+(?:\\[\\])?(?:\\|[\\w\\\\]+(?:\\[\\])?)*)\\s+)?\\$(\\w+)(?:\\s+(.*))?($)~s';
+    const PATTERN_PROPERTY = /** @lang RegExp */ '~^
+        # property typehint
+        (?:
+            ([\\w\\\\]+(?:\\[\\])?(?:\\|[\\w\\\\]+(?:\\[\\])?)*)\\s+
+        )?
+        # property name
+        \\$(\\w+)
+        # optional property description
+        (?:
+            \\s+(.*)
+        )?
+        ($)
+        ~sx';
 
     /**
      * @var ReflectionFactoryInterface
@@ -48,7 +60,7 @@ class AnnotationPropertyExtractor implements AnnotationPropertyExtractorInterfac
             if ($this->classReflection->hasAnnotation($annotationName)) {
                 foreach ($this->classReflection->getAnnotation($annotationName) as $annotation) {
                     $properties += $this->processMagicPropertyAnnotation($annotation, $annotationName);
-                };
+                }
             }
         }
 
