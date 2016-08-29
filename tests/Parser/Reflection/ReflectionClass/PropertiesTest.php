@@ -39,13 +39,13 @@ class PropertiesTest extends AbstractReflectionClassTestCase
 
     public function testGetMagicProperties()
     {
-        $this->assertCount(2, $this->reflectionClass->getMagicProperties());
+        $this->assertCount(3, $this->reflectionClass->getMagicProperties());
     }
 
 
     public function testGetOwnMagicProperties()
     {
-        $this->assertCount(1, $this->reflectionClass->getOwnMagicProperties());
+        $this->assertCount(2, $this->reflectionClass->getOwnMagicProperties());
     }
 
 

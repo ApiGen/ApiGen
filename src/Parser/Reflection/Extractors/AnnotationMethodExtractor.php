@@ -18,9 +18,53 @@ use ApiGen\Parser\Reflection\TokenReflection\ReflectionFactory;
 class AnnotationMethodExtractor implements AnnotationMethodExtractorInterface
 {
 
-    const PATTERN_METHOD
-        = '~^(?:(static)\\s+)?(?:([\\w\\\\]+(?:\\|[\\w\\\\]+)*)\\s+)?(&)?\\s*(\\w+)\\s*\\(\\s*(.*)\\s*\\)\\s*(.*|$)~s';
-    const PATTERN_PARAMETER = '~^(?:([\\w\\\\]+(?:\\|[\\w\\\\]+)*)\\s+)?(&)?\\s*\\$(\\w+)(?:\\s*=\\s*(.*))?($)~s';
+    const PATTERN_METHOD = /** @lang RegExp */ '~^
+        # static mark
+        (?:(static)\\s+)?
+        # return typehint
+        (?:([\\w\\\\]+(?:\\[\\])?(?:\\|[\\w\\\\]+(?:\\[\\])?)*)\\s+)?
+        # return reference?
+        (&)?
+        \\s*
+        # method name
+        (\\w+)
+        \\s*
+        \\(
+            # list of arguments
+            \\s*
+            (
+                # argument begin
+                (?:
+                    # argument typehint
+                    (?:(?:[\\w\\\\]+(?:\\[\\])?(?:\\|[\\w\\\\]+(?:\\[\\])?)*)\\s+)?
+                    # pass by reference?
+                    &?
+                    \\s*
+                    # argument name
+                    \\$\\w+
+                    # default value
+                    (?:\\s*=\\s*.*)?
+                    # optional comma
+                    ,?
+                )*
+            )?    
+            \\s*
+        \\)                                              
+        \\s*
+        # description
+        (.*|$)
+        ~sx';
+    const PATTERN_PARAMETER = /** @lang RegExp */  '~^
+        # argument typehint
+        (?:([\\w\\\\]+(?:\\[\\])?(?:\\|[\\w\\\\]+(?:\\[\\])?)*)\\s+)?
+        # pass by reference?
+        (&)?
+        \\s*
+        # argument name
+        \\$(\\w+)
+        # default value
+        (?:\\s*=\\s*(.*))?($)
+        ~sx';
 
     /**
      * @var ReflectionFactory
@@ -50,7 +94,7 @@ class AnnotationMethodExtractor implements AnnotationMethodExtractorInterface
         if ($reflectionClass->hasAnnotation('method')) {
             foreach ($reflectionClass->getAnnotation('method') as $annotation) {
                 $methods += $this->processMagicMethodAnnotation($annotation);
-            };
+            }
         }
 
         return $methods;
