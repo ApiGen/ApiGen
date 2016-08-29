@@ -264,7 +264,7 @@ class UrlFilters extends Filters
         return preg_replace_callback('~{@(?:link|see)\\s+([^}]+)}~', function ($matches) use ($reflectionElement) {
             list($url, $description) = Strings::split($matches[1]);
 
-            if (Validators::isUrl($url)) {
+            if (Validators::isUri($url)) {
                 return $this->linkBuilder->build($url, $description ?: $url);
             }
 
