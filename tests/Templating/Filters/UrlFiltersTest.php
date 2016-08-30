@@ -7,6 +7,7 @@ use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Contracts\Generator\Resolvers\ElementResolverInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Generator\Markups\Markup;
 use ApiGen\Generator\SourceCodeHighlighter\SourceCodeHighlighter;
 use ApiGen\Parser\Reflection\ReflectionElement;
@@ -39,12 +40,21 @@ class UrlFiltersTest extends PHPUnit_Framework_TestCase
 
         $elementLinkFactoryMock = Mockery::mock(ElementLinkFactory::class);
         $elementLinkFactoryMock->shouldReceive('createForElement')->andReturnUsing(
-            function (ClassReflectionInterface $reflectionClass, $classes = '') {
-                $name = $reflectionClass->getName();
+            function (ElementReflectionInterface $reflectionElement, $classes = '') {
+                $name = $reflectionElement->getName();
                 if ($classes) {
                     $classes = ' class="' . implode($classes, ' ') . '"';
+                } else {
+                    $classes = '';
                 }
-                return '<a href="class-link-' . $name . '"' . $classes . '>' . $name . '</a>';
+
+                if ($reflectionElement instanceof ClassReflectionInterface) {
+                    return '<a href="class-link-' . $name . '"' . $classes . '>' . $name . '</a>';
+                } elseif ($reflectionElement instanceof FunctionReflectionInterface) {
+                    return '<a href="function-link-' . $name . '"' . $classes . '>' . $name . '()</a>';
+                }
+
+                throw new \InvalidArgumentException();
             }
         );
 
@@ -221,7 +231,8 @@ EXPECTED;
             [
                 'ApiGen\ApiGen|string',
                 '<code><a href="class-link-ApiGen\ApiGen" class="deprecated invalid">ApiGen\ApiGen</a></code>|string'
-            ]
+            ],
+            ['int|int[]', 'integer|integer[]']
         ];
     }
 
@@ -294,7 +305,12 @@ EXPECTED;
                 $reflectionClassMock->shouldReceive('isDeprecated')->andReturn(true);
                 $reflectionClassMock->shouldReceive('isValid')->andReturn(false);
                 return $reflectionClassMock;
-
+            } elseif ($arg === 'int') {
+                $reflectionFunctionMock = Mockery::mock(FunctionReflectionInterface::class);
+                $reflectionFunctionMock->shouldReceive('getName')->andReturn('int');
+                $reflectionFunctionMock->shouldReceive('isDeprecated')->andReturn(false);
+                $reflectionFunctionMock->shouldReceive('isValid')->andReturn(true);
+                return $reflectionFunctionMock;
             } else {
                 return null;
             }

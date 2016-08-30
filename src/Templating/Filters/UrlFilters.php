@@ -17,7 +17,6 @@ use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Generator\Markups\Markup;
 use ApiGen\Generator\SourceCodeHighlighter\SourceCodeHighlighter;
-use ApiGen\Parser\Reflection\ReflectionFunction;
 use ApiGen\Templating\Filters\Helpers\ElementLinkFactory;
 use ApiGen\Templating\Filters\Helpers\LinkBuilder;
 use ApiGen\Templating\Filters\Helpers\Strings;
@@ -96,7 +95,7 @@ class UrlFilters extends Filters
         }
 
         $element = $this->elementResolver->resolveElement($definition, $reflectionElement, $expectedName);
-        if ($element === null || $element instanceof ReflectionFunction) {
+        if ($element === null || $element instanceof FunctionReflectionInterface) {
             return $expectedName;
         }
 
