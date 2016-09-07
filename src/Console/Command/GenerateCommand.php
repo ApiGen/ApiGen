@@ -216,6 +216,12 @@ class GenerateCommand extends AbstractCommand
                 InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
                 'Files matching this mask will be included in class tree,'
                 . ' but will not create a link to their documentation (deprecated, only present for BC).'
+            )
+            ->addOption(
+                'overwrite',
+                'o',
+                InputOption::VALUE_NONE,
+                'Force overwrite destination directory'
             );
     }
 
@@ -257,7 +263,7 @@ class GenerateCommand extends AbstractCommand
 
     private function generate(array $options)
     {
-        $this->prepareDestination($options['destination']);
+        $this->prepareDestination($options['destination'], $options['overwrite']);
         $this->io->writeln('<info>Generating API documentation</info>');
         $this->generatorQueue->run();
     }
@@ -354,9 +360,11 @@ class GenerateCommand extends AbstractCommand
     /**
      * @param string $destination
      */
-    private function prepareDestination($destination)
+    private function prepareDestination($destination, $allowOverwrite = false)
     {
-        $this->cleanDestinationWithCaution($destination);
+        if (!$allowOverwrite) {
+            $this->cleanDestinationWithCaution($destination);
+        }
         $this->themeResources->copyToDestination($destination);
     }
 

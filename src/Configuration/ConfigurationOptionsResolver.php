@@ -38,6 +38,7 @@ class ConfigurationOptionsResolver
         CO::DEBUG => false,
         CO::DEPRECATED => false,
         CO::DESTINATION => null,
+        CO::FORCE_OVERWRITE => false,
         CO::DOWNLOAD => false,
         CO::EXCLUDE => [],
         CO::EXTENSIONS => [],
