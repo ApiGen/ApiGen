@@ -113,10 +113,11 @@ class ApiGenExtensionTest extends PHPUnit_Framework_TestCase
     private function getCompiler()
     {
         $compiler = new Compiler(new ContainerBuilder);
-        $compiler->compile(['parameters' => [
+        $compiler->addConfig(['parameters' => [
             'rootDir' => __DIR__ . '/..',
             'tempDir' => __DIR__ . '/../temp'
-        ]], null, null);
+        ]]);
+        $compiler->compile();
         return $compiler;
     }
 }
