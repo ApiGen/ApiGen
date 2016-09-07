@@ -14,11 +14,10 @@ use ApiGen\Contracts\EventDispatcher\Event\EventInterface;
 class Event implements EventInterface
 {
 
-    /**+
-	 * @var string
-	 */
+    /**
+     * @var string
+     */
     private $name;
-
 
     /**
      * @param string $name

@@ -20,7 +20,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ConfigurationOptionsResolver
 {
-
     const AL_PROTECTED = 'protected';
     const AL_PRIVATE = 'private';
     const AL_PUBLIC = 'public';

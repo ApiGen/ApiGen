@@ -14,7 +14,6 @@ use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 
 class OutputFormatter extends BaseOutputFormatter
 {
-
     public function __construct()
     {
         parent::__construct(null, $this->getStyles());

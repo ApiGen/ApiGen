@@ -13,5 +13,4 @@ use InvalidArgumentException;
 
 class MissingFileException extends InvalidArgumentException
 {
-
 }

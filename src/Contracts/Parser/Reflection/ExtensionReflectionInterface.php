@@ -13,5 +13,4 @@ use ApiGen\Contracts\Parser\Reflection\Behavior\NamedInterface;
 
 interface ExtensionReflectionInterface extends NamedInterface
 {
-
 }

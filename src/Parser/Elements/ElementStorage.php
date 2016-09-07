@@ -176,8 +176,8 @@ class ElementStorage implements ElementStorageInterface
      */
     public function getFunctions()
     {
-         $this->ensureCategorization();
-         return $this->functions;
+        $this->ensureCategorization();
+        return $this->functions;
     }
 
 
@@ -198,11 +198,11 @@ class ElementStorage implements ElementStorageInterface
         $this->ensureCategorization();
 
         $elements = [
-            Elements::CLASSES => $this->classes,
-            Elements::CONSTANTS => $this->constants,
-            Elements::FUNCTIONS => $this->functions,
+            Elements::CLASSES    => $this->classes,
+            Elements::CONSTANTS  => $this->constants,
+            Elements::FUNCTIONS  => $this->functions,
             Elements::INTERFACES => $this->interfaces,
-            Elements::TRAITS => $this->traits,
+            Elements::TRAITS     => $this->traits,
             Elements::EXCEPTIONS => $this->exceptions
         ];
         return $elements;
@@ -214,7 +214,7 @@ class ElementStorage implements ElementStorageInterface
         foreach ($this->parserStorage->getTypes() as $type) {
             $elements = $this->parserStorage->getElementsByType($type);
             foreach ($elements as $elementName => $element) {
-                if (! $element->isDocumented()) {
+                if (!$element->isDocumented()) {
                     continue;
                 }
                 if ($element instanceof ConstantReflectionInterface) {

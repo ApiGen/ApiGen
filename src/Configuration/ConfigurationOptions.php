@@ -11,7 +11,6 @@ namespace ApiGen\Configuration;
 
 class ConfigurationOptions
 {
-
     const ACCESS_LEVELS = 'accessLevels';
     const ANNOTATION_GROUPS = 'annotationGroups';
     const CONFIG = 'config';

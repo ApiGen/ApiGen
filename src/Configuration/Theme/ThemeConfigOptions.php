@@ -11,7 +11,6 @@ namespace ApiGen\Configuration\Theme;
 
 class ThemeConfigOptions
 {
-
     const OVERVIEW = 'overview';
     const COMBINED = 'combined';
     const ELEMENT_LIST = 'elementlist';

@@ -13,5 +13,4 @@ use RuntimeException;
 
 class FileNotReadableException extends RuntimeException
 {
-
 }

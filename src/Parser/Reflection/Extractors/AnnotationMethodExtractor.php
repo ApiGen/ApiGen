@@ -17,7 +17,6 @@ use ApiGen\Parser\Reflection\TokenReflection\ReflectionFactory;
 
 class AnnotationMethodExtractor implements AnnotationMethodExtractorInterface
 {
-
     const PATTERN_METHOD = /** @lang RegExp */ '~^
         # static mark
         (?:(static)\\s+)?

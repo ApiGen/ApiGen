@@ -22,7 +22,6 @@ use Nette\Utils\ArrayHash;
 
 class TemplateFactory implements TemplateFactoryInterface
 {
-
     const ELEMENT_SOURCE = 'source';
     const ELEMENT_PACKAGE = 'package';
     const ELEMENT_NAMESPACE = 'namespace';

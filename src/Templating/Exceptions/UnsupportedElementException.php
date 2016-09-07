@@ -13,5 +13,4 @@ use RuntimeException;
 
 class UnsupportedElementException extends RuntimeException
 {
-
 }

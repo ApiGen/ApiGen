@@ -13,7 +13,6 @@ use Nette\DI\CompilerExtension;
 
 class UtilsExtension extends CompilerExtension
 {
-
     public function loadConfiguration()
     {
         $builder = $this->getContainerBuilder();

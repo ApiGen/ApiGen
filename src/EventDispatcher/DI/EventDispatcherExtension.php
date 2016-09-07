@@ -15,7 +15,6 @@ use Nette\DI\CompilerExtension;
 
 class EventDispatcherExtension extends CompilerExtension
 {
-
     public function loadConfiguration()
     {
         $builder = $this->getContainerBuilder();

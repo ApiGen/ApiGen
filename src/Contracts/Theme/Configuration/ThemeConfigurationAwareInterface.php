@@ -13,6 +13,5 @@ use ApiGen\Contracts\Configuration\ConfigurationInterface;
 
 interface ThemeConfigurationAwareInterface
 {
-
     public function setThemeConfiguration(ThemeConfigurationInterface $themeConfiguration);
 }

@@ -16,5 +16,4 @@ use RuntimeException;
  */
 class ConfigurationException extends RuntimeException
 {
-
 }
