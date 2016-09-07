@@ -58,6 +58,12 @@ abstract class Filters
         ];
 
         // Simple type
+        if (strlen($name) > 2 && substr($name, -2) === '[]') {
+            $clearName = substr($name, 0, -2);
+            if (isset($names[$clearName])) {
+                return $names[$clearName] . '[]';
+            }
+        }
         if (isset($names[$name])) {
             return $names[$name];
         }

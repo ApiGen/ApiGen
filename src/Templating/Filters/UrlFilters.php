@@ -95,7 +95,7 @@ class UrlFilters extends Filters
         }
 
         $element = $this->elementResolver->resolveElement($definition, $reflectionElement, $expectedName);
-        if ($element === null) {
+        if ($element === null || $element instanceof FunctionReflectionInterface) {
             return $expectedName;
         }
 
