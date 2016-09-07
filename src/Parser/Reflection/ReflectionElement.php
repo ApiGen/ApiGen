@@ -100,7 +100,7 @@ abstract class ReflectionElement extends ReflectionBase implements ElementReflec
 
                 if (! $php && $this->reflection->isInternal()) {
                     $this->isDocumented = false;
-                } elseif (! $internal && ($internal = $this->reflection->getAnnotation('internal'))) {
+                } elseif (! $internal && $this->reflection->hasAnnotation('internal')) {
                     $this->isDocumented = false;
                 } elseif ($this->reflection->hasAnnotation('ignore')) {
                     $this->isDocumented = false;
