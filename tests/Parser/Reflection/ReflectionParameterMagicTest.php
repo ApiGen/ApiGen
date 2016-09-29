@@ -27,6 +27,11 @@ class ReflectionParameterMagicTest extends PHPUnit_Framework_TestCase
      */
     private $reflectionParameterMagic;
 
+    /**
+     * @var MagicParameterReflectionInterface
+     */
+    private $reflectionParameterMagicWithDefault;
+
 
     protected function setUp()
     {
@@ -37,6 +42,9 @@ class ReflectionParameterMagicTest extends PHPUnit_Framework_TestCase
         $this->reflectionClass = $backend->getClasses()['Project\ReflectionMethod'];
         $reflectionMethodMagic = $this->reflectionClass->getMagicMethods()['doAnOperation'];
         $this->reflectionParameterMagic = $reflectionMethodMagic->getParameters()['data'];
+
+        $reflectionMethodMagic = $this->reflectionClass->getMagicMethods()['issue746'];
+        $this->reflectionParameterMagicWithDefault = $reflectionMethodMagic->getParameters()['data'];
     }
 
 
@@ -207,5 +215,16 @@ class ReflectionParameterMagicTest extends PHPUnit_Framework_TestCase
             'isPhpCoreDocumented' => true
         ]);
         return new ReflectionFactory($configurationMock, $parserStorageMock);
+    }
+
+
+    public function testIssue746HasDefaultValue()
+    {
+        $this->assertTrue($this->reflectionParameterMagicWithDefault->isDefaultValueAvailable());
+    }
+
+    public function testIssue746DefaultValue()
+    {
+        $this->assertEquals('null', $this->reflectionParameterMagicWithDefault->getDefaultValueDefinition());
     }
 }
