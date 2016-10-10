@@ -17,6 +17,7 @@ namespace Project;
  * @method static string doAStaticOperation(\stdClass $data, $type) This also some description.
  * @method static doAVoidStaticOperation(\stdClass $data, $type) This also some description.
  * @method static issue746(\stdClass $data = null, $type) This also some description.
+ * @method static issue746_2(int $data, array $type) This also some description.
  *
  * @package Some_Package
  */

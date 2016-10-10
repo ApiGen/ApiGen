@@ -32,6 +32,11 @@ class ReflectionParameterMagicTest extends PHPUnit_Framework_TestCase
      */
     private $reflectionParameterMagicWithDefault;
 
+    /**
+     * @var MagicMethodReflectionInterface
+     */
+    private $reflectionParameterMagicWithTwoArgs;
+
 
     protected function setUp()
     {
@@ -45,6 +50,8 @@ class ReflectionParameterMagicTest extends PHPUnit_Framework_TestCase
 
         $reflectionMethodMagic = $this->reflectionClass->getMagicMethods()['issue746'];
         $this->reflectionParameterMagicWithDefault = $reflectionMethodMagic->getParameters()['data'];
+
+        $this->reflectionParameterMagicWithTwoArgs = $this->reflectionClass->getMagicMethods()['issue746_2'];
     }
 
 
@@ -226,5 +233,12 @@ class ReflectionParameterMagicTest extends PHPUnit_Framework_TestCase
     public function testIssue746DefaultValue()
     {
         $this->assertEquals('null', $this->reflectionParameterMagicWithDefault->getDefaultValueDefinition());
+    }
+
+    public function testIssue764_2()
+    {
+        $this->assertCount(2, $this->reflectionParameterMagicWithTwoArgs->getParameters());
+        $this->assertEquals('int', $this->reflectionParameterMagicWithTwoArgs->getParameter('data')->getTypeHint());
+        $this->assertEquals('array', $this->reflectionParameterMagicWithTwoArgs->getParameter('type')->getTypeHint());
     }
 }

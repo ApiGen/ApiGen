@@ -46,6 +46,8 @@ class AnnotationMethodExtractor implements AnnotationMethodExtractorInterface
                     (?:\\s*=\\s*.*)?
                     # optional comma
                     ,?
+                    # optional space between comma and next argument
+                    \\s*
                 )*
             )?    
             \\s*
@@ -108,6 +110,8 @@ class AnnotationMethodExtractor implements AnnotationMethodExtractorInterface
     private function processMagicMethodAnnotation($annotation)
     {
         if (! preg_match(self::PATTERN_METHOD, $annotation, $matches)) {
+            d($annotation);
+            d("fail");
             return [];
         }
 
