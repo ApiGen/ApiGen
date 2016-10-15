@@ -8,6 +8,7 @@ use ApiGen\Contracts\Generator\Resolvers\ElementResolverInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 use ApiGen\Generator\Markups\Markup;
 use ApiGen\Generator\SourceCodeHighlighter\SourceCodeHighlighter;
 use ApiGen\Parser\Reflection\ReflectionElement;
@@ -52,6 +53,9 @@ class UrlFiltersTest extends PHPUnit_Framework_TestCase
                     return '<a href="class-link-' . $name . '"' . $classes . '>' . $name . '</a>';
                 } elseif ($reflectionElement instanceof FunctionReflectionInterface) {
                     return '<a href="function-link-' . $name . '"' . $classes . '>' . $name . '()</a>';
+                } elseif ($reflectionElement instanceof MethodReflectionInterface) {
+                    return '<a href="method-link-' . $name . '"' . $classes . '>' .
+                        $reflectionElement->getDeclaringClassName() . '::' . $name . '()</a>';
                 }
 
                 throw new \InvalidArgumentException();
@@ -128,7 +132,10 @@ class UrlFiltersTest extends PHPUnit_Framework_TestCase
             [
                 '{@see ApiGen\ApiGen}',
                 self::APIGEN_LINK
-            ]
+            ],
+
+            // issue #753
+            ['{@see ApiGen\ApiGen::testMethod()}', '<code><a href="method-link-testMethod">ApiGen\ApiGen::testMethod()</a></code>'],
         ];
     }
 
@@ -312,6 +319,13 @@ EXPECTED;
                 $reflectionFunctionMock->shouldReceive('isDeprecated')->andReturn(false);
                 $reflectionFunctionMock->shouldReceive('isValid')->andReturn(true);
                 return $reflectionFunctionMock;
+            } elseif ($arg === 'ApiGen\ApiGen::testMethod()') {
+                $reflectionMethodMock = Mockery::mock(MethodReflectionInterface::class);
+                $reflectionMethodMock->shouldReceive('getDeclaringClassName')->andReturn('ApiGen\ApiGen');
+                $reflectionMethodMock->shouldReceive('getName')->andReturn('testMethod');
+                $reflectionMethodMock->shouldReceive('isDeprecated')->andReturn(false);
+                $reflectionMethodMock->shouldReceive('isValid')->andReturn(true);
+                return $reflectionMethodMock;
             } else {
                 return null;
             }

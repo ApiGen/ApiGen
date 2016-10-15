@@ -264,12 +264,12 @@ class UrlFilters extends Filters
         return preg_replace_callback('~{@(?:link|see)\\s+([^}]+)}~', function ($matches) use ($reflectionElement) {
             list($url, $description) = Strings::split($matches[1]);
 
-            if (Validators::isUri($url)) {
-                return $this->linkBuilder->build($url, $description ?: $url);
-            }
-
             if ($link = $this->resolveLink($matches[1], $reflectionElement)) {
                 return $link;
+            }
+
+            if (Validators::isUri($url)) {
+                return $this->linkBuilder->build($url, $description ?: $url);
             }
 
             return $matches[1];
