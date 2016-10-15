@@ -57,6 +57,8 @@ class AnnotationMethodExtractor implements AnnotationMethodExtractorInterface
                     (?:\\s*=\\s*.*)?
                     # optional comma
                     ,?
+                    # optional space between comma and next argument
+                    \\s*
                 )*
             )?    
             \\s*

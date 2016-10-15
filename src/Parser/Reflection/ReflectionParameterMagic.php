@@ -182,6 +182,14 @@ class ReflectionParameterMagic extends ReflectionParameter implements MagicParam
         return (bool) $this->defaultValueDefinition;
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function getDefaultValueDefinition()
+    {
+        return $this->defaultValueDefinition;
+    }
+
 
     /**
      * {@inheritdoc}
