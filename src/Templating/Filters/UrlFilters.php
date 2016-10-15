@@ -151,12 +151,12 @@ class UrlFilters extends Filters
     {
         $links = [];
 
-        list($types) = Strings::split($annotation);
-        if (! empty($types) && $types[0] === '$') {
-            $types = null;
-        }
+        // typehints can not contains spaces
+        // valid typehint is:
+        // [TYPE[|TYPE[|...]][SPACE[METHOD|PARAM][DESCRIPTION]]
+        $parts = explode(' ', $annotation);
 
-        foreach (explode('|', $types) as $type) {
+        foreach (explode('|', $parts[0]) as $type) {
             $type = $this->getTypeName($type, false);
             $links[] = $this->resolveLink($type, $reflectionElement) ?: LatteFilters::escapeHtml(ltrim($type, '\\'));
         }

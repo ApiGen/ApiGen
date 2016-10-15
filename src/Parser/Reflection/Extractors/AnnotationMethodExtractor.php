@@ -22,7 +22,18 @@ class AnnotationMethodExtractor implements AnnotationMethodExtractorInterface
         # static mark
         (?:(static)\\s+)?
         # return typehint
-        (?:([\\w\\\\]+(?:\\[\\])?(?:\\|[\\w\\\\]+(?:\\[\\])?)*)\\s+)?
+        (?:
+            (
+                # $this or another word
+                (?:\\$this|[\\w\\\\]+)
+                # type is array?
+                (?:\\[\\])?
+                # and again, if "|" is found 
+                (?:\\|
+                    (?:\\$this|[\\w\\\\])+(?:\\[\\])?
+                )*
+            )\\s+
+        )?
         # return reference?
         (&)?
         \\s*

@@ -224,7 +224,7 @@ EXPECTED;
         return [
             ['int|string', 'integer|string'],
             ['string|$this', 'string|$this'],
-            ['$this', ''],
+            ['$this', '$this'], // expected $this because context is unresolved and $this is valid type
             [
                 'ApiGen\ApiGen',
                 self::APIGEN_LINK
