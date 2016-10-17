@@ -4,7 +4,6 @@ services:
 	- ApiGen\Console\Helper\ProgressBar
 	- ApiGen\Console\Command\GenerateCommand
 	- ApiGen\Console\Command\SelfUpdateCommand
-	- ApiGen\Console\Environment\MemoryLimit
 
 	- ApiGen\Console\Input\DefaultInputDefinitionFactory
 	- ApiGen\Console\Input\LiberalFormatArgvInput
