@@ -24,6 +24,10 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
      */
     private $application;
 
+    /**
+     * @var string
+     */
+    private $symfonyVersion = '2';
 
     protected function setUp()
     {
@@ -31,13 +35,22 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
         $defaultInputDefinitionFactoryMock = Mockery::mock(DefaultInputDefinitionFactoryInterface::class);
         $defaultInputDefinitionFactoryMock->shouldReceive('create')->andReturn(new InputDefinition);
         $this->application = new Application(new ApiGen, new MemoryLimit, $ioMock, $defaultInputDefinitionFactoryMock);
+        $this->symfonyVersion = (method_exists($this->application, 'asText')
+            ? '2'
+            : '3');
     }
 
 
     public function testGetLongVersion()
     {
+        $longVersion = '<info>ApiGen</info> version <comment>' . ApiGen::VERSION . '</comment>';
+
+        if ($this->symfonyVersion > 2) {
+            $longVersion = 'ApiGen <info>' . ApiGen::VERSION . '</info>';
+        }
+
         $this->assertSame(
-            'ApiGen <info>' . ApiGen::VERSION . '</info>',
+            $longVersion,
             $this->application->getLongVersion()
         );
     }
