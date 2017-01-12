@@ -37,7 +37,7 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
     public function testGetLongVersion()
     {
         $this->assertSame(
-            '<info>ApiGen</info> version <comment>' . ApiGen::VERSION . '</comment>',
+            'ApiGen <info>' . ApiGen::VERSION . '</info>',
             $this->application->getLongVersion()
         );
     }
