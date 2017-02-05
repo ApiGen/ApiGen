@@ -15,7 +15,7 @@
 		"popsul/php-token-reflection": "^1.5",
 		"apigen/theme-bootstrap": "1.1.*",
 		"apigen/theme-default": "1.0.*",
-		"herrera-io/phar-update": "~2.0",
+		"deployer/phar-update": "~2.0",
 		"kukulich/fshl": "~2.1",
 		"latte/latte": "^2.3.6",
 		"michelf/php-markdown": "~1.4",
