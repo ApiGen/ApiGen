@@ -17,8 +17,7 @@ class ConfigurationOptionsResolver
     const AL_PROTECTED = 'protected';
     const AL_PRIVATE = 'private';
     const AL_PUBLIC = 'public';
-    const TEMPLATE_THEME_DEFAULT = 'default';
-    const TEMPLATE_THEME_BOOTSTRAP = 'bootstrap';
+    const DEFAULT_THEME = 'default';
 
     /**
      * @var array
@@ -43,7 +42,7 @@ class ConfigurationOptionsResolver
         CO::NO_SOURCE_CODE => false,
         CO::TEMPLATE => null,
         CO::TEMPLATE_CONFIG => null,
-        CO::TEMPLATE_THEME => self::TEMPLATE_THEME_DEFAULT,
+        CO::TEMPLATE_THEME => self::DEFAULT_THEME,
         CO::TITLE => '',
         // helpers
         CO::VISIBILITY_LEVELS => [],
@@ -218,13 +217,13 @@ class ConfigurationOptionsResolver
      */
     private function getTemplateConfigPathFromTheme($theme)
     {
-        if ($theme === self::TEMPLATE_THEME_DEFAULT) {
-            return $this->themeConfigPathResolver->resolve('/vendor/apigen/theme-default/src/config.neon');
-        } elseif ($theme === self::TEMPLATE_THEME_BOOTSTRAP) {
-            return $this->themeConfigPathResolver->resolve('/vendor/apigen/theme-bootstrap/src/config.neon');
+        $themePath = $this->themeConfigPathResolver->resolve("/vendor/apigen/theme-$theme");
+
+        if (!$themePath) {
+            throw new ConfigurationException(CO::TEMPLATE_THEME . " $theme is not supported.");
         }
 
-        throw new ConfigurationException(CO::TEMPLATE_THEME . ' ' . $theme . ' is not supported.');
+        return "$themePath/src/config.neon";
     }
 
 
