@@ -5,6 +5,40 @@ All notable changes to [apigen][0] project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.1.0] - 2015-04-04
+
+### Added
+
+- [#573] `--config` now supports YAML format, thanks to @trong
+- [#536] `--source` option now accepts single files
+- [#539] `--annotation-groups` options added, to generate pages with single annotation (e.g. for todo: `--annotation-groups=todo`)
+  - before:
+    - `--todo --deprecated` (only these two)
+  - now:
+    - `--annotation-groups todo,deprecated`
+    - `--annotation-groups event,api`
+
+### Changed
+
+- [#550] wiping out destination is now protected by asking
+- [#523] when page from `--annotation-groups` has no items, info message is displayed
+- [#504] themes decoupled to standalone packages
+- [https://github.com/ApiGen/ThemeBootstrap/pull/3] Bootstrap theme was updated to Twitter Bootstrap 3, thanks to @olvlvl
+- [#507] use Box for PHAR compiling
+
+### Fixed
+
+- [#545] missloading of class list in layout panel
+- [#526] Exceptions were displayed instead of interfaces, thanks to @jrnickell
+- [#530] `--source-code` options should be `--no-source-code`, thanks to @yoosefi
+- [#538] spaces from `apigen.services.neon` removed, thanks to @ramsey
+- [#575] function link fixed
+
+## Updated
+
+- https://github.com/ApiGen/ApiGen/blob/master/CONTRIBUTING.md contributing info added
+- https://github.com/ApiGen/ApiGen/blob/master/UPGRADE-4.0.md upgrade from 2.8 to 4.0 info added
+
 ## [4.0.1] - 2015-03-09
 
 ### Fixed
