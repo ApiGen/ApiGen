@@ -1,88 +1,83 @@
-# Upgrade from 2.x to 4.0 
+# Change Log
 
+All notable changes to [apigen][0] project will be documented in this file.
 
-## Version
+The format is based on [Keep a Changelog](http://keepachangelog.com/)
+and this project adheres to [Semantic Versioning](http://semver.org/).
 
-- Version 3.0 was skipped, because master branch had 3.0-dev alias with code base similar to 2.8.
-  Since then there were many BC breaks, there for naming it 4.0.  
+## [4.0.0] - 2015-01-03
 
+Version `3.0` was skipped, because master branch had `3.0-dev` alias with code
+base similar to 2.8. Since then there were many BC breaks, thus major version was bumped to `4.0`.
 
-## PHP version
+### Added
 
-- Min PHP version was raised:
- 
-  Before: 5.3
-  
-  After: **5.4**
+- [Zenify\CodingStandard](https://github.com/Zenify/CodingStandard) was
+  introduced to keep codebase clean. It's based on
+  [PHP_CodeSniffer](https://github.com/squizlabs/PHP_CodeSniffer)
+- Codebase is now unit tested with with [PHPUnit](https://github.com/sebastianbergmann/phpunit) (test coverage of ~80%).
+- Continuous integration testing enabled ([Travis CI](http://travis-ci.org)).
+- New [Release process](wiki/Release-Process) was established. Releasing minor
+  version **every 2 months**.
 
+### Changed
 
-## Distribution
-
-- PEAR support was dropped. **Use PHAR file instead**. Latest stable version can be always found at [apigen.org](http://apigen.org)
-
-- New [Release process](wiki/Release-Process) was established. Releasing minor version **every 2 months**. 
-
-
-## Cli commands
-
-- [Symfony\Console](https://github.com/symfony/Console) replaced custom CLI solution, thus composer-like approach is used.
+- Minimum PHP version was raised from `5.3` to `5.4`.
+- Docblock markup was changed from Texy to [Markdown Markup](https://github.com/michelf/php-markdown)
+- [Symfony\Console](https://github.com/symfony/Console) replaced custom CLI
+  solution, thus composer-like approach is used.
   In particular, you need to call specific command name in first argument.
 
   Before:
-  
+
   `apigen -s source -d destination`
-  
+
   After:
-  
+
   `apigen generate -s source -d destination`
-  
-- New command `self-update` added, to upgrade `.phar` file:  
+- New command `self-update` added, to upgrade `.phar` file.
 
   Before:
-  
+
   *manual update*
-  
+
   After:
-    
- `apigen self-update`
 
+  `apigen self-update`
+- Bool options for arguments passed via CLI are off when absent, on when
+  present.
 
-## Cli options
-
-- Bool options are off when absent, on when present.
-  
   Before:
-  
+
   `... --tree yes # tree => true`
 
   `... --tree no # tree => false`
-  
+
    After:
-   
+
    `... --tree # tree => true`
 
    `... # tree => false`
 
-- Options with values now accept multiple formats:
+- Options with values for arguments passed via CLI now accept multiple formats:
 
   Before:
-  
+
   `... --access-levels public --access-levels protected`
-  
+
   After:
 
   `... --access-levels public,protected`
-  
+
   or
-  
- `... --access-levels="public,protected"`
 
-  or 
+  `... --access-levels="public,protected"`
 
- `... --access-levels public --access-levels protected`
-  
+  or
 
-- Some options were dropped. To see what the available ones are, just run `apigen generate --help`.
+  `... --access-levels public --access-levels protected`
+
+- Some CLI options were dropped. To see what the available ones are, just run `apigen generate --help`.
 
   - `--skip-doc-prefix` was dropped, use `--skip-doc-path` instead
   - `--allowed-html` was dropped
@@ -92,26 +87,20 @@
   - `--progressbar`; now always present
   - `--colors`; now always colors
   - `--update-check`; update manually by `apigen self-update` (new version is released every ~ 2 months)
-  
-- Some options were renamed and reversed.
-  
-  - `--source-code` was off by default, now it on by default; to turn it off, add `--no-source-code`  
 
+- Some CLI options were renamed and reversed.
 
-## Markup
+  - `--source-code` was off by default, now it on by default; to turn it off, add `--no-source-code`
 
-- Docblock markup was changed from Texy to [Markdown Markup](https://github.com/michelf/php-markdown)
+### Removed
 
+- PEAR support was dropped. **Use PHAR file instead**. Latest stable version
+  can be always found at [apigen.org](http://apigen.org)
 
-## Coding standard
-
-- [Zenify\CodingStandard](https://github.com/Zenify/CodingStandard) was introduces. It's based on [PHP_CodeSniffer](https://github.com/squizlabs/PHP_CodeSniffer)
-
-- Part of continuous integration testing by [Travis CI](http://travis-ci.org).
-
-
-## Tests
-
-- From no tests to unit testing with [PHPUnit](https://github.com/sebastianbergmann/phpunit). With decent coverage of ~80 %.
-
-- Part of continuous integration testing by [Travis CI](http://travis-ci.org).
+[4.2.x-dev]: https://github.com/apigen/apigen/compare/v4.2.1...4.2
+[4.1.2]: https://github.com/apigen/apigen/compare/v4.1.1...v4.1.2
+[4.1.1]: https://github.com/apigen/apigen/compare/v4.1.0...v4.1.1
+[4.1.0]: https://github.com/apigen/apigen/compare/v4.0.1...v4.1.0
+[4.0.1]: https://github.com/apigen/apigen/compare/v4.0.0...v4.0.1
+[4.0.0]: https://github.com/apigen/apigen/compare/v2.8.1...v4.0.0
+[0]: https://github.com/apigen/apigen
