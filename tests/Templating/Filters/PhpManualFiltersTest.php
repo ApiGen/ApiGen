@@ -13,13 +13,13 @@ use ApiGen\Parser\Reflection\ReflectionPropertyMagic;
 use ApiGen\Templating\Filters\PhpManualFilters;
 use Mockery;
 use Nette\Object;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use TokenReflection\IReflectionConstant;
 use TokenReflection\IReflectionExtension;
 use TokenReflection\IReflectionFunction;
 use TokenReflection\IReflectionMethod;
 
-class PhpManualFiltersTest extends PHPUnit_Framework_TestCase
+class PhpManualFiltersTest extends TestCase
 {
 
     /**

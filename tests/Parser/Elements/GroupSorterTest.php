@@ -7,10 +7,10 @@ use ApiGen\Parser\Elements\Elements;
 use ApiGen\Parser\Elements\GroupSorter;
 use ApiGen\Parser\Tests\MethodInvoker;
 use Mockery;
-use PHPUnit_Framework_Assert;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\TestCase;
 
-class GroupSorterTest extends PHPUnit_Framework_TestCase
+class GroupSorterTest extends TestCase
 {
 
     /**
@@ -71,10 +71,10 @@ class GroupSorterTest extends PHPUnit_Framework_TestCase
 
     public function testAddMissingParentGroup()
     {
-        $this->assertNull(PHPUnit_Framework_Assert::getObjectAttribute($this->groupSorter, 'groups'));
+        $this->assertNull(Assert::getObjectAttribute($this->groupSorter, 'groups'));
         MethodInvoker::callMethodOnObject($this->groupSorter, 'addMissingParentGroups', ['Some\Group\Name']);
 
-        $groups = PHPUnit_Framework_Assert::getObjectAttribute($this->groupSorter, 'groups');
+        $groups = Assert::getObjectAttribute($this->groupSorter, 'groups');
         $this->assertArrayHasKey('Some\Group\Name', $groups);
         $this->assertArrayHasKey('Some\Group', $groups);
         $this->assertArrayHasKey('Some', $groups);
@@ -84,7 +84,7 @@ class GroupSorterTest extends PHPUnit_Framework_TestCase
     public function testAddMissingElementTypes()
     {
         MethodInvoker::callMethodOnObject($this->groupSorter, 'addMissingElementTypes', ['Some\Group']);
-        $groups = PHPUnit_Framework_Assert::getObjectAttribute($this->groupSorter, 'groups');
+        $groups = Assert::getObjectAttribute($this->groupSorter, 'groups');
         $this->assertArrayHasKey('Some\Group', $groups);
 
         $someGroup = $groups['Some\Group'];

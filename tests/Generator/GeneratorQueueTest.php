@@ -9,9 +9,9 @@ use ApiGen\Contracts\Generator\TemplateGenerators\TemplateGeneratorInterface;
 use ApiGen\Generator\GeneratorQueue;
 use ApiGen\Tests\MethodInvoker;
 use Mockery;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class GeneratorQueueTest extends PHPUnit_Framework_TestCase
+class GeneratorQueueTest extends TestCase
 {
 
     /**

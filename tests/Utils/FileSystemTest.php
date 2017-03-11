@@ -4,9 +4,9 @@ namespace ApiGen\Utils\Tests\FileSystem;
 
 use ApiGen\Utils\FileSystem;
 use ApiGen\Utils\Tests\MethodInvoker;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class FileSystemTest extends PHPUnit_Framework_TestCase
+class FileSystemTest extends TestCase
 {
 
     /**

@@ -34,7 +34,7 @@
 		"mockery/mockery": "~0.9",
 		"herrera-io/box": "~1.6",
 		"squizlabs/php_codesniffer": "~2.0",
-		"phpunit/phpunit": "~4.0"
+		"phpunit/phpunit": "~6.0"
 	},
 	"conflict": {
 		"latte/latte": "~2.4.0",

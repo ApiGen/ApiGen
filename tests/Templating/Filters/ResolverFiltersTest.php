@@ -6,9 +6,9 @@ use ApiGen\Generator\Resolvers\ElementResolver;
 use ApiGen\Reflection\ReflectionElement;
 use ApiGen\Templating\Filters\ResolverFilters;
 use Mockery;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class ResolverFiltersTest extends PHPUnit_Framework_TestCase
+class ResolverFiltersTest extends TestCase
 {
 
     /**

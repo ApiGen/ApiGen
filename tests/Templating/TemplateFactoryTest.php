@@ -14,9 +14,9 @@ use ApiGen\Templating\TemplateNavigator;
 use ApiGen\Tests\MethodInvoker;
 use Latte\Engine;
 use Mockery;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class TemplateFactoryTest extends PHPUnit_Framework_TestCase
+class TemplateFactoryTest extends TestCase
 {
 
     /**
@@ -81,7 +81,7 @@ class TemplateFactoryTest extends PHPUnit_Framework_TestCase
 
     public function testCreateNamedForElementNonExisting()
     {
-        $this->setExpectedException(UnsupportedElementException::class);
+        $this->expectException(UnsupportedElementException::class);
 
         $reflectionClassMock = Mockery::mock(ClassReflectionInterface::class);
         $this->assertInstanceOf(

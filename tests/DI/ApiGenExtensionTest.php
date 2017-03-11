@@ -14,9 +14,9 @@ use ApiGen\Tests\MethodInvoker;
 use Latte\Engine;
 use Nette\DI\Compiler;
 use Nette\DI\ContainerBuilder;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class ApiGenExtensionTest extends PHPUnit_Framework_TestCase
+class ApiGenExtensionTest extends TestCase
 {
 
     /**

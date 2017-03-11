@@ -10,9 +10,9 @@ use ApiGen\Parser\Elements\ElementStorage;
 use ApiGen\Parser\Reflection\ReflectionClass;
 use ApiGen\Parser\Reflection\ReflectionElement;
 use Mockery;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class ElementExtractorTest extends PHPUnit_Framework_TestCase
+class ElementExtractorTest extends TestCase
 {
 
     /**

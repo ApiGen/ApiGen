@@ -4,9 +4,9 @@ namespace ApiGen\Tests\Templating\Filters\Helpers;
 
 use ApiGen\Templating\Filters\Helpers\LinkBuilder;
 use Nette\Utils\Html;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class LinkBuilderTest extends PHPUnit_Framework_TestCase
+class LinkBuilderTest extends TestCase
 {
 
     /**

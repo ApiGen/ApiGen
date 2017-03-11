@@ -3,9 +3,9 @@
 namespace ApiGen\Utils\Tests\Finder;
 
 use ApiGen\Utils\Finder\NetteFinder;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class ExcludeTest extends PHPUnit_Framework_TestCase
+class ExcludeTest extends TestCase
 {
 
     /**

@@ -24,7 +24,7 @@ class GenerateCommandPrepareOptionsTest extends ContainerAwareTestCase
 
     public function testPrepareOptionsDestinationNotSet()
     {
-        $this->setExpectedException(ConfigurationException::class, 'Destination is not set');
+        $this->expectException(ConfigurationException::class);
         MethodInvoker::callMethodOnObject($this->generateCommand, 'prepareOptions', [[
             'config' => '...'
         ]]);
@@ -34,7 +34,7 @@ class GenerateCommandPrepareOptionsTest extends ContainerAwareTestCase
     public function testPrepareOptionsSourceNotSet()
     {
 
-        $this->setExpectedException(ConfigurationException::class, 'Source is not set');
+        $this->expectException(ConfigurationException::class);
         MethodInvoker::callMethodOnObject($this->generateCommand, 'prepareOptions', [[
             'config' => '...',
             'destination' => TEMP_DIR . '/api'

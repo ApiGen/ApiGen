@@ -4,9 +4,9 @@ namespace ApiGen\Configuration;
 
 use ApiGen\Contracts\EventDispatcher\EventDispatcherInterface;
 use Mockery;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class ConfigurationTest extends PHPUnit_Framework_TestCase
+class ConfigurationTest extends TestCase
 {
 
     /**

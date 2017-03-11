@@ -77,7 +77,7 @@ class TraitsTest extends AbstractReflectionClassTestCase
 
     public function testUsesTraitNotExisting()
     {
-        $this->setExpectedException(RuntimeException::class);
+        $this->expectException(RuntimeException::class);
         $this->assertTrue($this->reflectionClass->usesTrait('Project\SomeTraitNotPresentHere'));
     }
 

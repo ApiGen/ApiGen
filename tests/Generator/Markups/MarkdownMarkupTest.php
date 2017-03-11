@@ -6,9 +6,9 @@ use ApiGen\Generator\Markups\MarkdownMarkup;
 use ApiGen\Generator\SourceCodeHighlighter\SourceCodeHighlighter;
 use Michelf\MarkdownExtra;
 use Mockery;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class MarkdownMarkupTest extends PHPUnit_Framework_TestCase
+class MarkdownMarkupTest extends TestCase
 {
 
     /**

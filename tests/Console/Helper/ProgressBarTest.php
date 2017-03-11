@@ -7,8 +7,8 @@ use ApiGen\Console\Input\LiberalFormatArgvInput;
 use ApiGen\Console\IO\IO;
 use ApiGen\Tests\MethodInvoker;
 use Mockery;
-use PHPUnit_Framework_Assert;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\TestCase;
 use Symfony;
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Helper\ProgressBar as SymfonyProgressBar;
@@ -17,7 +17,7 @@ use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\NullOutput;
 
-class ProgressBarTest extends PHPUnit_Framework_TestCase
+class ProgressBarTest extends TestCase
 {
 
     /**
@@ -35,12 +35,12 @@ class ProgressBarTest extends PHPUnit_Framework_TestCase
 
     public function testInit()
     {
-        $this->assertNull(PHPUnit_Framework_Assert::readAttribute($this->progressBar, 'bar'));
+        $this->assertNull(Assert::readAttribute($this->progressBar, 'bar'));
 
         $this->progressBar->init(50);
 
         /** @var SymfonyProgressBar $bar */
-        $bar = PHPUnit_Framework_Assert::readAttribute($this->progressBar, 'bar');
+        $bar = Assert::readAttribute($this->progressBar, 'bar');
         $this->assertInstanceOf(SymfonyProgressBar::class, $bar);
         $this->assertSame(50, $bar->getMaxSteps());
     }
@@ -54,7 +54,7 @@ class ProgressBarTest extends PHPUnit_Framework_TestCase
         $this->progressBar->increment(20);
 
         /** @var SymfonyProgressBar $bar */
-        $bar =  PHPUnit_Framework_Assert::readAttribute($this->progressBar, 'bar');
+        $bar = Assert::readAttribute($this->progressBar, 'bar');
         $this->assertSame(20, $bar->getProgress());
 
         $this->progressBar->increment(30);
