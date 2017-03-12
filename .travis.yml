@@ -5,22 +5,27 @@ sudo: false
 matrix:
   include:
     - php: 7.1
-      env: PHPCS=1 COVERALLS=1
+      env: CHECK_CS=1 PHPUNIT_FLAGS="--coverage-clover coverage.xml"
 
-before_script:
-  - composer install --prefer-dist
-  - if [[ $COVERALLS = 1 ]]; then composer require --dev satooshi/php-coveralls:dev-master; fi
-  - if [[ $COVERALLS = 1 ]]; then mkdir -p build/logs; fi
+install:
+  # install composer dependencies
+  - composer install
 
 script:
-  - vendor/bin/phpunit
-  - if [[ $PHPCS = 1 ]]; then composer check-cs; fi
-  - if [[ $COVERALLS = 1 ]]; then phpunit --coverage-clover build/logs/clover.xml; fi
-  - if [[ $COVERALLS = 1 ]]; then vendor/bin/coveralls -c .coveralls.yml -v; fi
+  # run tests
+  - vendor/bin/phpunit $PHPUNIT_FLAGS
+  # check coding standard (defined in composer.json "scripts" section)
+  - if [[ $CHECK_CS = 1 ]]; then composer check-cs; fi
+
+after_script:
+  # upload coverage.xml file to Scrutinizer to analyze it
+  - |
+    if [[ $PHPUNIT_FLAGS != "" ]]; then
+      wget https://scrutinizer-ci.com/ocular.phar
+      php ocular.phar code-coverage:upload --format=php-clover coverage.xml
+    fi
+  - ./update-gh-page.sh
+  - ./generate-api.sh
 
 notifications:
   email: false
-
-after_script:
-  - ./update-gh-page.sh
-  - ./generate-api.sh
