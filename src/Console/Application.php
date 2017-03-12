@@ -2,7 +2,6 @@
 
 namespace ApiGen\Console;
 
-use ApiGen\ApiGen;
 use ApiGen\Contracts\Console\Input\DefaultInputDefinitionFactoryInterface;
 use ApiGen\Contracts\Console\IO\IOInterface;
 use ApiGen\MemoryLimit;
@@ -20,12 +19,11 @@ class Application extends BaseApplication
 
 
     public function __construct(
-        ApiGen $apiGen,
         MemoryLimit $memoryLimit,
         IOInterface $io,
         DefaultInputDefinitionFactoryInterface $defaultInputDefinitionFactory
     ) {
-        parent::__construct('ApiGen', $apiGen->getVersion());
+        parent::__construct('ApiGen');
         $memoryLimit->setMemoryLimitTo('1024M');
         $this->io = $io;
         $this->setDefinition($defaultInputDefinitionFactory->create());
