@@ -40,18 +40,6 @@ script:
 notifications:
   email: false
 
-before_deploy:
-  - sh -c "curl -LSs http://box-project.github.io/box2/installer.php | php && php box.phar build"
-
-deploy:
-  provider: releases
-  api_key:
-    secure: qJHoOifor0HH2McbE4VJrIu/LtaG4IUyOE7mVA/4WIs6jhVEzIcLoPI39GvkfqdszUENJiCBysG/Wllo3lf0wTteclc3flt7aPpxaGt2S5L7yyYrCu3EOP6CnrUNd/2rVgRiLx8qRXXMZpRxtWTkoKBO6IxM5S8ASSzj9s2RjfM=
-  file: apigen.phar
-  on:
-    repo: ApiGen/ApiGen
-    tags: true
-
-after_deploy:
+after_script:
   - ./update-gh-page.sh
   - ./generate-api.sh
