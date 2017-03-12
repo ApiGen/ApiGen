@@ -1,9 +1,8 @@
 language: php
 
 php:
-  - 5.5
-  - 5.6
   - 7.0
+  - 7.1
 
 sudo: false
 
@@ -15,7 +14,7 @@ matrix:
   fast_finish: true
 
   include:
-    - php: 5.5
+    - php: 7
       env: COVERALLS=1 DEFAULT=0
 
     - php: 7
@@ -35,11 +34,11 @@ before_script:
   - set +H
 
 script:
-  - sh -c "if [ '$DEFAULT' = '1' ]; then phpunit; fi"
+  - sh -c "if [ '$DEFAULT' = '1' ]; then vendor/bin/phpunit; fi"
 
   - sh -c "if [ '$PHPCS' = '1' ]; then vendor/bin/phpcs -p --extensions=php --standard=PSR2 ./src; fi"
 
-  - sh -c "if [ '$COVERALLS' = '1' ]; then phpunit --coverage-clover build/logs/clover.xml; fi"
+  - sh -c "if [ '$COVERALLS' = '1' ]; then vendor/bin/phpunit --coverage-clover build/logs/clover.xml; fi"
   - sh -c "if [ '$COVERALLS' = '1' ]; then vendor/bin/coveralls -c .coveralls.yml -v; fi"
 
 notifications:
