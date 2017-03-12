@@ -53,7 +53,7 @@
 	"scripts": {
 		"check-cs": ["vendor/bin/phpcs -ps --extensions=php --standard=PSR2 --exclude=PSR1.Files.SideEffects src tests"],
 		"fix-cs": ["vendor/bin/phpcbf -p --extensions=php --standard=PSR2  --exclude=PSR1.Files.SideEffects src tests"],
-		"phpstan": "vendor/bin/phpstan analyse src --level 0 -c phpstan.neon"
+		"phpstan": "vendor/bin/phpstan analyse src --level 1 -c phpstan.neon"
 	},
 	"bin": [
 		"bin/apigen"
