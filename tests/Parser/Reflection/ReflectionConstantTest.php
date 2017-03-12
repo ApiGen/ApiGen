@@ -64,7 +64,7 @@ class ReflectionConstantTest extends TestCase
     public function testGetDeclaringClassName()
     {
         $this->assertNull($this->constantReflection->getDeclaringClassName());
-        $this->assertSame('ConstantInClass', $this->constantReflectionInClass->getDeclaringClassName());
+        $this->assertSame(ConstantInClass::class, $this->constantReflectionInClass->getDeclaringClassName());
     }
 
 
@@ -125,7 +125,7 @@ class ReflectionConstantTest extends TestCase
         $parserResultMock = Mockery::mock(ParserStorageInterface::class);
         $parserResultMock->shouldReceive('getElementsByType')->andReturnUsing(function ($arg) {
             if ($arg) {
-                return ['ConstantInClass' => $this->reflectionClass];
+                return [ConstantInClass::class => $this->reflectionClass];
             }
         });
 
