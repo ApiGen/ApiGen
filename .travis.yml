@@ -9,19 +9,14 @@ matrix:
 
 before_script:
   - composer install --prefer-dist
-  - sh -c "if [ '$COVERALLS' = '1' ]; then composer require --dev satooshi/php-coveralls:dev-master; fi"
-  - sh -c "if [ '$COVERALLS' = '1' ]; then mkdir -p build/logs; fi"
-
-  - phpenv rehash
-  - set +H
+  - if [[ $COVERALLS = 1 ]]; then composer require --dev satooshi/php-coveralls:dev-master; fi
+  - if [[ $COVERALLS = 1 ]]; then mkdir -p build/logs; fi
 
 script:
   - vendor/bin/phpunit
-
-  - sh -c "if [ '$PHPCS' = '1' ]; then vendor/bin/phpcs -p --extensions=php --standard=PSR2 ./src; fi"
-
-  - sh -c "if [ '$COVERALLS' = '1' ]; then phpunit --coverage-clover build/logs/clover.xml; fi"
-  - sh -c "if [ '$COVERALLS' = '1' ]; then vendor/bin/coveralls -c .coveralls.yml -v; fi"
+  - if [[ $PHPCS = 1 ]]; then vendor/bin/phpcs -p --extensions=php --standard=PSR2 ./src; fi
+  - if [[ $COVERALLS = 1 ]]; then phpunit --coverage-clover build/logs/clover.xml; fi
+  - if [[ $COVERALLS = 1 ]]; then vendor/bin/coveralls -c .coveralls.yml -v; fi
 
 notifications:
   email: false
