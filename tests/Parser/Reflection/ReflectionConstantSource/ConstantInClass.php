@@ -1,5 +1,6 @@
 <?php
 
+namespace ApiGen\Tests;
 
 class ConstantInClass
 {

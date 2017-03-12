@@ -1,45 +1,34 @@
 language: php
 
-php:
-  - 7.1
-
 sudo: false
 
-env:
-  global:
-    - DEFAULT=1
-
 matrix:
-  fast_finish: true
-
   include:
     - php: 7.1
-      env: PHPCS=1 DEFAULT=0 COVERALLS=1
+      # add variables to enable coverage, coding standard check and static analysis
+      env: PHPUNIT_FLAGS="--coverage-clover coverage.xml" CHECK_CS=1 RUN_PHPSTAN=1
 
-  allow_failures:
-    - env: COVERALLS=1 DEFAULT=0
-
-before_script:
-  - composer self-update
-  - composer install --prefer-dist --no-interaction
-
-  - sh -c "if [ '$COVERALLS' = '1' ]; then composer require --dev satooshi/php-coveralls:dev-master; fi"
-  - sh -c "if [ '$COVERALLS' = '1' ]; then mkdir -p build/logs; fi"
-
-  - phpenv rehash
-  - set +H
+install:
+  # install composer dependencies
+  - composer install
 
 script:
-  - sh -c "if [ '$DEFAULT' = '1' ]; then phpunit; fi"
+  # run tests
+  - vendor/bin/phpunit $PHPUNIT_FLAGS
+  # check coding standard (defined in composer.json "scripts" section)
+  - if [[ $CHECK_CS = 1 ]]; then composer check-cs; fi
+  # check with phpstan (defined in composer.json "scripts" section)
+  - if [[ $RUN_PHPSTAN = 1 ]]; then composer phpstan; fi
 
-  - sh -c "if [ '$PHPCS' = '1' ]; then vendor/bin/phpcs -p --extensions=php --standard=PSR2 ./src; fi"
-
-  - sh -c "if [ '$COVERALLS' = '1' ]; then phpunit --coverage-clover build/logs/clover.xml; fi"
-  - sh -c "if [ '$COVERALLS' = '1' ]; then vendor/bin/coveralls -c .coveralls.yml -v; fi"
+after_script:
+  # upload coverage.xml file to Scrutinizer to analyze it
+  - |
+    if [[ $PHPUNIT_FLAGS != "" ]]; then
+      wget https://scrutinizer-ci.com/ocular.phar
+      php ocular.phar code-coverage:upload --format=php-clover coverage.xml
+    fi
+  - ./update-gh-page.sh
+  - ./generate-api.sh
 
 notifications:
   email: false
-
-after_script:
-  - ./update-gh-page.sh
-  - ./generate-api.sh

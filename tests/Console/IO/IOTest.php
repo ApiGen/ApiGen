@@ -6,7 +6,6 @@ use ApiGen\Console\Input\LiberalFormatArgvInput;
 use ApiGen\Console\IO\IO;
 use Mockery;
 use PHPUnit\Framework\TestCase;
-use RuntimeException;
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
@@ -44,7 +43,11 @@ class IOTest extends TestCase
     {
         $questionHelper = new QuestionHelper;
         $questionHelper->setInputStream($this->getInputStream("Test\n"));
-        $io = new IO(new HelperSet(['question' => $questionHelper]), new LiberalFormatArgvInput, new StreamOutput(fopen('php://memory', 'w', false)));
+        $io = new IO(
+            new HelperSet(['question' => $questionHelper]),
+            new LiberalFormatArgvInput,
+            new StreamOutput(fopen('php://memory', 'w', false))
+        );
 
         $this->assertFalse($io->ask('Is this true', true));
         $this->assertTrue($io->ask('Is this true', false));

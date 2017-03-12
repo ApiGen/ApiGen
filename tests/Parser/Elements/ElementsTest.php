@@ -41,7 +41,14 @@ class ElementsTest extends TestCase
     public function testGetEmptyList()
     {
         $this->assertSame(
-            ['classes' => [], 'constants' => [], 'exceptions' => [], 'functions' => [], 'interfaces' => [], 'traits' => []],
+            [
+                'classes' => [],
+                'constants' => [],
+                'exceptions' => [],
+                'functions' => [],
+                'interfaces' => [],
+                'traits' => []
+            ],
             $this->elements->getEmptyList()
         );
     }

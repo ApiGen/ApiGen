@@ -8,9 +8,8 @@ use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
 use ApiGen\Parser\Broker\Backend;
 use ApiGen\Parser\Reflection\ReflectionClass;
-use ApiGen\Parser\Reflection\ReflectionConstant;
 use ApiGen\Parser\Reflection\TokenReflection\ReflectionFactory;
-use ApiGen\Parser\Tests\Configuration\ParserConfiguration;
+use ApiGen\Tests\ConstantInClass;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 use ReflectionProperty;
@@ -43,7 +42,7 @@ class ReflectionConstantTest extends TestCase
         $this->constantReflection = $backend->getConstants()['SOME_CONSTANT'];
 
         /** @var ReflectionClass $reflectionClass */
-        $this->reflectionClass = $backend->getClasses()['ConstantInClass'];
+        $this->reflectionClass = $backend->getClasses()[ConstantInClass::class];
         $this->constantReflectionInClass = $this->reflectionClass->getConstant('CONSTANT_INSIDE');
     }
 
@@ -65,7 +64,7 @@ class ReflectionConstantTest extends TestCase
     public function testGetDeclaringClassName()
     {
         $this->assertNull($this->constantReflection->getDeclaringClassName());
-        $this->assertSame('ConstantInClass', $this->constantReflectionInClass->getDeclaringClassName());
+        $this->assertSame(ConstantInClass::class, $this->constantReflectionInClass->getDeclaringClassName());
     }
 
 
@@ -126,7 +125,7 @@ class ReflectionConstantTest extends TestCase
         $parserResultMock = Mockery::mock(ParserStorageInterface::class);
         $parserResultMock->shouldReceive('getElementsByType')->andReturnUsing(function ($arg) {
             if ($arg) {
-                return ['ConstantInClass' => $this->reflectionClass];
+                return [ConstantInClass::class => $this->reflectionClass];
             }
         });
 

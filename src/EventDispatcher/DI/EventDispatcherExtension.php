@@ -1,16 +1,10 @@
 <?php
 
-/**
- * This file is part of the ApiGen (http://apigen.org)
- *
- * For the full copyright and license information, please view
- * the file LICENSE that was distributed with this source code.
- */
-
 namespace ApiGen\EventDispatcher\DI;
 
 use ApiGen\Contracts\EventDispatcher\EventDispatcherInterface;
 use ApiGen\Contracts\EventDispatcher\EventSubscriberInterface;
+use Nette\DI\Compiler;
 use Nette\DI\CompilerExtension;
 
 class EventDispatcherExtension extends CompilerExtension
@@ -18,9 +12,10 @@ class EventDispatcherExtension extends CompilerExtension
 
     public function loadConfiguration()
     {
-        $builder = $this->getContainerBuilder();
-        $services = $this->loadFromFile(__DIR__ . '/services.neon');
-        $this->compiler->parseServices($builder, $services);
+        Compiler::loadDefinitions(
+            $this->getContainerBuilder(),
+            $this->loadFromFile(__DIR__ . '/services.neon')['services']
+        );
     }
 
 

@@ -184,6 +184,4 @@ class TreeGeneratorTest extends TestCase
             MI::callMethodOnObject($this->treeGenerator, 'getTypeByReflection', [$reflectionClassMock])
         );
     }
-
-
 }

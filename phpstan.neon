@@ -1,0 +1,4 @@
+parameters:
+    ignoreErrors:
+        - "#does not call parent constructor from#"
+        - "#getDocComment#"

@@ -235,7 +235,7 @@ class ReflectionParameterMagicTest extends TestCase
         $this->assertEquals('null', $this->reflectionParameterMagicWithDefault->getDefaultValueDefinition());
     }
 
-    public function testIssue764_2()
+    public function testIssue764()
     {
         $this->assertCount(2, $this->reflectionParameterMagicWithTwoArgs->getParameters());
         $this->assertEquals('int', $this->reflectionParameterMagicWithTwoArgs->getParameter('data')->getTypeHint());

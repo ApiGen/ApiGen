@@ -1,15 +1,7 @@
 <?php
 
-/**
- * This file is part of the ApiGen (http://apigen.org)
- *
- * For the full copyright and license information, please view
- * the file LICENSE that was distributed with this source code.
- */
-
 namespace ApiGen\Console;
 
-use ApiGen\ApiGen;
 use ApiGen\Contracts\Console\Input\DefaultInputDefinitionFactoryInterface;
 use ApiGen\Contracts\Console\IO\IOInterface;
 use ApiGen\MemoryLimit;
@@ -27,12 +19,11 @@ class Application extends BaseApplication
 
 
     public function __construct(
-        ApiGen $apiGen,
         MemoryLimit $memoryLimit,
         IOInterface $io,
         DefaultInputDefinitionFactoryInterface $defaultInputDefinitionFactory
     ) {
-        parent::__construct('ApiGen', $apiGen->getVersion());
+        parent::__construct('ApiGen');
         $memoryLimit->setMemoryLimitTo('1024M');
         $this->io = $io;
         $this->setDefinition($defaultInputDefinitionFactory->create());

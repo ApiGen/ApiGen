@@ -1,5 +1,4 @@
 services:
-	- ApiGen\ApiGen
 	- ApiGen\MemoryLimit
 
 	# configuration

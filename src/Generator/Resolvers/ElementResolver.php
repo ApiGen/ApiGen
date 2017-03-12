@@ -1,12 +1,5 @@
 <?php
 
-/**
- * This file is part of the ApiGen (http://apigen.org)
- *
- * For the full copyright and license information, please view
- * the file LICENSE that was distributed with this source code.
- */
-
 namespace ApiGen\Generator\Resolvers;
 
 use ApiGen\Contracts\Generator\Resolvers\ElementResolverInterface;
@@ -19,8 +12,8 @@ use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ParameterReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
-use ApiGen\Reflection\ReflectionClass;
-use ApiGen\Reflection\ReflectionElement;
+use ApiGen\Parser\Reflection\ReflectionClass;
+use ApiGen\Parser\Reflection\ReflectionElement;
 use ArrayObject;
 use TokenReflection\Resolver;
 
@@ -125,7 +118,7 @@ class ElementResolver implements ElementResolverInterface
 
         $definitionBase = substr($definition, 0, strcspn($definition, '\\:'));
         $namespaceAliases = $reflectionElement->getNamespaceAliases();
-        $className = Resolver::resolveClassFqn($definition, $namespaceAliases, $reflectionElement->getNamespaceName());
+        $className = Resolver::resolveClassFQN($definition, $namespaceAliases, $reflectionElement->getNamespaceName());
 
         if ($resolved = $this->resolveIfParsed($definition, $reflectionElement)) {
             return $resolved;
@@ -187,7 +180,7 @@ class ElementResolver implements ElementResolverInterface
     {
         $class = $this->getClass(substr($definition, 0, $pos), $reflectionElement->getNamespaceName());
         if ($class === null) {
-            $fqnName = Resolver::resolveClassFqn(
+            $fqnName = Resolver::resolveClassFQN(
                 substr($definition, 0, $pos),
                 $reflectionElement->getNamespaceAliases(),
                 $reflectionElement->getNamespaceName()

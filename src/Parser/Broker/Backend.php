@@ -1,12 +1,5 @@
 <?php
 
-/**
- * This file is part of the ApiGen (http://apigen.org)
- *
- * For the full copyright and license information, please view
- * the file LICENSE that was distributed with this source code.
- */
-
 namespace ApiGen\Parser\Broker;
 
 use ApiGen\Contracts\Parser\Broker\BackendInterface;
@@ -240,6 +233,8 @@ class Backend extends Broker\Backend\Memory implements BackendInterface
      */
     private function getClassFqn($name, $reflection)
     {
-        return Resolver::resolveClassFqn($name, $reflection->getNamespaceAliases(), $reflection->getNamespaceName());
+        return Resolver::resolveClassFQN(
+            $name, $reflection->getNamespaceAliases(), $reflection->getNamespaceName()
+        );
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+namespace ApiGen\Tests;
+
 /**
  * @todo This class should be less complex.
  */
