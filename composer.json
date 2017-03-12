@@ -15,13 +15,13 @@
 		"popsul/php-token-reflection": "^1.5",
 		"apigen/theme-bootstrap": "1.1.*",
 		"apigen/theme-default": "1.0.*",
-		"kukulich/fshl": "~2.1",
+		"kukulich/fshl": "^2.1",
 		"latte/latte": "^2.3.6",
-		"michelf/php-markdown": "~1.4",
-		"nette/bootstrap": "^2.3",
-		"nette/di": "^2.3",
-		"nette/neon": "^2.3",
-		"nette/reflection": "^2.3",
+		"michelf/php-markdown": "^1.4",
+		"nette/bootstrap": "^2.4",
+		"nette/di": "^2.4",
+		"nette/neon": "^2.4",
+		"nette/reflection": "^2.4",
 		"symfony/console": "^3.2",
 		"symfony/event-dispatcher": "^3.2",
 		"symfony/options-resolver": "^3.2",
@@ -30,13 +30,12 @@
 	},
 	"require-dev": {
 		"ext-zip": "*",
-		"mockery/mockery": "~0.9",
-		"squizlabs/php_codesniffer": "~2.8",
-		"phpunit/phpunit": "~6.0"
+		"mockery/mockery": "^0.9",
+		"squizlabs/php_codesniffer": "^2.8",
+		"phpunit/phpunit": "^6.0"
 	},
 	"conflict": {
-		"latte/latte": "~2.4.0",
-		"nette/utils": "~2.4.0"
+		"latte/latte": "^2.4.0"
 	},
 	"autoload": {
 		"psr-4": {
