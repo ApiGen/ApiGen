@@ -11,7 +11,7 @@
 		{ "name": "David Grudl",  "homepage": "http://davidgrudl.com" }
 	],
 	"require": {
-		"php": ">=5.5",
+		"php": "^7.1",
 		"popsul/php-token-reflection": "^1.5",
 		"apigen/theme-bootstrap": "1.1.*",
 		"apigen/theme-default": "1.0.*",
