@@ -11,12 +11,12 @@ use ApiGen\MemoryLimit;
 use ApiGen\Tests\MethodInvoker;
 use Kdyby\Events\EventManager;
 use Mockery;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class ApplicationTest extends PHPUnit_Framework_TestCase
+class ApplicationTest extends TestCase
 {
 
     /**

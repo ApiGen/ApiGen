@@ -3,9 +3,9 @@
 namespace ApiGen\Utils\Tests\Neon\NeonFile;
 
 use ApiGen\Utils\FileSystem;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class CopyTest extends PHPUnit_Framework_TestCase
+class CopyTest extends TestCase
 {
 
     /**

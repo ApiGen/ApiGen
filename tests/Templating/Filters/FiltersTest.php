@@ -5,9 +5,9 @@ namespace ApiGen\Tests\Templating\Filters;
 use ApiGen\Templating\Filters\Filters;
 use ApiGen\Tests\MethodInvoker;
 use ApiGen\Tests\Templating\Filters\FiltersSource\FooFilters;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class FiltersTest extends PHPUnit_Framework_TestCase
+class FiltersTest extends TestCase
 {
 
     /**

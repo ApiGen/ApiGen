@@ -3,11 +3,10 @@
 namespace ApiGen\Tests\Configuration\Readers;
 
 use ApiGen;
-use ApiGen\Configuration\Readers\Exceptions\MissingFileException;
 use ApiGen\Configuration\Readers\NeonFile;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class NeonFileTest extends PHPUnit_Framework_TestCase
+class NeonFileTest extends TestCase
 {
 
     public function testRead()
@@ -20,9 +19,11 @@ class NeonFileTest extends PHPUnit_Framework_TestCase
     }
 
 
+    /**
+     * @expectedException \ApiGen\Configuration\Readers\Exceptions\MissingFileException
+     */
     public function testCreateNotExisting()
     {
-        $this->setExpectedException(MissingFileException::class);
         new NeonFile(TEMP_DIR . '/not-here.neon');
     }
 }

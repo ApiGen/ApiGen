@@ -13,10 +13,9 @@ use ApiGen\Templating\Filters\Helpers\ElementLinkFactory;
 use ApiGen\Templating\Filters\Helpers\ElementUrlFactory;
 use ApiGen\Templating\Filters\Helpers\LinkBuilder;
 use Mockery;
-use PHPUnit_Framework_TestCase;
-use UnexpectedValueException;
+use PHPUnit\Framework\TestCase;
 
-class ElementLinkFactoryTest extends PHPUnit_Framework_TestCase
+class ElementLinkFactoryTest extends TestCase
 {
 
     /**
@@ -126,10 +125,12 @@ class ElementLinkFactoryTest extends PHPUnit_Framework_TestCase
     }
 
 
+    /**
+     * @expectedException \UnexpectedValueException
+     */
     public function testCreateForElementOfUnspecificType()
     {
         $reflectionElement = Mockery::mock(ElementReflectionInterface::class);
-        $this->setExpectedException(UnexpectedValueException::class);
         $this->elementLinkFactory->createForElement($reflectionElement);
     }
 

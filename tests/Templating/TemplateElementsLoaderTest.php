@@ -10,9 +10,9 @@ use ApiGen\Templating\Template;
 use ApiGen\Templating\TemplateElementsLoader;
 use Latte\Engine;
 use Mockery;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class TemplateElementsLoaderTest extends PHPUnit_Framework_TestCase
+class TemplateElementsLoaderTest extends TestCase
 {
 
     /**

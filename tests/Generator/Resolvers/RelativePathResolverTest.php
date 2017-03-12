@@ -5,11 +5,10 @@ namespace ApiGen\Tests\Generator\Resolvers;
 use ApiGen\Configuration\Configuration;
 use ApiGen\Generator\Resolvers\RelativePathResolver;
 use ApiGen\Utils\FileSystem;
-use InvalidArgumentException;
 use Mockery;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class RelativePathResolverTest extends PHPUnit_Framework_TestCase
+class RelativePathResolverTest extends TestCase
 {
 
     public function testGetRelativePath()
@@ -37,13 +36,15 @@ class RelativePathResolverTest extends PHPUnit_Framework_TestCase
     }
 
 
+    /**
+     * @expectedException \InvalidArgumentException
+     */
     public function testGetRelativePathInvalid()
     {
         $configuration = Mockery::mock(Configuration::class);
         $configuration->shouldReceive('getOption')->with('source')->andReturn([TEMP_DIR]);
         $relativePathResolver = new RelativePathResolver($configuration, new FileSystem);
 
-        $this->setExpectedException(InvalidArgumentException::class);
         $relativePathResolver->getRelativePath('/var/dir/some-strange-file.txt');
     }
 

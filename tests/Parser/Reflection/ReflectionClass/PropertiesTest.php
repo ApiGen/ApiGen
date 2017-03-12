@@ -4,7 +4,6 @@ namespace ApiGen\Parser\Tests\Reflections\ReflectionClass;
 
 use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
 use ApiGen\Parser\Tests\Reflection\ReflectionClass\AbstractReflectionClassTestCase;
-use InvalidArgumentException;
 
 class PropertiesTest extends AbstractReflectionClassTestCase
 {
@@ -18,9 +17,11 @@ class PropertiesTest extends AbstractReflectionClassTestCase
     }
 
 
+    /**
+     * @expectedException \InvalidArgumentException
+     */
     public function testGetPropertyNonExisting()
     {
-        $this->setExpectedException(InvalidArgumentException::class);
         $this->reflectionClass->getProperty('notPresentProperty');
     }
 

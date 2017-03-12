@@ -3,9 +3,9 @@
 namespace ApiGen\Tests\Templating\Filters\Helpers;
 
 use ApiGen\Templating\Filters\Helpers\Strings;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class StringsTest extends PHPUnit_Framework_TestCase
+class StringsTest extends TestCase
 {
 
     public function testSplit()

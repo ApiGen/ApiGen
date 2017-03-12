@@ -6,9 +6,9 @@ use ApiGen\Generator\SourceCodeHighlighter\FshlSourceCodeHighlighter;
 use FSHL\Highlighter;
 use FSHL\Lexer\Php;
 use FSHL\Output\Html;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class FshlSourceCodeHighlighterTest extends PHPUnit_Framework_TestCase
+class FshlSourceCodeHighlighterTest extends TestCase
 {
 
     /**

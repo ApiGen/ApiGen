@@ -12,11 +12,11 @@ use ApiGen\Parser\Reflection\ReflectionConstant;
 use ApiGen\Parser\Reflection\TokenReflection\ReflectionFactory;
 use ApiGen\Parser\Tests\Configuration\ParserConfiguration;
 use Mockery;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ReflectionProperty;
 use TokenReflection\Broker;
 
-class ReflectionConstantTest extends PHPUnit_Framework_TestCase
+class ReflectionConstantTest extends TestCase
 {
 
     /**
