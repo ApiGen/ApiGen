@@ -10,8 +10,8 @@
 namespace ApiGen\Console\Command;
 
 use Exception;
-use Herrera\Phar\Update\Manager;
-use Herrera\Phar\Update\Manifest;
+use Deployer\Component\PharUpdate\Manager;
+use Deployer\Component\PharUpdate\Manifest;
 use Symfony\Component\Console\Command\Command as BaseCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
