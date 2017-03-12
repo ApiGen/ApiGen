@@ -10,49 +10,19 @@
 Just look at [CakePHP Framework](http://api.cakephp.org/3.0/) or [Doctrine ORM API](http://www.doctrine-project.org/api/orm/2.4/).
 
 
-## Requirements
+## Install via Composer
 
-- PHP 5.5
-
-
-## Install
-
-### 1. Using Composer (preferred method)
-
-In your project's root folder:
-
-```
-composer require --dev apigen/apigen
+```bash
+composer require apigen/apigen --dev
 ```
 
-Or if you want it globally:
-
-```
-composer global require --dev apigen/apigen
-```
-
-### 2. As a PHAR
-
-In your project's root folder:
-
-```
-curl -L -O https://github.com/ApiGen/ApiGen.github.io/raw/master/apigen.phar
-```
-
-(or just download it [here](https://github.com/ApiGen/ApiGen.github.io/raw/master/apigen.phar)).
-
-For global installation, just move the downloaded `apigen.phar` to your path.
 
 ## Usage
-
-*NOTE: The above examples assume you have ApiGen installed in your path. You might need to change the
-`apigen` command to `vendor/bin/apigen` if installed locally through Composer or `php apigen.phar`
-if using the PHAR version.*
 
 Run ApiGen with source and destination options:
 
 ```sh
-apigen generate -s ./src -d ./docs
+vendor/bin/apigen generate -s ./src -d ./docs
 ```
 
 To omit cli options just create `apigen.yaml` or `apigen.neon` file in your project's root folder:
@@ -67,7 +37,7 @@ destination: ./docs
 For all available options, along with descriptions and default values, just run:
 
 ```sh
-apigen generate --help
+vendor/bin/apigen generate --help
 ```
 
 *NOTE: In config files, options are camelCased (i.e. `accessLevel` for `--access-level`).*
@@ -77,14 +47,12 @@ Refer to the [wiki](https://github.com/ApiGen/ApiGen/wiki/supported-annotations)
 ## Testing
 
 ```sh
-$ phpunit
+vendor/bin/phpunit
 ```
 
 ## Get Support!
 
 * [#apigen](http://webchat.freenode.net/?channels=#apigen) on irc.freenode.net - Come chat with us, we have cake.
-
-* [GitHub Issues](https://github.com/ApiGen/ApiGen/issues) - Got issues? Please tell us!
 
 * [Roadmaps](https://github.com/ApiGen/ApiGen/wiki/Roadmaps) - Want to contribute? Get involved!
 
