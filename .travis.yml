@@ -1,28 +1,14 @@
 language: php
 
-php:
-  - 7.1
-
 sudo: false
 
-env:
-  global:
-    - DEFAULT=1
-
 matrix:
-  fast_finish: true
-
   include:
     - php: 7.1
-      env: PHPCS=1 DEFAULT=0 COVERALLS=1
-
-  allow_failures:
-    - env: COVERALLS=1 DEFAULT=0
+      env: PHPCS=1 COVERALLS=1
 
 before_script:
-  - composer self-update
-  - composer install --prefer-dist --no-interaction
-
+  - composer install --prefer-dist
   - sh -c "if [ '$COVERALLS' = '1' ]; then composer require --dev satooshi/php-coveralls:dev-master; fi"
   - sh -c "if [ '$COVERALLS' = '1' ]; then mkdir -p build/logs; fi"
 
@@ -30,7 +16,7 @@ before_script:
   - set +H
 
 script:
-  - sh -c "if [ '$DEFAULT' = '1' ]; then phpunit; fi"
+  - vendor/bin/phpunit
 
   - sh -c "if [ '$PHPCS' = '1' ]; then vendor/bin/phpcs -p --extensions=php --standard=PSR2 ./src; fi"
 
