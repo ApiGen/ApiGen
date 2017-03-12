@@ -1,11 +1,7 @@
 <phpunit
-        bootstrap="tests/bootstrap.php"
-        colors="true"
-        convertNoticesToExceptions="true"
-        convertWarningsToExceptions="true"
-        convertErrorsToExceptions="true"
-        syntaxCheck="true"
-        verbose="true"
+    bootstrap="tests/bootstrap.php"
+    colors="true"
+    verbose="true"
 >
     <testsuites>
         <testsuite>
@@ -14,7 +10,7 @@
     </testsuites>
     <filter>
         <whitelist>
-            <directory suffix=".php">src</directory>
+            <directory>src</directory>
         </whitelist>
     </filter>
 </phpunit>
