@@ -179,7 +179,7 @@ class GenerateCommand extends AbstractCommand
                 'templateConfig',
                 null,
                 InputOption::VALUE_REQUIRED,
-                'Your own template config, has higher priority then --template-theme.'
+                'Your own template config, has higher priority than --template-theme.'
             )
             ->addOption('title', null, InputOption::VALUE_REQUIRED, 'Title of generated documentation.')
             ->addOption(
