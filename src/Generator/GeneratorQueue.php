@@ -59,7 +59,7 @@ class GeneratorQueue implements GeneratorQueueInterface
 
 
     /**
-     * @return TemplateGenerator[]
+     * @return TemplateGeneratorInterface[]
      */
     private function getAllowedQueue()
     {

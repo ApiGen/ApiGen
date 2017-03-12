@@ -7,8 +7,10 @@ use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Configuration\Theme\ThemeConfigOptions as TCO;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Contracts\Templating\TemplateFactory\TemplateFactoryInterface;
+use ApiGen\Parser\Reflection\ReflectionElement;
 use ApiGen\Templating\Exceptions\UnsupportedElementException;
 use Latte;
 use Nette\Utils\ArrayHash;
@@ -109,11 +111,7 @@ class TemplateFactory implements TemplateFactoryInterface
     }
 
 
-    /**
-     * @param ReflectionElement $element
-     * @return Template
-     */
-    public function createForReflection($element)
+    public function createForReflection(ElementReflectionInterface $element): Template
     {
         $template = $this->buildTemplate();
 

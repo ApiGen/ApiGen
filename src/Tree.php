@@ -2,7 +2,6 @@
 
 namespace ApiGen;
 
-use ApiGen\Reflection\ReflectionElement;
 use ArrayObject;
 use RecursiveArrayIterator;
 use RecursiveIteratorIterator;
@@ -59,7 +58,7 @@ class Tree extends RecursiveTreeIterator
 
 
     /**
-     * @return ReflectionElement
+     * @return Parser\Reflection\ReflectionElement
      */
     public function current()
     {

@@ -3,8 +3,11 @@
 namespace ApiGen\Templating\Filters;
 
 use ApiGen\Generator\Resolvers\ElementResolver;
-use ApiGen\Reflection\ReflectionClass;
-use ApiGen\Reflection\ReflectionElement;
+use ApiGen\Parser\Reflection\ReflectionClass;
+use ApiGen\Parser\Reflection\ReflectionElement;
+
+//use ApiGen\Reflection\ReflectionClass;
+//use ApiGen\Reflection\ReflectionElement;
 
 class ResolverFilters extends Filters
 {
