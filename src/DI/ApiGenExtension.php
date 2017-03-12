@@ -6,6 +6,7 @@ use ApiGen\Contracts\Generator\GeneratorQueueInterface;
 use ApiGen\Contracts\Generator\TemplateGenerators\TemplateGeneratorInterface;
 use ApiGen\Templating\Filters\Filters;
 use Latte\Engine;
+use Nette\DI\Compiler;
 use Nette\DI\CompilerExtension;
 
 class ApiGenExtension extends CompilerExtension
@@ -29,9 +30,10 @@ class ApiGenExtension extends CompilerExtension
 
     private function loadServicesFromConfig()
     {
-        $builder = $this->getContainerBuilder();
-        $config = $this->loadFromFile(__DIR__ . '/services.neon');
-        $this->compiler->parseServices($builder, $config);
+        Compiler::loadDefinitions(
+            $this->getContainerBuilder(),
+            $this->loadFromFile(__DIR__ . '/services.neon')['services']
+        );
     }
 
 

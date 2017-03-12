@@ -3,6 +3,7 @@
 namespace ApiGen\Console\DI;
 
 use ApiGen\Console\Application;
+use Nette\DI\Compiler;
 use Nette\DI\CompilerExtension;
 use Symfony\Component\Console\Command\Command;
 
@@ -11,9 +12,10 @@ class ConsoleExtension extends CompilerExtension
 
     public function loadConfiguration()
     {
-        $builder = $this->getContainerBuilder();
-        $services = $this->loadFromFile(__DIR__ . '/services.neon');
-        $this->compiler->parseServices($builder, $services);
+        Compiler::loadDefinitions(
+            $this->getContainerBuilder(),
+            $this->loadFromFile(__DIR__ . '/services.neon')['services']
+        );
     }
 
 
