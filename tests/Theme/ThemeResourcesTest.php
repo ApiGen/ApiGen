@@ -5,9 +5,9 @@ namespace ApiGen\Tests\Theme;
 use ApiGen\Theme\ThemeResources;
 use ApiGen\Utils\FileSystem;
 use Mockery;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class ThemeResourcesTest extends PHPUnit_Framework_TestCase
+class ThemeResourcesTest extends TestCase
 {
 
     public function testCopyToDestination()

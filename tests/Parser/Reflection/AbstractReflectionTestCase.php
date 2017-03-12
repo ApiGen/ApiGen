@@ -8,10 +8,10 @@ use ApiGen\Contracts\Parser\ParserStorageInterface;
 use ApiGen\Parser\Broker\Backend;
 use ApiGen\Parser\Reflection\TokenReflection\ReflectionFactory;
 use Mockery;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use TokenReflection\Broker;
 
-abstract class AbstractReflectionTestCase extends PHPUnit_Framework_TestCase
+abstract class AbstractReflectionTestCase extends TestCase
 {
 
     /**

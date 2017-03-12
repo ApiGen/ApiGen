@@ -6,9 +6,6 @@ use ApiGen\Contracts\Parser\Reflection\Magic\MagicParameterReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ParameterReflectionInterface;
 use ApiGen\Parser\Reflection\ReflectionFunctionBase;
 use ApiGen\Parser\Reflection\ReflectionParameter;
-use InvalidArgumentException;
-use Mockery;
-use TokenReflection\Broker;
 
 class ReflectionParameterBaseTest extends AbstractReflectionTestCase
 {
@@ -60,16 +57,20 @@ class ReflectionParameterBaseTest extends AbstractReflectionTestCase
     }
 
 
+    /**
+     * @expectedException \InvalidArgumentException
+     */
     public function testGetParameterNotExistingName()
     {
-        $this->setExpectedException(InvalidArgumentException::class);
         $this->reflectionFunction->getParameter('notHere');
     }
 
 
+    /**
+     * @expectedException \InvalidArgumentException
+     */
     public function testGetParameterNotExistingPosition()
     {
-        $this->setExpectedException(InvalidArgumentException::class);
         $this->reflectionFunction->getParameter(1);
     }
 

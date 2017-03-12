@@ -9,11 +9,11 @@ use ApiGen\Parser\Reflection\ReflectionClass;
 use ApiGen\Parser\Reflection\TokenReflection\ReflectionFactory;
 use ApiGen\Parser\Tests\Configuration\ParserConfiguration;
 use Mockery;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ReflectionProperty;
 use TokenReflection\Broker;
 
-abstract class AbstractReflectionClassTestCase extends PHPUnit_Framework_TestCase
+abstract class AbstractReflectionClassTestCase extends TestCase
 {
 
     /**

@@ -4,9 +4,9 @@ namespace ApiGen\Utils\Tests\Finder;
 
 use ApiGen\Utils\Finder\FinderInterface;
 use ApiGen\Utils\Finder\NetteFinder;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class NetteFinderTest extends PHPUnit_Framework_TestCase
+class NetteFinderTest extends TestCase
 {
 
     /**

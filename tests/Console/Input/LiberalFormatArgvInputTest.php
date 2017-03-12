@@ -4,11 +4,11 @@ namespace ApiGen\Tests\Console\Input;
 
 use ApiGen\Console\Input\LiberalFormatArgvInput;
 use ApiGen\Tests\MethodInvoker;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputOption;
 
-class LiberalFormatArgvInputTest extends PHPUnit_Framework_TestCase
+class LiberalFormatArgvInputTest extends TestCase
 {
 
     /**

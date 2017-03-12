@@ -7,9 +7,9 @@ use ApiGen\Parser\Elements\ElementStorage;
 use ApiGen\Templating\Filters\Helpers\LinkBuilder;
 use ApiGen\Templating\Filters\NamespaceAndPackageUrlFilters;
 use Mockery;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class NamespaceAndPackageUrlFiltersTest extends PHPUnit_Framework_TestCase
+class NamespaceAndPackageUrlFiltersTest extends TestCase
 {
 
     /**

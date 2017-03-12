@@ -3,9 +3,9 @@
 namespace ApiGen\Parser\Tests\Elements;
 
 use ApiGen\Parser\Elements\Elements;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class ElementsTest extends PHPUnit_Framework_TestCase
+class ElementsTest extends TestCase
 {
 
     /**

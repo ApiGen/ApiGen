@@ -18,8 +18,8 @@ use ApiGen\Contracts\Parser\Reflection\TokenReflection\ReflectionFactoryInterfac
 use ApiGen\Parser\Reflection\TokenReflection\ReflectionFactory;
 use Mockery;
 use Nette\Object;
-use PHPUnit_Framework_Assert;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\TestCase;
 use TokenReflection\IReflectionClass;
 use TokenReflection\IReflectionConstant;
 use TokenReflection\IReflectionExtension;
@@ -28,7 +28,7 @@ use TokenReflection\IReflectionMethod;
 use TokenReflection\IReflectionParameter;
 use TokenReflection\IReflectionProperty;
 
-class ReflectionFactoryTest extends PHPUnit_Framework_TestCase
+class ReflectionFactoryTest extends TestCase
 {
 
     /**
@@ -145,17 +145,17 @@ class ReflectionFactoryTest extends PHPUnit_Framework_TestCase
     {
         $this->assertInstanceOf(
             ConfigurationInterface::class,
-            PHPUnit_Framework_Assert::getObjectAttribute($object, 'configuration')
+            Assert::getObjectAttribute($object, 'configuration')
         );
 
         $this->assertInstanceOf(
             ParserStorageInterface::class,
-            PHPUnit_Framework_Assert::getObjectAttribute($object, 'parserResult')
+            Assert::getObjectAttribute($object, 'parserResult')
         );
 
         $this->assertInstanceOf(
             ReflectionFactoryInterface::class,
-            PHPUnit_Framework_Assert::getObjectAttribute($object, 'reflectionFactory')
+            Assert::getObjectAttribute($object, 'reflectionFactory')
         );
     }
 }

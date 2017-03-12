@@ -9,9 +9,9 @@ use ApiGen\EventDispatcher\Tests\DI\EventDispatcherExtensionSource\SomeSubscribe
 use Nette\DI\Compiler;
 use Nette\DI\ContainerBuilder;
 use Nette\DI\ServiceDefinition;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class EventDispatcherExtensionTest extends PHPUnit_Framework_TestCase
+class EventDispatcherExtensionTest extends TestCase
 {
 
     public function testLoadConfiguration()

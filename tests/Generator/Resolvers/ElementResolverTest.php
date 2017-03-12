@@ -13,9 +13,9 @@ use ApiGen\Generator\Resolvers\ElementResolver;
 use ApiGen\Parser\Reflection\TokenReflection\ReflectionInterface;
 use ApiGen\Tests\MethodInvoker as MI;
 use Mockery;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class ElementResolverTest extends PHPUnit_Framework_TestCase
+class ElementResolverTest extends TestCase
 {
 
     /**

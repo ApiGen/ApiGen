@@ -10,10 +10,10 @@ use ApiGen\Contracts\Parser\Reflection\TokenReflection\ReflectionFactoryInterfac
 use ApiGen\Parser\Broker\Backend;
 use ApiGen\Parser\Reflection\TokenReflection\ReflectionFactory;
 use Mockery;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use TokenReflection\Broker;
 
-class ReflectionMethodTest extends PHPUnit_Framework_TestCase
+class ReflectionMethodTest extends TestCase
 {
 
     /**

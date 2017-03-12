@@ -17,9 +17,9 @@ use ApiGen\Templating\Filters\Helpers\LinkBuilder;
 use ApiGen\Templating\Filters\UrlFilters;
 use ApiGen\Tests\MethodInvoker;
 use Mockery;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class UrlFiltersTest extends PHPUnit_Framework_TestCase
+class UrlFiltersTest extends TestCase
 {
 
     const APIGEN_LINK = '<code><a href="class-link-ApiGen\ApiGen" class="deprecated invalid">ApiGen\ApiGen</a></code>';

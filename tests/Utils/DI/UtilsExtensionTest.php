@@ -6,9 +6,9 @@ use ApiGen\Utils\DI\UtilsExtension;
 use Nette\DI\Compiler;
 use Nette\DI\ContainerBuilder;
 use Nette\DI\ServiceDefinition;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class UtilsExtensionTest extends PHPUnit_Framework_TestCase
+class UtilsExtensionTest extends TestCase
 {
 
     public function testLoadConfiguration()

@@ -15,9 +15,11 @@ class MethodsTest extends AbstractReflectionClassTestCase
     }
 
 
+    /**
+     * @expectedException \InvalidArgumentException
+     */
     public function testGetMethodNonExisting()
     {
-        $this->setExpectedException('InvalidArgumentException');
         $this->reflectionClass->getMethod('notPresentMethod');
     }
 

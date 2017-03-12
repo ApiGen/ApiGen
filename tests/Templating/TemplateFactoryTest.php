@@ -7,16 +7,15 @@ use ApiGen\Configuration\Configuration;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
-use ApiGen\Templating\Exceptions\UnsupportedElementException;
 use ApiGen\Templating\Template;
 use ApiGen\Templating\TemplateFactory;
 use ApiGen\Templating\TemplateNavigator;
 use ApiGen\Tests\MethodInvoker;
 use Latte\Engine;
 use Mockery;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class TemplateFactoryTest extends PHPUnit_Framework_TestCase
+class TemplateFactoryTest extends TestCase
 {
 
     /**
@@ -79,10 +78,11 @@ class TemplateFactoryTest extends PHPUnit_Framework_TestCase
     }
 
 
+    /**
+     * @expectedException \ApiGen\Templating\Exceptions\UnsupportedElementException
+     */
     public function testCreateNamedForElementNonExisting()
     {
-        $this->setExpectedException(UnsupportedElementException::class);
-
         $reflectionClassMock = Mockery::mock(ClassReflectionInterface::class);
         $this->assertInstanceOf(
             'ApiGen\Templating\Template',

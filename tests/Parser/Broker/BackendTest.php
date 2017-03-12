@@ -10,11 +10,11 @@ use ApiGen\Contracts\Parser\Reflection\TokenReflection\ReflectionFactoryInterfac
 use ApiGen\Parser\Broker\Backend;
 use ApiGen\Parser\Reflection\TokenReflection\ReflectionFactory;
 use Mockery;
-use PHPUnit_Framework_Assert;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\TestCase;
 use TokenReflection\Broker;
 
-class BackendTest extends PHPUnit_Framework_TestCase
+class BackendTest extends TestCase
 {
 
     /**
@@ -81,17 +81,17 @@ class BackendTest extends PHPUnit_Framework_TestCase
     {
         $this->assertInstanceOf(
             ConfigurationInterface::class,
-            PHPUnit_Framework_Assert::getObjectAttribute($object, 'configuration')
+            Assert::getObjectAttribute($object, 'configuration')
         );
 
         $this->assertInstanceOf(
             ParserStorageInterface::class,
-            PHPUnit_Framework_Assert::getObjectAttribute($object, 'parserResult')
+            Assert::getObjectAttribute($object, 'parserResult')
         );
 
         $this->assertInstanceOf(
             ReflectionFactoryInterface::class,
-            PHPUnit_Framework_Assert::getObjectAttribute($object, 'reflectionFactory')
+            Assert::getObjectAttribute($object, 'reflectionFactory')
         );
     }
 

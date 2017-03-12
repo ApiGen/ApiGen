@@ -10,9 +10,9 @@ use ApiGen\Parser\Reflection\ReflectionFunction;
 use ApiGen\Parser\Reflection\ReflectionMethod;
 use ApiGen\Parser\Reflection\ReflectionProperty;
 use Mockery;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class AutocompleteElementsTest extends PHPUnit_Framework_TestCase
+class AutocompleteElementsTest extends TestCase
 {
 
     /**
