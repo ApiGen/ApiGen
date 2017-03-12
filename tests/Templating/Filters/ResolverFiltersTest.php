@@ -50,7 +50,6 @@ class ResolverFiltersTest extends TestCase
             'ResolvedElement',
             $this->resolverFilters->resolveElement('SomeElement', $reflectionElementMock)
         );
-
     }
 
 

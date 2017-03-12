@@ -124,7 +124,10 @@ class UrlFiltersTest extends TestCase
     public function getLinkAndSeeData()
     {
         return [
-            ['{@link bitcoin:1335STSwu9hST4vcMRppEPgENMHD2r1REK Donations}', '<a href="bitcoin:1335STSwu9hST4vcMRppEPgENMHD2r1REK">Donations</a>'],
+            [
+                '{@link bitcoin:1335STSwu9hST4vcMRppEPgENMHD2r1REK Donations}',
+                '<a href="bitcoin:1335STSwu9hST4vcMRppEPgENMHD2r1REK">Donations</a>'
+            ],
             ['{@link http://apigen.org Description}', '<a href="http://apigen.org">Description</a>'],
             ['{@link http://apigen.org}', '<a href="http://apigen.org">http://apigen.org</a>'],
             ['{@see http://php.net/manual/en PHP Manual}', '<a href="http://php.net/manual/en">PHP Manual</a>'],
@@ -135,7 +138,10 @@ class UrlFiltersTest extends TestCase
             ],
 
             // issue #753
-            ['{@see ApiGen\ApiGen::testMethod()}', '<code><a href="method-link-testMethod">ApiGen\ApiGen::testMethod()</a></code>'],
+            [
+                '{@see ApiGen\ApiGen::testMethod()}',
+                '<code><a href="method-link-testMethod">ApiGen\ApiGen::testMethod()</a></code>'
+            ],
         ];
     }
 

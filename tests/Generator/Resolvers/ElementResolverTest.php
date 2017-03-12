@@ -374,7 +374,11 @@ class ElementResolverTest extends TestCase
         $elements = ['ApiGen' => 1, 'ApiGen\SomeClass' => 2];
         $this->assertSame(
             $expected,
-            MI::callMethodOnObject($this->elementResolver, 'findElementByNameAndNamespace', [$elements, $name, $namespace])
+            MI::callMethodOnObject(
+                $this->elementResolver,
+                'findElementByNameAndNamespace',
+                [$elements, $name, $namespace]
+            )
         );
     }
 

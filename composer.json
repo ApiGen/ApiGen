@@ -49,6 +49,10 @@
 			"ApiGen\\Parser\\Tests\\": "tests/Parser"
 		}
 	},
+	"scripts": {
+		"check-cs": ["vendor/bin/phpcs -ps --extensions=php --standard=PSR2 --exclude=PSR1.Files.SideEffects src tests"],
+		"fix-cs": ["vendor/bin/phpcbf -p --extensions=php --standard=PSR2  --exclude=PSR1.Files.SideEffects src tests"]
+	},
 	"bin": [
 		"bin/apigen"
 	]

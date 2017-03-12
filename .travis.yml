@@ -14,7 +14,7 @@ before_script:
 
 script:
   - vendor/bin/phpunit
-  - if [[ $PHPCS = 1 ]]; then vendor/bin/phpcs -p --extensions=php --standard=PSR2 ./src; fi
+  - if [[ $PHPCS = 1 ]]; then composer check-cs; fi
   - if [[ $COVERALLS = 1 ]]; then phpunit --coverage-clover build/logs/clover.xml; fi
   - if [[ $COVERALLS = 1 ]]; then vendor/bin/coveralls -c .coveralls.yml -v; fi
 

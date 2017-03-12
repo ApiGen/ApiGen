@@ -1,5 +1,7 @@
 <?php
 
+namespace ApiGen\Tests;
+
 /**
  * @deprecated
  */
