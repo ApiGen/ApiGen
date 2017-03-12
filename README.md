@@ -12,7 +12,7 @@ Just look at [CakePHP Framework](http://api.cakephp.org/3.0/) or [Doctrine ORM A
 
 ## Requirements
 
-- PHP 5.5
+- PHP 7.0
 
 
 ## Install
