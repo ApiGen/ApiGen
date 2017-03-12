@@ -3,9 +3,9 @@
 namespace ApiGen\Tests\Herrera\Box\Compactor;
 
 use ApiGen\Herrera\Box\Compactor\PhpNette;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class PhpNetteTest extends PHPUnit_Framework_TestCase
+class PhpNetteTest extends TestCase
 {
 
     /**

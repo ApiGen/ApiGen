@@ -6,9 +6,9 @@ use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Templating\Filters\AnnotationFilters;
 use Mockery;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class AnnotationFiltersTest extends PHPUnit_Framework_TestCase
+class AnnotationFiltersTest extends TestCase
 {
 
     /**

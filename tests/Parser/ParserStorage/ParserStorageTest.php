@@ -10,10 +10,10 @@ use ApiGen\Parser\Tests\MethodInvoker;
 use ArrayObject;
 use Exception;
 use Mockery;
-use PHPUnit_Framework_Assert;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\TestCase;
 
-class ParserStorageTest extends PHPUnit_Framework_TestCase
+class ParserStorageTest extends TestCase
 {
 
     /**
@@ -33,11 +33,11 @@ class ParserStorageTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf(ArrayObject::class, $this->parserStorage->getClasses());
         $this->assertInstanceOf(ArrayObject::class, $this->parserStorage->getConstants());
         $this->assertInstanceOf(ArrayObject::class, $this->parserStorage->getFunctions());
-        $this->assertInstanceOf(ArrayObject::class, PHPUnit_Framework_Assert::getObjectAttribute(
+        $this->assertInstanceOf(ArrayObject::class, Assert::getObjectAttribute(
             $this->parserStorage,
             'internalClasses'
         ));
-        $this->assertInstanceOf(ArrayObject::class, PHPUnit_Framework_Assert::getObjectAttribute(
+        $this->assertInstanceOf(ArrayObject::class, Assert::getObjectAttribute(
             $this->parserStorage,
             'tokenizedClasses'
         ));
@@ -76,14 +76,14 @@ class ParserStorageTest extends PHPUnit_Framework_TestCase
 
         $internalClasses = new ArrayObject([4]);
         $this->parserStorage->setInternalClasses($internalClasses);
-        $this->assertSame($internalClasses, PHPUnit_Framework_Assert::getObjectAttribute(
+        $this->assertSame($internalClasses, Assert::getObjectAttribute(
             $this->parserStorage,
             'internalClasses'
         ));
 
         $tokenizedClasses = new ArrayObject([5]);
         $this->parserStorage->setTokenizedClasses($tokenizedClasses);
-        $this->assertSame($tokenizedClasses, PHPUnit_Framework_Assert::getObjectAttribute(
+        $this->assertSame($tokenizedClasses, Assert::getObjectAttribute(
             $this->parserStorage,
             'tokenizedClasses'
         ));
@@ -92,7 +92,7 @@ class ParserStorageTest extends PHPUnit_Framework_TestCase
 
     public function testGetElementsByTypeWithUnknownType()
     {
-        $this->setExpectedException(Exception::class);
+        $this->expectException(Exception::class);
         $this->parserStorage->getElementsByType('elements');
     }
 

@@ -15,10 +15,10 @@ use ApiGen\Parser\Reflection\ReflectionElement;
 use ApiGen\Parser\Tests\MethodInvoker;
 use Mockery;
 use Nette\Object;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use TokenReflection\Php\IReflection;
 
-class ElementStorageTest extends PHPUnit_Framework_TestCase
+class ElementStorageTest extends TestCase
 {
 
     /**

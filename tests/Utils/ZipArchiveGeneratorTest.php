@@ -3,9 +3,9 @@
 namespace ApiGen\Utils\Tests;
 
 use ApiGen\Utils\ZipArchiveGenerator;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class ZipArchiveGeneratorTest extends PHPUnit_Framework_TestCase
+class ZipArchiveGeneratorTest extends TestCase
 {
 
     public function testZipDirToFile()

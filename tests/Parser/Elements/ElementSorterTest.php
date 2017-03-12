@@ -8,9 +8,9 @@ use ApiGen\Parser\Reflection\ReflectionConstant;
 use ApiGen\Parser\Reflection\ReflectionFunction;
 use ApiGen\Parser\Reflection\ReflectionMethod;
 use Mockery;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class ElementSorterTest extends PHPUnit_Framework_TestCase
+class ElementSorterTest extends TestCase
 {
 
     /**

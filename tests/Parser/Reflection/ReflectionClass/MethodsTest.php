@@ -17,7 +17,7 @@ class MethodsTest extends AbstractReflectionClassTestCase
 
     public function testGetMethodNonExisting()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
         $this->reflectionClass->getMethod('notPresentMethod');
     }
 

@@ -3,9 +3,9 @@
 namespace ApiGen\Utils\Tests\Neon;
 
 use ApiGen\Utils\Neon\NeonFile;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class NeonFileTest extends PHPUnit_Framework_TestCase
+class NeonFileTest extends TestCase
 {
 
     public function testRead()
@@ -20,7 +20,7 @@ class NeonFileTest extends PHPUnit_Framework_TestCase
 
     public function testCreateNotExisting()
     {
-        $this->setExpectedException('ApiGen\Utils\Neon\Exceptions\MissingFileException');
+        $this->expectException('ApiGen\Utils\Neon\Exceptions\MissingFileException');
         new NeonFile(TEMP_DIR . '/not-here.neon');
     }
 
@@ -35,7 +35,7 @@ class NeonFileTest extends PHPUnit_Framework_TestCase
 
         // strange!
 
-        $this->setExpectedException('ApiGen\Utils\Neon\Exceptions\FileNotReadableException');
+        $this->expectException('ApiGen\Utils\Neon\Exceptions\FileNotReadableException');
         new NeonFile($filePath);
     }
 }

@@ -17,10 +17,9 @@ use ApiGen\Templating\TemplateFactory;
 use ApiGen\Tests\MethodInvoker as MI;
 use ArrayObject;
 use Mockery;
-use PHPUnit_Framework_Assert;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class TreeGeneratorTest extends PHPUnit_Framework_TestCase
+class TreeGeneratorTest extends TestCase
 {
 
     /**

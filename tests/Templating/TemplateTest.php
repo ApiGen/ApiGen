@@ -4,9 +4,9 @@ namespace ApiGen\Tests\Templating;
 
 use ApiGen\Templating\Template;
 use Latte\Engine;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class TemplateTest extends PHPUnit_Framework_TestCase
+class TemplateTest extends TestCase
 {
 
     /**

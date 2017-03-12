@@ -8,10 +8,10 @@ use ApiGen\Parser\Tests\Elements\ElementSorterTest;
 use ApiGen\Parser\Tests\MethodInvoker;
 use Nette\DI\Compiler;
 use Nette\DI\ContainerBuilder;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use TokenReflection\Broker;
 
-class ParserExtensionTest extends PHPUnit_Framework_TestCase
+class ParserExtensionTest extends TestCase
 {
 
     public function testLoadServicesFromConfig()

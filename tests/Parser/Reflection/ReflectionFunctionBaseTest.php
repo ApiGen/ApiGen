@@ -62,14 +62,14 @@ class ReflectionParameterBaseTest extends AbstractReflectionTestCase
 
     public function testGetParameterNotExistingName()
     {
-        $this->setExpectedException(InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->reflectionFunction->getParameter('notHere');
     }
 
 
     public function testGetParameterNotExistingPosition()
     {
-        $this->setExpectedException(InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->reflectionFunction->getParameter(1);
     }
 
