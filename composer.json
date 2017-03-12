@@ -32,7 +32,8 @@
 		"ext-zip": "*",
 		"mockery/mockery": "^0.9",
 		"squizlabs/php_codesniffer": "^2.8",
-		"phpunit/phpunit": "^6.0"
+		"phpunit/phpunit": "^6.0",
+		"phpstan/phpstan": "^0.6.4"
 	},
 	"conflict": {
 		"latte/latte": "^2.4.0"
@@ -51,7 +52,8 @@
 	},
 	"scripts": {
 		"check-cs": ["vendor/bin/phpcs -ps --extensions=php --standard=PSR2 --exclude=PSR1.Files.SideEffects src tests"],
-		"fix-cs": ["vendor/bin/phpcbf -p --extensions=php --standard=PSR2  --exclude=PSR1.Files.SideEffects src tests"]
+		"fix-cs": ["vendor/bin/phpcbf -p --extensions=php --standard=PSR2  --exclude=PSR1.Files.SideEffects src tests"],
+		"phpstan": "vendor/bin/phpstan analyse src --level=0"
 	},
 	"bin": [
 		"bin/apigen"
