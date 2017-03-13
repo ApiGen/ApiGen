@@ -189,7 +189,7 @@ class UrlFilters extends Filters
                 : $matches[0];
         }, $long);
 
-        return $this->doc($long, $element, true);
+        return $this->doc($long, $element);
     }
 
 
