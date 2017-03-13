@@ -21,7 +21,6 @@ class AnnotationFiltersTest extends TestCase
     {
         $configurationMock = Mockery::mock(Configuration::class);
         $configurationMock->shouldReceive('getOption')->with(CO::INTERNAL)->andReturn(false);
-        $configurationMock->shouldReceive('getOption')->with(CO::TODO)->andReturn(false);
         $elementResolverMock = Mockery::mock('ApiGen\Generator\Resolvers\ElementResolver');
         $this->annotationFilters = new AnnotationFilters($configurationMock, $elementResolverMock);
     }
@@ -36,7 +35,7 @@ class AnnotationFiltersTest extends TestCase
 
     public function testAnnotationFilter()
     {
-        $annotations = ['method' => true, 'remain' => true, 'todo' => true, 'internal' => true];
+        $annotations = ['method' => true, 'remain' => true, 'internal' => true];
         $this->assertSame(
             ['remain' => true],
             $this->annotationFilters->annotationFilter($annotations)

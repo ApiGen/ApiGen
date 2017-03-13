@@ -186,12 +186,6 @@ class GenerateCommand extends AbstractCommand
                 'Generate documentation for elements marked as @deprecated (deprecated, only present for BC).'
             )
             ->addOption(
-                'todo',
-                null,
-                InputOption::VALUE_NONE,
-                'Generate documentation for elements marked as @todo (deprecated, only present for BC).'
-            )
-            ->addOption(
                 'charset',
                 null,
                 InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,

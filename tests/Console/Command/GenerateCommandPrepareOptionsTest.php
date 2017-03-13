@@ -81,7 +81,6 @@ class GenerateCommandPrepareOptionsTest extends ContainerAwareTestCase
         $this->assertSame(['public', 'protected', 'private'], $options['accessLevels']);
         $this->assertSame('http://apigen.org', $options['baseUrl']);
         $this->assertSame('packages', $options['groups']);
-        $this->assertFalse($options['todo']);
     }
 
 
