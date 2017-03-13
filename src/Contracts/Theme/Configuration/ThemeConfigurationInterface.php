@@ -237,22 +237,6 @@ interface ThemeConfigurationInterface
      *
      * @return string
      */
-    public function getTreeTemplate();
-
-
-    /**
-     * Relative path to destination file, that can be opened in browser (*.html).
-     *
-     * @return string
-     */
-    public function getTreeDestination();
-
-
-    /**
-     * Absolute path to template file (*.latte, *.twig).
-     *
-     * @return string
-     */
     public function getSitemapTemplate();
 
 

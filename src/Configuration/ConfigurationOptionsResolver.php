@@ -46,12 +46,12 @@ class ConfigurationOptionsResolver
         CO::TEMPLATE_CONFIG => null,
         CO::TEMPLATE_THEME => self::TEMPLATE_THEME_DEFAULT,
         CO::TITLE => '',
-        CO::TREE => true,
         // helpers
         CO::VISIBILITY_LEVELS => [],
         CO::SOURCE_CODE => '',
         // removed, but BC for templates
         'download' => false,
+        'tree' => false,
     ];
 
     /**

@@ -92,12 +92,6 @@ interface ConfigurationInterface
 
 
     /**
-     * @return bool
-     */
-    public function isTreeAllowed();
-
-
-    /**
      * @return string
      */
     public function getDestination();

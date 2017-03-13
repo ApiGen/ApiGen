@@ -169,12 +169,6 @@ class GenerateCommand extends AbstractCommand
                 'Your own template config, has higher priority than --template-theme.'
             )
             ->addOption('title', null, InputOption::VALUE_REQUIRED, 'Title of generated documentation.')
-            ->addOption(
-                'tree',
-                null,
-                InputOption::VALUE_NONE,
-                'Generate tree view of classes, interfaces, traits and exceptions.'
-            )
 
             /**
              * @deprecated since version 4.2, to be removed in 5.0
