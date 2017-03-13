@@ -50,7 +50,6 @@ class ConfigurationOptionsResolver
         // removed, but BC for templates
         'download' => false,
         'tree' => false,
-        'php' => true,
     ];
 
     /**
