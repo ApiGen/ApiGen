@@ -17,11 +17,6 @@ trait IsDocumentedMagic
      */
     public function isDocumented()
     {
-        if ($this->isDocumented === null) {
-            $deprecated = $this->configuration->isDeprecatedDocumented();
-            $this->isDocumented = $deprecated || ! $this->isDeprecated();
-        }
-
-        return $this->isDocumented;
+        return true;
     }
 }

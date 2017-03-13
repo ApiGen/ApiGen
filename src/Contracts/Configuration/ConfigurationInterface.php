@@ -60,14 +60,6 @@ interface ConfigurationInterface
 
 
     /**
-     * Are elements marked as "@deprecated" documented.
-     *
-     * @return bool
-     */
-    public function isDeprecatedDocumented();
-
-
-    /**
      * Is grouping by namespaces enabled.
      *
      * @return bool

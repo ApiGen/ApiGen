@@ -126,15 +126,6 @@ class Configuration implements ConfigurationInterface
     /**
      * {@inheritdoc}
      */
-    public function isDeprecatedDocumented()
-    {
-        return (bool) $this->getOption('deprecated');
-    }
-
-
-    /**
-     * {@inheritdoc}
-     */
     public function getAnnotationGroups()
     {
         return $this->options['annotationGroups'];

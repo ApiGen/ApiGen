@@ -29,7 +29,6 @@ class ConfigurationOptionsResolver
         CO::BASE_URL => '',
         CO::CONFIG => '',
         CO::DEBUG => false,
-        CO::DEPRECATED => false,
         CO::DESTINATION => null,
         CO::FORCE_OVERWRITE => false,
         CO::EXCLUDE => [],
@@ -181,9 +180,7 @@ class ConfigurationOptionsResolver
     {
         $this->resolver->setNormalizer(CO::ANNOTATION_GROUPS, function (Options $options, $value) {
             $value = (array) $value;
-            if ($options[CO::DEPRECATED]) {
-                $value[] = CO::DEPRECATED;
-            }
+            $value[] = 'deprecated';
             return array_unique($value);
         });
 
