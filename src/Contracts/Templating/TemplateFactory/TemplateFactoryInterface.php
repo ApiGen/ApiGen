@@ -2,13 +2,13 @@
 
 namespace ApiGen\Contracts\Templating\TemplateFactory;
 
-use ApiGen\Contracts\Templating\Template\TemplateInterface;
+use ApiGen\Templating\Template;
 
 interface TemplateFactoryInterface
 {
 
     /**
-     * @return TemplateInterface
+     * @return Template
      */
     public function create();
 }
