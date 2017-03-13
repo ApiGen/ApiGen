@@ -234,7 +234,9 @@ class Backend extends Broker\Backend\Memory implements BackendInterface
     private function getClassFqn($name, $reflection)
     {
         return Resolver::resolveClassFQN(
-            $name, $reflection->getNamespaceAliases(), $reflection->getNamespaceName()
+            $name,
+            $reflection->getNamespaceAliases(),
+            $reflection->getNamespaceName()
         );
     }
 }
