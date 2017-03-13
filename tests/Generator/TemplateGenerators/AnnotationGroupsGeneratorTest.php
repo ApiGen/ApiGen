@@ -46,9 +46,8 @@ class AnnotationGroupsGeneratorTest extends ContainerAwareTestCase
             'destination' => TEMP_DIR . '/api',
             'annotationGroups' => ['api', 'event'],
             'deprecated' => true,
-            'todo' => true
         ]);
-        $this->assertSame(['api', 'event', 'deprecated', 'todo'], $resolvedOptions[CO::ANNOTATION_GROUPS]);
+        $this->assertSame(['api', 'event', 'deprecated'], $resolvedOptions[CO::ANNOTATION_GROUPS]);
     }
 
 
