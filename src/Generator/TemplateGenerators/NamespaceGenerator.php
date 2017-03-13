@@ -4,14 +4,14 @@ namespace ApiGen\Generator\TemplateGenerators;
 
 use ApiGen\Contracts\EventDispatcher\EventDispatcherInterface;
 use ApiGen\Contracts\Generator\StepCounterInterface;
-use ApiGen\Contracts\Generator\TemplateGenerators\ConditionalTemplateGeneratorInterface;
+use ApiGen\Contracts\Generator\TemplateGenerators\TemplateGeneratorInterface;
 use ApiGen\Contracts\Parser\Elements\ElementStorageInterface;
 use ApiGen\Generator\Event\GenerateProgressEvent;
 use ApiGen\Generator\Event\GeneratorEvents;
 use ApiGen\Generator\TemplateGenerators\Loaders\NamespaceLoader;
 use ApiGen\Templating\TemplateFactory;
 
-class NamespaceGenerator implements ConditionalTemplateGeneratorInterface, StepCounterInterface
+class NamespaceGenerator implements TemplateGeneratorInterface, StepCounterInterface
 {
 
     /**
@@ -69,14 +69,5 @@ class NamespaceGenerator implements ConditionalTemplateGeneratorInterface, StepC
     public function getStepCount()
     {
         return count($this->elementStorage->getNamespaces());
-    }
-
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isAllowed()
-    {
-        return (bool) $this->elementStorage->getNamespaces();
     }
 }
