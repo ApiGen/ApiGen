@@ -16,7 +16,6 @@ class ConfigurationOptions
     const EXTENSIONS = 'extensions';
     const GOOGLE_CSE_ID = 'googleCseId';
     const GOOGLE_ANALYTICS = 'googleAnalytics';
-    const GROUPS = 'groups';
     const MAIN = 'main';
     const INTERNAL = 'internal';
     const SOURCE = 'source';

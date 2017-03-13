@@ -1,6 +1,3 @@
 source: src
-tree: true
 accessLevels: [public, protected, private]
 baseUrl: http://apigen.org
-groups: packages
-php: true

@@ -27,15 +27,10 @@ class NamespaceAndPackageLoader
      */
     public function loadTemplateWithElementNamespaceOrPackage(Template $template, ElementReflectionInterface $element)
     {
-        if ($namespaces = $this->elementStorage->getNamespaces()) {
-            $name = $element->getPseudoNamespaceName();
-            $template = $this->loadTemplateWithNamespace($template, $name, $namespaces[$name]);
-        } elseif ($packages = $this->elementStorage->getPackages()) {
-            $name = $element->getPseudoPackageName();
-            $template = $this->loadTemplateWithNamespace($template, $name, $packages[$name]);
-        }
+        $namespaces = $this->elementStorage->getNamespaces();
+        $name = $element->getPseudoNamespaceName();
 
-        return $template;
+        return $this->loadTemplateWithNamespace($template, $name, $namespaces[$name]);
     }
 
 

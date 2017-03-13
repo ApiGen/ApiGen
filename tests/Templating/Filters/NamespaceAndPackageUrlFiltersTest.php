@@ -28,41 +28,6 @@ class NamespaceAndPackageUrlFiltersTest extends TestCase
     }
 
 
-    public function testPackageUrl()
-    {
-        $this->assertSame(
-            'package-Long.Package',
-            $this->namespaceAndPackageUrlFilters->packageUrl('Long\\Package')
-        );
-    }
-
-
-    public function testPackageLinks()
-    {
-        $this->assertSame(
-            '<a href="package-Long">Long</a>\<a href="package-Long.Package">Package</a>',
-            $this->namespaceAndPackageUrlFilters->packageLinks('Long\\Package')
-        );
-
-        $this->assertSame(
-            '<a href="package-Long">Long</a>\Package',
-            $this->namespaceAndPackageUrlFilters->packageLinks('Long\\Package', false)
-        );
-    }
-
-
-    public function testPackageLinksWithNoPackages()
-    {
-        $namespaceAndPackageUrlFilters = new NamespaceAndPackageUrlFilters(
-            $this->getConfigurationMock(),
-            new LinkBuilder,
-            $this->getElementStorageMock(0, 0)
-        );
-
-        $this->assertSame('Long\\Package', $namespaceAndPackageUrlFilters->packageLinks('Long\\Package'));
-    }
-
-
     public function testNamespaceUrl()
     {
         $this->assertSame(

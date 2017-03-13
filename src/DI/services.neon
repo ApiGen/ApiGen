@@ -30,8 +30,7 @@ services:
 	g8: ApiGen\Generator\TemplateGenerators\ConstantElementGenerator
 	g0: ApiGen\Generator\TemplateGenerators\FunctionElementGenerator
 	g10: ApiGen\Generator\TemplateGenerators\NamespaceGenerator
-	g11: ApiGen\Generator\TemplateGenerators\PackageGenerator
-	g12: ApiGen\Generator\TemplateGenerators\Loaders\NamespaceAndPackageLoader
+	g11: ApiGen\Generator\TemplateGenerators\Loaders\NamespaceAndPackageLoader
 
 	# templating
 	- ApiGen\Templating\TemplateElementsLoader

@@ -34,7 +34,6 @@ class ConfigurationOptionsResolver
         CO::EXTENSIONS => [],
         CO::GOOGLE_CSE_ID => '',
         CO::GOOGLE_ANALYTICS => '',
-        CO::GROUPS => '',
         CO::MAIN => '',
         CO::INTERNAL => false,
         CO::SOURCE => [],

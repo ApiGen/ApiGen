@@ -48,31 +48,6 @@ class NamespaceAndPackageUrlFilters extends Filters
 
 
     /**
-     * @param string $package
-     * @param bool $skipLast
-     * @return string
-     */
-    public function packageLinks($package, $skipLast = true)
-    {
-        if (! $this->elementStorage->getPackages()) {
-            return $package;
-        }
-
-        $links = [];
-
-        $parent = '';
-        foreach (explode('\\', $package) as $part) {
-            $parent = ltrim($parent . '\\' . $part, '\\');
-            $links[] = ($skipLast || $parent !== $package)
-                ? $this->linkBuilder->build($this->packageUrl($parent), $part)
-                : $part;
-        }
-
-        return implode('\\', $links);
-    }
-
-
-    /**
      * @param string $namespace
      * @param bool $skipLast
      * @return string
@@ -94,19 +69,6 @@ class NamespaceAndPackageUrlFilters extends Filters
         }
 
         return implode('\\', $links);
-    }
-
-
-    /**
-     * @param string $name
-     * @return string
-     */
-    public function packageUrl($name)
-    {
-        return sprintf(
-            $this->configuration->getOption(CO::TEMPLATE)['templates']['package']['filename'],
-            $this->urlize($name)
-        );
     }
 
 

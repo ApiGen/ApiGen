@@ -78,7 +78,7 @@ class TemplateElementsLoader
                 'constant' => null,
                 'function' => null,
                 'namespaces' => array_keys($this->elementStorage->getNamespaces()),
-                'packages' => array_keys($this->elementStorage->getPackages()),
+                'packages' => [], // removed, but for BC compatibility with templates
                 'classes' => array_filter($this->elementStorage->getClasses(), $this->getMainFilter()),
                 'interfaces' => array_filter($this->elementStorage->getInterfaces(), $this->getMainFilter()),
                 'traits' => array_filter($this->elementStorage->getTraits(), $this->getMainFilter()),

@@ -76,24 +76,6 @@ class ReflectionElementTest extends TestCase
     }
 
 
-    public function testGetPackageName()
-    {
-        $this->assertSame('Some\Package', $this->reflectionClass->getPackageName());
-    }
-
-
-    public function testGetPseudoPackageName()
-    {
-        $this->assertSame('Some\Package', $this->reflectionClass->getPseudoPackageName());
-    }
-
-
-    public function testInPackage()
-    {
-        $this->assertTrue($this->reflectionClass->inPackage());
-    }
-
-
     public function testGetNamespaceName()
     {
         $this->assertSame('Project', $this->reflectionClass->getNamespaceName());
