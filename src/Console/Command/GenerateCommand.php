@@ -141,13 +141,6 @@ class GenerateCommand extends AbstractCommand
                 'Directories and files matching this mask will not be parsed (e.g. */tests/*).'
             )
             ->addOption(
-                'groups',
-                null,
-                InputOption::VALUE_REQUIRED,
-                'The way elements are grouped in menu [options: namespaces, packages].',
-                'namespaces'
-            )
-            ->addOption(
                 'main',
                 null,
                 InputOption::VALUE_REQUIRED,

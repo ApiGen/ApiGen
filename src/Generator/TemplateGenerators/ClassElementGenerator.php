@@ -39,7 +39,7 @@ class ClassElementGenerator extends AbstractElementGenerator
      */
     private function loadTemplateWithParameters(Template $template, ClassReflectionInterface $class)
     {
-        $template = $this->namespaceAndPackageLoader->loadTemplateWithElementNamespaceOrPackage($template, $class);
+        $template = $this->namespaceLoader->loadTemplateWithElementNamespace($template, $class);
         $template->setParameters([
             'class' => $class,
             'directSubClasses' => $class->getDirectSubClasses(),

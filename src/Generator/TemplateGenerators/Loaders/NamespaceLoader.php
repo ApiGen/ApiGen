@@ -7,7 +7,7 @@ use ApiGen\Parser\Elements\Elements;
 use ApiGen\Parser\Elements\ElementStorage;
 use ApiGen\Templating\Template;
 
-class NamespaceAndPackageLoader
+class NamespaceLoader
 {
 
     /**
@@ -25,7 +25,7 @@ class NamespaceAndPackageLoader
     /**
      * @return Template
      */
-    public function loadTemplateWithElementNamespaceOrPackage(Template $template, ElementReflectionInterface $element)
+    public function loadTemplateWithElementNamespace(Template $template, ElementReflectionInterface $element)
     {
         $namespaces = $this->elementStorage->getNamespaces();
         $name = $element->getPseudoNamespaceName();
@@ -43,29 +43,11 @@ class NamespaceAndPackageLoader
     public function loadTemplateWithNamespace(Template $template, $name, $namespace)
     {
         $template->setParameters([
-            'package' => null,
+            'package' => null, // removed, but for BC with Themes
             'namespace' => $name,
             'subnamespaces' => $this->getSubnamesForName($name, $template->getParameters()['namespaces'])
         ]);
         $template = $this->loadTemplateWithElements($template, $namespace);
-        return $template;
-    }
-
-
-    /**
-     * @param Template $template
-     * @param string $name
-     * @param array $package
-     * @return Template
-     */
-    public function loadTemplateWithPackage(Template $template, $name, $package)
-    {
-        $template->setParameters([
-            'namespace' => null,
-            'package' => $name,
-            'subpackages' => $this->getSubnamesForName($name, $template->getParameters()['packages'])
-        ]);
-        $template = $this->loadTemplateWithElements($template, $package);
         return $template;
     }
 

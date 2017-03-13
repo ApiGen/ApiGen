@@ -9,6 +9,7 @@ use ApiGen\Tests\ContainerAwareTestCase;
 use ApiGen\Tests\MethodInvoker;
 use Mockery;
 use ReflectionObject;
+use Symfony\Component\Console\Formatter\OutputFormatterInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -62,6 +63,7 @@ class GenerateCommandExecuteTest extends ContainerAwareTestCase
     public function testExecuteWithError()
     {
         $inputMock = Mockery::mock(InputInterface::class);
+
         $outputMock = Mockery::mock(OutputInterface::class);
         $outputMock->shouldReceive('writeln');
 

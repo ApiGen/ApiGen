@@ -71,24 +71,6 @@ class Configuration implements ConfigurationInterface
     /**
      * {@inheritdoc}
      */
-    public function areNamespacesEnabled()
-    {
-        return $this->getOption('groups') === 'namespaces';
-    }
-
-
-    /**
-     * {@inheritdoc}
-     */
-    public function arePackagesEnabled()
-    {
-        return $this->getOption('groups') === 'packages';
-    }
-
-
-    /**
-     * {@inheritdoc}
-     */
     public function getVisibilityLevel()
     {
         return $this->options['visibilityLevels'];

@@ -70,11 +70,6 @@ class TemplateFactoryTest extends TestCase
             Template::class,
             $this->templateFactory->createNamedForElement(TemplateFactory::ELEMENT_NAMESPACE, $reflectionClassMock)
         );
-
-        $this->assertInstanceOf(
-            Template::class,
-            $this->templateFactory->createNamedForElement(TemplateFactory::ELEMENT_PACKAGE, $reflectionClassMock)
-        );
     }
 
 
@@ -130,7 +125,6 @@ class TemplateFactoryTest extends TestCase
         $templateNavigatorMock->shouldReceive('getTemplatePathForFunction')->andReturn();
         $templateNavigatorMock->shouldReceive('getTemplatePathForSourceElement')->andReturn();
         $templateNavigatorMock->shouldReceive('getTemplatePathForNamespace')->andReturn();
-        $templateNavigatorMock->shouldReceive('getTemplatePathForPackage')->andReturn();
         return $templateNavigatorMock;
     }
 }

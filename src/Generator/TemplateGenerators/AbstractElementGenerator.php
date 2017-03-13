@@ -6,7 +6,7 @@ use ApiGen\Contracts\EventDispatcher\EventDispatcherInterface;
 use ApiGen\Contracts\Generator\StepCounterInterface;
 use ApiGen\Contracts\Generator\TemplateGenerators\TemplateGeneratorInterface;
 use ApiGen\Contracts\Parser\Elements\ElementStorageInterface;
-use ApiGen\Generator\TemplateGenerators\Loaders\NamespaceAndPackageLoader;
+use ApiGen\Generator\TemplateGenerators\Loaders\NamespaceLoader;
 use ApiGen\Templating\TemplateFactory;
 
 abstract class AbstractElementGenerator implements TemplateGeneratorInterface, StepCounterInterface
@@ -23,9 +23,9 @@ abstract class AbstractElementGenerator implements TemplateGeneratorInterface, S
     protected $elementStorage;
 
     /**
-     * @var NamespaceAndPackageLoader
+     * @var NamespaceLoader
      */
-    protected $namespaceAndPackageLoader;
+    protected $namespaceLoader;
 
     /**
      * @var EventDispatcherInterface
@@ -36,12 +36,12 @@ abstract class AbstractElementGenerator implements TemplateGeneratorInterface, S
     public function __construct(
         TemplateFactory $templateFactory,
         ElementStorageInterface $elementStorage,
-        NamespaceAndPackageLoader $namespaceAndPackageLoader,
+        NamespaceLoader $namespaceLoader,
         EventDispatcherInterface $eventDispatcher
     ) {
         $this->templateFactory = $templateFactory;
         $this->elementStorage = $elementStorage;
-        $this->namespaceAndPackageLoader = $namespaceAndPackageLoader;
+        $this->namespaceLoader = $namespaceLoader;
         $this->eventDispatcher = $eventDispatcher;
     }
 }

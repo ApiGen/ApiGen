@@ -37,10 +37,6 @@ class ThemeConfigOptionsResolver extends Nette\Object
                 'filename' => 'elementlist.js',
                 'template' => 'elementlist.js.latte'
             ],
-            TCO::PACKAGE => [
-                'filename' => 'package-%s.html',
-                'template' => 'package.latte'
-            ],
             TCO::T_NAMESPACE => [
                 'filename' => 'namespace-%s.html',
                 'template' => 'namespace.latte'

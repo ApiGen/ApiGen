@@ -7,7 +7,7 @@ use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Templating\Filters\Helpers\ElementUrlFactory;
-use ApiGen\Templating\Filters\NamespaceAndPackageUrlFilters;
+use ApiGen\Templating\Filters\NamespaceUrlFilters;
 use ApiGen\Templating\Filters\SourceFilters;
 use ApiGen\Templating\TemplateNavigator;
 use ApiGen\Tests\ContainerAwareTestCase;
@@ -39,11 +39,11 @@ class TemplateNavigatorTest extends ContainerAwareTestCase
         $sourceFiltersMock->shouldReceive('sourceUrl')->andReturnUsing(function ($args) {
             return 'source-code-' . $args->getName() . '.html';
         });
-        $namespaceAndPackageUrlFiltersMock = Mockery::mock(NamespaceAndPackageUrlFilters::class);
-        $namespaceAndPackageUrlFiltersMock->shouldReceive('namespaceUrl')->andReturnUsing(function ($args) {
+        $namespaceUrlFiltersMock = Mockery::mock(NamespaceUrlFilters::class);
+        $namespaceUrlFiltersMock->shouldReceive('namespaceUrl')->andReturnUsing(function ($args) {
             return 'namespace-' . $args . '.html';
         });
-        $namespaceAndPackageUrlFiltersMock->shouldReceive('packageUrl')->andReturnUsing(function ($args) {
+        $namespaceUrlFiltersMock->shouldReceive('packageUrl')->andReturnUsing(function ($args) {
             return 'package-' . $args . '.html';
         });
 
@@ -61,7 +61,7 @@ class TemplateNavigatorTest extends ContainerAwareTestCase
             $this->configuration,
             $sourceFiltersMock,
             $elementUrlFactoryMock,
-            $namespaceAndPackageUrlFiltersMock
+            $namespaceUrlFiltersMock
         );
     }
 
@@ -89,15 +89,6 @@ class TemplateNavigatorTest extends ContainerAwareTestCase
         $this->assertSame(
             TEMP_DIR . '/api/namespace-MyNamespace.html',
             $this->templateNavigator->getTemplatePathForNamespace('MyNamespace')
-        );
-    }
-
-
-    public function testGetTemplatePathForPackage()
-    {
-        $this->assertSame(
-            TEMP_DIR . '/api/package-MyPackage.html',
-            $this->templateNavigator->getTemplatePathForPackage('MyPackage')
         );
     }
 

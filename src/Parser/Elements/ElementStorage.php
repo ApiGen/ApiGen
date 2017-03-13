@@ -206,7 +206,7 @@ class ElementStorage implements ElementStorageInterface
                     $elementType = Elements::CLASSES;
                     $this->classes[$elementName] = $element;
                 }
-                $this->categorizeElementToNamespaceAndPackage($elementName, $elementType, $element);
+                $this->categorizeElementToNamespace($elementName, $elementType, $element);
             }
         }
         $this->sortNamespaces();
@@ -220,7 +220,7 @@ class ElementStorage implements ElementStorageInterface
      * @param string $elementType
      * @param ElementReflectionInterface $element
      */
-    private function categorizeElementToNamespaceAndPackage(
+    private function categorizeElementToNamespace(
         $elementName,
         $elementType,
         ElementReflectionInterface $element

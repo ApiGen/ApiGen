@@ -8,7 +8,7 @@ use ApiGen\Contracts\Generator\TemplateGenerators\ConditionalTemplateGeneratorIn
 use ApiGen\Contracts\Parser\Elements\ElementStorageInterface;
 use ApiGen\Generator\Event\GenerateProgressEvent;
 use ApiGen\Generator\Event\GeneratorEvents;
-use ApiGen\Generator\TemplateGenerators\Loaders\NamespaceAndPackageLoader;
+use ApiGen\Generator\TemplateGenerators\Loaders\NamespaceLoader;
 use ApiGen\Templating\TemplateFactory;
 
 class NamespaceGenerator implements ConditionalTemplateGeneratorInterface, StepCounterInterface
@@ -25,9 +25,9 @@ class NamespaceGenerator implements ConditionalTemplateGeneratorInterface, StepC
     private $elementStorage;
 
     /**
-     * @var NamespaceAndPackageLoader
+     * @var NamespaceLoader
      */
-    private $namespaceAndPackageLoader;
+    private $namespaceLoader;
 
     /**
      * @var EventDispatcherInterface
@@ -38,12 +38,12 @@ class NamespaceGenerator implements ConditionalTemplateGeneratorInterface, StepC
     public function __construct(
         TemplateFactory $templateFactory,
         ElementStorageInterface $elementStorage,
-        NamespaceAndPackageLoader $namespaceAndPackageLoader,
+        NamespaceLoader $namespaceLoader,
         EventDispatcherInterface $eventDispatcher
     ) {
         $this->templateFactory = $templateFactory;
         $this->elementStorage = $elementStorage;
-        $this->namespaceAndPackageLoader = $namespaceAndPackageLoader;
+        $this->namespaceLoader = $namespaceLoader;
         $this->eventDispatcher = $eventDispatcher;
     }
 
@@ -55,7 +55,7 @@ class NamespaceGenerator implements ConditionalTemplateGeneratorInterface, StepC
     {
         foreach ($this->elementStorage->getNamespaces() as $name => $namespace) {
             $template = $this->templateFactory->createNamedForElement(TemplateFactory::ELEMENT_NAMESPACE, $name);
-            $template = $this->namespaceAndPackageLoader->loadTemplateWithNamespace($template, $name, $namespace);
+            $template = $this->namespaceLoader->loadTemplateWithNamespace($template, $name, $namespace);
             $template->save();
 
             $this->eventDispatcher->dispatch(new GenerateProgressEvent(GeneratorEvents::ON_GENERATE_PROGRESS));

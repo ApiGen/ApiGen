@@ -7,7 +7,7 @@ use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Parser\Elements\ElementStorage;
 use ApiGen\Templating\Filters\Helpers\LinkBuilder;
 
-class NamespaceAndPackageUrlFilters extends Filters
+class NamespaceUrlFilters extends Filters
 {
 
     /**
