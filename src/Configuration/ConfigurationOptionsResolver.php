@@ -38,7 +38,6 @@ class ConfigurationOptionsResolver
         CO::GROUPS => '',
         CO::MAIN => '',
         CO::INTERNAL => false,
-        CO::PHP => false,
         CO::SOURCE => [],
         CO::NO_SOURCE_CODE => false,
         CO::TEMPLATE => null,
@@ -51,6 +50,7 @@ class ConfigurationOptionsResolver
         // removed, but BC for templates
         'download' => false,
         'tree' => false,
+        'php' => true,
     ];
 
     /**

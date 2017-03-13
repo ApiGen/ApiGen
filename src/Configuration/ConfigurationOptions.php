@@ -19,7 +19,6 @@ class ConfigurationOptions
     const GROUPS = 'groups';
     const MAIN = 'main';
     const INTERNAL = 'internal';
-    const PHP = 'php';
     const SOURCE = 'source';
     const NO_SOURCE_CODE = 'noSourceCode';
     const TEMPLATE = 'template';

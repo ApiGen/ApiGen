@@ -166,7 +166,6 @@ class ReflectionParameterTest extends TestCase
         $configurationMock = Mockery::mock(ConfigurationInterface::class, [
             'getVisibilityLevel' => ReflectionProperty::IS_PUBLIC,
             'isInternalDocumented' => false,
-            'isPhpCoreDocumented' => true
         ]);
         return new ReflectionFactory($configurationMock, $parserStorageMock);
     }

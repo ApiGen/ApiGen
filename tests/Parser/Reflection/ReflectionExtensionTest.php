@@ -48,7 +48,6 @@ class ReflectionExtensionTest extends TestCase
         $parserStorageMock = Mockery::mock(ParserStorageInterface::class);
         $parserConfiguration = Mockery::mock(ConfigurationInterface::class, [
             'getVisibilityLevel' => 1,
-            'isPhpCoreDocumented' => true,
             'isInternalDocumented' => false
         ]);
         return new ReflectionFactory($parserConfiguration, $parserStorageMock);
