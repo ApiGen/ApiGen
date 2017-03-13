@@ -169,16 +169,6 @@ class GenerateCommand extends AbstractCommand
                 'Your own template config, has higher priority than --template-theme.'
             )
             ->addOption('title', null, InputOption::VALUE_REQUIRED, 'Title of generated documentation.')
-
-            /**
-             * @deprecated since version 4.2, to be removed in 5.0
-             */
-            ->addOption(
-                'deprecated',
-                null,
-                InputOption::VALUE_NONE,
-                'Generate documentation for elements marked as @deprecated (deprecated, only present for BC).'
-            )
             ->addOption(
                 'overwrite',
                 'o',
@@ -260,9 +250,6 @@ class GenerateCommand extends AbstractCommand
         $options = $this->convertDashKeysToCamel($cliOptions);
         $options = $this->loadOptionsFromConfig($options);
 
-        $this->warnAboutDeprecatedOptions($options);
-        $options = $this->unsetDeprecatedOptions($options);
-
         return $this->configuration->resolveOptions($options);
     }
 
@@ -341,36 +328,5 @@ class GenerateCommand extends AbstractCommand
                 $this->fileSystem->purgeDir($destination);
             }
         }
-    }
-
-
-    /**
-     * @deprecated since version 4.2, to be removed in 5.0
-     */
-    private function warnAboutDeprecatedOptions(array $options)
-    {
-        if (isset($options['deprecated']) && $options['deprecated']) {
-            $this->io->writeln(
-                '<warning>You are using the deprecated option "deprecated". ' .
-                'Use "--annotation-groups=deprecated" instead</warning>'
-            );
-        }
-
-        if (isset($options['todo']) && $options['todo']) {
-            $this->io->writeln(
-                '<warning>You are using the deprecated option "todo". Use "--annotation-groups=todo" instead</warning>'
-            );
-        }
-    }
-
-
-    /**
-     * @deprecated since version 4.2, to be removed in 5.0
-     *
-     * @return array
-     */
-    private function unsetDeprecatedOptions(array $options)
-    {
-        return $options;
     }
 }
