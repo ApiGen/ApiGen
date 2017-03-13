@@ -25,7 +25,6 @@ class TemplateElementsLoaderTest extends TestCase
     {
         $elementStorageMock = $this->getElementStorageMock();
         $configurationMock = Mockery::mock(Configuration::class);
-        $configurationMock->shouldReceive('getOption')->with(CO::DOWNLOAD)->andReturn(true);
         $configurationMock->shouldReceive('getOption')->with(CO::ANNOTATION_GROUPS)->andReturn(['todo']);
         $configurationMock->shouldReceive('getZipFileName')->andReturn('file.zip');
 
@@ -64,7 +63,6 @@ class TemplateElementsLoaderTest extends TestCase
         $this->assertArrayHasKey('functions', $parameters);
         $this->assertArrayHasKey('elements', $parameters);
 
-        $this->assertSame('file.zip', $parameters['archive']);
         $this->assertSame(['todo'], $parameters['annotationGroups']);
     }
 

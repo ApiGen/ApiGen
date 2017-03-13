@@ -5,6 +5,5 @@ accessLevels:
   - protected
   - private
 baseUrl: http://apigen.org
-download: true
 groups: packages
 php: true

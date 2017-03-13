@@ -32,7 +32,6 @@ class ConfigurationOptionsResolver
         CO::DEPRECATED => false,
         CO::DESTINATION => null,
         CO::FORCE_OVERWRITE => false,
-        CO::DOWNLOAD => false,
         CO::EXCLUDE => [],
         CO::EXTENSIONS => [],
         CO::GOOGLE_CSE_ID => '',
@@ -51,7 +50,9 @@ class ConfigurationOptionsResolver
         CO::TREE => true,
         // helpers
         CO::VISIBILITY_LEVELS => [],
-        CO::SOURCE_CODE => ''
+        CO::SOURCE_CODE => '',
+        // removed, but BC for templates
+        'download' => false
     ];
 
     /**

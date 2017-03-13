@@ -36,7 +36,7 @@ class GenerateCommandExecuteTest extends ContainerAwareTestCase
         $inputMock->shouldReceive('getOptions')->andReturn([
             'config' => null,
             'destination' => TEMP_DIR . '/Api',
-            'source' => __DIR__ . '/Source'
+            'source' => __DIR__ . '/Source',
         ]);
         $outputMock = Mockery::mock(OutputInterface::class);
 
@@ -48,7 +48,9 @@ class GenerateCommandExecuteTest extends ContainerAwareTestCase
 
         $this->assertSame(
             0, // success
-            MethodInvoker::callMethodOnObject($this->generateCommand, 'execute', [$inputMock, $outputMock])
+            MethodInvoker::callMethodOnObject(
+                $this->generateCommand, 'execute', [$inputMock, $outputMock]
+            )
         );
 
         $this->assertFileExists(TEMP_DIR . '/Api/index.html');
@@ -63,7 +65,9 @@ class GenerateCommandExecuteTest extends ContainerAwareTestCase
 
         $this->assertSame(
             1, // failure
-            MethodInvoker::callMethodOnObject($this->generateCommand, 'execute', [$inputMock, $outputMock])
+            MethodInvoker::callMethodOnObject(
+                $this->generateCommand, 'execute', [$inputMock, $outputMock]
+            )
         );
     }
 }
