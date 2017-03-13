@@ -37,7 +37,6 @@ class ConfigurationOptionsResolver
         CO::GROUPS => '',
         CO::MAIN => '',
         CO::INTERNAL => false,
-        CO::PHP => false,
         CO::SOURCE => [],
         CO::NO_SOURCE_CODE => false,
         CO::TEMPLATE => null,

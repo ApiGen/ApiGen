@@ -44,14 +44,6 @@ interface ConfigurationInterface
 
 
     /**
-     * Are PHP Core elements documented.
-     *
-     * @return bool
-     */
-    public function isPhpCoreDocumented();
-
-
-    /**
      * Are elements marked as "@internal" documented.
      *
      * @return bool
