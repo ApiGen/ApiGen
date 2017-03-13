@@ -17,7 +17,6 @@
 		"apigen/theme-default": "1.0.*",
 		"kukulich/fshl": "^2.1",
 		"latte/latte": "^2.3.6",
-		"michelf/php-markdown": "^1.4",
 		"nette/bootstrap": "^2.4",
 		"nette/di": "^2.4",
 		"nette/neon": "^2.4",
