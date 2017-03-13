@@ -180,13 +180,6 @@ class GenerateCommand extends AbstractCommand
                 'Generate documentation for elements marked as @deprecated (deprecated, only present for BC).'
             )
             ->addOption(
-                'skip-doc-path',
-                null,
-                InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
-                'Files matching this mask will be included in class tree,'
-                . ' but will not create a link to their documentation (deprecated, only present for BC).'
-            )
-            ->addOption(
                 'overwrite',
                 'o',
                 InputOption::VALUE_NONE,
@@ -368,12 +361,6 @@ class GenerateCommand extends AbstractCommand
                 '<warning>You are using the deprecated option "todo". Use "--annotation-groups=todo" instead</warning>'
             );
         }
-
-        if (isset($options['skipDocPath']) && $options['skipDocPath']) {
-            $this->io->writeln(
-                '<warning>You are using the deprecated option "skipDocPath". Use "exclude" instead.</warning>'
-            );
-        }
     }
 
 
@@ -384,7 +371,6 @@ class GenerateCommand extends AbstractCommand
      */
     private function unsetDeprecatedOptions(array $options)
     {
-        unset($options['skipDocPath']);
         return $options;
     }
 }
