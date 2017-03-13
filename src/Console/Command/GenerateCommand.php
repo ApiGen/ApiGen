@@ -180,12 +180,6 @@ class GenerateCommand extends AbstractCommand
                 'Generate documentation for elements marked as @deprecated (deprecated, only present for BC).'
             )
             ->addOption(
-                'charset',
-                null,
-                InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
-                'Charset of scanned files (deprecated, only present for BC).'
-            )
-            ->addOption(
                 'skip-doc-path',
                 null,
                 InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
@@ -362,13 +356,6 @@ class GenerateCommand extends AbstractCommand
      */
     private function warnAboutDeprecatedOptions(array $options)
     {
-        if (isset($options['charset']) && $options['charset']) {
-            $this->io->writeln(
-                '<warning>You are using the deprecated option "charset". ' .
-                'UTF-8 is default now.</warning>'
-            );
-        }
-
         if (isset($options['deprecated']) && $options['deprecated']) {
             $this->io->writeln(
                 '<warning>You are using the deprecated option "deprecated". ' .
@@ -397,7 +384,7 @@ class GenerateCommand extends AbstractCommand
      */
     private function unsetDeprecatedOptions(array $options)
     {
-        unset($options['charset'], $options['skipDocPath']);
+        unset($options['skipDocPath']);
         return $options;
     }
 }
