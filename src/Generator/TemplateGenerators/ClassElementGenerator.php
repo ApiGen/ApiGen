@@ -42,7 +42,6 @@ class ClassElementGenerator extends AbstractElementGenerator
         $template = $this->namespaceAndPackageLoader->loadTemplateWithElementNamespaceOrPackage($template, $class);
         $template->setParameters([
             'class' => $class,
-            'tree' => array_merge(array_reverse($class->getParentClasses()), [$class]),
             'directSubClasses' => $class->getDirectSubClasses(),
             'indirectSubClasses' => $class->getIndirectSubClasses(),
             'directImplementers' => $class->getDirectImplementers(),

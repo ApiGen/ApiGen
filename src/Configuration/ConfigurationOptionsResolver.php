@@ -45,7 +45,6 @@ class ConfigurationOptionsResolver
         CO::TEMPLATE_CONFIG => null,
         CO::TEMPLATE_THEME => self::DEFAULT_THEME,
         CO::TITLE => '',
-        CO::TREE => true,
         // helpers
         CO::VISIBILITY_LEVELS => [],
         CO::SOURCE_CODE => '',

@@ -25,14 +25,13 @@ services:
 	g4: ApiGen\Generator\TemplateGenerators\OpensearchGenerator
 	g5: ApiGen\Generator\TemplateGenerators\OverviewGenerator
 	g6: ApiGen\Generator\TemplateGenerators\SourceCodeGenerator
-	g7: ApiGen\Generator\TemplateGenerators\TreeGenerator
 	# elements
-	g8: ApiGen\Generator\TemplateGenerators\ClassElementGenerator
-	g9: ApiGen\Generator\TemplateGenerators\ConstantElementGenerator
-	g10: ApiGen\Generator\TemplateGenerators\FunctionElementGenerator
-	g11: ApiGen\Generator\TemplateGenerators\NamespaceGenerator
-	g12: ApiGen\Generator\TemplateGenerators\PackageGenerator
-	g13: ApiGen\Generator\TemplateGenerators\Loaders\NamespaceAndPackageLoader
+	g7: ApiGen\Generator\TemplateGenerators\ClassElementGenerator
+	g8: ApiGen\Generator\TemplateGenerators\ConstantElementGenerator
+	g0: ApiGen\Generator\TemplateGenerators\FunctionElementGenerator
+	g10: ApiGen\Generator\TemplateGenerators\NamespaceGenerator
+	g11: ApiGen\Generator\TemplateGenerators\PackageGenerator
+	g12: ApiGen\Generator\TemplateGenerators\Loaders\NamespaceAndPackageLoader
 	- ApiGen\Generator\Markups\MarkdownMarkup
 	- Michelf\MarkdownExtra
 

@@ -27,7 +27,6 @@ class ConfigurationOptions
     const TEMPLATE_CONFIG = 'templateConfig';
     const TEMPLATE_THEME = 'templateTheme';
     const TITLE = 'title';
-    const TREE = 'tree';
     const VISIBILITY_LEVELS = 'visibilityLevels';
     const SOURCE_CODE = 'sourceCode';
 }
