@@ -50,7 +50,7 @@ class ConfigurationOptionsResolver
         CO::VISIBILITY_LEVELS => [],
         CO::SOURCE_CODE => '',
         // removed, but BC for templates
-        'download' => false,
+        'download' => false
     ];
 
     /**

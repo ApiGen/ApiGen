@@ -36,7 +36,7 @@ class GenerateCommandExecuteTest extends ContainerAwareTestCase
         $inputMock->shouldReceive('getOptions')->andReturn([
             'config' => null,
             'destination' => TEMP_DIR . '/Api',
-            'source' => __DIR__ . '/Source'
+            'source' => __DIR__ . '/Source',
         ]);
         $outputMock = Mockery::mock(OutputInterface::class);
 
