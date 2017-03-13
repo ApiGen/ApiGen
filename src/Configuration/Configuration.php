@@ -11,7 +11,7 @@ class Configuration implements ConfigurationInterface
     /**
      * @var array
      */
-    private $options = [];
+    private $options;
 
     /**
      * @var ConfigurationOptionsResolver
