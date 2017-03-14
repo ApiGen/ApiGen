@@ -49,7 +49,9 @@ class GenerateCommandExecuteTest extends ContainerAwareTestCase
         $this->assertSame(
             0, // success
             MethodInvoker::callMethodOnObject(
-                $this->generateCommand, 'execute', [$inputMock, $outputMock]
+                $this->generateCommand,
+                'execute',
+                [$inputMock, $outputMock]
             )
         );
 
@@ -66,7 +68,9 @@ class GenerateCommandExecuteTest extends ContainerAwareTestCase
         $this->assertSame(
             1, // failure
             MethodInvoker::callMethodOnObject(
-                $this->generateCommand, 'execute', [$inputMock, $outputMock]
+                $this->generateCommand,
+                'execute',
+                [$inputMock, $outputMock]
             )
         );
     }
