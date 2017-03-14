@@ -48,7 +48,11 @@ class GenerateCommandExecuteTest extends ContainerAwareTestCase
 
         $this->assertSame(
             0, // success
-            MethodInvoker::callMethodOnObject($this->generateCommand, 'execute', [$inputMock, $outputMock])
+            MethodInvoker::callMethodOnObject(
+                $this->generateCommand,
+                'execute',
+                [$inputMock, $outputMock]
+            )
         );
 
         $this->assertFileExists(TEMP_DIR . '/Api/index.html');
@@ -64,7 +68,9 @@ class GenerateCommandExecuteTest extends ContainerAwareTestCase
         $this->assertSame(
             1, // failure
             MethodInvoker::callMethodOnObject(
-                $this->generateCommand, 'execute', [$inputMock, $outputMock]
+                $this->generateCommand,
+                'execute',
+                [$inputMock, $outputMock]
             )
         );
     }
