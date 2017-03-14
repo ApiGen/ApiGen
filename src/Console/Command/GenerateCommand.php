@@ -168,20 +168,6 @@ class GenerateCommand extends AbstractCommand
                 InputOption::VALUE_NONE,
                 'Generate tree view of classes, interfaces, traits and exceptions.'
             )
-
-            ->addOption(
-                'charset',
-                null,
-                InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
-                'Charset of scanned files (deprecated, only present for BC).'
-            )
-            ->addOption(
-                'skip-doc-path',
-                null,
-                InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
-                'Files matching this mask will be included in class tree,'
-                . ' but will not create a link to their documentation (deprecated, only present for BC).'
-            )
             ->addOption(
                 'overwrite',
                 'o',
@@ -263,9 +249,6 @@ class GenerateCommand extends AbstractCommand
         $options = $this->convertDashKeysToCamel($cliOptions);
         $options = $this->loadOptionsFromConfig($options);
 
-        $this->warnAboutDeprecatedOptions($options);
-        $options = $this->unsetDeprecatedOptions($options);
-
         return $this->configuration->resolveOptions($options);
     }
 
@@ -344,37 +327,5 @@ class GenerateCommand extends AbstractCommand
                 $this->fileSystem->purgeDir($destination);
             }
         }
-    }
-
-
-    /**
-     * @deprecated since version 4.2, to be removed in 5.0
-     */
-    private function warnAboutDeprecatedOptions(array $options)
-    {
-        if (isset($options['charset']) && $options['charset']) {
-            $this->io->writeln(
-                '<warning>You are using the deprecated option "charset". ' .
-                'UTF-8 is default now.</warning>'
-            );
-        }
-
-        if (isset($options['skipDocPath']) && $options['skipDocPath']) {
-            $this->io->writeln(
-                '<warning>You are using the deprecated option "skipDocPath". Use "exclude" instead.</warning>'
-            );
-        }
-    }
-
-
-    /**
-     * @deprecated since version 4.2, to be removed in 5.0
-     *
-     * @return array
-     */
-    private function unsetDeprecatedOptions(array $options)
-    {
-        unset($options['charset'], $options['skipDocPath']);
-        return $options;
     }
 }
