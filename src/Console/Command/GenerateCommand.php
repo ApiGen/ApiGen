@@ -141,20 +141,12 @@ class GenerateCommand extends AbstractCommand
                 'Directories and files matching this mask will not be parsed (e.g. */tests/*).'
             )
             ->addOption(
-                'groups',
-                null,
-                InputOption::VALUE_REQUIRED,
-                'The way elements are grouped in menu [options: namespaces, packages].',
-                'namespaces'
-            )
-            ->addOption(
                 'main',
                 null,
                 InputOption::VALUE_REQUIRED,
                 'Elements with this name prefix will be first in tree.'
             )
             ->addOption('internal', null, InputOption::VALUE_NONE, 'Include elements marked as @internal.')
-            ->addOption('php', null, InputOption::VALUE_NONE, 'Generate documentation for PHP internal classes.')
             ->addOption(
                 'noSourceCode',
                 null,
@@ -169,35 +161,6 @@ class GenerateCommand extends AbstractCommand
                 'Your own template config, has higher priority than --template-theme.'
             )
             ->addOption('title', null, InputOption::VALUE_REQUIRED, 'Title of generated documentation.')
-            ->addOption(
-                'tree',
-                null,
-                InputOption::VALUE_NONE,
-                'Generate tree view of classes, interfaces, traits and exceptions.'
-            )
-
-            /**
-             * @deprecated since version 4.2, to be removed in 5.0
-             */
-            ->addOption(
-                'deprecated',
-                null,
-                InputOption::VALUE_NONE,
-                'Generate documentation for elements marked as @deprecated (deprecated, only present for BC).'
-            )
-            ->addOption(
-                'charset',
-                null,
-                InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
-                'Charset of scanned files (deprecated, only present for BC).'
-            )
-            ->addOption(
-                'skip-doc-path',
-                null,
-                InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
-                'Files matching this mask will be included in class tree,'
-                . ' but will not create a link to their documentation (deprecated, only present for BC).'
-            )
             ->addOption(
                 'overwrite',
                 'o',
@@ -279,9 +242,6 @@ class GenerateCommand extends AbstractCommand
         $options = $this->convertDashKeysToCamel($cliOptions);
         $options = $this->loadOptionsFromConfig($options);
 
-        $this->warnAboutDeprecatedOptions($options);
-        $options = $this->unsetDeprecatedOptions($options);
-
         return $this->configuration->resolveOptions($options);
     }
 
@@ -360,50 +320,5 @@ class GenerateCommand extends AbstractCommand
                 $this->fileSystem->purgeDir($destination);
             }
         }
-    }
-
-
-    /**
-     * @deprecated since version 4.2, to be removed in 5.0
-     */
-    private function warnAboutDeprecatedOptions(array $options)
-    {
-        if (isset($options['charset']) && $options['charset']) {
-            $this->io->writeln(
-                '<warning>You are using the deprecated option "charset". ' .
-                'UTF-8 is default now.</warning>'
-            );
-        }
-
-        if (isset($options['deprecated']) && $options['deprecated']) {
-            $this->io->writeln(
-                '<warning>You are using the deprecated option "deprecated". ' .
-                'Use "--annotation-groups=deprecated" instead</warning>'
-            );
-        }
-
-        if (isset($options['todo']) && $options['todo']) {
-            $this->io->writeln(
-                '<warning>You are using the deprecated option "todo". Use "--annotation-groups=todo" instead</warning>'
-            );
-        }
-
-        if (isset($options['skipDocPath']) && $options['skipDocPath']) {
-            $this->io->writeln(
-                '<warning>You are using the deprecated option "skipDocPath". Use "exclude" instead.</warning>'
-            );
-        }
-    }
-
-
-    /**
-     * @deprecated since version 4.2, to be removed in 5.0
-     *
-     * @return array
-     */
-    private function unsetDeprecatedOptions(array $options)
-    {
-        unset($options['charset'], $options['skipDocPath']);
-        return $options;
     }
 }

@@ -71,8 +71,6 @@ abstract class AbstractReflectionClassTestCase extends TestCase
         $configurationMock = Mockery::mock(ConfigurationInterface::class, [
             'getVisibilityLevel' => ReflectionProperty::IS_PUBLIC | ReflectionProperty::IS_PROTECTED,
             'isInternalDocumented' => false,
-            'isPhpCoreDocumented' => true,
-            'isDeprecatedDocumented' => true
         ]);
         return new ReflectionFactory($configurationMock, $parserStorageMock);
     }

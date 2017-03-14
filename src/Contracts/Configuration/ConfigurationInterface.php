@@ -44,14 +44,6 @@ interface ConfigurationInterface
 
 
     /**
-     * Are PHP Core elements documented.
-     *
-     * @return bool
-     */
-    public function isPhpCoreDocumented();
-
-
-    /**
      * Are elements marked as "@internal" documented.
      *
      * @return bool
@@ -60,41 +52,11 @@ interface ConfigurationInterface
 
 
     /**
-     * Are elements marked as "@deprecated" documented.
-     *
-     * @return bool
-     */
-    public function isDeprecatedDocumented();
-
-
-    /**
-     * Is grouping by namespaces enabled.
-     *
-     * @return bool
-     */
-    public function areNamespacesEnabled();
-
-
-    /**
-     * Is grouping by packages enabled.
-     *
-     * @return bool
-     */
-    public function arePackagesEnabled();
-
-
-    /**
      * List of annotations.
      *
      * @return string[]
      */
     public function getAnnotationGroups();
-
-
-    /**
-     * @return bool
-     */
-    public function isTreeAllowed();
 
 
     /**

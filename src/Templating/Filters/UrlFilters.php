@@ -8,7 +8,6 @@ use ApiGen\Contracts\Generator\Resolvers\ElementResolverInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
-use ApiGen\Generator\Markups\Markup;
 use ApiGen\Generator\SourceCodeHighlighter\SourceCodeHighlighter;
 use ApiGen\Templating\Filters\Helpers\ElementLinkFactory;
 use ApiGen\Templating\Filters\Helpers\LinkBuilder;
@@ -23,11 +22,6 @@ class UrlFilters extends Filters
      * @var SourceCodeHighlighter
      */
     private $highlighter;
-
-    /**
-     * @var Markup
-     */
-    private $markup;
 
     /**
      * @var ElementResolverInterface
@@ -53,13 +47,11 @@ class UrlFilters extends Filters
     public function __construct(
         Configuration $configuration,
         SourceCodeHighlighter $highlighter,
-        Markup $markup,
         ElementResolverInterface $elementResolver,
         LinkBuilder $linkBuilder,
         ElementLinkFactory $elementLinkFactory
     ) {
         $this->highlighter = $highlighter;
-        $this->markup = $markup;
         $this->elementResolver = $elementResolver;
         $this->configuration = $configuration;
         $this->linkBuilder = $linkBuilder;
@@ -175,12 +167,11 @@ class UrlFilters extends Filters
 
     /**
      * @param ElementReflectionInterface $reflectionElement
-     * @param bool $block
      * @return string
      */
-    public function shortDescription(ElementReflectionInterface $reflectionElement, $block = false)
+    public function shortDescription(ElementReflectionInterface $reflectionElement)
     {
-        return $this->doc($reflectionElement->getShortDescription(), $reflectionElement, $block);
+        return $this->doc($reflectionElement->getShortDescription(), $reflectionElement);
     }
 
 
@@ -198,7 +189,7 @@ class UrlFilters extends Filters
                 : $matches[0];
         }, $long);
 
-        return $this->doc($long, $element, true);
+        return $this->doc($long, $element);
     }
 
 
@@ -208,19 +199,11 @@ class UrlFilters extends Filters
     /**
      * @param string $text
      * @param ElementReflectionInterface $reflectionElement
-     * @param bool $block
      * @return string
      */
-    public function doc($text, ElementReflectionInterface $reflectionElement, $block = false)
+    public function doc($text, ElementReflectionInterface $reflectionElement)
     {
         $text = $this->resolveInternalAnnotation($text);
-
-        // Process markup
-        if ($block) {
-            $text = $this->markup->block($text);
-        } else {
-            $text = $this->markup->line($text);
-        }
 
         return $this->resolveLinkAndSeeAnnotation($text, $reflectionElement);
     }

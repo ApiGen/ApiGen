@@ -28,29 +28,25 @@ class ConfigurationOptionsResolver
         CO::BASE_URL => '',
         CO::CONFIG => '',
         CO::DEBUG => false,
-        CO::DEPRECATED => false,
         CO::DESTINATION => null,
         CO::FORCE_OVERWRITE => false,
         CO::EXCLUDE => [],
         CO::EXTENSIONS => [],
         CO::GOOGLE_CSE_ID => '',
         CO::GOOGLE_ANALYTICS => '',
-        CO::GROUPS => '',
         CO::MAIN => '',
         CO::INTERNAL => false,
-        CO::PHP => false,
         CO::SOURCE => [],
         CO::NO_SOURCE_CODE => false,
         CO::TEMPLATE => null,
         CO::TEMPLATE_CONFIG => null,
         CO::TEMPLATE_THEME => self::DEFAULT_THEME,
         CO::TITLE => '',
-        CO::TREE => true,
         // helpers
         CO::VISIBILITY_LEVELS => [],
         CO::SOURCE_CODE => '',
         // removed, but BC for templates
-        'download' => false,
+        'download' => false
     ];
 
     /**
@@ -180,9 +176,7 @@ class ConfigurationOptionsResolver
     {
         $this->resolver->setNormalizer(CO::ANNOTATION_GROUPS, function (Options $options, $value) {
             $value = (array) $value;
-            if ($options[CO::DEPRECATED]) {
-                $value[] = CO::DEPRECATED;
-            }
+            $value[] = 'deprecated';
             return array_unique($value);
         });
 

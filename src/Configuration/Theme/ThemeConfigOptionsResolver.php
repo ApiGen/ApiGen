@@ -37,10 +37,6 @@ class ThemeConfigOptionsResolver extends Nette\Object
                 'filename' => 'elementlist.js',
                 'template' => 'elementlist.js.latte'
             ],
-            TCO::PACKAGE => [
-                'filename' => 'package-%s.html',
-                'template' => 'package.latte'
-            ],
             TCO::T_NAMESPACE => [
                 'filename' => 'namespace-%s.html',
                 'template' => 'namespace.latte'
@@ -64,10 +60,6 @@ class ThemeConfigOptionsResolver extends Nette\Object
             TCO::SOURCE => [
                 'filename' => 'source-%s.html',
                 'template' => 'source.latte'
-            ],
-            TCO::TREE => [
-                'filename' => 'tree.html',
-                'template' => 'tree.latte'
             ],
             TCO::OPENSEARCH => [
                 'filename' => 'opensearch.xml',

@@ -3,7 +3,6 @@
 namespace ApiGen\Configuration;
 
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
-use Nette\Utils\Strings;
 
 class Configuration implements ConfigurationInterface
 {
@@ -11,7 +10,7 @@ class Configuration implements ConfigurationInterface
     /**
      * @var array
      */
-    private $options = [];
+    private $options;
 
     /**
      * @var ConfigurationOptionsResolver
@@ -72,24 +71,6 @@ class Configuration implements ConfigurationInterface
     /**
      * {@inheritdoc}
      */
-    public function areNamespacesEnabled()
-    {
-        return $this->getOption('groups') === 'namespaces';
-    }
-
-
-    /**
-     * {@inheritdoc}
-     */
-    public function arePackagesEnabled()
-    {
-        return $this->getOption('groups') === 'packages';
-    }
-
-
-    /**
-     * {@inheritdoc}
-     */
     public function getVisibilityLevel()
     {
         return $this->options['visibilityLevels'];
@@ -108,15 +89,6 @@ class Configuration implements ConfigurationInterface
     /**
      * {@inheritdoc}
      */
-    public function isPhpCoreDocumented()
-    {
-        return (bool) $this->getOption('php');
-    }
-
-
-    /**
-     * {@inheritdoc}
-     */
     public function isInternalDocumented()
     {
         return (bool) $this->getOption('internal');
@@ -126,27 +98,9 @@ class Configuration implements ConfigurationInterface
     /**
      * {@inheritdoc}
      */
-    public function isDeprecatedDocumented()
-    {
-        return (bool) $this->getOption('deprecated');
-    }
-
-
-    /**
-     * {@inheritdoc}
-     */
     public function getAnnotationGroups()
     {
         return $this->options['annotationGroups'];
-    }
-
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isTreeAllowed()
-    {
-        return $this->options['tree'];
     }
 
 

@@ -54,7 +54,6 @@ class TemplateElementsLoaderTest extends TestCase
         $this->assertArrayHasKey('constant', $parameters);
         $this->assertArrayHasKey('function', $parameters);
         $this->assertArrayHasKey('namespaces', $parameters);
-        $this->assertArrayHasKey('packages', $parameters);
         $this->assertArrayHasKey('classes', $parameters);
         $this->assertArrayHasKey('interfaces', $parameters);
         $this->assertArrayHasKey('traits', $parameters);

@@ -102,12 +102,6 @@ class ReflectionMethodMagicTest extends TestCase
     }
 
 
-    public function testGetPackageName()
-    {
-        $this->assertSame('Some\Package', $this->reflectionMethodMagic->getPackageName());
-    }
-
-
     public function testGetNamespaceName()
     {
         $this->assertSame('Project', $this->reflectionMethodMagic->getNamespaceName());
@@ -219,8 +213,6 @@ class ReflectionMethodMagicTest extends TestCase
         $configurationMock = Mockery::mock(ConfigurationInterface::class, [
             'getVisibilityLevel' => ReflectionProperty::IS_PUBLIC,
             'isInternalDocumented' => false,
-            'isPhpCoreDocumented' => true,
-            'isDeprecatedDocumented' => false
         ]);
         return new ReflectionFactory($configurationMock, $parserStorageMock);
     }

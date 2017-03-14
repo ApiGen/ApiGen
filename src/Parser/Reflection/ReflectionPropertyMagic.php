@@ -145,15 +145,6 @@ class ReflectionPropertyMagic extends ReflectionProperty implements MagicPropert
     /**
      * {@inheritdoc}
      */
-    public function getPackageName()
-    {
-        return $this->declaringClass->getPackageName();
-    }
-
-
-    /**
-     * {@inheritdoc}
-     */
     public function getNamespaceName()
     {
         return $this->declaringClass->getNamespaceName();

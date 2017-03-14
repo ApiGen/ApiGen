@@ -140,7 +140,6 @@ class ReflectionMethodTest extends TestCase
     {
         $configurationMock = Mockery::mock(ConfigurationInterface::class, [
             'getVisibilityLevel' => 256,
-            'isPhpCoreDocumented' => true,
             'isInternalDocumented' => false
         ]);
         return $configurationMock;

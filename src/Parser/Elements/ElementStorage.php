@@ -2,7 +2,6 @@
 
 namespace ApiGen\Parser\Elements;
 
-use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Generator\Resolvers\ElementResolverInterface;
 use ApiGen\Contracts\Parser\Elements\ElementStorageInterface;
 use ApiGen\Contracts\Parser\Elements\GroupSorterInterface;
@@ -19,11 +18,6 @@ class ElementStorage implements ElementStorageInterface
      * @var array
      */
     private $namespaces = [];
-
-    /**
-     * @var array
-     */
-    private $packages = [];
 
     /**
      * @var ClassReflectionInterface[]
@@ -66,11 +60,6 @@ class ElementStorage implements ElementStorageInterface
     private $parserStorage;
 
     /**
-     * @var ConfigurationInterface
-     */
-    private $configuration;
-
-    /**
      * @var GroupSorterInterface
      */
     private $groupSorter;
@@ -83,12 +72,10 @@ class ElementStorage implements ElementStorageInterface
 
     public function __construct(
         ParserStorageInterface $parserResult,
-        ConfigurationInterface $configuration,
         GroupSorterInterface $groupSorter,
         ElementResolverInterface $elementResolver
     ) {
         $this->parserStorage = $parserResult;
-        $this->configuration = $configuration;
         $this->groupSorter = $groupSorter;
         $this->elementResolver = $elementResolver;
     }
@@ -101,16 +88,6 @@ class ElementStorage implements ElementStorageInterface
     {
         $this->ensureCategorization();
         return $this->namespaces;
-    }
-
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPackages()
-    {
-        $this->ensureCategorization();
-        return $this->packages;
     }
 
 
@@ -229,10 +206,10 @@ class ElementStorage implements ElementStorageInterface
                     $elementType = Elements::CLASSES;
                     $this->classes[$elementName] = $element;
                 }
-                $this->categorizeElementToNamespaceAndPackage($elementName, $elementType, $element);
+                $this->categorizeElementToNamespace($elementName, $elementType, $element);
             }
         }
-        $this->sortNamespacesAndPackages();
+        $this->sortNamespaces();
         $this->areElementsCategorized = true;
         $this->addUsedByAnnotation();
     }
@@ -243,58 +220,19 @@ class ElementStorage implements ElementStorageInterface
      * @param string $elementType
      * @param ElementReflectionInterface $element
      */
-    private function categorizeElementToNamespaceAndPackage(
+    private function categorizeElementToNamespace(
         $elementName,
         $elementType,
         ElementReflectionInterface $element
     ) {
-        $packageName = $element->getPseudoPackageName();
-        $this->packages[$packageName][$elementType][$elementName] = $element;
-
         $namespaceName = $element->getPseudoNamespaceName();
         $this->namespaces[$namespaceName][$elementType][$element->getShortName()] = $element;
     }
 
 
-    private function sortNamespacesAndPackages()
+    private function sortNamespaces()
     {
-        $areNamespacesEnabled = $this->configuration->areNamespacesEnabled(
-            $this->getNamespaceCount(),
-            $this->getPackageCount()
-        );
-
-        $arePackagesEnabled = $this->configuration->arePackagesEnabled($areNamespacesEnabled);
-
-        if ($areNamespacesEnabled) {
-            $this->namespaces = $this->groupSorter->sort($this->namespaces);
-            $this->packages = [];
-        } elseif ($arePackagesEnabled) {
-            $this->namespaces = [];
-            $this->packages = $this->groupSorter->sort($this->packages);
-        } else {
-            $this->namespaces = [];
-            $this->packages = [];
-        }
-    }
-
-
-    /**
-     * @return int
-     */
-    private function getNamespaceCount()
-    {
-        $nonDefaultNamespaces = array_diff(array_keys($this->namespaces), ['PHP', 'None']);
-        return count($nonDefaultNamespaces);
-    }
-
-
-    /**
-     * @return int
-     */
-    private function getPackageCount()
-    {
-        $nonDefaultPackages = array_diff(array_keys($this->packages), ['PHP', 'None']);
-        return count($nonDefaultPackages);
+        $this->namespaces = $this->groupSorter->sort($this->namespaces);
     }
 
 
