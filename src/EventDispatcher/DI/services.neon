@@ -1,3 +1,0 @@
-services:
-	- Symfony\Component\EventDispatcher\EventDispatcher
-	- ApiGen\EventDispatcher\SymfonyEventDispatcher

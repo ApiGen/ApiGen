@@ -1,7 +1,0 @@
-services:
-	- ApiGen\EventDispatcher\Tests\EventDispatcher\DispatchSource\Subscriber
-	- ApiGen\EventDispatcher\Tests\EventDispatcher\DispatchSource\SomeService
-	cacheStorage: Nette\Caching\Storages\DevNullStorage
-
-extensions:
-	- ApiGen\EventDispatcher\DI\EventDispatcherExtension

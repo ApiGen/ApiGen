@@ -8,12 +8,14 @@ use ApiGen\Contracts\Generator\Resolvers\ElementResolverInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
+use ApiGen\Event\ProcessDocTextEvent;
 use ApiGen\Generator\SourceCodeHighlighter\SourceCodeHighlighter;
 use ApiGen\Templating\Filters\Helpers\ElementLinkFactory;
 use ApiGen\Templating\Filters\Helpers\LinkBuilder;
 use ApiGen\Templating\Filters\Helpers\Strings;
 use Latte\Runtime\Filters as LatteFilters;
 use Nette\Utils\Validators;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class UrlFilters extends Filters
 {
@@ -43,19 +45,26 @@ class UrlFilters extends Filters
      */
     private $elementLinkFactory;
 
+    /**
+     * @var EventDispatcherInterface
+     */
+    private $eventDispatcher;
+
 
     public function __construct(
         Configuration $configuration,
         SourceCodeHighlighter $highlighter,
         ElementResolverInterface $elementResolver,
         LinkBuilder $linkBuilder,
-        ElementLinkFactory $elementLinkFactory
+        ElementLinkFactory $elementLinkFactory,
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->highlighter = $highlighter;
         $this->elementResolver = $elementResolver;
         $this->configuration = $configuration;
         $this->linkBuilder = $linkBuilder;
         $this->elementLinkFactory = $elementLinkFactory;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
 
@@ -207,7 +216,10 @@ class UrlFilters extends Filters
     {
         $text = $this->resolveInternalAnnotation($text);
 
-        return $this->resolveLinkAndSeeAnnotation($text, $reflectionElement);
+        $processDocTextEvent = new ProcessDocTextEvent($text, $reflectionElement);
+        $this->eventDispatcher->dispatch(ProcessDocTextEvent::class, $processDocTextEvent);
+
+        return $this->resolveLinkAndSeeAnnotation($processDocTextEvent->getText(), $reflectionElement);
     }
 
 
