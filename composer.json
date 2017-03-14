@@ -25,7 +25,8 @@
 		"symfony/event-dispatcher": "^3.2",
 		"symfony/options-resolver": "^3.2",
 		"symfony/yaml": "^3.2",
-		"tracy/tracy": "^2.3"
+		"tracy/tracy": "^2.3",
+		"symplify/symfony-event-dispatcher": "^1.4"
 	},
 	"require-dev": {
 		"mockery/mockery": "^0.9",
