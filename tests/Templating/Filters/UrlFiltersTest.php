@@ -9,7 +9,6 @@ use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
-use ApiGen\Generator\Markups\Markup;
 use ApiGen\Generator\SourceCodeHighlighter\SourceCodeHighlighter;
 use ApiGen\Parser\Reflection\ReflectionElement;
 use ApiGen\Templating\Filters\Helpers\ElementLinkFactory;
@@ -32,7 +31,6 @@ class UrlFiltersTest extends TestCase
 
     protected function setUp()
     {
-        $markupMock = $this->getMarkupMock();
         $sourceCodeHighlighterMock = Mockery::mock(SourceCodeHighlighter::class);
         $sourceCodeHighlighterMock->shouldReceive('highlight')->andReturnUsing(function ($arg) {
             return 'Highlighted: ' . $arg;
@@ -65,7 +63,6 @@ class UrlFiltersTest extends TestCase
         $this->urlFilters = new UrlFilters(
             $this->getConfigurationMock(),
             $sourceCodeHighlighterMock,
-            $markupMock,
             $elementResolverMock,
             new LinkBuilder,
             $elementLinkFactoryMock
@@ -76,8 +73,7 @@ class UrlFiltersTest extends TestCase
     public function testDoc()
     {
         $reflectionClassMock = Mockery::mock(ClassReflectionInterface::class);
-        $this->assertSame('Markupped: ...', $this->urlFilters->doc('...', $reflectionClassMock, true));
-        $this->assertSame('Markupped line: ...', $this->urlFilters->doc('...', $reflectionClassMock));
+        $this->assertSame('...', $this->urlFilters->doc('...', $reflectionClassMock));
     }
 
 
@@ -157,7 +153,7 @@ DOC;
 
         $reflectionElementMock = Mockery::mock(ElementReflectionInterface::class);
         $expected = <<<EXP
-Markupped line: * Some annotation
+* Some annotation
  * with more rows
  */
 EXP;
@@ -171,12 +167,12 @@ EXP;
         $reflectionElementMock->shouldReceive('getShortDescription')->andReturn('Some short description');
 
         $this->assertSame(
-            'Markupped line: Some short description',
+            'Some short description',
             $this->urlFilters->shortDescription($reflectionElementMock)
         );
 
         $this->assertSame(
-            'Markupped: Some short description',
+            'Some short description',
             $this->urlFilters->shortDescription($reflectionElementMock, true)
         );
     }
@@ -192,7 +188,7 @@ DOC;
         $reflectionElementMock->shouldReceive('getLongDescription')->andReturn($longDescription);
 
         $expected = <<<EXPECTED
-Markupped: Some long description with example:
+Some long description with example:
 <code>echo "hi";</code>
 EXPECTED;
         $this->assertSame($expected, $this->urlFilters->longDescription($reflectionElementMock));
@@ -293,12 +289,12 @@ EXPECTED;
     {
         return [
             ['ApiGen\ApiGen', 'return', self::APIGEN_LINK],
-            ['ApiGen\ApiGen special class', 'return', self::APIGEN_LINK . '<br>Markupped line: special class'],
+            ['ApiGen\ApiGen special class', 'return', self::APIGEN_LINK . '<br>special class'],
             ['ApiGen\ApiGen', 'throws', self::APIGEN_LINK],
             ['...', 'return', '...'],
             ['http://licence.com MIT', 'license', '<a href="http://licence.com">MIT</a>'],
             ['http://licence.com MIT', 'link', '<a href="http://licence.com">MIT</a>'],
-            ['ApiGen\ApiGen', 'link', 'Markupped line: ApiGen\ApiGen'],
+            ['ApiGen\ApiGen', 'link', 'ApiGen\ApiGen'],
             ['ApiGen\ApiGen', 'see', self::APIGEN_LINK],
             ['ApiGen\ApiGen', 'uses', self::APIGEN_LINK],
             ['ApiGen\ApiGen', 'usedby', self::APIGEN_LINK]
@@ -337,22 +333,6 @@ EXPECTED;
             }
         });
         return $elementResolverMock;
-    }
-
-
-    /**
-     * @return Mockery\MockInterface
-     */
-    private function getMarkupMock()
-    {
-        $markupMock = Mockery::mock(Markup::class);
-        $markupMock->shouldReceive('block')->andReturnUsing(function ($arg) {
-            return 'Markupped: ' . $arg;
-        });
-        $markupMock->shouldReceive('line')->andReturnUsing(function ($arg) {
-            return 'Markupped line: ' . $arg;
-        });
-        return $markupMock;
     }
 
 
