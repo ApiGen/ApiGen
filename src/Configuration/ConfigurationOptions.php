@@ -10,7 +10,6 @@ class ConfigurationOptions
     const CONFIG = 'config';
     const BASE_URL = 'baseUrl';
     const DEBUG = 'debug';
-    const DEPRECATED = 'deprecated';
     const DESTINATION = 'destination';
     const FORCE_OVERWRITE = 'overwrite';
     const EXCLUDE = 'exclude';

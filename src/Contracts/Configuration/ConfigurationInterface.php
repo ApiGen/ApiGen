@@ -60,14 +60,6 @@ interface ConfigurationInterface
 
 
     /**
-     * Are elements marked as "@deprecated" documented.
-     *
-     * @return bool
-     */
-    public function isDeprecatedDocumented();
-
-
-    /**
      * List of annotations.
      *
      * @return string[]
