@@ -10,7 +10,7 @@ use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Templating\Filters\Helpers\ElementUrlFactory;
-use ApiGen\Templating\Filters\NamespaceAndPackageUrlFilters;
+use ApiGen\Templating\Filters\NamespaceUrlFilters;
 use ApiGen\Templating\Filters\SourceFilters;
 
 class TemplateNavigator
@@ -32,21 +32,21 @@ class TemplateNavigator
     private $elementUrlFactory;
 
     /**
-     * @var NamespaceAndPackageUrlFilters
+     * @var NamespaceUrlFilters
      */
-    private $namespaceAndPackageUrlFilters;
+    private $namespaceUrlFilters;
 
 
     public function __construct(
         Configuration $configuration,
         SourceFilters $sourceFilters,
         ElementUrlFactory $elementUrlFactory,
-        NamespaceAndPackageUrlFilters $namespaceAndPackageUrlFilters
+        NamespaceUrlFilters $namespaceUrlFilters
     ) {
         $this->configuration = $configuration;
         $this->sourceFilters = $sourceFilters;
         $this->elementUrlFactory = $elementUrlFactory;
-        $this->namespaceAndPackageUrlFilters = $namespaceAndPackageUrlFilters;
+        $this->namespaceUrlFilters = $namespaceUrlFilters;
     }
 
 
@@ -78,17 +78,7 @@ class TemplateNavigator
      */
     public function getTemplatePathForNamespace($namespace)
     {
-        return $this->getDestination() . '/' . $this->namespaceAndPackageUrlFilters->namespaceUrl($namespace);
-    }
-
-
-    /**
-     * @param string $package
-     * @return string
-     */
-    public function getTemplatePathForPackage($package)
-    {
-        return $this->getDestination() . '/' . $this->namespaceAndPackageUrlFilters->packageUrl($package);
+        return $this->getDestination() . '/' . $this->namespaceUrlFilters->namespaceUrl($namespace);
     }
 
 

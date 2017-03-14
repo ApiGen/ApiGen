@@ -70,11 +70,6 @@ class TemplateFactoryTest extends TestCase
             Template::class,
             $this->templateFactory->createNamedForElement(TemplateFactory::ELEMENT_NAMESPACE, $reflectionClassMock)
         );
-
-        $this->assertInstanceOf(
-            Template::class,
-            $this->templateFactory->createNamedForElement(TemplateFactory::ELEMENT_PACKAGE, $reflectionClassMock)
-        );
     }
 
 

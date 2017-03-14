@@ -18,13 +18,6 @@ interface TemplateRouterInterface
 
 
     /**
-     * @param string $name
-     * @return string
-     */
-    public function getPackageRoute($name);
-
-
-    /**
      * @return string
      */
     public function getClassRoute(ClassReflectionInterface $classReflection);

@@ -3,7 +3,6 @@
 namespace ApiGen\Configuration;
 
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
-use Nette\Utils\Strings;
 
 class Configuration implements ConfigurationInterface
 {
@@ -66,24 +65,6 @@ class Configuration implements ConfigurationInterface
     public function setOptions(array $options)
     {
         $this->options = $options;
-    }
-
-
-    /**
-     * {@inheritdoc}
-     */
-    public function areNamespacesEnabled()
-    {
-        return $this->getOption('groups') === 'namespaces';
-    }
-
-
-    /**
-     * {@inheritdoc}
-     */
-    public function arePackagesEnabled()
-    {
-        return $this->getOption('groups') === 'packages';
     }
 
 

@@ -68,22 +68,6 @@ interface ConfigurationInterface
 
 
     /**
-     * Is grouping by namespaces enabled.
-     *
-     * @return bool
-     */
-    public function areNamespacesEnabled();
-
-
-    /**
-     * Is grouping by packages enabled.
-     *
-     * @return bool
-     */
-    public function arePackagesEnabled();
-
-
-    /**
      * List of annotations.
      *
      * @return string[]

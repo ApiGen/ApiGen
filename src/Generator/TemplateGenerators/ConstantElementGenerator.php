@@ -39,7 +39,7 @@ class ConstantElementGenerator extends AbstractElementGenerator
      */
     private function loadTemplateWithParameters(Template $template, ConstantReflectionInterface $constant)
     {
-        $template = $this->namespaceAndPackageLoader->loadTemplateWithElementNamespaceOrPackage($template, $constant);
+        $template = $this->namespaceLoader->loadTemplateWithElementNamespace($template, $constant);
         $template->setParameters([
             'constant' => $constant
         ]);

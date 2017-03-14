@@ -31,8 +31,7 @@ services:
 	g9: ApiGen\Generator\TemplateGenerators\ConstantElementGenerator
 	g10: ApiGen\Generator\TemplateGenerators\FunctionElementGenerator
 	g11: ApiGen\Generator\TemplateGenerators\NamespaceGenerator
-	g12: ApiGen\Generator\TemplateGenerators\PackageGenerator
-	g13: ApiGen\Generator\TemplateGenerators\Loaders\NamespaceAndPackageLoader
+	g12: ApiGen\Generator\TemplateGenerators\Loaders\NamespaceLoader
 	- ApiGen\Generator\Markups\MarkdownMarkup
 	- Michelf\MarkdownExtra
 
@@ -49,7 +48,7 @@ services:
 	- ApiGen\Templating\Filters\ResolverFilters
 	- ApiGen\Templating\Filters\SourceFilters
 	- ApiGen\Templating\Filters\UrlFilters
-	- ApiGen\Templating\Filters\NamespaceAndPackageUrlFilters
+	- ApiGen\Templating\Filters\NamespaceUrlFilters
 	- ApiGen\Templating\Filters\ElementUrlFilters
 
 	# theme

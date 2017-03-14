@@ -5,22 +5,22 @@ namespace ApiGen\Tests\Templating\Filters;
 use ApiGen\Configuration\Configuration;
 use ApiGen\Parser\Elements\ElementStorage;
 use ApiGen\Templating\Filters\Helpers\LinkBuilder;
-use ApiGen\Templating\Filters\NamespaceAndPackageUrlFilters;
+use ApiGen\Templating\Filters\NamespaceUrlFilters;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 
-class NamespaceAndPackageUrlFiltersTest extends TestCase
+class NamespaceUrlFiltersTest extends TestCase
 {
 
     /**
-     * @var NamespaceAndPackageUrlFilters
+     * @var NamespaceUrlFilters
      */
-    private $namespaceAndPackageUrlFilters;
+    private $namespaceUrlFilters;
 
 
     protected function setUp()
     {
-        $this->namespaceAndPackageUrlFilters = new NamespaceAndPackageUrlFilters(
+        $this->namespaceUrlFilters = new NamespaceUrlFilters(
             $this->getConfigurationMock(),
             new LinkBuilder,
             $this->getElementStorageMock(1, 1)
@@ -28,46 +28,11 @@ class NamespaceAndPackageUrlFiltersTest extends TestCase
     }
 
 
-    public function testPackageUrl()
-    {
-        $this->assertSame(
-            'package-Long.Package',
-            $this->namespaceAndPackageUrlFilters->packageUrl('Long\\Package')
-        );
-    }
-
-
-    public function testPackageLinks()
-    {
-        $this->assertSame(
-            '<a href="package-Long">Long</a>\<a href="package-Long.Package">Package</a>',
-            $this->namespaceAndPackageUrlFilters->packageLinks('Long\\Package')
-        );
-
-        $this->assertSame(
-            '<a href="package-Long">Long</a>\Package',
-            $this->namespaceAndPackageUrlFilters->packageLinks('Long\\Package', false)
-        );
-    }
-
-
-    public function testPackageLinksWithNoPackages()
-    {
-        $namespaceAndPackageUrlFilters = new NamespaceAndPackageUrlFilters(
-            $this->getConfigurationMock(),
-            new LinkBuilder,
-            $this->getElementStorageMock(0, 0)
-        );
-
-        $this->assertSame('Long\\Package', $namespaceAndPackageUrlFilters->packageLinks('Long\\Package'));
-    }
-
-
     public function testNamespaceUrl()
     {
         $this->assertSame(
             'namespace-Long.Namespace',
-            $this->namespaceAndPackageUrlFilters->namespaceUrl('Long\\Namespace')
+            $this->namespaceUrlFilters->namespaceUrl('Long\\Namespace')
         );
     }
 
@@ -76,32 +41,32 @@ class NamespaceAndPackageUrlFiltersTest extends TestCase
     {
         $this->assertSame(
             '<a href="namespace-Long">Long</a>\<a href="namespace-Long.Namespace">Namespace</a>',
-            $this->namespaceAndPackageUrlFilters->namespaceLinks('Long\\Namespace')
+            $this->namespaceUrlFilters->namespaceLinks('Long\\Namespace')
         );
 
         $this->assertSame(
             '<a href="namespace-Long">Long</a>\Namespace',
-            $this->namespaceAndPackageUrlFilters->namespaceLinks('Long\\Namespace', false)
+            $this->namespaceUrlFilters->namespaceLinks('Long\\Namespace', false)
         );
     }
 
 
     public function testNamespaceLinksWithNoNamespaces()
     {
-        $namespaceAndPackageUrlFilters = new NamespaceAndPackageUrlFilters(
+        $namespaceUrlFilters = new NamespaceUrlFilters(
             $this->getConfigurationMock(),
             new LinkBuilder,
             $this->getElementStorageMock(0, 0)
         );
 
-        $this->assertSame('Long\\Namespace', $namespaceAndPackageUrlFilters->namespaceLinks('Long\\Namespace'));
+        $this->assertSame('Long\\Namespace', $namespaceUrlFilters->namespaceLinks('Long\\Namespace'));
     }
 
 
     public function testSubgroupName()
     {
-        $this->assertSame('Subgroup', $this->namespaceAndPackageUrlFilters->subgroupName('Group\\Subgroup'));
-        $this->assertSame('Group', $this->namespaceAndPackageUrlFilters->subgroupName('Group'));
+        $this->assertSame('Subgroup', $this->namespaceUrlFilters->subgroupName('Group\\Subgroup'));
+        $this->assertSame('Group', $this->namespaceUrlFilters->subgroupName('Group'));
     }
 
 

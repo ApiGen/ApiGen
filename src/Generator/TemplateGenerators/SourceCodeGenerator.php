@@ -14,7 +14,7 @@ use ApiGen\Generator\Event\GenerateProgressEvent;
 use ApiGen\Generator\Event\GeneratorEvents;
 use ApiGen\Generator\Resolvers\RelativePathResolver;
 use ApiGen\Generator\SourceCodeHighlighter\SourceCodeHighlighter;
-use ApiGen\Generator\TemplateGenerators\Loaders\NamespaceAndPackageLoader;
+use ApiGen\Generator\TemplateGenerators\Loaders\NamespaceLoader;
 use ApiGen\Templating\TemplateFactory;
 
 class SourceCodeGenerator implements ConditionalTemplateGeneratorInterface, StepCounterInterface
@@ -51,9 +51,9 @@ class SourceCodeGenerator implements ConditionalTemplateGeneratorInterface, Step
     private $eventDispatcher;
 
     /**
-     * @var NamespaceAndPackageLoader
+     * @var NamespaceLoader
      */
-    protected $namespaceAndPackageLoader;
+    protected $namespaceLoader;
 
 
     public function __construct(
@@ -63,7 +63,7 @@ class SourceCodeGenerator implements ConditionalTemplateGeneratorInterface, Step
         RelativePathResolver $relativePathResolver,
         SourceCodeHighlighter $sourceCodeHighlighter,
         EventDispatcherInterface $eventDispatcher,
-        NamespaceAndPackageLoader $namespaceAndPackageLoader
+        NamespaceLoader $namespaceLoader
     ) {
         $this->configuration = $configuration;
         $this->elementStorage = $elementStorage;
@@ -71,7 +71,7 @@ class SourceCodeGenerator implements ConditionalTemplateGeneratorInterface, Step
         $this->relativePathResolver = $relativePathResolver;
         $this->sourceCodeHighlighter = $sourceCodeHighlighter;
         $this->eventDispatcher = $eventDispatcher;
-        $this->namespaceAndPackageLoader = $namespaceAndPackageLoader;
+        $this->namespaceLoader = $namespaceLoader;
     }
 
 
@@ -122,7 +122,7 @@ class SourceCodeGenerator implements ConditionalTemplateGeneratorInterface, Step
     private function generateForElement(ElementReflectionInterface $element)
     {
         $template = $this->templateFactory->createNamedForElement('source', $element);
-        $template = $this->namespaceAndPackageLoader->loadTemplateWithElementNamespaceOrPackage($template, $element);
+        $template = $this->namespaceLoader->loadTemplateWithElementNamespace($template, $element);
         $template->setParameters([
             'fileName' => $this->relativePathResolver->getRelativePath($element->getFileName()),
             'source' => $this->getHighlightedCodeFromElement($element)
