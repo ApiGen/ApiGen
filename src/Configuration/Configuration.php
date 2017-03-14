@@ -3,7 +3,6 @@
 namespace ApiGen\Configuration;
 
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
-use Nette\Utils\Strings;
 
 class Configuration implements ConfigurationInterface
 {
@@ -11,7 +10,7 @@ class Configuration implements ConfigurationInterface
     /**
      * @var array
      */
-    private $options = [];
+    private $options;
 
     /**
      * @var ConfigurationOptionsResolver
@@ -102,15 +101,6 @@ class Configuration implements ConfigurationInterface
     public function getMain()
     {
         return $this->getOption('main');
-    }
-
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isPhpCoreDocumented()
-    {
-        return (bool) $this->getOption('php');
     }
 
 

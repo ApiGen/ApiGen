@@ -6,4 +6,3 @@ accessLevels:
   - private
 baseUrl: http://apigen.org
 groups: packages
-php: true

@@ -103,7 +103,6 @@ class BackendTest extends TestCase
     {
         $parserStoragetMock = Mockery::mock(ParserStorageInterface::class);
         $configurationMock = Mockery::mock(ConfigurationInterface::class, [
-            'isPhpCoreDocumented' => true,
             'isInternalDocumented' => true,
             'getVisibilityLevel' => 1
         ]);
