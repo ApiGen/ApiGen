@@ -17,7 +17,6 @@ use Nette\Utils\ArrayHash;
 
 class TemplateFactory implements TemplateFactoryInterface
 {
-
     const ELEMENT_SOURCE = 'source';
     const ELEMENT_NAMESPACE = 'namespace';
     const ELEMENT_ANNOTATION_GROUP = 'annotationGroup';

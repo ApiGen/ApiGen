@@ -9,7 +9,6 @@ use Symfony\Component\Console\Command\Command;
 
 class ConsoleExtension extends CompilerExtension
 {
-
     public function loadConfiguration()
     {
         Compiler::loadDefinitions(

@@ -9,7 +9,6 @@ use ApiGen\Parser\Reflection\Parts\StartPositionEndPositionMagic;
 
 class ReflectionMethodMagic extends ReflectionMethod implements MagicMethodReflectionInterface
 {
-
     use IsDocumentedMagic;
     use StartLineEndLine;
     use StartPositionEndPositionMagic;

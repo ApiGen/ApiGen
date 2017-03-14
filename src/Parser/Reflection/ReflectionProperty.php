@@ -7,7 +7,6 @@ use ApiGen\Parser\Reflection\Parts\Visibility;
 
 class ReflectionProperty extends ReflectionElement implements PropertyReflectionInterface
 {
-
     use Visibility;
 
 

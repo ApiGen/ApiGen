@@ -14,7 +14,6 @@ use ApiGen\Parser\Reflection\Parts\StartPositionEndPositionMagic;
  */
 class ReflectionPropertyMagic extends ReflectionProperty implements MagicPropertyReflectionInterface
 {
-
     use IsDocumentedMagic;
     use StartLineEndLine;
     use StartPositionEndPositionMagic;

@@ -9,7 +9,6 @@ use ApiGen\Contracts\Parser\Reflection\TokenReflection\ReflectionFactoryInterfac
 
 class AnnotationPropertyExtractor implements AnnotationPropertyExtractorInterface
 {
-
     const PATTERN_PROPERTY = /** @lang RegExp */ '~^
         # property typehint
         (?:

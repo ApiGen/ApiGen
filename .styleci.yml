@@ -1,0 +1,14 @@
+preset: psr2
+
+risky: false
+
+linting: true
+
+finder:
+  exclude:
+    - "tests"
+  name:
+    - "*.php"
+  path:
+    - "bin"
+    - "src"

@@ -4,7 +4,6 @@ namespace ApiGen\Contracts\Parser\Elements;
 
 interface ElementsInterface
 {
-
     const CLASSES = 'classes';
     const CONSTANTS = 'constants';
     const EXCEPTIONS = 'exceptions';

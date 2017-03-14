@@ -9,7 +9,6 @@ use TokenReflection\Broker;
 
 class ParserExtension extends CompilerExtension
 {
-
     public function loadConfiguration()
     {
         $this->loadServicesFromConfig();

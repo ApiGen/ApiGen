@@ -11,7 +11,6 @@ use Nette\DI\CompilerExtension;
 
 class ApiGenExtension extends CompilerExtension
 {
-
     public function loadConfiguration()
     {
         $this->loadServicesFromConfig();

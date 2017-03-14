@@ -7,7 +7,6 @@ use Nette\DI\CompilerExtension;
 
 class UtilsExtension extends CompilerExtension
 {
-
     public function loadConfiguration()
     {
         Compiler::loadDefinitions(

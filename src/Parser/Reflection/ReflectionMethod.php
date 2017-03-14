@@ -8,7 +8,6 @@ use ApiGen\Parser\Reflection\Parts\Visibility;
 
 class ReflectionMethod extends ReflectionFunctionBase implements MethodReflectionInterface
 {
-
     use Visibility;
 
 

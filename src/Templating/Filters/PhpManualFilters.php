@@ -21,7 +21,6 @@ use ApiGen\Parser\Reflection\ReflectionProperty;
  */
 class PhpManualFilters extends Filters
 {
-
     const PHP_MANUAL_URL = 'http://php.net/manual/en';
 
     /**

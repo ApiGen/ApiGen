@@ -6,5 +6,4 @@ use ApiGen\Contracts\Parser\Reflection\Behavior\LinedInterface;
 
 interface FunctionReflectionInterface extends AbstractFunctionMethodReflectionInterface, LinedInterface
 {
-
 }
