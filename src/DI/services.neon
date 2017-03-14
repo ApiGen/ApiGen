@@ -32,8 +32,6 @@ services:
 	g10: ApiGen\Generator\TemplateGenerators\FunctionElementGenerator
 	g11: ApiGen\Generator\TemplateGenerators\NamespaceGenerator
 	g12: ApiGen\Generator\TemplateGenerators\Loaders\NamespaceLoader
-	- ApiGen\Generator\Markups\MarkdownMarkup
-	- Michelf\MarkdownExtra
 
 	# templating
 	- ApiGen\Templating\TemplateElementsLoader
