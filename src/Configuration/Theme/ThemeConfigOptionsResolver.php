@@ -61,10 +61,6 @@ class ThemeConfigOptionsResolver extends Nette\Object
                 'filename' => 'source-%s.html',
                 'template' => 'source.latte'
             ],
-            TCO::TREE => [
-                'filename' => 'tree.html',
-                'template' => 'tree.latte'
-            ],
             TCO::OPENSEARCH => [
                 'filename' => 'opensearch.xml',
                 'template' => 'opensearch.xml.latte'

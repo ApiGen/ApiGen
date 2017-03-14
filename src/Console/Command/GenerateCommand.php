@@ -163,12 +163,6 @@ class GenerateCommand extends AbstractCommand
             )
             ->addOption('title', null, InputOption::VALUE_REQUIRED, 'Title of generated documentation.')
             ->addOption(
-                'tree',
-                null,
-                InputOption::VALUE_NONE,
-                'Generate tree view of classes, interfaces, traits and exceptions.'
-            )
-            ->addOption(
                 'overwrite',
                 'o',
                 InputOption::VALUE_NONE,

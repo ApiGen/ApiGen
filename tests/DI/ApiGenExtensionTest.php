@@ -2,14 +2,11 @@
 
 namespace ApiGen\Tests\DI;
 
-use ApiGen\Command\GenerateCommand;
-use ApiGen\Console\Application;
 use ApiGen\Contracts\Generator\GeneratorQueueInterface;
 use ApiGen\DI\ApiGenExtension;
 use ApiGen\Generator\GeneratorQueue;
 use ApiGen\Generator\Resolvers\ElementResolver;
-use ApiGen\Generator\TemplateGenerators\ClassElementGenerator;
-use ApiGen\Generator\TemplateGenerators\ConstantElementGenerator;
+use ApiGen\Generator\TemplateGenerators\FunctionElementGenerator;
 use ApiGen\Templating\Filters\AnnotationFilters;
 use ApiGen\Tests\MethodInvoker;
 use Latte\Engine;
@@ -93,7 +90,7 @@ class ApiGenExtensionTest extends TestCase
 
         $filterService = $definition->getSetup()[8]->arguments[0];
         $command = $builder->getDefinition($builder->getServiceName($filterService));
-        $this->assertSame(ConstantElementGenerator::class, $command->getClass());
+        $this->assertSame(FunctionElementGenerator::class, $command->getClass());
     }
 
 

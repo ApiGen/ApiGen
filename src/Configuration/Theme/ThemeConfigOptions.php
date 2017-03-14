@@ -14,7 +14,6 @@ class ThemeConfigOptions
     const T_FUNCTION = 'function';
     const ANNOTATION_GROUP = 'annotationGroup';
     const SOURCE = 'source';
-    const TREE = 'tree';
     const OPENSEARCH = 'opensearch';
     const TEMPLATES_PATH = 'templatesPath';
     const RESOURCES = 'resources';
