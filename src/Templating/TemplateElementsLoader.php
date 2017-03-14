@@ -88,10 +88,6 @@ class TemplateElementsLoader
                 'elements' => $this->autocompleteElements->getElements()
             ];
 
-            if ($this->configuration->getOption(CO::DOWNLOAD)) {
-                $parameters['archive'] = basename($this->configuration->getZipFileName());
-            }
-
             $this->parameters = $parameters;
         }
         return $this->parameters;

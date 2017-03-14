@@ -13,7 +13,6 @@ class ConfigurationOptions
     const DEPRECATED = 'deprecated';
     const DESTINATION = 'destination';
     const FORCE_OVERWRITE = 'overwrite';
-    const DOWNLOAD = 'download';
     const EXCLUDE = 'exclude';
     const EXTENSIONS = 'extensions';
     const GOOGLE_CSE_ID = 'googleCseId';

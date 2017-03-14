@@ -1,4 +1,3 @@
 services:
 	- ApiGen\Utils\FileSystem
 	- ApiGen\Utils\Finder\NetteFinder
-	- ApiGen\Utils\ZipArchiveGenerator

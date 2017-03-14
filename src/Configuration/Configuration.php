@@ -90,16 +90,6 @@ class Configuration implements ConfigurationInterface
     /**
      * {@inheritdoc}
      */
-    public function getZipFileName()
-    {
-        $webalizedTitle = Strings::webalize($this->getOption('title'), null, false);
-        return ($webalizedTitle ? $webalizedTitle . '-' : '') . 'API-documentation.zip';
-    }
-
-
-    /**
-     * {@inheritdoc}
-     */
     public function getVisibilityLevel()
     {
         return $this->options['visibilityLevels'];
@@ -148,15 +138,6 @@ class Configuration implements ConfigurationInterface
     public function getAnnotationGroups()
     {
         return $this->options['annotationGroups'];
-    }
-
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isAvailableForDownload()
-    {
-        return $this->options['download'];
     }
 
 
