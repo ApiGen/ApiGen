@@ -3,10 +3,8 @@
 namespace ApiGen\Generator\EventSubscriber;
 
 use ApiGen\Contracts\Console\Helper\ProgressBarInterface;
-use ApiGen\Contracts\EventDispatcher\EventSubscriberInterface;
 use ApiGen\Generator\Event\GenerateProgressEvent;
-use ApiGen\Generator\Event\GeneratorEvents;
-use ApiGen\Generator\Event\QueueRunEvent;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class ProgressBarSubscriber implements EventSubscriberInterface
 {
@@ -26,22 +24,15 @@ class ProgressBarSubscriber implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public function getSubscribedEvents()
+    public static function getSubscribedEvents()
     {
         return [
-            GeneratorEvents::ON_QUEUE_RUN => 'initProgressBar',
-            GeneratorEvents::ON_GENERATE_PROGRESS => 'generateProgress'
+            GenerateProgressEvent::class => 'generateProgress'
         ];
     }
 
 
-    public function initProgressBar(QueueRunEvent $queueRunEvent)
-    {
-        $this->progressBar->init($queueRunEvent->getStepCount());
-    }
-
-
-    public function generateProgress(GenerateProgressEvent $generateProgressEvent)
+    public function generateProgress()
     {
         $this->progressBar->increment(1);
     }

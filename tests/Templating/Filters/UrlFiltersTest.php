@@ -17,6 +17,7 @@ use ApiGen\Templating\Filters\UrlFilters;
 use ApiGen\Tests\MethodInvoker;
 use Mockery;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class UrlFiltersTest extends TestCase
 {
@@ -65,7 +66,8 @@ class UrlFiltersTest extends TestCase
             $sourceCodeHighlighterMock,
             $elementResolverMock,
             new LinkBuilder,
-            $elementLinkFactoryMock
+            $elementLinkFactoryMock,
+            new EventDispatcher()
         );
     }
 

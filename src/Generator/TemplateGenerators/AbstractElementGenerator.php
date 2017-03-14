@@ -2,12 +2,12 @@
 
 namespace ApiGen\Generator\TemplateGenerators;
 
-use ApiGen\Contracts\EventDispatcher\EventDispatcherInterface;
 use ApiGen\Contracts\Generator\StepCounterInterface;
 use ApiGen\Contracts\Generator\TemplateGenerators\TemplateGeneratorInterface;
 use ApiGen\Contracts\Parser\Elements\ElementStorageInterface;
 use ApiGen\Generator\TemplateGenerators\Loaders\NamespaceLoader;
 use ApiGen\Templating\TemplateFactory;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 abstract class AbstractElementGenerator implements TemplateGeneratorInterface, StepCounterInterface
 {

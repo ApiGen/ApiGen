@@ -4,7 +4,6 @@ namespace ApiGen\Generator\TemplateGenerators;
 
 use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions as CO;
-use ApiGen\Contracts\EventDispatcher\EventDispatcherInterface;
 use ApiGen\Contracts\Generator\StepCounterInterface;
 use ApiGen\Contracts\Generator\TemplateGenerators\ConditionalTemplateGeneratorInterface;
 use ApiGen\Contracts\Parser\Elements\ElementStorageInterface;
@@ -16,6 +15,7 @@ use ApiGen\Generator\Resolvers\RelativePathResolver;
 use ApiGen\Generator\SourceCodeHighlighter\SourceCodeHighlighter;
 use ApiGen\Generator\TemplateGenerators\Loaders\NamespaceLoader;
 use ApiGen\Templating\TemplateFactory;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class SourceCodeGenerator implements ConditionalTemplateGeneratorInterface, StepCounterInterface
 {
@@ -83,7 +83,7 @@ class SourceCodeGenerator implements ConditionalTemplateGeneratorInterface, Step
                 if ($element->isTokenized()) {
                     $this->generateForElement($element);
 
-                    $this->eventDispatcher->dispatch(new GenerateProgressEvent(GeneratorEvents::ON_GENERATE_PROGRESS));
+                    $this->eventDispatcher->dispatch(GenerateProgressEvent::class);
                 }
             }
         }

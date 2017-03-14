@@ -2,31 +2,9 @@
 
 namespace ApiGen\Generator\Event;
 
-use ApiGen\Contracts\EventDispatcher\Event\EventInterface;
+use Symfony\Component\EventDispatcher\Event;
 
-class GenerateProgressEvent implements EventInterface
+class GenerateProgressEvent extends Event
 {
 
-    /**
-     * @var string
-     */
-    private $name;
-
-
-    /**
-     * @param string $name
-     */
-    public function __construct($name)
-    {
-        $this->name = $name;
-    }
-
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
 }

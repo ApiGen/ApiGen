@@ -2,14 +2,13 @@
 
 namespace ApiGen\Generator\TemplateGenerators;
 
-use ApiGen\Contracts\EventDispatcher\EventDispatcherInterface;
 use ApiGen\Contracts\Generator\StepCounterInterface;
 use ApiGen\Contracts\Generator\TemplateGenerators\TemplateGeneratorInterface;
 use ApiGen\Contracts\Parser\Elements\ElementStorageInterface;
 use ApiGen\Generator\Event\GenerateProgressEvent;
-use ApiGen\Generator\Event\GeneratorEvents;
 use ApiGen\Generator\TemplateGenerators\Loaders\NamespaceLoader;
 use ApiGen\Templating\TemplateFactory;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class NamespaceGenerator implements TemplateGeneratorInterface, StepCounterInterface
 {
@@ -58,7 +57,7 @@ class NamespaceGenerator implements TemplateGeneratorInterface, StepCounterInter
             $template = $this->namespaceLoader->loadTemplateWithNamespace($template, $name, $namespace);
             $template->save();
 
-            $this->eventDispatcher->dispatch(new GenerateProgressEvent(GeneratorEvents::ON_GENERATE_PROGRESS));
+            $this->eventDispatcher->dispatch(GenerateProgressEvent::class);
         }
     }
 

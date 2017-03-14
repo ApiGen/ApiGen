@@ -217,7 +217,7 @@ class UrlFilters extends Filters
         $text = $this->resolveInternalAnnotation($text);
 
         $processDocTextEvent = new ProcessDocTextEvent($text, $reflectionElement);
-        $this->eventDispatcher->dispatch($processDocTextEvent);
+        $this->eventDispatcher->dispatch(ProcessDocTextEvent::class, $processDocTextEvent);
 
         return $this->resolveLinkAndSeeAnnotation($processDocTextEvent->getText(), $reflectionElement);
     }

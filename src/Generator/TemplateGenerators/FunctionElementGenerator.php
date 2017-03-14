@@ -4,7 +4,6 @@ namespace ApiGen\Generator\TemplateGenerators;
 
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Generator\Event\GenerateProgressEvent;
-use ApiGen\Generator\Event\GeneratorEvents;
 use ApiGen\Templating\Template;
 
 class FunctionElementGenerator extends AbstractElementGenerator
@@ -20,7 +19,7 @@ class FunctionElementGenerator extends AbstractElementGenerator
             $template = $this->loadTemplateWithParameters($template, $reflectionFunction);
             $template->save();
 
-            $this->eventDispatcher->dispatch(new GenerateProgressEvent(GeneratorEvents::ON_GENERATE_PROGRESS));
+            $this->eventDispatcher->dispatch(GenerateProgressEvent::class);
         }
     }
 
