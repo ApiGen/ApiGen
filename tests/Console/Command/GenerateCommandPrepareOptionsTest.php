@@ -76,14 +76,11 @@ class GenerateCommandPrepareOptionsTest extends ContainerAwareTestCase
         $options = MethodInvoker::callMethodOnObject($this->generateCommand, 'prepareOptions', [[
             'config' => __DIR__ . '/apigen.neon',
             'destination' => TEMP_DIR . '/api',
-            'download' => false
         ]]);
 
         $this->assertSame(['public', 'protected', 'private'], $options['accessLevels']);
         $this->assertSame('http://apigen.org', $options['baseUrl']);
-        $this->assertTrue($options['download']);
         $this->assertSame('packages', $options['groups']);
-        $this->assertFalse($options['todo']);
     }
 
 
@@ -92,13 +89,11 @@ class GenerateCommandPrepareOptionsTest extends ContainerAwareTestCase
         $optionsYaml = MethodInvoker::callMethodOnObject($this->generateCommand, 'prepareOptions', [[
             'config' => __DIR__ . '/apigen.yml',
             'destination' => TEMP_DIR . '/api',
-            'download' => false
         ]]);
 
         $optionsNeon = MethodInvoker::callMethodOnObject($this->generateCommand, 'prepareOptions', [[
             'config' => __DIR__ . '/apigen.neon',
             'destination' => TEMP_DIR . '/api',
-            'download' => false
         ]]);
 
         $this->assertSame($optionsNeon, $optionsYaml);

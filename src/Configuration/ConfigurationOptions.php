@@ -13,7 +13,6 @@ class ConfigurationOptions
     const DEPRECATED = 'deprecated';
     const DESTINATION = 'destination';
     const FORCE_OVERWRITE = 'overwrite';
-    const DOWNLOAD = 'download';
     const EXCLUDE = 'exclude';
     const EXTENSIONS = 'extensions';
     const GOOGLE_CSE_ID = 'googleCseId';
@@ -28,7 +27,6 @@ class ConfigurationOptions
     const TEMPLATE_CONFIG = 'templateConfig';
     const TEMPLATE_THEME = 'templateTheme';
     const TITLE = 'title';
-    const TODO = 'todo';
     const TREE = 'tree';
     const VISIBILITY_LEVELS = 'visibilityLevels';
     const SOURCE_CODE = 'sourceCode';

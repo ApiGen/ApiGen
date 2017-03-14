@@ -62,10 +62,6 @@ class AnnotationFilters extends Filters
             unset($annotations['internal']);
         }
 
-        if (! $this->configuration->getOption(CO::TODO)) {
-            unset($annotations['todo']);
-        }
-
         return $annotations;
     }
 

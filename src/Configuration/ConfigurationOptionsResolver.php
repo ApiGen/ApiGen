@@ -31,7 +31,6 @@ class ConfigurationOptionsResolver
         CO::DEPRECATED => false,
         CO::DESTINATION => null,
         CO::FORCE_OVERWRITE => false,
-        CO::DOWNLOAD => false,
         CO::EXCLUDE => [],
         CO::EXTENSIONS => [],
         CO::GOOGLE_CSE_ID => '',
@@ -46,11 +45,12 @@ class ConfigurationOptionsResolver
         CO::TEMPLATE_CONFIG => null,
         CO::TEMPLATE_THEME => self::DEFAULT_THEME,
         CO::TITLE => '',
-        CO::TODO => false,
         CO::TREE => true,
         // helpers
         CO::VISIBILITY_LEVELS => [],
-        CO::SOURCE_CODE => ''
+        CO::SOURCE_CODE => '',
+        // removed, but BC for templates
+        'download' => false,
     ];
 
     /**
@@ -182,9 +182,6 @@ class ConfigurationOptionsResolver
             $value = (array) $value;
             if ($options[CO::DEPRECATED]) {
                 $value[] = CO::DEPRECATED;
-            }
-            if ($options[CO::TODO]) {
-                $value[] = CO::TODO;
             }
             return array_unique($value);
         });

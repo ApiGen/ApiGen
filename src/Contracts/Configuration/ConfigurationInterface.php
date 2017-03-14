@@ -84,25 +84,11 @@ interface ConfigurationInterface
 
 
     /**
-     * @return string
-     */
-    public function getZipFileName();
-
-
-    /**
      * List of annotations.
      *
      * @return string[]
      */
     public function getAnnotationGroups();
-
-
-    /**
-     * Is documentation available for downloading.
-     *
-     * @return bool
-     */
-    public function isAvailableForDownload();
 
 
     /**
