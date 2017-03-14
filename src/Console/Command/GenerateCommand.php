@@ -359,12 +359,6 @@ class GenerateCommand extends AbstractCommand
             );
         }
 
-        if (isset($options['todo']) && $options['todo']) {
-            $this->io->writeln(
-                '<warning>You are using the deprecated option "todo". Use "--annotation-groups=todo" instead</warning>'
-            );
-        }
-
         if (isset($options['skipDocPath']) && $options['skipDocPath']) {
             $this->io->writeln(
                 '<warning>You are using the deprecated option "skipDocPath". Use "exclude" instead.</warning>'
