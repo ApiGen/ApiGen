@@ -116,15 +116,6 @@ class Configuration implements ConfigurationInterface
     /**
      * {@inheritdoc}
      */
-    public function isTreeAllowed()
-    {
-        return $this->options['tree'];
-    }
-
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDestination()
     {
         return $this->options['destination'];
