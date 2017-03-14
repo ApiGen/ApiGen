@@ -220,7 +220,6 @@ class ReflectionMethodMagicTest extends TestCase
             'getVisibilityLevel' => ReflectionProperty::IS_PUBLIC,
             'isInternalDocumented' => false,
             'isPhpCoreDocumented' => true,
-            'isDeprecatedDocumented' => false
         ]);
         return new ReflectionFactory($configurationMock, $parserStorageMock);
     }
