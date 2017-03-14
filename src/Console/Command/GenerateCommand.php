@@ -169,15 +169,6 @@ class GenerateCommand extends AbstractCommand
                 'Generate tree view of classes, interfaces, traits and exceptions.'
             )
 
-            /**
-             * @deprecated since version 4.2, to be removed in 5.0
-             */
-            ->addOption(
-                'deprecated',
-                null,
-                InputOption::VALUE_NONE,
-                'Generate documentation for elements marked as @deprecated (deprecated, only present for BC).'
-            )
             ->addOption(
                 'charset',
                 null,
@@ -365,13 +356,6 @@ class GenerateCommand extends AbstractCommand
             $this->io->writeln(
                 '<warning>You are using the deprecated option "charset". ' .
                 'UTF-8 is default now.</warning>'
-            );
-        }
-
-        if (isset($options['deprecated']) && $options['deprecated']) {
-            $this->io->writeln(
-                '<warning>You are using the deprecated option "deprecated". ' .
-                'Use "--annotation-groups=deprecated" instead</warning>'
             );
         }
 
