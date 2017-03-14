@@ -16,12 +16,6 @@ interface ElementStorageInterface
 
 
     /**
-     * @return array
-     */
-    public function getPackages();
-
-
-    /**
      * @return ClassReflectionInterface[]
      */
     public function getClasses();

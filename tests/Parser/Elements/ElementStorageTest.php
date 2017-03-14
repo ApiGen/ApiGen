@@ -29,11 +29,7 @@ class ElementStorageTest extends TestCase
 
     public function testEnsureCategorization()
     {
-        $configurationMock = Mockery::mock(ConfigurationInterface::class, [
-            'areNamespacesEnabled' => true,
-            'arePackagesEnabled' => false
-        ]);
-        $elementStorage = $this->prepareElementStorage($configurationMock);
+        $elementStorage = $this->prepareElementStorage();
 
         MethodInvoker::callMethodOnObject($elementStorage, 'ensureCategorization');
 
@@ -47,46 +43,12 @@ class ElementStorageTest extends TestCase
         $this->assertCount(1, $elementStorage->getConstants());
 
         $this->assertCount(1, $elementStorage->getNamespaces());
-        $this->assertCount(0, $elementStorage->getPackages());
-    }
-
-
-    public function testEnsureCategorizationPackagesEnabled()
-    {
-        $configurationMock = Mockery::mock(ConfigurationInterface::class, [
-            'areNamespacesEnabled' => false,
-            'arePackagesEnabled' => true
-        ]);
-        $elementStorage = $this->prepareElementStorage($configurationMock);
-        MethodInvoker::callMethodOnObject($elementStorage, 'ensureCategorization');
-
-        $this->assertCount(0, $elementStorage->getNamespaces());
-        $this->assertCount(1, $elementStorage->getPackages());
-    }
-
-
-    public function testEnsureCategorizationPackagesNorNamespacesEnabled()
-    {
-        $configurationMock = Mockery::mock(ConfigurationInterface::class, [
-            'areNamespacesEnabled' => false,
-            'arePackagesEnabled' => false
-        ]);
-        $elementStorage = $this->prepareElementStorage($configurationMock);
-
-        MethodInvoker::callMethodOnObject($elementStorage, 'ensureCategorization');
-
-        $this->assertCount(0, $elementStorage->getNamespaces());
-        $this->assertCount(0, $elementStorage->getPackages());
     }
 
 
     public function testLoadUsesToReferencedElementUsedBy()
     {
-        $configurationMock = Mockery::mock(ConfigurationInterface::class, [
-            'areNamespacesEnabled' => true,
-            'arePackagesEnabled' => false
-        ]);
-        $elementStorage = $this->prepareElementStorage($configurationMock);
+        $elementStorage = $this->prepareElementStorage();
 
         $reflectionElementMock = Mockery::mock(ReflectionElement::class);
         $reflectionElementMock->shouldReceive('getAnnotation')->with('uses')->once()->andReturnNull();
@@ -113,7 +75,7 @@ class ElementStorageTest extends TestCase
     /**
      * @return ElementStorage
      */
-    private function prepareElementStorage($configurationMock)
+    private function prepareElementStorage()
     {
         $parserStorageMock = Mockery::mock(ParserStorageInterface::class);
         $parserStorageMock->shouldReceive('getTypes')->andReturn(['classes', 'functions', 'constants']);
@@ -140,7 +102,6 @@ class ElementStorageTest extends TestCase
 
         return new ElementStorage(
             $parserStorageMock,
-            $configurationMock,
             $groupSorterMock,
             $elementResolverMock
         );
@@ -194,7 +155,6 @@ class ElementStorageTest extends TestCase
     private function getReflectionClassMock()
     {
         $reflectionClassMock = Mockery::mock(ClassReflectionInterface::class);
-        $reflectionClassMock->shouldReceive('getPseudoPackageName')->andReturn('SomePackage');
         $reflectionClassMock->shouldReceive('getPseudoNamespaceName')->andReturn('SomeNamespace');
         $reflectionClassMock->shouldReceive('getShortName')->andReturn('SomeShortClass');
         $reflectionClassMock->shouldReceive('getOwnMethods')->andReturn([]);
@@ -212,7 +172,6 @@ class ElementStorageTest extends TestCase
     {
         $reflectionFunctionMock = Mockery::mock(FunctionReflectionInterface::class);
         $reflectionFunctionMock->shouldReceive('isDocumented')->andReturn(true);
-        $reflectionFunctionMock->shouldReceive('getPseudoPackageName')->andReturn('SomePackage');
         $reflectionFunctionMock->shouldReceive('getPseudoNamespaceName')->andReturn('SomeNamespace');
         $reflectionFunctionMock->shouldReceive('getShortName')->andReturn('SomeShortClass');
         $reflectionFunctionMock->shouldReceive('getAnnotation')->andReturn([]);
@@ -227,7 +186,6 @@ class ElementStorageTest extends TestCase
     {
         return Mockery::mock(ConstantReflectionInterface::class, [
             'isDocumented' => true,
-            'getPseudoPackageName' => 'SomePackage',
             'getPseudoNamespaceName' => 'SomeNamespace',
             'getShortName' => 'SomeShortClass',
             'getAnnotation' => []

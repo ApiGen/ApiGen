@@ -19,7 +19,6 @@ class TemplateFactory implements TemplateFactoryInterface
 {
 
     const ELEMENT_SOURCE = 'source';
-    const ELEMENT_PACKAGE = 'package';
     const ELEMENT_NAMESPACE = 'namespace';
     const ELEMENT_ANNOTATION_GROUP = 'annotationGroup';
 
@@ -100,8 +99,6 @@ class TemplateFactory implements TemplateFactoryInterface
             $template->setSavePath($this->templateNavigator->getTemplatePathForSourceElement($element));
         } elseif ($name === self::ELEMENT_NAMESPACE) {
             $template->setSavePath($this->templateNavigator->getTemplatePathForNamespace($element));
-        } elseif ($name === self::ELEMENT_PACKAGE) {
-            $template->setSavePath($this->templateNavigator->getTemplatePathForPackage($element));
         } elseif ($name === self::ELEMENT_ANNOTATION_GROUP) {
             $template->setSavePath($this->templateNavigator->getTemplatePathForAnnotationGroup($element));
         } else {

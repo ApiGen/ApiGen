@@ -39,7 +39,7 @@ class FunctionElementGenerator extends AbstractElementGenerator
      */
     private function loadTemplateWithParameters(Template $template, FunctionReflectionInterface $function)
     {
-        $template = $this->namespaceAndPackageLoader->loadTemplateWithElementNamespaceOrPackage($template, $function);
+        $template = $this->namespaceLoader->loadTemplateWithElementNamespace($template, $function);
         $template->setParameters([
             'function' => $function
         ]);
