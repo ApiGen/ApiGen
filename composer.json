@@ -1,66 +1,67 @@
 {
-	"name": "apigen/apigen",
-	"description": "PHP source code API generator",
-	"keywords": ["documentation", "phpdoc", "generator", "api"],
-	"homepage": "http://apigen.org/",
-	"license": "MIT",
-	"authors": [
-		{ "name": "Tomáš Votruba", "homepage": "https://tomasvotruba.cz", "email": "tomas.vot@gmail.com" },
-		{ "name": "Jaroslav Hanslík", "homepage": "https://github.com/kukulich" },
-		{ "name": "Ondřej Nešpor", "homepage": "https://github.com/andrewsville" },
-		{ "name": "David Grudl",  "homepage": "http://davidgrudl.com" }
-	],
-	"require": {
-		"php": "^7.1",
-		"popsul/php-token-reflection": "^1.5",
-		"apigen/theme-bootstrap": "1.1.*",
-		"apigen/theme-default": "1.0.*",
-		"kukulich/fshl": "^2.1",
-		"latte/latte": "^2.3.6",
-		"nette/bootstrap": "^2.4",
-		"nette/di": "^2.4",
-		"nette/neon": "^2.4",
-		"nette/reflection": "^2.4",
-		"symfony/console": "^3.2",
-		"symfony/event-dispatcher": "^3.2",
-		"symfony/options-resolver": "^3.2",
-		"symfony/yaml": "^3.2",
-		"tracy/tracy": "^2.3",
-		"symplify/symfony-event-dispatcher": "^1.4"
-	},
-	"require-dev": {
-		"mockery/mockery": "^0.9",
-		"phpunit/phpunit": "^6.0",
-		"phpstan/phpstan": "^0.6.4",
-		"symplify/easy-coding-standard": "^1.4",
-		"nette/application": "^2.4",
-		"squizlabs/php_codesniffer": "3.0.0RC4",
-		"friendsofphp/php-cs-fixer": "^2.1"
-	},
-	"conflict": {
-		"latte/latte": "^2.4.0"
-	},
-	"autoload": {
-		"psr-4": {
-			"ApiGen\\": "src"
-		}
-	},
-	"autoload-dev": {
-		"psr-4": {
-			"ApiGen\\Tests\\": "tests",
-			"ApiGen\\EventDispatcher\\Tests\\": "tests/EventDispatcher",
-			"ApiGen\\Parser\\Tests\\": "tests/Parser",
-			"PHP_CodeSniffer\\": "vendor/squizlabs/php_codesniffer/src"
-		}
-	},
-	"scripts": {
-		"check-cs": ["vendor/bin/phpcs -ps --extensions=php --standard=PSR2 --exclude=PSR1.Files.SideEffects src tests"],
-		"fix-cs": ["vendor/bin/phpcbf -p --extensions=php --standard=PSR2  --exclude=PSR1.Files.SideEffects src tests"],
-		"phpstan": "vendor/bin/phpstan analyse src --level 1 -c phpstan.neon",
+    "name": "apigen/apigen",
+    "description": "PHP source code API generator",
+    "keywords": ["documentation", "phpdoc", "generator", "api"],
+    "homepage": "http://apigen.org/",
+    "license": "MIT",
+    "authors": [
+        { "name": "Tomáš Votruba", "homepage": "https://tomasvotruba.cz", "email": "tomas.vot@gmail.com" },
+        { "name": "Jaroslav Hanslík", "homepage": "https://github.com/kukulich" },
+        { "name": "Ondřej Nešpor", "homepage": "https://github.com/andrewsville" },
+        { "name": "David Grudl",  "homepage": "http://davidgrudl.com" }
+    ],
+    "require": {
+        "php": "^7.1",
+        "popsul/php-token-reflection": "^1.5",
+        "apigen/theme-bootstrap": "1.1.*",
+        "apigen/theme-default": "1.0.*",
+        "kukulich/fshl": "^2.1",
+        "latte/latte": "^2.3.6",
+        "nette/bootstrap": "^2.4",
+        "nette/di": "^2.4",
+        "nette/neon": "^2.4",
+        "nette/reflection": "^2.4",
+        "symfony/console": "^3.2",
+        "symfony/event-dispatcher": "^3.2",
+        "symfony/options-resolver": "^3.2",
+        "symfony/yaml": "^3.2",
+        "tracy/tracy": "^2.3",
+        "symplify/symfony-event-dispatcher": "^1.4"
+    },
+    "require-dev": {
+        "mockery/mockery": "^0.9",
+        "phpunit/phpunit": "^6.0",
+        "phpstan/phpstan": "^0.6.4",
+        "nette/application": "^2.4",
+        "symplify/easy-coding-standard": "^1.4",
+        "squizlabs/php_codesniffer": "3.0.0RC4 as 2.8.1",
+        "friendsofphp/php-cs-fixer": "^2.1",
+        "slevomat/coding-standard": "^2.0"
+    },
+    "conflict": {
+        "latte/latte": "^2.4.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "ApiGen\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "ApiGen\\Tests\\": "tests",
+            "ApiGen\\EventDispatcher\\Tests\\": "tests/EventDispatcher",
+            "ApiGen\\Parser\\Tests\\": "tests/Parser",
+            "PHP_CodeSniffer\\": "vendor/squizlabs/php_codesniffer/src"
+        }
+    },
+    "scripts": {
+        "check-cs": ["vendor/bin/phpcs -ps --extensions=php --standard=PSR2 --exclude=PSR1.Files.SideEffects src tests"],
+        "fix-cs": ["vendor/bin/phpcbf -p --extensions=php --standard=PSR2  --exclude=PSR1.Files.SideEffects src tests"],
+        "phpstan": "vendor/bin/phpstan analyse src --level 1 -c phpstan.neon",
         "check-ecs": "vendor/symplify/easy-coding-standard/bin/easy-coding-standard check src tests",
         "fix-ecs": "vendor/symplify/easy-coding-standard/bin/easy-coding-standard check src tests --fix"
     },
-	"bin": [
-		"bin/apigen"
-	]
+    "bin": [
+        "bin/apigen"
+    ]
 }
