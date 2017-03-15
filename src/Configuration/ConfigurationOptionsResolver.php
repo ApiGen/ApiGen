@@ -187,7 +187,7 @@ class ConfigurationOptionsResolver
         });
 
         $this->resolver->setNormalizer(CO::BASE_URL, function (Options $options, $value) {
-            return rtrim($value, '/');
+            return rtrim((string) $value, '/');
         });
 
         $this->resolver->setNormalizer(CO::SOURCE, function (Options $options, $value) {
@@ -205,6 +205,10 @@ class ConfigurationOptionsResolver
         });
 
         $this->resolver->setNormalizer(CO::TEMPLATE_CONFIG, function (Options $options, $value) {
+            if ($value === null) {
+                return '';
+            }
+
             return $this->fileSystem->getAbsolutePath($value);
         });
     }

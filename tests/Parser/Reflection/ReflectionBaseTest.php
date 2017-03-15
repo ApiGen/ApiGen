@@ -65,13 +65,13 @@ class ReflectionBaseTest extends TestCase
 
     public function testGetStartLine()
     {
-        $this->assertSame(11, $this->reflectionClass->getStartLine());
+        $this->assertSame(10, $this->reflectionClass->getStartLine());
     }
 
 
     public function testGetEndLine()
     {
-        $this->assertSame(43, $this->reflectionClass->getEndLine());
+        $this->assertSame(42, $this->reflectionClass->getEndLine());
     }
 
 

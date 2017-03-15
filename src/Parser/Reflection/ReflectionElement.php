@@ -124,6 +124,17 @@ abstract class ReflectionElement extends ReflectionBase implements ElementReflec
 
 
     /**
+     * Removed, but for BC in templates.
+     *
+     * @return bool
+     */
+    public function inPackage()
+    {
+        return false;
+    }
+
+
+    /**
      * {@inheritdoc}
      */
     public function inNamespace()

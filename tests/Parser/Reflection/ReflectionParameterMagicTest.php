@@ -123,13 +123,13 @@ class ReflectionParameterMagicTest extends TestCase
 
     public function testStartLine()
     {
-        $this->assertSame(16, $this->reflectionParameterMagic->getStartLine());
+        $this->assertSame(15, $this->reflectionParameterMagic->getStartLine());
     }
 
 
     public function testEndLine()
     {
-        $this->assertSame(16, $this->reflectionParameterMagic->getEndLine());
+        $this->assertSame(15, $this->reflectionParameterMagic->getEndLine());
     }
 
 

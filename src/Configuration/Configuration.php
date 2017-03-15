@@ -30,8 +30,7 @@ class Configuration implements ConfigurationInterface
     public function resolveOptions(array $options)
     {
         $options = $this->unsetConsoleOptions($options);
-        $this->options = $options = $this->configurationOptionsResolver->resolve($options);
-        return $options;
+        return $this->options = $this->configurationOptionsResolver->resolve($options);
     }
 
 

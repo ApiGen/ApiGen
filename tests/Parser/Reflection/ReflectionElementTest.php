@@ -48,7 +48,7 @@ class ReflectionElementTest extends TestCase
 
     public function testGetStartPosition()
     {
-        $this->assertSame(9, $this->reflectionClass->getStartPosition());
+        $this->assertSame(16, $this->reflectionClass->getStartPosition());
     }
 
 

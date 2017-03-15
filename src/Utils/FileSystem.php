@@ -2,6 +2,7 @@
 
 namespace ApiGen\Utils;
 
+use Nette\Utils\FileSystem as NetteFileSystem;
 use Nette\Utils\Finder;
 
 class FileSystem
@@ -33,8 +34,7 @@ class FileSystem
      */
     public function deleteDir($path)
     {
-        self::purgeDir($path);
-        rmdir($path);
+        NetteFileSystem::delete($path);
     }
 
 
@@ -43,18 +43,8 @@ class FileSystem
      */
     public function purgeDir($path)
     {
-        if (! is_dir($path)) {
-            mkdir($path, 0755, true);
-        }
-
-        foreach (Finder::find('*')->from($path)->childFirst() as $item) {
-            /** @var \SplFileInfo $item */
-            if ($item->isDir()) {
-                rmdir($item);
-            } else {
-                unlink($item);
-            }
-        }
+        NetteFileSystem::delete($path);
+        NetteFileSystem::createDir($path);
     }
 
 
@@ -68,7 +58,7 @@ class FileSystem
         foreach ($baseDirectories as $directory) {
             $fileName = $directory . '/' . $path;
             if (is_file($fileName)) {
-                return self::normalizePath(realpath($fileName));
+                return $this->normalizePath(realpath($fileName));
             }
         }
 
@@ -76,7 +66,7 @@ class FileSystem
             $path = realpath($path);
         }
 
-        return self::normalizePath($path);
+        return $this->normalizePath($path);
     }
 
 

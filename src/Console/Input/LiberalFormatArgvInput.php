@@ -40,9 +40,10 @@ class LiberalFormatArgvInput extends Symfony\Component\Console\Input\ArgvInput
     {
         if (is_array($value)) {
             array_walk($value, function (&$singleValue) {
-                $singleValue = ltrim($singleValue, '=');
+                $singleValue = ltrim((string) $singleValue, '=');
             });
         } else {
+            $value = (string) $value;
             $value = ltrim($value, '=');
         }
         return $value;
@@ -57,33 +58,30 @@ class LiberalFormatArgvInput extends Symfony\Component\Console\Input\ArgvInput
     {
         if (is_array($value)) {
             array_walk($value, function (&$singleValue) {
+                $singleValue = (string) $singleValue;
                 $singleValue = $this->splitByCommaIfHasAny($singleValue);
             });
             if (count($value) && is_array($value[0])) {
                 return $value[0];
             }
         } else {
+            $value = (string) $value;
             $value = $this->splitByCommaIfHasAny($value);
         }
         return $value;
     }
 
 
-    /**
-     * @param string $value
-     * @return bool
-     */
-    private function containsComma($value)
+    private function containsComma(string $value): bool
     {
         return strpos($value, ',') !== false;
     }
 
 
     /**
-     * @param string $value
      * @return string|array
      */
-    private function splitByCommaIfHasAny($value)
+    private function splitByCommaIfHasAny(string $value)
     {
         if ($this->containsComma($value)) {
             return explode(',', $value);

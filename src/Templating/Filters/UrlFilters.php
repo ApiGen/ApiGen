@@ -145,7 +145,7 @@ class UrlFilters extends Filters
     {
         $links = [];
 
-        // typehints can not contains spaces
+        // typehints can not contain spaces
         // valid typehint is:
         // [TYPE[|TYPE[|...]][SPACE[METHOD|PARAM][DESCRIPTION]]
         $parts = explode(' ', $annotation);
@@ -335,7 +335,7 @@ class UrlFilters extends Filters
      */
     private function getDescriptionFromValue($value, ElementReflectionInterface $elementReflection)
     {
-        $description = trim(strpbrk($value, "\n\r\t $")) ?: null;
+        $description = trim((string) strpbrk($value, "\n\r\t $")) ?: null;
         if ($description) {
             $description = '<br>' . $this->doc($description, $elementReflection);
         }

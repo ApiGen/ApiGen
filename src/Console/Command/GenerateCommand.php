@@ -171,19 +171,12 @@ class GenerateCommand extends AbstractCommand
     }
 
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        try {
-            $options = $this->prepareOptions($input->getOptions());
-            $this->scanAndParse($options);
-            $this->generate($options);
-            return 0;
-        } catch (\Exception $e) {
-            $output->writeln(
-                sprintf(PHP_EOL . '<error>%s</error>', $e->getMessage())
-            );
-            return 1;
-        }
+        $options = $this->prepareOptions($input->getOptions());
+        $this->scanAndParse($options);
+        $this->generate($options);
+        return 0;
     }
 
 
