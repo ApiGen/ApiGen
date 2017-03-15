@@ -10,7 +10,7 @@ use Symfony\Component\Console\Command\Command;
 class ConsoleExtension extends CompilerExtension
 {
 
-    public function loadConfiguration()
+    public function loadConfiguration(): void
     {
         Compiler::loadDefinitions(
             $this->getContainerBuilder(),
@@ -19,7 +19,7 @@ class ConsoleExtension extends CompilerExtension
     }
 
 
-    public function beforeCompile()
+    public function beforeCompile(): void
     {
         $builder = $this->getContainerBuilder();
         $builder->prepareClassList();

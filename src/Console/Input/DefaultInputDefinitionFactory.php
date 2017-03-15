@@ -10,16 +10,12 @@ use Symfony\Component\Console\Input\InputOption;
 class DefaultInputDefinitionFactory implements DefaultInputDefinitionFactoryInterface
 {
 
-    /**
-     * {@inheritdoc}
-     */
-    public function create()
+    public function create(): InputDefinition
     {
         return new InputDefinition([
             new InputArgument('command', InputArgument::REQUIRED, 'The command to execute'),
             new InputOption('help', 'h', InputOption::VALUE_NONE, 'Display this help message.'),
-            new InputOption('quiet', 'q', InputOption::VALUE_NONE, 'Do not output any message.'),
-            new InputOption('version', 'V', InputOption::VALUE_NONE, 'Display this application version.')
+            new InputOption('quiet', 'q', InputOption::VALUE_NONE, 'Do not output any message.')
         ]);
     }
 }

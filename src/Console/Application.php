@@ -19,20 +19,15 @@ class Application extends BaseApplication
 
 
     public function __construct(
-        MemoryLimit $memoryLimit,
         IOInterface $io,
         DefaultInputDefinitionFactoryInterface $defaultInputDefinitionFactory
     ) {
         parent::__construct('ApiGen');
-        $memoryLimit->setMemoryLimitTo('1024M');
         $this->io = $io;
         $this->setDefinition($defaultInputDefinitionFactory->create());
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
     public function run(InputInterface $input = null, OutputInterface $output = null)
     {
         return parent::run($this->io->getInput(), $this->io->getOutput());

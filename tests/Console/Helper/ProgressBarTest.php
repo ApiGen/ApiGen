@@ -6,18 +6,16 @@ use ApiGen\Console\Helper\ProgressBar;
 use ApiGen\Console\Input\LiberalFormatArgvInput;
 use ApiGen\Console\IO\IO;
 use ApiGen\Tests\MethodInvoker;
-use Mockery;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
 use Symfony;
-use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Helper\ProgressBar as SymfonyProgressBar;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\NullOutput;
 
-class ProgressBarTest extends TestCase
+final class ProgressBarTest extends TestCase
 {
 
     /**
@@ -26,14 +24,14 @@ class ProgressBarTest extends TestCase
     private $progressBar;
 
 
-    protected function setUp()
+    protected function setUp(): void
     {
-        $io = new IO(new HelperSet, new LiberalFormatArgvInput, new NullOutput);
+        $io = new IO(new LiberalFormatArgvInput, new NullOutput);
         $this->progressBar = new ProgressBar($io);
     }
 
 
-    public function testInit()
+    public function testInit(): void
     {
         $this->assertNull(Assert::readAttribute($this->progressBar, 'bar'));
 
@@ -46,7 +44,7 @@ class ProgressBarTest extends TestCase
     }
 
 
-    public function testIncrement()
+    public function testIncrement(): void
     {
         $this->progressBar->increment();
 
@@ -62,7 +60,7 @@ class ProgressBarTest extends TestCase
     }
 
 
-    public function testGetBarFormat()
+    public function testGetBarFormat(): void
     {
         $this->assertSame(
             '<comment>%percent:3s% %</comment>',
@@ -71,7 +69,7 @@ class ProgressBarTest extends TestCase
 
         $arrayInput = new ArgvInput([], new InputDefinition([new InputOption('debug')]));
         $arrayInput->setOption('debug', true);
-        $io = new IO(new HelperSet, $arrayInput, new NullOutput);
+        $io = new IO($arrayInput, new NullOutput);
         $progressBar = new ProgressBar($io);
 
         $this->assertSame('debug', MethodInvoker::callMethodOnObject($progressBar, 'getBarFormat'));

@@ -22,13 +22,13 @@ class GenerateCommandExecuteTest extends ContainerAwareTestCase
     private $generateCommand;
 
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->generateCommand = $this->container->getByType(GenerateCommand::class);
     }
 
 
-    public function testExecute()
+    public function testExecute(): void
     {
         $this->assertFileNotExists(TEMP_DIR . '/Api/index.html');
 

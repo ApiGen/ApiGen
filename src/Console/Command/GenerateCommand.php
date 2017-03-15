@@ -263,18 +263,9 @@ final class GenerateCommand extends AbstractCommand
     }
 
 
-    /**
-     * @return array
-     */
     private function loadOptionsFromConfig(array $options): array
     {
-        $configFilePaths = [
-            $options['config'],
-            getcwd() . '/apigen.neon',
-            getcwd() . '/apigen.yaml',
-            getcwd() . '/apigen.neon.dist',
-            getcwd() . '/apigen.yaml.dist'
-        ];
+        $configFilePaths = $this->getPossiblePathsForConfig($options);
 
         foreach ($configFilePaths as $configFile) {
             if (file_exists($configFile)) {
@@ -282,6 +273,7 @@ final class GenerateCommand extends AbstractCommand
                 return array_merge($options, $configFileOptions);
             }
         }
+
         return $options;
     }
 
@@ -292,5 +284,21 @@ final class GenerateCommand extends AbstractCommand
             $this->fileSystem->purgeDir($destination);
         }
         $this->themeResources->copyToDestination($destination);
+    }
+
+    private function getPossiblePathsForConfig(array $options): array
+    {
+        $filePaths = [];
+
+        if ($options['config']) {
+            $filePaths[] = $options['config'];
+        }
+
+        $filePaths[] = getcwd() . '/apigen.neon';
+        $filePaths[] = getcwd() . '/apigen.yaml';
+        $filePaths[] = getcwd() . '/apigen.neon.dist';
+        $filePaths[] = getcwd() . '/apigen.yaml.dist';
+
+        return $filePaths;
     }
 }

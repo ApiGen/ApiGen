@@ -17,7 +17,7 @@ class OutputFormatter extends BaseOutputFormatter
     /**
      * @return array|OutputFormatterStyle[]
      */
-    private function getStyles()
+    private function getStyles(): array
     {
         return [
             'warning' => new OutputFormatterStyle('black', 'yellow')

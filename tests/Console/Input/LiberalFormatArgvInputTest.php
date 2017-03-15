@@ -17,7 +17,7 @@ class LiberalFormatArgvInputTest extends TestCase
     private $formatLiberalArgvInput;
 
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $inputDefinition = new InputDefinition([
             new InputOption('source', null, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED),
@@ -27,14 +27,14 @@ class LiberalFormatArgvInputTest extends TestCase
     }
 
 
-    public function testGetOption()
+    public function testGetOption(): void
     {
         $this->formatLiberalArgvInput->setOption('source', ['one,two']);
         $this->assertSame(['one', 'two'], $this->formatLiberalArgvInput->getOption('source'));
     }
 
 
-    public function testGetOptions()
+    public function testGetOptions(): void
     {
         $this->formatLiberalArgvInput->setOption('source', ['one,two']);
         $this->assertSame(['one', 'two'], $this->formatLiberalArgvInput->getOptions()['source']);
@@ -44,7 +44,7 @@ class LiberalFormatArgvInputTest extends TestCase
     /**
      * @dataProvider getSplitByComma()
      */
-    public function testSplitByComma($input, $expected)
+    public function testSplitByComma($input, $expected): void
     {
         $this->assertSame(
             $expected,
@@ -68,7 +68,7 @@ class LiberalFormatArgvInputTest extends TestCase
     /**
      * @dataProvider getRemoveEqualsData()
      */
-    public function testRemoveEquals($input, $expected)
+    public function testRemoveEquals($input, $expected): void
     {
         $this->assertSame(
             $expected,

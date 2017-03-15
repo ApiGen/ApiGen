@@ -3,14 +3,12 @@
 namespace ApiGen\Console\Input;
 
 use Symfony;
+use Symfony\Component\Console\Input\ArgvInput;
 
-class LiberalFormatArgvInput extends Symfony\Component\Console\Input\ArgvInput
+final class LiberalFormatArgvInput extends ArgvInput
 {
 
-    /**
-     * @return array
-     */
-    public function getOptions()
+    public function getOptions(): array
     {
         $options = parent::getOptions();
         foreach ($options as $key => $value) {
@@ -33,8 +31,8 @@ class LiberalFormatArgvInput extends Symfony\Component\Console\Input\ArgvInput
 
 
     /**
-     * @param array|string $value
-     * @return array|string
+     * @param string[]|string $value
+     * @return string[]|string
      */
     private function removeEqualsSign($value)
     {
@@ -42,10 +40,12 @@ class LiberalFormatArgvInput extends Symfony\Component\Console\Input\ArgvInput
             array_walk($value, function (&$singleValue) {
                 $singleValue = ltrim((string) $singleValue, '=');
             });
+
         } else {
             $value = (string) $value;
             $value = ltrim($value, '=');
         }
+
         return $value;
     }
 
@@ -79,9 +79,10 @@ class LiberalFormatArgvInput extends Symfony\Component\Console\Input\ArgvInput
 
 
     /**
-     * @return string|array
+     * @param string|string[] $value
+     * @return string|string[]
      */
-    private function splitByCommaIfHasAny(string $value)
+    private function splitByCommaIfHasAny($value)
     {
         if ($this->containsComma($value)) {
             return explode(',', $value);
