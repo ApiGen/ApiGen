@@ -36,27 +36,6 @@ interface ElementReflectionInterface extends NamedInterface
     /**
      * @return bool
      */
-    public function inPackage();
-
-
-    /**
-     * @return string
-     */
-    public function getPackageName();
-
-
-    /**
-     * Returns element package name (including subpackage name).
-     * For internal elements returns "PHP", for elements in global space returns "None".
-     *
-     * @return string
-     */
-    public function getPseudoPackageName();
-
-
-    /**
-     * @return bool
-     */
     public function inNamespace();
 
 

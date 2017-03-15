@@ -54,7 +54,7 @@ class ReflectionElementTest extends TestCase
 
     public function testGetEndPosition()
     {
-        $this->assertSame(62, $this->reflectionClass->getEndPosition());
+        $this->assertSame(69, $this->reflectionClass->getEndPosition());
     }
 
 
@@ -73,24 +73,6 @@ class ReflectionElementTest extends TestCase
     public function testIsDeprecated()
     {
         $this->assertFalse($this->reflectionClass->isDeprecated());
-    }
-
-
-    public function testGetPackageName()
-    {
-        $this->assertSame('Some\Package', $this->reflectionClass->getPackageName());
-    }
-
-
-    public function testGetPseudoPackageName()
-    {
-        $this->assertSame('Some\Package', $this->reflectionClass->getPseudoPackageName());
-    }
-
-
-    public function testInPackage()
-    {
-        $this->assertTrue($this->reflectionClass->inPackage());
     }
 
 

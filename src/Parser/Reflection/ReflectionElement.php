@@ -126,63 +126,6 @@ abstract class ReflectionElement extends ReflectionBase implements ElementReflec
     /**
      * {@inheritdoc}
      */
-    public function inPackage()
-    {
-        return ($this->getPackageName() !== '');
-    }
-
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPackageName()
-    {
-        static $packages = [];
-
-        if ($package = $this->getAnnotation('package')) {
-            $packageName = preg_replace('~\s+.*~s', '', $package[0]);
-            if (empty($packageName)) {
-                return '';
-            }
-
-            if ($subpackage = $this->getAnnotation('subpackage')) {
-                $subpackageName = preg_replace('~\s+.*~s', '', $subpackage[0]);
-                if (! empty($subpackageName) && strpos($subpackageName, $packageName) === 0) {
-                    $packageName = $subpackageName;
-                } else {
-                    $packageName .= '\\' . $subpackageName;
-                }
-            }
-            $packageName = strtr($packageName, '._/', '\\\\\\');
-
-            $lowerPackageName = strtolower($packageName);
-            if (! isset($packages[$lowerPackageName])) {
-                $packages[$lowerPackageName] = $packageName;
-            }
-
-            return $packages[$lowerPackageName];
-        }
-
-        return '';
-    }
-
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPseudoPackageName()
-    {
-        if ($this->isInternal()) {
-            return 'PHP';
-        }
-
-        return $this->getPackageName() ?: 'None';
-    }
-
-
-    /**
-     * {@inheritdoc}
-     */
     public function inNamespace()
     {
         return $this->getNamespaceName() !== '';
