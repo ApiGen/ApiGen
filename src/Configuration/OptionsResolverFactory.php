@@ -4,8 +4,10 @@ namespace ApiGen\Configuration;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-interface OptionsResolverFactory
+final class OptionsResolverFactory
 {
-
-    public function create(): OptionsResolver;
+    public function create(): OptionsResolver
+    {
+        return new OptionsResolver;
+    }
 }

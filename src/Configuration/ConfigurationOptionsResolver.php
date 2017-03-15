@@ -11,7 +11,7 @@ use ReflectionProperty;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ConfigurationOptionsResolver
+final class ConfigurationOptionsResolver
 {
 
     const AL_PROTECTED = 'protected';
@@ -31,13 +31,11 @@ class ConfigurationOptionsResolver
         CO::DESTINATION => null,
         CO::FORCE_OVERWRITE => false,
         CO::EXCLUDE => [],
-        CO::EXTENSIONS => [],
+        CO::EXTENSIONS => ['php'],
         CO::GOOGLE_CSE_ID => '',
         CO::GOOGLE_ANALYTICS => '',
-        CO::GROUPS => '',
         CO::MAIN => '',
         CO::INTERNAL => false,
-        CO::PHP => false,
         CO::SOURCE => [],
         CO::NO_SOURCE_CODE => false,
         CO::TEMPLATE => null,
@@ -91,9 +89,6 @@ class ConfigurationOptionsResolver
     }
 
 
-    /**
-     * @return array
-     */
     public function resolve(array $options): array
     {
         $this->resolver = $this->optionsResolverFactory->create();
@@ -101,6 +96,7 @@ class ConfigurationOptionsResolver
         $this->setRequired();
         $this->setAllowedValues();
         $this->setNormalizers();
+
         return $this->resolver->resolve($options);
     }
 
@@ -118,15 +114,13 @@ class ConfigurationOptionsResolver
                 } else {
                     $config = $options[CO::TEMPLATE_CONFIG];
                 }
-                return $this->themeConfigFactory->create($config)->getOptions();
+                return $this->themeConfigFactory->create($config)
+                    ->getOptions();
             }
         ]);
     }
 
 
-    /**
-     * @return int
-     */
     private function getAccessLevelForReflections(array $options): int
     {
         $accessLevel = null;
@@ -149,10 +143,7 @@ class ConfigurationOptionsResolver
 
     private function setRequired(): void
     {
-        $this->resolver->setRequired([
-            CO::SOURCE,
-            CO::DESTINATION
-        ]);
+        $this->resolver->setRequired([CO::SOURCE, CO::DESTINATION]);
     }
 
 
@@ -168,7 +159,9 @@ class ConfigurationOptionsResolver
 
         $this->resolver->addAllowedValues(CO::TEMPLATE_CONFIG, function ($value) {
             if ($value && ! is_file($value)) {
-                throw new ConfigurationException("Template config '$value' was not found");
+                throw new ConfigurationException(sprintf(
+                    'Template config "%s" was not found.', $value
+                ));
             }
             return true;
         });
@@ -226,7 +219,7 @@ class ConfigurationOptionsResolver
     }
 
 
-    private function allowedValuesForDestination(string $destination): bool
+    private function allowedValuesForDestination(?string $destination): bool
     {
         if (! $destination) {
             throw new ConfigurationException("Destination is not set. Use '-d <dir>' or config to set it");
@@ -235,17 +228,20 @@ class ConfigurationOptionsResolver
         }
 
         if (! is_writable($destination)) {
-            throw new ConfigurationException("Destination '$destination' is not writable");
+            throw new ConfigurationException(sprintf(
+                'Destination "%s" is not writable.',
+                $destination
+            ));
         }
         return true;
     }
 
 
     /**
-     * @param string|array $source
+     * @param string|string[] $source
      * @return bool
      */
-    private function allowedValuesForSource(array $source): bool
+    private function allowedValuesForSource($source): bool
     {
         if (! $source) {
             throw new ConfigurationException("Source is not set. Use '-s <dir>' or config to set it");
@@ -254,10 +250,19 @@ class ConfigurationOptionsResolver
         }
 
         foreach ($source as $singleSource) {
-            if (! file_exists($singleSource)) {
-                throw new ConfigurationException("Source '$singleSource' does not exist");
-            }
+            $this->ensureSourceExists($singleSource);
         }
+
         return true;
+    }
+
+    private function ensureSourceExists(string $singleSource)
+    {
+        if (! file_exists($singleSource)) {
+            throw new ConfigurationException(sprintf(
+                'Source "%s" does not exist',
+                $singleSource
+            ));
+        }
     }
 }
