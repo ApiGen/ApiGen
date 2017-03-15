@@ -11,11 +11,7 @@ class ReaderFactory
     const NEON = 'neon';
 
 
-    /**
-     * @param string $path
-     * @return ReaderInterface
-     */
-    public static function getReader($path)
+    public static function getReader(string $path): ReaderInterface
     {
         $fileExtension = pathinfo($path, PATHINFO_EXTENSION);
         return ($fileExtension === self::NEON) ? new NeonFile($path) : new YamlFile($path);

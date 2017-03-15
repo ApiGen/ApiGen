@@ -7,10 +7,7 @@ use Symfony\Component\Yaml\Yaml;
 class YamlFile extends AbstractFile implements ReaderInterface
 {
 
-    /**
-     * {@inheritdoc}
-     */
-    public function read()
+    public function read(): array
     {
         return Yaml::parse(file_get_contents($this->path));
     }

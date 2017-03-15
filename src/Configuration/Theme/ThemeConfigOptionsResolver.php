@@ -89,7 +89,7 @@ class ThemeConfigOptionsResolver extends Nette\Object
     /**
      * @return array
      */
-    public function resolve(array $options)
+    public function resolve(array $options): array
     {
         $this->resolver = $this->optionsResolverFactory->create();
         $this->setDefaults();
@@ -98,13 +98,13 @@ class ThemeConfigOptionsResolver extends Nette\Object
     }
 
 
-    private function setDefaults()
+    private function setDefaults(): void
     {
         $this->resolver->setDefaults($this->defaults);
     }
 
 
-    private function setNormalizers()
+    private function setNormalizers(): void
     {
         $this->resolver->setNormalizer(TCO::TEMPLATES, function (Options $options, $value) {
             return $this->makeTemplatePathsAbsolute($value, $options);
@@ -124,7 +124,7 @@ class ThemeConfigOptionsResolver extends Nette\Object
     /**
      * @return array
      */
-    private function makeTemplatePathsAbsolute(array $value, Options $options)
+    private function makeTemplatePathsAbsolute(array $value, Options $options): array
     {
         foreach ($value as $type => $settings) {
             $filePath = $options[TCO::TEMPLATES_PATH] . '/' . $settings['template'];
@@ -135,11 +135,7 @@ class ThemeConfigOptionsResolver extends Nette\Object
     }
 
 
-    /**
-     * @param string $file
-     * @param string $type
-     */
-    private function validateFileExistence($file, $type)
+    private function validateFileExistence(string $file, string $type): void
     {
         if (! is_file($file)) {
             throw new ConfigurationException("Template for $type was not found in $file");

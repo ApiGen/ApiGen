@@ -24,20 +24,14 @@ class Configuration implements ConfigurationInterface
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function resolveOptions(array $options)
+    public function resolveOptions(array $options): array
     {
         $options = $this->unsetConsoleOptions($options);
         return $this->options = $this->configurationOptionsResolver->resolve($options);
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getOption($name)
+    public function getOption(string $name)
     {
         if (isset($this->getOptions()[$name])) {
             return $this->getOptions()[$name];
@@ -46,10 +40,7 @@ class Configuration implements ConfigurationInterface
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getOptions()
+    public function getOptions(): array
     {
         if ($this->options === null) {
             $this->resolveOptions([]);
@@ -58,127 +49,91 @@ class Configuration implements ConfigurationInterface
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setOptions(array $options)
+    public function setOptions(array $options): void
     {
         $this->options = $options;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getVisibilityLevel()
+    public function getVisibilityLevel(): int
     {
         return $this->options['visibilityLevels'];
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getMain()
+    public function getMain(): string
     {
         return $this->getOption('main');
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isPhpCoreDocumented()
-    {
-        return (bool) $this->getOption('php');
-    }
-
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isInternalDocumented()
+    public function isInternalDocumented(): bool
     {
         return (bool) $this->getOption('internal');
     }
 
 
     /**
-     * {@inheritdoc}
+     * @return string[]
      */
-    public function getAnnotationGroups()
+    public function getAnnotationGroups(): array
     {
         return $this->options['annotationGroups'];
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDestination()
+    public function getDestination(): string
     {
         return $this->options['destination'];
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->options['title'];
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getBaseUrl()
+    public function getBaseUrl(): string
     {
         return $this->options['baseUrl'];
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getGoogleCseId()
+    public function getGoogleCseId(): string
     {
         return $this->options['googleCseId'];
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function shouldGenerateSourceCode()
+    public function shouldGenerateSourceCode(): bool
     {
         return $this->options['sourceCode'];
     }
 
 
     /**
-     * {@inheritdoc}
+     * @return array|string[]
      */
-    public function getSource()
+    public function getSource(): array
     {
         return $this->options['source'];
     }
 
 
     /**
-     * {@inheritdoc}
+     * @return array|string[]
      */
-    public function getExclude()
+    public function getExclude(): array
     {
         return $this->options['exclude'];
     }
 
 
     /**
-     * {@inheritdoc}
+     * @return array|string[]
      */
-    public function getExtensions()
+    public function getExtensions(): array
     {
         return $this->options['extensions'];
     }
@@ -187,7 +142,7 @@ class Configuration implements ConfigurationInterface
     /**
      * @return array
      */
-    private function unsetConsoleOptions(array $options)
+    private function unsetConsoleOptions(array $options): array
     {
         unset($options['config'], $options['help'], $options['version'], $options['quiet']);
         return $options;

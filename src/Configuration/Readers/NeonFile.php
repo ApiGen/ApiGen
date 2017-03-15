@@ -6,11 +6,10 @@ use Nette\Neon\Neon;
 
 class NeonFile extends AbstractFile implements ReaderInterface
 {
-
     /**
-     * {@inheritdoc}
+     * @return mixed[]
      */
-    public function read()
+    public function read(): array
     {
         $json = file_get_contents($this->path);
         return (array) Neon::decode($json);

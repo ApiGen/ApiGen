@@ -7,8 +7,5 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 interface OptionsResolverFactory
 {
 
-    /**
-     * @return OptionsResolver
-     */
-    public function create();
+    public function create(): OptionsResolver;
 }

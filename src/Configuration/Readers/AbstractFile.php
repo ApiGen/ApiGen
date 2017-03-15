@@ -14,20 +14,14 @@ abstract class AbstractFile
     protected $path;
 
 
-    /**
-     * @param string $path
-     */
-    public function __construct($path)
+    public function __construct(string $path)
     {
         $this->validatePath($path);
         $this->path = $path;
     }
 
 
-    /**
-     * @param string $path
-     */
-    protected function validatePath($path)
+    protected function validatePath(string $path): void
     {
         if (! file_exists($path)) {
             throw new MissingFileException($path . ' could not be found');

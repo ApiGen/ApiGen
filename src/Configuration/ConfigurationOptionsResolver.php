@@ -94,7 +94,7 @@ class ConfigurationOptionsResolver
     /**
      * @return array
      */
-    public function resolve(array $options)
+    public function resolve(array $options): array
     {
         $this->resolver = $this->optionsResolverFactory->create();
         $this->setDefaults();
@@ -105,7 +105,7 @@ class ConfigurationOptionsResolver
     }
 
 
-    private function setDefaults()
+    private function setDefaults(): void
     {
         $this->resolver->setDefaults($this->defaults);
         $this->resolver->setDefaults([
@@ -127,7 +127,7 @@ class ConfigurationOptionsResolver
     /**
      * @return int
      */
-    private function getAccessLevelForReflections(array $options)
+    private function getAccessLevelForReflections(array $options): int
     {
         $accessLevel = null;
 
@@ -147,7 +147,7 @@ class ConfigurationOptionsResolver
     }
 
 
-    private function setRequired()
+    private function setRequired(): void
     {
         $this->resolver->setRequired([
             CO::SOURCE,
@@ -156,7 +156,7 @@ class ConfigurationOptionsResolver
     }
 
 
-    private function setAllowedValues()
+    private function setAllowedValues(): void
     {
         $this->resolver->addAllowedValues(CO::DESTINATION, function ($destination) {
             return $this->allowedValuesForDestination($destination);
@@ -175,7 +175,7 @@ class ConfigurationOptionsResolver
     }
 
 
-    private function setNormalizers()
+    private function setNormalizers(): void
     {
         $this->resolver->setNormalizer(CO::ANNOTATION_GROUPS, function (Options $options, $value) {
             $value = (array) $value;
@@ -214,11 +214,7 @@ class ConfigurationOptionsResolver
     }
 
 
-    /**
-     * @param string $theme
-     * @return string
-     */
-    private function getTemplateConfigPathFromTheme($theme)
+    private function getTemplateConfigPathFromTheme(string $theme): string
     {
         $themePath = $this->themeConfigPathResolver->resolve("/vendor/apigen/theme-$theme");
 
@@ -230,11 +226,7 @@ class ConfigurationOptionsResolver
     }
 
 
-    /**
-     * @param string $destination
-     * @return bool
-     */
-    private function allowedValuesForDestination($destination)
+    private function allowedValuesForDestination(string $destination): bool
     {
         if (! $destination) {
             throw new ConfigurationException("Destination is not set. Use '-d <dir>' or config to set it");
@@ -253,7 +245,7 @@ class ConfigurationOptionsResolver
      * @param string|array $source
      * @return bool
      */
-    private function allowedValuesForSource($source)
+    private function allowedValuesForSource(array $source): bool
     {
         if (! $source) {
             throw new ConfigurationException("Source is not set. Use '-s <dir>' or config to set it");
