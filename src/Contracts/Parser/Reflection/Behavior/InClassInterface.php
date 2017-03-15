@@ -16,12 +16,6 @@ interface InClassInterface extends InNamespaceInterface
     /**
      * @return string
      */
-    public function getPackageName();
-
-
-    /**
-     * @return string
-     */
     public function getNamespaceName();
 
 

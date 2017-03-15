@@ -121,15 +121,6 @@ class ReflectionMethodMagic extends ReflectionMethod implements MagicMethodRefle
     /**
      * {@inheritdoc}
      */
-    public function getPackageName()
-    {
-        return $this->declaringClass->getPackageName();
-    }
-
-
-    /**
-     * {@inheritdoc}
-     */
     public function getNamespaceName()
     {
         return $this->declaringClass->getNamespaceName();
