@@ -1,3 +1,4 @@
 checkers:
-    # declare(strict_types=1);
+    # strict and scalar types
     - PhpCsFixer\Fixer\Strict\DeclareStrictTypesFixer
+    - SlevomatCodingStandard\Sniffs\TypeHints\TypeHintDeclarationSniff
