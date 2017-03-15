@@ -15,21 +15,14 @@ class NeonFile
     private $path;
 
 
-    /**
-     * @param string $path
-     */
-    public function __construct($path)
+    public function __construct(string $path)
     {
         $this->validatePath($path);
         $this->path = $path;
     }
 
 
-    /**
-     * @param string $path
-     * @throws \Exception
-     */
-    private function validatePath($path)
+    private function validatePath(string $path): void
     {
         if (! file_exists($path)) {
             throw new MissingFileException($path . ' could not be found');
@@ -44,7 +37,7 @@ class NeonFile
     /**
      * @return array
      */
-    public function read()
+    public function read(): array
     {
         $json = file_get_contents($this->path);
         return (array) Neon::decode($json);

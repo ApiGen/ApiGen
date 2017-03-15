@@ -14,13 +14,13 @@ class CopyTest extends TestCase
     private $fileSystem;
 
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->fileSystem = new FileSystem;
     }
 
 
-    public function testCopyFiles()
+    public function testCopyFiles(): void
     {
         $this->fileSystem->copy(
             [__DIR__ . '/CopySource/SomeDir/someFile.txt' => 'renamedFile.txt'],
@@ -31,7 +31,7 @@ class CopyTest extends TestCase
     }
 
 
-    public function testCopyDirectory()
+    public function testCopyDirectory(): void
     {
         $this->fileSystem->copy([__DIR__ . '/CopySource/SomeDir' => 'NewDir'], TEMP_DIR . '/destination');
         $this->assertFileExists(TEMP_DIR . '/destination/NewDir');

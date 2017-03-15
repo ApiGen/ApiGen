@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 class UtilsExtensionTest extends TestCase
 {
 
-    public function testLoadConfiguration()
+    public function testLoadConfiguration(): void
     {
         $utilsExtension = new UtilsExtension;
         $utilsExtension->setCompiler(new Compiler(new ContainerBuilder), 'compiler');

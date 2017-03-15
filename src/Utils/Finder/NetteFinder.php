@@ -7,11 +7,13 @@ use SplFileInfo;
 
 class NetteFinder implements FinderInterface
 {
-
     /**
-     * {@inheritdoc}
+     * @param string|array $source
+     * @param array $exclude
+     * @param array $extensions
+     * @return SplFileInfo[]
      */
-    public function find($source, array $exclude = [], array $extensions = ['php'])
+    public function find($source, array $exclude = [], array $extensions = ['php']): array
     {
         $sources = $this->turnToIterator($source);
         $fileMasks = $this->turnExtensionsToMask($extensions);
@@ -31,7 +33,7 @@ class NetteFinder implements FinderInterface
      * @param string $fileMasks
      * @return SplFileInfo[]
      */
-    private function getFilesFromSource($source, array $exclude, $fileMasks)
+    private function getFilesFromSource(string $source, array $exclude, string $fileMasks)
     {
         if (is_file($source)) {
             $foundFiles[$source] = new SplFileInfo($source);
@@ -45,10 +47,10 @@ class NetteFinder implements FinderInterface
 
 
     /**
-     * @param array|string $source
-     * @return array
+     * @param string[]|string $source
+     * @return string[]
      */
-    private function turnToIterator($source)
+    private function turnToIterator($source): array
     {
         if (! is_array($source)) {
             return [$source];
@@ -57,15 +59,14 @@ class NetteFinder implements FinderInterface
     }
 
 
-    /**
-     * @return array
-     */
-    private function turnExtensionsToMask(array $extensions)
+    private function turnExtensionsToMask(array $extensions): string
     {
-        array_walk($extensions, function (&$value) {
-            $value = '*.' . $value;
-        });
-        return $extensions;
+        $mask = '';
+        foreach ($extensions as $extension) {
+            $mask .= '*.' . $extension . ',';
+        }
+
+        return rtrim($mask, ',');
     }
 
 

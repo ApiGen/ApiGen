@@ -8,7 +8,7 @@ use Nette\DI\CompilerExtension;
 class UtilsExtension extends CompilerExtension
 {
 
-    public function loadConfiguration()
+    public function loadConfiguration(): void
     {
         Compiler::loadDefinitions(
             $this->getContainerBuilder(),

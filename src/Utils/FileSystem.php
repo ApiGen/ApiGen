@@ -8,40 +8,26 @@ use Nette\Utils\Finder;
 class FileSystem
 {
 
-    /**
-     * @param string $path
-     * @return string
-     */
-    public function normalizePath($path)
+    public function normalizePath(string $path): string
     {
         return str_replace('\\', '/', $path);
     }
 
 
-    /**
-     * @param string $path
-     * @return string
-     */
-    public function forceDir($path)
+    public function forceDir(string $path): string
     {
         @mkdir(dirname($path), 0755, true);
         return $path;
     }
 
 
-    /**
-     * @param string $path
-     */
-    public function deleteDir($path)
+    public function deleteDir(string $path): void
     {
         NetteFileSystem::delete($path);
     }
 
 
-    /**
-     * @param string $path
-     */
-    public function purgeDir($path)
+    public function purgeDir(string $path): void
     {
         NetteFileSystem::delete($path);
         NetteFileSystem::createDir($path);
@@ -53,7 +39,7 @@ class FileSystem
      * @param array $baseDirectories
      * @return string
      */
-    public function getAbsolutePath($path, array $baseDirectories = [])
+    public function getAbsolutePath(string $path, array $baseDirectories = []): string
     {
         foreach ($baseDirectories as $directory) {
             $fileName = $directory . '/' . $path;
@@ -70,11 +56,7 @@ class FileSystem
     }
 
 
-    /**
-     * @param string $path
-     * @return bool
-     */
-    public function isDirEmpty($path)
+    public function isDirEmpty(string $path): bool
     {
         if (count(glob($path . '/*'))) {
             return false;
@@ -87,7 +69,7 @@ class FileSystem
      * @param array $source
      * @param string $destination
      */
-    public function copy(array $source, $destination)
+    public function copy(array $source, string $destination): void
     {
         foreach ($source as $resourceSource => $resourceDestination) {
             if (is_file($resourceSource)) {

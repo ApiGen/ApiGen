@@ -14,7 +14,7 @@ class ExcludeTest extends TestCase
     private $scanner;
 
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->scanner = new NetteFinder;
     }
@@ -23,7 +23,7 @@ class ExcludeTest extends TestCase
     /**
      * Issue #412
      */
-    public function testExcludeAppliedOnlyOnSourcesPath()
+    public function testExcludeAppliedOnlyOnSourcesPath(): void
     {
         $files = $this->scanner->find(__DIR__ . '/Source', ['tests']);
         $this->assertCount(3, $files);
@@ -33,7 +33,7 @@ class ExcludeTest extends TestCase
     /**
      * Issue #529
      */
-    public function testExcludeDirRelativeToSource()
+    public function testExcludeDirRelativeToSource(): void
     {
         $source = __DIR__ . '/ScannerExcludeSource/src';
         $this->assertCount(0, $this->scanner->find($source, ['Core/smarty_cache']));
@@ -42,7 +42,7 @@ class ExcludeTest extends TestCase
     }
 
 
-    public function testExcludeFile()
+    public function testExcludeFile(): void
     {
         $source = __DIR__ . '/ScannerExcludeSource/src';
         $this->assertCount(0, $this->scanner->find($source, ['ShouldBeExcluded.php']));
