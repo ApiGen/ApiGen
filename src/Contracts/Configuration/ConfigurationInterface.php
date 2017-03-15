@@ -4,59 +4,37 @@ namespace ApiGen\Contracts\Configuration;
 
 interface ConfigurationInterface
 {
-
-    /**
-     * @return array
-     */
-    public function resolveOptions(array $options);
+    public function resolveOptions(array $options): array;
 
 
     /**
-     * @param string $name
      * @return mixed|NULL
      */
-    public function getOption($name);
+    public function getOption(string $name);
 
 
-    /**
-     * @return array
-     */
-    public function getOptions();
+    public function getOptions(): array;
 
 
-    public function setOptions(array $options);
+    public function setOptions(array $options): void;
 
 
     /**
      * Get property/method visibility level (public, protected or private, in binary code).
-     *
-     * @return int
      */
-    public function getVisibilityLevel();
+    public function getVisibilityLevel(): int;
 
 
     /**
      * Return name of main library
-     *
-     * @return string
      */
-    public function getMain();
-
-
-    /**
-     * Are PHP Core elements documented.
-     *
-     * @return bool
-     */
-    public function isPhpCoreDocumented();
+    public function getMain(): string;
 
 
     /**
      * Are elements marked as "@internal" documented.
-     *
-     * @return bool
      */
-    public function isInternalDocumented();
+    public function isInternalDocumented(): bool;
 
 
     /**
@@ -64,47 +42,34 @@ interface ConfigurationInterface
      *
      * @return string[]
      */
-    public function getAnnotationGroups();
+    public function getAnnotationGroups(): array;
 
 
-    /**
-     * @return string
-     */
-    public function getDestination();
+    public function getDestination(): string;
 
 
     /**
      * Get title of the project.
-     *
-     * @return string
      */
-    public function getTitle();
+    public function getTitle(): string;
 
 
     /**
      * Base url of application.
-     *
-     * @var string
      */
-    public function getBaseUrl();
+    public function getBaseUrl(): string;
 
 
-    /**
-     * @return string
-     */
-    public function getGoogleCseId();
+    public function getGoogleCseId(): string;
 
 
-    /**
-     * @return bool
-     */
-    public function shouldGenerateSourceCode();
+    public function shouldGenerateSourceCode(): bool;
 
 
     /**
      * @return string[]
      */
-    public function getSource();
+    public function getSource(): array;
 
 
     /**
@@ -112,7 +77,7 @@ interface ConfigurationInterface
      *
      * @return string[]
      */
-    public function getExclude();
+    public function getExclude(): array;
 
 
     /**
@@ -120,5 +85,5 @@ interface ConfigurationInterface
      *
      * @return string[]
      */
-    public function getExtensions();
+    public function getExtensions(): array;
 }
