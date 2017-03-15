@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 class ThemeResourcesTest extends TestCase
 {
 
-    public function testCopyToDestination()
+    public function testCopyToDestination(): void
     {
         $sourceDir = TEMP_DIR . '/source';
         $sourceFile = TEMP_DIR . '/other-source/other-file.txt';
@@ -33,11 +33,7 @@ class ThemeResourcesTest extends TestCase
     }
 
 
-    /**
-     * @param string $sourceFile
-     * @param string $sourceDir
-     */
-    private function prepareSources($sourceFile, $sourceDir)
+    private function prepareSources(string $sourceFile, string $sourceDir): void
     {
         mkdir(dirname($sourceFile), 0777);
         file_put_contents($sourceFile, '...');

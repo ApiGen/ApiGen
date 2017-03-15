@@ -13,20 +13,13 @@ class ThemeConfigPathResolver
     private $rootDir;
 
 
-    /**
-     * @param string $rootDir
-     */
-    public function __construct($rootDir)
+    public function __construct(string $rootDir)
     {
         $this->rootDir = $rootDir;
     }
 
 
-    /**
-     * @param string $path
-     * @return string
-     */
-    public function resolve($path)
+    public function resolve(string $path): string
     {
         $allowedPaths = [
             $this->rootDir,

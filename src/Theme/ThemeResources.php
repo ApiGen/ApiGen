@@ -30,10 +30,7 @@ class ThemeResources
     }
 
 
-    /**
-     * @param string $destination
-     */
-    public function copyToDestination($destination)
+    public function copyToDestination(string $destination): void
     {
         $resources = $this->configuration->getOption(CO::TEMPLATE)['resources'];
         foreach ($resources as $resourceSource => $resourceDestination) {

@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 class ThemeConfigPathResolverTest extends TestCase
 {
 
-    public function testResolve()
+    public function testResolve(): void
     {
         $themeConfigPathResolver = new ThemeConfigPathResolver(__DIR__ . '/ThemeConfigPathResolverSource');
 
