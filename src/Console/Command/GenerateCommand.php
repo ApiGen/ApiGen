@@ -16,7 +16,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use TokenReflection\Exception\FileProcessingException;
 
-class GenerateCommand extends AbstractCommand
+final class GenerateCommand extends AbstractCommand
 {
 
     /**
@@ -71,6 +71,7 @@ class GenerateCommand extends AbstractCommand
         FinderInterface $finder
     ) {
         parent::__construct();
+
         $this->configuration = $configuration;
         $this->parser = $parser;
         $this->parserResult = $parserResult;
@@ -82,11 +83,12 @@ class GenerateCommand extends AbstractCommand
     }
 
 
-    protected function configure()
+    protected function configure(): void
     {
-        $this->setName('generate')
-            ->setDescription('Generate API documentation')
-            ->addOption(
+        $this->setName('generate');
+        $this->setDescription('Generate API documentation');
+
+        $this->addOption(
                 'source',
                 's',
                 InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
@@ -180,7 +182,7 @@ class GenerateCommand extends AbstractCommand
     }
 
 
-    private function scanAndParse(array $options)
+    private function scanAndParse(array $options): void
     {
         $this->io->writeln('<info>Scanning sources and parsing</info>');
 
@@ -199,7 +201,7 @@ class GenerateCommand extends AbstractCommand
     }
 
 
-    private function generate(array $options)
+    private function generate(array $options): void
     {
         $this->prepareDestination($options['destination'], $options['overwrite']);
         $this->io->writeln('<info>Generating API documentation</info>');
@@ -207,7 +209,7 @@ class GenerateCommand extends AbstractCommand
     }
 
 
-    private function reportParserErrors(array $errors)
+    private function reportParserErrors(array $errors): void
     {
         /** @var FileProcessingException[] $errors */
         foreach ($errors as $error) {
@@ -228,10 +230,7 @@ class GenerateCommand extends AbstractCommand
     }
 
 
-    /**
-     * @return array
-     */
-    private function prepareOptions(array $cliOptions)
+    private function prepareOptions(array $cliOptions): array
     {
         $options = $this->convertDashKeysToCamel($cliOptions);
         $options = $this->loadOptionsFromConfig($options);
@@ -243,7 +242,7 @@ class GenerateCommand extends AbstractCommand
     /**
      * @return array
      */
-    private function convertDashKeysToCamel(array $options)
+    private function convertDashKeysToCamel(array $options): array
     {
         foreach ($options as $key => $value) {
             $camelKey = $this->camelFormat($key);
@@ -256,11 +255,7 @@ class GenerateCommand extends AbstractCommand
     }
 
 
-    /**
-     * @param string $name
-     * @return string
-     */
-    private function camelFormat($name)
+    private function camelFormat(string $name): string
     {
         return preg_replace_callback('~-([a-z])~', function ($matches) {
             return strtoupper($matches[1]);
@@ -271,7 +266,7 @@ class GenerateCommand extends AbstractCommand
     /**
      * @return array
      */
-    private function loadOptionsFromConfig(array $options)
+    private function loadOptionsFromConfig(array $options): array
     {
         $configFilePaths = [
             $options['config'],
@@ -284,35 +279,18 @@ class GenerateCommand extends AbstractCommand
         foreach ($configFilePaths as $configFile) {
             if (file_exists($configFile)) {
                 $configFileOptions = ReaderFactory::getReader($configFile)->read();
-                $options = array_merge($options, $configFileOptions);
-                break;
+                return array_merge($options, $configFileOptions);
             }
         }
         return $options;
     }
 
 
-    /**
-     * @param string $destination
-     */
-    private function prepareDestination($destination, $allowOverwrite = false)
+    private function prepareDestination(string $destination, bool $shouldOverwrite = false): void
     {
-        if (!$allowOverwrite) {
-            $this->cleanDestinationWithCaution($destination);
+        if ($shouldOverwrite) {
+            $this->fileSystem->purgeDir($destination);
         }
         $this->themeResources->copyToDestination($destination);
-    }
-
-
-    /**
-     * @param string $destination
-     */
-    private function cleanDestinationWithCaution($destination)
-    {
-        if (! $this->fileSystem->isDirEmpty($destination)) {
-            if ($this->io->ask('<warning>Destination is not empty. Do you want to erase it?</warning>', true)) {
-                $this->fileSystem->purgeDir($destination);
-            }
-        }
     }
 }
