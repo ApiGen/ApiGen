@@ -17,7 +17,7 @@ class FshlSourceCodeHighlighterTest extends TestCase
     private $fshlSourceCodeHighlighter;
 
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $fshlHighlighter = new Highlighter(new Html);
         $fshlHighlighter->setLexer(new Php);
@@ -25,7 +25,7 @@ class FshlSourceCodeHighlighterTest extends TestCase
     }
 
 
-    public function testHighlight()
+    public function testHighlight(): void
     {
         $this->assertSame(
             '<span class="php-var">$a</span> = <span class="php-num">1</span>',
@@ -34,7 +34,7 @@ class FshlSourceCodeHighlighterTest extends TestCase
     }
 
 
-    public function testHighlightAndAddLineNumbers()
+    public function testHighlightAndAddLineNumbers(): void
     {
         $this->assertSame(
             '<span class="line">1: </span><span class="php-var">$a</span> = <span class="php-num">1</span>',

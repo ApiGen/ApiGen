@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 class OverviewGeneratorTest extends TestCase
 {
 
-    public function testGenerate()
+    public function testGenerate(): void
     {
         $templateFactoryMock = $this->getTemplateFactoryMock();
         $overviewGenerator = new OverviewGenerator($templateFactoryMock);
@@ -20,10 +20,7 @@ class OverviewGeneratorTest extends TestCase
     }
 
 
-    /**
-     * @return Mockery\MockInterface
-     */
-    private function getTemplateFactoryMock()
+    private function getTemplateFactoryMock(): Mockery\MockInterface
     {
         $templateFactoryMock = Mockery::mock(TemplateFactory::class);
         $templateFactoryMock->shouldReceive('createForType')->andReturn($this->getTemplateMock());
@@ -32,10 +29,7 @@ class OverviewGeneratorTest extends TestCase
     }
 
 
-    /**
-     * @return Mockery\MockInterface
-     */
-    private function getTemplateMock()
+    private function getTemplateMock(): Mockery\MockInterface
     {
         $templateMock = Mockery::mock(Template::class);
         $templateMock->shouldReceive('setSavePath')->withAnyArgs();

@@ -28,10 +28,7 @@ class GeneratorQueue implements GeneratorQueueInterface
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function run()
+    public function run(): void
     {
         $this->progressBar->init($this->getStepCount());
         foreach ($this->getAllowedQueue() as $templateGenerator) {
@@ -40,18 +37,12 @@ class GeneratorQueue implements GeneratorQueueInterface
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function addToQueue(TemplateGeneratorInterface $templateGenerator)
+    public function addToQueue(TemplateGeneratorInterface $templateGenerator): void
     {
         $this->queue[] = $templateGenerator;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
     public function getQueue()
     {
         return $this->queue;
@@ -73,10 +64,7 @@ class GeneratorQueue implements GeneratorQueueInterface
     }
 
 
-    /**
-     * @return int
-     */
-    private function getStepCount()
+    private function getStepCount(): int
     {
         $steps = 0;
         foreach ($this->getAllowedQueue() as $templateGenerator) {

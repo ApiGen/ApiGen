@@ -13,13 +13,11 @@ use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ParameterReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
 use ApiGen\Parser\Reflection\ReflectionClass;
-use ApiGen\Parser\Reflection\ReflectionElement;
 use ArrayObject;
 use TokenReflection\Resolver;
 
-class ElementResolver implements ElementResolverInterface
+final class ElementResolver implements ElementResolverInterface
 {
-
     /**
      * @var array
      */
@@ -51,12 +49,12 @@ class ElementResolver implements ElementResolverInterface
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getClass($name, $namespace = '')
+    public function getClass(string $name, string $namespace = ''): ?ClassReflectionInterface
     {
         $parsedClasses = $this->parserStorage->getClasses();
+//        dump($parsedClasses);
+//        die;
+
         $class = $this->findElementByNameAndNamespace($parsedClasses, $name, $namespace);
         if ($class && $class->isDocumented()) {
             return $class;
@@ -66,12 +64,11 @@ class ElementResolver implements ElementResolverInterface
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getConstant($name, $namespace = '')
+    public function getConstant(string $name, string $namespace = ''): ?ConstantReflectionInterface
     {
         $parsedConstants = $this->parserStorage->getConstants();
+
+        /** @var ReflectionClass $constant */
         $constant = $this->findElementByNameAndNamespace($parsedConstants, $name, $namespace);
         if ($constant && $constant->isDocumented()) {
             return $constant;
@@ -81,10 +78,7 @@ class ElementResolver implements ElementResolverInterface
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getFunction($name, $namespace = '')
+    public function getFunction(string $name, string $namespace = ''): ?FunctionReflectionInterface
     {
         $parsedFunctions = $this->parserStorage->getFunctions();
         $function = $this->findElementByNameAndNamespace($parsedFunctions, $name, $namespace);
@@ -97,16 +91,25 @@ class ElementResolver implements ElementResolverInterface
 
 
     /**
-     * {@inheritdoc}
+     * @param string $definition
+     * @param object|string $reflectionElement
+     * @param string|null $expectedName
+     * @return ClassReflectionInterface|ConstantReflectionInterface|FunctionReflectionInterface|MethodReflectionInterface|PropertyReflectionInterface|NULL
      */
-    public function resolveElement($definition, $reflectionElement, &$expectedName = null)
+    public function resolveElement(string $definition, $reflectionElement, string &$expectedName = null)
     {
         if ($this->isSimpleType($definition)) {
             return null;
         }
 
+        // @todo hotfix
+        if (class_exists($definition, false)) {
+            return $reflectionElement;
+        }
+
         $originalContext = $reflectionElement;
         $reflectionElement = $this->correctContextForParameterOrClassMember($reflectionElement);
+
         if ($reflectionElement === null) {
             return null;
         }
@@ -166,18 +169,14 @@ class ElementResolver implements ElementResolverInterface
             // Member of a class
             return $this->getClass($reflectionElement->getDeclaringClassName());
         }
+
         return $reflectionElement;
     }
 
 
-    /**
-     * @param string $definition
-     * @param int $pos
-     * @param ElementReflectionInterface $reflectionElement
-     * @return ClassReflectionInterface
-     */
-    private function resolveContextForSelfProperty($definition, $pos, ElementReflectionInterface $reflectionElement)
-    {
+    private function resolveContextForSelfProperty(
+        string $definition, int $pos, ElementReflectionInterface $reflectionElement
+    ): ClassReflectionInterface {
         $class = $this->getClass(substr($definition, 0, $pos), $reflectionElement->getNamespaceName());
         if ($class === null) {
             $fqnName = Resolver::resolveClassFQN(
@@ -191,26 +190,16 @@ class ElementResolver implements ElementResolverInterface
     }
 
 
-    /**
-     * @param string $definition
-     * @return bool
-     */
-    private function isSimpleType($definition)
+    private function isSimpleType(string $definition): bool
     {
-        if (empty($definition) || isset($this->simpleTypes[$definition])) {
-            return true;
-        }
-
-        return false;
+        return empty($definition) || isset($this->simpleTypes[$definition]);
     }
 
 
     /**
-     * @param string $definition
-     * @param ElementReflectionInterface $reflectionElement
      * @return ClassReflectionInterface|ConstantReflectionInterface|FunctionReflectionInterface|NULL
      */
-    private function resolveIfParsed($definition, ElementReflectionInterface $reflectionElement)
+    private function resolveIfParsed(string $definition, ElementReflectionInterface $reflectionElement)
     {
         $definition = $this->removeEndBrackets($definition);
         if ($class = $this->getClass($definition, $reflectionElement->getNamespaceName())) {
@@ -220,16 +209,15 @@ class ElementResolver implements ElementResolverInterface
         } elseif ($function = $this->getFunction($definition, $reflectionElement->getNamespaceName())) {
             return $function;
         }
+
         return null;
     }
 
 
     /**
-     * @param $definition
-     * @param ClassReflectionInterface $context
      * @return ConstantReflectionInterface|MethodReflectionInterface|PropertyReflectionInterface|NULL
      */
-    private function resolveIfInContext($definition, ClassReflectionInterface $context)
+    private function resolveIfInContext(string $definition, ClassReflectionInterface $context)
     {
         $definition = $this->removeEndBrackets($definition);
         $definition = $this->removeStartDollar($definition);
@@ -241,15 +229,12 @@ class ElementResolver implements ElementResolverInterface
         } elseif ($context->hasConstant($definition)) {
             return $context->getConstant($definition);
         }
+
         return null;
     }
 
 
-    /**
-     * @param string $definition
-     * @return string
-     */
-    private function removeEndBrackets($definition)
+    private function removeEndBrackets(string $definition): string
     {
         if (substr($definition, -2) === '()') {
             return substr($definition, 0, -2);
@@ -258,11 +243,7 @@ class ElementResolver implements ElementResolverInterface
     }
 
 
-    /**
-     * @param string $definition
-     * @return string
-     */
-    private function removeStartDollar($definition)
+    private function removeStartDollar(string $definition): string
     {
         if ($definition[0] === '$') {
             return substr($definition, 1);
@@ -271,13 +252,7 @@ class ElementResolver implements ElementResolverInterface
     }
 
 
-    /**
-     * @param string $definition
-     * @param ClassReflectionInterface $reflectionClass
-     * @param int $pos
-     * @return ClassReflectionInterface
-     */
-    private function resolveContextForClassProperty($definition, ClassReflectionInterface $reflectionClass, $pos)
+    private function resolveContextForClassProperty(string $definition, ClassReflectionInterface $reflectionClass, int $pos): ClassReflectionInterface
     {
         // Class::something or Class->something
         if (strpos($definition, 'parent::') === 0 && ($parentClassName = $reflectionClass->getParentClassName())) {
@@ -290,10 +265,9 @@ class ElementResolver implements ElementResolverInterface
 
 
     /**
-     * @param NULL|ReflectionElement $reflectionElement
-     * @return bool
+     * @param object|string|null $reflectionElement
      */
-    private function isContextUsable($reflectionElement)
+    private function isContextUsable($reflectionElement): bool
     {
         if ($reflectionElement === null || $reflectionElement instanceof ConstantReflectionInterface
             || $reflectionElement instanceof FunctionReflectionInterface
@@ -308,9 +282,8 @@ class ElementResolver implements ElementResolverInterface
      * @param array|ArrayObject $elements
      * @param string $name
      * @param string $namespace
-     * @return ReflectionClass|NULL
      */
-    private function findElementByNameAndNamespace($elements, $name, $namespace)
+    private function findElementByNameAndNamespace($elements, string $name, string $namespace): ?ClassReflectionInterface
     {
         $namespacedName = $namespace . '\\' . $name;
         if (isset($elements[$namespacedName])) {

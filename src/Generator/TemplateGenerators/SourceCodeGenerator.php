@@ -75,7 +75,7 @@ class SourceCodeGenerator implements ConditionalTemplateGeneratorInterface, Step
     }
 
 
-    public function generate()
+    public function generate(): void
     {
         foreach ($this->elementStorage->getElements() as $type => $elementList) {
             foreach ($elementList as $element) {
@@ -90,10 +90,7 @@ class SourceCodeGenerator implements ConditionalTemplateGeneratorInterface, Step
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getStepCount()
+    public function getStepCount(): int
     {
         $tokenizedFilter = function (ClassReflectionInterface $class) {
             return $class->isTokenized();
@@ -110,16 +107,13 @@ class SourceCodeGenerator implements ConditionalTemplateGeneratorInterface, Step
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isAllowed()
+    public function isAllowed(): bool
     {
-        return $this->configuration->getOption(CO::SOURCE_CODE);
+        return (bool) $this->configuration->getOption(CO::SOURCE_CODE);
     }
 
 
-    private function generateForElement(ElementReflectionInterface $element)
+    private function generateForElement(ElementReflectionInterface $element): void
     {
         $template = $this->templateFactory->createNamedForElement('source', $element);
         $template = $this->namespaceLoader->loadTemplateWithElementNamespace($template, $element);
@@ -131,10 +125,7 @@ class SourceCodeGenerator implements ConditionalTemplateGeneratorInterface, Step
     }
 
 
-    /**
-     * @return string
-     */
-    private function getHighlightedCodeFromElement(ElementReflectionInterface $element)
+    private function getHighlightedCodeFromElement(ElementReflectionInterface $element): string
     {
         $content = file_get_contents($element->getFileName());
         return $this->sourceCodeHighlighter->highlightAndAddLineNumbers($content);

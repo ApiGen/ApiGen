@@ -9,10 +9,7 @@ use ApiGen\Templating\Template;
 class ConstantElementGenerator extends AbstractElementGenerator
 {
 
-    /**
-     * {@inheritdoc}
-     */
-    public function generate()
+    public function generate(): void
     {
         foreach ($this->elementStorage->getConstants() as $name => $reflectionConstant) {
             $template = $this->templateFactory->createForReflection($reflectionConstant);
@@ -24,19 +21,13 @@ class ConstantElementGenerator extends AbstractElementGenerator
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getStepCount()
+    public function getStepCount(): int
     {
         return count($this->elementStorage->getConstants());
     }
 
 
-    /**
-     * @return Template
-     */
-    private function loadTemplateWithParameters(Template $template, ConstantReflectionInterface $constant)
+    private function loadTemplateWithParameters(Template $template, ConstantReflectionInterface $constant): Template
     {
         $template = $this->namespaceLoader->loadTemplateWithElementNamespace($template, $constant);
         $template->setParameters([

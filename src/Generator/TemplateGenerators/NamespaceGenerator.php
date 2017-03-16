@@ -47,10 +47,7 @@ class NamespaceGenerator implements TemplateGeneratorInterface, StepCounterInter
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function generate()
+    public function generate(): void
     {
         foreach ($this->elementStorage->getNamespaces() as $name => $namespace) {
             $template = $this->templateFactory->createNamedForElement(TemplateFactory::ELEMENT_NAMESPACE, $name);
@@ -62,10 +59,7 @@ class NamespaceGenerator implements TemplateGeneratorInterface, StepCounterInter
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getStepCount()
+    public function getStepCount(): int
     {
         return count($this->elementStorage->getNamespaces());
     }

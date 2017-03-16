@@ -11,7 +11,7 @@ interface SourceCodeHighlighter
      * @param string $sourceCode
      * @return string
      */
-    public function highlight($sourceCode);
+    public function highlight(string $sourceCode): string;
 
 
     /**
@@ -20,5 +20,5 @@ interface SourceCodeHighlighter
      * @param string $sourceCode
      * @return string
      */
-    public function highlightAndAddLineNumbers($sourceCode);
+    public function highlightAndAddLineNumbers(string $sourceCode): string;
 }

@@ -8,10 +8,7 @@ namespace ApiGen\Tests;
 class DeprecatedClass
 {
 
-    /**
-     * @return string
-     */
-    public function getDrink()
+    public function getDrink(): string
     {
         return 'Mojito';
     }

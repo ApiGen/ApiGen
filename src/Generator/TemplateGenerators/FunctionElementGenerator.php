@@ -9,10 +9,7 @@ use ApiGen\Templating\Template;
 class FunctionElementGenerator extends AbstractElementGenerator
 {
 
-    /**
-     * {@inheritdoc}
-     */
-    public function generate()
+    public function generate(): void
     {
         foreach ($this->elementStorage->getFunctions() as $name => $reflectionFunction) {
             $template = $this->templateFactory->createForReflection($reflectionFunction);
@@ -24,19 +21,13 @@ class FunctionElementGenerator extends AbstractElementGenerator
     }
 
 
-    /**
-     * @return int
-     */
-    public function getStepCount()
+    public function getStepCount(): int
     {
         return count($this->elementStorage->getFunctions());
     }
 
 
-    /**
-     * @return Template
-     */
-    private function loadTemplateWithParameters(Template $template, FunctionReflectionInterface $function)
+    private function loadTemplateWithParameters(Template $template, FunctionReflectionInterface $function): Template
     {
         $template = $this->namespaceLoader->loadTemplateWithElementNamespace($template, $function);
         $template->setParameters([

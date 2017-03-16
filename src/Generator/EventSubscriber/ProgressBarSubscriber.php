@@ -21,9 +21,6 @@ class ProgressBarSubscriber implements EventSubscriberInterface
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
     public static function getSubscribedEvents()
     {
         return [
@@ -32,7 +29,7 @@ class ProgressBarSubscriber implements EventSubscriberInterface
     }
 
 
-    public function generateProgress()
+    public function generateProgress(): void
     {
         $this->progressBar->increment(1);
     }

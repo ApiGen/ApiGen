@@ -15,7 +15,7 @@ use ApiGen\Tests\MethodInvoker as MI;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 
-class ElementResolverTest extends TestCase
+final class ElementResolverTest extends TestCase
 {
 
     /**
@@ -24,7 +24,7 @@ class ElementResolverTest extends TestCase
     private $elementResolver;
 
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $elementReflection = Mockery::mock(ElementReflectionInterface::class);
         $elementReflection->shouldReceive('getName')->andReturn('NiceName');
@@ -50,7 +50,7 @@ class ElementResolverTest extends TestCase
     }
 
 
-    public function testResolveElement()
+    public function testResolveElement(): void
     {
         $reflectionClassMock = Mockery::mock(ClassReflectionInterface::class);
         $reflectionClassMock->shouldReceive('getNamespaceAliases')->andReturn([]);
@@ -69,7 +69,7 @@ class ElementResolverTest extends TestCase
     }
 
 
-    public function testGetClass()
+    public function testGetClass(): void
     {
         $element = $this->elementResolver->getClass('SomeClass');
         $this->assertInstanceOf(ElementReflectionInterface::class, $element);
@@ -80,19 +80,19 @@ class ElementResolverTest extends TestCase
     }
 
 
-    public function testGetClassNotExisting()
+    public function testGetClassNotExisting(): void
     {
         $this->assertNull($this->elementResolver->getClass('NotExistingClass'));
     }
 
 
-    public function testGetClassNotDocumented()
+    public function testGetClassNotDocumented(): void
     {
         $this->assertNull($this->elementResolver->getClass('SomeNotDocumentedClass'));
     }
 
 
-    public function testGetConstant()
+    public function testGetConstant(): void
     {
         $element = $this->elementResolver->getConstant('SomeConstant');
         $this->assertInstanceOf(ElementReflectionInterface::class, $element);
@@ -100,13 +100,13 @@ class ElementResolverTest extends TestCase
     }
 
 
-    public function testGetConstantNotExisting()
+    public function testGetConstantNotExisting(): void
     {
         $this->assertNull($this->elementResolver->getConstant('NotExistingConstant'));
     }
 
 
-    public function testGetFunction()
+    public function testGetFunction(): void
     {
         $element = $this->elementResolver->getFunction('SomeFunction');
         $this->assertInstanceOf(ElementReflectionInterface::class, $element);
@@ -114,13 +114,13 @@ class ElementResolverTest extends TestCase
     }
 
 
-    public function testGetConstantNotFunction()
+    public function testGetConstantNotFunction(): void
     {
         $this->assertNull($this->elementResolver->getFunction('NotExistingFunction'));
     }
 
 
-    public function testIsSimpleType()
+    public function testIsSimpleType(): void
     {
         $this->assertTrue(MI::callMethodOnObject($this->elementResolver, 'isSimpleType', ['string']));
         $this->assertTrue(MI::callMethodOnObject($this->elementResolver, 'isSimpleType', ['boolean']));
@@ -130,7 +130,7 @@ class ElementResolverTest extends TestCase
     }
 
 
-    public function testResolveIfParsed()
+    public function testResolveIfParsed(): void
     {
         $reflectionMethodMock = Mockery::mock(MethodReflectionInterface::class);
         $reflectionMethodMock->shouldReceive('getDeclaringClassName')->andReturnNull();
@@ -162,7 +162,7 @@ class ElementResolverTest extends TestCase
     }
 
 
-    public function testResolveIfInContext()
+    public function testResolveIfInContext(): void
     {
         $reflectionClassMock = Mockery::mock(ClassReflectionInterface::class);
         $reflectionClassMock->shouldReceive('hasProperty')->with('someProperty')->andReturn(true);
@@ -193,7 +193,7 @@ class ElementResolverTest extends TestCase
     }
 
 
-    public function testRemoveEndBrackets()
+    public function testRemoveEndBrackets(): void
     {
         $this->assertSame(
             'function',
@@ -202,7 +202,7 @@ class ElementResolverTest extends TestCase
     }
 
 
-    public function testRemoveStartDollar()
+    public function testRemoveStartDollar(): void
     {
         $this->assertSame(
             'property',
@@ -211,7 +211,7 @@ class ElementResolverTest extends TestCase
     }
 
 
-    public function testCorrectContextForParameterOrClassMemberWithClass()
+    public function testCorrectContextForParameterOrClassMemberWithClass(): void
     {
         $reflectionClassMock = Mockery::mock(ClassReflectionInterface::class);
         $this->assertSame(
@@ -225,7 +225,7 @@ class ElementResolverTest extends TestCase
     }
 
 
-    public function testCorrectContextForParameterOrClassMemberWithParameter()
+    public function testCorrectContextForParameterOrClassMemberWithParameter(): void
     {
         $reflectionParameterMock = Mockery::mock(ParameterReflectionInterface::class);
         $reflectionParameterMock->shouldReceive('getName')->andReturn('NiceName');
@@ -241,7 +241,7 @@ class ElementResolverTest extends TestCase
     }
 
 
-    public function testCorrectContextForParameterOrClassMemberWithParameterAndNoClass()
+    public function testCorrectContextForParameterOrClassMemberWithParameterAndNoClass(): void
     {
         $reflectionParameterMock = Mockery::mock(ParameterReflectionInterface::class);
         $reflectionParameterMock->shouldReceive('getDeclaringClassName')->andReturnNull();
@@ -257,7 +257,7 @@ class ElementResolverTest extends TestCase
     }
 
 
-    public function testCorrectContextForParameterOrClassMemberWithMethod()
+    public function testCorrectContextForParameterOrClassMemberWithMethod(): void
     {
         $reflectionMethodMock = Mockery::mock(MethodReflectionInterface::class);
         $reflectionMethodMock->shouldReceive('getDeclaringClassName')->andReturn('SomeClass');
@@ -272,7 +272,7 @@ class ElementResolverTest extends TestCase
     }
 
 
-    public function testResolveContextForClassPropertyInParent()
+    public function testResolveContextForClassPropertyInParent(): void
     {
         $reflectionClassMock = Mockery::mock(ClassReflectionInterface::class);
         $reflectionClassMock->shouldReceive('getParentClassName')->andReturn('SomeClass');
@@ -285,7 +285,7 @@ class ElementResolverTest extends TestCase
     }
 
 
-    public function testResolveContextForClassPropertyInSelf()
+    public function testResolveContextForClassPropertyInSelf(): void
     {
         $reflectionClassMock = Mockery::mock(ClassReflectionInterface::class);
         $reflectionClassMock->shouldReceive('getParentClassName')->andReturn('SomeClass');
@@ -298,7 +298,7 @@ class ElementResolverTest extends TestCase
     }
 
 
-    public function testResolveContextForClassPropertyForNonExisting()
+    public function testResolveContextForClassPropertyForNonExisting(): void
     {
         $reflectionClassMock = Mockery::mock(ClassReflectionInterface::class);
         $reflectionClassMock->shouldReceive('getParentClassName')->andReturn('SomeClass');
@@ -312,7 +312,7 @@ class ElementResolverTest extends TestCase
     }
 
 
-    public function testResolveContextForSelfProperty()
+    public function testResolveContextForSelfProperty(): void
     {
         $reflectionClassMock = Mockery::mock(ClassReflectionInterface::class);
         $reflectionClassMock->shouldReceive('getParentClassName')->andReturn('SomeClass');
@@ -343,7 +343,7 @@ class ElementResolverTest extends TestCase
     }
 
 
-    public function testIsContextUsable()
+    public function testIsContextUsable(): void
     {
         $this->assertFalse(
             MI::callMethodOnObject($this->elementResolver, 'isContextUsable', [null])
@@ -369,7 +369,7 @@ class ElementResolverTest extends TestCase
     /**
      * @dataProvider getFindElementByNameAndNamespaceData()
      */
-    public function testFindElementByNameAndNamespace($name, $namespace, $expected)
+    public function testFindElementByNameAndNamespace($name, $namespace, $expected): void
     {
         $elements = ['ApiGen' => 1, 'ApiGen\SomeClass' => 2];
         $this->assertSame(
@@ -383,10 +383,7 @@ class ElementResolverTest extends TestCase
     }
 
 
-    /**
-     * @return array[]
-     */
-    public function getFindElementByNameAndNamespaceData()
+    public function getFindElementByNameAndNamespaceData(): array
     {
         return [
             ['ApiGen', '', 1],

@@ -21,10 +21,7 @@ class ElementListGenerator implements TemplateGeneratorInterface
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function generate()
+    public function generate(): void
     {
         $this->templateFactory->createForType(TCO::ELEMENT_LIST)
             ->save();

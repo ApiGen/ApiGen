@@ -22,10 +22,7 @@ class NamespaceLoader
     }
 
 
-    /**
-     * @return Template
-     */
-    public function loadTemplateWithElementNamespace(Template $template, ElementReflectionInterface $element)
+    public function loadTemplateWithElementNamespace(Template $template, ElementReflectionInterface $element): Template
     {
         $namespaces = $this->elementStorage->getNamespaces();
         $name = $element->getPseudoNamespaceName();
@@ -40,7 +37,7 @@ class NamespaceLoader
      * @param array $namespace
      * @return Template
      */
-    public function loadTemplateWithNamespace(Template $template, $name, $namespace)
+    public function loadTemplateWithNamespace(Template $template, string $name, array $namespace): Template
     {
         $template->setParameters([
             'package' => null,
@@ -57,7 +54,7 @@ class NamespaceLoader
      * @param array $elements
      * @return Template
      */
-    private function loadTemplateWithElements(Template $template, $elements)
+    private function loadTemplateWithElements(Template $template, array $elements): Template
     {
         return $template->setParameters([
             Elements::CLASSES => $elements[Elements::CLASSES],
@@ -72,9 +69,9 @@ class NamespaceLoader
 
     /**
      * @param string $name
-     * @return array
+     * @param array $elements
      */
-    private function getSubnamesForName($name, $elements)
+    private function getSubnamesForName(string $name, $elements): array
     {
         return array_filter($elements, function ($subname) use ($name) {
             $pattern = '~^' . preg_quote($name) . '\\\\[^\\\\]+$~';

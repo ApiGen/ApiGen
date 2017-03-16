@@ -31,7 +31,7 @@ class AnnotationGroupsGeneratorTest extends ContainerAwareTestCase
     private $annotationGroupsGenerator;
 
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->configuration = $this->container->getByType(Configuration::class);
         $this->parser = $this->container->getByType(Parser::class);
@@ -39,7 +39,7 @@ class AnnotationGroupsGeneratorTest extends ContainerAwareTestCase
     }
 
 
-    public function testOptions()
+    public function testOptions(): void
     {
         $resolvedOptions = $this->configuration->resolveOptions([
             'source' => TEMP_DIR,
@@ -50,7 +50,7 @@ class AnnotationGroupsGeneratorTest extends ContainerAwareTestCase
     }
 
 
-    public function testGenerate()
+    public function testGenerate(): void
     {
         $this->setCorrectConfiguration();
         $this->annotationGroupsGenerator->generate();
@@ -58,7 +58,7 @@ class AnnotationGroupsGeneratorTest extends ContainerAwareTestCase
     }
 
 
-    public function testSetElementsWithAnnotationToTemplate()
+    public function testSetElementsWithAnnotationToTemplate(): void
     {
         $this->prepareGeneratorRequirements();
 
@@ -78,7 +78,7 @@ class AnnotationGroupsGeneratorTest extends ContainerAwareTestCase
     }
 
 
-    private function prepareGeneratorRequirements()
+    private function prepareGeneratorRequirements(): void
     {
         $this->setCorrectConfiguration();
 
@@ -90,7 +90,7 @@ class AnnotationGroupsGeneratorTest extends ContainerAwareTestCase
     }
 
 
-    private function setCorrectConfiguration()
+    private function setCorrectConfiguration(): void
     {
         $resolvedOptions = $this->configuration->resolveOptions([
             'source' => TEMP_DIR,

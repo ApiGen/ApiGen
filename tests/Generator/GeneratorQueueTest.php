@@ -20,7 +20,7 @@ class GeneratorQueueTest extends TestCase
     private $generatorQueue;
 
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $progressBarMock = Mockery::mock(ProgressBarInterface::class);
         $progressBarMock->shouldReceive('init');
@@ -28,7 +28,7 @@ class GeneratorQueueTest extends TestCase
     }
 
 
-    public function testRun()
+    public function testRun(): void
     {
         $templateGeneratorMock = Mockery::mock(TemplateGeneratorInterface::class);
         $templateGeneratorMock->shouldReceive('generate')->andReturn(file_put_contents(TEMP_DIR . '/file.txt', '...'));
@@ -39,7 +39,7 @@ class GeneratorQueueTest extends TestCase
     }
 
 
-    public function testAddToQueueAndGetQueue()
+    public function testAddToQueueAndGetQueue(): void
     {
         $templateGeneratorMock = Mockery::mock(TemplateGeneratorInterface::class);
         $this->generatorQueue->addToQueue($templateGeneratorMock);
@@ -47,7 +47,7 @@ class GeneratorQueueTest extends TestCase
     }
 
 
-    public function testGetAllowedQueue()
+    public function testGetAllowedQueue(): void
     {
         $templateGeneratorMock = Mockery::mock(TemplateGeneratorInterface::class);
         $this->generatorQueue->addToQueue($templateGeneratorMock);
@@ -60,7 +60,7 @@ class GeneratorQueueTest extends TestCase
     }
 
 
-    public function testGetStepCount()
+    public function testGetStepCount(): void
     {
         $templateGeneratorMock = Mockery::mock(TemplateGeneratorInterface::class, StepCounterInterface::class);
         $templateGeneratorMock->shouldReceive('getStepCount')->andReturn(50);
