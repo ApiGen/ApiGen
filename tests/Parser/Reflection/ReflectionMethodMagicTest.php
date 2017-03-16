@@ -168,12 +168,6 @@ class ReflectionMethodMagicTest extends TestCase
     }
 
 
-    public function testIsValid(): void
-    {
-        $this->assertTrue($this->reflectionMethodMagic->isValid());
-    }
-
-
     public function testStaticMethod(): void
     {
         $method = $this->reflectionClass->getMagicMethods()['doAStaticOperation'];

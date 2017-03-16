@@ -100,20 +100,20 @@ class SourceFiltersTest extends TestCase
     }
 
 
-//	public function testGetElementLinesAnchor()
-//	{
-//		$elementMock = $this->buildReflectionElement(NULL, 20, 40);
-//		$this->assertSame(
-//			'#20-40',
-//			MethodInvoker::callMethodOnObject($this->sourceFilters, 'getElementLinesAnchor', [$elementMock])
-//		);
-//
-//		$elementMock = $this->buildReflectionElement(NULL, 20, 20);
-//		$this->assertSame(
-//			'#20',
-//			MethodInvoker::callMethodOnObject($this->sourceFilters, 'getElementLinesAnchor', [$elementMock])
-//		);
-//	}
+	public function testGetElementLinesAnchor()
+	{
+		$elementMock = $this->buildReflectionElement(NULL, 20, 40);
+		$this->assertSame(
+			'#20-40',
+			MethodInvoker::callMethodOnObject($this->sourceFilters, 'getElementLinesAnchor', [$elementMock])
+		);
+
+		$elementMock = $this->buildReflectionElement(NULL, 20, 20);
+		$this->assertSame(
+			'#20',
+			MethodInvoker::callMethodOnObject($this->sourceFilters, 'getElementLinesAnchor', [$elementMock])
+		);
+	}
 
 
     private function buildReflectionElement(string $name, int $start, int $end): Mockery\MockInterface

@@ -104,12 +104,6 @@ class ReflectionMethodTest extends TestCase
     }
 
 
-    public function testIsValid(): void
-    {
-        $this->assertTrue($this->reflectionMethod->isValid());
-    }
-
-
     public function testGetParameters(): void
     {
         $this->assertCount(3, $this->reflectionMethod->getParameters());

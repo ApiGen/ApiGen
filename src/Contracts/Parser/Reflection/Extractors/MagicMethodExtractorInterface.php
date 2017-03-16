@@ -7,7 +7,6 @@ use ApiGen\Contracts\Parser\Reflection\Magic\MagicMethodReflectionInterface;
 
 interface MagicMethodExtractorInterface
 {
-
     /**
      * @return MagicMethodReflectionInterface[]
      */

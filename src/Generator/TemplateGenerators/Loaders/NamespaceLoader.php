@@ -7,7 +7,7 @@ use ApiGen\Parser\Elements\Elements;
 use ApiGen\Parser\Elements\ElementStorage;
 use ApiGen\Templating\Template;
 
-class NamespaceLoader
+final class NamespaceLoader
 {
 
     /**
@@ -31,16 +31,10 @@ class NamespaceLoader
     }
 
 
-    /**
-     * @param Template $template
-     * @param string $name
-     * @param array $namespace
-     * @return Template
-     */
     public function loadTemplateWithNamespace(Template $template, string $name, array $namespace): Template
     {
         $template->setParameters([
-            'package' => null,
+            'package' => null, // removed, but for BC in Themes
             'namespace' => $name,
             'subnamespaces' => $this->getSubnamesForName($name, $template->getParameters()['namespaces'])
         ]);
@@ -49,11 +43,6 @@ class NamespaceLoader
     }
 
 
-    /**
-     * @param Template $template
-     * @param array $elements
-     * @return Template
-     */
     private function loadTemplateWithElements(Template $template, array $elements): Template
     {
         return $template->setParameters([
@@ -67,11 +56,7 @@ class NamespaceLoader
     }
 
 
-    /**
-     * @param string $name
-     * @param array $elements
-     */
-    private function getSubnamesForName(string $name, $elements): array
+    private function getSubnamesForName(string $name, array $elements): array
     {
         return array_filter($elements, function ($subname) use ($name) {
             $pattern = '~^' . preg_quote($name) . '\\\\[^\\\\]+$~';

@@ -12,7 +12,7 @@ use ApiGen\Parser\Reflection\Parts\StartPositionEndPositionMagic;
  * Envelope for magic properties that are defined
  * only as @property, @property-read or @property-write annotation.
  */
-class ReflectionPropertyMagic extends ReflectionProperty implements MagicPropertyReflectionInterface
+final class ReflectionPropertyMagic extends ReflectionProperty implements MagicPropertyReflectionInterface
 {
 
     use IsDocumentedMagic;

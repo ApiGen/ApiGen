@@ -23,7 +23,7 @@ interface MagicMethodReflectionInterface extends MethodReflectionInterface
     /**
      * @return MagicParameterReflectionInterface[]
      */
-    public function getParameters();
+    public function getParameters(): array;
 
 
     /**

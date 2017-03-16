@@ -1,4 +1,6 @@
 checkers:
     # strict and scalar types
     - PhpCsFixer\Fixer\Strict\DeclareStrictTypesFixer
-    - SlevomatCodingStandard\Sniffs\TypeHints\TypeHintDeclarationSniff
+    SlevomatCodingStandard\Sniffs\TypeHints\TypeHintDeclarationSniff:
+        usefulAnnotations:
+            - @expectedException

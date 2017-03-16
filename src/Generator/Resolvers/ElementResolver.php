@@ -52,8 +52,6 @@ final class ElementResolver implements ElementResolverInterface
     public function getClass(string $name, string $namespace = ''): ?ClassReflectionInterface
     {
         $parsedClasses = $this->parserStorage->getClasses();
-//        dump($parsedClasses);
-//        die;
 
         $class = $this->findElementByNameAndNamespace($parsedClasses, $name, $namespace);
         if ($class && $class->isDocumented()) {

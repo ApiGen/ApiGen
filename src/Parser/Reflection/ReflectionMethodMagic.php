@@ -2,12 +2,13 @@
 
 namespace ApiGen\Parser\Reflection;
 
+use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\Magic\MagicMethodReflectionInterface;
 use ApiGen\Parser\Reflection\Parts\IsDocumentedMagic;
 use ApiGen\Parser\Reflection\Parts\StartLineEndLine;
 use ApiGen\Parser\Reflection\Parts\StartPositionEndPositionMagic;
 
-class ReflectionMethodMagic extends ReflectionMethod implements MagicMethodReflectionInterface
+final class ReflectionMethodMagic extends ReflectionMethod implements MagicMethodReflectionInterface
 {
 
     use IsDocumentedMagic;
@@ -55,19 +56,19 @@ class ReflectionMethodMagic extends ReflectionMethod implements MagicMethodRefle
     }
 
 
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
 
-    public function getShortDescription()
+    public function getShortDescription(): string
     {
         return $this->shortDescription;
     }
 
 
-    public function getLongDescription()
+    public function getLongDescription(): string
     {
         return $this->shortDescription;
     }
@@ -91,19 +92,19 @@ class ReflectionMethodMagic extends ReflectionMethod implements MagicMethodRefle
     }
 
 
-    public function isDeprecated()
+    public function isDeprecated(): bool
     {
         return $this->declaringClass->isDeprecated();
     }
 
 
-    public function getNamespaceName()
+    public function getNamespaceName(): string
     {
         return $this->declaringClass->getNamespaceName();
     }
 
 
-    public function getAnnotations()
+    public function getAnnotations(): array
     {
         if ($this->annotations === null) {
             $this->annotations = [];
@@ -112,7 +113,7 @@ class ReflectionMethodMagic extends ReflectionMethod implements MagicMethodRefle
     }
 
 
-    public function getDeclaringClass()
+    public function getDeclaringClass(): ClassReflectionInterface
     {
         return $this->declaringClass;
     }
@@ -136,37 +137,37 @@ class ReflectionMethodMagic extends ReflectionMethod implements MagicMethodRefle
     }
 
 
-    public function isPrivate()
+    public function isPrivate(): bool
     {
         return false;
     }
 
 
-    public function isProtected()
+    public function isProtected(): bool
     {
         return false;
     }
 
 
-    public function isPublic()
+    public function isPublic(): bool
     {
         return true;
     }
 
 
-    public function isStatic()
+    public function isStatic(): bool
     {
         return $this->static;
     }
 
 
-    public function getDeclaringTrait()
+    public function getDeclaringTrait(): ?ClassReflectionInterface
     {
         return $this->declaringClass->isTrait() ? $this->declaringClass : null;
     }
 
 
-    public function getDeclaringTraitName()
+    public function getDeclaringTraitName(): ?string
     {
         if ($declaringTrait = $this->getDeclaringTrait()) {
             return $declaringTrait->getName();
@@ -175,13 +176,13 @@ class ReflectionMethodMagic extends ReflectionMethod implements MagicMethodRefle
     }
 
 
-    public function getOriginalName()
+    public function getOriginalName(): string
     {
         return $this->getName();
     }
 
 
-    public function getParameters()
+    public function getParameters(): array
     {
         return $this->parameters;
     }

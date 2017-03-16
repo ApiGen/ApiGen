@@ -4,7 +4,6 @@ namespace ApiGen\Parser\Reflection\Parts;
 
 trait StartLineEndLine
 {
-
     /**
      * @var int
      */
@@ -16,14 +15,9 @@ trait StartLineEndLine
     private $endLine;
 
 
-    /**
-     * @param int $startLine
-     * @return $this
-     */
     public function setStartLine(int $startLine)
     {
         $this->startLine = $startLine;
-        return $this;
     }
 
 
@@ -33,14 +27,9 @@ trait StartLineEndLine
     }
 
 
-    /**
-     * @param int $endLine
-     * @return $this
-     */
     public function setEndLine(int $endLine)
     {
         $this->endLine = $endLine;
-        return $this;
     }
 
 

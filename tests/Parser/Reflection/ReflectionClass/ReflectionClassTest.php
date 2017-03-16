@@ -51,12 +51,6 @@ final class ReflectionClassTest extends AbstractReflectionClassTestCase
     }
 
 
-    public function testIsValid(): void
-    {
-        $this->assertTrue($this->reflectionClass->isValid());
-    }
-
-
     public function testIsDocumented(): void
     {
         $this->assertTrue($this->reflectionClass->isDocumented());

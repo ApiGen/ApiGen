@@ -6,7 +6,7 @@ use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\Extractors\MagicMethodExtractorInterface;
 use ApiGen\Contracts\Parser\Reflection\Magic\MagicMethodReflectionInterface;
 
-class MagicMethodExtractor implements MagicMethodExtractorInterface
+final class MagicMethodExtractor implements MagicMethodExtractorInterface
 {
 
     public function extractFromClass(ClassReflectionInterface $reflectionClass)
@@ -25,11 +25,9 @@ class MagicMethodExtractor implements MagicMethodExtractorInterface
 
 
     /**
-     * @param ClassReflectionInterface $parent
-     * @param bool $isDocumented
      * @return MagicMethodReflectionInterface[]
      */
-    private function extractFromParentClass(ClassReflectionInterface $parent, bool $isDocumented)
+    private function extractFromParentClass(ClassReflectionInterface $parent, bool $isDocumented): array
     {
         $methods = [];
         while ($parent) {
@@ -45,7 +43,7 @@ class MagicMethodExtractor implements MagicMethodExtractorInterface
      * @param bool $isDocumented
      * @return MagicMethodReflectionInterface[]
      */
-    private function extractFromTraits($traits, $isDocumented)
+    private function extractFromTraits(array $traits, bool $isDocumented): array
     {
         $methods = [];
         foreach ($traits as $trait) {
@@ -59,13 +57,11 @@ class MagicMethodExtractor implements MagicMethodExtractorInterface
 
 
     /**
-     * @param ClassReflectionInterface $reflectionClass
-     * @param bool $isDocumented
-     * @param array $methods
      * @return MagicMethodReflectionInterface[]
      */
-    private function extractOwnFromClass(ClassReflectionInterface $reflectionClass, bool $isDocumented, array $methods)
-    {
+    private function extractOwnFromClass(
+        ClassReflectionInterface $reflectionClass, bool $isDocumented, array $methods
+    ): array {
         foreach ($reflectionClass->getOwnMagicMethods() as $method) {
             if ($this->canBeExtracted($isDocumented, $methods, $method)) {
                 $methods[$method->getName()] = $method;
@@ -75,12 +71,6 @@ class MagicMethodExtractor implements MagicMethodExtractorInterface
     }
 
 
-    /**
-     * @param bool $isDocumented
-     * @param array $methods
-     * @param MagicMethodReflectionInterface $methodReflection
-     * @return bool
-     */
     private function canBeExtracted(bool $isDocumented, array $methods, MagicMethodReflectionInterface $methodReflection): bool
     {
         if (isset($methods[$methodReflection->getName()])) {

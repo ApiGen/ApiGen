@@ -33,12 +33,6 @@ class ReflectionFunctionTest extends TestCase
     }
 
 
-    public function testIsValid(): void
-    {
-        $this->assertTrue($this->reflectionFunction->isValid());
-    }
-
-
     public function testIsDocumented(): void
     {
         $this->assertTrue($this->reflectionFunction->isDocumented());

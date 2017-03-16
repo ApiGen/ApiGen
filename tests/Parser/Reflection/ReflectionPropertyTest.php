@@ -128,12 +128,6 @@ class ReflectionPropertyTest extends TestCase
     }
 
 
-    public function testIsValid(): void
-    {
-        $this->assertTrue($this->reflectionProperty->isValid());
-    }
-
-
     private function getReflectionFactory(): ReflectionFactory
     {
         $parserResultMock = Mockery::mock(ParserStorageInterface::class);

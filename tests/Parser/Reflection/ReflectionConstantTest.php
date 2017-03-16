@@ -103,13 +103,6 @@ class ReflectionConstantTest extends TestCase
     }
 
 
-    public function testIsValid(): void
-    {
-        $this->assertTrue($this->constantReflection->isValid());
-        $this->assertTrue($this->constantReflectionInClass->isValid());
-    }
-
-
     public function testIsDocumented(): void
     {
         $this->assertTrue($this->constantReflection->isDocumented());

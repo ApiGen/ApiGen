@@ -20,6 +20,6 @@ function withMagicParameters(): void
 }
 
 
-function getMemoryInBytes(string $value)
+function getMemoryInBytes(string $value): int
 {
 }
