@@ -11,13 +11,6 @@ final class AnnotationFilters extends Filters
 {
 
     /**
-     * @var array
-     */
-    private $rename = [
-        'usedby' => 'used by'
-    ];
-
-    /**
      * @var string[]
      */
     private $remove = [
@@ -37,11 +30,17 @@ final class AnnotationFilters extends Filters
     }
 
 
+    /**
+     * Removed, only for BC with Themes.
+     */
+    public function annotationSort(array $annotations): array
+    {
+        return $annotations;
+    }
+
+
     public function annotationBeautify(string $name): string
     {
-        if (isset($this->rename[$name])) {
-            $name = $this->rename[$name];
-        }
         return Strings::firstUpper($name);
     }
 

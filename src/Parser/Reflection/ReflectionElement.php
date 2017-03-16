@@ -174,7 +174,7 @@ abstract class ReflectionElement extends ReflectionBase implements ElementReflec
 
     public function getDocComment(): string
     {
-        return $this->reflection->getDocComment();
+        return (string) $this->reflection->getDocComment();
     }
 
 

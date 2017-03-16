@@ -129,7 +129,6 @@ final class UrlFiltersTest extends TestCase
         $reflectionMethodMock->method('getDeclaringClassName')->willReturn(Application::class);
         $reflectionMethodMock->method('getName')->willReturn('testMethod');
         $reflectionMethodMock->method('isDeprecated')->willReturn(false);
-        $reflectionMethodMock->method('isValid')->willReturn(true);
 
         /** @var ParserStorageInterface $parserStorage */
         $parserStorage = $this->container->getByType(ParserStorageInterface::class);
@@ -244,7 +243,7 @@ EXPECTED;
             ],
             [
                 'ApiGen\ApiGen|string',
-                '<code><a href="class-link-ApiGen\ApiGen" class="deprecated invalid">ApiGen\ApiGen</a></code>|string'
+                '<code><a href="class-link-ApiGen\ApiGen" class="deprecated">ApiGen\ApiGen</a></code>|string'
             ],
             ['int|int[]', 'integer|integer[]']
         ];
@@ -270,7 +269,7 @@ EXPECTED;
             ['int', null],
             [
                 'ApiGen\ApiGen[]',
-                '<code><a href="class-link-ApiGen\ApiGen" class="deprecated invalid">ApiGen\ApiGen</a>[]</code>'
+                '<code><a href="class-link-ApiGen\ApiGen" class="deprecated">ApiGen\ApiGen</a>[]</code>'
             ]
         ];
     }

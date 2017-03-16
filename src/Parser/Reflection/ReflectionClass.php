@@ -361,13 +361,13 @@ class ReflectionClass extends ReflectionElement implements ClassReflectionInterf
     }
 
 
-    public function getParentClass(): ClassReflectionInterface
+    public function getParentClass(): ?ClassReflectionInterface
     {
         if ($className = $this->reflection->getParentClassName()) {
             return $this->getParsedClasses()[$className];
         }
 
-        return $className;
+        return null;
     }
 
 
@@ -628,6 +628,13 @@ class ReflectionClass extends ReflectionElement implements ClassReflectionInterf
         return $this->reflectionFactory;
     }
 
+    /**
+     * Removed, but for BC in Themes
+     */
+    public function isValid(): bool
+    {
+        return true;
+    }
 
     private function sortUsedMethods(array $usedMethods): array
     {
