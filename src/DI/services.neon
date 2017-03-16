@@ -1,14 +1,9 @@
 services:
-	- ApiGen\MemoryLimit
-
 	# configuration
 	- ApiGen\Configuration\Configuration
 	- ApiGen\Configuration\ConfigurationOptionsResolver
 	- ApiGen\Configuration\OptionsResolverFactory
-	-
-		implement: ApiGen\Configuration\Theme\ThemeConfigFactory
-		parameters: [filePath]
-		arguments: [%filePath%]
+	- ApiGen\Configuration\Theme\ThemeConfigFactory
 	- ApiGen\Configuration\Theme\ThemeConfigOptionsResolver
 
 	# elements
@@ -41,7 +36,6 @@ services:
 	- ApiGen\Templating\Filters\Helpers\LinkBuilder
 	- ApiGen\Templating\Filters\AnnotationFilters
 	- ApiGen\Templating\Filters\PathFilters
-	- ApiGen\Templating\Filters\PhpManualFilters
 	- ApiGen\Templating\Filters\ResolverFilters
 	- ApiGen\Templating\Filters\SourceFilters
 	- ApiGen\Templating\Filters\UrlFilters
