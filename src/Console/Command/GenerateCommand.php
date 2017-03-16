@@ -189,8 +189,6 @@ final class GenerateCommand extends AbstractCommand
         $files = $this->finder->find($options['source'], $options['exclude'], $options['extensions']);
         $this->parser->parse($files);
 
-        $this->reportParserErrors($this->parser->getErrors());
-
         $stats = $this->parserResult->getDocumentedStats();
         $this->io->writeln(sprintf(
             'Found <comment>%d classes</comment>, <comment>%d constants</comment> and <comment>%d functions</comment>',
@@ -206,21 +204,6 @@ final class GenerateCommand extends AbstractCommand
         $this->prepareDestination($options['destination'], $options['overwrite']);
         $this->io->writeln('<info>Generating API documentation</info>');
         $this->generatorQueue->run();
-    }
-
-
-    private function reportParserErrors(array $errors): void
-    {
-        /** @var FileProcessingException[] $errors */
-        foreach ($errors as $error) {
-            $output = null;
-            if ($this->configuration->getOption('debug')) {
-                $output = $error->getDetail();
-            }
-            if ($output) {
-                $this->io->writeln(sprintf('<error>Parse error: "%s"</error>', $output));
-            }
-        }
     }
 
 
