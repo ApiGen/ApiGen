@@ -22,7 +22,7 @@ class ParserExtensionTest extends TestCase
         $builder = $extension->getContainerBuilder();
         $builder->prepareClassList();
 
-        $elementResolverDefinition = $builder->getDefinition($builder->getByType(ElementSorter::class));
+        $elementResolverDefinition = $builder->getDefinitionByType(ElementSorter::class);
         $this->assertSame(ElementSorter::class, $elementResolverDefinition->getClass());
     }
 
@@ -35,7 +35,7 @@ class ParserExtensionTest extends TestCase
         $builder = $extension->getContainerBuilder();
         $builder->prepareClassList();
 
-        $brokerDefinition = $builder->getDefinition($builder->getByType(Broker::class));
+        $brokerDefinition = $builder->getDefinitionByType(Broker::class);
         $this->assertSame(Broker::class, $brokerDefinition->getClass());
     }
 
