@@ -22,7 +22,6 @@
         "nette/neon": "^2.4",
         "nette/reflection": "^2.4",
         "symfony/console": "^3.2",
-        "symfony/event-dispatcher": "^3.2",
         "symfony/options-resolver": "^3.2",
         "symfony/yaml": "^3.2",
         "tracy/tracy": "^2.3",
