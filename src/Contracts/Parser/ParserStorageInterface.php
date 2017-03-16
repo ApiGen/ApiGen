@@ -8,11 +8,7 @@ use ArrayObject;
 interface ParserStorageInterface
 {
 
-    /**
-     * @param string $type
-     * @return ArrayObject
-     */
-    public function getElementsByType($type);
+    public function getElementsByType(string $type): ArrayObject;
 
 
     /**
@@ -20,56 +16,47 @@ interface ParserStorageInterface
      *
      * @return array
      */
-    public function getDocumentedStats();
+    public function getDocumentedStats(): array;
 
 
-    /**
-     * @return ArrayObject
-     */
-    public function getClasses();
+    public function getClasses(): ArrayObject;
 
 
-    /**
-     * @return ArrayObject
-     */
-    public function getConstants();
+    public function getConstants(): ArrayObject;
 
 
-    /**
-     * @return ArrayObject
-     */
-    public function getFunctions();
+    public function getFunctions(): ArrayObject;
 
 
     /**
      * @return string[]
      */
-    public function getTypes();
+    public function getTypes(): array;
 
 
-    public function setClasses(ArrayObject $classes);
+    public function setClasses(ArrayObject $classes): void;
 
 
-    public function setConstants(ArrayObject $constants);
+    public function setConstants(ArrayObject $constants): void;
 
 
-    public function setFunctions(ArrayObject $functions);
+    public function setFunctions(ArrayObject $functions): void;
 
 
-    public function setInternalClasses(ArrayObject $internalClasses);
+    public function setInternalClasses(ArrayObject $internalClasses): void;
 
 
-    public function setTokenizedClasses(ArrayObject $tokenizedClasses);
-
-
-    /**
-     * @return ClassReflectionInterface[]|array
-     */
-    public function getDirectImplementersOfInterface(ClassReflectionInterface $reflectionClass);
+    public function setTokenizedClasses(ArrayObject $tokenizedClasses): void;
 
 
     /**
-     * @return ClassReflectionInterface[]|array
+     * @return ClassReflectionInterface[]
      */
-    public function getIndirectImplementersOfInterface(ClassReflectionInterface $reflectionClass);
+    public function getDirectImplementersOfInterface(ClassReflectionInterface $reflectionClass): array;
+
+
+    /**
+     * @return ClassReflectionInterface[]
+     */
+    public function getIndirectImplementersOfInterface(ClassReflectionInterface $reflectionClass): array;
 }

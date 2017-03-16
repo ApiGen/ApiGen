@@ -22,17 +22,17 @@ interface ReflectionFactoryInterface
     /**
      * @return MagicMethodReflectionInterface
      */
-    public function createMethodMagic(array $settings);
+    public function createMethodMagic(array $settings): MagicMethodReflectionInterface;
 
 
     /**
      * @return MagicParameterReflectionInterface
      */
-    public function createParameterMagic(array $settings);
+    public function createParameterMagic(array $settings): MagicParameterReflectionInterface;
 
 
     /**
      * @return MagicPropertyReflectionInterface
      */
-    public function createPropertyMagic(array $settings);
+    public function createPropertyMagic(array $settings): MagicPropertyReflectionInterface;
 }

@@ -5,14 +5,8 @@ namespace ApiGen\Contracts\Console\Helper;
 interface ProgressBarInterface
 {
 
-    /**
-     * @param int $maximum
-     */
-    public function init($maximum = 1);
+    public function init(int $maximum = 1): void;
 
 
-    /**
-     * @param int $increment
-     */
-    public function increment($steps = 1);
+    public function increment(int $steps = 1): void;
 }

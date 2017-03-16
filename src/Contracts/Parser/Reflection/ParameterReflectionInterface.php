@@ -7,110 +7,56 @@ use ApiGen\Parser\Reflection\TokenReflection\ReflectionInterface;
 interface ParameterReflectionInterface extends ReflectionInterface
 {
 
-    /**
-     * @return string
-     */
-    public function getTypeHint();
+    public function getTypeHint(): string;
 
 
-    /**
-     * @return string
-     */
-    public function getDescription();
+    public function getDescription(): string;
 
 
-    /**
-     * @return string
-     */
-    public function getDefaultValueDefinition();
+    public function getDefaultValueDefinition(): ?string;
 
 
-    /**
-     * @return bool
-     */
-    public function isDefaultValueAvailable();
+    public function isDefaultValueAvailable(): bool;
 
 
-    /**
-     * @return int
-     */
-    public function getPosition();
+    public function getPosition(): int;
 
 
-    /**
-     * @return bool
-     */
-    public function isArray();
+    public function isArray(): bool;
 
 
-    /**
-     * @return bool
-     */
-    public function isCallable();
+    public function isCallable(): bool;
 
 
-    /**
-     * @return ClassReflectionInterface|NULL
-     */
-    public function getClass();
+    public function getClass(): ?ClassReflectionInterface;
 
 
-    /**
-     * @return string|NULL
-     */
-    public function getClassName();
+    public function getClassName(): ?string;
 
 
-    /**
-     * @return bool
-     */
-    public function allowsNull();
+    public function allowsNull(): bool;
 
 
-    /**
-     * @return bool
-     */
-    public function isOptional();
+    public function isOptional(): bool;
 
 
-    /**
-     * @return bool
-     */
-    public function isPassedByReference();
+    public function isPassedByReference(): bool;
 
 
-    /**
-     * @return bool
-     */
-    public function canBePassedByValue();
+    public function canBePassedByValue(): bool;
 
 
-    /**
-     * @return AbstractFunctionMethodReflectionInterface
-     */
-    public function getDeclaringFunction();
+    public function getDeclaringFunction(): AbstractFunctionMethodReflectionInterface;
 
 
-    /**
-     * @return string
-     */
-    public function getDeclaringFunctionName();
+    public function getDeclaringFunctionName(): string;
 
 
-    /**
-     * @return ClassReflectionInterface|NULL
-     */
-    public function getDeclaringClass();
+    public function getDeclaringClass(): ?ClassReflectionInterface;
 
 
-    /**
-     * @return string
-     */
-    public function getDeclaringClassName();
+    public function getDeclaringClassName(): string;
 
 
-    /**
-     * @return bool
-     */
-    public function isUnlimited();
+    public function isUnlimited(): bool;
 }

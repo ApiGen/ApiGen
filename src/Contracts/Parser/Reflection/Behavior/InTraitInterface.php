@@ -7,14 +7,8 @@ use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 interface InTraitInterface extends InNamespaceInterface
 {
 
-    /**
-     * @return ClassReflectionInterface
-     */
-    public function getDeclaringTrait();
+    public function getDeclaringTrait(): ?ClassReflectionInterface;
 
 
-    /**
-     * @return string|NULL
-     */
-    public function getDeclaringTraitName();
+    public function getDeclaringTraitName(): ?string;
 }

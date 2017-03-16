@@ -23,13 +23,13 @@ interface ClassMagicElementsExtractorInterface
     /**
      * @return array {[ declaringClassName => MagicMethodReflectionInterface[] ]}
      */
-    public function getInheritedMagicProperties();
+    public function getInheritedMagicProperties(): array;
 
 
     /**
      * @return array {[ declaringClassName => MagicMethodReflectionInterface[] ]}
      */
-    public function getUsedMagicProperties();
+    public function getUsedMagicProperties(): array;
 
 
     /**

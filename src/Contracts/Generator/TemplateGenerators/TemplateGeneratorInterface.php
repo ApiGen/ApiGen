@@ -8,5 +8,5 @@ interface TemplateGeneratorInterface
     /**
      * Generate template to file
      */
-    public function generate();
+    public function generate(): void;
 }

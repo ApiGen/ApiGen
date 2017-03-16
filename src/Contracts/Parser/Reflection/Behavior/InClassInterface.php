@@ -7,26 +7,20 @@ use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 interface InClassInterface extends InNamespaceInterface
 {
 
-    /**
-     * @return ClassReflectionInterface
-     */
-    public function getDeclaringClass();
+    public function getDeclaringClass(): ?ClassReflectionInterface;
 
 
-    /**
-     * @return string
-     */
-    public function getNamespaceName();
+    public function getNamespaceName(): string;
 
 
     /**
      * @return array
      */
-    public function getAnnotations();
+    public function getAnnotations(): array;
 
 
     /**
      * @return string[]
      */
-    public function getNamespaceAliases();
+    public function getNamespaceAliases(): array;
 }

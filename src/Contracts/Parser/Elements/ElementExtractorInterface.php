@@ -10,5 +10,5 @@ interface ElementExtractorInterface
      * @param callable $skipClassCallback
      * @return array[]
      */
-    public function extractElementsByAnnotation($annotation, callable $skipClassCallback = null);
+    public function extractElementsByAnnotation(string $annotation, callable $skipClassCallback = null);
 }

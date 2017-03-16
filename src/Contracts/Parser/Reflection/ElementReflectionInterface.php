@@ -9,40 +9,22 @@ use TokenReflection\Exception\BaseException;
 interface ElementReflectionInterface extends NamedInterface
 {
 
-    /**
-     * @return bool
-     */
-    public function isMain();
+    public function isMain(): bool;
 
 
-    /**
-     * @return bool
-     */
-    public function isValid();
+    public function isValid(): bool;
 
 
-    /**
-     * @return bool
-     */
-    public function isDocumented();
+    public function isDocumented(): bool;
 
 
-    /**
-     * @return bool
-     */
-    public function isDeprecated();
+    public function isDeprecated(): bool;
 
 
-    /**
-     * @return bool
-     */
-    public function inNamespace();
+    public function inNamespace(): bool;
 
 
-    /**
-     * @return string
-     */
-    public function getNamespaceName();
+    public function getNamespaceName(): string;
 
 
     /**
@@ -51,13 +33,13 @@ interface ElementReflectionInterface extends NamedInterface
      *
      * @return string
      */
-    public function getPseudoNamespaceName();
+    public function getPseudoNamespaceName(): string;
 
 
     /**
      * @return string[]
      */
-    public function getNamespaceAliases();
+    public function getNamespaceAliases(): array;
 
 
     /**
@@ -68,41 +50,31 @@ interface ElementReflectionInterface extends NamedInterface
      *
      * @return array
      */
-    public function getAnnotations();
+    public function getAnnotations(): array;
 
 
     /**
      * @param string $name
      * @return array
      */
-    public function getAnnotation($name);
+    public function getAnnotation(string $name): array;
 
 
-    /**
-     * @param string $name
-     * @return bool
-     */
-    public function hasAnnotation($name);
+    public function hasAnnotation(string $name): bool;
 
 
     /**
      * @param string $name
      * @param mixed $value
-     * @return self
      */
-    public function addAnnotation($name, $value);
+
+    public function addAnnotation(string $name, $value): void;
 
 
-    /**
-     * @return string
-     */
-    public function getShortDescription();
+    public function getShortDescription(): string;
 
 
-    /**
-     * @return string
-     */
-    public function getLongDescription();
+    public function getLongDescription(): string;
 
 
     /**
@@ -111,10 +83,7 @@ interface ElementReflectionInterface extends NamedInterface
     public function getDocComment();
 
 
-    /**
-     * @return string
-     */
-    public function getPrettyName();
+    public function getPrettyName(): string;
 
 
     /**
@@ -122,35 +91,23 @@ interface ElementReflectionInterface extends NamedInterface
      *
      * @return string
      */
-    public function getShortName();
+    public function getShortName(): string;
 
 
-    /**
-     * @return int
-     */
-    public function getStartPosition();
+    public function getStartPosition(): int;
 
 
-    /**
-     * @return int
-     */
-    public function getEndPosition();
+    public function getEndPosition(): int;
 
 
-    /**
-     * @return self
-     */
-    public function addReason(BaseException $reason);
+    public function addReason(BaseException $reason): void;
 
 
     /**
      * @return BaseException[]
      */
-    public function getReasons();
+    public function getReasons(): array;
 
 
-    /**
-     * @return bool
-     */
-    public function hasReasons();
+    public function hasReasons(): bool;
 }

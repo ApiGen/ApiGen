@@ -9,36 +9,20 @@ use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 
 interface ElementResolverInterface
 {
-
-    /**
-     * @param string $className
-     * @param string $namespace
-     * @return ClassReflectionInterface|bool
-     */
-    public function getClass($className, $namespace = '');
+    public function getClass(string $className, string $namespace = ''): ?ClassReflectionInterface;
 
 
-    /**
-     * @param string $className
-     * @param string $namespace
-     * @return ConstantReflectionInterface|bool
-     */
-    public function getConstant($className, $namespace = '');
+    public function getConstant(string $className, string $namespace = ''): ?ConstantReflectionInterface;
 
 
-    /**
-     * @param string $name
-     * @param string $namespace
-     * @return FunctionReflectionInterface|NULL
-     */
-    public function getFunction($name, $namespace = '');
+    public function getFunction(string $name, string $namespace = ''): ?FunctionReflectionInterface;
 
 
     /**
      * @param string $definition
-     * @param string $context
+     * @param string|object $context
      * @param string $expectedName
      * @return ElementReflectionInterface|bool
      */
-    public function resolveElement($definition, $context, &$expectedName = null);
+    public function resolveElement(string $definition, $context, string &$expectedName = null);
 }

@@ -14,22 +14,13 @@ interface PropertyReflectionInterface extends
     LinedInterface
 {
 
-    /**
-     * @return bool
-     */
-    public function isValid();
+    public function isValid(): bool;
 
 
-    /**
-     * @return bool
-     */
-    public function isDefault();
+    public function isDefault(): bool;
 
 
-    /**
-     * @return bool
-     */
-    public function isStatic();
+    public function isStatic(): bool;
 
 
     /**
@@ -38,40 +29,20 @@ interface PropertyReflectionInterface extends
     public function getDefaultValue();
 
 
-    /**
-     * @return string
-     */
-    public function getTypeHint();
+    public function getTypeHint(): string;
 
 
-    /**
-     * @return bool
-     */
-    public function isMagic();
+    public function isMagic(): bool;
 
 
-    /**
-     * @return bool
-     */
-    public function isReadOnly();
+    public function isReadOnly(): bool;
 
 
-    /**
-     * @return bool
-     */
-    public function isWriteOnly();
+    public function isWriteOnly(): bool;
 
 
-    /**
-     * @param string $name
-     * @return bool
-     */
-    public function hasAnnotation($name);
+    public function hasAnnotation(string $name): bool;
 
 
-    /**
-     * @param string $name
-     * @return bool
-     */
-    public function getAnnotation($name);
+    public function getAnnotation(string $name): array;
 }

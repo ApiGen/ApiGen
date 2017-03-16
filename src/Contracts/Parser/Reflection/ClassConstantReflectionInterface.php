@@ -8,10 +8,7 @@ use ApiGen\Contracts\Parser\Reflection\Behavior\LinedInterface;
 interface ClassConstantReflectionInterface extends ElementReflectionInterface, InClassInterface, LinedInterface
 {
 
-    /**
-     * @return string
-     */
-    public function getTypeHint();
+    public function getTypeHint(): string;
 
 
     /**
@@ -20,8 +17,5 @@ interface ClassConstantReflectionInterface extends ElementReflectionInterface, I
     public function getValue();
 
 
-    /**
-     * @return string
-     */
-    public function getValueDefinition();
+    public function getValueDefinition(): string;
 }

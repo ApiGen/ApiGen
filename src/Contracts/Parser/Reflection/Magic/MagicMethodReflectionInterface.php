@@ -11,22 +11,13 @@ use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 interface MagicMethodReflectionInterface extends MethodReflectionInterface
 {
 
-    /**
-     * @return bool
-     */
-    public function isPublic();
+    public function isPublic(): bool;
 
 
-    /**
-     * @return bool
-     */
-    public function isProtected();
+    public function isProtected(): bool;
 
 
-    /**
-     * @return bool
-     */
-    public function isPrivate();
+    public function isPrivate(): bool;
 
 
     /**
@@ -38,17 +29,11 @@ interface MagicMethodReflectionInterface extends MethodReflectionInterface
     /**
      * @param MagicParameterReflectionInterface[] $parameters
      */
-    public function setParameters(array $parameters);
+    public function setParameters(array $parameters): void;
 
 
-    /**
-     * @return string
-     */
-    public function getFileName();
+    public function getFileName(): string;
 
 
-    /**
-     * @return bool
-     */
-    public function isTokenized();
+    public function isTokenized(): bool;
 }

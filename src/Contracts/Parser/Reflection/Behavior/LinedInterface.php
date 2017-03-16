@@ -5,14 +5,8 @@ namespace ApiGen\Contracts\Parser\Reflection\Behavior;
 interface LinedInterface
 {
 
-    /**
-     * @return int
-     */
-    public function getStartLine();
+    public function getStartLine(): int;
 
 
-    /**
-     * @return int
-     */
-    public function getEndLine();
+    public function getEndLine(): int;
 }

@@ -7,8 +7,5 @@ use ApiGen\Templating\Template;
 interface TemplateFactoryInterface
 {
 
-    /**
-     * @return Template
-     */
-    public function create();
+    public function create(): Template;
 }

@@ -19,5 +19,5 @@ interface ElementFilterInterface
      * @param string $annotation
      * @return ElementReflectionInterface[]
      */
-    public function filterByAnnotation(array $elements, $annotation);
+    public function filterByAnnotation(array $elements, string $annotation);
 }

@@ -12,7 +12,7 @@ interface ElementStorageInterface
     /**
      * @return array
      */
-    public function getNamespaces();
+    public function getNamespaces(): array;
 
 
     /**
