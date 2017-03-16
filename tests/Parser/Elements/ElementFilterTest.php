@@ -16,13 +16,13 @@ class ElementFilterTest extends TestCase
     private $elementFilter;
 
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->elementFilter = new ElementFilter;
     }
 
 
-    public function testFilterForMain()
+    public function testFilterForMain(): void
     {
         $reflectionElement = Mockery::mock(ReflectionElement::class);
         $reflectionElement->shouldReceive('isMain')->andReturn(true);
@@ -36,7 +36,7 @@ class ElementFilterTest extends TestCase
     }
 
 
-    public function testFilterByAnnotation()
+    public function testFilterByAnnotation(): void
     {
         $reflectionElement = Mockery::mock(ReflectionElement::class);
         $reflectionElement->shouldReceive('hasAnnotation')->with('todo')->andReturn(true);

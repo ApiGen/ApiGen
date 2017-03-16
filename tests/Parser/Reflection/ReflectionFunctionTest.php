@@ -23,7 +23,7 @@ class ReflectionFunctionTest extends TestCase
     private $reflectionFunction;
 
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $backend = new Backend($this->getReflectionFactory());
         $broker = new Broker($backend);
@@ -33,28 +33,24 @@ class ReflectionFunctionTest extends TestCase
     }
 
 
-    public function testIsValid()
+    public function testIsValid(): void
     {
         $this->assertTrue($this->reflectionFunction->isValid());
     }
 
 
-    public function testIsDocumented()
+    public function testIsDocumented(): void
     {
         $this->assertTrue($this->reflectionFunction->isDocumented());
     }
 
 
-    /**
-     * @return ReflectionFactoryInterface
-     */
-    private function getReflectionFactory()
+    private function getReflectionFactory(): ReflectionFactoryInterface
     {
         $parserStorageMock = Mockery::mock(ParserStorageInterface::class);
         $configurationMock = Mockery::mock(ConfigurationInterface::class, [
             'getVisibilityLevel' => ReflectionProperty::IS_PUBLIC,
             'isInternalDocumented' => false,
-            'isPhpCoreDocumented' => true,
         ]);
         return new ReflectionFactory($configurationMock, $parserStorageMock);
     }

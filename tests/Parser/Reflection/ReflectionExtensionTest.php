@@ -22,7 +22,7 @@ class ReflectionExtensionTest extends TestCase
     private $reflectionExtension;
 
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $backend = new Backend($this->getReflectionFactory());
         $broker = new Broker($backend);
@@ -34,21 +34,17 @@ class ReflectionExtensionTest extends TestCase
     }
 
 
-    public function testGetName()
+    public function testGetName(): void
     {
         $this->assertSame('SPL', $this->reflectionExtension->getName());
     }
 
 
-    /**
-     * @return ReflectionFactoryInterface
-     */
-    private function getReflectionFactory()
+    private function getReflectionFactory(): ReflectionFactoryInterface
     {
         $parserStorageMock = Mockery::mock(ParserStorageInterface::class);
         $parserConfiguration = Mockery::mock(ConfigurationInterface::class, [
             'getVisibilityLevel' => 1,
-            'isPhpCoreDocumented' => true,
             'isInternalDocumented' => false
         ]);
         return new ReflectionFactory($parserConfiguration, $parserStorageMock);

@@ -37,7 +37,7 @@ abstract class AbstractReflectionClassTestCase extends TestCase
     protected $reflectionClassOfInterface;
 
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $backend = new Backend($this->getReflectionFactory());
         $broker = new Broker($backend);
@@ -49,10 +49,7 @@ abstract class AbstractReflectionClassTestCase extends TestCase
     }
 
 
-    /**
-     * @return Mockery\MockInterface
-     */
-    private function getReflectionFactory()
+    private function getReflectionFactory(): Mockery\MockInterface
     {
         $parserStorageMock = Mockery::mock(ParserStorageInterface::class);
         $parserStorageMock->shouldReceive('getDirectImplementersOfInterface')->andReturn([1]);

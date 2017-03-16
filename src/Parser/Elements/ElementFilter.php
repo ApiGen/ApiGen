@@ -8,9 +8,6 @@ use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
 class ElementFilter implements ElementFilterInterface
 {
 
-    /**
-     * {@inheritdoc}
-     */
     public function filterForMain(array $elements)
     {
         return array_filter($elements, function (ElementReflectionInterface $element) {
@@ -19,10 +16,7 @@ class ElementFilter implements ElementFilterInterface
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function filterByAnnotation(array $elements, $annotation)
+    public function filterByAnnotation(array $elements, string $annotation): array
     {
         return array_filter($elements, function (ElementReflectionInterface $element) use ($annotation) {
             return $element->hasAnnotation($annotation);

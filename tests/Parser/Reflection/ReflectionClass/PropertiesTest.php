@@ -8,7 +8,7 @@ use ApiGen\Parser\Tests\Reflection\ReflectionClass\AbstractReflectionClassTestCa
 class PropertiesTest extends AbstractReflectionClassTestCase
 {
 
-    public function testGetProperty()
+    public function testGetProperty(): void
     {
         $this->assertInstanceOf(
             PropertyReflectionInterface::class,
@@ -17,58 +17,55 @@ class PropertiesTest extends AbstractReflectionClassTestCase
     }
 
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
-    public function testGetPropertyNonExisting()
+    public function testGetPropertyNonExisting(): void
     {
         $this->reflectionClass->getProperty('notPresentProperty');
     }
 
 
-    public function testGetProperties()
+    public function testGetProperties(): void
     {
         $this->assertCount(4, $this->reflectionClass->getProperties());
     }
 
 
-    public function testGetOwnProperties()
+    public function testGetOwnProperties(): void
     {
         $this->assertCount(2, $this->reflectionClass->getOwnProperties());
     }
 
 
-    public function testGetMagicProperties()
+    public function testGetMagicProperties(): void
     {
         $this->assertCount(3, $this->reflectionClass->getMagicProperties());
     }
 
 
-    public function testGetOwnMagicProperties()
+    public function testGetOwnMagicProperties(): void
     {
         $this->assertCount(2, $this->reflectionClass->getOwnMagicProperties());
     }
 
 
-    public function testGetInheritedProperties()
+    public function testGetInheritedProperties(): void
     {
         $this->assertCount(1, $this->reflectionClass->getInheritedProperties());
     }
 
 
-    public function testGetInheritedMagicProperties()
+    public function testGetInheritedMagicProperties(): void
     {
         $this->assertCount(0, $this->reflectionClass->getInheritedMagicProperties());
     }
 
 
-    public function testGetUsedProperties()
+    public function testGetUsedProperties(): void
     {
         $this->assertCount(1, $this->reflectionClass->getUsedProperties());
     }
 
 
-    public function testGetUsedMagicProperties()
+    public function testGetUsedMagicProperties(): void
     {
         $this->assertCount(1, $this->reflectionClass->getUsedMagicProperties());
     }

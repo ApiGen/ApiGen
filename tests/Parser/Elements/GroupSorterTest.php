@@ -19,7 +19,7 @@ class GroupSorterTest extends TestCase
     private $groupSorter;
 
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $configurationMock = Mockery::mock(ConfigurationInterface::class, [
             'getMain' => ''
@@ -28,7 +28,7 @@ class GroupSorterTest extends TestCase
     }
 
 
-    public function testSort()
+    public function testSort(): void
     {
         $groups = ['OneGroup' => [], 'OtherGroup' => [], 'OneMoreGroup' => []];
         $sortedGroups = $this->groupSorter->sort($groups);
@@ -39,7 +39,7 @@ class GroupSorterTest extends TestCase
     }
 
 
-    public function testSortNoneGroupOnly()
+    public function testSortNoneGroupOnly(): void
     {
         $groups = ['None' => []];
         $sortedGroups = $this->groupSorter->sort($groups);
@@ -47,7 +47,7 @@ class GroupSorterTest extends TestCase
     }
 
 
-    public function testIsNoneGroupOnly()
+    public function testIsNoneGroupOnly(): void
     {
         $groups['None'] = true;
         $this->assertTrue(MethodInvoker::callMethodOnObject($this->groupSorter, 'isNoneGroupOnly', [$groups]));
@@ -57,7 +57,7 @@ class GroupSorterTest extends TestCase
     }
 
 
-    public function testConvertGroupNamesToLower()
+    public function testConvertGroupNamesToLower(): void
     {
         $groupNames = ['Some Group', 'Some other group'];
         $convertedGroupNames = MethodInvoker::callMethodOnObject(
@@ -69,7 +69,7 @@ class GroupSorterTest extends TestCase
     }
 
 
-    public function testAddMissingParentGroup()
+    public function testAddMissingParentGroup(): void
     {
         $this->assertNull(Assert::getObjectAttribute($this->groupSorter, 'groups'));
         MethodInvoker::callMethodOnObject($this->groupSorter, 'addMissingParentGroups', ['Some\Group\Name']);
@@ -81,7 +81,7 @@ class GroupSorterTest extends TestCase
     }
 
 
-    public function testAddMissingElementTypes()
+    public function testAddMissingElementTypes(): void
     {
         MethodInvoker::callMethodOnObject($this->groupSorter, 'addMissingElementTypes', ['Some\Group']);
         $groups = Assert::getObjectAttribute($this->groupSorter, 'groups');
@@ -100,7 +100,7 @@ class GroupSorterTest extends TestCase
     /**
      * @dataProvider getCompareGroupsData()
      */
-    public function testCompareGroups($one, $two, $main, $expected)
+    public function testCompareGroups($one, $two, $main, $expected): void
     {
         $this->assertSame(
             $expected,

@@ -46,10 +46,7 @@ class ElementExtractor implements ElementExtractorInterface
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function extractElementsByAnnotation($annotation, callable $skipClassCallback = null)
+    public function extractElementsByAnnotation(string $annotation, callable $skipClassCallback = null): array
     {
         $elements = $this->elements->getEmptyList();
         $elements[Elements::METHODS] = [];
@@ -99,9 +96,8 @@ class ElementExtractor implements ElementExtractorInterface
      * @param array $elements
      * @param string $annotation
      * @param array[] $storage
-     * @return array[]
      */
-    private function extractByAnnotationAndMerge($elements, $annotation, $storage)
+    private function extractByAnnotationAndMerge(array $elements, string $annotation, array $storage): array
     {
         $foundElements = $this->elementFilter->filterByAnnotation($elements, $annotation);
         return array_merge($storage, array_values($foundElements));
@@ -112,7 +108,7 @@ class ElementExtractor implements ElementExtractorInterface
      * @param array { key => elementList[] } $elements
      * @return array
      */
-    private function sortElements($elements)
+    private function sortElements(array $elements): array
     {
         foreach ($elements as $key => $elementList) {
             $this->elementSorter->sortElementsByFqn($elementList);

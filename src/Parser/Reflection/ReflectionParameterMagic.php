@@ -2,11 +2,12 @@
 
 namespace ApiGen\Parser\Reflection;
 
+use ApiGen\Contracts\Parser\Reflection\AbstractFunctionMethodReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\Magic\MagicParameterReflectionInterface;
 use TokenReflection;
 
-class ReflectionParameterMagic extends ReflectionParameter implements MagicParameterReflectionInterface
+final class ReflectionParameterMagic extends ReflectionParameter implements MagicParameterReflectionInterface
 {
 
     /**
@@ -25,7 +26,7 @@ class ReflectionParameterMagic extends ReflectionParameter implements MagicParam
     private $position;
 
     /**
-     * @var bool
+     * @var string
      */
     private $defaultValueDefinition;
 
@@ -59,172 +60,115 @@ class ReflectionParameterMagic extends ReflectionParameter implements MagicParam
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getTypeHint()
+    public function getTypeHint(): string
     {
         return $this->typeHint;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getFileName()
+    public function getFileName(): string
     {
         return $this->declaringFunction->getFileName();
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isTokenized()
+    public function isTokenized(): bool
     {
         return true;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getPrettyName()
+    public function getPrettyName(): string
     {
         return str_replace('()', '($' . $this->name . ')', $this->declaringFunction->getPrettyName());
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDeclaringClass()
+    public function getDeclaringClass(): ClassReflectionInterface
     {
         return $this->declaringFunction->getDeclaringClass();
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDeclaringClassName()
+    public function getDeclaringClassName(): string
     {
         return $this->declaringFunction->getDeclaringClassName();
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDeclaringFunction()
+    public function getDeclaringFunction(): AbstractFunctionMethodReflectionInterface
     {
         return $this->declaringFunction;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDeclaringFunctionName()
+    public function getDeclaringFunctionName(): string
     {
         return $this->declaringFunction->getName();
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getStartLine()
+    public function getStartLine(): int
     {
         return $this->declaringFunction->getStartLine();
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getEndLine()
+    public function getEndLine(): int
     {
         return $this->declaringFunction->getEndLine();
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDocComment()
+    public function getDocComment(): string
     {
         return '';
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isDefaultValueAvailable()
+    public function isDefaultValueAvailable(): bool
     {
         return (bool) $this->defaultValueDefinition;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefaultValueDefinition()
+    public function getDefaultValueDefinition(): ?string
     {
         return $this->defaultValueDefinition;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getPosition()
+    public function getPosition(): int
     {
         return $this->position;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isArray()
+    public function isArray(): bool
     {
         return TokenReflection\ReflectionParameter::ARRAY_TYPE_HINT === $this->typeHint;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isCallable()
+    public function isCallable(): bool
     {
         return TokenReflection\ReflectionParameter::CALLABLE_TYPE_HINT === $this->typeHint;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getClass()
+    public function getClass(): ?ClassReflectionInterface
     {
         $className = $this->getClassName();
         return $className === null ? null : $this->getParsedClasses()[$className];
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getClassName()
+    public function getClassName(): ?string
     {
         if ($this->isArray() || $this->isCallable()) {
             return null;
@@ -237,10 +181,7 @@ class ReflectionParameterMagic extends ReflectionParameter implements MagicParam
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function allowsNull()
+    public function allowsNull(): bool
     {
         if ($this->isArray() || $this->isCallable()) {
             return strtolower($this->defaultValueDefinition) === 'null';
@@ -250,37 +191,25 @@ class ReflectionParameterMagic extends ReflectionParameter implements MagicParam
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isOptional()
+    public function isOptional(): bool
     {
         return $this->isDefaultValueAvailable();
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isPassedByReference()
+    public function isPassedByReference(): bool
     {
         return $this->passedByReference;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function canBePassedByValue()
+    public function canBePassedByValue(): bool
     {
         return false;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isUnlimited()
+    public function isUnlimited(): bool
     {
         return $this->unlimited;
     }

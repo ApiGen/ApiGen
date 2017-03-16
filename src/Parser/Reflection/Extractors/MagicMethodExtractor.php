@@ -9,9 +9,6 @@ use ApiGen\Contracts\Parser\Reflection\Magic\MagicMethodReflectionInterface;
 class MagicMethodExtractor implements MagicMethodExtractorInterface
 {
 
-    /**
-     * {@inheritdoc}
-     */
     public function extractFromClass(ClassReflectionInterface $reflectionClass)
     {
         $methods = [];
@@ -32,7 +29,7 @@ class MagicMethodExtractor implements MagicMethodExtractorInterface
      * @param bool $isDocumented
      * @return MagicMethodReflectionInterface[]
      */
-    private function extractFromParentClass(ClassReflectionInterface $parent, $isDocumented)
+    private function extractFromParentClass(ClassReflectionInterface $parent, bool $isDocumented)
     {
         $methods = [];
         while ($parent) {
@@ -67,7 +64,7 @@ class MagicMethodExtractor implements MagicMethodExtractorInterface
      * @param array $methods
      * @return MagicMethodReflectionInterface[]
      */
-    private function extractOwnFromClass(ClassReflectionInterface $reflectionClass, $isDocumented, array $methods)
+    private function extractOwnFromClass(ClassReflectionInterface $reflectionClass, bool $isDocumented, array $methods)
     {
         foreach ($reflectionClass->getOwnMagicMethods() as $method) {
             if ($this->canBeExtracted($isDocumented, $methods, $method)) {
@@ -84,7 +81,7 @@ class MagicMethodExtractor implements MagicMethodExtractorInterface
      * @param MagicMethodReflectionInterface $methodReflection
      * @return bool
      */
-    private function canBeExtracted($isDocumented, array $methods, MagicMethodReflectionInterface $methodReflection)
+    private function canBeExtracted(bool $isDocumented, array $methods, MagicMethodReflectionInterface $methodReflection): bool
     {
         if (isset($methods[$methodReflection->getName()])) {
             return false;

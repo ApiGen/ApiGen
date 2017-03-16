@@ -27,7 +27,7 @@ class ParserTest extends ContainerAwareTestCase
     private $configuration;
 
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->parser = $this->container->getByType(ParserInterface::class);
         $this->parserResult = $this->container->getByType(ParserStorageInterface::class);
@@ -38,7 +38,7 @@ class ParserTest extends ContainerAwareTestCase
     }
 
 
-    public function testParseClasses()
+    public function testParseClasses(): void
     {
         $this->assertCount(0, $this->parserResult->getClasses());
 
@@ -53,7 +53,7 @@ class ParserTest extends ContainerAwareTestCase
      * @param string $dir
      * @return array { filePath => size }
      */
-    private function getFilesFromDir($dir)
+    private function getFilesFromDir(string $dir): array
     {
         $files = [];
         foreach (Finder::find('*.php')->in($dir) as $splFile) {

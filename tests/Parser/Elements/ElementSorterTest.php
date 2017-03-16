@@ -19,13 +19,13 @@ class ElementSorterTest extends TestCase
     private $elementSorter;
 
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->elementSorter = new ElementSorter;
     }
 
 
-    public function testSortElementsByFqnConstants()
+    public function testSortElementsByFqnConstants(): void
     {
         $reflectionConstantMock = Mockery::mock(ReflectionConstant::class);
         $reflectionConstantMock->shouldReceive('getDeclaringClassName')->andReturn('B');
@@ -44,7 +44,7 @@ class ElementSorterTest extends TestCase
     }
 
 
-    public function testSortElementsByFqnFunctions()
+    public function testSortElementsByFqnFunctions(): void
     {
         $reflectionFunctionMock = Mockery::mock(ReflectionFunction::class);
         $reflectionFunctionMock->shouldReceive('getNamespaceName')->andReturn('B');
@@ -63,7 +63,7 @@ class ElementSorterTest extends TestCase
     }
 
 
-    public function testSortElementsByFqnMethod()
+    public function testSortElementsByFqnMethod(): void
     {
         $reflectionMethodMock = Mockery::mock(ReflectionMethod::class);
         $reflectionMethodMock->shouldReceive('getDeclaringClassName')->andReturn('B');
@@ -82,7 +82,7 @@ class ElementSorterTest extends TestCase
     }
 
 
-    public function testSortElementsByFqnProperties()
+    public function testSortElementsByFqnProperties(): void
     {
         $reflectionMethodMock = Mockery::mock('ApiGen\Parser\Reflection\ReflectionMethod');
         $reflectionMethodMock->shouldReceive('getDeclaringClassName')->andReturn('B');
@@ -101,7 +101,7 @@ class ElementSorterTest extends TestCase
     }
 
 
-    public function testSortElementsByFqnNonSupportedType()
+    public function testSortElementsByFqnNonSupportedType(): void
     {
         $reflectionClassMock = Mockery::mock(ReflectionClass::class);
         $sortedElements = $this->elementSorter->sortElementsByFqn([$reflectionClassMock]);
@@ -109,7 +109,7 @@ class ElementSorterTest extends TestCase
     }
 
 
-    public function testSortElementsByFqnWithEmptyArray()
+    public function testSortElementsByFqnWithEmptyArray(): void
     {
         $this->assertSame([], $this->elementSorter->sortElementsByFqn([]));
     }

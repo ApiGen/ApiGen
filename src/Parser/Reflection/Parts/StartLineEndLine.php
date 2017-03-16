@@ -20,17 +20,14 @@ trait StartLineEndLine
      * @param int $startLine
      * @return $this
      */
-    public function setStartLine($startLine)
+    public function setStartLine(int $startLine)
     {
         $this->startLine = $startLine;
         return $this;
     }
 
 
-    /**
-     * @return int
-     */
-    public function getStartLine()
+    public function getStartLine(): int
     {
         return $this->startLine;
     }
@@ -40,17 +37,14 @@ trait StartLineEndLine
      * @param int $endLine
      * @return $this
      */
-    public function setEndLine($endLine)
+    public function setEndLine(int $endLine)
     {
         $this->endLine = $endLine;
         return $this;
     }
 
 
-    /**
-     * @return int
-     */
-    public function getEndLine()
+    public function getEndLine(): int
     {
         return $this->endLine;
     }

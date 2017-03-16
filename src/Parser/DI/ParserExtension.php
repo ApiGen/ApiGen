@@ -10,7 +10,7 @@ use TokenReflection\Broker;
 class ParserExtension extends CompilerExtension
 {
 
-    public function loadConfiguration()
+    public function loadConfiguration(): void
     {
         $this->loadServicesFromConfig();
 
@@ -28,7 +28,7 @@ class ParserExtension extends CompilerExtension
     }
 
 
-    private function loadServicesFromConfig()
+    private function loadServicesFromConfig(): void
     {
         Compiler::loadDefinitions(
             $this->getContainerBuilder(),

@@ -31,7 +31,7 @@ class ReflectionMethodMagicTest extends TestCase
     private $reflectionClass;
 
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $backend = new Backend($this->getReflectionFactory());
         $broker = new Broker($backend);
@@ -42,156 +42,153 @@ class ReflectionMethodMagicTest extends TestCase
     }
 
 
-    public function testInstance()
+    public function testInstance(): void
     {
         $this->assertInstanceOf(MagicMethodReflectionInterface::class, $this->reflectionMethodMagic);
     }
 
 
-    public function testGetDeclaringClass()
+    public function testGetDeclaringClass(): void
     {
         $this->isInstanceOf(ClassReflectionInterface::class, $this->reflectionMethodMagic->getDeclaringClass());
     }
 
 
-    public function testGetDeclaringClassName()
+    public function testGetDeclaringClassName(): void
     {
         $this->assertSame('Project\ReflectionMethod', $this->reflectionMethodMagic->getDeclaringClassName());
     }
 
 
-    public function testGetName()
+    public function testGetName(): void
     {
         $this->assertSame('getName', $this->reflectionMethodMagic->getName());
     }
 
 
-    public function testGetShortDescription()
+    public function testGetShortDescription(): void
     {
         $this->assertSame('This is some short description.', $this->reflectionMethodMagic->getShortDescription());
     }
 
 
-    public function testGetLongDescription()
+    public function testGetLongDescription(): void
     {
         $this->assertSame('This is some short description.', $this->reflectionMethodMagic->getLongDescription());
     }
 
 
-    public function testReturnReference()
+    public function testReturnReference(): void
     {
         $this->assertFalse($this->reflectionMethodMagic->returnsReference());
     }
 
 
-    public function testIsMagic()
+    public function testIsMagic(): void
     {
         $this->assertTrue($this->reflectionMethodMagic->isMagic());
     }
 
 
-    public function testIsDocumented()
+    public function testIsDocumented(): void
     {
         $this->assertTrue($this->reflectionMethodMagic->isDocumented());
     }
 
 
-    public function testIsDeprecated()
+    public function testIsDeprecated(): void
     {
         $this->assertFalse($this->reflectionMethodMagic->isDeprecated());
     }
 
 
-    public function testGetNamespaceName()
+    public function testGetNamespaceName(): void
     {
         $this->assertSame('Project', $this->reflectionMethodMagic->getNamespaceName());
     }
 
 
-    public function testGetAnnotations()
+    public function testGetAnnotations(): void
     {
         $this->assertSame(['return' => ['string']], $this->reflectionMethodMagic->getAnnotations());
     }
 
 
-    /** methods of parent ReflectionMethod */
-
-
-    public function testIsAbstract()
+    public function testIsAbstract(): void
     {
         $this->assertFalse($this->reflectionMethodMagic->isAbstract());
     }
 
 
-    public function testIsFinal()
+    public function testIsFinal(): void
     {
         $this->assertFalse($this->reflectionMethodMagic->isFinal());
     }
 
 
-    public function testIsPrivate()
+    public function testIsPrivate(): void
     {
         $this->assertFalse($this->reflectionMethodMagic->isPrivate());
     }
 
 
-    public function testIsProtected()
+    public function testIsProtected(): void
     {
         $this->assertFalse($this->reflectionMethodMagic->isProtected());
     }
 
 
-    public function testIsPublic()
+    public function testIsPublic(): void
     {
         $this->assertTrue($this->reflectionMethodMagic->isPublic());
     }
 
 
-    public function testIsStatic()
+    public function testIsStatic(): void
     {
         $this->assertFalse($this->reflectionMethodMagic->isStatic());
     }
 
 
-    public function testGetDeclaringTrait()
+    public function testGetDeclaringTrait(): void
     {
         $this->assertNull($this->reflectionMethodMagic->getDeclaringTrait());
     }
 
 
-    public function testGetDeclaringTraitName()
+    public function testGetDeclaringTraitName(): void
     {
         $this->assertNull($this->reflectionMethodMagic->getDeclaringTraitName());
     }
 
 
-    public function testGetOriginalName()
+    public function testGetOriginalName(): void
     {
         $this->assertSame('getName', $this->reflectionMethodMagic->getOriginalName());
     }
 
 
-    public function testIsValid()
+    public function testIsValid(): void
     {
         $this->assertTrue($this->reflectionMethodMagic->isValid());
     }
 
 
-    public function testStaticMethod()
+    public function testStaticMethod(): void
     {
         $method = $this->reflectionClass->getMagicMethods()['doAStaticOperation'];
         $this->assertTrue($method->isStatic());
     }
 
 
-    public function testStaticMethodReturnType()
+    public function testStaticMethodReturnType(): void
     {
         $method = $this->reflectionClass->getMagicMethods()['doAStaticOperation'];
         $this->assertSame('string', current($method->getAnnotation('return')));
     }
 
 
-    public function testVoidStaticMethod()
+    public function testVoidStaticMethod(): void
     {
         $method = $this->reflectionClass->getMagicMethods()['doAVoidStaticOperation'];
         $this->assertEmpty(current($method->getAnnotation('return')));
@@ -213,7 +210,6 @@ class ReflectionMethodMagicTest extends TestCase
         $configurationMock = Mockery::mock(ConfigurationInterface::class, [
             'getVisibilityLevel' => ReflectionProperty::IS_PUBLIC,
             'isInternalDocumented' => false,
-            'isPhpCoreDocumented' => true,
         ]);
         return new ReflectionFactory($configurationMock, $parserStorageMock);
     }

@@ -8,6 +8,7 @@ use ApiGen\Contracts\Parser\ParserStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\TokenReflection\ReflectionFactoryInterface;
 use ApiGen\Parser\Reflection\TokenReflection\ReflectionInterface;
+use ArrayObject;
 use Nette;
 use TokenReflection\IReflection;
 use TokenReflection\IReflectionClass;
@@ -52,55 +53,37 @@ abstract class ReflectionBase extends Nette\Object implements ReflectionInterfac
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->reflection->getName();
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getPrettyName()
+    public function getPrettyName(): string
     {
         return $this->reflection->getPrettyName();
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isInternal()
+    public function isInternal(): bool
     {
         return $this->reflection->isInternal();
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isTokenized()
+    public function isTokenized(): bool
     {
         return $this->reflection->isTokenized();
     }
 
 
-    /**
-     * @return string
-     */
-    public function getFileName()
+    public function getFileName(): string
     {
         return $this->reflection->getFileName();
     }
 
 
-    /**
-     * @return int
-     */
-    public function getStartLine()
+    public function getStartLine(): int
     {
         $startLine = $this->reflection->getStartLine();
         if ($doc = $this->getDocComment()) {
@@ -110,28 +93,25 @@ abstract class ReflectionBase extends Nette\Object implements ReflectionInterfac
     }
 
 
-    /**
-     * @return int
-     */
-    public function getEndLine()
+    public function getEndLine(): int
     {
         return $this->reflection->getEndLine();
     }
 
 
-    public function setConfiguration(ConfigurationInterface $configuration)
+    public function setConfiguration(ConfigurationInterface $configuration): void
     {
         $this->configuration = $configuration;
     }
 
 
-    public function setParserResult(ParserStorageInterface $parserResult)
+    public function setParserResult(ParserStorageInterface $parserResult): void
     {
         $this->parserResult = $parserResult;
     }
 
 
-    public function setReflectionFactory(ReflectionFactoryInterface $reflectionFactory)
+    public function setReflectionFactory(ReflectionFactoryInterface $reflectionFactory): void
     {
         $this->reflectionFactory = $reflectionFactory;
     }
@@ -140,7 +120,7 @@ abstract class ReflectionBase extends Nette\Object implements ReflectionInterfac
     /**
      * @return ClassReflectionInterface[]
      */
-    public function getParsedClasses()
+    public function getParsedClasses(): ArrayObject
     {
         return $this->parserResult->getElementsByType(ElementsInterface::CLASSES);
     }

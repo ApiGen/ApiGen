@@ -55,81 +55,54 @@ class ReflectionMethodMagic extends ReflectionMethod implements MagicMethodRefle
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
     public function getName()
     {
         return $this->name;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
     public function getShortDescription()
     {
         return $this->shortDescription;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
     public function getLongDescription()
     {
         return $this->shortDescription;
     }
 
 
-    /**
-     * @return bool
-     */
-    public function returnsReference()
+    public function returnsReference(): bool
     {
         return $this->returnsReference;
     }
 
 
-    /**
-     * @return bool
-     */
-    public function isMagic()
+    public function isMagic(): bool
     {
         return true;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getShortName()
+    public function getShortName(): string
     {
         return $this->name;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
     public function isDeprecated()
     {
         return $this->declaringClass->isDeprecated();
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
     public function getNamespaceName()
     {
         return $this->declaringClass->getNamespaceName();
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
     public function getAnnotations()
     {
         if ($this->annotations === null) {
@@ -139,90 +112,60 @@ class ReflectionMethodMagic extends ReflectionMethod implements MagicMethodRefle
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDeclaringClass()
     {
         return $this->declaringClass;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDeclaringClassName()
+    public function getDeclaringClassName(): string
     {
         return $this->declaringClass->getName();
     }
 
 
-    /**
-     * @return bool
-     */
-    public function isAbstract()
+    public function isAbstract(): bool
     {
         return false;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isFinal()
+    public function isFinal(): bool
     {
         return false;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
     public function isPrivate()
     {
         return false;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
     public function isProtected()
     {
         return false;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
     public function isPublic()
     {
         return true;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
     public function isStatic()
     {
         return $this->static;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDeclaringTrait()
     {
         return $this->declaringClass->isTrait() ? $this->declaringClass : null;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDeclaringTraitName()
     {
         if ($declaringTrait = $this->getDeclaringTrait()) {
@@ -232,73 +175,49 @@ class ReflectionMethodMagic extends ReflectionMethod implements MagicMethodRefle
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
     public function getOriginalName()
     {
         return $this->getName();
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
     public function getParameters()
     {
         return $this->parameters;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setParameters(array $parameters)
+    public function setParameters(array $parameters): void
     {
         $this->parameters = $parameters;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getNamespaceAliases()
+    public function getNamespaceAliases(): array
     {
         return $this->declaringClass->getNamespaceAliases();
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getPrettyName()
+    public function getPrettyName(): string
     {
         return sprintf('%s::%s()', $this->declaringClass->getName(), $this->name);
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getFileName()
+    public function getFileName(): string
     {
         return $this->declaringClass->getFileName();
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isTokenized()
+    public function isTokenized(): bool
     {
         return true;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDocComment()
+    public function getDocComment(): string
     {
         $docComment = "/**\n";
 
@@ -324,25 +243,19 @@ class ReflectionMethodMagic extends ReflectionMethod implements MagicMethodRefle
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function hasAnnotation($name)
+    public function hasAnnotation(string $name): bool
     {
         $annotations = $this->getAnnotations();
         return array_key_exists($name, $annotations);
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getAnnotation($name)
+    public function getAnnotation(string $name): array
     {
         $annotations = $this->getAnnotations();
         if (array_key_exists($name, $annotations)) {
             return $annotations[$name];
         }
-        return null;
+        return [];
     }
 }

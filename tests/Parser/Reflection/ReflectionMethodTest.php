@@ -27,7 +27,7 @@ class ReflectionMethodTest extends TestCase
     private $reflectionClass;
 
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $backend = new Backend($this->getReflectionFactory());
         $broker = new Broker($backend);
@@ -38,90 +38,85 @@ class ReflectionMethodTest extends TestCase
     }
 
 
-    public function testGetDeclaringClass()
+    public function testGetDeclaringClass(): void
     {
         $this->isInstanceOf(ClassReflectionInterface::class, $this->reflectionMethod->getDeclaringClass());
     }
 
 
-    public function testGetDeclaringClassName()
+    public function testGetDeclaringClassName(): void
     {
         $this->assertSame('Project\ReflectionMethod', $this->reflectionMethod->getDeclaringClassName());
     }
 
 
-    public function testIsAbstract()
+    public function testIsAbstract(): void
     {
         $this->assertFalse($this->reflectionMethod->isAbstract());
     }
 
 
-    public function testIsFinal()
+    public function testIsFinal(): void
     {
         $this->assertFalse($this->reflectionMethod->isFinal());
     }
 
 
-    public function testIsPrivate()
+    public function testIsPrivate(): void
     {
         $this->assertFalse($this->reflectionMethod->isPrivate());
     }
 
 
-    public function testIsProtected()
+    public function testIsProtected(): void
     {
         $this->assertFalse($this->reflectionMethod->isProtected());
     }
 
 
-    public function testIsPublic()
+    public function testIsPublic(): void
     {
         $this->assertTrue($this->reflectionMethod->isPublic());
     }
 
 
-    public function testIsStatic()
+    public function testIsStatic(): void
     {
         $this->assertFalse($this->reflectionMethod->isStatic());
     }
 
 
-    public function testGetDeclaringTrait()
+    public function testGetDeclaringTrait(): void
     {
         $this->assertNull($this->reflectionMethod->getDeclaringTrait());
     }
 
 
-    public function testGetDeclaringTraitName()
+    public function testGetDeclaringTraitName(): void
     {
         $this->assertNull($this->reflectionMethod->getDeclaringTraitName());
     }
 
 
-    public function testGetOriginalName()
+    public function testGetOriginalName(): void
     {
         $this->assertNull($this->reflectionMethod->getOriginalName());
     }
 
 
-    public function testIsValid()
+    public function testIsValid(): void
     {
         $this->assertTrue($this->reflectionMethod->isValid());
     }
 
 
-    /** ReflectionFunctionBase methods */
-
-    public function testGetParameters()
+    public function testGetParameters(): void
     {
         $this->assertCount(3, $this->reflectionMethod->getParameters());
     }
 
 
-    /**
-     * @return ReflectionFactoryInterface
-     */
-    private function getReflectionFactory()
+    private function getReflectionFactory(): ReflectionFactoryInterface
     {
         $parserStorageMock = Mockery::mock(ParserStorageInterface::class);
         $parserStorageMock->shouldReceive('getElementsByType')->andReturnUsing(function ($arg) {
@@ -140,7 +135,6 @@ class ReflectionMethodTest extends TestCase
     {
         $configurationMock = Mockery::mock(ConfigurationInterface::class, [
             'getVisibilityLevel' => 256,
-            'isPhpCoreDocumented' => true,
             'isInternalDocumented' => false
         ]);
         return $configurationMock;

@@ -21,7 +21,7 @@ class ElementExtractorTest extends TestCase
     private $elementExtractor;
 
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $elementFilterMock = Mockery::mock(ElementFilter::class);
         $elementFilterMock->shouldReceive('filterForMain')->andReturnUsing(function ($elements) {
@@ -51,7 +51,7 @@ class ElementExtractorTest extends TestCase
     }
 
 
-    public function testExtractElementsByAnnotation()
+    public function testExtractElementsByAnnotation(): void
     {
         $deprecatedElements = $this->elementExtractor->extractElementsByAnnotation('deprecated');
 
@@ -71,7 +71,7 @@ class ElementExtractorTest extends TestCase
     }
 
 
-    public function testExtractElementsByAnnotationWithCallback()
+    public function testExtractElementsByAnnotationWithCallback(): void
     {
         $deprecatedElements = $this->elementExtractor->extractElementsByAnnotation('deprecated', function ($element) {
             /** @var ReflectionElement $element */

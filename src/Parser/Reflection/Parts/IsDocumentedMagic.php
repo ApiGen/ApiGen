@@ -12,10 +12,7 @@ use ApiGen\Contracts\Parser\Configuration\ParserConfigurationInterface;
 trait IsDocumentedMagic
 {
 
-    /**
-     * @return bool
-     */
-    public function isDocumented()
+    public function isDocumented(): bool
     {
         return true;
     }

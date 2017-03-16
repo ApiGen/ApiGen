@@ -28,9 +28,6 @@ class ClassTraitElementsExtractor implements ClassTraitElementsExtractorInterfac
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDirectUsers()
     {
         $users = [];
@@ -48,9 +45,6 @@ class ClassTraitElementsExtractor implements ClassTraitElementsExtractorInterfac
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
     public function getIndirectUsers()
     {
         $users = [];
@@ -68,9 +62,6 @@ class ClassTraitElementsExtractor implements ClassTraitElementsExtractorInterfac
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTraitProperties()
     {
         $properties = [];
@@ -85,9 +76,6 @@ class ClassTraitElementsExtractor implements ClassTraitElementsExtractorInterfac
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTraitMethods()
     {
         $methods = [];
@@ -101,9 +89,6 @@ class ClassTraitElementsExtractor implements ClassTraitElementsExtractorInterfac
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
     public function getUsedProperties()
     {
         $allProperties = array_flip(array_map(function (PropertyReflectionInterface $property) {
@@ -133,9 +118,6 @@ class ClassTraitElementsExtractor implements ClassTraitElementsExtractorInterfac
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
     public function getUsedMethods()
     {
         $usedMethods = [];

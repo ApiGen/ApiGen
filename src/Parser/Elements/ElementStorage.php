@@ -81,89 +81,62 @@ class ElementStorage implements ElementStorageInterface
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getNamespaces()
+    public function getNamespaces(): array
     {
         $this->ensureCategorization();
         return $this->namespaces;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getClasses()
+    public function getClasses(): array
     {
         $this->ensureCategorization();
         return $this->classes;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getInterfaces()
+    public function getInterfaces(): array
     {
         $this->ensureCategorization();
         return $this->interfaces;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getTraits()
+    public function getTraits(): array
     {
         $this->ensureCategorization();
         return $this->traits;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getExceptions()
+    public function getExceptions(): array
     {
         $this->ensureCategorization();
         return $this->exceptions;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getConstants()
+    public function getConstants(): array
     {
         $this->ensureCategorization();
         return $this->constants;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getFunctions()
+    public function getFunctions(): array
     {
          $this->ensureCategorization();
          return $this->functions;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getClassElements()
+    public function getClassElements(): array
     {
         return array_merge($this->getClasses(), $this->getTraits(), $this->getInterfaces(), $this->getExceptions());
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getElements()
+    public function getElements(): array
     {
         $this->ensureCategorization();
 
@@ -179,7 +152,7 @@ class ElementStorage implements ElementStorageInterface
     }
 
 
-    private function categorizeParsedElements()
+    private function categorizeParsedElements(): void
     {
         foreach ($this->parserStorage->getTypes() as $type) {
             $elements = $this->parserStorage->getElementsByType($type);
@@ -215,26 +188,20 @@ class ElementStorage implements ElementStorageInterface
     }
 
 
-    /**
-     * @param string $elementType
-     * @param ElementReflectionInterface $element
-     */
-    private function categorizeElementToNamespace(
-        $elementType,
-        ElementReflectionInterface $element
-    ) {
+    private function categorizeElementToNamespace(string $elementType, ElementReflectionInterface $element): void
+    {
         $namespaceName = $element->getPseudoNamespaceName();
         $this->namespaces[$namespaceName][$elementType][$element->getShortName()] = $element;
     }
 
 
-    private function sortNamespaces()
+    private function sortNamespaces(): void
     {
         $this->namespaces = $this->groupSorter->sort($this->namespaces);
     }
 
 
-    private function addUsedByAnnotation()
+    private function addUsedByAnnotation(): void
     {
         foreach ($this->getElements() as $elementList) {
             foreach ($elementList as $parentElement) {
@@ -249,7 +216,7 @@ class ElementStorage implements ElementStorageInterface
     }
 
 
-    private function ensureCategorization()
+    private function ensureCategorization(): void
     {
         if ($this->areElementsCategorized === false) {
             $this->categorizeParsedElements();
@@ -257,10 +224,7 @@ class ElementStorage implements ElementStorageInterface
     }
 
 
-    /**
-     * @return array
-     */
-    private function getSubElements(ElementReflectionInterface $parentElement)
+    private function getSubElements(ElementReflectionInterface $parentElement): array
     {
         $elements = [$parentElement];
         if ($parentElement instanceof ClassReflectionInterface) {
@@ -275,7 +239,7 @@ class ElementStorage implements ElementStorageInterface
     }
 
 
-    private function loadUsesToReferencedElementUsedby(ElementReflectionInterface $element)
+    private function loadUsesToReferencedElementUsedby(ElementReflectionInterface $element): void
     {
         $uses = $element->getAnnotation('uses');
         if ($uses === null) {

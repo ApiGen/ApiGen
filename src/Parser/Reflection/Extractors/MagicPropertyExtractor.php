@@ -6,13 +6,12 @@ use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\Extractors\MagicPropertyExtractorInterface;
 use ApiGen\Contracts\Parser\Reflection\Magic\MagicPropertyReflectionInterface;
 
-class MagicPropertyExtractor implements MagicPropertyExtractorInterface
+final class MagicPropertyExtractor implements MagicPropertyExtractorInterface
 {
-
     /**
-     * {@inheritdoc}
+     * @return MagicPropertyReflectionInterface[]
      */
-    public function extractFromClass(ClassReflectionInterface $reflectionClass)
+    public function extractFromClass(ClassReflectionInterface $reflectionClass): array
     {
         $properties = [];
         if ($parentClass = $reflectionClass->getParentClass()) {
@@ -27,11 +26,9 @@ class MagicPropertyExtractor implements MagicPropertyExtractorInterface
 
 
     /**
-     * @param ClassReflectionInterface $parent
-     * @param bool $isDocumented
      * @return MagicPropertyReflectionInterface[]
      */
-    private function extractFromParentClass(ClassReflectionInterface $parent, $isDocumented)
+    private function extractFromParentClass(ClassReflectionInterface $parent, bool $isDocumented): array
     {
         $properties = [];
         while ($parent) {
@@ -43,11 +40,9 @@ class MagicPropertyExtractor implements MagicPropertyExtractorInterface
 
 
     /**
-     * @param array $traits
-     * @param bool $isDocumented
      * @return MagicPropertyReflectionInterface[]
      */
-    private function extractFromTraits($traits, $isDocumented)
+    private function extractFromTraits(array $traits, bool $isDocumented): array
     {
         $properties = [];
         foreach ($traits as $trait) {
@@ -61,12 +56,9 @@ class MagicPropertyExtractor implements MagicPropertyExtractorInterface
 
 
     /**
-     * @param ClassReflectionInterface $classReflection
-     * @param bool $isDocumented
-     * @param array $properties
      * @return MagicPropertyReflectionInterface[]
      */
-    private function extractOwnFromClass(ClassReflectionInterface $classReflection, $isDocumented, array $properties)
+    private function extractOwnFromClass(ClassReflectionInterface $classReflection, bool $isDocumented, array $properties)
     {
         foreach ($classReflection->getOwnMagicProperties() as $property) {
             if ($this->canBeExtracted($isDocumented, $properties, $property)) {
@@ -77,20 +69,15 @@ class MagicPropertyExtractor implements MagicPropertyExtractorInterface
     }
 
 
-    /**
-     * @param bool $isDocumented
-     * @param array $properties
-     * @param MagicPropertyReflectionInterface $propertyReflection
-     * @return bool
-     */
     private function canBeExtracted(
-        $isDocumented,
+        bool $isDocumented,
         array $properties,
         MagicPropertyReflectionInterface $propertyReflection
-    ) {
+    ): bool {
         if (isset($properties[$propertyReflection->getName()])) {
             return false;
         }
+
         if ($isDocumented && ! $propertyReflection->isDocumented()) {
             return false;
         }

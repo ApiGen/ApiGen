@@ -12,9 +12,6 @@ use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
 class ElementSorter implements ElementSorterInterface
 {
 
-    /**
-     * {@inheritdoc}
-     */
     public function sortElementsByFqn(array $elements)
     {
         if (count($elements)) {
@@ -70,51 +67,36 @@ class ElementSorter implements ElementSorterInterface
     }
 
 
-    /**
-     * @return int
-     */
     private function compareConstantsByFqn(
         ConstantReflectionInterface $reflection1,
         ConstantReflectionInterface $reflection2
-    ) {
+    ): int {
         return strcasecmp($this->getConstantFqnName($reflection1), $this->getConstantFqnName($reflection2));
     }
 
 
-    /**
-     * @return string
-     */
-    private function getConstantFqnName(ConstantReflectionInterface $reflection)
+    private function getConstantFqnName(ConstantReflectionInterface $reflection): string
     {
         $class = $reflection->getDeclaringClassName() ?: $reflection->getNamespaceName();
         return $class . '\\' . $reflection->getName();
     }
 
 
-    /**
-     * @return int
-     */
     private function compareFunctionsByFqn(
         FunctionReflectionInterface $reflection1,
         FunctionReflectionInterface $reflection2
-    ) {
+    ): int {
         return strcasecmp($this->getFunctionFqnName($reflection1), $this->getFunctionFqnName($reflection2));
     }
 
 
-    /**
-     * @return string
-     */
-    private function getFunctionFqnName(FunctionReflectionInterface $reflection)
+    private function getFunctionFqnName(FunctionReflectionInterface $reflection): string
     {
         return $reflection->getNamespaceName() . '\\' . $reflection->getName();
     }
 
 
-    /**
-     * @return int
-     */
-    private function compareMethodsOrPropertiesByFqn(InClassInterface $reflection1, InClassInterface $reflection2)
+    private function compareMethodsOrPropertiesByFqn(InClassInterface $reflection1, InClassInterface $reflection2): int
     {
         return strcasecmp(
             $this->getPropertyOrMethodFqnName($reflection1),
@@ -123,10 +105,7 @@ class ElementSorter implements ElementSorterInterface
     }
 
 
-    /**
-     * @return string
-     */
-    private function getPropertyOrMethodFqnName(InClassInterface $reflection)
+    private function getPropertyOrMethodFqnName(InClassInterface $reflection): string
     {
         return $reflection->getDeclaringClassName() . '::' . $reflection->getName();
     }

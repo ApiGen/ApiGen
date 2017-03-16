@@ -36,10 +36,7 @@ class Parser implements ParserInterface
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function parse(array $files)
+    public function parse(array $files): ParserStorageInterface
     {
         foreach ($files as $file) {
             try {
@@ -52,20 +49,18 @@ class Parser implements ParserInterface
         }
 
         $this->extractBrokerDataForParserResult($this->broker);
+
         return $this->parserStorage;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getErrors()
+    public function getErrors(): array
     {
         return $this->errors;
     }
 
 
-    private function extractBrokerDataForParserResult(Broker $broker)
+    private function extractBrokerDataForParserResult(Broker $broker): void
     {
         $allFoundClasses = $broker->getClasses(
             Backend::TOKENIZED_CLASSES | Backend::INTERNAL_CLASSES | Backend::NONEXISTENT_CLASSES
@@ -91,7 +86,7 @@ class Parser implements ParserInterface
         ArrayObject $functions,
         ArrayObject $internalClasses,
         ArrayObject $tokenizedClasses
-    ) {
+    ): void {
         $this->parserStorage->setClasses($classes);
         $this->parserStorage->setConstants($constants);
         $this->parserStorage->setFunctions($functions);

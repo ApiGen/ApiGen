@@ -37,10 +37,7 @@ class GroupSorter implements GroupSorterInterface
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function sort(array $groups)
+    public function sort(array $groups): array
     {
         if ($this->isNoneGroupOnly($groups)) {
             return [];
@@ -63,10 +60,7 @@ class GroupSorter implements GroupSorterInterface
     }
 
 
-    /**
-     * @return bool
-     */
-    private function isNoneGroupOnly(array $groups)
+    private function isNoneGroupOnly(array $groups): bool
     {
         if (count($groups) === 1 && isset($groups['None'])) {
             return true;
@@ -76,10 +70,10 @@ class GroupSorter implements GroupSorterInterface
 
 
     /**
-     * @param array $groupNames
-     * @return array
+     * @param string[] $groupNames
+     * @return array[]
      */
-    private function convertGroupNamesToLower($groupNames)
+    private function convertGroupNamesToLower(array $groupNames): array
     {
         $names = array_map(function ($name) {
             return strtolower($name);
@@ -89,10 +83,7 @@ class GroupSorter implements GroupSorterInterface
     }
 
 
-    /**
-     * @param string $groupName
-     */
-    private function addMissingParentGroups($groupName)
+    private function addMissingParentGroups(string $groupName): void
     {
         $parent = '';
         foreach (explode('\\', $groupName) as $part) {
@@ -105,10 +96,7 @@ class GroupSorter implements GroupSorterInterface
     }
 
 
-    /**
-     * @param string $groupName
-     */
-    private function addMissingElementTypes($groupName)
+    private function addMissingElementTypes(string $groupName): void
     {
         foreach ($this->elements->getAll() as $type) {
             if (! isset($this->groups[$groupName][$type])) {
@@ -118,13 +106,7 @@ class GroupSorter implements GroupSorterInterface
     }
 
 
-    /**
-     * @param string $one
-     * @param string $two
-     * @param string $main
-     * @return int
-     */
-    private function compareGroups($one, $two, $main)
+    private function compareGroups(string $one, string $two, string $main): int
     {
         // \ as separator has to be first
         $one = str_replace('\\', ' ', $one);

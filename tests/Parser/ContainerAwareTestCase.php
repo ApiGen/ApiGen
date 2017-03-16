@@ -32,11 +32,7 @@ abstract class ContainerAwareTestCase extends TestCase
     }
 
 
-    /**
-     * @param string $file
-     * @return string
-     */
-    protected function getFileContentInOneLine($file)
+    protected function getFileContentInOneLine(string $file): string
     {
         $content = file_get_contents($file);
         $content = preg_replace('/\s+/', ' ', $content);

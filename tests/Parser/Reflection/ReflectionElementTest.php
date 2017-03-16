@@ -24,7 +24,7 @@ class ReflectionElementTest extends TestCase
     private $reflectionClass;
 
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $backend = new Backend($this->getReflectionFactory());
         $broker = new Broker($backend);
@@ -34,85 +34,85 @@ class ReflectionElementTest extends TestCase
     }
 
 
-    public function testGetExtension()
+    public function testGetExtension(): void
     {
         $this->assertNull($this->reflectionClass->getExtension());
     }
 
 
-    public function testGetExtensionName()
+    public function testGetExtensionName(): void
     {
         $this->assertFalse($this->reflectionClass->getExtensionName());
     }
 
 
-    public function testGetStartPosition()
+    public function testGetStartPosition(): void
     {
         $this->assertSame(16, $this->reflectionClass->getStartPosition());
     }
 
 
-    public function testGetEndPosition()
+    public function testGetEndPosition(): void
     {
         $this->assertSame(69, $this->reflectionClass->getEndPosition());
     }
 
 
-    public function testIsMain()
+    public function testIsMain(): void
     {
         $this->assertTrue($this->reflectionClass->isMain());
     }
 
 
-    public function testIsDocumented()
+    public function testIsDocumented(): void
     {
         $this->assertTrue($this->reflectionClass->isDocumented());
     }
 
 
-    public function testIsDeprecated()
+    public function testIsDeprecated(): void
     {
         $this->assertFalse($this->reflectionClass->isDeprecated());
     }
 
 
-    public function testGetNamespaceName()
+    public function testGetNamespaceName(): void
     {
         $this->assertSame('Project', $this->reflectionClass->getNamespaceName());
     }
 
 
-    public function testGetPseudoNamespaceName()
+    public function testGetPseudoNamespaceName(): void
     {
         $this->assertSame('Project', $this->reflectionClass->getPseudoNamespaceName());
     }
 
 
-    public function testInNamespace()
+    public function testInNamespace(): void
     {
         $this->assertTrue($this->reflectionClass->inNamespace());
     }
 
 
-    public function testGetNamespacesAliases()
+    public function testGetNamespacesAliases(): void
     {
         $this->assertSame([], $this->reflectionClass->getNamespaceAliases());
     }
 
 
-    public function testGetShortDescription()
+    public function testGetShortDescription(): void
     {
         $this->assertSame('This is some description', $this->reflectionClass->getShortDescription());
     }
 
 
-    public function testGetLongDescription()
+    public function testGetLongDescription(): void
     {
         $this->assertSame('This is some description', $this->reflectionClass->getLongDescription());
     }
 
 
-    public function testGetDocComment()
+    public function testGetDocComment(): void
     {
         $docCommentParts = [];
         $docCommentParts[] = ' * This is some description';
@@ -127,7 +127,7 @@ class ReflectionElementTest extends TestCase
     }
 
 
-    public function testGetAnnotations()
+    public function testGetAnnotations(): void
     {
         $annotations = $this->reflectionClass->getAnnotations();
         $this->assertCount(3, $annotations);
@@ -137,39 +137,39 @@ class ReflectionElementTest extends TestCase
     }
 
 
-    public function testGetAnnotation()
+    public function testGetAnnotation(): void
     {
         $this->assertSame(['Some_Package'], $this->reflectionClass->getAnnotation('package'));
     }
 
 
-    public function testHasAnnotation()
+    public function testHasAnnotation(): void
     {
         $this->assertTrue($this->reflectionClass->hasAnnotation('package'));
         $this->assertFalse($this->reflectionClass->hasAnnotation('nope'));
     }
 
 
-    public function testAddReason()
+    public function testAddReason(): void
     {
         $this->reflectionClass->addReason(new FileProcessingException(['...']));
         $this->assertCount(1, $this->reflectionClass->getReasons());
     }
 
 
-    public function testGetReasons()
+    public function testGetReasons(): void
     {
         $this->assertSame([], $this->reflectionClass->getReasons());
     }
 
 
-    public function testHasReasons()
+    public function testHasReasons(): void
     {
         $this->assertFalse($this->reflectionClass->hasReasons());
     }
 
 
-    public function testAddAnnotation()
+    public function testAddAnnotation(): void
     {
         $this->assertFalse($this->reflectionClass->hasAnnotation('Foo'));
         $this->reflectionClass->addAnnotation('Foo', '...');
@@ -177,7 +177,7 @@ class ReflectionElementTest extends TestCase
     }
 
 
-    public function testGetAnnotationFromReflection()
+    public function testGetAnnotationFromReflection(): void
     {
         $annotations = MethodInvoker::callMethodOnObject(
             $this->reflectionClass,
@@ -199,7 +199,6 @@ class ReflectionElementTest extends TestCase
         $configurationMock = Mockery::mock(ConfigurationInterface::class, [
             'getVisibilityLevel' => ReflectionProperty::IS_PUBLIC,
             'isInternalDocumented' => false,
-            'isPhpCoreDocumented' => true,
             'getMain' => ''
         ]);
         return new ReflectionFactory($configurationMock, $parserStorageMock);

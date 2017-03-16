@@ -29,7 +29,7 @@ class ReflectionParameterTest extends TestCase
     private $reflectionParameter;
 
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $backend = new Backend($this->getReflectionFactory());
         $broker = new Broker($backend);
@@ -41,97 +41,97 @@ class ReflectionParameterTest extends TestCase
     }
 
 
-    public function testInstance()
+    public function testInstance(): void
     {
         $this->assertInstanceOf('ApiGen\Parser\Reflection\ReflectionParameter', $this->reflectionParameter);
     }
 
 
-    public function testGetTypeHint()
+    public function testGetTypeHint(): void
     {
         $this->assertSame('int|string', $this->reflectionParameter->getTypeHint());
     }
 
 
-    public function testGetDescription()
+    public function testGetDescription(): void
     {
         $this->assertSame(' the URL of the API endpoint', $this->reflectionParameter->getDescription());
     }
 
 
-    public function testIsDefaultValueAvailable()
+    public function testIsDefaultValueAvailable(): void
     {
         $this->assertTrue($this->reflectionParameter->isDefaultValueAvailable());
     }
 
 
-    public function testGetPosition()
+    public function testGetPosition(): void
     {
         $this->assertSame(0, $this->reflectionParameter->getPosition());
     }
 
 
-    public function testIsArray()
+    public function testIsArray(): void
     {
         $this->assertFalse($this->reflectionParameter->isArray());
     }
 
 
-    public function testIsCallable()
+    public function testIsCallable(): void
     {
         $this->assertFalse($this->reflectionParameter->isCallable());
     }
 
 
-    public function testGetClass()
+    public function testGetClass(): void
     {
         $this->assertNull($this->reflectionParameter->getClass());
     }
 
 
-    public function testGetClassName()
+    public function testGetClassName(): void
     {
         $this->assertNull($this->reflectionParameter->getClassName());
     }
 
 
-    public function testAllowsNull()
+    public function testAllowsNull(): void
     {
         $this->assertTrue($this->reflectionParameter->allowsNull());
     }
 
 
-    public function testIsOptional()
+    public function testIsOptional(): void
     {
         $this->assertTrue($this->reflectionParameter->isOptional());
     }
 
 
-    public function testIsPassedByReference()
+    public function testIsPassedByReference(): void
     {
         $this->assertFalse($this->reflectionParameter->isPassedByReference());
     }
 
 
-    public function testCanBePassedByValue()
+    public function testCanBePassedByValue(): void
     {
         $this->assertTrue($this->reflectionParameter->canBePassedByValue());
     }
 
 
-    public function testGetDeclaringFunction()
+    public function testGetDeclaringFunction(): void
     {
         $this->assertInstanceOf(MethodReflectionInterface::class, $this->reflectionParameter->getDeclaringFunction());
     }
 
 
-    public function testGetDeclaringFunctionName()
+    public function testGetDeclaringFunctionName(): void
     {
         $this->assertSame('methodWithArgs', $this->reflectionParameter->getDeclaringFunctionName());
     }
 
 
-    public function testGetDeclaringClass()
+    public function testGetDeclaringClass(): void
     {
         $this->assertInstanceOf(
             'ApiGen\Parser\Reflection\ReflectionClass',
@@ -140,22 +140,19 @@ class ReflectionParameterTest extends TestCase
     }
 
 
-    public function testGetDeclaringClassName()
+    public function testGetDeclaringClassName(): void
     {
         $this->assertSame('Project\ReflectionMethod', $this->reflectionParameter->getDeclaringClassName());
     }
 
 
-    public function testIsUnlimited()
+    public function testIsUnlimited(): void
     {
         $this->assertFalse($this->reflectionParameter->isUnlimited());
     }
 
 
-    /**
-     * @return ReflectionFactoryInterface
-     */
-    private function getReflectionFactory()
+    private function getReflectionFactory(): ReflectionFactoryInterface
     {
         $parserStorageMock = Mockery::mock(ParserStorageInterface::class);
         $parserStorageMock->shouldReceive('getElementsByType')->andReturnUsing(function ($arg) {
@@ -166,7 +163,6 @@ class ReflectionParameterTest extends TestCase
         $configurationMock = Mockery::mock(ConfigurationInterface::class, [
             'getVisibilityLevel' => ReflectionProperty::IS_PUBLIC,
             'isInternalDocumented' => false,
-            'isPhpCoreDocumented' => true
         ]);
         return new ReflectionFactory($configurationMock, $parserStorageMock);
     }

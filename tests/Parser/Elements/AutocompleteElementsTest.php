@@ -21,7 +21,7 @@ class AutocompleteElementsTest extends TestCase
     private $autocompleteElements;
 
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $classReflectionMock = Mockery::mock(ReflectionClass::class);
         $classReflectionMock->shouldReceive('getPrettyName')->andReturn('ClassPrettyName');
@@ -52,7 +52,7 @@ class AutocompleteElementsTest extends TestCase
     }
 
 
-    public function testGetElementsClasses()
+    public function testGetElementsClasses(): void
     {
         $elements = $this->autocompleteElements->getElements();
         $this->assertSame([

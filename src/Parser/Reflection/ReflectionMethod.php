@@ -12,93 +12,63 @@ class ReflectionMethod extends ReflectionFunctionBase implements MethodReflectio
     use Visibility;
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isMagic()
+    public function isMagic(): bool
     {
         return false;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDeclaringClass()
+    public function getDeclaringClass(): ?ClassReflectionInterface
     {
         $className = $this->reflection->getDeclaringClassName();
         return $className === null ? null : $this->getParsedClasses()[$className];
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDeclaringClassName()
+    public function getDeclaringClassName(): string
     {
         return $this->reflection->getDeclaringClassName();
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isAbstract()
+    public function isAbstract(): bool
     {
         return $this->reflection->isAbstract();
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isFinal()
+    public function isFinal(): bool
     {
         return $this->reflection->isFinal();
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isStatic()
+    public function isStatic(): bool
     {
         return $this->reflection->isStatic();
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDeclaringTrait()
+    public function getDeclaringTrait(): ?ClassReflectionInterface
     {
         $traitName = $this->reflection->getDeclaringTraitName();
         return $traitName === null ? null : $this->getParsedClasses()[$traitName];
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDeclaringTraitName()
+    public function getDeclaringTraitName(): string
     {
         return $this->reflection->getDeclaringTraitName();
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getOriginalName()
+    public function getOriginalName(): string
     {
         return $this->reflection->getOriginalName();
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isValid()
+    public function isValid(): bool
     {
         if ($class = $this->getDeclaringClass()) {
             return $class->isValid();
@@ -108,10 +78,7 @@ class ReflectionMethod extends ReflectionFunctionBase implements MethodReflectio
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getImplementedMethod()
+    public function getImplementedMethod(): ?MethodReflectionInterface
     {
         foreach ($this->getDeclaringClass()->getOwnInterfaces() as $interface) {
             if ($interface->hasMethod($this->getName())) {
@@ -122,10 +89,7 @@ class ReflectionMethod extends ReflectionFunctionBase implements MethodReflectio
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getOverriddenMethod()
+    public function getOverriddenMethod(): ?MethodReflectionInterface
     {
         $parent = $this->getDeclaringClass()->getParentClass();
         if ($parent === null) {
@@ -144,10 +108,7 @@ class ReflectionMethod extends ReflectionFunctionBase implements MethodReflectio
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getOriginal()
+    public function getOriginal(): ?MethodReflectionInterface
     {
         $originalName = $this->reflection->getOriginalName();
         if ($originalName === null) {

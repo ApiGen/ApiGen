@@ -26,9 +26,6 @@ class ParentClassElementsExtractor implements ParentClassElementsExtractorInterf
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
     public function getInheritedConstants()
     {
         return array_filter(
@@ -44,9 +41,6 @@ class ParentClassElementsExtractor implements ParentClassElementsExtractorInterf
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
     public function getInheritedProperties()
     {
         $properties = [];
@@ -69,9 +63,6 @@ class ParentClassElementsExtractor implements ParentClassElementsExtractorInterf
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
     public function getInheritedMethods()
     {
         $methods = [];
@@ -109,7 +100,7 @@ class ParentClassElementsExtractor implements ParentClassElementsExtractorInterf
      * @param ClassReflectionInterface $reflectionClass
      * @return array
      */
-    private function sortElements(array $elements, array $allElements, ClassReflectionInterface $reflectionClass)
+    private function sortElements(array $elements, array $allElements, ClassReflectionInterface $reflectionClass): array
     {
         if (! empty($elements)) {
             ksort($elements);

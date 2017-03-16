@@ -52,10 +52,7 @@ class ParserStorage implements ParserStorageInterface
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getElementsByType($type)
+    public function getElementsByType(string $type): ArrayObject
     {
         if ($type === ElementsInterface::CLASSES) {
             return $this->classes;
@@ -72,10 +69,7 @@ class ParserStorage implements ParserStorageInterface
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDocumentedStats()
+    public function getDocumentedStats(): array
     {
         return [
             'classes' => $this->getDocumentedElementsCount($this->tokenizedClasses),
@@ -86,91 +80,61 @@ class ParserStorage implements ParserStorageInterface
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getClasses()
+    public function getClasses(): ArrayObject
     {
         return $this->classes;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getConstants()
+    public function getConstants(): ArrayObject
     {
         return $this->constants;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getFunctions()
+    public function getFunctions(): ArrayObject
     {
         return $this->functions;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getTypes()
+    public function getTypes(): array
     {
         return $this->types;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setClasses(ArrayObject $classes)
+    public function setClasses(ArrayObject $classes): void
     {
         $this->classes = $classes;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setConstants(ArrayObject $constants)
+    public function setConstants(ArrayObject $constants): void
     {
         $this->constants = $constants;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setFunctions(ArrayObject $functions)
+    public function setFunctions(ArrayObject $functions): void
     {
         $this->functions = $functions;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setInternalClasses(ArrayObject $internalClasses)
+    public function setInternalClasses(ArrayObject $internalClasses): void
     {
         $this->internalClasses = $internalClasses;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setTokenizedClasses(ArrayObject $tokenizedClasses)
+    public function setTokenizedClasses(ArrayObject $tokenizedClasses): void
     {
         $this->tokenizedClasses = $tokenizedClasses;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDirectImplementersOfInterface(ClassReflectionInterface $reflectionClass)
+    public function getDirectImplementersOfInterface(ClassReflectionInterface $reflectionClass): array
     {
         $implementers = [];
         foreach ($this->classes as $class) {
@@ -179,14 +143,12 @@ class ParserStorage implements ParserStorageInterface
             }
         }
         uksort($implementers, 'strcasecmp');
+
         return $implementers;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getIndirectImplementersOfInterface(ClassReflectionInterface $reflectionClass)
+    public function getIndirectImplementersOfInterface(ClassReflectionInterface $reflectionClass): array
     {
         $implementers = [];
         foreach ($this->classes as $class) {
@@ -199,26 +161,13 @@ class ParserStorage implements ParserStorageInterface
     }
 
 
-    /**
-     * @param ClassReflectionInterface $class
-     * @param string $name
-     * @return bool
-     */
-    private function isAllowedDirectImplementer(ClassReflectionInterface $class, $name)
+    private function isAllowedDirectImplementer(ClassReflectionInterface $class, string $name): bool
     {
-        if ($class->isDocumented() && in_array($name, $class->getOwnInterfaceNames())) {
-            return true;
-        }
-        return false;
+        return $class->isDocumented() && in_array($name, $class->getOwnInterfaceNames());
     }
 
 
-    /**
-     * @param ClassReflectionInterface $class
-     * @param string $name
-     * @return bool
-     */
-    private function isAllowedIndirectImplementer(ClassReflectionInterface $class, $name)
+    private function isAllowedIndirectImplementer(ClassReflectionInterface $class, string $name): bool
     {
         if ($class->isDocumented() && $class->implementsInterface($name)
             && ! in_array($name, $class->getOwnInterfaceNames())
@@ -230,10 +179,9 @@ class ParserStorage implements ParserStorageInterface
 
 
     /**
-     * @param ElementReflectionInterface[]|ArrayObject $result
-     * @return int
+     * @param ElementReflectionInterface[] $result
      */
-    private function getDocumentedElementsCount(ArrayObject $result)
+    private function getDocumentedElementsCount(ArrayObject $result): int
     {
         $count = 0;
         foreach ($result as $element) {

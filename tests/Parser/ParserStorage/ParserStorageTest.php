@@ -21,13 +21,13 @@ class ParserStorageTest extends TestCase
     private $parserStorage;
 
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->parserStorage = new ParserStorage;
     }
 
 
-    public function testDefaultsOnConstruct()
+    public function testDefaultsOnConstruct(): void
     {
         $this->assertInstanceOf(ArrayObject::class, $this->parserStorage->getClasses());
         $this->assertInstanceOf(ArrayObject::class, $this->parserStorage->getConstants());
@@ -43,7 +43,7 @@ class ParserStorageTest extends TestCase
     }
 
 
-    public function testSettersAndGetters()
+    public function testSettersAndGetters(): void
     {
         $classes = new ArrayObject([1]);
         $this->parserStorage->setClasses($classes);
@@ -59,7 +59,7 @@ class ParserStorageTest extends TestCase
     }
 
 
-    public function testGetElementsByType()
+    public function testGetElementsByType(): void
     {
         $classes = new ArrayObject([1]);
         $this->parserStorage->setClasses($classes);
@@ -89,16 +89,13 @@ class ParserStorageTest extends TestCase
     }
 
 
-    /**
-     * @expectedException \Exception
-     */
-    public function testGetElementsByTypeWithUnknownType()
+    public function testGetElementsByTypeWithUnknownType(): void
     {
         $this->parserStorage->getElementsByType('elements');
     }
 
 
-    public function testGetTypes()
+    public function testGetTypes(): void
     {
         $this->assertSame(
             [Elements::CLASSES, Elements::CONSTANTS, Elements::FUNCTIONS],
@@ -107,7 +104,7 @@ class ParserStorageTest extends TestCase
     }
 
 
-    public function testGetDocumentedStats()
+    public function testGetDocumentedStats(): void
     {
         $this->parserStorage->setInternalClasses($this->getReflectionElementsArrayObject());
         $documentedStats = $this->parserStorage->getDocumentedStats();
@@ -120,7 +117,7 @@ class ParserStorageTest extends TestCase
     }
 
 
-    public function testGetDocumentedElementsCount()
+    public function testGetDocumentedElementsCount(): void
     {
         $reflectionElements = $this->getReflectionElementsArrayObject();
         $this->assertSame(1, MethodInvoker::callMethodOnObject(
@@ -131,10 +128,7 @@ class ParserStorageTest extends TestCase
     }
 
 
-    /**
-     * @return ArrayObject
-     */
-    private function getReflectionElementsArrayObject()
+    private function getReflectionElementsArrayObject(): ArrayObject
     {
         $reflectionElementMock = Mockery::mock(ElementReflectionInterface::class);
         $reflectionElementMock->shouldReceive('isDocumented')->andReturn(true);

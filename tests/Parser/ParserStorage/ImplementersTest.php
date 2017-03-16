@@ -27,7 +27,7 @@ class ImplementersTest extends ContainerAwareTestCase
     private $parentInterfaceReflection;
 
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $finder = Finder::find('*')->in(__DIR__ . '/ImplementersSource');
         $files = iterator_to_array($finder->getIterator());
@@ -47,7 +47,7 @@ class ImplementersTest extends ContainerAwareTestCase
     }
 
 
-    public function testGetDirectImplementersOfInterface()
+    public function testGetDirectImplementersOfInterface(): void
     {
         $implementers = $this->parserStorage->getDirectImplementersOfInterface($this->parentInterfaceReflection);
         $this->assertCount(1, $implementers);
@@ -58,7 +58,7 @@ class ImplementersTest extends ContainerAwareTestCase
     }
 
 
-    public function testGetIndirectImplementersOfInterface()
+    public function testGetIndirectImplementersOfInterface(): void
     {
         $implementers = $this->parserStorage->getIndirectImplementersOfInterface($this->parentInterfaceReflection);
         $this->assertCount(1, $implementers);

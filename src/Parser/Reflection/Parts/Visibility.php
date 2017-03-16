@@ -11,28 +11,19 @@ use TokenReflection\IReflectionProperty;
 trait Visibility
 {
 
-    /**
-     * @return bool
-     */
-    public function isPrivate()
+    public function isPrivate(): bool
     {
         return $this->reflection->isPrivate();
     }
 
 
-    /**
-     * @return bool
-     */
-    public function isProtected()
+    public function isProtected(): bool
     {
         return $this->reflection->isProtected();
     }
 
 
-    /**
-     * @return bool
-     */
-    public function isPublic()
+    public function isPublic(): bool
     {
         return $this->reflection->isPublic();
     }

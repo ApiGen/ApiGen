@@ -25,7 +25,7 @@ abstract class AbstractReflectionTestCase extends TestCase
     protected $backend;
 
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $parserStorageMock = Mockery::mock(ParserStorageInterface::class);
         $parserConfigurationMock = Mockery::mock(ConfigurationInterface::class);

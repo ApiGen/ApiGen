@@ -13,7 +13,7 @@ class ParentClass
     protected $someParentProperty;
 
 
-    public function getSomeParentStuff()
+    public function getSomeParentStuff(): void
     {
     }
 }

@@ -32,66 +32,47 @@ abstract class ReflectionElement extends ReflectionBase implements ElementReflec
     private $reasons = [];
 
 
-    /**
-     * @return ReflectionExtension|NULL
-     */
-    public function getExtension()
+    public function getExtension(): ?ReflectionExtension
     {
         $extension = $this->reflection->getExtension();
         return $extension === null ? null : $this->reflectionFactory->createFromReflection($extension);
     }
 
 
-    /**
-     * @return bool
-     */
-    public function getExtensionName()
+    public function getExtensionName(): string
     {
         return $this->reflection->getExtensionName();
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getStartPosition()
+    public function getStartPosition(): int
     {
         return $this->reflection->getStartPosition();
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getEndPosition()
+    public function getEndPosition(): int
     {
         return $this->reflection->getEndPosition();
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isMain()
+    public function isMain(): bool
     {
         $main = $this->configuration->getMain();
         return empty($main) || strpos($this->getName(), $main) === 0;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isDocumented()
+    public function isDocumented(): bool
     {
         if ($this->isDocumented === null) {
             $this->isDocumented = $this->reflection->isTokenized() || $this->reflection->isInternal();
 
             if ($this->isDocumented) {
-                $php = $this->configuration->isPhpCoreDocumented();
                 $internal = $this->configuration->isInternalDocumented();
 
-                if (! $php && $this->reflection->isInternal()) {
+                if ($this->reflection->isInternal()) {
                     $this->isDocumented = false;
                 } elseif (! $internal && $this->reflection->hasAnnotation('internal')) {
                     $this->isDocumented = false;
@@ -105,10 +86,7 @@ abstract class ReflectionElement extends ReflectionBase implements ElementReflec
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isDeprecated()
+    public function isDeprecated(): bool
     {
         if ($this->reflection->isDeprecated()) {
             return true;
@@ -125,28 +103,23 @@ abstract class ReflectionElement extends ReflectionBase implements ElementReflec
 
     /**
      * Removed, but for BC in templates.
-     *
-     * @return bool
      */
-    public function inPackage()
+    public function inPackage(): bool
     {
         return false;
     }
 
 
     /**
-     * {@inheritdoc}
+     * Removed, but for BC in templates.
      */
-    public function inNamespace()
+    public function inNamespace(): bool
     {
-        return $this->getNamespaceName() !== '';
+        return true;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getNamespaceName()
+    public function getNamespaceName(): string
     {
         static $namespaces = [];
 
@@ -165,28 +138,19 @@ abstract class ReflectionElement extends ReflectionBase implements ElementReflec
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getPseudoNamespaceName()
+    public function getPseudoNamespaceName(): string
     {
         return $this->isInternal() ? 'PHP' : $this->getNamespaceName() ?: 'None';
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getNamespaceAliases()
+    public function getNamespaceAliases(): array
     {
         return $this->reflection->getNamespaceAliases();
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getShortDescription()
+    public function getShortDescription(): string
     {
         $short = $this->reflection->getAnnotation(ReflectionAnnotation::SHORT_DESCRIPTION);
         if (! empty($short)) {
@@ -198,14 +162,11 @@ abstract class ReflectionElement extends ReflectionBase implements ElementReflec
             list(, $short) = preg_split('~\s+|$~', $var[0], 2);
         }
 
-        return $short;
+        return (string) $short;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getLongDescription()
+    public function getLongDescription(): string
     {
         $short = $this->getShortDescription();
         $long = $this->reflection->getAnnotation(ReflectionAnnotation::LONG_DESCRIPTION);
@@ -218,19 +179,13 @@ abstract class ReflectionElement extends ReflectionBase implements ElementReflec
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDocComment()
+    public function getDocComment(): string
     {
         return $this->reflection->getDocComment();
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getAnnotations()
+    public function getAnnotations(): array
     {
         if ($this->annotations === null) {
             $annotations = $this->reflection->getAnnotations();
@@ -247,62 +202,44 @@ abstract class ReflectionElement extends ReflectionBase implements ElementReflec
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getAnnotation($name)
+    public function getAnnotation(string $name): array
     {
-        return $this->hasAnnotation($name) ? $this->getAnnotations()[$name] : null;
+        return $this->hasAnnotation($name) ? $this->getAnnotations()[$name] : [];
+    }
+
+
+    public function hasAnnotation(string $name): bool
+    {
+        return isset($this->getAnnotations()[$name]);
     }
 
 
     /**
-     * {@inheritdoc}
+     * @param string $annotation
+     * @param mixed $value
      */
-    public function hasAnnotation($name)
-    {
-        $annotations = $this->getAnnotations();
-        return isset($annotations[$name]);
-    }
-
-
-    /**
-     * {@inheritdoc}
-     */
-    public function addAnnotation($annotation, $value)
+    public function addAnnotation(string $annotation, $value): void
     {
         if ($this->annotations === null) {
             $this->getAnnotations();
         }
         $this->annotations[$annotation][] = $value;
-
-        return $this;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function addReason(BaseException $reason)
+    public function addReason(BaseException $reason): void
     {
         $this->reasons[] = $reason;
-        return $this;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getReasons()
+    public function getReasons(): array
     {
         return $this->reasons;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function hasReasons()
+    public function hasReasons(): bool
     {
         return ! empty($this->reasons);
     }
@@ -310,9 +247,8 @@ abstract class ReflectionElement extends ReflectionBase implements ElementReflec
 
     /**
      * @param mixed $reflection
-     * @return array
      */
-    private function getAnnotationsFromReflection($reflection)
+    private function getAnnotationsFromReflection($reflection): array
     {
         $fileLevel = [
             'package' => true,

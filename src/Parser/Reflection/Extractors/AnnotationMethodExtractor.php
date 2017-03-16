@@ -89,9 +89,6 @@ class AnnotationMethodExtractor implements AnnotationMethodExtractorInterface
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
     public function extractFromReflection(ClassReflectionInterface $reflectionClass)
     {
         $this->reflectionClass = $reflectionClass;
@@ -111,7 +108,7 @@ class AnnotationMethodExtractor implements AnnotationMethodExtractorInterface
      * @param string $annotation
      * @return ReflectionMethodMagic[]|array
      */
-    private function processMagicMethodAnnotation($annotation)
+    private function processMagicMethodAnnotation(string $annotation): array
     {
         if (! preg_match(self::PATTERN_METHOD, $annotation, $matches)) {
             return [];
@@ -138,11 +135,7 @@ class AnnotationMethodExtractor implements AnnotationMethodExtractorInterface
     }
 
 
-    /**
-     * @param string $annotation
-     * @return int
-     */
-    private function getStartLine($annotation)
+    private function getStartLine(string $annotation): int
     {
         $doc = $this->reflectionClass->getDocComment();
         $tmp = $annotation;
@@ -153,11 +146,7 @@ class AnnotationMethodExtractor implements AnnotationMethodExtractorInterface
     }
 
 
-    /**
-     * @param ReflectionMethodMagic $method
-     * @param string $args
-     */
-    private function attachMethodParameters(ReflectionMethodMagic $method, $args)
+    private function attachMethodParameters(ReflectionMethodMagic $method, string $args): void
     {
         $parameters = [];
         foreach (array_filter(preg_split('~\\s*,\\s*~', $args)) as $position => $arg) {

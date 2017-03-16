@@ -27,7 +27,7 @@ class ReflectionPropertyTest extends TestCase
     private $reflectionProperty;
 
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $backend = new Backend($this->getReflectionFactory());
         $broker = new Broker($backend);
@@ -38,106 +38,103 @@ class ReflectionPropertyTest extends TestCase
     }
 
 
-    public function testInstance()
+    public function testInstance(): void
     {
         $this->assertInstanceOf(PropertyReflectionInterface::class, $this->reflectionProperty);
     }
 
 
-    public function testIsReadOnly()
+    public function testIsReadOnly(): void
     {
         $this->assertFalse($this->reflectionProperty->isReadOnly());
     }
 
 
-    public function testIsWriteOnly()
+    public function testIsWriteOnly(): void
     {
         $this->assertFalse($this->reflectionProperty->isWriteOnly());
     }
 
 
-    public function testIsMagic()
+    public function testIsMagic(): void
     {
         $this->assertFalse($this->reflectionProperty->isMagic());
     }
 
 
-    public function testGetTypeHint()
+    public function testGetTypeHint(): void
     {
         $this->assertSame('integer', $this->reflectionProperty->getTypeHint());
     }
 
 
-    public function testGetDeclaringClass()
+    public function testGetDeclaringClass(): void
     {
         $this->assertInstanceOf(ClassReflectionInterface::class, $this->reflectionProperty->getDeclaringClass());
     }
 
 
-    public function testGetDeclaringClassName()
+    public function testGetDeclaringClassName(): void
     {
         $this->assertSame('Project\ReflectionMethod', $this->reflectionProperty->getDeclaringClassName());
     }
 
 
-    public function testGetDefaultValue()
+    public function testGetDefaultValue(): void
     {
         $this->assertSame(52, $this->reflectionProperty->getDefaultValue());
     }
 
 
-    public function testIsDefault()
+    public function testIsDefault(): void
     {
         $this->assertTrue($this->reflectionProperty->isDefault());
     }
 
 
-    public function testIsPrivate()
+    public function testIsPrivate(): void
     {
         $this->assertFalse($this->reflectionProperty->isPrivate());
     }
 
 
-    public function testIsProtected()
+    public function testIsProtected(): void
     {
         $this->assertFalse($this->reflectionProperty->isProtected());
     }
 
 
-    public function testIsPublic()
+    public function testIsPublic(): void
     {
         $this->assertTrue($this->reflectionProperty->isPublic());
     }
 
 
-    public function testIsStatic()
+    public function testIsStatic(): void
     {
         $this->assertFalse($this->reflectionProperty->isStatic());
     }
 
 
-    public function testGetDeclaringTrait()
+    public function testGetDeclaringTrait(): void
     {
         $this->assertNull($this->reflectionProperty->getDeclaringTrait());
     }
 
 
-    public function testGetDeclaringTraitName()
+    public function testGetDeclaringTraitName(): void
     {
         $this->assertNull($this->reflectionProperty->getDeclaringTraitName());
     }
 
 
-    public function testIsValid()
+    public function testIsValid(): void
     {
         $this->assertTrue($this->reflectionProperty->isValid());
     }
 
 
-    /**
-     * @return ReflectionFactory
-     */
-    private function getReflectionFactory()
+    private function getReflectionFactory(): ReflectionFactory
     {
         $parserResultMock = Mockery::mock(ParserStorageInterface::class);
         $parserResultMock->shouldReceive('getElementsByType')->andReturnUsing(function ($arg) {
@@ -148,7 +145,6 @@ class ReflectionPropertyTest extends TestCase
         $configurationMock = Mockery::mock(ConfigurationInterface::class, [
             'getVisibilityLevel' => ReflectionProperty::IS_PUBLIC,
             'isInternalDocumented' => false,
-            'isPhpCoreDocumented' => true
         ]);
         return new ReflectionFactory($configurationMock, $parserResultMock);
     }

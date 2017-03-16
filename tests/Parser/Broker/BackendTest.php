@@ -28,14 +28,14 @@ class BackendTest extends TestCase
     private $broker;
 
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->backend = new Backend($this->getReflectionFactory());
         $this->broker = new Broker($this->backend);
     }
 
 
-    public function testGetClasses()
+    public function testGetClasses(): void
     {
         $this->broker->processDirectory(__DIR__ . '/BackendSource');
         $classes = $this->backend->getClasses();
@@ -48,7 +48,7 @@ class BackendTest extends TestCase
     }
 
 
-    public function testGetFunctions()
+    public function testGetFunctions(): void
     {
         $this->broker->processDirectory(__DIR__ . '/BackendSource');
         $functions = $this->backend->getFunctions();
@@ -61,7 +61,7 @@ class BackendTest extends TestCase
     }
 
 
-    public function testGetConstants()
+    public function testGetConstants(): void
     {
         $this->broker->processDirectory(__DIR__ . '/BackendSource');
         $constants = $this->backend->getConstants();
@@ -77,7 +77,7 @@ class BackendTest extends TestCase
     /**
      * @param object $object
      */
-    private function checkLoadedProperties($object)
+    private function checkLoadedProperties($object): void
     {
         $this->assertInstanceOf(
             ConfigurationInterface::class,
@@ -96,14 +96,10 @@ class BackendTest extends TestCase
     }
 
 
-    /**
-     * @return ReflectionFactory
-     */
-    private function getReflectionFactory()
+    private function getReflectionFactory(): ReflectionFactory
     {
         $parserStoragetMock = Mockery::mock(ParserStorageInterface::class);
         $configurationMock = Mockery::mock(ConfigurationInterface::class, [
-            'isPhpCoreDocumented' => true,
             'isInternalDocumented' => true,
             'getVisibilityLevel' => 1
         ]);

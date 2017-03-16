@@ -27,7 +27,7 @@ class ElementStorageTest extends TestCase
     private $reflectionClass;
 
 
-    public function testEnsureCategorization()
+    public function testEnsureCategorization(): void
     {
         $elementStorage = $this->prepareElementStorage();
 
@@ -46,7 +46,7 @@ class ElementStorageTest extends TestCase
     }
 
 
-    public function testLoadUsesToReferencedElementUsedBy()
+    public function testLoadUsesToReferencedElementUsedBy(): void
     {
         $elementStorage = $this->prepareElementStorage();
 
@@ -72,10 +72,7 @@ class ElementStorageTest extends TestCase
     }
 
 
-    /**
-     * @return ElementStorage
-     */
-    private function prepareElementStorage()
+    private function prepareElementStorage(): ElementStorage
     {
         $parserStorageMock = Mockery::mock(ParserStorageInterface::class);
         $parserStorageMock->shouldReceive('getTypes')->andReturn(['classes', 'functions', 'constants']);

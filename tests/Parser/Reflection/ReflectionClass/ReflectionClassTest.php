@@ -5,65 +5,65 @@ namespace ApiGen\Parser\Tests\Reflections\ReflectionClass;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Parser\Tests\Reflection\ReflectionClass\AbstractReflectionClassTestCase;
 
-class ReflectionClassTest extends AbstractReflectionClassTestCase
+final class ReflectionClassTest extends AbstractReflectionClassTestCase
 {
 
-    public function testInterface()
+    public function testInterface(): void
     {
         $this->assertInstanceOf(ClassReflectionInterface::class, $this->reflectionClass);
     }
 
 
-    public function testGetName()
+    public function testGetName(): void
     {
         $this->assertSame('Project\AccessLevels', $this->reflectionClass->getName());
     }
 
 
-    public function testGetShortName()
+    public function testGetShortName(): void
     {
         $this->assertSame('AccessLevels', $this->reflectionClass->getShortName());
     }
 
 
-    public function testIsAbstract()
+    public function testIsAbstract(): void
     {
         $this->assertFalse($this->reflectionClass->isAbstract());
     }
 
 
-    public function testIsFinal()
+    public function testIsFinal(): void
     {
         $this->assertFalse($this->reflectionClass->isFinal());
     }
 
 
-    public function testIsException()
+    public function testIsException(): void
     {
         $this->assertFalse($this->reflectionClass->isException());
     }
 
 
-    public function testIsSubclassOf()
+    public function testIsSubclassOf(): void
     {
         $this->assertTrue($this->reflectionClass->isSubclassOf('Project\ParentClass'));
         $this->assertFalse($this->reflectionClass->isSubclassOf('ArrayAccess'));
     }
 
 
-    public function testIsValid()
+    public function testIsValid(): void
     {
         $this->assertTrue($this->reflectionClass->isValid());
     }
 
 
-    public function testIsDocumented()
+    public function testIsDocumented(): void
     {
         $this->assertTrue($this->reflectionClass->isDocumented());
     }
 
 
-    public function testVisibility()
+    public function testVisibility(): void
     {
         $this->assertTrue($this->reflectionClass->hasMethod('publicMethod'));
         $this->assertTrue($this->reflectionClass->hasMethod('protectedMethod'));

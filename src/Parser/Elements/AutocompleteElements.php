@@ -33,10 +33,7 @@ class AutocompleteElements implements AutocompleteElementsInterface
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getElements()
+    public function getElements(): array
     {
         foreach ($this->elementStorage->getElements() as $type => $elementList) {
             foreach ($elementList as $element) {
@@ -50,7 +47,7 @@ class AutocompleteElements implements AutocompleteElementsInterface
     }
 
 
-    private function processElement(ElementReflectionInterface $element)
+    private function processElement(ElementReflectionInterface $element): void
     {
         if ($element instanceof ConstantReflectionInterface) {
             $this->elements[] = ['co', $element->getPrettyName()];
@@ -69,7 +66,7 @@ class AutocompleteElements implements AutocompleteElementsInterface
     }
 
 
-    private function sortElements()
+    private function sortElements(): void
     {
         usort($this->elements, function ($one, $two) {
             return strcasecmp($one[1], $two[1]);

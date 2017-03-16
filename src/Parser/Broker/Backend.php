@@ -52,10 +52,7 @@ class Backend extends Broker\Backend\Memory implements BackendInterface
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getConstants()
+    public function getConstants(): array
     {
         return array_map(function (IReflectionConstant $constant) {
             return $this->reflectionFactory->createFromReflection($constant);
@@ -63,10 +60,7 @@ class Backend extends Broker\Backend\Memory implements BackendInterface
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return array_map(function (IReflectionFunction $function) {
             return $this->reflectionFactory->createFromReflection($function);
@@ -77,7 +71,7 @@ class Backend extends Broker\Backend\Memory implements BackendInterface
     /**
      * @return ClassReflectionInterface[]
      */
-    protected function parseClassLists()
+    protected function parseClassLists(): array
     {
         $this->declared = array_flip(array_merge(get_declared_classes(), get_declared_interfaces()));
 
@@ -127,7 +121,7 @@ class Backend extends Broker\Backend\Memory implements BackendInterface
      *
      * @param ReflectionMethod|ReflectionFunction $reflection
      */
-    private function processFunction($reflection)
+    private function processFunction($reflection): void
     {
         $annotations = $reflection->getAnnotations();
         foreach (['param', 'return', 'throws'] as $annotation) {
@@ -145,7 +139,7 @@ class Backend extends Broker\Backend\Memory implements BackendInterface
     /**
      * @param string $name
      */
-    private function addClass($name)
+    private function addClass(string $name)
     {
         $name = ltrim($name, '\\');
 
@@ -174,7 +168,7 @@ class Backend extends Broker\Backend\Memory implements BackendInterface
     /**
      * @param TokenReflection\ReflectionClass|TokenReflection\Invalid\ReflectionClass $reflection
      */
-    private function loadParentClassesAndInterfacesFromClassReflection($reflection)
+    private function loadParentClassesAndInterfacesFromClassReflection($reflection): void
     {
         $reflectionRelatedClassElements = array_merge($reflection->getParentClasses(), $reflection->getInterfaces());
         foreach ($reflectionRelatedClassElements as $parentName => $parentReflection) {
@@ -192,11 +186,7 @@ class Backend extends Broker\Backend\Memory implements BackendInterface
     }
 
 
-    /**
-     * @param string $name
-     * @return bool
-     */
-    private function isClassLoaded($name)
+    private function isClassLoaded(string $name): bool
     {
         return isset($this->allClasses[self::TOKENIZED_CLASSES][$name])
             || isset($this->allClasses[self::INTERNAL_CLASSES][$name])
@@ -209,7 +199,7 @@ class Backend extends Broker\Backend\Memory implements BackendInterface
      * @param array $annotations
      * @param string $name
      */
-    private function loadAnnotationFromReflection($reflection, array $annotations, $name)
+    private function loadAnnotationFromReflection($reflection, array $annotations, $name): void
     {
         if (! isset($annotations[$name])) {
             return;
@@ -229,9 +219,8 @@ class Backend extends Broker\Backend\Memory implements BackendInterface
     /**
      * @param string $name
      * @param ClassReflectionInterface|MethodReflectionInterface|InNamespaceInterface $reflection
-     * @return string
      */
-    private function getClassFqn($name, $reflection)
+    private function getClassFqn(string $name, $reflection): string
     {
         return Resolver::resolveClassFQN(
             $name,

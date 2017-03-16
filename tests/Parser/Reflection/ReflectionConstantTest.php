@@ -34,7 +34,7 @@ class ReflectionConstantTest extends TestCase
     private $reflectionClass;
 
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $backend = new Backend($this->getReflectionFactory());
         $broker = new Broker($backend);
@@ -47,80 +47,77 @@ class ReflectionConstantTest extends TestCase
     }
 
 
-    public function testInstance()
+    public function testInstance(): void
     {
         $this->assertInstanceOf(ConstantReflectionInterface::class, $this->constantReflection);
         $this->assertInstanceOf(ConstantReflectionInterface::class, $this->constantReflectionInClass);
     }
 
 
-    public function testGetDeclaringClass()
+    public function testGetDeclaringClass(): void
     {
         $this->assertNull($this->constantReflection->getDeclaringClass());
         $this->assertInstanceOf(ClassReflectionInterface::class, $this->constantReflectionInClass->getDeclaringClass());
     }
 
 
-    public function testGetDeclaringClassName()
+    public function testGetDeclaringClassName(): void
     {
         $this->assertNull($this->constantReflection->getDeclaringClassName());
         $this->assertSame(ConstantInClass::class, $this->constantReflectionInClass->getDeclaringClassName());
     }
 
 
-    public function testGetName()
+    public function testGetName(): void
     {
         $this->assertSame('SOME_CONSTANT', $this->constantReflection->getName());
         $this->assertSame('CONSTANT_INSIDE', $this->constantReflectionInClass->getName());
     }
 
 
-    public function testGetShortName()
+    public function testGetShortName(): void
     {
         $this->assertSame('SOME_CONSTANT', $this->constantReflection->getShortName());
         $this->assertSame('CONSTANT_INSIDE', $this->constantReflectionInClass->getShortName());
     }
 
 
-    public function testGetTypeHint()
+    public function testGetTypeHint(): void
     {
         $this->assertSame('string', $this->constantReflection->getTypeHint());
         $this->assertSame('int', $this->constantReflectionInClass->getTypeHint());
     }
 
 
-    public function testGetValue()
+    public function testGetValue(): void
     {
         $this->assertSame('some value', $this->constantReflection->getValue());
         $this->assertSame(55, $this->constantReflectionInClass->getValue());
     }
 
 
-    public function testGetDefinition()
+    public function testGetDefinition(): void
     {
         $this->assertSame("'some value'", $this->constantReflection->getValueDefinition());
         $this->assertSame('55', $this->constantReflectionInClass->getValueDefinition());
     }
 
 
-    public function testIsValid()
+    public function testIsValid(): void
     {
         $this->assertTrue($this->constantReflection->isValid());
         $this->assertTrue($this->constantReflectionInClass->isValid());
     }
 
 
-    public function testIsDocumented()
+    public function testIsDocumented(): void
     {
         $this->assertTrue($this->constantReflection->isDocumented());
         $this->assertTrue($this->constantReflectionInClass->isDocumented());
     }
 
 
-    /**
-     * @return Mockery\MockInterface
-     */
-    private function getReflectionFactory()
+    private function getReflectionFactory(): Mockery\MockInterface
     {
         $parserResultMock = Mockery::mock(ParserStorageInterface::class);
         $parserResultMock->shouldReceive('getElementsByType')->andReturnUsing(function ($arg) {
@@ -132,7 +129,6 @@ class ReflectionConstantTest extends TestCase
         $configurationMock = Mockery::mock(ConfigurationInterface::class, [
             'getVisibilityLevel' => ReflectionProperty::IS_PUBLIC,
             'isInternalDocumented' => false,
-            'isPhpCoreDocumented' => true,
             'getMain' => ''
         ]);
         return new ReflectionFactory($configurationMock, $parserResultMock);

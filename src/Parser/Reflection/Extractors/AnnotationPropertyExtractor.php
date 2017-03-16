@@ -41,9 +41,6 @@ class AnnotationPropertyExtractor implements AnnotationPropertyExtractorInterfac
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
     public function extractFromReflection(ClassReflectionInterface $classReflection)
     {
         $this->classReflection = $classReflection;
@@ -66,7 +63,7 @@ class AnnotationPropertyExtractor implements AnnotationPropertyExtractorInterfac
      * @param string $annotationName
      * @return MagicPropertyReflectionInterface[]
      */
-    private function processMagicPropertyAnnotation($annotation, $annotationName)
+    private function processMagicPropertyAnnotation(string $annotation, string $annotationName)
     {
         if (! preg_match(self::PATTERN_PROPERTY, $annotation, $matches)) {
             return [];
@@ -90,11 +87,7 @@ class AnnotationPropertyExtractor implements AnnotationPropertyExtractorInterfac
     }
 
 
-    /**
-     * @param string $annotation
-     * @return int
-     */
-    private function getStartLine($annotation)
+    private function getStartLine(string $annotation): int
     {
         $doc = $this->classReflection->getDocComment();
         $tmp = $annotation;

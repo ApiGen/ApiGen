@@ -8,10 +8,7 @@ use TokenReflection;
 class ReflectionFunction extends ReflectionFunctionBase implements FunctionReflectionInterface
 {
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isValid()
+    public function isValid(): bool
     {
         if ($this->reflection instanceof TokenReflection\Invalid\ReflectionFunction) {
             return false;

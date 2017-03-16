@@ -8,10 +8,7 @@ use Nette\DI\Container;
 class ContainerFactory
 {
 
-    /**
-     * @return Container
-     */
-    public function create()
+    public function create(): Container
     {
         $configurator = new Configurator;
         $configurator->setTempDirectory(TEMP_DIR);

@@ -14,7 +14,7 @@ use TokenReflection\Broker;
 class ParserExtensionTest extends TestCase
 {
 
-    public function testLoadServicesFromConfig()
+    public function testLoadServicesFromConfig(): void
     {
         $extension = $this->getExtension();
         MethodInvoker::callMethodOnObject($extension, 'loadServicesFromConfig');
@@ -27,7 +27,7 @@ class ParserExtensionTest extends TestCase
     }
 
 
-    public function testLoadConfiguration()
+    public function testLoadConfiguration(): void
     {
         $extension = $this->getExtension();
         $extension->loadConfiguration();
@@ -40,10 +40,7 @@ class ParserExtensionTest extends TestCase
     }
 
 
-    /**
-     * @return ParserExtension
-     */
-    private function getExtension()
+    private function getExtension(): ParserExtension
     {
         $extension = new ParserExtension;
         $extension->setCompiler(new Compiler(new ContainerBuilder), 'compiler');

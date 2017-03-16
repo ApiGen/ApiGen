@@ -28,7 +28,7 @@ class ReflectionPropertyMagicTest extends TestCase
     private $reflectionPropertyMagic;
 
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $backend = new Backend($this->getReflectionFactory());
         $broker = new Broker($backend);
@@ -40,106 +40,103 @@ class ReflectionPropertyMagicTest extends TestCase
     }
 
 
-    public function testInstance()
+    public function testInstance(): void
     {
         $this->assertInstanceOf(MagicPropertyReflectionInterface::class, $this->reflectionPropertyMagic);
     }
 
 
-    public function testIsReadOnly()
+    public function testIsReadOnly(): void
     {
         $this->assertTrue($this->reflectionPropertyMagic->isReadOnly());
     }
 
 
-    public function testIsWriteOnly()
+    public function testIsWriteOnly(): void
     {
         $this->assertFalse($this->reflectionPropertyMagic->isWriteOnly());
     }
 
 
-    public function testIsMagic()
+    public function testIsMagic(): void
     {
         $this->assertTrue($this->reflectionPropertyMagic->isMagic());
     }
 
 
-    public function testGetTypeHint()
+    public function testGetTypeHint(): void
     {
         $this->assertSame('int', $this->reflectionPropertyMagic->getTypeHint());
     }
 
 
-    public function testGetDeclaringClass()
+    public function testGetDeclaringClass(): void
     {
         $this->assertInstanceOf(ClassReflectionInterface::class, $this->reflectionPropertyMagic->getDeclaringClass());
     }
 
 
-    public function testGetDeclaringClassName()
+    public function testGetDeclaringClassName(): void
     {
         $this->assertSame('Project\ReflectionMethod', $this->reflectionPropertyMagic->getDeclaringClassName());
     }
 
 
-    public function testGetDefaultValue()
+    public function testGetDefaultValue(): void
     {
         $this->assertNull($this->reflectionPropertyMagic->getDefaultValue());
     }
 
 
-    public function testIsDefault()
+    public function testIsDefault(): void
     {
         $this->assertFalse($this->reflectionPropertyMagic->isDefault());
     }
 
 
-    public function testIsPrivate()
+    public function testIsPrivate(): void
     {
         $this->assertFalse($this->reflectionPropertyMagic->isPrivate());
     }
 
 
-    public function testIsProtected()
+    public function testIsProtected(): void
     {
         $this->assertFalse($this->reflectionPropertyMagic->isProtected());
     }
 
 
-    public function testIsPublic()
+    public function testIsPublic(): void
     {
         $this->assertTrue($this->reflectionPropertyMagic->isPublic());
     }
 
 
-    public function testIsStatic()
+    public function testIsStatic(): void
     {
         $this->assertFalse($this->reflectionPropertyMagic->isStatic());
     }
 
 
-    public function testGetDeclaringTrait()
+    public function testGetDeclaringTrait(): void
     {
         $this->assertNull($this->reflectionPropertyMagic->getDeclaringTrait());
     }
 
 
-    public function testGetDeclaringTraitName()
+    public function testGetDeclaringTraitName(): void
     {
         $this->assertNull($this->reflectionPropertyMagic->getDeclaringTraitName());
     }
 
 
-    public function testIsValid()
+    public function testIsValid(): void
     {
         $this->assertTrue($this->reflectionPropertyMagic->isValid());
     }
 
 
-    /**
-     * @return ReflectionFactoryInterface
-     */
-    private function getReflectionFactory()
+    private function getReflectionFactory(): ReflectionFactoryInterface
     {
         $parserStorageMock = Mockery::mock(ParserStorageInterface::class);
         $parserStorageMock->shouldReceive('getElementsByType')->andReturnUsing(function ($arg) {
@@ -150,7 +147,6 @@ class ReflectionPropertyMagicTest extends TestCase
         $configurationMock = Mockery::mock(ConfigurationInterface::class, [
             'getVisibilityLevel' => ReflectionProperty::IS_PUBLIC,
             'isInternalDocumented' => false,
-            'isPhpCoreDocumented' => true
         ]);
         return new ReflectionFactory($configurationMock, $parserStorageMock);
     }
