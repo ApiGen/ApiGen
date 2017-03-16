@@ -13,8 +13,6 @@ interface ParserStorageInterface
 
     /**
      * Get stats for documented classes, functions and constants.
-     *
-     * @return array
      */
     public function getDocumentedStats(): array;
 

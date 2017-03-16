@@ -239,9 +239,6 @@ final class GenerateCommand extends AbstractCommand
     }
 
 
-    /**
-     * @return array
-     */
     private function convertDashKeysToCamel(array $options): array
     {
         foreach ($options as $key => $value) {

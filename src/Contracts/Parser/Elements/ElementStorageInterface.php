@@ -18,47 +18,47 @@ interface ElementStorageInterface
     /**
      * @return ClassReflectionInterface[]
      */
-    public function getClasses();
+    public function getClasses(): array;
 
 
     /**
      * @return ClassReflectionInterface[]
      */
-    public function getInterfaces();
+    public function getInterfaces(): array;
 
 
     /**
      * @return ClassReflectionInterface[]
      */
-    public function getTraits();
+    public function getTraits(): array;
 
 
     /**
      * @return ClassReflectionInterface[]
      */
-    public function getExceptions();
+    public function getExceptions(): array;
 
 
     /**
      * @return ConstantReflectionInterface[]
      */
-    public function getConstants();
+    public function getConstants(): array;
 
 
     /**
      * @return FunctionReflectionInterface[]
      */
-    public function getFunctions();
+    public function getFunctions(): array;
 
 
     /**
      * @return ClassReflectionInterface[]
      */
-    public function getClassElements();
+    public function getClassElements(): array;
 
 
     /**
      * @return array[]
      */
-    public function getElements();
+    public function getElements(): array;
 }

@@ -4,13 +4,13 @@ namespace ApiGen\Configuration;
 
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
 
-class Configuration implements ConfigurationInterface
+final class Configuration implements ConfigurationInterface
 {
 
     /**
      * @var array
      */
-    private $options = [];
+    private $options;
 
     /**
      * @var ConfigurationOptionsResolver
@@ -139,8 +139,6 @@ class Configuration implements ConfigurationInterface
     }
 
 
-    /**
-     * @return array
      */
     private function unsetConsoleOptions(array $options): array
     {

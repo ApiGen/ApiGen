@@ -7,9 +7,8 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputOption;
 
-class DefaultInputDefinitionFactory implements DefaultInputDefinitionFactoryInterface
+final class DefaultInputDefinitionFactory implements DefaultInputDefinitionFactoryInterface
 {
-
     public function create(): InputDefinition
     {
         return new InputDefinition([

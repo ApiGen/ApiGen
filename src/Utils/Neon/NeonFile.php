@@ -34,9 +34,6 @@ class NeonFile
     }
 
 
-    /**
-     * @return array
-     */
     public function read(): array
     {
         $json = file_get_contents($this->path);

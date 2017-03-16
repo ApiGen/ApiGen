@@ -12,14 +12,14 @@ use Nette\DI\CompilerExtension;
 class ApiGenExtension extends CompilerExtension
 {
 
-    public function loadConfiguration()
+    public function loadConfiguration(): void
     {
         $this->loadServicesFromConfig();
         $this->setupTemplating();
     }
 
 
-    public function beforeCompile()
+    public function beforeCompile(): void
     {
         $builder = $this->getContainerBuilder();
         $builder->prepareClassList();
@@ -28,7 +28,7 @@ class ApiGenExtension extends CompilerExtension
     }
 
 
-    private function loadServicesFromConfig()
+    private function loadServicesFromConfig(): void
     {
         Compiler::loadDefinitions(
             $this->getContainerBuilder(),
@@ -37,7 +37,7 @@ class ApiGenExtension extends CompilerExtension
     }
 
 
-    private function setupTemplating()
+    private function setupTemplating(): void
     {
         $builder = $this->getContainerBuilder();
         $builder->addDefinition($this->prefix('latteFactory'))
@@ -46,7 +46,7 @@ class ApiGenExtension extends CompilerExtension
     }
 
 
-    private function setupTemplatingFilters()
+    private function setupTemplatingFilters(): void
     {
         $builder = $this->getContainerBuilder();
         $latteFactory = $builder->getDefinition($builder->getByType(Engine::class));
@@ -56,7 +56,7 @@ class ApiGenExtension extends CompilerExtension
     }
 
 
-    private function setupGeneratorQueue()
+    private function setupGeneratorQueue(): void
     {
         $builder = $this->getContainerBuilder();
         $generator = $builder->getDefinition($builder->getByType(GeneratorQueueInterface::class));

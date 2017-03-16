@@ -5,7 +5,7 @@ namespace ApiGen\Console\Formatter;
 use Symfony\Component\Console\Formatter\OutputFormatter as BaseOutputFormatter;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 
-class OutputFormatter extends BaseOutputFormatter
+final class OutputFormatter extends BaseOutputFormatter
 {
 
     public function __construct()
@@ -15,7 +15,7 @@ class OutputFormatter extends BaseOutputFormatter
 
 
     /**
-     * @return array|OutputFormatterStyle[]
+     * @return OutputFormatterStyle[]
      */
     private function getStyles(): array
     {

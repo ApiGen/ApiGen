@@ -7,7 +7,6 @@ use Symfony\Component\Console\Input\ArgvInput;
 
 final class LiberalFormatArgvInput extends ArgvInput
 {
-
     public function getOptions(): array
     {
         $options = parent::getOptions();

@@ -86,9 +86,6 @@ class ThemeConfigOptionsResolver extends Nette\Object
     }
 
 
-    /**
-     * @return array
-     */
     public function resolve(array $options): array
     {
         $this->resolver = $this->optionsResolverFactory->create();
@@ -121,9 +118,6 @@ class ThemeConfigOptionsResolver extends Nette\Object
     }
 
 
-    /**
-     * @return array
-     */
     private function makeTemplatePathsAbsolute(array $value, Options $options): array
     {
         foreach ($value as $type => $settings) {

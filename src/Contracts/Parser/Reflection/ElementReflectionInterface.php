@@ -47,16 +47,10 @@ interface ElementReflectionInterface extends NamedInterface
      * Removes the short and long description.
      * In case of classes, functions and constants, @package, @subpackage, @author and @license annotations
      * are added from declaring files if not already present.
-     *
-     * @return array
      */
     public function getAnnotations(): array;
 
 
-    /**
-     * @param string $name
-     * @return array
-     */
     public function getAnnotation(string $name): array;
 
 
@@ -67,7 +61,6 @@ interface ElementReflectionInterface extends NamedInterface
      * @param string $name
      * @param mixed $value
      */
-
     public function addAnnotation(string $name, $value): void;
 
 
@@ -88,8 +81,6 @@ interface ElementReflectionInterface extends NamedInterface
 
     /**
      * Returns the unqualified name (UQN).
-     *
-     * @return string
      */
     public function getShortName(): string;
 
