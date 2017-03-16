@@ -2,7 +2,6 @@
 
 namespace ApiGen\Templating\Filters\Helpers;
 
-use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Configuration\Theme\ThemeConfigOptions as TCO;
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
@@ -14,7 +13,7 @@ use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
 use ApiGen\Templating\Filters\Filters;
 
-class ElementUrlFactory
+final class ElementUrlFactory
 {
 
     /**
@@ -31,9 +30,8 @@ class ElementUrlFactory
 
     /**
      * @param ElementReflectionInterface|string $element
-     * @return string|NULL
      */
-    public function createForElement($element)
+    public function createForElement($element): ?string
     {
         if ($element instanceof ClassReflectionInterface) {
             return $this->createForClass($element);
@@ -53,9 +51,8 @@ class ElementUrlFactory
 
     /**
      * @param string|ClassReflectionInterface $class
-     * @return string
      */
-    public function createForClass($class)
+    public function createForClass($class): string
     {
         $className = $class instanceof ClassReflectionInterface ? $class->getName() : $class;
         return sprintf(
@@ -65,10 +62,7 @@ class ElementUrlFactory
     }
 
 
-    /**
-     * @return string
-     */
-    public function createForMethod(MethodReflectionInterface $method, ClassReflectionInterface $class = null)
+    public function createForMethod(MethodReflectionInterface $method, ClassReflectionInterface $class = null): string
     {
         $className = $class !== null ? $class->getName() : $method->getDeclaringClassName();
         return $this->createForClass($className) . '#' . ($method->isMagic() ? 'm' : '') . '_'
@@ -76,20 +70,14 @@ class ElementUrlFactory
     }
 
 
-    /**
-     * @return string
-     */
-    public function createForProperty(PropertyReflectionInterface $property, ClassReflectionInterface $class = null)
+    public function createForProperty(PropertyReflectionInterface $property, ClassReflectionInterface $class = null): string
     {
         $className = $class !== null ? $class->getName() : $property->getDeclaringClassName();
         return $this->createForClass($className) . '#' . ($property->isMagic() ? 'm' : '') . '$' . $property->getName();
     }
 
 
-    /**
-     * @return string
-     */
-    public function createForConstant(ConstantReflectionInterface $constant)
+    public function createForConstant(ConstantReflectionInterface $constant): string
     {
         // Class constant
         if ($className = $constant->getDeclaringClassName()) {
@@ -104,10 +92,7 @@ class ElementUrlFactory
     }
 
 
-    /**
-     * @return string
-     */
-    public function createForFunction(FunctionReflectionInterface $function)
+    public function createForFunction(FunctionReflectionInterface $function): string
     {
         return sprintf(
             $this->configuration->getOption(CO::TEMPLATE)['templates']['function']['filename'],
@@ -116,11 +101,7 @@ class ElementUrlFactory
     }
 
 
-    /**
-     * @param string $name
-     * @return string
-     */
-    public function createForAnnotationGroup($name)
+    public function createForAnnotationGroup(string $name): string
     {
         return sprintf(
             $this->configuration->getOption(CO::TEMPLATE)['templates'][TCO::ANNOTATION_GROUP]['filename'],

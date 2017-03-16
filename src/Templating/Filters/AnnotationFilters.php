@@ -7,7 +7,7 @@ use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions as CO;
 use Nette\Utils\Strings;
 
-class AnnotationFilters extends Filters
+final class AnnotationFilters extends Filters
 {
 
     /**
@@ -37,11 +37,7 @@ class AnnotationFilters extends Filters
     }
 
 
-    /**
-     * @param string $name
-     * @return string
-     */
-    public function annotationBeautify($name)
+    public function annotationBeautify(string $name): string
     {
         if (isset($this->rename[$name])) {
             $name = $this->rename[$name];
@@ -50,10 +46,7 @@ class AnnotationFilters extends Filters
     }
 
 
-    /**
-     * @return array
-     */
-    public function annotationFilter(array $annotations, array $customToRemove = [])
+    public function annotationFilter(array $annotations, array $customToRemove = []): array
     {
         $annotations = $this->filterOut($annotations, $this->remove);
         $annotations = $this->filterOut($annotations, $customToRemove);
@@ -66,20 +59,7 @@ class AnnotationFilters extends Filters
     }
 
 
-    /**
-     * @deprecated since 4.2. To be removed in 5.0.
-     * @return array
-     */
-    public function annotationSort(array $annotations)
-    {
-        return $annotations;
-    }
-
-
-    /**
-     * @return array
-     */
-    private function filterOut(array $annotations, array $toRemove)
+    private function filterOut(array $annotations, array $toRemove): array
     {
         foreach ($toRemove as $annotation) {
             unset($annotations[$annotation]);

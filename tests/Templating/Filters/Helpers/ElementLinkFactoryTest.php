@@ -24,13 +24,13 @@ class ElementLinkFactoryTest extends TestCase
     private $elementLinkFactory;
 
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->elementLinkFactory = new ElementLinkFactory($this->getElementUrlFactoryMock(), new LinkBuilder);
     }
 
 
-    public function testCreateForElementClass()
+    public function testCreateForElementClass(): void
     {
         $reflectionClass = Mockery::mock(ClassReflectionInterface::class);
         $reflectionClass->shouldReceive('getName')->andReturn('SomeClass');
@@ -43,7 +43,7 @@ class ElementLinkFactoryTest extends TestCase
     }
 
 
-    public function testCreateForFunction()
+    public function testCreateForFunction(): void
     {
         $reflectionFunction = Mockery::mock(FunctionReflectionInterface::class);
         $reflectionFunction->shouldReceive('getName')->andReturn('getSome');
@@ -56,7 +56,7 @@ class ElementLinkFactoryTest extends TestCase
     }
 
 
-    public function testCreateForConstant()
+    public function testCreateForConstant(): void
     {
         $reflectionConstant = Mockery::mock(ConstantReflectionInterface::class);
         $reflectionConstant->shouldReceive('getName')->andReturn('SOME_CONSTANT');
@@ -70,7 +70,7 @@ class ElementLinkFactoryTest extends TestCase
     }
 
 
-    public function testCreateForConstantInClass()
+    public function testCreateForConstantInClass(): void
     {
         $reflectionConstant = Mockery::mock(ConstantReflectionInterface::class);
         $reflectionConstant->shouldReceive('getName')->andReturn('SOME_CONSTANT');
@@ -83,7 +83,7 @@ class ElementLinkFactoryTest extends TestCase
     }
 
 
-    public function testCreateForElementConstantInNamespace()
+    public function testCreateForElementConstantInNamespace(): void
     {
         $reflectionConstant = Mockery::mock(ConstantReflectionInterface::class);
         $reflectionConstant->shouldReceive('getName')->andReturn('SOME_CONSTANT');
@@ -99,7 +99,7 @@ class ElementLinkFactoryTest extends TestCase
     }
 
 
-    public function testCreateForProperty()
+    public function testCreateForProperty(): void
     {
         $reflectionProperty = Mockery::mock(PropertyReflectionInterface::class);
         $reflectionProperty->shouldReceive('getName')->andReturn('property');
@@ -112,7 +112,7 @@ class ElementLinkFactoryTest extends TestCase
     }
 
 
-    public function testCreateForMethod()
+    public function testCreateForMethod(): void
     {
         $reflectionMethod = Mockery::mock(MethodReflectionInterface::class);
         $reflectionMethod->shouldReceive('getName')->andReturn('method');
@@ -128,14 +128,14 @@ class ElementLinkFactoryTest extends TestCase
     /**
      * @expectedException \UnexpectedValueException
      */
-    public function testCreateForElementOfUnspecificType()
+    public function testCreateForElementOfUnspecificType(): void
     {
         $reflectionElement = Mockery::mock(ElementReflectionInterface::class);
         $this->elementLinkFactory->createForElement($reflectionElement);
     }
 
 
-    public function testCreateForElementWithCssClasses()
+    public function testCreateForElementWithCssClasses(): void
     {
         $reflectionClass = Mockery::mock(ClassReflectionInterface::class);
         $reflectionClass->shouldReceive('getName')->andReturn('SomeClass');
@@ -148,10 +148,7 @@ class ElementLinkFactoryTest extends TestCase
     }
 
 
-    /**
-     * @return Mockery\MockInterface
-     */
-    private function getElementUrlFactoryMock()
+    private function getElementUrlFactoryMock(): Mockery\MockInterface
     {
         $elementUrlFactoryMock = Mockery::mock(ElementUrlFactory::class);
         $elementUrlFactoryMock->shouldReceive('createForClass')->andReturnUsing(

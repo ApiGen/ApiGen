@@ -2,14 +2,14 @@
 
 namespace ApiGen\Templating;
 
-use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions as CO;
+use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Parser\Elements\ElementStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
 use ApiGen\Parser\Elements\AutocompleteElements;
 use Closure;
 
-class TemplateElementsLoader
+final class TemplateElementsLoader
 {
 
     /**
@@ -18,7 +18,7 @@ class TemplateElementsLoader
     private $elementStorage;
 
     /**
-     * @var Configuration
+     * @var ConfigurationInterface
      */
     private $configuration;
 
@@ -35,7 +35,7 @@ class TemplateElementsLoader
 
     public function __construct(
         ElementStorageInterface $elementStorage,
-        Configuration $configuration,
+        ConfigurationInterface $configuration,
         AutocompleteElements $autocompleteElements
     ) {
         $this->elementStorage = $elementStorage;
@@ -44,19 +44,13 @@ class TemplateElementsLoader
     }
 
 
-    /**
-     * @return Template
-     */
-    public function addElementsToTemplate(Template $template)
+    public function addElementsToTemplate(Template $template): Template
     {
         return $template->setParameters($this->getParameters());
     }
 
 
-    /**
-     * @return Closure
-     */
-    private function getMainFilter()
+    private function getMainFilter(): Closure
     {
         return function (ElementReflectionInterface $element) {
             return $element->isMain();
@@ -64,10 +58,7 @@ class TemplateElementsLoader
     }
 
 
-    /**
-     * @return array
-     */
-    private function getParameters()
+    private function getParameters(): array
     {
         if ($this->parameters === null) {
             $parameters = [

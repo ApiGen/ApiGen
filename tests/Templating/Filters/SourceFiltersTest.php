@@ -23,7 +23,7 @@ class SourceFiltersTest extends TestCase
     private $sourceFilters;
 
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $configurationMock = Mockery::mock(Configuration::class);
         $configurationMock->shouldReceive('getOption')->with('destination')->andReturn(TEMP_DIR);
@@ -35,7 +35,7 @@ class SourceFiltersTest extends TestCase
     }
 
 
-    public function testStaticFile()
+    public function testStaticFile(): void
     {
         file_put_contents(TEMP_DIR . '/some-file.txt', '...');
         $link = $this->sourceFilters->staticFile('some-file.txt');
@@ -43,7 +43,7 @@ class SourceFiltersTest extends TestCase
     }
 
 
-    public function testSourceUrlFunction()
+    public function testSourceUrlFunction(): void
     {
         $reflectionFunction = Mockery::mock(FunctionReflectionInterface::class);
         $reflectionFunction->shouldReceive('getName')->andReturn('someFunction');
@@ -57,7 +57,7 @@ class SourceFiltersTest extends TestCase
     }
 
 
-    public function testSourceUrlClass()
+    public function testSourceUrlClass(): void
     {
         $reflectionClass = Mockery::mock(ClassReflectionInterface::class);
         $reflectionClass->shouldReceive('getName')->andReturn('someClass');
@@ -71,7 +71,7 @@ class SourceFiltersTest extends TestCase
     }
 
 
-    public function testSourceUrlClassConstant()
+    public function testSourceUrlClassConstant(): void
     {
         $reflectionConstant = Mockery::mock(ClassConstantReflectionInterface::class);
         $reflectionConstant->shouldReceive('getName')->andReturn('someConstant');
@@ -86,7 +86,7 @@ class SourceFiltersTest extends TestCase
     }
 
 
-    public function testSourceUrlConstant()
+    public function testSourceUrlConstant(): void
     {
         $reflectionConstant = Mockery::mock(ConstantReflectionInterface::class);
         $reflectionConstant->shouldReceive('getName')->andReturn('someConstant');
@@ -116,13 +116,7 @@ class SourceFiltersTest extends TestCase
 //	}
 
 
-    /**
-     * @param string $name
-     * @param int $start
-     * @param int $end
-     * @return Mockery\MockInterface
-     */
-    private function buildReflectionElement($name, $start, $end)
+    private function buildReflectionElement(string $name, int $start, int $end): Mockery\MockInterface
     {
         $reflectionElement = Mockery::mock(ElementReflectionInterface::class, LinedInterface::class);
         $reflectionElement->shouldReceive('getName')->andReturn($name);

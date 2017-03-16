@@ -61,20 +61,13 @@ class TemplateFactory implements TemplateFactoryInterface
     }
 
 
-    /**
-     * @return Template
-     */
-    public function create()
+    public function create(): Template
     {
         return $this->buildTemplate();
     }
 
 
-    /**
-     * @param string $type
-     * @return Template
-     */
-    public function createForType($type)
+    public function createForType(string $type): Template
     {
         $template = $this->buildTemplate();
         $template->setFile($this->templateNavigator->getTemplatePath($type));
@@ -90,7 +83,7 @@ class TemplateFactory implements TemplateFactoryInterface
      * @throws \Exception
      * @return Template
      */
-    public function createNamedForElement($name, $element)
+    public function createNamedForElement(string $name, $element): Template
     {
         $template = $this->buildTemplate();
         $template->setFile($this->templateNavigator->getTemplatePath($name));
@@ -127,10 +120,7 @@ class TemplateFactory implements TemplateFactoryInterface
     }
 
 
-    /**
-     * @return Template
-     */
-    private function buildTemplate()
+    private function buildTemplate(): Template
     {
         if ($this->builtTemplate === null) {
             $options = $this->configuration->getOptions();
@@ -145,10 +135,7 @@ class TemplateFactory implements TemplateFactoryInterface
     }
 
 
-    /**
-     * @return Template
-     */
-    private function setEmptyDefaults(Template $template)
+    private function setEmptyDefaults(Template $template): Template
     {
         return $template->setParameters([
             'namespace' => null,

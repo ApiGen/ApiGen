@@ -19,11 +19,7 @@ class PathFilters extends Filters
     }
 
 
-    /**
-     * @param string $fileName
-     * @return string
-     */
-    public function relativePath($fileName)
+    public function relativePath(string $fileName): string
     {
         return $this->relativePathResolver->getRelativePath($fileName);
     }

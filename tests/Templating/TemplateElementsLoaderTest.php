@@ -2,8 +2,8 @@
 
 namespace ApiGen\Tests\Templating;
 
-use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions as CO;
+use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Parser\Elements\AutocompleteElements;
 use ApiGen\Parser\Elements\ElementStorage;
 use ApiGen\Templating\Template;
@@ -12,7 +12,7 @@ use Latte\Engine;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 
-class TemplateElementsLoaderTest extends TestCase
+final class TemplateElementsLoaderTest extends TestCase
 {
 
     /**
@@ -21,10 +21,10 @@ class TemplateElementsLoaderTest extends TestCase
     private $templateElementsLoader;
 
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $elementStorageMock = $this->getElementStorageMock();
-        $configurationMock = Mockery::mock(Configuration::class);
+        $configurationMock = Mockery::mock(ConfigurationInterface::class);
         $configurationMock->shouldReceive('getOption')->with(CO::ANNOTATION_GROUPS)->andReturn(['todo']);
         $configurationMock->shouldReceive('getZipFileName')->andReturn('file.zip');
 
@@ -39,7 +39,7 @@ class TemplateElementsLoaderTest extends TestCase
     }
 
 
-    public function testAddElementToTemplate()
+    public function testAddElementToTemplate(): void
     {
         $latteEngineMock = Mockery::mock(Engine::class);
         $template = new Template($latteEngineMock);
@@ -67,10 +67,7 @@ class TemplateElementsLoaderTest extends TestCase
     }
 
 
-    /**
-     * @return Mockery\MockInterface
-     */
-    private function getElementStorageMock()
+    private function getElementStorageMock(): Mockery\MockInterface
     {
         $elementStorageMock = Mockery::mock(ElementStorage::class);
         $elementStorageMock->shouldReceive('getNamespaces')->andReturn([]);

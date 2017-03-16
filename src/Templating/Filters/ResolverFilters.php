@@ -29,7 +29,7 @@ class ResolverFilters extends Filters
      * @param string|NULL $namespace
      * @return ReflectionClass|FALSE
      */
-    public function getClass($className, $namespace = null)
+    public function getClass(string $className, ?string $namespace = null)
     {
         $reflection = $this->elementResolver->getClass($className, $namespace);
         if ($reflection) {
@@ -45,7 +45,7 @@ class ResolverFilters extends Filters
      * @param NULL $expectedName
      * @return ReflectionElement|bool|NULL
      */
-    public function resolveElement($definition, $context, &$expectedName = null)
+    public function resolveElement(string $definition, ReflectionElement $context, &$expectedName = null)
     {
         $reflection = $this->elementResolver->resolveElement($definition, $context, $expectedName);
         if ($reflection) {

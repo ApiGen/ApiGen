@@ -4,12 +4,7 @@ namespace ApiGen\Templating\Filters\Helpers;
 
 class Strings
 {
-
-    /**
-     * @param string $value
-     * @return array
-     */
-    public static function split($value)
+    public static function split(string $value): array
     {
         return preg_split('~\s+|$~', $value, 2);
     }

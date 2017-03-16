@@ -16,13 +16,13 @@ class FiltersTest extends TestCase
     private $filters;
 
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->filters = new FooFilters;
     }
 
 
-    public function testLoader()
+    public function testLoader(): void
     {
         $this->assertSame('Filtered: foo', $this->filters->loader('bazFilter', 'foo'));
         $this->assertNull($this->filters->loader('nonExisting'));
@@ -32,7 +32,7 @@ class FiltersTest extends TestCase
     /**
      * @dataProvider typeNameProvider
      */
-    public function testGetTypeName($name, $expectedName)
+    public function testGetTypeName($name, $expectedName): void
     {
         $this->assertSame(
             $expectedName,
@@ -62,7 +62,7 @@ class FiltersTest extends TestCase
     }
 
 
-    public function testGetTypeNameWithTrimOff()
+    public function testGetTypeNameWithTrimOff(): void
     {
         $this->assertSame(
             '\\Namespace',
@@ -71,7 +71,7 @@ class FiltersTest extends TestCase
     }
 
 
-    public function testUrlize()
+    public function testUrlize(): void
     {
         $this->assertSame(
             'Some.class',
@@ -80,7 +80,7 @@ class FiltersTest extends TestCase
     }
 
 
-    public function testUrl()
+    public function testUrl(): void
     {
         $this->assertSame(
             'Some%20class',

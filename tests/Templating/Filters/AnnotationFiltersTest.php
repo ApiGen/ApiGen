@@ -17,7 +17,7 @@ class AnnotationFiltersTest extends TestCase
     private $annotationFilters;
 
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $configurationMock = Mockery::mock(Configuration::class);
         $configurationMock->shouldReceive('getOption')->with(CO::INTERNAL)->andReturn(false);
@@ -26,14 +26,14 @@ class AnnotationFiltersTest extends TestCase
     }
 
 
-    public function testAnnotationBeautify()
+    public function testAnnotationBeautify(): void
     {
         $this->assertSame('Used by', $this->annotationFilters->annotationBeautify('usedby'));
         $this->assertSame('Method', $this->annotationFilters->annotationBeautify('method'));
     }
 
 
-    public function testAnnotationFilter()
+    public function testAnnotationFilter(): void
     {
         $annotations = ['method' => true, 'remain' => true, 'internal' => true];
         $this->assertSame(
@@ -43,7 +43,7 @@ class AnnotationFiltersTest extends TestCase
     }
 
 
-    public function testAnnotationFilterWithCustom()
+    public function testAnnotationFilterWithCustom(): void
     {
         $annotations = ['remain' => true, 'otherToRemain' => true];
         $this->assertSame(

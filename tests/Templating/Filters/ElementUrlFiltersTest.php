@@ -23,13 +23,13 @@ class ElementUrlFiltersTest extends TestCase
     private $elementUrlFilters;
 
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->elementUrlFilters = new ElementUrlFilters($this->getElementUrlFactoryMock());
     }
 
 
-    public function testElementUrl()
+    public function testElementUrl(): void
     {
         $reflectionElementMock = Mockery::mock(ElementReflectionInterface::class);
         $reflectionElementMock->shouldReceive('getName')->andReturn('ReflectionElement');
@@ -37,7 +37,7 @@ class ElementUrlFiltersTest extends TestCase
     }
 
 
-    public function testClassUrl()
+    public function testClassUrl(): void
     {
         $reflectionClassMock = Mockery::mock(ClassReflectionInterface::class);
         $reflectionClassMock->shouldReceive('getName')->andReturn('ReflectionClass');
@@ -45,7 +45,7 @@ class ElementUrlFiltersTest extends TestCase
     }
 
 
-    public function testMethodUrl()
+    public function testMethodUrl(): void
     {
         $reflectionMethodMock = Mockery::mock(MethodReflectionInterface::class);
         $reflectionMethodMock->shouldReceive('getName')->andReturn('ReflectionMethod');
@@ -53,7 +53,7 @@ class ElementUrlFiltersTest extends TestCase
     }
 
 
-    public function testPropertyUrl()
+    public function testPropertyUrl(): void
     {
         $reflectionPropertyMock = Mockery::mock(PropertyReflectionInterface::class);
         $reflectionPropertyMock->shouldReceive('getName')->andReturn('ReflectionProperty');
@@ -61,7 +61,7 @@ class ElementUrlFiltersTest extends TestCase
     }
 
 
-    public function testConstantUrl()
+    public function testConstantUrl(): void
     {
         $reflectionConstantMock = Mockery::mock(ConstantReflectionInterface::class);
         $reflectionConstantMock->shouldReceive('getName')->andReturn('ReflectionConstant');
@@ -69,7 +69,7 @@ class ElementUrlFiltersTest extends TestCase
     }
 
 
-    public function testFunctionUrl()
+    public function testFunctionUrl(): void
     {
         $reflectionFunctionMock = Mockery::mock(FunctionReflectionInterface::class);
         $reflectionFunctionMock->shouldReceive('getName')->andReturn('ReflectionFunction');
@@ -77,10 +77,7 @@ class ElementUrlFiltersTest extends TestCase
     }
 
 
-    /**
-     * @return Mockery\MockInterface
-     */
-    private function getElementUrlFactoryMock()
+    private function getElementUrlFactoryMock(): Mockery\MockInterface
     {
         $elementUrlFactoryMock = Mockery::mock(ElementUrlFactory::class);
         $elementUrlFactoryMock->shouldReceive('createForElement')->andReturnUsing(function (NamedInterface $arg) {

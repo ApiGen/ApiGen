@@ -27,7 +27,7 @@ class TemplateNavigatorTest extends ContainerAwareTestCase
     private $templateNavigator;
 
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->configuration = $this->container->getByType(Configuration::class);
         $this->configuration->resolveOptions([
@@ -66,7 +66,7 @@ class TemplateNavigatorTest extends ContainerAwareTestCase
     }
 
 
-    public function testGetTemplateFileName()
+    public function testGetTemplateFileName(): void
     {
         $this->assertSame(
             TEMP_DIR . '/api/index.html',
@@ -75,7 +75,7 @@ class TemplateNavigatorTest extends ContainerAwareTestCase
     }
 
 
-    public function testGetTemplatePath()
+    public function testGetTemplatePath(): void
     {
         $this->assertStringEndsWith(
             '/overview.latte',
@@ -84,7 +84,7 @@ class TemplateNavigatorTest extends ContainerAwareTestCase
     }
 
 
-    public function testGetTemplatePathForNamespace()
+    public function testGetTemplatePathForNamespace(): void
     {
         $this->assertSame(
             TEMP_DIR . '/api/namespace-MyNamespace.html',
@@ -93,7 +93,7 @@ class TemplateNavigatorTest extends ContainerAwareTestCase
     }
 
 
-    public function testGetTemplatePathForClass()
+    public function testGetTemplatePathForClass(): void
     {
         $classReflectionMock = Mockery::mock(ClassReflectionInterface::class);
         $classReflectionMock->shouldReceive('getName')->andReturn('SomeClass');
@@ -105,7 +105,7 @@ class TemplateNavigatorTest extends ContainerAwareTestCase
     }
 
 
-    public function testGetTemplatePathForConstant()
+    public function testGetTemplatePathForConstant(): void
     {
         $constantReflectionMock = Mockery::mock(ConstantReflectionInterface::class);
         $constantReflectionMock->shouldReceive('getName')->andReturn('SomeConstant');
@@ -117,7 +117,7 @@ class TemplateNavigatorTest extends ContainerAwareTestCase
     }
 
 
-    public function testGetTemplatePathForFunction()
+    public function testGetTemplatePathForFunction(): void
     {
         $functionReflectionMock = Mockery::mock(FunctionReflectionInterface::class);
         $functionReflectionMock->shouldReceive('getName')->andReturn('SomeFunction');
@@ -129,7 +129,7 @@ class TemplateNavigatorTest extends ContainerAwareTestCase
     }
 
 
-    public function testGetTemplatePathForMethod()
+    public function testGetTemplatePathForMethod(): void
     {
         $classReflectionMock = Mockery::mock(ClassReflectionInterface::class);
         $classReflectionMock->shouldReceive('getName')->andReturn('SomeClass');

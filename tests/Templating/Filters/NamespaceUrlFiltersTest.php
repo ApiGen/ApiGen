@@ -18,7 +18,7 @@ class NamespaceUrlFiltersTest extends TestCase
     private $namespaceUrlFilters;
 
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->namespaceUrlFilters = new NamespaceUrlFilters(
             $this->getConfigurationMock(),
@@ -28,7 +28,7 @@ class NamespaceUrlFiltersTest extends TestCase
     }
 
 
-    public function testNamespaceUrl()
+    public function testNamespaceUrl(): void
     {
         $this->assertSame(
             'namespace-Long.Namespace',
@@ -37,7 +37,7 @@ class NamespaceUrlFiltersTest extends TestCase
     }
 
 
-    public function testNamespaceLinks()
+    public function testNamespaceLinks(): void
     {
         $this->assertSame(
             '<a href="namespace-Long">Long</a>\<a href="namespace-Long.Namespace">Namespace</a>',
@@ -51,7 +51,7 @@ class NamespaceUrlFiltersTest extends TestCase
     }
 
 
-    public function testNamespaceLinksWithNoNamespaces()
+    public function testNamespaceLinksWithNoNamespaces(): void
     {
         $namespaceUrlFilters = new NamespaceUrlFilters(
             $this->getConfigurationMock(),
@@ -63,17 +63,14 @@ class NamespaceUrlFiltersTest extends TestCase
     }
 
 
-    public function testSubgroupName()
+    public function testSubgroupName(): void
     {
         $this->assertSame('Subgroup', $this->namespaceUrlFilters->subgroupName('Group\\Subgroup'));
         $this->assertSame('Group', $this->namespaceUrlFilters->subgroupName('Group'));
     }
 
 
-    /**
-     * @return Mockery\MockInterface
-     */
-    private function getConfigurationMock()
+    private function getConfigurationMock(): Mockery\MockInterface
     {
         $configurationMock = Mockery::mock(Configuration::class);
         $configurationMock->shouldReceive('getOption')->with('template')->andReturn([
@@ -86,10 +83,7 @@ class NamespaceUrlFiltersTest extends TestCase
     }
 
 
-    /**
-     * @return Mockery\MockInterface
-     */
-    private function getElementStorageMock($packageCount, $namespaceCount)
+    private function getElementStorageMock($packageCount, $namespaceCount): Mockery\MockInterface
     {
         $elementStorageMock = Mockery::mock(ElementStorage::class);
         $elementStorageMock->shouldReceive('getPackages')->andReturn($packageCount);

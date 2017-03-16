@@ -34,10 +34,7 @@ class Template
     }
 
 
-    /**
-     * @param string $file
-     */
-    public function setFile($file)
+    public function setFile(string $file): void
     {
         $this->file = $file;
     }
@@ -55,26 +52,20 @@ class Template
     /**
      * @return self
      */
-    public function setParameters(array $parameters)
+    public function setParameters(array $parameters): self
     {
         $this->parameters = $parameters + $this->parameters;
         return $this;
     }
 
 
-    /**
-     * @param string $savePath
-     */
-    public function setSavePath($savePath)
+    public function setSavePath(string $savePath): void
     {
         $this->savePath = $savePath;
     }
 
 
-    /**
-     * @param string $file
-     */
-    public function save($file = null)
+    public function save(string $file = null): void
     {
         $this->savePath = $file ?: $this->savePath;
         $dir = dirname($this->savePath);

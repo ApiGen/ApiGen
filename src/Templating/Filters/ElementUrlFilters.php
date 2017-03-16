@@ -26,10 +26,7 @@ class ElementUrlFilters extends Filters
     }
 
 
-    /**
-     * @return string
-     */
-    public function elementUrl(ElementReflectionInterface $element)
+    public function elementUrl(ElementReflectionInterface $element): string
     {
         return $this->elementUrlFactory->createForElement($element);
     }
@@ -39,43 +36,31 @@ class ElementUrlFilters extends Filters
      * @param string|ReflectionClass $class
      * @return string
      */
-    public function classUrl($class)
+    public function classUrl($class): string
     {
         return $this->elementUrlFactory->createForClass($class);
     }
 
 
-    /**
-     * @return string
-     */
-    public function methodUrl(MethodReflectionInterface $method, ClassReflectionInterface $class = null)
+    public function methodUrl(MethodReflectionInterface $method, ClassReflectionInterface $class = null): string
     {
         return $this->elementUrlFactory->createForMethod($method, $class);
     }
 
 
-    /**
-     * @return string
-     */
-    public function propertyUrl(PropertyReflectionInterface $property, ClassReflectionInterface $class = null)
+    public function propertyUrl(PropertyReflectionInterface $property, ClassReflectionInterface $class = null): string
     {
         return $this->elementUrlFactory->createForProperty($property, $class);
     }
 
 
-    /**
-     * @return string
-     */
-    public function constantUrl(ConstantReflectionInterface $constant)
+    public function constantUrl(ConstantReflectionInterface $constant): string
     {
         return $this->elementUrlFactory->createForConstant($constant);
     }
 
 
-    /**
-     * @return string
-     */
-    public function functionUrl(FunctionReflectionInterface $function)
+    public function functionUrl(FunctionReflectionInterface $function): string
     {
         return $this->elementUrlFactory->createForFunction($function);
     }

@@ -24,7 +24,7 @@ class ElementUrlFactoryTest extends TestCase
     private $elementUrlFactory;
 
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $configurationMock = Mockery::mock(Configuration::class);
         $configurationMock->shouldReceive('getOption')->with(CO::TEMPLATE)->andReturn([
@@ -38,7 +38,7 @@ class ElementUrlFactoryTest extends TestCase
     }
 
 
-    public function testCreateForElement()
+    public function testCreateForElement(): void
     {
         $this->assertSame(
             'class-SomeNamespace.SomeClass',
@@ -77,7 +77,7 @@ class ElementUrlFactoryTest extends TestCase
     }
 
 
-    public function testCreateForClass()
+    public function testCreateForClass(): void
     {
         $this->assertSame(
             'class-SomeNamespace.SomeClass',
@@ -87,7 +87,7 @@ class ElementUrlFactoryTest extends TestCase
     }
 
 
-    public function testCreateForMethod()
+    public function testCreateForMethod(): void
     {
         $reflectionMethodMock = $this->getReflectionMethodMock();
         $reflectionMethodMock->shouldReceive('isMagic')->andReturn(false);
@@ -106,7 +106,7 @@ class ElementUrlFactoryTest extends TestCase
     }
 
 
-    public function testCreateForMethodWithSeparateClass()
+    public function testCreateForMethodWithSeparateClass(): void
     {
         $reflectionMethodMock = $this->getReflectionMethodMock();
         $reflectionMethodMock->shouldReceive('getOriginalName')->andReturnNull();
@@ -119,7 +119,7 @@ class ElementUrlFactoryTest extends TestCase
     }
 
 
-    public function testCreateForMethodWithMagicMethod()
+    public function testCreateForMethodWithMagicMethod(): void
     {
         $reflectionMethodMock = $this->getReflectionMethodMock();
         $reflectionMethodMock->shouldReceive('getOriginalName')->andReturnNull();
@@ -132,7 +132,7 @@ class ElementUrlFactoryTest extends TestCase
     }
 
 
-    public function testCreateForProperty()
+    public function testCreateForProperty(): void
     {
         $reflectionPropertyMock = $this->getReflectionPropertyMock();
         $reflectionPropertyMock->shouldReceive('isMagic')->andReturn(false);
@@ -144,7 +144,7 @@ class ElementUrlFactoryTest extends TestCase
     }
 
 
-    public function testCreateForPropertyWithSeparateClass()
+    public function testCreateForPropertyWithSeparateClass(): void
     {
         $reflectionPropertyMock = $this->getReflectionPropertyMock();
         $reflectionPropertyMock->shouldReceive('isMagic')->andReturn(false);
@@ -156,7 +156,7 @@ class ElementUrlFactoryTest extends TestCase
     }
 
 
-    public function testCreateForPropertyWithMagicMethod()
+    public function testCreateForPropertyWithMagicMethod(): void
     {
         $reflectionPropertyMock = $this->getReflectionPropertyMock();
         $reflectionPropertyMock->shouldReceive('getOriginalName')->andReturnNull();
@@ -168,7 +168,7 @@ class ElementUrlFactoryTest extends TestCase
     }
 
 
-    public function testCreateForConstant()
+    public function testCreateForConstant(): void
     {
         $reflectionConstantMock = $this->getReflectionConstantMock();
 
@@ -186,7 +186,7 @@ class ElementUrlFactoryTest extends TestCase
     }
 
 
-    public function testCreateForFunction()
+    public function testCreateForFunction(): void
     {
         $reflectionFunctionMock = $this->getReflectionFunctionMock();
         $this->assertSame(
@@ -196,10 +196,7 @@ class ElementUrlFactoryTest extends TestCase
     }
 
 
-    /**
-     * @return Mockery\MockInterface
-     */
-    private function getReflectionMethodMock()
+    private function getReflectionMethodMock(): Mockery\MockInterface
     {
         $reflectionMethodMock = Mockery::mock(MethodReflectionInterface::class);
         $reflectionMethodMock->shouldReceive('getName')->andReturn('getSomeMethod');
@@ -208,10 +205,7 @@ class ElementUrlFactoryTest extends TestCase
     }
 
 
-    /**
-     * @return Mockery\MockInterface
-     */
-    private function getReflectionClassMock()
+    private function getReflectionClassMock(): Mockery\MockInterface
     {
         $reflectionClassMock = Mockery::mock(ClassReflectionInterface::class);
         $reflectionClassMock->shouldReceive('getName')->andReturn('SomeNamespace\\SomeClass');
@@ -219,10 +213,7 @@ class ElementUrlFactoryTest extends TestCase
     }
 
 
-    /**
-     * @return Mockery\MockInterface
-     */
-    private function getReflectionPropertyMock()
+    private function getReflectionPropertyMock(): Mockery\MockInterface
     {
         $reflectionPropertyMock = Mockery::mock(PropertyReflectionInterface::class);
         $reflectionPropertyMock->shouldReceive('getName')->andReturn('someProperty');
@@ -231,10 +222,7 @@ class ElementUrlFactoryTest extends TestCase
     }
 
 
-    /**
-     * @return Mockery\MockInterface
-     */
-    private function getReflectionConstantMock()
+    private function getReflectionConstantMock(): Mockery\MockInterface
     {
         $reflectionConstantMock = Mockery::mock(ConstantReflectionInterface::class);
         $reflectionConstantMock->shouldReceive('getName')->andReturn('someConstant');
@@ -242,10 +230,7 @@ class ElementUrlFactoryTest extends TestCase
     }
 
 
-    /**
-     * @return Mockery\MockInterface
-     */
-    private function getReflectionFunctionMock()
+    private function getReflectionFunctionMock(): Mockery\MockInterface
     {
         $reflectionFunctionMock = Mockery::mock(FunctionReflectionInterface::class);
         $reflectionFunctionMock->shouldReceive('getName')->andReturn('someFunction');

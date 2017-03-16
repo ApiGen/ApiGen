@@ -34,11 +34,7 @@ class NamespaceUrlFilters extends Filters
     }
 
 
-    /**
-     * @param string $groupName
-     * @return string
-     */
-    public function subgroupName($groupName)
+    public function subgroupName(string $groupName): string
     {
         if ($pos = strrpos($groupName, '\\')) {
             return substr($groupName, $pos + 1);
@@ -47,12 +43,7 @@ class NamespaceUrlFilters extends Filters
     }
 
 
-    /**
-     * @param string $namespace
-     * @param bool $skipLast
-     * @return string
-     */
-    public function namespaceLinks($namespace, $skipLast = true)
+    public function namespaceLinks(string $namespace, bool $skipLast = true): string
     {
         if (! $this->elementStorage->getNamespaces()) {
             return $namespace;
@@ -72,11 +63,7 @@ class NamespaceUrlFilters extends Filters
     }
 
 
-    /**
-     * @param string $name
-     * @return string
-     */
-    public function namespaceUrl($name)
+    public function namespaceUrl(string $name): string
     {
         return sprintf(
             $this->configuration->getOption(CO::TEMPLATE)['templates']['namespace']['filename'],

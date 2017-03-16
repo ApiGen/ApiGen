@@ -16,7 +16,7 @@ class PathFiltersTest extends TestCase
     private $pathFilters;
 
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $relativePathResolverMock = Mockery::mock(RelativePathResolver::class);
         $relativePathResolverMock->shouldReceive('getRelativePath')->andReturnUsing(function ($arg) {
@@ -26,7 +26,7 @@ class PathFiltersTest extends TestCase
     }
 
 
-    public function testRelativePath()
+    public function testRelativePath(): void
     {
         $this->assertSame('../someFile.txt', $this->pathFilters->relativePath('someFile.txt'));
     }
