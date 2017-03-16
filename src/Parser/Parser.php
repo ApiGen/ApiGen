@@ -7,21 +7,14 @@ use ApiGen\Contracts\Parser\ParserStorageInterface;
 use ArrayObject;
 use TokenReflection\Broker;
 use TokenReflection\Broker\Backend;
-use TokenReflection\Exception\FileProcessingException;
-use TokenReflection\Exception\ParseException;
 
-class Parser implements ParserInterface
+final class Parser implements ParserInterface
 {
 
     /**
      * @var Broker
      */
     private $broker;
-
-    /**
-     * @var array
-     */
-    private $errors = [];
 
     /**
      * @var ParserStorageInterface
@@ -39,24 +32,12 @@ class Parser implements ParserInterface
     public function parse(array $files): ParserStorageInterface
     {
         foreach ($files as $file) {
-            try {
-                $this->broker->processFile($file->getPathname());
-            } catch (ParseException $exception) {
-                $this->errors[] = new FileProcessingException([$exception]);
-            } catch (FileProcessingException $exception) {
-                $this->errors[] = $exception;
-            }
+            $this->broker->processFile($file->getPathname());
         }
 
         $this->extractBrokerDataForParserResult($this->broker);
 
         return $this->parserStorage;
-    }
-
-
-    public function getErrors(): array
-    {
-        return $this->errors;
     }
 
 
