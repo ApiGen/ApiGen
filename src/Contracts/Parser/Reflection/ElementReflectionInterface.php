@@ -12,9 +12,6 @@ interface ElementReflectionInterface extends NamedInterface
     public function isMain(): bool;
 
 
-    public function isValid(): bool;
-
-
     public function isDocumented(): bool;
 
 
@@ -89,16 +86,4 @@ interface ElementReflectionInterface extends NamedInterface
 
 
     public function getEndPosition(): int;
-
-
-    public function addReason(BaseException $reason): void;
-
-
-    /**
-     * @return BaseException[]
-     */
-    public function getReasons(): array;
-
-
-    public function hasReasons(): bool;
 }

@@ -14,9 +14,6 @@ interface ClassReflectionInterface extends ElementReflectionInterface, LinedInte
     public function isDocumented(): bool;
 
 
-    public function isValid(): bool;
-
-
     public function getParentClass(): ?ClassReflectionInterface;
 
 

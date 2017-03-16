@@ -14,9 +14,6 @@ interface PropertyReflectionInterface extends
     LinedInterface
 {
 
-    public function isValid(): bool;
-
-
     public function isDefault(): bool;
 
 

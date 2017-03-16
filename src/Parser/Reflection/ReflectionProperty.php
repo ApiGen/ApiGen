@@ -100,16 +100,6 @@ class ReflectionProperty extends ReflectionElement implements PropertyReflection
     }
 
 
-    public function isValid(): bool
-    {
-        if ($class = $this->getDeclaringClass()) {
-            return $class->isValid();
-        }
-
-        return true;
-    }
-
-
     public function getShortName(): string
     {
         return $this->getName();

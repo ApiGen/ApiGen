@@ -24,13 +24,6 @@ abstract class ReflectionElement extends ReflectionBase implements ElementReflec
      */
     protected $annotations;
 
-    /**
-     * Reasons why this element's reflection is invalid.
-     *
-     * @var array
-     */
-    private $reasons = [];
-
 
     public function getExtension(): ?ReflectionExtension
     {
@@ -224,24 +217,6 @@ abstract class ReflectionElement extends ReflectionBase implements ElementReflec
             $this->getAnnotations();
         }
         $this->annotations[$annotation][] = $value;
-    }
-
-
-    public function addReason(BaseException $reason): void
-    {
-        $this->reasons[] = $reason;
-    }
-
-
-    public function getReasons(): array
-    {
-        return $this->reasons;
-    }
-
-
-    public function hasReasons(): bool
-    {
-        return ! empty($this->reasons);
     }
 
 

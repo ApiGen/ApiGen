@@ -150,25 +150,6 @@ class ReflectionElementTest extends TestCase
     }
 
 
-    public function testAddReason(): void
-    {
-        $this->reflectionClass->addReason(new FileProcessingException(['...']));
-        $this->assertCount(1, $this->reflectionClass->getReasons());
-    }
-
-
-    public function testGetReasons(): void
-    {
-        $this->assertSame([], $this->reflectionClass->getReasons());
-    }
-
-
-    public function testHasReasons(): void
-    {
-        $this->assertFalse($this->reflectionClass->hasReasons());
-    }
-
-
     public function testAddAnnotation(): void
     {
         $this->assertFalse($this->reflectionClass->hasAnnotation('Foo'));

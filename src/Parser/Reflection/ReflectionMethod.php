@@ -68,16 +68,6 @@ class ReflectionMethod extends ReflectionFunctionBase implements MethodReflectio
     }
 
 
-    public function isValid(): bool
-    {
-        if ($class = $this->getDeclaringClass()) {
-            return $class->isValid();
-        }
-
-        return true;
-    }
-
-
     public function getImplementedMethod(): ?MethodReflectionInterface
     {
         foreach ($this->getDeclaringClass()->getOwnInterfaces() as $interface) {

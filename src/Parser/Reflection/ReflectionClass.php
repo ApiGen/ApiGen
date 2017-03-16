@@ -611,12 +611,6 @@ class ReflectionClass extends ReflectionElement implements ClassReflectionInterf
     }
 
 
-    public function isValid(): bool
-    {
-        return $this->reflection instanceof TokenReflection\Invalid\ReflectionClass;
-    }
-
-
     public function isVisibilityLevelPublic(): bool
     {
         return (bool) ($this->getVisibilityLevel() & Visibility::IS_PUBLIC);

@@ -66,18 +66,4 @@ class ReflectionConstant extends ReflectionElement implements ConstantReflection
     {
         return $this->reflection->getValueDefinition();
     }
-
-
-    public function isValid(): bool
-    {
-        if ($this->reflection instanceof TokenReflection\Invalid\ReflectionConstant) {
-            return false;
-        }
-
-        if ($class = $this->getDeclaringClass()) {
-            return $class->isValid();
-        }
-
-        return true;
-    }
 }
