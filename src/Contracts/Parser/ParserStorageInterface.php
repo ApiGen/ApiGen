@@ -3,12 +3,11 @@
 namespace ApiGen\Contracts\Parser;
 
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
-use ArrayObject;
 
 interface ParserStorageInterface
 {
 
-    public function getElementsByType(string $type): ArrayObject;
+    public function getElementsByType(string $type): array;
 
 
     /**
@@ -17,13 +16,13 @@ interface ParserStorageInterface
     public function getDocumentedStats(): array;
 
 
-    public function getClasses(): ArrayObject;
+    public function getClasses(): array;
 
 
-    public function getConstants(): ArrayObject;
+    public function getConstants(): array;
 
 
-    public function getFunctions(): ArrayObject;
+    public function getFunctions(): array;
 
 
     /**
@@ -32,19 +31,16 @@ interface ParserStorageInterface
     public function getTypes(): array;
 
 
-    public function setClasses(ArrayObject $classes): void;
+    public function setClasses(array $classes): void;
 
 
-    public function setConstants(ArrayObject $constants): void;
+    public function setConstants(array $constants): void;
 
 
-    public function setFunctions(ArrayObject $functions): void;
+    public function setFunctions(array $functions): void;
 
 
-    public function setInternalClasses(ArrayObject $internalClasses): void;
-
-
-    public function setTokenizedClasses(ArrayObject $tokenizedClasses): void;
+    public function setTokenizedClasses(array $tokenizedClasses): void;
 
 
     /**

@@ -2,10 +2,8 @@
 
 namespace ApiGen\Parser\Reflection;
 
-use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Contracts\Parser\Reflection\ClassConstantReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\Extractors\ClassMagicElementsExtractorInterface;
 use ApiGen\Contracts\Parser\Reflection\Extractors\ClassTraitElementsExtractorInterface;
 use ApiGen\Contracts\Parser\Reflection\Extractors\ParentClassElementsExtractorInterface;
@@ -17,10 +15,9 @@ use ApiGen\Parser\Reflection\Extractors\ClassTraitElementsExtractor;
 use ApiGen\Parser\Reflection\Extractors\ParentClassElementsExtractor;
 use InvalidArgumentException;
 use ReflectionProperty as Visibility;
-use TokenReflection;
 use TokenReflection\IReflectionClass;
 
-class ReflectionClass extends ReflectionElement implements ClassReflectionInterface
+final class ReflectionClass extends ReflectionElement implements ClassReflectionInterface
 {
 
     /**

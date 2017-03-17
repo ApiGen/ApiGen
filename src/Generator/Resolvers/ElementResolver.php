@@ -13,7 +13,6 @@ use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ParameterReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
 use ApiGen\Parser\Reflection\ReflectionClass;
-use ArrayObject;
 use TokenReflection\Resolver;
 
 final class ElementResolver implements ElementResolverInterface
@@ -76,7 +75,10 @@ final class ElementResolver implements ElementResolverInterface
     }
 
 
-    public function getFunction(string $name, string $namespace = ''): ?FunctionReflectionInterface
+    /**
+     * @return FunctionReflectionInterface|MethodReflectionInterface|null
+     */
+    public function getFunction(string $name, string $namespace = '')
     {
         $parsedFunctions = $this->parserStorage->getFunctions();
         $function = $this->findElementByNameAndNamespace($parsedFunctions, $name, $namespace);
@@ -277,11 +279,9 @@ final class ElementResolver implements ElementResolverInterface
 
 
     /**
-     * @param array|ArrayObject $elements
-     * @param string $name
-     * @param string $namespace
+     * @return mixed|ElementReflectionInterface
      */
-    private function findElementByNameAndNamespace($elements, string $name, string $namespace): ?ClassReflectionInterface
+    private function findElementByNameAndNamespace(array $elements, string $name, string $namespace)
     {
         $namespacedName = $namespace . '\\' . $name;
         if (isset($elements[$namespacedName])) {
