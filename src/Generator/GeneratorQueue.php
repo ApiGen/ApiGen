@@ -8,9 +8,8 @@ use ApiGen\Contracts\Generator\StepCounterInterface;
 use ApiGen\Contracts\Generator\TemplateGenerators\ConditionalTemplateGeneratorInterface;
 use ApiGen\Contracts\Generator\TemplateGenerators\TemplateGeneratorInterface;
 
-class GeneratorQueue implements GeneratorQueueInterface
+final class GeneratorQueue implements GeneratorQueueInterface
 {
-
     /**
      * @var ProgressBarInterface
      */
@@ -31,6 +30,7 @@ class GeneratorQueue implements GeneratorQueueInterface
     public function run(): void
     {
         $this->progressBar->init($this->getStepCount());
+
         foreach ($this->getAllowedQueue() as $templateGenerator) {
             $templateGenerator->generate();
         }
@@ -40,12 +40,6 @@ class GeneratorQueue implements GeneratorQueueInterface
     public function addToQueue(TemplateGeneratorInterface $templateGenerator): void
     {
         $this->queue[] = $templateGenerator;
-    }
-
-
-    public function getQueue()
-    {
-        return $this->queue;
     }
 
 
@@ -72,6 +66,7 @@ class GeneratorQueue implements GeneratorQueueInterface
                 $steps += $templateGenerator->getStepCount();
             }
         }
+
         return $steps;
     }
 }

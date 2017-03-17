@@ -3,6 +3,7 @@
 namespace ApiGen\Parser\Tests\Broker;
 
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
+use ApiGen\Contracts\Parser\Broker\BackendInterface;
 use ApiGen\Contracts\Parser\ParserStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
@@ -14,7 +15,7 @@ use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
 use TokenReflection\Broker;
 
-class BackendTest extends TestCase
+final class BackendTest extends TestCase
 {
 
     /**
@@ -103,6 +104,7 @@ class BackendTest extends TestCase
             'isInternalDocumented' => true,
             'getVisibilityLevel' => 1
         ]);
+
         return new ReflectionFactory($configurationMock, $parserStoragetMock);
     }
 }

@@ -11,7 +11,7 @@ use ApiGen\Tests\MethodInvoker;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 
-class GeneratorQueueTest extends TestCase
+final class GeneratorQueueTest extends TestCase
 {
 
     /**
