@@ -7,7 +7,7 @@ use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 use ApiGen\Tests\MethodInvoker;
 use PHPUnit_Framework_MockObject_MockObject;
 
-final class ResolveIfParsedElementResolverTest extends AbstractElementResolverTest
+final class ResolveIfParsedTest extends AbstractElementResolverTest
 {
     public function test(): void
     {

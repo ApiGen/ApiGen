@@ -12,11 +12,11 @@ final class RelativePathResolverTest extends TestCase
 
     public function testGetRelativePath(): void
     {
-        $configuration = $this->createMock(ConfigurationInterface::class);
-        $configuration->method('getOption')
+        $configurationMock = $this->createMock(ConfigurationInterface::class);
+        $configurationMock->method('getOption')
             ->willReturn([TEMP_DIR]);
 
-        $relativePathResolver = new RelativePathResolver($configuration, new FileSystem);
+        $relativePathResolver = new RelativePathResolver($configurationMock, new FileSystem);
 
         $this->assertSame('some-file.txt', $relativePathResolver->getRelativePath(TEMP_DIR . '/some-file.txt'));
         $this->assertSame(
@@ -28,11 +28,11 @@ final class RelativePathResolverTest extends TestCase
 
     public function testGetRelativePathWithWindowsPath(): void
     {
-        $configuration = $this->createMock(ConfigurationInterface::class);
-        $configuration->method('getOption')
+        $configurationMock = $this->createMock(ConfigurationInterface::class);
+        $configurationMock->method('getOption')
             ->willReturn(['C:\some\dir']);
 
-        $relativePathResolver = new RelativePathResolver($configuration, new FileSystem);
+        $relativePathResolver = new RelativePathResolver($configurationMock, new FileSystem);
 
         $this->assertSame('file.txt', $relativePathResolver->getRelativePath('C:\some\dir\file.txt'));
         $this->assertSame('more-dir/file.txt', $relativePathResolver->getRelativePath('C:\some\dir\more-dir\file.txt'));
@@ -44,11 +44,11 @@ final class RelativePathResolverTest extends TestCase
      */
     public function testGetRelativePathInvalid(): void
     {
-        $configuration = $this->createMock(ConfigurationInterface::class);
-        $configuration->method('getOption')
+        $configurationMock = $this->createMock(ConfigurationInterface::class);
+        $configurationMock->method('getOption')
             ->willReturn([TEMP_DIR]);
 
-        $relativePathResolver = new RelativePathResolver($configuration, new FileSystem);
+        $relativePathResolver = new RelativePathResolver($configurationMock, new FileSystem);
 
         $relativePathResolver->getRelativePath('/var/dir/some-strange-file.txt');
     }

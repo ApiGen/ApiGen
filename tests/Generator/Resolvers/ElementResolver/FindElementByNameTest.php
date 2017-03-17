@@ -4,7 +4,7 @@ namespace ApiGen\Tests\Generator\Resolvers\ElementResolver;
 
 use ApiGen\Tests\MethodInvoker;
 
-final class FindElementByNameElementResolverTest extends AbstractElementResolverTest
+final class FindElementByNameTest extends AbstractElementResolverTest
 {
     /**
      * @dataProvider getFindElementByNameAndNamespaceData()

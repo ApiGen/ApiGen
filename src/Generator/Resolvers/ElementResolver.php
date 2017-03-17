@@ -161,12 +161,12 @@ final class ElementResolver implements ElementResolverInterface
     private function correctContextForParameterOrClassMember($reflectionElement)
     {
         if ($reflectionElement instanceof ParameterReflectionInterface
-            && $reflectionElement->getDeclaringClassName() === null
+            && $reflectionElement->getDeclaringClassName() === ''
         ) {
-            // Parameter of function in namespace or global space
             return $this->getFunction($reflectionElement->getDeclaringFunctionName());
-        } elseif ($reflectionElement instanceof InClassInterface) {
-            // Member of a class
+        }
+
+        if ($reflectionElement instanceof InClassInterface) {
             return $this->getClass($reflectionElement->getDeclaringClassName());
         }
 
@@ -176,7 +176,7 @@ final class ElementResolver implements ElementResolverInterface
 
     private function resolveContextForSelfProperty(
         string $definition, int $pos, ElementReflectionInterface $reflectionElement
-    ): ClassReflectionInterface {
+    ): ?ClassReflectionInterface {
         $class = $this->getClass(substr($definition, 0, $pos), $reflectionElement->getNamespaceName());
         if ($class === null) {
             $fqnName = Resolver::resolveClassFQN(
@@ -252,14 +252,20 @@ final class ElementResolver implements ElementResolverInterface
     }
 
 
-    private function resolveContextForClassProperty(string $definition, ClassReflectionInterface $reflectionClass, int $pos): ClassReflectionInterface
-    {
+    private function resolveContextForClassProperty(
+        string $definition,
+        ClassReflectionInterface $reflectionClass,
+        int $position
+    ): ?ClassReflectionInterface {
         // Class::something or Class->something
         if (strpos($definition, 'parent::') === 0 && ($parentClassName = $reflectionClass->getParentClassName())) {
             return $this->getClass($parentClassName);
-        } elseif (strpos($definition, 'self::') !== 0) {
-            return $this->resolveContextForSelfProperty($definition, $pos, $reflectionClass);
         }
+
+        if (strpos($definition, 'self::') !== 0) {
+            return $this->resolveContextForSelfProperty($definition, $position, $reflectionClass);
+        }
+
         return $reflectionClass;
     }
 

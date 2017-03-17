@@ -9,7 +9,7 @@ use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
 use ApiGen\Tests\MethodInvoker;
 use PHPUnit_Framework_MockObject_MockObject;
 
-final class ResolveIfContextElementResolverTest extends AbstractElementResolverTest
+final class ResolveIfInContextTest extends AbstractElementResolverTest
 {
     public function testResolvePropertyFromClassReflection(): void
     {
@@ -18,7 +18,7 @@ final class ResolveIfContextElementResolverTest extends AbstractElementResolverT
         $resolvedElement = MethodInvoker::callMethodOnObject(
             $this->elementResolver,
             'resolveIfInContext',
-            ['someProperty', $classReflectionMock]
+            ['$someProperty', $classReflectionMock]
         );
 
         $this->assertInstanceOf(PropertyReflectionInterface::class, $resolvedElement);

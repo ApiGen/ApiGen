@@ -6,7 +6,7 @@ use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use PHPUnit_Framework_MockObject_MockObject;
 
-final class FunctionElementResolverTest extends AbstractElementResolverTest
+final class FunctionTest extends AbstractElementResolverTest
 {
     public function testGetFunction(): void
     {
