@@ -12,9 +12,8 @@ use ApiGen\Tests\MethodInvoker;
 use Latte\Engine;
 use Nette\Utils\Finder;
 
-class AnnotationGroupsGeneratorTest extends ContainerAwareTestCase
+final class AnnotationGroupsGeneratorTest extends ContainerAwareTestCase
 {
-
     /**
      * @var Configuration
      */
@@ -86,6 +85,7 @@ class AnnotationGroupsGeneratorTest extends ContainerAwareTestCase
         foreach (Finder::findFiles('*')->in(__DIR__ . '/DeprecatedSources')->getIterator() as $file) {
             $files[] = $file;
         }
+
         $this->parser->parse($files);
     }
 

@@ -4,8 +4,10 @@ namespace ApiGen\Parser;
 
 use ApiGen\Contracts\Parser\ParserInterface;
 use ApiGen\Contracts\Parser\ParserStorageInterface;
+use Exception;
 use TokenReflection\Broker;
 use TokenReflection\Broker\Backend;
+use TokenReflection\Exception\ParseException;
 
 final class Parser implements ParserInterface
 {
@@ -30,7 +32,18 @@ final class Parser implements ParserInterface
     public function parse(array $files): ParserStorageInterface
     {
         foreach ($files as $file) {
-            $this->broker->processFile($file->getPathname());
+            try {
+                $this->broker->processFile($file->getPathname());
+
+            } catch (ParseException $parseException) {
+                // @todo: make nice exception convertion
+                throw new Exception(sprintf(
+                    'Parser error on %d line with "%s" token. %s',
+                    $parseException->getExceptionLine(),
+                    $parseException->getTokenName(),
+                    $parseException->getDetail()
+                ));
+            }
         }
 
         $this->extractBrokerDataForParserResult($this->broker);

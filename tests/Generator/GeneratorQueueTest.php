@@ -8,12 +8,10 @@ use ApiGen\Contracts\Generator\TemplateGenerators\ConditionalTemplateGeneratorIn
 use ApiGen\Contracts\Generator\TemplateGenerators\TemplateGeneratorInterface;
 use ApiGen\Generator\GeneratorQueue;
 use ApiGen\Tests\MethodInvoker;
-use Mockery;
 use PHPUnit\Framework\TestCase;
 
 final class GeneratorQueueTest extends TestCase
 {
-
     /**
      * @var GeneratorQueue
      */
@@ -22,16 +20,18 @@ final class GeneratorQueueTest extends TestCase
 
     protected function setUp(): void
     {
-        $progressBarMock = Mockery::mock(ProgressBarInterface::class);
-        $progressBarMock->shouldReceive('init');
+        $progressBarMock = $this->createMock(ProgressBarInterface::class);
         $this->generatorQueue = new GeneratorQueue($progressBarMock);
     }
 
 
     public function testRun(): void
     {
-        $templateGeneratorMock = Mockery::mock(TemplateGeneratorInterface::class);
-        $templateGeneratorMock->shouldReceive('generate')->andReturn(file_put_contents(TEMP_DIR . '/file.txt', '...'));
+        $this->assertFileNotExists(TEMP_DIR . '/file.txt');
+
+        $templateGeneratorMock = $this->createMock(TemplateGeneratorInterface::class);
+        $templateGeneratorMock->method('generate')
+            ->willReturn(file_put_contents(TEMP_DIR . '/file.txt', '...'));
         $this->generatorQueue->addToQueue($templateGeneratorMock);
         $this->generatorQueue->run();
 
@@ -39,33 +39,36 @@ final class GeneratorQueueTest extends TestCase
     }
 
 
-    public function testAddToQueueAndGetQueue(): void
-    {
-        $templateGeneratorMock = Mockery::mock(TemplateGeneratorInterface::class);
-        $this->generatorQueue->addToQueue($templateGeneratorMock);
-        $this->assertCount(1, $this->generatorQueue->getQueue());
-    }
-
-
     public function testGetAllowedQueue(): void
     {
-        $templateGeneratorMock = Mockery::mock(TemplateGeneratorInterface::class);
-        $this->generatorQueue->addToQueue($templateGeneratorMock);
+        $this->generatorQueue->addToQueue($this->createConditionalTemplateGenerator());
 
-        $templateGeneratorConditionalMock = Mockery::mock(ConditionalTemplateGeneratorInterface::class);
-        $templateGeneratorConditionalMock->shouldReceive('isAllowed')->andReturn(false);
-        $this->generatorQueue->addToQueue($templateGeneratorConditionalMock);
-
-        $this->assertCount(1, MethodInvoker::callMethodOnObject($this->generatorQueue, 'getAllowedQueue'));
+        $this->assertCount(0, MethodInvoker::callMethodOnObject($this->generatorQueue, 'getAllowedQueue'));
     }
 
 
     public function testGetStepCount(): void
     {
-        $templateGeneratorMock = Mockery::mock(TemplateGeneratorInterface::class, StepCounterInterface::class);
-        $templateGeneratorMock->shouldReceive('getStepCount')->andReturn(50);
+        $templateGeneratorMock = $this->createMock([TemplateGeneratorInterface::class, StepCounterInterface::class]);
+        $templateGeneratorMock->method('getStepCount')
+            ->willReturn(50);
         $this->generatorQueue->addToQueue($templateGeneratorMock);
 
         $this->assertSame(50, MethodInvoker::callMethodOnObject($this->generatorQueue, 'getStepCount'));
+    }
+
+    private function createConditionalTemplateGenerator(): ConditionalTemplateGeneratorInterface
+    {
+        return new class implements ConditionalTemplateGeneratorInterface
+        {
+            public function isAllowed(): bool
+            {
+                return false;
+            }
+
+            public function generate(): void
+            {
+            }
+        };
     }
 }
