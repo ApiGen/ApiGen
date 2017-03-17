@@ -2,19 +2,18 @@
 
 namespace ApiGen\Parser\Tests\Elements;
 
+use ApiGen\Contracts\Parser\Elements\ElementStorageInterface;
+use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
 use ApiGen\Parser\Elements\AutocompleteElements;
-use ApiGen\Parser\Elements\ElementStorage;
-use ApiGen\Parser\Reflection\ReflectionClass;
-use ApiGen\Parser\Reflection\ReflectionConstant;
-use ApiGen\Parser\Reflection\ReflectionFunction;
-use ApiGen\Parser\Reflection\ReflectionMethod;
-use ApiGen\Parser\Reflection\ReflectionProperty;
-use Mockery;
 use PHPUnit\Framework\TestCase;
+use PHPUnit_Framework_MockObject_MockObject;
 
-class AutocompleteElementsTest extends TestCase
+final class AutocompleteElementsTest extends TestCase
 {
-
     /**
      * @var AutocompleteElements
      */
@@ -23,31 +22,7 @@ class AutocompleteElementsTest extends TestCase
 
     protected function setUp(): void
     {
-        $classReflectionMock = Mockery::mock(ReflectionClass::class);
-        $classReflectionMock->shouldReceive('getPrettyName')->andReturn('ClassPrettyName');
-        $classReflectionMock->shouldReceive('getOwnConstants')->andReturn([]);
-
-        $methodReflection = Mockery::mock(ReflectionMethod::class);
-        $methodReflection->shouldReceive('getPrettyName')->andReturn('ClassPrettyName::methodName');
-        $classReflectionMock->shouldReceive('getOwnMethods')->andReturn([$methodReflection]);
-
-        $propertyReflection = Mockery::mock(ReflectionProperty::class);
-        $propertyReflection->shouldReceive('getPrettyName')->andReturn('ClassPrettyName::$propertyName');
-        $classReflectionMock->shouldReceive('getOwnProperties')->andReturn([$propertyReflection]);
-
-        $constantReflectionMock = Mockery::mock(ReflectionConstant::class);
-        $constantReflectionMock->shouldReceive('getPrettyName')->andReturn('ConstantPrettyName');
-
-        $functionReflectionMock = Mockery::mock(ReflectionFunction::class);
-        $functionReflectionMock->shouldReceive('getPrettyName')->andReturn('FunctionPrettyName');
-
-        $elementsStorageMock = Mockery::mock(ElementStorage::class);
-        $elementsStorageMock->shouldReceive('getElements')->andReturn([
-            'classes' => [$classReflectionMock],
-            'constants' => [$constantReflectionMock],
-            'functions' => [$functionReflectionMock]
-        ]);
-
+        $elementsStorageMock = $this->createElementStorageMock();
         $this->autocompleteElements = new AutocompleteElements($elementsStorageMock);
     }
 
@@ -62,5 +37,46 @@ class AutocompleteElementsTest extends TestCase
             ['co', 'ConstantPrettyName'],
             ['f', 'FunctionPrettyName'],
         ], $elements);
+    }
+
+    /**
+     * @return PHPUnit_Framework_MockObject_MockObject|ElementStorageInterface
+     */
+    private function createElementStorageMock()
+    {
+        $classReflectionMock = $this->createMock(ClassReflectionInterface::class);
+        $classReflectionMock->method('getPrettyName')
+            ->willReturn('ClassPrettyName');
+        $classReflectionMock->method('getOwnConstants')
+            ->willReturn([]);
+
+        $methodReflection = $this->createMock(MethodReflectionInterface::class);
+        $methodReflection->method('getPrettyName')
+            ->willReturn('ClassPrettyName::methodName');
+        $classReflectionMock->method('getOwnMethods')
+            ->willReturn([$methodReflection]);
+
+        $propertyReflection = $this->createMock(PropertyReflectionInterface::class);
+        $propertyReflection->method('getPrettyName')
+            ->willReturn('ClassPrettyName::$propertyName');
+        $classReflectionMock->method('getOwnProperties')
+            ->willReturn([$propertyReflection]);
+
+        $constantReflectionMock = $this->createMock(ConstantReflectionInterface::class);
+        $constantReflectionMock->method('getPrettyName')
+            ->willReturn('ConstantPrettyName');
+
+        $functionReflectionMock = $this->createMock(FunctionReflectionInterface::class);
+        $functionReflectionMock->method('getPrettyName')
+            ->willReturn('FunctionPrettyName');
+
+        $elementsStorageMock = $this->createMock(ElementStorageInterface::class);
+        $elementsStorageMock->method('getElements')
+            ->willReturn([
+                'classes' => [$classReflectionMock],
+                'constants' => [$constantReflectionMock],
+                'functions' => [$functionReflectionMock]
+            ]);
+        return $elementsStorageMock;
     }
 }

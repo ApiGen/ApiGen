@@ -9,9 +9,8 @@ use ApiGen\Contracts\Parser\Elements\ElementSorterInterface;
 use ApiGen\Contracts\Parser\Elements\ElementStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 
-class ElementExtractor implements ElementExtractorInterface
+final class ElementExtractor implements ElementExtractorInterface
 {
-
     /**
      * @var ElementsInterface
      */
@@ -46,7 +45,7 @@ class ElementExtractor implements ElementExtractorInterface
     }
 
 
-    public function extractElementsByAnnotation(string $annotation, callable $skipClassCallback = null): array
+    public function extractElementsByAnnotation(string $annotation): array
     {
         $elements = $this->elements->getEmptyList();
         $elements[Elements::METHODS] = [];
@@ -63,10 +62,6 @@ class ElementExtractor implements ElementExtractorInterface
             foreach ($elementList as $class) {
                 /** @var ClassReflectionInterface $class */
                 if (! $class->isMain()) {
-                    continue;
-                }
-
-                if ($skipClassCallback && $skipClassCallback($class)) { // in case when class is prior to it's elements
                     continue;
                 }
 
@@ -92,21 +87,16 @@ class ElementExtractor implements ElementExtractorInterface
     }
 
 
-    /**
-     * @param array $elements
-     * @param string $annotation
-     * @param array[] $storage
-     */
     private function extractByAnnotationAndMerge(array $elements, string $annotation, array $storage): array
     {
         $foundElements = $this->elementFilter->filterByAnnotation($elements, $annotation);
+
         return array_merge($storage, array_values($foundElements));
     }
 
 
     /**
      * @param array { key => elementList[] } $elements
-     * @return array
      */
     private function sortElements(array $elements): array
     {

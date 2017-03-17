@@ -20,7 +20,7 @@ class ReflectionParameter extends ReflectionBase implements ParameterReflectionI
             return $className;
         } elseif ($annotations = $this->getDeclaringFunction()->getAnnotation('param')) {
             if (! empty($annotations[$this->getPosition()])) {
-                list($types) = preg_split('~\s+|$~', $annotations[$this->getPosition()], 2);
+                [$types] = preg_split('~\s+|$~', $annotations[$this->getPosition()], 2);
                 if (! empty($types) && $types[0] !== '$') {
                     return $types;
                 }

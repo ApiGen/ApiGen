@@ -11,9 +11,8 @@ use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 
-class ElementStorage implements ElementStorageInterface
+final class ElementStorage implements ElementStorageInterface
 {
-
     /**
      * @var array
      */
@@ -247,7 +246,7 @@ class ElementStorage implements ElementStorageInterface
         }
 
         foreach ($uses as $value) {
-            list($link, $description) = preg_split('~\s+|$~', $value, 2);
+            [$link, $description] = preg_split('~\s+|$~', $value, 2);
             $resolved = $this->elementResolver->resolveElement($link, $element);
             if ($resolved) {
                 $resolved->addAnnotation('usedby', $element->getPrettyName() . ' ' . $description);

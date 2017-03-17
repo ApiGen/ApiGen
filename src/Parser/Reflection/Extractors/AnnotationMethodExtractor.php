@@ -114,7 +114,7 @@ class AnnotationMethodExtractor implements AnnotationMethodExtractorInterface
             return [];
         }
 
-        list(, $static, $returnTypeHint, $returnsReference, $name, $args, $shortDescription) = $matches;
+        [, $static, $returnTypeHint, $returnsReference, $name, $args, $shortDescription] = $matches;
 
         $startLine = $this->getStartLine($annotation);
         $endLine = $startLine + substr_count($annotation, "\n");
@@ -155,7 +155,7 @@ class AnnotationMethodExtractor implements AnnotationMethodExtractorInterface
                 continue;
             }
 
-            list(, $typeHint, $passedByReference, $name, $defaultValueDefinition) = $matches;
+            [, $typeHint, $passedByReference, $name, $defaultValueDefinition] = $matches;
 
             $parameters[$name] = $this->reflectionFactory->createParameterMagic([
                 'name' => $name,

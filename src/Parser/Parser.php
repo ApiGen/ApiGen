@@ -49,7 +49,7 @@ final class Parser implements ParserInterface
         $functions = $broker->getFunctions();
         $tokenizedClasses = $broker->getClasses(Backend::TOKENIZED_CLASSES);
 
-        uksort($allFoundClasses, 'strcasecmp');
+        uksort($classes, 'strcasecmp');
         uksort($constants, 'strcasecmp');
         uksort($functions, 'strcasecmp');
 

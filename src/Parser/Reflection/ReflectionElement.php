@@ -152,7 +152,7 @@ abstract class ReflectionElement extends ReflectionBase implements ElementReflec
 
         if ($this instanceof ReflectionProperty || $this instanceof ReflectionConstant) {
             $var = $this->getAnnotation('var');
-            list(, $short) = preg_split('~\s+|$~', $var[0], 2);
+            [, $short] = preg_split('~\s+|$~', $var[0], 2);
         }
 
         return (string) $short;

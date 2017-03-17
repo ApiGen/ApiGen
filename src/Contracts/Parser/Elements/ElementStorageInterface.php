@@ -8,7 +8,6 @@ use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 
 interface ElementStorageInterface
 {
-
     /**
      * @return array
      */

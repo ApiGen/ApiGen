@@ -10,6 +10,7 @@ use Symfony\Component\Console\Command\Command;
 class ConsoleExtension extends CompilerExtension
 {
 
+    // @todo: use external package
     public function loadConfiguration(): void
     {
         Compiler::loadDefinitions(
@@ -21,11 +22,11 @@ class ConsoleExtension extends CompilerExtension
 
     public function beforeCompile(): void
     {
-        $builder = $this->getContainerBuilder();
-        $builder->prepareClassList();
+        $containerBuilder = $this->getContainerBuilder();
+        $containerBuilder->prepareClassList();
 
-        $application = $builder->getDefinition($builder->getByType(Application::class));
-        foreach ($builder->findByType(Command::class) as $definition) {
+        $application = $containerBuilder->getDefinitionByType(Application::class);
+        foreach ($containerBuilder->findByType(Command::class) as $definition) {
             $application->addSetup('add', ['@' . $definition->getClass()]);
         }
     }

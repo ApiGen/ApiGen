@@ -69,7 +69,7 @@ class AnnotationPropertyExtractor implements AnnotationPropertyExtractorInterfac
             return [];
         }
 
-        list(, $typeHint, $name, $shortDescription) = $matches;
+        [, $typeHint, $name, $shortDescription] = $matches;
 
         $startLine = $this->getStartLine($annotation);
         $properties = [];

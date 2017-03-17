@@ -4,5 +4,5 @@ namespace ApiGen\Contracts\Parser\Elements;
 
 interface ElementExtractorInterface
 {
-    public function extractElementsByAnnotation(string $annotation, callable $skipClassCallback = null): array;
+    public function extractElementsByAnnotation(string $annotation): array;
 }

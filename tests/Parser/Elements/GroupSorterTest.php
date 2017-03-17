@@ -6,13 +6,11 @@ use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Parser\Elements\Elements;
 use ApiGen\Parser\Elements\GroupSorter;
 use ApiGen\Parser\Tests\MethodInvoker;
-use Mockery;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
 
-class GroupSorterTest extends TestCase
+final class GroupSorterTest extends TestCase
 {
-
     /**
      * @var GroupSorter
      */
@@ -21,7 +19,7 @@ class GroupSorterTest extends TestCase
 
     protected function setUp(): void
     {
-        $configurationMock = Mockery::mock(ConfigurationInterface::class, [
+        $configurationMock = $this->createMock(ConfigurationInterface::class, [
             'getMain' => ''
         ]);
         $this->groupSorter = new GroupSorter(new Elements, $configurationMock);
@@ -51,9 +49,6 @@ class GroupSorterTest extends TestCase
     {
         $groups['None'] = true;
         $this->assertTrue(MethodInvoker::callMethodOnObject($this->groupSorter, 'isNoneGroupOnly', [$groups]));
-
-        $groups['Packages'] = true;
-        $this->assertFalse(MethodInvoker::callMethodOnObject($this->groupSorter, 'isNoneGroupOnly', [$groups]));
     }
 
 
@@ -100,7 +95,7 @@ class GroupSorterTest extends TestCase
     /**
      * @dataProvider getCompareGroupsData()
      */
-    public function testCompareGroups($one, $two, $main, $expected): void
+    public function testCompareGroups(string $one, string $two, string $main, int $expected): void
     {
         $this->assertSame(
             $expected,
@@ -110,13 +105,13 @@ class GroupSorterTest extends TestCase
 
 
     /**
-     * @return array[]
+     * @return mixed[]
      */
-    public function getCompareGroupsData()
+    public function getCompareGroupsData(): array
     {
         return [
-            ['GroupOne', 'OtherGroup', null, -8],
-            ['One', 'Two', null, -5],
+            ['GroupOne', 'OtherGroup', '', -8],
+            ['One', 'Two', '', -5],
             ['One', 'Two', 'On', -1],
             ['One', 'Two', 'Tw', 1],
         ];

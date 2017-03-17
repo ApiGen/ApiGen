@@ -86,7 +86,7 @@ abstract class ReflectionFunctionBase extends ReflectionElement implements Abstr
             return;
         }
 
-        list(, $typeHint, $name) = $matches;
+        [, $typeHint, $name] = $matches;
 
         $this->parameters[$position] = $this->reflectionFactory->createParameterMagic([
             'name' => $name,
