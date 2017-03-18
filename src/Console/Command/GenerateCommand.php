@@ -149,7 +149,6 @@ final class GenerateCommand extends AbstractCommand
                 'Elements with this name prefix will be first in tree.'
             )
             ->addOption('internal', null, InputOption::VALUE_NONE, 'Include elements marked as @internal.')
-            ->addOption('php', null, InputOption::VALUE_NONE, 'Generate documentation for PHP internal classes.')
             ->addOption(
                 'noSourceCode',
                 null,

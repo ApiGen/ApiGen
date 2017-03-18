@@ -22,7 +22,7 @@ class ResolverFiltersTest extends TestCase
         $elementResolverMock->method('getClass')->willReturnCallback(function ($arg) {
             return ($arg === 'SomeClass') ? 'ResolvedClass' : null;
         });
-        $elementResolverMock->method('getClass')->twice()->willReturnNull();
+        $elementResolverMock->method('getClass')->twice()->willReturn(null);
         $elementResolverMock->method('resolveElement')->willReturnCallback(function ($arg) {
             return ($arg === 'SomeElement') ? 'ResolvedElement' : null;
         });

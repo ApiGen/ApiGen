@@ -2,16 +2,14 @@
 
 namespace ApiGen\Parser\Reflection\Extractors;
 
-use ApiGen\Contracts\Parser\Reflection\ClassConstantReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\Extractors\ParentClassElementsExtractorInterface;
 use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
 use ApiGen\Parser\Reflection\ReflectionClass;
-use ApiGen\Parser\Reflection\ReflectionMethod;
-use ApiGen\Parser\Reflection\ReflectionProperty;
 
-class ParentClassElementsExtractor implements ParentClassElementsExtractorInterface
+final class ParentClassElementsExtractor implements ParentClassElementsExtractorInterface
 {
 
     /**
@@ -25,8 +23,10 @@ class ParentClassElementsExtractor implements ParentClassElementsExtractorInterf
         $this->reflectionClass = $reflectionClass;
     }
 
-
-    public function getInheritedConstants()
+    /**
+     * @return ConstantReflectionInterface[]
+     */
+    public function getInheritedConstants(): array
     {
         return array_filter(
             array_map(
@@ -41,7 +41,7 @@ class ParentClassElementsExtractor implements ParentClassElementsExtractorInterf
     }
 
 
-    public function getInheritedProperties()
+    public function getInheritedProperties(): array
     {
         $properties = [];
         $allProperties = array_flip(array_map(function (PropertyReflectionInterface $propertyReflection) {
@@ -63,7 +63,10 @@ class ParentClassElementsExtractor implements ParentClassElementsExtractorInterf
     }
 
 
-    public function getInheritedMethods()
+    /**
+     * @return MethodReflectionInterface[]
+     */
+    public function getInheritedMethods(): array
     {
         $methods = [];
         $allMethods = array_flip(array_map(function (MethodReflectionInterface $methodReflection) {
@@ -88,7 +91,7 @@ class ParentClassElementsExtractor implements ParentClassElementsExtractorInterf
     /**
      * @return ClassReflectionInterface[]
      */
-    private function getParentClassesAndInterfaces()
+    private function getParentClassesAndInterfaces(): array
     {
         return array_merge($this->reflectionClass->getParentClasses(), $this->reflectionClass->getInterfaces());
     }

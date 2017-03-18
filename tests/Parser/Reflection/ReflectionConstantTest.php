@@ -4,7 +4,6 @@ namespace ApiGen\Parser\Tests\Reflection;
 
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Parser\ParserStorageInterface;
-use ApiGen\Contracts\Parser\Reflection\ClassConstantReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\TokenReflection\ReflectionFactoryInterface;
@@ -115,7 +114,7 @@ final class ReflectionConstantTest extends TestCase
      */
     private function getReflectionFactory()
     {
-        $constantInClassReflectionMock = $this->createMock(ClassConstantReflectionInterface::class);
+        $constantInClassReflectionMock = $this->createMock(ConstantReflectionInterface::class);
 
         $parserResultMock = $this->createMock(ParserStorageInterface::class);
         $parserResultMock->method('getElementsByType')

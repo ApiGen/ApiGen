@@ -4,7 +4,6 @@ namespace ApiGen\Tests\Templating\Filters;
 
 use ApiGen\Configuration\Configuration;
 use ApiGen\Contracts\Parser\Reflection\Behavior\LinedInterface;
-use ApiGen\Contracts\Parser\Reflection\ClassConstantReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
@@ -72,7 +71,7 @@ class SourceFiltersTest extends TestCase
 
     public function testSourceUrlClassConstant(): void
     {
-        $reflectionConstant = $this->createMock(ClassConstantReflectionInterface::class);
+        $reflectionConstant = $this->createMock(ConstantReflectionInterface::class);
         $reflectionConstant->method('getName')->willReturn('someConstant');
         $reflectionConstant->method('getDeclaringClassName')->willReturn('someClass');
         $reflectionConstant->method('getStartLine')->willReturn(20);
