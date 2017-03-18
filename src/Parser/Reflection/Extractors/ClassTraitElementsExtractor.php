@@ -122,7 +122,7 @@ class ClassTraitElementsExtractor implements ClassTraitElementsExtractorInterfac
     {
         $usedMethods = [];
         foreach ($this->classReflection->getMethods() as $m) {
-            if ($m->getDeclaringTraitName() === null
+            if ($m->getDeclaringTraitName() === ''
                 || $m->getDeclaringTraitName() === $this->classReflection->getName()
             ) {
                 continue;

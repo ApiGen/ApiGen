@@ -7,7 +7,6 @@ use ApiGen\Parser\Tests\Reflection\ReflectionClass\AbstractReflectionClassTestCa
 
 final class ReflectionClassTest extends AbstractReflectionClassTestCase
 {
-
     public function testInterface(): void
     {
         $this->assertInstanceOf(ClassReflectionInterface::class, $this->reflectionClass);

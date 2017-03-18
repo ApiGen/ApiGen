@@ -36,7 +36,7 @@ class ReflectionMethod
      * @param mixed $data and array or a blob of data to be sent
      * @param array $headers add optional headers
      */
-    public function methodWithArgs($url = 1, $data = null, $headers = []): void
+    public function methodWithArgs($url = 1, $data = null, $headers = [])
     {
     }
 }

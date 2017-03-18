@@ -50,7 +50,7 @@ class ReflectionMethodMagicTest extends TestCase
 
     public function testGetDeclaringClass(): void
     {
-        $this->isInstanceOf(ClassReflectionInterface::class, $this->reflectionMethodMagic->getDeclaringClass());
+        $this->assertInstanceOf(ClassReflectionInterface::class, $this->reflectionMethodMagic->getDeclaringClass());
     }
 
 
@@ -158,7 +158,7 @@ class ReflectionMethodMagicTest extends TestCase
 
     public function testGetDeclaringTraitName(): void
     {
-        $this->assertNull($this->reflectionMethodMagic->getDeclaringTraitName());
+        $this->assertSame('', $this->reflectionMethodMagic->getDeclaringTraitName());
     }
 
 

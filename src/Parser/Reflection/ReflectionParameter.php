@@ -73,8 +73,8 @@ class ReflectionParameter extends ReflectionBase implements ParameterReflectionI
 
     public function getClass(): ?ClassReflectionInterface
     {
-        $className = $this->reflection->getClassName();
-        return $className === null ? null : $this->getParsedClasses()[$className];
+        $className = (string) $this->reflection->getClassName();
+        return $className === '' ? null : $this->getParsedClasses()[$className];
     }
 
 
@@ -122,20 +122,20 @@ class ReflectionParameter extends ReflectionBase implements ParameterReflectionI
 
     public function getDeclaringFunctionName(): string
     {
-        return $this->reflection->getDeclaringFunctionName();
+        return (string) $this->reflection->getDeclaringFunctionName();
     }
 
 
     public function getDeclaringClass(): ?ClassReflectionInterface
     {
         $className = $this->reflection->getDeclaringClassName();
-        return $className === null ? null : $this->getParsedClasses()[$className];
+        return $className === '' ? null : $this->getParsedClasses()[$className];
     }
 
 
     public function getDeclaringClassName(): string
     {
-        return $this->reflection->getDeclaringClassName();
+        return (string) $this->reflection->getDeclaringClassName();
     }
 
 

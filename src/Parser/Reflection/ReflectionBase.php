@@ -8,7 +8,6 @@ use ApiGen\Contracts\Parser\ParserStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\TokenReflection\ReflectionFactoryInterface;
 use ApiGen\Parser\Reflection\TokenReflection\ReflectionInterface;
-use ArrayObject;
 use Nette;
 use TokenReflection\IReflection;
 use TokenReflection\IReflectionClass;
@@ -120,7 +119,7 @@ abstract class ReflectionBase extends Nette\Object implements ReflectionInterfac
     /**
      * @return ClassReflectionInterface[]
      */
-    public function getParsedClasses(): ArrayObject
+    public function getParsedClasses(): array
     {
         return $this->parserResult->getElementsByType(ElementsInterface::CLASSES);
     }

@@ -121,7 +121,7 @@ final class ReflectionMethodMagic extends ReflectionMethod implements MagicMetho
 
     public function getDeclaringClassName(): string
     {
-        return $this->declaringClass->getName();
+        return (string) $this->declaringClass->getName();
     }
 
 
@@ -167,12 +167,12 @@ final class ReflectionMethodMagic extends ReflectionMethod implements MagicMetho
     }
 
 
-    public function getDeclaringTraitName(): ?string
+    public function getDeclaringTraitName(): string
     {
         if ($declaringTrait = $this->getDeclaringTrait()) {
             return $declaringTrait->getName();
         }
-        return null;
+        return '';
     }
 
 

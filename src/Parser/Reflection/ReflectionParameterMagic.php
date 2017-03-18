@@ -98,7 +98,7 @@ final class ReflectionParameterMagic extends ReflectionParameter implements Magi
 
     public function getDeclaringClassName(): string
     {
-        return $this->declaringFunction->getDeclaringClassName();
+        return (string) $this->declaringFunction->getDeclaringClassName();
     }
 
 
@@ -163,8 +163,8 @@ final class ReflectionParameterMagic extends ReflectionParameter implements Magi
 
     public function getClass(): ?ClassReflectionInterface
     {
-        $className = $this->getClassName();
-        return $className === null ? null : $this->getParsedClasses()[$className];
+        $className = (string) $this->getClassName();
+        return $className === '' ? null : $this->getParsedClasses()[$className];
     }
 
 

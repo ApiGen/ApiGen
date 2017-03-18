@@ -124,7 +124,7 @@ class ReflectionPropertyTest extends TestCase
 
     public function testGetDeclaringTraitName(): void
     {
-        $this->assertNull($this->reflectionProperty->getDeclaringTraitName());
+        $this->assertSame('', $this->reflectionProperty->getDeclaringTraitName());
     }
 
 
@@ -140,6 +140,7 @@ class ReflectionPropertyTest extends TestCase
             'getVisibilityLevel' => ReflectionProperty::IS_PUBLIC,
             'isInternalDocumented' => false,
         ]);
+
         return new ReflectionFactory($configurationMock, $parserResultMock);
     }
 }

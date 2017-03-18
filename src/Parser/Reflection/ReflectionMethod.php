@@ -21,13 +21,13 @@ class ReflectionMethod extends ReflectionFunctionBase implements MethodReflectio
     public function getDeclaringClass(): ?ClassReflectionInterface
     {
         $className = $this->reflection->getDeclaringClassName();
-        return $className === null ? null : $this->getParsedClasses()[$className];
+        return $className === '' ? null : $this->getParsedClasses()[$className];
     }
 
 
     public function getDeclaringClassName(): string
     {
-        return $this->reflection->getDeclaringClassName();
+        return (string) $this->reflection->getDeclaringClassName();
     }
 
 
@@ -52,19 +52,19 @@ class ReflectionMethod extends ReflectionFunctionBase implements MethodReflectio
     public function getDeclaringTrait(): ?ClassReflectionInterface
     {
         $traitName = $this->reflection->getDeclaringTraitName();
-        return $traitName === null ? null : $this->getParsedClasses()[$traitName];
+        return $traitName === '' ? null : $this->getParsedClasses()[$traitName];
     }
 
 
     public function getDeclaringTraitName(): string
     {
-        return $this->reflection->getDeclaringTraitName();
+        return (string) $this->reflection->getDeclaringTraitName();
     }
 
 
     public function getOriginalName(): string
     {
-        return $this->reflection->getOriginalName();
+        return (string) $this->reflection->getOriginalName();
     }
 
 

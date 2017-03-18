@@ -7,7 +7,7 @@ use Countable;
 class Collection implements Countable
 {
 
-    public function count(): void
+    public function count()
     {
     }
 }

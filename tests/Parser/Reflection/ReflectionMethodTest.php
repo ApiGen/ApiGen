@@ -10,12 +10,13 @@ use ApiGen\Contracts\Parser\Reflection\TokenReflection\ReflectionFactoryInterfac
 use ApiGen\Parser\Broker\Backend;
 use ApiGen\Parser\Reflection\TokenReflection\ReflectionFactory;
 use Mockery;
+use Mockery\MockInterface;
 use PHPUnit\Framework\TestCase;
+use Project\ReflectionMethod;
 use TokenReflection\Broker;
 
-class ReflectionMethodTest extends TestCase
+final class ReflectionMethodTest extends TestCase
 {
-
     /**
      * @var MethodReflectionInterface
      */
@@ -33,14 +34,14 @@ class ReflectionMethodTest extends TestCase
         $broker = new Broker($backend);
         $broker->processDirectory(__DIR__ . '/ReflectionMethodSource');
 
-        $this->reflectionClass = $backend->getClasses()['Project\ReflectionMethod'];
+        $this->reflectionClass = $backend->getClasses()[ReflectionMethod::class];
         $this->reflectionMethod = $this->reflectionClass->getMethod('methodWithArgs');
     }
 
 
     public function testGetDeclaringClass(): void
     {
-        $this->isInstanceOf(ClassReflectionInterface::class, $this->reflectionMethod->getDeclaringClass());
+        $this->assertInstanceOf(ClassReflectionInterface::class, $this->reflectionMethod->getDeclaringClass());
     }
 
 
@@ -94,13 +95,13 @@ class ReflectionMethodTest extends TestCase
 
     public function testGetDeclaringTraitName(): void
     {
-        $this->assertNull($this->reflectionMethod->getDeclaringTraitName());
+        $this->assertSame('', $this->reflectionMethod->getDeclaringTraitName());
     }
 
 
     public function testGetOriginalName(): void
     {
-        $this->assertNull($this->reflectionMethod->getOriginalName());
+        $this->assertSame('', $this->reflectionMethod->getOriginalName());
     }
 
 
@@ -123,7 +124,7 @@ class ReflectionMethodTest extends TestCase
 
 
     /**
-     * @return Mockery\MockInterface|ConfigurationInterface
+     * @return MockInterface|ConfigurationInterface
      */
     private function getConfigurationMock()
     {

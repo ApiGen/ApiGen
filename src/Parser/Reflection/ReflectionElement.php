@@ -235,7 +235,7 @@ abstract class ReflectionElement extends ReflectionBase implements ElementReflec
 
         $annotations = [];
         if ($reflection instanceof ReflectionClass || $reflection instanceof ReflectionFunction
-            || ($reflection instanceof ReflectionConstant  && $reflection->getDeclaringClassName() === null)
+            || ($reflection instanceof ReflectionConstant  && $reflection->getDeclaringClassName() === '')
         ) {
             foreach ($reflection->getFileReflection()->getAnnotations() as $name => $value) {
                 if (isset($fileLevel[$name]) && empty($annotations[$name])) {

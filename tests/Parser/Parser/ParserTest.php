@@ -8,9 +8,8 @@ use ApiGen\Contracts\Parser\ParserStorageInterface;
 use Nette\Utils\Finder;
 use ReflectionProperty;
 
-class ParserTest extends ContainerAwareTestCase
+final class ParserTest extends ContainerAwareTestCase
 {
-
     /**
      * @var ParserInterface
      */
@@ -38,14 +37,23 @@ class ParserTest extends ContainerAwareTestCase
     }
 
 
+    /**
+     * @expectedException \TokenReflection\Exception\FileProcessingException
+     */
+    public function testParseError(): void
+    {
+        $this->assertCount(0, $this->parserResult->getClasses());
+
+        $this->parser->parse($this->getFilesFromDir(__DIR__ . '/ErrorParseSource'));
+    }
+
+
     public function testParseClasses(): void
     {
         $this->assertCount(0, $this->parserResult->getClasses());
 
         $this->parser->parse($this->getFilesFromDir(__DIR__ . '/ParserSource'));
-        $this->assertCount(4, $this->parserResult->getClasses());
-
-        $this->assertCount(1, $this->parser->getErrors());
+        $this->assertCount(3, $this->parserResult->getClasses());
     }
 
 

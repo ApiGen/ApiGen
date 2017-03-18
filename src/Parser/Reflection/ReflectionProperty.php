@@ -59,7 +59,7 @@ class ReflectionProperty extends ReflectionElement implements PropertyReflection
 
     public function getDeclaringClassName(): string
     {
-        return $this->reflection->getDeclaringClassName();
+        return (string) $this->reflection->getDeclaringClassName();
     }
 
 
@@ -89,14 +89,14 @@ class ReflectionProperty extends ReflectionElement implements PropertyReflection
 
     public function getDeclaringTrait(): ?ClassReflectionInterface
     {
-        $traitName = $this->reflection->getDeclaringTraitName();
-        return $traitName === null ? null : $this->getParsedClasses()[$traitName];
+        $traitName = (string) $this->reflection->getDeclaringTraitName();
+        return $traitName === '' ? null : $this->getParsedClasses()[$traitName];
     }
 
 
     public function getDeclaringTraitName(): string
     {
-        return $this->reflection->getDeclaringTraitName();
+        return (string) $this->reflection->getDeclaringTraitName();
     }
 
 

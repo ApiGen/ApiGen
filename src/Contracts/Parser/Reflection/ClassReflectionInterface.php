@@ -6,7 +6,6 @@ use ApiGen\Contracts\Parser\Reflection\Behavior\LinedInterface;
 use ApiGen\Contracts\Parser\Reflection\Magic\MagicMethodReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\Magic\MagicPropertyReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\TokenReflection\ReflectionFactoryInterface;
-use ArrayObject;
 
 interface ClassReflectionInterface extends ElementReflectionInterface, LinedInterface
 {
@@ -284,7 +283,7 @@ interface ClassReflectionInterface extends ElementReflectionInterface, LinedInte
     /**
      * @return ClassReflectionInterface[]
      */
-    public function getParsedClasses(): ArrayObject;
+    public function getParsedClasses(): array;
 
 
     public function getStartPosition(): int;

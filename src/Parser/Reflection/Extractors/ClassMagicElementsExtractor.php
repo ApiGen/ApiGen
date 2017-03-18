@@ -137,7 +137,7 @@ final class ClassMagicElementsExtractor implements ClassMagicElementsExtractorIn
         $usedMethods = [];
         foreach ($this->getMagicMethods() as $method) {
             $declaringTraitName = $method->getDeclaringTraitName();
-            if ($declaringTraitName === null || $declaringTraitName === $this->classReflection->getName()) {
+            if ($declaringTraitName === '' || $declaringTraitName === $this->classReflection->getName()) {
                 continue;
             }
             $usedMethods[$declaringTraitName][$method->getName()]['method'] = $method;

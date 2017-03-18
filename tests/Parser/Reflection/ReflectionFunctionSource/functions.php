@@ -4,7 +4,7 @@
  * @param array $arg
  * @return string
  */
-function getSomeData(array $arg): string
+function getSomeData(array $arg)
 {
     return $arg[0];
 }
@@ -15,11 +15,11 @@ function getSomeData(array $arg): string
  * @param string $second first magic parameter
  * @param not propper annotation
  */
-function withMagicParameters(): void
+function withMagicParameters()
 {
 }
 
 
-function getMemoryInBytes(string $value): int
+function getMemoryInBytes(string $value)
 {
 }

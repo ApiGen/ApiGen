@@ -5,5 +5,5 @@ namespace Project;
 interface RichInterface
 {
 
-    public function getSomeStuff(): void;
+    public function getSomeStuff();
 }

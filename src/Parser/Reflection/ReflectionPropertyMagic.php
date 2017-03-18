@@ -142,7 +142,7 @@ final class ReflectionPropertyMagic extends ReflectionProperty implements MagicP
 
     public function getDeclaringClassName(): string
     {
-        return $this->declaringClass->getName();
+        return (string) $this->declaringClass->getName();
     }
 
 
@@ -199,7 +199,7 @@ final class ReflectionPropertyMagic extends ReflectionProperty implements MagicP
         if ($declaringTrait = $this->getDeclaringTrait()) {
             return $declaringTrait->getName();
         }
-        return null;
+        return '';
     }
 
 

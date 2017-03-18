@@ -17,7 +17,6 @@ use TokenReflection\Broker;
 
 final class BackendTest extends TestCase
 {
-
     /**
      * @var BackendInterface
      */

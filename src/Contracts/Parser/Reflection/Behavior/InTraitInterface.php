@@ -10,5 +10,5 @@ interface InTraitInterface extends InNamespaceInterface
     public function getDeclaringTrait(): ?ClassReflectionInterface;
 
 
-    public function getDeclaringTraitName(): ?string;
+    public function getDeclaringTraitName(): string;
 }

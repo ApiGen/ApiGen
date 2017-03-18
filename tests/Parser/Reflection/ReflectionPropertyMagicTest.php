@@ -14,9 +14,8 @@ use PHPUnit\Framework\TestCase;
 use ReflectionProperty;
 use TokenReflection\Broker;
 
-class ReflectionPropertyMagicTest extends TestCase
+final class ReflectionPropertyMagicTest extends TestCase
 {
-
     /**
      * @var ClassReflectionInterface
      */
@@ -126,11 +125,14 @@ class ReflectionPropertyMagicTest extends TestCase
 
     public function testGetDeclaringTraitName(): void
     {
-        $this->assertNull($this->reflectionPropertyMagic->getDeclaringTraitName());
+        $this->assertSame('', $this->reflectionPropertyMagic->getDeclaringTraitName());
     }
 
 
-    private function getReflectionFactory(): ReflectionFactoryInterface
+    /**
+     * @return ReflectionFactoryInterface
+     */
+    private function getReflectionFactory()
     {
         $parserStorageMock = Mockery::mock(ParserStorageInterface::class);
         $parserStorageMock->shouldReceive('getElementsByType')->andReturnUsing(function ($arg) {
@@ -142,6 +144,7 @@ class ReflectionPropertyMagicTest extends TestCase
             'getVisibilityLevel' => ReflectionProperty::IS_PUBLIC,
             'isInternalDocumented' => false,
         ]);
+
         return new ReflectionFactory($configurationMock, $parserStorageMock);
     }
 }

@@ -12,7 +12,7 @@ trait SomeTrait
     public $publicTraitProperty;
 
 
-    public function publicTraitMethod(): void
+    public function publicTraitMethod()
     {
     }
 }

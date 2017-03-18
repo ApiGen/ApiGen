@@ -7,6 +7,7 @@ use ApiGen\Contracts\Parser\ParserStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\Magic\MagicMethodReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\Magic\MagicParameterReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\TokenReflection\ReflectionFactoryInterface;
 use ApiGen\Parser\Broker\Backend;
 use ApiGen\Parser\Reflection\TokenReflection\ReflectionFactory;
 use Mockery;
@@ -14,7 +15,7 @@ use PHPUnit\Framework\TestCase;
 use ReflectionProperty;
 use TokenReflection\Broker;
 
-class ReflectionParameterMagicTest extends TestCase
+final class ReflectionParameterMagicTest extends TestCase
 {
 
     /**
@@ -205,7 +206,10 @@ class ReflectionParameterMagicTest extends TestCase
     }
 
 
-    private function getReflectionFactory(): Mockery\MockInterface
+    /**
+     * @return ReflectionFactoryInterface
+     */
+    private function getReflectionFactory()
     {
         $parserStorageMock = Mockery::mock(ParserStorageInterface::class);
         $parserStorageMock->shouldReceive('getElementsByType')->andReturnUsing(function ($arg) {
@@ -217,6 +221,7 @@ class ReflectionParameterMagicTest extends TestCase
             'getVisibilityLevel' => ReflectionProperty::IS_PUBLIC,
             'isInternalDocumented' => false,
         ]);
+
         return new ReflectionFactory($configurationMock, $parserStorageMock);
     }
 
