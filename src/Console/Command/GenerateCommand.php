@@ -155,12 +155,12 @@ final class GenerateCommand extends AbstractCommand
                 InputOption::VALUE_NONE,
                 'Do not generate highlighted source code for elements.'
             )
-            ->addOption('templateTheme', null, InputOption::VALUE_REQUIRED, 'ApiGen template theme name.', 'default')
             ->addOption(
                 'templateConfig',
                 null,
                 InputOption::VALUE_REQUIRED,
-                'Your own template config, has higher priority than --template-theme.'
+                'Your own template config, has higher priority than --template-theme.',
+                getcwd() . '/vendor/apigen/theme-default/src/config.neon'
             )
             ->addOption('title', null, InputOption::VALUE_REQUIRED, 'Title of generated documentation.')
             ->addOption(

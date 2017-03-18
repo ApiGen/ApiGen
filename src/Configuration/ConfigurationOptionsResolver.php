@@ -5,7 +5,6 @@ namespace ApiGen\Configuration;
 use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Configuration\Exceptions\ConfigurationException;
 use ApiGen\Configuration\Theme\ThemeConfigFactory;
-use ApiGen\Theme\ThemeConfigPathResolver;
 use ApiGen\Utils\FileSystem;
 use ReflectionProperty;
 use Symfony\Component\OptionsResolver\Options;
@@ -17,7 +16,6 @@ final class ConfigurationOptionsResolver
     const AL_PROTECTED = 'protected';
     const AL_PRIVATE = 'private';
     const AL_PUBLIC = 'public';
-    const DEFAULT_THEME = 'default';
 
     /**
      * @var array
@@ -40,7 +38,6 @@ final class ConfigurationOptionsResolver
         CO::NO_SOURCE_CODE => false,
         CO::TEMPLATE => null,
         CO::TEMPLATE_CONFIG => null,
-        CO::TEMPLATE_THEME => self::DEFAULT_THEME,
         CO::TITLE => '',
         // helpers
         CO::VISIBILITY_LEVELS => [],
@@ -66,11 +63,6 @@ final class ConfigurationOptionsResolver
     private $optionsResolverFactory;
 
     /**
-     * @var ThemeConfigPathResolver
-     */
-    private $themeConfigPathResolver;
-
-    /**
      * @var FileSystem
      */
     private $fileSystem;
@@ -79,12 +71,10 @@ final class ConfigurationOptionsResolver
     public function __construct(
         ThemeConfigFactory $themeConfigFactory,
         OptionsResolverFactory $optionsResolverFactory,
-        ThemeConfigPathResolver $themeConfigPathResolver,
         FileSystem $fileSystem
     ) {
         $this->themeConfigFactory = $themeConfigFactory;
         $this->optionsResolverFactory = $optionsResolverFactory;
-        $this->themeConfigPathResolver = $themeConfigPathResolver;
         $this->fileSystem = $fileSystem;
     }
 
@@ -109,11 +99,7 @@ final class ConfigurationOptionsResolver
                 return $this->getAccessLevelForReflections($options[CO::ACCESS_LEVELS]);
             },
             CO::TEMPLATE => function (Options $options) {
-                if (! $options[CO::TEMPLATE_CONFIG]) {
-                    $config = $this->getTemplateConfigPathFromTheme($options[CO::TEMPLATE_THEME]);
-                } else {
-                    $config = $options[CO::TEMPLATE_CONFIG];
-                }
+                $config = $options[CO::TEMPLATE_CONFIG];
                 return $this->themeConfigFactory->create($config)
                     ->getOptions();
             }
@@ -204,18 +190,6 @@ final class ConfigurationOptionsResolver
 
             return $this->fileSystem->getAbsolutePath($value);
         });
-    }
-
-
-    private function getTemplateConfigPathFromTheme(string $theme): string
-    {
-        $themePath = $this->themeConfigPathResolver->resolve("/vendor/apigen/theme-$theme");
-
-        if (!$themePath) {
-            throw new ConfigurationException(CO::TEMPLATE_THEME . " $theme is not supported.");
-        }
-
-        return "$themePath/src/config.neon";
     }
 
 

@@ -24,7 +24,6 @@ class ConfigurationOptions
     const NO_SOURCE_CODE = 'noSourceCode';
     const TEMPLATE = 'template';
     const TEMPLATE_CONFIG = 'templateConfig';
-    const TEMPLATE_THEME = 'templateTheme';
     const TITLE = 'title';
     const VISIBILITY_LEVELS = 'visibilityLevels';
     const SOURCE_CODE = 'sourceCode';

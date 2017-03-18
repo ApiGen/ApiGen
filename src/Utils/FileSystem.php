@@ -52,6 +52,10 @@ class FileSystem
             $path = realpath($path);
         }
 
+        if (file_exists(getcwd() . $path)) {
+            $path = getcwd() . $path;
+        }
+
         return $this->normalizePath($path);
     }
 
