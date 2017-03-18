@@ -2,13 +2,12 @@
 
 namespace ApiGen\Tests\Templating\Filters;
 
-use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions as CO;
+use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Templating\Filters\AnnotationFilters;
-use Mockery;
 use PHPUnit\Framework\TestCase;
 
-class AnnotationFiltersTest extends TestCase
+final class AnnotationFiltersTest extends TestCase
 {
 
     /**
@@ -19,8 +18,11 @@ class AnnotationFiltersTest extends TestCase
 
     protected function setUp(): void
     {
-        $configurationMock = $this->createMock(Configuration::class);
-        $configurationMock->method('getOption')->with(CO::INTERNAL)->willReturn(false);
+        $configurationMock = $this->createMock(ConfigurationInterface::class);
+        $configurationMock->method('getOption')
+            ->with(CO::INTERNAL)
+            ->willReturn(false);
+
         $elementResolverMock = $this->createMock('ApiGen\Generator\Resolvers\ElementResolver');
         $this->annotationFilters = new AnnotationFilters($configurationMock, $elementResolverMock);
     }
@@ -28,7 +30,6 @@ class AnnotationFiltersTest extends TestCase
 
     public function testAnnotationBeautify(): void
     {
-        $this->assertSame('Used by', $this->annotationFilters->annotationBeautify('usedby'));
         $this->assertSame('Method', $this->annotationFilters->annotationBeautify('method'));
     }
 

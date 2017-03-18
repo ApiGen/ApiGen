@@ -4,7 +4,6 @@ namespace ApiGen\Tests\Templating\Filters;
 
 use ApiGen\Generator\Resolvers\RelativePathResolver;
 use ApiGen\Templating\Filters\PathFilters;
-use Mockery;
 use PHPUnit\Framework\TestCase;
 
 class PathFiltersTest extends TestCase

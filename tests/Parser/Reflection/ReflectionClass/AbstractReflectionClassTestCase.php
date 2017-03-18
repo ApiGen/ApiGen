@@ -4,11 +4,10 @@ namespace ApiGen\Parser\Tests\Reflection\ReflectionClass;
 
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Parser\ParserStorageInterface;
+use ApiGen\Contracts\Parser\Reflection\TokenReflection\ReflectionFactoryInterface;
 use ApiGen\Parser\Broker\Backend;
 use ApiGen\Parser\Reflection\ReflectionClass;
 use ApiGen\Parser\Reflection\TokenReflection\ReflectionFactory;
-use ApiGen\Parser\Tests\Configuration\ParserConfiguration;
-use Mockery;
 use PHPUnit\Framework\TestCase;
 use ReflectionProperty;
 use TokenReflection\Broker;
@@ -49,7 +48,10 @@ abstract class AbstractReflectionClassTestCase extends TestCase
     }
 
 
-    private function getReflectionFactory(): Mockery\MockInterface
+    /**
+     * @return ReflectionFactoryInterface
+     */
+    private function getReflectionFactory()
     {
         $parserStorageMock = $this->createMock(ParserStorageInterface::class);
         $parserStorageMock->method('getDirectImplementersOfInterface')->willReturn([1]);

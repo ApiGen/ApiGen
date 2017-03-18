@@ -183,7 +183,6 @@ final class ElementStorage implements ElementStorageInterface
         }
         $this->sortNamespaces();
         $this->areElementsCategorized = true;
-        $this->addUsedByAnnotation();
     }
 
 
@@ -200,57 +199,10 @@ final class ElementStorage implements ElementStorageInterface
     }
 
 
-    private function addUsedByAnnotation(): void
-    {
-        foreach ($this->getElements() as $elementList) {
-            foreach ($elementList as $parentElement) {
-                $elements = $this->getSubElements($parentElement);
-
-                /** @var ElementReflectionInterface $element */
-                foreach ($elements as $element) {
-                    $this->loadUsesToReferencedElementUsedby($element);
-                }
-            }
-        }
-    }
-
-
     private function ensureCategorization(): void
     {
         if ($this->areElementsCategorized === false) {
             $this->categorizeParsedElements();
-        }
-    }
-
-
-    private function getSubElements(ElementReflectionInterface $parentElement): array
-    {
-        $elements = [$parentElement];
-        if ($parentElement instanceof ClassReflectionInterface) {
-            $elements = array_merge(
-                $elements,
-                array_values($parentElement->getOwnMethods()),
-                array_values($parentElement->getOwnConstants()),
-                array_values($parentElement->getOwnProperties())
-            );
-        }
-        return $elements;
-    }
-
-
-    private function loadUsesToReferencedElementUsedby(ElementReflectionInterface $element): void
-    {
-        $uses = $element->getAnnotation('uses');
-        if ($uses === null) {
-            return;
-        }
-
-        foreach ($uses as $value) {
-            [$link, $description] = preg_split('~\s+|$~', $value, 2);
-            $resolved = $this->elementResolver->resolveElement($link, $element);
-            if ($resolved) {
-                $resolved->addAnnotation('usedby', $element->getPrettyName() . ' ' . $description);
-            }
         }
     }
 }

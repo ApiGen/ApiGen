@@ -9,7 +9,6 @@ use ApiGen\Parser\Elements\ElementStorage;
 use ApiGen\Templating\Template;
 use ApiGen\Templating\TemplateElementsLoader;
 use Latte\Engine;
-use Mockery;
 use PHPUnit\Framework\TestCase;
 
 final class TemplateElementsLoaderTest extends TestCase

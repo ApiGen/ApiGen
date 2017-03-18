@@ -6,7 +6,6 @@ use ApiGen\Configuration\Configuration;
 use ApiGen\Tests\ContainerFactory;
 use ApiGen\Theme\ThemeResources;
 use ApiGen\Utils\FileSystem;
-use Mockery;
 use Nette\DI\Container;
 use PHPUnit\Framework\TestCase;
 

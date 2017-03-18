@@ -13,7 +13,6 @@ use ApiGen\Templating\TemplateFactory;
 use ApiGen\Templating\TemplateNavigator;
 use ApiGen\Tests\MethodInvoker;
 use Latte\Engine;
-use Mockery;
 use PHPUnit\Framework\TestCase;
 
 final class TemplateFactoryTest extends TestCase

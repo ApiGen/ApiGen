@@ -107,8 +107,7 @@ final class UrlFilters extends Filters
             'license' => $this->processLicenseAnnotations($value),
             'link' => $this->processLinkAnnotations($value),
             'see' => $this->processSeeAnnotations($value, $reflectionElement),
-            'uses' => $this->processUsesAndUsedbyAnnotations($value, $reflectionElement),
-            'usedby' => $this->processUsesAndUsedbyAnnotations($value, $reflectionElement),
+            'uses' => $this->processUsesAnnotations($value, $reflectionElement),
         ];
 
         if (isset($annotationProcessors[$name])) {
@@ -288,7 +287,7 @@ final class UrlFilters extends Filters
     }
 
 
-    private function processUsesAndUsedbyAnnotations(string $value, ElementReflectionInterface $reflectionElement): ?string
+    private function processUsesAnnotations(string $value, ElementReflectionInterface $reflectionElement): ?string
     {
         [$link, $description] = Strings::split($value);
         $separator = $reflectionElement instanceof ClassReflectionInterface || ! $description ? ' ' : '<br>';

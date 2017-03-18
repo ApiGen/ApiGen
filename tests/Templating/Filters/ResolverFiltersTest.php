@@ -5,7 +5,6 @@ namespace ApiGen\Tests\Templating\Filters;
 use ApiGen\Generator\Resolvers\ElementResolver;
 use ApiGen\Reflection\ReflectionElement;
 use ApiGen\Templating\Filters\ResolverFilters;
-use Mockery;
 use PHPUnit\Framework\TestCase;
 
 class ResolverFiltersTest extends TestCase

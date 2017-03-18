@@ -9,7 +9,6 @@ use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\TokenReflection\ReflectionFactoryInterface;
 use ApiGen\Parser\Broker\Backend;
 use ApiGen\Parser\Reflection\TokenReflection\ReflectionFactory;
-use Mockery;
 use Mockery\MockInterface;
 use PHPUnit\Framework\TestCase;
 use Project\ReflectionMethod;

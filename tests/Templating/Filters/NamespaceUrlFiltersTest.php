@@ -6,7 +6,6 @@ use ApiGen\Configuration\Configuration;
 use ApiGen\Parser\Elements\ElementStorage;
 use ApiGen\Templating\Filters\Helpers\LinkBuilder;
 use ApiGen\Templating\Filters\NamespaceUrlFilters;
-use Mockery;
 use PHPUnit\Framework\TestCase;
 
 class NamespaceUrlFiltersTest extends TestCase

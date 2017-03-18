@@ -11,7 +11,6 @@ use ApiGen\Templating\Filters\NamespaceUrlFilters;
 use ApiGen\Templating\Filters\SourceFilters;
 use ApiGen\Templating\TemplateNavigator;
 use ApiGen\Tests\ContainerAwareTestCase;
-use Mockery;
 
 class TemplateNavigatorTest extends ContainerAwareTestCase
 {

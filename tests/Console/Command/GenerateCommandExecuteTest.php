@@ -6,14 +6,12 @@ use ApiGen\Console\Command\GenerateCommand;
 use ApiGen\Contracts\Console\IO\IOInterface;
 use ApiGen\Tests\ContainerAwareTestCase;
 use ApiGen\Tests\MethodInvoker;
-use Mockery;
 use ReflectionObject;
-use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class GenerateCommandExecuteTest extends ContainerAwareTestCase
+final class GenerateCommandExecuteTest extends ContainerAwareTestCase
 {
 
     /**

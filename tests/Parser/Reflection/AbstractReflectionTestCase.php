@@ -7,13 +7,11 @@ use ApiGen\Contracts\Parser\Broker\BackendInterface;
 use ApiGen\Contracts\Parser\ParserStorageInterface;
 use ApiGen\Parser\Broker\Backend;
 use ApiGen\Parser\Reflection\TokenReflection\ReflectionFactory;
-use Mockery;
 use PHPUnit\Framework\TestCase;
 use TokenReflection\Broker;
 
 abstract class AbstractReflectionTestCase extends TestCase
 {
-
     /**
      * @var Broker
      */

@@ -3,7 +3,6 @@
 namespace ApiGen\Tests\Theme;
 
 use ApiGen\Theme\ThemeConfigPathResolver;
-use Mockery;
 use PHPUnit\Framework\TestCase;
 
 class ThemeConfigPathResolverTest extends TestCase

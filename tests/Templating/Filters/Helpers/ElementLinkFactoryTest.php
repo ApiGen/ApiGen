@@ -12,7 +12,6 @@ use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
 use ApiGen\Templating\Filters\Helpers\ElementLinkFactory;
 use ApiGen\Templating\Filters\Helpers\ElementUrlFactory;
 use ApiGen\Templating\Filters\Helpers\LinkBuilder;
-use Mockery;
 use PHPUnit\Framework\TestCase;
 
 class ElementLinkFactoryTest extends TestCase

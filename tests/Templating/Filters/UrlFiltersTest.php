@@ -13,7 +13,6 @@ use ApiGen\Templating\Filters\UrlFilters;
 use ApiGen\Tests\ContainerFactory;
 use ApiGen\Tests\MethodInvoker;
 use ArrayObject;
-use Mockery;
 use Nette\DI\Container;
 use PHPUnit\Framework\TestCase;
 
@@ -299,8 +298,7 @@ EXPECTED;
             ['http://licence.com MIT', 'link', '<a href="http://licence.com">MIT</a>'],
             ['ApiGen\ApiGen', 'link', 'ApiGen\ApiGen'],
             ['ApiGen\ApiGen', 'see', self::APIGEN_LINK],
-            ['ApiGen\ApiGen', 'uses', self::APIGEN_LINK],
-            ['ApiGen\ApiGen', 'usedby', self::APIGEN_LINK]
+            ['ApiGen\ApiGen', 'uses', self::APIGEN_LINK]
         ];
     }
 

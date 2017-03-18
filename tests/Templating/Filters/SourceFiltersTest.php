@@ -11,7 +11,6 @@ use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Templating\Filters\SourceFilters;
 use ApiGen\Tests\MethodInvoker;
-use Mockery;
 use PHPUnit\Framework\TestCase;
 
 class SourceFiltersTest extends TestCase

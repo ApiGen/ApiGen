@@ -11,7 +11,6 @@ use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
 use ApiGen\Templating\Filters\ElementUrlFilters;
 use ApiGen\Templating\Filters\Helpers\ElementUrlFactory;
-use Mockery;
 use PHPUnit\Framework\TestCase;
 
 class ElementUrlFiltersTest extends TestCase

@@ -4,7 +4,6 @@ namespace ApiGen\Parser\Tests\Elements;
 
 use ApiGen\Parser\Elements\ElementFilter;
 use ApiGen\Parser\Reflection\ReflectionElement;
-use Mockery;
 use PHPUnit\Framework\TestCase;
 
 class ElementFilterTest extends TestCase
