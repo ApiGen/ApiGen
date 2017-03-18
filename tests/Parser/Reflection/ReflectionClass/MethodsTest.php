@@ -6,15 +6,17 @@ use ApiGen\Contracts\Parser\Reflection\Magic\MagicMethodReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 use ApiGen\Parser\Tests\Reflection\ReflectionClass\AbstractReflectionClassTestCase;
 
-class MethodsTest extends AbstractReflectionClassTestCase
+final class MethodsTest extends AbstractReflectionClassTestCase
 {
-
     public function testGetMethod(): void
     {
         $this->assertInstanceOf(MethodReflectionInterface::class, $this->reflectionClass->getMethod('publicMethod'));
     }
 
 
+    /**
+     * @expectedException \InvalidArgumentException
+     */
     public function testGetMethodNonExisting(): void
     {
         $this->reflectionClass->getMethod('notPresentMethod');

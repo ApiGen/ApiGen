@@ -9,6 +9,7 @@ use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
 use ApiGen\Parser\Broker\Backend;
 use ApiGen\Parser\Reflection\TokenReflection\ReflectionFactory;
 use PHPUnit\Framework\TestCase;
+use Project\ReflectionMethod;
 use ReflectionProperty;
 use TokenReflection\Broker;
 
@@ -32,7 +33,7 @@ class ReflectionPropertyTest extends TestCase
         $broker = new Broker($backend);
         $broker->processDirectory(__DIR__ . '/ReflectionMethodSource');
 
-        $this->reflectionClass = $backend->getClasses()['Project\ReflectionMethod'];
+        $this->reflectionClass = $backend->getClasses()[ReflectionMethod::class];
         $this->reflectionProperty = $this->reflectionClass->getProperty('memberCount');
     }
 
@@ -135,10 +136,11 @@ class ReflectionPropertyTest extends TestCase
                 return ['Project\ReflectionMethod' => $this->reflectionClass];
             }
         });
-        $configurationMock = $this->createMock(ConfigurationInterface::class, [
-            'getVisibilityLevel' => ReflectionProperty::IS_PUBLIC,
-            'isInternalDocumented' => false,
-        ]);
+        $configurationMock = $this->createMock(ConfigurationInterface::class);
+        $configurationMock->method('getVisibilityLevel')
+            ->willReturn(ReflectionProperty::IS_PUBLIC);
+        $configurationMock->method('isInternalDocumented')
+            ->willReturn(false);
 
         return new ReflectionFactory($configurationMock, $parserResultMock);
     }

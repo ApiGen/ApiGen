@@ -4,9 +4,8 @@ namespace ApiGen\Parser\Reflection;
 
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
-use TokenReflection;
 
-class ReflectionConstant extends ReflectionElement implements ConstantReflectionInterface
+final class ReflectionConstant extends ReflectionElement implements ConstantReflectionInterface
 {
 
     public function getName(): string

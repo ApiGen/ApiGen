@@ -4,6 +4,7 @@ namespace ApiGen\Parser\Reflection;
 
 use ApiGen\Contracts\Parser\Reflection\ClassConstantReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\Extractors\ClassMagicElementsExtractorInterface;
 use ApiGen\Contracts\Parser\Reflection\Extractors\ClassTraitElementsExtractorInterface;
 use ApiGen\Contracts\Parser\Reflection\Extractors\ParentClassElementsExtractorInterface;
@@ -277,6 +278,9 @@ final class ReflectionClass extends ReflectionElement implements ClassReflection
     }
 
 
+    /**
+     * @return ConstantReflectionInterface[]
+     */
     public function getConstants(): array
     {
         if ($this->constants === null) {
@@ -311,8 +315,11 @@ final class ReflectionClass extends ReflectionElement implements ClassReflection
         return $this->ownConstants;
     }
 
-
-    public function getConstant(string $name): ClassConstantReflectionInterface
+    /**
+     * @param string $name
+     * @return ClassConstantReflectionInterface
+     */
+    public function getConstant(string $name): ConstantReflectionInterface
     {
         if (isset($this->getConstants()[$name])) {
             return $this->getConstants()[$name];
@@ -338,7 +345,7 @@ final class ReflectionClass extends ReflectionElement implements ClassReflection
     }
 
 
-    public function getOwnConstant(string $name): ClassConstantReflectionInterface
+    public function getOwnConstant(string $name): ConstantReflectionInterface
     {
         if (isset($this->getOwnConstants()[$name])) {
             return $this->getOwnConstants()[$name];

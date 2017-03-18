@@ -17,6 +17,9 @@ class PropertiesTest extends AbstractReflectionClassTestCase
     }
 
 
+    /**
+     * @expectedException \InvalidArgumentException
+     */
     public function testGetPropertyNonExisting(): void
     {
         $this->reflectionClass->getProperty('notPresentProperty');

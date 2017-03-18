@@ -98,10 +98,11 @@ final class BackendTest extends TestCase
     private function getReflectionFactory(): ReflectionFactory
     {
         $parserStoragetMock = $this->createMock(ParserStorageInterface::class);
-        $configurationMock = $this->createMock(ConfigurationInterface::class, [
-            'isInternalDocumented' => true,
-            'getVisibilityLevel' => 1
-        ]);
+        $configurationMock = $this->createMock(ConfigurationInterface::class);
+        $configurationMock->method('isInternalDocumented')
+            ->willReturn(true);
+        $configurationMock->method('getVisibilityLevel')
+            ->willReturn(1);
 
         return new ReflectionFactory($configurationMock, $parserStoragetMock);
     }

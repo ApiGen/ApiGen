@@ -3,6 +3,7 @@
 namespace ApiGen\Parser\Tests\Elements;
 
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 use ApiGen\Parser\Elements\ElementSorter;
 use ApiGen\Parser\Reflection\ReflectionConstant;
@@ -12,7 +13,6 @@ use PHPUnit\Framework\TestCase;
 
 final class ElementSorterTest extends TestCase
 {
-
     /**
      * @var ElementSorter
      */
@@ -27,13 +27,13 @@ final class ElementSorterTest extends TestCase
 
     public function testSortElementsByFqnConstants(): void
     {
-        $constantReflectionMock = $this->createMock(ReflectionConstant::class);
+        $constantReflectionMock = $this->createMock(ConstantReflectionInterface::class);
         $constantReflectionMock->method('getDeclaringClassName')
             ->willReturn('B');
         $constantReflectionMock->method('getName')
             ->willReturn('C');
 
-        $constantReflectionMock2 = $this->createMock(ReflectionConstant::class);
+        $constantReflectionMock2 = $this->createMock(ConstantReflectionInterface::class);
         $constantReflectionMock2->method('getDeclaringClassName')
             ->willReturn('A');
         $constantReflectionMock2->method('getName')

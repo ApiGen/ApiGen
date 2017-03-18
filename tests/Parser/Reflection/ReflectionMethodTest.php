@@ -123,14 +123,15 @@ final class ReflectionMethodTest extends TestCase
 
 
     /**
-     * @return MockInterface|ConfigurationInterface
+     * @return ConfigurationInterface
      */
     private function getConfigurationMock()
     {
-        $configurationMock = $this->createMock(ConfigurationInterface::class, [
-            'getVisibilityLevel' => 256,
-            'isInternalDocumented' => false
-        ]);
+        $configurationMock = $this->createMock(ConfigurationInterface::class);
+        $configurationMock->method('isInternalDocumented')
+                ->willReturn(true);
+        $configurationMock->method('getVisibilityLevel')
+            ->willReturn(256);
         return $configurationMock;
     }
 }

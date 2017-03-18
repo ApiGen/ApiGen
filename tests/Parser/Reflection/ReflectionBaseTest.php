@@ -13,9 +13,8 @@ use PHPUnit\Framework\TestCase;
 use ReflectionProperty;
 use TokenReflection\Broker;
 
-class ReflectionBaseTest extends TestCase
+final class ReflectionBaseTest extends TestCase
 {
-
     /**
      * @var ReflectionBase
      */
@@ -83,14 +82,16 @@ class ReflectionBaseTest extends TestCase
 
     private function getReflectionFactory(): ReflectionFactoryInterface
     {
-        $parserStorageMock = $this->createMock(ParserStorageInterface::class, [
-            'getElementsByType' => ['...']
-        ]);
+        $parserStorageMock = $this->createMock(ParserStorageInterface::class);
+        $parserStorageMock->method('getElementsByType')
+            ->willReturn(['...']);
 
-        $configurationMock = $this->createMock(ConfigurationInterface::class, [
-            'getVisibilityLevel' => ReflectionProperty::IS_PUBLIC,
-            'isInternalDocumented' => false,
-        ]);
+        $configurationMock = $this->createMock(ConfigurationInterface::class);
+        $configurationMock->method('getVisibilityLevel')
+            ->willReturn(ReflectionProperty::IS_PUBLIC);
+        $configurationMock->method('isInternalDocumented')
+            ->willReturn(false);
+
         return new ReflectionFactory($configurationMock, $parserStorageMock);
     }
 }

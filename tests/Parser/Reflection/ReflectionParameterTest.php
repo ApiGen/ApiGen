@@ -159,10 +159,12 @@ class ReflectionParameterTest extends TestCase
                 return ['Project\ReflectionMethod' => $this->reflectionClass];
             }
         });
-        $configurationMock = $this->createMock(ConfigurationInterface::class, [
-            'getVisibilityLevel' => ReflectionProperty::IS_PUBLIC,
-            'isInternalDocumented' => false,
-        ]);
+        $configurationMock = $this->createMock(ConfigurationInterface::class);
+        $configurationMock->method('isInternalDocumented')
+            ->willReturn(false);
+        $configurationMock->method('getVisibilityLevel')
+            ->willReturn(ReflectionProperty::IS_PUBLIC);
+
         return new ReflectionFactory($configurationMock, $parserStorageMock);
     }
 }

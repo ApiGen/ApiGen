@@ -19,9 +19,9 @@ final class GroupSorterTest extends TestCase
 
     protected function setUp(): void
     {
-        $configurationMock = $this->createMock(ConfigurationInterface::class, [
-            'getMain' => ''
-        ]);
+        $configurationMock = $this->createMock(ConfigurationInterface::class);
+        $configurationMock->method('getMain')
+            ->willReturn('');
         $this->groupSorter = new GroupSorter(new Elements, $configurationMock);
     }
 

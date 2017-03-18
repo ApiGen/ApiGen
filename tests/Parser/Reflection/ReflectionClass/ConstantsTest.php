@@ -3,11 +3,9 @@
 namespace ApiGen\Parser\Tests\Reflection\ReflectionClass;
 
 use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
-use InvalidArgumentException;
 
-class ConstantsTest extends AbstractReflectionClassTestCase
+final class ConstantsTest extends AbstractReflectionClassTestCase
 {
-
     public function testGetConstants(): void
     {
         $this->assertCount(2, $this->reflectionClass->getConstants());
@@ -42,18 +40,24 @@ class ConstantsTest extends AbstractReflectionClassTestCase
     public function testGetOwnConstant(): void
     {
         $this->assertInstanceOf(
-            'ApiGen\Parser\Reflection\ReflectionConstant',
+            ConstantReflectionInterface::class, // 'ApiGen\Parser\Reflection\ReflectionConstant',
             $this->reflectionClass->getOwnConstant('LEVEL')
         );
     }
 
 
+    /**
+     * @expectedException \InvalidArgumentException
+     */
     public function testGetOwnConstantNonExisting(): void
     {
         $this->reflectionClass->getOwnConstant('NON_EXISTING');
     }
 
 
+    /**
+     * @expectedException \InvalidArgumentException
+     */
     public function testGetConstantNonExisting(): void
     {
         $this->reflectionClass->getConstant('NON_EXISTING');
