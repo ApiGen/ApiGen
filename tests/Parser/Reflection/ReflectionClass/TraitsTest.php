@@ -4,10 +4,8 @@ namespace ApiGen\Parser\Tests\Reflections\ReflectionClass;
 
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Parser\Tests\Reflection\ReflectionClass\AbstractReflectionClassTestCase;
-use TokenReflection;
-use TokenReflection\Exception\RuntimeException;
 
-class TraitsTest extends AbstractReflectionClassTestCase
+final class TraitsTest extends AbstractReflectionClassTestCase
 {
 
     public function testIsTrait(): void
@@ -75,9 +73,12 @@ class TraitsTest extends AbstractReflectionClassTestCase
     }
 
 
+    /**
+     * @expectedException \TokenReflection\Exception\RuntimeException
+     */
     public function testUsesTraitNotExisting(): void
     {
-        $this->assertTrue($this->reflectionClass->usesTrait('Project\SomeTraitNotPresentHere'));
+        $this->reflectionClass->usesTrait('Project\SomeTraitNotPresentHere');
     }
 
 

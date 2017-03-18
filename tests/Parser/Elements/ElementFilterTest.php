@@ -6,9 +6,8 @@ use ApiGen\Parser\Elements\ElementFilter;
 use ApiGen\Parser\Reflection\ReflectionElement;
 use PHPUnit\Framework\TestCase;
 
-class ElementFilterTest extends TestCase
+final class ElementFilterTest extends TestCase
 {
-
     /**
      * @var ElementFilter
      */
@@ -24,27 +23,28 @@ class ElementFilterTest extends TestCase
     public function testFilterForMain(): void
     {
         $reflectionElement = $this->createMock(ReflectionElement::class);
-        $reflectionElement->method('isMain')->willReturn(true);
+        $reflectionElement->method('isMain')
+            ->willReturn(true);
+
         $reflectionElement2 = $this->createMock(ReflectionElement::class);
-        $reflectionElement2->method('isMain')->willReturn(false);
+        $reflectionElement2->method('isMain')
+            ->willReturn(false);
+
         $elements = [$reflectionElement, $reflectionElement2];
 
-        $filteredElements = $this->elementFilter->filterForMain($elements);
-        $this->assertCount(1, $filteredElements);
-        $this->assertInstanceOf(ReflectionElement::class, $filteredElements[0]);
+        $this->assertCount(1, $this->elementFilter->filterForMain($elements));
     }
 
 
     public function testFilterByAnnotation(): void
     {
         $reflectionElement = $this->createMock(ReflectionElement::class);
-        $reflectionElement->method('hasAnnotation')->with('todo')->willReturn(true);
-        $reflectionElement->method('hasAnnotation')->with('deprecated')->willReturn(false);
+        $reflectionElement->method('hasAnnotation')
+            ->willReturnCallback(function ($arg) {
+                return $arg === 'todo';
+            });
 
-        $todoElements = $this->elementFilter->filterByAnnotation([$reflectionElement], 'todo');
-        $this->assertCount(1, $todoElements);
-        $this->assertInstanceOf(ReflectionElement::class, $todoElements[0]);
-
+        $this->assertCount(1, $this->elementFilter->filterByAnnotation([$reflectionElement], 'todo'));
         $this->assertCount(0, $this->elementFilter->filterByAnnotation([$reflectionElement], 'deprecated'));
     }
 }

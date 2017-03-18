@@ -150,27 +150,27 @@ class ElementLinkFactoryTest extends TestCase
     private function getElementUrlFactoryMock(): Mockery\MockInterface
     {
         $elementUrlFactoryMock = $this->createMock(ElementUrlFactory::class);
-        $elementUrlFactoryMock->method('createForClass')->willReturnUsing(
+        $elementUrlFactoryMock->method('createForClass')->willReturnCallback(
             function (NamedInterface $reflectionClass) {
                 return 'class-link-' . $reflectionClass->getName();
             }
         );
-        $elementUrlFactoryMock->method('createForConstant')->willReturnUsing(
+        $elementUrlFactoryMock->method('createForConstant')->willReturnCallback(
             function (NamedInterface $reflectionConstant) {
                 return 'constant-link-' . $reflectionConstant->getName();
             }
         );
-        $elementUrlFactoryMock->method('createForFunction')->willReturnUsing(
+        $elementUrlFactoryMock->method('createForFunction')->willReturnCallback(
             function (NamedInterface $reflectionFunction) {
                 return 'function-link-' . $reflectionFunction->getName();
             }
         );
-        $elementUrlFactoryMock->method('createForProperty')->willReturnUsing(
+        $elementUrlFactoryMock->method('createForProperty')->willReturnCallback(
             function (NamedInterface $reflectionProperty) {
                 return 'property-link-' . $reflectionProperty->getName();
             }
         );
-        $elementUrlFactoryMock->method('createForMethod')->willReturnUsing(
+        $elementUrlFactoryMock->method('createForMethod')->willReturnCallback(
             function (NamedInterface $reflectionMethod) {
                 return 'method-link-' . $reflectionMethod->getName();
             }

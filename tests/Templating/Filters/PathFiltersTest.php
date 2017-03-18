@@ -18,7 +18,7 @@ class PathFiltersTest extends TestCase
     protected function setUp(): void
     {
         $relativePathResolverMock = $this->createMock(RelativePathResolver::class);
-        $relativePathResolverMock->method('getRelativePath')->willReturnUsing(function ($arg) {
+        $relativePathResolverMock->method('getRelativePath')->willReturnCallback(function ($arg) {
             return '../' . $arg;
         });
         $this->pathFilters = new PathFilters($relativePathResolverMock);

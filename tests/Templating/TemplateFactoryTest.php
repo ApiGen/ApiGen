@@ -43,7 +43,7 @@ final class TemplateFactoryTest extends TestCase
 //        $configurationMock->method('getOptions')->willReturn(['template' => ['templatesPath' => '...']]);
 //
 //        $templateElementsLoaderMock = $this->createMock(ApiGen\Templating\TemplateElementsLoader::class);
-//        $templateElementsLoaderMock->method('addElementsToTemplate')->willReturnUsing(function ($args) {
+//        $templateElementsLoaderMock->method('addElementsToTemplate')->willReturnCallback(function ($args) {
 //            return $args;
 //        });
 //
@@ -121,7 +121,7 @@ final class TemplateFactoryTest extends TestCase
 //    private function getTemplateNavigatorMock(): Mockery\MockInterface
 //    {
 //        $templateNavigatorMock = $this->createMock(TemplateNavigator::class);
-//        $templateNavigatorMock->method('getTemplatePath')->willReturnUsing(function ($arg) {
+//        $templateNavigatorMock->method('getTemplatePath')->willReturnCallback(function ($arg) {
 //            return $arg . '-template-path.latte';
 //        });
 //        $templateNavigatorMock->method('getTemplateFileName')->willReturn('...');

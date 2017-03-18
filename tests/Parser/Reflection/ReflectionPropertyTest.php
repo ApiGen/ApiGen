@@ -130,7 +130,7 @@ class ReflectionPropertyTest extends TestCase
     private function getReflectionFactory(): ReflectionFactory
     {
         $parserResultMock = $this->createMock(ParserStorageInterface::class);
-        $parserResultMock->method('getElementsByType')->willReturnUsing(function ($arg) {
+        $parserResultMock->method('getElementsByType')->willReturnCallback(function ($arg) {
             if ($arg) {
                 return ['Project\ReflectionMethod' => $this->reflectionClass];
             }

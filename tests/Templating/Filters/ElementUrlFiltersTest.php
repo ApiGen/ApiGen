@@ -79,22 +79,22 @@ class ElementUrlFiltersTest extends TestCase
     private function getElementUrlFactoryMock(): Mockery\MockInterface
     {
         $elementUrlFactoryMock = $this->createMock(ElementUrlFactory::class);
-        $elementUrlFactoryMock->method('createForElement')->willReturnUsing(function (NamedInterface $arg) {
+        $elementUrlFactoryMock->method('createForElement')->willReturnCallback(function (NamedInterface $arg) {
             return 'url-for-' . $arg->getName();
         });
-        $elementUrlFactoryMock->method('createForClass')->willReturnUsing(function (NamedInterface $arg) {
+        $elementUrlFactoryMock->method('createForClass')->willReturnCallback(function (NamedInterface $arg) {
             return 'url-for-' . $arg->getName();
         });
-        $elementUrlFactoryMock->method('createForMethod')->willReturnUsing(function (NamedInterface $arg) {
+        $elementUrlFactoryMock->method('createForMethod')->willReturnCallback(function (NamedInterface $arg) {
             return 'url-for-' . $arg->getName();
         });
-        $elementUrlFactoryMock->method('createForProperty')->willReturnUsing(function (NamedInterface $arg) {
+        $elementUrlFactoryMock->method('createForProperty')->willReturnCallback(function (NamedInterface $arg) {
             return 'url-for-' . $arg->getName();
         });
-        $elementUrlFactoryMock->method('createForConstant')->willReturnUsing(function (NamedInterface $arg) {
+        $elementUrlFactoryMock->method('createForConstant')->willReturnCallback(function (NamedInterface $arg) {
             return 'url-for-' . $arg->getName();
         });
-        $elementUrlFactoryMock->method('createForFunction')->willReturnUsing(function (NamedInterface $arg) {
+        $elementUrlFactoryMock->method('createForFunction')->willReturnCallback(function (NamedInterface $arg) {
             return 'url-for-' . $arg->getName();
         });
         return $elementUrlFactoryMock;

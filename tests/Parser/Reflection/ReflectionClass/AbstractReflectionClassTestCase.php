@@ -14,7 +14,6 @@ use TokenReflection\Broker;
 
 abstract class AbstractReflectionClassTestCase extends TestCase
 {
-
     /**
      * @var ReflectionClass
      */
@@ -53,10 +52,11 @@ abstract class AbstractReflectionClassTestCase extends TestCase
      */
     private function getReflectionFactory()
     {
+        // @todo: use $parserStorage from DI
         $parserStorageMock = $this->createMock(ParserStorageInterface::class);
         $parserStorageMock->method('getDirectImplementersOfInterface')->willReturn([1]);
         $parserStorageMock->method('getIndirectImplementersOfInterface')->willReturn([]);
-        $parserStorageMock->method('getElementsByType')->willReturnUsing(function ($arg) {
+        $parserStorageMock->method('getElementsByType')->willReturnCallback(function ($arg) {
             if ($arg) {
                 return [
                     'Project\AccessLevels' => $this->reflectionClass,
@@ -67,11 +67,12 @@ abstract class AbstractReflectionClassTestCase extends TestCase
             }
         });
 
-        $configurationMock = $this->createMock(ConfigurationInterface::class, [
-            'getVisibilityLevel' => ReflectionProperty::IS_PUBLIC | ReflectionProperty::IS_PROTECTED,
-            'isInternalDocumented' => false,
-            'isPhpCoreDocumented' => true,
-        ]);
+        $configurationMock = $this->createMock(ConfigurationInterface::class);
+        $configurationMock->method('getVisibilityLevel')
+            ->willReturn(ReflectionProperty::IS_PUBLIC | ReflectionProperty::IS_PROTECTED);
+        $configurationMock->method('isInternalDocumented')
+            ->willReturn(false);
+
         return new ReflectionFactory($configurationMock, $parserStorageMock);
     }
 }

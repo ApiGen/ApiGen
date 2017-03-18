@@ -35,25 +35,25 @@ class TemplateNavigatorTest extends ContainerAwareTestCase
         ]);
 
         $sourceFiltersMock = $this->createMock(SourceFilters::class);
-        $sourceFiltersMock->method('sourceUrl')->willReturnUsing(function ($args) {
+        $sourceFiltersMock->method('sourceUrl')->willReturnCallback(function ($args) {
             return 'source-code-' . $args->getName() . '.html';
         });
         $namespaceUrlFiltersMock = $this->createMock(NamespaceUrlFilters::class);
-        $namespaceUrlFiltersMock->method('namespaceUrl')->willReturnUsing(function ($args) {
+        $namespaceUrlFiltersMock->method('namespaceUrl')->willReturnCallback(function ($args) {
             return 'namespace-' . $args . '.html';
         });
-        $namespaceUrlFiltersMock->method('packageUrl')->willReturnUsing(function ($args) {
+        $namespaceUrlFiltersMock->method('packageUrl')->willReturnCallback(function ($args) {
             return 'package-' . $args . '.html';
         });
 
         $elementUrlFactoryMock = $this->createMock(ElementUrlFactory::class);
-        $elementUrlFactoryMock->method('createForClass')->willReturnUsing(function ($args) {
+        $elementUrlFactoryMock->method('createForClass')->willReturnCallback(function ($args) {
             return 'class-' . $args->getName() . '.html';
         });
-        $elementUrlFactoryMock->method('createForConstant')->willReturnUsing(function ($args) {
+        $elementUrlFactoryMock->method('createForConstant')->willReturnCallback(function ($args) {
             return 'constant-' . $args->getName() . '.html';
         });
-        $elementUrlFactoryMock->method('createForFunction')->willReturnUsing(function ($args) {
+        $elementUrlFactoryMock->method('createForFunction')->willReturnCallback(function ($args) {
             return 'function-' . $args->getName() . '.html';
         });
         $this->templateNavigator = new TemplateNavigator(

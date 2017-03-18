@@ -15,9 +15,8 @@ use PHPUnit\Framework\TestCase;
 use ReflectionProperty;
 use TokenReflection\Broker;
 
-class ReflectionMethodMagicTest extends TestCase
+final class ReflectionMethodMagicTest extends TestCase
 {
-
     /**
      * @var ReflectionMethodMagic
      */
@@ -193,16 +192,19 @@ class ReflectionMethodMagicTest extends TestCase
     private function getReflectionFactory()
     {
         $parserStorageMock = $this->createMock(ParserStorageInterface::class);
-        $parserStorageMock->method('getElementsByType')->willReturnUsing(function ($arg) {
-            if ($arg) {
-                return ['Project\ReflectionMethod' => $this->reflectionClass];
-            }
-        });
+        $parserStorageMock->method('getElementsByType')
+            ->willReturnCallback(function ($arg) {
+                if ($arg) {
+                    return ['Project\ReflectionMethod' => $this->reflectionClass];
+                }
+            });
 
-        $configurationMock = $this->createMock(ConfigurationInterface::class, [
-            'getVisibilityLevel' => ReflectionProperty::IS_PUBLIC,
-            'isInternalDocumented' => false,
-        ]);
+        $configurationMock = $this->createMock(ConfigurationInterface::class);
+        $configurationMock->method('getVisibilityLevel')
+            ->willReturn(ReflectionProperty::IS_PUBLIC);
+        $configurationMock->method('isInternalDocumented')
+            ->willReturn(false);
+
         return new ReflectionFactory($configurationMock, $parserStorageMock);
     }
 }

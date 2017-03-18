@@ -19,11 +19,11 @@ class ResolverFiltersTest extends TestCase
     protected function setUp(): void
     {
         $elementResolverMock = $this->createMock(ElementResolver::class);
-        $elementResolverMock->method('getClass')->willReturnUsing(function ($arg) {
+        $elementResolverMock->method('getClass')->willReturnCallback(function ($arg) {
             return ($arg === 'SomeClass') ? 'ResolvedClass' : null;
         });
         $elementResolverMock->method('getClass')->twice()->willReturnNull();
-        $elementResolverMock->method('resolveElement')->willReturnUsing(function ($arg) {
+        $elementResolverMock->method('resolveElement')->willReturnCallback(function ($arg) {
             return ($arg === 'SomeElement') ? 'ResolvedElement' : null;
         });
         $this->resolverFilters = new ResolverFilters($elementResolverMock);
