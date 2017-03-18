@@ -21,16 +21,16 @@ composer require apigen/apigen --dev
 Run ApiGen with source and destination options:
 
 ```sh
-vendor/bin/apigen generate -s ./src -d ./docs
+vendor/bin/apigen generate --source /src --destination /docs
 ```
 
 To omit cli options just create `apigen.yaml` or `apigen.neon` file in your project's root folder:
 
 ```yaml
 source:
-    - ./src
+    - /src
 
-destination: ./docs
+destination: /docs
 ```
 
 For all available options, along with descriptions and default values, just run:
@@ -43,17 +43,12 @@ vendor/bin/apigen generate --help
 
 Refer to the [wiki](https://github.com/ApiGen/ApiGen/wiki/supported-annotations) for all supported annotations.
 
+
 ## Testing
 
 ```sh
 vendor/bin/phpunit
 ```
-
-## Get Support!
-
-* [#apigen](http://webchat.freenode.net/?channels=#apigen) on irc.freenode.net - Come chat with us, we have cake.
-
-* [Roadmaps](https://github.com/ApiGen/ApiGen/wiki/Roadmaps) - Want to contribute? Get involved!
 
 ## Contributing
 
