@@ -25,19 +25,6 @@ abstract class ReflectionElement extends ReflectionBase implements ElementReflec
     protected $annotations;
 
 
-    public function getExtension(): ?ReflectionExtension
-    {
-        $extension = $this->reflection->getExtension();
-        return $extension === null ? null : $this->reflectionFactory->createFromReflection($extension);
-    }
-
-
-    public function getExtensionName(): string
-    {
-        return $this->reflection->getExtensionName();
-    }
-
-
     public function getStartPosition(): int
     {
         return $this->reflection->getStartPosition();

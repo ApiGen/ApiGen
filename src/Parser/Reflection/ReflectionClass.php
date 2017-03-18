@@ -312,7 +312,7 @@ final class ReflectionClass extends ReflectionElement implements ClassReflection
     }
 
 
-    public function getConstantReflection(string $name): ClassConstantReflectionInterface
+    public function getConstant(string $name): ClassConstantReflectionInterface
     {
         if (isset($this->getConstants()[$name])) {
             return $this->getConstants()[$name];
@@ -323,12 +323,6 @@ final class ReflectionClass extends ReflectionElement implements ClassReflection
             $name,
             $this->reflection->getName()
         ));
-    }
-
-
-    public function getConstant(string $name): ClassConstantReflectionInterface
-    {
-        return $this->getConstantReflection($name);
     }
 
 

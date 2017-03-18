@@ -15,7 +15,7 @@ use ApiGen\Templating\Exceptions\UnsupportedElementException;
 use Latte;
 use Nette\Utils\ArrayHash;
 
-class TemplateFactory implements TemplateFactoryInterface
+final class TemplateFactory implements TemplateFactoryInterface
 {
 
     const ELEMENT_SOURCE = 'source';

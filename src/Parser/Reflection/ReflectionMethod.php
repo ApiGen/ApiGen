@@ -51,7 +51,7 @@ class ReflectionMethod extends ReflectionFunctionBase implements MethodReflectio
 
     public function getDeclaringTrait(): ?ClassReflectionInterface
     {
-        $traitName = $this->reflection->getDeclaringTraitName();
+        $traitName = (string) $this->reflection->getDeclaringTraitName();
         return $traitName === '' ? null : $this->getParsedClasses()[$traitName];
     }
 

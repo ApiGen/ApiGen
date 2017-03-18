@@ -172,9 +172,6 @@ interface ClassReflectionInterface extends ElementReflectionInterface, LinedInte
     public function getOwnConstant(string $name): ClassConstantReflectionInterface;
 
 
-    public function getConstantReflection(string $name): ClassConstantReflectionInterface;
-
-
     public function getDocComment(): string;
 
 
