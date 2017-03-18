@@ -25,9 +25,9 @@ class SourceFiltersTest extends TestCase
 
     protected function setUp(): void
     {
-        $configurationMock = Mockery::mock(Configuration::class);
-        $configurationMock->shouldReceive('getOption')->with('destination')->andReturn(TEMP_DIR);
-        $configurationMock->shouldReceive('getOption')->with('template')->andReturn(
+        $configurationMock = $this->createMock(Configuration::class);
+        $configurationMock->method('getOption')->with('destination')->willReturn(TEMP_DIR);
+        $configurationMock->method('getOption')->with('template')->willReturn(
             ['templates' => ['source' => ['filename' => 'source-file-%s.html']]
             ]
         );
@@ -45,10 +45,10 @@ class SourceFiltersTest extends TestCase
 
     public function testSourceUrlFunction(): void
     {
-        $reflectionFunction = Mockery::mock(FunctionReflectionInterface::class);
-        $reflectionFunction->shouldReceive('getName')->andReturn('someFunction');
-        $reflectionFunction->shouldReceive('getStartLine')->andReturn(15);
-        $reflectionFunction->shouldReceive('getEndLine')->andReturn(25);
+        $reflectionFunction = $this->createMock(FunctionReflectionInterface::class);
+        $reflectionFunction->method('getName')->willReturn('someFunction');
+        $reflectionFunction->method('getStartLine')->willReturn(15);
+        $reflectionFunction->method('getEndLine')->willReturn(25);
 
         $this->assertSame(
             'source-file-function-someFunction.html#15-25',
@@ -59,10 +59,10 @@ class SourceFiltersTest extends TestCase
 
     public function testSourceUrlClass(): void
     {
-        $reflectionClass = Mockery::mock(ClassReflectionInterface::class);
-        $reflectionClass->shouldReceive('getName')->andReturn('someClass');
-        $reflectionClass->shouldReceive('getStartLine')->andReturn(10);
-        $reflectionClass->shouldReceive('getEndLine')->andReturn(100);
+        $reflectionClass = $this->createMock(ClassReflectionInterface::class);
+        $reflectionClass->method('getName')->willReturn('someClass');
+        $reflectionClass->method('getStartLine')->willReturn(10);
+        $reflectionClass->method('getEndLine')->willReturn(100);
 
         $this->assertSame(
             'source-file-class-someClass.html#10-100',
@@ -73,11 +73,11 @@ class SourceFiltersTest extends TestCase
 
     public function testSourceUrlClassConstant(): void
     {
-        $reflectionConstant = Mockery::mock(ClassConstantReflectionInterface::class);
-        $reflectionConstant->shouldReceive('getName')->andReturn('someConstant');
-        $reflectionConstant->shouldReceive('getDeclaringClassName')->andReturn('someClass');
-        $reflectionConstant->shouldReceive('getStartLine')->andReturn(20);
-        $reflectionConstant->shouldReceive('getEndLine')->andReturn(20);
+        $reflectionConstant = $this->createMock(ClassConstantReflectionInterface::class);
+        $reflectionConstant->method('getName')->willReturn('someConstant');
+        $reflectionConstant->method('getDeclaringClassName')->willReturn('someClass');
+        $reflectionConstant->method('getStartLine')->willReturn(20);
+        $reflectionConstant->method('getEndLine')->willReturn(20);
 
         $this->assertSame(
             'source-file-class-someClass.html#20',
@@ -88,10 +88,10 @@ class SourceFiltersTest extends TestCase
 
     public function testSourceUrlConstant(): void
     {
-        $reflectionConstant = Mockery::mock(ConstantReflectionInterface::class);
-        $reflectionConstant->shouldReceive('getName')->andReturn('someConstant');
-        $reflectionConstant->shouldReceive('getStartLine')->andReturn(20);
-        $reflectionConstant->shouldReceive('getEndLine')->andReturn(20);
+        $reflectionConstant = $this->createMock(ConstantReflectionInterface::class);
+        $reflectionConstant->method('getName')->willReturn('someConstant');
+        $reflectionConstant->method('getStartLine')->willReturn(20);
+        $reflectionConstant->method('getEndLine')->willReturn(20);
 
         $this->assertSame(
             'source-file-constant-someConstant.html#20',
@@ -118,10 +118,10 @@ class SourceFiltersTest extends TestCase
 
     private function buildReflectionElement(string $name, int $start, int $end): Mockery\MockInterface
     {
-        $reflectionElement = Mockery::mock(ElementReflectionInterface::class, LinedInterface::class);
-        $reflectionElement->shouldReceive('getName')->andReturn($name);
-        $reflectionElement->shouldReceive('getStartLine')->andReturn($start);
-        $reflectionElement->shouldReceive('getEndLine')->andReturn($end);
+        $reflectionElement = $this->createMock(ElementReflectionInterface::class, LinedInterface::class);
+        $reflectionElement->method('getName')->willReturn($name);
+        $reflectionElement->method('getStartLine')->willReturn($start);
+        $reflectionElement->method('getEndLine')->willReturn($end);
         return $reflectionElement;
     }
 }

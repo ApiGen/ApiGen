@@ -24,10 +24,10 @@ class ElementFilterTest extends TestCase
 
     public function testFilterForMain(): void
     {
-        $reflectionElement = Mockery::mock(ReflectionElement::class);
-        $reflectionElement->shouldReceive('isMain')->andReturn(true);
-        $reflectionElement2 = Mockery::mock(ReflectionElement::class);
-        $reflectionElement2->shouldReceive('isMain')->andReturn(false);
+        $reflectionElement = $this->createMock(ReflectionElement::class);
+        $reflectionElement->method('isMain')->willReturn(true);
+        $reflectionElement2 = $this->createMock(ReflectionElement::class);
+        $reflectionElement2->method('isMain')->willReturn(false);
         $elements = [$reflectionElement, $reflectionElement2];
 
         $filteredElements = $this->elementFilter->filterForMain($elements);
@@ -38,9 +38,9 @@ class ElementFilterTest extends TestCase
 
     public function testFilterByAnnotation(): void
     {
-        $reflectionElement = Mockery::mock(ReflectionElement::class);
-        $reflectionElement->shouldReceive('hasAnnotation')->with('todo')->andReturn(true);
-        $reflectionElement->shouldReceive('hasAnnotation')->with('deprecated')->andReturn(false);
+        $reflectionElement = $this->createMock(ReflectionElement::class);
+        $reflectionElement->method('hasAnnotation')->with('todo')->willReturn(true);
+        $reflectionElement->method('hasAnnotation')->with('deprecated')->willReturn(false);
 
         $todoElements = $this->elementFilter->filterByAnnotation([$reflectionElement], 'todo');
         $this->assertCount(1, $todoElements);

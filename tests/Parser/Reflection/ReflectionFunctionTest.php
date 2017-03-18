@@ -40,8 +40,8 @@ final class ReflectionFunctionTest extends TestCase
 
     private function getReflectionFactory(): ReflectionFactoryInterface
     {
-        $parserStorageMock = Mockery::mock(ParserStorageInterface::class);
-        $configurationMock = Mockery::mock(ConfigurationInterface::class, [
+        $parserStorageMock = $this->createMock(ParserStorageInterface::class);
+        $configurationMock = $this->createMock(ConfigurationInterface::class, [
             'getVisibilityLevel' => ReflectionProperty::IS_PUBLIC,
             'isInternalDocumented' => false,
         ]);

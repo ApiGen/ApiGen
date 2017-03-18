@@ -19,9 +19,9 @@ class AnnotationFiltersTest extends TestCase
 
     protected function setUp(): void
     {
-        $configurationMock = Mockery::mock(Configuration::class);
-        $configurationMock->shouldReceive('getOption')->with(CO::INTERNAL)->andReturn(false);
-        $elementResolverMock = Mockery::mock('ApiGen\Generator\Resolvers\ElementResolver');
+        $configurationMock = $this->createMock(Configuration::class);
+        $configurationMock->method('getOption')->with(CO::INTERNAL)->willReturn(false);
+        $elementResolverMock = $this->createMock('ApiGen\Generator\Resolvers\ElementResolver');
         $this->annotationFilters = new AnnotationFilters($configurationMock, $elementResolverMock);
     }
 

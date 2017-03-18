@@ -38,13 +38,13 @@ final class TemplateFactoryTest extends TestCase
         ]);
 
 
-//        $latteEngineMock = Mockery::mock(Engine::class);
+//        $latteEngineMock = $this->createMock(Engine::class);
 //
-//        $configurationMock = Mockery::mock(ConfigurationInterface::class);
-//        $configurationMock->shouldReceive('getOptions')->andReturn(['template' => ['templatesPath' => '...']]);
+//        $configurationMock = $this->createMock(ConfigurationInterface::class);
+//        $configurationMock->method('getOptions')->willReturn(['template' => ['templatesPath' => '...']]);
 //
-//        $templateElementsLoaderMock = Mockery::mock(ApiGen\Templating\TemplateElementsLoader::class);
-//        $templateElementsLoaderMock->shouldReceive('addElementsToTemplate')->andReturnUsing(function ($args) {
+//        $templateElementsLoaderMock = $this->createMock(ApiGen\Templating\TemplateElementsLoader::class);
+//        $templateElementsLoaderMock->method('addElementsToTemplate')->willReturnUsing(function ($args) {
 //            return $args;
 //        });
 //
@@ -87,7 +87,7 @@ final class TemplateFactoryTest extends TestCase
 //
 //    public function testCreateNamedForElementNonExisting(): void
 //    {
-//        $reflectionClassMock = Mockery::mock(ClassReflectionInterface::class);
+//        $reflectionClassMock = $this->createMock(ClassReflectionInterface::class);
 //        $this->assertInstanceOf(
 //            'ApiGen\Templating\Template',
 //            $this->templateFactory->createNamedForElement('notExisting', $reflectionClassMock)
@@ -97,15 +97,15 @@ final class TemplateFactoryTest extends TestCase
 //
 //    public function testCreateForReflection(): void
 //    {
-//        $reflectionClassMock = Mockery::mock(ClassReflectionInterface::class);
+//        $reflectionClassMock = $this->createMock(ClassReflectionInterface::class);
 //        $template = $this->templateFactory->createForReflection($reflectionClassMock);
 //        $this->assertInstanceOf(Template::class, $template);
 //
-//        $reflectionConstantMock = Mockery::mock(ConstantReflectionInterface::class);
+//        $reflectionConstantMock = $this->createMock(ConstantReflectionInterface::class);
 //        $template = $this->templateFactory->createForReflection($reflectionConstantMock);
 //        $this->assertInstanceOf(Template::class, $template);
 //
-//        $reflectionFunctionMock = Mockery::mock(FunctionReflectionInterface::class);
+//        $reflectionFunctionMock = $this->createMock(FunctionReflectionInterface::class);
 //        $template = $this->templateFactory->createForReflection($reflectionFunctionMock);
 //        $this->assertInstanceOf(Template::class, $template);
 //    }
@@ -121,17 +121,17 @@ final class TemplateFactoryTest extends TestCase
 //
 //    private function getTemplateNavigatorMock(): Mockery\MockInterface
 //    {
-//        $templateNavigatorMock = Mockery::mock(TemplateNavigator::class);
-//        $templateNavigatorMock->shouldReceive('getTemplatePath')->andReturnUsing(function ($arg) {
+//        $templateNavigatorMock = $this->createMock(TemplateNavigator::class);
+//        $templateNavigatorMock->method('getTemplatePath')->willReturnUsing(function ($arg) {
 //            return $arg . '-template-path.latte';
 //        });
-//        $templateNavigatorMock->shouldReceive('getTemplateFileName')->andReturn('...');
-//        $templateNavigatorMock->shouldReceive('getTemplatePathForClass')->andReturn();
-//        $templateNavigatorMock->shouldReceive('getTemplatePathForConstant')->andReturn();
-//        $templateNavigatorMock->shouldReceive('getTemplatePathForFunction')->andReturn();
-//        $templateNavigatorMock->shouldReceive('getTemplatePathForSourceElement')->andReturn();
-//        $templateNavigatorMock->shouldReceive('getTemplatePathForNamespace')->andReturn();
-//        $templateNavigatorMock->shouldReceive('getTemplatePathForPackage')->andReturn();
+//        $templateNavigatorMock->method('getTemplateFileName')->willReturn('...');
+//        $templateNavigatorMock->method('getTemplatePathForClass')->willReturn();
+//        $templateNavigatorMock->method('getTemplatePathForConstant')->willReturn();
+//        $templateNavigatorMock->method('getTemplatePathForFunction')->willReturn();
+//        $templateNavigatorMock->method('getTemplatePathForSourceElement')->willReturn();
+//        $templateNavigatorMock->method('getTemplatePathForNamespace')->willReturn();
+//        $templateNavigatorMock->method('getTemplatePathForPackage')->willReturn();
 //
 //        return $templateNavigatorMock;
 //    }

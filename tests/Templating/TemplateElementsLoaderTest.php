@@ -24,12 +24,12 @@ final class TemplateElementsLoaderTest extends TestCase
     protected function setUp(): void
     {
         $elementStorageMock = $this->getElementStorageMock();
-        $configurationMock = Mockery::mock(ConfigurationInterface::class);
-        $configurationMock->shouldReceive('getOption')->with(CO::ANNOTATION_GROUPS)->andReturn(['todo']);
-        $configurationMock->shouldReceive('getZipFileName')->andReturn('file.zip');
+        $configurationMock = $this->createMock(ConfigurationInterface::class);
+        $configurationMock->method('getOption')->with(CO::ANNOTATION_GROUPS)->willReturn(['todo']);
+        $configurationMock->method('getZipFileName')->willReturn('file.zip');
 
-        $autocompleteElementsMock = Mockery::mock(AutocompleteElements::class);
-        $autocompleteElementsMock->shouldReceive('getElements')->andReturn([]);
+        $autocompleteElementsMock = $this->createMock(AutocompleteElements::class);
+        $autocompleteElementsMock->method('getElements')->willReturn([]);
 
         $this->templateElementsLoader = new TemplateElementsLoader(
             $elementStorageMock,
@@ -41,7 +41,7 @@ final class TemplateElementsLoaderTest extends TestCase
 
     public function testAddElementToTemplate(): void
     {
-        $latteEngineMock = Mockery::mock(Engine::class);
+        $latteEngineMock = $this->createMock(Engine::class);
         $template = new Template($latteEngineMock);
         $template = $this->templateElementsLoader->addElementsToTemplate($template);
         $this->assertInstanceOf(Template::class, $template);
@@ -69,15 +69,15 @@ final class TemplateElementsLoaderTest extends TestCase
 
     private function getElementStorageMock(): Mockery\MockInterface
     {
-        $elementStorageMock = Mockery::mock(ElementStorage::class);
-        $elementStorageMock->shouldReceive('getNamespaces')->andReturn([]);
-        $elementStorageMock->shouldReceive('getPackages')->andReturn([]);
-        $elementStorageMock->shouldReceive('getClasses')->andReturn([]);
-        $elementStorageMock->shouldReceive('getInterfaces')->andReturn([]);
-        $elementStorageMock->shouldReceive('getTraits')->andReturn([]);
-        $elementStorageMock->shouldReceive('getExceptions')->andReturn([]);
-        $elementStorageMock->shouldReceive('getConstants')->andReturn([]);
-        $elementStorageMock->shouldReceive('getFunctions')->andReturn([]);
+        $elementStorageMock = $this->createMock(ElementStorage::class);
+        $elementStorageMock->method('getNamespaces')->willReturn([]);
+        $elementStorageMock->method('getPackages')->willReturn([]);
+        $elementStorageMock->method('getClasses')->willReturn([]);
+        $elementStorageMock->method('getInterfaces')->willReturn([]);
+        $elementStorageMock->method('getTraits')->willReturn([]);
+        $elementStorageMock->method('getExceptions')->willReturn([]);
+        $elementStorageMock->method('getConstants')->willReturn([]);
+        $elementStorageMock->method('getFunctions')->willReturn([]);
         return $elementStorageMock;
     }
 }

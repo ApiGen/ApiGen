@@ -19,12 +19,12 @@ class ResolverFiltersTest extends TestCase
 
     protected function setUp(): void
     {
-        $elementResolverMock = Mockery::mock(ElementResolver::class);
-        $elementResolverMock->shouldReceive('getClass')->andReturnUsing(function ($arg) {
+        $elementResolverMock = $this->createMock(ElementResolver::class);
+        $elementResolverMock->method('getClass')->willReturnUsing(function ($arg) {
             return ($arg === 'SomeClass') ? 'ResolvedClass' : null;
         });
-        $elementResolverMock->shouldReceive('getClass')->twice()->andReturnNull();
-        $elementResolverMock->shouldReceive('resolveElement')->andReturnUsing(function ($arg) {
+        $elementResolverMock->method('getClass')->twice()->willReturnNull();
+        $elementResolverMock->method('resolveElement')->willReturnUsing(function ($arg) {
             return ($arg === 'SomeElement') ? 'ResolvedElement' : null;
         });
         $this->resolverFilters = new ResolverFilters($elementResolverMock);
@@ -45,7 +45,7 @@ class ResolverFiltersTest extends TestCase
 
     public function testResolveElement(): void
     {
-        $reflectionElementMock = Mockery::mock(ReflectionElement::class);
+        $reflectionElementMock = $this->createMock(ReflectionElement::class);
         $this->assertSame(
             'ResolvedElement',
             $this->resolverFilters->resolveElement('SomeElement', $reflectionElementMock)
@@ -55,7 +55,7 @@ class ResolverFiltersTest extends TestCase
 
     public function testResolveElementForNonExistingElement(): void
     {
-        $reflectionElementMock = Mockery::mock(ReflectionElement::class);
+        $reflectionElementMock = $this->createMock(ReflectionElement::class);
         $this->assertFalse($this->resolverFilters->resolveElement('NonExistingElement', $reflectionElementMock));
     }
 }

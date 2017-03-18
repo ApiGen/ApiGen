@@ -51,10 +51,10 @@ abstract class AbstractReflectionClassTestCase extends TestCase
 
     private function getReflectionFactory(): Mockery\MockInterface
     {
-        $parserStorageMock = Mockery::mock(ParserStorageInterface::class);
-        $parserStorageMock->shouldReceive('getDirectImplementersOfInterface')->andReturn([1]);
-        $parserStorageMock->shouldReceive('getIndirectImplementersOfInterface')->andReturn([]);
-        $parserStorageMock->shouldReceive('getElementsByType')->andReturnUsing(function ($arg) {
+        $parserStorageMock = $this->createMock(ParserStorageInterface::class);
+        $parserStorageMock->method('getDirectImplementersOfInterface')->willReturn([1]);
+        $parserStorageMock->method('getIndirectImplementersOfInterface')->willReturn([]);
+        $parserStorageMock->method('getElementsByType')->willReturnUsing(function ($arg) {
             if ($arg) {
                 return [
                     'Project\AccessLevels' => $this->reflectionClass,
@@ -65,7 +65,7 @@ abstract class AbstractReflectionClassTestCase extends TestCase
             }
         });
 
-        $configurationMock = Mockery::mock(ConfigurationInterface::class, [
+        $configurationMock = $this->createMock(ConfigurationInterface::class, [
             'getVisibilityLevel' => ReflectionProperty::IS_PUBLIC | ReflectionProperty::IS_PROTECTED,
             'isInternalDocumented' => false,
             'isPhpCoreDocumented' => true,

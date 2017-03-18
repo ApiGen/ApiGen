@@ -28,7 +28,6 @@
         "symplify/symfony-event-dispatcher": "^1.4"
     },
     "require-dev": {
-        "mockery/mockery": "^0.9",
         "phpunit/phpunit": "^6.0",
         "phpstan/phpstan": "^0.6.4",
         "nette/application": "^2.4",

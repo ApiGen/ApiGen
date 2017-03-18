@@ -52,7 +52,7 @@ final class UrlFiltersTest extends TestCase
 
     public function testDoc(): void
     {
-        $reflectionClassMock = Mockery::mock(ClassReflectionInterface::class);
+        $reflectionClassMock = $this->createMock(ClassReflectionInterface::class);
         $this->assertSame('...', $this->urlFilters->doc('...', $reflectionClassMock));
     }
 
@@ -154,7 +154,7 @@ final class UrlFiltersTest extends TestCase
  */
 DOC;
 
-        $reflectionElementMock = Mockery::mock(ElementReflectionInterface::class);
+        $reflectionElementMock = $this->createMock(ElementReflectionInterface::class);
         $expected = <<<EXP
 * Some annotation
  * with more rows
@@ -166,8 +166,8 @@ EXP;
 
     public function testShortDescription(): void
     {
-        $reflectionElementMock = Mockery::mock(ElementReflectionInterface::class);
-        $reflectionElementMock->shouldReceive('getShortDescription')->andReturn('Some short description');
+        $reflectionElementMock = $this->createMock(ElementReflectionInterface::class);
+        $reflectionElementMock->method('getShortDescription')->willReturn('Some short description');
 
         $this->assertSame(
             'Some short description',
@@ -187,8 +187,8 @@ EXP;
 Some long description with example:
 <code>echo "hi";</code>
 DOC;
-        $reflectionElementMock = Mockery::mock(ElementReflectionInterface::class);
-        $reflectionElementMock->shouldReceive('getLongDescription')->andReturn($longDescription);
+        $reflectionElementMock = $this->createMock(ElementReflectionInterface::class);
+        $reflectionElementMock->method('getLongDescription')->willReturn($longDescription);
 
         $expected = <<<EXPECTED
 Some long description with example:
@@ -200,7 +200,7 @@ EXPECTED;
 
     public function testHighlightPhp(): void
     {
-        $reflectionClassMock = Mockery::mock(ClassReflectionInterface::class);
+        $reflectionClassMock = $this->createMock(ClassReflectionInterface::class);
         $this->assertSame(
             'Highlighted: ...',
             $this->urlFilters->highlightPhp('...', $reflectionClassMock)
@@ -210,7 +210,7 @@ EXPECTED;
 
     public function testHighlightValue(): void
     {
-        $reflectionClassMock = Mockery::mock(ClassReflectionInterface::class);
+        $reflectionClassMock = $this->createMock(ClassReflectionInterface::class);
         $this->assertSame(
             'Highlighted: ...',
             $this->urlFilters->highlightValue('...', $reflectionClassMock)
@@ -223,7 +223,7 @@ EXPECTED;
      */
     public function testTypeLinks(string $annotation, string $expected): void
     {
-        $reflectionClass = Mockery::mock(ClassReflectionInterface::class);
+        $reflectionClass = $this->createMock(ClassReflectionInterface::class);
         $this->assertSame($expected, $this->urlFilters->typeLinks($annotation, $reflectionClass));
     }
 
@@ -255,7 +255,7 @@ EXPECTED;
      */
     public function testResolveLink(string $definition, string $expected): void
     {
-        $reflectionClass = Mockery::mock(ClassReflectionInterface::class);
+        $reflectionClass = $this->createMock(ClassReflectionInterface::class);
         $this->assertSame($expected, $this->urlFilters->resolveLink($definition, $reflectionClass));
     }
 

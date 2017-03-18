@@ -5,17 +5,15 @@ namespace ApiGen\Parser\Tests\Reflection;
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Parser\ParserStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\TokenReflection\ReflectionFactoryInterface;
 use ApiGen\Parser\Broker\Backend;
 use ApiGen\Parser\Reflection\TokenReflection\ReflectionFactory;
-use ApiGen\Parser\Tests\Configuration\ParserConfiguration;
 use ApiGen\Parser\Tests\MethodInvoker;
-use Mockery;
 use PHPUnit\Framework\TestCase;
 use ReflectionProperty;
 use TokenReflection\Broker;
-use TokenReflection\Exception\FileProcessingException;
 
-class ReflectionElementTest extends TestCase
+final class ReflectionElementTest extends TestCase
 {
 
     /**
@@ -31,18 +29,6 @@ class ReflectionElementTest extends TestCase
         $broker->processDirectory(__DIR__ . '/ReflectionMethodSource');
 
         $this->reflectionClass = $backend->getClasses()['Project\ReflectionMethod'];
-    }
-
-
-    public function testGetExtension(): void
-    {
-        $this->assertNull($this->reflectionClass->getExtension());
-    }
-
-
-    public function testGetExtensionName(): void
-    {
-        $this->assertFalse($this->reflectionClass->getExtensionName());
     }
 
 
@@ -170,18 +156,22 @@ class ReflectionElementTest extends TestCase
 
 
     /**
-     * @return Mockery\MockInterface|ParserStorageInterface
+     * @return ReflectionFactoryInterface
      */
     private function getReflectionFactory()
     {
-        $parserStorageMock = Mockery::mock(ParserStorageInterface::class);
-        $parserStorageMock->shouldReceive('getElementsByType')->andReturn(['...']);
+        $parserStorageMock = $this->createMock(ParserStorageInterface::class);
+        $parserStorageMock->method('getElementsByType')
+            ->willReturn(['...']);
 
-        $configurationMock = Mockery::mock(ConfigurationInterface::class, [
-            'getVisibilityLevel' => ReflectionProperty::IS_PUBLIC,
-            'isInternalDocumented' => false,
-            'getMain' => ''
-        ]);
+        $configurationMock = $this->createMock(ConfigurationInterface::class);
+        $configurationMock->method('getVisibilityLevel')
+            ->willReturn(ReflectionProperty::IS_PUBLIC);
+        $configurationMock->method('isInternalDocumented')
+            ->willReturn(false);
+        $configurationMock->method('getMain')
+            ->willReturn('');
+
         return new ReflectionFactory($configurationMock, $parserStorageMock);
     }
 }

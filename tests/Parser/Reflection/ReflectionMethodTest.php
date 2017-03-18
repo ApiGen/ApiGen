@@ -113,8 +113,8 @@ final class ReflectionMethodTest extends TestCase
 
     private function getReflectionFactory(): ReflectionFactoryInterface
     {
-        $parserStorageMock = Mockery::mock(ParserStorageInterface::class);
-        $parserStorageMock->shouldReceive('getElementsByType')->andReturnUsing(function ($arg) {
+        $parserStorageMock = $this->createMock(ParserStorageInterface::class);
+        $parserStorageMock->method('getElementsByType')->willReturnUsing(function ($arg) {
             if ($arg) {
                 return ['Project\ReflectionMethod' => $this->reflectionClass];
             }
@@ -128,7 +128,7 @@ final class ReflectionMethodTest extends TestCase
      */
     private function getConfigurationMock()
     {
-        $configurationMock = Mockery::mock(ConfigurationInterface::class, [
+        $configurationMock = $this->createMock(ConfigurationInterface::class, [
             'getVisibilityLevel' => 256,
             'isInternalDocumented' => false
         ]);

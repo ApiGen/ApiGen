@@ -32,13 +32,13 @@ class GenerateCommandExecuteTest extends ContainerAwareTestCase
     {
         $this->assertFileNotExists(TEMP_DIR . '/Api/index.html');
 
-        $inputMock = Mockery::mock(InputInterface::class);
-        $inputMock->shouldReceive('getOptions')->andReturn([
+        $inputMock = $this->createMock(InputInterface::class);
+        $inputMock->method('getOptions')->willReturn([
             'config' => null,
             'destination' => TEMP_DIR . '/Api',
             'source' => __DIR__ . '/Source'
         ]);
-        $outputMock = Mockery::mock(OutputInterface::class);
+        $outputMock = $this->createMock(OutputInterface::class);
 
         $io = $this->container->getByType(IOInterface::class);
         $reflection = new ReflectionObject($io);
@@ -63,7 +63,7 @@ class GenerateCommandExecuteTest extends ContainerAwareTestCase
 //    public function testExecuteWithError()
 //    {
 //        $inputMock = $this->createMock(InputInterface::class);
-//        $inputMock->shouldReceive('getOptions')->andReturn([]);
+//        $inputMock->method('getOptions')->willReturn([]);
 //
 //        $this->assertSame(
 //            1, // failure

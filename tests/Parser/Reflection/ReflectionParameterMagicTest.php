@@ -211,13 +211,13 @@ final class ReflectionParameterMagicTest extends TestCase
      */
     private function getReflectionFactory()
     {
-        $parserStorageMock = Mockery::mock(ParserStorageInterface::class);
-        $parserStorageMock->shouldReceive('getElementsByType')->andReturnUsing(function ($arg) {
+        $parserStorageMock = $this->createMock(ParserStorageInterface::class);
+        $parserStorageMock->method('getElementsByType')->willReturnUsing(function ($arg) {
             if ($arg) {
                 return ['Project\ReflectionMethod' => $this->reflectionClass];
             }
         });
-        $configurationMock = Mockery::mock(ConfigurationInterface::class, [
+        $configurationMock = $this->createMock(ConfigurationInterface::class, [
             'getVisibilityLevel' => ReflectionProperty::IS_PUBLIC,
             'isInternalDocumented' => false,
         ]);

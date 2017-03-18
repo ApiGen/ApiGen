@@ -72,8 +72,8 @@ class NamespaceUrlFiltersTest extends TestCase
 
     private function getConfigurationMock(): Mockery\MockInterface
     {
-        $configurationMock = Mockery::mock(Configuration::class);
-        $configurationMock->shouldReceive('getOption')->with('template')->andReturn([
+        $configurationMock = $this->createMock(Configuration::class);
+        $configurationMock->method('getOption')->with('template')->willReturn([
             'templates' => [
                 'package' => ['filename' => 'package-%s'],
                 'namespace' => ['filename' => 'namespace-%s']
@@ -85,9 +85,9 @@ class NamespaceUrlFiltersTest extends TestCase
 
     private function getElementStorageMock($packageCount, $namespaceCount): Mockery\MockInterface
     {
-        $elementStorageMock = Mockery::mock(ElementStorage::class);
-        $elementStorageMock->shouldReceive('getPackages')->andReturn($packageCount);
-        $elementStorageMock->shouldReceive('getNamespaces')->andReturn($namespaceCount);
+        $elementStorageMock = $this->createMock(ElementStorage::class);
+        $elementStorageMock->method('getPackages')->willReturn($packageCount);
+        $elementStorageMock->method('getNamespaces')->willReturn($namespaceCount);
         return $elementStorageMock;
     }
 }

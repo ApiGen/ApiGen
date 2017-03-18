@@ -3,35 +3,14 @@
 namespace ApiGen\Tests\Console;
 
 use ApiGen\Console\Application;
-use ApiGen\Contracts\Console\Input\DefaultInputDefinitionFactoryInterface;
-use ApiGen\Contracts\Console\IO\IOInterface;
-use Mockery;
-use PHPUnit\Framework\TestCase;
-use Symfony\Component\Console\Input\InputDefinition;
+use ApiGen\Tests\ContainerAwareTestCase;
 
-class ApplicationTest extends TestCase
+final class ApplicationTest extends ContainerAwareTestCase
 {
-
-    /**
-     * @var Application
-     */
-    private $application;
-
-
-    protected function setUp(): void
+    public function testsGetLongVersions(): void
     {
-        $ioMock = Mockery::mock(IOInterface::class);
-        $defaultInputDefinitionFactoryMock = Mockery::mock(DefaultInputDefinitionFactoryInterface::class);
-        $defaultInputDefinitionFactoryMock->shouldReceive('create')->andReturn(new InputDefinition);
-        $this->application = new Application($ioMock, $defaultInputDefinitionFactoryMock);
-    }
+        $application = $this->container->getByType(Application::class);
 
-
-    public function testGetLongVersion(): void
-    {
-        $this->assertSame(
-            'ApiGen',
-            $this->application->getLongVersion()
-        );
+        $this->assertSame('ApiGen', $application->getLongVersion());
     }
 }
