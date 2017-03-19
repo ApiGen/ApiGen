@@ -199,6 +199,7 @@ final class ReflectionPropertyMagic extends ReflectionProperty implements MagicP
         if ($declaringTrait = $this->getDeclaringTrait()) {
             return $declaringTrait->getName();
         }
+
         return '';
     }
 
@@ -262,6 +263,7 @@ final class ReflectionPropertyMagic extends ReflectionProperty implements MagicP
         if (array_key_exists($name, $annotations)) {
             return $annotations[$name];
         }
+
         return null;
     }
 }

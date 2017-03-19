@@ -88,6 +88,7 @@ abstract class ReflectionBase extends Nette\Object implements ReflectionInterfac
         if ($doc = $this->getDocComment()) {
             $startLine -= substr_count($doc, "\n") + 1;
         }
+
         return $startLine;
     }
 

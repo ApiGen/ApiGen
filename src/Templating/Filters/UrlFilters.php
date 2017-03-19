@@ -252,6 +252,7 @@ final class UrlFilters extends Filters
         if ($description) {
             $description = '<br>' . $this->doc($description, $elementReflection);
         }
+
         return (string) $description;
     }
 
@@ -269,6 +270,7 @@ final class UrlFilters extends Filters
         if (Validators::isUrl($url)) {
             return $this->linkBuilder->build($url, $description ?: $url);
         }
+
         return '';
     }
 
@@ -283,6 +285,7 @@ final class UrlFilters extends Filters
                 $doc[] = $this->doc($link, $reflectionElement);
             }
         }
+
         return implode(', ', $doc);
     }
 

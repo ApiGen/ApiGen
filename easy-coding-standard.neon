@@ -1,4 +1,11 @@
 checkers:
+    # PSR2
+    PHP_CodeSniffer\Standards\Generic\Sniffs\Files\LineLengthSniff:
+        absoluteLineLimit: 120
+
+    - PHP_CodeSniffer\Standards\PSR2\Sniffs\Files\EndFileNewlineSniff
+    - PHP_CodeSniffer\Standards\Squiz\Sniffs\WhiteSpace\ControlStructureSpacingSniff
+
     # strict and scalar types
     - PhpCsFixer\Fixer\Strict\DeclareStrictTypesFixer
     SlevomatCodingStandard\Sniffs\TypeHints\TypeHintDeclarationSniff:

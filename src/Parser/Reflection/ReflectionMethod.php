@@ -75,6 +75,7 @@ class ReflectionMethod extends ReflectionFunctionBase implements MethodReflectio
                 return $interface->getMethod($this->getName());
             }
         }
+
         return null;
     }
 
@@ -85,6 +86,7 @@ class ReflectionMethod extends ReflectionFunctionBase implements MethodReflectio
         if ($parent === null) {
             return null;
         }
+
         foreach ($parent->getMethods() as $method) {
             if ($method->getName() === $this->getName()) {
                 if (! $method->isPrivate() && ! $method->isAbstract()) {
@@ -94,6 +96,7 @@ class ReflectionMethod extends ReflectionFunctionBase implements MethodReflectio
                 }
             }
         }
+
         return null;
     }
 
@@ -104,6 +107,7 @@ class ReflectionMethod extends ReflectionFunctionBase implements MethodReflectio
         if ($originalName === null) {
             return null;
         }
+
         $originalDeclaringClassName = $this->reflection->getOriginal()->getDeclaringClassName();
         return $this->getParsedClasses()[$originalDeclaringClassName]->getMethod($originalName);
     }

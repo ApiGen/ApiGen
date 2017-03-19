@@ -24,6 +24,7 @@ class ElementSorter implements ElementSorterInterface
                 return $this->sortPropertiesOrMethodsByFqn($elements);
             }
         }
+
         return $elements;
     }
 

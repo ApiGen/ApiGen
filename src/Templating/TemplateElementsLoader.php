@@ -80,6 +80,7 @@ final class TemplateElementsLoader
 
             $this->parameters = $parameters;
         }
+
         return $this->parameters;
     }
 }

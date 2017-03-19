@@ -203,6 +203,7 @@ abstract class ReflectionElement extends ReflectionBase implements ElementReflec
         if ($this->annotations === null) {
             $this->getAnnotations();
         }
+
         $this->annotations[$annotation][] = $value;
     }
 
@@ -230,6 +231,7 @@ abstract class ReflectionElement extends ReflectionBase implements ElementReflec
                 }
             }
         }
+
         return $annotations;
     }
 }

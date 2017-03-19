@@ -120,6 +120,7 @@ final class ParserStorage implements ParserStorageInterface
                 $implementers[] = $class;
             }
         }
+
         uksort($implementers, 'strcasecmp');
 
         return $implementers;
@@ -134,6 +135,7 @@ final class ParserStorage implements ParserStorageInterface
                 $implementers[] = $class;
             }
         }
+
         uksort($implementers, 'strcasecmp');
         return $implementers;
     }

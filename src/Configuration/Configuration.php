@@ -35,6 +35,7 @@ final class Configuration implements ConfigurationInterface
         if (isset($this->getOptions()[$name])) {
             return $this->getOptions()[$name];
         }
+
         return null;
     }
 
@@ -44,6 +45,7 @@ final class Configuration implements ConfigurationInterface
         if ($this->options === null) {
             $this->resolveOptions([]);
         }
+
         return $this->options;
     }
 

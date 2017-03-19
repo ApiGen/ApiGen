@@ -20,6 +20,7 @@ final class MagicMethodExtractor implements MagicMethodExtractorInterface
         if ($traits = $reflectionClass->getTraits()) {
             $methods += $this->extractFromTraits($traits, $reflectionClass->isDocumented());
         }
+
         return $methods;
     }
 
@@ -34,6 +35,7 @@ final class MagicMethodExtractor implements MagicMethodExtractorInterface
             $methods = $this->extractOwnFromClass($parent, $isDocumented, $methods);
             $parent = $parent->getParentClass();
         }
+
         return $methods;
     }
 
@@ -50,8 +52,10 @@ final class MagicMethodExtractor implements MagicMethodExtractorInterface
             if (! $trait instanceof ClassReflectionInterface) {
                 continue;
             }
+
             $methods = $this->extractOwnFromClass($trait, $isDocumented, $methods);
         }
+
         return $methods;
     }
 
@@ -67,6 +71,7 @@ final class MagicMethodExtractor implements MagicMethodExtractorInterface
                 $methods[$method->getName()] = $method;
             }
         }
+
         return $methods;
     }
 
@@ -76,9 +81,11 @@ final class MagicMethodExtractor implements MagicMethodExtractorInterface
         if (isset($methods[$methodReflection->getName()])) {
             return false;
         }
+
         if ($isDocumented && ! $methodReflection->isDocumented()) {
             return false;
         }
+
         return true;
     }
 }

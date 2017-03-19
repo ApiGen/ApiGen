@@ -56,6 +56,7 @@ final class ParentClassElementsExtractor implements ParentClassElementsExtractor
                     $allProperties[$property->getName()] = null;
                 }
             }
+
             $properties = $this->sortElements($inheritedProperties, $properties, $class);
         }
 
@@ -81,6 +82,7 @@ final class ParentClassElementsExtractor implements ParentClassElementsExtractor
                     $allMethods[$method->getName()] = null;
                 }
             }
+
             $methods = $this->sortElements($inheritedMethods, $methods, $class);
         }
 
@@ -109,6 +111,7 @@ final class ParentClassElementsExtractor implements ParentClassElementsExtractor
             ksort($elements);
             $allElements[$reflectionClass->getName()] = array_values($elements);
         }
+
         return $allElements;
     }
 }

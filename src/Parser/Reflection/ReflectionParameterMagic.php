@@ -173,6 +173,7 @@ final class ReflectionParameterMagic extends ReflectionParameter implements Magi
         if ($this->isArray() || $this->isCallable()) {
             return null;
         }
+
         if (isset($this->getParsedClasses()[$this->typeHint])) {
             return $this->typeHint;
         }

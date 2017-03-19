@@ -149,6 +149,7 @@ final class ElementStorage implements ElementStorageInterface
                 if (! $element->isDocumented()) {
                     continue;
                 }
+
                 if ($element instanceof ConstantReflectionInterface) {
                     $elementType = Elements::CONSTANTS;
                     $this->constants[$elementName] = $element;
@@ -168,9 +169,11 @@ final class ElementStorage implements ElementStorageInterface
                     $elementType = Elements::CLASSES;
                     $this->classes[$elementName] = $element;
                 }
+
                 $this->categorizeElementToNamespace($elementType, $element);
             }
         }
+
         $this->sortNamespaces();
         $this->areElementsCategorized = true;
     }

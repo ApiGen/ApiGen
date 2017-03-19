@@ -110,6 +110,7 @@ final class ThemeConfigOptionsResolver extends Nette\Object
                 $key = $options['templatesPath'] . '/' . $key;
                 $absolutizedResources[$key] = $resource;
             }
+
             return $absolutizedResources;
         });
     }
@@ -122,6 +123,7 @@ final class ThemeConfigOptionsResolver extends Nette\Object
             $value[$type]['template'] = $filePath;
             $this->validateFileExistence($filePath, $type);
         }
+
         return $value;
     }
 

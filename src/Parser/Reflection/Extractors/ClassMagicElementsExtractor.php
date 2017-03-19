@@ -72,6 +72,7 @@ final class ClassMagicElementsExtractor implements ClassMagicElementsExtractorIn
                 $this->ownMagicMethods += $extractor->extractFromReflection($this->classReflection);
             }
         }
+
         return $this->ownMagicMethods;
     }
 
@@ -124,6 +125,7 @@ final class ClassMagicElementsExtractor implements ClassMagicElementsExtractorIn
             if (! $trait instanceof ClassReflectionInterface) {
                 continue;
             }
+
             $usedProperties = $this->getUsedElements($trait->getOwnMagicProperties(), $allProperties);
             $properties = $this->sortElements($usedProperties, $properties, $trait);
         }
@@ -140,8 +142,10 @@ final class ClassMagicElementsExtractor implements ClassMagicElementsExtractorIn
             if ($declaringTraitName === '' || $declaringTraitName === $this->classReflection->getName()) {
                 continue;
             }
+
             $usedMethods[$declaringTraitName][$method->getName()]['method'] = $method;
         }
+
         return $usedMethods;
     }
 
@@ -159,6 +163,7 @@ final class ClassMagicElementsExtractor implements ClassMagicElementsExtractorIn
                 $allElements[$property->getName()] = null;
             }
         }
+
         return $elements;
     }
 
@@ -169,6 +174,7 @@ final class ClassMagicElementsExtractor implements ClassMagicElementsExtractorIn
             ksort($elements);
             $allElements[$classReflection->getName()] = array_values($elements);
         }
+
         return $allElements;
     }
 }

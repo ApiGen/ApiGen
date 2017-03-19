@@ -125,10 +125,12 @@ final class ReflectionClass extends ReflectionElement implements ClassReflection
                 if (!$trait instanceof ReflectionClass) {
                     continue;
                 }
+
                 foreach ($trait->getOwnMethods() as $method) {
                     if (isset($this->methods[$method->getName()])) {
                         continue;
                     }
+
                     if (! $this->isDocumented() || $method->isDocumented()) {
                         $this->methods[$method->getName()] = $method;
                     }
@@ -155,6 +157,7 @@ final class ReflectionClass extends ReflectionElement implements ClassReflection
                 return $method->configuration->getVisibilityLevel() === $this->getVisibilityLevel();
             });
         }
+
         return $this->methods;
     }
 
@@ -171,6 +174,7 @@ final class ReflectionClass extends ReflectionElement implements ClassReflection
                 }
             }
         }
+
         return $this->ownMethods;
     }
 
@@ -216,12 +220,14 @@ final class ReflectionClass extends ReflectionElement implements ClassReflection
                 if (isset($this->properties[$property->getName()])) {
                     continue;
                 }
+
                 $apiProperty = $this->reflectionFactory->createFromReflection($property);
                 if (! $this->isDocumented() || $apiProperty->isDocumented()) {
                     $this->properties[$property->getName()] = $apiProperty;
                 }
             }
         }
+
         return $this->properties;
     }
 
@@ -253,6 +259,7 @@ final class ReflectionClass extends ReflectionElement implements ClassReflection
                 }
             }
         }
+
         return $this->ownProperties;
     }
 
@@ -311,6 +318,7 @@ final class ReflectionClass extends ReflectionElement implements ClassReflection
                 }
             }
         }
+
         return $this->ownConstants;
     }
 
@@ -381,6 +389,7 @@ final class ReflectionClass extends ReflectionElement implements ClassReflection
                 return $this->getParsedClasses()[$class->getName()];
             }, $this->reflection->getParentClasses());
         }
+
         return $this->parentClasses;
     }
 
@@ -481,6 +490,7 @@ final class ReflectionClass extends ReflectionElement implements ClassReflection
                 $subClasses[] = $class;
             }
         }
+
         uksort($subClasses, 'strcasecmp');
         return $subClasses;
     }
@@ -496,6 +506,7 @@ final class ReflectionClass extends ReflectionElement implements ClassReflection
                 $subClasses[] = $class;
             }
         }
+
         uksort($subClasses, 'strcasecmp');
         return $subClasses;
     }
@@ -506,6 +517,7 @@ final class ReflectionClass extends ReflectionElement implements ClassReflection
         if (! $this->isInterface()) {
             return [];
         }
+
         return $this->parserResult->getDirectImplementersOfInterface($this);
     }
 
@@ -515,6 +527,7 @@ final class ReflectionClass extends ReflectionElement implements ClassReflection
         if (! $this->isInterface()) {
             return [];
         }
+
         return $this->parserResult->getIndirectImplementersOfInterface($this);
     }
 
@@ -524,6 +537,7 @@ final class ReflectionClass extends ReflectionElement implements ClassReflection
         if (! $this->isTrait()) {
             return [];
         }
+
         return $this->classTraitElementExtractor->getDirectUsers();
     }
 
@@ -533,6 +547,7 @@ final class ReflectionClass extends ReflectionElement implements ClassReflection
         if (! $this->isTrait()) {
             return [];
         }
+
         return $this->classTraitElementExtractor->getIndirectUsers();
     }
 
@@ -598,6 +613,7 @@ final class ReflectionClass extends ReflectionElement implements ClassReflection
         if ($this->properties === null) {
             $this->getProperties();
         }
+
         return isset($this->properties[$name]);
     }
 
@@ -641,6 +657,7 @@ final class ReflectionClass extends ReflectionElement implements ClassReflection
                 if (! isset($aliasedMethods['aliases'])) {
                     $aliasedMethods['aliases'] = [];
                 }
+
                 ksort($aliasedMethods['aliases']);
             });
         });

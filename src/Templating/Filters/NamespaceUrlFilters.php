@@ -40,6 +40,7 @@ class NamespaceUrlFilters extends Filters
         if ($pos = strrpos($groupName, '\\')) {
             return substr($groupName, $pos + 1);
         }
+
         return $groupName;
     }
 

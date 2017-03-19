@@ -142,6 +142,7 @@ class AnnotationMethodExtractor implements AnnotationMethodExtractorInterface
         if ($delimiter = strpos($annotation, "\n")) {
             $tmp = substr($annotation, 0, $delimiter);
         }
+
         return $this->reflectionClass->getStartLine() + substr_count(substr($doc, 0, strpos($doc, $tmp)), "\n");
     }
 
@@ -168,6 +169,7 @@ class AnnotationMethodExtractor implements AnnotationMethodExtractorInterface
             ]);
             $method->addAnnotation('param', ltrim(sprintf('%s $%s', $typeHint, $name)));
         }
+
         $method->setParameters($parameters);
     }
 }

@@ -30,6 +30,7 @@ class SourceFilters extends Filters
         if (is_file($filename)) {
             $name .= '?' . sha1_file($filename);
         }
+
         return $name;
     }
 
@@ -62,6 +63,7 @@ class SourceFilters extends Filters
         if ($withLine) {
             $url .= $this->getElementLinesAnchor($element);
         }
+
         return $url;
     }
 
@@ -74,6 +76,7 @@ class SourceFilters extends Filters
         ) {
             return true;
         }
+
         return false;
     }
 
@@ -84,6 +87,7 @@ class SourceFilters extends Filters
         if ($element->getStartLine() !== $element->getEndLine()) {
             $anchor .= '-' . $element->getEndLine();
         }
+
         return $anchor;
     }
 }

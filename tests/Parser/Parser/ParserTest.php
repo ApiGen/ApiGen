@@ -67,6 +67,7 @@ final class ParserTest extends ContainerAwareTestCase
         foreach (Finder::find('*.php')->in($dir) as $splFile) {
             $files[] = $splFile;
         }
+
         return $files;
     }
 }

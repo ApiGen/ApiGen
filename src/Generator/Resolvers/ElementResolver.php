@@ -186,6 +186,7 @@ final class ElementResolver implements ElementResolverInterface
             );
             $class = $this->getClass($fqnName);
         }
+
         return $class;
     }
 
@@ -239,6 +240,7 @@ final class ElementResolver implements ElementResolverInterface
         if (substr($definition, -2) === '()') {
             return substr($definition, 0, -2);
         }
+
         return $definition;
     }
 
@@ -248,6 +250,7 @@ final class ElementResolver implements ElementResolverInterface
         if ($definition[0] === '$') {
             return substr($definition, 1);
         }
+
         return $definition;
     }
 
@@ -280,6 +283,7 @@ final class ElementResolver implements ElementResolverInterface
         ) {
             return false;
         }
+
         return true;
     }
 

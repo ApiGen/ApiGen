@@ -9,11 +9,10 @@ use TokenReflection\IReflectionParameter;
 
 abstract class ReflectionFunctionBase extends ReflectionElement implements AbstractFunctionMethodReflectionInterface
 {
-
     /**
      * @var string Matches "array $arg"
      */
-    const PARAM_ANNOTATION = '~^(?:([\\w\\\\]+(?:\\|[\\w\\\\]+)*)\\s+)?\\$(\\w+)(?:\\s+(.*))?($)~s';
+    private const PARAM_ANNOTATION = '~^(?:([\\w\\\\]+(?:\\|[\\w\\\\]+)*)\\s+)?\\$(\\w+)(?:\\s+(.*))?($)~s';
 
     /**
      * @var array

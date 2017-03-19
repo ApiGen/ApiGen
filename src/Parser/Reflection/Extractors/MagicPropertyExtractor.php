@@ -21,6 +21,7 @@ final class MagicPropertyExtractor implements MagicPropertyExtractorInterface
         if ($traits = $reflectionClass->getTraits()) {
             $properties += $this->extractFromTraits($traits, $reflectionClass->isDocumented());
         }
+
         return $properties;
     }
 
@@ -35,6 +36,7 @@ final class MagicPropertyExtractor implements MagicPropertyExtractorInterface
             $properties = $this->extractOwnFromClass($parent, $isDocumented, $properties);
             $parent = $parent->getParentClass();
         }
+
         return $properties;
     }
 
@@ -49,8 +51,10 @@ final class MagicPropertyExtractor implements MagicPropertyExtractorInterface
             if (! $trait instanceof ClassReflectionInterface) {
                 continue;
             }
+
             $properties = $this->extractOwnFromClass($trait, $isDocumented, $properties);
         }
+
         return $properties;
     }
 
@@ -65,6 +69,7 @@ final class MagicPropertyExtractor implements MagicPropertyExtractorInterface
                 $properties[$property->getName()] = $property;
             }
         }
+
         return $properties;
     }
 
@@ -81,6 +86,7 @@ final class MagicPropertyExtractor implements MagicPropertyExtractorInterface
         if ($isDocumented && ! $propertyReflection->isDocumented()) {
             return false;
         }
+
         return true;
     }
 }

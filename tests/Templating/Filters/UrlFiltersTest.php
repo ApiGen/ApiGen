@@ -2,14 +2,11 @@
 
 namespace ApiGen\Tests\Templating\Filters;
 
-use ApiGen\Configuration\Configuration;
-use ApiGen\Configuration\ConfigurationOptions;
-use ApiGen\Console\Application;
+use ApiGen\Console\Command\GenerateCommand;
 use ApiGen\Contracts\Parser\ParserStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
-use ApiGen\Parser\Parser;
 use ApiGen\Templating\Filters\UrlFilters;
 use ApiGen\Tests\ContainerAwareTestCase;
 use ApiGen\Tests\MethodInvoker;
@@ -30,7 +27,7 @@ final class UrlFiltersTest extends ContainerAwareTestCase
     /**
      * @var string
      */
-    private const APIGEN_LINK = '<code><a href="class-ApiGen.Console.Application.html" class="deprecated">ApiGen\Console\Application</a></code>';
+    private const APIGEN_LINK = '<code><a href="class-ApiGen.Console.Command.GenerateCommand.html" class="deprecated">ApiGen\Console\Command\GenerateCommand</a></code>';
 
     /**
      * @var UrlFilters
@@ -97,7 +94,7 @@ final class UrlFiltersTest extends ContainerAwareTestCase
     public function testResolveLinkAndSeeAnnotation(string $docBlock, string $expectedLink): void
     {
         $reflectionClassMock = $this->createMock(ClassReflectionInterface::class);
-        $reflectionClassMock->method('getName')->willReturn(Application::class);
+        $reflectionClassMock->method('getName')->willReturn(GenerateCommand::class);
         $reflectionClassMock->method('isDeprecated')->willReturn(true);
 
         $this->assertSame(
@@ -123,7 +120,7 @@ final class UrlFiltersTest extends ContainerAwareTestCase
             ['{@link http://apigen.org}', '<a href="http://apigen.org">http://apigen.org</a>'],
             ['{@see http://php.net/manual/en PHP Manual}', '<a href="http://php.net/manual/en">PHP Manual</a>'],
             ['{@see NotActiveClass}', 'NotActiveClass'],
-            [sprintf('{@see %s}', Application::class), self::APIGEN_LINK],
+            [sprintf('{@see %s}', GenerateCommand::class), self::APIGEN_LINK],
         ];
     }
 
@@ -136,7 +133,7 @@ final class UrlFiltersTest extends ContainerAwareTestCase
     public function testResolveLinkAndSeeAnnotationForMethod():void
     {
         $reflectionMethodMock = $this->createMock(MethodReflectionInterface::class);
-        $reflectionMethodMock->method('getDeclaringClassName')->willReturn(Application::class);
+        $reflectionMethodMock->method('getDeclaringClassName')->willReturn(GenerateCommand::class);
         $reflectionMethodMock->method('getName')->willReturn('testMethod');
         $reflectionMethodMock->method('isDeprecated')->willReturn(false);
 
@@ -299,7 +296,7 @@ DOC;
     {
         $reflectionClassMock = $this->createMock(ClassReflectionInterface::class);
         $reflectionClassMock->method('getName')
-            ->willReturn(Application::class);
+            ->willReturn(GenerateCommand::class);
         $reflectionClassMock->method('isDeprecated')
             ->willReturn(true);
 

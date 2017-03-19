@@ -25,6 +25,7 @@ final class Elements implements ElementsInterface
         foreach ($this->getAll() as $type) {
             $emptyList[$type] = [];
         }
+
         return $emptyList;
     }
 }

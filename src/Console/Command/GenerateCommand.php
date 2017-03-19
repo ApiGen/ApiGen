@@ -224,6 +224,7 @@ final class GenerateCommand extends AbstractCommand
                 unset($options[$key]);
             }
         }
+
         return $options;
     }
 
@@ -256,6 +257,7 @@ final class GenerateCommand extends AbstractCommand
         if ($shouldOverwrite) {
             $this->fileSystem->purgeDir($destination);
         }
+
         $this->themeResources->copyToDestination($destination);
     }
 

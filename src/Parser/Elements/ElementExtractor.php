@@ -103,6 +103,7 @@ final class ElementExtractor implements ElementExtractorInterface
         foreach ($elements as $key => $elementList) {
             $this->elementSorter->sortElementsByFqn($elementList);
         }
+
         return $elements;
     }
 }

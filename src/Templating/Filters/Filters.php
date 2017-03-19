@@ -16,6 +16,7 @@ abstract class Filters
             $args = array_slice(func_get_args(), 1);
             return call_user_func_array([$this, $name], $args);
         }
+
         return null;
     }
 
@@ -46,6 +47,7 @@ abstract class Filters
                 return $names[$clearName] . '[]';
             }
         }
+
         if (isset($names[$name])) {
             return $names[$name];
         }

@@ -55,6 +55,7 @@ class NetteFinder implements FinderInterface
         if (! is_array($source)) {
             return [$source];
         }
+
         return $source;
     }
 

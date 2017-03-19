@@ -100,6 +100,7 @@ class SourceCodeGeneratorTest extends ContainerAwareTestCase
         foreach (Finder::findFiles('*')->in(__DIR__ . '/SourceCodeSource')->getIterator() as $file) {
             $files[] = $file;
         }
+
         $this->parser->parse($files);
     }
 }

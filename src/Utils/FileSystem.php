@@ -65,6 +65,7 @@ class FileSystem
         if (count(glob($path . '/*'))) {
             return false;
         }
+
         return true;
     }
 

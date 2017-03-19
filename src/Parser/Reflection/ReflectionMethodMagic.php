@@ -109,6 +109,7 @@ final class ReflectionMethodMagic extends ReflectionMethod implements MagicMetho
         if ($this->annotations === null) {
             $this->annotations = [];
         }
+
         return $this->annotations;
     }
 
@@ -172,6 +173,7 @@ final class ReflectionMethodMagic extends ReflectionMethod implements MagicMetho
         if ($declaringTrait = $this->getDeclaringTrait()) {
             return $declaringTrait->getName();
         }
+
         return '';
     }
 
@@ -257,6 +259,7 @@ final class ReflectionMethodMagic extends ReflectionMethod implements MagicMetho
         if (array_key_exists($name, $annotations)) {
             return $annotations[$name];
         }
+
         return [];
     }
 }

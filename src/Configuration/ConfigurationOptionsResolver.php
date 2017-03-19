@@ -151,6 +151,7 @@ final class ConfigurationOptionsResolver
                     'Template config "%s" was not found.', $value
                 ));
             }
+
             return true;
         });
     }
@@ -175,9 +176,11 @@ final class ConfigurationOptionsResolver
             if (! is_array($value)) {
                 $value = [$value];
             }
+
             foreach ($value as $key => $source) {
                 $value[$key] = $this->fileSystem->getAbsolutePath($source);
             }
+
             return $value;
         });
 
@@ -209,6 +212,7 @@ final class ConfigurationOptionsResolver
                 $destination
             ));
         }
+
         return true;
     }
 

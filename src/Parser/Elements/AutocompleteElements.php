@@ -59,6 +59,7 @@ class AutocompleteElements implements AutocompleteElementsInterface
             foreach ($element->getOwnMethods() as $method) {
                 $this->elements[] = ['m', $method->getPrettyName()];
             }
+
             foreach ($element->getOwnProperties() as $property) {
                 $this->elements[] = ['p', $property->getPrettyName()];
             }

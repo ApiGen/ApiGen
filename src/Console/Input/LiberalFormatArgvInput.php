@@ -14,6 +14,7 @@ final class LiberalFormatArgvInput extends ArgvInput
             $options[$key] = $this->removeEqualsSign($value);
             $options[$key] = $this->splitByComma($value);
         }
+
         return $options;
     }
 
@@ -39,7 +40,6 @@ final class LiberalFormatArgvInput extends ArgvInput
             array_walk($value, function (&$singleValue) {
                 $singleValue = ltrim((string) $singleValue, '=');
             });
-
         } else {
             $value = (string) $value;
             $value = ltrim($value, '=');
@@ -67,6 +67,7 @@ final class LiberalFormatArgvInput extends ArgvInput
             $value = (string) $value;
             $value = $this->splitByCommaIfHasAny($value);
         }
+
         return $value;
     }
 
@@ -86,6 +87,7 @@ final class LiberalFormatArgvInput extends ArgvInput
         if ($this->containsComma($value)) {
             return explode(',', $value);
         }
+
         return $value;
     }
 }

@@ -34,7 +34,6 @@ final class Parser implements ParserInterface
         foreach ($files as $file) {
             try {
                 $this->broker->processFile($file->getPathname());
-
             } catch (ParseException $parseException) {
                 // @todo: make nice exception convertion
                 throw new Exception(sprintf(

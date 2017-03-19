@@ -31,6 +31,7 @@ final class ThemeConfig
                 $filePath
             ));
         }
+
         $this->filePath = $filePath;
         $this->themeConfigOptionsResolver = $themeConfigOptionsResolver;
     }
@@ -46,6 +47,7 @@ final class ThemeConfig
             $options['templatesPath'] = dirname($this->filePath);
             $this->options = $this->themeConfigOptionsResolver->resolve($options);
         }
+
         return $this->options;
     }
 }

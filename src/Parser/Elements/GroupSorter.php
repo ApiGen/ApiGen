@@ -42,6 +42,7 @@ class GroupSorter implements GroupSorterInterface
         if ($this->isNoneGroupOnly($groups)) {
             return [];
         }
+
         $this->groups = $groups;
 
         $groupNames = array_keys($groups);
@@ -65,6 +66,7 @@ class GroupSorter implements GroupSorterInterface
         if (count($groups) === 1 && isset($groups['None'])) {
             return true;
         }
+
         return false;
     }
 

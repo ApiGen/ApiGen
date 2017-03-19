@@ -36,6 +36,7 @@ class ResolverFilters extends Filters
         if ($reflection) {
             return $reflection;
         }
+
         return false;
     }
 

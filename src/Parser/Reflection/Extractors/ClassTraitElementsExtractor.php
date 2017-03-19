@@ -36,10 +36,12 @@ class ClassTraitElementsExtractor implements ClassTraitElementsExtractorInterfac
             if (! $class->isDocumented()) {
                 continue;
             }
+
             if (in_array($name, $class->getOwnTraitNames())) {
                 $users[] = $class;
             }
         }
+
         uksort($users, 'strcasecmp');
         return $users;
     }
@@ -53,10 +55,12 @@ class ClassTraitElementsExtractor implements ClassTraitElementsExtractorInterfac
             if (! $class->isDocumented()) {
                 continue;
             }
+
             if ($class->usesTrait($name) && ! in_array($name, $class->getOwnTraitNames())) {
                 $users[] = $class;
             }
         }
+
         uksort($users, 'strcasecmp');
         return $users;
     }
@@ -72,6 +76,7 @@ class ClassTraitElementsExtractor implements ClassTraitElementsExtractorInterfac
                 $properties[$property->getName()] = $apiProperty;
             }
         }
+
         return $properties;
     }
 
@@ -85,6 +90,7 @@ class ClassTraitElementsExtractor implements ClassTraitElementsExtractorInterfac
                 $methods[$method->getName()] = $apiMethod;
             }
         }
+
         return $methods;
     }
 
@@ -114,6 +120,7 @@ class ClassTraitElementsExtractor implements ClassTraitElementsExtractorInterfac
                 $properties[$trait->getName()] = array_values($usedProperties);
             }
         }
+
         return $properties;
     }
 
@@ -133,6 +140,7 @@ class ClassTraitElementsExtractor implements ClassTraitElementsExtractorInterfac
                 $usedMethods[$m->getDeclaringTraitName()][$m->getName()]['aliases'][$m->getName()] = $m;
             }
         }
+
         return $usedMethods;
     }
 }

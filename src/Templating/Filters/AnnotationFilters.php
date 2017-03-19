@@ -62,6 +62,7 @@ final class AnnotationFilters extends Filters
         foreach ($toRemove as $annotation) {
             unset($annotations[$annotation]);
         }
+
         return $annotations;
     }
 }

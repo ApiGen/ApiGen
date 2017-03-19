@@ -94,6 +94,7 @@ class AnnotationPropertyExtractor implements AnnotationPropertyExtractorInterfac
         if ($delimiter = strpos($annotation, "\n")) {
             $tmp = substr($annotation, 0, $delimiter);
         }
+
         return $this->classReflection->getStartLine() + substr_count(substr($doc, 0, strpos($doc, $tmp)), "\n");
     }
 }

@@ -55,7 +55,7 @@ final class TemplateNavigator
         $options = $this->configuration->getOptions();
         $templates = $options[ConfigurationOptions::TEMPLATE][ThemeConfigOptions::TEMPLATES];
 
-        if ( ! isset($templates[$name])) {
+        if (! isset($templates[$name])) {
             throw new Exception(sprintf(
                 'Template for "%s" not found. Available templates: "%s".',
                 $name,
