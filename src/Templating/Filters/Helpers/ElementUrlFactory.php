@@ -2,8 +2,8 @@
 
 namespace ApiGen\Templating\Filters\Helpers;
 
-use ApiGen\Configuration\ConfigurationOptions as CO;
-use ApiGen\Configuration\Theme\ThemeConfigOptions as TCO;
+use ApiGen\Configuration\ConfigurationOptions;
+use ApiGen\Configuration\Theme\ThemeConfigOptions;
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
@@ -15,7 +15,6 @@ use ApiGen\Templating\Filters\Filters;
 
 final class ElementUrlFactory
 {
-
     /**
      * @var ConfigurationInterface
      */
@@ -56,7 +55,7 @@ final class ElementUrlFactory
     {
         $className = $class instanceof ClassReflectionInterface ? $class->getName() : $class;
         return sprintf(
-            $this->configuration->getOption(CO::TEMPLATE)['templates']['class']['filename'],
+            $this->configuration->getOption(ConfigurationOptions::TEMPLATE)['templates']['class']['filename'],
             Filters::urlize($className)
         );
     }
@@ -86,7 +85,7 @@ final class ElementUrlFactory
 
         // Constant in namespace or global space
         return sprintf(
-            $this->configuration->getOption(CO::TEMPLATE)['templates']['constant']['filename'],
+            $this->configuration->getOption(ConfigurationOptions::TEMPLATE)['templates']['constant']['filename'],
             Filters::urlize($constant->getName())
         );
     }
@@ -95,7 +94,7 @@ final class ElementUrlFactory
     public function createForFunction(FunctionReflectionInterface $function): string
     {
         return sprintf(
-            $this->configuration->getOption(CO::TEMPLATE)['templates']['function']['filename'],
+            $this->configuration->getOption(ConfigurationOptions::TEMPLATE)['templates']['function']['filename'],
             Filters::urlize($function->getName())
         );
     }
@@ -104,7 +103,7 @@ final class ElementUrlFactory
     public function createForAnnotationGroup(string $name): string
     {
         return sprintf(
-            $this->configuration->getOption(CO::TEMPLATE)['templates'][TCO::ANNOTATION_GROUP]['filename'],
+            $this->configuration->getOption(ConfigurationOptions::TEMPLATE)['templates'][ThemeConfigOptions::ANNOTATION_GROUP]['filename'],
             Filters::urlize($name)
         );
     }

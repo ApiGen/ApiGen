@@ -8,12 +8,10 @@ use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
-use ApiGen\Reflection\ReflectionClass;
 use ApiGen\Templating\Filters\Helpers\ElementUrlFactory;
 
-class ElementUrlFilters extends Filters
+final class ElementUrlFilters extends Filters
 {
-
     /**
      * @var ElementUrlFactory
      */
@@ -33,7 +31,7 @@ class ElementUrlFilters extends Filters
 
 
     /**
-     * @param string|ReflectionClass $class
+     * @param string|ClassReflectionInterface $class
      * @return string
      */
     public function classUrl($class): string

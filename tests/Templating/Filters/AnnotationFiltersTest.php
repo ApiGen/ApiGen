@@ -9,7 +9,6 @@ use PHPUnit\Framework\TestCase;
 
 final class AnnotationFiltersTest extends TestCase
 {
-
     /**
      * @var AnnotationFilters
      */
@@ -23,8 +22,7 @@ final class AnnotationFiltersTest extends TestCase
             ->with(CO::INTERNAL)
             ->willReturn(false);
 
-        $elementResolverMock = $this->createMock('ApiGen\Generator\Resolvers\ElementResolver');
-        $this->annotationFilters = new AnnotationFilters($configurationMock, $elementResolverMock);
+        $this->annotationFilters = new AnnotationFilters($configurationMock);
     }
 
 

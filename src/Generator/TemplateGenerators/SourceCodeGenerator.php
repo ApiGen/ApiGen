@@ -2,26 +2,24 @@
 
 namespace ApiGen\Generator\TemplateGenerators;
 
-use ApiGen\Configuration\Configuration;
-use ApiGen\Configuration\ConfigurationOptions as CO;
+use ApiGen\Configuration\ConfigurationOptions;
+use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Generator\StepCounterInterface;
 use ApiGen\Contracts\Generator\TemplateGenerators\ConditionalTemplateGeneratorInterface;
 use ApiGen\Contracts\Parser\Elements\ElementStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
 use ApiGen\Generator\Event\GenerateProgressEvent;
-use ApiGen\Generator\Event\GeneratorEvents;
 use ApiGen\Generator\Resolvers\RelativePathResolver;
 use ApiGen\Generator\SourceCodeHighlighter\SourceCodeHighlighter;
 use ApiGen\Generator\TemplateGenerators\Loaders\NamespaceLoader;
 use ApiGen\Templating\TemplateFactory;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class SourceCodeGenerator implements ConditionalTemplateGeneratorInterface, StepCounterInterface
+final class SourceCodeGenerator implements ConditionalTemplateGeneratorInterface, StepCounterInterface
 {
-
     /**
-     * @var Configuration
+     * @var ConfigurationInterface
      */
     private $configuration;
 
@@ -57,7 +55,7 @@ class SourceCodeGenerator implements ConditionalTemplateGeneratorInterface, Step
 
 
     public function __construct(
-        Configuration $configuration,
+        ConfigurationInterface $configuration,
         ElementStorageInterface $elementStorage,
         TemplateFactory $templateFactory,
         RelativePathResolver $relativePathResolver,
@@ -109,7 +107,7 @@ class SourceCodeGenerator implements ConditionalTemplateGeneratorInterface, Step
 
     public function isAllowed(): bool
     {
-        return (bool) $this->configuration->getOption(CO::SOURCE_CODE);
+        return (bool) $this->configuration->getOption(ConfigurationOptions::SOURCE_CODE);
     }
 
 

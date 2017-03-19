@@ -3,7 +3,7 @@
 namespace ApiGen\Templating\Filters;
 
 use ApiGen\Configuration\Configuration;
-use ApiGen\Configuration\ConfigurationOptions as CO;
+use ApiGen\Configuration\ConfigurationOptions;
 use ApiGen\Contracts\Generator\Resolvers\ElementResolverInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
@@ -186,7 +186,7 @@ final class UrlFilters extends Filters
                 return $matches[0];
             }
 
-            if ($this->configuration->getOption(CO::INTERNAL) && isset($matches[2])) {
+            if ($this->configuration->getOption(ConfigurationOptions::INTERNAL) && isset($matches[2])) {
                 return $matches[2];
             }
 

@@ -2,7 +2,7 @@
 
 namespace ApiGen\Generator\TemplateGenerators;
 
-use ApiGen\Configuration\Theme\ThemeConfigOptions as TCO;
+use ApiGen\Configuration\Theme\ThemeConfigOptions;
 use ApiGen\Contracts\Generator\TemplateGenerators\TemplateGeneratorInterface;
 use ApiGen\Templating\TemplateFactory;
 
@@ -23,7 +23,7 @@ class OverviewGenerator implements TemplateGeneratorInterface
 
     public function generate(): void
     {
-        $this->templateFactory->createForType(TCO::OVERVIEW)
+        $this->templateFactory->createForType(ThemeConfigOptions::OVERVIEW)
             ->save();
     }
 }

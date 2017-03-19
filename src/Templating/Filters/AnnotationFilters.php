@@ -2,9 +2,8 @@
 
 namespace ApiGen\Templating\Filters;
 
-use ApiGen;
-use ApiGen\Configuration\Configuration;
-use ApiGen\Configuration\ConfigurationOptions as CO;
+use ApiGen\Configuration\ConfigurationOptions;
+use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use Nette\Utils\Strings;
 
 final class AnnotationFilters extends Filters
@@ -19,12 +18,12 @@ final class AnnotationFilters extends Filters
     ];
 
     /**
-     * @var Configuration
+     * @var ConfigurationInterface
      */
     private $configuration;
 
 
-    public function __construct(Configuration $configuration)
+    public function __construct(ConfigurationInterface $configuration)
     {
         $this->configuration = $configuration;
     }
@@ -50,7 +49,7 @@ final class AnnotationFilters extends Filters
         $annotations = $this->filterOut($annotations, $this->remove);
         $annotations = $this->filterOut($annotations, $customToRemove);
 
-        if (! $this->configuration->getOption(CO::INTERNAL)) {
+        if (! $this->configuration->getOption(ConfigurationOptions::INTERNAL)) {
             unset($annotations['internal']);
         }
 

@@ -2,7 +2,6 @@
 
 namespace ApiGen\Configuration;
 
-use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Configuration\Exceptions\ConfigurationException;
 use ApiGen\Configuration\Theme\ThemeConfigFactory;
 use ApiGen\Utils\FileSystem;
@@ -12,36 +11,35 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class ConfigurationOptionsResolver
 {
-
-    const AL_PROTECTED = 'protected';
-    const AL_PRIVATE = 'private';
-    const AL_PUBLIC = 'public';
+    public const AL_PROTECTED = 'protected';
+    public const AL_PRIVATE = 'private';
+    public const AL_PUBLIC = 'public';
 
     /**
      * @var array
      */
     private $defaults = [
-        CO::ANNOTATION_GROUPS => [],
-        CO::ACCESS_LEVELS => ['public'],
-        CO::BASE_URL => '',
-        CO::CONFIG => '',
-        CO::DEBUG => false,
-        CO::DESTINATION => null,
-        CO::FORCE_OVERWRITE => false,
-        CO::EXCLUDE => [],
-        CO::EXTENSIONS => ['php'],
-        CO::GOOGLE_CSE_ID => '',
-        CO::GOOGLE_ANALYTICS => '',
-        CO::MAIN => '',
-        CO::INTERNAL => false,
-        CO::SOURCE => [],
-        CO::NO_SOURCE_CODE => false,
-        CO::TEMPLATE => null,
-        CO::TEMPLATE_CONFIG => null,
-        CO::TITLE => '',
+        ConfigurationOptions::ANNOTATION_GROUPS => [],
+        ConfigurationOptions::ACCESS_LEVELS => ['public'],
+        ConfigurationOptions::BASE_URL => '',
+        ConfigurationOptions::CONFIG => '',
+        ConfigurationOptions::DEBUG => false,
+        ConfigurationOptions::DESTINATION => null,
+        ConfigurationOptions::FORCE_OVERWRITE => false,
+        ConfigurationOptions::EXCLUDE => [],
+        ConfigurationOptions::EXTENSIONS => ['php'],
+        ConfigurationOptions::GOOGLE_CSE_ID => '',
+        ConfigurationOptions::GOOGLE_ANALYTICS => '',
+        ConfigurationOptions::MAIN => '',
+        ConfigurationOptions::INTERNAL => false,
+        ConfigurationOptions::SOURCE => [],
+        ConfigurationOptions::NO_SOURCE_CODE => false,
+        ConfigurationOptions::TEMPLATE => null,
+        ConfigurationOptions::TEMPLATE_CONFIG => null,
+        ConfigurationOptions::TITLE => '',
         // helpers
-        CO::VISIBILITY_LEVELS => [],
-        CO::SOURCE_CODE => '',
+        ConfigurationOptions::VISIBILITY_LEVELS => [],
+        ConfigurationOptions::SOURCE_CODE => '',
         // removed, but BC for templates
         'download' => false,
         'tree' => false,
@@ -95,11 +93,15 @@ final class ConfigurationOptionsResolver
     {
         $this->resolver->setDefaults($this->defaults);
         $this->resolver->setDefaults([
-            CO::VISIBILITY_LEVELS => function (Options $options) {
-                return $this->getAccessLevelForReflections($options[CO::ACCESS_LEVELS]);
+            ConfigurationOptions::VISIBILITY_LEVELS => function (Options $options) {
+                return $this->getAccessLevelForReflections($options[ConfigurationOptions::ACCESS_LEVELS]);
             },
-            CO::TEMPLATE => function (Options $options) {
-                $config = $options[CO::TEMPLATE_CONFIG];
+            ConfigurationOptions::TEMPLATE => function (Options $options) {
+                $config = $options[ConfigurationOptions::TEMPLATE_CONFIG];
+                if ($config === '') {
+                    $config = getcwd() . '/vendor/apigen/theme-default/src/config.neon';
+                }
+
                 return $this->themeConfigFactory->create($config)
                     ->getOptions();
             }
@@ -129,21 +131,21 @@ final class ConfigurationOptionsResolver
 
     private function setRequired(): void
     {
-        $this->resolver->setRequired([CO::SOURCE, CO::DESTINATION]);
+        $this->resolver->setRequired([ConfigurationOptions::SOURCE, ConfigurationOptions::DESTINATION]);
     }
 
 
     private function setAllowedValues(): void
     {
-        $this->resolver->addAllowedValues(CO::DESTINATION, function ($destination) {
+        $this->resolver->addAllowedValues(ConfigurationOptions::DESTINATION, function ($destination) {
             return $this->allowedValuesForDestination($destination);
         });
 
-        $this->resolver->addAllowedValues(CO::SOURCE, function ($source) {
+        $this->resolver->addAllowedValues(ConfigurationOptions::SOURCE, function ($source) {
             return $this->allowedValuesForSource($source);
         });
 
-        $this->resolver->addAllowedValues(CO::TEMPLATE_CONFIG, function ($value) {
+        $this->resolver->addAllowedValues(ConfigurationOptions::TEMPLATE_CONFIG, function ($value) {
             if ($value && ! is_file($value)) {
                 throw new ConfigurationException(sprintf(
                     'Template config "%s" was not found.', $value
@@ -156,20 +158,20 @@ final class ConfigurationOptionsResolver
 
     private function setNormalizers(): void
     {
-        $this->resolver->setNormalizer(CO::ANNOTATION_GROUPS, function (Options $options, $value) {
+        $this->resolver->setNormalizer(ConfigurationOptions::ANNOTATION_GROUPS, function (Options $options, $value) {
             $value = (array) $value;
             return array_unique($value);
         });
 
-        $this->resolver->setNormalizer(CO::DESTINATION, function (Options $options, $value) {
+        $this->resolver->setNormalizer(ConfigurationOptions::DESTINATION, function (Options $options, $value) {
             return $this->fileSystem->getAbsolutePath($value);
         });
 
-        $this->resolver->setNormalizer(CO::BASE_URL, function (Options $options, $value) {
+        $this->resolver->setNormalizer(ConfigurationOptions::BASE_URL, function (Options $options, $value) {
             return rtrim((string) $value, '/');
         });
 
-        $this->resolver->setNormalizer(CO::SOURCE, function (Options $options, $value) {
+        $this->resolver->setNormalizer(ConfigurationOptions::SOURCE, function (Options $options, $value) {
             if (! is_array($value)) {
                 $value = [$value];
             }
@@ -179,11 +181,11 @@ final class ConfigurationOptionsResolver
             return $value;
         });
 
-        $this->resolver->setNormalizer(CO::SOURCE_CODE, function (Options $options) {
-            return ! $options[CO::NO_SOURCE_CODE];
+        $this->resolver->setNormalizer(ConfigurationOptions::SOURCE_CODE, function (Options $options) {
+            return ! $options[ConfigurationOptions::NO_SOURCE_CODE];
         });
 
-        $this->resolver->setNormalizer(CO::TEMPLATE_CONFIG, function (Options $options, $value) {
+        $this->resolver->setNormalizer(ConfigurationOptions::TEMPLATE_CONFIG, function (Options $options, $value) {
             if ($value === null) {
                 return '';
             }

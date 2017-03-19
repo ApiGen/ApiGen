@@ -2,7 +2,7 @@
 
 namespace ApiGen\Templating;
 
-use ApiGen\Configuration\ConfigurationOptions as CO;
+use ApiGen\Configuration\ConfigurationOptions;
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Parser\Elements\ElementStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
@@ -11,7 +11,6 @@ use Closure;
 
 final class TemplateElementsLoader
 {
-
     /**
      * @var ElementStorageInterface
      */
@@ -62,7 +61,7 @@ final class TemplateElementsLoader
     {
         if ($this->parameters === null) {
             $parameters = [
-                'annotationGroups' => $this->configuration->getOption(CO::ANNOTATION_GROUPS),
+                'annotationGroups' => $this->configuration->getOption(ConfigurationOptions::ANNOTATION_GROUPS),
                 'namespace' => null,
                 'package' => null, // removed, but for BC with Themes
                 'class' => null,

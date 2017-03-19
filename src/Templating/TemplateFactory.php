@@ -3,8 +3,8 @@
 namespace ApiGen\Templating;
 
 use ApiGen\Configuration\Configuration;
-use ApiGen\Configuration\ConfigurationOptions as CO;
-use ApiGen\Configuration\Theme\ThemeConfigOptions as TCO;
+use ApiGen\Configuration\ConfigurationOptions;
+use ApiGen\Configuration\Theme\ThemeConfigOptions;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
@@ -63,13 +63,23 @@ final class TemplateFactory implements TemplateFactoryInterface
 
     public function create(): Template
     {
-        return $this->buildTemplate();
+        if ($this->builtTemplate === null) {
+            $options = $this->configuration->getOptions();
+            $template = new Template($this->latteEngine);
+            $template->setParameters([
+                'config' => ArrayHash::from($options),
+                'basePath' => $options[ConfigurationOptions::TEMPLATE][ThemeConfigOptions::TEMPLATES_PATH]
+            ]);
+            $this->builtTemplate = $template;
+        }
+
+        return $this->templateElementsLoader->addElementsToTemplate($this->builtTemplate);
     }
 
 
     public function createForType(string $type): Template
     {
-        $template = $this->buildTemplate();
+        $template = $this->create();
         $template->setFile($this->templateNavigator->getTemplatePath($type));
         $template->setSavePath($this->templateNavigator->getTemplateFileName($type));
         $template = $this->setEmptyDefaults($template);
@@ -85,8 +95,10 @@ final class TemplateFactory implements TemplateFactoryInterface
      */
     public function createNamedForElement(string $name, $element): Template
     {
-        $template = $this->buildTemplate();
-        $template->setFile($this->templateNavigator->getTemplatePath($name));
+        $template = $this->create();
+
+        $templateFile = $this->templateNavigator->getTemplatePath($name);
+        $template->setFile($templateFile);
 
         if ($name === self::ELEMENT_SOURCE) {
             $template->setSavePath($this->templateNavigator->getTemplatePathForSourceElement($element));
@@ -95,15 +107,19 @@ final class TemplateFactory implements TemplateFactoryInterface
         } elseif ($name === self::ELEMENT_ANNOTATION_GROUP) {
             $template->setSavePath($this->templateNavigator->getTemplatePathForAnnotationGroup($element));
         } else {
-            throw new UnsupportedElementException($name . ' is not supported template type.');
+            throw new UnsupportedElementException(sprintf(
+                '"%s" is not supported template type.',
+                $name
+            ));
         }
+
         return $template;
     }
 
 
     public function createForReflection(ElementReflectionInterface $element): Template
     {
-        $template = $this->buildTemplate();
+        $template = $this->create();
 
         if ($element instanceof ClassReflectionInterface) {
             $template->setFile($this->templateNavigator->getTemplatePath('class'));
@@ -120,26 +136,10 @@ final class TemplateFactory implements TemplateFactoryInterface
     }
 
 
-    private function buildTemplate(): Template
-    {
-        if ($this->builtTemplate === null) {
-            $options = $this->configuration->getOptions();
-            $template = new Template($this->latteEngine);
-            $template->setParameters([
-                'config' => ArrayHash::from($options),
-                'basePath' => $options[CO::TEMPLATE][TCO::TEMPLATES_PATH]
-            ]);
-            $this->builtTemplate = $template;
-        }
-        return $this->templateElementsLoader->addElementsToTemplate($this->builtTemplate);
-    }
-
-
     private function setEmptyDefaults(Template $template): Template
     {
         return $template->setParameters([
             'namespace' => null,
-            'package' => null
         ]);
     }
 }

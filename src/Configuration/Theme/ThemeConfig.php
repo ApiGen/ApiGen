@@ -5,9 +5,8 @@ namespace ApiGen\Configuration\Theme;
 use ApiGen\Configuration\Exceptions\ConfigurationException;
 use ApiGen\Configuration\Readers\NeonFile;
 
-class ThemeConfig
+final class ThemeConfig
 {
-
     /**
      * @var mixed[]
      */

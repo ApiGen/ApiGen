@@ -2,18 +2,17 @@
 
 namespace ApiGen\Theme;
 
-use ApiGen\Configuration\Configuration;
-use ApiGen\Configuration\ConfigurationOptions as CO;
+use ApiGen\Configuration\ConfigurationOptions;
+use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Utils\FileSystem;
 use Nette\Utils\Finder;
 use RecursiveDirectoryIterator;
 use SplFileInfo;
 
-class ThemeResources
+final class ThemeResources
 {
-
     /**
-     * @var Configuration
+     * @var ConfigurationInterface
      */
     private $configuration;
 
@@ -23,7 +22,7 @@ class ThemeResources
     private $fileSystem;
 
 
-    public function __construct(Configuration $configuration, FileSystem $fileSystem)
+    public function __construct(ConfigurationInterface $configuration, FileSystem $fileSystem)
     {
         $this->configuration = $configuration;
         $this->fileSystem = $fileSystem;
@@ -32,7 +31,7 @@ class ThemeResources
 
     public function copyToDestination(string $destination): void
     {
-        $resources = $this->configuration->getOption(CO::TEMPLATE)['resources'];
+        $resources = $this->configuration->getOption(ConfigurationOptions::TEMPLATE)['resources'];
         foreach ($resources as $resourceSource => $resourceDestination) {
             // File
             if (is_file($resourceSource)) {

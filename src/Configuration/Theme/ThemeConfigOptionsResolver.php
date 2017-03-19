@@ -4,14 +4,12 @@ namespace ApiGen\Configuration\Theme;
 
 use ApiGen\Configuration\Exceptions\ConfigurationException;
 use ApiGen\Configuration\OptionsResolverFactory;
-use ApiGen\Configuration\Theme\ThemeConfigOptions as TCO;
 use Nette;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ThemeConfigOptionsResolver extends Nette\Object
+final class ThemeConfigOptionsResolver extends Nette\Object
 {
-
     /**
      * @var array
      */
@@ -19,54 +17,53 @@ class ThemeConfigOptionsResolver extends Nette\Object
         'name' => '',
         'options' => [
             'elementDetailsCollapsed' => true,
-            'elementsOrder' => 'natural' # or: alphabetical
         ],
-        TCO::RESOURCES => [
+        ThemeConfigOptions::RESOURCES => [
             'resources' => 'resources'
         ],
-        TCO::TEMPLATES => [
-            TCO::OVERVIEW => [
+        ThemeConfigOptions::TEMPLATES => [
+            ThemeConfigOptions::OVERVIEW => [
                 'filename' => 'index.html',
                 'template' => 'overview.latte'
             ],
-            TCO::COMBINED => [
+            ThemeConfigOptions::COMBINED => [
                 'filename' => 'resources/combined.js',
                 'template' => 'combined.js.latte'
             ],
-            TCO::ELEMENT_LIST => [
+            ThemeConfigOptions::ELEMENT_LIST => [
                 'filename' => 'elementlist.js',
                 'template' => 'elementlist.js.latte'
             ],
-            TCO::T_NAMESPACE => [
+            ThemeConfigOptions::T_NAMESPACE => [
                 'filename' => 'namespace-%s.html',
                 'template' => 'namespace.latte'
             ],
-            TCO::T_CLASS => [
+            ThemeConfigOptions::T_CLASS => [
                 'filename' => 'class-%s.html',
                 'template' => 'class.latte'
             ],
-            TCO::T_CONSTANT => [
+            ThemeConfigOptions::T_CONSTANT => [
                 'filename' => 'constant-%s.html',
                 'template' => 'constant.latte'
             ],
-            TCO::T_FUNCTION => [
+            ThemeConfigOptions::T_FUNCTION => [
                 'filename' => 'function-%s.html',
                 'template' => 'function.latte'
             ],
-            TCO::ANNOTATION_GROUP => [
+            ThemeConfigOptions::ANNOTATION_GROUP => [
                 'filename' => 'annotation-group-%s.html',
                 'template' => 'annotation-group.latte'
             ],
-            TCO::SOURCE => [
+            ThemeConfigOptions::SOURCE => [
                 'filename' => 'source-%s.html',
                 'template' => 'source.latte'
             ],
-            TCO::OPENSEARCH => [
+            ThemeConfigOptions::OPENSEARCH => [
                 'filename' => 'opensearch.xml',
                 'template' => 'opensearch.xml.latte'
             ]
         ],
-        TCO::TEMPLATES_PATH => ''
+        ThemeConfigOptions::TEMPLATES_PATH => ''
     ];
 
     /**
@@ -103,11 +100,11 @@ class ThemeConfigOptionsResolver extends Nette\Object
 
     private function setNormalizers(): void
     {
-        $this->resolver->setNormalizer(TCO::TEMPLATES, function (Options $options, $value) {
+        $this->resolver->setNormalizer(ThemeConfigOptions::TEMPLATES, function (Options $options, $value) {
             return $this->makeTemplatePathsAbsolute($value, $options);
         });
 
-        $this->resolver->setNormalizer(TCO::RESOURCES, function (Options $options, $resources) {
+        $this->resolver->setNormalizer(ThemeConfigOptions::RESOURCES, function (Options $options, $resources) {
             $absolutizedResources = [];
             foreach ($resources as $key => $resource) {
                 $key = $options['templatesPath'] . '/' . $key;
@@ -121,7 +118,7 @@ class ThemeConfigOptionsResolver extends Nette\Object
     private function makeTemplatePathsAbsolute(array $value, Options $options): array
     {
         foreach ($value as $type => $settings) {
-            $filePath = $options[TCO::TEMPLATES_PATH] . '/' . $settings['template'];
+            $filePath = $options[ThemeConfigOptions::TEMPLATES_PATH] . '/' . $settings['template'];
             $value[$type]['template'] = $filePath;
             $this->validateFileExistence($filePath, $type);
         }
@@ -132,7 +129,11 @@ class ThemeConfigOptionsResolver extends Nette\Object
     private function validateFileExistence(string $file, string $type): void
     {
         if (! is_file($file)) {
-            throw new ConfigurationException("Template for $type was not found in $file");
+            throw new ConfigurationException(sprintf(
+                'Template for "%s" was not found in "%s"',
+                $type,
+                $file
+            ));
         }
     }
 }

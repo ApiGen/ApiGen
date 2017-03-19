@@ -2,18 +2,13 @@
 
 namespace ApiGen\Tests\Templating;
 
-use ApiGen\Configuration\ConfigurationOptions as CO;
-use ApiGen\Contracts\Configuration\ConfigurationInterface;
-use ApiGen\Parser\Elements\AutocompleteElements;
-use ApiGen\Parser\Elements\ElementStorage;
 use ApiGen\Templating\Template;
 use ApiGen\Templating\TemplateElementsLoader;
+use ApiGen\Tests\ContainerAwareTestCase;
 use Latte\Engine;
-use PHPUnit\Framework\TestCase;
 
-final class TemplateElementsLoaderTest extends TestCase
+final class TemplateElementsLoaderTest extends ContainerAwareTestCase
 {
-
     /**
      * @var TemplateElementsLoader
      */
@@ -22,19 +17,7 @@ final class TemplateElementsLoaderTest extends TestCase
 
     protected function setUp(): void
     {
-        $elementStorageMock = $this->getElementStorageMock();
-        $configurationMock = $this->createMock(ConfigurationInterface::class);
-        $configurationMock->method('getOption')->with(CO::ANNOTATION_GROUPS)->willReturn(['todo']);
-        $configurationMock->method('getZipFileName')->willReturn('file.zip');
-
-        $autocompleteElementsMock = $this->createMock(AutocompleteElements::class);
-        $autocompleteElementsMock->method('getElements')->willReturn([]);
-
-        $this->templateElementsLoader = new TemplateElementsLoader(
-            $elementStorageMock,
-            $configurationMock,
-            $autocompleteElementsMock
-        );
+        $this->templateElementsLoader = $this->container->getByType(TemplateElementsLoader::class);
     }
 
 
@@ -47,13 +30,10 @@ final class TemplateElementsLoaderTest extends TestCase
 
         $parameters = $template->getParameters();
         $this->assertArrayHasKey('namespace', $parameters);
-        $this->assertArrayHasKey('namespace', $parameters);
-        $this->assertArrayHasKey('package', $parameters);
         $this->assertArrayHasKey('class', $parameters);
         $this->assertArrayHasKey('constant', $parameters);
         $this->assertArrayHasKey('function', $parameters);
         $this->assertArrayHasKey('namespaces', $parameters);
-        $this->assertArrayHasKey('packages', $parameters);
         $this->assertArrayHasKey('classes', $parameters);
         $this->assertArrayHasKey('interfaces', $parameters);
         $this->assertArrayHasKey('traits', $parameters);
@@ -63,20 +43,5 @@ final class TemplateElementsLoaderTest extends TestCase
         $this->assertArrayHasKey('elements', $parameters);
 
         $this->assertSame(['todo'], $parameters['annotationGroups']);
-    }
-
-
-    private function getElementStorageMock(): Mockery\MockInterface
-    {
-        $elementStorageMock = $this->createMock(ElementStorage::class);
-        $elementStorageMock->method('getNamespaces')->willReturn([]);
-        $elementStorageMock->method('getPackages')->willReturn([]);
-        $elementStorageMock->method('getClasses')->willReturn([]);
-        $elementStorageMock->method('getInterfaces')->willReturn([]);
-        $elementStorageMock->method('getTraits')->willReturn([]);
-        $elementStorageMock->method('getExceptions')->willReturn([]);
-        $elementStorageMock->method('getConstants')->willReturn([]);
-        $elementStorageMock->method('getFunctions')->willReturn([]);
-        return $elementStorageMock;
     }
 }

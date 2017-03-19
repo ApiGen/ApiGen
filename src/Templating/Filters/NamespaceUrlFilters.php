@@ -3,8 +3,9 @@
 namespace ApiGen\Templating\Filters;
 
 use ApiGen\Configuration\Configuration;
-use ApiGen\Configuration\ConfigurationOptions as CO;
+use ApiGen\Configuration\ConfigurationOptions;
 use ApiGen\Parser\Elements\ElementStorage;
+use ApiGen\Parser\Reflection\ReflectionElement;
 use ApiGen\Templating\Filters\Helpers\LinkBuilder;
 
 class NamespaceUrlFilters extends Filters
@@ -63,10 +64,13 @@ class NamespaceUrlFilters extends Filters
     }
 
 
-    public function namespaceUrl(string $name): string
+    /**
+     * @param ReflectionElement|string $element
+     */
+    public function namespaceUrl($name): string
     {
         return sprintf(
-            $this->configuration->getOption(CO::TEMPLATE)['templates']['namespace']['filename'],
+            $this->configuration->getOption(ConfigurationOptions::TEMPLATE)['templates']['namespace']['filename'],
             $this->urlize($name)
         );
     }

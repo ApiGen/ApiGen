@@ -3,7 +3,7 @@
 namespace ApiGen\Generator\TemplateGenerators;
 
 use ApiGen\Configuration\Configuration;
-use ApiGen\Configuration\ConfigurationOptions as CO;
+use ApiGen\Configuration\ConfigurationOptions;
 use ApiGen\Contracts\Generator\TemplateGenerators\ConditionalTemplateGeneratorInterface;
 use ApiGen\Templating\TemplateFactory;
 
@@ -38,6 +38,6 @@ class OpensearchGenerator implements ConditionalTemplateGeneratorInterface
     public function isAllowed(): bool
     {
         $options = $this->configuration->getOptions();
-        return $options[CO::GOOGLE_CSE_ID] && $options[CO::BASE_URL];
+        return $options[ConfigurationOptions::GOOGLE_CSE_ID] && $options[ConfigurationOptions::BASE_URL];
     }
 }

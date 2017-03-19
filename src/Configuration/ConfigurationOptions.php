@@ -2,29 +2,115 @@
 
 namespace ApiGen\Configuration;
 
-class ConfigurationOptions
+final class ConfigurationOptions
 {
+    /**
+     * @var string
+     */
+    public const ACCESS_LEVELS = 'accessLevels';
 
-    const ACCESS_LEVELS = 'accessLevels';
-    const ANNOTATION_GROUPS = 'annotationGroups';
-    const CONFIG = 'config';
-    const BASE_URL = 'baseUrl';
-    const DEBUG = 'debug';
-    const DESTINATION = 'destination';
-    const FORCE_OVERWRITE = 'overwrite';
-    const EXCLUDE = 'exclude';
-    const EXTENSIONS = 'extensions';
-    const GOOGLE_CSE_ID = 'googleCseId';
-    const GOOGLE_ANALYTICS = 'googleAnalytics';
-    const GROUPS = 'groups';
-    const MAIN = 'main';
-    const INTERNAL = 'internal';
-    const PHP = 'php';
-    const SOURCE = 'source';
-    const NO_SOURCE_CODE = 'noSourceCode';
-    const TEMPLATE = 'template';
-    const TEMPLATE_CONFIG = 'templateConfig';
-    const TITLE = 'title';
-    const VISIBILITY_LEVELS = 'visibilityLevels';
-    const SOURCE_CODE = 'sourceCode';
+    /**
+     * @var string
+     */
+    public const ANNOTATION_GROUPS = 'annotationGroups';
+
+    /**
+     * @var string
+     */
+    public const CONFIG = 'config';
+
+    /**
+     * @var string
+     */
+    public const BASE_URL = 'baseUrl';
+
+    /**
+     * @var string
+     */
+    public const DEBUG = 'debug';
+
+    /**
+     * @var string
+     */
+    public const DESTINATION = 'destination';
+
+    /**
+     * @var string
+     */
+    public const FORCE_OVERWRITE = 'overwrite';
+
+    /**
+     * @var string
+     */
+    public const EXCLUDE = 'exclude';
+
+    /**
+     * @var string
+     */
+    public const EXTENSIONS = 'extensions';
+
+    /**
+     * @var string
+     */
+    public const GOOGLE_CSE_ID = 'googleCseId';
+
+    /**
+     * @var string
+     */
+    public const GOOGLE_ANALYTICS = 'googleAnalytics';
+
+    /**
+     * @var string
+     */
+    public const GROUPS = 'groups';
+
+    /**
+     * @var string
+     */
+    public const MAIN = 'main';
+
+    /**
+     * @var string
+     */
+    public const INTERNAL = 'internal';
+
+    /**
+     * @var string
+     */
+    public const PHP = 'php';
+
+    /**
+     * @var string
+     */
+    public const SOURCE = 'source';
+
+    /**
+     * @var string
+     */
+    public const NO_SOURCE_CODE = 'noSourceCode';
+
+    /**
+     * @var string
+     */
+    public const TEMPLATE = 'template';
+
+    /**
+     * @var string
+     */
+    public const TEMPLATE_CONFIG = 'templateConfig';
+
+    /**
+     * @var string
+     */
+    public const TITLE = 'title';
+
+    /**
+     * @var string
+     */
+    public const VISIBILITY_LEVELS = 'visibilityLevels';
+
+    /**
+     * @var string
+     */
+    public const SOURCE_CODE = 'sourceCode';
 }
