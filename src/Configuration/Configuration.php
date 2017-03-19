@@ -6,7 +6,6 @@ use ApiGen\Contracts\Configuration\ConfigurationInterface;
 
 final class Configuration implements ConfigurationInterface
 {
-
     /**
      * @var array
      */

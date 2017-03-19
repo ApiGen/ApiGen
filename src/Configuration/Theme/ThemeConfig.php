@@ -3,7 +3,7 @@
 namespace ApiGen\Configuration\Theme;
 
 use ApiGen\Configuration\Exceptions\ConfigurationException;
-use ApiGen\Configuration\Readers\NeonFile;
+use Nette\DI\Config\Loader;
 
 final class ThemeConfig
 {
@@ -42,10 +42,9 @@ final class ThemeConfig
     public function getOptions(): array
     {
         if ($this->options === null) {
-            $file = new NeonFile($this->filePath);
-            $values = $file->read();
-            $values['templatesPath'] = dirname($this->filePath);
-            $this->options = $this->themeConfigOptionsResolver->resolve($values);
+            $options = (new Loader)->load($this->filePath);
+            $options['templatesPath'] = dirname($this->filePath);
+            $this->options = $this->themeConfigOptionsResolver->resolve($options);
         }
         return $this->options;
     }

@@ -64,10 +64,7 @@ class NamespaceUrlFilters extends Filters
     }
 
 
-    /**
-     * @param ReflectionElement|string $element
-     */
-    public function namespaceUrl($name): string
+    public function namespaceUrl(string $name): string
     {
         return sprintf(
             $this->configuration->getOption(ConfigurationOptions::TEMPLATE)['templates']['namespace']['filename'],

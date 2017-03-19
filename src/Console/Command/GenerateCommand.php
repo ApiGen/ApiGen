@@ -3,7 +3,6 @@
 namespace ApiGen\Console\Command;
 
 use ApiGen\Configuration\Configuration;
-use ApiGen\Configuration\Readers\ReaderFactory;
 use ApiGen\Contracts\Console\IO\IOInterface;
 use ApiGen\Contracts\Generator\GeneratorQueueInterface;
 use ApiGen\Contracts\Parser\ParserInterface;
@@ -11,6 +10,7 @@ use ApiGen\Contracts\Parser\ParserStorageInterface;
 use ApiGen\Theme\ThemeResources;
 use ApiGen\Utils\FileSystem;
 use ApiGen\Utils\Finder\FinderInterface;
+use Nette\DI\Config\Loader;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -90,11 +90,11 @@ final class GenerateCommand extends AbstractCommand
 
         $this->addOption(
                 'source',
-                's',
+                null,
                 InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
                 'Dirs or files documentation is generated for.'
             )
-            ->addOption('destination', 'd', InputOption::VALUE_REQUIRED, 'Target dir for documentation.')
+            ->addOption('destination', null, InputOption::VALUE_REQUIRED, 'Target dir for documentation.')
             ->addOption(
                 'accessLevels',
                 null,
@@ -242,7 +242,7 @@ final class GenerateCommand extends AbstractCommand
 
         foreach ($configFilePaths as $configFile) {
             if (file_exists($configFile)) {
-                $configFileOptions = ReaderFactory::getReader($configFile)->read();
+                $configFileOptions = (new Loader())->load($configFile);
                 return array_merge($options, $configFileOptions);
             }
         }
@@ -268,9 +268,7 @@ final class GenerateCommand extends AbstractCommand
         }
 
         $filePaths[] = getcwd() . '/apigen.neon';
-        $filePaths[] = getcwd() . '/apigen.yaml';
         $filePaths[] = getcwd() . '/apigen.neon.dist';
-        $filePaths[] = getcwd() . '/apigen.yaml.dist';
 
         return $filePaths;
     }

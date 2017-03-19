@@ -2,28 +2,18 @@
 
 namespace ApiGen\Tests\Configuration\Readers;
 
-use ApiGen;
-use ApiGen\Configuration\Readers\NeonFile;
+use Nette\DI\Config\Loader;
 use PHPUnit\Framework\TestCase;
 
-class NeonFileTest extends TestCase
+final class NeonFileTest extends TestCase
 {
-
     public function testRead(): void
     {
         file_put_contents(TEMP_DIR . '/config.neon', 'var: value');
-        $neonFile = new NeonFile(TEMP_DIR . '/config.neon');
 
-        $options = $neonFile->read();
+        $configLoader = new Loader;
+        $options = $configLoader->load(TEMP_DIR . '/config.neon');
+
         $this->assertSame(['var' => 'value'], $options);
-    }
-
-
-    /**
-     * @expectedException \ApiGen\Configuration\Readers\Exceptions\MissingFileException
-     */
-    public function testCreateNotExisting(): void
-    {
-        new NeonFile(TEMP_DIR . '/not-here.neon');
     }
 }

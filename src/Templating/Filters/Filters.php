@@ -20,7 +20,7 @@ abstract class Filters
     }
 
 
-    public static function urlize($string): string
+    public static function urlize(string $string): string
     {
         return preg_replace('~[^\w]~', '.', $string);
     }

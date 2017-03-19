@@ -23,7 +23,6 @@
         "nette/reflection": "^2.4",
         "symfony/console": "^3.2",
         "symfony/options-resolver": "^3.2",
-        "symfony/yaml": "^3.2",
         "tracy/tracy": "^2.3",
         "symplify/symfony-event-dispatcher": "^1.4"
     },
