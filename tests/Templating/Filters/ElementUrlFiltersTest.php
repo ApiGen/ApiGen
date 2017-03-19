@@ -21,7 +21,6 @@ final class ElementUrlFiltersTest extends ContainerAwareTestCase
     protected function setUp(): void
     {
         $this->elementUrlFilters = $this->container->getByType(ElementUrlFilters::class);
-        //new ElementUrlFilters($this->getElementUrlFactoryMock());
     }
 
 
