@@ -2,13 +2,11 @@
 
 namespace ApiGen\Tests\Templating\Filters;
 
-use ApiGen\Generator\Resolvers\RelativePathResolver;
 use ApiGen\Templating\Filters\PathFilters;
-use PHPUnit\Framework\TestCase;
+use ApiGen\Tests\ContainerAwareTestCase;
 
-class PathFiltersTest extends TestCase
+final class PathFiltersTest extends ContainerAwareTestCase
 {
-
     /**
      * @var PathFilters
      */
@@ -17,16 +15,15 @@ class PathFiltersTest extends TestCase
 
     protected function setUp(): void
     {
-        $relativePathResolverMock = $this->createMock(RelativePathResolver::class);
-        $relativePathResolverMock->method('getRelativePath')->willReturnCallback(function ($arg) {
-            return '../' . $arg;
-        });
-        $this->pathFilters = new PathFilters($relativePathResolverMock);
+        $this->pathFilters = $this->container->getByType(PathFilters::class);
     }
 
 
     public function testRelativePath(): void
     {
-        $this->assertSame('../someFile.txt', $this->pathFilters->relativePath('someFile.txt'));
+        $this->assertSame(
+            'Templating/Filters/FiltersSource/FooFilters.php',
+            $this->pathFilters->relativePath(__DIR__ . '/FiltersSource/FooFilters.php')
+        );
     }
 }

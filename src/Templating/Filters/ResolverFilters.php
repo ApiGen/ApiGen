@@ -5,6 +5,7 @@ namespace ApiGen\Templating\Filters;
 use ApiGen\Generator\Resolvers\ElementResolver;
 use ApiGen\Parser\Reflection\ReflectionClass;
 use ApiGen\Parser\Reflection\ReflectionElement;
+use ApiGen\Parser\Reflection\TokenReflection\ReflectionInterface;
 
 //use ApiGen\Reflection\ReflectionClass;
 //use ApiGen\Reflection\ReflectionElement;
@@ -29,7 +30,7 @@ class ResolverFilters extends Filters
      * @param string|NULL $namespace
      * @return ReflectionClass|FALSE
      */
-    public function getClass(string $className, ?string $namespace = null)
+    public function getClass(string $className, ?string $namespace = '')
     {
         $reflection = $this->elementResolver->getClass($className, $namespace);
         if ($reflection) {
@@ -41,16 +42,17 @@ class ResolverFilters extends Filters
 
     /**
      * @param string $definition
-     * @param ReflectionElement $context
+     * @param ReflectionElement|ReflectionInterface $context
      * @param NULL $expectedName
      * @return ReflectionElement|bool|NULL
      */
-    public function resolveElement(string $definition, ReflectionElement $context, &$expectedName = null)
+    public function resolveElement(string $definition, $context, &$expectedName = null)
     {
         $reflection = $this->elementResolver->resolveElement($definition, $context, $expectedName);
         if ($reflection) {
             return $reflection;
         }
+
         return false;
     }
 }

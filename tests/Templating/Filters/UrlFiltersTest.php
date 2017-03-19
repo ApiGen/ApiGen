@@ -9,15 +9,23 @@ use ApiGen\Contracts\Parser\ParserStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
+use ApiGen\Parser\Parser;
 use ApiGen\Templating\Filters\UrlFilters;
-use ApiGen\Tests\ContainerFactory;
+use ApiGen\Tests\ContainerAwareTestCase;
 use ApiGen\Tests\MethodInvoker;
-use ArrayObject;
-use Nette\DI\Container;
-use PHPUnit\Framework\TestCase;
 
-final class UrlFiltersTest extends TestCase
+
+final class UrlFiltersTest extends ContainerAwareTestCase
 {
+    /**
+     * @var string
+     */
+    private const SOME_CLASS_LINK = '<code><a href="class-SomeClass.html" class="deprecated">SomeClass</a></code>';
+
+    /**
+     * @var string
+     */
+    private const SOME_CLASS_LINK_MULTI = '<code><a href="class-SomeClass.html" class="deprecated">SomeClass</a>[]</code>';
 
     /**
      * @var string
@@ -29,22 +37,23 @@ final class UrlFiltersTest extends TestCase
      */
     private $urlFilters;
 
-    /**
-     * @var Container
-     */
-    private $container;
-
 
     protected function setUp(): void
     {
-        $this->container = (new ContainerFactory())->create();
         $this->urlFilters = $this->container->getByType(UrlFilters::class);
 
-        /** @var Configuration configuration */
-        $configuration = $this->container->getByType(Configuration::class);
-        $configuration->resolveOptions([
-            ConfigurationOptions::SOURCE => __DIR__,
-            ConfigurationOptions::DESTINATION => __DIR__ . '/Destination'
+        $classReflectionMock = $this->createMock(ClassReflectionInterface::class);
+        $classReflectionMock->method('getName')
+            ->willReturn('SomeClass');
+        $classReflectionMock->method('isDeprecated')
+            ->willReturn(true);
+        $classReflectionMock->method('isDocumented')
+            ->willReturn(true);
+
+        /** @var ParserStorageInterface $parserStorage */
+        $parserStorage = $this->container->getByType(ParserStorageInterface::class);
+        $parserStorage->setClasses([
+            'SomeClass' => $classReflectionMock
         ]);
     }
 
@@ -121,6 +130,8 @@ final class UrlFiltersTest extends TestCase
 
     /**
      * Issue #753
+     *
+     * @todo needs to be resolved.
      */
     public function testResolveLinkAndSeeAnnotationForMethod():void
     {
@@ -131,14 +142,14 @@ final class UrlFiltersTest extends TestCase
 
         /** @var ParserStorageInterface $parserStorage */
         $parserStorage = $this->container->getByType(ParserStorageInterface::class);
-        $parserStorage->setClasses(new ArrayObject([
-            Application::class => $this->createClassReflection()
-        ]));
+        $parserStorage->setClasses([
+            'SomeClass' => $this->createClassReflection()
+        ]);
 
         $this->assertSame(
-            '<code><a href="method-link-testMethod">ApiGen\Console\Application::testMethod()</a></code>',
+            '<a href="SomeClass::someMethod()">SomeClass::someMethod()</a>',
             MethodInvoker::callMethodOnObject($this->urlFilters, 'resolveLinkAndSeeAnnotation', [
-                '{@see ApiGen\Console\Application::testMethod()}', $reflectionMethodMock
+                '{@see SomeClass::someMethod()}', $reflectionMethodMock
             ])
         );
     }
@@ -166,16 +177,12 @@ EXP;
     public function testShortDescription(): void
     {
         $reflectionElementMock = $this->createMock(ElementReflectionInterface::class);
-        $reflectionElementMock->method('getShortDescription')->willReturn('Some short description');
+        $reflectionElementMock->method('getShortDescription')
+            ->willReturn('Some short description');
 
         $this->assertSame(
             'Some short description',
             $this->urlFilters->shortDescription($reflectionElementMock)
-        );
-
-        $this->assertSame(
-            'Some short description',
-            $this->urlFilters->shortDescription($reflectionElementMock, true)
         );
     }
 
@@ -187,13 +194,10 @@ Some long description with example:
 <code>echo "hi";</code>
 DOC;
         $reflectionElementMock = $this->createMock(ElementReflectionInterface::class);
-        $reflectionElementMock->method('getLongDescription')->willReturn($longDescription);
+        $reflectionElementMock->method('getLongDescription')
+            ->willReturn($longDescription);
 
-        $expected = <<<EXPECTED
-Some long description with example:
-<code>echo "hi";</code>
-EXPECTED;
-        $this->assertSame($expected, $this->urlFilters->longDescription($reflectionElementMock));
+        $this->assertSame($longDescription, $this->urlFilters->longDescription($reflectionElementMock));
     }
 
 
@@ -201,8 +205,8 @@ EXPECTED;
     {
         $reflectionClassMock = $this->createMock(ClassReflectionInterface::class);
         $this->assertSame(
-            'Highlighted: ...',
-            $this->urlFilters->highlightPhp('...', $reflectionClassMock)
+            '<span class="php-keyword1">echo</span> <span class="php-quote">&quot;hi&quot;</span>;',
+            $this->urlFilters->highlightPhp('echo "hi";', $reflectionClassMock)
         );
     }
 
@@ -211,8 +215,8 @@ EXPECTED;
     {
         $reflectionClassMock = $this->createMock(ClassReflectionInterface::class);
         $this->assertSame(
-            'Highlighted: ...',
-            $this->urlFilters->highlightValue('...', $reflectionClassMock)
+            '<span class="php-var">$var</span> = <span class="php-num">5</span>;',
+            $this->urlFilters->highlightValue('$var = 5;', $reflectionClassMock)
         );
     }
 
@@ -228,23 +232,14 @@ EXPECTED;
 
 
     /**
-     * @return array[]
+     * @return string[][]
      */
     public function getTypeLinksData(): array
     {
         return [
-            ['int|string', 'integer|string'],
-            ['string|$this', 'string|$this'],
-            ['$this', '$this'], // expected $this because context is unresolved and $this is valid type
-            [
-                'ApiGen\ApiGen',
-                self::APIGEN_LINK
-            ],
-            [
-                'ApiGen\ApiGen|string',
-                '<code><a href="class-link-ApiGen\ApiGen" class="deprecated">ApiGen\ApiGen</a></code>|string'
-            ],
-            ['int|int[]', 'integer|integer[]']
+            ['int|string[]', 'integer|string[]'],
+            ['string|$this', 'string|<code><a href="class-.html"></a></code>'],
+            ['SomeClass|string', self::SOME_CLASS_LINK . '|string']
         ];
     }
 
@@ -252,7 +247,7 @@ EXPECTED;
     /**
      * @dataProvider getResolveLinksData()
      */
-    public function testResolveLink(string $definition, string $expected): void
+    public function testResolveLink(string $definition, ?string $expected): void
     {
         $reflectionClass = $this->createMock(ClassReflectionInterface::class);
         $this->assertSame($expected, $this->urlFilters->resolveLink($definition, $reflectionClass));
@@ -266,10 +261,7 @@ EXPECTED;
     {
         return [
             ['int', null],
-            [
-                'ApiGen\ApiGen[]',
-                '<code><a href="class-link-ApiGen\ApiGen" class="deprecated">ApiGen\ApiGen</a>[]</code>'
-            ]
+            ['SomeClass[]', self::SOME_CLASS_LINK_MULTI]
         ];
     }
 
@@ -290,15 +282,15 @@ EXPECTED;
     public function getAnnotationData(): array
     {
         return [
-            ['ApiGen\ApiGen', 'return', self::APIGEN_LINK],
-            ['ApiGen\ApiGen special class', 'return', self::APIGEN_LINK . '<br>special class'],
-            ['ApiGen\ApiGen', 'throws', self::APIGEN_LINK],
+            ['SomeClass', 'return', self::SOME_CLASS_LINK],
+            ['SomeClass special class', 'return', self::SOME_CLASS_LINK . '<br>special class'],
+            ['SomeClass', 'throws', self::SOME_CLASS_LINK],
             ['...', 'return', '...'],
             ['http://licence.com MIT', 'license', '<a href="http://licence.com">MIT</a>'],
             ['http://licence.com MIT', 'link', '<a href="http://licence.com">MIT</a>'],
-            ['ApiGen\ApiGen', 'link', 'ApiGen\ApiGen'],
-            ['ApiGen\ApiGen', 'see', self::APIGEN_LINK],
-            ['ApiGen\ApiGen', 'uses', self::APIGEN_LINK]
+            ['SomeClass', 'link', ''],
+            ['SomeClass', 'see', self::SOME_CLASS_LINK],
+            ['SomeClass', 'uses', self::SOME_CLASS_LINK]
         ];
     }
 
@@ -306,8 +298,10 @@ EXPECTED;
     private function createClassReflection(): ClassReflectionInterface
     {
         $reflectionClassMock = $this->createMock(ClassReflectionInterface::class);
-        $reflectionClassMock->method('getName')->willReturn(Application::class);
-        $reflectionClassMock->method('isDeprecated')->willReturn(true);
+        $reflectionClassMock->method('getName')
+            ->willReturn(Application::class);
+        $reflectionClassMock->method('isDeprecated')
+            ->willReturn(true);
 
         return $reflectionClassMock;
     }

@@ -2,6 +2,7 @@
 
 namespace ApiGen\Tests\Templating;
 
+use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Templating\Template;
 use ApiGen\Templating\TemplateElementsLoader;
 use ApiGen\Tests\ContainerAwareTestCase;
@@ -18,6 +19,13 @@ final class TemplateElementsLoaderTest extends ContainerAwareTestCase
     protected function setUp(): void
     {
         $this->templateElementsLoader = $this->container->getByType(TemplateElementsLoader::class);
+
+        $configuration = $this->container->getByType(ConfigurationInterface::class);
+        $configuration->resolveOptions([
+            'source' => __DIR__,
+            'destination' => TEMP_DIR,
+            'annotationGroups' => ['todo']
+        ]);
     }
 
 

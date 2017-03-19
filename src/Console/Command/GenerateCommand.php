@@ -268,7 +268,6 @@ final class GenerateCommand extends AbstractCommand
         }
 
         $filePaths[] = getcwd() . '/apigen.neon';
-        $filePaths[] = getcwd() . '/apigen.neon.dist';
 
         return $filePaths;
     }

@@ -24,8 +24,10 @@ abstract class ContainerAwareTestCase extends TestCase
     protected $destinationDir;
 
 
-    public function __construct()
+    public function __construct(?string $name = null, array $data = [], string $dataName = '')
     {
+        parent::__construct($name, $data, $dataName);
+
         $this->container = (new ContainerFactory)->create();
         $this->sourceDir = $this->container->getParameters()['appDir'] . '/Project';
         $this->destinationDir = $this->container->getParameters()['tempDir'] . '/api';

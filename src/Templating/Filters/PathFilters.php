@@ -4,9 +4,8 @@ namespace ApiGen\Templating\Filters;
 
 use ApiGen\Generator\Resolvers\RelativePathResolver;
 
-class PathFilters extends Filters
+final class PathFilters extends Filters
 {
-
     /**
      * @var RelativePathResolver
      */

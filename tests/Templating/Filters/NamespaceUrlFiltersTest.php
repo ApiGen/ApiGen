@@ -2,16 +2,13 @@
 
 namespace ApiGen\Tests\Templating\Filters;
 
-use ApiGen\Configuration\Configuration;
 use ApiGen\Contracts\Parser\ParserStorageInterface;
-use ApiGen\Parser\Elements\ElementStorage;
-use ApiGen\Templating\Filters\Helpers\LinkBuilder;
+use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Templating\Filters\NamespaceUrlFilters;
 use ApiGen\Tests\ContainerAwareTestCase;
 
 final class NamespaceUrlFiltersTest extends ContainerAwareTestCase
 {
-
     /**
      * @var NamespaceUrlFilters
      */
@@ -21,13 +18,16 @@ final class NamespaceUrlFiltersTest extends ContainerAwareTestCase
     protected function setUp(): void
     {
         $this->namespaceUrlFilters = $this->container->getByType(NamespaceUrlFilters::class);
-//        $this->namespaceUrlFilters = new NamespaceUrlFilters(
-//            $this->getConfigurationMock(),
-//            new LinkBuilder,
-//            $this->getElementStorageMock(1, 1)
-//        );
 
-        $this->parserStorage = $this->container->getByType(ParserStorageInterface::class);
+        $classReflectionMock = $this->createMock(ClassReflectionInterface::class);
+        $classReflectionMock->method('isDocumented')
+            ->willReturn(true);
+
+        /** @var ParserStorageInterface $parserStorage */
+        $parserStorage = $this->container->getByType(ParserStorageInterface::class);
+        $parserStorage->setClasses([
+            'Long\Namespace\SomeClass' => $classReflectionMock
+        ]);
     }
 
 
@@ -43,54 +43,23 @@ final class NamespaceUrlFiltersTest extends ContainerAwareTestCase
     public function testNamespaceLinks(): void
     {
         $this->assertSame(
-            '<a href="namespace-Long">Long</a>\<a href="namespace-Long.Namespace">Namespace</a>',
+            '<a href="namespace-Long.html">Long</a>\<a href="namespace-Long.Namespace.html">Namespace</a>',
             $this->namespaceUrlFilters->namespaceLinks('Long\Namespace')
         );
-
-        //        $this->assertSame(
-//            '<a href="namespace-Long">Long</a>\Namespace',
-//            $this->namespaceUrlFilters->namespaceLinks('Long\\Namespace', false)
-//        );
     }
 
-//
-//    public function testNamespaceLinksWithNoNamespaces(): void
-//    {
-//        $namespaceUrlFilters = new NamespaceUrlFilters(
-//            $this->getConfigurationMock(),
-//            new LinkBuilder,
-//            $this->getElementStorageMock(0, 0)
-//        );
-//
-//        $this->assertSame('Long\\Namespace', $namespaceUrlFilters->namespaceLinks('Long\\Namespace'));
-//    }
-//
-//
-//    public function testSubgroupName(): void
-//    {
-//        $this->assertSame('Subgroup', $this->namespaceUrlFilters->subgroupName('Group\\Subgroup'));
-//        $this->assertSame('Group', $this->namespaceUrlFilters->subgroupName('Group'));
-//    }
-
-
-    private function getConfigurationMock(): Mockery\MockInterface
+    public function testNamespaceLinksWithNoNamespaces(): void
     {
-        $configurationMock = $this->createMock(Configuration::class);
-        $configurationMock->method('getOption')->with('template')->willReturn([
-            'templates' => [
-                'package' => ['filename' => 'package-%s'],
-                'namespace' => ['filename' => 'namespace-%s']
-            ]
-        ]);
-        return $configurationMock;
+        $this->assertSame(
+            '<a href="namespace-Long.html">Long</a>\<a href="namespace-Long.Namespace.html">Namespace</a>',
+            $this->namespaceUrlFilters->namespaceLinks('Long\\Namespace')
+        );
     }
 
 
-    private function getElementStorageMock($packageCount, $namespaceCount): Mockery\MockInterface
+    public function testSubgroupName(): void
     {
-        $elementStorageMock = $this->createMock(ElementStorage::class);
-        $elementStorageMock->method('getPackages')->willReturn($packageCount);
-        $elementStorageMock->method('getNamespaces')->willReturn($namespaceCount);
-        return $elementStorageMock;
+        $this->assertSame('Subgroup', $this->namespaceUrlFilters->subgroupName('Group\\Subgroup'));
+        $this->assertSame('Group', $this->namespaceUrlFilters->subgroupName('Group'));
     }
 }

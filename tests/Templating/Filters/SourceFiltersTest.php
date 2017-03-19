@@ -2,19 +2,14 @@
 
 namespace ApiGen\Tests\Templating\Filters;
 
-use ApiGen\Configuration\Configuration;
-use ApiGen\Contracts\Parser\Reflection\Behavior\LinedInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Templating\Filters\SourceFilters;
-use ApiGen\Tests\MethodInvoker;
-use PHPUnit\Framework\TestCase;
+use ApiGen\Tests\ContainerAwareTestCase;
 
-class SourceFiltersTest extends TestCase
+final class SourceFiltersTest extends ContainerAwareTestCase
 {
-
     /**
      * @var SourceFilters
      */
@@ -23,13 +18,7 @@ class SourceFiltersTest extends TestCase
 
     protected function setUp(): void
     {
-        $configurationMock = $this->createMock(Configuration::class);
-        $configurationMock->method('getOption')->with('destination')->willReturn(TEMP_DIR);
-        $configurationMock->method('getOption')->with('template')->willReturn(
-            ['templates' => ['source' => ['filename' => 'source-file-%s.html']]
-            ]
-        );
-            $this->sourceFilters = new SourceFilters($configurationMock);
+        $this->sourceFilters = $this->container->getByType(SourceFilters::class);
     }
 
 
@@ -44,12 +33,15 @@ class SourceFiltersTest extends TestCase
     public function testSourceUrlFunction(): void
     {
         $reflectionFunction = $this->createMock(FunctionReflectionInterface::class);
-        $reflectionFunction->method('getName')->willReturn('someFunction');
-        $reflectionFunction->method('getStartLine')->willReturn(15);
-        $reflectionFunction->method('getEndLine')->willReturn(25);
+        $reflectionFunction->method('getName')
+            ->willReturn('someFunction');
+        $reflectionFunction->method('getStartLine')
+            ->willReturn(15);
+        $reflectionFunction->method('getEndLine')
+            ->willReturn(25);
 
         $this->assertSame(
-            'source-file-function-someFunction.html#15-25',
+            'source-function-someFunction.html#15-25',
             $this->sourceFilters->sourceUrl($reflectionFunction)
         );
     }
@@ -58,12 +50,15 @@ class SourceFiltersTest extends TestCase
     public function testSourceUrlClass(): void
     {
         $reflectionClass = $this->createMock(ClassReflectionInterface::class);
-        $reflectionClass->method('getName')->willReturn('someClass');
-        $reflectionClass->method('getStartLine')->willReturn(10);
-        $reflectionClass->method('getEndLine')->willReturn(100);
+        $reflectionClass->method('getName')
+            ->willReturn('someClass');
+        $reflectionClass->method('getStartLine')
+            ->willReturn(10);
+        $reflectionClass->method('getEndLine')
+            ->willReturn(100);
 
         $this->assertSame(
-            'source-file-class-someClass.html#10-100',
+            'source-class-someClass.html#10-100',
             $this->sourceFilters->sourceUrl($reflectionClass)
         );
     }
@@ -72,13 +67,17 @@ class SourceFiltersTest extends TestCase
     public function testSourceUrlClassConstant(): void
     {
         $reflectionConstant = $this->createMock(ConstantReflectionInterface::class);
-        $reflectionConstant->method('getName')->willReturn('someConstant');
-        $reflectionConstant->method('getDeclaringClassName')->willReturn('someClass');
-        $reflectionConstant->method('getStartLine')->willReturn(20);
-        $reflectionConstant->method('getEndLine')->willReturn(20);
+        $reflectionConstant->method('getName')
+            ->willReturn('someConstant');
+        $reflectionConstant->method('getDeclaringClassName')
+            ->willReturn('someClass');
+        $reflectionConstant->method('getStartLine')
+            ->willReturn(20);
+        $reflectionConstant->method('getEndLine')
+            ->willReturn(20);
 
         $this->assertSame(
-            'source-file-class-someClass.html#20',
+            'source-constant-someConstant.html#20',
             $this->sourceFilters->sourceUrl($reflectionConstant)
         );
     }
@@ -87,39 +86,16 @@ class SourceFiltersTest extends TestCase
     public function testSourceUrlConstant(): void
     {
         $reflectionConstant = $this->createMock(ConstantReflectionInterface::class);
-        $reflectionConstant->method('getName')->willReturn('someConstant');
-        $reflectionConstant->method('getStartLine')->willReturn(20);
-        $reflectionConstant->method('getEndLine')->willReturn(20);
+        $reflectionConstant->method('getName')
+            ->willReturn('someConstant');
+        $reflectionConstant->method('getStartLine')
+            ->willReturn(20);
+        $reflectionConstant->method('getEndLine')
+            ->willReturn(20);
 
         $this->assertSame(
-            'source-file-constant-someConstant.html#20',
+            'source-constant-someConstant.html#20',
             $this->sourceFilters->sourceUrl($reflectionConstant)
         );
-    }
-
-
-	public function testGetElementLinesAnchor()
-	{
-		$elementMock = $this->buildReflectionElement(NULL, 20, 40);
-		$this->assertSame(
-			'#20-40',
-			MethodInvoker::callMethodOnObject($this->sourceFilters, 'getElementLinesAnchor', [$elementMock])
-		);
-
-		$elementMock = $this->buildReflectionElement(NULL, 20, 20);
-		$this->assertSame(
-			'#20',
-			MethodInvoker::callMethodOnObject($this->sourceFilters, 'getElementLinesAnchor', [$elementMock])
-		);
-	}
-
-
-    private function buildReflectionElement(string $name, int $start, int $end): Mockery\MockInterface
-    {
-        $reflectionElement = $this->createMock(ElementReflectionInterface::class, LinedInterface::class);
-        $reflectionElement->method('getName')->willReturn($name);
-        $reflectionElement->method('getStartLine')->willReturn($start);
-        $reflectionElement->method('getEndLine')->willReturn($end);
-        return $reflectionElement;
     }
 }
