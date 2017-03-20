@@ -5,7 +5,7 @@ namespace ApiGen\Parser\Tests\Elements;
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Parser\Elements\Elements;
 use ApiGen\Parser\Elements\GroupSorter;
-use ApiGen\Parser\Tests\MethodInvoker;
+use ApiGen\Tests\MethodInvoker;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
 

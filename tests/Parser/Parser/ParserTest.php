@@ -5,8 +5,10 @@ namespace ApiGen\Parser\Tests;
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Parser\ParserInterface;
 use ApiGen\Contracts\Parser\ParserStorageInterface;
+use ApiGen\Tests\ContainerAwareTestCase;
 use Nette\Utils\Finder;
 use ReflectionProperty;
+use SplFileInfo;
 
 final class ParserTest extends ContainerAwareTestCase
 {
@@ -59,7 +61,7 @@ final class ParserTest extends ContainerAwareTestCase
 
     /**
      * @param string $dir
-     * @return array { filePath => size }
+     * @return SplFileInfo[]
      */
     private function getFilesFromDir(string $dir): array
     {

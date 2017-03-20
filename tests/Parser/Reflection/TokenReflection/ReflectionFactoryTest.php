@@ -27,7 +27,7 @@ use TokenReflection\IReflectionMethod;
 use TokenReflection\IReflectionParameter;
 use TokenReflection\IReflectionProperty;
 
-class ReflectionFactoryTest extends TestCase
+final class ReflectionFactoryTest extends TestCase
 {
 
     /**
@@ -140,6 +140,9 @@ class ReflectionFactoryTest extends TestCase
     }
 
 
+    /**
+     * @param object $object
+     */
     private function checkLoadedProperties($object): void
     {
         $this->assertInstanceOf(

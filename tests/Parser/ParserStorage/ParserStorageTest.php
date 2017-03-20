@@ -6,13 +6,12 @@ use ApiGen\Contracts\Parser\ParserStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
 use ApiGen\Parser\Elements\Elements;
 use ApiGen\Parser\ParserStorage;
-use ApiGen\Parser\Tests\MethodInvoker;
+use ApiGen\Tests\MethodInvoker;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
 
 final class ParserStorageTest extends TestCase
 {
-
     /**
      * @var ParserStorageInterface
      */
@@ -103,6 +102,9 @@ final class ParserStorageTest extends TestCase
     }
 
 
+    /**
+     * @return ElementReflectionInterface[]
+     */
     private function getReflectionElementsArrayObject(): array
     {
         $reflectionElementMock = $this->createMock(ElementReflectionInterface::class);

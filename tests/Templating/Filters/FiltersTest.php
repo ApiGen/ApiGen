@@ -7,9 +7,8 @@ use ApiGen\Tests\MethodInvoker;
 use ApiGen\Tests\Templating\Filters\FiltersSource\FooFilters;
 use PHPUnit\Framework\TestCase;
 
-class FiltersTest extends TestCase
+final class FiltersTest extends TestCase
 {
-
     /**
      * @var Filters
      */
@@ -32,7 +31,7 @@ class FiltersTest extends TestCase
     /**
      * @dataProvider typeNameProvider
      */
-    public function testGetTypeName($name, $expectedName): void
+    public function testGetTypeName(string $name, string $expectedName): void
     {
         $this->assertSame(
             $expectedName,
@@ -42,9 +41,9 @@ class FiltersTest extends TestCase
 
 
     /**
-     * @return array[]
+     * @return string[]
      */
-    public function typeNameProvider()
+    public function typeNameProvider(): array
     {
         return [
             ['bool', 'boolean'],
