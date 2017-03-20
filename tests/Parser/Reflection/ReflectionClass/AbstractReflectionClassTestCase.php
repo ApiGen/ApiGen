@@ -47,9 +47,6 @@ abstract class AbstractReflectionClassTestCase extends TestCase
     }
 
 
-    /**
-     * @return ReflectionFactoryInterface
-     */
     private function getReflectionFactory(): ReflectionFactoryInterface
     {
         // @todo: use $parserStorage from DI
