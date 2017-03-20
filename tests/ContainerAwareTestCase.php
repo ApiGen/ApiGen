@@ -23,7 +23,11 @@ abstract class ContainerAwareTestCase extends TestCase
      */
     protected $destinationDir;
 
-
+    /**
+     * @param string $name
+     * @param mixed[] $data
+     * @param string $dataName
+     */
     public function __construct(?string $name = null, array $data = [], string $dataName = '')
     {
         parent::__construct($name, $data, $dataName);

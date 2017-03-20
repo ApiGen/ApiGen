@@ -13,7 +13,7 @@ use Project\ReflectionMethod;
 use ReflectionProperty;
 use TokenReflection\Broker;
 
-class ReflectionPropertyTest extends TestCase
+final class ReflectionPropertyTest extends TestCase
 {
 
     /**
@@ -64,7 +64,7 @@ class ReflectionPropertyTest extends TestCase
 
     public function testGetTypeHint(): void
     {
-        $this->assertSame('integer', $this->reflectionProperty->getTypeHint());
+        $this->assertSame('int', $this->reflectionProperty->getTypeHint());
     }
 
 

@@ -142,7 +142,10 @@ final class Configuration implements ConfigurationInterface
 
     private function unsetConsoleOptions(array $options): array
     {
-        unset($options['config'], $options['help'], $options['quiet']);
+        unset(
+            $options['ansi'], $options['noAnsi'], $options['noInteraction'], $options['config'],
+            $options['help'], $options['quiet'], $options['verbose'], $options['version']
+        );
         return $options;
     }
 }

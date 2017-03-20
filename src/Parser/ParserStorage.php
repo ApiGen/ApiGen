@@ -28,11 +28,6 @@ final class ParserStorage implements ParserStorageInterface
     /**
      * @var array
      */
-    private $tokenizedClasses = [];
-
-    /**
-     * @var array
-     */
     private $types = [ElementsInterface::CLASSES, ElementsInterface::CONSTANTS, ElementsInterface::FUNCTIONS];
 
 
@@ -57,7 +52,7 @@ final class ParserStorage implements ParserStorageInterface
     public function getDocumentedStats(): array
     {
         return [
-            'classes' => $this->getDocumentedElementsCount($this->tokenizedClasses),
+            'classes' => $this->getDocumentedElementsCount($this->classes),
             'constants' => $this->getDocumentedElementsCount($this->constants),
             'functions' => $this->getDocumentedElementsCount($this->functions),
         ];
@@ -103,12 +98,6 @@ final class ParserStorage implements ParserStorageInterface
     public function setFunctions(array $functions): void
     {
         $this->functions = $functions;
-    }
-
-
-    public function setTokenizedClasses(array $tokenizedClasses): void
-    {
-        $this->tokenizedClasses = $tokenizedClasses;
     }
 
 

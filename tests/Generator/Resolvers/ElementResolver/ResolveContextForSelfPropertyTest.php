@@ -40,7 +40,7 @@ final class ResolveContextForSelfPropertyTest extends AbstractElementResolverTes
     }
 
 
-    public function testOtherClassProperty()
+    public function testOtherClassProperty(): void
     {
         $classReflectionMock = $this->createClassReflectionMock();
 
@@ -53,7 +53,7 @@ final class ResolveContextForSelfPropertyTest extends AbstractElementResolverTes
         $this->assertSame('SomeClass', $resolvedElement->getName());
     }
 
-    public function testUnknown()
+    public function testUnknown(): void
     {
         $classReflectionMock = $this->createClassReflectionMock();
 

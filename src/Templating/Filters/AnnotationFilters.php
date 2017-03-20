@@ -8,7 +8,6 @@ use Nette\Utils\Strings;
 
 final class AnnotationFilters extends Filters
 {
-
     /**
      * @var string[]
      */
@@ -31,6 +30,9 @@ final class AnnotationFilters extends Filters
 
     /**
      * Removed, only for BC with Themes.
+     *
+     * @param string[] $annotations
+     * @return string[]
      */
     public function annotationSort(array $annotations): array
     {
@@ -44,6 +46,11 @@ final class AnnotationFilters extends Filters
     }
 
 
+    /**
+     * @param string[] $annotations
+     * @param string[] $customToRemove
+     * @return string[]
+     */
     public function annotationFilter(array $annotations, array $customToRemove = []): array
     {
         $annotations = $this->filterOut($annotations, $this->remove);
@@ -57,6 +64,11 @@ final class AnnotationFilters extends Filters
     }
 
 
+    /**
+     * @param string[] $annotations
+     * @param string[] $toRemove
+     * @return string[]
+     */
     private function filterOut(array $annotations, array $toRemove): array
     {
         foreach ($toRemove as $annotation) {

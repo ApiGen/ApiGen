@@ -2,20 +2,16 @@
 
 namespace ApiGen\Parser\Tests\Reflection;
 
-use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Parser\ParserStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\TokenReflection\ReflectionFactoryInterface;
 use ApiGen\Parser\Broker\Backend;
-use ApiGen\Parser\Reflection\ReflectionClass;
-use ApiGen\Parser\Reflection\TokenReflection\ReflectionFactory;
+use ApiGen\Parser\Reflection\ReflectionBase;
 use ApiGen\Tests\ConstantInClass;
-use PHPUnit\Framework\TestCase;
-use ReflectionProperty;
+use ApiGen\Tests\ContainerAwareTestCase;
 use TokenReflection\Broker;
 
-final class ReflectionConstantTest extends TestCase
+final class ReflectionConstantTest extends ContainerAwareTestCase
 {
     /**
      * @var ConstantReflectionInterface
@@ -23,7 +19,7 @@ final class ReflectionConstantTest extends TestCase
     private $constantReflection;
 
     /**
-     * @var ConstantReflectionInterface
+     * @var ConstantReflectionInterface|ReflectionBase
      */
     private $constantReflectionInClass;
 
@@ -35,14 +31,25 @@ final class ReflectionConstantTest extends TestCase
 
     protected function setUp(): void
     {
-        $backend = new Backend($this->getReflectionFactory());
-        $broker = new Broker($backend);
+        $broker = $this->container->getByType(Broker::class);
         $broker->processDirectory(__DIR__ . '/ReflectionConstantSource');
-        $this->constantReflection = $backend->getConstants()['SOME_CONSTANT'];
 
-        /** @var ReflectionClass $reflectionClass */
+        $backend = $this->container->getByType(Backend::class);
+        $this->constantReflection = $backend->getConstants()['SOME_CONSTANT'];
         $this->reflectionClass = $backend->getClasses()[ConstantInClass::class];
+
         $this->constantReflectionInClass = $this->reflectionClass->getConstant('CONSTANT_INSIDE');
+
+        /** @var ParserStorageInterface $parserStorage */
+        $parserStorage = $this->container->getByType(ParserStorageInterface::class);
+        $parserStorage->setClasses([
+            ConstantInClass::class => $this->reflectionClass
+        ]);
+        $parserStorage->setConstants([
+            'SOME_CONSTANT' => $this->constantReflection
+        ]);
+
+        $this->constantReflectionInClass->setParserStorage($parserStorage);
     }
 
 
@@ -52,86 +59,59 @@ final class ReflectionConstantTest extends TestCase
         $this->assertInstanceOf(ConstantReflectionInterface::class, $this->constantReflectionInClass);
     }
 
-//
-//    public function testGetDeclaringClass(): void
-//    {
-//        $this->assertNull($this->constantReflection->getDeclaringClass());
-//        $this->assertInstanceOf(ClassReflectionInterface::class, $this->constantReflectionInClass->getDeclaringClass());
-//    }
-//
-//
-//    public function testGetDeclaringClassName(): void
-//    {
-//        $this->assertNull($this->constantReflection->getDeclaringClassName());
-//        $this->assertSame(ConstantInClass::class, $this->constantReflectionInClass->getDeclaringClassName());
-//    }
-//
-//
-//    public function testGetName(): void
-//    {
-//        $this->assertSame('SOME_CONSTANT', $this->constantReflection->getName());
-//        $this->assertSame('CONSTANT_INSIDE', $this->constantReflectionInClass->getName());
-//    }
-//
-//
-//    public function testGetShortName(): void
-//    {
-//        $this->assertSame('SOME_CONSTANT', $this->constantReflection->getShortName());
-//        $this->assertSame('CONSTANT_INSIDE', $this->constantReflectionInClass->getShortName());
-//    }
-//
-//
-//    public function testGetTypeHint(): void
-//    {
-//        $this->assertSame('string', $this->constantReflection->getTypeHint());
-//        $this->assertSame('int', $this->constantReflectionInClass->getTypeHint());
-//    }
-//
-//
-//    public function testGetValue(): void
-//    {
-//        $this->assertSame('some value', $this->constantReflection->getValue());
-//        $this->assertSame(55, $this->constantReflectionInClass->getValue());
-//    }
-//
-//
-//    public function testGetDefinition(): void
-//    {
-//        $this->assertSame("'some value'", $this->constantReflection->getValueDefinition());
-//        $this->assertSame('55', $this->constantReflectionInClass->getValueDefinition());
-//    }
-//
-//
-//    public function testIsDocumented(): void
-//    {
-//        $this->assertTrue($this->constantReflection->isDocumented());
-//        $this->assertTrue($this->constantReflectionInClass->isDocumented());
-//    }
 
-
-    /**
-     * @return ReflectionFactoryInterface
-     */
-    private function getReflectionFactory()
+    public function testGetDeclaringClass(): void
     {
-        $constantInClassReflectionMock = $this->createMock(ConstantReflectionInterface::class);
+        $this->assertNull($this->constantReflection->getDeclaringClass());
+        $this->assertInstanceOf(ClassReflectionInterface::class, $this->constantReflectionInClass->getDeclaringClass());
+    }
 
-        $parserResultMock = $this->createMock(ParserStorageInterface::class);
-        $parserResultMock->method('getElementsByType')
-            ->willReturnArgument(function ($arg) use ($constantInClassReflectionMock) {
-                if ($arg) {
-                    return [ConstantInClass::class => $constantInClassReflectionMock];
-                }
-            });
 
-        $configurationMock = $this->createMock(ConfigurationInterface::class);
-        $configurationMock->method('getVisibilityLevel')
-            ->willReturn(ReflectionProperty::IS_PUBLIC);
-        $configurationMock->method('isInternalDocumented')
-            ->willReturn(false);
-        $configurationMock->method('getMain')
-            ->willReturn('');
+    public function testGetDeclaringClassName(): void
+    {
+        $this->assertSame('', $this->constantReflection->getDeclaringClassName());
+        $this->assertSame(ConstantInClass::class, $this->constantReflectionInClass->getDeclaringClassName());
+    }
 
-        return new ReflectionFactory($configurationMock, $parserResultMock);
+
+    public function testGetName(): void
+    {
+        $this->assertSame('SOME_CONSTANT', $this->constantReflection->getName());
+        $this->assertSame('CONSTANT_INSIDE', $this->constantReflectionInClass->getName());
+    }
+
+
+    public function testGetShortName(): void
+    {
+        $this->assertSame('SOME_CONSTANT', $this->constantReflection->getShortName());
+        $this->assertSame('CONSTANT_INSIDE', $this->constantReflectionInClass->getShortName());
+    }
+
+
+    public function testGetTypeHint(): void
+    {
+        $this->assertSame('string', $this->constantReflection->getTypeHint());
+        $this->assertSame('int', $this->constantReflectionInClass->getTypeHint());
+    }
+
+
+    public function testGetValue(): void
+    {
+        $this->assertSame('some value', $this->constantReflection->getValue());
+        $this->assertSame(55, $this->constantReflectionInClass->getValue());
+    }
+
+
+    public function testGetDefinition(): void
+    {
+        $this->assertSame("'some value'", $this->constantReflection->getValueDefinition());
+        $this->assertSame('55', $this->constantReflectionInClass->getValueDefinition());
+    }
+
+
+    public function testIsDocumented(): void
+    {
+        $this->assertTrue($this->constantReflection->isDocumented());
+        $this->assertTrue($this->constantReflectionInClass->isDocumented());
     }
 }

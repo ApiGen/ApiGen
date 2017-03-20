@@ -7,7 +7,6 @@ use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
 
 final class ReflectionConstant extends ReflectionElement implements ConstantReflectionInterface
 {
-
     public function getName(): string
     {
         return $this->reflection->getName();
@@ -41,14 +40,14 @@ final class ReflectionConstant extends ReflectionElement implements ConstantRefl
 
     public function getDeclaringClass(): ?ClassReflectionInterface
     {
-        $className = $this->reflection->getDeclaringClassName();
-        return $className === null ? null : $this->getParsedClasses()[$className];
+        $className = (string) $this->reflection->getDeclaringClassName();
+        return $className === '' ? null : $this->getParsedClasses()[$className];
     }
 
 
     public function getDeclaringClassName(): string
     {
-        return $this->reflection->getDeclaringClassName();
+        return (string) $this->reflection->getDeclaringClassName();
     }
 
 

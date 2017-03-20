@@ -9,7 +9,7 @@ final class MethodInvoker
     /**
      * @param object $object
      * @param string $method
-     * @param array $args
+     * @param mixed[] $args
      * @return mixed
      */
     public static function callMethodOnObject($object, string $method, array $args = [])

@@ -53,13 +53,6 @@ final class ParserStorageTest extends TestCase
         $functions = [3];
         $this->parserStorage->setFunctions($functions);
         $this->assertSame($functions, $this->parserStorage->getElementsByType(Elements::FUNCTIONS));
-
-        $tokenizedClasses = [4];
-        $this->parserStorage->setTokenizedClasses($tokenizedClasses);
-        $this->assertSame($tokenizedClasses, Assert::getObjectAttribute(
-            $this->parserStorage,
-            'tokenizedClasses'
-        ));
     }
 
 

@@ -8,7 +8,7 @@ use ApiGen\Contracts\Parser\ParserStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\TokenReflection\ReflectionFactoryInterface;
 use ApiGen\Parser\Reflection\TokenReflection\ReflectionInterface;
-use Nette;
+use Nette\Object;
 use TokenReflection\IReflection;
 use TokenReflection\IReflectionClass;
 use TokenReflection\IReflectionFunction;
@@ -16,9 +16,8 @@ use TokenReflection\IReflectionMethod;
 use TokenReflection\IReflectionParameter;
 use TokenReflection\IReflectionProperty;
 
-abstract class ReflectionBase extends Nette\Object implements ReflectionInterface
+abstract class ReflectionBase extends Object implements ReflectionInterface
 {
-
     /**
      * @var string
      */
@@ -37,7 +36,7 @@ abstract class ReflectionBase extends Nette\Object implements ReflectionInterfac
     /**
      * @var ParserStorageInterface
      */
-    protected $parserResult;
+    protected $parserStorage;
 
     /**
      * @var ReflectionFactoryInterface
@@ -105,9 +104,9 @@ abstract class ReflectionBase extends Nette\Object implements ReflectionInterfac
     }
 
 
-    public function setParserResult(ParserStorageInterface $parserResult): void
+    public function setParserStorage(ParserStorageInterface $parserStorage): void
     {
-        $this->parserResult = $parserResult;
+        $this->parserStorage = $parserStorage;
     }
 
 
@@ -122,6 +121,6 @@ abstract class ReflectionBase extends Nette\Object implements ReflectionInterfac
      */
     public function getParsedClasses(): array
     {
-        return $this->parserResult->getElementsByType(ElementsInterface::CLASSES);
+        return $this->parserStorage->getElementsByType(ElementsInterface::CLASSES);
     }
 }

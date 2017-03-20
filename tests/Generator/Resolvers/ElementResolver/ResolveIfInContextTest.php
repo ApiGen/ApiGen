@@ -24,7 +24,7 @@ final class ResolveIfInContextTest extends AbstractElementResolverTest
         $this->assertInstanceOf(PropertyReflectionInterface::class, $resolvedElement);
     }
 
-    public function testResolveMethodFromClassReflection()
+    public function testResolveMethodFromClassReflection(): void
     {
         $classReflectionMock = $this->createClassReflectionMockWithMethod();
 
@@ -37,7 +37,7 @@ final class ResolveIfInContextTest extends AbstractElementResolverTest
         $this->assertInstanceOf(MethodReflectionInterface::class, $resolvedElement);
     }
 
-    public function testResolveConstantFromClassReflection()
+    public function testResolveConstantFromClassReflection(): void
     {
         $classReflectionMock = $this->createClassReflectionMockWithConstant();
 
@@ -51,7 +51,7 @@ final class ResolveIfInContextTest extends AbstractElementResolverTest
     }
 
 
-    public function testMissingElement()
+    public function testMissingElement(): void
     {
         $classReflectionMock = $this->createMock(ClassReflectionInterface::class);
 

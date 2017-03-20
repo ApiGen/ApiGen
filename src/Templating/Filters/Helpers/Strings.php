@@ -2,8 +2,11 @@
 
 namespace ApiGen\Templating\Filters\Helpers;
 
-class Strings
+final class Strings
 {
+    /**
+     * @return string[]
+     */
     public static function split(string $value): array
     {
         return preg_split('~\s+|$~', $value, 2);

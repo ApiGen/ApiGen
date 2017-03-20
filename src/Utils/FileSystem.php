@@ -5,9 +5,8 @@ namespace ApiGen\Utils;
 use Nette\Utils\FileSystem as NetteFileSystem;
 use Nette\Utils\Finder;
 
-class FileSystem
+final class FileSystem
 {
-
     public function normalizePath(string $path): string
     {
         return str_replace('\\', '/', $path);
@@ -36,7 +35,7 @@ class FileSystem
 
     /**
      * @param string $path
-     * @param array $baseDirectories
+     * @param string[] $baseDirectories
      * @return string
      */
     public function getAbsolutePath(string $path, array $baseDirectories = []): string
@@ -71,7 +70,7 @@ class FileSystem
 
 
     /**
-     * @param array $source
+     * @param string[]|string[][] $source
      * @param string $destination
      */
     public function copy(array $source, string $destination): void

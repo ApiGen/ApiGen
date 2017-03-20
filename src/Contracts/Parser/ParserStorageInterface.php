@@ -6,7 +6,6 @@ use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 
 interface ParserStorageInterface
 {
-
     public function getElementsByType(string $type): array;
 
 
@@ -38,9 +37,6 @@ interface ParserStorageInterface
 
 
     public function setFunctions(array $functions): void;
-
-
-    public function setTokenizedClasses(array $tokenizedClasses): void;
 
 
     /**

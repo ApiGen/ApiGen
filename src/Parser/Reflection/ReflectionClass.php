@@ -322,10 +322,6 @@ final class ReflectionClass extends ReflectionElement implements ClassReflection
         return $this->ownConstants;
     }
 
-    /**
-     * @param string $name
-     * @return ConstantReflectionInterface
-     */
     public function getConstant(string $name): ConstantReflectionInterface
     {
         if (isset($this->getConstants()[$name])) {
@@ -518,7 +514,7 @@ final class ReflectionClass extends ReflectionElement implements ClassReflection
             return [];
         }
 
-        return $this->parserResult->getDirectImplementersOfInterface($this);
+        return $this->parserStorage->getDirectImplementersOfInterface($this);
     }
 
 
@@ -528,7 +524,7 @@ final class ReflectionClass extends ReflectionElement implements ClassReflection
             return [];
         }
 
-        return $this->parserResult->getIndirectImplementersOfInterface($this);
+        return $this->parserStorage->getIndirectImplementersOfInterface($this);
     }
 
 

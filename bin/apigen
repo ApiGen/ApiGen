@@ -39,8 +39,8 @@ $configurator->addParameters(['rootDir' => __DIR__ . '/..']);
 $container = $configurator->createContainer();
 
 
-/** @var ApiGen\Console\Application $application */
-$application = $container->getByType(Application::class);
+/** @var \Symfony\Component\Console\Application $application */
+$application = $container->getByType(\Symfony\Component\Console\Application::class);
 $application->setAutoExit(false);
 $input = $container->getByType(InputInterface::class);
 $output = $container->getByType(OutputInterface::class);

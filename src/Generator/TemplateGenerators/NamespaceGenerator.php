@@ -10,9 +10,8 @@ use ApiGen\Generator\TemplateGenerators\Loaders\NamespaceLoader;
 use ApiGen\Templating\TemplateFactory;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class NamespaceGenerator implements TemplateGeneratorInterface, StepCounterInterface
+final class NamespaceGenerator implements TemplateGeneratorInterface, StepCounterInterface
 {
-
     /**
      * @var TemplateFactory
      */
@@ -51,7 +50,7 @@ class NamespaceGenerator implements TemplateGeneratorInterface, StepCounterInter
     {
         foreach ($this->elementStorage->getNamespaces() as $name => $namespace) {
             $template = $this->templateFactory->createNamedForElement(TemplateFactory::ELEMENT_NAMESPACE, $name);
-            $template = $this->namespaceLoader->loadTemplateWithNamespace($template, $name, $namespace);
+            $this->namespaceLoader->loadTemplateWithNamespace($template, $name, $namespace);
             $template->save();
 
             $this->eventDispatcher->dispatch(GenerateProgressEvent::class);

@@ -42,10 +42,10 @@ class ReflectionFactory implements ReflectionFactoryInterface
     private $parserStorage;
 
 
-    public function __construct(ConfigurationInterface $configuration, ParserStorageInterface $parserResult)
+    public function __construct(ConfigurationInterface $configuration, ParserStorageInterface $parserStorage)
     {
         $this->configuration = $configuration;
-        $this->parserStorage = $parserResult;
+        $this->parserStorage = $parserStorage;
     }
 
 
@@ -116,7 +116,7 @@ class ReflectionFactory implements ReflectionFactoryInterface
     private function setDependencies(ReflectionBase $reflection): void
     {
         $reflection->setConfiguration($this->configuration);
-        $reflection->setParserResult($this->parserStorage);
+        $reflection->setParserStorage($this->parserStorage);
         $reflection->setReflectionFactory($this);
     }
 }

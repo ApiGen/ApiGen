@@ -29,7 +29,7 @@ final class FiltersTest extends TestCase
 
 
     /**
-     * @dataProvider typeNameProvider
+     * @dataProvider typeNameProvider()
      */
     public function testGetTypeName(string $name, string $expectedName): void
     {

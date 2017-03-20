@@ -63,9 +63,9 @@ final class ElementStorage implements ElementStorageInterface
     private $groupSorter;
 
 
-    public function __construct(ParserStorageInterface $parserResult, GroupSorterInterface $groupSorter)
+    public function __construct(ParserStorageInterface $parserStorage, GroupSorterInterface $groupSorter)
     {
-        $this->parserStorage = $parserResult;
+        $this->parserStorage = $parserStorage;
         $this->groupSorter = $groupSorter;
     }
 

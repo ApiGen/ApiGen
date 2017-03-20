@@ -22,12 +22,14 @@ final class UrlFiltersTest extends ContainerAwareTestCase
     /**
      * @var string
      */
-    private const SOME_CLASS_LINK_MULTI = '<code><a href="class-SomeClass.html" class="deprecated">SomeClass</a>[]</code>';
+    private const SOME_CLASS_LINK_MULTI = '<code><a href="class-SomeClass.html" class="deprecated">SomeClass</a>'
+        . '[]</code>';
 
     /**
      * @var string
      */
-    private const APIGEN_LINK = '<code><a href="class-ApiGen.Console.Command.GenerateCommand.html" class="deprecated">ApiGen\Console\Command\GenerateCommand</a></code>';
+    private const APIGEN_LINK = '<code><a href="class-ApiGen.Console.Command.GenerateCommand.html" class="deprecated">'
+        . 'ApiGen\Console\Command\GenerateCommand</a></code>';
 
     /**
      * @var UrlFilters
@@ -107,7 +109,7 @@ final class UrlFiltersTest extends ContainerAwareTestCase
 
 
     /**
-     * @return array[]
+     * @return string[][]
      */
     public function getLinkAndSeeData(): array
     {
@@ -130,7 +132,7 @@ final class UrlFiltersTest extends ContainerAwareTestCase
      *
      * @todo needs to be resolved.
      */
-    public function testResolveLinkAndSeeAnnotationForMethod():void
+    public function testResolveLinkAndSeeAnnotationForMethod(): void
     {
         $reflectionMethodMock = $this->createMock(MethodReflectionInterface::class);
         $reflectionMethodMock->method('getDeclaringClassName')->willReturn(GenerateCommand::class);

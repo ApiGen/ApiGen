@@ -125,7 +125,7 @@ final class ReflectionMethodTest extends TestCase
     /**
      * @return ConfigurationInterface
      */
-    private function getConfigurationMock()
+    private function getConfigurationMock(): ConfigurationInterface
     {
         $configurationMock = $this->createMock(ConfigurationInterface::class);
         $configurationMock->method('isInternalDocumented')

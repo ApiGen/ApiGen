@@ -50,7 +50,7 @@ abstract class AbstractReflectionClassTestCase extends TestCase
     /**
      * @return ReflectionFactoryInterface
      */
-    private function getReflectionFactory()
+    private function getReflectionFactory(): ReflectionFactoryInterface
     {
         // @todo: use $parserStorage from DI
         $parserStorageMock = $this->createMock(ParserStorageInterface::class);

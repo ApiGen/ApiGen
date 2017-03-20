@@ -9,7 +9,7 @@ use ApiGen\Tests\ContainerAwareTestCase;
 
 final class OverviewGeneratorTest extends ContainerAwareTestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         /** @var ConfigurationInterface $configuration */
         $configuration = $this->container->getByType(ConfigurationInterface::class);

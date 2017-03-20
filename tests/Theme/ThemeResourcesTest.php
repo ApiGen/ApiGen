@@ -16,7 +16,7 @@ final class ThemeResourcesTest extends TestCase
      */
     private $configuration;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $container = (new ContainerFactory)->create();
         $this->configuration = $container->getByType(Configuration::class);

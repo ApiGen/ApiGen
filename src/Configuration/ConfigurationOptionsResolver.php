@@ -236,7 +236,7 @@ final class ConfigurationOptionsResolver
         return true;
     }
 
-    private function ensureSourceExists(string $singleSource)
+    private function ensureSourceExists(string $singleSource): void
     {
         if (! file_exists($singleSource)) {
             throw new ConfigurationException(sprintf(

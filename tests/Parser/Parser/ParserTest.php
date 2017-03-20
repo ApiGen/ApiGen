@@ -20,7 +20,7 @@ final class ParserTest extends ContainerAwareTestCase
     /**
      * @var ParserStorageInterface
      */
-    private $parserResult;
+    private $parserStorage;
 
     /**
      * @var ConfigurationInterface
@@ -31,7 +31,7 @@ final class ParserTest extends ContainerAwareTestCase
     protected function setUp(): void
     {
         $this->parser = $this->container->getByType(ParserInterface::class);
-        $this->parserResult = $this->container->getByType(ParserStorageInterface::class);
+        $this->parserStorage = $this->container->getByType(ParserStorageInterface::class);
         $this->configuration = $this->container->getByType(ConfigurationInterface::class);
         /** @var ConfigurationInterface $configuration */
         $configuration = $this->container->getByType(ConfigurationInterface::class);
@@ -44,7 +44,7 @@ final class ParserTest extends ContainerAwareTestCase
      */
     public function testParseError(): void
     {
-        $this->assertCount(0, $this->parserResult->getClasses());
+        $this->assertCount(0, $this->parserStorage->getClasses());
 
         $this->parser->parse($this->getFilesFromDir(__DIR__ . '/ErrorParseSource'));
     }
@@ -52,10 +52,10 @@ final class ParserTest extends ContainerAwareTestCase
 
     public function testParseClasses(): void
     {
-        $this->assertCount(0, $this->parserResult->getClasses());
+        $this->assertCount(0, $this->parserStorage->getClasses());
 
         $this->parser->parse($this->getFilesFromDir(__DIR__ . '/ParserSource'));
-        $this->assertCount(3, $this->parserResult->getClasses());
+        $this->assertCount(3, $this->parserStorage->getClasses());
     }
 
 

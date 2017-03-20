@@ -4,9 +4,8 @@ namespace ApiGen\Templating;
 
 use Latte\Engine;
 
-class Template
+final class Template
 {
-
     /**
      * @var Engine
      */
@@ -43,19 +42,17 @@ class Template
     /**
      * @return mixed[]
      */
-    public function getParameters()
+    public function getParameters(): array
     {
         return $this->parameters;
     }
 
-
     /**
-     * @return self
+     * @param mixed[] $parameters
      */
-    public function setParameters(array $parameters): self
+    public function setParameters(array $parameters): void
     {
         $this->parameters = $parameters + $this->parameters;
-        return $this;
     }
 
 

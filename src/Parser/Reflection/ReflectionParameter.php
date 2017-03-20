@@ -116,7 +116,7 @@ class ReflectionParameter extends ReflectionBase implements ParameterReflectionI
             return $this->getParsedClasses()[$className]->getMethod($functionName);
         }
 
-        return $this->parserResult->getFunctions()[$functionName];
+        return $this->parserStorage->getFunctions()[$functionName];
     }
 
 

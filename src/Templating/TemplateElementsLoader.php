@@ -27,7 +27,7 @@ final class TemplateElementsLoader
     private $autocompleteElements;
 
     /**
-     * @var array
+     * @var mixed[]
      */
     private $parameters;
 
@@ -43,9 +43,9 @@ final class TemplateElementsLoader
     }
 
 
-    public function addElementsToTemplate(Template $template): Template
+    public function addElementsToTemplate(Template $template): void
     {
-        return $template->setParameters($this->getParameters());
+        $template->setParameters($this->getParameters());
     }
 
 
@@ -56,7 +56,9 @@ final class TemplateElementsLoader
         };
     }
 
-
+    /**
+     * @return mixed[]
+     */
     private function getParameters(): array
     {
         if ($this->parameters === null) {

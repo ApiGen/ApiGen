@@ -25,7 +25,7 @@ final class ResolveIfParsedTest extends AbstractElementResolverTest
         $this->assertInstanceOf(ElementReflectionInterface::class, $resolvedElement);
     }
 
-    public function testMissingElement()
+    public function testMissingElement(): void
     {
         $reflectionMock = $this->createMethodReflectionMock();
 

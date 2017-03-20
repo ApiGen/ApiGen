@@ -5,7 +5,7 @@ namespace ApiGen\Utils\Finder;
 use Nette\Utils\Finder;
 use SplFileInfo;
 
-class NetteFinder implements FinderInterface
+final class NetteFinder implements FinderInterface
 {
     /**
      * @param string|array $source

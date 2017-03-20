@@ -69,8 +69,10 @@ final class ElementUrlFactory
     }
 
 
-    public function createForProperty(PropertyReflectionInterface $property, ClassReflectionInterface $class = null): string
-    {
+    public function createForProperty(
+        PropertyReflectionInterface $property,
+        ClassReflectionInterface $class = null
+    ): string {
         $className = $class !== null ? $class->getName() : $property->getDeclaringClassName();
         return $this->createForClass($className) . '#' . ($property->isMagic() ? 'm' : '') . '$' . $property->getName();
     }
@@ -103,7 +105,9 @@ final class ElementUrlFactory
     public function createForAnnotationGroup(string $name): string
     {
         return sprintf(
-            $this->configuration->getOption(ConfigurationOptions::TEMPLATE)['templates'][ThemeConfigOptions::ANNOTATION_GROUP]['filename'],
+            $this->configuration->getOption(
+                ConfigurationOptions::TEMPLATE
+            )['templates'][ThemeConfigOptions::ANNOTATION_GROUP]['filename'],
             Filters::urlize($name)
         );
     }

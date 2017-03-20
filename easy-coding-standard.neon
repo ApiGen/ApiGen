@@ -10,5 +10,18 @@ checkers:
     - PhpCsFixer\Fixer\Strict\DeclareStrictTypesFixer
     SlevomatCodingStandard\Sniffs\TypeHints\TypeHintDeclarationSniff:
         usefulAnnotations:
+            - @dataProvider
             - @expectedException
             - @deprecated
+            - @todo
+
+skip:
+    SlevomatCodingStandard\Sniffs\TypeHints\TypeHintDeclarationSniff:
+        - tests/Parser/Reflection/ReflectionMethodSource/ReflectionMethod.php
+        - tests/Parser/Reflection/ReflectionFunctionSource/functions.php
+        - tests/Parser/Reflection/ReflectionClassSource/SomeTrait.php
+        - tests/Parser/Reflection/ReflectionClassSource/ParentClass.php
+        - tests/Parser/Reflection/ReflectionClassSource/RichInterface.php
+        - tests/Generator/TemplateGenerators/DeprecatedSources/DeprecatedMethod.php
+        - tests/Generator/TemplateGenerators/DeprecatedSources/DeprecatedClass.php
+        - tests/Parser/Broker/BackendSource/SomeFunction.php

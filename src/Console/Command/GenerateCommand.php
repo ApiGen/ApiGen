@@ -32,7 +32,7 @@ final class GenerateCommand extends AbstractCommand
     /**
      * @var ParserStorageInterface
      */
-    private $parserResult;
+    private $parserStorage;
 
     /**
      * @var GeneratorQueueInterface
@@ -63,7 +63,7 @@ final class GenerateCommand extends AbstractCommand
     public function __construct(
         Configuration $configuration,
         ParserInterface $parser,
-        ParserStorageInterface $parserResult,
+        ParserStorageInterface $parserStorage,
         GeneratorQueueInterface $generatorQueue,
         FileSystem $fileSystem,
         ThemeResources $themeResources,
@@ -74,7 +74,7 @@ final class GenerateCommand extends AbstractCommand
 
         $this->configuration = $configuration;
         $this->parser = $parser;
-        $this->parserResult = $parserResult;
+        $this->parserStorage = $parserStorage;
         $this->generatorQueue = $generatorQueue;
         $this->fileSystem = $fileSystem;
         $this->themeResources = $themeResources;
@@ -188,7 +188,7 @@ final class GenerateCommand extends AbstractCommand
         $files = $this->finder->find($options['source'], $options['exclude'], $options['extensions']);
         $this->parser->parse($files);
 
-        $stats = $this->parserResult->getDocumentedStats();
+        $stats = $this->parserStorage->getDocumentedStats();
         $this->io->writeln(sprintf(
             'Found <comment>%d classes</comment>, <comment>%d constants</comment> and <comment>%d functions</comment>',
             $stats['classes'],

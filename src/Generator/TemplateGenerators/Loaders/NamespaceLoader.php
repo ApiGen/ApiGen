@@ -27,25 +27,26 @@ final class NamespaceLoader
         $namespaces = $this->elementStorage->getNamespaces();
         $name = $element->getPseudoNamespaceName();
 
-        return $this->loadTemplateWithNamespace($template, $name, $namespaces[$name]);
+        $this->loadTemplateWithNamespace($template, $name, $namespaces[$name]);
+
+        return $template;
     }
 
 
-    public function loadTemplateWithNamespace(Template $template, string $name, array $namespace): Template
+    public function loadTemplateWithNamespace(Template $template, string $name, array $namespace): void
     {
         $template->setParameters([
             'package' => null, // removed, but for BC in Themes
             'namespace' => $name,
             'subnamespaces' => $this->getSubnamesForName($name, $template->getParameters()['namespaces'])
         ]);
-        $template = $this->loadTemplateWithElements($template, $namespace);
-        return $template;
+        $this->loadTemplateWithElements($template, $namespace);
     }
 
 
-    private function loadTemplateWithElements(Template $template, array $elements): Template
+    private function loadTemplateWithElements(Template $template, array $elements): void
     {
-        return $template->setParameters([
+        $template->setParameters([
             Elements::CLASSES => $elements[Elements::CLASSES],
             Elements::INTERFACES => $elements[Elements::INTERFACES],
             Elements::TRAITS => $elements[Elements::TRAITS],

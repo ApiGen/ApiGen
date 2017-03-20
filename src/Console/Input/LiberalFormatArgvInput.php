@@ -5,6 +5,9 @@ namespace ApiGen\Console\Input;
 use Symfony;
 use Symfony\Component\Console\Input\ArgvInput;
 
+/**
+ * @todo put to standalone package
+ */
 final class LiberalFormatArgvInput extends ArgvInput
 {
     public function getOptions(): array

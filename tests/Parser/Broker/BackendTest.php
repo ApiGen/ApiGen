@@ -85,7 +85,7 @@ final class BackendTest extends TestCase
 
         $this->assertInstanceOf(
             ParserStorageInterface::class,
-            Assert::getObjectAttribute($object, 'parserResult')
+            Assert::getObjectAttribute($object, 'parserStorage')
         );
 
         $this->assertInstanceOf(

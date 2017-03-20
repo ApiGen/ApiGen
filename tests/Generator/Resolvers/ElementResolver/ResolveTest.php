@@ -30,7 +30,10 @@ final class ResolveTest extends AbstractElementResolverTest
             ->with('someMethod')
             ->willReturn($methodReflectionMock);
 
-        $this->assertSame($methodReflectionMock, $this->elementResolver->resolveElement('someMethod', $classReflectionMock));
+        $this->assertSame(
+            $methodReflectionMock,
+            $this->elementResolver->resolveElement('someMethod', $classReflectionMock)
+        );
     }
 
     public function testNonExistingElement(): void

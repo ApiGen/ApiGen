@@ -73,7 +73,9 @@ final class TemplateFactory implements TemplateFactoryInterface
             $this->builtTemplate = $template;
         }
 
-        return $this->templateElementsLoader->addElementsToTemplate($this->builtTemplate);
+        $this->templateElementsLoader->addElementsToTemplate($this->builtTemplate);
+
+        return $this->builtTemplate;
     }
 
 
@@ -82,7 +84,7 @@ final class TemplateFactory implements TemplateFactoryInterface
         $template = $this->create();
         $template->setFile($this->templateNavigator->getTemplatePath($type));
         $template->setSavePath($this->templateNavigator->getTemplateFileName($type));
-        $template = $this->setEmptyDefaults($template);
+        $this->setEmptyDefaults($template);
         return $template;
     }
 
@@ -136,9 +138,9 @@ final class TemplateFactory implements TemplateFactoryInterface
     }
 
 
-    private function setEmptyDefaults(Template $template): Template
+    private function setEmptyDefaults(Template $template): void
     {
-        return $template->setParameters([
+        $template->setParameters([
             'namespace' => null,
         ]);
     }

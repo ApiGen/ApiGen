@@ -33,7 +33,7 @@ final class TemplateElementsLoaderTest extends ContainerAwareTestCase
     {
         $latteEngineMock = $this->createMock(Engine::class);
         $template = new Template($latteEngineMock);
-        $template = $this->templateElementsLoader->addElementsToTemplate($template);
+        $this->templateElementsLoader->addElementsToTemplate($template);
         $this->assertInstanceOf(Template::class, $template);
 
         $parameters = $template->getParameters();

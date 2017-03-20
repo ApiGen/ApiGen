@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * @param array $arg
+ * @param mixed[] $arg
  * @return string
  */
 function getSomeData(array $arg)

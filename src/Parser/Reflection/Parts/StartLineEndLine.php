@@ -15,7 +15,7 @@ trait StartLineEndLine
     private $endLine;
 
 
-    public function setStartLine(int $startLine)
+    public function setStartLine(int $startLine): void
     {
         $this->startLine = $startLine;
     }
@@ -27,7 +27,7 @@ trait StartLineEndLine
     }
 
 
-    public function setEndLine(int $endLine)
+    public function setEndLine(int $endLine): void
     {
         $this->endLine = $endLine;
     }

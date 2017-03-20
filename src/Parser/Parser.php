@@ -45,36 +45,31 @@ final class Parser implements ParserInterface
             }
         }
 
-        $this->extractBrokerDataForParserResult($this->broker);
+        $this->extractBrokerDataForParserStorage($this->broker);
 
         return $this->parserStorage;
     }
 
 
-    private function extractBrokerDataForParserResult(Broker $broker): void
+    private function extractBrokerDataForParserStorage(Broker $broker): void
     {
-        $classes = $broker->getClasses(
-            Backend::TOKENIZED_CLASSES | Backend::INTERNAL_CLASSES | Backend::NONEXISTENT_CLASSES
-        );
+        $classes = $broker->getClasses(Backend::TOKENIZED_CLASSES | Backend::INTERNAL_CLASSES);
 
         $constants = $broker->getConstants();
         $functions = $broker->getFunctions();
-        $tokenizedClasses = $broker->getClasses(Backend::TOKENIZED_CLASSES);
 
         uksort($classes, 'strcasecmp');
         uksort($constants, 'strcasecmp');
         uksort($functions, 'strcasecmp');
 
-        $this->loadToParserStorage($classes, $constants, $functions, $tokenizedClasses);
+        $this->loadToParserStorage($classes, $constants, $functions);
     }
 
 
-    private function loadToParserStorage(
-        array $classes, array $constants, array $functions, array $tokenizedClasses
-    ): void {
+    private function loadToParserStorage(array $classes, array $constants, array $functions): void
+    {
         $this->parserStorage->setClasses($classes);
         $this->parserStorage->setConstants($constants);
         $this->parserStorage->setFunctions($functions);
-        $this->parserStorage->setTokenizedClasses($tokenizedClasses);
     }
 }

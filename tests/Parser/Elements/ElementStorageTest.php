@@ -18,7 +18,7 @@ final class ElementStorageTest extends ContainerAwareTestCase
      */
     private $elementStorage;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         /** @var ParserStorageInterface $parserStorage */
         $parserStorage = $this->container->getByType(ParserStorageInterface::class);
