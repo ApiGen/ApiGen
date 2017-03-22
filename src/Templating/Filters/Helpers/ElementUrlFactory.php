@@ -64,8 +64,8 @@ final class ElementUrlFactory
     public function createForMethod(MethodReflectionInterface $method, ClassReflectionInterface $class = null): string
     {
         $className = $class !== null ? $class->getName() : $method->getDeclaringClassName();
-        return $this->createForClass($className) . '#' . ($method->isMagic() ? 'm' : '') . '_'
-        . ($method->getOriginalName() ?: $method->getName());
+        return $this->createForClass($className) . '#_'
+            . ($method->getOriginalName() ?: $method->getName());
     }
 
 
@@ -74,7 +74,7 @@ final class ElementUrlFactory
         ClassReflectionInterface $class = null
     ): string {
         $className = $class !== null ? $class->getName() : $property->getDeclaringClassName();
-        return $this->createForClass($className) . '#' . ($property->isMagic() ? 'm' : '') . '$' . $property->getName();
+        return $this->createForClass($className) . '#$' . $property->getName();
     }
 
 

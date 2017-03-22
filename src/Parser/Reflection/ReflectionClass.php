@@ -4,15 +4,11 @@ namespace ApiGen\Parser\Reflection;
 
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\Extractors\ClassMagicElementsExtractorInterface;
 use ApiGen\Contracts\Parser\Reflection\Extractors\ClassTraitElementsExtractorInterface;
 use ApiGen\Contracts\Parser\Reflection\Extractors\ParentClassElementsExtractorInterface;
-use ApiGen\Contracts\Parser\Reflection\Magic\MagicMethodReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\Magic\MagicPropertyReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\TokenReflection\ReflectionFactoryInterface;
-use ApiGen\Parser\Reflection\Extractors\ClassMagicElementsExtractor;
 use ApiGen\Parser\Reflection\Extractors\ClassTraitElementsExtractor;
 use ApiGen\Parser\Reflection\Extractors\ParentClassElementsExtractor;
 use InvalidArgumentException;
@@ -58,11 +54,6 @@ final class ReflectionClass extends ReflectionElement implements ClassReflection
     private $ownMethods;
 
     /**
-     * @var ClassMagicElementsExtractorInterface
-     */
-    private $classMagicElementExtractor;
-
-    /**
      * @var ClassTraitElementsExtractorInterface
      */
     private $classTraitElementExtractor;
@@ -79,7 +70,6 @@ final class ReflectionClass extends ReflectionElement implements ClassReflection
     public function __construct($reflectionClass)
     {
         parent::__construct($reflectionClass);
-        $this->classMagicElementExtractor = new ClassMagicElementsExtractor($this);
         $this->classTraitElementExtractor = new ClassTraitElementsExtractor($this, $reflectionClass);
         $this->parentClassElementExtractor = new ParentClassElementsExtractor($this);
     }
@@ -191,24 +181,6 @@ final class ReflectionClass extends ReflectionElement implements ClassReflection
 
 
     /**
-     * @return MagicMethodReflectionInterface[]
-     */
-    public function getMagicMethods(): array
-    {
-        return $this->classMagicElementExtractor->getMagicMethods();
-    }
-
-
-    /**
-     * @return MagicMethodReflectionInterface[]
-     */
-    public function getOwnMagicMethods(): array
-    {
-        return $this->classMagicElementExtractor->getOwnMagicMethods();
-    }
-
-
-    /**
      * @return MethodReflectionInterface[]
      */
     public function getTraitMethods(): array
@@ -228,15 +200,6 @@ final class ReflectionClass extends ReflectionElement implements ClassReflection
             $name,
             $this->reflection->getName()
         ));
-    }
-
-
-    /**
-     * @return MagicPropertyReflectionInterface[]
-     */
-    public function getMagicProperties(): array
-    {
-        return $this->classMagicElementExtractor->getMagicProperties();
     }
 
 
@@ -261,15 +224,6 @@ final class ReflectionClass extends ReflectionElement implements ClassReflection
         }
 
         return $this->properties;
-    }
-
-
-    /**
-     * @return ReflectionPropertyMagic[]
-     */
-    public function getOwnMagicProperties(): array
-    {
-        return $this->classMagicElementExtractor->getOwnMagicProperties();
     }
 
 
@@ -637,30 +591,11 @@ final class ReflectionClass extends ReflectionElement implements ClassReflection
 
 
     /**
-     * @return MagicMethodReflectionInterface[]
-     */
-    public function getInheritedMagicMethods(): array
-    {
-        return $this->classMagicElementExtractor->getInheritedMagicMethods();
-    }
-
-
-    /**
      * @return MethodReflectionInterface[]
      */
     public function getUsedMethods(): array
     {
         $usedMethods = $this->classTraitElementExtractor->getUsedMethods();
-        return $this->sortUsedMethods($usedMethods);
-    }
-
-
-    /**
-     * @return MagicMethodReflectionInterface[]
-     */
-    public function getUsedMagicMethods(): array
-    {
-        $usedMethods = $this->classMagicElementExtractor->getUsedMagicMethods();
         return $this->sortUsedMethods($usedMethods);
     }
 
@@ -684,29 +619,11 @@ final class ReflectionClass extends ReflectionElement implements ClassReflection
 
 
     /**
-     * @return MagicPropertyReflectionInterface[]
-     */
-    public function getInheritedMagicProperties(): array
-    {
-        return $this->classMagicElementExtractor->getInheritedMagicProperties();
-    }
-
-
-    /**
      * @return PropertyReflectionInterface[]
      */
     public function getUsedProperties(): array
     {
         return $this->classTraitElementExtractor->getUsedProperties();
-    }
-
-
-    /**
-     * @return MagicPropertyReflectionInterface[]
-     */
-    public function getUsedMagicProperties(): array
-    {
-        return $this->classMagicElementExtractor->getUsedMagicProperties();
     }
 
 
@@ -750,6 +667,74 @@ final class ReflectionClass extends ReflectionElement implements ClassReflection
     {
         return true;
     }
+
+
+    /**
+     * Removed, but for BC in Themes
+     *
+     * @return mixed[]
+     */
+    public function getOwnMagicMethods(): array
+    {
+        return [];
+    }
+
+
+    /**
+     * Removed, but for BC in Themes
+     *
+     * @return mixed[]
+     */
+    public function getInheritedMagicMethods(): array
+    {
+        return [];
+    }
+
+
+    /**
+     * Removed, but for BC in Themes
+     *
+     * @return mixed[]
+     */
+    public function getUsedMagicMethods(): array
+    {
+        return [];
+    }
+
+
+
+    /**
+     * Removed, but for BC in Themes
+     *
+     * @return mixed[]
+     */
+    public function getOwnMagicProperties(): array
+    {
+        return [];
+    }
+
+
+    /**
+     * Removed, but for BC in Themes
+     *
+     * @return mixed[]
+     */
+    public function getInheritedMagicProperties(): array
+    {
+        return [];
+    }
+
+
+    /**
+     * Removed, but for BC in Themes
+     *
+     * @return mixed[]
+     */
+    public function getUsedMagicProperties(): array
+    {
+        return [];
+    }
+
 
     /**
      * @param mixed[] $usedMethods

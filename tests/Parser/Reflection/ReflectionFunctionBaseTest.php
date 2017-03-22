@@ -2,7 +2,6 @@
 
 namespace ApiGen\Parser\Tests\Reflection;
 
-use ApiGen\Contracts\Parser\Reflection\Magic\MagicParameterReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ParameterReflectionInterface;
 use ApiGen\Parser\Reflection\ReflectionFunctionBase;
 use ApiGen\Parser\Reflection\ReflectionParameter;
@@ -72,18 +71,6 @@ class ReflectionParameterBaseTest extends AbstractReflectionTestCase
     public function testGetParameterNotExistingPosition(): void
     {
         $this->reflectionFunction->getParameter(1);
-    }
-
-
-    public function testProcessAnnotation(): void
-    {
-        $reflectionFunction = $this->backend->getFunctions()['withMagicParameters'];
-        $parameters = $reflectionFunction->getParameters();
-
-        $this->assertCount(2, $parameters);
-
-        $this->assertInstanceOf(MagicParameterReflectionInterface::class, $parameters[0]);
-        $this->assertInstanceOf(MagicParameterReflectionInterface::class, $parameters[1]);
     }
 
 

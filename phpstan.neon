@@ -1,5 +1,4 @@
 parameters:
     ignoreErrors:
-        - "#does not call parent constructor from#"
         - "#getDocComment#"
         - "#must implement interface PhpParser#"

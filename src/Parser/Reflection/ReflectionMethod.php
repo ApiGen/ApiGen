@@ -12,12 +12,6 @@ class ReflectionMethod extends ReflectionFunctionBase implements MethodReflectio
     use Visibility;
 
 
-    public function isMagic(): bool
-    {
-        return false;
-    }
-
-
     public function getDeclaringClass(): ?ClassReflectionInterface
     {
         $className = $this->reflection->getDeclaringClassName();

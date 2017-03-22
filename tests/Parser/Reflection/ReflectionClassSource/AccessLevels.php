@@ -3,7 +3,6 @@
 namespace Project;
 
 /**
- * @property $someMagicProperty
  * @property \stdClass[] $issue696
  * @method getSome()
  * @method \stdClass[] methodRelatedToIssue696(\stdClass[] $argument)

@@ -56,12 +56,6 @@ final class ReflectionPropertyTest extends TestCase
     }
 
 
-    public function testIsMagic(): void
-    {
-        $this->assertFalse($this->reflectionProperty->isMagic());
-    }
-
-
     public function testGetTypeHint(): void
     {
         $this->assertSame('int', $this->reflectionProperty->getTypeHint());

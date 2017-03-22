@@ -4,9 +4,6 @@ namespace ApiGen\Parser\Reflection\TokenReflection;
 
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Parser\ParserStorageInterface;
-use ApiGen\Contracts\Parser\Reflection\Magic\MagicMethodReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\Magic\MagicParameterReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\Magic\MagicPropertyReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\TokenReflection\ReflectionFactoryInterface;
 use ApiGen\Parser\Reflection\ReflectionBase;
 use ApiGen\Parser\Reflection\ReflectionClass;
@@ -14,11 +11,8 @@ use ApiGen\Parser\Reflection\ReflectionConstant;
 use ApiGen\Parser\Reflection\ReflectionExtension;
 use ApiGen\Parser\Reflection\ReflectionFunction;
 use ApiGen\Parser\Reflection\ReflectionMethod;
-use ApiGen\Parser\Reflection\ReflectionMethodMagic;
 use ApiGen\Parser\Reflection\ReflectionParameter;
-use ApiGen\Parser\Reflection\ReflectionParameterMagic;
 use ApiGen\Parser\Reflection\ReflectionProperty;
-use ApiGen\Parser\Reflection\ReflectionPropertyMagic;
 use RuntimeException;
 use TokenReflection\IReflectionClass;
 use TokenReflection\IReflectionConstant;
@@ -62,45 +56,8 @@ class ReflectionFactory implements ReflectionFactoryInterface
 
 
     /**
-     * @param mixed[] $settings
-     * @return MagicMethodReflectionInterface
-     */
-    public function createMethodMagic(array $settings): MagicMethodReflectionInterface
-    {
-        $reflection = new ReflectionMethodMagic($settings);
-        $this->setDependencies($reflection);
-
-        return $reflection;
-    }
-
-
-    /**
-     * @param mixed[] $settings
-     */
-    public function createParameterMagic(array $settings): MagicParameterReflectionInterface
-    {
-        $reflection = new ReflectionParameterMagic($settings);
-        $this->setDependencies($reflection);
-
-        return $reflection;
-    }
-
-
-    /**
-     * @param mixed[] $settings
-     */
-    public function createPropertyMagic(array $settings): MagicPropertyReflectionInterface
-    {
-        $reflection = new ReflectionPropertyMagic($settings);
-        $this->setDependencies($reflection);
-
-        return $reflection;
-    }
-
-
-    /**
      * @param IReflectionClass|IReflectionConstant|IReflectionMethod $reflection
-     * @return ReflectionClass|ReflectionConstant|ReflectionMethod
+     * @return mixed
      */
     private function createByReflectionType($reflection)
     {

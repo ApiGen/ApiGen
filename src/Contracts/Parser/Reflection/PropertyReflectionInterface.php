@@ -29,9 +29,6 @@ interface PropertyReflectionInterface extends
     public function getTypeHint(): string;
 
 
-    public function isMagic(): bool;
-
-
     public function isReadOnly(): bool;
 
 

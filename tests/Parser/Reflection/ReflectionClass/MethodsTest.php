@@ -2,7 +2,6 @@
 
 namespace ApiGen\Parser\Tests\Reflections\ReflectionClass;
 
-use ApiGen\Contracts\Parser\Reflection\Magic\MagicMethodReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 use ApiGen\Parser\Tests\Reflection\ReflectionClass\AbstractReflectionClassTestCase;
 
@@ -35,40 +34,14 @@ final class MethodsTest extends AbstractReflectionClassTestCase
     }
 
 
-    public function testGetMagicMethods(): void
-    {
-        $this->assertCount(4, $this->reflectionClass->getMagicMethods());
-        $magicMethod = $this->reflectionClass->getMagicMethods()['getSome'];
-        $this->assertInstanceOf(MagicMethodReflectionInterface::class, $magicMethod);
-    }
-
-
-    public function testGetOwnMagicMethods(): void
-    {
-        $this->assertCount(2, $this->reflectionClass->getOwnMagicMethods());
-    }
-
-
     public function testGetInheritedMethods(): void
     {
         $this->assertCount(2, $this->reflectionClass->getInheritedMethods());
     }
 
 
-    public function testGetInheritedMagicMethods(): void
-    {
-        $this->assertCount(1, $this->reflectionClass->getInheritedMagicMethods());
-    }
-
-
     public function testGetUsedMethods(): void
     {
         $this->assertCount(1, $this->reflectionClass->getUsedMethods());
-    }
-
-
-    public function testGetUsedMagicMethods(): void
-    {
-        $this->assertCount(1, $this->reflectionClass->getUsedMagicMethods());
     }
 }

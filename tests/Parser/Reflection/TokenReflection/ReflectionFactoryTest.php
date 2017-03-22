@@ -8,9 +8,6 @@ use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ExtensionReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\Magic\MagicMethodReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\Magic\MagicParameterReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\Magic\MagicPropertyReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ParameterReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
@@ -44,45 +41,12 @@ final class ReflectionFactoryTest extends TestCase
     }
 
 
-    public function testCreateMethodMagic(): void
-    {
-        $methodMagic = $this->reflectionFactory->createMethodMagic([
-            'name' => '', 'shortDescription' => '', 'startLine' => '', 'endLine' => '', 'returnsReference' => '',
-            'declaringClass' => '', 'annotations' => ''
-        ]);
-        $this->assertInstanceOf(MagicMethodReflectionInterface::class, $methodMagic);
-        $this->checkLoadedProperties($methodMagic);
-    }
-
-
-    public function testCreateParameterMagic(): void
-    {
-        $parameterMagic = $this->reflectionFactory->createParameterMagic([
-            'name' => '', 'position' => '', 'typeHint' => '', 'defaultValueDefinition' => '',
-            'unlimited' => '', 'passedByReference' => '', 'declaringFunction' => ''
-        ]);
-        $this->assertInstanceOf(MagicParameterReflectionInterface::class, $parameterMagic);
-        $this->checkLoadedProperties($parameterMagic);
-    }
-
-
     public function testCreateFromReflectionClass(): void
     {
         $tokenReflectionClassMock = $this->createMock(IReflectionClass::class, Object::class);
         $reflectionClass = $this->reflectionFactory->createFromReflection($tokenReflectionClassMock);
         $this->assertInstanceOf(ClassReflectionInterface::class, $reflectionClass);
         $this->checkLoadedProperties($reflectionClass);
-    }
-
-
-    public function testCreatePropertyMagic(): void
-    {
-        $propertyMagic = $this->reflectionFactory->createPropertyMagic([
-            'name' => '', 'typeHint' => '', 'shortDescription' => '', 'startLine' => '',
-            'endLine' => '', 'readOnly' => '', 'writeOnly' => '', 'declaringClass' => ''
-        ]);
-        $this->assertInstanceOf(MagicPropertyReflectionInterface::class, $propertyMagic);
-        $this->checkLoadedProperties($propertyMagic);
     }
 
 

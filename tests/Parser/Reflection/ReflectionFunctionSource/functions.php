@@ -10,16 +10,6 @@ function getSomeData(array $arg)
 }
 
 
-/**
- * @param int $first first magic parameter
- * @param string $second first magic parameter
- * @param not propper annotation
- */
-function withMagicParameters()
-{
-}
-
-
 function getMemoryInBytes(string $value)
 {
 }
