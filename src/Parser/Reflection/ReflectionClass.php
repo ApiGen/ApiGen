@@ -15,7 +15,7 @@ use InvalidArgumentException;
 use ReflectionProperty as Visibility;
 use TokenReflection\IReflectionClass;
 
-final class ReflectionClass extends ReflectionElement implements ClassReflectionInterface
+final class ReflectionClass extends AbstractReflectionElement implements ClassReflectionInterface
 {
 
     /**

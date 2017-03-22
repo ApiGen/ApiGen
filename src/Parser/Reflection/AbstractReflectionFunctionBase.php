@@ -7,13 +7,8 @@ use ApiGen\Contracts\Parser\Reflection\ParameterReflectionInterface;
 use InvalidArgumentException;
 use TokenReflection\IReflectionParameter;
 
-abstract class ReflectionFunctionBase extends ReflectionElement implements AbstractFunctionMethodReflectionInterface
+abstract class AbstractReflectionFunctionBase extends AbstractReflectionElement implements AbstractFunctionMethodReflectionInterface
 {
-    /**
-     * @var string Matches "array $arg"
-     */
-    private const PARAM_ANNOTATION = '~^(?:([\\w\\\\]+(?:\\|[\\w\\\\]+)*)\\s+)?\\$(\\w+)(?:\\s+(.*))?($)~s';
-
     /**
      * @var ParameterReflectionInterface[]
      */

@@ -6,9 +6,9 @@ use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Templating\Filters\SourceFilters;
-use ApiGen\Tests\ContainerAwareTestCase;
+use ApiGen\Tests\AbstractContainerAwareTestCase;
 
-final class SourceFiltersTest extends ContainerAwareTestCase
+final class SourceFiltersTest extends AbstractContainerAwareTestCase
 {
     /**
      * @var SourceFilters

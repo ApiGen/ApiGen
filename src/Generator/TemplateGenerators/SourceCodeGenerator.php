@@ -4,6 +4,7 @@ namespace ApiGen\Generator\TemplateGenerators;
 
 use ApiGen\Configuration\ConfigurationOptions;
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
+use ApiGen\Contracts\Generator\SourceCodeHighlighter\SourceCodeHighlighterInterface;
 use ApiGen\Contracts\Generator\StepCounterInterface;
 use ApiGen\Contracts\Generator\TemplateGenerators\ConditionalTemplateGeneratorInterface;
 use ApiGen\Contracts\Parser\Elements\ElementStorageInterface;
@@ -11,7 +12,6 @@ use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
 use ApiGen\Generator\Event\GenerateProgressEvent;
 use ApiGen\Generator\Resolvers\RelativePathResolver;
-use ApiGen\Generator\SourceCodeHighlighter\SourceCodeHighlighter;
 use ApiGen\Generator\TemplateGenerators\Loaders\NamespaceLoader;
 use ApiGen\Templating\TemplateFactory;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -39,7 +39,7 @@ final class SourceCodeGenerator implements ConditionalTemplateGeneratorInterface
     private $relativePathResolver;
 
     /**
-     * @var SourceCodeHighlighter
+     * @var SourceCodeHighlighterInterface
      */
     private $sourceCodeHighlighter;
 
@@ -59,7 +59,7 @@ final class SourceCodeGenerator implements ConditionalTemplateGeneratorInterface
         ElementStorageInterface $elementStorage,
         TemplateFactory $templateFactory,
         RelativePathResolver $relativePathResolver,
-        SourceCodeHighlighter $sourceCodeHighlighter,
+        SourceCodeHighlighterInterface $sourceCodeHighlighter,
         EventDispatcherInterface $eventDispatcher,
         NamespaceLoader $namespaceLoader
     ) {

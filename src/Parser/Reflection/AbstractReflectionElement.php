@@ -4,16 +4,13 @@ namespace ApiGen\Parser\Reflection;
 
 use ApiGen\Contracts\Parser\Reflection\Behavior\InClassInterface;
 use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
-use TokenReflection;
-use TokenReflection\Exception\BaseException;
 use TokenReflection\ReflectionAnnotation;
 use TokenReflection\ReflectionClass;
 use TokenReflection\ReflectionConstant;
 use TokenReflection\ReflectionFunction;
 
-abstract class ReflectionElement extends ReflectionBase implements ElementReflectionInterface
+abstract class AbstractReflectionElement extends AbstractReflectionBase implements ElementReflectionInterface
 {
-
     /**
      * @var bool
      */

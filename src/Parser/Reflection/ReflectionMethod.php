@@ -6,9 +6,8 @@ use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 use ApiGen\Parser\Reflection\Parts\Visibility;
 
-final class ReflectionMethod extends ReflectionFunctionBase implements MethodReflectionInterface
+final class ReflectionMethod extends AbstractReflectionFunctionBase implements MethodReflectionInterface
 {
-
     use Visibility;
 
 

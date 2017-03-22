@@ -8,10 +8,10 @@ use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 use ApiGen\Templating\Filters\UrlFilters;
-use ApiGen\Tests\ContainerAwareTestCase;
+use ApiGen\Tests\AbstractContainerAwareTestCase;
 use ApiGen\Tests\MethodInvoker;
 
-final class UrlFiltersTest extends ContainerAwareTestCase
+final class UrlFiltersTest extends AbstractContainerAwareTestCase
 {
     /**
      * @var string

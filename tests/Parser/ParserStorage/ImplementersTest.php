@@ -9,11 +9,11 @@ use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Parser\Tests\ParserStorageImplementersSource\ChildInterface;
 use ApiGen\Parser\Tests\ParserStorageImplementersSource\ParentInterface;
 use ApiGen\Parser\Tests\ParserStorageImplementersSource\SomeClass;
-use ApiGen\Tests\ContainerAwareTestCase;
+use ApiGen\Tests\AbstractContainerAwareTestCase;
 use Nette\Utils\Finder;
 use ReflectionProperty;
 
-final class ImplementersTest extends ContainerAwareTestCase
+final class ImplementersTest extends AbstractContainerAwareTestCase
 {
 
     /**

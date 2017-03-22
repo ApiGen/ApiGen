@@ -9,9 +9,9 @@ use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
 use ApiGen\Templating\Filters\Helpers\ElementLinkFactory;
-use ApiGen\Tests\ContainerAwareTestCase;
+use ApiGen\Tests\AbstractContainerAwareTestCase;
 
-final class ElementLinkFactoryTest extends ContainerAwareTestCase
+final class ElementLinkFactoryTest extends AbstractContainerAwareTestCase
 {
     /**
      * @var ElementLinkFactory

@@ -6,7 +6,7 @@ use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use Nette\DI\Container;
 use PHPUnit\Framework\TestCase;
 
-abstract class ContainerAwareTestCase extends TestCase
+abstract class AbstractContainerAwareTestCase extends TestCase
 {
     /**
      * @var Container

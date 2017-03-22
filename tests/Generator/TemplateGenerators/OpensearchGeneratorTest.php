@@ -4,9 +4,9 @@ namespace ApiGen\Tests\Generator\TemplateGenerators;
 
 use ApiGen\Configuration\Configuration;
 use ApiGen\Generator\TemplateGenerators\OpensearchGenerator;
-use ApiGen\Tests\ContainerAwareTestCase;
+use ApiGen\Tests\AbstractContainerAwareTestCase;
 
-class OpensearchGeneratorTest extends ContainerAwareTestCase
+class OpensearchGeneratorTest extends AbstractContainerAwareTestCase
 {
 
     /**

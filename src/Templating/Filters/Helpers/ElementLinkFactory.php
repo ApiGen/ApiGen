@@ -8,6 +8,7 @@ use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
+use ApiGen\Parser\Reflection\AbstractReflectionBase;
 use ApiGen\Parser\Reflection\ReflectionBase;
 use Nette\Utils\Html;
 use UnexpectedValueException;
@@ -52,7 +53,7 @@ final class ElementLinkFactory
 
         throw new UnexpectedValueException(sprintf(
             'Descendant of "%s" class expected. Got "%s" class.',
-            ReflectionBase::class,
+            AbstractReflectionBase::class,
             get_class($element)
         ));
     }

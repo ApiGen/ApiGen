@@ -2,8 +2,8 @@
 
 namespace ApiGen\Parser\Tests\Elements;
 
+use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
 use ApiGen\Parser\Elements\ElementFilter;
-use ApiGen\Parser\Reflection\ReflectionElement;
 use PHPUnit\Framework\TestCase;
 
 final class ElementFilterTest extends TestCase
@@ -22,11 +22,11 @@ final class ElementFilterTest extends TestCase
 
     public function testFilterForMain(): void
     {
-        $reflectionElement = $this->createMock(ReflectionElement::class);
+        $reflectionElement = $this->createMock(ElementReflectionInterface::class);
         $reflectionElement->method('isMain')
             ->willReturn(true);
 
-        $reflectionElement2 = $this->createMock(ReflectionElement::class);
+        $reflectionElement2 = $this->createMock(ElementReflectionInterface::class);
         $reflectionElement2->method('isMain')
             ->willReturn(false);
 
@@ -38,7 +38,7 @@ final class ElementFilterTest extends TestCase
 
     public function testFilterByAnnotation(): void
     {
-        $reflectionElement = $this->createMock(ReflectionElement::class);
+        $reflectionElement = $this->createMock(ElementReflectionInterface::class);
         $reflectionElement->method('hasAnnotation')
             ->willReturnCallback(function ($arg) {
                 return $arg === 'todo';

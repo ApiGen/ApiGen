@@ -7,12 +7,12 @@ use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Generator\TemplateGenerators\AnnotationGroupsGenerator;
 use ApiGen\Parser\Parser;
 use ApiGen\Templating\Template;
-use ApiGen\Tests\ContainerAwareTestCase;
+use ApiGen\Tests\AbstractContainerAwareTestCase;
 use ApiGen\Tests\MethodInvoker;
 use Latte\Engine;
 use Nette\Utils\Finder;
 
-final class AnnotationGroupsGeneratorTest extends ContainerAwareTestCase
+final class AnnotationGroupsGeneratorTest extends AbstractContainerAwareTestCase
 {
     /**
      * @var Configuration

@@ -6,13 +6,12 @@ use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
 use ApiGen\Parser\Reflection\Parts\Visibility;
 
-final class ReflectionProperty extends ReflectionElement implements PropertyReflectionInterface
+final class ReflectionProperty extends AbstractReflectionElement implements PropertyReflectionInterface
 {
-
     use Visibility;
 
 
-    public function isReadOnly():bool
+    public function isReadOnly(): bool
     {
         return false;
     }

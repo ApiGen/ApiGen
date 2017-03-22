@@ -5,10 +5,10 @@ namespace ApiGen\Tests\Templating;
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Templating\Template;
 use ApiGen\Templating\TemplateElementsLoader;
-use ApiGen\Tests\ContainerAwareTestCase;
+use ApiGen\Tests\AbstractContainerAwareTestCase;
 use Latte\Engine;
 
-final class TemplateElementsLoaderTest extends ContainerAwareTestCase
+final class TemplateElementsLoaderTest extends AbstractContainerAwareTestCase
 {
     /**
      * @var TemplateElementsLoader

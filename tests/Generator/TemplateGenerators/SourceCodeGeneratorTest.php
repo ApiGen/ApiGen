@@ -6,11 +6,11 @@ use ApiGen\Configuration\Configuration;
 use ApiGen\Generator\TemplateGenerators\SourceCodeGenerator;
 use ApiGen\Parser\Elements\ElementStorage;
 use ApiGen\Parser\Parser;
-use ApiGen\Tests\ContainerAwareTestCase;
+use ApiGen\Tests\AbstractContainerAwareTestCase;
 use ApiGen\Tests\MethodInvoker;
 use Nette\Utils\Finder;
 
-class SourceCodeGeneratorTest extends ContainerAwareTestCase
+class SourceCodeGeneratorTest extends AbstractContainerAwareTestCase
 {
 
     /**

@@ -4,14 +4,14 @@ namespace ApiGen\Tests\Console\Command;
 
 use ApiGen\Console\Command\GenerateCommand;
 use ApiGen\Contracts\Console\IO\IOInterface;
-use ApiGen\Tests\ContainerAwareTestCase;
+use ApiGen\Tests\AbstractContainerAwareTestCase;
 use ApiGen\Tests\MethodInvoker;
 use ReflectionObject;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 
-final class GenerateCommandExecuteTest extends ContainerAwareTestCase
+final class GenerateCommandExecuteTest extends AbstractContainerAwareTestCase
 {
 
     /**

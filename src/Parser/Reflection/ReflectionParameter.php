@@ -4,12 +4,10 @@ namespace ApiGen\Parser\Reflection;
 
 use ApiGen\Contracts\Parser\Reflection\AbstractFunctionMethodReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ParameterReflectionInterface;
 
-final class ReflectionParameter extends ReflectionBase implements ParameterReflectionInterface
+final class ReflectionParameter extends AbstractReflectionBase implements ParameterReflectionInterface
 {
-
     public function getTypeHint(): string
     {
         if ($this->isArray()) {

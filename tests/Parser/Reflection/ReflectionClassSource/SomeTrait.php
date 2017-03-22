@@ -8,6 +8,9 @@ namespace Project;
 trait SomeTrait
 {
 
+    /**
+     * @var mixed
+     */
     public $publicTraitProperty;
 
 

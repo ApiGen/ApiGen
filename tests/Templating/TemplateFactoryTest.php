@@ -10,10 +10,10 @@ use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Contracts\Templating\TemplateFactory\TemplateFactoryInterface;
 use ApiGen\Templating\Template;
 use ApiGen\Templating\TemplateFactory;
-use ApiGen\Tests\ContainerAwareTestCase;
+use ApiGen\Tests\AbstractContainerAwareTestCase;
 use ApiGen\Tests\MethodInvoker;
 
-final class TemplateFactoryTest extends ContainerAwareTestCase
+final class TemplateFactoryTest extends AbstractContainerAwareTestCase
 {
     /**
      * @var TemplateFactory

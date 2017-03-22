@@ -8,9 +8,9 @@ use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
 use ApiGen\Templating\Filters\ElementUrlFilters;
-use ApiGen\Tests\ContainerAwareTestCase;
+use ApiGen\Tests\AbstractContainerAwareTestCase;
 
-final class ElementUrlFiltersTest extends ContainerAwareTestCase
+final class ElementUrlFiltersTest extends AbstractContainerAwareTestCase
 {
     /**
      * @var ElementUrlFilters

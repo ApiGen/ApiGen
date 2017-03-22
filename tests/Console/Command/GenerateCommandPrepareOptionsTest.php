@@ -3,10 +3,10 @@
 namespace ApiGen\Tests\Command;
 
 use ApiGen\Console\Command\GenerateCommand;
-use ApiGen\Tests\ContainerAwareTestCase;
+use ApiGen\Tests\AbstractContainerAwareTestCase;
 use ApiGen\Tests\MethodInvoker;
 
-final class GenerateCommandPrepareOptionsTest extends ContainerAwareTestCase
+final class GenerateCommandPrepareOptionsTest extends AbstractContainerAwareTestCase
 {
     /**
      * @var GenerateCommand

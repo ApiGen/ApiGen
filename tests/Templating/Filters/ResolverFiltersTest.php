@@ -5,10 +5,10 @@ namespace ApiGen\Tests\Templating\Filters;
 use ApiGen\Contracts\Parser\ParserStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Templating\Filters\ResolverFilters;
-use ApiGen\Tests\ContainerAwareTestCase;
+use ApiGen\Tests\AbstractContainerAwareTestCase;
 use PHPUnit_Framework_MockObject_MockObject;
 
-final class ResolverFiltersTest extends ContainerAwareTestCase
+final class ResolverFiltersTest extends AbstractContainerAwareTestCase
 {
     /**
      * @var ResolverFilters

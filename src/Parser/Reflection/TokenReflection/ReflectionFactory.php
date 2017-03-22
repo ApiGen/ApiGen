@@ -5,7 +5,7 @@ namespace ApiGen\Parser\Reflection\TokenReflection;
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Parser\ParserStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\TokenReflection\ReflectionFactoryInterface;
-use ApiGen\Parser\Reflection\ReflectionBase;
+use ApiGen\Parser\Reflection\AbstractReflectionBase;
 use ApiGen\Parser\Reflection\ReflectionClass;
 use ApiGen\Parser\Reflection\ReflectionConstant;
 use ApiGen\Parser\Reflection\ReflectionExtension;
@@ -24,7 +24,6 @@ use TokenReflection\IReflectionProperty;
 
 final class ReflectionFactory implements ReflectionFactoryInterface
 {
-
     /**
      * @var ConfigurationInterface
      */
@@ -81,7 +80,7 @@ final class ReflectionFactory implements ReflectionFactoryInterface
     }
 
 
-    private function setDependencies(ReflectionBase $reflection): void
+    private function setDependencies(AbstractReflectionBase $reflection): void
     {
         $reflection->setConfiguration($this->configuration);
         $reflection->setParserStorage($this->parserStorage);

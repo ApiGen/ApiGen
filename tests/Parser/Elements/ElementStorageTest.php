@@ -8,10 +8,10 @@ use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Parser\Reflection\ReflectionClass;
-use ApiGen\Tests\ContainerAwareTestCase;
+use ApiGen\Tests\AbstractContainerAwareTestCase;
 use PHPUnit_Framework_MockObject_MockObject;
 
-final class ElementStorageTest extends ContainerAwareTestCase
+final class ElementStorageTest extends AbstractContainerAwareTestCase
 {
     /**
      * @var ElementStorageInterface

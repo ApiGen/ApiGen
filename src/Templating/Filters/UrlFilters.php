@@ -5,11 +5,11 @@ namespace ApiGen\Templating\Filters;
 use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions;
 use ApiGen\Contracts\Generator\Resolvers\ElementResolverInterface;
+use ApiGen\Contracts\Generator\SourceCodeHighlighter\SourceCodeHighlighterInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Event\ProcessDocTextEvent;
-use ApiGen\Generator\SourceCodeHighlighter\SourceCodeHighlighter;
 use ApiGen\Templating\Filters\Helpers\ElementLinkFactory;
 use ApiGen\Templating\Filters\Helpers\LinkBuilder;
 use ApiGen\Templating\Filters\Helpers\Strings;
@@ -20,7 +20,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 final class UrlFilters extends Filters
 {
     /**
-     * @var SourceCodeHighlighter
+     * @var SourceCodeHighlighterInterface
      */
     private $highlighter;
 
@@ -52,7 +52,7 @@ final class UrlFilters extends Filters
 
     public function __construct(
         Configuration $configuration,
-        SourceCodeHighlighter $highlighter,
+        SourceCodeHighlighterInterface $highlighter,
         ElementResolverInterface $elementResolver,
         LinkBuilder $linkBuilder,
         ElementLinkFactory $elementLinkFactory,

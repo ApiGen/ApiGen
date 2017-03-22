@@ -57,7 +57,7 @@ class SourceFilters extends Filters
             $file = 'class-';
         }
 
-        $file .= $this->urlize($elementName);
+        $file .= self::urlize($elementName);
 
         $url = sprintf($this->configuration->getOption('template')['templates']['source']['filename'], $file);
         if ($withLine) {

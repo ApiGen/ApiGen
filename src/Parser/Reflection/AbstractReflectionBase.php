@@ -16,7 +16,7 @@ use TokenReflection\IReflectionMethod;
 use TokenReflection\IReflectionParameter;
 use TokenReflection\IReflectionProperty;
 
-abstract class ReflectionBase extends Object implements ReflectionInterface
+abstract class AbstractReflectionBase extends Object implements ReflectionInterface
 {
     /**
      * @var string

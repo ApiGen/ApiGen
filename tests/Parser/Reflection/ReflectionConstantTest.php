@@ -8,10 +8,10 @@ use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
 use ApiGen\Parser\Broker\Backend;
 use ApiGen\Parser\Reflection\ReflectionBase;
 use ApiGen\Tests\ConstantInClass;
-use ApiGen\Tests\ContainerAwareTestCase;
+use ApiGen\Tests\AbstractContainerAwareTestCase;
 use TokenReflection\Broker;
 
-final class ReflectionConstantTest extends ContainerAwareTestCase
+final class ReflectionConstantTest extends AbstractContainerAwareTestCase
 {
     /**
      * @var ConstantReflectionInterface

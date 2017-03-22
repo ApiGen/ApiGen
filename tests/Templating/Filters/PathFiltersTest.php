@@ -3,9 +3,9 @@
 namespace ApiGen\Tests\Templating\Filters;
 
 use ApiGen\Templating\Filters\PathFilters;
-use ApiGen\Tests\ContainerAwareTestCase;
+use ApiGen\Tests\AbstractContainerAwareTestCase;
 
-final class PathFiltersTest extends ContainerAwareTestCase
+final class PathFiltersTest extends AbstractContainerAwareTestCase
 {
     /**
      * @var PathFilters

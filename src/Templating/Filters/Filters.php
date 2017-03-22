@@ -2,9 +2,11 @@
 
 namespace ApiGen\Templating\Filters;
 
-abstract class Filters
+/**
+ * @todo use ModularFilters package
+ */
+class Filters
 {
-
     /**
      * Calls public method with args if exists and passes args.
      *
