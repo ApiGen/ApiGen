@@ -19,12 +19,10 @@ final class ElementSorterTest extends TestCase
      */
     private $elementSorter;
 
-
     protected function setUp(): void
     {
         $this->elementSorter = new ElementSorter;
     }
-
 
     public function testSortElementsByFqnConstants(): void
     {
@@ -48,7 +46,6 @@ final class ElementSorterTest extends TestCase
         $this->assertSame($constantReflectionMock, $sortedElements[1]);
     }
 
-
     public function testSortElementsByFqnFunctions(): void
     {
         $reflectionFunctionMock = $this->createMock(FunctionReflectionInterface::class);
@@ -70,7 +67,6 @@ final class ElementSorterTest extends TestCase
         $this->assertSame($reflectionFunctionMock2, $sortedElements[0]);
         $this->assertSame($reflectionFunctionMock, $sortedElements[1]);
     }
-
 
     public function testSortElementsByFqnMethod(): void
     {
@@ -94,7 +90,6 @@ final class ElementSorterTest extends TestCase
         $this->assertSame($reflectionMethodMock, $sortedElements[1]);
     }
 
-
     public function testSortElementsByFqnProperties(): void
     {
         $reflectionMethodMock = $this->createMock(MethodReflectionInterface::class);
@@ -117,14 +112,12 @@ final class ElementSorterTest extends TestCase
         $this->assertSame($reflectionMethodMock, $sortedElements[1]);
     }
 
-
     public function testSortElementsByFqnNonSupportedType(): void
     {
         $reflectionClassMock = $this->createMock(ClassReflectionInterface::class);
         $sortedElements = $this->elementSorter->sortElementsByFqn([$reflectionClassMock]);
         $this->assertSame([$reflectionClassMock], $sortedElements);
     }
-
 
     public function testSortElementsByFqnWithEmptyArray(): void
     {

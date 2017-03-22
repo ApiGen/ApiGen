@@ -7,7 +7,6 @@ use PHPUnit\Framework\TestCase;
 
 class StringsTest extends TestCase
 {
-
     public function testSplit(): void
     {
         $this->assertSame(['@license', 'MIT'], Strings::split('@license MIT'));

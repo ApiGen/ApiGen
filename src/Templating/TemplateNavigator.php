@@ -36,7 +36,6 @@ final class TemplateNavigator
      */
     private $namespaceUrlFilters;
 
-
     public function __construct(
         ConfigurationInterface $configuration,
         SourceFilters $sourceFilters,
@@ -48,7 +47,6 @@ final class TemplateNavigator
         $this->elementUrlFactory = $elementUrlFactory;
         $this->namespaceUrlFilters = $namespaceUrlFilters;
     }
-
 
     public function getTemplatePath(string $name): string
     {
@@ -66,7 +64,6 @@ final class TemplateNavigator
         return $templates[$name]['template'];
     }
 
-
     public function getTemplateFileName(string $name): string
     {
         $options = $this->configuration->getOptions();
@@ -75,14 +72,12 @@ final class TemplateNavigator
             . $options[ConfigurationOptions::TEMPLATE][ThemeConfigOptions::TEMPLATES][$name]['filename'];
     }
 
-
     public function getTemplatePathForNamespace(string $namespace): string
     {
         return $this->getDestination()
             . DIRECTORY_SEPARATOR
             . $this->namespaceUrlFilters->namespaceUrl($namespace);
     }
-
 
     public function getTemplatePathForClass(ClassReflectionInterface $element): string
     {
@@ -91,14 +86,12 @@ final class TemplateNavigator
             . $this->elementUrlFactory->createForClass($element);
     }
 
-
     public function getTemplatePathForConstant(ConstantReflectionInterface $element): string
     {
         return $this->getDestination()
             . DIRECTORY_SEPARATOR
             . $this->elementUrlFactory->createForConstant($element);
     }
-
 
     public function getTemplatePathForFunction(FunctionReflectionInterface $element): string
     {
@@ -107,7 +100,6 @@ final class TemplateNavigator
             . $this->elementUrlFactory->createForFunction($element);
     }
 
-
     public function getTemplatePathForSourceElement(ElementReflectionInterface $element): string
     {
         return $this->getDestination()
@@ -115,14 +107,12 @@ final class TemplateNavigator
             . $this->sourceFilters->sourceUrl($element, false);
     }
 
-
     public function getTemplatePathForAnnotationGroup(string $element): string
     {
         return $this->getDestination()
             . DIRECTORY_SEPARATOR
             . $this->elementUrlFactory->createForAnnotationGroup($element);
     }
-
 
     private function getDestination(): string
     {

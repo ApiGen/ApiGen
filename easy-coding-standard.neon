@@ -60,3 +60,8 @@ skip:
         - src/Console/Command/AbstractCommand.php
         - tests/Parser/Reflection/ReflectionClassSource/RichInterface.php
         - src/Contracts/Parser/Broker/BackendInterface.php
+
+    # bug: https://github.com/Symplify/Symplify/issues/121
+    Symplify\CodingStandard\Sniffs\WhiteSpace\InBetweenMethodSpacingSniff:
+        - tests/Parser/Reflection/ReflectionFunctionSource/functions.php
+        - tests/Parser/Broker/BackendSource/SomeFunction.php

@@ -50,7 +50,6 @@ final class ResolveIfInContextTest extends AbstractElementResolverTest
         $this->assertInstanceOf(ConstantReflectionInterface::class, $resolvedElement);
     }
 
-
     public function testMissingElement(): void
     {
         $classReflectionMock = $this->createMock(ClassReflectionInterface::class);
@@ -63,7 +62,6 @@ final class ResolveIfInContextTest extends AbstractElementResolverTest
 
         $this->assertNull($resolvedElement);
     }
-
 
     /**
      * @return PHPUnit_Framework_MockObject_MockObject|ClassReflectionInterface
@@ -83,7 +81,6 @@ final class ResolveIfInContextTest extends AbstractElementResolverTest
 
         return $classReflectionMock;
     }
-
 
     /**
      * @return PHPUnit_Framework_MockObject_MockObject|ClassReflectionInterface

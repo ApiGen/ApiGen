@@ -31,7 +31,6 @@ final class TemplateElementsLoader
      */
     private $parameters;
 
-
     public function __construct(
         ElementStorageInterface $elementStorage,
         ConfigurationInterface $configuration,
@@ -42,12 +41,10 @@ final class TemplateElementsLoader
         $this->autocompleteElements = $autocompleteElements;
     }
 
-
     public function addElementsToTemplate(Template $template): void
     {
         $template->setParameters($this->getParameters());
     }
-
 
     private function getMainFilter(): Closure
     {

@@ -8,7 +8,6 @@ use ApiGen\Templating\Template;
 
 class ConstantElementGenerator extends AbstractElementGenerator
 {
-
     public function generate(): void
     {
         foreach ($this->elementStorage->getConstants() as $name => $reflectionConstant) {
@@ -20,12 +19,10 @@ class ConstantElementGenerator extends AbstractElementGenerator
         }
     }
 
-
     public function getStepCount(): int
     {
         return count($this->elementStorage->getConstants());
     }
-
 
     private function loadTemplateWithParameters(Template $template, ConstantReflectionInterface $constant): Template
     {

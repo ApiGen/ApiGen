@@ -15,7 +15,6 @@ final class ResolverFiltersTest extends AbstractContainerAwareTestCase
      */
     private $resolverFilters;
 
-
     protected function setUp(): void
     {
         $this->resolverFilters = $this->container->getByType(ResolverFilters::class);
@@ -29,12 +28,10 @@ final class ResolverFiltersTest extends AbstractContainerAwareTestCase
         ]);
     }
 
-
     public function testGetClass(): void
     {
         $this->assertInstanceOf(ClassReflectionInterface::class, $this->resolverFilters->getClass('SomeClass'));
     }
-
 
     public function testGetClassForNonExistingClass(): void
     {
@@ -46,7 +43,6 @@ final class ResolverFiltersTest extends AbstractContainerAwareTestCase
         $reflectionElementMock = $this->createMock(ClassReflectionInterface::class);
         $this->assertFalse($this->resolverFilters->resolveElement('NonExistingElement', $reflectionElementMock));
     }
-
 
     /**
      * @return PHPUnit_Framework_MockObject_MockObject|ClassReflectionInterface

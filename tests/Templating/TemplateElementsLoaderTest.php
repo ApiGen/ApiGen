@@ -15,7 +15,6 @@ final class TemplateElementsLoaderTest extends AbstractContainerAwareTestCase
      */
     private $templateElementsLoader;
 
-
     protected function setUp(): void
     {
         $this->templateElementsLoader = $this->container->getByType(TemplateElementsLoader::class);
@@ -27,7 +26,6 @@ final class TemplateElementsLoaderTest extends AbstractContainerAwareTestCase
             'annotationGroups' => ['todo']
         ]);
     }
-
 
     public function testAddElementToTemplate(): void
     {

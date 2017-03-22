@@ -12,15 +12,12 @@ interface ConstantReflectionInterface extends
     InClassInterface,
     LinedInterface
 {
-
     public function getTypeHint(): string;
-
 
     /**
      * @return mixed
      */
     public function getValue();
-
 
     public function getValueDefinition(): string;
 }

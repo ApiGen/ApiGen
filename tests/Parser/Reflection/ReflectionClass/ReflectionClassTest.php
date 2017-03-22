@@ -12,36 +12,30 @@ final class ReflectionClassTest extends AbstractReflectionClassTestCase
         $this->assertInstanceOf(ClassReflectionInterface::class, $this->reflectionClass);
     }
 
-
     public function testGetName(): void
     {
         $this->assertSame('Project\AccessLevels', $this->reflectionClass->getName());
     }
-
 
     public function testGetShortName(): void
     {
         $this->assertSame('AccessLevels', $this->reflectionClass->getShortName());
     }
 
-
     public function testIsAbstract(): void
     {
         $this->assertFalse($this->reflectionClass->isAbstract());
     }
-
 
     public function testIsFinal(): void
     {
         $this->assertTrue($this->reflectionClass->isFinal());
     }
 
-
     public function testIsException(): void
     {
         $this->assertFalse($this->reflectionClass->isException());
     }
-
 
     public function testIsSubclassOf(): void
     {
@@ -49,12 +43,10 @@ final class ReflectionClassTest extends AbstractReflectionClassTestCase
         $this->assertFalse($this->reflectionClass->isSubclassOf('ArrayAccess'));
     }
 
-
     public function testIsDocumented(): void
     {
         $this->assertTrue($this->reflectionClass->isDocumented());
     }
-
 
     public function testVisibility(): void
     {

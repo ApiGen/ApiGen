@@ -48,7 +48,6 @@ final class ThemeResourcesTest extends TestCase
         $this->assertFileExists($destinationDir . '/other-file-renamed.txt');
     }
 
-
     private function prepareSources(string $sourceFile, string $sourceDir): void
     {
         mkdir(dirname($sourceFile), 0777);

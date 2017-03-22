@@ -4,7 +4,6 @@ namespace ApiGen\Contracts\Parser\Elements;
 
 interface ElementsInterface
 {
-
     const CLASSES = 'classes';
     const CONSTANTS = 'constants';
     const EXCEPTIONS = 'exceptions';
@@ -20,12 +19,10 @@ interface ElementsInterface
      */
     public function getClassTypeList(): array;
 
-
     /**
      * @return string[]
      */
     public function getAll(): array;
-
 
     /**
      * @return mixed[]

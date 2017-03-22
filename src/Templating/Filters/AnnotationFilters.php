@@ -21,18 +21,15 @@ final class AnnotationFilters extends Filters
      */
     private $configuration;
 
-
     public function __construct(ConfigurationInterface $configuration)
     {
         $this->configuration = $configuration;
     }
 
-
     public function annotationBeautify(string $name): string
     {
         return Strings::firstUpper($name);
     }
-
 
     /**
      * @param string[] $annotations
@@ -50,7 +47,6 @@ final class AnnotationFilters extends Filters
 
         return $annotations;
     }
-
 
     /**
      * @param string[] $annotations

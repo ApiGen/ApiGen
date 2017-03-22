@@ -26,13 +26,11 @@ final class BackendTest extends TestCase
      */
     private $broker;
 
-
     protected function setUp(): void
     {
         $this->backend = new Backend($this->getReflectionFactory());
         $this->broker = new Broker($this->backend);
     }
-
 
     public function testGetClasses(): void
     {
@@ -46,7 +44,6 @@ final class BackendTest extends TestCase
         $this->checkLoadedProperties($class);
     }
 
-
     public function testGetFunctions(): void
     {
         $this->broker->processDirectory(__DIR__ . '/BackendSource');
@@ -59,7 +56,6 @@ final class BackendTest extends TestCase
         $this->checkLoadedProperties($function);
     }
 
-
     public function testGetConstants(): void
     {
         $this->broker->processDirectory(__DIR__ . '/BackendSource');
@@ -71,7 +67,6 @@ final class BackendTest extends TestCase
 
         $this->checkLoadedProperties($constant);
     }
-
 
     /**
      * @param object $object
@@ -93,7 +88,6 @@ final class BackendTest extends TestCase
             Assert::getObjectAttribute($object, 'reflectionFactory')
         );
     }
-
 
     private function getReflectionFactory(): ReflectionFactory
     {

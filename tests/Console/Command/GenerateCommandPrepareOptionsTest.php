@@ -13,12 +13,10 @@ final class GenerateCommandPrepareOptionsTest extends AbstractContainerAwareTest
      */
     private $generateCommand;
 
-
     protected function setUp(): void
     {
         $this->generateCommand = $this->container->getByType(GenerateCommand::class);
     }
-
 
     /**
      * @expectedException \ApiGen\Configuration\Exceptions\ConfigurationException
@@ -29,7 +27,6 @@ final class GenerateCommandPrepareOptionsTest extends AbstractContainerAwareTest
             'config' => 'config.neon'
         ]]);
     }
-
 
     /**
      * @expectedException \ApiGen\Configuration\Exceptions\ConfigurationException
@@ -42,7 +39,6 @@ final class GenerateCommandPrepareOptionsTest extends AbstractContainerAwareTest
         ]]);
     }
 
-
     public function testPrepareOptions(): void
     {
         $options = MethodInvoker::callMethodOnObject($this->generateCommand, 'prepareOptions', [[
@@ -53,7 +49,6 @@ final class GenerateCommandPrepareOptionsTest extends AbstractContainerAwareTest
 
         $this->assertSame(TEMP_DIR . '/api', $options['destination']);
     }
-
 
     public function testPrepareOptionsConfigPriority(): void
     {
@@ -70,7 +65,6 @@ final class GenerateCommandPrepareOptionsTest extends AbstractContainerAwareTest
         $this->assertSame(realpath(__DIR__ . '/../../../src'), $options['source'][0]);
     }
 
-
     public function testPrepareOptionsMergeIsCorrect(): void
     {
         $options = MethodInvoker::callMethodOnObject($this->generateCommand, 'prepareOptions', [[
@@ -82,7 +76,6 @@ final class GenerateCommandPrepareOptionsTest extends AbstractContainerAwareTest
         $this->assertSame(['public', 'protected', 'private'], $options['accessLevels']);
         $this->assertSame('http://apigen.org', $options['baseUrl']);
     }
-
 
     public function testLoadOptionsFromConfig(): void
     {

@@ -12,26 +12,22 @@ final class FileSystem
         return str_replace('\\', '/', $path);
     }
 
-
     public function forceDir(string $path): string
     {
         @mkdir(dirname($path), 0755, true);
         return $path;
     }
 
-
     public function deleteDir(string $path): void
     {
         NetteFileSystem::delete($path);
     }
-
 
     public function purgeDir(string $path): void
     {
         NetteFileSystem::delete($path);
         NetteFileSystem::createDir($path);
     }
-
 
     /**
      * @param string $path
@@ -58,7 +54,6 @@ final class FileSystem
         return $this->normalizePath($path);
     }
 
-
     public function isDirEmpty(string $path): bool
     {
         if (count(glob($path . '/*'))) {
@@ -67,7 +62,6 @@ final class FileSystem
 
         return true;
     }
-
 
     /**
      * @param string[]|string[][] $source

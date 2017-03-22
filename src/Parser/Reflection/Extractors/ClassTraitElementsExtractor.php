@@ -20,13 +20,11 @@ final class ClassTraitElementsExtractor implements ClassTraitElementsExtractorIn
      */
     private $originalReflection;
 
-
     public function __construct(ClassReflectionInterface $classReflection, IReflection $originalReflection)
     {
         $this->classReflection = $classReflection;
         $this->originalReflection = $originalReflection;
     }
-
 
     /**
      * @return ClassReflectionInterface[]
@@ -49,7 +47,6 @@ final class ClassTraitElementsExtractor implements ClassTraitElementsExtractorIn
         return $users;
     }
 
-
     /**
      * @return ClassReflectionInterface[]
      */
@@ -71,7 +68,6 @@ final class ClassTraitElementsExtractor implements ClassTraitElementsExtractorIn
         return $users;
     }
 
-
     /**
      * @return PropertyReflectionInterface[]
      */
@@ -89,7 +85,6 @@ final class ClassTraitElementsExtractor implements ClassTraitElementsExtractorIn
         return $properties;
     }
 
-
     /**
      * @return MethodReflectionInterface[]
      */
@@ -105,7 +100,6 @@ final class ClassTraitElementsExtractor implements ClassTraitElementsExtractorIn
 
         return $methods;
     }
-
 
     /**
      * @return PropertyReflectionInterface[]
@@ -138,7 +132,6 @@ final class ClassTraitElementsExtractor implements ClassTraitElementsExtractorIn
 
         return $properties;
     }
-
 
     /**
      * @return MethodReflectionInterface[]

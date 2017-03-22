@@ -14,7 +14,6 @@ final class AnnotationFiltersTest extends TestCase
      */
     private $annotationFilters;
 
-
     protected function setUp(): void
     {
         $configurationMock = $this->createMock(ConfigurationInterface::class);
@@ -25,12 +24,10 @@ final class AnnotationFiltersTest extends TestCase
         $this->annotationFilters = new AnnotationFilters($configurationMock);
     }
 
-
     public function testAnnotationBeautify(): void
     {
         $this->assertSame('Method', $this->annotationFilters->annotationBeautify('method'));
     }
-
 
     public function testAnnotationFilter(): void
     {
@@ -40,7 +37,6 @@ final class AnnotationFiltersTest extends TestCase
             $this->annotationFilters->annotationFilter($annotations)
         );
     }
-
 
     public function testAnnotationFilterWithCustom(): void
     {

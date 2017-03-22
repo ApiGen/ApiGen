@@ -73,7 +73,6 @@ final class ConfigurationOptionsResolver
      */
     private $fileSystem;
 
-
     public function __construct(
         ThemeConfigFactory $themeConfigFactory,
         OptionsResolverFactory $optionsResolverFactory,
@@ -83,7 +82,6 @@ final class ConfigurationOptionsResolver
         $this->optionsResolverFactory = $optionsResolverFactory;
         $this->fileSystem = $fileSystem;
     }
-
 
     /**
      * @param mixed[] $options
@@ -99,7 +97,6 @@ final class ConfigurationOptionsResolver
 
         return $this->resolver->resolve($options);
     }
-
 
     private function setDefaults(): void
     {
@@ -119,7 +116,6 @@ final class ConfigurationOptionsResolver
             }
         ]);
     }
-
 
     /**
      * @param mixed[] $options
@@ -144,12 +140,10 @@ final class ConfigurationOptionsResolver
         return $accessLevel;
     }
 
-
     private function setRequired(): void
     {
         $this->resolver->setRequired([ConfigurationOptions::SOURCE, ConfigurationOptions::DESTINATION]);
     }
-
 
     private function setAllowedValues(): void
     {
@@ -171,7 +165,6 @@ final class ConfigurationOptionsResolver
             return true;
         });
     }
-
 
     private function setNormalizers(): void
     {
@@ -213,7 +206,6 @@ final class ConfigurationOptionsResolver
         });
     }
 
-
     private function allowedValuesForDestination(?string $destination): bool
     {
         if (! $destination) {
@@ -231,7 +223,6 @@ final class ConfigurationOptionsResolver
 
         return true;
     }
-
 
     /**
      * @param string|string[] $source

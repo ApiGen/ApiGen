@@ -29,7 +29,6 @@ final class ElementStorageTest extends AbstractContainerAwareTestCase
         $this->elementStorage = $this->container->getByType(ElementStorageInterface::class);
     }
 
-
     public function testEnsureCategorization(): void
     {
         $this->assertCount(1, $this->elementStorage->getClasses());
@@ -101,7 +100,6 @@ final class ElementStorageTest extends AbstractContainerAwareTestCase
         return $classes;
     }
 
-
     /**
      * @return ClassReflectionInterface|PHPUnit_Framework_MockObject_MockObject
 
@@ -123,7 +121,6 @@ final class ElementStorageTest extends AbstractContainerAwareTestCase
         return $reflectionClassMock;
     }
 
-
     /**
      * @return FunctionReflectionInterface|PHPUnit_Framework_MockObject_MockObject
      */
@@ -139,7 +136,6 @@ final class ElementStorageTest extends AbstractContainerAwareTestCase
 
         return $reflectionFunctionMock;
     }
-
 
     /**
      * @return ConstantReflectionInterface|PHPUnit_Framework_MockObject_MockObject

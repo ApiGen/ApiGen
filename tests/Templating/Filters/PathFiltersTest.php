@@ -12,12 +12,10 @@ final class PathFiltersTest extends AbstractContainerAwareTestCase
      */
     private $pathFilters;
 
-
     protected function setUp(): void
     {
         $this->pathFilters = $this->container->getByType(PathFilters::class);
     }
-
 
     public function testRelativePath(): void
     {

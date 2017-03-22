@@ -15,12 +15,10 @@ final class SourceFiltersTest extends AbstractContainerAwareTestCase
      */
     private $sourceFilters;
 
-
     protected function setUp(): void
     {
         $this->sourceFilters = $this->container->getByType(SourceFilters::class);
     }
-
 
     public function testStaticFile(): void
     {
@@ -28,7 +26,6 @@ final class SourceFiltersTest extends AbstractContainerAwareTestCase
         $link = $this->sourceFilters->staticFile('some-file.txt');
         $this->assertSame('some-file.txt?6eae3a5b062c6d0d79f070c26e6d62486b40cb46', $link);
     }
-
 
     public function testSourceUrlFunction(): void
     {
@@ -46,7 +43,6 @@ final class SourceFiltersTest extends AbstractContainerAwareTestCase
         );
     }
 
-
     public function testSourceUrlClass(): void
     {
         $reflectionClass = $this->createMock(ClassReflectionInterface::class);
@@ -62,7 +58,6 @@ final class SourceFiltersTest extends AbstractContainerAwareTestCase
             $this->sourceFilters->sourceUrl($reflectionClass)
         );
     }
-
 
     public function testSourceUrlClassConstant(): void
     {
@@ -81,7 +76,6 @@ final class SourceFiltersTest extends AbstractContainerAwareTestCase
             $this->sourceFilters->sourceUrl($reflectionConstant)
         );
     }
-
 
     public function testSourceUrlConstant(): void
     {

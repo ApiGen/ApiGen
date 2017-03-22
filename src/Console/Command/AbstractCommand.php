@@ -19,7 +19,6 @@ abstract class AbstractCommand extends Command
         return parent::addOption($name, $shortcut, $mode, $description, $default);
     }
 
-
     private function dashFormat(string $name): string
     {
         return preg_replace_callback('~([A-Z])~', function ($matches) {

@@ -20,12 +20,10 @@ final class GeneratorQueue implements GeneratorQueueInterface
      */
     private $queue = [];
 
-
     public function __construct(ProgressBarInterface $progressBar)
     {
         $this->progressBar = $progressBar;
     }
-
 
     public function run(): void
     {
@@ -36,12 +34,10 @@ final class GeneratorQueue implements GeneratorQueueInterface
         }
     }
 
-
     public function addToQueue(TemplateGeneratorInterface $templateGenerator): void
     {
         $this->queue[] = $templateGenerator;
     }
-
 
     /**
      * @return TemplateGeneratorInterface[]
@@ -56,7 +52,6 @@ final class GeneratorQueue implements GeneratorQueueInterface
             return true;
         });
     }
-
 
     private function getStepCount(): int
     {

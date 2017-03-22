@@ -24,7 +24,6 @@ final class ProcessDocTextEvent extends Event
         $this->reflectionElement = $reflectionElement;
     }
 
-
     public function getText(): string
     {
         return $this->text;

@@ -15,7 +15,6 @@ use ReflectionProperty;
 
 final class ImplementersTest extends AbstractContainerAwareTestCase
 {
-
     /**
      * @var ParserStorageInterface
      */
@@ -25,7 +24,6 @@ final class ImplementersTest extends AbstractContainerAwareTestCase
      * @var ClassReflectionInterface
      */
     private $parentInterfaceReflection;
-
 
     protected function setUp(): void
     {
@@ -48,7 +46,6 @@ final class ImplementersTest extends AbstractContainerAwareTestCase
         $this->parentInterfaceReflection = $classes[ParentInterface::class];
     }
 
-
     public function testGetDirectImplementersOfInterface(): void
     {
         $implementers = $this->parserStorage->getDirectImplementersOfInterface($this->parentInterfaceReflection);
@@ -58,7 +55,6 @@ final class ImplementersTest extends AbstractContainerAwareTestCase
         $this->assertInstanceOf(ClassReflectionInterface::class, $implementer);
         $this->assertSame(ChildInterface::class, $implementer->getName());
     }
-
 
     public function testGetIndirectImplementersOfInterface(): void
     {

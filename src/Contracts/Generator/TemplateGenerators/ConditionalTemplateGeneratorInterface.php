@@ -4,6 +4,5 @@ namespace ApiGen\Contracts\Generator\TemplateGenerators;
 
 interface ConditionalTemplateGeneratorInterface extends TemplateGeneratorInterface
 {
-
     public function isAllowed(): bool;
 }

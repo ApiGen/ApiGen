@@ -8,7 +8,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 final class IO implements IOInterface
 {
-
     /**
      * @var InputInterface
      */
@@ -19,25 +18,21 @@ final class IO implements IOInterface
      */
     private $output;
 
-
     public function __construct(InputInterface $input, OutputInterface $output)
     {
         $this->input = $input;
         $this->output = $output;
     }
 
-
     public function getInput(): InputInterface
     {
         return $this->input;
     }
 
-
     public function getOutput(): OutputInterface
     {
         return $this->output;
     }
-
 
     public function writeln(string $message): void
     {

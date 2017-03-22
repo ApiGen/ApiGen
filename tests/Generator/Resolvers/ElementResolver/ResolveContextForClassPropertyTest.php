@@ -19,7 +19,6 @@ final class ResolveContextForClassPropertyTest extends AbstractElementResolverTe
         ]);
     }
 
-
     public function testPropertyInParent(): void
     {
         $classReflectionMock = $this->createMock(ClassReflectionInterface::class);
@@ -33,7 +32,6 @@ final class ResolveContextForClassPropertyTest extends AbstractElementResolverTe
         $this->assertInstanceOf(ClassReflectionInterface::class, $resolvedElement);
         $this->assertSame('SomeClass', $resolvedElement->getName());
     }
-
 
     public function testPropertyInSelf(): void
     {
@@ -51,7 +49,6 @@ final class ResolveContextForClassPropertyTest extends AbstractElementResolverTe
         $this->assertSame('ChildClass', $resolvedElement->getName());
     }
 
-
     public function testNonExisting(): void
     {
         $reflectionClassMock = $this->createMock(ClassReflectionInterface::class);
@@ -61,7 +58,6 @@ final class ResolveContextForClassPropertyTest extends AbstractElementResolverTe
         ]);
         $this->assertNull($resolvedElement);
     }
-
 
     /**
      * @return PHPUnit_Framework_MockObject_MockObject|ClassReflectionInterface

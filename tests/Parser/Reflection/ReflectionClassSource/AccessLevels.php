@@ -9,7 +9,6 @@ namespace Project;
  */
 final class AccessLevels extends ParentClass implements RichInterface
 {
-
     use SomeTrait;
     use SomeTraitNotPresentHere;
 
@@ -32,16 +31,13 @@ final class AccessLevels extends ParentClass implements RichInterface
      */
     private $privateProperty;
 
-
     public function publicMethod()
     {
     }
 
-
     protected function protectedMethod()
     {
     }
-
 
     private function privateMethod()
     {

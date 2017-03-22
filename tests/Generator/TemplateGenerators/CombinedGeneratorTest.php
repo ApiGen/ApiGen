@@ -8,7 +8,6 @@ use ApiGen\Tests\AbstractContainerAwareTestCase;
 
 class CombinedGeneratorTest extends AbstractContainerAwareTestCase
 {
-
     /**
      * @var Configuration
      */
@@ -19,13 +18,11 @@ class CombinedGeneratorTest extends AbstractContainerAwareTestCase
      */
     private $combinedGenerator;
 
-
     protected function setUp(): void
     {
         $this->configuration = $this->container->getByType(Configuration::class);
         $this->combinedGenerator = $this->container->getByType(CombinedGenerator::class);
     }
-
 
     public function testGenerate(): void
     {

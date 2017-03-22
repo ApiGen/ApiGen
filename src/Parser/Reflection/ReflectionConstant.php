@@ -12,12 +12,10 @@ final class ReflectionConstant extends AbstractReflectionElement implements Cons
         return $this->reflection->getName();
     }
 
-
     public function getShortName(): string
     {
         return $this->reflection->getShortName();
     }
-
 
     public function getTypeHint(): string
     {
@@ -38,19 +36,16 @@ final class ReflectionConstant extends AbstractReflectionElement implements Cons
         }
     }
 
-
     public function getDeclaringClass(): ?ClassReflectionInterface
     {
         $className = (string) $this->reflection->getDeclaringClassName();
         return $className === '' ? null : $this->getParsedClasses()[$className];
     }
 
-
     public function getDeclaringClassName(): string
     {
         return (string) $this->reflection->getDeclaringClassName();
     }
-
 
     /**
      * @return mixed
@@ -59,7 +54,6 @@ final class ReflectionConstant extends AbstractReflectionElement implements Cons
     {
         return $this->reflection->getValue();
     }
-
 
     public function getValueDefinition(): string
     {

@@ -27,7 +27,6 @@ use TokenReflection\Resolver;
  */
 final class Backend extends Broker\Backend\Memory implements BackendInterface
 {
-
     /**
      * @var ClassReflectionInterface[][]
      */
@@ -47,12 +46,10 @@ final class Backend extends Broker\Backend\Memory implements BackendInterface
      */
     private $reflectionFactory;
 
-
     public function __construct(ReflectionFactoryInterface $reflectionFactory)
     {
         $this->reflectionFactory = $reflectionFactory;
     }
-
 
     /**
      * @return ConstantReflectionInterface[]
@@ -64,7 +61,6 @@ final class Backend extends Broker\Backend\Memory implements BackendInterface
         }, parent::getConstants());
     }
 
-
     /**
      * @return FunctionReflectionInterface[]
      */
@@ -74,7 +70,6 @@ final class Backend extends Broker\Backend\Memory implements BackendInterface
             return $this->reflectionFactory->createFromReflection($function);
         }, parent::getFunctions());
     }
-
 
     /**
      * @return ClassReflectionInterface[]
@@ -123,7 +118,6 @@ final class Backend extends Broker\Backend\Memory implements BackendInterface
         return $this->allClasses;
     }
 
-
     /**
      * Processes a function/method and adds classes from annotations to the overall class array.
      *
@@ -142,7 +136,6 @@ final class Backend extends Broker\Backend\Memory implements BackendInterface
             }
         }
     }
-
 
     /**
      * @return false|void
@@ -172,7 +165,6 @@ final class Backend extends Broker\Backend\Memory implements BackendInterface
         }
     }
 
-
     /**
      * @param TokenReflection\ReflectionClass|TokenReflection\Invalid\ReflectionClass $reflection
      */
@@ -193,14 +185,12 @@ final class Backend extends Broker\Backend\Memory implements BackendInterface
         }
     }
 
-
     private function isClassLoaded(string $name): bool
     {
         return isset($this->allClasses[self::TOKENIZED_CLASSES][$name])
             || isset($this->allClasses[self::INTERNAL_CLASSES][$name])
             || isset($this->allClasses[self::NONEXISTENT_CLASSES][$name]);
     }
-
 
     /**
      * @param ClassReflectionInterface|MethodReflectionInterface $reflection
@@ -222,7 +212,6 @@ final class Backend extends Broker\Backend\Memory implements BackendInterface
             }
         }
     }
-
 
     /**
      * @param string $name

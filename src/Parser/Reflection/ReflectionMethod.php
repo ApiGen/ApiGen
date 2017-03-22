@@ -4,11 +4,11 @@ namespace ApiGen\Parser\Reflection;
 
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
-use ApiGen\Parser\Reflection\Parts\Visibility;
+use ApiGen\Parser\Reflection\Parts\VisibilityTrait;
 
-final class ReflectionMethod extends AbstractReflectionFunctionBase implements MethodReflectionInterface
+final class ReflectionMethod extends AbstractReflectionFunction implements MethodReflectionInterface
 {
-    use Visibility;
+    use VisibilityTrait;
 
 
     public function getDeclaringClass(): ?ClassReflectionInterface
@@ -17,30 +17,25 @@ final class ReflectionMethod extends AbstractReflectionFunctionBase implements M
         return $className === '' ? null : $this->getParsedClasses()[$className];
     }
 
-
     public function getDeclaringClassName(): string
     {
         return (string) $this->reflection->getDeclaringClassName();
     }
-
 
     public function isAbstract(): bool
     {
         return $this->reflection->isAbstract();
     }
 
-
     public function isFinal(): bool
     {
         return $this->reflection->isFinal();
     }
 
-
     public function isStatic(): bool
     {
         return $this->reflection->isStatic();
     }
-
 
     public function getDeclaringTrait(): ?ClassReflectionInterface
     {
@@ -48,18 +43,15 @@ final class ReflectionMethod extends AbstractReflectionFunctionBase implements M
         return $traitName === '' ? null : $this->getParsedClasses()[$traitName];
     }
 
-
     public function getDeclaringTraitName(): string
     {
         return (string) $this->reflection->getDeclaringTraitName();
     }
 
-
     public function getOriginalName(): string
     {
         return (string) $this->reflection->getOriginalName();
     }
-
 
     public function getImplementedMethod(): ?MethodReflectionInterface
     {
@@ -71,7 +63,6 @@ final class ReflectionMethod extends AbstractReflectionFunctionBase implements M
 
         return null;
     }
-
 
     public function getOverriddenMethod(): ?MethodReflectionInterface
     {
@@ -92,7 +83,6 @@ final class ReflectionMethod extends AbstractReflectionFunctionBase implements M
 
         return null;
     }
-
 
     public function getOriginal(): ?MethodReflectionInterface
     {

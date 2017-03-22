@@ -6,7 +6,6 @@ use Countable;
 
 final class Collection implements Countable
 {
-
     public function count(): void
     {
     }

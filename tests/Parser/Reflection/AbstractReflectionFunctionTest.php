@@ -3,17 +3,15 @@
 namespace ApiGen\Parser\Tests\Reflection;
 
 use ApiGen\Contracts\Parser\Reflection\ParameterReflectionInterface;
-use ApiGen\Parser\Reflection\ReflectionFunctionBase;
+use ApiGen\Parser\Reflection\AbstractReflectionFunction;
 use ApiGen\Parser\Reflection\ReflectionParameter;
 
-class ReflectionParameterBaseTest extends AbstractReflectionTestCase
+final class AbstractReflectionFunctionTest extends AbstractReflectionTestCase
 {
-
     /**
-     * @var ReflectionFunctionBase
+     * @var AbstractReflectionFunction
      */
     private $reflectionFunction;
-
 
     protected function setUp(): void
     {
@@ -22,18 +20,15 @@ class ReflectionParameterBaseTest extends AbstractReflectionTestCase
         $this->reflectionFunction = $this->backend->getFunctions()['getSomeData'];
     }
 
-
     public function testGetShortName(): void
     {
         $this->assertSame('getSomeData', $this->reflectionFunction->getShortName());
     }
 
-
     public function testReturnReference(): void
     {
         $this->assertFalse($this->reflectionFunction->returnsReference());
     }
-
 
     public function testGetParameters(): void
     {
@@ -45,7 +40,6 @@ class ReflectionParameterBaseTest extends AbstractReflectionTestCase
         $this->assertInstanceOf(ParameterReflectionInterface::class, $parameter);
     }
 
-
     public function testGetParameter(): void
     {
         $parameter = $this->reflectionFunction->getParameter('arg');
@@ -55,7 +49,6 @@ class ReflectionParameterBaseTest extends AbstractReflectionTestCase
         $this->assertInstanceOf(ParameterReflectionInterface::class, $parameter);
     }
 
-
     /**
      * @expectedException \InvalidArgumentException
      */
@@ -64,7 +57,6 @@ class ReflectionParameterBaseTest extends AbstractReflectionTestCase
         $this->reflectionFunction->getParameter('notHere');
     }
 
-
     /**
      * @expectedException \InvalidArgumentException
      */
@@ -72,7 +64,6 @@ class ReflectionParameterBaseTest extends AbstractReflectionTestCase
     {
         $this->reflectionFunction->getParameter(1);
     }
-
 
     public function testGetParametersAnnotationMatchingRealCount(): void
     {

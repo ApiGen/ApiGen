@@ -30,7 +30,6 @@ final class ElementSorter implements ElementSorterInterface
         return $elements;
     }
 
-
     /**
      * @param ConstantReflectionInterface[] $constantReflections
      * @return ConstantReflectionInterface[]
@@ -42,7 +41,6 @@ final class ElementSorter implements ElementSorterInterface
         });
         return $constantReflections;
     }
-
 
     /**
      * @param FunctionReflectionInterface[] $functionReflections
@@ -56,7 +54,6 @@ final class ElementSorter implements ElementSorterInterface
         return $functionReflections;
     }
 
-
     /**
      * @param InClassInterface[] $elementReflections
      * @return MethodReflectionInterface[]
@@ -69,7 +66,6 @@ final class ElementSorter implements ElementSorterInterface
         return $elementReflections;
     }
 
-
     private function compareConstantsByFqn(
         ConstantReflectionInterface $reflection1,
         ConstantReflectionInterface $reflection2
@@ -77,13 +73,11 @@ final class ElementSorter implements ElementSorterInterface
         return strcasecmp($this->getConstantFqnName($reflection1), $this->getConstantFqnName($reflection2));
     }
 
-
     private function getConstantFqnName(ConstantReflectionInterface $reflection): string
     {
         $class = $reflection->getDeclaringClassName() ?: $reflection->getNamespaceName();
         return $class . '\\' . $reflection->getName();
     }
-
 
     private function compareFunctionsByFqn(
         FunctionReflectionInterface $reflection1,
@@ -92,12 +86,10 @@ final class ElementSorter implements ElementSorterInterface
         return strcasecmp($this->getFunctionFqnName($reflection1), $this->getFunctionFqnName($reflection2));
     }
 
-
     private function getFunctionFqnName(FunctionReflectionInterface $reflection): string
     {
         return $reflection->getNamespaceName() . '\\' . $reflection->getName();
     }
-
 
     private function compareMethodsOrPropertiesByFqn(InClassInterface $reflection1, InClassInterface $reflection2): int
     {
@@ -106,7 +98,6 @@ final class ElementSorter implements ElementSorterInterface
             $this->getPropertyOrMethodFqnName($reflection2)
         );
     }
-
 
     private function getPropertyOrMethodFqnName(InClassInterface $reflection): string
     {

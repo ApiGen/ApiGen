@@ -21,7 +21,6 @@ final class TemplateNavigatorTest extends AbstractContainerAwareTestCase
      */
     private $templateNavigator;
 
-
     protected function setUp(): void
     {
         $this->configuration = $this->container->getByType(ConfigurationInterface::class);
@@ -33,12 +32,10 @@ final class TemplateNavigatorTest extends AbstractContainerAwareTestCase
         $this->templateNavigator = $this->container->getByType(TemplateNavigator::class);
     }
 
-
     public function testGetTemplateFileName(): void
     {
         $this->assertSame(TEMP_DIR . '/api/index.html', $this->templateNavigator->getTemplateFileName('overview'));
     }
-
 
     public function testGetTemplatePath(): void
     {
@@ -48,7 +45,6 @@ final class TemplateNavigatorTest extends AbstractContainerAwareTestCase
         );
     }
 
-
     public function testGetTemplatePathForNamespace(): void
     {
         $this->assertSame(
@@ -56,7 +52,6 @@ final class TemplateNavigatorTest extends AbstractContainerAwareTestCase
             $this->templateNavigator->getTemplatePathForNamespace('MyNamespace')
         );
     }
-
 
     public function testGetTemplatePathForClass(): void
     {
@@ -68,7 +63,6 @@ final class TemplateNavigatorTest extends AbstractContainerAwareTestCase
             $this->templateNavigator->getTemplatePathForClass($classReflectionMock)
         );
     }
-
 
     public function testGetTemplatePathForConstant(): void
     {
@@ -82,7 +76,6 @@ final class TemplateNavigatorTest extends AbstractContainerAwareTestCase
         );
     }
 
-
     public function testGetTemplatePathForFunction(): void
     {
         $functionReflectionMock = $this->createMock(FunctionReflectionInterface::class);
@@ -94,7 +87,6 @@ final class TemplateNavigatorTest extends AbstractContainerAwareTestCase
             $this->templateNavigator->getTemplatePathForFunction($functionReflectionMock)
         );
     }
-
 
     public function testGetTemplatePathForMethod(): void
     {

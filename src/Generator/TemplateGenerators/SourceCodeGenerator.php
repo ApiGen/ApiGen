@@ -53,7 +53,6 @@ final class SourceCodeGenerator implements ConditionalTemplateGeneratorInterface
      */
     protected $namespaceLoader;
 
-
     public function __construct(
         ConfigurationInterface $configuration,
         ElementStorageInterface $elementStorage,
@@ -72,7 +71,6 @@ final class SourceCodeGenerator implements ConditionalTemplateGeneratorInterface
         $this->namespaceLoader = $namespaceLoader;
     }
 
-
     public function generate(): void
     {
         foreach ($this->elementStorage->getElements() as $type => $elementList) {
@@ -86,7 +84,6 @@ final class SourceCodeGenerator implements ConditionalTemplateGeneratorInterface
             }
         }
     }
-
 
     public function getStepCount(): int
     {
@@ -104,12 +101,10 @@ final class SourceCodeGenerator implements ConditionalTemplateGeneratorInterface
         return $count;
     }
 
-
     public function isAllowed(): bool
     {
         return (bool) $this->configuration->getOption(ConfigurationOptions::SOURCE_CODE);
     }
-
 
     private function generateForElement(ElementReflectionInterface $element): void
     {
@@ -121,7 +116,6 @@ final class SourceCodeGenerator implements ConditionalTemplateGeneratorInterface
         ]);
         $template->save();
     }
-
 
     private function getHighlightedCodeFromElement(ElementReflectionInterface $element): string
     {

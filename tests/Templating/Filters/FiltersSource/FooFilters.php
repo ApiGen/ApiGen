@@ -6,7 +6,6 @@ use ApiGen\Templating\Filters\Filters;
 
 class FooFilters extends Filters
 {
-
     protected function bazFilter(string $text): string
     {
         return 'Filtered: ' . $text;

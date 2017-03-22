@@ -6,12 +6,10 @@ interface AbstractFunctionMethodReflectionInterface extends ElementReflectionInt
 {
     public function returnsReference(): bool;
 
-
     /**
      * @return ParameterReflectionInterface[]
      */
     public function getParameters(): array;
-
 
     /**
      * @param int|string $key

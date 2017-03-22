@@ -14,7 +14,6 @@ final class NamespaceUrlFiltersTest extends AbstractContainerAwareTestCase
      */
     private $namespaceUrlFilters;
 
-
     protected function setUp(): void
     {
         $this->namespaceUrlFilters = $this->container->getByType(NamespaceUrlFilters::class);
@@ -30,7 +29,6 @@ final class NamespaceUrlFiltersTest extends AbstractContainerAwareTestCase
         ]);
     }
 
-
     public function testNamespaceUrl(): void
     {
         $this->assertSame(
@@ -38,7 +36,6 @@ final class NamespaceUrlFiltersTest extends AbstractContainerAwareTestCase
             $this->namespaceUrlFilters->namespaceUrl('Long\\Namespace')
         );
     }
-
 
     public function testNamespaceLinks(): void
     {
@@ -55,7 +52,6 @@ final class NamespaceUrlFiltersTest extends AbstractContainerAwareTestCase
             $this->namespaceUrlFilters->namespaceLinks('Long\\Namespace')
         );
     }
-
 
     public function testSubgroupName(): void
     {

@@ -26,12 +26,10 @@ use TokenReflection\IReflectionProperty;
 
 final class ReflectionFactoryTest extends TestCase
 {
-
     /**
      * @var ReflectionFactoryInterface
      */
     private $reflectionFactory;
-
 
     protected function setUp(): void
     {
@@ -39,7 +37,6 @@ final class ReflectionFactoryTest extends TestCase
         $configurationMock = $this->createMock(ConfigurationInterface::class);
         $this->reflectionFactory = new ReflectionFactory($configurationMock, $parserStorageMock);
     }
-
 
     public function testCreateFromReflectionClass(): void
     {
@@ -49,7 +46,6 @@ final class ReflectionFactoryTest extends TestCase
         $this->checkLoadedProperties($reflectionClass);
     }
 
-
     public function testCreateFromReflectionFunction(): void
     {
         $tokenReflectionFunctionMock = $this->createMock(IReflectionFunction::class, Object::class);
@@ -57,7 +53,6 @@ final class ReflectionFactoryTest extends TestCase
         $this->assertInstanceOf(FunctionReflectionInterface::class, $reflectionFunction);
         $this->checkLoadedProperties($reflectionFunction);
     }
-
 
     public function testCreateFromReflectionMethod(): void
     {
@@ -67,7 +62,6 @@ final class ReflectionFactoryTest extends TestCase
         $this->checkLoadedProperties($reflectionMethod);
     }
 
-
     public function testCreateFromReflectionProperty(): void
     {
         $tokenReflectionPropertyMock = $this->createMock(IReflectionProperty::class, Object::class);
@@ -75,7 +69,6 @@ final class ReflectionFactoryTest extends TestCase
         $this->assertInstanceOf(PropertyReflectionInterface::class, $reflectionProperty);
         $this->checkLoadedProperties($reflectionProperty);
     }
-
 
     public function testCreateFromReflectionParameter(): void
     {
@@ -85,7 +78,6 @@ final class ReflectionFactoryTest extends TestCase
         $this->checkLoadedProperties($reflectionParameter);
     }
 
-
     public function testCreateFromReflectionConstant(): void
     {
         $tokenReflectionConstantMock = $this->createMock(IReflectionConstant::class, Object::class);
@@ -93,16 +85,6 @@ final class ReflectionFactoryTest extends TestCase
         $this->assertInstanceOf(ConstantReflectionInterface::class, $reflectionConstant);
         $this->checkLoadedProperties($reflectionConstant);
     }
-
-
-    public function testCreateFromReflectionExtension(): void
-    {
-        $tokenReflectionExtensionMock = $this->createMock(IReflectionExtension::class, Object::class);
-        $reflectionExtension = $this->reflectionFactory->createFromReflection($tokenReflectionExtensionMock);
-        $this->assertInstanceOf(ExtensionReflectionInterface::class, $reflectionExtension);
-        $this->checkLoadedProperties($reflectionExtension);
-    }
-
 
     /**
      * @param object $object

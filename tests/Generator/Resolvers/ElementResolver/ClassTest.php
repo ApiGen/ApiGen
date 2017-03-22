@@ -28,12 +28,10 @@ final class ClassTest extends AbstractElementResolverTest
         $this->assertNotSame($element, $element2);
     }
 
-
     public function testGetClassNotExisting(): void
     {
         $this->assertNull($this->elementResolver->getClass('NotExistingClass'));
     }
-
 
     public function testGetClassNotDocumented(): void
     {
@@ -43,7 +41,6 @@ final class ClassTest extends AbstractElementResolverTest
 
         $this->assertNull($this->elementResolver->getClass('SomeNotDocumentedClass'));
     }
-
 
     /**
      * @return PHPUnit_Framework_MockObject_MockObject|ClassReflectionInterface

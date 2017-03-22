@@ -12,15 +12,12 @@ interface ElementResolverInterface
 {
     public function getClass(string $className, string $namespace = ''): ?ClassReflectionInterface;
 
-
     public function getConstant(string $className, string $namespace = ''): ?ConstantReflectionInterface;
-
 
     /**
      * @return FunctionReflectionInterface|MethodReflectionInterface|null
      */
     public function getFunction(string $name, string $namespace = '');
-
 
     /**
      * @param string $definition

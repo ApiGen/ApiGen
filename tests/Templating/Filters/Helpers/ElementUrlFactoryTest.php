@@ -23,7 +23,6 @@ final class ElementUrlFactoryTest extends TestCase
      */
     private $elementUrlFactory;
 
-
     protected function setUp(): void
     {
         $configurationMock = $this->createMock(ConfigurationInterface::class);
@@ -38,7 +37,6 @@ final class ElementUrlFactoryTest extends TestCase
             ]);
         $this->elementUrlFactory = new ElementUrlFactory($configurationMock);
     }
-
 
 //    public function testCreateForElement(): void
 //    {
@@ -237,7 +235,6 @@ final class ElementUrlFactoryTest extends TestCase
         return $reflectionMethodMock;
     }
 
-
     /**
      * @return PHPUnit_Framework_MockObject_MockObject|ClassReflectionInterface
      */
@@ -248,7 +245,6 @@ final class ElementUrlFactoryTest extends TestCase
             ->willReturn('SomeNamespace\\SomeClass');
         return $reflectionClassMock;
     }
-
 
     /**
      * @return PHPUnit_Framework_MockObject_MockObject|PropertyReflectionInterface
@@ -263,7 +259,6 @@ final class ElementUrlFactoryTest extends TestCase
         return $reflectionPropertyMock;
     }
 
-
     /**
      * @return PHPUnit_Framework_MockObject_MockObject|ConstantReflectionInterface
      */
@@ -274,7 +269,6 @@ final class ElementUrlFactoryTest extends TestCase
             ->willReturn('someConstant');
         return $reflectionConstantMock;
     }
-
 
     /**
      * @return PHPUnit_Framework_MockObject_MockObject|FunctionReflectionInterface

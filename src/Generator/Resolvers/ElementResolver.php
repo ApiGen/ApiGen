@@ -41,12 +41,10 @@ final class ElementResolver implements ElementResolverInterface
      */
     private $parserStorage;
 
-
     public function __construct(ParserStorageInterface $parserStorage)
     {
         $this->parserStorage = $parserStorage;
     }
-
 
     public function getClass(string $name, string $namespace = ''): ?ClassReflectionInterface
     {
@@ -59,7 +57,6 @@ final class ElementResolver implements ElementResolverInterface
 
         return null;
     }
-
 
     public function getConstant(string $name, string $namespace = ''): ?ConstantReflectionInterface
     {
@@ -74,7 +71,6 @@ final class ElementResolver implements ElementResolverInterface
         return null;
     }
 
-
     /**
      * @return FunctionReflectionInterface|MethodReflectionInterface|null
      */
@@ -88,7 +84,6 @@ final class ElementResolver implements ElementResolverInterface
 
         return null;
     }
-
 
     /**
      * @param string $definition
@@ -153,7 +148,6 @@ final class ElementResolver implements ElementResolverInterface
         return $this->resolveIfInContext($definition, $reflectionElement);
     }
 
-
     /**
      * @param ClassReflectionInterface|ParameterReflectionInterface|FunctionReflectionInterface $reflectionElement
      * @return ClassReflectionInterface|FunctionReflectionInterface
@@ -173,7 +167,6 @@ final class ElementResolver implements ElementResolverInterface
         return $reflectionElement;
     }
 
-
     private function resolveContextForSelfProperty(
         string $definition,
         int $pos,
@@ -192,12 +185,10 @@ final class ElementResolver implements ElementResolverInterface
         return $class;
     }
 
-
     private function isSimpleType(string $definition): bool
     {
         return empty($definition) || isset($this->simpleTypes[$definition]);
     }
-
 
     /**
      * @return ClassReflectionInterface|ConstantReflectionInterface|FunctionReflectionInterface|null
@@ -215,7 +206,6 @@ final class ElementResolver implements ElementResolverInterface
 
         return null;
     }
-
 
     /**
      * @return ConstantReflectionInterface|MethodReflectionInterface|PropertyReflectionInterface|null
@@ -236,7 +226,6 @@ final class ElementResolver implements ElementResolverInterface
         return null;
     }
 
-
     private function removeEndBrackets(string $definition): string
     {
         if (substr($definition, -2) === '()') {
@@ -246,7 +235,6 @@ final class ElementResolver implements ElementResolverInterface
         return $definition;
     }
 
-
     private function removeStartDollar(string $definition): string
     {
         if ($definition[0] === '$') {
@@ -255,7 +243,6 @@ final class ElementResolver implements ElementResolverInterface
 
         return $definition;
     }
-
 
     private function resolveContextForClassProperty(
         string $definition,
@@ -274,7 +261,6 @@ final class ElementResolver implements ElementResolverInterface
         return $reflectionClass;
     }
 
-
     /**
      * @param object|string|null $reflectionElement
      */
@@ -288,7 +274,6 @@ final class ElementResolver implements ElementResolverInterface
 
         return true;
     }
-
 
     /**
      * @param mixed[] $elements

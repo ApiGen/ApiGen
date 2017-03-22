@@ -11,12 +11,10 @@ final class PathFilters extends Filters
      */
     private $relativePathResolver;
 
-
     public function __construct(RelativePathResolver $relativePathResolver)
     {
         $this->relativePathResolver = $relativePathResolver;
     }
-
 
     public function relativePath(string $fileName): string
     {

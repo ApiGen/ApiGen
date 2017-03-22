@@ -20,12 +20,10 @@ final class ElementUrlFactory
      */
     private $configuration;
 
-
     public function __construct(ConfigurationInterface $configuration)
     {
         $this->configuration = $configuration;
     }
-
 
     /**
      * @param ElementReflectionInterface|string $element
@@ -47,7 +45,6 @@ final class ElementUrlFactory
         return null;
     }
 
-
     /**
      * @param string|ClassReflectionInterface $class
      */
@@ -60,14 +57,12 @@ final class ElementUrlFactory
         );
     }
 
-
     public function createForMethod(MethodReflectionInterface $method, ClassReflectionInterface $class = null): string
     {
         $className = $class !== null ? $class->getName() : $method->getDeclaringClassName();
         return $this->createForClass($className) . '#_'
             . ($method->getOriginalName() ?: $method->getName());
     }
-
 
     public function createForProperty(
         PropertyReflectionInterface $property,
@@ -76,7 +71,6 @@ final class ElementUrlFactory
         $className = $class !== null ? $class->getName() : $property->getDeclaringClassName();
         return $this->createForClass($className) . '#$' . $property->getName();
     }
-
 
     public function createForConstant(ConstantReflectionInterface $constant): string
     {
@@ -92,7 +86,6 @@ final class ElementUrlFactory
         );
     }
 
-
     public function createForFunction(FunctionReflectionInterface $function): string
     {
         return sprintf(
@@ -100,7 +93,6 @@ final class ElementUrlFactory
             Filters::urlize($function->getName())
         );
     }
-
 
     public function createForAnnotationGroup(string $name): string
     {

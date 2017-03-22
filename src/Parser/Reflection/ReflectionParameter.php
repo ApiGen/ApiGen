@@ -6,7 +6,7 @@ use ApiGen\Contracts\Parser\Reflection\AbstractFunctionMethodReflectionInterface
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ParameterReflectionInterface;
 
-final class ReflectionParameter extends AbstractReflectionBase implements ParameterReflectionInterface
+final class ReflectionParameter extends AbstractReflection implements ParameterReflectionInterface
 {
     public function getTypeHint(): string
     {
@@ -26,7 +26,6 @@ final class ReflectionParameter extends AbstractReflectionBase implements Parame
         }
     }
 
-
     public function getDescription(): string
     {
         $annotations = $this->getDeclaringFunction()->getAnnotation('param');
@@ -38,36 +37,30 @@ final class ReflectionParameter extends AbstractReflectionBase implements Parame
         return preg_replace('~^(\\$' . $this->getName() . '(?:,\\.{3})?)(\\s+|$)~i', '\\2', $description, 1);
     }
 
-
     public function getDefaultValueDefinition(): ?string
     {
         return $this->reflection === null ? null : $this->reflection->getDefaultValueDefinition();
     }
-
 
     public function isDefaultValueAvailable(): bool
     {
         return $this->reflection->isDefaultValueAvailable();
     }
 
-
     public function getPosition(): int
     {
         return $this->reflection->getPosition();
     }
-
 
     public function isArray(): bool
     {
         return $this->reflection->isArray();
     }
 
-
     public function isCallable(): bool
     {
         return $this->reflection->isCallable();
     }
-
 
     public function getClass(): ?ClassReflectionInterface
     {
@@ -75,36 +68,30 @@ final class ReflectionParameter extends AbstractReflectionBase implements Parame
         return $className === '' ? null : $this->getParsedClasses()[$className];
     }
 
-
     public function getClassName(): ?string
     {
         return $this->reflection->getClassName();
     }
-
 
     public function allowsNull(): bool
     {
         return $this->reflection->allowsNull();
     }
 
-
     public function isOptional(): bool
     {
         return $this->reflection->isOptional();
     }
-
 
     public function isPassedByReference(): bool
     {
         return $this->reflection->isPassedByReference();
     }
 
-
     public function canBePassedByValue(): bool
     {
         return $this->reflection->canBePassedByValue();
     }
-
 
     public function getDeclaringFunction(): AbstractFunctionMethodReflectionInterface
     {
@@ -117,12 +104,10 @@ final class ReflectionParameter extends AbstractReflectionBase implements Parame
         return $this->parserStorage->getFunctions()[$functionName];
     }
 
-
     public function getDeclaringFunctionName(): string
     {
         return (string) $this->reflection->getDeclaringFunctionName();
     }
-
 
     public function getDeclaringClass(): ?ClassReflectionInterface
     {
@@ -130,12 +115,10 @@ final class ReflectionParameter extends AbstractReflectionBase implements Parame
         return $className === '' ? null : $this->getParsedClasses()[$className];
     }
 
-
     public function getDeclaringClassName(): string
     {
         return (string) $this->reflection->getDeclaringClassName();
     }
-
 
     public function isUnlimited(): bool
     {

@@ -17,7 +17,6 @@ use TokenReflection\IReflectionClass;
 
 final class ReflectionClass extends AbstractReflectionElement implements ClassReflectionInterface
 {
-
     /**
      * @var ClassReflectionInterface[]
      */
@@ -63,7 +62,6 @@ final class ReflectionClass extends AbstractReflectionElement implements ClassRe
      */
     private $parentClassElementExtractor;
 
-
     /**
      * @param mixed $reflectionClass
      */
@@ -74,42 +72,35 @@ final class ReflectionClass extends AbstractReflectionElement implements ClassRe
         $this->parentClassElementExtractor = new ParentClassElementsExtractor($this);
     }
 
-
     public function getShortName(): string
     {
         return $this->reflection->getShortName();
     }
-
 
     public function isAbstract(): bool
     {
         return $this->reflection->isAbstract();
     }
 
-
     public function isFinal(): bool
     {
         return $this->reflection->isFinal();
     }
-
 
     public function isInterface(): bool
     {
         return $this->reflection->isInterface();
     }
 
-
     public function isException(): bool
     {
         return $this->reflection->isException();
     }
 
-
     public function isSubclassOf(string $class): bool
     {
         return $this->reflection->isSubclassOf($class);
     }
-
 
     /**
      * @return MethodReflectionInterface[]
@@ -159,7 +150,6 @@ final class ReflectionClass extends AbstractReflectionElement implements ClassRe
         return $this->methods;
     }
 
-
     /**
      * @return MethodReflectionInterface[]
      */
@@ -179,7 +169,6 @@ final class ReflectionClass extends AbstractReflectionElement implements ClassRe
         return $this->ownMethods;
     }
 
-
     /**
      * @return MethodReflectionInterface[]
      */
@@ -187,7 +176,6 @@ final class ReflectionClass extends AbstractReflectionElement implements ClassRe
     {
         return $this->classTraitElementExtractor->getTraitMethods();
     }
-
 
     public function getMethod(string $name): MethodReflectionInterface
     {
@@ -201,7 +189,6 @@ final class ReflectionClass extends AbstractReflectionElement implements ClassRe
             $this->reflection->getName()
         ));
     }
-
 
     /**
      * @return PropertyReflectionInterface[]
@@ -226,7 +213,6 @@ final class ReflectionClass extends AbstractReflectionElement implements ClassRe
         return $this->properties;
     }
 
-
     /**
      * @return PropertyReflectionInterface[]
      */
@@ -246,7 +232,6 @@ final class ReflectionClass extends AbstractReflectionElement implements ClassRe
         return $this->ownProperties;
     }
 
-
     /**
      * @return PropertyReflectionInterface[]
      */
@@ -254,7 +239,6 @@ final class ReflectionClass extends AbstractReflectionElement implements ClassRe
     {
         return $this->classTraitElementExtractor->getTraitProperties();
     }
-
 
     public function getProperty(string $name): PropertyReflectionInterface
     {
@@ -268,7 +252,6 @@ final class ReflectionClass extends AbstractReflectionElement implements ClassRe
             $this->reflection->getName()
         ));
     }
-
 
     /**
      * @return ConstantReflectionInterface[]
@@ -288,7 +271,6 @@ final class ReflectionClass extends AbstractReflectionElement implements ClassRe
 
         return $this->constants;
     }
-
 
     /**
      * @return ConstantReflectionInterface[]
@@ -321,18 +303,15 @@ final class ReflectionClass extends AbstractReflectionElement implements ClassRe
         ));
     }
 
-
     public function hasConstant(string $name): bool
     {
         return isset($this->getConstants()[$name]);
     }
 
-
     public function hasOwnConstant(string $name): bool
     {
         return isset($this->getOwnConstants()[$name]);
     }
-
 
     public function getOwnConstant(string $name): ConstantReflectionInterface
     {
@@ -347,7 +326,6 @@ final class ReflectionClass extends AbstractReflectionElement implements ClassRe
         ));
     }
 
-
     public function getParentClass(): ?ClassReflectionInterface
     {
         if ($className = $this->reflection->getParentClassName()) {
@@ -357,12 +335,10 @@ final class ReflectionClass extends AbstractReflectionElement implements ClassRe
         return null;
     }
 
-
     public function getParentClassName(): ?string
     {
         return $this->reflection->getParentClassName();
     }
-
 
     /**
      * @return ClassReflectionInterface[]
@@ -378,7 +354,6 @@ final class ReflectionClass extends AbstractReflectionElement implements ClassRe
         return $this->parentClasses;
     }
 
-
     /**
      * @return string[]
      */
@@ -387,12 +362,10 @@ final class ReflectionClass extends AbstractReflectionElement implements ClassRe
         return $this->reflection->getParentClassNameList();
     }
 
-
     public function implementsInterface(string $interface): bool
     {
         return $this->reflection->implementsInterface($interface);
     }
-
 
     /**
      * @return ClassReflectionInterface[]
@@ -404,7 +377,6 @@ final class ReflectionClass extends AbstractReflectionElement implements ClassRe
         }, $this->reflection->getInterfaces());
     }
 
-
     /**
      * @return ClassReflectionInterface[]
      */
@@ -415,7 +387,6 @@ final class ReflectionClass extends AbstractReflectionElement implements ClassRe
         }, $this->reflection->getOwnInterfaces());
     }
 
-
     /**
      * @return string[]
      */
@@ -423,7 +394,6 @@ final class ReflectionClass extends AbstractReflectionElement implements ClassRe
     {
         return $this->reflection->getOwnInterfaceNames();
     }
-
 
     /**
      * @return ClassReflectionInterface[]
@@ -439,7 +409,6 @@ final class ReflectionClass extends AbstractReflectionElement implements ClassRe
         }, $this->reflection->getTraits());
     }
 
-
     /**
      * @return string[]
      */
@@ -447,7 +416,6 @@ final class ReflectionClass extends AbstractReflectionElement implements ClassRe
     {
         return $this->reflection->getTraitNames();
     }
-
 
     /**
      * @return string[]
@@ -457,7 +425,6 @@ final class ReflectionClass extends AbstractReflectionElement implements ClassRe
         return $this->reflection->getOwnTraitNames();
     }
 
-
     /**
      * @return string[]
      */
@@ -465,7 +432,6 @@ final class ReflectionClass extends AbstractReflectionElement implements ClassRe
     {
         return $this->reflection->getTraitAliases();
     }
-
 
     /**
      * @return ClassReflectionInterface[]
@@ -481,12 +447,10 @@ final class ReflectionClass extends AbstractReflectionElement implements ClassRe
         }, $this->reflection->getOwnTraits());
     }
 
-
     public function isTrait(): bool
     {
         return $this->reflection->isTrait();
     }
-
 
     public function usesTrait(string $trait): bool
     {
@@ -509,7 +473,6 @@ final class ReflectionClass extends AbstractReflectionElement implements ClassRe
         return $subClasses;
     }
 
-
     /**
      * @return ClassReflectionInterface[]
      */
@@ -528,7 +491,6 @@ final class ReflectionClass extends AbstractReflectionElement implements ClassRe
         return $subClasses;
     }
 
-
     /**
      * @return ClassReflectionInterface[]
      */
@@ -540,7 +502,6 @@ final class ReflectionClass extends AbstractReflectionElement implements ClassRe
 
         return $this->parserStorage->getDirectImplementersOfInterface($this);
     }
-
 
     /**
      * @return ClassReflectionInterface[]
@@ -554,7 +515,6 @@ final class ReflectionClass extends AbstractReflectionElement implements ClassRe
         return $this->parserStorage->getIndirectImplementersOfInterface($this);
     }
 
-
     /**
      * @return ClassReflectionInterface[]
      */
@@ -566,7 +526,6 @@ final class ReflectionClass extends AbstractReflectionElement implements ClassRe
 
         return $this->classTraitElementExtractor->getDirectUsers();
     }
-
 
     /**
      * @return ClassReflectionInterface[]
@@ -580,7 +539,6 @@ final class ReflectionClass extends AbstractReflectionElement implements ClassRe
         return $this->classTraitElementExtractor->getIndirectUsers();
     }
 
-
     /**
      * @return MethodReflectionInterface[]
      */
@@ -588,7 +546,6 @@ final class ReflectionClass extends AbstractReflectionElement implements ClassRe
     {
         return $this->parentClassElementExtractor->getInheritedMethods();
     }
-
 
     /**
      * @return MethodReflectionInterface[]
@@ -599,7 +556,6 @@ final class ReflectionClass extends AbstractReflectionElement implements ClassRe
         return $this->sortUsedMethods($usedMethods);
     }
 
-
     /**
      * @return ConstantReflectionInterface[]
      */
@@ -607,7 +563,6 @@ final class ReflectionClass extends AbstractReflectionElement implements ClassRe
     {
         return $this->parentClassElementExtractor->getInheritedConstants();
     }
-
 
     /**
      * @return PropertyReflectionInterface[]
@@ -617,7 +572,6 @@ final class ReflectionClass extends AbstractReflectionElement implements ClassRe
         return $this->parentClassElementExtractor->getInheritedProperties();
     }
 
-
     /**
      * @return PropertyReflectionInterface[]
      */
@@ -625,7 +579,6 @@ final class ReflectionClass extends AbstractReflectionElement implements ClassRe
     {
         return $this->classTraitElementExtractor->getUsedProperties();
     }
-
 
     public function hasProperty(string $name): bool
     {
@@ -636,30 +589,25 @@ final class ReflectionClass extends AbstractReflectionElement implements ClassRe
         return isset($this->properties[$name]);
     }
 
-
     public function hasMethod(string $name): bool
     {
         return isset($this->getMethods()[$name]);
     }
-
 
     public function isVisibilityLevelPublic(): bool
     {
         return (bool) ($this->getVisibilityLevel() & Visibility::IS_PUBLIC);
     }
 
-
     public function getVisibilityLevel(): int
     {
         return $this->configuration->getVisibilityLevel();
     }
 
-
     public function getReflectionFactory(): ReflectionFactoryInterface
     {
         return $this->reflectionFactory;
     }
-
 
     /**
      * @param mixed[] $usedMethods

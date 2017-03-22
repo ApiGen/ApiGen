@@ -8,19 +8,16 @@ use TokenReflection;
 
 class InterfacesTest extends AbstractReflectionClassTestCase
 {
-
     public function testIsInterface(): void
     {
         $this->assertFalse($this->reflectionClass->isInterface());
     }
-
 
     public function testImplementsInterface(): void
     {
         $this->assertFalse($this->reflectionClass->implementsInterface('NoInterface'));
         $this->assertTrue($this->reflectionClass->implementsInterface('Project\RichInterface'));
     }
-
 
     public function testGetInterfaces(): void
     {
@@ -29,7 +26,6 @@ class InterfacesTest extends AbstractReflectionClassTestCase
         $this->assertInstanceOf(ClassReflectionInterface::class, $interfaces['Project\RichInterface']);
     }
 
-
     public function testGetOwnInterfaces(): void
     {
         $interfaces = $this->reflectionClass->getOwnInterfaces();
@@ -37,18 +33,15 @@ class InterfacesTest extends AbstractReflectionClassTestCase
         $this->assertInstanceOf(ClassReflectionInterface::class, $interfaces['Project\RichInterface']);
     }
 
-
     public function testGetOwnInterfaceNames(): void
     {
         $this->assertSame(['Project\RichInterface'], $this->reflectionClass->getOwnInterfaceNames());
     }
 
-
     public function testGetDirectImplementers(): void
     {
         $this->assertCount(1, $this->reflectionClassOfInterface->getDirectImplementers());
     }
-
 
     public function testGetIndirectImplementers(): void
     {

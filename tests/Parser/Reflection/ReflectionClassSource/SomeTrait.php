@@ -7,12 +7,10 @@ namespace Project;
  */
 trait SomeTrait
 {
-
     /**
      * @var mixed
      */
     public $publicTraitProperty;
-
 
     public function publicTraitMethod()
     {

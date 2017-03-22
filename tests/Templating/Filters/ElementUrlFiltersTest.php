@@ -17,12 +17,10 @@ final class ElementUrlFiltersTest extends AbstractContainerAwareTestCase
      */
     private $elementUrlFilters;
 
-
     protected function setUp(): void
     {
         $this->elementUrlFilters = $this->container->getByType(ElementUrlFilters::class);
     }
-
 
     public function testClassUrl(): void
     {
@@ -35,7 +33,6 @@ final class ElementUrlFiltersTest extends AbstractContainerAwareTestCase
             $this->elementUrlFilters->classUrl($reflectionClassMock)
         );
     }
-
 
     public function testMethodUrl(): void
     {
@@ -51,7 +48,6 @@ final class ElementUrlFiltersTest extends AbstractContainerAwareTestCase
         );
     }
 
-
     public function testPropertyUrl(): void
     {
         $reflectionPropertyMock = $this->createMock(PropertyReflectionInterface::class);
@@ -66,7 +62,6 @@ final class ElementUrlFiltersTest extends AbstractContainerAwareTestCase
         );
     }
 
-
     public function testConstantUrl(): void
     {
         $reflectionConstantMock = $this->createMock(ConstantReflectionInterface::class);
@@ -78,7 +73,6 @@ final class ElementUrlFiltersTest extends AbstractContainerAwareTestCase
             $this->elementUrlFilters->constantUrl($reflectionConstantMock)
         );
     }
-
 
     public function testFunctionUrl(): void
     {

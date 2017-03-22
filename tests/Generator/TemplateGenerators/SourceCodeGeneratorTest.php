@@ -12,7 +12,6 @@ use Nette\Utils\Finder;
 
 class SourceCodeGeneratorTest extends AbstractContainerAwareTestCase
 {
-
     /**
      * @var Configuration
      */
@@ -33,7 +32,6 @@ class SourceCodeGeneratorTest extends AbstractContainerAwareTestCase
      */
     private $elementStorage;
 
-
     protected function setUp(): void
     {
         $this->configuration = $this->container->getByType(Configuration::class);
@@ -41,7 +39,6 @@ class SourceCodeGeneratorTest extends AbstractContainerAwareTestCase
         $this->sourceCodeGenerator = $this->container->getByType(SourceCodeGenerator::class);
         $this->elementStorage = $this->container->getByType(ElementStorage::class);
     }
-
 
     public function testIsAllowed(): void
     {
@@ -58,13 +55,11 @@ class SourceCodeGeneratorTest extends AbstractContainerAwareTestCase
         $this->assertFalse($this->sourceCodeGenerator->isAllowed());
     }
 
-
     public function testStepCount(): void
     {
         $this->prepareSourceCodeGenerator();
         $this->assertSame(1, $this->sourceCodeGenerator->getStepCount());
     }
-
 
     public function testGenerate(): void
     {
@@ -74,7 +69,6 @@ class SourceCodeGeneratorTest extends AbstractContainerAwareTestCase
             TEMP_DIR . '/api/source-class-ApiGen.Tests.Generator.TemplateGenerators.SourceCodeSource.SomeClass.html'
         );
     }
-
 
     public function testGenerateForElement(): void
     {
@@ -87,7 +81,6 @@ class SourceCodeGeneratorTest extends AbstractContainerAwareTestCase
             TEMP_DIR . '/api/source-class-ApiGen.Tests.Generator.TemplateGenerators.SourceCodeSource.SomeClass.html'
         );
     }
-
 
     private function prepareSourceCodeGenerator(): void
     {

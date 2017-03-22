@@ -17,19 +17,16 @@ use Symfony\Component\Console\Output\NullOutput;
 
 final class ProgressBarTest extends TestCase
 {
-
     /**
      * @var ProgressBar
      */
     private $progressBar;
-
 
     protected function setUp(): void
     {
         $io = new IO(new LiberalFormatArgvInput, new NullOutput);
         $this->progressBar = new ProgressBar($io);
     }
-
 
     public function testInit(): void
     {
@@ -42,7 +39,6 @@ final class ProgressBarTest extends TestCase
         $this->assertInstanceOf(SymfonyProgressBar::class, $bar);
         $this->assertSame(50, $bar->getMaxSteps());
     }
-
 
     public function testIncrement(): void
     {
@@ -58,7 +54,6 @@ final class ProgressBarTest extends TestCase
         $this->progressBar->increment(30);
         $this->assertSame(50, $bar->getProgress());
     }
-
 
     public function testGetBarFormat(): void
     {

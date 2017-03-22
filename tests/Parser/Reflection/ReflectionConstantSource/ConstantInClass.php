@@ -4,7 +4,6 @@ namespace ApiGen\Tests;
 
 class ConstantInClass
 {
-
     /**
      * @var int
      */

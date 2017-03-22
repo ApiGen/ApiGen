@@ -11,13 +11,11 @@ use Nette\DI\CompilerExtension;
 
 final class ApiGenExtension extends CompilerExtension
 {
-
     public function loadConfiguration(): void
     {
         $this->loadServicesFromConfig();
         $this->setupTemplating();
     }
-
 
     public function beforeCompile(): void
     {
@@ -27,7 +25,6 @@ final class ApiGenExtension extends CompilerExtension
         $this->setupGeneratorQueue();
     }
 
-
     private function loadServicesFromConfig(): void
     {
         Compiler::loadDefinitions(
@@ -35,7 +32,6 @@ final class ApiGenExtension extends CompilerExtension
             $this->loadFromFile(__DIR__ . '/services.neon')['services']
         );
     }
-
 
     private function setupTemplating(): void
     {
@@ -46,7 +42,6 @@ final class ApiGenExtension extends CompilerExtension
             ->addSetup('setTempDirectory', [$containerBuilder->expand('%tempDir%/cache/latte')]);
     }
 
-
     private function setupTemplatingFilters(): void
     {
         // @todo: use Symplify package
@@ -56,7 +51,6 @@ final class ApiGenExtension extends CompilerExtension
             $latteFactory->addSetup('addFilter', [null, ['@' . $definition->getClass(), 'loader']]);
         }
     }
-
 
     private function setupGeneratorQueue(): void
     {

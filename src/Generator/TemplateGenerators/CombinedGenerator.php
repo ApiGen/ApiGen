@@ -7,18 +7,15 @@ use ApiGen\Templating\TemplateFactory;
 
 final class CombinedGenerator implements TemplateGeneratorInterface
 {
-
     /**
      * @var TemplateFactory
      */
     private $templateFactory;
 
-
     public function __construct(TemplateFactory $templateFactory)
     {
         $this->templateFactory = $templateFactory;
     }
-
 
     public function generate(): void
     {

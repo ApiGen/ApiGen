@@ -4,11 +4,11 @@ namespace ApiGen\Parser\Reflection;
 
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
-use ApiGen\Parser\Reflection\Parts\Visibility;
+use ApiGen\Parser\Reflection\Parts\VisibilityTrait;
 
 final class ReflectionProperty extends AbstractReflectionElement implements PropertyReflectionInterface
 {
-    use Visibility;
+    use VisibilityTrait;
 
 
     public function isReadOnly(): bool
@@ -16,12 +16,10 @@ final class ReflectionProperty extends AbstractReflectionElement implements Prop
         return false;
     }
 
-
     public function isWriteOnly(): bool
     {
         return false;
     }
-
 
     public function getTypeHint(): string
     {
@@ -42,25 +40,21 @@ final class ReflectionProperty extends AbstractReflectionElement implements Prop
         }
     }
 
-
     public function getDeclaringClass(): ?ClassReflectionInterface
     {
         $className = $this->reflection->getDeclaringClassName();
         return $className === null ? null : $this->getParsedClasses()[$className];
     }
 
-
     public function getDeclaringClassName(): string
     {
         return (string) $this->reflection->getDeclaringClassName();
     }
 
-
     public function getDefaultValueDefinition(): string
     {
         return $this->reflection->getDefaultValueDefinition();
     }
-
 
     /**
      * @return mixed
@@ -70,18 +64,15 @@ final class ReflectionProperty extends AbstractReflectionElement implements Prop
         return $this->reflection->getDefaultValue();
     }
 
-
     public function isDefault(): bool
     {
         return $this->reflection->isDefault();
     }
 
-
     public function isStatic(): bool
     {
         return $this->reflection->isStatic();
     }
-
 
     public function getDeclaringTrait(): ?ClassReflectionInterface
     {
@@ -89,12 +80,10 @@ final class ReflectionProperty extends AbstractReflectionElement implements Prop
         return $traitName === '' ? null : $this->getParsedClasses()[$traitName];
     }
 
-
     public function getDeclaringTraitName(): string
     {
         return (string) $this->reflection->getDeclaringTraitName();
     }
-
 
     public function getShortName(): string
     {

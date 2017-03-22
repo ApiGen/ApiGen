@@ -14,19 +14,16 @@ final class FiltersTest extends TestCase
      */
     private $filters;
 
-
     protected function setUp(): void
     {
         $this->filters = new FooFilters;
     }
-
 
     public function testLoader(): void
     {
         $this->assertSame('Filtered: foo', $this->filters->loader('bazFilter', 'foo'));
         $this->assertNull($this->filters->loader('nonExisting'));
     }
-
 
     /**
      * @dataProvider typeNameProvider()
@@ -38,7 +35,6 @@ final class FiltersTest extends TestCase
             MethodInvoker::callMethodOnObject($this->filters, 'getTypeName', [$name])
         );
     }
-
 
     /**
      * @return string[]
@@ -60,7 +56,6 @@ final class FiltersTest extends TestCase
         ];
     }
 
-
     public function testGetTypeNameWithTrimOff(): void
     {
         $this->assertSame(
@@ -69,7 +64,6 @@ final class FiltersTest extends TestCase
         );
     }
 
-
     public function testUrlize(): void
     {
         $this->assertSame(
@@ -77,7 +71,6 @@ final class FiltersTest extends TestCase
             MethodInvoker::callMethodOnObject($this->filters, 'urlize', ['Some class'])
         );
     }
-
 
     public function testUrl(): void
     {

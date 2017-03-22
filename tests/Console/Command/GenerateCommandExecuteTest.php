@@ -13,18 +13,15 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 final class GenerateCommandExecuteTest extends AbstractContainerAwareTestCase
 {
-
     /**
      * @var GenerateCommand
      */
     private $generateCommand;
 
-
     protected function setUp(): void
     {
         $this->generateCommand = $this->container->getByType(GenerateCommand::class);
     }
-
 
     public function testExecute(): void
     {
@@ -56,7 +53,6 @@ final class GenerateCommandExecuteTest extends AbstractContainerAwareTestCase
 
         $this->assertFileExists(TEMP_DIR . '/Api/index.html');
     }
-
 
 //    public function testExecuteWithError()
 //    {

@@ -8,7 +8,7 @@ use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
-use ApiGen\Parser\Reflection\AbstractReflectionBase;
+use ApiGen\Parser\Reflection\AbstractReflection;
 use ApiGen\Parser\Reflection\ReflectionBase;
 use Nette\Utils\Html;
 use UnexpectedValueException;
@@ -25,13 +25,11 @@ final class ElementLinkFactory
      */
     private $linkBuilder;
 
-
     public function __construct(ElementUrlFactory $elementUrlFactory, LinkBuilder $linkBuilder)
     {
         $this->elementUrlFactory = $elementUrlFactory;
         $this->linkBuilder = $linkBuilder;
     }
-
 
     /**
      * @param ElementReflectionInterface $element
@@ -53,11 +51,10 @@ final class ElementLinkFactory
 
         throw new UnexpectedValueException(sprintf(
             'Descendant of "%s" class expected. Got "%s" class.',
-            AbstractReflectionBase::class,
+            AbstractReflection::class,
             get_class($element)
         ));
     }
-
 
     /**
      * @param ClassReflectionInterface $reflectionClass
@@ -73,7 +70,6 @@ final class ElementLinkFactory
         );
     }
 
-
     /**
      * @param MethodReflectionInterface $reflectionMethod
      * @param mixed[] $classes
@@ -87,7 +83,6 @@ final class ElementLinkFactory
             $classes
         );
     }
-
 
     /**
      * @param PropertyReflectionInterface $reflectionProperty
@@ -105,7 +100,6 @@ final class ElementLinkFactory
             $classes
         );
     }
-
 
     /**
      * @param ConstantReflectionInterface $reflectionConstant
@@ -125,7 +119,6 @@ final class ElementLinkFactory
         return $this->linkBuilder->build($url, $text, false, $classes);
     }
 
-
     /**
      * @param FunctionReflectionInterface $reflectionFunction
      * @param mixed[] $classes
@@ -139,7 +132,6 @@ final class ElementLinkFactory
             $classes
         );
     }
-
 
     private function getGlobalConstantName(ConstantReflectionInterface $reflectionConstant): string
     {

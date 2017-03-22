@@ -27,7 +27,6 @@ final class ParserTest extends AbstractContainerAwareTestCase
      */
     private $configuration;
 
-
     protected function setUp(): void
     {
         $this->parser = $this->container->getByType(ParserInterface::class);
@@ -37,7 +36,6 @@ final class ParserTest extends AbstractContainerAwareTestCase
         $configuration = $this->container->getByType(ConfigurationInterface::class);
         $configuration->setOptions(['visibilityLevels' => ReflectionProperty::IS_PUBLIC]);
     }
-
 
     /**
      * @expectedException \TokenReflection\Exception\FileProcessingException
@@ -49,7 +47,6 @@ final class ParserTest extends AbstractContainerAwareTestCase
         $this->parser->parse($this->getFilesFromDir(__DIR__ . '/ErrorParseSource'));
     }
 
-
     public function testParseClasses(): void
     {
         $this->assertCount(0, $this->parserStorage->getClasses());
@@ -57,7 +54,6 @@ final class ParserTest extends AbstractContainerAwareTestCase
         $this->parser->parse($this->getFilesFromDir(__DIR__ . '/ParserSource'));
         $this->assertCount(3, $this->parserStorage->getClasses());
     }
-
 
     /**
      * @param string $dir

@@ -20,7 +20,6 @@ interface BackendInterface
      */
     public function getConstants(): array;
 
-
     /**
      * @return FunctionReflectionInterface[]
      */

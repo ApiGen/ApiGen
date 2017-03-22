@@ -5,10 +5,9 @@ namespace ApiGen\Parser\Reflection\TokenReflection;
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Parser\ParserStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\TokenReflection\ReflectionFactoryInterface;
-use ApiGen\Parser\Reflection\AbstractReflectionBase;
+use ApiGen\Parser\Reflection\AbstractReflection;
 use ApiGen\Parser\Reflection\ReflectionClass;
 use ApiGen\Parser\Reflection\ReflectionConstant;
-use ApiGen\Parser\Reflection\ReflectionExtension;
 use ApiGen\Parser\Reflection\ReflectionFunction;
 use ApiGen\Parser\Reflection\ReflectionMethod;
 use ApiGen\Parser\Reflection\ReflectionParameter;
@@ -16,7 +15,6 @@ use ApiGen\Parser\Reflection\ReflectionProperty;
 use RuntimeException;
 use TokenReflection\IReflectionClass;
 use TokenReflection\IReflectionConstant;
-use TokenReflection\IReflectionExtension;
 use TokenReflection\IReflectionFunction;
 use TokenReflection\IReflectionMethod;
 use TokenReflection\IReflectionParameter;
@@ -34,13 +32,11 @@ final class ReflectionFactory implements ReflectionFactoryInterface
      */
     private $parserStorage;
 
-
     public function __construct(ConfigurationInterface $configuration, ParserStorageInterface $parserStorage)
     {
         $this->configuration = $configuration;
         $this->parserStorage = $parserStorage;
     }
-
 
     /**
      * @param IReflectionClass|IReflectionConstant|IReflectionMethod $tokenReflection
@@ -52,7 +48,6 @@ final class ReflectionFactory implements ReflectionFactoryInterface
         $this->setDependencies($reflection);
         return $reflection;
     }
-
 
     /**
      * @param IReflectionClass|IReflectionConstant|IReflectionMethod $reflection
@@ -72,15 +67,12 @@ final class ReflectionFactory implements ReflectionFactoryInterface
             return new ReflectionParameter($reflection);
         } elseif ($reflection instanceof IReflectionFunction) {
             return new ReflectionFunction($reflection);
-        } elseif ($reflection instanceof IReflectionExtension) {
-            return new ReflectionExtension($reflection);
         }
 
         throw new RuntimeException('Invalid reflection class type ' . get_class($reflection));
     }
 
-
-    private function setDependencies(AbstractReflectionBase $reflection): void
+    private function setDependencies(AbstractReflection $reflection): void
     {
         $reflection->setConfiguration($this->configuration);
         $reflection->setParserStorage($this->parserStorage);

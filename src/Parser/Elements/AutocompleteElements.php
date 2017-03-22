@@ -15,7 +15,6 @@ use ApiGen\Parser\Reflection\ReflectionFunction;
 
 final class AutocompleteElements implements AutocompleteElementsInterface
 {
-
     /**
      * @var ElementStorageInterface
      */
@@ -26,12 +25,10 @@ final class AutocompleteElements implements AutocompleteElementsInterface
      */
     private $elements = [];
 
-
     public function __construct(ElementStorageInterface $elementStorage)
     {
         $this->elementStorage = $elementStorage;
     }
-
 
     /**
      * @return mixed[]
@@ -48,7 +45,6 @@ final class AutocompleteElements implements AutocompleteElementsInterface
 
         return $this->elements;
     }
-
 
     private function processElement(ElementReflectionInterface $element): void
     {
@@ -68,7 +64,6 @@ final class AutocompleteElements implements AutocompleteElementsInterface
             }
         }
     }
-
 
     private function sortElements(): void
     {

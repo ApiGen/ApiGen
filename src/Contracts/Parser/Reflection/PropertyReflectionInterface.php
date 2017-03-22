@@ -13,30 +13,22 @@ interface PropertyReflectionInterface extends
     InClassInterface,
     LinedInterface
 {
-
     public function isDefault(): bool;
 
-
     public function isStatic(): bool;
-
 
     /**
      * @return mixed
      */
     public function getDefaultValue();
 
-
     public function getTypeHint(): string;
-
 
     public function isReadOnly(): bool;
 
-
     public function isWriteOnly(): bool;
 
-
     public function hasAnnotation(string $name): bool;
-
 
     /**
      * @param string $name

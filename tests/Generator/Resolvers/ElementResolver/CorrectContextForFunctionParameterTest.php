@@ -30,7 +30,6 @@ final class CorrectContextForFunctionParameterTest extends AbstractElementResolv
         $this->assertSame($functionReflectionMock, $resolvedElement);
     }
 
-
     /**
      * @return PHPUnit_Framework_MockObject_MockObject|ParameterReflectionInterface
      */

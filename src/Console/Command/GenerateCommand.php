@@ -17,7 +17,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 final class GenerateCommand extends AbstractCommand
 {
-
     /**
      * @var Configuration
      */
@@ -58,7 +57,6 @@ final class GenerateCommand extends AbstractCommand
      */
     private $finder;
 
-
     public function __construct(
         Configuration $configuration,
         ParserInterface $parser,
@@ -80,7 +78,6 @@ final class GenerateCommand extends AbstractCommand
         $this->io = $io;
         $this->finder = $finder;
     }
-
 
     protected function configure(): void
     {
@@ -170,7 +167,6 @@ final class GenerateCommand extends AbstractCommand
             );
     }
 
-
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $options = $this->prepareOptions($input->getOptions());
@@ -178,7 +174,6 @@ final class GenerateCommand extends AbstractCommand
         $this->generate($options);
         return 0;
     }
-
 
     /**
      * @param mixed[] $options
@@ -199,7 +194,6 @@ final class GenerateCommand extends AbstractCommand
         ));
     }
 
-
     /**
      * @param mixed[] $options
      */
@@ -209,7 +203,6 @@ final class GenerateCommand extends AbstractCommand
         $this->io->writeln('<info>Generating API documentation</info>');
         $this->generatorQueue->run();
     }
-
 
     /**
      * @param mixed[] $cliOptions
@@ -222,7 +215,6 @@ final class GenerateCommand extends AbstractCommand
 
         return $this->configuration->resolveOptions($options);
     }
-
 
     /**
      * @param mixed[] $options
@@ -241,14 +233,12 @@ final class GenerateCommand extends AbstractCommand
         return $options;
     }
 
-
     private function camelFormat(string $name): string
     {
         return preg_replace_callback('~-([a-z])~', function ($matches) {
             return strtoupper($matches[1]);
         }, $name);
     }
-
 
     /**
      * @param mixed[] $options
@@ -268,7 +258,6 @@ final class GenerateCommand extends AbstractCommand
         return $options;
     }
 
-
     private function prepareDestination(string $destination, bool $shouldOverwrite = false): void
     {
         if ($shouldOverwrite) {
@@ -277,7 +266,6 @@ final class GenerateCommand extends AbstractCommand
 
         $this->themeResources->copyToDestination($destination);
     }
-
 
     /**
      * @param mixed[] $options

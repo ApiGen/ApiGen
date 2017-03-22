@@ -4,9 +4,7 @@ namespace ApiGen\Contracts\Parser\Reflection\Behavior;
 
 interface InNamespaceInterface
 {
-
     public function getDeclaringClassName(): string;
-
 
     /**
      * @return string[]

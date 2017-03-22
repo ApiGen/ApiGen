@@ -22,7 +22,6 @@ final class ThemeConfig
      */
     private $themeConfigOptionsResolver;
 
-
     public function __construct(string $filePath, ThemeConfigOptionsResolver $themeConfigOptionsResolver)
     {
         if (! is_file($filePath)) {
@@ -35,7 +34,6 @@ final class ThemeConfig
         $this->filePath = $filePath;
         $this->themeConfigOptionsResolver = $themeConfigOptionsResolver;
     }
-
 
     /**
      * @return mixed[]

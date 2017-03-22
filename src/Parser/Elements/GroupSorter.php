@@ -28,13 +28,11 @@ final class GroupSorter implements GroupSorterInterface
      */
     private $elements;
 
-
     public function __construct(ElementsInterface $elements, ConfigurationInterface $configuration)
     {
         $this->elements = $elements;
         $this->configuration = $configuration;
     }
-
 
     /**
      * @param mixed[] $groups
@@ -63,7 +61,6 @@ final class GroupSorter implements GroupSorterInterface
         return $this->groups;
     }
 
-
     /**
      * @param mixed[] $groups
      */
@@ -71,7 +68,6 @@ final class GroupSorter implements GroupSorterInterface
     {
         return count($groups) === 1 && isset($groups['None']);
     }
-
 
     /**
      * @param string[] $groupNames
@@ -86,7 +82,6 @@ final class GroupSorter implements GroupSorterInterface
         return array_flip($names);
     }
 
-
     private function addMissingParentGroups(string $groupName): void
     {
         $parent = '';
@@ -99,7 +94,6 @@ final class GroupSorter implements GroupSorterInterface
         }
     }
 
-
     private function addMissingElementTypes(string $groupName): void
     {
         foreach ($this->elements->getAll() as $type) {
@@ -108,7 +102,6 @@ final class GroupSorter implements GroupSorterInterface
             }
         }
     }
-
 
     private function compareGroups(string $one, string $two, string $main): int
     {

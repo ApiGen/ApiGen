@@ -9,7 +9,7 @@ use TokenReflection\ReflectionClass;
 use TokenReflection\ReflectionConstant;
 use TokenReflection\ReflectionFunction;
 
-abstract class AbstractReflectionElement extends AbstractReflectionBase implements ElementReflectionInterface
+abstract class AbstractReflectionElement extends AbstractReflection implements ElementReflectionInterface
 {
     /**
      * @var bool
@@ -21,25 +21,21 @@ abstract class AbstractReflectionElement extends AbstractReflectionBase implemen
      */
     protected $annotations;
 
-
     public function getStartPosition(): int
     {
         return $this->reflection->getStartPosition();
     }
-
 
     public function getEndPosition(): int
     {
         return $this->reflection->getEndPosition();
     }
 
-
     public function isMain(): bool
     {
         $main = $this->configuration->getMain();
         return empty($main) || strpos($this->getName(), $main) === 0;
     }
-
 
     public function isDocumented(): bool
     {
@@ -62,7 +58,6 @@ abstract class AbstractReflectionElement extends AbstractReflectionBase implemen
         return $this->isDocumented;
     }
 
-
     public function isDeprecated(): bool
     {
         if ($this->reflection->isDeprecated()) {
@@ -77,12 +72,10 @@ abstract class AbstractReflectionElement extends AbstractReflectionBase implemen
         return false;
     }
 
-
     public function inNamespace(): bool
     {
         return $this->getNamespaceName() !== '';
     }
-
 
     public function getNamespaceName(): string
     {
@@ -102,12 +95,10 @@ abstract class AbstractReflectionElement extends AbstractReflectionBase implemen
         return $namespaces[$lowerNamespaceName];
     }
 
-
     public function getPseudoNamespaceName(): string
     {
         return $this->isInternal() ? 'PHP' : $this->getNamespaceName() ?: 'None';
     }
-
 
     /**
      * @return string[]
@@ -116,7 +107,6 @@ abstract class AbstractReflectionElement extends AbstractReflectionBase implemen
     {
         return $this->reflection->getNamespaceAliases();
     }
-
 
     public function getShortDescription(): string
     {
@@ -133,7 +123,6 @@ abstract class AbstractReflectionElement extends AbstractReflectionBase implemen
         return (string) $short;
     }
 
-
     public function getLongDescription(): string
     {
         $short = $this->getShortDescription();
@@ -146,12 +135,10 @@ abstract class AbstractReflectionElement extends AbstractReflectionBase implemen
         return $short;
     }
 
-
     public function getDocComment(): string
     {
         return (string) $this->reflection->getDocComment();
     }
-
 
     /**
      * @return mixed[]
@@ -172,7 +159,6 @@ abstract class AbstractReflectionElement extends AbstractReflectionBase implemen
         return $this->annotations;
     }
 
-
     /**
      * @return mixed[]
      */
@@ -181,12 +167,10 @@ abstract class AbstractReflectionElement extends AbstractReflectionBase implemen
         return $this->hasAnnotation($name) ? $this->getAnnotations()[$name] : [];
     }
 
-
     public function hasAnnotation(string $name): bool
     {
         return isset($this->getAnnotations()[$name]);
     }
-
 
     /**
      * @param string $annotation
@@ -200,7 +184,6 @@ abstract class AbstractReflectionElement extends AbstractReflectionBase implemen
 
         $this->annotations[$annotation][] = $value;
     }
-
 
     /**
      * @param mixed $reflection

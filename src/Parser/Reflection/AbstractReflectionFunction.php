@@ -7,25 +7,23 @@ use ApiGen\Contracts\Parser\Reflection\ParameterReflectionInterface;
 use InvalidArgumentException;
 use TokenReflection\IReflectionParameter;
 
-abstract class AbstractReflectionFunctionBase extends AbstractReflectionElement implements AbstractFunctionMethodReflectionInterface
+abstract class AbstractReflectionFunction
+    extends AbstractReflectionElement implements AbstractFunctionMethodReflectionInterface
 {
     /**
      * @var ParameterReflectionInterface[]
      */
     protected $parameters;
 
-
     public function getShortName(): string
     {
         return $this->reflection->getShortName();
     }
 
-
     public function returnsReference(): bool
     {
         return $this->reflection->returnsReference();
     }
-
 
     /**
      * @return ParameterReflectionInterface[]
@@ -40,7 +38,6 @@ abstract class AbstractReflectionFunctionBase extends AbstractReflectionElement 
 
         return $this->parameters;
     }
-
 
     /**
      * @param int|string $key

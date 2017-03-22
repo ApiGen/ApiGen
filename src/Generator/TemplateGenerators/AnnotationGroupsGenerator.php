@@ -11,7 +11,6 @@ use ApiGen\Templating\TemplateFactory;
 
 final class AnnotationGroupsGenerator implements TemplateGeneratorInterface
 {
-
     /**
      * @var ConfigurationInterface
      */
@@ -27,7 +26,6 @@ final class AnnotationGroupsGenerator implements TemplateGeneratorInterface
      */
     private $elementExtractor;
 
-
     public function __construct(
         ConfigurationInterface $configuration,
         TemplateFactory $templateFactory,
@@ -37,7 +35,6 @@ final class AnnotationGroupsGenerator implements TemplateGeneratorInterface
         $this->templateFactory = $templateFactory;
         $this->elementExtractor = $elementExtractor;
     }
-
 
     public function generate(): void
     {
@@ -51,7 +48,6 @@ final class AnnotationGroupsGenerator implements TemplateGeneratorInterface
             $template->save();
         }
     }
-
 
     private function setElementsWithAnnotationToTemplate(Template $template, string $annotation): Template
     {

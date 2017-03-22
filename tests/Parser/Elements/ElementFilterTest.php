@@ -13,12 +13,10 @@ final class ElementFilterTest extends TestCase
      */
     private $elementFilter;
 
-
     protected function setUp(): void
     {
         $this->elementFilter = new ElementFilter;
     }
-
 
     public function testFilterForMain(): void
     {
@@ -34,7 +32,6 @@ final class ElementFilterTest extends TestCase
 
         $this->assertCount(1, $this->elementFilter->filterForMain($elements));
     }
-
 
     public function testFilterByAnnotation(): void
     {

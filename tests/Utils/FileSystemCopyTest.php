@@ -12,12 +12,10 @@ final class FileSystemCopyTest extends TestCase
      */
     private $fileSystem;
 
-
     protected function setUp(): void
     {
         $this->fileSystem = new FileSystem;
     }
-
 
     public function testCopyFiles(): void
     {

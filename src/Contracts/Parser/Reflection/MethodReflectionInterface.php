@@ -14,21 +14,15 @@ interface MethodReflectionInterface extends
 {
     public function isAbstract(): bool;
 
-
     public function isFinal(): bool;
-
 
     public function isStatic(): bool;
 
-
     public function getImplementedMethod(): ?MethodReflectionInterface;
-
 
     public function getOverriddenMethod(): ?MethodReflectionInterface;
 
-
     public function getOriginal(): ?MethodReflectionInterface;
-
 
     public function getOriginalName(): string;
 }

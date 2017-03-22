@@ -16,12 +16,10 @@ final class Configuration implements ConfigurationInterface
      */
     private $configurationOptionsResolver;
 
-
     public function __construct(ConfigurationOptionsResolver $configurationOptionsResolver)
     {
         $this->configurationOptionsResolver = $configurationOptionsResolver;
     }
-
 
     /**
      * @param mixed[] $options
@@ -32,7 +30,6 @@ final class Configuration implements ConfigurationInterface
         $options = $this->unsetConsoleOptions($options);
         return $this->options = $this->configurationOptionsResolver->resolve($options);
     }
-
 
     /**
      * @return mixed|null
@@ -46,7 +43,6 @@ final class Configuration implements ConfigurationInterface
         return null;
     }
 
-
     /**
      * @return mixed[]
      */
@@ -59,7 +55,6 @@ final class Configuration implements ConfigurationInterface
         return $this->options;
     }
 
-
     /**
      * @param mixed[] $options
      */
@@ -68,24 +63,20 @@ final class Configuration implements ConfigurationInterface
         $this->options = $options;
     }
 
-
     public function getVisibilityLevel(): int
     {
         return $this->options['visibilityLevels'];
     }
-
 
     public function getMain(): string
     {
         return $this->getOption('main');
     }
 
-
     public function isInternalDocumented(): bool
     {
         return (bool) $this->getOption('internal');
     }
-
 
     /**
      * @return string[]
@@ -95,36 +86,30 @@ final class Configuration implements ConfigurationInterface
         return $this->options['annotationGroups'];
     }
 
-
     public function getDestination(): string
     {
         return $this->options['destination'];
     }
-
 
     public function getTitle(): string
     {
         return $this->options['title'];
     }
 
-
     public function getBaseUrl(): string
     {
         return $this->options['baseUrl'];
     }
-
 
     public function getGoogleCseId(): string
     {
         return $this->options['googleCseId'];
     }
 
-
     public function shouldGenerateSourceCode(): bool
     {
         return $this->options['sourceCode'];
     }
-
 
     /**
      * @return array|string[]
@@ -134,7 +119,6 @@ final class Configuration implements ConfigurationInterface
         return $this->options['source'];
     }
 
-
     /**
      * @return array|string[]
      */
@@ -143,7 +127,6 @@ final class Configuration implements ConfigurationInterface
         return $this->options['exclude'];
     }
 
-
     /**
      * @return string[]
      */
@@ -151,7 +134,6 @@ final class Configuration implements ConfigurationInterface
     {
         return $this->options['extensions'];
     }
-
 
     /**
      * @param mixed[] $options

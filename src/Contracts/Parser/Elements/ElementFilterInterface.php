@@ -12,7 +12,6 @@ interface ElementFilterInterface
      */
     public function filterForMain(array $elements): array;
 
-
     /**
      * @param ElementReflectionInterface[] $elements
      * @param string $annotation

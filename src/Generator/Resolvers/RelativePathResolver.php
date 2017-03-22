@@ -9,7 +9,6 @@ use InvalidArgumentException;
 
 final class RelativePathResolver
 {
-
     /**
      * @var ConfigurationInterface
      */
@@ -20,13 +19,11 @@ final class RelativePathResolver
      */
     private $fileSystem;
 
-
     public function __construct(ConfigurationInterface $configuration, FileSystem $fileSystem)
     {
         $this->configuration = $configuration;
         $this->fileSystem = $fileSystem;
     }
-
 
     public function getRelativePath(string $fileName): string
     {
@@ -38,7 +35,6 @@ final class RelativePathResolver
 
         throw new InvalidArgumentException(sprintf('Could not determine "%s" relative path', $fileName));
     }
-
 
     private function getFileNameWithoutSourcePath(string $fileName, string $directory): string
     {

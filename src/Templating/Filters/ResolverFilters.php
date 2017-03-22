@@ -12,18 +12,15 @@ use ApiGen\Parser\Reflection\TokenReflection\ReflectionInterface;
 
 class ResolverFilters extends Filters
 {
-
     /**
      * @var ElementResolver
      */
     private $elementResolver;
 
-
     public function __construct(ElementResolver $elementResolver)
     {
         $this->elementResolver = $elementResolver;
     }
-
 
     /**
      * @param string $className
@@ -39,7 +36,6 @@ class ResolverFilters extends Filters
 
         return false;
     }
-
 
     /**
      * @param string $definition

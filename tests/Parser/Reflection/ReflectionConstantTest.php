@@ -28,7 +28,6 @@ final class ReflectionConstantTest extends AbstractContainerAwareTestCase
      */
     private $reflectionClass;
 
-
     protected function setUp(): void
     {
         $broker = $this->container->getByType(Broker::class);
@@ -52,13 +51,11 @@ final class ReflectionConstantTest extends AbstractContainerAwareTestCase
         $this->constantReflectionInClass->setParserStorage($parserStorage);
     }
 
-
     public function testInstance(): void
     {
         $this->assertInstanceOf(ConstantReflectionInterface::class, $this->constantReflection);
         $this->assertInstanceOf(ConstantReflectionInterface::class, $this->constantReflectionInClass);
     }
-
 
     public function testGetDeclaringClass(): void
     {
@@ -66,13 +63,11 @@ final class ReflectionConstantTest extends AbstractContainerAwareTestCase
         $this->assertInstanceOf(ClassReflectionInterface::class, $this->constantReflectionInClass->getDeclaringClass());
     }
 
-
     public function testGetDeclaringClassName(): void
     {
         $this->assertSame('', $this->constantReflection->getDeclaringClassName());
         $this->assertSame(ConstantInClass::class, $this->constantReflectionInClass->getDeclaringClassName());
     }
-
 
     public function testGetName(): void
     {
@@ -80,13 +75,11 @@ final class ReflectionConstantTest extends AbstractContainerAwareTestCase
         $this->assertSame('CONSTANT_INSIDE', $this->constantReflectionInClass->getName());
     }
 
-
     public function testGetShortName(): void
     {
         $this->assertSame('SOME_CONSTANT', $this->constantReflection->getShortName());
         $this->assertSame('CONSTANT_INSIDE', $this->constantReflectionInClass->getShortName());
     }
-
 
     public function testGetTypeHint(): void
     {
@@ -94,20 +87,17 @@ final class ReflectionConstantTest extends AbstractContainerAwareTestCase
         $this->assertSame('int', $this->constantReflectionInClass->getTypeHint());
     }
 
-
     public function testGetValue(): void
     {
         $this->assertSame('some value', $this->constantReflection->getValue());
         $this->assertSame(55, $this->constantReflectionInClass->getValue());
     }
 
-
     public function testGetDefinition(): void
     {
         $this->assertSame("'some value'", $this->constantReflection->getValueDefinition());
         $this->assertSame('55', $this->constantReflectionInClass->getValueDefinition());
     }
-
 
     public function testIsDocumented(): void
     {

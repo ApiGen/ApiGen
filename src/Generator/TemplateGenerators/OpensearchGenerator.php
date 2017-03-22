@@ -9,7 +9,6 @@ use ApiGen\Templating\TemplateFactory;
 
 final class OpensearchGenerator implements ConditionalTemplateGeneratorInterface
 {
-
     /**
      * @var Configuration
      */
@@ -20,20 +19,17 @@ final class OpensearchGenerator implements ConditionalTemplateGeneratorInterface
      */
     private $templateFactory;
 
-
     public function __construct(Configuration $configuration, TemplateFactory $templateFactory)
     {
         $this->configuration = $configuration;
         $this->templateFactory = $templateFactory;
     }
 
-
     public function generate(): void
     {
         $this->templateFactory->createForType('opensearch')
             ->save();
     }
-
 
     public function isAllowed(): bool
     {

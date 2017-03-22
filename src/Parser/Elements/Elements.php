@@ -14,7 +14,6 @@ final class Elements implements ElementsInterface
         return [self::CLASSES, self::EXCEPTIONS, self::INTERFACES, self::TRAITS];
     }
 
-
     /**
      * @return string[]
      */
@@ -22,7 +21,6 @@ final class Elements implements ElementsInterface
     {
         return [self::CLASSES, self::CONSTANTS, self::EXCEPTIONS, self::FUNCTIONS, self::INTERFACES, self::TRAITS];
     }
-
 
     /**
      * @return mixed[]

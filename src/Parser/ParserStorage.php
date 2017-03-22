@@ -32,7 +32,6 @@ final class ParserStorage implements ParserStorageInterface
      */
     private $types = [ElementsInterface::CLASSES, ElementsInterface::CONSTANTS, ElementsInterface::FUNCTIONS];
 
-
     /**
      * @return mixed[]
      */
@@ -53,7 +52,6 @@ final class ParserStorage implements ParserStorageInterface
         ));
     }
 
-
     /**
      * @return int[]
      */
@@ -66,7 +64,6 @@ final class ParserStorage implements ParserStorageInterface
         ];
     }
 
-
     /**
      * @return ClassReflectionInterface[]
      */
@@ -74,7 +71,6 @@ final class ParserStorage implements ParserStorageInterface
     {
         return $this->classes;
     }
-
 
     /**
      * @return ConstantReflectionInterface[]
@@ -84,7 +80,6 @@ final class ParserStorage implements ParserStorageInterface
         return $this->constants;
     }
 
-
     /**
      * @return FunctionReflectionInterface[]
      */
@@ -92,7 +87,6 @@ final class ParserStorage implements ParserStorageInterface
     {
         return $this->functions;
     }
-
 
     /**
      * @return int[]
@@ -102,7 +96,6 @@ final class ParserStorage implements ParserStorageInterface
         return $this->types;
     }
 
-
     /**
      * @param ClassReflectionInterface[] $classes
      */
@@ -110,7 +103,6 @@ final class ParserStorage implements ParserStorageInterface
     {
         $this->classes = $classes;
     }
-
 
     /**
      * @param ConstantReflectionInterface[] $constants
@@ -120,7 +112,6 @@ final class ParserStorage implements ParserStorageInterface
         $this->constants = $constants;
     }
 
-
     /**
      * @param FunctionReflectionInterface[] $functions
      */
@@ -128,7 +119,6 @@ final class ParserStorage implements ParserStorageInterface
     {
         $this->functions = $functions;
     }
-
 
     /**
      * @return ClassReflectionInterface[]
@@ -147,7 +137,6 @@ final class ParserStorage implements ParserStorageInterface
         return $implementers;
     }
 
-
     /**
      * @return ClassReflectionInterface[]
      */
@@ -164,19 +153,16 @@ final class ParserStorage implements ParserStorageInterface
         return $implementers;
     }
 
-
     private function isAllowedDirectImplementer(ClassReflectionInterface $class, string $name): bool
     {
         return $class->isDocumented() && in_array($name, $class->getOwnInterfaceNames());
     }
-
 
     private function isAllowedIndirectImplementer(ClassReflectionInterface $class, string $name): bool
     {
         return $class->isDocumented() && $class->implementsInterface($name)
             && ! in_array($name, $class->getOwnInterfaceNames());
     }
-
 
     /**
      * @param ElementReflectionInterface[] $result

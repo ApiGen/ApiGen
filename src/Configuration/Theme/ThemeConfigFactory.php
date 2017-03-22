@@ -14,7 +14,6 @@ final class ThemeConfigFactory
         $this->themeConfigOptionsResolver = $themeConfigOptionsResolver;
     }
 
-
     public function create(string $filePath): ThemeConfig
     {
         return new ThemeConfig($filePath, $this->themeConfigOptionsResolver);

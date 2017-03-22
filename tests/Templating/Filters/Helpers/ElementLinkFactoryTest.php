@@ -18,12 +18,10 @@ final class ElementLinkFactoryTest extends AbstractContainerAwareTestCase
      */
     private $elementLinkFactory;
 
-
     protected function setUp(): void
     {
         $this->elementLinkFactory = $this->container->getByType(ElementLinkFactory::class);
     }
-
 
     public function testCreateForElementClass(): void
     {
@@ -37,7 +35,6 @@ final class ElementLinkFactoryTest extends AbstractContainerAwareTestCase
         );
     }
 
-
     public function testCreateForFunction(): void
     {
         $reflectionFunction = $this->createMock(FunctionReflectionInterface::class);
@@ -49,7 +46,6 @@ final class ElementLinkFactoryTest extends AbstractContainerAwareTestCase
             $this->elementLinkFactory->createForElement($reflectionFunction)
         );
     }
-
 
     public function testCreateForConstant(): void
     {
@@ -65,7 +61,6 @@ final class ElementLinkFactoryTest extends AbstractContainerAwareTestCase
         );
     }
 
-
     public function testCreateForConstantInClass(): void
     {
         $reflectionConstant = $this->createMock(ConstantReflectionInterface::class);
@@ -79,7 +74,6 @@ final class ElementLinkFactoryTest extends AbstractContainerAwareTestCase
             $this->elementLinkFactory->createForElement($reflectionConstant)
         );
     }
-
 
     public function testCreateForElementConstantInNamespace(): void
     {
@@ -99,7 +93,6 @@ final class ElementLinkFactoryTest extends AbstractContainerAwareTestCase
         );
     }
 
-
     public function testCreateForProperty(): void
     {
         $reflectionProperty = $this->createMock(PropertyReflectionInterface::class);
@@ -113,7 +106,6 @@ final class ElementLinkFactoryTest extends AbstractContainerAwareTestCase
             $this->elementLinkFactory->createForElement($reflectionProperty)
         );
     }
-
 
     public function testCreateForMethod(): void
     {
@@ -129,7 +121,6 @@ final class ElementLinkFactoryTest extends AbstractContainerAwareTestCase
         );
     }
 
-
     /**
      * @expectedException \UnexpectedValueException
      */
@@ -138,7 +129,6 @@ final class ElementLinkFactoryTest extends AbstractContainerAwareTestCase
         $reflectionElement = $this->createMock(ElementReflectionInterface::class);
         $this->elementLinkFactory->createForElement($reflectionElement);
     }
-
 
     public function testCreateForElementWithCssClasses(): void
     {

@@ -11,12 +11,10 @@ final class ConstantsTest extends AbstractReflectionClassTestCase
         $this->assertCount(2, $this->reflectionClass->getConstants());
     }
 
-
     public function testGetOwnConstants(): void
     {
         $this->assertCount(1, $this->reflectionClass->getOwnConstants());
     }
-
 
     public function testHasConstant(): void
     {
@@ -24,18 +22,15 @@ final class ConstantsTest extends AbstractReflectionClassTestCase
         $this->assertTrue($this->reflectionClass->hasConstant('LEVEL'));
     }
 
-
     public function testGetConstant(): void
     {
         $this->assertInstanceOf(ConstantReflectionInterface::class, $this->reflectionClass->getConstant('LEVEL'));
     }
 
-
     public function testHasOwnConstant(): void
     {
         $this->assertTrue($this->reflectionClass->hasOwnConstant('LEVEL'));
     }
-
 
     public function testGetOwnConstant(): void
     {
@@ -45,7 +40,6 @@ final class ConstantsTest extends AbstractReflectionClassTestCase
         );
     }
 
-
     /**
      * @expectedException \InvalidArgumentException
      */
@@ -54,7 +48,6 @@ final class ConstantsTest extends AbstractReflectionClassTestCase
         $this->reflectionClass->getOwnConstant('NON_EXISTING');
     }
 
-
     /**
      * @expectedException \InvalidArgumentException
      */
@@ -62,7 +55,6 @@ final class ConstantsTest extends AbstractReflectionClassTestCase
     {
         $this->reflectionClass->getConstant('NON_EXISTING');
     }
-
 
     public function testGetInheritedConstants(): void
     {

@@ -4,6 +4,5 @@ namespace ApiGen\Contracts\Generator;
 
 interface StepCounterInterface
 {
-
     public function getStepCount(): int;
 }

@@ -8,25 +8,21 @@ use PHPUnit\Framework\TestCase;
 
 class FileSystemTest extends TestCase
 {
-
     /**
      * @var FileSystem
      */
     private $fileSystem;
-
 
     protected function setUp(): void
     {
         $this->fileSystem = new FileSystem;
     }
 
-
     public function testNormalizePath(): void
     {
         $backslashPath = 'C:\User\Program File\ApiGen';
         $this->assertSame('C:/User/Program File/ApiGen', $this->fileSystem->normalizePath($backslashPath));
     }
-
 
     public function testForceDir(): void
     {
@@ -38,7 +34,6 @@ class FileSystemTest extends TestCase
         $this->assertTrue(file_exists($dirPath));
     }
 
-
     public function testDeleteDir(): void
     {
         $dir = TEMP_DIR . '/new-dir';
@@ -48,7 +43,6 @@ class FileSystemTest extends TestCase
         $this->fileSystem->deleteDir($dir);
         $this->assertFalse(file_exists($dir));
     }
-
 
     public function testPurgeDir(): void
     {
@@ -67,7 +61,6 @@ class FileSystemTest extends TestCase
         $this->assertFalse(file_exists($dir));
     }
 
-
     public function testPurgeDirOnNonExistingDir(): void
     {
         $dir = TEMP_DIR . '/not-created-dir';
@@ -76,7 +69,6 @@ class FileSystemTest extends TestCase
         $this->fileSystem->purgeDir($dir);
         $this->assertTrue(file_exists($dir));
     }
-
 
     public function testGetAbsolutePath(): void
     {
@@ -101,7 +93,6 @@ class FileSystemTest extends TestCase
             $this->fileSystem->getAbsolutePath('\someDir\someDeeperFile.txt')
         );
     }
-
 
     public function testIsDirEmpty(): void
     {

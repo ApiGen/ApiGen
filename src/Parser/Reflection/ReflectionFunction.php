@@ -4,7 +4,7 @@ namespace ApiGen\Parser\Reflection;
 
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 
-final class ReflectionFunction extends AbstractReflectionFunctionBase implements FunctionReflectionInterface
+final class ReflectionFunction extends AbstractReflectionFunction implements FunctionReflectionInterface
 {
 
 }

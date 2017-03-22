@@ -76,12 +76,10 @@ final class ThemeConfigOptionsResolver extends Nette\Object
      */
     private $optionsResolverFactory;
 
-
     public function __construct(OptionsResolverFactory $optionsResolverFactory)
     {
         $this->optionsResolverFactory = $optionsResolverFactory;
     }
-
 
     /**
      * @param mixed[] $options
@@ -95,12 +93,10 @@ final class ThemeConfigOptionsResolver extends Nette\Object
         return $this->resolver->resolve($options);
     }
 
-
     private function setDefaults(): void
     {
         $this->resolver->setDefaults($this->defaults);
     }
-
 
     private function setNormalizers(): void
     {
@@ -119,7 +115,6 @@ final class ThemeConfigOptionsResolver extends Nette\Object
         });
     }
 
-
     /**
      * @param string[] $value
      * @param Options $options
@@ -135,7 +130,6 @@ final class ThemeConfigOptionsResolver extends Nette\Object
 
         return $value;
     }
-
 
     private function validateFileExistence(string $file, string $type): void
     {

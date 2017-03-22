@@ -20,7 +20,6 @@ final class TemplateFactoryTest extends AbstractContainerAwareTestCase
      */
     private $templateFactory;
 
-
     protected function setUp(): void
     {
         $this->templateFactory = $this->container->getByType(TemplateFactoryInterface::class);
@@ -33,18 +32,15 @@ final class TemplateFactoryTest extends AbstractContainerAwareTestCase
         ]);
     }
 
-
     public function testCreate(): void
     {
         $this->assertInstanceOf(Template::class, $this->templateFactory->create());
     }
 
-
     public function testCreateForType(): void
     {
         $this->assertInstanceOf(Template::class, $this->templateFactory->createForType('overview'));
     }
-
 
     public function testCreateNamedForElement(): void
     {
@@ -64,7 +60,6 @@ final class TemplateFactoryTest extends AbstractContainerAwareTestCase
         );
     }
 
-
     /**
      * @expectedException \Exception
      */
@@ -73,7 +68,6 @@ final class TemplateFactoryTest extends AbstractContainerAwareTestCase
         $reflectionClassMock = $this->createMock(ClassReflectionInterface::class);
         $this->templateFactory->createNamedForElement('notExisting', $reflectionClassMock);
     }
-
 
     public function testCreateForReflection(): void
     {
@@ -89,7 +83,6 @@ final class TemplateFactoryTest extends AbstractContainerAwareTestCase
         $template = $this->templateFactory->createForReflection($reflectionFunctionMock);
         $this->assertInstanceOf(Template::class, $template);
     }
-
 
     public function testBuildTemplateCache(): void
     {

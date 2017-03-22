@@ -20,7 +20,6 @@ final class ElementExtractorTest extends TestCase
      */
     private $elementExtractor;
 
-
     protected function setUp(): void
     {
         $container = (new ContainerFactory)->create();

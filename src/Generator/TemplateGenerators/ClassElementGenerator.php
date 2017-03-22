@@ -8,7 +8,6 @@ use ApiGen\Templating\Template;
 
 class ClassElementGenerator extends AbstractElementGenerator
 {
-
     public function generate(): void
     {
         foreach ($this->elementStorage->getClassElements() as $name => $reflectionClass) {
@@ -20,12 +19,10 @@ class ClassElementGenerator extends AbstractElementGenerator
         }
     }
 
-
     public function getStepCount(): int
     {
         return count($this->elementStorage->getClassElements());
     }
-
 
     private function loadTemplateWithParameters(Template $template, ClassReflectionInterface $class): Template
     {

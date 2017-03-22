@@ -21,13 +21,11 @@ final class ThemeResources
      */
     private $fileSystem;
 
-
     public function __construct(ConfigurationInterface $configuration, FileSystem $fileSystem)
     {
         $this->configuration = $configuration;
         $this->fileSystem = $fileSystem;
     }
-
 
     public function copyToDestination(string $destination): void
     {

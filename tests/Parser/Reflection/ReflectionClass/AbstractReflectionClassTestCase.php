@@ -34,7 +34,6 @@ abstract class AbstractReflectionClassTestCase extends TestCase
      */
     protected $reflectionClassOfInterface;
 
-
     protected function setUp(): void
     {
         $backend = new Backend($this->getReflectionFactory());
@@ -45,7 +44,6 @@ abstract class AbstractReflectionClassTestCase extends TestCase
         $this->reflectionClassOfTrait = $backend->getClasses()['Project\SomeTrait'];
         $this->reflectionClassOfInterface = $backend->getClasses()['Project\RichInterface'];
     }
-
 
     private function getReflectionFactory(): ReflectionFactoryInterface
     {
