@@ -42,8 +42,8 @@ final class NamespaceLoader
         Template $template,
         string $name,
         array $namespace
-    ): void
-    {
+    ): void {
+    
         $template->setParameters([
             'package' => null, // removed, but for BC in Themes
             'namespace' => $name,

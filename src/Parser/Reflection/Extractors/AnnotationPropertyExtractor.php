@@ -71,7 +71,8 @@ final class AnnotationPropertyExtractor implements AnnotationPropertyExtractorIn
      * @return MagicPropertyReflectionInterface[]
      */
     private function processMagicPropertyAnnotation(
-        string $annotation, string $annotationName
+        string $annotation,
+        string $annotationName
     ): array {
         if (! preg_match(self::PATTERN_PROPERTY, $annotation, $matches)) {
             return [];

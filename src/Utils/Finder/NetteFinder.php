@@ -34,7 +34,9 @@ final class NetteFinder implements FinderInterface
      * @return SplFileInfo[]
      */
     private function getFilesFromSource(
-        string $source, array $exclude, string $fileMasks
+        string $source,
+        array $exclude,
+        string $fileMasks
     ): array {
         if (is_file($source)) {
             $foundFiles[$source] = new SplFileInfo($source);

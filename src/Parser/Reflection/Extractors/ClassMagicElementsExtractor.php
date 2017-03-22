@@ -198,9 +198,11 @@ final class ClassMagicElementsExtractor implements ClassMagicElementsExtractorIn
      * @param ClassReflectionInterface $classReflection
      * @return mixed[]
      */
-    private function sortElements(array $elements, array $allElements, ClassReflectionInterface $classReflection): array
-
-    {
+    private function sortElements(
+        array $elements,
+        array $allElements,
+        ClassReflectionInterface $classReflection
+    ): array {
         if (! empty($elements)) {
             ksort($elements);
             $allElements[$classReflection->getName()] = array_values($elements);

@@ -11,7 +11,6 @@ use ApiGen\Templating\Filters\UrlFilters;
 use ApiGen\Tests\ContainerAwareTestCase;
 use ApiGen\Tests\MethodInvoker;
 
-
 final class UrlFiltersTest extends ContainerAwareTestCase
 {
     /**

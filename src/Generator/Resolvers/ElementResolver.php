@@ -175,7 +175,9 @@ final class ElementResolver implements ElementResolverInterface
 
 
     private function resolveContextForSelfProperty(
-        string $definition, int $pos, ElementReflectionInterface $reflectionElement
+        string $definition,
+        int $pos,
+        ElementReflectionInterface $reflectionElement
     ): ?ClassReflectionInterface {
         $class = $this->getClass(substr($definition, 0, $pos), $reflectionElement->getNamespaceName());
         if ($class === null) {

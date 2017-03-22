@@ -62,7 +62,11 @@ final class AnnotationMethodExtractor implements AnnotationMethodExtractorInterf
         # description
         (.*|$)
         ~sx';
-    const PATTERN_PARAMETER = /** @lang RegExp */  '~^
+
+    /**
+     * @var string
+     */
+    public const PATTERN_PARAMETER = /** @lang RegExp */  '~^
         # argument typehint
         (?:([\\w\\\\]+(?:\\[\\])?(?:\\|[\\w\\\\]+(?:\\[\\])?)*)\\s+)?
         # pass by reference?

@@ -2,13 +2,10 @@
 
 namespace ApiGen\Contracts\Parser\Reflection;
 
-use ApiGen\Contracts\Parser\Reflection\Behavior\LinedInterface;
 use ApiGen\Contracts\Parser\Reflection\Behavior\NamedInterface;
-use TokenReflection\Exception\BaseException;
 
 interface ElementReflectionInterface extends NamedInterface
 {
-
     public function isMain(): bool;
 
 
@@ -42,7 +39,7 @@ interface ElementReflectionInterface extends NamedInterface
     /**
      * Returns reflection element annotations.
      * Removes the short and long description.
-     * In case of classes, functions and constants, @package, @subpackage, @author and @license annotations
+     * In case of classes, functions and constants, @author and @license annotations
      * are added from declaring files if not already present.
      *
      * @return mixed[]

@@ -34,7 +34,8 @@ final class ReflectionConstant extends ReflectionElement implements ConstantRefl
                 return $type;
             }
         } catch (\Exception $e) {
-            return '';        }
+            return '';
+        }
     }
 
 

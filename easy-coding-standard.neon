@@ -5,6 +5,9 @@ checkers:
 
     - PHP_CodeSniffer\Standards\PSR2\Sniffs\Files\EndFileNewlineSniff
     - PHP_CodeSniffer\Standards\Squiz\Sniffs\WhiteSpace\ControlStructureSpacingSniff
+    - PHP_CodeSniffer\Standards\PSR2\Sniffs\Namespaces\UseDeclarationSniff
+    - PHP_CodeSniffer\Standards\Squiz\Sniffs\Functions\MultiLineFunctionDeclarationSniff
+    - PHP_CodeSniffer\Standards\PEAR\Sniffs\WhiteSpace\ScopeClosingBraceSniff
 
     # strict and scalar types
     - PhpCsFixer\Fixer\Strict\DeclareStrictTypesFixer
