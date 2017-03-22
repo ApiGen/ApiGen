@@ -1,27 +1,24 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Parser;
 
 use ApiGen\Contracts\Parser\ParserInterface;
 use ApiGen\Contracts\Parser\ParserStorageInterface;
-use ArrayObject;
+use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
+use Exception;
+use SplFileInfo;
 use TokenReflection\Broker;
 use TokenReflection\Broker\Backend;
-use TokenReflection\Exception\FileProcessingException;
 use TokenReflection\Exception\ParseException;
 
-class Parser implements ParserInterface
+final class Parser implements ParserInterface
 {
-
     /**
      * @var Broker
      */
     private $broker;
-
-    /**
-     * @var array
-     */
-    private $errors = [];
 
     /**
      * @var ParserStorageInterface
@@ -29,73 +26,62 @@ class Parser implements ParserInterface
     private $parserStorage;
 
 
-    public function __construct(Broker $broker, ParserStorageInterface $parserResult)
+    public function __construct(Broker $broker, ParserStorageInterface $parserStorage)
     {
         $this->broker = $broker;
-        $this->parserStorage = $parserResult;
+        $this->parserStorage = $parserStorage;
     }
 
 
     /**
-     * {@inheritdoc}
+     * @param SplFileInfo[] $files
      */
-    public function parse(array $files)
+    public function parse(array $files): ParserStorageInterface
     {
         foreach ($files as $file) {
             try {
                 $this->broker->processFile($file->getPathname());
-            } catch (ParseException $exception) {
-                $this->errors[] = new FileProcessingException([$exception]);
-            } catch (FileProcessingException $exception) {
-                $this->errors[] = $exception;
+            } catch (ParseException $parseException) {
+                // @todo: make nice exception convertion
+                throw new Exception(sprintf(
+                    'Parser error on %d line with "%s" token. %s',
+                    $parseException->getExceptionLine(),
+                    $parseException->getTokenName(),
+                    $parseException->getDetail()
+                ));
             }
         }
 
-        $this->extractBrokerDataForParserResult($this->broker);
+        $this->extractBrokerDataForParserStorage($this->broker);
+
         return $this->parserStorage;
     }
 
 
+    private function extractBrokerDataForParserStorage(Broker $broker): void
+    {
+        $classes = $broker->getClasses(Backend::TOKENIZED_CLASSES | Backend::INTERNAL_CLASSES);
+
+        $constants = $broker->getConstants();
+        $functions = $broker->getFunctions();
+
+        uksort($classes, 'strcasecmp');
+        uksort($constants, 'strcasecmp');
+        uksort($functions, 'strcasecmp');
+
+        $this->loadToParserStorage($classes, $constants, $functions);
+    }
+
+
     /**
-     * {@inheritdoc}
+     * @param ClassReflectionInterface[] $classes
+     * @param ConstantReflectionInterface[] $constants
+     * @param FunctionReflectionInterface[] $functions
      */
-    public function getErrors()
+    private function loadToParserStorage(array $classes, array $constants, array $functions): void
     {
-        return $this->errors;
-    }
-
-
-    private function extractBrokerDataForParserResult(Broker $broker)
-    {
-        $allFoundClasses = $broker->getClasses(
-            Backend::TOKENIZED_CLASSES | Backend::INTERNAL_CLASSES | Backend::NONEXISTENT_CLASSES
-        );
-
-        $classes = new ArrayObject($allFoundClasses);
-        $constants = new ArrayObject($broker->getConstants());
-        $functions = new ArrayObject($broker->getFunctions());
-        $internalClasses = new ArrayObject($broker->getClasses(Backend::INTERNAL_CLASSES));
-        $tokenizedClasses = new ArrayObject($broker->getClasses(Backend::TOKENIZED_CLASSES));
-
-        $classes->uksort('strcasecmp');
-        $constants->uksort('strcasecmp');
-        $functions->uksort('strcasecmp');
-
-        $this->loadToParserResult($classes, $constants, $functions, $internalClasses, $tokenizedClasses);
-    }
-
-
-    private function loadToParserResult(
-        ArrayObject $classes,
-        ArrayObject $constants,
-        ArrayObject $functions,
-        ArrayObject $internalClasses,
-        ArrayObject $tokenizedClasses
-    ) {
         $this->parserStorage->setClasses($classes);
         $this->parserStorage->setConstants($constants);
         $this->parserStorage->setFunctions($functions);
-        $this->parserStorage->setInternalClasses($internalClasses);
-        $this->parserStorage->setTokenizedClasses($tokenizedClasses);
     }
 }

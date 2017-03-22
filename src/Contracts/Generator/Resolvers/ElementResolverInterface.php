@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Contracts\Generator\Resolvers;
 
@@ -6,39 +6,27 @@ use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 
 interface ElementResolverInterface
 {
+    public function getClass(string $className, string $namespace = ''): ?ClassReflectionInterface;
 
-    /**
-     * @param string $className
-     * @param string $namespace
-     * @return ClassReflectionInterface|bool
-     */
-    public function getClass($className, $namespace = '');
+
+    public function getConstant(string $className, string $namespace = ''): ?ConstantReflectionInterface;
 
 
     /**
-     * @param string $className
-     * @param string $namespace
-     * @return ConstantReflectionInterface|bool
+     * @return FunctionReflectionInterface|MethodReflectionInterface|null
      */
-    public function getConstant($className, $namespace = '');
-
-
-    /**
-     * @param string $name
-     * @param string $namespace
-     * @return FunctionReflectionInterface|NULL
-     */
-    public function getFunction($name, $namespace = '');
+    public function getFunction(string $name, string $namespace = '');
 
 
     /**
      * @param string $definition
-     * @param string $context
+     * @param string|object $context
      * @param string $expectedName
      * @return ElementReflectionInterface|bool
      */
-    public function resolveElement($definition, $context, &$expectedName = null);
+    public function resolveElement(string $definition, $context, string &$expectedName = null);
 }

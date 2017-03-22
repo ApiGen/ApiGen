@@ -1,24 +1,23 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Templating;
 
-use ApiGen\Configuration\Configuration;
-use ApiGen\Configuration\ConfigurationOptions as CO;
+use ApiGen\Configuration\ConfigurationOptions;
+use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Parser\Elements\ElementStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
 use ApiGen\Parser\Elements\AutocompleteElements;
 use Closure;
 
-class TemplateElementsLoader
+final class TemplateElementsLoader
 {
-
     /**
      * @var ElementStorageInterface
      */
     private $elementStorage;
 
     /**
-     * @var Configuration
+     * @var ConfigurationInterface
      */
     private $configuration;
 
@@ -28,14 +27,14 @@ class TemplateElementsLoader
     private $autocompleteElements;
 
     /**
-     * @var array
+     * @var mixed[]
      */
     private $parameters;
 
 
     public function __construct(
         ElementStorageInterface $elementStorage,
-        Configuration $configuration,
+        ConfigurationInterface $configuration,
         AutocompleteElements $autocompleteElements
     ) {
         $this->elementStorage = $elementStorage;
@@ -44,34 +43,27 @@ class TemplateElementsLoader
     }
 
 
-    /**
-     * @return Template
-     */
-    public function addElementsToTemplate(Template $template)
+    public function addElementsToTemplate(Template $template): void
     {
-        return $template->setParameters($this->getParameters());
+        $template->setParameters($this->getParameters());
     }
 
 
-    /**
-     * @return Closure
-     */
-    private function getMainFilter()
+    private function getMainFilter(): Closure
     {
         return function (ElementReflectionInterface $element) {
             return $element->isMain();
         };
     }
 
-
     /**
-     * @return array
+     * @return mixed[]
      */
-    private function getParameters()
+    private function getParameters(): array
     {
         if ($this->parameters === null) {
             $parameters = [
-                'annotationGroups' => $this->configuration->getOption(CO::ANNOTATION_GROUPS),
+                'annotationGroups' => $this->configuration->getOption(ConfigurationOptions::ANNOTATION_GROUPS),
                 'namespace' => null,
                 'package' => null, // removed, but for BC with Themes
                 'class' => null,
@@ -90,6 +82,7 @@ class TemplateElementsLoader
 
             $this->parameters = $parameters;
         }
+
         return $this->parameters;
     }
 }

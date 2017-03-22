@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Parser\Reflection;
 
@@ -8,14 +8,4 @@ use TokenReflection;
 class ReflectionFunction extends ReflectionFunctionBase implements FunctionReflectionInterface
 {
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isValid()
-    {
-        if ($this->reflection instanceof TokenReflection\Invalid\ReflectionFunction) {
-            return false;
-        }
-        return true;
-    }
 }

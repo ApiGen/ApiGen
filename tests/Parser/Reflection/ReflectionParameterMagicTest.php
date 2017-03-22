@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Parser\Tests\Reflection;
 
@@ -7,14 +7,14 @@ use ApiGen\Contracts\Parser\ParserStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\Magic\MagicMethodReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\Magic\MagicParameterReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\TokenReflection\ReflectionFactoryInterface;
 use ApiGen\Parser\Broker\Backend;
 use ApiGen\Parser\Reflection\TokenReflection\ReflectionFactory;
-use Mockery;
 use PHPUnit\Framework\TestCase;
 use ReflectionProperty;
 use TokenReflection\Broker;
 
-class ReflectionParameterMagicTest extends TestCase
+final class ReflectionParameterMagicTest extends TestCase
 {
 
     /**
@@ -38,7 +38,7 @@ class ReflectionParameterMagicTest extends TestCase
     private $reflectionParameterMagicWithTwoArgs;
 
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $backend = new Backend($this->getReflectionFactory());
         $broker = new Broker($backend);
@@ -55,37 +55,37 @@ class ReflectionParameterMagicTest extends TestCase
     }
 
 
-    public function testInstance()
+    public function testInstance(): void
     {
         $this->assertInstanceOf(MagicParameterReflectionInterface::class, $this->reflectionParameterMagic);
     }
 
 
-    public function testGetName()
+    public function testGetName(): void
     {
         $this->assertSame('data', $this->reflectionParameterMagic->getName());
     }
 
 
-    public function testGetTypeHint()
+    public function testGetTypeHint(): void
     {
         $this->assertSame('\stdClass', $this->reflectionParameterMagic->getTypeHint());
     }
 
 
-    public function testGetFileName()
+    public function testGetFileName(): void
     {
         $this->assertStringEndsWith('ReflectionMethod.php', $this->reflectionParameterMagic->getFileName());
     }
 
 
-    public function testIsTokenized()
+    public function testIsTokenized(): void
     {
         $this->assertTrue($this->reflectionParameterMagic->isTokenized());
     }
 
 
-    public function testGetPrettyName()
+    public function testGetPrettyName(): void
     {
         $this->assertSame(
             'Project\ReflectionMethod::doAnOperation($data)',
@@ -94,19 +94,19 @@ class ReflectionParameterMagicTest extends TestCase
     }
 
 
-    public function testGetDeclaringClass()
+    public function testGetDeclaringClass(): void
     {
         $this->assertInstanceOf(ClassReflectionInterface::class, $this->reflectionParameterMagic->getDeclaringClass());
     }
 
 
-    public function testGetDeclaringClassName()
+    public function testGetDeclaringClassName(): void
     {
         $this->assertSame('Project\ReflectionMethod', $this->reflectionParameterMagic->getDeclaringClassName());
     }
 
 
-    public function testGetDeclaringFunction()
+    public function testGetDeclaringFunction(): void
     {
         $this->assertInstanceOf(
             MagicMethodReflectionInterface::class,
@@ -115,127 +115,125 @@ class ReflectionParameterMagicTest extends TestCase
     }
 
 
-    public function testGetDeclaringFunctionName()
+    public function testGetDeclaringFunctionName(): void
     {
         $this->assertSame('doAnOperation', $this->reflectionParameterMagic->getDeclaringFunctionName());
     }
 
 
-    public function testStartLine()
+    public function testStartLine(): void
     {
-        $this->assertSame(16, $this->reflectionParameterMagic->getStartLine());
+        $this->assertSame(15, $this->reflectionParameterMagic->getStartLine());
     }
 
 
-    public function testEndLine()
+    public function testEndLine(): void
     {
-        $this->assertSame(16, $this->reflectionParameterMagic->getEndLine());
+        $this->assertSame(15, $this->reflectionParameterMagic->getEndLine());
     }
 
 
-    public function testGetDocComment()
+    public function testGetDocComment(): void
     {
         $this->assertSame('', $this->reflectionParameterMagic->getDocComment());
     }
 
 
-    public function testIsDefaultValueAvailable()
+    public function testIsDefaultValueAvailable(): void
     {
         $this->assertFalse($this->reflectionParameterMagic->isDefaultValueAvailable());
     }
 
 
-    public function testGetPosition()
+    public function testGetPosition(): void
     {
         $this->assertSame(0, $this->reflectionParameterMagic->getPosition());
     }
 
 
-    public function testIsArray()
+    public function testIsArray(): void
     {
         $this->assertFalse($this->reflectionParameterMagic->isArray());
     }
 
 
-    public function testIsCallable()
+    public function testIsCallable(): void
     {
         $this->assertFalse($this->reflectionParameterMagic->isCallable());
     }
 
 
-    public function testGetClass()
+    public function testGetClass(): void
     {
         $this->assertNull($this->reflectionParameterMagic->getClass());
     }
 
 
-    public function testGetClassName()
+    public function testGetClassName(): void
     {
         $this->assertNull($this->reflectionParameterMagic->getClassName());
     }
 
 
-    public function testAllowsNull()
+    public function testAllowsNull(): void
     {
         $this->assertFalse($this->reflectionParameterMagic->allowsNull());
     }
 
 
-    public function testIsOptional()
+    public function testIsOptional(): void
     {
         $this->assertFalse($this->reflectionParameterMagic->isOptional());
     }
 
 
-    public function testIsPassedByReference()
+    public function testIsPassedByReference(): void
     {
         $this->assertFalse($this->reflectionParameterMagic->isPassedByReference());
     }
 
 
-    public function testCanBePassedByValue()
+    public function testCanBePassedByValue(): void
     {
         $this->assertFalse($this->reflectionParameterMagic->canBePassedByValue());
     }
 
 
-    public function testIsUnlimited()
+    public function testIsUnlimited(): void
     {
         $this->assertFalse($this->reflectionParameterMagic->isUnlimited());
     }
 
 
-    /**
-     * @return Mockery\MockInterface
-     */
-    private function getReflectionFactory()
+    private function getReflectionFactory(): ReflectionFactoryInterface
     {
-        $parserStorageMock = Mockery::mock(ParserStorageInterface::class);
-        $parserStorageMock->shouldReceive('getElementsByType')->andReturnUsing(function ($arg) {
+        $parserStorageMock = $this->createMock(ParserStorageInterface::class);
+        $parserStorageMock->method('getElementsByType')->willReturnCallback(function ($arg) {
             if ($arg) {
                 return ['Project\ReflectionMethod' => $this->reflectionClass];
             }
         });
-        $configurationMock = Mockery::mock(ConfigurationInterface::class, [
-            'getVisibilityLevel' => ReflectionProperty::IS_PUBLIC,
-            'isInternalDocumented' => false,
-            'isPhpCoreDocumented' => true
-        ]);
+        $configurationMock = $this->createMock(ConfigurationInterface::class);
+        $configurationMock->method('isInternalDocumented')
+            ->willReturn(true);
+        $configurationMock->method('getVisibilityLevel')
+            ->willReturn(ReflectionProperty::IS_PUBLIC);
+
         return new ReflectionFactory($configurationMock, $parserStorageMock);
     }
 
 
-    public function testIssue746HasDefaultValue()
+    public function testIssue746HasDefaultValue(): void
     {
         $this->assertTrue($this->reflectionParameterMagicWithDefault->isDefaultValueAvailable());
     }
 
-    public function testIssue746DefaultValue()
+    public function testIssue746DefaultValue(): void
     {
         $this->assertEquals('null', $this->reflectionParameterMagicWithDefault->getDefaultValueDefinition());
     }
 
-    public function testIssue764()
+    public function testIssue764(): void
     {
         $this->assertCount(2, $this->reflectionParameterMagicWithTwoArgs->getParameters());
         $this->assertEquals('int', $this->reflectionParameterMagicWithTwoArgs->getParameter('data')->getTypeHint());

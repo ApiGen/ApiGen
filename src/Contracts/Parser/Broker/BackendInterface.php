@@ -1,35 +1,28 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Contracts\Parser\Broker;
 
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
+use TokenReflection\Broker\Backend\Memory;
 
 interface BackendInterface
 {
-
     /**
-     * Returns all classes from all namespaces.
-     *
      * @param int $type Returned class types (multiple values may be OR-ed).
      * @return ClassReflectionInterface[]
      */
-    public function getClasses($type);
-
+    public function getClasses($type = Memory::TOKENIZED_CLASSES);
 
     /**
-     * Returns all constants from all namespaces.
-     *
      * @return ConstantReflectionInterface[]
      */
-    public function getConstants();
+    public function getConstants(): array;
 
 
     /**
-     * Returns all functions from all namespaces.
-     *
      * @return FunctionReflectionInterface[]
      */
-    public function getFunctions();
+    public function getFunctions(): array;
 }

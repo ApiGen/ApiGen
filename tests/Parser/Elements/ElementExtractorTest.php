@@ -1,109 +1,60 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Parser\Tests\Elements;
 
-use ApiGen\Parser\Elements\ElementExtractor;
-use ApiGen\Parser\Elements\ElementFilter;
-use ApiGen\Parser\Elements\Elements;
-use ApiGen\Parser\Elements\ElementSorter;
-use ApiGen\Parser\Elements\ElementStorage;
-use ApiGen\Parser\Reflection\ReflectionClass;
-use ApiGen\Parser\Reflection\ReflectionElement;
-use Mockery;
+use ApiGen\Contracts\Parser\Elements\ElementExtractorInterface;
+use ApiGen\Contracts\Parser\ParserStorageInterface;
+use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
+use ApiGen\Tests\ContainerFactory;
 use PHPUnit\Framework\TestCase;
 
-class ElementExtractorTest extends TestCase
+final class ElementExtractorTest extends TestCase
 {
+    /**
+     * @var ParserStorageInterface
+     */
+    private $parserStorage;
 
     /**
-     * @var ElementExtractor
+     * @var ElementExtractorInterface
      */
     private $elementExtractor;
 
 
-    protected function setUp()
+    protected function setUp(): void
     {
-        $elementFilterMock = Mockery::mock(ElementFilter::class);
-        $elementFilterMock->shouldReceive('filterForMain')->andReturnUsing(function ($elements) {
-            return $elements;
-        });
-        $elementFilterMock->shouldReceive('filterByAnnotation')->andReturnUsing(function ($elements) {
-            return $elements;
-        });
+        $container = (new ContainerFactory)->create();
 
-        $elementStorageMock = Mockery::mock(ElementStorage::class);
-        $elementStorageMock->shouldReceive('getElements')->andReturn([
-            'classes' => $this->getReflectionClassMocks(),
-            'constants' => []
+        $this->elementExtractor = $container->getByType(ElementExtractorInterface::class);
+        $this->parserStorage = $container->getByType(ParserStorageInterface::class);
+    }
+
+    public function testExtractElementsByAnnotation(): void
+    {
+        $this->parserStorage->setClasses([
+            'SomeClass' => $this->createDeprecatedClassReflectionMock()
         ]);
 
-        $elementSorterMock = Mockery::mock(ElementSorter::class);
-        $elementSorterMock->shouldReceive('sortElementsByFqn')->andReturnUsing(function ($elements) {
-            return $elements;
-        });
-
-        $this->elementExtractor = new ElementExtractor(
-            new Elements,
-            $elementFilterMock,
-            $elementStorageMock,
-            $elementSorterMock
-        );
-    }
-
-
-    public function testExtractElementsByAnnotation()
-    {
         $deprecatedElements = $this->elementExtractor->extractElementsByAnnotation('deprecated');
-
-        $this->assertInternalType('array', $deprecatedElements);
-        $this->assertCount(8, $deprecatedElements);
-
-        $this->assertArrayHasKey('classes', $deprecatedElements);
-        $this->assertArrayHasKey('traits', $deprecatedElements);
-        $this->assertArrayHasKey('interfaces', $deprecatedElements);
-        $this->assertArrayHasKey('exceptions', $deprecatedElements);
-        $this->assertArrayHasKey('constants', $deprecatedElements);
-        $this->assertArrayHasKey('functions', $deprecatedElements);
-        $this->assertArrayHasKey('methods', $deprecatedElements);
-        $this->assertArrayHasKey('properties', $deprecatedElements);
-
-        $this->assertCount(3, $deprecatedElements['classes']);
+        $this->assertCount(1, $deprecatedElements['classes']);
     }
-
-
-    public function testExtractElementsByAnnotationWithCallback()
-    {
-        $deprecatedElements = $this->elementExtractor->extractElementsByAnnotation('deprecated', function ($element) {
-            /** @var ReflectionElement $element */
-            return $element->isDeprecated();
-        });
-        $this->assertCount(2, $deprecatedElements['methods']);
-    }
-
 
     /**
-     * @return ReflectionClass[]
+     * @return \PHPUnit_Framework_MockObject_MockObject|ClassReflectionInterface
      */
-    private function getReflectionClassMocks()
+    private function createDeprecatedClassReflectionMock()
     {
-        $reflectionClassMock = Mockery::mock(ReflectionClass::class);
-        $reflectionClassMock->shouldReceive('getOwnConstants')->andReturn([]);
-        $reflectionClassMock->shouldReceive('getOwnProperties')->andReturn([]);
+        $reflectionClassMock = $this->createMock(ClassReflectionInterface::class);
+        $reflectionClassMock->method('isDocumented')
+            ->willReturn(true);
+        $reflectionClassMock->method('getOwnMethods')
+            ->willReturn([]);
+        $reflectionClassMock->method('isMain')
+            ->willReturn(true);
+        $reflectionClassMock->method('hasAnnotation')
+            ->with('deprecated')
+            ->willReturn(true);
 
-        $reflectionClassMock2 = clone $reflectionClassMock;
-        $reflectionClassMock2->shouldReceive('isMain')->andReturn(true);
-        $reflectionClassMock2->shouldReceive('isDeprecated')->andReturn(false);
-        $reflectionClassMock2->shouldReceive('getOwnMethods')->andReturn([1, 2]);
-
-        $reflectionClassMock3 = clone $reflectionClassMock;
-        $reflectionClassMock3->shouldReceive('isMain')->andReturn(true);
-        $reflectionClassMock3->shouldReceive('isDeprecated')->andReturn(true);
-        $reflectionClassMock3->shouldReceive('getOwnMethods')->andReturn([3, 4]);
-
-        $reflectionClassMock->shouldReceive('getOwnMethods')->andReturn([]);
-        $reflectionClassMock->shouldReceive('isMain')->andReturn(false);
-        $reflectionClassMock->shouldReceive('isDeprecated')->andReturn(true);
-
-        return [$reflectionClassMock, $reflectionClassMock2, $reflectionClassMock3];
+        return $reflectionClassMock;
     }
 }

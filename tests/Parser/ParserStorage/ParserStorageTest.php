@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Parser\Tests\ParserStorage;
 
@@ -6,99 +6,66 @@ use ApiGen\Contracts\Parser\ParserStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
 use ApiGen\Parser\Elements\Elements;
 use ApiGen\Parser\ParserStorage;
-use ApiGen\Parser\Tests\MethodInvoker;
-use ArrayObject;
-use Mockery;
+use ApiGen\Tests\MethodInvoker;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
 
-class ParserStorageTest extends TestCase
+final class ParserStorageTest extends TestCase
 {
-
     /**
      * @var ParserStorageInterface
      */
     private $parserStorage;
 
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->parserStorage = new ParserStorage;
     }
 
 
-    public function testDefaultsOnConstruct()
+    public function testSettersAndGetters(): void
     {
-        $this->assertInstanceOf(ArrayObject::class, $this->parserStorage->getClasses());
-        $this->assertInstanceOf(ArrayObject::class, $this->parserStorage->getConstants());
-        $this->assertInstanceOf(ArrayObject::class, $this->parserStorage->getFunctions());
-        $this->assertInstanceOf(ArrayObject::class, Assert::getObjectAttribute(
-            $this->parserStorage,
-            'internalClasses'
-        ));
-        $this->assertInstanceOf(ArrayObject::class, Assert::getObjectAttribute(
-            $this->parserStorage,
-            'tokenizedClasses'
-        ));
-    }
-
-
-    public function testSettersAndGetters()
-    {
-        $classes = new ArrayObject([1]);
+        $classes = [1];
         $this->parserStorage->setClasses($classes);
         $this->assertSame($classes, $this->parserStorage->getClasses());
 
-        $constants = new ArrayObject([2]);
+        $constants = [2];
         $this->parserStorage->setConstants($constants);
         $this->assertSame($constants, $this->parserStorage->getConstants());
 
-        $functions = new ArrayObject([3]);
+        $functions = [3];
         $this->parserStorage->setFunctions($functions);
         $this->assertSame($functions, $this->parserStorage->getFunctions());
     }
 
 
-    public function testGetElementsByType()
+    public function testGetElementsByType(): void
     {
-        $classes = new ArrayObject([1]);
+        $classes = [1];
         $this->parserStorage->setClasses($classes);
         $this->assertSame($classes, $this->parserStorage->getElementsByType(Elements::CLASSES));
 
-        $constants = new ArrayObject([2]);
+        $constants = [2];
         $this->parserStorage->setConstants($constants);
         $this->assertSame($constants, $this->parserStorage->getElementsByType(Elements::CONSTANTS));
 
-        $functions = new ArrayObject([3]);
+        $functions = [3];
         $this->parserStorage->setFunctions($functions);
         $this->assertSame($functions, $this->parserStorage->getElementsByType(Elements::FUNCTIONS));
-
-        $internalClasses = new ArrayObject([4]);
-        $this->parserStorage->setInternalClasses($internalClasses);
-        $this->assertSame($internalClasses, Assert::getObjectAttribute(
-            $this->parserStorage,
-            'internalClasses'
-        ));
-
-        $tokenizedClasses = new ArrayObject([5]);
-        $this->parserStorage->setTokenizedClasses($tokenizedClasses);
-        $this->assertSame($tokenizedClasses, Assert::getObjectAttribute(
-            $this->parserStorage,
-            'tokenizedClasses'
-        ));
     }
 
 
     /**
      * @expectedException \Exception
      */
-    public function testGetElementsByTypeWithUnknownType()
+    public function testGetElementsByTypeWithUnknownType(): void
     {
         $this->parserStorage->getElementsByType('elements');
     }
 
 
-    public function testGetTypes()
+    public function testGetTypes(): void
     {
         $this->assertSame(
             [Elements::CLASSES, Elements::CONSTANTS, Elements::FUNCTIONS],
@@ -107,20 +74,17 @@ class ParserStorageTest extends TestCase
     }
 
 
-    public function testGetDocumentedStats()
+    public function testGetDocumentedStats(): void
     {
-        $this->parserStorage->setInternalClasses($this->getReflectionElementsArrayObject());
         $documentedStats = $this->parserStorage->getDocumentedStats();
         $this->assertInternalType('array', $documentedStats);
         $this->assertArrayHasKey('classes', $documentedStats);
         $this->assertArrayHasKey('constants', $documentedStats);
         $this->assertArrayHasKey('functions', $documentedStats);
-        $this->assertArrayHasKey('internalClasses', $documentedStats);
-        $this->assertSame(1, $documentedStats['internalClasses']);
     }
 
 
-    public function testGetDocumentedElementsCount()
+    public function testGetDocumentedElementsCount(): void
     {
         $reflectionElements = $this->getReflectionElementsArrayObject();
         $this->assertSame(1, MethodInvoker::callMethodOnObject(
@@ -132,17 +96,18 @@ class ParserStorageTest extends TestCase
 
 
     /**
-     * @return ArrayObject
+     * @return ElementReflectionInterface[]
      */
-    private function getReflectionElementsArrayObject()
+    private function getReflectionElementsArrayObject(): array
     {
-        $reflectionElementMock = Mockery::mock(ElementReflectionInterface::class);
-        $reflectionElementMock->shouldReceive('isDocumented')->andReturn(true);
+        $reflectionElementMock = $this->createMock(ElementReflectionInterface::class);
+        $reflectionElementMock->method('isDocumented')
+            ->willReturn(true);
 
-        $reflectionElementMock2 = Mockery::mock(ElementReflectionInterface::class);
-        $reflectionElementMock2->shouldReceive('isDocumented')->andReturn(false);
+        $reflectionElementMock2 = $this->createMock(ElementReflectionInterface::class);
+        $reflectionElementMock2->method('isDocumented')
+            ->willReturn(false);
 
-        $reflectionElements = new ArrayObject([$reflectionElementMock, $reflectionElementMock2]);
-        return $reflectionElements;
+        return [$reflectionElementMock, $reflectionElementMock2];
     }
 }

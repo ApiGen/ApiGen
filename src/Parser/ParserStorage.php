@@ -1,61 +1,42 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Parser;
 
 use ApiGen\Contracts\Parser\Elements\ElementsInterface;
 use ApiGen\Contracts\Parser\ParserStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
-use ArrayObject;
+use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
+use Exception;
 
-class ParserStorage implements ParserStorageInterface
+final class ParserStorage implements ParserStorageInterface
 {
-
     /**
-     * @var ArrayObject
+     * @var ClassReflectionInterface[]
      */
-    private $classes;
+    private $classes = [];
 
     /**
-     * @var ArrayObject
+     * @var ConstantReflectionInterface[]
      */
-    private $constants;
+    private $constants = [];
 
     /**
-     * @var ArrayObject
+     * @var FunctionReflectionInterface[]
      */
-    private $functions;
+    private $functions = [];
 
     /**
-     * @var ArrayObject
-     */
-    private $internalClasses;
-
-    /**
-     * @var ArrayObject
-     */
-    private $tokenizedClasses;
-
-    /**
-     * @var array
+     * @var int[]
      */
     private $types = [ElementsInterface::CLASSES, ElementsInterface::CONSTANTS, ElementsInterface::FUNCTIONS];
 
 
-    public function __construct()
-    {
-        $this->classes = new ArrayObject;
-        $this->constants = new ArrayObject;
-        $this->functions = new ArrayObject;
-        $this->internalClasses = new ArrayObject;
-        $this->tokenizedClasses = new ArrayObject;
-    }
-
-
     /**
-     * {@inheritdoc}
+     * @return mixed[]
      */
-    public function getElementsByType($type)
+    public function getElementsByType(string $type): array
     {
         if ($type === ElementsInterface::CLASSES) {
             return $this->classes;
@@ -65,112 +46,94 @@ class ParserStorage implements ParserStorageInterface
             return $this->functions;
         }
 
-        throw new \Exception(sprintf(
-            '"%s" is not supported element type',
-            $type
+        throw new Exception(sprintf(
+            '"%s" is not supported element type. Pick one of: %s',
+            $type,
+            implode(',', $this->types)
         ));
     }
 
 
     /**
-     * {@inheritdoc}
+     * @return int[]
      */
-    public function getDocumentedStats()
+    public function getDocumentedStats(): array
     {
         return [
-            'classes' => $this->getDocumentedElementsCount($this->tokenizedClasses),
+            'classes' => $this->getDocumentedElementsCount($this->classes),
             'constants' => $this->getDocumentedElementsCount($this->constants),
             'functions' => $this->getDocumentedElementsCount($this->functions),
-            'internalClasses' => $this->getDocumentedElementsCount($this->internalClasses)
         ];
     }
 
 
     /**
-     * {@inheritdoc}
+     * @return ClassReflectionInterface[]
      */
-    public function getClasses()
+    public function getClasses(): array
     {
         return $this->classes;
     }
 
 
     /**
-     * {@inheritdoc}
+     * @return ConstantReflectionInterface[]
      */
-    public function getConstants()
+    public function getConstants(): array
     {
         return $this->constants;
     }
 
 
     /**
-     * {@inheritdoc}
+     * @return FunctionReflectionInterface[]
      */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return $this->functions;
     }
 
 
     /**
-     * {@inheritdoc}
+     * @return int[]
      */
-    public function getTypes()
+    public function getTypes(): array
     {
         return $this->types;
     }
 
 
     /**
-     * {@inheritdoc}
+     * @param ClassReflectionInterface[] $classes
      */
-    public function setClasses(ArrayObject $classes)
+    public function setClasses(array $classes): void
     {
         $this->classes = $classes;
     }
 
 
     /**
-     * {@inheritdoc}
+     * @param ConstantReflectionInterface[] $constants
      */
-    public function setConstants(ArrayObject $constants)
+    public function setConstants(array $constants): void
     {
         $this->constants = $constants;
     }
 
 
     /**
-     * {@inheritdoc}
+     * @param FunctionReflectionInterface[] $functions
      */
-    public function setFunctions(ArrayObject $functions)
+    public function setFunctions(array $functions): void
     {
         $this->functions = $functions;
     }
 
 
     /**
-     * {@inheritdoc}
+     * @return ClassReflectionInterface[]
      */
-    public function setInternalClasses(ArrayObject $internalClasses)
-    {
-        $this->internalClasses = $internalClasses;
-    }
-
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setTokenizedClasses(ArrayObject $tokenizedClasses)
-    {
-        $this->tokenizedClasses = $tokenizedClasses;
-    }
-
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDirectImplementersOfInterface(ClassReflectionInterface $reflectionClass)
+    public function getDirectImplementersOfInterface(ClassReflectionInterface $reflectionClass): array
     {
         $implementers = [];
         foreach ($this->classes as $class) {
@@ -178,15 +141,17 @@ class ParserStorage implements ParserStorageInterface
                 $implementers[] = $class;
             }
         }
+
         uksort($implementers, 'strcasecmp');
+
         return $implementers;
     }
 
 
     /**
-     * {@inheritdoc}
+     * @return ClassReflectionInterface[]
      */
-    public function getIndirectImplementersOfInterface(ClassReflectionInterface $reflectionClass)
+    public function getIndirectImplementersOfInterface(ClassReflectionInterface $reflectionClass): array
     {
         $implementers = [];
         foreach ($this->classes as $class) {
@@ -194,51 +159,35 @@ class ParserStorage implements ParserStorageInterface
                 $implementers[] = $class;
             }
         }
+
         uksort($implementers, 'strcasecmp');
         return $implementers;
     }
 
 
-    /**
-     * @param ClassReflectionInterface $class
-     * @param string $name
-     * @return bool
-     */
-    private function isAllowedDirectImplementer(ClassReflectionInterface $class, $name)
+    private function isAllowedDirectImplementer(ClassReflectionInterface $class, string $name): bool
     {
-        if ($class->isDocumented() && in_array($name, $class->getOwnInterfaceNames())) {
-            return true;
-        }
-        return false;
+        return $class->isDocumented() && in_array($name, $class->getOwnInterfaceNames());
+    }
+
+
+    private function isAllowedIndirectImplementer(ClassReflectionInterface $class, string $name): bool
+    {
+        return $class->isDocumented() && $class->implementsInterface($name)
+            && ! in_array($name, $class->getOwnInterfaceNames());
     }
 
 
     /**
-     * @param ClassReflectionInterface $class
-     * @param string $name
-     * @return bool
+     * @param ElementReflectionInterface[] $result
      */
-    private function isAllowedIndirectImplementer(ClassReflectionInterface $class, $name)
-    {
-        if ($class->isDocumented() && $class->implementsInterface($name)
-            && ! in_array($name, $class->getOwnInterfaceNames())
-        ) {
-            return true;
-        }
-        return false;
-    }
-
-
-    /**
-     * @param ElementReflectionInterface[]|ArrayObject $result
-     * @return int
-     */
-    private function getDocumentedElementsCount(ArrayObject $result)
+    private function getDocumentedElementsCount(array $result): int
     {
         $count = 0;
         foreach ($result as $element) {
             $count += (int) $element->isDocumented();
         }
+
         return $count;
     }
 }

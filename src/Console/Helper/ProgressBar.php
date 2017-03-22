@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Console\Helper;
 
@@ -26,10 +26,7 @@ class ProgressBar implements ProgressBarInterface
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function init($maximum = 1)
+    public function init(int $maximum = 1): void
     {
         $this->bar = new ProgressBarHelper($this->consoleIO->getOutput(), $maximum);
         $this->bar->setFormat($this->getBarFormat());
@@ -37,10 +34,7 @@ class ProgressBar implements ProgressBarInterface
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function increment($increment = 1)
+    public function increment(int $increment = 1): void
     {
         if ($this->bar === null) {
             return;
@@ -53,10 +47,7 @@ class ProgressBar implements ProgressBarInterface
     }
 
 
-    /**
-     * @return string
-     */
-    private function getBarFormat()
+    private function getBarFormat(): string
     {
         if ($this->getDebugOption()) {
             return 'debug';
@@ -66,10 +57,7 @@ class ProgressBar implements ProgressBarInterface
     }
 
 
-    /**
-     * @return bool
-     */
-    private function getDebugOption()
+    private function getDebugOption(): bool
     {
         if ($this->consoleIO->getInput() && $this->consoleIO->getInput()->hasOption('debug')) {
             return $this->consoleIO->getInput()->getOption('debug');

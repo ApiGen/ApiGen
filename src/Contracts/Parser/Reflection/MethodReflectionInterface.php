@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Contracts\Parser\Reflection;
 
@@ -13,50 +13,26 @@ interface MethodReflectionInterface extends
     LinedInterface
 {
 
-    /**
-     * @return bool
-     */
-    public function isMagic();
+    public function isMagic(): bool;
 
 
-    /**
-     * @return bool
-     */
-    public function isAbstract();
+    public function isAbstract(): bool;
 
 
-    /**
-     * @return bool
-     */
-    public function isFinal();
+    public function isFinal(): bool;
 
 
-    /**
-     * @return bool
-     */
-    public function isStatic();
+    public function isStatic(): bool;
 
 
-    /**
-     * @return MethodReflectionInterface
-     */
-    public function getImplementedMethod();
+    public function getImplementedMethod(): ?MethodReflectionInterface;
 
 
-    /**
-     * @return MethodReflectionInterface
-     */
-    public function getOverriddenMethod();
+    public function getOverriddenMethod(): ?MethodReflectionInterface;
 
 
-    /**
-     * @return MethodReflectionInterface
-     */
-    public function getOriginal();
+    public function getOriginal(): ?MethodReflectionInterface;
 
 
-    /**
-     * @return string
-     */
-    public function getOriginalName();
+    public function getOriginalName(): string;
 }

@@ -1,16 +1,19 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Parser\Reflection\Extractors;
 
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\Extractors\AnnotationPropertyExtractorInterface;
 use ApiGen\Contracts\Parser\Reflection\Magic\MagicPropertyReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\TokenReflection\ReflectionFactoryInterface;
 
-class AnnotationPropertyExtractor implements AnnotationPropertyExtractorInterface
+final class AnnotationPropertyExtractor implements AnnotationPropertyExtractorInterface
 {
-
-    const PATTERN_PROPERTY = /** @lang RegExp */ '~^
+    /**
+     * @var string
+     */
+    public const PATTERN_PROPERTY = /** @lang RegExp */ '~^
         # property typehint
         (?:
             ([\\w\\\\]+(?:\\[\\])?(?:\\|[\\w\\\\]+(?:\\[\\])?)*)\\s+
@@ -42,9 +45,10 @@ class AnnotationPropertyExtractor implements AnnotationPropertyExtractorInterfac
 
 
     /**
-     * {@inheritdoc}
+     * @param ClassReflectionInterface $classReflection
+     * @return PropertyReflectionInterface[]
      */
-    public function extractFromReflection(ClassReflectionInterface $classReflection)
+    public function extractFromReflection(ClassReflectionInterface $classReflection): array
     {
         $this->classReflection = $classReflection;
 
@@ -66,13 +70,15 @@ class AnnotationPropertyExtractor implements AnnotationPropertyExtractorInterfac
      * @param string $annotationName
      * @return MagicPropertyReflectionInterface[]
      */
-    private function processMagicPropertyAnnotation($annotation, $annotationName)
-    {
+    private function processMagicPropertyAnnotation(
+        string $annotation,
+        string $annotationName
+    ): array {
         if (! preg_match(self::PATTERN_PROPERTY, $annotation, $matches)) {
             return [];
         }
 
-        list(, $typeHint, $name, $shortDescription) = $matches;
+        [, $typeHint, $name, $shortDescription] = $matches;
 
         $startLine = $this->getStartLine($annotation);
         $properties = [];
@@ -90,17 +96,14 @@ class AnnotationPropertyExtractor implements AnnotationPropertyExtractorInterfac
     }
 
 
-    /**
-     * @param string $annotation
-     * @return int
-     */
-    private function getStartLine($annotation)
+    private function getStartLine(string $annotation): int
     {
         $doc = $this->classReflection->getDocComment();
         $tmp = $annotation;
         if ($delimiter = strpos($annotation, "\n")) {
             $tmp = substr($annotation, 0, $delimiter);
         }
+
         return $this->classReflection->getStartLine() + substr_count(substr($doc, 0, strpos($doc, $tmp)), "\n");
     }
 }

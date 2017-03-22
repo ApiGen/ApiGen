@@ -1,12 +1,9 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Contracts\Generator\TemplateGenerators;
 
 interface ConditionalTemplateGeneratorInterface extends TemplateGeneratorInterface
 {
 
-    /**
-     * @return bool
-     */
-    public function isAllowed();
+    public function isAllowed(): bool;
 }

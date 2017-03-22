@@ -1,9 +1,9 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Generator\TemplateGenerators;
 
 use ApiGen\Configuration\Configuration;
-use ApiGen\Configuration\ConfigurationOptions as CO;
+use ApiGen\Configuration\ConfigurationOptions;
 use ApiGen\Contracts\Generator\TemplateGenerators\ConditionalTemplateGeneratorInterface;
 use ApiGen\Templating\TemplateFactory;
 
@@ -28,22 +28,16 @@ class OpensearchGenerator implements ConditionalTemplateGeneratorInterface
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function generate()
+    public function generate(): void
     {
         $this->templateFactory->createForType('opensearch')
             ->save();
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isAllowed()
+    public function isAllowed(): bool
     {
         $options = $this->configuration->getOptions();
-        return $options[CO::GOOGLE_CSE_ID] && $options[CO::BASE_URL];
+        return $options[ConfigurationOptions::GOOGLE_CSE_ID] && $options[ConfigurationOptions::BASE_URL];
     }
 }

@@ -1,7 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Parser\Reflection;
 
+use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
 use ApiGen\Parser\Reflection\Parts\Visibility;
 
@@ -11,40 +12,28 @@ class ReflectionProperty extends ReflectionElement implements PropertyReflection
     use Visibility;
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isReadOnly()
+    public function isReadOnly():bool
     {
         return false;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isWriteOnly()
+    public function isWriteOnly(): bool
     {
         return false;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isMagic()
+    public function isMagic(): bool
     {
         return false;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getTypeHint()
+    public function getTypeHint(): string
     {
         if ($annotations = $this->getAnnotation('var')) {
-            list($types) = preg_split('~\s+|$~', $annotations[0], 2);
+            [$types] = preg_split('~\s+|$~', $annotations[0], 2);
             if (! empty($types) && $types[0] !== '$') {
                 return $types;
             }
@@ -56,41 +45,32 @@ class ReflectionProperty extends ReflectionElement implements PropertyReflection
                 return $type;
             }
         } catch (\Exception $e) {
-            return;
+            return '';
         }
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDeclaringClass()
+    public function getDeclaringClass(): ?ClassReflectionInterface
     {
         $className = $this->reflection->getDeclaringClassName();
         return $className === null ? null : $this->getParsedClasses()[$className];
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDeclaringClassName()
+    public function getDeclaringClassName(): string
     {
-        return $this->reflection->getDeclaringClassName();
+        return (string) $this->reflection->getDeclaringClassName();
     }
 
 
-    /**
-     * @return string
-     */
-    public function getDefaultValueDefinition()
+    public function getDefaultValueDefinition(): string
     {
         return $this->reflection->getDefaultValueDefinition();
     }
 
 
     /**
-     * {@inheritdoc}
+     * @return mixed
      */
     public function getDefaultValue()
     {
@@ -98,60 +78,32 @@ class ReflectionProperty extends ReflectionElement implements PropertyReflection
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isDefault()
+    public function isDefault(): bool
     {
         return $this->reflection->isDefault();
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isStatic()
+    public function isStatic(): bool
     {
         return $this->reflection->isStatic();
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDeclaringTrait()
+    public function getDeclaringTrait(): ?ClassReflectionInterface
     {
-        $traitName = $this->reflection->getDeclaringTraitName();
-        return $traitName === null ? null : $this->getParsedClasses()[$traitName];
+        $traitName = (string) $this->reflection->getDeclaringTraitName();
+        return $traitName === '' ? null : $this->getParsedClasses()[$traitName];
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDeclaringTraitName()
+    public function getDeclaringTraitName(): string
     {
-        return $this->reflection->getDeclaringTraitName();
+        return (string) $this->reflection->getDeclaringTraitName();
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isValid()
-    {
-        if ($class = $this->getDeclaringClass()) {
-            return $class->isValid();
-        }
-
-        return true;
-    }
-
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getShortName()
+    public function getShortName(): string
     {
         return $this->getName();
     }

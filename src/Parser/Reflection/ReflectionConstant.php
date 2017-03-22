@@ -1,38 +1,28 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Parser\Reflection;
 
+use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
-use TokenReflection;
 
-class ReflectionConstant extends ReflectionElement implements ConstantReflectionInterface
+final class ReflectionConstant extends ReflectionElement implements ConstantReflectionInterface
 {
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->reflection->getName();
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getShortName()
+    public function getShortName(): string
     {
         return $this->reflection->getShortName();
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getTypeHint()
+    public function getTypeHint(): string
     {
         if ($annotations = $this->getAnnotation('var')) {
-            list($types) = preg_split('~\s+|$~', $annotations[0], 2);
+            [$types] = preg_split('~\s+|$~', $annotations[0], 2);
             if (! empty($types)) {
                 return $types;
             }
@@ -44,32 +34,26 @@ class ReflectionConstant extends ReflectionElement implements ConstantReflection
                 return $type;
             }
         } catch (\Exception $e) {
-            return null;
+            return '';
         }
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDeclaringClass()
+    public function getDeclaringClass(): ?ClassReflectionInterface
     {
-        $className = $this->reflection->getDeclaringClassName();
-        return $className === null ? null : $this->getParsedClasses()[$className];
+        $className = (string) $this->reflection->getDeclaringClassName();
+        return $className === '' ? null : $this->getParsedClasses()[$className];
+    }
+
+
+    public function getDeclaringClassName(): string
+    {
+        return (string) $this->reflection->getDeclaringClassName();
     }
 
 
     /**
-     * {@inheritdoc}
-     */
-    public function getDeclaringClassName()
-    {
-        return $this->reflection->getDeclaringClassName();
-    }
-
-
-    /**
-     * {@inheritdoc}
+     * @return mixed
      */
     public function getValue()
     {
@@ -77,28 +61,8 @@ class ReflectionConstant extends ReflectionElement implements ConstantReflection
     }
 
 
-    /**
-     * @return string
-     */
-    public function getValueDefinition()
+    public function getValueDefinition(): string
     {
         return $this->reflection->getValueDefinition();
-    }
-
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isValid()
-    {
-        if ($this->reflection instanceof TokenReflection\Invalid\ReflectionConstant) {
-            return false;
-        }
-
-        if ($class = $this->getDeclaringClass()) {
-            return $class->isValid();
-        }
-
-        return true;
     }
 }

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Tests\Command;
 
@@ -6,16 +6,15 @@ use ApiGen\Console\Command\GenerateCommand;
 use ApiGen\Tests\ContainerAwareTestCase;
 use ApiGen\Tests\MethodInvoker;
 
-class GenerateCommandPrepareOptionsTest extends ContainerAwareTestCase
+final class GenerateCommandPrepareOptionsTest extends ContainerAwareTestCase
 {
-
     /**
      * @var GenerateCommand
      */
     private $generateCommand;
 
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->generateCommand = $this->container->getByType(GenerateCommand::class);
     }
@@ -24,10 +23,10 @@ class GenerateCommandPrepareOptionsTest extends ContainerAwareTestCase
     /**
      * @expectedException \ApiGen\Configuration\Exceptions\ConfigurationException
      */
-    public function testPrepareOptionsDestinationNotSet()
+    public function testPrepareOptionsDestinationNotSet(): void
     {
         MethodInvoker::callMethodOnObject($this->generateCommand, 'prepareOptions', [[
-            'config' => '...'
+            'config' => 'config.neon'
         ]]);
     }
 
@@ -35,19 +34,19 @@ class GenerateCommandPrepareOptionsTest extends ContainerAwareTestCase
     /**
      * @expectedException \ApiGen\Configuration\Exceptions\ConfigurationException
      */
-    public function testPrepareOptionsSourceNotSet()
+    public function testPrepareOptionsSourceNotSet(): void
     {
         MethodInvoker::callMethodOnObject($this->generateCommand, 'prepareOptions', [[
-            'config' => '...',
+            'config' => 'config.neon',
             'destination' => TEMP_DIR . '/api'
         ]]);
     }
 
 
-    public function testPrepareOptions()
+    public function testPrepareOptions(): void
     {
         $options = MethodInvoker::callMethodOnObject($this->generateCommand, 'prepareOptions', [[
-            'config' => '...',
+            'config' => 'config.neon',
             'destination' => TEMP_DIR . '/api',
             'source' => __DIR__
         ]]);
@@ -56,7 +55,7 @@ class GenerateCommandPrepareOptionsTest extends ContainerAwareTestCase
     }
 
 
-    public function testPrepareOptionsConfigPriority()
+    public function testPrepareOptionsConfigPriority(): void
     {
         $configAndDestinationOptions = [
             'config' => __DIR__ . '/apigen.neon',
@@ -67,50 +66,37 @@ class GenerateCommandPrepareOptionsTest extends ContainerAwareTestCase
         $options = MethodInvoker::callMethodOnObject($this->generateCommand, 'prepareOptions', [
             $configAndDestinationOptions
         ]);
+
         $this->assertSame(realpath(__DIR__ . '/../../../src'), $options['source'][0]);
     }
 
 
-    public function testPrepareOptionsMergeIsCorrect()
+    public function testPrepareOptionsMergeIsCorrect(): void
     {
         $options = MethodInvoker::callMethodOnObject($this->generateCommand, 'prepareOptions', [[
+            'source' => __DIR__,
             'config' => __DIR__ . '/apigen.neon',
             'destination' => TEMP_DIR . '/api',
         ]]);
 
         $this->assertSame(['public', 'protected', 'private'], $options['accessLevels']);
         $this->assertSame('http://apigen.org', $options['baseUrl']);
-        $this->assertSame('packages', $options['groups']);
     }
 
 
-    public function testPrepareOptionsMergeIsCorrectFromYamlConfig()
+    public function testLoadOptionsFromConfig(): void
     {
-        $optionsYaml = MethodInvoker::callMethodOnObject($this->generateCommand, 'prepareOptions', [[
-            'config' => __DIR__ . '/apigen.yml',
-            'destination' => TEMP_DIR . '/api',
-        ]]);
-
-        $optionsNeon = MethodInvoker::callMethodOnObject($this->generateCommand, 'prepareOptions', [[
-            'config' => __DIR__ . '/apigen.neon',
-            'destination' => TEMP_DIR . '/api',
-        ]]);
-
-        $this->assertSame($optionsNeon, $optionsYaml);
-    }
-
-
-    public function testLoadOptionsFromConfig()
-    {
-        $options['config'] = '...';
-        file_put_contents(getcwd() . '/apigen.neon.dist', 'debug: true');
+        $options['config'] = 'config.neon';
+        $options['destination'] = __DIR__;
+        file_put_contents(getcwd() . '/apigen.neon', 'debug: true');
 
         $options = MethodInvoker::callMethodOnObject($this->generateCommand, 'loadOptionsFromConfig', [$options]);
         $this->assertSame([
-            'config' => '...',
+            'config' => 'config.neon',
+            'destination' => __DIR__,
             'debug' => true
         ], $options);
 
-        unlink(getcwd() . '/apigen.neon.dist');
+        unlink(getcwd() . '/apigen.neon');
     }
 }

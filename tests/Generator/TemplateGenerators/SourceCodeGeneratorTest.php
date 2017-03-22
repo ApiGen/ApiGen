@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Tests\Generator\TemplateGenerators;
 
@@ -34,7 +34,7 @@ class SourceCodeGeneratorTest extends ContainerAwareTestCase
     private $elementStorage;
 
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->configuration = $this->container->getByType(Configuration::class);
         $this->parser = $this->container->getByType(Parser::class);
@@ -43,7 +43,7 @@ class SourceCodeGeneratorTest extends ContainerAwareTestCase
     }
 
 
-    public function testIsAllowed()
+    public function testIsAllowed(): void
     {
         $this->configuration->resolveOptions([
             'source' => __DIR__ . '/SourceCodeSource',
@@ -59,14 +59,14 @@ class SourceCodeGeneratorTest extends ContainerAwareTestCase
     }
 
 
-    public function testStepCount()
+    public function testStepCount(): void
     {
         $this->prepareSourceCodeGenerator();
         $this->assertSame(1, $this->sourceCodeGenerator->getStepCount());
     }
 
 
-    public function testGenerate()
+    public function testGenerate(): void
     {
         $this->prepareSourceCodeGenerator();
         $this->sourceCodeGenerator->generate();
@@ -76,7 +76,7 @@ class SourceCodeGeneratorTest extends ContainerAwareTestCase
     }
 
 
-    public function testGenerateForElement()
+    public function testGenerateForElement(): void
     {
         $this->prepareSourceCodeGenerator();
         $classes = $this->elementStorage->getClasses();
@@ -89,7 +89,7 @@ class SourceCodeGeneratorTest extends ContainerAwareTestCase
     }
 
 
-    private function prepareSourceCodeGenerator()
+    private function prepareSourceCodeGenerator(): void
     {
         $this->configuration->resolveOptions([
             'source' => __DIR__ . '/SourceCodeSource',
@@ -100,6 +100,7 @@ class SourceCodeGeneratorTest extends ContainerAwareTestCase
         foreach (Finder::findFiles('*')->in(__DIR__ . '/SourceCodeSource')->getIterator() as $file) {
             $files[] = $file;
         }
+
         $this->parser->parse($files);
     }
 }

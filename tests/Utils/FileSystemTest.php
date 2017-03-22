@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Utils\Tests\FileSystem;
 
@@ -15,20 +15,20 @@ class FileSystemTest extends TestCase
     private $fileSystem;
 
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->fileSystem = new FileSystem;
     }
 
 
-    public function testNormalizePath()
+    public function testNormalizePath(): void
     {
         $backslashPath = 'C:\User\Program File\ApiGen';
         $this->assertSame('C:/User/Program File/ApiGen', $this->fileSystem->normalizePath($backslashPath));
     }
 
 
-    public function testForceDir()
+    public function testForceDir(): void
     {
         $filePath = TEMP_DIR . '/some/dir/file.txt';
         $dirPath = dirname($filePath);
@@ -39,7 +39,7 @@ class FileSystemTest extends TestCase
     }
 
 
-    public function testDeleteDir()
+    public function testDeleteDir(): void
     {
         $dir = TEMP_DIR . '/new-dir';
         mkdir($dir);
@@ -50,7 +50,7 @@ class FileSystemTest extends TestCase
     }
 
 
-    public function testPurgeDir()
+    public function testPurgeDir(): void
     {
         $dir = TEMP_DIR . '/dir-with-content';
         mkdir($dir);
@@ -68,7 +68,7 @@ class FileSystemTest extends TestCase
     }
 
 
-    public function testPurgeDirOnNonExistingDir()
+    public function testPurgeDirOnNonExistingDir(): void
     {
         $dir = TEMP_DIR . '/not-created-dir';
         $this->assertFalse(file_exists($dir));
@@ -78,7 +78,7 @@ class FileSystemTest extends TestCase
     }
 
 
-    public function testGetAbsolutePath()
+    public function testGetAbsolutePath(): void
     {
         $absoluteDir = $this->fileSystem->normalizePath(TEMP_DIR . '/relative-dir');
         mkdir($absoluteDir);
@@ -103,7 +103,7 @@ class FileSystemTest extends TestCase
     }
 
 
-    public function testIsDirEmpty()
+    public function testIsDirEmpty(): void
     {
         $this->assertTrue($this->fileSystem->isDirEmpty(__DIR__ . '/FileSystemSource/EmptyDir'));
         $this->assertFalse($this->fileSystem->isDirEmpty(__DIR__ . '/FileSystemSource/NonEmptyDir'));

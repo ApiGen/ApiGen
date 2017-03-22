@@ -1,18 +1,18 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Parser\Reflection\Extractors;
 
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\Extractors\MagicPropertyExtractorInterface;
 use ApiGen\Contracts\Parser\Reflection\Magic\MagicPropertyReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
 
-class MagicPropertyExtractor implements MagicPropertyExtractorInterface
+final class MagicPropertyExtractor implements MagicPropertyExtractorInterface
 {
-
     /**
-     * {@inheritdoc}
+     * @return MagicPropertyReflectionInterface[]
      */
-    public function extractFromClass(ClassReflectionInterface $reflectionClass)
+    public function extractFromClass(ClassReflectionInterface $reflectionClass): array
     {
         $properties = [];
         if ($parentClass = $reflectionClass->getParentClass()) {
@@ -22,40 +22,41 @@ class MagicPropertyExtractor implements MagicPropertyExtractorInterface
         if ($traits = $reflectionClass->getTraits()) {
             $properties += $this->extractFromTraits($traits, $reflectionClass->isDocumented());
         }
+
         return $properties;
     }
 
 
     /**
-     * @param ClassReflectionInterface $parent
-     * @param bool $isDocumented
      * @return MagicPropertyReflectionInterface[]
      */
-    private function extractFromParentClass(ClassReflectionInterface $parent, $isDocumented)
+    private function extractFromParentClass(ClassReflectionInterface $parent, bool $isDocumented): array
     {
         $properties = [];
         while ($parent) {
             $properties = $this->extractOwnFromClass($parent, $isDocumented, $properties);
             $parent = $parent->getParentClass();
         }
+
         return $properties;
     }
 
 
     /**
-     * @param array $traits
-     * @param bool $isDocumented
+     * @param ClassReflectionInterface[] $traits
      * @return MagicPropertyReflectionInterface[]
      */
-    private function extractFromTraits($traits, $isDocumented)
+    private function extractFromTraits(array $traits, bool $isDocumented): array
     {
         $properties = [];
         foreach ($traits as $trait) {
             if (! $trait instanceof ClassReflectionInterface) {
                 continue;
             }
+
             $properties = $this->extractOwnFromClass($trait, $isDocumented, $properties);
         }
+
         return $properties;
     }
 
@@ -63,37 +64,42 @@ class MagicPropertyExtractor implements MagicPropertyExtractorInterface
     /**
      * @param ClassReflectionInterface $classReflection
      * @param bool $isDocumented
-     * @param array $properties
+     * @param mixed[] $properties
      * @return MagicPropertyReflectionInterface[]
      */
-    private function extractOwnFromClass(ClassReflectionInterface $classReflection, $isDocumented, array $properties)
-    {
+    private function extractOwnFromClass(
+        ClassReflectionInterface $classReflection,
+        bool $isDocumented,
+        array $properties
+    ): array {
         foreach ($classReflection->getOwnMagicProperties() as $property) {
             if ($this->canBeExtracted($isDocumented, $properties, $property)) {
                 $properties[$property->getName()] = $property;
             }
         }
+
         return $properties;
     }
 
 
     /**
      * @param bool $isDocumented
-     * @param array $properties
+     * @param PropertyReflectionInterface[] $properties
      * @param MagicPropertyReflectionInterface $propertyReflection
-     * @return bool
      */
     private function canBeExtracted(
-        $isDocumented,
+        bool $isDocumented,
         array $properties,
         MagicPropertyReflectionInterface $propertyReflection
-    ) {
+    ): bool {
         if (isset($properties[$propertyReflection->getName()])) {
             return false;
         }
+
         if ($isDocumented && ! $propertyReflection->isDocumented()) {
             return false;
         }
+
         return true;
     }
 }

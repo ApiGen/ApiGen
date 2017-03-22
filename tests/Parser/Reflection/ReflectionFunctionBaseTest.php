@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Parser\Tests\Reflection;
 
@@ -16,7 +16,7 @@ class ReflectionParameterBaseTest extends AbstractReflectionTestCase
     private $reflectionFunction;
 
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->broker->processDirectory(__DIR__ . '/ReflectionFunctionSource');
@@ -24,19 +24,19 @@ class ReflectionParameterBaseTest extends AbstractReflectionTestCase
     }
 
 
-    public function testGetShortName()
+    public function testGetShortName(): void
     {
         $this->assertSame('getSomeData', $this->reflectionFunction->getShortName());
     }
 
 
-    public function testReturnReference()
+    public function testReturnReference(): void
     {
         $this->assertFalse($this->reflectionFunction->returnsReference());
     }
 
 
-    public function testGetParameters()
+    public function testGetParameters(): void
     {
         $parameters = $this->reflectionFunction->getParameters();
         $this->assertCount(1, $parameters);
@@ -47,7 +47,7 @@ class ReflectionParameterBaseTest extends AbstractReflectionTestCase
     }
 
 
-    public function testGetParameter()
+    public function testGetParameter(): void
     {
         $parameter = $this->reflectionFunction->getParameter('arg');
         $this->assertInstanceOf(ParameterReflectionInterface::class, $parameter);
@@ -60,7 +60,7 @@ class ReflectionParameterBaseTest extends AbstractReflectionTestCase
     /**
      * @expectedException \InvalidArgumentException
      */
-    public function testGetParameterNotExistingName()
+    public function testGetParameterNotExistingName(): void
     {
         $this->reflectionFunction->getParameter('notHere');
     }
@@ -69,13 +69,13 @@ class ReflectionParameterBaseTest extends AbstractReflectionTestCase
     /**
      * @expectedException \InvalidArgumentException
      */
-    public function testGetParameterNotExistingPosition()
+    public function testGetParameterNotExistingPosition(): void
     {
         $this->reflectionFunction->getParameter(1);
     }
 
 
-    public function testProcessAnnotation()
+    public function testProcessAnnotation(): void
     {
         $reflectionFunction = $this->backend->getFunctions()['withMagicParameters'];
         $parameters = $reflectionFunction->getParameters();
@@ -87,7 +87,7 @@ class ReflectionParameterBaseTest extends AbstractReflectionTestCase
     }
 
 
-    public function testGetParametersAnnotationMatchingRealCount()
+    public function testGetParametersAnnotationMatchingRealCount(): void
     {
         $reflectionFunction = $this->backend->getFunctions()['getMemoryInBytes'];
 

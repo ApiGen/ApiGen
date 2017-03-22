@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Tests\Generator\TemplateGenerators;
 
@@ -20,14 +20,14 @@ class CombinedGeneratorTest extends ContainerAwareTestCase
     private $combinedGenerator;
 
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->configuration = $this->container->getByType(Configuration::class);
         $this->combinedGenerator = $this->container->getByType(CombinedGenerator::class);
     }
 
 
-    public function testGenerate()
+    public function testGenerate(): void
     {
         $this->configuration->resolveOptions([
             'source' => TEMP_DIR,

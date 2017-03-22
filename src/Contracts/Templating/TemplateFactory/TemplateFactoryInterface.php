@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Contracts\Templating\TemplateFactory;
 
@@ -7,8 +7,5 @@ use ApiGen\Templating\Template;
 interface TemplateFactoryInterface
 {
 
-    /**
-     * @return Template
-     */
-    public function create();
+    public function create(): Template;
 }

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Contracts\Parser\Reflection\Behavior;
 
@@ -7,32 +7,20 @@ use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 interface InClassInterface extends InNamespaceInterface
 {
 
-    /**
-     * @return ClassReflectionInterface
-     */
-    public function getDeclaringClass();
+    public function getDeclaringClass(): ?ClassReflectionInterface;
+
+
+    public function getNamespaceName(): string;
 
 
     /**
-     * @return string
+     * @return mixed[]
      */
-    public function getPackageName();
-
-
-    /**
-     * @return string
-     */
-    public function getNamespaceName();
-
-
-    /**
-     * @return array
-     */
-    public function getAnnotations();
+    public function getAnnotations(): array;
 
 
     /**
      * @return string[]
      */
-    public function getNamespaceAliases();
+    public function getNamespaceAliases(): array;
 }

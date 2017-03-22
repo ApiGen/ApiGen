@@ -1,31 +1,47 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Tests\Theme;
 
+use ApiGen\Configuration\Configuration;
+use ApiGen\Tests\ContainerFactory;
 use ApiGen\Theme\ThemeResources;
 use ApiGen\Utils\FileSystem;
-use Mockery;
+use Nette\DI\Container;
 use PHPUnit\Framework\TestCase;
 
-class ThemeResourcesTest extends TestCase
+final class ThemeResourcesTest extends TestCase
 {
+    /**
+     * @var Configuration
+     */
+    private $configuration;
 
-    public function testCopyToDestination()
+    protected function setUp(): void
+    {
+        $container = (new ContainerFactory)->create();
+        $this->configuration = $container->getByType(Configuration::class);
+    }
+
+    public function testCopyToDestination(): void
     {
         $sourceDir = TEMP_DIR . '/source';
         $sourceFile = TEMP_DIR . '/other-source/other-file.txt';
         $destinationDir = TEMP_DIR . '/destination';
 
-        $configurationMock = Mockery::mock('ApiGen\Configuration\Configuration');
-        $configurationMock->shouldReceive('getOption')->with('template')->andReturn([
-            'resources' => [
-                $sourceFile => 'other-file-renamed.txt',
-                $sourceDir => 'assets'
+        $this->configuration->resolveOptions([
+            'source' => __DIR__,
+            'destination' => __DIR__ . '/Destination',
+            'template' => [
+                'resources' => [
+                    $sourceFile => 'other-file-renamed.txt',
+                    $sourceDir => 'assets'
+                ]
             ]
         ]);
+
         $this->prepareSources($sourceFile, $sourceDir);
 
-        $themeResources = new ThemeResources($configurationMock, new FileSystem);
+        $themeResources = new ThemeResources($this->configuration, new FileSystem);
         $themeResources->copyToDestination($destinationDir);
 
         $this->assertFileExists($destinationDir . '/assets/file.txt');
@@ -33,11 +49,7 @@ class ThemeResourcesTest extends TestCase
     }
 
 
-    /**
-     * @param string $sourceFile
-     * @param string $sourceDir
-     */
-    private function prepareSources($sourceFile, $sourceDir)
+    private function prepareSources(string $sourceFile, string $sourceDir): void
     {
         mkdir(dirname($sourceFile), 0777);
         file_put_contents($sourceFile, '...');

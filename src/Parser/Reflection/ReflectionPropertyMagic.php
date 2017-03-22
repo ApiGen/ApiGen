@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Parser\Reflection;
 
@@ -12,7 +12,7 @@ use ApiGen\Parser\Reflection\Parts\StartPositionEndPositionMagic;
  * Envelope for magic properties that are defined
  * only as @property, @property-read or @property-write annotation.
  */
-class ReflectionPropertyMagic extends ReflectionProperty implements MagicPropertyReflectionInterface
+final class ReflectionPropertyMagic extends ReflectionProperty implements MagicPropertyReflectionInterface
 {
 
     use IsDocumentedMagic;
@@ -55,6 +55,9 @@ class ReflectionPropertyMagic extends ReflectionProperty implements MagicPropert
     private $declaringClass;
 
 
+    /**
+     * @param mixed[] $options
+     */
     public function __construct(array $options)
     {
         $this->name = $options['name'];
@@ -70,138 +73,93 @@ class ReflectionPropertyMagic extends ReflectionProperty implements MagicPropert
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getTypeHint()
+    public function getTypeHint(): string
     {
         return $this->typeHint;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isWriteOnly()
+    public function isWriteOnly(): bool
     {
         return $this->writeOnly;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getShortDescription()
+    public function getShortDescription(): string
     {
         return $this->shortDescription;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getLongDescription()
+    public function getLongDescription(): string
     {
         return $this->longDescription;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isReadOnly()
+    public function isReadOnly():bool
     {
         return $this->readOnly;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isMagic()
+    public function isMagic(): bool
     {
         return true;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isDeprecated()
+    public function isDeprecated(): bool
     {
         return $this->declaringClass->isDeprecated();
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getPackageName()
-    {
-        return $this->declaringClass->getPackageName();
-    }
-
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getNamespaceName()
+    public function getNamespaceName(): string
     {
         return $this->declaringClass->getNamespaceName();
     }
 
 
     /**
-     * {@inheritdoc}
+     * @return mixed[]
      */
-    public function getAnnotations()
+    public function getAnnotations(): array
     {
         if ($this->annotations === null) {
             $this->annotations = [];
         }
+
         return $this->annotations;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDeclaringClass()
+    public function getDeclaringClass(): ?ClassReflectionInterface
     {
         return $this->declaringClass;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDeclaringClassName()
+    public function getDeclaringClassName(): string
     {
-        return $this->declaringClass->getName();
+        return (string) $this->declaringClass->getName();
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setDeclaringClass(ClassReflectionInterface $declaringClass)
+    public function setDeclaringClass(ClassReflectionInterface $declaringClass): void
     {
         $this->declaringClass = $declaringClass;
-        return $this;
     }
 
 
     /**
-     * {@inheritdoc}
+     * @return mixed
      */
     public function getDefaultValue()
     {
@@ -209,112 +167,84 @@ class ReflectionPropertyMagic extends ReflectionProperty implements MagicPropert
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isDefault()
+    public function isDefault(): bool
     {
         return false;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isPrivate()
+    public function isPrivate(): bool
     {
         return false;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isProtected()
+    public function isProtected(): bool
     {
         return false;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isPublic()
+    public function isPublic(): bool
     {
         return true;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isStatic()
+    public function isStatic(): bool
     {
         return false;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDeclaringTrait()
+    public function getDeclaringTrait(): ?ClassReflectionInterface
     {
         return $this->declaringClass->isTrait() ? $this->declaringClass : null;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDeclaringTraitName()
+    public function getDeclaringTraitName(): string
     {
         if ($declaringTrait = $this->getDeclaringTrait()) {
             return $declaringTrait->getName();
         }
-        return null;
+
+        return '';
     }
 
 
     /**
-     * {@inheritdoc}
+     * @return string[]
      */
-    public function getNamespaceAliases()
+    public function getNamespaceAliases(): array
     {
         return $this->declaringClass->getNamespaceAliases();
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getPrettyName()
+    public function getPrettyName(): string
     {
-        return sprintf('%s::$%s', $this->declaringClass->getName(), $this->name);
+        return sprintf(
+            '%s::$%s',
+            $this->declaringClass->getName(),
+            $this->name
+        );
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getFileName()
+    public function getFileName(): string
     {
         return $this->declaringClass->getFileName();
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isTokenized()
+    public function isTokenized(): bool
     {
         return true;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDocComment()
+    public function getDocComment(): string
     {
         $docComment = "/**\n";
 
@@ -332,10 +262,7 @@ class ReflectionPropertyMagic extends ReflectionProperty implements MagicPropert
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function hasAnnotation($name)
+    public function hasAnnotation(string $name): bool
     {
         $annotations = $this->getAnnotations();
         return array_key_exists($name, $annotations);
@@ -343,14 +270,16 @@ class ReflectionPropertyMagic extends ReflectionProperty implements MagicPropert
 
 
     /**
-     * {@inheritdoc}
+     * @param string $name
+     * @return mixed[]
      */
-    public function getAnnotation($name)
+    public function getAnnotation(string $name): array
     {
         $annotations = $this->getAnnotations();
         if (array_key_exists($name, $annotations)) {
             return $annotations[$name];
         }
+
         return null;
     }
 }

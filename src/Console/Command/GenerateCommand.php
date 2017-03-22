@@ -1,9 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Console\Command;
 
 use ApiGen\Configuration\Configuration;
-use ApiGen\Configuration\Readers\ReaderFactory;
 use ApiGen\Contracts\Console\IO\IOInterface;
 use ApiGen\Contracts\Generator\GeneratorQueueInterface;
 use ApiGen\Contracts\Parser\ParserInterface;
@@ -11,12 +10,12 @@ use ApiGen\Contracts\Parser\ParserStorageInterface;
 use ApiGen\Theme\ThemeResources;
 use ApiGen\Utils\FileSystem;
 use ApiGen\Utils\Finder\FinderInterface;
+use Nette\DI\Config\Loader;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use TokenReflection\Exception\FileProcessingException;
 
-class GenerateCommand extends AbstractCommand
+final class GenerateCommand extends AbstractCommand
 {
 
     /**
@@ -32,7 +31,7 @@ class GenerateCommand extends AbstractCommand
     /**
      * @var ParserStorageInterface
      */
-    private $parserResult;
+    private $parserStorage;
 
     /**
      * @var GeneratorQueueInterface
@@ -63,7 +62,7 @@ class GenerateCommand extends AbstractCommand
     public function __construct(
         Configuration $configuration,
         ParserInterface $parser,
-        ParserStorageInterface $parserResult,
+        ParserStorageInterface $parserStorage,
         GeneratorQueueInterface $generatorQueue,
         FileSystem $fileSystem,
         ThemeResources $themeResources,
@@ -71,9 +70,10 @@ class GenerateCommand extends AbstractCommand
         FinderInterface $finder
     ) {
         parent::__construct();
+
         $this->configuration = $configuration;
         $this->parser = $parser;
-        $this->parserResult = $parserResult;
+        $this->parserStorage = $parserStorage;
         $this->generatorQueue = $generatorQueue;
         $this->fileSystem = $fileSystem;
         $this->themeResources = $themeResources;
@@ -82,17 +82,18 @@ class GenerateCommand extends AbstractCommand
     }
 
 
-    protected function configure()
+    protected function configure(): void
     {
-        $this->setName('generate')
-            ->setDescription('Generate API documentation')
-            ->addOption(
+        $this->setName('generate');
+        $this->setDescription('Generate API documentation');
+
+        $this->addOption(
                 'source',
-                's',
+                null,
                 InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
                 'Dirs or files documentation is generated for.'
             )
-            ->addOption('destination', 'd', InputOption::VALUE_REQUIRED, 'Target dir for documentation.')
+            ->addOption('destination', null, InputOption::VALUE_REQUIRED, 'Target dir for documentation.')
             ->addOption(
                 'accessLevels',
                 null,
@@ -147,19 +148,18 @@ class GenerateCommand extends AbstractCommand
                 'Elements with this name prefix will be first in tree.'
             )
             ->addOption('internal', null, InputOption::VALUE_NONE, 'Include elements marked as @internal.')
-            ->addOption('php', null, InputOption::VALUE_NONE, 'Generate documentation for PHP internal classes.')
             ->addOption(
                 'noSourceCode',
                 null,
                 InputOption::VALUE_NONE,
                 'Do not generate highlighted source code for elements.'
             )
-            ->addOption('templateTheme', null, InputOption::VALUE_REQUIRED, 'ApiGen template theme name.', 'default')
             ->addOption(
                 'templateConfig',
                 null,
                 InputOption::VALUE_REQUIRED,
-                'Your own template config, has higher priority than --template-theme.'
+                'Your own template config, has higher priority than --template-theme.',
+                getcwd() . '/vendor/apigen/theme-default/src/config.neon'
             )
             ->addOption('title', null, InputOption::VALUE_REQUIRED, 'Title of generated documentation.')
             ->addOption(
@@ -171,32 +171,26 @@ class GenerateCommand extends AbstractCommand
     }
 
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        try {
-            $options = $this->prepareOptions($input->getOptions());
-            $this->scanAndParse($options);
-            $this->generate($options);
-            return 0;
-        } catch (\Exception $e) {
-            $output->writeln(
-                sprintf(PHP_EOL . '<error>%s</error>', $e->getMessage())
-            );
-            return 1;
-        }
+        $options = $this->prepareOptions($input->getOptions());
+        $this->scanAndParse($options);
+        $this->generate($options);
+        return 0;
     }
 
 
-    private function scanAndParse(array $options)
+    /**
+     * @param mixed[] $options
+     */
+    private function scanAndParse(array $options): void
     {
         $this->io->writeln('<info>Scanning sources and parsing</info>');
 
         $files = $this->finder->find($options['source'], $options['exclude'], $options['extensions']);
         $this->parser->parse($files);
 
-        $this->reportParserErrors($this->parser->getErrors());
-
-        $stats = $this->parserResult->getDocumentedStats();
+        $stats = $this->parserStorage->getDocumentedStats();
         $this->io->writeln(sprintf(
             'Found <comment>%d classes</comment>, <comment>%d constants</comment> and <comment>%d functions</comment>',
             $stats['classes'],
@@ -206,7 +200,10 @@ class GenerateCommand extends AbstractCommand
     }
 
 
-    private function generate(array $options)
+    /**
+     * @param mixed[] $options
+     */
+    private function generate(array $options): void
     {
         $this->prepareDestination($options['destination'], $options['overwrite']);
         $this->io->writeln('<info>Generating API documentation</info>');
@@ -214,31 +211,11 @@ class GenerateCommand extends AbstractCommand
     }
 
 
-    private function reportParserErrors(array $errors)
-    {
-        /** @var FileProcessingException[] $errors */
-        foreach ($errors as $error) {
-            $output = null;
-            if ($this->configuration->getOption('debug')) {
-                $output = $error->getDetail();
-            } else {
-                /** @var \Exception[] $reasons */
-                $reasons = $error->getReasons();
-                if (isset($reasons[0]) && count($reasons)) {
-                    $output = $reasons[0]->getMessage();
-                }
-            }
-            if ($output) {
-                $this->io->writeln(sprintf('<error>Parse error: "%s"</error>', $output));
-            }
-        }
-    }
-
-
     /**
-     * @return array
+     * @param mixed[] $cliOptions
+     * @return mixed[]
      */
-    private function prepareOptions(array $cliOptions)
+    private function prepareOptions(array $cliOptions): array
     {
         $options = $this->convertDashKeysToCamel($cliOptions);
         $options = $this->loadOptionsFromConfig($options);
@@ -248,9 +225,10 @@ class GenerateCommand extends AbstractCommand
 
 
     /**
-     * @return array
+     * @param mixed[] $options
+     * @return mixed[]
      */
-    private function convertDashKeysToCamel(array $options)
+    private function convertDashKeysToCamel(array $options): array
     {
         foreach ($options as $key => $value) {
             $camelKey = $this->camelFormat($key);
@@ -259,15 +237,12 @@ class GenerateCommand extends AbstractCommand
                 unset($options[$key]);
             }
         }
+
         return $options;
     }
 
 
-    /**
-     * @param string $name
-     * @return string
-     */
-    private function camelFormat($name)
+    private function camelFormat(string $name): string
     {
         return preg_replace_callback('~-([a-z])~', function ($matches) {
             return strtoupper($matches[1]);
@@ -276,50 +251,48 @@ class GenerateCommand extends AbstractCommand
 
 
     /**
-     * @return array
+     * @param mixed[] $options
+     * @return mixed[]
      */
-    private function loadOptionsFromConfig(array $options)
+    private function loadOptionsFromConfig(array $options): array
     {
-        $configFilePaths = [
-            $options['config'],
-            getcwd() . '/apigen.neon',
-            getcwd() . '/apigen.yaml',
-            getcwd() . '/apigen.neon.dist',
-            getcwd() . '/apigen.yaml.dist'
-        ];
+        $configFilePaths = $this->getPossiblePathsForConfig($options);
 
         foreach ($configFilePaths as $configFile) {
             if (file_exists($configFile)) {
-                $configFileOptions = ReaderFactory::getReader($configFile)->read();
-                $options = array_merge($options, $configFileOptions);
-                break;
+                $configFileOptions = (new Loader())->load($configFile);
+                return array_merge($options, $configFileOptions);
             }
         }
+
         return $options;
     }
 
 
-    /**
-     * @param string $destination
-     */
-    private function prepareDestination($destination, $allowOverwrite = false)
+    private function prepareDestination(string $destination, bool $shouldOverwrite = false): void
     {
-        if (!$allowOverwrite) {
-            $this->cleanDestinationWithCaution($destination);
+        if ($shouldOverwrite) {
+            $this->fileSystem->purgeDir($destination);
         }
+
         $this->themeResources->copyToDestination($destination);
     }
 
 
     /**
-     * @param string $destination
+     * @param mixed[] $options
+     * @return mixed[]
      */
-    private function cleanDestinationWithCaution($destination)
+    private function getPossiblePathsForConfig(array $options): array
     {
-        if (! $this->fileSystem->isDirEmpty($destination)) {
-            if ($this->io->ask('<warning>Destination is not empty. Do you want to erase it?</warning>', true)) {
-                $this->fileSystem->purgeDir($destination);
-            }
+        $filePaths = [];
+
+        if ($options['config']) {
+            $filePaths[] = $options['config'];
         }
+
+        $filePaths[] = getcwd() . '/apigen.neon';
+
+        return $filePaths;
     }
 }

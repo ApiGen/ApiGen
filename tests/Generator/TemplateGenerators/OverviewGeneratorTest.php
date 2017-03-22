@@ -1,45 +1,32 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Tests\ApiGen\Generator\TemplateGenerators;
 
+use ApiGen\Contracts\Configuration\ConfigurationInterface;
+use ApiGen\Contracts\Templating\TemplateFactory\TemplateFactoryInterface;
 use ApiGen\Generator\TemplateGenerators\OverviewGenerator;
-use ApiGen\Templating\Template;
-use ApiGen\Templating\TemplateFactory;
-use Mockery;
-use PHPUnit\Framework\TestCase;
+use ApiGen\Tests\ContainerAwareTestCase;
 
-class OverviewGeneratorTest extends TestCase
+final class OverviewGeneratorTest extends ContainerAwareTestCase
 {
-
-    public function testGenerate()
+    protected function setUp(): void
     {
-        $templateFactoryMock = $this->getTemplateFactoryMock();
-        $overviewGenerator = new OverviewGenerator($templateFactoryMock);
+        /** @var ConfigurationInterface $configuration */
+        $configuration = $this->container->getByType(ConfigurationInterface::class);
+        $configuration->resolveOptions([
+            'source' => __DIR__,
+            'destination' => TEMP_DIR
+        ]);
+    }
+
+    public function testGenerate(): void
+    {
+        /** @var TemplateFactoryInterface $templateFactory */
+        $templateFactory = $this->container->getByType(TemplateFactoryInterface::class);
+
+        $overviewGenerator = new OverviewGenerator($templateFactory);
         $overviewGenerator->generate();
+
         $this->assertFileExists(TEMP_DIR . '/index.html');
-    }
-
-
-    /**
-     * @return Mockery\MockInterface
-     */
-    private function getTemplateFactoryMock()
-    {
-        $templateFactoryMock = Mockery::mock(TemplateFactory::class);
-        $templateFactoryMock->shouldReceive('createForType')->andReturn($this->getTemplateMock());
-        $templateFactoryMock->shouldReceive('save');
-        return $templateFactoryMock;
-    }
-
-
-    /**
-     * @return Mockery\MockInterface
-     */
-    private function getTemplateMock()
-    {
-        $templateMock = Mockery::mock(Template::class);
-        $templateMock->shouldReceive('setSavePath')->withAnyArgs();
-        $templateMock->shouldReceive('save')->andReturn(file_put_contents(TEMP_DIR . '/index.html', '...'));
-        return $templateMock;
     }
 }

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Contracts\Parser\Reflection\Extractors;
 
@@ -12,35 +12,35 @@ interface ClassTraitElementsExtractorInterface
     /**
      * @return ClassReflectionInterface[]
      */
-    public function getDirectUsers();
+    public function getDirectUsers(): array;
 
 
     /**
      * @return ClassReflectionInterface[]
      */
-    public function getIndirectUsers();
+    public function getIndirectUsers(): array;
 
 
     /**
      * @return PropertyReflectionInterface[]
      */
-    public function getTraitProperties();
+    public function getTraitProperties(): array;
 
 
     /**
      * @return PropertyReflectionInterface[][]
      */
-    public function getUsedProperties();
+    public function getUsedProperties(): array;
 
 
     /**
      * @return MethodReflectionInterface[]
      */
-    public function getTraitMethods();
+    public function getTraitMethods(): array;
 
 
     /**
      * @return MethodReflectionInterface[]
      */
-    public function getUsedMethods();
+    public function getUsedMethods(): array;
 }

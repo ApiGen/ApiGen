@@ -1,72 +1,70 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Parser\Tests\Reflection\ReflectionClass;
 
 use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
-use InvalidArgumentException;
 
-class ConstantsTest extends AbstractReflectionClassTestCase
+final class ConstantsTest extends AbstractReflectionClassTestCase
 {
-
-    public function testGetConstants()
+    public function testGetConstants(): void
     {
         $this->assertCount(2, $this->reflectionClass->getConstants());
     }
 
 
-    public function testGetOwnConstants()
+    public function testGetOwnConstants(): void
     {
         $this->assertCount(1, $this->reflectionClass->getOwnConstants());
     }
 
 
-    public function testHasConstant()
+    public function testHasConstant(): void
     {
         $this->assertFalse($this->reflectionClass->hasConstant('NOT_EXISTING'));
         $this->assertTrue($this->reflectionClass->hasConstant('LEVEL'));
     }
 
 
-    public function testGetConstant()
+    public function testGetConstant(): void
     {
         $this->assertInstanceOf(ConstantReflectionInterface::class, $this->reflectionClass->getConstant('LEVEL'));
     }
 
 
-    public function testHasOwnConstant()
+    public function testHasOwnConstant(): void
     {
         $this->assertTrue($this->reflectionClass->hasOwnConstant('LEVEL'));
     }
 
 
-    public function testGetOwnConstant()
+    public function testGetOwnConstant(): void
     {
         $this->assertInstanceOf(
-            'ApiGen\Parser\Reflection\ReflectionConstant',
+            ConstantReflectionInterface::class, // 'ApiGen\Parser\Reflection\ReflectionConstant',
             $this->reflectionClass->getOwnConstant('LEVEL')
         );
     }
 
 
     /**
-     * @expectedException InvalidArgumentException
+     * @expectedException \InvalidArgumentException
      */
-    public function testGetOwnConstantNonExisting()
+    public function testGetOwnConstantNonExisting(): void
     {
         $this->reflectionClass->getOwnConstant('NON_EXISTING');
     }
 
 
     /**
-     * @expectedException InvalidArgumentException
+     * @expectedException \InvalidArgumentException
      */
-    public function testGetConstantNonExisting()
+    public function testGetConstantNonExisting(): void
     {
         $this->reflectionClass->getConstant('NON_EXISTING');
     }
 
 
-    public function testGetInheritedConstants()
+    public function testGetInheritedConstants(): void
     {
         $this->assertCount(1, $this->reflectionClass->getInheritedConstants());
     }

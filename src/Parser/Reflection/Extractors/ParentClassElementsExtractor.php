@@ -1,17 +1,15 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Parser\Reflection\Extractors;
 
-use ApiGen\Contracts\Parser\Reflection\ClassConstantReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\Extractors\ParentClassElementsExtractorInterface;
 use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
 use ApiGen\Parser\Reflection\ReflectionClass;
-use ApiGen\Parser\Reflection\ReflectionMethod;
-use ApiGen\Parser\Reflection\ReflectionProperty;
 
-class ParentClassElementsExtractor implements ParentClassElementsExtractorInterface
+final class ParentClassElementsExtractor implements ParentClassElementsExtractorInterface
 {
 
     /**
@@ -25,11 +23,10 @@ class ParentClassElementsExtractor implements ParentClassElementsExtractorInterf
         $this->reflectionClass = $reflectionClass;
     }
 
-
     /**
-     * {@inheritdoc}
+     * @return ConstantReflectionInterface[]
      */
-    public function getInheritedConstants()
+    public function getInheritedConstants(): array
     {
         return array_filter(
             array_map(
@@ -45,9 +42,9 @@ class ParentClassElementsExtractor implements ParentClassElementsExtractorInterf
 
 
     /**
-     * {@inheritdoc}
+     * @return PropertyReflectionInterface[]
      */
-    public function getInheritedProperties()
+    public function getInheritedProperties(): array
     {
         $properties = [];
         $allProperties = array_flip(array_map(function (PropertyReflectionInterface $propertyReflection) {
@@ -62,6 +59,7 @@ class ParentClassElementsExtractor implements ParentClassElementsExtractorInterf
                     $allProperties[$property->getName()] = null;
                 }
             }
+
             $properties = $this->sortElements($inheritedProperties, $properties, $class);
         }
 
@@ -70,9 +68,9 @@ class ParentClassElementsExtractor implements ParentClassElementsExtractorInterf
 
 
     /**
-     * {@inheritdoc}
+     * @return MethodReflectionInterface[]
      */
-    public function getInheritedMethods()
+    public function getInheritedMethods(): array
     {
         $methods = [];
         $allMethods = array_flip(array_map(function (MethodReflectionInterface $methodReflection) {
@@ -87,6 +85,7 @@ class ParentClassElementsExtractor implements ParentClassElementsExtractorInterf
                     $allMethods[$method->getName()] = null;
                 }
             }
+
             $methods = $this->sortElements($inheritedMethods, $methods, $class);
         }
 
@@ -97,24 +96,25 @@ class ParentClassElementsExtractor implements ParentClassElementsExtractorInterf
     /**
      * @return ClassReflectionInterface[]
      */
-    private function getParentClassesAndInterfaces()
+    private function getParentClassesAndInterfaces(): array
     {
         return array_merge($this->reflectionClass->getParentClasses(), $this->reflectionClass->getInterfaces());
     }
 
 
     /**
-     * @param array $elements
-     * @param array $allElements
+     * @param mixed[] $elements
+     * @param mixed[] $allElements
      * @param ClassReflectionInterface $reflectionClass
-     * @return array
+     * @return mixed[]
      */
-    private function sortElements(array $elements, array $allElements, ClassReflectionInterface $reflectionClass)
+    private function sortElements(array $elements, array $allElements, ClassReflectionInterface $reflectionClass): array
     {
         if (! empty($elements)) {
             ksort($elements);
             $allElements[$reflectionClass->getName()] = array_values($elements);
         }
+
         return $allElements;
     }
 }

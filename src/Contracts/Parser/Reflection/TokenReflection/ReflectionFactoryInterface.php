@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Contracts\Parser\Reflection\TokenReflection;
 
@@ -20,19 +20,22 @@ interface ReflectionFactoryInterface
 
 
     /**
+     * @param mixed[] $settings
      * @return MagicMethodReflectionInterface
      */
-    public function createMethodMagic(array $settings);
+    public function createMethodMagic(array $settings): MagicMethodReflectionInterface;
 
 
     /**
+     * @param mixed[] $settings
      * @return MagicParameterReflectionInterface
      */
-    public function createParameterMagic(array $settings);
+    public function createParameterMagic(array $settings): MagicParameterReflectionInterface;
 
 
     /**
+     * @param mixed[] $settings
      * @return MagicPropertyReflectionInterface
      */
-    public function createPropertyMagic(array $settings);
+    public function createPropertyMagic(array $settings): MagicPropertyReflectionInterface;
 }

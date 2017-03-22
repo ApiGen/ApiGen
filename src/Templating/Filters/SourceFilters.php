@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Templating\Filters;
 
@@ -24,16 +24,13 @@ class SourceFilters extends Filters
     }
 
 
-    /**
-     * @param string $name
-     * @return string
-     */
-    public function staticFile($name)
+    public function staticFile(string $name): string
     {
         $filename = $this->configuration->getOption('destination') . '/' . $name;
         if (is_file($filename)) {
             $name .= '?' . sha1_file($filename);
         }
+
         return $name;
     }
 
@@ -43,7 +40,7 @@ class SourceFilters extends Filters
      * @param bool $withLine Include file line number into the link
      * @return string
      */
-    public function sourceUrl(ElementReflectionInterface $element, $withLine = true)
+    public function sourceUrl(ElementReflectionInterface $element, bool $withLine = true): string
     {
         $file = '';
         if ($this->isDirectUrl($element)) {
@@ -66,14 +63,12 @@ class SourceFilters extends Filters
         if ($withLine) {
             $url .= $this->getElementLinesAnchor($element);
         }
+
         return $url;
     }
 
 
-    /**
-     * @return bool
-     */
-    private function isDirectUrl(ElementReflectionInterface $element)
+    private function isDirectUrl(ElementReflectionInterface $element): bool
     {
         if ($element instanceof ClassReflectionInterface
             || $element instanceof FunctionReflectionInterface
@@ -81,20 +76,18 @@ class SourceFilters extends Filters
         ) {
             return true;
         }
+
         return false;
     }
 
 
-    /**
-     * @param LinedInterface $element
-     * @return string
-     */
-    private function getElementLinesAnchor(LinedInterface $element)
+    private function getElementLinesAnchor(LinedInterface $element): string
     {
         $anchor = '#' . $element->getStartLine();
         if ($element->getStartLine() !== $element->getEndLine()) {
             $anchor .= '-' . $element->getEndLine();
         }
+
         return $anchor;
     }
 }

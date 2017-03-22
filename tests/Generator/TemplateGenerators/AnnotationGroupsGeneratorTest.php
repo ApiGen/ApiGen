@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Tests\Generator\TemplateGenerators;
 
@@ -12,9 +12,8 @@ use ApiGen\Tests\MethodInvoker;
 use Latte\Engine;
 use Nette\Utils\Finder;
 
-class AnnotationGroupsGeneratorTest extends ContainerAwareTestCase
+final class AnnotationGroupsGeneratorTest extends ContainerAwareTestCase
 {
-
     /**
      * @var Configuration
      */
@@ -31,7 +30,7 @@ class AnnotationGroupsGeneratorTest extends ContainerAwareTestCase
     private $annotationGroupsGenerator;
 
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->configuration = $this->container->getByType(Configuration::class);
         $this->parser = $this->container->getByType(Parser::class);
@@ -39,7 +38,7 @@ class AnnotationGroupsGeneratorTest extends ContainerAwareTestCase
     }
 
 
-    public function testOptions()
+    public function testOptions(): void
     {
         $resolvedOptions = $this->configuration->resolveOptions([
             'source' => TEMP_DIR,
@@ -50,7 +49,7 @@ class AnnotationGroupsGeneratorTest extends ContainerAwareTestCase
     }
 
 
-    public function testGenerate()
+    public function testGenerate(): void
     {
         $this->setCorrectConfiguration();
         $this->annotationGroupsGenerator->generate();
@@ -58,7 +57,7 @@ class AnnotationGroupsGeneratorTest extends ContainerAwareTestCase
     }
 
 
-    public function testSetElementsWithAnnotationToTemplate()
+    public function testSetElementsWithAnnotationToTemplate(): void
     {
         $this->prepareGeneratorRequirements();
 
@@ -78,7 +77,7 @@ class AnnotationGroupsGeneratorTest extends ContainerAwareTestCase
     }
 
 
-    private function prepareGeneratorRequirements()
+    private function prepareGeneratorRequirements(): void
     {
         $this->setCorrectConfiguration();
 
@@ -86,11 +85,12 @@ class AnnotationGroupsGeneratorTest extends ContainerAwareTestCase
         foreach (Finder::findFiles('*')->in(__DIR__ . '/DeprecatedSources')->getIterator() as $file) {
             $files[] = $file;
         }
+
         $this->parser->parse($files);
     }
 
 
-    private function setCorrectConfiguration()
+    private function setCorrectConfiguration(): void
     {
         $resolvedOptions = $this->configuration->resolveOptions([
             'source' => TEMP_DIR,

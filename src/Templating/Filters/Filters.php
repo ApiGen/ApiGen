@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Templating\Filters;
 
@@ -8,36 +8,26 @@ abstract class Filters
     /**
      * Calls public method with args if exists and passes args.
      *
-     * @param string $name
-     * @throws \Exception
      * @return mixed
      */
-    public function loader($name)
+    public function loader(string $name)
     {
         if (method_exists($this, $name)) {
             $args = array_slice(func_get_args(), 1);
             return call_user_func_array([$this, $name], $args);
         }
+
         return null;
     }
 
 
-    /**
-     * @param string $string
-     * @return string
-     */
-    public static function urlize($string)
+    public static function urlize(string $string): string
     {
         return preg_replace('~[^\w]~', '.', $string);
     }
 
 
-    /**
-     * @param string $name
-     * @param bool $trimNamespaceSeparator
-     * @return string
-     */
-    protected function getTypeName($name, $trimNamespaceSeparator = true)
+    protected function getTypeName(string $name, bool $trimNamespaceSeparator = true): string
     {
         $names = [
             'int' => 'integer',
@@ -57,6 +47,7 @@ abstract class Filters
                 return $names[$clearName] . '[]';
             }
         }
+
         if (isset($names[$name])) {
             return $names[$name];
         }
@@ -66,11 +57,7 @@ abstract class Filters
     }
 
 
-    /**
-     * @param string $url
-     * @return string
-     */
-    private function url($url)
+    private function url(string $url): string
     {
         return rawurlencode($url);
     }

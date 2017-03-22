@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Parser\Tests\Reflection;
 
@@ -8,13 +8,11 @@ use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\TokenReflection\ReflectionFactoryInterface;
 use ApiGen\Parser\Broker\Backend;
 use ApiGen\Parser\Reflection\TokenReflection\ReflectionFactory;
-use ApiGen\Parser\Tests\Configuration\ParserConfiguration;
-use Mockery;
 use PHPUnit\Framework\TestCase;
 use ReflectionProperty;
 use TokenReflection\Broker;
 
-class ReflectionFunctionTest extends TestCase
+final class ReflectionFunctionTest extends TestCase
 {
 
     /**
@@ -23,7 +21,7 @@ class ReflectionFunctionTest extends TestCase
     private $reflectionFunction;
 
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $backend = new Backend($this->getReflectionFactory());
         $broker = new Broker($backend);
@@ -33,29 +31,20 @@ class ReflectionFunctionTest extends TestCase
     }
 
 
-    public function testIsValid()
-    {
-        $this->assertTrue($this->reflectionFunction->isValid());
-    }
-
-
-    public function testIsDocumented()
+    public function testIsDocumented(): void
     {
         $this->assertTrue($this->reflectionFunction->isDocumented());
     }
 
 
-    /**
-     * @return ReflectionFactoryInterface
-     */
-    private function getReflectionFactory()
+    private function getReflectionFactory(): ReflectionFactoryInterface
     {
-        $parserStorageMock = Mockery::mock(ParserStorageInterface::class);
-        $configurationMock = Mockery::mock(ConfigurationInterface::class, [
-            'getVisibilityLevel' => ReflectionProperty::IS_PUBLIC,
-            'isInternalDocumented' => false,
-            'isPhpCoreDocumented' => true,
-        ]);
+        $parserStorageMock = $this->createMock(ParserStorageInterface::class);
+        $configurationMock = $this->createMock(ConfigurationInterface::class);
+        $configurationMock->method('getVisibilityLevel')
+            ->willReturn(ReflectionProperty::IS_PUBLIC);
+        $configurationMock->method('isInternalDocumented')
+            ->willReturn(false);
         return new ReflectionFactory($configurationMock, $parserStorageMock);
     }
 }

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Parser\Reflection\Extractors;
 
@@ -8,10 +8,12 @@ use ApiGen\Parser\Reflection\ReflectionClass;
 use ApiGen\Parser\Reflection\ReflectionMethodMagic;
 use ApiGen\Parser\Reflection\TokenReflection\ReflectionFactory;
 
-class AnnotationMethodExtractor implements AnnotationMethodExtractorInterface
+final class AnnotationMethodExtractor implements AnnotationMethodExtractorInterface
 {
-
-    const PATTERN_METHOD = /** @lang RegExp */ '~^
+    /**
+     * @var string
+     */
+    public const PATTERN_METHOD = /** @lang RegExp */ '~^
         # static mark
         (?:(static)\\s+)?
         # return typehint
@@ -60,7 +62,11 @@ class AnnotationMethodExtractor implements AnnotationMethodExtractorInterface
         # description
         (.*|$)
         ~sx';
-    const PATTERN_PARAMETER = /** @lang RegExp */  '~^
+
+    /**
+     * @var string
+     */
+    public const PATTERN_PARAMETER = /** @lang RegExp */  '~^
         # argument typehint
         (?:([\\w\\\\]+(?:\\[\\])?(?:\\|[\\w\\\\]+(?:\\[\\])?)*)\\s+)?
         # pass by reference?
@@ -90,9 +96,9 @@ class AnnotationMethodExtractor implements AnnotationMethodExtractorInterface
 
 
     /**
-     * {@inheritdoc}
+     * @return ReflectionMethodMagic[]
      */
-    public function extractFromReflection(ClassReflectionInterface $reflectionClass)
+    public function extractFromReflection(ClassReflectionInterface $reflectionClass): array
     {
         $this->reflectionClass = $reflectionClass;
 
@@ -111,13 +117,13 @@ class AnnotationMethodExtractor implements AnnotationMethodExtractorInterface
      * @param string $annotation
      * @return ReflectionMethodMagic[]|array
      */
-    private function processMagicMethodAnnotation($annotation)
+    private function processMagicMethodAnnotation(string $annotation): array
     {
         if (! preg_match(self::PATTERN_METHOD, $annotation, $matches)) {
             return [];
         }
 
-        list(, $static, $returnTypeHint, $returnsReference, $name, $args, $shortDescription) = $matches;
+        [, $static, $returnTypeHint, $returnsReference, $name, $args, $shortDescription] = $matches;
 
         $startLine = $this->getStartLine($annotation);
         $endLine = $startLine + substr_count($annotation, "\n");
@@ -138,26 +144,19 @@ class AnnotationMethodExtractor implements AnnotationMethodExtractorInterface
     }
 
 
-    /**
-     * @param string $annotation
-     * @return int
-     */
-    private function getStartLine($annotation)
+    private function getStartLine(string $annotation): int
     {
         $doc = $this->reflectionClass->getDocComment();
         $tmp = $annotation;
         if ($delimiter = strpos($annotation, "\n")) {
             $tmp = substr($annotation, 0, $delimiter);
         }
+
         return $this->reflectionClass->getStartLine() + substr_count(substr($doc, 0, strpos($doc, $tmp)), "\n");
     }
 
 
-    /**
-     * @param ReflectionMethodMagic $method
-     * @param string $args
-     */
-    private function attachMethodParameters(ReflectionMethodMagic $method, $args)
+    private function attachMethodParameters(ReflectionMethodMagic $method, string $args): void
     {
         $parameters = [];
         foreach (array_filter(preg_split('~\\s*,\\s*~', $args)) as $position => $arg) {
@@ -166,7 +165,7 @@ class AnnotationMethodExtractor implements AnnotationMethodExtractorInterface
                 continue;
             }
 
-            list(, $typeHint, $passedByReference, $name, $defaultValueDefinition) = $matches;
+            [, $typeHint, $passedByReference, $name, $defaultValueDefinition] = $matches;
 
             $parameters[$name] = $this->reflectionFactory->createParameterMagic([
                 'name' => $name,
@@ -179,6 +178,7 @@ class AnnotationMethodExtractor implements AnnotationMethodExtractorInterface
             ]);
             $method->addAnnotation('param', ltrim(sprintf('%s $%s', $typeHint, $name)));
         }
+
         $method->setParameters($parameters);
     }
 }

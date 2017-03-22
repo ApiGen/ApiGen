@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Parser\Tests\Elements;
 
@@ -14,13 +14,13 @@ class ElementsTest extends TestCase
     private $elements;
 
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->elements = new Elements;
     }
 
 
-    public function testGetClassTypeList()
+    public function testGetClassTypeList(): void
     {
         $this->assertSame(
             ['classes', 'exceptions', 'interfaces', 'traits'],
@@ -29,7 +29,7 @@ class ElementsTest extends TestCase
     }
 
 
-    public function testGetAll()
+    public function testGetAll(): void
     {
         $this->assertSame(
             ['classes', 'constants', 'exceptions', 'functions', 'interfaces', 'traits'],
@@ -38,7 +38,7 @@ class ElementsTest extends TestCase
     }
 
 
-    public function testGetEmptyList()
+    public function testGetEmptyList(): void
     {
         $this->assertSame(
             [

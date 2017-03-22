@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Tests\Console\Input;
 
@@ -6,18 +6,18 @@ use ApiGen\Console\Input\LiberalFormatArgvInput;
 use ApiGen\Tests\MethodInvoker;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Input\InputDefinition;
+use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 
-class LiberalFormatArgvInputTest extends TestCase
+final class LiberalFormatArgvInputTest extends TestCase
 {
-
     /**
      * @var LiberalFormatArgvInput
      */
     private $formatLiberalArgvInput;
 
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $inputDefinition = new InputDefinition([
             new InputOption('source', null, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED),
@@ -27,14 +27,14 @@ class LiberalFormatArgvInputTest extends TestCase
     }
 
 
-    public function testGetOption()
+    public function testGetOption(): void
     {
         $this->formatLiberalArgvInput->setOption('source', ['one,two']);
         $this->assertSame(['one', 'two'], $this->formatLiberalArgvInput->getOption('source'));
     }
 
 
-    public function testGetOptions()
+    public function testGetOptions(): void
     {
         $this->formatLiberalArgvInput->setOption('source', ['one,two']);
         $this->assertSame(['one', 'two'], $this->formatLiberalArgvInput->getOptions()['source']);
@@ -43,8 +43,11 @@ class LiberalFormatArgvInputTest extends TestCase
 
     /**
      * @dataProvider getSplitByComma()
+     *
+     * @param string[]|string $input
+     * @param string[] $expected
      */
-    public function testSplitByComma($input, $expected)
+    public function testSplitByComma($input, array $expected): void
     {
         $this->assertSame(
             $expected,
@@ -54,9 +57,9 @@ class LiberalFormatArgvInputTest extends TestCase
 
 
     /**
-     * @return array[]
+     * @return string[][]
      */
-    public function getSplitByComma()
+    public function getSplitByComma(): array
     {
         return [
             [['one,two'], ['one', 'two']],
@@ -67,8 +70,11 @@ class LiberalFormatArgvInputTest extends TestCase
 
     /**
      * @dataProvider getRemoveEqualsData()
+     *
+     * @param string[]|string $input
+     * @param string[]|string $expected
      */
-    public function testRemoveEquals($input, $expected)
+    public function testRemoveEquals($input, $expected): void
     {
         $this->assertSame(
             $expected,
@@ -78,9 +84,9 @@ class LiberalFormatArgvInputTest extends TestCase
 
 
     /**
-     * @return array[]
+     * @return mixed[]
      */
-    public function getRemoveEqualsData()
+    public function getRemoveEqualsData(): array
     {
         return [
             ['=something', 'something'],

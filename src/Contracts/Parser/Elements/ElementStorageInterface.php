@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Contracts\Parser\Elements;
 
@@ -8,57 +8,56 @@ use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 
 interface ElementStorageInterface
 {
-
     /**
-     * @return array
+     * @return mixed[]
      */
-    public function getNamespaces();
-
-
-    /**
-     * @return ClassReflectionInterface[]
-     */
-    public function getClasses();
+    public function getNamespaces(): array;
 
 
     /**
      * @return ClassReflectionInterface[]
      */
-    public function getInterfaces();
+    public function getClasses(): array;
 
 
     /**
      * @return ClassReflectionInterface[]
      */
-    public function getTraits();
+    public function getInterfaces(): array;
 
 
     /**
      * @return ClassReflectionInterface[]
      */
-    public function getExceptions();
+    public function getTraits(): array;
+
+
+    /**
+     * @return ClassReflectionInterface[]
+     */
+    public function getExceptions(): array;
 
 
     /**
      * @return ConstantReflectionInterface[]
      */
-    public function getConstants();
+    public function getConstants(): array;
 
 
     /**
      * @return FunctionReflectionInterface[]
      */
-    public function getFunctions();
+    public function getFunctions(): array;
 
 
     /**
      * @return ClassReflectionInterface[]
      */
-    public function getClassElements();
+    public function getClassElements(): array;
 
 
     /**
-     * @return array[]
+     * @return mixed[]
      */
-    public function getElements();
+    public function getElements(): array;
 }

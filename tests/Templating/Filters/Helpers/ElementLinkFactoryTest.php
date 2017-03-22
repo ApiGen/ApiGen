@@ -1,8 +1,7 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Tests\Templating\Filters\Helpers;
 
-use ApiGen\Contracts\Parser\Reflection\Behavior\NamedInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
@@ -10,116 +9,122 @@ use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
 use ApiGen\Templating\Filters\Helpers\ElementLinkFactory;
-use ApiGen\Templating\Filters\Helpers\ElementUrlFactory;
-use ApiGen\Templating\Filters\Helpers\LinkBuilder;
-use Mockery;
-use PHPUnit\Framework\TestCase;
+use ApiGen\Tests\ContainerAwareTestCase;
 
-class ElementLinkFactoryTest extends TestCase
+final class ElementLinkFactoryTest extends ContainerAwareTestCase
 {
-
     /**
      * @var ElementLinkFactory
      */
     private $elementLinkFactory;
 
 
-    protected function setUp()
+    protected function setUp(): void
     {
-        $this->elementLinkFactory = new ElementLinkFactory($this->getElementUrlFactoryMock(), new LinkBuilder);
+        $this->elementLinkFactory = $this->container->getByType(ElementLinkFactory::class);
     }
 
 
-    public function testCreateForElementClass()
+    public function testCreateForElementClass(): void
     {
-        $reflectionClass = Mockery::mock(ClassReflectionInterface::class);
-        $reflectionClass->shouldReceive('getName')->andReturn('SomeClass');
-        $reflectionClass->shouldReceive('getDeclaringClassName')->andReturn('declaringClass');
+        $reflectionClass = $this->createMock(ClassReflectionInterface::class);
+        $reflectionClass->method('getName')
+            ->willReturn('SomeClass');
 
         $this->assertSame(
-            '<a href="class-link-SomeClass">SomeClass</a>',
+            '<a href="class-SomeClass.html">SomeClass</a>',
             $this->elementLinkFactory->createForElement($reflectionClass)
         );
     }
 
 
-    public function testCreateForFunction()
+    public function testCreateForFunction(): void
     {
-        $reflectionFunction = Mockery::mock(FunctionReflectionInterface::class);
-        $reflectionFunction->shouldReceive('getName')->andReturn('getSome');
-        $reflectionFunction->shouldReceive('getDeclaringClassName')->andReturn('DeclaringClass');
+        $reflectionFunction = $this->createMock(FunctionReflectionInterface::class);
+        $reflectionFunction->method('getName')
+            ->willReturn('getSome');
 
         $this->assertSame(
-            '<a href="function-link-getSome">getSome()</a>',
+            '<a href="function-getSome.html">getSome()</a>',
             $this->elementLinkFactory->createForElement($reflectionFunction)
         );
     }
 
 
-    public function testCreateForConstant()
+    public function testCreateForConstant(): void
     {
-        $reflectionConstant = Mockery::mock(ConstantReflectionInterface::class);
-        $reflectionConstant->shouldReceive('getName')->andReturn('SOME_CONSTANT');
-        $reflectionConstant->shouldReceive('getDeclaringClassName')->andReturnNull();
-        $reflectionConstant->shouldReceive('inNamespace')->andReturn(false);
+        $reflectionConstant = $this->createMock(ConstantReflectionInterface::class);
+        $reflectionConstant->method('getName')
+            ->willReturn('SOME_CONSTANT');
+        $reflectionConstant->method('inNamespace')
+            ->willReturn(false);
 
         $this->assertSame(
-            '<a href="constant-link-SOME_CONSTANT"><b>SOME_CONSTANT</b></a>',
+            '<a href="constant-SOME_CONSTANT.html"><b>SOME_CONSTANT</b></a>',
             $this->elementLinkFactory->createForElement($reflectionConstant)
         );
     }
 
 
-    public function testCreateForConstantInClass()
+    public function testCreateForConstantInClass(): void
     {
-        $reflectionConstant = Mockery::mock(ConstantReflectionInterface::class);
-        $reflectionConstant->shouldReceive('getName')->andReturn('SOME_CONSTANT');
-        $reflectionConstant->shouldReceive('getDeclaringClassName')->andReturn('DeclaringClass');
+        $reflectionConstant = $this->createMock(ConstantReflectionInterface::class);
+        $reflectionConstant->method('getName')
+            ->willReturn('SOME_CONSTANT');
+        $reflectionConstant->method('getDeclaringClassName')
+            ->willReturn('DeclaringClass');
 
         $this->assertSame(
-            '<a href="constant-link-SOME_CONSTANT">DeclaringClass::<b>SOME_CONSTANT</b></a>',
+            '<a href="class-DeclaringClass.html#SOME_CONSTANT">DeclaringClass::<b>SOME_CONSTANT</b></a>',
             $this->elementLinkFactory->createForElement($reflectionConstant)
         );
     }
 
 
-    public function testCreateForElementConstantInNamespace()
+    public function testCreateForElementConstantInNamespace(): void
     {
-        $reflectionConstant = Mockery::mock(ConstantReflectionInterface::class);
-        $reflectionConstant->shouldReceive('getName')->andReturn('SOME_CONSTANT');
-        $reflectionConstant->shouldReceive('getShortName')->andReturn('SHORT_SOME_CONSTANT');
-        $reflectionConstant->shouldReceive('getDeclaringClassName')->andReturnNull();
-        $reflectionConstant->shouldReceive('inNamespace')->andReturn(true);
-        $reflectionConstant->shouldReceive('getNamespaceName')->andReturn('Namespace');
+        $reflectionConstant = $this->createMock(ConstantReflectionInterface::class);
+        $reflectionConstant->method('getName')
+            ->willReturn('SOME_CONSTANT');
+        $reflectionConstant->method('getShortName')
+            ->willReturn('SHORT_SOME_CONSTANT');
+        $reflectionConstant->method('inNamespace')
+            ->willReturn(true);
+        $reflectionConstant->method('getNamespaceName')
+            ->willReturn('Namespace');
 
         $this->assertSame(
-            '<a href="constant-link-SOME_CONSTANT">Namespace\<b>SHORT_SOME_CONSTANT</b></a>',
+            '<a href="constant-SOME_CONSTANT.html">Namespace\<b>SHORT_SOME_CONSTANT</b></a>',
             $this->elementLinkFactory->createForElement($reflectionConstant)
         );
     }
 
 
-    public function testCreateForProperty()
+    public function testCreateForProperty(): void
     {
-        $reflectionProperty = Mockery::mock(PropertyReflectionInterface::class);
-        $reflectionProperty->shouldReceive('getName')->andReturn('property');
-        $reflectionProperty->shouldReceive('getDeclaringClassName')->andReturn('SomeClass');
+        $reflectionProperty = $this->createMock(PropertyReflectionInterface::class);
+        $reflectionProperty->method('getName')
+            ->willReturn('property');
+        $reflectionProperty->method('getDeclaringClassName')
+            ->willReturn('SomeClass');
 
         $this->assertSame(
-            '<a href="property-link-property">SomeClass::<var>$property</var></a>',
+            '<a href="class-SomeClass.html#$property">SomeClass::<var>$property</var></a>',
             $this->elementLinkFactory->createForElement($reflectionProperty)
         );
     }
 
 
-    public function testCreateForMethod()
+    public function testCreateForMethod(): void
     {
-        $reflectionMethod = Mockery::mock(MethodReflectionInterface::class);
-        $reflectionMethod->shouldReceive('getName')->andReturn('method');
-        $reflectionMethod->shouldReceive('getDeclaringClassName')->andReturn('SomeClass');
+        $reflectionMethod = $this->createMock(MethodReflectionInterface::class);
+        $reflectionMethod->method('getName')
+            ->willReturn('method');
+        $reflectionMethod->method('getDeclaringClassName')
+            ->willReturn('SomeClass');
 
         $this->assertSame(
-            '<a href="method-link-method">SomeClass::method()</a>',
+            '<a href="class-SomeClass.html#_method">SomeClass::method()</a>',
             $this->elementLinkFactory->createForElement($reflectionMethod)
         );
     }
@@ -128,57 +133,22 @@ class ElementLinkFactoryTest extends TestCase
     /**
      * @expectedException \UnexpectedValueException
      */
-    public function testCreateForElementOfUnspecificType()
+    public function testCreateForElementOfUnspecificType(): void
     {
-        $reflectionElement = Mockery::mock(ElementReflectionInterface::class);
+        $reflectionElement = $this->createMock(ElementReflectionInterface::class);
         $this->elementLinkFactory->createForElement($reflectionElement);
     }
 
 
-    public function testCreateForElementWithCssClasses()
+    public function testCreateForElementWithCssClasses(): void
     {
-        $reflectionClass = Mockery::mock(ClassReflectionInterface::class);
-        $reflectionClass->shouldReceive('getName')->andReturn('SomeClass');
-        $reflectionClass->shouldReceive('getDeclaringClassName')->andReturn('someElement');
+        $reflectionClass = $this->createMock(ClassReflectionInterface::class);
+        $reflectionClass->method('getName')
+            ->willReturn('SomeClass');
 
         $this->assertSame(
-            '<a href="class-link-SomeClass" class="deprecated">SomeClass</a>',
+            '<a href="class-SomeClass.html" class="deprecated">SomeClass</a>',
             $this->elementLinkFactory->createForElement($reflectionClass, ['deprecated'])
         );
-    }
-
-
-    /**
-     * @return Mockery\MockInterface
-     */
-    private function getElementUrlFactoryMock()
-    {
-        $elementUrlFactoryMock = Mockery::mock(ElementUrlFactory::class);
-        $elementUrlFactoryMock->shouldReceive('createForClass')->andReturnUsing(
-            function (NamedInterface $reflectionClass) {
-                return 'class-link-' . $reflectionClass->getName();
-            }
-        );
-        $elementUrlFactoryMock->shouldReceive('createForConstant')->andReturnUsing(
-            function (NamedInterface $reflectionConstant) {
-                return 'constant-link-' . $reflectionConstant->getName();
-            }
-        );
-        $elementUrlFactoryMock->shouldReceive('createForFunction')->andReturnUsing(
-            function (NamedInterface $reflectionFunction) {
-                return 'function-link-' . $reflectionFunction->getName();
-            }
-        );
-        $elementUrlFactoryMock->shouldReceive('createForProperty')->andReturnUsing(
-            function (NamedInterface $reflectionProperty) {
-                return 'property-link-' . $reflectionProperty->getName();
-            }
-        );
-        $elementUrlFactoryMock->shouldReceive('createForMethod')->andReturnUsing(
-            function (NamedInterface $reflectionMethod) {
-                return 'method-link-' . $reflectionMethod->getName();
-            }
-        );
-        return $elementUrlFactoryMock;
     }
 }

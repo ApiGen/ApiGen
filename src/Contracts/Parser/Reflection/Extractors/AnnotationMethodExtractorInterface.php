@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Contracts\Parser\Reflection\Extractors;
 
@@ -11,5 +11,5 @@ interface AnnotationMethodExtractorInterface
     /**
      * @return MagicMethodReflectionInterface[]
      */
-    public function extractFromReflection(ClassReflectionInterface $classReflection);
+    public function extractFromReflection(ClassReflectionInterface $classReflection): array;
 }

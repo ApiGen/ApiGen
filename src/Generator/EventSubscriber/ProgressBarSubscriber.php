@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Generator\EventSubscriber;
 
@@ -6,7 +6,7 @@ use ApiGen\Contracts\Console\Helper\ProgressBarInterface;
 use ApiGen\Generator\Event\GenerateProgressEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class ProgressBarSubscriber implements EventSubscriberInterface
+final class ProgressBarSubscriber implements EventSubscriberInterface
 {
 
     /**
@@ -22,9 +22,9 @@ class ProgressBarSubscriber implements EventSubscriberInterface
 
 
     /**
-     * {@inheritdoc}
+     * @return string[]
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             GenerateProgressEvent::class => 'generateProgress'
@@ -32,7 +32,7 @@ class ProgressBarSubscriber implements EventSubscriberInterface
     }
 
 
-    public function generateProgress()
+    public function generateProgress(): void
     {
         $this->progressBar->increment(1);
     }

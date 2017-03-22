@@ -1,22 +1,13 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Templating\Filters;
 
-use ApiGen;
-use ApiGen\Configuration\Configuration;
-use ApiGen\Configuration\ConfigurationOptions as CO;
+use ApiGen\Configuration\ConfigurationOptions;
+use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use Nette\Utils\Strings;
 
-class AnnotationFilters extends Filters
+final class AnnotationFilters extends Filters
 {
-
-    /**
-     * @var array
-     */
-    private $rename = [
-        'usedby' => 'used by'
-    ];
-
     /**
      * @var string[]
      */
@@ -26,39 +17,46 @@ class AnnotationFilters extends Filters
     ];
 
     /**
-     * @var Configuration
+     * @var ConfigurationInterface
      */
     private $configuration;
 
 
-    public function __construct(Configuration $configuration)
+    public function __construct(ConfigurationInterface $configuration)
     {
         $this->configuration = $configuration;
     }
 
 
     /**
-     * @param string $name
-     * @return string
+     * Removed, only for BC with Themes.
+     *
+     * @param string[] $annotations
+     * @return string[]
      */
-    public function annotationBeautify($name)
+    public function annotationSort(array $annotations): array
     {
-        if (isset($this->rename[$name])) {
-            $name = $this->rename[$name];
-        }
+        return $annotations;
+    }
+
+
+    public function annotationBeautify(string $name): string
+    {
         return Strings::firstUpper($name);
     }
 
 
     /**
-     * @return array
+     * @param string[] $annotations
+     * @param string[] $customToRemove
+     * @return string[]
      */
-    public function annotationFilter(array $annotations, array $customToRemove = [])
+    public function annotationFilter(array $annotations, array $customToRemove = []): array
     {
         $annotations = $this->filterOut($annotations, $this->remove);
         $annotations = $this->filterOut($annotations, $customToRemove);
 
-        if (! $this->configuration->getOption(CO::INTERNAL)) {
+        if (! $this->configuration->getOption(ConfigurationOptions::INTERNAL)) {
             unset($annotations['internal']);
         }
 
@@ -67,23 +65,16 @@ class AnnotationFilters extends Filters
 
 
     /**
-     * @deprecated since 4.2. To be removed in 5.0.
-     * @return array
+     * @param string[] $annotations
+     * @param string[] $toRemove
+     * @return string[]
      */
-    public function annotationSort(array $annotations)
-    {
-        return $annotations;
-    }
-
-
-    /**
-     * @return array
-     */
-    private function filterOut(array $annotations, array $toRemove)
+    private function filterOut(array $annotations, array $toRemove): array
     {
         foreach ($toRemove as $annotation) {
             unset($annotations[$annotation]);
         }
+
         return $annotations;
     }
 }

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Parser\Tests\Reflection;
 
@@ -8,22 +8,20 @@ use ApiGen\Contracts\Parser\Reflection\TokenReflection\ReflectionFactoryInterfac
 use ApiGen\Parser\Broker\Backend;
 use ApiGen\Parser\Reflection\ReflectionBase;
 use ApiGen\Parser\Reflection\TokenReflection\ReflectionFactory;
-use ApiGen\Parser\Tests\MethodInvoker;
-use Mockery;
+use ApiGen\Tests\MethodInvoker;
 use PHPUnit\Framework\TestCase;
 use ReflectionProperty;
 use TokenReflection\Broker;
 
-class ReflectionBaseTest extends TestCase
+final class ReflectionBaseTest extends TestCase
 {
-
     /**
      * @var ReflectionBase
      */
     private $reflectionClass;
 
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $backend = new Backend($this->getReflectionFactory());
         $broker = new Broker($backend);
@@ -33,69 +31,67 @@ class ReflectionBaseTest extends TestCase
     }
 
 
-    public function testGetName()
+    public function testGetName(): void
     {
         $this->assertSame('Project\ReflectionMethod', $this->reflectionClass->getName());
     }
 
 
-    public function testGetPrettyName()
+    public function testGetPrettyName(): void
     {
         $this->assertSame('Project\ReflectionMethod', $this->reflectionClass->getPrettyName());
     }
 
 
-    public function testIsInternal()
+    public function testIsInternal(): void
     {
         $this->assertFalse($this->reflectionClass->isInternal());
     }
 
 
-    public function testIsTokenized()
+    public function testIsTokenized(): void
     {
         $this->assertTrue($this->reflectionClass->isTokenized());
     }
 
 
-    public function testGetFileName()
+    public function testGetFileName(): void
     {
         $this->assertStringEndsWith('ReflectionMethod.php', $this->reflectionClass->getFileName());
     }
 
 
-    public function testGetStartLine()
+    public function testGetStartLine(): void
     {
-        $this->assertSame(11, $this->reflectionClass->getStartLine());
+        $this->assertSame(10, $this->reflectionClass->getStartLine());
     }
 
 
-    public function testGetEndLine()
+    public function testGetEndLine(): void
     {
-        $this->assertSame(43, $this->reflectionClass->getEndLine());
+        $this->assertSame(42, $this->reflectionClass->getEndLine());
     }
 
 
-    public function testGetParsedClasses()
+    public function testGetParsedClasses(): void
     {
         $parsedClasses = MethodInvoker::callMethodOnObject($this->reflectionClass, 'getParsedClasses');
         $this->assertCount(1, $parsedClasses);
     }
 
 
-    /**
-     * @return ReflectionFactoryInterface
-     */
-    private function getReflectionFactory()
+    private function getReflectionFactory(): ReflectionFactoryInterface
     {
-        $parserStorageMock = Mockery::mock(ParserStorageInterface::class, [
-            'getElementsByType' => ['...']
-        ]);
+        $parserStorageMock = $this->createMock(ParserStorageInterface::class);
+        $parserStorageMock->method('getElementsByType')
+            ->willReturn(['...']);
 
-        $configurationMock = Mockery::mock(ConfigurationInterface::class, [
-            'getVisibilityLevel' => ReflectionProperty::IS_PUBLIC,
-            'isInternalDocumented' => false,
-            'isPhpCoreDocumented' => true
-        ]);
+        $configurationMock = $this->createMock(ConfigurationInterface::class);
+        $configurationMock->method('getVisibilityLevel')
+            ->willReturn(ReflectionProperty::IS_PUBLIC);
+        $configurationMock->method('isInternalDocumented')
+            ->willReturn(false);
+
         return new ReflectionFactory($configurationMock, $parserStorageMock);
     }
 }

@@ -1,10 +1,9 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Tests\Generator\TemplateGenerators;
 
 use ApiGen\Configuration\Configuration;
 use ApiGen\Generator\TemplateGenerators\OpensearchGenerator;
-use ApiGen\Generator\TemplateGenerators\OverviewGenerator;
 use ApiGen\Tests\ContainerAwareTestCase;
 
 class OpensearchGeneratorTest extends ContainerAwareTestCase
@@ -21,14 +20,14 @@ class OpensearchGeneratorTest extends ContainerAwareTestCase
     private $opensearchGenerator;
 
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->configuration = $this->container->getByType(Configuration::class);
         $this->opensearchGenerator = $this->container->getByType(OpensearchGenerator::class);
     }
 
 
-    public function testIsAllowed()
+    public function testIsAllowed(): void
     {
         $this->configuration->resolveOptions([
             'destination' => TEMP_DIR . '/api',
@@ -42,7 +41,7 @@ class OpensearchGeneratorTest extends ContainerAwareTestCase
     }
 
 
-    public function testGenerate()
+    public function testGenerate(): void
     {
         $this->setCorrectConfiguration();
         $this->opensearchGenerator->generate();
@@ -50,7 +49,7 @@ class OpensearchGeneratorTest extends ContainerAwareTestCase
     }
 
 
-    private function setCorrectConfiguration()
+    private function setCorrectConfiguration(): void
     {
         $this->configuration->resolveOptions([
             'destination' => TEMP_DIR . '/api',

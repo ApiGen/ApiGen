@@ -1,10 +1,10 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Templating;
 
-use ApiGen\Configuration\Configuration;
-use ApiGen\Configuration\ConfigurationOptions as CO;
-use ApiGen\Configuration\Theme\ThemeConfigOptions as TCO;
+use ApiGen\Configuration\ConfigurationOptions;
+use ApiGen\Configuration\Theme\ThemeConfigOptions;
+use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
@@ -12,12 +12,12 @@ use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Templating\Filters\Helpers\ElementUrlFactory;
 use ApiGen\Templating\Filters\NamespaceUrlFilters;
 use ApiGen\Templating\Filters\SourceFilters;
+use Exception;
 
-class TemplateNavigator
+final class TemplateNavigator
 {
-
     /**
-     * @var Configuration
+     * @var ConfigurationInterface
      */
     private $configuration;
 
@@ -38,7 +38,7 @@ class TemplateNavigator
 
 
     public function __construct(
-        Configuration $configuration,
+        ConfigurationInterface $configuration,
         SourceFilters $sourceFilters,
         ElementUrlFactory $elementUrlFactory,
         NamespaceUrlFilters $namespaceUrlFilters
@@ -50,89 +50,82 @@ class TemplateNavigator
     }
 
 
-    /**
-     * @param string $name
-     * @return string
-     */
-    public function getTemplatePath($name)
+    public function getTemplatePath(string $name): string
     {
         $options = $this->configuration->getOptions();
-        return $options[CO::TEMPLATE][TCO::TEMPLATES][$name]['template'];
+        $templates = $options[ConfigurationOptions::TEMPLATE][ThemeConfigOptions::TEMPLATES];
+
+        if (! isset($templates[$name])) {
+            throw new Exception(sprintf(
+                'Template for "%s" not found. Available templates: "%s".',
+                $name,
+                implode('", "', array_keys($templates))
+            ));
+        }
+
+        return $templates[$name]['template'];
     }
 
 
-    /**
-     * @param string $name
-     * @return string
-     */
-    public function getTemplateFileName($name)
+    public function getTemplateFileName(string $name): string
     {
         $options = $this->configuration->getOptions();
-        return $this->getDestination() . '/' . $options[CO::TEMPLATE][TCO::TEMPLATES][$name]['filename'];
+        return $this->getDestination()
+            . DIRECTORY_SEPARATOR
+            . $options[ConfigurationOptions::TEMPLATE][ThemeConfigOptions::TEMPLATES][$name]['filename'];
     }
 
 
-    /**
-     * @param string $namespace
-     * @return string
-     */
-    public function getTemplatePathForNamespace($namespace)
+    public function getTemplatePathForNamespace(string $namespace): string
     {
-        return $this->getDestination() . '/' . $this->namespaceUrlFilters->namespaceUrl($namespace);
+        return $this->getDestination()
+            . DIRECTORY_SEPARATOR
+            . $this->namespaceUrlFilters->namespaceUrl($namespace);
     }
 
 
-    /**
-     * @return string
-     */
-    public function getTemplatePathForClass(ClassReflectionInterface $element)
+    public function getTemplatePathForClass(ClassReflectionInterface $element): string
     {
-        return $this->getDestination() . '/' . $this->elementUrlFactory->createForClass($element);
+        return $this->getDestination()
+            . DIRECTORY_SEPARATOR
+            . $this->elementUrlFactory->createForClass($element);
     }
 
 
-    /**
-     * @return string
-     */
-    public function getTemplatePathForConstant(ConstantReflectionInterface $element)
+    public function getTemplatePathForConstant(ConstantReflectionInterface $element): string
     {
-        return $this->getDestination() . '/' . $this->elementUrlFactory->createForConstant($element);
+        return $this->getDestination()
+            . DIRECTORY_SEPARATOR
+            . $this->elementUrlFactory->createForConstant($element);
     }
 
 
-    /**
-     * @return string
-     */
-    public function getTemplatePathForFunction(FunctionReflectionInterface $element)
+    public function getTemplatePathForFunction(FunctionReflectionInterface $element): string
     {
-        return $this->getDestination() . '/' . $this->elementUrlFactory->createForFunction($element);
+        return $this->getDestination()
+            . DIRECTORY_SEPARATOR
+            . $this->elementUrlFactory->createForFunction($element);
     }
 
 
-    /**
-     * @return string
-     */
-    public function getTemplatePathForSourceElement(ElementReflectionInterface $element)
+    public function getTemplatePathForSourceElement(ElementReflectionInterface $element): string
     {
-        return $this->getDestination() . '/' . $this->sourceFilters->sourceUrl($element, false);
+        return $this->getDestination()
+            . DIRECTORY_SEPARATOR
+            . $this->sourceFilters->sourceUrl($element, false);
     }
 
 
-    /**
-     * @param string $element
-     * @return string
-     */
-    public function getTemplatePathForAnnotationGroup($element)
+    public function getTemplatePathForAnnotationGroup(string $element): string
     {
-        return $this->getDestination() . '/' . $this->elementUrlFactory->createForAnnotationGroup($element);
+        return $this->getDestination()
+            . DIRECTORY_SEPARATOR
+            . $this->elementUrlFactory->createForAnnotationGroup($element);
     }
 
 
-    /**
-     * @return string
-     */
-    private function getDestination()
+    private function getDestination(): string
     {
-        return $this->configuration->getOption(CO::DESTINATION);
+        return (string) $this->configuration->getOption(ConfigurationOptions::DESTINATION);
     }
 }

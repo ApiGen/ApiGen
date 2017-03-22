@@ -1,22 +1,21 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Parser\Tests\Broker;
 
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
+use ApiGen\Contracts\Parser\Broker\BackendInterface;
 use ApiGen\Contracts\Parser\ParserStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\TokenReflection\ReflectionFactoryInterface;
 use ApiGen\Parser\Broker\Backend;
 use ApiGen\Parser\Reflection\TokenReflection\ReflectionFactory;
-use Mockery;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
 use TokenReflection\Broker;
 
-class BackendTest extends TestCase
+final class BackendTest extends TestCase
 {
-
     /**
      * @var BackendInterface
      */
@@ -28,14 +27,14 @@ class BackendTest extends TestCase
     private $broker;
 
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->backend = new Backend($this->getReflectionFactory());
         $this->broker = new Broker($this->backend);
     }
 
 
-    public function testGetClasses()
+    public function testGetClasses(): void
     {
         $this->broker->processDirectory(__DIR__ . '/BackendSource');
         $classes = $this->backend->getClasses();
@@ -48,7 +47,7 @@ class BackendTest extends TestCase
     }
 
 
-    public function testGetFunctions()
+    public function testGetFunctions(): void
     {
         $this->broker->processDirectory(__DIR__ . '/BackendSource');
         $functions = $this->backend->getFunctions();
@@ -61,7 +60,7 @@ class BackendTest extends TestCase
     }
 
 
-    public function testGetConstants()
+    public function testGetConstants(): void
     {
         $this->broker->processDirectory(__DIR__ . '/BackendSource');
         $constants = $this->backend->getConstants();
@@ -77,7 +76,7 @@ class BackendTest extends TestCase
     /**
      * @param object $object
      */
-    private function checkLoadedProperties($object)
+    private function checkLoadedProperties($object): void
     {
         $this->assertInstanceOf(
             ConfigurationInterface::class,
@@ -86,7 +85,7 @@ class BackendTest extends TestCase
 
         $this->assertInstanceOf(
             ParserStorageInterface::class,
-            Assert::getObjectAttribute($object, 'parserResult')
+            Assert::getObjectAttribute($object, 'parserStorage')
         );
 
         $this->assertInstanceOf(
@@ -96,17 +95,15 @@ class BackendTest extends TestCase
     }
 
 
-    /**
-     * @return ReflectionFactory
-     */
-    private function getReflectionFactory()
+    private function getReflectionFactory(): ReflectionFactory
     {
-        $parserStoragetMock = Mockery::mock(ParserStorageInterface::class);
-        $configurationMock = Mockery::mock(ConfigurationInterface::class, [
-            'isPhpCoreDocumented' => true,
-            'isInternalDocumented' => true,
-            'getVisibilityLevel' => 1
-        ]);
+        $parserStoragetMock = $this->createMock(ParserStorageInterface::class);
+        $configurationMock = $this->createMock(ConfigurationInterface::class);
+        $configurationMock->method('isInternalDocumented')
+            ->willReturn(true);
+        $configurationMock->method('getVisibilityLevel')
+            ->willReturn(1);
+
         return new ReflectionFactory($configurationMock, $parserStoragetMock);
     }
 }

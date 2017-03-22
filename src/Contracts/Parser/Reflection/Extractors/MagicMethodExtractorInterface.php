@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Contracts\Parser\Reflection\Extractors;
 
@@ -7,9 +7,8 @@ use ApiGen\Contracts\Parser\Reflection\Magic\MagicMethodReflectionInterface;
 
 interface MagicMethodExtractorInterface
 {
-
     /**
      * @return MagicMethodReflectionInterface[]
      */
-    public function extractFromClass(ClassReflectionInterface $classReflection);
+    public function extractFromClass(ClassReflectionInterface $classReflection): array;
 }

@@ -1,13 +1,14 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Parser\Reflection;
 
+use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\Magic\MagicMethodReflectionInterface;
 use ApiGen\Parser\Reflection\Parts\IsDocumentedMagic;
 use ApiGen\Parser\Reflection\Parts\StartLineEndLine;
 use ApiGen\Parser\Reflection\Parts\StartPositionEndPositionMagic;
 
-class ReflectionMethodMagic extends ReflectionMethod implements MagicMethodReflectionInterface
+final class ReflectionMethodMagic extends ReflectionMethod implements MagicMethodReflectionInterface
 {
 
     use IsDocumentedMagic;
@@ -40,6 +41,9 @@ class ReflectionMethodMagic extends ReflectionMethod implements MagicMethodRefle
     private $static;
 
 
+    /**
+     * @param mixed[]
+     */
     public function __construct(array $settings)
     {
         $this->name = $settings['name'];
@@ -55,259 +59,183 @@ class ReflectionMethodMagic extends ReflectionMethod implements MagicMethodRefle
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getShortDescription()
+    public function getShortDescription(): string
     {
         return $this->shortDescription;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getLongDescription()
+    public function getLongDescription(): string
     {
         return $this->shortDescription;
     }
 
 
-    /**
-     * @return bool
-     */
-    public function returnsReference()
+    public function returnsReference(): bool
     {
         return $this->returnsReference;
     }
 
 
-    /**
-     * @return bool
-     */
-    public function isMagic()
+    public function isMagic(): bool
     {
         return true;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getShortName()
+    public function getShortName(): string
     {
         return $this->name;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isDeprecated()
+    public function isDeprecated(): bool
     {
         return $this->declaringClass->isDeprecated();
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getPackageName()
-    {
-        return $this->declaringClass->getPackageName();
-    }
-
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getNamespaceName()
+    public function getNamespaceName(): string
     {
         return $this->declaringClass->getNamespaceName();
     }
 
 
     /**
-     * {@inheritdoc}
+     * @return mixed[]
      */
-    public function getAnnotations()
+    public function getAnnotations(): array
     {
         if ($this->annotations === null) {
             $this->annotations = [];
         }
+
         return $this->annotations;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDeclaringClass()
+    public function getDeclaringClass(): ClassReflectionInterface
     {
         return $this->declaringClass;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDeclaringClassName()
+    public function getDeclaringClassName(): string
     {
-        return $this->declaringClass->getName();
+        return (string) $this->declaringClass->getName();
     }
 
 
-    /**
-     * @return bool
-     */
-    public function isAbstract()
+    public function isAbstract(): bool
     {
         return false;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isFinal()
+    public function isFinal(): bool
     {
         return false;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isPrivate()
+    public function isPrivate(): bool
     {
         return false;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isProtected()
+    public function isProtected(): bool
     {
         return false;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isPublic()
+    public function isPublic(): bool
     {
         return true;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isStatic()
+    public function isStatic(): bool
     {
         return $this->static;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDeclaringTrait()
+    public function getDeclaringTrait(): ?ClassReflectionInterface
     {
         return $this->declaringClass->isTrait() ? $this->declaringClass : null;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDeclaringTraitName()
+    public function getDeclaringTraitName(): string
     {
         if ($declaringTrait = $this->getDeclaringTrait()) {
             return $declaringTrait->getName();
         }
-        return null;
+
+        return '';
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getOriginalName()
+    public function getOriginalName(): string
     {
         return $this->getName();
     }
 
 
     /**
-     * {@inheritdoc}
+     * @return mixed[]
      */
-    public function getParameters()
+    public function getParameters(): array
     {
         return $this->parameters;
     }
 
 
     /**
-     * {@inheritdoc}
+     * @param mixed[] $parameters
      */
-    public function setParameters(array $parameters)
+    public function setParameters(array $parameters): void
     {
         $this->parameters = $parameters;
     }
 
 
     /**
-     * {@inheritdoc}
+     * @return string[]
      */
-    public function getNamespaceAliases()
+    public function getNamespaceAliases(): array
     {
         return $this->declaringClass->getNamespaceAliases();
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getPrettyName()
+    public function getPrettyName(): string
     {
         return sprintf('%s::%s()', $this->declaringClass->getName(), $this->name);
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getFileName()
+    public function getFileName(): string
     {
         return $this->declaringClass->getFileName();
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isTokenized()
+    public function isTokenized(): bool
     {
         return true;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDocComment()
+    public function getDocComment(): string
     {
         $docComment = "/**\n";
 
@@ -333,10 +261,7 @@ class ReflectionMethodMagic extends ReflectionMethod implements MagicMethodRefle
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function hasAnnotation($name)
+    public function hasAnnotation(string $name): bool
     {
         $annotations = $this->getAnnotations();
         return array_key_exists($name, $annotations);
@@ -344,14 +269,15 @@ class ReflectionMethodMagic extends ReflectionMethod implements MagicMethodRefle
 
 
     /**
-     * {@inheritdoc}
+     * @return mixed[]
      */
-    public function getAnnotation($name)
+    public function getAnnotation(string $name): array
     {
         $annotations = $this->getAnnotations();
         if (array_key_exists($name, $annotations)) {
             return $annotations[$name];
         }
-        return null;
+
+        return [];
     }
 }

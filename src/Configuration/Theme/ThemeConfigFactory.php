@@ -1,13 +1,22 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Configuration\Theme;
 
-interface ThemeConfigFactory
+final class ThemeConfigFactory
 {
-
     /**
-     * @param string $filePath
-     * @return ThemeConfig
+     * @var ThemeConfigOptionsResolver
      */
-    public function create($filePath);
+    private $themeConfigOptionsResolver;
+
+    public function __construct(ThemeConfigOptionsResolver $themeConfigOptionsResolver)
+    {
+        $this->themeConfigOptionsResolver = $themeConfigOptionsResolver;
+    }
+
+
+    public function create(string $filePath): ThemeConfig
+    {
+        return new ThemeConfig($filePath, $this->themeConfigOptionsResolver);
+    }
 }

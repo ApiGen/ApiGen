@@ -1,5 +1,4 @@
-<?php
-
+<?php declare(strict_types=1);
 /**
  * @author ApiGen
  * @licence MIT
@@ -25,7 +24,7 @@ class ReflectionMethod
 {
 
     /**
-     * @param int
+     * @var int
      */
     public $memberCount = 52;
 
@@ -35,7 +34,7 @@ class ReflectionMethod
      *
      * @param int|string $url the URL of the API endpoint
      * @param mixed $data and array or a blob of data to be sent
-     * @param array $headers add optional headers
+     * @param mixed[] $headers add optional headers
      */
     public function methodWithArgs($url = 1, $data = null, $headers = [])
     {

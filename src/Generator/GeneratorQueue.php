@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Generator;
 
@@ -8,9 +8,8 @@ use ApiGen\Contracts\Generator\StepCounterInterface;
 use ApiGen\Contracts\Generator\TemplateGenerators\ConditionalTemplateGeneratorInterface;
 use ApiGen\Contracts\Generator\TemplateGenerators\TemplateGeneratorInterface;
 
-class GeneratorQueue implements GeneratorQueueInterface
+final class GeneratorQueue implements GeneratorQueueInterface
 {
-
     /**
      * @var ProgressBarInterface
      */
@@ -28,55 +27,38 @@ class GeneratorQueue implements GeneratorQueueInterface
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function run()
+    public function run(): void
     {
         $this->progressBar->init($this->getStepCount());
+
         foreach ($this->getAllowedQueue() as $templateGenerator) {
             $templateGenerator->generate();
         }
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function addToQueue(TemplateGeneratorInterface $templateGenerator)
+    public function addToQueue(TemplateGeneratorInterface $templateGenerator): void
     {
         $this->queue[] = $templateGenerator;
     }
 
 
     /**
-     * {@inheritdoc}
-     */
-    public function getQueue()
-    {
-        return $this->queue;
-    }
-
-
-    /**
      * @return TemplateGeneratorInterface[]
      */
-    private function getAllowedQueue()
+    private function getAllowedQueue(): array
     {
         return array_filter($this->queue, function (TemplateGeneratorInterface $generator) {
             if ($generator instanceof ConditionalTemplateGeneratorInterface) {
                 return $generator->isAllowed();
-            } else {
-                return true;
             }
+
+            return true;
         });
     }
 
 
-    /**
-     * @return int
-     */
-    private function getStepCount()
+    private function getStepCount(): int
     {
         $steps = 0;
         foreach ($this->getAllowedQueue() as $templateGenerator) {
@@ -84,6 +66,7 @@ class GeneratorQueue implements GeneratorQueueInterface
                 $steps += $templateGenerator->getStepCount();
             }
         }
+
         return $steps;
     }
 }

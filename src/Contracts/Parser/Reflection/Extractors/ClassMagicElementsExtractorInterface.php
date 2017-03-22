@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Contracts\Parser\Reflection\Extractors;
 
@@ -7,45 +7,44 @@ use ApiGen\Contracts\Parser\Reflection\Magic\MagicPropertyReflectionInterface;
 
 interface ClassMagicElementsExtractorInterface
 {
+    /**
+     * @return MagicPropertyReflectionInterface[]
+     */
+    public function getMagicProperties(): array;
+
 
     /**
      * @return MagicPropertyReflectionInterface[]
      */
-    public function getMagicProperties();
-
-
-    /**
-     * @return MagicPropertyReflectionInterface[]
-     */
-    public function getOwnMagicProperties();
-
-
-    /**
-     * @return array {[ declaringClassName => MagicMethodReflectionInterface[] ]}
-     */
-    public function getInheritedMagicProperties();
-
-
-    /**
-     * @return array {[ declaringClassName => MagicMethodReflectionInterface[] ]}
-     */
-    public function getUsedMagicProperties();
+    public function getOwnMagicProperties(): array;
 
 
     /**
      * @return MagicMethodReflectionInterface[]
      */
-    public function getMagicMethods();
+    public function getInheritedMagicProperties(): array;
 
 
     /**
      * @return MagicMethodReflectionInterface[]
      */
-    public function getOwnMagicMethods();
+    public function getUsedMagicProperties(): array;
 
 
     /**
      * @return MagicMethodReflectionInterface[]
      */
-    public function getUsedMagicMethods();
+    public function getMagicMethods(): array;
+
+
+    /**
+     * @return MagicMethodReflectionInterface[]
+     */
+    public function getOwnMagicMethods(): array;
+
+
+    /**
+     * @return MagicMethodReflectionInterface[]
+     */
+    public function getUsedMagicMethods(): array;
 }

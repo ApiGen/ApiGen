@@ -1,18 +1,18 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Parser\Reflection\Extractors;
 
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\Extractors\MagicMethodExtractorInterface;
 use ApiGen\Contracts\Parser\Reflection\Magic\MagicMethodReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 
-class MagicMethodExtractor implements MagicMethodExtractorInterface
+final class MagicMethodExtractor implements MagicMethodExtractorInterface
 {
-
     /**
-     * {@inheritdoc}
+     * @return MagicMethodReflectionInterface[]
      */
-    public function extractFromClass(ClassReflectionInterface $reflectionClass)
+    public function extractFromClass(ClassReflectionInterface $reflectionClass): array
     {
         $methods = [];
 
@@ -23,22 +23,22 @@ class MagicMethodExtractor implements MagicMethodExtractorInterface
         if ($traits = $reflectionClass->getTraits()) {
             $methods += $this->extractFromTraits($traits, $reflectionClass->isDocumented());
         }
+
         return $methods;
     }
 
 
     /**
-     * @param ClassReflectionInterface $parent
-     * @param bool $isDocumented
      * @return MagicMethodReflectionInterface[]
      */
-    private function extractFromParentClass(ClassReflectionInterface $parent, $isDocumented)
+    private function extractFromParentClass(ClassReflectionInterface $parent, bool $isDocumented): array
     {
         $methods = [];
         while ($parent) {
             $methods = $this->extractOwnFromClass($parent, $isDocumented, $methods);
             $parent = $parent->getParentClass();
         }
+
         return $methods;
     }
 
@@ -48,15 +48,17 @@ class MagicMethodExtractor implements MagicMethodExtractorInterface
      * @param bool $isDocumented
      * @return MagicMethodReflectionInterface[]
      */
-    private function extractFromTraits($traits, $isDocumented)
+    private function extractFromTraits(array $traits, bool $isDocumented): array
     {
         $methods = [];
         foreach ($traits as $trait) {
             if (! $trait instanceof ClassReflectionInterface) {
                 continue;
             }
+
             $methods = $this->extractOwnFromClass($trait, $isDocumented, $methods);
         }
+
         return $methods;
     }
 
@@ -64,34 +66,42 @@ class MagicMethodExtractor implements MagicMethodExtractorInterface
     /**
      * @param ClassReflectionInterface $reflectionClass
      * @param bool $isDocumented
-     * @param array $methods
+     * @param mixed[] $methods
      * @return MagicMethodReflectionInterface[]
      */
-    private function extractOwnFromClass(ClassReflectionInterface $reflectionClass, $isDocumented, array $methods)
-    {
+    private function extractOwnFromClass(
+        ClassReflectionInterface $reflectionClass,
+        bool $isDocumented,
+        array $methods
+    ): array {
         foreach ($reflectionClass->getOwnMagicMethods() as $method) {
             if ($this->canBeExtracted($isDocumented, $methods, $method)) {
                 $methods[$method->getName()] = $method;
             }
         }
+
         return $methods;
     }
 
 
     /**
      * @param bool $isDocumented
-     * @param array $methods
+     * @param MethodReflectionInterface[] $methods
      * @param MagicMethodReflectionInterface $methodReflection
-     * @return bool
      */
-    private function canBeExtracted($isDocumented, array $methods, MagicMethodReflectionInterface $methodReflection)
-    {
+    private function canBeExtracted(
+        bool $isDocumented,
+        array $methods,
+        MagicMethodReflectionInterface $methodReflection
+    ): bool {
         if (isset($methods[$methodReflection->getName()])) {
             return false;
         }
+
         if ($isDocumented && ! $methodReflection->isDocumented()) {
             return false;
         }
+
         return true;
     }
 }

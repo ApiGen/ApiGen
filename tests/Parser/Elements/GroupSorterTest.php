@@ -1,34 +1,32 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Parser\Tests\Elements;
 
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Parser\Elements\Elements;
 use ApiGen\Parser\Elements\GroupSorter;
-use ApiGen\Parser\Tests\MethodInvoker;
-use Mockery;
+use ApiGen\Tests\MethodInvoker;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
 
-class GroupSorterTest extends TestCase
+final class GroupSorterTest extends TestCase
 {
-
     /**
      * @var GroupSorter
      */
     private $groupSorter;
 
 
-    protected function setUp()
+    protected function setUp(): void
     {
-        $configurationMock = Mockery::mock(ConfigurationInterface::class, [
-            'getMain' => ''
-        ]);
+        $configurationMock = $this->createMock(ConfigurationInterface::class);
+        $configurationMock->method('getMain')
+            ->willReturn('');
         $this->groupSorter = new GroupSorter(new Elements, $configurationMock);
     }
 
 
-    public function testSort()
+    public function testSort(): void
     {
         $groups = ['OneGroup' => [], 'OtherGroup' => [], 'OneMoreGroup' => []];
         $sortedGroups = $this->groupSorter->sort($groups);
@@ -39,7 +37,7 @@ class GroupSorterTest extends TestCase
     }
 
 
-    public function testSortNoneGroupOnly()
+    public function testSortNoneGroupOnly(): void
     {
         $groups = ['None' => []];
         $sortedGroups = $this->groupSorter->sort($groups);
@@ -47,17 +45,14 @@ class GroupSorterTest extends TestCase
     }
 
 
-    public function testIsNoneGroupOnly()
+    public function testIsNoneGroupOnly(): void
     {
         $groups['None'] = true;
         $this->assertTrue(MethodInvoker::callMethodOnObject($this->groupSorter, 'isNoneGroupOnly', [$groups]));
-
-        $groups['Packages'] = true;
-        $this->assertFalse(MethodInvoker::callMethodOnObject($this->groupSorter, 'isNoneGroupOnly', [$groups]));
     }
 
 
-    public function testConvertGroupNamesToLower()
+    public function testConvertGroupNamesToLower(): void
     {
         $groupNames = ['Some Group', 'Some other group'];
         $convertedGroupNames = MethodInvoker::callMethodOnObject(
@@ -69,7 +64,7 @@ class GroupSorterTest extends TestCase
     }
 
 
-    public function testAddMissingParentGroup()
+    public function testAddMissingParentGroup(): void
     {
         $this->assertNull(Assert::getObjectAttribute($this->groupSorter, 'groups'));
         MethodInvoker::callMethodOnObject($this->groupSorter, 'addMissingParentGroups', ['Some\Group\Name']);
@@ -81,7 +76,7 @@ class GroupSorterTest extends TestCase
     }
 
 
-    public function testAddMissingElementTypes()
+    public function testAddMissingElementTypes(): void
     {
         MethodInvoker::callMethodOnObject($this->groupSorter, 'addMissingElementTypes', ['Some\Group']);
         $groups = Assert::getObjectAttribute($this->groupSorter, 'groups');
@@ -100,7 +95,7 @@ class GroupSorterTest extends TestCase
     /**
      * @dataProvider getCompareGroupsData()
      */
-    public function testCompareGroups($one, $two, $main, $expected)
+    public function testCompareGroups(string $one, string $two, string $main, int $expected): void
     {
         $this->assertSame(
             $expected,
@@ -110,13 +105,13 @@ class GroupSorterTest extends TestCase
 
 
     /**
-     * @return array[]
+     * @return mixed[]
      */
-    public function getCompareGroupsData()
+    public function getCompareGroupsData(): array
     {
         return [
-            ['GroupOne', 'OtherGroup', null, -8],
-            ['One', 'Two', null, -5],
+            ['GroupOne', 'OtherGroup', '', -8],
+            ['One', 'Two', '', -5],
             ['One', 'Two', 'On', -1],
             ['One', 'Two', 'Tw', 1],
         ];

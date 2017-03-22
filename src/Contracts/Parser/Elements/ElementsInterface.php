@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Contracts\Parser\Elements;
 
@@ -18,17 +18,17 @@ interface ElementsInterface
     /**
      * @return string[]
      */
-    public function getClassTypeList();
+    public function getClassTypeList(): array;
 
 
     /**
      * @return string[]
      */
-    public function getAll();
+    public function getAll(): array;
 
 
     /**
-     * @return array[]
+     * @return mixed[]
      */
-    public function getEmptyList();
+    public function getEmptyList(): array;
 }

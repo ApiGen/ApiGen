@@ -1,11 +1,10 @@
-<?php
-
+<?php declare(strict_types=1);
 
 /**
- * @param array $arg
+ * @param mixed[] $arg
  * @return string
  */
-function getSomeData($arg)
+function getSomeData(array $arg)
 {
     return $arg[0];
 }
@@ -21,10 +20,6 @@ function withMagicParameters()
 }
 
 
-/**
- * @param string $value
- * @return int
- */
-function getMemoryInBytes($value)
+function getMemoryInBytes(string $value)
 {
 }

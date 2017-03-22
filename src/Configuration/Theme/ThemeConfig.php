@@ -1,13 +1,12 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Configuration\Theme;
 
 use ApiGen\Configuration\Exceptions\ConfigurationException;
-use ApiGen\Configuration\Readers\NeonFile;
+use Nette\DI\Config\Loader;
 
-class ThemeConfig
+final class ThemeConfig
 {
-
     /**
      * @var mixed[]
      */
@@ -24,14 +23,15 @@ class ThemeConfig
     private $themeConfigOptionsResolver;
 
 
-    /**
-     * @param string $filePath
-     */
-    public function __construct($filePath, ThemeConfigOptionsResolver $themeConfigOptionsResolver)
+    public function __construct(string $filePath, ThemeConfigOptionsResolver $themeConfigOptionsResolver)
     {
         if (! is_file($filePath)) {
-            throw new ConfigurationException("File $filePath doesn't exist");
+            throw new ConfigurationException(sprintf(
+                'File "%s" not found.',
+                $filePath
+            ));
         }
+
         $this->filePath = $filePath;
         $this->themeConfigOptionsResolver = $themeConfigOptionsResolver;
     }
@@ -40,14 +40,14 @@ class ThemeConfig
     /**
      * @return mixed[]
      */
-    public function getOptions()
+    public function getOptions(): array
     {
         if ($this->options === null) {
-            $file = new NeonFile($this->filePath);
-            $values = $file->read();
-            $values['templatesPath'] = dirname($this->filePath);
-            $this->options = $this->themeConfigOptionsResolver->resolve($values);
+            $options = (new Loader)->load($this->filePath);
+            $options['templatesPath'] = dirname($this->filePath);
+            $this->options = $this->themeConfigOptionsResolver->resolve($options);
         }
+
         return $this->options;
     }
 }

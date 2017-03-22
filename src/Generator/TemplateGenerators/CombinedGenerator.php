@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Generator\TemplateGenerators;
 
@@ -20,10 +20,7 @@ class CombinedGenerator implements TemplateGeneratorInterface
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function generate()
+    public function generate(): void
     {
         $this->templateFactory->createForType('combined')
             ->save();

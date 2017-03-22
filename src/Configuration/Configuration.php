@@ -1,16 +1,15 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Configuration;
 
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
 
-class Configuration implements ConfigurationInterface
+final class Configuration implements ConfigurationInterface
 {
-
     /**
-     * @var array
+     * @var mixed[]
      */
-    private $options = [];
+    private $options;
 
     /**
      * @var ConfigurationOptionsResolver
@@ -25,172 +24,145 @@ class Configuration implements ConfigurationInterface
 
 
     /**
-     * {@inheritdoc}
+     * @param mixed[] $options
+     * @return mixed[]
      */
-    public function resolveOptions(array $options)
+    public function resolveOptions(array $options): array
     {
         $options = $this->unsetConsoleOptions($options);
-        $this->options = $options = $this->configurationOptionsResolver->resolve($options);
-        return $options;
+        return $this->options = $this->configurationOptionsResolver->resolve($options);
     }
 
 
     /**
-     * {@inheritdoc}
+     * @return mixed|null
      */
-    public function getOption($name)
+    public function getOption(string $name)
     {
         if (isset($this->getOptions()[$name])) {
             return $this->getOptions()[$name];
         }
+
         return null;
     }
 
 
     /**
-     * {@inheritdoc}
+     * @return mixed[]
      */
-    public function getOptions()
+    public function getOptions(): array
     {
         if ($this->options === null) {
             $this->resolveOptions([]);
         }
+
         return $this->options;
     }
 
 
     /**
-     * {@inheritdoc}
+     * @param mixed[] $options
      */
-    public function setOptions(array $options)
+    public function setOptions(array $options): void
     {
         $this->options = $options;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getVisibilityLevel()
+    public function getVisibilityLevel(): int
     {
         return $this->options['visibilityLevels'];
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getMain()
+    public function getMain(): string
     {
         return $this->getOption('main');
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isPhpCoreDocumented()
-    {
-        return (bool) $this->getOption('php');
-    }
-
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isInternalDocumented()
+    public function isInternalDocumented(): bool
     {
         return (bool) $this->getOption('internal');
     }
 
 
     /**
-     * {@inheritdoc}
+     * @return string[]
      */
-    public function getAnnotationGroups()
+    public function getAnnotationGroups(): array
     {
         return $this->options['annotationGroups'];
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDestination()
+    public function getDestination(): string
     {
         return $this->options['destination'];
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->options['title'];
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getBaseUrl()
+    public function getBaseUrl(): string
     {
         return $this->options['baseUrl'];
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getGoogleCseId()
+    public function getGoogleCseId(): string
     {
         return $this->options['googleCseId'];
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function shouldGenerateSourceCode()
+    public function shouldGenerateSourceCode(): bool
     {
         return $this->options['sourceCode'];
     }
 
 
     /**
-     * {@inheritdoc}
+     * @return array|string[]
      */
-    public function getSource()
+    public function getSource(): array
     {
         return $this->options['source'];
     }
 
 
     /**
-     * {@inheritdoc}
+     * @return array|string[]
      */
-    public function getExclude()
+    public function getExclude(): array
     {
         return $this->options['exclude'];
     }
 
 
     /**
-     * {@inheritdoc}
+     * @return string[]
      */
-    public function getExtensions()
+    public function getExtensions(): array
     {
         return $this->options['extensions'];
     }
 
 
     /**
-     * @return array
+     * @param mixed[] $options
+     * @return mixed[]
      */
-    private function unsetConsoleOptions(array $options)
+    private function unsetConsoleOptions(array $options): array
     {
-        unset($options['config'], $options['help'], $options['version'], $options['quiet']);
+        unset(
+            $options['ansi'], $options['noAnsi'], $options['noInteraction'], $options['config'],
+            $options['help'], $options['quiet'], $options['verbose'], $options['version']
+        );
         return $options;
     }
 }

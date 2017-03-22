@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Generator\TemplateGenerators;
 
@@ -39,7 +39,7 @@ class AnnotationGroupsGenerator implements TemplateGeneratorInterface
     }
 
 
-    public function generate()
+    public function generate(): void
     {
         $annotations = $this->configuration->getOption('annotationGroups');
         foreach ($annotations as $annotation) {
@@ -53,12 +53,7 @@ class AnnotationGroupsGenerator implements TemplateGeneratorInterface
     }
 
 
-    /**
-     * @param Template $template
-     * @param string $annotation
-     * @return Template
-     */
-    private function setElementsWithAnnotationToTemplate(Template $template, $annotation)
+    private function setElementsWithAnnotationToTemplate(Template $template, string $annotation): Template
     {
         $elements = $this->elementExtractor->extractElementsByAnnotation($annotation);
 

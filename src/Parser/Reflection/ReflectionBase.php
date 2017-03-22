@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Parser\Reflection;
 
@@ -8,7 +8,7 @@ use ApiGen\Contracts\Parser\ParserStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\TokenReflection\ReflectionFactoryInterface;
 use ApiGen\Parser\Reflection\TokenReflection\ReflectionInterface;
-use Nette;
+use Nette\Object;
 use TokenReflection\IReflection;
 use TokenReflection\IReflectionClass;
 use TokenReflection\IReflectionFunction;
@@ -16,9 +16,8 @@ use TokenReflection\IReflectionMethod;
 use TokenReflection\IReflectionParameter;
 use TokenReflection\IReflectionProperty;
 
-abstract class ReflectionBase extends Nette\Object implements ReflectionInterface
+abstract class ReflectionBase extends Object implements ReflectionInterface
 {
-
     /**
      * @var string
      */
@@ -37,7 +36,7 @@ abstract class ReflectionBase extends Nette\Object implements ReflectionInterfac
     /**
      * @var ParserStorageInterface
      */
-    protected $parserResult;
+    protected $parserStorage;
 
     /**
      * @var ReflectionFactoryInterface
@@ -52,86 +51,66 @@ abstract class ReflectionBase extends Nette\Object implements ReflectionInterfac
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->reflection->getName();
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getPrettyName()
+    public function getPrettyName(): string
     {
         return $this->reflection->getPrettyName();
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isInternal()
+    public function isInternal(): bool
     {
         return $this->reflection->isInternal();
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isTokenized()
+    public function isTokenized(): bool
     {
         return $this->reflection->isTokenized();
     }
 
 
-    /**
-     * @return string
-     */
-    public function getFileName()
+    public function getFileName(): string
     {
         return $this->reflection->getFileName();
     }
 
 
-    /**
-     * @return int
-     */
-    public function getStartLine()
+    public function getStartLine(): int
     {
         $startLine = $this->reflection->getStartLine();
         if ($doc = $this->getDocComment()) {
             $startLine -= substr_count($doc, "\n") + 1;
         }
+
         return $startLine;
     }
 
 
-    /**
-     * @return int
-     */
-    public function getEndLine()
+    public function getEndLine(): int
     {
         return $this->reflection->getEndLine();
     }
 
 
-    public function setConfiguration(ConfigurationInterface $configuration)
+    public function setConfiguration(ConfigurationInterface $configuration): void
     {
         $this->configuration = $configuration;
     }
 
 
-    public function setParserResult(ParserStorageInterface $parserResult)
+    public function setParserStorage(ParserStorageInterface $parserStorage): void
     {
-        $this->parserResult = $parserResult;
+        $this->parserStorage = $parserStorage;
     }
 
 
-    public function setReflectionFactory(ReflectionFactoryInterface $reflectionFactory)
+    public function setReflectionFactory(ReflectionFactoryInterface $reflectionFactory): void
     {
         $this->reflectionFactory = $reflectionFactory;
     }
@@ -140,8 +119,8 @@ abstract class ReflectionBase extends Nette\Object implements ReflectionInterfac
     /**
      * @return ClassReflectionInterface[]
      */
-    public function getParsedClasses()
+    public function getParsedClasses(): array
     {
-        return $this->parserResult->getElementsByType(ElementsInterface::CLASSES);
+        return $this->parserStorage->getElementsByType(ElementsInterface::CLASSES);
     }
 }

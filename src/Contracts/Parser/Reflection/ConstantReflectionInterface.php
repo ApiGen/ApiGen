@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Contracts\Parser\Reflection;
 
@@ -13,10 +13,7 @@ interface ConstantReflectionInterface extends
     LinedInterface
 {
 
-    /**
-     * @return string
-     */
-    public function getTypeHint();
+    public function getTypeHint(): string;
 
 
     /**
@@ -25,8 +22,5 @@ interface ConstantReflectionInterface extends
     public function getValue();
 
 
-    /**
-     * @return string
-     */
-    public function getValueDefinition();
+    public function getValueDefinition(): string;
 }

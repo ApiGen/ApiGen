@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Parser\Elements;
 
@@ -9,9 +9,8 @@ use ApiGen\Contracts\Parser\Elements\ElementSorterInterface;
 use ApiGen\Contracts\Parser\Elements\ElementStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 
-class ElementExtractor implements ElementExtractorInterface
+final class ElementExtractor implements ElementExtractorInterface
 {
-
     /**
      * @var ElementsInterface
      */
@@ -47,9 +46,9 @@ class ElementExtractor implements ElementExtractorInterface
 
 
     /**
-     * {@inheritdoc}
+     * @return mixed[]
      */
-    public function extractElementsByAnnotation($annotation, callable $skipClassCallback = null)
+    public function extractElementsByAnnotation(string $annotation): array
     {
         $elements = $this->elements->getEmptyList();
         $elements[Elements::METHODS] = [];
@@ -66,10 +65,6 @@ class ElementExtractor implements ElementExtractorInterface
             foreach ($elementList as $class) {
                 /** @var ClassReflectionInterface $class */
                 if (! $class->isMain()) {
-                    continue;
-                }
-
-                if ($skipClassCallback && $skipClassCallback($class)) { // in case when class is prior to it's elements
                     continue;
                 }
 
@@ -96,27 +91,29 @@ class ElementExtractor implements ElementExtractorInterface
 
 
     /**
-     * @param array $elements
+     * @param mixed[] $elements
      * @param string $annotation
-     * @param array[] $storage
-     * @return array[]
+     * @param mixed[] $storage
+     * @return mixed[]
      */
-    private function extractByAnnotationAndMerge($elements, $annotation, $storage)
+    private function extractByAnnotationAndMerge(array $elements, string $annotation, array $storage): array
     {
         $foundElements = $this->elementFilter->filterByAnnotation($elements, $annotation);
+
         return array_merge($storage, array_values($foundElements));
     }
 
 
     /**
-     * @param array { key => elementList[] } $elements
-     * @return array
+     * @param mixed[] $elements
+     * @return mixed[]
      */
-    private function sortElements($elements)
+    private function sortElements(array $elements): array
     {
         foreach ($elements as $key => $elementList) {
             $this->elementSorter->sortElementsByFqn($elementList);
         }
+
         return $elements;
     }
 }

@@ -1,16 +1,16 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Parser\Reflection;
 
+use ApiGen\Contracts\Parser\Reflection\AbstractFunctionMethodReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ParameterReflectionInterface;
 
 class ReflectionParameter extends ReflectionBase implements ParameterReflectionInterface
 {
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getTypeHint()
+    public function getTypeHint(): string
     {
         if ($this->isArray()) {
             return 'array';
@@ -20,7 +20,7 @@ class ReflectionParameter extends ReflectionBase implements ParameterReflectionI
             return $className;
         } elseif ($annotations = $this->getDeclaringFunction()->getAnnotation('param')) {
             if (! empty($annotations[$this->getPosition()])) {
-                list($types) = preg_split('~\s+|$~', $annotations[$this->getPosition()], 2);
+                [$types] = preg_split('~\s+|$~', $annotations[$this->getPosition()], 2);
                 if (! empty($types) && $types[0] !== '$') {
                     return $types;
                 }
@@ -29,10 +29,7 @@ class ReflectionParameter extends ReflectionBase implements ParameterReflectionI
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDescription()
+    public function getDescription(): string
     {
         $annotations = $this->getDeclaringFunction()->getAnnotation('param');
         if (empty($annotations[$this->getPosition()])) {
@@ -44,153 +41,105 @@ class ReflectionParameter extends ReflectionBase implements ParameterReflectionI
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefaultValueDefinition()
+    public function getDefaultValueDefinition(): ?string
     {
         return $this->reflection === null ? null : $this->reflection->getDefaultValueDefinition();
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isDefaultValueAvailable()
+    public function isDefaultValueAvailable(): bool
     {
         return $this->reflection->isDefaultValueAvailable();
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getPosition()
+    public function getPosition(): int
     {
         return $this->reflection->getPosition();
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isArray()
+    public function isArray(): bool
     {
         return $this->reflection->isArray();
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isCallable()
+    public function isCallable(): bool
     {
         return $this->reflection->isCallable();
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getClass()
+    public function getClass(): ?ClassReflectionInterface
     {
-        $className = $this->reflection->getClassName();
-        return $className === null ? null : $this->getParsedClasses()[$className];
+        $className = (string) $this->reflection->getClassName();
+        return $className === '' ? null : $this->getParsedClasses()[$className];
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getClassName()
+    public function getClassName(): ?string
     {
         return $this->reflection->getClassName();
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function allowsNull()
+    public function allowsNull(): bool
     {
         return $this->reflection->allowsNull();
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isOptional()
+    public function isOptional(): bool
     {
         return $this->reflection->isOptional();
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isPassedByReference()
+    public function isPassedByReference(): bool
     {
         return $this->reflection->isPassedByReference();
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function canBePassedByValue()
+    public function canBePassedByValue(): bool
     {
         return $this->reflection->canBePassedByValue();
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDeclaringFunction()
+    public function getDeclaringFunction(): AbstractFunctionMethodReflectionInterface
     {
         $functionName = $this->reflection->getDeclaringFunctionName();
 
         if ($className = $this->reflection->getDeclaringClassName()) {
             return $this->getParsedClasses()[$className]->getMethod($functionName);
-        } else {
-            return $this->parserResult->getFunctions()[$functionName];
         }
+
+        return $this->parserStorage->getFunctions()[$functionName];
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDeclaringFunctionName()
+    public function getDeclaringFunctionName(): string
     {
-        return $this->reflection->getDeclaringFunctionName();
+        return (string) $this->reflection->getDeclaringFunctionName();
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDeclaringClass()
+    public function getDeclaringClass(): ?ClassReflectionInterface
     {
         $className = $this->reflection->getDeclaringClassName();
-        return $className === null ? null : $this->getParsedClasses()[$className];
+        return $className === '' ? null : $this->getParsedClasses()[$className];
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDeclaringClassName()
+    public function getDeclaringClassName(): string
     {
-        return $this->reflection->getDeclaringClassName();
+        return (string) $this->reflection->getDeclaringClassName();
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isUnlimited()
+    public function isUnlimited(): bool
     {
         return false;
     }

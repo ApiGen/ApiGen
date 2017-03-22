@@ -1,10 +1,11 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Templating\Filters;
 
 use ApiGen\Configuration\Configuration;
-use ApiGen\Configuration\ConfigurationOptions as CO;
+use ApiGen\Configuration\ConfigurationOptions;
 use ApiGen\Parser\Elements\ElementStorage;
+use ApiGen\Parser\Reflection\ReflectionElement;
 use ApiGen\Templating\Filters\Helpers\LinkBuilder;
 
 class NamespaceUrlFilters extends Filters
@@ -34,25 +35,17 @@ class NamespaceUrlFilters extends Filters
     }
 
 
-    /**
-     * @param string $groupName
-     * @return string
-     */
-    public function subgroupName($groupName)
+    public function subgroupName(string $groupName): string
     {
         if ($pos = strrpos($groupName, '\\')) {
             return substr($groupName, $pos + 1);
         }
+
         return $groupName;
     }
 
 
-    /**
-     * @param string $namespace
-     * @param bool $skipLast
-     * @return string
-     */
-    public function namespaceLinks($namespace, $skipLast = true)
+    public function namespaceLinks(string $namespace, bool $skipLast = true): string
     {
         if (! $this->elementStorage->getNamespaces()) {
             return $namespace;
@@ -72,14 +65,10 @@ class NamespaceUrlFilters extends Filters
     }
 
 
-    /**
-     * @param string $name
-     * @return string
-     */
-    public function namespaceUrl($name)
+    public function namespaceUrl(string $name): string
     {
         return sprintf(
-            $this->configuration->getOption(CO::TEMPLATE)['templates']['namespace']['filename'],
+            $this->configuration->getOption(ConfigurationOptions::TEMPLATE)['templates']['namespace']['filename'],
             $this->urlize($name)
         );
     }

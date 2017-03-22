@@ -1,32 +1,17 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Console\DI;
 
-use ApiGen\Console\Application;
 use Nette\DI\Compiler;
 use Nette\DI\CompilerExtension;
-use Symfony\Component\Console\Command\Command;
 
-class ConsoleExtension extends CompilerExtension
+final class ConsoleExtension extends CompilerExtension
 {
-
-    public function loadConfiguration()
+    public function loadConfiguration(): void
     {
         Compiler::loadDefinitions(
             $this->getContainerBuilder(),
             $this->loadFromFile(__DIR__ . '/services.neon')['services']
         );
-    }
-
-
-    public function beforeCompile()
-    {
-        $builder = $this->getContainerBuilder();
-        $builder->prepareClassList();
-
-        $application = $builder->getDefinition($builder->getByType(Application::class));
-        foreach ($builder->findByType(Command::class) as $definition) {
-            $application->addSetup('add', ['@' . $definition->getClass()]);
-        }
     }
 }

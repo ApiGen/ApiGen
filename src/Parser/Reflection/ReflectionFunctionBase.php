@@ -1,47 +1,41 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Parser\Reflection;
 
 use ApiGen\Contracts\Parser\Reflection\AbstractFunctionMethodReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\ParameterReflectionInterface;
 use InvalidArgumentException;
 use TokenReflection\IReflectionParameter;
 
 abstract class ReflectionFunctionBase extends ReflectionElement implements AbstractFunctionMethodReflectionInterface
 {
-
     /**
      * @var string Matches "array $arg"
      */
-    const PARAM_ANNOTATION = '~^(?:([\\w\\\\]+(?:\\|[\\w\\\\]+)*)\\s+)?\\$(\\w+)(?:\\s+(.*))?($)~s';
+    private const PARAM_ANNOTATION = '~^(?:([\\w\\\\]+(?:\\|[\\w\\\\]+)*)\\s+)?\\$(\\w+)(?:\\s+(.*))?($)~s';
 
     /**
-     * @var array
+     * @var ParameterReflectionInterface[]
      */
     protected $parameters;
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getShortName()
+    public function getShortName(): string
     {
         return $this->reflection->getShortName();
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function returnsReference()
+    public function returnsReference(): bool
     {
         return $this->reflection->returnsReference();
     }
 
 
     /**
-     * {@inheritdoc}
+     * @return ParameterReflectionInterface[]
      */
-    public function getParameters()
+    public function getParameters(): array
     {
         if ($this->parameters === null) {
             $this->parameters = array_map(function (IReflectionParameter $parameter) {
@@ -64,9 +58,9 @@ abstract class ReflectionFunctionBase extends ReflectionElement implements Abstr
 
 
     /**
-     * {@inheritdoc}
+     * @param int|string $key
      */
-    public function getParameter($key)
+    public function getParameter($key): ParameterReflectionInterface
     {
         $parameters = $this->getParameters();
 
@@ -88,17 +82,13 @@ abstract class ReflectionFunctionBase extends ReflectionElement implements Abstr
     }
 
 
-    /**
-     * @param string $annotation
-     * @param int $position
-     */
-    private function processAnnotation($annotation, $position)
+    private function processAnnotation(string $annotation, int $position): void
     {
         if (! preg_match(self::PARAM_ANNOTATION, $annotation, $matches)) {
             return;
         }
 
-        list(, $typeHint, $name) = $matches;
+        [, $typeHint, $name] = $matches;
 
         $this->parameters[$position] = $this->reflectionFactory->createParameterMagic([
             'name' => $name,

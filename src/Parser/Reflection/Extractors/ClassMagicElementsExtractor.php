@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Parser\Reflection\Extractors;
 
@@ -10,7 +10,7 @@ use ApiGen\Contracts\Parser\Reflection\Magic\MagicPropertyReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
 
-class ClassMagicElementsExtractor implements ClassMagicElementsExtractorInterface
+final class ClassMagicElementsExtractor implements ClassMagicElementsExtractorInterface
 {
 
     /**
@@ -36,18 +36,18 @@ class ClassMagicElementsExtractor implements ClassMagicElementsExtractorInterfac
 
 
     /**
-     * {@inheritdoc}
+     * @return MagicPropertyReflectionInterface[]
      */
-    public function getMagicProperties()
+    public function getMagicProperties(): array
     {
         return $this->getOwnMagicProperties() + (new MagicPropertyExtractor)->extractFromClass($this->classReflection);
     }
 
 
     /**
-     * {@inheritdoc}
+     * @return MagicPropertyReflectionInterface[]
      */
-    public function getOwnMagicProperties()
+    public function getOwnMagicProperties(): array
     {
         if ($this->ownMagicProperties === null) {
             $this->ownMagicProperties = [];
@@ -63,18 +63,18 @@ class ClassMagicElementsExtractor implements ClassMagicElementsExtractorInterfac
 
 
     /**
-     * {@inheritdoc}
+     * @return MagicMethodReflectionInterface[]
      */
-    public function getMagicMethods()
+    public function getMagicMethods(): array
     {
         return $this->getOwnMagicMethods() + (new MagicMethodExtractor)->extractFromClass($this->classReflection);
     }
 
 
     /**
-     * {@inheritdoc}
+     * @return MagicMethodReflectionInterface[]
      */
-    public function getOwnMagicMethods()
+    public function getOwnMagicMethods(): array
     {
         if ($this->ownMagicMethods === null) {
             $this->ownMagicMethods = [];
@@ -84,14 +84,15 @@ class ClassMagicElementsExtractor implements ClassMagicElementsExtractorInterfac
                 $this->ownMagicMethods += $extractor->extractFromReflection($this->classReflection);
             }
         }
+
         return $this->ownMagicMethods;
     }
 
 
     /**
-     * {@inheritdoc}
+     * @return MagicPropertyReflectionInterface[]
      */
-    public function getInheritedMagicProperties()
+    public function getInheritedMagicProperties(): array
     {
         $properties = [];
         $allProperties = array_flip(array_map(function (PropertyReflectionInterface $property) {
@@ -108,9 +109,9 @@ class ClassMagicElementsExtractor implements ClassMagicElementsExtractorInterfac
 
 
     /**
-     * {@inheritdoc}
+     * @return MagicMethodReflectionInterface[]
      */
-    public function getInheritedMagicMethods()
+    public function getInheritedMagicMethods(): array
     {
         $methods = [];
         $allMethods = array_flip(array_map(function (MethodReflectionInterface $method) {
@@ -132,9 +133,9 @@ class ClassMagicElementsExtractor implements ClassMagicElementsExtractorInterfac
 
 
     /**
-     * {@inheritdoc}
+     * @return MagicPropertyReflectionInterface[]
      */
-    public function getUsedMagicProperties()
+    public function getUsedMagicProperties(): array
     {
         $properties = [];
         $allProperties = array_flip(array_map(function (PropertyReflectionInterface $property) {
@@ -145,6 +146,7 @@ class ClassMagicElementsExtractor implements ClassMagicElementsExtractorInterfac
             if (! $trait instanceof ClassReflectionInterface) {
                 continue;
             }
+
             $usedProperties = $this->getUsedElements($trait->getOwnMagicProperties(), $allProperties);
             $properties = $this->sortElements($usedProperties, $properties, $trait);
         }
@@ -154,28 +156,30 @@ class ClassMagicElementsExtractor implements ClassMagicElementsExtractorInterfac
 
 
     /**
-     * {@inheritdoc}
+     * @return MagicMethodReflectionInterface[]
      */
-    public function getUsedMagicMethods()
+    public function getUsedMagicMethods(): array
     {
         $usedMethods = [];
         foreach ($this->getMagicMethods() as $method) {
             $declaringTraitName = $method->getDeclaringTraitName();
-            if ($declaringTraitName === null || $declaringTraitName === $this->classReflection->getName()) {
+            if ($declaringTraitName === '' || $declaringTraitName === $this->classReflection->getName()) {
                 continue;
             }
+
             $usedMethods[$declaringTraitName][$method->getName()]['method'] = $method;
         }
+
         return $usedMethods;
     }
 
 
     /**
      * @param ElementReflectionInterface[] $elementsToCheck
-     * @param array $allElements
-     * @return array
+     * @param mixed[] $allElements
+     * @return mixed[]
      */
-    private function getUsedElements(array $elementsToCheck, array &$allElements)
+    private function getUsedElements(array $elementsToCheck, array &$allElements): array
     {
         $elements = [];
         foreach ($elementsToCheck as $property) {
@@ -184,19 +188,26 @@ class ClassMagicElementsExtractor implements ClassMagicElementsExtractorInterfac
                 $allElements[$property->getName()] = null;
             }
         }
+
         return $elements;
     }
 
-
     /**
-     * @return array
+     * @param mixed[] $elements
+     * @param mixed[] $allElements
+     * @param ClassReflectionInterface $classReflection
+     * @return mixed[]
      */
-    private function sortElements(array $elements, array $allElements, ClassReflectionInterface $classReflection)
-    {
+    private function sortElements(
+        array $elements,
+        array $allElements,
+        ClassReflectionInterface $classReflection
+    ): array {
         if (! empty($elements)) {
             ksort($elements);
             $allElements[$classReflection->getName()] = array_values($elements);
         }
+
         return $allElements;
     }
 }

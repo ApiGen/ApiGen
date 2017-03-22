@@ -1,33 +1,29 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Tests\Templating\Filters;
 
-use ApiGen\Generator\Resolvers\RelativePathResolver;
 use ApiGen\Templating\Filters\PathFilters;
-use Mockery;
-use PHPUnit\Framework\TestCase;
+use ApiGen\Tests\ContainerAwareTestCase;
 
-class PathFiltersTest extends TestCase
+final class PathFiltersTest extends ContainerAwareTestCase
 {
-
     /**
      * @var PathFilters
      */
     private $pathFilters;
 
 
-    protected function setUp()
+    protected function setUp(): void
     {
-        $relativePathResolverMock = Mockery::mock(RelativePathResolver::class);
-        $relativePathResolverMock->shouldReceive('getRelativePath')->andReturnUsing(function ($arg) {
-            return '../' . $arg;
-        });
-        $this->pathFilters = new PathFilters($relativePathResolverMock);
+        $this->pathFilters = $this->container->getByType(PathFilters::class);
     }
 
 
-    public function testRelativePath()
+    public function testRelativePath(): void
     {
-        $this->assertSame('../someFile.txt', $this->pathFilters->relativePath('someFile.txt'));
+        $this->assertSame(
+            'Templating/Filters/FiltersSource/FooFilters.php',
+            $this->pathFilters->relativePath(__DIR__ . '/FiltersSource/FooFilters.php')
+        );
     }
 }

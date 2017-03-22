@@ -1,9 +1,12 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Parser\Reflection\TokenReflection;
 
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Parser\ParserStorageInterface;
+use ApiGen\Contracts\Parser\Reflection\Magic\MagicMethodReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\Magic\MagicParameterReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\Magic\MagicPropertyReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\TokenReflection\ReflectionFactoryInterface;
 use ApiGen\Parser\Reflection\ReflectionBase;
 use ApiGen\Parser\Reflection\ReflectionClass;
@@ -39,50 +42,59 @@ class ReflectionFactory implements ReflectionFactoryInterface
     private $parserStorage;
 
 
-    public function __construct(ConfigurationInterface $configuration, ParserStorageInterface $parserResult)
+    public function __construct(ConfigurationInterface $configuration, ParserStorageInterface $parserStorage)
     {
         $this->configuration = $configuration;
-        $this->parserStorage = $parserResult;
+        $this->parserStorage = $parserStorage;
     }
 
 
     /**
-     * {@inheritdoc}
+     * @param IReflectionClass|IReflectionConstant|IReflectionMethod $tokenReflection
+     * @return ReflectionClass|ReflectionConstant|ReflectionMethod
      */
     public function createFromReflection($tokenReflection)
     {
         $reflection = $this->createByReflectionType($tokenReflection);
-        return $this->setDependencies($reflection);
+        $this->setDependencies($reflection);
+        return $reflection;
     }
 
 
     /**
-     * {@inheritdoc}
+     * @param mixed[] $settings
+     * @return MagicMethodReflectionInterface
      */
-    public function createMethodMagic(array $settings)
+    public function createMethodMagic(array $settings): MagicMethodReflectionInterface
     {
         $reflection = new ReflectionMethodMagic($settings);
-        return $this->setDependencies($reflection);
+        $this->setDependencies($reflection);
+
+        return $reflection;
     }
 
 
     /**
-     * {@inheritdoc}
+     * @param mixed[] $settings
      */
-    public function createParameterMagic(array $settings)
+    public function createParameterMagic(array $settings): MagicParameterReflectionInterface
     {
         $reflection = new ReflectionParameterMagic($settings);
-        return $this->setDependencies($reflection);
+        $this->setDependencies($reflection);
+
+        return $reflection;
     }
 
 
     /**
-     * {@inheritdoc}
+     * @param mixed[] $settings
      */
-    public function createPropertyMagic(array $settings)
+    public function createPropertyMagic(array $settings): MagicPropertyReflectionInterface
     {
         $reflection = new ReflectionPropertyMagic($settings);
-        return $this->setDependencies($reflection);
+        $this->setDependencies($reflection);
+
+        return $reflection;
     }
 
 
@@ -112,14 +124,10 @@ class ReflectionFactory implements ReflectionFactoryInterface
     }
 
 
-    /**
-     * @return ReflectionBase
-     */
-    private function setDependencies(ReflectionBase $reflection)
+    private function setDependencies(ReflectionBase $reflection): void
     {
         $reflection->setConfiguration($this->configuration);
-        $reflection->setParserResult($this->parserStorage);
+        $reflection->setParserStorage($this->parserStorage);
         $reflection->setReflectionFactory($this);
-        return $reflection;
     }
 }

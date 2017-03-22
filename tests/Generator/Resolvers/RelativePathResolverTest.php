@@ -1,21 +1,22 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Tests\Generator\Resolvers;
 
-use ApiGen\Configuration\Configuration;
+use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Generator\Resolvers\RelativePathResolver;
 use ApiGen\Utils\FileSystem;
-use Mockery;
 use PHPUnit\Framework\TestCase;
 
-class RelativePathResolverTest extends TestCase
+final class RelativePathResolverTest extends TestCase
 {
 
-    public function testGetRelativePath()
+    public function testGetRelativePath(): void
     {
-        $configuration = Mockery::mock(Configuration::class);
-        $configuration->shouldReceive('getOption')->with('source')->andReturn([TEMP_DIR]);
-        $relativePathResolver = new RelativePathResolver($configuration, new FileSystem);
+        $configurationMock = $this->createMock(ConfigurationInterface::class);
+        $configurationMock->method('getOption')
+            ->willReturn([TEMP_DIR]);
+
+        $relativePathResolver = new RelativePathResolver($configurationMock, new FileSystem);
 
         $this->assertSame('some-file.txt', $relativePathResolver->getRelativePath(TEMP_DIR . '/some-file.txt'));
         $this->assertSame(
@@ -25,11 +26,13 @@ class RelativePathResolverTest extends TestCase
     }
 
 
-    public function testGetRelativePathWithWindowsPath()
+    public function testGetRelativePathWithWindowsPath(): void
     {
-        $configuration = Mockery::mock(Configuration::class);
-        $configuration->shouldReceive('getOption')->with('source')->andReturn(['C:\some\dir']);
-        $relativePathResolver = new RelativePathResolver($configuration, new FileSystem);
+        $configurationMock = $this->createMock(ConfigurationInterface::class);
+        $configurationMock->method('getOption')
+            ->willReturn(['C:\some\dir']);
+
+        $relativePathResolver = new RelativePathResolver($configurationMock, new FileSystem);
 
         $this->assertSame('file.txt', $relativePathResolver->getRelativePath('C:\some\dir\file.txt'));
         $this->assertSame('more-dir/file.txt', $relativePathResolver->getRelativePath('C:\some\dir\more-dir\file.txt'));
@@ -39,11 +42,13 @@ class RelativePathResolverTest extends TestCase
     /**
      * @expectedException \InvalidArgumentException
      */
-    public function testGetRelativePathInvalid()
+    public function testGetRelativePathInvalid(): void
     {
-        $configuration = Mockery::mock(Configuration::class);
-        $configuration->shouldReceive('getOption')->with('source')->andReturn([TEMP_DIR]);
-        $relativePathResolver = new RelativePathResolver($configuration, new FileSystem);
+        $configurationMock = $this->createMock(ConfigurationInterface::class);
+        $configurationMock->method('getOption')
+            ->willReturn([TEMP_DIR]);
+
+        $relativePathResolver = new RelativePathResolver($configurationMock, new FileSystem);
 
         $relativePathResolver->getRelativePath('/var/dir/some-strange-file.txt');
     }
@@ -52,15 +57,14 @@ class RelativePathResolverTest extends TestCase
     /**
      * Issue #408
      */
-    public function testGetRelativePathWithSourceEndingSlash()
+    public function testGetRelativePathWithSourceEndingSlash(): void
     {
-        $configuration = Mockery::mock(Configuration::class);
-        $configuration->shouldReceive('getOption')->with('source')->once()->andReturn(['ProjectBeta']);
-        $configuration->shouldReceive('getOption')->with('source')->twice()->andReturn(['ProjectBeta/']);
-        $relativePathResolver = new RelativePathResolver($configuration, new FileSystem);
+        $configurationMock = $this->createMock(ConfigurationInterface::class);
+        $configurationMock->method('getOption')
+            ->with('source')
+            ->willReturn(['ProjectBeta']);
 
-        $fileName = 'ProjectBeta/entities/Category.php';
-        $this->assertSame('entities/Category.php', $relativePathResolver->getRelativePath($fileName));
+        $relativePathResolver = new RelativePathResolver($configurationMock, new FileSystem);
 
         $fileName = 'ProjectBeta/entities/Category.php';
         $this->assertSame('entities/Category.php', $relativePathResolver->getRelativePath($fileName));

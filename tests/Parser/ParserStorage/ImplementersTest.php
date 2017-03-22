@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Parser\Tests\ParserStorage;
 
@@ -6,14 +6,14 @@ use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Parser\ParserInterface;
 use ApiGen\Contracts\Parser\ParserStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
-use ApiGen\Parser\Tests\ContainerAwareTestCase;
 use ApiGen\Parser\Tests\ParserStorageImplementersSource\ChildInterface;
 use ApiGen\Parser\Tests\ParserStorageImplementersSource\ParentInterface;
 use ApiGen\Parser\Tests\ParserStorageImplementersSource\SomeClass;
+use ApiGen\Tests\ContainerAwareTestCase;
 use Nette\Utils\Finder;
 use ReflectionProperty;
 
-class ImplementersTest extends ContainerAwareTestCase
+final class ImplementersTest extends ContainerAwareTestCase
 {
 
     /**
@@ -27,14 +27,16 @@ class ImplementersTest extends ContainerAwareTestCase
     private $parentInterfaceReflection;
 
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $finder = Finder::find('*')->in(__DIR__ . '/ImplementersSource');
         $files = iterator_to_array($finder->getIterator());
 
         /** @var ConfigurationInterface $configuration */
         $configuration = $this->container->getByType(ConfigurationInterface::class);
-        $configuration->setOptions(['visibilityLevels' => ReflectionProperty::IS_PUBLIC]);
+        $configuration->setOptions([
+            'visibilityLevels' => ReflectionProperty::IS_PUBLIC
+        ]);
 
         /** @var ParserInterface $parser */
         $parser = $this->container->getByType(ParserInterface::class);
@@ -47,7 +49,7 @@ class ImplementersTest extends ContainerAwareTestCase
     }
 
 
-    public function testGetDirectImplementersOfInterface()
+    public function testGetDirectImplementersOfInterface(): void
     {
         $implementers = $this->parserStorage->getDirectImplementersOfInterface($this->parentInterfaceReflection);
         $this->assertCount(1, $implementers);
@@ -58,7 +60,7 @@ class ImplementersTest extends ContainerAwareTestCase
     }
 
 
-    public function testGetIndirectImplementersOfInterface()
+    public function testGetIndirectImplementersOfInterface(): void
     {
         $implementers = $this->parserStorage->getIndirectImplementersOfInterface($this->parentInterfaceReflection);
         $this->assertCount(1, $implementers);

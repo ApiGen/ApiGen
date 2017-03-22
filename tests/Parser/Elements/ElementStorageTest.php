@@ -1,194 +1,159 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Parser\Tests\Elements;
 
-use ApiGen\Contracts\Configuration\ConfigurationInterface;
-use ApiGen\Contracts\Generator\Resolvers\ElementResolverInterface;
+use ApiGen\Contracts\Parser\Elements\ElementStorageInterface;
 use ApiGen\Contracts\Parser\ParserStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
-use ApiGen\Parser\Elements\ElementStorage;
-use ApiGen\Parser\Elements\GroupSorter;
 use ApiGen\Parser\Reflection\ReflectionClass;
-use ApiGen\Parser\Reflection\ReflectionElement;
-use ApiGen\Parser\Tests\MethodInvoker;
-use Mockery;
-use Nette\Object;
-use PHPUnit\Framework\TestCase;
-use TokenReflection\Php\IReflection;
+use ApiGen\Tests\ContainerAwareTestCase;
+use PHPUnit_Framework_MockObject_MockObject;
 
-class ElementStorageTest extends TestCase
+final class ElementStorageTest extends ContainerAwareTestCase
 {
-
     /**
-     * @var ClassReflectionInterface
+     * @var ElementStorageInterface
      */
-    private $reflectionClass;
+    private $elementStorage;
 
-
-    public function testEnsureCategorization()
+    protected function setUp(): void
     {
-        $elementStorage = $this->prepareElementStorage();
+        /** @var ParserStorageInterface $parserStorage */
+        $parserStorage = $this->container->getByType(ParserStorageInterface::class);
+        $parserStorage->setClasses($this->getReflectionClassMocks());
+        $parserStorage->setFunctions([$this->getFunctionReflectionMock()]);
+        $parserStorage->setConstants([$this->getConstantReflectionMock()]);
 
-        MethodInvoker::callMethodOnObject($elementStorage, 'ensureCategorization');
-
-        $this->assertCount(1, $elementStorage->getClasses());
-        $this->assertCount(1, $elementStorage->getTraits());
-        $this->assertCount(1, $elementStorage->getInterfaces());
-        $this->assertCount(1, $elementStorage->getExceptions());
-        $this->assertCount(4, $elementStorage->getClassElements());
-
-        $this->assertCount(1, $elementStorage->getFunctions());
-        $this->assertCount(1, $elementStorage->getConstants());
-
-        $this->assertCount(1, $elementStorage->getNamespaces());
+        $this->elementStorage = $this->container->getByType(ElementStorageInterface::class);
     }
 
 
-    public function testLoadUsesToReferencedElementUsedBy()
+    public function testEnsureCategorization(): void
     {
-        $elementStorage = $this->prepareElementStorage();
+        $this->assertCount(1, $this->elementStorage->getClasses());
+        $this->assertCount(1, $this->elementStorage->getTraits());
+        $this->assertCount(1, $this->elementStorage->getInterfaces());
+        $this->assertCount(1, $this->elementStorage->getExceptions());
+        $this->assertCount(4, $this->elementStorage->getClassElements());
 
-        $reflectionElementMock = Mockery::mock(ReflectionElement::class);
-        $reflectionElementMock->shouldReceive('getAnnotation')->with('uses')->once()->andReturnNull();
-        $reflectionElementMock->shouldReceive('getAnnotation')->with('uses')->twice()->andReturn(['ApiGen\ApiGen']);
-        $reflectionElementMock->shouldReceive('getPrettyName')->andReturn('PrettyName');
+        $this->assertCount(1, $this->elementStorage->getFunctions());
+        $this->assertCount(1, $this->elementStorage->getConstants());
 
-        $this->assertFalse($this->reflectionClass->hasAnnotation('usedby'));
-        MethodInvoker::callMethodOnObject(
-            $elementStorage,
-            'loadUsesToReferencedElementUsedBy',
-            [$reflectionElementMock]
-        );
-        $this->assertFalse($this->reflectionClass->hasAnnotation('usedby'));
-
-        MethodInvoker::callMethodOnObject(
-            $elementStorage,
-            'loadUsesToReferencedElementUsedBy',
-            [$reflectionElementMock]
-        );
-        $this->assertTrue($this->reflectionClass->hasAnnotation('usedby'));
+        $this->assertCount(1, $this->elementStorage->getNamespaces());
     }
-
-
-    /**
-     * @return ElementStorage
-     */
-    private function prepareElementStorage()
-    {
-        $parserStorageMock = Mockery::mock(ParserStorageInterface::class);
-        $parserStorageMock->shouldReceive('getTypes')->andReturn(['classes', 'functions', 'constants']);
-        $parserStorageMock->shouldReceive('getElementsByType')->with('classes')
-            ->andReturn($this->getReflectionClassMocks());
-
-        $parserStorageMock->shouldReceive('getElementsByType')->with('functions')
-            ->andReturn([$this->getReflectionFunctionMock()]);
-
-        $parserStorageMock->shouldReceive('getElementsByType')->with('constants')
-            ->andReturn([$this->getReflectionConstantMock()]);
-
-        $groupSorterMock = Mockery::mock(GroupSorter::class);
-        $groupSorterMock->shouldReceive('sort')->andReturnUsing(function ($elements) {
-            return $elements;
-        });
-
-        $iReflectionClassMock = Mockery::mock(IReflection::class, Object::class);
-        $iReflectionClassMock->shouldReceive('getAnnotations')->andReturn([]);
-
-        $this->reflectionClass = new ReflectionClass($iReflectionClassMock);
-        $elementResolverMock = Mockery::mock(ElementResolverInterface::class);
-        $elementResolverMock->shouldReceive('resolveElement')->andReturn($this->reflectionClass);
-
-        return new ElementStorage(
-            $parserStorageMock,
-            $groupSorterMock,
-            $elementResolverMock
-        );
-    }
-
 
     /**
      * @return ReflectionClass[]
      */
-    private function getReflectionClassMocks()
+    private function getReflectionClassMocks(): array
     {
         $classes = [];
         $reflectionClassMock = $this->getReflectionClassMock();
-        $reflectionClassMock->shouldReceive('isDocumented')->andReturn(true);
-        $reflectionClassMock->shouldReceive('isInterface')->andReturn(false);
-        $reflectionClassMock->shouldReceive('isTrait')->andReturn(false);
-        $reflectionClassMock->shouldReceive('isException')->andReturn(false);
+        $reflectionClassMock->method('isDocumented')
+            ->willReturn(true);
+        $reflectionClassMock->method('isInterface')
+            ->willReturn(false);
+        $reflectionClassMock->method('isTrait')
+            ->willReturn(false);
+        $reflectionClassMock->method('isException')
+            ->willReturn(false);
         $classes[] = $reflectionClassMock;
 
         $reflectionClassMock2 = $this->getReflectionClassMock();
-        $reflectionClassMock2->shouldReceive('isDocumented')->andReturn(false);
+        $reflectionClassMock2->method('isDocumented')
+            ->willReturn(false);
         $classes[] = $reflectionClassMock2;
 
         $reflectionClassMock3 = $this->getReflectionClassMock();
-        $reflectionClassMock3->shouldReceive('isDocumented')->andReturn(true);
-        $reflectionClassMock3->shouldReceive('isInterface')->andReturn(true);
-        $reflectionClassMock3->shouldReceive('isTrait')->andReturn(false);
-        $reflectionClassMock3->shouldReceive('isException')->andReturn(false);
+        $reflectionClassMock3->method('isDocumented')
+            ->willReturn(true);
+        $reflectionClassMock3->method('isInterface')
+            ->willReturn(true);
+        $reflectionClassMock3->method('isTrait')
+            ->willReturn(false);
+        $reflectionClassMock3->method('isException')
+            ->willReturn(false);
         $classes[] = $reflectionClassMock3;
 
         $reflectionClassMock4 = $this->getReflectionClassMock();
-        $reflectionClassMock4->shouldReceive('isDocumented')->andReturn(true);
-        $reflectionClassMock4->shouldReceive('isInterface')->andReturn(false);
-        $reflectionClassMock4->shouldReceive('isTrait')->andReturn(true);
-        $reflectionClassMock4->shouldReceive('isException')->andReturn(false);
+        $reflectionClassMock4->method('isDocumented')
+            ->willReturn(true);
+        $reflectionClassMock4->method('isInterface')
+            ->willReturn(false);
+        $reflectionClassMock4->method('isTrait')
+            ->willReturn(true);
+        $reflectionClassMock4->method('isException')
+            ->willReturn(false);
         $classes[] = $reflectionClassMock4;
 
         $reflectionClassMock5 = $this->getReflectionClassMock();
-        $reflectionClassMock5->shouldReceive('isDocumented')->andReturn(true);
-        $reflectionClassMock5->shouldReceive('isInterface')->andReturn(false);
-        $reflectionClassMock5->shouldReceive('isTrait')->andReturn(false);
-        $reflectionClassMock5->shouldReceive('isException')->andReturn(true);
+        $reflectionClassMock5->method('isDocumented')
+            ->willReturn(true);
+        $reflectionClassMock5->method('isInterface')
+            ->willReturn(false);
+        $reflectionClassMock5->method('isTrait')
+            ->willReturn(false);
+        $reflectionClassMock5->method('isException')
+            ->willReturn(true);
         $classes[] = $reflectionClassMock5;
         return $classes;
     }
 
 
     /**
-     * @return Mockery\MockInterface|ClassReflectionInterface
+     * @return ClassReflectionInterface|PHPUnit_Framework_MockObject_MockObject
+
      */
     private function getReflectionClassMock()
     {
-        $reflectionClassMock = Mockery::mock(ClassReflectionInterface::class);
-        $reflectionClassMock->shouldReceive('getPseudoNamespaceName')->andReturn('SomeNamespace');
-        $reflectionClassMock->shouldReceive('getShortName')->andReturn('SomeShortClass');
-        $reflectionClassMock->shouldReceive('getOwnMethods')->andReturn([]);
-        $reflectionClassMock->shouldReceive('getOwnConstants')->andReturn([]);
-        $reflectionClassMock->shouldReceive('getOwnProperties')->andReturn([]);
-        $reflectionClassMock->shouldReceive('getAnnotation')->andReturn([]);
+        $reflectionClassMock = $this->createMock(ClassReflectionInterface::class);
+        $reflectionClassMock->method('getPseudoNamespaceName')
+            ->willReturn('SomeNamespace');
+        $reflectionClassMock->method('getShortName')
+            ->willReturn('SomeShortClass');
+        $reflectionClassMock->method('getOwnMethods')
+            ->willReturn([]);
+        $reflectionClassMock->method('getOwnConstants')
+            ->willReturn([]);
+        $reflectionClassMock->method('getOwnProperties')
+            ->willReturn([]);
+
         return $reflectionClassMock;
     }
 
 
     /**
-     * @return Mockery\MockInterface|FunctionReflectionInterface
+     * @return FunctionReflectionInterface|PHPUnit_Framework_MockObject_MockObject
      */
-    private function getReflectionFunctionMock()
+    private function getFunctionReflectionMock()
     {
-        $reflectionFunctionMock = Mockery::mock(FunctionReflectionInterface::class);
-        $reflectionFunctionMock->shouldReceive('isDocumented')->andReturn(true);
-        $reflectionFunctionMock->shouldReceive('getPseudoNamespaceName')->andReturn('SomeNamespace');
-        $reflectionFunctionMock->shouldReceive('getShortName')->andReturn('SomeShortClass');
-        $reflectionFunctionMock->shouldReceive('getAnnotation')->andReturn([]);
+        $reflectionFunctionMock = $this->createMock(FunctionReflectionInterface::class);
+        $reflectionFunctionMock->method('isDocumented')
+            ->willReturn(true);
+        $reflectionFunctionMock->method('getPseudoNamespaceName')
+            ->willReturn('SomeNamespace');
+        $reflectionFunctionMock->method('getShortName')
+            ->willReturn('SomeShortClass');
+
         return $reflectionFunctionMock;
     }
 
 
     /**
-     * @return Mockery\MockInterface|ConstantReflectionInterface
+     * @return ConstantReflectionInterface|PHPUnit_Framework_MockObject_MockObject
      */
-    private function getReflectionConstantMock()
+    private function getConstantReflectionMock()
     {
-        return Mockery::mock(ConstantReflectionInterface::class, [
-            'isDocumented' => true,
-            'getPseudoNamespaceName' => 'SomeNamespace',
-            'getShortName' => 'SomeShortClass',
-            'getAnnotation' => []
-        ]);
+        $constantReflectionMock = $this->createMock(ConstantReflectionInterface::class);
+        $constantReflectionMock->method('isDocumented')
+            ->willReturn(true);
+        $constantReflectionMock->method('getPseudoNamespaceName')
+            ->willReturn('SomeNamespace');
+        $constantReflectionMock->method('getShortName')
+            ->willReturn('SomeShortClass');
+
+        return $constantReflectionMock;
     }
 }

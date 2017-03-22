@@ -1,8 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Generator\TemplateGenerators;
 
-use ApiGen\Configuration\Theme\ThemeConfigOptions as TCO;
+use ApiGen\Configuration\Theme\ThemeConfigOptions;
 use ApiGen\Contracts\Generator\TemplateGenerators\TemplateGeneratorInterface;
 use ApiGen\Templating\TemplateFactory;
 
@@ -21,12 +21,9 @@ class ElementListGenerator implements TemplateGeneratorInterface
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function generate()
+    public function generate(): void
     {
-        $this->templateFactory->createForType(TCO::ELEMENT_LIST)
+        $this->templateFactory->createForType(ThemeConfigOptions::ELEMENT_LIST)
             ->save();
     }
 }

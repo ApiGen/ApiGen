@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\DI;
 
@@ -9,26 +9,26 @@ use Latte\Engine;
 use Nette\DI\Compiler;
 use Nette\DI\CompilerExtension;
 
-class ApiGenExtension extends CompilerExtension
+final class ApiGenExtension extends CompilerExtension
 {
 
-    public function loadConfiguration()
+    public function loadConfiguration(): void
     {
         $this->loadServicesFromConfig();
         $this->setupTemplating();
     }
 
 
-    public function beforeCompile()
+    public function beforeCompile(): void
     {
-        $builder = $this->getContainerBuilder();
-        $builder->prepareClassList();
+        $containerBuilder = $this->getContainerBuilder();
+        $containerBuilder->prepareClassList();
         $this->setupTemplatingFilters();
         $this->setupGeneratorQueue();
     }
 
 
-    private function loadServicesFromConfig()
+    private function loadServicesFromConfig(): void
     {
         Compiler::loadDefinitions(
             $this->getContainerBuilder(),
@@ -37,30 +37,33 @@ class ApiGenExtension extends CompilerExtension
     }
 
 
-    private function setupTemplating()
+    private function setupTemplating(): void
     {
-        $builder = $this->getContainerBuilder();
-        $builder->addDefinition($this->prefix('latteFactory'))
+        // @todo: create and use Symplify package - FlatWhite
+        $containerBuilder = $this->getContainerBuilder();
+        $containerBuilder->addDefinition($this->prefix('latteFactory'))
             ->setClass(Engine::class)
-            ->addSetup('setTempDirectory', [$builder->expand('%tempDir%/cache/latte')]);
+            ->addSetup('setTempDirectory', [$containerBuilder->expand('%tempDir%/cache/latte')]);
     }
 
 
-    private function setupTemplatingFilters()
+    private function setupTemplatingFilters(): void
     {
-        $builder = $this->getContainerBuilder();
-        $latteFactory = $builder->getDefinition($builder->getByType(Engine::class));
-        foreach ($builder->findByType(Filters::class) as $definition) {
+        // @todo: use Symplify package
+        $containerBuilder = $this->getContainerBuilder();
+        $latteFactory = $containerBuilder->getDefinitionByType(Engine::class);
+        foreach ($containerBuilder->findByType(Filters::class) as $definition) {
             $latteFactory->addSetup('addFilter', [null, ['@' . $definition->getClass(), 'loader']]);
         }
     }
 
 
-    private function setupGeneratorQueue()
+    private function setupGeneratorQueue(): void
     {
-        $builder = $this->getContainerBuilder();
-        $generator = $builder->getDefinition($builder->getByType(GeneratorQueueInterface::class));
-        $services = $builder->findByType(TemplateGeneratorInterface::class);
+        // @todo: use package builder for these collections
+        $containerBuilder = $this->getContainerBuilder();
+        $generator = $containerBuilder->getDefinitionByType(GeneratorQueueInterface::class);
+        $services = $containerBuilder->findByType(TemplateGeneratorInterface::class);
         ksort($services, SORT_NATURAL);
         foreach ($services as $definition) {
             $generator->addSetup('addToQueue', ['@' . $definition->getClass()]);

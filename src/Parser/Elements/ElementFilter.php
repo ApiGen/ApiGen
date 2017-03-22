@@ -1,28 +1,28 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Parser\Elements;
 
 use ApiGen\Contracts\Parser\Elements\ElementFilterInterface;
 use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
 
-class ElementFilter implements ElementFilterInterface
+final class ElementFilter implements ElementFilterInterface
 {
-
     /**
-     * {@inheritdoc}
+     * @param ElementReflectionInterface[] $elements
+     * @return ElementReflectionInterface[]
      */
-    public function filterForMain(array $elements)
+    public function filterForMain(array $elements): array
     {
         return array_filter($elements, function (ElementReflectionInterface $element) {
             return $element->isMain();
         });
     }
 
-
     /**
-     * {@inheritdoc}
+     * @param ElementReflectionInterface[] $elements
+     * @return ElementReflectionInterface[]
      */
-    public function filterByAnnotation(array $elements, $annotation)
+    public function filterByAnnotation(array $elements, string $annotation): array
     {
         return array_filter($elements, function (ElementReflectionInterface $element) use ($annotation) {
             return $element->hasAnnotation($annotation);

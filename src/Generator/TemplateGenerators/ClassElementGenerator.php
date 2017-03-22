@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Generator\TemplateGenerators;
 
@@ -9,10 +9,7 @@ use ApiGen\Templating\Template;
 class ClassElementGenerator extends AbstractElementGenerator
 {
 
-    /**
-     * {@inheritdoc}
-     */
-    public function generate()
+    public function generate(): void
     {
         foreach ($this->elementStorage->getClassElements() as $name => $reflectionClass) {
             $template = $this->templateFactory->createForReflection($reflectionClass);
@@ -24,19 +21,13 @@ class ClassElementGenerator extends AbstractElementGenerator
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getStepCount()
+    public function getStepCount(): int
     {
         return count($this->elementStorage->getClassElements());
     }
 
 
-    /**
-     * @return Template
-     */
-    private function loadTemplateWithParameters(Template $template, ClassReflectionInterface $class)
+    private function loadTemplateWithParameters(Template $template, ClassReflectionInterface $class): Template
     {
         $template = $this->namespaceLoader->loadTemplateWithElementNamespace($template, $class);
         $template->setParameters([

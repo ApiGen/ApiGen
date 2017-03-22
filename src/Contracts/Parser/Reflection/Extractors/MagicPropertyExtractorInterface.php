@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Contracts\Parser\Reflection\Extractors;
 
@@ -11,5 +11,5 @@ interface MagicPropertyExtractorInterface
     /**
      * @return MagicPropertyReflectionInterface[]
      */
-    public function extractFromClass(ClassReflectionInterface $reflectionClass);
+    public function extractFromClass(ClassReflectionInterface $reflectionClass): array;
 }

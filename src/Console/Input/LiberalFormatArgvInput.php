@@ -1,22 +1,23 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Console\Input;
 
 use Symfony;
+use Symfony\Component\Console\Input\ArgvInput;
 
-class LiberalFormatArgvInput extends Symfony\Component\Console\Input\ArgvInput
+/**
+ * @todo put to standalone package
+ */
+final class LiberalFormatArgvInput extends ArgvInput
 {
-
-    /**
-     * @return array
-     */
-    public function getOptions()
+    public function getOptions(): array
     {
         $options = parent::getOptions();
         foreach ($options as $key => $value) {
             $options[$key] = $this->removeEqualsSign($value);
             $options[$key] = $this->splitByComma($value);
         }
+
         return $options;
     }
 
@@ -33,18 +34,20 @@ class LiberalFormatArgvInput extends Symfony\Component\Console\Input\ArgvInput
 
 
     /**
-     * @param array|string $value
-     * @return array|string
+     * @param string[]|string $value
+     * @return string[]|string
      */
     private function removeEqualsSign($value)
     {
         if (is_array($value)) {
             array_walk($value, function (&$singleValue) {
-                $singleValue = ltrim($singleValue, '=');
+                $singleValue = ltrim((string) $singleValue, '=');
             });
         } else {
+            $value = (string) $value;
             $value = ltrim($value, '=');
         }
+
         return $value;
     }
 
@@ -57,37 +60,37 @@ class LiberalFormatArgvInput extends Symfony\Component\Console\Input\ArgvInput
     {
         if (is_array($value)) {
             array_walk($value, function (&$singleValue) {
+                $singleValue = (string) $singleValue;
                 $singleValue = $this->splitByCommaIfHasAny($singleValue);
             });
             if (count($value) && is_array($value[0])) {
                 return $value[0];
             }
         } else {
+            $value = (string) $value;
             $value = $this->splitByCommaIfHasAny($value);
         }
+
         return $value;
     }
 
 
-    /**
-     * @param string $value
-     * @return bool
-     */
-    private function containsComma($value)
+    private function containsComma(string $value): bool
     {
         return strpos($value, ',') !== false;
     }
 
 
     /**
-     * @param string $value
-     * @return string|array
+     * @param string|string[] $value
+     * @return string|string[]
      */
     private function splitByCommaIfHasAny($value)
     {
         if ($this->containsComma($value)) {
             return explode(',', $value);
         }
+
         return $value;
     }
 }

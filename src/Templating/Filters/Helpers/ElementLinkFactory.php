@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Templating\Filters\Helpers;
 
@@ -8,12 +8,12 @@ use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
+use ApiGen\Parser\Reflection\ReflectionBase;
 use Nette\Utils\Html;
 use UnexpectedValueException;
 
-class ElementLinkFactory
+final class ElementLinkFactory
 {
-
     /**
      * @var ElementUrlFactory
      */
@@ -33,9 +33,10 @@ class ElementLinkFactory
 
 
     /**
-     * @return string
+     * @param ElementReflectionInterface $element
+     * @param mixed[] $classes
      */
-    public function createForElement(ElementReflectionInterface $element, array $classes = [])
+    public function createForElement(ElementReflectionInterface $element, array $classes = []): string
     {
         if ($element instanceof ClassReflectionInterface) {
             return $this->createForClass($element, $classes);
@@ -49,17 +50,19 @@ class ElementLinkFactory
             return $this->createForFunction($element, $classes);
         }
 
-        throw new UnexpectedValueException(
-            'Descendant of ApiGen\Reflection\Reflection class expected. Got "'
-            . get_class($element) . ' class".'
-        );
+        throw new UnexpectedValueException(sprintf(
+            'Descendant of "%s" class expected. Got "%s" class.',
+            ReflectionBase::class,
+            get_class($element)
+        ));
     }
 
 
     /**
-     * @return string
+     * @param ClassReflectionInterface $reflectionClass
+     * @param mixed[] $classes
      */
-    private function createForClass(ClassReflectionInterface $reflectionClass, array $classes)
+    private function createForClass(ClassReflectionInterface $reflectionClass, array $classes): string
     {
         return $this->linkBuilder->build(
             $this->elementUrlFactory->createForClass($reflectionClass),
@@ -71,9 +74,10 @@ class ElementLinkFactory
 
 
     /**
-     * @return string
+     * @param MethodReflectionInterface $reflectionMethod
+     * @param mixed[] $classes
      */
-    private function createForMethod(MethodReflectionInterface $reflectionMethod, array $classes)
+    private function createForMethod(MethodReflectionInterface $reflectionMethod, array $classes): string
     {
         return $this->linkBuilder->build(
             $this->elementUrlFactory->createForMethod($reflectionMethod),
@@ -85,9 +89,10 @@ class ElementLinkFactory
 
 
     /**
-     * @return string
+     * @param PropertyReflectionInterface $reflectionProperty
+     * @param mixed[] $classes
      */
-    private function createForProperty(PropertyReflectionInterface $reflectionProperty, array $classes)
+    private function createForProperty(PropertyReflectionInterface $reflectionProperty, array $classes): string
     {
         $text = $reflectionProperty->getDeclaringClassName() . '::' .
             Html::el('var')->setText('$' . $reflectionProperty->getName());
@@ -102,9 +107,10 @@ class ElementLinkFactory
 
 
     /**
-     * @return string
+     * @param ConstantReflectionInterface $reflectionConstant
+     * @param mixed[] $classes
      */
-    private function createForConstant(ConstantReflectionInterface $reflectionConstant, array $classes)
+    private function createForConstant(ConstantReflectionInterface $reflectionConstant, array $classes): string
     {
         $url = $this->elementUrlFactory->createForConstant($reflectionConstant);
 
@@ -120,9 +126,10 @@ class ElementLinkFactory
 
 
     /**
-     * @return string
+     * @param FunctionReflectionInterface $reflectionFunction
+     * @param mixed[] $classes
      */
-    private function createForFunction(FunctionReflectionInterface $reflectionFunction, array $classes)
+    private function createForFunction(FunctionReflectionInterface $reflectionFunction, array $classes): string
     {
         return $this->linkBuilder->build(
             $this->elementUrlFactory->createForFunction($reflectionFunction),
@@ -133,16 +140,13 @@ class ElementLinkFactory
     }
 
 
-    /**
-     * @return string
-     */
-    private function getGlobalConstantName(ConstantReflectionInterface $reflectionConstant)
+    private function getGlobalConstantName(ConstantReflectionInterface $reflectionConstant): string
     {
         if ($reflectionConstant->inNamespace()) {
             return $reflectionConstant->getNamespaceName() . '\\' .
                 Html::el('b')->setText($reflectionConstant->getShortName());
         } else {
-            return Html::el('b')->setText($reflectionConstant->getName());
+            return (string) Html::el('b')->setText($reflectionConstant->getName());
         }
     }
 }

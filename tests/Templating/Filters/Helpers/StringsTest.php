@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Tests\Templating\Filters\Helpers;
 
@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 class StringsTest extends TestCase
 {
 
-    public function testSplit()
+    public function testSplit(): void
     {
         $this->assertSame(['@license', 'MIT'], Strings::split('@license MIT'));
         $this->assertSame(['@author', 'Some author'], Strings::split('@author Some author'));

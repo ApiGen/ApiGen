@@ -1,12 +1,11 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Templating\Filters;
 
 use ApiGen\Generator\Resolvers\RelativePathResolver;
 
-class PathFilters extends Filters
+final class PathFilters extends Filters
 {
-
     /**
      * @var RelativePathResolver
      */
@@ -19,11 +18,7 @@ class PathFilters extends Filters
     }
 
 
-    /**
-     * @param string $fileName
-     * @return string
-     */
-    public function relativePath($fileName)
+    public function relativePath(string $fileName): string
     {
         return $this->relativePathResolver->getRelativePath($fileName);
     }

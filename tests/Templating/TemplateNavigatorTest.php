@@ -1,23 +1,18 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Tests\Templating;
 
-use ApiGen\Configuration\Configuration;
+use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
-use ApiGen\Templating\Filters\Helpers\ElementUrlFactory;
-use ApiGen\Templating\Filters\NamespaceUrlFilters;
-use ApiGen\Templating\Filters\SourceFilters;
 use ApiGen\Templating\TemplateNavigator;
 use ApiGen\Tests\ContainerAwareTestCase;
-use Mockery;
 
-class TemplateNavigatorTest extends ContainerAwareTestCase
+final class TemplateNavigatorTest extends ContainerAwareTestCase
 {
-
     /**
-     * @var Configuration
+     * @var ConfigurationInterface
      */
     private $configuration;
 
@@ -27,55 +22,25 @@ class TemplateNavigatorTest extends ContainerAwareTestCase
     private $templateNavigator;
 
 
-    protected function setUp()
+    protected function setUp(): void
     {
-        $this->configuration = $this->container->getByType(Configuration::class);
+        $this->configuration = $this->container->getByType(ConfigurationInterface::class);
         $this->configuration->resolveOptions([
             'source' => __DIR__,
             'destination' => TEMP_DIR . '/api'
         ]);
 
-        $sourceFiltersMock = Mockery::mock(SourceFilters::class);
-        $sourceFiltersMock->shouldReceive('sourceUrl')->andReturnUsing(function ($args) {
-            return 'source-code-' . $args->getName() . '.html';
-        });
-        $namespaceUrlFiltersMock = Mockery::mock(NamespaceUrlFilters::class);
-        $namespaceUrlFiltersMock->shouldReceive('namespaceUrl')->andReturnUsing(function ($args) {
-            return 'namespace-' . $args . '.html';
-        });
-        $namespaceUrlFiltersMock->shouldReceive('packageUrl')->andReturnUsing(function ($args) {
-            return 'package-' . $args . '.html';
-        });
-
-        $elementUrlFactoryMock = Mockery::mock(ElementUrlFactory::class);
-        $elementUrlFactoryMock->shouldReceive('createForClass')->andReturnUsing(function ($args) {
-            return 'class-' . $args->getName() . '.html';
-        });
-        $elementUrlFactoryMock->shouldReceive('createForConstant')->andReturnUsing(function ($args) {
-            return 'constant-' . $args->getName() . '.html';
-        });
-        $elementUrlFactoryMock->shouldReceive('createForFunction')->andReturnUsing(function ($args) {
-            return 'function-' . $args->getName() . '.html';
-        });
-        $this->templateNavigator = new TemplateNavigator(
-            $this->configuration,
-            $sourceFiltersMock,
-            $elementUrlFactoryMock,
-            $namespaceUrlFiltersMock
-        );
+        $this->templateNavigator = $this->container->getByType(TemplateNavigator::class);
     }
 
 
-    public function testGetTemplateFileName()
+    public function testGetTemplateFileName(): void
     {
-        $this->assertSame(
-            TEMP_DIR . '/api/index.html',
-            $this->templateNavigator->getTemplateFileName('overview')
-        );
+        $this->assertSame(TEMP_DIR . '/api/index.html', $this->templateNavigator->getTemplateFileName('overview'));
     }
 
 
-    public function testGetTemplatePath()
+    public function testGetTemplatePath(): void
     {
         $this->assertStringEndsWith(
             '/overview.latte',
@@ -84,7 +49,7 @@ class TemplateNavigatorTest extends ContainerAwareTestCase
     }
 
 
-    public function testGetTemplatePathForNamespace()
+    public function testGetTemplatePathForNamespace(): void
     {
         $this->assertSame(
             TEMP_DIR . '/api/namespace-MyNamespace.html',
@@ -93,10 +58,10 @@ class TemplateNavigatorTest extends ContainerAwareTestCase
     }
 
 
-    public function testGetTemplatePathForClass()
+    public function testGetTemplatePathForClass(): void
     {
-        $classReflectionMock = Mockery::mock(ClassReflectionInterface::class);
-        $classReflectionMock->shouldReceive('getName')->andReturn('SomeClass');
+        $classReflectionMock = $this->createMock(ClassReflectionInterface::class);
+        $classReflectionMock->method('getName')->willReturn('SomeClass');
 
         $this->assertSame(
             TEMP_DIR . '/api/class-SomeClass.html',
@@ -105,10 +70,11 @@ class TemplateNavigatorTest extends ContainerAwareTestCase
     }
 
 
-    public function testGetTemplatePathForConstant()
+    public function testGetTemplatePathForConstant(): void
     {
-        $constantReflectionMock = Mockery::mock(ConstantReflectionInterface::class);
-        $constantReflectionMock->shouldReceive('getName')->andReturn('SomeConstant');
+        $constantReflectionMock = $this->createMock(ConstantReflectionInterface::class);
+        $constantReflectionMock->method('getName')
+            ->willReturn('SomeConstant');
 
         $this->assertSame(
             TEMP_DIR . '/api/constant-SomeConstant.html',
@@ -117,10 +83,11 @@ class TemplateNavigatorTest extends ContainerAwareTestCase
     }
 
 
-    public function testGetTemplatePathForFunction()
+    public function testGetTemplatePathForFunction(): void
     {
-        $functionReflectionMock = Mockery::mock(FunctionReflectionInterface::class);
-        $functionReflectionMock->shouldReceive('getName')->andReturn('SomeFunction');
+        $functionReflectionMock = $this->createMock(FunctionReflectionInterface::class);
+        $functionReflectionMock->method('getName')
+            ->willReturn('SomeFunction');
 
         $this->assertSame(
             TEMP_DIR . '/api/function-SomeFunction.html',
@@ -129,13 +96,14 @@ class TemplateNavigatorTest extends ContainerAwareTestCase
     }
 
 
-    public function testGetTemplatePathForMethod()
+    public function testGetTemplatePathForMethod(): void
     {
-        $classReflectionMock = Mockery::mock(ClassReflectionInterface::class);
-        $classReflectionMock->shouldReceive('getName')->andReturn('SomeClass');
+        $classReflectionMock = $this->createMock(ClassReflectionInterface::class);
+        $classReflectionMock->method('getName')
+            ->willReturn('SomeClass');
 
         $this->assertSame(
-            TEMP_DIR . '/api/source-code-SomeClass.html',
+            TEMP_DIR . '/api/source-class-SomeClass.html',
             $this->templateNavigator->getTemplatePathForSourceElement($classReflectionMock)
         );
     }

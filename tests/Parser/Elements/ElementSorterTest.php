@@ -1,58 +1,66 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Parser\Tests\Elements;
 
+use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 use ApiGen\Parser\Elements\ElementSorter;
-use ApiGen\Parser\Reflection\ReflectionClass;
 use ApiGen\Parser\Reflection\ReflectionConstant;
 use ApiGen\Parser\Reflection\ReflectionFunction;
 use ApiGen\Parser\Reflection\ReflectionMethod;
-use Mockery;
 use PHPUnit\Framework\TestCase;
 
-class ElementSorterTest extends TestCase
+final class ElementSorterTest extends TestCase
 {
-
     /**
      * @var ElementSorter
      */
     private $elementSorter;
 
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->elementSorter = new ElementSorter;
     }
 
 
-    public function testSortElementsByFqnConstants()
+    public function testSortElementsByFqnConstants(): void
     {
-        $reflectionConstantMock = Mockery::mock(ReflectionConstant::class);
-        $reflectionConstantMock->shouldReceive('getDeclaringClassName')->andReturn('B');
-        $reflectionConstantMock->shouldReceive('getName')->andReturn('C');
+        $constantReflectionMock = $this->createMock(ConstantReflectionInterface::class);
+        $constantReflectionMock->method('getDeclaringClassName')
+            ->willReturn('B');
+        $constantReflectionMock->method('getName')
+            ->willReturn('C');
 
-        $reflectionConstantMock2 = Mockery::mock(ReflectionConstant::class);
-        $reflectionConstantMock2->shouldReceive('getDeclaringClassName')->andReturn('A');
-        $reflectionConstantMock2->shouldReceive('getName')->andReturn('D');
+        $constantReflectionMock2 = $this->createMock(ConstantReflectionInterface::class);
+        $constantReflectionMock2->method('getDeclaringClassName')
+            ->willReturn('A');
+        $constantReflectionMock2->method('getName')
+            ->willReturn('D');
 
-        $elements = [$reflectionConstantMock, $reflectionConstantMock2];
+        $elements = [$constantReflectionMock, $constantReflectionMock2];
 
         $sortedElements = $this->elementSorter->sortElementsByFqn($elements);
         $this->assertNotSame($elements, $sortedElements);
-        $this->assertSame($reflectionConstantMock2, $sortedElements[0]);
-        $this->assertSame($reflectionConstantMock, $sortedElements[1]);
+        $this->assertSame($constantReflectionMock2, $sortedElements[0]);
+        $this->assertSame($constantReflectionMock, $sortedElements[1]);
     }
 
 
-    public function testSortElementsByFqnFunctions()
+    public function testSortElementsByFqnFunctions(): void
     {
-        $reflectionFunctionMock = Mockery::mock(ReflectionFunction::class);
-        $reflectionFunctionMock->shouldReceive('getNamespaceName')->andReturn('B');
-        $reflectionFunctionMock->shouldReceive('getName')->andReturn('C');
+        $reflectionFunctionMock = $this->createMock(ReflectionFunction::class);
+        $reflectionFunctionMock->method('getNamespaceName')
+            ->willReturn('B');
+        $reflectionFunctionMock->method('getName')
+            ->willReturn('C');
 
-        $reflectionFunctionMock2 = Mockery::mock(ReflectionFunction::class);
-        $reflectionFunctionMock2->shouldReceive('getNamespaceName')->andReturn('A');
-        $reflectionFunctionMock2->shouldReceive('getName')->andReturn('D');
+        $reflectionFunctionMock2 = $this->createMock(ReflectionFunction::class);
+        $reflectionFunctionMock2->method('getNamespaceName')
+            ->willReturn('A');
+        $reflectionFunctionMock2->method('getName')
+            ->willReturn('D');
 
         $elements = [$reflectionFunctionMock, $reflectionFunctionMock2];
 
@@ -63,15 +71,19 @@ class ElementSorterTest extends TestCase
     }
 
 
-    public function testSortElementsByFqnMethod()
+    public function testSortElementsByFqnMethod(): void
     {
-        $reflectionMethodMock = Mockery::mock(ReflectionMethod::class);
-        $reflectionMethodMock->shouldReceive('getDeclaringClassName')->andReturn('B');
-        $reflectionMethodMock->shouldReceive('getName')->andReturn('C');
+        $reflectionMethodMock = $this->createMock(ReflectionMethod::class);
+        $reflectionMethodMock->method('getDeclaringClassName')
+            ->willReturn('B');
+        $reflectionMethodMock->method('getName')
+            ->willReturn('C');
 
-        $reflectionMethodMock2 = Mockery::mock(ReflectionMethod::class);
-        $reflectionMethodMock2->shouldReceive('getDeclaringClassName')->andReturn('A');
-        $reflectionMethodMock2->shouldReceive('getName')->andReturn('D');
+        $reflectionMethodMock2 = $this->createMock(ReflectionMethod::class);
+        $reflectionMethodMock2->method('getDeclaringClassName')
+            ->willReturn('A');
+        $reflectionMethodMock2->method('getName')
+            ->willReturn('D');
 
         $elements = [$reflectionMethodMock, $reflectionMethodMock2];
 
@@ -82,15 +94,19 @@ class ElementSorterTest extends TestCase
     }
 
 
-    public function testSortElementsByFqnProperties()
+    public function testSortElementsByFqnProperties(): void
     {
-        $reflectionMethodMock = Mockery::mock('ApiGen\Parser\Reflection\ReflectionMethod');
-        $reflectionMethodMock->shouldReceive('getDeclaringClassName')->andReturn('B');
-        $reflectionMethodMock->shouldReceive('getName')->andReturn('C');
+        $reflectionMethodMock = $this->createMock(MethodReflectionInterface::class);
+        $reflectionMethodMock->method('getDeclaringClassName')
+            ->willReturn('B');
+        $reflectionMethodMock->method('getName')
+            ->willReturn('C');
 
-        $reflectionMethodMock2 = Mockery::mock('ApiGen\Parser\Reflection\ReflectionMethod');
-        $reflectionMethodMock2->shouldReceive('getDeclaringClassName')->andReturn('A');
-        $reflectionMethodMock2->shouldReceive('getName')->andReturn('D');
+        $reflectionMethodMock2 = $this->createMock(MethodReflectionInterface::class);
+        $reflectionMethodMock2->method('getDeclaringClassName')
+            ->willReturn('A');
+        $reflectionMethodMock2->method('getName')
+            ->willReturn('D');
 
         $elements = [$reflectionMethodMock, $reflectionMethodMock2];
 
@@ -101,15 +117,15 @@ class ElementSorterTest extends TestCase
     }
 
 
-    public function testSortElementsByFqnNonSupportedType()
+    public function testSortElementsByFqnNonSupportedType(): void
     {
-        $reflectionClassMock = Mockery::mock(ReflectionClass::class);
+        $reflectionClassMock = $this->createMock(ClassReflectionInterface::class);
         $sortedElements = $this->elementSorter->sortElementsByFqn([$reflectionClassMock]);
         $this->assertSame([$reflectionClassMock], $sortedElements);
     }
 
 
-    public function testSortElementsByFqnWithEmptyArray()
+    public function testSortElementsByFqnWithEmptyArray(): void
     {
         $this->assertSame([], $this->elementSorter->sortElementsByFqn([]));
     }

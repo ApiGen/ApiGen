@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Parser\Elements;
 
@@ -22,7 +22,7 @@ class AutocompleteElements implements AutocompleteElementsInterface
     private $elementStorage;
 
     /**
-     * @var array
+     * @var mixed[]
      */
     private $elements = [];
 
@@ -34,9 +34,9 @@ class AutocompleteElements implements AutocompleteElementsInterface
 
 
     /**
-     * {@inheritdoc}
+     * @return mixed[]
      */
-    public function getElements()
+    public function getElements(): array
     {
         foreach ($this->elementStorage->getElements() as $type => $elementList) {
             foreach ($elementList as $element) {
@@ -50,7 +50,7 @@ class AutocompleteElements implements AutocompleteElementsInterface
     }
 
 
-    private function processElement(ElementReflectionInterface $element)
+    private function processElement(ElementReflectionInterface $element): void
     {
         if ($element instanceof ConstantReflectionInterface) {
             $this->elements[] = ['co', $element->getPrettyName()];
@@ -62,6 +62,7 @@ class AutocompleteElements implements AutocompleteElementsInterface
             foreach ($element->getOwnMethods() as $method) {
                 $this->elements[] = ['m', $method->getPrettyName()];
             }
+
             foreach ($element->getOwnProperties() as $property) {
                 $this->elements[] = ['p', $property->getPrettyName()];
             }
@@ -69,7 +70,7 @@ class AutocompleteElements implements AutocompleteElementsInterface
     }
 
 
-    private function sortElements()
+    private function sortElements(): void
     {
         usort($this->elements, function ($one, $two) {
             return strcasecmp($one[1], $two[1]);

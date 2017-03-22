@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Tests\Templating;
 
@@ -15,13 +15,13 @@ class TemplateTest extends TestCase
     private $template;
 
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->template = new Template(new Engine);
     }
 
 
-    public function testFileIsSavedWithContent()
+    public function testFileIsSavedWithContent(): void
     {
         $this->template->setFile(__DIR__ . '/TemplateSource/template.latte');
         $this->template->setParameters(['name' => 'World!']);

@@ -1,12 +1,11 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Contracts\Parser\Elements;
 
 interface AutocompleteElementsInterface
 {
-
     /**
-     * @return array
+     * @return mixed[]
      */
-    public function getElements();
+    public function getElements(): array;
 }

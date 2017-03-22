@@ -1,61 +1,62 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Tests\Templating\Filters;
 
-use ApiGen\Generator\Resolvers\ElementResolver;
-use ApiGen\Reflection\ReflectionElement;
+use ApiGen\Contracts\Parser\ParserStorageInterface;
+use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Templating\Filters\ResolverFilters;
-use Mockery;
-use PHPUnit\Framework\TestCase;
+use ApiGen\Tests\ContainerAwareTestCase;
+use PHPUnit_Framework_MockObject_MockObject;
 
-class ResolverFiltersTest extends TestCase
+final class ResolverFiltersTest extends ContainerAwareTestCase
 {
-
     /**
      * @var ResolverFilters
      */
     private $resolverFilters;
 
 
-    protected function setUp()
+    protected function setUp(): void
     {
-        $elementResolverMock = Mockery::mock(ElementResolver::class);
-        $elementResolverMock->shouldReceive('getClass')->andReturnUsing(function ($arg) {
-            return ($arg === 'SomeClass') ? 'ResolvedClass' : null;
-        });
-        $elementResolverMock->shouldReceive('getClass')->twice()->andReturnNull();
-        $elementResolverMock->shouldReceive('resolveElement')->andReturnUsing(function ($arg) {
-            return ($arg === 'SomeElement') ? 'ResolvedElement' : null;
-        });
-        $this->resolverFilters = new ResolverFilters($elementResolverMock);
+        $this->resolverFilters = $this->container->getByType(ResolverFilters::class);
+
+        $classReflectionMock = $this->createClassReflectionMock();
+
+        /** @var ParserStorageInterface $parserStorage */
+        $parserStorage = $this->container->getByType(ParserStorageInterface::class);
+        $parserStorage->setClasses([
+            'SomeClass' => $classReflectionMock
+        ]);
     }
 
 
-    public function testGetClass()
+    public function testGetClass(): void
     {
-        $this->assertSame('ResolvedClass', $this->resolverFilters->getClass('SomeClass'));
+        $this->assertInstanceOf(ClassReflectionInterface::class, $this->resolverFilters->getClass('SomeClass'));
     }
 
 
-    public function testGetClassForNonExistingClass()
+    public function testGetClassForNonExistingClass(): void
     {
         $this->assertFalse($this->resolverFilters->getClass('NotExistingClass'));
     }
 
-
-    public function testResolveElement()
+    public function testResolveElementForNonExistingElement(): void
     {
-        $reflectionElementMock = Mockery::mock(ReflectionElement::class);
-        $this->assertSame(
-            'ResolvedElement',
-            $this->resolverFilters->resolveElement('SomeElement', $reflectionElementMock)
-        );
+        $reflectionElementMock = $this->createMock(ClassReflectionInterface::class);
+        $this->assertFalse($this->resolverFilters->resolveElement('NonExistingElement', $reflectionElementMock));
     }
 
 
-    public function testResolveElementForNonExistingElement()
+    /**
+     * @return PHPUnit_Framework_MockObject_MockObject|ClassReflectionInterface
+     */
+    private function createClassReflectionMock()
     {
-        $reflectionElementMock = Mockery::mock(ReflectionElement::class);
-        $this->assertFalse($this->resolverFilters->resolveElement('NonExistingElement', $reflectionElementMock));
+        $classReflectionMock = $this->createMock(ClassReflectionInterface::class);
+        $classReflectionMock->method('isDocumented')
+            ->willReturn(true);
+
+        return $classReflectionMock;
     }
 }

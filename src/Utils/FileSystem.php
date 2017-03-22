@@ -1,74 +1,49 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Utils;
 
+use Nette\Utils\FileSystem as NetteFileSystem;
 use Nette\Utils\Finder;
 
-class FileSystem
+final class FileSystem
 {
-
-    /**
-     * @param string $path
-     * @return string
-     */
-    public function normalizePath($path)
+    public function normalizePath(string $path): string
     {
         return str_replace('\\', '/', $path);
     }
 
 
-    /**
-     * @param string $path
-     * @return string
-     */
-    public function forceDir($path)
+    public function forceDir(string $path): string
     {
         @mkdir(dirname($path), 0755, true);
         return $path;
     }
 
 
-    /**
-     * @param string $path
-     */
-    public function deleteDir($path)
+    public function deleteDir(string $path): void
     {
-        self::purgeDir($path);
-        rmdir($path);
+        NetteFileSystem::delete($path);
+    }
+
+
+    public function purgeDir(string $path): void
+    {
+        NetteFileSystem::delete($path);
+        NetteFileSystem::createDir($path);
     }
 
 
     /**
      * @param string $path
-     */
-    public function purgeDir($path)
-    {
-        if (! is_dir($path)) {
-            mkdir($path, 0755, true);
-        }
-
-        foreach (Finder::find('*')->from($path)->childFirst() as $item) {
-            /** @var \SplFileInfo $item */
-            if ($item->isDir()) {
-                rmdir($item);
-            } else {
-                unlink($item);
-            }
-        }
-    }
-
-
-    /**
-     * @param string $path
-     * @param array $baseDirectories
+     * @param string[] $baseDirectories
      * @return string
      */
-    public function getAbsolutePath($path, array $baseDirectories = [])
+    public function getAbsolutePath(string $path, array $baseDirectories = []): string
     {
         foreach ($baseDirectories as $directory) {
             $fileName = $directory . '/' . $path;
             if (is_file($fileName)) {
-                return self::normalizePath(realpath($fileName));
+                return $this->normalizePath(realpath($fileName));
             }
         }
 
@@ -76,28 +51,29 @@ class FileSystem
             $path = realpath($path);
         }
 
-        return self::normalizePath($path);
+        if (file_exists(getcwd() . $path)) {
+            $path = getcwd() . $path;
+        }
+
+        return $this->normalizePath($path);
     }
 
 
-    /**
-     * @param string $path
-     * @return bool
-     */
-    public function isDirEmpty($path)
+    public function isDirEmpty(string $path): bool
     {
         if (count(glob($path . '/*'))) {
             return false;
         }
+
         return true;
     }
 
 
     /**
-     * @param array $source
+     * @param string[]|string[][] $source
      * @param string $destination
      */
-    public function copy(array $source, $destination)
+    public function copy(array $source, string $destination): void
     {
         foreach ($source as $resourceSource => $resourceDestination) {
             if (is_file($resourceSource)) {

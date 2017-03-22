@@ -1,13 +1,14 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Parser\Reflection;
 
-use ApiGen\Configuration\ConfigurationOptions as CO;
-use ApiGen\Contracts\Parser\Reflection\ClassConstantReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\Extractors\ClassMagicElementsExtractorInterface;
 use ApiGen\Contracts\Parser\Reflection\Extractors\ClassTraitElementsExtractorInterface;
 use ApiGen\Contracts\Parser\Reflection\Extractors\ParentClassElementsExtractorInterface;
+use ApiGen\Contracts\Parser\Reflection\Magic\MagicMethodReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\Magic\MagicPropertyReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\TokenReflection\ReflectionFactoryInterface;
@@ -16,10 +17,9 @@ use ApiGen\Parser\Reflection\Extractors\ClassTraitElementsExtractor;
 use ApiGen\Parser\Reflection\Extractors\ParentClassElementsExtractor;
 use InvalidArgumentException;
 use ReflectionProperty as Visibility;
-use TokenReflection;
 use TokenReflection\IReflectionClass;
 
-class ReflectionClass extends ReflectionElement implements ClassReflectionInterface
+final class ReflectionClass extends ReflectionElement implements ClassReflectionInterface
 {
 
     /**
@@ -38,12 +38,12 @@ class ReflectionClass extends ReflectionElement implements ClassReflectionInterf
     private $ownProperties;
 
     /**
-     * @var ClassConstantReflectionInterface[]
+     * @var ConstantReflectionInterface[]
      */
     private $constants;
 
     /**
-     * @var ClassConstantReflectionInterface[]
+     * @var ConstantReflectionInterface[]
      */
     private $ownConstants;
 
@@ -73,6 +73,9 @@ class ReflectionClass extends ReflectionElement implements ClassReflectionInterf
     private $parentClassElementExtractor;
 
 
+    /**
+     * @param mixed $reflectionClass
+     */
     public function __construct($reflectionClass)
     {
         parent::__construct($reflectionClass);
@@ -82,64 +85,46 @@ class ReflectionClass extends ReflectionElement implements ClassReflectionInterf
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getShortName()
+    public function getShortName(): string
     {
         return $this->reflection->getShortName();
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isAbstract()
+    public function isAbstract(): bool
     {
         return $this->reflection->isAbstract();
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isFinal()
+    public function isFinal(): bool
     {
         return $this->reflection->isFinal();
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isInterface()
+    public function isInterface(): bool
     {
         return $this->reflection->isInterface();
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isException()
+    public function isException(): bool
     {
         return $this->reflection->isException();
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isSubclassOf($class)
+    public function isSubclassOf(string $class): bool
     {
         return $this->reflection->isSubclassOf($class);
     }
 
 
     /**
-     * {@inheritdoc}
+     * @return MethodReflectionInterface[]
      */
-    public function getMethods()
+    public function getMethods(): array
     {
         if ($this->methods === null) {
             $this->methods = $this->getOwnMethods();
@@ -148,10 +133,12 @@ class ReflectionClass extends ReflectionElement implements ClassReflectionInterf
                 if (!$trait instanceof ReflectionClass) {
                     continue;
                 }
+
                 foreach ($trait->getOwnMethods() as $method) {
                     if (isset($this->methods[$method->getName()])) {
                         continue;
                     }
+
                     if (! $this->isDocumented() || $method->isDocumented()) {
                         $this->methods[$method->getName()] = $method;
                     }
@@ -178,14 +165,15 @@ class ReflectionClass extends ReflectionElement implements ClassReflectionInterf
                 return $method->configuration->getVisibilityLevel() === $this->getVisibilityLevel();
             });
         }
+
         return $this->methods;
     }
 
 
     /**
-     * {@inheritdoc}
+     * @return MethodReflectionInterface[]
      */
-    public function getOwnMethods()
+    public function getOwnMethods(): array
     {
         if ($this->ownMethods === null) {
             $this->ownMethods = [];
@@ -197,41 +185,39 @@ class ReflectionClass extends ReflectionElement implements ClassReflectionInterf
                 }
             }
         }
+
         return $this->ownMethods;
     }
 
 
     /**
-     * {@inheritdoc}
+     * @return MagicMethodReflectionInterface[]
      */
-    public function getMagicMethods()
+    public function getMagicMethods(): array
     {
         return $this->classMagicElementExtractor->getMagicMethods();
     }
 
 
     /**
-     * {@inheritdoc}
+     * @return MagicMethodReflectionInterface[]
      */
-    public function getOwnMagicMethods()
+    public function getOwnMagicMethods(): array
     {
         return $this->classMagicElementExtractor->getOwnMagicMethods();
     }
 
 
     /**
-     * {@inheritdoc}
+     * @return MethodReflectionInterface[]
      */
-    public function getTraitMethods()
+    public function getTraitMethods(): array
     {
         return $this->classTraitElementExtractor->getTraitMethods();
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getMethod($name)
+    public function getMethod(string $name): MethodReflectionInterface
     {
         if ($this->hasMethod($name)) {
             return $this->methods[$name];
@@ -246,9 +232,18 @@ class ReflectionClass extends ReflectionElement implements ClassReflectionInterf
 
 
     /**
-     * {@inheritdoc}
+     * @return MagicPropertyReflectionInterface[]
      */
-    public function getProperties()
+    public function getMagicProperties(): array
+    {
+        return $this->classMagicElementExtractor->getMagicProperties();
+    }
+
+
+    /**
+     * @return PropertyReflectionInterface[]
+     */
+    public function getProperties(): array
     {
         if ($this->properties === null) {
             $this->properties = $this->getOwnProperties();
@@ -257,38 +252,31 @@ class ReflectionClass extends ReflectionElement implements ClassReflectionInterf
                 if (isset($this->properties[$property->getName()])) {
                     continue;
                 }
+
                 $apiProperty = $this->reflectionFactory->createFromReflection($property);
                 if (! $this->isDocumented() || $apiProperty->isDocumented()) {
                     $this->properties[$property->getName()] = $apiProperty;
                 }
             }
         }
+
         return $this->properties;
-    }
-
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getMagicProperties()
-    {
-        return $this->classMagicElementExtractor->getMagicProperties();
     }
 
 
     /**
      * @return ReflectionPropertyMagic[]
      */
-    public function getOwnMagicProperties()
+    public function getOwnMagicProperties(): array
     {
         return $this->classMagicElementExtractor->getOwnMagicProperties();
     }
 
 
     /**
-     * {@inheritdoc}
+     * @return PropertyReflectionInterface[]
      */
-    public function getOwnProperties()
+    public function getOwnProperties(): array
     {
         if ($this->ownProperties === null) {
             $this->ownProperties = [];
@@ -300,23 +288,21 @@ class ReflectionClass extends ReflectionElement implements ClassReflectionInterf
                 }
             }
         }
+
         return $this->ownProperties;
     }
 
 
     /**
-     * {@inheritdoc}
+     * @return PropertyReflectionInterface[]
      */
-    public function getTraitProperties()
+    public function getTraitProperties(): array
     {
         return $this->classTraitElementExtractor->getTraitProperties();
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getProperty($name)
+    public function getProperty(string $name): PropertyReflectionInterface
     {
         if ($this->hasProperty($name)) {
             return $this->properties[$name];
@@ -331,9 +317,9 @@ class ReflectionClass extends ReflectionElement implements ClassReflectionInterf
 
 
     /**
-     * {@inheritdoc}
+     * @return ConstantReflectionInterface[]
      */
-    public function getConstants()
+    public function getConstants(): array
     {
         if ($this->constants === null) {
             $this->constants = [];
@@ -351,9 +337,9 @@ class ReflectionClass extends ReflectionElement implements ClassReflectionInterf
 
 
     /**
-     * {@inheritdoc}
+     * @return ConstantReflectionInterface[]
      */
-    public function getOwnConstants()
+    public function getOwnConstants(): array
     {
         if ($this->ownConstants === null) {
             $this->ownConstants = [];
@@ -364,14 +350,11 @@ class ReflectionClass extends ReflectionElement implements ClassReflectionInterf
                 }
             }
         }
+
         return $this->ownConstants;
     }
 
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getConstantReflection($name)
+    public function getConstant(string $name): ConstantReflectionInterface
     {
         if (isset($this->getConstants()[$name])) {
             return $this->getConstants()[$name];
@@ -385,37 +368,19 @@ class ReflectionClass extends ReflectionElement implements ClassReflectionInterf
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getConstant($name)
-    {
-        return $this->getConstantReflection($name);
-    }
-
-
-    /**
-     * {@inheritdoc}
-     */
-    public function hasConstant($name)
+    public function hasConstant(string $name): bool
     {
         return isset($this->getConstants()[$name]);
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function hasOwnConstant($name)
+    public function hasOwnConstant(string $name): bool
     {
         return isset($this->getOwnConstants()[$name]);
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getOwnConstant($name)
+    public function getOwnConstant(string $name): ConstantReflectionInterface
     {
         if (isset($this->getOwnConstants()[$name])) {
             return $this->getOwnConstants()[$name];
@@ -429,63 +394,56 @@ class ReflectionClass extends ReflectionElement implements ClassReflectionInterf
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getParentClass()
+    public function getParentClass(): ?ClassReflectionInterface
     {
         if ($className = $this->reflection->getParentClassName()) {
             return $this->getParsedClasses()[$className];
         }
-        return $className;
+
+        return null;
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getParentClassName()
+    public function getParentClassName(): ?string
     {
         return $this->reflection->getParentClassName();
     }
 
 
     /**
-     * {@inheritdoc}
+     * @return ClassReflectionInterface[]
      */
-    public function getParentClasses()
+    public function getParentClasses(): array
     {
         if ($this->parentClasses === null) {
             $this->parentClasses = array_map(function (IReflectionClass $class) {
                 return $this->getParsedClasses()[$class->getName()];
             }, $this->reflection->getParentClasses());
         }
+
         return $this->parentClasses;
     }
 
 
     /**
-     * {@inheritdoc}
+     * @return string[]
      */
-    public function getParentClassNameList()
+    public function getParentClassNameList(): array
     {
         return $this->reflection->getParentClassNameList();
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function implementsInterface($interface)
+    public function implementsInterface(string $interface): bool
     {
         return $this->reflection->implementsInterface($interface);
     }
 
 
     /**
-     * {@inheritdoc}
+     * @return ClassReflectionInterface[]
      */
-    public function getInterfaces()
+    public function getInterfaces(): array
     {
         return array_map(function (IReflectionClass $class) {
             return $this->getParsedClasses()[$class->getName()];
@@ -494,9 +452,9 @@ class ReflectionClass extends ReflectionElement implements ClassReflectionInterf
 
 
     /**
-     * {@inheritdoc}
+     * @return ClassReflectionInterface[]
      */
-    public function getOwnInterfaces()
+    public function getOwnInterfaces(): array
     {
         return array_map(function (IReflectionClass $class) {
             return $this->getParsedClasses()[$class->getName()];
@@ -505,18 +463,18 @@ class ReflectionClass extends ReflectionElement implements ClassReflectionInterf
 
 
     /**
-     * {@inheritdoc}
+     * @return string[]
      */
-    public function getOwnInterfaceNames()
+    public function getOwnInterfaceNames(): array
     {
         return $this->reflection->getOwnInterfaceNames();
     }
 
 
     /**
-     * {@inheritdoc}
+     * @return ClassReflectionInterface[]
      */
-    public function getTraits()
+    public function getTraits(): array
     {
         return array_map(function (IReflectionClass $class) {
             if (! isset($this->getParsedClasses()[$class->getName()])) {
@@ -529,36 +487,36 @@ class ReflectionClass extends ReflectionElement implements ClassReflectionInterf
 
 
     /**
-     * {@inheritdoc}
+     * @return string[]
      */
-    public function getTraitNames()
+    public function getTraitNames(): array
     {
         return $this->reflection->getTraitNames();
     }
 
 
     /**
-     * {@inheritdoc}
+     * @return string[]
      */
-    public function getOwnTraitNames()
+    public function getOwnTraitNames(): array
     {
         return $this->reflection->getOwnTraitNames();
     }
 
 
     /**
-     * {@inheritdoc}
+     * @return string[]
      */
-    public function getTraitAliases()
+    public function getTraitAliases(): array
     {
         return $this->reflection->getTraitAliases();
     }
 
 
     /**
-     * {@inheritdoc}
+     * @return ClassReflectionInterface[]
      */
-    public function getOwnTraits()
+    public function getOwnTraits(): array
     {
         return array_map(function (IReflectionClass $class) {
             if (! isset($this->getParsedClasses()[$class->getName()])) {
@@ -570,28 +528,21 @@ class ReflectionClass extends ReflectionElement implements ClassReflectionInterf
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isTrait()
+    public function isTrait(): bool
     {
         return $this->reflection->isTrait();
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function usesTrait($trait)
+    public function usesTrait(string $trait): bool
     {
         return $this->reflection->usesTrait($trait);
     }
 
-
     /**
-     * {@inheritdoc}
+     * @return ClassReflectionInterface[]
      */
-    public function getDirectSubClasses()
+    public function getDirectSubClasses(): array
     {
         $subClasses = [];
         foreach ($this->getParsedClasses() as $class) {
@@ -599,15 +550,16 @@ class ReflectionClass extends ReflectionElement implements ClassReflectionInterf
                 $subClasses[] = $class;
             }
         }
+
         uksort($subClasses, 'strcasecmp');
         return $subClasses;
     }
 
 
     /**
-     * {@inheritdoc}
+     * @return ClassReflectionInterface[]
      */
-    public function getIndirectSubClasses()
+    public function getIndirectSubClasses(): array
     {
         $subClasses = [];
         foreach ($this->getParsedClasses() as $class) {
@@ -617,81 +569,86 @@ class ReflectionClass extends ReflectionElement implements ClassReflectionInterf
                 $subClasses[] = $class;
             }
         }
+
         uksort($subClasses, 'strcasecmp');
         return $subClasses;
     }
 
 
     /**
-     * {@inheritdoc}
+     * @return ClassReflectionInterface[]
      */
-    public function getDirectImplementers()
+    public function getDirectImplementers(): array
     {
         if (! $this->isInterface()) {
             return [];
         }
-        return $this->parserResult->getDirectImplementersOfInterface($this);
+
+        return $this->parserStorage->getDirectImplementersOfInterface($this);
     }
 
 
     /**
-     * {@inheritdoc}
+     * @return ClassReflectionInterface[]
      */
-    public function getIndirectImplementers()
+    public function getIndirectImplementers(): array
     {
         if (! $this->isInterface()) {
             return [];
         }
-        return $this->parserResult->getIndirectImplementersOfInterface($this);
+
+        return $this->parserStorage->getIndirectImplementersOfInterface($this);
     }
 
 
     /**
-     * {@inheritdoc}
+     * @return ClassReflectionInterface[]
      */
-    public function getDirectUsers()
+    public function getDirectUsers(): array
     {
         if (! $this->isTrait()) {
             return [];
         }
+
         return $this->classTraitElementExtractor->getDirectUsers();
     }
 
 
     /**
-     * {@inheritdoc}
+     * @return ClassReflectionInterface[]
      */
-    public function getIndirectUsers()
+    public function getIndirectUsers(): array
     {
         if (! $this->isTrait()) {
             return [];
         }
+
         return $this->classTraitElementExtractor->getIndirectUsers();
     }
 
 
     /**
-     * {@inheritdoc}
+     * @return MethodReflectionInterface[]
      */
-    public function getInheritedMethods()
+    public function getInheritedMethods(): array
     {
         return $this->parentClassElementExtractor->getInheritedMethods();
     }
 
 
     /**
-     * {@inheritdoc}
+     * @return MagicMethodReflectionInterface[]
      */
-    public function getInheritedMagicMethods()
+    public function getInheritedMagicMethods(): array
     {
         return $this->classMagicElementExtractor->getInheritedMagicMethods();
     }
 
 
     /**
-     * {@inheritdoc}
+     * @return MethodReflectionInterface[]
      */
-    public function getUsedMethods()
+    public function getUsedMethods(): array
     {
         $usedMethods = $this->classTraitElementExtractor->getUsedMethods();
         return $this->sortUsedMethods($usedMethods);
@@ -699,9 +656,9 @@ class ReflectionClass extends ReflectionElement implements ClassReflectionInterf
 
 
     /**
-     * {@inheritdoc}
+     * @return MagicMethodReflectionInterface[]
      */
-    public function getUsedMagicMethods()
+    public function getUsedMagicMethods(): array
     {
         $usedMethods = $this->classMagicElementExtractor->getUsedMagicMethods();
         return $this->sortUsedMethods($usedMethods);
@@ -709,115 +666,96 @@ class ReflectionClass extends ReflectionElement implements ClassReflectionInterf
 
 
     /**
-     * {@inheritdoc}
+     * @return ConstantReflectionInterface[]
      */
-    public function getInheritedConstants()
+    public function getInheritedConstants(): array
     {
         return $this->parentClassElementExtractor->getInheritedConstants();
     }
 
 
     /**
-     * {@inheritdoc}
+     * @return PropertyReflectionInterface[]
      */
-    public function getInheritedProperties()
+    public function getInheritedProperties(): array
     {
         return $this->parentClassElementExtractor->getInheritedProperties();
     }
 
 
     /**
-     * {@inheritdoc}
+     * @return MagicPropertyReflectionInterface[]
      */
-    public function getInheritedMagicProperties()
+    public function getInheritedMagicProperties(): array
     {
         return $this->classMagicElementExtractor->getInheritedMagicProperties();
     }
 
 
     /**
-     * {@inheritdoc}
+     * @return PropertyReflectionInterface[]
      */
-    public function getUsedProperties()
+    public function getUsedProperties(): array
     {
         return $this->classTraitElementExtractor->getUsedProperties();
     }
 
 
     /**
-     * {@inheritdoc}
+     * @return MagicPropertyReflectionInterface[]
      */
-    public function getUsedMagicProperties()
+    public function getUsedMagicProperties(): array
     {
         return $this->classMagicElementExtractor->getUsedMagicProperties();
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function hasProperty($name)
+    public function hasProperty(string $name): bool
     {
         if ($this->properties === null) {
             $this->getProperties();
         }
+
         return isset($this->properties[$name]);
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function hasMethod($name)
+    public function hasMethod(string $name): bool
     {
         return isset($this->getMethods()[$name]);
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isValid()
+    public function isVisibilityLevelPublic(): bool
     {
-        if ($this->reflection instanceof TokenReflection\Invalid\ReflectionClass) {
-            return false;
-        }
-
-        return true;
+        return (bool) ($this->getVisibilityLevel() & Visibility::IS_PUBLIC);
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isVisibilityLevelPublic()
-    {
-        return $this->getVisibilityLevel() & Visibility::IS_PUBLIC;
-    }
-
-
-    /**
-     * @return int
-     */
-    public function getVisibilityLevel()
+    public function getVisibilityLevel(): int
     {
         return $this->configuration->getVisibilityLevel();
     }
 
 
-    /**
-     * @return ReflectionFactoryInterface
-     */
-    public function getReflectionFactory()
+    public function getReflectionFactory(): ReflectionFactoryInterface
     {
         return $this->reflectionFactory;
     }
 
+    /**
+     * Removed, but for BC in Themes
+     */
+    public function isValid(): bool
+    {
+        return true;
+    }
 
     /**
-     * @return array
+     * @param mixed[] $usedMethods
+     * @return mixed[]
      */
-    private function sortUsedMethods(array $usedMethods)
+    private function sortUsedMethods(array $usedMethods): array
     {
         array_walk($usedMethods, function (&$methods) {
             ksort($methods);
@@ -825,6 +763,7 @@ class ReflectionClass extends ReflectionElement implements ClassReflectionInterf
                 if (! isset($aliasedMethods['aliases'])) {
                     $aliasedMethods['aliases'] = [];
                 }
+
                 ksort($aliasedMethods['aliases']);
             });
         });

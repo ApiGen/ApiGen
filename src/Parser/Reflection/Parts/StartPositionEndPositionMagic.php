@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Parser\Reflection\Parts;
 
@@ -10,19 +10,13 @@ use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 trait StartPositionEndPositionMagic
 {
 
-    /**
-     * @return int
-     */
-    public function getStartPosition()
+    public function getStartPosition(): int
     {
         return $this->declaringClass->getStartPosition();
     }
 
 
-    /**
-     * @return int
-     */
-    public function getEndPosition()
+    public function getEndPosition(): int
     {
         return $this->declaringClass->getEndPosition();
     }

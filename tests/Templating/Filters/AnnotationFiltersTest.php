@@ -1,39 +1,38 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Tests\Templating\Filters;
 
-use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions as CO;
+use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Templating\Filters\AnnotationFilters;
-use Mockery;
 use PHPUnit\Framework\TestCase;
 
-class AnnotationFiltersTest extends TestCase
+final class AnnotationFiltersTest extends TestCase
 {
-
     /**
      * @var AnnotationFilters
      */
     private $annotationFilters;
 
 
-    protected function setUp()
+    protected function setUp(): void
     {
-        $configurationMock = Mockery::mock(Configuration::class);
-        $configurationMock->shouldReceive('getOption')->with(CO::INTERNAL)->andReturn(false);
-        $elementResolverMock = Mockery::mock('ApiGen\Generator\Resolvers\ElementResolver');
-        $this->annotationFilters = new AnnotationFilters($configurationMock, $elementResolverMock);
+        $configurationMock = $this->createMock(ConfigurationInterface::class);
+        $configurationMock->method('getOption')
+            ->with(CO::INTERNAL)
+            ->willReturn(false);
+
+        $this->annotationFilters = new AnnotationFilters($configurationMock);
     }
 
 
-    public function testAnnotationBeautify()
+    public function testAnnotationBeautify(): void
     {
-        $this->assertSame('Used by', $this->annotationFilters->annotationBeautify('usedby'));
         $this->assertSame('Method', $this->annotationFilters->annotationBeautify('method'));
     }
 
 
-    public function testAnnotationFilter()
+    public function testAnnotationFilter(): void
     {
         $annotations = ['method' => true, 'remain' => true, 'internal' => true];
         $this->assertSame(
@@ -43,7 +42,7 @@ class AnnotationFiltersTest extends TestCase
     }
 
 
-    public function testAnnotationFilterWithCustom()
+    public function testAnnotationFilterWithCustom(): void
     {
         $annotations = ['remain' => true, 'otherToRemain' => true];
         $this->assertSame(

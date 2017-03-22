@@ -1,21 +1,19 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Parser\Tests\Reflection\ReflectionClass;
 
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Parser\ParserStorageInterface;
+use ApiGen\Contracts\Parser\Reflection\TokenReflection\ReflectionFactoryInterface;
 use ApiGen\Parser\Broker\Backend;
 use ApiGen\Parser\Reflection\ReflectionClass;
 use ApiGen\Parser\Reflection\TokenReflection\ReflectionFactory;
-use ApiGen\Parser\Tests\Configuration\ParserConfiguration;
-use Mockery;
 use PHPUnit\Framework\TestCase;
 use ReflectionProperty;
 use TokenReflection\Broker;
 
 abstract class AbstractReflectionClassTestCase extends TestCase
 {
-
     /**
      * @var ReflectionClass
      */
@@ -37,7 +35,7 @@ abstract class AbstractReflectionClassTestCase extends TestCase
     protected $reflectionClassOfInterface;
 
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $backend = new Backend($this->getReflectionFactory());
         $broker = new Broker($backend);
@@ -49,15 +47,13 @@ abstract class AbstractReflectionClassTestCase extends TestCase
     }
 
 
-    /**
-     * @return Mockery\MockInterface
-     */
-    private function getReflectionFactory()
+    private function getReflectionFactory(): ReflectionFactoryInterface
     {
-        $parserStorageMock = Mockery::mock(ParserStorageInterface::class);
-        $parserStorageMock->shouldReceive('getDirectImplementersOfInterface')->andReturn([1]);
-        $parserStorageMock->shouldReceive('getIndirectImplementersOfInterface')->andReturn([]);
-        $parserStorageMock->shouldReceive('getElementsByType')->andReturnUsing(function ($arg) {
+        // @todo: use $parserStorage from DI
+        $parserStorageMock = $this->createMock(ParserStorageInterface::class);
+        $parserStorageMock->method('getDirectImplementersOfInterface')->willReturn([1]);
+        $parserStorageMock->method('getIndirectImplementersOfInterface')->willReturn([]);
+        $parserStorageMock->method('getElementsByType')->willReturnCallback(function ($arg) {
             if ($arg) {
                 return [
                     'Project\AccessLevels' => $this->reflectionClass,
@@ -68,11 +64,12 @@ abstract class AbstractReflectionClassTestCase extends TestCase
             }
         });
 
-        $configurationMock = Mockery::mock(ConfigurationInterface::class, [
-            'getVisibilityLevel' => ReflectionProperty::IS_PUBLIC | ReflectionProperty::IS_PROTECTED,
-            'isInternalDocumented' => false,
-            'isPhpCoreDocumented' => true,
-        ]);
+        $configurationMock = $this->createMock(ConfigurationInterface::class);
+        $configurationMock->method('getVisibilityLevel')
+            ->willReturn(ReflectionProperty::IS_PUBLIC | ReflectionProperty::IS_PROTECTED);
+        $configurationMock->method('isInternalDocumented')
+            ->willReturn(false);
+
         return new ReflectionFactory($configurationMock, $parserStorageMock);
     }
 }

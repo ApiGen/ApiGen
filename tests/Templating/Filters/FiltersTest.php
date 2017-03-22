@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Tests\Templating\Filters;
 
@@ -7,22 +7,21 @@ use ApiGen\Tests\MethodInvoker;
 use ApiGen\Tests\Templating\Filters\FiltersSource\FooFilters;
 use PHPUnit\Framework\TestCase;
 
-class FiltersTest extends TestCase
+final class FiltersTest extends TestCase
 {
-
     /**
      * @var Filters
      */
     private $filters;
 
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->filters = new FooFilters;
     }
 
 
-    public function testLoader()
+    public function testLoader(): void
     {
         $this->assertSame('Filtered: foo', $this->filters->loader('bazFilter', 'foo'));
         $this->assertNull($this->filters->loader('nonExisting'));
@@ -30,9 +29,9 @@ class FiltersTest extends TestCase
 
 
     /**
-     * @dataProvider typeNameProvider
+     * @dataProvider typeNameProvider()
      */
-    public function testGetTypeName($name, $expectedName)
+    public function testGetTypeName(string $name, string $expectedName): void
     {
         $this->assertSame(
             $expectedName,
@@ -42,9 +41,9 @@ class FiltersTest extends TestCase
 
 
     /**
-     * @return array[]
+     * @return string[]
      */
-    public function typeNameProvider()
+    public function typeNameProvider(): array
     {
         return [
             ['bool', 'boolean'],
@@ -62,7 +61,7 @@ class FiltersTest extends TestCase
     }
 
 
-    public function testGetTypeNameWithTrimOff()
+    public function testGetTypeNameWithTrimOff(): void
     {
         $this->assertSame(
             '\\Namespace',
@@ -71,7 +70,7 @@ class FiltersTest extends TestCase
     }
 
 
-    public function testUrlize()
+    public function testUrlize(): void
     {
         $this->assertSame(
             'Some.class',
@@ -80,7 +79,7 @@ class FiltersTest extends TestCase
     }
 
 
-    public function testUrl()
+    public function testUrl(): void
     {
         $this->assertSame(
             'Some%20class',

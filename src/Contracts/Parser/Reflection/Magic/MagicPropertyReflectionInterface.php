@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Contracts\Parser\Reflection\Magic;
 
@@ -8,68 +8,35 @@ use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
 interface MagicPropertyReflectionInterface extends PropertyReflectionInterface
 {
 
-    /**
-     * @return bool
-     */
-    public function isDocumented();
+    public function isDocumented(): bool;
 
 
-    /**
-     * @return string
-     */
-    public function getShortDescription();
+    public function getShortDescription(): string;
 
 
-    /**
-     * @return string
-     */
-    public function getLongDescription();
+    public function getLongDescription(): string;
 
 
-    /**
-     * @return string
-     */
-    public function getDocComment();
+    public function getDocComment(): string;
 
 
-    /**
-     * @return bool
-     */
-    public function isDeprecated();
+    public function isDeprecated(): bool;
 
 
-    /**
-     * @return self
-     */
-    public function setDeclaringClass(ClassReflectionInterface $declaringClass);
+    public function setDeclaringClass(ClassReflectionInterface $declaringClass): void;
 
 
-    /**
-     * @return bool
-     */
-    public function isPrivate();
+    public function isPrivate(): bool;
 
 
-    /**
-     * @return bool
-     */
-    public function isProtected();
+    public function isProtected(): bool;
 
 
-    /**
-     * @return bool
-     */
-    public function isPublic();
+    public function isPublic(): bool;
 
 
-    /**
-     * @return string
-     */
-    public function getFileName();
+    public function getFileName(): string;
 
 
-    /**
-     * @return bool
-     */
-    public function isTokenized();
+    public function isTokenized(): bool;
 }

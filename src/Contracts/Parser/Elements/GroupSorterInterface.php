@@ -1,12 +1,12 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Contracts\Parser\Elements;
 
 interface GroupSorterInterface
 {
-
     /**
-     * @return array
+     * @param mixed[] $groups
+     * @return mixed[]
      */
-    public function sort(array $groups);
+    public function sort(array $groups): array;
 }

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ApiGen\Contracts\Console\IO;
 
@@ -8,28 +8,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 interface IOInterface
 {
 
-    /**
-     * @return InputInterface
-     */
-    public function getInput();
+    public function getInput(): InputInterface;
 
 
-    /**
-     * @return OutputInterface
-     */
-    public function getOutput();
+    public function getOutput(): OutputInterface;
 
 
-    /**
-     * @param string $message
-     */
-    public function writeln($message);
-
-
-    /**
-     * @param string $question
-     * @param NULL|string $default
-     * @return string
-     */
-    public function ask($question, $default = null);
+    public function writeln(string $message): void;
 }
