@@ -14,7 +14,6 @@
         "php": "^7.1",
         "popsul/php-token-reflection": "^1.5",
         "apigen/theme-bootstrap": "1.1.*",
-        "apigen/theme-default": "1.0.*",
         "kukulich/fshl": "^2.1",
         "latte/latte": "^2.3.6",
         "nette/bootstrap": "^2.4",

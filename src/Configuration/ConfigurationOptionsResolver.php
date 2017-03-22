@@ -103,7 +103,7 @@ final class ConfigurationOptionsResolver
             ConfigurationOptions::TEMPLATE => function (Options $options) {
                 $config = $options[ConfigurationOptions::TEMPLATE_CONFIG];
                 if ($config === '') {
-                    $config = getcwd() . '/vendor/apigen/theme-default/src/config.neon';
+                    $config = getcwd() . '/packages/ThemeDefault/src/config.neon';
                 }
 
                 return $this->themeConfigFactory->create($config)

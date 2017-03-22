@@ -159,7 +159,7 @@ final class GenerateCommand extends AbstractCommand
                 null,
                 InputOption::VALUE_REQUIRED,
                 'Your own template config, has higher priority than --template-theme.',
-                getcwd() . '/vendor/apigen/theme-default/src/config.neon'
+                getcwd() . '/packages/ThemeDefault/src/config.neon'
             )
             ->addOption('title', null, InputOption::VALUE_REQUIRED, 'Title of generated documentation.')
             ->addOption(
