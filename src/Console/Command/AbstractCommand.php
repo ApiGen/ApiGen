@@ -13,7 +13,7 @@ abstract class AbstractCommand extends Command
      * @param string $description
      * @param ?mixed $default
      */
-    public function addOption($name, $shortcut = null, $mode = null, $description = '', $default = null): void
+    public function addOption($name, $shortcut = null, $mode = null, $description = '', $default = null): Command
     {
         $name = $this->dashFormat($name);
         return parent::addOption($name, $shortcut, $mode, $description, $default);
