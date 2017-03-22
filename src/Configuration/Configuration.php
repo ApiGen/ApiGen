@@ -7,7 +7,7 @@ use ApiGen\Contracts\Configuration\ConfigurationInterface;
 final class Configuration implements ConfigurationInterface
 {
     /**
-     * @var array
+     * @var mixed[]
      */
     private $options;
 
@@ -23,6 +23,10 @@ final class Configuration implements ConfigurationInterface
     }
 
 
+    /**
+     * @param mixed[] $options
+     * @return mixed[]
+     */
     public function resolveOptions(array $options): array
     {
         $options = $this->unsetConsoleOptions($options);
@@ -30,6 +34,9 @@ final class Configuration implements ConfigurationInterface
     }
 
 
+    /**
+     * @return mixed|null
+     */
     public function getOption(string $name)
     {
         if (isset($this->getOptions()[$name])) {
@@ -40,6 +47,9 @@ final class Configuration implements ConfigurationInterface
     }
 
 
+    /**
+     * @return mixed[]
+     */
     public function getOptions(): array
     {
         if ($this->options === null) {
@@ -50,6 +60,9 @@ final class Configuration implements ConfigurationInterface
     }
 
 
+    /**
+     * @param mixed[] $options
+     */
     public function setOptions(array $options): void
     {
         $this->options = $options;
@@ -132,7 +145,7 @@ final class Configuration implements ConfigurationInterface
 
 
     /**
-     * @return array|string[]
+     * @return string[]
      */
     public function getExtensions(): array
     {
@@ -140,6 +153,10 @@ final class Configuration implements ConfigurationInterface
     }
 
 
+    /**
+     * @param mixed[] $options
+     * @return mixed[]
+     */
     private function unsetConsoleOptions(array $options): array
     {
         unset(

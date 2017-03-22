@@ -13,7 +13,7 @@ use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 final class ElementStorage implements ElementStorageInterface
 {
     /**
-     * @var array
+     * @var mixed[]
      */
     private $namespaces = [];
 
@@ -70,6 +70,9 @@ final class ElementStorage implements ElementStorageInterface
     }
 
 
+    /**
+     * @return mixed[]
+     */
     public function getNamespaces(): array
     {
         $this->ensureCategorization();
@@ -77,6 +80,9 @@ final class ElementStorage implements ElementStorageInterface
     }
 
 
+    /**
+     * @return ClassReflectionInterface[]
+     */
     public function getClasses(): array
     {
         $this->ensureCategorization();
@@ -84,6 +90,9 @@ final class ElementStorage implements ElementStorageInterface
     }
 
 
+    /**
+     * @return ClassReflectionInterface[]
+     */
     public function getInterfaces(): array
     {
         $this->ensureCategorization();
@@ -91,6 +100,9 @@ final class ElementStorage implements ElementStorageInterface
     }
 
 
+    /**
+     * @return ClassReflectionInterface[]
+     */
     public function getTraits(): array
     {
         $this->ensureCategorization();
@@ -98,6 +110,9 @@ final class ElementStorage implements ElementStorageInterface
     }
 
 
+    /**
+     * @return ClassReflectionInterface[]
+     */
     public function getExceptions(): array
     {
         $this->ensureCategorization();
@@ -105,6 +120,9 @@ final class ElementStorage implements ElementStorageInterface
     }
 
 
+    /**
+     * @return ConstantReflectionInterface[]
+     */
     public function getConstants(): array
     {
         $this->ensureCategorization();
@@ -112,6 +130,9 @@ final class ElementStorage implements ElementStorageInterface
     }
 
 
+    /**
+     * @return FunctionReflectionInterface[]
+     */
     public function getFunctions(): array
     {
          $this->ensureCategorization();
@@ -119,12 +140,18 @@ final class ElementStorage implements ElementStorageInterface
     }
 
 
+    /**
+     * @return ClassReflectionInterface[]
+     */
     public function getClassElements(): array
     {
         return array_merge($this->getClasses(), $this->getTraits(), $this->getInterfaces(), $this->getExceptions());
     }
 
 
+    /**
+     * @return mixed[]
+     */
     public function getElements(): array
     {
         $this->ensureCategorization();

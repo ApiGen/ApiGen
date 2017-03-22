@@ -128,9 +128,6 @@ final class ReflectionPropertyMagicTest extends TestCase
     }
 
 
-    /**
-     * @return ReflectionFactoryInterface
-     */
     private function getReflectionFactory(): ReflectionFactoryInterface
     {
         $parserStorageMock = $this->createMock(ParserStorageInterface::class);

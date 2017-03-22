@@ -16,7 +16,7 @@ final class ConfigurationOptionsResolver
     public const AL_PUBLIC = 'public';
 
     /**
-     * @var array
+     * @var mixed[]
      */
     private $defaults = [
         ConfigurationOptions::ANNOTATION_GROUPS => [],
@@ -77,6 +77,10 @@ final class ConfigurationOptionsResolver
     }
 
 
+    /**
+     * @param mixed[] $options
+     * @return mixed[]
+     */
     public function resolve(array $options): array
     {
         $this->resolver = $this->optionsResolverFactory->create();
@@ -109,6 +113,10 @@ final class ConfigurationOptionsResolver
     }
 
 
+    /**
+     * @param mixed[] $options
+     * @return int
+     */
     private function getAccessLevelForReflections(array $options): int
     {
         $accessLevel = null;

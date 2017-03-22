@@ -84,9 +84,9 @@ final class LiberalFormatArgvInputTest extends TestCase
 
 
     /**
-     * @return array[]
+     * @return mixed[]
      */
-    public function getRemoveEqualsData()
+    public function getRemoveEqualsData(): array
     {
         return [
             ['=something', 'something'],

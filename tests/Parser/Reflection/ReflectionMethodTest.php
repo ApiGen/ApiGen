@@ -122,9 +122,6 @@ final class ReflectionMethodTest extends TestCase
     }
 
 
-    /**
-     * @return ConfigurationInterface
-     */
     private function getConfigurationMock(): ConfigurationInterface
     {
         $configurationMock = $this->createMock(ConfigurationInterface::class);
@@ -132,6 +129,7 @@ final class ReflectionMethodTest extends TestCase
                 ->willReturn(true);
         $configurationMock->method('getVisibilityLevel')
             ->willReturn(256);
+
         return $configurationMock;
     }
 }

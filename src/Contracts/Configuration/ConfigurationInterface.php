@@ -4,6 +4,10 @@ namespace ApiGen\Contracts\Configuration;
 
 interface ConfigurationInterface
 {
+    /**
+     * @param mixed[] $options
+     * @return mixed[]
+     */
     public function resolveOptions(array $options): array;
 
 
@@ -13,9 +17,14 @@ interface ConfigurationInterface
     public function getOption(string $name);
 
 
+    /**
+     * @return mixed[]
+     */
     public function getOptions(): array;
 
-
+    /**
+     * @param mixed[] $options
+     */
     public function setOptions(array $options): void;
 
 

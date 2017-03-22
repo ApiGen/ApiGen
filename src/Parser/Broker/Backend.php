@@ -5,6 +5,8 @@ namespace ApiGen\Parser\Broker;
 use ApiGen\Contracts\Parser\Broker\BackendInterface;
 use ApiGen\Contracts\Parser\Reflection\Behavior\InNamespaceInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\TokenReflection\ReflectionFactoryInterface;
 use ApiGen\Parser\Reflection\ReflectionClass;
@@ -23,7 +25,7 @@ use TokenReflection\Resolver;
  *
  * @method TokenReflection\ReflectionNamespace[] getNamespaces()
  */
-class Backend extends Broker\Backend\Memory implements BackendInterface
+final class Backend extends Broker\Backend\Memory implements BackendInterface
 {
 
     /**
@@ -36,7 +38,7 @@ class Backend extends Broker\Backend\Memory implements BackendInterface
     ];
 
     /**
-     * @var array
+     * @var mixed[]
      */
     private $declared = [];
 
@@ -52,6 +54,9 @@ class Backend extends Broker\Backend\Memory implements BackendInterface
     }
 
 
+    /**
+     * @return ConstantReflectionInterface[]
+     */
     public function getConstants(): array
     {
         return array_map(function (IReflectionConstant $constant) {
@@ -60,6 +65,9 @@ class Backend extends Broker\Backend\Memory implements BackendInterface
     }
 
 
+    /**
+     * @return FunctionReflectionInterface[]
+     */
     public function getFunctions(): array
     {
         return array_map(function (IReflectionFunction $function) {
@@ -137,7 +145,7 @@ class Backend extends Broker\Backend\Memory implements BackendInterface
 
 
     /**
-     * @param string $name
+     * @return false|void
      */
     private function addClass(string $name)
     {
@@ -196,7 +204,7 @@ class Backend extends Broker\Backend\Memory implements BackendInterface
 
     /**
      * @param ClassReflectionInterface|MethodReflectionInterface $reflection
-     * @param array $annotations
+     * @param mixed[] $annotations
      * @param string $name
      */
     private function loadAnnotationFromReflection($reflection, array $annotations, $name): void

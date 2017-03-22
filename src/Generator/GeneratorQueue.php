@@ -46,14 +46,14 @@ final class GeneratorQueue implements GeneratorQueueInterface
     /**
      * @return TemplateGeneratorInterface[]
      */
-    private function getAllowedQueue()
+    private function getAllowedQueue(): array
     {
         return array_filter($this->queue, function (TemplateGeneratorInterface $generator) {
             if ($generator instanceof ConditionalTemplateGeneratorInterface) {
                 return $generator->isAllowed();
-            } else {
-                return true;
             }
+
+            return true;
         });
     }
 

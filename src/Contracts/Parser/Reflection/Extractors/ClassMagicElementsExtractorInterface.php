@@ -7,27 +7,26 @@ use ApiGen\Contracts\Parser\Reflection\Magic\MagicPropertyReflectionInterface;
 
 interface ClassMagicElementsExtractorInterface
 {
+    /**
+     * @return MagicPropertyReflectionInterface[]
+     */
+    public function getMagicProperties(): array;
+
 
     /**
      * @return MagicPropertyReflectionInterface[]
      */
-    public function getMagicProperties();
+    public function getOwnMagicProperties(): array;
 
 
     /**
-     * @return MagicPropertyReflectionInterface[]
-     */
-    public function getOwnMagicProperties();
-
-
-    /**
-     * @return array {[ declaringClassName => MagicMethodReflectionInterface[] ]}
+     * @return MagicMethodReflectionInterface[]
      */
     public function getInheritedMagicProperties(): array;
 
 
     /**
-     * @return array {[ declaringClassName => MagicMethodReflectionInterface[] ]}
+     * @return MagicMethodReflectionInterface[]
      */
     public function getUsedMagicProperties(): array;
 
@@ -35,17 +34,17 @@ interface ClassMagicElementsExtractorInterface
     /**
      * @return MagicMethodReflectionInterface[]
      */
-    public function getMagicMethods();
+    public function getMagicMethods(): array;
 
 
     /**
      * @return MagicMethodReflectionInterface[]
      */
-    public function getOwnMagicMethods();
+    public function getOwnMagicMethods(): array;
 
 
     /**
      * @return MagicMethodReflectionInterface[]
      */
-    public function getUsedMagicMethods();
+    public function getUsedMagicMethods(): array;
 }

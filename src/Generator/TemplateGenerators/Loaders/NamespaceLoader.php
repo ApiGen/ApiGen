@@ -33,7 +33,16 @@ final class NamespaceLoader
     }
 
 
-    public function loadTemplateWithNamespace(Template $template, string $name, array $namespace): void
+    /**
+     * @param Template $template
+     * @param string $name
+     * @param mixed[] $namespace
+     */
+    public function loadTemplateWithNamespace(
+        Template $template,
+        string $name,
+        array $namespace
+    ): void
     {
         $template->setParameters([
             'package' => null, // removed, but for BC in Themes
@@ -44,6 +53,10 @@ final class NamespaceLoader
     }
 
 
+    /**
+     * @param Template $template
+     * @param mixed[] $elements
+     */
     private function loadTemplateWithElements(Template $template, array $elements): void
     {
         $template->setParameters([
@@ -57,6 +70,11 @@ final class NamespaceLoader
     }
 
 
+    /**
+     * @param string $name
+     * @param mixed[] $elements
+     * @return string[]
+     */
     private function getSubnamesForName(string $name, array $elements): array
     {
         return array_filter($elements, function ($subname) use ($name) {

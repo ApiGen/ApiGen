@@ -14,7 +14,6 @@ use Nette\DI\Config\Loader;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use TokenReflection\Exception\FileProcessingException;
 
 final class GenerateCommand extends AbstractCommand
 {
@@ -181,6 +180,9 @@ final class GenerateCommand extends AbstractCommand
     }
 
 
+    /**
+     * @param mixed[] $options
+     */
     private function scanAndParse(array $options): void
     {
         $this->io->writeln('<info>Scanning sources and parsing</info>');
@@ -198,6 +200,9 @@ final class GenerateCommand extends AbstractCommand
     }
 
 
+    /**
+     * @param mixed[] $options
+     */
     private function generate(array $options): void
     {
         $this->prepareDestination($options['destination'], $options['overwrite']);
@@ -206,6 +211,10 @@ final class GenerateCommand extends AbstractCommand
     }
 
 
+    /**
+     * @param mixed[] $cliOptions
+     * @return mixed[]
+     */
     private function prepareOptions(array $cliOptions): array
     {
         $options = $this->convertDashKeysToCamel($cliOptions);
@@ -215,6 +224,10 @@ final class GenerateCommand extends AbstractCommand
     }
 
 
+    /**
+     * @param mixed[] $options
+     * @return mixed[]
+     */
     private function convertDashKeysToCamel(array $options): array
     {
         foreach ($options as $key => $value) {
@@ -237,6 +250,10 @@ final class GenerateCommand extends AbstractCommand
     }
 
 
+    /**
+     * @param mixed[] $options
+     * @return mixed[]
+     */
     private function loadOptionsFromConfig(array $options): array
     {
         $configFilePaths = $this->getPossiblePathsForConfig($options);
@@ -261,6 +278,11 @@ final class GenerateCommand extends AbstractCommand
         $this->themeResources->copyToDestination($destination);
     }
 
+
+    /**
+     * @param mixed[] $options
+     * @return mixed[]
+     */
     private function getPossiblePathsForConfig(array $options): array
     {
         $filePaths = [];

@@ -41,5 +41,9 @@ interface PropertyReflectionInterface extends
     public function hasAnnotation(string $name): bool;
 
 
+    /**
+     * @param string $name
+     * @return mixed[]
+     */
     public function getAnnotation(string $name): array;
 }

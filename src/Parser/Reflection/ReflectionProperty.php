@@ -69,6 +69,9 @@ class ReflectionProperty extends ReflectionElement implements PropertyReflection
     }
 
 
+    /**
+     * @return mixed
+     */
     public function getDefaultValue()
     {
         return $this->reflection->getDefaultValue();

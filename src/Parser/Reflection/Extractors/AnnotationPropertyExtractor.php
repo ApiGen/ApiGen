@@ -5,12 +5,15 @@ namespace ApiGen\Parser\Reflection\Extractors;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\Extractors\AnnotationPropertyExtractorInterface;
 use ApiGen\Contracts\Parser\Reflection\Magic\MagicPropertyReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\TokenReflection\ReflectionFactoryInterface;
 
-class AnnotationPropertyExtractor implements AnnotationPropertyExtractorInterface
+final class AnnotationPropertyExtractor implements AnnotationPropertyExtractorInterface
 {
-
-    const PATTERN_PROPERTY = /** @lang RegExp */ '~^
+    /**
+     * @var string
+     */
+    public const PATTERN_PROPERTY = /** @lang RegExp */ '~^
         # property typehint
         (?:
             ([\\w\\\\]+(?:\\[\\])?(?:\\|[\\w\\\\]+(?:\\[\\])?)*)\\s+
@@ -41,7 +44,11 @@ class AnnotationPropertyExtractor implements AnnotationPropertyExtractorInterfac
     }
 
 
-    public function extractFromReflection(ClassReflectionInterface $classReflection)
+    /**
+     * @param ClassReflectionInterface $classReflection
+     * @return PropertyReflectionInterface[]
+     */
+    public function extractFromReflection(ClassReflectionInterface $classReflection): array
     {
         $this->classReflection = $classReflection;
 
@@ -63,8 +70,9 @@ class AnnotationPropertyExtractor implements AnnotationPropertyExtractorInterfac
      * @param string $annotationName
      * @return MagicPropertyReflectionInterface[]
      */
-    private function processMagicPropertyAnnotation(string $annotation, string $annotationName)
-    {
+    private function processMagicPropertyAnnotation(
+        string $annotation, string $annotationName
+    ): array {
         if (! preg_match(self::PATTERN_PROPERTY, $annotation, $matches)) {
             return [];
         }

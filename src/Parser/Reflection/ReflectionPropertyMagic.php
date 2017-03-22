@@ -55,6 +55,9 @@ final class ReflectionPropertyMagic extends ReflectionProperty implements MagicP
     private $declaringClass;
 
 
+    /**
+     * @param mixed[] $options
+     */
     public function __construct(array $options)
     {
         $this->name = $options['name'];
@@ -124,6 +127,9 @@ final class ReflectionPropertyMagic extends ReflectionProperty implements MagicP
     }
 
 
+    /**
+     * @return mixed[]
+     */
     public function getAnnotations(): array
     {
         if ($this->annotations === null) {
@@ -152,6 +158,9 @@ final class ReflectionPropertyMagic extends ReflectionProperty implements MagicP
     }
 
 
+    /**
+     * @return mixed
+     */
     public function getDefaultValue()
     {
         return null;
@@ -204,6 +213,9 @@ final class ReflectionPropertyMagic extends ReflectionProperty implements MagicP
     }
 
 
+    /**
+     * @return string[]
+     */
     public function getNamespaceAliases(): array
     {
         return $this->declaringClass->getNamespaceAliases();
@@ -257,6 +269,10 @@ final class ReflectionPropertyMagic extends ReflectionProperty implements MagicP
     }
 
 
+    /**
+     * @param string $name
+     * @return mixed[]
+     */
     public function getAnnotation(string $name): array
     {
         $annotations = $this->getAnnotations();

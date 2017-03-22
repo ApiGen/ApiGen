@@ -4,19 +4,19 @@ namespace ApiGen\Parser\Reflection\Extractors;
 
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\Extractors\ClassTraitElementsExtractorInterface;
+use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
 use TokenReflection\IReflection;
 
-class ClassTraitElementsExtractor implements ClassTraitElementsExtractorInterface
+final class ClassTraitElementsExtractor implements ClassTraitElementsExtractorInterface
 {
-
     /**
      * @var ClassReflectionInterface
      */
     private $classReflection;
 
     /**
-     * @var \TokenReflection\IReflection|\ClassReflectionInterface
+     * @var \TokenReflection\IReflection|ClassReflectionInterface
      */
     private $originalReflection;
 
@@ -28,7 +28,10 @@ class ClassTraitElementsExtractor implements ClassTraitElementsExtractorInterfac
     }
 
 
-    public function getDirectUsers()
+    /**
+     * @return ClassReflectionInterface[]
+     */
+    public function getDirectUsers(): array
     {
         $users = [];
         $name = $this->classReflection->getName();
@@ -47,7 +50,10 @@ class ClassTraitElementsExtractor implements ClassTraitElementsExtractorInterfac
     }
 
 
-    public function getIndirectUsers()
+    /**
+     * @return ClassReflectionInterface[]
+     */
+    public function getIndirectUsers(): array
     {
         $users = [];
         $name = $this->classReflection->getName();
@@ -66,7 +72,10 @@ class ClassTraitElementsExtractor implements ClassTraitElementsExtractorInterfac
     }
 
 
-    public function getTraitProperties()
+    /**
+     * @return PropertyReflectionInterface[]
+     */
+    public function getTraitProperties(): array
     {
         $properties = [];
         $traitProperties = $this->originalReflection->getTraitProperties($this->classReflection->getVisibilityLevel());
@@ -81,7 +90,10 @@ class ClassTraitElementsExtractor implements ClassTraitElementsExtractorInterfac
     }
 
 
-    public function getTraitMethods()
+    /**
+     * @return MethodReflectionInterface[]
+     */
+    public function getTraitMethods(): array
     {
         $methods = [];
         foreach ($this->originalReflection->getTraitMethods($this->classReflection->getVisibilityLevel()) as $method) {
@@ -95,7 +107,10 @@ class ClassTraitElementsExtractor implements ClassTraitElementsExtractorInterfac
     }
 
 
-    public function getUsedProperties()
+    /**
+     * @return PropertyReflectionInterface[]
+     */
+    public function getUsedProperties(): array
     {
         $allProperties = array_flip(array_map(function (PropertyReflectionInterface $property) {
             return $property->getName();
@@ -125,7 +140,10 @@ class ClassTraitElementsExtractor implements ClassTraitElementsExtractorInterfac
     }
 
 
-    public function getUsedMethods()
+    /**
+     * @return MethodReflectionInterface[]
+     */
+    public function getUsedMethods(): array
     {
         $usedMethods = [];
         foreach ($this->classReflection->getMethods() as $m) {

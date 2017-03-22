@@ -15,7 +15,7 @@ abstract class ReflectionFunctionBase extends ReflectionElement implements Abstr
     private const PARAM_ANNOTATION = '~^(?:([\\w\\\\]+(?:\\|[\\w\\\\]+)*)\\s+)?\\$(\\w+)(?:\\s+(.*))?($)~s';
 
     /**
-     * @var array
+     * @var ParameterReflectionInterface[]
      */
     protected $parameters;
 
@@ -32,6 +32,9 @@ abstract class ReflectionFunctionBase extends ReflectionElement implements Abstr
     }
 
 
+    /**
+     * @return ParameterReflectionInterface[]
+     */
     public function getParameters(): array
     {
         if ($this->parameters === null) {

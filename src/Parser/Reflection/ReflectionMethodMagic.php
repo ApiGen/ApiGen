@@ -41,6 +41,9 @@ final class ReflectionMethodMagic extends ReflectionMethod implements MagicMetho
     private $static;
 
 
+    /**
+     * @param mixed[]
+     */
     public function __construct(array $settings)
     {
         $this->name = $settings['name'];
@@ -104,6 +107,9 @@ final class ReflectionMethodMagic extends ReflectionMethod implements MagicMetho
     }
 
 
+    /**
+     * @return mixed[]
+     */
     public function getAnnotations(): array
     {
         if ($this->annotations === null) {
@@ -184,18 +190,27 @@ final class ReflectionMethodMagic extends ReflectionMethod implements MagicMetho
     }
 
 
+    /**
+     * @return mixed[]
+     */
     public function getParameters(): array
     {
         return $this->parameters;
     }
 
 
+    /**
+     * @param mixed[] $parameters
+     */
     public function setParameters(array $parameters): void
     {
         $this->parameters = $parameters;
     }
 
 
+    /**
+     * @return string[]
+     */
     public function getNamespaceAliases(): array
     {
         return $this->declaringClass->getNamespaceAliases();
@@ -253,6 +268,9 @@ final class ReflectionMethodMagic extends ReflectionMethod implements MagicMetho
     }
 
 
+    /**
+     * @return mixed[]
+     */
     public function getAnnotation(string $name): array
     {
         $annotations = $this->getAnnotations();

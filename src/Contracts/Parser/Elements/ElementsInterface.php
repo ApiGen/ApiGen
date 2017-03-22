@@ -28,7 +28,7 @@ interface ElementsInterface
 
 
     /**
-     * @return array[]
+     * @return mixed[]
      */
     public function getEmptyList(): array;
 }

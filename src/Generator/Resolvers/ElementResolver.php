@@ -18,7 +18,7 @@ use TokenReflection\Resolver;
 final class ElementResolver implements ElementResolverInterface
 {
     /**
-     * @var array
+     * @var int[]
      */
     private $simpleTypes = [
         'boolean' => 1,
@@ -289,6 +289,9 @@ final class ElementResolver implements ElementResolverInterface
 
 
     /**
+     * @param mixed[] $elements
+     * @param string $name
+     * @param string $namespace
      * @return mixed|ElementReflectionInterface
      */
     private function findElementByNameAndNamespace(array $elements, string $name, string $namespace)

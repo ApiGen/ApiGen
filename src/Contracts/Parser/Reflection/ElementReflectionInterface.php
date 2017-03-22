@@ -44,10 +44,15 @@ interface ElementReflectionInterface extends NamedInterface
      * Removes the short and long description.
      * In case of classes, functions and constants, @package, @subpackage, @author and @license annotations
      * are added from declaring files if not already present.
+     *
+     * @return mixed[]
      */
     public function getAnnotations(): array;
 
 
+    /**
+     * @return mixed[]
+     */
     public function getAnnotation(string $name): array;
 
 

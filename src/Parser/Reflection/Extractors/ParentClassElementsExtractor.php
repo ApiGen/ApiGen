@@ -41,6 +41,9 @@ final class ParentClassElementsExtractor implements ParentClassElementsExtractor
     }
 
 
+    /**
+     * @return PropertyReflectionInterface[]
+     */
     public function getInheritedProperties(): array
     {
         $properties = [];
@@ -100,10 +103,10 @@ final class ParentClassElementsExtractor implements ParentClassElementsExtractor
 
 
     /**
-     * @param array $elements
-     * @param array $allElements
+     * @param mixed[] $elements
+     * @param mixed[] $allElements
      * @param ClassReflectionInterface $reflectionClass
-     * @return array
+     * @return mixed[]
      */
     private function sortElements(array $elements, array $allElements, ClassReflectionInterface $reflectionClass): array
     {

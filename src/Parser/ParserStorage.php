@@ -5,32 +5,37 @@ namespace ApiGen\Parser;
 use ApiGen\Contracts\Parser\Elements\ElementsInterface;
 use ApiGen\Contracts\Parser\ParserStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use Exception;
 
 final class ParserStorage implements ParserStorageInterface
 {
     /**
-     * @var array
+     * @var ClassReflectionInterface[]
      */
     private $classes = [];
 
     /**
-     * @var array
+     * @var ConstantReflectionInterface[]
      */
     private $constants = [];
 
     /**
-     * @var array
+     * @var FunctionReflectionInterface[]
      */
     private $functions = [];
 
     /**
-     * @var array
+     * @var int[]
      */
     private $types = [ElementsInterface::CLASSES, ElementsInterface::CONSTANTS, ElementsInterface::FUNCTIONS];
 
 
+    /**
+     * @return mixed[]
+     */
     public function getElementsByType(string $type): array
     {
         if ($type === ElementsInterface::CLASSES) {
@@ -49,6 +54,9 @@ final class ParserStorage implements ParserStorageInterface
     }
 
 
+    /**
+     * @return int[]
+     */
     public function getDocumentedStats(): array
     {
         return [
@@ -59,48 +67,72 @@ final class ParserStorage implements ParserStorageInterface
     }
 
 
+    /**
+     * @return ClassReflectionInterface[]
+     */
     public function getClasses(): array
     {
         return $this->classes;
     }
 
 
+    /**
+     * @return ConstantReflectionInterface[]
+     */
     public function getConstants(): array
     {
         return $this->constants;
     }
 
 
+    /**
+     * @return FunctionReflectionInterface[]
+     */
     public function getFunctions(): array
     {
         return $this->functions;
     }
 
 
+    /**
+     * @return int[]
+     */
     public function getTypes(): array
     {
         return $this->types;
     }
 
 
+    /**
+     * @param ClassReflectionInterface[] $classes
+     */
     public function setClasses(array $classes): void
     {
         $this->classes = $classes;
     }
 
 
+    /**
+     * @param ConstantReflectionInterface[] $constants
+     */
     public function setConstants(array $constants): void
     {
         $this->constants = $constants;
     }
 
 
+    /**
+     * @param FunctionReflectionInterface[] $functions
+     */
     public function setFunctions(array $functions): void
     {
         $this->functions = $functions;
     }
 
 
+    /**
+     * @return ClassReflectionInterface[]
+     */
     public function getDirectImplementersOfInterface(ClassReflectionInterface $reflectionClass): array
     {
         $implementers = [];
@@ -116,6 +148,9 @@ final class ParserStorage implements ParserStorageInterface
     }
 
 
+    /**
+     * @return ClassReflectionInterface[]
+     */
     public function getIndirectImplementersOfInterface(ClassReflectionInterface $reflectionClass): array
     {
         $implementers = [];

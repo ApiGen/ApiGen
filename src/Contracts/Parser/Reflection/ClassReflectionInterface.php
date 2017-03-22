@@ -22,49 +22,49 @@ interface ClassReflectionInterface extends ElementReflectionInterface, LinedInte
     /**
      * @return ClassReflectionInterface[]
      */
-    public function getParentClasses();
+    public function getParentClasses(): array;
 
 
     /**
      * @return string[]
      */
-    public function getParentClassNameList();
+    public function getParentClassNameList(): array;
 
 
     /**
      * @return ClassReflectionInterface[]
      */
-    public function getDirectSubClasses();
+    public function getDirectSubClasses(): array;
 
 
     /**
      * @return ClassReflectionInterface[]
      */
-    public function getIndirectSubClasses();
+    public function getIndirectSubClasses(): array;
 
 
     /**
      * @return ClassReflectionInterface[]
      */
-    public function getDirectImplementers();
+    public function getDirectImplementers(): array;
 
 
     /**
      * @return ClassReflectionInterface[]
      */
-    public function getIndirectImplementers();
+    public function getIndirectImplementers(): array;
 
 
     /**
      * @return ClassReflectionInterface[]
      */
-    public function getDirectUsers();
+    public function getDirectUsers(): array;
 
 
     /**
      * @return ClassReflectionInterface[]
      */
-    public function getIndirectUsers();
+    public function getIndirectUsers(): array;
 
 
     public function implementsInterface(string $name): bool;
@@ -73,41 +73,41 @@ interface ClassReflectionInterface extends ElementReflectionInterface, LinedInte
     /**
      * @return ClassReflectionInterface[]
      */
-    public function getInterfaces();
+    public function getInterfaces(): array;
 
 
     /**
      * @return ClassReflectionInterface[]
      */
-    public function getOwnInterfaces();
+    public function getOwnInterfaces(): array;
 
 
     /**
      * @return string[]
      */
-    public function getOwnInterfaceNames();
+    public function getOwnInterfaceNames(): array;
 
 
     /**
      * @return MethodReflectionInterface[]
      */
-    public function getMethods();
+    public function getMethods(): array;
 
 
     /**
      * @return MethodReflectionInterface[]
      */
-    public function getOwnMethods();
+    public function getOwnMethods(): array;
 
 
     /**
-     * @return array {[ className => MethodReflectionInterface[] ]}
+     * @return MethodReflectionInterface[]
      */
     public function getInheritedMethods(): array;
 
 
     /**
-     * @return array {[ className => MagicMethodReflectionInterface[] ]}
+     * @return MagicMethodReflectionInterface[]
      */
     public function getInheritedMagicMethods(): array;
 
@@ -227,7 +227,7 @@ interface ClassReflectionInterface extends ElementReflectionInterface, LinedInte
 
 
     /**
-     * @return array {[ className => PropertyReflectionInterface[] ]}
+     * @return PropertyReflectionInterface[]
      */
     public function getInheritedProperties(): array;
 
@@ -257,13 +257,13 @@ interface ClassReflectionInterface extends ElementReflectionInterface, LinedInte
 
 
     /**
-     * @return array {[ traitName => PropertyReflectionInterface[] ]}
+     * @return PropertyReflectionInterface[]
      */
     public function getUsedProperties(): array;
 
 
     /**
-     * @return array {[ traitName => MagicPropertyReflectionInterface[] ]}
+     * @return MagicPropertyReflectionInterface[]
      */
     public function getUsedMagicProperties(): array;
 

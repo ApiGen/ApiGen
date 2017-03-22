@@ -13,6 +13,9 @@ interface InClassInterface extends InNamespaceInterface
     public function getNamespaceName(): string;
 
 
+    /**
+     * @return mixed[]
+     */
     public function getAnnotations(): array;
 
 

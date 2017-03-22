@@ -5,11 +5,14 @@ namespace ApiGen\Parser\Reflection\Extractors;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\Extractors\MagicMethodExtractorInterface;
 use ApiGen\Contracts\Parser\Reflection\Magic\MagicMethodReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 
 final class MagicMethodExtractor implements MagicMethodExtractorInterface
 {
-
-    public function extractFromClass(ClassReflectionInterface $reflectionClass)
+    /**
+     * @return MagicMethodReflectionInterface[]
+     */
+    public function extractFromClass(ClassReflectionInterface $reflectionClass): array
     {
         $methods = [];
 
@@ -61,10 +64,15 @@ final class MagicMethodExtractor implements MagicMethodExtractorInterface
 
 
     /**
+     * @param ClassReflectionInterface $reflectionClass
+     * @param bool $isDocumented
+     * @param mixed[] $methods
      * @return MagicMethodReflectionInterface[]
      */
     private function extractOwnFromClass(
-        ClassReflectionInterface $reflectionClass, bool $isDocumented, array $methods
+        ClassReflectionInterface $reflectionClass,
+        bool $isDocumented,
+        array $methods
     ): array {
         foreach ($reflectionClass->getOwnMagicMethods() as $method) {
             if ($this->canBeExtracted($isDocumented, $methods, $method)) {
@@ -76,8 +84,16 @@ final class MagicMethodExtractor implements MagicMethodExtractorInterface
     }
 
 
-    private function canBeExtracted(bool $isDocumented, array $methods, MagicMethodReflectionInterface $methodReflection): bool
-    {
+    /**
+     * @param bool $isDocumented
+     * @param MethodReflectionInterface[] $methods
+     * @param MagicMethodReflectionInterface $methodReflection
+     */
+    private function canBeExtracted(
+        bool $isDocumented,
+        array $methods,
+        MagicMethodReflectionInterface $methodReflection
+    ): bool {
         if (isset($methods[$methodReflection->getName()])) {
             return false;
         }

@@ -20,18 +20,21 @@ interface ReflectionFactoryInterface
 
 
     /**
+     * @param mixed[] $settings
      * @return MagicMethodReflectionInterface
      */
     public function createMethodMagic(array $settings): MagicMethodReflectionInterface;
 
 
     /**
+     * @param mixed[] $settings
      * @return MagicParameterReflectionInterface
      */
     public function createParameterMagic(array $settings): MagicParameterReflectionInterface;
 
 
     /**
+     * @param mixed[] $settings
      * @return MagicPropertyReflectionInterface
      */
     public function createPropertyMagic(array $settings): MagicPropertyReflectionInterface;

@@ -11,7 +11,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 final class ThemeConfigOptionsResolver extends Nette\Object
 {
     /**
-     * @var array
+     * @var mixed[]
      */
     private $defaults = [
         'name' => '',
@@ -83,6 +83,10 @@ final class ThemeConfigOptionsResolver extends Nette\Object
     }
 
 
+    /**
+     * @param mixed[] $options
+     * @return mixed[]
+     */
     public function resolve(array $options): array
     {
         $this->resolver = $this->optionsResolverFactory->create();
@@ -116,6 +120,11 @@ final class ThemeConfigOptionsResolver extends Nette\Object
     }
 
 
+    /**
+     * @param string[] $value
+     * @param Options $options
+     * @return string[]
+     */
     private function makeTemplatePathsAbsolute(array $value, Options $options): array
     {
         foreach ($value as $type => $settings) {

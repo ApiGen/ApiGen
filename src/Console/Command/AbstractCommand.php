@@ -6,8 +6,14 @@ use Symfony\Component\Console\Command\Command;
 
 abstract class AbstractCommand extends Command
 {
-
-    public function addOption($name, $shortcut = null, $mode = null, $description = '', $default = null)
+    /**
+     * @param string $name
+     * @param ?string $shortcut
+     * @param ?int $mode
+     * @param string $description
+     * @param ?mixed $default
+     */
+    public function addOption($name, $shortcut = null, $mode = null, $description = '', $default = null): void
     {
         $name = $this->dashFormat($name);
         return parent::addOption($name, $shortcut, $mode, $description, $default);

@@ -155,9 +155,6 @@ final class ReflectionElementTest extends TestCase
     }
 
 
-    /**
-     * @return ReflectionFactoryInterface
-     */
     private function getReflectionFactory(): ReflectionFactoryInterface
     {
         $parserStorageMock = $this->createMock(ParserStorageInterface::class);

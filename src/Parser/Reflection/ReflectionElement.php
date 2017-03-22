@@ -20,7 +20,7 @@ abstract class ReflectionElement extends ReflectionBase implements ElementReflec
     protected $isDocumented;
 
     /**
-     * @var array
+     * @var mixed[]
      */
     protected $annotations;
 
@@ -124,6 +124,9 @@ abstract class ReflectionElement extends ReflectionBase implements ElementReflec
     }
 
 
+    /**
+     * @return string[]
+     */
     public function getNamespaceAliases(): array
     {
         return $this->reflection->getNamespaceAliases();
@@ -165,6 +168,9 @@ abstract class ReflectionElement extends ReflectionBase implements ElementReflec
     }
 
 
+    /**
+     * @return mixed[]
+     */
     public function getAnnotations(): array
     {
         if ($this->annotations === null) {
@@ -182,6 +188,9 @@ abstract class ReflectionElement extends ReflectionBase implements ElementReflec
     }
 
 
+    /**
+     * @return mixed[]
+     */
     public function getAnnotation(string $name): array
     {
         return $this->hasAnnotation($name) ? $this->getAnnotations()[$name] : [];
@@ -210,6 +219,7 @@ abstract class ReflectionElement extends ReflectionBase implements ElementReflec
 
     /**
      * @param mixed $reflection
+     * @return mixed[]
      */
     private function getAnnotationsFromReflection($reflection): array
     {

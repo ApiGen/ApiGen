@@ -45,6 +45,9 @@ final class ElementExtractor implements ElementExtractorInterface
     }
 
 
+    /**
+     * @return mixed[]
+     */
     public function extractElementsByAnnotation(string $annotation): array
     {
         $elements = $this->elements->getEmptyList();
@@ -87,6 +90,12 @@ final class ElementExtractor implements ElementExtractorInterface
     }
 
 
+    /**
+     * @param mixed[] $elements
+     * @param string $annotation
+     * @param mixed[] $storage
+     * @return mixed[]
+     */
     private function extractByAnnotationAndMerge(array $elements, string $annotation, array $storage): array
     {
         $foundElements = $this->elementFilter->filterByAnnotation($elements, $annotation);
@@ -96,7 +105,8 @@ final class ElementExtractor implements ElementExtractorInterface
 
 
     /**
-     * @param array { key => elementList[] } $elements
+     * @param mixed[] $elements
+     * @return mixed[]
      */
     private function sortElements(array $elements): array
     {

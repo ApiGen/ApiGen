@@ -3,24 +3,38 @@
 namespace ApiGen\Contracts\Parser;
 
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 
 interface ParserStorageInterface
 {
+    /**
+     * @return mixed[]
+     */
     public function getElementsByType(string $type): array;
 
 
     /**
-     * Get stats for documented classes, functions and constants.
+     * @return int[]
      */
     public function getDocumentedStats(): array;
 
 
+    /**
+     * @return ClassReflectionInterface[]
+     */
     public function getClasses(): array;
 
 
+    /**
+     * @return ConstantReflectionInterface[]
+     */
     public function getConstants(): array;
 
 
+    /**
+     * @return FunctionReflectionInterface[]
+     */
     public function getFunctions(): array;
 
 
@@ -30,12 +44,21 @@ interface ParserStorageInterface
     public function getTypes(): array;
 
 
+    /**
+     * @param ClassReflectionInterface[] $classes
+     */
     public function setClasses(array $classes): void;
 
 
+    /**
+     * @param ConstantReflectionInterface[] $constants
+     */
     public function setConstants(array $constants): void;
 
 
+    /**
+     * @param FunctionReflectionInterface[] $functions
+     */
     public function setFunctions(array $functions): void;
 
 

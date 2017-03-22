@@ -13,7 +13,7 @@ interface BackendInterface
      * @param int $type Returned class types (multiple values may be OR-ed).
      * @return ClassReflectionInterface[]
      */
-    public function getClasses($type = Memory::TOKENIZED_CLASSES);
+    public function getClasses($type = Memory::TOKENIZED_CLASSES): array;
 
     /**
      * @return ConstantReflectionInterface[]

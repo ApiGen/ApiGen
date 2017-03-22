@@ -46,6 +46,9 @@ final class ReflectionParameterMagic extends ReflectionParameter implements Magi
     private $declaringFunction;
 
 
+    /**
+     * @param mixed[] $settings
+     */
     public function __construct(array $settings)
     {
         $this->name = $settings['name'];

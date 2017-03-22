@@ -6,10 +6,9 @@ use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
 
 interface ElementSorterInterface
 {
-
     /**
-     * @param ElementReflectionInterface[]
+     * @param ElementReflectionInterface[] $elements
      * @return ElementReflectionInterface[]
      */
-    public function sortElementsByFqn(array $elements);
+    public function sortElementsByFqn(array $elements): array;
 }

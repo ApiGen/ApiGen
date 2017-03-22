@@ -4,5 +4,8 @@ namespace ApiGen\Contracts\Parser\Elements;
 
 interface ElementExtractorInterface
 {
+    /**
+     * @return mixed[]
+     */
     public function extractElementsByAnnotation(string $annotation): array;
 }

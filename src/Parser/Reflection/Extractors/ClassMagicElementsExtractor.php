@@ -35,12 +35,18 @@ final class ClassMagicElementsExtractor implements ClassMagicElementsExtractorIn
     }
 
 
+    /**
+     * @return MagicPropertyReflectionInterface[]
+     */
     public function getMagicProperties(): array
     {
         return $this->getOwnMagicProperties() + (new MagicPropertyExtractor)->extractFromClass($this->classReflection);
     }
 
 
+    /**
+     * @return MagicPropertyReflectionInterface[]
+     */
     public function getOwnMagicProperties(): array
     {
         if ($this->ownMagicProperties === null) {
@@ -56,12 +62,18 @@ final class ClassMagicElementsExtractor implements ClassMagicElementsExtractorIn
     }
 
 
+    /**
+     * @return MagicMethodReflectionInterface[]
+     */
     public function getMagicMethods(): array
     {
         return $this->getOwnMagicMethods() + (new MagicMethodExtractor)->extractFromClass($this->classReflection);
     }
 
 
+    /**
+     * @return MagicMethodReflectionInterface[]
+     */
     public function getOwnMagicMethods(): array
     {
         if ($this->ownMagicMethods === null) {
@@ -77,6 +89,9 @@ final class ClassMagicElementsExtractor implements ClassMagicElementsExtractorIn
     }
 
 
+    /**
+     * @return MagicPropertyReflectionInterface[]
+     */
     public function getInheritedMagicProperties(): array
     {
         $properties = [];
@@ -93,6 +108,9 @@ final class ClassMagicElementsExtractor implements ClassMagicElementsExtractorIn
     }
 
 
+    /**
+     * @return MagicMethodReflectionInterface[]
+     */
     public function getInheritedMagicMethods(): array
     {
         $methods = [];
@@ -114,6 +132,9 @@ final class ClassMagicElementsExtractor implements ClassMagicElementsExtractorIn
     }
 
 
+    /**
+     * @return MagicPropertyReflectionInterface[]
+     */
     public function getUsedMagicProperties(): array
     {
         $properties = [];
@@ -134,6 +155,9 @@ final class ClassMagicElementsExtractor implements ClassMagicElementsExtractorIn
     }
 
 
+    /**
+     * @return MagicMethodReflectionInterface[]
+     */
     public function getUsedMagicMethods(): array
     {
         $usedMethods = [];
@@ -152,7 +176,8 @@ final class ClassMagicElementsExtractor implements ClassMagicElementsExtractorIn
 
     /**
      * @param ElementReflectionInterface[] $elementsToCheck
-     * @param array $allElements
+     * @param mixed[] $allElements
+     * @return mixed[]
      */
     private function getUsedElements(array $elementsToCheck, array &$allElements): array
     {
@@ -167,8 +192,14 @@ final class ClassMagicElementsExtractor implements ClassMagicElementsExtractorIn
         return $elements;
     }
 
-
+    /**
+     * @param mixed[] $elements
+     * @param mixed[] $allElements
+     * @param ClassReflectionInterface $classReflection
+     * @return mixed[]
+     */
     private function sortElements(array $elements, array $allElements, ClassReflectionInterface $classReflection): array
+
     {
         if (! empty($elements)) {
             ksort($elements);

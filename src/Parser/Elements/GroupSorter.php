@@ -6,16 +6,15 @@ use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Parser\Elements\ElementsInterface;
 use ApiGen\Contracts\Parser\Elements\GroupSorterInterface;
 
-class GroupSorter implements GroupSorterInterface
+final class GroupSorter implements GroupSorterInterface
 {
-
     /**
-     * @var array
+     * @var string[]
      */
     private $lowercasedGroupNames;
 
     /**
-     * @var array
+     * @var mixed[]
      */
     private $groups;
 
@@ -37,6 +36,10 @@ class GroupSorter implements GroupSorterInterface
     }
 
 
+    /**
+     * @param mixed[] $groups
+     * @return mixed[]
+     */
     public function sort(array $groups): array
     {
         if ($this->isNoneGroupOnly($groups)) {
@@ -61,19 +64,18 @@ class GroupSorter implements GroupSorterInterface
     }
 
 
+    /**
+     * @param mixed[] $groups
+     */
     private function isNoneGroupOnly(array $groups): bool
     {
-        if (count($groups) === 1 && isset($groups['None'])) {
-            return true;
-        }
-
-        return false;
+        return count($groups) === 1 && isset($groups['None']);
     }
 
 
     /**
      * @param string[] $groupNames
-     * @return array[]
+     * @return string[]
      */
     private function convertGroupNamesToLower(array $groupNames): array
     {

@@ -50,6 +50,7 @@ class ReflectionFactory implements ReflectionFactoryInterface
 
 
     /**
+     * @param IReflectionClass|IReflectionConstant|IReflectionMethod $tokenReflection
      * @return ReflectionClass|ReflectionConstant|ReflectionMethod
      */
     public function createFromReflection($tokenReflection)
@@ -60,6 +61,10 @@ class ReflectionFactory implements ReflectionFactoryInterface
     }
 
 
+    /**
+     * @param mixed[] $settings
+     * @return MagicMethodReflectionInterface
+     */
     public function createMethodMagic(array $settings): MagicMethodReflectionInterface
     {
         $reflection = new ReflectionMethodMagic($settings);
@@ -69,6 +74,9 @@ class ReflectionFactory implements ReflectionFactoryInterface
     }
 
 
+    /**
+     * @param mixed[] $settings
+     */
     public function createParameterMagic(array $settings): MagicParameterReflectionInterface
     {
         $reflection = new ReflectionParameterMagic($settings);
@@ -78,6 +86,9 @@ class ReflectionFactory implements ReflectionFactoryInterface
     }
 
 
+    /**
+     * @param mixed[] $settings
+     */
     public function createPropertyMagic(array $settings): MagicPropertyReflectionInterface
     {
         $reflection = new ReflectionPropertyMagic($settings);

@@ -8,9 +8,9 @@ use SplFileInfo;
 final class NetteFinder implements FinderInterface
 {
     /**
-     * @param string|array $source
-     * @param array $exclude
-     * @param array $extensions
+     * @param string|string[] $source
+     * @param string[] $exclude
+     * @param string[] $extensions
      * @return SplFileInfo[]
      */
     public function find($source, array $exclude = [], array $extensions = ['php']): array
@@ -29,12 +29,13 @@ final class NetteFinder implements FinderInterface
 
     /**
      * @param string $source
-     * @param array $exclude
+     * @param string[] $exclude
      * @param string $fileMasks
      * @return SplFileInfo[]
      */
-    private function getFilesFromSource(string $source, array $exclude, string $fileMasks)
-    {
+    private function getFilesFromSource(
+        string $source, array $exclude, string $fileMasks
+    ): array {
         if (is_file($source)) {
             $foundFiles[$source] = new SplFileInfo($source);
             return $foundFiles;
@@ -60,6 +61,9 @@ final class NetteFinder implements FinderInterface
     }
 
 
+    /**
+     * @param string[] $extensions
+     */
     private function turnExtensionsToMask(array $extensions): string
     {
         $mask = '';
@@ -74,7 +78,7 @@ final class NetteFinder implements FinderInterface
     /**
      * @return SplFileInfo[]
      */
-    private function convertFinderToArray(Finder $finder)
+    private function convertFinderToArray(Finder $finder): array
     {
         return iterator_to_array($finder->getIterator());
     }

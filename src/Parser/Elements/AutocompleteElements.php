@@ -22,7 +22,7 @@ class AutocompleteElements implements AutocompleteElementsInterface
     private $elementStorage;
 
     /**
-     * @var array
+     * @var mixed[]
      */
     private $elements = [];
 
@@ -33,6 +33,9 @@ class AutocompleteElements implements AutocompleteElementsInterface
     }
 
 
+    /**
+     * @return mixed[]
+     */
     public function getElements(): array
     {
         foreach ($this->elementStorage->getElements() as $type => $elementList) {

@@ -9,7 +9,7 @@ use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 interface ElementStorageInterface
 {
     /**
-     * @return array
+     * @return mixed[]
      */
     public function getNamespaces(): array;
 
@@ -57,7 +57,7 @@ interface ElementStorageInterface
 
 
     /**
-     * @return array[]
+     * @return mixed[]
      */
     public function getElements(): array;
 }

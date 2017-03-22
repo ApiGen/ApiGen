@@ -4,7 +4,11 @@ namespace ApiGen\Parser;
 
 use ApiGen\Contracts\Parser\ParserInterface;
 use ApiGen\Contracts\Parser\ParserStorageInterface;
+use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use Exception;
+use SplFileInfo;
 use TokenReflection\Broker;
 use TokenReflection\Broker\Backend;
 use TokenReflection\Exception\ParseException;
@@ -29,6 +33,9 @@ final class Parser implements ParserInterface
     }
 
 
+    /**
+     * @param SplFileInfo[] $files
+     */
     public function parse(array $files): ParserStorageInterface
     {
         foreach ($files as $file) {
@@ -66,6 +73,11 @@ final class Parser implements ParserInterface
     }
 
 
+    /**
+     * @param ClassReflectionInterface[] $classes
+     * @param ConstantReflectionInterface[] $constants
+     * @param FunctionReflectionInterface[] $functions
+     */
     private function loadToParserStorage(array $classes, array $constants, array $functions): void
     {
         $this->parserStorage->setClasses($classes);

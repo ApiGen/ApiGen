@@ -7,9 +7,8 @@ use ApiGen\Contracts\Parser\Reflection\Magic\MagicPropertyReflectionInterface;
 
 interface AnnotationPropertyExtractorInterface
 {
-
     /**
      * @return MagicPropertyReflectionInterface[]
      */
-    public function extractFromReflection(ClassReflectionInterface $classReflection);
+    public function extractFromReflection(ClassReflectionInterface $classReflection): array;
 }

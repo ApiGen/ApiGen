@@ -8,10 +8,12 @@ use ApiGen\Parser\Reflection\ReflectionClass;
 use ApiGen\Parser\Reflection\ReflectionMethodMagic;
 use ApiGen\Parser\Reflection\TokenReflection\ReflectionFactory;
 
-class AnnotationMethodExtractor implements AnnotationMethodExtractorInterface
+final class AnnotationMethodExtractor implements AnnotationMethodExtractorInterface
 {
-
-    const PATTERN_METHOD = /** @lang RegExp */ '~^
+    /**
+     * @var string
+     */
+    public const PATTERN_METHOD = /** @lang RegExp */ '~^
         # static mark
         (?:(static)\\s+)?
         # return typehint
@@ -89,7 +91,10 @@ class AnnotationMethodExtractor implements AnnotationMethodExtractorInterface
     }
 
 
-    public function extractFromReflection(ClassReflectionInterface $reflectionClass)
+    /**
+     * @return ReflectionMethodMagic[]
+     */
+    public function extractFromReflection(ClassReflectionInterface $reflectionClass): array
     {
         $this->reflectionClass = $reflectionClass;
 
