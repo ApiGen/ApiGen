@@ -33,5 +33,3 @@ skip:
         - src/Console/Command/AbstractCommand.php
         - tests/Parser/Reflection/ReflectionClassSource/RichInterface.php
         - src/Contracts/Parser/Broker/BackendInterface.php
-    PhpCsFixer\Fixer\Strict\DeclareStrictTypesFixer:
-        - tests/Parser/Reflection/ReflectionClassSource/SomeTrait.php
