@@ -8,10 +8,10 @@ abstract class AbstractCommand extends Command
 {
     /**
      * @param string $name
-     * @param ?string $shortcut
-     * @param ?int $mode
+     * @param string|null $shortcut
+     * @param int|null $mode
      * @param string $description
-     * @param ?mixed $default
+     * @param mixed|null $default
      */
     public function addOption($name, $shortcut = null, $mode = null, $description = '', $default = null): Command
     {

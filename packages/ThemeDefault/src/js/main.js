@@ -9,7 +9,7 @@ $(window).load(function() {
 
 	// Menu
 
-	// Hide deep packages and namespaces
+	// Hide deep namespaces
 	$('ul span', $groups).click(function(event) {
 		event.preventDefault();
 		event.stopPropagation();
@@ -138,7 +138,7 @@ $(window).load(function() {
 					$('.short', $this).hide();
 					$('.detailed', $this).show();
 					trCollapsed = false;
-				} else {					
+				} else {
 					$('.short', $this).show();
 					$('.detailed', $this).hide();
 					trCollapsed = true;

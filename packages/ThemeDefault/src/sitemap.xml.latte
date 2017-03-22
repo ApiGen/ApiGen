@@ -7,9 +7,6 @@
 <url n:foreach="$namespaces as $namespace">
 	<loc>{$config->baseUrl}/{$namespace|namespaceUrl}</loc>
 </url>
-<url n:foreach="$packages as $package">
-	<loc>{$config->baseUrl}/{$package|packageUrl}</loc>
-</url>
 
 {define elements}
 <url n:foreach="$elements as $element">

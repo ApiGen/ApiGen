@@ -94,7 +94,7 @@ final class ElementResolver implements ElementResolverInterface
      * @param string $definition
      * @param object|string $reflectionElement
      * @param string|null $expectedName
-     * @return ClassReflectionInterface|ConstantReflectionInterface|FunctionReflectionInterface|MethodReflectionInterface|PropertyReflectionInterface|NULL
+     * @return ClassReflectionInterface|ConstantReflectionInterface|FunctionReflectionInterface|MethodReflectionInterface|PropertyReflectionInterface|null
      */
     public function resolveElement(string $definition, $reflectionElement, string &$expectedName = null)
     {
@@ -200,7 +200,7 @@ final class ElementResolver implements ElementResolverInterface
 
 
     /**
-     * @return ClassReflectionInterface|ConstantReflectionInterface|FunctionReflectionInterface|NULL
+     * @return ClassReflectionInterface|ConstantReflectionInterface|FunctionReflectionInterface|null
      */
     private function resolveIfParsed(string $definition, ElementReflectionInterface $reflectionElement)
     {
@@ -218,7 +218,7 @@ final class ElementResolver implements ElementResolverInterface
 
 
     /**
-     * @return ConstantReflectionInterface|MethodReflectionInterface|PropertyReflectionInterface|NULL
+     * @return ConstantReflectionInterface|MethodReflectionInterface|PropertyReflectionInterface|null
      */
     private function resolveIfInContext(string $definition, ClassReflectionInterface $context)
     {

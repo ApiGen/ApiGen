@@ -43,9 +43,8 @@ final class NamespaceLoader
         string $name,
         array $namespace
     ): void {
-    
+
         $template->setParameters([
-            'package' => null, // removed, but for BC in Themes
             'namespace' => $name,
             'subnamespaces' => $this->getSubnamesForName($name, $template->getParameters()['namespaces'])
         ]);

@@ -2,12 +2,13 @@ checkers:
     # PSR2
     PHP_CodeSniffer\Standards\Generic\Sniffs\Files\LineLengthSniff:
         absoluteLineLimit: 120
-
     - PHP_CodeSniffer\Standards\PSR2\Sniffs\Files\EndFileNewlineSniff
     - PHP_CodeSniffer\Standards\Squiz\Sniffs\WhiteSpace\ControlStructureSpacingSniff
     - PHP_CodeSniffer\Standards\PSR2\Sniffs\Namespaces\UseDeclarationSniff
     - PHP_CodeSniffer\Standards\Squiz\Sniffs\Functions\MultiLineFunctionDeclarationSniff
     - PHP_CodeSniffer\Standards\PEAR\Sniffs\WhiteSpace\ScopeClosingBraceSniff
+    - PhpCsFixer\Fixer\Casing\LowercaseConstantsFixer
+    - PhpCsFixer\Fixer\Casing\LowercaseKeywordsFixer
 
     # strict and scalar types
     - PhpCsFixer\Fixer\Strict\DeclareStrictTypesFixer

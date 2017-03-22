@@ -12,7 +12,7 @@ interface ConfigurationInterface
 
 
     /**
-     * @return mixed|NULL
+     * @return mixed|null
      */
     public function getOption(string $name);
 

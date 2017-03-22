@@ -81,24 +81,6 @@ abstract class ReflectionElement extends ReflectionBase implements ElementReflec
     }
 
 
-    /**
-     * Removed, but for BC in templates.
-     */
-    public function inPackage(): bool
-    {
-        return false;
-    }
-
-
-    /**
-     * Removed, but for BC in templates.
-     */
-    public function inNamespace(): bool
-    {
-        return true;
-    }
-
-
     public function getNamespaceName(): string
     {
         static $namespaces = [];

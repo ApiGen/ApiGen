@@ -65,12 +65,10 @@ final class TemplateElementsLoader
             $parameters = [
                 'annotationGroups' => $this->configuration->getOption(ConfigurationOptions::ANNOTATION_GROUPS),
                 'namespace' => null,
-                'package' => null, // removed, but for BC with Themes
                 'class' => null,
                 'constant' => null,
                 'function' => null,
                 'namespaces' => array_keys($this->elementStorage->getNamespaces()),
-                'packages' => [], // removed, but for BC with Themes
                 'classes' => array_filter($this->elementStorage->getClasses(), $this->getMainFilter()),
                 'interfaces' => array_filter($this->elementStorage->getInterfaces(), $this->getMainFilter()),
                 'traits' => array_filter($this->elementStorage->getTraits(), $this->getMainFilter()),

@@ -52,20 +52,15 @@
 		{/define}
 
 		<div id="groups">
-			{if $namespaces}
-				<h3>Namespaces</h3>
-				{include group, groups => $namespaces, actualGroup => $namespace, groupBy => 'namespace'}
-			{elseif $packages}
-				<h3>Packages</h3>
-				{include group, groups => $packages, actualGroup => $package, groupBy => 'package'}
-			{/if}
+			<h3>Namespaces</h3>
+			{include group, groups => $namespaces, actualGroup => $namespace, groupBy => 'namespace'}
 		</div>
 
-		<hr n:if="($namespaces || $packages) && ($classes || $interfaces || $traits || $exceptions || $constants || $functions)">
+		<hr n:if="($namespaces) && ($classes || $interfaces || $traits || $exceptions || $constants || $functions)">
 
 		{define elements}
 			<ul>
-				<li n:foreach="$elements as $element" n:class="$activeElement === $element ? active" n:if="$element->namespaceName"><a n:class="$element->deprecated ? deprecated, !$element->valid ? invalid" href="{$element|elementUrl}">{if $namespace}{$element->shortName}{else}{$element->name}{/if}</a></li>
+				<li n:foreach="$elements as $element" n:class="$activeElement === $element ? active" n:if="$element->namespaceName"><a n:class="$element->deprecated ? deprecated" href="{$element|elementUrl}">{if $namespace}{$element->shortName}{else}{$element->name}{/if}</a></li>
 			</ul>
 		{/define}
 
@@ -118,9 +113,6 @@
 			<li n:class="'overview' === $active ? active">
 				<a n:tag-if="'overview' !== $active" href="index.html" title="Overview"><span>Overview</span></a>
 			</li>
-			<li n:class="'package' === $active ? active" n:if="$packages">
-				<a n:tag-if="'package' !== $active && $package" href="{$package|packageUrl}" title="Summary of {$package}"><span>Package</span></a>
-			</li>
 			<li n:class="'namespace' === $active ? active" n:if="$namespaces">
 				<a n:tag-if="'namespace' !== $active && $namespace" href="{$namespace|namespaceUrl}" title="Summary of {$namespace}"><span>Namespace</span></a>
 			</li>
@@ -135,9 +127,6 @@
 			</li>
 		</ul>
 		<ul>
-			<li n:class="'tree' === $active ? active" n:if="$config->tree">
-				<a n:tag-if="'tree' !== $active" href="tree.html" title="Tree view of classes, interfaces, traits and exceptions"><span>Tree</span></a>
-			</li>
 			{foreach $annotationGroups as $annotation}
 				<li n:class="$active === 'annotation-group-' . $annotation ? active">
 					<a n:tag-if="$active !== 'annotation-group-' . $annotation" href="annotation-group-{$annotation}.html" title="List of elements with {$annotation} annotation">
@@ -145,11 +134,6 @@
 					</a>
 				</li>
 			{/foreach}
-		</ul>
-		<ul>
-			<li n:if="$config->download">
-				<a href="{$archive}" title="Download documentation as ZIP archive"><span>Download</span></a>
-			</li>
 		</ul>
 	</div>
 

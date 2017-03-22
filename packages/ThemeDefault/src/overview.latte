@@ -20,19 +20,6 @@
 		{/foreach}
 	</table>
 
-	<table class="summary" id="packages" n:if="count($packages)">
-		<caption>Packages summary</caption>
-		{foreach $packages as $package}
-			{continueIf $config->main && 0 !== strpos($package, $config->main)}
-			<tr>
-				{var $group = true}
-				<td class="name">
-					<a href="{$package|packageUrl}">{$package}</a>
-				</td>
-			</tr>
-		{/foreach}
-	</table>
-
 	{if ! $group}
 		{include '@elementlist.latte'}
 	{/if}

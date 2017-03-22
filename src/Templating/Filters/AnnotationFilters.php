@@ -28,18 +28,6 @@ final class AnnotationFilters extends Filters
     }
 
 
-    /**
-     * Removed, only for BC with Themes.
-     *
-     * @param string[] $annotations
-     * @return string[]
-     */
-    public function annotationSort(array $annotations): array
-    {
-        return $annotations;
-    }
-
-
     public function annotationBeautify(string $name): string
     {
         return Strings::firstUpper($name);

@@ -27,8 +27,8 @@ class ResolverFilters extends Filters
 
     /**
      * @param string $className
-     * @param string|NULL $namespace
-     * @return ReflectionClass|FALSE
+     * @param string|null $namespace
+     * @return ReflectionClass|false
      */
     public function getClass(string $className, ?string $namespace = '')
     {
@@ -44,8 +44,8 @@ class ResolverFilters extends Filters
     /**
      * @param string $definition
      * @param ReflectionElement|ReflectionInterface $context
-     * @param NULL $expectedName
-     * @return ReflectionElement|bool|NULL
+     * @param null $expectedName
+     * @return ReflectionElement|bool|null
      */
     public function resolveElement(string $definition, $context, &$expectedName = null)
     {

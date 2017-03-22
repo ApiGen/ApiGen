@@ -11,8 +11,19 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class ConfigurationOptionsResolver
 {
+    /**
+     * @var string
+     */
     public const AL_PROTECTED = 'protected';
+
+    /**
+     * @var string
+     */
     public const AL_PRIVATE = 'private';
+
+    /**
+     * @var string
+     */
     public const AL_PUBLIC = 'public';
 
     /**
@@ -39,10 +50,7 @@ final class ConfigurationOptionsResolver
         ConfigurationOptions::TITLE => '',
         // helpers
         ConfigurationOptions::VISIBILITY_LEVELS => [],
-        ConfigurationOptions::SOURCE_CODE => '',
-        // removed, but BC for templates
-        'download' => false,
-        'tree' => false,
+        ConfigurationOptions::SOURCE_CODE => ''
     ];
 
     /**

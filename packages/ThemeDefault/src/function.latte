@@ -7,8 +7,6 @@
 <div id="content" class="function">
 	<h1 n:class="$function->deprecated ? deprecated">Function {$function->shortName}</h1>
 
-	{if $function->valid}
-
 	<div class="description" n:if="$template->longDescription($function)">
 	{$function|longDescription|noescape}
 	</div>
@@ -64,19 +62,5 @@
 		</td>
 	</tr>
 	</table>
-
-	{else}
-		<div class="invalid">
-			<p>
-				Documentation of this function could not be generated.
-			</p>
-			<p>
-				Function was originally declared in {$function->fileName|relativePath} and is invalid because of:
-			</p>
-			<ul>
-				<li n:foreach="$function->reasons as $reason">Function was redeclared in {$reason->getSender()->getFileName()|relativePath}.</li>
-			</ul>
-		</div>
-	{/if}
 </div>
 {/block}

@@ -7,8 +7,6 @@
 <div id="content" class="class">
 	<h1 n:class="$class->deprecated ? deprecated">{if $class->interface}Interface{elseif $class->trait}Trait{else}Class{/if} {$class->shortName}</h1>
 
-	{if $class->valid}
-
 	<div class="description" n:if="$template->longDescription($class)">
 	{$class|longDescription|noescape}
 	</div>
@@ -17,11 +15,11 @@
 		<dd n:foreach="$tree as $item" style="padding-left:{($iterator->counter - 1) * 30}px">
 			<img src="resources/inherit.png" alt="Extended by" n:if="$iterator->counter > 1">
 			{if $item->documented}
-			<a href="{$item|classUrl}" n:tag-if="!$iterator->last">{last}<b>{/last}<span n:class="$item->deprecated ? deprecated, !$item->valid ? invalid">{$item->name}</span>{last}</b>{/last}</a>
+			<a href="{$item|classUrl}" n:tag-if="!$iterator->last">{last}<b>{/last}<span n:class="$item->deprecated ? deprecated">{$item->name}</span>{last}</b>{/last}</a>
 			{else}{$item->name}{/if}
 			{var $itemOwnInterfaces = $item->ownInterfaces}
 			{if $itemOwnInterfaces} implements {foreach $itemOwnInterfaces as $interface}
-				<a href="{$interface|classUrl}" n:tag-if="$interface->documented"><span n:class="$interface->deprecated ? deprecated, !$interface->valid ? invalid">{$interface->name}</span></a>{sep}, {/sep}
+				<a href="{$interface|classUrl}" n:tag-if="$interface->documented"><span n:class="$interface->deprecated ? deprecated">{$interface->name}</span></a>{sep}, {/sep}
 			{/foreach}{/if}
 			{var $itemOwnTraits = $item->ownTraits}
 			{if $itemOwnTraits} uses {foreach $itemOwnTraits as $trait}
@@ -29,7 +27,7 @@
 					{$trait} (not available)
 
 				{else}
-					<a href="{$trait|classUrl}" n:tag-if="$trait->documented"><span n:class="$trait->deprecated ? deprecated, !$trait->valid ? invalid">{$trait->name}</span></a>{sep}, {/sep}
+					<a href="{$trait|classUrl}" n:tag-if="$trait->documented"><span n:class="$trait->deprecated ? deprecated">{$trait->name}</span></a>{sep}, {/sep}
 				{/}
 			{/foreach}{/if}
 		</dd>
@@ -414,19 +412,5 @@
 		</code></td>
 	</tr>
 	</table>
-
-	{else}
-		<div class="invalid">
-			<p>
-				Documentation of this class could not be generated.
-			</p>
-			<p>
-				Class was originally declared in {$class->fileName|relativePath} and is invalid because of:
-			</p>
-			<ul>
-				<li n:foreach="$class->reasons as $reason">Class was redeclared in {$reason->getSender()->getFileName()|relativePath}.</li>
-			</ul>
-		</div>
-	{/if}
 </div>
 {/block}

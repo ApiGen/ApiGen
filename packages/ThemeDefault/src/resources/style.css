@@ -98,10 +98,6 @@ code a b {
 	opacity: .5;
 }
 
-.invalid {
-	color: #e71818;
-}
-
 .hidden {
 	display: none;
 }
@@ -143,10 +139,6 @@ code a b {
 	color: #333333;
 	background: none;
 	font-weight: bold;
-}
-
-#menu .active > a.invalid {
-	color: #e71818;
 }
 
 #menu .active > a:hover, #menu .active > a:active, #menu .active > a:focus {
@@ -367,7 +359,7 @@ dl.tree dd {
 	margin: 3px -10px;
 }
 
-#packages.summary td:first-child, #namespaces.summary td:first-child, .inherited.summary td:first-child, .used.summary td:first-child {
+#namespaces.summary td:first-child, .inherited.summary td:first-child, .used.summary td:first-child {
 	text-align: left;
 }
 
@@ -452,11 +444,6 @@ td.attributes {
 	margin: 0 0 5px 25px;
 }
 
-div.invalid {
-	background-color: #fae4e0;
-	padding: 10px;
-}
-
 /* Splitter */
 #splitter {
 	position: fixed;
@@ -482,39 +469,6 @@ div.invalid {
 	margin: 3em 0 0;
 	height: 90px;
 	background: #ffffff url('footer.png') no-repeat center top;
-}
-
-/* Tree */
-div.tree ul {
-	list-style: none;
-	background: url('tree-vertical.png') left repeat-y;
-	padding: 0;
-	margin-left: 20px;
-}
-
-div.tree li {
-	margin: 0;
-	padding: 0;
-}
-
-div.tree div {
-	padding-left: 30px;
-}
-
-div.tree div.notlast {
-	background: url('tree-hasnext.png') left 10px no-repeat;
-}
-
-div.tree div.last {
-	background: url('tree-last.png') left -240px no-repeat;
-}
-
-div.tree li.last {
-	background: url('tree-cleaner.png') left center repeat-y;
-}
-
-div.tree span.padding {
-	padding-left: 15px;
 }
 
 /* Source code */
