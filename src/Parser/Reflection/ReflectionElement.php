@@ -81,6 +81,12 @@ abstract class ReflectionElement extends ReflectionBase implements ElementReflec
     }
 
 
+    public function inNamespace(): bool
+    {
+        return $this->getNamespaceName() !== '';
+    }
+
+
     public function getNamespaceName(): string
     {
         static $namespaces = [];

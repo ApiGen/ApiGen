@@ -13,8 +13,7 @@
 
 	<div class="info">
 		{if $constant->inNamespace()}<b>Namespace:</b> {$constant->namespaceName|namespaceLinks|noescape}<br>{/if}
-		{if $constant->inPackage()}<b>Package:</b> {$constant->packageName|packageLinks|noescape}<br>{/if}
-		{foreach $template->annotationSort($template->annotationFilter($constant->annotations, array('var'))) as $annotation => $values}
+		{foreach $template->annotationFilter($constant->annotations, array('var')) as $annotation => $values}
 			{foreach $values as $value}
 				<b>{$annotation|annotationBeautify}{if $value}:{/if}</b>
 				{$value|annotation:$annotation:$constant|noescape}<br>
