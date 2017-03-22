@@ -6,7 +6,7 @@ use ApiGen\Contracts\Console\Helper\ProgressBarInterface;
 use ApiGen\Contracts\Console\IO\IOInterface;
 use Symfony\Component\Console\Helper\ProgressBar as ProgressBarHelper;
 
-class ProgressBar implements ProgressBarInterface
+final class ProgressBar implements ProgressBarInterface
 {
 
     /**

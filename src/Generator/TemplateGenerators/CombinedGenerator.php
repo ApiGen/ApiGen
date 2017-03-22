@@ -5,7 +5,7 @@ namespace ApiGen\Generator\TemplateGenerators;
 use ApiGen\Contracts\Generator\TemplateGenerators\TemplateGeneratorInterface;
 use ApiGen\Templating\TemplateFactory;
 
-class CombinedGenerator implements TemplateGeneratorInterface
+final class CombinedGenerator implements TemplateGeneratorInterface
 {
 
     /**

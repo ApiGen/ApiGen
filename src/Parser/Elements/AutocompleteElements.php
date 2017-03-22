@@ -13,7 +13,7 @@ use ApiGen\Parser\Reflection\ReflectionClass;
 use ApiGen\Parser\Reflection\ReflectionConstant;
 use ApiGen\Parser\Reflection\ReflectionFunction;
 
-class AutocompleteElements implements AutocompleteElementsInterface
+final class AutocompleteElements implements AutocompleteElementsInterface
 {
 
     /**

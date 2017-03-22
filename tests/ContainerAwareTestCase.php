@@ -42,14 +42,4 @@ abstract class ContainerAwareTestCase extends TestCase
             'destination' => TEMP_DIR,
         ]);
     }
-
-
-    protected function getFileContentInOneLine(string $file): string
-    {
-        $content = file_get_contents($file);
-        $content = preg_replace('/\s+/', ' ', $content);
-        $content = preg_replace('/(?<=>)\s+|\s+(?=<)/', '', $content);
-
-        return $content;
-    }
 }

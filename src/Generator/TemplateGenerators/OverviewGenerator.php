@@ -6,7 +6,7 @@ use ApiGen\Configuration\Theme\ThemeConfigOptions;
 use ApiGen\Contracts\Generator\TemplateGenerators\TemplateGeneratorInterface;
 use ApiGen\Templating\TemplateFactory;
 
-class OverviewGenerator implements TemplateGeneratorInterface
+final class OverviewGenerator implements TemplateGeneratorInterface
 {
 
     /**

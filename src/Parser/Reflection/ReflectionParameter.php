@@ -7,7 +7,7 @@ use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ParameterReflectionInterface;
 
-class ReflectionParameter extends ReflectionBase implements ParameterReflectionInterface
+final class ReflectionParameter extends ReflectionBase implements ParameterReflectionInterface
 {
 
     public function getTypeHint(): string

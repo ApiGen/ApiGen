@@ -6,7 +6,7 @@ use ApiGen\Configuration\Theme\ThemeConfigOptions;
 use ApiGen\Contracts\Generator\TemplateGenerators\TemplateGeneratorInterface;
 use ApiGen\Templating\TemplateFactory;
 
-class ElementListGenerator implements TemplateGeneratorInterface
+final class ElementListGenerator implements TemplateGeneratorInterface
 {
 
     /**

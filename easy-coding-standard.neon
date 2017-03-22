@@ -1,4 +1,7 @@
 checkers:
+    # Solid
+    - Symplify\CodingStandard\Sniffs\Classes\FinalInterfaceSniff
+
     # PSR2
     PHP_CodeSniffer\Standards\Generic\Sniffs\Files\LineLengthSniff:
         absoluteLineLimit: 120

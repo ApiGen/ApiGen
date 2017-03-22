@@ -33,7 +33,7 @@ final class ReflectionClassTest extends AbstractReflectionClassTestCase
 
     public function testIsFinal(): void
     {
-        $this->assertFalse($this->reflectionClass->isFinal());
+        $this->assertTrue($this->reflectionClass->isFinal());
     }
 
 

@@ -4,7 +4,7 @@ namespace ApiGen\Generator\SourceCodeHighlighter;
 
 use FSHL\Highlighter;
 
-class FshlSourceCodeHighlighter implements SourceCodeHighlighter
+final class FshlSourceCodeHighlighter implements SourceCodeHighlighter
 {
 
     /**

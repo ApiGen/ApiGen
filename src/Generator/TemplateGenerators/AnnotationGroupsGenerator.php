@@ -9,7 +9,7 @@ use ApiGen\Parser\Elements\Elements;
 use ApiGen\Templating\Template;
 use ApiGen\Templating\TemplateFactory;
 
-class AnnotationGroupsGenerator implements TemplateGeneratorInterface
+final class AnnotationGroupsGenerator implements TemplateGeneratorInterface
 {
 
     /**

@@ -22,7 +22,7 @@ use TokenReflection\IReflectionMethod;
 use TokenReflection\IReflectionParameter;
 use TokenReflection\IReflectionProperty;
 
-class ReflectionFactory implements ReflectionFactoryInterface
+final class ReflectionFactory implements ReflectionFactoryInterface
 {
 
     /**

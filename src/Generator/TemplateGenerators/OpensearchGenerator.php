@@ -7,7 +7,7 @@ use ApiGen\Configuration\ConfigurationOptions;
 use ApiGen\Contracts\Generator\TemplateGenerators\ConditionalTemplateGeneratorInterface;
 use ApiGen\Templating\TemplateFactory;
 
-class OpensearchGenerator implements ConditionalTemplateGeneratorInterface
+final class OpensearchGenerator implements ConditionalTemplateGeneratorInterface
 {
 
     /**
