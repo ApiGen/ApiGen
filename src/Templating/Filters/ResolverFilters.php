@@ -3,12 +3,9 @@
 namespace ApiGen\Templating\Filters;
 
 use ApiGen\Generator\Resolvers\ElementResolver;
+use ApiGen\Parser\Reflection\AbstractReflectionElement;
 use ApiGen\Parser\Reflection\ReflectionClass;
-use ApiGen\Parser\Reflection\ReflectionElement;
 use ApiGen\Parser\Reflection\TokenReflection\ReflectionInterface;
-
-//use ApiGen\Reflection\ReflectionClass;
-//use ApiGen\Reflection\ReflectionElement;
 
 class ResolverFilters extends Filters
 {
@@ -39,9 +36,9 @@ class ResolverFilters extends Filters
 
     /**
      * @param string $definition
-     * @param ReflectionElement|ReflectionInterface $context
+     * @param AbstractReflectionElement|ReflectionInterface $context
      * @param null $expectedName
-     * @return ReflectionElement|bool|null
+     * @return AbstractReflectionElement|bool|null
      */
     public function resolveElement(string $definition, $context, &$expectedName = null)
     {

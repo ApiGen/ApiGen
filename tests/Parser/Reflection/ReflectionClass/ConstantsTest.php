@@ -35,7 +35,7 @@ final class ConstantsTest extends AbstractReflectionClassTestCase
     public function testGetOwnConstant(): void
     {
         $this->assertInstanceOf(
-            ConstantReflectionInterface::class, // 'ApiGen\Parser\Reflection\ReflectionConstant',
+            ConstantReflectionInterface::class,
             $this->reflectionClass->getOwnConstant('LEVEL')
         );
     }

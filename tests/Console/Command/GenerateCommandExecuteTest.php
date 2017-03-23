@@ -54,20 +54,20 @@ final class GenerateCommandExecuteTest extends AbstractContainerAwareTestCase
         $this->assertFileExists(TEMP_DIR . '/Api/index.html');
     }
 
-//    public function testExecuteWithError()
-//    {
-//        $inputMock = $this->createMock(InputInterface::class);
-//        $inputMock->method('getOptions')->willReturn([]);
-//
-//        $this->assertSame(
-//            1, // failure
-//            MethodInvoker::callMethodOnObject(
-//                $this->generateCommand,
-//                'execute',
-//                [$inputMock, new NullOutput()]
-//            )
-//        );
-//
-//        $this->assertFileNotExists(TEMP_DIR . '/Api/index.html');
-//    }
+    /**
+     * @expectedException \ApiGen\Configuration\Exceptions\ConfigurationException
+     */
+    public function testExecuteWithError()
+    {
+        $inputMock = $this->createMock(InputInterface::class);
+        $inputMock->method('getOptions')->willReturn([
+            'config' => null
+        ]);
+
+        MethodInvoker::callMethodOnObject(
+            $this->generateCommand,
+            'execute',
+            [$inputMock, new NullOutput()]
+        );
+    }
 }

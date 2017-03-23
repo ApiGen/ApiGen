@@ -61,7 +61,7 @@ final class AbstractReflectionTest extends TestCase
 
     public function testGetEndLine(): void
     {
-        $this->assertSame(42, $this->reflectionClass->getEndLine());
+        $this->assertSame(40, $this->reflectionClass->getEndLine());
     }
 
     public function testGetParsedClasses(): void
