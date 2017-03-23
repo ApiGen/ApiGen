@@ -190,7 +190,8 @@ final class UrlFilters extends Filters
         return preg_replace_callback('~{@(?:link|see)\\s+([^}]+)}~', function ($matches) use ($reflectionElement) {
             [$url, $description] = Strings::split($matches[1]);
 
-            if ($link = $this->resolveLink($matches[1], $reflectionElement)) {
+            $link = $this->resolveLink($matches[1], $reflectionElement);
+            if ($link) {
                 return $link;
             }
 

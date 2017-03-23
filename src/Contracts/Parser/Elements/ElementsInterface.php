@@ -4,15 +4,45 @@ namespace ApiGen\Contracts\Parser\Elements;
 
 interface ElementsInterface
 {
-    const CLASSES = 'classes';
-    const CONSTANTS = 'constants';
-    const EXCEPTIONS = 'exceptions';
-    const FUNCTIONS = 'functions';
-    const INTERFACES = 'interfaces';
-    const TRAITS = 'traits';
-    const PROPERTIES = 'properties';
-    const METHODS = 'methods';
+    /**
+     * @var string
+     */
+    public const CLASSES = 'classes';
 
+    /**
+     * @var string
+     */
+    public const CONSTANTS = 'constants';
+
+    /**
+     * @var string
+     */
+    public const EXCEPTIONS = 'exceptions';
+
+    /**
+     * @var string
+     */
+    public const FUNCTIONS = 'functions';
+
+    /**
+     * @var string
+     */
+    public const INTERFACES = 'interfaces';
+
+    /**
+     * @var string
+     */
+    public const TRAITS = 'traits';
+
+    /**
+     * @var string
+     */
+    public const PROPERTIES = 'properties';
+
+    /**
+     * @var string
+     */
+    public const METHODS = 'methods';
 
     /**
      * @return string[]

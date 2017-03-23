@@ -126,7 +126,7 @@ final class ReflectionClass extends AbstractReflectionElement implements ClassRe
                 }
             }
 
-            if (null !== $this->getParentClassName()) {
+            if ($this->getParentClassName() !== null) {
                 foreach ($this->getParentClass()->getMethods() as $parentMethod) {
                     if (!isset($this->methods[$parentMethod->getName()])) {
                         $this->methods[$parentMethod->getName()] = $parentMethod;
@@ -328,8 +328,10 @@ final class ReflectionClass extends AbstractReflectionElement implements ClassRe
 
     public function getParentClass(): ?ClassReflectionInterface
     {
-        if ($className = $this->reflection->getParentClassName()) {
-            return $this->getParsedClasses()[$className];
+        $parentClassName = $this->reflection->getParentClassName();
+
+        if ($parentClassName) {
+            return $this->getParsedClasses()[$parentClassName];
         }
 
         return null;

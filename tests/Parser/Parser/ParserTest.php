@@ -22,16 +22,11 @@ final class ParserTest extends AbstractContainerAwareTestCase
      */
     private $parserStorage;
 
-    /**
-     * @var ConfigurationInterface
-     */
-    private $configuration;
-
     protected function setUp(): void
     {
         $this->parser = $this->container->getByType(ParserInterface::class);
         $this->parserStorage = $this->container->getByType(ParserStorageInterface::class);
-        $this->configuration = $this->container->getByType(ConfigurationInterface::class);
+
         /** @var ConfigurationInterface $configuration */
         $configuration = $this->container->getByType(ConfigurationInterface::class);
         $configuration->setOptions(['visibilityLevels' => ReflectionProperty::IS_PUBLIC]);

@@ -2,19 +2,70 @@
 
 namespace ApiGen\Configuration\Theme;
 
-class ThemeConfigOptions
+final class ThemeConfigOptions
 {
-    const OVERVIEW = 'overview';
-    const COMBINED = 'combined';
-    const ELEMENT_LIST = 'elementlist';
-    const T_NAMESPACE = 'namespace';
-    const T_CLASS = 'class';
-    const T_CONSTANT = 'constant';
-    const T_FUNCTION = 'function';
-    const ANNOTATION_GROUP = 'annotationGroup';
-    const SOURCE = 'source';
-    const OPENSEARCH = 'opensearch';
-    const TEMPLATES_PATH = 'templatesPath';
-    const RESOURCES = 'resources';
-    const TEMPLATES = 'templates';
+    /**
+     * @var string
+     */
+    public const OVERVIEW = 'overview';
+
+    /**
+     * @var string
+     */
+    public const COMBINED = 'combined';
+
+    /**
+     * @var string
+     */
+    public const ELEMENT_LIST = 'elementlist';
+
+    /**
+     * @var string
+     */
+    public const T_NAMESPACE = 'namespace';
+
+    /**
+     * @var string
+     */
+    public const T_CLASS = 'class';
+
+    /**
+     * @var string
+     */
+    public const T_CONSTANT = 'constant';
+
+    /**
+     * @var string
+     */
+    public const T_FUNCTION = 'function';
+
+    /**
+     * @var string
+     */
+    public const ANNOTATION_GROUP = 'annotationGroup';
+
+    /**
+     * @var string
+     */
+    public const SOURCE = 'source';
+
+    /**
+     * @var string
+     */
+    public const OPENSEARCH = 'opensearch';
+
+    /**
+     * @var string
+     */
+    public const TEMPLATES_PATH = 'templatesPath';
+
+    /**
+     * @var string
+     */
+    public const RESOURCES = 'resources';
+
+    /**
+     * @var string
+     */
+    public const TEMPLATES = 'templates';
 }

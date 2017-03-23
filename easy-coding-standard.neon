@@ -18,8 +18,13 @@ checkers:
     - Symplify\CodingStandard\Sniffs\Commenting\VarPropertyCommentSniff
     - Symplify\CodingStandard\Sniffs\Commenting\MethodCommentSniff
 
-    # Dev Code
+    # Dev & Dead Code
     - Symplify\CodingStandard\Sniffs\Debug\DebugFunctionCallSniff
+    - SlevomatCodingStandard\Sniffs\Classes\UnusedPrivateElementsSniff
+    - SlevomatCodingStandard\Sniffs\Commenting\ForbiddenAnnotationsSniff
+
+    # Constants
+    - SlevomatCodingStandard\Sniffs\Classes\ClassConstantVisibilitySniff
 
     # Class Naming
     - Symplify\CodingStandard\Sniffs\Naming\AbstractClassNameSniff
@@ -29,8 +34,15 @@ checkers:
     # Class Structure
     - Symplify\CodingStandard\Sniffs\Classes\ClassDeclarationSniff
 
+    # Code Structures
+    - SlevomatCodingStandard\Sniffs\ControlStructures\AssignmentInConditionSniff
+    - SlevomatCodingStandard\Sniffs\ControlStructures\AssignmentInConditionSniff
+    - SlevomatCodingStandard\Sniffs\ControlStructures\YodaComparisonSniff
+
     # Namespaces
     - Symplify\CodingStandard\Sniffs\Namespaces\ClassNamesWithoutPreSlashSniff
+    - Symplify\CodingStandard\Sniffs\Namespaces\NamespaceDeclarationSniff
+    - Symplify\CodingStandard\Sniffs\Namespaces\UseDeclarationSniff
 
     # Spacing
     - Symplify\CodingStandard\Sniffs\WhiteSpace\InBetweenMethodSpacingSniff
@@ -65,3 +77,12 @@ skip:
     Symplify\CodingStandard\Sniffs\WhiteSpace\InBetweenMethodSpacingSniff:
         - tests/Parser/Reflection/ReflectionFunctionSource/functions.php
         - tests/Parser/Broker/BackendSource/SomeFunction.php
+
+    SlevomatCodingStandard\Sniffs\Classes\ClassConstantVisibilitySniff:
+        - tests/Parser/Reflection/ReflectionClassSource/ParentClass.php
+        - tests/Parser/Reflection/ReflectionConstantSource/ConstantInClass.php
+        - tests/Parser/Parser/ParserTest.php
+        - tests/Parser/Reflection/ReflectionClassSource/AccessLevels.php
+
+    SlevomatCodingStandard\Sniffs\Classes\UnusedPrivateElementsSniff:
+        - tests/Parser/Reflection/ReflectionClassSource/AccessLevels.php

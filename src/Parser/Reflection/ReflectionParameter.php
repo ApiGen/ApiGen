@@ -12,11 +12,19 @@ final class ReflectionParameter extends AbstractReflection implements ParameterR
     {
         if ($this->isArray()) {
             return 'array';
-        } elseif ($this->isCallable()) {
+        }
+
+        if ($this->isCallable()) {
             return 'callable';
-        } elseif ($className = $this->getClassName()) {
+        }
+
+        $className = $this->getClassName();
+        if ($className) {
             return $className;
-        } elseif ($annotations = $this->getDeclaringFunction()->getAnnotation('param')) {
+        }
+
+        $annotations = $this->getDeclaringFunction()->getAnnotation('param');
+        if ($annotations) {
             if (! empty($annotations[$this->getPosition()])) {
                 [$types] = preg_split('~\s+|$~', $annotations[$this->getPosition()], 2);
                 if (! empty($types) && $types[0] !== '$') {
@@ -24,6 +32,8 @@ final class ReflectionParameter extends AbstractReflection implements ParameterR
                 }
             }
         }
+
+        return '';
     }
 
     public function getDescription(): string
@@ -97,7 +107,9 @@ final class ReflectionParameter extends AbstractReflection implements ParameterR
     {
         $functionName = $this->reflection->getDeclaringFunctionName();
 
-        if ($className = $this->reflection->getDeclaringClassName()) {
+        $className = $this->reflection->getDeclaringClassName();
+
+        if ($className) {
             return $this->getParsedClasses()[$className]->getMethod($functionName);
         }
 

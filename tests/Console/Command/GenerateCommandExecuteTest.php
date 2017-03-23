@@ -57,7 +57,7 @@ final class GenerateCommandExecuteTest extends AbstractContainerAwareTestCase
     /**
      * @expectedException \ApiGen\Configuration\Exceptions\ConfigurationException
      */
-    public function testExecuteWithError()
+    public function testExecuteWithError(): void
     {
         $inputMock = $this->createMock(InputInterface::class);
         $inputMock->method('getOptions')->willReturn([

@@ -77,7 +77,9 @@ abstract class AbstractReflection extends Object implements ReflectionInterface
     public function getStartLine(): int
     {
         $startLine = $this->reflection->getStartLine();
-        if ($doc = $this->getDocComment()) {
+        $doc = $this->getDocComment();
+
+        if ($doc) {
             $startLine -= substr_count($doc, "\n") + 1;
         }
 

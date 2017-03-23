@@ -75,7 +75,9 @@ final class ElementUrlFactory
     public function createForConstant(ConstantReflectionInterface $constant): string
     {
         // Class constant
-        if ($className = $constant->getDeclaringClassName()) {
+        $className = $constant->getDeclaringClassName();
+
+        if ($className) {
             return $this->createForClass($className) . '#' . $constant->getName();
         }
 

@@ -2,10 +2,8 @@
 
 namespace ApiGen\Tests\Templating\Filters\Helpers;
 
-use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
-use ApiGen\Contracts\Parser\Reflection\Behavior\InClassInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
@@ -78,7 +76,6 @@ final class ElementUrlFactoryTest extends TestCase
         $this->assertNull($this->elementUrlFactory->createForElement($reflectionElementMock));
     }
 
-
     public function testCreateForClass(): void
     {
         $this->assertSame(
@@ -87,7 +84,6 @@ final class ElementUrlFactoryTest extends TestCase
         );
         $this->assertSame('class-SomeStringClass', $this->elementUrlFactory->createForClass('SomeStringClass'));
     }
-
 
     public function testCreateForMethod(): void
     {
@@ -101,7 +97,7 @@ final class ElementUrlFactoryTest extends TestCase
         );
     }
 
-    public function testCreateForMethodAnother()
+    public function testCreateForMethodAnother(): void
     {
         $reflectionMethodMock = $this->getReflectionMethodMock();
 
@@ -113,7 +109,6 @@ final class ElementUrlFactoryTest extends TestCase
             $this->elementUrlFactory->createForMethod($reflectionMethodMock)
         );
     }
-
 
     public function testCreateForMethodWithSeparateClass(): void
     {
@@ -137,7 +132,6 @@ final class ElementUrlFactoryTest extends TestCase
         );
     }
 
-
     public function testCreateForPropertyWithSeparateClass(): void
     {
         $reflectionPropertyMock = $this->getReflectionPropertyMock();
@@ -147,8 +141,6 @@ final class ElementUrlFactoryTest extends TestCase
             $this->elementUrlFactory->createForProperty($reflectionPropertyMock, $this->getReflectionClassMock())
         );
     }
-
-
 
     public function testCreateForConstantInClass(): void
     {
@@ -174,7 +166,6 @@ final class ElementUrlFactoryTest extends TestCase
         );
     }
 
-
     public function testCreateForFunction(): void
     {
         $reflectionFunctionMock = $this->getReflectionFunctionMock();
@@ -184,7 +175,6 @@ final class ElementUrlFactoryTest extends TestCase
             $this->elementUrlFactory->createForFunction($reflectionFunctionMock)
         );
     }
-
 
     /**
      * @return PHPUnit_Framework_MockObject_MockObject|MethodReflectionInterface

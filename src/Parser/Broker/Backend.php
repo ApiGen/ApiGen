@@ -131,7 +131,8 @@ final class Backend extends Broker\Backend\Memory implements BackendInterface
         }
 
         foreach ($reflection->getParameters() as $parameter) {
-            if ($hint = $parameter->getClassName()) {
+            $hint = $parameter->getClassName();
+            if ($hint) {
                 $this->addClass($hint);
             }
         }
@@ -154,7 +155,9 @@ final class Backend extends Broker\Backend\Memory implements BackendInterface
             $this->allClasses[self::INTERNAL_CLASSES][$name] = $parameterClass;
             $parentClasses = array_merge($parameterClass->getInterfaces(), $parameterClass->getParentClasses());
             foreach ($parentClasses as $parentClass) {
-                if (! isset($this->allClasses[self::INTERNAL_CLASSES][$parentName = $parentClass->getName()])) {
+                $parentName = $parentClass->getName();
+
+                if (! isset($this->allClasses[self::INTERNAL_CLASSES][$parentName])) {
                     $this->allClasses[self::INTERNAL_CLASSES][$parentName] = $parentClass;
                 }
             }
@@ -205,7 +208,8 @@ final class Backend extends Broker\Backend\Memory implements BackendInterface
 
         foreach ($annotations[$name] as $doc) {
             foreach (explode('|', preg_replace('~\\s.*~', '', $doc)) as $name) {
-                if ($name = rtrim($name, '[]')) {
+                $name = rtrim($name, '[]');
+                if ($name) {
                     $name = $this->getClassFqn($name, $reflection);
                     $this->addClass($name);
                 }

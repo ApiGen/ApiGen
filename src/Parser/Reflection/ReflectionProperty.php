@@ -23,7 +23,9 @@ final class ReflectionProperty extends AbstractReflectionElement implements Prop
 
     public function getTypeHint(): string
     {
-        if ($annotations = $this->getAnnotation('var')) {
+        $annotations = $this->getAnnotation('var');
+
+        if ($annotations) {
             [$types] = preg_split('~\s+|$~', $annotations[0], 2);
             if (! empty($types) && $types[0] !== '$') {
                 return $types;

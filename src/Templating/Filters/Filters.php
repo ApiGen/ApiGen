@@ -56,7 +56,7 @@ class Filters
         return $trimNamespaceSeparator ? ltrim($name, '\\') : $name;
     }
 
-    private function url(string $url): string
+    protected function url(string $url): string
     {
         return rawurlencode($url);
     }

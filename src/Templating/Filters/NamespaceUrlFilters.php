@@ -34,7 +34,9 @@ class NamespaceUrlFilters extends Filters
 
     public function subgroupName(string $groupName): string
     {
-        if ($pos = strrpos($groupName, '\\')) {
+        $pos = strrpos($groupName, '\\');
+
+        if ($pos) {
             return substr($groupName, $pos + 1);
         }
 
