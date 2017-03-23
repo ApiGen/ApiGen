@@ -43,6 +43,14 @@ checkers:
     - Symplify\CodingStandard\Sniffs\Namespaces\ClassNamesWithoutPreSlashSniff
     - Symplify\CodingStandard\Sniffs\Namespaces\NamespaceDeclarationSniff
     - Symplify\CodingStandard\Sniffs\Namespaces\UseDeclarationSniff
+    - PhpCsFixer\Fixer\Import\NoUnusedImportsFixer
+    - SlevomatCodingStandard\Sniffs\Namespaces\UseFromSameNamespaceSniff
+    - SlevomatCodingStandard\Sniffs\Namespaces\UndefinedKeywordTokenException
+    - SlevomatCodingStandard\Sniffs\Namespaces\ReferenceUsedNamesOnlySniff
+    - SlevomatCodingStandard\Sniffs\Namespaces\NoKeywordsException
+    - SlevomatCodingStandard\Sniffs\Namespaces\MultipleUsesPerLineSniff
+    - SlevomatCodingStandard\Sniffs\Namespaces\DisallowGroupUseSniff
+    - PhpCsFixer\Fixer\Import\OrderedImportsFixer
 
     # Spacing
     - Symplify\CodingStandard\Sniffs\WhiteSpace\InBetweenMethodSpacingSniff
@@ -56,6 +64,10 @@ checkers:
             - @expectedException
             - @deprecated
             - @todo
+    - SlevomatCodingStandard\Sniffs\TypeHints\NullableTypeForNullDefaultValueSniff
+    - SlevomatCodingStandard\Sniffs\TypeHints\ParameterTypeHintSpacingSniff
+    - SlevomatCodingStandard\Sniffs\TypeHints\ReturnTypeHintSpacingSniff
+    - SlevomatCodingStandard\Sniffs\TypeHints\LongTypeHintsSniff
 
 skip:
     SlevomatCodingStandard\Sniffs\TypeHints\TypeHintDeclarationSniff:

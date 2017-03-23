@@ -5,6 +5,7 @@ namespace ApiGen\Parser\Reflection;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
 use ApiGen\Parser\Reflection\Parts\VisibilityTrait;
+use Exception;
 
 final class ReflectionProperty extends AbstractReflectionElement implements PropertyReflectionInterface
 {
@@ -37,7 +38,7 @@ final class ReflectionProperty extends AbstractReflectionElement implements Prop
             if (strtolower($type) !== 'null') {
                 return $type;
             }
-        } catch (\Exception $e) {
+        } catch (Exception $exception) {
             return '';
         }
     }

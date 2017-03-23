@@ -5,7 +5,6 @@ namespace ApiGen\Templating\Filters;
 use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions;
 use ApiGen\Parser\Elements\ElementStorage;
-use ApiGen\Parser\Reflection\ReflectionElement;
 use ApiGen\Templating\Filters\Helpers\LinkBuilder;
 
 class NamespaceUrlFilters extends Filters

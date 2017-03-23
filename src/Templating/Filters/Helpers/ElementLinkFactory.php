@@ -9,7 +9,6 @@ use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
 use ApiGen\Parser\Reflection\AbstractReflection;
-use ApiGen\Parser\Reflection\ReflectionBase;
 use Nette\Utils\Html;
 use UnexpectedValueException;
 

@@ -57,7 +57,7 @@ final class Template
         $this->savePath = $savePath;
     }
 
-    public function save(string $file = null): void
+    public function save(?string $file = null): void
     {
         $this->savePath = $file ?: $this->savePath;
         $dir = dirname($this->savePath);

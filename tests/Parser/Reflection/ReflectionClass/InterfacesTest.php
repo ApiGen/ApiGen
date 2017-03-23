@@ -4,7 +4,6 @@ namespace ApiGen\Parser\Tests\Reflections\ReflectionClass;
 
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Parser\Tests\Reflection\ReflectionClass\AbstractReflectionClassTestCase;
-use TokenReflection;
 
 class InterfacesTest extends AbstractReflectionClassTestCase
 {

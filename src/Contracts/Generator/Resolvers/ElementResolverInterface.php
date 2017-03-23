@@ -25,5 +25,5 @@ interface ElementResolverInterface
      * @param string $expectedName
      * @return ElementReflectionInterface|bool
      */
-    public function resolveElement(string $definition, $context, string &$expectedName = null);
+    public function resolveElement(string $definition, $context, ?string &$expectedName = null);
 }

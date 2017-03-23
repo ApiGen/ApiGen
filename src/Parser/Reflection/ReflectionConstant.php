@@ -4,6 +4,7 @@ namespace ApiGen\Parser\Reflection;
 
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
+use Exception;
 
 final class ReflectionConstant extends AbstractReflectionElement implements ConstantReflectionInterface
 {
@@ -33,7 +34,7 @@ final class ReflectionConstant extends AbstractReflectionElement implements Cons
             if (strtolower($type) !== 'null') {
                 return $type;
             }
-        } catch (\Exception $e) {
+        } catch (Exception $exception) {
             return '';
         }
     }

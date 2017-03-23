@@ -36,12 +36,12 @@ final class ElementUrlFilters extends Filters
         return $this->elementUrlFactory->createForClass($class);
     }
 
-    public function methodUrl(MethodReflectionInterface $method, ClassReflectionInterface $class = null): string
+    public function methodUrl(MethodReflectionInterface $method, ?ClassReflectionInterface $class = null): string
     {
         return $this->elementUrlFactory->createForMethod($method, $class);
     }
 
-    public function propertyUrl(PropertyReflectionInterface $property, ClassReflectionInterface $class = null): string
+    public function propertyUrl(PropertyReflectionInterface $property, ?ClassReflectionInterface $class = null): string
     {
         return $this->elementUrlFactory->createForProperty($property, $class);
     }

@@ -2,7 +2,6 @@
 
 namespace ApiGen\Console\Input;
 
-use Symfony;
 use Symfony\Component\Console\Input\ArgvInput;
 
 /**

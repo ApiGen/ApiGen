@@ -2,7 +2,6 @@
 
 namespace ApiGen\Tests\Templating;
 
-use ApiGen;
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;

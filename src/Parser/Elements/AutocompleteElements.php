@@ -8,10 +8,6 @@ use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
-use ApiGen\Parser\Reflection\ReflectionBase;
-use ApiGen\Parser\Reflection\ReflectionClass;
-use ApiGen\Parser\Reflection\ReflectionConstant;
-use ApiGen\Parser\Reflection\ReflectionFunction;
 
 final class AutocompleteElements implements AutocompleteElementsInterface
 {

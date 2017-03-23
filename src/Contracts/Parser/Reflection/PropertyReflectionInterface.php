@@ -5,7 +5,6 @@ namespace ApiGen\Contracts\Parser\Reflection;
 use ApiGen\Contracts\Parser\Reflection\Behavior\InClassInterface;
 use ApiGen\Contracts\Parser\Reflection\Behavior\InTraitInterface;
 use ApiGen\Contracts\Parser\Reflection\Behavior\LinedInterface;
-use ApiGen\Contracts\Parser\Reflection\Behavior\NamedInterface;
 
 interface PropertyReflectionInterface extends
     ElementReflectionInterface,

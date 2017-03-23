@@ -7,7 +7,6 @@ use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
 use ApiGen\Parser\Elements\Elements;
 use ApiGen\Parser\ParserStorage;
 use ApiGen\Tests\MethodInvoker;
-use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
 
 final class ParserStorageTest extends TestCase
