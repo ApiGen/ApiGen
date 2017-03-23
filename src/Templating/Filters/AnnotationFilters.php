@@ -4,6 +4,8 @@ namespace ApiGen\Templating\Filters;
 
 use ApiGen\Configuration\ConfigurationOptions;
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
+use ApiGen\Event\FilterAnnotationsEvent;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 final class AnnotationFilters extends Filters
 {
@@ -12,9 +14,15 @@ final class AnnotationFilters extends Filters
      */
     private $configuration;
 
-    public function __construct(ConfigurationInterface $configuration)
+    /**
+     * @var EventDispatcherInterface
+     */
+    private $eventDispatcher;
+
+    public function __construct(ConfigurationInterface $configuration, EventDispatcherInterface $eventDispatcher)
     {
         $this->configuration = $configuration;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -24,6 +32,10 @@ final class AnnotationFilters extends Filters
      */
     public function annotationFilter(array $annotations, array $annotationsToRemove = []): array
     {
+        $filterAnnotationsEvent = new FilterAnnotationsEvent($annotations);
+        $this->eventDispatcher->dispatch(FilterAnnotationsEvent::class, $filterAnnotationsEvent);
+        $annotations = $filterAnnotationsEvent->getAnnotations();
+
         foreach ($annotationsToRemove as $annotationToRemove) {
             unset($annotations[$annotationToRemove]);
         }

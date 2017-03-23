@@ -6,6 +6,7 @@ use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Templating\Filters\AnnotationFilters;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 final class AnnotationFiltersTest extends TestCase
 {
@@ -21,7 +22,7 @@ final class AnnotationFiltersTest extends TestCase
             ->with(CO::INTERNAL)
             ->willReturn(false);
 
-        $this->annotationFilters = new AnnotationFilters($configurationMock);
+        $this->annotationFilters = new AnnotationFilters($configurationMock, new EventDispatcher);
     }
 
     public function testAnnotationFilter(): void
