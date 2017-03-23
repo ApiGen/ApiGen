@@ -127,10 +127,10 @@
 			</li>
 		</ul>
 		<ul>
-			{foreach $annotationGroups as $annotation}
-				<li n:class="$active === 'annotation-group-' . $annotation ? active">
-					<a n:tag-if="$active !== 'annotation-group-' . $annotation" href="annotation-group-{$annotation}.html" title="List of elements with {$annotation} annotation">
-						<span>{$annotation|firstUpper}</span>
+			{foreach $annotationGroups as $annotationGroup}
+				<li n:class="$active === 'annotation-group-' . $annotationGroup ? active">
+					<a href="annotation-group-{$annotationGroup}.html" title="List of elements with {$annotationGroup} annotation">
+						<span>{$annotationGroup|firstUpper}</span>
 					</a>
 				</li>
 			{/foreach}

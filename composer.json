@@ -15,7 +15,7 @@
         "popsul/php-token-reflection": "^1.5",
         "apigen/theme-bootstrap": "1.1.*",
         "kukulich/fshl": "^2.1",
-        "latte/latte": "^2.3.6",
+        "latte/latte": "^2.4",
         "nette/bootstrap": "^2.4",
         "nette/di": "^2.4",
         "nette/neon": "^2.4",
@@ -32,9 +32,6 @@
         "squizlabs/php_codesniffer": "3.0.0RC4 as 2.8.1",
         "slevomat/coding-standard": "^2.0",
         "symplify/coding-standard": "^1.4.8"
-    },
-    "conflict": {
-        "latte/latte": "^2.4.0"
     },
     "autoload": {
         "psr-4": {
