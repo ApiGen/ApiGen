@@ -27,10 +27,10 @@ final class AnnotationFiltersTest extends TestCase
     public function testAnnotationFilter(): void
     {
         $annotations = ['method' => true, 'remain' => true, 'internal' => true];
-        $this->assertSame(
-            ['remain' => true],
-            $this->annotationFilters->annotationFilter($annotations)
-        );
+        $this->assertSame([
+            'method' => true,
+            'remain' => true,
+        ], $this->annotationFilters->annotationFilter($annotations));
     }
 
     public function testAnnotationFilterWithCustom(): void
