@@ -41,16 +41,6 @@ abstract class ReflectionFunctionBase extends ReflectionElement implements Abstr
             $this->parameters = array_map(function (IReflectionParameter $parameter) {
                 return $this->reflectionFactory->createFromReflection($parameter);
             }, $this->reflection->getParameters());
-
-            $annotations = (array) $this->getAnnotation('param');
-            foreach ($annotations as $position => $annotation) {
-                if (isset($this->parameters[$position])) {
-                    // Standard parameter
-                    continue;
-                }
-
-                $this->processAnnotation($annotation, $position);
-            }
         }
 
         return $this->parameters;
@@ -79,25 +69,5 @@ abstract class ReflectionFunctionBase extends ReflectionElement implements Abstr
             $key,
             $this->getName()
         ));
-    }
-
-
-    private function processAnnotation(string $annotation, int $position): void
-    {
-        if (! preg_match(self::PARAM_ANNOTATION, $annotation, $matches)) {
-            return;
-        }
-
-        [, $typeHint, $name] = $matches;
-
-        $this->parameters[$position] = $this->reflectionFactory->createParameterMagic([
-            'name' => $name,
-            'position' => $position,
-            'typeHint' => $typeHint,
-            'defaultValueDefinition' => null,
-            'unlimited' => true,
-            'passedByReference' => false,
-            'declaringFunction' => $this
-        ]);
     }
 }

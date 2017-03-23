@@ -8,7 +8,6 @@ use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
 
 interface ClassTraitElementsExtractorInterface
 {
-
     /**
      * @return ClassReflectionInterface[]
      */

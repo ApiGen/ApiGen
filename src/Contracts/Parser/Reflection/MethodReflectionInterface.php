@@ -12,10 +12,6 @@ interface MethodReflectionInterface extends
     InTraitInterface,
     LinedInterface
 {
-
-    public function isMagic(): bool;
-
-
     public function isAbstract(): bool;
 
 

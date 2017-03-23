@@ -24,12 +24,6 @@ class ReflectionProperty extends ReflectionElement implements PropertyReflection
     }
 
 
-    public function isMagic(): bool
-    {
-        return false;
-    }
-
-
     public function getTypeHint(): string
     {
         if ($annotations = $this->getAnnotation('var')) {

@@ -2,9 +2,6 @@
 
 namespace Project;
 
-/**
- * @method getParentMagic()
- */
 class ParentClass
 {
 

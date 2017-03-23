@@ -3,8 +3,6 @@
 namespace ApiGen\Contracts\Parser\Reflection;
 
 use ApiGen\Contracts\Parser\Reflection\Behavior\LinedInterface;
-use ApiGen\Contracts\Parser\Reflection\Magic\MagicMethodReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\Magic\MagicPropertyReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\TokenReflection\ReflectionFactoryInterface;
 
 interface ClassReflectionInterface extends ElementReflectionInterface, LinedInterface
@@ -107,33 +105,15 @@ interface ClassReflectionInterface extends ElementReflectionInterface, LinedInte
 
 
     /**
-     * @return MagicMethodReflectionInterface[]
-     */
-    public function getInheritedMagicMethods(): array;
-
-
-    /**
      * @return MethodReflectionInterface[]
      */
     public function getUsedMethods(): array;
 
 
     /**
-     * @return MagicMethodReflectionInterface[]
-     */
-    public function getUsedMagicMethods(): array;
-
-
-    /**
      * @return MethodReflectionInterface[]
      */
     public function getTraitMethods(): array;
-
-
-    /**
-     * @return MagicMethodReflectionInterface[]
-     */
-    public function getOwnMagicMethods(): array;
 
 
     public function getMethod(string $name): MethodReflectionInterface;
@@ -233,24 +213,6 @@ interface ClassReflectionInterface extends ElementReflectionInterface, LinedInte
 
 
     /**
-     * @return MagicPropertyReflectionInterface[]
-     */
-    public function getInheritedMagicProperties(): array;
-
-
-    /**
-     * @return MagicPropertyReflectionInterface[]
-     */
-    public function getMagicProperties(): array;
-
-
-    /**
-     * @return MagicPropertyReflectionInterface[]
-     */
-    public function getOwnMagicProperties(): array;
-
-
-    /**
      * @return PropertyReflectionInterface[]
      */
     public function getTraitProperties(): array;
@@ -260,12 +222,6 @@ interface ClassReflectionInterface extends ElementReflectionInterface, LinedInte
      * @return PropertyReflectionInterface[]
      */
     public function getUsedProperties(): array;
-
-
-    /**
-     * @return MagicPropertyReflectionInterface[]
-     */
-    public function getUsedMagicProperties(): array;
 
 
     public function getProperty(string $name): PropertyReflectionInterface;
