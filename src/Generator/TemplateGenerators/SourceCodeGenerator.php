@@ -8,11 +8,12 @@ use ApiGen\Contracts\Generator\SourceCodeHighlighter\SourceCodeHighlighterInterf
 use ApiGen\Contracts\Generator\StepCounterInterface;
 use ApiGen\Contracts\Generator\TemplateGenerators\ConditionalTemplateGeneratorInterface;
 use ApiGen\Contracts\Parser\Elements\ElementStorageInterface;
-use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
 use ApiGen\Generator\Event\GenerateProgressEvent;
 use ApiGen\Generator\Resolvers\RelativePathResolver;
 use ApiGen\Generator\TemplateGenerators\Loaders\NamespaceLoader;
+use ApiGen\Parser\Reflection\AbstractReflection;
+use ApiGen\Parser\Reflection\TokenReflection\ReflectionInterface;
 use ApiGen\Templating\TemplateFactory;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -87,7 +88,7 @@ final class SourceCodeGenerator implements ConditionalTemplateGeneratorInterface
 
     public function getStepCount(): int
     {
-        $tokenizedFilter = function (ClassReflectionInterface $class) {
+        $tokenizedFilter = function (ReflectionInterface $class) {
             return $class->isTokenized();
         };
 
@@ -106,6 +107,9 @@ final class SourceCodeGenerator implements ConditionalTemplateGeneratorInterface
         return (bool) $this->configuration->getOption(ConfigurationOptions::SOURCE_CODE);
     }
 
+    /**
+     * @param ElementReflectionInterface|AbstractReflection $element
+     */
     private function generateForElement(ElementReflectionInterface $element): void
     {
         $template = $this->templateFactory->createNamedForElement('source', $element);
@@ -117,7 +121,7 @@ final class SourceCodeGenerator implements ConditionalTemplateGeneratorInterface
         $template->save();
     }
 
-    private function getHighlightedCodeFromElement(ElementReflectionInterface $element): string
+    private function getHighlightedCodeFromElement(AbstractReflection $element): string
     {
         $content = file_get_contents($element->getFileName());
         return $this->sourceCodeHighlighter->highlightAndAddLineNumbers($content);

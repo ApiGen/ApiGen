@@ -3,13 +3,14 @@
 namespace ApiGen\Templating\Filters;
 
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
+use ApiGen\Contracts\Parser\Reflection\Behavior\InClassInterface;
 use ApiGen\Contracts\Parser\Reflection\Behavior\LinedInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 
-class SourceFilters extends Filters
+final class SourceFilters extends Filters
 {
     /**
      * @var ConfigurationInterface
@@ -34,11 +35,12 @@ class SourceFilters extends Filters
     /**
      * @param ElementReflectionInterface $element
      * @param bool $withLine Include file line number into the link
-     * @return string
      */
     public function sourceUrl(ElementReflectionInterface $element, bool $withLine = true): string
     {
         $file = '';
+        $elementName = '';
+
         if ($this->isDirectUrl($element)) {
             $elementName = $element->getName();
             if ($element instanceof ClassReflectionInterface) {
@@ -48,7 +50,7 @@ class SourceFilters extends Filters
             } elseif ($element instanceof FunctionReflectionInterface) {
                 $file = 'function-';
             }
-        } else {
+        } elseif ($element instanceof InClassInterface) {
             $elementName = $element->getDeclaringClassName();
             $file = 'class-';
         }

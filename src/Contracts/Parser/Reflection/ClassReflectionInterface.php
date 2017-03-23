@@ -4,6 +4,7 @@ namespace ApiGen\Contracts\Parser\Reflection;
 
 use ApiGen\Contracts\Parser\Reflection\Behavior\LinedInterface;
 use ApiGen\Contracts\Parser\Reflection\TokenReflection\ReflectionFactoryInterface;
+use ApiGen\Parser\Reflection\Parts\VisibilityTrait;
 
 interface ClassReflectionInterface extends ElementReflectionInterface, LinedInterface
 {
@@ -71,12 +72,12 @@ interface ClassReflectionInterface extends ElementReflectionInterface, LinedInte
     public function getOwnInterfaceNames(): array;
 
     /**
-     * @return MethodReflectionInterface[]
+     * @return MethodReflectionInterface[]|VisibilityTrait[]
      */
     public function getMethods(): array;
 
     /**
-     * @return MethodReflectionInterface[]
+     * @return MethodReflectionInterface[]|VisibilityTrait[]
      */
     public function getOwnMethods(): array;
 
@@ -161,7 +162,7 @@ interface ClassReflectionInterface extends ElementReflectionInterface, LinedInte
     public function getProperties(): array;
 
     /**
-     * @return PropertyReflectionInterface[]
+     * @return PropertyReflectionInterface[]|VisibilityTrait[]
      */
     public function getOwnProperties(): array;
 

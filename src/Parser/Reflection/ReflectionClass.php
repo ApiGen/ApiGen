@@ -135,7 +135,7 @@ final class ReflectionClass extends AbstractReflectionElement implements ClassRe
             }
 
             foreach ($this->getOwnInterfaces() as $interface) {
-                foreach ($interface->getMethods(null) as $parentMethod) {
+                foreach ($interface->getMethods() as $parentMethod) {
                     if (!isset($this->methods[$parentMethod->getName()])) {
                         $this->methods[$parentMethod->getName()] = $parentMethod;
                     }

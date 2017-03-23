@@ -7,6 +7,7 @@ use ApiGen\Contracts\Parser\Reflection\Behavior\InClassInterface;
 use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
+use ApiGen\Parser\Reflection\TokenReflection\ReflectionInterface;
 
 final class ElementSorter implements ElementSorterInterface
 {
@@ -99,7 +100,10 @@ final class ElementSorter implements ElementSorterInterface
         );
     }
 
-    private function getPropertyOrMethodFqnName(InClassInterface $reflection): string
+    /**
+     * @param InClassInterface|ReflectionInterface $reflection
+     */
+    private function getPropertyOrMethodFqnName(ReflectionInterface $reflection): string
     {
         return $reflection->getDeclaringClassName() . '::' . $reflection->getName();
     }

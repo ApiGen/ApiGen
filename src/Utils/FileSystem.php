@@ -4,6 +4,8 @@ namespace ApiGen\Utils;
 
 use Nette\Utils\FileSystem as NetteFileSystem;
 use Nette\Utils\Finder;
+use RecursiveDirectoryIterator;
+use SplFileInfo;
 
 final class FileSystem
 {
@@ -74,13 +76,13 @@ final class FileSystem
                 copy($resourceSource, FileSystem::forceDir($destination  . '/' . $resourceDestination));
                 continue;
             } else {
-                /** @var \RecursiveDirectoryIterator $iterator */
+                /** @var RecursiveDirectoryIterator $iterator */
                 $iterator = Finder::findFiles('*')->from($resourceSource)->getIterator();
                 foreach ($iterator as $item) {
-                    /** @var \SplFileInfo $item */
-                    copy($item->getPathName(), FileSystem::forceDir($destination
+                    /** @var SplFileInfo $item */
+                    copy($item->getPathname(), FileSystem::forceDir($destination
                         . '/' . $resourceDestination
-                        . '/' . $iterator->getSubPathName()));
+                        . '/' . $iterator->getSubPathname()));
                 }
             }
         }
