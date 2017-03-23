@@ -11,17 +11,26 @@ final class FilterAnnotationsEvent extends Event
      */
     private $annotations;
 
+    /**
+     * @param mixed[] $annotations
+     */
     public function __construct(array $annotations)
     {
         $this->annotations = $annotations;
     }
 
+    /**
+     * @return mixed[]
+     */
     public function getAnnotations(): array
     {
         return $this->annotations;
     }
 
-    public function changeAnnotations(array $annotations)
+    /**
+     * @param mixed[] $annotations
+     */
+    public function changeAnnotations(array $annotations): void
     {
         $this->annotations = $annotations;
     }
