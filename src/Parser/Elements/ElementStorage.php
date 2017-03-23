@@ -197,6 +197,7 @@ final class ElementStorage implements ElementStorageInterface
     private function categorizeElementToNamespace(string $elementType, ElementReflectionInterface $element): void
     {
         $namespaceName = $element->getPseudoNamespaceName();
+
         $this->namespaces[$namespaceName][$elementType][$element->getShortName()] = $element;
     }
 

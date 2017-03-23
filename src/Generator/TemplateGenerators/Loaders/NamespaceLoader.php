@@ -2,27 +2,27 @@
 
 namespace ApiGen\Generator\TemplateGenerators\Loaders;
 
+use ApiGen\Contracts\Parser\Elements\ElementStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
 use ApiGen\Parser\Elements\Elements;
-use ApiGen\Parser\Elements\ElementStorage;
 use ApiGen\Templating\Template;
 
 final class NamespaceLoader
 {
     /**
-     * @var ElementStorage
+     * @var ElementStorageInterface
      */
     private $elementStorage;
 
-    public function __construct(ElementStorage $elementStorage)
+    public function __construct(ElementStorageInterface $elementStorage)
     {
         $this->elementStorage = $elementStorage;
     }
 
     public function loadTemplateWithElementNamespace(Template $template, ElementReflectionInterface $element): Template
     {
-        $namespaces = $this->elementStorage->getNamespaces();
         $name = $element->getPseudoNamespaceName();
+        $namespaces = $this->elementStorage->getNamespaces();
 
         $this->loadTemplateWithNamespace($template, $name, $namespaces[$name]);
 
@@ -39,7 +39,6 @@ final class NamespaceLoader
         string $name,
         array $namespace
     ): void {
-
         $template->setParameters([
             'namespace' => $name,
             'subnamespaces' => $this->getSubnamesForName($name, $template->getParameters()['namespaces'])
