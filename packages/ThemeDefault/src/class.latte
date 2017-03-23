@@ -76,7 +76,7 @@
 
 		{foreach $template->annotationFilter($class->annotations) as $annotation => $values}
 			{foreach $values as $value}
-				<b>{$annotation|annotationBeautify}{if $value}:{/if}</b>
+				<b>{$annotation}{if $value}:{/if}</b>
 				{$value|annotation:$annotation:$class|noescape}<br>
 			{/foreach}
 		{/foreach}
@@ -167,7 +167,7 @@
 			{/ifset}
 
 			{foreach $template->annotationFilter($annotations, array('deprecated', 'param', 'return', 'throws')) as $annotation => $descriptions}
-				<h4>{$annotation|annotationBeautify}</h4>
+				<h4>{$annotation}</h4>
 				<div class="list">
 				{foreach $descriptions as $description}
 					{if $description}
@@ -247,7 +247,7 @@
 				{$constant|longDescription|noescape}
 
 				{foreach $template->annotationFilter($annotations, array('var')) as $annotation => $descriptions}
-					<h4>{$annotation|annotationBeautify}</h4>
+					<h4>{$annotation}</h4>
 					<div class="list">
 					{foreach $descriptions as $description}
 						{if $description}
@@ -300,7 +300,7 @@
 				{$property|longDescription|noescape}
 
 				{foreach $template->annotationFilter($property->annotations, array('var')) as $annotation => $descriptions}
-					<h4>{$annotation|annotationBeautify}</h4>
+					<h4>{$annotation}</h4>
 					<div class="list">
 					{foreach $descriptions as $description}
 						{if $description}

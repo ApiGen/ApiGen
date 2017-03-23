@@ -54,7 +54,7 @@ final class ProgressBar implements ProgressBarInterface
     private function getDebugOption(): bool
     {
         if ($this->consoleIO->getInput() && $this->consoleIO->getInput()->hasOption('debug')) {
-            return $this->consoleIO->getInput()->getOption('debug');
+            return (bool) $this->consoleIO->getInput()->getOption('debug');
         } else {
             return false;
         }

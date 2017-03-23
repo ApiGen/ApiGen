@@ -24,11 +24,6 @@ final class AnnotationFiltersTest extends TestCase
         $this->annotationFilters = new AnnotationFilters($configurationMock);
     }
 
-    public function testAnnotationBeautify(): void
-    {
-        $this->assertSame('Method', $this->annotationFilters->annotationBeautify('method'));
-    }
-
     public function testAnnotationFilter(): void
     {
         $annotations = ['method' => true, 'remain' => true, 'internal' => true];

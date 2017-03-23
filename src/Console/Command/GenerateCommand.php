@@ -199,7 +199,7 @@ final class GenerateCommand extends AbstractCommand
      */
     private function generate(array $options): void
     {
-        $this->prepareDestination($options['destination'], $options['overwrite']);
+        $this->prepareDestination($options['destination'], (bool) $options['overwrite']);
         $this->io->writeln('<info>Generating API documentation</info>');
         $this->generatorQueue->run();
     }

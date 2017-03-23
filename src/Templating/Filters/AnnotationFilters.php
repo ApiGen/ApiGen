@@ -26,11 +26,6 @@ final class AnnotationFilters extends Filters
         $this->configuration = $configuration;
     }
 
-    public function annotationBeautify(string $name): string
-    {
-        return Strings::firstUpper($name);
-    }
-
     /**
      * @param string[] $annotations
      * @param string[] $customToRemove
