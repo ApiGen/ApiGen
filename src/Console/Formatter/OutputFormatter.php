@@ -7,12 +7,10 @@ use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 
 final class OutputFormatter extends BaseOutputFormatter
 {
-
     public function __construct()
     {
         parent::__construct(null, $this->getStyles());
     }
-
 
     /**
      * @return OutputFormatterStyle[]

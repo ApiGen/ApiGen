@@ -7,30 +7,37 @@ namespace Project;
  * @method getSome()
  * @method \stdClass[] methodRelatedToIssue696(\stdClass[] $argument)
  */
-class AccessLevels extends ParentClass implements RichInterface
+final class AccessLevels extends ParentClass implements RichInterface
 {
-
     use SomeTrait;
     use SomeTraitNotPresentHere;
 
     const LEVEL = 5;
 
+    /**
+     * @var mixed
+     */
     public $publicProperty;
 
+
+    /**
+     * @var mixed
+     */
     protected $protectedProperty;
 
-    private $privateProperty;
 
+    /**
+     * @var mixed
+     */
+    private $privateProperty;
 
     public function publicMethod()
     {
     }
 
-
     protected function protectedMethod()
     {
     }
-
 
     private function privateMethod()
     {

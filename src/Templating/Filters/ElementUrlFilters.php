@@ -17,18 +17,15 @@ final class ElementUrlFilters extends Filters
      */
     private $elementUrlFactory;
 
-
     public function __construct(ElementUrlFactory $elementUrlFactory)
     {
         $this->elementUrlFactory = $elementUrlFactory;
     }
 
-
     public function elementUrl(ElementReflectionInterface $element): string
     {
         return $this->elementUrlFactory->createForElement($element);
     }
-
 
     /**
      * @param string|ClassReflectionInterface $class
@@ -39,24 +36,20 @@ final class ElementUrlFilters extends Filters
         return $this->elementUrlFactory->createForClass($class);
     }
 
-
-    public function methodUrl(MethodReflectionInterface $method, ClassReflectionInterface $class = null): string
+    public function methodUrl(MethodReflectionInterface $method, ?ClassReflectionInterface $class = null): string
     {
         return $this->elementUrlFactory->createForMethod($method, $class);
     }
 
-
-    public function propertyUrl(PropertyReflectionInterface $property, ClassReflectionInterface $class = null): string
+    public function propertyUrl(PropertyReflectionInterface $property, ?ClassReflectionInterface $class = null): string
     {
         return $this->elementUrlFactory->createForProperty($property, $class);
     }
-
 
     public function constantUrl(ConstantReflectionInterface $constant): string
     {
         return $this->elementUrlFactory->createForConstant($constant);
     }
-
 
     public function functionUrl(FunctionReflectionInterface $function): string
     {

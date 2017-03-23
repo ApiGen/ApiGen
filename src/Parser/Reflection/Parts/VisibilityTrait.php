@@ -8,20 +8,17 @@ use TokenReflection\IReflectionProperty;
 /**
  * @property-read IReflectionMethod|IReflectionProperty $reflection
  */
-trait Visibility
+trait VisibilityTrait
 {
-
     public function isPrivate(): bool
     {
         return $this->reflection->isPrivate();
     }
 
-
     public function isProtected(): bool
     {
         return $this->reflection->isProtected();
     }
-
 
     public function isPublic(): bool
     {

@@ -8,10 +8,10 @@ use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 use ApiGen\Templating\Filters\UrlFilters;
-use ApiGen\Tests\ContainerAwareTestCase;
+use ApiGen\Tests\AbstractContainerAwareTestCase;
 use ApiGen\Tests\MethodInvoker;
 
-final class UrlFiltersTest extends ContainerAwareTestCase
+final class UrlFiltersTest extends AbstractContainerAwareTestCase
 {
     /**
      * @var string
@@ -35,7 +35,6 @@ final class UrlFiltersTest extends ContainerAwareTestCase
      */
     private $urlFilters;
 
-
     protected function setUp(): void
     {
         $this->urlFilters = $this->container->getByType(UrlFilters::class);
@@ -55,13 +54,11 @@ final class UrlFiltersTest extends ContainerAwareTestCase
         ]);
     }
 
-
     public function testDoc(): void
     {
         $reflectionClassMock = $this->createMock(ClassReflectionInterface::class);
         $this->assertSame('...', $this->urlFilters->doc('...', $reflectionClassMock));
     }
-
 
     /**
      * @dataProvider getInternalData()
@@ -73,7 +70,6 @@ final class UrlFiltersTest extends ContainerAwareTestCase
             MethodInvoker::callMethodOnObject($this->urlFilters, 'resolveInternalAnnotation', [$docBlock])
         );
     }
-
 
     /**
      * @return string[]
@@ -87,7 +83,6 @@ final class UrlFiltersTest extends ContainerAwareTestCase
             ['{@inherited bar}', '{@inherited bar}'],
         ];
     }
-
 
     /**
      * @dataProvider getLinkAndSeeData()
@@ -106,7 +101,6 @@ final class UrlFiltersTest extends ContainerAwareTestCase
         );
     }
 
-
     /**
      * @return string[][]
      */
@@ -124,7 +118,6 @@ final class UrlFiltersTest extends ContainerAwareTestCase
             [sprintf('{@see %s}', GenerateCommand::class), self::APIGEN_LINK],
         ];
     }
-
 
     /**
      * Issue #753
@@ -152,7 +145,6 @@ final class UrlFiltersTest extends ContainerAwareTestCase
         );
     }
 
-
     public function testDescription(): void
     {
         $docBlock = <<<DOC
@@ -171,7 +163,6 @@ EXP;
         $this->assertSame($expected, $this->urlFilters->description($docBlock, $reflectionElementMock));
     }
 
-
     public function testShortDescription(): void
     {
         $reflectionElementMock = $this->createMock(ElementReflectionInterface::class);
@@ -183,7 +174,6 @@ EXP;
             $this->urlFilters->shortDescription($reflectionElementMock)
         );
     }
-
 
     public function testLongDescription(): void
     {
@@ -198,7 +188,6 @@ DOC;
         $this->assertSame($longDescription, $this->urlFilters->longDescription($reflectionElementMock));
     }
 
-
     public function testHighlightPhp(): void
     {
         $reflectionClassMock = $this->createMock(ClassReflectionInterface::class);
@@ -207,7 +196,6 @@ DOC;
             $this->urlFilters->highlightPhp('echo "hi";', $reflectionClassMock)
         );
     }
-
 
     public function testHighlightValue(): void
     {
@@ -218,7 +206,6 @@ DOC;
         );
     }
 
-
     /**
      * @dataProvider getTypeLinksData()
      */
@@ -227,7 +214,6 @@ DOC;
         $reflectionClass = $this->createMock(ClassReflectionInterface::class);
         $this->assertSame($expected, $this->urlFilters->typeLinks($annotation, $reflectionClass));
     }
-
 
     /**
      * @return string[][]
@@ -241,7 +227,6 @@ DOC;
         ];
     }
 
-
     /**
      * @dataProvider getResolveLinksData()
      */
@@ -250,7 +235,6 @@ DOC;
         $reflectionClass = $this->createMock(ClassReflectionInterface::class);
         $this->assertSame($expected, $this->urlFilters->resolveLink($definition, $reflectionClass));
     }
-
 
     /**
      * @return mixed[]
@@ -263,7 +247,6 @@ DOC;
         ];
     }
 
-
     /**
      * @dataProvider getAnnotationData()
      */
@@ -272,7 +255,6 @@ DOC;
         $classReflectionMock = $this->createMock(ClassReflectionInterface::class);
         $this->assertSame($expected, $this->urlFilters->annotation($annotation, $name, $classReflectionMock));
     }
-
 
     /**
      * @return mixed[]
@@ -291,7 +273,6 @@ DOC;
             ['SomeClass', 'uses', self::SOME_CLASS_LINK]
         ];
     }
-
 
     private function createClassReflection(): ClassReflectionInterface
     {

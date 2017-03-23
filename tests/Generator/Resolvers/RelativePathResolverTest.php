@@ -9,7 +9,6 @@ use PHPUnit\Framework\TestCase;
 
 final class RelativePathResolverTest extends TestCase
 {
-
     public function testGetRelativePath(): void
     {
         $configurationMock = $this->createMock(ConfigurationInterface::class);
@@ -25,7 +24,6 @@ final class RelativePathResolverTest extends TestCase
         );
     }
 
-
     public function testGetRelativePathWithWindowsPath(): void
     {
         $configurationMock = $this->createMock(ConfigurationInterface::class);
@@ -37,7 +35,6 @@ final class RelativePathResolverTest extends TestCase
         $this->assertSame('file.txt', $relativePathResolver->getRelativePath('C:\some\dir\file.txt'));
         $this->assertSame('more-dir/file.txt', $relativePathResolver->getRelativePath('C:\some\dir\more-dir\file.txt'));
     }
-
 
     /**
      * @expectedException \InvalidArgumentException
@@ -52,7 +49,6 @@ final class RelativePathResolverTest extends TestCase
 
         $relativePathResolver->getRelativePath('/var/dir/some-strange-file.txt');
     }
-
 
     /**
      * Issue #408

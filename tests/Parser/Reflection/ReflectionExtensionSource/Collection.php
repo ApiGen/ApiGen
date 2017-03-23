@@ -4,9 +4,8 @@ namespace ApiGen\Tests;
 
 use Countable;
 
-class Collection implements Countable
+final class Collection implements Countable
 {
-
     public function count(): void
     {
     }

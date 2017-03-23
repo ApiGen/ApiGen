@@ -3,9 +3,8 @@
 namespace ApiGen\Parser\Reflection;
 
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
-use TokenReflection;
 
-class ReflectionFunction extends ReflectionFunctionBase implements FunctionReflectionInterface
+final class ReflectionFunction extends AbstractReflectionFunction implements FunctionReflectionInterface
 {
 
 }

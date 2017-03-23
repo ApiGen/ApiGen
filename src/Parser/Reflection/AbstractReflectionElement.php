@@ -4,16 +4,13 @@ namespace ApiGen\Parser\Reflection;
 
 use ApiGen\Contracts\Parser\Reflection\Behavior\InClassInterface;
 use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
-use TokenReflection;
-use TokenReflection\Exception\BaseException;
 use TokenReflection\ReflectionAnnotation;
 use TokenReflection\ReflectionClass;
 use TokenReflection\ReflectionConstant;
 use TokenReflection\ReflectionFunction;
 
-abstract class ReflectionElement extends ReflectionBase implements ElementReflectionInterface
+abstract class AbstractReflectionElement extends AbstractReflection implements ElementReflectionInterface
 {
-
     /**
      * @var bool
      */
@@ -24,25 +21,21 @@ abstract class ReflectionElement extends ReflectionBase implements ElementReflec
      */
     protected $annotations;
 
-
     public function getStartPosition(): int
     {
         return $this->reflection->getStartPosition();
     }
-
 
     public function getEndPosition(): int
     {
         return $this->reflection->getEndPosition();
     }
 
-
     public function isMain(): bool
     {
         $main = $this->configuration->getMain();
         return empty($main) || strpos($this->getName(), $main) === 0;
     }
-
 
     public function isDocumented(): bool
     {
@@ -65,7 +58,6 @@ abstract class ReflectionElement extends ReflectionBase implements ElementReflec
         return $this->isDocumented;
     }
 
-
     public function isDeprecated(): bool
     {
         if ($this->reflection->isDeprecated()) {
@@ -80,24 +72,10 @@ abstract class ReflectionElement extends ReflectionBase implements ElementReflec
         return false;
     }
 
-
-    /**
-     * Removed, but for BC in templates.
-     */
-    public function inPackage(): bool
-    {
-        return false;
-    }
-
-
-    /**
-     * Removed, but for BC in templates.
-     */
     public function inNamespace(): bool
     {
-        return true;
+        return $this->getNamespaceName() !== '';
     }
-
 
     public function getNamespaceName(): string
     {
@@ -117,12 +95,10 @@ abstract class ReflectionElement extends ReflectionBase implements ElementReflec
         return $namespaces[$lowerNamespaceName];
     }
 
-
     public function getPseudoNamespaceName(): string
     {
         return $this->isInternal() ? 'PHP' : $this->getNamespaceName() ?: 'None';
     }
-
 
     /**
      * @return string[]
@@ -131,7 +107,6 @@ abstract class ReflectionElement extends ReflectionBase implements ElementReflec
     {
         return $this->reflection->getNamespaceAliases();
     }
-
 
     public function getShortDescription(): string
     {
@@ -148,7 +123,6 @@ abstract class ReflectionElement extends ReflectionBase implements ElementReflec
         return (string) $short;
     }
 
-
     public function getLongDescription(): string
     {
         $short = $this->getShortDescription();
@@ -161,12 +135,10 @@ abstract class ReflectionElement extends ReflectionBase implements ElementReflec
         return $short;
     }
 
-
     public function getDocComment(): string
     {
         return (string) $this->reflection->getDocComment();
     }
-
 
     /**
      * @return mixed[]
@@ -187,7 +159,6 @@ abstract class ReflectionElement extends ReflectionBase implements ElementReflec
         return $this->annotations;
     }
 
-
     /**
      * @return mixed[]
      */
@@ -196,12 +167,10 @@ abstract class ReflectionElement extends ReflectionBase implements ElementReflec
         return $this->hasAnnotation($name) ? $this->getAnnotations()[$name] : [];
     }
 
-
     public function hasAnnotation(string $name): bool
     {
         return isset($this->getAnnotations()[$name]);
     }
-
 
     /**
      * @param string $annotation
@@ -215,7 +184,6 @@ abstract class ReflectionElement extends ReflectionBase implements ElementReflec
 
         $this->annotations[$annotation][] = $value;
     }
-
 
     /**
      * @param mixed $reflection

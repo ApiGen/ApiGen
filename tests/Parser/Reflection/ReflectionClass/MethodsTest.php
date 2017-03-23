@@ -12,7 +12,6 @@ final class MethodsTest extends AbstractReflectionClassTestCase
         $this->assertInstanceOf(MethodReflectionInterface::class, $this->reflectionClass->getMethod('publicMethod'));
     }
 
-
     /**
      * @expectedException \InvalidArgumentException
      */
@@ -21,24 +20,20 @@ final class MethodsTest extends AbstractReflectionClassTestCase
         $this->reflectionClass->getMethod('notPresentMethod');
     }
 
-
     public function testGetMethods(): void
     {
         $this->assertCount(5, $this->reflectionClass->getMethods());
     }
-
 
     public function testGetOwnMethods(): void
     {
         $this->assertCount(2, $this->reflectionClass->getOwnMethods());
     }
 
-
     public function testGetInheritedMethods(): void
     {
         $this->assertCount(2, $this->reflectionClass->getInheritedMethods());
     }
-
 
     public function testGetUsedMethods(): void
     {

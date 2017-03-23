@@ -9,9 +9,8 @@ use ApiGen\Parser\Elements\Elements;
 use ApiGen\Templating\Template;
 use ApiGen\Templating\TemplateFactory;
 
-class AnnotationGroupsGenerator implements TemplateGeneratorInterface
+final class AnnotationGroupsGenerator implements TemplateGeneratorInterface
 {
-
     /**
      * @var ConfigurationInterface
      */
@@ -27,7 +26,6 @@ class AnnotationGroupsGenerator implements TemplateGeneratorInterface
      */
     private $elementExtractor;
 
-
     public function __construct(
         ConfigurationInterface $configuration,
         TemplateFactory $templateFactory,
@@ -37,7 +35,6 @@ class AnnotationGroupsGenerator implements TemplateGeneratorInterface
         $this->templateFactory = $templateFactory;
         $this->elementExtractor = $elementExtractor;
     }
-
 
     public function generate(): void
     {
@@ -51,7 +48,6 @@ class AnnotationGroupsGenerator implements TemplateGeneratorInterface
             $template->save();
         }
     }
-
 
     private function setElementsWithAnnotationToTemplate(Template $template, string $annotation): Template
     {

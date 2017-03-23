@@ -15,14 +15,12 @@ final class FshlSourceCodeHighlighterTest extends TestCase
      */
     private $sourceCodeHighlighter;
 
-
     protected function setUp(): void
     {
         $highlighter = new Highlighter(new Html);
         $highlighter->setLexer(new Php);
         $this->sourceCodeHighlighter = new FshlSourceCodeHighlighter($highlighter);
     }
-
 
     public function testHighlight(): void
     {
@@ -31,7 +29,6 @@ final class FshlSourceCodeHighlighterTest extends TestCase
             $this->sourceCodeHighlighter->highlight('$a = 1')
         );
     }
-
 
     public function testHighlightAndAddLineNumbers(): void
     {

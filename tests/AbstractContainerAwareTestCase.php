@@ -6,7 +6,7 @@ use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use Nette\DI\Container;
 use PHPUnit\Framework\TestCase;
 
-abstract class ContainerAwareTestCase extends TestCase
+abstract class AbstractContainerAwareTestCase extends TestCase
 {
     /**
      * @var Container
@@ -41,15 +41,5 @@ abstract class ContainerAwareTestCase extends TestCase
             'source' => __DIR__,
             'destination' => TEMP_DIR,
         ]);
-    }
-
-
-    protected function getFileContentInOneLine(string $file): string
-    {
-        $content = file_get_contents($file);
-        $content = preg_replace('/\s+/', ' ', $content);
-        $content = preg_replace('/(?<=>)\s+|\s+(?=<)/', '', $content);
-
-        return $content;
     }
 }

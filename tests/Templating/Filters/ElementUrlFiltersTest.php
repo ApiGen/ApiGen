@@ -8,21 +8,19 @@ use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
 use ApiGen\Templating\Filters\ElementUrlFilters;
-use ApiGen\Tests\ContainerAwareTestCase;
+use ApiGen\Tests\AbstractContainerAwareTestCase;
 
-final class ElementUrlFiltersTest extends ContainerAwareTestCase
+final class ElementUrlFiltersTest extends AbstractContainerAwareTestCase
 {
     /**
      * @var ElementUrlFilters
      */
     private $elementUrlFilters;
 
-
     protected function setUp(): void
     {
         $this->elementUrlFilters = $this->container->getByType(ElementUrlFilters::class);
     }
-
 
     public function testClassUrl(): void
     {
@@ -35,7 +33,6 @@ final class ElementUrlFiltersTest extends ContainerAwareTestCase
             $this->elementUrlFilters->classUrl($reflectionClassMock)
         );
     }
-
 
     public function testMethodUrl(): void
     {
@@ -51,7 +48,6 @@ final class ElementUrlFiltersTest extends ContainerAwareTestCase
         );
     }
 
-
     public function testPropertyUrl(): void
     {
         $reflectionPropertyMock = $this->createMock(PropertyReflectionInterface::class);
@@ -66,7 +62,6 @@ final class ElementUrlFiltersTest extends ContainerAwareTestCase
         );
     }
 
-
     public function testConstantUrl(): void
     {
         $reflectionConstantMock = $this->createMock(ConstantReflectionInterface::class);
@@ -78,7 +73,6 @@ final class ElementUrlFiltersTest extends ContainerAwareTestCase
             $this->elementUrlFilters->constantUrl($reflectionConstantMock)
         );
     }
-
 
     public function testFunctionUrl(): void
     {

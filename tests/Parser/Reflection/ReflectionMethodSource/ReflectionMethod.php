@@ -22,12 +22,10 @@ namespace Project;
  */
 class ReflectionMethod
 {
-
     /**
      * @var int
      */
     public $memberCount = 52;
-
 
     /**
      * Send a POST request

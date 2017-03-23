@@ -14,12 +14,10 @@ use TokenReflection\Broker;
 
 final class ReflectionFunctionTest extends TestCase
 {
-
     /**
      * @var FunctionReflectionInterface
      */
     private $reflectionFunction;
-
 
     protected function setUp(): void
     {
@@ -30,12 +28,10 @@ final class ReflectionFunctionTest extends TestCase
         $this->reflectionFunction = $backend->getFunctions()['getSomeData'];
     }
 
-
     public function testIsDocumented(): void
     {
         $this->assertTrue($this->reflectionFunction->isDocumented());
     }
-
 
     private function getReflectionFactory(): ReflectionFactoryInterface
     {

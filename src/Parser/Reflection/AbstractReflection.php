@@ -16,7 +16,7 @@ use TokenReflection\IReflectionMethod;
 use TokenReflection\IReflectionParameter;
 use TokenReflection\IReflectionProperty;
 
-abstract class ReflectionBase extends Object implements ReflectionInterface
+abstract class AbstractReflection extends Object implements ReflectionInterface
 {
     /**
      * @var string
@@ -43,78 +43,68 @@ abstract class ReflectionBase extends Object implements ReflectionInterface
      */
     protected $reflectionFactory;
 
-
     public function __construct(IReflection $reflection)
     {
         $this->reflectionType = get_class($this);
         $this->reflection = $reflection;
     }
 
-
     public function getName(): string
     {
         return $this->reflection->getName();
     }
-
 
     public function getPrettyName(): string
     {
         return $this->reflection->getPrettyName();
     }
 
-
     public function isInternal(): bool
     {
         return $this->reflection->isInternal();
     }
-
 
     public function isTokenized(): bool
     {
         return $this->reflection->isTokenized();
     }
 
-
     public function getFileName(): string
     {
         return $this->reflection->getFileName();
     }
 
-
     public function getStartLine(): int
     {
         $startLine = $this->reflection->getStartLine();
-        if ($doc = $this->getDocComment()) {
+        $doc = $this->getDocComment();
+
+        if ($doc) {
             $startLine -= substr_count($doc, "\n") + 1;
         }
 
         return $startLine;
     }
 
-
     public function getEndLine(): int
     {
         return $this->reflection->getEndLine();
     }
-
 
     public function setConfiguration(ConfigurationInterface $configuration): void
     {
         $this->configuration = $configuration;
     }
 
-
     public function setParserStorage(ParserStorageInterface $parserStorage): void
     {
         $this->parserStorage = $parserStorage;
     }
 
-
     public function setReflectionFactory(ReflectionFactoryInterface $reflectionFactory): void
     {
         $this->reflectionFactory = $reflectionFactory;
     }
-
 
     /**
      * @return ClassReflectionInterface[]

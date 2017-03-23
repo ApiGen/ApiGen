@@ -13,48 +13,40 @@ interface ElementStorageInterface
      */
     public function getNamespaces(): array;
 
-
     /**
      * @return ClassReflectionInterface[]
      */
     public function getClasses(): array;
-
 
     /**
      * @return ClassReflectionInterface[]
      */
     public function getInterfaces(): array;
 
-
     /**
      * @return ClassReflectionInterface[]
      */
     public function getTraits(): array;
-
 
     /**
      * @return ClassReflectionInterface[]
      */
     public function getExceptions(): array;
 
-
     /**
      * @return ConstantReflectionInterface[]
      */
     public function getConstants(): array;
-
 
     /**
      * @return FunctionReflectionInterface[]
      */
     public function getFunctions(): array;
 
-
     /**
      * @return ClassReflectionInterface[]
      */
     public function getClassElements(): array;
-
 
     /**
      * @return mixed[]

@@ -25,13 +25,11 @@ final class Parser implements ParserInterface
      */
     private $parserStorage;
 
-
     public function __construct(Broker $broker, ParserStorageInterface $parserStorage)
     {
         $this->broker = $broker;
         $this->parserStorage = $parserStorage;
     }
-
 
     /**
      * @param SplFileInfo[] $files
@@ -57,7 +55,6 @@ final class Parser implements ParserInterface
         return $this->parserStorage;
     }
 
-
     private function extractBrokerDataForParserStorage(Broker $broker): void
     {
         $classes = $broker->getClasses(Backend::TOKENIZED_CLASSES | Backend::INTERNAL_CLASSES);
@@ -71,7 +68,6 @@ final class Parser implements ParserInterface
 
         $this->loadToParserStorage($classes, $constants, $functions);
     }
-
 
     /**
      * @param ClassReflectionInterface[] $classes

@@ -8,10 +8,10 @@ use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Parser\Reflection\ReflectionClass;
-use ApiGen\Tests\ContainerAwareTestCase;
+use ApiGen\Tests\AbstractContainerAwareTestCase;
 use PHPUnit_Framework_MockObject_MockObject;
 
-final class ElementStorageTest extends ContainerAwareTestCase
+final class ElementStorageTest extends AbstractContainerAwareTestCase
 {
     /**
      * @var ElementStorageInterface
@@ -28,7 +28,6 @@ final class ElementStorageTest extends ContainerAwareTestCase
 
         $this->elementStorage = $this->container->getByType(ElementStorageInterface::class);
     }
-
 
     public function testEnsureCategorization(): void
     {
@@ -101,7 +100,6 @@ final class ElementStorageTest extends ContainerAwareTestCase
         return $classes;
     }
 
-
     /**
      * @return ClassReflectionInterface|PHPUnit_Framework_MockObject_MockObject
 
@@ -123,7 +121,6 @@ final class ElementStorageTest extends ContainerAwareTestCase
         return $reflectionClassMock;
     }
 
-
     /**
      * @return FunctionReflectionInterface|PHPUnit_Framework_MockObject_MockObject
      */
@@ -139,7 +136,6 @@ final class ElementStorageTest extends ContainerAwareTestCase
 
         return $reflectionFunctionMock;
     }
-
 
     /**
      * @return ConstantReflectionInterface|PHPUnit_Framework_MockObject_MockObject

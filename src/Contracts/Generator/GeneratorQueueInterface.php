@@ -8,6 +8,5 @@ interface GeneratorQueueInterface
 {
     public function addToQueue(TemplateGeneratorInterface $templateGenerator): void;
 
-
     public function run(): void;
 }

@@ -7,18 +7,15 @@ use PHPUnit\Framework\TestCase;
 
 class ExcludeTest extends TestCase
 {
-
     /**
      * @var NetteFinder
      */
     private $scanner;
 
-
     protected function setUp(): void
     {
         $this->scanner = new NetteFinder;
     }
-
 
     /**
      * Issue #412
@@ -28,7 +25,6 @@ class ExcludeTest extends TestCase
         $files = $this->scanner->find(__DIR__ . '/Source', ['tests']);
         $this->assertCount(3, $files);
     }
-
 
     /**
      * Issue #529
@@ -40,7 +36,6 @@ class ExcludeTest extends TestCase
         $this->assertCount(0, $this->scanner->find($source, ['/Core/smarty_cache']));
         $this->assertCount(1, $this->scanner->find($source, ['src/Core/smarty_cache']));
     }
-
 
     public function testExcludeFile(): void
     {

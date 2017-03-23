@@ -11,7 +11,6 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 abstract class AbstractElementGenerator implements TemplateGeneratorInterface, StepCounterInterface
 {
-
     /**
      * @var TemplateFactory
      */
@@ -31,7 +30,6 @@ abstract class AbstractElementGenerator implements TemplateGeneratorInterface, S
      * @var EventDispatcherInterface
      */
     protected $eventDispatcher;
-
 
     public function __construct(
         TemplateFactory $templateFactory,

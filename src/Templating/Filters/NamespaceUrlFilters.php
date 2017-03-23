@@ -5,12 +5,10 @@ namespace ApiGen\Templating\Filters;
 use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions;
 use ApiGen\Parser\Elements\ElementStorage;
-use ApiGen\Parser\Reflection\ReflectionElement;
 use ApiGen\Templating\Filters\Helpers\LinkBuilder;
 
 class NamespaceUrlFilters extends Filters
 {
-
     /**
      * @var Configuration
      */
@@ -26,7 +24,6 @@ class NamespaceUrlFilters extends Filters
      */
     private $elementStorage;
 
-
     public function __construct(Configuration $configuration, LinkBuilder $linkBuilder, ElementStorage $elementStorage)
     {
         $this->configuration = $configuration;
@@ -34,16 +31,16 @@ class NamespaceUrlFilters extends Filters
         $this->elementStorage = $elementStorage;
     }
 
-
     public function subgroupName(string $groupName): string
     {
-        if ($pos = strrpos($groupName, '\\')) {
+        $pos = strrpos($groupName, '\\');
+
+        if ($pos) {
             return substr($groupName, $pos + 1);
         }
 
         return $groupName;
     }
-
 
     public function namespaceLinks(string $namespace, bool $skipLast = true): string
     {
@@ -63,7 +60,6 @@ class NamespaceUrlFilters extends Filters
 
         return implode('\\', $links);
     }
-
 
     public function namespaceUrl(string $name): string
     {

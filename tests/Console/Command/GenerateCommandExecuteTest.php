@@ -4,27 +4,24 @@ namespace ApiGen\Tests\Console\Command;
 
 use ApiGen\Console\Command\GenerateCommand;
 use ApiGen\Contracts\Console\IO\IOInterface;
-use ApiGen\Tests\ContainerAwareTestCase;
+use ApiGen\Tests\AbstractContainerAwareTestCase;
 use ApiGen\Tests\MethodInvoker;
 use ReflectionObject;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 
-final class GenerateCommandExecuteTest extends ContainerAwareTestCase
+final class GenerateCommandExecuteTest extends AbstractContainerAwareTestCase
 {
-
     /**
      * @var GenerateCommand
      */
     private $generateCommand;
 
-
     protected function setUp(): void
     {
         $this->generateCommand = $this->container->getByType(GenerateCommand::class);
     }
-
 
     public function testExecute(): void
     {
@@ -57,21 +54,20 @@ final class GenerateCommandExecuteTest extends ContainerAwareTestCase
         $this->assertFileExists(TEMP_DIR . '/Api/index.html');
     }
 
+    /**
+     * @expectedException \ApiGen\Configuration\Exceptions\ConfigurationException
+     */
+    public function testExecuteWithError(): void
+    {
+        $inputMock = $this->createMock(InputInterface::class);
+        $inputMock->method('getOptions')->willReturn([
+            'config' => null
+        ]);
 
-//    public function testExecuteWithError()
-//    {
-//        $inputMock = $this->createMock(InputInterface::class);
-//        $inputMock->method('getOptions')->willReturn([]);
-//
-//        $this->assertSame(
-//            1, // failure
-//            MethodInvoker::callMethodOnObject(
-//                $this->generateCommand,
-//                'execute',
-//                [$inputMock, new NullOutput()]
-//            )
-//        );
-//
-//        $this->assertFileNotExists(TEMP_DIR . '/Api/index.html');
-//    }
+        MethodInvoker::callMethodOnObject(
+            $this->generateCommand,
+            'execute',
+            [$inputMock, new NullOutput()]
+        );
+    }
 }

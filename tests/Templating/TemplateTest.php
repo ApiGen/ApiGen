@@ -8,18 +8,15 @@ use PHPUnit\Framework\TestCase;
 
 class TemplateTest extends TestCase
 {
-
     /**
      * @var Template
      */
     private $template;
 
-
     protected function setUp(): void
     {
         $this->template = new Template(new Engine);
     }
-
 
     public function testFileIsSavedWithContent(): void
     {

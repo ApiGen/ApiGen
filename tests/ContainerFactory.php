@@ -7,7 +7,6 @@ use Nette\DI\Container;
 
 class ContainerFactory
 {
-
     public function create(): Container
     {
         $configurator = new Configurator;

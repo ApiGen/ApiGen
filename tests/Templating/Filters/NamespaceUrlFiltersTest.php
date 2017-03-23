@@ -5,15 +5,14 @@ namespace ApiGen\Tests\Templating\Filters;
 use ApiGen\Contracts\Parser\ParserStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Templating\Filters\NamespaceUrlFilters;
-use ApiGen\Tests\ContainerAwareTestCase;
+use ApiGen\Tests\AbstractContainerAwareTestCase;
 
-final class NamespaceUrlFiltersTest extends ContainerAwareTestCase
+final class NamespaceUrlFiltersTest extends AbstractContainerAwareTestCase
 {
     /**
      * @var NamespaceUrlFilters
      */
     private $namespaceUrlFilters;
-
 
     protected function setUp(): void
     {
@@ -30,7 +29,6 @@ final class NamespaceUrlFiltersTest extends ContainerAwareTestCase
         ]);
     }
 
-
     public function testNamespaceUrl(): void
     {
         $this->assertSame(
@@ -38,7 +36,6 @@ final class NamespaceUrlFiltersTest extends ContainerAwareTestCase
             $this->namespaceUrlFilters->namespaceUrl('Long\\Namespace')
         );
     }
-
 
     public function testNamespaceLinks(): void
     {
@@ -55,7 +52,6 @@ final class NamespaceUrlFiltersTest extends ContainerAwareTestCase
             $this->namespaceUrlFilters->namespaceLinks('Long\\Namespace')
         );
     }
-
 
     public function testSubgroupName(): void
     {

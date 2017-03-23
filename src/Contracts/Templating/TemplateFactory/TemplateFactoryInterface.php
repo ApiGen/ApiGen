@@ -6,6 +6,5 @@ use ApiGen\Templating\Template;
 
 interface TemplateFactoryInterface
 {
-
     public function create(): Template;
 }

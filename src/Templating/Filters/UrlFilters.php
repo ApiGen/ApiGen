@@ -5,11 +5,11 @@ namespace ApiGen\Templating\Filters;
 use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions;
 use ApiGen\Contracts\Generator\Resolvers\ElementResolverInterface;
+use ApiGen\Contracts\Generator\SourceCodeHighlighter\SourceCodeHighlighterInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Event\ProcessDocTextEvent;
-use ApiGen\Generator\SourceCodeHighlighter\SourceCodeHighlighter;
 use ApiGen\Templating\Filters\Helpers\ElementLinkFactory;
 use ApiGen\Templating\Filters\Helpers\LinkBuilder;
 use ApiGen\Templating\Filters\Helpers\Strings;
@@ -20,7 +20,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 final class UrlFilters extends Filters
 {
     /**
-     * @var SourceCodeHighlighter
+     * @var SourceCodeHighlighterInterface
      */
     private $highlighter;
 
@@ -49,10 +49,9 @@ final class UrlFilters extends Filters
      */
     private $eventDispatcher;
 
-
     public function __construct(
         Configuration $configuration,
-        SourceCodeHighlighter $highlighter,
+        SourceCodeHighlighterInterface $highlighter,
         ElementResolverInterface $elementResolver,
         LinkBuilder $linkBuilder,
         ElementLinkFactory $elementLinkFactory,
@@ -65,7 +64,6 @@ final class UrlFilters extends Filters
         $this->elementLinkFactory = $elementLinkFactory;
         $this->eventDispatcher = $eventDispatcher;
     }
-
 
     /**
      * Tries to parse a definition of a class/method/property/constant/function
@@ -98,7 +96,6 @@ final class UrlFilters extends Filters
         return '<code>' . $link . $suffix . '</code>';
     }
 
-
     public function annotation(string $value, string $name, ElementReflectionInterface $reflectionElement): string
     {
         $annotationProcessors = [
@@ -116,7 +113,6 @@ final class UrlFilters extends Filters
 
         return $this->doc($value, $reflectionElement);
     }
-
 
     /**
      * Returns links for types.
@@ -138,19 +134,16 @@ final class UrlFilters extends Filters
         return implode('|', $links);
     }
 
-
     public function description(string $annotation, ElementReflectionInterface $reflectionElement): string
     {
         $description = trim(strpbrk($annotation, "\n\r\t $")) ?: $annotation;
         return $this->doc($description, $reflectionElement);
     }
 
-
     public function shortDescription(ElementReflectionInterface $reflectionElement): string
     {
         return $this->doc($reflectionElement->getShortDescription(), $reflectionElement);
     }
-
 
     public function longDescription(ElementReflectionInterface $element): string
     {
@@ -166,7 +159,6 @@ final class UrlFilters extends Filters
         return $this->doc($long, $element);
     }
 
-
     public function doc(string $text, ElementReflectionInterface $reflectionElement): string
     {
         $text = $this->resolveInternalAnnotation($text);
@@ -176,7 +168,6 @@ final class UrlFilters extends Filters
 
         return $this->resolveLinkAndSeeAnnotation($processDocTextEvent->getText(), $reflectionElement);
     }
-
 
     private function resolveInternalAnnotation(string $text): string
     {
@@ -194,13 +185,13 @@ final class UrlFilters extends Filters
         }, $text);
     }
 
-
     private function resolveLinkAndSeeAnnotation(string $text, ElementReflectionInterface $reflectionElement): string
     {
         return preg_replace_callback('~{@(?:link|see)\\s+([^}]+)}~', function ($matches) use ($reflectionElement) {
             [$url, $description] = Strings::split($matches[1]);
 
-            if ($link = $this->resolveLink($matches[1], $reflectionElement)) {
+            $link = $this->resolveLink($matches[1], $reflectionElement);
+            if ($link) {
                 return $link;
             }
 
@@ -212,19 +203,16 @@ final class UrlFilters extends Filters
         }, $text);
     }
 
-
     public function highlightPhp(string $source, ElementReflectionInterface $reflectionElement): string
     {
         return $this->resolveLink($this->getTypeName($source), $reflectionElement)
             ?: $this->highlighter->highlight((string) $source);
     }
 
-
     public function highlightValue(string $definition, ElementReflectionInterface $reflectionElement): string
     {
         return $this->highlightPhp(preg_replace('~^(?:[ ]{4}|\t)~m', '', $definition), $reflectionElement);
     }
-
 
     private function processReturnAnnotations(string $value, ElementReflectionInterface $reflectionElement): string
     {
@@ -233,14 +221,12 @@ final class UrlFilters extends Filters
         return $typeLinks . $description;
     }
 
-
     private function processThrowsAnnotations(string $value, ElementReflectionInterface $elementReflection): string
     {
         $description = $this->getDescriptionFromValue($value, $elementReflection);
         $typeLinks = $this->typeLinks($value, $elementReflection);
         return $typeLinks . $description;
     }
-
 
     /**
      * @param mixed $value
@@ -256,13 +242,11 @@ final class UrlFilters extends Filters
         return (string) $description;
     }
 
-
     private function processLicenseAnnotations(string $value): string
     {
         [$url, $description] = Strings::split($value);
         return $this->linkBuilder->build($url, $description ?: $url);
     }
-
 
     private function processLinkAnnotations(string $value): string
     {
@@ -273,7 +257,6 @@ final class UrlFilters extends Filters
 
         return '';
     }
-
 
     private function processSeeAnnotations(string $value, ElementReflectionInterface $reflectionElement): string
     {
@@ -288,7 +271,6 @@ final class UrlFilters extends Filters
 
         return implode(', ', $doc);
     }
-
 
     private function processUsesAnnotations(string $value, ElementReflectionInterface $reflectionElement): ?string
     {

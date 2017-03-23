@@ -8,14 +8,9 @@ use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
-use ApiGen\Parser\Reflection\ReflectionBase;
-use ApiGen\Parser\Reflection\ReflectionClass;
-use ApiGen\Parser\Reflection\ReflectionConstant;
-use ApiGen\Parser\Reflection\ReflectionFunction;
 
-class AutocompleteElements implements AutocompleteElementsInterface
+final class AutocompleteElements implements AutocompleteElementsInterface
 {
-
     /**
      * @var ElementStorageInterface
      */
@@ -26,12 +21,10 @@ class AutocompleteElements implements AutocompleteElementsInterface
      */
     private $elements = [];
 
-
     public function __construct(ElementStorageInterface $elementStorage)
     {
         $this->elementStorage = $elementStorage;
     }
-
 
     /**
      * @return mixed[]
@@ -48,7 +41,6 @@ class AutocompleteElements implements AutocompleteElementsInterface
 
         return $this->elements;
     }
-
 
     private function processElement(ElementReflectionInterface $element): void
     {
@@ -68,7 +60,6 @@ class AutocompleteElements implements AutocompleteElementsInterface
             }
         }
     }
-
 
     private function sortElements(): void
     {

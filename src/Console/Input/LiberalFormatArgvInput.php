@@ -2,7 +2,6 @@
 
 namespace ApiGen\Console\Input;
 
-use Symfony;
 use Symfony\Component\Console\Input\ArgvInput;
 
 /**
@@ -21,7 +20,6 @@ final class LiberalFormatArgvInput extends ArgvInput
         return $options;
     }
 
-
     /**
      * @param string $name
      * @return mixed
@@ -31,7 +29,6 @@ final class LiberalFormatArgvInput extends ArgvInput
         $this->options = $this->getOptions();
         return parent::getOption($name);
     }
-
 
     /**
      * @param string[]|string $value
@@ -50,7 +47,6 @@ final class LiberalFormatArgvInput extends ArgvInput
 
         return $value;
     }
-
 
     /**
      * @param mixed $value
@@ -74,12 +70,10 @@ final class LiberalFormatArgvInput extends ArgvInput
         return $value;
     }
 
-
     private function containsComma(string $value): bool
     {
         return strpos($value, ',') !== false;
     }
-
 
     /**
      * @param string|string[] $value

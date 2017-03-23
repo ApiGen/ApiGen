@@ -8,18 +8,15 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 final class ProgressBarSubscriber implements EventSubscriberInterface
 {
-
     /**
      * @var ProgressBarInterface
      */
     private $progressBar;
 
-
     public function __construct(ProgressBarInterface $progressBar)
     {
         $this->progressBar = $progressBar;
     }
-
 
     /**
      * @return string[]
@@ -30,7 +27,6 @@ final class ProgressBarSubscriber implements EventSubscriberInterface
             GenerateProgressEvent::class => 'generateProgress'
         ];
     }
-
 
     public function generateProgress(): void
     {

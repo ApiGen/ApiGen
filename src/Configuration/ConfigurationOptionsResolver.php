@@ -11,8 +11,19 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class ConfigurationOptionsResolver
 {
+    /**
+     * @var string
+     */
     public const AL_PROTECTED = 'protected';
+
+    /**
+     * @var string
+     */
     public const AL_PRIVATE = 'private';
+
+    /**
+     * @var string
+     */
     public const AL_PUBLIC = 'public';
 
     /**
@@ -39,10 +50,7 @@ final class ConfigurationOptionsResolver
         ConfigurationOptions::TITLE => '',
         // helpers
         ConfigurationOptions::VISIBILITY_LEVELS => [],
-        ConfigurationOptions::SOURCE_CODE => '',
-        // removed, but BC for templates
-        'download' => false,
-        'tree' => false,
+        ConfigurationOptions::SOURCE_CODE => ''
     ];
 
     /**
@@ -65,7 +73,6 @@ final class ConfigurationOptionsResolver
      */
     private $fileSystem;
 
-
     public function __construct(
         ThemeConfigFactory $themeConfigFactory,
         OptionsResolverFactory $optionsResolverFactory,
@@ -75,7 +82,6 @@ final class ConfigurationOptionsResolver
         $this->optionsResolverFactory = $optionsResolverFactory;
         $this->fileSystem = $fileSystem;
     }
-
 
     /**
      * @param mixed[] $options
@@ -92,7 +98,6 @@ final class ConfigurationOptionsResolver
         return $this->resolver->resolve($options);
     }
 
-
     private function setDefaults(): void
     {
         $this->resolver->setDefaults($this->defaults);
@@ -103,7 +108,7 @@ final class ConfigurationOptionsResolver
             ConfigurationOptions::TEMPLATE => function (Options $options) {
                 $config = $options[ConfigurationOptions::TEMPLATE_CONFIG];
                 if ($config === '') {
-                    $config = getcwd() . '/vendor/apigen/theme-default/src/config.neon';
+                    $config = getcwd() . '/packages/ThemeDefault/src/config.neon';
                 }
 
                 return $this->themeConfigFactory->create($config)
@@ -111,7 +116,6 @@ final class ConfigurationOptionsResolver
             }
         ]);
     }
-
 
     /**
      * @param mixed[] $options
@@ -136,12 +140,10 @@ final class ConfigurationOptionsResolver
         return $accessLevel;
     }
 
-
     private function setRequired(): void
     {
         $this->resolver->setRequired([ConfigurationOptions::SOURCE, ConfigurationOptions::DESTINATION]);
     }
-
 
     private function setAllowedValues(): void
     {
@@ -163,7 +165,6 @@ final class ConfigurationOptionsResolver
             return true;
         });
     }
-
 
     private function setNormalizers(): void
     {
@@ -205,7 +206,6 @@ final class ConfigurationOptionsResolver
         });
     }
 
-
     private function allowedValuesForDestination(?string $destination): bool
     {
         if (! $destination) {
@@ -223,7 +223,6 @@ final class ConfigurationOptionsResolver
 
         return true;
     }
-
 
     /**
      * @param string|string[] $source

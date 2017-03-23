@@ -9,18 +9,15 @@ use ApiGen\Templating\Template;
 
 final class NamespaceLoader
 {
-
     /**
      * @var ElementStorage
      */
     private $elementStorage;
 
-
     public function __construct(ElementStorage $elementStorage)
     {
         $this->elementStorage = $elementStorage;
     }
-
 
     public function loadTemplateWithElementNamespace(Template $template, ElementReflectionInterface $element): Template
     {
@@ -32,7 +29,6 @@ final class NamespaceLoader
         return $template;
     }
 
-
     /**
      * @param Template $template
      * @param string $name
@@ -43,15 +39,13 @@ final class NamespaceLoader
         string $name,
         array $namespace
     ): void {
-    
+
         $template->setParameters([
-            'package' => null, // removed, but for BC in Themes
             'namespace' => $name,
             'subnamespaces' => $this->getSubnamesForName($name, $template->getParameters()['namespaces'])
         ]);
         $this->loadTemplateWithElements($template, $namespace);
     }
-
 
     /**
      * @param Template $template
@@ -68,7 +62,6 @@ final class NamespaceLoader
             Elements::FUNCTIONS => $elements[Elements::FUNCTIONS]
         ]);
     }
-
 
     /**
      * @param string $name

@@ -5,9 +5,8 @@ namespace ApiGen\Utils\DI;
 use Nette\DI\Compiler;
 use Nette\DI\CompilerExtension;
 
-class UtilsExtension extends CompilerExtension
+final class UtilsExtension extends CompilerExtension
 {
-
     public function loadConfiguration(): void
     {
         Compiler::loadDefinitions(

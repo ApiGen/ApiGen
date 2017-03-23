@@ -7,26 +7,24 @@ use Nette\DI\Compiler;
 use Nette\DI\CompilerExtension;
 use TokenReflection\Broker;
 
-class ParserExtension extends CompilerExtension
+final class ParserExtension extends CompilerExtension
 {
-
     public function loadConfiguration(): void
     {
         $this->loadServicesFromConfig();
 
-        $builder = $this->getContainerBuilder();
+        $containerBuilder = $this->getContainerBuilder();
 
-        $backend = $builder->addDefinition($this->prefix('backend'))
+        $backend = $containerBuilder->addDefinition($this->prefix('backend'))
             ->setClass(Backend::class);
 
-        $builder->addDefinition($this->prefix('broker'))
+        $containerBuilder->addDefinition($this->prefix('broker'))
             ->setClass(Broker::class)
             ->setArguments([
                 $backend,
                 Broker::OPTION_DEFAULT & ~(Broker::OPTION_PARSE_FUNCTION_BODY | Broker::OPTION_SAVE_TOKEN_STREAM)
             ]);
     }
-
 
     private function loadServicesFromConfig(): void
     {

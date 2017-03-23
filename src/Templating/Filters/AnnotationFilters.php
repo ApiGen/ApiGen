@@ -21,30 +21,15 @@ final class AnnotationFilters extends Filters
      */
     private $configuration;
 
-
     public function __construct(ConfigurationInterface $configuration)
     {
         $this->configuration = $configuration;
     }
 
-
-    /**
-     * Removed, only for BC with Themes.
-     *
-     * @param string[] $annotations
-     * @return string[]
-     */
-    public function annotationSort(array $annotations): array
-    {
-        return $annotations;
-    }
-
-
     public function annotationBeautify(string $name): string
     {
         return Strings::firstUpper($name);
     }
-
 
     /**
      * @param string[] $annotations
@@ -62,7 +47,6 @@ final class AnnotationFilters extends Filters
 
         return $annotations;
     }
-
 
     /**
      * @param string[] $annotations

@@ -8,7 +8,6 @@ use ApiGen\Console\IO\IO;
 use ApiGen\Tests\MethodInvoker;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
-use Symfony;
 use Symfony\Component\Console\Helper\ProgressBar as SymfonyProgressBar;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Input\InputDefinition;
@@ -17,19 +16,16 @@ use Symfony\Component\Console\Output\NullOutput;
 
 final class ProgressBarTest extends TestCase
 {
-
     /**
      * @var ProgressBar
      */
     private $progressBar;
-
 
     protected function setUp(): void
     {
         $io = new IO(new LiberalFormatArgvInput, new NullOutput);
         $this->progressBar = new ProgressBar($io);
     }
-
 
     public function testInit(): void
     {
@@ -42,7 +38,6 @@ final class ProgressBarTest extends TestCase
         $this->assertInstanceOf(SymfonyProgressBar::class, $bar);
         $this->assertSame(50, $bar->getMaxSteps());
     }
-
 
     public function testIncrement(): void
     {
@@ -58,7 +53,6 @@ final class ProgressBarTest extends TestCase
         $this->progressBar->increment(30);
         $this->assertSame(50, $bar->getProgress());
     }
-
 
     public function testGetBarFormat(): void
     {

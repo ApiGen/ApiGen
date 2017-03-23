@@ -11,18 +11,15 @@ use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 
 class SourceFilters extends Filters
 {
-
     /**
      * @var ConfigurationInterface
      */
     private $configuration;
 
-
     public function __construct(ConfigurationInterface $configuration)
     {
         $this->configuration = $configuration;
     }
-
 
     public function staticFile(string $name): string
     {
@@ -33,7 +30,6 @@ class SourceFilters extends Filters
 
         return $name;
     }
-
 
     /**
      * @param ElementReflectionInterface $element
@@ -57,7 +53,7 @@ class SourceFilters extends Filters
             $file = 'class-';
         }
 
-        $file .= $this->urlize($elementName);
+        $file .= self::urlize($elementName);
 
         $url = sprintf($this->configuration->getOption('template')['templates']['source']['filename'], $file);
         if ($withLine) {
@@ -66,7 +62,6 @@ class SourceFilters extends Filters
 
         return $url;
     }
-
 
     private function isDirectUrl(ElementReflectionInterface $element): bool
     {
@@ -79,7 +74,6 @@ class SourceFilters extends Filters
 
         return false;
     }
-
 
     private function getElementLinesAnchor(LinedInterface $element): string
     {

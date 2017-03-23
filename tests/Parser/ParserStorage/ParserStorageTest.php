@@ -7,7 +7,6 @@ use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
 use ApiGen\Parser\Elements\Elements;
 use ApiGen\Parser\ParserStorage;
 use ApiGen\Tests\MethodInvoker;
-use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
 
 final class ParserStorageTest extends TestCase
@@ -17,12 +16,10 @@ final class ParserStorageTest extends TestCase
      */
     private $parserStorage;
 
-
     protected function setUp(): void
     {
         $this->parserStorage = new ParserStorage;
     }
-
 
     public function testSettersAndGetters(): void
     {
@@ -39,7 +36,6 @@ final class ParserStorageTest extends TestCase
         $this->assertSame($functions, $this->parserStorage->getFunctions());
     }
 
-
     public function testGetElementsByType(): void
     {
         $classes = [1];
@@ -55,7 +51,6 @@ final class ParserStorageTest extends TestCase
         $this->assertSame($functions, $this->parserStorage->getElementsByType(Elements::FUNCTIONS));
     }
 
-
     /**
      * @expectedException \Exception
      */
@@ -64,7 +59,6 @@ final class ParserStorageTest extends TestCase
         $this->parserStorage->getElementsByType('elements');
     }
 
-
     public function testGetTypes(): void
     {
         $this->assertSame(
@@ -72,7 +66,6 @@ final class ParserStorageTest extends TestCase
             $this->parserStorage->getTypes()
         );
     }
-
 
     public function testGetDocumentedStats(): void
     {
@@ -83,7 +76,6 @@ final class ParserStorageTest extends TestCase
         $this->assertArrayHasKey('functions', $documentedStats);
     }
 
-
     public function testGetDocumentedElementsCount(): void
     {
         $reflectionElements = $this->getReflectionElementsArrayObject();
@@ -93,7 +85,6 @@ final class ParserStorageTest extends TestCase
             [$reflectionElements]
         ));
     }
-
 
     /**
      * @return ElementReflectionInterface[]

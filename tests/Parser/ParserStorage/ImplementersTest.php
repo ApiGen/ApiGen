@@ -9,13 +9,12 @@ use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Parser\Tests\ParserStorageImplementersSource\ChildInterface;
 use ApiGen\Parser\Tests\ParserStorageImplementersSource\ParentInterface;
 use ApiGen\Parser\Tests\ParserStorageImplementersSource\SomeClass;
-use ApiGen\Tests\ContainerAwareTestCase;
+use ApiGen\Tests\AbstractContainerAwareTestCase;
 use Nette\Utils\Finder;
 use ReflectionProperty;
 
-final class ImplementersTest extends ContainerAwareTestCase
+final class ImplementersTest extends AbstractContainerAwareTestCase
 {
-
     /**
      * @var ParserStorageInterface
      */
@@ -25,7 +24,6 @@ final class ImplementersTest extends ContainerAwareTestCase
      * @var ClassReflectionInterface
      */
     private $parentInterfaceReflection;
-
 
     protected function setUp(): void
     {
@@ -48,7 +46,6 @@ final class ImplementersTest extends ContainerAwareTestCase
         $this->parentInterfaceReflection = $classes[ParentInterface::class];
     }
 
-
     public function testGetDirectImplementersOfInterface(): void
     {
         $implementers = $this->parserStorage->getDirectImplementersOfInterface($this->parentInterfaceReflection);
@@ -58,7 +55,6 @@ final class ImplementersTest extends ContainerAwareTestCase
         $this->assertInstanceOf(ClassReflectionInterface::class, $implementer);
         $this->assertSame(ChildInterface::class, $implementer->getName());
     }
-
 
     public function testGetIndirectImplementersOfInterface(): void
     {

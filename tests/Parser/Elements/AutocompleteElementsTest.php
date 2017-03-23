@@ -19,13 +19,11 @@ final class AutocompleteElementsTest extends TestCase
      */
     private $autocompleteElements;
 
-
     protected function setUp(): void
     {
         $elementsStorageMock = $this->createElementStorageMock();
         $this->autocompleteElements = new AutocompleteElements($elementsStorageMock);
     }
-
 
     public function testGetElementsClasses(): void
     {

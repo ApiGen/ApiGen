@@ -26,7 +26,6 @@ final class FindElementByNameTest extends AbstractElementResolverTest
         );
     }
 
-
     /**
      * @return string[]
      */

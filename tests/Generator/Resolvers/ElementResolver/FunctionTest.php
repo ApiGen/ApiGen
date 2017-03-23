@@ -19,12 +19,10 @@ final class FunctionTest extends AbstractElementResolverTest
         $this->assertTrue($element->isDocumented());
     }
 
-
     public function testNonExistingFunction(): void
     {
         $this->assertNull($this->elementResolver->getFunction('NotExistingFunction'));
     }
-
 
     /**
      * @return PHPUnit_Framework_MockObject_MockObject|FunctionReflectionInterface

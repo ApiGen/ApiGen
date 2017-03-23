@@ -4,11 +4,10 @@ namespace ApiGen\Tests\Generator\TemplateGenerators;
 
 use ApiGen\Configuration\Configuration;
 use ApiGen\Generator\TemplateGenerators\CombinedGenerator;
-use ApiGen\Tests\ContainerAwareTestCase;
+use ApiGen\Tests\AbstractContainerAwareTestCase;
 
-class CombinedGeneratorTest extends ContainerAwareTestCase
+class CombinedGeneratorTest extends AbstractContainerAwareTestCase
 {
-
     /**
      * @var Configuration
      */
@@ -19,13 +18,11 @@ class CombinedGeneratorTest extends ContainerAwareTestCase
      */
     private $combinedGenerator;
 
-
     protected function setUp(): void
     {
         $this->configuration = $this->container->getByType(Configuration::class);
         $this->combinedGenerator = $this->container->getByType(CombinedGenerator::class);
     }
-
 
     public function testGenerate(): void
     {

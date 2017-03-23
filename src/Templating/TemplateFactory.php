@@ -17,10 +17,20 @@ use Nette\Utils\ArrayHash;
 
 final class TemplateFactory implements TemplateFactoryInterface
 {
+    /**
+     * @var string
+     */
+    public const ELEMENT_SOURCE = 'source';
 
-    const ELEMENT_SOURCE = 'source';
-    const ELEMENT_NAMESPACE = 'namespace';
-    const ELEMENT_ANNOTATION_GROUP = 'annotationGroup';
+    /**
+     * @var string
+     */
+    public const ELEMENT_NAMESPACE = 'namespace';
+
+    /**
+     * @var string
+     */
+    public const ELEMENT_ANNOTATION_GROUP = 'annotationGroup';
 
     /**
      * @var Latte\Engine
@@ -47,7 +57,6 @@ final class TemplateFactory implements TemplateFactoryInterface
      */
     private $builtTemplate;
 
-
     public function __construct(
         Latte\Engine $latteEngine,
         Configuration $configuration,
@@ -59,7 +68,6 @@ final class TemplateFactory implements TemplateFactoryInterface
         $this->templateNavigator = $templateNavigator;
         $this->templateElementsLoader = $templateElementsLoader;
     }
-
 
     public function create(): Template
     {
@@ -78,7 +86,6 @@ final class TemplateFactory implements TemplateFactoryInterface
         return $this->builtTemplate;
     }
 
-
     public function createForType(string $type): Template
     {
         $template = $this->create();
@@ -87,7 +94,6 @@ final class TemplateFactory implements TemplateFactoryInterface
         $this->setEmptyDefaults($template);
         return $template;
     }
-
 
     /**
      * @param string $name
@@ -118,7 +124,6 @@ final class TemplateFactory implements TemplateFactoryInterface
         return $template;
     }
 
-
     public function createForReflection(ElementReflectionInterface $element): Template
     {
         $template = $this->create();
@@ -136,7 +141,6 @@ final class TemplateFactory implements TemplateFactoryInterface
 
         return $template;
     }
-
 
     private function setEmptyDefaults(Template $template): void
     {

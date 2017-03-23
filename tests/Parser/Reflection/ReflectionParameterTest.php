@@ -16,7 +16,6 @@ use TokenReflection\Broker;
 
 class ReflectionParameterTest extends TestCase
 {
-
     /**
      * @var ClassReflectionInterface
      */
@@ -26,7 +25,6 @@ class ReflectionParameterTest extends TestCase
      * @var ParameterReflectionInterface
      */
     private $reflectionParameter;
-
 
     protected function setUp(): void
     {
@@ -39,96 +37,80 @@ class ReflectionParameterTest extends TestCase
         $this->reflectionParameter = $reflectionMethod->getParameter(0);
     }
 
-
     public function testInstance(): void
     {
         $this->assertInstanceOf('ApiGen\Parser\Reflection\ReflectionParameter', $this->reflectionParameter);
     }
-
 
     public function testGetTypeHint(): void
     {
         $this->assertSame('int|string', $this->reflectionParameter->getTypeHint());
     }
 
-
     public function testGetDescription(): void
     {
         $this->assertSame(' the URL of the API endpoint', $this->reflectionParameter->getDescription());
     }
-
 
     public function testIsDefaultValueAvailable(): void
     {
         $this->assertTrue($this->reflectionParameter->isDefaultValueAvailable());
     }
 
-
     public function testGetPosition(): void
     {
         $this->assertSame(0, $this->reflectionParameter->getPosition());
     }
-
 
     public function testIsArray(): void
     {
         $this->assertFalse($this->reflectionParameter->isArray());
     }
 
-
     public function testIsCallable(): void
     {
         $this->assertFalse($this->reflectionParameter->isCallable());
     }
-
 
     public function testGetClass(): void
     {
         $this->assertNull($this->reflectionParameter->getClass());
     }
 
-
     public function testGetClassName(): void
     {
         $this->assertNull($this->reflectionParameter->getClassName());
     }
-
 
     public function testAllowsNull(): void
     {
         $this->assertTrue($this->reflectionParameter->allowsNull());
     }
 
-
     public function testIsOptional(): void
     {
         $this->assertTrue($this->reflectionParameter->isOptional());
     }
-
 
     public function testIsPassedByReference(): void
     {
         $this->assertFalse($this->reflectionParameter->isPassedByReference());
     }
 
-
     public function testCanBePassedByValue(): void
     {
         $this->assertTrue($this->reflectionParameter->canBePassedByValue());
     }
-
 
     public function testGetDeclaringFunction(): void
     {
         $this->assertInstanceOf(MethodReflectionInterface::class, $this->reflectionParameter->getDeclaringFunction());
     }
 
-
     public function testGetDeclaringFunctionName(): void
     {
         $this->assertSame('methodWithArgs', $this->reflectionParameter->getDeclaringFunctionName());
     }
-
 
     public function testGetDeclaringClass(): void
     {
@@ -138,18 +120,15 @@ class ReflectionParameterTest extends TestCase
         );
     }
 
-
     public function testGetDeclaringClassName(): void
     {
         $this->assertSame('Project\ReflectionMethod', $this->reflectionParameter->getDeclaringClassName());
     }
 
-
     public function testIsUnlimited(): void
     {
         $this->assertFalse($this->reflectionParameter->isUnlimited());
     }
-
 
     private function getReflectionFactory(): ReflectionFactoryInterface
     {

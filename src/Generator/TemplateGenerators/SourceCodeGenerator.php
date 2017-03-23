@@ -4,6 +4,7 @@ namespace ApiGen\Generator\TemplateGenerators;
 
 use ApiGen\Configuration\ConfigurationOptions;
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
+use ApiGen\Contracts\Generator\SourceCodeHighlighter\SourceCodeHighlighterInterface;
 use ApiGen\Contracts\Generator\StepCounterInterface;
 use ApiGen\Contracts\Generator\TemplateGenerators\ConditionalTemplateGeneratorInterface;
 use ApiGen\Contracts\Parser\Elements\ElementStorageInterface;
@@ -11,7 +12,6 @@ use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
 use ApiGen\Generator\Event\GenerateProgressEvent;
 use ApiGen\Generator\Resolvers\RelativePathResolver;
-use ApiGen\Generator\SourceCodeHighlighter\SourceCodeHighlighter;
 use ApiGen\Generator\TemplateGenerators\Loaders\NamespaceLoader;
 use ApiGen\Templating\TemplateFactory;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -39,7 +39,7 @@ final class SourceCodeGenerator implements ConditionalTemplateGeneratorInterface
     private $relativePathResolver;
 
     /**
-     * @var SourceCodeHighlighter
+     * @var SourceCodeHighlighterInterface
      */
     private $sourceCodeHighlighter;
 
@@ -53,13 +53,12 @@ final class SourceCodeGenerator implements ConditionalTemplateGeneratorInterface
      */
     protected $namespaceLoader;
 
-
     public function __construct(
         ConfigurationInterface $configuration,
         ElementStorageInterface $elementStorage,
         TemplateFactory $templateFactory,
         RelativePathResolver $relativePathResolver,
-        SourceCodeHighlighter $sourceCodeHighlighter,
+        SourceCodeHighlighterInterface $sourceCodeHighlighter,
         EventDispatcherInterface $eventDispatcher,
         NamespaceLoader $namespaceLoader
     ) {
@@ -71,7 +70,6 @@ final class SourceCodeGenerator implements ConditionalTemplateGeneratorInterface
         $this->eventDispatcher = $eventDispatcher;
         $this->namespaceLoader = $namespaceLoader;
     }
-
 
     public function generate(): void
     {
@@ -86,7 +84,6 @@ final class SourceCodeGenerator implements ConditionalTemplateGeneratorInterface
             }
         }
     }
-
 
     public function getStepCount(): int
     {
@@ -104,12 +101,10 @@ final class SourceCodeGenerator implements ConditionalTemplateGeneratorInterface
         return $count;
     }
 
-
     public function isAllowed(): bool
     {
         return (bool) $this->configuration->getOption(ConfigurationOptions::SOURCE_CODE);
     }
-
 
     private function generateForElement(ElementReflectionInterface $element): void
     {
@@ -121,7 +116,6 @@ final class SourceCodeGenerator implements ConditionalTemplateGeneratorInterface
         ]);
         $template->save();
     }
-
 
     private function getHighlightedCodeFromElement(ElementReflectionInterface $element): string
     {

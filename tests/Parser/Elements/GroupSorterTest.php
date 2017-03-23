@@ -16,7 +16,6 @@ final class GroupSorterTest extends TestCase
      */
     private $groupSorter;
 
-
     protected function setUp(): void
     {
         $configurationMock = $this->createMock(ConfigurationInterface::class);
@@ -24,7 +23,6 @@ final class GroupSorterTest extends TestCase
             ->willReturn('');
         $this->groupSorter = new GroupSorter(new Elements, $configurationMock);
     }
-
 
     public function testSort(): void
     {
@@ -36,7 +34,6 @@ final class GroupSorterTest extends TestCase
         $this->assertArrayHasKey('OneMoreGroup', $sortedGroups);
     }
 
-
     public function testSortNoneGroupOnly(): void
     {
         $groups = ['None' => []];
@@ -44,13 +41,11 @@ final class GroupSorterTest extends TestCase
         $this->assertSame([], $sortedGroups);
     }
 
-
     public function testIsNoneGroupOnly(): void
     {
         $groups['None'] = true;
         $this->assertTrue(MethodInvoker::callMethodOnObject($this->groupSorter, 'isNoneGroupOnly', [$groups]));
     }
-
 
     public function testConvertGroupNamesToLower(): void
     {
@@ -63,7 +58,6 @@ final class GroupSorterTest extends TestCase
         $this->assertSame(['some group' => 0, 'some other group' => 1], $convertedGroupNames);
     }
 
-
     public function testAddMissingParentGroup(): void
     {
         $this->assertNull(Assert::getObjectAttribute($this->groupSorter, 'groups'));
@@ -74,7 +68,6 @@ final class GroupSorterTest extends TestCase
         $this->assertArrayHasKey('Some\Group', $groups);
         $this->assertArrayHasKey('Some', $groups);
     }
-
 
     public function testAddMissingElementTypes(): void
     {
@@ -91,7 +84,6 @@ final class GroupSorterTest extends TestCase
         $this->assertArrayHasKey('traits', $someGroup);
     }
 
-
     /**
      * @dataProvider getCompareGroupsData()
      */
@@ -102,7 +94,6 @@ final class GroupSorterTest extends TestCase
             MethodInvoker::callMethodOnObject($this->groupSorter, 'compareGroups', [$one, $two, $main])
         );
     }
-
 
     /**
      * @return mixed[]

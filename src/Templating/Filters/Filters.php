@@ -2,9 +2,11 @@
 
 namespace ApiGen\Templating\Filters;
 
-abstract class Filters
+/**
+ * @todo use ModularFilters package
+ */
+class Filters
 {
-
     /**
      * Calls public method with args if exists and passes args.
      *
@@ -20,12 +22,10 @@ abstract class Filters
         return null;
     }
 
-
     public static function urlize(string $string): string
     {
         return preg_replace('~[^\w]~', '.', $string);
     }
-
 
     protected function getTypeName(string $name, bool $trimNamespaceSeparator = true): string
     {
@@ -56,8 +56,7 @@ abstract class Filters
         return $trimNamespaceSeparator ? ltrim($name, '\\') : $name;
     }
 
-
-    private function url(string $url): string
+    protected function url(string $url): string
     {
         return rawurlencode($url);
     }

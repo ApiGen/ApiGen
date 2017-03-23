@@ -5,16 +5,15 @@ namespace ApiGen\Tests\Templating\Filters;
 use ApiGen\Contracts\Parser\ParserStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Templating\Filters\ResolverFilters;
-use ApiGen\Tests\ContainerAwareTestCase;
+use ApiGen\Tests\AbstractContainerAwareTestCase;
 use PHPUnit_Framework_MockObject_MockObject;
 
-final class ResolverFiltersTest extends ContainerAwareTestCase
+final class ResolverFiltersTest extends AbstractContainerAwareTestCase
 {
     /**
      * @var ResolverFilters
      */
     private $resolverFilters;
-
 
     protected function setUp(): void
     {
@@ -29,12 +28,10 @@ final class ResolverFiltersTest extends ContainerAwareTestCase
         ]);
     }
 
-
     public function testGetClass(): void
     {
         $this->assertInstanceOf(ClassReflectionInterface::class, $this->resolverFilters->getClass('SomeClass'));
     }
-
 
     public function testGetClassForNonExistingClass(): void
     {
@@ -46,7 +43,6 @@ final class ResolverFiltersTest extends ContainerAwareTestCase
         $reflectionElementMock = $this->createMock(ClassReflectionInterface::class);
         $this->assertFalse($this->resolverFilters->resolveElement('NonExistingElement', $reflectionElementMock));
     }
-
 
     /**
      * @return PHPUnit_Framework_MockObject_MockObject|ClassReflectionInterface

@@ -5,9 +5,9 @@ namespace ApiGen\Tests\ApiGen\Generator\TemplateGenerators;
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Templating\TemplateFactory\TemplateFactoryInterface;
 use ApiGen\Generator\TemplateGenerators\OverviewGenerator;
-use ApiGen\Tests\ContainerAwareTestCase;
+use ApiGen\Tests\AbstractContainerAwareTestCase;
 
-final class OverviewGeneratorTest extends ContainerAwareTestCase
+final class OverviewGeneratorTest extends AbstractContainerAwareTestCase
 {
     protected function setUp(): void
     {

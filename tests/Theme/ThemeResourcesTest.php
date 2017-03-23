@@ -6,7 +6,6 @@ use ApiGen\Configuration\Configuration;
 use ApiGen\Tests\ContainerFactory;
 use ApiGen\Theme\ThemeResources;
 use ApiGen\Utils\FileSystem;
-use Nette\DI\Container;
 use PHPUnit\Framework\TestCase;
 
 final class ThemeResourcesTest extends TestCase
@@ -47,7 +46,6 @@ final class ThemeResourcesTest extends TestCase
         $this->assertFileExists($destinationDir . '/assets/file.txt');
         $this->assertFileExists($destinationDir . '/other-file-renamed.txt');
     }
-
 
     private function prepareSources(string $sourceFile, string $sourceDir): void
     {

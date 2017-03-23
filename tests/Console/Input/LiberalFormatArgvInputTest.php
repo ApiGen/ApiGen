@@ -6,7 +6,6 @@ use ApiGen\Console\Input\LiberalFormatArgvInput;
 use ApiGen\Tests\MethodInvoker;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Input\InputDefinition;
-use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 
 final class LiberalFormatArgvInputTest extends TestCase
@@ -15,7 +14,6 @@ final class LiberalFormatArgvInputTest extends TestCase
      * @var LiberalFormatArgvInput
      */
     private $formatLiberalArgvInput;
-
 
     protected function setUp(): void
     {
@@ -26,20 +24,17 @@ final class LiberalFormatArgvInputTest extends TestCase
         $this->formatLiberalArgvInput = new LiberalFormatArgvInput([], $inputDefinition);
     }
 
-
     public function testGetOption(): void
     {
         $this->formatLiberalArgvInput->setOption('source', ['one,two']);
         $this->assertSame(['one', 'two'], $this->formatLiberalArgvInput->getOption('source'));
     }
 
-
     public function testGetOptions(): void
     {
         $this->formatLiberalArgvInput->setOption('source', ['one,two']);
         $this->assertSame(['one', 'two'], $this->formatLiberalArgvInput->getOptions()['source']);
     }
-
 
     /**
      * @dataProvider getSplitByComma()
@@ -55,7 +50,6 @@ final class LiberalFormatArgvInputTest extends TestCase
         );
     }
 
-
     /**
      * @return string[][]
      */
@@ -66,7 +60,6 @@ final class LiberalFormatArgvInputTest extends TestCase
             ['one,two', ['one', 'two']]
         ];
     }
-
 
     /**
      * @dataProvider getRemoveEqualsData()
@@ -81,7 +74,6 @@ final class LiberalFormatArgvInputTest extends TestCase
             MethodInvoker::callMethodOnObject($this->formatLiberalArgvInput, 'removeEqualsSign', [$input])
         );
     }
-
 
     /**
      * @return mixed[]

@@ -26,7 +26,6 @@ final class NetteFinder implements FinderInterface
         return $files;
     }
 
-
     /**
      * @param string $source
      * @param string[] $exclude
@@ -48,7 +47,6 @@ final class NetteFinder implements FinderInterface
         }
     }
 
-
     /**
      * @param string[]|string $source
      * @return string[]
@@ -62,7 +60,6 @@ final class NetteFinder implements FinderInterface
         return $source;
     }
 
-
     /**
      * @param string[] $extensions
      */
@@ -75,7 +72,6 @@ final class NetteFinder implements FinderInterface
 
         return rtrim($mask, ',');
     }
-
 
     /**
      * @return SplFileInfo[]

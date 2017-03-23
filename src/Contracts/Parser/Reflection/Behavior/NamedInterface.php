@@ -4,9 +4,7 @@ namespace ApiGen\Contracts\Parser\Reflection\Behavior;
 
 interface NamedInterface
 {
-
     public function getName(): string;
-
 
     public function getPrettyName(): string;
 }

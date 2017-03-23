@@ -7,7 +7,6 @@ namespace ApiGen\Tests;
  */
 class DeprecatedClass
 {
-
     /**
      * @return string
      */

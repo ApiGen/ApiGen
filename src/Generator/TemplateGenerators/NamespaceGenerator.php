@@ -32,7 +32,6 @@ final class NamespaceGenerator implements TemplateGeneratorInterface, StepCounte
      */
     private $eventDispatcher;
 
-
     public function __construct(
         TemplateFactory $templateFactory,
         ElementStorageInterface $elementStorage,
@@ -45,7 +44,6 @@ final class NamespaceGenerator implements TemplateGeneratorInterface, StepCounte
         $this->eventDispatcher = $eventDispatcher;
     }
 
-
     public function generate(): void
     {
         foreach ($this->elementStorage->getNamespaces() as $name => $namespace) {
@@ -56,7 +54,6 @@ final class NamespaceGenerator implements TemplateGeneratorInterface, StepCounte
             $this->eventDispatcher->dispatch(GenerateProgressEvent::class);
         }
     }
-
 
     public function getStepCount(): int
     {

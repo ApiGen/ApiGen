@@ -7,12 +7,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 interface IOInterface
 {
-
     public function getInput(): InputInterface;
 
-
     public function getOutput(): OutputInterface;
-
 
     public function writeln(string $message): void;
 }

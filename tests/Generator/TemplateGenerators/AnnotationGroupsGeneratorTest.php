@@ -7,12 +7,12 @@ use ApiGen\Configuration\ConfigurationOptions as CO;
 use ApiGen\Generator\TemplateGenerators\AnnotationGroupsGenerator;
 use ApiGen\Parser\Parser;
 use ApiGen\Templating\Template;
-use ApiGen\Tests\ContainerAwareTestCase;
+use ApiGen\Tests\AbstractContainerAwareTestCase;
 use ApiGen\Tests\MethodInvoker;
 use Latte\Engine;
 use Nette\Utils\Finder;
 
-final class AnnotationGroupsGeneratorTest extends ContainerAwareTestCase
+final class AnnotationGroupsGeneratorTest extends AbstractContainerAwareTestCase
 {
     /**
      * @var Configuration
@@ -29,14 +29,12 @@ final class AnnotationGroupsGeneratorTest extends ContainerAwareTestCase
      */
     private $annotationGroupsGenerator;
 
-
     protected function setUp(): void
     {
         $this->configuration = $this->container->getByType(Configuration::class);
         $this->parser = $this->container->getByType(Parser::class);
         $this->annotationGroupsGenerator = $this->container->getByType(AnnotationGroupsGenerator::class);
     }
-
 
     public function testOptions(): void
     {
@@ -48,14 +46,12 @@ final class AnnotationGroupsGeneratorTest extends ContainerAwareTestCase
         $this->assertSame(['api', 'event'], $resolvedOptions[CO::ANNOTATION_GROUPS]);
     }
 
-
     public function testGenerate(): void
     {
         $this->setCorrectConfiguration();
         $this->annotationGroupsGenerator->generate();
         $this->assertFileExists(TEMP_DIR . '/api/annotation-group-deprecated.html');
     }
-
 
     public function testSetElementsWithAnnotationToTemplate(): void
     {
@@ -76,7 +72,6 @@ final class AnnotationGroupsGeneratorTest extends ContainerAwareTestCase
         $this->assertCount(1, $parameters['annotationMethods']);
     }
 
-
     private function prepareGeneratorRequirements(): void
     {
         $this->setCorrectConfiguration();
@@ -88,7 +83,6 @@ final class AnnotationGroupsGeneratorTest extends ContainerAwareTestCase
 
         $this->parser->parse($files);
     }
-
 
     private function setCorrectConfiguration(): void
     {

@@ -15,12 +15,10 @@ use TokenReflection\Broker;
 
 final class ReflectionElementTest extends TestCase
 {
-
     /**
      * @var ElementReflectionInterface
      */
     private $reflectionClass;
-
 
     protected function setUp(): void
     {
@@ -31,72 +29,60 @@ final class ReflectionElementTest extends TestCase
         $this->reflectionClass = $backend->getClasses()['Project\ReflectionMethod'];
     }
 
-
     public function testGetStartPosition(): void
     {
         $this->assertSame(16, $this->reflectionClass->getStartPosition());
     }
-
 
     public function testGetEndPosition(): void
     {
         $this->assertSame(69, $this->reflectionClass->getEndPosition());
     }
 
-
     public function testIsMain(): void
     {
         $this->assertTrue($this->reflectionClass->isMain());
     }
-
 
     public function testIsDocumented(): void
     {
         $this->assertTrue($this->reflectionClass->isDocumented());
     }
 
-
     public function testIsDeprecated(): void
     {
         $this->assertFalse($this->reflectionClass->isDeprecated());
     }
-
 
     public function testGetNamespaceName(): void
     {
         $this->assertSame('Project', $this->reflectionClass->getNamespaceName());
     }
 
-
     public function testGetPseudoNamespaceName(): void
     {
         $this->assertSame('Project', $this->reflectionClass->getPseudoNamespaceName());
     }
-
 
     public function testInNamespace(): void
     {
         $this->assertTrue($this->reflectionClass->inNamespace());
     }
 
-
     public function testGetNamespacesAliases(): void
     {
         $this->assertSame([], $this->reflectionClass->getNamespaceAliases());
     }
-
 
     public function testGetShortDescription(): void
     {
         $this->assertSame('This is some description', $this->reflectionClass->getShortDescription());
     }
 
-
     public function testGetLongDescription(): void
     {
         $this->assertSame('This is some description', $this->reflectionClass->getLongDescription());
     }
-
 
     public function testGetDocComment(): void
     {
@@ -112,7 +98,6 @@ final class ReflectionElementTest extends TestCase
         }
     }
 
-
     public function testGetAnnotations(): void
     {
         $annotations = $this->reflectionClass->getAnnotations();
@@ -122,12 +107,10 @@ final class ReflectionElementTest extends TestCase
         $this->assertArrayHasKey('package', $annotations);
     }
 
-
     public function testGetAnnotation(): void
     {
         $this->assertSame(['Some_Package'], $this->reflectionClass->getAnnotation('package'));
     }
-
 
     public function testHasAnnotation(): void
     {
@@ -135,14 +118,12 @@ final class ReflectionElementTest extends TestCase
         $this->assertFalse($this->reflectionClass->hasAnnotation('nope'));
     }
 
-
     public function testAddAnnotation(): void
     {
         $this->assertFalse($this->reflectionClass->hasAnnotation('Foo'));
         $this->reflectionClass->addAnnotation('Foo', '...');
         $this->assertTrue($this->reflectionClass->hasAnnotation('Foo'));
     }
-
 
     public function testGetAnnotationFromReflection(): void
     {
@@ -153,7 +134,6 @@ final class ReflectionElementTest extends TestCase
         );
         $this->assertSame([], $annotations);
     }
-
 
     private function getReflectionFactory(): ReflectionFactoryInterface
     {

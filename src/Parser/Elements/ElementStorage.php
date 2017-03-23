@@ -62,13 +62,11 @@ final class ElementStorage implements ElementStorageInterface
      */
     private $groupSorter;
 
-
     public function __construct(ParserStorageInterface $parserStorage, GroupSorterInterface $groupSorter)
     {
         $this->parserStorage = $parserStorage;
         $this->groupSorter = $groupSorter;
     }
-
 
     /**
      * @return mixed[]
@@ -79,7 +77,6 @@ final class ElementStorage implements ElementStorageInterface
         return $this->namespaces;
     }
 
-
     /**
      * @return ClassReflectionInterface[]
      */
@@ -88,7 +85,6 @@ final class ElementStorage implements ElementStorageInterface
         $this->ensureCategorization();
         return $this->classes;
     }
-
 
     /**
      * @return ClassReflectionInterface[]
@@ -99,7 +95,6 @@ final class ElementStorage implements ElementStorageInterface
         return $this->interfaces;
     }
 
-
     /**
      * @return ClassReflectionInterface[]
      */
@@ -108,7 +103,6 @@ final class ElementStorage implements ElementStorageInterface
         $this->ensureCategorization();
         return $this->traits;
     }
-
 
     /**
      * @return ClassReflectionInterface[]
@@ -119,7 +113,6 @@ final class ElementStorage implements ElementStorageInterface
         return $this->exceptions;
     }
 
-
     /**
      * @return ConstantReflectionInterface[]
      */
@@ -128,7 +121,6 @@ final class ElementStorage implements ElementStorageInterface
         $this->ensureCategorization();
         return $this->constants;
     }
-
 
     /**
      * @return FunctionReflectionInterface[]
@@ -139,7 +131,6 @@ final class ElementStorage implements ElementStorageInterface
          return $this->functions;
     }
 
-
     /**
      * @return ClassReflectionInterface[]
      */
@@ -147,7 +138,6 @@ final class ElementStorage implements ElementStorageInterface
     {
         return array_merge($this->getClasses(), $this->getTraits(), $this->getInterfaces(), $this->getExceptions());
     }
-
 
     /**
      * @return mixed[]
@@ -166,7 +156,6 @@ final class ElementStorage implements ElementStorageInterface
         ];
         return $elements;
     }
-
 
     private function categorizeParsedElements(): void
     {
@@ -205,19 +194,16 @@ final class ElementStorage implements ElementStorageInterface
         $this->areElementsCategorized = true;
     }
 
-
     private function categorizeElementToNamespace(string $elementType, ElementReflectionInterface $element): void
     {
         $namespaceName = $element->getPseudoNamespaceName();
         $this->namespaces[$namespaceName][$elementType][$element->getShortName()] = $element;
     }
 
-
     private function sortNamespaces(): void
     {
         $this->namespaces = $this->groupSorter->sort($this->namespaces);
     }
-
 
     private function ensureCategorization(): void
     {

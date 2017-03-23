@@ -6,21 +6,19 @@ use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Templating\Filters\SourceFilters;
-use ApiGen\Tests\ContainerAwareTestCase;
+use ApiGen\Tests\AbstractContainerAwareTestCase;
 
-final class SourceFiltersTest extends ContainerAwareTestCase
+final class SourceFiltersTest extends AbstractContainerAwareTestCase
 {
     /**
      * @var SourceFilters
      */
     private $sourceFilters;
 
-
     protected function setUp(): void
     {
         $this->sourceFilters = $this->container->getByType(SourceFilters::class);
     }
-
 
     public function testStaticFile(): void
     {
@@ -28,7 +26,6 @@ final class SourceFiltersTest extends ContainerAwareTestCase
         $link = $this->sourceFilters->staticFile('some-file.txt');
         $this->assertSame('some-file.txt?6eae3a5b062c6d0d79f070c26e6d62486b40cb46', $link);
     }
-
 
     public function testSourceUrlFunction(): void
     {
@@ -46,7 +43,6 @@ final class SourceFiltersTest extends ContainerAwareTestCase
         );
     }
 
-
     public function testSourceUrlClass(): void
     {
         $reflectionClass = $this->createMock(ClassReflectionInterface::class);
@@ -62,7 +58,6 @@ final class SourceFiltersTest extends ContainerAwareTestCase
             $this->sourceFilters->sourceUrl($reflectionClass)
         );
     }
-
 
     public function testSourceUrlClassConstant(): void
     {
@@ -81,7 +76,6 @@ final class SourceFiltersTest extends ContainerAwareTestCase
             $this->sourceFilters->sourceUrl($reflectionConstant)
         );
     }
-
 
     public function testSourceUrlConstant(): void
     {

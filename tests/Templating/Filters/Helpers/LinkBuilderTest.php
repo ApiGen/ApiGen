@@ -8,18 +8,15 @@ use PHPUnit\Framework\TestCase;
 
 final class LinkBuilderTest extends TestCase
 {
-
     /**
      * @var LinkBuilder
      */
     private $linkBuilder;
 
-
     protected function setUp(): void
     {
         $this->linkBuilder = new LinkBuilder;
     }
-
 
     /**
      * @dataProvider getBuildData()
@@ -34,7 +31,6 @@ final class LinkBuilderTest extends TestCase
     {
         $this->assertSame($expectedLink, $this->linkBuilder->build($url, $text, $escape, $classes));
     }
-
 
     /**
      * @return mixed[]

@@ -19,7 +19,6 @@ abstract class AbstractElementResolverTest extends TestCase
      */
     protected $parserStorage;
 
-
     protected function setUp(): void
     {
         $container = (new ContainerFactory())->create();

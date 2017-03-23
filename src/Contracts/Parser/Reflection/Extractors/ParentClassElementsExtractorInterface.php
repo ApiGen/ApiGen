@@ -8,18 +8,15 @@ use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
 
 interface ParentClassElementsExtractorInterface
 {
-
     /**
      * @return ConstantReflectionInterface[]
      */
     public function getInheritedConstants(): array;
 
-
     /**
      * @return PropertyReflectionInterface[][]
      */
     public function getInheritedProperties(): array;
-
 
     /**
      * @return MethodReflectionInterface[]

@@ -22,7 +22,6 @@ abstract class AbstractReflectionTestCase extends TestCase
      */
     protected $backend;
 
-
     protected function setUp(): void
     {
         $parserStorageMock = $this->createMock(ParserStorageInterface::class);

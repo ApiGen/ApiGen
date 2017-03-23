@@ -25,7 +25,6 @@ final class ResolveContextForSelfPropertyTest extends AbstractElementResolverTes
         ]);
     }
 
-
     public function testSelfProperty(): void
     {
         $classReflectionMock = $this->createClassReflectionMock();
@@ -38,7 +37,6 @@ final class ResolveContextForSelfPropertyTest extends AbstractElementResolverTes
         $this->assertInstanceOf(ElementReflectionInterface::class, $resolvedElement);
         $this->assertSame('SomeClass', $resolvedElement->getName());
     }
-
 
     public function testOtherClassProperty(): void
     {

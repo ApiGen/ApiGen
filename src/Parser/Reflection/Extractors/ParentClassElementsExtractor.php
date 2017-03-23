@@ -11,12 +11,10 @@ use ApiGen\Parser\Reflection\ReflectionClass;
 
 final class ParentClassElementsExtractor implements ParentClassElementsExtractorInterface
 {
-
     /**
      * @var ClassReflectionInterface
      */
     private $reflectionClass;
-
 
     public function __construct(ReflectionClass $reflectionClass)
     {
@@ -39,7 +37,6 @@ final class ParentClassElementsExtractor implements ParentClassElementsExtractor
             )
         );
     }
-
 
     /**
      * @return PropertyReflectionInterface[]
@@ -66,7 +63,6 @@ final class ParentClassElementsExtractor implements ParentClassElementsExtractor
         return $properties;
     }
 
-
     /**
      * @return MethodReflectionInterface[]
      */
@@ -92,7 +88,6 @@ final class ParentClassElementsExtractor implements ParentClassElementsExtractor
         return $methods;
     }
 
-
     /**
      * @return ClassReflectionInterface[]
      */
@@ -100,7 +95,6 @@ final class ParentClassElementsExtractor implements ParentClassElementsExtractor
     {
         return array_merge($this->reflectionClass->getParentClasses(), $this->reflectionClass->getInterfaces());
     }
-
 
     /**
      * @param mixed[] $elements

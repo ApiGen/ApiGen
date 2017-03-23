@@ -21,7 +21,6 @@ final class ConstantElementResolverTest extends AbstractElementResolverTest
         );
     }
 
-
     public function testGetConstantNotExisting(): void
     {
         $this->assertNull($this->elementResolver->getConstant('NotExistingConstant'));

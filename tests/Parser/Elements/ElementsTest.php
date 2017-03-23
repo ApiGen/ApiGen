@@ -7,18 +7,15 @@ use PHPUnit\Framework\TestCase;
 
 class ElementsTest extends TestCase
 {
-
     /**
      * @var Elements
      */
     private $elements;
 
-
     protected function setUp(): void
     {
         $this->elements = new Elements;
     }
-
 
     public function testGetClassTypeList(): void
     {
@@ -28,7 +25,6 @@ class ElementsTest extends TestCase
         );
     }
 
-
     public function testGetAll(): void
     {
         $this->assertSame(
@@ -36,7 +32,6 @@ class ElementsTest extends TestCase
             $this->elements->getAll()
         );
     }
-
 
     public function testGetEmptyList(): void
     {

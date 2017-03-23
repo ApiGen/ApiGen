@@ -17,13 +17,11 @@ final class GeneratorQueueTest extends TestCase
      */
     private $generatorQueue;
 
-
     protected function setUp(): void
     {
         $progressBarMock = $this->createMock(ProgressBarInterface::class);
         $this->generatorQueue = new GeneratorQueue($progressBarMock);
     }
-
 
     public function testRun(): void
     {
@@ -38,14 +36,12 @@ final class GeneratorQueueTest extends TestCase
         $this->assertFileExists(TEMP_DIR . '/file.txt');
     }
 
-
     public function testGetAllowedQueue(): void
     {
         $this->generatorQueue->addToQueue($this->createConditionalTemplateGenerator());
 
         $this->assertCount(0, MethodInvoker::callMethodOnObject($this->generatorQueue, 'getAllowedQueue'));
     }
-
 
     public function testGetStepCount(): void
     {

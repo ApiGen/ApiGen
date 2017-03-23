@@ -27,7 +27,6 @@ use TokenReflection\Resolver;
  */
 final class Backend extends Broker\Backend\Memory implements BackendInterface
 {
-
     /**
      * @var ClassReflectionInterface[][]
      */
@@ -47,12 +46,10 @@ final class Backend extends Broker\Backend\Memory implements BackendInterface
      */
     private $reflectionFactory;
 
-
     public function __construct(ReflectionFactoryInterface $reflectionFactory)
     {
         $this->reflectionFactory = $reflectionFactory;
     }
-
 
     /**
      * @return ConstantReflectionInterface[]
@@ -64,7 +61,6 @@ final class Backend extends Broker\Backend\Memory implements BackendInterface
         }, parent::getConstants());
     }
 
-
     /**
      * @return FunctionReflectionInterface[]
      */
@@ -74,7 +70,6 @@ final class Backend extends Broker\Backend\Memory implements BackendInterface
             return $this->reflectionFactory->createFromReflection($function);
         }, parent::getFunctions());
     }
-
 
     /**
      * @return ClassReflectionInterface[]
@@ -123,7 +118,6 @@ final class Backend extends Broker\Backend\Memory implements BackendInterface
         return $this->allClasses;
     }
 
-
     /**
      * Processes a function/method and adds classes from annotations to the overall class array.
      *
@@ -137,12 +131,12 @@ final class Backend extends Broker\Backend\Memory implements BackendInterface
         }
 
         foreach ($reflection->getParameters() as $parameter) {
-            if ($hint = $parameter->getClassName()) {
+            $hint = $parameter->getClassName();
+            if ($hint) {
                 $this->addClass($hint);
             }
         }
     }
-
 
     /**
      * @return false|void
@@ -161,7 +155,9 @@ final class Backend extends Broker\Backend\Memory implements BackendInterface
             $this->allClasses[self::INTERNAL_CLASSES][$name] = $parameterClass;
             $parentClasses = array_merge($parameterClass->getInterfaces(), $parameterClass->getParentClasses());
             foreach ($parentClasses as $parentClass) {
-                if (! isset($this->allClasses[self::INTERNAL_CLASSES][$parentName = $parentClass->getName()])) {
+                $parentName = $parentClass->getName();
+
+                if (! isset($this->allClasses[self::INTERNAL_CLASSES][$parentName])) {
                     $this->allClasses[self::INTERNAL_CLASSES][$parentName] = $parentClass;
                 }
             }
@@ -171,7 +167,6 @@ final class Backend extends Broker\Backend\Memory implements BackendInterface
             }
         }
     }
-
 
     /**
      * @param TokenReflection\ReflectionClass|TokenReflection\Invalid\ReflectionClass $reflection
@@ -193,14 +188,12 @@ final class Backend extends Broker\Backend\Memory implements BackendInterface
         }
     }
 
-
     private function isClassLoaded(string $name): bool
     {
         return isset($this->allClasses[self::TOKENIZED_CLASSES][$name])
             || isset($this->allClasses[self::INTERNAL_CLASSES][$name])
             || isset($this->allClasses[self::NONEXISTENT_CLASSES][$name]);
     }
-
 
     /**
      * @param ClassReflectionInterface|MethodReflectionInterface $reflection
@@ -215,14 +208,14 @@ final class Backend extends Broker\Backend\Memory implements BackendInterface
 
         foreach ($annotations[$name] as $doc) {
             foreach (explode('|', preg_replace('~\\s.*~', '', $doc)) as $name) {
-                if ($name = rtrim($name, '[]')) {
+                $name = rtrim($name, '[]');
+                if ($name) {
                     $name = $this->getClassFqn($name, $reflection);
                     $this->addClass($name);
                 }
             }
         }
     }
-
 
     /**
      * @param string $name

@@ -31,7 +31,6 @@ final class ElementExtractor implements ElementExtractorInterface
      */
     private $elementSorter;
 
-
     public function __construct(
         ElementsInterface $elements,
         ElementFilterInterface $elementFilter,
@@ -43,7 +42,6 @@ final class ElementExtractor implements ElementExtractorInterface
         $this->elementStorage = $elementStorage;
         $this->elementSorter = $elementSorter;
     }
-
 
     /**
      * @return mixed[]
@@ -89,7 +87,6 @@ final class ElementExtractor implements ElementExtractorInterface
         return $this->sortElements($elements);
     }
 
-
     /**
      * @param mixed[] $elements
      * @param string $annotation
@@ -102,7 +99,6 @@ final class ElementExtractor implements ElementExtractorInterface
 
         return array_merge($storage, array_values($foundElements));
     }
-
 
     /**
      * @param mixed[] $elements

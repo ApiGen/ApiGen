@@ -2,7 +2,6 @@
 
 namespace ApiGen\Tests\Templating;
 
-use ApiGen;
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
@@ -10,16 +9,15 @@ use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Contracts\Templating\TemplateFactory\TemplateFactoryInterface;
 use ApiGen\Templating\Template;
 use ApiGen\Templating\TemplateFactory;
-use ApiGen\Tests\ContainerAwareTestCase;
+use ApiGen\Tests\AbstractContainerAwareTestCase;
 use ApiGen\Tests\MethodInvoker;
 
-final class TemplateFactoryTest extends ContainerAwareTestCase
+final class TemplateFactoryTest extends AbstractContainerAwareTestCase
 {
     /**
      * @var TemplateFactory
      */
     private $templateFactory;
-
 
     protected function setUp(): void
     {
@@ -33,18 +31,15 @@ final class TemplateFactoryTest extends ContainerAwareTestCase
         ]);
     }
 
-
     public function testCreate(): void
     {
         $this->assertInstanceOf(Template::class, $this->templateFactory->create());
     }
 
-
     public function testCreateForType(): void
     {
         $this->assertInstanceOf(Template::class, $this->templateFactory->createForType('overview'));
     }
-
 
     public function testCreateNamedForElement(): void
     {
@@ -64,7 +59,6 @@ final class TemplateFactoryTest extends ContainerAwareTestCase
         );
     }
 
-
     /**
      * @expectedException \Exception
      */
@@ -73,7 +67,6 @@ final class TemplateFactoryTest extends ContainerAwareTestCase
         $reflectionClassMock = $this->createMock(ClassReflectionInterface::class);
         $this->templateFactory->createNamedForElement('notExisting', $reflectionClassMock);
     }
-
 
     public function testCreateForReflection(): void
     {
@@ -89,7 +82,6 @@ final class TemplateFactoryTest extends ContainerAwareTestCase
         $template = $this->templateFactory->createForReflection($reflectionFunctionMock);
         $this->assertInstanceOf(Template::class, $template);
     }
-
 
     public function testBuildTemplateCache(): void
     {

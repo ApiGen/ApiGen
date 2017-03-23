@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Generator\SourceCodeHighlighter;
+namespace ApiGen\Contracts\Generator\SourceCodeHighlighter;
 
-interface SourceCodeHighlighter
+interface SourceCodeHighlighterInterface
 {
     public function highlight(string $sourceCode): string;
 

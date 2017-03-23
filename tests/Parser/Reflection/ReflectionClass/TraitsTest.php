@@ -12,7 +12,6 @@ final class TraitsTest extends AbstractReflectionClassTestCase
         $this->assertFalse($this->reflectionClass->isTrait());
     }
 
-
     public function testGetTraits(): void
     {
         $traits = $this->reflectionClass->getTraits();
@@ -21,13 +20,11 @@ final class TraitsTest extends AbstractReflectionClassTestCase
         $this->assertSame('Project\SomeTraitNotPresentHere', $traits['Project\SomeTraitNotPresentHere']);
     }
 
-
     public function testGetOwnTraits(): void
     {
         $traits = $this->reflectionClass->getOwnTraits();
         $this->assertCount(2, $traits);
     }
-
 
     public function testGetTraitNames(): void
     {
@@ -37,7 +34,6 @@ final class TraitsTest extends AbstractReflectionClassTestCase
         );
     }
 
-
     public function testGetOwnTraitName(): void
     {
         $this->assertSame(
@@ -46,31 +42,26 @@ final class TraitsTest extends AbstractReflectionClassTestCase
         );
     }
 
-
     public function testGetTraitAliases(): void
     {
         $this->assertCount(0, $this->reflectionClass->getTraitAliases());
-    }
-//
+    }//
 
     public function testGetTraitProperties(): void
     {
         $this->assertCount(1, $this->reflectionClass->getTraitProperties());
     }
 
-
     public function testGetTraitMethods(): void
     {
         $this->assertCount(1, $this->reflectionClass->getTraitMethods());
     }
-
 
     public function testUsesTrait(): void
     {
         $this->assertTrue($this->reflectionClass->usesTrait('Project\SomeTrait'));
         $this->assertFalse($this->reflectionClass->usesTrait('Project\NotActiveTrait'));
     }
-
 
     /**
      * @expectedException \TokenReflection\Exception\RuntimeException
@@ -80,12 +71,10 @@ final class TraitsTest extends AbstractReflectionClassTestCase
         $this->reflectionClass->usesTrait('Project\SomeTraitNotPresentHere');
     }
 
-
     public function testGetDirectUsers(): void
     {
         $this->assertCount(1, $this->reflectionClassOfTrait->getDirectUsers());
     }
-
 
     public function testGetIndirectUsers(): void
     {

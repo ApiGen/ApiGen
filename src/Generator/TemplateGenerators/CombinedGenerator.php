@@ -5,20 +5,17 @@ namespace ApiGen\Generator\TemplateGenerators;
 use ApiGen\Contracts\Generator\TemplateGenerators\TemplateGeneratorInterface;
 use ApiGen\Templating\TemplateFactory;
 
-class CombinedGenerator implements TemplateGeneratorInterface
+final class CombinedGenerator implements TemplateGeneratorInterface
 {
-
     /**
      * @var TemplateFactory
      */
     private $templateFactory;
 
-
     public function __construct(TemplateFactory $templateFactory)
     {
         $this->templateFactory = $templateFactory;
     }
-
 
     public function generate(): void
     {

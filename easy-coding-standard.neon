@@ -1,15 +1,62 @@
 checkers:
+    # Solid
+    - Symplify\CodingStandard\Sniffs\Classes\FinalInterfaceSniff
+
     # PSR2
     PHP_CodeSniffer\Standards\Generic\Sniffs\Files\LineLengthSniff:
         absoluteLineLimit: 120
-
     - PHP_CodeSniffer\Standards\PSR2\Sniffs\Files\EndFileNewlineSniff
     - PHP_CodeSniffer\Standards\Squiz\Sniffs\WhiteSpace\ControlStructureSpacingSniff
     - PHP_CodeSniffer\Standards\PSR2\Sniffs\Namespaces\UseDeclarationSniff
     - PHP_CodeSniffer\Standards\Squiz\Sniffs\Functions\MultiLineFunctionDeclarationSniff
     - PHP_CodeSniffer\Standards\PEAR\Sniffs\WhiteSpace\ScopeClosingBraceSniff
+    - PhpCsFixer\Fixer\Casing\LowercaseConstantsFixer
+    - PhpCsFixer\Fixer\Casing\LowercaseKeywordsFixer
 
-    # strict and scalar types
+    # Comments
+    - Symplify\CodingStandard\Sniffs\Commenting\BlockPropertyCommentSniff
+    - Symplify\CodingStandard\Sniffs\Commenting\VarPropertyCommentSniff
+    - Symplify\CodingStandard\Sniffs\Commenting\MethodCommentSniff
+
+    # Dev & Dead Code
+    - Symplify\CodingStandard\Sniffs\Debug\DebugFunctionCallSniff
+    - SlevomatCodingStandard\Sniffs\Classes\UnusedPrivateElementsSniff
+    - SlevomatCodingStandard\Sniffs\Commenting\ForbiddenAnnotationsSniff
+
+    # Constants
+    - SlevomatCodingStandard\Sniffs\Classes\ClassConstantVisibilitySniff
+
+    # Class Naming
+    - Symplify\CodingStandard\Sniffs\Naming\AbstractClassNameSniff
+    - Symplify\CodingStandard\Sniffs\Naming\InterfaceNameSniff
+    - Symplify\CodingStandard\Sniffs\Naming\TraitNameSniff
+
+    # Class Structure
+    - Symplify\CodingStandard\Sniffs\Classes\ClassDeclarationSniff
+
+    # Code Structures
+    - SlevomatCodingStandard\Sniffs\ControlStructures\AssignmentInConditionSniff
+    - SlevomatCodingStandard\Sniffs\ControlStructures\AssignmentInConditionSniff
+    - SlevomatCodingStandard\Sniffs\ControlStructures\YodaComparisonSniff
+
+    # Namespaces
+    - Symplify\CodingStandard\Sniffs\Namespaces\ClassNamesWithoutPreSlashSniff
+    - Symplify\CodingStandard\Sniffs\Namespaces\NamespaceDeclarationSniff
+    - Symplify\CodingStandard\Sniffs\Namespaces\UseDeclarationSniff
+    - PhpCsFixer\Fixer\Import\NoUnusedImportsFixer
+    - SlevomatCodingStandard\Sniffs\Namespaces\UseFromSameNamespaceSniff
+    - SlevomatCodingStandard\Sniffs\Namespaces\UndefinedKeywordTokenException
+    - SlevomatCodingStandard\Sniffs\Namespaces\ReferenceUsedNamesOnlySniff
+    - SlevomatCodingStandard\Sniffs\Namespaces\NoKeywordsException
+    - SlevomatCodingStandard\Sniffs\Namespaces\MultipleUsesPerLineSniff
+    - SlevomatCodingStandard\Sniffs\Namespaces\DisallowGroupUseSniff
+    - PhpCsFixer\Fixer\Import\OrderedImportsFixer
+
+    # Spacing
+    - Symplify\CodingStandard\Sniffs\WhiteSpace\InBetweenMethodSpacingSniff
+    - Symplify\CodingStandard\Sniffs\WhiteSpace\PropertiesMethodsMutualSpacingSniff
+
+    # Strict and Scalar types
     - PhpCsFixer\Fixer\Strict\DeclareStrictTypesFixer
     SlevomatCodingStandard\Sniffs\TypeHints\TypeHintDeclarationSniff:
         usefulAnnotations:
@@ -17,6 +64,10 @@ checkers:
             - @expectedException
             - @deprecated
             - @todo
+    - SlevomatCodingStandard\Sniffs\TypeHints\NullableTypeForNullDefaultValueSniff
+    - SlevomatCodingStandard\Sniffs\TypeHints\ParameterTypeHintSpacingSniff
+    - SlevomatCodingStandard\Sniffs\TypeHints\ReturnTypeHintSpacingSniff
+    - SlevomatCodingStandard\Sniffs\TypeHints\LongTypeHintsSniff
 
 skip:
     SlevomatCodingStandard\Sniffs\TypeHints\TypeHintDeclarationSniff:
@@ -33,3 +84,17 @@ skip:
         - src/Console/Command/AbstractCommand.php
         - tests/Parser/Reflection/ReflectionClassSource/RichInterface.php
         - src/Contracts/Parser/Broker/BackendInterface.php
+
+    # bug: https://github.com/Symplify/Symplify/issues/121
+    Symplify\CodingStandard\Sniffs\WhiteSpace\InBetweenMethodSpacingSniff:
+        - tests/Parser/Reflection/ReflectionFunctionSource/functions.php
+        - tests/Parser/Broker/BackendSource/SomeFunction.php
+
+    SlevomatCodingStandard\Sniffs\Classes\ClassConstantVisibilitySniff:
+        - tests/Parser/Reflection/ReflectionClassSource/ParentClass.php
+        - tests/Parser/Reflection/ReflectionConstantSource/ConstantInClass.php
+        - tests/Parser/Parser/ParserTest.php
+        - tests/Parser/Reflection/ReflectionClassSource/AccessLevels.php
+
+    SlevomatCodingStandard\Sniffs\Classes\UnusedPrivateElementsSniff:
+        - tests/Parser/Reflection/ReflectionClassSource/AccessLevels.php

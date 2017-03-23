@@ -7,30 +7,23 @@ use ApiGen\Contracts\Parser\Reflection\ParameterReflectionInterface;
 use InvalidArgumentException;
 use TokenReflection\IReflectionParameter;
 
-abstract class ReflectionFunctionBase extends ReflectionElement implements AbstractFunctionMethodReflectionInterface
+abstract class AbstractReflectionFunction
+    extends AbstractReflectionElement implements AbstractFunctionMethodReflectionInterface
 {
-    /**
-     * @var string Matches "array $arg"
-     */
-    private const PARAM_ANNOTATION = '~^(?:([\\w\\\\]+(?:\\|[\\w\\\\]+)*)\\s+)?\\$(\\w+)(?:\\s+(.*))?($)~s';
-
     /**
      * @var ParameterReflectionInterface[]
      */
     protected $parameters;
-
 
     public function getShortName(): string
     {
         return $this->reflection->getShortName();
     }
 
-
     public function returnsReference(): bool
     {
         return $this->reflection->returnsReference();
     }
-
 
     /**
      * @return ParameterReflectionInterface[]
@@ -45,7 +38,6 @@ abstract class ReflectionFunctionBase extends ReflectionElement implements Abstr
 
         return $this->parameters;
     }
-
 
     /**
      * @param int|string $key

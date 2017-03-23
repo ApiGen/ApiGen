@@ -26,18 +26,15 @@ final class Template
      */
     private $parameters = [];
 
-
     public function __construct(Engine $latteEngine)
     {
         $this->latteEngine = $latteEngine;
     }
 
-
     public function setFile(string $file): void
     {
         $this->file = $file;
     }
-
 
     /**
      * @return mixed[]
@@ -55,14 +52,12 @@ final class Template
         $this->parameters = $parameters + $this->parameters;
     }
 
-
     public function setSavePath(string $savePath): void
     {
         $this->savePath = $savePath;
     }
 
-
-    public function save(string $file = null): void
+    public function save(?string $file = null): void
     {
         $this->savePath = $file ?: $this->savePath;
         $dir = dirname($this->savePath);

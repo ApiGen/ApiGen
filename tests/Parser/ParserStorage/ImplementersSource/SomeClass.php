@@ -2,7 +2,7 @@
 
 namespace ApiGen\Parser\Tests\ParserStorageImplementersSource;
 
-class SomeClass implements ChildInterface
+final class SomeClass implements ChildInterface
 {
 
 }
