@@ -7,7 +7,7 @@
 <div id="content" class="constant">
 	<h1 n:class="$constant->deprecated ? deprecated">Constant {$constant->shortName}</h1>
 
-	{capture $longDescripiton}{$constant|longDescription}{/capture}
+	{var $longDescripiton = ($constant|longDescription)}
 	<div n:if="$longDescripiton" class="description">
 		{$longDescripiton|noescape}
 	</div>
@@ -35,7 +35,7 @@
 	<tr>
 		<td class="name"><code>{$constant->typeHint|typeLinks:$constant|noescape}</code></td>
 		<td class="value">{block|strip}
-			{capture $element}{$constant->valueDefinition|resolveElement: $constant}{/capture}
+			{var $element = ($constant->valueDefinition)|
 			{if $element}<a href="{$element|constantUrl}">{$constant->valueDefinition}</a>{else}<code>{$constant->valueDefinition|highlightValue:$constant|noescape}</code>{/if}
 		{/block}</td>
 	</tr>

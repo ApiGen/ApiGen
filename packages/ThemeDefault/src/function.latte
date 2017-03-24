@@ -7,7 +7,7 @@
 <div id="content" class="function">
 	<h1 n:class="$function->deprecated ? deprecated">Function {$function->shortName}</h1>
 
-	{capture $longDescription}{$function|longDescription}{/capture}
+	{var $longDescription = ($function|longDescription)}
 	<div class="description" n:if="$longDescription">
 		{$function|longDescription|noescape}
 	</div>

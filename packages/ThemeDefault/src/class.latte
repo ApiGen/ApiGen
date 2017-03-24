@@ -6,7 +6,7 @@
 {block content}
 <div id="content" class="class">
 	<h1 n:class="$class->deprecated ? deprecated">{if $class->interface}Interface{elseif $class->trait}Trait{else}Class{/if} {$class->shortName}</h1>
-	{capture $longDescription}{$class|longDescription}{/capture}
+	{var $longDescription = ($class|longDescription)}
 	<div class="description" n:if="$longDescription">
 	{$class|longDescription|noescape}
 	</div>
@@ -182,7 +182,7 @@
 			{var $overriddenMethod = $method->overriddenMethod}
 			{if $overriddenMethod}
 				<h4>Overrides</h4>
-				{capture $declaringClass}{$overriddenMethod->declaringClassName|getClass}{/capture}
+				{var $declaringClass = ($overriddenMethod->declaringClassName|getClass)}
 				<div class="list">
 					<code><a n:tag-if="$declaringClass" href="{$overriddenMethod|methodUrl}">{$overriddenMethod->prettyName}</a></code>
 				</div>
@@ -191,7 +191,7 @@
 			{var $implementedMethod = $method->implementedMethod}
 			{if $implementedMethod}
 				<h4>Implementation of</h4>
-                {capture $declaringClass}{$implementedMethod->declaringClassName|getClass}{/capture}
+				{var $declaringClass = ($implementedMethod->declaringClassName|getClass)}
 				<div class="list">
                     <code><a n:tag-if="$declaringClass" href="{$implementedMethod|methodUrl}">{$implementedMethod->prettyName}</a></code>
                 </div>
@@ -209,14 +209,14 @@
 	</table>
 
 	<table n:foreach="$class->inheritedMethods as $parentName => $methods" class="summary inherited">
-        {capture $parentClass}{$parentName|getClass}{/capture}
+        {var $parentClass = ($parentName|getClass)}
         <caption>
             Methods inherited from <a href="{$parentName|classUrl}#methods" n:tag-if="$parentClass">{$parentName}</a>
         </caption>
         <tr>
             <td>
                 <code>
-                    {capture $parentClass}{$parentName|getClass}{/capture}
+                    {var $parentClass = ($parentName|getClass)}
                     {foreach $methods as $method}
                         <a href="{$method|methodUrl}" n:tag-if="$parentClass">
                             <span n:tag-if="$method->deprecated" class="deprecated">{$method->name}()</span>
@@ -228,12 +228,12 @@
 	</table>
 
 	<table n:foreach="$class->usedMethods as $traitName => $methods" class="summary used">
-        {capture $trait}{$traitName|getClass}{/capture}
+        {var $trait = ($traitName|getClass)}
         <caption>Methods used from <a href="{$traitName|classUrl}#methods" n:tag-if="$trait">{$traitName}</a></caption>
         <tr>
             <td>
                 <code>
-                    {capture $trait}{$traitName|getClass}{/capture}
+                    {var $trait = ($traitName|getClass)}
                     {foreach $methods as $data}
                         <a href="{$data['method']|methodUrl: $data['method']->declaringTrait}" n:tag-if="$trait">
                             <span n:tag-if="$data['method']->deprecated" class="deprecated">{$data['method']->name}()</span>
@@ -292,7 +292,7 @@
 	</table>
 
 	<table n:foreach="$class->inheritedConstants as $parentName => $inheritedConstants" class="summary inherited">
-        {capture $parentClass}{$parentName|getClass}{/capture}
+        {var $parentClass = ($parentName|getClass)}
         <caption>Constants inherited from <a href="{$parentName|classUrl}#constants" n:tag-if="$parentClass">{$parentName}</a></caption>
         <tr>
             <td>
@@ -358,7 +358,7 @@
 	</table>
 
 	<table n:foreach="$class->inheritedProperties as $parentName => $properties" class="summary inherited">
-        {capture $parentClass}{$parentName|getClass}{/capture}
+        {var $parentClass = ($parentName|getClass)}
         <caption>Properties inherited from <a href="{$parentName|classUrl}#properties" n:tag-if="$parentClass">{$parentName}</a></caption>
         <tr>
             <td><code>
@@ -370,7 +370,7 @@
 	</table>
 
 	<table n:foreach="$class->usedProperties as $traitName => $properties" class="summary used">
-        {capture $trait}{$traitName|getClass}{/capture}
+        {var $trait = ($traitName|getClass)}
     	<caption>Properties used from <a href="{$traitName|classUrl}#properties" n:tag-if="$trait">{$traitName}</a></caption>
         <tr>
             <td>
