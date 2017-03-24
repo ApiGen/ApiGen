@@ -15,7 +15,7 @@
 	<div class="info">
 		{if $constant->inNamespace()}<b>Namespace:</b> {$constant->namespaceName|namespaceLinks|noescape}<br>{/if}
 
-        {var $filteredAnnotations = call_user_func($this->filters->annotationFilter, $class->annotations, ['var'])}
+        {var $filteredAnnotations = ($class->annotations|annotationFilter: ['var'])}
 		{foreach $filteredAnnotations as $annotation => $values}
 			{foreach $values as $value}
 				<b>{$annotation}{if $value}:{/if}</b>

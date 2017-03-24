@@ -74,7 +74,7 @@
 		{if $class->internal}<b>PHP Extension:</b> <a href="{$class->extension|manualUrl}" title="Go to PHP documentation">{$class->extension->name|firstUpper}</a><br>{/if}
 		{if $class->inNamespace()}<b>Namespace:</b> {$class->namespaceName|namespaceLinks|noescape}<br>{/if}
 
-		{var $filteredAnnotations = call_user_func($this->filters->annotationFilter, $class->annotations)}
+		{var $filteredAnnotations = ($class->annotations|annotationFilter)}
 		{foreach $filteredAnnotations as $annotation => $values}
 			{foreach $values as $value}
 				<b>{$annotation}{if $value}:{/if}</b>
@@ -167,7 +167,7 @@
 				</div>
 			{/ifset}
 
-            {var $filteredAnnotations = call_user_func($this->filters->annotationFilter, $class->annotations, ['deprecated', 'param', 'return', 'throws'])}
+            {var $filteredAnnotations = ($class->annotations|annotationFilter: ['deprecated', 'param', 'return', 'throws'])}
 			{foreach $filteredAnnotations as $annotation => $descriptions}
 				<h4>{$annotation}</h4>
 				<div class="list">
@@ -269,7 +269,7 @@
 			<div n:class="description, detailed, $config->template['options']['elementDetailsCollapsed'] ? hidden">
 				{$constant|longDescription|noescape}
 
-                {var $filteredAnnotations = call_user_func($this->filters->annotationFilter, $class->annotations, ['var'])}
+                {var $filteredAnnotations = ($class->annotations|annotationFilter: ['var'])}
 				{foreach $filteredAnnotations as $annotation => $descriptions}
 					<h4>{$annotation}</h4>
 					<div class="list">
@@ -326,7 +326,7 @@
 			<div n:class="description, detailed, $config->template['options']['elementDetailsCollapsed'] ? hidden">
 				{$property|longDescription|noescape}
 
-                {var $filteredAnnotations = call_user_func($this->filters->annotationFilter, $class->annotations, ['var'])}
+                {var $filteredAnnotations = ($class->annotations|annotationFilter: ['var'])}
 				{foreach $filteredAnnotations as $annotation => $descriptions}
 					<h4>{$annotation}</h4>
 					<div class="list">
