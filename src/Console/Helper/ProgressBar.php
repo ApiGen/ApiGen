@@ -9,6 +9,11 @@ use Symfony\Component\Console\Helper\ProgressBar as ProgressBarHelper;
 final class ProgressBar implements ProgressBarInterface
 {
     /**
+     * @var string
+     */
+    private const BAR_FORMAT = '<comment>%percent:3s% %</comment>';
+
+    /**
      * @var IOInterface
      */
     private $consoleIO;
@@ -26,7 +31,7 @@ final class ProgressBar implements ProgressBarInterface
     public function init(int $maximum = 1): void
     {
         $this->bar = new ProgressBarHelper($this->consoleIO->getOutput(), $maximum);
-        $this->bar->setFormat($this->getBarFormat());
+        $this->bar->setFormat(self::BAR_FORMAT);
         $this->bar->start();
     }
 
@@ -39,24 +44,6 @@ final class ProgressBar implements ProgressBarInterface
         $this->bar->advance($increment);
         if ($this->bar->getProgress() === $this->bar->getMaxSteps()) {
             $this->consoleIO->getOutput()->writeln(' - Finished!');
-        }
-    }
-
-    private function getBarFormat(): string
-    {
-        if ($this->getDebugOption()) {
-            return 'debug';
-        } else {
-            return '<comment>%percent:3s% %</comment>';
-        }
-    }
-
-    private function getDebugOption(): bool
-    {
-        if ($this->consoleIO->getInput() && $this->consoleIO->getInput()->hasOption('debug')) {
-            return (bool) $this->consoleIO->getInput()->getOption('debug');
-        } else {
-            return false;
         }
     }
 }

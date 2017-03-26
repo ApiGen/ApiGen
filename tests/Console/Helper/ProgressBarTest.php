@@ -53,19 +53,4 @@ final class ProgressBarTest extends TestCase
         $this->progressBar->increment(30);
         $this->assertSame(50, $bar->getProgress());
     }
-
-    public function testGetBarFormat(): void
-    {
-        $this->assertSame(
-            '<comment>%percent:3s% %</comment>',
-            MethodInvoker::callMethodOnObject($this->progressBar, 'getBarFormat')
-        );
-
-        $arrayInput = new ArgvInput([], new InputDefinition([new InputOption('debug')]));
-        $arrayInput->setOption('debug', true);
-        $io = new IO($arrayInput, new NullOutput);
-        $progressBar = new ProgressBar($io);
-
-        $this->assertSame('debug', MethodInvoker::callMethodOnObject($progressBar, 'getBarFormat'));
-    }
 }

@@ -34,7 +34,6 @@ final class ConfigurationOptionsResolver
         ConfigurationOptions::ACCESS_LEVELS => ['public'],
         ConfigurationOptions::BASE_URL => '',
         ConfigurationOptions::CONFIG => '',
-        ConfigurationOptions::DEBUG => false,
         ConfigurationOptions::DESTINATION => null,
         ConfigurationOptions::FORCE_OVERWRITE => false,
         ConfigurationOptions::EXCLUDE => [],

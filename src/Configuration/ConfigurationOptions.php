@@ -27,11 +27,6 @@ final class ConfigurationOptions
     /**
      * @var string
      */
-    public const DEBUG = 'debug';
-
-    /**
-     * @var string
-     */
     public const DESTINATION = 'destination';
 
     /**

@@ -124,7 +124,6 @@ final class GenerateCommand extends AbstractCommand
                 'Base url used for sitemap (for search box).'
             )
             ->addOption('googleAnalytics', null, InputOption::VALUE_REQUIRED, 'Google Analytics tracking code.')
-            ->addOption('debug', null, InputOption::VALUE_NONE, 'Turn on debug mode.')
             ->addOption(
                 'extensions',
                 null,
