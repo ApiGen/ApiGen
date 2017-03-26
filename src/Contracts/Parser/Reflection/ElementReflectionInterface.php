@@ -30,10 +30,7 @@ interface ElementReflectionInterface extends NamedInterface
     public function getNamespaceAliases(): array;
 
     /**
-     * Returns reflection element annotations.
      * Removes the short and long description.
-     * In case of classes, functions and constants, @author and @license annotations
-     * are added from declaring files if not already present.
      *
      * @return mixed[]
      */
@@ -45,12 +42,6 @@ interface ElementReflectionInterface extends NamedInterface
     public function getAnnotation(string $name): array;
 
     public function hasAnnotation(string $name): bool;
-
-    /**
-     * @param string $name
-     * @param mixed $value
-     */
-    public function addAnnotation(string $name, $value): void;
 
     public function getShortDescription(): string;
 

@@ -83,15 +83,4 @@ final class ReflectionMethod extends AbstractReflectionFunction implements Metho
 
         return null;
     }
-
-    public function getOriginal(): ?MethodReflectionInterface
-    {
-        $originalName = $this->reflection->getOriginalName();
-        if ($originalName === null) {
-            return null;
-        }
-
-        $originalDeclaringClassName = $this->reflection->getOriginal()->getDeclaringClassName();
-        return $this->getParsedClasses()[$originalDeclaringClassName]->getMethod($originalName);
-    }
 }
