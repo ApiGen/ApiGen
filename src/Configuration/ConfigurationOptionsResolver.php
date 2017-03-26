@@ -49,7 +49,6 @@ final class ConfigurationOptionsResolver
         ConfigurationOptions::TITLE => '',
         // helpers
         ConfigurationOptions::VISIBILITY_LEVELS => [],
-        ConfigurationOptions::SOURCE_CODE => ''
     ];
 
     /**

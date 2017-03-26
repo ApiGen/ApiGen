@@ -103,9 +103,4 @@ final class ConfigurationOptions
      * @var string
      */
     public const VISIBILITY_LEVELS = 'visibilityLevels';
-
-    /**
-     * @var string
-     */
-    public const SOURCE_CODE = 'sourceCode';
 }
