@@ -356,14 +356,6 @@ final class ReflectionClass extends AbstractReflectionElement implements ClassRe
         return $this->parentClasses;
     }
 
-    /**
-     * @return string[]
-     */
-    public function getParentClassNameList(): array
-    {
-        return $this->reflection->getParentClassNameList();
-    }
-
     public function implementsInterface(string $interface): bool
     {
         return $this->reflection->implementsInterface($interface);

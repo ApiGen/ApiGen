@@ -20,11 +20,6 @@ interface ClassReflectionInterface extends ElementReflectionInterface, LinedInte
     public function getParentClasses(): array;
 
     /**
-     * @return string[]
-     */
-    public function getParentClassNameList(): array;
-
-    /**
      * @return ClassReflectionInterface[]
      */
     public function getDirectSubClasses(): array;
