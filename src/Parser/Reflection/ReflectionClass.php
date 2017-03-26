@@ -596,11 +596,6 @@ final class ReflectionClass extends AbstractReflectionElement implements ClassRe
         return isset($this->getMethods()[$name]);
     }
 
-    public function isVisibilityLevelPublic(): bool
-    {
-        return (bool) ($this->getVisibilityLevel() & Visibility::IS_PUBLIC);
-    }
-
     public function getVisibilityLevel(): int
     {
         return $this->configuration->getVisibilityLevel();

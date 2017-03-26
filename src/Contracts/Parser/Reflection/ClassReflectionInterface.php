@@ -125,8 +125,6 @@ interface ClassReflectionInterface extends ElementReflectionInterface, LinedInte
 
     public function getDocComment(): string;
 
-    public function isVisibilityLevelPublic(): bool;
-
     public function getVisibilityLevel(): int;
 
     public function getReflectionFactory(): ReflectionFactoryInterface;
