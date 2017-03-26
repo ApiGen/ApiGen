@@ -3,7 +3,7 @@
 namespace ApiGen\Parser\Elements;
 
 use ApiGen\Contracts\Parser\Elements\ElementStorageInterface;
-use ApiGen\Contracts\Parser\Elements\GroupSorterInterface;
+use ApiGen\Contracts\Parser\Elements\NamespaceSorterInterface;
 use ApiGen\Contracts\Parser\ParserStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
@@ -58,11 +58,11 @@ final class ElementStorage implements ElementStorageInterface
     private $parserStorage;
 
     /**
-     * @var GroupSorterInterface
+     * @var NamespaceSorterInterface
      */
     private $groupSorter;
 
-    public function __construct(ParserStorageInterface $parserStorage, GroupSorterInterface $groupSorter)
+    public function __construct(ParserStorageInterface $parserStorage, NamespaceSorterInterface $groupSorter)
     {
         $this->parserStorage = $parserStorage;
         $this->groupSorter = $groupSorter;
