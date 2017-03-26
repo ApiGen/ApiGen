@@ -40,21 +40,6 @@ class SourceCodeGeneratorTest extends AbstractContainerAwareTestCase
         $this->elementStorage = $this->container->getByType(ElementStorage::class);
     }
 
-    public function testIsAllowed(): void
-    {
-        $this->configuration->resolveOptions([
-            'source' => __DIR__ . '/SourceCodeSource',
-            'destination' => TEMP_DIR . '/api'
-        ]);
-        $this->assertTrue($this->sourceCodeGenerator->isAllowed());
-        $this->configuration->resolveOptions([
-            'source' => __DIR__ . '/SourceCodeSource',
-            'destination' => TEMP_DIR . '/api',
-            'noSourceCode' => true
-        ]);
-        $this->assertFalse($this->sourceCodeGenerator->isAllowed());
-    }
-
     public function testStepCount(): void
     {
         $this->prepareSourceCodeGenerator();

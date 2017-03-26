@@ -44,7 +44,6 @@ final class ConfigurationOptionsResolver
         ConfigurationOptions::MAIN => '',
         ConfigurationOptions::INTERNAL => false,
         ConfigurationOptions::SOURCE => [],
-        ConfigurationOptions::NO_SOURCE_CODE => false,
         ConfigurationOptions::TEMPLATE => null,
         ConfigurationOptions::TEMPLATE_CONFIG => null,
         ConfigurationOptions::TITLE => '',
@@ -191,10 +190,6 @@ final class ConfigurationOptionsResolver
             }
 
             return $value;
-        });
-
-        $this->resolver->setNormalizer(ConfigurationOptions::SOURCE_CODE, function (Options $options) {
-            return ! $options[ConfigurationOptions::NO_SOURCE_CODE];
         });
 
         $this->resolver->setNormalizer(ConfigurationOptions::TEMPLATE_CONFIG, function (Options $options, $value) {

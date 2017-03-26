@@ -87,11 +87,6 @@ final class ConfigurationOptions
     /**
      * @var string
      */
-    public const NO_SOURCE_CODE = 'noSourceCode';
-
-    /**
-     * @var string
-     */
     public const TEMPLATE = 'template';
 
     /**

@@ -146,12 +146,6 @@ final class GenerateCommand extends AbstractCommand
             )
             ->addOption('internal', null, InputOption::VALUE_NONE, 'Include elements marked as @internal.')
             ->addOption(
-                'noSourceCode',
-                null,
-                InputOption::VALUE_NONE,
-                'Do not generate highlighted source code for elements.'
-            )
-            ->addOption(
                 'templateConfig',
                 null,
                 InputOption::VALUE_REQUIRED,
