@@ -5,13 +5,9 @@ namespace ApiGen\Tests\Console\Helper;
 use ApiGen\Console\Helper\ProgressBar;
 use ApiGen\Console\Input\LiberalFormatArgvInput;
 use ApiGen\Console\IO\IO;
-use ApiGen\Tests\MethodInvoker;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Helper\ProgressBar as SymfonyProgressBar;
-use Symfony\Component\Console\Input\ArgvInput;
-use Symfony\Component\Console\Input\InputDefinition;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\NullOutput;
 
 final class ProgressBarTest extends TestCase
