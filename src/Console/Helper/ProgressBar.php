@@ -11,7 +11,7 @@ final class ProgressBar implements ProgressBarInterface
     /**
      * @var string
      */
-    private const BAR_FORMAT = '<comment>%percent:3s% %</comment>';
+    private const BAR_FORMAT = 'debug';
 
     /**
      * @var IOInterface
