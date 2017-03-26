@@ -139,19 +139,28 @@ final class ClassTraitElementsExtractor implements ClassTraitElementsExtractorIn
     public function getUsedMethods(): array
     {
         $usedMethods = [];
-        foreach ($this->classReflection->getMethods() as $m) {
-            if ($m->getDeclaringTraitName() === ''
-                || $m->getDeclaringTraitName() === $this->classReflection->getName()
+        foreach ($this->classReflection->getMethods() as $methodReflection) {
+            if ($methodReflection->getDeclaringTraitName() === ''
+                || $methodReflection->getDeclaringTraitName() === $this->classReflection->getName()
             ) {
                 continue;
             }
 
-            $usedMethods[$m->getDeclaringTraitName()][$m->getName()]['method'] = $m;
-            if ($m->getOriginalName() !== null && $m->getOriginalName() !== $m->getName()) {
-                $usedMethods[$m->getDeclaringTraitName()][$m->getName()]['aliases'][$m->getName()] = $m;
+            $traitName = $methodReflection->getDeclaringTraitName();
+            $methodName = $methodReflection->getName();
+
+            $usedMethods[$traitName][$methodName]['method'] = $methodReflection;
+            if ($this->wasMethodNameAliased($methodReflection)) {
+                $usedMethods[$traitName][$methodName]['aliases'][$methodReflection->getName()] = $methodReflection;
             }
         }
 
         return $usedMethods;
+    }
+
+    private function wasMethodNameAliased(MethodReflectionInterface $methodReflection): bool
+    {
+        return $methodReflection->getOriginalName() !== null
+            && $methodReflection->getOriginalName() !== $methodReflection->getName();
     }
 }

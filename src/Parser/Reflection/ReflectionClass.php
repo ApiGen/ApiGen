@@ -12,7 +12,6 @@ use ApiGen\Contracts\Parser\Reflection\TokenReflection\ReflectionFactoryInterfac
 use ApiGen\Parser\Reflection\Extractors\ClassTraitElementsExtractor;
 use ApiGen\Parser\Reflection\Extractors\ParentClassElementsExtractor;
 use InvalidArgumentException;
-use ReflectionProperty as Visibility;
 use TokenReflection\IReflectionClass;
 
 final class ReflectionClass extends AbstractReflectionElement implements ClassReflectionInterface
