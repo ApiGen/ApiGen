@@ -17,9 +17,7 @@ Just look at [CakePHP Framework](http://api.cakephp.org/3.0/) or [Doctrine ORM A
 
 ## Install
 
-### 1. Using Composer (preferred method)
-
-In your project's root folder:
+Install using composer as a development dependency in your project:
 
 ```
 composer require --dev apigen/apigen
@@ -31,28 +29,12 @@ Or if you want it globally:
 composer global require --dev apigen/apigen
 ```
 
-### 2. As a PHAR
-
-In your project's root folder:
-
-```
-curl -L -O https://github.com/ApiGen/ApiGen.github.io/raw/master/apigen.phar
-```
-
-(or just download it [here](https://github.com/ApiGen/ApiGen.github.io/raw/master/apigen.phar)).
-
-For global installation, just move the downloaded `apigen.phar` to your path.
-
 ## Usage
-
-*NOTE: The above examples assume you have ApiGen installed in your path. You might need to change the
-`apigen` command to `vendor/bin/apigen` if installed locally through Composer or `php apigen.phar`
-if using the PHAR version.*
 
 Run ApiGen with source and destination options:
 
 ```sh
-apigen generate -s ./src -d ./docs
+vendor/bin/apigen generate -s ./src -d ./docs
 ```
 
 To omit cli options just create `apigen.yaml` or `apigen.neon` file in your project's root folder:
@@ -67,7 +49,7 @@ destination: ./docs
 For all available options, along with descriptions and default values, just run:
 
 ```sh
-apigen generate --help
+vendor/bin/apigen generate --help
 ```
 
 *NOTE: In config files, options are camelCased (i.e. `accessLevel` for `--access-level`).*
@@ -77,7 +59,7 @@ Refer to the [wiki](https://github.com/ApiGen/ApiGen/wiki/supported-annotations)
 ## Testing
 
 ```sh
-$ phpunit
+$ vendor/bin/phpunit
 ```
 
 ## Get Support!
