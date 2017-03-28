@@ -118,13 +118,6 @@ final class ReflectionElementTest extends TestCase
         $this->assertFalse($this->reflectionClass->hasAnnotation('nope'));
     }
 
-    public function testAddAnnotation(): void
-    {
-        $this->assertFalse($this->reflectionClass->hasAnnotation('Foo'));
-        $this->reflectionClass->addAnnotation('Foo', '...');
-        $this->assertTrue($this->reflectionClass->hasAnnotation('Foo'));
-    }
-
     public function testGetAnnotationFromReflection(): void
     {
         $annotations = MethodInvoker::callMethodOnObject(

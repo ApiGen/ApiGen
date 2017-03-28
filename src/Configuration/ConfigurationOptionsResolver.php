@@ -34,7 +34,6 @@ final class ConfigurationOptionsResolver
         ConfigurationOptions::ACCESS_LEVELS => ['public'],
         ConfigurationOptions::BASE_URL => '',
         ConfigurationOptions::CONFIG => '',
-        ConfigurationOptions::DEBUG => false,
         ConfigurationOptions::DESTINATION => null,
         ConfigurationOptions::FORCE_OVERWRITE => false,
         ConfigurationOptions::EXCLUDE => [],
@@ -44,13 +43,11 @@ final class ConfigurationOptionsResolver
         ConfigurationOptions::MAIN => '',
         ConfigurationOptions::INTERNAL => false,
         ConfigurationOptions::SOURCE => [],
-        ConfigurationOptions::NO_SOURCE_CODE => false,
         ConfigurationOptions::TEMPLATE => null,
         ConfigurationOptions::TEMPLATE_CONFIG => null,
         ConfigurationOptions::TITLE => '',
         // helpers
         ConfigurationOptions::VISIBILITY_LEVELS => [],
-        ConfigurationOptions::SOURCE_CODE => ''
     ];
 
     /**
@@ -191,10 +188,6 @@ final class ConfigurationOptionsResolver
             }
 
             return $value;
-        });
-
-        $this->resolver->setNormalizer(ConfigurationOptions::SOURCE_CODE, function (Options $options) {
-            return ! $options[ConfigurationOptions::NO_SOURCE_CODE];
         });
 
         $this->resolver->setNormalizer(ConfigurationOptions::TEMPLATE_CONFIG, function (Options $options, $value) {

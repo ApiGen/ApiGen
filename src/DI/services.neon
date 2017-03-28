@@ -1,57 +1,57 @@
 services:
-	# configuration
-	- ApiGen\Configuration\Configuration
-	- ApiGen\Configuration\ConfigurationOptionsResolver
-	- ApiGen\Configuration\OptionsResolverFactory
-	- ApiGen\Configuration\Theme\ThemeConfigFactory
-	- ApiGen\Configuration\Theme\ThemeConfigOptionsResolver
+    # configuration
+    - ApiGen\Configuration\Configuration
+    - ApiGen\Configuration\ConfigurationOptionsResolver
+    - ApiGen\Configuration\OptionsResolverFactory
+    - ApiGen\Configuration\Theme\ThemeConfigFactory
+    - ApiGen\Configuration\Theme\ThemeConfigOptionsResolver
 
-	# elements
-	- ApiGen\Generator\Resolvers\ElementResolver
-	- ApiGen\Generator\Resolvers\RelativePathResolver
+    # elements
+    - ApiGen\Generator\Resolvers\ElementResolver
+    - ApiGen\Generator\Resolvers\RelativePathResolver
 
-	# generator
-	- ApiGen\Generator\EventSubscriber\ProgressBarSubscriber
-	- ApiGen\Generator\GeneratorQueue
-	# intentionally first to collect output from other generators
-	g1: ApiGen\Generator\TemplateGenerators\CombinedGenerator
-	g2: ApiGen\Generator\TemplateGenerators\AnnotationGroupsGenerator
-	g3: ApiGen\Generator\TemplateGenerators\ElementListGenerator
-	g4: ApiGen\Generator\TemplateGenerators\OpensearchGenerator
-	g5: ApiGen\Generator\TemplateGenerators\OverviewGenerator
-	g6: ApiGen\Generator\TemplateGenerators\SourceCodeGenerator
-	# elements
-	g7: ApiGen\Generator\TemplateGenerators\ClassElementGenerator
-	g8: ApiGen\Generator\TemplateGenerators\ConstantElementGenerator
-	g9: ApiGen\Generator\TemplateGenerators\FunctionElementGenerator
-	g10: ApiGen\Generator\TemplateGenerators\NamespaceGenerator
-	g11: ApiGen\Generator\TemplateGenerators\Loaders\NamespaceLoader
+    # generator
+    - ApiGen\Generator\EventSubscriber\ProgressBarSubscriber
+    - ApiGen\Generator\GeneratorQueue
+    # intentionally first to collect output from other generators
+    g1: ApiGen\Generator\TemplateGenerators\CombinedGenerator
+    g2: ApiGen\Generator\TemplateGenerators\AnnotationGroupsGenerator
+    g3: ApiGen\Generator\TemplateGenerators\ElementListGenerator
+    g4: ApiGen\Generator\TemplateGenerators\OpensearchGenerator
+    g5: ApiGen\Generator\TemplateGenerators\OverviewGenerator
+    g6: ApiGen\Generator\TemplateGenerators\SourceCodeGenerator
+    # elements
+    g7: ApiGen\Generator\TemplateGenerators\ClassElementGenerator
+    g8: ApiGen\Generator\TemplateGenerators\ConstantElementGenerator
+    g9: ApiGen\Generator\TemplateGenerators\FunctionElementGenerator
+    g10: ApiGen\Generator\TemplateGenerators\NamespaceGenerator
+    g11: ApiGen\Generator\TemplateGenerators\Loaders\NamespaceLoader
 
-	# templating
-	- ApiGen\Templating\TemplateElementsLoader
-	- ApiGen\Templating\TemplateFactory
-	- ApiGen\Templating\TemplateNavigator
-	- ApiGen\Templating\Filters\Helpers\ElementLinkFactory
-	- ApiGen\Templating\Filters\Helpers\ElementUrlFactory
-	- ApiGen\Templating\Filters\Helpers\LinkBuilder
-	- ApiGen\Templating\Filters\AnnotationFilters
-	- ApiGen\Templating\Filters\PathFilters
-	- ApiGen\Templating\Filters\ResolverFilters
-	- ApiGen\Templating\Filters\SourceFilters
-	- ApiGen\Templating\Filters\UrlFilters
-	- ApiGen\Templating\Filters\NamespaceUrlFilters
-	- ApiGen\Templating\Filters\ElementUrlFilters
+    # templating
+    - ApiGen\Templating\TemplateElementsLoader
+    - ApiGen\Templating\TemplateFactory
+    - ApiGen\Templating\TemplateNavigator
+    - ApiGen\Templating\Filters\Helpers\ElementLinkFactory
+    - ApiGen\Templating\Filters\Helpers\ElementUrlFactory
+    - ApiGen\Templating\Filters\Helpers\LinkBuilder
+    - ApiGen\Templating\Filters\AnnotationFilters
+    - ApiGen\Templating\Filters\PathFilters
+    - ApiGen\Templating\Filters\ResolverFilters
+    - ApiGen\Templating\Filters\SourceFilters
+    - ApiGen\Templating\Filters\UrlFilters
+    - ApiGen\Templating\Filters\NamespaceUrlFilters
+    - ApiGen\Templating\Filters\ElementUrlFilters
 
-	# theme
-	- ApiGen\Theme\ThemeResources
+    # theme
+    - ApiGen\Theme\ThemeResources
 
-	# syntax highlighter
-	- ApiGen\Generator\SourceCodeHighlighter\FshlSourceCodeHighlighter
-	- FSHL\Output\Html
-	- FSHL\Lexer\Php
-	-
-		class: FSHL\Highlighter
-		setup:
-			- setLexer(@FSHL\Lexer\Php)
+    # syntax highlighter
+    - ApiGen\Generator\SourceCodeHighlighter\FshlSourceCodeHighlighter
+    - FSHL\Output\Html
+    - FSHL\Lexer\Php
+    -
+        class: FSHL\Highlighter
+        setup:
+            - setLexer(@FSHL\Lexer\Php)
 
-	cacheStorage: Nette\Caching\Storages\DevNullStorage
+    cacheStorage: Nette\Caching\Storages\DevNullStorage

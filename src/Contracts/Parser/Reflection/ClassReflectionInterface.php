@@ -4,6 +4,7 @@ namespace ApiGen\Contracts\Parser\Reflection;
 
 use ApiGen\Contracts\Parser\Reflection\Behavior\LinedInterface;
 use ApiGen\Contracts\Parser\Reflection\TokenReflection\ReflectionFactoryInterface;
+use ApiGen\Parser\Reflection\Parts\VisibilityTrait;
 
 interface ClassReflectionInterface extends ElementReflectionInterface, LinedInterface
 {
@@ -17,11 +18,6 @@ interface ClassReflectionInterface extends ElementReflectionInterface, LinedInte
      * @return ClassReflectionInterface[]
      */
     public function getParentClasses(): array;
-
-    /**
-     * @return string[]
-     */
-    public function getParentClassNameList(): array;
 
     /**
      * @return ClassReflectionInterface[]
@@ -71,12 +67,12 @@ interface ClassReflectionInterface extends ElementReflectionInterface, LinedInte
     public function getOwnInterfaceNames(): array;
 
     /**
-     * @return MethodReflectionInterface[]
+     * @return MethodReflectionInterface[]|VisibilityTrait[]
      */
     public function getMethods(): array;
 
     /**
-     * @return MethodReflectionInterface[]
+     * @return MethodReflectionInterface[]|VisibilityTrait[]
      */
     public function getOwnMethods(): array;
 
@@ -124,8 +120,6 @@ interface ClassReflectionInterface extends ElementReflectionInterface, LinedInte
 
     public function getDocComment(): string;
 
-    public function isVisibilityLevelPublic(): bool;
-
     public function getVisibilityLevel(): int;
 
     public function getReflectionFactory(): ReflectionFactoryInterface;
@@ -161,7 +155,7 @@ interface ClassReflectionInterface extends ElementReflectionInterface, LinedInte
     public function getProperties(): array;
 
     /**
-     * @return PropertyReflectionInterface[]
+     * @return PropertyReflectionInterface[]|VisibilityTrait[]
      */
     public function getOwnProperties(): array;
 

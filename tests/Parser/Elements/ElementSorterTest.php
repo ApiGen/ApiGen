@@ -2,11 +2,12 @@
 
 namespace ApiGen\Parser\Tests\Elements;
 
+use ApiGen\Contracts\Parser\Reflection\Behavior\InClassInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 use ApiGen\Parser\Elements\ElementSorter;
+use ApiGen\Parser\Reflection\TokenReflection\ReflectionInterface;
 use PHPUnit\Framework\TestCase;
 
 final class ElementSorterTest extends TestCase
@@ -67,13 +68,17 @@ final class ElementSorterTest extends TestCase
 
     public function testSortElementsByFqnMethod(): void
     {
-        $reflectionMethodMock = $this->createMock(MethodReflectionInterface::class);
+        $reflectionMethodMock = $this->createMock(
+            [ReflectionInterface::class, InClassInterface::class]
+        );
         $reflectionMethodMock->method('getDeclaringClassName')
             ->willReturn('B');
         $reflectionMethodMock->method('getName')
             ->willReturn('C');
 
-        $reflectionMethodMock2 = $this->createMock(MethodReflectionInterface::class);
+        $reflectionMethodMock2 = $this->createMock(
+            [ReflectionInterface::class, InClassInterface::class]
+        );
         $reflectionMethodMock2->method('getDeclaringClassName')
             ->willReturn('A');
         $reflectionMethodMock2->method('getName')
@@ -89,13 +94,13 @@ final class ElementSorterTest extends TestCase
 
     public function testSortElementsByFqnProperties(): void
     {
-        $reflectionMethodMock = $this->createMock(MethodReflectionInterface::class);
+        $reflectionMethodMock = $this->createMock([ReflectionInterface::class, InClassInterface::class]);
         $reflectionMethodMock->method('getDeclaringClassName')
             ->willReturn('B');
         $reflectionMethodMock->method('getName')
             ->willReturn('C');
 
-        $reflectionMethodMock2 = $this->createMock(MethodReflectionInterface::class);
+        $reflectionMethodMock2 = $this->createMock([ReflectionInterface::class, InClassInterface::class]);
         $reflectionMethodMock2->method('getDeclaringClassName')
             ->willReturn('A');
         $reflectionMethodMock2->method('getName')

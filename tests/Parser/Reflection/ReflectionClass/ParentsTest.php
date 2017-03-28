@@ -22,11 +22,6 @@ class ParentsTest extends AbstractReflectionClassTestCase
         $this->assertCount(1, $this->reflectionClass->getParentClasses());
     }
 
-    public function testGetParentClassNameList(): void
-    {
-        $this->assertSame(['Project\ParentClass'], $this->reflectionClass->getParentClassNameList());
-    }
-
     public function testGetDirectSubClasses(): void
     {
         $this->assertCount(1, $this->reflectionClassOfParent->getDirectSubClasses());

@@ -3,67 +3,60 @@
 namespace ApiGen\Parser\Tests\Elements;
 
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
+use ApiGen\Contracts\Parser\Elements\NamespaceSorterInterface;
 use ApiGen\Parser\Elements\Elements;
-use ApiGen\Parser\Elements\GroupSorter;
+use ApiGen\Parser\Elements\NamespaceSorter;
 use ApiGen\Tests\MethodInvoker;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
 
-final class GroupSorterTest extends TestCase
+final class NamespaceSorterTest extends TestCase
 {
     /**
-     * @var GroupSorter
+     * @var NamespaceSorterInterface
      */
-    private $groupSorter;
+    private $namespaceSorter;
 
     protected function setUp(): void
     {
         $configurationMock = $this->createMock(ConfigurationInterface::class);
         $configurationMock->method('getMain')
             ->willReturn('');
-        $this->groupSorter = new GroupSorter(new Elements, $configurationMock);
+
+        $this->namespaceSorter = new NamespaceSorter(new Elements, $configurationMock);
     }
 
     public function testSort(): void
     {
         $groups = ['OneGroup' => [], 'OtherGroup' => [], 'OneMoreGroup' => []];
-        $sortedGroups = $this->groupSorter->sort($groups);
+        $sortedGroups = $this->namespaceSorter->sort($groups);
         $this->assertCount(3, $sortedGroups);
         $this->assertArrayHasKey('OneGroup', $sortedGroups);
         $this->assertArrayHasKey('OtherGroup', $sortedGroups);
         $this->assertArrayHasKey('OneMoreGroup', $sortedGroups);
     }
 
-    public function testSortNoneGroupOnly(): void
+    public function testSortNoneOnly(): void
     {
         $groups = ['None' => []];
-        $sortedGroups = $this->groupSorter->sort($groups);
+        $sortedGroups = $this->namespaceSorter->sort($groups);
         $this->assertSame([], $sortedGroups);
     }
 
-    public function testIsNoneGroupOnly(): void
+    public function testIsNoneOnly(): void
     {
         $groups['None'] = true;
-        $this->assertTrue(MethodInvoker::callMethodOnObject($this->groupSorter, 'isNoneGroupOnly', [$groups]));
+        $this->assertTrue(MethodInvoker::callMethodOnObject($this->namespaceSorter, 'isNoneOnly', [$groups]));
     }
 
-    public function testConvertGroupNamesToLower(): void
+    public function testAddMissingParentNamespaces(): void
     {
-        $groupNames = ['Some Group', 'Some other group'];
-        $convertedGroupNames = MethodInvoker::callMethodOnObject(
-            $this->groupSorter,
-            'convertGroupNamesToLower',
-            [$groupNames]
+        $this->assertNull(Assert::getObjectAttribute($this->namespaceSorter, 'namespaces'));
+        MethodInvoker::callMethodOnObject(
+            $this->namespaceSorter, 'addMissingParentNamespaces', ['Some\Group\Name']
         );
-        $this->assertSame(['some group' => 0, 'some other group' => 1], $convertedGroupNames);
-    }
 
-    public function testAddMissingParentGroup(): void
-    {
-        $this->assertNull(Assert::getObjectAttribute($this->groupSorter, 'groups'));
-        MethodInvoker::callMethodOnObject($this->groupSorter, 'addMissingParentGroups', ['Some\Group\Name']);
-
-        $groups = Assert::getObjectAttribute($this->groupSorter, 'groups');
+        $groups = Assert::getObjectAttribute($this->namespaceSorter, 'namespaces');
         $this->assertArrayHasKey('Some\Group\Name', $groups);
         $this->assertArrayHasKey('Some\Group', $groups);
         $this->assertArrayHasKey('Some', $groups);
@@ -71,8 +64,8 @@ final class GroupSorterTest extends TestCase
 
     public function testAddMissingElementTypes(): void
     {
-        MethodInvoker::callMethodOnObject($this->groupSorter, 'addMissingElementTypes', ['Some\Group']);
-        $groups = Assert::getObjectAttribute($this->groupSorter, 'groups');
+        MethodInvoker::callMethodOnObject($this->namespaceSorter, 'addMissingElementTypes', ['Some\Group']);
+        $groups = Assert::getObjectAttribute($this->namespaceSorter, 'namespaces');
         $this->assertArrayHasKey('Some\Group', $groups);
 
         $someGroup = $groups['Some\Group'];
@@ -85,20 +78,20 @@ final class GroupSorterTest extends TestCase
     }
 
     /**
-     * @dataProvider getCompareGroupsData()
+     * @dataProvider getCompareNamespacesData()
      */
-    public function testCompareGroups(string $one, string $two, string $main, int $expected): void
+    public function testCompareNamespaces(string $one, string $two, string $main, int $expected): void
     {
         $this->assertSame(
             $expected,
-            MethodInvoker::callMethodOnObject($this->groupSorter, 'compareGroups', [$one, $two, $main])
+            MethodInvoker::callMethodOnObject($this->namespaceSorter, 'compareNamespaceNames', [$one, $two, $main])
         );
     }
 
     /**
      * @return mixed[]
      */
-    public function getCompareGroupsData(): array
+    public function getCompareNamespacesData(): array
     {
         return [
             ['GroupOne', 'OtherGroup', '', -8],

@@ -124,7 +124,6 @@ final class GenerateCommand extends AbstractCommand
                 'Base url used for sitemap (for search box).'
             )
             ->addOption('googleAnalytics', null, InputOption::VALUE_REQUIRED, 'Google Analytics tracking code.')
-            ->addOption('debug', null, InputOption::VALUE_NONE, 'Turn on debug mode.')
             ->addOption(
                 'extensions',
                 null,
@@ -145,12 +144,6 @@ final class GenerateCommand extends AbstractCommand
                 'Elements with this name prefix will be first in tree.'
             )
             ->addOption('internal', null, InputOption::VALUE_NONE, 'Include elements marked as @internal.')
-            ->addOption(
-                'noSourceCode',
-                null,
-                InputOption::VALUE_NONE,
-                'Do not generate highlighted source code for elements.'
-            )
             ->addOption(
                 'templateConfig',
                 null,
@@ -199,7 +192,7 @@ final class GenerateCommand extends AbstractCommand
      */
     private function generate(array $options): void
     {
-        $this->prepareDestination($options['destination'], $options['overwrite']);
+        $this->prepareDestination($options['destination'], (bool) $options['overwrite']);
         $this->io->writeln('<info>Generating API documentation</info>');
         $this->generatorQueue->run();
     }

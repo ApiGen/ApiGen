@@ -4,59 +4,44 @@ namespace ApiGen\Templating\Filters;
 
 use ApiGen\Configuration\ConfigurationOptions;
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
-use Nette\Utils\Strings;
+use ApiGen\Event\FilterAnnotationsEvent;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 final class AnnotationFilters extends Filters
 {
-    /**
-     * @var string[]
-     */
-    private $remove = [
-        'package', 'subpackage', 'property', 'property-read', 'property-write', 'method', 'abstract', 'access',
-        'final', 'filesource', 'global', 'name', 'static', 'staticvar'
-    ];
-
     /**
      * @var ConfigurationInterface
      */
     private $configuration;
 
-    public function __construct(ConfigurationInterface $configuration)
+    /**
+     * @var EventDispatcherInterface
+     */
+    private $eventDispatcher;
+
+    public function __construct(ConfigurationInterface $configuration, EventDispatcherInterface $eventDispatcher)
     {
         $this->configuration = $configuration;
-    }
-
-    public function annotationBeautify(string $name): string
-    {
-        return Strings::firstUpper($name);
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
      * @param string[] $annotations
-     * @param string[] $customToRemove
+     * @param string[] $annotationsToRemove
      * @return string[]
      */
-    public function annotationFilter(array $annotations, array $customToRemove = []): array
+    public function annotationFilter(array $annotations, array $annotationsToRemove = []): array
     {
-        $annotations = $this->filterOut($annotations, $this->remove);
-        $annotations = $this->filterOut($annotations, $customToRemove);
+        $filterAnnotationsEvent = new FilterAnnotationsEvent($annotations);
+        $this->eventDispatcher->dispatch(FilterAnnotationsEvent::class, $filterAnnotationsEvent);
+        $annotations = $filterAnnotationsEvent->getAnnotations();
+
+        foreach ($annotationsToRemove as $annotationToRemove) {
+            unset($annotations[$annotationToRemove]);
+        }
 
         if (! $this->configuration->getOption(ConfigurationOptions::INTERNAL)) {
             unset($annotations['internal']);
-        }
-
-        return $annotations;
-    }
-
-    /**
-     * @param string[] $annotations
-     * @param string[] $toRemove
-     * @return string[]
-     */
-    private function filterOut(array $annotations, array $toRemove): array
-    {
-        foreach ($toRemove as $annotation) {
-            unset($annotations[$annotation]);
         }
 
         return $annotations;

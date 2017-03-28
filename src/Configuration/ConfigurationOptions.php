@@ -27,11 +27,6 @@ final class ConfigurationOptions
     /**
      * @var string
      */
-    public const DEBUG = 'debug';
-
-    /**
-     * @var string
-     */
     public const DESTINATION = 'destination';
 
     /**
@@ -87,11 +82,6 @@ final class ConfigurationOptions
     /**
      * @var string
      */
-    public const NO_SOURCE_CODE = 'noSourceCode';
-
-    /**
-     * @var string
-     */
     public const TEMPLATE = 'template';
 
     /**
@@ -108,9 +98,4 @@ final class ConfigurationOptions
      * @var string
      */
     public const VISIBILITY_LEVELS = 'visibilityLevels';
-
-    /**
-     * @var string
-     */
-    public const SOURCE_CODE = 'sourceCode';
 }

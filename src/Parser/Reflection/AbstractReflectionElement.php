@@ -49,8 +49,6 @@ abstract class AbstractReflectionElement extends AbstractReflection implements E
                     $this->isDocumented = false;
                 } elseif (! $internal && $this->reflection->hasAnnotation('internal')) {
                     $this->isDocumented = false;
-                } elseif ($this->reflection->hasAnnotation('ignore')) {
-                    $this->isDocumented = false;
                 }
             }
         }
@@ -170,19 +168,6 @@ abstract class AbstractReflectionElement extends AbstractReflection implements E
     public function hasAnnotation(string $name): bool
     {
         return isset($this->getAnnotations()[$name]);
-    }
-
-    /**
-     * @param string $annotation
-     * @param mixed $value
-     */
-    public function addAnnotation(string $annotation, $value): void
-    {
-        if ($this->annotations === null) {
-            $this->getAnnotations();
-        }
-
-        $this->annotations[$annotation][] = $value;
     }
 
     /**

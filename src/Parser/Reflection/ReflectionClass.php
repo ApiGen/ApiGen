@@ -12,7 +12,6 @@ use ApiGen\Contracts\Parser\Reflection\TokenReflection\ReflectionFactoryInterfac
 use ApiGen\Parser\Reflection\Extractors\ClassTraitElementsExtractor;
 use ApiGen\Parser\Reflection\Extractors\ParentClassElementsExtractor;
 use InvalidArgumentException;
-use ReflectionProperty as Visibility;
 use TokenReflection\IReflectionClass;
 
 final class ReflectionClass extends AbstractReflectionElement implements ClassReflectionInterface
@@ -135,7 +134,7 @@ final class ReflectionClass extends AbstractReflectionElement implements ClassRe
             }
 
             foreach ($this->getOwnInterfaces() as $interface) {
-                foreach ($interface->getMethods(null) as $parentMethod) {
+                foreach ($interface->getMethods() as $parentMethod) {
                     if (!isset($this->methods[$parentMethod->getName()])) {
                         $this->methods[$parentMethod->getName()] = $parentMethod;
                     }
@@ -354,14 +353,6 @@ final class ReflectionClass extends AbstractReflectionElement implements ClassRe
         }
 
         return $this->parentClasses;
-    }
-
-    /**
-     * @return string[]
-     */
-    public function getParentClassNameList(): array
-    {
-        return $this->reflection->getParentClassNameList();
     }
 
     public function implementsInterface(string $interface): bool
@@ -594,11 +585,6 @@ final class ReflectionClass extends AbstractReflectionElement implements ClassRe
     public function hasMethod(string $name): bool
     {
         return isset($this->getMethods()[$name]);
-    }
-
-    public function isVisibilityLevelPublic(): bool
-    {
-        return (bool) ($this->getVisibilityLevel() & Visibility::IS_PUBLIC);
     }
 
     public function getVisibilityLevel(): int

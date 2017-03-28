@@ -61,8 +61,6 @@ interface ConfigurationInterface
 
     public function getGoogleCseId(): string;
 
-    public function shouldGenerateSourceCode(): bool;
-
     /**
      * @return string[]
      */

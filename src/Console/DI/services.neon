@@ -5,5 +5,4 @@ services:
     # Input Output
     - ApiGen\Console\IO\IO
     - ApiGen\Console\Input\LiberalFormatArgvInput
-    - ApiGen\Console\Formatter\OutputFormatter
     - Symfony\Component\Console\Output\ConsoleOutput

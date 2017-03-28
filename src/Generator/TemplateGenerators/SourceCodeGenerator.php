@@ -2,27 +2,21 @@
 
 namespace ApiGen\Generator\TemplateGenerators;
 
-use ApiGen\Configuration\ConfigurationOptions;
-use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Generator\SourceCodeHighlighter\SourceCodeHighlighterInterface;
 use ApiGen\Contracts\Generator\StepCounterInterface;
-use ApiGen\Contracts\Generator\TemplateGenerators\ConditionalTemplateGeneratorInterface;
+use ApiGen\Contracts\Generator\TemplateGenerators\TemplateGeneratorInterface;
 use ApiGen\Contracts\Parser\Elements\ElementStorageInterface;
-use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
 use ApiGen\Generator\Event\GenerateProgressEvent;
 use ApiGen\Generator\Resolvers\RelativePathResolver;
 use ApiGen\Generator\TemplateGenerators\Loaders\NamespaceLoader;
+use ApiGen\Parser\Reflection\AbstractReflection;
+use ApiGen\Parser\Reflection\TokenReflection\ReflectionInterface;
 use ApiGen\Templating\TemplateFactory;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-final class SourceCodeGenerator implements ConditionalTemplateGeneratorInterface, StepCounterInterface
+final class SourceCodeGenerator implements TemplateGeneratorInterface, StepCounterInterface
 {
-    /**
-     * @var ConfigurationInterface
-     */
-    private $configuration;
-
     /**
      * @var ElementStorageInterface
      */
@@ -54,7 +48,6 @@ final class SourceCodeGenerator implements ConditionalTemplateGeneratorInterface
     protected $namespaceLoader;
 
     public function __construct(
-        ConfigurationInterface $configuration,
         ElementStorageInterface $elementStorage,
         TemplateFactory $templateFactory,
         RelativePathResolver $relativePathResolver,
@@ -62,7 +55,6 @@ final class SourceCodeGenerator implements ConditionalTemplateGeneratorInterface
         EventDispatcherInterface $eventDispatcher,
         NamespaceLoader $namespaceLoader
     ) {
-        $this->configuration = $configuration;
         $this->elementStorage = $elementStorage;
         $this->templateFactory = $templateFactory;
         $this->relativePathResolver = $relativePathResolver;
@@ -87,7 +79,7 @@ final class SourceCodeGenerator implements ConditionalTemplateGeneratorInterface
 
     public function getStepCount(): int
     {
-        $tokenizedFilter = function (ClassReflectionInterface $class) {
+        $tokenizedFilter = function (ReflectionInterface $class) {
             return $class->isTokenized();
         };
 
@@ -101,11 +93,9 @@ final class SourceCodeGenerator implements ConditionalTemplateGeneratorInterface
         return $count;
     }
 
-    public function isAllowed(): bool
-    {
-        return (bool) $this->configuration->getOption(ConfigurationOptions::SOURCE_CODE);
-    }
-
+    /**
+     * @param ElementReflectionInterface|AbstractReflection $element
+     */
     private function generateForElement(ElementReflectionInterface $element): void
     {
         $template = $this->templateFactory->createNamedForElement('source', $element);
@@ -117,7 +107,7 @@ final class SourceCodeGenerator implements ConditionalTemplateGeneratorInterface
         $template->save();
     }
 
-    private function getHighlightedCodeFromElement(ElementReflectionInterface $element): string
+    private function getHighlightedCodeFromElement(AbstractReflection $element): string
     {
         $content = file_get_contents($element->getFileName());
         return $this->sourceCodeHighlighter->highlightAndAddLineNumbers($content);

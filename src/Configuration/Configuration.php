@@ -106,11 +106,6 @@ final class Configuration implements ConfigurationInterface
         return $this->options['googleCseId'];
     }
 
-    public function shouldGenerateSourceCode(): bool
-    {
-        return $this->options['sourceCode'];
-    }
-
     /**
      * @return array|string[]
      */

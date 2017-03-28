@@ -7,20 +7,23 @@
 <div id="content" class="function">
 	<h1 n:class="$function->deprecated ? deprecated">Function {$function->shortName}</h1>
 
-	<div class="description" n:if="$template->longDescription($function)">
-	{$function|longDescription|noescape}
+	{var $longDescription = ($function|longDescription)}
+	<div class="description" n:if="$longDescription">
+		{$function|longDescription|noescape}
 	</div>
 
 	<div class="info">
 		{if $function->inNamespace()}<b>Namespace:</b> {$function->namespaceName|namespaceLinks|noescape}<br>{/if}
-		{foreach $template->annotationFilter($function->annotations, array('param', 'return', 'throws')) as $annotation => $values}
+
+        {var $filteredAnnotations = ($class->annotations|annotationFilter: ['param', 'return', 'throws'])}
+		{foreach $filteredAnnotations as $annotation => $values}
 			{foreach $values as $value}
-				<b>{$annotation|annotationBeautify}{if $value}:{/if}</b>
+				<b>{$annotation}{if $value}:{/if}</b>
 				{$value|annotation:$annotation:$function|noescape}<br>
 			{/foreach}
 		{/foreach}
 		<b>Located at</b>
-		<a n:tag-if="$config->sourceCode" href="{$function|sourceUrl}" title="Go to source code">
+		<a href="{$function|sourceUrl}" title="Go to source code">
 			{$function->fileName|relativePath}
 		</a><br>
 	</div>
