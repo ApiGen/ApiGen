@@ -54,7 +54,7 @@ interface ConfigurationInterface
      */
     public function getBaseUrl(): string;
 
-    public function getGoogleCseId(): string;
+    public function getGoogleAnalytics(): string;
 
     /**
      * @return string[]

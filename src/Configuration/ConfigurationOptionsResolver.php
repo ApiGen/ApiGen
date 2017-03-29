@@ -38,7 +38,6 @@ final class ConfigurationOptionsResolver
         ConfigurationOptions::EXTENSIONS => ['php'],
         // template parameters
         ConfigurationOptions::TITLE => '',
-        ConfigurationOptions::GOOGLE_CSE_ID => '',
         ConfigurationOptions::GOOGLE_ANALYTICS => '',
         // filtering generated content
         ConfigurationOptions::ACCESS_LEVELS => [self::ACCESS_LEVEL_PUBLIC, self::ACCESS_LEVEL_PROTECTED],

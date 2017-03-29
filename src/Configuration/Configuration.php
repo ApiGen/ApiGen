@@ -96,14 +96,9 @@ final class Configuration implements ConfigurationInterface
         return $this->options[ConfigurationOptions::BASE_URL];
     }
 
-    public function getGoogleCseId(): string
-    {
-        return $this->options[ConfigurationOptions::GOOGLE_CSE_ID];
-    }
-
     public function getGoogleAnalytics(): string
     {
-        return $this->options[ConfigurationOptions::GOOGLE_CSE_ID];
+        return $this->options[ConfigurationOptions::GOOGLE_ANALYTICS];
     }
 
     /**

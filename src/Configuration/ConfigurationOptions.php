@@ -47,11 +47,6 @@ final class ConfigurationOptions
     /**
      * @var string
      */
-    public const GOOGLE_CSE_ID = 'googleCseId';
-
-    /**
-     * @var string
-     */
     public const GOOGLE_ANALYTICS = 'googleAnalytics';
 
     /**

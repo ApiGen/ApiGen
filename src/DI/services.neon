@@ -17,15 +17,14 @@ services:
     g1: ApiGen\Generator\TemplateGenerators\CombinedGenerator
     g2: ApiGen\Generator\TemplateGenerators\AnnotationGroupsGenerator
     g3: ApiGen\Generator\TemplateGenerators\ElementListGenerator
-    g4: ApiGen\Generator\TemplateGenerators\OpensearchGenerator
-    g5: ApiGen\Generator\TemplateGenerators\OverviewGenerator
-    g6: ApiGen\Generator\TemplateGenerators\SourceCodeGenerator
+    g4: ApiGen\Generator\TemplateGenerators\OverviewGenerator
+    g5: ApiGen\Generator\TemplateGenerators\SourceCodeGenerator
     # elements
-    g7: ApiGen\Generator\TemplateGenerators\ClassElementGenerator
-    g8: ApiGen\Generator\TemplateGenerators\ConstantElementGenerator
-    g9: ApiGen\Generator\TemplateGenerators\FunctionElementGenerator
-    g10: ApiGen\Generator\TemplateGenerators\NamespaceGenerator
-    g11: ApiGen\Generator\TemplateGenerators\Loaders\NamespaceLoader
+    g6: ApiGen\Generator\TemplateGenerators\ClassElementGenerator
+    g7: ApiGen\Generator\TemplateGenerators\ConstantElementGenerator
+    g8: ApiGen\Generator\TemplateGenerators\FunctionElementGenerator
+    g9: ApiGen\Generator\TemplateGenerators\NamespaceGenerator
+    g10: ApiGen\Generator\TemplateGenerators\Loaders\NamespaceLoader
 
     # templating
     - ApiGen\Templating\TemplateElementsLoader

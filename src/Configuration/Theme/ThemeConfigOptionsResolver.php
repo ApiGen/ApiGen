@@ -57,10 +57,6 @@ final class ThemeConfigOptionsResolver extends Nette\Object
             ThemeConfigOptions::SOURCE => [
                 'filename' => 'source-%s.html',
                 'template' => 'source.latte'
-            ],
-            ThemeConfigOptions::OPENSEARCH => [
-                'filename' => 'opensearch.xml',
-                'template' => 'opensearch.xml.latte'
             ]
         ],
         ThemeConfigOptions::TEMPLATES_PATH => ''
