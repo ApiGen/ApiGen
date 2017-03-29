@@ -1,7 +1,6 @@
 #!/usr/bin/env php
 <?php
 
-use ApiGen\Console\Application;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -10,32 +9,19 @@ require __DIR__ . '/bootstrap.php';
 
 // Create temp dir
 $tempDir = sys_get_temp_dir() . '/_apigen';
-if (function_exists("posix_getuid")) {
-	$tempDir .= posix_getuid();
-}
+
 $fileSystem = new ApiGen\Utils\FileSystem;
 $fileSystem->purgeDir($tempDir);
 
 
 // Init debugger
 Tracy\Debugger::$strictMode = TRUE;
-if (isset($_SERVER['argv']) && ($tmp = array_search('--debug', $_SERVER['argv'], TRUE))) {
-	Tracy\Debugger::enable(Tracy\Debugger::DEVELOPMENT);
-
-} else {
-	Tracy\Debugger::enable(Tracy\Debugger::PRODUCTION);
-	Tracy\Debugger::$onFatalError[] = function() use ($fileSystem, $tempDir) {
-		echo "For more information turn on the debug mode using the --debug option.\n";
-		$fileSystem->deleteDir($tempDir);
-	};
-}
-
+Tracy\Debugger::enable(Tracy\Debugger::DEVELOPMENT);
 
 $configurator = new Nette\Configurator;
 $configurator->setDebugMode( ! Tracy\Debugger::$productionMode);
 $configurator->setTempDirectory($tempDir);
 $configurator->addConfig(__DIR__ . '/../src/DI/config.neon');
-$configurator->addParameters(['rootDir' => __DIR__ . '/..']);
 $container = $configurator->createContainer();
 
 
@@ -45,7 +31,3 @@ $application->setAutoExit(false);
 $input = $container->getByType(InputInterface::class);
 $output = $container->getByType(OutputInterface::class);
 $application->run($input, $output);
-
-
-// Remove temp data
-$fileSystem->deleteDir($tempDir);

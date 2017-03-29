@@ -168,8 +168,11 @@ final class ConfigurationOptionsResolver
     private function setNormalizers(): void
     {
         $this->resolver->setNormalizer(ConfigurationOptions::ANNOTATION_GROUPS, function (Options $options, $value) {
-            $value = (array) $value;
-            return array_unique($value);
+            if ($value === '') {
+                return [];
+            }
+
+            return $value;
         });
 
         $this->resolver->setNormalizer(ConfigurationOptions::DESTINATION, function (Options $options, $value) {
@@ -204,7 +207,9 @@ final class ConfigurationOptionsResolver
     private function allowedValuesForDestination(?string $destination): bool
     {
         if (! $destination) {
-            throw new ConfigurationException("Destination is not set. Use '-d <dir>' or config to set it");
+            throw new ConfigurationException(
+                'Destination is not set. Use "--destination <directory>" or config to set it.'
+            );
         } elseif (! is_dir($destination)) {
             mkdir($destination, 0755, true);
         }
@@ -226,7 +231,9 @@ final class ConfigurationOptionsResolver
     private function allowedValuesForSource($source): bool
     {
         if (! $source) {
-            throw new ConfigurationException("Source is not set. Use '-s <dir>' or config to set it");
+            throw new ConfigurationException(
+                'Source is not set. Use "--source <directory>" or config to set it.'
+            );
         } elseif (! is_array($source)) {
             $source = [$source];
         }

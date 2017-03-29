@@ -57,11 +57,6 @@ final class ConfigurationOptions
     /**
      * @var string
      */
-    public const GROUPS = 'groups';
-
-    /**
-     * @var string
-     */
     public const MAIN = 'main';
 
     /**

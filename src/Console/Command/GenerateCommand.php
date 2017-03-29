@@ -164,7 +164,7 @@ final class GenerateCommand extends AbstractCommand
             )
             ->addOption(
                 ConfigurationOptions::FORCE_OVERWRITE,
-                'o',
+                null,
                 InputOption::VALUE_NONE,
                 'Force overwrite destination directory'
             );
