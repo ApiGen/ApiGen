@@ -65,12 +65,12 @@ final class Configuration implements ConfigurationInterface
 
     public function getVisibilityLevel(): int
     {
-        return $this->options['visibilityLevels'];
+        return $this->options[ConfigurationOptions::VISIBILITY_LEVELS];
     }
 
     public function getMain(): string
     {
-        return $this->getOption('main');
+        return $this->options[ConfigurationOptions::MAIN];
     }
 
     /**
@@ -78,27 +78,27 @@ final class Configuration implements ConfigurationInterface
      */
     public function getAnnotationGroups(): array
     {
-        return $this->options['annotationGroups'];
+        return $this->options[ConfigurationOptions::ANNOTATION_GROUPS];
     }
 
     public function getDestination(): string
     {
-        return $this->options['destination'];
+        return $this->options[ConfigurationOptions::DESTINATION];
     }
 
     public function getTitle(): string
     {
-        return $this->options['title'];
+        return $this->options[ConfigurationOptions::TITLE];
     }
 
     public function getBaseUrl(): string
     {
-        return $this->options['baseUrl'];
+        return $this->options[ConfigurationOptions::BASE_URL];
     }
 
     public function getGoogleCseId(): string
     {
-        return $this->options['googleCseId'];
+        return $this->options[ConfigurationOptions::GOOGLE_CSE_ID];
     }
 
     /**
@@ -106,7 +106,7 @@ final class Configuration implements ConfigurationInterface
      */
     public function getSource(): array
     {
-        return $this->options['source'];
+        return $this->options[ConfigurationOptions::SOURCE];
     }
 
     /**
@@ -114,7 +114,7 @@ final class Configuration implements ConfigurationInterface
      */
     public function getExclude(): array
     {
-        return $this->options['exclude'];
+        return $this->options[ConfigurationOptions::EXCLUDE];
     }
 
     /**
@@ -122,7 +122,7 @@ final class Configuration implements ConfigurationInterface
      */
     public function getExtensions(): array
     {
-        return $this->options['extensions'];
+        return $this->options[ConfigurationOptions::EXTENSIONS];
     }
 
     /**

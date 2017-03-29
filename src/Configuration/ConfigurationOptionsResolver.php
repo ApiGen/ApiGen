@@ -41,7 +41,7 @@ final class ConfigurationOptionsResolver
         ConfigurationOptions::GOOGLE_CSE_ID => '',
         ConfigurationOptions::GOOGLE_ANALYTICS => '',
         // filtering generated content
-        ConfigurationOptions::ACCESS_LEVELS => ['public'],
+        ConfigurationOptions::ACCESS_LEVELS => [self::AL_PUBLIC],
         ConfigurationOptions::ANNOTATION_GROUPS => [],
         ConfigurationOptions::BASE_URL => '',
         ConfigurationOptions::CONFIG => '',

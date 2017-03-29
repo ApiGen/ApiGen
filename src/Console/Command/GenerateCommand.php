@@ -3,6 +3,7 @@
 namespace ApiGen\Console\Command;
 
 use ApiGen\Configuration\Configuration;
+use ApiGen\Configuration\ConfigurationOptions;
 use ApiGen\Contracts\Console\IO\IOInterface;
 use ApiGen\Contracts\Generator\GeneratorQueueInterface;
 use ApiGen\Contracts\Parser\ParserInterface;
@@ -85,74 +86,84 @@ final class GenerateCommand extends AbstractCommand
         $this->setDescription('Generate API documentation');
 
         $this->addOption(
-                'source',
+                ConfigurationOptions::SOURCE,
                 null,
                 InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
                 'Dirs or files documentation is generated for.'
             )
-            ->addOption('destination', null, InputOption::VALUE_REQUIRED, 'Target dir for documentation.')
             ->addOption(
-                'accessLevels',
+                ConfigurationOptions::DESTINATION,
+                null,
+                InputOption::VALUE_REQUIRED,
+                'Target dir for documentation.'
+            )
+            ->addOption(
+                ConfigurationOptions::ACCESS_LEVELS,
                 null,
                 InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
                 'Access levels of included method and properties [options: public, protected, private].',
                 ['public', 'protected']
             )
             ->addOption(
-                'annotationGroups',
+                ConfigurationOptions::ANNOTATION_GROUPS,
                 null,
                 InputOption::VALUE_REQUIRED,
                 'Generate page with elements with specific annotation.'
             )
             ->addOption(
-                'config',
+                ConfigurationOptions::CONFIG,
                 null,
                 InputOption::VALUE_REQUIRED,
                 'Custom path to apigen.neon config file.',
                 getcwd() . '/apigen.neon'
             )
             ->addOption(
-                'googleCseId',
+                ConfigurationOptions::GOOGLE_CSE_ID,
                 null,
                 InputOption::VALUE_REQUIRED,
                 'Custom google search engine id (for search box).'
             )
             ->addOption(
-                'baseUrl',
+                ConfigurationOptions::BASE_URL,
                 null,
                 InputOption::VALUE_REQUIRED,
                 'Base url used for sitemap (for search box).'
             )
             ->addOption('googleAnalytics', null, InputOption::VALUE_REQUIRED, 'Google Analytics tracking code.')
             ->addOption(
-                'extensions',
+                ConfigurationOptions::EXTENSIONS,
                 null,
                 InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
                 'Scanned file extensions.',
                 ['php']
             )
             ->addOption(
-                'exclude',
+                ConfigurationOptions::EXCLUDE,
                 null,
                 InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
                 'Directories and files matching this mask will not be parsed (e.g. */tests/*).'
             )
             ->addOption(
-                'main',
+                ConfigurationOptions::MAIN,
                 null,
                 InputOption::VALUE_REQUIRED,
                 'Elements with this name prefix will be first in tree.'
             )
             ->addOption(
-                'templateConfig',
+                ConfigurationOptions::TEMPLATE_CONFIG,
                 null,
                 InputOption::VALUE_REQUIRED,
                 'Your own template config, has higher priority than --template-theme.',
                 getcwd() . '/packages/ThemeDefault/src/config.neon'
             )
-            ->addOption('title', null, InputOption::VALUE_REQUIRED, 'Title of generated documentation.')
             ->addOption(
-                'overwrite',
+                ConfigurationOptions::TITLE,
+                null,
+                InputOption::VALUE_REQUIRED,
+                'Title of generated documentation.'
+            )
+            ->addOption(
+                ConfigurationOptions::FORCE_OVERWRITE,
                 'o',
                 InputOption::VALUE_NONE,
                 'Force overwrite destination directory'
@@ -174,7 +185,11 @@ final class GenerateCommand extends AbstractCommand
     {
         $this->io->writeln('<info>Scanning sources and parsing</info>');
 
-        $files = $this->finder->find($options['source'], $options['exclude'], $options['extensions']);
+        $files = $this->finder->find(
+            $options[ConfigurationOptions::SOURCE],
+            $options[ConfigurationOptions::EXCLUDE],
+            $options[ConfigurationOptions::EXTENSIONS]
+        );
         $this->parser->parse($files);
 
         $stats = $this->parserStorage->getDocumentedStats();
@@ -191,7 +206,10 @@ final class GenerateCommand extends AbstractCommand
      */
     private function generate(array $options): void
     {
-        $this->prepareDestination($options['destination'], (bool) $options['overwrite']);
+        $this->prepareDestination(
+            $options[ConfigurationOptions::DESTINATION],
+            (bool) $options[ConfigurationOptions::FORCE_OVERWRITE]
+        );
         $this->io->writeln('<info>Generating API documentation</info>');
         $this->generatorQueue->run();
     }
@@ -267,8 +285,8 @@ final class GenerateCommand extends AbstractCommand
     {
         $filePaths = [];
 
-        if ($options['config']) {
-            $filePaths[] = $options['config'];
+        if ($options[ConfigurationOptions::CONFIG]) {
+            $filePaths[] = $options[ConfigurationOptions::CONFIG];
         }
 
         $filePaths[] = getcwd() . '/apigen.neon';
