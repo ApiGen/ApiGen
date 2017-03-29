@@ -256,13 +256,11 @@ final class GenerateCommand extends AbstractCommand
      */
     private function loadOptionsFromConfig(array $options): array
     {
-        $configFilePaths = $this->getPossiblePathsForConfig($options);
+        $configFile = $options[ConfigurationOptions::CONFIG] ?? getcwd() . '/apigen.neon';
 
-        foreach ($configFilePaths as $configFile) {
-            if (file_exists($configFile)) {
-                $configFileOptions = (new Loader())->load($configFile);
-                return array_merge($options, $configFileOptions);
-            }
+        if (file_exists($configFile)) {
+            $configFileOptions = (new Loader())->load($configFile);
+            return array_merge($options, $configFileOptions);
         }
 
         return $options;
@@ -275,22 +273,5 @@ final class GenerateCommand extends AbstractCommand
         }
 
         $this->themeResources->copyToDestination($destination);
-    }
-
-    /**
-     * @param mixed[] $options
-     * @return mixed[]
-     */
-    private function getPossiblePathsForConfig(array $options): array
-    {
-        $filePaths = [];
-
-        if ($options[ConfigurationOptions::CONFIG]) {
-            $filePaths[] = $options[ConfigurationOptions::CONFIG];
-        }
-
-        $filePaths[] = getcwd() . '/apigen.neon';
-
-        return $filePaths;
     }
 }
