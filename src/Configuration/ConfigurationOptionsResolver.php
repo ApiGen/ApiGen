@@ -30,21 +30,24 @@ final class ConfigurationOptionsResolver
      * @var mixed[]
      */
     private $defaults = [
-        ConfigurationOptions::ANNOTATION_GROUPS => [],
-        ConfigurationOptions::ACCESS_LEVELS => ['public'],
-        ConfigurationOptions::BASE_URL => '',
-        ConfigurationOptions::CONFIG => '',
+        // required
+        ConfigurationOptions::SOURCE => [],
         ConfigurationOptions::DESTINATION => null,
-        ConfigurationOptions::FORCE_OVERWRITE => false,
+        // file finder
         ConfigurationOptions::EXCLUDE => [],
         ConfigurationOptions::EXTENSIONS => ['php'],
+        // template parameters
+        ConfigurationOptions::TITLE => '',
         ConfigurationOptions::GOOGLE_CSE_ID => '',
         ConfigurationOptions::GOOGLE_ANALYTICS => '',
+        // filtering generated content
+        ConfigurationOptions::ACCESS_LEVELS => ['public'],
+        ConfigurationOptions::ANNOTATION_GROUPS => [],
+        ConfigurationOptions::BASE_URL => '',
+        ConfigurationOptions::CONFIG => '',
+        ConfigurationOptions::FORCE_OVERWRITE => false,
         ConfigurationOptions::MAIN => '',
-        ConfigurationOptions::SOURCE => [],
-        ConfigurationOptions::TEMPLATE => null,
         ConfigurationOptions::TEMPLATE_CONFIG => null,
-        ConfigurationOptions::TITLE => '',
         // helpers
         ConfigurationOptions::VISIBILITY_LEVELS => [],
     ];
