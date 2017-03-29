@@ -24,7 +24,7 @@ Run ApiGen with source and destination options:
 vendor/bin/apigen generate --source /src --destination /docs
 ```
 
-To omit cli options just create `apigen.yaml` or `apigen.neon` file in your project's root folder:
+To omit cli options just create `apigen.neon` file in your project's root folder:
 
 ```yaml
 source:
@@ -41,15 +41,20 @@ vendor/bin/apigen generate --help
 
 *NOTE: In config files, options are camelCased (i.e. `accessLevel` for `--access-level`).*
 
-Refer to the [wiki](https://github.com/ApiGen/ApiGen/wiki/supported-annotations) for all supported annotations.
-
 
 ## Testing
 
 ```sh
-vendor/bin/phpunit
+composer complete-check
 ```
+
 
 ## Contributing
 
-Please refer to [CONTRIBUTING](https://github.com/apigen/apigen/blob/master/CONTRIBUTING.md) for details.
+Rules are simple:
+
+- **new feature needs tests**
+- **all tests must pass**
+- **1 feature per PR**
+
+We would be happy to merge your feature then.
