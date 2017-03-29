@@ -2,7 +2,6 @@
 
 namespace ApiGen\Templating\Filters;
 
-use ApiGen\Configuration\Configuration;
 use ApiGen\Contracts\Generator\Resolvers\ElementResolverInterface;
 use ApiGen\Contracts\Generator\SourceCodeHighlighter\SourceCodeHighlighterInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
@@ -29,11 +28,6 @@ final class UrlFilters extends Filters
     private $elementResolver;
 
     /**
-     * @var Configuration
-     */
-    private $configuration;
-
-    /**
      * @var LinkBuilder
      */
     private $linkBuilder;
@@ -49,7 +43,6 @@ final class UrlFilters extends Filters
     private $eventDispatcher;
 
     public function __construct(
-        Configuration $configuration,
         SourceCodeHighlighterInterface $highlighter,
         ElementResolverInterface $elementResolver,
         LinkBuilder $linkBuilder,
@@ -58,7 +51,6 @@ final class UrlFilters extends Filters
     ) {
         $this->highlighter = $highlighter;
         $this->elementResolver = $elementResolver;
-        $this->configuration = $configuration;
         $this->linkBuilder = $linkBuilder;
         $this->elementLinkFactory = $elementLinkFactory;
         $this->eventDispatcher = $eventDispatcher;
