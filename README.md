@@ -30,26 +30,33 @@ Or multiple:
 vendor/bin/apigen generate src tests --destination docs
 ```
 
-To omit cli options just create `apigen.neon` file in your project's root folder:
-
-```yaml
-source:
-    - src
-    - tests
-
-destination: docs
-```
-
 
 ## Configuration
 
-To be done...
+To add another configuration, add `apigen.neon` to your root project.
+
+You can setup all these options:
+
+```yaml
+main: ApiGen
+visibilityLevels: [public, protected] # array
+annotationGroups: [todo, deprecated] # array
+title: "ApiGen Docs"
+baseUrl: http://apigen.org/api
+exclude: tests
+extensions: [php] # array
+overwrite: true # bool
+templateConfig: path-to-template-config.neon # string
+
+# templates parameters
+googleAnalytics: 123
+```
 
 
 
 ## Supported Annotations
 
-To be done...
+(To be done...)
 
 
 ## Testing

@@ -62,11 +62,6 @@ final class ConfigurationOptions
     /**
      * @var string
      */
-    public const PHP = 'php';
-
-    /**
-     * @var string
-     */
     public const SOURCE = 'source';
 
     /**
