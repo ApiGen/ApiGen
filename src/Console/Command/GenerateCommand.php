@@ -12,6 +12,7 @@ use ApiGen\Theme\ThemeResources;
 use ApiGen\Utils\FileSystem;
 use ApiGen\Utils\Finder\FinderInterface;
 use Nette\DI\Config\Loader;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -84,90 +85,24 @@ final class GenerateCommand extends AbstractCommand
     {
         $this->setName('generate');
         $this->setDescription('Generate API documentation');
-
+        $this->addArgument(
+            ConfigurationOptions::SOURCE,
+            InputArgument::IS_ARRAY | InputOption::VALUE_REQUIRED,
+            'Dirs or files documentation is generated for.'
+        );
         $this->addOption(
-                ConfigurationOptions::SOURCE,
-                null,
-                InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
-                'Dirs or files documentation is generated for.'
-            )
-            ->addOption(
-                ConfigurationOptions::DESTINATION,
-                null,
-                InputOption::VALUE_REQUIRED,
-                'Target dir for documentation.'
-            )
-            ->addOption(
-                ConfigurationOptions::ACCESS_LEVELS,
-                null,
-                InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
-                'Access levels of included method and properties [options: public, protected, private].',
-                ['public', 'protected']
-            )
-            ->addOption(
-                ConfigurationOptions::ANNOTATION_GROUPS,
-                null,
-                InputOption::VALUE_REQUIRED,
-                'Generate page with elements with specific annotation.'
-            )
-            ->addOption(
-                ConfigurationOptions::CONFIG,
-                null,
-                InputOption::VALUE_REQUIRED,
-                'Custom path to apigen.neon config file.',
-                getcwd() . '/apigen.neon'
-            )
-            ->addOption(
-                ConfigurationOptions::GOOGLE_CSE_ID,
-                null,
-                InputOption::VALUE_REQUIRED,
-                'Custom google search engine id (for search box).'
-            )
-            ->addOption(
-                ConfigurationOptions::BASE_URL,
-                null,
-                InputOption::VALUE_REQUIRED,
-                'Base url used for sitemap (for search box).'
-            )
-            ->addOption('googleAnalytics', null, InputOption::VALUE_REQUIRED, 'Google Analytics tracking code.')
-            ->addOption(
-                ConfigurationOptions::EXTENSIONS,
-                null,
-                InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
-                'Scanned file extensions.',
-                ['php']
-            )
-            ->addOption(
-                ConfigurationOptions::EXCLUDE,
-                null,
-                InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
-                'Directories and files matching this mask will not be parsed (e.g. */tests/*).'
-            )
-            ->addOption(
-                ConfigurationOptions::MAIN,
-                null,
-                InputOption::VALUE_REQUIRED,
-                'Elements with this name prefix will be first in tree.'
-            )
-            ->addOption(
-                ConfigurationOptions::TEMPLATE_CONFIG,
-                null,
-                InputOption::VALUE_REQUIRED,
-                'Your own template config, has higher priority than --template-theme.',
-                getcwd() . '/packages/ThemeDefault/src/config.neon'
-            )
-            ->addOption(
-                ConfigurationOptions::TITLE,
-                null,
-                InputOption::VALUE_REQUIRED,
-                'Title of generated documentation.'
-            )
-            ->addOption(
-                ConfigurationOptions::FORCE_OVERWRITE,
-                null,
-                InputOption::VALUE_NONE,
-                'Force overwrite destination directory'
-            );
+            ConfigurationOptions::DESTINATION,
+            null,
+            InputOption::VALUE_REQUIRED,
+            'Target dir for generated documentation.'
+        );
+        $this->addOption(
+            ConfigurationOptions::CONFIG,
+            null,
+            InputOption::VALUE_REQUIRED,
+            'Path to apigen.neon config file.',
+            getcwd() . DIRECTORY_SEPARATOR . 'apigen.neon'
+        );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

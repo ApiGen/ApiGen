@@ -20,31 +20,41 @@ composer require apigen/apigen --dev
 
 Run ApiGen with source and destination options:
 
-```sh
-vendor/bin/apigen generate --source /src --destination /docs
+```bash
+vendor/bin/apigen generate src --destination docs
+```
+
+Or multiple:
+
+```bash
+vendor/bin/apigen generate src tests --destination docs
 ```
 
 To omit cli options just create `apigen.neon` file in your project's root folder:
 
 ```yaml
 source:
-    - /src
+    - src
+    - tests
 
-destination: /docs
+destination: docs
 ```
 
-For all available options, along with descriptions and default values, just run:
 
-```sh
-vendor/bin/apigen generate --help
-```
+## Configuration
 
-*NOTE: In config files, options are camelCased (i.e. `accessLevel` for `--access-level`).*
+To be done...
+
+
+
+## Supported Annotations
+
+To be done...
 
 
 ## Testing
 
-```sh
+```bash
 composer complete-check
 ```
 

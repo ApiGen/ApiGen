@@ -14,17 +14,17 @@ final class ConfigurationOptionsResolver
     /**
      * @var string
      */
-    public const AL_PROTECTED = 'protected';
+    public const ACCESS_LEVEL_PROTECTED = 'protected';
 
     /**
      * @var string
      */
-    public const AL_PRIVATE = 'private';
+    public const ACCESS_LEVEL_PRIVATE = 'private';
 
     /**
      * @var string
      */
-    public const AL_PUBLIC = 'public';
+    public const ACCESS_LEVEL_PUBLIC = 'public';
 
     /**
      * @var mixed[]
@@ -41,7 +41,7 @@ final class ConfigurationOptionsResolver
         ConfigurationOptions::GOOGLE_CSE_ID => '',
         ConfigurationOptions::GOOGLE_ANALYTICS => '',
         // filtering generated content
-        ConfigurationOptions::ACCESS_LEVELS => [self::AL_PUBLIC],
+        ConfigurationOptions::ACCESS_LEVELS => [self::ACCESS_LEVEL_PUBLIC, self::ACCESS_LEVEL_PROTECTED],
         ConfigurationOptions::ANNOTATION_GROUPS => [],
         ConfigurationOptions::BASE_URL => '',
         ConfigurationOptions::CONFIG => '',
@@ -124,15 +124,15 @@ final class ConfigurationOptionsResolver
     {
         $accessLevel = null;
 
-        if (in_array(self::AL_PUBLIC, $options)) {
+        if (in_array(self::ACCESS_LEVEL_PUBLIC, $options)) {
             $accessLevel |= ReflectionProperty::IS_PUBLIC;
         }
 
-        if (in_array(self::AL_PROTECTED, $options)) {
+        if (in_array(self::ACCESS_LEVEL_PROTECTED, $options)) {
             $accessLevel |= ReflectionProperty::IS_PROTECTED;
         }
 
-        if (in_array(self::AL_PRIVATE, $options)) {
+        if (in_array(self::ACCESS_LEVEL_PRIVATE, $options)) {
             $accessLevel |= ReflectionProperty::IS_PRIVATE;
         }
 
