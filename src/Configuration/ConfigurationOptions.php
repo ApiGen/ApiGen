@@ -67,11 +67,6 @@ final class ConfigurationOptions
     /**
      * @var string
      */
-    public const INTERNAL = 'internal';
-
-    /**
-     * @var string
-     */
     public const PHP = 'php';
 
     /**

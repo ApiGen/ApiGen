@@ -143,7 +143,6 @@ final class GenerateCommand extends AbstractCommand
                 InputOption::VALUE_REQUIRED,
                 'Elements with this name prefix will be first in tree.'
             )
-            ->addOption('internal', null, InputOption::VALUE_NONE, 'Include elements marked as @internal.')
             ->addOption(
                 'templateConfig',
                 null,

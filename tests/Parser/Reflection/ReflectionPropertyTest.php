@@ -116,8 +116,6 @@ final class ReflectionPropertyTest extends TestCase
         $configurationMock = $this->createMock(ConfigurationInterface::class);
         $configurationMock->method('getVisibilityLevel')
             ->willReturn(ReflectionProperty::IS_PUBLIC);
-        $configurationMock->method('isInternalDocumented')
-            ->willReturn(false);
 
         return new ReflectionFactory($configurationMock, $parserResultMock);
     }

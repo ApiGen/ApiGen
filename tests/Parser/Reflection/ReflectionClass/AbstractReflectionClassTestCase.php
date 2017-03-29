@@ -65,8 +65,6 @@ abstract class AbstractReflectionClassTestCase extends TestCase
         $configurationMock = $this->createMock(ConfigurationInterface::class);
         $configurationMock->method('getVisibilityLevel')
             ->willReturn(ReflectionProperty::IS_PUBLIC | ReflectionProperty::IS_PROTECTED);
-        $configurationMock->method('isInternalDocumented')
-            ->willReturn(false);
 
         return new ReflectionFactory($configurationMock, $parserStorageMock);
     }

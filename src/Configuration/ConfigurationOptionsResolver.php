@@ -41,7 +41,6 @@ final class ConfigurationOptionsResolver
         ConfigurationOptions::GOOGLE_CSE_ID => '',
         ConfigurationOptions::GOOGLE_ANALYTICS => '',
         ConfigurationOptions::MAIN => '',
-        ConfigurationOptions::INTERNAL => false,
         ConfigurationOptions::SOURCE => [],
         ConfigurationOptions::TEMPLATE => null,
         ConfigurationOptions::TEMPLATE_CONFIG => null,

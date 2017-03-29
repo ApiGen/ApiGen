@@ -177,10 +177,6 @@ final class UrlFilters extends Filters
                 return $matches[0];
             }
 
-            if ($this->configuration->getOption(ConfigurationOptions::INTERNAL) && isset($matches[2])) {
-                return $matches[2];
-            }
-
             return '';
         }, $text);
     }

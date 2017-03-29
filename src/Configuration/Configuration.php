@@ -73,11 +73,6 @@ final class Configuration implements ConfigurationInterface
         return $this->getOption('main');
     }
 
-    public function isInternalDocumented(): bool
-    {
-        return (bool) $this->getOption('internal');
-    }
-
     /**
      * @return string[]
      */
