@@ -70,7 +70,7 @@ class SourceCodeGeneratorTest extends AbstractContainerAwareTestCase
     private function prepareSourceCodeGenerator(): void
     {
         $this->configuration->resolveOptions([
-            'source' => __DIR__ . '/SourceCodeSource',
+            'source' => [__DIR__ . '/SourceCodeSource'],
             'destination' => TEMP_DIR . '/api'
         ]);
 

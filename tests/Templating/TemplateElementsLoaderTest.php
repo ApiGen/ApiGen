@@ -21,7 +21,7 @@ final class TemplateElementsLoaderTest extends AbstractContainerAwareTestCase
 
         $configuration = $this->container->getByType(ConfigurationInterface::class);
         $configuration->resolveOptions([
-            'source' => __DIR__,
+            'source' => [__DIR__],
             'destination' => TEMP_DIR,
             'annotationGroups' => ['todo']
         ]);

@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Tests\Command;
+namespace ApiGen\Tests\Console\Command;
 
 use ApiGen\Console\Command\GenerateCommand;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
@@ -28,34 +28,12 @@ final class GenerateCommandPrepareOptionsTest extends AbstractContainerAwareTest
         ]]);
     }
 
-    /**
-     * @expectedException \ApiGen\Configuration\Exceptions\ConfigurationException
-     */
-    public function testPrepareOptionsSourceNotSet(): void
-    {
-        MethodInvoker::callMethodOnObject($this->generateCommand, 'prepareOptions', [[
-            'config' => 'config.neon',
-            'destination' => TEMP_DIR . '/api',
-        ]]);
-    }
-
-    public function testPrepareOptions(): void
-    {
-        $options = MethodInvoker::callMethodOnObject($this->generateCommand, 'prepareOptions', [[
-            'config' => 'config.neon',
-            'destination' => TEMP_DIR . '/api',
-            'source' => __DIR__
-        ]]);
-
-        $this->assertSame(TEMP_DIR . '/api', $options['destination']);
-    }
-
     public function testPrepareOptionsConfigPriority(): void
     {
         $configAndDestinationOptions = [
             'config' => __DIR__ . '/apigen.neon',
             'destination' => TEMP_DIR . '/api',
-            'source' => __DIR__
+            'source' => [__DIR__]
         ];
 
         $options = MethodInvoker::callMethodOnObject($this->generateCommand, 'prepareOptions', [
@@ -68,7 +46,7 @@ final class GenerateCommandPrepareOptionsTest extends AbstractContainerAwareTest
     public function testPrepareOptionsMergeIsCorrect(): void
     {
         $options = MethodInvoker::callMethodOnObject($this->generateCommand, 'prepareOptions', [[
-            'source' => __DIR__,
+            'source' => [__DIR__],
             'config' => __DIR__ . '/apigen.neon',
             'destination' => TEMP_DIR . '/api',
         ]]);

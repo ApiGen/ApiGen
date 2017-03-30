@@ -2,6 +2,7 @@
 
 namespace ApiGen\Tests;
 
+use ApiGen\Configuration\ConfigurationOptions;
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use Nette\DI\Container;
 use PHPUnit\Framework\TestCase;
@@ -38,8 +39,8 @@ abstract class AbstractContainerAwareTestCase extends TestCase
 
         $configuration = $this->container->getByType(ConfigurationInterface::class);
         $configuration->resolveOptions([
-            'source' => __DIR__,
-            'destination' => TEMP_DIR,
+            ConfigurationOptions::SOURCE => [__DIR__],
+            ConfigurationOptions::DESTINATION => TEMP_DIR,
         ]);
     }
 }

@@ -28,7 +28,7 @@ final class ThemeResourcesTest extends TestCase
         $destinationDir = TEMP_DIR . '/destination';
 
         $this->configuration->resolveOptions([
-            'source' => __DIR__,
+            'source' => [__DIR__],
             'destination' => __DIR__ . '/Destination',
             'template' => [
                 'resources' => [

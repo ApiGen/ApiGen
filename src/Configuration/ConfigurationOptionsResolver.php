@@ -47,7 +47,7 @@ final class ConfigurationOptionsResolver
         ConfigurationOptions::FORCE_OVERWRITE => false,
         ConfigurationOptions::MAIN => '',
         ConfigurationOptions::TEMPLATE_CONFIG => null,
-        // helpers
+        // helpers - @todo: remove
         ConfigurationOptions::VISIBILITY_LEVELS => [],
     ];
 
@@ -117,7 +117,6 @@ final class ConfigurationOptionsResolver
 
     /**
      * @param mixed[] $options
-     * @return int
      */
     private function getAccessLevelForReflections(array $options): int
     {
@@ -224,19 +223,10 @@ final class ConfigurationOptionsResolver
     }
 
     /**
-     * @param string|string[] $source
-     * @return bool
+     * @param string[] $source
      */
-    private function allowedValuesForSource($source): bool
+    private function allowedValuesForSource(array $source): bool
     {
-        if (! $source) {
-            throw new ConfigurationException(
-                'Source is not set. Use "--source <directory>" or config to set it.'
-            );
-        } elseif (! is_array($source)) {
-            $source = [$source];
-        }
-
         foreach ($source as $singleSource) {
             $this->ensureSourceExists($singleSource);
         }
