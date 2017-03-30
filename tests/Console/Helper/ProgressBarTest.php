@@ -3,8 +3,6 @@
 namespace ApiGen\Tests\Console\Helper;
 
 use ApiGen\Console\Helper\ProgressBar;
-use ApiGen\Console\Input\LiberalFormatArgvInput;
-use ApiGen\Console\IO\IO;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Helper\ProgressBar as SymfonyProgressBar;
@@ -19,8 +17,7 @@ final class ProgressBarTest extends TestCase
 
     protected function setUp(): void
     {
-        $io = new IO(new LiberalFormatArgvInput, new NullOutput);
-        $this->progressBar = new ProgressBar($io);
+        $this->progressBar = new ProgressBar(new NullOutput());
     }
 
     public function testInit(): void

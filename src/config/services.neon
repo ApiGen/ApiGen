@@ -1,0 +1,62 @@
+# Console
+- ApiGen\Console\Helper\ProgressBar
+- ApiGen\Console\Command\GenerateCommand
+- Symfony\Component\Console\Output\ConsoleOutput
+
+# Utils
+- ApiGen\Utils\FileSystem
+- ApiGen\Utils\Finder\NetteFinder
+
+# Configuration
+- ApiGen\Configuration\Configuration
+- ApiGen\Configuration\ConfigurationOptionsResolver
+- ApiGen\Configuration\OptionsResolverFactory
+- ApiGen\Configuration\Theme\ThemeConfigFactory
+- ApiGen\Configuration\Theme\ThemeConfigOptionsResolver
+
+# Elements
+- ApiGen\Generator\Resolvers\ElementResolver
+- ApiGen\Generator\Resolvers\RelativePathResolver
+
+# Generator
+- ApiGen\Generator\EventSubscriber\ProgressBarSubscriber
+- ApiGen\Generator\GeneratorQueue
+# intentionally first to collect output from other generators
+g1: ApiGen\Generator\TemplateGenerators\CombinedGenerator
+g2: ApiGen\Generator\TemplateGenerators\AnnotationGroupsGenerator
+g3: ApiGen\Generator\TemplateGenerators\ElementListGenerator
+g4: ApiGen\Generator\TemplateGenerators\OverviewGenerator
+g5: ApiGen\Generator\TemplateGenerators\SourceCodeGenerator
+# elements
+g6: ApiGen\Generator\TemplateGenerators\ClassElementGenerator
+g7: ApiGen\Generator\TemplateGenerators\ConstantElementGenerator
+g8: ApiGen\Generator\TemplateGenerators\FunctionElementGenerator
+g9: ApiGen\Generator\TemplateGenerators\NamespaceGenerator
+g10: ApiGen\Generator\TemplateGenerators\Loaders\NamespaceLoader
+
+# Templating
+- ApiGen\Templating\TemplateElementsLoader
+- ApiGen\Templating\TemplateFactory
+- ApiGen\Templating\TemplateNavigator
+- ApiGen\Templating\Filters\Helpers\ElementLinkFactory
+- ApiGen\Templating\Filters\Helpers\ElementUrlFactory
+- ApiGen\Templating\Filters\Helpers\LinkBuilder
+- ApiGen\Templating\Filters\AnnotationFilters
+- ApiGen\Templating\Filters\PathFilters
+- ApiGen\Templating\Filters\ResolverFilters
+- ApiGen\Templating\Filters\SourceFilters
+- ApiGen\Templating\Filters\UrlFilters
+- ApiGen\Templating\Filters\NamespaceUrlFilters
+- ApiGen\Templating\Filters\ElementUrlFilters
+
+# Theme
+- ApiGen\Theme\ThemeResources
+
+# Syntax Highlighter
+- ApiGen\Generator\SourceCodeHighlighter\FshlSourceCodeHighlighter
+- FSHL\Output\Html
+- FSHL\Lexer\Php
+-
+    class: FSHL\Highlighter
+    setup:
+        - setLexer(@FSHL\Lexer\Php)

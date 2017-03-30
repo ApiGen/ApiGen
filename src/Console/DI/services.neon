@@ -1,8 +1,0 @@
-services:
-    - ApiGen\Console\Helper\ProgressBar
-    - ApiGen\Console\Command\GenerateCommand
-
-    # Input Output
-    - ApiGen\Console\IO\IO
-    - ApiGen\Console\Input\LiberalFormatArgvInput
-    - Symfony\Component\Console\Output\ConsoleOutput

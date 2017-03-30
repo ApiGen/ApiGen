@@ -4,7 +4,6 @@ namespace ApiGen\Console\Command;
 
 use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions;
-use ApiGen\Contracts\Console\IO\IOInterface;
 use ApiGen\Contracts\Generator\GeneratorQueueInterface;
 use ApiGen\Contracts\Parser\ParserInterface;
 use ApiGen\Contracts\Parser\ParserStorageInterface;
@@ -50,14 +49,14 @@ final class GenerateCommand extends AbstractCommand
     private $themeResources;
 
     /**
-     * @var IOInterface
-     */
-    private $io;
-
-    /**
      * @var FinderInterface
      */
     private $finder;
+
+    /**
+     * @var OutputInterface
+     */
+    private $output;
 
     public function __construct(
         Configuration $configuration,
@@ -66,7 +65,6 @@ final class GenerateCommand extends AbstractCommand
         GeneratorQueueInterface $generatorQueue,
         FileSystem $fileSystem,
         ThemeResources $themeResources,
-        IOInterface $io,
         FinderInterface $finder
     ) {
         parent::__construct();
@@ -77,7 +75,6 @@ final class GenerateCommand extends AbstractCommand
         $this->generatorQueue = $generatorQueue;
         $this->fileSystem = $fileSystem;
         $this->themeResources = $themeResources;
-        $this->io = $io;
         $this->finder = $finder;
     }
 
@@ -107,6 +104,8 @@ final class GenerateCommand extends AbstractCommand
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $this->output = $output;
+
         $options = $this->prepareOptions($input->getOptions());
         $this->scanAndParse($options);
         $this->generate($options);
@@ -118,7 +117,7 @@ final class GenerateCommand extends AbstractCommand
      */
     private function scanAndParse(array $options): void
     {
-        $this->io->writeln('<info>Scanning sources and parsing</info>');
+        $this->output->writeln('<info>Scanning sources and parsing</info>');
 
         $files = $this->finder->find(
             $options[ConfigurationOptions::SOURCE],
@@ -128,7 +127,7 @@ final class GenerateCommand extends AbstractCommand
         $this->parser->parse($files);
 
         $stats = $this->parserStorage->getDocumentedStats();
-        $this->io->writeln(sprintf(
+        $this->output->writeln(sprintf(
             'Found <comment>%d classes</comment>, <comment>%d constants</comment> and <comment>%d functions</comment>',
             $stats['classes'],
             $stats['constants'],
@@ -145,7 +144,7 @@ final class GenerateCommand extends AbstractCommand
             $options[ConfigurationOptions::DESTINATION],
             (bool) $options[ConfigurationOptions::FORCE_OVERWRITE]
         );
-        $this->io->writeln('<info>Generating API documentation</info>');
+        $this->output->writeln('<info>Generating API documentation</info>');
         $this->generatorQueue->run();
     }
 
