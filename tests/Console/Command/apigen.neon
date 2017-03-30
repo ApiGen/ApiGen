@@ -1,3 +1,4 @@
-source: src
+source:
+    - src
 accessLevels: [public, protected, private]
 baseUrl: http://apigen.org

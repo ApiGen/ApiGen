@@ -169,7 +169,8 @@ final class GenerateCommand extends AbstractCommand
      */
     private function loadOptionsFromConfig(array $options): array
     {
-        $configFile = $options[ConfigurationOptions::CONFIG] ?? getcwd() . '/apigen.neon';
+        $configFile = $options[ConfigurationOptions::CONFIG] ?? getcwd() . DIRECTORY_SEPARATOR . 'apigen.neon';
+        $configFile = $this->fileSystem->getAbsolutePath($configFile);
 
         if (file_exists($configFile)) {
             $configFileOptions = (new Loader())->load($configFile);

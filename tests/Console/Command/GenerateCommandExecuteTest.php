@@ -35,7 +35,7 @@ final class GenerateCommandExecuteTest extends AbstractContainerAwareTestCase
         $inputMock->method('getOptions')->willReturn([
             'config' => null,
             'destination' => TEMP_DIR . '/Api',
-            'source' => __DIR__ . '/Source'
+            'source' => [__DIR__ . '/Source']
         ]);
         $outputMock = $this->createMock(OutputInterface::class);
 
