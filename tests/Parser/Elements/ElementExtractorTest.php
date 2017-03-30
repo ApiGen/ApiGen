@@ -5,10 +5,9 @@ namespace ApiGen\Parser\Tests\Elements;
 use ApiGen\Contracts\Parser\Elements\ElementExtractorInterface;
 use ApiGen\Contracts\Parser\ParserStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
-use ApiGen\Tests\ContainerFactory;
-use PHPUnit\Framework\TestCase;
+use ApiGen\Tests\AbstractContainerAwareTestCase;
 
-final class ElementExtractorTest extends TestCase
+final class ElementExtractorTest extends AbstractContainerAwareTestCase
 {
     /**
      * @var ParserStorageInterface
@@ -22,10 +21,8 @@ final class ElementExtractorTest extends TestCase
 
     protected function setUp(): void
     {
-        $container = (new ContainerFactory)->create();
-
-        $this->elementExtractor = $container->getByType(ElementExtractorInterface::class);
-        $this->parserStorage = $container->getByType(ParserStorageInterface::class);
+        $this->elementExtractor = $this->container->getByType(ElementExtractorInterface::class);
+        $this->parserStorage = $this->container->getByType(ParserStorageInterface::class);
     }
 
     public function testExtractElementsByAnnotation(): void

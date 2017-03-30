@@ -4,6 +4,7 @@ namespace ApiGen\Tests;
 
 use ApiGen\Configuration\ConfigurationOptions;
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
+use ApiGen\DI\Container\ContainerFactory;
 use Nette\DI\Container;
 use PHPUnit\Framework\TestCase;
 

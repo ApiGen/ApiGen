@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Tests;
+namespace ApiGen\DI\Container;
 
 use Nette\Configurator;
 use Nette\DI\Container;
@@ -11,7 +11,7 @@ final class ContainerFactory
     {
         $configurator = new Configurator;
         $configurator->setTempDirectory(TEMP_DIR);
-        $configurator->addConfig(__DIR__ . '/../src/config/config.neon');
+        $configurator->addConfig(__DIR__ . '/../../config/config.neon');
         return $configurator->createContainer();
     }
 }

@@ -3,12 +3,11 @@
 namespace ApiGen\Tests\Theme;
 
 use ApiGen\Configuration\Configuration;
-use ApiGen\Tests\ContainerFactory;
+use ApiGen\Tests\AbstractContainerAwareTestCase;
 use ApiGen\Theme\ThemeResources;
 use ApiGen\Utils\FileSystem;
-use PHPUnit\Framework\TestCase;
 
-final class ThemeResourcesTest extends TestCase
+final class ThemeResourcesTest extends AbstractContainerAwareTestCase
 {
     /**
      * @var Configuration
@@ -17,8 +16,7 @@ final class ThemeResourcesTest extends TestCase
 
     protected function setUp(): void
     {
-        $container = (new ContainerFactory)->create();
-        $this->configuration = $container->getByType(Configuration::class);
+        $this->configuration = $this->container->getByType(Configuration::class);
     }
 
     public function testCopyToDestination(): void
