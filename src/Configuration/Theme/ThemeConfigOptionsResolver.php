@@ -15,9 +15,6 @@ final class ThemeConfigOptionsResolver extends Nette\Object
      */
     private $defaults = [
         'name' => '',
-        'options' => [
-            'elementDetailsCollapsed' => true,
-        ],
         ThemeConfigOptions::RESOURCES => [
             'resources' => 'resources'
         ],

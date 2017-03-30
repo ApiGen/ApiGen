@@ -128,24 +128,6 @@ $(window).load(function() {
 		$caption.click();
 	}
 
-	// Open details
-	if (ApiGen.config.options.elementDetailsCollapsed) {
-		var trCollapsed = true;
-		$('tr', $content).filter(':has(.detailed)')
-			.click(function() {
-				var $this = $(this);
-				if (trCollapsed) {
-					$('.short', $this).hide();
-					$('.detailed', $this).show();
-					trCollapsed = false;
-				} else {
-					$('.short', $this).show();
-					$('.detailed', $this).hide();
-					trCollapsed = true;
-				}
-			});
-	}
-
 	// Splitter
 	var splitterWidth = $splitter.width();
 	var splitterPosition = $.cookie('splitter') ? parseInt($.cookie('splitter')) : null;

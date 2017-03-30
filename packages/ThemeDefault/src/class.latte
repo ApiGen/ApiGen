@@ -117,13 +117,7 @@
 			{/foreach}
 		){/block}</code>
 
-		{if $config->template['options']['elementDetailsCollapsed']}
-		<div class="description short">
-			{$method|shortDescription:true|noescape}
-		</div>
-		{/if}
-
-		<div n:class="description, detailed, $config->template['options']['elementDetailsCollapsed'] ? hidden">
+		<div class="description detailed">
 			{$method|longDescription|noescape}
 
 			{if !$class->deprecated && $method->deprecated}
@@ -262,11 +256,7 @@
 			{/if}
 			</code>
 
-			<div n:if="$config->template['options']['elementDetailsCollapsed']" class="description short">
-				{$constant|shortDescription:true|noescape}
-			</div>
-
-			<div n:class="description, detailed, $config->template['options']['elementDetailsCollapsed'] ? hidden">
+			<div class="description detailed">
 				{$constant|longDescription|noescape}
 
                 {var $filteredAnnotations = ($class->annotations|annotationFilter: ['var'])}
@@ -319,11 +309,7 @@
 				<a href="{$property|sourceUrl}" title="Go to source code"><var>${$property->name}</var></a>
 			{/if}
 
-			<div n:if="$config->template['options']['elementDetailsCollapsed']" class="description short">
-				{$property|shortDescription:true|noescape}
-			</div>
-
-			<div n:class="description, detailed, $config->template['options']['elementDetailsCollapsed'] ? hidden">
+			<div class="description detailed">
 				{$property|longDescription|noescape}
 
                 {var $filteredAnnotations = ($class->annotations|annotationFilter: ['var'])}
