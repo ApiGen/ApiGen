@@ -42,7 +42,7 @@ final class ThemeConfig
     {
         if ($this->options === null) {
             $options = (new Loader)->load($this->filePath);
-            $options['templatesPath'] = dirname($this->filePath);
+            $options[ThemeConfigOptions::TEMPLATES_PATH] = dirname($this->filePath);
             $this->options = $this->themeConfigOptionsResolver->resolve($options);
         }
 

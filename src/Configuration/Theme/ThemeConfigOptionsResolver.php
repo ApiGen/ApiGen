@@ -86,6 +86,7 @@ final class ThemeConfigOptionsResolver extends Nette\Object
         $this->resolver = $this->optionsResolverFactory->create();
         $this->setDefaults();
         $this->setNormalizers();
+
         return $this->resolver->resolve($options);
     }
 

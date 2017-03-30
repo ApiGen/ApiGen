@@ -1,14 +1,9 @@
 <?php
 
-/**
- * @param string $file
- * @return bool
- */
-function includeIfExists($file)
+function includeIfExists(string $file): bool
 {
-	return file_exists($file) ? include $file : FALSE;
+	return file_exists($file) ? include $file : false;
 }
-
 
 if ( ! ($loader = includeIfExists(__DIR__ . '/../vendor/autoload.php'))
 	&& ! ($loader = includeIfExists(__DIR__ . '/../../../autoload.php')))
