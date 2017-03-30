@@ -7,9 +7,9 @@
 <div id="content" class="function">
 	<h1 n:class="$function->deprecated ? deprecated">Function {$function->shortName}</h1>
 
-	{var $description = ($function|description)}
-	<div class="description" n:if="$description">
-		{$function|description|noescape}
+	{var $functionDescription = ($function|description)}
+	<div class="description" n:if="$functionDescription">
+		{$functionDescription|noescape}
 	</div>
 
 	<div class="info">
