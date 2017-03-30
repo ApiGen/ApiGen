@@ -6,9 +6,9 @@
 {block content}
 <div id="content" class="class">
 	<h1 n:class="$class->deprecated ? deprecated">{if $class->interface}Interface{elseif $class->trait}Trait{else}Class{/if} {$class->shortName}</h1>
-	{var $longDescription = ($class|longDescription)}
-	<div class="description" n:if="$longDescription">
-	{$class|longDescription|noescape}
+	{var $classDescription = ($class|description)}
+	<div class="description" n:if="$classDescription">
+		{$classDescription|noescape}
 	</div>
 
 	<dl class="tree" n:if="$class->parentClass || $class->ownInterfaces || $class->ownTraits">
@@ -118,7 +118,7 @@
 		){/block}</code>
 
 		<div class="description detailed">
-			{$method|longDescription|noescape}
+			{$method|description|noescape}
 
 			{if !$class->deprecated && $method->deprecated}
 				<h4>Deprecated</h4>
@@ -138,7 +138,7 @@
 				<div class="list"><dl>
 				{foreach $method->parameters as $parameter}
 					<dt><var>${$parameter->name}</var>{if $parameter->unlimited},…{/if}</dt>
-					<dd>{$parameter->description|description:$method|noescape}</dd>
+					<dd>{$parameter->description|annotationDescription:$method|noescape}</dd>
 				{/foreach}
 				</dl></div>
 			{/if}
@@ -257,7 +257,7 @@
 			</code>
 
 			<div class="description detailed">
-				{$constant|longDescription|noescape}
+				{$constant|description|noescape}
 
                 {var $filteredAnnotations = ($class->annotations|annotationFilter: ['var'])}
 				{foreach $filteredAnnotations as $annotation => $descriptions}
@@ -310,7 +310,7 @@
 			{/if}
 
 			<div class="description detailed">
-				{$property|longDescription|noescape}
+				{$property|description|noescape}
 
                 {var $filteredAnnotations = ($class->annotations|annotationFilter: ['var'])}
 				{foreach $filteredAnnotations as $annotation => $descriptions}

@@ -41,9 +41,7 @@ interface ElementReflectionInterface extends NamedInterface
 
     public function hasAnnotation(string $name): bool;
 
-    public function getShortDescription(): string;
-
-    public function getLongDescription(): string;
+    public function getDescription(): string;
 
     /**
      * @return string|bool

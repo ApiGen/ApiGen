@@ -145,7 +145,7 @@ final class UrlFiltersTest extends AbstractContainerAwareTestCase
         );
     }
 
-    public function testDescription(): void
+    public function testAnnotationDescription(): void
     {
         $docBlock = <<<DOC
 /**
@@ -160,32 +160,20 @@ DOC;
  * with more rows
  */
 EXP;
-        $this->assertSame($expected, $this->urlFilters->description($docBlock, $reflectionElementMock));
+        $this->assertSame($expected, $this->urlFilters->annotationDescription($docBlock, $reflectionElementMock));
     }
 
-    public function testShortDescription(): void
-    {
-        $reflectionElementMock = $this->createMock(ElementReflectionInterface::class);
-        $reflectionElementMock->method('getShortDescription')
-            ->willReturn('Some short description');
-
-        $this->assertSame(
-            'Some short description',
-            $this->urlFilters->shortDescription($reflectionElementMock)
-        );
-    }
-
-    public function testLongDescription(): void
+    public function testDescription(): void
     {
         $longDescription = <<<DOC
 Some long description with example:
 <code>echo "hi";</code>
 DOC;
         $reflectionElementMock = $this->createMock(ElementReflectionInterface::class);
-        $reflectionElementMock->method('getLongDescription')
+        $reflectionElementMock->method('getDescription')
             ->willReturn($longDescription);
 
-        $this->assertSame($longDescription, $this->urlFilters->longDescription($reflectionElementMock));
+        $this->assertSame($longDescription, $this->urlFilters->description($reflectionElementMock));
     }
 
     public function testHighlightPhp(): void

@@ -7,9 +7,9 @@
 <div id="content" class="constant">
 	<h1 n:class="$constant->deprecated ? deprecated">Constant {$constant->shortName}</h1>
 
-	{var $longDescripiton = ($constant|longDescription)}
-	<div n:if="$longDescripiton" class="description">
-		{$longDescripiton|noescape}
+	{var $constantDescription = ($constant|description)}
+	<div n:if="$constantDescription" class="description">
+		{$constantDescription|noescape}
 	</div>
 
 	<div class="info">

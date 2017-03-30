@@ -69,14 +69,9 @@ final class ReflectionElementTest extends TestCase
         $this->assertSame([], $this->reflectionClass->getNamespaceAliases());
     }
 
-    public function testGetShortDescription(): void
+    public function testGetDescription(): void
     {
-        $this->assertSame('This is some description', $this->reflectionClass->getShortDescription());
-    }
-
-    public function testGetLongDescription(): void
-    {
-        $this->assertSame('This is some description', $this->reflectionClass->getLongDescription());
+        $this->assertSame('This is some description', $this->reflectionClass->getDescription());
     }
 
     public function testGetDocComment(): void
