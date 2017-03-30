@@ -6,9 +6,9 @@
 {block content}
 <div id="content" class="class">
 	<h1 n:class="$class->deprecated ? deprecated">{if $class->interface}Interface{elseif $class->trait}Trait{else}Class{/if} {$class->shortName}</h1>
-	{var $longDescription = ($class|longDescription)}
-	<div class="description" n:if="$longDescription">
-	{$class|longDescription|noescape}
+	{var $classDescription = ($class|description)}
+	<div class="description" n:if="$classDescription">
+		{$classDescription|noescape}
 	</div>
 
 	<dl class="tree" n:if="$class->parentClass || $class->ownInterfaces || $class->ownTraits">
@@ -117,14 +117,8 @@
 			{/foreach}
 		){/block}</code>
 
-		{if $config->template['options']['elementDetailsCollapsed']}
-		<div class="description short">
-			{$method|shortDescription:true|noescape}
-		</div>
-		{/if}
-
-		<div n:class="description, detailed, $config->template['options']['elementDetailsCollapsed'] ? hidden">
-			{$method|longDescription|noescape}
+		<div class="description detailed">
+			{$method|description|noescape}
 
 			{if !$class->deprecated && $method->deprecated}
 				<h4>Deprecated</h4>
@@ -144,7 +138,7 @@
 				<div class="list"><dl>
 				{foreach $method->parameters as $parameter}
 					<dt><var>${$parameter->name}</var>{if $parameter->unlimited},…{/if}</dt>
-					<dd>{$parameter->description|description:$method|noescape}</dd>
+					<dd>{$parameter->description|annotationDescription:$method|noescape}</dd>
 				{/foreach}
 				</dl></div>
 			{/if}
@@ -262,12 +256,8 @@
 			{/if}
 			</code>
 
-			<div n:if="$config->template['options']['elementDetailsCollapsed']" class="description short">
-				{$constant|shortDescription:true|noescape}
-			</div>
-
-			<div n:class="description, detailed, $config->template['options']['elementDetailsCollapsed'] ? hidden">
-				{$constant|longDescription|noescape}
+			<div class="description detailed">
+				{$constant|description|noescape}
 
                 {var $filteredAnnotations = ($class->annotations|annotationFilter: ['var'])}
 				{foreach $filteredAnnotations as $annotation => $descriptions}
@@ -319,12 +309,8 @@
 				<a href="{$property|sourceUrl}" title="Go to source code"><var>${$property->name}</var></a>
 			{/if}
 
-			<div n:if="$config->template['options']['elementDetailsCollapsed']" class="description short">
-				{$property|shortDescription:true|noescape}
-			</div>
-
-			<div n:class="description, detailed, $config->template['options']['elementDetailsCollapsed'] ? hidden">
-				{$property|longDescription|noescape}
+			<div class="description detailed">
+				{$property|description|noescape}
 
                 {var $filteredAnnotations = ($class->annotations|annotationFilter: ['var'])}
 				{foreach $filteredAnnotations as $annotation => $descriptions}

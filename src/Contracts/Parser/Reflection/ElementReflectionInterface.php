@@ -6,8 +6,6 @@ use ApiGen\Contracts\Parser\Reflection\Behavior\NamedInterface;
 
 interface ElementReflectionInterface extends NamedInterface
 {
-    public function isMain(): bool;
-
     public function isDocumented(): bool;
 
     public function isDeprecated(): bool;
@@ -43,9 +41,7 @@ interface ElementReflectionInterface extends NamedInterface
 
     public function hasAnnotation(string $name): bool;
 
-    public function getShortDescription(): string;
-
-    public function getLongDescription(): string;
+    public function getDescription(): string;
 
     /**
      * @return string|bool

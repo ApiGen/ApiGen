@@ -2,7 +2,6 @@
 
 namespace ApiGen\Parser\Elements;
 
-use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Parser\Elements\ElementsInterface;
 use ApiGen\Contracts\Parser\Elements\NamespaceSorterInterface;
 
@@ -14,19 +13,13 @@ final class NamespaceSorter implements NamespaceSorterInterface
     private $namespaces;
 
     /**
-     * @var ConfigurationInterface
-     */
-    private $configuration;
-
-    /**
      * @var ElementsInterface
      */
     private $elements;
 
-    public function __construct(ElementsInterface $elements, ConfigurationInterface $configuration)
+    public function __construct(ElementsInterface $elements)
     {
         $this->elements = $elements;
-        $this->configuration = $configuration;
     }
 
     /**
@@ -49,7 +42,7 @@ final class NamespaceSorter implements NamespaceSorterInterface
         }
 
         uksort($this->namespaces, function ($one, $two) {
-            return $this->compareNamespaceNames($one, $two, $this->configuration->getMain());
+            return $this->compareNamespaceNames($one, $two);
         });
 
         return $this->namespaces;
@@ -84,20 +77,11 @@ final class NamespaceSorter implements NamespaceSorterInterface
         }
     }
 
-    private function compareNamespaceNames(string $firstNamespace, string $secondNamespace, string $main): int
+    private function compareNamespaceNames(string $firstNamespace, string $secondNamespace): int
     {
         // \ as separator has to be first
         $firstNamespace = str_replace('\\', ' ', $firstNamespace);
         $secondNamespace = str_replace('\\', ' ', $secondNamespace);
-
-        // @todo: battle ship?
-        if ($main) {
-            if (strpos($firstNamespace, $main) === 0 && strpos($secondNamespace, $main) !== 0) {
-                return -1;
-            } elseif (strpos($firstNamespace, $main) !== 0 && strpos($secondNamespace, $main) === 0) {
-                return 1;
-            }
-        }
 
         return strcasecmp($firstNamespace, $secondNamespace);
     }

@@ -68,11 +68,6 @@ final class Configuration implements ConfigurationInterface
         return $this->options[ConfigurationOptions::VISIBILITY_LEVELS];
     }
 
-    public function getMain(): string
-    {
-        return $this->options[ConfigurationOptions::MAIN];
-    }
-
     /**
      * @return string[]
      */

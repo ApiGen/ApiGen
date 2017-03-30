@@ -31,12 +31,6 @@ abstract class AbstractReflectionElement extends AbstractReflection implements E
         return $this->reflection->getEndPosition();
     }
 
-    public function isMain(): bool
-    {
-        $main = $this->configuration->getMain();
-        return empty($main) || strpos($this->getName(), $main) === 0;
-    }
-
     public function isDocumented(): bool
     {
         if ($this->isDocumented === null) {
@@ -104,22 +98,7 @@ abstract class AbstractReflectionElement extends AbstractReflection implements E
         return $this->reflection->getNamespaceAliases();
     }
 
-    public function getShortDescription(): string
-    {
-        $short = $this->reflection->getAnnotation(ReflectionAnnotation::SHORT_DESCRIPTION);
-        if (! empty($short)) {
-            return $short;
-        }
-
-        if ($this instanceof ReflectionProperty || $this instanceof ReflectionConstant) {
-            $var = $this->getAnnotation('var');
-            [, $short] = preg_split('~\s+|$~', $var[0], 2);
-        }
-
-        return (string) $short;
-    }
-
-    public function getLongDescription(): string
+    public function getDescription(): string
     {
         $short = $this->getShortDescription();
         $long = $this->reflection->getAnnotation(ReflectionAnnotation::LONG_DESCRIPTION);
@@ -194,5 +173,20 @@ abstract class AbstractReflectionElement extends AbstractReflection implements E
         }
 
         return $annotations;
+    }
+
+    private function getShortDescription(): string
+    {
+        $short = $this->reflection->getAnnotation(ReflectionAnnotation::SHORT_DESCRIPTION);
+        if (! empty($short)) {
+            return $short;
+        }
+
+        if ($this instanceof ReflectionProperty || $this instanceof ReflectionConstant) {
+            $var = $this->getAnnotation('var');
+            [, $short] = preg_split('~\s+|$~', $var[0], 2);
+        }
+
+        return (string) $short;
     }
 }

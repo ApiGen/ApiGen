@@ -31,11 +31,6 @@ interface ConfigurationInterface
     public function getVisibilityLevel(): int;
 
     /**
-     * Return name of main library
-     */
-    public function getMain(): string;
-
-    /**
      * List of annotations.
      *
      * @return string[]

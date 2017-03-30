@@ -125,20 +125,15 @@ final class UrlFilters extends Filters
         return implode('|', $links);
     }
 
-    public function description(string $annotation, ElementReflectionInterface $reflectionElement): string
+    public function annotationDescription(string $annotation, ElementReflectionInterface $reflectionElement): string
     {
         $description = trim(strpbrk($annotation, "\n\r\t $")) ?: $annotation;
         return $this->doc($description, $reflectionElement);
     }
 
-    public function shortDescription(ElementReflectionInterface $reflectionElement): string
+    public function description(ElementReflectionInterface $element): string
     {
-        return $this->doc($reflectionElement->getShortDescription(), $reflectionElement);
-    }
-
-    public function longDescription(ElementReflectionInterface $element): string
-    {
-        $long = $element->getLongDescription();
+        $long = $element->getDescription();
 
         // Merge lines
         $long = preg_replace_callback('~(?:<(code|pre)>.+?</\1>)|([^<]*)~s', function ($matches) {

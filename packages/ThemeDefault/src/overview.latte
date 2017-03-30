@@ -12,7 +12,7 @@
 	<table class="summary" id="namespaces" n:if="$namespaces">
 		<caption>Namespaces summary</caption>
 		{foreach $namespaces as $namespace}
-			{continueIf ($config->main && 0 !== strpos($namespace, $config->main)) || $namespace === 'PHP'}
+			{continueIf $namespace === 'PHP'}
 			<tr>
 				{var $group = true}
 				<td class="name"><a href="{$namespace|namespaceUrl}">{$namespace}</a></td>

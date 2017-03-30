@@ -45,7 +45,6 @@ final class ConfigurationOptionsResolver
         ConfigurationOptions::BASE_URL => '',
         ConfigurationOptions::CONFIG => '',
         ConfigurationOptions::FORCE_OVERWRITE => false,
-        ConfigurationOptions::MAIN => '',
         ConfigurationOptions::TEMPLATE_CONFIG => null,
         // helpers - @todo: remove
         ConfigurationOptions::VISIBILITY_LEVELS => [],

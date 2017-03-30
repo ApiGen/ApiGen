@@ -38,7 +38,6 @@ To add another configuration, add `apigen.neon` to your root project.
 You can setup all these options:
 
 ```yaml
-main: ApiGen
 visibilityLevels: [public, protected] # array
 annotationGroups: [todo, deprecated] # array
 title: "ApiGen Docs"

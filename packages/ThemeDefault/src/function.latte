@@ -7,9 +7,9 @@
 <div id="content" class="function">
 	<h1 n:class="$function->deprecated ? deprecated">Function {$function->shortName}</h1>
 
-	{var $longDescription = ($function|longDescription)}
-	<div class="description" n:if="$longDescription">
-		{$function|longDescription|noescape}
+	{var $functionDescription = ($function|description)}
+	<div class="description" n:if="$functionDescription">
+		{$functionDescription|noescape}
 	</div>
 
 	<div class="info">
@@ -37,7 +37,7 @@
 		<td class="value"><code>{block|strip}
 			<var>{if $parameter->passedByReference}&amp; {/if}${$parameter->name}</var>{if $parameter->defaultValueAvailable} = {$parameter->defaultValueDefinition|highlightPHP:$function|noescape}{elseif $parameter->unlimited},…{/if}
 		{/block}</code></td>
-		<td>{$parameter->description|description:$function}</td>
+		<td>{$parameter->description|annotationDescription:$function}</td>
 	</tr>
 	</table>
 
@@ -48,7 +48,7 @@
 			{$annotations['return'][0]|typeLinks:$function|noescape}
 		</code></td>
 		<td>
-			{$annotations['return'][0]|description:$function|noescape}
+			{$annotations['return'][0]|annotationDescription:$function|noescape}
 		</td>
 	</tr>
 	</table>
@@ -60,7 +60,7 @@
 			{$throws|typeLinks:$function|noescape}
 		</code></td>
 		<td>
-			{$throws|description:$function|noescape}
+			{$throws|annotationDescription:$function|noescape}
 		</td>
 	</tr>
 	</table>
