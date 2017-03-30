@@ -1,6 +1,7 @@
 #!/usr/bin/env php
 <?php declare(strict_types=1);
 
+use ApiGen\DI\Container\ContainerFactory;
 use Symfony\Component\Console\Application;
 
 // Performance boost
@@ -9,22 +10,11 @@ gc_disable();
 // Require Composer autoload
 require_once getcwd() . '/vendor/autoload.php';
 
-// Create temp dir
-$tempDir = sys_get_temp_dir() . '/_apigen';
-$fileSystem = new ApiGen\Utils\FileSystem;
-$fileSystem->purgeDir($tempDir);
-
 // Init debugger
 Tracy\Debugger::$strictMode = TRUE;
 Tracy\Debugger::enable(Tracy\Debugger::DEVELOPMENT);
 
-// @todo: move to container factory
-$configurator = new Nette\Configurator;
-$configurator->setDebugMode( ! Tracy\Debugger::$productionMode);
-$configurator->setTempDirectory($tempDir);
-$configurator->addConfig(__DIR__ . '/../src/config/config.neon');
-$container = $configurator->createContainer();
-
 /** @var Application $application */
+$container = (new ContainerFactory)->create();
 $application = $container->getByType(Application::class);
 $application->run();

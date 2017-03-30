@@ -10,7 +10,7 @@ final class ContainerFactory
     public function create(): Container
     {
         $configurator = new Configurator;
-        $configurator->setTempDirectory(TEMP_DIR);
+        $configurator->setTempDirectory(sys_get_temp_dir() . '/_apigen');
         $configurator->addConfig(__DIR__ . '/../../config/config.neon');
         return $configurator->createContainer();
     }
