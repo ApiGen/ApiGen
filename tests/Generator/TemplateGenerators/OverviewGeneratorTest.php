@@ -14,7 +14,7 @@ final class OverviewGeneratorTest extends AbstractContainerAwareTestCase
         /** @var ConfigurationInterface $configuration */
         $configuration = $this->container->getByType(ConfigurationInterface::class);
         $configuration->resolveOptions([
-            'source' => __DIR__,
+            'source' => [__DIR__],
             'destination' => TEMP_DIR
         ]);
     }

@@ -25,7 +25,7 @@ final class TemplateNavigatorTest extends AbstractContainerAwareTestCase
     {
         $this->configuration = $this->container->getByType(ConfigurationInterface::class);
         $this->configuration->resolveOptions([
-            'source' => __DIR__,
+            'source' => [__DIR__],
             'destination' => TEMP_DIR . '/api'
         ]);
 

@@ -32,10 +32,12 @@ final class GenerateCommandExecuteTest extends AbstractContainerAwareTestCase
         $this->assertFileNotExists(TEMP_DIR . '/Api/index.html');
 
         $inputMock = $this->createMock(InputInterface::class);
+        $inputMock->method('getArgument')->willReturn([
+            __DIR__ . '/Source'
+        ]);
         $inputMock->method('getOptions')->willReturn([
             'config' => null,
             'destination' => TEMP_DIR . '/Api',
-            'source' => [__DIR__ . '/Source']
         ]);
         $outputMock = $this->createMock(OutputInterface::class);
 
@@ -57,6 +59,9 @@ final class GenerateCommandExecuteTest extends AbstractContainerAwareTestCase
     public function testExecuteWithError(): void
     {
         $inputMock = $this->createMock(InputInterface::class);
+        $inputMock->method('getArgument')->willReturn([
+            __DIR__
+        ]);
         $inputMock->method('getOptions')->willReturn([
             'config' => null
         ]);

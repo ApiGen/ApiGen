@@ -26,7 +26,7 @@ final class TemplateFactoryTest extends AbstractContainerAwareTestCase
         /** @var ConfigurationInterface $configuration */
         $configuration = $this->container->getByType(ConfigurationInterface::class);
         $configuration->resolveOptions([
-           'source' => __DIR__,
+           'source' => [__DIR__],
            'destination' => __DIR__ . '/Destination'
         ]);
     }

@@ -27,7 +27,7 @@ class CombinedGeneratorTest extends AbstractContainerAwareTestCase
     public function testGenerate(): void
     {
         $this->configuration->resolveOptions([
-            'source' => TEMP_DIR,
+            'source' => [TEMP_DIR],
             'destination' => TEMP_DIR . '/api'
         ]);
         $this->combinedGenerator->generate();

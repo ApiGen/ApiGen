@@ -39,7 +39,7 @@ final class AnnotationGroupsGeneratorTest extends AbstractContainerAwareTestCase
     public function testOptions(): void
     {
         $resolvedOptions = $this->configuration->resolveOptions([
-            'source' => TEMP_DIR,
+            'source' => [TEMP_DIR],
             'destination' => TEMP_DIR . '/api',
             'annotationGroups' => ['api', 'event'],
         ]);
@@ -87,7 +87,7 @@ final class AnnotationGroupsGeneratorTest extends AbstractContainerAwareTestCase
     private function setCorrectConfiguration(): void
     {
         $resolvedOptions = $this->configuration->resolveOptions([
-            'source' => TEMP_DIR,
+            'source' => [TEMP_DIR],
             'destination' => TEMP_DIR . '/api',
             'annotationGroups' => ['deprecated']
         ]);
