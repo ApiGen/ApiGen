@@ -106,7 +106,11 @@ final class GenerateCommand extends AbstractCommand
     {
         $this->output = $output;
 
-        $options = $this->prepareOptions($input->getOptions());
+        $cliOptions = [
+            ConfigurationOptions::SOURCE => $input->getArgument(ConfigurationOptions::SOURCE),
+        ] + $input->getOptions();
+
+        $options = $this->prepareOptions($cliOptions);
         $this->scanAndParse($options);
         $this->generate($options);
         return 0;
@@ -149,39 +153,14 @@ final class GenerateCommand extends AbstractCommand
     }
 
     /**
-     * @param mixed[] $cliOptions
-     * @return mixed[]
-     */
-    private function prepareOptions(array $cliOptions): array
-    {
-        $options = $this->convertDashKeysToCamel($cliOptions);
-        $options = $this->loadOptionsFromConfig($options);
-
-        return $this->configuration->resolveOptions($options);
-    }
-
-    /**
      * @param mixed[] $options
      * @return mixed[]
      */
-    private function convertDashKeysToCamel(array $options): array
+    private function prepareOptions(array $options): array
     {
-        foreach ($options as $key => $value) {
-            $camelKey = $this->camelFormat($key);
-            if ($key !== $camelKey) {
-                $options[$camelKey] = $value;
-                unset($options[$key]);
-            }
-        }
+        $options = $this->loadOptionsFromConfig($options);
 
-        return $options;
-    }
-
-    private function camelFormat(string $name): string
-    {
-        return preg_replace_callback('~-([a-z])~', function ($matches) {
-            return strtoupper($matches[1]);
-        }, $name);
+        return $this->configuration->resolveOptions($options);
     }
 
     /**
