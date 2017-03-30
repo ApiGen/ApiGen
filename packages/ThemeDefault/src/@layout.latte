@@ -9,7 +9,6 @@
 	<title>{include title}{if 'overview' !== $active && $config->title} | {$config->title}{/if}</title>
 
 	<link rel="stylesheet" href="{='resources/style.css'|staticFile}">
-	<link n:if="$config->googleCseId" rel="search" type="application/opensearchdescription+xml" title="{$config->title}" href="{$config->baseUrl}/opensearch.xml">
 
 	<script n:if="$config->googleAnalytics">
 		var _gaq = _gaq || [];
@@ -102,8 +101,7 @@
 
 <div id="right">
 <div id="rightInner">
-	<form{if $config->googleCseId} action="https://www.google.com/cse"{/if} id="search">
-		<input type="hidden" name="cx" value="{$config->googleCseId}">
+	<form id="search">
 		<input type="hidden" name="ie" value="UTF-8">
 		<input type="text" name="q" class="text" placeholder="Search"{if 'overview' === $active} autofocus{/if}>
 	</form>

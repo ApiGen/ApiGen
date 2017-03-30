@@ -47,32 +47,12 @@ final class ConfigurationOptions
     /**
      * @var string
      */
-    public const GOOGLE_CSE_ID = 'googleCseId';
-
-    /**
-     * @var string
-     */
     public const GOOGLE_ANALYTICS = 'googleAnalytics';
 
     /**
      * @var string
      */
-    public const GROUPS = 'groups';
-
-    /**
-     * @var string
-     */
     public const MAIN = 'main';
-
-    /**
-     * @var string
-     */
-    public const INTERNAL = 'internal';
-
-    /**
-     * @var string
-     */
-    public const PHP = 'php';
 
     /**
      * @var string

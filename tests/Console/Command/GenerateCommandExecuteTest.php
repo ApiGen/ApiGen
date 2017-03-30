@@ -3,12 +3,12 @@
 namespace ApiGen\Tests\Console\Command;
 
 use ApiGen\Console\Command\GenerateCommand;
-use ApiGen\Contracts\Console\IO\IOInterface;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 use ApiGen\Tests\MethodInvoker;
-use ReflectionObject;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\NullOutput;
+use Symfony\Component\Console\Output\Output;
 use Symfony\Component\Console\Output\OutputInterface;
 
 final class GenerateCommandExecuteTest extends AbstractContainerAwareTestCase
@@ -21,6 +21,10 @@ final class GenerateCommandExecuteTest extends AbstractContainerAwareTestCase
     protected function setUp(): void
     {
         $this->generateCommand = $this->container->getByType(GenerateCommand::class);
+
+        /** @var ConsoleOutput $output */
+        $output = $this->container->getByType(OutputInterface::class);
+        $output->setVerbosity(Output::VERBOSITY_QUIET);
     }
 
     public function testExecute(): void
@@ -34,13 +38,6 @@ final class GenerateCommandExecuteTest extends AbstractContainerAwareTestCase
             'source' => __DIR__ . '/Source'
         ]);
         $outputMock = $this->createMock(OutputInterface::class);
-
-        $io = $this->container->getByType(IOInterface::class);
-        $reflection = new ReflectionObject($io);
-
-        $output = $reflection->getProperty('output');
-        $output->setAccessible(true);
-        $output->setValue($io, new NullOutput);
 
         $this->assertSame(
             0, // success

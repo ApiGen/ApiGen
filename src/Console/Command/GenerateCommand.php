@@ -3,7 +3,7 @@
 namespace ApiGen\Console\Command;
 
 use ApiGen\Configuration\Configuration;
-use ApiGen\Contracts\Console\IO\IOInterface;
+use ApiGen\Configuration\ConfigurationOptions;
 use ApiGen\Contracts\Generator\GeneratorQueueInterface;
 use ApiGen\Contracts\Parser\ParserInterface;
 use ApiGen\Contracts\Parser\ParserStorageInterface;
@@ -11,6 +11,7 @@ use ApiGen\Theme\ThemeResources;
 use ApiGen\Utils\FileSystem;
 use ApiGen\Utils\Finder\FinderInterface;
 use Nette\DI\Config\Loader;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -48,14 +49,14 @@ final class GenerateCommand extends AbstractCommand
     private $themeResources;
 
     /**
-     * @var IOInterface
-     */
-    private $io;
-
-    /**
      * @var FinderInterface
      */
     private $finder;
+
+    /**
+     * @var OutputInterface
+     */
+    private $output;
 
     public function __construct(
         Configuration $configuration,
@@ -64,7 +65,6 @@ final class GenerateCommand extends AbstractCommand
         GeneratorQueueInterface $generatorQueue,
         FileSystem $fileSystem,
         ThemeResources $themeResources,
-        IOInterface $io,
         FinderInterface $finder
     ) {
         parent::__construct();
@@ -75,7 +75,6 @@ final class GenerateCommand extends AbstractCommand
         $this->generatorQueue = $generatorQueue;
         $this->fileSystem = $fileSystem;
         $this->themeResources = $themeResources;
-        $this->io = $io;
         $this->finder = $finder;
     }
 
@@ -83,85 +82,30 @@ final class GenerateCommand extends AbstractCommand
     {
         $this->setName('generate');
         $this->setDescription('Generate API documentation');
-
+        $this->addArgument(
+            ConfigurationOptions::SOURCE,
+            InputArgument::IS_ARRAY | InputOption::VALUE_REQUIRED,
+            'Dirs or files documentation is generated for.'
+        );
         $this->addOption(
-                'source',
-                null,
-                InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
-                'Dirs or files documentation is generated for.'
-            )
-            ->addOption('destination', null, InputOption::VALUE_REQUIRED, 'Target dir for documentation.')
-            ->addOption(
-                'accessLevels',
-                null,
-                InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
-                'Access levels of included method and properties [options: public, protected, private].',
-                ['public', 'protected']
-            )
-            ->addOption(
-                'annotationGroups',
-                null,
-                InputOption::VALUE_REQUIRED,
-                'Generate page with elements with specific annotation.'
-            )
-            ->addOption(
-                'config',
-                null,
-                InputOption::VALUE_REQUIRED,
-                'Custom path to apigen.neon config file.',
-                getcwd() . '/apigen.neon'
-            )
-            ->addOption(
-                'googleCseId',
-                null,
-                InputOption::VALUE_REQUIRED,
-                'Custom google search engine id (for search box).'
-            )
-            ->addOption(
-                'baseUrl',
-                null,
-                InputOption::VALUE_REQUIRED,
-                'Base url used for sitemap (for search box).'
-            )
-            ->addOption('googleAnalytics', null, InputOption::VALUE_REQUIRED, 'Google Analytics tracking code.')
-            ->addOption(
-                'extensions',
-                null,
-                InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
-                'Scanned file extensions.',
-                ['php']
-            )
-            ->addOption(
-                'exclude',
-                null,
-                InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
-                'Directories and files matching this mask will not be parsed (e.g. */tests/*).'
-            )
-            ->addOption(
-                'main',
-                null,
-                InputOption::VALUE_REQUIRED,
-                'Elements with this name prefix will be first in tree.'
-            )
-            ->addOption('internal', null, InputOption::VALUE_NONE, 'Include elements marked as @internal.')
-            ->addOption(
-                'templateConfig',
-                null,
-                InputOption::VALUE_REQUIRED,
-                'Your own template config, has higher priority than --template-theme.',
-                getcwd() . '/packages/ThemeDefault/src/config.neon'
-            )
-            ->addOption('title', null, InputOption::VALUE_REQUIRED, 'Title of generated documentation.')
-            ->addOption(
-                'overwrite',
-                'o',
-                InputOption::VALUE_NONE,
-                'Force overwrite destination directory'
-            );
+            ConfigurationOptions::DESTINATION,
+            null,
+            InputOption::VALUE_REQUIRED,
+            'Target dir for generated documentation.'
+        );
+        $this->addOption(
+            ConfigurationOptions::CONFIG,
+            null,
+            InputOption::VALUE_REQUIRED,
+            'Path to apigen.neon config file.',
+            getcwd() . DIRECTORY_SEPARATOR . 'apigen.neon'
+        );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $this->output = $output;
+
         $options = $this->prepareOptions($input->getOptions());
         $this->scanAndParse($options);
         $this->generate($options);
@@ -173,13 +117,17 @@ final class GenerateCommand extends AbstractCommand
      */
     private function scanAndParse(array $options): void
     {
-        $this->io->writeln('<info>Scanning sources and parsing</info>');
+        $this->output->writeln('<info>Scanning sources and parsing</info>');
 
-        $files = $this->finder->find($options['source'], $options['exclude'], $options['extensions']);
+        $files = $this->finder->find(
+            $options[ConfigurationOptions::SOURCE],
+            $options[ConfigurationOptions::EXCLUDE],
+            $options[ConfigurationOptions::EXTENSIONS]
+        );
         $this->parser->parse($files);
 
         $stats = $this->parserStorage->getDocumentedStats();
-        $this->io->writeln(sprintf(
+        $this->output->writeln(sprintf(
             'Found <comment>%d classes</comment>, <comment>%d constants</comment> and <comment>%d functions</comment>',
             $stats['classes'],
             $stats['constants'],
@@ -192,8 +140,11 @@ final class GenerateCommand extends AbstractCommand
      */
     private function generate(array $options): void
     {
-        $this->prepareDestination($options['destination'], (bool) $options['overwrite']);
-        $this->io->writeln('<info>Generating API documentation</info>');
+        $this->prepareDestination(
+            $options[ConfigurationOptions::DESTINATION],
+            (bool) $options[ConfigurationOptions::FORCE_OVERWRITE]
+        );
+        $this->output->writeln('<info>Generating API documentation</info>');
         $this->generatorQueue->run();
     }
 
@@ -239,13 +190,11 @@ final class GenerateCommand extends AbstractCommand
      */
     private function loadOptionsFromConfig(array $options): array
     {
-        $configFilePaths = $this->getPossiblePathsForConfig($options);
+        $configFile = $options[ConfigurationOptions::CONFIG] ?? getcwd() . '/apigen.neon';
 
-        foreach ($configFilePaths as $configFile) {
-            if (file_exists($configFile)) {
-                $configFileOptions = (new Loader())->load($configFile);
-                return array_merge($options, $configFileOptions);
-            }
+        if (file_exists($configFile)) {
+            $configFileOptions = (new Loader())->load($configFile);
+            return array_merge($options, $configFileOptions);
         }
 
         return $options;
@@ -258,22 +207,5 @@ final class GenerateCommand extends AbstractCommand
         }
 
         $this->themeResources->copyToDestination($destination);
-    }
-
-    /**
-     * @param mixed[] $options
-     * @return mixed[]
-     */
-    private function getPossiblePathsForConfig(array $options): array
-    {
-        $filePaths = [];
-
-        if ($options['config']) {
-            $filePaths[] = $options['config'];
-        }
-
-        $filePaths[] = getcwd() . '/apigen.neon';
-
-        return $filePaths;
     }
 }

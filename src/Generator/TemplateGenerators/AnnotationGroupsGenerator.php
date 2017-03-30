@@ -2,6 +2,7 @@
 
 namespace ApiGen\Generator\TemplateGenerators;
 
+use ApiGen\Configuration\ConfigurationOptions;
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Generator\TemplateGenerators\TemplateGeneratorInterface;
 use ApiGen\Contracts\Parser\Elements\ElementExtractorInterface;
@@ -38,15 +39,21 @@ final class AnnotationGroupsGenerator implements TemplateGeneratorInterface
 
     public function generate(): void
     {
-        $annotations = $this->configuration->getOption('annotationGroups');
-        foreach ($annotations as $annotation) {
-            $template = $this->templateFactory->createNamedForElement(
-                TemplateFactory::ELEMENT_ANNOTATION_GROUP,
-                $annotation
-            );
-            $template = $this->setElementsWithAnnotationToTemplate($template, $annotation);
-            $template->save();
+        $annotationGroups = $this->configuration->getOption(ConfigurationOptions::ANNOTATION_GROUPS);
+
+        foreach ($annotationGroups as $annotationGroup) {
+            $this->generateForAnnotation($annotationGroup);
         }
+    }
+
+    private function generateForAnnotation(string $annotationGroup): void
+    {
+        $template = $this->templateFactory->createNamedForElement(
+            TemplateFactory::ELEMENT_ANNOTATION_GROUP,
+            $annotationGroup
+        );
+        $template = $this->setElementsWithAnnotationToTemplate($template, $annotationGroup);
+        $template->save();
     }
 
     private function setElementsWithAnnotationToTemplate(Template $template, string $annotation): Template

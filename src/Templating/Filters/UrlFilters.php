@@ -2,8 +2,6 @@
 
 namespace ApiGen\Templating\Filters;
 
-use ApiGen\Configuration\Configuration;
-use ApiGen\Configuration\ConfigurationOptions;
 use ApiGen\Contracts\Generator\Resolvers\ElementResolverInterface;
 use ApiGen\Contracts\Generator\SourceCodeHighlighter\SourceCodeHighlighterInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
@@ -30,11 +28,6 @@ final class UrlFilters extends Filters
     private $elementResolver;
 
     /**
-     * @var Configuration
-     */
-    private $configuration;
-
-    /**
      * @var LinkBuilder
      */
     private $linkBuilder;
@@ -50,7 +43,6 @@ final class UrlFilters extends Filters
     private $eventDispatcher;
 
     public function __construct(
-        Configuration $configuration,
         SourceCodeHighlighterInterface $highlighter,
         ElementResolverInterface $elementResolver,
         LinkBuilder $linkBuilder,
@@ -59,7 +51,6 @@ final class UrlFilters extends Filters
     ) {
         $this->highlighter = $highlighter;
         $this->elementResolver = $elementResolver;
-        $this->configuration = $configuration;
         $this->linkBuilder = $linkBuilder;
         $this->elementLinkFactory = $elementLinkFactory;
         $this->eventDispatcher = $eventDispatcher;
@@ -175,10 +166,6 @@ final class UrlFilters extends Filters
         return preg_replace_callback($pattern, function ($matches) {
             if ($matches[1] !== 'internal') {
                 return $matches[0];
-            }
-
-            if ($this->configuration->getOption(ConfigurationOptions::INTERNAL) && isset($matches[2])) {
-                return $matches[2];
             }
 
             return '';

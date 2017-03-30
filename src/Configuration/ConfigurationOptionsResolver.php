@@ -14,38 +14,39 @@ final class ConfigurationOptionsResolver
     /**
      * @var string
      */
-    public const AL_PROTECTED = 'protected';
+    public const ACCESS_LEVEL_PROTECTED = 'protected';
 
     /**
      * @var string
      */
-    public const AL_PRIVATE = 'private';
+    public const ACCESS_LEVEL_PRIVATE = 'private';
 
     /**
      * @var string
      */
-    public const AL_PUBLIC = 'public';
+    public const ACCESS_LEVEL_PUBLIC = 'public';
 
     /**
      * @var mixed[]
      */
     private $defaults = [
-        ConfigurationOptions::ANNOTATION_GROUPS => [],
-        ConfigurationOptions::ACCESS_LEVELS => ['public'],
-        ConfigurationOptions::BASE_URL => '',
-        ConfigurationOptions::CONFIG => '',
+        // required
+        ConfigurationOptions::SOURCE => [],
         ConfigurationOptions::DESTINATION => null,
-        ConfigurationOptions::FORCE_OVERWRITE => false,
+        // file finder
         ConfigurationOptions::EXCLUDE => [],
         ConfigurationOptions::EXTENSIONS => ['php'],
-        ConfigurationOptions::GOOGLE_CSE_ID => '',
-        ConfigurationOptions::GOOGLE_ANALYTICS => '',
-        ConfigurationOptions::MAIN => '',
-        ConfigurationOptions::INTERNAL => false,
-        ConfigurationOptions::SOURCE => [],
-        ConfigurationOptions::TEMPLATE => null,
-        ConfigurationOptions::TEMPLATE_CONFIG => null,
+        // template parameters
         ConfigurationOptions::TITLE => '',
+        ConfigurationOptions::GOOGLE_ANALYTICS => '',
+        // filtering generated content
+        ConfigurationOptions::ACCESS_LEVELS => [self::ACCESS_LEVEL_PUBLIC, self::ACCESS_LEVEL_PROTECTED],
+        ConfigurationOptions::ANNOTATION_GROUPS => [],
+        ConfigurationOptions::BASE_URL => '',
+        ConfigurationOptions::CONFIG => '',
+        ConfigurationOptions::FORCE_OVERWRITE => false,
+        ConfigurationOptions::MAIN => '',
+        ConfigurationOptions::TEMPLATE_CONFIG => null,
         // helpers
         ConfigurationOptions::VISIBILITY_LEVELS => [],
     ];
@@ -122,15 +123,15 @@ final class ConfigurationOptionsResolver
     {
         $accessLevel = null;
 
-        if (in_array(self::AL_PUBLIC, $options)) {
+        if (in_array(self::ACCESS_LEVEL_PUBLIC, $options)) {
             $accessLevel |= ReflectionProperty::IS_PUBLIC;
         }
 
-        if (in_array(self::AL_PROTECTED, $options)) {
+        if (in_array(self::ACCESS_LEVEL_PROTECTED, $options)) {
             $accessLevel |= ReflectionProperty::IS_PROTECTED;
         }
 
-        if (in_array(self::AL_PRIVATE, $options)) {
+        if (in_array(self::ACCESS_LEVEL_PRIVATE, $options)) {
             $accessLevel |= ReflectionProperty::IS_PRIVATE;
         }
 
@@ -166,8 +167,11 @@ final class ConfigurationOptionsResolver
     private function setNormalizers(): void
     {
         $this->resolver->setNormalizer(ConfigurationOptions::ANNOTATION_GROUPS, function (Options $options, $value) {
-            $value = (array) $value;
-            return array_unique($value);
+            if ($value === '') {
+                return [];
+            }
+
+            return $value;
         });
 
         $this->resolver->setNormalizer(ConfigurationOptions::DESTINATION, function (Options $options, $value) {
@@ -202,7 +206,9 @@ final class ConfigurationOptionsResolver
     private function allowedValuesForDestination(?string $destination): bool
     {
         if (! $destination) {
-            throw new ConfigurationException("Destination is not set. Use '-d <dir>' or config to set it");
+            throw new ConfigurationException(
+                'Destination is not set. Use "--destination <directory>" or config to set it.'
+            );
         } elseif (! is_dir($destination)) {
             mkdir($destination, 0755, true);
         }
@@ -224,7 +230,9 @@ final class ConfigurationOptionsResolver
     private function allowedValuesForSource($source): bool
     {
         if (! $source) {
-            throw new ConfigurationException("Source is not set. Use '-s <dir>' or config to set it");
+            throw new ConfigurationException(
+                'Source is not set. Use "--source <directory>" or config to set it.'
+            );
         } elseif (! is_array($source)) {
             $source = [$source];
         }

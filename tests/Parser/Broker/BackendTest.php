@@ -93,8 +93,6 @@ final class BackendTest extends TestCase
     {
         $parserStoragetMock = $this->createMock(ParserStorageInterface::class);
         $configurationMock = $this->createMock(ConfigurationInterface::class);
-        $configurationMock->method('isInternalDocumented')
-            ->willReturn(true);
         $configurationMock->method('getVisibilityLevel')
             ->willReturn(1);
 

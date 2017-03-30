@@ -36,11 +36,6 @@ interface ConfigurationInterface
     public function getMain(): string;
 
     /**
-     * Are elements marked as "@internal" documented.
-     */
-    public function isInternalDocumented(): bool;
-
-    /**
      * List of annotations.
      *
      * @return string[]
@@ -59,7 +54,7 @@ interface ConfigurationInterface
      */
     public function getBaseUrl(): string;
 
-    public function getGoogleCseId(): string;
+    public function getGoogleAnalytics(): string;
 
     /**
      * @return string[]

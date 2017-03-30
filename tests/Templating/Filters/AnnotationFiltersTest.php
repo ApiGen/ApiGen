@@ -2,8 +2,6 @@
 
 namespace ApiGen\Tests\Templating\Filters;
 
-use ApiGen\Configuration\ConfigurationOptions as CO;
-use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Templating\Filters\AnnotationFilters;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -17,21 +15,7 @@ final class AnnotationFiltersTest extends TestCase
 
     protected function setUp(): void
     {
-        $configurationMock = $this->createMock(ConfigurationInterface::class);
-        $configurationMock->method('getOption')
-            ->with(CO::INTERNAL)
-            ->willReturn(false);
-
-        $this->annotationFilters = new AnnotationFilters($configurationMock, new EventDispatcher);
-    }
-
-    public function testAnnotationFilter(): void
-    {
-        $annotations = ['method' => true, 'remain' => true, 'internal' => true];
-        $this->assertSame([
-            'method' => true,
-            'remain' => true,
-        ], $this->annotationFilters->annotationFilter($annotations));
+        $this->annotationFilters = new AnnotationFilters(new EventDispatcher);
     }
 
     public function testAnnotationFilterWithCustom(): void

@@ -3,8 +3,8 @@
 namespace ApiGen\Console\Helper;
 
 use ApiGen\Contracts\Console\Helper\ProgressBarInterface;
-use ApiGen\Contracts\Console\IO\IOInterface;
 use Symfony\Component\Console\Helper\ProgressBar as ProgressBarHelper;
+use Symfony\Component\Console\Output\OutputInterface;
 
 final class ProgressBar implements ProgressBarInterface
 {
@@ -14,23 +14,23 @@ final class ProgressBar implements ProgressBarInterface
     private const BAR_FORMAT = 'debug';
 
     /**
-     * @var IOInterface
-     */
-    private $consoleIO;
-
-    /**
      * @var ProgressBarHelper
      */
     private $bar;
 
-    public function __construct(IOInterface $consoleIO)
+    /**
+     * @var OutputInterface
+     */
+    private $output;
+
+    public function __construct(OutputInterface $output)
     {
-        $this->consoleIO = $consoleIO;
+        $this->output = $output;
     }
 
     public function init(int $maximum = 1): void
     {
-        $this->bar = new ProgressBarHelper($this->consoleIO->getOutput(), $maximum);
+        $this->bar = new ProgressBarHelper($this->output, $maximum);
         $this->bar->setFormat(self::BAR_FORMAT);
         $this->bar->start();
     }
@@ -43,7 +43,7 @@ final class ProgressBar implements ProgressBarInterface
 
         $this->bar->advance($increment);
         if ($this->bar->getProgress() === $this->bar->getMaxSteps()) {
-            $this->consoleIO->getOutput()->writeln(' - Finished!');
+            $this->output->writeln(' - Finished!');
         }
     }
 }

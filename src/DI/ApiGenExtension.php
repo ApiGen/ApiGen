@@ -29,7 +29,7 @@ final class ApiGenExtension extends CompilerExtension
     {
         Compiler::loadDefinitions(
             $this->getContainerBuilder(),
-            $this->loadFromFile(__DIR__ . '/services.neon')['services']
+            $this->loadFromFile(__DIR__ . '/../config/services.neon')
         );
     }
 

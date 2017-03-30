@@ -1,3 +1,0 @@
-services:
-	- ApiGen\Utils\FileSystem
-	- ApiGen\Utils\Finder\NetteFinder

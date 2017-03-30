@@ -35,7 +35,7 @@ final class GenerateCommandPrepareOptionsTest extends AbstractContainerAwareTest
     {
         MethodInvoker::callMethodOnObject($this->generateCommand, 'prepareOptions', [[
             'config' => 'config.neon',
-            'destination' => TEMP_DIR . '/api'
+            'destination' => TEMP_DIR . '/api',
         ]]);
     }
 
@@ -75,21 +75,5 @@ final class GenerateCommandPrepareOptionsTest extends AbstractContainerAwareTest
 
         $this->assertSame(['public', 'protected', 'private'], $options['accessLevels']);
         $this->assertSame('http://apigen.org', $options['baseUrl']);
-    }
-
-    public function testLoadOptionsFromConfig(): void
-    {
-        $options['config'] = 'config.neon';
-        $options['destination'] = __DIR__;
-        file_put_contents(getcwd() . '/apigen.neon', 'debug: true');
-
-        $options = MethodInvoker::callMethodOnObject($this->generateCommand, 'loadOptionsFromConfig', [$options]);
-        $this->assertSame([
-            'config' => 'config.neon',
-            'destination' => __DIR__,
-            'debug' => true
-        ], $options);
-
-        unlink(getcwd() . '/apigen.neon');
     }
 }

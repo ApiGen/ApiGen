@@ -1,51 +1,33 @@
 #!/usr/bin/env php
-<?php
+<?php declare(strict_types=1);
 
-use ApiGen\Console\Application;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
+gc_disable(); // performance boost
+
+use Symfony\Component\Console\Application;
 
 require __DIR__ . '/bootstrap.php';
 
 
 // Create temp dir
 $tempDir = sys_get_temp_dir() . '/_apigen';
-if (function_exists("posix_getuid")) {
-	$tempDir .= posix_getuid();
-}
 $fileSystem = new ApiGen\Utils\FileSystem;
 $fileSystem->purgeDir($tempDir);
 
 
 // Init debugger
 Tracy\Debugger::$strictMode = TRUE;
-if (isset($_SERVER['argv']) && ($tmp = array_search('--debug', $_SERVER['argv'], TRUE))) {
-	Tracy\Debugger::enable(Tracy\Debugger::DEVELOPMENT);
-
-} else {
-	Tracy\Debugger::enable(Tracy\Debugger::PRODUCTION);
-	Tracy\Debugger::$onFatalError[] = function() use ($fileSystem, $tempDir) {
-		echo "For more information turn on the debug mode using the --debug option.\n";
-		$fileSystem->deleteDir($tempDir);
-	};
-}
+Tracy\Debugger::enable(Tracy\Debugger::DEVELOPMENT);
 
 
+// @todo: move to container factory
 $configurator = new Nette\Configurator;
 $configurator->setDebugMode( ! Tracy\Debugger::$productionMode);
 $configurator->setTempDirectory($tempDir);
-$configurator->addConfig(__DIR__ . '/../src/DI/config.neon');
-$configurator->addParameters(['rootDir' => __DIR__ . '/..']);
+$configurator->addConfig(__DIR__ . '/../src/config/config.neon');
 $container = $configurator->createContainer();
 
 
-/** @var \Symfony\Component\Console\Application $application */
-$application = $container->getByType(\Symfony\Component\Console\Application::class);
-$application->setAutoExit(false);
-$input = $container->getByType(InputInterface::class);
-$output = $container->getByType(OutputInterface::class);
-$application->run($input, $output);
-
-
-// Remove temp data
-$fileSystem->deleteDir($tempDir);
+/** @var Application $application */
+$application = $container->getByType(Application::class);
+$application->setCatchExceptions(false);
+$application->run();

@@ -139,8 +139,6 @@ class ReflectionParameterTest extends TestCase
             }
         });
         $configurationMock = $this->createMock(ConfigurationInterface::class);
-        $configurationMock->method('isInternalDocumented')
-            ->willReturn(false);
         $configurationMock->method('getVisibilityLevel')
             ->willReturn(ReflectionProperty::IS_PUBLIC);
 

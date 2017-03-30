@@ -43,11 +43,9 @@ abstract class AbstractReflectionElement extends AbstractReflection implements E
             $this->isDocumented = $this->reflection->isTokenized() || $this->reflection->isInternal();
 
             if ($this->isDocumented) {
-                $internal = $this->configuration->isInternalDocumented();
-
                 if ($this->reflection->isInternal()) {
                     $this->isDocumented = false;
-                } elseif (! $internal && $this->reflection->hasAnnotation('internal')) {
+                } elseif ($this->reflection->hasAnnotation('internal')) {
                     $this->isDocumented = false;
                 }
             }

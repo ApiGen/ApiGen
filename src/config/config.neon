@@ -1,7 +1,5 @@
 extensions:
     - ApiGen\DI\ApiGenExtension
-    - ApiGen\Console\DI\ConsoleExtension
     - ApiGen\Parser\DI\ParserExtension
-    - ApiGen\Utils\DI\UtilsExtension
     - Symplify\SymfonyEventDispatcher\Adapter\Nette\DI\SymfonyEventDispatcherExtension
     - Contributte\Console\DI\ConsoleExtension

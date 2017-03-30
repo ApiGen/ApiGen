@@ -20,36 +20,58 @@ composer require apigen/apigen --dev
 
 Run ApiGen with source and destination options:
 
-```sh
-vendor/bin/apigen generate --source /src --destination /docs
+```bash
+vendor/bin/apigen generate src --destination docs
 ```
 
-To omit cli options just create `apigen.yaml` or `apigen.neon` file in your project's root folder:
+Or multiple:
+
+```bash
+vendor/bin/apigen generate src tests --destination docs
+```
+
+
+## Configuration
+
+To add another configuration, add `apigen.neon` to your root project.
+
+You can setup all these options:
 
 ```yaml
-source:
-    - /src
+main: ApiGen
+visibilityLevels: [public, protected] # array
+annotationGroups: [todo, deprecated] # array
+title: "ApiGen Docs"
+baseUrl: http://apigen.org/api
+exclude: tests
+extensions: [php] # array
+overwrite: true # bool
+templateConfig: path-to-template-config.neon # string
 
-destination: /docs
+# templates parameters
+googleAnalytics: 123
 ```
 
-For all available options, along with descriptions and default values, just run:
 
-```sh
-vendor/bin/apigen generate --help
-```
 
-*NOTE: In config files, options are camelCased (i.e. `accessLevel` for `--access-level`).*
+## Supported Annotations
 
-Refer to the [wiki](https://github.com/ApiGen/ApiGen/wiki/supported-annotations) for all supported annotations.
+(To be done...)
 
 
 ## Testing
 
-```sh
-vendor/bin/phpunit
+```bash
+composer complete-check
 ```
+
 
 ## Contributing
 
-Please refer to [CONTRIBUTING](https://github.com/apigen/apigen/blob/master/CONTRIBUTING.md) for details.
+Rules are simple:
+
+- **new feature needs tests**
+- **all tests must pass**
+- **1 feature per PR**
+
+We would be happy to merge your feature then.

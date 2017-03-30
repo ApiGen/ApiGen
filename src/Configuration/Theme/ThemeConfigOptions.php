@@ -52,11 +52,6 @@ final class ThemeConfigOptions
     /**
      * @var string
      */
-    public const OPENSEARCH = 'opensearch';
-
-    /**
-     * @var string
-     */
     public const TEMPLATES_PATH = 'templatesPath';
 
     /**
