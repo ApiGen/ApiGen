@@ -52,11 +52,6 @@ final class ConfigurationOptions
     /**
      * @var string
      */
-    public const MAIN = 'main';
-
-    /**
-     * @var string
-     */
     public const SOURCE = 'source';
 
     /**

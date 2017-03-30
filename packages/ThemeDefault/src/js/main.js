@@ -5,7 +5,6 @@ $(window).load(function() {
 	var $rightInner = $('#rightInner');
 	var $splitter = $('#splitter');
 	var $groups = $('#groups');
-	var $content = $('#content');
 
 	// Menu
 

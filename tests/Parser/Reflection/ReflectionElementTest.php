@@ -39,11 +39,6 @@ final class ReflectionElementTest extends TestCase
         $this->assertSame(69, $this->reflectionClass->getEndPosition());
     }
 
-    public function testIsMain(): void
-    {
-        $this->assertTrue($this->reflectionClass->isMain());
-    }
-
     public function testIsDocumented(): void
     {
         $this->assertTrue($this->reflectionClass->isDocumented());
@@ -137,8 +132,6 @@ final class ReflectionElementTest extends TestCase
         $configurationMock = $this->createMock(ConfigurationInterface::class);
         $configurationMock->method('getVisibilityLevel')
             ->willReturn(ReflectionProperty::IS_PUBLIC);
-        $configurationMock->method('getMain')
-            ->willReturn('');
 
         return new ReflectionFactory($configurationMock, $parserStorageMock);
     }

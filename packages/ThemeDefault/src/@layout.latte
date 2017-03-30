@@ -33,7 +33,7 @@
 				{foreach $groups as $group}
 				{continueIf $group === 'PHP'}
 				{var $nextLevel = substr_count($iterator->nextValue, '\\') > substr_count($group, '\\')}
-				<li n:class="$actualGroup === $group || 0 === strpos($actualGroup, $group . '\\') ? active, $config->main && 0 === strpos($group, $config->main) ? main">
+				<li n:class="$actualGroup === $group || 0 === strpos($actualGroup, $group . '\\') ? active">
 					<a href="{if $groupBy === 'package'}{$group|packageUrl}{else}{$group|namespaceUrl}{/if}">
 						{$group|subgroupName}<span n:tag-if="$nextLevel"></span>
 					</a>

@@ -48,8 +48,6 @@ final class ElementExtractorTest extends TestCase
             ->willReturn(true);
         $reflectionClassMock->method('getOwnMethods')
             ->willReturn([]);
-        $reflectionClassMock->method('isMain')
-            ->willReturn(true);
         $reflectionClassMock->method('hasAnnotation')
             ->with('deprecated')
             ->willReturn(true);

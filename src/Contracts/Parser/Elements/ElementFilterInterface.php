@@ -8,12 +8,6 @@ interface ElementFilterInterface
 {
     /**
      * @param ElementReflectionInterface[] $elements
-     * @return ElementReflectionInterface[]
-     */
-    public function filterForMain(array $elements): array;
-
-    /**
-     * @param ElementReflectionInterface[] $elements
      * @param string $annotation
      * @return ElementReflectionInterface[]
      */

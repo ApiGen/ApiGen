@@ -5,9 +5,7 @@ namespace ApiGen\Templating;
 use ApiGen\Configuration\ConfigurationOptions;
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Parser\Elements\ElementStorageInterface;
-use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
 use ApiGen\Parser\Elements\AutocompleteElements;
-use Closure;
 
 final class TemplateElementsLoader
 {
@@ -46,13 +44,6 @@ final class TemplateElementsLoader
         $template->setParameters($this->getParameters());
     }
 
-    private function getMainFilter(): Closure
-    {
-        return function (ElementReflectionInterface $element) {
-            return $element->isMain();
-        };
-    }
-
     /**
      * @return mixed[]
      */
@@ -66,12 +57,12 @@ final class TemplateElementsLoader
                 'constant' => null,
                 'function' => null,
                 'namespaces' => array_keys($this->elementStorage->getNamespaces()),
-                'classes' => array_filter($this->elementStorage->getClasses(), $this->getMainFilter()),
-                'interfaces' => array_filter($this->elementStorage->getInterfaces(), $this->getMainFilter()),
-                'traits' => array_filter($this->elementStorage->getTraits(), $this->getMainFilter()),
-                'exceptions' => array_filter($this->elementStorage->getExceptions(), $this->getMainFilter()),
-                'constants' => array_filter($this->elementStorage->getConstants(), $this->getMainFilter()),
-                'functions' => array_filter($this->elementStorage->getFunctions(), $this->getMainFilter()),
+                'classes' => array_filter($this->elementStorage->getClasses()),
+                'interfaces' => array_filter($this->elementStorage->getInterfaces()),
+                'traits' => array_filter($this->elementStorage->getTraits()),
+                'exceptions' => array_filter($this->elementStorage->getExceptions()),
+                'constants' => array_filter($this->elementStorage->getConstants()),
+                'functions' => array_filter($this->elementStorage->getFunctions()),
                 'elements' => $this->autocompleteElements->getElements()
             ];
 

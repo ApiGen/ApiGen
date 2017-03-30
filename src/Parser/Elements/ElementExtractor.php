@@ -53,8 +53,7 @@ final class ElementExtractor implements ElementExtractorInterface
         $elements[Elements::PROPERTIES] = [];
 
         foreach ($this->elementStorage->getElements() as $type => $elementList) {
-            $elementsForMain = $this->elementFilter->filterForMain($elementList);
-            $elements[$type] += $this->elementFilter->filterByAnnotation($elementsForMain, $annotation);
+            $elements[$type] += $this->elementFilter->filterByAnnotation($elementList, $annotation);
 
             if ($type === Elements::CONSTANTS || $type === Elements::FUNCTIONS) {
                 continue;
@@ -62,10 +61,6 @@ final class ElementExtractor implements ElementExtractorInterface
 
             foreach ($elementList as $class) {
                 /** @var ClassReflectionInterface $class */
-                if (! $class->isMain()) {
-                    continue;
-                }
-
                 $elements[Elements::METHODS] = $this->extractByAnnotationAndMerge(
                     $class->getOwnMethods(),
                     $annotation,

@@ -20,8 +20,6 @@ final class NamespaceSorterTest extends TestCase
     protected function setUp(): void
     {
         $configurationMock = $this->createMock(ConfigurationInterface::class);
-        $configurationMock->method('getMain')
-            ->willReturn('');
 
         $this->namespaceSorter = new NamespaceSorter(new Elements, $configurationMock);
     }
@@ -80,11 +78,11 @@ final class NamespaceSorterTest extends TestCase
     /**
      * @dataProvider getCompareNamespacesData()
      */
-    public function testCompareNamespaces(string $one, string $two, string $main, int $expected): void
+    public function testCompareNamespaces(string $one, string $two, int $expected): void
     {
         $this->assertSame(
             $expected,
-            MethodInvoker::callMethodOnObject($this->namespaceSorter, 'compareNamespaceNames', [$one, $two, $main])
+            MethodInvoker::callMethodOnObject($this->namespaceSorter, 'compareNamespaceNames', [$one, $two])
         );
     }
 
@@ -94,10 +92,8 @@ final class NamespaceSorterTest extends TestCase
     public function getCompareNamespacesData(): array
     {
         return [
-            ['GroupOne', 'OtherGroup', '', -8],
-            ['One', 'Two', '', -5],
-            ['One', 'Two', 'On', -1],
-            ['One', 'Two', 'Tw', 1],
+            ['GroupOne', 'OtherGroup', -8],
+            ['One', 'Two', -5],
         ];
     }
 }

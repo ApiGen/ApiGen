@@ -31,12 +31,6 @@ abstract class AbstractReflectionElement extends AbstractReflection implements E
         return $this->reflection->getEndPosition();
     }
 
-    public function isMain(): bool
-    {
-        $main = $this->configuration->getMain();
-        return empty($main) || strpos($this->getName(), $main) === 0;
-    }
-
     public function isDocumented(): bool
     {
         if ($this->isDocumented === null) {
