@@ -78,11 +78,6 @@ final class ReflectionParameter extends AbstractReflection implements ParameterR
         return $this->reflection->isOptional();
     }
 
-    public function canBePassedByValue(): bool
-    {
-        return $this->reflection->canBePassedByValue();
-    }
-
     public function getDeclaringFunction(): AbstractFunctionMethodReflectionInterface
     {
         $functionName = $this->reflection->getDeclaringFunctionName();

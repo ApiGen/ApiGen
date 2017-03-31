@@ -22,8 +22,6 @@ interface ParameterReflectionInterface extends ReflectionInterface
 
     public function isOptional(): bool;
 
-    public function canBePassedByValue(): bool;
-
     public function getDeclaringFunction(): AbstractFunctionMethodReflectionInterface;
 
     public function getDeclaringFunctionName(): string;
