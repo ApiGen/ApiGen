@@ -6,7 +6,6 @@ use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions;
 use ApiGen\Contracts\Generator\GeneratorQueueInterface;
 use ApiGen\Contracts\Parser\ParserInterface;
-use ApiGen\Contracts\Parser\ParserStorageInterface;
 use ApiGen\Theme\ThemeResources;
 use ApiGen\Utils\FileSystem;
 use ApiGen\Utils\Finder\FinderInterface;
@@ -27,11 +26,6 @@ final class GenerateCommand extends AbstractCommand
      * @var ParserInterface
      */
     private $parser;
-
-    /**
-     * @var ParserStorageInterface
-     */
-    private $parserStorage;
 
     /**
      * @var GeneratorQueueInterface
@@ -61,7 +55,6 @@ final class GenerateCommand extends AbstractCommand
     public function __construct(
         Configuration $configuration,
         ParserInterface $parser,
-        ParserStorageInterface $parserStorage,
         GeneratorQueueInterface $generatorQueue,
         FileSystem $fileSystem,
         ThemeResources $themeResources,
@@ -71,7 +64,6 @@ final class GenerateCommand extends AbstractCommand
 
         $this->configuration = $configuration;
         $this->parser = $parser;
-        $this->parserStorage = $parserStorage;
         $this->generatorQueue = $generatorQueue;
         $this->fileSystem = $fileSystem;
         $this->themeResources = $themeResources;
