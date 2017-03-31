@@ -73,11 +73,6 @@ final class ReflectionParameter extends AbstractReflection implements ParameterR
         return $this->reflection->getClassName();
     }
 
-    public function allowsNull(): bool
-    {
-        return $this->reflection->allowsNull();
-    }
-
     public function isOptional(): bool
     {
         return $this->reflection->isOptional();

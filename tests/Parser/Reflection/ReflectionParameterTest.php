@@ -72,11 +72,6 @@ class ReflectionParameterTest extends TestCase
         $this->assertNull($this->reflectionParameter->getClassName());
     }
 
-    public function testAllowsNull(): void
-    {
-        $this->assertTrue($this->reflectionParameter->allowsNull());
-    }
-
     public function testIsOptional(): void
     {
         $this->assertTrue($this->reflectionParameter->isOptional());

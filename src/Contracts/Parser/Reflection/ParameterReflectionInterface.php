@@ -20,8 +20,6 @@ interface ParameterReflectionInterface extends ReflectionInterface
 
     public function getClassName(): ?string;
 
-    public function allowsNull(): bool;
-
     public function isOptional(): bool;
 
     public function isPassedByReference(): bool;
