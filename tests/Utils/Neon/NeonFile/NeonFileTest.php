@@ -25,6 +25,9 @@ class NeonFileTest extends PHPUnit_Framework_TestCase
     }
 
 
+    /**
+     * @requires OS Linux
+     */
     public function testFileNotReadable()
     {
         $dirPath = TEMP_DIR . '/some-dir';
