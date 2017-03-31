@@ -77,11 +77,6 @@ class ReflectionParameterTest extends TestCase
         $this->assertTrue($this->reflectionParameter->isOptional());
     }
 
-    public function testIsPassedByReference(): void
-    {
-        $this->assertFalse($this->reflectionParameter->isPassedByReference());
-    }
-
     public function testCanBePassedByValue(): void
     {
         $this->assertTrue($this->reflectionParameter->canBePassedByValue());

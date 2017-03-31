@@ -78,11 +78,6 @@ final class ReflectionParameter extends AbstractReflection implements ParameterR
         return $this->reflection->isOptional();
     }
 
-    public function isPassedByReference(): bool
-    {
-        return $this->reflection->isPassedByReference();
-    }
-
     public function canBePassedByValue(): bool
     {
         return $this->reflection->canBePassedByValue();
