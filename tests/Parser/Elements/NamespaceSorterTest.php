@@ -38,7 +38,7 @@ final class NamespaceSorterTest extends TestCase
     {
         $groups = ['None' => []];
         $sortedGroups = $this->namespaceSorter->sort($groups);
-        $this->assertSame([], $sortedGroups);
+        $this->assertSame(['None' => []], $sortedGroups);
     }
 
     public function testIsNoneOnly(): void

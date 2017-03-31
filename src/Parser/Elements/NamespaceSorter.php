@@ -29,7 +29,7 @@ final class NamespaceSorter implements NamespaceSorterInterface
     public function sort(array $namespaces): array
     {
         if ($this->isNoneOnly($namespaces)) {
-            return [];
+            return $namespaces;
         }
 
         $this->namespaces = $namespaces;
