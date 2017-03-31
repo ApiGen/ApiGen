@@ -2,7 +2,6 @@
 
 namespace ApiGen\Parser\Tests\Reflection;
 
-use ApiGen\Contracts\Parser\Broker\BackendInterface;
 use ApiGen\Parser\Broker\Backend;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 use TokenReflection\Broker;
@@ -15,7 +14,7 @@ abstract class AbstractReflectionTestCase extends AbstractContainerAwareTestCase
     protected $broker;
 
     /**
-     * @var BackendInterface
+     * @var Backend
      */
     protected $backend;
 

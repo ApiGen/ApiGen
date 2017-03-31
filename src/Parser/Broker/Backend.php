@@ -2,7 +2,6 @@
 
 namespace ApiGen\Parser\Broker;
 
-use ApiGen\Contracts\Parser\Broker\BackendInterface;
 use ApiGen\Contracts\Parser\Reflection\Behavior\InNamespaceInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
@@ -25,7 +24,7 @@ use TokenReflection\Resolver;
  *
  * @method TokenReflection\ReflectionNamespace[] getNamespaces()
  */
-final class Backend extends Memory implements BackendInterface
+final class Backend extends Memory
 {
     /**
      * @var ClassReflectionInterface[][]

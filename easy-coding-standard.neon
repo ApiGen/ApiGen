@@ -71,12 +71,10 @@ skip:
         - tests/Parser/Reflection/ReflectionClassSource/RichInterface.php
         - tests/Generator/TemplateGenerators/DeprecatedSources/DeprecatedMethod.php
         - tests/Generator/TemplateGenerators/DeprecatedSources/DeprecatedClass.php
-        - tests/Parser/Broker/BackendSource/SomeFunction.php
         - tests/Parser/Reflection/ReflectionClassSource/AccessLevels.php
         - src/Console/Input/LiberalFormatArgvInput.php
         - src/Console/Command/AbstractCommand.php
         - tests/Parser/Reflection/ReflectionClassSource/RichInterface.php
-        - src/Contracts/Parser/Broker/BackendInterface.php
 
     SlevomatCodingStandard\Sniffs\Classes\ClassConstantVisibilitySniff:
         - tests/Parser/Reflection/ReflectionClassSource/ParentClass.php
