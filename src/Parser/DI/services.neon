@@ -1,11 +1,14 @@
 services:
-	- ApiGen\Parser\Elements\AutocompleteElements
-	- ApiGen\Parser\Elements\ElementExtractor
-	- ApiGen\Parser\Elements\ElementFilter
-	- ApiGen\Parser\Elements\Elements
-	- ApiGen\Parser\Elements\ElementSorter
-	- ApiGen\Parser\Elements\ElementStorage
-	- ApiGen\Parser\Elements\NamespaceSorter
-	- ApiGen\Parser\Parser
-	- ApiGen\Parser\ParserStorage
-	- ApiGen\Parser\Reflection\TokenReflection\ReflectionFactory
+    - ApiGen\Parser\Elements\AutocompleteElements
+    - ApiGen\Parser\Elements\ElementExtractor
+    - ApiGen\Parser\Elements\ElementFilter
+    - ApiGen\Parser\Elements\Elements
+    - ApiGen\Parser\Elements\ElementSorter
+    - ApiGen\Parser\Elements\ElementStorage
+    - ApiGen\Parser\Elements\NamespaceSorter
+    - ApiGen\Parser\Parser
+    - ApiGen\Parser\ParserStorage
+    - ApiGen\Parser\Reflection\TokenReflection\ReflectionFactory
+
+    - TokenReflection\Broker
+    - ApiGen\Parser\Broker\Backend
