@@ -53,18 +53,6 @@ final class ParserStorage implements ParserStorageInterface
     }
 
     /**
-     * @return int[]
-     */
-    public function getDocumentedStats(): array
-    {
-        return [
-            'classes' => $this->getDocumentedElementsCount($this->classes),
-            'constants' => $this->getDocumentedElementsCount($this->constants),
-            'functions' => $this->getDocumentedElementsCount($this->functions),
-        ];
-    }
-
-    /**
      * @return ClassReflectionInterface[]
      */
     public function getClasses(): array
@@ -162,18 +150,5 @@ final class ParserStorage implements ParserStorageInterface
     {
         return $class->isDocumented() && $class->implementsInterface($name)
             && ! in_array($name, $class->getOwnInterfaceNames());
-    }
-
-    /**
-     * @param ElementReflectionInterface[] $result
-     */
-    private function getDocumentedElementsCount(array $result): int
-    {
-        $count = 0;
-        foreach ($result as $element) {
-            $count += (int) $element->isDocumented();
-        }
-
-        return $count;
     }
 }

@@ -66,39 +66,4 @@ final class ParserStorageTest extends TestCase
             $this->parserStorage->getTypes()
         );
     }
-
-    public function testGetDocumentedStats(): void
-    {
-        $documentedStats = $this->parserStorage->getDocumentedStats();
-        $this->assertInternalType('array', $documentedStats);
-        $this->assertArrayHasKey('classes', $documentedStats);
-        $this->assertArrayHasKey('constants', $documentedStats);
-        $this->assertArrayHasKey('functions', $documentedStats);
-    }
-
-    public function testGetDocumentedElementsCount(): void
-    {
-        $reflectionElements = $this->getReflectionElementsArrayObject();
-        $this->assertSame(1, MethodInvoker::callMethodOnObject(
-            $this->parserStorage,
-            'getDocumentedElementsCount',
-            [$reflectionElements]
-        ));
-    }
-
-    /**
-     * @return ElementReflectionInterface[]
-     */
-    private function getReflectionElementsArrayObject(): array
-    {
-        $reflectionElementMock = $this->createMock(ElementReflectionInterface::class);
-        $reflectionElementMock->method('isDocumented')
-            ->willReturn(true);
-
-        $reflectionElementMock2 = $this->createMock(ElementReflectionInterface::class);
-        $reflectionElementMock2->method('isDocumented')
-            ->willReturn(false);
-
-        return [$reflectionElementMock, $reflectionElementMock2];
-    }
 }

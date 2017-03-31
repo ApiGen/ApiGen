@@ -129,14 +129,6 @@ final class GenerateCommand extends AbstractCommand
             $options[ConfigurationOptions::EXTENSIONS]
         );
         $this->parser->parse($files);
-
-        $stats = $this->parserStorage->getDocumentedStats();
-        $this->output->writeln(sprintf(
-            'Found <comment>%d classes</comment>, <comment>%d constants</comment> and <comment>%d functions</comment>',
-            $stats['classes'],
-            $stats['constants'],
-            $stats['functions']
-        ));
     }
 
     /**

@@ -14,11 +14,6 @@ interface ParserStorageInterface
     public function getElementsByType(string $type): array;
 
     /**
-     * @return int[]
-     */
-    public function getDocumentedStats(): array;
-
-    /**
      * @return ClassReflectionInterface[]
      */
     public function getClasses(): array;
