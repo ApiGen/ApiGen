@@ -9,12 +9,14 @@ use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ParameterReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\TokenReflection\ReflectionFactoryInterface;
 use ApiGen\Parser\Broker\Backend;
+use ApiGen\Parser\Reflection\ReflectionParameter;
 use ApiGen\Parser\Reflection\TokenReflection\ReflectionFactory;
 use PHPUnit\Framework\TestCase;
+use Project\ReflectionMethod;
 use ReflectionProperty;
 use TokenReflection\Broker;
 
-class ReflectionParameterTest extends TestCase
+final class ReflectionParameterTest extends TestCase
 {
     /**
      * @var ClassReflectionInterface
@@ -32,14 +34,14 @@ class ReflectionParameterTest extends TestCase
         $broker = new Broker($backend);
         $broker->processDirectory(__DIR__ . '/ReflectionMethodSource');
 
-        $this->reflectionClass = $backend->getClasses()['Project\ReflectionMethod'];
+        $this->reflectionClass = $backend->getClasses()[ReflectionMethod::class];
         $reflectionMethod = $this->reflectionClass->getMethod('methodWithArgs');
         $this->reflectionParameter = $reflectionMethod->getParameter(0);
     }
 
     public function testInstance(): void
     {
-        $this->assertInstanceOf('ApiGen\Parser\Reflection\ReflectionParameter', $this->reflectionParameter);
+        $this->assertInstanceOf(ReflectionParameter::class, $this->reflectionParameter);
     }
 
     public function testGetTypeHint(): void
