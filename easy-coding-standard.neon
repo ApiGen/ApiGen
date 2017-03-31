@@ -46,12 +46,9 @@ checkers:
     - SlevomatCodingStandard\Sniffs\Namespaces\DisallowGroupUseSniff
     - PhpCsFixer\Fixer\Import\OrderedImportsFixer
 
-<<<<<<< HEAD
     # Spacing
     - PhpCsFixer\Fixer\ClassNotation\MethodSeparationFixer
 
-=======
->>>>>>> cs fixes
     # Strict and Scalar types
     - PhpCsFixer\Fixer\Strict\DeclareStrictTypesFixer
     SlevomatCodingStandard\Sniffs\TypeHints\TypeHintDeclarationSniff:
