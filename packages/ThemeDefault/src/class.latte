@@ -72,7 +72,7 @@
 	<div class="info">
 		{if !$class->interface && !$class->trait && ($class->abstract || $class->final)}<b>{if $class->abstract}Abstract{else}Final{/if}</b><br>{/if}
 		{if $class->internal}<b>PHP Extension:</b> <a href="{$class->extension|manualUrl}" title="Go to PHP documentation">{$class->extension->name|firstUpper}</a><br>{/if}
-		{if $class->inNamespace()}<b>Namespace:</b> {$class->namespaceName|namespaceLinks|noescape}<br>{/if}
+		{if $class->namespaceName}<b>Namespace:</b> {$class->namespaceName|namespaceLinks|noescape}<br>{/if}
 
 		{var $filteredAnnotations = ($class->annotations|annotationFilter)}
 		{foreach $filteredAnnotations as $annotation => $values}

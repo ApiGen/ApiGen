@@ -62,11 +62,6 @@ abstract class AbstractReflectionElement extends AbstractReflection implements E
         return false;
     }
 
-    public function inNamespace(): bool
-    {
-        return $this->getNamespaceName() !== '';
-    }
-
     public function getNamespaceName(): string
     {
         static $namespaces = [];

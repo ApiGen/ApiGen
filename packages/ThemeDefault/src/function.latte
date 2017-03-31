@@ -13,7 +13,7 @@
 	</div>
 
 	<div class="info">
-		{if $function->inNamespace()}<b>Namespace:</b> {$function->namespaceName|namespaceLinks|noescape}<br>{/if}
+		{if $function->namespaceName}<b>Namespace:</b> {$function->namespaceName|namespaceLinks|noescape}<br>{/if}
 
         {var $filteredAnnotations = ($class->annotations|annotationFilter: ['param', 'return', 'throws'])}
 		{foreach $filteredAnnotations as $annotation => $values}

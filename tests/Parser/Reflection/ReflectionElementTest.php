@@ -59,11 +59,6 @@ final class ReflectionElementTest extends TestCase
         $this->assertSame('Project', $this->reflectionClass->getPseudoNamespaceName());
     }
 
-    public function testInNamespace(): void
-    {
-        $this->assertTrue($this->reflectionClass->inNamespace());
-    }
-
     public function testGetNamespacesAliases(): void
     {
         $this->assertSame([], $this->reflectionClass->getNamespaceAliases());

@@ -13,7 +13,7 @@ use ApiGen\Parser\Reflection\ReflectionClass;
 use ApiGen\Parser\Reflection\ReflectionFunction;
 use ApiGen\Parser\Reflection\ReflectionMethod;
 use TokenReflection;
-use TokenReflection\Broker;
+use TokenReflection\Broker\Backend\Memory;
 use TokenReflection\IReflectionConstant;
 use TokenReflection\IReflectionFunction;
 use TokenReflection\Resolver;
@@ -25,7 +25,7 @@ use TokenReflection\Resolver;
  *
  * @method TokenReflection\ReflectionNamespace[] getNamespaces()
  */
-final class Backend extends Broker\Backend\Memory implements BackendInterface
+final class Backend extends Memory implements BackendInterface
 {
     /**
      * @var ClassReflectionInterface[][]

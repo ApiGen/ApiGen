@@ -10,8 +10,6 @@ interface ElementReflectionInterface extends NamedInterface
 
     public function isDeprecated(): bool;
 
-    public function inNamespace(): bool;
-
     public function getNamespaceName(): string;
 
     /**

@@ -52,8 +52,6 @@ final class ElementLinkFactoryTest extends AbstractContainerAwareTestCase
         $reflectionConstant = $this->createMock(ConstantReflectionInterface::class);
         $reflectionConstant->method('getName')
             ->willReturn('SOME_CONSTANT');
-        $reflectionConstant->method('inNamespace')
-            ->willReturn(false);
 
         $this->assertSame(
             '<a href="constant-SOME_CONSTANT.html"><b>SOME_CONSTANT</b></a>',
@@ -82,8 +80,6 @@ final class ElementLinkFactoryTest extends AbstractContainerAwareTestCase
             ->willReturn('SOME_CONSTANT');
         $reflectionConstant->method('getShortName')
             ->willReturn('SHORT_SOME_CONSTANT');
-        $reflectionConstant->method('inNamespace')
-            ->willReturn(true);
         $reflectionConstant->method('getNamespaceName')
             ->willReturn('Namespace');
 

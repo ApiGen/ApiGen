@@ -134,7 +134,7 @@ final class ElementLinkFactory
 
     private function getGlobalConstantName(ConstantReflectionInterface $reflectionConstant): string
     {
-        if ($reflectionConstant->inNamespace()) {
+        if ($reflectionConstant->getNamespaceName()) {
             return $reflectionConstant->getNamespaceName() . '\\' .
                 Html::el('b')->setText($reflectionConstant->getShortName());
         } else {
