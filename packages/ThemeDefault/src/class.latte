@@ -176,18 +176,16 @@
 			{var $overriddenMethod = $method->overriddenMethod}
 			{if $overriddenMethod}
 				<h4>Overrides</h4>
-				{var $declaringClass = ($overriddenMethod->declaringClassName|getClass)}
 				<div class="list">
-					<code><a n:tag-if="$declaringClass" href="{$overriddenMethod|methodUrl}">{$overriddenMethod->prettyName}</a></code>
+					<code><a n:tag-if="$overriddenMethod->declaringClass" href="{$overriddenMethod|methodUrl}">{$overriddenMethod->prettyName}</a></code>
 				</div>
 			{/if}
 
 			{var $implementedMethod = $method->implementedMethod}
 			{if $implementedMethod}
 				<h4>Implementation of</h4>
-				{var $declaringClass = ($implementedMethod->declaringClassName|getClass)}
 				<div class="list">
-                    <code><a n:tag-if="$declaringClass" href="{$implementedMethod|methodUrl}">{$implementedMethod->prettyName}</a></code>
+					<code><a n:tag-if="$implementedMethod->declaringClass" href="{$implementedMethod|methodUrl}">{$implementedMethod->prettyName}</a></code>
                 </div>
 			{/if}
 		</div>
@@ -210,7 +208,6 @@
         <tr>
             <td>
                 <code>
-                    {var $parentClass = ($parentName|getClass)}
                     {foreach $methods as $method}
                         <a href="{$method|methodUrl}" n:tag-if="$parentClass">
                             <span n:tag-if="$method->deprecated" class="deprecated">{$method->name}()</span>
@@ -227,7 +224,6 @@
         <tr>
             <td>
                 <code>
-                    {var $trait = ($traitName|getClass)}
                     {foreach $methods as $data}
                         <a href="{$data['method']|methodUrl: $data['method']->declaringTrait}" n:tag-if="$trait">
                             <span n:tag-if="$data['method']->deprecated" class="deprecated">{$data['method']->name}()</span>
