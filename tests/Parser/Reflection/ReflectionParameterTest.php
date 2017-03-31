@@ -62,11 +62,6 @@ class ReflectionParameterTest extends TestCase
         $this->assertFalse($this->reflectionParameter->isArray());
     }
 
-    public function testIsCallable(): void
-    {
-        $this->assertFalse($this->reflectionParameter->isCallable());
-    }
-
     public function testGetClass(): void
     {
         $this->assertNull($this->reflectionParameter->getClass());

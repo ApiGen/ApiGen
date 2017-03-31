@@ -16,8 +16,6 @@ interface ParameterReflectionInterface extends ReflectionInterface
 
     public function isArray(): bool;
 
-    public function isCallable(): bool;
-
     public function getClass(): ?ClassReflectionInterface;
 
     public function getClassName(): ?string;

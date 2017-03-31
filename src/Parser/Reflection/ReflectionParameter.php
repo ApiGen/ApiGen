@@ -62,11 +62,6 @@ final class ReflectionParameter extends AbstractReflection implements ParameterR
         return $this->reflection->isArray();
     }
 
-    public function isCallable(): bool
-    {
-        return $this->reflection->isCallable();
-    }
-
     public function getClass(): ?ClassReflectionInterface
     {
         $className = (string) $this->reflection->getClassName();
@@ -130,5 +125,10 @@ final class ReflectionParameter extends AbstractReflection implements ParameterR
     public function isUnlimited(): bool
     {
         return false;
+    }
+
+    private function isCallable(): bool
+    {
+        return $this->reflection->isCallable();
     }
 }
