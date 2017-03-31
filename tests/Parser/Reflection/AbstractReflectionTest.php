@@ -7,8 +7,8 @@ use ApiGen\Parser\Broker\Backend;
 use ApiGen\Parser\Reflection\AbstractReflection;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 use ApiGen\Tests\MethodInvoker;
-use TokenReflection\Broker;
 use Project\ReflectionMethod;
+use TokenReflection\Broker;
 
 final class AbstractReflectionTest extends AbstractContainerAwareTestCase
 {

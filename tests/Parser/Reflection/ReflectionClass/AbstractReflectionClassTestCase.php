@@ -6,11 +6,11 @@ use ApiGen\Contracts\Parser\ParserStorageInterface;
 use ApiGen\Parser\Broker\Backend;
 use ApiGen\Parser\Reflection\ReflectionClass;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
-use Project\SomeTrait;
-use TokenReflection\Broker;
 use Project\AccessLevels;
 use Project\ParentClass;
 use Project\RichInterface;
+use Project\SomeTrait;
+use TokenReflection\Broker;
 
 abstract class AbstractReflectionClassTestCase extends AbstractContainerAwareTestCase
 {

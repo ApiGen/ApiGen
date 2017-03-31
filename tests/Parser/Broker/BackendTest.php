@@ -16,7 +16,11 @@ use TokenReflection\Broker;
 
 final class BackendTest extends AbstractContainerAwareTestCase
 {
+    /**
+     * @var string
+     */
     private $sourceDirectory = __DIR__ . '/BackendSource';
+
     /**
      * @var BackendInterface
      */
@@ -63,7 +67,7 @@ final class BackendTest extends AbstractContainerAwareTestCase
         $this->checkLoadedProperties($function);
     }
 
-    public function testGetFunctionsWithBetterReflection()
+    public function testGetFunctionsWithBetterReflection(): void
     {
         $this->parser->processDirectory($this->sourceDirectory);
         $functions = $this->parser->getFunctions();

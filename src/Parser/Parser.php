@@ -40,7 +40,6 @@ final class Parser implements ParserInterface
             try {
                 $this->broker->processFile($file->getPathname());
             } catch (ParseException $parseException) {
-                // @todo: make nice exception convertion
                 throw new Exception(sprintf(
                     'Parser error on %d line with "%s" token. %s',
                     $parseException->getExceptionLine(),

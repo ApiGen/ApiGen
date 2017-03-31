@@ -3,19 +3,47 @@
 namespace ApiGen\ElementReflection\Parser;
 
 use ApiGen\Parser\Reflection\ReflectionClass;
-use BetterReflection\Reflector\ClassReflector;
-use BetterReflection\SourceLocator\Type\DirectoriesSourceLocator;
+use Roave\BetterReflection\Reflection\ReflectionFunction;
+use Roave\BetterReflection\Reflector\ClassReflector;
+use Roave\BetterReflection\Reflector\FunctionReflector;
+use Roave\BetterReflection\SourceLocator\Type\DirectoriesSourceLocator;
 
 final class Parser
 {
     /**
-     * @param string[] $directories
+     * @var ReflectionClass[]
+     */
+    private $classReflections = [];
+
+    /**
+     * @var ReflectionFunction[]
+     */
+    private $functionReflections = [];
+
+    public function processDirectory(string $directory): void
+    {
+        $directoriesSourceLocator = new DirectoriesSourceLocator([$directory]);
+
+        $classReflector = new ClassReflector($directoriesSourceLocator);
+        $this->classReflections = $classReflector->getAllClasses();
+
+        $functionReflector = new FunctionReflector($directoriesSourceLocator);
+        $this->functionReflections = $functionReflector->getAllFunctions();
+    }
+
+    /**
      * @return ReflectionClass[]
      */
-    public function parseDirectories(array $directories): array
+    public function getClasses(): array
     {
-        $directoriesSourceLocator = new DirectoriesSourceLocator($directories);
-        $classReflector = new ClassReflector($directoriesSourceLocator);
-        return $classReflector->getAllClasses();
+        return $this->classReflections;
+    }
+
+    /**
+     * @return ReflectionFunction[]
+     */
+    public function getFunctions(): array
+    {
+        return $this->functionReflections;
     }
 }
