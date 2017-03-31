@@ -27,6 +27,10 @@ class TemplateNavigatorTest extends ContainerAwareTestCase
      */
     private $templateNavigator;
 
+    /**
+     * @var FileSystem
+     */
+    private $fileSystem;
 
     protected function setUp()
     {
@@ -64,13 +68,14 @@ class TemplateNavigatorTest extends ContainerAwareTestCase
             $elementUrlFactoryMock,
             $namespaceAndPackageUrlFiltersMock
         );
+        $this->fileSystem = new FileSystem;
     }
 
 
     public function testGetTemplateFileName()
     {
         $this->assertSame(
-            FileSystem::getAbsolutePath(TEMP_DIR . '/api/index.html'),
+            $this->fileSystem->getAbsolutePath(TEMP_DIR . '/api/index.html'),
             $this->templateNavigator->getTemplateFileName('overview')
         );
     }
@@ -88,7 +93,7 @@ class TemplateNavigatorTest extends ContainerAwareTestCase
     public function testGetTemplatePathForNamespace()
     {
         $this->assertSame(
-            FileSystem::getAbsolutePath(TEMP_DIR . '/api/namespace-MyNamespace.html'),
+            $this->fileSystem->getAbsolutePath(TEMP_DIR . '/api/namespace-MyNamespace.html'),
             $this->templateNavigator->getTemplatePathForNamespace('MyNamespace')
         );
     }
@@ -97,7 +102,7 @@ class TemplateNavigatorTest extends ContainerAwareTestCase
     public function testGetTemplatePathForPackage()
     {
         $this->assertSame(
-            FileSystem::getAbsolutePath(TEMP_DIR . '/api/package-MyPackage.html'),
+            $this->fileSystem->getAbsolutePath(TEMP_DIR . '/api/package-MyPackage.html'),
             $this->templateNavigator->getTemplatePathForPackage('MyPackage')
         );
     }
@@ -109,7 +114,7 @@ class TemplateNavigatorTest extends ContainerAwareTestCase
         $classReflectionMock->shouldReceive('getName')->andReturn('SomeClass');
 
         $this->assertSame(
-            FileSystem::getAbsolutePath(TEMP_DIR . '/api/class-SomeClass.html'),
+            $this->fileSystem->getAbsolutePath(TEMP_DIR . '/api/class-SomeClass.html'),
             $this->templateNavigator->getTemplatePathForClass($classReflectionMock)
         );
     }
@@ -121,7 +126,7 @@ class TemplateNavigatorTest extends ContainerAwareTestCase
         $constantReflectionMock->shouldReceive('getName')->andReturn('SomeConstant');
 
         $this->assertSame(
-            FileSystem::getAbsolutePath(TEMP_DIR . '/api/constant-SomeConstant.html'),
+            $this->fileSystem->getAbsolutePath(TEMP_DIR . '/api/constant-SomeConstant.html'),
             $this->templateNavigator->getTemplatePathForConstant($constantReflectionMock)
         );
     }
@@ -133,7 +138,7 @@ class TemplateNavigatorTest extends ContainerAwareTestCase
         $functionReflectionMock->shouldReceive('getName')->andReturn('SomeFunction');
 
         $this->assertSame(
-            FileSystem::getAbsolutePath(TEMP_DIR . '/api/function-SomeFunction.html'),
+            $this->fileSystem->getAbsolutePath(TEMP_DIR . '/api/function-SomeFunction.html'),
             $this->templateNavigator->getTemplatePathForFunction($functionReflectionMock)
         );
     }
@@ -145,7 +150,7 @@ class TemplateNavigatorTest extends ContainerAwareTestCase
         $classReflectionMock->shouldReceive('getName')->andReturn('SomeClass');
 
         $this->assertSame(
-            FileSystem::getAbsolutePath(TEMP_DIR . '/api/source-code-SomeClass.html'),
+            $this->fileSystem->getAbsolutePath(TEMP_DIR . '/api/source-code-SomeClass.html'),
             $this->templateNavigator->getTemplatePathForSourceElement($classReflectionMock)
         );
     }

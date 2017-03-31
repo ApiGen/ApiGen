@@ -42,7 +42,7 @@ class ThemeConfigPathResolver
         ];
 
         foreach ($allowedPaths as $allowedPath) {
-            $absolutePath = FileSystem::getAbsolutePath($allowedPath . '/' . $path);
+            $absolutePath = $allowedPath . '/' . ltrim($path, '/');
             if (file_exists($absolutePath)) {
                 return $absolutePath;
             }

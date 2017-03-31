@@ -16,10 +16,16 @@ class GenerateCommandPrepareOptionsTest extends ContainerAwareTestCase
      */
     private $generateCommand;
 
+    /**
+     * @var FileSystem
+     */
+    private $fileSystem;
+
 
     protected function setUp()
     {
         $this->generateCommand = $this->container->getByType(GenerateCommand::class);
+        $this->fileSystem = new FileSystem;
     }
 
 
@@ -51,7 +57,7 @@ class GenerateCommandPrepareOptionsTest extends ContainerAwareTestCase
             'source' => __DIR__
         ]]);
 
-        $this->assertSame(FileSystem::getAbsolutePath(TEMP_DIR . '/api'), $options['destination']);
+        $this->assertSame($this->fileSystem->getAbsolutePath(TEMP_DIR . '/api'), $options['destination']);
     }
 
 
@@ -66,7 +72,7 @@ class GenerateCommandPrepareOptionsTest extends ContainerAwareTestCase
         $options = MethodInvoker::callMethodOnObject($this->generateCommand, 'prepareOptions', [
             $configAndDestinationOptions
         ]);
-        $this->assertSame(FileSystem::getAbsolutePath(__DIR__ . '/../../../src'), $options['source'][0]);
+        $this->assertSame($this->fileSystem->getAbsolutePath(__DIR__ . '/../../../src'), $options['source'][0]);
     }
 
 
