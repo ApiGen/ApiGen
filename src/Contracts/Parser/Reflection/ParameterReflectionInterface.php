@@ -20,8 +20,6 @@ interface ParameterReflectionInterface extends ReflectionInterface
 
     public function getClassName(): ?string;
 
-    public function isOptional(): bool;
-
     public function getDeclaringFunction(): AbstractFunctionMethodReflectionInterface;
 
     public function getDeclaringFunctionName(): string;

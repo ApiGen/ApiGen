@@ -72,11 +72,6 @@ class ReflectionParameterTest extends TestCase
         $this->assertNull($this->reflectionParameter->getClassName());
     }
 
-    public function testIsOptional(): void
-    {
-        $this->assertTrue($this->reflectionParameter->isOptional());
-    }
-
     public function testGetDeclaringFunction(): void
     {
         $this->assertInstanceOf(MethodReflectionInterface::class, $this->reflectionParameter->getDeclaringFunction());

@@ -73,11 +73,6 @@ final class ReflectionParameter extends AbstractReflection implements ParameterR
         return $this->reflection->getClassName();
     }
 
-    public function isOptional(): bool
-    {
-        return $this->reflection->isOptional();
-    }
-
     public function getDeclaringFunction(): AbstractFunctionMethodReflectionInterface
     {
         $functionName = $this->reflection->getDeclaringFunctionName();
