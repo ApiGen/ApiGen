@@ -10,12 +10,13 @@ use ApiGen\Theme\ThemeResources;
 use ApiGen\Utils\FileSystem;
 use ApiGen\Utils\Finder\FinderInterface;
 use Nette\DI\Config\Loader;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-final class GenerateCommand extends AbstractCommand
+final class GenerateCommand extends Command
 {
     /**
      * @var Configuration
