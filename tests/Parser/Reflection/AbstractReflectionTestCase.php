@@ -2,15 +2,12 @@
 
 namespace ApiGen\Parser\Tests\Reflection;
 
-use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Parser\Broker\BackendInterface;
-use ApiGen\Contracts\Parser\ParserStorageInterface;
 use ApiGen\Parser\Broker\Backend;
-use ApiGen\Parser\Reflection\TokenReflection\ReflectionFactory;
-use PHPUnit\Framework\TestCase;
+use ApiGen\Tests\AbstractContainerAwareTestCase;
 use TokenReflection\Broker;
 
-abstract class AbstractReflectionTestCase extends TestCase
+abstract class AbstractReflectionTestCase extends AbstractContainerAwareTestCase
 {
     /**
      * @var Broker
@@ -24,11 +21,7 @@ abstract class AbstractReflectionTestCase extends TestCase
 
     protected function setUp(): void
     {
-        $parserStorageMock = $this->createMock(ParserStorageInterface::class);
-        $parserConfigurationMock = $this->createMock(ConfigurationInterface::class);
-
-        $reflectionFactory = new ReflectionFactory($parserConfigurationMock, $parserStorageMock);
-        $this->backend = new Backend($reflectionFactory);
-        $this->broker = new Broker($this->backend);
+        $this->backend = $this->container->getByType(Backend::class);
+        $this->broker = $this->container->getByType(Broker::class);
     }
 }

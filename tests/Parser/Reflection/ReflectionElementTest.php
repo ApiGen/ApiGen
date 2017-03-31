@@ -2,18 +2,14 @@
 
 namespace ApiGen\Parser\Tests\Reflection;
 
-use ApiGen\Contracts\Configuration\ConfigurationInterface;
-use ApiGen\Contracts\Parser\ParserStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\TokenReflection\ReflectionFactoryInterface;
 use ApiGen\Parser\Broker\Backend;
-use ApiGen\Parser\Reflection\TokenReflection\ReflectionFactory;
+use ApiGen\Tests\AbstractContainerAwareTestCase;
 use ApiGen\Tests\MethodInvoker;
-use PHPUnit\Framework\TestCase;
-use ReflectionProperty;
+use Project\ReflectionMethod;
 use TokenReflection\Broker;
 
-final class ReflectionElementTest extends TestCase
+final class ReflectionElementTest extends AbstractContainerAwareTestCase
 {
     /**
      * @var ElementReflectionInterface
@@ -22,11 +18,15 @@ final class ReflectionElementTest extends TestCase
 
     protected function setUp(): void
     {
-        $backend = new Backend($this->getReflectionFactory());
-        $broker = new Broker($backend);
+        /** @var Backend $backend */
+        $backend = $this->container->getByType(Backend::class);
+
+        /** @var Broker $broker */
+        $broker = $this->container->getByType(Broker::class);
+
         $broker->processDirectory(__DIR__ . '/ReflectionMethodSource');
 
-        $this->reflectionClass = $backend->getClasses()['Project\ReflectionMethod'];
+        $this->reflectionClass = $backend->getClasses()[ReflectionMethod::class];
     }
 
     public function testGetStartPosition(): void
@@ -111,18 +111,5 @@ final class ReflectionElementTest extends TestCase
             [$this->reflectionClass]
         );
         $this->assertSame([], $annotations);
-    }
-
-    private function getReflectionFactory(): ReflectionFactoryInterface
-    {
-        $parserStorageMock = $this->createMock(ParserStorageInterface::class);
-        $parserStorageMock->method('getElementsByType')
-            ->willReturn(['...']);
-
-        $configurationMock = $this->createMock(ConfigurationInterface::class);
-        $configurationMock->method('getVisibilityLevel')
-            ->willReturn(ReflectionProperty::IS_PUBLIC);
-
-        return new ReflectionFactory($configurationMock, $parserStorageMock);
     }
 }

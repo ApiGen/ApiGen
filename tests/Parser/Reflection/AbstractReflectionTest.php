@@ -2,18 +2,15 @@
 
 namespace ApiGen\Parser\Tests\Reflection;
 
-use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Parser\ParserStorageInterface;
-use ApiGen\Contracts\Parser\Reflection\TokenReflection\ReflectionFactoryInterface;
 use ApiGen\Parser\Broker\Backend;
 use ApiGen\Parser\Reflection\AbstractReflection;
-use ApiGen\Parser\Reflection\TokenReflection\ReflectionFactory;
+use ApiGen\Tests\AbstractContainerAwareTestCase;
 use ApiGen\Tests\MethodInvoker;
-use PHPUnit\Framework\TestCase;
-use ReflectionProperty;
 use TokenReflection\Broker;
+use Project\ReflectionMethod;
 
-final class AbstractReflectionTest extends TestCase
+final class AbstractReflectionTest extends AbstractContainerAwareTestCase
 {
     /**
      * @var AbstractReflection
@@ -22,21 +19,30 @@ final class AbstractReflectionTest extends TestCase
 
     protected function setUp(): void
     {
-        $backend = new Backend($this->getReflectionFactory());
-        $broker = new Broker($backend);
+        /** @var Backend $backend */
+        $backend = $this->container->getByType(Backend::class);
+
+        /** @var Broker $broker */
+        $broker = $this->container->getByType(Broker::class);
         $broker->processDirectory(__DIR__ . '/ReflectionMethodSource');
 
-        $this->reflectionClass = $backend->getClasses()['Project\ReflectionMethod'];
+        $this->reflectionClass = $backend->getClasses()[ReflectionMethod::class];
+
+        /** @var ParserStorageInterface $parserStorage */
+        $parserStorage = $this->container->getByType(ParserStorageInterface::class);
+        $parserStorage->setClasses([
+            ReflectionMethod::class => $this->reflectionClass
+        ]);
     }
 
     public function testGetName(): void
     {
-        $this->assertSame('Project\ReflectionMethod', $this->reflectionClass->getName());
+        $this->assertSame(ReflectionMethod::class, $this->reflectionClass->getName());
     }
 
     public function testGetPrettyName(): void
     {
-        $this->assertSame('Project\ReflectionMethod', $this->reflectionClass->getPrettyName());
+        $this->assertSame(ReflectionMethod::class, $this->reflectionClass->getPrettyName());
     }
 
     public function testIsInternal(): void
@@ -68,18 +74,5 @@ final class AbstractReflectionTest extends TestCase
     {
         $parsedClasses = MethodInvoker::callMethodOnObject($this->reflectionClass, 'getParsedClasses');
         $this->assertCount(1, $parsedClasses);
-    }
-
-    private function getReflectionFactory(): ReflectionFactoryInterface
-    {
-        $parserStorageMock = $this->createMock(ParserStorageInterface::class);
-        $parserStorageMock->method('getElementsByType')
-            ->willReturn(['...']);
-
-        $configurationMock = $this->createMock(ConfigurationInterface::class);
-        $configurationMock->method('getVisibilityLevel')
-            ->willReturn(ReflectionProperty::IS_PUBLIC);
-
-        return new ReflectionFactory($configurationMock, $parserStorageMock);
     }
 }

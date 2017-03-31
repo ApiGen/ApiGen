@@ -8,14 +8,15 @@ use ApiGen\Contracts\Parser\ParserStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\TokenReflection\ReflectionFactoryInterface;
+use ApiGen\ElementReflection\Parser\Parser;
 use ApiGen\Parser\Broker\Backend;
-use ApiGen\Parser\Reflection\TokenReflection\ReflectionFactory;
+use ApiGen\Tests\AbstractContainerAwareTestCase;
 use PHPUnit\Framework\Assert;
-use PHPUnit\Framework\TestCase;
 use TokenReflection\Broker;
 
-final class BackendTest extends TestCase
+final class BackendTest extends AbstractContainerAwareTestCase
 {
+    private $sourceDirectory = __DIR__ . '/BackendSource';
     /**
      * @var BackendInterface
      */
@@ -26,10 +27,16 @@ final class BackendTest extends TestCase
      */
     private $broker;
 
+    /**
+     * @var Parser
+     */
+    private $parser;
+
     protected function setUp(): void
     {
-        $this->backend = new Backend($this->getReflectionFactory());
-        $this->broker = new Broker($this->backend);
+        $this->backend = $this->container->getByType(Backend::class);
+        $this->broker = $this->container->getByType(Broker::class);
+        $this->parser = $this->container->getByType(Parser::class);
     }
 
     public function testGetClasses(): void
@@ -46,7 +53,7 @@ final class BackendTest extends TestCase
 
     public function testGetFunctions(): void
     {
-        $this->broker->processDirectory(__DIR__ . '/BackendSource');
+        $this->broker->processDirectory($this->sourceDirectory);
         $functions = $this->backend->getFunctions();
         $this->assertCount(1, $functions);
 
@@ -54,6 +61,13 @@ final class BackendTest extends TestCase
         $this->assertInstanceOf(FunctionReflectionInterface::class, $function);
 
         $this->checkLoadedProperties($function);
+    }
+
+    public function testGetFunctionsWithBetterReflection()
+    {
+        $this->parser->processDirectory($this->sourceDirectory);
+        $functions = $this->parser->getFunctions();
+        $this->assertCount(1, $functions);
     }
 
     public function testGetConstants(): void
@@ -87,15 +101,5 @@ final class BackendTest extends TestCase
             ReflectionFactoryInterface::class,
             Assert::getObjectAttribute($object, 'reflectionFactory')
         );
-    }
-
-    private function getReflectionFactory(): ReflectionFactory
-    {
-        $parserStoragetMock = $this->createMock(ParserStorageInterface::class);
-        $configurationMock = $this->createMock(ConfigurationInterface::class);
-        $configurationMock->method('getVisibilityLevel')
-            ->willReturn(1);
-
-        return new ReflectionFactory($configurationMock, $parserStoragetMock);
     }
 }

@@ -2,21 +2,17 @@
 
 namespace ApiGen\Parser\Tests\Reflection;
 
-use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Parser\ParserStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ParameterReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\TokenReflection\ReflectionFactoryInterface;
 use ApiGen\Parser\Broker\Backend;
 use ApiGen\Parser\Reflection\ReflectionParameter;
-use ApiGen\Parser\Reflection\TokenReflection\ReflectionFactory;
-use PHPUnit\Framework\TestCase;
+use ApiGen\Tests\AbstractContainerAwareTestCase;
 use Project\ReflectionMethod;
-use ReflectionProperty;
 use TokenReflection\Broker;
 
-final class ReflectionParameterTest extends TestCase
+final class ReflectionParameterTest extends AbstractContainerAwareTestCase
 {
     /**
      * @var ClassReflectionInterface
@@ -30,11 +26,22 @@ final class ReflectionParameterTest extends TestCase
 
     protected function setUp(): void
     {
-        $backend = new Backend($this->getReflectionFactory());
-        $broker = new Broker($backend);
+        /** @var Backend $backend */
+        $backend = $this->container->getByType(Backend::class);
+
+        /** @var Broker $broker */
+        $broker = $this->container->getByType(Broker::class);
+
         $broker->processDirectory(__DIR__ . '/ReflectionMethodSource');
 
         $this->reflectionClass = $backend->getClasses()[ReflectionMethod::class];
+
+        /** @var ParserStorageInterface $parserStorage */
+        $parserStorage = $this->container->getByType(ParserStorageInterface::class);
+        $parserStorage->setClasses([
+            ReflectionMethod::class => $this->reflectionClass
+        ]);
+
         $reflectionMethod = $this->reflectionClass->getMethod('methodWithArgs');
         $this->reflectionParameter = $reflectionMethod->getParameter(0);
     }
@@ -100,20 +107,5 @@ final class ReflectionParameterTest extends TestCase
     public function testIsUnlimited(): void
     {
         $this->assertFalse($this->reflectionParameter->isUnlimited());
-    }
-
-    private function getReflectionFactory(): ReflectionFactoryInterface
-    {
-        $parserStorageMock = $this->createMock(ParserStorageInterface::class);
-        $parserStorageMock->method('getElementsByType')->willReturnCallback(function ($arg) {
-            if ($arg) {
-                return ['Project\ReflectionMethod' => $this->reflectionClass];
-            }
-        });
-        $configurationMock = $this->createMock(ConfigurationInterface::class);
-        $configurationMock->method('getVisibilityLevel')
-            ->willReturn(ReflectionProperty::IS_PUBLIC);
-
-        return new ReflectionFactory($configurationMock, $parserStorageMock);
     }
 }
