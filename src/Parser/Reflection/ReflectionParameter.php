@@ -52,11 +52,6 @@ final class ReflectionParameter extends AbstractReflection implements ParameterR
         return $this->reflection === null ? null : $this->reflection->getDefaultValueDefinition();
     }
 
-    public function isDefaultValueAvailable(): bool
-    {
-        return $this->reflection->isDefaultValueAvailable();
-    }
-
     public function getPosition(): int
     {
         return $this->reflection->getPosition();

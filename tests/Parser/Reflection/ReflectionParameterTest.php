@@ -52,11 +52,6 @@ class ReflectionParameterTest extends TestCase
         $this->assertSame(' the URL of the API endpoint', $this->reflectionParameter->getDescription());
     }
 
-    public function testIsDefaultValueAvailable(): void
-    {
-        $this->assertTrue($this->reflectionParameter->isDefaultValueAvailable());
-    }
-
     public function testGetPosition(): void
     {
         $this->assertSame(0, $this->reflectionParameter->getPosition());
