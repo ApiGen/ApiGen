@@ -40,7 +40,7 @@ final class AutocompleteElementsTest extends TestCase
     /**
      * @return PHPUnit_Framework_MockObject_MockObject|ElementStorageInterface
      */
-    private function createElementStorageMock()
+    private function createElementStorageMock(): ElementStorageInterface
     {
         $classReflectionMock = $this->createMock(ClassReflectionInterface::class);
         $classReflectionMock->method('getPrettyName')
