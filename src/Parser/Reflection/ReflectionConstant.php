@@ -4,10 +4,13 @@ namespace ApiGen\Parser\Reflection;
 
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
+use ApiGen\Parser\Reflection\Parts\VisibilityTrait;
 use Exception;
 
 final class ReflectionConstant extends AbstractReflectionElement implements ConstantReflectionInterface
 {
+    use VisibilityTrait;
+
     public function getName(): string
     {
         return $this->reflection->getName();
