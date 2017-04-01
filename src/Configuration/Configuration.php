@@ -62,9 +62,9 @@ final class Configuration implements ConfigurationInterface
         $this->options = $options;
     }
 
-    public function getVisibilityLevel(): int
+    public function getVisibilityLevels(): int
     {
-        return $this->options[ConfigurationOptions::VISIBILITY_LEVELS];
+        return $this->getOptions()[ConfigurationOptions::VISIBILITY_LEVELS];
     }
 
     /**

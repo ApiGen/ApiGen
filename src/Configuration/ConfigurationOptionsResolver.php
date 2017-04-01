@@ -14,17 +14,17 @@ final class ConfigurationOptionsResolver
     /**
      * @var string
      */
-    public const ACCESS_LEVEL_PROTECTED = 'protected';
+    public const VISIBILITY_LEVEL_PROTECTED = 'protected';
 
     /**
      * @var string
      */
-    public const ACCESS_LEVEL_PRIVATE = 'private';
+    public const VISIBILITY_LEVEL_PRIVATE = 'private';
 
     /**
      * @var string
      */
-    public const ACCESS_LEVEL_PUBLIC = 'public';
+    public const VISIBILITY_LEVEL_PUBLIC = 'public';
 
     /**
      * @var mixed[]
@@ -40,14 +40,12 @@ final class ConfigurationOptionsResolver
         ConfigurationOptions::TITLE => '',
         ConfigurationOptions::GOOGLE_ANALYTICS => '',
         // filtering generated content
-        ConfigurationOptions::ACCESS_LEVELS => [self::ACCESS_LEVEL_PUBLIC, self::ACCESS_LEVEL_PROTECTED],
+        ConfigurationOptions::VISIBILITY_LEVELS => [self::VISIBILITY_LEVEL_PUBLIC, self::VISIBILITY_LEVEL_PROTECTED],
         ConfigurationOptions::ANNOTATION_GROUPS => [],
         ConfigurationOptions::BASE_URL => '',
         ConfigurationOptions::CONFIG => '',
         ConfigurationOptions::FORCE_OVERWRITE => false,
-        ConfigurationOptions::TEMPLATE_CONFIG => null,
-        // helpers - @todo: remove
-        ConfigurationOptions::VISIBILITY_LEVELS => [],
+        ConfigurationOptions::TEMPLATE_CONFIG => null
     ];
 
     /**
@@ -99,9 +97,6 @@ final class ConfigurationOptionsResolver
     {
         $this->resolver->setDefaults($this->defaults);
         $this->resolver->setDefaults([
-            ConfigurationOptions::VISIBILITY_LEVELS => function (Options $options) {
-                return $this->getAccessLevelForReflections($options[ConfigurationOptions::ACCESS_LEVELS]);
-            },
             ConfigurationOptions::TEMPLATE => function (Options $options) {
                 $config = $options[ConfigurationOptions::TEMPLATE_CONFIG];
                 if ($config === '') {
@@ -117,23 +112,23 @@ final class ConfigurationOptionsResolver
     /**
      * @param mixed[] $options
      */
-    private function getAccessLevelForReflections(array $options): int
+    private function normalizeVisibilityLevelsToBinary(array $options): int
     {
-        $accessLevel = null;
+        $visibilityLevelInInteger = null;
 
-        if (in_array(self::ACCESS_LEVEL_PUBLIC, $options)) {
-            $accessLevel |= ReflectionProperty::IS_PUBLIC;
+        if (in_array(self::VISIBILITY_LEVEL_PUBLIC, $options)) {
+            $visibilityLevelInInteger |= ReflectionProperty::IS_PUBLIC;
         }
 
-        if (in_array(self::ACCESS_LEVEL_PROTECTED, $options)) {
-            $accessLevel |= ReflectionProperty::IS_PROTECTED;
+        if (in_array(self::VISIBILITY_LEVEL_PROTECTED, $options)) {
+            $visibilityLevelInInteger |= ReflectionProperty::IS_PROTECTED;
         }
 
-        if (in_array(self::ACCESS_LEVEL_PRIVATE, $options)) {
-            $accessLevel |= ReflectionProperty::IS_PRIVATE;
+        if (in_array(self::VISIBILITY_LEVEL_PRIVATE, $options)) {
+            $visibilityLevelInInteger |= ReflectionProperty::IS_PRIVATE;
         }
 
-        return $accessLevel;
+        return $visibilityLevelInInteger;
     }
 
     private function setRequired(): void
@@ -199,6 +194,10 @@ final class ConfigurationOptionsResolver
 
             return $this->fileSystem->getAbsolutePath($value);
         });
+
+        $this->resolver->setNormalizer(ConfigurationOptions::VISIBILITY_LEVELS, function (Options $options, $value) {
+            return $this->normalizeVisibilityLevelsToBinary($value);
+        });
     }
 
     private function allowedValuesForDestination(?string $destination): bool
@@ -207,7 +206,9 @@ final class ConfigurationOptionsResolver
             throw new ConfigurationException(
                 'Destination is not set. Use "--destination <directory>" or config to set it.'
             );
-        } elseif (! is_dir($destination)) {
+        }
+
+        if (! is_dir($destination)) {
             mkdir($destination, 0755, true);
         }
 

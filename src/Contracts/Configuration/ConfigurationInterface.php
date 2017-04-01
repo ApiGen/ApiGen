@@ -28,7 +28,7 @@ interface ConfigurationInterface
     /**
      * Get property/method visibility level (public, protected or private, in binary code).
      */
-    public function getVisibilityLevel(): int;
+    public function getVisibilityLevels(): int;
 
     /**
      * List of annotations.

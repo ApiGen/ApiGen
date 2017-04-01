@@ -142,7 +142,7 @@ final class ReflectionClass extends AbstractReflectionElement implements ClassRe
             }
 
             $this->methods = array_filter($this->methods, function (ReflectionMethod $method) {
-                return $method->configuration->getVisibilityLevel() === $this->getVisibilityLevel();
+                return $method->configuration->getVisibilityLevels() === $this->getVisibilityLevel();
             });
         }
 
@@ -589,7 +589,7 @@ final class ReflectionClass extends AbstractReflectionElement implements ClassRe
 
     public function getVisibilityLevel(): int
     {
-        return $this->configuration->getVisibilityLevel();
+        return $this->configuration->getVisibilityLevels();
     }
 
     public function getTransformerCollector(): TransformerCollectorInterface

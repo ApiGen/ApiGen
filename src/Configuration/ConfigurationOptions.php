@@ -7,7 +7,7 @@ final class ConfigurationOptions
     /**
      * @var string
      */
-    public const ACCESS_LEVELS = 'accessLevels';
+    public const VISIBILITY_LEVELS = 'visibilityLevels';
 
     /**
      * @var string
@@ -68,9 +68,4 @@ final class ConfigurationOptions
      * @var string
      */
     public const TITLE = 'title';
-
-    /**
-     * @var string
-     */
-    public const VISIBILITY_LEVELS = 'visibilityLevels';
 }

@@ -54,7 +54,7 @@ final class GenerateCommandPrepareOptionsTest extends AbstractContainerAwareTest
             ConfigurationOptions::DESTINATION => TEMP_DIR . '/api',
         ]]);
 
-        $this->assertSame(['public', 'protected', 'private'], $options[ConfigurationOptions::ACCESS_LEVELS]);
+        $this->assertSame(1792, $options[ConfigurationOptions::VISIBILITY_LEVELS]);
         $this->assertSame('http://apigen.org', $options[ConfigurationOptions::BASE_URL]);
     }
 }
