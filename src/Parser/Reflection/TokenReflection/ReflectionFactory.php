@@ -43,7 +43,9 @@ final class ReflectionFactory implements ReflectionFactoryInterface
     {
         $element = $this->transformerCollector->transformReflectionToElement($reflection);
 
-        $this->setDependencies($element);
+        if ($element instanceof AbstractReflection) {
+            $this->setDependencies($element);
+        }
 
         return $element;
     }
