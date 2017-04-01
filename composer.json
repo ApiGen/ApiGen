@@ -40,6 +40,7 @@
         "psr-4": {
             "ApiGen\\": "src",
             "ApiGen\\ElementReflection\\": "packages/ElementReflection/src",
+            "ApiGen\\ReflectionToElementTransformer\\": "packages/ReflectionToElementTransformer/src",
             "PHP_CodeSniffer\\": "vendor/squizlabs/php_codesniffer/src"
         }
     },

@@ -2,6 +2,7 @@
 
 namespace ApiGen\ElementReflection\Tests\Parser;
 
+use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\ElementReflection\Parser\Parser;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 
@@ -26,5 +27,8 @@ final class ParserTest extends AbstractContainerAwareTestCase
 
         $functionReflections = $this->parser->getFunctionReflections();
         $this->assertCount(1, $functionReflections);
+
+//        $functionReflection = array_pop($functionReflections);
+//        $this->assertInstanceOf(FunctionReflectionInterface::class, $functionReflection);
     }
 }

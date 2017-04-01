@@ -1,0 +1,2 @@
+- ApiGen\ReflectionToElementTransformer\TransformerCollector
+- ApiGen\ReflectionToElementTransformer\Transformer\ClassReflectionToClassTransformer

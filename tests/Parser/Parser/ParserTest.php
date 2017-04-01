@@ -2,15 +2,12 @@
 
 namespace ApiGen\Parser\Tests;
 
-use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Parser\ParserInterface;
 use ApiGen\Contracts\Parser\ParserStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\TokenReflection\ReflectionFactoryInterface;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
-use PHPUnit\Framework\Assert;
 
 final class ParserTest extends AbstractContainerAwareTestCase
 {
@@ -38,8 +35,6 @@ final class ParserTest extends AbstractContainerAwareTestCase
 
         $function = array_pop($functions);
         $this->assertInstanceOf(FunctionReflectionInterface::class, $function);
-
-        $this->checkLoadedProperties($function);
     }
 
     public function testGetConstants(): void
@@ -50,8 +45,6 @@ final class ParserTest extends AbstractContainerAwareTestCase
 
         $constant = array_pop($constants);
         $this->assertInstanceOf(ConstantReflectionInterface::class, $constant);
-
-        $this->checkLoadedProperties($constant);
     }
 
     /**
@@ -64,7 +57,7 @@ final class ParserTest extends AbstractContainerAwareTestCase
         $this->parser->parseDirectories([__DIR__ . '/ErrorParseSource']);
     }
 
-    public function testGetClasses(): void
+    public function testParseClasses(): void
     {
         $this->assertCount(0, $this->parserStorage->getClasses());
 
@@ -75,27 +68,5 @@ final class ParserTest extends AbstractContainerAwareTestCase
 
         $class = array_pop($classes);
         $this->assertInstanceOf(ClassReflectionInterface::class, $class);
-        $this->checkLoadedProperties($class);
-    }
-
-    /**
-     * @param object $object
-     */
-    private function checkLoadedProperties($object): void
-    {
-        $this->assertInstanceOf(
-            ConfigurationInterface::class,
-            Assert::getObjectAttribute($object, 'configuration')
-        );
-
-        $this->assertInstanceOf(
-            ParserStorageInterface::class,
-            Assert::getObjectAttribute($object, 'parserStorage')
-        );
-
-        $this->assertInstanceOf(
-            ReflectionFactoryInterface::class,
-            Assert::getObjectAttribute($object, 'reflectionFactory')
-        );
     }
 }

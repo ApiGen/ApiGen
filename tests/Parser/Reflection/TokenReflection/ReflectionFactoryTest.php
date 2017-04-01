@@ -11,10 +11,9 @@ use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ParameterReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\TokenReflection\ReflectionFactoryInterface;
-use ApiGen\Parser\Reflection\TokenReflection\ReflectionFactory;
+use ApiGen\Tests\AbstractContainerAwareTestCase;
 use Nette\Object;
 use PHPUnit\Framework\Assert;
-use PHPUnit\Framework\TestCase;
 use TokenReflection\IReflectionClass;
 use TokenReflection\IReflectionConstant;
 use TokenReflection\IReflectionFunction;
@@ -22,7 +21,7 @@ use TokenReflection\IReflectionMethod;
 use TokenReflection\IReflectionParameter;
 use TokenReflection\IReflectionProperty;
 
-final class ReflectionFactoryTest extends TestCase
+final class ReflectionFactoryTest extends AbstractContainerAwareTestCase
 {
     /**
      * @var ReflectionFactoryInterface
@@ -31,9 +30,7 @@ final class ReflectionFactoryTest extends TestCase
 
     protected function setUp(): void
     {
-        $parserStorageMock = $this->createMock(ParserStorageInterface::class);
-        $configurationMock = $this->createMock(ConfigurationInterface::class);
-        $this->reflectionFactory = new ReflectionFactory($configurationMock, $parserStorageMock);
+        $this->reflectionFactory = $this->container->getByType(ReflectionFactoryInterface::class);
     }
 
     public function testCreateFromReflectionClass(): void

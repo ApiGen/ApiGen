@@ -2,6 +2,7 @@
 
 namespace ApiGen\ElementReflection\Parser;
 
+use ApiGen\Contracts\Parser\Reflection\TokenReflection\ReflectionFactoryInterface;
 use ApiGen\Parser\Reflection\ReflectionClass;
 use Roave\BetterReflection\Reflection\ReflectionFunction;
 use Roave\BetterReflection\Reflector\ClassReflector;
@@ -21,6 +22,16 @@ final class Parser
     private $functionReflections = [];
 
     /**
+     * @var ReflectionFactoryInterface
+     */
+    private $reflectionFactory;
+
+    public function __construct(ReflectionFactoryInterface $reflectionFactory)
+    {
+        $this->reflectionFactory = $reflectionFactory;
+    }
+
+    /**
      * @param string[] $directories
      */
     public function parseDirectories(array $directories): void
@@ -32,6 +43,9 @@ final class Parser
 
         $functionReflector = new FunctionReflector($directoriesSourceLocator);
         $this->functionReflections = $functionReflector->getAllFunctions();
+//        $this->functionReflections = array_map(function (ReflectionFunction $functionReflection) {
+//            return $this->reflectionFactory->createFromReflection($functionReflection);
+//        }, $functionReflections);
 
         // @todo constants
     }
