@@ -5,14 +5,16 @@
 >
     <testsuites>
         <testsuite>
-            <directory>tests</directory>
             <directory>packages/ElementReflection/tests</directory>
+            <directory>packages/ReflectionToElementTransformer/tests</directory>
+            <directory>tests</directory>
         </testsuite>
     </testsuites>
     <filter>
         <whitelist>
-            <directory>src</directory>
             <directory>packages/ElementReflection/src</directory>
+            <directory>packages/ReflectionToElementTransformer/src</directory>
+            <directory>src</directory>
         </whitelist>
     </filter>
 </phpunit>

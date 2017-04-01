@@ -42,10 +42,10 @@ final class Parser
         $this->classReflections = $classReflector->getAllClasses();
 
         $functionReflector = new FunctionReflector($directoriesSourceLocator);
-        $this->functionReflections = $functionReflector->getAllFunctions();
-//        $this->functionReflections = array_map(function (ReflectionFunction $functionReflection) {
-//            return $this->reflectionFactory->createFromReflection($functionReflection);
-//        }, $functionReflections);
+
+        $this->functionReflections = array_map(function (ReflectionFunction $functionReflection) {
+            return $this->transformerCollector->transformReflectionToElement($functionReflection);
+        }, $functionReflector->getAllFunctions());
 
         // @todo constants
     }
