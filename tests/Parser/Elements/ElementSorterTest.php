@@ -6,8 +6,8 @@ use ApiGen\Contracts\Parser\Reflection\Behavior\InClassInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
-use ApiGen\Parser\Elements\ElementSorter;
 use ApiGen\Contracts\Parser\Reflection\TokenReflection\ReflectionInterface;
+use ApiGen\Parser\Elements\ElementSorter;
 use PHPUnit\Framework\TestCase;
 
 final class ElementSorterTest extends TestCase
