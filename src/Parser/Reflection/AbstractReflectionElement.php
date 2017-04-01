@@ -21,16 +21,6 @@ abstract class AbstractReflectionElement extends AbstractReflection implements E
      */
     protected $annotations;
 
-    public function getStartPosition(): int
-    {
-        return $this->reflection->getStartPosition();
-    }
-
-    public function getEndPosition(): int
-    {
-        return $this->reflection->getEndPosition();
-    }
-
     public function isDocumented(): bool
     {
         if ($this->isDocumented === null) {

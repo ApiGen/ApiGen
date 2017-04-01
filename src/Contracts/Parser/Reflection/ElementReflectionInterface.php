@@ -52,8 +52,4 @@ interface ElementReflectionInterface extends NamedInterface
      * Returns the unqualified name (UQN).
      */
     public function getShortName(): string;
-
-    public function getStartPosition(): int;
-
-    public function getEndPosition(): int;
 }

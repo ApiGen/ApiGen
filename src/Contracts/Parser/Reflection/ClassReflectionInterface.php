@@ -185,10 +185,6 @@ interface ClassReflectionInterface extends ElementReflectionInterface, LinedInte
      */
     public function getParsedClasses(): array;
 
-    public function getStartPosition(): int;
-
-    public function getEndPosition(): int;
-
     public function isAbstract(): bool;
 
     public function isFinal(): bool;

@@ -29,16 +29,6 @@ final class ReflectionElementTest extends AbstractContainerAwareTestCase
         $this->reflectionClass = $backend->getClasses()[ReflectionMethod::class];
     }
 
-    public function testGetStartPosition(): void
-    {
-        $this->assertSame(16, $this->reflectionClass->getStartPosition());
-    }
-
-    public function testGetEndPosition(): void
-    {
-        $this->assertSame(69, $this->reflectionClass->getEndPosition());
-    }
-
     public function testIsDocumented(): void
     {
         $this->assertTrue($this->reflectionClass->isDocumented());
