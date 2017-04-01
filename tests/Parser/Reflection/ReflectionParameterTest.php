@@ -43,7 +43,8 @@ final class ReflectionParameterTest extends AbstractContainerAwareTestCase
         ]);
 
         $reflectionMethod = $this->reflectionClass->getMethod('methodWithArgs');
-        $this->reflectionParameter = $reflectionMethod->getParameter(0);
+        $reflectionParameters = $reflectionMethod->getParameters();
+        $this->reflectionParameter = array_shift($reflectionParameters);
     }
 
     public function testInstance(): void

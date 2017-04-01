@@ -40,31 +40,6 @@ final class AbstractReflectionFunctionTest extends AbstractReflectionTestCase
         $this->assertInstanceOf(ParameterReflectionInterface::class, $parameter);
     }
 
-    public function testGetParameter(): void
-    {
-        $parameter = $this->reflectionFunction->getParameter('arg');
-        $this->assertInstanceOf(ParameterReflectionInterface::class, $parameter);
-
-        $parameter = $this->reflectionFunction->getParameter(0);
-        $this->assertInstanceOf(ParameterReflectionInterface::class, $parameter);
-    }
-
-    /**
-     * @expectedException \InvalidArgumentException
-     */
-    public function testGetParameterNotExistingName(): void
-    {
-        $this->reflectionFunction->getParameter('notHere');
-    }
-
-    /**
-     * @expectedException \InvalidArgumentException
-     */
-    public function testGetParameterNotExistingPosition(): void
-    {
-        $this->reflectionFunction->getParameter(1);
-    }
-
     public function testGetParametersAnnotationMatchingRealCount(): void
     {
         $reflectionFunction = $this->backend->getFunctions()['getMemoryInBytes'];

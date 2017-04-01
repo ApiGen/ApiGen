@@ -4,7 +4,6 @@ namespace ApiGen\Parser\Reflection;
 
 use ApiGen\Contracts\Parser\Reflection\AbstractFunctionMethodReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ParameterReflectionInterface;
-use InvalidArgumentException;
 use TokenReflection\IReflectionParameter;
 
 abstract class AbstractReflectionFunction
@@ -37,29 +36,5 @@ abstract class AbstractReflectionFunction
         }
 
         return $this->parameters;
-    }
-
-    /**
-     * @param int|string $key
-     */
-    public function getParameter($key): ParameterReflectionInterface
-    {
-        $parameters = $this->getParameters();
-
-        if (isset($parameters[$key])) {
-            return $parameters[$key];
-        }
-
-        foreach ($parameters as $parameter) {
-            if ($parameter->getName() === $key) {
-                return $parameter;
-            }
-        }
-
-        throw new InvalidArgumentException(sprintf(
-            'There is no parameter with name/position "%s" in function/method "%s"',
-            $key,
-            $this->getName()
-        ));
     }
 }

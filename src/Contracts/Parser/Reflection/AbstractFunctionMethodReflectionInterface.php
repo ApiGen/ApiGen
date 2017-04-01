@@ -10,10 +10,4 @@ interface AbstractFunctionMethodReflectionInterface extends ElementReflectionInt
      * @return ParameterReflectionInterface[]
      */
     public function getParameters(): array;
-
-    /**
-     * @param int|string $key
-     * @return ParameterReflectionInterface
-     */
-    public function getParameter($key): ParameterReflectionInterface;
 }
