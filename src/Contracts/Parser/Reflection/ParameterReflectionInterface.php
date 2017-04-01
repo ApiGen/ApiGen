@@ -20,13 +20,13 @@ interface ParameterReflectionInterface extends ReflectionInterface
 
     public function getClassName(): ?string;
 
+    public function getDeclaringClassName(): string;
+
     public function getDeclaringFunction(): AbstractFunctionMethodReflectionInterface;
 
     public function getDeclaringFunctionName(): string;
 
     public function getDeclaringClass(): ?ClassReflectionInterface;
-
-    public function getDeclaringClassName(): string;
 
     public function isUnlimited(): bool;
 }

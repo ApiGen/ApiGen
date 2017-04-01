@@ -73,6 +73,11 @@ final class ReflectionParameter extends AbstractReflection implements ParameterR
         return $this->reflection->getClassName();
     }
 
+    public function getDeclaringClassName(): string
+    {
+        return (string) $this->reflection->getDeclaringClassName();
+    }
+
     public function getDeclaringFunction(): AbstractFunctionMethodReflectionInterface
     {
         $functionName = $this->reflection->getDeclaringFunctionName();
@@ -95,11 +100,6 @@ final class ReflectionParameter extends AbstractReflection implements ParameterR
     {
         $className = $this->reflection->getDeclaringClassName();
         return $className === '' ? null : $this->getParsedClasses()[$className];
-    }
-
-    public function getDeclaringClassName(): string
-    {
-        return (string) $this->reflection->getDeclaringClassName();
     }
 
     public function isUnlimited(): bool

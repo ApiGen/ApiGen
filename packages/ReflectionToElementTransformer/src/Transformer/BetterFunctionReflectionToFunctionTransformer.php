@@ -2,8 +2,8 @@
 
 namespace ApiGen\ReflectionToElementTransformer\Transformer;
 
-use ApiGen\Parser\Reflection\ReflectionClass;
-use ApiGen\Parser\Reflection\ReflectionFunction;
+use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
+use ApiGen\ElementReflection\Reflection\NewFunctionReflection;
 use ApiGen\ReflectionToElementTransformer\Contract\Transformer\TransformerInterface;
 use Roave\BetterReflection\Reflection\ReflectionFunction as BetterReflectionFunction;
 
@@ -19,12 +19,14 @@ final class BetterFunctionReflectionToFunctionTransformer implements Transformer
 
     /**
      * @param object|BetterReflectionFunction $reflection
-     * @return ReflectionClass
+     * @return FunctionReflectionInterface
      */
     public function transform($reflection)
     {
-        dump($reflection);
-        die;
-        return new ReflectionFunction($reflection);
+        return new NewFunctionReflection(
+            $reflection->getName(),
+            $reflection->getStartLine(),
+            $reflection->getEndLine()
+        );
     }
 }
