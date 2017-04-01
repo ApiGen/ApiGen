@@ -70,7 +70,7 @@ final class ReflectionFactory implements ReflectionFactoryInterface
     private function createByReflectionType($reflection)
     {
         foreach ($this->transformerCollector->getTransformers() as $transformer) {
-            if ( ! $transformer->matches($reflection)) {
+            if (! $transformer->matches($reflection)) {
                 continue;
             }
 
