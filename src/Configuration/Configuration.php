@@ -27,7 +27,6 @@ final class Configuration implements ConfigurationInterface
      */
     public function resolveOptions(array $options): array
     {
-        $options = $this->unsetConsoleOptions($options);
         return $this->options = $this->configurationOptionsResolver->resolve($options);
     }
 
@@ -118,18 +117,5 @@ final class Configuration implements ConfigurationInterface
     public function getExtensions(): array
     {
         return $this->getOptions()[ConfigurationOptions::EXTENSIONS];
-    }
-
-    /**
-     * @param mixed[] $options
-     * @return mixed[]
-     */
-    private function unsetConsoleOptions(array $options): array
-    {
-        unset(
-            $options['ansi'], $options['no-ansi'], $options['no-interaction'], $options['config'],
-            $options['help'], $options['quiet'], $options['verbose'], $options['version']
-        );
-        return $options;
     }
 }

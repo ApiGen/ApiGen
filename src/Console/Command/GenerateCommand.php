@@ -101,7 +101,9 @@ final class GenerateCommand extends Command
 
         $cliOptions = [
             ConfigurationOptions::SOURCE => $input->getArgument(ConfigurationOptions::SOURCE),
-        ] + $input->getOptions();
+            ConfigurationOptions::DESTINATION => $input->getOption(ConfigurationOptions::DESTINATION),
+            ConfigurationOptions::CONFIG => $input->getOption(ConfigurationOptions::CONFIG)
+        ];
 
         $options = $this->prepareOptions($cliOptions);
         $this->scanAndParse($options);
