@@ -2,26 +2,26 @@
 
 namespace ApiGen\ReflectionToElementTransformer\Transformer;
 
-use ApiGen\Parser\Reflection\ReflectionClass;
+use ApiGen\Parser\Reflection\ReflectionMethod;
 use ApiGen\ReflectionToElementTransformer\Contract\Transformer\TransformerInterface;
-use TokenReflection\IReflectionClass;
+use TokenReflection\IReflectionMethod;
 
-final class ClassReflectionToClassTransformer implements TransformerInterface
+final class MethodReflectionToMethodTransformer implements TransformerInterface
 {
     /**
      * @param object $reflection
      */
     public function matches($reflection): bool
     {
-        return $reflection instanceof IReflectionClass;
+        return $reflection instanceof IReflectionMethod;
     }
 
     /**
-     * @param object|IReflectionClass $reflection
-     * @return ReflectionClass
+     * @param object|IReflectionMethod $reflection
+     * @return ReflectionMethod
      */
     public function transform($reflection)
     {
-        return new ReflectionClass($reflection);
+        return new ReflectionMethod($reflection);
     }
 }

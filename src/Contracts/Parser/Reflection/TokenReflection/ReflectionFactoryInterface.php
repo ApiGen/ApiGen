@@ -9,8 +9,8 @@ use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 interface ReflectionFactoryInterface
 {
     /**
-     * @param object $tokenReflection
+     * @param object $reflection
      * @return ClassReflectionInterface|ConstantReflectionInterface|MethodReflectionInterface
      */
-    public function createFromReflection($tokenReflection);
+    public function createFromReflection($reflection);
 }

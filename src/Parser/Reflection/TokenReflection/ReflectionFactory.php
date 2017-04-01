@@ -7,23 +7,10 @@ use ApiGen\Contracts\Parser\ParserStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\TokenReflection\ReflectionFactoryInterface;
 use ApiGen\Exception\Parser\Reflection\UnsupportedClassException;
 use ApiGen\Parser\Reflection\AbstractReflection;
-use ApiGen\Parser\Reflection\ReflectionClass;
-use ApiGen\Parser\Reflection\ReflectionConstant;
-use ApiGen\Parser\Reflection\ReflectionFunction;
-use ApiGen\Parser\Reflection\ReflectionMethod;
-use ApiGen\Parser\Reflection\ReflectionParameter;
-use ApiGen\Parser\Reflection\ReflectionProperty;
 use ApiGen\ReflectionToElementTransformer\Contract\TransformerCollectorInterface;
-use TokenReflection\IReflectionClass;
-use TokenReflection\IReflectionConstant;
-use TokenReflection\IReflectionFunction;
-use TokenReflection\IReflectionMethod;
-use TokenReflection\IReflectionParameter;
-use TokenReflection\IReflectionProperty;
 
 /**
  * @todo rename to TransformerCollector
- * @todo decouple and add TranformerInterface per item
  */
 final class ReflectionFactory implements ReflectionFactoryInterface
 {
@@ -53,18 +40,20 @@ final class ReflectionFactory implements ReflectionFactoryInterface
     }
 
     /**
-     * @param IReflectionClass|IReflectionConstant|IReflectionMethod $tokenReflection
-     * @return ReflectionClass|ReflectionConstant|ReflectionMethod
+     * @param mixed $reflection
+     * @return mixed
      */
-    public function createFromReflection($tokenReflection)
+    public function createFromReflection($reflection)
     {
-        $reflection = $this->createByReflectionType($tokenReflection);
-        $this->setDependencies($reflection);
-        return $reflection;
+        $element = $this->createByReflectionType($reflection);
+
+        $this->setDependencies($element);
+
+        return $element;
     }
 
     /**
-     * @param IReflectionClass|IReflectionConstant|IReflectionMethod $reflection
+     * @param mixed $reflection
      * @return mixed
      */
     private function createByReflectionType($reflection)
@@ -75,26 +64,6 @@ final class ReflectionFactory implements ReflectionFactoryInterface
             }
 
             return $transformer->transform($reflection);
-        }
-
-        if ($reflection instanceof IReflectionConstant) {
-            return new ReflectionConstant($reflection);
-        }
-
-        if ($reflection instanceof IReflectionMethod) {
-            return new ReflectionMethod($reflection);
-        }
-
-        if ($reflection instanceof IReflectionProperty) {
-            return new ReflectionProperty($reflection);
-        }
-
-        if ($reflection instanceof IReflectionParameter) {
-            return new ReflectionParameter($reflection);
-        }
-
-        if ($reflection instanceof IReflectionFunction) {
-            return new ReflectionFunction($reflection);
         }
 
         throw new UnsupportedClassException(sprintf(
