@@ -8,9 +8,9 @@ use ApiGen\Contracts\Parser\Reflection\Extractors\ClassTraitElementsExtractorInt
 use ApiGen\Contracts\Parser\Reflection\Extractors\ParentClassElementsExtractorInterface;
 use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\TokenReflection\ReflectionFactoryInterface;
 use ApiGen\Parser\Reflection\Extractors\ClassTraitElementsExtractor;
 use ApiGen\Parser\Reflection\Extractors\ParentClassElementsExtractor;
+use ApiGen\ReflectionToElementTransformer\Contract\TransformerCollectorInterface;
 use InvalidArgumentException;
 use TokenReflection\IReflectionClass;
 
@@ -158,7 +158,7 @@ final class ReflectionClass extends AbstractReflectionElement implements ClassRe
             $this->ownMethods = [];
 
             foreach ($this->reflection->getOwnMethods($this->getVisibilityLevel()) as $method) {
-                $apiMethod = $this->reflectionFactory->createFromReflection($method);
+                $apiMethod = $this->transformerCollector->transformReflectionToElement($method);
                 if (! $this->isDocumented() || $apiMethod->isDocumented()) {
                     $this->ownMethods[$method->getName()] = $apiMethod;
                 }
@@ -202,7 +202,7 @@ final class ReflectionClass extends AbstractReflectionElement implements ClassRe
                     continue;
                 }
 
-                $apiProperty = $this->reflectionFactory->createFromReflection($property);
+                $apiProperty = $this->transformerCollector->transformReflectionToElement($property);
                 if (! $this->isDocumented() || $apiProperty->isDocumented()) {
                     $this->properties[$property->getName()] = $apiProperty;
                 }
@@ -220,7 +220,7 @@ final class ReflectionClass extends AbstractReflectionElement implements ClassRe
         if ($this->ownProperties === null) {
             $this->ownProperties = [];
             foreach ($this->reflection->getOwnProperties($this->getVisibilityLevel()) as $property) {
-                $apiProperty = $this->reflectionFactory->createFromReflection($property);
+                $apiProperty = $this->transformerCollector->transformReflectionToElement($property);
                 if (! $this->isDocumented() || $apiProperty->isDocumented()) {
                     /** @var ReflectionElement $property */
                     $this->ownProperties[$property->getName()] = $apiProperty;
@@ -260,7 +260,7 @@ final class ReflectionClass extends AbstractReflectionElement implements ClassRe
         if ($this->constants === null) {
             $this->constants = [];
             foreach ($this->reflection->getConstantReflections() as $constant) {
-                $apiConstant = $this->reflectionFactory->createFromReflection($constant);
+                $apiConstant = $this->transformerCollector->transformReflectionToElement($constant);
                 if (! $this->isDocumented() || $apiConstant->isDocumented()) {
                     /** @var ReflectionElement $constant */
                     $this->constants[$constant->getName()] = $apiConstant;
@@ -592,9 +592,9 @@ final class ReflectionClass extends AbstractReflectionElement implements ClassRe
         return $this->configuration->getVisibilityLevel();
     }
 
-    public function getReflectionFactory(): ReflectionFactoryInterface
+    public function getTransformerCollector(): TransformerCollectorInterface
     {
-        return $this->reflectionFactory;
+        return $this->transformerCollector;
     }
 
     /**

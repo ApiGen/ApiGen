@@ -48,6 +48,7 @@
         "psr-4": {
             "ApiGen\\Tests\\": "tests",
             "ApiGen\\ElementReflection\\Tests\\": "packages/ElementReflection/tests",
+            "ApiGen\\ReflectionToElementTransformer\\Tests\\": "packages/ReflectionToElementTransformer/tests",
             "ApiGen\\Parser\\Tests\\": "tests/Parser"
         }
     },

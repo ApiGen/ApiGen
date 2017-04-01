@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Parser\Tests\Reflection\TokenReflection;
+namespace ApiGen\ReflectionToElementTransformer\Tests;
 
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Parser\ParserStorageInterface;
@@ -10,7 +10,7 @@ use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ParameterReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\TokenReflection\ReflectionFactoryInterface;
+use ApiGen\ReflectionToElementTransformer\Contract\TransformerCollectorInterface;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 use Nette\Object;
 use PHPUnit\Framework\Assert;
@@ -21,22 +21,22 @@ use TokenReflection\IReflectionMethod;
 use TokenReflection\IReflectionParameter;
 use TokenReflection\IReflectionProperty;
 
-final class ReflectionFactoryTest extends AbstractContainerAwareTestCase
+final class TransformerCollectorTest extends AbstractContainerAwareTestCase
 {
     /**
-     * @var ReflectionFactoryInterface
+     * @var TransformerCollectorInterface
      */
-    private $reflectionFactory;
+    private $transformerCollector;
 
     protected function setUp(): void
     {
-        $this->reflectionFactory = $this->container->getByType(ReflectionFactoryInterface::class);
+        $this->transformerCollector = $this->container->getByType(TransformerCollectorInterface::class);
     }
 
     public function testCreateFromReflectionClass(): void
     {
         $tokenReflectionClassMock = $this->createMock(IReflectionClass::class, Object::class);
-        $reflectionClass = $this->reflectionFactory->createFromReflection($tokenReflectionClassMock);
+        $reflectionClass = $this->transformerCollector->transformReflectionToElement($tokenReflectionClassMock);
         $this->assertInstanceOf(ClassReflectionInterface::class, $reflectionClass);
         $this->checkLoadedProperties($reflectionClass);
     }
@@ -44,7 +44,7 @@ final class ReflectionFactoryTest extends AbstractContainerAwareTestCase
     public function testCreateFromReflectionFunction(): void
     {
         $tokenReflectionFunctionMock = $this->createMock(IReflectionFunction::class, Object::class);
-        $reflectionFunction = $this->reflectionFactory->createFromReflection($tokenReflectionFunctionMock);
+        $reflectionFunction = $this->transformerCollector->transformReflectionToElement($tokenReflectionFunctionMock);
         $this->assertInstanceOf(FunctionReflectionInterface::class, $reflectionFunction);
         $this->checkLoadedProperties($reflectionFunction);
     }
@@ -52,7 +52,7 @@ final class ReflectionFactoryTest extends AbstractContainerAwareTestCase
     public function testCreateFromReflectionMethod(): void
     {
         $tokenReflectionMethodMock = $this->createMock(IReflectionMethod::class, Object::class);
-        $reflectionMethod = $this->reflectionFactory->createFromReflection($tokenReflectionMethodMock);
+        $reflectionMethod = $this->transformerCollector->transformReflectionToElement($tokenReflectionMethodMock);
         $this->assertInstanceOf(MethodReflectionInterface::class, $reflectionMethod);
         $this->checkLoadedProperties($reflectionMethod);
     }
@@ -60,7 +60,7 @@ final class ReflectionFactoryTest extends AbstractContainerAwareTestCase
     public function testCreateFromReflectionProperty(): void
     {
         $tokenReflectionPropertyMock = $this->createMock(IReflectionProperty::class, Object::class);
-        $reflectionProperty = $this->reflectionFactory->createFromReflection($tokenReflectionPropertyMock);
+        $reflectionProperty = $this->transformerCollector->transformReflectionToElement($tokenReflectionPropertyMock);
         $this->assertInstanceOf(PropertyReflectionInterface::class, $reflectionProperty);
         $this->checkLoadedProperties($reflectionProperty);
     }
@@ -68,7 +68,7 @@ final class ReflectionFactoryTest extends AbstractContainerAwareTestCase
     public function testCreateFromReflectionParameter(): void
     {
         $tokenReflectionParameterMock = $this->createMock(IReflectionParameter::class, Object::class);
-        $reflectionParameter = $this->reflectionFactory->createFromReflection($tokenReflectionParameterMock);
+        $reflectionParameter = $this->transformerCollector->transformReflectionToElement($tokenReflectionParameterMock);
         $this->assertInstanceOf(ParameterReflectionInterface::class, $reflectionParameter);
         $this->checkLoadedProperties($reflectionParameter);
     }
@@ -76,7 +76,7 @@ final class ReflectionFactoryTest extends AbstractContainerAwareTestCase
     public function testCreateFromReflectionConstant(): void
     {
         $tokenReflectionConstantMock = $this->createMock(IReflectionConstant::class, Object::class);
-        $reflectionConstant = $this->reflectionFactory->createFromReflection($tokenReflectionConstantMock);
+        $reflectionConstant = $this->transformerCollector->transformReflectionToElement($tokenReflectionConstantMock);
         $this->assertInstanceOf(ConstantReflectionInterface::class, $reflectionConstant);
         $this->checkLoadedProperties($reflectionConstant);
     }
@@ -97,8 +97,8 @@ final class ReflectionFactoryTest extends AbstractContainerAwareTestCase
         );
 
         $this->assertInstanceOf(
-            ReflectionFactoryInterface::class,
-            Assert::getObjectAttribute($object, 'reflectionFactory')
+            TransformerCollectorInterface::class,
+            Assert::getObjectAttribute($object, 'transformerCollector')
         );
     }
 }

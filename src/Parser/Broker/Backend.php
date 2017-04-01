@@ -7,10 +7,10 @@ use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\TokenReflection\ReflectionFactoryInterface;
 use ApiGen\Parser\Reflection\ReflectionClass;
 use ApiGen\Parser\Reflection\ReflectionFunction;
 use ApiGen\Parser\Reflection\ReflectionMethod;
+use ApiGen\ReflectionToElementTransformer\Contract\TransformerCollectorInterface;
 use TokenReflection;
 use TokenReflection\Broker\Backend\Memory;
 use TokenReflection\IReflectionConstant;
@@ -41,13 +41,13 @@ final class Backend extends Memory
     private $declared = [];
 
     /**
-     * @var ReflectionFactoryInterface
+     * @var TransformerCollectorInterface
      */
-    private $reflectionFactory;
+    private $transformerCollector;
 
-    public function __construct(ReflectionFactoryInterface $reflectionFactory)
+    public function __construct(TransformerCollectorInterface $transformerCollector)
     {
-        $this->reflectionFactory = $reflectionFactory;
+        $this->transformerCollector = $transformerCollector;
     }
 
     /**
@@ -56,7 +56,7 @@ final class Backend extends Memory
     public function getConstants(): array
     {
         return array_map(function (IReflectionConstant $constant) {
-            return $this->reflectionFactory->createFromReflection($constant);
+            return $this->transformerCollector->transformReflectionToElement($constant);
         }, parent::getConstants());
     }
 
@@ -66,7 +66,7 @@ final class Backend extends Memory
     public function getFunctions(): array
     {
         return array_map(function (IReflectionFunction $function) {
-            return $this->reflectionFactory->createFromReflection($function);
+            return $this->transformerCollector->transformReflectionToElement($function);
         }, parent::getFunctions());
     }
 
@@ -79,7 +79,7 @@ final class Backend extends Memory
 
         foreach ($this->getNamespaces() as $namespace) {
             foreach ($namespace->getClasses() as $name => $ref) {
-                $class = $this->reflectionFactory->createFromReflection($ref);
+                $class = $this->transformerCollector->transformReflectionToElement($ref);
 
                 $this->allClasses[self::TOKENIZED_CLASSES][$name] = $class;
                 if (! $class->isDocumented()) {
@@ -110,7 +110,7 @@ final class Backend extends Memory
 
         array_walk_recursive($this->allClasses, function (&$reflection) {
             if (! $reflection instanceof ReflectionClass) {
-                $reflection = $this->reflectionFactory->createFromReflection($reflection);
+                $reflection = $this->transformerCollector->transformReflectionToElement($reflection);
             }
         });
 

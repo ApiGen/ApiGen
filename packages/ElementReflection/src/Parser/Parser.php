@@ -2,8 +2,8 @@
 
 namespace ApiGen\ElementReflection\Parser;
 
-use ApiGen\Contracts\Parser\Reflection\TokenReflection\ReflectionFactoryInterface;
 use ApiGen\Parser\Reflection\ReflectionClass;
+use ApiGen\ReflectionToElementTransformer\Contract\TransformerCollectorInterface;
 use Roave\BetterReflection\Reflection\ReflectionFunction;
 use Roave\BetterReflection\Reflector\ClassReflector;
 use Roave\BetterReflection\Reflector\FunctionReflector;
@@ -22,13 +22,13 @@ final class Parser
     private $functionReflections = [];
 
     /**
-     * @var ReflectionFactoryInterface
+     * @var TransformerCollectorInterface
      */
-    private $reflectionFactory;
+    private $transformerCollector;
 
-    public function __construct(ReflectionFactoryInterface $reflectionFactory)
+    public function __construct(TransformerCollectorInterface $transformerCollector)
     {
-        $this->reflectionFactory = $reflectionFactory;
+        $this->transformerCollector = $transformerCollector;
     }
 
     /**

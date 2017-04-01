@@ -32,7 +32,7 @@ abstract class AbstractReflectionFunction
     {
         if ($this->parameters === null) {
             $this->parameters = array_map(function (IReflectionParameter $parameter) {
-                return $this->reflectionFactory->createFromReflection($parameter);
+                return $this->transformerCollector->transformReflectionToElement($parameter);
             }, $this->reflection->getParameters());
         }
 

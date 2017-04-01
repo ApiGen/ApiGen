@@ -6,8 +6,8 @@ use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Parser\Elements\ElementsInterface;
 use ApiGen\Contracts\Parser\ParserStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\TokenReflection\ReflectionFactoryInterface;
 use ApiGen\Parser\Reflection\TokenReflection\ReflectionInterface;
+use ApiGen\ReflectionToElementTransformer\Contract\TransformerCollectorInterface;
 use Nette\Object;
 use TokenReflection\IReflection;
 use TokenReflection\IReflectionClass;
@@ -39,9 +39,9 @@ abstract class AbstractReflection extends Object implements ReflectionInterface
     protected $parserStorage;
 
     /**
-     * @var ReflectionFactoryInterface
+     * @var TransformerCollectorInterface
      */
-    protected $reflectionFactory;
+    protected $transformerCollector;
 
     public function __construct(IReflection $reflection)
     {
@@ -101,9 +101,9 @@ abstract class AbstractReflection extends Object implements ReflectionInterface
         $this->parserStorage = $parserStorage;
     }
 
-    public function setReflectionFactory(ReflectionFactoryInterface $reflectionFactory): void
+    public function setTransformerCollector(TransformerCollectorInterface $transformerCollector): void
     {
-        $this->reflectionFactory = $reflectionFactory;
+        $this->transformerCollector = $transformerCollector;
     }
 
     /**
