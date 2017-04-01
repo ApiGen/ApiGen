@@ -6,6 +6,8 @@ interface InNamespaceInterface
 {
     public function getDeclaringClassName(): string;
 
+    public function getNamespaceName(): string;
+
     /**
      * @return string[]
      */
