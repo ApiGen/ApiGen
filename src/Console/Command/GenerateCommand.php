@@ -19,6 +19,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 final class GenerateCommand extends Command
 {
     /**
+     * @var string
+     */
+    private const NAME = 'generate';
+
+    /**
      * @var ConfigurationInterface
      */
     private $configuration;
@@ -73,7 +78,7 @@ final class GenerateCommand extends Command
 
     protected function configure(): void
     {
-        $this->setName('generate');
+        $this->setName(self::NAME);
         $this->setDescription('Generate API documentation');
         $this->addArgument(
             ConfigurationOptions::SOURCE,

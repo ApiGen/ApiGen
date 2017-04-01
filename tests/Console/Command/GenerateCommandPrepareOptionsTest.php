@@ -2,6 +2,7 @@
 
 namespace ApiGen\Tests\Console\Command;
 
+use ApiGen\Configuration\ConfigurationOptions;
 use ApiGen\Console\Command\GenerateCommand;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 use ApiGen\Tests\MethodInvoker;
@@ -26,16 +27,16 @@ final class GenerateCommandPrepareOptionsTest extends AbstractContainerAwareTest
     public function testPrepareOptionsDestinationNotSet(): void
     {
         MethodInvoker::callMethodOnObject($this->generateCommand, 'prepareOptions', [[
-            'config' => 'config.neon'
+            ConfigurationOptions::CONFIG => 'config.neon'
         ]]);
     }
 
     public function testPrepareOptionsConfigPriority(): void
     {
         $configAndDestinationOptions = [
-            'config' => __DIR__ . '/apigen.neon',
-            'destination' => TEMP_DIR . '/api',
-            'source' => [__DIR__]
+            ConfigurationOptions::CONFIG => __DIR__ . '/apigen.neon',
+            ConfigurationOptions::DESTINATION => TEMP_DIR . '/api',
+            ConfigurationOptions::SOURCE => [__DIR__]
         ];
 
         $options = MethodInvoker::callMethodOnObject($this->generateCommand, 'prepareOptions', [
@@ -48,12 +49,12 @@ final class GenerateCommandPrepareOptionsTest extends AbstractContainerAwareTest
     public function testPrepareOptionsMergeIsCorrect(): void
     {
         $options = MethodInvoker::callMethodOnObject($this->generateCommand, 'prepareOptions', [[
-            'source' => [__DIR__],
-            'config' => __DIR__ . '/apigen.neon',
-            'destination' => TEMP_DIR . '/api',
+            ConfigurationOptions::SOURCE => [__DIR__],
+            ConfigurationOptions::CONFIG => __DIR__ . '/apigen.neon',
+            ConfigurationOptions::DESTINATION => TEMP_DIR . '/api',
         ]]);
 
-        $this->assertSame(['public', 'protected', 'private'], $options['accessLevels']);
-        $this->assertSame('http://apigen.org', $options['baseUrl']);
+        $this->assertSame(['public', 'protected', 'private'], $options[ConfigurationOptions::ACCESS_LEVELS]);
+        $this->assertSame('http://apigen.org', $options[ConfigurationOptions::BASE_URL]);
     }
 }
