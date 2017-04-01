@@ -11,7 +11,7 @@ use ApiGen\Generator\Event\GenerateProgressEvent;
 use ApiGen\Generator\Resolvers\RelativePathResolver;
 use ApiGen\Generator\TemplateGenerators\Loaders\NamespaceLoader;
 use ApiGen\Parser\Reflection\AbstractReflection;
-use ApiGen\Parser\Reflection\TokenReflection\ReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\TokenReflection\ReflectionInterface;
 use ApiGen\Templating\TemplateFactory;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 

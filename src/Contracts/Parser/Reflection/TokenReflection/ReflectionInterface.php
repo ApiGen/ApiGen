@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Parser\Reflection\TokenReflection;
+namespace ApiGen\Contracts\Parser\Reflection\TokenReflection;
 
 interface ReflectionInterface
 {

@@ -5,7 +5,7 @@ namespace ApiGen\Templating\Filters;
 use ApiGen\Generator\Resolvers\ElementResolver;
 use ApiGen\Parser\Reflection\AbstractReflectionElement;
 use ApiGen\Parser\Reflection\ReflectionClass;
-use ApiGen\Parser\Reflection\TokenReflection\ReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\TokenReflection\ReflectionInterface;
 
 class ResolverFilters extends Filters
 {

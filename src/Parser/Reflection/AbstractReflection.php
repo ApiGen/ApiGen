@@ -6,7 +6,7 @@ use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Parser\Elements\ElementsInterface;
 use ApiGen\Contracts\Parser\ParserStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
-use ApiGen\Parser\Reflection\TokenReflection\ReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\TokenReflection\ReflectionInterface;
 use ApiGen\ReflectionToElementTransformer\Contract\TransformerCollectorInterface;
 use Nette\Object;
 use TokenReflection\IReflection;
