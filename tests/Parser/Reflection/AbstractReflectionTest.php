@@ -62,7 +62,7 @@ final class AbstractReflectionTest extends AbstractContainerAwareTestCase
 
     public function testGetStartLine(): void
     {
-        $this->assertSame(10, $this->reflectionClass->getStartLine());
+        $this->assertSame(23, $this->reflectionClass->getStartLine());
     }
 
     public function testGetEndLine(): void
