@@ -9,7 +9,8 @@ interface TransformerCollectorInterface
     public function addTransformer(TransformerInterface $transformer): void;
 
     /**
-     * @return TransformerInterface[]
+     * @param object $reflection
+     * @return mixed
      */
-    public function getTransformers(): array;
+    public function transformReflectionToElement($reflection);
 }

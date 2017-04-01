@@ -4,6 +4,7 @@ namespace ApiGen\ReflectionToElementTransformer;
 
 use ApiGen\ReflectionToElementTransformer\Contract\Transformer\TransformerInterface;
 use ApiGen\ReflectionToElementTransformer\Contract\TransformerCollectorInterface;
+use ApiGen\ReflectionToElementTransformer\Exception\UnsupportedReflectionClassException;
 
 final class TransformerCollector implements TransformerCollectorInterface
 {
@@ -18,10 +19,23 @@ final class TransformerCollector implements TransformerCollectorInterface
     }
 
     /**
-     * @return TransformerInterface[]
+     * @param object $reflection
+     * @return mixed
      */
-    public function getTransformers(): array
+    public function transformReflectionToElement($reflection)
     {
-        return $this->transformers;
+        foreach ($this->transformers as $transformer) {
+            if (! $transformer->matches($reflection)) {
+                continue;
+            }
+
+            return $transformer->transform($reflection);
+        }
+
+        throw new UnsupportedReflectionClassException(sprintf(
+            'Reflection class "%s" is not yet supported. Register new transformer implementing "%s".',
+            get_class($reflection),
+            TransformerInterface::class
+        ));
     }
 }
