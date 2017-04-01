@@ -1,11 +1,11 @@
 {layout '@layout.latte'}
 {var $active = 'class'}
 
-{block title}{if $class->deprecated}Deprecated {/if}{if $class->interface}Interface{elseif $class->trait}Trait{else}Class{/if} {$class->name}{/block}
+{block title}{if $class->isDeprecated()}Deprecated {/if}{if $class->interface}Interface{elseif $class->trait}Trait{else}Class{/if} {$class->name}{/block}
 
 {block content}
 <div id="content" class="class">
-	<h1 n:class="$class->deprecated ? deprecated">{if $class->interface}Interface{elseif $class->trait}Trait{else}Class{/if} {$class->shortName}</h1>
+	<h1 n:class="$class->isDeprecated() ? deprecated">{if $class->interface}Interface{elseif $class->trait}Trait{else}Class{/if} {$class->shortName}</h1>
 	{var $classDescription = ($class|description)}
 	<div class="description" n:if="$classDescription">
 		{$classDescription|noescape}
@@ -15,11 +15,11 @@
 		<dd n:foreach="$tree as $item" style="padding-left:{($iterator->counter - 1) * 30}px">
 			<img src="resources/inherit.png" alt="Extended by" n:if="$iterator->counter > 1">
 			{if $item->documented}
-			<a href="{$item|classUrl}" n:tag-if="!$iterator->last">{last}<b>{/last}<span n:class="$item->deprecated ? deprecated">{$item->name}</span>{last}</b>{/last}</a>
+			<a href="{$item|classUrl}" n:tag-if="!$iterator->last">{last}<b>{/last}<span n:class="$item->isDeprecated() ? deprecated">{$item->name}</span>{last}</b>{/last}</a>
 			{else}{$item->name}{/if}
 			{var $itemOwnInterfaces = $item->ownInterfaces}
 			{if $itemOwnInterfaces} implements {foreach $itemOwnInterfaces as $interface}
-				<a href="{$interface|classUrl}" n:tag-if="$interface->documented"><span n:class="$interface->deprecated ? deprecated">{$interface->name}</span></a>{sep}, {/sep}
+				<a href="{$interface|classUrl}" n:tag-if="$interface->documented"><span n:class="$interface->isDeprecated() ? deprecated">{$interface->name}</span></a>{sep}, {/sep}
 			{/foreach}{/if}
 			{var $itemOwnTraits = $item->ownTraits}
 			{if $itemOwnTraits} uses {foreach $itemOwnTraits as $trait}
@@ -27,7 +27,7 @@
 					{$trait} (not available)
 
 				{else}
-					<a href="{$trait|classUrl}" n:tag-if="$trait->documented"><span n:class="$trait->deprecated ? deprecated">{$trait->name}</span></a>{sep}, {/sep}
+					<a href="{$trait|classUrl}" n:tag-if="$trait->documented"><span n:class="$trait->isDeprecated() ? deprecated">{$trait->name}</span></a>{sep}, {/sep}
 				{/}
 			{/foreach}{/if}
 		</dd>
@@ -35,7 +35,7 @@
 
 	{define children}
 		{foreach $children as $child}
-			<a href="{$child|classUrl}" n:tag-if="$child->documented"><span n:tag-if="$child->deprecated" class="deprecated">{$child->name}</span></a>{sep}, {/sep}
+			<a href="{$child|classUrl}" n:tag-if="$child->documented"><span n:tag-if="$child->isDeprecated()" class="deprecated">{$child->name}</span></a>{sep}, {/sep}
 		{/foreach}
 	{/define}
 
@@ -92,7 +92,7 @@
 	{var $ownMethods = $class->ownMethods}
 
 	{define method}
-	<tr data-order="{$method->name}" id="_{$method->name}" n:class="$method->deprecated ? deprecated">
+	<tr data-order="{$method->name}" id="_{$method->name}" n:class="$method->isDeprecated() ? deprecated">
 		{var $annotations = $method->annotations}
 
 		<td class="attributes"><code>
@@ -120,7 +120,7 @@
 		<div class="description detailed">
 			{$method|description|noescape}
 
-			{if !$class->deprecated && $method->deprecated}
+			{if !$class->isDeprecated() && $method->isDeprecated()}
 				<h4>Deprecated</h4>
 				{ifset $annotations['deprecated']}
 				<div class="list">
@@ -210,7 +210,7 @@
                 <code>
                     {foreach $methods as $method}
                         <a href="{$method|methodUrl}" n:tag-if="$parentClass">
-                            <span n:tag-if="$method->deprecated" class="deprecated">{$method->name}()</span>
+                            <span n:tag-if="$method->isDeprecated()" class="deprecated">{$method->name}()</span>
                         </a>{sep}, {/sep}
                     {/foreach}
                 </code>
@@ -226,9 +226,9 @@
                 <code>
                     {foreach $methods as $data}
                         <a href="{$data['method']|methodUrl: $data['method']->declaringTrait}" n:tag-if="$trait">
-                            <span n:tag-if="$data['method']->deprecated" class="deprecated">{$data['method']->name}()</span>
+                            <span n:tag-if="$data['method']->isDeprecated()" class="deprecated">{$data['method']->name}()</span>
                         </a>
-                        {if $data['aliases']}(as {foreach $data['aliases'] as $alias}<span n:tag-if="$data['method']->deprecated" class="deprecated">{$alias->name}()</span>{sep}, {/sep}{/foreach}){/if}{sep}, {/sep}
+                        {if $data['aliases']}(as {foreach $data['aliases'] as $alias}<span n:tag-if="$data['method']->isDeprecated()" class="deprecated">{$alias->name}()</span>{sep}, {/sep}{/foreach}){/if}{sep}, {/sep}
                     {/foreach}
                 </code>
             </td>
@@ -284,7 +284,7 @@
             <td>
                 <code>
                 {foreach $inheritedConstants as $constant}
-                    <a href="{$constant|constantUrl}" n:tag-if="$parentClass"><b><span n:tag-if="$constant->deprecated" class"deprecated">{$constant->name}</span></b></a>{sep}, {/sep}
+                    <a href="{$constant|constantUrl}" n:tag-if="$parentClass"><b><span n:tag-if="$constant->isDeprecated()" class"deprecated">{$constant->name}</span></b></a>{sep}, {/sep}
                 {/foreach}
                 </code>
             </td>
@@ -292,7 +292,7 @@
 	</table>
 
 	{define property}
-	<tr data-order="{$property->name}" id="${$property->name}" n:class="$property->deprecated ? deprecated">
+	<tr data-order="{$property->name}" id="${$property->name}" n:class="$property->isDeprecated() ? deprecated">
 		<td class="attributes"><code>
 			{if $property->protected}protected{elseif $property->private}private{else}public{/if} {if $property->static}static{/if} {if $property->readOnly}read-only{elseif $property->writeOnly}write-only{/if}
 			{$property->typeHint|typeLinks:$property|noescape}
@@ -345,7 +345,7 @@
         <tr>
             <td><code>
             {foreach $properties as $property}
-                <a href="{$property|propertyUrl}" n:tag-if="$parentClass"><var><span n:tag-if="$property->deprecated" class="deprecated">${$property->name}</span></var></a>{sep}, {/sep}
+                <a href="{$property|propertyUrl}" n:tag-if="$parentClass"><var><span n:tag-if="$property->isDeprecated()" class="deprecated">${$property->name}</span></var></a>{sep}, {/sep}
             {/foreach}
             </code></td>
         </tr>
@@ -358,7 +358,7 @@
             <td>
                 <code>
                     {foreach $properties as $property}
-                        <a href="{$property|propertyUrl: $property->declaringTrait}" n:tag-if="$trait"><var><span n:tag-if="$property->deprecated" class="deprecated">${$property->name}</span></var></a>{sep}, {/sep}
+                        <a href="{$property|propertyUrl: $property->declaringTrait}" n:tag-if="$trait"><var><span n:tag-if="$property->isDeprecated()" class="deprecated">${$property->name}</span></var></a>{sep}, {/sep}
                     {/foreach}
                 </code>
             </td>

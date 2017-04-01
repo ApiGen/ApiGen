@@ -1,11 +1,11 @@
 {layout '@layout.latte'}
 {var $active = 'function'}
 
-{block title}{if $function->deprecated}Deprecated {/if}Function {$function->name}{/block}
+{block title}{if $function->isDeprecated()}Deprecated {/if}Function {$function->name}{/block}
 
 {block content}
 <div id="content" class="function">
-	<h1 n:class="$function->deprecated ? deprecated">Function {$function->shortName}</h1>
+	<h1 n:class="$function->isDeprecated() ? deprecated">Function {$function->shortName}</h1>
 
 	{var $functionDescription = ($function|description)}
 	<div class="description" n:if="$functionDescription">

@@ -1,11 +1,11 @@
 {layout '@layout.latte'}
 {var $active = 'constant'}
 
-{block title}{if $constant->deprecated}Deprecated {/if}Constant {$constant->name}{/block}
+{block title}{if $constant->isDeprecated()}Deprecated {/if}Constant {$constant->name}{/block}
 
 {block content}
 <div id="content" class="constant">
-	<h1 n:class="$constant->deprecated ? deprecated">Constant {$constant->shortName}</h1>
+	<h1 n:class="$constant->isDeprecated() ? deprecated">Constant {$constant->shortName}</h1>
 
 	{var $constantDescription = ($constant|description)}
 	<div n:if="$constantDescription" class="description">
