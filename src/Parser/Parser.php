@@ -2,11 +2,13 @@
 
 namespace ApiGen\Parser;
 
+use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Parser\ParserInterface;
 use ApiGen\Contracts\Parser\ParserStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
+use ApiGen\Utils\Finder\FinderInterface;
 use Exception;
 use SplFileInfo;
 use TokenReflection\Broker;
@@ -25,16 +27,46 @@ final class Parser implements ParserInterface
      */
     private $parserStorage;
 
-    public function __construct(Broker $broker, ParserStorageInterface $parserStorage)
-    {
+    /**
+     * @var FinderInterface
+     */
+    private $finder;
+
+    /**
+     * @var ConfigurationInterface
+     */
+    private $configuration;
+
+    public function __construct(
+        Broker $broker,
+        ParserStorageInterface $parserStorage,
+        FinderInterface $finder,
+        ConfigurationInterface $configuration
+    ) {
         $this->broker = $broker;
         $this->parserStorage = $parserStorage;
+        $this->finder = $finder;
+        $this->configuration = $configuration;
+    }
+
+    /**
+     * @param string[] $directories
+     */
+    public function parseDirectories(array $directories): ParserStorageInterface
+    {
+        $files = $this->finder->find(
+            $directories,
+            $this->configuration->getExtensions(),
+            $this->configuration->getExclude()
+        );
+
+        return $this->parseFiles($files);
     }
 
     /**
      * @param SplFileInfo[] $files
      */
-    public function parse(array $files): ParserStorageInterface
+    public function parseFiles(array $files): ParserStorageInterface
     {
         foreach ($files as $file) {
             try {

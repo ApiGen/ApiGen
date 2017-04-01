@@ -109,7 +109,7 @@ final class Configuration implements ConfigurationInterface
      */
     public function getExclude(): array
     {
-        return $this->options[ConfigurationOptions::EXCLUDE];
+        return $this->getOptions()[ConfigurationOptions::EXCLUDE];
     }
 
     /**
@@ -117,7 +117,7 @@ final class Configuration implements ConfigurationInterface
      */
     public function getExtensions(): array
     {
-        return $this->options[ConfigurationOptions::EXTENSIONS];
+        return $this->getOptions()[ConfigurationOptions::EXTENSIONS];
     }
 
     /**

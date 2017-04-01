@@ -5,7 +5,7 @@ namespace ApiGen\Utils\Tests\Finder;
 use ApiGen\Utils\Finder\NetteFinder;
 use PHPUnit\Framework\TestCase;
 
-class ExcludeTest extends TestCase
+final class ExcludeTest extends TestCase
 {
     /**
      * @var NetteFinder
@@ -22,7 +22,7 @@ class ExcludeTest extends TestCase
      */
     public function testExcludeAppliedOnlyOnSourcesPath(): void
     {
-        $files = $this->scanner->find(__DIR__ . '/Source', ['tests']);
+        $files = $this->scanner->find([__DIR__ . '/Source'], ['tests']);
         $this->assertCount(3, $files);
     }
 
@@ -31,7 +31,7 @@ class ExcludeTest extends TestCase
      */
     public function testExcludeDirRelativeToSource(): void
     {
-        $source = __DIR__ . '/ScannerExcludeSource/src';
+        $source = [__DIR__ . '/ScannerExcludeSource/src'];
         $this->assertCount(0, $this->scanner->find($source, ['Core/smarty_cache']));
         $this->assertCount(0, $this->scanner->find($source, ['/Core/smarty_cache']));
         $this->assertCount(1, $this->scanner->find($source, ['src/Core/smarty_cache']));
@@ -39,7 +39,7 @@ class ExcludeTest extends TestCase
 
     public function testExcludeFile(): void
     {
-        $source = __DIR__ . '/ScannerExcludeSource/src';
+        $source = [__DIR__ . '/ScannerExcludeSource/src'];
         $this->assertCount(0, $this->scanner->find($source, ['ShouldBeExcluded.php']));
         $this->assertCount(0, $this->scanner->find($source, ['*ShouldBeExcluded*']));
     }

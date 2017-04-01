@@ -7,9 +7,14 @@ use SplFileInfo;
 interface ParserInterface
 {
     /**
+     * @param string[] $directories
+     */
+    public function parseDirectories(array $directories): ParserStorageInterface;
+
+    /**
      * Parser files to element reflections.
      *
      * @param SplFileInfo[] $files
      */
-    public function parse(array $files): ParserStorageInterface;
+    public function parseFiles(array $files): ParserStorageInterface;
 }

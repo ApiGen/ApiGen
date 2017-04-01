@@ -38,7 +38,7 @@ final class ImplementersTest extends AbstractContainerAwareTestCase
 
         /** @var ParserInterface $parser */
         $parser = $this->container->getByType(ParserInterface::class);
-        $parser->parse($files);
+        $parser->parseFiles($files);
 
         $this->parserStorage = $this->container->getByType(ParserStorageInterface::class);
         $classes = $this->parserStorage->getClasses();

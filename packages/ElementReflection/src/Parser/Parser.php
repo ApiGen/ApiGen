@@ -20,21 +20,26 @@ final class Parser
      */
     private $functionReflections = [];
 
-    public function processDirectory(string $directory): void
+    /**
+     * @param string[] $directories
+     */
+    public function parseDirectories(array $directories): void
     {
-        $directoriesSourceLocator = new DirectoriesSourceLocator([$directory]);
+        $directoriesSourceLocator = new DirectoriesSourceLocator($directories);
 
         $classReflector = new ClassReflector($directoriesSourceLocator);
         $this->classReflections = $classReflector->getAllClasses();
 
         $functionReflector = new FunctionReflector($directoriesSourceLocator);
         $this->functionReflections = $functionReflector->getAllFunctions();
+
+        // @todo constants
     }
 
     /**
      * @return ReflectionClass[]
      */
-    public function getClasses(): array
+    public function getClassReflections(): array
     {
         return $this->classReflections;
     }
@@ -42,7 +47,7 @@ final class Parser
     /**
      * @return ReflectionFunction[]
      */
-    public function getFunctions(): array
+    public function getFunctionReflections(): array
     {
         return $this->functionReflections;
     }

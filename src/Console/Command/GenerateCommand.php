@@ -2,8 +2,8 @@
 
 namespace ApiGen\Console\Command;
 
-use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions;
+use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Generator\GeneratorQueueInterface;
 use ApiGen\Contracts\Parser\ParserInterface;
 use ApiGen\Theme\ThemeResources;
@@ -19,7 +19,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 final class GenerateCommand extends Command
 {
     /**
-     * @var Configuration
+     * @var ConfigurationInterface
      */
     private $configuration;
 
@@ -54,7 +54,7 @@ final class GenerateCommand extends Command
     private $output;
 
     public function __construct(
-        Configuration $configuration,
+        ConfigurationInterface $configuration,
         ParserInterface $parser,
         GeneratorQueueInterface $generatorQueue,
         FileSystem $fileSystem,
@@ -121,7 +121,8 @@ final class GenerateCommand extends Command
             $options[ConfigurationOptions::EXCLUDE],
             $options[ConfigurationOptions::EXTENSIONS]
         );
-        $this->parser->parse($files);
+
+        $this->parser->parseFiles($files);
     }
 
     /**

@@ -81,7 +81,7 @@ final class AnnotationGroupsGeneratorTest extends AbstractContainerAwareTestCase
             $files[] = $file;
         }
 
-        $this->parser->parse($files);
+        $this->parser->parseFiles($files);
     }
 
     private function setCorrectConfiguration(): void

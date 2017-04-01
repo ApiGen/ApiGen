@@ -79,6 +79,6 @@ class SourceCodeGeneratorTest extends AbstractContainerAwareTestCase
             $files[] = $file;
         }
 
-        $this->parser->parse($files);
+        $this->parser->parseFiles($files);
     }
 }
