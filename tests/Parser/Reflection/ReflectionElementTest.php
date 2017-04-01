@@ -59,20 +59,6 @@ final class ReflectionElementTest extends AbstractContainerAwareTestCase
         $this->assertSame('This is some description', $this->reflectionClass->getDescription());
     }
 
-    public function testGetDocComment(): void
-    {
-        $docCommentParts = [];
-        $docCommentParts[] = ' * This is some description';
-        $docCommentParts[] = ' * @property-read int $skillCounter';
-        $docCommentParts[] = ' * @method string getName() This is some short description.';
-        $docCommentParts[] = ' * @method string doAnOperation(\stdClass $data, $type) This also some description.';
-        $docCommentParts[] = ' * @package Some_Package';
-
-        foreach ($docCommentParts as $part) {
-            $this->assertContains($part, $this->reflectionClass->getDocComment());
-        }
-    }
-
     public function testGetAnnotations(): void
     {
         $annotations = $this->reflectionClass->getAnnotations();

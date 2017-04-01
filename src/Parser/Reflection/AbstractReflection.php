@@ -19,11 +19,6 @@ use TokenReflection\IReflectionProperty;
 abstract class AbstractReflection extends Object implements ReflectionInterface
 {
     /**
-     * @var string
-     */
-    protected $reflectionType;
-
-    /**
      * @var IReflectionClass|IReflectionFunction|IReflectionMethod|IReflectionParameter|IReflectionProperty
      */
     protected $reflection;
@@ -45,7 +40,6 @@ abstract class AbstractReflection extends Object implements ReflectionInterface
 
     public function __construct(IReflection $reflection)
     {
-        $this->reflectionType = get_class($this);
         $this->reflection = $reflection;
     }
 
@@ -76,14 +70,7 @@ abstract class AbstractReflection extends Object implements ReflectionInterface
 
     public function getStartLine(): int
     {
-        $startLine = $this->reflection->getStartLine();
-        $doc = $this->getDocComment();
-
-        if ($doc) {
-            $startLine -= substr_count($doc, "\n") + 1;
-        }
-
-        return $startLine;
+        return $this->reflection->getStartLine();
     }
 
     public function getEndLine(): int

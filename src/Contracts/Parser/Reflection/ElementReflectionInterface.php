@@ -15,8 +15,6 @@ interface ElementReflectionInterface extends NamedInterface
     /**
      * Returns element namespace name.
      * For internal elements returns "PHP", for elements in global space returns "None".
-     *
-     * @return string
      */
     public function getPseudoNamespaceName(): string;
 
@@ -40,11 +38,6 @@ interface ElementReflectionInterface extends NamedInterface
     public function hasAnnotation(string $name): bool;
 
     public function getDescription(): string;
-
-    /**
-     * @return string|bool
-     */
-    public function getDocComment();
 
     public function getPrettyName(): string;
 

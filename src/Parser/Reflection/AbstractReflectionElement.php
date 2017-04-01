@@ -95,11 +95,6 @@ abstract class AbstractReflectionElement extends AbstractReflection implements E
         return $short;
     }
 
-    public function getDocComment(): string
-    {
-        return (string) $this->reflection->getDocComment();
-    }
-
     /**
      * @return mixed[]
      */
