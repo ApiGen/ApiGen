@@ -5,6 +5,7 @@ namespace ApiGen\ElementReflection\Reflection;
 use ApiGen\Annotation\AnnotationList;
 use ApiGen\Contracts\Parser\Reflection\AbstractFunctionMethodReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ParameterReflectionInterface;
 use phpDocumentor\Reflection\DocBlock\Tags\Param;
 use Roave\BetterReflection\Reflection\ReflectionParameter;
@@ -75,35 +76,57 @@ final class NewParameterReflection implements ParameterReflectionInterface
 
     public function getDefaultValueDefinition(): ?string
     {
-        // TODO: Implement getDefaultValueDefinition() method.
+        if ($this->reflection->isDefaultValueAvailable()) {
+            return $this->reflection->getDefaultValueAsString();
+        }
+
+        return null;
     }
 
     public function isArray(): bool
     {
-        // TODO: Implement isArray() method.
+        return $this->reflection->isArray();
     }
 
     public function getClass(): ?ClassReflectionInterface
     {
-        // TODO: Implement getClass() method.
+        $typeHint = $this->reflection->getTypeHint();
+        if ($typeHint) {
+            // @todo
+        }
+
+        return null;
     }
 
     public function getClassName(): ?string
     {
-        // TODO: Implement getClassName() method.
+        $class = $this->getClass();
+        if ($class) {
+            return $class->getName();
+        }
+
+        return null;
     }
 
     public function getDeclaringClassName(): string
     {
-        // TODO: Implement getDeclaringClassName() method.
+        $declaringClass = $this->getDeclaringClass();
+        if ($declaringClass) {
+            return $declaringClass->getName();
+        }
+
+        return '';
     }
 
     public function getDeclaringClass(): ?ClassReflectionInterface
     {
-        // TODO: Implement getDeclaringClass() method.
+        if ($this->declaringFunction instanceof MethodReflectionInterface) {
+            $this->declaringFunction->getDeclaringClass();
+        }
+
+        return null;
     }
 
-    // @todo: rename to variadic
     public function isVariadic(): bool
     {
         return $this->reflection->isVariadic();

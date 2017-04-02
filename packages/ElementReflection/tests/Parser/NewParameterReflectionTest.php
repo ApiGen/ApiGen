@@ -53,14 +53,28 @@ final class NewParameterReflectionTest extends AbstractContainerAwareTestCase
         );
     }
 
-    public function testTypeHints()
+    public function testType()
     {
         $this->assertSame('', $this->parameterReflection->getTypeHint());
         $this->assertTrue($this->parameterReflection->isVariadic());
+        $this->assertFalse($this->parameterReflection->isArray());
+        $this->assertNull($this->parameterReflection->getClass());
+        $this->assertNull($this->parameterReflection->getClassName());
     }
 
     public function testDescription()
     {
         $this->assertSame('and their description', $this->parameterReflection->getDescription());
+    }
+
+    public function testDefaults()
+    {
+        $this->assertNull($this->parameterReflection->getDefaultValueDefinition());
+    }
+
+    public function testDeclaringClass()
+    {
+        $this->assertNull($this->parameterReflection->getDeclaringClass());
+        $this->assertSame('', $this->parameterReflection->getDeclaringClassName());
     }
 }
