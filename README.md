@@ -124,22 +124,20 @@ debug: false                        # set to true to enable debug
 This section provides information on all available CLI commands and their
 options.
 
-To get a list of available `apigen` commands:
-
-    $ apigen list
-
-Main commands:
+Main ApiGen commands:
 
 - [generate](#generate) - generates API documentation.
-- `help` - display help for a specific command.
-- `list` - lists available commands.
+
+To get a list of available `apigen list` command. To get help on specific
+command use `apigen help`, i.e.:
+
+    $ apigen help generate
 
 #### Generate
 
-`generate` command is the main command which starts generation of API
-documentation. The command relies on reading data from [configuration
-files](#Configuration). If these are not available, then it will expect command
-line arguments passed to it.
+`generate` command is the main command which generates API documentation. The
+command relies either on passing it CLI options or reading data from
+[configuration files](#Configuration).
 
 A list of options accepted by `generate` command:
 
