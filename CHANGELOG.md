@@ -15,8 +15,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   destination directory when building docs [#604].
 - Added `.editorconfig` to the project.
 - Enabled PHP7 tests in Travis-CI.
-- Added `--debug` CLI argument, which prints detailed parser errors.
+- Added `--debug` CLI option, which prints detailed parser errors.
+- Added `--overwrite` CLI option [#679].
 - Added support for `static` type [#704].
+- Added documentation generation for global constants and functions [#2].
+- Added support for array-nottation typehint for `@propety` and `@method` [#699].
+- Added bitcoin link support via `@link bitcoin:address` [#731].
 
 ### Changed
 
@@ -44,7 +48,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Fixed an issue with handling paths on different OS. The paths should now be
   normalized and work on Windows [#668].
 - `TreeGenerator` now properly generates a tree, instead of a list [#569].
-- Fixed API documentation download link generation [#702].
+- Fixed API documentation download link generation. The generated `.zip`
+  filename will now include a name of the slugified project name [#702].
+- Fixed an issue where ApiGen sometimes would incorrectly resolve return
+  typehints for functions [#740].
+- Fixed an issue when docblocks marked with `@internal` would be documented
+  [#734].
+- Fixed support of `$this` as return type hint [#750].
+- Fixed support for `themes` allowing you to use any theme available in `vendor`.
 
 ### Removed
 
