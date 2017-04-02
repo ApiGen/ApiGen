@@ -224,7 +224,7 @@ final class Backend extends Memory
     {
         return Resolver::resolveClassFQN(
             $name,
-            $reflection->getNamespaceAliases(),
+            [],
             $reflection->getNamespaceName()
         );
     }

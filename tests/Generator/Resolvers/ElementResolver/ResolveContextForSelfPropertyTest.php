@@ -74,8 +74,6 @@ final class ResolveContextForSelfPropertyTest extends AbstractElementResolverTes
             ->willReturn('SomeClass');
         $classReflectionMock->method('getNamespaceName')
             ->willReturn('SomeNamespace');
-        $classReflectionMock->method('getNamespaceAliases')
-            ->willReturn([]);
 
         return $classReflectionMock;
     }

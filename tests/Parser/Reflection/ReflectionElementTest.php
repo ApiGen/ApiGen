@@ -49,11 +49,6 @@ final class ReflectionElementTest extends AbstractContainerAwareTestCase
         $this->assertSame('Project', $this->reflectionClass->getPseudoNamespaceName());
     }
 
-    public function testGetNamespacesAliases(): void
-    {
-        $this->assertSame([], $this->reflectionClass->getNamespaceAliases());
-    }
-
     public function testGetDescription(): void
     {
         $this->assertSame('This is some description', $this->reflectionClass->getDescription());

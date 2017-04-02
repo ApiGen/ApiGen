@@ -115,8 +115,8 @@ final class ElementResolver implements ElementResolverInterface
         }
 
         $definitionBase = substr($definition, 0, strcspn($definition, '\\:'));
-        $namespaceAliases = $reflectionElement->getNamespaceAliases();
-        $className = Resolver::resolveClassFQN($definition, $namespaceAliases, $reflectionElement->getNamespaceName());
+
+        $className = Resolver::resolveClassFQN($definition, [], $reflectionElement->getNamespaceName());
 
         $resolved = $this->resolveIfParsed($definition, $reflectionElement);
         if ($resolved) {
@@ -177,7 +177,7 @@ final class ElementResolver implements ElementResolverInterface
         if ($class === null) {
             $fqnName = Resolver::resolveClassFQN(
                 substr($definition, 0, $pos),
-                $reflectionElement->getNamespaceAliases(),
+                [],
                 $reflectionElement->getNamespaceName()
             );
             $class = $this->getClass($fqnName);

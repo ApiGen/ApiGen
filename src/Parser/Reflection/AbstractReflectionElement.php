@@ -75,14 +75,6 @@ abstract class AbstractReflectionElement extends AbstractReflection implements E
         return $this->isInternal() ? 'PHP' : $this->getNamespaceName() ?: 'None';
     }
 
-    /**
-     * @return string[]
-     */
-    public function getNamespaceAliases(): array
-    {
-        return $this->reflection->getNamespaceAliases();
-    }
-
     public function getDescription(): string
     {
         $short = $this->getShortDescription();
