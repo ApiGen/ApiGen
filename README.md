@@ -85,38 +85,39 @@ configuration options, together with their default values.
 # and supported configuration options, together with their default values.
 # source options
 source: [src]                       # Source directory(-ies) to build API docs for
-extensions: [php] # array           # A list of file extension to include when
-                                    # scanning source dir
+                                    # (array)
+extensions: [php]                   # A list of file extension to include when
+                                    # scanning source dir (array)
 accessLevels: [public, protected]   # Access levels of methods and properties
-                                    # to include
-annotationGroups: [todo, deprecated]# Annotation Groups to include
+                                    # to include (array)
+annotationGroups: [todo, deprecated]# Annotation Groups to include (array)
 internal: false                     # Set to `true` to include @internal in API
-                                    # docs.
+                                    # docs (boolean)
 #main: 'SomePrefix'                 # Elements with this name prefix will be
-                                    # first in the tree.
+                                    # first in the tree (string)
 php: false                          # Set to `true` to generate docs for PHP
-                                    # internal classes.
+                                    # internal classes (boolean)
 noSourceCode: false                 # Set to `true` to NOT generate highlighted
-                                    # source code for elements.
+                                    # source code for elements (boolean)
 
 # destination / generated docs options
-destination: doc                    # Destination directory for API docs
+destination: doc                    # Destination directory for API docs (string)
 exclude: tests                      # A blob pattern to exclude from API docs
-                                    # generation.
-overwrite: true # bool              # Overwrite destination directory by
-                                    # default
-title: "ApiGen Docs"                # Title of generated API docs.
-baseUrl: http://apigen.org/api      # Base URL for generated API docs.
-templateConfig: path/to/config.neon # path to template configuration
+                                    # generation (string (blob))
+overwrite: true                     # Overwrite destination directory by
+                                    # default (boolean)
+title: "ApiGen Docs"                # Title of generated API docs (string)
+baseUrl: http://apigen.org/api      # Base URL for generated API docs (string (URL))
+templateConfig: path/to/config.neon # path to template configuration (string (path))
 
 # templates parameters
-googleAnalytics: 123
-googleCseId: 456
+googleAnalytics: 123                # Google Analytics tracking code (string)
+googleCseId: 456                    # Google Custom Search Engine ID (string)
 download: true                      # show a link to download API docs ZIP
-                                    # archive in the API docs
+                                    # archive in the API docs (boolean)
 
 # debug
-debug: false                        # set to true to enable debug
+debug: false                        # set to true to enable debug (boolean)
 ```
 
 ### CLI Commands
