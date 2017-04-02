@@ -148,7 +148,7 @@ A list of options accepted by `generate` command:
 | `--destination` (`-d`)| Destination directory for API docs.
 | `--access-levels`     | Access levels of methods and properties to be included in API docs [options: `public`, `protected`, `private`]. Default: `["public","protected"]`.
 | `--annotation-groups` | Generate page with elements with specific annotation.
-| `--config`            | Custom path to apigen configuration file. Default: `./apigen.neon`
+| `--config`            | Custom path to ApiGen configuration file. Default: `./apigen.neon`
 | `--google-cse-id`     | Custom Google Search Engine ID (for search box).
 | `--base-url`          | Base URL (used for Sitemap / search box).
 | `--google-analytics`  | Google Analytics tracking code to include in generated API docs.
@@ -172,8 +172,9 @@ A list of options accepted by `generate` command:
 | `--overwrite` (`-o`)  | Force overwriting of destination directory.
 | `--help` (`-h`)       | Display help message for all or specific commands.
 | `--quiet` (`-q`)      | Do not output any messages.
-| `--version` (`-V`)    | Display version of apigen.
+| `--version` (`-V`)    | Display version of ApiGen.
 | --------------------- |
+
 ## Contributing
 
 Please refer to [CONTRIBUTING](CONTRIBUTING.md) for details.
