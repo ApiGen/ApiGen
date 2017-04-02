@@ -5,6 +5,61 @@ All notable changes to [apigen][0] project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.2.x-dev] - UNRELEASED
+
+### Added
+
+- Added support for `*.dist` config files [#603].
+- Added NEON file support.
+- Added ability to skip confirmation question to overwrite non-empty
+  destination directory when building docs [#604].
+- Added `.editorconfig` to the project.
+- Enabled PHP7 tests in Travis-CI.
+- Added `--debug` CLI argument, which prints detailed parser errors.
+- Added support for `static` type [#704].
+
+### Changed
+
+- Minimum PHP requirement was increased from `5.4` to `5.5`.
+- Project is now `PSR-2` compatible.
+- Changed PHP Token Reflection library from `andrewsville/php-token-reflection`
+  to `popsul/php-token-reflection`.
+- UTF-8 is now a standard/default charset. [ApiGen] will  expect UTF-8 encoded
+  files by default (see [#64] for info).
+- Project structure has been decoupled, some parts of internal code have been
+  `ApiGen\Parser` (`apigen/parser` package).
+- ApiGen now uses different temporary directories for different users. This
+  should prevent problems when different users are running apigen simultaneously.
+- Only relevant classes are generated in sidebar and source code pages [#771].
+
+### Fixed
+
+- Fixed an issue with temporary files not being removed upon exit (in cases
+  where failure happens) [#520]
+- Fixed an issue with `generate` command throwing an error [#631]
+- Fixed deprecation checks when generating docs
+- Fixed issues with exception handling in low-level parser
+- Fixed generation problems when generating docs for classes using same Traits.
+- Fixed an error on generating docs for non-existent traits.
+- Fixed an issue with handling paths on different OS. The paths should now be
+  normalized and work on Windows [#668].
+- `TreeGenerator` now properly generates a tree, instead of a list [#569].
+- Fixed API documentation download link generation [#702].
+
+### Removed
+
+- `--charset` CLI option has been dropped (expecting `UTF-8` now by default).
+- `--skip-doc-path` CLI option has ben dropped (use `--exclude` instead).
+- Removed various deprecated generators (Robots, Sitemap) which weren't used.
+- Dropped PHAR support in `composer`.
+- Cleanup codebase to get rid of unused namespaces, methods or properties.
+
+### Updated
+
+- Updated `nette` dependency from `2.2` to `2.3`.
+- Updated `symfony` components to `2.7` version.
+- Enabled autocomplete for methods and properties.
+
 ## [4.1.1] - 2015-04-09
 
 ### Fixed
@@ -143,7 +198,7 @@ base similar to 2.8. Since then there were many BC breaks, thus major version wa
 - PEAR support was dropped. **Use PHAR file instead**. Latest stable version
   can be always found at [apigen.org](http://apigen.org)
 
-[4.2.x-dev]: https://github.com/apigen/apigen/compare/v4.2.1...4.2
+[4.2.x-dev]: https://github.com/apigen/apigen/compare/v4.1.2...4.2
 [4.1.2]: https://github.com/apigen/apigen/compare/v4.1.1...v4.1.2
 [4.1.1]: https://github.com/apigen/apigen/compare/v4.1.0...v4.1.1
 [4.1.0]: https://github.com/apigen/apigen/compare/v4.0.1...v4.1.0
