@@ -76,8 +76,8 @@ parameter).
 
 #### Reference Configuration
 
-A reference configuration file with all of the available and support
-configuration options, together with their default values.
+A reference configuration file with all of the available and supported
+configuration options.
 
 ```neon
 # apigen.neon.dist
