@@ -33,12 +33,6 @@ final class NewFunctionReflection implements FunctionReflectionInterface
      */
     private $parameterReflections = [];
 
-    public function setParameterReflections(array $parameterReflections): void
-    {
-        Assert::allIsInstanceOf($parameterReflections, ParameterReflectionInterface::class);
-        $this->parameterReflections = $parameterReflections;
-    }
-
     /**
      * @param ReflectionFunction $betterFunctionReflection
      * @param DocBlock $docBlock
@@ -156,5 +150,14 @@ final class NewFunctionReflection implements FunctionReflectionInterface
         }
 
         return true;
+    }
+
+    /**
+     * @param ParameterReflectionInterface[] $parameterReflections
+     */
+    private function setParameterReflections(array $parameterReflections): void
+    {
+        Assert::allIsInstanceOf($parameterReflections, ParameterReflectionInterface::class);
+        $this->parameterReflections = $parameterReflections;
     }
 }

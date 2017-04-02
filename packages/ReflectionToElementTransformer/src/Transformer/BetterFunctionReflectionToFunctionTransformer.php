@@ -22,26 +22,12 @@ final class BetterFunctionReflectionToFunctionTransformer implements Transformer
      */
     private $betterParameterReflectionToParameterTransformer;
 
-    /**
-     * @var BetterFunctionReflectionToFunctionTransformer
-     */
-    private $functionTransformer;
-
     public function __construct(
         DocBlockFactory $docBlockFactory,
         BetterParameterReflectionToParameterTransformer $betterParameterReflectionToParameterTransformer
     ) {
         $this->docBlockFactory = $docBlockFactory;
         $this->betterParameterReflectionToParameterTransformer = $betterParameterReflectionToParameterTransformer;
-    }
-
-    /**
-     * @note prevents circular reference, resolve later in clean way
-     */
-    public function setFunctionTransformer(
-        BetterFunctionReflectionToFunctionTransformer $betterFunctionReflectionToFunctionTransformer
-    ) {
-        $this->functionTransformer = $betterFunctionReflectionToFunctionTransformer;
     }
 
     /**
