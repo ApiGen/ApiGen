@@ -6,6 +6,7 @@ use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ParameterReflectionInterface;
 use phpDocumentor\Reflection\DocBlock;
 use Roave\BetterReflection\Reflection\ReflectionFunction;
+use Webmozart\Assert\Assert;
 
 /**
  * To replace @see \ApiGen\Parser\Reflection\ReflectionFunction
@@ -23,13 +24,20 @@ final class NewFunctionReflection implements FunctionReflectionInterface
     private $reflection;
 
     /**
+     * @var DocBlock
+     */
+    private $docBlock;
+
+    /**
      * @var ParameterReflectionInterface[]
      */
     private $parameterReflections = [];
-    /**
-     *
-     */
-    private $docBlock;
+
+    public function setParameterReflections(array $parameterReflections): void
+    {
+        Assert::allIsInstanceOf($parameterReflections, ParameterReflectionInterface::class);
+        $this->parameterReflections = $parameterReflections;
+    }
 
     /**
      * @param ReflectionFunction $betterFunctionReflection
@@ -39,11 +47,11 @@ final class NewFunctionReflection implements FunctionReflectionInterface
     public function __construct(
         ReflectionFunction $betterFunctionReflection,
         DocBlock $docBlock,
-        array $parameterReflections = [])
-    {
+        array $parameterReflections
+    ) {
         $this->reflection = $betterFunctionReflection;
         $this->docBlock = $docBlock;
-        $this->parameterReflections = $parameterReflections;
+        $this->setParameterReflections($parameterReflections);
     }
 
     public function getName(): string
@@ -139,7 +147,14 @@ final class NewFunctionReflection implements FunctionReflectionInterface
 
     public function isDocumented(): bool
     {
+        if ($this->reflection->isInternal()) {
+            return false;
+        }
 
-        // TODO: Implement isDocumented() method.
+        if ($this->hasAnnotation('internal')) {
+            return false;
+        }
+
+        return true;
     }
 }

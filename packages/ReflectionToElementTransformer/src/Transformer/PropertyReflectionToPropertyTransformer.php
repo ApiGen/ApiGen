@@ -17,10 +17,9 @@ final class PropertyReflectionToPropertyTransformer implements TransformerInterf
     }
 
     /**
-     * @param object|IReflectionProperty $reflection
-     * @return ReflectionProperty
+     * @param IReflectionProperty $reflection
      */
-    public function transform($reflection)
+    public function transform($reflection): ReflectionProperty
     {
         return new ReflectionProperty($reflection);
     }

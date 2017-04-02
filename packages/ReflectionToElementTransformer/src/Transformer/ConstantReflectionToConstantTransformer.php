@@ -17,10 +17,9 @@ final class ConstantReflectionToConstantTransformer implements TransformerInterf
     }
 
     /**
-     * @param object|IReflectionConstant $reflection
-     * @return ReflectionConstant
+     * @param IReflectionConstant $reflection
      */
-    public function transform($reflection)
+    public function transform($reflection): ReflectionConstant
     {
         return new ReflectionConstant($reflection);
     }

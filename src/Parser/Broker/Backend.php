@@ -75,7 +75,11 @@ final class Backend extends Memory
      */
     protected function parseClassLists(): array
     {
-        $this->declared = array_flip(array_merge(get_declared_classes(), get_declared_interfaces()));
+        $this->declared = array_flip(array_merge(
+            get_declared_classes(),
+            get_declared_interfaces(),
+            get_declared_traits()
+        ));
 
         foreach ($this->getNamespaces() as $namespace) {
             foreach ($namespace->getClasses() as $name => $ref) {

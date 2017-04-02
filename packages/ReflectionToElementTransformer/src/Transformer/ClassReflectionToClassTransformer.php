@@ -17,10 +17,9 @@ final class ClassReflectionToClassTransformer implements TransformerInterface
     }
 
     /**
-     * @param object|IReflectionClass $reflection
-     * @return ReflectionClass
+     * @param IReflectionClass $reflection
      */
-    public function transform($reflection)
+    public function transform($reflection): ReflectionClass
     {
         return new ReflectionClass($reflection);
     }

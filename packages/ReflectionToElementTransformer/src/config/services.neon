@@ -10,3 +10,4 @@
 
 # Better Reflection
 - ApiGen\ReflectionToElementTransformer\Transformer\BetterFunctionReflectionToFunctionTransformer
+- ApiGen\ReflectionToElementTransformer\Transformer\BetterParameterReflectionToParameterTransformer

@@ -18,9 +18,8 @@ final class FunctionReflectionToFunctionTransformer implements TransformerInterf
 
     /**
      * @param object|IReflectionFunction $reflection
-     * @return ReflectionFunction
      */
-    public function transform($reflection)
+    public function transform($reflection): ReflectionFunction
     {
         return new ReflectionFunction($reflection);
     }

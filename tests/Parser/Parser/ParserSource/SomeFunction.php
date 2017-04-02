@@ -9,6 +9,6 @@ namespace SomeNamespace;
  *
  * @return string
  */
-function someAloneFunction()
+function someAloneFunction(int $number, ?string $name = null, ...$arguments)
 {
 }

@@ -17,10 +17,9 @@ final class MethodReflectionToMethodTransformer implements TransformerInterface
     }
 
     /**
-     * @param object|IReflectionMethod $reflection
-     * @return ReflectionMethod
+     * @param IReflectionMethod $reflection
      */
-    public function transform($reflection)
+    public function transform($reflection): ReflectionMethod
     {
         return new ReflectionMethod($reflection);
     }

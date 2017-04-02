@@ -17,10 +17,9 @@ final class ParameterReflectionToParameterTransformer implements TransformerInte
     }
 
     /**
-     * @param object|IReflectionParameter $reflection
-     * @return ReflectionParameter
+     * @param IReflectionParameter $reflection
      */
-    public function transform($reflection)
+    public function transform($reflection): ReflectionParameter
     {
         return new ReflectionParameter($reflection);
     }
