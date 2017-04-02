@@ -2,6 +2,7 @@
 
 namespace ApiGen\ElementReflection\Reflection;
 
+use ApiGen\Annotation\AnnotationList;
 use ApiGen\Contracts\Parser\Reflection\AbstractFunctionMethodReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ParameterReflectionInterface;
@@ -59,7 +60,21 @@ final class NewParameterReflection implements ParameterReflectionInterface
 
     public function getDescription(): string
     {
-        // TODO: Implement getDescription() method.
+        $annotations = $this->declaringFunction->getAnnotation(AnnotationList::PARAM);
+        if (empty($annotations[$this->reflection->getPosition()])) {
+            return '';
+        }
+
+        $description = trim(strpbrk(
+            $annotations[$this->reflection->getPosition()],
+            "\n\r\t "
+        ));
+
+        return preg_replace(
+            '~^(\\$' . $this->getName() . '(?:,\\.{3})?)(\\s+|$)~i', '\\2',
+            $description,
+            1
+        );
     }
 
     public function getDefaultValueDefinition(): ?string
