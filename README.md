@@ -52,6 +52,37 @@ vendor/bin/apigen generate --help
 
 ## Documentation
 
+### DocBlock Annotations
+
+This section provides a list of [PHP DocBlock
+annotations](https://www.phpdoc.org/docs/latest/guides/docblocks.html) (tags)
+that are supported by ApiGen:
+
+- `@author` - documents the author of the associated element.
+- `@copyright` - documents the copyright information for the associated element.
+- `@deprected` - indicated that the associated element is deprecated and can be
+  removed in the future version.
+- `@internal` - denotes that the associated elements is internal to this
+  application or library and hides it by default.
+- `@license` - indicates which license is applicable for the associated
+  element.
+- `@link` - indicates a relation between the associated element and a page of
+  a website.
+- `@method` - allows a class to know which ‘magic’ methods are callable.
+- `@package` - categorizes the associated element into a logical grouping or
+  subdivision.
+- `@param` - documents a single argument of a function or method.
+- `@property` - allows a class to know which ‘magic’ properties are present.
+- `@return` - documents the return value of functions or methods.
+- `@see` - indicates a reference from the associated element to a website or
+  other elements.
+- `@subpackage` - categorizes the associated element into a logical grouping or
+  subdivision.
+- `@throws` - indicates whether the associated element could throw a specific
+  type of exception.
+- `@usedby` indicates a "from" reference with a single associated element.
+- `@uses` - indicates a reference to (and from) a single associated element.
+
 ### Configuration
 
 This section provides information on all available configuration options that
