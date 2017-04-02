@@ -27,13 +27,10 @@ final class NewFunctionReflectionTest extends AbstractContainerAwareTestCase
         $this->functionReflection = array_pop($functionReflections);
     }
 
-    public function test()
+    public function testLines()
     {
         $this->assertSame(12, $this->functionReflection->getStartLine());
         $this->assertSame(14, $this->functionReflection->getEndLine());
-
-        // is documented
-        $this->assertTrue($this->functionReflection->isDocumented());
     }
 
     public function testNames(): void
@@ -72,5 +69,10 @@ final class NewFunctionReflectionTest extends AbstractContainerAwareTestCase
     {
         $parameters = $this->functionReflection->getParameters();
         $this->assertCount(3, $parameters);
+    }
+
+    public function testMisc()
+    {
+        $this->assertTrue($this->functionReflection->isDocumented());
     }
 }

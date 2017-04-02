@@ -2,6 +2,7 @@
 
 namespace ApiGen\ElementReflection\Tests\Parser;
 
+use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ParameterReflectionInterface;
 use ApiGen\ElementReflection\Parser\Parser;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
@@ -30,12 +31,31 @@ final class NewParameterReflectionTest extends AbstractContainerAwareTestCase
         $this->parameterReflection = array_pop($parameterReflections);
     }
 
-    public function test()
+    public function testName()
     {
         $this->assertSame('arguments', $this->parameterReflection->getName());
         $this->assertSame(
             'SomeNamespace\someAloneFunction($arguments)',
             $this->parameterReflection->getPrettyName()
         );
+    }
+
+    public function testDeclaringFunction()
+    {
+        $this->assertInstanceOf(
+            FunctionReflectionInterface::class,
+            $this->parameterReflection->getDeclaringFunction()
+        );
+
+        $this->assertSame(
+            'SomeNamespace\someAloneFunction',
+            $this->parameterReflection->getDeclaringFunctionName()
+        );
+    }
+
+    public function testTypeHints()
+    {
+        $this->assertSame('', $this->parameterReflection->getTypeHint());
+        $this->assertTrue($this->parameterReflection->isVariadic());
     }
 }

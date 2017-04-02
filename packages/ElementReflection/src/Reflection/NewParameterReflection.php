@@ -42,11 +42,19 @@ final class NewParameterReflection implements ParameterReflectionInterface
         return $this->reflection->getName();
     }
 
+    public function getDeclaringFunction(): AbstractFunctionMethodReflectionInterface
+    {
+        return $this->declaringFunction;
+    }
 
+    public function getDeclaringFunctionName(): string
+    {
+        return $this->declaringFunction->getName();
+    }
 
     public function getTypeHint(): string
     {
-        // TODO: Implement getTypeHint() method.
+        return (string) $this->reflection->getTypeHint();
     }
 
     public function getDescription(): string
@@ -57,11 +65,6 @@ final class NewParameterReflection implements ParameterReflectionInterface
     public function getDefaultValueDefinition(): ?string
     {
         // TODO: Implement getDefaultValueDefinition() method.
-    }
-
-    public function getPosition(): int
-    {
-        // TODO: Implement getPosition() method.
     }
 
     public function isArray(): bool
@@ -84,27 +87,17 @@ final class NewParameterReflection implements ParameterReflectionInterface
         // TODO: Implement getDeclaringClassName() method.
     }
 
-    public function getDeclaringFunction(): AbstractFunctionMethodReflectionInterface
-    {
-        // TODO: Implement getDeclaringFunction() method.
-    }
-
-    public function getDeclaringFunctionName(): string
-    {
-        // TODO: Implement getDeclaringFunctionName() method.
-    }
-
     public function getDeclaringClass(): ?ClassReflectionInterface
     {
         // TODO: Implement getDeclaringClass() method.
     }
 
     // @todo: rename to variadic
-
-    public function isUnlimited(): bool
+    public function isVariadic(): bool
     {
-        // TODO: Implement isUnlimited() method.
+        return $this->reflection->isVariadic();
     }
+
     /**
      * Returns if the reflection object is internal.
      */

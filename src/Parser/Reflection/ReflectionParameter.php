@@ -97,7 +97,7 @@ final class ReflectionParameter extends AbstractReflection implements ParameterR
         return $className === '' ? null : $this->getParsedClasses()[$className];
     }
 
-    public function isUnlimited(): bool
+    public function isVariadic(): bool
     {
         return false;
     }

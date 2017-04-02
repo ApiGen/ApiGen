@@ -47,6 +47,6 @@ final class AbstractReflectionFunctionTest extends AbstractReflectionTestCase
         $parameters = $reflectionFunction->getParameters();
         $this->assertCount(1, $parameters);
 
-        $this->assertFalse($parameters[0]->isUnlimited());
+        $this->assertFalse($parameters[0]->isVariadic());
     }
 }

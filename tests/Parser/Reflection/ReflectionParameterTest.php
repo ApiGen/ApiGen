@@ -102,6 +102,6 @@ final class ReflectionParameterTest extends AbstractContainerAwareTestCase
 
     public function testIsUnlimited(): void
     {
-        $this->assertFalse($this->reflectionParameter->isUnlimited());
+        $this->assertFalse($this->reflectionParameter->isVariadic());
     }
 }
