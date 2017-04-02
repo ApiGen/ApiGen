@@ -54,8 +54,70 @@ vendor/bin/apigen generate --help
 
 ### Configuration
 
-This section provides information on all available coniguration options that
+This section provides information on all available configuration options that
 can be included in configuration files (`apigen.yml` or `apigen.neon`).
+
+#### Minimal Configuration
+
+A minimal configuration file:
+
+```neon
+# apigen.neon.dist
+# This is minimal configuration for ApiGen.
+source: [src]           # directory(-ies) to scan PHP files from
+destination: docs       # destination directory to generate API docs in
+```
+
+**Note!** The configuration files match CLI options for [generate](#generate)
+command. The only difference is that when defining these options in
+configuration file, you have to use `camelCased` format (i.e.
+`--annotation-groups` CLI options becomes `annotationGroups` configuration
+parameter).
+
+#### Reference Configuration
+
+A reference configuration file with all of the available and support
+configuration options, together with their default values.
+
+```neon
+# apigen.neon.dist
+# This is reference configuration for ApiGen. It contains all of the available
+# and supported configuration options, together with their default values.
+# source options
+source: [src]                       # Source directory(-ies) to build API docs for
+extensions: [php] # array           # A list of file extension to include when
+                                    # scanning source dir
+accessLevels: [public, protected]   # Access levels of methods and properties
+                                    # to include
+annotationGroups: [todo, deprecated]# Annotation Groups to include
+internal: false                     # Set to `true` to include @internal in API
+                                    # docs.
+#main: 'SomePrefix'                 # Elements with this name prefix will be
+                                    # first in the tree.
+php: false                          # Set to `true` to generate docs for PHP
+                                    # internal classes.
+noSourceCode: false                 # Set to `true` to NOT generate highlighted
+                                    # source code for elements.
+
+# destination / generated docs options
+destination: doc                    # Destination directory for API docs
+exclude: tests                      # A blob pattern to exclude from API docs
+                                    # generation.
+overwrite: true # bool              # Overwrite destination directory by
+                                    # default
+title: "ApiGen Docs"                # Title of generated API docs.
+baseUrl: http://apigen.org/api      # Base URL for generated API docs.
+templateConfig: path/to/config.neon # path to template configuration
+
+# templates parameters
+googleAnalytics: 123
+googleCseId: 456
+download: true                      # show a link to download API docs ZIP
+                                    # archive in the API docs
+
+# debug
+debug: false                        # set to true to enable debug
+```
 
 ### CLI Commands
 
