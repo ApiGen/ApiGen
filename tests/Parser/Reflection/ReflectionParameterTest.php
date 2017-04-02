@@ -11,6 +11,7 @@ use ApiGen\Parser\Reflection\ReflectionParameter;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 use Project\ReflectionMethod;
 use TokenReflection\Broker;
+use ApiGen\Parser\Reflection\ReflectionClass;
 
 final class ReflectionParameterTest extends AbstractContainerAwareTestCase
 {
@@ -90,17 +91,17 @@ final class ReflectionParameterTest extends AbstractContainerAwareTestCase
     public function testGetDeclaringClass(): void
     {
         $this->assertInstanceOf(
-            'ApiGen\Parser\Reflection\ReflectionClass',
+            ReflectionClass::class,
             $this->reflectionParameter->getDeclaringClass()
         );
     }
 
     public function testGetDeclaringClassName(): void
     {
-        $this->assertSame('Project\ReflectionMethod', $this->reflectionParameter->getDeclaringClassName());
+        $this->assertSame(ReflectionMethod::class, $this->reflectionParameter->getDeclaringClassName());
     }
 
-    public function testIsUnlimited(): void
+    public function testIsVariadic(): void
     {
         $this->assertFalse($this->reflectionParameter->isVariadic());
     }

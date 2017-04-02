@@ -35,7 +35,7 @@
 	<tr n:foreach="$function->parameters as $parameter" id="${$parameter->name}">
 		<td class="name"><code>{$parameter->typeHint|typeLinks:$function|noescape}</code></td>
 		<td class="value"><code>{block|strip}
-			<var>{if $parameter->passedByReference}&amp; {/if}${$parameter->name}</var>{if $parameter->defaultValueAvailable} = {$parameter->defaultValueDefinition|highlightPHP:$function|noescape}{elseif $parameter->unlimited},…{/if}
+			<var>{if $parameter->passedByReference}&amp; {/if}${$parameter->name}</var>{if $parameter->defaultValueAvailable} = {$parameter->defaultValueDefinition|highlightPHP:$function|noescape}{elseif $parameter->isVariadic()},…{/if}
 		{/block}</code></td>
 		<td>{$parameter->description|annotationDescription:$function}</td>
 	</tr>

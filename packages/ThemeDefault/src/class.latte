@@ -113,7 +113,7 @@
 			{/if}
 			{foreach $method->parameters as $parameter}
 				<span>{$parameter->typeHint|typeLinks:$method|noescape}
-				<var>{if $parameter->passedByReference}&amp; {/if}${$parameter->name}</var>{if $parameter->defaultValueAvailable} = {$parameter->defaultValueDefinition|highlightPHP:$class|noescape}{elseif $parameter->unlimited},…{/if}</span>{sep}, {/sep}
+				<var>{if $parameter->passedByReference}&amp; {/if}${$parameter->name}</var>{if $parameter->defaultValueAvailable} = {$parameter->defaultValueDefinition|highlightPHP:$class|noescape}{elseif $parameter->isVariadic()},…{/if}</span>{sep}, {/sep}
 			{/foreach}
 		){/block}</code>
 
@@ -137,7 +137,7 @@
 				<h4>Parameters</h4>
 				<div class="list"><dl>
 				{foreach $method->parameters as $parameter}
-					<dt><var>${$parameter->name}</var>{if $parameter->unlimited},…{/if}</dt>
+					<dt><var>${$parameter->name}</var>{if $parameter->isVariadic()},…{/if}</dt>
 					<dd>{$parameter->description|annotationDescription:$method|noescape}</dd>
 				{/foreach}
 				</dl></div>
