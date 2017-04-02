@@ -71,7 +71,7 @@ destination: docs       # destination directory to generate API docs in
 **Note!** The configuration files match CLI options for [generate](#generate)
 command. The only difference is that when defining these options in
 configuration file, you have to use `camelCased` format (i.e.
-`--annotation-groups` CLI options becomes `annotationGroups` configuration
+`--annotation-groups` CLI option becomes `annotationGroups` configuration
 parameter).
 
 #### Reference Configuration
