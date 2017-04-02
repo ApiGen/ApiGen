@@ -5,6 +5,12 @@ All notable changes to [apigen][0] project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.1.1] - 2015-04-09
+
+### Fixed
+
+- Fix issue with ThemeConfigPathResolver for vendor [#590]
+
 ## [4.1.0] - 2015-04-04
 
 ### Added
@@ -34,7 +40,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - [#538] spaces from `apigen.services.neon` removed, thanks to @ramsey
 - [#575] function link fixed
 
-## Updated
+### Updated
 
 - https://github.com/ApiGen/ApiGen/blob/master/CONTRIBUTING.md contributing info added
 - https://github.com/ApiGen/ApiGen/blob/master/UPGRADE-4.0.md upgrade from 2.8 to 4.0 info added
