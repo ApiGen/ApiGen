@@ -14,8 +14,14 @@ interface ParameterReflectionInterface extends ReflectionInterface
 
     public function isArray(): bool;
 
+    /**
+     * @todo This is actually return parameter typehint. Find a better name.
+     */
     public function getClass(): ?ClassReflectionInterface;
 
+    /**
+     * @todo This is actually return parameter typehint. Find a better name.
+     */
     public function getClassName(): ?string;
 
     public function getDeclaringClassName(): string;

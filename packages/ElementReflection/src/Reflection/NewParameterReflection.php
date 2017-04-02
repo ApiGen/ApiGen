@@ -98,14 +98,6 @@ final class NewParameterReflection implements ParameterReflectionInterface
         return $this->reflection->isVariadic();
     }
 
-    /**
-     * Returns if the reflection object is internal.
-     */
-    public function isInternal(): bool
-    {
-        // TODO: Implement isInternal() method.
-    }
-
     public function setDeclaringFunction(AbstractFunctionMethodReflectionInterface $declaringFunction)
     {
         $this->declaringFunction = $declaringFunction;

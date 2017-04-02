@@ -10,11 +10,6 @@ interface ReflectionInterface
     public function getName(): string;
 
     /**
-     * Returns if the reflection object is internal.
-     */
-    public function isInternal(): bool;
-
-    /**
      * Returns an element pretty (docblock compatible) name.
      */
     public function getPrettyName(): string;
