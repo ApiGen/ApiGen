@@ -68,25 +68,19 @@ final class SourceCodeGenerator implements TemplateGeneratorInterface, StepCount
         foreach ($this->elementStorage->getElements() as $type => $elementList) {
             foreach ($elementList as $element) {
                 /** @var ElementReflectionInterface $element */
-                if ($element->isTokenized()) {
-                    $this->generateForElement($element);
+                $this->generateForElement($element);
 
-                    $this->eventDispatcher->dispatch(GenerateProgressEvent::class);
-                }
+                $this->eventDispatcher->dispatch(GenerateProgressEvent::class);
             }
         }
     }
 
     public function getStepCount(): int
     {
-        $tokenizedFilter = function (ReflectionInterface $class) {
-            return $class->isTokenized();
-        };
-
-        $count = count(array_filter($this->elementStorage->getClasses(), $tokenizedFilter))
-            + count(array_filter($this->elementStorage->getInterfaces(), $tokenizedFilter))
-            + count(array_filter($this->elementStorage->getTraits(), $tokenizedFilter))
-            + count(array_filter($this->elementStorage->getExceptions(), $tokenizedFilter))
+        $count = count($this->elementStorage->getClasses())
+            + count($this->elementStorage->getInterfaces())
+            + count($this->elementStorage->getTraits())
+            + count($this->elementStorage->getExceptions())
             + count($this->elementStorage->getConstants())
             + count($this->elementStorage->getFunctions());
 

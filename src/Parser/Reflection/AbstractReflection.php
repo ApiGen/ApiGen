@@ -58,11 +58,6 @@ abstract class AbstractReflection extends Object implements ReflectionInterface
         return $this->reflection->isInternal();
     }
 
-    public function isTokenized(): bool
-    {
-        return $this->reflection->isTokenized();
-    }
-
     public function getFileName(): string
     {
         return $this->reflection->getFileName();

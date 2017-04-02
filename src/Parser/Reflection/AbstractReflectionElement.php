@@ -12,30 +12,13 @@ use TokenReflection\ReflectionFunction;
 abstract class AbstractReflectionElement extends AbstractReflection implements ElementReflectionInterface
 {
     /**
-     * @var bool
-     */
-    protected $isDocumented;
-
-    /**
      * @var mixed[]
      */
     protected $annotations;
 
     public function isDocumented(): bool
     {
-        if ($this->isDocumented === null) {
-            $this->isDocumented = $this->reflection->isTokenized() || $this->reflection->isInternal();
-
-            if ($this->isDocumented) {
-                if ($this->reflection->isInternal()) {
-                    $this->isDocumented = false;
-                } elseif ($this->reflection->hasAnnotation('internal')) {
-                    $this->isDocumented = false;
-                }
-            }
-        }
-
-        return $this->isDocumented;
+        return ! $this->reflection->isInternal();
     }
 
     public function isDeprecated(): bool
@@ -46,7 +29,7 @@ abstract class AbstractReflectionElement extends AbstractReflection implements E
 
         if ($this instanceof InClassInterface) {
             $class = $this->getDeclaringClass();
-            return !is_null($class) && $class->isDeprecated();
+            return $class !== null && $class->isDeprecated();
         }
 
         return false;

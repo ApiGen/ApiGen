@@ -2,6 +2,13 @@
 
 namespace SomeNamespace;
 
+/**
+ * Some description.
+ *
+ * And more lines!
+ *
+ * @return string
+ */
 function someAloneFunction()
 {
 }

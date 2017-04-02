@@ -50,11 +50,6 @@ final class AbstractReflectionTest extends AbstractContainerAwareTestCase
         $this->assertFalse($this->reflectionClass->isInternal());
     }
 
-    public function testIsTokenized(): void
-    {
-        $this->assertTrue($this->reflectionClass->isTokenized());
-    }
-
     public function testGetFileName(): void
     {
         $this->assertStringEndsWith('ReflectionMethod.php', $this->reflectionClass->getFileName());

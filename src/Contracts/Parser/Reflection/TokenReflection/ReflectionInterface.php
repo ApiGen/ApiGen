@@ -15,11 +15,6 @@ interface ReflectionInterface
     public function isInternal(): bool;
 
     /**
-     * Returns if the current reflection comes from a tokenized source.
-     */
-    public function isTokenized(): bool;
-
-    /**
      * Returns an element pretty (docblock compatible) name.
      */
     public function getPrettyName(): string;
