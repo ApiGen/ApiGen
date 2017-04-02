@@ -175,6 +175,16 @@ A list of options accepted by `generate` command:
 | `--version` (`-V`)    | Display version of ApiGen.
 | --------------------- |
 
+### Themes
+
+In order to enable a custom theme, you have to either provide `--theme-config`
+CLI option when runing `apigen generate` or add `themeConfig` configuration
+option in your ApiGen configuration file:
+
+```neon
+themeConfig: path/to/theme/config.neon # path to theme's config file
+```
+
 ## Contributing
 
 Please refer to [CONTRIBUTING](CONTRIBUTING.md) for details.
