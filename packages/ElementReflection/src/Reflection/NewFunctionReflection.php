@@ -4,20 +4,84 @@ namespace ApiGen\ElementReflection\Reflection;
 
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ParameterReflectionInterface;
+use Roave\BetterReflection\Reflection\ReflectionFunction;
 
+/**
+ * To replace @see \ApiGen\Parser\Reflection\ReflectionFunction
+ */
 final class NewFunctionReflection implements FunctionReflectionInterface
 {
-    public function __construct(
-        string $name,
-        int $startLine,
-        int $endLine
-    ) {
+    /**
+     * @var ReflectionFunction
+     */
+    private $reflection;
 
+    /**
+     * @var ParameterReflectionInterface[]
+     */
+    private $parameterReflections = [];
+
+    /**
+     * @param ReflectionFunction $reflection
+     * @param ParameterReflectionInterface[] $parameterReflections
+     */
+    public function __construct(ReflectionFunction $reflection, array $parameterReflections = [])
+    {
+        $this->reflection = $reflection;
+        $this->parameterReflections = $parameterReflections;
+    }
+
+    public function getName(): string
+    {
+        return $this->reflection->getName();
+    }
+
+    public function getShortName(): string
+    {
+        return $this->reflection->getShortName();
+    }
+
+    public function getStartLine(): int
+    {
+        return $this->reflection->getStartLine();
+    }
+
+    public function getEndLine(): int
+    {
+        return $this->reflection->getEndLine();
     }
 
     public function returnsReference(): bool
     {
-        // TODO: Implement returnsReference() method.
+        return $this->reflection->returnsReference();
+    }
+
+    public function isDeprecated(): bool
+    {
+        return $this->reflection->isDeprecated();
+    }
+
+    public function getNamespaceName(): string
+    {
+        return $this->reflection->getNamespaceName();
+    }
+
+    public function getPseudoNamespaceName(): string
+    {
+        if ($this->reflection->isInternal()) {
+            return 'PHP';
+        }
+
+        if ($this->reflection->getNamespaceName()) {
+            return $this->reflection->getNamespaceName();
+        }
+
+        return 'None';
+    }
+
+    public function getPrettyName(): string
+    {
+        return $this->reflection->getName() . '()';
     }
 
     /**
@@ -25,7 +89,7 @@ final class NewFunctionReflection implements FunctionReflectionInterface
      */
     public function getParameters(): array
     {
-        // TODO: Implement getParameters() method.
+        return $this->parameterReflections;
     }
 
     public function isDocumented(): bool
@@ -33,51 +97,12 @@ final class NewFunctionReflection implements FunctionReflectionInterface
         // TODO: Implement isDocumented() method.
     }
 
-    public function isDeprecated(): bool
-    {
-        // TODO: Implement isDeprecated() method.
-    }
-
-    public function getNamespaceName(): string
-    {
-        // TODO: Implement getNamespaceName() method.
-    }
-
     /**
-     * Returns element namespace name.
-     * For internal elements returns "PHP", for elements in global space returns "None".
-     *
-     * @return string
-     */
-    public function getPseudoNamespaceName(): string
-    {
-        // TODO: Implement getPseudoNamespaceName() method.
-    }
-
-    /**
-     * @return string[]
-     */
-    public function getNamespaceAliases(): array
-    {
-        // TODO: Implement getNamespaceAliases() method.
-    }
-
-    /**
-     * Removes the short and long description.
-     *
      * @return mixed[]
      */
     public function getAnnotations(): array
     {
         // TODO: Implement getAnnotations() method.
-    }
-
-    /**
-     * @return mixed[]
-     */
-    public function getAnnotation(string $name): array
-    {
-        // TODO: Implement getAnnotation() method.
     }
 
     public function hasAnnotation(string $name): bool
@@ -91,38 +116,10 @@ final class NewFunctionReflection implements FunctionReflectionInterface
     }
 
     /**
-     * @return string|bool
+     * @return mixed[]
      */
-    public function getDocComment()
+    public function getAnnotation(string $name): array
     {
-        // TODO: Implement getDocComment() method.
-    }
-
-    public function getPrettyName(): string
-    {
-        // TODO: Implement getPrettyName() method.
-    }
-
-    /**
-     * Returns the unqualified name (UQN).
-     */
-    public function getShortName(): string
-    {
-        // TODO: Implement getShortName() method.
-    }
-
-    public function getStartLine(): int
-    {
-        // TODO: Implement getStartLine() method.
-    }
-
-    public function getEndLine(): int
-    {
-        // TODO: Implement getEndLine() method.
-    }
-
-    public function getName(): string
-    {
-        // TODO: Implement getName() method.
+        // TODO: Implement getAnnotation() method.
     }
 }

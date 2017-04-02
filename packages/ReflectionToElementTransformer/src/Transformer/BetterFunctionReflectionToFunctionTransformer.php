@@ -24,9 +24,7 @@ final class BetterFunctionReflectionToFunctionTransformer implements Transformer
     public function transform($reflection)
     {
         return new NewFunctionReflection(
-            $reflection->getName(),
-            $reflection->getStartLine(),
-            $reflection->getEndLine()
+            $reflection
         );
     }
 }

@@ -2,6 +2,7 @@
 
 namespace ApiGen\ElementReflection\Parser;
 
+use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Parser\Reflection\ReflectionClass;
 use ApiGen\ReflectionToElementTransformer\Contract\TransformerCollectorInterface;
 use Roave\BetterReflection\Reflection\ReflectionFunction;
@@ -59,7 +60,7 @@ final class Parser
     }
 
     /**
-     * @return ReflectionFunction[]
+     * @return FunctionReflectionInterface[]
      */
     public function getFunctionReflections(): array
     {
