@@ -62,11 +62,6 @@ final class ReflectionParameterTest extends AbstractContainerAwareTestCase
         $this->assertSame(' the URL of the API endpoint', $this->reflectionParameter->getDescription());
     }
 
-    public function testGetPosition(): void
-    {
-        $this->assertSame(0, $this->reflectionParameter->getPosition());
-    }
-
     public function testIsArray(): void
     {
         $this->assertFalse($this->reflectionParameter->isArray());

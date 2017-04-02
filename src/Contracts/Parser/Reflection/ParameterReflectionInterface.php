@@ -12,8 +12,6 @@ interface ParameterReflectionInterface extends ReflectionInterface
 
     public function getDefaultValueDefinition(): ?string;
 
-    public function getPosition(): int;
-
     public function isArray(): bool;
 
     public function getClass(): ?ClassReflectionInterface;

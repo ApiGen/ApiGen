@@ -52,11 +52,6 @@ final class ReflectionParameter extends AbstractReflection implements ParameterR
         return $this->reflection === null ? null : $this->reflection->getDefaultValueDefinition();
     }
 
-    public function getPosition(): int
-    {
-        return $this->reflection->getPosition();
-    }
-
     public function isArray(): bool
     {
         return $this->reflection->isArray();
@@ -110,5 +105,10 @@ final class ReflectionParameter extends AbstractReflection implements ParameterR
     private function isCallable(): bool
     {
         return $this->reflection->isCallable();
+    }
+
+    private function getPosition(): int
+    {
+        return $this->reflection->getPosition();
     }
 }
