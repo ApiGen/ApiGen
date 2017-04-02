@@ -61,6 +61,6 @@ final class NewParameterReflectionTest extends AbstractContainerAwareTestCase
 
     public function testDescription()
     {
-        $this->assertSame('', $this->parameterReflection->getDescription());
+        $this->assertSame('and their description', $this->parameterReflection->getDescription());
     }
 }

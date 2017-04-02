@@ -6,6 +6,7 @@ use ApiGen\Annotation\AnnotationList;
 use ApiGen\Contracts\Parser\Reflection\AbstractFunctionMethodReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ParameterReflectionInterface;
+use phpDocumentor\Reflection\DocBlock\Tags\Param;
 use Roave\BetterReflection\Reflection\ReflectionParameter;
 
 /**
@@ -65,16 +66,11 @@ final class NewParameterReflection implements ParameterReflectionInterface
             return '';
         }
 
-        $description = trim(strpbrk(
-            $annotations[$this->reflection->getPosition()],
-            "\n\r\t "
-        ));
+        /** @var Param $paramAnnotation */
+        $paramAnnotation = $annotations[$this->reflection->getPosition()];
 
-        return preg_replace(
-            '~^(\\$' . $this->getName() . '(?:,\\.{3})?)(\\s+|$)~i', '\\2',
-            $description,
-            1
-        );
+        return $paramAnnotation->getDescription()
+            ->render();
     }
 
     public function getDefaultValueDefinition(): ?string

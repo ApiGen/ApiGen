@@ -29,8 +29,8 @@ final class NewFunctionReflectionTest extends AbstractContainerAwareTestCase
 
     public function testLines()
     {
-        $this->assertSame(12, $this->functionReflection->getStartLine());
-        $this->assertSame(14, $this->functionReflection->getEndLine());
+        $this->assertSame(16, $this->functionReflection->getStartLine());
+        $this->assertSame(18, $this->functionReflection->getEndLine());
     }
 
     public function testNames(): void
@@ -49,13 +49,13 @@ final class NewFunctionReflectionTest extends AbstractContainerAwareTestCase
 
     public function testAnnotations(): void
     {
-        $this->assertCount(1, $this->functionReflection->getAnnotations());
+        $this->assertCount(4, $this->functionReflection->getAnnotations());
         $this->assertTrue($this->functionReflection->hasAnnotation('return'));
-        $this->assertFalse($this->functionReflection->hasAnnotation('param'));
+        $this->assertTrue($this->functionReflection->hasAnnotation('param'));
 
         $returnAnnotation = $this->functionReflection->getAnnotation('return')[0];
         $this->assertInstanceOf(Return_::class, $returnAnnotation);
-        $this->assertSame([], $this->functionReflection->getAnnotation('param'));
+        $this->assertCount(3, $this->functionReflection->getAnnotation('param'));
 
         $this->assertFalse($this->functionReflection->isDeprecated());
 
