@@ -6,7 +6,7 @@ use ApiGen\Parser\Reflection\ReflectionConstant;
 use ApiGen\ReflectionToElementTransformer\Contract\Transformer\TransformerInterface;
 use TokenReflection\IReflectionConstant;
 
-final class ConstantReflectionToConstantTransformer implements TransformerInterface
+final class TokenConstantReflectionTransformer implements TransformerInterface
 {
     /**
      * @param object $reflection

@@ -10,12 +10,12 @@ use TokenReflection\IReflectionFunction;
 /**
  * @deprecated Remove after removing old Parser.
  *
- * Will be replaced by @see BetterFunctionReflectionToFunctionTransformer
+ * Will be replaced by @see BetterFunctionReflectionTransformer
  */
-final class FunctionReflectionToFunctionTransformer implements TransformerInterface
+final class TokenFunctionReflectionTransformer implements TransformerInterface
 {
     /**
-     * @var BetterFunctionReflectionToFunctionTransformer
+     * @var BetterFunctionReflectionTransformer
      */
     private $betterFunctionReflectionToFunctionTransformer;
 
@@ -27,7 +27,7 @@ final class FunctionReflectionToFunctionTransformer implements TransformerInterf
         return $reflection instanceof IReflectionFunction;
     }
 
-    public function __construct(BetterFunctionReflectionToFunctionTransformer $betterFunctionReflectionToFunctionTransformer)
+    public function __construct(BetterFunctionReflectionTransformer $betterFunctionReflectionToFunctionTransformer)
     {
         $this->betterFunctionReflectionToFunctionTransformer = $betterFunctionReflectionToFunctionTransformer;
     }

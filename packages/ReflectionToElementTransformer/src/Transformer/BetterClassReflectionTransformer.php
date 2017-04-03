@@ -3,9 +3,11 @@
 namespace ApiGen\ReflectionToElementTransformer\Transformer;
 
 use ApiGen\Contracts\Parser\Reflection\ParameterReflectionInterface;
+use ApiGen\ElementReflection\Reflection\InterfaceReflection;
 use ApiGen\ElementReflection\Reflection\NewClassReflection;
 use ApiGen\ElementReflection\Reflection\NewFunctionReflection;
 use ApiGen\ElementReflection\Reflection\NewParameterReflection;
+use ApiGen\ElementReflection\Reflection\TraitReflection;
 use ApiGen\ReflectionToElementTransformer\Contract\Transformer\TransformerInterface;
 use phpDocumentor\Reflection\DocBlockFactory;
 use Roave\BetterReflection\Reflection\ReflectionClass;
@@ -13,7 +15,7 @@ use Roave\BetterReflection\Reflection\ReflectionFunction as BetterReflectionFunc
 use Roave\BetterReflection\Reflection\ReflectionFunction;
 use Roave\BetterReflection\Reflection\ReflectionParameter;
 
-final class BetterClassReflectionToClassTransformer implements TransformerInterface
+final class BetterClassReflectionTransformer implements TransformerInterface
 {
     /**
      * @var DocBlockFactory
@@ -21,13 +23,13 @@ final class BetterClassReflectionToClassTransformer implements TransformerInterf
     private $docBlockFactory;
 
     /**
-     * @var BetterParameterReflectionToParameterTransformer
+     * @var BetterParameterReflectionTransformer
      */
     private $betterParameterReflectionToParameterTransformer;
 
     public function __construct(
         DocBlockFactory $docBlockFactory,
-        BetterParameterReflectionToParameterTransformer $betterParameterReflectionToParameterTransformer
+        BetterParameterReflectionTransformer $betterParameterReflectionToParameterTransformer
     ) {
         $this->docBlockFactory = $docBlockFactory;
         $this->betterParameterReflectionToParameterTransformer = $betterParameterReflectionToParameterTransformer;
@@ -43,11 +45,21 @@ final class BetterClassReflectionToClassTransformer implements TransformerInterf
 
     /**
      * @param ReflectionClass $reflection
+     * @return NewClassReflection|InterfaceReflection|TraitReflection
      */
-    public function transform($reflection): NewClassReflection
+    public function transform($reflection)
     {
         $docBlock = $this->docBlockFactory->create($reflection->getDocComment() . ' ');
 //        $parameters = $this->transformParameters($reflection);
+
+
+        if ($reflection->isInterface()) {
+            return $this->createInterface($reflection);
+        }
+
+        if ($reflection->isTrait()) {
+
+        }
 
         $classReflection = new NewClassReflection(
             $reflection,
@@ -63,6 +75,12 @@ final class BetterClassReflectionToClassTransformer implements TransformerInterf
 //        }
 //
         return $classReflection;
+    }
+
+    private function createInterface(ReflectionClass $reflection): InterfaceReflection
+    {
+        $docBlock = $this->docBlockFactory->create($reflection->getDocComment() . ' ');
+        return new InterfaceReflection($reflection, $docBlock);
     }
 
 //    /**

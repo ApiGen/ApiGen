@@ -11,7 +11,7 @@ use Roave\BetterReflection\Reflection\ReflectionFunction as BetterReflectionFunc
 use Roave\BetterReflection\Reflection\ReflectionFunction;
 use Roave\BetterReflection\Reflection\ReflectionParameter;
 
-final class BetterFunctionReflectionToFunctionTransformer implements TransformerInterface
+final class BetterFunctionReflectionTransformer implements TransformerInterface
 {
     /**
      * @var DocBlockFactory
@@ -19,13 +19,13 @@ final class BetterFunctionReflectionToFunctionTransformer implements Transformer
     private $docBlockFactory;
 
     /**
-     * @var BetterParameterReflectionToParameterTransformer
+     * @var BetterParameterReflectionTransformer
      */
     private $betterParameterReflectionToParameterTransformer;
 
     public function __construct(
         DocBlockFactory $docBlockFactory,
-        BetterParameterReflectionToParameterTransformer $betterParameterReflectionToParameterTransformer
+        BetterParameterReflectionTransformer $betterParameterReflectionToParameterTransformer
     ) {
         $this->docBlockFactory = $docBlockFactory;
         $this->betterParameterReflectionToParameterTransformer = $betterParameterReflectionToParameterTransformer;

@@ -16,7 +16,7 @@ use TokenReflection\IReflectionParameter;
 /**
  * @deprecated Remove after removing old Parser.
  */
-final class ParameterReflectionToParameterTransformer implements TransformerInterface
+final class TokenParameterReflectionTransformer implements TransformerInterface
 {
     /**
      * @var DocBlockFactory

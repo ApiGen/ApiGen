@@ -64,7 +64,7 @@ final class ParserTest extends AbstractContainerAwareTestCase
         $this->parser->parseDirectories([__DIR__ . '/ParserSource']);
 
         $classes = $this->parserStorage->getClasses();
-        $this->assertCount(3, $classes);
+        $this->assertCount(4, $classes);
 
         $class = array_pop($classes);
         $this->assertInstanceOf(ClassReflectionInterface::class, $class);

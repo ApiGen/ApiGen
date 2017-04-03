@@ -6,7 +6,7 @@ use ApiGen\Parser\Reflection\ReflectionClass;
 use ApiGen\ReflectionToElementTransformer\Contract\Transformer\TransformerInterface;
 use TokenReflection\IReflectionClass;
 
-final class ClassReflectionToClassTransformer implements TransformerInterface
+final class TokenClassReflectionTransformer implements TransformerInterface
 {
     /**
      * @param object $reflection

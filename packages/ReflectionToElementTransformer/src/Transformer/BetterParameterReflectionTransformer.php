@@ -6,7 +6,7 @@ use ApiGen\ElementReflection\Reflection\NewParameterReflection;
 use ApiGen\ReflectionToElementTransformer\Contract\Transformer\TransformerInterface;
 use Roave\BetterReflection\Reflection\ReflectionParameter;
 
-final class BetterParameterReflectionToParameterTransformer implements TransformerInterface
+final class BetterParameterReflectionTransformer implements TransformerInterface
 {
     /**
      * @param object $reflection
