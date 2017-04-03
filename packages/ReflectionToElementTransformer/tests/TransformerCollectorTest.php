@@ -15,6 +15,7 @@ use ApiGen\Tests\AbstractContainerAwareTestCase;
 use Nette\Object;
 use PHPUnit\Framework\Assert;
 use Roave\BetterReflection\Reflection\ReflectionFunction;
+use Roave\BetterReflection\Reflection\ReflectionParameter;
 use TokenReflection\IReflectionClass;
 use TokenReflection\IReflectionConstant;
 use TokenReflection\IReflectionMethod;
@@ -71,10 +72,10 @@ final class TransformerCollectorTest extends AbstractContainerAwareTestCase
 
     public function testCreateFromReflectionParameter(): void
     {
-        $tokenReflectionParameterMock = $this->createMock(IReflectionParameter::class, Object::class);
+        $tokenReflectionParameterMock = $this->createMock(ReflectionParameter::class);
+
         $reflectionParameter = $this->transformerCollector->transformReflectionToElement($tokenReflectionParameterMock);
         $this->assertInstanceOf(ParameterReflectionInterface::class, $reflectionParameter);
-        $this->checkLoadedProperties($reflectionParameter);
     }
 
     public function testCreateFromReflectionConstant(): void

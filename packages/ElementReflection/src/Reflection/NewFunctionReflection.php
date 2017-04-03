@@ -160,4 +160,10 @@ final class NewFunctionReflection implements FunctionReflectionInterface
         Assert::allIsInstanceOf($parameterReflections, ParameterReflectionInterface::class);
         $this->parameterReflections = $parameterReflections;
     }
+
+    public function getFileName(): string
+    {
+        // @todo
+        return '';
+    }
 }
