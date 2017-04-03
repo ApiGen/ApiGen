@@ -2,14 +2,13 @@
 
 [![Build Status](https://img.shields.io/travis/ApiGen/ApiGen/master.svg?style=flat-square)](https://travis-ci.org/ApiGen/ApiGen)
 [![Build status](https://ci.appveyor.com/api/projects/status/p8y6685thhh7mgw0/branch/4.2?svg=true)](https://ci.appveyor.com/project/ek9/apigen/branch/4.2)
-[![Quality Score](https://img.shields.io/scrutinizer/g/ApiGen/ApiGen.svg?style=flat-square)](https://scrutinizer-ci.com/g/ApiGen/ApiGen)
 [![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/ApiGen/ApiGen.svg?style=flat-square)](https://scrutinizer-ci.com/g/ApiGen/ApiGen)
 [![Downloads](https://img.shields.io/packagist/dt/apigen/apigen.svg?style=flat-square)](https://packagist.org/packages/apigen/apigen)
 [![Latest stable](https://img.shields.io/packagist/v/apigen/apigen.svg?style=flat-square)](https://packagist.org/packages/apigen/apigen)
 
 Just look at [CakePHP Framework](http://api.cakephp.org/3.0/) or [Doctrine ORM API](http://www.doctrine-project.org/api/orm/2.4/).
 
-**Note!** The `master` branch is `5.x` series of ApiGen. It's an undergoing
+**Note!** The `master` branch is `5.0.x` series of ApiGen. It's an undergoing
 effort to bring support of PHP 5.6 / 7 features and modernise the codebase. For
 `4.2.x` series of ApiGen please check `4.2` branch.
 
@@ -33,6 +32,7 @@ Or generate API docs for multiple directories:
 
 ```bash
 vendor/bin/apigen generate src tests --destination docs
+```
 
 ## Configuration
 

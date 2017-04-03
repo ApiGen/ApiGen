@@ -43,7 +43,7 @@ final class RelativePathResolver
     {
         $directory = $this->fileSystem->normalizePath($directory);
         $fileName = $this->fileSystem->normalizePath($fileName);
-        $directory = rtrim($directory, DIRECTORY_SEPARATOR);
+
         return substr($fileName, strlen($directory) + 1);
     }
 }
