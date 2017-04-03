@@ -37,4 +37,4 @@ install:
 
 test_script:
   - cd c:\projects\apigen
-  - php vendor\phpunit\phpunit\phpunit --testdox
+  - php vendor\phpunit\phpunit\phpunit -vvv
