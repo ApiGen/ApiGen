@@ -8,7 +8,6 @@ use ApiGen\Parser\Reflection\AbstractReflectionFunction;
 use ApiGen\Parser\Reflection\ReflectionParameter;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 
-
 final class AbstractReflectionFunctionTest extends AbstractContainerAwareTestCase
 {
     /**
@@ -53,7 +52,7 @@ final class AbstractReflectionFunctionTest extends AbstractContainerAwareTestCas
 
     public function testGetParametersAnnotationMatchingRealCount(): void
     {
-        $parameters = $this->reflectionFunction->getParameters();
+        $parameters = $this->otherReflectionFunction->getParameters();
         $this->assertCount(1, $parameters);
 
         $this->assertFalse($parameters[0]->isVariadic());
