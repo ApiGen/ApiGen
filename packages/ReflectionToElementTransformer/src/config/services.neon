@@ -1,7 +1,6 @@
 - ApiGen\ReflectionToElementTransformer\TransformerCollector
 
 # Token Reflection (to be removed)
-- ApiGen\ReflectionToElementTransformer\Transformer\ClassReflectionToClassTransformer
 - ApiGen\ReflectionToElementTransformer\Transformer\ConstantReflectionToConstantTransformer
 - ApiGen\ReflectionToElementTransformer\Transformer\MethodReflectionToMethodTransformer
 - ApiGen\ReflectionToElementTransformer\Transformer\PropertyReflectionToPropertyTransformer
@@ -15,3 +14,8 @@
 - ApiGen\ReflectionToElementTransformer\Transformer\BetterParameterReflectionToParameterTransformer
 # replaces
 - ApiGen\ReflectionToElementTransformer\Transformer\ParameterReflectionToParameterTransformer
+
+# Better Reflection
+- ApiGen\ReflectionToElementTransformer\Transformer\BetterClassReflectionToClassTransformer
+# replaces
+- ApiGen\ReflectionToElementTransformer\Transformer\ClassReflectionToClassTransformer

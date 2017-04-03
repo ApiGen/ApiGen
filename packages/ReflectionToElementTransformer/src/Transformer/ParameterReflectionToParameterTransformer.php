@@ -84,7 +84,9 @@ final class ParameterReflectionToParameterTransformer implements TransformerInte
                 []
             );
 
-            $newClassReflection = new NewClassReflection($reflection->getDeclaringClass());
+            $docBlock = $this->docBlockFactory->create($reflection->getDocComment() . ' ');
+
+            $newClassReflection = new NewClassReflection($reflection->getDeclaringClass(), $docBlock);
             $methodReflection->setDeclaringClass($newClassReflection);
             return $methodReflection;
         }

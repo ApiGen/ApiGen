@@ -2,12 +2,14 @@
 
 namespace ApiGen\ElementReflection\Reflection;
 
+use ApiGen\Annotation\AnnotationList;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
 use ApiGen\Parser\Reflection\Parts\VisibilityTrait;
 use ApiGen\ReflectionToElementTransformer\Contract\TransformerCollectorInterface;
+use phpDocumentor\Reflection\DocBlock;
 use Roave\BetterReflection\Reflection\ReflectionClass;
 
 final class NewClassReflection implements ClassReflectionInterface
@@ -17,9 +19,17 @@ final class NewClassReflection implements ClassReflectionInterface
      */
     private $reflection;
 
-    public function __construct(ReflectionClass $betterClassReflection)
-    {
+    /**
+     * @var DocBlock
+     */
+    private $docBlock;
+
+    public function __construct(
+        ReflectionClass $betterClassReflection,
+        DocBlock $docBlock
+    ) {
         $this->reflection = $betterClassReflection;
+        $this->docBlock = $docBlock;
     }
 
     public function getName(): string
@@ -76,7 +86,7 @@ final class NewClassReflection implements ClassReflectionInterface
     public function getDescription(): string
     {
         $description = $this->docBlock->getSummary()
-            . self::EMPTY_LINE
+            . AnnotationList::EMPTY_LINE
             . $this->docBlock->getDescription();
 
         return trim($description);
@@ -94,6 +104,7 @@ final class NewClassReflection implements ClassReflectionInterface
 
         return true;
     }
+
 
     public function getParentClass(): ?ClassReflectionInterface
     {
@@ -339,7 +350,7 @@ final class NewClassReflection implements ClassReflectionInterface
      */
     public function getProperties(): array
     {
-        // TODO: Implement getProperties() method.
+        return [];
     }
 
     /**
@@ -433,17 +444,15 @@ final class NewClassReflection implements ClassReflectionInterface
     }
 
     /**
-     * Removes the short and long description.
-     *
      * @return mixed[]
      */
     public function getAnnotations(): array
     {
-        // TODO: Implement getAnnotations() method.
+        return $this->docBlock->getTags();
     }
 
     public function hasAnnotation(string $name): bool
     {
-        // TODO: Implement hasAnnotation() method.
+        return $this->docBlock->hasTag($name);
     }
 }

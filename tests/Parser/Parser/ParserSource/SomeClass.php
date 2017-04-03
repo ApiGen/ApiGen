@@ -2,6 +2,13 @@
 
 namespace ApiGen\Parser\Tests\Parser\ParserSource;
 
+/**
+ * Huge and small
+ *
+ * description.
+ *
+ * @author Me.
+ */
 class SomeClass
 {
 

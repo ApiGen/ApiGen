@@ -2,6 +2,7 @@
 
 namespace ApiGen\ElementReflection\Reflection;
 
+use ApiGen\Annotation\AnnotationList;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ParameterReflectionInterface;
 use phpDocumentor\Reflection\DocBlock;
@@ -13,11 +14,6 @@ use Webmozart\Assert\Assert;
  */
 final class NewFunctionReflection implements FunctionReflectionInterface
 {
-    /**
-     * @var string
-     */
-    private const EMPTY_LINE = PHP_EOL . PHP_EOL;
-
     /**
      * @var ReflectionFunction
      */
@@ -125,7 +121,7 @@ final class NewFunctionReflection implements FunctionReflectionInterface
     public function getDescription(): string
     {
         $description = $this->docBlock->getSummary()
-            . self::EMPTY_LINE
+            . AnnotationList::EMPTY_LINE
             . $this->docBlock->getDescription();
 
         return trim($description);

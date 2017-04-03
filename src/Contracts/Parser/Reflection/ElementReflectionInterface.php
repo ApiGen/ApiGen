@@ -19,8 +19,6 @@ interface ElementReflectionInterface extends NamedInterface
     public function getPseudoNamespaceName(): string;
 
     /**
-     * Removes the short and long description.
-     *
      * @return mixed[]
      */
     public function getAnnotations(): array;
