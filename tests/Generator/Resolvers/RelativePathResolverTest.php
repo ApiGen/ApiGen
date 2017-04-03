@@ -34,7 +34,7 @@ class RelativePathResolverTest extends PHPUnit_Framework_TestCase
         $relativePathResolver = new RelativePathResolver($configuration, new FileSystem);
 
         $this->assertSame('file.txt', $relativePathResolver->getRelativePath('C:\some\dir\file.txt'));
-        $this->assertSame('more-dir/file.txt', $relativePathResolver->getRelativePath('C:\some\dir\more-dir\file.txt'));
+        $this->assertSame('more-dir\file.txt', $relativePathResolver->getRelativePath('C:\some\dir\more-dir\file.txt'));
     }
 
 
@@ -60,9 +60,9 @@ class RelativePathResolverTest extends PHPUnit_Framework_TestCase
         $relativePathResolver = new RelativePathResolver($configuration, new FileSystem);
 
         $fileName = 'ProjectBeta/entities/Category.php';
-        $this->assertSame('entities/Category.php', $relativePathResolver->getRelativePath($fileName));
+        $this->assertSame('entities'.DIRECTORY_SEPARATOR.'Category.php', $relativePathResolver->getRelativePath($fileName));
 
         $fileName = 'ProjectBeta/entities/Category.php';
-        $this->assertSame('entities/Category.php', $relativePathResolver->getRelativePath($fileName));
+        $this->assertSame('entities'.DIRECTORY_SEPARATOR.'Category.php', $relativePathResolver->getRelativePath($fileName));
     }
 }
