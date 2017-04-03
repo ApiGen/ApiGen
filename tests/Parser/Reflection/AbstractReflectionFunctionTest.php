@@ -2,25 +2,33 @@
 
 namespace ApiGen\Parser\Tests\Reflection;
 
+use ApiGen\Contracts\Parser\ParserInterface;
 use ApiGen\Contracts\Parser\Reflection\ParameterReflectionInterface;
 use ApiGen\Parser\Reflection\AbstractReflectionFunction;
 use ApiGen\Parser\Reflection\ReflectionParameter;
+use ApiGen\Tests\AbstractContainerAwareTestCase;
 
-final class AbstractReflectionFunctionTest extends AbstractReflectionTestCase
+
+final class AbstractReflectionFunctionTest extends AbstractContainerAwareTestCase
 {
     /**
      * @var AbstractReflectionFunction
      */
     private $reflectionFunction;
 
+    /**
+     * @var AbstractReflectionFunction
+     */
+    private $otherReflectionFunction;
+
     protected function setUp(): void
     {
-        parent::setUp();
+        /** @var ParserInterface $parser */
+        $parser = $this->container->getByType(ParserInterface::class);
 
-        $parserStorage = $this->parser->parseDirectories([__DIR__ . '/ReflectionFunctionSource']);
+        $parserStorage = $parser->parseDirectories([__DIR__ . '/ReflectionFunctionSource']);
         $this->reflectionFunction = $parserStorage->getFunctions()['getSomeData'];
-
-        $this->reflectionFunction = $this->backend->getFunctions()['getSomeData'];
+        $this->otherReflectionFunction = $parserStorage->getFunctions()['getMemoryInBytes'];
     }
 
     public function testGetShortName(): void
@@ -45,9 +53,7 @@ final class AbstractReflectionFunctionTest extends AbstractReflectionTestCase
 
     public function testGetParametersAnnotationMatchingRealCount(): void
     {
-        $reflectionFunction = $this->backend->getFunctions()['getMemoryInBytes'];
-
-        $parameters = $reflectionFunction->getParameters();
+        $parameters = $this->reflectionFunction->getParameters();
         $this->assertCount(1, $parameters);
 
         $this->assertFalse($parameters[0]->isVariadic());
