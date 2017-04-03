@@ -2,8 +2,8 @@
 
 namespace ApiGen\ElementReflection\Parser;
 
+use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
-use ApiGen\Parser\Reflection\ReflectionClass;
 use ApiGen\ReflectionToElementTransformer\Contract\TransformerCollectorInterface;
 use Roave\BetterReflection\Reflection\ReflectionFunction;
 use Roave\BetterReflection\Reflector\ClassReflector;
@@ -13,7 +13,7 @@ use Roave\BetterReflection\SourceLocator\Type\DirectoriesSourceLocator;
 final class Parser
 {
     /**
-     * @var ReflectionClass[]
+     * @var ClassReflectionInterface[]
      */
     private $classReflections = [];
 
@@ -52,7 +52,7 @@ final class Parser
     }
 
     /**
-     * @return ReflectionClass[]
+     * @return ClassReflectionInterface[]
      */
     public function getClassReflections(): array
     {

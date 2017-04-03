@@ -74,9 +74,9 @@ final class ReflectionMethod extends AbstractReflectionFunction implements Metho
             if ($method->getName() === $this->getName()) {
                 if (! $method->isPrivate() && ! $method->isAbstract()) {
                     return $method;
-                } else {
-                    return null;
                 }
+
+                return null;
             }
         }
 

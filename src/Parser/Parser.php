@@ -15,6 +15,9 @@ use TokenReflection\Broker;
 use TokenReflection\Broker\Backend;
 use TokenReflection\Exception\ParseException;
 
+/**
+ * @deprecated Remove with old Parser.
+ */
 final class Parser implements ParserInterface
 {
     /**
