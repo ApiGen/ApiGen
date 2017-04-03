@@ -80,7 +80,9 @@ class FileSystemTest extends TestCase
         $this->assertTrue(file_exists($absoluteFile));
 
         $this->assertSame($absoluteDir, $this->fileSystem->getAbsolutePath($absoluteDir));
-        $this->assertSame($absoluteDir . DIRECTORY_SEPARATOR . 'file.txt', $this->fileSystem->getAbsolutePath('file.txt', [$absoluteDir]));
+        $this->assertSame(
+            $absoluteDir . DIRECTORY_SEPARATOR . 'file.txt',
+            $this->fileSystem->getAbsolutePath('file.txt', [$absoluteDir]));
 
         $this->assertSame(
             'someFile.txt',
