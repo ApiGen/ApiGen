@@ -38,7 +38,7 @@ final class ReflectionParameterTest extends AbstractContainerAwareTestCase
 
     public function testInstance(): void
     {
-        $this->assertInstanceOf(ReflectionParameter::class, $this->reflectionParameter);
+        $this->assertInstanceOf(ParameterReflectionInterface::class, $this->reflectionParameter);
     }
 
     public function testGetTypeHint(): void
@@ -48,7 +48,7 @@ final class ReflectionParameterTest extends AbstractContainerAwareTestCase
 
     public function testGetDescription(): void
     {
-        $this->assertSame(' the URL of the API endpoint', $this->reflectionParameter->getDescription());
+        $this->assertSame('the URL of the API endpoint', $this->reflectionParameter->getDescription());
     }
 
     public function testIsArray(): void
@@ -79,7 +79,7 @@ final class ReflectionParameterTest extends AbstractContainerAwareTestCase
     public function testGetDeclaringClass(): void
     {
         $this->assertInstanceOf(
-            ReflectionClass::class,
+            ClassReflectionInterface::class,
             $this->reflectionParameter->getDeclaringClass()
         );
     }

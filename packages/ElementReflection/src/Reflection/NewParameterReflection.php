@@ -8,6 +8,7 @@ use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ParameterReflectionInterface;
 use phpDocumentor\Reflection\DocBlock\Tags\Param;
+use phpDocumentor\Reflection\Types\Compound;
 use Roave\BetterReflection\Reflection\ReflectionParameter;
 
 /**
@@ -57,7 +58,25 @@ final class NewParameterReflection implements ParameterReflectionInterface
 
     public function getTypeHint(): string
     {
-        return (string) $this->reflection->getTypeHint();
+        if ($this->isArray()) {
+            return 'array';
+        }
+
+        if ($this->reflection->isCallable()) {
+            return 'callable';
+        }
+
+        $className = $this->getClassName();
+        if ($className) {
+            return $className;
+        }
+
+        $annotation = $this->getAnnotation();
+        if ($annotation) {
+            return (string) $annotation->getType();
+        }
+
+        return '';
     }
 
     public function getDescription(): string
@@ -121,7 +140,7 @@ final class NewParameterReflection implements ParameterReflectionInterface
     public function getDeclaringClass(): ?ClassReflectionInterface
     {
         if ($this->declaringFunction instanceof MethodReflectionInterface) {
-            $this->declaringFunction->getDeclaringClass();
+            return $this->declaringFunction->getDeclaringClass();
         }
 
         return null;
@@ -135,5 +154,15 @@ final class NewParameterReflection implements ParameterReflectionInterface
     public function setDeclaringFunction(AbstractFunctionMethodReflectionInterface $declaringFunction)
     {
         $this->declaringFunction = $declaringFunction;
+    }
+
+    private function getAnnotation(): ?Param
+    {
+        $annotations = $this->declaringFunction->getAnnotation(AnnotationList::PARAM);
+        if (empty($annotations[$this->reflection->getPosition()])) {
+            return null;
+        }
+
+        return $annotations[$this->reflection->getPosition()];
     }
 }
