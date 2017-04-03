@@ -1,7 +1,7 @@
 # Smart and Readable Documentation for your PHP project
 
 [![Build Status](https://img.shields.io/travis/ApiGen/ApiGen/master.svg?style=flat-square)](https://travis-ci.org/ApiGen/ApiGen)
-[![Build status](https://ci.appveyor.com/api/projects/status/p8y6685thhh7mgw0/branch/4.2?svg=true)](https://ci.appveyor.com/project/ek9/apigen/branch/4.2)
+[![Build status](https://ci.appveyor.com/api/projects/status/p8y6685thhh7mgw0/branch/master?svg=true)](https://ci.appveyor.com/project/ek9/apigen/branch/master)
 [![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/ApiGen/ApiGen.svg?style=flat-square)](https://scrutinizer-ci.com/g/ApiGen/ApiGen)
 [![Downloads](https://img.shields.io/packagist/dt/apigen/apigen.svg?style=flat-square)](https://packagist.org/packages/apigen/apigen)
 [![Latest stable](https://img.shields.io/packagist/v/apigen/apigen.svg?style=flat-square)](https://packagist.org/packages/apigen/apigen)
