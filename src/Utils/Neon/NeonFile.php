@@ -38,7 +38,7 @@ class NeonFile
      */
     private function validatePath($path)
     {
-        if (! file_exists($path)) {
+        if (! file_exists($path) || ! is_file($path)) {
             throw new MissingFileException($path . ' could not be found');
         }
 

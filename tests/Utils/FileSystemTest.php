@@ -23,8 +23,8 @@ class FileSystemTest extends PHPUnit_Framework_TestCase
 
     public function testNormalizePath()
     {
-        $backslashPath = 'C:\User\Program File\ApiGen';
-        $this->assertSame('C:/User/Program File/ApiGen', $this->fileSystem->normalizePath($backslashPath));
+        $backslashPath = 'C:' . DIRECTORY_SEPARATOR . 'Program Files' . DIRECTORY_SEPARATOR . 'ApiGen';
+        $this->assertSame($backslashPath, $this->fileSystem->normalizePath($backslashPath));
     }
 
 
@@ -84,21 +84,22 @@ class FileSystemTest extends PHPUnit_Framework_TestCase
         mkdir($absoluteDir);
         $this->assertTrue(file_exists($absoluteDir));
 
-        $absoluteFile = $absoluteDir . '/file.txt';
+        $absoluteFile = $absoluteDir . DIRECTORY_SEPARATOR . 'file.txt';
         file_put_contents($absoluteFile, '...');
         $this->assertTrue(file_exists($absoluteFile));
 
         $this->assertSame($absoluteDir, $this->fileSystem->getAbsolutePath($absoluteDir));
-        $this->assertSame($absoluteDir . '/file.txt', $this->fileSystem->getAbsolutePath('file.txt', [$absoluteDir]));
+        $this->assertSame($absoluteDir . DIRECTORY_SEPARATOR . 'file.txt', $this->fileSystem->getAbsolutePath('file.txt', [$absoluteDir]));
 
         $this->assertSame(
             'someFile.txt',
             $this->fileSystem->getAbsolutePath('someFile.txt')
         );
 
+        $testFile = DIRECTORY_SEPARATOR . 'someDir' . DIRECTORY_SEPARATOR . 'someDeeperFile.txt';
         $this->assertSame(
-            '/someDir/someDeeperFile.txt',
-            $this->fileSystem->getAbsolutePath('\someDir\someDeeperFile.txt')
+            $testFile,
+            $this->fileSystem->getAbsolutePath($testFile)
         );
     }
 

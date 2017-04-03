@@ -30,12 +30,12 @@ class GenerateCommandExecuteTest extends ContainerAwareTestCase
 
     public function testExecute()
     {
-        $this->assertFileNotExists(TEMP_DIR . '/Api/index.html');
+        $this->assertFileNotExists(TEMP_DIR . '/api/index.html');
 
         $inputMock = Mockery::mock(InputInterface::class);
         $inputMock->shouldReceive('getOptions')->andReturn([
             'config' => null,
-            'destination' => TEMP_DIR . '/Api',
+            'destination' => TEMP_DIR . '/api',
             'source' => __DIR__ . '/Source'
         ]);
         $outputMock = Mockery::mock(OutputInterface::class);
@@ -51,7 +51,7 @@ class GenerateCommandExecuteTest extends ContainerAwareTestCase
             MethodInvoker::callMethodOnObject($this->generateCommand, 'execute', [$inputMock, $outputMock])
         );
 
-        $this->assertFileExists(TEMP_DIR . '/Api/index.html');
+        $this->assertFileExists(TEMP_DIR . '/api/index.html');
     }
 
 

@@ -18,10 +18,11 @@ class RelativePathResolverTest extends PHPUnit_Framework_TestCase
         $configuration->shouldReceive('getOption')->with('source')->andReturn([TEMP_DIR]);
         $relativePathResolver = new RelativePathResolver($configuration, new FileSystem);
 
+        $testData = 'dir' . DIRECTORY_SEPARATOR . 'some-file.txt';
         $this->assertSame('some-file.txt', $relativePathResolver->getRelativePath(TEMP_DIR . '/some-file.txt'));
         $this->assertSame(
-            'some/dir/some-file.txt',
-            $relativePathResolver->getRelativePath(TEMP_DIR . '/some/dir/some-file.txt')
+            $testData,
+            $relativePathResolver->getRelativePath(TEMP_DIR . DIRECTORY_SEPARATOR . $testData)
         );
     }
 
@@ -33,7 +34,7 @@ class RelativePathResolverTest extends PHPUnit_Framework_TestCase
         $relativePathResolver = new RelativePathResolver($configuration, new FileSystem);
 
         $this->assertSame('file.txt', $relativePathResolver->getRelativePath('C:\some\dir\file.txt'));
-        $this->assertSame('more-dir/file.txt', $relativePathResolver->getRelativePath('C:\some\dir\more-dir\file.txt'));
+        $this->assertSame('more-dir'.DIRECTORY_SEPARATOR.'file.txt', $relativePathResolver->getRelativePath('C:\some\dir\more-dir\file.txt'));
     }
 
 
@@ -59,9 +60,9 @@ class RelativePathResolverTest extends PHPUnit_Framework_TestCase
         $relativePathResolver = new RelativePathResolver($configuration, new FileSystem);
 
         $fileName = 'ProjectBeta/entities/Category.php';
-        $this->assertSame('entities/Category.php', $relativePathResolver->getRelativePath($fileName));
+        $this->assertSame('entities'.DIRECTORY_SEPARATOR.'Category.php', $relativePathResolver->getRelativePath($fileName));
 
         $fileName = 'ProjectBeta/entities/Category.php';
-        $this->assertSame('entities/Category.php', $relativePathResolver->getRelativePath($fileName));
+        $this->assertSame('entities'.DIRECTORY_SEPARATOR.'Category.php', $relativePathResolver->getRelativePath($fileName));
     }
 }

@@ -10,6 +10,7 @@
 namespace ApiGen\Theme;
 
 use ApiGen\Configuration\Exceptions\ConfigurationException;
+use ApiGen\Utils\FileSystem;
 
 class ThemeConfigPathResolver
 {
@@ -37,11 +38,11 @@ class ThemeConfigPathResolver
     {
         $allowedPaths = [
             $this->rootDir,
-            $this->rootDir . '/../../..'
+            $this->rootDir . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..'
         ];
 
         foreach ($allowedPaths as $allowedPath) {
-            $absolutePath = $allowedPath . '/' . ltrim($path, DIRECTORY_SEPARATOR);
+            $absolutePath = $allowedPath . DIRECTORY_SEPARATOR . ltrim($path, DIRECTORY_SEPARATOR);
             if (file_exists($absolutePath)) {
                 return $absolutePath;
             }
