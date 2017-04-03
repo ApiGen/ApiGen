@@ -6,6 +6,7 @@ use ApiGen\Configuration\Exceptions\ConfigurationException;
 use ApiGen\Console\Command\GenerateCommand;
 use ApiGen\Tests\ContainerAwareTestCase;
 use ApiGen\Tests\MethodInvoker;
+use ApiGen\Utils\FileSystem;
 
 class GenerateCommandPrepareOptionsTest extends ContainerAwareTestCase
 {
@@ -15,10 +16,16 @@ class GenerateCommandPrepareOptionsTest extends ContainerAwareTestCase
      */
     private $generateCommand;
 
+    /**
+     * @var FileSystem
+     */
+    private $fileSystem;
+
 
     protected function setUp()
     {
         $this->generateCommand = $this->container->getByType(GenerateCommand::class);
+        $this->fileSystem = new FileSystem;
     }
 
 
@@ -50,7 +57,7 @@ class GenerateCommandPrepareOptionsTest extends ContainerAwareTestCase
             'source' => __DIR__
         ]]);
 
-        $this->assertSame(TEMP_DIR . DIRECTORY_SEPARATOR . 'api', $options['destination']);
+        $this->assertSame($this->fileSystem->getAbsolutePath(TEMP_DIR . '/api'), $options['destination']);
     }
 
 
@@ -65,7 +72,7 @@ class GenerateCommandPrepareOptionsTest extends ContainerAwareTestCase
         $options = MethodInvoker::callMethodOnObject($this->generateCommand, 'prepareOptions', [
             $configAndDestinationOptions
         ]);
-        $this->assertSame(realpath(__DIR__ . '/../../../src'), $options['source'][0]);
+        $this->assertSame($this->fileSystem->getAbsolutePath(__DIR__ . '/../../../src'), $options['source'][0]);
     }
 
 
