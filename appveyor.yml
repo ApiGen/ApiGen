@@ -32,6 +32,8 @@ install:
   - echo extension_dir=ext >> php.ini
   - echo extension=php_openssl.dll >> php.ini
   - echo extension=php_curl.dll >> php.ini
+  # enable phpunit specific extensions
+  - echo extension=php_mbstring.dll >> php.ini
   # cd to project dir and run composer install
   - cd c:\projects\apigen
   - composer install --no-progress --ansi
