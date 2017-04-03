@@ -9,10 +9,13 @@
 
 Just look at [CakePHP Framework](http://api.cakephp.org/3.0/) or [Doctrine ORM API](http://www.doctrine-project.org/api/orm/2.4/).
 
+**Note!** This is `4.2` branch, final `4.x` series of ApiGen. The project is
+undergoing a rewrite (`5.x` series on `master`). Please submit any PRs for
+versions `4.2.x` to `4.2` branch.
+
 ## Requirements
 
-- PHP 5.5
-
+- PHP 5.5+
 
 ## Install
 
