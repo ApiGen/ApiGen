@@ -81,6 +81,7 @@ skip:
         - tests/Parser/Reflection/ReflectionConstantSource/ConstantInClass.php
         - tests/Parser/Parser/ParserTest.php
         - tests/Parser/Reflection/ReflectionClassSource/AccessLevels.php
+        - tests/Parser/Parser/ParserSource/SomeInterface.php
 
     SlevomatCodingStandard\Sniffs\Classes\UnusedPrivateElementsSniff:
         - tests/Parser/Reflection/ReflectionClassSource/AccessLevels.php
