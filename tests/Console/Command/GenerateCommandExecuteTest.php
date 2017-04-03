@@ -29,7 +29,7 @@ final class GenerateCommandExecuteTest extends AbstractContainerAwareTestCase
 
     public function testExecute(): void
     {
-        $this->assertFileNotExists(TEMP_DIR . '/Api/index.html');
+        $this->assertFileNotExists(TEMP_DIR . '/api/index.html');
 
         $inputMock = $this->createMock(InputInterface::class);
         $inputMock->method('getArgument')->willReturn([
@@ -37,7 +37,8 @@ final class GenerateCommandExecuteTest extends AbstractContainerAwareTestCase
         ]);
         $inputMock->method('getOptions')->willReturn([
             'config' => null,
-            'destination' => TEMP_DIR . '/Api',
+            'destination' => TEMP_DIR . '/api',
+            'source' => __DIR__ . '/Source'
         ]);
         $outputMock = $this->createMock(OutputInterface::class);
 
@@ -50,7 +51,7 @@ final class GenerateCommandExecuteTest extends AbstractContainerAwareTestCase
             )
         );
 
-        $this->assertFileExists(TEMP_DIR . '/Api/index.html');
+        $this->assertFileExists(TEMP_DIR . '/api/index.html');
     }
 
     /**
