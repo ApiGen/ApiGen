@@ -4,12 +4,11 @@ namespace ApiGen\ReflectionToElementTransformer\Transformer;
 
 use ApiGen\ElementReflection\Reflection\NewFunctionReflection;
 use ApiGen\ReflectionToElementTransformer\Contract\Transformer\TransformerInterface;
-use Roave\BetterReflection\Reflector\FunctionReflector;
-use Roave\BetterReflection\SourceLocator\Type\SingleFileSourceLocator;
+use ApiGen\ReflectionToElementTransformer\Legacy\BetterFunctionReflectionParser;
 use TokenReflection\IReflectionFunction;
 
 /**
- * @deprecated Remove after removing old Parser, Broker and Backend.
+ * @deprecated Remove after removing old Parser.
  *
  * Will be replaced by @see BetterFunctionReflectionToFunctionTransformer
  */
@@ -38,19 +37,10 @@ final class FunctionReflectionToFunctionTransformer implements TransformerInterf
      */
     public function transform($reflection): NewFunctionReflection
     {
-        $singleFileSourceLocator = new SingleFileSourceLocator($reflection->getFileName());
-        $functionReflector = new FunctionReflector($singleFileSourceLocator);
-        $functionReflections = $functionReflector->getAllFunctions();
-
-        $specificFunctionReflection = null;
-        foreach ($functionReflections as $functionReflection) {
-            if ($functionReflection->getName() === $reflection->getName()) {
-                $specificFunctionReflection = $functionReflection;
-            }
-        }
+        $betterFunctionReflection = BetterFunctionReflectionParser::parseByNameAndFile($reflection->getName(), $reflection->getFileName());
 
         return $this->betterFunctionReflectionToFunctionTransformer->transform(
-            $specificFunctionReflection
+            $betterFunctionReflection
         );
     }
 }
