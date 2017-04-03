@@ -38,11 +38,11 @@ class ThemeConfigPathResolver
     {
         $allowedPaths = [
             $this->rootDir,
-            $this->rootDir . '/../../..'
+            $this->rootDir . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..'
         ];
 
         foreach ($allowedPaths as $allowedPath) {
-            $absolutePath = $allowedPath . '/' . ltrim($path, '/');
+            $absolutePath = $allowedPath . DIRECTORY_SEPARATOR . ltrim($path, DIRECTORY_SEPARATOR);
             if (file_exists($absolutePath)) {
                 return $absolutePath;
             }
