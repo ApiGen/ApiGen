@@ -53,5 +53,10 @@
     },
     "bin": [
         "bin/apigen"
-    ]
+    ],
+	"extra": {
+		"branch-alias": {
+			"dev-master": "5.0.x-dev"
+		}
+	}
 }
