@@ -19,7 +19,6 @@ use Roave\BetterReflection\Reflection\ReflectionParameter;
 use TokenReflection\IReflectionClass;
 use TokenReflection\IReflectionConstant;
 use TokenReflection\IReflectionMethod;
-use TokenReflection\IReflectionParameter;
 use TokenReflection\IReflectionProperty;
 
 final class TransformerCollectorTest extends AbstractContainerAwareTestCase

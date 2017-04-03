@@ -58,6 +58,7 @@ final class NewParameterReflectionTest extends AbstractContainerAwareTestCase
         $this->assertSame('string', $this->parameterReflection->getTypeHint());
         $this->assertTrue($this->parameterReflection->isVariadic());
         $this->assertFalse($this->parameterReflection->isArray());
+        $this->assertFalse($this->parameterReflection->isCallable());
         $this->assertNull($this->parameterReflection->getClass());
         $this->assertNull($this->parameterReflection->getClassName());
     }

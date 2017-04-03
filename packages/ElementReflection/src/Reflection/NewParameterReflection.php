@@ -150,6 +150,11 @@ final class NewParameterReflection implements ParameterReflectionInterface
         return $this->reflection->isVariadic();
     }
 
+    public function isCallable(): bool
+    {
+        return $this->reflection->isCallable();
+    }
+
     public function setDeclaringFunction(AbstractFunctionMethodReflectionInterface $declaringFunction)
     {
         $this->declaringFunction = $declaringFunction;

@@ -11,15 +11,13 @@ use ApiGen\ReflectionToElementTransformer\Contract\TransformerCollectorInterface
 use Nette\Object;
 use TokenReflection\IReflection;
 use TokenReflection\IReflectionClass;
-use TokenReflection\IReflectionFunction;
 use TokenReflection\IReflectionMethod;
-use TokenReflection\IReflectionParameter;
 use TokenReflection\IReflectionProperty;
 
 abstract class AbstractReflection extends Object implements ReflectionInterface
 {
     /**
-     * @var IReflectionClass|IReflectionFunction|IReflectionMethod|IReflectionParameter|IReflectionProperty
+     * @var IReflectionClass|IReflectionMethod|IReflectionProperty
      */
     protected $reflection;
 

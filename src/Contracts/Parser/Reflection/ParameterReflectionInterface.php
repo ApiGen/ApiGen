@@ -33,4 +33,6 @@ interface ParameterReflectionInterface extends ReflectionInterface
     public function getDeclaringClass(): ?ClassReflectionInterface;
 
     public function isVariadic(): bool;
+
+    public function isCallable(): bool;
 }
