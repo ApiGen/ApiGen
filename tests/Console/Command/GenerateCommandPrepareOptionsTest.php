@@ -37,7 +37,7 @@ class GenerateCommandPrepareOptionsTest extends ContainerAwareTestCase
         $this->setExpectedException(ConfigurationException::class, 'Source is not set');
         MethodInvoker::callMethodOnObject($this->generateCommand, 'prepareOptions', [[
             'config' => '...',
-            'destination' => TEMP_DIR . '/api'
+            'destination' => TEMP_DIR . DIRECTORY_SEPARATOR . 'api'
         ]]);
     }
 
@@ -46,19 +46,19 @@ class GenerateCommandPrepareOptionsTest extends ContainerAwareTestCase
     {
         $options = MethodInvoker::callMethodOnObject($this->generateCommand, 'prepareOptions', [[
             'config' => '...',
-            'destination' => TEMP_DIR . '/api',
+            'destination' => TEMP_DIR . DIRECTORY_SEPARATOR . 'api',
             'source' => __DIR__
         ]]);
 
-        $this->assertSame(TEMP_DIR . '/api', $options['destination']);
+        $this->assertSame(TEMP_DIR . DIRECTORY_SEPARATOR . 'api', $options['destination']);
     }
 
 
     public function testPrepareOptionsConfigPriority()
     {
         $configAndDestinationOptions = [
-            'config' => __DIR__ . '/apigen.neon',
-            'destination' => TEMP_DIR . '/api',
+            'config' => __DIR__ . DIRECTORY_SEPARATOR . 'apigen.neon',
+            'destination' => TEMP_DIR . DIRECTORY_SEPARATOR . 'api',
             'source' => __DIR__
         ];
 
@@ -72,8 +72,8 @@ class GenerateCommandPrepareOptionsTest extends ContainerAwareTestCase
     public function testPrepareOptionsMergeIsCorrect()
     {
         $options = MethodInvoker::callMethodOnObject($this->generateCommand, 'prepareOptions', [[
-            'config' => __DIR__ . '/apigen.neon',
-            'destination' => TEMP_DIR . '/api',
+            'config' => __DIR__ . DIRECTORY_SEPARATOR . 'apigen.neon',
+            'destination' => TEMP_DIR . DIRECTORY_SEPARATOR . 'api',
             'download' => false
         ]]);
 
@@ -88,14 +88,14 @@ class GenerateCommandPrepareOptionsTest extends ContainerAwareTestCase
     public function testPrepareOptionsMergeIsCorrectFromYamlConfig()
     {
         $optionsYaml = MethodInvoker::callMethodOnObject($this->generateCommand, 'prepareOptions', [[
-            'config' => __DIR__ . '/apigen.yml',
-            'destination' => TEMP_DIR . '/api',
+            'config' => __DIR__ . DIRECTORY_SEPARATOR . 'apigen.yml',
+            'destination' => TEMP_DIR . DIRECTORY_SEPARATOR . 'api',
             'download' => false
         ]]);
 
         $optionsNeon = MethodInvoker::callMethodOnObject($this->generateCommand, 'prepareOptions', [[
-            'config' => __DIR__ . '/apigen.neon',
-            'destination' => TEMP_DIR . '/api',
+            'config' => __DIR__ . DIRECTORY_SEPARATOR . 'apigen.neon',
+            'destination' => TEMP_DIR . DIRECTORY_SEPARATOR . 'api',
             'download' => false
         ]]);
 
@@ -106,7 +106,7 @@ class GenerateCommandPrepareOptionsTest extends ContainerAwareTestCase
     public function testLoadOptionsFromConfig()
     {
         $options['config'] = '...';
-        file_put_contents(getcwd() . '/apigen.neon.dist', 'debug: true');
+        file_put_contents(getcwd() . DIRECTORY_SEPARATOR . 'apigen.neon.dist', 'debug: true');
 
         $options = MethodInvoker::callMethodOnObject($this->generateCommand, 'loadOptionsFromConfig', [$options]);
         $this->assertSame([
@@ -114,6 +114,6 @@ class GenerateCommandPrepareOptionsTest extends ContainerAwareTestCase
             'debug' => true
         ], $options);
 
-        unlink(getcwd() . '/apigen.neon.dist');
+        unlink(getcwd() . DIRECTORY_SEPARATOR . 'apigen.neon.dist');
     }
 }

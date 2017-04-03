@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   destination directory when building docs [#604].
 - Added `.editorconfig` to the project.
 - Enabled PHP7 tests in Travis-CI.
+- Enabled automated CI tests on Windows via Appveyor [#831]
 - Added `--debug` CLI option, which prints detailed parser errors.
 - Added `--overwrite` CLI option [#679].
 - Added support for `static` type [#704].
