@@ -87,6 +87,9 @@ final class UrlFilters extends Filters
         return '<code>' . $link . $suffix . '</code>';
     }
 
+    /**
+     * @todo refactor to annotation collector
+     */
     public function annotation(string $value, string $name, ElementReflectionInterface $reflectionElement): string
     {
         $annotationProcessors = [
