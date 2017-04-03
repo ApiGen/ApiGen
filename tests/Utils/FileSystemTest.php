@@ -23,7 +23,7 @@ class FileSystemTest extends PHPUnit_Framework_TestCase
 
     public function testNormalizePath()
     {
-        $backslashPath = 'C:' . DIRECTORY_SEPARATOR . 'User' . DIRECTORY_SEPARATOR . 'Program Fil' . DIRECTORY_SEPARATOR . '\ApiGen';
+        $backslashPath = 'C:' . DIRECTORY_SEPARATOR . 'Program Files' . DIRECTORY_SEPARATOR . 'ApiGen';
         $this->assertSame($backslashPath, $this->fileSystem->normalizePath($backslashPath));
     }
 
@@ -96,9 +96,10 @@ class FileSystemTest extends PHPUnit_Framework_TestCase
             $this->fileSystem->getAbsolutePath('someFile.txt')
         );
 
+        $testFile = DIRECTORY_SEPARATOR . 'someDir' . DIRECTORY_SEPARATOR . 'someDeeperFile.txt';
         $this->assertSame(
-            '/someDir/someDeeperFile.txt',
-            $this->fileSystem->getAbsolutePath('\someDir\someDeeperFile.txt')
+            $testFile,
+            $this->fileSystem->getAbsolutePath($testFile)
         );
     }
 
