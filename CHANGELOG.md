@@ -42,6 +42,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Fixed an issue with temporary files not being removed upon exit (in cases
   where failure happens) [#520]
 - Fixed an issue with `generate` command throwing an error [#631]
+- Fixed tests (and hopefully compatibility) on Windows OS [#804]
 - Fixed deprecation checks when generating docs
 - Fixed issues with exception handling in low-level parser
 - Fixed generation problems when generating docs for classes using same Traits.
