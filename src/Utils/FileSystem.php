@@ -20,7 +20,7 @@ class FileSystem
      */
     public function normalizePath($path)
     {
-        return str_replace('\\', '/', $path);
+        return str_replace(['\\', '/'], DIRECTORY_SEPARATOR, $path);
     }
 
 
