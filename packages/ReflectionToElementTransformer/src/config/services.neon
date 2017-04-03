@@ -5,9 +5,13 @@
 - ApiGen\ReflectionToElementTransformer\Transformer\ConstantReflectionToConstantTransformer
 - ApiGen\ReflectionToElementTransformer\Transformer\MethodReflectionToMethodTransformer
 - ApiGen\ReflectionToElementTransformer\Transformer\PropertyReflectionToPropertyTransformer
-- ApiGen\ReflectionToElementTransformer\Transformer\ParameterReflectionToParameterTransformer
-- ApiGen\ReflectionToElementTransformer\Transformer\FunctionReflectionToFunctionTransformer
 
 # Better Reflection
 - ApiGen\ReflectionToElementTransformer\Transformer\BetterFunctionReflectionToFunctionTransformer
+# replaces
+- ApiGen\ReflectionToElementTransformer\Transformer\FunctionReflectionToFunctionTransformer
+
+# Better Reflection
 - ApiGen\ReflectionToElementTransformer\Transformer\BetterParameterReflectionToParameterTransformer
+# replaces
+- ApiGen\ReflectionToElementTransformer\Transformer\ParameterReflectionToParameterTransformer

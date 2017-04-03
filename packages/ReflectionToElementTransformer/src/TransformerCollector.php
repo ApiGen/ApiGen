@@ -68,6 +68,7 @@ final class TransformerCollector implements TransformerCollectorInterface
     {
         $element->setConfiguration($this->configuration);
         $element->setParserStorage($this->parserStorage);
+
         $element->setTransformerCollector($this);
     }
 }

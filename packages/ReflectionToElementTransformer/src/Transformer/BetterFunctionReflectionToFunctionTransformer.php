@@ -4,6 +4,7 @@ namespace ApiGen\ReflectionToElementTransformer\Transformer;
 
 use ApiGen\Contracts\Parser\Reflection\ParameterReflectionInterface;
 use ApiGen\ElementReflection\Reflection\NewFunctionReflection;
+use ApiGen\ElementReflection\Reflection\NewParameterReflection;
 use ApiGen\ReflectionToElementTransformer\Contract\Transformer\TransformerInterface;
 use phpDocumentor\Reflection\DocBlockFactory;
 use Roave\BetterReflection\Reflection\ReflectionFunction as BetterReflectionFunction;
@@ -43,7 +44,7 @@ final class BetterFunctionReflectionToFunctionTransformer implements Transformer
      */
     public function transform($reflection): NewFunctionReflection
     {
-        $docBlock = $this->docBlockFactory->create($reflection->getDocComment());
+        $docBlock = $this->docBlockFactory->create($reflection->getDocComment() . ' ');
         $parameters = $this->transformParameters($reflection);
 
         $functionReflection = new NewFunctionReflection(
@@ -53,6 +54,7 @@ final class BetterFunctionReflectionToFunctionTransformer implements Transformer
         );
 
         foreach ($parameters as $parameter) {
+            /** @var NewParameterReflection $parameter */
             $parameter->setDeclaringFunction($functionReflection);
         }
 

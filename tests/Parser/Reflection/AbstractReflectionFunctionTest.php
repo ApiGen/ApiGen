@@ -16,7 +16,10 @@ final class AbstractReflectionFunctionTest extends AbstractReflectionTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->broker->processDirectory(__DIR__ . '/ReflectionFunctionSource');
+
+        $parserStorage = $this->parser->parseDirectories([__DIR__ . '/ReflectionFunctionSource']);
+        $this->reflectionFunction = $parserStorage->getFunctions()['getSomeData'];
+
         $this->reflectionFunction = $this->backend->getFunctions()['getSomeData'];
     }
 

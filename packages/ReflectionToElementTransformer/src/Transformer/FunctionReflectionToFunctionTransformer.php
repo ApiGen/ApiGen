@@ -2,12 +2,24 @@
 
 namespace ApiGen\ReflectionToElementTransformer\Transformer;
 
-use ApiGen\Parser\Reflection\ReflectionFunction;
+use ApiGen\ElementReflection\Reflection\NewFunctionReflection;
 use ApiGen\ReflectionToElementTransformer\Contract\Transformer\TransformerInterface;
+use Roave\BetterReflection\Reflector\FunctionReflector;
+use Roave\BetterReflection\SourceLocator\Type\SingleFileSourceLocator;
 use TokenReflection\IReflectionFunction;
 
+/**
+ * @deprecated Remove after removing old Parser, Broker and Backend.
+ *
+ * Will be replaced by @see BetterFunctionReflectionToFunctionTransformer
+ */
 final class FunctionReflectionToFunctionTransformer implements TransformerInterface
 {
+    /**
+     * @var BetterFunctionReflectionToFunctionTransformer
+     */
+    private $betterFunctionReflectionToFunctionTransformer;
+
     /**
      * @param object $reflection
      */
@@ -16,11 +28,29 @@ final class FunctionReflectionToFunctionTransformer implements TransformerInterf
         return $reflection instanceof IReflectionFunction;
     }
 
-    /**
-     * @param object|IReflectionFunction $reflection
-     */
-    public function transform($reflection): ReflectionFunction
+    public function __construct(BetterFunctionReflectionToFunctionTransformer $betterFunctionReflectionToFunctionTransformer)
     {
-        return new ReflectionFunction($reflection);
+        $this->betterFunctionReflectionToFunctionTransformer = $betterFunctionReflectionToFunctionTransformer;
+    }
+
+    /**
+     * @param IReflectionFunction $reflection
+     */
+    public function transform($reflection): NewFunctionReflection
+    {
+        $singleFileSourceLocator = new SingleFileSourceLocator($reflection->getFileName());
+        $functionReflector = new FunctionReflector($singleFileSourceLocator);
+        $functionReflections = $functionReflector->getAllFunctions();
+
+        $specificFunctionReflection = null;
+        foreach ($functionReflections as $functionReflection) {
+            if ($functionReflection->getName() === $reflection->getName()) {
+                $specificFunctionReflection = $functionReflection;
+            }
+        }
+
+        return $this->betterFunctionReflectionToFunctionTransformer->transform(
+            $specificFunctionReflection
+        );
     }
 }

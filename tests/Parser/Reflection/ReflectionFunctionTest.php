@@ -2,10 +2,9 @@
 
 namespace ApiGen\Parser\Tests\Reflection;
 
+use ApiGen\Contracts\Parser\ParserInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
-use ApiGen\Parser\Broker\Backend;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
-use TokenReflection\Broker;
 
 final class ReflectionFunctionTest extends AbstractContainerAwareTestCase
 {
@@ -16,15 +15,11 @@ final class ReflectionFunctionTest extends AbstractContainerAwareTestCase
 
     protected function setUp(): void
     {
-        /** @var Backend $backend */
-        $backend = $this->container->getByType(Backend::class);
+        /** @var ParserInterface $parser */
+        $parser = $this->container->getByType(ParserInterface::class);
+        $parserStorage = $parser->parseDirectories([__DIR__ . '/ReflectionFunctionSource']);
 
-        /** @var Broker $broker */
-        $broker = $this->container->getByType(Broker::class);
-
-        $broker->processDirectory(__DIR__ . '/ReflectionFunctionSource');
-
-        $this->reflectionFunction = $backend->getFunctions()['getSomeData'];
+        $this->reflectionFunction = $parserStorage->getFunctions()['getSomeData'];
     }
 
     public function testIsDocumented(): void
