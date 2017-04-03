@@ -4,10 +4,6 @@ shallow_clone: false
 platform: x64
 clone_folder: c:\projects\apigen
 
-environment:
-  matrix:
-  - PHP_DOWNLOAD_FILE: php-7.1.3-nts-Win32-VC14-x64.zip
-
 skip_commits:
   message: /\[ci skip\]/
 
@@ -25,8 +21,8 @@ init:
 install:
   - IF EXIST c:\php (SET PHP=0) ELSE (mkdir c:\php)
   - cd c:\php
-  - IF %PHP%==1 appveyor DownloadFile http://windows.php.net/downloads/releases/archives/%PHP_DOWNLOAD_FILE%
-  - IF %PHP%==1 7z x %PHP_DOWNLOAD_FILE% -y > 7z.log
+  - IF %PHP%==1 appveyor DownloadFile http://windows.php.net/downloads/releases/archives/php-7.1.3-nts-Win32-VC14-x64.zip
+  - IF %PHP%==1 7z x php-7.1.3-nts-Win32-VC14-x64.zip -y > 7z.log
   - IF %PHP%==1 echo @php %%~dp0composer.phar %%* > composer.bat
   - appveyor DownloadFile https://getcomposer.org/composer.phar
   - copy php.ini-production php.ini /Y
