@@ -2,14 +2,11 @@
 
 namespace ApiGen\Parser\Tests\Reflection;
 
-use ApiGen\Contracts\Parser\ParserStorageInterface;
+use ApiGen\Contracts\Parser\ParserInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
-use ApiGen\Parser\Broker\Backend;
-use ApiGen\Parser\Reflection\ReflectionBase;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 use ApiGen\Tests\ConstantInClass;
-use TokenReflection\Broker;
 
 final class ReflectionConstantTest extends AbstractContainerAwareTestCase
 {
@@ -19,7 +16,7 @@ final class ReflectionConstantTest extends AbstractContainerAwareTestCase
     private $constantReflection;
 
     /**
-     * @var ConstantReflectionInterface|ReflectionBase
+     * @var ConstantReflectionInterface
      */
     private $constantReflectionInClass;
 
@@ -30,25 +27,14 @@ final class ReflectionConstantTest extends AbstractContainerAwareTestCase
 
     protected function setUp(): void
     {
-        $broker = $this->container->getByType(Broker::class);
-        $broker->processDirectory(__DIR__ . '/ReflectionConstantSource');
+        /** @var ParserInterface $parser */
+        $parser = $this->container->getByType(ParserInterface::class);
+        $parserStorage = $parser->parseDirectories([__DIR__ . '/ReflectionConstantSource']);
 
-        $backend = $this->container->getByType(Backend::class);
-        $this->constantReflection = $backend->getConstants()['SOME_CONSTANT'];
-        $this->reflectionClass = $backend->getClasses()[ConstantInClass::class];
+        $this->constantReflection = $parserStorage->getConstants()['SOME_CONSTANT'];
+        $this->reflectionClass = $parserStorage->getClasses()[ConstantInClass::class];
 
         $this->constantReflectionInClass = $this->reflectionClass->getConstant('CONSTANT_INSIDE');
-
-        /** @var ParserStorageInterface $parserStorage */
-        $parserStorage = $this->container->getByType(ParserStorageInterface::class);
-        $parserStorage->setClasses([
-            ConstantInClass::class => $this->reflectionClass
-        ]);
-        $parserStorage->setConstants([
-            'SOME_CONSTANT' => $this->constantReflection
-        ]);
-
-        $this->constantReflectionInClass->setParserStorage($parserStorage);
     }
 
     public function testInstance(): void

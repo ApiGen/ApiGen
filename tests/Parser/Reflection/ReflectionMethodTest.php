@@ -2,13 +2,11 @@
 
 namespace ApiGen\Parser\Tests\Reflection;
 
-use ApiGen\Contracts\Parser\ParserStorageInterface;
+use ApiGen\Contracts\Parser\ParserInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
-use ApiGen\Parser\Broker\Backend;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 use Project\ReflectionMethod;
-use TokenReflection\Broker;
 
 final class ReflectionMethodTest extends AbstractContainerAwareTestCase
 {
@@ -24,22 +22,11 @@ final class ReflectionMethodTest extends AbstractContainerAwareTestCase
 
     protected function setUp(): void
     {
-        /** @var Backend $backend */
-        $backend = $this->container->getByType(Backend::class);
+        /** @var ParserInterface $parser */
+        $parser = $this->container->getByType(ParserInterface::class);
+        $parserStorage = $parser->parseDirectories([__DIR__ . '/ReflectionMethodSource']);
 
-        /** @var Broker $broker */
-        $broker = $this->container->getByType(Broker::class);
-
-        $broker->processDirectory(__DIR__ . '/ReflectionMethodSource');
-
-        $this->reflectionClass = $backend->getClasses()[ReflectionMethod::class];
-
-        /** @var ParserStorageInterface $parserStorage */
-        $parserStorage = $this->container->getByType(ParserStorageInterface::class);
-        $parserStorage->setClasses([
-            ReflectionMethod::class => $this->reflectionClass
-        ]);
-
+        $this->reflectionClass = $parserStorage->getClasses()[ReflectionMethod::class];
         $this->reflectionMethod = $this->reflectionClass->getMethod('methodWithArgs');
     }
 
@@ -50,7 +37,7 @@ final class ReflectionMethodTest extends AbstractContainerAwareTestCase
 
     public function testGetDeclaringClassName(): void
     {
-        $this->assertSame('Project\ReflectionMethod', $this->reflectionMethod->getDeclaringClassName());
+        $this->assertSame(ReflectionMethod::class, $this->reflectionMethod->getDeclaringClassName());
     }
 
     public function testIsAbstract(): void

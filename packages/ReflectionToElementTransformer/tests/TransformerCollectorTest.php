@@ -14,11 +14,9 @@ use ApiGen\ReflectionToElementTransformer\Contract\TransformerCollectorInterface
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 use Nette\Object;
 use PHPUnit\Framework\Assert;
-use Roave\BetterReflection\Reflection\Reflection;
 use Roave\BetterReflection\Reflection\ReflectionFunction;
 use TokenReflection\IReflectionClass;
 use TokenReflection\IReflectionConstant;
-use TokenReflection\IReflectionFunction;
 use TokenReflection\IReflectionMethod;
 use TokenReflection\IReflectionParameter;
 use TokenReflection\IReflectionProperty;
