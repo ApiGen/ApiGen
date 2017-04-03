@@ -70,7 +70,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Updated
 
 - Updated `nette` dependency from `2.2` to `2.3`.
-- Updated `symfony` components to `2.7` version.
+- Updated `symfony` components dependencies to support both `2.x` (`2.7` or
+  `2.8`) and `3.x` versions [#835]
 - Enabled autocomplete for methods and properties.
 
 ## [4.1.1] - 2015-04-09
