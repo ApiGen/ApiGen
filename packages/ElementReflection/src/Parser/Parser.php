@@ -4,6 +4,8 @@ namespace ApiGen\ElementReflection\Parser;
 
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
+use ApiGen\ElementReflection\Reflection\InterfaceReflection;
+use ApiGen\ElementReflection\Reflection\TraitReflection;
 use ApiGen\ReflectionToElementTransformer\Contract\TransformerCollectorInterface;
 use Roave\BetterReflection\Reflection\ReflectionClass;
 use Roave\BetterReflection\Reflection\ReflectionFunction;
@@ -24,7 +26,17 @@ final class Parser
     private $classReflections = [];
 
     /**
-     * @var ReflectionFunction[]
+     * @var InterfaceReflection[]
+     */
+    private $interfaceReflections = [];
+
+    /**
+     * @var TraitReflection[]
+     */
+    private $traitReflections = [];
+
+    /**
+     * @var FunctionReflectionInterface[]
      */
     private $functionReflections = [];
 
@@ -41,10 +53,11 @@ final class Parser
         $directoriesSourceLocator = new DirectoriesSourceLocator($directories);
 
         $classReflector = new ClassReflector($directoriesSourceLocator);
-        $this->classReflections = $this->transformBetterClassReflections($classReflector);
+        $classInterfaceAndTraitReflections = $this->transformBetterClassInterfaceAndTraitReflections($classReflector);
+        $this->separateClassInterfaceAndTraitReflections($classInterfaceAndTraitReflections);
 
         $functionReflector = new FunctionReflector($directoriesSourceLocator);
-        $this->functionReflections = $this->transformBetterFunctionReflections($functionReflector);
+        $this->transformBetterFunctionReflections($functionReflector);
 
         // @todo constants
     }
@@ -58,6 +71,22 @@ final class Parser
     }
 
     /**
+     * @return InterfaceReflection[]
+     */
+    public function getInterfaceReflections()
+    {
+        return $this->interfaceReflections;
+    }
+
+    /**
+     * @return TraitReflection[]
+     */
+    public function getTraitReflections(): array
+    {
+        return $this->traitReflections;
+    }
+
+    /**
      * @return FunctionReflectionInterface[]
      */
     public function getFunctionReflections(): array
@@ -68,7 +97,7 @@ final class Parser
     /**
      * @return ClassReflectionInterface[]
      */
-    private function transformBetterClassReflections(ClassReflector $classReflector): array
+    private function transformBetterClassInterfaceAndTraitReflections(ClassReflector $classReflector): array
     {
         $betterClassReflections = $classReflector->getAllClasses();
 
@@ -78,13 +107,28 @@ final class Parser
     }
 
     /**
-     * @return FunctionReflectionInterface[]
+     * @param object[] $classInterfaceAndTraitReflections
      */
-    private function transformBetterFunctionReflections(FunctionReflector $functionReflector): array
+    private function separateClassInterfaceAndTraitReflections($classInterfaceAndTraitReflections): void
+    {
+        $this->classReflections = array_filter($classInterfaceAndTraitReflections, function ($reflection) {
+            return $reflection instanceof ClassReflectionInterface;
+        });
+
+        $this->interfaceReflections = array_filter($classInterfaceAndTraitReflections, function ($reflection) {
+            return $reflection instanceof InterfaceReflection;
+        });
+
+        $this->traitReflections = array_filter($classInterfaceAndTraitReflections, function ($reflection) {
+            return $reflection instanceof TraitReflection;
+        });
+    }
+
+    private function transformBetterFunctionReflections(FunctionReflector $functionReflector): void
     {
         $betterFunctionReflections = $functionReflector->getAllFunctions();
 
-        return array_map(function (ReflectionFunction $betterFunctionReflection) {
+        $this->functionReflections = array_map(function (ReflectionFunction $betterFunctionReflection) {
             return $this->transformerCollector->transformReflectionToElement($betterFunctionReflection);
         }, $betterFunctionReflections);
     }

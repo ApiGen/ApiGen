@@ -4,6 +4,8 @@ namespace ApiGen\ElementReflection\Tests\Parser;
 
 use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
 use ApiGen\ElementReflection\Parser\Parser;
+use ApiGen\ElementReflection\Reflection\InterfaceReflection;
+use ApiGen\Parser\Tests\Parser\ParserSource\SomeInterface;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 
 /**
@@ -12,9 +14,9 @@ use ApiGen\Tests\AbstractContainerAwareTestCase;
 final class InterfaceReflectionTest extends AbstractContainerAwareTestCase
 {
     /**
-     * @var PropertyReflectionInterface
+     * @var InterfaceReflection
      */
-    private $propertyReflection;
+    private $interfaceReflection;
 
     protected function setUp()
     {
@@ -22,28 +24,22 @@ final class InterfaceReflectionTest extends AbstractContainerAwareTestCase
         $parser = $this->container->getByType(Parser::class);
         $parser->parseDirectories([__DIR__ . '/../../../../tests/Parser/Parser/ParserSource']);
 
-        $classReflections = $parser->getClassReflections();
-        $classReflection = array_pop($classReflections);
-        $propertyReflections = $classReflection->getProperties();
-        $this->propertyReflection = array_shift($propertyReflections);
+        $interfaceReflections = $parser->getInterfaceReflections();
+        $this->interfaceReflection = array_shift($interfaceReflections);
     }
 
     public function testLines()
     {
-        $this->assertTrue(true);
-//        dump($this->propertyReflection);
-//        die;
-//
-//        $this->assertSame(16, $this->functionReflection->getStartLine());
-//        $this->assertSame(18, $this->functionReflection->getEndLine());
+        $this->assertSame(5, $this->interfaceReflection->getStartLine());
+        $this->assertSame(11, $this->interfaceReflection->getEndLine());
     }
-//
-//    public function testNames(): void
-//    {
-//        $this->assertSame('SomeNamespace\someAloneFunction', $this->functionReflection->getName());
-//        $this->assertSame('someAloneFunction', $this->functionReflection->getShortName());
-//        $this->assertSame('SomeNamespace\someAloneFunction()', $this->functionReflection->getPrettyName());
-//    }
+
+        public function testNames(): void
+    {
+        $this->assertSame(SomeInterface::class, $this->interfaceReflection->getName());
+        $this->assertSame('SomeInterface', $this->interfaceReflection->getShortName());
+        $this->assertSame(SomeInterface::class. '()', $this->interfaceReflection->getPrettyName());
+    }
 //
 //    public function testNamespaces()
 //    {
