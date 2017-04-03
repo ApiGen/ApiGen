@@ -5,7 +5,7 @@ All notable changes to [apigen][0] project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [4.2.x-dev] - UNRELEASED
+## [4.2.0-RC1] - 2017-04-03
 
 ### Added
 
@@ -212,7 +212,7 @@ base similar to 2.8. Since then there were many BC breaks, thus major version wa
 - PEAR support was dropped. **Use PHAR file instead**. Latest stable version
   can be always found at [apigen.org](http://apigen.org)
 
-[4.2.x-dev]: https://github.com/apigen/apigen/compare/v4.1.2...4.2
+[4.2.0-RC1]: https://github.com/apigen/apigen/compare/v4.1.2...4.2.0-RC1
 [4.1.2]: https://github.com/apigen/apigen/compare/v4.1.1...v4.1.2
 [4.1.1]: https://github.com/apigen/apigen/compare/v4.1.0...v4.1.1
 [4.1.0]: https://github.com/apigen/apigen/compare/v4.0.1...v4.1.0
