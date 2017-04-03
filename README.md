@@ -208,7 +208,6 @@ A list of options accepted by `generate` command:
 | `--help` (`-h`)       | Display help message for all or specific commands.
 | `--quiet` (`-q`)      | Do not output any messages.
 | `--version` (`-V`)    | Display version of ApiGen.
-| --------------------- |
 
 ### Themes
 
