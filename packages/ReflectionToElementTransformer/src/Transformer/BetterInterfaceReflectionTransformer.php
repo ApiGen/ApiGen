@@ -2,12 +2,12 @@
 
 namespace ApiGen\ReflectionToElementTransformer\Transformer;
 
-use ApiGen\ElementReflection\Reflection\NewClassReflection;
+use ApiGen\ElementReflection\Reflection\InterfaceReflection;
 use ApiGen\ReflectionToElementTransformer\Contract\Transformer\TransformerInterface;
 use phpDocumentor\Reflection\DocBlockFactory;
 use Roave\BetterReflection\Reflection\ReflectionClass;
 
-final class BetterClassReflectionTransformer implements TransformerInterface
+final class BetterInterfaceReflectionTransformer implements TransformerInterface
 {
     /**
      * @var DocBlockFactory
@@ -24,21 +24,15 @@ final class BetterClassReflectionTransformer implements TransformerInterface
      */
     public function matches($reflection): bool
     {
-        return $reflection instanceof ReflectionClass && ! $reflection->isTrait() && ! $reflection->isInterface();
+        return $reflection instanceof ReflectionClass && $reflection->isInterface();
     }
 
     /**
      * @param ReflectionClass $reflection
      */
-    public function transform($reflection): NewClassReflection
+    public function transform($reflection): InterfaceReflection
     {
         $docBlock = $this->docBlockFactory->create($reflection->getDocComment() . ' ');
-
-        $classReflection = new NewClassReflection(
-            $reflection,
-            $docBlock
-        );
-
-        return $classReflection;
+        return new InterfaceReflection($reflection, $docBlock);
     }
 }

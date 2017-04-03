@@ -19,3 +19,7 @@
 - ApiGen\ReflectionToElementTransformer\Transformer\BetterClassReflectionTransformer
 # replaces
 - ApiGen\ReflectionToElementTransformer\Transformer\TokenClassReflectionTransformer
+
+# New Better Reflection
+- ApiGen\ReflectionToElementTransformer\Transformer\BetterInterfaceReflectionTransformer
+- ApiGen\ReflectionToElementTransformer\Transformer\BetterTraitReflectionTransformer
