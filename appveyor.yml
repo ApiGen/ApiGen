@@ -6,7 +6,7 @@ clone_folder: c:\projects\apigen
 
 environment:
   matrix:
-    - PHP_DOWNLOAD_FILE: php-7.1.3-nts-Win32-VC14-x64.zip
+  - PHP_DOWNLOAD_FILE: php-7.1.3-nts-Win32-VC14-x64.zip
 
 skip_commits:
   message: /\[ci skip\]/
