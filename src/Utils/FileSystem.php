@@ -11,7 +11,7 @@ final class FileSystem
 {
     public function normalizePath(string $path): string
     {
-        return str_replace('\\', '/', $path);
+        return str_replace(['\\', '/'], DIRECTORY_SEPARATOR, $path);
     }
 
     public function forceDir(string $path): string

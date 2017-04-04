@@ -1,0 +1,44 @@
+version: '{branch}-{build}'
+build: false
+shallow_clone: false
+platform: x64
+clone_folder: c:\projects\apigen
+
+skip_commits:
+  message: /\[ci skip\]/
+
+cache:
+  - c:\php -> appveyor.yml
+  - composer.phar
+
+init:
+  - SET PATH=c:\php;%PATH%
+  - SET COMPOSER_NO_INTERACTION=1
+  - SET PHP=1
+  - SET ANSICON=121x90 (121x90)
+  - git config --global core.autocrlf input
+
+install:
+  # install php 7.1.2
+  - IF EXIST c:\php (SET PHP=0) ELSE (mkdir c:\php)
+  - cd c:\php
+  - IF %PHP%==1 appveyor DownloadFile http://windows.php.net/downloads/releases/archives/php-7.1.2-nts-Win32-VC14-x64.zip
+  - IF %PHP%==1 7z x php-7.1.2-nts-Win32-VC14-x64.zip -y > 7z.log
+  - IF %PHP%==1 echo @php %%~dp0composer.phar %%* > composer.bat
+  - appveyor DownloadFile https://getcomposer.org/composer.phar
+  # setup PHP config (php.ini)
+  - copy php.ini-production php.ini /Y
+  - echo date.timezone="UTC" >> php.ini
+  # enable composer specific extensions
+  - echo extension_dir=ext >> php.ini
+  - echo extension=php_openssl.dll >> php.ini
+  - echo extension=php_curl.dll >> php.ini
+  # enable phpunit specific extensions
+  - echo extension=php_mbstring.dll >> php.ini
+  # cd to project dir and run composer install
+  - cd c:\projects\apigen
+  - composer install --no-progress --ansi
+
+test_script:
+  - cd c:\projects\apigen
+  - php vendor\phpunit\phpunit\phpunit -vvv

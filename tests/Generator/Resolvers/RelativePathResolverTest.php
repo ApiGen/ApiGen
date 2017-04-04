@@ -18,9 +18,10 @@ final class RelativePathResolverTest extends TestCase
         $relativePathResolver = new RelativePathResolver($configurationMock, new FileSystem);
 
         $this->assertSame('some-file.txt', $relativePathResolver->getRelativePath(TEMP_DIR . '/some-file.txt'));
+        $testPath = 'some' .DIRECTORY_SEPARATOR. 'dir' .DIRECTORY_SEPARATOR. 'file.txt';
         $this->assertSame(
-            'some/dir/some-file.txt',
-            $relativePathResolver->getRelativePath(TEMP_DIR . '/some/dir/some-file.txt')
+            $testPath,
+            $relativePathResolver->getRelativePath(TEMP_DIR . DIRECTORY_SEPARATOR . $testPath)
         );
     }
 
@@ -33,7 +34,9 @@ final class RelativePathResolverTest extends TestCase
         $relativePathResolver = new RelativePathResolver($configurationMock, new FileSystem);
 
         $this->assertSame('file.txt', $relativePathResolver->getRelativePath('C:\some\dir\file.txt'));
-        $this->assertSame('more-dir/file.txt', $relativePathResolver->getRelativePath('C:\some\dir\more-dir\file.txt'));
+        $this->assertSame(
+            'more-dir' . DIRECTORY_SEPARATOR . 'file.txt',
+            $relativePathResolver->getRelativePath('C:\some\dir\more-dir\file.txt'));
     }
 
     /**
@@ -63,6 +66,8 @@ final class RelativePathResolverTest extends TestCase
         $relativePathResolver = new RelativePathResolver($configurationMock, new FileSystem);
 
         $fileName = 'ProjectBeta/entities/Category.php';
-        $this->assertSame('entities/Category.php', $relativePathResolver->getRelativePath($fileName));
+        $this->assertSame(
+            'entities' . DIRECTORY_SEPARATOR . 'Category.php',
+            $relativePathResolver->getRelativePath($fileName));
     }
 }

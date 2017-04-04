@@ -19,9 +19,14 @@ final class PathFiltersTest extends AbstractContainerAwareTestCase
 
     public function testRelativePath(): void
     {
+        $testPath = 'Templating' . DIRECTORY_SEPARATOR . 'Filters'
+            . DIRECTORY_SEPARATOR . 'FiltersSource'
+            . DIRECTORY_SEPARATOR . 'FooFilters.php';
+
         $this->assertSame(
-            'Templating/Filters/FiltersSource/FooFilters.php',
-            $this->pathFilters->relativePath(__DIR__ . '/FiltersSource/FooFilters.php')
+            $testPath,
+            $this->pathFilters->relativePath(
+                __DIR__ . DIRECTORY_SEPARATOR . 'FiltersSource' . DIRECTORY_SEPARATOR . 'FooFilters.php')
         );
     }
 }

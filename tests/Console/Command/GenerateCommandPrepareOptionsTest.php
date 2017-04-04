@@ -5,6 +5,7 @@ namespace ApiGen\Tests\Console\Command;
 use ApiGen\Console\Command\GenerateCommand;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 use ApiGen\Tests\MethodInvoker;
+use ApiGen\Utils\FileSystem;
 
 final class GenerateCommandPrepareOptionsTest extends AbstractContainerAwareTestCase
 {
@@ -16,6 +17,7 @@ final class GenerateCommandPrepareOptionsTest extends AbstractContainerAwareTest
     protected function setUp(): void
     {
         $this->generateCommand = $this->container->getByType(GenerateCommand::class);
+        $this->fileSystem = new FileSystem;
     }
 
     /**

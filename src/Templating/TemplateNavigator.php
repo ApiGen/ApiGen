@@ -12,6 +12,7 @@ use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Templating\Filters\Helpers\ElementUrlFactory;
 use ApiGen\Templating\Filters\NamespaceUrlFilters;
 use ApiGen\Templating\Filters\SourceFilters;
+use ApiGen\Utils\FileSystem;
 use Exception;
 
 final class TemplateNavigator
@@ -36,6 +37,11 @@ final class TemplateNavigator
      */
     private $namespaceUrlFilters;
 
+    /**
+     * @var FileSystem
+     */
+    private $fileSystem;
+
     public function __construct(
         ConfigurationInterface $configuration,
         SourceFilters $sourceFilters,
@@ -46,6 +52,7 @@ final class TemplateNavigator
         $this->sourceFilters = $sourceFilters;
         $this->elementUrlFactory = $elementUrlFactory;
         $this->namespaceUrlFilters = $namespaceUrlFilters;
+        $this->fileSystem = new FileSystem();
     }
 
     public function getTemplatePath(string $name): string
@@ -61,61 +68,61 @@ final class TemplateNavigator
             ));
         }
 
-        return $templates[$name]['template'];
+        return $this->fileSystem->normalizePath($templates[$name]['template']);
     }
 
     public function getTemplateFileName(string $name): string
     {
         $options = $this->configuration->getOptions();
-        return $this->getDestination()
+        return $this->fileSystem->normalizePath($this->getDestination()
             . DIRECTORY_SEPARATOR
-            . $options[ConfigurationOptions::TEMPLATE][ThemeConfigOptions::TEMPLATES][$name]['filename'];
+            . $options[ConfigurationOptions::TEMPLATE][ThemeConfigOptions::TEMPLATES][$name]['filename']);
     }
 
     public function getTemplatePathForNamespace(string $namespace): string
     {
-        return $this->getDestination()
+        return $this->fileSystem->normalizePath($this->getDestination()
             . DIRECTORY_SEPARATOR
-            . $this->namespaceUrlFilters->namespaceUrl($namespace);
+            . $this->namespaceUrlFilters->namespaceUrl($namespace));
     }
 
     public function getTemplatePathForClass(ClassReflectionInterface $element): string
     {
-        return $this->getDestination()
+        return $this->fileSystem->normalizePath($this->getDestination()
             . DIRECTORY_SEPARATOR
-            . $this->elementUrlFactory->createForClass($element);
+            . $this->elementUrlFactory->createForClass($element));
     }
 
     public function getTemplatePathForConstant(ConstantReflectionInterface $element): string
     {
-        return $this->getDestination()
+        return $this->fileSystem->normalizePath($this->getDestination()
             . DIRECTORY_SEPARATOR
-            . $this->elementUrlFactory->createForConstant($element);
+            . $this->elementUrlFactory->createForConstant($element));
     }
 
     public function getTemplatePathForFunction(FunctionReflectionInterface $element): string
     {
-        return $this->getDestination()
+        return $this->fileSystem->normalizePath($this->getDestination()
             . DIRECTORY_SEPARATOR
-            . $this->elementUrlFactory->createForFunction($element);
+            . $this->elementUrlFactory->createForFunction($element));
     }
 
     public function getTemplatePathForSourceElement(ElementReflectionInterface $element): string
     {
-        return $this->getDestination()
+        return $this->fileSystem->normalizePath($this->getDestination()
             . DIRECTORY_SEPARATOR
-            . $this->sourceFilters->sourceUrl($element, false);
+            . $this->sourceFilters->sourceUrl($element, false));
     }
 
     public function getTemplatePathForAnnotationGroup(string $element): string
     {
-        return $this->getDestination()
+        return $this->fileSystem->normalizePath($this->getDestination()
             . DIRECTORY_SEPARATOR
-            . $this->elementUrlFactory->createForAnnotationGroup($element);
+            . $this->elementUrlFactory->createForAnnotationGroup($element));
     }
 
     private function getDestination(): string
     {
-        return (string) $this->configuration->getOption(ConfigurationOptions::DESTINATION);
+        return $this->configuration->getOption(ConfigurationOptions::DESTINATION);
     }
 }
