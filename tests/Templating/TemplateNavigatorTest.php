@@ -8,6 +8,7 @@ use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Templating\TemplateNavigator;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
+use ApiGen\Utils\FileSystem;
 
 final class TemplateNavigatorTest extends AbstractContainerAwareTestCase
 {
@@ -21,6 +22,11 @@ final class TemplateNavigatorTest extends AbstractContainerAwareTestCase
      */
     private $templateNavigator;
 
+    /**
+     * @var FileSystem
+     */
+    private $fileSystem;
+
     protected function setUp(): void
     {
         $this->configuration = $this->container->getByType(ConfigurationInterface::class);
@@ -30,12 +36,13 @@ final class TemplateNavigatorTest extends AbstractContainerAwareTestCase
         ]);
 
         $this->templateNavigator = $this->container->getByType(TemplateNavigator::class);
+        $this->fileSystem = new FileSystem();
     }
 
     public function testGetTemplateFileName(): void
     {
         $this->assertSame(
-            TEMP_DIR . DIRECTORY_SEPARATOR . 'api' . DIRECTORY_SEPARATOR . 'index.html',
+            $this->fileSystem->normalizePath(TEMP_DIR . DIRECTORY_SEPARATOR . 'api' . DIRECTORY_SEPARATOR . 'index.html'),
             $this->templateNavigator->getTemplateFileName('overview'));
     }
 
@@ -50,7 +57,9 @@ final class TemplateNavigatorTest extends AbstractContainerAwareTestCase
     public function testGetTemplatePathForNamespace(): void
     {
         $this->assertSame(
-            TEMP_DIR . DIRECTORY_SEPARATOR . 'api' . DIRECTORY_SEPARATOR . 'namespace-MyNamespace.html',
+            $this->fileSystem->normalizePath(
+                TEMP_DIR . DIRECTORY_SEPARATOR . 'api' . DIRECTORY_SEPARATOR . 'namespace-MyNamespace.html'
+            ),
             $this->templateNavigator->getTemplatePathForNamespace('MyNamespace')
         );
     }
@@ -61,7 +70,9 @@ final class TemplateNavigatorTest extends AbstractContainerAwareTestCase
         $classReflectionMock->method('getName')->willReturn('SomeClass');
 
         $this->assertSame(
-            TEMP_DIR . DIRECTORY_SEPARATOR . 'api' . DIRECTORY_SEPARATOR . 'class-SomeClass.html',
+            $this->fileSystem->normalizePath(
+                TEMP_DIR . DIRECTORY_SEPARATOR . 'api' . DIRECTORY_SEPARATOR . 'class-SomeClass.html'
+            ),
             $this->templateNavigator->getTemplatePathForClass($classReflectionMock)
         );
     }
@@ -73,7 +84,9 @@ final class TemplateNavigatorTest extends AbstractContainerAwareTestCase
             ->willReturn('SomeConstant');
 
         $this->assertSame(
-            TEMP_DIR . DIRECTORY_SEPARATOR . 'api' . DIRECTORY_SEPARATOR . 'constant-SomeConstant.html',
+            $this->fileSystem->normalizePath(
+                TEMP_DIR . DIRECTORY_SEPARATOR . 'api' . DIRECTORY_SEPARATOR . 'constant-SomeConstant.html'
+            ),
             $this->templateNavigator->getTemplatePathForConstant($constantReflectionMock)
         );
     }
@@ -85,7 +98,9 @@ final class TemplateNavigatorTest extends AbstractContainerAwareTestCase
             ->willReturn('SomeFunction');
 
         $this->assertSame(
-            TEMP_DIR . DIRECTORY_SEPARATOR . 'api' . DIRECTORY_SEPARATOR . 'function-SomeFunction.html',
+            $this->fileSystem->normalizePath(
+                TEMP_DIR . DIRECTORY_SEPARATOR . 'api' . DIRECTORY_SEPARATOR . 'function-SomeFunction.html'
+            ),
             $this->templateNavigator->getTemplatePathForFunction($functionReflectionMock)
         );
     }
@@ -97,7 +112,9 @@ final class TemplateNavigatorTest extends AbstractContainerAwareTestCase
             ->willReturn('SomeClass');
 
         $this->assertSame(
-            TEMP_DIR . DIRECTORY_SEPARATOR . 'api' . DIRECTORY_SEPARATOR . 'source-class-SomeClass.html',
+            $this->fileSystem->normalizePath(
+                TEMP_DIR . DIRECTORY_SEPARATOR . 'api' . DIRECTORY_SEPARATOR . 'source-class-SomeClass.html'
+            ),
             $this->templateNavigator->getTemplatePathForSourceElement($classReflectionMock)
         );
     }
