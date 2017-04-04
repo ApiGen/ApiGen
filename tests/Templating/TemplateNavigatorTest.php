@@ -42,7 +42,9 @@ final class TemplateNavigatorTest extends AbstractContainerAwareTestCase
     public function testGetTemplateFileName(): void
     {
         $this->assertSame(
-            $this->fileSystem->normalizePath(TEMP_DIR . DIRECTORY_SEPARATOR . 'api' . DIRECTORY_SEPARATOR . 'index.html'),
+            $this->fileSystem->normalizePath(
+                TEMP_DIR . DIRECTORY_SEPARATOR . 'api' . DIRECTORY_SEPARATOR . 'index.html'
+            ),
             $this->templateNavigator->getTemplateFileName('overview'));
     }
 

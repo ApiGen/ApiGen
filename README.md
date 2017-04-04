@@ -14,7 +14,7 @@ effort to bring support of PHP 5.6 / 7 features and modernise the codebase. For
 
 ## Install
 
-**Note!** PHP 7.1 is required to run `apigen`.
+**Note!** PHP 7.1 is required to run `apigen 5.x`.
 
 Install using composer as a development dependency in your project:
 
