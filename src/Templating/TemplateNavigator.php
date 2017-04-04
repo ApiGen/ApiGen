@@ -68,62 +68,61 @@ final class TemplateNavigator
             ));
         }
 
-        return $templates[$name]['template'];
+        return $this->filesystem->normalizePath($templates[$name]['template']);
     }
 
     public function getTemplateFileName(string $name): string
     {
         $options = $this->configuration->getOptions();
-        return $this->getDestination()
+        return $this->filesystem->normalizePath($this->getDestination()
             . DIRECTORY_SEPARATOR
-            . $options[ConfigurationOptions::TEMPLATE][ThemeConfigOptions::TEMPLATES][$name]['filename'];
+            . $options[ConfigurationOptions::TEMPLATE][ThemeConfigOptions::TEMPLATES][$name]['filename']);
     }
 
     public function getTemplatePathForNamespace(string $namespace): string
     {
-        return $this->getDestination()
+        return $this->filesystem->normalizePath($this->getDestination()
             . DIRECTORY_SEPARATOR
-            . $this->namespaceUrlFilters->namespaceUrl($namespace);
+            . $this->namespaceUrlFilters->namespaceUrl($namespace));
     }
 
     public function getTemplatePathForClass(ClassReflectionInterface $element): string
     {
-        return $this->getDestination()
+        return $this->filesystem->normalizePath($this->getDestination()
             . DIRECTORY_SEPARATOR
-            . $this->elementUrlFactory->createForClass($element);
+            . $this->elementUrlFactory->createForClass($element));
     }
 
     public function getTemplatePathForConstant(ConstantReflectionInterface $element): string
     {
-        return $this->getDestination()
+        return $this->filesystem->normalizePath($this->getDestination()
             . DIRECTORY_SEPARATOR
-            . $this->elementUrlFactory->createForConstant($element);
+            . $this->elementUrlFactory->createForConstant($element));
     }
 
     public function getTemplatePathForFunction(FunctionReflectionInterface $element): string
     {
-        return $this->getDestination()
+        return $this->filesystem->normalizePath($this->getDestination()
             . DIRECTORY_SEPARATOR
-            . $this->elementUrlFactory->createForFunction($element);
+            . $this->elementUrlFactory->createForFunction($element));
     }
 
     public function getTemplatePathForSourceElement(ElementReflectionInterface $element): string
     {
-        return $this->getDestination()
+        return $this->filesystem->normalizePath($this->getDestination()
             . DIRECTORY_SEPARATOR
-            . $this->sourceFilters->sourceUrl($element, false);
+            . $this->sourceFilters->sourceUrl($element, false));
     }
 
     public function getTemplatePathForAnnotationGroup(string $element): string
     {
-        return $this->getDestination()
+        return $this->filesystem->normalizePath($this->getDestination()
             . DIRECTORY_SEPARATOR
-            . $this->elementUrlFactory->createForAnnotationGroup($element);
+            . $this->elementUrlFactory->createForAnnotationGroup($element));
     }
 
     private function getDestination(): string
     {
-        return $this->fileSystem->normalizePath(
-            $this->configuration->getOption(ConfigurationOptions::DESTINATION));
+        return $this->configuration->getOption(ConfigurationOptions::DESTINATION);
     }
 }
