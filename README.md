@@ -96,7 +96,7 @@ can be included in configuration files (`apigen.yml` or `apigen.neon`).
 
 A minimal configuration file:
 
-```neon
+```yaml
 # apigen.neon.dist
 # This is minimal configuration for ApiGen.
 source: [src]           # directory(-ies) to scan PHP files from
@@ -114,7 +114,7 @@ parameter).
 A reference configuration file with all of the available and supported
 configuration options.
 
-```neon
+```yaml
 # apigen.neon.dist
 # This is reference configuration for ApiGen. It contains all of the available
 # and supported configuration options, together with their default values.
@@ -215,7 +215,7 @@ In order to enable a custom theme, you have to either provide `--theme-config`
 CLI option when runing `apigen generate` or add `themeConfig` configuration
 option in your ApiGen configuration file:
 
-```neon
+```yaml
 themeConfig: path/to/theme/config.neon # path to theme's config file
 ```
 
