@@ -34,7 +34,9 @@ final class TemplateNavigatorTest extends AbstractContainerAwareTestCase
 
     public function testGetTemplateFileName(): void
     {
-        $this->assertSame(TEMP_DIR . '/api/index.html', $this->templateNavigator->getTemplateFileName('overview'));
+        $this->assertSame(
+            TEMP_DIR . DIRECTORY_SEPARATOR . 'api' . DIRECTORY_SEPARATOR . 'index.html',
+            $this->templateNavigator->getTemplateFileName('overview'));
     }
 
     public function testGetTemplatePath(): void
@@ -48,7 +50,7 @@ final class TemplateNavigatorTest extends AbstractContainerAwareTestCase
     public function testGetTemplatePathForNamespace(): void
     {
         $this->assertSame(
-            TEMP_DIR . '/api/namespace-MyNamespace.html',
+            TEMP_DIR . DIRECTORY_SEPARATOR . 'api' . DIRECTORY_SEPARATOR . 'namespace-MyNamespace.html',
             $this->templateNavigator->getTemplatePathForNamespace('MyNamespace')
         );
     }
@@ -59,7 +61,7 @@ final class TemplateNavigatorTest extends AbstractContainerAwareTestCase
         $classReflectionMock->method('getName')->willReturn('SomeClass');
 
         $this->assertSame(
-            TEMP_DIR . '/api/class-SomeClass.html',
+            TEMP_DIR . DIRECTORY_SEPARATOR . 'api' . DIRECTORY_SEPARATOR . 'class-SomeClass.html',
             $this->templateNavigator->getTemplatePathForClass($classReflectionMock)
         );
     }
@@ -71,7 +73,7 @@ final class TemplateNavigatorTest extends AbstractContainerAwareTestCase
             ->willReturn('SomeConstant');
 
         $this->assertSame(
-            TEMP_DIR . '/api/constant-SomeConstant.html',
+            TEMP_DIR . DIRECTORY_SEPARATOR . 'api' . DIRECTORY_SEPARATOR . 'constant-SomeConstant.html',
             $this->templateNavigator->getTemplatePathForConstant($constantReflectionMock)
         );
     }
@@ -83,7 +85,7 @@ final class TemplateNavigatorTest extends AbstractContainerAwareTestCase
             ->willReturn('SomeFunction');
 
         $this->assertSame(
-            TEMP_DIR . '/api/function-SomeFunction.html',
+            TEMP_DIR . DIRECTORY_SEPARATOR . 'api' . DIRECTORY_SEPARATOR . 'function-SomeFunction.html',
             $this->templateNavigator->getTemplatePathForFunction($functionReflectionMock)
         );
     }
@@ -95,7 +97,7 @@ final class TemplateNavigatorTest extends AbstractContainerAwareTestCase
             ->willReturn('SomeClass');
 
         $this->assertSame(
-            TEMP_DIR . '/api/source-class-SomeClass.html',
+            TEMP_DIR . DIRECTORY_SEPARATOR . 'api' . DIRECTORY_SEPARATOR . 'source-class-SomeClass.html',
             $this->templateNavigator->getTemplatePathForSourceElement($classReflectionMock)
         );
     }
