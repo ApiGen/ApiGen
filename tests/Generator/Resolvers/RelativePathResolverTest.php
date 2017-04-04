@@ -67,7 +67,7 @@ final class RelativePathResolverTest extends TestCase
 
         $fileName = 'ProjectBeta/entities/Category.php';
         $this->assertSame(
-            'entities' . DIRECTORY_SEPARATOR . '/Category.php',
+            'entities' . DIRECTORY_SEPARATOR . 'Category.php',
             $relativePathResolver->getRelativePath($fileName));
     }
 }
