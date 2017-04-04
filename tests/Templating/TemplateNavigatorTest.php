@@ -49,7 +49,7 @@ final class TemplateNavigatorTest extends AbstractContainerAwareTestCase
     public function testGetTemplatePath(): void
     {
         $this->assertStringEndsWith(
-            '/overview.latte',
+            DIRECTORY_SEPARATOR . 'overview.latte',
             $this->templateNavigator->getTemplatePath('overview')
         );
     }
