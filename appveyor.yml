@@ -1,4 +1,5 @@
 version: '{branch}-{build}'
+build: false
 shallow_clone: false
 platform: x64
 clone_folder: c:\projects\apigen
