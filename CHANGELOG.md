@@ -212,7 +212,7 @@ base similar to 2.8. Since then there were many BC breaks, thus major version wa
 - PEAR support was dropped. **Use PHAR file instead**. Latest stable version
   can be always found at [apigen.org](http://apigen.org)
 
-[4.2.0-RC1]: https://github.com/apigen/apigen/compare/v4.1.2...4.2.0-RC1
+[4.2.0-RC1]: https://github.com/apigen/apigen/compare/v4.1.2...v4.2.0-RC1
 [4.1.2]: https://github.com/apigen/apigen/compare/v4.1.1...v4.1.2
 [4.1.1]: https://github.com/apigen/apigen/compare/v4.1.0...v4.1.1
 [4.1.0]: https://github.com/apigen/apigen/compare/v4.0.1...v4.1.0
