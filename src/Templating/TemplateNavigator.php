@@ -12,7 +12,7 @@ use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Templating\Filters\Helpers\ElementUrlFactory;
 use ApiGen\Templating\Filters\NamespaceUrlFilters;
 use ApiGen\Templating\Filters\SourceFilters;
-use ApiGen\Utils\Filesystem;
+use ApiGen\Utils\FileSystem;
 use Exception;
 
 final class TemplateNavigator
@@ -40,7 +40,7 @@ final class TemplateNavigator
     /**
      * @var FileSystem
      */
-    private $filesystem;
+    private $fileSystem;
 
     public function __construct(
         ConfigurationInterface $configuration,
@@ -52,7 +52,7 @@ final class TemplateNavigator
         $this->sourceFilters = $sourceFilters;
         $this->elementUrlFactory = $elementUrlFactory;
         $this->namespaceUrlFilters = $namespaceUrlFilters;
-        $this->filesystem = new FileSystem();
+        $this->fileSystem = new FileSystem();
     }
 
     public function getTemplatePath(string $name): string
@@ -123,7 +123,7 @@ final class TemplateNavigator
 
     private function getDestination(): string
     {
-        return $this->filesystem->normalizePath(
+        return $this->fileSystem->normalizePath(
             $this->configuration->getOption(ConfigurationOptions::DESTINATION));
     }
 }
