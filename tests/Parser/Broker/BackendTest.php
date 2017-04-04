@@ -171,3 +171,4 @@ final class BackendTest extends TestCase
         return new ReflectionFactory($configurationMock, $parserStoragetMock);
     }
 }
+
