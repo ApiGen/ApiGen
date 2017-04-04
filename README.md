@@ -100,7 +100,7 @@ This section provides information on all available configuration options that
 can be included in configuration files (`apigen.yml` or `apigen.neon`). For
 minimal example configuration check [Configuration](#Configuration).
 
-```neon
+```yaml
 # apigen.neon.dist
 # This is reference configuration for ApiGen. It contains all of the available
 # and supported configuration options, together with their default values.
@@ -201,7 +201,7 @@ In order to enable a custom theme, you have to either provide `--theme-config`
 CLI option when runing `apigen generate` or add `themeConfig` configuration
 option in your ApiGen configuration file:
 
-```neon
+```yaml
 themeConfig: path/to/theme/config.neon # path to theme's config file
 ```
 
