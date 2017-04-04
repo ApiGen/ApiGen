@@ -405,14 +405,6 @@ final class ReflectionClass extends AbstractReflectionElement implements ClassRe
     /**
      * @return string[]
      */
-    public function getTraitNames(): array
-    {
-        return $this->reflection->getTraitNames();
-    }
-
-    /**
-     * @return string[]
-     */
     public function getOwnTraitNames(): array
     {
         return $this->reflection->getOwnTraitNames();

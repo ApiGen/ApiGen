@@ -26,14 +26,6 @@ final class TraitsTest extends AbstractReflectionClassTestCase
         $this->assertCount(2, $traits);
     }
 
-    public function testGetTraitNames(): void
-    {
-        $this->assertSame(
-            ['Project\SomeTrait', 'Project\SomeTraitNotPresentHere'],
-            $this->reflectionClass->getTraitNames()
-        );
-    }
-
     public function testGetOwnTraitName(): void
     {
         $this->assertSame(

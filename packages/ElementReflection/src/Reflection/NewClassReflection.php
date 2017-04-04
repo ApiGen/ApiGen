@@ -321,17 +321,6 @@ final class NewClassReflection implements ClassReflectionInterface
         // TODO: Implement getOwnTraits() method.
     }
 
-    /**
-     * @return string[]
-     */
-    public function getTraitNames(): array
-    {
-        // TODO: Implement getTraitNames() method.
-    }
-
-    /**
-     * @return string[]
-     */
     public function getOwnTraitNames(): array
     {
         // TODO: Implement getOwnTraitNames() method.
