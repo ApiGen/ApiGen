@@ -5,9 +5,7 @@ namespace ApiGen\Parser\Reflection;
 use ApiGen\Contracts\Parser\Reflection\Behavior\InClassInterface;
 use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
 use TokenReflection\ReflectionAnnotation;
-use TokenReflection\ReflectionClass;
 use TokenReflection\ReflectionConstant;
-use TokenReflection\ReflectionFunction;
 
 abstract class AbstractReflectionElement extends AbstractReflection implements ElementReflectionInterface
 {
@@ -82,7 +80,6 @@ abstract class AbstractReflectionElement extends AbstractReflection implements E
             unset($annotations[ReflectionAnnotation::SHORT_DESCRIPTION]);
             unset($annotations[ReflectionAnnotation::LONG_DESCRIPTION]);
 
-            $annotations += $this->getAnnotationsFromReflection($this->reflection);
             $this->annotations = $annotations;
         }
 
@@ -100,34 +97,6 @@ abstract class AbstractReflectionElement extends AbstractReflection implements E
     public function hasAnnotation(string $name): bool
     {
         return isset($this->getAnnotations()[$name]);
-    }
-
-    /**
-     * @param mixed $reflection
-     * @return mixed[]
-     */
-    private function getAnnotationsFromReflection($reflection): array
-    {
-        $fileLevel = [
-            'package' => true,
-            'subpackage' => true,
-            'author' => true,
-            'license' => true,
-            'copyright' => true
-        ];
-
-        $annotations = [];
-        if ($reflection instanceof ReflectionClass || $reflection instanceof ReflectionFunction
-            || ($reflection instanceof ReflectionConstant  && $reflection->getDeclaringClassName() === '')
-        ) {
-            foreach ($reflection->getFileReflection()->getAnnotations() as $name => $value) {
-                if (isset($fileLevel[$name]) && empty($annotations[$name])) {
-                    $annotations[$name] = $value;
-                }
-            }
-        }
-
-        return $annotations;
     }
 
     private function getShortDescription(): string

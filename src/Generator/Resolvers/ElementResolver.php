@@ -200,21 +200,21 @@ final class ElementResolver implements ElementResolverInterface
     /**
      * @return ConstantReflectionInterface|MethodReflectionInterface|PropertyReflectionInterface|null
      */
-    private function resolveIfInContext(string $definition, ClassReflectionInterface $context)
+    private function resolveIfInContext(string $definition, ClassReflectionInterface $classReflection)
     {
         $definition = $this->removeEndBrackets($definition);
         $definition = $this->removeStartDollar($definition);
 
-        if ($context->hasProperty($definition)) {
-            return $context->getProperty($definition);
+        if ($classReflection->hasProperty($definition)) {
+            return $classReflection->getProperty($definition);
         }
 
-        if ($context->hasMethod($definition)) {
-            return $context->getMethod($definition);
+        if ($classReflection->hasMethod($definition)) {
+            return $classReflection->getMethod($definition);
         }
 
-        if ($context->hasConstant($definition)) {
-            return $context->getConstant($definition);
+        if ($classReflection->hasConstant($definition)) {
+            return $classReflection->getConstant($definition);
         }
 
         return null;

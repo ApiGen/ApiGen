@@ -5,7 +5,6 @@ namespace ApiGen\Parser\Tests\Reflection;
 use ApiGen\Contracts\Parser\ParserInterface;
 use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
-use ApiGen\Tests\MethodInvoker;
 use Project\ReflectionMethod;
 
 final class ReflectionElementTest extends AbstractContainerAwareTestCase
@@ -67,15 +66,5 @@ final class ReflectionElementTest extends AbstractContainerAwareTestCase
     {
         $this->assertTrue($this->reflectionClass->hasAnnotation('package'));
         $this->assertFalse($this->reflectionClass->hasAnnotation('nope'));
-    }
-
-    public function testGetAnnotationFromReflection(): void
-    {
-        $annotations = MethodInvoker::callMethodOnObject(
-            $this->reflectionClass,
-            'getAnnotationsFromReflection',
-            [$this->reflectionClass]
-        );
-        $this->assertSame([], $annotations);
     }
 }
