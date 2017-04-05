@@ -15,6 +15,9 @@ use ApiGen\Templating\Exceptions\UnsupportedElementException;
 use Latte;
 use Nette\Utils\ArrayHash;
 
+/**
+ * @todo decouple to collector
+ */
 final class TemplateFactory implements TemplateFactoryInterface
 {
     /**

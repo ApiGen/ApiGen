@@ -2,6 +2,7 @@
 
 namespace ApiGen\Generator\TemplateGenerators;
 
+use ApiGen\Configuration\Theme\ThemeConfigOptions;
 use ApiGen\Contracts\Generator\SourceCodeHighlighter\SourceCodeHighlighterInterface;
 use ApiGen\Contracts\Generator\StepCounterInterface;
 use ApiGen\Contracts\Generator\TemplateGenerators\TemplateGeneratorInterface;
@@ -90,7 +91,7 @@ final class SourceCodeGenerator implements TemplateGeneratorInterface, StepCount
      */
     private function generateForElement(ElementReflectionInterface $element): void
     {
-        $template = $this->templateFactory->createNamedForElement('source', $element);
+        $template = $this->templateFactory->createNamedForElement(ThemeConfigOptions::SOURCE, $element);
         $template = $this->namespaceLoader->loadTemplateWithElementNamespace($template, $element);
         $template->setParameters([
             'fileName' => $this->relativePathResolver->getRelativePath($element->getFileName()),

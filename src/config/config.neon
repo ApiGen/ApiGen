@@ -3,5 +3,6 @@ extensions:
     - ApiGen\Parser\DI\ParserExtension
     - ApiGen\ElementReflection\DI\ElementReflectionExtension
     - ApiGen\ReflectionToElementTransformer\DI\ReflectionToElementTransformerExtension
+
     - Symplify\SymfonyEventDispatcher\Adapter\Nette\DI\SymfonyEventDispatcherExtension
     - Contributte\Console\DI\ConsoleExtension

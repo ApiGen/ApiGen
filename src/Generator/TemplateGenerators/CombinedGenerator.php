@@ -2,6 +2,7 @@
 
 namespace ApiGen\Generator\TemplateGenerators;
 
+use ApiGen\Configuration\Theme\ThemeConfigOptions;
 use ApiGen\Contracts\Generator\TemplateGenerators\TemplateGeneratorInterface;
 use ApiGen\Templating\TemplateFactory;
 
@@ -19,7 +20,7 @@ final class CombinedGenerator implements TemplateGeneratorInterface
 
     public function generate(): void
     {
-        $this->templateFactory->createForType('combined')
-            ->save();
+        $template = $this->templateFactory->createForType(ThemeConfigOptions::COMBINED);
+        $template->save();
     }
 }

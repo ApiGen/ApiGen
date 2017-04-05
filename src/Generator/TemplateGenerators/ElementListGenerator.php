@@ -20,7 +20,7 @@ final class ElementListGenerator implements TemplateGeneratorInterface
 
     public function generate(): void
     {
-        $this->templateFactory->createForType(ThemeConfigOptions::ELEMENT_LIST)
-            ->save();
+        $template = $this->templateFactory->createForType(ThemeConfigOptions::ELEMENT_LIST);
+        $template->save();
     }
 }

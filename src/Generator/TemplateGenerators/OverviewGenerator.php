@@ -20,7 +20,7 @@ final class OverviewGenerator implements TemplateGeneratorInterface
 
     public function generate(): void
     {
-        $this->templateFactory->createForType(ThemeConfigOptions::OVERVIEW)
-            ->save();
+        $template = $this->templateFactory->createForType(ThemeConfigOptions::OVERVIEW);
+        $template->save();
     }
 }
