@@ -12,6 +12,8 @@ interface MethodReflectionInterface extends
     InTraitInterface,
     LinedInterface
 {
+    public function getPrettyName(): string;
+
     public function isAbstract(): bool;
 
     public function isFinal(): bool;

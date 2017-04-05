@@ -44,9 +44,7 @@ final class AutocompleteElements implements AutocompleteElementsInterface
 
     private function processElement(ElementReflectionInterface $element): void
     {
-        if ($element instanceof ConstantReflectionInterface) {
-            $this->elements[] = ['co', $element->getPrettyName()];
-        } elseif ($element instanceof FunctionReflectionInterface) {
+        if ($element instanceof FunctionReflectionInterface) {
             $this->elements[] = ['f', $element->getPrettyName()];
         } elseif ($element instanceof ClassReflectionInterface) {
             $this->elements[] = ['c', $element->getPrettyName()];

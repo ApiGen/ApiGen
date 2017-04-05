@@ -8,6 +8,8 @@ use ApiGen\ReflectionToElementTransformer\Contract\TransformerCollectorInterface
 
 interface ClassReflectionInterface extends ElementReflectionInterface, LinedInterface
 {
+    public function getPrettyName(): string;
+
     public function isDocumented(): bool;
 
     public function getParentClass(): ?ClassReflectionInterface;

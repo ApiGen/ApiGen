@@ -12,6 +12,8 @@ interface PropertyReflectionInterface extends
     InClassInterface,
     LinedInterface
 {
+    public function getPrettyName(): string;
+
     public function isDefault(): bool;
 
     public function isStatic(): bool;

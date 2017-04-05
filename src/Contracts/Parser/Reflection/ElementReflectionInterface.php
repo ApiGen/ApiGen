@@ -2,10 +2,15 @@
 
 namespace ApiGen\Contracts\Parser\Reflection;
 
-use ApiGen\Contracts\Parser\Reflection\Behavior\NamedInterface;
-
-interface ElementReflectionInterface extends NamedInterface
+interface ElementReflectionInterface
 {
+    public function getName(): string;
+
+    /**
+     * Returns the unqualified name (UQN).
+     */
+    public function getShortName(): string;
+
     public function isDocumented(): bool;
 
     public function isDeprecated(): bool;
@@ -32,11 +37,4 @@ interface ElementReflectionInterface extends NamedInterface
     public function hasAnnotation(string $name): bool;
 
     public function getDescription(): string;
-
-    public function getPrettyName(): string;
-
-    /**
-     * Returns the unqualified name (UQN).
-     */
-    public function getShortName(): string;
 }
