@@ -4,9 +4,10 @@ namespace ApiGen\Parser\Reflection;
 
 use ApiGen\Annotation\AnnotationList;
 use ApiGen\Contracts\Parser\Reflection\Behavior\InClassInterface;
+use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
 use TokenReflection\ReflectionAnnotation;
-use TokenReflection\ReflectionConstant;
 
 abstract class AbstractReflectionElement extends AbstractReflection implements ElementReflectionInterface
 {
@@ -76,10 +77,11 @@ abstract class AbstractReflectionElement extends AbstractReflection implements E
     {
         if ($this->annotations === null) {
             $annotations = $this->reflection->getAnnotations();
-            $annotations = array_change_key_case($annotations, CASE_LOWER);
 
-            unset($annotations[ReflectionAnnotation::SHORT_DESCRIPTION]);
-            unset($annotations[ReflectionAnnotation::LONG_DESCRIPTION]);
+            unset(
+                $annotations[ReflectionAnnotation::SHORT_DESCRIPTION],
+                $annotations[ReflectionAnnotation::LONG_DESCRIPTION]
+            );
 
             $this->annotations = $annotations;
         }
@@ -92,7 +94,7 @@ abstract class AbstractReflectionElement extends AbstractReflection implements E
      */
     public function getAnnotation(string $name): array
     {
-        return $this->hasAnnotation($name) ? $this->getAnnotations()[$name] : [];
+        return $this->getAnnotations()[$name] ?? [];
     }
 
     public function hasAnnotation(string $name): bool
@@ -107,7 +109,7 @@ abstract class AbstractReflectionElement extends AbstractReflection implements E
             return $short;
         }
 
-        if ($this instanceof ReflectionProperty || $this instanceof ReflectionConstant) {
+        if ($this instanceof PropertyReflectionInterface || $this instanceof ConstantReflectionInterface) {
             $var = $this->getAnnotation(AnnotationList::VAR_);
             [, $short] = preg_split('~\s+|$~', $var[0], 2);
         }
