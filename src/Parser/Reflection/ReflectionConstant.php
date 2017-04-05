@@ -4,12 +4,24 @@ namespace ApiGen\Parser\Reflection;
 
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
-use ApiGen\Parser\Reflection\Parts\VisibilityTrait;
 use Exception;
 
 final class ReflectionConstant extends AbstractReflectionElement implements ConstantReflectionInterface
 {
-    use VisibilityTrait;
+    public function isPrivate(): bool
+    {
+        return $this->reflection->isPrivate();
+    }
+
+    public function isProtected(): bool
+    {
+        return $this->reflection->isProtected();
+    }
+
+    public function isPublic(): bool
+    {
+        return $this->reflection->isPublic();
+    }
 
     public function getName(): string
     {
