@@ -2,6 +2,7 @@
 
 namespace ApiGen\Templating\Filters\Helpers;
 
+use ApiGen\Annotation\AnnotationList;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
@@ -90,7 +91,7 @@ final class ElementLinkFactory
     private function createForProperty(PropertyReflectionInterface $reflectionProperty, array $classes): string
     {
         $text = $reflectionProperty->getDeclaringClassName() . '::' .
-            Html::el('var')->setText('$' . $reflectionProperty->getName());
+            Html::el(AnnotationList::VAR_)->setText('$' . $reflectionProperty->getName());
 
         return $this->linkBuilder->build(
             $this->elementUrlFactory->createForProperty($reflectionProperty),

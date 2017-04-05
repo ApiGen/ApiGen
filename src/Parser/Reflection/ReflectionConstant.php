@@ -2,6 +2,7 @@
 
 namespace ApiGen\Parser\Reflection;
 
+use ApiGen\Annotation\AnnotationList;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
 use Exception;
@@ -35,7 +36,7 @@ final class ReflectionConstant extends AbstractReflectionElement implements Cons
 
     public function getTypeHint(): string
     {
-        $annotations = $this->getAnnotation('var');
+        $annotations = $this->getAnnotation(AnnotationList::VAR_);
 
         if ($annotations) {
             [$types] = preg_split('~\s+|$~', $annotations[0], 2);

@@ -2,6 +2,7 @@
 
 namespace ApiGen\Parser\Reflection;
 
+use ApiGen\Annotation\AnnotationList;
 use ApiGen\Contracts\Parser\Reflection\Behavior\InClassInterface;
 use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
 use TokenReflection\ReflectionAnnotation;
@@ -107,7 +108,7 @@ abstract class AbstractReflectionElement extends AbstractReflection implements E
         }
 
         if ($this instanceof ReflectionProperty || $this instanceof ReflectionConstant) {
-            $var = $this->getAnnotation('var');
+            $var = $this->getAnnotation(AnnotationList::VAR_);
             [, $short] = preg_split('~\s+|$~', $var[0], 2);
         }
 

@@ -2,6 +2,7 @@
 
 namespace ApiGen\Parser\Broker;
 
+use ApiGen\Annotation\AnnotationList;
 use ApiGen\Contracts\Parser\Reflection\Behavior\InNamespaceInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
@@ -92,7 +93,7 @@ final class Backend extends Memory
             }
 
             foreach ($class->getOwnProperties() as $property) {
-                $this->loadAnnotationFromReflection($class, $property->getAnnotations(), 'var');
+                $this->loadAnnotationFromReflection($class, $property->getAnnotations(), AnnotationList::VAR_);
             }
         }
 
