@@ -154,18 +154,6 @@ final class ElementUrlFactoryTest extends TestCase
         );
     }
 
-    public function testCreateForConstant(): void
-    {
-        $reflectionConstantMock = $this->getReflectionConstantMock();
-        $reflectionConstantMock->method('getDeclaringClassName')
-            ->willReturn('');
-
-        $this->assertSame(
-            'constant-someConstant',
-            $this->elementUrlFactory->createForConstant($reflectionConstantMock)
-        );
-    }
-
     public function testCreateForFunction(): void
     {
         $reflectionFunctionMock = $this->getReflectionFunctionMock();

@@ -47,18 +47,6 @@ final class ElementLinkFactoryTest extends AbstractContainerAwareTestCase
         );
     }
 
-    public function testCreateForConstant(): void
-    {
-        $reflectionConstant = $this->createMock(ConstantReflectionInterface::class);
-        $reflectionConstant->method('getName')
-            ->willReturn('SOME_CONSTANT');
-
-        $this->assertSame(
-            '<a href="constant-SOME_CONSTANT.html"><b>SOME_CONSTANT</b></a>',
-            $this->elementLinkFactory->createForElement($reflectionConstant)
-        );
-    }
-
     public function testCreateForConstantInClass(): void
     {
         $reflectionConstant = $this->createMock(ConstantReflectionInterface::class);
@@ -69,22 +57,6 @@ final class ElementLinkFactoryTest extends AbstractContainerAwareTestCase
 
         $this->assertSame(
             '<a href="class-DeclaringClass.html#SOME_CONSTANT">DeclaringClass::<b>SOME_CONSTANT</b></a>',
-            $this->elementLinkFactory->createForElement($reflectionConstant)
-        );
-    }
-
-    public function testCreateForElementConstantInNamespace(): void
-    {
-        $reflectionConstant = $this->createMock(ConstantReflectionInterface::class);
-        $reflectionConstant->method('getName')
-            ->willReturn('SOME_CONSTANT');
-        $reflectionConstant->method('getShortName')
-            ->willReturn('SHORT_SOME_CONSTANT');
-        $reflectionConstant->method('getNamespaceName')
-            ->willReturn('Namespace');
-
-        $this->assertSame(
-            '<a href="constant-SOME_CONSTANT.html">Namespace\<b>SHORT_SOME_CONSTANT</b></a>',
             $this->elementLinkFactory->createForElement($reflectionConstant)
         );
     }

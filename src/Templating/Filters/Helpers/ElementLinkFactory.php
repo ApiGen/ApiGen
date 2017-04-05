@@ -109,12 +109,8 @@ final class ElementLinkFactory
     {
         $url = $this->elementUrlFactory->createForConstant($reflectionConstant);
 
-        if ($reflectionConstant->getDeclaringClassName()) {
-            $text = $reflectionConstant->getDeclaringClassName() . '::' .
-                Html::el('b')->setText($reflectionConstant->getName());
-        } else {
-            $text = $this->getGlobalConstantName($reflectionConstant);
-        }
+        $text = $reflectionConstant->getDeclaringClassName() . '::' .
+        Html::el('b')->setText($reflectionConstant->getName());
 
         return $this->linkBuilder->build($url, $text, false, $classes);
     }
@@ -131,15 +127,5 @@ final class ElementLinkFactory
             true,
             $classes
         );
-    }
-
-    private function getGlobalConstantName(ConstantReflectionInterface $reflectionConstant): string
-    {
-        if ($reflectionConstant->getNamespaceName()) {
-            return $reflectionConstant->getNamespaceName() . '\\' .
-                Html::el('b')->setText($reflectionConstant->getShortName());
-        } else {
-            return (string) Html::el('b')->setText($reflectionConstant->getName());
-        }
     }
 }

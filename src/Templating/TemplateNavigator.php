@@ -6,7 +6,6 @@ use ApiGen\Configuration\ConfigurationOptions;
 use ApiGen\Configuration\Theme\ThemeConfigOptions;
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Templating\Filters\Helpers\ElementUrlFactory;
@@ -91,13 +90,6 @@ final class TemplateNavigator
         return $this->fileSystem->normalizePath($this->getDestination()
             . DIRECTORY_SEPARATOR
             . $this->elementUrlFactory->createForClass($element));
-    }
-
-    public function getTemplatePathForConstant(ConstantReflectionInterface $element): string
-    {
-        return $this->fileSystem->normalizePath($this->getDestination()
-            . DIRECTORY_SEPARATOR
-            . $this->elementUrlFactory->createForConstant($element));
     }
 
     public function getTemplatePathForFunction(FunctionReflectionInterface $element): string

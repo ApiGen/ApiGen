@@ -74,18 +74,9 @@ final class ElementUrlFactory
 
     public function createForConstant(ConstantReflectionInterface $constant): string
     {
-        // Class constant
         $className = $constant->getDeclaringClassName();
 
-        if ($className) {
-            return $this->createForClass($className) . '#' . $constant->getName();
-        }
-
-        // Constant in namespace or global space
-        return sprintf(
-            $this->configuration->getOption(ConfigurationOptions::TEMPLATE)['templates']['constant']['filename'],
-            Filters::urlize($constant->getName())
-        );
+        return $this->createForClass($className) . '#' . $constant->getName();
     }
 
     public function createForFunction(FunctionReflectionInterface $function): string

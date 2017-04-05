@@ -6,7 +6,6 @@ use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Parser\Reflection\Behavior\InClassInterface;
 use ApiGen\Contracts\Parser\Reflection\Behavior\LinedInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 
@@ -45,8 +44,6 @@ final class SourceFilters extends Filters
             $elementName = $element->getName();
             if ($element instanceof ClassReflectionInterface) {
                 $file = 'class-';
-            } elseif ($element instanceof ConstantReflectionInterface) {
-                $file = 'constant-';
             } elseif ($element instanceof FunctionReflectionInterface) {
                 $file = 'function-';
             }
@@ -69,7 +66,6 @@ final class SourceFilters extends Filters
     {
         if ($element instanceof ClassReflectionInterface
             || $element instanceof FunctionReflectionInterface
-            || $element instanceof ConstantReflectionInterface
         ) {
             return true;
         }

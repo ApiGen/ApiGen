@@ -32,11 +32,6 @@ final class ThemeConfigOptions
     /**
      * @var string
      */
-    public const T_CONSTANT = 'constant';
-
-    /**
-     * @var string
-     */
     public const T_FUNCTION = 'function';
 
     /**

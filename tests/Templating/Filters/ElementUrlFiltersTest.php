@@ -65,11 +65,13 @@ final class ElementUrlFiltersTest extends AbstractContainerAwareTestCase
     public function testConstantUrl(): void
     {
         $reflectionConstantMock = $this->createMock(ConstantReflectionInterface::class);
+        $reflectionConstantMock->method('getDeclaringClassName')
+            ->willReturn('SomeClass');
         $reflectionConstantMock->method('getName')
             ->willReturn('SomeConstant');
 
         $this->assertSame(
-            'constant-SomeConstant.html',
+            'class-SomeClass.html#SomeConstant',
             $this->elementUrlFilters->constantUrl($reflectionConstantMock)
         );
     }

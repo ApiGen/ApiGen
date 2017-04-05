@@ -39,10 +39,6 @@ final class ThemeConfigOptionsResolver extends Nette\Object
                 'filename' => 'class-%s.html',
                 'template' => 'class.latte'
             ],
-            ThemeConfigOptions::T_CONSTANT => [
-                'filename' => 'constant-%s.html',
-                'template' => 'constant.latte'
-            ],
             ThemeConfigOptions::T_FUNCTION => [
                 'filename' => 'function-%s.html',
                 'template' => 'function.latte'

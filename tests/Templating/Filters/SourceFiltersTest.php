@@ -72,23 +72,7 @@ final class SourceFiltersTest extends AbstractContainerAwareTestCase
             ->willReturn(20);
 
         $this->assertSame(
-            'source-constant-someConstant.html#20',
-            $this->sourceFilters->sourceUrl($reflectionConstant)
-        );
-    }
-
-    public function testSourceUrlConstant(): void
-    {
-        $reflectionConstant = $this->createMock(ConstantReflectionInterface::class);
-        $reflectionConstant->method('getName')
-            ->willReturn('someConstant');
-        $reflectionConstant->method('getStartLine')
-            ->willReturn(20);
-        $reflectionConstant->method('getEndLine')
-            ->willReturn(20);
-
-        $this->assertSame(
-            'source-constant-someConstant.html#20',
+            'source-class-someClass.html#20',
             $this->sourceFilters->sourceUrl($reflectionConstant)
         );
     }

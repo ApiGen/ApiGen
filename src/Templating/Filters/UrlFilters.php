@@ -191,7 +191,7 @@ final class UrlFilters extends Filters
     public function highlightPhp(string $source, ElementReflectionInterface $reflectionElement): string
     {
         return $this->resolveLink($this->getTypeName($source), $reflectionElement)
-            ?: $this->highlighter->highlight((string) $source);
+            ?: $this->highlighter->highlight($source);
     }
 
     public function highlightValue(string $definition, ElementReflectionInterface $reflectionElement): string

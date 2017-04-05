@@ -79,20 +79,6 @@ final class TemplateNavigatorTest extends AbstractContainerAwareTestCase
         );
     }
 
-    public function testGetTemplatePathForConstant(): void
-    {
-        $constantReflectionMock = $this->createMock(ConstantReflectionInterface::class);
-        $constantReflectionMock->method('getName')
-            ->willReturn('SomeConstant');
-
-        $this->assertSame(
-            $this->fileSystem->normalizePath(
-                TEMP_DIR . DIRECTORY_SEPARATOR . 'api' . DIRECTORY_SEPARATOR . 'constant-SomeConstant.html'
-            ),
-            $this->templateNavigator->getTemplatePathForConstant($constantReflectionMock)
-        );
-    }
-
     public function testGetTemplatePathForFunction(): void
     {
         $functionReflectionMock = $this->createMock(FunctionReflectionInterface::class);

@@ -6,11 +6,9 @@ use ApiGen\Configuration\Configuration;
 use ApiGen\Configuration\ConfigurationOptions;
 use ApiGen\Configuration\Theme\ThemeConfigOptions;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Contracts\Templating\TemplateFactory\TemplateFactoryInterface;
-use ApiGen\Parser\Reflection\ReflectionElement;
 use ApiGen\Templating\Exceptions\UnsupportedElementException;
 use Latte;
 use Nette\Utils\ArrayHash;
@@ -134,9 +132,6 @@ final class TemplateFactory implements TemplateFactoryInterface
         if ($element instanceof ClassReflectionInterface) {
             $template->setFile($this->templateNavigator->getTemplatePath('class'));
             $template->setSavePath($this->templateNavigator->getTemplatePathForClass($element));
-        } elseif ($element instanceof ConstantReflectionInterface) {
-            $template->setFile($this->templateNavigator->getTemplatePath('constant'));
-            $template->setSavePath($this->templateNavigator->getTemplatePathForConstant($element));
         } elseif ($element instanceof FunctionReflectionInterface) {
             $template->setFile($this->templateNavigator->getTemplatePath('function'));
             $template->setSavePath($this->templateNavigator->getTemplatePathForFunction($element));

@@ -115,9 +115,6 @@
 			<li n:class="'function' === $active ? active" n:if="$function">
 				<a n:tag-if="'function' !== $active" href="{$function|functionUrl}" title="Summary of {$function->getName()}"><span>Function</span></a>
 			</li>
-			<li n:class="'constant' === $active ? active" n:if="$constant">
-				<a n:tag-if="'constant' !== $active" href="{$constant|constantUrl}" title="Summary of {$constant->getName()}"><span>Constant</span></a>
-			</li>
 		</ul>
 		<ul>
 			{foreach $annotationGroups as $annotationGroup}

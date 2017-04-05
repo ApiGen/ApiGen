@@ -76,7 +76,7 @@ final class ElementSorter implements ElementSorterInterface
 
     private function getConstantFqnName(ConstantReflectionInterface $reflection): string
     {
-        $class = $reflection->getDeclaringClassName() ?: $reflection->getNamespaceName();
+        $class = $reflection->getDeclaringClassName();
         return $class . '\\' . $reflection->getName();
     }
 
