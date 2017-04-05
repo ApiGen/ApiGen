@@ -4,7 +4,6 @@ namespace ApiGen\Tests\Templating;
 
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Templating\TemplateNavigator;
 use ApiGen\Tests\AbstractContainerAwareTestCase;

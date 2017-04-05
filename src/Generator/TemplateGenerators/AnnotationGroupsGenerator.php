@@ -2,7 +2,6 @@
 
 namespace ApiGen\Generator\TemplateGenerators;
 
-use ApiGen\Configuration\ConfigurationOptions;
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Generator\TemplateGenerators\TemplateGeneratorInterface;
 use ApiGen\Contracts\Parser\Elements\ElementExtractorInterface;
@@ -39,7 +38,7 @@ final class AnnotationGroupsGenerator implements TemplateGeneratorInterface
 
     public function generate(): void
     {
-        $annotationGroups = $this->configuration->getOption(ConfigurationOptions::ANNOTATION_GROUPS);
+        $annotationGroups = $this->configuration->getAnnotationGroups();
 
         foreach ($annotationGroups as $annotationGroup) {
             $this->generateForAnnotation($annotationGroup);

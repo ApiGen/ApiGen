@@ -74,8 +74,9 @@ final class FileSystem
         foreach ($source as $resourceSource => $resourceDestination) {
             if (is_file($resourceSource)) {
                 copy($resourceSource, FileSystem::forceDir($destination  . '/' . $resourceDestination));
-                continue;
-            } else {
+            }
+
+            if (is_dir($resourceSource)) {
                 /** @var RecursiveDirectoryIterator $iterator */
                 $iterator = Finder::findFiles('*')->from($resourceSource)->getIterator();
                 foreach ($iterator as $item) {
