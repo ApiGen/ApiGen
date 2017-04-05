@@ -307,11 +307,6 @@ final class ReflectionClass extends AbstractReflectionElement implements ClassRe
         return isset($this->getConstants()[$name]);
     }
 
-    public function hasOwnConstant(string $name): bool
-    {
-        return isset($this->getOwnConstants()[$name]);
-    }
-
     public function getOwnConstant(string $name): ConstantReflectionInterface
     {
         if (isset($this->getOwnConstants()[$name])) {

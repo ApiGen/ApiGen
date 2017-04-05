@@ -27,11 +27,6 @@ final class ConstantsTest extends AbstractReflectionClassTestCase
         $this->assertInstanceOf(ConstantReflectionInterface::class, $this->reflectionClass->getConstant('LEVEL'));
     }
 
-    public function testHasOwnConstant(): void
-    {
-        $this->assertTrue($this->reflectionClass->hasOwnConstant('LEVEL'));
-    }
-
     public function testGetOwnConstant(): void
     {
         $this->assertInstanceOf(

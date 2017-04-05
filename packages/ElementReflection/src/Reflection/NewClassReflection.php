@@ -280,11 +280,6 @@ final class NewClassReflection implements ClassReflectionInterface
         // TODO: Implement hasConstant() method.
     }
 
-    public function hasOwnConstant(string $name): bool
-    {
-        // TODO: Implement hasOwnConstant() method.
-    }
-
     public function getConstant(string $name): ConstantReflectionInterface
     {
         // TODO: Implement getConstant() method.

@@ -109,8 +109,6 @@ interface ClassReflectionInterface extends ElementReflectionInterface, LinedInte
 
     public function hasConstant(string $name): bool;
 
-    public function hasOwnConstant(string $name): bool;
-
     public function getConstant(string $name): ConstantReflectionInterface;
 
     public function getOwnConstant(string $name): ConstantReflectionInterface;
