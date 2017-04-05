@@ -178,7 +178,7 @@ final class Backend extends Memory
     }
 
     /**
-     * @param ClassReflectionInterface|MethodReflectionInterface $reflection
+     * @param FunctionReflectionInterface|MethodReflectionInterface $reflection
      * @param mixed[] $annotations
      * @param string $name
      */
