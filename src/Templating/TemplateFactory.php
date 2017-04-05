@@ -11,7 +11,6 @@ use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Contracts\Templating\TemplateFactory\TemplateFactoryInterface;
 use ApiGen\Templating\Exceptions\UnsupportedElementException;
 use Latte;
-use Nette\Utils\ArrayHash;
 
 /**
  * @todo decouple to collector
@@ -83,6 +82,8 @@ final class TemplateFactory implements TemplateFactoryInterface
             $this->builtTemplate = $template;
         }
 
+        $this->setEmptyDefaults($this->builtTemplate);
+
         $this->templateElementsLoader->addElementsToTemplate($this->builtTemplate);
 
         return $this->builtTemplate;
@@ -93,7 +94,6 @@ final class TemplateFactory implements TemplateFactoryInterface
         $template = $this->create();
         $template->setFile($this->templateNavigator->getTemplatePath($type));
         $template->setSavePath($this->templateNavigator->getTemplateFileName($type));
-        $this->setEmptyDefaults($template);
         return $template;
     }
 
