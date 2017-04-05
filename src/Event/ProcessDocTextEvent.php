@@ -1,6 +1,5 @@
 <?php declare(strict_types=1);
 
-
 namespace ApiGen\Event;
 
 use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
