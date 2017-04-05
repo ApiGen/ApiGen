@@ -5,7 +5,6 @@ namespace ApiGen\Parser\Tests\Reflection;
 use ApiGen\Contracts\Parser\ParserInterface;
 use ApiGen\Contracts\Parser\Reflection\ParameterReflectionInterface;
 use ApiGen\Parser\Reflection\AbstractReflectionFunction;
-use ApiGen\Parser\Reflection\ReflectionParameter;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 
 final class AbstractReflectionFunctionTest extends AbstractContainerAwareTestCase
@@ -45,7 +44,6 @@ final class AbstractReflectionFunctionTest extends AbstractContainerAwareTestCas
         $parameters = $this->reflectionFunction->getParameters();
         $this->assertCount(1, $parameters);
 
-        /** @var ReflectionParameter $parameter */
         $parameter = $parameters[0];
         $this->assertInstanceOf(ParameterReflectionInterface::class, $parameter);
     }
