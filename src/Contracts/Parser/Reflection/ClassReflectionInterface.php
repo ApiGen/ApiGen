@@ -127,6 +127,9 @@ interface ClassReflectionInterface extends ElementReflectionInterface, LinedInte
      */
     public function getOwnTraits(): array;
 
+    /**
+     * @return string[]
+     */
     public function getOwnTraitNames(): array;
 
     /**

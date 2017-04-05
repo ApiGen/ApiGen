@@ -13,7 +13,7 @@ final class TokenConstantReflectionTransformer implements TransformerInterface
      */
     public function matches($reflection): bool
     {
-        return $reflection instanceof IReflectionConstant;
+        return $reflection instanceof IReflectionConstant && $reflection->getDeclaringClass();
     }
 
     /**

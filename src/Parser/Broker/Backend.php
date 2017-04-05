@@ -4,7 +4,6 @@ namespace ApiGen\Parser\Broker;
 
 use ApiGen\Contracts\Parser\Reflection\Behavior\InNamespaceInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 use ApiGen\Parser\Reflection\ReflectionClass;
@@ -13,7 +12,6 @@ use ApiGen\Parser\Reflection\ReflectionMethod;
 use ApiGen\ReflectionToElementTransformer\Contract\TransformerCollectorInterface;
 use TokenReflection;
 use TokenReflection\Broker\Backend\Memory;
-use TokenReflection\IReflectionConstant;
 use TokenReflection\IReflectionFunction;
 use TokenReflection\Resolver;
 

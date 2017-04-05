@@ -5,7 +5,6 @@ namespace ApiGen\ReflectionToElementTransformer\Tests;
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Parser\ParserStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ParameterReflectionInterface;
@@ -17,7 +16,6 @@ use PHPUnit\Framework\Assert;
 use Roave\BetterReflection\Reflection\ReflectionFunction;
 use Roave\BetterReflection\Reflection\ReflectionParameter;
 use TokenReflection\IReflectionClass;
-use TokenReflection\IReflectionConstant;
 use TokenReflection\IReflectionMethod;
 use TokenReflection\IReflectionProperty;
 
@@ -75,14 +73,6 @@ final class TransformerCollectorTest extends AbstractContainerAwareTestCase
 
         $reflectionParameter = $this->transformerCollector->transformReflectionToElement($tokenReflectionParameterMock);
         $this->assertInstanceOf(ParameterReflectionInterface::class, $reflectionParameter);
-    }
-
-    public function testCreateFromReflectionConstant(): void
-    {
-        $tokenReflectionConstantMock = $this->createMock(IReflectionConstant::class, Object::class);
-        $reflectionConstant = $this->transformerCollector->transformReflectionToElement($tokenReflectionConstantMock);
-        $this->assertInstanceOf(ConstantReflectionInterface::class, $reflectionConstant);
-        $this->checkLoadedProperties($reflectionConstant);
     }
 
     /**

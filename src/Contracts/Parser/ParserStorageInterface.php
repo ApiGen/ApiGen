@@ -3,7 +3,6 @@
 namespace ApiGen\Contracts\Parser;
 
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 
 interface ParserStorageInterface
