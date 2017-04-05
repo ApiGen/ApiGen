@@ -102,7 +102,7 @@ final class ClassTraitElementsExtractor implements ClassTraitElementsExtractorIn
     }
 
     /**
-     * @return PropertyReflectionInterface[]
+     * @return PropertyReflectionInterface[][]
      */
     public function getUsedProperties(): array
     {

@@ -1,3 +1,4 @@
 parameters:
     ignoreErrors:
         - "#must implement interface PhpParser#"
+        - "#does not accept TokenReflection#"

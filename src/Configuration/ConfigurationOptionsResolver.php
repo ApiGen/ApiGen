@@ -114,7 +114,7 @@ final class ConfigurationOptionsResolver
      */
     private function normalizeVisibilityLevelsToBinary(array $options): int
     {
-        $visibilityLevelInInteger = null;
+        $visibilityLevelInInteger = 0;
 
         if (in_array(self::VISIBILITY_LEVEL_PUBLIC, $options)) {
             $visibilityLevelInInteger |= ReflectionProperty::IS_PUBLIC;

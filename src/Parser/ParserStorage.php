@@ -21,7 +21,7 @@ final class ParserStorage implements ParserStorageInterface
     private $functions = [];
 
     /**
-     * @var int[]
+     * @var string[]
      */
     private $types = [ElementsInterface::CLASSES, ElementsInterface::FUNCTIONS];
 
@@ -62,7 +62,7 @@ final class ParserStorage implements ParserStorageInterface
     }
 
     /**
-     * @return int[]
+     * @return string[]
      */
     public function getTypes(): array
     {

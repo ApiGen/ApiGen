@@ -39,7 +39,7 @@ final class ParentClassElementsExtractor implements ParentClassElementsExtractor
     }
 
     /**
-     * @return PropertyReflectionInterface[]
+     * @return PropertyReflectionInterface[][]
      */
     public function getInheritedProperties(): array
     {

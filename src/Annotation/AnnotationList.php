@@ -17,5 +17,15 @@ final class AnnotationList
     /**
      * @var string
      */
+    public const THROWS = 'throws';
+
+    /**
+     * @var string
+     */
+    public const RETURN_ = 'return';
+
+    /**
+     * @var string
+     */
     public const EMPTY_LINE = PHP_EOL . PHP_EOL;
 }

@@ -8,8 +8,6 @@ use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 use ApiGen\Parser\Reflection\ReflectionClass;
-use ApiGen\Parser\Reflection\ReflectionFunction;
-use ApiGen\Parser\Reflection\ReflectionMethod;
 use ApiGen\ReflectionToElementTransformer\Contract\TransformerCollectorInterface;
 use TokenReflection;
 use TokenReflection\Broker\Backend\Memory;
@@ -60,7 +58,7 @@ final class Backend extends Memory
     }
 
     /**
-     * @return ClassReflectionInterface[]
+     * @return ClassReflectionInterface[][]
      */
     protected function parseClassLists(): array
     {
@@ -113,12 +111,12 @@ final class Backend extends Memory
     /**
      * Processes a function/method and adds classes from annotations to the overall class array.
      *
-     * @param ReflectionMethod|ReflectionFunction $reflection
+     * @param MethodReflectionInterface|FunctionReflectionInterface $reflection
      */
     private function processFunction($reflection): void
     {
         $annotations = $reflection->getAnnotations();
-        foreach (['param', 'return', 'throws'] as $annotation) {
+        foreach ([AnnotationList::PARAM, AnnotationList::RETURN_, AnnotationList::THROWS] as $annotation) {
             $this->loadAnnotationFromReflection($reflection, $annotations, $annotation);
         }
 

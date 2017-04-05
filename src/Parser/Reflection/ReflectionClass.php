@@ -545,7 +545,7 @@ final class ReflectionClass extends AbstractReflectionElement implements ClassRe
     }
 
     /**
-     * @return PropertyReflectionInterface[]
+     * @return PropertyReflectionInterface[][]
      */
     public function getInheritedProperties(): array
     {
@@ -553,7 +553,7 @@ final class ReflectionClass extends AbstractReflectionElement implements ClassRe
     }
 
     /**
-     * @return PropertyReflectionInterface[]
+     * @return PropertyReflectionInterface[][]
      */
     public function getUsedProperties(): array
     {
