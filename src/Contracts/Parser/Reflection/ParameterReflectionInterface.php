@@ -26,7 +26,10 @@ interface ParameterReflectionInterface extends ReflectionInterface
 
     public function getDeclaringClassName(): string;
 
-    public function getDeclaringFunction(): AbstractFunctionMethodReflectionInterface;
+    /**
+     * @return MethodReflectionInterface|FunctionReflectionInterface
+     */
+    public function getDeclaringFunction();
 
     public function getDeclaringFunctionName(): string;
 

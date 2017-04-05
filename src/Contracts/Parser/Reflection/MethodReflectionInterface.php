@@ -7,7 +7,7 @@ use ApiGen\Contracts\Parser\Reflection\Behavior\InTraitInterface;
 use ApiGen\Contracts\Parser\Reflection\Behavior\LinedInterface;
 
 interface MethodReflectionInterface extends
-    AbstractFunctionMethodReflectionInterface,
+    ElementReflectionInterface,
     InClassInterface,
     InTraitInterface,
     LinedInterface
@@ -25,4 +25,11 @@ interface MethodReflectionInterface extends
     public function getOverriddenMethod(): ?MethodReflectionInterface;
 
     public function getOriginalName(): string;
+
+    public function returnsReference(): bool;
+
+    /**
+     * @return ParameterReflectionInterface[]
+     */
+    public function getParameters(): array;
 }

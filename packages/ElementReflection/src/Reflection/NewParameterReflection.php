@@ -3,8 +3,8 @@
 namespace ApiGen\ElementReflection\Reflection;
 
 use ApiGen\Annotation\AnnotationList;
-use ApiGen\Contracts\Parser\Reflection\AbstractFunctionMethodReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ParameterReflectionInterface;
 use phpDocumentor\Reflection\DocBlock\Tags\Param;
@@ -21,7 +21,7 @@ final class NewParameterReflection implements ParameterReflectionInterface
     private $reflection;
 
     /**
-     * @var AbstractFunctionMethodReflectionInterface
+     * @var MethodReflectionInterface|FunctionReflectionInterface
      */
     private $declaringFunction;
 
@@ -45,7 +45,10 @@ final class NewParameterReflection implements ParameterReflectionInterface
         return $this->reflection->getName();
     }
 
-    public function getDeclaringFunction(): AbstractFunctionMethodReflectionInterface
+    /**
+     * @return MethodReflectionInterface|FunctionReflectionInterface
+     */
+    public function getDeclaringFunction()
     {
         return $this->declaringFunction;
     }
@@ -155,7 +158,10 @@ final class NewParameterReflection implements ParameterReflectionInterface
         return $this->reflection->isCallable();
     }
 
-    public function setDeclaringFunction(AbstractFunctionMethodReflectionInterface $declaringFunction)
+    /**
+     * @param MethodReflectionInterface|FunctionReflectionInterface $declaringFunction
+     */
+    public function setDeclaringFunction($declaringFunction)
     {
         $this->declaringFunction = $declaringFunction;
     }
