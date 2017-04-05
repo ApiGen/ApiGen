@@ -1,11 +1,11 @@
 {layout '@layout.latte'}
 {var $active = 'function'}
 
-{block title}{if $function->isDeprecated()}Deprecated {/if}Function {$function->name}{/block}
+{block title}{if $function->isDeprecated()}Deprecated {/if}Function {$function->getName()}{/block}
 
 {block content}
 <div id="content" class="function">
-	<h1 n:class="$function->isDeprecated() ? deprecated">Function {$function->shortName}</h1>
+	<h1 n:class="$function->isDeprecated() ? deprecated">Function {$function->getShortName()}</h1>
 
 	{var $functionDescription = ($function|description)}
 	<div class="description" n:if="$functionDescription">
@@ -13,9 +13,9 @@
 	</div>
 
 	<div class="info">
-		{if $function->namespaceName}<b>Namespace:</b> {$function->namespaceName|namespaceLinks|noescape}<br>{/if}
+		{if $function->getNamespaceName()}<b>Namespace:</b> {$function->getNamespaceName()|namespaceLinks|noescape}<br>{/if}
 
-        {var $filteredAnnotations = ($class->annotations|annotationFilter: ['param', 'return', 'throws'])}
+        {var $filteredAnnotations = ($class->getAnnotations()|annotationFilter: ['param', 'return', 'throws'])}
 		{foreach $filteredAnnotations as $annotation => $values}
 			{foreach $values as $value}
 				<b>{$annotation}{if $value}:{/if}</b>
@@ -24,18 +24,18 @@
 		{/foreach}
 		<b>Located at</b>
 		<a href="{$function|sourceUrl}" title="Go to source code">
-			{$function->fileName|relativePath}
+			{$function->getFileName()|relativePath}
 		</a><br>
 	</div>
 
-	{var $annotations = $function->annotations}
+	{var $annotations = $function->getAnnotations()}
 
 	<table class="summary" id="parameters" n:if="count($function->parameters)">
 	<caption>Parameters summary</caption>
-	<tr n:foreach="$function->parameters as $parameter" id="${$parameter->name}">
+	<tr n:foreach="$function->parameters as $parameter" id="${$parameter->getName()}">
 		<td class="name"><code>{$parameter->typeHint|typeLinks:$function|noescape}</code></td>
 		<td class="value"><code>{block|strip}
-			<var>{if $parameter->passedByReference}&amp; {/if}${$parameter->name}</var>{if $parameter->defaultValueAvailable} = {$parameter->defaultValueDefinition|highlightPHP:$function|noescape}{elseif $parameter->isVariadic()},…{/if}
+			<var>{if $parameter->passedByReference}&amp; {/if}${$parameter->getName()}</var>{if $parameter->defaultValueAvailable} = {$parameter->defaultValueDefinition|highlightPHP:$function|noescape}{elseif $parameter->isVariadic()},…{/if}
 		{/block}</code></td>
 		<td>{$parameter->description|annotationDescription:$function}</td>
 	</tr>

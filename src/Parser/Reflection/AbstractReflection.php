@@ -8,13 +8,12 @@ use ApiGen\Contracts\Parser\ParserStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\TokenReflection\ReflectionInterface;
 use ApiGen\ReflectionToElementTransformer\Contract\TransformerCollectorInterface;
-use Nette\Object;
 use TokenReflection\IReflection;
 use TokenReflection\IReflectionClass;
 use TokenReflection\IReflectionMethod;
 use TokenReflection\IReflectionProperty;
 
-abstract class AbstractReflection extends Object implements ReflectionInterface
+abstract class AbstractReflection implements ReflectionInterface
 {
     /**
      * @var IReflectionClass|IReflectionMethod|IReflectionProperty
@@ -87,6 +86,7 @@ abstract class AbstractReflection extends Object implements ReflectionInterface
     }
 
     /**
+     * @todo: set called information externally and drop this service locator dependency
      * @return ClassReflectionInterface[]
      */
     public function getParsedClasses(): array

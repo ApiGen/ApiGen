@@ -1,11 +1,11 @@
 {layout '@layout.latte'}
 {var $active = 'constant'}
 
-{block title}{if $constant->isDeprecated()}Deprecated {/if}Constant {$constant->name}{/block}
+{block title}{if $constant->isDeprecated()}Deprecated {/if}Constant {$constant->getName()}{/block}
 
 {block content}
 <div id="content" class="constant">
-	<h1 n:class="$constant->isDeprecated() ? deprecated">Constant {$constant->shortName}</h1>
+	<h1 n:class="$constant->isDeprecated() ? deprecated">Constant {$constant->getShortName()}</h1>
 
 	{var $constantDescription = ($constant|description)}
 	<div n:if="$constantDescription" class="description">
@@ -13,9 +13,9 @@
 	</div>
 
 	<div class="info">
-		{if $constant->namespaceName}<b>Namespace:</b> {$constant->namespaceName|namespaceLinks|noescape}<br>{/if}
+		{if $constant->getNamespaceName()}<b>Namespace:</b> {$constant->getNamespaceName()|namespaceLinks|noescape}<br>{/if}
 
-        {var $filteredAnnotations = ($class->annotations|annotationFilter: ['var'])}
+        {var $filteredAnnotations = ($class->getAnnotations()|annotationFilter: ['var'])}
 		{foreach $filteredAnnotations as $annotation => $values}
 			{foreach $values as $value}
 				<b>{$annotation}{if $value}:{/if}</b>
@@ -24,11 +24,11 @@
 		{/foreach}
 		<b>Located at</b>
 		<a href="{$constant|sourceUrl}" title="Go to source code">
-			{$constant->fileName|relativePath}
+			{$constant->getFileName()|relativePath}
 		</a><br>
 	</div>
 
-	{var $annotations = $constant->annotations}
+	{var $annotations = $constant->getAnnotations()}
 
 	<table class="summary" id="vars">
 	<caption>Value summary</caption>

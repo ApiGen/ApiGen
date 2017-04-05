@@ -59,7 +59,7 @@
 
 		{define elements}
 			<ul>
-				<li n:foreach="$elements as $element" n:class="$activeElement === $element ? active" n:if="$element->namespaceName"><a n:class="$element->isDeprecated() ? deprecated" href="{$element|elementUrl}">{if $namespace}{$element->shortName}{else}{$element->name}{/if}</a></li>
+				<li n:foreach="$elements as $element" n:class="$activeElement === $element ? active" n:if="$element->getNamespaceName()"><a n:class="$element->isDeprecated() ? deprecated" href="{$element|elementUrl}">{if $namespace}{$element->getShortName()}{else}{$element->getName()}{/if}</a></li>
 			</ul>
 		{/define}
 
@@ -110,13 +110,13 @@
 				<a n:tag-if="'namespace' !== $active && $namespace" href="{$namespace|namespaceUrl}" title="Summary of {$namespace}"><span>Namespace</span></a>
 			</li>
 			<li n:class="'class' === $active ? active" n:if="!$function && !$constant">
-				<a n:tag-if="'class' !== $active && $class" href="{$class|classUrl}" title="Summary of {$class->name}"><span>Class</span></a>
+				<a n:tag-if="'class' !== $active && $class" href="{$class|classUrl}" title="Summary of {$class->getName()}"><span>Class</span></a>
 			</li>
 			<li n:class="'function' === $active ? active" n:if="$function">
-				<a n:tag-if="'function' !== $active" href="{$function|functionUrl}" title="Summary of {$function->name}"><span>Function</span></a>
+				<a n:tag-if="'function' !== $active" href="{$function|functionUrl}" title="Summary of {$function->getName()}"><span>Function</span></a>
 			</li>
 			<li n:class="'constant' === $active ? active" n:if="$constant">
-				<a n:tag-if="'constant' !== $active" href="{$constant|constantUrl}" title="Summary of {$constant->name}"><span>Constant</span></a>
+				<a n:tag-if="'constant' !== $active" href="{$constant|constantUrl}" title="Summary of {$constant->getName()}"><span>Constant</span></a>
 			</li>
 		</ul>
 		<ul>
