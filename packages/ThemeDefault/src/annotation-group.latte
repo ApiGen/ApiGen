@@ -45,27 +45,6 @@
 			</tr>
 		</table>
 
-		<table class="summary" id="constants" n:if="$annotationConstants">
-			<caption>Constants summary</caption>
-			<tr n:foreach="$annotationConstants as $constant">
-				{if $constant->declaringClassName}
-					<td class="name"><a href="{$constant->declaringClassName|classUrl}">{$constant->declaringClassName}</a></td>
-					<td class="name"><code><a href="{$constant|constantUrl}"><b>{$constant->getName()}</b></a></code></td>
-
-				{else}
-					<td class="name" n:if="$namespaces || $classes || $interfaces || $traits || $exceptions"><a n:if="$constant->getNamespaceName()" href="{$constant->getNamespaceName()|namespaceUrl}">{$constant->getNamespaceName()}</a></td>
-					<td n:class="name"><code><a href="{$constant|constantUrl}"><b>{$constant->getShortName()}</b></a></code></td>
-				{/if}
-				<td>
-					{foreach $constant->getAnnotations()[$annotation] as $description}
-						{if $description}
-							{$description|annotation: $annotation:$constant|noescape}<br>
-						{/if}
-					{/foreach}
-				</td>
-			</tr>
-		</table>
-
 		<table class="summary" id="properties" n:if="$annotationProperties">
 			<caption>Properties summary</caption>
 			<tr n:foreach="$annotationProperties as $property">

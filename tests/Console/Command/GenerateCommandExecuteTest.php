@@ -42,7 +42,7 @@ final class GenerateCommandExecuteTest extends AbstractContainerAwareTestCase
             $exitCode
         );
 
-        $this->assertFileExists(TEMP_DIR . '/api/index.html');
+        $this->assertFileExists(TEMP_DIR . '/Api/index.html');
     }
 
     /**

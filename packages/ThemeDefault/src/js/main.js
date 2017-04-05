@@ -38,7 +38,15 @@ $(window).load(function() {
 
 	// Search autocompletion
 	var autocompleteFound = false;
-	var autocompleteFiles = {'c': 'class', 'co': 'constant', 'f': 'function', 'm': 'class', 'mm': 'class', 'p': 'class', 'mp': 'class', 'cc': 'class'};
+	var autocompleteFiles = {
+	    'c': 'class',
+        'f': 'function',
+        'm': 'class',
+        'mm': 'class',
+        'p': 'class',
+        'mp': 'class',
+        'cc': 'class'
+	};
 	var $search = $('#search input[name=q]');
 	$search
 		.autocomplete(ApiGen.elements, {
