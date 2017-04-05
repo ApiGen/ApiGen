@@ -2,15 +2,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
-	<loc>{$config->baseUrl}/index.html</loc>
+	<loc>{$baseUrl}/index.html</loc>
 </url>
 <url n:foreach="$namespaces as $namespace">
-	<loc>{$config->baseUrl}/{$namespace|namespaceUrl}</loc>
+	<loc>{$baseUrl}/{$namespace|namespaceUrl}</loc>
 </url>
 
 {define elements}
 <url n:foreach="$elements as $element">
-	<loc>{$config->baseUrl}/{$element|elementUrl}</loc>
+	<loc>{$baseUrl}/{$element|elementUrl}</loc>
 </url>
 {/define}
 

@@ -76,7 +76,8 @@ final class TemplateFactory implements TemplateFactoryInterface
             $options = $this->configuration->getOptions();
             $template = new Template($this->latteEngine);
             $template->setParameters([
-                'config' => ArrayHash::from($options),
+                'title' => $this->configuration->getTitle(),
+                'googleAnalytics' => $this->configuration->getGoogleAnalytics(),
                 'basePath' => $options[ConfigurationOptions::TEMPLATE][ThemeConfigOptions::TEMPLATES_PATH]
             ]);
             $this->builtTemplate = $template;
@@ -98,7 +99,7 @@ final class TemplateFactory implements TemplateFactoryInterface
 
     /**
      * @param string $name
-     * @param ReflectionElement|string $element
+     * @param ElementReflectionInterface|string $element
      * @throws \Exception
      * @return Template
      */
