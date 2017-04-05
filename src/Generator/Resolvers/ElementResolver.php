@@ -58,19 +58,6 @@ final class ElementResolver implements ElementResolverInterface
         return null;
     }
 
-    public function getConstant(string $name, string $namespace = ''): ?ConstantReflectionInterface
-    {
-        $parsedConstants = $this->parserStorage->getConstants();
-
-        /** @var ReflectionClass $constant */
-        $constant = $this->findElementByNameAndNamespace($parsedConstants, $name, $namespace);
-        if ($constant && $constant->isDocumented()) {
-            return $constant;
-        }
-
-        return null;
-    }
-
     /**
      * @return FunctionReflectionInterface|MethodReflectionInterface|null
      */
@@ -203,11 +190,6 @@ final class ElementResolver implements ElementResolverInterface
             return $class;
         }
 
-        $constant = $this->getConstant($definition, $reflectionElement->getNamespaceName());
-        if ($constant) {
-            return $constant;
-        }
-
         $function = $this->getFunction($definition, $reflectionElement->getNamespaceName());
         if ($function) {
             return $function;
@@ -226,9 +208,13 @@ final class ElementResolver implements ElementResolverInterface
 
         if ($context->hasProperty($definition)) {
             return $context->getProperty($definition);
-        } elseif ($context->hasMethod($definition)) {
+        }
+
+        if ($context->hasMethod($definition)) {
             return $context->getMethod($definition);
-        } elseif ($context->hasConstant($definition)) {
+        }
+
+        if ($context->hasConstant($definition)) {
             return $context->getConstant($definition);
         }
 

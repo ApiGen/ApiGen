@@ -67,7 +67,6 @@ final class AnnotationGroupsGenerator implements TemplateGeneratorInterface
             'annotationInterfaces' => $elements[Elements::INTERFACES],
             'annotationTraits' => $elements[Elements::TRAITS],
             'annotationExceptions' => $elements[Elements::EXCEPTIONS],
-            'annotationConstants' => $elements[Elements::CONSTANTS],
             'annotationMethods' => $elements[Elements::METHODS],
             'annotationFunctions' => $elements[Elements::FUNCTIONS],
             'annotationProperties' => $elements[Elements::PROPERTIES]

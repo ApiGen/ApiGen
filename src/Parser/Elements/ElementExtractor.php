@@ -49,13 +49,14 @@ final class ElementExtractor implements ElementExtractorInterface
     public function extractElementsByAnnotation(string $annotation): array
     {
         $elements = $this->elements->getEmptyList();
+        $elements['constants'] = [];
         $elements[Elements::METHODS] = [];
         $elements[Elements::PROPERTIES] = [];
 
         foreach ($this->elementStorage->getElements() as $type => $elementList) {
             $elements[$type] += $this->elementFilter->filterByAnnotation($elementList, $annotation);
 
-            if ($type === Elements::CONSTANTS || $type === Elements::FUNCTIONS) {
+            if ($type === Elements::FUNCTIONS) {
                 continue;
             }
 
@@ -66,10 +67,10 @@ final class ElementExtractor implements ElementExtractorInterface
                     $annotation,
                     $elements[Elements::METHODS]
                 );
-                $elements[Elements::CONSTANTS] = $this->extractByAnnotationAndMerge(
+                $elements['constants'] = $this->extractByAnnotationAndMerge(
                     $class->getOwnConstants(),
                     $annotation,
-                    $elements[Elements::CONSTANTS]
+                    $elements['constants']
                 );
                 $elements[Elements::PROPERTIES] = $this->extractByAnnotationAndMerge(
                     $class->getOwnProperties(),

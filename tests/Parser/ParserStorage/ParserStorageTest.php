@@ -25,10 +25,6 @@ final class ParserStorageTest extends TestCase
         $this->parserStorage->setClasses($classes);
         $this->assertSame($classes, $this->parserStorage->getClasses());
 
-        $constants = [2];
-        $this->parserStorage->setConstants($constants);
-        $this->assertSame($constants, $this->parserStorage->getConstants());
-
         $functions = [3];
         $this->parserStorage->setFunctions($functions);
         $this->assertSame($functions, $this->parserStorage->getFunctions());
@@ -39,10 +35,6 @@ final class ParserStorageTest extends TestCase
         $classes = [1];
         $this->parserStorage->setClasses($classes);
         $this->assertSame($classes, $this->parserStorage->getElementsByType(Elements::CLASSES));
-
-        $constants = [2];
-        $this->parserStorage->setConstants($constants);
-        $this->assertSame($constants, $this->parserStorage->getElementsByType(Elements::CONSTANTS));
 
         $functions = [3];
         $this->parserStorage->setFunctions($functions);
@@ -60,7 +52,7 @@ final class ParserStorageTest extends TestCase
     public function testGetTypes(): void
     {
         $this->assertSame(
-            [Elements::CLASSES, Elements::CONSTANTS, Elements::FUNCTIONS],
+            [Elements::CLASSES, Elements::FUNCTIONS],
             $this->parserStorage->getTypes()
         );
     }

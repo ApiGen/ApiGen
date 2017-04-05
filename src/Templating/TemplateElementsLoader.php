@@ -61,7 +61,6 @@ final class TemplateElementsLoader
                 'interfaces' => array_filter($this->elementStorage->getInterfaces()),
                 'traits' => array_filter($this->elementStorage->getTraits()),
                 'exceptions' => array_filter($this->elementStorage->getExceptions()),
-                'constants' => array_filter($this->elementStorage->getConstants()),
                 'functions' => array_filter($this->elementStorage->getFunctions()),
                 'elements' => $this->autocompleteElements->getElements()
             ];

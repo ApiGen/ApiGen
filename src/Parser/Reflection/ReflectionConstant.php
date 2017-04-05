@@ -45,7 +45,7 @@ final class ReflectionConstant extends AbstractReflectionElement implements Cons
     public function getDeclaringClass(): ?ClassReflectionInterface
     {
         $className = (string) $this->reflection->getDeclaringClassName();
-        return $className === '' ? null : $this->getParsedClasses()[$className];
+        return $this->getParsedClasses()[$className];
     }
 
     public function getDeclaringClassName(): string

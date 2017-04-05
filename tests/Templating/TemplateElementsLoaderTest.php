@@ -44,7 +44,6 @@ final class TemplateElementsLoaderTest extends AbstractContainerAwareTestCase
         $this->assertArrayHasKey('interfaces', $parameters);
         $this->assertArrayHasKey('traits', $parameters);
         $this->assertArrayHasKey('exceptions', $parameters);
-        $this->assertArrayHasKey('constants', $parameters);
         $this->assertArrayHasKey('functions', $parameters);
         $this->assertArrayHasKey('elements', $parameters);
 

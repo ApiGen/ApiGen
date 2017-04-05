@@ -98,11 +98,6 @@ interface ClassReflectionInterface extends ElementReflectionInterface, LinedInte
     /**
      * @return ConstantReflectionInterface[]
      */
-    public function getConstants(): array;
-
-    /**
-     * @return ConstantReflectionInterface[]
-     */
     public function getOwnConstants(): array;
 
     /**

@@ -29,10 +29,9 @@ g4: ApiGen\Generator\TemplateGenerators\OverviewGenerator
 g5: ApiGen\Generator\TemplateGenerators\SourceCodeGenerator
 # elements
 g6: ApiGen\Generator\TemplateGenerators\ClassElementGenerator
-g7: ApiGen\Generator\TemplateGenerators\ConstantElementGenerator
-g8: ApiGen\Generator\TemplateGenerators\FunctionElementGenerator
-g9: ApiGen\Generator\TemplateGenerators\NamespaceGenerator
-g10: ApiGen\Generator\TemplateGenerators\Loaders\NamespaceLoader
+g7: ApiGen\Generator\TemplateGenerators\FunctionElementGenerator
+g8: ApiGen\Generator\TemplateGenerators\NamespaceGenerator
+g9: ApiGen\Generator\TemplateGenerators\Loaders\NamespaceLoader
 
 # Templating
 - ApiGen\Templating\TemplateElementsLoader

@@ -396,9 +396,9 @@ final class ReflectionClass extends AbstractReflectionElement implements ClassRe
         return array_map(function (IReflectionClass $class) {
             if (! isset($this->getParsedClasses()[$class->getName()])) {
                 return $class->getName();
-            } else {
-                return $this->getParsedClasses()[$class->getName()];
             }
+
+            return $this->getParsedClasses()[$class->getName()];
         }, $this->reflection->getTraits());
     }
 
@@ -426,9 +426,9 @@ final class ReflectionClass extends AbstractReflectionElement implements ClassRe
         return array_map(function (IReflectionClass $class) {
             if (! isset($this->getParsedClasses()[$class->getName()])) {
                 return $class->getName();
-            } else {
-                return $this->getParsedClasses()[$class->getName()];
             }
+
+            return $this->getParsedClasses()[$class->getName()];
         }, $this->reflection->getOwnTraits());
     }
 

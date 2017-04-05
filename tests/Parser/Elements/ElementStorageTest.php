@@ -24,7 +24,6 @@ final class ElementStorageTest extends AbstractContainerAwareTestCase
         $parserStorage = $this->container->getByType(ParserStorageInterface::class);
         $parserStorage->setClasses($this->getReflectionClassMocks());
         $parserStorage->setFunctions([$this->getFunctionReflectionMock()]);
-        $parserStorage->setConstants([$this->getConstantReflectionMock()]);
 
         $this->elementStorage = $this->container->getByType(ElementStorageInterface::class);
     }
@@ -38,7 +37,6 @@ final class ElementStorageTest extends AbstractContainerAwareTestCase
         $this->assertCount(4, $this->elementStorage->getClassElements());
 
         $this->assertCount(1, $this->elementStorage->getFunctions());
-        $this->assertCount(1, $this->elementStorage->getConstants());
 
         $this->assertCount(1, $this->elementStorage->getNamespaces());
     }
@@ -135,21 +133,5 @@ final class ElementStorageTest extends AbstractContainerAwareTestCase
             ->willReturn('SomeShortClass');
 
         return $reflectionFunctionMock;
-    }
-
-    /**
-     * @return ConstantReflectionInterface|PHPUnit_Framework_MockObject_MockObject
-     */
-    private function getConstantReflectionMock()
-    {
-        $constantReflectionMock = $this->createMock(ConstantReflectionInterface::class);
-        $constantReflectionMock->method('isDocumented')
-            ->willReturn(true);
-        $constantReflectionMock->method('getPseudoNamespaceName')
-            ->willReturn('SomeNamespace');
-        $constantReflectionMock->method('getShortName')
-            ->willReturn('SomeShortClass');
-
-        return $constantReflectionMock;
     }
 }

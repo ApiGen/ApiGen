@@ -34,11 +34,6 @@ interface ElementStorageInterface
     public function getExceptions(): array;
 
     /**
-     * @return ConstantReflectionInterface[]
-     */
-    public function getConstants(): array;
-
-    /**
      * @return FunctionReflectionInterface[]
      */
     public function getFunctions(): array;

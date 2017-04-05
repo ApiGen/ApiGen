@@ -38,11 +38,6 @@ final class ElementStorage implements ElementStorageInterface
     private $exceptions = [];
 
     /**
-     * @var ConstantReflectionInterface[]
-     */
-    private $constants = [];
-
-    /**
      * @var FunctionReflectionInterface[]
      */
     private $functions = [];
@@ -114,15 +109,6 @@ final class ElementStorage implements ElementStorageInterface
     }
 
     /**
-     * @return ConstantReflectionInterface[]
-     */
-    public function getConstants(): array
-    {
-        $this->ensureCategorization();
-        return $this->constants;
-    }
-
-    /**
      * @return FunctionReflectionInterface[]
      */
     public function getFunctions(): array
@@ -148,7 +134,6 @@ final class ElementStorage implements ElementStorageInterface
 
         $elements = [
             Elements::CLASSES => $this->classes,
-            Elements::CONSTANTS => $this->constants,
             Elements::FUNCTIONS => $this->functions,
             Elements::INTERFACES => $this->interfaces,
             Elements::TRAITS => $this->traits,
@@ -166,10 +151,7 @@ final class ElementStorage implements ElementStorageInterface
                     continue;
                 }
 
-                if ($element instanceof ConstantReflectionInterface) {
-                    $elementType = Elements::CONSTANTS;
-                    $this->constants[$elementName] = $element;
-                } elseif ($element instanceof FunctionReflectionInterface) {
+                if ($element instanceof FunctionReflectionInterface) {
                     $elementType = Elements::FUNCTIONS;
                     $this->functions[$elementName] = $element;
                 } elseif ($element->isInterface()) {

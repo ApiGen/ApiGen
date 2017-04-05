@@ -57,9 +57,7 @@ final class Parser
         $this->separateClassInterfaceAndTraitReflections($classInterfaceAndTraitReflections);
 
         $functionReflector = new FunctionReflector($directoriesSourceLocator);
-        $this->transformBetterFunctionReflections($functionReflector);
-
-        // @todo constants
+        $this->functionReflections = $this->transformBetterFunctionReflections($functionReflector);
     }
 
     /**
@@ -124,11 +122,14 @@ final class Parser
         });
     }
 
-    private function transformBetterFunctionReflections(FunctionReflector $functionReflector): void
+    /**
+     * @return FunctionReflectionInterface[]
+     */
+    private function transformBetterFunctionReflections(FunctionReflector $functionReflector): array
     {
         $betterFunctionReflections = $functionReflector->getAllFunctions();
 
-        $this->functionReflections = array_map(function (ReflectionFunction $betterFunctionReflection) {
+        return array_map(function (ReflectionFunction $betterFunctionReflection) {
             return $this->transformerCollector->transformReflectionToElement($betterFunctionReflection);
         }, $betterFunctionReflections);
     }

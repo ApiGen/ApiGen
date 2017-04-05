@@ -3,7 +3,6 @@
 namespace ApiGen\Contracts\Generator\Resolvers;
 
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
@@ -11,8 +10,6 @@ use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 interface ElementResolverInterface
 {
     public function getClass(string $className, string $namespace = ''): ?ClassReflectionInterface;
-
-    public function getConstant(string $className, string $namespace = ''): ?ConstantReflectionInterface;
 
     /**
      * @return FunctionReflectionInterface|MethodReflectionInterface|null

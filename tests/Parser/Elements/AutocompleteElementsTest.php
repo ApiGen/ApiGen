@@ -32,7 +32,6 @@ final class AutocompleteElementsTest extends TestCase
             ['c', 'ClassPrettyName'],
             ['p', 'ClassPrettyName::$propertyName'],
             ['m', 'ClassPrettyName::methodName'],
-            ['co', 'ConstantPrettyName'],
             ['f', 'FunctionPrettyName'],
         ], $elements);
     }
@@ -60,10 +59,6 @@ final class AutocompleteElementsTest extends TestCase
         $classReflectionMock->method('getOwnProperties')
             ->willReturn([$propertyReflection]);
 
-        $constantReflectionMock = $this->createMock(ConstantReflectionInterface::class);
-        $constantReflectionMock->method('getPrettyName')
-            ->willReturn('ConstantPrettyName');
-
         $functionReflectionMock = $this->createMock(FunctionReflectionInterface::class);
         $functionReflectionMock->method('getPrettyName')
             ->willReturn('FunctionPrettyName');
@@ -72,7 +67,6 @@ final class AutocompleteElementsTest extends TestCase
         $elementsStorageMock->method('getElements')
             ->willReturn([
                 'classes' => [$classReflectionMock],
-                'constants' => [$constantReflectionMock],
                 'functions' => [$functionReflectionMock]
             ]);
         return $elementsStorageMock;

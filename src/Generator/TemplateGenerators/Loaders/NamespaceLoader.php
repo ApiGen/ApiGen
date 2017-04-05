@@ -57,7 +57,6 @@ final class NamespaceLoader
             Elements::INTERFACES => $elements[Elements::INTERFACES],
             Elements::TRAITS => $elements[Elements::TRAITS],
             Elements::EXCEPTIONS => $elements[Elements::EXCEPTIONS],
-            Elements::CONSTANTS => $elements[Elements::CONSTANTS],
             Elements::FUNCTIONS => $elements[Elements::FUNCTIONS]
         ]);
     }

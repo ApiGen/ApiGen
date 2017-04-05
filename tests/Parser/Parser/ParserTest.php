@@ -37,16 +37,6 @@ final class ParserTest extends AbstractContainerAwareTestCase
         $this->assertInstanceOf(FunctionReflectionInterface::class, $function);
     }
 
-    public function testGetConstants(): void
-    {
-        $this->parser->parseDirectories([__DIR__ . '/ParserSource']);
-        $constants = $this->parserStorage->getConstants();
-        $this->assertCount(1, $constants);
-
-        $constant = array_pop($constants);
-        $this->assertInstanceOf(ConstantReflectionInterface::class, $constant);
-    }
-
     /**
      * @expectedException \TokenReflection\Exception\FileProcessingException
      */

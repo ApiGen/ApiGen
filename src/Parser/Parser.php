@@ -93,25 +93,21 @@ final class Parser implements ParserInterface
     {
         $classes = $broker->getClasses(Backend::TOKENIZED_CLASSES | Backend::INTERNAL_CLASSES);
 
-        $constants = $broker->getConstants();
         $functions = $broker->getFunctions();
 
         uksort($classes, 'strcasecmp');
-        uksort($constants, 'strcasecmp');
         uksort($functions, 'strcasecmp');
 
-        $this->loadToParserStorage($classes, $constants, $functions);
+        $this->loadToParserStorage($classes, $functions);
     }
 
     /**
      * @param ClassReflectionInterface[] $classes
-     * @param ConstantReflectionInterface[] $constants
      * @param FunctionReflectionInterface[] $functions
      */
-    private function loadToParserStorage(array $classes, array $constants, array $functions): void
+    private function loadToParserStorage(array $classes, array $functions): void
     {
         $this->parserStorage->setClasses($classes);
-        $this->parserStorage->setConstants($constants);
         $this->parserStorage->setFunctions($functions);
     }
 }

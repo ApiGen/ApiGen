@@ -51,16 +51,6 @@ final class Backend extends Memory
     }
 
     /**
-     * @return ConstantReflectionInterface[]
-     */
-    public function getConstants(): array
-    {
-        return array_map(function (IReflectionConstant $constant) {
-            return $this->transformerCollector->transformReflectionToElement($constant);
-        }, parent::getConstants());
-    }
-
-    /**
      * @return FunctionReflectionInterface[]
      */
     public function getFunctions(): array

@@ -80,7 +80,6 @@ final class SourceCodeGenerator implements TemplateGeneratorInterface, StepCount
             + count($this->elementStorage->getInterfaces())
             + count($this->elementStorage->getTraits())
             + count($this->elementStorage->getExceptions())
-            + count($this->elementStorage->getConstants())
             + count($this->elementStorage->getFunctions());
 
         return $count;

@@ -19,11 +19,6 @@ interface ParserStorageInterface
     public function getClasses(): array;
 
     /**
-     * @return ConstantReflectionInterface[]
-     */
-    public function getConstants(): array;
-
-    /**
      * @return FunctionReflectionInterface[]
      */
     public function getFunctions(): array;
@@ -37,11 +32,6 @@ interface ParserStorageInterface
      * @param ClassReflectionInterface[] $classes
      */
     public function setClasses(array $classes): void;
-
-    /**
-     * @param ConstantReflectionInterface[] $constants
-     */
-    public function setConstants(array $constants): void;
 
     /**
      * @param FunctionReflectionInterface[] $functions

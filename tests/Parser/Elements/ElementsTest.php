@@ -28,7 +28,7 @@ class ElementsTest extends TestCase
     public function testGetAll(): void
     {
         $this->assertSame(
-            ['classes', 'constants', 'exceptions', 'functions', 'interfaces', 'traits'],
+            ['classes', 'exceptions', 'functions', 'interfaces', 'traits'],
             $this->elements->getAll()
         );
     }
@@ -38,7 +38,6 @@ class ElementsTest extends TestCase
         $this->assertSame(
             [
                 'classes' => [],
-                'constants' => [],
                 'exceptions' => [],
                 'functions' => [],
                 'interfaces' => [],

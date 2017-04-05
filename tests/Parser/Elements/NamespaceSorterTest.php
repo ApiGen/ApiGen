@@ -68,7 +68,6 @@ final class NamespaceSorterTest extends TestCase
 
         $someGroup = $groups['Some\Group'];
         $this->assertArrayHasKey('classes', $someGroup);
-        $this->assertArrayHasKey('constants', $someGroup);
         $this->assertArrayHasKey('exceptions', $someGroup);
         $this->assertArrayHasKey('functions', $someGroup);
         $this->assertArrayHasKey('interfaces', $someGroup);

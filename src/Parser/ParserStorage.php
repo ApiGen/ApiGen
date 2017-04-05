@@ -5,7 +5,6 @@ namespace ApiGen\Parser;
 use ApiGen\Contracts\Parser\Elements\ElementsInterface;
 use ApiGen\Contracts\Parser\ParserStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use Exception;
 
@@ -17,11 +16,6 @@ final class ParserStorage implements ParserStorageInterface
     private $classes = [];
 
     /**
-     * @var ConstantReflectionInterface[]
-     */
-    private $constants = [];
-
-    /**
      * @var FunctionReflectionInterface[]
      */
     private $functions = [];
@@ -29,7 +23,7 @@ final class ParserStorage implements ParserStorageInterface
     /**
      * @var int[]
      */
-    private $types = [ElementsInterface::CLASSES, ElementsInterface::CONSTANTS, ElementsInterface::FUNCTIONS];
+    private $types = [ElementsInterface::CLASSES, ElementsInterface::FUNCTIONS];
 
     /**
      * @return mixed[]
@@ -38,9 +32,9 @@ final class ParserStorage implements ParserStorageInterface
     {
         if ($type === ElementsInterface::CLASSES) {
             return $this->classes;
-        } elseif ($type === ElementsInterface::CONSTANTS) {
-            return $this->constants;
-        } elseif ($type === ElementsInterface::FUNCTIONS) {
+        }
+
+        if ($type === ElementsInterface::FUNCTIONS) {
             return $this->functions;
         }
 
@@ -57,14 +51,6 @@ final class ParserStorage implements ParserStorageInterface
     public function getClasses(): array
     {
         return $this->classes;
-    }
-
-    /**
-     * @return ConstantReflectionInterface[]
-     */
-    public function getConstants(): array
-    {
-        return $this->constants;
     }
 
     /**
@@ -89,14 +75,6 @@ final class ParserStorage implements ParserStorageInterface
     public function setClasses(array $classes): void
     {
         $this->classes = $classes;
-    }
-
-    /**
-     * @param ConstantReflectionInterface[] $constants
-     */
-    public function setConstants(array $constants): void
-    {
-        $this->constants = $constants;
     }
 
     /**
