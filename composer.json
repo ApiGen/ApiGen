@@ -35,7 +35,7 @@
         "symplify/easy-coding-standard": "^1.4",
         "squizlabs/php_codesniffer": "3.0.0RC4 as 2.8.1",
         "slevomat/coding-standard": "^2.0",
-        "symplify/coding-standard": "^1.4.8"
+        "symplify/coding-standard": "^1.4"
     },
     "autoload": {
         "psr-4": {
@@ -55,7 +55,7 @@
     },
     "scripts": {
         "complete-check": ["phpunit", "@phpstan", "@check-cs"],
-        "phpstan": "vendor/bin/phpstan analyse src --level 5 -c phpstan.neon",
+        "phpstan": "vendor/bin/phpstan analyse src --level 4 -c phpstan.neon",
         "check-cs": "vendor/bin/easy-coding-standard check src tests",
         "fix-cs": "vendor/bin/easy-coding-standard check src tests --fix"
     },

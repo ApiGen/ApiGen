@@ -13,6 +13,6 @@ namespace SomeNamespace;
  *
  * @return string
  */
-function someAloneFunction(int $number, ?string $name = null, /*string - old Parser fails*/ ...$arguments)
+function someAloneFunction(int $number, ?string $name = null, /*string - old Parser fails*/ ...$arguments)/*: string - old Parser fails */
 {
 }

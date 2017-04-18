@@ -46,9 +46,12 @@ checkers:
     - SlevomatCodingStandard\Sniffs\Namespaces\DisallowGroupUseSniff
     - PhpCsFixer\Fixer\Import\OrderedImportsFixer
 
+<<<<<<< HEAD
     # Spacing
     - PhpCsFixer\Fixer\ClassNotation\MethodSeparationFixer
 
+=======
+>>>>>>> cs fixes
     # Strict and Scalar types
     - PhpCsFixer\Fixer\Strict\DeclareStrictTypesFixer
     SlevomatCodingStandard\Sniffs\TypeHints\TypeHintDeclarationSniff:
@@ -75,6 +78,7 @@ skip:
         - src/Console/Input/LiberalFormatArgvInput.php
         - src/Console/Command/AbstractCommand.php
         - tests/Parser/Reflection/ReflectionClassSource/RichInterface.php
+        - tests/Parser/Parser/ParserSource/SomeFunction.php
 
     SlevomatCodingStandard\Sniffs\Classes\ClassConstantVisibilitySniff:
         - tests/Parser/Reflection/ReflectionClassSource/ParentClass.php
