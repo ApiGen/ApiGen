@@ -37,7 +37,7 @@ abstract class AbstractContainerAwareTestCase extends TestCase
         $this->container = (new ContainerFactory)->create();
 
         $this->sourceDir = $this->container->getParameters()['appDir'] . '/Project';
-        $this->destinationDir = $this->container->getParameters()['tempDir'] . '/api';
+        $this->destinationDir = $this->container->getParameters()['tempDir'] . '/Api';
 
         $configuration = $this->container->getByType(ConfigurationInterface::class);
         $configuration->resolveOptions([
