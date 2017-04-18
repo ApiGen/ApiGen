@@ -117,14 +117,6 @@ final class ElementStorage implements ElementStorageInterface
     }
 
     /**
-     * @return ClassReflectionInterface[]
-     */
-    public function getClassElements(): array
-    {
-        return array_merge($this->getClasses(), $this->getTraits(), $this->getInterfaces(), $this->getExceptions());
-    }
-
-    /**
      * @return mixed[]
      */
     public function getElements(): array

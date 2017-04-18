@@ -48,9 +48,33 @@ final class ClassElementGenerator implements TemplateGeneratorInterface, StepCou
 
     public function generate(): void
     {
-        foreach ($this->elementStorage->getClassElements() as $name => $reflectionClass) {
-            $template = $this->templateFactory->createForReflection($reflectionClass);
-            $this->loadTemplateWithParameters($template, $reflectionClass);
+        foreach ($this->elementStorage->getClasses() as $name => $classReflection) {
+            $template = $this->templateFactory->createForReflection($classReflection);
+            $this->loadTemplateWithParameters($template, $classReflection);
+            $template->save();
+
+            $this->eventDispatcher->dispatch(GenerateProgressEvent::class);
+        }
+
+        foreach ($this->elementStorage->getTraits() as $name => $classReflection) {
+            $template = $this->templateFactory->createForReflection($classReflection);
+            $this->loadTemplateWithParameters($template, $classReflection);
+            $template->save();
+
+            $this->eventDispatcher->dispatch(GenerateProgressEvent::class);
+        }
+
+        foreach ($this->elementStorage->getInterfaces() as $name => $classReflection) {
+            $template = $this->templateFactory->createForReflection($classReflection);
+            $this->loadTemplateWithParameters($template, $classReflection);
+            $template->save();
+
+            $this->eventDispatcher->dispatch(GenerateProgressEvent::class);
+        }
+
+        foreach ($this->elementStorage->getExceptions() as $name => $classReflection) {
+            $template = $this->templateFactory->createForReflection($classReflection);
+            $this->loadTemplateWithParameters($template, $classReflection);
             $template->save();
 
             $this->eventDispatcher->dispatch(GenerateProgressEvent::class);
@@ -59,7 +83,10 @@ final class ClassElementGenerator implements TemplateGeneratorInterface, StepCou
 
     public function getStepCount(): int
     {
-        return count($this->elementStorage->getClassElements());
+        return count($this->elementStorage->getClasses())
+            + count($this->elementStorage->getInterfaces())
+            + count($this->elementStorage->getTraits())
+            + count($this->elementStorage->getExceptions());
     }
 
     private function loadTemplateWithParameters(Template $template, ClassReflectionInterface $class): void
@@ -68,10 +95,16 @@ final class ClassElementGenerator implements TemplateGeneratorInterface, StepCou
         $template->setParameters([
             'class' => $class,
             'tree' => array_merge(array_reverse($class->getParentClasses()), [$class]),
+
+            // class
             'directSubClasses' => $class->getDirectSubClasses(),
             'indirectSubClasses' => $class->getIndirectSubClasses(),
+
+            // interface
             'directImplementers' => $class->getDirectImplementers(),
             'indirectImplementers' => $class->getIndirectImplementers(),
+
+            // trait
             'directUsers' => $class->getDirectUsers(),
             'indirectUsers' => $class->getIndirectUsers(),
         ]);

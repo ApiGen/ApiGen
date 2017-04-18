@@ -38,11 +38,6 @@ interface ElementStorageInterface
     public function getFunctions(): array;
 
     /**
-     * @return ClassReflectionInterface[]
-     */
-    public function getClassElements(): array;
-
-    /**
      * @return mixed[]
      */
     public function getElements(): array;
