@@ -39,14 +39,14 @@
 		{/foreach}
 	{/define}
 
-	<div n:if="$directUsers">
+	<div n:if="$trait->getDirectUsers()">
 		<h4>Direct Known Users</h4>
-		{include children, children => $directUsers}
+		{include children, children => $trait->getDirectUsers()}
 	</div>
 
-	<div n:if="$indirectUsers">
+	<div n:if="$trait->getIndirectUsers()">
 		<h4>Indirect Known Users</h4>
-		{include children, children => $indirectUsers}
+		{include children, children => $trait->getIndirectUsers()}
 	</div>
 
 	<div class="info">

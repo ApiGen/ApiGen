@@ -62,16 +62,12 @@ final class InterfaceGenerator implements TemplateGeneratorInterface, StepCounte
         return count($this->elementStorage->getInterfaces());
     }
 
-    private function loadTemplateWithParameters(Template $template, ClassReflectionInterface $class): void
+    private function loadTemplateWithParameters(Template $template, ClassReflectionInterface $interface): void
     {
-        $template = $this->namespaceLoader->loadTemplateWithElementNamespace($template, $class);
+        $template = $this->namespaceLoader->loadTemplateWithElementNamespace($template, $interface);
         $template->setParameters([
-            'interface' => $class,
-            'tree' => array_merge(array_reverse($class->getParentClasses()), [$class]),
-
-            // interface
-            'directImplementers' => $class->getDirectImplementers(),
-            'indirectImplementers' => $class->getIndirectImplementers(),
+            'interface' => $interface,
+            'tree' => array_merge(array_reverse($interface->getParentClasses()), [$interface]),
         ]);
     }
 }

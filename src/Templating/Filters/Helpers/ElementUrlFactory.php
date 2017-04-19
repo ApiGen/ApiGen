@@ -32,13 +32,21 @@ final class ElementUrlFactory
     {
         if ($element instanceof ClassReflectionInterface) {
             return $this->createForClass($element);
-        } elseif ($element instanceof MethodReflectionInterface) {
+        }
+
+        if ($element instanceof MethodReflectionInterface) {
             return $this->createForMethod($element);
-        } elseif ($element instanceof PropertyReflectionInterface) {
+        }
+
+        if ($element instanceof PropertyReflectionInterface) {
             return $this->createForProperty($element);
-        } elseif ($element instanceof ConstantReflectionInterface) {
+        }
+
+        if ($element instanceof ConstantReflectionInterface) {
             return $this->createForConstant($element);
-        } elseif ($element instanceof FunctionReflectionInterface) {
+        }
+
+        if ($element instanceof FunctionReflectionInterface) {
             return $this->createForFunction($element);
         }
 

@@ -48,9 +48,9 @@ final class TraitGenerator implements TemplateGeneratorInterface, StepCounterInt
 
     public function generate(): void
     {
-        foreach ($this->elementStorage->getTraits() as $name => $classReflection) {
-            $template = $this->templateFactory->createForReflection($classReflection);
-            $this->loadTemplateWithParameters($template, $classReflection);
+        foreach ($this->elementStorage->getTraits() as $name => $traitReflection) {
+            $template = $this->templateFactory->createForReflection($traitReflection);
+            $this->loadTemplateWithParameters($template, $traitReflection);
             $template->save();
 
             $this->eventDispatcher->dispatch(GenerateProgressEvent::class);
@@ -62,16 +62,12 @@ final class TraitGenerator implements TemplateGeneratorInterface, StepCounterInt
         return count($this->elementStorage->getTraits());
     }
 
-    private function loadTemplateWithParameters(Template $template, ClassReflectionInterface $class): void
+    private function loadTemplateWithParameters(Template $template, ClassReflectionInterface $trait): void
     {
-        $template = $this->namespaceLoader->loadTemplateWithElementNamespace($template, $class);
+        $template = $this->namespaceLoader->loadTemplateWithElementNamespace($template, $trait);
         $template->setParameters([
-            'trait' => $class,
-            'tree' => array_merge(array_reverse($class->getParentClasses()), [$class]),
-
-            // trait
-            'directUsers' => $class->getDirectUsers(),
-            'indirectUsers' => $class->getIndirectUsers(),
+            'trait' => $trait,
+            'tree' => array_merge(array_reverse($trait->getParentClasses()), [$trait]),
         ]);
     }
 }

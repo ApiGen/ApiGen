@@ -38,14 +38,14 @@
 		{/foreach}
 	{/define}
 
-	<div n:if="$directImplementers">
+	<div n:if="$interface->getDirectImplementers()">
 		<h4>Direct known implementers</h4>
-		{include children, children => $directImplementers}
+		{include children, children => $interface->getDirectImplementers()}
 	</div>
 
-	<div n:if="$indirectImplementers">
+	<div n:if="$interface->getIndirectImplementers()">
 		<h4>Indirect known implementers</h4>
-		{include children, children => $indirectImplementers}
+		{include children, children => $interface->getIndirectImplementers()}
 	</div>
 
 	<div class="info">
