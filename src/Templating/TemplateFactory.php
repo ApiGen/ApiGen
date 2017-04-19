@@ -131,7 +131,13 @@ final class TemplateFactory implements TemplateFactoryInterface
         $template = $this->create();
 
         if ($element instanceof ClassReflectionInterface) {
-            $template->setFile($this->templateNavigator->getTemplatePath('class'));
+            if ($element->isTrait()) {
+                $template->setFile($this->templateNavigator->getTemplatePath('trait'));
+            } elseif ($element->isInterface()) {
+                $template->setFile($this->templateNavigator->getTemplatePath('interface'));
+            } else {
+                $template->setFile($this->templateNavigator->getTemplatePath('class'));
+            }
             $template->setSavePath($this->templateNavigator->getTemplatePathForClass($element));
         } elseif ($element instanceof FunctionReflectionInterface) {
             $template->setFile($this->templateNavigator->getTemplatePath('function'));

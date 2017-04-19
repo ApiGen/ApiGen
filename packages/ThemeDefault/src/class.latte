@@ -1,11 +1,11 @@
 {layout '@layout.latte'}
 {var $active = 'class'}
 
-{block title}{if $class->isDeprecated()}Deprecated {/if}{if $class->isInterface()}Interface{elseif $class->isTrait()}Trait{else}Class{/if} {$class->getName()}{/block}
+{block title}{if $class->isDeprecated()}Deprecated {/if}Class {$class->getName()}{/block}
 
 {block content}
 <div id="content" class="class">
-	<h1 n:class="$class->isDeprecated() ? deprecated">{if $class->isInterface()}Interface{elseif $class->isTrait()}Trait{else}Class{/if} {$class->getShortName()}</h1>
+	<h1 n:class="$class->isDeprecated() ? deprecated">Class {$class->getShortName()}</h1>
 	{var $classDescription = ($class|description)}
 	<div class="description" n:if="$classDescription">
 		{$classDescription|noescape}
@@ -49,28 +49,8 @@
 		{include children, children => $indirectSubClasses}
 	</div>
 
-	<div n:if="$directImplementers">
-		<h4>Direct known implementers</h4>
-		{include children, children => $directImplementers}
-	</div>
-
-	<div n:if="$indirectImplementers">
-		<h4>Indirect known implementers</h4>
-		{include children, children => $indirectImplementers}
-	</div>
-
-	<div n:if="$directUsers">
-		<h4>Direct Known Users</h4>
-		{include children, children => $directUsers}
-	</div>
-
-	<div n:if="$indirectUsers">
-		<h4>Indirect Known Users</h4>
-		{include children, children => $indirectUsers}
-	</div>
-
 	<div class="info">
-		{if !$class->isInterface() && !$class->isTrait() && ($class->isAbstract() || $class->isFinal())}<b>{if $class->isAbstract()}Abstract{else}Final{/if}</b><br>{/if}
+		{if $class->isAbstract() || $class->isFinal()}<b>{if $class->isAbstract()}Abstract{else}Final{/if}</b><br>{/if}
 		{if $class->isInternal()}<b>PHP Extension:</b> <a href="{$class->extension|manualUrl}" title="Go to PHP documentation">{$class->extension->getName()|firstUpper}</a><br>{/if}
 		{if $class->getNamespaceName()}<b>Namespace:</b> {$class->getNamespaceName()|namespaceLinks|noescape}<br>{/if}
 
