@@ -51,10 +51,18 @@ final class ElementUrlFactory
     public function createForClass($class): string
     {
         $className = $class instanceof ClassReflectionInterface ? $class->getName() : $class;
-        return sprintf(
-            $this->configuration->getOption(ConfigurationOptions::TEMPLATE)['templates']['class']['filename'],
-            Filters::urlize($className)
-        );
+
+        $filename = $this->configuration->getOption(ConfigurationOptions::TEMPLATE)['templates']['class']['filename'];
+
+        if ($class instanceof ClassReflectionInterface) {
+            if ($class->isTrait()) {
+                $filename = $this->configuration->getOption(ConfigurationOptions::TEMPLATE)['templates']['trait']['filename'];
+            } elseif ($class->isInterface()) {
+                $filename =$this->configuration->getOption(ConfigurationOptions::TEMPLATE)['templates']['interface']['filename'];
+            }
+        }
+
+        return sprintf($filename, Filters::urlize($className));
     }
 
     public function createForMethod(MethodReflectionInterface $method, ?ClassReflectionInterface $class = null): string

@@ -17,16 +17,16 @@
 			<a href="{$item|classUrl}" n:tag-if="!$iterator->last">{last}<b>{/last}<span n:class="$item->isDeprecated() ? deprecated">{$item->getName()}</span>{last}</b>{/last}</a>
 			{else}{$item->getName()}{/if}
 			{var $itemOwnInterfaces = $item->ownInterfaces}
-			{if $itemOwnInterfaces} implements {foreach $itemOwnInterfaces as $interface}
-				<a href="{$interface|classUrl}" n:tag-if="$interface->documented"><span n:class="$interface->isDeprecated() ? deprecated">{$interface->getName()}</span></a>{sep}, {/sep}
+			{if $itemOwnInterfaces} implements {foreach $itemOwnInterfaces as $ownInterface}
+				<a href="{$ownInterface|classUrl}" n:tag-if="$ownInterface->documented"><span n:class="$ownInterface->isDeprecated() ? deprecated">{$ownInterface->getName()}</span></a>{sep}, {/sep}
 			{/foreach}{/if}
 			{var $itemOwnTraits = $item->ownTraits}
-			{if $itemOwnTraits} uses {foreach $itemOwnTraits as $trait}
-				{if is_string($trait)}
-					{$trait} (not available)
+			{if $itemOwnTraits} uses {foreach $itemOwnTraits as $ownTrait}
+				{if is_string($ownTrait)}
+					{$ownTrait} (not available)
 
 				{else}
-					<a href="{$trait|classUrl}" n:tag-if="$trait->documented"><span n:class="$trait->isDeprecated() ? deprecated">{$trait->getName()}</span></a>{sep}, {/sep}
+					<a href="{$ownTrait|classUrl}" n:tag-if="$ownTrait->documented"><span n:class="$ownTrait->isDeprecated() ? deprecated">{$ownTrait->getName()}</span></a>{sep}, {/sep}
 				{/}
 			{/foreach}{/if}
 		</dd>

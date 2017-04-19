@@ -39,6 +39,14 @@ final class ThemeConfigOptionsResolver extends Nette\Object
                 'filename' => 'class-%s.html',
                 'template' => 'class.latte'
             ],
+            'trait' => [
+                'filename' => 'trait-%s.html',
+                'template' => 'trait.latte'
+            ],
+            'interface' => [
+                'filename' => 'interface-%s.html',
+                'template' => 'interface.latte'
+            ],
             ThemeConfigOptions::T_FUNCTION => [
                 'filename' => 'function-%s.html',
                 'template' => 'function.latte'

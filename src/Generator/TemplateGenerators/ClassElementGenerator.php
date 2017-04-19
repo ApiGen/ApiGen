@@ -94,6 +94,8 @@ final class ClassElementGenerator implements TemplateGeneratorInterface, StepCou
         $template = $this->namespaceLoader->loadTemplateWithElementNamespace($template, $class);
         $template->setParameters([
             'class' => $class,
+            'trait' => $class,
+            'interface' => $class,
             'tree' => array_merge(array_reverse($class->getParentClasses()), [$class]),
 
             // class
