@@ -55,20 +55,11 @@ final class ClassGenerator implements TemplateGeneratorInterface, StepCounterInt
 
             $this->eventDispatcher->dispatch(GenerateProgressEvent::class);
         }
-
-        foreach ($this->elementStorage->getExceptions() as $name => $classReflection) {
-            $template = $this->templateFactory->createForReflection($classReflection);
-            $this->loadTemplateWithParameters($template, $classReflection);
-            $template->save();
-
-            $this->eventDispatcher->dispatch(GenerateProgressEvent::class);
-        }
     }
 
     public function getStepCount(): int
     {
-        return count($this->elementStorage->getClasses())
-            + count($this->elementStorage->getExceptions());
+        return count($this->elementStorage->getClasses());
     }
 
     private function loadTemplateWithParameters(Template $template, ClassReflectionInterface $class): void
