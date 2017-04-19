@@ -12,7 +12,7 @@ use ApiGen\Generator\TemplateGenerators\Loaders\NamespaceLoader;
 use ApiGen\Templating\Template;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-final class ClassElementGenerator implements TemplateGeneratorInterface, StepCounterInterface
+final class ClassGenerator implements TemplateGeneratorInterface, StepCounterInterface
 {
     /**
      * @var TemplateFactoryInterface

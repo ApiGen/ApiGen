@@ -138,6 +138,7 @@ final class TemplateFactory implements TemplateFactoryInterface
             } else {
                 $template->setFile($this->templateNavigator->getTemplatePath('class'));
             }
+
             $template->setSavePath($this->templateNavigator->getTemplatePathForClass($element));
         } elseif ($element instanceof FunctionReflectionInterface) {
             $template->setFile($this->templateNavigator->getTemplatePath('function'));

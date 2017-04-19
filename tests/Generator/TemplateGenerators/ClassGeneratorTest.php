@@ -4,13 +4,13 @@ namespace ApiGen\Tests\ApiGen\Generator\TemplateGenerators;
 
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Parser\ParserInterface;
-use ApiGen\Generator\TemplateGenerators\ClassElementGenerator;
+use ApiGen\Generator\TemplateGenerators\ClassGenerator;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 
-final class ClassElementGeneratorTest extends AbstractContainerAwareTestCase
+final class ClassGeneratorTest extends AbstractContainerAwareTestCase
 {
     /**
-     * @var ClassElementGenerator
+     * @var ClassGenerator
      */
     private $classElementGenerator;
 
@@ -27,12 +27,14 @@ final class ClassElementGeneratorTest extends AbstractContainerAwareTestCase
         $parser = $this->container->getByType(ParserInterface::class);
         $parser->parseDirectories([__DIR__ . '/Source']);
 
-        $this->classElementGenerator = $this->container->getByType(ClassElementGenerator::class);
+        $this->classElementGenerator = $this->container->getByType(ClassGenerator::class);
     }
 
     public function testGenerate(): void
     {
         $this->classElementGenerator->generate();
-        $this->assertFileExists(TEMP_DIR . '/class-ApiGen.Tests.ApiGen.Generator.TemplateGenerators.Source.SomeClass.html');
+        $this->assertFileExists(
+            TEMP_DIR . '/class-ApiGen.Tests.ApiGen.Generator.TemplateGenerators.Source.SomeClass.html'
+        );
     }
 }

@@ -56,9 +56,13 @@ final class ElementUrlFactory
 
         if ($class instanceof ClassReflectionInterface) {
             if ($class->isTrait()) {
-                $filename = $this->configuration->getOption(ConfigurationOptions::TEMPLATE)['templates']['trait']['filename'];
+                $filename = $this->configuration->getOption(
+                    ConfigurationOptions::TEMPLATE
+                )['templates']['trait']['filename'];
             } elseif ($class->isInterface()) {
-                $filename =$this->configuration->getOption(ConfigurationOptions::TEMPLATE)['templates']['interface']['filename'];
+                $filename =$this->configuration->getOption(
+                    ConfigurationOptions::TEMPLATE
+                )['templates']['interface']['filename'];
             }
         }
 

@@ -33,6 +33,8 @@ final class InterfaceGeneratorTest extends AbstractContainerAwareTestCase
     public function test(): void
     {
         $this->interfaceGenerator->generate();
-        $this->assertFileExists(TEMP_DIR . '/interface-ApiGen.Tests.ApiGen.Generator.TemplateGenerators.Source.SomeInterface.html');
+        $this->assertFileExists(
+            TEMP_DIR . '/interface-ApiGen.Tests.ApiGen.Generator.TemplateGenerators.Source.SomeInterface.html'
+        );
     }
 }
