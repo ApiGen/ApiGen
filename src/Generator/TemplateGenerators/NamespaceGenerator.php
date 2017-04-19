@@ -6,7 +6,8 @@ use ApiGen\Contracts\Generator\StepCounterInterface;
 use ApiGen\Contracts\Generator\TemplateGenerators\TemplateGeneratorInterface;
 use ApiGen\Contracts\Parser\Elements\ElementStorageInterface;
 use ApiGen\Generator\Event\GenerateProgressEvent;
-use ApiGen\Generator\TemplateGenerators\Loaders\NamespaceLoader;
+use ApiGen\Parser\Elements\Elements;
+use ApiGen\Templating\Template;
 use ApiGen\Templating\TemplateFactory;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -23,11 +24,6 @@ final class NamespaceGenerator implements TemplateGeneratorInterface, StepCounte
     private $elementStorage;
 
     /**
-     * @var NamespaceLoader
-     */
-    private $namespaceLoader;
-
-    /**
      * @var EventDispatcherInterface
      */
     private $eventDispatcher;
@@ -35,12 +31,10 @@ final class NamespaceGenerator implements TemplateGeneratorInterface, StepCounte
     public function __construct(
         TemplateFactory $templateFactory,
         ElementStorageInterface $elementStorage,
-        NamespaceLoader $namespaceLoader,
         EventDispatcherInterface $eventDispatcher
     ) {
         $this->templateFactory = $templateFactory;
         $this->elementStorage = $elementStorage;
-        $this->namespaceLoader = $namespaceLoader;
         $this->eventDispatcher = $eventDispatcher;
     }
 
@@ -48,9 +42,7 @@ final class NamespaceGenerator implements TemplateGeneratorInterface, StepCounte
     {
         foreach ($this->elementStorage->getNamespaces() as $name => $namespace) {
             $template = $this->templateFactory->createNamedForElement(TemplateFactory::ELEMENT_NAMESPACE, $name);
-
-            $this->namespaceLoader->loadTemplateWithNamespace($template, $name, $namespace);
-
+            $this->loadTemplateWithNamespace($template, $name, $namespace);
             $template->save();
 
             $this->eventDispatcher->dispatch(GenerateProgressEvent::class);
@@ -60,5 +52,39 @@ final class NamespaceGenerator implements TemplateGeneratorInterface, StepCounte
     public function getStepCount(): int
     {
         return count($this->elementStorage->getNamespaces());
+    }
+
+    /**
+     * @param Template $template
+     * @param string $name
+     * @param mixed[] $elementsInNamespace
+     */
+    public function loadTemplateWithNamespace(Template $template, string $name, array $elementsInNamespace): void
+    {
+        $template->setParameters([
+            'namespace' => $name,
+            'subnamespaces' => $this->getSubnamesForName($name, $template->getParameters()['namespaces'])
+        ]);
+
+        $template->setParameters([
+            Elements::CLASSES => $elementsInNamespace[Elements::CLASSES],
+            Elements::INTERFACES => $elementsInNamespace[Elements::INTERFACES],
+            Elements::TRAITS => $elementsInNamespace[Elements::TRAITS],
+            Elements::EXCEPTIONS => $elementsInNamespace[Elements::EXCEPTIONS],
+            Elements::FUNCTIONS => $elementsInNamespace[Elements::FUNCTIONS]
+        ]);
+    }
+
+    /**
+     * @param string $name
+     * @param mixed[] $elements
+     * @return string[]
+     */
+    private function getSubnamesForName(string $name, array $elements): array
+    {
+        return array_filter($elements, function ($subname) use ($name) {
+            $pattern = '~^' . preg_quote($name) . '\\\\[^\\\\]+$~';
+            return (bool) preg_match($pattern, $subname);
+        });
     }
 }
