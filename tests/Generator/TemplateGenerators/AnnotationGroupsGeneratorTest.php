@@ -6,23 +6,10 @@ use ApiGen\Configuration\Configuration;
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Parser\ParserInterface;
 use ApiGen\Generator\TemplateGenerators\AnnotationGroupsGenerator;
-use ApiGen\Templating\Template;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
-use ApiGen\Tests\MethodInvoker;
-use Latte\Engine;
 
 final class AnnotationGroupsGeneratorTest extends AbstractContainerAwareTestCase
 {
-    /**
-     * @var Configuration
-     */
-    private $configuration;
-
-    /**
-     * @var ParserInterface
-     */
-    private $parser;
-
     /**
      * @var AnnotationGroupsGenerator
      */
@@ -38,37 +25,24 @@ final class AnnotationGroupsGeneratorTest extends AbstractContainerAwareTestCase
             'annotationGroups' => ['deprecated']
         ]);
 
-        $this->parser = $this->container->getByType(ParserInterface::class);
+        /** @var ParserInterface $parser */
+        $parser = $this->container->getByType(ParserInterface::class);
+        $parser->parseDirectories([__DIR__ . '/DeprecatedSources']);
         $this->annotationGroupsGenerator = $this->container->getByType(AnnotationGroupsGenerator::class);
     }
 
     public function testGenerate(): void
     {
         $this->annotationGroupsGenerator->generate();
+
         $this->assertFileExists(TEMP_DIR . '/annotation-group-deprecated.html');
-    }
-
-    public function testSetElementsWithAnnotationToTemplate(): void
-    {
-        $this->prepareGeneratorRequirements();
-
-        $template = new Template(new Engine);
-        $template = MethodInvoker::callMethodOnObject(
-            $this->annotationGroupsGenerator,
-            'setElementsWithAnnotationToTemplate',
-            [$template, 'deprecated']
+        $this->assertContains(
+            'ApiGen\Tests\DeprecatedClass',
+                file_get_contents(TEMP_DIR . '/annotation-group-deprecated.html')
         );
-
-        /** @var Template $template */
-        $parameters = $template->getParameters();
-
-        $this->assertSame('deprecated', $parameters['annotation']);
-        $this->assertCount(1, $parameters['annotationClasses']);
-        $this->assertCount(1, $parameters['annotationMethods']);
-    }
-
-    private function prepareGeneratorRequirements(): void
-    {
-        $this->parser->parseDirectories([__DIR__ . '/DeprecatedSources']);
+        $this->assertContains(
+            'ApiGen\Tests\DeprecatedMethod',
+            file_get_contents(TEMP_DIR . '/annotation-group-deprecated.html')
+        );
     }
 }

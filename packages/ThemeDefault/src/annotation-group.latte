@@ -8,30 +8,25 @@
 	<h1>{include title}</h1>
 
 	{if $hasElements}
-		<table class="summary" id="classes" n:if="$annotationClasses">
+		<table class="summary" id="classes" n:if="$classes">
 			<caption>Classes summary</caption>
-			{include classes, items => $annotationClasses}
+			{include items, items => $classes}
 		</table>
 
-		<table class="summary" id="interfaces" n:if="$annotationInterfaces">
+		<table class="summary" id="interfaces" n:if="$interfaces">
 			<caption>Interfaces summary</caption>
-			{include classes, items => $annotationInterfaces}
+			{include items, items => $interfaces}
 		</table>
 
-		<table class="summary" id="traits" n:if="$annotationTraits">
+		<table class="summary" id="traits" n:if="$traits">
 			<caption>Traits summary</caption>
-			{include classes, items => $annotationTraits}
+			{include items, items => $traits}
 		</table>
 
-		<table class="summary" id="exceptions" n:if="$annotationExceptions">
-			<caption>Exceptions summary</caption>
-			{include classes, items => $annotationExceptions}
-		</table>
-
-		<table class="summary" id="methods" n:if="$annotationMethods">
+		<table class="summary" id="methods" n:if="$methods">
 			<caption>Methods summary</caption>
-			<tr n:foreach="$annotationMethods as $method">
-				<td class="name"><a href="{$method->declaringClassName|classUrl}">{$method->declaringClassName}</a></td>
+			<tr n:foreach="$methods as $method">
+				<td class="name"><a href="{$method->getDeclaringClassName()|classUrl}">{$method->getDeclaringClassName()}</a></td>
 				<td class="name"><code><a href="{$method|methodUrl}">{$method->getName()}()</a></code></td>
 				<td>
 					{if $method->hasAnnotation($annotation)}
@@ -45,10 +40,10 @@
 			</tr>
 		</table>
 
-		<table class="summary" id="properties" n:if="$annotationProperties">
+		<table class="summary" id="properties" n:if="$properties">
 			<caption>Properties summary</caption>
-			<tr n:foreach="$annotationProperties as $property">
-				<td class="name"><a href="{$property->getDeclaringClassName()|classUrl}">{$property->declaringClassName}</a></td>
+			<tr n:foreach="$properties as $property">
+				<td class="name"><a href="{$property->getDeclaringClassName()|classUrl}">{$property->getDeclaringClassName()}</a></td>
 				<td class="name"><a href="{$property|propertyUrl}"><var>${$property->getName()}</var></a></td>
 				<td>
 					{foreach $property->getAnnotations()[$annotation] as $description}
@@ -60,9 +55,9 @@
 			</tr>
 		</table>
 
-		<table class="summary" id="functions" n:if="$annotationFunctions">
+		<table class="summary" id="functions" n:if="$functions">
 			<caption>Functions summary</caption>
-			<tr n:foreach="$annotationFunctions as $function">
+			<tr n:foreach="$functions as $function">
 				<td class="name" n:if="$namespaces"><a n:if="$function->getNamespaceName()" href="{$function->getNamespaceName()|namespaceUrl}">{$function->getNamespaceName()}</a></td>
 				<td class="name"><code><a href="{$function|functionUrl}">{$function->getShortName()}</a></code></td>
 				<td>
@@ -82,7 +77,7 @@
 {/block}
 
 
-{define classes}
+{define items}
 	<tr n:foreach="$items as $class">
 		<td class="name"><a href="{$class|classUrl}">{$class->getName()}</a></td>
 		<td>

@@ -51,26 +51,24 @@ final class AnnotationGroupsGenerator implements TemplateGeneratorInterface
             TemplateFactory::ELEMENT_ANNOTATION_GROUP,
             $annotationGroup
         );
-        $template = $this->setElementsWithAnnotationToTemplate($template, $annotationGroup);
+
+        $this->setElementsWithAnnotationToTemplate($template, $annotationGroup);
         $template->save();
     }
 
-    private function setElementsWithAnnotationToTemplate(Template $template, string $annotation): Template
+    private function setElementsWithAnnotationToTemplate(Template $template, string $annotation): void
     {
         $elements = $this->elementExtractor->extractElementsByAnnotation($annotation);
 
         $template->setParameters([
             'annotation' => $annotation,
             'hasElements' => (bool) count(array_filter($elements, 'count')),
-            'annotationClasses' => $elements[Elements::CLASSES],
-            'annotationInterfaces' => $elements[Elements::INTERFACES],
-            'annotationTraits' => $elements[Elements::TRAITS],
-            'annotationExceptions' => $elements[Elements::EXCEPTIONS],
-            'annotationMethods' => $elements[Elements::METHODS],
-            'annotationFunctions' => $elements[Elements::FUNCTIONS],
-            'annotationProperties' => $elements[Elements::PROPERTIES]
+            Elements::CLASSES => $elements[Elements::CLASSES],
+            Elements::INTERFACES => $elements[Elements::INTERFACES],
+            Elements::TRAITS => $elements[Elements::TRAITS],
+            Elements::METHODS => $elements[Elements::METHODS],
+            Elements::FUNCTIONS => $elements[Elements::FUNCTIONS],
+            Elements::PROPERTIES => $elements[Elements::PROPERTIES]
         ]);
-
-        return $template;
     }
 }
