@@ -3,8 +3,6 @@
 namespace ApiGen\Templating;
 
 use ApiGen\Configuration\Configuration;
-use ApiGen\Configuration\ConfigurationOptions;
-use ApiGen\Configuration\Theme\ThemeConfigOptions;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
@@ -26,11 +24,6 @@ final class TemplateFactory implements TemplateFactoryInterface
      * @var string
      */
     public const ELEMENT_NAMESPACE = 'namespace';
-
-    /**
-     * @var string
-     */
-    public const ELEMENT_ANNOTATION_GROUP = 'annotationGroup';
 
     /**
      * @var Latte\Engine
@@ -72,12 +65,10 @@ final class TemplateFactory implements TemplateFactoryInterface
     public function create(): Template
     {
         if ($this->builtTemplate === null) {
-            $options = $this->configuration->getOptions();
             $template = new Template($this->latteEngine);
             $template->setParameters([
                 'title' => $this->configuration->getTitle(),
                 'googleAnalytics' => $this->configuration->getGoogleAnalytics(),
-                'basePath' => $options[ConfigurationOptions::TEMPLATE][ThemeConfigOptions::TEMPLATES_PATH]
             ]);
             $this->builtTemplate = $template;
         }
@@ -112,18 +103,17 @@ final class TemplateFactory implements TemplateFactoryInterface
 
         if ($name === self::ELEMENT_SOURCE) {
             $template->setSavePath($this->templateNavigator->getTemplatePathForSourceElement($element));
-        } elseif ($name === self::ELEMENT_NAMESPACE) {
-            $template->setSavePath($this->templateNavigator->getTemplatePathForNamespace($element));
-        } elseif ($name === self::ELEMENT_ANNOTATION_GROUP) {
-            $template->setSavePath($this->templateNavigator->getTemplatePathForAnnotationGroup($element));
-        } else {
-            throw new UnsupportedElementException(sprintf(
-                '"%s" is not supported template type.',
-                $name
-            ));
+            return $template;
         }
 
-        return $template;
+        if ($name === self::ELEMENT_NAMESPACE) {
+            return $template;
+        }
+
+        throw new UnsupportedElementException(sprintf(
+            '"%s" is not supported template type.',
+            $name
+        ));
     }
 
     public function createForReflection(ElementReflectionInterface $element): Template

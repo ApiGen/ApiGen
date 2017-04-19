@@ -28,7 +28,7 @@ g4: ApiGen\Generator\TemplateGenerators\OverviewGenerator
 g5: ApiGen\Generator\TemplateGenerators\SourceCodeGenerator
 # elements
 g6: ApiGen\Generator\TemplateGenerators\ClassGenerator
-g7: ApiGen\Generator\TemplateGenerators\FunctionElementGenerator
+g7: ApiGen\Generator\TemplateGenerators\FunctionGenerator
 g8: ApiGen\Generator\TemplateGenerators\NamespaceGenerator
 - ApiGen\Generator\TemplateGenerators\TraitGenerator
 - ApiGen\Generator\TemplateGenerators\InterfaceGenerator

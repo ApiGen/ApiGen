@@ -1,22 +1,23 @@
 {
     "name": "apigen/apigen",
-    "description": "PHP source code API generator",
-    "keywords": ["documentation", "phpdoc", "generator", "api"],
-    "homepage": "http://apigen.org/",
+    "description": "PHP 7.1 source code API generator.",
     "license": "MIT",
     "authors": [
-        { "name": "Tomáš Votruba", "homepage": "https://tomasvotruba.cz", "email": "tomas.vot@gmail.com" },
+        { "name": "Tomáš Votruba", "homepage": "https://tomasvotruba.cz" },
         { "name": "Jaroslav Hanslík", "homepage": "https://github.com/kukulich" },
         { "name": "Ondřej Nešpor", "homepage": "https://github.com/andrewsville" },
         { "name": "David Grudl",  "homepage": "http://davidgrudl.com" }
+    ],
+    "bin": [
+        "bin/apigen"
     ],
     "require": {
         "php": "^7.1",
         "popsul/php-token-reflection": "^1.5",
         "roave/better-reflection": "dev-master",
-
-        "apigen/theme-bootstrap": "1.1.*",
+        "phpdocumentor/reflection-docblock": "^3.1",
         "kukulich/fshl": "^2.1",
+
         "latte/latte": "^2.4",
         "nette/bootstrap": "^2.4",
         "nette/di": "^2.4",
@@ -26,12 +27,11 @@
         "symfony/options-resolver": "^3.2",
 
         "contributte/console": "^0.1",
-        "symplify/symfony-event-dispatcher": "^1.4",
-        "phpdocumentor/reflection-docblock": "^3.1"
+        "symplify/symfony-event-dispatcher": "^1.4"
     },
     "require-dev": {
         "phpunit/phpunit": "^6.0",
-        "phpstan/phpstan": "^0.6.4",
+        "phpstan/phpstan": "^0.6",
         "symplify/easy-coding-standard": "^1.4",
         "squizlabs/php_codesniffer": "3.0.0RC4 as 2.8.1",
         "slevomat/coding-standard": "^2.0",
@@ -58,13 +58,5 @@
         "phpstan": "vendor/bin/phpstan analyse src --level 4 -c phpstan.neon",
         "check-cs": "vendor/bin/easy-coding-standard check src tests",
         "fix-cs": "vendor/bin/easy-coding-standard check src tests --fix"
-    },
-    "bin": [
-        "bin/apigen"
-    ],
-	"extra": {
-		"branch-alias": {
-			"dev-master": "5.0.x-dev"
-		}
-	}
+    }
 }

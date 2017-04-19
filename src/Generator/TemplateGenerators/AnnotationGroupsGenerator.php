@@ -5,9 +5,10 @@ namespace ApiGen\Generator\TemplateGenerators;
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Generator\TemplateGenerators\TemplateGeneratorInterface;
 use ApiGen\Contracts\Parser\Elements\ElementExtractorInterface;
+use ApiGen\Contracts\Templating\TemplateFactory\TemplateFactoryInterface;
 use ApiGen\Parser\Elements\Elements;
+use ApiGen\Templating\Filters\Filters;
 use ApiGen\Templating\Template;
-use ApiGen\Templating\TemplateFactory;
 
 final class AnnotationGroupsGenerator implements TemplateGeneratorInterface
 {
@@ -17,7 +18,7 @@ final class AnnotationGroupsGenerator implements TemplateGeneratorInterface
     private $configuration;
 
     /**
-     * @var TemplateFactory
+     * @var TemplateFactoryInterface
      */
     private $templateFactory;
 
@@ -28,7 +29,7 @@ final class AnnotationGroupsGenerator implements TemplateGeneratorInterface
 
     public function __construct(
         ConfigurationInterface $configuration,
-        TemplateFactory $templateFactory,
+        TemplateFactoryInterface $templateFactory,
         ElementExtractorInterface $elementExtractor
     ) {
         $this->configuration = $configuration;
@@ -38,21 +39,26 @@ final class AnnotationGroupsGenerator implements TemplateGeneratorInterface
 
     public function generate(): void
     {
-        $annotationGroups = $this->configuration->getAnnotationGroups();
-
-        foreach ($annotationGroups as $annotationGroup) {
-            $this->generateForAnnotation($annotationGroup);
+        foreach ($this->configuration->getAnnotationGroups() as $annotation) {
+            $this->generateForAnnotation($annotation);
         }
     }
 
-    private function generateForAnnotation(string $annotationGroup): void
+    private function generateForAnnotation(string $annotation): void
     {
-        $template = $this->templateFactory->createNamedForElement(
-            TemplateFactory::ELEMENT_ANNOTATION_GROUP,
-            $annotationGroup
+        $template = $this->templateFactory->create();
+
+        $template->setFile(
+            $this->configuration->getTemplatesDirectory() . DIRECTORY_SEPARATOR . 'annotation-group.latte'
         );
 
-        $this->setElementsWithAnnotationToTemplate($template, $annotationGroup);
+        $template->setSavePath(
+            $this->configuration->getDestination()
+            . DIRECTORY_SEPARATOR
+            . sprintf('annotation-group-%s.html', Filters::urlize($annotation))
+        );
+
+        $this->setElementsWithAnnotationToTemplate($template, $annotation);
         $template->save();
     }
 

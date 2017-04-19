@@ -159,7 +159,6 @@ final class NewFunctionReflection implements FunctionReflectionInterface
 
     public function getFileName(): string
     {
-        // @todo
-        return '';
+        return $this->reflection->getFileName();
     }
 }

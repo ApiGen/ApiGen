@@ -118,4 +118,9 @@ final class Configuration implements ConfigurationInterface
     {
         return $this->getOptions()[ConfigurationOptions::EXTENSIONS];
     }
+
+    public function getTemplatesDirectory(): string
+    {
+        return $this->getOption(ConfigurationOptions::TEMPLATE)['templatesPath'];
+    }
 }

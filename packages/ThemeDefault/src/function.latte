@@ -14,8 +14,7 @@
 
 	<div class="info">
 		{if $function->getNamespaceName()}<b>Namespace:</b> {$function->getNamespaceName()|namespaceLinks|noescape}<br>{/if}
-
-        {var $filteredAnnotations = ($class->getAnnotations()|annotationFilter: ['param', 'return', 'throws'])}
+        {var $filteredAnnotations = ($function->getAnnotations()|annotationFilter: ['param', 'return', 'throws'])}
 		{foreach $filteredAnnotations as $annotation => $values}
 			{foreach $values as $value}
 				<b>{$annotation}{if $value}:{/if}</b>
@@ -30,9 +29,9 @@
 
 	{var $annotations = $function->getAnnotations()}
 
-	<table class="summary" id="parameters" n:if="count($function->parameters)">
+	<table class="summary" id="parameters" n:if="count($function->getParameters())">
 	<caption>Parameters summary</caption>
-	<tr n:foreach="$function->parameters as $parameter" id="${$parameter->getName()}">
+	<tr n:foreach="$function->getParameters() as $parameter" id="${$parameter->getName()}">
 		<td class="name"><code>{$parameter->typeHint|typeLinks:$function|noescape}</code></td>
 		<td class="value"><code>{block|strip}
 			<var>{if $parameter->passedByReference}&amp; {/if}${$parameter->getName()}</var>{if $parameter->defaultValueAvailable} = {$parameter->defaultValueDefinition|highlightPHP:$function|noescape}{elseif $parameter->isVariadic()},…{/if}

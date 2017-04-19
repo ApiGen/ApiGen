@@ -55,16 +55,6 @@ final class TemplateNavigatorTest extends AbstractContainerAwareTestCase
         );
     }
 
-    public function testGetTemplatePathForNamespace(): void
-    {
-        $this->assertSame(
-            $this->fileSystem->normalizePath(
-                TEMP_DIR . DIRECTORY_SEPARATOR . 'api' . DIRECTORY_SEPARATOR . 'namespace-MyNamespace.html'
-            ),
-            $this->templateNavigator->getTemplatePathForNamespace('MyNamespace')
-        );
-    }
-
     public function testGetTemplatePathForClass(): void
     {
         $classReflectionMock = $this->createMock(ClassReflectionInterface::class);

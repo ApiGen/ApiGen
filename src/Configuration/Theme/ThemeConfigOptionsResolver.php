@@ -47,10 +47,6 @@ final class ThemeConfigOptionsResolver extends Nette\Object
                 'filename' => 'function-%s.html',
                 'template' => 'function.latte'
             ],
-            ThemeConfigOptions::ANNOTATION_GROUP => [
-                'filename' => 'annotation-group-%s.html',
-                'template' => 'annotation-group.latte'
-            ],
             ThemeConfigOptions::SOURCE => [
                 'filename' => 'source-%s.html',
                 'template' => 'source.latte'

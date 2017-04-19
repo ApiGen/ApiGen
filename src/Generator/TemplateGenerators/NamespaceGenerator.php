@@ -2,11 +2,13 @@
 
 namespace ApiGen\Generator\TemplateGenerators;
 
+use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Generator\StepCounterInterface;
 use ApiGen\Contracts\Generator\TemplateGenerators\TemplateGeneratorInterface;
 use ApiGen\Contracts\Parser\Elements\ElementStorageInterface;
 use ApiGen\Generator\Event\GenerateProgressEvent;
 use ApiGen\Parser\Elements\Elements;
+use ApiGen\Templating\Filters\Filters;
 use ApiGen\Templating\Template;
 use ApiGen\Templating\TemplateFactory;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -28,28 +30,36 @@ final class NamespaceGenerator implements TemplateGeneratorInterface, StepCounte
      */
     private $eventDispatcher;
 
+    /**
+     * @var ConfigurationInterface
+     */
+    private $configuration;
+
     public function __construct(
         TemplateFactory $templateFactory,
         ElementStorageInterface $elementStorage,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        ConfigurationInterface $configuration
     ) {
         $this->templateFactory = $templateFactory;
         $this->elementStorage = $elementStorage;
         $this->eventDispatcher = $eventDispatcher;
+        $this->configuration = $configuration;
     }
 
     public function generate(): void
     {
-        foreach ($this->elementStorage->getNamespaces() as $name => $namespaceElements) {
-            $template = $this->templateFactory->createNamedForElement(TemplateFactory::ELEMENT_NAMESPACE, $name);
+        foreach ($this->elementStorage->getNamespaces() as $namespace => $namespaceElements) {
+            $template = $this->templateFactory->createNamedForElement(TemplateFactory::ELEMENT_NAMESPACE, $namespace);
 
             $template->setParameters([
-                'namespace' => $name,
-                'subnamespaces' => $this->getSubnamesForName($name, $template->getParameters()['namespaces'])
+                'namespace' => $namespace,
+                'subnamespaces' => $this->getSubnamesForName($namespace, $template->getParameters()['namespaces'])
             ]);
 
             $this->loadTemplateWithNamespace($template, $namespaceElements);
-            $template->save();
+
+            $template->save($this->getFileDestination($namespace));
 
             $this->eventDispatcher->dispatch(GenerateProgressEvent::class);
         }
@@ -86,5 +96,12 @@ final class NamespaceGenerator implements TemplateGeneratorInterface, StepCounte
             $pattern = '~^' . preg_quote($name) . '\\\\[^\\\\]+$~';
             return (bool) preg_match($pattern, $subname);
         });
+    }
+
+    private function getFileDestination(string $namespace): string
+    {
+        return $this->configuration->getDestination()
+            . DIRECTORY_SEPARATOR
+            . sprintf('namespace-%s.html', Filters::urlize($namespace));
     }
 }

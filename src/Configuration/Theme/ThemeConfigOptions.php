@@ -32,11 +32,6 @@ final class ThemeConfigOptions
     /**
      * @var string
      */
-    public const ANNOTATION_GROUP = 'annotationGroup';
-
-    /**
-     * @var string
-     */
     public const SOURCE = 'source';
 
     /**

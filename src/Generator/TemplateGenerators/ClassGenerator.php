@@ -53,8 +53,7 @@ final class ClassGenerator implements TemplateGeneratorInterface, StepCounterInt
             $template = $this->templateFactory->createForReflection($classReflection);
             $this->loadTemplateWithParameters($template, $classReflection);
 
-            $template->setSavePath($this->getDestinationPath($classReflection));
-            $template->save();
+            $template->save($this->getDestinationPath($classReflection));
 
             $this->eventDispatcher->dispatch(GenerateProgressEvent::class);
         }

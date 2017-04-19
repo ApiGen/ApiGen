@@ -39,6 +39,8 @@ interface ConfigurationInterface
 
     public function getDestination(): string;
 
+    public function getTemplatesDirectory(): string;
+
     /**
      * Get title of the project.
      */

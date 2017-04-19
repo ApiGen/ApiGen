@@ -9,7 +9,6 @@ use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Templating\Filters\Helpers\ElementUrlFactory;
-use ApiGen\Templating\Filters\NamespaceUrlFilters;
 use ApiGen\Templating\Filters\SourceFilters;
 use ApiGen\Utils\FileSystem;
 use Exception;
@@ -32,11 +31,6 @@ final class TemplateNavigator
     private $elementUrlFactory;
 
     /**
-     * @var NamespaceUrlFilters
-     */
-    private $namespaceUrlFilters;
-
-    /**
      * @var FileSystem
      */
     private $fileSystem;
@@ -45,13 +39,11 @@ final class TemplateNavigator
         ConfigurationInterface $configuration,
         SourceFilters $sourceFilters,
         ElementUrlFactory $elementUrlFactory,
-        NamespaceUrlFilters $namespaceUrlFilters,
         FileSystem $fileSystem
     ) {
         $this->configuration = $configuration;
         $this->sourceFilters = $sourceFilters;
         $this->elementUrlFactory = $elementUrlFactory;
-        $this->namespaceUrlFilters = $namespaceUrlFilters;
         $this->fileSystem = $fileSystem;
     }
 
@@ -79,13 +71,6 @@ final class TemplateNavigator
             . $options[ConfigurationOptions::TEMPLATE][ThemeConfigOptions::TEMPLATES][$name]['filename']);
     }
 
-    public function getTemplatePathForNamespace(string $namespace): string
-    {
-        return $this->fileSystem->normalizePath($this->configuration->getDestination()
-            . DIRECTORY_SEPARATOR
-            . $this->namespaceUrlFilters->namespaceUrl($namespace));
-    }
-
     public function getTemplatePathForClass(ClassReflectionInterface $element): string
     {
         return $this->fileSystem->normalizePath($this->configuration->getDestination()
@@ -105,12 +90,5 @@ final class TemplateNavigator
         return $this->fileSystem->normalizePath($this->configuration->getDestination()
             . DIRECTORY_SEPARATOR
             . $this->sourceFilters->sourceUrl($element, false));
-    }
-
-    public function getTemplatePathForAnnotationGroup(string $element): string
-    {
-        return $this->fileSystem->normalizePath($this->configuration->getDestination()
-            . DIRECTORY_SEPARATOR
-            . $this->elementUrlFactory->createForAnnotationGroup($element));
     }
 }

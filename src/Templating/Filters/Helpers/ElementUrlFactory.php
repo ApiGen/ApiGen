@@ -3,7 +3,6 @@
 namespace ApiGen\Templating\Filters\Helpers;
 
 use ApiGen\Configuration\ConfigurationOptions;
-use ApiGen\Configuration\Theme\ThemeConfigOptions;
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
@@ -104,16 +103,6 @@ final class ElementUrlFactory
         return sprintf(
             $this->configuration->getOption(ConfigurationOptions::TEMPLATE)['templates']['function']['filename'],
             Filters::urlize($function->getName())
-        );
-    }
-
-    public function createForAnnotationGroup(string $name): string
-    {
-        return sprintf(
-            $this->configuration->getOption(
-                ConfigurationOptions::TEMPLATE
-            )['templates'][ThemeConfigOptions::ANNOTATION_GROUP]['filename'],
-            Filters::urlize($name)
         );
     }
 }

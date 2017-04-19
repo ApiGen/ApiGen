@@ -65,7 +65,7 @@ class NamespaceUrlFilters extends Filters
     {
         return sprintf(
             $this->configuration->getOption(ConfigurationOptions::TEMPLATE)['templates']['namespace']['filename'],
-            $this->urlize($name)
+            Filters::urlize($name)
         );
     }
 }
