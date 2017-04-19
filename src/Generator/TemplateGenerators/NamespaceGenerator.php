@@ -40,9 +40,15 @@ final class NamespaceGenerator implements TemplateGeneratorInterface, StepCounte
 
     public function generate(): void
     {
-        foreach ($this->elementStorage->getNamespaces() as $name => $namespace) {
+        foreach ($this->elementStorage->getNamespaces() as $name => $namespaceElements) {
             $template = $this->templateFactory->createNamedForElement(TemplateFactory::ELEMENT_NAMESPACE, $name);
-            $this->loadTemplateWithNamespace($template, $name, $namespace);
+
+            $template->setParameters([
+                'namespace' => $name,
+                'subnamespaces' => $this->getSubnamesForName($name, $template->getParameters()['namespaces'])
+            ]);
+
+            $this->loadTemplateWithNamespace($template, $namespaceElements);
             $template->save();
 
             $this->eventDispatcher->dispatch(GenerateProgressEvent::class);
@@ -56,16 +62,10 @@ final class NamespaceGenerator implements TemplateGeneratorInterface, StepCounte
 
     /**
      * @param Template $template
-     * @param string $name
      * @param mixed[] $elementsInNamespace
      */
-    public function loadTemplateWithNamespace(Template $template, string $name, array $elementsInNamespace): void
+    private function loadTemplateWithNamespace(Template $template, array $elementsInNamespace): void
     {
-        $template->setParameters([
-            'namespace' => $name,
-            'subnamespaces' => $this->getSubnamesForName($name, $template->getParameters()['namespaces'])
-        ]);
-
         $template->setParameters([
             Elements::CLASSES => $elementsInNamespace[Elements::CLASSES],
             Elements::INTERFACES => $elementsInNamespace[Elements::INTERFACES],

@@ -2,7 +2,6 @@
 
 namespace ApiGen\Tests\ApiGen\Generator\TemplateGenerators;
 
-use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Parser\ParserInterface;
 use ApiGen\Generator\TemplateGenerators\ClassGenerator;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
@@ -16,13 +15,6 @@ final class ClassGeneratorTest extends AbstractContainerAwareTestCase
 
     protected function setUp(): void
     {
-        /** @var ConfigurationInterface $configuration */
-        $configuration = $this->container->getByType(ConfigurationInterface::class);
-        $configuration->resolveOptions([
-            'source' => [__DIR__],
-            'destination' => TEMP_DIR
-        ]);
-
         /** @var ParserInterface $parser */
         $parser = $this->container->getByType(ParserInterface::class);
         $parser->parseDirectories([__DIR__ . '/Source']);
