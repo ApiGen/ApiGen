@@ -12,11 +12,6 @@ final class ThemeConfigOptions
     /**
      * @var string
      */
-    public const COMBINED = 'combined';
-
-    /**
-     * @var string
-     */
     public const ELEMENT_LIST = 'elementlist';
 
     /**

@@ -23,10 +23,6 @@ final class ThemeConfigOptionsResolver extends Nette\Object
                 'filename' => 'index.html',
                 'template' => 'overview.latte'
             ],
-            ThemeConfigOptions::COMBINED => [
-                'filename' => 'resources/combined.js',
-                'template' => 'combined.js.latte'
-            ],
             ThemeConfigOptions::ELEMENT_LIST => [
                 'filename' => 'elementlist.js',
                 'template' => 'elementlist.js.latte'

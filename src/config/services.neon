@@ -22,7 +22,6 @@
 - ApiGen\Generator\EventSubscriber\ProgressBarSubscriber
 - ApiGen\Generator\GeneratorQueue
 # intentionally first to collect output from other generators
-g1: ApiGen\Generator\TemplateGenerators\CombinedGenerator
 g2: ApiGen\Generator\TemplateGenerators\AnnotationGroupsGenerator
 g3: ApiGen\Generator\TemplateGenerators\ElementListGenerator
 g4: ApiGen\Generator\TemplateGenerators\OverviewGenerator
