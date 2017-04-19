@@ -2,7 +2,6 @@
 
 namespace ApiGen\Tests\ApiGen\Generator\TemplateGenerators;
 
-use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Parser\ParserInterface;
 use ApiGen\Generator\TemplateGenerators\NamespaceGenerator;
 use ApiGen\Generator\TemplateGenerators\TraitGenerator;
