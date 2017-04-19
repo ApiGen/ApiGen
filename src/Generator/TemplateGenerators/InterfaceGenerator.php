@@ -12,7 +12,7 @@ use ApiGen\Generator\TemplateGenerators\Loaders\NamespaceLoader;
 use ApiGen\Templating\Template;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-final class ClassElementGenerator implements TemplateGeneratorInterface, StepCounterInterface
+final class InterfaceGenerator implements TemplateGeneratorInterface, StepCounterInterface
 {
     /**
      * @var TemplateFactoryInterface
@@ -48,15 +48,7 @@ final class ClassElementGenerator implements TemplateGeneratorInterface, StepCou
 
     public function generate(): void
     {
-        foreach ($this->elementStorage->getClasses() as $name => $classReflection) {
-            $template = $this->templateFactory->createForReflection($classReflection);
-            $this->loadTemplateWithParameters($template, $classReflection);
-            $template->save();
-
-            $this->eventDispatcher->dispatch(GenerateProgressEvent::class);
-        }
-
-        foreach ($this->elementStorage->getExceptions() as $name => $classReflection) {
+        foreach ($this->elementStorage->getInterfaces() as $name => $classReflection) {
             $template = $this->templateFactory->createForReflection($classReflection);
             $this->loadTemplateWithParameters($template, $classReflection);
             $template->save();
@@ -67,20 +59,19 @@ final class ClassElementGenerator implements TemplateGeneratorInterface, StepCou
 
     public function getStepCount(): int
     {
-        return count($this->elementStorage->getClasses())
-            + count($this->elementStorage->getExceptions());
+        return count($this->elementStorage->getInterfaces());
     }
 
     private function loadTemplateWithParameters(Template $template, ClassReflectionInterface $class): void
     {
         $template = $this->namespaceLoader->loadTemplateWithElementNamespace($template, $class);
         $template->setParameters([
-            'class' => $class,
+            'interface' => $class,
             'tree' => array_merge(array_reverse($class->getParentClasses()), [$class]),
 
-            // class
-            'directSubClasses' => $class->getDirectSubClasses(),
-            'indirectSubClasses' => $class->getIndirectSubClasses(),
+            // interface
+            'directImplementers' => $class->getDirectImplementers(),
+            'indirectImplementers' => $class->getIndirectImplementers(),
         ]);
     }
 }

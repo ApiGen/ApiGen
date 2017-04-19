@@ -31,6 +31,8 @@ g5: ApiGen\Generator\TemplateGenerators\SourceCodeGenerator
 g6: ApiGen\Generator\TemplateGenerators\ClassElementGenerator
 g7: ApiGen\Generator\TemplateGenerators\FunctionElementGenerator
 g8: ApiGen\Generator\TemplateGenerators\NamespaceGenerator
+- ApiGen\Generator\TemplateGenerators\TraitGenerator
+- ApiGen\Generator\TemplateGenerators\InterfaceGenerator
 - ApiGen\Generator\TemplateGenerators\Loaders\NamespaceLoader
 
 # Templating
