@@ -8,7 +8,6 @@ use ApiGen\Contracts\Parser\Elements\ElementStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Templating\TemplateFactory\TemplateFactoryInterface;
 use ApiGen\Generator\Event\GenerateProgressEvent;
-use ApiGen\Generator\TemplateGenerators\Loaders\NamespaceLoader;
 use ApiGen\Templating\Template;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -25,11 +24,6 @@ final class InterfaceGenerator implements TemplateGeneratorInterface, StepCounte
     private $elementStorage;
 
     /**
-     * @var NamespaceLoader
-     */
-    private $namespaceLoader;
-
-    /**
      * @var EventDispatcherInterface
      */
     private $eventDispatcher;
@@ -37,12 +31,10 @@ final class InterfaceGenerator implements TemplateGeneratorInterface, StepCounte
     public function __construct(
         TemplateFactoryInterface $templateFactory,
         ElementStorageInterface $elementStorage,
-        NamespaceLoader $namespaceLoader,
         EventDispatcherInterface $eventDispatcher
     ) {
         $this->templateFactory = $templateFactory;
         $this->elementStorage = $elementStorage;
-        $this->namespaceLoader = $namespaceLoader;
         $this->eventDispatcher = $eventDispatcher;
     }
 
@@ -64,7 +56,6 @@ final class InterfaceGenerator implements TemplateGeneratorInterface, StepCounte
 
     private function loadTemplateWithParameters(Template $template, ClassReflectionInterface $interface): void
     {
-        $template = $this->namespaceLoader->loadTemplateWithElementNamespace($template, $interface);
         $template->setParameters([
             'interface' => $interface,
             'tree' => array_merge(array_reverse($interface->getParentClasses()), [$interface]),

@@ -10,7 +10,6 @@ use ApiGen\Contracts\Parser\Elements\ElementStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
 use ApiGen\Generator\Event\GenerateProgressEvent;
 use ApiGen\Generator\Resolvers\RelativePathResolver;
-use ApiGen\Generator\TemplateGenerators\Loaders\NamespaceLoader;
 use ApiGen\Parser\Reflection\AbstractReflection;
 use ApiGen\Templating\TemplateFactory;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -42,25 +41,18 @@ final class SourceCodeGenerator implements TemplateGeneratorInterface, StepCount
      */
     private $eventDispatcher;
 
-    /**
-     * @var NamespaceLoader
-     */
-    protected $namespaceLoader;
-
     public function __construct(
         ElementStorageInterface $elementStorage,
         TemplateFactory $templateFactory,
         RelativePathResolver $relativePathResolver,
         SourceCodeHighlighterInterface $sourceCodeHighlighter,
-        EventDispatcherInterface $eventDispatcher,
-        NamespaceLoader $namespaceLoader
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->elementStorage = $elementStorage;
         $this->templateFactory = $templateFactory;
         $this->relativePathResolver = $relativePathResolver;
         $this->sourceCodeHighlighter = $sourceCodeHighlighter;
         $this->eventDispatcher = $eventDispatcher;
-        $this->namespaceLoader = $namespaceLoader;
     }
 
     public function generate(): void
@@ -92,7 +84,6 @@ final class SourceCodeGenerator implements TemplateGeneratorInterface, StepCount
     private function generateForElement(ElementReflectionInterface $element): void
     {
         $template = $this->templateFactory->createNamedForElement(ThemeConfigOptions::SOURCE, $element);
-        $template = $this->namespaceLoader->loadTemplateWithElementNamespace($template, $element);
         $template->setParameters([
             'fileName' => $this->relativePathResolver->getRelativePath($element->getFileName()),
             'source' => $this->getHighlightedCodeFromElement($element)

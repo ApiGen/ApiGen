@@ -48,7 +48,9 @@ final class NamespaceGenerator implements TemplateGeneratorInterface, StepCounte
     {
         foreach ($this->elementStorage->getNamespaces() as $name => $namespace) {
             $template = $this->templateFactory->createNamedForElement(TemplateFactory::ELEMENT_NAMESPACE, $name);
+
             $this->namespaceLoader->loadTemplateWithNamespace($template, $name, $namespace);
+
             $template->save();
 
             $this->eventDispatcher->dispatch(GenerateProgressEvent::class);

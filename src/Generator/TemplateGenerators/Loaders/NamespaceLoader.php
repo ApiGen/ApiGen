@@ -43,14 +43,14 @@ final class NamespaceLoader
             'namespace' => $name,
             'subnamespaces' => $this->getSubnamesForName($name, $template->getParameters()['namespaces'])
         ]);
-        $this->loadTemplateWithElements($template, $namespace);
+        $this->loadTemplateWithElementsInNamespace($template, $namespace);
     }
 
     /**
      * @param Template $template
      * @param mixed[] $elements
      */
-    private function loadTemplateWithElements(Template $template, array $elements): void
+    private function loadTemplateWithElementsInNamespace(Template $template, array $elements): void
     {
         $template->setParameters([
             Elements::CLASSES => $elements[Elements::CLASSES],
