@@ -38,25 +38,25 @@ final class TraitGenerator implements TemplateGeneratorInterface
 
     public function generate(): void
     {
-        foreach ($this->elementStorage->getTraits() as $name => $traitReflection) {
+        foreach ($this->elementStorage->getTraits() as $traitName => $traitReflection) {
             $template = $this->templateFactory->createForReflection($traitReflection);
 
             // $template->setPath()
 
-            $template->save($this->getDestinationPath($traitReflection), [
+            $template->save($this->getDestinationPath($traitName), [
                 'trait' => $traitReflection,
                 'tree' => array_merge(array_reverse($traitReflection->getParentClasses()), [$traitReflection]),
             ]);
         }
     }
 
-    private function getDestinationPath(ClassReflectionInterface $traitReflection): string
+    private function getDestinationPath(string $traitName): string
     {
         return $this->configuration->getDestination()
             . DIRECTORY_SEPARATOR
             . sprintf(
                 'trait-%s.html',
-                UrlFilters::urlize($traitReflection->getName())
+                UrlFilters::urlize($traitName)
             );
     }
 }

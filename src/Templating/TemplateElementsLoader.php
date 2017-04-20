@@ -54,7 +54,6 @@ final class TemplateElementsLoader
                 'annotationGroups' => $this->configuration->getOption(ConfigurationOptions::ANNOTATION_GROUPS),
                 'namespace' => null,
                 'class' => null,
-                'constant' => null,
                 'function' => null,
                 'namespaces' => array_keys($this->elementStorage->getNamespaces()),
                 'classes' => array_filter($this->elementStorage->getClasses()),

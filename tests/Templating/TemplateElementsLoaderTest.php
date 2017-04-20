@@ -38,7 +38,6 @@ final class TemplateElementsLoaderTest extends AbstractContainerAwareTestCase
         $parameters = $template->getParameters();
         $this->assertArrayHasKey('namespace', $parameters);
         $this->assertArrayHasKey('class', $parameters);
-        $this->assertArrayHasKey('constant', $parameters);
         $this->assertArrayHasKey('function', $parameters);
         $this->assertArrayHasKey('namespaces', $parameters);
         $this->assertArrayHasKey('classes', $parameters);
