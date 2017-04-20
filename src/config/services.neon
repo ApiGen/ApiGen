@@ -36,7 +36,6 @@
 # Templating
 - ApiGen\Templating\TemplateElementsLoader
 - ApiGen\Templating\TemplateFactory
-- ApiGen\Templating\TemplateNavigator
 - ApiGen\Templating\Filters\Helpers\ElementLinkFactory
 - ApiGen\Templating\Filters\Helpers\ElementUrlFactory
 - ApiGen\Templating\Filters\Helpers\LinkBuilder
