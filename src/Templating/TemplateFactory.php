@@ -21,11 +21,6 @@ final class TemplateFactory implements TemplateFactoryInterface
     public const ELEMENT_SOURCE = 'source';
 
     /**
-     * @var string
-     */
-    public const ELEMENT_NAMESPACE = 'namespace';
-
-    /**
      * @var Latte\Engine
      */
     private $latteEngine;
@@ -103,10 +98,6 @@ final class TemplateFactory implements TemplateFactoryInterface
 
         if ($name === self::ELEMENT_SOURCE) {
             $template->setSavePath($this->templateNavigator->getTemplatePathForSourceElement($element));
-            return $template;
-        }
-
-        if ($name === self::ELEMENT_NAMESPACE) {
             return $template;
         }
 

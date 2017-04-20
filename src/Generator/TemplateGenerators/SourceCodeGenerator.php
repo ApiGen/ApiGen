@@ -94,6 +94,7 @@ final class SourceCodeGenerator implements TemplateGeneratorInterface, StepCount
     private function getHighlightedCodeFromElement(AbstractReflection $element): string
     {
         $content = file_get_contents($element->getFileName());
+
         return $this->sourceCodeHighlighter->highlightAndAddLineNumbers($content);
     }
 }

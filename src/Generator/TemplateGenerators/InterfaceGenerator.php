@@ -3,17 +3,13 @@
 namespace ApiGen\Generator\TemplateGenerators;
 
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
-use ApiGen\Contracts\Generator\StepCounterInterface;
 use ApiGen\Contracts\Generator\TemplateGenerators\TemplateGeneratorInterface;
 use ApiGen\Contracts\Parser\Elements\ElementStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Templating\TemplateFactory\TemplateFactoryInterface;
-use ApiGen\Generator\Event\GenerateProgressEvent;
 use ApiGen\Templating\Filters\UrlFilters;
-use ApiGen\Templating\Template;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-final class InterfaceGenerator implements TemplateGeneratorInterface, StepCounterInterface
+final class InterfaceGenerator implements TemplateGeneratorInterface
 {
     /**
      * @var TemplateFactoryInterface
@@ -26,11 +22,6 @@ final class InterfaceGenerator implements TemplateGeneratorInterface, StepCounte
     private $elementStorage;
 
     /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
-
-    /**
      * @var ConfigurationInterface
      */
     private $configuration;
@@ -38,12 +29,10 @@ final class InterfaceGenerator implements TemplateGeneratorInterface, StepCounte
     public function __construct(
         TemplateFactoryInterface $templateFactory,
         ElementStorageInterface $elementStorage,
-        EventDispatcherInterface $eventDispatcher,
         ConfigurationInterface $configuration
     ) {
         $this->templateFactory = $templateFactory;
         $this->elementStorage = $elementStorage;
-        $this->eventDispatcher = $eventDispatcher;
         $this->configuration = $configuration;
     }
 
@@ -51,17 +40,12 @@ final class InterfaceGenerator implements TemplateGeneratorInterface, StepCounte
     {
         foreach ($this->elementStorage->getInterfaces() as $name => $interfaceReflection) {
             $template = $this->templateFactory->createForReflection($interfaceReflection);
-            $this->loadTemplateWithParameters($template, $interfaceReflection);
 
-            $template->save($this->getDestinationPath($interfaceReflection));
-
-            $this->eventDispatcher->dispatch(GenerateProgressEvent::class);
+            $template->save($this->getDestinationPath($interfaceReflection), [
+                'interface' => $interfaceReflection,
+                'tree' => array_merge(array_reverse($interfaceReflection->getParentClasses()), [$interfaceReflection]),
+            ]);
         }
-    }
-
-    public function getStepCount(): int
-    {
-        return count($this->elementStorage->getInterfaces());
     }
 
     private function getDestinationPath(ClassReflectionInterface $interfaceReflection): string
@@ -74,13 +58,5 @@ final class InterfaceGenerator implements TemplateGeneratorInterface, StepCounte
         return $this->configuration->getDestination()
             . DIRECTORY_SEPARATOR
             . $fileName;
-    }
-
-    private function loadTemplateWithParameters(Template $template, ClassReflectionInterface $interface): void
-    {
-        $template->setParameters([
-            'interface' => $interface,
-            'tree' => array_merge(array_reverse($interface->getParentClasses()), [$interface]),
-        ]);
     }
 }

@@ -64,7 +64,8 @@ class NamespaceUrlFilters extends Filters
     public function namespaceUrl(string $name): string
     {
         return sprintf(
-            $this->configuration->getOption(ConfigurationOptions::TEMPLATE)['templates']['namespace']['filename'],
+            'namespace-%s.html',
+//            $this->configuration->getOption(ConfigurationOptions::TEMPLATE)['templates']['namespace']['filename'],
             Filters::urlize($name)
         );
     }

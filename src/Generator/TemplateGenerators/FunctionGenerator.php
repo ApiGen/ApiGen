@@ -3,16 +3,13 @@
 namespace ApiGen\Generator\TemplateGenerators;
 
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
-use ApiGen\Contracts\Generator\StepCounterInterface;
 use ApiGen\Contracts\Generator\TemplateGenerators\TemplateGeneratorInterface;
 use ApiGen\Contracts\Parser\Elements\ElementStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Contracts\Templating\TemplateFactory\TemplateFactoryInterface;
-use ApiGen\Generator\Event\GenerateProgressEvent;
 use ApiGen\Templating\Filters\Filters;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-final class FunctionGenerator implements TemplateGeneratorInterface, StepCounterInterface
+final class FunctionGenerator implements TemplateGeneratorInterface
 {
     /**
      * @var TemplateFactoryInterface
@@ -25,11 +22,6 @@ final class FunctionGenerator implements TemplateGeneratorInterface, StepCounter
     private $elementStorage;
 
     /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
-
-    /**
      * @var ConfigurationInterface
      */
     private $configuration;
@@ -37,42 +29,43 @@ final class FunctionGenerator implements TemplateGeneratorInterface, StepCounter
     public function __construct(
         TemplateFactoryInterface $templateFactory,
         ElementStorageInterface $elementStorage,
-        EventDispatcherInterface $eventDispatcher,
         ConfigurationInterface $configuration
     ) {
         $this->templateFactory = $templateFactory;
         $this->elementStorage = $elementStorage;
-        $this->eventDispatcher = $eventDispatcher;
         $this->configuration = $configuration;
     }
 
     public function generate(): void
     {
-        foreach ($this->elementStorage->getFunctions() as $name => $reflectionFunction) {
-            $template = $this->templateFactory->createForReflection($reflectionFunction);
-
-            $template->setParameters([
-                'function' => $reflectionFunction
-            ]);
-
-            $template->save($this->getDestination($reflectionFunction));
-
-            $this->eventDispatcher->dispatch(GenerateProgressEvent::class);
+        foreach ($this->elementStorage->getFunctions() as $reflectionFunction) {
+            $this->generateForFunction($reflectionFunction);
         }
     }
 
-    public function getStepCount(): int
+    private function getTemplateFile(): string
     {
-        return count($this->elementStorage->getFunctions());
+        return $this->configuration->getTemplatesDirectory()
+            . DIRECTORY_SEPARATOR
+            . 'function.latte';
     }
 
     private function getDestination(FunctionReflectionInterface $reflectionFunction): string
     {
         return $this->configuration->getDestination()
             . DIRECTORY_SEPARATOR
-            . Filters::urlize(sprintf(
+            . sprintf(
                 'function-%s.html',
-                $reflectionFunction->getName()
-            ));
+                Filters::urlize($reflectionFunction->getName())
+            );
+    }
+
+    private function generateForFunction(FunctionReflectionInterface $reflectionFunction): void
+    {
+        $template = $this->templateFactory->createForReflection($reflectionFunction);
+        $template->setFile($this->getTemplateFile());
+        $template->save($this->getDestination($reflectionFunction), [
+            'function' => $reflectionFunction
+        ]);
     }
 }

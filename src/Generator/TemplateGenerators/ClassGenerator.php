@@ -3,17 +3,13 @@
 namespace ApiGen\Generator\TemplateGenerators;
 
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
-use ApiGen\Contracts\Generator\StepCounterInterface;
 use ApiGen\Contracts\Generator\TemplateGenerators\TemplateGeneratorInterface;
 use ApiGen\Contracts\Parser\Elements\ElementStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Templating\TemplateFactory\TemplateFactoryInterface;
-use ApiGen\Generator\Event\GenerateProgressEvent;
 use ApiGen\Templating\Filters\UrlFilters;
-use ApiGen\Templating\Template;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-final class ClassGenerator implements TemplateGeneratorInterface, StepCounterInterface
+final class ClassGenerator implements TemplateGeneratorInterface
 {
     /**
      * @var TemplateFactoryInterface
@@ -26,11 +22,6 @@ final class ClassGenerator implements TemplateGeneratorInterface, StepCounterInt
     private $elementStorage;
 
     /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
-
-    /**
      * @var ConfigurationInterface
      */
     private $configuration;
@@ -38,49 +29,37 @@ final class ClassGenerator implements TemplateGeneratorInterface, StepCounterInt
     public function __construct(
         TemplateFactoryInterface $templateFactory,
         ElementStorageInterface $elementStorage,
-        EventDispatcherInterface $eventDispatcher,
         ConfigurationInterface $configuration
     ) {
         $this->templateFactory = $templateFactory;
         $this->elementStorage = $elementStorage;
-        $this->eventDispatcher = $eventDispatcher;
         $this->configuration = $configuration;
     }
 
     public function generate(): void
     {
-        foreach ($this->elementStorage->getClasses() as $name => $classReflection) {
-            $template = $this->templateFactory->createForReflection($classReflection);
-            $this->loadTemplateWithParameters($template, $classReflection);
-
-            $template->save($this->getDestinationPath($classReflection));
-
-            $this->eventDispatcher->dispatch(GenerateProgressEvent::class);
+        foreach ($this->elementStorage->getClasses() as $classReflection) {
+            $this->generateForClass($classReflection);
         }
     }
 
-    public function getStepCount(): int
+    private function generateForClass(ClassReflectionInterface $classReflection): void
     {
-        return count($this->elementStorage->getClasses());
+        $template = $this->templateFactory->createForReflection($classReflection);
+
+        $template->save($this->getDestinationPath($classReflection), [
+            'class' => $classReflection,
+            'tree' => array_merge(array_reverse($classReflection->getParentClasses()), [$classReflection]),
+        ]);
     }
 
     private function getDestinationPath(ClassReflectionInterface $classReflection): string
     {
-        $fileName = sprintf(
-            'class-%s.html',
-            UrlFilters::urlize($classReflection->getName())
-        );
-
         return $this->configuration->getDestination()
             . DIRECTORY_SEPARATOR
-            . $fileName;
-    }
-
-    private function loadTemplateWithParameters(Template $template, ClassReflectionInterface $class): void
-    {
-        $template->setParameters([
-            'class' => $class,
-            'tree' => array_merge(array_reverse($class->getParentClasses()), [$class]),
-        ]);
+            . sprintf(
+                'class-%s.html',
+                UrlFilters::urlize($classReflection->getName())
+            );
     }
 }

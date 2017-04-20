@@ -7,16 +7,6 @@ final class ThemeConfigOptions
     /**
      * @var string
      */
-    public const OVERVIEW = 'overview';
-
-    /**
-     * @var string
-     */
-    public const ELEMENT_LIST = 'elementlist';
-
-    /**
-     * @var string
-     */
     public const T_NAMESPACE = 'namespace';
 
     /**

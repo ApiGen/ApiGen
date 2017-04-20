@@ -2,7 +2,7 @@
 
 namespace ApiGen\Generator\TemplateGenerators;
 
-use ApiGen\Configuration\Theme\ThemeConfigOptions;
+use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Generator\TemplateGenerators\TemplateGeneratorInterface;
 use ApiGen\Templating\TemplateFactory;
 
@@ -13,14 +13,37 @@ final class OverviewGenerator implements TemplateGeneratorInterface
      */
     private $templateFactory;
 
-    public function __construct(TemplateFactory $templateFactory)
-    {
+    /**
+     * @var ConfigurationInterface
+     */
+    private $configuration;
+
+    public function __construct(
+        TemplateFactory $templateFactory,
+        ConfigurationInterface $configuration
+    ) {
         $this->templateFactory = $templateFactory;
+        $this->configuration = $configuration;
     }
 
     public function generate(): void
     {
-        $template = $this->templateFactory->createForType(ThemeConfigOptions::OVERVIEW);
-        $template->save();
+        $template = $this->templateFactory->create();
+        $template->setFile($this->getTemplateFile());
+        $template->save($this->createFileDestination());
+    }
+
+    private function getTemplateFile(): string
+    {
+        return $this->configuration->getTemplatesDirectory()
+            . DIRECTORY_SEPARATOR
+            . 'overview.latte';
+    }
+
+    private function createFileDestination(): string
+    {
+        return $this->configuration->getDestination()
+            . DIRECTORY_SEPARATOR
+            . 'index.html';
     }
 }

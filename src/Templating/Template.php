@@ -57,7 +57,11 @@ final class Template
         $this->savePath = $savePath;
     }
 
-    public function save(?string $file = null): void
+    /**
+     * @param null|string $file
+     * @param mixed[] $parameters
+     */
+    public function save(?string $file = null, array $parameters = []): void
     {
         $this->savePath = $file ?: $this->savePath;
         $dir = dirname($this->savePath);
@@ -66,7 +70,8 @@ final class Template
             mkdir($dir, 0755, true);
         }
 
-        $content = $this->latteEngine->renderToString($this->file, $this->parameters);
+        $parameters = array_merge($this->parameters, $parameters);
+        $content = $this->latteEngine->renderToString($this->file, $parameters);
         file_put_contents($this->savePath, $content);
     }
 }

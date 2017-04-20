@@ -19,18 +19,6 @@ final class ThemeConfigOptionsResolver extends Nette\Object
             'resources' => 'resources'
         ],
         ThemeConfigOptions::TEMPLATES => [
-            ThemeConfigOptions::OVERVIEW => [
-                'filename' => 'index.html',
-                'template' => 'overview.latte'
-            ],
-            ThemeConfigOptions::ELEMENT_LIST => [
-                'filename' => 'elementlist.js',
-                'template' => 'elementlist.js.latte'
-            ],
-            ThemeConfigOptions::T_NAMESPACE => [
-                'filename' => 'namespace-%s.html',
-                'template' => 'namespace.latte'
-            ],
             ThemeConfigOptions::T_CLASS => [
                 'filename' => 'class-%s.html',
                 'template' => 'class.latte'
