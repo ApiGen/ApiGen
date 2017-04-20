@@ -7,7 +7,7 @@ use Latte\Engine;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
-class TemplateTest extends TestCase
+final class TemplateTest extends TestCase
 {
     /**
      * @var Template

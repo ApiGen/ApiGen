@@ -55,11 +55,19 @@ final class ClassGenerator implements NamedDestinationGeneratorInterface
 
     private function generateForClass(ClassReflectionInterface $classReflection): void
     {
-        $template = $this->templateFactory->createForReflection($classReflection);
+        $template = $this->templateFactory->create();
+        $template->setFile($this->getTemplateFile());
 
         $template->save($this->getDestinationPath($classReflection->getName()), [
             'class' => $classReflection,
             'tree' => array_merge(array_reverse($classReflection->getParentClasses()), [$classReflection]),
         ]);
+    }
+
+    private function getTemplateFile(): string
+    {
+        return $this->configuration->getTemplatesDirectory()
+            . DIRECTORY_SEPARATOR
+            . 'class.latte';
     }
 }

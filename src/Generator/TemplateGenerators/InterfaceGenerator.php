@@ -5,6 +5,7 @@ namespace ApiGen\Generator\TemplateGenerators;
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Generator\NamedDestinationGeneratorInterface;
 use ApiGen\Contracts\Parser\Elements\ElementStorageInterface;
+use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Templating\TemplateFactory\TemplateFactoryInterface;
 use ApiGen\Templating\Filters\UrlFilters;
 
@@ -37,15 +38,8 @@ final class InterfaceGenerator implements NamedDestinationGeneratorInterface
 
     public function generate(): void
     {
-        foreach ($this->elementStorage->getInterfaces() as $name => $interfaceReflection) {
-            $template = $this->templateFactory->createForReflection($interfaceReflection);
-
-            // @todo: set path
-
-            $template->save($this->getDestinationPath($interfaceReflection->getName()), [
-                'interface' => $interfaceReflection,
-                'tree' => array_merge(array_reverse($interfaceReflection->getParentClasses()), [$interfaceReflection]),
-            ]);
+        foreach ($this->elementStorage->getInterfaces() as $interfaceReflection) {
+            $this->generateForInterface($interfaceReflection);
         }
     }
 
@@ -57,5 +51,23 @@ final class InterfaceGenerator implements NamedDestinationGeneratorInterface
                 'interface-%s.html',
                 UrlFilters::urlize($interfaceName)
             );
+    }
+
+    private function generateForInterface(ClassReflectionInterface $interfaceReflection): void
+    {
+        $template = $this->templateFactory->create();
+        $template->setFile($this->getTemplateFile());
+
+        $template->save($this->getDestinationPath($interfaceReflection->getName()), [
+            'interface' => $interfaceReflection,
+            'tree' => array_merge(array_reverse($interfaceReflection->getParentClasses()), [$interfaceReflection]),
+        ]);
+    }
+
+    private function getTemplateFile(): string
+    {
+        return $this->configuration->getTemplatesDirectory()
+            . DIRECTORY_SEPARATOR
+            . 'interface.latte';
     }
 }

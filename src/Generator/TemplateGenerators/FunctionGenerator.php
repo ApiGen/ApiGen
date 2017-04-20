@@ -55,8 +55,9 @@ final class FunctionGenerator implements NamedDestinationGeneratorInterface
 
     private function generateForFunction(FunctionReflectionInterface $reflectionFunction): void
     {
-        $template = $this->templateFactory->createForReflection($reflectionFunction);
+        $template = $this->templateFactory->create();
         $template->setFile($this->getTemplateFile());
+
         $template->save($this->getDestinationPath($reflectionFunction->getName()), [
             'function' => $reflectionFunction
         ]);

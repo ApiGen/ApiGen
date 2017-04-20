@@ -3,19 +3,14 @@
 namespace ApiGen\Tests\Templating;
 
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
-use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Contracts\Templating\TemplateFactory\TemplateFactoryInterface;
 use ApiGen\Templating\Template;
-use ApiGen\Templating\TemplateFactory;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
-use ApiGen\Tests\MethodInvoker;
 
 final class TemplateFactoryTest extends AbstractContainerAwareTestCase
 {
     /**
-     * @var TemplateFactory
+     * @var TemplateFactoryInterface
      */
     private $templateFactory;
 
@@ -34,27 +29,5 @@ final class TemplateFactoryTest extends AbstractContainerAwareTestCase
     public function testCreate(): void
     {
         $this->assertInstanceOf(Template::class, $this->templateFactory->create());
-    }
-
-    public function testCreateForReflection(): void
-    {
-        $reflectionClassMock = $this->createMock(ClassReflectionInterface::class);
-        $template = $this->templateFactory->createForReflection($reflectionClassMock);
-        $this->assertInstanceOf(Template::class, $template);
-
-        $reflectionConstantMock = $this->createMock(ConstantReflectionInterface::class);
-        $template = $this->templateFactory->createForReflection($reflectionConstantMock);
-        $this->assertInstanceOf(Template::class, $template);
-
-        $reflectionFunctionMock = $this->createMock(FunctionReflectionInterface::class);
-        $template = $this->templateFactory->createForReflection($reflectionFunctionMock);
-        $this->assertInstanceOf(Template::class, $template);
-    }
-
-    public function testBuildTemplateCache(): void
-    {
-        $template = MethodInvoker::callMethodOnObject($this->templateFactory, 'create');
-        $template2 = MethodInvoker::callMethodOnObject($this->templateFactory, 'create');
-        $this->assertSame($template, $template2);
     }
 }

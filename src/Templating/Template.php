@@ -16,11 +16,6 @@ final class Template
     /**
      * @var string
      */
-    private $savePath;
-
-    /**
-     * @var string
-     */
     private $file;
 
     /**
@@ -60,32 +55,25 @@ final class Template
         $this->parameters = $parameters + $this->parameters;
     }
 
-    public function setSavePath(string $savePath): void
-    {
-        $this->savePath = $savePath;
-    }
-
     /**
-     * @param null|string $file
+     * @param string $fileDestination
      * @param mixed[] $parameters
      */
-    public function save(?string $file = null, array $parameters = []): void
+    public function save(string $fileDestination, array $parameters = []): void
     {
-        $this->savePath = $file ?: $this->savePath;
-        $dir = dirname($this->savePath);
-
-        $this->ensureDirectoryExists($dir);
+        $this->ensureDirectoryExists($fileDestination);
 
         $parameters = array_merge($this->parameters, $parameters);
-        file_put_contents($this->savePath, $this->latteEngine->renderToString($this->file, $parameters));
+        file_put_contents($fileDestination, $this->latteEngine->renderToString($this->file, $parameters));
 
         $this->eventDispatcher->dispatch(GenerateProgressEvent::class);
     }
 
-    private function ensureDirectoryExists(string $dir): void
+    private function ensureDirectoryExists(string $destination): void
     {
-        if (!is_dir($dir)) {
-            mkdir($dir, 0755, true);
+        $directory = dirname($destination);
+        if (! is_dir($directory)) {
+            mkdir($directory, 0755, true);
         }
     }
 }

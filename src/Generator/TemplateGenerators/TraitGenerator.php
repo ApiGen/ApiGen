@@ -55,13 +55,19 @@ final class TraitGenerator implements NamedDestinationGeneratorInterface
 
     private function generateForTrait(ClassReflectionInterface $traitReflection): void
     {
-        $template = $this->templateFactory->createForReflection($traitReflection);
-
-        // @todo: $template->setPath()
+        $template = $this->templateFactory->create();
+        $template->setFile($this->getTemplateFile());
 
         $template->save($this->getDestinationPath($traitReflection->getName()), [
             'trait' => $traitReflection,
             'tree' => array_merge(array_reverse($traitReflection->getParentClasses()), [$traitReflection]),
         ]);
+    }
+
+    private function getTemplateFile(): string
+    {
+        return $this->configuration->getTemplatesDirectory()
+            . DIRECTORY_SEPARATOR
+            . 'trait.latte';
     }
 }
