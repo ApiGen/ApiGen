@@ -56,7 +56,7 @@ final class SourceFilters extends Filters
 
         $file .= self::urlize($elementName);
 
-        $url = sprintf($this->configuration->getOption('template')['templates']['source']['filename'], $file);
+        $url = sprintf('source-%s.html', $file);
         if ($withLine) {
             $url .= $this->getElementLinesAnchor($element);
         }

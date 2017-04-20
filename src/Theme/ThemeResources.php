@@ -2,7 +2,6 @@
 
 namespace ApiGen\Theme;
 
-use ApiGen\Configuration\ConfigurationOptions;
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Utils\FileSystem;
 
@@ -24,9 +23,12 @@ final class ThemeResources
         $this->fileSystem = $fileSystem;
     }
 
+    // todo: move to filesystem...
     public function copyToDestination(string $destination): void
     {
-        $resources = $this->configuration->getOption(ConfigurationOptions::TEMPLATE)['resources'];
-        $this->fileSystem->copy($resources, $destination);
+        $this->fileSystem->copyDirectory(
+            $this->configuration->getTemplatesDirectory() . DIRECTORY_SEPARATOR . 'resources',
+            $destination . DIRECTORY_SEPARATOR . 'resources'
+        );
     }
 }

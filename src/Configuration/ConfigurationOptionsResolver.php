@@ -3,7 +3,6 @@
 namespace ApiGen\Configuration;
 
 use ApiGen\Configuration\Exceptions\ConfigurationException;
-use ApiGen\Configuration\Theme\ThemeConfigFactory;
 use ApiGen\Utils\FileSystem;
 use ReflectionProperty;
 use Symfony\Component\OptionsResolver\Options;
@@ -45,13 +44,8 @@ final class ConfigurationOptionsResolver
         ConfigurationOptions::BASE_URL => '',
         ConfigurationOptions::CONFIG => '',
         ConfigurationOptions::FORCE_OVERWRITE => false,
-        ConfigurationOptions::TEMPLATE_CONFIG => null
+        ConfigurationOptions::THEME_DIRECTORY => null
     ];
-
-    /**
-     * @var ThemeConfigFactory
-     */
-    private $themeConfigFactory;
 
     /**
      * @var OptionsResolver
@@ -68,12 +62,8 @@ final class ConfigurationOptionsResolver
      */
     private $fileSystem;
 
-    public function __construct(
-        ThemeConfigFactory $themeConfigFactory,
-        OptionsResolverFactory $optionsResolverFactory,
-        FileSystem $fileSystem
-    ) {
-        $this->themeConfigFactory = $themeConfigFactory;
+    public function __construct(OptionsResolverFactory $optionsResolverFactory, FileSystem $fileSystem)
+    {
         $this->optionsResolverFactory = $optionsResolverFactory;
         $this->fileSystem = $fileSystem;
     }
@@ -97,14 +87,11 @@ final class ConfigurationOptionsResolver
     {
         $this->resolver->setDefaults($this->defaults);
         $this->resolver->setDefaults([
-            ConfigurationOptions::TEMPLATE => function (Options $options) {
-                $config = $options[ConfigurationOptions::TEMPLATE_CONFIG];
-                if ($config === '') {
-                    $config = getcwd() . '/packages/ThemeDefault/src/config.neon';
+            ConfigurationOptions::THEME_DIRECTORY => function (Options $options, $value) {
+                if ($value) {
+                    return $value;
                 }
-
-                return $this->themeConfigFactory->create($config)
-                    ->getOptions();
+                return getcwd() . '/packages/ThemeDefault/src';
             }
         ]);
     }
@@ -146,10 +133,11 @@ final class ConfigurationOptionsResolver
             return $this->allowedValuesForSource($source);
         });
 
-        $this->resolver->addAllowedValues(ConfigurationOptions::TEMPLATE_CONFIG, function ($value) {
-            if ($value && ! is_file($value)) {
+        $this->resolver->addAllowedValues(ConfigurationOptions::THEME_DIRECTORY, function ($value) {
+            if ($value && ! is_dir($value)) {
                 throw new ConfigurationException(sprintf(
-                    'Template config "%s" was not found.', $value
+                    'Theme directory "%s" was not found.',
+                    $value
                 ));
             }
 
@@ -187,7 +175,7 @@ final class ConfigurationOptionsResolver
             return $value;
         });
 
-        $this->resolver->setNormalizer(ConfigurationOptions::TEMPLATE_CONFIG, function (Options $options, $value) {
+        $this->resolver->setNormalizer(ConfigurationOptions::THEME_DIRECTORY, function (Options $options, $value) {
             if ($value === null) {
                 return '';
             }

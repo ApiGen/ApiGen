@@ -16,7 +16,9 @@ final class FileSystem
 
     public function forceDir(string $path): string
     {
-        @mkdir(dirname($path), 0755, true);
+        @mkdir($path, 0755, true);
+        $directory = dirname($path);
+        @mkdir($directory, 0755, true);
         return $path;
     }
 
@@ -86,6 +88,22 @@ final class FileSystem
                         . '/' . $iterator->getSubPathname()));
                 }
             }
+        }
+    }
+
+    public function copyDirectory(string $sourceDirectory, string $destinationDirectory): void
+    {
+        FileSystem::forceDir($destinationDirectory);
+
+        /** @var RecursiveDirectoryIterator $iterator */
+        $fileInfos = Finder::findFiles('*')->from($sourceDirectory)
+            ->getIterator();
+
+        foreach ($fileInfos as $fileInfo) {
+            $sourceFile = $fileInfo->getPathname();
+            $destinationFile = $destinationDirectory . DIRECTORY_SEPARATOR . $fileInfo->getFilename();
+
+            copy($sourceFile, $destinationFile);
         }
     }
 }

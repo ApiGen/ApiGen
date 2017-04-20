@@ -72,27 +72,27 @@ final class Configuration implements ConfigurationInterface
      */
     public function getAnnotationGroups(): array
     {
-        return $this->options[ConfigurationOptions::ANNOTATION_GROUPS];
+        return $this->getOptions()[ConfigurationOptions::ANNOTATION_GROUPS];
     }
 
     public function getDestination(): string
     {
-        return $this->options[ConfigurationOptions::DESTINATION];
+        return $this->getOptions()[ConfigurationOptions::DESTINATION];
     }
 
     public function getTitle(): string
     {
-        return $this->options[ConfigurationOptions::TITLE];
+        return $this->getOptions()[ConfigurationOptions::TITLE];
     }
 
     public function getBaseUrl(): string
     {
-        return $this->options[ConfigurationOptions::BASE_URL];
+        return $this->getOptions()[ConfigurationOptions::BASE_URL];
     }
 
     public function getGoogleAnalytics(): string
     {
-        return $this->options[ConfigurationOptions::GOOGLE_ANALYTICS];
+        return $this->getOptions()[ConfigurationOptions::GOOGLE_ANALYTICS];
     }
 
     /**
@@ -100,7 +100,7 @@ final class Configuration implements ConfigurationInterface
      */
     public function getSource(): array
     {
-        return $this->options[ConfigurationOptions::SOURCE];
+        return $this->getOptions()[ConfigurationOptions::SOURCE];
     }
 
     /**
@@ -121,6 +121,6 @@ final class Configuration implements ConfigurationInterface
 
     public function getTemplatesDirectory(): string
     {
-        return $this->getOption(ConfigurationOptions::TEMPLATE)['templatesPath'];
+        return $this->getOptions()[ConfigurationOptions::THEME_DIRECTORY];
     }
 }

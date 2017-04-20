@@ -12,8 +12,6 @@
 - ApiGen\Configuration\Configuration
 - ApiGen\Configuration\ConfigurationOptionsResolver
 - ApiGen\Configuration\OptionsResolverFactory
-- ApiGen\Configuration\Theme\ThemeConfigFactory
-- ApiGen\Configuration\Theme\ThemeConfigOptionsResolver
 
 # Elements
 - ApiGen\Generator\Resolvers\ElementResolver

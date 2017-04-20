@@ -57,12 +57,7 @@ final class ConfigurationOptions
     /**
      * @var string
      */
-    public const TEMPLATE = 'template';
-
-    /**
-     * @var string
-     */
-    public const TEMPLATE_CONFIG = 'templateConfig';
+    public const THEME_DIRECTORY = 'themeDirectory';
 
     /**
      * @var string
