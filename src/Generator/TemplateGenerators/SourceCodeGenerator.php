@@ -3,17 +3,15 @@
 namespace ApiGen\Generator\TemplateGenerators;
 
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
+use ApiGen\Contracts\Generator\GeneratorInterface;
 use ApiGen\Contracts\Generator\SourceCodeHighlighter\SourceCodeHighlighterInterface;
-use ApiGen\Contracts\Generator\TemplateGenerators\TemplateGeneratorInterface;
 use ApiGen\Contracts\Parser\Elements\ElementStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\TokenReflection\ReflectionInterface;
 use ApiGen\Generator\Resolvers\RelativePathResolver;
 use ApiGen\Parser\Reflection\AbstractReflection;
-use ApiGen\Templating\Filters\SourceFilters;
 use ApiGen\Templating\TemplateFactory;
 
-final class SourceCodeGenerator implements TemplateGeneratorInterface
+final class SourceCodeGenerator implements GeneratorInterface
 {
     /**
      * @var ElementStorageInterface
@@ -40,30 +38,23 @@ final class SourceCodeGenerator implements TemplateGeneratorInterface
      */
     private $configuration;
 
-    /**
-     * @var SourceFilters
-     */
-    private $sourceFilters;
-
     public function __construct(
         ElementStorageInterface $elementStorage,
         TemplateFactory $templateFactory,
         RelativePathResolver $relativePathResolver,
         SourceCodeHighlighterInterface $sourceCodeHighlighter,
-        ConfigurationInterface $configuration,
-        SourceFilters $sourceFilters
+        ConfigurationInterface $configuration
     ) {
         $this->elementStorage = $elementStorage;
         $this->templateFactory = $templateFactory;
         $this->relativePathResolver = $relativePathResolver;
         $this->sourceCodeHighlighter = $sourceCodeHighlighter;
         $this->configuration = $configuration;
-        $this->sourceFilters = $sourceFilters;
     }
 
     public function generate(): void
     {
-        foreach ($this->elementStorage->getElements() as $type => $elementList) {
+        foreach ($this->elementStorage->getElements() as $elementList) {
             foreach ($elementList as $element) {
                 /** @var ElementReflectionInterface $element */
                 $this->generateForElement($element);
@@ -78,7 +69,7 @@ final class SourceCodeGenerator implements TemplateGeneratorInterface
     {
         $template = $this->templateFactory->create();
         $template->setFile($this->getTemplateFile());
-        $template->save($this->getDestination($element), [
+        $template->save($this->getDestinationPath($element), [
             'fileName' => $this->relativePathResolver->getRelativePath($element->getFileName()),
             'source' => $this->getHighlightedCodeFromElement($element)
         ]);
@@ -87,7 +78,6 @@ final class SourceCodeGenerator implements TemplateGeneratorInterface
     private function getHighlightedCodeFromElement(AbstractReflection $element): string
     {
         $content = file_get_contents($element->getFileName());
-
         return $this->sourceCodeHighlighter->highlightAndAddLineNumbers($content);
     }
 
@@ -98,11 +88,17 @@ final class SourceCodeGenerator implements TemplateGeneratorInterface
             . 'source.latte';
     }
 
-    private function getDestination(ReflectionInterface $reflection): string
+    public function getDestinationPath(ElementReflectionInterface $name): string
     {
+        dump($name);
+        die;
+//        'source-class-%s.html'
+//        'source-function-%s.html'
         return $this->configuration->getDestination()
             . DIRECTORY_SEPARATOR
-            . $this->sourceFilters->sourceUrl($reflection, false)
+            . sprintf(
+
+            )
         ;
     }
 }

@@ -3,13 +3,13 @@
 namespace ApiGen\Generator\TemplateGenerators;
 
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
-use ApiGen\Contracts\Generator\TemplateGenerators\TemplateGeneratorInterface;
+use ApiGen\Contracts\Generator\NamedDestinationGeneratorInterface;
 use ApiGen\Contracts\Parser\Elements\ElementStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Templating\TemplateFactory\TemplateFactoryInterface;
 use ApiGen\Templating\Filters\UrlFilters;
 
-final class ClassGenerator implements TemplateGeneratorInterface
+final class ClassGenerator implements NamedDestinationGeneratorInterface
 {
     /**
      * @var TemplateFactoryInterface
@@ -43,23 +43,23 @@ final class ClassGenerator implements TemplateGeneratorInterface
         }
     }
 
-    private function generateForClass(ClassReflectionInterface $classReflection): void
-    {
-        $template = $this->templateFactory->createForReflection($classReflection);
-
-        $template->save($this->getDestinationPath($classReflection), [
-            'class' => $classReflection,
-            'tree' => array_merge(array_reverse($classReflection->getParentClasses()), [$classReflection]),
-        ]);
-    }
-
-    private function getDestinationPath(ClassReflectionInterface $classReflection): string
+    public function getDestinationPath(string $className): string
     {
         return $this->configuration->getDestination()
             . DIRECTORY_SEPARATOR
             . sprintf(
                 'class-%s.html',
-                UrlFilters::urlize($classReflection->getName())
+                UrlFilters::urlize($className)
             );
+    }
+
+    private function generateForClass(ClassReflectionInterface $classReflection): void
+    {
+        $template = $this->templateFactory->createForReflection($classReflection);
+
+        $template->save($this->getDestinationPath($classReflection->getName()), [
+            'class' => $classReflection,
+            'tree' => array_merge(array_reverse($classReflection->getParentClasses()), [$classReflection]),
+        ]);
     }
 }

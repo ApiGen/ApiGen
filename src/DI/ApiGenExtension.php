@@ -2,8 +2,8 @@
 
 namespace ApiGen\DI;
 
+use ApiGen\Contracts\Generator\GeneratorInterface;
 use ApiGen\Contracts\Generator\GeneratorQueueInterface;
-use ApiGen\Contracts\Generator\TemplateGenerators\TemplateGeneratorInterface;
 use ApiGen\Templating\Filters\Filters;
 use Latte\Engine;
 use Nette\DI\Compiler;
@@ -57,7 +57,7 @@ final class ApiGenExtension extends CompilerExtension
         // @todo: use package builder for these collections
         $containerBuilder = $this->getContainerBuilder();
         $generator = $containerBuilder->getDefinitionByType(GeneratorQueueInterface::class);
-        $services = $containerBuilder->findByType(TemplateGeneratorInterface::class);
+        $services = $containerBuilder->findByType(GeneratorInterface::class);
         ksort($services, SORT_NATURAL);
         foreach ($services as $definition) {
             $generator->addSetup('addGenerator', ['@' . $definition->getClass()]);

@@ -3,10 +3,10 @@
 namespace ApiGen\Generator\TemplateGenerators;
 
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
-use ApiGen\Contracts\Generator\TemplateGenerators\TemplateGeneratorInterface;
+use ApiGen\Contracts\Generator\GeneratorInterface;
 use ApiGen\Contracts\Templating\TemplateFactory\TemplateFactoryInterface;
 
-final class ElementListGenerator implements TemplateGeneratorInterface
+final class ElementListGenerator implements GeneratorInterface
 {
     /**
      * @var TemplateFactoryInterface
@@ -28,7 +28,7 @@ final class ElementListGenerator implements TemplateGeneratorInterface
     {
         $template = $this->templateFactory->create();
         $template->setFile($this->getTemplateFile());
-        $template->save($this->createFileDestination());
+        $template->save($this->getDestinationPath());
     }
 
     private function getTemplateFile(): string
@@ -38,7 +38,7 @@ final class ElementListGenerator implements TemplateGeneratorInterface
             . 'elementlist.js.latte';
     }
 
-    private function createFileDestination(): string
+    private function getDestinationPath(): string
     {
         return $this->configuration->getDestination()
             . DIRECTORY_SEPARATOR

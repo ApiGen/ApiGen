@@ -3,13 +3,13 @@
 namespace ApiGen\Generator\TemplateGenerators;
 
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
-use ApiGen\Contracts\Generator\TemplateGenerators\TemplateGeneratorInterface;
+use ApiGen\Contracts\Generator\NamedDestinationGeneratorInterface;
 use ApiGen\Contracts\Parser\Elements\ElementExtractorInterface;
 use ApiGen\Contracts\Templating\TemplateFactory\TemplateFactoryInterface;
 use ApiGen\Parser\Elements\Elements;
 use ApiGen\Templating\Filters\Filters;
 
-final class AnnotationGroupsGenerator implements TemplateGeneratorInterface
+final class AnnotationGroupsGenerator implements NamedDestinationGeneratorInterface
 {
     /**
      * @var ConfigurationInterface
@@ -43,6 +43,16 @@ final class AnnotationGroupsGenerator implements TemplateGeneratorInterface
         }
     }
 
+    public function getDestinationPath(string $annotation): string
+    {
+        return $this->configuration->getDestination()
+            . DIRECTORY_SEPARATOR
+            . sprintf(
+                'annotation-group-%s.html',
+                Filters::urlize($annotation)
+            );
+    }
+
     private function generateForAnnotation(string $annotation): void
     {
         $template = $this->templateFactory->create();
@@ -53,7 +63,7 @@ final class AnnotationGroupsGenerator implements TemplateGeneratorInterface
 
         $elements = $this->elementExtractor->extractElementsByAnnotation($annotation);
 
-        $template->save($this->getDestination($annotation), [
+        $template->save($this->getDestinationPath($annotation), [
             'annotation' => $annotation,
             'hasElements' => (bool) count(array_filter($elements, 'count')),
             'classes' => $elements[Elements::CLASSES],
@@ -63,15 +73,5 @@ final class AnnotationGroupsGenerator implements TemplateGeneratorInterface
             'functions' => $elements[Elements::FUNCTIONS],
             'properties' => $elements[Elements::PROPERTIES]
         ]);
-    }
-
-    private function getDestination(string $annotation): string
-    {
-        return $this->configuration->getDestination()
-            . DIRECTORY_SEPARATOR
-            . sprintf(
-                'annotation-group-%s.html',
-                Filters::urlize($annotation)
-            );
     }
 }

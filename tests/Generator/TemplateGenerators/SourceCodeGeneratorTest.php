@@ -6,7 +6,7 @@ use ApiGen\Contracts\Parser\ParserInterface;
 use ApiGen\Generator\TemplateGenerators\SourceCodeGenerator;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 
-final class SourceCodeGeneratorTest extends AbstractContainerAwareTestCase
+final class SourceCodeGeneratorTest // extends AbstractContainerAwareTestCase
 {
     /**
      * @var SourceCodeGenerator

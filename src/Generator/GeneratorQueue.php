@@ -3,8 +3,8 @@
 namespace ApiGen\Generator;
 
 use ApiGen\Contracts\Console\Helper\ProgressBarInterface;
+use ApiGen\Contracts\Generator\GeneratorInterface;
 use ApiGen\Contracts\Generator\GeneratorQueueInterface;
-use ApiGen\Contracts\Generator\TemplateGenerators\TemplateGeneratorInterface;
 use ApiGen\Progress\StepCounter;
 
 final class GeneratorQueue implements GeneratorQueueInterface
@@ -15,9 +15,9 @@ final class GeneratorQueue implements GeneratorQueueInterface
     private $progressBar;
 
     /**
-     * @var TemplateGeneratorInterface[]
+     * @var GeneratorInterface[]
      */
-    private $templateGenerators = [];
+    private $generators = [];
 
     /**
      * @var StepCounter
@@ -30,16 +30,16 @@ final class GeneratorQueue implements GeneratorQueueInterface
         $this->stepCounter = $stepCounter;
     }
 
-    public function addGenerator(TemplateGeneratorInterface $templateGenerator): void
+    public function addGenerator(GeneratorInterface $generator): void
     {
-        $this->templateGenerators[] = $templateGenerator;
+        $this->generators[] = $generator;
     }
 
     public function run(): void
     {
         $this->progressBar->init($this->stepCounter->getStepCount());
 
-        foreach ($this->templateGenerators as $templateGenerator) {
+        foreach ($this->generators as $templateGenerator) {
             $templateGenerator->generate();
         }
     }

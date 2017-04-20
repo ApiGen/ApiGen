@@ -3,13 +3,13 @@
 namespace ApiGen\Generator\TemplateGenerators;
 
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
-use ApiGen\Contracts\Generator\TemplateGenerators\TemplateGeneratorInterface;
+use ApiGen\Contracts\Generator\NamedDestinationGeneratorInterface;
 use ApiGen\Contracts\Parser\Elements\ElementStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Contracts\Templating\TemplateFactory\TemplateFactoryInterface;
 use ApiGen\Templating\Filters\Filters;
 
-final class FunctionGenerator implements TemplateGeneratorInterface
+final class FunctionGenerator implements NamedDestinationGeneratorInterface
 {
     /**
      * @var TemplateFactoryInterface
@@ -43,20 +43,13 @@ final class FunctionGenerator implements TemplateGeneratorInterface
         }
     }
 
-    private function getTemplateFile(): string
-    {
-        return $this->configuration->getTemplatesDirectory()
-            . DIRECTORY_SEPARATOR
-            . 'function.latte';
-    }
-
-    private function getDestination(FunctionReflectionInterface $reflectionFunction): string
+    public function getDestinationPath(string $functionName): string
     {
         return $this->configuration->getDestination()
             . DIRECTORY_SEPARATOR
             . sprintf(
                 'function-%s.html',
-                Filters::urlize($reflectionFunction->getName())
+                Filters::urlize($functionName)
             );
     }
 
@@ -64,8 +57,15 @@ final class FunctionGenerator implements TemplateGeneratorInterface
     {
         $template = $this->templateFactory->createForReflection($reflectionFunction);
         $template->setFile($this->getTemplateFile());
-        $template->save($this->getDestination($reflectionFunction), [
+        $template->save($this->getDestinationPath($reflectionFunction->getName()), [
             'function' => $reflectionFunction
         ]);
+    }
+
+    private function getTemplateFile(): string
+    {
+        return $this->configuration->getTemplatesDirectory()
+            . DIRECTORY_SEPARATOR
+            . 'function.latte';
     }
 }

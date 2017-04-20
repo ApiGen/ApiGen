@@ -2,8 +2,8 @@
 
 namespace ApiGen\Tests\Generator;
 
+use ApiGen\Contracts\Generator\GeneratorInterface;
 use ApiGen\Contracts\Generator\GeneratorQueueInterface;
-use ApiGen\Contracts\Generator\TemplateGenerators\TemplateGeneratorInterface;
 use ApiGen\Generator\GeneratorQueue;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -28,7 +28,7 @@ final class GeneratorQueueTest extends AbstractContainerAwareTestCase
     {
         $this->assertFileNotExists(TEMP_DIR . '/file.txt');
 
-        $templateGeneratorMock = $this->createMock(TemplateGeneratorInterface::class);
+        $templateGeneratorMock = $this->createMock(GeneratorInterface::class);
         $templateGeneratorMock->method('generate')
             ->willReturn(file_put_contents(TEMP_DIR . '/file.txt', '...'));
         $this->generatorQueue->addGenerator($templateGeneratorMock);

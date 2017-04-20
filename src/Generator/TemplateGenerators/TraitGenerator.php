@@ -3,13 +3,13 @@
 namespace ApiGen\Generator\TemplateGenerators;
 
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
-use ApiGen\Contracts\Generator\TemplateGenerators\TemplateGeneratorInterface;
+use ApiGen\Contracts\Generator\NamedDestinationGeneratorInterface;
 use ApiGen\Contracts\Parser\Elements\ElementStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Templating\TemplateFactory\TemplateFactoryInterface;
 use ApiGen\Templating\Filters\UrlFilters;
 
-final class TraitGenerator implements TemplateGeneratorInterface
+final class TraitGenerator implements NamedDestinationGeneratorInterface
 {
     /**
      * @var TemplateFactoryInterface
@@ -38,19 +38,12 @@ final class TraitGenerator implements TemplateGeneratorInterface
 
     public function generate(): void
     {
-        foreach ($this->elementStorage->getTraits() as $traitName => $traitReflection) {
-            $template = $this->templateFactory->createForReflection($traitReflection);
-
-            // $template->setPath()
-
-            $template->save($this->getDestinationPath($traitName), [
-                'trait' => $traitReflection,
-                'tree' => array_merge(array_reverse($traitReflection->getParentClasses()), [$traitReflection]),
-            ]);
+        foreach ($this->elementStorage->getTraits() as $traitReflection) {
+            $this->generateForTrait($traitReflection);
         }
     }
 
-    private function getDestinationPath(string $traitName): string
+    public function getDestinationPath(string $traitName): string
     {
         return $this->configuration->getDestination()
             . DIRECTORY_SEPARATOR
@@ -58,5 +51,17 @@ final class TraitGenerator implements TemplateGeneratorInterface
                 'trait-%s.html',
                 UrlFilters::urlize($traitName)
             );
+    }
+
+    private function generateForTrait(ClassReflectionInterface $traitReflection): void
+    {
+        $template = $this->templateFactory->createForReflection($traitReflection);
+
+        // @todo: $template->setPath()
+
+        $template->save($this->getDestinationPath($traitReflection->getName()), [
+            'trait' => $traitReflection,
+            'tree' => array_merge(array_reverse($traitReflection->getParentClasses()), [$traitReflection]),
+        ]);
     }
 }

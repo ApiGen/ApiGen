@@ -6,10 +6,8 @@ use ApiGen\Configuration\ConfigurationOptions;
 use ApiGen\Configuration\Theme\ThemeConfigOptions;
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Templating\Filters\Helpers\ElementUrlFactory;
-use ApiGen\Templating\Filters\SourceFilters;
 use ApiGen\Utils\FileSystem;
 use Exception;
 
@@ -19,11 +17,6 @@ final class TemplateNavigator
      * @var ConfigurationInterface
      */
     private $configuration;
-
-    /**
-     * @var SourceFilters
-     */
-    private $sourceFilters;
 
     /**
      * @var ElementUrlFactory
@@ -37,12 +30,10 @@ final class TemplateNavigator
 
     public function __construct(
         ConfigurationInterface $configuration,
-        SourceFilters $sourceFilters,
         ElementUrlFactory $elementUrlFactory,
         FileSystem $fileSystem
     ) {
         $this->configuration = $configuration;
-        $this->sourceFilters = $sourceFilters;
         $this->elementUrlFactory = $elementUrlFactory;
         $this->fileSystem = $fileSystem;
     }
@@ -83,12 +74,5 @@ final class TemplateNavigator
         return $this->fileSystem->normalizePath($this->configuration->getDestination()
             . DIRECTORY_SEPARATOR
             . $this->elementUrlFactory->createForFunction($element));
-    }
-
-    public function getTemplatePathForSourceElement(ElementReflectionInterface $element): string
-    {
-        return $this->fileSystem->normalizePath($this->configuration->getDestination()
-            . DIRECTORY_SEPARATOR
-            . $this->sourceFilters->sourceUrl($element, false));
     }
 }

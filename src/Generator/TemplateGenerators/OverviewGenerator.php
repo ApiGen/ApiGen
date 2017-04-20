@@ -3,10 +3,10 @@
 namespace ApiGen\Generator\TemplateGenerators;
 
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
-use ApiGen\Contracts\Generator\TemplateGenerators\TemplateGeneratorInterface;
+use ApiGen\Contracts\Generator\GeneratorInterface;
 use ApiGen\Templating\TemplateFactory;
 
-final class OverviewGenerator implements TemplateGeneratorInterface
+final class OverviewGenerator implements GeneratorInterface
 {
     /**
      * @var TemplateFactory
@@ -37,7 +37,7 @@ final class OverviewGenerator implements TemplateGeneratorInterface
     {
         return $this->configuration->getTemplatesDirectory()
             . DIRECTORY_SEPARATOR
-            . 'overview.latte';
+            . 'index.latte';
     }
 
     private function createFileDestination(): string

@@ -74,14 +74,18 @@ final class Template
         $this->savePath = $file ?: $this->savePath;
         $dir = dirname($this->savePath);
 
-        if (! is_dir($dir)) {
-            mkdir($dir, 0755, true);
-        }
+        $this->ensureDirectoryExists($dir);
 
         $parameters = array_merge($this->parameters, $parameters);
-        $content = $this->latteEngine->renderToString($this->file, $parameters);
-        file_put_contents($this->savePath, $content);
+        file_put_contents($this->savePath, $this->latteEngine->renderToString($this->file, $parameters));
 
         $this->eventDispatcher->dispatch(GenerateProgressEvent::class);
+    }
+
+    private function ensureDirectoryExists(string $dir): void
+    {
+        if (!is_dir($dir)) {
+            mkdir($dir, 0755, true);
+        }
     }
 }

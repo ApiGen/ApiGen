@@ -64,18 +64,4 @@ final class TemplateNavigatorTest extends AbstractContainerAwareTestCase
             $this->templateNavigator->getTemplatePathForFunction($functionReflectionMock)
         );
     }
-
-    public function testGetTemplatePathForMethod(): void
-    {
-        $classReflectionMock = $this->createMock(ClassReflectionInterface::class);
-        $classReflectionMock->method('getName')
-            ->willReturn('SomeClass');
-
-        $this->assertSame(
-            $this->fileSystem->normalizePath(
-                TEMP_DIR . DIRECTORY_SEPARATOR . 'api' . DIRECTORY_SEPARATOR . 'source-class-SomeClass.html'
-            ),
-            $this->templateNavigator->getTemplatePathForSourceElement($classReflectionMock)
-        );
-    }
 }

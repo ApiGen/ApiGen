@@ -3,13 +3,13 @@
 namespace ApiGen\Generator\TemplateGenerators;
 
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
-use ApiGen\Contracts\Generator\TemplateGenerators\TemplateGeneratorInterface;
+use ApiGen\Contracts\Generator\NamedDestinationGeneratorInterface;
 use ApiGen\Contracts\Parser\Elements\ElementStorageInterface;
 use ApiGen\Contracts\Templating\TemplateFactory\TemplateFactoryInterface;
 use ApiGen\Parser\Elements\Elements;
 use ApiGen\Templating\Filters\Filters;
 
-final class NamespaceGenerator implements TemplateGeneratorInterface
+final class NamespaceGenerator implements NamedDestinationGeneratorInterface
 {
     /**
      * @var TemplateFactoryInterface
@@ -39,20 +39,39 @@ final class NamespaceGenerator implements TemplateGeneratorInterface
     public function generate(): void
     {
         foreach ($this->elementStorage->getNamespaces() as $namespace => $elementsInNamespace) {
-            $template = $this->templateFactory->create();
-
-            $template->setFile($this->getTemplateFile());
-
-            $template->save($this->getFileDestination($namespace), [
-                'namespace' => $namespace,
-                'subnamespaces' => $this->getSubnamesForName($namespace, $template->getParameters()['namespaces']),
-                'classes' => $elementsInNamespace[Elements::CLASSES],
-                'interfaces' => $elementsInNamespace[Elements::INTERFACES],
-                'traits' => $elementsInNamespace[Elements::TRAITS],
-                'exceptions' => $elementsInNamespace[Elements::EXCEPTIONS],
-                'functions' => $elementsInNamespace[Elements::FUNCTIONS]
-            ]);
+            $this->generateForNamespace($namespace, $elementsInNamespace);
         }
+    }
+
+    public function getDestinationPath(string $namespace): string
+    {
+        return $this->configuration->getDestination()
+            . DIRECTORY_SEPARATOR
+            . sprintf(
+                'namespace-%s.html',
+                Filters::urlize($namespace)
+            );
+    }
+
+    /**
+     * @param string $namespace
+     * @param mixed[] $elementsInNamespace
+     */
+    private function generateForNamespace(string $namespace, array $elementsInNamespace): void
+    {
+        $template = $this->templateFactory->create();
+
+        $template->setFile($this->getTemplateFile());
+
+        $template->save($this->getDestinationPath($namespace), [
+            'namespace' => $namespace,
+            'subnamespaces' => $this->getSubnamesForName($namespace, $template->getParameters()['namespaces']),
+            'classes' => $elementsInNamespace[Elements::CLASSES],
+            'interfaces' => $elementsInNamespace[Elements::INTERFACES],
+            'traits' => $elementsInNamespace[Elements::TRAITS],
+            'exceptions' => $elementsInNamespace[Elements::EXCEPTIONS],
+            'functions' => $elementsInNamespace[Elements::FUNCTIONS]
+        ]);
     }
 
     /**
@@ -73,15 +92,5 @@ final class NamespaceGenerator implements TemplateGeneratorInterface
         return $this->configuration->getTemplatesDirectory()
             . DIRECTORY_SEPARATOR
             . 'namespace.latte';
-    }
-
-    private function getFileDestination(string $namespace): string
-    {
-        return $this->configuration->getDestination()
-            . DIRECTORY_SEPARATOR
-            . sprintf(
-                'namespace-%s.html',
-                Filters::urlize($namespace)
-            );
     }
 }
