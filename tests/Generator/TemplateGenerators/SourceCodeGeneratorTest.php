@@ -22,11 +22,6 @@ final class SourceCodeGeneratorTest extends AbstractContainerAwareTestCase
         $this->sourceCodeGenerator = $this->container->getByType(SourceCodeGenerator::class);
     }
 
-    public function testStepCount(): void
-    {
-        $this->assertSame(1, $this->sourceCodeGenerator->getStepCount());
-    }
-
     public function testGenerate(): void
     {
         $this->sourceCodeGenerator->generate();

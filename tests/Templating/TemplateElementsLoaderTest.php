@@ -7,6 +7,7 @@ use ApiGen\Templating\Template;
 use ApiGen\Templating\TemplateElementsLoader;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 use Latte\Engine;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 final class TemplateElementsLoaderTest extends AbstractContainerAwareTestCase
 {
@@ -30,7 +31,7 @@ final class TemplateElementsLoaderTest extends AbstractContainerAwareTestCase
     public function testAddElementToTemplate(): void
     {
         $latteEngineMock = $this->createMock(Engine::class);
-        $template = new Template($latteEngineMock);
+        $template = new Template($latteEngineMock, new EventDispatcher);
         $this->templateElementsLoader->addElementsToTemplate($template);
         $this->assertInstanceOf(Template::class, $template);
 

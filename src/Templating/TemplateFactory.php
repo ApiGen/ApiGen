@@ -7,19 +7,14 @@ use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Contracts\Templating\TemplateFactory\TemplateFactoryInterface;
-use ApiGen\Templating\Exceptions\UnsupportedElementException;
 use Latte;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @todo decouple to collector
  */
 final class TemplateFactory implements TemplateFactoryInterface
 {
-    /**
-     * @var string
-     */
-    public const ELEMENT_SOURCE = 'source';
-
     /**
      * @var Latte\Engine
      */
@@ -45,22 +40,29 @@ final class TemplateFactory implements TemplateFactoryInterface
      */
     private $builtTemplate;
 
+    /**
+     * @var EventDispatcherInterface
+     */
+    private $eventDispatcher;
+
     public function __construct(
         Latte\Engine $latteEngine,
         Configuration $configuration,
         TemplateNavigator $templateNavigator,
-        TemplateElementsLoader $templateElementsLoader
+        TemplateElementsLoader $templateElementsLoader,
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->latteEngine = $latteEngine;
         $this->configuration = $configuration;
         $this->templateNavigator = $templateNavigator;
         $this->templateElementsLoader = $templateElementsLoader;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function create(): Template
     {
         if ($this->builtTemplate === null) {
-            $template = new Template($this->latteEngine);
+            $template = new Template($this->latteEngine, $this->eventDispatcher);
             $template->setParameters([
                 'title' => $this->configuration->getTitle(),
                 'googleAnalytics' => $this->configuration->getGoogleAnalytics(),
@@ -81,30 +83,6 @@ final class TemplateFactory implements TemplateFactoryInterface
         $template->setFile($this->templateNavigator->getTemplatePath($type));
         $template->setSavePath($this->templateNavigator->getTemplateFileName($type));
         return $template;
-    }
-
-    /**
-     * @param string $name
-     * @param ElementReflectionInterface|string $element
-     * @throws \Exception
-     * @return Template
-     */
-    public function createNamedForElement(string $name, $element): Template
-    {
-        $template = $this->create();
-
-        $templateFile = $this->templateNavigator->getTemplatePath($name);
-        $template->setFile($templateFile);
-
-        if ($name === self::ELEMENT_SOURCE) {
-            $template->setSavePath($this->templateNavigator->getTemplatePathForSourceElement($element));
-            return $template;
-        }
-
-        throw new UnsupportedElementException(sprintf(
-            '"%s" is not supported template type.',
-            $name
-        ));
     }
 
     public function createForReflection(ElementReflectionInterface $element): Template

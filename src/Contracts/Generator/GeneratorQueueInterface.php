@@ -6,7 +6,7 @@ use ApiGen\Contracts\Generator\TemplateGenerators\TemplateGeneratorInterface;
 
 interface GeneratorQueueInterface
 {
-    public function addToQueue(TemplateGeneratorInterface $templateGenerator): void;
+    public function addGenerator(TemplateGeneratorInterface $templateGenerator): void;
 
     public function run(): void;
 }

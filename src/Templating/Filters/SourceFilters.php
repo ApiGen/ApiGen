@@ -34,6 +34,8 @@ final class SourceFilters extends Filters
     /**
      * @param ElementReflectionInterface $element
      * @param bool $withLine Include file line number into the link
+     *
+     * @todo split into 2 methods, no bool
      */
     public function sourceUrl(ElementReflectionInterface $element, bool $withLine = true): string
     {

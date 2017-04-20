@@ -60,7 +60,7 @@ final class ApiGenExtension extends CompilerExtension
         $services = $containerBuilder->findByType(TemplateGeneratorInterface::class);
         ksort($services, SORT_NATURAL);
         foreach ($services as $definition) {
-            $generator->addSetup('addToQueue', ['@' . $definition->getClass()]);
+            $generator->addSetup('addGenerator', ['@' . $definition->getClass()]);
         }
     }
 }

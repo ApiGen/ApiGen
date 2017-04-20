@@ -2,7 +2,9 @@
 
 namespace ApiGen\Templating;
 
+use ApiGen\Generator\Event\GenerateProgressEvent;
 use Latte\Engine;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 final class Template
 {
@@ -26,9 +28,15 @@ final class Template
      */
     private $parameters = [];
 
-    public function __construct(Engine $latteEngine)
+    /**
+     * @var EventDispatcherInterface
+     */
+    private $eventDispatcher;
+
+    public function __construct(Engine $latteEngine, EventDispatcherInterface $eventDispatcher)
     {
         $this->latteEngine = $latteEngine;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function setFile(string $file): void
@@ -73,5 +81,7 @@ final class Template
         $parameters = array_merge($this->parameters, $parameters);
         $content = $this->latteEngine->renderToString($this->file, $parameters);
         file_put_contents($this->savePath, $content);
+
+        $this->eventDispatcher->dispatch(GenerateProgressEvent::class);
     }
 }

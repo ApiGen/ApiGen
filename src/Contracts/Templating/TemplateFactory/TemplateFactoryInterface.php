@@ -11,11 +11,5 @@ interface TemplateFactoryInterface
 
     public function createForType(string $type): Template;
 
-    /**
-     * @param string $name
-     * @param ElementReflectionInterface|string $element
-     */
-    public function createNamedForElement(string $name, $element): Template;
-
     public function createForReflection(ElementReflectionInterface $element): Template;
 }

@@ -2,18 +2,11 @@
 
 namespace ApiGen\Templating\Filters;
 
-use ApiGen\Configuration\Configuration;
-use ApiGen\Configuration\ConfigurationOptions;
 use ApiGen\Parser\Elements\ElementStorage;
 use ApiGen\Templating\Filters\Helpers\LinkBuilder;
 
-class NamespaceUrlFilters extends Filters
+final class NamespaceUrlFilters extends Filters
 {
-    /**
-     * @var Configuration
-     */
-    private $configuration;
-
     /**
      * @var LinkBuilder
      */
@@ -24,9 +17,8 @@ class NamespaceUrlFilters extends Filters
      */
     private $elementStorage;
 
-    public function __construct(Configuration $configuration, LinkBuilder $linkBuilder, ElementStorage $elementStorage)
+    public function __construct(LinkBuilder $linkBuilder, ElementStorage $elementStorage)
     {
-        $this->configuration = $configuration;
         $this->linkBuilder = $linkBuilder;
         $this->elementStorage = $elementStorage;
     }
@@ -63,10 +55,6 @@ class NamespaceUrlFilters extends Filters
 
     public function namespaceUrl(string $name): string
     {
-        return sprintf(
-            'namespace-%s.html',
-//            $this->configuration->getOption(ConfigurationOptions::TEMPLATE)['templates']['namespace']['filename'],
-            Filters::urlize($name)
-        );
+        return sprintf('namespace-%s.html', Filters::urlize($name));
     }
 }

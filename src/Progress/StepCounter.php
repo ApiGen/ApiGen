@@ -1,20 +1,37 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Generator\Progress;
+namespace ApiGen\Progress;
+
+use ApiGen\Contracts\Parser\Elements\ElementStorageInterface;
 
 final class StepCounter
 {
-    public function getTotalStepCount(): int
+    /**
+     * @var ElementStorageInterface
+     */
+    private $elementStorage;
+
+    public function __construct(ElementStorageInterface $elementStorage)
     {
-        // classes
-        count($this->elementStorage->getClasses());
-        // traits
-        return count($this->elementStorage->getTraits());
-        // interfaces
-        return count($this->elementStorage->getInterfaces());
-        // functions
-        return count($this->elementStorage->getFunctions());
-        // namespace elements
-        return count($this->elementStorage->getNamespaces());
+        $this->elementStorage = $elementStorage;
+    }
+
+    public function getStepCount(): int
+    {
+        return $this->getSourceCodeStepCount()
+            + count($this->elementStorage->getNamespaces())
+            + count($this->elementStorage->getClasses())
+            + count($this->elementStorage->getTraits())
+            + count($this->elementStorage->getInterfaces())
+            + count($this->elementStorage->getFunctions());
+    }
+
+    private function getSourceCodeStepCount(): int
+    {
+        return count($this->elementStorage->getClasses())
+            + count($this->elementStorage->getInterfaces())
+            + count($this->elementStorage->getTraits())
+            + count($this->elementStorage->getExceptions())
+            + count($this->elementStorage->getFunctions());
     }
 }

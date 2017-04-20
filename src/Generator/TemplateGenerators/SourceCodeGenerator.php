@@ -2,19 +2,18 @@
 
 namespace ApiGen\Generator\TemplateGenerators;
 
-use ApiGen\Configuration\Theme\ThemeConfigOptions;
+use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Generator\SourceCodeHighlighter\SourceCodeHighlighterInterface;
-use ApiGen\Contracts\Generator\StepCounterInterface;
 use ApiGen\Contracts\Generator\TemplateGenerators\TemplateGeneratorInterface;
 use ApiGen\Contracts\Parser\Elements\ElementStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
-use ApiGen\Generator\Event\GenerateProgressEvent;
+use ApiGen\Contracts\Parser\Reflection\TokenReflection\ReflectionInterface;
 use ApiGen\Generator\Resolvers\RelativePathResolver;
 use ApiGen\Parser\Reflection\AbstractReflection;
+use ApiGen\Templating\Filters\SourceFilters;
 use ApiGen\Templating\TemplateFactory;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-final class SourceCodeGenerator implements TemplateGeneratorInterface, StepCounterInterface
+final class SourceCodeGenerator implements TemplateGeneratorInterface
 {
     /**
      * @var ElementStorageInterface
@@ -37,22 +36,29 @@ final class SourceCodeGenerator implements TemplateGeneratorInterface, StepCount
     private $sourceCodeHighlighter;
 
     /**
-     * @var EventDispatcherInterface
+     * @var ConfigurationInterface
      */
-    private $eventDispatcher;
+    private $configuration;
+
+    /**
+     * @var SourceFilters
+     */
+    private $sourceFilters;
 
     public function __construct(
         ElementStorageInterface $elementStorage,
         TemplateFactory $templateFactory,
         RelativePathResolver $relativePathResolver,
         SourceCodeHighlighterInterface $sourceCodeHighlighter,
-        EventDispatcherInterface $eventDispatcher
+        ConfigurationInterface $configuration,
+        SourceFilters $sourceFilters
     ) {
         $this->elementStorage = $elementStorage;
         $this->templateFactory = $templateFactory;
         $this->relativePathResolver = $relativePathResolver;
         $this->sourceCodeHighlighter = $sourceCodeHighlighter;
-        $this->eventDispatcher = $eventDispatcher;
+        $this->configuration = $configuration;
+        $this->sourceFilters = $sourceFilters;
     }
 
     public function generate(): void
@@ -61,21 +67,8 @@ final class SourceCodeGenerator implements TemplateGeneratorInterface, StepCount
             foreach ($elementList as $element) {
                 /** @var ElementReflectionInterface $element */
                 $this->generateForElement($element);
-
-                $this->eventDispatcher->dispatch(GenerateProgressEvent::class);
             }
         }
-    }
-
-    public function getStepCount(): int
-    {
-        $count = count($this->elementStorage->getClasses())
-            + count($this->elementStorage->getInterfaces())
-            + count($this->elementStorage->getTraits())
-            + count($this->elementStorage->getExceptions())
-            + count($this->elementStorage->getFunctions());
-
-        return $count;
     }
 
     /**
@@ -83,12 +76,12 @@ final class SourceCodeGenerator implements TemplateGeneratorInterface, StepCount
      */
     private function generateForElement(ElementReflectionInterface $element): void
     {
-        $template = $this->templateFactory->createNamedForElement(ThemeConfigOptions::SOURCE, $element);
-        $template->setParameters([
+        $template = $this->templateFactory->create();
+        $template->setFile($this->getTemplateFile());
+        $template->save($this->getDestination($element), [
             'fileName' => $this->relativePathResolver->getRelativePath($element->getFileName()),
             'source' => $this->getHighlightedCodeFromElement($element)
         ]);
-        $template->save();
     }
 
     private function getHighlightedCodeFromElement(AbstractReflection $element): string
@@ -96,5 +89,20 @@ final class SourceCodeGenerator implements TemplateGeneratorInterface, StepCount
         $content = file_get_contents($element->getFileName());
 
         return $this->sourceCodeHighlighter->highlightAndAddLineNumbers($content);
+    }
+
+    private function getTemplateFile(): string
+    {
+        return $this->configuration->getTemplatesDirectory()
+            . DIRECTORY_SEPARATOR
+            . 'source.latte';
+    }
+
+    private function getDestination(ReflectionInterface $reflection): string
+    {
+        return $this->configuration->getDestination()
+            . DIRECTORY_SEPARATOR
+            . $this->sourceFilters->sourceUrl($reflection, false)
+        ;
     }
 }

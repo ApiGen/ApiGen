@@ -2,6 +2,7 @@
 - ApiGen\Console\Helper\ProgressBar
 - ApiGen\Console\Command\GenerateCommand
 - Symfony\Component\Console\Output\ConsoleOutput
+- ApiGen\Progress\StepCounter
 
 # Utils
 - ApiGen\Utils\FileSystem
@@ -21,17 +22,16 @@
 # Generator
 - ApiGen\Generator\EventSubscriber\ProgressBarSubscriber
 - ApiGen\Generator\GeneratorQueue
-# intentionally first to collect output from other generators
-g2: ApiGen\Generator\TemplateGenerators\AnnotationGroupsGenerator
-g3: ApiGen\Generator\TemplateGenerators\ElementListGenerator
-g4: ApiGen\Generator\TemplateGenerators\OverviewGenerator
-g5: ApiGen\Generator\TemplateGenerators\SourceCodeGenerator
+- ApiGen\Generator\TemplateGenerators\AnnotationGroupsGenerator
+- ApiGen\Generator\TemplateGenerators\ElementListGenerator
+- ApiGen\Generator\TemplateGenerators\OverviewGenerator # rename to index, it's index
+- ApiGen\Generator\TemplateGenerators\SourceCodeGenerator
 # elements
-g6: ApiGen\Generator\TemplateGenerators\ClassGenerator
-g7: ApiGen\Generator\TemplateGenerators\FunctionGenerator
-g8: ApiGen\Generator\TemplateGenerators\NamespaceGenerator
-- ApiGen\Generator\TemplateGenerators\TraitGenerator
+- ApiGen\Generator\TemplateGenerators\NamespaceGenerator
+- ApiGen\Generator\TemplateGenerators\ClassGenerator
 - ApiGen\Generator\TemplateGenerators\InterfaceGenerator
+- ApiGen\Generator\TemplateGenerators\TraitGenerator
+- ApiGen\Generator\TemplateGenerators\FunctionGenerator
 
 # Templating
 - ApiGen\Templating\TemplateElementsLoader

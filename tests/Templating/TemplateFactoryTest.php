@@ -36,25 +36,6 @@ final class TemplateFactoryTest extends AbstractContainerAwareTestCase
         $this->assertInstanceOf(Template::class, $this->templateFactory->create());
     }
 
-    public function testCreateNamedForElement(): void
-    {
-        $reflectionClassMock = $this->createMock(ClassReflectionInterface::class);
-
-        $this->assertInstanceOf(
-            Template::class,
-            $this->templateFactory->createNamedForElement(TemplateFactory::ELEMENT_SOURCE, $reflectionClassMock)
-        );
-    }
-
-    /**
-     * @expectedException \Exception
-     */
-    public function testCreateNamedForElementNonExisting(): void
-    {
-        $reflectionClassMock = $this->createMock(ClassReflectionInterface::class);
-        $this->templateFactory->createNamedForElement('notExisting', $reflectionClassMock);
-    }
-
     public function testCreateForReflection(): void
     {
         $reflectionClassMock = $this->createMock(ClassReflectionInterface::class);

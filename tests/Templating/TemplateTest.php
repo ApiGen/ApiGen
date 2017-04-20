@@ -5,6 +5,7 @@ namespace ApiGen\Tests\Templating;
 use ApiGen\Templating\Template;
 use Latte\Engine;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class TemplateTest extends TestCase
 {
@@ -15,7 +16,7 @@ class TemplateTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->template = new Template(new Engine);
+        $this->template = new Template(new Engine, new EventDispatcher);
     }
 
     public function testFileIsSavedWithContent(): void
