@@ -7,7 +7,6 @@ use ApiGen\Contracts\Generator\NamedDestinationGeneratorInterface;
 use ApiGen\Contracts\Parser\Elements\ElementExtractorInterface;
 use ApiGen\Contracts\Templating\TemplateFactory\TemplateFactoryInterface;
 use ApiGen\Parser\Elements\Elements;
-use ApiGen\Templating\Filters\Filters;
 
 final class AnnotationGroupsGenerator implements NamedDestinationGeneratorInterface
 {
@@ -45,12 +44,10 @@ final class AnnotationGroupsGenerator implements NamedDestinationGeneratorInterf
 
     public function getDestinationPath(string $annotation): string
     {
-        return $this->configuration->getDestination()
-            . DIRECTORY_SEPARATOR
-            . sprintf(
-                'annotation-group-%s.html',
-                Filters::urlize($annotation)
-            );
+        return $this->configuration->getDestinationForFileMaskAndName(
+            'annotation-group-%s',
+            $annotation
+        );
     }
 
     private function generateForAnnotation(string $annotation): void
@@ -58,7 +55,7 @@ final class AnnotationGroupsGenerator implements NamedDestinationGeneratorInterf
         $template = $this->templateFactory->create();
 
         $template->setFile(
-            $this->configuration->getTemplatesDirectory() . DIRECTORY_SEPARATOR . 'annotation-group.latte'
+            $this->configuration->getTemplateByName('annotation-group')
         );
 
         $elements = $this->elementExtractor->extractElementsByAnnotation($annotation);

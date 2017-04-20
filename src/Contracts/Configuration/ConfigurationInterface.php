@@ -41,6 +41,8 @@ interface ConfigurationInterface
 
     public function getTemplatesDirectory(): string;
 
+    public function getTemplateByName(string $name): string;
+
     /**
      * Get title of the project.
      */
@@ -71,4 +73,6 @@ interface ConfigurationInterface
      * @return string[]
      */
     public function getExtensions(): array;
+
+    public function getDestinationForFileMaskAndName(string $fileMask, string $elementName): string;
 }

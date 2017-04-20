@@ -6,7 +6,7 @@ use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Generator\GeneratorInterface;
 use ApiGen\Templating\TemplateFactory;
 
-final class OverviewGenerator implements GeneratorInterface
+final class IndexGenerator implements GeneratorInterface
 {
     /**
      * @var TemplateFactory
@@ -18,10 +18,8 @@ final class OverviewGenerator implements GeneratorInterface
      */
     private $configuration;
 
-    public function __construct(
-        TemplateFactory $templateFactory,
-        ConfigurationInterface $configuration
-    ) {
+    public function __construct(TemplateFactory $templateFactory, ConfigurationInterface $configuration)
+    {
         $this->templateFactory = $templateFactory;
         $this->configuration = $configuration;
     }
@@ -29,21 +27,12 @@ final class OverviewGenerator implements GeneratorInterface
     public function generate(): void
     {
         $template = $this->templateFactory->create();
-        $template->setFile($this->getTemplateFile());
+        $template->setFile($this->configuration->getTemplateByName('index'));
         $template->save($this->createFileDestination());
-    }
-
-    private function getTemplateFile(): string
-    {
-        return $this->configuration->getTemplatesDirectory()
-            . DIRECTORY_SEPARATOR
-            . 'index.latte';
     }
 
     private function createFileDestination(): string
     {
-        return $this->configuration->getDestination()
-            . DIRECTORY_SEPARATOR
-            . 'index.html';
+        return $this->configuration->getDestinationForFileMaskAndName('index', '');
     }
 }

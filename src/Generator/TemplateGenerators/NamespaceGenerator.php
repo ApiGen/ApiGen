@@ -7,7 +7,6 @@ use ApiGen\Contracts\Generator\NamedDestinationGeneratorInterface;
 use ApiGen\Contracts\Parser\Elements\ElementStorageInterface;
 use ApiGen\Contracts\Templating\TemplateFactory\TemplateFactoryInterface;
 use ApiGen\Parser\Elements\Elements;
-use ApiGen\Templating\Filters\Filters;
 
 final class NamespaceGenerator implements NamedDestinationGeneratorInterface
 {
@@ -45,12 +44,7 @@ final class NamespaceGenerator implements NamedDestinationGeneratorInterface
 
     public function getDestinationPath(string $namespace): string
     {
-        return $this->configuration->getDestination()
-            . DIRECTORY_SEPARATOR
-            . sprintf(
-                'namespace-%s.html',
-                Filters::urlize($namespace)
-            );
+        return $this->configuration->getDestinationForFileMaskAndName('namespace-%s', $namespace);
     }
 
     /**
@@ -89,8 +83,6 @@ final class NamespaceGenerator implements NamedDestinationGeneratorInterface
 
     private function getTemplateFile(): string
     {
-        return $this->configuration->getTemplatesDirectory()
-            . DIRECTORY_SEPARATOR
-            . 'namespace.latte';
+        return $this->configuration->getTemplateByName('namespace');
     }
 }

@@ -7,7 +7,6 @@ use ApiGen\Contracts\Generator\NamedDestinationGeneratorInterface;
 use ApiGen\Contracts\Parser\Elements\ElementStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Templating\TemplateFactory\TemplateFactoryInterface;
-use ApiGen\Templating\Filters\UrlFilters;
 
 final class ClassGenerator implements NamedDestinationGeneratorInterface
 {
@@ -45,19 +44,13 @@ final class ClassGenerator implements NamedDestinationGeneratorInterface
 
     public function getDestinationPath(string $className): string
     {
-        return $this->configuration->getDestination()
-            . DIRECTORY_SEPARATOR
-            . sprintf(
-                'class-%s.html',
-                UrlFilters::urlize($className)
-            );
+        return $this->configuration->getDestinationForFileMaskAndName('class-%s', $className);
     }
 
     private function generateForClass(ClassReflectionInterface $classReflection): void
     {
         $template = $this->templateFactory->create();
         $template->setFile($this->getTemplateFile());
-
         $template->save($this->getDestinationPath($classReflection->getName()), [
             'class' => $classReflection,
             'tree' => array_merge(array_reverse($classReflection->getParentClasses()), [$classReflection]),
@@ -66,8 +59,6 @@ final class ClassGenerator implements NamedDestinationGeneratorInterface
 
     private function getTemplateFile(): string
     {
-        return $this->configuration->getTemplatesDirectory()
-            . DIRECTORY_SEPARATOR
-            . 'class.latte';
+        return $this->configuration->getTemplateByName('class');
     }
 }

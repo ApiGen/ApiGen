@@ -3,6 +3,7 @@
 namespace ApiGen\Configuration;
 
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
+use ApiGen\Templating\Filters\UrlFilters;
 
 final class Configuration implements ConfigurationInterface
 {
@@ -122,5 +123,18 @@ final class Configuration implements ConfigurationInterface
     public function getTemplatesDirectory(): string
     {
         return $this->getOptions()[ConfigurationOptions::THEME_DIRECTORY];
+    }
+
+    public function getTemplateByName(string $name): string
+    {
+        return $this->getTemplatesDirectory() . DIRECTORY_SEPARATOR . $name . '.latte';
+    }
+
+    public function getDestinationForFileMaskAndName(string $fileMask, string $elementName): string
+    {
+        return $this->getDestination() . DIRECTORY_SEPARATOR . sprintf(
+            $fileMask . '.html',
+            UrlFilters::urlize($elementName)
+        );
     }
 }

@@ -7,7 +7,6 @@ use ApiGen\Contracts\Generator\NamedDestinationGeneratorInterface;
 use ApiGen\Contracts\Parser\Elements\ElementStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Templating\TemplateFactory\TemplateFactoryInterface;
-use ApiGen\Templating\Filters\UrlFilters;
 
 final class TraitGenerator implements NamedDestinationGeneratorInterface
 {
@@ -45,12 +44,7 @@ final class TraitGenerator implements NamedDestinationGeneratorInterface
 
     public function getDestinationPath(string $traitName): string
     {
-        return $this->configuration->getDestination()
-            . DIRECTORY_SEPARATOR
-            . sprintf(
-                'trait-%s.html',
-                UrlFilters::urlize($traitName)
-            );
+        return $this->configuration->getDestinationForFileMaskAndName('trait-%s',$traitName);
     }
 
     private function generateForTrait(ClassReflectionInterface $traitReflection): void
@@ -66,8 +60,6 @@ final class TraitGenerator implements NamedDestinationGeneratorInterface
 
     private function getTemplateFile(): string
     {
-        return $this->configuration->getTemplatesDirectory()
-            . DIRECTORY_SEPARATOR
-            . 'trait.latte';
+        return $this->configuration->getTemplateByName('trait');
     }
 }

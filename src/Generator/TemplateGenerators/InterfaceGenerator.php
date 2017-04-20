@@ -7,7 +7,6 @@ use ApiGen\Contracts\Generator\NamedDestinationGeneratorInterface;
 use ApiGen\Contracts\Parser\Elements\ElementStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Templating\TemplateFactory\TemplateFactoryInterface;
-use ApiGen\Templating\Filters\UrlFilters;
 
 final class InterfaceGenerator implements NamedDestinationGeneratorInterface
 {
@@ -45,12 +44,10 @@ final class InterfaceGenerator implements NamedDestinationGeneratorInterface
 
     public function getDestinationPath(string $interfaceName): string
     {
-        return $this->configuration->getDestination()
-            . DIRECTORY_SEPARATOR
-            . sprintf(
-                'interface-%s.html',
-                UrlFilters::urlize($interfaceName)
-            );
+        return $this->configuration->getDestinationForFileMaskAndName(
+            'interface-%s',
+            $interfaceName
+        );
     }
 
     private function generateForInterface(ClassReflectionInterface $interfaceReflection): void
@@ -66,8 +63,6 @@ final class InterfaceGenerator implements NamedDestinationGeneratorInterface
 
     private function getTemplateFile(): string
     {
-        return $this->configuration->getTemplatesDirectory()
-            . DIRECTORY_SEPARATOR
-            . 'interface.latte';
+        return $this->configuration->getTemplateByName('interface');
     }
 }

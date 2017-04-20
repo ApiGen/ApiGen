@@ -7,7 +7,6 @@ use ApiGen\Contracts\Generator\NamedDestinationGeneratorInterface;
 use ApiGen\Contracts\Parser\Elements\ElementStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Contracts\Templating\TemplateFactory\TemplateFactoryInterface;
-use ApiGen\Templating\Filters\Filters;
 
 final class FunctionGenerator implements NamedDestinationGeneratorInterface
 {
@@ -45,12 +44,10 @@ final class FunctionGenerator implements NamedDestinationGeneratorInterface
 
     public function getDestinationPath(string $functionName): string
     {
-        return $this->configuration->getDestination()
-            . DIRECTORY_SEPARATOR
-            . sprintf(
-                'function-%s.html',
-                Filters::urlize($functionName)
-            );
+        return $this->configuration->getDestinationForFileMaskAndName(
+            'function-%s',
+            $functionName
+        );
     }
 
     private function generateForFunction(FunctionReflectionInterface $reflectionFunction): void
@@ -65,8 +62,6 @@ final class FunctionGenerator implements NamedDestinationGeneratorInterface
 
     private function getTemplateFile(): string
     {
-        return $this->configuration->getTemplatesDirectory()
-            . DIRECTORY_SEPARATOR
-            . 'function.latte';
+        return $this->configuration->getTemplateByName('function');
     }
 }

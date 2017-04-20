@@ -91,6 +91,7 @@ final class ConfigurationOptionsResolver
                 if ($value) {
                     return $value;
                 }
+
                 return getcwd() . '/packages/ThemeDefault/src';
             }
         ]);
