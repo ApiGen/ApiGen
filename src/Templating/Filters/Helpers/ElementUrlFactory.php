@@ -2,8 +2,6 @@
 
 namespace ApiGen\Templating\Filters\Helpers;
 
-use ApiGen\Configuration\ConfigurationOptions;
-use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
@@ -14,16 +12,6 @@ use ApiGen\Templating\Filters\Filters;
 
 final class ElementUrlFactory
 {
-    /**
-     * @var ConfigurationInterface
-     */
-    private $configuration;
-
-    public function __construct(ConfigurationInterface $configuration)
-    {
-        $this->configuration = $configuration;
-    }
-
     /**
      * @param ElementReflectionInterface|string $element
      */
@@ -59,17 +47,12 @@ final class ElementUrlFactory
     {
         $className = $class instanceof ClassReflectionInterface ? $class->getName() : $class;
 
-        $filename = $this->configuration->getOption(ConfigurationOptions::TEMPLATE)['templates']['class']['filename'];
-
+        $filename = 'class-%s.html';
         if ($class instanceof ClassReflectionInterface) {
             if ($class->isTrait()) {
-                $filename = $this->configuration->getOption(
-                    ConfigurationOptions::TEMPLATE
-                )['templates']['trait']['filename'];
+                $filename = 'trait-%s.html';
             } elseif ($class->isInterface()) {
-                $filename =$this->configuration->getOption(
-                    ConfigurationOptions::TEMPLATE
-                )['templates']['interface']['filename'];
+                $filename = 'interface-%s.html';
             }
         }
 
@@ -101,7 +84,7 @@ final class ElementUrlFactory
     public function createForFunction(FunctionReflectionInterface $function): string
     {
         return sprintf(
-            $this->configuration->getOption(ConfigurationOptions::TEMPLATE)['templates']['function']['filename'],
+            'function-%s.html',
             Filters::urlize($function->getName())
         );
     }

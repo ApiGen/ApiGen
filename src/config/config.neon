@@ -4,7 +4,7 @@ extensions:
     - ApiGen\ElementReflection\DI\ElementReflectionExtension
     - ApiGen\ReflectionToElementTransformer\DI\ReflectionToElementTransformerExtension
 
-    # Symfony\EventDispathcer integration to Nette\DI
+    # Symfony\EventDispatcher integration to Nette\DI
     - Symplify\SymfonyEventDispatcher\Adapter\Nette\DI\SymfonyEventDispatcherExtension
     # Symfony\Console integration to Nette\DI
     - Contributte\Console\DI\ConsoleExtension
