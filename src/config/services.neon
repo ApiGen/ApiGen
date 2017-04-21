@@ -18,7 +18,7 @@
 - ApiGen\Generator\Resolvers\RelativePathResolver
 
 # Generator
-- ApiGen\Generator\EventSubscriber\ProgressBarSubscriber
+- ApiGen\Generator\EventSubscriber\ProgressBarEventSubscriber
 - ApiGen\Generator\GeneratorQueue
 - ApiGen\Generator\TemplateGenerators\AnnotationGroupsGenerator
 - ApiGen\Generator\TemplateGenerators\ElementListGenerator

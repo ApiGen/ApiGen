@@ -6,6 +6,7 @@ use ApiGen\Configuration\ConfigurationOptions;
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Utils\FileSystem;
 use InvalidArgumentException;
+use Nette\Utils\Strings;
 
 final class RelativePathResolver
 {
@@ -28,16 +29,19 @@ final class RelativePathResolver
     public function getRelativePath(string $fileName): string
     {
         $fileName = $this->fileSystem->normalizePath($fileName);
-        foreach ($this->configuration->getOption(ConfigurationOptions::SOURCE) as $directory) {
+        $sources = $this->configuration->getOption(ConfigurationOptions::SOURCE);
+        foreach ($sources as $directory) {
             $directory = $this->fileSystem->normalizePath($directory);
-            if (strpos($fileName, $directory) === 0) {
+
+            if (Strings::startsWith($fileName, $directory)) {
                 return $this->getFileNameWithoutSourcePath($fileName, $directory);
             }
         }
 
         throw new InvalidArgumentException(sprintf(
-            'Could not determine "%s" relative path',
-            $fileName
+            'Could not determine relative path for "%s". Looked at available sources: %s.',
+            $fileName,
+            implode(', ', $sources)
         ));
     }
 

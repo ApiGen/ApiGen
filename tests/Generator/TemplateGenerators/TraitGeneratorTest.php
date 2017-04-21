@@ -17,7 +17,7 @@ final class TraitGeneratorTest extends AbstractContainerAwareTestCase
     {
         /** @var ParserInterface $parser */
         $parser = $this->container->getByType(ParserInterface::class);
-        $parser->parseDirectories([__DIR__ . '/Source']);
+        $parser->parseDirectories([__DIR__ . DIRECTORY_SEPARATOR . 'Source']);
 
         $this->traitGenerator = $this->container->getByType(TraitGenerator::class);
     }

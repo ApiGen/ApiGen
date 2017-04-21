@@ -8,7 +8,6 @@ use ApiGen\Contracts\Generator\SourceCodeHighlighter\SourceCodeHighlighterInterf
 use ApiGen\Contracts\Parser\Elements\ElementStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Templating\TemplateRendererInterface;
-use ApiGen\Generator\Resolvers\RelativePathResolver;
 
 final class ClassGenerator implements GeneratorInterface
 {
@@ -28,11 +27,6 @@ final class ClassGenerator implements GeneratorInterface
     private $sourceCodeHighlighter;
 
     /**
-     * @var RelativePathResolver
-     */
-    private $relativePathResolver;
-
-    /**
      * @var TemplateRendererInterface
      */
     private $templateRenderer;
@@ -41,13 +35,11 @@ final class ClassGenerator implements GeneratorInterface
         ElementStorageInterface $elementStorage,
         ConfigurationInterface $configuration,
         SourceCodeHighlighterInterface $sourceCodeHighlighter,
-        RelativePathResolver $relativePathResolver,
         TemplateRendererInterface $templateRenderer
     ) {
         $this->elementStorage = $elementStorage;
         $this->configuration = $configuration;
         $this->sourceCodeHighlighter = $sourceCodeHighlighter;
-        $this->relativePathResolver = $relativePathResolver;
         $this->templateRenderer = $templateRenderer;
     }
 
@@ -80,7 +72,7 @@ final class ClassGenerator implements GeneratorInterface
             $this->configuration->getTemplateByName('source'),
             $this->configuration->getDestinationWithPrefixName('source-class-', $classReflection->getName()),
             [
-                'fileName' => $this->relativePathResolver->getRelativePath($classReflection->getFileName()),
+                'fileName' => $classReflection->getFileName(),
                 'source' => $highlightedContent
             ]
         );
