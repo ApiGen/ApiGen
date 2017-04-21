@@ -23,7 +23,6 @@
 - ApiGen\Generator\TemplateGenerators\AnnotationGroupsGenerator
 - ApiGen\Generator\TemplateGenerators\ElementListGenerator
 - ApiGen\Generator\TemplateGenerators\IndexGenerator
-- ApiGen\Generator\TemplateGenerators\SourceCodeGenerator
 # elements
 - ApiGen\Generator\TemplateGenerators\NamespaceGenerator
 - ApiGen\Generator\TemplateGenerators\ClassGenerator

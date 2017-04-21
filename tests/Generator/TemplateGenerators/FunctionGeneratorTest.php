@@ -28,5 +28,9 @@ final class FunctionGeneratorTest extends AbstractContainerAwareTestCase
         $this->assertFileExists(
             TEMP_DIR . '/function-ApiGen.Tests.Generator.TemplateGenerators.Source.someFunction.html'
         );
+
+        $this->assertFileExists(
+            TEMP_DIR . '/source-function-ApiGen.Tests.Generator.TemplateGenerators.Source.someFunction.html'
+        );
     }
 }

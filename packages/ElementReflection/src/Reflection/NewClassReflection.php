@@ -438,4 +438,9 @@ final class NewClassReflection implements ClassReflectionInterface
     {
         return $this->docBlock->hasTag($name);
     }
+
+    public function getFileName(): string
+    {
+        return $this->reflection->getFileName();
+    }
 }

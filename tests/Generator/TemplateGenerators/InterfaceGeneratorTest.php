@@ -28,5 +28,8 @@ final class InterfaceGeneratorTest extends AbstractContainerAwareTestCase
         $this->assertFileExists(
             TEMP_DIR . '/interface-ApiGen.Tests.Generator.TemplateGenerators.Source.SomeInterface.html'
         );
+        $this->assertFileExists(
+            TEMP_DIR . '/source-interface-ApiGen.Tests.Generator.TemplateGenerators.Source.SomeInterface.html'
+        );
     }
 }

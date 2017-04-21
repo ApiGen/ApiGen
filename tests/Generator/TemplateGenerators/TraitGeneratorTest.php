@@ -28,5 +28,8 @@ final class TraitGeneratorTest extends AbstractContainerAwareTestCase
         $this->assertFileExists(
             TEMP_DIR . '/trait-ApiGen.Tests.Generator.TemplateGenerators.Source.SomeTrait.html'
         );
+        $this->assertFileExists(
+            TEMP_DIR . '/source-trait-ApiGen.Tests.Generator.TemplateGenerators.Source.SomeTrait.html'
+        );
     }
 }
