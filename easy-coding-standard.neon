@@ -64,6 +64,7 @@ checkers:
 
 skip:
     SlevomatCodingStandard\Sniffs\TypeHints\TypeHintDeclarationSniff:
+        - tests/Parser/Parser/ParserSource/SomeClass.php
         - tests/Generator/TemplateGenerators/Source/SomeFunction.php
         - tests/Parser/Reflection/ReflectionMethodSource/ReflectionMethod.php
         - tests/Parser/Reflection/ReflectionFunctionSource/functions.php

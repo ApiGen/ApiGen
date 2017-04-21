@@ -4,18 +4,11 @@ namespace ApiGen\Parser\Elements;
 
 use ApiGen\Contracts\Parser\Elements\ElementExtractorInterface;
 use ApiGen\Contracts\Parser\Elements\ElementFilterInterface;
-use ApiGen\Contracts\Parser\Elements\ElementsInterface;
 use ApiGen\Contracts\Parser\Elements\ElementSorterInterface;
 use ApiGen\Contracts\Parser\Elements\ElementStorageInterface;
-use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 
 final class ElementExtractor implements ElementExtractorInterface
 {
-    /**
-     * @var ElementsInterface
-     */
-    private $elements;
-
     /**
      * @var ElementFilterInterface
      */
@@ -32,12 +25,10 @@ final class ElementExtractor implements ElementExtractorInterface
     private $elementSorter;
 
     public function __construct(
-        ElementsInterface $elements,
         ElementFilterInterface $elementFilter,
         ElementStorageInterface $elementStorage,
         ElementSorterInterface $elementSorter
     ) {
-        $this->elements = $elements;
         $this->elementFilter = $elementFilter;
         $this->elementStorage = $elementStorage;
         $this->elementSorter = $elementSorter;

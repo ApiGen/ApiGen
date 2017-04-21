@@ -11,9 +11,12 @@ namespace ApiGen\Parser\Tests\Parser\ParserSource;
  */
 class SomeClass
 {
+    /**
+     * @var int
+     */
     public $someProperty;
 
-    public function SomeMethod()
+    public function SomeMethod()/*: void - brokes old parser */
     {
 
     }

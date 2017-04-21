@@ -55,6 +55,7 @@ final class AutocompleteElements implements AutocompleteElementsInterface
 
     /**
      * @param string[] $elements
+     * @return string[]
      */
     private function sortElements(array $elements): array
     {
