@@ -2,21 +2,16 @@
 
 namespace ApiGen\Templating;
 
-use ApiGen\Contracts\Templating\TemplateFactory\TemplateFactoryInterface;
 use ApiGen\Contracts\Templating\TemplateRendererInterface;
 use ApiGen\Event\CreateTemplateEvent;
 use ApiGen\Generator\Event\GenerateProgressEvent;
+use ApiGen\Templating\Parameters\ParameterBag;
+use ApiGen\Utils\FileSystem;
 use Latte\Engine;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 final class TemplateRenderer implements TemplateRendererInterface
 {
-    /**
-     * @var TemplateFactoryInterface
-     */
-    private $templateFactory;
-
     /**
      * @var EventDispatcherInterface
      */
@@ -27,13 +22,9 @@ final class TemplateRenderer implements TemplateRendererInterface
      */
     private $latteEngine;
 
-    public function __construct(
-        Engine $latteEngine,
-        TemplateFactoryInterface $templateFactory,
-        EventDispatcherInterface $eventDispatcher
-    ) {
+    public function __construct(Engine $latteEngine, EventDispatcherInterface $eventDispatcher)
+    {
         $this->latteEngine = $latteEngine;
-        $this->templateFactory = $templateFactory;
         $this->eventDispatcher = $eventDispatcher;
     }
 
@@ -44,29 +35,18 @@ final class TemplateRenderer implements TemplateRendererInterface
      */
     public function renderToFile(string $templateFile, string $destinationFile, array $parameters = []): void
     {
-        // @todo: create template event here
+        $parametersBag = new ParameterBag;
 
-//        $this->eventDispatcher->dispatch(GenerateProgressEvent::class);
-//
-//        $createTemplateEvent = new CreateTemplateEvent($parametersBag);
-//        $this->eventDispatcher->dispatch(CreateTemplateEvent::class, $createTemplateEvent);
+        $createTemplateEvent = new CreateTemplateEvent($parametersBag);
+        $this->eventDispatcher->dispatch(CreateTemplateEvent::class, $createTemplateEvent);
 
-        $template = $this->templateFactory->create();
-        $template->save($templateFile, $destinationFile, $parameters);
+        $parametersBag->addParameters($parameters);
 
-//        /**
-//         * @param string $fileDestination
-//         * @param mixed[] $parameters
-//         */
-//        public function save(string $templateFile, string $fileDestination, array $parameters = []): void
-//    {
-//        FileSystem::ensureDirectoryExists($fileDestination);
-//
-//        $parameters = array_merge($this->parameters, $parameters);
-//
-//        file_put_contents($fileDestination, $this->latteEngine->renderToString($templateFile, $parameters));
-//    }
-
+        FileSystem::ensureDirectoryExists($destinationFile);
+        file_put_contents(
+            $destinationFile,
+            $this->latteEngine->renderToString($templateFile, $parametersBag->getParameters())
+        );
 
         $this->eventDispatcher->dispatch(GenerateProgressEvent::class);
     }

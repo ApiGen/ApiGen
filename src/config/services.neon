@@ -31,7 +31,6 @@
 - ApiGen\Generator\TemplateGenerators\FunctionGenerator
 
 # Templating
-- ApiGen\Templating\TemplateFactory
 - ApiGen\Templating\TemplateRenderer
 - ApiGen\EventSubscriber\ConfigurationTemplateVariablesEventSubscriber
 - ApiGen\EventSubscriber\ElementsTemplateVariablesEventSubscriber
