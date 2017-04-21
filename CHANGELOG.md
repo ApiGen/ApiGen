@@ -1,6 +1,6 @@
 # Change Log
 
-All notable changes to [apigen][0] project will be documented in this file.
+All notable changes to [Apigen][0] project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
@@ -25,39 +25,26 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Updated
 
-- TBA
 
-## [4.2.0-RC1] - 2017-04-03
+----
 
 ### Added
 
-- Added support for `*.dist` config files [#603].
-- Added NEON file support.
-- Added ability to skip confirmation question to overwrite non-empty
-  destination directory when building docs [#604].
 - Added `.editorconfig` to the project.
 - Enabled PHP7 tests in Travis-CI.
-- Enabled automated CI tests on Windows via Appveyor [#831]
-- Added `--debug` CLI option, which prints detailed parser errors.
-- Added `--overwrite` CLI option [#679].
 - Added support for `static` type [#704].
-- Added documentation generation for global constants and functions [#2].
-- Added support for array-nottation typehint for `@propety` and `@method` [#699].
 - Added bitcoin link support via `@link bitcoin:address` [#731].
 
 ### Changed
 
-- Minimum PHP requirement was increased from `5.4` to `5.5`.
+- Minimum PHP requirement was increased from `5.4` to `7.1`.
 - Project is now `PSR-2` compatible.
 - Changed PHP Token Reflection library from `andrewsville/php-token-reflection`
   to `popsul/php-token-reflection`.
 - UTF-8 is now a standard/default charset. [ApiGen] will  expect UTF-8 encoded
   files by default (see [#64] for info).
-- Project structure has been decoupled, some parts of internal code have been
-  `ApiGen\Parser` (`apigen/parser` package).
-- ApiGen now uses different temporary directories for different users. This
-  should prevent problems when different users are running apigen simultaneously.
 - Only relevant classes are generated in sidebar and source code pages [#771].
+- Enabled autocomplete for methods and properties.
 
 ### Fixed
 
@@ -71,7 +58,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Fixed an error on generating docs for non-existent traits.
 - Fixed an issue with handling paths on different OS. The paths should now be
   normalized and work on Windows [#668].
-- `TreeGenerator` now properly generates a tree, instead of a list [#569].
 - Fixed API documentation download link generation. The generated `.zip`
   filename will now include a name of the slugified project name [#702].
 - Fixed an issue where ApiGen sometimes would incorrectly resolve return
@@ -79,7 +65,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Fixed an issue when docblocks marked with `@internal` would be documented
   [#734].
 - Fixed support of `$this` as return type hint [#750].
-- Fixed support for `themes` allowing you to use any theme available in `vendor`.
 
 ### Removed
 
@@ -88,13 +73,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Removed various deprecated generators (Robots, Sitemap) which weren't used.
 - Dropped PHAR support in `composer`.
 - Cleanup codebase to get rid of unused namespaces, methods or properties.
-
-### Updated
-
-- Updated `nette` dependency from `2.2` to `2.3`.
-- Updated `symfony` components dependencies to support both `2.x` (`2.7` or
-  `2.8`) and `3.x` versions [#835]
-- Enabled autocomplete for methods and properties.
 
 ## [4.1.1] - 2015-04-09
 
@@ -234,8 +212,7 @@ base similar to 2.8. Since then there were many BC breaks, thus major version wa
 - PEAR support was dropped. **Use PHAR file instead**. Latest stable version
   can be always found at [apigen.org](http://apigen.org)
 
-[5.0.x-dev]: https://github.com/apigen/apigen/compare/4.2...master
-[4.2.0-RC1]: https://github.com/apigen/apigen/compare/v4.1.2...v4.2.0-RC1
+[5.0.x-dev]: https://github.com/apigen/apigen/compare/4.1.2...master
 [4.1.2]: https://github.com/apigen/apigen/compare/v4.1.1...v4.1.2
 [4.1.1]: https://github.com/apigen/apigen/compare/v4.1.0...v4.1.1
 [4.1.0]: https://github.com/apigen/apigen/compare/v4.0.1...v4.1.0
