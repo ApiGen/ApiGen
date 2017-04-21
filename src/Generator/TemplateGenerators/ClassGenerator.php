@@ -75,7 +75,7 @@ final class ClassGenerator implements NamedDestinationGeneratorInterface
         ]);
     }
 
-    private function generateSourceCodeForClass(ClassReflectionInterface $classReflection)
+    private function generateSourceCodeForClass(ClassReflectionInterface $classReflection): void
     {
         $template = $this->templateFactory->create();
         $template->setFile($this->configuration->getTemplateByName('source'));

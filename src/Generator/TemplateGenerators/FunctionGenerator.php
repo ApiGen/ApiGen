@@ -75,7 +75,7 @@ final class FunctionGenerator implements NamedDestinationGeneratorInterface
         ]);
     }
 
-    private function generateSourceCodeForFunction(FunctionReflectionInterface $functionReflection)
+    private function generateSourceCodeForFunction(FunctionReflectionInterface $functionReflection): void
     {
         $template = $this->templateFactory->create();
         $template->setFile($this->configuration->getTemplateByName('source'));
@@ -83,7 +83,9 @@ final class FunctionGenerator implements NamedDestinationGeneratorInterface
         $content = file_get_contents($functionReflection->getFileName());
         $highlightedContent = $this->sourceCodeHighlighter->highlightAndAddLineNumbers($content);
 
-        $destination = $this->configuration->getDestinationWithPrefixName('source-function-', $functionReflection->getName());
+        $destination = $this->configuration->getDestinationWithPrefixName(
+            'source-function-', $functionReflection->getName()
+        );
 
         $template->save($destination, [
             'fileName' => $this->relativePathResolver->getRelativePath($functionReflection->getFileName()),

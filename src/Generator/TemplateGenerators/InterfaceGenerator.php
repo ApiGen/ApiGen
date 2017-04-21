@@ -75,7 +75,7 @@ final class InterfaceGenerator implements NamedDestinationGeneratorInterface
         ]);
     }
 
-    private function generateSourceCodeForInterface(ClassReflectionInterface $interfaceReflection)
+    private function generateSourceCodeForInterface(ClassReflectionInterface $interfaceReflection): void
     {
         $template = $this->templateFactory->create();
         $template->setFile($this->configuration->getTemplateByName('source'));
@@ -83,7 +83,9 @@ final class InterfaceGenerator implements NamedDestinationGeneratorInterface
         $content = file_get_contents($interfaceReflection->getFileName());
         $highlightedContent = $this->sourceCodeHighlighter->highlightAndAddLineNumbers($content);
 
-        $destination = $this->configuration->getDestinationWithPrefixName('source-interface-', $interfaceReflection->getName());
+        $destination = $this->configuration->getDestinationWithPrefixName(
+            'source-interface-', $interfaceReflection->getName()
+        );
 
         $template->save($destination, [
             'fileName' => $this->relativePathResolver->getRelativePath($interfaceReflection->getFileName()),

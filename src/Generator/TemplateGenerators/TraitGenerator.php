@@ -75,7 +75,7 @@ final class TraitGenerator implements NamedDestinationGeneratorInterface
         ]);
     }
 
-    private function generateSourceCodeForTrait(ClassReflectionInterface $traitReflection)
+    private function generateSourceCodeForTrait(ClassReflectionInterface $traitReflection): void
     {
         $template = $this->templateFactory->create();
         $template->setFile($this->configuration->getTemplateByName('source'));
