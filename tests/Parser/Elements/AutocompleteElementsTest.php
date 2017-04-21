@@ -2,16 +2,15 @@
 
 namespace ApiGen\Parser\Tests\Elements;
 
-use ApiGen\Contracts\Parser\Elements\ElementStorageInterface;
-use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
+use ApiGen\Contracts\Parser\ParserInterface;
 use ApiGen\Parser\Elements\AutocompleteElements;
-use PHPUnit\Framework\TestCase;
-use PHPUnit_Framework_MockObject_MockObject;
+use ApiGen\Parser\Tests\Parser\ParserSource\SomeClass;
+use ApiGen\Parser\Tests\Parser\ParserSource\SomeInterface;
+use ApiGen\Parser\Tests\ParserSource\SomeOtherClass;
+use ApiGen\Parser\Tests\ParserSource\YetAnotherClass;
+use ApiGen\Tests\AbstractContainerAwareTestCase;
 
-final class AutocompleteElementsTest extends TestCase
+final class AutocompleteElementsTest extends AbstractContainerAwareTestCase
 {
     /**
      * @var AutocompleteElements
@@ -20,54 +19,24 @@ final class AutocompleteElementsTest extends TestCase
 
     protected function setUp(): void
     {
-        $elementsStorageMock = $this->createElementStorageMock();
-        $this->autocompleteElements = new AutocompleteElements($elementsStorageMock);
+        /** @var ParserInterface $parser */
+        $parser = $this->container->getByType(ParserInterface::class);
+        $parser->parseDirectories([__DIR__ . '/../Parser/ParserSource']);
+
+        $this->autocompleteElements = $this->container->getByType(AutocompleteElements::class);
     }
 
     public function testGetElementsClasses(): void
     {
         $elements = $this->autocompleteElements->getElements();
         $this->assertSame([
-            ['c', 'ClassPrettyName'],
-            ['p', 'ClassPrettyName::$propertyName'],
-            ['m', 'ClassPrettyName::methodName'],
-            ['f', 'FunctionPrettyName'],
+            ['c', SomeClass::class],
+            ['p', SomeClass::class . '::$someProperty'],
+            ['m', SomeClass::class . '::SomeMethod()'],
+            ['c', SomeInterface::class],
+            ['c', SomeOtherClass::class],
+            ['c', YetAnotherClass::class],
+            ['f', 'SomeNamespace\someAloneFunction()']
         ], $elements);
-    }
-
-    /**
-     * @return PHPUnit_Framework_MockObject_MockObject|ElementStorageInterface
-     */
-    private function createElementStorageMock(): ElementStorageInterface
-    {
-        $classReflectionMock = $this->createMock(ClassReflectionInterface::class);
-        $classReflectionMock->method('getPrettyName')
-            ->willReturn('ClassPrettyName');
-        $classReflectionMock->method('getOwnConstants')
-            ->willReturn([]);
-
-        $methodReflection = $this->createMock(MethodReflectionInterface::class);
-        $methodReflection->method('getPrettyName')
-            ->willReturn('ClassPrettyName::methodName');
-        $classReflectionMock->method('getOwnMethods')
-            ->willReturn([$methodReflection]);
-
-        $propertyReflection = $this->createMock(PropertyReflectionInterface::class);
-        $propertyReflection->method('getPrettyName')
-            ->willReturn('ClassPrettyName::$propertyName');
-        $classReflectionMock->method('getOwnProperties')
-            ->willReturn([$propertyReflection]);
-
-        $functionReflectionMock = $this->createMock(FunctionReflectionInterface::class);
-        $functionReflectionMock->method('getPrettyName')
-            ->willReturn('FunctionPrettyName');
-
-        $elementsStorageMock = $this->createMock(ElementStorageInterface::class);
-        $elementsStorageMock->method('getElements')
-            ->willReturn([
-                'classes' => [$classReflectionMock],
-                'functions' => [$functionReflectionMock]
-            ]);
-        return $elementsStorageMock;
     }
 }

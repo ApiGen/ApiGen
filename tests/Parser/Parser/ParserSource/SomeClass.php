@@ -11,5 +11,10 @@ namespace ApiGen\Parser\Tests\Parser\ParserSource;
  */
 class SomeClass
 {
+    public $someProperty;
 
+    public function SomeMethod()
+    {
+
+    }
 }

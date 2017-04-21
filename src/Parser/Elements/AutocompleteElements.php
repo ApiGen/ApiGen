@@ -4,9 +4,6 @@ namespace ApiGen\Parser\Elements;
 
 use ApiGen\Contracts\Parser\Elements\AutocompleteElementsInterface;
 use ApiGen\Contracts\Parser\Elements\ElementStorageInterface;
-use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 
 final class AutocompleteElements implements AutocompleteElementsInterface
 {
@@ -15,53 +12,56 @@ final class AutocompleteElements implements AutocompleteElementsInterface
      */
     private $elementStorage;
 
-    /**
-     * @var mixed[]
-     */
-    private $elements = [];
-
     public function __construct(ElementStorageInterface $elementStorage)
     {
         $this->elementStorage = $elementStorage;
     }
 
     /**
-     * @return mixed[]
+     * @return string[]
      */
     public function getElements(): array
     {
-        foreach ($this->elementStorage->getElements() as $type => $elementList) {
-            foreach ($elementList as $element) {
-                $this->processElement($element);
+        $elements = [];
+
+        foreach ($this->elementStorage->getFunctions() as $functionReflection) {
+            $elements[] = ['f', $functionReflection->getPrettyName()];
+        }
+
+        foreach ($this->elementStorage->getClasses() as $classReflection) {
+            $elements[] = ['c', $classReflection->getPrettyName()];
+
+            foreach ($classReflection->getOwnMethods() as $methodReflection) {
+                $elements[] = ['m', $methodReflection->getPrettyName()];
+            }
+
+            foreach ($classReflection->getOwnProperties() as $propertyReflection) {
+                $elements[] = ['p', $propertyReflection->getPrettyName()];
             }
         }
 
-        $this->sortElements();
-
-        return $this->elements;
-    }
-
-    private function processElement(ElementReflectionInterface $element): void
-    {
-        if ($element instanceof FunctionReflectionInterface) {
-            $this->elements[] = ['f', $element->getPrettyName()];
-        } elseif ($element instanceof ClassReflectionInterface) {
-            $this->elements[] = ['c', $element->getPrettyName()];
-
-            foreach ($element->getOwnMethods() as $method) {
-                $this->elements[] = ['m', $method->getPrettyName()];
-            }
-
-            foreach ($element->getOwnProperties() as $property) {
-                $this->elements[] = ['p', $property->getPrettyName()];
-            }
+        foreach ($this->elementStorage->getInterfaces() as $interfaceReflection) {
+            $elements[] = ['c', $interfaceReflection->getPrettyName()];
         }
+
+        foreach ($this->elementStorage->getTraits() as $traitReflection) {
+            $elements[] = ['c', $traitReflection->getPrettyName()];
+        }
+
+        $elements = $this->sortElements($elements);
+
+        return $elements;
     }
 
-    private function sortElements(): void
+    /**
+     * @param string[] $elements
+     */
+    private function sortElements(array $elements): array
     {
-        usort($this->elements, function ($one, $two) {
+        usort($elements, function ($one, $two) {
             return strcasecmp($one[1], $two[1]);
         });
+
+        return $elements;
     }
 }

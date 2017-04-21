@@ -116,23 +116,6 @@ final class ElementStorage implements ElementStorageInterface
          return $this->functions;
     }
 
-    /**
-     * @return mixed[]
-     */
-    public function getElements(): array
-    {
-        $this->ensureCategorization();
-
-        $elements = [
-            Elements::CLASSES => $this->classes,
-            Elements::FUNCTIONS => $this->functions,
-            Elements::INTERFACES => $this->interfaces,
-            Elements::TRAITS => $this->traits,
-            Elements::EXCEPTIONS => $this->exceptions
-        ];
-        return $elements;
-    }
-
     private function categorizeParsedElements(): void
     {
         foreach ($this->parserStorage->getTypes() as $type) {

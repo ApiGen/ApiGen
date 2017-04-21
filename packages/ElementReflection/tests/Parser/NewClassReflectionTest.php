@@ -71,7 +71,7 @@ final class NewClassReflectionTest extends AbstractContainerAwareTestCase
     public function testLines()
     {
         $this->assertSame(12, $this->classReflection->getStartLine());
-        $this->assertSame(15, $this->classReflection->getEndLine());
+        $this->assertSame(20, $this->classReflection->getEndLine());
     }
 
     public function testIsDocumented()

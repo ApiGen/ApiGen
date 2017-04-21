@@ -48,36 +48,49 @@ final class ElementExtractor implements ElementExtractorInterface
      */
     public function extractElementsByAnnotation(string $annotation): array
     {
-        $elements = $this->elements->getEmptyList();
-        $elements['constants'] = [];
-        $elements[Elements::METHODS] = [];
-        $elements[Elements::PROPERTIES] = [];
+        $elements = [
+            // these might be empty, if no classes
+            'methods' => [],
+            'constants' => [],
+            'properties' => [],
+        ];
 
-        foreach ($this->elementStorage->getElements() as $type => $elementList) {
-            $elements[$type] += $this->elementFilter->filterByAnnotation($elementList, $annotation);
+        $elements['functions'] = $this->elementFilter->filterByAnnotation(
+            $this->elementStorage->getFunctions(),
+            $annotation
+        );
 
-            if ($type === Elements::FUNCTIONS) {
-                continue;
-            }
+        $elements['classes'] = $this->elementFilter->filterByAnnotation(
+            $this->elementStorage->getClasses(),
+            $annotation
+        );
 
-            foreach ($elementList as $class) {
-                /** @var ClassReflectionInterface $class */
-                $elements[Elements::METHODS] = $this->extractByAnnotationAndMerge(
-                    $class->getOwnMethods(),
-                    $annotation,
-                    $elements[Elements::METHODS]
-                );
-                $elements['constants'] = $this->extractByAnnotationAndMerge(
-                    $class->getOwnConstants(),
-                    $annotation,
-                    $elements['constants']
-                );
-                $elements[Elements::PROPERTIES] = $this->extractByAnnotationAndMerge(
-                    $class->getOwnProperties(),
-                    $annotation,
-                    $elements[Elements::PROPERTIES]
-                );
-            }
+        $elements['interfaces'] = $this->elementFilter->filterByAnnotation(
+            $this->elementStorage->getInterfaces(),
+            $annotation
+        );
+
+        $elements['traits'] = $this->elementFilter->filterByAnnotation(
+            $this->elementStorage->getTraits(),
+            $annotation
+        );
+
+        foreach ($this->elementStorage->getClasses() as $classReflection) {
+            $elements['methods'] = $this->extractByAnnotationAndMerge(
+                $classReflection->getOwnMethods(),
+                $annotation,
+                $elements[Elements::METHODS]
+            );
+            $elements['constants'] = $this->extractByAnnotationAndMerge(
+                $classReflection->getOwnConstants(),
+                $annotation,
+                $elements['constants']
+            );
+            $elements['properties'] = $this->extractByAnnotationAndMerge(
+                $classReflection->getOwnProperties(),
+                $annotation,
+                $elements[Elements::PROPERTIES]
+            );
         }
 
         return $this->sortElements($elements);

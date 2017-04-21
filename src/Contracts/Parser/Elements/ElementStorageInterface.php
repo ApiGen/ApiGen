@@ -36,9 +36,4 @@ interface ElementStorageInterface
      * @return FunctionReflectionInterface[]
      */
     public function getFunctions(): array;
-
-    /**
-     * @return mixed[][]
-     */
-    public function getElements(): array;
 }
