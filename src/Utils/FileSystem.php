@@ -106,4 +106,12 @@ final class FileSystem
             copy($sourceFile, $destinationFile);
         }
     }
+
+    public static function ensureDirectoryExists(string $destination): void
+    {
+        $directory = dirname($destination);
+        if (! is_dir($directory)) {
+            mkdir($directory, 0755, true);
+        }
+    }
 }

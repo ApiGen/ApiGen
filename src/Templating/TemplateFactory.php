@@ -4,6 +4,7 @@ namespace ApiGen\Templating;
 
 use ApiGen\Contracts\Templating\TemplateFactory\TemplateFactoryInterface;
 use ApiGen\Event\CreateTemplateEvent;
+use ApiGen\Templating\Parameters\ParameterBag;
 use Latte\Engine;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -27,10 +28,12 @@ final class TemplateFactory implements TemplateFactoryInterface
 
     public function create(): Template
     {
-        $template = new Template($this->latteEngine);
+        $parametersBag = new ParameterBag;
 
-        $createTemplateEvent = new CreateTemplateEvent($template);
+        $createTemplateEvent = new CreateTemplateEvent($parametersBag);
         $this->eventDispatcher->dispatch(CreateTemplateEvent::class, $createTemplateEvent);
+
+        $template = new Template($this->latteEngine, $parametersBag);
 
         return $template;
     }

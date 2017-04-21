@@ -2,23 +2,23 @@
 
 namespace ApiGen\Event;
 
-use ApiGen\Templating\Template;
+use ApiGen\Templating\Parameters\ParameterBag;
 use Symfony\Component\EventDispatcher\Event;
 
 final class CreateTemplateEvent extends Event
 {
     /**
-     * @var Template
+     * @var ParameterBag
      */
-    private $template;
+    private $parameterBag;
 
-    public function __construct(Template $template)
+    public function __construct(ParameterBag $parameterBag)
     {
-        $this->template = $template;
+        $this->parameterBag = $parameterBag;
     }
 
-    public function getTemplate(): Template
+    public function getParameterBag(): ParameterBag
     {
-        return $this->template;
+        return $this->parameterBag;
     }
 }

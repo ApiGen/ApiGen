@@ -2,6 +2,8 @@
 
 namespace ApiGen\Templating;
 
+use ApiGen\Templating\Parameters\ParameterBag;
+use ApiGen\Utils\FileSystem;
 use Latte\Engine;
 
 final class Template
@@ -12,13 +14,14 @@ final class Template
     private $latteEngine;
 
     /**
-     * @var mixed[]
+     * @var ParameterBag
      */
-    private $parameters = [];
+    private $parameters;
 
-    public function __construct(Engine $latteEngine)
+    public function __construct(Engine $latteEngine, ParameterBag $parameterBag)
     {
         $this->latteEngine = $latteEngine;
+        $this->parameters = $parameterBag;
     }
 
     /**
@@ -26,7 +29,7 @@ final class Template
      */
     public function addParameters(array $parameters): void
     {
-        $this->parameters = $parameters + $this->parameters;
+        $this->parameters->addParameters($parameters);
     }
 
     /**
@@ -35,18 +38,13 @@ final class Template
      */
     public function save(string $templateFile, string $fileDestination, array $parameters = []): void
     {
-        $this->ensureDirectoryExists($fileDestination);
+        FileSystem::ensureDirectoryExists($fileDestination);
 
-        $parameters = array_merge($this->parameters, $parameters);
+        $this->parameters->addParameters($parameters);
 
-        file_put_contents($fileDestination, $this->latteEngine->renderToString($templateFile, $parameters));
-    }
-
-    private function ensureDirectoryExists(string $destination): void
-    {
-        $directory = dirname($destination);
-        if (! is_dir($directory)) {
-            mkdir($directory, 0755, true);
-        }
+        file_put_contents(
+            $fileDestination,
+            $this->latteEngine->renderToString($templateFile, $this->parameters->getParameters())
+        );
     }
 }

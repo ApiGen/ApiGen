@@ -35,8 +35,8 @@ final class ElementsTemplateVariablesEventSubscriber implements EventSubscriberI
 
     public function loadTemplateVariables(CreateTemplateEvent $createTemplateEvent): void
     {
-        $template = $createTemplateEvent->getTemplate();
-        $template->addParameters([
+        $parameterBag = $createTemplateEvent->getParameterBag();
+        $parameterBag->addParameters([
             'namespace' => null,
             'class' => null,
             'function' => null,
