@@ -44,10 +44,7 @@ final class InterfaceGenerator implements NamedDestinationGeneratorInterface
 
     public function getDestinationPath(string $interfaceName): string
     {
-        return $this->configuration->getDestinationForFileMaskAndName(
-            'interface-%s',
-            $interfaceName
-        );
+        return $this->configuration->getDestinationWithPrefixName('interface-', $interfaceName);
     }
 
     private function generateForInterface(ClassReflectionInterface $interfaceReflection): void

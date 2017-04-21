@@ -44,7 +44,7 @@ final class NamespaceGenerator implements NamedDestinationGeneratorInterface
 
     public function getDestinationPath(string $namespace): string
     {
-        return $this->configuration->getDestinationForFileMaskAndName('namespace-%s', $namespace);
+        return $this->configuration->getDestinationWithPrefixName('namespace-', $namespace);
     }
 
     /**

@@ -74,5 +74,7 @@ interface ConfigurationInterface
      */
     public function getExtensions(): array;
 
-    public function getDestinationForFileMaskAndName(string $fileMask, string $elementName): string;
+    public function getDestinationWithName(string $prefix): string;
+
+    public function getDestinationWithPrefixName(string $prefix, string $name): string;
 }

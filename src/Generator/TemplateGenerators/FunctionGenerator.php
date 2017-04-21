@@ -44,8 +44,8 @@ final class FunctionGenerator implements NamedDestinationGeneratorInterface
 
     public function getDestinationPath(string $functionName): string
     {
-        return $this->configuration->getDestinationForFileMaskAndName(
-            'function-%s',
+        return $this->configuration->getDestinationWithPrefixName(
+            'function-',
             $functionName
         );
     }

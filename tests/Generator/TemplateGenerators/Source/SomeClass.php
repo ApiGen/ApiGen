@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Tests\ApiGen\Generator\TemplateGenerators\Source;
+namespace ApiGen\Tests\Generator\TemplateGenerators\Source;
 
 class SomeClass
 {

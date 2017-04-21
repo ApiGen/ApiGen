@@ -44,7 +44,7 @@ final class TraitGenerator implements NamedDestinationGeneratorInterface
 
     public function getDestinationPath(string $traitName): string
     {
-        return $this->configuration->getDestinationForFileMaskAndName('trait-%s',$traitName);
+        return $this->configuration->getDestinationWithPrefixName('trait-',$traitName);
     }
 
     private function generateForTrait(ClassReflectionInterface $traitReflection): void

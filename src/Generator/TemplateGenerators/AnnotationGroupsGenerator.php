@@ -44,10 +44,7 @@ final class AnnotationGroupsGenerator implements NamedDestinationGeneratorInterf
 
     public function getDestinationPath(string $annotation): string
     {
-        return $this->configuration->getDestinationForFileMaskAndName(
-            'annotation-group-%s',
-            $annotation
-        );
+        return $this->configuration->getDestinationWithPrefixName('annotation-group-', $annotation);
     }
 
     private function generateForAnnotation(string $annotation): void

@@ -54,11 +54,17 @@ final class SourceCodeGenerator implements GeneratorInterface
 
     public function generate(): void
     {
-        foreach ($this->elementStorage->getElements() as $elementList) {
-            foreach ($elementList as $element) {
-                /** @var ElementReflectionInterface $element */
-                $this->generateForElement($element);
-            }
+        foreach ($this->elementStorage->getClasses() as $trait) {
+            $this->generateForElement($trait);
+        }
+        foreach ($this->elementStorage->getInterfaces() as $trait) {
+            $this->generateForElement($trait);
+        }
+        foreach ($this->elementStorage->getTraits() as $trait) {
+            $this->generateForElement($trait);
+        }
+        foreach ($this->elementStorage->getFunctions() as $trait) {
+            $this->generateForElement($trait);
         }
     }
 
@@ -83,9 +89,7 @@ final class SourceCodeGenerator implements GeneratorInterface
 
     private function getTemplateFile(): string
     {
-        return $this->configuration->getTemplatesDirectory()
-            . DIRECTORY_SEPARATOR
-            . 'source.latte';
+        return $this->configuration->getTemplateByName('source');
     }
 
     public function getDestinationPath(ElementReflectionInterface $name): string

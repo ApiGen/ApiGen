@@ -28,11 +28,6 @@ final class IndexGenerator implements GeneratorInterface
     {
         $template = $this->templateFactory->create();
         $template->setFile($this->configuration->getTemplateByName('index'));
-        $template->save($this->createFileDestination());
-    }
-
-    private function createFileDestination(): string
-    {
-        return $this->configuration->getDestinationForFileMaskAndName('index', '');
+        $template->save($this->configuration->getDestinationWithName('index'));
     }
 }

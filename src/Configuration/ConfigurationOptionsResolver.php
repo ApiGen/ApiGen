@@ -10,6 +10,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class ConfigurationOptionsResolver
 {
+    // todo: make modular
+    // collector for OpitonInterface services to buider in here.
+
+
+
     /**
      * @var string
      */

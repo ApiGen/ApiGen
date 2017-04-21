@@ -130,11 +130,16 @@ final class Configuration implements ConfigurationInterface
         return $this->getTemplatesDirectory() . DIRECTORY_SEPARATOR . $name . '.latte';
     }
 
-    public function getDestinationForFileMaskAndName(string $fileMask, string $elementName): string
+    public function getDestinationWithName(string $name): string
+    {
+        return $this->getDestination() . DIRECTORY_SEPARATOR . $name . '.html';
+    }
+
+    public function getDestinationWithPrefixName(string $prefix, string $name): string
     {
         return $this->getDestination() . DIRECTORY_SEPARATOR . sprintf(
-            $fileMask . '.html',
-            UrlFilters::urlize($elementName)
+            $prefix . '%s.html',
+            UrlFilters::urlize($name)
         );
     }
 }

@@ -22,8 +22,8 @@
 - ApiGen\Generator\GeneratorQueue
 - ApiGen\Generator\TemplateGenerators\AnnotationGroupsGenerator
 - ApiGen\Generator\TemplateGenerators\ElementListGenerator
-- ApiGen\Generator\TemplateGenerators\IndexGenerator # rename to index, it's index
-#- ApiGen\Generator\TemplateGenerators\SourceCodeGenerator -> put into all elements...
+- ApiGen\Generator\TemplateGenerators\IndexGenerator
+- ApiGen\Generator\TemplateGenerators\SourceCodeGenerator
 # elements
 - ApiGen\Generator\TemplateGenerators\NamespaceGenerator
 - ApiGen\Generator\TemplateGenerators\ClassGenerator

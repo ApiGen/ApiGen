@@ -15,6 +15,8 @@ interface ClassReflectionInterface extends ElementReflectionInterface, LinedInte
 
     public function getParentClassName(): ?string;
 
+    public function getFileName(): string;
+
     /**
      * @return ClassReflectionInterface[]
      */
