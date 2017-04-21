@@ -97,7 +97,7 @@ final class Configuration implements ConfigurationInterface
     }
 
     /**
-     * @return array|string[]
+     * @return string[]
      */
     public function getSource(): array
     {
@@ -105,7 +105,7 @@ final class Configuration implements ConfigurationInterface
     }
 
     /**
-     * @return array|string[]
+     * @return string[]
      */
     public function getExclude(): array
     {

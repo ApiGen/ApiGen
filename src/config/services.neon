@@ -31,8 +31,11 @@
 - ApiGen\Generator\TemplateGenerators\FunctionGenerator
 
 # Templating
-- ApiGen\Templating\TemplateElementsLoader
 - ApiGen\Templating\TemplateFactory
+- ApiGen\EventSubscriber\ConfigurationTemplateVariablesEventSubscriber
+- ApiGen\EventSubscriber\ElementsTemplateVariablesEventSubscriber
+
+# Template Filters
 - ApiGen\Templating\Filters\Helpers\ElementLinkFactory
 - ApiGen\Templating\Filters\Helpers\ElementUrlFactory
 - ApiGen\Templating\Filters\Helpers\LinkBuilder

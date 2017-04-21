@@ -9,7 +9,6 @@ use ApiGen\Contracts\Parser\Elements\ElementStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Contracts\Templating\TemplateFactory\TemplateFactoryInterface;
 use ApiGen\Generator\Resolvers\RelativePathResolver;
-use PHP_CodeSniffer\Reports\Source;
 
 final class FunctionGenerator implements NamedDestinationGeneratorInterface
 {
