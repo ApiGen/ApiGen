@@ -3,12 +3,12 @@
 namespace ApiGen\Generator\TemplateGenerators;
 
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
-use ApiGen\Contracts\Generator\NamedDestinationGeneratorInterface;
+use ApiGen\Contracts\Generator\GeneratorInterface;
 use ApiGen\Contracts\Parser\Elements\ElementExtractorInterface;
-use ApiGen\Contracts\Templating\TemplateFactory\TemplateFactoryInterface;
+use ApiGen\Contracts\Templating\TemplateRendererInterface;
 use ApiGen\Parser\Elements\Elements;
 
-final class AnnotationGroupsGenerator implements NamedDestinationGeneratorInterface
+final class AnnotationGroupsGenerator implements GeneratorInterface
 {
     /**
      * @var ConfigurationInterface
@@ -16,23 +16,23 @@ final class AnnotationGroupsGenerator implements NamedDestinationGeneratorInterf
     private $configuration;
 
     /**
-     * @var TemplateFactoryInterface
-     */
-    private $templateFactory;
-
-    /**
      * @var ElementExtractorInterface
      */
     private $elementExtractor;
 
+    /**
+     * @var TemplateRendererInterface
+     */
+    private $templateRenderer;
+
     public function __construct(
         ConfigurationInterface $configuration,
-        TemplateFactoryInterface $templateFactory,
-        ElementExtractorInterface $elementExtractor
+        ElementExtractorInterface $elementExtractor,
+        TemplateRendererInterface $templateRenderer
     ) {
         $this->configuration = $configuration;
-        $this->templateFactory = $templateFactory;
         $this->elementExtractor = $elementExtractor;
+        $this->templateRenderer = $templateRenderer;
     }
 
     public function generate(): void
@@ -42,30 +42,23 @@ final class AnnotationGroupsGenerator implements NamedDestinationGeneratorInterf
         }
     }
 
-    public function getDestinationPath(string $annotation): string
-    {
-        return $this->configuration->getDestinationWithPrefixName('annotation-group-', $annotation);
-    }
-
     private function generateForAnnotation(string $annotation): void
     {
-        $template = $this->templateFactory->create();
-
-        $template->setFile(
-            $this->configuration->getTemplateByName('annotation-group')
-        );
-
         $elements = $this->elementExtractor->extractElementsByAnnotation($annotation);
 
-        $template->save($this->getDestinationPath($annotation), [
-            'annotation' => $annotation,
-            'hasElements' => (bool) count(array_filter($elements, 'count')),
-            'classes' => $elements[Elements::CLASSES],
-            'interfaces' => $elements[Elements::INTERFACES],
-            'traits' => $elements[Elements::TRAITS],
-            'methods' => $elements[Elements::METHODS],
-            'functions' => $elements[Elements::FUNCTIONS],
-            'properties' => $elements[Elements::PROPERTIES]
-        ]);
+        $this->templateRenderer->renderToFile(
+            $this->configuration->getTemplateByName('annotation-group'),
+            $this->configuration->getDestinationWithPrefixName('annotation-group-', $annotation),
+            [
+                'annotation' => $annotation,
+                'hasElements' => (bool) count(array_filter($elements, 'count')),
+                'classes' => $elements[Elements::CLASSES],
+                'interfaces' => $elements[Elements::INTERFACES],
+                'traits' => $elements[Elements::TRAITS],
+                'methods' => $elements[Elements::METHODS],
+                'functions' => $elements[Elements::FUNCTIONS],
+                'properties' => $elements[Elements::PROPERTIES]
+            ]
+        );
     }
 }

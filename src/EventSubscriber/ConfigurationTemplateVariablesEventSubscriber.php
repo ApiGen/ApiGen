@@ -29,7 +29,7 @@ final class ConfigurationTemplateVariablesEventSubscriber implements EventSubscr
     public function loadTemplateVariables(CreateTemplateEvent $createTemplateEvent): void
     {
         $template = $createTemplateEvent->getTemplate();
-        $template->setParameters([
+        $template->addParameters([
             'title' => $this->configuration->getTitle(),
             'googleAnalytics' => $this->configuration->getGoogleAnalytics(),
             'annotationGroups' => $this->configuration->getAnnotationGroups()

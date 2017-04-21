@@ -27,7 +27,7 @@ final class TemplateFactory implements TemplateFactoryInterface
 
     public function create(): Template
     {
-        $template = new Template($this->latteEngine, $this->eventDispatcher);
+        $template = new Template($this->latteEngine);
 
         $createTemplateEvent = new CreateTemplateEvent($template);
         $this->eventDispatcher->dispatch(CreateTemplateEvent::class, $createTemplateEvent);

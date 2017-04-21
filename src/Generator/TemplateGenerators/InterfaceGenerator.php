@@ -3,20 +3,15 @@
 namespace ApiGen\Generator\TemplateGenerators;
 
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
-use ApiGen\Contracts\Generator\NamedDestinationGeneratorInterface;
+use ApiGen\Contracts\Generator\GeneratorInterface;
 use ApiGen\Contracts\Generator\SourceCodeHighlighter\SourceCodeHighlighterInterface;
 use ApiGen\Contracts\Parser\Elements\ElementStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
-use ApiGen\Contracts\Templating\TemplateFactory\TemplateFactoryInterface;
+use ApiGen\Contracts\Templating\TemplateRendererInterface;
 use ApiGen\Generator\Resolvers\RelativePathResolver;
 
-final class InterfaceGenerator implements NamedDestinationGeneratorInterface
+final class InterfaceGenerator implements GeneratorInterface
 {
-    /**
-     * @var TemplateFactoryInterface
-     */
-    private $templateFactory;
-
     /**
      * @var ElementStorageInterface
      */
@@ -37,18 +32,23 @@ final class InterfaceGenerator implements NamedDestinationGeneratorInterface
      */
     private $relativePathResolver;
 
+    /**
+     * @var TemplateRendererInterface
+     */
+    private $templateRenderer;
+
     public function __construct(
-        TemplateFactoryInterface $templateFactory,
         ElementStorageInterface $elementStorage,
         ConfigurationInterface $configuration,
         SourceCodeHighlighterInterface $sourceCodeHighlighter,
-        RelativePathResolver $relativePathResolver
+        RelativePathResolver $relativePathResolver,
+        TemplateRendererInterface $templateRenderer
     ) {
-        $this->templateFactory = $templateFactory;
         $this->elementStorage = $elementStorage;
         $this->configuration = $configuration;
         $this->sourceCodeHighlighter = $sourceCodeHighlighter;
         $this->relativePathResolver = $relativePathResolver;
+        $this->templateRenderer = $templateRenderer;
     }
 
     public function generate(): void
@@ -59,27 +59,20 @@ final class InterfaceGenerator implements NamedDestinationGeneratorInterface
         }
     }
 
-    public function getDestinationPath(string $interfaceName): string
-    {
-        return $this->configuration->getDestinationWithPrefixName('interface-', $interfaceName);
-    }
-
     private function generateForInterface(ClassReflectionInterface $interfaceReflection): void
     {
-        $template = $this->templateFactory->create();
-        $template->setFile($this->configuration->getTemplateByName('interface'));
-
-        $template->save($this->getDestinationPath($interfaceReflection->getName()), [
-            'interface' => $interfaceReflection,
-            'tree' => array_merge(array_reverse($interfaceReflection->getParentClasses()), [$interfaceReflection]),
-        ]);
+        $this->templateRenderer->renderToFile(
+            $this->configuration->getTemplateByName('interface'),
+            $this->configuration->getDestinationWithPrefixName('interface-', $interfaceReflection->getName()),
+            [
+                'interface' => $interfaceReflection,
+                'tree' => array_merge(array_reverse($interfaceReflection->getParentClasses()), [$interfaceReflection]),
+            ]
+        );
     }
 
     private function generateSourceCodeForInterface(ClassReflectionInterface $interfaceReflection): void
     {
-        $template = $this->templateFactory->create();
-        $template->setFile($this->configuration->getTemplateByName('source'));
-
         $content = file_get_contents($interfaceReflection->getFileName());
         $highlightedContent = $this->sourceCodeHighlighter->highlightAndAddLineNumbers($content);
 
@@ -87,9 +80,13 @@ final class InterfaceGenerator implements NamedDestinationGeneratorInterface
             'source-interface-', $interfaceReflection->getName()
         );
 
-        $template->save($destination, [
-            'fileName' => $this->relativePathResolver->getRelativePath($interfaceReflection->getFileName()),
-            'source' => $highlightedContent,
-        ]);
+        $this->templateRenderer->renderToFile(
+            $this->configuration->getTemplateByName('source'),
+            $destination,
+            [
+                'fileName' => $this->relativePathResolver->getRelativePath($interfaceReflection->getFileName()),
+                'source' => $highlightedContent,
+            ]
+        );
     }
 }

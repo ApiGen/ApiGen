@@ -3,20 +3,15 @@
 namespace ApiGen\Generator\TemplateGenerators;
 
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
-use ApiGen\Contracts\Generator\NamedDestinationGeneratorInterface;
+use ApiGen\Contracts\Generator\GeneratorInterface;
 use ApiGen\Contracts\Generator\SourceCodeHighlighter\SourceCodeHighlighterInterface;
 use ApiGen\Contracts\Parser\Elements\ElementStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
-use ApiGen\Contracts\Templating\TemplateFactory\TemplateFactoryInterface;
+use ApiGen\Contracts\Templating\TemplateRendererInterface;
 use ApiGen\Generator\Resolvers\RelativePathResolver;
 
-final class TraitGenerator implements NamedDestinationGeneratorInterface
+final class TraitGenerator implements GeneratorInterface
 {
-    /**
-     * @var TemplateFactoryInterface
-     */
-    private $templateFactory;
-
     /**
      * @var ElementStorageInterface
      */
@@ -37,18 +32,23 @@ final class TraitGenerator implements NamedDestinationGeneratorInterface
      */
     private $relativePathResolver;
 
+    /**
+     * @var TemplateRendererInterface
+     */
+    private $templateRenderer;
+
     public function __construct(
-        TemplateFactoryInterface $templateFactory,
         ElementStorageInterface $elementStorage,
         ConfigurationInterface $configuration,
         SourceCodeHighlighterInterface $sourceCodeHighlighter,
-        RelativePathResolver $relativePathResolver
+        RelativePathResolver $relativePathResolver,
+        TemplateRendererInterface $templateRenderer
     ) {
-        $this->templateFactory = $templateFactory;
         $this->elementStorage = $elementStorage;
         $this->configuration = $configuration;
         $this->sourceCodeHighlighter = $sourceCodeHighlighter;
         $this->relativePathResolver = $relativePathResolver;
+        $this->templateRenderer = $templateRenderer;
     }
 
     public function generate(): void
@@ -59,35 +59,32 @@ final class TraitGenerator implements NamedDestinationGeneratorInterface
         }
     }
 
-    public function getDestinationPath(string $traitName): string
-    {
-        return $this->configuration->getDestinationWithPrefixName('trait-',$traitName);
-    }
-
     private function generateForTrait(ClassReflectionInterface $traitReflection): void
     {
-        $template = $this->templateFactory->create();
-        $template->setFile($this->configuration->getTemplateByName('trait'));
-
-        $template->save($this->getDestinationPath($traitReflection->getName()), [
-            'trait' => $traitReflection,
-            'tree' => array_merge(array_reverse($traitReflection->getParentClasses()), [$traitReflection]),
-        ]);
+        $this->templateRenderer->renderToFile(
+            $this->configuration->getTemplateByName('trait'),
+            $this->configuration->getDestinationWithPrefixName('trait-',$traitReflection->getName()),
+            [
+                'trait' => $traitReflection,
+                'tree' => array_merge(array_reverse($traitReflection->getParentClasses()), [$traitReflection]),
+            ]
+        );
     }
 
     private function generateSourceCodeForTrait(ClassReflectionInterface $traitReflection): void
     {
-        $template = $this->templateFactory->create();
-        $template->setFile($this->configuration->getTemplateByName('source'));
-
         $content = file_get_contents($traitReflection->getFileName());
         $highlightedContent = $this->sourceCodeHighlighter->highlightAndAddLineNumbers($content);
 
         $destination = $this->configuration->getDestinationWithPrefixName('source-trait-', $traitReflection->getName());
 
-        $template->save($destination, [
-            'fileName' => $this->relativePathResolver->getRelativePath($traitReflection->getFileName()),
-            'source' => $highlightedContent,
-        ]);
+        $this->templateRenderer->renderToFile(
+            $this->configuration->getTemplateByName('source'),
+            $destination,
+            [
+                'fileName' => $this->relativePathResolver->getRelativePath($traitReflection->getFileName()),
+                'source' => $highlightedContent,
+            ]
+        );
     }
 }

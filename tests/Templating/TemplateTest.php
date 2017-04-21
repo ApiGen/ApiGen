@@ -21,9 +21,11 @@ final class TemplateTest extends TestCase
 
     public function testFileIsSavedWithContent(): void
     {
-        $this->template->setFile(__DIR__ . '/TemplateSource/template.latte');
-        $this->template->setParameters(['name' => 'World!']);
-        $this->template->save(TEMP_DIR . '/dir/hello-world.html');
+        $this->template->addParameters(['name' => 'World!']);
+        $this->template->save(
+            __DIR__ . '/TemplateSource/template.latte',
+            TEMP_DIR . '/dir/hello-world.html'
+        );
         $this->assertFileExists(TEMP_DIR . '/dir/hello-world.html');
         $generatedContent = file_get_contents(TEMP_DIR . '/dir/hello-world.html');
         $this->assertSame('Hello World!', trim($generatedContent));

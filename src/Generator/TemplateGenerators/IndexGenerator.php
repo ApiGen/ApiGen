@@ -4,30 +4,31 @@ namespace ApiGen\Generator\TemplateGenerators;
 
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Generator\GeneratorInterface;
-use ApiGen\Templating\TemplateFactory;
+use ApiGen\Contracts\Templating\TemplateRendererInterface;
 
 final class IndexGenerator implements GeneratorInterface
 {
-    /**
-     * @var TemplateFactory
-     */
-    private $templateFactory;
-
     /**
      * @var ConfigurationInterface
      */
     private $configuration;
 
-    public function __construct(TemplateFactory $templateFactory, ConfigurationInterface $configuration)
+    /**
+     * @var TemplateRendererInterface
+     */
+    private $templateRenderer;
+
+    public function __construct(ConfigurationInterface $configuration, TemplateRendererInterface $templateRenderer)
     {
-        $this->templateFactory = $templateFactory;
         $this->configuration = $configuration;
+        $this->templateRenderer = $templateRenderer;
     }
 
     public function generate(): void
     {
-        $template = $this->templateFactory->create();
-        $template->setFile($this->configuration->getTemplateByName('index'));
-        $template->save($this->configuration->getDestinationWithName('index'));
+        $this->templateRenderer->renderToFile(
+            $this->configuration->getTemplateByName('index'),
+            $this->configuration->getDestinationWithName('index')
+        );
     }
 }

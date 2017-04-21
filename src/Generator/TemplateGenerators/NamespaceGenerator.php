@@ -3,18 +3,13 @@
 namespace ApiGen\Generator\TemplateGenerators;
 
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
-use ApiGen\Contracts\Generator\NamedDestinationGeneratorInterface;
+use ApiGen\Contracts\Generator\GeneratorInterface;
 use ApiGen\Contracts\Parser\Elements\ElementStorageInterface;
-use ApiGen\Contracts\Templating\TemplateFactory\TemplateFactoryInterface;
+use ApiGen\Contracts\Templating\TemplateRendererInterface;
 use ApiGen\Parser\Elements\Elements;
 
-final class NamespaceGenerator implements NamedDestinationGeneratorInterface
+final class NamespaceGenerator implements GeneratorInterface
 {
-    /**
-     * @var TemplateFactoryInterface
-     */
-    private $templateFactory;
-
     /**
      * @var ElementStorageInterface
      */
@@ -25,14 +20,19 @@ final class NamespaceGenerator implements NamedDestinationGeneratorInterface
      */
     private $configuration;
 
+    /**
+     * @var TemplateRendererInterface
+     */
+    private $templateRenderer;
+
     public function __construct(
-        TemplateFactoryInterface $templateFactory,
         ElementStorageInterface $elementStorage,
-        ConfigurationInterface $configuration
+        ConfigurationInterface $configuration,
+        TemplateRendererInterface $templateRenderer
     ) {
-        $this->templateFactory = $templateFactory;
         $this->elementStorage = $elementStorage;
         $this->configuration = $configuration;
+        $this->templateRenderer = $templateRenderer;
     }
 
     public function generate(): void
@@ -42,47 +42,37 @@ final class NamespaceGenerator implements NamedDestinationGeneratorInterface
         }
     }
 
-    public function getDestinationPath(string $namespace): string
-    {
-        return $this->configuration->getDestinationWithPrefixName('namespace-', $namespace);
-    }
-
     /**
      * @param string $namespace
      * @param mixed[] $elementsInNamespace
      */
     private function generateForNamespace(string $namespace, array $elementsInNamespace): void
     {
-        $template = $this->templateFactory->create();
-
-        $template->setFile($this->getTemplateFile());
-
-        $template->save($this->getDestinationPath($namespace), [
-            'namespace' => $namespace,
-            'subnamespaces' => $this->getSubnamesForName($namespace, $template->getParameters()['namespaces']),
-            'classes' => $elementsInNamespace[Elements::CLASSES],
-            'interfaces' => $elementsInNamespace[Elements::INTERFACES],
-            'traits' => $elementsInNamespace[Elements::TRAITS],
-            'exceptions' => $elementsInNamespace[Elements::EXCEPTIONS],
-            'functions' => $elementsInNamespace[Elements::FUNCTIONS]
-        ]);
+        $this->templateRenderer->renderToFile(
+            $this->configuration->getTemplateByName('namespace'),
+            $this->configuration->getDestinationWithPrefixName('namespace-', $namespace),
+            [
+                'namespace' => $namespace,
+                'subnamespaces' => $this->getSubnamesForName($namespace),
+                'classes' => $elementsInNamespace[Elements::CLASSES],
+                'interfaces' => $elementsInNamespace[Elements::INTERFACES],
+                'traits' => $elementsInNamespace[Elements::TRAITS],
+                'exceptions' => $elementsInNamespace[Elements::EXCEPTIONS],
+                'functions' => $elementsInNamespace[Elements::FUNCTIONS]
+            ]
+        );
     }
 
     /**
-     * @param string $name
-     * @param mixed[] $elements
      * @return string[]
      */
-    private function getSubnamesForName(string $name, array $elements): array
+    private function getSubnamesForName(string $name): array
     {
-        return array_filter($elements, function ($subname) use ($name) {
+        $allNamespaces = array_keys($this->elementStorage->getNamespaces());
+
+        return array_filter($allNamespaces, function ($subname) use ($name) {
             $pattern = '~^' . preg_quote($name) . '\\\\[^\\\\]+$~';
             return (bool) preg_match($pattern, $subname);
         });
-    }
-
-    private function getTemplateFile(): string
-    {
-        return $this->configuration->getTemplateByName('namespace');
     }
 }

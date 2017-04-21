@@ -3,20 +3,15 @@
 namespace ApiGen\Generator\TemplateGenerators;
 
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
-use ApiGen\Contracts\Generator\NamedDestinationGeneratorInterface;
+use ApiGen\Contracts\Generator\GeneratorInterface;
 use ApiGen\Contracts\Generator\SourceCodeHighlighter\SourceCodeHighlighterInterface;
 use ApiGen\Contracts\Parser\Elements\ElementStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
-use ApiGen\Contracts\Templating\TemplateFactory\TemplateFactoryInterface;
+use ApiGen\Contracts\Templating\TemplateRendererInterface;
 use ApiGen\Generator\Resolvers\RelativePathResolver;
 
-final class FunctionGenerator implements NamedDestinationGeneratorInterface
+final class FunctionGenerator implements GeneratorInterface
 {
-    /**
-     * @var TemplateFactoryInterface
-     */
-    private $templateFactory;
-
     /**
      * @var ElementStorageInterface
      */
@@ -37,18 +32,23 @@ final class FunctionGenerator implements NamedDestinationGeneratorInterface
      */
     private $relativePathResolver;
 
+    /**
+     * @var TemplateRendererInterface
+     */
+    private $templateRenderer;
+
     public function __construct(
-        TemplateFactoryInterface $templateFactory,
         ElementStorageInterface $elementStorage,
         ConfigurationInterface $configuration,
         SourceCodeHighlighterInterface $sourceCodeHighlighter,
-        RelativePathResolver $relativePathResolver
+        RelativePathResolver $relativePathResolver,
+        TemplateRendererInterface $templateRenderer
     ) {
-        $this->templateFactory = $templateFactory;
         $this->elementStorage = $elementStorage;
         $this->configuration = $configuration;
         $this->sourceCodeHighlighter = $sourceCodeHighlighter;
         $this->relativePathResolver = $relativePathResolver;
+        $this->templateRenderer = $templateRenderer;
     }
 
     public function generate(): void
@@ -59,26 +59,19 @@ final class FunctionGenerator implements NamedDestinationGeneratorInterface
         }
     }
 
-    public function getDestinationPath(string $functionName): string
-    {
-        return $this->configuration->getDestinationWithPrefixName('function-', $functionName);
-    }
-
     private function generateForFunction(FunctionReflectionInterface $reflectionFunction): void
     {
-        $template = $this->templateFactory->create();
-        $template->setFile($this->configuration->getTemplateByName('function'));
-
-        $template->save($this->getDestinationPath($reflectionFunction->getName()), [
-            'function' => $reflectionFunction
-        ]);
+        $this->templateRenderer->renderToFile(
+            $this->configuration->getTemplateByName('function'),
+            $this->configuration->getDestinationWithPrefixName('function-', $reflectionFunction->getName()),
+            [
+                'function' => $reflectionFunction
+            ]
+        );
     }
 
     private function generateSourceCodeForFunction(FunctionReflectionInterface $functionReflection): void
     {
-        $template = $this->templateFactory->create();
-        $template->setFile($this->configuration->getTemplateByName('source'));
-
         $content = file_get_contents($functionReflection->getFileName());
         $highlightedContent = $this->sourceCodeHighlighter->highlightAndAddLineNumbers($content);
 
@@ -86,9 +79,13 @@ final class FunctionGenerator implements NamedDestinationGeneratorInterface
             'source-function-', $functionReflection->getName()
         );
 
-        $template->save($destination, [
-            'fileName' => $this->relativePathResolver->getRelativePath($functionReflection->getFileName()),
-            'source' => $highlightedContent,
-        ]);
+        $this->templateRenderer->renderToFile(
+            $this->configuration->getTemplateByName('source'),
+            $destination,
+            [
+                'fileName' => $this->relativePathResolver->getRelativePath($functionReflection->getFileName()),
+                'source' => $highlightedContent,
+            ]
+        );
     }
 }

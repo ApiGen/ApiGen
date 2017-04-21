@@ -4,44 +4,31 @@ namespace ApiGen\Generator\TemplateGenerators;
 
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Generator\GeneratorInterface;
-use ApiGen\Contracts\Templating\TemplateFactory\TemplateFactoryInterface;
+use ApiGen\Contracts\Templating\TemplateRendererInterface;
 
 final class ElementListGenerator implements GeneratorInterface
 {
-    /**
-     * @var TemplateFactoryInterface
-     */
-    private $templateFactory;
-
     /**
      * @var ConfigurationInterface
      */
     private $configuration;
 
-    public function __construct(TemplateFactoryInterface $templateFactory, ConfigurationInterface $configuration)
+    /**
+     * @var TemplateRendererInterface
+     */
+    private $templateRenderer;
+
+    public function __construct(ConfigurationInterface $configuration, TemplateRendererInterface $templateRenderer)
     {
-        $this->templateFactory = $templateFactory;
         $this->configuration = $configuration;
+        $this->templateRenderer = $templateRenderer;
     }
 
     public function generate(): void
     {
-        $template = $this->templateFactory->create();
-        $template->setFile($this->getTemplateFile());
-        $template->save($this->getDestinationPath());
-    }
-
-    private function getTemplateFile(): string
-    {
-        return $this->configuration->getTemplatesDirectory()
-            . DIRECTORY_SEPARATOR
-            . 'elementlist.js.latte';
-    }
-
-    private function getDestinationPath(): string
-    {
-        return $this->configuration->getDestination()
-            . DIRECTORY_SEPARATOR
-            . 'elementlist.js';
+        $this->templateRenderer->renderToFile(
+            $this->configuration->getTemplatesDirectory() . DIRECTORY_SEPARATOR . 'elementlist.js.latte',
+            $this->configuration->getDestination() . DIRECTORY_SEPARATOR . 'elementlist.js'
+        );
     }
 }
