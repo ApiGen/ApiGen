@@ -31,30 +31,24 @@ checkers:
     - Symplify\CodingStandard\Sniffs\Naming\InterfaceNameSniff
     - Symplify\CodingStandard\Sniffs\Naming\TraitNameSniff
 
-    # Class Structure
-    - Symplify\CodingStandard\Sniffs\Classes\ClassDeclarationSniff
-
     # Code Structures
     - SlevomatCodingStandard\Sniffs\ControlStructures\AssignmentInConditionSniff
     - SlevomatCodingStandard\Sniffs\ControlStructures\AssignmentInConditionSniff
     - SlevomatCodingStandard\Sniffs\ControlStructures\YodaComparisonSniff
 
     # Namespaces
+    - PhpCsFixer\Fixer\NamespaceNotation\BlankLineAfterNamespaceFixer
+    - PhpCsFixer\Fixer\NamespaceNotation\NoBlankLinesBeforeNamespaceFixer
     - Symplify\CodingStandard\Sniffs\Namespaces\ClassNamesWithoutPreSlashSniff
-    - Symplify\CodingStandard\Sniffs\Namespaces\NamespaceDeclarationSniff
-    - Symplify\CodingStandard\Sniffs\Namespaces\UseDeclarationSniff
     - PhpCsFixer\Fixer\Import\NoUnusedImportsFixer
     - SlevomatCodingStandard\Sniffs\Namespaces\UseFromSameNamespaceSniff
-    - SlevomatCodingStandard\Sniffs\Namespaces\UndefinedKeywordTokenException
     - SlevomatCodingStandard\Sniffs\Namespaces\ReferenceUsedNamesOnlySniff
-    - SlevomatCodingStandard\Sniffs\Namespaces\NoKeywordsException
     - SlevomatCodingStandard\Sniffs\Namespaces\MultipleUsesPerLineSniff
     - SlevomatCodingStandard\Sniffs\Namespaces\DisallowGroupUseSniff
     - PhpCsFixer\Fixer\Import\OrderedImportsFixer
 
     # Spacing
-    - Symplify\CodingStandard\Sniffs\WhiteSpace\InBetweenMethodSpacingSniff
-    - Symplify\CodingStandard\Sniffs\WhiteSpace\PropertiesMethodsMutualSpacingSniff
+    - PhpCsFixer\Fixer\ClassNotation\MethodSeparationFixer
 
     # Strict and Scalar types
     - PhpCsFixer\Fixer\Strict\DeclareStrictTypesFixer
@@ -84,11 +78,6 @@ skip:
         - src/Console/Command/AbstractCommand.php
         - tests/Parser/Reflection/ReflectionClassSource/RichInterface.php
         - src/Contracts/Parser/Broker/BackendInterface.php
-
-    # bug: https://github.com/Symplify/Symplify/issues/121
-    Symplify\CodingStandard\Sniffs\WhiteSpace\InBetweenMethodSpacingSniff:
-        - tests/Parser/Reflection/ReflectionFunctionSource/functions.php
-        - tests/Parser/Broker/BackendSource/SomeFunction.php
 
     SlevomatCodingStandard\Sniffs\Classes\ClassConstantVisibilitySniff:
         - tests/Parser/Reflection/ReflectionClassSource/ParentClass.php
