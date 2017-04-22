@@ -10,7 +10,6 @@ final class ReflectionMethod extends AbstractReflectionFunction implements Metho
 {
     use VisibilityTrait;
 
-
     public function getDeclaringClass(): ?ClassReflectionInterface
     {
         $className = $this->reflection->getDeclaringClassName();

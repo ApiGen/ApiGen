@@ -45,7 +45,7 @@ final class TraitsTest extends AbstractReflectionClassTestCase
     public function testGetTraitAliases(): void
     {
         $this->assertCount(0, $this->reflectionClass->getTraitAliases());
-    }//
+    }
 
     public function testGetTraitProperties(): void
     {

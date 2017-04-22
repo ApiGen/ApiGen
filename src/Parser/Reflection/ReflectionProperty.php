@@ -11,7 +11,6 @@ final class ReflectionProperty extends AbstractReflectionElement implements Prop
 {
     use VisibilityTrait;
 
-
     public function isReadOnly(): bool
     {
         return false;

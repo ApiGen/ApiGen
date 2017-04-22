@@ -38,7 +38,6 @@ checkers:
 
     # Namespaces
     - PhpCsFixer\Fixer\NamespaceNotation\BlankLineAfterNamespaceFixer
-    - PhpCsFixer\Fixer\NamespaceNotation\NoBlankLinesBeforeNamespaceFixer
     - Symplify\CodingStandard\Sniffs\Namespaces\ClassNamesWithoutPreSlashSniff
     - PhpCsFixer\Fixer\Import\NoUnusedImportsFixer
     - SlevomatCodingStandard\Sniffs\Namespaces\UseFromSameNamespaceSniff
@@ -87,3 +86,6 @@ skip:
 
     SlevomatCodingStandard\Sniffs\Classes\UnusedPrivateElementsSniff:
         - tests/Parser/Reflection/ReflectionClassSource/AccessLevels.php
+
+    PhpCsFixer\Fixer\ClassNotation\MethodSeparationFixer:
+        - tests/Generator/GeneratorQueueTest.php
