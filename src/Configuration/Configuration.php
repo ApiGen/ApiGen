@@ -6,6 +6,8 @@ use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\ModularConfiguration\Contract\ConfigurationOptionInterface;
 use ApiGen\ModularConfiguration\Contract\ConfigurationResolverInterface;
 use ApiGen\Templating\Filters\UrlFilters;
+use ApiGen\Utils\FileSystem;
+use Nette\DI\Config\Loader;
 
 final class Configuration implements ConfigurationInterface, ConfigurationResolverInterface
 {
@@ -24,9 +26,17 @@ final class Configuration implements ConfigurationInterface, ConfigurationResolv
      */
     private $configurationOptionsResolver;
 
-    public function __construct(ConfigurationOptionsResolver $configurationOptionsResolver)
-    {
+    /**
+     * @var FileSystem
+     */
+    private $fileSystem;
+
+    public function __construct(
+        ConfigurationOptionsResolver $configurationOptionsResolver,
+        FileSystem $fileSystem
+    ) {
         $this->configurationOptionsResolver = $configurationOptionsResolver;
+        $this->fileSystem = $fileSystem;
     }
 
     public function addConfigurationOption(ConfigurationOptionInterface $configurationOption): void
@@ -153,5 +163,33 @@ final class Configuration implements ConfigurationInterface, ConfigurationResolv
             $prefix . '%s.html',
             UrlFilters::urlize($name)
         );
+    }
+
+    /**
+     * @var mixed[]
+     * @return mixed[]
+     */
+    public function prepareOptions(array $options): array
+    {
+        $options = $this->loadOptionsFromConfig($options);
+
+        return $this->resolveOptions($options);
+    }
+
+    /**
+     * @param mixed[] $options
+     * @return mixed[]
+     */
+    private function loadOptionsFromConfig(array $options): array
+    {
+        $configFile = $options[ConfigurationOptions::CONFIG] ?? getcwd() . DIRECTORY_SEPARATOR . 'apigen.neon';
+        $configFile = $this->fileSystem->getAbsolutePath($configFile);
+
+        if (file_exists($configFile)) {
+            $configFileOptions = (new Loader)->load($configFile);
+            return array_merge($options, $configFileOptions);
+        }
+
+        return $options;
     }
 }

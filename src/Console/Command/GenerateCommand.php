@@ -9,7 +9,6 @@ use ApiGen\Contracts\Parser\ParserInterface;
 use ApiGen\Theme\ThemeResources;
 use ApiGen\Utils\FileSystem;
 use ApiGen\Utils\Finder\FinderInterface;
-use Nette\DI\Config\Loader;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -110,7 +109,8 @@ final class GenerateCommand extends Command
             ConfigurationOptions::CONFIG => $input->getOption(ConfigurationOptions::CONFIG)
         ];
 
-        $options = $this->prepareOptions($cliOptions);
+        $options = $this->configuration->prepareOptions($cliOptions);
+
         $this->scanAndParse($options);
         $this->generate($options);
         return 0;
@@ -143,34 +143,6 @@ final class GenerateCommand extends Command
         );
         $this->output->writeln('<info>Generating API documentation</info>');
         $this->generatorQueue->run();
-    }
-
-    /**
-     * @param mixed[] $options
-     * @return mixed[]
-     */
-    private function prepareOptions(array $options): array
-    {
-        $options = $this->loadOptionsFromConfig($options);
-
-        return $this->configuration->resolveOptions($options);
-    }
-
-    /**
-     * @param mixed[] $options
-     * @return mixed[]
-     */
-    private function loadOptionsFromConfig(array $options): array
-    {
-        $configFile = $options[ConfigurationOptions::CONFIG] ?? getcwd() . DIRECTORY_SEPARATOR . 'apigen.neon';
-        $configFile = $this->fileSystem->getAbsolutePath($configFile);
-
-        if (file_exists($configFile)) {
-            $configFileOptions = (new Loader())->load($configFile);
-            return array_merge($options, $configFileOptions);
-        }
-
-        return $options;
     }
 
     private function prepareDestination(string $destination, bool $shouldOverwrite = false): void
