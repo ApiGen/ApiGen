@@ -3,14 +3,21 @@
 namespace ApiGen\Configuration;
 
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
+use ApiGen\ModularConfiguration\Contract\ConfigurationOptionInterface;
+use ApiGen\ModularConfiguration\Contract\ConfigurationResolverInterface;
 use ApiGen\Templating\Filters\UrlFilters;
 
-final class Configuration implements ConfigurationInterface
+final class Configuration implements ConfigurationInterface, ConfigurationResolverInterface
 {
     /**
      * @var mixed[]
      */
     private $options;
+
+    /**
+     * @var ConfigurationOptionInterface[]
+     */
+    private $configurationOptions = [];
 
     /**
      * @var ConfigurationOptionsResolver
@@ -20,6 +27,11 @@ final class Configuration implements ConfigurationInterface
     public function __construct(ConfigurationOptionsResolver $configurationOptionsResolver)
     {
         $this->configurationOptionsResolver = $configurationOptionsResolver;
+    }
+
+    public function addConfigurationOption(ConfigurationOptionInterface $configurationOption): void
+    {
+        $this->configurationOptions[$configurationOption->getName()] = $configurationOption;
     }
 
     /**

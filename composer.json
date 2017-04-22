@@ -27,7 +27,8 @@
         "symfony/options-resolver": "^3.2",
 
         "contributte/console": "^0.1",
-        "symplify/symfony-event-dispatcher": "^1.4"
+        "symplify/symfony-event-dispatcher": "^1.4",
+        "symplify/package-builder": "^1.4"
     },
     "require-dev": {
         "phpunit/phpunit": "^6.0",
@@ -41,6 +42,7 @@
         "psr-4": {
             "ApiGen\\": "src",
             "ApiGen\\ElementReflection\\": "packages/ElementReflection/src",
+            "ApiGen\\ModularConfiguration\\": "packages/ModularConfiguration/src",
             "ApiGen\\ReflectionToElementTransformer\\": "packages/ReflectionToElementTransformer/src",
             "PHP_CodeSniffer\\": "vendor/squizlabs/php_codesniffer/src"
         }

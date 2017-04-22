@@ -8,6 +8,7 @@ use ApiGen\Templating\Filters\Filters;
 use Latte\Engine;
 use Nette\DI\Compiler;
 use Nette\DI\CompilerExtension;
+use Symplify\PackageBuilder\Adapter\Nette\DI\DefinitionCollector;
 
 final class ApiGenExtension extends CompilerExtension
 {
@@ -54,13 +55,18 @@ final class ApiGenExtension extends CompilerExtension
 
     private function setupGeneratorQueue(): void
     {
+        DefinitionCollector::loadCollectorWithType(
+            $this->getContainerBuilder(),
+            GeneratorQueueInterface::class,
+            GeneratorInterface::class,
+            'addGenerator'
+        );
+
         // @todo: use package builder for these collections
-        $containerBuilder = $this->getContainerBuilder();
-        $generator = $containerBuilder->getDefinitionByType(GeneratorQueueInterface::class);
-        $services = $containerBuilder->findByType(GeneratorInterface::class);
-        ksort($services, SORT_NATURAL);
-        foreach ($services as $definition) {
-            $generator->addSetup('addGenerator', ['@' . $definition->getClass()]);
-        }
+//        $containerBuilder = $this->getContainerBuilder();
+//        $generator = $containerBuilder->getDefinitionByType(GeneratorQueueInterface::class);
+//        foreach ($containerBuilder->findByType(GeneratorInterface::class) as $definition) {
+//            $generator->addSetup('addGenerator', ['@' . $definition->getClass()]);
+//        }
     }
 }
