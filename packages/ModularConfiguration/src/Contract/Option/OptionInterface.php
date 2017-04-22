@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\ModularConfiguration\Contract;
+namespace ApiGen\ModularConfiguration\Contract\Option;
 
 interface OptionInterface
 {

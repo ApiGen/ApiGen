@@ -3,6 +3,7 @@ extensions:
     - ApiGen\Parser\DI\ParserExtension
     - ApiGen\ElementReflection\DI\ElementReflectionExtension
     - ApiGen\ReflectionToElementTransformer\DI\ReflectionToElementTransformerExtension
+    - ApiGen\ModularConfiguration\DI\ModularConfigurationExtension
 
     # Symfony\EventDispatcher integration to Nette\DI
     - Symplify\SymfonyEventDispatcher\Adapter\Nette\DI\SymfonyEventDispatcherExtension

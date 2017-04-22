@@ -5,6 +5,7 @@ namespace ApiGen\Console\Command;
 use ApiGen\Application\ApiGenApplication;
 use ApiGen\Application\Command\RunCommand;
 use ApiGen\Configuration\ConfigurationOptions;
+use ApiGen\ModularConfiguration\Contract\ConfigurationDecoratorInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -23,11 +24,19 @@ final class GenerateCommand extends Command
      */
     private $apiGenApplication;
 
-    public function __construct(ApiGenApplication $apiGenApplication)
-    {
-        parent::__construct();
+    /**
+     * @var ConfigurationDecoratorInterface
+     */
+    private $configurationDecorator;
 
+    public function __construct(
+        ApiGenApplication $apiGenApplication,
+        ConfigurationDecoratorInterface $configurationDecorator
+    ) {
         $this->apiGenApplication = $apiGenApplication;
+        $this->configurationDecorator = $configurationDecorator;
+
+        parent::__construct();
     }
 
     protected function configure(): void
@@ -39,20 +48,8 @@ final class GenerateCommand extends Command
             InputArgument::IS_ARRAY | InputOption::VALUE_REQUIRED,
             'Dirs or files documentation is generated for.'
         );
-        // @todo: use ConfigurationDecorator
-        $this->addOption(
-            ConfigurationOptions::DESTINATION,
-            null,
-            InputOption::VALUE_REQUIRED,
-            'Target dir for generated documentation.'
-        );
-        $this->addOption(
-            ConfigurationOptions::CONFIG,
-            null,
-            InputOption::VALUE_REQUIRED,
-            'Path to apigen.neon config file.',
-            getcwd() . DIRECTORY_SEPARATOR . 'apigen.neon'
-        );
+
+        $this->configurationDecorator->decorateCommand($this);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

@@ -97,7 +97,7 @@ final class ApiGenApplication
         $this->generatorQueue->run();
     }
 
-    private function prepareDestination(string $destination, bool $shouldOverwrite = false): void
+    private function prepareDestination(string $destination, bool $shouldOverwrite): void
     {
         if ($shouldOverwrite) {
             $this->fileSystem->purgeDir($destination);
