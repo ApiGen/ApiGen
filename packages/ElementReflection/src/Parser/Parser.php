@@ -11,7 +11,7 @@ use Roave\BetterReflection\Reflection\ReflectionClass;
 use Roave\BetterReflection\Reflection\ReflectionFunction;
 use Roave\BetterReflection\Reflector\ClassReflector;
 use Roave\BetterReflection\Reflector\FunctionReflector;
-use Roave\BetterReflection\SourceLocator\Type\DirectoriesSourceLocato;
+use Roave\BetterReflection\SourceLocator\Type\DirectoriesSourceLocator;
 
 final class Parser
 {
