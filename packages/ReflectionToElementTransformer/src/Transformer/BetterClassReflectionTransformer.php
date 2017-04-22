@@ -28,7 +28,7 @@ final class BetterClassReflectionTransformer implements TransformerInterface
     }
 
     /**
-     * @param ReflectionClass $reflection
+     * @param object|ReflectionClass $reflection
      */
     public function transform($reflection): NewClassReflection
     {

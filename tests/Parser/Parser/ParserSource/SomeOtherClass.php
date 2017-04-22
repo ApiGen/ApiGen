@@ -4,5 +4,8 @@ namespace ApiGen\Parser\Tests\ParserSource;
 
 class SomeOtherClass
 {
-
+    /**
+     * @var int
+     */
+    public $someProperty;
 }

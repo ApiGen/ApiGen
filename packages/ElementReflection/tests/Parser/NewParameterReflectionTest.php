@@ -17,7 +17,7 @@ final class NewParameterReflectionTest extends AbstractContainerAwareTestCase
      */
     private $parameterReflection;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         /** @var Parser $parser */
         $parser = $this->container->getByType(Parser::class);
@@ -31,7 +31,7 @@ final class NewParameterReflectionTest extends AbstractContainerAwareTestCase
         $this->parameterReflection = array_pop($parameterReflections);
     }
 
-    public function testName()
+    public function testName(): void
     {
         $this->assertSame('arguments', $this->parameterReflection->getName());
         $this->assertSame(
@@ -40,7 +40,7 @@ final class NewParameterReflectionTest extends AbstractContainerAwareTestCase
         );
     }
 
-    public function testDeclaringFunction()
+    public function testDeclaringFunction(): void
     {
         $this->assertInstanceOf(
             FunctionReflectionInterface::class,
@@ -53,7 +53,7 @@ final class NewParameterReflectionTest extends AbstractContainerAwareTestCase
         );
     }
 
-    public function testType()
+    public function testType(): void
     {
         $this->assertSame('string', $this->parameterReflection->getTypeHint());
         $this->assertTrue($this->parameterReflection->isVariadic());
@@ -63,17 +63,17 @@ final class NewParameterReflectionTest extends AbstractContainerAwareTestCase
         $this->assertNull($this->parameterReflection->getClassName());
     }
 
-    public function testDescription()
+    public function testDescription(): void
     {
         $this->assertSame('and their description', $this->parameterReflection->getDescription());
     }
 
-    public function testDefaults()
+    public function testDefaults(): void
     {
         $this->assertNull($this->parameterReflection->getDefaultValueDefinition());
     }
 
-    public function testDeclaringClass()
+    public function testDeclaringClass(): void
     {
         $this->assertNull($this->parameterReflection->getDeclaringClass());
         $this->assertSame('', $this->parameterReflection->getDeclaringClassName());

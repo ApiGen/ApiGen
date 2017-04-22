@@ -16,7 +16,6 @@ checkers:
     # Comments
     - Symplify\CodingStandard\Sniffs\Commenting\BlockPropertyCommentSniff
     - Symplify\CodingStandard\Sniffs\Commenting\VarPropertyCommentSniff
-    - Symplify\CodingStandard\Sniffs\Commenting\MethodCommentSniff
 
     # Dev & Dead Code
     - Symplify\CodingStandard\Sniffs\Debug\DebugFunctionCallSniff
@@ -78,6 +77,22 @@ skip:
         - src/Console/Command/AbstractCommand.php
         - tests/Parser/Reflection/ReflectionClassSource/RichInterface.php
         - tests/Parser/Parser/ParserSource/SomeFunction.php
+        - packages/ReflectionToElementTransformer/src/Transformer/TokenFunctionReflectionTransformer.php
+        - packages/ReflectionToElementTransformer/src/Transformer/BetterClassReflectionTransformer.php
+        - packages/ReflectionToElementTransformer/src/Transformer/BetterFunctionReflectionTransformer.php
+        - packages/ReflectionToElementTransformer/src/Transformer/BetterInterfaceReflectionTransformer.php
+        - packages/ReflectionToElementTransformer/src/Transformer/BetterParameterReflectionTransformer.php
+        - packages/ReflectionToElementTransformer/src/Transformer/BetterTraitReflectionTransformer.php
+        - packages/ReflectionToElementTransformer/src/Transformer/TokenClassReflectionTransformer.php
+        - packages/ReflectionToElementTransformer/src/Transformer/TokenConstantReflectionTransformer.php
+        - packages/ReflectionToElementTransformer/src/Transformer/TokenMethodReflectionTransformer.php
+        - packages/ReflectionToElementTransformer/src/Transformer/TokenParameterReflectionTransformer.php
+        - packages/ReflectionToElementTransformer/src/Transformer/TokenPropertyReflectionTransformer.php
+        - packages/ElementReflection/src/Reflection/NewClassReflection.php
+        - packages/ElementReflection/src/Reflection/NewPropertyReflection.php
+        - packages/ReflectionToElementTransformer/src/Transformer/BetterPropertyReflectionToPropertyTransformer.php
+        - packages/ReflectionToElementTransformer/src/Transformer/TokenFunctionReflectionTransformer.php
+        - packages/ReflectionToElementTransformer/src/Transformer/BetterPropertyReflectionTransformer.php
 
     SlevomatCodingStandard\Sniffs\Classes\ClassConstantVisibilitySniff:
         - tests/Parser/Reflection/ReflectionClassSource/ParentClass.php

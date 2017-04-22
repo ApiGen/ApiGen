@@ -3,7 +3,6 @@
 namespace ApiGen\ElementReflection\Reflection;
 
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ParameterReflectionInterface;
 use phpDocumentor\Reflection\DocBlock;
@@ -222,7 +221,7 @@ final class NewMethodReflection implements MethodReflectionInterface
         // TODO: Implement getOriginalName() method.
     }
 
-    public function setDeclaringClass(ClassReflectionInterface $classReflection)
+    public function setDeclaringClass(ClassReflectionInterface $classReflection): void
     {
         $this->declaringClass = $classReflection;
     }

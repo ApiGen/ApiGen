@@ -2,9 +2,9 @@
 
 namespace ApiGen\ModularConfiguration;
 
+use ApiGen\ModularConfiguration\Contract\ConfigurationDecoratorInterface;
 use ApiGen\ModularConfiguration\Contract\Option\CommandOptionInterface;
 use ApiGen\ModularConfiguration\Contract\Option\OptionInterface;
-use ApiGen\ModularConfiguration\Contract\ConfigurationDecoratorInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputOption;
 
@@ -23,7 +23,7 @@ final class ConfigurationDecorator implements ConfigurationDecoratorInterface
     public function decorateCommand(Command $command): void
     {
         foreach ($this->options as $option) {
-            if ( ! $this->isCommandOptionCandidate($option, $command)) {
+            if (! $this->isCommandOptionCandidate($option, $command)) {
                 continue;
             }
 

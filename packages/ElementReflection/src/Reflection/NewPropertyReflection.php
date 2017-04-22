@@ -102,7 +102,7 @@ final class NewPropertyReflection implements PropertyReflectionInterface
 
     public function getName(): string
     {
-        // TODO: Implement getName() method.
+        return $this->betterPropertyReflection->getName();
     }
 
     public function isDefault(): bool
@@ -144,7 +144,6 @@ final class NewPropertyReflection implements PropertyReflectionInterface
     }
 
     /**
-     * @param string $name
      * @return mixed[]
      */
     public function getAnnotation(string $name): array

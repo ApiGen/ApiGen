@@ -2,7 +2,6 @@
 
 namespace ApiGen\Contracts\Parser\Reflection;
 
-use ApiGen\Contracts\Parser\Reflection\Behavior\LinedInterface;
 use ApiGen\ReflectionToElementTransformer\Contract\TransformerCollectorInterface;
 
 interface TraitReflectionInterface extends ElementReflectionInterface

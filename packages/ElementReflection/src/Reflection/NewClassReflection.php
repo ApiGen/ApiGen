@@ -104,7 +104,6 @@ final class NewClassReflection implements ClassReflectionInterface
         return true;
     }
 
-
     public function getParentClass(): ?ClassReflectionInterface
     {
         // TODO: Implement getParentClass() method.

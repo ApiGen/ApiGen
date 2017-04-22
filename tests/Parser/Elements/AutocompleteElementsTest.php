@@ -35,6 +35,7 @@ final class AutocompleteElementsTest extends AbstractContainerAwareTestCase
             ['m', SomeClass::class . '::SomeMethod()'],
             ['c', SomeInterface::class],
             ['c', SomeOtherClass::class],
+            ['p', SomeOtherClass::class . '::$someProperty'],
             ['c', YetAnotherClass::class],
             ['f', 'SomeNamespace\someAloneFunction()']
         ], $elements);

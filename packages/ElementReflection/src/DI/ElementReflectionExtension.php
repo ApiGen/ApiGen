@@ -7,7 +7,7 @@ use Nette\DI\CompilerExtension;
 
 final class ElementReflectionExtension extends CompilerExtension
 {
-    public function loadConfiguration()
+    public function loadConfiguration(): void
     {
         Compiler::loadDefinitions(
             $this->getContainerBuilder(),

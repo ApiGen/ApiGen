@@ -17,7 +17,7 @@ final class NewFunctionReflectionTest extends AbstractContainerAwareTestCase
      */
     private $functionReflection;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         /** @var Parser $parser */
         $parser = $this->container->getByType(Parser::class);
@@ -27,7 +27,7 @@ final class NewFunctionReflectionTest extends AbstractContainerAwareTestCase
         $this->functionReflection = array_pop($functionReflections);
     }
 
-    public function testLines()
+    public function testLines(): void
     {
         $this->assertSame(16, $this->functionReflection->getStartLine());
         $this->assertSame(18, $this->functionReflection->getEndLine());
@@ -40,7 +40,7 @@ final class NewFunctionReflectionTest extends AbstractContainerAwareTestCase
         $this->assertSame('SomeNamespace\someAloneFunction()', $this->functionReflection->getPrettyName());
     }
 
-    public function testNamespaces()
+    public function testNamespaces(): void
     {
         $this->assertSame('SomeNamespace', $this->functionReflection->getNamespaceName());
         $this->assertSame('SomeNamespace', $this->functionReflection->getPseudoNamespaceName());
@@ -65,13 +65,13 @@ final class NewFunctionReflectionTest extends AbstractContainerAwareTestCase
         );
     }
 
-    public function testParameters()
+    public function testParameters(): void
     {
         $parameters = $this->functionReflection->getParameters();
         $this->assertCount(3, $parameters);
     }
 
-    public function testMisc()
+    public function testMisc(): void
     {
         $this->assertTrue($this->functionReflection->isDocumented());
     }

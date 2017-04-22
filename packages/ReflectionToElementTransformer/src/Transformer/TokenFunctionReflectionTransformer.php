@@ -37,7 +37,9 @@ final class TokenFunctionReflectionTransformer implements TransformerInterface
      */
     public function transform($reflection): NewFunctionReflection
     {
-        $betterFunctionReflection = BetterFunctionReflectionParser::parseByNameAndFile($reflection->getName(), $reflection->getFileName());
+        $betterFunctionReflection = BetterFunctionReflectionParser::parseByNameAndFile(
+            $reflection->getName(), $reflection->getFileName()
+        );
 
         return $this->betterFunctionReflectionToFunctionTransformer->transform(
             $betterFunctionReflection

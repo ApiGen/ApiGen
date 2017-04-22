@@ -161,7 +161,7 @@ final class NewParameterReflection implements ParameterReflectionInterface
     /**
      * @param MethodReflectionInterface|FunctionReflectionInterface $declaringFunction
      */
-    public function setDeclaringFunction($declaringFunction)
+    public function setDeclaringFunction($declaringFunction): void
     {
         $this->declaringFunction = $declaringFunction;
     }

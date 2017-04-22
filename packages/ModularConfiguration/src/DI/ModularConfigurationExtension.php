@@ -2,15 +2,15 @@
 
 namespace ApiGen\ModularConfiguration\DI;
 
-use ApiGen\ModularConfiguration\Contract\Option\OptionInterface;
 use ApiGen\ModularConfiguration\Contract\ConfigurationDecoratorInterface;
+use ApiGen\ModularConfiguration\Contract\Option\OptionInterface;
 use Nette\DI\Compiler;
 use Nette\DI\CompilerExtension;
 use Symplify\PackageBuilder\Adapter\Nette\DI\DefinitionCollector;
 
 final class ModularConfigurationExtension extends CompilerExtension
 {
-    public function loadConfiguration()
+    public function loadConfiguration(): void
     {
         Compiler::loadDefinitions(
             $this->getContainerBuilder(),
@@ -18,7 +18,7 @@ final class ModularConfigurationExtension extends CompilerExtension
         );
     }
 
-    public function beforeCompile()
+    public function beforeCompile(): void
     {
         DefinitionCollector::loadCollectorWithType(
             $this->getContainerBuilder(),

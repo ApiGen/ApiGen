@@ -9,7 +9,7 @@ use Nette\DI\CompilerExtension;
 
 final class ReflectionToElementTransformerExtension extends CompilerExtension
 {
-    public function loadConfiguration()
+    public function loadConfiguration(): void
     {
         Compiler::loadDefinitions(
             $this->getContainerBuilder(),
@@ -17,7 +17,7 @@ final class ReflectionToElementTransformerExtension extends CompilerExtension
         );
     }
 
-    public function beforeCompile()
+    public function beforeCompile(): void
     {
         $containerBuilder = $this->getContainerBuilder();
 

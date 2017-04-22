@@ -39,7 +39,7 @@ final class InterfaceReflection
         return $this->betterInterfaceReflection->getShortName();
     }
 
-    public function getPrettyName()
+    public function getPrettyName(): string
     {
         return $this->betterInterfaceReflection->getName() . '()';
     }

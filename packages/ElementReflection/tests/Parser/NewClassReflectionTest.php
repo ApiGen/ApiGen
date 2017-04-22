@@ -18,7 +18,7 @@ final class NewClassReflectionTest extends AbstractContainerAwareTestCase
      */
     private $classReflection;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         /** @var Parser $parser */
         $parser = $this->container->getByType(Parser::class);
@@ -28,19 +28,19 @@ final class NewClassReflectionTest extends AbstractContainerAwareTestCase
         $this->classReflection = array_shift($classReflections);
     }
 
-    public function test()
+    public function test(): void
     {
         $this->assertInstanceOf(ClassReflectionInterface::class, $this->classReflection);
     }
 
-    public function testName()
+    public function testName(): void
     {
         $this->assertSame(SomeClass::class, $this->classReflection->getName());
         $this->assertSame('SomeClass', $this->classReflection->getShortName());
         $this->assertSame(SomeClass::class . '()', $this->classReflection->getPrettyName());
     }
 
-    public function testNamespace()
+    public function testNamespace(): void
     {
         $this->assertSame(
             'ApiGen\Parser\Tests\Parser\ParserSource',
@@ -53,7 +53,7 @@ final class NewClassReflectionTest extends AbstractContainerAwareTestCase
         );
     }
 
-    public function testAnnotations()
+    public function testAnnotations(): void
     {
         $this->assertSame(
             'Huge and small' . PHP_EOL . PHP_EOL . 'description.',
@@ -68,13 +68,13 @@ final class NewClassReflectionTest extends AbstractContainerAwareTestCase
         $this->assertCount(1, $this->classReflection->getAnnotations());
     }
 
-    public function testLines()
+    public function testLines(): void
     {
         $this->assertSame(12, $this->classReflection->getStartLine());
         $this->assertSame(23, $this->classReflection->getEndLine());
     }
 
-    public function testIsDocumented()
+    public function testIsDocumented(): void
     {
         $this->assertTrue($this->classReflection->isDocumented());
     }

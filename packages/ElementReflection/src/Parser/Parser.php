@@ -71,7 +71,7 @@ final class Parser
     /**
      * @return InterfaceReflection[]
      */
-    public function getInterfaceReflections()
+    public function getInterfaceReflections(): array
     {
         return $this->interfaceReflections;
     }
@@ -107,7 +107,7 @@ final class Parser
     /**
      * @param object[] $classInterfaceAndTraitReflections
      */
-    private function separateClassInterfaceAndTraitReflections($classInterfaceAndTraitReflections): void
+    private function separateClassInterfaceAndTraitReflections(array $classInterfaceAndTraitReflections): void
     {
         $this->classReflections = array_filter($classInterfaceAndTraitReflections, function ($reflection) {
             return $reflection instanceof ClassReflectionInterface;
