@@ -1,10 +1,8 @@
 <?php declare(strict_types=1);
 
-
 namespace ApiGen\Parser\Tests\Reflection;
 
-
-class TraitReflectionTest
+final class TraitReflectionTest
 {
 
 }

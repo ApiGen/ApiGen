@@ -14,24 +14,18 @@ final class ApiGenExtension extends CompilerExtension
 {
     public function loadConfiguration(): void
     {
-        $this->loadServicesFromConfig();
+        Compiler::loadDefinitions(
+            $this->getContainerBuilder(),
+            $this->loadFromFile(__DIR__ . '/../config/services.neon')
+        );
+
         $this->setupTemplating();
     }
 
     public function beforeCompile(): void
     {
-        $containerBuilder = $this->getContainerBuilder();
-        $containerBuilder->prepareClassList();
         $this->setupTemplatingFilters();
         $this->setupGeneratorQueue();
-    }
-
-    private function loadServicesFromConfig(): void
-    {
-        Compiler::loadDefinitions(
-            $this->getContainerBuilder(),
-            $this->loadFromFile(__DIR__ . '/../config/services.neon')
-        );
     }
 
     private function setupTemplating(): void
@@ -61,12 +55,5 @@ final class ApiGenExtension extends CompilerExtension
             GeneratorInterface::class,
             'addGenerator'
         );
-
-        // @todo: use package builder for these collections
-//        $containerBuilder = $this->getContainerBuilder();
-//        $generator = $containerBuilder->getDefinitionByType(GeneratorQueueInterface::class);
-//        foreach ($containerBuilder->findByType(GeneratorInterface::class) as $definition) {
-//            $generator->addSetup('addGenerator', ['@' . $definition->getClass()]);
-//        }
     }
 }
