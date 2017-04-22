@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Project;
+namespace ApiGen\Tests\Parser\Reflection\ReflectionClassSource;
 
 /**
  * @property \stdClass[] $issue696
@@ -10,7 +10,7 @@ namespace Project;
 final class AccessLevels extends ParentClass implements RichInterface
 {
     use SomeTrait;
-    use SomeTraitNotPresentHere;
+    // use SomeTraitNotPresentHere;
 
     const LEVEL = 5;
 
@@ -40,6 +40,10 @@ final class AccessLevels extends ParentClass implements RichInterface
     }
 
     private function privateMethod()
+    {
+    }
+
+    public function getSomeStuff()
     {
     }
 }

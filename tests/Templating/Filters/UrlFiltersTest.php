@@ -10,6 +10,7 @@ use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 use ApiGen\Templating\Filters\UrlFilters;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 use ApiGen\Tests\MethodInvoker;
+use PHPUnit_Framework_MockObject_MockObject;
 
 final class UrlFiltersTest extends AbstractContainerAwareTestCase
 {
@@ -72,7 +73,7 @@ final class UrlFiltersTest extends AbstractContainerAwareTestCase
     }
 
     /**
-     * @return string[]
+     * @return string[][]
      */
     public function getInternalData(): array
     {
@@ -262,7 +263,10 @@ DOC;
         ];
     }
 
-    private function createClassReflection(): ClassReflectionInterface
+    /**
+     * @return ClassReflectionInterface|PHPUnit_Framework_MockObject_MockObject
+     */
+    private function createClassReflection()
     {
         $reflectionClassMock = $this->createMock(ClassReflectionInterface::class);
         $reflectionClassMock->method('getName')

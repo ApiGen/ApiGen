@@ -1,11 +1,11 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Parser\Tests\Reflection;
+namespace ApiGen\Tests\Parser\Reflection;
 
 use ApiGen\Contracts\Parser\ParserInterface;
 use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
-use Project\ReflectionMethod;
+use ApiGen\Tests\Parser\Reflection\ReflectionMethodSource\ReflectionMethod;
 
 final class ReflectionElementTest extends AbstractContainerAwareTestCase
 {
@@ -35,12 +35,18 @@ final class ReflectionElementTest extends AbstractContainerAwareTestCase
 
     public function testGetNamespaceName(): void
     {
-        $this->assertSame('Project', $this->reflectionClass->getNamespaceName());
+        $this->assertSame(
+            'ApiGen\Tests\Parser\Reflection\ReflectionMethodSource',
+            $this->reflectionClass->getNamespaceName()
+        );
     }
 
     public function testGetPseudoNamespaceName(): void
     {
-        $this->assertSame('Project', $this->reflectionClass->getPseudoNamespaceName());
+        $this->assertSame(
+            'ApiGen\Tests\Parser\Reflection\ReflectionMethodSource',
+            $this->reflectionClass->getPseudoNamespaceName()
+        );
     }
 
     public function testGetDescription(): void

@@ -6,7 +6,7 @@ use ApiGen\Configuration\ConfigurationOptions;
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 
-final class ConfigurationOptionsResolverTest extends AbstractContainerAwareTestCase
+final class ConfigurationTest extends AbstractContainerAwareTestCase
 {
     /**
      * @var ConfigurationInterface

@@ -1,12 +1,12 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Parser\Tests\Reflection;
+namespace ApiGen\Tests\Parser\Reflection;
 
 use ApiGen\Contracts\Parser\ParserInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
-use Project\ReflectionMethod;
+use ApiGen\Tests\Parser\Reflection\ReflectionMethodSource\ReflectionMethod;
 
 final class ReflectionPropertyTest extends AbstractContainerAwareTestCase
 {
@@ -57,7 +57,10 @@ final class ReflectionPropertyTest extends AbstractContainerAwareTestCase
 
     public function testGetDeclaringClassName(): void
     {
-        $this->assertSame('Project\ReflectionMethod', $this->reflectionProperty->getDeclaringClassName());
+        $this->assertSame(
+            'ApiGen\Tests\Parser\Reflection\ReflectionMethodSource\ReflectionMethod',
+            $this->reflectionProperty->getDeclaringClassName()
+        );
     }
 
     public function testGetDefaultValue(): void
@@ -68,21 +71,6 @@ final class ReflectionPropertyTest extends AbstractContainerAwareTestCase
     public function testIsDefault(): void
     {
         $this->assertTrue($this->reflectionProperty->isDefault());
-    }
-
-    public function testIsPrivate(): void
-    {
-        $this->assertFalse($this->reflectionProperty->isPrivate());
-    }
-
-    public function testIsProtected(): void
-    {
-        $this->assertFalse($this->reflectionProperty->isProtected());
-    }
-
-    public function testIsPublic(): void
-    {
-        $this->assertTrue($this->reflectionProperty->isPublic());
     }
 
     public function testIsStatic(): void

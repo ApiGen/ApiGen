@@ -1,9 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Parser\Tests\Reflections\ReflectionClass;
+namespace ApiGen\Tests\Parser\Reflection\ReflectionClass;
 
 use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
-use ApiGen\Parser\Tests\Reflection\ReflectionClass\AbstractReflectionClassTestCase;
 
 class PropertiesTest extends AbstractReflectionClassTestCase
 {

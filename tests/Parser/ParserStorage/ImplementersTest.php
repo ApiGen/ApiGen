@@ -1,16 +1,16 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Parser\Tests\ParserStorage;
+namespace ApiGen\Tests\Parser\ParserStorage;
 
 use ApiGen\Configuration\ConfigurationOptions;
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Parser\ParserInterface;
 use ApiGen\Contracts\Parser\ParserStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
-use ApiGen\Parser\Tests\ParserStorageImplementersSource\ChildInterface;
-use ApiGen\Parser\Tests\ParserStorageImplementersSource\ParentInterface;
-use ApiGen\Parser\Tests\ParserStorageImplementersSource\SomeClass;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
+use ApiGen\Tests\Parser\ParserStorage\ImplementersSource\ChildInterface;
+use ApiGen\Tests\Parser\ParserStorage\ImplementersSource\ParentInterface;
+use ApiGen\Tests\Parser\ParserStorage\ImplementersSource\SomeClass;
 use Nette\Utils\Finder;
 use ReflectionProperty;
 

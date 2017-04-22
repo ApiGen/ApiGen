@@ -1,11 +1,11 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Utils\Tests\FileSystem;
+namespace ApiGen\Tests\Utils;
 
 use ApiGen\Utils\FileSystem;
 use PHPUnit\Framework\TestCase;
 
-class FileSystemTest extends TestCase
+final class FileSystemTest extends TestCase
 {
     /**
      * @var FileSystem

@@ -7,6 +7,8 @@ use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Parser\ParserInterface;
 use ApiGen\Generator\TemplateGenerators\AnnotationGroupsGenerator;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
+use ApiGen\Tests\Generator\TemplateGenerators\DeprecatedSources\DeprecatedClass;
+use ApiGen\Tests\Generator\TemplateGenerators\DeprecatedSources\DeprecatedMethod;
 
 final class AnnotationGroupsGeneratorTest extends AbstractContainerAwareTestCase
 {
@@ -37,11 +39,11 @@ final class AnnotationGroupsGeneratorTest extends AbstractContainerAwareTestCase
 
         $this->assertFileExists(TEMP_DIR . '/annotation-group-deprecated.html');
         $this->assertContains(
-            'ApiGen\Tests\DeprecatedClass',
+            DeprecatedClass::class,
                 file_get_contents(TEMP_DIR . '/annotation-group-deprecated.html')
         );
         $this->assertContains(
-            'ApiGen\Tests\DeprecatedMethod',
+            DeprecatedMethod::class,
             file_get_contents(TEMP_DIR . '/annotation-group-deprecated.html')
         );
     }

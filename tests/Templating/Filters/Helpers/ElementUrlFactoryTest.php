@@ -193,7 +193,10 @@ final class ElementUrlFactoryTest extends TestCase
         return $reflectionPropertyMock;
     }
 
-    private function getReflectionConstantMock(): ConstantReflectionInterface
+    /**
+     * @return PHPUnit_Framework_MockObject_MockObject|ConstantReflectionInterface
+     */
+    private function getReflectionConstantMock()
     {
         $reflectionConstantMock = $this->createMock(ConstantReflectionInterface::class);
         $reflectionConstantMock->method('getName')
@@ -202,7 +205,10 @@ final class ElementUrlFactoryTest extends TestCase
         return $reflectionConstantMock;
     }
 
-    private function getReflectionFunctionMock(): FunctionReflectionInterface
+    /**
+     * @return PHPUnit_Framework_MockObject_MockObject|FunctionReflectionInterface
+     */
+    private function getReflectionFunctionMock()
     {
         $reflectionFunctionMock = $this->createMock(FunctionReflectionInterface::class);
         $reflectionFunctionMock->method('getName')

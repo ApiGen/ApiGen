@@ -1,9 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Parser\Tests\Reflections\ReflectionClass;
+namespace ApiGen\Tests\Parser\Reflection\ReflectionClass;
 
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
-use ApiGen\Parser\Tests\Reflection\ReflectionClass\AbstractReflectionClassTestCase;
+use ApiGen\Tests\Parser\Reflection\ReflectionClassSource\AccessLevels;
+use ApiGen\Tests\Parser\Reflection\ReflectionClassSource\ParentClass;
 
 final class ReflectionClassTest extends AbstractReflectionClassTestCase
 {
@@ -14,7 +15,7 @@ final class ReflectionClassTest extends AbstractReflectionClassTestCase
 
     public function testGetName(): void
     {
-        $this->assertSame('Project\AccessLevels', $this->reflectionClass->getName());
+        $this->assertSame(AccessLevels::class, $this->reflectionClass->getName());
     }
 
     public function testGetShortName(): void
@@ -39,7 +40,7 @@ final class ReflectionClassTest extends AbstractReflectionClassTestCase
 
     public function testIsSubclassOf(): void
     {
-        $this->assertTrue($this->reflectionClass->isSubclassOf('Project\ParentClass'));
+        $this->assertTrue($this->reflectionClass->isSubclassOf(ParentClass::class));
         $this->assertFalse($this->reflectionClass->isSubclassOf('ArrayAccess'));
     }
 

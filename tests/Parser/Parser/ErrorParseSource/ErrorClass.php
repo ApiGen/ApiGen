@@ -3,7 +3,7 @@ const ONE = 1;
 const ONE = 1;
 
 
-namespace ApiGen\Parser\Tests\ErrorClass;
+namespace ApiGen\Tests\Parser\Parser\ErrorClass;
 
 class ErrorClass
 {

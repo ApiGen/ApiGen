@@ -1,34 +1,35 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Parser\Tests\Reflection\ReflectionClass;
+namespace ApiGen\Tests\Parser\Reflection\ReflectionClass;
 
 use ApiGen\Contracts\Parser\ParserInterface;
+use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Parser\Reflection\ReflectionClass;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
-use Project\AccessLevels;
-use Project\ParentClass;
-use Project\RichInterface;
-use Project\SomeTrait;
+use ApiGen\Tests\Parser\Reflection\ReflectionClassSource\AccessLevels;
+use ApiGen\Tests\Parser\Reflection\ReflectionClassSource\ParentClass;
+use ApiGen\Tests\Parser\Reflection\ReflectionClassSource\RichInterface;
+use ApiGen\Tests\Parser\Reflection\ReflectionClassSource\SomeTrait;
 
 abstract class AbstractReflectionClassTestCase extends AbstractContainerAwareTestCase
 {
     /**
-     * @var ReflectionClass
+     * @var ReflectionClass|ClassReflectionInterface
      */
     protected $reflectionClass;
 
     /**
-     * @var ReflectionClass
+     * @var ReflectionClass|ClassReflectionInterface
      */
     protected $reflectionClassOfParent;
 
     /**
-     * @var ReflectionClass
+     * @var ReflectionClass|ClassReflectionInterface
      */
     protected $reflectionClassOfTrait;
 
     /**
-     * @var ReflectionClass
+     * @var ReflectionClass|ClassReflectionInterface
      */
     protected $reflectionClassOfInterface;
 

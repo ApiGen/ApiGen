@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Parser\Tests\Parser\ParserSource;
+namespace ApiGen\Tests\Parser\Parser\ParserSource;
 
 interface SomeInterface
 {

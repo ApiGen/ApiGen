@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Parser\Tests\Elements;
+namespace ApiGen\Tests\Parser\Elements;
 
 use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
 use ApiGen\Parser\Elements\ElementFilter;

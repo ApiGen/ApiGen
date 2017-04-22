@@ -4,12 +4,12 @@ namespace ApiGen\ElementReflection\Tests\Parser;
 
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\ElementReflection\Parser\Parser;
-use ApiGen\Parser\Tests\Parser\ParserSource\SomeClass;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
+use ApiGen\Tests\Parser\Parser\ParserSource\SomeClass;
 use phpDocumentor\Reflection\DocBlock\Tags\Author;
 
 /**
- * Mirror to Function test @see \ApiGen\Parser\Tests\ParserTest
+ * Mirror to Function test @see \ApiGen\Tests\ParserTest
  */
 final class NewClassReflectionTest extends AbstractContainerAwareTestCase
 {
@@ -43,12 +43,12 @@ final class NewClassReflectionTest extends AbstractContainerAwareTestCase
     public function testNamespace(): void
     {
         $this->assertSame(
-            'ApiGen\Parser\Tests\Parser\ParserSource',
+            'ApiGen\Tests\Parser\Parser\ParserSource',
             $this->classReflection->getNamespaceName()
         );
 
         $this->assertSame(
-            'ApiGen\Parser\Tests\Parser\ParserSource',
+            'ApiGen\Tests\Parser\Parser\ParserSource',
             $this->classReflection->getPseudoNamespaceName()
         );
     }

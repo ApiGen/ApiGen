@@ -37,7 +37,7 @@ final class FiltersTest extends TestCase
     }
 
     /**
-     * @return string[]
+     * @return string[][]
      */
     public function typeNameProvider(): array
     {

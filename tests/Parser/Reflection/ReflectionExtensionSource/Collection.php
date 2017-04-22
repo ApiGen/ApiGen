@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Tests;
+namespace ApiGen\Tests\Parser\Reflection\ReflectionExtensionSource;
 
 use Countable;
 

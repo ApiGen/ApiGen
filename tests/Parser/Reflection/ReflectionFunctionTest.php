@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Parser\Tests\Reflection;
+namespace ApiGen\Tests\Parser\Reflection;
 
 use ApiGen\Contracts\Parser\ParserInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;

@@ -1,9 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Parser\Tests\Reflections\ReflectionClass;
+namespace ApiGen\Tests\Parser\Reflection\ReflectionClass;
 
 use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
-use ApiGen\Parser\Tests\Reflection\ReflectionClass\AbstractReflectionClassTestCase;
 
 final class MethodsTest extends AbstractReflectionClassTestCase
 {
@@ -27,12 +26,12 @@ final class MethodsTest extends AbstractReflectionClassTestCase
 
     public function testGetOwnMethods(): void
     {
-        $this->assertCount(2, $this->reflectionClass->getOwnMethods());
+        $this->assertCount(3, $this->reflectionClass->getOwnMethods());
     }
 
     public function testGetInheritedMethods(): void
     {
-        $this->assertCount(2, $this->reflectionClass->getInheritedMethods());
+        $this->assertCount(1, $this->reflectionClass->getInheritedMethods());
     }
 
     public function testGetUsedMethods(): void

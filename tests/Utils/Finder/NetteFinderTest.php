@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Utils\Tests\Finder;
+namespace ApiGen\Tests\Utils\Finder;
 
 use ApiGen\Utils\Finder\FinderInterface;
 use ApiGen\Utils\Finder\NetteFinder;

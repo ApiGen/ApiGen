@@ -5,7 +5,7 @@
  * @copyright 2015
  */
 
-namespace Project;
+namespace ApiGen\Tests\Parser\Reflection\ReflectionMethodSource;
 
 /**
  * This is some description

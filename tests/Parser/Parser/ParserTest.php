@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Parser\Tests;
+namespace ApiGen\Tests\Parser\Parser;
 
 use ApiGen\Contracts\Parser\ParserInterface;
 use ApiGen\Contracts\Parser\ParserStorageInterface;

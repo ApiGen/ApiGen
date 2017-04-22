@@ -7,7 +7,7 @@ use ApiGen\ElementReflection\Parser\Parser;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 
 /**
- * Mirror to Function test @see \ApiGen\Parser\Tests\ParserTest
+ * Mirror to Function test @see \ApiGen\Tests\ParserTest
  */
 final class NewPropertyReflectionTest extends AbstractContainerAwareTestCase
 {

@@ -27,7 +27,7 @@ final class FindElementByNameTest extends AbstractElementResolverTest
     }
 
     /**
-     * @return string[]
+     * @return mixed[][]
      */
     public function getFindElementByNameAndNamespaceData(): array
     {

@@ -1,11 +1,11 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Parser\Tests\Reflections\ReflectionClass;
+namespace ApiGen\Tests\Parser\Reflection\ReflectionClass;
 
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
-use ApiGen\Parser\Tests\Reflection\ReflectionClass\AbstractReflectionClassTestCase;
+use ApiGen\Tests\Parser\Reflection\ReflectionClassSource\RichInterface;
 
-class InterfacesTest extends AbstractReflectionClassTestCase
+final class InterfacesTest extends AbstractReflectionClassTestCase
 {
     public function testIsInterface(): void
     {
@@ -15,26 +15,26 @@ class InterfacesTest extends AbstractReflectionClassTestCase
     public function testImplementsInterface(): void
     {
         $this->assertFalse($this->reflectionClass->implementsInterface('NoInterface'));
-        $this->assertTrue($this->reflectionClass->implementsInterface('Project\RichInterface'));
+        $this->assertTrue($this->reflectionClass->implementsInterface(RichInterface::class));
     }
 
     public function testGetInterfaces(): void
     {
         $interfaces = $this->reflectionClass->getInterfaces();
         $this->assertCount(1, $interfaces);
-        $this->assertInstanceOf(ClassReflectionInterface::class, $interfaces['Project\RichInterface']);
+        $this->assertInstanceOf(ClassReflectionInterface::class, $interfaces[RichInterface::class]);
     }
 
     public function testGetOwnInterfaces(): void
     {
         $interfaces = $this->reflectionClass->getOwnInterfaces();
         $this->assertCount(1, $interfaces);
-        $this->assertInstanceOf(ClassReflectionInterface::class, $interfaces['Project\RichInterface']);
+        $this->assertInstanceOf(ClassReflectionInterface::class, $interfaces[RichInterface::class]);
     }
 
     public function testGetOwnInterfaceNames(): void
     {
-        $this->assertSame(['Project\RichInterface'], $this->reflectionClass->getOwnInterfaceNames());
+        $this->assertSame([RichInterface::class], $this->reflectionClass->getOwnInterfaceNames());
     }
 
     public function testGetDirectImplementers(): void

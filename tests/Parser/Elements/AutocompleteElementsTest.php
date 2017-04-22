@@ -1,14 +1,14 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Parser\Tests\Elements;
+namespace ApiGen\Tests\Parser\Elements;
 
 use ApiGen\Contracts\Parser\ParserInterface;
 use ApiGen\Parser\Elements\AutocompleteElements;
-use ApiGen\Parser\Tests\Parser\ParserSource\SomeClass;
-use ApiGen\Parser\Tests\Parser\ParserSource\SomeInterface;
-use ApiGen\Parser\Tests\ParserSource\SomeOtherClass;
-use ApiGen\Parser\Tests\ParserSource\YetAnotherClass;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
+use ApiGen\Tests\Parser\Parser\ParserSource\SomeClass;
+use ApiGen\Tests\Parser\Parser\ParserSource\SomeInterface;
+use ApiGen\Tests\Parser\Parser\ParserSource\SomeOtherClass;
+use ApiGen\Tests\Parser\Parser\ParserSource\YetAnotherClass;
 
 final class AutocompleteElementsTest extends AbstractContainerAwareTestCase
 {

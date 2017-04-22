@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Project;
+namespace ApiGen\Tests\Parser\Reflection\ReflectionClassSource;
 
 /**
  * @property int $someTraitProperty

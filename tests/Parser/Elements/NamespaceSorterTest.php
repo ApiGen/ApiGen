@@ -1,8 +1,7 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Parser\Tests\Elements;
+namespace ApiGen\Tests\Parser\Elements;
 
-use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Parser\Elements\NamespaceSorterInterface;
 use ApiGen\Parser\Elements\Elements;
 use ApiGen\Parser\Elements\NamespaceSorter;
@@ -19,9 +18,7 @@ final class NamespaceSorterTest extends TestCase
 
     protected function setUp(): void
     {
-        $configurationMock = $this->createMock(ConfigurationInterface::class);
-
-        $this->namespaceSorter = new NamespaceSorter(new Elements, $configurationMock);
+        $this->namespaceSorter = new NamespaceSorter(new Elements);
     }
 
     public function testSort(): void

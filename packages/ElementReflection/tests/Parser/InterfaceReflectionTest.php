@@ -4,11 +4,11 @@ namespace ApiGen\ElementReflection\Tests\Parser;
 
 use ApiGen\ElementReflection\Parser\Parser;
 use ApiGen\ElementReflection\Reflection\InterfaceReflection;
-use ApiGen\Parser\Tests\Parser\ParserSource\SomeInterface;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
+use ApiGen\Tests\Parser\Parser\ParserSource\SomeInterface;
 
 /**
- * Mirror to Function test @see \ApiGen\Parser\Tests\ParserTest
+ * Mirror to Function test @see \ApiGen\Tests\ParserTest
  */
 final class InterfaceReflectionTest extends AbstractContainerAwareTestCase
 {

@@ -1,18 +1,19 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Parser\Tests\Reflection;
+namespace ApiGen\Tests\Parser\Reflection;
 
 use ApiGen\Contracts\Parser\ParserInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ParameterReflectionInterface;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
-use Project\ReflectionMethod;
+use ApiGen\Tests\Parser\Reflection\ReflectionMethodSource\ReflectionMethod;
 
 final class ReflectionMethodTest extends AbstractContainerAwareTestCase
 {
     /**
-     * @var MethodReflectionInterface
+     * @var MethodReflectionInterface|FunctionReflectionInterface
      */
     private $reflectionMethod;
 
@@ -22,12 +23,12 @@ final class ReflectionMethodTest extends AbstractContainerAwareTestCase
     private $reflectionClass;
 
     /**
-     * @var MethodReflectionInterface
+     * @var MethodReflectionInterface|FunctionReflectionInterface
      */
     private $reflectionFunctionWithParameters;
 
     /**
-     * @var MethodReflectionInterface
+     * @var MethodReflectionInterface|FunctionReflectionInterface
      */
     private $otherReflectionFunction;
 

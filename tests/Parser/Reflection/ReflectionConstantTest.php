@@ -1,12 +1,12 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Parser\Tests\Reflection;
+namespace ApiGen\Tests\Parser\Reflection;
 
 use ApiGen\Contracts\Parser\ParserInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
-use ApiGen\Tests\ConstantInClass;
+use ApiGen\Tests\Parser\Reflection\ReflectionConstantSource\ConstantInClass;
 
 final class ReflectionConstantTest extends AbstractContainerAwareTestCase
 {

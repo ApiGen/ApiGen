@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Parser\Tests\Reflections\ReflectionClass;
+namespace ApiGen\Tests\Parser\Reflection\ReflectionClass;
 
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
-use ApiGen\Parser\Tests\Reflection\ReflectionClass\AbstractReflectionClassTestCase;
+use ApiGen\Tests\Parser\Reflection\ReflectionClassSource\ParentClass;
 
 class ParentsTest extends AbstractReflectionClassTestCase
 {
@@ -14,7 +14,7 @@ class ParentsTest extends AbstractReflectionClassTestCase
 
     public function testGetParentClassName(): void
     {
-        $this->assertSame('Project\ParentClass', $this->reflectionClass->getParentClassName());
+        $this->assertSame(ParentClass::class, $this->reflectionClass->getParentClassName());
     }
 
     public function testGetParentClasses(): void
