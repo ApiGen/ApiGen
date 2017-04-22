@@ -8,7 +8,7 @@ use ApiGen\ElementReflection\Parser\Parser;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 
 /**
- * Mirror to Parameter test @see \ApiGen\Tests\ParserTest
+ * Mirror to Parameter test @see \ApiGen\Tests\Parser\Parser\ParserTest
  */
 final class NewParameterReflectionTest extends AbstractContainerAwareTestCase
 {
