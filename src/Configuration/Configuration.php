@@ -166,7 +166,7 @@ final class Configuration implements ConfigurationInterface, ConfigurationResolv
     }
 
     /**
-     * @var mixed[]
+     * @param mixed[] $options
      * @return mixed[]
      */
     public function prepareOptions(array $options): array

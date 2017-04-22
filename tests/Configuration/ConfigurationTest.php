@@ -13,12 +13,12 @@ final class ConfigurationOptionsResolverTest extends AbstractContainerAwareTestC
      */
     private $configuration;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->configuration = $this->container->getByType(ConfigurationInterface::class);
     }
 
-    public function testResolve()
+    public function testResolve(): void
     {
         $options = $this->configuration->prepareOptions([
             ConfigurationOptions::DESTINATION => TEMP_DIR

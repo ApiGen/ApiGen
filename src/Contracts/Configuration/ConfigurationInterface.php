@@ -79,7 +79,7 @@ interface ConfigurationInterface
     public function getDestinationWithPrefixName(string $prefix, string $name): string;
 
     /**
-     * @var mixed[]
+     * @param mixed[] $options
      * @return mixed[]
      */
     public function prepareOptions(array $options): array;
