@@ -1,3 +1,6 @@
+# ApiGenApplication
+- ApiGen\Application\ApiGenApplication
+
 # Console
 - ApiGen\Console\Helper\ProgressBar
 - ApiGen\Console\Command\GenerateCommand

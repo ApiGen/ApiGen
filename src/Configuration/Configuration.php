@@ -3,23 +3,16 @@
 namespace ApiGen\Configuration;
 
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
-use ApiGen\ModularConfiguration\Contract\ConfigurationOptionInterface;
-use ApiGen\ModularConfiguration\Contract\ConfigurationResolverInterface;
 use ApiGen\Templating\Filters\UrlFilters;
 use ApiGen\Utils\FileSystem;
 use Nette\DI\Config\Loader;
 
-final class Configuration implements ConfigurationInterface, ConfigurationResolverInterface
+final class Configuration implements ConfigurationInterface
 {
     /**
      * @var mixed[]
      */
     private $options;
-
-    /**
-     * @var ConfigurationOptionInterface[]
-     */
-    private $configurationOptions = [];
 
     /**
      * @var ConfigurationOptionsResolver
@@ -37,11 +30,6 @@ final class Configuration implements ConfigurationInterface, ConfigurationResolv
     ) {
         $this->configurationOptionsResolver = $configurationOptionsResolver;
         $this->fileSystem = $fileSystem;
-    }
-
-    public function addConfigurationOption(ConfigurationOptionInterface $configurationOption): void
-    {
-        $this->configurationOptions[$configurationOption->getName()] = $configurationOption;
     }
 
     /**

@@ -2,7 +2,7 @@
 
 namespace ApiGen\ModularConfiguration\Contract;
 
-interface ConfigurationOptionInterface
+interface OptionInterface
 {
     public function getName(): string;
 

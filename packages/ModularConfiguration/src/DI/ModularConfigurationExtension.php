@@ -2,8 +2,8 @@
 
 namespace ApiGen\ModularConfiguration\DI;
 
-use ApiGen\ModularConfiguration\Contract\ConfigurationOptionInterface;
-use ApiGen\ModularConfiguration\Contract\ConfigurationResolverInterface;
+use ApiGen\ModularConfiguration\Contract\OptionInterface;
+use ApiGen\ModularConfiguration\Contract\ConfigurationDecoratorInterface;
 use Nette\DI\CompilerExtension;
 use Symplify\PackageBuilder\Adapter\Nette\DI\DefinitionCollector;
 
@@ -13,8 +13,8 @@ final class ModularConfigurationExtension extends CompilerExtension
     {
         DefinitionCollector::loadCollectorWithType(
             $this->getContainerBuilder(),
-            ConfigurationResolverInterface::class,
-            ConfigurationOptionInterface::class,
+            ConfigurationDecoratorInterface::class,
+            OptionInterface::class,
             'addConfigurationOption'
         );
     }

@@ -2,13 +2,9 @@
 
 namespace ApiGen\Console\Command;
 
+use ApiGen\Application\ApiGenApplication;
+use ApiGen\Application\Command\RunCommand;
 use ApiGen\Configuration\ConfigurationOptions;
-use ApiGen\Contracts\Configuration\ConfigurationInterface;
-use ApiGen\Contracts\Generator\GeneratorQueueInterface;
-use ApiGen\Contracts\Parser\ParserInterface;
-use ApiGen\Theme\ThemeResources;
-use ApiGen\Utils\FileSystem;
-use ApiGen\Utils\Finder\FinderInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -23,56 +19,15 @@ final class GenerateCommand extends Command
     private const NAME = 'generate';
 
     /**
-     * @var ConfigurationInterface
+     * @var ApiGenApplication
      */
-    private $configuration;
+    private $apiGenApplication;
 
-    /**
-     * @var ParserInterface
-     */
-    private $parser;
-
-    /**
-     * @var GeneratorQueueInterface
-     */
-    private $generatorQueue;
-
-    /**
-     * @var FileSystem
-     */
-    private $fileSystem;
-
-    /**
-     * @var ThemeResources
-     */
-    private $themeResources;
-
-    /**
-     * @var FinderInterface
-     */
-    private $finder;
-
-    /**
-     * @var OutputInterface
-     */
-    private $output;
-
-    public function __construct(
-        ConfigurationInterface $configuration,
-        ParserInterface $parser,
-        GeneratorQueueInterface $generatorQueue,
-        FileSystem $fileSystem,
-        ThemeResources $themeResources,
-        FinderInterface $finder
-    ) {
+    public function __construct(ApiGenApplication $apiGenApplication)
+    {
         parent::__construct();
 
-        $this->configuration = $configuration;
-        $this->parser = $parser;
-        $this->generatorQueue = $generatorQueue;
-        $this->fileSystem = $fileSystem;
-        $this->themeResources = $themeResources;
-        $this->finder = $finder;
+        $this->apiGenApplication = $apiGenApplication;
     }
 
     protected function configure(): void
@@ -84,6 +39,7 @@ final class GenerateCommand extends Command
             InputArgument::IS_ARRAY | InputOption::VALUE_REQUIRED,
             'Dirs or files documentation is generated for.'
         );
+        // @todo: use ConfigurationDecorator
         $this->addOption(
             ConfigurationOptions::DESTINATION,
             null,
@@ -101,56 +57,10 @@ final class GenerateCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $this->output = $output;
+        $runCommand = RunCommand::createFromInput($input);
 
-        $cliOptions = [
-            ConfigurationOptions::SOURCE => $input->getArgument(ConfigurationOptions::SOURCE),
-            ConfigurationOptions::DESTINATION => $input->getOption(ConfigurationOptions::DESTINATION),
-            ConfigurationOptions::CONFIG => $input->getOption(ConfigurationOptions::CONFIG)
-        ];
+        $this->apiGenApplication->runCommand($runCommand);
 
-        $options = $this->configuration->prepareOptions($cliOptions);
-
-        $this->scanAndParse($options);
-        $this->generate($options);
         return 0;
-    }
-
-    /**
-     * @param mixed[] $options
-     */
-    private function scanAndParse(array $options): void
-    {
-        $this->output->writeln('<info>Scanning sources and parsing</info>');
-
-        $files = $this->finder->find(
-            $options[ConfigurationOptions::SOURCE],
-            $options[ConfigurationOptions::EXCLUDE],
-            $options[ConfigurationOptions::EXTENSIONS]
-        );
-
-        $this->parser->parseFiles($files);
-    }
-
-    /**
-     * @param mixed[] $options
-     */
-    private function generate(array $options): void
-    {
-        $this->prepareDestination(
-            $options[ConfigurationOptions::DESTINATION],
-            (bool) $options[ConfigurationOptions::FORCE_OVERWRITE]
-        );
-        $this->output->writeln('<info>Generating API documentation</info>');
-        $this->generatorQueue->run();
-    }
-
-    private function prepareDestination(string $destination, bool $shouldOverwrite = false): void
-    {
-        if ($shouldOverwrite) {
-            $this->fileSystem->purgeDir($destination);
-        }
-
-        $this->themeResources->copyToDestination($destination);
     }
 }
