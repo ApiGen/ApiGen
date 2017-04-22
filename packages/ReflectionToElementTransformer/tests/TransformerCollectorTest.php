@@ -11,7 +11,6 @@ use ApiGen\Contracts\Parser\Reflection\ParameterReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
 use ApiGen\ReflectionToElementTransformer\Contract\TransformerCollectorInterface;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
-use Nette\Object;
 use PHPUnit\Framework\Assert;
 use Roave\BetterReflection\Reflection\ReflectionFunction;
 use Roave\BetterReflection\Reflection\ReflectionParameter;
@@ -33,7 +32,7 @@ final class TransformerCollectorTest extends AbstractContainerAwareTestCase
 
     public function testCreateFromReflectionClass(): void
     {
-        $tokenReflectionClassMock = $this->createMock(IReflectionClass::class, Object::class);
+        $tokenReflectionClassMock = $this->createMock(IReflectionClass::class);
         $reflectionClass = $this->transformerCollector->transformReflectionToElement($tokenReflectionClassMock);
         $this->assertInstanceOf(ClassReflectionInterface::class, $reflectionClass);
         $this->checkLoadedProperties($reflectionClass);
@@ -53,7 +52,7 @@ final class TransformerCollectorTest extends AbstractContainerAwareTestCase
 
     public function testCreateFromReflectionMethod(): void
     {
-        $tokenReflectionMethodMock = $this->createMock(IReflectionMethod::class, Object::class);
+        $tokenReflectionMethodMock = $this->createMock(IReflectionMethod::class);
         $reflectionMethod = $this->transformerCollector->transformReflectionToElement($tokenReflectionMethodMock);
         $this->assertInstanceOf(MethodReflectionInterface::class, $reflectionMethod);
         $this->checkLoadedProperties($reflectionMethod);
@@ -61,7 +60,7 @@ final class TransformerCollectorTest extends AbstractContainerAwareTestCase
 
     public function testCreateFromReflectionProperty(): void
     {
-        $tokenReflectionPropertyMock = $this->createMock(IReflectionProperty::class, Object::class);
+        $tokenReflectionPropertyMock = $this->createMock(IReflectionProperty::class);
         $reflectionProperty = $this->transformerCollector->transformReflectionToElement($tokenReflectionPropertyMock);
         $this->assertInstanceOf(PropertyReflectionInterface::class, $reflectionProperty);
         $this->checkLoadedProperties($reflectionProperty);

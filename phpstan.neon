@@ -2,3 +2,5 @@ parameters:
     ignoreErrors:
         - "#must implement interface PhpParser#"
         - "#does not accept TokenReflection#"
+        - "#allIsInstanceOf#"
+        - "#PHPUnit_Framework_MockObject_MockObject::method()#"

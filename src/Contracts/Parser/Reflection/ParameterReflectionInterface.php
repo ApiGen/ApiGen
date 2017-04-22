@@ -38,4 +38,9 @@ interface ParameterReflectionInterface extends ReflectionInterface
     public function isVariadic(): bool;
 
     public function isCallable(): bool;
+
+    /**
+     * @param MethodReflectionInterface|FunctionReflectionInterface $declaringFunction
+     */
+    public function setDeclaringFunction($declaringFunction): void;
 }
