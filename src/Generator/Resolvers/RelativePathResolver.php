@@ -2,8 +2,8 @@
 
 namespace ApiGen\Generator\Resolvers;
 
-use ApiGen\Configuration\ConfigurationOptions;
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
+use ApiGen\ModularConfiguration\Option\SourceOption;
 use ApiGen\Utils\FileSystem;
 use InvalidArgumentException;
 use Nette\Utils\Strings;
@@ -29,7 +29,7 @@ final class RelativePathResolver
     public function getRelativePath(string $fileName): string
     {
         $fileName = $this->fileSystem->normalizePath($fileName);
-        $sources = $this->configuration->getOption(ConfigurationOptions::SOURCE);
+        $sources = $this->configuration->getOption(SourceOption::NAME);
         foreach ($sources as $directory) {
             $directory = $this->fileSystem->normalizePath($directory);
 

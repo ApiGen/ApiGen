@@ -7,6 +7,8 @@ use ApiGen\ModularConfiguration\Option\AnnotationGroupsOption;
 use ApiGen\ModularConfiguration\Option\BaseUrlOption;
 use ApiGen\ModularConfiguration\Option\ConfigurationFileOption;
 use ApiGen\ModularConfiguration\Option\DestinationOption;
+use ApiGen\ModularConfiguration\Option\ExcludeOption;
+use ApiGen\ModularConfiguration\Option\SourceOption;
 use ApiGen\Templating\Filters\UrlFilters;
 use ApiGen\Utils\FileSystem;
 use Nette\DI\Config\Loader;
@@ -115,7 +117,7 @@ final class Configuration implements ConfigurationInterface
      */
     public function getSource(): array
     {
-        return $this->getOptions()[ConfigurationOptions::SOURCE];
+        return $this->getOptions()[SourceOption::NAME];
     }
 
     /**
@@ -123,7 +125,7 @@ final class Configuration implements ConfigurationInterface
      */
     public function getExclude(): array
     {
-        return $this->getOptions()[ConfigurationOptions::EXCLUDE];
+        return $this->getOptions()[ExcludeOption::NAME];
     }
 
     /**

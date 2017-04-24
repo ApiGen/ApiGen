@@ -9,6 +9,8 @@ use ApiGen\Contracts\Generator\GeneratorQueueInterface;
 use ApiGen\Contracts\Parser\ParserInterface;
 use ApiGen\ModularConfiguration\Option\ConfigurationFileOption;
 use ApiGen\ModularConfiguration\Option\DestinationOption;
+use ApiGen\ModularConfiguration\Option\ExcludeOption;
+use ApiGen\ModularConfiguration\Option\SourceOption;
 use ApiGen\Theme\ThemeResources;
 use ApiGen\Utils\FileSystem;
 use ApiGen\Utils\Finder\FinderInterface;
@@ -64,7 +66,7 @@ final class ApiGenApplication
     public function runCommand(RunCommand $runCommand): void
     {
         $options = $this->configuration->prepareOptions([
-            ConfigurationOptions::SOURCE => $runCommand->getSource(),
+            SourceOption::NAME => $runCommand->getSource(),
             DestinationOption::NAME => $runCommand->getDestination(),
             ConfigurationFileOption::NAME => $runCommand->getConfigPath()
         ]);
@@ -79,8 +81,8 @@ final class ApiGenApplication
     private function scanAndParse(array $options): void
     {
         $files = $this->finder->find(
-            $options[ConfigurationOptions::SOURCE],
-            $options[ConfigurationOptions::EXCLUDE],
+            $options[SourceOption::NAME],
+            $options[ExcludeOption::NAME],
             $options[ConfigurationOptions::EXTENSIONS]
         );
 

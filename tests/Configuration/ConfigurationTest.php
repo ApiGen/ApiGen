@@ -31,7 +31,6 @@ final class ConfigurationTest extends AbstractContainerAwareTestCase
         ]);
 
         $this->assertSame([
-            'exclude' => [],
             'extensions' => ['php'],
             'title' => '',
             'googleAnalytics' => '',
@@ -43,6 +42,7 @@ final class ConfigurationTest extends AbstractContainerAwareTestCase
             'annotationGroups' => [],
             'baseUrl' => '',
             'source' => [],
+            'exclude' => [],
         ], $options);
     }
 
@@ -61,7 +61,7 @@ final class ConfigurationTest extends AbstractContainerAwareTestCase
         $configAndDestinationOptions = [
             ConfigurationFileOption::NAME => __DIR__ . '/apigen.neon',
             DestinationOption::NAME => TEMP_DIR . '/api',
-            ConfigurationOptions::SOURCE => [__DIR__]
+            SourceOption::NAME => [__DIR__]
         ];
 
         $options = $this->configuration->prepareOptions($configAndDestinationOptions);
@@ -72,7 +72,7 @@ final class ConfigurationTest extends AbstractContainerAwareTestCase
     public function testPrepareOptionsMergeIsCorrect(): void
     {
         $options = $this->configuration->prepareOptions([
-            ConfigurationOptions::SOURCE => [__DIR__],
+            SourceOption::NAME => [__DIR__],
             ConfigurationFileOption::NAME => __DIR__ . '/apigen.neon',
             DestinationOption::NAME => TEMP_DIR . '/api',
         ]);

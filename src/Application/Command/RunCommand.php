@@ -2,9 +2,9 @@
 
 namespace ApiGen\Application\Command;
 
-use ApiGen\Configuration\ConfigurationOptions;
 use ApiGen\ModularConfiguration\Option\ConfigurationFileOption;
 use ApiGen\ModularConfiguration\Option\DestinationOption;
+use ApiGen\ModularConfiguration\Option\SourceOption;
 use Symfony\Component\Console\Input\InputInterface;
 
 final class RunCommand
@@ -39,7 +39,7 @@ final class RunCommand
     public static function createFromInput(InputInterface $input): self
     {
         return new self(
-            $input->getArgument(ConfigurationOptions::SOURCE),
+            $input->getArgument(SourceOption::NAME),
             $input->getOption(DestinationOption::NAME),
             $input->getOption(ConfigurationFileOption::NAME)
         );

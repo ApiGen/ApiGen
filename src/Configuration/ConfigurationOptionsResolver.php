@@ -7,6 +7,7 @@ use ApiGen\ModularConfiguration\Option\AnnotationGroupsOption;
 use ApiGen\ModularConfiguration\Option\BaseUrlOption;
 use ApiGen\ModularConfiguration\Option\ConfigurationFileOption;
 use ApiGen\ModularConfiguration\Option\DestinationOption;
+use ApiGen\ModularConfiguration\Option\ExcludeOption;
 use ApiGen\ModularConfiguration\Option\SourceOption;
 use ApiGen\Utils\FileSystem;
 use ReflectionProperty;
@@ -35,7 +36,6 @@ final class ConfigurationOptionsResolver
      */
     private $defaults = [
         // file finder
-        ConfigurationOptions::EXCLUDE => [],
         ConfigurationOptions::EXTENSIONS => ['php'],
         // template parameters
         ConfigurationOptions::TITLE => '',
@@ -81,13 +81,19 @@ final class ConfigurationOptionsResolver
      */
     private $sourceOption;
 
+    /**
+     * @var ExcludeOption
+     */
+    private $excludeOption;
+
     public function __construct(
         FileSystem $fileSystem,
         DestinationOption $destinationOption,
         ConfigurationFileOption $configurationFileOption,
         AnnotationGroupsOption $annotationGroupsOption,
         BaseUrlOption $baseUrlOption,
-        SourceOption $sourceOption
+        SourceOption $sourceOption,
+        ExcludeOption $excludeOption
     ) {
         $this->fileSystem = $fileSystem;
         $this->destinationOption = $destinationOption;
@@ -95,6 +101,7 @@ final class ConfigurationOptionsResolver
         $this->annotationGroupsOption = $annotationGroupsOption;
         $this->baseUrlOption = $baseUrlOption;
         $this->sourceOption = $sourceOption;
+        $this->excludeOption = $excludeOption;
     }
 
     /**
@@ -105,7 +112,6 @@ final class ConfigurationOptionsResolver
     {
         $this->resolver = new OptionsResolver();
         $this->setDefaults();
-//        $this->setRequired();
         $this->setAllowedValues();
         $this->setNormalizers();
 
@@ -126,6 +132,9 @@ final class ConfigurationOptionsResolver
         $baseUrl = $options['baseUrl'] ?? '';
         unset($options['baseUrl']);
 
+        $exclude = $options['exclude'] ?? [];
+        unset($options['exclude']);
+
         if (!isset($options['source'])) {
             throw new ConfigurationException;
         }
@@ -140,6 +149,7 @@ final class ConfigurationOptionsResolver
         $options['annotationGroups'] = $this->annotationGroupsOption->resolveValue($annotationGroups);
         $options['baseUrl'] = $this->baseUrlOption->resolveValue($baseUrl);
         $options['source'] = $this->sourceOption->resolveValue($source);
+        $options['exclude'] = $this->excludeOption->resolveValue($exclude);
 
         return $options;
     }
