@@ -2,14 +2,11 @@
 
 namespace ApiGen\ModularConfiguration\Contract\Option;
 
-interface CommandOptionInterface extends CommandBoundInterface
+interface CommandArgumentInterface extends CommandBoundInterface
 {
     public function getDescription(): string;
 
     public function isValueRequired(): bool;
 
-    /**
-     * @return mixed|null
-     */
-    public function getDefaultValue();
+    public function isArray(): bool;
 }

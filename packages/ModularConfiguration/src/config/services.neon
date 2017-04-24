@@ -3,3 +3,4 @@
 - ApiGen\ModularConfiguration\Option\ConfigurationFileOption
 - ApiGen\ModularConfiguration\Option\AnnotationGroupsOption
 - ApiGen\ModularConfiguration\Option\BaseUrlOption
+- ApiGen\ModularConfiguration\Option\SourceOption

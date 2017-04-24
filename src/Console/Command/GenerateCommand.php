@@ -4,12 +4,9 @@ namespace ApiGen\Console\Command;
 
 use ApiGen\Application\ApiGenApplication;
 use ApiGen\Application\Command\RunCommand;
-use ApiGen\Configuration\ConfigurationOptions;
 use ApiGen\ModularConfiguration\Contract\ConfigurationDecoratorInterface;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 final class GenerateCommand extends Command
@@ -43,12 +40,6 @@ final class GenerateCommand extends Command
     {
         $this->setName(self::NAME);
         $this->setDescription('Generate API documentation');
-        $this->addArgument(
-            ConfigurationOptions::SOURCE,
-            InputArgument::IS_ARRAY | InputOption::VALUE_REQUIRED,
-            'Dirs or files documentation is generated for.'
-        );
-
         $this->configurationDecorator->decorateCommand($this);
     }
 
