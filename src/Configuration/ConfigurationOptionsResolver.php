@@ -3,6 +3,7 @@
 namespace ApiGen\Configuration;
 
 use ApiGen\Configuration\Exceptions\ConfigurationException;
+use ApiGen\ModularConfiguration\Option\AnnotationGroupsOption;
 use ApiGen\ModularConfiguration\Option\ConfigurationFileOption;
 use ApiGen\ModularConfiguration\Option\DestinationOption;
 use ApiGen\Utils\FileSystem;
@@ -41,7 +42,6 @@ final class ConfigurationOptionsResolver
         ConfigurationOptions::GOOGLE_ANALYTICS => '',
         // filtering generated content
         ConfigurationOptions::VISIBILITY_LEVELS => [self::VISIBILITY_LEVEL_PUBLIC, self::VISIBILITY_LEVEL_PROTECTED],
-        ConfigurationOptions::ANNOTATION_GROUPS => [],
         ConfigurationOptions::BASE_URL => '',
         ConfigurationOptions::FORCE_OVERWRITE => false,
         ConfigurationOptions::THEME_DIRECTORY => null
@@ -61,19 +61,27 @@ final class ConfigurationOptionsResolver
      * @var DestinationOption
      */
     private $destinationOption;
+
     /**
-     * @var
+     * @var ConfigurationFileOption
      */
     private $configurationFileOption;
+
+    /**
+     * @var AnnotationGroupsOption
+     */
+    private $annotationGroupsOption;
 
     public function __construct(
         FileSystem $fileSystem,
         DestinationOption $destinationOption,
-        ConfigurationFileOption $configurationFileOption
+        ConfigurationFileOption $configurationFileOption,
+        AnnotationGroupsOption $annotationGroupsOption
     ) {
         $this->fileSystem = $fileSystem;
         $this->destinationOption = $destinationOption;
         $this->configurationFileOption = $configurationFileOption;
+        $this->annotationGroupsOption = $annotationGroupsOption;
     }
 
     /**
@@ -98,10 +106,14 @@ final class ConfigurationOptionsResolver
         $config = $options['config'] ?? '';
         unset($options['config']);
 
+        $annotationGroups = $options['annotationGroups'] ?? '';
+        unset($options['annotationGroups']);
+
         $options = $this->resolver->resolve($options);
 
         $options['destination'] = $this->destinationOption->resolveValue($destination);
         $options['config'] = $this->configurationFileOption->resolveValue($config);
+        $options['annotationGroups'] = $this->annotationGroupsOption->resolveValue($annotationGroups);
 
         return $options;
     }
@@ -167,14 +179,6 @@ final class ConfigurationOptionsResolver
 
     private function setNormalizers(): void
     {
-        $this->resolver->setNormalizer(ConfigurationOptions::ANNOTATION_GROUPS, function (Options $options, $value) {
-            if ($value === '') {
-                return [];
-            }
-
-            return $value;
-        });
-
         $this->resolver->setNormalizer(ConfigurationOptions::BASE_URL, function (Options $options, $value) {
             return rtrim((string) $value, '/');
         });

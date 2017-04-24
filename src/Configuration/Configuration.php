@@ -3,6 +3,7 @@
 namespace ApiGen\Configuration;
 
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
+use ApiGen\ModularConfiguration\Option\AnnotationGroupsOption;
 use ApiGen\ModularConfiguration\Option\ConfigurationFileOption;
 use ApiGen\ModularConfiguration\Option\DestinationOption;
 use ApiGen\Templating\Filters\UrlFilters;
@@ -85,7 +86,7 @@ final class Configuration implements ConfigurationInterface
      */
     public function getAnnotationGroups(): array
     {
-        return $this->getOptions()[ConfigurationOptions::ANNOTATION_GROUPS];
+        return $this->getOptions()[AnnotationGroupsOption::NAME];
     }
 
     public function getDestination(): string

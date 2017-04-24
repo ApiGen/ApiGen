@@ -12,11 +12,6 @@ final class ConfigurationOptions
     /**
      * @var string
      */
-    public const ANNOTATION_GROUPS = 'annotationGroups';
-
-    /**
-     * @var string
-     */
     public const BASE_URL = 'baseUrl';
 
     /**

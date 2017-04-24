@@ -1,3 +1,4 @@
 - ApiGen\ModularConfiguration\ConfigurationDecorator
 - ApiGen\ModularConfiguration\Option\DestinationOption
 - ApiGen\ModularConfiguration\Option\ConfigurationFileOption
+- ApiGen\ModularConfiguration\Option\AnnotationGroupsOption

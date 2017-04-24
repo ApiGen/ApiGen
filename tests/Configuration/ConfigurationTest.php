@@ -34,11 +34,11 @@ final class ConfigurationTest extends AbstractContainerAwareTestCase
             'overwrite' => false,
             'source' => [],
             'visibilityLevels' => 768,
-            'annotationGroups' => [],
             'baseUrl' => '',
             'themeDirectory' => realpath(__DIR__ . '/../../packages/ThemeDefault/src'),
             'destination' => TEMP_DIR,
             'config' => '',
+            'annotationGroups' => [],
         ], $options);
     }
 
