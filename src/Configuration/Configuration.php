@@ -9,8 +9,10 @@ use ApiGen\ModularConfiguration\Option\ConfigurationFileOption;
 use ApiGen\ModularConfiguration\Option\DestinationOption;
 use ApiGen\ModularConfiguration\Option\ExcludeOption;
 use ApiGen\ModularConfiguration\Option\ExtensionsOption;
+use ApiGen\ModularConfiguration\Option\GoogleAnalyticsOption;
 use ApiGen\ModularConfiguration\Option\SourceOption;
 use ApiGen\ModularConfiguration\Option\ThemeDirectoryOption;
+use ApiGen\ModularConfiguration\Option\TitleOption;
 use ApiGen\ModularConfiguration\Option\VisibilityLevelOption;
 use ApiGen\Templating\Filters\UrlFilters;
 use ApiGen\Utils\FileSystem;
@@ -102,7 +104,7 @@ final class Configuration implements ConfigurationInterface
 
     public function getTitle(): string
     {
-        return $this->getOptions()[ConfigurationOptions::TITLE];
+        return $this->getOptions()[TitleOption::NAME];
     }
 
     public function getBaseUrl(): string
@@ -112,7 +114,7 @@ final class Configuration implements ConfigurationInterface
 
     public function getGoogleAnalytics(): string
     {
-        return $this->getOptions()[ConfigurationOptions::GOOGLE_ANALYTICS];
+        return $this->getOptions()[GoogleAnalyticsOption::NAME];
     }
 
     /**

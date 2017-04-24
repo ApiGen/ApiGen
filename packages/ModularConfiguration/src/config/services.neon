@@ -1,4 +1,6 @@
 - ApiGen\ModularConfiguration\ConfigurationDecorator
+
+# Options
 - ApiGen\ModularConfiguration\Option\DestinationOption
 - ApiGen\ModularConfiguration\Option\ConfigurationFileOption
 - ApiGen\ModularConfiguration\Option\AnnotationGroupsOption
@@ -8,3 +10,6 @@
 - ApiGen\ModularConfiguration\Option\ThemeDirectoryOption
 - ApiGen\ModularConfiguration\Option\ExtensionsOption
 - ApiGen\ModularConfiguration\Option\VisibilityLevelOption
+- ApiGen\ModularConfiguration\Option\GoogleAnalyticsOption
+- ApiGen\ModularConfiguration\Option\TitleOption
+- ApiGen\ModularConfiguration\Option\OverwriteOption

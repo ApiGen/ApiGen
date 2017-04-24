@@ -9,28 +9,15 @@ use ApiGen\ModularConfiguration\Option\ConfigurationFileOption;
 use ApiGen\ModularConfiguration\Option\DestinationOption;
 use ApiGen\ModularConfiguration\Option\ExcludeOption;
 use ApiGen\ModularConfiguration\Option\ExtensionsOption;
+use ApiGen\ModularConfiguration\Option\GoogleAnalyticsOption;
+use ApiGen\ModularConfiguration\Option\OverwriteOption;
 use ApiGen\ModularConfiguration\Option\SourceOption;
 use ApiGen\ModularConfiguration\Option\ThemeDirectoryOption;
+use ApiGen\ModularConfiguration\Option\TitleOption;
 use ApiGen\ModularConfiguration\Option\VisibilityLevelOption;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class ConfigurationOptionsResolver
 {
-    /**
-     * @var mixed[]
-     */
-    private $defaults = [
-        // template parameters
-        ConfigurationOptions::TITLE => '',
-        ConfigurationOptions::GOOGLE_ANALYTICS => '',
-        ConfigurationOptions::FORCE_OVERWRITE => false,
-    ];
-
-    /**
-     * @var OptionsResolver
-     */
-    private $resolver;
-
     /**
      * @var DestinationOption
      */
@@ -76,6 +63,21 @@ final class ConfigurationOptionsResolver
      */
     private $visibilityLevelOption;
 
+    /**
+     * @var TitleOption
+     */
+    private $titleOption;
+
+    /**
+     * @var GoogleAnalyticsOption
+     */
+    private $googleAnalyticsOption;
+
+    /**
+     * @var OverwriteOption
+     */
+    private $overwriteOption;
+
     public function __construct(
         DestinationOption $destinationOption,
         ConfigurationFileOption $configurationFileOption,
@@ -85,7 +87,10 @@ final class ConfigurationOptionsResolver
         ExcludeOption $excludeOption,
         ThemeDirectoryOption $themeDirectoryOption,
         ExtensionsOption $extensionsOption,
-        VisibilityLevelOption $visibilityLevelOption
+        VisibilityLevelOption $visibilityLevelOption,
+        TitleOption $titleOption,
+        GoogleAnalyticsOption $googleAnalyticsOption,
+        OverwriteOption $overwriteOption
     ) {
         $this->destinationOption = $destinationOption;
         $this->configurationFileOption = $configurationFileOption;
@@ -96,6 +101,9 @@ final class ConfigurationOptionsResolver
         $this->themeDirectoryOption = $themeDirectoryOption;
         $this->extensionsOption = $extensionsOption;
         $this->visibilityLevelOption = $visibilityLevelOption;
+        $this->titleOption = $titleOption;
+        $this->googleAnalyticsOption = $googleAnalyticsOption;
+        $this->overwriteOption = $overwriteOption;
     }
 
     /**
@@ -104,9 +112,6 @@ final class ConfigurationOptionsResolver
      */
     public function resolve(array $options): array
     {
-        $this->resolver = new OptionsResolver();
-        $this->resolver->setDefaults($this->defaults);
-
         // temp code
         if (!isset($options['destination'])) {
             throw new ConfigurationException;
@@ -143,7 +148,7 @@ final class ConfigurationOptionsResolver
         $source = $options['source'];
         unset($options['source']);
 
-        $options = $this->resolver->resolve($options);
+        $options = [];
 
         $options['destination'] = $this->destinationOption->resolveValue($destination);
         $options['config'] = $this->configurationFileOption->resolveValue($config);
@@ -154,6 +159,13 @@ final class ConfigurationOptionsResolver
         $options['themeDirectory'] = $this->themeDirectoryOption->resolveValue($themeDirectory);
         $options['extensions'] = $this->extensionsOption->resolveValue($extensions);
         $options['visibilityLevels'] = $this->visibilityLevelOption->resolveValue($visibilityLevel);
+        $options[OverwriteOption::NAME] = $this->overwriteOption->resolveValue(
+            $options[OverwriteOption::NAME] ?? false
+        );
+        $options[GoogleAnalyticsOption::NAME] = $this->googleAnalyticsOption->resolveValue(
+            $options[GoogleAnalyticsOption::NAME] ?? ''
+        );
+        $options[TitleOption::NAME] = $this->titleOption->resolveValue($options[TitleOption::NAME] ?? '');
 
         return $options;
     }

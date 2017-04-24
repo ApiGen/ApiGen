@@ -3,7 +3,6 @@
 namespace ApiGen\Application;
 
 use ApiGen\Application\Command\RunCommand;
-use ApiGen\Configuration\ConfigurationOptions;
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Generator\GeneratorQueueInterface;
 use ApiGen\Contracts\Parser\ParserInterface;
@@ -11,6 +10,7 @@ use ApiGen\ModularConfiguration\Option\ConfigurationFileOption;
 use ApiGen\ModularConfiguration\Option\DestinationOption;
 use ApiGen\ModularConfiguration\Option\ExcludeOption;
 use ApiGen\ModularConfiguration\Option\ExtensionsOption;
+use ApiGen\ModularConfiguration\Option\OverwriteOption;
 use ApiGen\ModularConfiguration\Option\SourceOption;
 use ApiGen\Theme\ThemeResources;
 use ApiGen\Utils\FileSystem;
@@ -97,7 +97,7 @@ final class ApiGenApplication
     {
         $this->prepareDestination(
             $options[DestinationOption::NAME],
-            (bool) $options[ConfigurationOptions::FORCE_OVERWRITE]
+            (bool) $options[OverwriteOption::NAME]
         );
         $this->generatorQueue->run();
     }

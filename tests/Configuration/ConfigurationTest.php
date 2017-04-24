@@ -30,9 +30,6 @@ final class ConfigurationTest extends AbstractContainerAwareTestCase
         ]);
 
         $this->assertSame([
-            'title' => '',
-            'googleAnalytics' => '',
-            'overwrite' => false,
             'destination' => TEMP_DIR,
             'config' => '',
             'annotationGroups' => [],
@@ -42,6 +39,9 @@ final class ConfigurationTest extends AbstractContainerAwareTestCase
             'themeDirectory' => realpath(__DIR__ . '/../../packages/ThemeDefault/src'),
             'extensions' => ['php'],
             'visibilityLevels' => 768,
+            'overwrite' => false,
+            'googleAnalytics' => '',
+            'title' => '',
         ], $options);
     }
 
