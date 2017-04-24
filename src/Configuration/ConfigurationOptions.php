@@ -12,11 +12,6 @@ final class ConfigurationOptions
     /**
      * @var string
      */
-    public const BASE_URL = 'baseUrl';
-
-    /**
-     * @var string
-     */
     public const FORCE_OVERWRITE = 'overwrite';
 
     /**

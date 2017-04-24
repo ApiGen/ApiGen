@@ -4,6 +4,7 @@ namespace ApiGen\Tests\Configuration;
 
 use ApiGen\Configuration\ConfigurationOptions;
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
+use ApiGen\ModularConfiguration\Option\BaseUrlOption;
 use ApiGen\ModularConfiguration\Option\ConfigurationFileOption;
 use ApiGen\ModularConfiguration\Option\DestinationOption;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
@@ -34,11 +35,11 @@ final class ConfigurationTest extends AbstractContainerAwareTestCase
             'overwrite' => false,
             'source' => [],
             'visibilityLevels' => 768,
-            'baseUrl' => '',
             'themeDirectory' => realpath(__DIR__ . '/../../packages/ThemeDefault/src'),
             'destination' => TEMP_DIR,
             'config' => '',
             'annotationGroups' => [],
+            'baseUrl' => '',
         ], $options);
     }
 
@@ -74,6 +75,6 @@ final class ConfigurationTest extends AbstractContainerAwareTestCase
         ]);
 
         $this->assertSame(1792, $options[ConfigurationOptions::VISIBILITY_LEVELS]);
-        $this->assertSame('http://apigen.org', $options[ConfigurationOptions::BASE_URL]);
+        $this->assertSame('http://apigen.org', $options[BaseUrlOption::NAME]);
     }
 }

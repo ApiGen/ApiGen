@@ -4,6 +4,7 @@ namespace ApiGen\Configuration;
 
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\ModularConfiguration\Option\AnnotationGroupsOption;
+use ApiGen\ModularConfiguration\Option\BaseUrlOption;
 use ApiGen\ModularConfiguration\Option\ConfigurationFileOption;
 use ApiGen\ModularConfiguration\Option\DestinationOption;
 use ApiGen\Templating\Filters\UrlFilters;
@@ -101,7 +102,7 @@ final class Configuration implements ConfigurationInterface
 
     public function getBaseUrl(): string
     {
-        return $this->getOptions()[ConfigurationOptions::BASE_URL];
+        return $this->getOptions()[BaseUrlOption::NAME];
     }
 
     public function getGoogleAnalytics(): string

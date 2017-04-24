@@ -2,3 +2,4 @@
 - ApiGen\ModularConfiguration\Option\DestinationOption
 - ApiGen\ModularConfiguration\Option\ConfigurationFileOption
 - ApiGen\ModularConfiguration\Option\AnnotationGroupsOption
+- ApiGen\ModularConfiguration\Option\BaseUrlOption
