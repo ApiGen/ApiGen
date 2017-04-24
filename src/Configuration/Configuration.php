@@ -9,6 +9,7 @@ use ApiGen\ModularConfiguration\Option\ConfigurationFileOption;
 use ApiGen\ModularConfiguration\Option\DestinationOption;
 use ApiGen\ModularConfiguration\Option\ExcludeOption;
 use ApiGen\ModularConfiguration\Option\SourceOption;
+use ApiGen\ModularConfiguration\Option\ThemeDirectoryOption;
 use ApiGen\Templating\Filters\UrlFilters;
 use ApiGen\Utils\FileSystem;
 use Nette\DI\Config\Loader;
@@ -138,7 +139,7 @@ final class Configuration implements ConfigurationInterface
 
     public function getTemplatesDirectory(): string
     {
-        return $this->getOptions()[ConfigurationOptions::THEME_DIRECTORY];
+        return $this->getOptions()[ThemeDirectoryOption::NAME];
     }
 
     public function getTemplateByName(string $name): string

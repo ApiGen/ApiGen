@@ -2,7 +2,6 @@
 
 namespace ApiGen\Tests\Console\Command;
 
-use ApiGen\Configuration\ConfigurationOptions;
 use ApiGen\Console\Command\GenerateCommand;
 use ApiGen\ModularConfiguration\Option\ConfigurationFileOption;
 use ApiGen\ModularConfiguration\Option\DestinationOption;
@@ -30,24 +29,24 @@ final class GenerateCommandExecuteTest extends AbstractContainerAwareTestCase
         $output->setVerbosity(Output::VERBOSITY_QUIET);
     }
 
-//    public function testExecute(): void
-//    {
-//        $this->assertFileNotExists(TEMP_DIR . '/api/index.html');
-//
-//        $input = new ArrayInput([
-//            ConfigurationOptions::SOURCE => [__DIR__ . '/Source'],
-//            '--' . DestinationOption::NAME => TEMP_DIR . '/Api',
-//            '--' . ConfigurationFileOption::NAME => '...',
-//        ]);
-//
-//        $exitCode = $this->generateCommand->run($input, new NullOutput);
-//        $this->assertSame(
-//            0, // success
-//            $exitCode
-//        );
-//
-//        $this->assertFileExists(TEMP_DIR . '/Api/index.html');
-//    }
+    public function testExecute(): void
+    {
+        $this->assertFileNotExists(TEMP_DIR . '/api/index.html');
+
+        $input = new ArrayInput([
+            SourceOption::NAME => [__DIR__ . '/Source'],
+            '--' . DestinationOption::NAME => TEMP_DIR . '/Api',
+            '--' . ConfigurationFileOption::NAME => '...',
+        ]);
+
+        $exitCode = $this->generateCommand->run($input, new NullOutput);
+        $this->assertSame(
+            0, // success
+            $exitCode
+        );
+
+        $this->assertFileExists(TEMP_DIR . '/Api/index.html');
+    }
 
     /**
      * @expectedException \ApiGen\Configuration\Exceptions\ConfigurationException

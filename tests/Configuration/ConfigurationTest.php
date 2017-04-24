@@ -9,7 +9,6 @@ use ApiGen\ModularConfiguration\Option\ConfigurationFileOption;
 use ApiGen\ModularConfiguration\Option\DestinationOption;
 use ApiGen\ModularConfiguration\Option\SourceOption;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
-use PHP_CodeSniffer\Reports\Source;
 
 final class ConfigurationTest extends AbstractContainerAwareTestCase
 {
@@ -36,13 +35,13 @@ final class ConfigurationTest extends AbstractContainerAwareTestCase
             'googleAnalytics' => '',
             'overwrite' => false,
             'visibilityLevels' => 768,
-            'themeDirectory' => realpath(__DIR__ . '/../../packages/ThemeDefault/src'),
             'destination' => TEMP_DIR,
             'config' => '',
             'annotationGroups' => [],
             'baseUrl' => '',
             'source' => [],
             'exclude' => [],
+            'themeDirectory' => realpath(__DIR__ . '/../../packages/ThemeDefault/src'),
         ], $options);
     }
 

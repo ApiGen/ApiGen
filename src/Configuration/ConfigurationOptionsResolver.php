@@ -9,7 +9,7 @@ use ApiGen\ModularConfiguration\Option\ConfigurationFileOption;
 use ApiGen\ModularConfiguration\Option\DestinationOption;
 use ApiGen\ModularConfiguration\Option\ExcludeOption;
 use ApiGen\ModularConfiguration\Option\SourceOption;
-use ApiGen\Utils\FileSystem;
+use ApiGen\ModularConfiguration\Option\ThemeDirectoryOption;
 use ReflectionProperty;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -43,18 +43,12 @@ final class ConfigurationOptionsResolver
         // filtering generated content
         ConfigurationOptions::VISIBILITY_LEVELS => [self::VISIBILITY_LEVEL_PUBLIC, self::VISIBILITY_LEVEL_PROTECTED],
         ConfigurationOptions::FORCE_OVERWRITE => false,
-        ConfigurationOptions::THEME_DIRECTORY => null
     ];
 
     /**
      * @var OptionsResolver
      */
     private $resolver;
-
-    /**
-     * @var FileSystem
-     */
-    private $fileSystem;
 
     /**
      * @var DestinationOption
@@ -86,22 +80,27 @@ final class ConfigurationOptionsResolver
      */
     private $excludeOption;
 
+    /**
+     * @var ThemeDirectoryOption
+     */
+    private $themeDirectoryOption;
+
     public function __construct(
-        FileSystem $fileSystem,
         DestinationOption $destinationOption,
         ConfigurationFileOption $configurationFileOption,
         AnnotationGroupsOption $annotationGroupsOption,
         BaseUrlOption $baseUrlOption,
         SourceOption $sourceOption,
-        ExcludeOption $excludeOption
+        ExcludeOption $excludeOption,
+        ThemeDirectoryOption $themeDirectoryOption
     ) {
-        $this->fileSystem = $fileSystem;
         $this->destinationOption = $destinationOption;
         $this->configurationFileOption = $configurationFileOption;
         $this->annotationGroupsOption = $annotationGroupsOption;
         $this->baseUrlOption = $baseUrlOption;
         $this->sourceOption = $sourceOption;
         $this->excludeOption = $excludeOption;
+        $this->themeDirectoryOption = $themeDirectoryOption;
     }
 
     /**
@@ -111,8 +110,7 @@ final class ConfigurationOptionsResolver
     public function resolve(array $options): array
     {
         $this->resolver = new OptionsResolver();
-        $this->setDefaults();
-        $this->setAllowedValues();
+        $this->resolver->setDefaults($this->defaults);
         $this->setNormalizers();
 
         // temp code
@@ -135,6 +133,9 @@ final class ConfigurationOptionsResolver
         $exclude = $options['exclude'] ?? [];
         unset($options['exclude']);
 
+        $themeDirectory = $options['themeDirectory'] ?? null;
+        unset($options['themeDirectory']);
+
         if (!isset($options['source'])) {
             throw new ConfigurationException;
         }
@@ -150,22 +151,9 @@ final class ConfigurationOptionsResolver
         $options['baseUrl'] = $this->baseUrlOption->resolveValue($baseUrl);
         $options['source'] = $this->sourceOption->resolveValue($source);
         $options['exclude'] = $this->excludeOption->resolveValue($exclude);
+        $options['themeDirectory'] = $this->themeDirectoryOption->resolveValue($themeDirectory);
 
         return $options;
-    }
-
-    private function setDefaults(): void
-    {
-        $this->resolver->setDefaults($this->defaults);
-        $this->resolver->setDefaults([
-            ConfigurationOptions::THEME_DIRECTORY => function (Options $options, $value) {
-                if ($value) {
-                    return $value;
-                }
-
-                return getcwd() . '/packages/ThemeDefault/src';
-            }
-        ]);
     }
 
     /**
@@ -190,30 +178,8 @@ final class ConfigurationOptionsResolver
         return $visibilityLevelInInteger;
     }
 
-    private function setAllowedValues(): void
-    {
-        $this->resolver->addAllowedValues(ConfigurationOptions::THEME_DIRECTORY, function ($value) {
-            if ($value && ! is_dir($value)) {
-                throw new ConfigurationException(sprintf(
-                    'Theme directory "%s" was not found.',
-                    $value
-                ));
-            }
-
-            return true;
-        });
-    }
-
     private function setNormalizers(): void
     {
-        $this->resolver->setNormalizer(ConfigurationOptions::THEME_DIRECTORY, function (Options $options, $value) {
-            if ($value === null) {
-                return '';
-            }
-
-            return $this->fileSystem->getAbsolutePath($value);
-        });
-
         $this->resolver->setNormalizer(ConfigurationOptions::VISIBILITY_LEVELS, function (Options $options, $value) {
             return $this->normalizeVisibilityLevelsToBinary($value);
         });
