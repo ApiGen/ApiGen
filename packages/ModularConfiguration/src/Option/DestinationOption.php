@@ -2,8 +2,10 @@
 
 namespace ApiGen\ModularConfiguration\Option;
 
+use ApiGen\Configuration\Exceptions\ConfigurationException;
 use ApiGen\Console\Command\GenerateCommand;
 use ApiGen\ModularConfiguration\Contract\Option\CommandOptionInterface;
+use ApiGen\Utils\FileSystem;
 
 final class DestinationOption implements CommandOptionInterface
 {
@@ -11,6 +13,16 @@ final class DestinationOption implements CommandOptionInterface
      * @var string
      */
     public const NAME = 'destination';
+
+    /**
+     * @var FileSystem
+     */
+    private $fileSystem;
+
+    public function __construct(FileSystem $fileSystem)
+    {
+        $this->fileSystem = $fileSystem;
+    }
 
     public function getCommand(): string
     {
@@ -44,8 +56,30 @@ final class DestinationOption implements CommandOptionInterface
      * @param mixed $value
      * @return mixed
      */
-    public function resolveValue($value)
+    public function resolveValue($value): string
     {
-        // TODO: Implement resolveValue() method.
+        $this->validateValue($value);
+
+        return $this->fileSystem->getAbsolutePath($value);
+    }
+
+    private function validateValue(?string $destination): void
+    {
+        if (! $destination) {
+            throw new ConfigurationException(
+                'Destination is not set. Use "--destination <directory>" or config to set it.'
+            );
+        }
+
+        if (! is_dir($destination)) {
+            FileSystem::forceDir($destination);
+        }
+
+        if (! is_writable($destination)) {
+            throw new ConfigurationException(sprintf(
+                'Destination "%s" is not writable.',
+                $destination
+            ));
+        }
     }
 }

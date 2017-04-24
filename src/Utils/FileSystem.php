@@ -14,7 +14,7 @@ final class FileSystem
         return str_replace(['\\', '/'], DIRECTORY_SEPARATOR, $path);
     }
 
-    public function forceDir(string $path): string
+    public static function forceDir(string $path): string
     {
         @mkdir($path, 0755, true);
         $directory = dirname($path);

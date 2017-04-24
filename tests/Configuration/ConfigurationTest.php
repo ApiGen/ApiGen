@@ -4,6 +4,7 @@ namespace ApiGen\Tests\Configuration;
 
 use ApiGen\Configuration\ConfigurationOptions;
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
+use ApiGen\ModularConfiguration\Option\DestinationOption;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 
 final class ConfigurationTest extends AbstractContainerAwareTestCase
@@ -21,7 +22,7 @@ final class ConfigurationTest extends AbstractContainerAwareTestCase
     public function testResolve(): void
     {
         $options = $this->configuration->prepareOptions([
-            ConfigurationOptions::DESTINATION => TEMP_DIR
+            DestinationOption::NAME => TEMP_DIR
         ]);
 
         $this->assertSame([
@@ -32,11 +33,11 @@ final class ConfigurationTest extends AbstractContainerAwareTestCase
             'config' => '',
             'overwrite' => false,
             'source' => [],
-            'destination' => TEMP_DIR,
             'visibilityLevels' => 768,
             'annotationGroups' => [],
             'baseUrl' => '',
-            'themeDirectory' => realpath(__DIR__ . '/../../packages/ThemeDefault/src')
+            'themeDirectory' => realpath(__DIR__ . '/../../packages/ThemeDefault/src'),
+            'destination' => TEMP_DIR
         ], $options);
     }
 
@@ -54,7 +55,7 @@ final class ConfigurationTest extends AbstractContainerAwareTestCase
     {
         $configAndDestinationOptions = [
             ConfigurationOptions::CONFIG => __DIR__ . '/apigen.neon',
-            ConfigurationOptions::DESTINATION => TEMP_DIR . '/api',
+            DestinationOption::NAME => TEMP_DIR . '/api',
             ConfigurationOptions::SOURCE => [__DIR__]
         ];
 
@@ -68,7 +69,7 @@ final class ConfigurationTest extends AbstractContainerAwareTestCase
         $options = $this->configuration->prepareOptions([
             ConfigurationOptions::SOURCE => [__DIR__],
             ConfigurationOptions::CONFIG => __DIR__ . '/apigen.neon',
-            ConfigurationOptions::DESTINATION => TEMP_DIR . '/api',
+            DestinationOption::NAME => TEMP_DIR . '/api',
         ]);
 
         $this->assertSame(1792, $options[ConfigurationOptions::VISIBILITY_LEVELS]);

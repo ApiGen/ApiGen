@@ -3,6 +3,7 @@
 namespace ApiGen\Configuration;
 
 use ApiGen\Configuration\Exceptions\ConfigurationException;
+use ApiGen\ModularConfiguration\Option\DestinationOption;
 use ApiGen\Utils\FileSystem;
 use ReflectionProperty;
 use Symfony\Component\OptionsResolver\Options;
@@ -10,11 +11,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class ConfigurationOptionsResolver
 {
-    // todo: make modular
-    // collector for OpitonInterface services to buider in here.
-
-
-
     /**
      * @var string
      */
@@ -36,7 +32,6 @@ final class ConfigurationOptionsResolver
     private $defaults = [
         // required
         ConfigurationOptions::SOURCE => [],
-        ConfigurationOptions::DESTINATION => null,
         // file finder
         ConfigurationOptions::EXCLUDE => [],
         ConfigurationOptions::EXTENSIONS => ['php'],
@@ -62,9 +57,17 @@ final class ConfigurationOptionsResolver
      */
     private $fileSystem;
 
-    public function __construct(FileSystem $fileSystem)
-    {
+    /**
+     * @var DestinationOption
+     */
+    private $destinationOption;
+
+    public function __construct(
+        FileSystem $fileSystem,
+        DestinationOption $destinationOption
+    ) {
         $this->fileSystem = $fileSystem;
+        $this->destinationOption = $destinationOption;
     }
 
     /**
@@ -79,7 +82,18 @@ final class ConfigurationOptionsResolver
         $this->setAllowedValues();
         $this->setNormalizers();
 
-        return $this->resolver->resolve($options);
+        // temp code
+        if (!isset($options['destination'])) {
+            throw new ConfigurationException;
+        }
+        $destination = $options['destination'];
+        unset($options['destination']);
+
+        $options = $this->resolver->resolve($options);
+
+        $options['destination'] = $this->destinationOption->resolveValue($destination);
+
+        return $options;
     }
 
     private function setDefaults(): void
@@ -120,15 +134,11 @@ final class ConfigurationOptionsResolver
 
     private function setRequired(): void
     {
-        $this->resolver->setRequired([ConfigurationOptions::SOURCE, ConfigurationOptions::DESTINATION]);
+        $this->resolver->setRequired([ConfigurationOptions::SOURCE]);
     }
 
     private function setAllowedValues(): void
     {
-        $this->resolver->addAllowedValues(ConfigurationOptions::DESTINATION, function ($destination) {
-            return $this->allowedValuesForDestination($destination);
-        });
-
         $this->resolver->addAllowedValues(ConfigurationOptions::SOURCE, function ($source) {
             return $this->allowedValuesForSource($source);
         });
@@ -153,10 +163,6 @@ final class ConfigurationOptionsResolver
             }
 
             return $value;
-        });
-
-        $this->resolver->setNormalizer(ConfigurationOptions::DESTINATION, function (Options $options, $value) {
-            return $this->fileSystem->getAbsolutePath($value);
         });
 
         $this->resolver->setNormalizer(ConfigurationOptions::BASE_URL, function (Options $options, $value) {
@@ -186,28 +192,6 @@ final class ConfigurationOptionsResolver
         $this->resolver->setNormalizer(ConfigurationOptions::VISIBILITY_LEVELS, function (Options $options, $value) {
             return $this->normalizeVisibilityLevelsToBinary($value);
         });
-    }
-
-    private function allowedValuesForDestination(?string $destination): bool
-    {
-        if (! $destination) {
-            throw new ConfigurationException(
-                'Destination is not set. Use "--destination <directory>" or config to set it.'
-            );
-        }
-
-        if (! is_dir($destination)) {
-            mkdir($destination, 0755, true);
-        }
-
-        if (! is_writable($destination)) {
-            throw new ConfigurationException(sprintf(
-                'Destination "%s" is not writable.',
-                $destination
-            ));
-        }
-
-        return true;
     }
 
     /**

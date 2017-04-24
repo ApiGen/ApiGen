@@ -3,6 +3,7 @@
 namespace ApiGen\Application\Command;
 
 use ApiGen\Configuration\ConfigurationOptions;
+use ApiGen\ModularConfiguration\Option\DestinationOption;
 use Symfony\Component\Console\Input\InputInterface;
 
 final class RunCommand
@@ -38,7 +39,7 @@ final class RunCommand
     {
         return new self(
             $input->getArgument(ConfigurationOptions::SOURCE),
-            $input->getOption(ConfigurationOptions::DESTINATION),
+            $input->getOption(DestinationOption::NAME),
             $input->getOption(ConfigurationOptions::CONFIG)
         );
     }

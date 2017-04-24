@@ -3,6 +3,7 @@
 namespace ApiGen\Configuration;
 
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
+use ApiGen\ModularConfiguration\Option\DestinationOption;
 use ApiGen\Templating\Filters\UrlFilters;
 use ApiGen\Utils\FileSystem;
 use Nette\DI\Config\Loader;
@@ -88,7 +89,7 @@ final class Configuration implements ConfigurationInterface
 
     public function getDestination(): string
     {
-        return $this->getOptions()[ConfigurationOptions::DESTINATION];
+        return $this->getOptions()[DestinationOption::NAME];
     }
 
     public function getTitle(): string

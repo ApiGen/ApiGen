@@ -7,6 +7,7 @@ use ApiGen\Configuration\ConfigurationOptions;
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Generator\GeneratorQueueInterface;
 use ApiGen\Contracts\Parser\ParserInterface;
+use ApiGen\ModularConfiguration\Option\DestinationOption;
 use ApiGen\Theme\ThemeResources;
 use ApiGen\Utils\FileSystem;
 use ApiGen\Utils\Finder\FinderInterface;
@@ -63,7 +64,7 @@ final class ApiGenApplication
     {
         $options = $this->configuration->prepareOptions([
             ConfigurationOptions::SOURCE => $runCommand->getSource(),
-            ConfigurationOptions::DESTINATION => $runCommand->getDestination(),
+            DestinationOption::NAME => $runCommand->getDestination(),
             ConfigurationOptions::CONFIG => $runCommand->getConfigPath()
         ]);
 
@@ -91,7 +92,7 @@ final class ApiGenApplication
     private function generate(array $options): void
     {
         $this->prepareDestination(
-            $options[ConfigurationOptions::DESTINATION],
+            $options[DestinationOption::NAME],
             (bool) $options[ConfigurationOptions::FORCE_OVERWRITE]
         );
         $this->generatorQueue->run();
