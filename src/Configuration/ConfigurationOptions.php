@@ -7,11 +7,6 @@ final class ConfigurationOptions
     /**
      * @var string
      */
-    public const VISIBILITY_LEVELS = 'visibilityLevels';
-
-    /**
-     * @var string
-     */
     public const FORCE_OVERWRITE = 'overwrite';
 
     /**

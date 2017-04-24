@@ -2,11 +2,11 @@
 
 namespace ApiGen\Tests\Parser\ParserStorage;
 
-use ApiGen\Configuration\ConfigurationOptions;
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Parser\ParserInterface;
 use ApiGen\Contracts\Parser\ParserStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
+use ApiGen\ModularConfiguration\Option\VisibilityLevelOption;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 use ApiGen\Tests\Parser\ParserStorage\ImplementersSource\ChildInterface;
 use ApiGen\Tests\Parser\ParserStorage\ImplementersSource\ParentInterface;
@@ -34,7 +34,7 @@ final class ImplementersTest extends AbstractContainerAwareTestCase
         /** @var ConfigurationInterface $configuration */
         $configuration = $this->container->getByType(ConfigurationInterface::class);
         $configuration->setOptions([
-            ConfigurationOptions::VISIBILITY_LEVELS => ReflectionProperty::IS_PUBLIC
+            VisibilityLevelOption::NAME => ReflectionProperty::IS_PUBLIC
         ]);
 
         /** @var ParserInterface $parser */

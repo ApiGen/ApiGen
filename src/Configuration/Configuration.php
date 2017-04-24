@@ -11,6 +11,7 @@ use ApiGen\ModularConfiguration\Option\ExcludeOption;
 use ApiGen\ModularConfiguration\Option\ExtensionsOption;
 use ApiGen\ModularConfiguration\Option\SourceOption;
 use ApiGen\ModularConfiguration\Option\ThemeDirectoryOption;
+use ApiGen\ModularConfiguration\Option\VisibilityLevelOption;
 use ApiGen\Templating\Filters\UrlFilters;
 use ApiGen\Utils\FileSystem;
 use Nette\DI\Config\Loader;
@@ -83,7 +84,7 @@ final class Configuration implements ConfigurationInterface
 
     public function getVisibilityLevels(): int
     {
-        return $this->getOptions()[ConfigurationOptions::VISIBILITY_LEVELS];
+        return $this->getOptions()[VisibilityLevelOption::NAME];
     }
 
     /**

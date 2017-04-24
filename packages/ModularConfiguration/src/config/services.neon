@@ -7,3 +7,4 @@
 - ApiGen\ModularConfiguration\Option\ExcludeOption
 - ApiGen\ModularConfiguration\Option\ThemeDirectoryOption
 - ApiGen\ModularConfiguration\Option\ExtensionsOption
+- ApiGen\ModularConfiguration\Option\VisibilityLevelOption

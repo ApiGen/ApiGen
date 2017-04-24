@@ -2,12 +2,12 @@
 
 namespace ApiGen\Tests\Configuration;
 
-use ApiGen\Configuration\ConfigurationOptions;
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\ModularConfiguration\Option\BaseUrlOption;
 use ApiGen\ModularConfiguration\Option\ConfigurationFileOption;
 use ApiGen\ModularConfiguration\Option\DestinationOption;
 use ApiGen\ModularConfiguration\Option\SourceOption;
+use ApiGen\ModularConfiguration\Option\VisibilityLevelOption;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 
 final class ConfigurationTest extends AbstractContainerAwareTestCase
@@ -33,7 +33,6 @@ final class ConfigurationTest extends AbstractContainerAwareTestCase
             'title' => '',
             'googleAnalytics' => '',
             'overwrite' => false,
-            'visibilityLevels' => 768,
             'destination' => TEMP_DIR,
             'config' => '',
             'annotationGroups' => [],
@@ -42,6 +41,7 @@ final class ConfigurationTest extends AbstractContainerAwareTestCase
             'exclude' => [],
             'themeDirectory' => realpath(__DIR__ . '/../../packages/ThemeDefault/src'),
             'extensions' => ['php'],
+            'visibilityLevels' => 768,
         ], $options);
     }
 
@@ -76,7 +76,7 @@ final class ConfigurationTest extends AbstractContainerAwareTestCase
             DestinationOption::NAME => TEMP_DIR . '/api',
         ]);
 
-        $this->assertSame(1792, $options[ConfigurationOptions::VISIBILITY_LEVELS]);
+        $this->assertSame(1792, $options[VisibilityLevelOption::NAME]);
         $this->assertSame('http://apigen.org', $options[BaseUrlOption::NAME]);
     }
 }

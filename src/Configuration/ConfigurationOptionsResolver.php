@@ -11,27 +11,11 @@ use ApiGen\ModularConfiguration\Option\ExcludeOption;
 use ApiGen\ModularConfiguration\Option\ExtensionsOption;
 use ApiGen\ModularConfiguration\Option\SourceOption;
 use ApiGen\ModularConfiguration\Option\ThemeDirectoryOption;
-use ReflectionProperty;
-use Symfony\Component\OptionsResolver\Options;
+use ApiGen\ModularConfiguration\Option\VisibilityLevelOption;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class ConfigurationOptionsResolver
 {
-    /**
-     * @var string
-     */
-    public const VISIBILITY_LEVEL_PROTECTED = 'protected';
-
-    /**
-     * @var string
-     */
-    public const VISIBILITY_LEVEL_PRIVATE = 'private';
-
-    /**
-     * @var string
-     */
-    public const VISIBILITY_LEVEL_PUBLIC = 'public';
-
     /**
      * @var mixed[]
      */
@@ -39,8 +23,6 @@ final class ConfigurationOptionsResolver
         // template parameters
         ConfigurationOptions::TITLE => '',
         ConfigurationOptions::GOOGLE_ANALYTICS => '',
-        // filtering generated content
-        ConfigurationOptions::VISIBILITY_LEVELS => [self::VISIBILITY_LEVEL_PUBLIC, self::VISIBILITY_LEVEL_PROTECTED],
         ConfigurationOptions::FORCE_OVERWRITE => false,
     ];
 
@@ -89,6 +71,11 @@ final class ConfigurationOptionsResolver
      */
     private $extensionsOption;
 
+    /**
+     * @var VisibilityLevelOption
+     */
+    private $visibilityLevelOption;
+
     public function __construct(
         DestinationOption $destinationOption,
         ConfigurationFileOption $configurationFileOption,
@@ -97,7 +84,8 @@ final class ConfigurationOptionsResolver
         SourceOption $sourceOption,
         ExcludeOption $excludeOption,
         ThemeDirectoryOption $themeDirectoryOption,
-        ExtensionsOption $extensionsOption
+        ExtensionsOption $extensionsOption,
+        VisibilityLevelOption $visibilityLevelOption
     ) {
         $this->destinationOption = $destinationOption;
         $this->configurationFileOption = $configurationFileOption;
@@ -107,6 +95,7 @@ final class ConfigurationOptionsResolver
         $this->excludeOption = $excludeOption;
         $this->themeDirectoryOption = $themeDirectoryOption;
         $this->extensionsOption = $extensionsOption;
+        $this->visibilityLevelOption = $visibilityLevelOption;
     }
 
     /**
@@ -117,7 +106,6 @@ final class ConfigurationOptionsResolver
     {
         $this->resolver = new OptionsResolver();
         $this->resolver->setDefaults($this->defaults);
-        $this->setNormalizers();
 
         // temp code
         if (!isset($options['destination'])) {
@@ -142,6 +130,9 @@ final class ConfigurationOptionsResolver
         $exclude = $options['exclude'] ?? [];
         unset($options['exclude']);
 
+        $visibilityLevel = $options['visibilityLevels'] ?? [];
+        unset($options['visibilityLevels']);
+
         $themeDirectory = $options['themeDirectory'] ?? null;
         unset($options['themeDirectory']);
 
@@ -162,36 +153,8 @@ final class ConfigurationOptionsResolver
         $options['exclude'] = $this->excludeOption->resolveValue($exclude);
         $options['themeDirectory'] = $this->themeDirectoryOption->resolveValue($themeDirectory);
         $options['extensions'] = $this->extensionsOption->resolveValue($extensions);
+        $options['visibilityLevels'] = $this->visibilityLevelOption->resolveValue($visibilityLevel);
 
         return $options;
-    }
-
-    /**
-     * @param mixed[] $options
-     */
-    private function normalizeVisibilityLevelsToBinary(array $options): int
-    {
-        $visibilityLevelInInteger = 0;
-
-        if (in_array(self::VISIBILITY_LEVEL_PUBLIC, $options)) {
-            $visibilityLevelInInteger |= ReflectionProperty::IS_PUBLIC;
-        }
-
-        if (in_array(self::VISIBILITY_LEVEL_PROTECTED, $options)) {
-            $visibilityLevelInInteger |= ReflectionProperty::IS_PROTECTED;
-        }
-
-        if (in_array(self::VISIBILITY_LEVEL_PRIVATE, $options)) {
-            $visibilityLevelInInteger |= ReflectionProperty::IS_PRIVATE;
-        }
-
-        return $visibilityLevelInInteger;
-    }
-
-    private function setNormalizers(): void
-    {
-        $this->resolver->setNormalizer(ConfigurationOptions::VISIBILITY_LEVELS, function (Options $options, $value) {
-            return $this->normalizeVisibilityLevelsToBinary($value);
-        });
     }
 }
