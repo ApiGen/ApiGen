@@ -56,7 +56,7 @@ This section provides a list of [PHP DocBlock
 annotations](https://www.phpdoc.org/docs/latest/guides/docblocks.html) (tags)
 that are supported by ApiGen:
 
-- `@deprected` - indicated that the associated element is deprecated and can be removed in the future version.
+- `@deprecated` - indicated that the associated element is deprecated and can be removed in the future version.
 - `@internal` - denotes that the associated elements is internal to this application or library and hides it by default.
 - `@link` - indicates a relation between the associated element and a page of a website.
 - `@param` - documents a single argument of a function or method.
