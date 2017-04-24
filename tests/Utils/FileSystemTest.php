@@ -29,7 +29,7 @@ final class FileSystemTest extends TestCase
         $dirPath = dirname($filePath);
         $this->assertFalse(file_exists($dirPath));
 
-        $this->fileSystem->forceDir($filePath);
+        FileSystem::forceDir($filePath);
         $this->assertTrue(file_exists($dirPath));
     }
 

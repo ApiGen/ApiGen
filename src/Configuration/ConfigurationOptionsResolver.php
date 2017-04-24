@@ -23,11 +23,7 @@ final class ConfigurationOptionsResolver
     public function resolve(array $options): array
     {
         foreach ($this->configurationResolver->getOptionNames() as $name) {
-            if (isset($options[$name])) {
-                $options[$name] = $this->configurationResolver->resolveValue($name, $options[$name]);
-            } else {
-                $options[$name] = $this->configurationResolver->resolveValue($name, null);
-            }
+            $options[$name] = $this->configurationResolver->resolveValue($name, $options[$name] ?? null);
         }
 
         return $options;
