@@ -8,6 +8,7 @@ use ApiGen\ModularConfiguration\Option\BaseUrlOption;
 use ApiGen\ModularConfiguration\Option\ConfigurationFileOption;
 use ApiGen\ModularConfiguration\Option\DestinationOption;
 use ApiGen\ModularConfiguration\Option\ExcludeOption;
+use ApiGen\ModularConfiguration\Option\ExtensionsOption;
 use ApiGen\ModularConfiguration\Option\SourceOption;
 use ApiGen\ModularConfiguration\Option\ThemeDirectoryOption;
 use ReflectionProperty;
@@ -35,8 +36,6 @@ final class ConfigurationOptionsResolver
      * @var mixed[]
      */
     private $defaults = [
-        // file finder
-        ConfigurationOptions::EXTENSIONS => ['php'],
         // template parameters
         ConfigurationOptions::TITLE => '',
         ConfigurationOptions::GOOGLE_ANALYTICS => '',
@@ -85,6 +84,11 @@ final class ConfigurationOptionsResolver
      */
     private $themeDirectoryOption;
 
+    /**
+     * @var ExtensionsOption
+     */
+    private $extensionsOption;
+
     public function __construct(
         DestinationOption $destinationOption,
         ConfigurationFileOption $configurationFileOption,
@@ -92,7 +96,8 @@ final class ConfigurationOptionsResolver
         BaseUrlOption $baseUrlOption,
         SourceOption $sourceOption,
         ExcludeOption $excludeOption,
-        ThemeDirectoryOption $themeDirectoryOption
+        ThemeDirectoryOption $themeDirectoryOption,
+        ExtensionsOption $extensionsOption
     ) {
         $this->destinationOption = $destinationOption;
         $this->configurationFileOption = $configurationFileOption;
@@ -101,6 +106,7 @@ final class ConfigurationOptionsResolver
         $this->sourceOption = $sourceOption;
         $this->excludeOption = $excludeOption;
         $this->themeDirectoryOption = $themeDirectoryOption;
+        $this->extensionsOption = $extensionsOption;
     }
 
     /**
@@ -130,6 +136,9 @@ final class ConfigurationOptionsResolver
         $baseUrl = $options['baseUrl'] ?? '';
         unset($options['baseUrl']);
 
+        $extensions = $options['extensions'] ?? [];
+        unset($options['extensions']);
+
         $exclude = $options['exclude'] ?? [];
         unset($options['exclude']);
 
@@ -152,6 +161,7 @@ final class ConfigurationOptionsResolver
         $options['source'] = $this->sourceOption->resolveValue($source);
         $options['exclude'] = $this->excludeOption->resolveValue($exclude);
         $options['themeDirectory'] = $this->themeDirectoryOption->resolveValue($themeDirectory);
+        $options['extensions'] = $this->extensionsOption->resolveValue($extensions);
 
         return $options;
     }

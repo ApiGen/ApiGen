@@ -10,6 +10,7 @@ use ApiGen\Contracts\Parser\ParserInterface;
 use ApiGen\ModularConfiguration\Option\ConfigurationFileOption;
 use ApiGen\ModularConfiguration\Option\DestinationOption;
 use ApiGen\ModularConfiguration\Option\ExcludeOption;
+use ApiGen\ModularConfiguration\Option\ExtensionsOption;
 use ApiGen\ModularConfiguration\Option\SourceOption;
 use ApiGen\Theme\ThemeResources;
 use ApiGen\Utils\FileSystem;
@@ -83,7 +84,7 @@ final class ApiGenApplication
         $files = $this->finder->find(
             $options[SourceOption::NAME],
             $options[ExcludeOption::NAME],
-            $options[ConfigurationOptions::EXTENSIONS]
+            $options[ExtensionsOption::NAME]
         );
 
         $this->parser->parseFiles($files);

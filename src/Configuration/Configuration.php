@@ -8,6 +8,7 @@ use ApiGen\ModularConfiguration\Option\BaseUrlOption;
 use ApiGen\ModularConfiguration\Option\ConfigurationFileOption;
 use ApiGen\ModularConfiguration\Option\DestinationOption;
 use ApiGen\ModularConfiguration\Option\ExcludeOption;
+use ApiGen\ModularConfiguration\Option\ExtensionsOption;
 use ApiGen\ModularConfiguration\Option\SourceOption;
 use ApiGen\ModularConfiguration\Option\ThemeDirectoryOption;
 use ApiGen\Templating\Filters\UrlFilters;
@@ -134,7 +135,7 @@ final class Configuration implements ConfigurationInterface
      */
     public function getExtensions(): array
     {
-        return $this->getOptions()[ConfigurationOptions::EXTENSIONS];
+        return $this->getOptions()[ExtensionsOption::NAME];
     }
 
     public function getTemplatesDirectory(): string

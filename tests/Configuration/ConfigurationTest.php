@@ -30,7 +30,6 @@ final class ConfigurationTest extends AbstractContainerAwareTestCase
         ]);
 
         $this->assertSame([
-            'extensions' => ['php'],
             'title' => '',
             'googleAnalytics' => '',
             'overwrite' => false,
@@ -42,6 +41,7 @@ final class ConfigurationTest extends AbstractContainerAwareTestCase
             'source' => [],
             'exclude' => [],
             'themeDirectory' => realpath(__DIR__ . '/../../packages/ThemeDefault/src'),
+            'extensions' => ['php'],
         ], $options);
     }
 

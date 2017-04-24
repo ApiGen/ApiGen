@@ -17,17 +17,7 @@ final class ConfigurationOptions
     /**
      * @var string
      */
-    public const EXTENSIONS = 'extensions';
-
-    /**
-     * @var string
-     */
     public const GOOGLE_ANALYTICS = 'googleAnalytics';
-
-    /**
-     * @var string
-     */
-    public const THEME_DIRECTORY = 'themeDirectory';
 
     /**
      * @var string
