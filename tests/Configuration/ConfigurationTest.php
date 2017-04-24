@@ -4,6 +4,7 @@ namespace ApiGen\Tests\Configuration;
 
 use ApiGen\Configuration\ConfigurationOptions;
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
+use ApiGen\ModularConfiguration\Option\ConfigurationFileOption;
 use ApiGen\ModularConfiguration\Option\DestinationOption;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 
@@ -30,14 +31,14 @@ final class ConfigurationTest extends AbstractContainerAwareTestCase
             'extensions' => ['php'],
             'title' => '',
             'googleAnalytics' => '',
-            'config' => '',
             'overwrite' => false,
             'source' => [],
             'visibilityLevels' => 768,
             'annotationGroups' => [],
             'baseUrl' => '',
             'themeDirectory' => realpath(__DIR__ . '/../../packages/ThemeDefault/src'),
-            'destination' => TEMP_DIR
+            'destination' => TEMP_DIR,
+            'config' => '',
         ], $options);
     }
 
@@ -47,14 +48,14 @@ final class ConfigurationTest extends AbstractContainerAwareTestCase
     public function testPrepareOptionsDestinationNotSet(): void
     {
         $this->configuration->prepareOptions([
-            ConfigurationOptions::CONFIG => 'config.neon'
+            ConfigurationFileOption::NAME => 'config.neon'
         ]);
     }
 
     public function testPrepareOptionsConfigPriority(): void
     {
         $configAndDestinationOptions = [
-            ConfigurationOptions::CONFIG => __DIR__ . '/apigen.neon',
+            ConfigurationFileOption::NAME => __DIR__ . '/apigen.neon',
             DestinationOption::NAME => TEMP_DIR . '/api',
             ConfigurationOptions::SOURCE => [__DIR__]
         ];
@@ -68,7 +69,7 @@ final class ConfigurationTest extends AbstractContainerAwareTestCase
     {
         $options = $this->configuration->prepareOptions([
             ConfigurationOptions::SOURCE => [__DIR__],
-            ConfigurationOptions::CONFIG => __DIR__ . '/apigen.neon',
+            ConfigurationFileOption::NAME => __DIR__ . '/apigen.neon',
             DestinationOption::NAME => TEMP_DIR . '/api',
         ]);
 

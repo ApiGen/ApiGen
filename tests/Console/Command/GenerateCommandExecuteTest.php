@@ -4,6 +4,7 @@ namespace ApiGen\Tests\Console\Command;
 
 use ApiGen\Configuration\ConfigurationOptions;
 use ApiGen\Console\Command\GenerateCommand;
+use ApiGen\ModularConfiguration\Option\ConfigurationFileOption;
 use ApiGen\ModularConfiguration\Option\DestinationOption;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -35,7 +36,7 @@ final class GenerateCommandExecuteTest extends AbstractContainerAwareTestCase
         $input = new ArrayInput([
             ConfigurationOptions::SOURCE => [__DIR__ . '/Source'],
             '--' . DestinationOption::NAME => TEMP_DIR . '/Api',
-            '--' . ConfigurationOptions::CONFIG => '...',
+            '--' . ConfigurationFileOption::NAME => '...',
         ]);
 
         $exitCode = $this->generateCommand->run($input, new NullOutput);
@@ -56,7 +57,7 @@ final class GenerateCommandExecuteTest extends AbstractContainerAwareTestCase
         $input = new ArrayInput([
             ConfigurationOptions::SOURCE => ['missing'],
             '--' . DestinationOption::NAME => 'missing',
-            '--' . ConfigurationOptions::CONFIG => 'wrong'
+            '--' . ConfigurationFileOption::NAME => 'wrong'
         ]);
 
         $this->generateCommand->run($input, new NullOutput);

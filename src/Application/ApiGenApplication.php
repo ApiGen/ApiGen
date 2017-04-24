@@ -7,6 +7,7 @@ use ApiGen\Configuration\ConfigurationOptions;
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Generator\GeneratorQueueInterface;
 use ApiGen\Contracts\Parser\ParserInterface;
+use ApiGen\ModularConfiguration\Option\ConfigurationFileOption;
 use ApiGen\ModularConfiguration\Option\DestinationOption;
 use ApiGen\Theme\ThemeResources;
 use ApiGen\Utils\FileSystem;
@@ -65,7 +66,7 @@ final class ApiGenApplication
         $options = $this->configuration->prepareOptions([
             ConfigurationOptions::SOURCE => $runCommand->getSource(),
             DestinationOption::NAME => $runCommand->getDestination(),
-            ConfigurationOptions::CONFIG => $runCommand->getConfigPath()
+            ConfigurationFileOption::NAME => $runCommand->getConfigPath()
         ]);
 
         $this->scanAndParse($options);

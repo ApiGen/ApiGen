@@ -17,17 +17,7 @@ final class ConfigurationOptions
     /**
      * @var string
      */
-    public const CONFIG = 'config';
-
-    /**
-     * @var string
-     */
     public const BASE_URL = 'baseUrl';
-
-    /**
-     * @var string
-     */
-    public const DESTINATION = 'destination';
 
     /**
      * @var string

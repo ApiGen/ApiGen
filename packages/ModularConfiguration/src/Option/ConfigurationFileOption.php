@@ -7,15 +7,6 @@ use ApiGen\ModularConfiguration\Contract\Option\CommandOptionInterface;
 
 final class ConfigurationFileOption implements CommandOptionInterface
 {
-    //
-//        $this->addOption(
-//            ConfigurationOptions::CONFIG,
-//            null,
-//            InputOption::VALUE_REQUIRED,
-//            'Path to apigen.neon config file.',
-//            getcwd() . DIRECTORY_SEPARATOR . 'apigen.neon'
-//        );
-
     /**
      * @var string
      */
@@ -41,10 +32,7 @@ final class ConfigurationFileOption implements CommandOptionInterface
         return true;
     }
 
-    /**
-     * @return mixed|null
-     */
-    public function getDefaultValue()
+    public function getDefaultValue(): string
     {
         return getcwd() . DIRECTORY_SEPARATOR . 'apigen.neon';
     }
@@ -53,8 +41,8 @@ final class ConfigurationFileOption implements CommandOptionInterface
      * @param mixed $value
      * @return mixed
      */
-    public function resolveValue($value)
+    public function resolveValue($value): string
     {
-        // TODO: Implement resolveValue() method.
+        return $value ?: '';
     }
 }

@@ -3,6 +3,7 @@
 namespace ApiGen\Configuration;
 
 use ApiGen\Configuration\Exceptions\ConfigurationException;
+use ApiGen\ModularConfiguration\Option\ConfigurationFileOption;
 use ApiGen\ModularConfiguration\Option\DestinationOption;
 use ApiGen\Utils\FileSystem;
 use ReflectionProperty;
@@ -42,7 +43,6 @@ final class ConfigurationOptionsResolver
         ConfigurationOptions::VISIBILITY_LEVELS => [self::VISIBILITY_LEVEL_PUBLIC, self::VISIBILITY_LEVEL_PROTECTED],
         ConfigurationOptions::ANNOTATION_GROUPS => [],
         ConfigurationOptions::BASE_URL => '',
-        ConfigurationOptions::CONFIG => '',
         ConfigurationOptions::FORCE_OVERWRITE => false,
         ConfigurationOptions::THEME_DIRECTORY => null
     ];
@@ -61,13 +61,19 @@ final class ConfigurationOptionsResolver
      * @var DestinationOption
      */
     private $destinationOption;
+    /**
+     * @var
+     */
+    private $configurationFileOption;
 
     public function __construct(
         FileSystem $fileSystem,
-        DestinationOption $destinationOption
+        DestinationOption $destinationOption,
+        ConfigurationFileOption $configurationFileOption
     ) {
         $this->fileSystem = $fileSystem;
         $this->destinationOption = $destinationOption;
+        $this->configurationFileOption = $configurationFileOption;
     }
 
     /**
@@ -89,9 +95,13 @@ final class ConfigurationOptionsResolver
         $destination = $options['destination'];
         unset($options['destination']);
 
+        $config = $options['config'] ?? '';
+        unset($options['config']);
+
         $options = $this->resolver->resolve($options);
 
         $options['destination'] = $this->destinationOption->resolveValue($destination);
+        $options['config'] = $this->configurationFileOption->resolveValue($config);
 
         return $options;
     }

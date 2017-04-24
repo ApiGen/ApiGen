@@ -3,6 +3,7 @@
 namespace ApiGen\Configuration;
 
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
+use ApiGen\ModularConfiguration\Option\ConfigurationFileOption;
 use ApiGen\ModularConfiguration\Option\DestinationOption;
 use ApiGen\Templating\Filters\UrlFilters;
 use ApiGen\Utils\FileSystem;
@@ -171,7 +172,7 @@ final class Configuration implements ConfigurationInterface
      */
     private function loadOptionsFromConfig(array $options): array
     {
-        $configFile = $options[ConfigurationOptions::CONFIG] ?? getcwd() . DIRECTORY_SEPARATOR . 'apigen.neon';
+        $configFile = $options[ConfigurationFileOption::NAME] ?? getcwd() . DIRECTORY_SEPARATOR . 'apigen.neon';
         $configFile = $this->fileSystem->getAbsolutePath($configFile);
 
         if (file_exists($configFile)) {
