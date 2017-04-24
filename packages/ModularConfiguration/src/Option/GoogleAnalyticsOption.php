@@ -21,6 +21,10 @@ final class GoogleAnalyticsOption implements OptionInterface
      */
     public function resolveValue($value): string
     {
+        if ($value === null) {
+            return '';
+        }
+
         return $value;
     }
 }

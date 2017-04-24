@@ -2,23 +2,22 @@
 
 namespace ApiGen\ModularConfiguration;
 
-use ApiGen\ModularConfiguration\Contract\ConfigurationDecoratorInterface;
+use ApiGen\ModularConfiguration\Contract\CommandDecoratorInterface;
 use ApiGen\ModularConfiguration\Contract\Option\CommandArgumentInterface;
 use ApiGen\ModularConfiguration\Contract\Option\CommandBoundInterface;
 use ApiGen\ModularConfiguration\Contract\Option\CommandOptionInterface;
-use ApiGen\ModularConfiguration\Contract\Option\OptionInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 
-final class ConfigurationDecorator implements ConfigurationDecoratorInterface
+final class CommandDecorator implements CommandDecoratorInterface
 {
     /**
-     * @var OptionInterface[]|CommandOptionInterface[]
+     * @var CommandBoundInterface[]
      */
     private $options = [];
 
-    public function addConfigurationOption(OptionInterface $option): void
+    public function addOption(CommandBoundInterface $option): void
     {
         $this->options[$option->getName()] = $option;
     }
@@ -40,12 +39,8 @@ final class ConfigurationDecorator implements ConfigurationDecoratorInterface
         }
     }
 
-    private function isCommandCandidate(OptionInterface $option, Command $command): bool
+    private function isCommandCandidate(CommandBoundInterface $option, Command $command): bool
     {
-        if (! $option instanceof CommandBoundInterface) {
-            return false;
-        }
-
         return is_a($command, $option->getCommand());
     }
 

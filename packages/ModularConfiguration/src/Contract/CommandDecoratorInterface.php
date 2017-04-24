@@ -2,12 +2,12 @@
 
 namespace ApiGen\ModularConfiguration\Contract;
 
-use ApiGen\ModularConfiguration\Contract\Option\OptionInterface;
+use ApiGen\ModularConfiguration\Contract\Option\CommandBoundInterface;
 use Symfony\Component\Console\Command\Command;
 
-interface ConfigurationDecoratorInterface
+interface CommandDecoratorInterface
 {
-    public function addConfigurationOption(OptionInterface $option): void;
+    public function addOption(CommandBoundInterface $option): void;
 
     public function decorateCommand(Command $command): void;
 }

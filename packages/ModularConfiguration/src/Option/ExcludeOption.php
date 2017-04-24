@@ -22,6 +22,10 @@ final class ExcludeOption implements OptionInterface
      */
     public function resolveValue($value): array
     {
+        if ($value === null) {
+            return [];
+        }
+
         return $value;
     }
 }

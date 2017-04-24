@@ -30,18 +30,18 @@ final class ConfigurationTest extends AbstractContainerAwareTestCase
         ]);
 
         $this->assertSame([
+            'source' => [],
             'destination' => TEMP_DIR,
-            'config' => '',
             'annotationGroups' => [],
             'baseUrl' => '',
-            'source' => [],
+            'config' => '',
             'exclude' => [],
-            'themeDirectory' => realpath(__DIR__ . '/../../packages/ThemeDefault/src'),
             'extensions' => ['php'],
-            'visibilityLevels' => 768,
-            'overwrite' => false,
             'googleAnalytics' => '',
+            'overwrite' => false,
+            'themeDirectory' => realpath(__DIR__ . '/../../packages/ThemeDefault/src'),
             'title' => '',
+            'visibilityLevels' => 768,
         ], $options);
     }
 

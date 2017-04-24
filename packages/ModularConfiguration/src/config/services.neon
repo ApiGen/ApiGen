@@ -1,4 +1,5 @@
-- ApiGen\ModularConfiguration\ConfigurationDecorator
+- ApiGen\ModularConfiguration\ConfigurationResolver
+- ApiGen\ModularConfiguration\CommandDecorator
 
 # Options
 - ApiGen\ModularConfiguration\Option\DestinationOption
