@@ -7,7 +7,9 @@ use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\ModularConfiguration\Option\BaseUrlOption;
 use ApiGen\ModularConfiguration\Option\ConfigurationFileOption;
 use ApiGen\ModularConfiguration\Option\DestinationOption;
+use ApiGen\ModularConfiguration\Option\SourceOption;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
+use PHP_CodeSniffer\Reports\Source;
 
 final class ConfigurationTest extends AbstractContainerAwareTestCase
 {
@@ -24,6 +26,7 @@ final class ConfigurationTest extends AbstractContainerAwareTestCase
     public function testResolve(): void
     {
         $options = $this->configuration->prepareOptions([
+            SourceOption::NAME => [],
             DestinationOption::NAME => TEMP_DIR
         ]);
 
@@ -33,13 +36,13 @@ final class ConfigurationTest extends AbstractContainerAwareTestCase
             'title' => '',
             'googleAnalytics' => '',
             'overwrite' => false,
-            'source' => [],
             'visibilityLevels' => 768,
             'themeDirectory' => realpath(__DIR__ . '/../../packages/ThemeDefault/src'),
             'destination' => TEMP_DIR,
             'config' => '',
             'annotationGroups' => [],
             'baseUrl' => '',
+            'source' => [],
         ], $options);
     }
 

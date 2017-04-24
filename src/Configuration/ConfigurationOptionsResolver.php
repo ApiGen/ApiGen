@@ -7,6 +7,7 @@ use ApiGen\ModularConfiguration\Option\AnnotationGroupsOption;
 use ApiGen\ModularConfiguration\Option\BaseUrlOption;
 use ApiGen\ModularConfiguration\Option\ConfigurationFileOption;
 use ApiGen\ModularConfiguration\Option\DestinationOption;
+use ApiGen\ModularConfiguration\Option\SourceOption;
 use ApiGen\Utils\FileSystem;
 use ReflectionProperty;
 use Symfony\Component\OptionsResolver\Options;
@@ -33,8 +34,6 @@ final class ConfigurationOptionsResolver
      * @var mixed[]
      */
     private $defaults = [
-        // required
-        ConfigurationOptions::SOURCE => [],
         // file finder
         ConfigurationOptions::EXCLUDE => [],
         ConfigurationOptions::EXTENSIONS => ['php'],
@@ -77,18 +76,25 @@ final class ConfigurationOptionsResolver
      */
     private $baseUrlOption;
 
+    /**
+     * @var SourceOption
+     */
+    private $sourceOption;
+
     public function __construct(
         FileSystem $fileSystem,
         DestinationOption $destinationOption,
         ConfigurationFileOption $configurationFileOption,
         AnnotationGroupsOption $annotationGroupsOption,
-        BaseUrlOption $baseUrlOption
+        BaseUrlOption $baseUrlOption,
+        SourceOption $sourceOption
     ) {
         $this->fileSystem = $fileSystem;
         $this->destinationOption = $destinationOption;
         $this->configurationFileOption = $configurationFileOption;
         $this->annotationGroupsOption = $annotationGroupsOption;
         $this->baseUrlOption = $baseUrlOption;
+        $this->sourceOption = $sourceOption;
     }
 
     /**
@@ -99,7 +105,7 @@ final class ConfigurationOptionsResolver
     {
         $this->resolver = new OptionsResolver();
         $this->setDefaults();
-        $this->setRequired();
+//        $this->setRequired();
         $this->setAllowedValues();
         $this->setNormalizers();
 
@@ -120,12 +126,20 @@ final class ConfigurationOptionsResolver
         $baseUrl = $options['baseUrl'] ?? '';
         unset($options['baseUrl']);
 
+        if (!isset($options['source'])) {
+            throw new ConfigurationException;
+        }
+
+        $source = $options['source'];
+        unset($options['source']);
+
         $options = $this->resolver->resolve($options);
 
         $options['destination'] = $this->destinationOption->resolveValue($destination);
         $options['config'] = $this->configurationFileOption->resolveValue($config);
         $options['annotationGroups'] = $this->annotationGroupsOption->resolveValue($annotationGroups);
         $options['baseUrl'] = $this->baseUrlOption->resolveValue($baseUrl);
+        $options['source'] = $this->sourceOption->resolveValue($source);
 
         return $options;
     }
@@ -166,17 +180,8 @@ final class ConfigurationOptionsResolver
         return $visibilityLevelInInteger;
     }
 
-    private function setRequired(): void
-    {
-        $this->resolver->setRequired([ConfigurationOptions::SOURCE]);
-    }
-
     private function setAllowedValues(): void
     {
-        $this->resolver->addAllowedValues(ConfigurationOptions::SOURCE, function ($source) {
-            return $this->allowedValuesForSource($source);
-        });
-
         $this->resolver->addAllowedValues(ConfigurationOptions::THEME_DIRECTORY, function ($value) {
             if ($value && ! is_dir($value)) {
                 throw new ConfigurationException(sprintf(
@@ -191,18 +196,6 @@ final class ConfigurationOptionsResolver
 
     private function setNormalizers(): void
     {
-        $this->resolver->setNormalizer(ConfigurationOptions::SOURCE, function (Options $options, $value) {
-            if (! is_array($value)) {
-                $value = [$value];
-            }
-
-            foreach ($value as $key => $source) {
-                $value[$key] = $this->fileSystem->getAbsolutePath($source);
-            }
-
-            return $value;
-        });
-
         $this->resolver->setNormalizer(ConfigurationOptions::THEME_DIRECTORY, function (Options $options, $value) {
             if ($value === null) {
                 return '';
@@ -214,27 +207,5 @@ final class ConfigurationOptionsResolver
         $this->resolver->setNormalizer(ConfigurationOptions::VISIBILITY_LEVELS, function (Options $options, $value) {
             return $this->normalizeVisibilityLevelsToBinary($value);
         });
-    }
-
-    /**
-     * @param string[] $source
-     */
-    private function allowedValuesForSource(array $source): bool
-    {
-        foreach ($source as $singleSource) {
-            $this->ensureSourceExists($singleSource);
-        }
-
-        return true;
-    }
-
-    private function ensureSourceExists(string $singleSource): void
-    {
-        if (! file_exists($singleSource)) {
-            throw new ConfigurationException(sprintf(
-                'Source "%s" does not exist',
-                $singleSource
-            ));
-        }
     }
 }

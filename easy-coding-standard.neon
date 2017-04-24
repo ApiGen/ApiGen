@@ -93,6 +93,7 @@ skip:
         - packages/ReflectionToElementTransformer/src/Transformer/BetterPropertyReflectionToPropertyTransformer.php
         - packages/ReflectionToElementTransformer/src/Transformer/TokenFunctionReflectionTransformer.php
         - packages/ReflectionToElementTransformer/src/Transformer/BetterPropertyReflectionTransformer.php
+        - packages/ModularConfiguration/src/Option/SourceOption.php
 
     SlevomatCodingStandard\Sniffs\Classes\ClassConstantVisibilitySniff:
         - tests/Parser/Reflection/ReflectionClassSource/ParentClass.php
