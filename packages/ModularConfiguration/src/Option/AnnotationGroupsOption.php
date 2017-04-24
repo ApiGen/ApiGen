@@ -2,9 +2,7 @@
 
 namespace ApiGen\ModularConfiguration\Option;
 
-use ApiGen\Configuration\Exceptions\ConfigurationException;
 use ApiGen\ModularConfiguration\Contract\Option\OptionInterface;
-use ApiGen\Utils\FileSystem;
 
 final class AnnotationGroupsOption implements OptionInterface
 {

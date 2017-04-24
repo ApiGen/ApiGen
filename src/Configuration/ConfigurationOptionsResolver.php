@@ -107,6 +107,7 @@ final class ConfigurationOptionsResolver
         if (!isset($options['destination'])) {
             throw new ConfigurationException;
         }
+
         $destination = $options['destination'];
         unset($options['destination']);
 
