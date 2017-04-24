@@ -58,18 +58,12 @@ final class ConfigurationOptionsResolver
     private $resolver;
 
     /**
-     * @var OptionsResolverFactory
-     */
-    private $optionsResolverFactory;
-
-    /**
      * @var FileSystem
      */
     private $fileSystem;
 
-    public function __construct(OptionsResolverFactory $optionsResolverFactory, FileSystem $fileSystem)
+    public function __construct(FileSystem $fileSystem)
     {
-        $this->optionsResolverFactory = $optionsResolverFactory;
         $this->fileSystem = $fileSystem;
     }
 
@@ -79,7 +73,7 @@ final class ConfigurationOptionsResolver
      */
     public function resolve(array $options): array
     {
-        $this->resolver = $this->optionsResolverFactory->create();
+        $this->resolver = new OptionsResolver();
         $this->setDefaults();
         $this->setRequired();
         $this->setAllowedValues();
