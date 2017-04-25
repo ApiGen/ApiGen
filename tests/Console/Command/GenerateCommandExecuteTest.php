@@ -3,7 +3,6 @@
 namespace ApiGen\Tests\Console\Command;
 
 use ApiGen\Console\Command\GenerateCommand;
-use ApiGen\ModularConfiguration\Option\ConfigurationFileOption;
 use ApiGen\ModularConfiguration\Option\DestinationOption;
 use ApiGen\ModularConfiguration\Option\SourceOption;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
