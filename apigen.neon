@@ -1,0 +1,6 @@
+parameters:
+    source:
+        - src
+        # - packages/**/src, @todo: add support
+    visibilityLevels: [public, protected]
+    baseUrl: http://apigen.org

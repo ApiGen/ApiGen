@@ -34,19 +34,17 @@ Below is a minimal example configuration. Save it as a `apigen.neon` file in
 the root of your project:
 
 ```yaml
-source: [src]           # directory(-ies) to scan PHP files from
-destination: docs       # destination directory to generate API docs in
-visibilityLevels: [public, protected] # array
-annotationGroups: [todo, deprecated] # array
-title: "ApiGen Docs"
-baseUrl: http://apigen.org/api
-exclude: tests
-extensions: [php] # array
-overwrite: true # bool
-templateConfig: path-to-template-config.neon # string
-
-# templates parameters
-googleAnalytics: 123
+parameters:
+    source: [src]           # 1+ files or directories to scan PHP classes and functions in
+    destination: docs       # directory, where API docs will be generated to
+    visibilityLevels: [public, protected] # array
+    annotationGroups: [todo, deprecated] # array
+    title: "ApiGen Docs" # string
+    baseUrl: http://apigen.org/api # string
+    exclude: [tests] # array
+    extensions: [php] # array
+    overwrite: false # bool
+    googleAnalytics: "" # string
 ```
 
 ## DocBlock Annotations
@@ -66,12 +64,12 @@ that are supported by ApiGen:
 
 ## Themes
 
-In order to enable a custom theme, you have to either provide `--theme-config`
-CLI option when runing `apigen generate` or add `themeConfig` configuration
+In order to enable a custom theme, you have to provide `themeDirectory` configuration
 option in your ApiGen configuration file:
 
 ```yaml
-themeConfig: path/to/theme/config.neon # path to theme's config file
+parameters:
+    themeDirectory: path/to/theme # path to theme's config file
 ```
 
 ## Contributing

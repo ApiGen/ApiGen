@@ -21,11 +21,6 @@ interface ConfigurationInterface
     public function getOptions(): array;
 
     /**
-     * @param mixed[] $options
-     */
-    public function setOptions(array $options): void;
-
-    /**
      * Get property/method visibility level (public, protected or private, in binary code).
      */
     public function getVisibilityLevels(): int;
@@ -77,10 +72,4 @@ interface ConfigurationInterface
     public function getDestinationWithName(string $prefix): string;
 
     public function getDestinationWithPrefixName(string $prefix, string $name): string;
-
-    /**
-     * @param mixed[] $options
-     * @return mixed[]
-     */
-    public function prepareOptions(array $options): array;
 }

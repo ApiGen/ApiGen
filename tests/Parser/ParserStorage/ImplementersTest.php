@@ -2,17 +2,14 @@
 
 namespace ApiGen\Tests\Parser\ParserStorage;
 
-use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Parser\ParserInterface;
 use ApiGen\Contracts\Parser\ParserStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
-use ApiGen\ModularConfiguration\Option\VisibilityLevelOption;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 use ApiGen\Tests\Parser\ParserStorage\ImplementersSource\ChildInterface;
 use ApiGen\Tests\Parser\ParserStorage\ImplementersSource\ParentInterface;
 use ApiGen\Tests\Parser\ParserStorage\ImplementersSource\SomeClass;
 use Nette\Utils\Finder;
-use ReflectionProperty;
 
 final class ImplementersTest extends AbstractContainerAwareTestCase
 {
@@ -30,12 +27,6 @@ final class ImplementersTest extends AbstractContainerAwareTestCase
     {
         $finder = Finder::find('*')->in(__DIR__ . '/ImplementersSource');
         $files = iterator_to_array($finder->getIterator());
-
-        /** @var ConfigurationInterface $configuration */
-        $configuration = $this->container->getByType(ConfigurationInterface::class);
-        $configuration->setOptions([
-            VisibilityLevelOption::NAME => ReflectionProperty::IS_PUBLIC
-        ]);
 
         /** @var ParserInterface $parser */
         $parser = $this->container->getByType(ParserInterface::class);

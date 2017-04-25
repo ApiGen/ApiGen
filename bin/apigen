@@ -10,10 +10,6 @@ gc_disable();
 // Require Composer autoload
 require_once getcwd() . '/vendor/autoload.php';
 
-// Init debugger
-Tracy\Debugger::$strictMode = TRUE;
-Tracy\Debugger::enable(Tracy\Debugger::DEVELOPMENT);
-
 $container = (new ContainerFactory)->create();
 
 /** @var Application $application */

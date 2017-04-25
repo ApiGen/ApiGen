@@ -4,7 +4,6 @@ namespace ApiGen\Tests\Configuration;
 
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\ModularConfiguration\Option\BaseUrlOption;
-use ApiGen\ModularConfiguration\Option\ConfigurationFileOption;
 use ApiGen\ModularConfiguration\Option\DestinationOption;
 use ApiGen\ModularConfiguration\Option\SourceOption;
 use ApiGen\ModularConfiguration\Option\VisibilityLevelOption;
@@ -24,24 +23,23 @@ final class ConfigurationTest extends AbstractContainerAwareTestCase
 
     public function testResolve(): void
     {
-        $options = $this->configuration->prepareOptions([
+        $options = $this->configuration->resolveOptions([
             SourceOption::NAME => [],
             DestinationOption::NAME => TEMP_DIR
         ]);
 
         $this->assertSame([
             'source' => [],
+            'visibilityLevels' => 768,
+            'baseUrl' => 'http://apigen.org',
             'destination' => TEMP_DIR,
             'annotationGroups' => [],
-            'baseUrl' => '',
-            'config' => '',
             'exclude' => [],
             'extensions' => ['php'],
             'googleAnalytics' => '',
             'overwrite' => false,
             'themeDirectory' => realpath(__DIR__ . '/../../packages/ThemeDefault/src'),
             'title' => '',
-            'visibilityLevels' => 768,
         ], $options);
     }
 
@@ -50,33 +48,29 @@ final class ConfigurationTest extends AbstractContainerAwareTestCase
      */
     public function testPrepareOptionsDestinationNotSet(): void
     {
-        $this->configuration->prepareOptions([
-            ConfigurationFileOption::NAME => 'config.neon'
-        ]);
+        $this->configuration->resolveOptions([]);
     }
 
     public function testPrepareOptionsConfigPriority(): void
     {
         $configAndDestinationOptions = [
-            ConfigurationFileOption::NAME => __DIR__ . '/apigen.neon',
             DestinationOption::NAME => TEMP_DIR . '/api',
             SourceOption::NAME => [__DIR__]
         ];
 
-        $options = $this->configuration->prepareOptions($configAndDestinationOptions);
+        $options = $this->configuration->resolveOptions($configAndDestinationOptions);
 
-        $this->assertSame(realpath(__DIR__ . '/../../src'), $options['source'][0]);
+        $this->assertSame(__DIR__, $options['source'][0]);
     }
 
     public function testPrepareOptionsMergeIsCorrect(): void
     {
-        $options = $this->configuration->prepareOptions([
+        $options = $this->configuration->resolveOptions([
             SourceOption::NAME => [__DIR__],
-            ConfigurationFileOption::NAME => __DIR__ . '/apigen.neon',
             DestinationOption::NAME => TEMP_DIR . '/api',
         ]);
 
-        $this->assertSame(1792, $options[VisibilityLevelOption::NAME]);
+        $this->assertSame(768, $options[VisibilityLevelOption::NAME]);
         $this->assertSame('http://apigen.org', $options[BaseUrlOption::NAME]);
     }
 }

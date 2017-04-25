@@ -6,7 +6,6 @@ use ApiGen\Application\Command\RunCommand;
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Generator\GeneratorQueueInterface;
 use ApiGen\Contracts\Parser\ParserInterface;
-use ApiGen\ModularConfiguration\Option\ConfigurationFileOption;
 use ApiGen\ModularConfiguration\Option\DestinationOption;
 use ApiGen\ModularConfiguration\Option\ExcludeOption;
 use ApiGen\ModularConfiguration\Option\ExtensionsOption;
@@ -66,10 +65,9 @@ final class ApiGenApplication
 
     public function runCommand(RunCommand $runCommand): void
     {
-        $options = $this->configuration->prepareOptions([
+        $options = $this->configuration->resolveOptions([
             SourceOption::NAME => $runCommand->getSource(),
-            DestinationOption::NAME => $runCommand->getDestination(),
-            ConfigurationFileOption::NAME => $runCommand->getConfigPath()
+            DestinationOption::NAME => $runCommand->getDestination()
         ]);
 
         $this->scanAndParse($options);

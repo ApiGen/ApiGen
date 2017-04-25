@@ -3,7 +3,6 @@
 
 # Options
 - ApiGen\ModularConfiguration\Option\DestinationOption
-- ApiGen\ModularConfiguration\Option\ConfigurationFileOption
 - ApiGen\ModularConfiguration\Option\AnnotationGroupsOption
 - ApiGen\ModularConfiguration\Option\BaseUrlOption
 - ApiGen\ModularConfiguration\Option\SourceOption
@@ -14,3 +13,6 @@
 - ApiGen\ModularConfiguration\Option\GoogleAnalyticsOption
 - ApiGen\ModularConfiguration\Option\TitleOption
 - ApiGen\ModularConfiguration\Option\OverwriteOption
+
+# Paramters
+- ApiGen\ModularConfiguration\Parameter\ParameterProvider

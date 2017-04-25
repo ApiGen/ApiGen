@@ -2,6 +2,7 @@
 
 namespace ApiGen\ModularConfiguration;
 
+use ApiGen\Configuration\Exceptions\ConfigurationException;
 use ApiGen\ModularConfiguration\Contract\ConfigurationResolverInterface;
 use ApiGen\ModularConfiguration\Contract\Option\OptionInterface;
 
@@ -24,9 +25,7 @@ final class ConfigurationResolver implements ConfigurationResolverInterface
      */
     public function resolveValue(string $name, $value)
     {
-        if (! isset($this->options[$name])) {
-            return null; // or throw exception?
-        }
+        $this->ensureOptionExists($name);
 
         return $this->options[$name]->resolveValue($value);
     }
@@ -37,5 +36,16 @@ final class ConfigurationResolver implements ConfigurationResolverInterface
     public function getOptionNames(): array
     {
         return array_keys($this->options);
+    }
+
+    private function ensureOptionExists(string $name): void
+    {
+        if (! isset($this->options[$name])) {
+            throw new ConfigurationException(sprintf(
+                'Option "%s" was not found. Available options are: %s.',
+                $name,
+                array_keys($this->options)
+            ));
+        }
     }
 }

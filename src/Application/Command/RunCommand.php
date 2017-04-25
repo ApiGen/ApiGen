@@ -2,7 +2,6 @@
 
 namespace ApiGen\Application\Command;
 
-use ApiGen\ModularConfiguration\Option\ConfigurationFileOption;
 use ApiGen\ModularConfiguration\Option\DestinationOption;
 use ApiGen\ModularConfiguration\Option\SourceOption;
 use Symfony\Component\Console\Input\InputInterface;
@@ -20,28 +19,21 @@ final class RunCommand
     private $destination;
 
     /**
-     * @var string
-     */
-    private $configPath;
-
-    /**
      * @param string[] $source
      * @param string $destination
      * @param string $configPath
      */
-    private function __construct(array $source, string $destination, string $configPath)
+    private function __construct(array $source, string $destination)
     {
         $this->source = $source;
         $this->destination = $destination;
-        $this->configPath = $configPath;
     }
 
     public static function createFromInput(InputInterface $input): self
     {
         return new self(
             $input->getArgument(SourceOption::NAME),
-            $input->getOption(DestinationOption::NAME),
-            $input->getOption(ConfigurationFileOption::NAME)
+            $input->getOption(DestinationOption::NAME)
         );
     }
 
@@ -56,10 +48,5 @@ final class RunCommand
     public function getDestination(): string
     {
         return $this->destination;
-    }
-
-    public function getConfigPath(): string
-    {
-        return $this->configPath;
     }
 }

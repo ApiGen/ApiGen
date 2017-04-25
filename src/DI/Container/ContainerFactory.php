@@ -13,6 +13,10 @@ final class ContainerFactory
         $configurator = new Configurator;
         $configurator->setTempDirectory($this->createAndReturnTempDir());
         $configurator->addConfig(__DIR__ . '/../../config/config.neon');
+        $localConfig = getcwd() . '/apigen.neon';
+        if (file_exists($localConfig)) {
+            $configurator->addConfig($localConfig);
+        }
 
         return $configurator->createContainer();
     }
