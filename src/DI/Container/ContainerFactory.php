@@ -4,28 +4,46 @@ namespace ApiGen\DI\Container;
 
 use Nette\Configurator;
 use Nette\DI\Container;
+use Nette\DI\Extensions\ExtensionsExtension;
+use Nette\DI\Extensions\PhpExtension;
 use Nette\Utils\FileSystem;
 
 final class ContainerFactory
 {
+    /**
+     * @var string
+     */
+    private const CONFIG_NAME = 'apigen.neon';
+
     public function create(): Container
     {
         $configurator = new Configurator;
         $configurator->setTempDirectory($this->createAndReturnTempDir());
-        $configurator->addConfig(__DIR__ . '/../../config/config.neon');
-        $localConfig = getcwd() . '/apigen.neon';
-        if (file_exists($localConfig)) {
-            $configurator->addConfig($localConfig);
-        }
+
+        $this->loadConfigFiles($configurator);
+
+        $configurator->defaultExtensions = [
+            'php' => PhpExtension::class,
+            'extensions' => ExtensionsExtension::class,
+        ];
 
         return $configurator->createContainer();
     }
 
     private function createAndReturnTempDir(): string
     {
-        $tempDir = sys_get_temp_dir() . DIRECTORY_SEPARATOR . '_apigen';
+        $tempDir = sys_get_temp_dir() . '/_apigen';
         FileSystem::delete($tempDir);
         FileSystem::createDir($tempDir);
         return $tempDir;
+    }
+
+    private function loadConfigFiles(Configurator $configurator): void
+    {
+        $configurator->addConfig(__DIR__ . '/../../config/config.neon');
+        $localConfig = getcwd() . '/' . self::CONFIG_NAME;
+        if (file_exists($localConfig)) {
+            $configurator->addConfig($localConfig);
+        }
     }
 }
