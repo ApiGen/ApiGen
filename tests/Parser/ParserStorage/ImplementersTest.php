@@ -9,7 +9,6 @@ use ApiGen\Tests\AbstractContainerAwareTestCase;
 use ApiGen\Tests\Parser\ParserStorage\ImplementersSource\ChildInterface;
 use ApiGen\Tests\Parser\ParserStorage\ImplementersSource\ParentInterface;
 use ApiGen\Tests\Parser\ParserStorage\ImplementersSource\SomeClass;
-use Nette\Utils\Finder;
 
 final class ImplementersTest extends AbstractContainerAwareTestCase
 {
@@ -25,12 +24,9 @@ final class ImplementersTest extends AbstractContainerAwareTestCase
 
     protected function setUp(): void
     {
-        $finder = Finder::find('*')->in(__DIR__ . '/ImplementersSource');
-        $files = iterator_to_array($finder->getIterator());
-
         /** @var ParserInterface $parser */
         $parser = $this->container->getByType(ParserInterface::class);
-        $parser->parseFiles($files);
+        $parser->parseDirectories([__DIR__ . '/ImplementersSource']);
 
         $this->parserStorage = $this->container->getByType(ParserStorageInterface::class);
         $classes = $this->parserStorage->getClasses();

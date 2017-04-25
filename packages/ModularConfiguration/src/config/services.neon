@@ -14,5 +14,5 @@
 - ApiGen\ModularConfiguration\Option\TitleOption
 - ApiGen\ModularConfiguration\Option\OverwriteOption
 
-# Paramters
+# Parameters
 - ApiGen\ModularConfiguration\Parameter\ParameterProvider
