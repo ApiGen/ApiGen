@@ -18,7 +18,6 @@ final class BaseUrlOption implements OptionInterface
 
     /**
      * @param mixed $value
-     * @return mixed
      */
     public function resolveValue($value): string
     {

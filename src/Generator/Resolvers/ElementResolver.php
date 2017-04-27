@@ -72,9 +72,7 @@ final class ElementResolver implements ElementResolverInterface
     }
 
     /**
-     * @param string $definition
      * @param object|string $reflectionElement
-     * @param string|null $expectedName
      * @return ClassReflectionInterface|ConstantReflectionInterface|FunctionReflectionInterface|MethodReflectionInterface|PropertyReflectionInterface|null
      */
     public function resolveElement(string $definition, $reflectionElement, ?string &$expectedName = null)
@@ -273,8 +271,6 @@ final class ElementResolver implements ElementResolverInterface
 
     /**
      * @param mixed[] $elements
-     * @param string $name
-     * @param string $namespace
      * @return mixed|ElementReflectionInterface
      */
     private function findElementByNameAndNamespace(array $elements, string $name, string $namespace)

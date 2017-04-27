@@ -9,7 +9,6 @@ interface ConfigurationResolverInterface
     public function addOption(OptionInterface $option): void;
 
     /**
-     * @param string $name
      * @param mixed $value
      * @return mixed
      */

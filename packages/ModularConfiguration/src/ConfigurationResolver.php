@@ -19,7 +19,6 @@ final class ConfigurationResolver implements ConfigurationResolverInterface
     }
 
     /**
-     * @param string $name
      * @param mixed $value
      * @return mixed
      */

@@ -26,9 +26,7 @@ final class NetteFinder implements FinderInterface
     }
 
     /**
-     * @param string $source
      * @param string[] $exclude
-     * @param string $fileMasks
      * @return SplFileInfo[]
      */
     private function getFilesFromSource(string $source, array $exclude, string $fileMasks): array

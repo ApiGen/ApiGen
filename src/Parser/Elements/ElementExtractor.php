@@ -89,7 +89,6 @@ final class ElementExtractor implements ElementExtractorInterface
 
     /**
      * @param mixed[] $elements
-     * @param string $annotation
      * @param mixed[] $storage
      * @return mixed[]
      */

@@ -29,8 +29,6 @@ final class TemplateRenderer implements TemplateRendererInterface
     }
 
     /**
-     * @param string $templateFile
-     * @param string $destinationFile
      * @param mixed[] $parameters
      */
     public function renderToFile(string $templateFile, string $destinationFile, array $parameters = []): void

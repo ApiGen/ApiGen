@@ -34,8 +34,8 @@
         "phpstan/phpstan": "^0.6",
         "symplify/easy-coding-standard": "^1.4",
         "squizlabs/php_codesniffer": "3.0.0RC4 as 2.8.1",
-        "slevomat/coding-standard": "^2.0",
-        "symplify/coding-standard": "^1.4"
+        "slevomat/coding-standard": "^2.1",
+        "symplify/coding-standard": "v2.0.0-RC2"
     },
     "autoload": {
         "psr-4": {
@@ -50,7 +50,6 @@
         "psr-4": {
             "ApiGen\\Tests\\": "tests",
             "ApiGen\\ElementReflection\\Tests\\": "packages/ElementReflection/tests",
-            "ApiGen\\ModularConfiguration\\Tests\\": "packages/ModularConfiguration/tests",
             "ApiGen\\ReflectionToElementTransformer\\Tests\\": "packages/ReflectionToElementTransformer/tests",
             "ApiGen\\Parser\\Tests\\": "tests/Parser"
         }

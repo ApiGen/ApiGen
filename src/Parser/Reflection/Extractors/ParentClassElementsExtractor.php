@@ -99,7 +99,6 @@ final class ParentClassElementsExtractor implements ParentClassElementsExtractor
     /**
      * @param mixed[] $elements
      * @param mixed[] $allElements
-     * @param ClassReflectionInterface $reflectionClass
      * @return mixed[]
      */
     private function sortElements(array $elements, array $allElements, ClassReflectionInterface $reflectionClass): array

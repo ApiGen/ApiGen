@@ -20,8 +20,6 @@ class ResolverFilters extends Filters
     }
 
     /**
-     * @param string $className
-     * @param string|null $namespace
      * @return ReflectionClass|false
      */
     public function getClass(string $className, ?string $namespace = '')
@@ -35,7 +33,6 @@ class ResolverFilters extends Filters
     }
 
     /**
-     * @param string $definition
      * @param AbstractReflectionElement|ReflectionInterface $context
      * @param null $expectedName
      * @return AbstractReflectionElement|bool|null

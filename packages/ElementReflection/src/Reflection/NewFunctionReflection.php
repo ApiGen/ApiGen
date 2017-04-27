@@ -30,8 +30,6 @@ final class NewFunctionReflection implements FunctionReflectionInterface
     private $parameterReflections = [];
 
     /**
-     * @param ReflectionFunction $betterFunctionReflection
-     * @param DocBlock $docBlock
      * @param ParameterReflectionInterface[] $parameterReflections
      */
     public function __construct(

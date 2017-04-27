@@ -34,9 +34,7 @@ final class FileSystem
     }
 
     /**
-     * @param string $path
      * @param string[] $baseDirectories
-     * @return string
      */
     public function getAbsolutePath(string $path, array $baseDirectories = []): string
     {
@@ -69,7 +67,6 @@ final class FileSystem
 
     /**
      * @param string[]|string[][] $source
-     * @param string $destination
      */
     public function copy(array $source, string $destination): void
     {

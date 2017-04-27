@@ -200,7 +200,6 @@ final class Backend extends Memory
     }
 
     /**
-     * @param string $name
      * @param ClassReflectionInterface|MethodReflectionInterface|InNamespaceInterface $reflection
      */
     private function getClassFqn(string $name, $reflection): string

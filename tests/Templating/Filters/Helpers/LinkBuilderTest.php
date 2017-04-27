@@ -21,11 +21,7 @@ final class LinkBuilderTest extends TestCase
     /**
      * @dataProvider getBuildData()
      *
-     * @param string $url
-     * @param string $text
-     * @param bool $escape
      * @param string[] $classes
-     * @param string $expectedLink
      */
     public function testBuild(string $url, string $text, bool $escape, array $classes, string $expectedLink): void
     {

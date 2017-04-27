@@ -215,7 +215,6 @@ final class UrlFilters extends Filters
 
     /**
      * @param mixed $value
-     * @param ElementReflectionInterface $elementReflection
      */
     private function getDescriptionFromValue($value, ElementReflectionInterface $elementReflection): string
     {

@@ -17,9 +17,7 @@ interface ElementResolverInterface
     public function getFunction(string $name, string $namespace = '');
 
     /**
-     * @param string $definition
      * @param string|object $context
-     * @param string $expectedName
      * @return ElementReflectionInterface|bool
      */
     public function resolveElement(string $definition, $context, ?string &$expectedName = null);

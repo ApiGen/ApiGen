@@ -32,7 +32,6 @@ final class ElementLinkFactory
     }
 
     /**
-     * @param ElementReflectionInterface $element
      * @param mixed[] $classes
      */
     public function createForElement(ElementReflectionInterface $element, array $classes = []): string
@@ -57,7 +56,6 @@ final class ElementLinkFactory
     }
 
     /**
-     * @param ClassReflectionInterface $reflectionClass
      * @param mixed[] $classes
      */
     private function createForClass(ClassReflectionInterface $reflectionClass, array $classes): string
@@ -71,7 +69,6 @@ final class ElementLinkFactory
     }
 
     /**
-     * @param MethodReflectionInterface $reflectionMethod
      * @param mixed[] $classes
      */
     private function createForMethod(MethodReflectionInterface $reflectionMethod, array $classes): string
@@ -85,7 +82,6 @@ final class ElementLinkFactory
     }
 
     /**
-     * @param PropertyReflectionInterface $reflectionProperty
      * @param mixed[] $classes
      */
     private function createForProperty(PropertyReflectionInterface $reflectionProperty, array $classes): string
@@ -102,7 +98,6 @@ final class ElementLinkFactory
     }
 
     /**
-     * @param ConstantReflectionInterface $reflectionConstant
      * @param mixed[] $classes
      */
     private function createForConstant(ConstantReflectionInterface $reflectionConstant, array $classes): string
@@ -116,7 +111,6 @@ final class ElementLinkFactory
     }
 
     /**
-     * @param FunctionReflectionInterface $reflectionFunction
      * @param mixed[] $classes
      */
     private function createForFunction(FunctionReflectionInterface $reflectionFunction, array $classes): string

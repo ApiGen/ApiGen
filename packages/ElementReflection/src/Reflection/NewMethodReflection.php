@@ -40,8 +40,6 @@ final class NewMethodReflection implements MethodReflectionInterface
     private $declaringClass;
 
     /**
-     * @param ReflectionMethod $betterFunctionReflection
-     * @param DocBlock $docBlock
      * @param ParameterReflectionInterface[] $parameterReflections
      */
     public function __construct(

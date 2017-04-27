@@ -8,7 +8,6 @@ interface ElementFilterInterface
 {
     /**
      * @param ElementReflectionInterface[] $elements
-     * @param string $annotation
      * @return ElementReflectionInterface[]
      */
     public function filterByAnnotation(array $elements, string $annotation): array;

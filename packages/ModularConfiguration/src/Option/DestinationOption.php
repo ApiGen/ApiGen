@@ -54,7 +54,6 @@ final class DestinationOption implements CommandOptionInterface
 
     /**
      * @param mixed $value
-     * @return mixed
      */
     public function resolveValue($value): string
     {

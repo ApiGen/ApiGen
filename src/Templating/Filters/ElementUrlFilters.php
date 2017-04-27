@@ -29,7 +29,6 @@ final class ElementUrlFilters extends Filters
 
     /**
      * @param string|ClassReflectionInterface $class
-     * @return string
      */
     public function classUrl($class): string
     {

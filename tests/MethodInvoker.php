@@ -8,7 +8,6 @@ final class MethodInvoker
 {
     /**
      * @param object $object
-     * @param string $method
      * @param mixed[] $args
      * @return mixed
      */

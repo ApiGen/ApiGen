@@ -43,7 +43,6 @@ final class NamespaceGenerator implements GeneratorInterface
     }
 
     /**
-     * @param string $namespace
      * @param mixed[] $elementsInNamespace
      */
     private function generateForNamespace(string $namespace, array $elementsInNamespace): void
