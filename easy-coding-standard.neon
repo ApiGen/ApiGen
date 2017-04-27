@@ -62,6 +62,15 @@ checkers:
     - SlevomatCodingStandard\Sniffs\TypeHints\ReturnTypeHintSpacingSniff
     - SlevomatCodingStandard\Sniffs\TypeHints\LongTypeHintsSniff
 
+    PhpCsFixer\Fixer\ClassNotation\VisibilityRequiredFixer:
+        - const
+        - property
+        - method
+
+    # new since PhpCsFixer 2.1/2.2
+    - PhpCsFixer\Fixer\LanguageConstruct\IsNullFixer
+    - PhpCsFixer\Fixer\Basic\NonPrintableCharacterFixer
+
 skip:
     SlevomatCodingStandard\Sniffs\TypeHints\TypeHintDeclarationSniff:
         - tests/Parser/Parser/ParserSource/SomeClass.php
@@ -109,3 +118,9 @@ skip:
 
     PhpCsFixer\Fixer\ClassNotation\MethodSeparationFixer:
         - tests/Generator/GeneratorQueueTest.php
+
+    PhpCsFixer\Fixer\ClassNotation\VisibilityRequiredFixer:
+        - tests/Parser/Parser/ParserSource/SomeInterface.php
+        - tests/Parser/Reflection/ReflectionClassSource/AccessLevels.php
+        - tests/Parser/Reflection/ReflectionClassSource/ParentClass.php
+        - tests/Parser/Reflection/ReflectionConstantSource/ConstantInClass.php
