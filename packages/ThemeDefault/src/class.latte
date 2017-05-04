@@ -274,7 +274,7 @@
 	{define property}
 	<tr data-order="{$property->getName()}" id="${$property->getName()}" n:class="$property->isDeprecated() ? deprecated">
 		<td class="attributes"><code>
-			{if $property->protected}protected{elseif $property->private}private{else}public{/if} {if $property->static}static{/if} {if $property->readOnly}read-only{elseif $property->writeOnly}write-only{/if}
+			{if $property->protected}protected{elseif $property->private}private{else}public{/if} {if $property->static}static{/if}
 			{$property->typeHint|typeLinks:$property|noescape}
 		</code></td>
 

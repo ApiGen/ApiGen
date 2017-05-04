@@ -2,6 +2,9 @@
 
 namespace ApiGen\ElementReflection\Reflection;
 
+/**
+ * @todo
+ */
 final class TraitMethodReflection
 {
 

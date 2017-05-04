@@ -25,10 +25,6 @@ interface PropertyReflectionInterface extends
 
     public function getTypeHint(): string;
 
-    public function isReadOnly(): bool;
-
-    public function isWriteOnly(): bool;
-
     public function hasAnnotation(string $name): bool;
 
     /**

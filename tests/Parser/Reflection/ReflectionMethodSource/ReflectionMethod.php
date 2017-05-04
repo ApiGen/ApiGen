@@ -9,16 +9,6 @@ namespace ApiGen\Tests\Parser\Reflection\ReflectionMethodSource;
 
 /**
  * This is some description
- *
- * @property-read int $skillCounter
- * @method string getName() This is some short description.
- * @method string doAnOperation(\stdClass $data, $type) This also some description.
- * @method static string doAStaticOperation(\stdClass $data, $type) This also some description.
- * @method static doAVoidStaticOperation(\stdClass $data, $type) This also some description.
- * @method static issue746(\stdClass $data = null, $type) This also some description.
- * @method static issue746_2(int $data, array $type) This also some description.
- *
- * @package Some_Package
  */
 class ReflectionMethod
 {

@@ -7,6 +7,11 @@ final class AnnotationList
     /**
      * @var string
      */
+    public const DEPRECATED = 'deprecated';
+
+    /**
+     * @var string
+     */
     public const PARAM = 'param';
 
     /**

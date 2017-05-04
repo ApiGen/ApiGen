@@ -35,16 +35,6 @@ final class ReflectionPropertyTest extends AbstractContainerAwareTestCase
         $this->assertInstanceOf(PropertyReflectionInterface::class, $this->reflectionProperty);
     }
 
-    public function testIsReadOnly(): void
-    {
-        $this->assertFalse($this->reflectionProperty->isReadOnly());
-    }
-
-    public function testIsWriteOnly(): void
-    {
-        $this->assertFalse($this->reflectionProperty->isWriteOnly());
-    }
-
     public function testGetTypeHint(): void
     {
         $this->assertSame('int', $this->reflectionProperty->getTypeHint());

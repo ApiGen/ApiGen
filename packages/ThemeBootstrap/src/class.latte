@@ -100,11 +100,11 @@
 	{var $inheritedMagicMethods = $class->inheritedMagicMethods}
 	{var $usedMagicMethods = $class->usedMagicMethods}
 
-	{if $ownMethods || $inheritedMethods || $usedMethods || $ownMagicMethods || $usedMagicMethods}
+	{if $ownMethods || $inheritedMethods || $usedMethods}
 		{define method}
-		<div data-order="{$method->name}" id="{if $method->magic}m{/if}_{$method->name}" n:class="element">
+		<div data-order="{$method->name}" id="_{$method->name}" n:class="element">
 			{var $annotations = $method->annotations}
-			<a class="anchor" href="#{if $method->magic}m{/if}_{$method->name}"></a>
+			<a class="anchor" href="#_{$method->name}"></a>
 			<code class="signature">
 				<span class="modifier">
 				{if !$class->interface && $method->abstract}abstract{elseif $method->final}final{/if} {if $method->protected}protected{elseif $method->private}private{else}public{/if} {if $method->static}static{/if}
@@ -325,11 +325,11 @@
 
 	{if $ownProperties || $inheritedProperties || $usedProperties || $ownMagicProperties || $inheritedMagicProperties || $usedMagicProperties}
 		{define property}
-		<div data-order="{$property->name}" id="{if $property->magic}m{/if}${$property->name}" n:class="element">
-			<a href="#{if $property->magic}m{/if}${$property->name}" class="anchor"></a>
+		<div data-order="{$property->name}" id="${$property->name}" n:class="element">
+			<a href="#${$property->name}" class="anchor"></a>
 			<code class="signature">
 				<span class="modifier">
-				{if $property->protected}protected{elseif $property->private}private{else}public{/if} {if $property->static}static{/if} {if $property->readOnly}read-only{elseif $property->writeOnly}write-only{/if}
+				{if $property->protected}protected{elseif $property->private}private{else}public{/if} {if $property->static}static{/if}
 				</span>
 
 				<span class="name">
@@ -362,7 +362,7 @@
 				{/foreach}
 			</div>
 
-			<pre n:if="!$property->magic" class="value">{$property->defaultValueDefinition|highlightValue:$class|noescape}</pre>
+			<pre class="value">{$property->defaultValueDefinition|highlightValue:$class|noescape}</pre>
 		</div>
 		{/define}
 
