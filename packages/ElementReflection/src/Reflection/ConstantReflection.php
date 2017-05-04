@@ -1,14 +1,18 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Parser\Reflection;
+namespace ApiGen\ElementReflection\Reflection;
 
-use ApiGen\Annotation\AnnotationList;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
-use Exception;
 
-final class ReflectionConstant extends AbstractReflectionElement implements ConstantReflectionInterface
+// @todo, resolve manually probably
+final class ConstantReflection implements ConstantReflectionInterface
 {
+//    public function __construct()
+//    {
+//        new Reflection
+//    }
+
     public function isPrivate(): bool
     {
         return $this->reflection->isPrivate();
@@ -77,5 +81,66 @@ final class ReflectionConstant extends AbstractReflectionElement implements Cons
     public function getValueDefinition(): string
     {
         return $this->reflection->getValueDefinition();
+    }
+
+    public function isDocumented(): bool
+    {
+        // TODO: Implement isDocumented() method.
+    }
+
+    public function isDeprecated(): bool
+    {
+        // TODO: Implement isDeprecated() method.
+    }
+
+    public function getNamespaceName(): string
+    {
+        // TODO: Implement getNamespaceName() method.
+    }
+
+    /**
+     * Returns element namespace name.
+     * For internal elements returns "PHP", for elements in global space returns "None".
+     */
+    public function getPseudoNamespaceName(): string
+    {
+        // TODO: Implement getPseudoNamespaceName() method.
+    }
+
+    /**
+     *
+     * @return mixed[]
+     */
+    public function getAnnotations(): array
+    {
+        // TODO: Implement getAnnotations() method.
+    }
+
+    /**
+     * @return mixed[]
+     */
+    public function getAnnotation(string $name): array
+    {
+        // TODO: Implement getAnnotation() method.
+    }
+
+    public function hasAnnotation(string $name): bool
+    {
+        // TODO: Implement hasAnnotation() method.
+    }
+
+    public function getDescription(): string
+    {
+        // TODO: Implement getDescription() method.
+    }
+
+    public function getStartLine(): int
+    {
+        // TODO: Implement getStartLine() method.
+    }
+
+    public function getEndLine(): int
+    {
+        // TODO: Implement getEndLine() method.
     }
 }

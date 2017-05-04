@@ -4,7 +4,7 @@ namespace ApiGen\ReflectionToElementTransformer\Transformer;
 
 use ApiGen\Contracts\Parser\Reflection\ParameterReflectionInterface;
 use ApiGen\ElementReflection\Reflection\FunctionReflection;
-use ApiGen\ElementReflection\Reflection\ParameterReflection;
+use ApiGen\ElementReflection\Reflection\MethodParameterReflection;
 use ApiGen\ReflectionToElementTransformer\Contract\Transformer\TransformerInterface;
 use phpDocumentor\Reflection\DocBlockFactory;
 use Roave\BetterReflection\Reflection\ReflectionFunction;
@@ -54,7 +54,7 @@ final class BetterFunctionReflectionTransformer implements TransformerInterface
         );
 
         foreach ($parameters as $parameter) {
-            /** @var ParameterReflection $parameter */
+            /** @var MethodParameterReflection $parameter */
             $parameter->setDeclaringFunction($functionReflection);
         }
 
