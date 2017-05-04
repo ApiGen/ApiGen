@@ -3,19 +3,19 @@
 namespace ApiGen\Parser\Elements;
 
 use ApiGen\Contracts\Parser\Elements\ElementExtractorInterface;
-use ApiGen\Contracts\Parser\Elements\ElementStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\ReflectionInterface;
+use ApiGen\Reflection\Contract\ReflectionStorageInterface;
 
 final class ElementExtractor implements ElementExtractorInterface
 {
     /**
-     * @var ElementStorageInterface
+     * @var ReflectionStorageInterface
      */
-    private $elementStorage;
+    private $reflectionStorage;
 
-    public function __construct(ElementStorageInterface $elementStorage)
+    public function __construct(ReflectionStorageInterface $reflectionStorage)
     {
-        $this->elementStorage = $elementStorage;
+        $this->reflectionStorage = $reflectionStorage;
     }
 
     /**
@@ -31,26 +31,26 @@ final class ElementExtractor implements ElementExtractorInterface
         ];
 
         $elements['functions'] = $this->filterByAnnotation(
-            $this->elementStorage->getFunctions(),
+            $this->reflectionStorage->getFunctionReflections(),
             $annotation
         );
 
         $elements['classes'] = $this->filterByAnnotation(
-            $this->elementStorage->getClasses(),
+            $this->reflectionStorage->getClassReflections(),
             $annotation
         );
 
         $elements['interfaces'] = $this->filterByAnnotation(
-            $this->elementStorage->getInterfaces(),
+            $this->reflectionStorage->getInterfaceReflections(),
             $annotation
         );
 
         $elements['traits'] = $this->filterByAnnotation(
-            $this->elementStorage->getTraits(),
+            $this->reflectionStorage->getTraitReflections(),
             $annotation
         );
 
-        foreach ($this->elementStorage->getClasses() as $classReflection) {
+        foreach ($this->reflectionStorage->getClassReflections() as $classReflection) {
             $elements['methods'] = $this->extractByAnnotationAndMerge(
                 $classReflection->getOwnMethods(),
                 $annotation,

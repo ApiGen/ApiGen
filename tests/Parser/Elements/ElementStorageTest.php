@@ -2,18 +2,16 @@
 
 namespace ApiGen\Tests\Parser\Elements;
 
-use ApiGen\Contracts\Parser\Elements\ElementStorageInterface;
-use ApiGen\Contracts\Parser\ParserStorageInterface;
+use ApiGen\Contracts\Parser\Elements\ReflectionStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
-use ApiGen\Parser\Reflection\ReflectionClass;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 use PHPUnit_Framework_MockObject_MockObject;
 
 final class ElementStorageTest extends AbstractContainerAwareTestCase
 {
     /**
-     * @var ElementStorageInterface
+     * @var ReflectionStorageInterface
      */
     private $elementStorage;
 
@@ -24,7 +22,7 @@ final class ElementStorageTest extends AbstractContainerAwareTestCase
         $parserStorage->setClasses($this->getReflectionClassMocks());
         $parserStorage->setFunctions([$this->getFunctionReflectionMock()]);
 
-        $this->elementStorage = $this->container->getByType(ElementStorageInterface::class);
+        $this->elementStorage = $this->container->getByType(ReflectionStorageInterface::class);
     }
 
     public function testEnsureCategorization(): void

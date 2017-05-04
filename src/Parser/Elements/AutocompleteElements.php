@@ -3,18 +3,18 @@
 namespace ApiGen\Parser\Elements;
 
 use ApiGen\Contracts\Parser\Elements\AutocompleteElementsInterface;
-use ApiGen\Contracts\Parser\Elements\ElementStorageInterface;
+use ApiGen\Reflection\Contract\ReflectionStorageInterface;
 
 final class AutocompleteElements implements AutocompleteElementsInterface
 {
     /**
-     * @var ElementStorageInterface
+     * @var ReflectionStorageInterface
      */
-    private $elementStorage;
+    private $reflectionStorage;
 
-    public function __construct(ElementStorageInterface $elementStorage)
+    public function __construct(ReflectionStorageInterface $reflectionStorage)
     {
-        $this->elementStorage = $elementStorage;
+        $this->reflectionStorage = $reflectionStorage;
     }
 
     /**
@@ -24,11 +24,11 @@ final class AutocompleteElements implements AutocompleteElementsInterface
     {
         $elements = [];
 
-        foreach ($this->elementStorage->getFunctions() as $functionReflection) {
+        foreach ($this->reflectionStorage->getFunctionReflections() as $functionReflection) {
             $elements[] = ['f', $functionReflection->getPrettyName()];
         }
 
-        foreach ($this->elementStorage->getClasses() as $classReflection) {
+        foreach ($this->reflectionStorage->getClassReflections() as $classReflection) {
             $elements[] = ['c', $classReflection->getPrettyName()];
 
             foreach ($classReflection->getOwnMethods() as $methodReflection) {
@@ -40,11 +40,11 @@ final class AutocompleteElements implements AutocompleteElementsInterface
             }
         }
 
-        foreach ($this->elementStorage->getInterfaces() as $interfaceReflection) {
+        foreach ($this->reflectionStorage->getInterfaceReflections() as $interfaceReflection) {
             $elements[] = ['c', $interfaceReflection->getPrettyName()];
         }
 
-        foreach ($this->elementStorage->getTraits() as $traitReflection) {
+        foreach ($this->reflectionStorage->getTraitReflections() as $traitReflection) {
             $elements[] = ['c', $traitReflection->getPrettyName()];
         }
 
@@ -54,6 +54,8 @@ final class AutocompleteElements implements AutocompleteElementsInterface
     }
 
     /**
+     * @todo is this needed?
+     *
      * @param string[] $elements
      * @return string[]
      */

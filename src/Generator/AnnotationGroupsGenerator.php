@@ -1,12 +1,11 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Generator\TemplateGenerators;
+namespace ApiGen\Generator;
 
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Generator\GeneratorInterface;
 use ApiGen\Contracts\Parser\Elements\ElementExtractorInterface;
 use ApiGen\Contracts\Templating\TemplateRendererInterface;
-use ApiGen\Parser\Elements\Elements;
 
 final class AnnotationGroupsGenerator implements GeneratorInterface
 {
@@ -52,12 +51,12 @@ final class AnnotationGroupsGenerator implements GeneratorInterface
             [
                 'annotation' => $annotation,
                 'hasElements' => (bool) count(array_filter($elements, 'count')),
-                'classes' => $elements[Elements::CLASSES],
-                'interfaces' => $elements[Elements::INTERFACES],
-                'traits' => $elements[Elements::TRAITS],
-                'methods' => $elements[Elements::METHODS],
-                'functions' => $elements[Elements::FUNCTIONS],
-                'properties' => $elements[Elements::PROPERTIES]
+                'classes' => $elements['classes'],
+                'interfaces' => $elements['interfaces'],
+                'traits' => $elements['traits'],
+                'methods' => $elements['methods'],
+                'functions' => $elements['functions'],
+                'properties' => $elements['properties']
             ]
         );
     }

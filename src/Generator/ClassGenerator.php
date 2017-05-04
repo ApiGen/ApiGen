@@ -1,20 +1,20 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Generator\TemplateGenerators;
+namespace ApiGen\Generator;
 
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Generator\GeneratorInterface;
 use ApiGen\Contracts\Generator\SourceCodeHighlighter\SourceCodeHighlighterInterface;
-use ApiGen\Contracts\Parser\Elements\ElementStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Templating\TemplateRendererInterface;
+use ApiGen\Reflection\Contract\ReflectionStorageInterface;
 
-final class TraitGenerator implements GeneratorInterface
+final class ClassGenerator implements GeneratorInterface
 {
     /**
-     * @var ElementStorageInterface
+     * @var ReflectionStorageInterface
      */
-    private $elementStorage;
+    private $reflectionStorage;
 
     /**
      * @var ConfigurationInterface
@@ -32,12 +32,12 @@ final class TraitGenerator implements GeneratorInterface
     private $templateRenderer;
 
     public function __construct(
-        ElementStorageInterface $elementStorage,
+        ReflectionStorageInterface $reflectionStorage,
         ConfigurationInterface $configuration,
         SourceCodeHighlighterInterface $sourceCodeHighlighter,
         TemplateRendererInterface $templateRenderer
     ) {
-        $this->elementStorage = $elementStorage;
+        $this->reflectionStorage = $reflectionStorage;
         $this->configuration = $configuration;
         $this->sourceCodeHighlighter = $sourceCodeHighlighter;
         $this->templateRenderer = $templateRenderer;
@@ -45,37 +45,35 @@ final class TraitGenerator implements GeneratorInterface
 
     public function generate(): void
     {
-        foreach ($this->elementStorage->getTraits() as $traitReflection) {
-            $this->generateForTrait($traitReflection);
-            $this->generateSourceCodeForTrait($traitReflection);
+        foreach ($this->reflectionStorage->getClassReflections() as $classReflection) {
+            $this->generateForClass($classReflection);
+            $this->generateSourceCodeForClass($classReflection);
         }
     }
 
-    private function generateForTrait(ClassReflectionInterface $traitReflection): void
+    private function generateForClass(ClassReflectionInterface $classReflection): void
     {
         $this->templateRenderer->renderToFile(
-            $this->configuration->getTemplateByName('trait'),
-            $this->configuration->getDestinationWithPrefixName('trait-',$traitReflection->getName()),
+            $this->configuration->getTemplateByName('class'),
+            $this->configuration->getDestinationWithPrefixName('class-', $classReflection->getName()),
             [
-                'trait' => $traitReflection,
-                'tree' => array_merge(array_reverse($traitReflection->getParentClasses()), [$traitReflection]),
+                'class' => $classReflection,
+                'tree' => array_merge(array_reverse($classReflection->getParentClasses()), [$classReflection]),
             ]
         );
     }
 
-    private function generateSourceCodeForTrait(ClassReflectionInterface $traitReflection): void
+    private function generateSourceCodeForClass(ClassReflectionInterface $classReflection): void
     {
-        $content = file_get_contents($traitReflection->getFileName());
+        $content = file_get_contents($classReflection->getFileName());
         $highlightedContent = $this->sourceCodeHighlighter->highlightAndAddLineNumbers($content);
-
-        $destination = $this->configuration->getDestinationWithPrefixName('source-trait-', $traitReflection->getName());
 
         $this->templateRenderer->renderToFile(
             $this->configuration->getTemplateByName('source'),
-            $destination,
+            $this->configuration->getDestinationWithPrefixName('source-class-', $classReflection->getName()),
             [
-                'fileName' => $traitReflection->getFileName(),
-                'source' => $highlightedContent,
+                'fileName' => $classReflection->getFileName(),
+                'source' => $highlightedContent
             ]
         );
     }

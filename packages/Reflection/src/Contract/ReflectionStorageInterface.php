@@ -1,19 +1,14 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Contracts\Parser;
+namespace ApiGen\Reflection\Contract;
 
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\InterfaceReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\TraitReflectionInterface;
 
-interface ParserInterface
+interface ReflectionStorageInterface
 {
-    /**
-     * @param string[] $directories
-     */
-    public function parseDirectories(array $directories): void;
-
     /**
      * @return ClassReflectionInterface[]
      */
@@ -33,16 +28,4 @@ interface ParserInterface
      * @return FunctionReflectionInterface[]
      */
     public function getFunctionReflections(): array;
-
-    // @legacy bellow @see \ApiGen\Parser\ParserStorage
-
-    /**
-     * @return ClassReflectionInterface[]|InterfaceReflectionInterface[]
-     */
-    public function getDirectImplementersOfInterface(InterfaceReflectionInterface $interfaceReflection): array;
-
-    /**
-     * @return ClassReflectionInterface[]|InterfaceReflectionInterface[]
-     */
-    public function getIndirectImplementersOfInterface(InterfaceReflectionInterface $interfaceReflection): array;
 }

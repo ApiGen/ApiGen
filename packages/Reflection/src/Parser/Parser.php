@@ -2,10 +2,12 @@
 
 namespace ApiGen\Reflection\Parser;
 
-use ApiGen\Contracts\Parser\ParserInterface;
+use ApiGen\Parser\Contract\ParserInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\InterfaceReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\TraitReflectionInterface;
+use ApiGen\Reflection\Contract\ReflectionStorageInterface;
 use ApiGen\Reflection\Reflection\InterfaceReflection;
 use ApiGen\Reflection\Reflection\TraitReflection;
 use ApiGen\Reflection\Contract\TransformerCollectorInterface;
@@ -13,7 +15,7 @@ use Roave\BetterReflection\Reflector\ClassReflector;
 use Roave\BetterReflection\Reflector\FunctionReflector;
 use Roave\BetterReflection\SourceLocator\Type\DirectoriesSourceLocator;
 
-final class Parser implements ParserInterface
+final class Parser implements ParserInterface, ReflectionStorageInterface
 {
     /**
      * @var TransformerCollectorInterface
@@ -26,12 +28,12 @@ final class Parser implements ParserInterface
     private $classReflections = [];
 
     /**
-     * @var InterfaceReflection[]
+     * @var InterfaceReflectionInterface[]
      */
     private $interfaceReflections = [];
 
     /**
-     * @var TraitReflection[]
+     * @var TraitReflectionInterface[]
      */
     private $traitReflections = [];
 
@@ -95,16 +97,6 @@ final class Parser implements ParserInterface
     }
 
     /**
-     * @return ClassReflectionInterface[]
-     */
-    private function transformBetterClassInterfaceAndTraitReflections(ClassReflector $classReflector): array
-    {
-        $betterClassReflections = $classReflector->getAllClasses();
-
-        $this->transformerCollector->transformGroup($betterClassReflections);
-    }
-
-    /**
      * @param object[] $classInterfaceAndTraitReflections
      */
     private function separateClassInterfaceAndTraitReflections(array $classInterfaceAndTraitReflections): void
@@ -130,6 +122,16 @@ final class Parser implements ParserInterface
         $betterFunctionReflections = $functionReflector->getAllFunctions();
 
         return $this->transformerCollector->transformGroup($betterFunctionReflections);
+    }
+
+    /**
+     * @return ClassReflectionInterface[]
+     */
+    private function transformBetterClassInterfaceAndTraitReflections(ClassReflector $classReflector): array
+    {
+        $betterClassReflections = $classReflector->getAllClasses();
+
+        return $this->transformerCollector->transformGroup($betterClassReflections);
     }
 
     private function parseClassElements(DirectoriesSourceLocator $directoriesSourceLocator): void

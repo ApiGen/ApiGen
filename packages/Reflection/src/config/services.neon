@@ -13,3 +13,12 @@
 - ApiGen\Reflection\Transformer\BetterParameterReflectionTransformer
 - ApiGen\Reflection\Transformer\BetterInterfaceReflectionTransformer
 - ApiGen\Reflection\Transformer\BetterTraitReflectionTransformer
+
+
+
+# Elements
+- ApiGen\Parser\Elements\AutocompleteElements
+- ApiGen\Parser\Elements\ElementExtractor
+
+- ApiGen\Namespaces\NamespaceSorter
+- ApiGen\Namespaces\NamespaceStorage

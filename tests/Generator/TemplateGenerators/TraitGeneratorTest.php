@@ -3,7 +3,7 @@
 namespace ApiGen\Tests\Generator\TemplateGenerators;
 
 use ApiGen\Contracts\Parser\ParserInterface;
-use ApiGen\Generator\TemplateGenerators\TraitGenerator;
+use ApiGen\Generator\TraitGenerator;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 
 final class TraitGeneratorTest extends AbstractContainerAwareTestCase

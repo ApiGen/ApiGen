@@ -21,15 +21,15 @@
 # Generator
 - ApiGen\Generator\EventSubscriber\ProgressBarEventSubscriber
 - ApiGen\Generator\GeneratorQueue
-- ApiGen\Generator\TemplateGenerators\AnnotationGroupsGenerator
-- ApiGen\Generator\TemplateGenerators\ElementListGenerator
-- ApiGen\Generator\TemplateGenerators\IndexGenerator
+- ApiGen\Generator\AnnotationGroupsGenerator
+- ApiGen\Generator\ElementListGenerator
+- ApiGen\Generator\IndexGenerator
 # elements
-- ApiGen\Generator\TemplateGenerators\NamespaceGenerator
-- ApiGen\Generator\TemplateGenerators\ClassGenerator
-- ApiGen\Generator\TemplateGenerators\InterfaceGenerator
-- ApiGen\Generator\TemplateGenerators\TraitGenerator
-- ApiGen\Generator\TemplateGenerators\FunctionGenerator
+- ApiGen\Generator\NamespaceGenerator
+- ApiGen\Generator\ClassGenerator
+- ApiGen\Generator\InterfaceGenerator
+- ApiGen\Generator\TraitGenerator
+- ApiGen\Generator\FunctionGenerator
 
 # Templating
 - ApiGen\Templating\TemplateRenderer

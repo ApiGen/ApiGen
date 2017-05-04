@@ -2,7 +2,7 @@
 
 namespace ApiGen\Tests\Generator\TemplateGenerators;
 
-use ApiGen\Generator\TemplateGenerators\IndexGenerator;
+use ApiGen\Generator\IndexGenerator;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 
 final class OverviewGeneratorTest extends AbstractContainerAwareTestCase

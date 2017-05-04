@@ -39,8 +39,8 @@ final class GeneratorQueue implements GeneratorQueueInterface
     {
         $this->progressBar->init($this->stepCounter->getStepCount());
 
-        foreach ($this->generators as $templateGenerator) {
-            $templateGenerator->generate();
+        foreach ($this->generators as $generator) {
+            $generator->generate();
         }
     }
 }

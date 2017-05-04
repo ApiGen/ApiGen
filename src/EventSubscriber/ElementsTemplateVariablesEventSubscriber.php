@@ -2,27 +2,37 @@
 
 namespace ApiGen\EventSubscriber;
 
-use ApiGen\Contracts\Parser\Elements\ElementStorageInterface;
 use ApiGen\Event\CreateTemplateEvent;
+use ApiGen\Namespaces\NamespaceStorage;
 use ApiGen\Parser\Elements\AutocompleteElements;
+use ApiGen\Reflection\Contract\ReflectionStorageInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 final class ElementsTemplateVariablesEventSubscriber implements EventSubscriberInterface
 {
     /**
-     * @var ElementStorageInterface
+     * @var ReflectionStorageInterface
      */
-    private $elementStorage;
+    private $reflectionStorage;
 
     /**
      * @var AutocompleteElements
      */
     private $autocompleteElements;
 
-    public function __construct(ElementStorageInterface $elementStorage, AutocompleteElements $autocompleteElements)
-    {
-        $this->elementStorage = $elementStorage;
+    /**
+     * @var NamespaceStorage
+     */
+    private $namespaceStorage;
+
+    public function __construct(
+        ReflectionStorageInterface $reflectionStorage,
+        NamespaceStorage $namespaceStorage,
+        AutocompleteElements $autocompleteElements
+    ) {
+        $this->reflectionStorage = $reflectionStorage;
         $this->autocompleteElements = $autocompleteElements;
+        $this->namespaceStorage = $namespaceStorage;
     }
 
     /**
@@ -40,11 +50,11 @@ final class ElementsTemplateVariablesEventSubscriber implements EventSubscriberI
             'namespace' => null,
             'class' => null,
             'function' => null,
-            'namespaces' => array_keys($this->elementStorage->getNamespaces()),
-            'classes' => array_filter($this->elementStorage->getClasses()),
-            'interfaces' => array_filter($this->elementStorage->getInterfaces()),
-            'traits' => array_filter($this->elementStorage->getTraits()),
-            'functions' => array_filter($this->elementStorage->getFunctions()),
+            'namespaces' => array_keys($this->namespaceStorage->getReflectionsCategorizedToNamespaces()),
+            'classes' => array_filter($this->reflectionStorage->getClassReflections()),
+            'interfaces' => array_filter($this->reflectionStorage->getInterfaceReflections()),
+            'traits' => array_filter($this->reflectionStorage->getTraitReflections()),
+            'functions' => array_filter($this->reflectionStorage->getFunctionReflections()),
             'elements' => $this->autocompleteElements->getElements() // @todo: rename to autocompleteElements
         ]);
     }

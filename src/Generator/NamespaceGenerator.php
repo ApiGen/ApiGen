@@ -1,20 +1,14 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Generator\TemplateGenerators;
+namespace ApiGen\Generator;
 
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Generator\GeneratorInterface;
-use ApiGen\Contracts\Parser\Elements\ElementStorageInterface;
 use ApiGen\Contracts\Templating\TemplateRendererInterface;
-use ApiGen\Parser\Elements\Elements;
+use ApiGen\Namespaces\NamespaceStorage;
 
 final class NamespaceGenerator implements GeneratorInterface
 {
-    /**
-     * @var ElementStorageInterface
-     */
-    private $elementStorage;
-
     /**
      * @var ConfigurationInterface
      */
@@ -24,21 +18,26 @@ final class NamespaceGenerator implements GeneratorInterface
      * @var TemplateRendererInterface
      */
     private $templateRenderer;
+    /**
+     * @var NamespaceStorage
+     */
+    private $namespaceStorage;
 
     public function __construct(
-        ElementStorageInterface $elementStorage,
+        NamespaceStorage $namespaceStorage,
         ConfigurationInterface $configuration,
         TemplateRendererInterface $templateRenderer
     ) {
-        $this->elementStorage = $elementStorage;
+        $this->namespaceStorage = $namespaceStorage;
         $this->configuration = $configuration;
         $this->templateRenderer = $templateRenderer;
     }
 
     public function generate(): void
     {
-        foreach ($this->elementStorage->getNamespaces() as $namespace => $elementsInNamespace) {
-            $this->generateForNamespace($namespace, $elementsInNamespace);
+        $reflectionsCategorizedToNamespaces = $this->namespaceStorage->getReflectionsCategorizedToNamespaces();
+        foreach ($reflectionsCategorizedToNamespaces as $namespace => $reflectionsInNamespace) {
+            $this->generateForNamespace($namespace, $reflectionsInNamespace);
         }
     }
 
@@ -53,10 +52,10 @@ final class NamespaceGenerator implements GeneratorInterface
             [
                 'namespace' => $namespace,
                 'subnamespaces' => $this->getSubnamesForName($namespace),
-                'classes' => $elementsInNamespace[Elements::CLASSES],
-                'interfaces' => $elementsInNamespace[Elements::INTERFACES],
-                'traits' => $elementsInNamespace[Elements::TRAITS],
-                'functions' => $elementsInNamespace[Elements::FUNCTIONS]
+                'classes' => $elementsInNamespace['classes'],
+                'interfaces' => $elementsInNamespace['interfaces'],
+                'traits' => $elementsInNamespace['traits'],
+                'functions' => $elementsInNamespace['functions']
             ]
         );
     }
@@ -66,7 +65,7 @@ final class NamespaceGenerator implements GeneratorInterface
      */
     private function getSubnamesForName(string $name): array
     {
-        $allNamespaces = array_keys($this->elementStorage->getNamespaces());
+        $allNamespaces = $this->namespaceStorage->getNamespaces();
 
         return array_filter($allNamespaces, function ($subname) use ($name) {
             $pattern = '~^' . preg_quote($name) . '\\\\[^\\\\]+$~';

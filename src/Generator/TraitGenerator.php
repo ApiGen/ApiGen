@@ -1,20 +1,21 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Generator\TemplateGenerators;
+namespace ApiGen\Generator;
 
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Generator\GeneratorInterface;
 use ApiGen\Contracts\Generator\SourceCodeHighlighter\SourceCodeHighlighterInterface;
-use ApiGen\Contracts\Parser\Elements\ElementStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\TraitReflectionInterface;
 use ApiGen\Contracts\Templating\TemplateRendererInterface;
+use ApiGen\Reflection\Contract\ReflectionStorageInterface;
 
-final class InterfaceGenerator implements GeneratorInterface
+final class TraitGenerator implements GeneratorInterface
 {
     /**
-     * @var ElementStorageInterface
+     * @var ReflectionStorageInterface
      */
-    private $elementStorage;
+    private $reflectionStorage;
 
     /**
      * @var ConfigurationInterface
@@ -32,12 +33,12 @@ final class InterfaceGenerator implements GeneratorInterface
     private $templateRenderer;
 
     public function __construct(
-        ElementStorageInterface $elementStorage,
+        ReflectionStorageInterface $reflectionStorage,
         ConfigurationInterface $configuration,
         SourceCodeHighlighterInterface $sourceCodeHighlighter,
         TemplateRendererInterface $templateRenderer
     ) {
-        $this->elementStorage = $elementStorage;
+        $this->reflectionStorage = $reflectionStorage;
         $this->configuration = $configuration;
         $this->sourceCodeHighlighter = $sourceCodeHighlighter;
         $this->templateRenderer = $templateRenderer;
@@ -45,38 +46,36 @@ final class InterfaceGenerator implements GeneratorInterface
 
     public function generate(): void
     {
-        foreach ($this->elementStorage->getInterfaces() as $interfaceReflection) {
-            $this->generateForInterface($interfaceReflection);
-            $this->generateSourceCodeForInterface($interfaceReflection);
+        foreach ($this->reflectionStorage->getTraitReflections() as $traitReflection) {
+            $this->generateForTrait($traitReflection);
+            $this->generateSourceCodeForTrait($traitReflection);
         }
     }
 
-    private function generateForInterface(ClassReflectionInterface $interfaceReflection): void
+    private function generateForTrait(TraitReflectionInterface $traitReflection): void
     {
         $this->templateRenderer->renderToFile(
-            $this->configuration->getTemplateByName('interface'),
-            $this->configuration->getDestinationWithPrefixName('interface-', $interfaceReflection->getName()),
+            $this->configuration->getTemplateByName('trait'),
+            $this->configuration->getDestinationWithPrefixName('trait-',$traitReflection->getName()),
             [
-                'interface' => $interfaceReflection,
-                'tree' => array_merge(array_reverse($interfaceReflection->getParentClasses()), [$interfaceReflection]),
+                'trait' => $traitReflection,
+                'tree' => array_merge(array_reverse($traitReflection->getParentClasses()), [$traitReflection]),
             ]
         );
     }
 
-    private function generateSourceCodeForInterface(ClassReflectionInterface $interfaceReflection): void
+    private function generateSourceCodeForTrait(ClassReflectionInterface $traitReflection): void
     {
-        $content = file_get_contents($interfaceReflection->getFileName());
+        $content = file_get_contents($traitReflection->getFileName());
         $highlightedContent = $this->sourceCodeHighlighter->highlightAndAddLineNumbers($content);
 
-        $destination = $this->configuration->getDestinationWithPrefixName(
-            'source-interface-', $interfaceReflection->getName()
-        );
+        $destination = $this->configuration->getDestinationWithPrefixName('source-trait-', $traitReflection->getName());
 
         $this->templateRenderer->renderToFile(
             $this->configuration->getTemplateByName('source'),
             $destination,
             [
-                'fileName' => $interfaceReflection->getFileName(),
+                'fileName' => $traitReflection->getFileName(),
                 'source' => $highlightedContent,
             ]
         );

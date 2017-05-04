@@ -7,7 +7,7 @@ parameters:
 
     autoload_files:
         # possibly add to autoload-dev section
-        - %rootDir%/../../../tests/Generator/TemplateGenerators/Source/SomeFunction.php
+        - %rootDir%/../../../tests/Generator/Source/SomeFunction.php
         - %rootDir%/../../../tests/Parser/Parser/ParserSource/SomeFunction.php
         - %rootDir%/../../../tests/Parser/Reflection/ReflectionFunctionSource/functions.php
 
