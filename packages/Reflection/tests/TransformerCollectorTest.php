@@ -33,7 +33,7 @@ final class TransformerCollectorTest extends AbstractContainerAwareTestCase
     public function testCreateFromReflectionClass(): void
     {
         $tokenReflectionClassMock = $this->createMock(IReflectionClass::class);
-        $reflectionClass = $this->transformerCollector->transformReflectionToElement($tokenReflectionClassMock);
+        $reflectionClass = $this->transformerCollector->transformSingle($tokenReflectionClassMock);
         $this->assertInstanceOf(ClassReflectionInterface::class, $reflectionClass);
         $this->checkLoadedProperties($reflectionClass);
     }
@@ -46,14 +46,14 @@ final class TransformerCollectorTest extends AbstractContainerAwareTestCase
         $tokenReflectionFunctionMock->method('getDocComment')
             ->willReturn(' ');
 
-        $reflectionFunction = $this->transformerCollector->transformReflectionToElement($tokenReflectionFunctionMock);
+        $reflectionFunction = $this->transformerCollector->transformSingle($tokenReflectionFunctionMock);
         $this->assertInstanceOf(FunctionReflectionInterface::class, $reflectionFunction);
     }
 
     public function testCreateFromReflectionMethod(): void
     {
         $tokenReflectionMethodMock = $this->createMock(IReflectionMethod::class);
-        $reflectionMethod = $this->transformerCollector->transformReflectionToElement($tokenReflectionMethodMock);
+        $reflectionMethod = $this->transformerCollector->transformSingle($tokenReflectionMethodMock);
         $this->assertInstanceOf(MethodReflectionInterface::class, $reflectionMethod);
         $this->checkLoadedProperties($reflectionMethod);
     }
@@ -61,7 +61,7 @@ final class TransformerCollectorTest extends AbstractContainerAwareTestCase
     public function testCreateFromReflectionProperty(): void
     {
         $tokenReflectionPropertyMock = $this->createMock(IReflectionProperty::class);
-        $reflectionProperty = $this->transformerCollector->transformReflectionToElement($tokenReflectionPropertyMock);
+        $reflectionProperty = $this->transformerCollector->transformSingle($tokenReflectionPropertyMock);
         $this->assertInstanceOf(PropertyReflectionInterface::class, $reflectionProperty);
         $this->checkLoadedProperties($reflectionProperty);
     }
@@ -70,7 +70,7 @@ final class TransformerCollectorTest extends AbstractContainerAwareTestCase
     {
         $tokenReflectionParameterMock = $this->createMock(ReflectionParameter::class);
 
-        $reflectionParameter = $this->transformerCollector->transformReflectionToElement($tokenReflectionParameterMock);
+        $reflectionParameter = $this->transformerCollector->transformSingle($tokenReflectionParameterMock);
         $this->assertInstanceOf(ParameterReflectionInterface::class, $reflectionParameter);
     }
 

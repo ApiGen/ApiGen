@@ -12,11 +12,11 @@ interface TransformerCollectorInterface
      * @param object $reflection
      * @return mixed
      */
-    public function transformReflectionToElement($reflection);
+    public function transformSingle($reflection);
 
     /**
      * @param object[] $reflections
      * @return object[]
      */
-    public function transformReflectionsToElements(array $reflections): array;
+    public function transformGroup(array $reflections): array;
 }

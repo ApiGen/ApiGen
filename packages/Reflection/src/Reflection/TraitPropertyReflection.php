@@ -81,7 +81,7 @@ final class TraitPropertyReflection implements PropertyReflectionInterface
 
     public function getDeclaringTrait(): TraitReflectionInterface
     {
-        return $this->transformerCollector->transformReflectionToElement(
+        return $this->transformerCollector->transformSingle(
             $this->betterPropertyReflection->getDeclaringClass()
         );
     }
@@ -189,7 +189,7 @@ final class TraitPropertyReflection implements PropertyReflectionInterface
 
     public function getDeclaringClass(): ?ClassReflectionInterface
     {
-        return $this->transformerCollector->transformReflectionToElement(
+        return $this->transformerCollector->transformSingle(
             $this->betterPropertyReflection->getDeclaringClass()
         );
     }

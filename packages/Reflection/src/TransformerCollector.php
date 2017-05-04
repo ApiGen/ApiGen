@@ -35,11 +35,11 @@ final class TransformerCollector implements TransformerCollectorInterface
      * @param object[] $reflections
      * @return object[]
      */
-    public function transformReflectionsToElements(array $reflections): array
+    public function transformGroup(array $reflections): array
     {
         $elements = [];
         foreach ($reflections as $reflection) {
-            $elements[] = $this->transformReflectionToElement($reflection);
+            $elements[] = $this->transformSingle($reflection);
         }
 
         return $elements;
@@ -49,7 +49,7 @@ final class TransformerCollector implements TransformerCollectorInterface
      * @param object $reflection
      * @return object
      */
-    public function transformReflectionToElement($reflection)
+    public function transformSingle($reflection)
     {
         foreach ($this->transformers as $transformer) {
             if (! $transformer->matches($reflection)) {

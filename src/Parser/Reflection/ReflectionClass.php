@@ -158,7 +158,7 @@ final class ReflectionClass extends AbstractReflectionElement implements ClassRe
             $this->ownMethods = [];
 
             foreach ($this->reflection->getOwnMethods($this->getVisibilityLevel()) as $method) {
-                $apiMethod = $this->transformerCollector->transformReflectionToElement($method);
+                $apiMethod = $this->transformerCollector->transformSingle($method);
                 if (! $this->isDocumented() || $apiMethod->isDocumented()) {
                     $this->ownMethods[$method->getName()] = $apiMethod;
                 }
@@ -202,7 +202,7 @@ final class ReflectionClass extends AbstractReflectionElement implements ClassRe
                     continue;
                 }
 
-                $apiProperty = $this->transformerCollector->transformReflectionToElement($property);
+                $apiProperty = $this->transformerCollector->transformSingle($property);
                 if (! $this->isDocumented() || $apiProperty->isDocumented()) {
                     $this->properties[$property->getName()] = $apiProperty;
                 }
@@ -220,7 +220,7 @@ final class ReflectionClass extends AbstractReflectionElement implements ClassRe
         if ($this->ownProperties === null) {
             $this->ownProperties = [];
             foreach ($this->reflection->getOwnProperties($this->getVisibilityLevel()) as $property) {
-                $apiProperty = $this->transformerCollector->transformReflectionToElement($property);
+                $apiProperty = $this->transformerCollector->transformSingle($property);
                 if (! $this->isDocumented() || $apiProperty->isDocumented()) {
                     /** @var ReflectionElement $property */
                     $this->ownProperties[$property->getName()] = $apiProperty;

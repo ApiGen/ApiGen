@@ -10,7 +10,6 @@ use ApiGen\Reflection\Reflection\InterfaceReflection;
 use ApiGen\Reflection\Reflection\TraitReflection;
 use ApiGen\Reflection\Contract\TransformerCollectorInterface;
 use Roave\BetterReflection\Reflection\ReflectionClass;
-use Roave\BetterReflection\Reflection\ReflectionFunction;
 use Roave\BetterReflection\Reflector\ClassReflector;
 use Roave\BetterReflection\Reflector\FunctionReflector;
 use Roave\BetterReflection\SourceLocator\Type\DirectoriesSourceLocator;
@@ -103,9 +102,7 @@ final class Parser implements ParserInterface
     {
         $betterClassReflections = $classReflector->getAllClasses();
 
-        return array_map(function (ReflectionClass $betterClassReflection) {
-            return $this->transformerCollector->transformReflectionToElement($betterClassReflection);
-        }, $betterClassReflections);
+        $this->transformerCollector->transformGroup($betterClassReflections);
     }
 
     /**
@@ -133,9 +130,7 @@ final class Parser implements ParserInterface
     {
         $betterFunctionReflections = $functionReflector->getAllFunctions();
 
-        return array_map(function (ReflectionFunction $betterFunctionReflection) {
-            return $this->transformerCollector->transformReflectionToElement($betterFunctionReflection);
-        }, $betterFunctionReflections);
+        return $this->transformerCollector->transformGroup($betterFunctionReflections);
     }
 
     private function parseClassElements(DirectoriesSourceLocator $directoriesSourceLocator): void

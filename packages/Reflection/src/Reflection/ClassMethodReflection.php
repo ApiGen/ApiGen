@@ -238,7 +238,7 @@ final class ClassMethodReflection implements MethodReflectionInterface
     public function getParameters(): array
     {
         if ($this->parameters === []) {
-            $this->parameters = $this->transformerCollector->transformReflectionsToElements(
+            $this->parameters = $this->transformerCollector->transformGroup(
                 $this->reflection->getParameters()
             );
         }

@@ -176,7 +176,7 @@ final class ClassPropertyReflection implements PropertyReflectionInterface
 
     public function getDeclaringClass(): ClassReflectionInterface
     {
-        return $this->transformerCollector->transformReflectionToElement(
+        return $this->transformerCollector->transformSingle(
             $this->betterPropertyReflection->getDeclaringClass()
         );
     }
