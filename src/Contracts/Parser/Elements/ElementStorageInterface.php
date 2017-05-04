@@ -28,11 +28,6 @@ interface ElementStorageInterface
     public function getTraits(): array;
 
     /**
-     * @return ClassReflectionInterface[]
-     */
-    public function getExceptions(): array;
-
-    /**
      * @return FunctionReflectionInterface[]
      */
     public function getFunctions(): array;

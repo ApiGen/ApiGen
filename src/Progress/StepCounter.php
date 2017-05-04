@@ -31,7 +31,6 @@ final class StepCounter
         return count($this->elementStorage->getClasses())
             + count($this->elementStorage->getInterfaces())
             + count($this->elementStorage->getTraits())
-            + count($this->elementStorage->getExceptions())
             + count($this->elementStorage->getFunctions());
     }
 }

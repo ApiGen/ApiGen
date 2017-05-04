@@ -32,7 +32,6 @@ final class ElementStorageTest extends AbstractContainerAwareTestCase
         $this->assertCount(1, $this->elementStorage->getClasses());
         $this->assertCount(1, $this->elementStorage->getTraits());
         $this->assertCount(1, $this->elementStorage->getInterfaces());
-        $this->assertCount(1, $this->elementStorage->getExceptions());
 
         $this->assertCount(1, $this->elementStorage->getFunctions());
 

@@ -12,11 +12,6 @@ interface ElementsInterface
     /**
      * @var string
      */
-    public const EXCEPTIONS = 'exceptions';
-
-    /**
-     * @var string
-     */
     public const FUNCTIONS = 'functions';
 
     /**

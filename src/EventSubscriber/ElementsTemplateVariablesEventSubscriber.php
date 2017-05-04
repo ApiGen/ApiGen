@@ -44,7 +44,6 @@ final class ElementsTemplateVariablesEventSubscriber implements EventSubscriberI
             'classes' => array_filter($this->elementStorage->getClasses()),
             'interfaces' => array_filter($this->elementStorage->getInterfaces()),
             'traits' => array_filter($this->elementStorage->getTraits()),
-            'exceptions' => array_filter($this->elementStorage->getExceptions()),
             'functions' => array_filter($this->elementStorage->getFunctions()),
             'elements' => $this->autocompleteElements->getElements()
         ]);

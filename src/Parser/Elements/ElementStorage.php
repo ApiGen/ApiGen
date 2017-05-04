@@ -31,11 +31,6 @@ final class ElementStorage implements ElementStorageInterface
     private $traits = [];
 
     /**
-     * @var ClassReflectionInterface[]
-     */
-    private $exceptions = [];
-
-    /**
      * @var FunctionReflectionInterface[]
      */
     private $functions = [];
@@ -89,15 +84,6 @@ final class ElementStorage implements ElementStorageInterface
     {
         $this->ensureCategorization();
         return $this->traits;
-    }
-
-    /**
-     * @return ClassReflectionInterface[]
-     */
-    public function getExceptions(): array
-    {
-        $this->ensureCategorization();
-        return $this->exceptions;
     }
 
     /**

@@ -11,7 +11,7 @@ final class Elements implements ElementsInterface
      */
     public function getAll(): array
     {
-        return [self::CLASSES, self::EXCEPTIONS, self::FUNCTIONS, self::INTERFACES, self::TRAITS];
+        return [self::CLASSES, self::FUNCTIONS, self::INTERFACES, self::TRAITS];
     }
 
     /**

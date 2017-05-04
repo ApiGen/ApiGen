@@ -55,7 +55,7 @@
 			{include group, groups => $namespaces, actualGroup => $namespace, groupBy => 'namespace'}
 		</div>
 
-		<hr n:if="($namespaces) && ($classes || $interfaces || $traits || $exceptions || $functions)">
+		<hr n:if="($namespaces) && ($classes || $interfaces || $traits || $functions)">
 
 		{define elements}
 			<ul>
@@ -77,11 +77,6 @@
 			{if $traits}
 			<h3>Traits</h3>
 			{include elements, elements => $traits, activeElement => $class}
-			{/if}
-
-			{if $exceptions}
-			<h3>Exceptions</h3>
-			{include elements, elements => $exceptions, activeElement => $class}
 			{/if}
 
 			{if $functions}

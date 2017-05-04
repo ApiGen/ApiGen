@@ -10,7 +10,7 @@ interface TransformerCollectorInterface
 
     /**
      * @param object $reflection
-     * @return mixed
+     * @return object
      */
     public function transformSingle($reflection);
 

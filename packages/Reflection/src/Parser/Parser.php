@@ -9,7 +9,6 @@ use ApiGen\Contracts\Parser\Reflection\InterfaceReflectionInterface;
 use ApiGen\Reflection\Reflection\InterfaceReflection;
 use ApiGen\Reflection\Reflection\TraitReflection;
 use ApiGen\Reflection\Contract\TransformerCollectorInterface;
-use Roave\BetterReflection\Reflection\ReflectionClass;
 use Roave\BetterReflection\Reflector\ClassReflector;
 use Roave\BetterReflection\Reflector\FunctionReflector;
 use Roave\BetterReflection\SourceLocator\Type\DirectoriesSourceLocator;

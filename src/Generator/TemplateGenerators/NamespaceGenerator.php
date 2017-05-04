@@ -56,7 +56,6 @@ final class NamespaceGenerator implements GeneratorInterface
                 'classes' => $elementsInNamespace[Elements::CLASSES],
                 'interfaces' => $elementsInNamespace[Elements::INTERFACES],
                 'traits' => $elementsInNamespace[Elements::TRAITS],
-                'exceptions' => $elementsInNamespace[Elements::EXCEPTIONS],
                 'functions' => $elementsInNamespace[Elements::FUNCTIONS]
             ]
         );

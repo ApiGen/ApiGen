@@ -3,7 +3,7 @@
     "description": "PHP 7.1 source code API generator.",
     "license": "MIT",
     "authors": [
-        { "name": "Tomáš Votruba", "homepage": "https://tomasvotruba.cz" },
+        { "name": "ApiGen Contributors", "homepage": "https://github.com/apigen/apigen/graphs/contributors" },
         { "name": "Jaroslav Hanslík", "homepage": "https://github.com/kukulich" },
         { "name": "Ondřej Nešpor", "homepage": "https://github.com/andrewsville" },
         { "name": "David Grudl",  "homepage": "http://davidgrudl.com" }
