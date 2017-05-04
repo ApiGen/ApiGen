@@ -10,10 +10,7 @@ use ApiGen\Contracts\Parser\Reflection\ParameterReflectionInterface;
 use phpDocumentor\Reflection\DocBlock\Tags\Param;
 use Roave\BetterReflection\Reflection\ReflectionParameter;
 
-/**
- * To replace @see \ApiGen\Parser\Reflection\ReflectionParameter
- */
-final class NewParameterReflection implements ParameterReflectionInterface
+final class ParameterReflection implements ParameterReflectionInterface
 {
     /**
      * @var ReflectionParameter

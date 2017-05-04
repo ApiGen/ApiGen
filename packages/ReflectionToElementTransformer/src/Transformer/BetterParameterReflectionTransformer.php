@@ -2,7 +2,7 @@
 
 namespace ApiGen\ReflectionToElementTransformer\Transformer;
 
-use ApiGen\ElementReflection\Reflection\NewParameterReflection;
+use ApiGen\ElementReflection\Reflection\ParameterReflection;
 use ApiGen\ReflectionToElementTransformer\Contract\Transformer\TransformerInterface;
 use Roave\BetterReflection\Reflection\ReflectionParameter;
 
@@ -19,8 +19,8 @@ final class BetterParameterReflectionTransformer implements TransformerInterface
     /**
      * @param ReflectionParameter $reflection
      */
-    public function transform($reflection): NewParameterReflection
+    public function transform($reflection): ParameterReflection
     {
-        return new NewParameterReflection($reflection);
+        return new ParameterReflection($reflection);
     }
 }

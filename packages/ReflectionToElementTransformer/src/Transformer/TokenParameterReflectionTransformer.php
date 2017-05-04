@@ -5,7 +5,7 @@ namespace ApiGen\ReflectionToElementTransformer\Transformer;
 use ApiGen\ElementReflection\Reflection\ClassReflection;
 use ApiGen\ElementReflection\Reflection\FunctionReflection;
 use ApiGen\ElementReflection\Reflection\ClassMethodReflection;
-use ApiGen\ElementReflection\Reflection\NewParameterReflection;
+use ApiGen\ElementReflection\Reflection\ParameterReflection;
 use ApiGen\ReflectionToElementTransformer\Contract\Transformer\TransformerInterface;
 use ApiGen\ReflectionToElementTransformer\Legacy\BetterFunctionReflectionParser;
 use phpDocumentor\Reflection\DocBlockFactory;
@@ -40,7 +40,7 @@ final class TokenParameterReflectionTransformer implements TransformerInterface
     /**
      * @param IReflectionParameter $reflection
      */
-    public function transform($reflection): NewParameterReflection
+    public function transform($reflection): ParameterReflection
     {
         $betterFunctionReflection = BetterFunctionReflectionParser::parseByNameAndFile(
             $reflection->getDeclaringFunctionName(),
@@ -55,7 +55,7 @@ final class TokenParameterReflectionTransformer implements TransformerInterface
         }
 
         $newFunctionReflection = $this->createBetterFunctionReflectionForParameter($betterFunctionReflection);
-        $newParameterReflection = new NewParameterReflection($matchingParameterReflection);
+        $newParameterReflection = new ParameterReflection($matchingParameterReflection);
         $newParameterReflection->setDeclaringFunction($newFunctionReflection);
 
         return $newParameterReflection;
