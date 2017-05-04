@@ -44,7 +44,7 @@ final class ConfigurationTest extends AbstractContainerAwareTestCase
     }
 
     /**
-     * @expectedException \ApiGen\Configuration\Exceptions\ConfigurationException
+     * @expectedException \ApiGen\ModularConfiguration\Exception\ConfigurationException
      */
     public function testPrepareOptionsDestinationNotSet(): void
     {

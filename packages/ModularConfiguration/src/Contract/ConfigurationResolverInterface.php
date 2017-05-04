@@ -15,7 +15,8 @@ interface ConfigurationResolverInterface
     public function resolveValue(string $name, $value);
 
     /**
-     * @return string[]
+     * @param mixed[] $values
+     * @return mixed[]
      */
-    public function getOptionNames(): array;
+    public function resolveValuesWithDefaults(array $values): array;
 }

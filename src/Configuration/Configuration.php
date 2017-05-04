@@ -3,6 +3,7 @@
 namespace ApiGen\Configuration;
 
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
+use ApiGen\ModularConfiguration\Contract\ConfigurationResolverInterface;
 use ApiGen\ModularConfiguration\Option\AnnotationGroupsOption;
 use ApiGen\ModularConfiguration\Option\BaseUrlOption;
 use ApiGen\ModularConfiguration\Option\DestinationOption;
@@ -24,21 +25,21 @@ final class Configuration implements ConfigurationInterface
     private $options;
 
     /**
-     * @var ConfigurationOptionsResolver
-     */
-    private $configurationOptionsResolver;
-
-    /**
      * @var ParameterProvider
      */
     private $parameterProvider;
 
+    /**
+     * @var ConfigurationResolverInterface
+     */
+    private $configurationResolver;
+
     public function __construct(
-        ConfigurationOptionsResolver $configurationOptionsResolver,
-        ParameterProvider $parameterProvider
+        ParameterProvider $parameterProvider,
+        ConfigurationResolverInterface $configurationResolver
     ) {
-        $this->configurationOptionsResolver = $configurationOptionsResolver;
         $this->parameterProvider = $parameterProvider;
+        $this->configurationResolver = $configurationResolver;
     }
 
     /**
@@ -49,7 +50,8 @@ final class Configuration implements ConfigurationInterface
     {
         $configParameters = $this->parameterProvider->provide();
         $options = array_merge($configParameters, $options);
-        return $this->options = $this->configurationOptionsResolver->resolve($options);
+
+        return $this->options = $this->configurationResolver->resolveValuesWithDefaults($options);
     }
 
     /**

@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Configuration\Exceptions;
+namespace ApiGen\ModularConfiguration\Exception;
 
 use RuntimeException;
 

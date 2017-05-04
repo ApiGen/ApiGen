@@ -5,7 +5,6 @@ extensions:
     - ApiGen\Reflection\DI\ReflectionExtension
     - ApiGen\ModularConfiguration\DI\ModularConfigurationExtension
 
-    # Symfony\EventDispatcher integration to Nette\DI
+    # Symfony components integration to Nette\DI
     - Symplify\SymfonyEventDispatcher\Adapter\Nette\DI\SymfonyEventDispatcherExtension
-    # Symfony\Console integration to Nette\DI
     - Contributte\Console\DI\ConsoleExtension

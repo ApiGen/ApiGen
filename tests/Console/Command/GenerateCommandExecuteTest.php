@@ -47,7 +47,7 @@ final class GenerateCommandExecuteTest extends AbstractContainerAwareTestCase
     }
 
     /**
-     * @expectedException \ApiGen\Configuration\Exceptions\ConfigurationException
+     * @expectedException \ApiGen\ModularConfiguration\Exception\ConfigurationException
      * @expectedExceptionMessage Source "missing" does not exist
      */
     public function testExecuteWithError(): void

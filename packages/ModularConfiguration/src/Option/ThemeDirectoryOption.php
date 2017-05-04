@@ -2,7 +2,7 @@
 
 namespace ApiGen\ModularConfiguration\Option;
 
-use ApiGen\Configuration\Exceptions\ConfigurationException;
+use ApiGen\ModularConfiguration\Exception\ConfigurationException;
 use ApiGen\ModularConfiguration\Contract\Option\OptionInterface;
 use ApiGen\Utils\FileSystem;
 

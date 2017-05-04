@@ -13,7 +13,6 @@
 
 # Configuration
 - ApiGen\Configuration\Configuration
-- ApiGen\Configuration\ConfigurationOptionsResolver
 
 # Elements
 - ApiGen\Generator\Resolvers\ElementResolver
