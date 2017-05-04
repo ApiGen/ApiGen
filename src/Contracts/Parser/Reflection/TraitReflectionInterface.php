@@ -141,7 +141,7 @@ interface TraitReflectionInterface extends ReflectionInterface
     public function getProperties(): array;
 
     /**
-     * @return PropertyReflectionInterface[]|VisibilityTrait[]
+     * @return PropertyReflectionInterface[]
      */
     public function getOwnProperties(): array;
 
@@ -165,11 +165,6 @@ interface TraitReflectionInterface extends ReflectionInterface
     public function hasProperty(string $name): bool;
 
     public function usesTrait(string $name): bool;
-
-    /**
-     * @return ClassReflectionInterface[]
-     */
-    public function getParsedClasses(): array;
 
     public function isAbstract(): bool;
 

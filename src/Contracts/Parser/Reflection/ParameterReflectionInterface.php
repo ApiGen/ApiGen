@@ -2,10 +2,18 @@
 
 namespace ApiGen\Contracts\Parser\Reflection;
 
-use ApiGen\Contracts\Parser\Reflection\TokenReflection\ReflectionInterface;
-
-interface ParameterReflectionInterface extends ReflectionInterface
+interface ParameterReflectionInterface
 {
+    /**
+     * Returns the name (FQN).
+     */
+    public function getName(): string;
+
+    /**
+     * Returns an element pretty (docblock compatible) name.
+     */
+    public function getPrettyName(): string;
+
     public function getTypeHint(): string;
 
     public function getDescription(): string;

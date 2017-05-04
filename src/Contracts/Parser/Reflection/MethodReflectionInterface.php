@@ -9,8 +9,7 @@ use ApiGen\Contracts\Parser\Reflection\Behavior\LinedInterface;
 interface MethodReflectionInterface extends
     ReflectionInterface,
     InClassInterface,
-    InTraitInterface,
-    LinedInterface
+    InTraitInterface
 {
     public function getPrettyName(): string;
 
@@ -30,4 +29,8 @@ interface MethodReflectionInterface extends
      * @return ParameterReflectionInterface[]
      */
     public function getParameters(): array;
+
+    public function getStartLine(): int;
+
+    public function getEndLine(): int;
 }

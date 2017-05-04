@@ -5,7 +5,7 @@ namespace ApiGen\Contracts\Parser\Reflection;
 use ApiGen\Contracts\Parser\Reflection\Behavior\LinedInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorInterface;
 
-interface ClassReflectionInterface extends ReflectionInterface, LinedInterface
+interface ClassReflectionInterface extends ReflectionInterface
 {
     public function getPrettyName(): string;
 
@@ -163,4 +163,8 @@ interface ClassReflectionInterface extends ReflectionInterface, LinedInterface
     public function isTrait(): bool;
 
     public function isSubclassOf(string $class): bool;
+
+    public function getStartLine(): int;
+
+    public function getEndLine(): int;
 }

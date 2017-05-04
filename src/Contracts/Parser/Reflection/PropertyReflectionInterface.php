@@ -9,8 +9,7 @@ use ApiGen\Contracts\Parser\Reflection\Behavior\LinedInterface;
 interface PropertyReflectionInterface extends
     ReflectionInterface,
     InTraitInterface,
-    InClassInterface,
-    LinedInterface
+    InClassInterface
 {
     public function getPrettyName(): string;
 
@@ -31,4 +30,8 @@ interface PropertyReflectionInterface extends
      * @return mixed[]
      */
     public function getAnnotation(string $name): array;
+
+    public function getStartLine(): int;
+
+    public function getEndLine(): int;
 }
