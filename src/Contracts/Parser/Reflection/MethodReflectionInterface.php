@@ -2,15 +2,12 @@
 
 namespace ApiGen\Contracts\Parser\Reflection;
 
-use ApiGen\Contracts\Parser\Reflection\Behavior\InClassInterface;
-use ApiGen\Contracts\Parser\Reflection\Behavior\InTraitInterface;
-use ApiGen\Contracts\Parser\Reflection\Behavior\LinedInterface;
-
-interface MethodReflectionInterface extends
-    ReflectionInterface,
-    InClassInterface,
-    InTraitInterface
+interface MethodReflectionInterface
 {
+    public function getDeclaringClassName(): string;
+
+    public function getNamespaceName(): string;
+
     public function getPrettyName(): string;
 
     public function isAbstract(): bool;
@@ -33,4 +30,46 @@ interface MethodReflectionInterface extends
     public function getStartLine(): int;
 
     public function getEndLine(): int;
+
+    public function getDeclaringClassName(): string;
+
+    public function getNamespaceName(): string;
+
+    public function getName(): string;
+
+    /**
+     * Returns the unqualified name (UQN).
+     */
+    public function getShortName(): string;
+
+    public function isDocumented(): bool;
+
+    public function isDeprecated(): bool;
+
+    /**
+     * Returns element namespace name.
+     * For internal elements returns "PHP", for elements in global space returns "None".
+     */
+    public function getPseudoNamespaceName(): string;
+
+    /**
+     *
+     * @return mixed[]
+     */
+    public function getAnnotations(): array;
+
+    /**
+     * @return mixed[]
+     */
+    public function getAnnotation(string $name): array;
+
+    public function hasAnnotation(string $name): bool;
+
+    public function getDescription(): string;
+
+
+    // smoetimes?
+    public function getDeclaringTrait(): ?TraitReflectionInterface;
+
+    public function getDeclaringTraitName(): string;
 }

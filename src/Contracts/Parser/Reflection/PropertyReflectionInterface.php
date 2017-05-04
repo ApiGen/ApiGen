@@ -2,14 +2,10 @@
 
 namespace ApiGen\Contracts\Parser\Reflection;
 
-use ApiGen\Contracts\Parser\Reflection\Behavior\InClassInterface;
 use ApiGen\Contracts\Parser\Reflection\Behavior\InTraitInterface;
-use ApiGen\Contracts\Parser\Reflection\Behavior\LinedInterface;
 
 interface PropertyReflectionInterface extends
-    ReflectionInterface,
-    InTraitInterface,
-    InClassInterface
+    ReflectionInterface
 {
     public function getPrettyName(): string;
 
@@ -34,4 +30,20 @@ interface PropertyReflectionInterface extends
     public function getStartLine(): int;
 
     public function getEndLine(): int;
+
+    public function getDeclaringClass(): ?ClassReflectionInterface;
+
+    /**
+     * @return mixed[]
+     */
+    public function getAnnotations(): array;
+
+    public function getDeclaringClassName(): string;
+
+    public function getNamespaceName(): string;
+
+    // sometimes
+    public function getDeclaringTrait(): ?TraitReflectionInterface;
+
+    public function getDeclaringTraitName(): string
 }

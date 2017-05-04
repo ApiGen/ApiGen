@@ -2,14 +2,7 @@
 
 namespace ApiGen\Contracts\Parser\Reflection;
 
-use ApiGen\Contracts\Parser\Reflection\Behavior\InClassInterface;
-use ApiGen\Contracts\Parser\Reflection\Behavior\InNamespaceInterface;
-use ApiGen\Contracts\Parser\Reflection\Behavior\LinedInterface;
-
-interface ConstantReflectionInterface extends
-    ReflectionInterface,
-    InNamespaceInterface,
-    InClassInterface
+interface ConstantReflectionInterface extends ReflectionInterface
 {
     public function getTypeHint(): string;
 
@@ -23,4 +16,15 @@ interface ConstantReflectionInterface extends
     public function getStartLine(): int;
 
     public function getEndLine(): int;
+
+    public function getDeclaringClass(): ?ClassReflectionInterface;
+
+    /**
+     * @return mixed[]
+     */
+    public function getAnnotations(): array;
+
+    public function getDeclaringClassName(): string;
+
+    public function getNamespaceName(): string;
 }
