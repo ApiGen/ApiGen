@@ -6,6 +6,7 @@ use ApiGen\ReflectionToElementTransformer\Contract\Transformer\TransformerInterf
 use ApiGen\ReflectionToElementTransformer\Contract\TransformerCollectorInterface;
 use Nette\DI\Compiler;
 use Nette\DI\CompilerExtension;
+use Symplify\PackageBuilder\Adapter\Nette\DI\DefinitionCollector;
 
 final class ReflectionToElementTransformerExtension extends CompilerExtension
 {
@@ -19,15 +20,11 @@ final class ReflectionToElementTransformerExtension extends CompilerExtension
 
     public function beforeCompile(): void
     {
-        $containerBuilder = $this->getContainerBuilder();
-
-        $transformerCollectorDefinition = $containerBuilder->getDefinitionByType(
-            TransformerCollectorInterface::class
+        DefinitionCollector::loadCollectorWithType(
+            $this->getContainerBuilder(),
+            TransformerCollectorInterface::class,
+            TransformerInterface::class,
+            'addTransformer'
         );
-        $transformerDefinitions = $containerBuilder->findByType(TransformerInterface::class);
-
-        foreach ($transformerDefinitions as $name => $definition) {
-            $transformerCollectorDefinition->addSetup('addTransformer', ['@' . $name]);
-        }
     }
 }

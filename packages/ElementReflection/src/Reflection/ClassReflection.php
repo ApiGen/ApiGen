@@ -106,12 +106,23 @@ final class ClassReflection implements ClassReflectionInterface
 
     public function getParentClass(): ?ClassReflectionInterface
     {
-        // TODO: Implement getParentClass() method.
+        $parentClassName = $this->reflection->getParentClassName();
+
+        if ($parentClassName) {
+            return $this->getParsedClasses()[$parentClassName];
+        }
+
+        return null;
     }
 
-    public function getParentClassName(): ?string
+    public function getParentClassName(): string
     {
-        // TODO: Implement getParentClassName() method.
+        if ($this->reflection->getParentClass()) {
+            return $this->reflection->getParentClass()
+                ->getShortName();
+        }
+
+        return '';
     }
 
     /**
@@ -119,7 +130,13 @@ final class ClassReflection implements ClassReflectionInterface
      */
     public function getParentClasses(): array
     {
-        // TODO: Implement getParentClasses() method.
+        if ($this->parentClasses === null) {
+            $this->parentClasses = array_map(function (IReflectionClass $class) {
+                return $this->getParsedClasses()[$class->getName()];
+            }, $this->reflection->getParentClasses());
+        }
+
+        return $this->parentClasses;
     }
 
     /**
@@ -138,41 +155,9 @@ final class ClassReflection implements ClassReflectionInterface
         // TODO: Implement getIndirectSubClasses() method.
     }
 
-    /**
-     * @return ClassReflectionInterface[]
-     */
-    public function getDirectImplementers(): array
+    public function implementsInterface(string $interface): bool
     {
-        // TODO: Implement getDirectImplementers() method.
-    }
-
-    /**
-     * @return ClassReflectionInterface[]
-     */
-    public function getIndirectImplementers(): array
-    {
-        // TODO: Implement getIndirectImplementers() method.
-    }
-
-    /**
-     * @return ClassReflectionInterface[]
-     */
-    public function getDirectUsers(): array
-    {
-        // TODO: Implement getDirectUsers() method.
-    }
-
-    /**
-     * @return ClassReflectionInterface[]
-     */
-    public function getIndirectUsers(): array
-    {
-        // TODO: Implement getIndirectUsers() method.
-    }
-
-    public function implementsInterface(string $name): bool
-    {
-        // TODO: Implement implementsInterface() method.
+        return $this->reflection->implementsInterface($interface);
     }
 
     /**
@@ -254,7 +239,18 @@ final class ClassReflection implements ClassReflectionInterface
      */
     public function getConstants(): array
     {
-        // TODO: Implement getConstants() method.
+        if ($this->constants === null) {
+            $this->constants = [];
+            foreach ($this->reflection->getConstantReflections() as $constant) {
+                $apiConstant = $this->transformerCollector->transformReflectionToElement($constant);
+                if (! $this->isDocumented() || $apiConstant->isDocumented()) {
+                    /** @var ReflectionElement $constant */
+                    $this->constants[$constant->getName()] = $apiConstant;
+                }
+            }
+        }
+
+        return $this->constants;
     }
 
     /**
@@ -262,7 +258,15 @@ final class ClassReflection implements ClassReflectionInterface
      */
     public function getOwnConstants(): array
     {
-        // TODO: Implement getOwnConstants() method.
+        if (isset($this->getOwnConstants()[$name])) {
+            return $this->getOwnConstants()[$name];
+        }
+
+        throw new InvalidArgumentException(sprintf(
+            'Constant %s does not exist in class %s',
+            $name,
+            $this->reflection->getName()
+        ));
     }
 
     /**
@@ -356,12 +360,9 @@ final class ClassReflection implements ClassReflectionInterface
      */
     public function getTraitProperties(): array
     {
-        // TODO: Implement getTraitProperties() method.
+        return $this->classTraitElementExtractor->getTraitProperties();
     }
 
-    /**
-     * @return PropertyReflectionInterface[]
-     */
     public function getUsedProperties(): array
     {
         // TODO: Implement getUsedProperties() method.
@@ -369,7 +370,15 @@ final class ClassReflection implements ClassReflectionInterface
 
     public function getProperty(string $name): PropertyReflectionInterface
     {
-        // TODO: Implement getProperty() method.
+        if ($this->hasProperty($name)) {
+            return $this->properties[$name];
+        }
+
+        throw new InvalidArgumentException(sprintf(
+            'Property %s does not exist in class %s',
+            $name,
+            $this->reflection->getName()
+        ));
     }
 
     public function hasProperty(string $name): bool

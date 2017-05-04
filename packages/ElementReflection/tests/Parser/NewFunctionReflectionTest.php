@@ -7,9 +7,6 @@ use ApiGen\ElementReflection\Parser\Parser;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 use phpDocumentor\Reflection\DocBlock\Tags\Return_;
 
-/**
- * Mirror to Function test @see \ApiGen\Tests\Parser\Parser\ParserTest
- */
 final class NewFunctionReflectionTest extends AbstractContainerAwareTestCase
 {
     /**

@@ -231,45 +231,6 @@ final class ReflectionClass extends AbstractReflectionElement implements ClassRe
         return $this->ownProperties;
     }
 
-    /**
-     * @return PropertyReflectionInterface[]
-     */
-    public function getTraitProperties(): array
-    {
-        return $this->classTraitElementExtractor->getTraitProperties();
-    }
-
-    public function getProperty(string $name): PropertyReflectionInterface
-    {
-        if ($this->hasProperty($name)) {
-            return $this->properties[$name];
-        }
-
-        throw new InvalidArgumentException(sprintf(
-            'Property %s does not exist in class %s',
-            $name,
-            $this->reflection->getName()
-        ));
-    }
-
-    /**
-     * @return ConstantReflectionInterface[]
-     */
-    public function getConstants(): array
-    {
-        if ($this->constants === null) {
-            $this->constants = [];
-            foreach ($this->reflection->getConstantReflections() as $constant) {
-                $apiConstant = $this->transformerCollector->transformReflectionToElement($constant);
-                if (! $this->isDocumented() || $apiConstant->isDocumented()) {
-                    /** @var ReflectionElement $constant */
-                    $this->constants[$constant->getName()] = $apiConstant;
-                }
-            }
-        }
-
-        return $this->constants;
-    }
 
     /**
      * @return ConstantReflectionInterface[]
@@ -307,53 +268,6 @@ final class ReflectionClass extends AbstractReflectionElement implements ClassRe
         return isset($this->getConstants()[$name]);
     }
 
-    public function getOwnConstant(string $name): ConstantReflectionInterface
-    {
-        if (isset($this->getOwnConstants()[$name])) {
-            return $this->getOwnConstants()[$name];
-        }
-
-        throw new InvalidArgumentException(sprintf(
-            'Constant %s does not exist in class %s',
-            $name,
-            $this->reflection->getName()
-        ));
-    }
-
-    public function getParentClass(): ?ClassReflectionInterface
-    {
-        $parentClassName = $this->reflection->getParentClassName();
-
-        if ($parentClassName) {
-            return $this->getParsedClasses()[$parentClassName];
-        }
-
-        return null;
-    }
-
-    public function getParentClassName(): ?string
-    {
-        return $this->reflection->getParentClassName();
-    }
-
-    /**
-     * @return ClassReflectionInterface[]
-     */
-    public function getParentClasses(): array
-    {
-        if ($this->parentClasses === null) {
-            $this->parentClasses = array_map(function (IReflectionClass $class) {
-                return $this->getParsedClasses()[$class->getName()];
-            }, $this->reflection->getParentClasses());
-        }
-
-        return $this->parentClasses;
-    }
-
-    public function implementsInterface(string $interface): bool
-    {
-        return $this->reflection->implementsInterface($interface);
-    }
 
     /**
      * @return ClassReflectionInterface[]

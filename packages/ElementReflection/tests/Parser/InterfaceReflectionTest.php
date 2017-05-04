@@ -7,9 +7,6 @@ use ApiGen\ElementReflection\Reflection\InterfaceReflection;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 use ApiGen\Tests\Parser\Parser\ParserSource\SomeInterface;
 
-/**
- * Mirror to Function test @see \ApiGen\Tests\Parser\Parser\ParserTest
- */
 final class InterfaceReflectionTest extends AbstractContainerAwareTestCase
 {
     /**

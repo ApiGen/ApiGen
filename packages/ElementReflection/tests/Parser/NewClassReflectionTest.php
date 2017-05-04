@@ -8,9 +8,6 @@ use ApiGen\Tests\AbstractContainerAwareTestCase;
 use ApiGen\Tests\Parser\Parser\ParserSource\SomeClass;
 use phpDocumentor\Reflection\DocBlock\Tags\Author;
 
-/**
- * Mirror to Function test @see \ApiGen\Tests\Parser\Parser\ParserTest
- */
 final class NewClassReflectionTest extends AbstractContainerAwareTestCase
 {
     /**

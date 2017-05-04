@@ -7,7 +7,6 @@ use ApiGen\Contracts\Parser\Reflection\Behavior\InClassInterface;
 use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
-use TokenReflection\ReflectionAnnotation;
 
 abstract class AbstractReflectionElement extends AbstractReflection implements ElementReflectionInterface
 {

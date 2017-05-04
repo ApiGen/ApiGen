@@ -331,6 +331,7 @@
         </tr>
 	</table>
 
+    {* @todo $class->getTraits() *}
 	<table n:foreach="$class->getUsedProperties() as $traitName => $properties" class="summary used">
         {var $trait = ($traitName|getClass)}
     	<caption>Properties used from <a href="{$traitName|classUrl}#properties" n:tag-if="$trait">{$traitName}</a></caption>
