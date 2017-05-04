@@ -9,10 +9,7 @@ use phpDocumentor\Reflection\DocBlock;
 use Roave\BetterReflection\Reflection\ReflectionFunction;
 use Webmozart\Assert\Assert;
 
-/**
- * To replace @see \ApiGen\Parser\Reflection\ReflectionFunction
- */
-final class NewFunctionReflection implements FunctionReflectionInterface
+final class FunctionReflection implements FunctionReflectionInterface
 {
     /**
      * @var ReflectionFunction

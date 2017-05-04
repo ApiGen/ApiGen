@@ -2,8 +2,8 @@
 
 namespace ApiGen\ReflectionToElementTransformer\Transformer;
 
-use ApiGen\ElementReflection\Reflection\NewClassReflection;
-use ApiGen\ElementReflection\Reflection\NewFunctionReflection;
+use ApiGen\ElementReflection\Reflection\ClassReflection;
+use ApiGen\ElementReflection\Reflection\FunctionReflection;
 use ApiGen\ElementReflection\Reflection\NewMethodReflection;
 use ApiGen\ElementReflection\Reflection\NewParameterReflection;
 use ApiGen\ReflectionToElementTransformer\Contract\Transformer\TransformerInterface;
@@ -63,14 +63,14 @@ final class TokenParameterReflectionTransformer implements TransformerInterface
 
     /**
      * @param ReflectionFunction|ReflectionMethod $reflection
-     * @return NewFunctionReflection|NewMethodReflection
+     * @return FunctionReflection|NewMethodReflection
      */
     private function createBetterFunctionReflectionForParameter($reflection)
     {
         $docBlock = $this->docBlockFactory->create($reflection->getDocComment() . ' ');
 
         if ($reflection instanceof ReflectionFunction) {
-            return new NewFunctionReflection(
+            return new FunctionReflection(
                 $reflection,
                 $docBlock,
                 []
@@ -86,7 +86,7 @@ final class TokenParameterReflectionTransformer implements TransformerInterface
 
             $docBlock = $this->docBlockFactory->create($reflection->getDocComment() . ' ');
 
-            $newClassReflection = new NewClassReflection($reflection->getDeclaringClass(), $docBlock);
+            $newClassReflection = new ClassReflection($reflection->getDeclaringClass(), $docBlock);
             $methodReflection->setDeclaringClass($newClassReflection);
             return $methodReflection;
         }

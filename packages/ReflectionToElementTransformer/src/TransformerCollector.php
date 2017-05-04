@@ -21,20 +21,28 @@ final class TransformerCollector implements TransformerCollectorInterface
      */
     private $configuration;
 
-    /**
-     * @var ParserStorageInterface
-     */
-    private $parserStorage;
-
-    public function __construct(ConfigurationInterface $configuration, ParserStorageInterface $parserStorage)
+    public function __construct(ConfigurationInterface $configuration)
     {
         $this->configuration = $configuration;
-        $this->parserStorage = $parserStorage;
     }
 
     public function addTransformer(TransformerInterface $transformer): void
     {
         $this->transformers[] = $transformer;
+    }
+
+    /**
+     * @param object[] $reflections
+     * @return object[]
+     */
+    public function transformReflectionsToElements(array $reflections): array
+    {
+        $elements = [];
+        foreach ($reflections as $reflection) {
+            $elements[] = $this->transformReflectionToElement($reflection);
+        }
+
+        return $elements;
     }
 
     /**
@@ -67,8 +75,6 @@ final class TransformerCollector implements TransformerCollectorInterface
     private function setDependencies(AbstractReflection $element): void
     {
         $element->setConfiguration($this->configuration);
-        $element->setParserStorage($this->parserStorage);
-
         $element->setTransformerCollector($this);
     }
 }

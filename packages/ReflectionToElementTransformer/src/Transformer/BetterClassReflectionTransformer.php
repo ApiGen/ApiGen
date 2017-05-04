@@ -2,7 +2,7 @@
 
 namespace ApiGen\ReflectionToElementTransformer\Transformer;
 
-use ApiGen\ElementReflection\Reflection\NewClassReflection;
+use ApiGen\ElementReflection\Reflection\ClassReflection;
 use ApiGen\ReflectionToElementTransformer\Contract\Transformer\TransformerInterface;
 use phpDocumentor\Reflection\DocBlockFactory;
 use Roave\BetterReflection\Reflection\ReflectionClass;
@@ -30,11 +30,11 @@ final class BetterClassReflectionTransformer implements TransformerInterface
     /**
      * @param object|ReflectionClass $reflection
      */
-    public function transform($reflection): NewClassReflection
+    public function transform($reflection): ClassReflection
     {
         $docBlock = $this->docBlockFactory->create($reflection->getDocComment() . ' ');
 
-        $classReflection = new NewClassReflection(
+        $classReflection = new ClassReflection(
             $reflection,
             $docBlock
         );

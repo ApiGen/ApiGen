@@ -13,4 +13,10 @@ interface TransformerCollectorInterface
      * @return mixed
      */
     public function transformReflectionToElement($reflection);
+
+    /**
+     * @param object[] $reflections
+     * @return object[]
+     */
+    public function transformReflectionsToElements(array $reflections): array;
 }

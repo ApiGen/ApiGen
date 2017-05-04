@@ -5,13 +5,11 @@ namespace ApiGen\ElementReflection\Reflection;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ParameterReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\TraitReflectionInterface;
+use ApiGen\ReflectionToElementTransformer\Contract\TransformerCollectorInterface;
 use phpDocumentor\Reflection\DocBlock;
 use Roave\BetterReflection\Reflection\ReflectionMethod;
-use Webmozart\Assert\Assert;
 
-/**
- * To replace @see \ApiGen\Parser\Reflection\ReflectionMethod
- */
 final class NewMethodReflection implements MethodReflectionInterface
 {
     /**
@@ -30,14 +28,19 @@ final class NewMethodReflection implements MethodReflectionInterface
     private $docBlock;
 
     /**
-     * @var ParameterReflectionInterface[]
-     */
-    private $parameterReflections = [];
-
-    /**
      * @var ClassReflectionInterface
      */
     private $declaringClass;
+
+    /**
+     * @var ParameterReflectionInterface[]
+     */
+    private $parameters = [];
+
+    /**
+     * @var TransformerCollectorInterface
+     */
+    private $transformerCollector;
 
     /**
      * @param ParameterReflectionInterface[] $parameterReflections
@@ -45,11 +48,11 @@ final class NewMethodReflection implements MethodReflectionInterface
     public function __construct(
         ReflectionMethod $betterFunctionReflection,
         DocBlock $docBlock,
-        array $parameterReflections
+        TransformerCollectorInterface $transformerCollector
     ) {
         $this->reflection = $betterFunctionReflection;
         $this->docBlock = $docBlock;
-        $this->setParameterReflections($parameterReflections);
+        $this->transformerCollector = $transformerCollector;
     }
 
     public function getName(): string
@@ -135,17 +138,9 @@ final class NewMethodReflection implements MethodReflectionInterface
         return trim($description);
     }
 
-    /**
-     * @return ParameterReflectionInterface[]
-     */
-    public function getParameters(): array
-    {
-        return $this->parameterReflections;
-    }
-
     public function isDocumented(): bool
     {
-        if ($this->reflection->isInternal()) {
+        if ($this->reflection->isInternal()) { // @note: what exactly does this mean? PHP or OUR?
             return false;
         }
 
@@ -154,15 +149,6 @@ final class NewMethodReflection implements MethodReflectionInterface
         }
 
         return true;
-    }
-
-    /**
-     * @param ParameterReflectionInterface[] $parameterReflections
-     */
-    private function setParameterReflections(array $parameterReflections): void
-    {
-        Assert::allIsInstanceOf($parameterReflections, ParameterReflectionInterface::class);
-        $this->parameterReflections = $parameterReflections;
     }
 
     public function getDeclaringClass(): ?ClassReflectionInterface
@@ -179,48 +165,104 @@ final class NewMethodReflection implements MethodReflectionInterface
         return '';
     }
 
-    public function getDeclaringTrait(): ?ClassReflectionInterface
+    public function getDeclaringTrait(): ?TraitReflectionInterface
     {
-        // TODO: Implement getDeclaringTrait() method.
+        if ($this->reflection->getDeclaringClass()->isTrait()) {
+            return $this->transformerCollector->transformReflectionToElement($this->reflection->getDeclaringClass());
+        }
+
+        return null;
     }
 
     public function getDeclaringTraitName(): string
     {
-        // TODO: Implement getDeclaringTraitName() method.
-    }
+        if (! $this->getDeclaringTrait()) {
+            return '';
+        }
 
-    public function isAbstract(): bool
-    {
-        // TODO: Implement isAbstract() method.
-    }
-
-    public function isFinal(): bool
-    {
-        // TODO: Implement isFinal() method.
-    }
-
-    public function isStatic(): bool
-    {
-        // TODO: Implement isStatic() method.
-    }
-
-    public function getImplementedMethod(): ?MethodReflectionInterface
-    {
-        // TODO: Implement getImplementedMethod() method.
-    }
-
-    public function getOverriddenMethod(): ?MethodReflectionInterface
-    {
-        // TODO: Implement getOverriddenMethod() method.
-    }
-
-    public function getOriginalName(): string
-    {
-        // TODO: Implement getOriginalName() method.
+        return $this->getDeclaringTrait()
+            ->getName();
     }
 
     public function setDeclaringClass(ClassReflectionInterface $classReflection): void
     {
         $this->declaringClass = $classReflection;
+    }
+
+    public function isPrivate(): bool
+    {
+        return $this->reflection->isPrivate();
+    }
+
+    public function isProtected(): bool
+    {
+        return $this->reflection->isProtected();
+    }
+
+    public function isPublic(): bool
+    {
+        return $this->reflection->isPublic();
+    }
+
+    public function isAbstract(): bool
+    {
+        return $this->reflection->isAbstract();
+    }
+
+    public function isFinal(): bool
+    {
+        return $this->reflection->isFinal();
+    }
+
+    public function isStatic(): bool
+    {
+        return $this->reflection->isStatic();
+    }
+
+    // @todo: is used?
+    public function getImplementedMethod(): ?MethodReflectionInterface
+    {
+        foreach ($this->getDeclaringClass()->getOwnInterfaces() as $interface) {
+            if ($interface->hasMethod($this->getName())) {
+                return $interface->getMethod($this->getName());
+            }
+        }
+
+        return null;
+    }
+
+    // @todo: is used?
+    public function getOverriddenMethod(): ?MethodReflectionInterface
+    {
+        $parent = $this->getDeclaringClass()->getParentClass();
+        if ($parent === null) {
+            return null;
+        }
+
+        foreach ($parent->getMethods() as $method) {
+            if ($method->getName() === $this->getName()) {
+                if (! $method->isPrivate() && ! $method->isAbstract()) {
+                    return $method;
+                }
+
+                return null;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @return ParameterReflectionInterface[]
+     */
+    public function getParameters(): array
+    {
+        if ($this->parameters === []) {
+            $this->parameters = $this->transformerCollector->transformReflectionsToElements(
+                $this->reflection->getParameters()
+            );
+        }
+
+        return $this->parameters;
     }
 }

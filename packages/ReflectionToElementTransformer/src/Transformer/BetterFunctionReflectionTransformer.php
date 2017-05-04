@@ -3,7 +3,7 @@
 namespace ApiGen\ReflectionToElementTransformer\Transformer;
 
 use ApiGen\Contracts\Parser\Reflection\ParameterReflectionInterface;
-use ApiGen\ElementReflection\Reflection\NewFunctionReflection;
+use ApiGen\ElementReflection\Reflection\FunctionReflection;
 use ApiGen\ElementReflection\Reflection\NewParameterReflection;
 use ApiGen\ReflectionToElementTransformer\Contract\Transformer\TransformerInterface;
 use phpDocumentor\Reflection\DocBlockFactory;
@@ -42,12 +42,12 @@ final class BetterFunctionReflectionTransformer implements TransformerInterface
     /**
      * @param BetterReflectionFunction $reflection
      */
-    public function transform($reflection): NewFunctionReflection
+    public function transform($reflection): FunctionReflection
     {
         $docBlock = $this->docBlockFactory->create($reflection->getDocComment() . ' ');
         $parameters = $this->transformParameters($reflection);
 
-        $functionReflection = new NewFunctionReflection(
+        $functionReflection = new FunctionReflection(
             $reflection,
             $docBlock,
             $parameters

@@ -2,7 +2,7 @@
 
 namespace ApiGen\ReflectionToElementTransformer\Transformer;
 
-use ApiGen\ElementReflection\Reflection\NewFunctionReflection;
+use ApiGen\ElementReflection\Reflection\FunctionReflection;
 use ApiGen\ReflectionToElementTransformer\Contract\Transformer\TransformerInterface;
 use ApiGen\ReflectionToElementTransformer\Legacy\BetterFunctionReflectionParser;
 use TokenReflection\IReflectionFunction;
@@ -35,7 +35,7 @@ final class TokenFunctionReflectionTransformer implements TransformerInterface
     /**
      * @param IReflectionFunction $reflection
      */
-    public function transform($reflection): NewFunctionReflection
+    public function transform($reflection): FunctionReflection
     {
         $betterFunctionReflection = BetterFunctionReflectionParser::parseByNameAndFile(
             $reflection->getName(), $reflection->getFileName()

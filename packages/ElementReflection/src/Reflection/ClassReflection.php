@@ -11,7 +11,7 @@ use ApiGen\ReflectionToElementTransformer\Contract\TransformerCollectorInterface
 use phpDocumentor\Reflection\DocBlock;
 use Roave\BetterReflection\Reflection\ReflectionClass;
 
-final class NewClassReflection implements ClassReflectionInterface
+final class ClassReflection implements ClassReflectionInterface
 {
     /**
      * @var ReflectionClass

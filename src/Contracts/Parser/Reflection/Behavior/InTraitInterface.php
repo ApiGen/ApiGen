@@ -2,11 +2,11 @@
 
 namespace ApiGen\Contracts\Parser\Reflection\Behavior;
 
-use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\TraitReflectionInterface;
 
 interface InTraitInterface extends InNamespaceInterface
 {
-    public function getDeclaringTrait(): ?ClassReflectionInterface;
+    public function getDeclaringTrait(): ?TraitReflectionInterface;
 
     public function getDeclaringTraitName(): string;
 }

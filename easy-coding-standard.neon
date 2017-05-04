@@ -98,7 +98,7 @@ skip:
         - packages/ReflectionToElementTransformer/src/Transformer/TokenMethodReflectionTransformer.php
         - packages/ReflectionToElementTransformer/src/Transformer/TokenParameterReflectionTransformer.php
         - packages/ReflectionToElementTransformer/src/Transformer/TokenPropertyReflectionTransformer.php
-        - packages/ElementReflection/src/Reflection/NewClassReflection.php
+        - packages/ElementReflection/src/Reflection/ClassReflection.php
         - packages/ElementReflection/src/Reflection/NewPropertyReflection.php
         - packages/ReflectionToElementTransformer/src/Transformer/TokenFunctionReflectionTransformer.php
         - packages/ReflectionToElementTransformer/src/Transformer/BetterPropertyReflectionTransformer.php

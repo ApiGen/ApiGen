@@ -52,7 +52,7 @@ final class ReflectionMethod extends AbstractReflectionElement implements Method
 
     public function getDeclaringTrait(): ?ClassReflectionInterface
     {
-        $traitName = (string) $this->reflection->getDeclaringTraitName();
+        $traitName = (string) $this->reflection-> getDeclaringTraitName();
         return $traitName === '' ? null : $this->getParsedClasses()[$traitName];
     }
 

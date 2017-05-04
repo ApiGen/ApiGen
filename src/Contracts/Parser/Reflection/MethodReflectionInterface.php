@@ -24,8 +24,6 @@ interface MethodReflectionInterface extends
 
     public function getOverriddenMethod(): ?MethodReflectionInterface;
 
-    public function getOriginalName(): string;
-
     public function returnsReference(): bool;
 
     /**

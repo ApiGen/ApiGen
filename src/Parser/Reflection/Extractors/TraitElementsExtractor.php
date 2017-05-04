@@ -6,7 +6,6 @@ use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\Extractors\ClassTraitElementsExtractorInterface;
 use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
-use TokenReflection\IReflection;
 
 final class ClassTraitElementsExtractor implements ClassTraitElementsExtractorInterface
 {
