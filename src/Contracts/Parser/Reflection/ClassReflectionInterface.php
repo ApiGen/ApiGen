@@ -32,26 +32,6 @@ interface ClassReflectionInterface extends ElementReflectionInterface, LinedInte
      */
     public function getIndirectSubClasses(): array;
 
-    /**
-     * @return ClassReflectionInterface[]
-     */
-    public function getDirectImplementers(): array;
-
-    /**
-     * @return ClassReflectionInterface[]
-     */
-    public function getIndirectImplementers(): array;
-
-    /**
-     * @return ClassReflectionInterface[]
-     */
-    public function getDirectUsers(): array;
-
-    /**
-     * @return ClassReflectionInterface[]
-     */
-    public function getIndirectUsers(): array;
-
     public function implementsInterface(string $name): bool;
 
     /**
@@ -70,12 +50,12 @@ interface ClassReflectionInterface extends ElementReflectionInterface, LinedInte
     public function getOwnInterfaceNames(): array;
 
     /**
-     * @return MethodReflectionInterface[]|VisibilityTrait[]
+     * @return MethodReflectionInterface[]
      */
     public function getMethods(): array;
 
     /**
-     * @return MethodReflectionInterface[]|VisibilityTrait[]
+     * @return MethodReflectionInterface[]
      */
     public function getOwnMethods(): array;
 
@@ -144,7 +124,7 @@ interface ClassReflectionInterface extends ElementReflectionInterface, LinedInte
     public function getProperties(): array;
 
     /**
-     * @return PropertyReflectionInterface[]|VisibilityTrait[]
+     * @return PropertyReflectionInterface[]
      */
     public function getOwnProperties(): array;
 

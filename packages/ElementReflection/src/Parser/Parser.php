@@ -50,14 +50,10 @@ final class Parser
      */
     public function parseDirectories(array $directories): void
     {
-        $directoriesSourceLocator = new DirectoriesSourceLocator($directories);
+        $directoriesSourceLocator = $this->createDirectoriesSource($directories);
 
-        $classReflector = new ClassReflector($directoriesSourceLocator);
-        $classInterfaceAndTraitReflections = $this->transformBetterClassInterfaceAndTraitReflections($classReflector);
-        $this->separateClassInterfaceAndTraitReflections($classInterfaceAndTraitReflections);
-
-        $functionReflector = new FunctionReflector($directoriesSourceLocator);
-        $this->functionReflections = $this->transformBetterFunctionReflections($functionReflector);
+        $this->parseClassElements($directoriesSourceLocator);
+        $this->parseFunctions($directoriesSourceLocator);
     }
 
     /**
@@ -132,5 +128,32 @@ final class Parser
         return array_map(function (ReflectionFunction $betterFunctionReflection) {
             return $this->transformerCollector->transformReflectionToElement($betterFunctionReflection);
         }, $betterFunctionReflections);
+    }
+
+    /**
+     * @param $directoriesSourceLocator
+     */
+    private function parseClassElements($directoriesSourceLocator): void
+    {
+        $classReflector = new ClassReflector($directoriesSourceLocator);
+        $classInterfaceAndTraitReflections = $this->transformBetterClassInterfaceAndTraitReflections($classReflector);
+        $this->separateClassInterfaceAndTraitReflections($classInterfaceAndTraitReflections);
+    }
+
+    /**
+     * @param $directoriesSourceLocator
+     */
+    private function parseFunctions($directoriesSourceLocator): void
+    {
+        $functionReflector = new FunctionReflector($directoriesSourceLocator);
+        $this->functionReflections = $this->transformBetterFunctionReflections($functionReflector);
+    }
+
+    /**
+     * @param string[] $directories
+     */
+    private function createDirectoriesSource(array $directories): DirectoriesSourceLocator
+    {
+        return new DirectoriesSourceLocator($directories);
     }
 }
