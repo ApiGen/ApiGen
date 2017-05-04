@@ -10,7 +10,7 @@ use ApiGen\ReflectionToElementTransformer\Contract\TransformerCollectorInterface
 use phpDocumentor\Reflection\DocBlock;
 use Roave\BetterReflection\Reflection\ReflectionMethod;
 
-final class NewMethodReflection implements MethodReflectionInterface
+final class ClassMethodReflection implements MethodReflectionInterface
 {
     /**
      * @var string

@@ -4,7 +4,7 @@ namespace ApiGen\ReflectionToElementTransformer\Transformer;
 
 use ApiGen\ElementReflection\Reflection\ClassReflection;
 use ApiGen\ElementReflection\Reflection\FunctionReflection;
-use ApiGen\ElementReflection\Reflection\NewMethodReflection;
+use ApiGen\ElementReflection\Reflection\ClassMethodReflection;
 use ApiGen\ElementReflection\Reflection\NewParameterReflection;
 use ApiGen\ReflectionToElementTransformer\Contract\Transformer\TransformerInterface;
 use ApiGen\ReflectionToElementTransformer\Legacy\BetterFunctionReflectionParser;
@@ -63,7 +63,7 @@ final class TokenParameterReflectionTransformer implements TransformerInterface
 
     /**
      * @param ReflectionFunction|ReflectionMethod $reflection
-     * @return FunctionReflection|NewMethodReflection
+     * @return FunctionReflection|ClassMethodReflection
      */
     private function createBetterFunctionReflectionForParameter($reflection)
     {
@@ -78,7 +78,7 @@ final class TokenParameterReflectionTransformer implements TransformerInterface
         }
 
         if ($reflection instanceof ReflectionMethod) {
-            $methodReflection = new NewMethodReflection(
+            $methodReflection = new ClassMethodReflection(
                 $reflection,
                 $docBlock,
                 []
