@@ -3,6 +3,5 @@ services:
     - ApiGen\Parser\Elements\ElementExtractor
     - ApiGen\Parser\Elements\ElementFilter
     - ApiGen\Parser\Elements\Elements
-    - ApiGen\Parser\Elements\ElementSorter
     - ApiGen\Parser\Elements\ElementStorage
     - ApiGen\Parser\Elements\NamespaceSorter

@@ -3,7 +3,6 @@
 namespace ApiGen\Parser\Elements;
 
 use ApiGen\Contracts\Parser\Elements\ElementExtractorInterface;
-use ApiGen\Contracts\Parser\Elements\ElementSorterInterface;
 use ApiGen\Contracts\Parser\Elements\ElementStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\ReflectionInterface;
 
@@ -14,17 +13,9 @@ final class ElementExtractor implements ElementExtractorInterface
      */
     private $elementStorage;
 
-    /**
-     * @var ElementSorterInterface
-     */
-    private $elementSorter;
-
-    public function __construct(
-        ElementStorageInterface $elementStorage,
-        ElementSorterInterface $elementSorter
-    ) {
+    public function __construct(ElementStorageInterface $elementStorage)
+    {
         $this->elementStorage = $elementStorage;
-        $this->elementSorter = $elementSorter;
     }
 
     /**
@@ -63,7 +54,7 @@ final class ElementExtractor implements ElementExtractorInterface
             $elements['methods'] = $this->extractByAnnotationAndMerge(
                 $classReflection->getOwnMethods(),
                 $annotation,
-                $elements[Elements::METHODS]
+                $elements['methods']
             );
             $elements['constants'] = $this->extractByAnnotationAndMerge(
                 $classReflection->getOwnConstants(),
@@ -73,11 +64,11 @@ final class ElementExtractor implements ElementExtractorInterface
             $elements['properties'] = $this->extractByAnnotationAndMerge(
                 $classReflection->getOwnProperties(),
                 $annotation,
-                $elements[Elements::PROPERTIES]
+                $elements['properties']
             );
         }
 
-        return $this->sortElements($elements);
+        return $elements;
     }
 
     /**
@@ -93,23 +84,10 @@ final class ElementExtractor implements ElementExtractorInterface
     }
 
     /**
-     * @param mixed[] $elements
-     * @return mixed[]
-     */
-    private function sortElements(array $elements): array
-    {
-        foreach ($elements as $key => $elementList) {
-            $this->elementSorter->sortElementsByFqn($elementList);
-        }
-
-        return $elements;
-    }
-
-    /**
      * @param ReflectionInterface[] $elements
      * @return ReflectionInterface[]
      */
-    public function filterByAnnotation(array $elements, string $annotation): array
+    private function filterByAnnotation(array $elements, string $annotation): array
     {
         return array_filter($elements, function (ReflectionInterface $element) use ($annotation) {
             return $element->hasAnnotation($annotation);

@@ -2,7 +2,6 @@ extensions:
     - ApiGen\DI\ApiGenExtension
     - ApiGen\Parser\DI\ParserExtension
     - ApiGen\Reflection\DI\ReflectionExtension
-    - ApiGen\Reflection\DI\ReflectionExtension
     - ApiGen\ModularConfiguration\DI\ModularConfigurationExtension
 
     # Symfony components integration to Nette\DI

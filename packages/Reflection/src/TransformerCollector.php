@@ -42,7 +42,13 @@ final class TransformerCollector implements TransformerCollectorInterface
             // @todo: here is the place to filter out public/protected etc
             // also ! $this->reflection->isInternal();, remove isDocumented()
             $elements[] = $this->transformSingle($reflection);
+
         }
+
+        // @todo: sort here!, before ElementSorter
+        usort($elements, function ($firstElement, $secondElement) {
+           return strcmp($firstElement->getName(), $secondElement->getName());
+        });
 
         return $elements;
     }
