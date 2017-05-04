@@ -3,7 +3,7 @@
 namespace ApiGen\Contracts\Generator\Resolvers;
 
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\ReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 
@@ -18,7 +18,7 @@ interface ElementResolverInterface
 
     /**
      * @param string|object $context
-     * @return ElementReflectionInterface|bool
+     * @return ReflectionInterface|bool
      */
     public function resolveElement(string $definition, $context, ?string &$expectedName = null);
 }

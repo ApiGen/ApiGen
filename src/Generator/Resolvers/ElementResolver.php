@@ -7,7 +7,7 @@ use ApiGen\Contracts\Parser\ParserStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\Behavior\InClassInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\ReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ParameterReflectionInterface;
@@ -155,7 +155,7 @@ final class ElementResolver implements ElementResolverInterface
     private function resolveContextForSelfProperty(
         string $definition,
         int $pos,
-        ElementReflectionInterface $reflectionElement
+        ReflectionInterface $reflectionElement
     ): ?ClassReflectionInterface {
         $class = $this->getClass(substr($definition, 0, $pos), $reflectionElement->getNamespaceName());
         if ($class === null) {
@@ -178,7 +178,7 @@ final class ElementResolver implements ElementResolverInterface
     /**
      * @return ClassReflectionInterface|ConstantReflectionInterface|FunctionReflectionInterface|null
      */
-    private function resolveIfParsed(string $definition, ElementReflectionInterface $reflectionElement)
+    private function resolveIfParsed(string $definition, ReflectionInterface $reflectionElement)
     {
         $definition = $this->removeEndBrackets($definition);
 
@@ -271,7 +271,7 @@ final class ElementResolver implements ElementResolverInterface
 
     /**
      * @param mixed[] $elements
-     * @return mixed|ElementReflectionInterface
+     * @return mixed|ReflectionInterface
      */
     private function findElementByNameAndNamespace(array $elements, string $name, string $namespace)
     {

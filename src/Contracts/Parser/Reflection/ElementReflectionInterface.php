@@ -2,7 +2,7 @@
 
 namespace ApiGen\Contracts\Parser\Reflection;
 
-interface ElementReflectionInterface
+interface ReflectionInterface
 {
     public function getName(): string;
 

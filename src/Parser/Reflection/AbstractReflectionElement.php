@@ -5,10 +5,10 @@ namespace ApiGen\Parser\Reflection;
 use ApiGen\Annotation\AnnotationList;
 use ApiGen\Contracts\Parser\Reflection\Behavior\InClassInterface;
 use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\ReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
 
-abstract class AbstractReflectionElement extends AbstractReflection implements ElementReflectionInterface
+abstract class AbstractReflectionElement extends AbstractReflection implements ReflectionInterface
 {
     /**
      * @var mixed[]

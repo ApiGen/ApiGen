@@ -5,7 +5,7 @@ namespace ApiGen\Templating\Filters;
 use ApiGen\Contracts\Generator\Resolvers\ElementResolverInterface;
 use ApiGen\Contracts\Generator\SourceCodeHighlighter\SourceCodeHighlighterInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\ReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Event\ProcessDocTextEvent;
 use ApiGen\Templating\Filters\Helpers\ElementLinkFactory;
@@ -60,7 +60,7 @@ final class UrlFilters extends Filters
      * Tries to parse a definition of a class/method/property/constant/function
      * and returns the appropriate link if successful.
      */
-    public function resolveLink(string $definition, ElementReflectionInterface $reflectionElement): ?string
+    public function resolveLink(string $definition, ReflectionInterface $reflectionElement): ?string
     {
         if (empty($definition)) {
             return null;
@@ -90,7 +90,7 @@ final class UrlFilters extends Filters
     /**
      * @todo refactor to annotation collector
      */
-    public function annotation(string $value, string $name, ElementReflectionInterface $reflectionElement): string
+    public function annotation(string $value, string $name, ReflectionInterface $reflectionElement): string
     {
         $annotationProcessors = [
             'return' => $this->processReturnAnnotations($value, $reflectionElement),
@@ -111,7 +111,7 @@ final class UrlFilters extends Filters
     /**
      * Returns links for types.
      */
-    public function typeLinks(string $annotation, ElementReflectionInterface $reflectionElement): string
+    public function typeLinks(string $annotation, ReflectionInterface $reflectionElement): string
     {
         $links = [];
 
@@ -128,13 +128,13 @@ final class UrlFilters extends Filters
         return implode('|', $links);
     }
 
-    public function annotationDescription(string $annotation, ElementReflectionInterface $reflectionElement): string
+    public function annotationDescription(string $annotation, ReflectionInterface $reflectionElement): string
     {
         $description = trim(strpbrk($annotation, "\n\r\t $")) ?: $annotation;
         return $this->doc($description, $reflectionElement);
     }
 
-    public function description(ElementReflectionInterface $element): string
+    public function description(ReflectionInterface $element): string
     {
         $long = $element->getDescription();
 
@@ -148,7 +148,7 @@ final class UrlFilters extends Filters
         return $this->doc($long, $element);
     }
 
-    public function doc(string $text, ElementReflectionInterface $reflectionElement): string
+    public function doc(string $text, ReflectionInterface $reflectionElement): string
     {
         $text = $this->resolveInternalAnnotation($text);
 
@@ -170,7 +170,7 @@ final class UrlFilters extends Filters
         }, $text);
     }
 
-    private function resolveLinkAndSeeAnnotation(string $text, ElementReflectionInterface $reflectionElement): string
+    private function resolveLinkAndSeeAnnotation(string $text, ReflectionInterface $reflectionElement): string
     {
         return preg_replace_callback('~{@(?:link|see)\\s+([^}]+)}~', function ($matches) use ($reflectionElement) {
             [$url, $description] = Strings::split($matches[1]);
@@ -188,39 +188,39 @@ final class UrlFilters extends Filters
         }, $text);
     }
 
-    public function highlightPhp(string $source, ElementReflectionInterface $reflectionElement): string
+    public function highlightPhp(string $source, ReflectionInterface $reflectionElement): string
     {
         return $this->resolveLink($this->getTypeName($source), $reflectionElement)
             ?: $this->highlighter->highlight($source);
     }
 
-    public function highlightValue(string $definition, ElementReflectionInterface $reflectionElement): string
+    public function highlightValue(string $definition, ReflectionInterface $reflectionElement): string
     {
         return $this->highlightPhp(preg_replace('~^(?:[ ]{4}|\t)~m', '', $definition), $reflectionElement);
     }
 
-    private function processReturnAnnotations(string $value, ElementReflectionInterface $reflectionElement): string
+    private function processReturnAnnotations(string $value, ReflectionInterface $reflectionElement): string
     {
         $description = $this->getDescriptionFromValue($value, $reflectionElement);
         $typeLinks = $this->typeLinks($value, $reflectionElement);
         return $typeLinks . $description;
     }
 
-    private function processThrowsAnnotations(string $value, ElementReflectionInterface $elementReflection): string
+    private function processThrowsAnnotations(string $value, ReflectionInterface $Reflection): string
     {
-        $description = $this->getDescriptionFromValue($value, $elementReflection);
-        $typeLinks = $this->typeLinks($value, $elementReflection);
+        $description = $this->getDescriptionFromValue($value, $Reflection);
+        $typeLinks = $this->typeLinks($value, $Reflection);
         return $typeLinks . $description;
     }
 
     /**
      * @param mixed $value
      */
-    private function getDescriptionFromValue($value, ElementReflectionInterface $elementReflection): string
+    private function getDescriptionFromValue($value, ReflectionInterface $Reflection): string
     {
         $description = (string) trim((string) strpbrk($value, "\n\r\t $")) ?: null;
         if ($description) {
-            $description = '<br>' . $this->doc($description, $elementReflection);
+            $description = '<br>' . $this->doc($description, $Reflection);
         }
 
         return (string) $description;
@@ -242,7 +242,7 @@ final class UrlFilters extends Filters
         return '';
     }
 
-    private function processSeeAnnotations(string $value, ElementReflectionInterface $reflectionElement): string
+    private function processSeeAnnotations(string $value, ReflectionInterface $reflectionElement): string
     {
         $doc = [];
         foreach (preg_split('~\\s*,\\s*~', $value) as $link) {
@@ -256,7 +256,7 @@ final class UrlFilters extends Filters
         return implode(', ', $doc);
     }
 
-    private function processUsesAnnotations(string $value, ElementReflectionInterface $reflectionElement): ?string
+    private function processUsesAnnotations(string $value, ReflectionInterface $reflectionElement): ?string
     {
         [$link, $description] = Strings::split($value);
         $separator = $reflectionElement instanceof ClassReflectionInterface || ! $description ? ' ' : '<br>';

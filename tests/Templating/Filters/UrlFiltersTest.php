@@ -5,7 +5,7 @@ namespace ApiGen\Tests\Templating\Filters;
 use ApiGen\Console\Command\GenerateCommand;
 use ApiGen\Contracts\Parser\ParserStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\ReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 use ApiGen\Templating\Filters\UrlFilters;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
@@ -155,7 +155,7 @@ final class UrlFiltersTest extends AbstractContainerAwareTestCase
  */
 DOC;
 
-        $reflectionElementMock = $this->createMock(ElementReflectionInterface::class);
+        $reflectionElementMock = $this->createMock(ReflectionInterface::class);
         $expected = <<<EXP
 * Some annotation
  * with more rows
@@ -170,7 +170,7 @@ EXP;
 Some long description with example:
 <code>echo "hi";</code>
 DOC;
-        $reflectionElementMock = $this->createMock(ElementReflectionInterface::class);
+        $reflectionElementMock = $this->createMock(ReflectionInterface::class);
         $reflectionElementMock->method('getDescription')
             ->willReturn($longDescription);
 

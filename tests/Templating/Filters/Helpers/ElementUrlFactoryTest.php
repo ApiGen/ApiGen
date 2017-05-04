@@ -4,7 +4,7 @@ namespace ApiGen\Tests\Templating\Filters\Helpers;
 
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\ReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
@@ -60,7 +60,7 @@ final class ElementUrlFactoryTest extends TestCase
             $this->elementUrlFactory->createForElement($this->getReflectionFunctionMock())
         );
 
-        $reflectionElementMock = $this->createMock(ElementReflectionInterface::class);
+        $reflectionElementMock = $this->createMock(ReflectionInterface::class);
         $this->assertNull($this->elementUrlFactory->createForElement($reflectionElementMock));
     }
 

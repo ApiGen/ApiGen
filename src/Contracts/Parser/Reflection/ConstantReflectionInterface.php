@@ -7,7 +7,7 @@ use ApiGen\Contracts\Parser\Reflection\Behavior\InNamespaceInterface;
 use ApiGen\Contracts\Parser\Reflection\Behavior\LinedInterface;
 
 interface ConstantReflectionInterface extends
-    ElementReflectionInterface,
+    ReflectionInterface,
     InNamespaceInterface,
     InClassInterface,
     LinedInterface

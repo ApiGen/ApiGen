@@ -87,21 +87,21 @@ skip:
         - src/Console/Command/AbstractCommand.php
         - tests/Parser/Reflection/ReflectionClassSource/RichInterface.php
         - tests/Parser/Parser/ParserSource/SomeFunction.php
-        - packages/ReflectionToElementTransformer/src/Transformer/TokenFunctionReflectionTransformer.php
-        - packages/ReflectionToElementTransformer/src/Transformer/BetterClassReflectionTransformer.php
-        - packages/ReflectionToElementTransformer/src/Transformer/BetterFunctionReflectionTransformer.php
-        - packages/ReflectionToElementTransformer/src/Transformer/BetterInterfaceReflectionTransformer.php
-        - packages/ReflectionToElementTransformer/src/Transformer/BetterParameterReflectionTransformer.php
-        - packages/ReflectionToElementTransformer/src/Transformer/BetterTraitReflectionTransformer.php
-        - packages/ReflectionToElementTransformer/src/Transformer/TokenClassReflectionTransformer.php
-        - packages/ReflectionToElementTransformer/src/Transformer/TokenConstantReflectionTransformer.php
-        - packages/ReflectionToElementTransformer/src/Transformer/TokenMethodReflectionTransformer.php
-        - packages/ReflectionToElementTransformer/src/Transformer/TokenParameterReflectionTransformer.php
-        - packages/ReflectionToElementTransformer/src/Transformer/TokenPropertyReflectionTransformer.php
-        - packages/ElementReflection/src/Reflection/ClassReflection.php
-        - packages/ElementReflection/src/Reflection/ClassPropertyReflection.php
-        - packages/ReflectionToElementTransformer/src/Transformer/TokenFunctionReflectionTransformer.php
-        - packages/ReflectionToElementTransformer/src/Transformer/BetterPropertyReflectionTransformer.php
+        - packages/Reflection/src/Transformer/TokenFunctionReflectionTransformer.php
+        - packages/Reflection/src/Transformer/BetterClassReflectionTransformer.php
+        - packages/Reflection/src/Transformer/BetterFunctionReflectionTransformer.php
+        - packages/Reflection/src/Transformer/BetterInterfaceReflectionTransformer.php
+        - packages/Reflection/src/Transformer/BetterParameterReflectionTransformer.php
+        - packages/Reflection/src/Transformer/BetterTraitReflectionTransformer.php
+        - packages/Reflection/src/Transformer/TokenClassReflectionTransformer.php
+        - packages/Reflection/src/Transformer/TokenConstantReflectionTransformer.php
+        - packages/Reflection/src/Transformer/TokenMethodReflectionTransformer.php
+        - packages/Reflection/src/Transformer/TokenParameterReflectionTransformer.php
+        - packages/Reflection/src/Transformer/TokenPropertyReflectionTransformer.php
+        - packages/Reflection/src/Reflection/ClassReflection.php
+        - packages/Reflection/src/Reflection/ClassPropertyReflection.php
+        - packages/Reflection/src/Transformer/TokenFunctionReflectionTransformer.php
+        - packages/Reflection/src/Transformer/BetterPropertyReflectionTransformer.php
         - packages/ModularConfiguration/src/Option/SourceOption.php
         - packages/ModularConfiguration/src/Option/ThemeDirectoryOption.php
 

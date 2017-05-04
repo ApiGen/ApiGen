@@ -4,7 +4,7 @@ namespace ApiGen\Templating\Filters;
 
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\ReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
@@ -22,7 +22,7 @@ final class ElementUrlFilters extends Filters
         $this->elementUrlFactory = $elementUrlFactory;
     }
 
-    public function elementUrl(ElementReflectionInterface $element): string
+    public function elementUrl(ReflectionInterface $element): string
     {
         return $this->elementUrlFactory->createForElement($element);
     }

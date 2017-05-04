@@ -2,7 +2,7 @@
 
 namespace ApiGen\Tests\Generator\Resolvers\ElementResolver;
 
-use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\ReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 use ApiGen\Tests\MethodInvoker;
 use PHPUnit_Framework_MockObject_MockObject;
@@ -22,7 +22,7 @@ final class ResolveIfParsedTest extends AbstractElementResolverTest
             ['SomeFunction()', $methodReflectionMock]
         );
 
-        $this->assertInstanceOf(ElementReflectionInterface::class, $resolvedElement);
+        $this->assertInstanceOf(ReflectionInterface::class, $resolvedElement);
     }
 
     public function testMissingElement(): void

@@ -2,7 +2,7 @@
 
 namespace ApiGen\Tests\Generator\Resolvers\ElementResolver;
 
-use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\ReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use PHPUnit_Framework_MockObject_MockObject;
 
@@ -15,7 +15,7 @@ final class FunctionTest extends AbstractElementResolverTest
         ]);
 
         $element = $this->elementResolver->getFunction('SomeFunction');
-        $this->assertInstanceOf(ElementReflectionInterface::class, $element);
+        $this->assertInstanceOf(ReflectionInterface::class, $element);
         $this->assertTrue($element->isDocumented());
     }
 

@@ -17,14 +17,6 @@ class ElementsTest extends TestCase
         $this->elements = new Elements;
     }
 
-    public function testGetClassTypeList(): void
-    {
-        $this->assertSame(
-            ['classes', 'exceptions', 'interfaces', 'traits'],
-            $this->elements->getClassTypeList()
-        );
-    }
-
     public function testGetAll(): void
     {
         $this->assertSame(

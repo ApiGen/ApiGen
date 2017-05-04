@@ -2,7 +2,7 @@
 
 namespace ApiGen\Tests\Parser\Elements;
 
-use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\ReflectionInterface;
 use ApiGen\Parser\Elements\ElementFilter;
 use PHPUnit\Framework\TestCase;
 
@@ -20,7 +20,7 @@ final class ElementFilterTest extends TestCase
 
     public function testFilterByAnnotation(): void
     {
-        $reflectionElement = $this->createMock(ElementReflectionInterface::class);
+        $reflectionElement = $this->createMock(ReflectionInterface::class);
         $reflectionElement->method('hasAnnotation')
             ->willReturnCallback(function ($arg) {
                 return $arg === 'todo';

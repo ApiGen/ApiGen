@@ -4,7 +4,7 @@ namespace ApiGen\Templating\Filters\Helpers;
 
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\ReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
@@ -13,7 +13,7 @@ use ApiGen\Templating\Filters\Filters;
 final class ElementUrlFactory
 {
     /**
-     * @param ElementReflectionInterface|string $element
+     * @param ReflectionInterface|string $element
      */
     public function createForElement($element): ?string
     {

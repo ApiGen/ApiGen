@@ -3,7 +3,7 @@
 namespace ApiGen\Tests\Generator\Resolvers\ElementResolver;
 
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\ReflectionInterface;
 use PHPUnit_Framework_MockObject_MockObject;
 
 final class ClassTest extends AbstractElementResolverTest
@@ -17,12 +17,12 @@ final class ClassTest extends AbstractElementResolverTest
 
         $element = $this->elementResolver->getClass('SomeClass');
 
-        $this->assertInstanceOf(ElementReflectionInterface::class, $element);
+        $this->assertInstanceOf(ReflectionInterface::class, $element);
         $this->assertTrue($element->isDocumented());
 
         $element2 = $this->elementResolver->getClass('SomeClass', 'SomeNamespace');
 
-        $this->assertInstanceOf(ElementReflectionInterface::class, $element2);
+        $this->assertInstanceOf(ReflectionInterface::class, $element2);
         $this->assertTrue($element2->isDocumented());
 
         $this->assertNotSame($element, $element2);

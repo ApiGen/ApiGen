@@ -6,7 +6,7 @@ use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Parser\Elements\ElementsInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\TokenReflection\ReflectionInterface;
-use ApiGen\ReflectionToElementTransformer\Contract\TransformerCollectorInterface;
+use ApiGen\Reflection\Contract\TransformerCollectorInterface;
 
 abstract class AbstractReflection implements ReflectionInterface
 {

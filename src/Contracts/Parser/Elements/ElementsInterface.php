@@ -42,11 +42,6 @@ interface ElementsInterface
     /**
      * @return string[]
      */
-    public function getClassTypeList(): array;
-
-    /**
-     * @return string[]
-     */
     public function getAll(): array;
 
     /**

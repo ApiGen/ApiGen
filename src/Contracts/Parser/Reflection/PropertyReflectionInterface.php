@@ -7,7 +7,7 @@ use ApiGen\Contracts\Parser\Reflection\Behavior\InTraitInterface;
 use ApiGen\Contracts\Parser\Reflection\Behavior\LinedInterface;
 
 interface PropertyReflectionInterface extends
-    ElementReflectionInterface,
+    ReflectionInterface,
     InTraitInterface,
     InClassInterface,
     LinedInterface

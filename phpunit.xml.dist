@@ -5,15 +5,15 @@
 >
     <testsuites>
         <testsuite>
-            <directory>packages/ElementReflection/tests</directory>
-            <directory>packages/ReflectionToElementTransformer/tests</directory>
+            <directory>packages/Reflection/tests</directory>
+            <directory>packages/Reflection/tests</directory>
             <directory>tests</directory>
         </testsuite>
     </testsuites>
     <filter>
         <whitelist>
-            <directory>packages/ElementReflection/src</directory>
-            <directory>packages/ReflectionToElementTransformer/src</directory>
+            <directory>packages/Reflection/src</directory>
+            <directory>packages/Reflection/src</directory>
             <directory>src</directory>
         </whitelist>
     </filter>

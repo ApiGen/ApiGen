@@ -56,15 +56,15 @@ final class ElementSorter implements ElementSorterInterface
     }
 
     /**
-     * @param InClassInterface[] $elementReflections
+     * @param InClassInterface[] $Reflections
      * @return MethodReflectionInterface[]
      */
-    private function sortPropertiesOrMethodsByFqn(array $elementReflections): array
+    private function sortPropertiesOrMethodsByFqn(array $Reflections): array
     {
-        usort($elementReflections, function ($a, $b) {
+        usort($Reflections, function ($a, $b) {
             return $this->compareMethodsOrPropertiesByFqn($a, $b);
         });
-        return $elementReflections;
+        return $Reflections;
     }
 
     private function compareConstantsByFqn(

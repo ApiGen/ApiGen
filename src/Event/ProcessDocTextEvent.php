@@ -2,7 +2,7 @@
 
 namespace ApiGen\Event;
 
-use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\ReflectionInterface;
 use Symfony\Component\EventDispatcher\Event;
 
 final class ProcessDocTextEvent extends Event
@@ -13,11 +13,11 @@ final class ProcessDocTextEvent extends Event
     private $text;
 
     /**
-     * @var ElementReflectionInterface
+     * @var ReflectionInterface
      */
     private $reflectionElement;
 
-    public function __construct(string $text, ElementReflectionInterface $reflectionElement)
+    public function __construct(string $text, ReflectionInterface $reflectionElement)
     {
         $this->text = $text;
         $this->reflectionElement = $reflectionElement;
@@ -28,7 +28,7 @@ final class ProcessDocTextEvent extends Event
         return $this->text;
     }
 
-    public function getReflectionElement(): ElementReflectionInterface
+    public function getReflectionElement(): ReflectionInterface
     {
         return $this->reflectionElement;
     }

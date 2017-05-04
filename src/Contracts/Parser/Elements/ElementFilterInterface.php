@@ -2,13 +2,13 @@
 
 namespace ApiGen\Contracts\Parser\Elements;
 
-use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\ReflectionInterface;
 
 interface ElementFilterInterface
 {
     /**
-     * @param ElementReflectionInterface[] $elements
-     * @return ElementReflectionInterface[]
+     * @param ReflectionInterface[] $elements
+     * @return ReflectionInterface[]
      */
     public function filterByAnnotation(array $elements, string $annotation): array;
 }

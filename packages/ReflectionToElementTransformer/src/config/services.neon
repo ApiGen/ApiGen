@@ -1,9 +1,0 @@
-- ApiGen\ReflectionToElementTransformer\TransformerCollector
-
-# Better Reflection
-- ApiGen\ReflectionToElementTransformer\Transformer\BetterClassReflectionTransformer
-- ApiGen\ReflectionToElementTransformer\Transformer\BetterFunctionReflectionTransformer
-- ApiGen\ReflectionToElementTransformer\Transformer\BetterInterfaceReflectionTransformer
-- ApiGen\ReflectionToElementTransformer\Transformer\BetterParameterReflectionTransformer
-- ApiGen\ReflectionToElementTransformer\Transformer\BetterInterfaceReflectionTransformer
-- ApiGen\ReflectionToElementTransformer\Transformer\BetterTraitReflectionTransformer

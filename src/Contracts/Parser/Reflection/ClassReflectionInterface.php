@@ -3,9 +3,9 @@
 namespace ApiGen\Contracts\Parser\Reflection;
 
 use ApiGen\Contracts\Parser\Reflection\Behavior\LinedInterface;
-use ApiGen\ReflectionToElementTransformer\Contract\TransformerCollectorInterface;
+use ApiGen\Reflection\Contract\TransformerCollectorInterface;
 
-interface ClassReflectionInterface extends ElementReflectionInterface, LinedInterface
+interface ClassReflectionInterface extends ReflectionInterface, LinedInterface
 {
     public function getPrettyName(): string;
 

@@ -10,7 +10,7 @@ use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
 use ApiGen\Parser\Reflection\Extractors\ClassTraitElementsExtractor;
 use ApiGen\Parser\Reflection\Extractors\ParentClassElementsExtractor;
-use ApiGen\ReflectionToElementTransformer\Contract\TransformerCollectorInterface;
+use ApiGen\Reflection\Contract\TransformerCollectorInterface;
 use InvalidArgumentException;
 use TokenReflection\IReflectionClass;
 

@@ -3,14 +3,14 @@
 namespace ApiGen\Tests\Parser\Reflection;
 
 use ApiGen\Contracts\Parser\ParserInterface;
-use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\ReflectionInterface;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 use ApiGen\Tests\Parser\Reflection\ReflectionMethodSource\ReflectionMethod;
 
 final class ReflectionElementTest extends AbstractContainerAwareTestCase
 {
     /**
-     * @var ElementReflectionInterface
+     * @var ReflectionInterface
      */
     private $reflectionClass;
 

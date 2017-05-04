@@ -3,7 +3,7 @@
 namespace ApiGen\Tests\Generator\Resolvers\ElementResolver;
 
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\ReflectionInterface;
 use ApiGen\Tests\MethodInvoker;
 use PHPUnit_Framework_MockObject_MockObject;
 
@@ -34,7 +34,7 @@ final class ResolveContextForSelfPropertyTest extends AbstractElementResolverTes
             'resolveContextForSelfProperty',
             ['SomeClass::$property', 9, $classReflectionMock]
         );
-        $this->assertInstanceOf(ElementReflectionInterface::class, $resolvedElement);
+        $this->assertInstanceOf(ReflectionInterface::class, $resolvedElement);
         $this->assertSame('SomeClass', $resolvedElement->getName());
     }
 
@@ -47,7 +47,7 @@ final class ResolveContextForSelfPropertyTest extends AbstractElementResolverTes
             'resolveContextForSelfProperty',
             ['SomeOtherClass::$property', 14, $classReflectionMock]
         );
-        $this->assertInstanceOf(ElementReflectionInterface::class, $resolvedElement);
+        $this->assertInstanceOf(ReflectionInterface::class, $resolvedElement);
         $this->assertSame('SomeClass', $resolvedElement->getName());
     }
 

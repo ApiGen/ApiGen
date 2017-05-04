@@ -1,5 +1,0 @@
-- ApiGen\ElementReflection\Parser\Parser
-
-# DocBlock
--
-    factory: phpDocumentor\Reflection\DocBlockFactory::createInstance

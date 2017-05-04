@@ -6,7 +6,7 @@ use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Parser\Reflection\Behavior\InClassInterface;
 use ApiGen\Contracts\Parser\Reflection\Behavior\LinedInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\ReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 
 final class SourceFilters extends Filters
@@ -35,7 +35,7 @@ final class SourceFilters extends Filters
      *
      * @todo split into 2 methods, no bool
      */
-    public function sourceUrl(ElementReflectionInterface $element, bool $withLine = true): string
+    public function sourceUrl(ReflectionInterface $element, bool $withLine = true): string
     {
         $file = '';
         $elementName = '';
@@ -62,7 +62,7 @@ final class SourceFilters extends Filters
         return $url;
     }
 
-    private function isDirectUrl(ElementReflectionInterface $element): bool
+    private function isDirectUrl(ReflectionInterface $element): bool
     {
         if ($element instanceof ClassReflectionInterface
             || $element instanceof FunctionReflectionInterface

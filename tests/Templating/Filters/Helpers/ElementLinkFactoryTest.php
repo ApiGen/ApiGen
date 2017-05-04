@@ -4,7 +4,7 @@ namespace ApiGen\Tests\Templating\Filters\Helpers;
 
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\ReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
@@ -94,7 +94,7 @@ final class ElementLinkFactoryTest extends AbstractContainerAwareTestCase
      */
     public function testCreateForElementOfUnspecificType(): void
     {
-        $reflectionElement = $this->createMock(ElementReflectionInterface::class);
+        $reflectionElement = $this->createMock(ReflectionInterface::class);
         $this->elementLinkFactory->createForElement($reflectionElement);
     }
 

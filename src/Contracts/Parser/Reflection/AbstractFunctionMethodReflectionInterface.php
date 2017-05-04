@@ -2,7 +2,7 @@
 
 namespace ApiGen\Contracts\Parser\Reflection;
 
-interface AbstractFunctionMethodReflectionInterface extends ElementReflectionInterface
+interface AbstractFunctionMethodReflectionInterface extends ReflectionInterface
 {
     public function returnsReference(): bool;
 

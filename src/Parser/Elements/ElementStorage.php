@@ -6,7 +6,7 @@ use ApiGen\Contracts\Parser\Elements\ElementStorageInterface;
 use ApiGen\Contracts\Parser\Elements\NamespaceSorterInterface;
 use ApiGen\Contracts\Parser\ParserStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\ReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 
 final class ElementStorage implements ElementStorageInterface
@@ -150,7 +150,7 @@ final class ElementStorage implements ElementStorageInterface
         $this->areElementsCategorized = true;
     }
 
-    private function categorizeElementToNamespace(string $elementType, ElementReflectionInterface $element): void
+    private function categorizeElementToNamespace(string $elementType, ReflectionInterface $element): void
     {
         $namespaceName = $element->getPseudoNamespaceName();
 

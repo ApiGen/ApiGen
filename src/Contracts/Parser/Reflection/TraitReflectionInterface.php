@@ -2,9 +2,9 @@
 
 namespace ApiGen\Contracts\Parser\Reflection;
 
-use ApiGen\ReflectionToElementTransformer\Contract\TransformerCollectorInterface;
+use ApiGen\Reflection\Contract\TransformerCollectorInterface;
 
-interface TraitReflectionInterface extends ElementReflectionInterface
+interface TraitReflectionInterface extends ReflectionInterface
 {
     public function getPrettyName(): string;
 

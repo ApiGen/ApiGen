@@ -5,7 +5,7 @@ namespace ApiGen\Templating\Filters\Helpers;
 use ApiGen\Annotation\AnnotationList;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\ElementReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\ReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
@@ -34,7 +34,7 @@ final class ElementLinkFactory
     /**
      * @param mixed[] $classes
      */
-    public function createForElement(ElementReflectionInterface $element, array $classes = []): string
+    public function createForElement(ReflectionInterface $element, array $classes = []): string
     {
         if ($element instanceof ClassReflectionInterface) {
             return $this->createForClass($element, $classes);
