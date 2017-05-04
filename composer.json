@@ -13,7 +13,6 @@
     ],
     "require": {
         "php": "^7.1",
-        "popsul/php-token-reflection": "^1.5",
         "roave/better-reflection": "dev-master",
         "phpdocumentor/reflection-docblock": "^3.1",
         "kukulich/fshl": "^2.1",
