@@ -37,7 +37,7 @@ the root of your project:
 ```yaml
 source: [src]           # directory(-ies) to scan PHP files from
 destination: docs       # destination directory to generate API docs in
-visibilityLevels: [public, protected] # array
+accessLevels: [public, protected] # array
 annotationGroups: [todo, deprecated] # array
 title: "ApiGen Docs"
 baseUrl: http://apigen.org/api
@@ -49,6 +49,8 @@ templateConfig: path-to-template-config.neon # string
 # templates parameters
 googleAnalytics: 123
 ```
+
+Note: The key names should be the camelCased verions of the the flags listed in the CLI when running `$ apigen generate -h`. For example, `annotation-groups` becomes `annotationGroups`.
 
 ## DocBlock Annotations
 
