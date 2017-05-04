@@ -3,17 +3,12 @@
 namespace ApiGen\Parser\Elements;
 
 use ApiGen\Contracts\Parser\Elements\ElementExtractorInterface;
-use ApiGen\Contracts\Parser\Elements\ElementFilterInterface;
 use ApiGen\Contracts\Parser\Elements\ElementSorterInterface;
 use ApiGen\Contracts\Parser\Elements\ElementStorageInterface;
+use ApiGen\Contracts\Parser\Reflection\ReflectionInterface;
 
 final class ElementExtractor implements ElementExtractorInterface
 {
-    /**
-     * @var ElementFilterInterface
-     */
-    private $elementFilter;
-
     /**
      * @var ElementStorageInterface
      */
@@ -25,11 +20,9 @@ final class ElementExtractor implements ElementExtractorInterface
     private $elementSorter;
 
     public function __construct(
-        ElementFilterInterface $elementFilter,
         ElementStorageInterface $elementStorage,
         ElementSorterInterface $elementSorter
     ) {
-        $this->elementFilter = $elementFilter;
         $this->elementStorage = $elementStorage;
         $this->elementSorter = $elementSorter;
     }
@@ -46,22 +39,22 @@ final class ElementExtractor implements ElementExtractorInterface
             'properties' => [],
         ];
 
-        $elements['functions'] = $this->elementFilter->filterByAnnotation(
+        $elements['functions'] = $this->filterByAnnotation(
             $this->elementStorage->getFunctions(),
             $annotation
         );
 
-        $elements['classes'] = $this->elementFilter->filterByAnnotation(
+        $elements['classes'] = $this->filterByAnnotation(
             $this->elementStorage->getClasses(),
             $annotation
         );
 
-        $elements['interfaces'] = $this->elementFilter->filterByAnnotation(
+        $elements['interfaces'] = $this->filterByAnnotation(
             $this->elementStorage->getInterfaces(),
             $annotation
         );
 
-        $elements['traits'] = $this->elementFilter->filterByAnnotation(
+        $elements['traits'] = $this->filterByAnnotation(
             $this->elementStorage->getTraits(),
             $annotation
         );
@@ -94,7 +87,7 @@ final class ElementExtractor implements ElementExtractorInterface
      */
     private function extractByAnnotationAndMerge(array $elements, string $annotation, array $storage): array
     {
-        $foundElements = $this->elementFilter->filterByAnnotation($elements, $annotation);
+        $foundElements = $this->filterByAnnotation($elements, $annotation);
 
         return array_merge($storage, array_values($foundElements));
     }
@@ -110,5 +103,16 @@ final class ElementExtractor implements ElementExtractorInterface
         }
 
         return $elements;
+    }
+
+    /**
+     * @param ReflectionInterface[] $elements
+     * @return ReflectionInterface[]
+     */
+    public function filterByAnnotation(array $elements, string $annotation): array
+    {
+        return array_filter($elements, function (ReflectionInterface $element) use ($annotation) {
+            return $element->hasAnnotation($annotation);
+        });
     }
 }
