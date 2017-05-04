@@ -94,8 +94,6 @@ interface ClassReflectionInterface extends ReflectionInterface, LinedInterface
 
     public function getOwnConstant(string $name): ConstantReflectionInterface;
 
-    public function getVisibilityLevel(): int;
-
     public function getTransformerCollector(): TransformerCollectorInterface;
 
     /**

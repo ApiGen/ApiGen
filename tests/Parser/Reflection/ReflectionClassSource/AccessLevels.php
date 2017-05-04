@@ -12,7 +12,7 @@ final class AccessLevels extends ParentClass implements RichInterface
     use SomeTrait;
     // use SomeTraitNotPresentHere;
 
-    /*public - breaks old parser */const LEVEL = 5;
+    public const LEVEL = 5;
 
     /**
      * @var mixed

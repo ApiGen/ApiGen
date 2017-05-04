@@ -7,5 +7,5 @@ class ConstantInClass
     /**
      * @var int
      */
-   const CONSTANT_INSIDE = 55;
+   public const CONSTANT_INSIDE = 55;
 }

@@ -114,12 +114,3 @@ skip:
 
     SlevomatCodingStandard\Sniffs\Classes\UnusedPrivateElementsSniff:
         - tests/Parser/Reflection/ReflectionClassSource/AccessLevels.php
-
-    PhpCsFixer\Fixer\ClassNotation\MethodSeparationFixer:
-        - tests/Generator/GeneratorQueueTest.php
-
-    PhpCsFixer\Fixer\ClassNotation\VisibilityRequiredFixer:
-        - tests/Parser/Parser/ParserSource/SomeInterface.php
-        - tests/Parser/Reflection/ReflectionClassSource/AccessLevels.php
-        - tests/Parser/Reflection/ReflectionClassSource/ParentClass.php
-        - tests/Parser/Reflection/ReflectionConstantSource/ConstantInClass.php

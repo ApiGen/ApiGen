@@ -4,7 +4,7 @@ namespace ApiGen\Tests\Parser\Reflection\ReflectionClassSource;
 
 class ParentClass
 {
-    const SOME_PARENT_CONSTANT = 123;
+    public const SOME_PARENT_CONSTANT = 123;
 
     /**
      * @var mixed

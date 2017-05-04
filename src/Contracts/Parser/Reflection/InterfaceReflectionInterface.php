@@ -91,8 +91,6 @@ interface InterfaceReflectionInterface extends ReflectionInterface
 
     public function getOwnConstant(string $name): ConstantReflectionInterface;
 
-    public function getVisibilityLevel(): int;
-
     public function getTransformerCollector(): TransformerCollectorInterface;
 
     /**

@@ -342,11 +342,6 @@ final class ClassReflection implements ClassReflectionInterface
         // TODO: Implement getOwnConstant() method.
     }
 
-    public function getVisibilityLevel(): int
-    {
-        // TODO: Implement getVisibilityLevel() method.
-    }
-
     public function getTransformerCollector(): TransformerCollectorInterface
     {
         // TODO: Implement getTransformerCollector() method.
@@ -403,7 +398,7 @@ final class ClassReflection implements ClassReflectionInterface
     {
         if ($this->properties === null) {
             $this->properties = $this->getOwnProperties();
-            foreach ($this->reflection->getProperties($this->getVisibilityLevel()) as $property) {
+            foreach ($this->reflection->getProperties() as $property) {
                 /** @var ReflectionElement $property */
                 if (isset($this->properties[$property->getName()])) {
                     continue;
@@ -426,7 +421,7 @@ final class ClassReflection implements ClassReflectionInterface
     {
         if ($this->ownProperties === null) {
             $this->ownProperties = [];
-            foreach ($this->reflection->getOwnProperties($this->getVisibilityLevel()) as $property) {
+            foreach ($this->reflection->getOwnProperties() as $property) {
                 $apiProperty = $this->transformerCollector->transformSingle($property);
                 if (! $this->isDocumented() || $apiProperty->isDocumented()) {
                     /** @var ReflectionElement $property */
@@ -593,10 +588,6 @@ final class ClassReflection implements ClassReflectionInterface
                     }
                 }
             }
-
-            $this->methods = array_filter($this->methods, function (ReflectionMethod $method) {
-                return $method->configuration->getVisibilityLevels() === $this->getVisibilityLevel();
-            });
         }
 
         return $this->methods;
@@ -610,7 +601,7 @@ final class ClassReflection implements ClassReflectionInterface
         if ($this->ownMethods === null) {
             $this->ownMethods = [];
 
-            foreach ($this->reflection->getOwnMethods($this->getVisibilityLevel()) as $method) {
+            foreach ($this->reflection->getOwnMethods() as $method) {
                 $apiMethod = $this->transformerCollector->transformSingle($method);
                 if (! $this->isDocumented() || $apiMethod->isDocumented()) {
                     $this->ownMethods[$method->getName()] = $apiMethod;
