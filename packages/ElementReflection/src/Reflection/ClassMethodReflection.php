@@ -5,7 +5,6 @@ namespace ApiGen\ElementReflection\Reflection;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ParameterReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\TraitReflectionInterface;
 use ApiGen\ReflectionToElementTransformer\Contract\TransformerCollectorInterface;
 use phpDocumentor\Reflection\DocBlock;
 use Roave\BetterReflection\Reflection\ReflectionMethod;
@@ -163,25 +162,6 @@ final class ClassMethodReflection implements MethodReflectionInterface
         }
 
         return '';
-    }
-
-    public function getDeclaringTrait(): ?TraitReflectionInterface
-    {
-        if ($this->reflection->getDeclaringClass()->isTrait()) {
-            return $this->transformerCollector->transformReflectionToElement($this->reflection->getDeclaringClass());
-        }
-
-        return null;
-    }
-
-    public function getDeclaringTraitName(): string
-    {
-        if (! $this->getDeclaringTrait()) {
-            return '';
-        }
-
-        return $this->getDeclaringTrait()
-            ->getName();
     }
 
     public function setDeclaringClass(ClassReflectionInterface $classReflection): void

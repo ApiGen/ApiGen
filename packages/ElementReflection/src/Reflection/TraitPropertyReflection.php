@@ -10,7 +10,7 @@ use ApiGen\ReflectionToElementTransformer\Contract\TransformerCollectorInterface
 use phpDocumentor\Reflection\DocBlock;
 use Roave\BetterReflection\Reflection\ReflectionProperty;
 
-final class PropertyReflection implements PropertyReflectionInterface
+final class TraitPropertyReflection implements PropertyReflectionInterface
 {
     /**
      * @var ReflectionProperty
@@ -79,26 +79,17 @@ final class PropertyReflection implements PropertyReflectionInterface
         // TODO: Implement getDescription() method.
     }
 
-    public function getDeclaringTrait(): ?TraitReflectionInterface
+    public function getDeclaringTrait(): TraitReflectionInterface
     {
-        if ($this->betterPropertyReflection->getDeclaringClass()->isTrait()) {
-            return $this->transformerCollector->transformReflectionToElement(
-                $this->betterPropertyReflection->getDeclaringClass()
-            );
-        }
-
-        return null;
+        return $this->transformerCollector->transformReflectionToElement(
+            $this->betterPropertyReflection->getDeclaringClass()
+        );
     }
 
     public function getDeclaringTraitName(): string
     {
-        if ($this->getDeclaringTrait()) {
-            return $this->getDeclaringTrait()
-                ->getName();
-        }
-
-        // @throw exception?
-        return '';
+        return $this->getDeclaringTrait()
+            ->getName();
     }
 
     public function getStartLine(): int

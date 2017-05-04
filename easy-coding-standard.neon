@@ -99,7 +99,7 @@ skip:
         - packages/ReflectionToElementTransformer/src/Transformer/TokenParameterReflectionTransformer.php
         - packages/ReflectionToElementTransformer/src/Transformer/TokenPropertyReflectionTransformer.php
         - packages/ElementReflection/src/Reflection/ClassReflection.php
-        - packages/ElementReflection/src/Reflection/PropertyReflection.php
+        - packages/ElementReflection/src/Reflection/ClassPropertyReflection.php
         - packages/ReflectionToElementTransformer/src/Transformer/TokenFunctionReflectionTransformer.php
         - packages/ReflectionToElementTransformer/src/Transformer/BetterPropertyReflectionTransformer.php
         - packages/ModularConfiguration/src/Option/SourceOption.php
