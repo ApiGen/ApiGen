@@ -7,7 +7,6 @@ use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\Extractors\ParentClassElementsExtractorInterface;
 use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
-use ApiGen\Parser\Reflection\ReflectionClass;
 
 final class ParentClassElementsExtractor implements ParentClassElementsExtractorInterface
 {
@@ -16,7 +15,7 @@ final class ParentClassElementsExtractor implements ParentClassElementsExtractor
      */
     private $reflectionClass;
 
-    public function __construct(ReflectionClass $reflectionClass)
+    public function __construct(ClassReflectionInterface $reflectionClass)
     {
         $this->reflectionClass = $reflectionClass;
     }

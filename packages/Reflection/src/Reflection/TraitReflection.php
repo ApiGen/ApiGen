@@ -47,4 +47,28 @@ final class TraitReflection
 
         return trim($description);
     }
+
+
+    /**
+     * @return ClassReflectionInterface[]
+     */
+    public function getDirectUsers(): array
+    {
+        if (! $this->isTrait()) {
+            return [];
+        }
+
+        return $this->classTraitElementExtractor->getDirectUsers();
+    }
+
+    /**
+     * @return ClassReflectionInterface[]
+     */
+    public function getIndirectUsers(): array
+    {
+        return $this->classTraitElementExtractor->getIndirectUsers();
+    }
+
+
+
 }

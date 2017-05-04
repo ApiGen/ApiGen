@@ -3,7 +3,6 @@
 namespace ApiGen\Reflection;
 
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
-use ApiGen\Contracts\Parser\ParserStorageInterface;
 use ApiGen\Parser\Reflection\AbstractReflection;
 use ApiGen\Reflection\Contract\Transformer\TransformerInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorInterface;
@@ -39,6 +38,8 @@ final class TransformerCollector implements TransformerCollectorInterface
     {
         $elements = [];
         foreach ($reflections as $reflection) {
+            // @todo: here is the place to filter out public/protected etc
+            // also ! $this->reflection->isInternal();, remove isDocumented()
             $elements[] = $this->transformSingle($reflection);
         }
 

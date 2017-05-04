@@ -4,7 +4,6 @@ namespace ApiGen\Parser\Elements;
 
 use ApiGen\Contracts\Parser\Elements\ElementStorageInterface;
 use ApiGen\Contracts\Parser\Elements\NamespaceSorterInterface;
-use ApiGen\Contracts\Parser\ParserStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
@@ -47,18 +46,12 @@ final class ElementStorage implements ElementStorageInterface
     private $areElementsCategorized = false;
 
     /**
-     * @var ParserStorageInterface
-     */
-    private $parserStorage;
-
-    /**
      * @var NamespaceSorterInterface
      */
     private $groupSorter;
 
-    public function __construct(ParserStorageInterface $parserStorage, NamespaceSorterInterface $groupSorter)
+    public function __construct(NamespaceSorterInterface $groupSorter)
     {
-        $this->parserStorage = $parserStorage;
         $this->groupSorter = $groupSorter;
     }
 
@@ -116,32 +109,17 @@ final class ElementStorage implements ElementStorageInterface
          return $this->functions;
     }
 
+    // this is already done in Transformer, just once
     private function categorizeParsedElements(): void
     {
         foreach ($this->parserStorage->getTypes() as $type) {
             $elements = $this->parserStorage->getElementsByType($type);
             foreach ($elements as $elementName => $element) {
-                if (! $element->isDocumented()) {
-                    continue;
-                }
+//                if (! $element->isDocumented()) {
+//                    continue;
+//                }
 
-                if ($element instanceof FunctionReflectionInterface) {
-                    $elementType = Elements::FUNCTIONS;
-                    $this->functions[$elementName] = $element;
-                } elseif ($element->isInterface()) {
-                    $elementType = Elements::INTERFACES;
-                    $this->interfaces[$elementName] = $element;
-                } elseif ($element->isTrait()) {
-                    $elementType = Elements::TRAITS;
-                    $this->traits[$elementName] = $element;
-                } elseif ($element->isException()) {
-                    $elementType = Elements::EXCEPTIONS;
-                    $this->exceptions[$elementName] = $element;
-                } else {
-                    $elementType = Elements::CLASSES;
-                    $this->classes[$elementName] = $element;
-                }
-
+                // @todo: move somewhere else, ReflectionRepository?
                 $this->categorizeElementToNamespace($elementType, $element);
             }
         }

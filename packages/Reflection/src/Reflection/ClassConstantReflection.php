@@ -90,7 +90,11 @@ final class ClassConstantReflection implements ConstantReflectionInterface
 
     public function isDeprecated(): bool
     {
-        // TODO: Implement isDeprecated() method.
+        if ($this->refleection->isDeprecated()) {
+            return true;
+        }
+
+        // if parent is deprecated, so is this
     }
 
     public function getNamespaceName(): string

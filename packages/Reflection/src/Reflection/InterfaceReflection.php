@@ -68,4 +68,28 @@ final class InterfaceReflection
 
         return trim($description);
     }
+
+    /**
+     * @return ClassReflectionInterface[]
+     */
+    public function getDirectImplementers(): array
+    {
+        if (! $this->isInterface()) {
+            return [];
+        }
+
+        return $this->parserStorage->getDirectImplementersOfInterface($this);
+    }
+
+    /**
+     * @return ClassReflectionInterface[]
+     */
+    public function getIndirectImplementers(): array
+    {
+        if (! $this->isInterface()) {
+            return [];
+        }
+
+        return $this->parserStorage->getIndirectImplementersOfInterface($this);
+    }
 }

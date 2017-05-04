@@ -3,7 +3,6 @@
 namespace ApiGen\Reflection\Tests;
 
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
-use ApiGen\Contracts\Parser\ParserStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
@@ -82,11 +81,6 @@ final class TransformerCollectorTest extends AbstractContainerAwareTestCase
         $this->assertInstanceOf(
             ConfigurationInterface::class,
             Assert::getObjectAttribute($object, 'configuration')
-        );
-
-        $this->assertInstanceOf(
-            ParserStorageInterface::class,
-            Assert::getObjectAttribute($object, 'parserStorage')
         );
 
         $this->assertInstanceOf(

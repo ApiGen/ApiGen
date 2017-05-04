@@ -3,7 +3,6 @@
 namespace ApiGen\Generator\Resolvers;
 
 use ApiGen\Contracts\Generator\Resolvers\ElementResolverInterface;
-use ApiGen\Contracts\Parser\ParserStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\Behavior\InClassInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
@@ -12,7 +11,6 @@ use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ParameterReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
-use TokenReflection\Resolver;
 
 final class ElementResolver implements ElementResolverInterface
 {
@@ -35,19 +33,9 @@ final class ElementResolver implements ElementResolverInterface
         'mixed' => 1
     ];
 
-    /**
-     * @var ParserStorageInterface
-     */
-    private $parserStorage;
-
-    public function __construct(ParserStorageInterface $parserStorage)
-    {
-        $this->parserStorage = $parserStorage;
-    }
-
     public function getClass(string $name, string $namespace = ''): ?ClassReflectionInterface
     {
-        $parsedClasses = $this->parserStorage->getClasses();
+        $parsedClasses = // $this->parserStorage->getClasses();
 
         $class = $this->findElementByNameAndNamespace($parsedClasses, $name, $namespace);
         if ($class && $class->isDocumented()) {
@@ -62,7 +50,7 @@ final class ElementResolver implements ElementResolverInterface
      */
     public function getFunction(string $name, string $namespace = '')
     {
-        $parsedFunctions = $this->parserStorage->getFunctions();
+        $parsedFunctions = // $this->parserStorage->getFunctions();
         $function = $this->findElementByNameAndNamespace($parsedFunctions, $name, $namespace);
         if ($function && $function->isDocumented()) {
             return $function;
@@ -113,9 +101,9 @@ final class ElementResolver implements ElementResolverInterface
 
             if (strpos($className, ':') === false) {
                 return $this->getClass($className, $reflectionElement->getNamespaceName());
-            } else {
-                $definition = $className;
             }
+
+            $definition = $className;
         }
 
         $position = $this->getPositionFromDefinition($definition);

@@ -81,7 +81,11 @@ final class ClassMethodReflection implements MethodReflectionInterface
 
     public function isDeprecated(): bool
     {
-        return $this->reflection->isDeprecated();
+        if ($this->reflection->isDeprecated()) {
+            return true;
+        }
+
+        // if parent is deprecated, so is this
     }
 
     public function getNamespaceName(): string

@@ -53,11 +53,6 @@ final class ClassPropertyReflection implements PropertyReflectionInterface
         // TODO: Implement isDocumented() method.
     }
 
-    public function isDeprecated(): bool
-    {
-        return $this->hasAnnotation(AnnotationList::DEPRECATED);
-    }
-
     public function getNamespaceName(): string
     {
         return $this->betterPropertyReflection->getDeclaringClass()
