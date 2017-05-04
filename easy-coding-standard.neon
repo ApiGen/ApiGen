@@ -100,7 +100,6 @@ skip:
         - packages/ReflectionToElementTransformer/src/Transformer/TokenPropertyReflectionTransformer.php
         - packages/ElementReflection/src/Reflection/NewClassReflection.php
         - packages/ElementReflection/src/Reflection/NewPropertyReflection.php
-        - packages/ReflectionToElementTransformer/src/Transformer/BetterPropertyReflectionToPropertyTransformer.php
         - packages/ReflectionToElementTransformer/src/Transformer/TokenFunctionReflectionTransformer.php
         - packages/ReflectionToElementTransformer/src/Transformer/BetterPropertyReflectionTransformer.php
         - packages/ModularConfiguration/src/Option/SourceOption.php
