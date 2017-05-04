@@ -2,8 +2,10 @@
 
 namespace ApiGen\ElementReflection\Parser;
 
+use ApiGen\Contracts\Parser\ParserInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\InterfaceReflectionInterface;
 use ApiGen\ElementReflection\Reflection\InterfaceReflection;
 use ApiGen\ElementReflection\Reflection\TraitReflection;
 use ApiGen\ReflectionToElementTransformer\Contract\TransformerCollectorInterface;
@@ -13,7 +15,7 @@ use Roave\BetterReflection\Reflector\ClassReflector;
 use Roave\BetterReflection\Reflector\FunctionReflector;
 use Roave\BetterReflection\SourceLocator\Type\DirectoriesSourceLocator;
 
-final class Parser
+final class Parser implements ParserInterface
 {
     /**
      * @var TransformerCollectorInterface
@@ -50,10 +52,16 @@ final class Parser
      */
     public function parseDirectories(array $directories): void
     {
+        // @legacy allowed to specify extensions and exclude, removed for now
         $directoriesSourceLocator = $this->createDirectoriesSource($directories);
 
         $this->parseClassElements($directoriesSourceLocator);
         $this->parseFunctions($directoriesSourceLocator);
+
+        // @legacy
+        // Add classes from @param, @var, @return, @throws annotations as well
+        // as parent classes to the overall class list.
+        // @see \ApiGen\Parser\Broker\Backend
     }
 
     /**
@@ -130,20 +138,14 @@ final class Parser
         }, $betterFunctionReflections);
     }
 
-    /**
-     * @param $directoriesSourceLocator
-     */
-    private function parseClassElements($directoriesSourceLocator): void
+    private function parseClassElements(DirectoriesSourceLocator $directoriesSourceLocator): void
     {
         $classReflector = new ClassReflector($directoriesSourceLocator);
         $classInterfaceAndTraitReflections = $this->transformBetterClassInterfaceAndTraitReflections($classReflector);
         $this->separateClassInterfaceAndTraitReflections($classInterfaceAndTraitReflections);
     }
 
-    /**
-     * @param $directoriesSourceLocator
-     */
-    private function parseFunctions($directoriesSourceLocator): void
+    private function parseFunctions(DirectoriesSourceLocator $directoriesSourceLocator): void
     {
         $functionReflector = new FunctionReflector($directoriesSourceLocator);
         $this->functionReflections = $this->transformBetterFunctionReflections($functionReflector);
@@ -155,5 +157,51 @@ final class Parser
     private function createDirectoriesSource(array $directories): DirectoriesSourceLocator
     {
         return new DirectoriesSourceLocator($directories);
+    }
+
+    // @legacy bellow @see \ApiGen\Parser\ParserStorage
+
+    /**
+     * @return ClassReflectionInterface[]|InterfaceReflectionInterface[]
+     */
+    public function getDirectImplementersOfInterface(InterfaceReflectionInterface $interfaceReflection): array
+    {
+        $implementers = [];
+        foreach ($this->getClassReflections() as $class) {
+            if ($this->isAllowedDirectImplementer($class, $interfaceReflection->getName())) {
+                $implementers[] = $class;
+            }
+        }
+
+        uksort($implementers, 'strcasecmp');
+
+        return $implementers;
+    }
+
+    /**
+     * @return ClassReflectionInterface[]|InterfaceReflectionInterface[]
+     */
+    public function getIndirectImplementersOfInterface(InterfaceReflectionInterface $interfaceReflection): array
+    {
+        $implementers = [];
+        foreach ($this->getClassReflections() as $class) {
+            if ($this->isAllowedIndirectImplementer($class, $interfaceReflection->getName())) {
+                $implementers[] = $class;
+            }
+        }
+
+        uksort($implementers, 'strcasecmp');
+        return $implementers;
+    }
+
+    private function isAllowedDirectImplementer(ClassReflectionInterface $class, string $name): bool
+    {
+        return $class->isDocumented() && in_array($name, $class->getOwnInterfaceNames());
+    }
+
+    private function isAllowedIndirectImplementer(ClassReflectionInterface $class, string $name): bool
+    {
+        return $class->isDocumented() && $class->implementsInterface($name)
+            && ! in_array($name, $class->getOwnInterfaceNames());
     }
 }
