@@ -103,15 +103,6 @@ final class ClassConstantReflection implements ConstantReflectionInterface
     }
 
     /**
-     * Returns element namespace name.
-     * For internal elements returns "PHP", for elements in global space returns "None".
-     */
-    public function getPseudoNamespaceName(): string
-    {
-        // TODO: Implement getPseudoNamespaceName() method.
-    }
-
-    /**
      *
      * @return mixed[]
      */

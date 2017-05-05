@@ -40,7 +40,6 @@ final class NewFunctionReflectionTest extends AbstractContainerAwareTestCase
     public function testNamespaces(): void
     {
         $this->assertSame('SomeNamespace', $this->functionReflection->getNamespaceName());
-        $this->assertSame('SomeNamespace', $this->functionReflection->getPseudoNamespaceName());
         $this->testNames();
     }
 

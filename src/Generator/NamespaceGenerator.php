@@ -6,6 +6,7 @@ use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Generator\GeneratorInterface;
 use ApiGen\Contracts\Templating\TemplateRendererInterface;
 use ApiGen\Namespaces\NamespaceStorage;
+use ApiGen\Namespaces\SingleNamespaceStorage;
 
 final class NamespaceGenerator implements GeneratorInterface
 {
@@ -35,41 +36,30 @@ final class NamespaceGenerator implements GeneratorInterface
 
     public function generate(): void
     {
-        $reflectionsCategorizedToNamespaces = $this->namespaceStorage->getReflectionsCategorizedToNamespaces();
-        foreach ($reflectionsCategorizedToNamespaces as $namespace => $reflectionsInNamespace) {
-            $this->generateForNamespace($namespace, $reflectionsInNamespace);
+        foreach ($this->namespaceStorage->getNamespaces() as $namespace) {
+            $singleNamespaceStorage = $this->namespaceStorage->findInNamespace($namespace);
+            $this->generateForNamespace($singleNamespaceStorage);
         }
     }
 
     /**
      * @param mixed[] $elementsInNamespace
      */
-    private function generateForNamespace(string $namespace, array $elementsInNamespace): void
+    private function generateForNamespace(SingleNamespaceStorage $singleNamespaceStorage): void
     {
         $this->templateRenderer->renderToFile(
             $this->configuration->getTemplateByName('namespace'),
-            $this->configuration->getDestinationWithPrefixName('namespace-', $namespace),
+            $this->configuration->getDestinationWithPrefixName(
+                'namespace-', $singleNamespaceStorage->getNamespace()
+            ),
             [
-                'namespace' => $namespace,
-                'subnamespaces' => $this->getSubnamesForName($namespace),
-                'classes' => $elementsInNamespace['classes'],
-                'interfaces' => $elementsInNamespace['interfaces'],
-                'traits' => $elementsInNamespace['traits'],
-                'functions' => $elementsInNamespace['functions']
+                'namespace' => $singleNamespaceStorage->getNamespace(),
+                'subnamespaces' => $singleNamespaceStorage->getSubNamespaces(),
+                'classes' => $singleNamespaceStorage->getClassReflections(),
+                'interfaces' => $singleNamespaceStorage->getInterfaceReflections(),
+                'traits' => $singleNamespaceStorage->getTraitReflections(),
+                'functions' => $singleNamespaceStorage->getFunctionReflections()
             ]
         );
-    }
-
-    /**
-     * @return string[]
-     */
-    private function getSubnamesForName(string $name): array
-    {
-        $allNamespaces = $this->namespaceStorage->getNamespaces();
-
-        return array_filter($allNamespaces, function ($subname) use ($name) {
-            $pattern = '~^' . preg_quote($name) . '\\\\[^\\\\]+$~';
-            return (bool) preg_match($pattern, $subname);
-        });
     }
 }

@@ -63,27 +63,27 @@ final class NamespaceSorter
         return $namespaces;
     }
 
-    /**
-     * @param mixed[] $namespaces
-     * @return mixed[]
-     */
-    private function addMissingElementTypes(array $namespaces, string $namespaceName): array
-    {
-        foreach (ElementEmptyListFactory::createBasicEmptyList() as $type) {
-            if (! isset($namespaces[$namespaceName][$type])) {
-                $namespaces[$namespaceName][$type] = [];
-            }
-        }
+//    /**
+//     * @param mixed[] $namespaces
+//     * @return mixed[]
+//     */
+//    private function addMissingElementTypes(array $namespaces, string $namespaceName): array
+//    {
+//        foreach (ElementEmptyListFactory::createBasicEmptyList() as $type) {
+//            if (! isset($namespaces[$namespaceName][$type])) {
+//                $namespaces[$namespaceName][$type] = [];
+//            }
+//        }
+//
+//        return $namespaces;
+//    }
 
-        return $namespaces;
-    }
-
-    private function compareNamespaceNames(string $firstNamespace, string $secondNamespace): int
-    {
-        // \ as separator has to be first
-        $firstNamespace = str_replace(self::NAMESPACE_SEPARATOR, ' ', $firstNamespace);
-        $secondNamespace = str_replace(self::NAMESPACE_SEPARATOR, ' ', $secondNamespace);
-
-        return strcasecmp($firstNamespace, $secondNamespace);
-    }
+//    private function compareNamespaceNames(string $firstNamespace, string $secondNamespace): int
+//    {
+//        // \ as separator has to be first
+//        $firstNamespace = str_replace(self::NAMESPACE_SEPARATOR, ' ', $firstNamespace);
+//        $secondNamespace = str_replace(self::NAMESPACE_SEPARATOR, ' ', $secondNamespace);
+//
+//        return strcasecmp($firstNamespace, $secondNamespace);
+//    }
 }

@@ -59,16 +59,6 @@ final class TraitPropertyReflection implements PropertyReflectionInterface
             ->getNamespaceName();
     }
 
-    /**
-     * Returns element namespace name.
-     * For internal elements returns "PHP", for elements in global space returns "None".
-     */
-    public function getPseudoNamespaceName(): string
-    {
-        // TODO: Implement getPseudoNamespaceName() method.
-    }
-
-
     public function getDescription(): string
     {
         // TODO: Implement getDescription() method.

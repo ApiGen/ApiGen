@@ -93,19 +93,6 @@ final class ClassMethodReflection implements MethodReflectionInterface
         return $this->reflection->getNamespaceName();
     }
 
-    public function getPseudoNamespaceName(): string
-    {
-        if ($this->reflection->isInternal()) {
-            return 'PHP';
-        }
-
-        if ($this->reflection->getNamespaceName()) {
-            return $this->reflection->getNamespaceName();
-        }
-
-        return 'None';
-    }
-
     public function getPrettyName(): string
     {
         return $this->reflection->getName() . '()';

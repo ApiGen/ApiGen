@@ -41,14 +41,6 @@ final class ReflectionElementTest extends AbstractContainerAwareTestCase
         );
     }
 
-    public function testGetPseudoNamespaceName(): void
-    {
-        $this->assertSame(
-            'ApiGen\Tests\Parser\Reflection\ReflectionMethodSource',
-            $this->reflectionClass->getPseudoNamespaceName()
-        );
-    }
-
     public function testGetDescription(): void
     {
         $this->assertSame('This is some description', $this->reflectionClass->getDescription());

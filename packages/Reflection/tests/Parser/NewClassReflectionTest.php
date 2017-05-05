@@ -43,11 +43,6 @@ final class NewClassReflectionTest extends AbstractContainerAwareTestCase
             'ApiGen\Tests\Parser\Parser\ParserSource',
             $this->classReflection->getNamespaceName()
         );
-
-        $this->assertSame(
-            'ApiGen\Tests\Parser\Parser\ParserSource',
-            $this->classReflection->getPseudoNamespaceName()
-        );
     }
 
     public function testAnnotations(): void

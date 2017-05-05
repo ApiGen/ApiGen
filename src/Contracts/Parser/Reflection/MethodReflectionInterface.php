@@ -47,12 +47,6 @@ interface MethodReflectionInterface
     public function isDeprecated(): bool;
 
     /**
-     * Returns element namespace name.
-     * For internal elements returns "PHP", for elements in global space returns "None".
-     */
-    public function getPseudoNamespaceName(): string;
-
-    /**
      *
      * @return mixed[]
      */

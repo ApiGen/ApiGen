@@ -73,26 +73,6 @@ final class ClassReflection implements ClassReflectionInterface
 //        return $namespaces[$lowerNamespaceName];
 //    }
 
-// drop those "PHP" elements
-//        public function getPseudoNamespaceName(): string
-//    {
-//        return $this->isInternal() ? 'PHP' : $this->getNamespaceName() ?: 'None';
-//    }
-    }
-
-    public function getPseudoNamespaceName(): string
-    {
-        if ($this->reflection->isInternal()) {
-            return 'PHP';
-        }
-
-        if ($this->reflection->getNamespaceName()) {
-            return $this->reflection->getNamespaceName();
-        }
-
-        return 'None';
-    }
-
     public function getPrettyName(): string
     {
         return $this->reflection->getName() . '()';

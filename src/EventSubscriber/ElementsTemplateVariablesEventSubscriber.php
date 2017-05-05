@@ -50,7 +50,7 @@ final class ElementsTemplateVariablesEventSubscriber implements EventSubscriberI
             'namespace' => null,
             'class' => null,
             'function' => null,
-            'namespaces' => array_keys($this->namespaceStorage->getReflectionsCategorizedToNamespaces()),
+            'namespaces' => array_keys($this->namespaceStorage->categorizeReflectionsToNamespaces()),
             'classes' => array_filter($this->reflectionStorage->getClassReflections()),
             'interfaces' => array_filter($this->reflectionStorage->getInterfaceReflections()),
             'traits' => array_filter($this->reflectionStorage->getTraitReflections()),

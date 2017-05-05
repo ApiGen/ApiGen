@@ -5,7 +5,7 @@
 
 {block content}
 <div id="content" class="namespace">
-	<h1>{if $namespace !== 'None'}Namespace {$namespace|namespaceLinks:false|noescape}{else}No namespace{/if}</h1>
+	<h1>{if $namespace !== 'None'}Namespace {$namespace|namespaceLinks: false|noescape}{else}No namespace{/if}</h1>
 
 	<table class="summary" id="namespaces" n:if="$subnamespaces">
 	<caption>Namespaces summary</caption>

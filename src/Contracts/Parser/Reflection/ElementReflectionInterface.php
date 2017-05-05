@@ -18,12 +18,6 @@ interface ReflectionInterface
     public function getNamespaceName(): string;
 
     /**
-     * Returns element namespace name.
-     * For internal elements returns "PHP", for elements in global space returns "None".
-     */
-    public function getPseudoNamespaceName(): string;
-
-    /**
      *
      * @return mixed[]
      */
