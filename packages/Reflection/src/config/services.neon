@@ -10,6 +10,9 @@
 - ApiGen\Reflection\Transformer\BetterClassReflectionTransformer
 - ApiGen\Reflection\Transformer\BetterFunctionReflectionTransformer
 - ApiGen\Reflection\Transformer\BetterInterfaceReflectionTransformer
-- ApiGen\Reflection\Transformer\BetterParameterReflectionTransformer
 - ApiGen\Reflection\Transformer\BetterInterfaceReflectionTransformer
 - ApiGen\Reflection\Transformer\BetterTraitReflectionTransformer
+
+# Parameters
+- ApiGen\Reflection\Transformer\BetterMethodParameterReflectionTransformer
+- ApiGen\Reflection\Transformer\BetterFunctionParameterReflectionTransformer

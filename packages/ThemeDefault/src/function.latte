@@ -36,7 +36,7 @@
 		<td class="value"><code>{block|strip}
 			<var>{if $parameter->passedByReference}&amp; {/if}${$parameter->getName()}</var>{if $parameter->defaultValueAvailable} = {$parameter->defaultValueDefinition|highlightPHP:$function|noescape}{elseif $parameter->isVariadic()},…{/if}
 		{/block}</code></td>
-		<td>{$parameter->description|annotationDescription:$function}</td>
+		<td>{$parameter->getDescription()|annotationDescription:$function}</td>
 	</tr>
 	</table>
 

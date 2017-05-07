@@ -5,54 +5,59 @@ namespace ApiGen\Reflection\Reflection;
 use ApiGen\Annotation\AnnotationList;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\ParameterReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\FunctionParameterReflectionInterface;
+use ApiGen\Reflection\Contract\TransformerCollectorAwareInterface;
+use ApiGen\Reflection\Contract\TransformerCollectorInterface;
 use phpDocumentor\Reflection\DocBlock\Tags\Param;
 use Roave\BetterReflection\Reflection\ReflectionParameter;
 
-final class FunctionParameterReflection implements ParameterReflectionInterface
+final class FunctionParameterReflection implements FunctionParameterReflectionInterface, TransformerCollectorAwareInterface
 {
     /**
      * @var ReflectionParameter
      */
-    private $reflection;
+    private $betterReflectionParameter;
 
     /**
-     * @var MethodReflectionInterface|FunctionReflectionInterface
+     * @var FunctionReflectionInterface
      */
     private $declaringFunction;
 
-    public function __construct(
-        ReflectionParameter $betterParameterReflection
-    ) {
-        $this->reflection = $betterParameterReflection;
+    /**
+     * @var TransformerCollectorInterface
+     */
+    private $transformerCollector;
+
+    public function __construct(ReflectionParameter $betterParameterReflection)
+    {
+        $this->betterReflectionParameter = $betterParameterReflection;
     }
 
     public function getName(): string
     {
-        return $this->reflection->getName();
+        return $this->betterReflectionParameter->getName();
     }
 
-    /**
-     * @return MethodReflectionInterface|FunctionReflectionInterface
-     */
-    public function getDeclaringFunction()
+    public function getDeclaringFunction(): FunctionReflectionInterface
     {
-        return $this->declaringFunction;
+        return $this->transformerCollector->transformSingle(
+            $this->betterReflectionParameter->getDeclaringFunction()
+        );
     }
 
     public function getDeclaringFunctionName(): string
     {
-        return $this->declaringFunction->getName();
+        return $this->getDeclaringFunction()
+            ->getName();
     }
 
     public function getTypeHint(): string
     {
-        if ($this->isArray()) {
+        if ($this->betterReflectionParameter->isArray()) {
             return 'array';
         }
 
-        if ($this->reflection->isCallable()) {
+        if ($this->betterReflectionParameter->isCallable()) {
             return 'callable';
         }
 
@@ -61,9 +66,8 @@ final class FunctionParameterReflection implements ParameterReflectionInterface
             return $className;
         }
 
-        $annotation = $this->getAnnotation();
-        if ($annotation) {
-            return (string) $annotation->getType();
+        if (count($this->betterReflectionParameter->getDocBlockTypes())) {
+            return implode('|', $this->betterReflectionParameter->getDocBlockTypeStrings());
         }
 
         return '';
@@ -71,22 +75,19 @@ final class FunctionParameterReflection implements ParameterReflectionInterface
 
     public function getDescription(): string
     {
-        $annotations = $this->declaringFunction->getAnnotation(AnnotationList::PARAM);
-        if (empty($annotations[$this->reflection->getPosition()])) {
+        if ($this->getAnnotation() === null) {
             return '';
         }
 
-        /** @var Param $paramAnnotation */
-        $paramAnnotation = $annotations[$this->reflection->getPosition()];
-
-        return $paramAnnotation->getDescription()
+        return $this->getAnnotation()
+            ->getDescription()
             ->render();
     }
 
     public function getDefaultValueDefinition(): ?string
     {
-        if ($this->reflection->isDefaultValueAvailable()) {
-            return $this->reflection->getDefaultValueAsString();
+        if ($this->betterReflectionParameter->isDefaultValueAvailable()) {
+            return $this->betterReflectionParameter->getDefaultValueAsString();
         }
 
         return null;
@@ -94,12 +95,12 @@ final class FunctionParameterReflection implements ParameterReflectionInterface
 
     public function isArray(): bool
     {
-        return $this->reflection->isArray();
+        return $this->betterReflectionParameter->isArray();
     }
 
     public function getClass(): ?ClassReflectionInterface
     {
-        $typeHint = $this->reflection->getTypeHint();
+        $typeHint = $this->betterReflectionParameter->getTypeHint();
         if ($typeHint) {
             // @todo
         }
@@ -119,29 +120,31 @@ final class FunctionParameterReflection implements ParameterReflectionInterface
 
     public function isVariadic(): bool
     {
-        return $this->reflection->isVariadic();
+        return $this->betterReflectionParameter->isVariadic();
     }
 
     public function isCallable(): bool
     {
-        return $this->reflection->isCallable();
+        return $this->betterReflectionParameter->isCallable();
     }
 
-    /**
-     * @param MethodReflectionInterface|FunctionReflectionInterface $declaringFunction
-     */
-    public function setDeclaringFunction($declaringFunction): void
+    public function setTransformerCollector(TransformerCollectorInterface $transformerCollector): void
     {
-        $this->declaringFunction = $declaringFunction;
+        $this->transformerCollector = $transformerCollector;
     }
 
     private function getAnnotation(): ?Param
     {
-        $annotations = $this->declaringFunction->getAnnotation(AnnotationList::PARAM);
-        if (empty($annotations[$this->reflection->getPosition()])) {
-            return null;
+        /** @var Param[] $functionParamAnnotations */
+        $functionParamAnnotations = $this->getDeclaringFunction()
+            ->getAnnotation(AnnotationList::PARAM);
+
+        foreach ($functionParamAnnotations as $functionParamAnnotation) {
+            if ($functionParamAnnotation->getVariableName() === $this->getName()) {
+                return $functionParamAnnotation;
+            }
         }
 
-        return $annotations[$this->reflection->getPosition()];
+        return null;
     }
 }

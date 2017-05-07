@@ -1,8 +1,11 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Contracts\Parser\Reflection;
+namespace ApiGen\Reflection\Contract\Reflection;
 
-interface ParameterReflectionInterface_
+use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
+
+interface AbstractParameterReflectionInterface
 {
     public function getName(): string;
 
@@ -24,23 +27,7 @@ interface ParameterReflectionInterface_
      */
     public function getClassName(): ?string;
 
-    public function getDeclaringClassName(): string;
-
-    /**
-     * @return MethodReflectionInterface|FunctionReflectionInterface
-     */
-    public function getDeclaringFunction();
-
-    public function getDeclaringFunctionName(): string;
-
-    public function getDeclaringClass(): ?ClassReflectionInterface;
-
     public function isVariadic(): bool;
 
     public function isCallable(): bool;
-
-    /**
-     * @param MethodReflectionInterface|FunctionReflectionInterface $declaringFunction
-     */
-    public function setDeclaringFunction($declaringFunction): void;
 }

@@ -2,14 +2,10 @@
 
 namespace ApiGen\Reflection\Transformer;
 
-use ApiGen\Contracts\Parser\Reflection\ParameterReflectionInterface;
 use ApiGen\Reflection\Reflection\FunctionReflection;
-use ApiGen\Reflection\Reflection\MethodParameterReflection;
 use ApiGen\Reflection\Contract\Transformer\TransformerInterface;
 use phpDocumentor\Reflection\DocBlockFactory;
-use Roave\BetterReflection\Reflection\ReflectionFunction;
 use Roave\BetterReflection\Reflection\ReflectionFunction as BetterReflectionFunction;
-use Roave\BetterReflection\Reflection\ReflectionParameter;
 
 final class BetterFunctionReflectionTransformer implements TransformerInterface
 {
@@ -17,11 +13,6 @@ final class BetterFunctionReflectionTransformer implements TransformerInterface
      * @var DocBlockFactory
      */
     private $docBlockFactory;
-
-    /**
-     * @var BetterParameterReflectionTransformer
-     */
-    private $betterParameterReflectionToParameterTransformer;
 
     public function __construct(DocBlockFactory $docBlockFactory)
     {
@@ -43,31 +34,6 @@ final class BetterFunctionReflectionTransformer implements TransformerInterface
     {
         $docBlock = $this->docBlockFactory->create($reflection->getDocComment() . ' ');
 
-//        $parameters = $this->transformParameters($reflection);
-//
-        $functionReflection = new FunctionReflection(
-            $reflection,
-            $docBlock
-//            $parameters
-        );
-
-//        foreach ($parameters as $parameter) {
-//            /** @var MethodParameterReflection $parameter */
-//            $parameter->setDeclaringFunction($functionReflection);
-//        }
-
-        return $functionReflection;
-    }
-
-    /**
-     * @return ParameterReflectionInterface[]
-     */
-    private function transformParameters(ReflectionFunction $reflection): array
-    {
-        return array_map(function (ReflectionParameter $parameterReflection) {
-            return $this->betterParameterReflectionToParameterTransformer->transform(
-                $parameterReflection
-            );
-        }, $reflection->getParameters());
+        return new FunctionReflection($reflection, $docBlock);
     }
 }

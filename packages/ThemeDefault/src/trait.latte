@@ -117,7 +117,7 @@
 				<div class="list"><dl>
 				{foreach $method->parameters as $parameter}
 					<dt><var>${$parameter->getName()}</var>{if $parameter->isVariadic()},…{/if}</dt>
-					<dd>{$parameter->description|annotationDescription:$method|noescape}</dd>
+					<dd>{$parameter->getDescription()|annotationDescription:$method|noescape}</dd>
 				{/foreach}
 				</dl></div>
 			{/if}

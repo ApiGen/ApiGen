@@ -2,6 +2,8 @@
 
 namespace ApiGen\Contracts\Parser\Reflection;
 
+use phpDocumentor\Reflection\DocBlock\Tags\BaseTag;
+
 interface FunctionReflectionInterface
 {
     public function getName(): string;
@@ -28,9 +30,9 @@ interface FunctionReflectionInterface
     public function hasAnnotation(string $name): bool;
 
     /**
-     * @return mixed
+     * @return BaseTag[]
      */
-    public function getAnnotation(string $name);
+    public function getAnnotation(string $name): array;
 
     public function isDeprecated(): bool;
 
