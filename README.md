@@ -41,8 +41,6 @@ parameters:
     annotationGroups: [todo, deprecated] # array
     title: "ApiGen Docs" # string
     baseUrl: http://apigen.org/api # string
-    exclude: [tests] # array
-    extensions: [php] # array
     overwrite: false # bool
     googleAnalytics: "" # string
 ```

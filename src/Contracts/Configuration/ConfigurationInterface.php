@@ -55,20 +55,6 @@ interface ConfigurationInterface
      */
     public function getSource(): array;
 
-    /**
-     * Exclude masks for files/directories.
-     *
-     * @return string[]
-     */
-    public function getExclude(): array;
-
-    /**
-     * File extensions to be taken in account.
-     *
-     * @return string[]
-     */
-    public function getExtensions(): array;
-
     public function getDestinationWithName(string $prefix): string;
 
     public function getDestinationWithPrefixName(string $prefix, string $name): string;

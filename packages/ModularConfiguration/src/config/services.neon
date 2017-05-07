@@ -6,9 +6,7 @@
 - ApiGen\ModularConfiguration\Option\AnnotationGroupsOption
 - ApiGen\ModularConfiguration\Option\BaseUrlOption
 - ApiGen\ModularConfiguration\Option\SourceOption
-- ApiGen\ModularConfiguration\Option\ExcludeOption
 - ApiGen\ModularConfiguration\Option\ThemeDirectoryOption
-- ApiGen\ModularConfiguration\Option\ExtensionsOption
 - ApiGen\ModularConfiguration\Option\VisibilityLevelOption
 - ApiGen\ModularConfiguration\Option\GoogleAnalyticsOption
 - ApiGen\ModularConfiguration\Option\TitleOption

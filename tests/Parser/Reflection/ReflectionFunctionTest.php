@@ -6,6 +6,8 @@ use ApiGen\Contracts\Parser\ParserInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 
+// migrate to /Reflection package
+
 final class ReflectionFunctionTest extends AbstractContainerAwareTestCase
 {
     /**

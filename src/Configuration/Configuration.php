@@ -7,8 +7,6 @@ use ApiGen\ModularConfiguration\Contract\ConfigurationResolverInterface;
 use ApiGen\ModularConfiguration\Option\AnnotationGroupsOption;
 use ApiGen\ModularConfiguration\Option\BaseUrlOption;
 use ApiGen\ModularConfiguration\Option\DestinationOption;
-use ApiGen\ModularConfiguration\Option\ExcludeOption;
-use ApiGen\ModularConfiguration\Option\ExtensionsOption;
 use ApiGen\ModularConfiguration\Option\GoogleAnalyticsOption;
 use ApiGen\ModularConfiguration\Option\SourceOption;
 use ApiGen\ModularConfiguration\Option\ThemeDirectoryOption;
@@ -113,22 +111,6 @@ final class Configuration implements ConfigurationInterface
     public function getSource(): array
     {
         return $this->getOptions()[SourceOption::NAME];
-    }
-
-    /**
-     * @return string[]
-     */
-    public function getExclude(): array
-    {
-        return $this->getOptions()[ExcludeOption::NAME];
-    }
-
-    /**
-     * @return string[]
-     */
-    public function getExtensions(): array
-    {
-        return $this->getOptions()[ExtensionsOption::NAME];
     }
 
     public function getTemplatesDirectory(): string

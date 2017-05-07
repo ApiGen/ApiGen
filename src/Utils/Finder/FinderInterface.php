@@ -8,9 +8,7 @@ interface FinderInterface
 {
     /**
      * @param string[] $sources
-     * @param string[] $exclude
-     * @param string[] $extensions
      * @return SplFileInfo[]
      */
-    public function find(array $sources, array $exclude = [], array $extensions = ['php']): array;
+    public function find(array $sources): array;
 }

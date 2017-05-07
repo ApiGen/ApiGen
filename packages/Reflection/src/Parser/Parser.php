@@ -152,6 +152,8 @@ final class Parser implements ParserInterface, ReflectionStorageInterface
      */
     private function createDirectoriesSource(array $directories): DirectoriesSourceLocator
     {
+        // @todo: use FileIteratorSourceLocator and FinderInterface
+        // such service scan be replaced in config by own with custom finder implementation
         return new DirectoriesSourceLocator($directories);
     }
 
