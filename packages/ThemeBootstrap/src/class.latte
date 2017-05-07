@@ -16,12 +16,12 @@
 	<dl class="tree well" n:if="$class->parentClass || $class->ownInterfaces || $class->ownTraits">
 		<dd n:foreach="$tree as $item" style="padding-left:{($iterator->counter - 1) * 2}ex">
 			<span n:if="$iterator->counter > 1">┗</span>
-			{if $item->documented}
+			{if $item->isDocumented()}
 			<a href="{$item|classUrl}" n:tag-if="!$iterator->last">{last}<b>{/last}<span n:class="$item->deprecated ? deprecated, !$item->valid ? invalid">{$item->name}</span>{last}</b>{/last}</a>
 			{else}{$item->name}{/if}
 			{var $itemOwnInterfaces = $item->ownInterfaces}
 			{if $itemOwnInterfaces} implements {foreach $itemOwnInterfaces as $interface}
-				<a href="{$interface|classUrl}" n:tag-if="$interface->documented"><span n:class="$interface->deprecated ? deprecated, !$interface->valid ? invalid">{$interface->name}</span></a>{sep}, {/sep}
+				<a href="{$interface|classUrl}" n:tag-if="$interface->isDocumented()"><span n:class="$interface->deprecated ? deprecated, !$interface->valid ? invalid">{$interface->name}</span></a>{sep}, {/sep}
 			{/foreach}{/if}
 			{var $itemOwnTraits = $item->ownTraits}
 			{if $itemOwnTraits} uses {foreach $itemOwnTraits as $trait}
@@ -29,7 +29,7 @@
 					{$trait} (not available)
 
 				{else}
-					<a href="{$trait|classUrl}" n:tag-if="$trait->documented"><span n:class="$trait->deprecated ? deprecated, !$trait->valid ? invalid">{$trait->name}</span></a>{sep}, {/sep}
+					<a href="{$trait|classUrl}" n:tag-if="$trait->isDocumented()"><span n:class="$trait->deprecated ? deprecated, !$trait->valid ? invalid">{$trait->name}</span></a>{sep}, {/sep}
 				{/}
 			{/foreach}{/if}
 		</dd>
@@ -38,7 +38,7 @@
 	{define children}
 		<p class="elementList">
 		{foreach $children as $child}
-			<code><a href="{$child|classUrl}" n:tag-if="$child->documented"><span n:tag-if="$child->deprecated" class="deprecated">{$child->name}</span></a></code>{sep}, {/sep}
+			<code><a href="{$child|classUrl}" n:tag-if="$child->isDocumented()"><span n:tag-if="$child->deprecated" class="deprecated">{$child->name}</span></a></code>{sep}, {/sep}
 		{/foreach}
 		</p>
 	{/define}
@@ -75,7 +75,6 @@
 
 	<div class="alert alert-info">
 		{if !$class->interface && !$class->trait && ($class->abstract || $class->final)}<b>{if $class->abstract}Abstract{else}Final{/if}</b><br>{/if}
-		{if $class->internal}<b>PHP Extension:</b> <a href="{$class->extension|manualUrl}" title="Go to PHP documentation">{$class->extension->name|firstUpper}</a><br>{/if}
 		{if $class->inNamespace()}<b>Namespace:</b> {$class->namespaceName|namespaceLinks|noescape}<br>{/if}
 		{if $class->inPackage()}<b>Package:</b> {$class->packageName|packageLinks|noescape}<br>{/if}
 
@@ -85,11 +84,7 @@
 				{$value|annotation:$annotation:$class|noescape}<br>
 			{/foreach}
 		{/foreach}
-		{if $class->internal}
-			<b>Documented at</b> <a href="{$class|manualUrl}" title="Go to PHP documentation">php.net</a>
-		{else}
-			<b>Located at</b> <a n:tag-if="$config->sourceCode" href="{$class|sourceUrl}" title="Go to source code">{$class->fileName|relativePath}</a>
-		{/if}
+        <b>Located at</b> <a n:tag-if="$config->sourceCode" href="{$class|sourceUrl}" title="Go to source code">{$class->fileName|relativePath}</a>
 		<br>
 	</div>
 
@@ -112,11 +107,7 @@
 				</span>
 
 				<span n:class="$method->deprecated ? deprecated">{block|strip}
-					{if $class->internal}
-						<a href="{$method|manualUrl}" title="Go to PHP documentation">{$method->name}</a>(
-					{else}
-						<a n:tag-if="$config->sourceCode" href="{$method|sourceUrl}" title="Go to source code"><span class="name">{$method->name}</span></a>(
-					{/if}
+                    <a n:tag-if="$config->sourceCode" href="{$method|sourceUrl}" title="Go to source code"><span class="name">{$method->name}</span></a>(
 					{if $method->parameters}
 					{foreach $method->parameters as $parameter}
 						<span class="method-param"><span n:if="$parameter->typeHint" class="type">{$parameter->typeHint|typeLinks:$method|noescape}</span>
@@ -273,11 +264,7 @@
 
 			<code class="signature">
 				<span class="name">
-				{if $class->internal}
-					<a href="{$constant|manualUrl}" title="Go to PHP documentation"><b>{$constant->name}</b></a>
-				{else}
-					<a n:tag-if="$config->sourceCode" href="{$constant|sourceUrl}" title="Go to source code"><b>{$constant->name}</b></a>
-				{/if}
+                <a n:tag-if="$config->sourceCode" href="{$constant|sourceUrl}" title="Go to source code"><b>{$constant->name}</b></a>
 				</span>
 
                 <span class="type" n:if="$constant->typeHint">: {$constant->typeHint|typeLinks:$constant|noescape}</span>
@@ -333,11 +320,7 @@
 				</span>
 
 				<span class="name">
-				{if $class->internal}
-					<a href="{$property|manualUrl}" title="Go to PHP documentation"><var>${$property->name}</var></a>
-				{else}
-					<a n:tag-if="$config->sourceCode" href="{$property|sourceUrl}" title="Go to source code"><var>${$property->name}</var></a>
-				{/if}
+                <a n:tag-if="$config->sourceCode" href="{$property|sourceUrl}" title="Go to source code"><var>${$property->name}</var></a>
 				</span>
 
 				{if $property->typeHint}: <span class="type">{$property->typeHint|typeLinks:$property|noescape}</span>{/if}
