@@ -8,7 +8,7 @@ use ApiGen\Reflection\Contract\Reflection\FunctionReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\FunctionParameterReflectionInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorAwareInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorInterface;
-use ApiGen\Reflection\Contracts\Reflection\InterfaceReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\InterfaceReflectionInterface;
 use phpDocumentor\Reflection\DocBlock\Tags\Param;
 use phpDocumentor\Reflection\Types\Object_;
 use ReflectionObject;

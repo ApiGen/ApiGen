@@ -2,10 +2,6 @@
 
 namespace ApiGen\Reflection\Contract\Reflection;
 
-use ApiGen\Reflection\Contract\Reflection\ClassReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\InterfaceReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\MethodReflectionInterface;
-
 interface AbstractParameterReflectionInterface
 {
     public function getName(): string;
