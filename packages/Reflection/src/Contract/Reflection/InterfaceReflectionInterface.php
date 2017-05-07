@@ -97,4 +97,6 @@ interface InterfaceReflectionInterface
     public function getParsedClasses(): array;
 
     public function isSubclassOf(string $class): bool;
+
+    public function extendsInterface(string $interface): bool;
 }

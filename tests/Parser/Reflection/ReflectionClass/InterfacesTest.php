@@ -7,11 +7,6 @@ use ApiGen\Tests\Parser\Reflection\ReflectionClassSource\RichInterface;
 
 final class InterfacesTest extends AbstractReflectionClassTestCase
 {
-    public function testIsInterface(): void
-    {
-        $this->assertFalse($this->reflectionClass->isInterface());
-    }
-
     public function testImplementsInterface(): void
     {
         $this->assertFalse($this->reflectionClass->implementsInterface('NoInterface'));

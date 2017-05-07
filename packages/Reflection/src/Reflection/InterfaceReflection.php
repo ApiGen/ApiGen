@@ -3,13 +3,15 @@
 namespace ApiGen\Reflection\Reflection;
 
 use ApiGen\Annotation\AnnotationList;
+use ApiGen\Reflection\Contract\Reflection\ClassReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ConstantReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\InterfaceReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\MethodReflectionInterface;
+use ApiGen\Reflection\Contract\TransformerCollectorInterface;
 use phpDocumentor\Reflection\DocBlock;
 use Roave\BetterReflection\Reflection\ReflectionClass;
 
-/**
- * @todo prepare interface
- */
-final class InterfaceReflection
+final class InterfaceReflection implements InterfaceReflectionInterface
 {
     /**
      * @var ReflectionClass
@@ -86,5 +88,161 @@ final class InterfaceReflection
         }
 
         return $this->parserStorage->getIndirectImplementersOfInterface($this);
+    }
+
+    public function isDocumented(): bool
+    {
+        // TODO: Implement isDocumented() method.
+    }
+
+    public function getParentClass(): ?ClassReflectionInterface
+    {
+        // TODO: Implement getParentClass() method.
+    }
+
+    public function getParentClassName(): ?string
+    {
+        // TODO: Implement getParentClassName() method.
+    }
+
+    public function getFileName(): string
+    {
+        // TODO: Implement getFileName() method.
+    }
+
+    /**
+     * @return ClassReflectionInterface[]
+     */
+    public function getParentClasses(): array
+    {
+        // TODO: Implement getParentClasses() method.
+    }
+
+    /**
+     * @return ClassReflectionInterface[]
+     */
+    public function getInterfaces(): array
+    {
+        // TODO: Implement getInterfaces() method.
+    }
+
+    /**
+     * @return ClassReflectionInterface[]
+     */
+    public function getOwnInterfaces(): array
+    {
+        // TODO: Implement getOwnInterfaces() method.
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getOwnInterfaceNames(): array
+    {
+        // TODO: Implement getOwnInterfaceNames() method.
+    }
+
+    /**
+     * @return MethodReflectionInterface[]
+     */
+    public function getMethods(): array
+    {
+        // TODO: Implement getMethods() method.
+    }
+
+    /**
+     * @return MethodReflectionInterface[]
+     */
+    public function getOwnMethods(): array
+    {
+        // TODO: Implement getOwnMethods() method.
+    }
+
+    /**
+     * @return MethodReflectionInterface[]
+     */
+    public function getInheritedMethods(): array
+    {
+        // TODO: Implement getInheritedMethods() method.
+    }
+
+    /**
+     * @return MethodReflectionInterface[]
+     */
+    public function getUsedMethods(): array
+    {
+        // TODO: Implement getUsedMethods() method.
+    }
+
+    /**
+     * @return MethodReflectionInterface[]
+     */
+    public function getTraitMethods(): array
+    {
+        // TODO: Implement getTraitMethods() method.
+    }
+
+    public function getMethod(string $name): MethodReflectionInterface
+    {
+        // TODO: Implement getMethod() method.
+    }
+
+    public function hasMethod(string $name): bool
+    {
+        // TODO: Implement hasMethod() method.
+    }
+
+    /**
+     * @return ConstantReflectionInterface[]
+     */
+    public function getOwnConstants(): array
+    {
+        // TODO: Implement getOwnConstants() method.
+    }
+
+    /**
+     * @return ConstantReflectionInterface[]
+     */
+    public function getInheritedConstants(): array
+    {
+        // TODO: Implement getInheritedConstants() method.
+    }
+
+    public function hasConstant(string $name): bool
+    {
+        // TODO: Implement hasConstant() method.
+    }
+
+    public function getConstant(string $name): ConstantReflectionInterface
+    {
+        // TODO: Implement getConstant() method.
+    }
+
+    public function getOwnConstant(string $name): ConstantReflectionInterface
+    {
+        // TODO: Implement getOwnConstant() method.
+    }
+
+    public function getTransformerCollector(): TransformerCollectorInterface
+    {
+        // TODO: Implement getTransformerCollector() method.
+    }
+
+    /**
+     * @return ClassReflectionInterface[]
+     */
+    public function getParsedClasses(): array
+    {
+        // TODO: Implement getParsedClasses() method.
+    }
+
+    public function isSubclassOf(string $class): bool
+    {
+        // TODO: Implement isSubclassOf() method.
+    }
+
+    public function extendsInterface(string $interface): bool
+    {
+        return $this->betterInterfaceReflection->implementsInterface($interface);
     }
 }
