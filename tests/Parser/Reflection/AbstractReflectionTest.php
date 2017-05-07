@@ -4,7 +4,7 @@ namespace ApiGen\Tests\Parser\Reflection;
 
 use ApiGen\Contracts\Parser\ParserInterface;
 use ApiGen\Contracts\Parser\ParserStorageInterface;
-use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ClassReflectionInterface;
 use ApiGen\Parser\Reflection\AbstractReflection;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 use ApiGen\Tests\MethodInvoker;

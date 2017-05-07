@@ -2,12 +2,12 @@
 
 namespace ApiGen\Templating\Filters;
 
-use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\ReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ClassReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ClassConstantReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\FunctionReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\MethodReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\PropertyReflectionInterface;
 use ApiGen\Templating\Filters\Helpers\ElementUrlFactory;
 
 final class ElementUrlFilters extends Filters
@@ -45,7 +45,7 @@ final class ElementUrlFilters extends Filters
         return $this->elementUrlFactory->createForProperty($property, $class);
     }
 
-    public function constantUrl(ConstantReflectionInterface $constant): string
+    public function constantUrl(ClassConstantReflectionInterface $constant): string
     {
         return $this->elementUrlFactory->createForConstant($constant);
     }

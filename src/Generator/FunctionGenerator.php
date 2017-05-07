@@ -5,7 +5,7 @@ namespace ApiGen\Generator;
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Generator\GeneratorInterface;
 use ApiGen\Contracts\Generator\SourceCodeHighlighter\SourceCodeHighlighterInterface;
-use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\FunctionReflectionInterface;
 use ApiGen\Contracts\Templating\TemplateRendererInterface;
 use ApiGen\Reflection\Contract\ReflectionStorageInterface;
 

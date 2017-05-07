@@ -2,7 +2,7 @@
 
 namespace ApiGen\Reflection\Tests\Reflection\FunctionReflection;
 
-use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\FunctionReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\FunctionParameterReflectionInterface;
 use ApiGen\Tests\AbstractParserAwareTestCase;
 use phpDocumentor\Reflection\DocBlock\Tags\Return_;

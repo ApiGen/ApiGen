@@ -2,11 +2,11 @@
 
 namespace ApiGen\Parser\Reflection\Extractors;
 
-use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\Extractors\ParentClassElementsExtractorInterface;
-use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ClassReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ClassConstantReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Extractors\ParentClassElementsExtractorInterface;
+use ApiGen\Reflection\Contract\Reflection\MethodReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\PropertyReflectionInterface;
 
 final class ParentClassElementsExtractor implements ParentClassElementsExtractorInterface
 {
@@ -21,7 +21,7 @@ final class ParentClassElementsExtractor implements ParentClassElementsExtractor
     }
 
     /**
-     * @return ConstantReflectionInterface[]
+     * @return ClassConstantReflectionInterface[]
      */
     public function getInheritedConstants(): array
     {

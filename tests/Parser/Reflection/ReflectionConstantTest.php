@@ -3,15 +3,15 @@
 namespace ApiGen\Tests\Parser\Reflection;
 
 use ApiGen\Contracts\Parser\ParserInterface;
-use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ClassReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ClassConstantReflectionInterface;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 use ApiGen\Tests\Parser\Reflection\ReflectionConstantSource\ConstantInClass;
 
 final class ReflectionConstantTest extends AbstractContainerAwareTestCase
 {
     /**
-     * @var ConstantReflectionInterface
+     * @var ClassConstantReflectionInterface
      */
     private $constantReflectionInClass;
 
@@ -33,7 +33,7 @@ final class ReflectionConstantTest extends AbstractContainerAwareTestCase
 
     public function testInstance(): void
     {
-        $this->assertInstanceOf(ConstantReflectionInterface::class, $this->constantReflectionInClass);
+        $this->assertInstanceOf(ClassConstantReflectionInterface::class, $this->constantReflectionInClass);
     }
 
     public function testGetDeclaringClass(): void

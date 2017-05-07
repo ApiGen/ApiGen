@@ -3,9 +3,9 @@
 namespace ApiGen\Reflection\Reflection;
 
 use ApiGen\Annotation\AnnotationList;
-use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\TraitReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ClassReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\PropertyReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\TraitReflectionInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorInterface;
 use phpDocumentor\Reflection\DocBlock;
 use Roave\BetterReflection\Reflection\ReflectionProperty;

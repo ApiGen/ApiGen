@@ -2,9 +2,9 @@
 
 namespace ApiGen\Tests\Templating\Filters;
 
-use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ClassReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ClassConstantReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\FunctionReflectionInterface;
 use ApiGen\Templating\Filters\SourceFilters;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 
@@ -61,7 +61,7 @@ final class SourceFiltersTest extends AbstractContainerAwareTestCase
 
     public function testSourceUrlClassConstant(): void
     {
-        $reflectionConstant = $this->createMock(ConstantReflectionInterface::class);
+        $reflectionConstant = $this->createMock(ClassConstantReflectionInterface::class);
         $reflectionConstant->method('getName')
             ->willReturn('someConstant');
         $reflectionConstant->method('getDeclaringClassName')

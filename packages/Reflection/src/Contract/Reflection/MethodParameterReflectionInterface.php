@@ -2,8 +2,8 @@
 
 namespace ApiGen\Reflection\Contract\Reflection;
 
-use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ClassReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\MethodReflectionInterface;
 
 interface MethodParameterReflectionInterface extends AbstractParameterReflectionInterface
 {

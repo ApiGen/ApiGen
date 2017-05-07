@@ -3,11 +3,11 @@
 namespace ApiGen\Templating\Filters;
 
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
-use ApiGen\Contracts\Parser\Reflection\Behavior\InClassInterface;
-use ApiGen\Contracts\Parser\Reflection\Behavior\LinedInterface;
-use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\ReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Behavior\InClassInterface;
+use ApiGen\Reflection\Contract\Reflection\Behavior\LinedInterface;
+use ApiGen\Reflection\Contract\Reflection\ClassReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\FunctionReflectionInterface;
 
 final class SourceFilters extends Filters
 {

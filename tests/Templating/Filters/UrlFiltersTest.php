@@ -4,9 +4,9 @@ namespace ApiGen\Tests\Templating\Filters;
 
 use ApiGen\Console\Command\GenerateCommand;
 use ApiGen\Contracts\Parser\ParserStorageInterface;
-use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\ReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ClassReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\MethodReflectionInterface;
 use ApiGen\Templating\Filters\UrlFilters;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 use ApiGen\Tests\MethodInvoker;

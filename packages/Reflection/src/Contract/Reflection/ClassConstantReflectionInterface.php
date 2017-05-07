@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Contracts\Parser\Reflection;
+namespace ApiGen\Reflection\Contract\Reflection;
 
-interface ConstantReflectionInterface
+interface ClassConstantReflectionInterface
 {
     public function getTypeHint(): string;
 
@@ -17,7 +17,7 @@ interface ConstantReflectionInterface
 
     public function getEndLine(): int;
 
-    public function getDeclaringClass(): ?ClassReflectionInterface;
+    public function getDeclaringClass(): ClassReflectionInterface;
 
     /**
      * @return mixed[]
@@ -27,4 +27,6 @@ interface ConstantReflectionInterface
     public function getDeclaringClassName(): string;
 
     public function getNamespaceName(): string;
+
+    public function getName(): string;
 }

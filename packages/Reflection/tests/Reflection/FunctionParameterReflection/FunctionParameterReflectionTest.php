@@ -2,7 +2,7 @@
 
 namespace ApiGen\Reflection\Tests\Reflection\FunctionParameterReflection;
 
-use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\FunctionReflectionInterface;
 use ApiGen\Reflection\Reflection\FunctionParameterReflection;
 use ApiGen\Tests\AbstractParserAwareTestCase;
 

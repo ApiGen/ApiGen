@@ -1,9 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Contracts\Parser\Reflection;
+namespace ApiGen\Reflection\Contract\Reflection;
 
-interface PropertyReflectionInterface extends
-    ReflectionInterface
+use ApiGen\Reflection\Contract\Reflection\ClassReflectionInterface;
+
+interface PropertyReflectionInterface
 {
     public function isDefault(): bool;
 
@@ -41,5 +42,18 @@ interface PropertyReflectionInterface extends
     // sometimes
     public function getDeclaringTrait(): ?TraitReflectionInterface;
 
-    public function getDeclaringTraitName(): string
+    public function getDeclaringTraitName(): string;
+
+    public function getName(): string;
+
+    /**
+     * Returns the unqualified name (UQN).
+     */
+    public function getShortName(): string;
+
+    public function isDocumented(): bool;
+
+    public function isDeprecated(): bool;
+
+    public function getDescription(): string;
 }

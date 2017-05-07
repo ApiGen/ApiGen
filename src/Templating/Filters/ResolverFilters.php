@@ -2,7 +2,7 @@
 
 namespace ApiGen\Templating\Filters;
 
-use ApiGen\Contracts\Parser\Reflection\TokenReflection\ReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\TokenReflection\ReflectionInterface;
 use ApiGen\Generator\Resolvers\ElementResolver;
 use ApiGen\Parser\Reflection\AbstractReflectionElement;
 use ApiGen\Parser\Reflection\ReflectionClass;

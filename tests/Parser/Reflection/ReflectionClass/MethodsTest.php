@@ -2,7 +2,7 @@
 
 namespace ApiGen\Tests\Parser\Reflection\ReflectionClass;
 
-use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\MethodReflectionInterface;
 
 final class MethodsTest extends AbstractReflectionClassTestCase
 {

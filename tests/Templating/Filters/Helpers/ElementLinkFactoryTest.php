@@ -2,12 +2,12 @@
 
 namespace ApiGen\Tests\Templating\Filters\Helpers;
 
-use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\ReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ClassReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ClassConstantReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\FunctionReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\MethodReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\PropertyReflectionInterface;
 use ApiGen\Templating\Filters\Helpers\ElementLinkFactory;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 
@@ -49,7 +49,7 @@ final class ElementLinkFactoryTest extends AbstractContainerAwareTestCase
 
     public function testCreateForConstantInClass(): void
     {
-        $reflectionConstant = $this->createMock(ConstantReflectionInterface::class);
+        $reflectionConstant = $this->createMock(ClassConstantReflectionInterface::class);
         $reflectionConstant->method('getName')
             ->willReturn('SOME_CONSTANT');
         $reflectionConstant->method('getDeclaringClassName')

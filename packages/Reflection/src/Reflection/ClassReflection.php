@@ -3,9 +3,9 @@
 namespace ApiGen\Reflection\Reflection;
 
 use ApiGen\Annotation\AnnotationList;
-use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\MethodReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\PropertyReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ClassConstantReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorInterface;
 use phpDocumentor\Reflection\DocBlock;
@@ -244,7 +244,7 @@ final class ClassReflection implements ClassReflectionInterface
     }
 
     /**
-     * @return ConstantReflectionInterface[]
+     * @return \ApiGen\Reflection\Contract\Reflection\ClassConstantReflectionInterface[]
      */
     public function getConstants(): array
     {
@@ -263,7 +263,7 @@ final class ClassReflection implements ClassReflectionInterface
     }
 
     /**
-     * @return ConstantReflectionInterface[]
+     * @return ClassConstantReflectionInterface[]
      */
     public function getOwnConstants(): array
     {
@@ -281,7 +281,7 @@ final class ClassReflection implements ClassReflectionInterface
     }
 
     /**
-     * @return ConstantReflectionInterface[]
+     * @return ClassConstantReflectionInterface[]
      */
     public function getInheritedConstants(): array
     {
@@ -293,7 +293,7 @@ final class ClassReflection implements ClassReflectionInterface
         return isset($this->getConstants()[$name]);
     }
 
-    public function getConstant(string $name): ConstantReflectionInterface
+    public function getConstant(string $name): ClassConstantReflectionInterface
     {
         if (isset($this->getConstants()[$name])) {
             return $this->getConstants()[$name];
@@ -306,7 +306,7 @@ final class ClassReflection implements ClassReflectionInterface
         ));
     }
 
-    public function getOwnConstant(string $name): ConstantReflectionInterface
+    public function getOwnConstant(string $name): ClassConstantReflectionInterface
     {
         // TODO: Implement getOwnConstant() method.
     }

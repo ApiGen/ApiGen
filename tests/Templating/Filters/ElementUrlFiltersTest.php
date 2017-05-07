@@ -2,11 +2,11 @@
 
 namespace ApiGen\Tests\Templating\Filters;
 
-use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ClassReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ClassConstantReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\FunctionReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\MethodReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\PropertyReflectionInterface;
 use ApiGen\Templating\Filters\ElementUrlFilters;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 
@@ -64,7 +64,7 @@ final class ElementUrlFiltersTest extends AbstractContainerAwareTestCase
 
     public function testConstantUrl(): void
     {
-        $reflectionConstantMock = $this->createMock(ConstantReflectionInterface::class);
+        $reflectionConstantMock = $this->createMock(ClassConstantReflectionInterface::class);
         $reflectionConstantMock->method('getDeclaringClassName')
             ->willReturn('SomeClass');
         $reflectionConstantMock->method('getName')

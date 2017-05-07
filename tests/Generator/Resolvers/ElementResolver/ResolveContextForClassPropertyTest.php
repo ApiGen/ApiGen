@@ -2,7 +2,7 @@
 
 namespace ApiGen\Tests\Generator\Resolvers\ElementResolver;
 
-use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ClassReflectionInterface;
 use ApiGen\Tests\MethodInvoker;
 use PHPUnit_Framework_MockObject_MockObject;
 

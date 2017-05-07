@@ -2,12 +2,12 @@
 
 namespace ApiGen\Tests\Templating\Filters\Helpers;
 
-use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\ReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ClassReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ClassConstantReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\FunctionReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\MethodReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\PropertyReflectionInterface;
 use ApiGen\Templating\Filters\Helpers\ElementUrlFactory;
 use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject;
@@ -194,11 +194,11 @@ final class ElementUrlFactoryTest extends TestCase
     }
 
     /**
-     * @return PHPUnit_Framework_MockObject_MockObject|ConstantReflectionInterface
+     * @return PHPUnit_Framework_MockObject_MockObject|ClassConstantReflectionInterface
      */
     private function getReflectionConstantMock()
     {
-        $reflectionConstantMock = $this->createMock(ConstantReflectionInterface::class);
+        $reflectionConstantMock = $this->createMock(ClassConstantReflectionInterface::class);
         $reflectionConstantMock->method('getName')
             ->willReturn('someConstant');
 

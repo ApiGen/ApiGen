@@ -3,9 +3,8 @@
 namespace ApiGen\Reflection\Reflection;
 
 use ApiGen\Annotation\AnnotationList;
-use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\ParameterReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\FunctionParameterReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\FunctionReflectionInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorAwareInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorInterface;
 use phpDocumentor\Reflection\DocBlock;
@@ -24,7 +23,7 @@ final class FunctionReflection implements FunctionReflectionInterface, Transform
     private $docBlock;
 
     /**
-     * @var ParameterReflectionInterface[]
+     * @var FunctionParameterReflectionInterface[]
      */
     private $parameterReflections = [];
 

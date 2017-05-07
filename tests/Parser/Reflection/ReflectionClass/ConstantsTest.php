@@ -2,7 +2,7 @@
 
 namespace ApiGen\Tests\Parser\Reflection\ReflectionClass;
 
-use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ClassConstantReflectionInterface;
 
 final class ConstantsTest extends AbstractReflectionClassTestCase
 {
@@ -24,13 +24,13 @@ final class ConstantsTest extends AbstractReflectionClassTestCase
 
     public function testGetConstant(): void
     {
-        $this->assertInstanceOf(ConstantReflectionInterface::class, $this->reflectionClass->getConstant('LEVEL'));
+        $this->assertInstanceOf(ClassConstantReflectionInterface::class, $this->reflectionClass->getConstant('LEVEL'));
     }
 
     public function testGetOwnConstant(): void
     {
         $this->assertInstanceOf(
-            ConstantReflectionInterface::class,
+            ClassConstantReflectionInterface::class,
             $this->reflectionClass->getOwnConstant('LEVEL')
         );
     }

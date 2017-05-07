@@ -2,7 +2,7 @@
 
 namespace ApiGen\Reflection\Contract\Reflection;
 
-use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\MethodReflectionInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorInterface;
 
 interface ClassReflectionInterface
@@ -77,20 +77,20 @@ interface ClassReflectionInterface
     public function hasMethod(string $name): bool;
 
     /**
-     * @return ConstantReflectionInterface[]
+     * @return ClassConstantReflectionInterface[]
      */
     public function getOwnConstants(): array;
 
     /**
-     * @return ConstantReflectionInterface[]
+     * @return ClassConstantReflectionInterface[]
      */
     public function getInheritedConstants(): array;
 
     public function hasConstant(string $name): bool;
 
-    public function getConstant(string $name): ConstantReflectionInterface;
+    public function getConstant(string $name): ClassConstantReflectionInterface;
 
-    public function getOwnConstant(string $name): ConstantReflectionInterface;
+    public function getOwnConstant(string $name): ClassConstantReflectionInterface;
 
     public function getTransformerCollector(): TransformerCollectorInterface;
 

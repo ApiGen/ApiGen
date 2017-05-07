@@ -3,12 +3,12 @@
 namespace ApiGen\Templating\Filters\Helpers;
 
 use ApiGen\Annotation\AnnotationList;
-use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\ReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ClassReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ClassConstantReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\FunctionReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\MethodReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\PropertyReflectionInterface;
 use ApiGen\Parser\Reflection\AbstractReflection;
 use Nette\Utils\Html;
 use UnexpectedValueException;
@@ -42,7 +42,7 @@ final class ElementLinkFactory
             return $this->createForMethod($element, $classes);
         } elseif ($element instanceof PropertyReflectionInterface) {
             return $this->createForProperty($element, $classes);
-        } elseif ($element instanceof ConstantReflectionInterface) {
+        } elseif ($element instanceof ClassConstantReflectionInterface) {
             return $this->createForConstant($element, $classes);
         } elseif ($element instanceof FunctionReflectionInterface) {
             return $this->createForFunction($element, $classes);
@@ -100,7 +100,7 @@ final class ElementLinkFactory
     /**
      * @param mixed[] $classes
      */
-    private function createForConstant(ConstantReflectionInterface $reflectionConstant, array $classes): string
+    private function createForConstant(ClassConstantReflectionInterface $reflectionConstant, array $classes): string
     {
         $url = $this->elementUrlFactory->createForConstant($reflectionConstant);
 

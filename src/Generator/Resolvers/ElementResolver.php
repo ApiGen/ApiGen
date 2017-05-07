@@ -3,14 +3,14 @@
 namespace ApiGen\Generator\Resolvers;
 
 use ApiGen\Contracts\Generator\Resolvers\ElementResolverInterface;
-use ApiGen\Contracts\Parser\Reflection\Behavior\InClassInterface;
-use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\ReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\ParameterReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Behavior\InClassInterface;
+use ApiGen\Reflection\Contract\Reflection\ClassReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ClassConstantReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\FunctionReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\MethodReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ParameterReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\PropertyReflectionInterface;
 
 final class ElementResolver implements ElementResolverInterface
 {
@@ -61,7 +61,7 @@ final class ElementResolver implements ElementResolverInterface
 
     /**
      * @param object|string $reflectionElement
-     * @return ClassReflectionInterface|ConstantReflectionInterface|FunctionReflectionInterface|MethodReflectionInterface|PropertyReflectionInterface|null
+     * @return ClassReflectionInterface|ClassConstantReflectionInterface|FunctionReflectionInterface|MethodReflectionInterface|PropertyReflectionInterface|null
      */
     public function resolveElement(string $definition, $reflectionElement, ?string &$expectedName = null)
     {
@@ -164,7 +164,7 @@ final class ElementResolver implements ElementResolverInterface
     }
 
     /**
-     * @return ClassReflectionInterface|ConstantReflectionInterface|FunctionReflectionInterface|null
+     * @return ClassReflectionInterface|ClassConstantReflectionInterface|FunctionReflectionInterface|null
      */
     private function resolveIfParsed(string $definition, ReflectionInterface $reflectionElement)
     {
@@ -184,7 +184,7 @@ final class ElementResolver implements ElementResolverInterface
     }
 
     /**
-     * @return ConstantReflectionInterface|MethodReflectionInterface|PropertyReflectionInterface|null
+     * @return ClassConstantReflectionInterface|MethodReflectionInterface|PropertyReflectionInterface|null
      */
     private function resolveIfInContext(string $definition, ClassReflectionInterface $classReflection)
     {
@@ -248,7 +248,7 @@ final class ElementResolver implements ElementResolverInterface
      */
     private function isContextUsable($reflectionElement): bool
     {
-        if ($reflectionElement === null || $reflectionElement instanceof ConstantReflectionInterface
+        if ($reflectionElement === null || $reflectionElement instanceof ClassConstantReflectionInterface
             || $reflectionElement instanceof FunctionReflectionInterface
         ) {
             return false;

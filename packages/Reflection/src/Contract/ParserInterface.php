@@ -2,8 +2,8 @@
 
 namespace ApiGen\Reflection\Contract;
 
-use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\InterfaceReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ClassReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\InterfaceReflectionInterface;
 
 interface ParserInterface
 {

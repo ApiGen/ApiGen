@@ -2,7 +2,7 @@
 
 namespace ApiGen\Element;
 
-use ApiGen\Contracts\Parser\Reflection\ReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ReflectionInterface;
 use ApiGen\Element\Contract\ElementExtractorInterface;
 use ApiGen\Reflection\Contract\ReflectionStorageInterface;
 

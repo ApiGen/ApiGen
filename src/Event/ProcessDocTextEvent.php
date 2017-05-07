@@ -2,7 +2,7 @@
 
 namespace ApiGen\Event;
 
-use ApiGen\Contracts\Parser\Reflection\ReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ReflectionInterface;
 use Symfony\Component\EventDispatcher\Event;
 
 final class ProcessDocTextEvent extends Event

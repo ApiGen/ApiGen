@@ -2,7 +2,7 @@
 
 namespace ApiGen\Reflection\Contract\Reflection;
 
-use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\FunctionReflectionInterface;
 
 interface FunctionParameterReflectionInterface extends AbstractParameterReflectionInterface
 {

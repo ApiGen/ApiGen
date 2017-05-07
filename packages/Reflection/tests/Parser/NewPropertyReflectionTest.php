@@ -2,7 +2,7 @@
 
 namespace ApiGen\Reflection\Tests\Parser;
 
-use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\PropertyReflectionInterface;
 use ApiGen\Reflection\Parser\Parser;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 

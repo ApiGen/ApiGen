@@ -2,7 +2,7 @@
 
 namespace ApiGen\Element\Latte\Filter;
 
-use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\MethodReflectionInterface;
 use ApiGen\Element\Naming\ReflectionNaming;
 use Symplify\ModularLatteFilters\Contract\DI\LatteFiltersProviderInterface;
 

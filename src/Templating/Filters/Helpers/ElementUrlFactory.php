@@ -2,12 +2,12 @@
 
 namespace ApiGen\Templating\Filters\Helpers;
 
-use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\ReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ClassReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ClassConstantReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\FunctionReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\MethodReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\PropertyReflectionInterface;
 use ApiGen\Templating\Filters\Filters;
 
 final class ElementUrlFactory
@@ -29,7 +29,7 @@ final class ElementUrlFactory
             return $this->createForProperty($element);
         }
 
-        if ($element instanceof ConstantReflectionInterface) {
+        if ($element instanceof ClassConstantReflectionInterface) {
             return $this->createForConstant($element);
         }
 
@@ -74,7 +74,7 @@ final class ElementUrlFactory
         return $this->createForClass($className) . '#$' . $property->getName();
     }
 
-    public function createForConstant(ConstantReflectionInterface $constant): string
+    public function createForConstant(ClassConstantReflectionInterface $constant): string
     {
         $className = $constant->getDeclaringClassName();
 

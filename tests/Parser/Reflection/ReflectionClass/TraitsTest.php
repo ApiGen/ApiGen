@@ -2,7 +2,7 @@
 
 namespace ApiGen\Tests\Parser\Reflection\ReflectionClass;
 
-use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ClassReflectionInterface;
 use ApiGen\Tests\Parser\Reflection\ReflectionClassSource\SomeTrait;
 
 final class TraitsTest extends AbstractReflectionClassTestCase

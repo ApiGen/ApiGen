@@ -2,9 +2,9 @@
 
 namespace ApiGen\Tests\Generator\Resolvers\ElementResolver;
 
-use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ClassReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ClassConstantReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\FunctionReflectionInterface;
 use ApiGen\Tests\MethodInvoker;
 
 final class IsContextUsableTest extends AbstractElementResolverTest
@@ -15,7 +15,7 @@ final class IsContextUsableTest extends AbstractElementResolverTest
             MethodInvoker::callMethodOnObject($this->elementResolver, 'isContextUsable', [null])
         );
 
-        $reflectionConstantMock = $this->createMock(ConstantReflectionInterface::class);
+        $reflectionConstantMock = $this->createMock(ClassConstantReflectionInterface::class);
         $this->assertFalse(
             MethodInvoker::callMethodOnObject($this->elementResolver, 'isContextUsable', [$reflectionConstantMock])
         );

@@ -3,7 +3,7 @@
 namespace ApiGen\Tests\Templating\Filters;
 
 use ApiGen\Contracts\Parser\ParserStorageInterface;
-use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ClassReflectionInterface;
 use ApiGen\Templating\Filters\NamespaceUrlFilters;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 

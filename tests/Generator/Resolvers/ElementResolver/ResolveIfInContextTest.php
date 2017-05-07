@@ -2,10 +2,10 @@
 
 namespace ApiGen\Tests\Generator\Resolvers\ElementResolver;
 
-use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ClassReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ClassConstantReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\MethodReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\PropertyReflectionInterface;
 use ApiGen\Tests\MethodInvoker;
 use PHPUnit_Framework_MockObject_MockObject;
 
@@ -47,7 +47,7 @@ final class ResolveIfInContextTest extends AbstractElementResolverTest
             ['someConstant', $classReflectionMock]
         );
 
-        $this->assertInstanceOf(ConstantReflectionInterface::class, $resolvedElement);
+        $this->assertInstanceOf(ClassConstantReflectionInterface::class, $resolvedElement);
     }
 
     public function testMissingElement(): void
@@ -118,7 +118,7 @@ final class ResolveIfInContextTest extends AbstractElementResolverTest
         $classReflectionMock->method('hasConstant')
             ->willReturn(false);
 
-        $constantReflectionMock = $this->createMock(ConstantReflectionInterface::class);
+        $constantReflectionMock = $this->createMock(ClassConstantReflectionInterface::class);
 
         $classReflectionMock->method('getConstant')
             ->willReturn($constantReflectionMock);

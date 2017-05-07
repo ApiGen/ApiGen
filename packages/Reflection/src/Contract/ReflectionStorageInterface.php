@@ -2,10 +2,10 @@
 
 namespace ApiGen\Reflection\Contract;
 
-use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\InterfaceReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\TraitReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ClassReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\FunctionReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\InterfaceReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\TraitReflectionInterface;
 
 interface ReflectionStorageInterface
 {

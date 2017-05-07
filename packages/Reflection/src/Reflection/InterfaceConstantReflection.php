@@ -2,11 +2,11 @@
 
 namespace ApiGen\Reflection\Reflection;
 
-use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ClassReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ClassConstantReflectionInterface;
 
 // @todo, resolve manually probably
-final class ConstantReflection implements ConstantReflectionInterface
+final class ClassConstantReflection implements ClassConstantReflectionInterface
 {
 //    public function __construct()
 //    {

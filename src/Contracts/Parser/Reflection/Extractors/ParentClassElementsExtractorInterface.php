@@ -1,15 +1,15 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Contracts\Parser\Reflection\Extractors;
+namespace ApiGen\Reflection\Contract\Reflection\Extractors;
 
-use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ClassConstantReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\MethodReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\PropertyReflectionInterface;
 
 interface ParentClassElementsExtractorInterface
 {
     /**
-     * @return ConstantReflectionInterface[]
+     * @return ClassConstantReflectionInterface[]
      */
     public function getInheritedConstants(): array;
 
