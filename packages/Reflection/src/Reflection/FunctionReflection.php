@@ -5,11 +5,12 @@ namespace ApiGen\Reflection\Reflection;
 use ApiGen\Annotation\AnnotationList;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ParameterReflectionInterface;
+use ApiGen\Reflection\Contract\TransformerCollectorAwareInterface;
+use ApiGen\Reflection\Contract\TransformerCollectorInterface;
 use phpDocumentor\Reflection\DocBlock;
 use Roave\BetterReflection\Reflection\ReflectionFunction;
-//use Webmozart\Assert\Assert;
 
-final class FunctionReflection implements FunctionReflectionInterface
+final class FunctionReflection implements FunctionReflectionInterface, TransformerCollectorAwareInterface
 {
     /**
      * @var ReflectionFunction
@@ -27,16 +28,14 @@ final class FunctionReflection implements FunctionReflectionInterface
     private $parameterReflections = [];
 
     /**
-     * @param ParameterReflectionInterface[] $parameterReflections
+     * @var TransformerCollectorInterface
      */
-    public function __construct(
-        ReflectionFunction $betterFunctionReflection,
-        DocBlock $docBlock
-//        array $parameterReflections
-    ) {
+    private $transformerCollector;
+
+    public function __construct(ReflectionFunction $betterFunctionReflection, DocBlock $docBlock)
+    {
         $this->reflection = $betterFunctionReflection;
         $this->docBlock = $docBlock;
-//        $this->setParameterReflections($parameterReflections);
     }
 
     public function getName(): string
@@ -109,7 +108,9 @@ final class FunctionReflection implements FunctionReflectionInterface
      */
     public function getParameters(): array
     {
-        return $this->parameterReflections;
+        return $this->transformerCollector->transformGroup(
+            $this->reflection->getParameters()
+        );
     }
 
     public function isDocumented(): bool
@@ -137,5 +138,10 @@ final class FunctionReflection implements FunctionReflectionInterface
     public function getFileName(): string
     {
         return $this->reflection->getFileName();
+    }
+
+    public function setTransformerCollector(TransformerCollectorInterface $transformerCollector): void
+    {
+        $this->transformerCollector = $transformerCollector;
     }
 }

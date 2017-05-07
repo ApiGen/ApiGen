@@ -6,6 +6,8 @@ interface FunctionReflectionInterface
 {
     public function getName(): string;
 
+    public function getNamespaceName(): string;
+
     public function getStartLine(): int;
 
     public function getEndLine(): int;
@@ -20,4 +22,19 @@ interface FunctionReflectionInterface
     public function getParameters(): array;
 
     public function getShortName(): string;
+
+    public function getAnnotations(): array;
+
+    public function hasAnnotation(string $name): bool;
+
+    /**
+     * @return mixed
+     */
+    public function getAnnotation(string $name);
+
+    public function isDeprecated(): bool;
+
+    public function getDescription(): string;
+
+    public function isDocumented(): bool;
 }

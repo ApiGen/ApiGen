@@ -3,8 +3,8 @@
 namespace ApiGen\Reflection;
 
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
-use ApiGen\Parser\Reflection\AbstractReflection;
 use ApiGen\Reflection\Contract\Transformer\TransformerInterface;
+use ApiGen\Reflection\Contract\TransformerCollectorAwareInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorInterface;
 use ApiGen\Reflection\Exception\UnsupportedReflectionClassException;
 
@@ -66,8 +66,8 @@ final class TransformerCollector implements TransformerCollectorInterface
 
             $element = $transformer->transform($reflection);
 
-            if ($element instanceof AbstractReflection) {
-                $this->setDependencies($element);
+            if ($element instanceof TransformerCollectorAwareInterface) {
+                $element->setTransformerCollector($this);
             }
 
             return $element;
@@ -78,11 +78,5 @@ final class TransformerCollector implements TransformerCollectorInterface
             get_class($reflection),
             TransformerInterface::class
         ));
-    }
-
-    private function setDependencies(AbstractReflection $element): void
-    {
-        $element->setConfiguration($this->configuration);
-        $element->setTransformerCollector($this);
     }
 }

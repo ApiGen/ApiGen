@@ -50,12 +50,13 @@ final class ElementsTemplateVariablesEventSubscriber implements EventSubscriberI
             'namespace' => null,
             'class' => null,
             'function' => null,
-            'namespaces' => array_keys($this->namespaceStorage->categorizeReflectionsToNamespaces()),
+            'namespaces' => $this->namespaceStorage->getNamespaces(),
             'classes' => array_filter($this->reflectionStorage->getClassReflections()),
             'interfaces' => array_filter($this->reflectionStorage->getInterfaceReflections()),
             'traits' => array_filter($this->reflectionStorage->getTraitReflections()),
             'functions' => array_filter($this->reflectionStorage->getFunctionReflections()),
-            'elements' => $this->autocompleteElements->getElements() // @todo: rename to autocompleteElements
+            // @todo: rename to autocompleteElements as Latte variable
+            'elements' => $this->autocompleteElements->getElements()
         ]);
     }
 }
