@@ -90,6 +90,10 @@ final class FunctionParameterReflection implements FunctionParameterReflectionIn
     public function getDefaultValueDefinition(): ?string
     {
         if ($this->betterParameterReflection->isDefaultValueAvailable()) {
+            if ($this->betterParameterReflection->isDefaultValueConstant()) {
+                return $this->betterParameterReflection->getDefaultValueConstantName();
+            }
+
             return $this->betterParameterReflection->getDefaultValueAsString();
         }
 

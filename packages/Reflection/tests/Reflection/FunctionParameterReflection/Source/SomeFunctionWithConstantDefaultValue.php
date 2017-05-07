@@ -2,8 +2,9 @@
 
 namespace ApiGen\Reflection\Tests\Reflection\FunctionParameterReflection\Source;
 
-const HI = 5;
+define('HI', 5);
 
+//function someAloneFunction(int $hello = SomeClassWithConstants::HEY)
 function someAloneFunction(int $hello = HI)
 {
 }
