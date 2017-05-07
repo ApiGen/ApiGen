@@ -1,1 +1,6 @@
 - ApiGen\Element\Naming\ReflectionNaming
+- ApiGen\Element\Latte\Filter\MethodReflectionNamingFilter
+
+- ApiGen\Element\AutocompleteElements
+- ApiGen\Element\ElementExtractor
+- ApiGen\Element\Namespaces\NamespaceStorage

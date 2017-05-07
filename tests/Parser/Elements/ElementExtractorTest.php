@@ -2,17 +2,17 @@
 
 namespace ApiGen\Tests\Parser\Elements;
 
-use ApiGen\Contracts\Parser\Elements\ElementExtractorInterface;
-use ApiGen\Contracts\Parser\ParserStorageInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
+use ApiGen\Element\Contract\ElementExtractorInterface;
+use ApiGen\Reflection\Contract\ReflectionStorageInterface;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 
 final class ElementExtractorTest extends AbstractContainerAwareTestCase
 {
     /**
-     * @var ParserStorageInterface
+     * @var ReflectionStorageInterface
      */
-    private $parserStorage;
+    private $reflectionStorage;
 
     /**
      * @var ElementExtractorInterface
@@ -22,12 +22,12 @@ final class ElementExtractorTest extends AbstractContainerAwareTestCase
     protected function setUp(): void
     {
         $this->elementExtractor = $this->container->getByType(ElementExtractorInterface::class);
-        $this->parserStorage = $this->container->getByType(ParserStorageInterface::class);
+        $this->reflectionStorage = $this->container->getByType(ReflectionStorageInterface::class);
     }
 
     public function testExtractElementsByAnnotation(): void
     {
-        $this->parserStorage->setClasses([
+        $this->reflectionStorage->setClasses([
             'SomeClass' => $this->createDeprecatedClassReflectionMock()
         ]);
 

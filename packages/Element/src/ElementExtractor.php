@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Parser\Elements;
+namespace ApiGen\Element;
 
-use ApiGen\Contracts\Parser\Elements\ElementExtractorInterface;
 use ApiGen\Contracts\Parser\Reflection\ReflectionInterface;
+use ApiGen\Element\Contract\ElementExtractorInterface;
 use ApiGen\Reflection\Contract\ReflectionStorageInterface;
 
 final class ElementExtractor implements ElementExtractorInterface

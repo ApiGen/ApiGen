@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Element\Filter;
+namespace ApiGen\Element\Latte\Filter;
 
 use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 use ApiGen\Element\Naming\ReflectionNaming;

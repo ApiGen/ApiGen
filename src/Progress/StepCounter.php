@@ -2,7 +2,7 @@
 
 namespace ApiGen\Progress;
 
-use ApiGen\Namespaces\NamespaceStorage;
+use ApiGen\Element\Namespaces\NamespaceStorage;
 use ApiGen\Reflection\Contract\ReflectionStorageInterface;
 
 final class StepCounter

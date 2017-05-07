@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Parser\Elements;
+namespace ApiGen\Element;
 
-use ApiGen\Contracts\Parser\Elements\AutocompleteElementsInterface;
+use ApiGen\Element\Contract\AutocompleteElementsInterface;
 use ApiGen\Element\Naming\ReflectionNaming;
 use ApiGen\Reflection\Contract\ReflectionStorageInterface;
 

@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Namespaces;
+namespace ApiGen\Element\Namespaces;
 
 use ApiGen\Reflection\Contract\ReflectionStorageInterface;
 use Nette\Utils\Strings;

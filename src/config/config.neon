@@ -1,5 +1,6 @@
 extensions:
     - ApiGen\DI\ApiGenExtension
+    - ApiGen\Element\DI\ElementExtension
     - ApiGen\Reflection\DI\ReflectionExtension
     - ApiGen\ModularConfiguration\DI\ModularConfigurationExtension
 

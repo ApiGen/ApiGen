@@ -3,8 +3,8 @@
 namespace ApiGen\EventSubscriber;
 
 use ApiGen\Event\CreateTemplateEvent;
-use ApiGen\Namespaces\NamespaceStorage;
-use ApiGen\Parser\Elements\AutocompleteElements;
+use ApiGen\Element\Namespaces\NamespaceStorage;
+use ApiGen\Element\AutocompleteElements;
 use ApiGen\Reflection\Contract\ReflectionStorageInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 

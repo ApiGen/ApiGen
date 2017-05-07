@@ -5,8 +5,8 @@ namespace ApiGen\Generator;
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Generator\GeneratorInterface;
 use ApiGen\Contracts\Templating\TemplateRendererInterface;
-use ApiGen\Namespaces\NamespaceStorage;
-use ApiGen\Namespaces\SingleNamespaceStorage;
+use ApiGen\Element\Namespaces\NamespaceStorage;
+use ApiGen\Element\Namespaces\SingleNamespaceStorage;
 
 final class NamespaceGenerator implements GeneratorInterface
 {

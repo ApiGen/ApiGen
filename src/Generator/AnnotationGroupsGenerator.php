@@ -4,8 +4,8 @@ namespace ApiGen\Generator;
 
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Generator\GeneratorInterface;
-use ApiGen\Contracts\Parser\Elements\ElementExtractorInterface;
 use ApiGen\Contracts\Templating\TemplateRendererInterface;
+use ApiGen\Element\Contract\ElementExtractorInterface;
 
 final class AnnotationGroupsGenerator implements GeneratorInterface
 {
