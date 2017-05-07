@@ -3,10 +3,10 @@
 namespace ApiGen\Reflection\Reflection;
 
 use ApiGen\Annotation\AnnotationList;
-use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ConstantReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\PropertyReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorInterface;
 use phpDocumentor\Reflection\DocBlock;
 use Roave\BetterReflection\Reflection\ReflectionClass;
@@ -237,13 +237,6 @@ final class ClassReflection implements ClassReflectionInterface
         return $this->sortUsedMethods($usedMethods);
     }
 
-
-
-
-    public function getMethod(string $name): MethodReflectionInterface
-    {
-        // TODO: Implement getMethod() method.
-    }
 
     public function hasMethod(string $name): bool
     {
@@ -594,5 +587,15 @@ final class ClassReflection implements ClassReflectionInterface
     public function getTraitMethods(): array
     {
         return $this->classTraitElementExtractor->getTraitMethods();
+    }
+
+    public function isInterface(): bool
+    {
+        // TODO: Implement isInterface() method.
+    }
+
+    public function isException(): bool
+    {
+        // TODO: Implement isException() method.
     }
 }

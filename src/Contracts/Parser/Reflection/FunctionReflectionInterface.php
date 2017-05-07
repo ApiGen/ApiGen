@@ -2,6 +2,7 @@
 
 namespace ApiGen\Contracts\Parser\Reflection;
 
+use ApiGen\Reflection\Contract\Reflection\FunctionParameterReflectionInterface;
 use phpDocumentor\Reflection\DocBlock\Tags\BaseTag;
 
 interface FunctionReflectionInterface
@@ -19,7 +20,7 @@ interface FunctionReflectionInterface
     public function returnsReference(): bool;
 
     /**
-     * @return ParameterReflectionInterface[]
+     * @return FunctionParameterReflectionInterface[]
      */
     public function getParameters(): array;
 

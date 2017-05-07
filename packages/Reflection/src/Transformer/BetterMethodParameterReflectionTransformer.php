@@ -24,7 +24,11 @@ final class BetterMethodParameterReflectionTransformer implements TransformerInt
      */
     public function matches($reflection): bool
     {
-        return $reflection instanceof ReflectionParameter && $reflection->getClass();
+        if ( !$reflection instanceof ReflectionParameter) {
+            return false;
+        }
+
+        return (bool) $reflection->getDeclaringClass();
     }
 
     /**

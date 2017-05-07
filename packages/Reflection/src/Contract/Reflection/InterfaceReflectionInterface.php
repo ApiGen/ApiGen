@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Contracts\Parser\Reflection;
+namespace ApiGen\Reflection\Contracts\Reflection;
 
 use ApiGen\Reflection\Contract\TransformerCollectorInterface;
 
-interface InterfaceReflectionInterface extends ReflectionInterface
+interface InterfaceReflectionInterface
 {
     public function isDocumented(): bool;
 

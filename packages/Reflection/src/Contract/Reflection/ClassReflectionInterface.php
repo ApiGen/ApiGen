@@ -2,6 +2,7 @@
 
 namespace ApiGen\Reflection\Contract\Reflection;
 
+use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorInterface;
 
 interface ClassReflectionInterface

@@ -2,7 +2,7 @@
 
 namespace ApiGen\Contracts\Parser\Reflection;
 
-interface ConstantReflectionInterface extends ReflectionInterface
+interface ConstantReflectionInterface
 {
     public function getTypeHint(): string;
 

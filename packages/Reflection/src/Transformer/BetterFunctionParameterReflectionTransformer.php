@@ -25,7 +25,11 @@ final class BetterFunctionParameterReflectionTransformer implements TransformerI
      */
     public function matches($reflection): bool
     {
-        return $reflection instanceof ReflectionParameter && ($reflection->getClass() === null);
+        if (! $reflection instanceof ReflectionParameter) {
+            return false;
+        }
+
+        return $reflection->getDeclaringClass() === null;
     }
 
     /**

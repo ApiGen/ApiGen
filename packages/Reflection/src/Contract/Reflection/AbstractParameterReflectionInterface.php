@@ -3,6 +3,7 @@
 namespace ApiGen\Reflection\Contract\Reflection;
 
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
+use ApiGen\Contracts\Parser\Reflection\InterfaceReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\MethodReflectionInterface;
 
 interface AbstractParameterReflectionInterface
@@ -19,8 +20,10 @@ interface AbstractParameterReflectionInterface
 
     /**
      * @todo This is actually return parameter typehint. Find a better name.
+     *
+     * @return ClassReflectionInterface|InterfaceReflectionInterface|null
      */
-    public function getClass(): ?ClassReflectionInterface;
+    public function getClass();
 
     /**
      * @todo This is actually return parameter typehint. Find a better name.

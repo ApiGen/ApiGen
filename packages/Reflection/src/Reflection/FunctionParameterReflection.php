@@ -8,20 +8,20 @@ use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\FunctionParameterReflectionInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorAwareInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorInterface;
+use ApiGen\Reflection\Contracts\Reflection\InterfaceReflectionInterface;
 use phpDocumentor\Reflection\DocBlock\Tags\Param;
+use phpDocumentor\Reflection\Types\Object_;
+use ReflectionObject;
+use Roave\BetterReflection\Reflection\ReflectionClass;
 use Roave\BetterReflection\Reflection\ReflectionParameter;
+use Roave\BetterReflection\Reflector\ClassReflector;
 
 final class FunctionParameterReflection implements FunctionParameterReflectionInterface, TransformerCollectorAwareInterface
 {
     /**
      * @var ReflectionParameter
      */
-    private $betterReflectionParameter;
-
-    /**
-     * @var FunctionReflectionInterface
-     */
-    private $declaringFunction;
+    private $betterParameterReflection;
 
     /**
      * @var TransformerCollectorInterface
@@ -30,19 +30,22 @@ final class FunctionParameterReflection implements FunctionParameterReflectionIn
 
     public function __construct(ReflectionParameter $betterParameterReflection)
     {
-        $this->betterReflectionParameter = $betterParameterReflection;
+        $this->betterParameterReflection = $betterParameterReflection;
     }
 
     public function getName(): string
     {
-        return $this->betterReflectionParameter->getName();
+        return $this->betterParameterReflection->getName();
     }
 
     public function getDeclaringFunction(): FunctionReflectionInterface
     {
-        return $this->transformerCollector->transformSingle(
-            $this->betterReflectionParameter->getDeclaringFunction()
+        /** @var FunctionReflectionInterface $declaringFunction */
+        $declaringFunction = $this->transformerCollector->transformSingle(
+            $this->betterParameterReflection->getDeclaringFunction()
         );
+
+        return $declaringFunction;
     }
 
     public function getDeclaringFunctionName(): string
@@ -53,11 +56,11 @@ final class FunctionParameterReflection implements FunctionParameterReflectionIn
 
     public function getTypeHint(): string
     {
-        if ($this->betterReflectionParameter->isArray()) {
+        if ($this->betterParameterReflection->isArray()) {
             return 'array';
         }
 
-        if ($this->betterReflectionParameter->isCallable()) {
+        if ($this->betterParameterReflection->isCallable()) {
             return 'callable';
         }
 
@@ -66,8 +69,8 @@ final class FunctionParameterReflection implements FunctionParameterReflectionIn
             return $className;
         }
 
-        if (count($this->betterReflectionParameter->getDocBlockTypes())) {
-            return implode('|', $this->betterReflectionParameter->getDocBlockTypeStrings());
+        if (count($this->betterParameterReflection->getDocBlockTypes())) {
+            return implode('|', $this->betterParameterReflection->getDocBlockTypeStrings());
         }
 
         return '';
@@ -86,8 +89,8 @@ final class FunctionParameterReflection implements FunctionParameterReflectionIn
 
     public function getDefaultValueDefinition(): ?string
     {
-        if ($this->betterReflectionParameter->isDefaultValueAvailable()) {
-            return $this->betterReflectionParameter->getDefaultValueAsString();
+        if ($this->betterParameterReflection->isDefaultValueAvailable()) {
+            return $this->betterParameterReflection->getDefaultValueAsString();
         }
 
         return null;
@@ -95,37 +98,44 @@ final class FunctionParameterReflection implements FunctionParameterReflectionIn
 
     public function isArray(): bool
     {
-        return $this->betterReflectionParameter->isArray();
+        return $this->betterParameterReflection->isArray();
     }
 
-    public function getClass(): ?ClassReflectionInterface
+    /**
+     * @return ClassReflectionInterface|InterfaceReflectionInterface|null
+     */
+    public function getClass()
     {
-        $typeHint = $this->betterReflectionParameter->getTypeHint();
-        if ($typeHint) {
-            // @todo
+        if ($this->getClassName() === null) {
+            return null;
         }
 
-        return null;
+        $betterClassReflection = ReflectionClass::createFromName($this->getClassName());
+
+        /** @var ClassReflectionInterface|InterfaceReflectionInterface $classOrInterfaceReflection */
+        $classOrInterfaceReflection = $this->transformerCollector->transformSingle($betterClassReflection);
+
+        return $classOrInterfaceReflection;
     }
 
     public function getClassName(): ?string
     {
-        $class = $this->getClass();
-        if ($class) {
-            return $class->getName();
+        $typeHint = $this->betterParameterReflection->getTypeHint();
+        if ( ! $typeHint instanceof Object_) {
+            return null;
         }
 
-        return null;
+        return $typeHint->getFqsen()->getName();
     }
 
     public function isVariadic(): bool
     {
-        return $this->betterReflectionParameter->isVariadic();
+        return $this->betterParameterReflection->isVariadic();
     }
 
     public function isCallable(): bool
     {
-        return $this->betterReflectionParameter->isCallable();
+        return $this->betterParameterReflection->isCallable();
     }
 
     public function setTransformerCollector(TransformerCollectorInterface $transformerCollector): void

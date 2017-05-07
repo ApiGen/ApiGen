@@ -29,10 +29,6 @@ interface MethodReflectionInterface
 
     public function getEndLine(): int;
 
-    public function getDeclaringClassName(): string;
-
-    public function getNamespaceName(): string;
-
     public function getName(): string;
 
     /**
