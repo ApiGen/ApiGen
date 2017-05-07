@@ -73,11 +73,6 @@ final class ClassReflection implements ClassReflectionInterface
 //        return $namespaces[$lowerNamespaceName];
 //    }
 
-    public function getPrettyName(): string
-    {
-        return $this->reflection->getName() . '()';
-    }
-
     /**
      * @return mixed[]
      */

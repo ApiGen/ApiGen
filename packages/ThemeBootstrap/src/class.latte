@@ -201,7 +201,7 @@
 				{var $implementedMethod = $method->implementedMethod}
 				{if $implementedMethod}
 					<h4>Implementation of</h4>
-					<div class="list"><code><a n:tag-if="$template->getClass($implementedMethod->declaringClassName)" href="{$implementedMethod|methodUrl}">{$implementedMethod->prettyName}</a></code></div>
+					<div class="list"><code><a n:tag-if="$template->getClass($implementedMethod->declaringClassName)" href="{$implementedMethod|methodUrl}">{$implementedMethod|prettyMethodName}</a></code></div>
 				{/if}
 			</div>
 		</div>

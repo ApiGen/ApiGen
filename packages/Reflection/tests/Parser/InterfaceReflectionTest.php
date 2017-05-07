@@ -34,6 +34,5 @@ final class InterfaceReflectionTest extends AbstractContainerAwareTestCase
     {
         $this->assertSame(SomeInterface::class, $this->interfaceReflection->getName());
         $this->assertSame('SomeInterface', $this->interfaceReflection->getShortName());
-        $this->assertSame(SomeInterface::class. '()', $this->interfaceReflection->getPrettyName());
     }
 }

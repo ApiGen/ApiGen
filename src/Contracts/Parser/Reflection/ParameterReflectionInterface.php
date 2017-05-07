@@ -9,11 +9,6 @@ interface ParameterReflectionInterface
      */
     public function getName(): string;
 
-    /**
-     * Returns an element pretty (docblock compatible) name.
-     */
-    public function getPrettyName(): string;
-
     public function getTypeHint(): string;
 
     public function getDescription(): string;

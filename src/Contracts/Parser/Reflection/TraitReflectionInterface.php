@@ -2,12 +2,8 @@
 
 namespace ApiGen\Contracts\Parser\Reflection;
 
-use ApiGen\Reflection\Contract\TransformerCollectorInterface;
-
 interface TraitReflectionInterface extends ReflectionInterface
 {
-    public function getPrettyName(): string;
-
     public function isDocumented(): bool;
 
     public function getFileName(): string;

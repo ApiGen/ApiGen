@@ -8,8 +8,6 @@ interface MethodReflectionInterface
 
     public function getNamespaceName(): string;
 
-    public function getPrettyName(): string;
-
     public function isAbstract(): bool;
 
     public function isFinal(): bool;

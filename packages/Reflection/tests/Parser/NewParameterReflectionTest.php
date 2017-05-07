@@ -31,10 +31,6 @@ final class NewParameterReflectionTest extends AbstractContainerAwareTestCase
     public function testName(): void
     {
         $this->assertSame('arguments', $this->parameterReflection->getName());
-        $this->assertSame(
-            'SomeNamespace\someAloneFunction($arguments)',
-            $this->parameterReflection->getPrettyName()
-        );
     }
 
     public function testDeclaringFunction(): void

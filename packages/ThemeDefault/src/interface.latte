@@ -155,7 +155,7 @@
 			{if $overriddenMethod}
 				<h4>Overrides</h4>
 				<div class="list">
-					<code><a n:tag-if="$overriddenMethod->declaringClass" href="{$overriddenMethod|methodUrl}">{$overriddenMethod->prettyName}</a></code>
+					<code><a n:tag-if="$overriddenMethod->declaringClass" href="{$overriddenMethod|methodUrl}">{$overriddenMethod|prettyMethodName}</a></code>
 				</div>
 			{/if}
 
@@ -163,7 +163,7 @@
 			{if $implementedMethod}
 				<h4>Implementation of</h4>
 				<div class="list">
-					<code><a n:tag-if="$implementedMethod->declaringClass" href="{$implementedMethod|methodUrl}">{$implementedMethod->prettyName}</a></code>
+					<code><a n:tag-if="$implementedMethod->declaringClass" href="{$implementedMethod|methodUrl}">{$implementedMethod|prettyMethodName}</a></code>
                 </div>
 			{/if}
 		</div>

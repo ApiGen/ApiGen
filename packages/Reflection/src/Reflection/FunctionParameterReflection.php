@@ -28,15 +28,6 @@ final class FunctionParameterReflection implements ParameterReflectionInterface
         $this->reflection = $betterParameterReflection;
     }
 
-    public function getPrettyName(): string
-    {
-        return str_replace(
-            '()',
-            '($' . $this->reflection->getName() . ')',
-            $this->declaringFunction->getPrettyName()
-        );
-    }
-
     public function getName(): string
     {
         return $this->reflection->getName();

@@ -2,7 +2,6 @@
 
 namespace ApiGen\Templating\Filters;
 
-use ApiGen\Parser\Elements\ElementStorage;
 use ApiGen\Templating\Filters\Helpers\LinkBuilder;
 
 final class NamespaceUrlFilters extends Filters
@@ -12,15 +11,9 @@ final class NamespaceUrlFilters extends Filters
      */
     private $linkBuilder;
 
-    /**
-     * @var ElementStorage
-     */
-    private $elementStorage;
-
-    public function __construct(LinkBuilder $linkBuilder, ElementStorage $elementStorage)
+    public function __construct(LinkBuilder $linkBuilder)
     {
         $this->linkBuilder = $linkBuilder;
-        $this->elementStorage = $elementStorage;
     }
 
     public function subgroupName(string $groupName): string
@@ -36,10 +29,6 @@ final class NamespaceUrlFilters extends Filters
 
     public function namespaceLinks(string $namespace, bool $skipLast = true): string
     {
-        if (! $this->elementStorage->getNamespaces()) {
-            return $namespace;
-        }
-
         $links = [];
 
         $parent = '';
@@ -52,6 +41,9 @@ final class NamespaceUrlFilters extends Filters
 
         return implode('\\', $links);
     }
+
+    // @todo
+    // public function namespaceLinkWithoutLast(string $namespace): string
 
     public function namespaceUrl(string $name): string
     {

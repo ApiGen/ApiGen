@@ -7,7 +7,7 @@ use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ParameterReflectionInterface;
 use phpDocumentor\Reflection\DocBlock;
 use Roave\BetterReflection\Reflection\ReflectionFunction;
-use Webmozart\Assert\Assert;
+//use Webmozart\Assert\Assert;
 
 final class FunctionReflection implements FunctionReflectionInterface
 {
@@ -31,12 +31,12 @@ final class FunctionReflection implements FunctionReflectionInterface
      */
     public function __construct(
         ReflectionFunction $betterFunctionReflection,
-        DocBlock $docBlock,
-        array $parameterReflections
+        DocBlock $docBlock
+//        array $parameterReflections
     ) {
         $this->reflection = $betterFunctionReflection;
         $this->docBlock = $docBlock;
-        $this->setParameterReflections($parameterReflections);
+//        $this->setParameterReflections($parameterReflections);
     }
 
     public function getName(): string
@@ -72,11 +72,6 @@ final class FunctionReflection implements FunctionReflectionInterface
     public function getNamespaceName(): string
     {
         return $this->reflection->getNamespaceName();
-    }
-
-    public function getPrettyName(): string
-    {
-        return $this->reflection->getName() . '()';
     }
 
     /**
@@ -129,15 +124,15 @@ final class FunctionReflection implements FunctionReflectionInterface
 
         return true;
     }
-
-    /**
-     * @param ParameterReflectionInterface[] $parameterReflections
-     */
-    private function setParameterReflections(array $parameterReflections): void
-    {
-        Assert::allIsInstanceOf($parameterReflections, ParameterReflectionInterface::class);
-        $this->parameterReflections = $parameterReflections;
-    }
+//
+//    /**
+//     * @param ParameterReflectionInterface[] $parameterReflections
+//     */
+//    private function setParameterReflections(array $parameterReflections): void
+//    {
+//        Assert::allIsInstanceOf($parameterReflections, ParameterReflectionInterface::class);
+//        $this->parameterReflections = $parameterReflections;
+//    }
 
     public function getFileName(): string
     {

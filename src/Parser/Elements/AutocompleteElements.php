@@ -3,8 +3,10 @@
 namespace ApiGen\Parser\Elements;
 
 use ApiGen\Contracts\Parser\Elements\AutocompleteElementsInterface;
+use ApiGen\Element\Naming\ReflectionNaming;
 use ApiGen\Reflection\Contract\ReflectionStorageInterface;
 
+// @todo: allow service override here
 final class AutocompleteElements implements AutocompleteElementsInterface
 {
     /**
@@ -12,9 +14,15 @@ final class AutocompleteElements implements AutocompleteElementsInterface
      */
     private $reflectionStorage;
 
-    public function __construct(ReflectionStorageInterface $reflectionStorage)
+    /**
+     * @var ReflectionNaming
+     */
+    private $reflectionNaming;
+
+    public function __construct(ReflectionStorageInterface $reflectionStorage, ReflectionNaming $reflectionNaming)
     {
         $this->reflectionStorage = $reflectionStorage;
+        $this->reflectionNaming = $reflectionNaming;
     }
 
     /**
@@ -25,27 +33,27 @@ final class AutocompleteElements implements AutocompleteElementsInterface
         $elements = [];
 
         foreach ($this->reflectionStorage->getFunctionReflections() as $functionReflection) {
-            $elements[] = ['f', $functionReflection->getPrettyName()];
+            $elements[] = ['f', $functionReflection->getName() . '()'];
         }
 
         foreach ($this->reflectionStorage->getClassReflections() as $classReflection) {
-            $elements[] = ['c', $classReflection->getPrettyName()];
+            $elements[] = ['c', $classReflection->getName()];
 
             foreach ($classReflection->getOwnMethods() as $methodReflection) {
-                $elements[] = ['m', $methodReflection->getPrettyName()];
+                $elements[] = ['m', $this->reflectionNaming->forMethodReflection($methodReflection)];
             }
 
             foreach ($classReflection->getOwnProperties() as $propertyReflection) {
-                $elements[] = ['p', $propertyReflection->getPrettyName()];
+                $elements[] = ['p', $this->reflectionNaming->forPropertyReflection($propertyReflection)];
             }
         }
 
         foreach ($this->reflectionStorage->getInterfaceReflections() as $interfaceReflection) {
-            $elements[] = ['c', $interfaceReflection->getPrettyName()];
+            $elements[] = ['c', $interfaceReflection->getName()];
         }
 
         foreach ($this->reflectionStorage->getTraitReflections() as $traitReflection) {
-            $elements[] = ['c', $traitReflection->getPrettyName()];
+            $elements[] = ['c', $traitReflection->getName()];
         }
 
         $elements = $this->sortElements($elements);

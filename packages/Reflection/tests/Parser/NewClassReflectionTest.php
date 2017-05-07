@@ -34,7 +34,6 @@ final class NewClassReflectionTest extends AbstractContainerAwareTestCase
     {
         $this->assertSame(SomeClass::class, $this->classReflection->getName());
         $this->assertSame('SomeClass', $this->classReflection->getShortName());
-        $this->assertSame(SomeClass::class . '()', $this->classReflection->getPrettyName());
     }
 
     public function testNamespace(): void

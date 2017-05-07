@@ -7,8 +7,6 @@ use ApiGen\Reflection\Contract\TransformerCollectorInterface;
 
 interface ClassReflectionInterface extends ReflectionInterface
 {
-    public function getPrettyName(): string;
-
     public function isDocumented(): bool;
 
     public function getParentClass(): ?ClassReflectionInterface;

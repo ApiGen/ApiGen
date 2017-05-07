@@ -2,8 +2,8 @@
 
 namespace ApiGen\Tests\Parser\Reflection;
 
-use ApiGen\Contracts\Parser\ParserInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
+use ApiGen\Reflection\Contract\ParserInterface;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 
 // migrate to /Reflection package
@@ -19,9 +19,11 @@ final class ReflectionFunctionTest extends AbstractContainerAwareTestCase
     {
         /** @var ParserInterface $parser */
         $parser = $this->container->getByType(ParserInterface::class);
-        $parserStorage = $parser->parseDirectories([__DIR__ . '/ReflectionFunctionSource']);
+        $parser->parseDirectories([__DIR__ . '/ReflectionFunctionSource']);
 
-        $this->reflectionFunction = $parserStorage->getFunctions()['getSomeData'];
+        $reflectionStorage = $parser;
+
+        $this->reflectionFunction = $reflectionStorage->getFunctions()['getSomeData'];
     }
 
     public function testIsDocumented(): void

@@ -1,0 +1,71 @@
+<?php declare(strict_types=1);
+
+namespace ApiGen\Reflection\Tests\Reflection\FunctionReflection;
+
+use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
+use function ApiGen\Reflection\Tests\Reflection\FunctionReflection\Source\someAloneFunction;
+use ApiGen\Tests\AbstractParserAwareTestCase;
+
+final class FunctionReflectionTest extends AbstractParserAwareTestCase
+{
+    /**
+     * @var FunctionReflectionInterface
+     */
+    private $functionReflection;
+
+    protected function setUp(): void
+    {
+        $this->parser->parseDirectories([__DIR__ . '/Source']);
+
+        $functionReflections = $this->parser->getFunctionReflections();
+        $this->functionReflection = array_pop($functionReflections);
+    }
+
+    public function testLines(): void
+    {
+        $this->assertSame(16, $this->functionReflection->getStartLine());
+        $this->assertSame(19, $this->functionReflection->getEndLine());
+    }
+
+    public function testNames(): void
+    {
+        $namespacePrefix = 'ApiGen\Reflection\Tests\Reflection\FunctionReflection\Source\\';
+        $this->assertSame($namespacePrefix . 'someAloneFunction', $this->functionReflection->getName());
+        $this->assertSame('someAloneFunction', $this->functionReflection->getShortName());
+    }
+//
+//    public function testNamespaces(): void
+//    {
+//        $this->assertSame('SomeNamespace', $this->functionReflection->getNamespaceName());
+//        $this->testNames();
+//    }
+//
+//    public function testAnnotations(): void
+//    {
+//        $this->assertCount(4, $this->functionReflection->getAnnotations());
+//        $this->assertTrue($this->functionReflection->hasAnnotation('return'));
+//        $this->assertTrue($this->functionReflection->hasAnnotation('param'));
+//
+//        $returnAnnotation = $this->functionReflection->getAnnotation('return')[0];
+//        $this->assertInstanceOf(Return_::class, $returnAnnotation);
+//        $this->assertCount(3, $this->functionReflection->getAnnotation('param'));
+//
+//        $this->assertFalse($this->functionReflection->isDeprecated());
+//
+//        $this->assertSame(
+//            'Some description.' . PHP_EOL . PHP_EOL . 'And more lines!',
+//            $this->functionReflection->getDescription()
+//        );
+//    }
+//
+//    public function testParameters(): void
+//    {
+//        $parameters = $this->functionReflection->getParameters();
+//        $this->assertCount(3, $parameters);
+//    }
+//
+//    public function testMisc(): void
+//    {
+//        $this->assertTrue($this->functionReflection->isDocumented());
+//    }
+}

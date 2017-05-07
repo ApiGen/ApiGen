@@ -15,9 +15,7 @@
 - ApiGen\Reflection\Transformer\BetterTraitReflectionTransformer
 
 
-
 # Elements
 - ApiGen\Parser\Elements\AutocompleteElements
 - ApiGen\Parser\Elements\ElementExtractor
-
 - ApiGen\Namespaces\NamespaceStorage

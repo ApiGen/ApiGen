@@ -4,13 +4,13 @@ namespace ApiGen\Contracts\Parser\Reflection;
 
 interface FunctionReflectionInterface
 {
+    public function getName(): string;
+
     public function getStartLine(): int;
 
     public function getEndLine(): int;
 
     public function getFileName(): string;
-
-    public function getPrettyName(): string;
 
     public function returnsReference(): bool;
 
@@ -18,4 +18,6 @@ interface FunctionReflectionInterface
      * @return ParameterReflectionInterface[]
      */
     public function getParameters(): array;
+
+    public function getShortName(): string;
 }

@@ -23,12 +23,9 @@ final class BetterFunctionReflectionTransformer implements TransformerInterface
      */
     private $betterParameterReflectionToParameterTransformer;
 
-    public function __construct(
-        DocBlockFactory $docBlockFactory,
-        BetterParameterReflectionTransformer $betterParameterReflectionToParameterTransformer
-    ) {
+    public function __construct(DocBlockFactory $docBlockFactory)
+    {
         $this->docBlockFactory = $docBlockFactory;
-        $this->betterParameterReflectionToParameterTransformer = $betterParameterReflectionToParameterTransformer;
     }
 
     /**
@@ -45,18 +42,19 @@ final class BetterFunctionReflectionTransformer implements TransformerInterface
     public function transform($reflection): FunctionReflection
     {
         $docBlock = $this->docBlockFactory->create($reflection->getDocComment() . ' ');
-        $parameters = $this->transformParameters($reflection);
 
+//        $parameters = $this->transformParameters($reflection);
+//
         $functionReflection = new FunctionReflection(
             $reflection,
-            $docBlock,
-            $parameters
+            $docBlock
+//            $parameters
         );
 
-        foreach ($parameters as $parameter) {
-            /** @var MethodParameterReflection $parameter */
-            $parameter->setDeclaringFunction($functionReflection);
-        }
+//        foreach ($parameters as $parameter) {
+//            /** @var MethodParameterReflection $parameter */
+//            $parameter->setDeclaringFunction($functionReflection);
+//        }
 
         return $functionReflection;
     }

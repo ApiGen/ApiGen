@@ -37,12 +37,6 @@ final class ClassPropertyReflection implements PropertyReflectionInterface
         $this->transformerCollector = $transformerCollector;
     }
 
-    public function getPrettyName(): string
-    {
-        // @todo
-        return '';
-    }
-
     public function getShortName(): string
     {
         return $this->getName();

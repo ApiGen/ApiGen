@@ -47,11 +47,6 @@ final class InterfaceReflection
         return $this->betterInterfaceReflection->getShortName();
     }
 
-    public function getPrettyName(): string
-    {
-        return $this->betterInterfaceReflection->getName() . '()';
-    }
-
     /**
      * @return mixed[]
      */

@@ -2,13 +2,9 @@
 
 namespace ApiGen\Contracts\Parser\Reflection;
 
-use ApiGen\Contracts\Parser\Reflection\Behavior\InTraitInterface;
-
 interface PropertyReflectionInterface extends
     ReflectionInterface
 {
-    public function getPrettyName(): string;
-
     public function isDefault(): bool;
 
     public function isStatic(): bool;

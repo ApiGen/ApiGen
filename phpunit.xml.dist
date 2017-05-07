@@ -6,13 +6,11 @@
     <testsuites>
         <testsuite>
             <directory>packages/Reflection/tests</directory>
-            <directory>packages/Reflection/tests</directory>
             <directory>tests</directory>
         </testsuite>
     </testsuites>
     <filter>
         <whitelist>
-            <directory>packages/Reflection/src</directory>
             <directory>packages/Reflection/src</directory>
             <directory>src</directory>
         </whitelist>

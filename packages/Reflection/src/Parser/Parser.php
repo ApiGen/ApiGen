@@ -2,7 +2,7 @@
 
 namespace ApiGen\Reflection\Parser;
 
-use ApiGen\Parser\Contract\ParserInterface;
+use ApiGen\Reflection\Contract\ParserInterface;
 use ApiGen\Contracts\Parser\Reflection\ClassReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\InterfaceReflectionInterface;

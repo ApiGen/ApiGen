@@ -93,11 +93,6 @@ final class ClassMethodReflection implements MethodReflectionInterface
         return $this->reflection->getNamespaceName();
     }
 
-    public function getPrettyName(): string
-    {
-        return $this->reflection->getName() . '()';
-    }
-
     /**
      * @return mixed[]
      */
