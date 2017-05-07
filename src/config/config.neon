@@ -7,3 +7,5 @@ extensions:
     # Symfony components integration to Nette\DI
     - Symplify\SymfonyEventDispatcher\Adapter\Nette\DI\SymfonyEventDispatcherExtension
     - Contributte\Console\DI\ConsoleExtension
+
+    - Symplify\ModularLatteFilters\DI\ModularLatteFiltersExtension

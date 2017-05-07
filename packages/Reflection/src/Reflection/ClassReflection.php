@@ -54,6 +54,7 @@ final class ClassReflection implements ClassReflectionInterface
     public function getNamespaceName(): string
     {
         return $this->reflection->getNamespaceName();
+    }
 
 //        public function getNamespaceName(): string
 //    {
