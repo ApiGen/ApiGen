@@ -5,6 +5,7 @@ namespace ApiGen\Reflection\Reflection;
 use ApiGen\Annotation\AnnotationList;
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
 use ApiGen\Contracts\Parser\Reflection\ParameterReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\FunctionParameterReflectionInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorAwareInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorInterface;
 use phpDocumentor\Reflection\DocBlock;
@@ -104,7 +105,7 @@ final class FunctionReflection implements FunctionReflectionInterface, Transform
     }
 
     /**
-     * @return ParameterReflectionInterface[]
+     * @return FunctionParameterReflectionInterface[]
      */
     public function getParameters(): array
     {
@@ -125,15 +126,6 @@ final class FunctionReflection implements FunctionReflectionInterface, Transform
 
         return true;
     }
-//
-//    /**
-//     * @param ParameterReflectionInterface[] $parameterReflections
-//     */
-//    private function setParameterReflections(array $parameterReflections): void
-//    {
-//        Assert::allIsInstanceOf($parameterReflections, ParameterReflectionInterface::class);
-//        $this->parameterReflections = $parameterReflections;
-//    }
 
     public function getFileName(): string
     {

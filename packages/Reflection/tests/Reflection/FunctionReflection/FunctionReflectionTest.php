@@ -3,7 +3,7 @@
 namespace ApiGen\Reflection\Tests\Reflection\FunctionReflection;
 
 use ApiGen\Contracts\Parser\Reflection\FunctionReflectionInterface;
-use ApiGen\Contracts\Parser\Reflection\ParameterReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\FunctionParameterReflectionInterface;
 use ApiGen\Tests\AbstractParserAwareTestCase;
 use phpDocumentor\Reflection\DocBlock\Tags\Return_;
 
@@ -71,7 +71,7 @@ final class FunctionReflectionTest extends AbstractParserAwareTestCase
         $this->assertCount(3, $parameters);
 
         foreach ($parameters as $parameter) {
-            $this->assertInstanceOf(ParameterReflectionInterface::class, $parameter);
+            $this->assertInstanceOf(FunctionParameterReflectionInterface::class, $parameter);
         }
     }
 

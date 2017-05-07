@@ -5,9 +5,7 @@
 
 {block content}
 <div id="content" class="class">
-	<h1 n:class="$class->deprecated ? deprecated"><span class="type">{if $class->interface}Interface{elseif $class->trait}Trait{else}Class{/if}</span> {$class->shortName}</h1>
-
-	{if $class->valid}
+	<h1 n:class="$class->deprecated ? deprecated"><span class="type">{if $class->interface}Interface{elseif $class->trait}Trait{else}Class{/if}</span> {$class->getShortName()}</h1>
 
 	<div class="description" n:if="$template->longDescription($class)">
 	{$class|longDescription|noescape}
@@ -17,11 +15,11 @@
 		<dd n:foreach="$tree as $item" style="padding-left:{($iterator->counter - 1) * 2}ex">
 			<span n:if="$iterator->counter > 1">┗</span>
 			{if $item->isDocumented()}
-			<a href="{$item|classUrl}" n:tag-if="!$iterator->last">{last}<b>{/last}<span n:class="$item->deprecated ? deprecated, !$item->valid ? invalid">{$item->name}</span>{last}</b>{/last}</a>
+			<a href="{$item|classUrl}" n:tag-if="!$iterator->last">{last}<b>{/last}<span n:class="$item->deprecated ? deprecated">{$item->name}</span>{last}</b>{/last}</a>
 			{else}{$item->name}{/if}
 			{var $itemOwnInterfaces = $item->ownInterfaces}
 			{if $itemOwnInterfaces} implements {foreach $itemOwnInterfaces as $interface}
-				<a href="{$interface|classUrl}" n:tag-if="$interface->isDocumented()"><span n:class="$interface->deprecated ? deprecated, !$interface->valid ? invalid">{$interface->name}</span></a>{sep}, {/sep}
+				<a href="{$interface|classUrl}" n:tag-if="$interface->isDocumented()"><span n:class="$interface->deprecated ? deprecated">{$interface->name}</span></a>{sep}, {/sep}
 			{/foreach}{/if}
 			{var $itemOwnTraits = $item->ownTraits}
 			{if $itemOwnTraits} uses {foreach $itemOwnTraits as $trait}
@@ -400,20 +398,6 @@
 		{/foreach}
 		</p>
 		{/foreach}
-	{/if}
-
-	{else}
-		<div class="alert alert-error">
-			<p>
-				Documentation of this class could not be generated.
-			</p>
-			<p>
-				Class was originally declared in {$class->fileName|relativePath} and is invalid because of:
-			</p>
-			<ul>
-				<li n:foreach="$class->reasons as $reason">Class was redeclared in {$reason->getSender()->getFileName()|relativePath}.</li>
-			</ul>
-		</div>
 	{/if}
 </div>
 {/block}

@@ -16,10 +16,10 @@
 				<ul>
 			{/if}
 
-			<li n:class="!$tree->hasSibling() ? last"><div class="{if $tree->hasSibling()}not{/if}last"><a href="{$reflectionName|classUrl}" n:tag-if="$reflection->isDocumented()"><span n:class="$reflection->deprecated ? deprecated, !$reflection->valid ? invalid">{$reflectionName}</span></a>
+			<li n:class="!$tree->hasSibling() ? last"><div class="{if $tree->hasSibling()}not{/if}last"><a href="{$reflectionName|classUrl}" n:tag-if="$reflection->isDocumented()"><span n:class="$reflection->deprecated ? deprecated">{$reflectionName}</span></a>
 			{var $interfaces = $reflection->ownInterfaces}
 			{if $interfaces} implements {foreach $interfaces as $interface}
-				<a href="{$interface|classUrl}" n:tag-if="$interface->isDocumented()"><span n:class="$interface->deprecated ? deprecated, !$interface->valid ? invalid">{$interface->name}</span></a>{sep}, {/sep}
+				<a href="{$interface|classUrl}" n:tag-if="$interface->isDocumented()"><span n:class="$interface->deprecated ? deprecated">{$interface->name}</span></a>{sep}, {/sep}
 			{/foreach}{/if}
 			{var $traits = $reflection->ownTraits}
 			{if $traits}{if $interfaces}<br><span class="padding"></span>{/if} uses {foreach $traits as $trait}
@@ -27,7 +27,7 @@
 					{$trait} (not available)
 
 				{else}
-					<a href="{$trait|classUrl}" n:tag-if="$trait->isDocumented()"><span n:class="$trait->deprecated ? deprecated, !$trait->valid ? invalid">{$trait->name}</span></a>{sep}, {/sep}
+					<a href="{$trait|classUrl}" n:tag-if="$trait->isDocumented()"><span n:class="$trait->deprecated ? deprecated">{$trait->name}</span></a>{sep}, {/sep}
 				{/}
 			{/foreach}{/if}
 			</div>
