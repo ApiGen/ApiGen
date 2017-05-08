@@ -2,11 +2,6 @@
 
 namespace ApiGen\Reflection\Tests\Reflection\Class_\ClassReflection\Source;
 
-/**
- * @property \stdClass[] $issue696
- * @method getSome()
- * @method \stdClass[] methodRelatedToIssue696(\stdClass[] $argument)
- */
 final class AccessLevels extends ParentClass implements RichInterface
 {
     use SomeTrait;

@@ -2,6 +2,8 @@
 
 namespace ApiGen\Reflection\Tests\Reflection\Class_\ClassReflection;
 
+use ApiGen\Reflection\Contract\Reflection\Class_\ClassConstantReflectionInterface;
+
 final class ConstantsTest extends AbstractReflectionClassTestCase
 {
     public function testGetConstants(): void

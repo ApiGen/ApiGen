@@ -45,7 +45,9 @@ final class ReflectionStorage implements ReflectionStorageInterface
     {
         array_walk($classReflections, function (ClassReflectionInterface $classReflection) {});
         sort($classReflections);
-        $this->classReflections = $classReflections;
+        foreach ($classReflections as $classReflection) {
+            $this->classReflections[$classReflection->getName()] = $classReflection;
+        }
     }
 
     /**
@@ -63,7 +65,9 @@ final class ReflectionStorage implements ReflectionStorageInterface
     {
         array_walk($interfaceReflections, function (InterfaceReflectionInterface $interfaceReflection) {});
         sort($interfaceReflections);
-        $this->interfaceReflections = $interfaceReflections;
+        foreach ($interfaceReflections as $interfaceReflection) {
+            $this->interfaceReflections[$interfaceReflection->getName()] = $interfaceReflection;
+        }
     }
 
     /**
@@ -81,7 +85,9 @@ final class ReflectionStorage implements ReflectionStorageInterface
     {
         array_walk($traitReflections, function (TraitReflectionInterface $traitReflection) {});
         sort($traitReflections);
-        $this->traitReflections = $traitReflections;
+        foreach ($traitReflections as $traitReflection) {
+            $this->traitReflections[$traitReflection->getName()] = $traitReflection;
+        }
     }
 
     /**
