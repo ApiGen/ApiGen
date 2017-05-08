@@ -108,19 +108,6 @@ final class FunctionReflection implements FunctionReflectionInterface, Transform
         );
     }
 
-    public function isDocumented(): bool
-    {
-        if ($this->reflection->isInternal()) {
-            return false;
-        }
-
-        if ($this->hasAnnotation('internal')) {
-            return false;
-        }
-
-        return true;
-    }
-
     public function getFileName(): string
     {
         return $this->reflection->getFileName();

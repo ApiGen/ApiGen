@@ -15,8 +15,6 @@ interface TraitReflectionInterface extends AnnotationsInterface
      */
     public function getShortName(): string;
 
-    public function isDocumented(): bool;
-
     public function isDeprecated(): bool;
 
     public function getNamespaceName(): string;

@@ -22,7 +22,5 @@ interface FunctionReflectionInterface extends StartAndEndLineInterface, Annotati
 
     public function getNamespaceName(): string;
 
-    public function isDocumented(): bool;
-
     public function getFileName(): string;
 }

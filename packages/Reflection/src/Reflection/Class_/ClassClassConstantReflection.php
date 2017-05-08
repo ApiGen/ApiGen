@@ -110,11 +110,6 @@ final class ClassClassConstantReflection implements ClassConstantReflectionInter
         return $this->reflection->getValueDefinition();
     }
 
-    public function isDocumented(): bool
-    {
-        // TODO: Implement isDocumented() method.
-    }
-
     public function isDeprecated(): bool
     {
         if ($this->refleection->isDeprecated()) {

@@ -39,7 +39,5 @@ interface AbstractMethodReflectionInterface extends StartAndEndLineInterface, An
      */
     public function getShortName(): string;
 
-    public function isDocumented(): bool;
-
     public function isDeprecated(): bool;
 }

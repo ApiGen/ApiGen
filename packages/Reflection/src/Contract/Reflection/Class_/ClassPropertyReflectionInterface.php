@@ -27,7 +27,5 @@ interface ClassPropertyReflectionInterface extends AbstractClassElementInterface
      */
     public function getShortName(): string;
 
-    public function isDocumented(): bool;
-
     public function isDeprecated(): bool;
 }

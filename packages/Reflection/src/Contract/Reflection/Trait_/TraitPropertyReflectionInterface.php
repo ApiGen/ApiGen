@@ -27,7 +27,5 @@ interface TraitPropertyReflectionInterface extends AbstractTraitElementInterface
      */
     public function getShortName(): string;
 
-    public function isDocumented(): bool;
-
     public function isDeprecated(): bool;
 }

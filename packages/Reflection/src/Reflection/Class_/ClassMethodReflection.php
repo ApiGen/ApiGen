@@ -2,10 +2,8 @@
 
 namespace ApiGen\Reflection\Reflection\Class_;
 
+use ApiGen\Reflection\Contract\Reflection\Class_\ClassMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\ClassMethodReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\ParameterReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\Trait_\TraitReflectionInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorInterface;
 use phpDocumentor\Reflection\DocBlock;
 use Roave\BetterReflection\Reflection\ReflectionMethod;
@@ -31,11 +29,6 @@ final class ClassMethodReflection implements ClassMethodReflectionInterface
      * @var ClassReflectionInterface
      */
     private $declaringClass;
-
-    /**
-     * @var ParameterReflectionInterface[]
-     */
-    private $parameters = [];
 
     /**
      * @var TransformerCollectorInterface

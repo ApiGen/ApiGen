@@ -11,8 +11,6 @@ interface ClassReflectionInterface extends StartAndEndLineInterface, Annotations
 {
     public function getName(): string;
 
-    public function isDocumented(): bool;
-
     public function getParentClass(): ?ClassReflectionInterface;
 
     public function getParentClassName(): ?string;

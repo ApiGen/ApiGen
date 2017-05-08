@@ -91,11 +91,6 @@ final class InterfaceReflection implements InterfaceReflectionInterface, Transfo
         return $this->implementersResolver->resolveIndirectImplementersOfInterface($this->getName());
     }
 
-    public function isDocumented(): bool
-    {
-        // TODO: Implement isDocumented() method.
-    }
-
     public function getFileName(): string
     {
         return $this->betterInterfaceReflection->getFileName();

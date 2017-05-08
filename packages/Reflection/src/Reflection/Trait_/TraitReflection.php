@@ -86,11 +86,6 @@ final class TraitReflection implements TraitReflectionInterface
         // TODO: Implement getNamespaceName() method.
     }
 
-    public function isDocumented(): bool
-    {
-// TODO: Implement isDocumented() method.
-    }
-
     public function getFileName(): string
     {
         // TODO: Implement getFileName() method.

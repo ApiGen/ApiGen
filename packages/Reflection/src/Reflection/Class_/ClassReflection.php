@@ -7,11 +7,12 @@ use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassPropertyReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassConstantReflectionInterface;
+use ApiGen\Reflection\Contract\TransformerCollectorAwareInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorInterface;
 use phpDocumentor\Reflection\DocBlock;
 use Roave\BetterReflection\Reflection\ReflectionClass;
 
-final class ClassReflection implements ClassReflectionInterface
+final class ClassReflection implements ClassReflectionInterface, TransformerCollectorAwareInterface
 {
     /**
      * @var ReflectionClass
@@ -22,6 +23,11 @@ final class ClassReflection implements ClassReflectionInterface
      * @var DocBlock
      */
     private $docBlock;
+
+    /**
+     * @var TransformerCollectorInterface
+     */
+    private $transformerCollector;
 
     public function __construct(ReflectionClass $betterClassReflection, DocBlock $docBlock)
     {
@@ -87,19 +93,6 @@ final class ClassReflection implements ClassReflectionInterface
             . $this->docBlock->getDescription();
 
         return trim($description);
-    }
-
-    public function isDocumented(): bool
-    {
-        if ($this->betterClassReflection->isInternal()) {
-            return false;
-        }
-
-        if ($this->hasAnnotation('internal')) {
-            return false;
-        }
-
-        return true;
     }
 
     public function getParentClass(): ?ClassReflectionInterface
@@ -544,7 +537,9 @@ final class ClassReflection implements ClassReflectionInterface
      */
     public function getOwnMethods(): array
     {
-        dump($this->$this->betterClassReflection->getImmediateMethods());
+        dump($this->transformerCollector->transformGroup(
+            $this->betterClassReflection->getImmediateMethods()
+        ));
         die;
 
         if ($this->ownMethods === null) {
@@ -573,5 +568,10 @@ final class ClassReflection implements ClassReflectionInterface
     public function getInterfaces(): array
     {
         // TODO: Implement getInterfaces() method.
+    }
+
+    public function setTransformerCollector(TransformerCollectorInterface $transformerCollector): void
+    {
+        $this->transformerCollector = $transformerCollector;
     }
 }

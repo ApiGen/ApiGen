@@ -97,11 +97,6 @@ final class InterfaceConstantReflection implements InterfaceConstantReflectionIn
         return $this->reflection->getValueDefinition();
     }
 
-    public function isDocumented(): bool
-    {
-        // TODO: Implement isDocumented() method.
-    }
-
     public function isDeprecated(): bool
     {
         // TODO: Implement isDeprecated() method.

@@ -39,11 +39,6 @@ final class ClassPropertyReflection implements ClassPropertyReflectionInterface
         return $this->getName();
     }
 
-    public function isDocumented(): bool
-    {
-        // TODO: Implement isDocumented() method.
-    }
-
     public function getNamespaceName(): string
     {
         return $this->betterPropertyReflection->getDeclaringClass()
