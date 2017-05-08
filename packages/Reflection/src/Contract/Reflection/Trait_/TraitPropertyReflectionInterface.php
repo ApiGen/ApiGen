@@ -2,9 +2,10 @@
 
 namespace ApiGen\Reflection\Contract\Reflection\Trait_;
 
+use ApiGen\Reflection\Contract\Reflection\Partial\AnnotationsInterface;
 use ApiGen\Reflection\Contract\Reflection\Partial\StartAndEndLineInterface;
 
-interface TraitPropertyReflectionInterface extends AbstractTraitElementInterface, StartAndEndLineInterface
+interface TraitPropertyReflectionInterface extends AbstractTraitElementInterface, StartAndEndLineInterface, AnnotationsInterface
 {
     public function isDefault(): bool;
 
@@ -16,18 +17,6 @@ interface TraitPropertyReflectionInterface extends AbstractTraitElementInterface
     public function getDefaultValue();
 
     public function getTypeHint(): string;
-
-    public function hasAnnotation(string $name): bool;
-
-    /**
-     * @return mixed[]
-     */
-    public function getAnnotation(string $name): array;
-
-    /**
-     * @return mixed[]
-     */
-    public function getAnnotations(): array;
 
     public function getNamespaceName(): string;
 

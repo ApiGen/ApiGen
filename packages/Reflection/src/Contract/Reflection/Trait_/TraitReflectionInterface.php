@@ -4,11 +4,22 @@ namespace ApiGen\Reflection\Contract\Reflection\Trait_;
 
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\ReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Partial\AnnotationsInterface;
 
-interface TraitReflectionInterface extends ReflectionInterface
+interface TraitReflectionInterface extends AnnotationsInterface
 {
+    public function getName(): string;
+
+    /**
+     * Returns the unqualified name (UQN).
+     */
+    public function getShortName(): string;
+
     public function isDocumented(): bool;
+
+    public function isDeprecated(): bool;
+
+    public function getNamespaceName(): string;
 
     public function getFileName(): string;
 
@@ -62,22 +73,22 @@ interface TraitReflectionInterface extends ReflectionInterface
     public function getTraitAliases(): array;
 
     /**
-     * @return ClassPropertyReflectionInterface[]
+     * @return TraitPropertyReflectionInterface[]
      */
     public function getProperties(): array;
 
     /**
-     * @return ClassPropertyReflectionInterface[]
+     * @return TraitPropertyReflectionInterface[]
      */
     public function getOwnProperties(): array;
 
     /**
-     * @return ClassPropertyReflectionInterface[]
+     * @return TraitPropertyReflectionInterface[]
      */
     public function getTraitProperties(): array;
 
     /**
-     * @return ClassPropertyReflectionInterface[]
+     * @return TraitPropertyReflectionInterface[]
      */
     public function getUsedProperties(): array;
 

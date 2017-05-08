@@ -2,9 +2,10 @@
 
 namespace ApiGen\Reflection\Contract\Reflection\Class_;
 
+use ApiGen\Reflection\Contract\Reflection\Partial\AnnotationsInterface;
 use ApiGen\Reflection\Contract\Reflection\Partial\StartAndEndLineInterface;
 
-interface ClassPropertyReflectionInterface extends AbstractClassElementInterface, StartAndEndLineInterface
+interface ClassPropertyReflectionInterface extends AbstractClassElementInterface, StartAndEndLineInterface, AnnotationsInterface
 {
     public function isDefault(): bool;
 
@@ -16,18 +17,6 @@ interface ClassPropertyReflectionInterface extends AbstractClassElementInterface
     public function getDefaultValue();
 
     public function getTypeHint(): string;
-
-    public function hasAnnotation(string $name): bool;
-
-    /**
-     * @return mixed[]
-     */
-    public function getAnnotation(string $name): array;
-
-    /**
-     * @return mixed[]
-     */
-    public function getAnnotations(): array;
 
     public function getNamespaceName(): string;
 
