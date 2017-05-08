@@ -4,6 +4,8 @@ namespace ApiGen\Reflection\Reflection\Class_;
 
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceMethodReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Trait_\TraitReflectionInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorInterface;
 use phpDocumentor\Reflection\DocBlock;
 use Roave\BetterReflection\Reflection\ReflectionMethod;
@@ -112,7 +114,7 @@ final class ClassMethodReflection implements ClassMethodReflectionInterface
         return trim($description);
     }
 
-    public function getDeclaringClass(): ?ClassReflectionInterface
+    public function getDeclaringClass(): ClassReflectionInterface
     {
         return $this->declaringClass;
     }
@@ -162,7 +164,8 @@ final class ClassMethodReflection implements ClassMethodReflectionInterface
     }
 
     // @todo: is used?
-    public function getImplementedMethod(): ?ClassMethodReflectionInterface
+
+    public function getImplementedMethod(): ?InterfaceMethodReflectionInterface
     {
         foreach ($this->getDeclaringClass()->getOwnInterfaces() as $interface) {
             if ($interface->hasMethod($this->getName())) {

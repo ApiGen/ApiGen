@@ -3,9 +3,7 @@
 namespace ApiGen\Reflection\Transformer\BetterReflection\Class_;
 
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassMethodReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\Class_\ClassPropertyReflectionInterface;
 use ApiGen\Reflection\Reflection\Class_\ClassMethodReflection;
-use ApiGen\Reflection\Reflection\Class_\ClassPropertyReflection;
 use ApiGen\Reflection\Contract\Transformer\TransformerInterface;
 use phpDocumentor\Reflection\DocBlockFactoryInterface;
 use Roave\BetterReflection\Reflection\ReflectionMethod;
@@ -38,11 +36,11 @@ final class ClassMethodReflectionTransformer implements TransformerInterface
     }
 
     /**
-     * @param ReflectionProperty $reflection
+     * @param ReflectionMethod $reflection
      */
     public function transform($reflection): ClassMethodReflectionInterface
     {
-        $docBlock = $this->docBlockFactory->create($reflection->getDocBlockTypes() ?: ' ');
+        $docBlock = $this->docBlockFactory->create($reflection->getDocComment() ?: ' ');
 
         return new ClassMethodReflection($reflection, $docBlock);
     }

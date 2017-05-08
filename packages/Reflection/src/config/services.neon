@@ -13,6 +13,7 @@
 # Class
 - ApiGen\Reflection\Transformer\BetterReflection\Class_\ClassReflectionTransformer
 - ApiGen\Reflection\Transformer\BetterReflection\Class_\ClassPropertyReflectionTransformer
+- ApiGen\Reflection\Transformer\BetterReflection\Class_\ClassMethodReflectionTransformer
 # Function
 - ApiGen\Reflection\Transformer\BetterReflection\Function_\FunctionReflectionTransformer
 - ApiGen\Reflection\Transformer\BetterReflection\Function_\FunctionParameterReflectionTransformer
