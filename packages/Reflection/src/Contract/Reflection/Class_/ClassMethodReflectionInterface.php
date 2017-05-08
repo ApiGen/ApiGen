@@ -2,7 +2,8 @@
 
 namespace ApiGen\Reflection\Contract\Reflection\Class_;
 
-interface ClassMethodReflectionInterface extends AbstractMethodReflectionInterface
+use ApiGen\Reflection\Contract\Reflection\AbstractMethodReflectionInterface;
+
+interface ClassMethodReflectionInterface extends AbstractMethodReflectionInterface, AbstractClassElementInterface
 {
-    public function getDeclaringClassName(): string;
 }

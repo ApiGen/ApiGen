@@ -3,11 +3,7 @@
 namespace ApiGen\Reflection\Contract\Reflection\Trait_;
 
 use ApiGen\Reflection\Contract\Reflection\AbstractMethodReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\TraitReflectionInterface;
 
-interface TraitMethodReflectionInterface extends AbstractMethodReflectionInterface
+interface TraitMethodReflectionInterface extends AbstractMethodReflectionInterface, AbstractTraitElementInterface
 {
-    public function getDeclaringTrait(): TraitReflectionInterface;
-
-    public function getDeclaringTraitName(): string;
 }

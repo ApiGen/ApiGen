@@ -2,6 +2,10 @@
 
 namespace ApiGen\Reflection\Contract\Reflection;
 
+use ApiGen\Reflection\Contract\Reflection\Class_\ClassMethodReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceMethodReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Trait_\TraitMethodReflectionInterface;
+
 interface AbstractMethodReflectionInterface
 {
     public function getNamespaceName(): string;
@@ -12,14 +16,17 @@ interface AbstractMethodReflectionInterface
 
     public function isStatic(): bool;
 
-    public function getImplementedMethod(): ?ClassMethodReflectionInterface;
+    public function getImplementedMethod(): ?InterfaceMethodReflectionInterface;
 
-    public function getOverriddenMethod(): ?ClassMethodReflectionInterface;
+    /**
+     * @return ClassMethodReflectionInterface|TraitMethodReflectionInterface|null
+     */
+    public function getOverriddenMethod();
 
     public function returnsReference(): bool;
 
     /**
-     * @return ParameterReflectionInterface[]
+     * @return AbstractParameterReflectionInterface[]
      */
     public function getParameters(): array;
 

@@ -2,7 +2,7 @@
 
 namespace ApiGen\Reflection\Contract\Reflection\Class_;
 
-interface ClassConstantReflectionInterface
+interface ClassConstantReflectionInterface extends AbstractClassElementInterface
 {
     public function getTypeHint(): string;
 
@@ -17,14 +17,10 @@ interface ClassConstantReflectionInterface
 
     public function getEndLine(): int;
 
-    public function getDeclaringClass(): ClassReflectionInterface;
-
     /**
      * @return mixed[]
      */
     public function getAnnotations(): array;
-
-    public function getDeclaringClassName(): string;
 
     public function getNamespaceName(): string;
 

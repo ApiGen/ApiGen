@@ -2,7 +2,6 @@
 
 namespace ApiGen\Reflection\Contract\Reflection\Interface_;
 
-interface InterfaceMethodReflectionInterface
+interface InterfaceMethodReflectionInterface extends AbstractInterfaceElementInterface
 {
-
 }

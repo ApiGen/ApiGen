@@ -2,7 +2,7 @@
 
 namespace ApiGen\Reflection\Contract\Reflection\Class_;
 
-interface ClassPropertyReflectionInterface
+interface ClassPropertyReflectionInterface extends AbstractClassElementInterface
 {
     public function isDefault(): bool;
 
@@ -26,21 +26,12 @@ interface ClassPropertyReflectionInterface
 
     public function getEndLine(): int;
 
-    public function getDeclaringClass(): ?ClassReflectionInterface;
-
     /**
      * @return mixed[]
      */
     public function getAnnotations(): array;
 
-    public function getDeclaringClassName(): string;
-
     public function getNamespaceName(): string;
-
-    // sometimes
-    public function getDeclaringTrait(): ?TraitReflectionInterface;
-
-    public function getDeclaringTraitName(): string;
 
     public function getName(): string;
 

@@ -2,9 +2,7 @@
 
 namespace ApiGen\Reflection\Contract\Reflection\Trait_;
 
-use ApiGen\Reflection\Contract\Reflection\TraitReflectionInterface;
-
-interface TraitPropertyReflectionInterface
+interface TraitPropertyReflectionInterface extends AbstractTraitElementInterface
 {
     public function isDefault(): bool;
 
@@ -34,10 +32,6 @@ interface TraitPropertyReflectionInterface
     public function getAnnotations(): array;
 
     public function getNamespaceName(): string;
-
-    public function getDeclaringTrait(): TraitReflectionInterface;
-
-    public function getDeclaringTraitName(): string;
 
     public function getName(): string;
 
