@@ -1,12 +1,12 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Reflection\Transformer;
+namespace ApiGen\Reflection\Transformer\Trait_;
 
 use ApiGen\Reflection\Reflection\MethodParameterReflection;
 use ApiGen\Reflection\Contract\Transformer\TransformerInterface;
 use Roave\BetterReflection\Reflection\ReflectionParameter;
 
-final class BetterPropertyReflectionTransformer implements TransformerInterface
+final class BetterTraitPropertyReflectionTransformer implements TransformerInterface
 {
     /**
      * @param object $reflection

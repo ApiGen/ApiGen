@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Reflection\Transformer;
+namespace ApiGen\Reflection\Transformer\Interface_;
 
 use ApiGen\Element\Tree\ImplementersResolver;
 use ApiGen\Reflection\Reflection\InterfaceReflection;
@@ -39,7 +39,7 @@ final class BetterInterfaceReflectionTransformer implements TransformerInterface
      */
     public function transform($reflection): InterfaceReflection
     {
-        $docBlock = $this->docBlockFactory->create($reflection->getDocComment() . ' ');
+        $docBlock = $this->docBlockFactory->create($reflection->getDocComment() ?: ' ');
         return new InterfaceReflection($reflection, $docBlock, $this->implementersResolver);
     }
 }

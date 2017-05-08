@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Reflection\Transformer;
+namespace ApiGen\Reflection\Transformer\Function_;
 
 use ApiGen\Reflection\Contract\Reflection\FunctionParameterReflectionInterface;
 use ApiGen\Reflection\Reflection\FunctionParameterReflection;

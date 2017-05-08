@@ -39,7 +39,7 @@ final class BetterConstantReflectionTransformer implements TransformerInterface
         // @todo: find out here!
 
         die;
-//        $docBlock = $this->docBlockFactory->create($reflection->getDocComment() . ' ');
+//        $docBlock = $this->docBlockFactory->create($reflection->getDocComment() ?: ' ');
 //
 //        return new ClassReflection($reflection, $docBlock);
     }

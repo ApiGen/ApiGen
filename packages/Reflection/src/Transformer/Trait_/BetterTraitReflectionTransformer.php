@@ -1,8 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Reflection\Transformer;
+namespace ApiGen\Reflection\Transformer\Trait_;
 
-use ApiGen\Reflection\Reflection\TraitReflection;
+use ApiGen\Reflection\Contract\Reflection\Trait_\TraitReflectionInterface;
+use ApiGen\Reflection\Reflection\Trait_\TraitReflection;
 use ApiGen\Reflection\Contract\Transformer\TransformerInterface;
 use phpDocumentor\Reflection\DocBlockFactory;
 use Roave\BetterReflection\Reflection\ReflectionClass;
@@ -30,9 +31,9 @@ final class BetterTraitReflectionTransformer implements TransformerInterface
     /**
      * @param ReflectionClass $reflection
      */
-    public function transform($reflection): TraitReflection
+    public function transform($reflection): TraitReflectionInterface
     {
-        $docBlock = $this->docBlockFactory->create($reflection->getDocComment() . ' ');
+        $docBlock = $this->docBlockFactory->create($reflection->getDocComment() ?: ' ');
         return new TraitReflection($reflection, $docBlock);
     }
 }

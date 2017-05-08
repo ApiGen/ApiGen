@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Reflection\Transformer;
+namespace ApiGen\Reflection\Transformer\Function_;
 
 use ApiGen\Reflection\Reflection\FunctionReflection;
 use ApiGen\Reflection\Contract\Transformer\TransformerInterface;
@@ -32,7 +32,7 @@ final class BetterFunctionReflectionTransformer implements TransformerInterface
      */
     public function transform($reflection): FunctionReflection
     {
-        $docBlock = $this->docBlockFactory->create($reflection->getDocComment() . ' ');
+        $docBlock = $this->docBlockFactory->create($reflection->getDocComment() ?: ' ');
 
         return new FunctionReflection($reflection, $docBlock);
     }

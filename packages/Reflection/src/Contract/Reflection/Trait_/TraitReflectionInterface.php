@@ -86,8 +86,4 @@ interface TraitReflectionInterface extends ReflectionInterface
     public function hasProperty(string $name): bool;
 
     public function usesTrait(string $name): bool;
-
-    public function isAbstract(): bool;
-
-    public function isFinal(): bool;
 }
