@@ -40,13 +40,17 @@ final class InterfaceReflectionTest extends AbstractParserAwareTestCase
         $interfaces = $this->interfaceReflection->getInterfaces();
         $this->assertCount(2, $interfaces);
         $this->assertInstanceOf(InterfaceReflectionInterface::class, $interfaces[0]);
-
-        $this->assertSame([RichInterface::class, PoorInterface::class], $this->interfaceReflection->getInterfaceNames());
     }
 
     public function testLines(): void
     {
         $this->assertSame(5, $this->interfaceReflection->getStartLine());
         $this->assertSame(7, $this->interfaceReflection->getEndLine());
+    }
+
+    public function testAnnotations()
+    {
+//        $this->interfaceReflection->getShortName()
+
     }
 }

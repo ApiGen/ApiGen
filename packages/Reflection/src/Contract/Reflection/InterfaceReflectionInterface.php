@@ -26,11 +26,6 @@ interface InterfaceReflectionInterface
     public function getInterfaces(): array;
 
     /**
-     * @return string[]
-     */
-    public function getInterfaceNames(): array;
-
-    /**
      * @return MethodReflectionInterface[]
      */
     public function getMethods(): array;
@@ -60,12 +55,12 @@ interface InterfaceReflectionInterface
     public function hasMethod(string $name): bool;
 
     /**
-     * @return ConstantReflectionInterface[]
+     * @return ClassConstantReflectionInterface[]
      */
     public function getOwnConstants(): array;
 
     /**
-     * @return ConstantReflectionInterface[]
+     * @return ClassConstantReflectionInterface[]
      */
     public function getInheritedConstants(): array;
 

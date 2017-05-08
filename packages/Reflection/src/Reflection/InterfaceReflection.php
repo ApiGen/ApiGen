@@ -10,7 +10,6 @@ use ApiGen\Reflection\Contract\Reflection\InterfaceReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\MethodReflectionInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorAwareInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorInterface;
-use ApiGen\Reflection\Tests\Reflection\InterfaceReflection\Source\SomeInterface;
 use phpDocumentor\Reflection\DocBlock;
 use Roave\BetterReflection\Reflection\ReflectionClass;
 
@@ -120,14 +119,6 @@ final class InterfaceReflection implements InterfaceReflectionInterface, Transfo
     }
 
     /**
-     * @return string[]
-     */
-    public function getInterfaceNames(): array
-    {
-        return $this->betterInterfaceReflection->getInterfaceNames();
-    }
-
-    /**
      * @return MethodReflectionInterface[]
      */
     public function getMethods(): array
@@ -178,15 +169,19 @@ final class InterfaceReflection implements InterfaceReflectionInterface, Transfo
     }
 
     /**
-     * @return ConstantReflectionInterface[]
+     * @return ClassConstantReflectionInterface[]
+     *
+     * @todo replace with InterfaceConstantReflection!
      */
     public function getOwnConstants(): array
     {
-        // TODO: Implement getOwnConstants() method.
+        return $this->transformerCollector->transformGroup(
+            $this->betterInterfaceReflection->getConstants()
+        );
     }
 
     /**
-     * @return ConstantReflectionInterface[]
+     * @return ClassConstantReflectionInterface[]
      */
     public function getInheritedConstants(): array
     {
@@ -206,24 +201,6 @@ final class InterfaceReflection implements InterfaceReflectionInterface, Transfo
     public function getOwnConstant(string $name): ClassConstantReflectionInterface
     {
         // TODO: Implement getOwnConstant() method.
-    }
-
-    public function getTransformerCollector(): TransformerCollectorInterface
-    {
-        // TODO: Implement getTransformerCollector() method.
-    }
-
-    /**
-     * @return ClassReflectionInterface[]
-     */
-    public function getParsedClasses(): array
-    {
-        // TODO: Implement getParsedClasses() method.
-    }
-
-    public function isSubclassOf(string $class): bool
-    {
-        // TODO: Implement isSubclassOf() method.
     }
 
     /**

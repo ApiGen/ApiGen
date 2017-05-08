@@ -64,7 +64,7 @@ final class TransformerCollector implements TransformerCollectorInterface
 
         throw new UnsupportedReflectionClassException(sprintf(
             'Reflection class "%s" is not yet supported. Register new transformer implementing "%s".',
-            get_class($reflection),
+            is_object($reflection) ? get_class($reflection) : 'constant',
             TransformerInterface::class
         ));
     }

@@ -4,4 +4,5 @@ namespace ApiGen\Reflection\Tests\Reflection\InterfaceReflection\Source;
 
 interface PoorInterface
 {
+    const HOPE = 'do';
 }
