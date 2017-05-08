@@ -2,7 +2,9 @@
 
 namespace ApiGen\Reflection\Contract\Reflection\Function_;
 
-interface FunctionReflectionInterface
+use ApiGen\Reflection\Contract\Reflection\Partial\StartAndEndLineInterface;
+
+interface FunctionReflectionInterface extends StartAndEndLineInterface
 {
     public function returnsReference(): bool;
 
@@ -14,10 +16,6 @@ interface FunctionReflectionInterface
     public function getName(): string;
 
     public function getShortName(): string;
-
-    public function getStartLine(): int;
-
-    public function getEndLine(): int;
 
     public function isDeprecated(): bool;
 

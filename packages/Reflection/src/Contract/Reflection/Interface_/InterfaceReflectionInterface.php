@@ -3,8 +3,9 @@
 namespace ApiGen\Reflection\Contract\Reflection\Interface_;
 
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Partial\StartAndEndLineInterface;
 
-interface InterfaceReflectionInterface
+interface InterfaceReflectionInterface extends StartAndEndLineInterface
 {
     public function getName(): string;
 
@@ -65,8 +66,4 @@ interface InterfaceReflectionInterface
     public function implementsInterface(string $interface): bool;
 
     public function getShortName(): string;
-
-    public function getStartLine(): int;
-
-    public function getEndLine(): int;
 }

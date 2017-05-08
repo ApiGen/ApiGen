@@ -2,7 +2,9 @@
 
 namespace ApiGen\Reflection\Contract\Reflection\Class_;
 
-interface ClassPropertyReflectionInterface extends AbstractClassElementInterface
+use ApiGen\Reflection\Contract\Reflection\Partial\StartAndEndLineInterface;
+
+interface ClassPropertyReflectionInterface extends AbstractClassElementInterface, StartAndEndLineInterface
 {
     public function isDefault(): bool;
 
@@ -21,10 +23,6 @@ interface ClassPropertyReflectionInterface extends AbstractClassElementInterface
      * @return mixed[]
      */
     public function getAnnotation(string $name): array;
-
-    public function getStartLine(): int;
-
-    public function getEndLine(): int;
 
     /**
      * @return mixed[]

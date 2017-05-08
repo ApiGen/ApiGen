@@ -2,7 +2,9 @@
 
 namespace ApiGen\Reflection\Contract\Reflection\Class_;
 
-interface ClassConstantReflectionInterface extends AbstractClassElementInterface
+use ApiGen\Reflection\Contract\Reflection\Partial\StartAndEndLineInterface;
+
+interface ClassConstantReflectionInterface extends AbstractClassElementInterface, StartAndEndLineInterface
 {
     public function getTypeHint(): string;
 
@@ -12,10 +14,6 @@ interface ClassConstantReflectionInterface extends AbstractClassElementInterface
     public function getValue();
 
     public function getValueDefinition(): string;
-
-    public function getStartLine(): int;
-
-    public function getEndLine(): int;
 
     /**
      * @return mixed[]

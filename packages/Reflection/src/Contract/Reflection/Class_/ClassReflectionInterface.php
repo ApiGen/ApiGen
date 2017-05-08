@@ -2,9 +2,11 @@
 
 namespace ApiGen\Reflection\Contract\Reflection\Class_;
 
+use ApiGen\Reflection\Contract\Reflection\Partial\StartAndEndLineInterface;
+use ApiGen\Reflection\Contract\Reflection\Trait_\TraitPropertyReflectionInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorInterface;
 
-interface ClassReflectionInterface
+interface ClassReflectionInterface extends StartAndEndLineInterface
 {
     public function getName(): string;
 
@@ -116,31 +118,31 @@ interface ClassReflectionInterface
     public function getTraitAliases(): array;
 
     /**
-     * @return PropertyReflectionInterface[]
+     * @return ClassPropertyReflectionInterface[]
      */
     public function getProperties(): array;
 
     /**
-     * @return PropertyReflectionInterface[]
+     * @return ClassPropertyReflectionInterface[]
      */
     public function getOwnProperties(): array;
 
     /**
-     * @return PropertyReflectionInterface[]
+     * @return ClassPropertyReflectionInterface[]
      */
     public function getInheritedProperties(): array;
 
     /**
-     * @return PropertyReflectionInterface[]
+     * @return TraitPropertyReflectionInterface[]
      */
     public function getTraitProperties(): array;
 
     /**
-     * @return PropertyReflectionInterface[]
+     * @return TraitPropertyReflectionInterface[]
      */
     public function getUsedProperties(): array;
 
-    public function getProperty(string $name): PropertyReflectionInterface;
+    public function getProperty(string $name): ClassPropertyReflectionInterface;
 
     public function hasProperty(string $name): bool;
 
@@ -151,8 +153,4 @@ interface ClassReflectionInterface
     public function isFinal(): bool;
 
     public function isSubclassOf(string $class): bool;
-
-    public function getStartLine(): int;
-
-    public function getEndLine(): int;
 }
