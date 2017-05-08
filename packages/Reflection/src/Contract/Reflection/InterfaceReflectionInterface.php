@@ -8,16 +8,7 @@ interface InterfaceReflectionInterface
 {
     public function isDocumented(): bool;
 
-    public function getParentClass(): ?ClassReflectionInterface;
-
-    public function getParentClassName(): ?string;
-
     public function getFileName(): string;
-
-    /**
-     * @return ClassReflectionInterface[]
-     */
-    public function getParentClasses(): array;
 
     /**
      * @return ClassReflectionInterface[]
@@ -88,15 +79,6 @@ interface InterfaceReflectionInterface
     public function getConstant(string $name): ConstantReflectionInterface;
 
     public function getOwnConstant(string $name): ConstantReflectionInterface;
-
-    public function getTransformerCollector(): TransformerCollectorInterface;
-
-    /**
-     * @return ClassReflectionInterface[]
-     */
-    public function getParsedClasses(): array;
-
-    public function isSubclassOf(string $class): bool;
 
     public function extendsInterface(string $interface): bool;
 }

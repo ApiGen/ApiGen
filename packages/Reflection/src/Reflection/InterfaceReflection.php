@@ -113,14 +113,6 @@ final class InterfaceReflection implements InterfaceReflectionInterface
     /**
      * @return ClassReflectionInterface[]
      */
-    public function getParentClasses(): array
-    {
-        // TODO: Implement getParentClasses() method.
-    }
-
-    /**
-     * @return ClassReflectionInterface[]
-     */
     public function getInterfaces(): array
     {
         // TODO: Implement getInterfaces() method.

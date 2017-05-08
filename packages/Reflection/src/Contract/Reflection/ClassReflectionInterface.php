@@ -2,11 +2,12 @@
 
 namespace ApiGen\Reflection\Contract\Reflection;
 
-use ApiGen\Reflection\Contract\Reflection\MethodReflectionInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorInterface;
 
 interface ClassReflectionInterface
 {
+    public function getName(): string;
+
     public function isDocumented(): bool;
 
     public function getParentClass(): ?ClassReflectionInterface;
