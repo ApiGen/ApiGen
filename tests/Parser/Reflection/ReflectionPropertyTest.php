@@ -3,7 +3,7 @@
 namespace ApiGen\Tests\Parser\Reflection;
 
 use ApiGen\Contracts\Parser\ParserInterface;
-use ApiGen\Reflection\Contract\Reflection\ClassReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\ClassPropertyReflectionInterface;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 use ApiGen\Tests\Parser\Reflection\ReflectionMethodSource\ReflectionMethod;

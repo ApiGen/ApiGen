@@ -2,7 +2,7 @@
 
 namespace ApiGen\Tests\Generator\Resolvers\ElementResolver;
 
-use ApiGen\Reflection\Contract\Reflection\ClassReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\ClassMethodReflectionInterface;
 
 final class ResolveTest extends AbstractElementResolverTest

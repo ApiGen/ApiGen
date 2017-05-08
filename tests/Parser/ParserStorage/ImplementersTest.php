@@ -2,7 +2,7 @@
 
 namespace ApiGen\Tests\Parser\ParserStorage;
 
-use ApiGen\Reflection\Contract\Reflection\ClassReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 use ApiGen\Tests\Parser\ParserStorage\ImplementersSource\ChildInterface;
 use ApiGen\Tests\Parser\ParserStorage\ImplementersSource\ParentInterface;

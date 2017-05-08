@@ -4,10 +4,10 @@ namespace ApiGen\Generator\Resolvers;
 
 use ApiGen\Contracts\Generator\Resolvers\ElementResolverInterface;
 use ApiGen\Reflection\Contract\Reflection\Behavior\InClassInterface;
-use ApiGen\Reflection\Contract\Reflection\ClassReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\ClassConstantReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\ReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\FunctionReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Function_\FunctionReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\ClassMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\ParameterReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\ClassPropertyReflectionInterface;

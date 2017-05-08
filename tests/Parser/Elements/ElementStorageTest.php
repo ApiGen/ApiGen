@@ -3,8 +3,8 @@
 namespace ApiGen\Tests\Parser\Elements;
 
 use ApiGen\Contracts\Parser\Elements\ReflectionStorageInterface;
-use ApiGen\Reflection\Contract\Reflection\ClassReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\FunctionReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Function_\FunctionReflectionInterface;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 use PHPUnit_Framework_MockObject_MockObject;
 

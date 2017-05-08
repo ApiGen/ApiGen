@@ -2,7 +2,7 @@
 
 namespace ApiGen\Parser\Reflection\Extractors;
 
-use ApiGen\Reflection\Contract\Reflection\ClassReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Extractors\ClassTraitElementsExtractorInterface;
 use ApiGen\Reflection\Contract\Reflection\ClassMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\ClassPropertyReflectionInterface;

@@ -2,9 +2,9 @@
 
 namespace ApiGen\Tests\Templating\Filters;
 
-use ApiGen\Reflection\Contract\Reflection\ClassReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\ClassConstantReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\FunctionReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Function_\FunctionReflectionInterface;
 use ApiGen\Templating\Filters\SourceFilters;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 

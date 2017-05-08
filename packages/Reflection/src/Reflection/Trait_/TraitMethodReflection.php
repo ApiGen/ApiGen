@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Reflection\Reflection;
+namespace ApiGen\Reflection\Reflection\Trait_;
 
 /**
  * @todo1111

@@ -4,9 +4,9 @@ namespace ApiGen\Templating\Filters;
 
 use ApiGen\Contracts\Generator\Resolvers\ElementResolverInterface;
 use ApiGen\Contracts\Generator\SourceCodeHighlighter\SourceCodeHighlighterInterface;
-use ApiGen\Reflection\Contract\Reflection\ClassReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\ReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\FunctionReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Function_\FunctionReflectionInterface;
 use ApiGen\Event\ProcessDocTextEvent;
 use ApiGen\Templating\Filters\Helpers\ElementLinkFactory;
 use ApiGen\Templating\Filters\Helpers\LinkBuilder;

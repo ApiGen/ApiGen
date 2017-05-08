@@ -3,10 +3,10 @@
 namespace ApiGen\Reflection\Parser;
 
 use ApiGen\Reflection\Contract\ParserInterface;
-use ApiGen\Reflection\Contract\Reflection\ClassReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\FunctionReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\InterfaceReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\TraitReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Function_\FunctionReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Trait_\TraitReflectionInterface;
 use ApiGen\Reflection\Contract\ReflectionStorageInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorInterface;
 use Roave\BetterReflection\Reflector\ClassReflector;

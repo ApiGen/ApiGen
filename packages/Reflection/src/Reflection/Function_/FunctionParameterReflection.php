@@ -1,14 +1,14 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Reflection\Reflection;
+namespace ApiGen\Reflection\Reflection\Function_;
 
 use ApiGen\Annotation\AnnotationList;
-use ApiGen\Reflection\Contract\Reflection\ClassReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\FunctionReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Function_\FunctionReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\FunctionParameterReflectionInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorAwareInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorInterface;
-use ApiGen\Reflection\Contract\Reflection\InterfaceReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceReflectionInterface;
 use phpDocumentor\Reflection\DocBlock\Tags\Param;
 use phpDocumentor\Reflection\Types\Object_;
 use ReflectionObject;

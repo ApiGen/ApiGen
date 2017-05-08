@@ -2,7 +2,7 @@
 
 namespace ApiGen\Tests\Parser\Reflection\ReflectionClass;
 
-use ApiGen\Reflection\Contract\Reflection\ClassReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Tests\Parser\Reflection\ReflectionClassSource\AccessLevels;
 use ApiGen\Tests\Parser\Reflection\ReflectionClassSource\ParentClass;
 

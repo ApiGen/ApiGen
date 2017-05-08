@@ -4,7 +4,7 @@ namespace ApiGen\Tests\Parser\Parser;
 
 use ApiGen\Contracts\Parser\ParserInterface;
 use ApiGen\Contracts\Parser\ParserStorageInterface;
-use ApiGen\Reflection\Contract\Reflection\ClassReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 
 final class ParserTest extends AbstractContainerAwareTestCase

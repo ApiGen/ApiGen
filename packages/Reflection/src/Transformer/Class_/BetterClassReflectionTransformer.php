@@ -2,7 +2,7 @@
 
 namespace ApiGen\Reflection\Transformer;
 
-use ApiGen\Reflection\Contract\Reflection\ClassReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Reflection\ClassReflection;
 use ApiGen\Reflection\Contract\Transformer\TransformerInterface;
 use phpDocumentor\Reflection\DocBlockFactory;

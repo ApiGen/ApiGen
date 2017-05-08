@@ -1,16 +1,15 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Reflection\Reflection;
+namespace ApiGen\Reflection\Reflection\Trait_;
 
 use ApiGen\Annotation\AnnotationList;
-use ApiGen\Reflection\Contract\Reflection\ClassReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\ClassPropertyReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\TraitReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Trait_\TraitPropertyReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Trait_\TraitReflectionInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorInterface;
 use phpDocumentor\Reflection\DocBlock;
 use Roave\BetterReflection\Reflection\ReflectionProperty;
 
-final class TraitClassPropertyReflection implements ClassPropertyReflectionInterface
+final class TraitPropertyReflection implements TraitPropertyReflectionInterface
 {
     /**
      * @var ReflectionProperty
@@ -27,14 +26,10 @@ final class TraitClassPropertyReflection implements ClassPropertyReflectionInter
      */
     private $transformerCollector;
 
-    public function __construct(
-        ReflectionProperty $betterPropertyReflection,
-        DocBlock $docBlock,
-        TransformerCollectorInterface $transformerCollector
-    ) {
+    public function __construct(ReflectionProperty $betterPropertyReflection, DocBlock $docBlock)
+    {
         $this->betterPropertyReflection = $betterPropertyReflection;
         $this->docBlock = $docBlock;
-        $this->transformerCollector = $transformerCollector;
     }
 
     public function getShortName(): string

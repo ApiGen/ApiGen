@@ -3,7 +3,7 @@
 namespace ApiGen\Reflection\Contract\Reflection\Function_;
 
 use ApiGen\Reflection\Contract\Reflection\AbstractParameterReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\FunctionReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Function_\FunctionReflectionInterface;
 
 interface FunctionParameterReflectionInterface extends AbstractParameterReflectionInterface
 {

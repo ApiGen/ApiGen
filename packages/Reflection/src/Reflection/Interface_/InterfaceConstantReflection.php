@@ -1,18 +1,13 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Reflection\Reflection;
+namespace ApiGen\Reflection\Reflection\Interface_;
 
-use ApiGen\Reflection\Contract\Reflection\ClassReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\ClassConstantReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceConstantReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceReflectionInterface;
 
 // @todo, resolve manually probably
-final class ClassConstantReflection implements ClassConstantReflectionInterface
+final class InterfaceConstantReflection implements InterfaceConstantReflectionInterface
 {
-//    public function __construct()
-//    {
-//        new Reflection
-//    }
-
     public function isPrivate(): bool
     {
         return $this->reflection->isPrivate();
@@ -133,5 +128,15 @@ final class ClassConstantReflection implements ClassConstantReflectionInterface
     public function getEndLine(): int
     {
         // TODO: Implement getEndLine() method.
+    }
+
+    public function getDeclaringInterfaceName(): string
+    {
+        // TODO: Implement getDeclaringInterfaceName() method.
+    }
+
+    public function getDeclaringInterface(): InterfaceReflectionInterface
+    {
+        // TODO: Implement getDeclaringInterface() method.
     }
 }

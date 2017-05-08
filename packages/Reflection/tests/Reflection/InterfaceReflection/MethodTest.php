@@ -2,7 +2,7 @@
 
 namespace ApiGen\Reflection\Tests\Reflection\InterfaceReflection;
 
-use ApiGen\Reflection\Contract\Reflection\InterfaceReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceReflectionInterface;
 use ApiGen\Reflection\Tests\Reflection\InterfaceReflection\Source\PoorInterface;
 use ApiGen\Tests\AbstractParserAwareTestCase;
 
