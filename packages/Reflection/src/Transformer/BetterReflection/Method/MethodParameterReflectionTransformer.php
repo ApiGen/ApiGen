@@ -2,7 +2,7 @@
 
 namespace ApiGen\Reflection\Transformer\BetterReflection\Method;
 
-use ApiGen\Reflection\Reflection\MethodParameterReflection;
+use ApiGen\Reflection\Reflection\Method\MethodParameterReflection;
 use ApiGen\Reflection\Contract\Transformer\TransformerInterface;
 use phpDocumentor\Reflection\DocBlockFactoryInterface;
 use Roave\BetterReflection\Reflection\ReflectionParameter;
@@ -24,9 +24,12 @@ final class MethodParameterReflectionTransformer implements TransformerInterface
      */
     public function matches($reflection): bool
     {
-        if ( !$reflection instanceof ReflectionParameter) {
+        if (! $reflection instanceof ReflectionParameter) {
             return false;
         }
+
+        dump($reflection);
+        die;
 
         return (bool) $reflection->getDeclaringClass();
     }

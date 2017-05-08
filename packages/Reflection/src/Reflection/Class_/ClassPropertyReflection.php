@@ -3,14 +3,13 @@
 namespace ApiGen\Reflection\Reflection\Class_;
 
 use ApiGen\Annotation\AnnotationList;
+use ApiGen\Reflection\Contract\Reflection\Class_\ClassPropertyReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\ClassPropertyReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\Trait_\TraitReflectionInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorInterface;
 use phpDocumentor\Reflection\DocBlock;
 use Roave\BetterReflection\Reflection\ReflectionProperty;
 
-final class ClassClassPropertyReflection implements ClassPropertyReflectionInterface
+final class ClassPropertyReflection implements ClassPropertyReflectionInterface
 {
     /**
      * @var ReflectionProperty
@@ -29,12 +28,10 @@ final class ClassClassPropertyReflection implements ClassPropertyReflectionInter
 
     public function __construct(
         ReflectionProperty $betterPropertyReflection,
-        DocBlock $docBlock,
-        TransformerCollectorInterface $transformerCollector
+        DocBlock $docBlock
     ) {
         $this->betterPropertyReflection = $betterPropertyReflection;
         $this->docBlock = $docBlock;
-        $this->transformerCollector = $transformerCollector;
     }
 
     public function getShortName(): string
@@ -173,5 +170,10 @@ final class ClassClassPropertyReflection implements ClassPropertyReflectionInter
     {
         // @todo
         return $this->betterPropertyReflection->getDefaultValue();
+    }
+
+    public function isDeprecated(): bool
+    {
+        // TODO: Implement isDeprecated() method.
     }
 }

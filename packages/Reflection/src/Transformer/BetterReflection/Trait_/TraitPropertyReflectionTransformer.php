@@ -2,7 +2,7 @@
 
 namespace ApiGen\Reflection\Transformer\BetterReflection\Trait_;
 
-use ApiGen\Reflection\Reflection\MethodParameterReflection;
+use ApiGen\Reflection\Reflection\Method\MethodParameterReflection;
 use ApiGen\Reflection\Contract\Transformer\TransformerInterface;
 use Roave\BetterReflection\Reflection\ReflectionParameter;
 

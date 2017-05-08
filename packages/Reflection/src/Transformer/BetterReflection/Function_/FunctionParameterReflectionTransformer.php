@@ -2,24 +2,13 @@
 
 namespace ApiGen\Reflection\Transformer\BetterReflection\Function_;
 
-use ApiGen\Reflection\Contract\Reflection\FunctionParameterReflectionInterface;
-use ApiGen\Reflection\Reflection\FunctionParameterReflection;
+use ApiGen\Reflection\Contract\Reflection\Function_\FunctionParameterReflectionInterface;
+use ApiGen\Reflection\Reflection\Function_\FunctionParameterReflection;
 use ApiGen\Reflection\Contract\Transformer\TransformerInterface;
-use phpDocumentor\Reflection\DocBlockFactoryInterface;
 use Roave\BetterReflection\Reflection\ReflectionParameter;
 
 final class FunctionParameterReflectionTransformer implements TransformerInterface
 {
-    /**
-     * @var DocBlockFactoryInterface
-     */
-    private $docBlockFactory;
-
-    public function __construct(DocBlockFactoryInterface $docBlockFactory)
-    {
-        $this->docBlockFactory = $docBlockFactory;
-    }
-
     /**
      * @param object $reflection
      */

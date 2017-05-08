@@ -18,7 +18,7 @@ final class ImplementersTest extends AbstractParserAwareTestCase
         $this->parser->parseDirectories([__DIR__ . '/Source']);
 
         $interfaceReflections = $this->reflectionStorage->getInterfaceReflections();
-        $this->interfaceReflection = $interfaceReflections[0];
+        $this->interfaceReflection = $interfaceReflections[2];
     }
 
     public function testExists()
@@ -31,19 +31,14 @@ final class ImplementersTest extends AbstractParserAwareTestCase
         $this->assertCount(0, $this->interfaceReflection->getInterfaces());
     }
 
-//    public function testGetOwnInterfaceNames(): void
-//    {
-//        $this->assertSame([RichInterface::class], $this->reflectionClass->getOwnInterfaceNames());
-//    }
-//
     public function testGetDirectImplementers(): void
     {
         $this->assertCount(1, $this->interfaceReflection->getDirectImplementers());
     }
-//
-//    public function testGetIndirectImplementers(): void
-//    {
-//        $indirectImplementers = $this->reflectionClassOfInterface->getIndirectImplementers();
-//        $this->assertSame([], $indirectImplementers);
-//    }
+
+    public function testGetIndirectImplementers(): void
+    {
+        $indirectImplementers = $this->interfaceReflection->getIndirectImplementers();
+        $this->assertSame([], $indirectImplementers);
+    }
 }

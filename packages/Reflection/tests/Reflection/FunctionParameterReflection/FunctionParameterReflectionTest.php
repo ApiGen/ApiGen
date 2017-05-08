@@ -2,8 +2,8 @@
 
 namespace ApiGen\Reflection\Tests\Reflection\FunctionParameterReflection;
 
+use ApiGen\Reflection\Contract\Reflection\Function_\FunctionParameterReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Function_\FunctionReflectionInterface;
-use ApiGen\Reflection\Reflection\FunctionParameterReflection;
 use ApiGen\Tests\AbstractParserAwareTestCase;
 
 final class FunctionParameterReflectionTest extends AbstractParserAwareTestCase
@@ -14,7 +14,7 @@ final class FunctionParameterReflectionTest extends AbstractParserAwareTestCase
     private $namespacePrefix = 'ApiGen\Reflection\Tests\Reflection\FunctionParameterReflection\Source';
 
     /**
-     * @var FunctionParameterReflection
+     * @var FunctionParameterReflectionInterface
      */
     private $functionParameterReflection;
 
@@ -23,10 +23,10 @@ final class FunctionParameterReflectionTest extends AbstractParserAwareTestCase
         $this->parser->parseDirectories([__DIR__ . '/Source']);
 
         $functionReflections = $this->reflectionStorage->getFunctionReflections();
-        $functionReflection = $functionReflections[0];
+        $functionReflection = $functionReflections[2];
 
         $functionParametersReflections = $functionReflection->getParameters();
-        $this->functionParameterReflection = array_pop($functionParametersReflections);
+        $this->functionParameterReflection = $functionParametersReflections[0]; //array_pop($functionParametersReflections);
     }
 
     public function testName(): void

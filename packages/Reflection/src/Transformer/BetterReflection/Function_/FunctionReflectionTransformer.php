@@ -2,7 +2,7 @@
 
 namespace ApiGen\Reflection\Transformer\BetterReflection\Function_;
 
-use ApiGen\Reflection\Reflection\FunctionReflection;
+use ApiGen\Reflection\Reflection\Function_\FunctionReflection;
 use ApiGen\Reflection\Contract\Transformer\TransformerInterface;
 use phpDocumentor\Reflection\DocBlockFactory;
 use Roave\BetterReflection\Reflection\ReflectionFunction as BetterReflectionFunction;

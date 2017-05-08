@@ -2,9 +2,11 @@
 
 namespace ApiGen\Reflection\Transformer\BetterReflection\Class_;
 
-use ApiGen\Reflection\Reflection\MethodParameterReflection;
+use ApiGen\Reflection\Reflection\Class_\ClassPropertyReflection;
+use ApiGen\Reflection\Reflection\Method\MethodParameterReflection;
 use ApiGen\Reflection\Contract\Transformer\TransformerInterface;
 use Roave\BetterReflection\Reflection\ReflectionParameter;
+use Roave\BetterReflection\Reflection\ReflectionProperty;
 
 final class ClassPropertyReflectionTransformer implements TransformerInterface
 {
@@ -13,7 +15,16 @@ final class ClassPropertyReflectionTransformer implements TransformerInterface
      */
     public function matches($reflection): bool
     {
-        return $reflection instanceof ReflectionParameter;
+        if (! $reflection instanceof ReflectionProperty) {
+            return false;
+        }
+
+        $declaringClass = $reflection->getDeclaringClass();
+        if ($declaringClass === null) {
+            return false;
+        }
+
+        return ! $declaringClass->isTrait() && ! $declaringClass->isInterface();
     }
 
     /**
@@ -21,6 +32,8 @@ final class ClassPropertyReflectionTransformer implements TransformerInterface
      */
     public function transform($reflection): MethodParameterReflection
     {
-        return new MethodParameterReflection($reflection);
+        return new ClassPropertyReflection(
+            $reflection
+        );
     }
 }

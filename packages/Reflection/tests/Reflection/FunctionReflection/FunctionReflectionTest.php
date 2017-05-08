@@ -2,8 +2,8 @@
 
 namespace ApiGen\Reflection\Tests\Reflection\FunctionReflection;
 
+use ApiGen\Reflection\Contract\Reflection\Function_\FunctionParameterReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Function_\FunctionReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\FunctionParameterReflectionInterface;
 use ApiGen\Tests\AbstractParserAwareTestCase;
 use phpDocumentor\Reflection\DocBlock\Tags\Return_;
 

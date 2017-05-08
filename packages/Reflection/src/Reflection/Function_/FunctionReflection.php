@@ -3,7 +3,7 @@
 namespace ApiGen\Reflection\Reflection\Function_;
 
 use ApiGen\Annotation\AnnotationList;
-use ApiGen\Reflection\Contract\Reflection\FunctionParameterReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Function_\FunctionParameterReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Function_\FunctionReflectionInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorAwareInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorInterface;
@@ -21,11 +21,6 @@ final class FunctionReflection implements FunctionReflectionInterface, Transform
      * @var DocBlock
      */
     private $docBlock;
-
-    /**
-     * @var FunctionParameterReflectionInterface[]
-     */
-    private $parameterReflections = [];
 
     /**
      * @var TransformerCollectorInterface

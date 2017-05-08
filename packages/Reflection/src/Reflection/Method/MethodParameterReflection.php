@@ -1,36 +1,44 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Reflection\Reflection;
+namespace ApiGen\Reflection\Reflection\Method;
 
 use ApiGen\Annotation\AnnotationList;
+use ApiGen\Reflection\Contract\Reflection\Class_\ClassMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Function_\FunctionReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\ClassMethodReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\ParameterReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Method\MethodParameterReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Trait_\TraitMethodReflectionInterface;
+use ApiGen\Reflection\Contract\TransformerCollectorAwareInterface;
+use ApiGen\Reflection\Contract\TransformerCollectorInterface;
+use ApiGen\Reflection\TransformerCollector;
 use phpDocumentor\Reflection\DocBlock\Tags\Param;
 use Roave\BetterReflection\Reflection\ReflectionParameter;
 
-final class MethodParameterReflection implements ParameterReflectionInterface
+final class MethodParameterReflection implements MethodParameterReflectionInterface, TransformerCollectorAwareInterface
 {
     /**
      * @var ReflectionParameter
      */
-    private $reflection;
+    private $betterParameterReflection;
 
     /**
      * @var ClassMethodReflectionInterface|FunctionReflectionInterface
      */
     private $declaringFunction;
 
-    public function __construct(
-        ReflectionParameter $betterParameterReflection
-    ) {
-        $this->reflection = $betterParameterReflection;
+    /**
+     * @var TransformerCollectorInterface
+     */
+    private $transformerCollector;
+
+    public function __construct(ReflectionParameter $betterParameterReflection)
+    {
+        $this->betterParameterReflection = $betterParameterReflection;
     }
 
     public function getName(): string
     {
-        return $this->reflection->getName();
+        return $this->betterParameterReflection->getName();
     }
 
     /**
@@ -52,7 +60,7 @@ final class MethodParameterReflection implements ParameterReflectionInterface
             return 'array';
         }
 
-        if ($this->reflection->isCallable()) {
+        if ($this->betterParameterReflection->isCallable()) {
             return 'callable';
         }
 
@@ -72,12 +80,12 @@ final class MethodParameterReflection implements ParameterReflectionInterface
     public function getDescription(): string
     {
         $annotations = $this->declaringFunction->getAnnotation(AnnotationList::PARAM);
-        if (empty($annotations[$this->reflection->getPosition()])) {
+        if (empty($annotations[$this->betterParameterReflection->getPosition()])) {
             return '';
         }
 
         /** @var Param $paramAnnotation */
-        $paramAnnotation = $annotations[$this->reflection->getPosition()];
+        $paramAnnotation = $annotations[$this->betterParameterReflection->getPosition()];
 
         return $paramAnnotation->getDescription()
             ->render();
@@ -85,8 +93,8 @@ final class MethodParameterReflection implements ParameterReflectionInterface
 
     public function getDefaultValueDefinition(): ?string
     {
-        if ($this->reflection->isDefaultValueAvailable()) {
-            return $this->reflection->getDefaultValueAsString();
+        if ($this->betterParameterReflection->isDefaultValueAvailable()) {
+            return $this->betterParameterReflection->getDefaultValueAsString();
         }
 
         return null;
@@ -94,12 +102,12 @@ final class MethodParameterReflection implements ParameterReflectionInterface
 
     public function isArray(): bool
     {
-        return $this->reflection->isArray();
+        return $this->betterParameterReflection->isArray();
     }
 
     public function getClass(): ?ClassReflectionInterface
     {
-        $typeHint = $this->reflection->getTypeHint();
+        $typeHint = $this->betterParameterReflection->getTypeHint();
         if ($typeHint) {
             // @todo
         }
@@ -138,12 +146,12 @@ final class MethodParameterReflection implements ParameterReflectionInterface
 
     public function isVariadic(): bool
     {
-        return $this->reflection->isVariadic();
+        return $this->betterParameterReflection->isVariadic();
     }
 
     public function isCallable(): bool
     {
-        return $this->reflection->isCallable();
+        return $this->betterParameterReflection->isCallable();
     }
 
     /**
@@ -157,10 +165,25 @@ final class MethodParameterReflection implements ParameterReflectionInterface
     private function getAnnotation(): ?Param
     {
         $annotations = $this->declaringFunction->getAnnotation(AnnotationList::PARAM);
-        if (empty($annotations[$this->reflection->getPosition()])) {
+        if (empty($annotations[$this->betterParameterReflection->getPosition()])) {
             return null;
         }
 
-        return $annotations[$this->reflection->getPosition()];
+        return $annotations[$this->betterParameterReflection->getPosition()];
+    }
+
+    /**
+     * @return ClassMethodReflectionInterface|TraitMethodReflectionInterface
+     */
+    public function getDeclaringMethod()
+    {
+        return $this->transformerCollector->transformSingle(
+            $this->betterParameterReflection->getDeclaringFunction()
+        );
+    }
+
+    public function setTransformerCollector(TransformerCollectorInterface $transformerCollector): void
+    {
+        $this->transformerCollector = $transformerCollector;
     }
 }

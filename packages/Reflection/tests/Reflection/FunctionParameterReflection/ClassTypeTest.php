@@ -3,13 +3,13 @@
 namespace ApiGen\Reflection\Tests\Reflection\FunctionParameterReflection;
 
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
-use ApiGen\Reflection\Reflection\FunctionParameterReflection;
+use ApiGen\Reflection\Contract\Reflection\Function_\FunctionParameterReflectionInterface;
 use ApiGen\Tests\AbstractParserAwareTestCase;
 
 final class ClassTypeTest extends AbstractParserAwareTestCase
 {
     /**
-     * @var FunctionParameterReflection
+     * @var FunctionParameterReflectionInterface
      */
     private $functionParameterReflection;
 
@@ -18,7 +18,7 @@ final class ClassTypeTest extends AbstractParserAwareTestCase
         $this->parser->parseDirectories([__DIR__ . '/Source']);
 
         $functionReflections = $this->reflectionStorage->getFunctionReflections();
-        $functionReflection = $functionReflections[2];
+        $functionReflection = $functionReflections[0];
 
         $functionParametersReflections = $functionReflection->getParameters();
         $this->functionParameterReflection = array_pop($functionParametersReflections);
