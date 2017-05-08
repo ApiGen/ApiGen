@@ -16,7 +16,7 @@ final class ConstantDefaultValueTest extends AbstractParserAwareTestCase
     {
         $this->parser->parseDirectories([__DIR__ . '/Source']);
 
-        $functionReflections = $this->parser->getFunctionReflections();
+        $functionReflections = $this->reflectionStorage->getFunctionReflections();
         $functionReflection = $functionReflections[1];
 
         $functionParametersReflections = $functionReflection->getParameters();

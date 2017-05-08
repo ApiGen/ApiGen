@@ -3,8 +3,6 @@
 namespace ApiGen\Templating\Filters;
 
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
-use ApiGen\Reflection\Contract\Reflection\Behavior\InClassInterface;
-use ApiGen\Reflection\Contract\Reflection\Behavior\LinedInterface;
 use ApiGen\Reflection\Contract\Reflection\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\ReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\FunctionReflectionInterface;
@@ -32,11 +30,16 @@ final class SourceFilters extends Filters
     }
 
     /**
-     *
      * @todo split into 2 methods, no bool
      */
     public function sourceUrl(ReflectionInterface $element, bool $withLine = true): string
     {
+        // classSourceUrl
+        // traitSourceUrl
+        // interfaceSourceUrl
+        // methodSourceUrl
+        // functionSourceUrl
+
         $file = '';
         $elementName = '';
 
@@ -73,7 +76,7 @@ final class SourceFilters extends Filters
         return false;
     }
 
-    private function getElementLinesAnchor(LinedInterface $element): string
+    private function getElementLinesAnchor($element): string
     {
         $anchor = '#' . $element->getStartLine();
         if ($element->getStartLine() !== $element->getEndLine()) {

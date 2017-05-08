@@ -22,7 +22,7 @@ final class FunctionParameterReflectionTest extends AbstractParserAwareTestCase
     {
         $this->parser->parseDirectories([__DIR__ . '/Source']);
 
-        $functionReflections = $this->parser->getFunctionReflections();
+        $functionReflections = $this->reflectionStorage->getFunctionReflections();
 
         $functionReflection = $functionReflections[0];
         $functionParametersReflections = $functionReflection->getParameters();
