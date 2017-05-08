@@ -30,6 +30,3 @@
 
 # Class
 - ApiGen\Reflection\Transformer\Native\Class_\ClassConstantReflectionTransformer
-
-# Interface
-- ApiGen\Reflection\Reflection\Interface_\InterfaceConstantReflection

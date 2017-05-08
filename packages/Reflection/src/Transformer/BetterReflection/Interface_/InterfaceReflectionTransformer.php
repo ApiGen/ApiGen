@@ -3,7 +3,7 @@
 namespace ApiGen\Reflection\Transformer\BetterReflection\Interface_;
 
 use ApiGen\Element\Tree\ImplementersResolver;
-use ApiGen\Reflection\Reflection\InterfaceReflection;
+use ApiGen\Reflection\Reflection\Interface_\InterfaceReflection;
 use ApiGen\Reflection\Contract\Transformer\TransformerInterface;
 use phpDocumentor\Reflection\DocBlockFactory;
 use Roave\BetterReflection\Reflection\ReflectionClass;

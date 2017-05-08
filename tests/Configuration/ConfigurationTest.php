@@ -34,8 +34,6 @@ final class ConfigurationTest extends AbstractContainerAwareTestCase
             'baseUrl' => 'http://apigen.org',
             'destination' => TEMP_DIR,
             'annotationGroups' => [],
-            'exclude' => [],
-            'extensions' => ['php'],
             'googleAnalytics' => '',
             'overwrite' => false,
             'themeDirectory' => realpath(__DIR__ . '/../../packages/ThemeDefault/src'),

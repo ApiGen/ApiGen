@@ -56,19 +56,16 @@ final class Parser implements ParserInterface
         $classReflections = array_filter($classInterfaceAndTraitReflections, function ($reflection) {
             return $reflection instanceof ClassReflectionInterface;
         });
-        sort($classReflections);
         $this->reflectionStorage->setClassReflections($classReflections);
 
         $interfaceReflections = array_filter($classInterfaceAndTraitReflections, function ($reflection) {
             return $reflection instanceof InterfaceReflectionInterface;
         });
-        sort($interfaceReflections);
         $this->reflectionStorage->setInterfaceReflections($interfaceReflections);
 
         $traitReflections = array_filter($classInterfaceAndTraitReflections, function ($reflection) {
             return $reflection instanceof TraitReflectionInterface;
         });
-        sort($traitReflections);
         $this->reflectionStorage->setTraitReflections($traitReflections);
     }
 

@@ -23,6 +23,9 @@ final class InterfaceConstantReflectionTransformer implements TransformerInterfa
      */
     public function matches($reflection): bool
     {
+        dump($reflection);
+        die;
+
         return is_string($reflection);
     }
 
@@ -33,7 +36,7 @@ final class InterfaceConstantReflectionTransformer implements TransformerInterfa
     {
         // what to do here? :)
         dump($reflection);
-        die;
+        dump(__CLASS__);
 
         $docBlock = $this->docBlockFactory->create($reflection->getDocComment() ?: ' ');
 

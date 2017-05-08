@@ -10,6 +10,7 @@ use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceMethodReflectionIn
 use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceReflectionInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorAwareInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorInterface;
+use ApiGen\Tests\Parser\Reflection\ReflectionConstantTest;
 use phpDocumentor\Reflection\DocBlock;
 use Roave\BetterReflection\Reflection\ReflectionClass;
 
@@ -133,7 +134,9 @@ final class InterfaceReflection implements InterfaceReflectionInterface, Transfo
      */
     public function getOwnMethods(): array
     {
-        // TODO: Implement getOwnMethods() method.
+        return $this->transformerCollector->transformGroup(
+            $this->betterInterfaceReflection->getImmediateMethods()
+        );
     }
 
     /**
@@ -167,9 +170,16 @@ final class InterfaceReflection implements InterfaceReflectionInterface, Transfo
      */
     public function getOwnConstants(): array
     {
-        return $this->transformerCollector->transformGroup(
-            $this->betterInterfaceReflection->getConstants()
-        );
+        $ownConstants = [];
+        foreach ($this->betterInterfaceReflection->getConstants() as $name => $value) {
+            $ownConstants[] = InterfaceConstantReflection::createFromNameValueAndInterface(
+                $name,
+                $value,
+                $this
+            );
+        }
+
+        return $ownConstants;
     }
 
     /**
@@ -177,22 +187,61 @@ final class InterfaceReflection implements InterfaceReflectionInterface, Transfo
      */
     public function getInheritedConstants(): array
     {
-        // TODO: Implement getInheritedConstants() method.
+        $inheritedConstants = [];
+        foreach ($this->getInterfaces() as $interfaceReflection) {
+            $inheritedConstants += $interfaceReflection->getOwnConstants();
+        }
+
+        return $inheritedConstants;
     }
 
     public function hasConstant(string $name): bool
     {
-        // TODO: Implement hasConstant() method.
+        foreach ($this->getOwnConstants() as $interfaceConstantReflection) {
+            if ($name === $interfaceConstantReflection->getName()) {
+                return true;
+            }
+        }
+
+        foreach ($this->getInheritedConstants() as $interfaceConstantReflection) {
+            if ($name === $interfaceConstantReflection->getName()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public function getConstant(string $name): InterfaceConstantReflectionInterface
     {
-        // TODO: Implement getConstant() method.
+        foreach ($this->getOwnConstants() as $interfaceConstantReflection) {
+            if ($interfaceConstantReflection->getName() === $name) {
+                return $interfaceConstantReflection;
+            }
+        }
+
+        foreach ($this->getInheritedConstants() as $interfaceConstantReflection) {
+            if ($interfaceConstantReflection->getName() === $name) {
+                return $interfaceConstantReflection;
+            }
+        }
+
+        throw new \Exception(
+            sprintf('missing cosntant %s', $name)
+        );
     }
 
     public function getOwnConstant(string $name): InterfaceConstantReflectionInterface
     {
-        // TODO: Implement getOwnConstant() method.
+        foreach ($this->getOwnConstants() as $interfaceConstantReflection) {
+            if ($name === $interfaceConstantReflection->getName()) {
+                return $interfaceConstantReflection;
+            }
+        }
+
+        throw new \Exception(
+            sprintf('missing cosntant %s', $name)
+        );
     }
 
     /**

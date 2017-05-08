@@ -5,9 +5,44 @@ namespace ApiGen\Reflection\Reflection\Interface_;
 use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceConstantReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceReflectionInterface;
 
-// @todo, resolve manually probably
+/**
+ * @inspiration https://github.com/POPSuL/PHP-Token-Reflection/blob/develop/TokenReflection/Php/ReflectionConstant.php
+ */
 final class InterfaceConstantReflection implements InterfaceConstantReflectionInterface
 {
+    /**
+     * @var string
+     */
+    private $name;
+
+    /**
+     * @var mixed
+     */
+    private $value;
+
+    /**
+     * @var InterfaceReflectionInterface
+     */
+    private $interfaceReflection;
+
+    /**
+     * @param mixed $value
+     */
+    private function __construct(string $name, $value, InterfaceReflectionInterface $interfaceReflection)
+    {
+        $this->name = $name;
+        $this->value = $value;
+        $this->interfaceReflection = $interfaceReflection;
+    }
+
+    /**
+     * @param mixed $value
+     */
+    public static function createFromNameValueAndInterface(string $name, $value, InterfaceReflectionInterface $interfaceReflection): self
+    {
+        return new self($name, $value, $interfaceReflection);
+    }
+
     public function isPrivate(): bool
     {
         return $this->reflection->isPrivate();
@@ -25,12 +60,7 @@ final class InterfaceConstantReflection implements InterfaceConstantReflectionIn
 
     public function getName(): string
     {
-        return $this->reflection->getName();
-    }
-
-    public function getShortName(): string
-    {
-        return $this->reflection->getShortName();
+        return $this->name;
     }
 
     public function getTypeHint(): string
@@ -54,23 +84,12 @@ final class InterfaceConstantReflection implements InterfaceConstantReflectionIn
         }
     }
 
-    public function getDeclaringClass(): ?ClassReflectionInterface
-    {
-        $className = (string) $this->reflection->getDeclaringClassName();
-        return $this->getParsedClasses()[$className];
-    }
-
-    public function getDeclaringClassName(): string
-    {
-        return (string) $this->reflection->getDeclaringClassName();
-    }
-
     /**
      * @return mixed
      */
     public function getValue()
     {
-        return $this->reflection->getValue();
+        return $this->value;
     }
 
     public function getValueDefinition(): string
@@ -132,11 +151,11 @@ final class InterfaceConstantReflection implements InterfaceConstantReflectionIn
 
     public function getDeclaringInterfaceName(): string
     {
-        // TODO: Implement getDeclaringInterfaceName() method.
+        $this->interfaceReflection->getName();
     }
 
     public function getDeclaringInterface(): InterfaceReflectionInterface
     {
-        // TODO: Implement getDeclaringInterface() method.
+        return $this->interfaceReflection;
     }
 }

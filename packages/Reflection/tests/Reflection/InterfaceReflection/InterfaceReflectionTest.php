@@ -3,7 +3,6 @@
 namespace ApiGen\Reflection\Tests\Reflection\InterfaceReflection;
 
 use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceReflectionInterface;
-use ApiGen\Reflection\Tests\Reflection\InterfaceReflection\Source\PoorInterface;
 use ApiGen\Reflection\Tests\Reflection\InterfaceReflection\Source\RichInterface;
 use ApiGen\Reflection\Tests\Reflection\InterfaceReflection\Source\SomeInterface;
 use ApiGen\Tests\AbstractParserAwareTestCase;
@@ -45,12 +44,6 @@ final class InterfaceReflectionTest extends AbstractParserAwareTestCase
     public function testLines(): void
     {
         $this->assertSame(5, $this->interfaceReflection->getStartLine());
-        $this->assertSame(7, $this->interfaceReflection->getEndLine());
-    }
-
-    public function testAnnotations()
-    {
-//        $this->interfaceReflection->getShortName()
-
+        $this->assertSame(8, $this->interfaceReflection->getEndLine());
     }
 }

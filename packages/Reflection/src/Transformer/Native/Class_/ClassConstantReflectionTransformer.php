@@ -33,7 +33,7 @@ final class ClassConstantReflectionTransformer implements TransformerInterface
     {
         // what to do here? :)
         dump($reflection);
-        die;
+        dump(__CLASS__);
 
         $docBlock = $this->docBlockFactory->create($reflection->getDocComment() ?: ' ');
 

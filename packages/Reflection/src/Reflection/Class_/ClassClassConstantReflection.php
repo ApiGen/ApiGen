@@ -2,16 +2,43 @@
 
 namespace ApiGen\Reflection\Reflection\Class_;
 
+use ApiGen\Reflection\Contract\Reflection\Class_\ClassConstantReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\ClassConstantReflectionInterface;
 
-// @todo, resolve manually probably
 final class ClassClassConstantReflection implements ClassConstantReflectionInterface
 {
-//    public function __construct()
-//    {
-//        new Reflection
-//    }
+    /**
+     * @var string
+     */
+    private $name;
+
+    /**
+     * @var mixed
+     */
+    private $value;
+
+    /**
+     * @var ClassReflectionInterface
+     */
+    private $classReflection;
+
+    /**
+     * @param mixed $value
+     */
+    private function __construct(string $name, $value, ClassReflectionInterface $classReflection)
+    {
+        $this->name = $name;
+        $this->value = $value;
+        $this->classReflection = $classReflection;
+    }
+
+    /**
+     * @param mixed $value
+     */
+    public static function createFromNameValueAndClass(string $name, $value, ClassReflectionInterface $classReflection): self
+    {
+        return new self($name, $value, $classReflection);
+    }
 
     public function isPrivate(): bool
     {
