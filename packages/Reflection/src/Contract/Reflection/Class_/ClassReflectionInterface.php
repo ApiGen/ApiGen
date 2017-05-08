@@ -2,11 +2,12 @@
 
 namespace ApiGen\Reflection\Contract\Reflection\Class_;
 
+use ApiGen\Reflection\Contract\Reflection\Partial\AnnotationsInterface;
 use ApiGen\Reflection\Contract\Reflection\Partial\StartAndEndLineInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitPropertyReflectionInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorInterface;
 
-interface ClassReflectionInterface extends StartAndEndLineInterface
+interface ClassReflectionInterface extends StartAndEndLineInterface, AnnotationsInterface
 {
     public function getName(): string;
 
