@@ -18,12 +18,10 @@ final class ClassTest extends AbstractElementResolverTest
         $element = $this->elementResolver->getClass('SomeClass');
 
         $this->assertInstanceOf(ReflectionInterface::class, $element);
-        $this->assertTrue($element->isDocumented());
 
         $element2 = $this->elementResolver->getClass('SomeClass', 'SomeNamespace');
 
         $this->assertInstanceOf(ReflectionInterface::class, $element2);
-        $this->assertTrue($element2->isDocumented());
 
         $this->assertNotSame($element, $element2);
     }

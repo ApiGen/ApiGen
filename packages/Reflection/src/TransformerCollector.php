@@ -28,9 +28,14 @@ final class TransformerCollector implements TransformerCollectorInterface
         $elements = [];
         foreach ($reflections as $reflection) {
             // $this->configuration->getVisibilityLevels()
-            // @todo: here is the place to filter out public/protected etc
+            // @todo: here is the place to filter out public/protected etc - use service!
             // also ! $this->reflection->isInternal();, remove isDocumented()
-            $elements[] = $this->transformSingle($reflection);
+            $transformedReflection = $this->transformSingle($reflection);
+            if ($transformedReflection->hasAnnotation('internal')) {
+                continue;
+            }
+
+            $elements[] = $transformedReflection;
 
         }
 

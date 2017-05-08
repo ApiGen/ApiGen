@@ -3,9 +3,10 @@
 namespace ApiGen\Reflection\Contract\Reflection\Interface_;
 
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Partial\AnnotationsInterface;
 use ApiGen\Reflection\Contract\Reflection\Partial\StartAndEndLineInterface;
 
-interface InterfaceReflectionInterface extends StartAndEndLineInterface
+interface InterfaceReflectionInterface extends StartAndEndLineInterface, AnnotationsInterface
 {
     public function getName(): string;
 

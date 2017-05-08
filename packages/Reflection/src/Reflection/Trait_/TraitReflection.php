@@ -86,23 +86,9 @@ final class TraitReflection implements TraitReflectionInterface
         // TODO: Implement getNamespaceName() method.
     }
 
-    /**
-     *
-     * @return mixed[]
-     */
-    public function getAnnotations(): array
-    {
-        // TODO: Implement getAnnotations() method.
-    }
-
-    public function hasAnnotation(string $name): bool
-    {
-        // TODO: Implement hasAnnotation() method.
-    }
-
     public function isDocumented(): bool
     {
-        // TODO: Implement isDocumented() method.
+// TODO: Implement isDocumented() method.
     }
 
     public function getFileName(): string
@@ -221,5 +207,18 @@ final class TraitReflection implements TraitReflectionInterface
     public function usesTrait(string $name): bool
     {
         // TODO: Implement usesTrait() method.
+    }
+
+    /**
+     * @return mixed[]
+     */
+    public function getAnnotations(): array
+    {
+        return $this->docBlock->getTags();
+    }
+
+    public function hasAnnotation(string $name): bool
+    {
+        return $this->docBlock->hasTag($name);
     }
 }

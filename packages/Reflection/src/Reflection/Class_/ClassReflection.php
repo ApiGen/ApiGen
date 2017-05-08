@@ -511,6 +511,8 @@ final class ClassReflection implements ClassReflectionInterface
      */
     public function getMethods(): array
     {
+        dump($this->getOwnMethods());
+        die;
         if ($this->methods === null) {
             $this->methods = $this->getOwnMethods();
 
@@ -555,6 +557,7 @@ final class ClassReflection implements ClassReflectionInterface
      */
     public function getOwnMethods(): array
     {
+
         if ($this->ownMethods === null) {
             $this->ownMethods = [];
 

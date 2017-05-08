@@ -66,14 +66,6 @@ final class InterfaceReflection implements InterfaceReflectionInterface, Transfo
         return $this->betterInterfaceReflection->getShortName();
     }
 
-    /**
-     * @return mixed[]
-     */
-    public function getAnnotation(string $name): array
-    {
-        return $this->docBlock->getTagsByName($name);
-    }
-
     public function getDescription(): string
     {
         $description = $this->docBlock->getSummary()
@@ -256,5 +248,26 @@ final class InterfaceReflection implements InterfaceReflectionInterface, Transfo
     public function setTransformerCollector(TransformerCollectorInterface $transformerCollector): void
     {
         $this->transformerCollector = $transformerCollector;
+    }
+
+    /**
+     * @return mixed[]
+     */
+    public function getAnnotations(): array
+    {
+        return $this->docBlock->getTags();
+    }
+
+    public function hasAnnotation(string $name): bool
+    {
+        return $this->docBlock->hasTag($name);
+    }
+
+    /**
+     * @return mixed[]
+     */
+    public function getAnnotation(string $name): array
+    {
+        return $this->docBlock->getTagsByName($name);
     }
 }

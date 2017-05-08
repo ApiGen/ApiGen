@@ -14,9 +14,7 @@
 	<dl class="tree well" n:if="$class->parentClass || $class->getOwnInterfaces() || $class->getOwnTraits()">
 		<dd n:foreach="$tree as $item" style="padding-left:{($iterator->counter - 1) * 2}ex">
 			<span n:if="$iterator->counter > 1">┗</span>
-			{if $item->isDocumented()}
 			<a href="{$item|classUrl}" n:tag-if="!$iterator->last">{last}<b>{/last}<span n:class="$item->deprecated ? deprecated">{$item->name}</span>{last}</b>{/last}</a>
-			{else}{$item->name}{/if}
 			{var $itemOwnInterfaces = $item->getOwnInterfaces()}
 			{if $itemOwnInterfaces} implements {foreach $itemOwnInterfaces as $interface}
 				<a href="{$interface|classUrl}" n:tag-if="$interface->isDocumented()"><span n:class="$interface->deprecated ? deprecated">{$interface->name}</span></a>{sep}, {/sep}
