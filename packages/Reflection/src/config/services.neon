@@ -1,4 +1,5 @@
 - ApiGen\Reflection\Parser\Parser
+- ApiGen\Reflection\ReflectionStorage
 
 # DocBlock
 -

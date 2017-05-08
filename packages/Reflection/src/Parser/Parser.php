@@ -107,17 +107,17 @@ final class Parser implements ParserInterface
         $classReflections = array_filter($classInterfaceAndTraitReflections, function ($reflection) {
             return $reflection instanceof ClassReflectionInterface;
         });
-        $this->reflectionStorage->addClassReflections($classReflections);
+        $this->reflectionStorage->setClassReflections($classReflections);
 
         $interfaceReflections = array_filter($classInterfaceAndTraitReflections, function ($reflection) {
             return $reflection instanceof InterfaceReflectionInterface;
         });
-        $this->reflectionStorage->addInterfaceReflection($interfaceReflections);
+        $this->reflectionStorage->setInterfaceReflections($interfaceReflections);
 
         $traitReflections = array_filter($classInterfaceAndTraitReflections, function ($reflection) {
             return $reflection instanceof TraitReflectionInterface;
         });
-        $this->reflectionStorage->addTraitReflections($traitReflections);
+        $this->reflectionStorage->setTraitReflections($traitReflections);
     }
 
     /**
@@ -151,7 +151,7 @@ final class Parser implements ParserInterface
     {
         $functionReflector = new FunctionReflector($directoriesSourceLocator);
         $functionReflections = $this->transformBetterFunctionReflections($functionReflector);
-        $this->reflectionStorage->addFunctionReflections($functionReflections);
+        $this->reflectionStorage->setFunctionReflections($functionReflections);
     }
 
     /**

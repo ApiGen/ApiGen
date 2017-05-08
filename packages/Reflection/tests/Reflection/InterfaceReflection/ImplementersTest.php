@@ -17,7 +17,7 @@ final class ImplementersTest extends AbstractParserAwareTestCase
     {
         $this->parser->parseDirectories([__DIR__ . '/Source']);
 
-        $interfaceReflections = $this->parser->getInterfaceReflections();
+        $interfaceReflections = $this->reflectionStorage->getInterfaceReflections();
         $this->interfaceReflection = $interfaceReflections[0];
     }
 

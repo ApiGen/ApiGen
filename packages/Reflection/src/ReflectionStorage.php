@@ -10,13 +10,40 @@ use ApiGen\Reflection\Contract\ReflectionStorageInterface;
 
 final class ReflectionStorage implements ReflectionStorageInterface
 {
+    /**
+     * @var ClassReflectionInterface[]
+     */
+    private $classReflections = [];
 
+    /**
+     * @var InterfaceReflectionInterface[]
+     */
+    private $interfaceReflections = [];
+
+    /**
+     * @var TraitReflectionInterface[]
+     */
+    private $traitReflections = [];
+
+    /**
+     * @var FunctionReflectionInterface[]
+     */
+    private $functionReflections = [];
 
     /**
      * @return ClassReflectionInterface[]
      */
     public function getClassReflections(): array
     {
+        return $this->classReflections;
+    }
+
+    /**
+     * @param ClassReflectionInterface[] $classReflections
+     */
+    public function setClassReflections(array $classReflections): void
+    {
+        $this->classReflections = $classReflections;
     }
 
     /**
@@ -24,6 +51,15 @@ final class ReflectionStorage implements ReflectionStorageInterface
      */
     public function getInterfaceReflections(): array
     {
+        return $this->interfaceReflections;
+    }
+
+    /**
+     * @param InterfaceReflectionInterface[] $interfaceReflections
+     */
+    public function setInterfaceReflections(array $interfaceReflections): void
+    {
+        $this->interfaceReflections = $interfaceReflections;
     }
 
     /**
@@ -31,6 +67,15 @@ final class ReflectionStorage implements ReflectionStorageInterface
      */
     public function getTraitReflections(): array
     {
+        return $this->traitReflections;
+    }
+
+    /**
+     * @param TraitReflectionInterface[] $traitReflections
+     */
+    public function setTraitReflections(array $traitReflections): void
+    {
+        $this->traitReflections = $traitReflections;
     }
 
     /**
@@ -38,5 +83,14 @@ final class ReflectionStorage implements ReflectionStorageInterface
      */
     public function getFunctionReflections(): array
     {
+        return $this->functionReflections;
+    }
+
+    /**
+     * @param FunctionReflectionInterface[] $functionReflections
+     */
+    public function setFunctionReflections(array $functionReflections): void
+    {
+        $this->functionReflections = $functionReflections;
     }
 }

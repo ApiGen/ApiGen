@@ -6,7 +6,6 @@ use ApiGen\Reflection\Contract\Reflection\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\FunctionReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\InterfaceReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\TraitReflectionInterface;
-use ApiGen\Reflection\Reflection\InterfaceReflection;
 
 interface ReflectionStorageInterface
 {
@@ -33,12 +32,17 @@ interface ReflectionStorageInterface
     /**
      * @param TraitReflectionInterface[] $traitReflections
      */
-    public function testTraitReflections(array $traitReflections): void;
+    public function setTraitReflections(array $traitReflections): void;
 
     /**
      * @return TraitReflectionInterface[]
      */
     public function getTraitReflections(): array;
+
+    /**
+     * @param FunctionReflectionInterface[] $functionReflections
+     */
+    public function setFunctionReflections(array $functionReflections): void;
 
     /**
      * @return FunctionReflectionInterface[]

@@ -10,9 +10,14 @@ use PHPUnit\Framework\TestCase;
 abstract class AbstractParserAwareTestCase extends TestCase
 {
     /**
-     * @var ParserInterface|ReflectionStorageInterface
+     * @var ParserInterface
      */
     protected $parser;
+
+    /**
+     * @var ReflectionStorageInterface
+     */
+    protected $reflectionStorage;
 
     /**
      * @param mixed[] $data
@@ -23,5 +28,6 @@ abstract class AbstractParserAwareTestCase extends TestCase
 
         $container = (new ContainerFactory)->create();
         $this->parser = $container->getByType(ParserInterface::class);
+        $this->reflectionStorage = $container->getByType(ReflectionStorageInterface::class);
     }
 }
