@@ -2,12 +2,12 @@
 
 namespace ApiGen\Reflection\Tests\Parser;
 
-use ApiGen\Reflection\Parser\Parser;
 use ApiGen\Reflection\Reflection\InterfaceReflection;
-use ApiGen\Tests\AbstractContainerAwareTestCase;
+use ApiGen\Tests\AbstractParserAwareTestCase;
 use ApiGen\Tests\Parser\Parser\ParserSource\SomeInterface;
 
-final class InterfaceReflectionTest extends AbstractContainerAwareTestCase
+// @todo: mote to Reflection\InterfaceReflection test
+final class InterfaceReflectionTest extends AbstractParserAwareTestCase
 {
     /**
      * @var InterfaceReflection
@@ -16,11 +16,9 @@ final class InterfaceReflectionTest extends AbstractContainerAwareTestCase
 
     protected function setUp(): void
     {
-        /** @var Parser $parser */
-        $parser = $this->container->getByType(Parser::class);
-        $parser->parseDirectories([__DIR__ . '/../../../../tests/Parser/Parser/ParserSource']);
+        $this->parser->parseDirectories([__DIR__ . '/../../../../tests/Parser/Parser/ParserSource']);
 
-        $interfaceReflections = $parser->getInterfaceReflections();
+        $interfaceReflections = $this->reflectionStorage->getInterfaceReflections();
         $this->interfaceReflection = array_shift($interfaceReflections);
     }
 

@@ -28,7 +28,7 @@ interface InterfaceReflectionInterface
     /**
      * @return string[]
      */
-    public function getOwnInterfaceNames(): array;
+    public function getInterfaceNames(): array;
 
     /**
      * @return MethodReflectionInterface[]
@@ -76,4 +76,10 @@ interface InterfaceReflectionInterface
     public function getOwnConstant(string $name): ClassConstantReflectionInterface;
 
     public function implementsInterface(string $interface): bool;
+
+    public function getShortName(): string;
+
+    public function getStartLine(): int;
+
+    public function getEndLine(): int;
 }

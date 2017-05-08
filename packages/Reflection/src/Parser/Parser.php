@@ -21,25 +21,6 @@ final class Parser implements ParserInterface
     private $transformerCollector;
 
     /**
-     * @var ClassReflectionInterface[]
-     */
-    private $classReflections = [];
-
-    /**
-     * @var InterfaceReflectionInterface[]
-     */
-    private $interfaceReflections = [];
-
-    /**
-     * @var TraitReflectionInterface[]
-     */
-    private $traitReflections = [];
-
-    /**
-     * @var FunctionReflectionInterface[]
-     */
-    private $functionReflections = [];
-    /**
      * @var ReflectionStorageInterface
      */
     private $reflectionStorage;
@@ -68,38 +49,6 @@ final class Parser implements ParserInterface
     }
 
     /**
-     * @return ClassReflectionInterface[]
-     */
-    public function getClassReflections(): array
-    {
-        return $this->classReflections;
-    }
-
-    /**
-     * @return InterfaceReflectionInterface[]
-     */
-    public function getInterfaceReflections(): array
-    {
-        return $this->interfaceReflections;
-    }
-
-    /**
-     * @return TraitReflectionInterface[]
-     */
-    public function getTraitReflections(): array
-    {
-        return $this->traitReflections;
-    }
-
-    /**
-     * @return FunctionReflectionInterface[]
-     */
-    public function getFunctionReflections(): array
-    {
-        return $this->functionReflections;
-    }
-
-    /**
      * @param object[] $classInterfaceAndTraitReflections
      */
     private function separateClassInterfaceAndTraitReflections(array $classInterfaceAndTraitReflections): void
@@ -107,16 +56,19 @@ final class Parser implements ParserInterface
         $classReflections = array_filter($classInterfaceAndTraitReflections, function ($reflection) {
             return $reflection instanceof ClassReflectionInterface;
         });
+        sort($classReflections);
         $this->reflectionStorage->setClassReflections($classReflections);
 
         $interfaceReflections = array_filter($classInterfaceAndTraitReflections, function ($reflection) {
             return $reflection instanceof InterfaceReflectionInterface;
         });
+        sort($interfaceReflections);
         $this->reflectionStorage->setInterfaceReflections($interfaceReflections);
 
         $traitReflections = array_filter($classInterfaceAndTraitReflections, function ($reflection) {
             return $reflection instanceof TraitReflectionInterface;
         });
+        sort($traitReflections);
         $this->reflectionStorage->setTraitReflections($traitReflections);
     }
 
@@ -162,51 +114,5 @@ final class Parser implements ParserInterface
         // @todo: use FileIteratorSourceLocator and FinderInterface
         // such service scan be replaced in config by own with custom finder implementation
         return new DirectoriesSourceLocator($directories);
-    }
-
-    // @legacy bellow @see \ApiGen\Parser\ParserStorage
-
-    /**
-     * @return ClassReflectionInterface[]|InterfaceReflectionInterface[]
-     */
-    public function getDirectImplementersOfInterface(InterfaceReflectionInterface $interfaceReflection): array
-    {
-        $implementers = [];
-        foreach ($this->getClassReflections() as $class) {
-            if ($this->isAllowedDirectImplementer($class, $interfaceReflection->getName())) {
-                $implementers[] = $class;
-            }
-        }
-
-        uksort($implementers, 'strcasecmp');
-
-        return $implementers;
-    }
-
-    /**
-     * @return ClassReflectionInterface[]|InterfaceReflectionInterface[]
-     */
-    public function getIndirectImplementersOfInterface(InterfaceReflectionInterface $interfaceReflection): array
-    {
-        $implementers = [];
-        foreach ($this->getClassReflections() as $class) {
-            if ($this->isAllowedIndirectImplementer($class, $interfaceReflection->getName())) {
-                $implementers[] = $class;
-            }
-        }
-
-        uksort($implementers, 'strcasecmp');
-        return $implementers;
-    }
-
-    private function isAllowedDirectImplementer(ClassReflectionInterface $class, string $name): bool
-    {
-        return $class->isDocumented() && in_array($name, $class->getOwnInterfaceNames());
-    }
-
-    private function isAllowedIndirectImplementer(ClassReflectionInterface $class, string $name): bool
-    {
-        return $class->isDocumented() && $class->implementsInterface($name)
-            && ! in_array($name, $class->getOwnInterfaceNames());
     }
 }

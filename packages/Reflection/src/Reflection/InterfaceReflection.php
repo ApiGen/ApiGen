@@ -122,9 +122,9 @@ final class InterfaceReflection implements InterfaceReflectionInterface, Transfo
     /**
      * @return string[]
      */
-    public function getOwnInterfaceNames(): array
+    public function getInterfaceNames(): array
     {
-        // TODO: Implement getOwnInterfaceNames() method.
+        return $this->betterInterfaceReflection->getInterfaceNames();
     }
 
     /**
