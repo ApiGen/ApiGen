@@ -39,7 +39,7 @@ final class MethodParameterReflectionTransformer implements TransformerInterface
      */
     public function transform($reflection): MethodParameterReflection
     {
-        $docBlock = $this->docBlockFactory->create($reflection->getDocBlockTypes() . ' ');
+        $docBlock = $this->docBlockFactory->create($reflection->getDocBlockTypes() ?: ' ');
 
         return new MethodParameterReflection($reflection, $docBlock);
     }

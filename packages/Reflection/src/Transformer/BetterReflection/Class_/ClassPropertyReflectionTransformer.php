@@ -2,14 +2,24 @@
 
 namespace ApiGen\Reflection\Transformer\BetterReflection\Class_;
 
+use ApiGen\Reflection\Contract\Reflection\Class_\ClassPropertyReflectionInterface;
 use ApiGen\Reflection\Reflection\Class_\ClassPropertyReflection;
-use ApiGen\Reflection\Reflection\Method\MethodParameterReflection;
 use ApiGen\Reflection\Contract\Transformer\TransformerInterface;
-use Roave\BetterReflection\Reflection\ReflectionParameter;
+use phpDocumentor\Reflection\DocBlockFactoryInterface;
 use Roave\BetterReflection\Reflection\ReflectionProperty;
 
 final class ClassPropertyReflectionTransformer implements TransformerInterface
 {
+    /**
+     * @var DocBlockFactoryInterface
+     */
+    private $docBlockFactory;
+
+    public function __construct(DocBlockFactoryInterface $docBlockFactory)
+    {
+        $this->docBlockFactory = $docBlockFactory;
+    }
+
     /**
      * @param object $reflection
      */
@@ -24,16 +34,16 @@ final class ClassPropertyReflectionTransformer implements TransformerInterface
             return false;
         }
 
-        return ! $declaringClass->isTrait() && ! $declaringClass->isInterface();
+        return ! $declaringClass->isTrait();
     }
 
     /**
-     * @param ReflectionParameter $reflection
+     * @param ReflectionProperty $reflection
      */
-    public function transform($reflection): MethodParameterReflection
+    public function transform($reflection): ClassPropertyReflectionInterface
     {
-        return new ClassPropertyReflection(
-            $reflection
-        );
+        $docBlock = $this->docBlockFactory->create($reflection->getDocBlockTypes() ?: ' ');
+
+        return new ClassPropertyReflection($reflection, $docBlock);
     }
 }
