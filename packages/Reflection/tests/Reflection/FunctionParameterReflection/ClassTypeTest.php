@@ -18,11 +18,9 @@ final class ClassTypeTest extends AbstractParserAwareTestCase
         $this->parser->parseDirectories([__DIR__ . '/Source']);
 
         $functionReflections = $this->reflectionStorage->getFunctionReflections();
-
         $functionReflection = $functionReflections[2];
 
         $functionParametersReflections = $functionReflection->getParameters();
-
         $this->functionParameterReflection = array_pop($functionParametersReflections);
     }
 

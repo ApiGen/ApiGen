@@ -29,11 +29,6 @@ final class InterfaceReflectionTest extends AbstractParserAwareTestCase
         $this->assertSame('SomeInterface', $this->interfaceReflection->getShortName());
     }
 
-    public function testExists()
-    {
-        $this->assertInstanceOf(InterfaceReflectionInterface::class, $this->interfaceReflection);
-    }
-
     public function testImplementsInterface(): void
     {
         $this->assertFalse($this->interfaceReflection->implementsInterface('NoInterface'));
