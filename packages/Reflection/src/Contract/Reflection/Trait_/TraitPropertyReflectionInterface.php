@@ -30,6 +30,4 @@ interface TraitPropertyReflectionInterface extends AbstractTraitElementInterface
     public function isDocumented(): bool;
 
     public function isDeprecated(): bool;
-
-    public function getDescription(): string;
 }

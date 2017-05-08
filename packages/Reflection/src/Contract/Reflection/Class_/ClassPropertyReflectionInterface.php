@@ -30,6 +30,4 @@ interface ClassPropertyReflectionInterface extends AbstractClassElementInterface
     public function isDocumented(): bool;
 
     public function isDeprecated(): bool;
-
-    public function getDescription(): string;
 }

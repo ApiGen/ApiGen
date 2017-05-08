@@ -11,8 +11,6 @@ interface AbstractParameterReflectionInterface
 
     public function getTypeHint(): string;
 
-    public function getDescription(): string;
-
     public function getDefaultValueDefinition(): ?string;
 
     public function isArray(): bool;

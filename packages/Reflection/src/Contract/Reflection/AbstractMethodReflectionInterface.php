@@ -42,6 +42,4 @@ interface AbstractMethodReflectionInterface extends StartAndEndLineInterface, An
     public function isDocumented(): bool;
 
     public function isDeprecated(): bool;
-
-    public function getDescription(): string;
 }
