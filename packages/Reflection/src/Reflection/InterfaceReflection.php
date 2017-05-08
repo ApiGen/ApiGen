@@ -4,7 +4,6 @@ namespace ApiGen\Reflection\Reflection;
 
 use ApiGen\Annotation\AnnotationList;
 use ApiGen\Reflection\Contract\Reflection\ClassReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\ConstantReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\InterfaceReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\MethodReflectionInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorInterface;
@@ -71,10 +70,6 @@ final class InterfaceReflection implements InterfaceReflectionInterface
      */
     public function getDirectImplementers(): array
     {
-        if (! $this->isInterface()) {
-            return [];
-        }
-
         return $this->parserStorage->getDirectImplementersOfInterface($this);
     }
 
@@ -83,26 +78,12 @@ final class InterfaceReflection implements InterfaceReflectionInterface
      */
     public function getIndirectImplementers(): array
     {
-        if (! $this->isInterface()) {
-            return [];
-        }
-
         return $this->parserStorage->getIndirectImplementersOfInterface($this);
     }
 
     public function isDocumented(): bool
     {
         // TODO: Implement isDocumented() method.
-    }
-
-    public function getParentClass(): ?ClassReflectionInterface
-    {
-        // TODO: Implement getParentClass() method.
-    }
-
-    public function getParentClassName(): ?string
-    {
-        // TODO: Implement getParentClassName() method.
     }
 
     public function getFileName(): string

@@ -2,8 +2,6 @@
 
 namespace ApiGen\Reflection\Contract\Reflection;
 
-use ApiGen\Reflection\Contract\TransformerCollectorInterface;
-
 interface InterfaceReflectionInterface
 {
     public function isDocumented(): bool;

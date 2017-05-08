@@ -51,7 +51,6 @@
 
 	<div class="info">
 		{if $class->isAbstract() || $class->isFinal()}<b>{if $class->isAbstract()}Abstract{else}Final{/if}</b><br>{/if}
-		{if $class->isInternal()}<b>PHP Extension:</b> <a href="{$class->extension|manualUrl}" title="Go to PHP documentation">{$class->extension->getName()|firstUpper}</a><br>{/if}
 		{if $class->getNamespaceName()}<b>Namespace:</b> {$class->getNamespaceName()|namespaceLinks|noescape}<br>{/if}
 
 		{var $filteredAnnotations = ($class->getAnnotations()|annotationFilter)}
@@ -61,11 +60,7 @@
 				{$value|annotation:$annotation:$class|noescape}<br>
 			{/foreach}
 		{/foreach}
-		{if $class->isInternal()}
-			<b>Documented at</b> <a href="{$class|manualUrl}" title="Go to PHP documentation">php.net</a>
-		{else}
-			<b>Located at</b> <a href="{$class|sourceUrl}" title="Go to source code">{$class->getFileName()|relativePath}</a>
-		{/if}
+        <b>Located at</b> <a href="{$class|sourceUrl}" title="Go to source code">{$class->getFileName()|relativePath}</a>
 		<br>
 	</div>
 
@@ -86,11 +81,7 @@
 		<td class="name"><div>
 		<a class="anchor" href="#_{$method->getName()}">#</a>
 		<code>{block|strip}
-			{if $class->isInternal()}
-				<a href="{$method|manualUrl}" title="Go to PHP documentation">{$method->getName()}</a>(
-			{else}
-				<a href="{$method|sourceUrl}" title="Go to source code">{$method->getName()}</a>(
-			{/if}
+            <a href="{$method|sourceUrl}" title="Go to source code">{$method->getName()}</a>(
 			{foreach $method->parameters as $parameter}
 				<span>{$parameter->typeHint|typeLinks:$method|noescape}
 				<var>{if $parameter->passedByReference}&amp; {/if}${$parameter->getName()}</var>{if $parameter->defaultValueAvailable} = {$parameter->defaultValueDefinition|highlightPHP:$class|noescape}{elseif $parameter->isVariadic()},…{/if}</span>{sep}, {/sep}
@@ -225,11 +216,7 @@
 		<td class="attributes"><code>{$constant->typeHint|typeLinks:$constant|noescape}</code></td>
 		<td class="name">
 			<code>
-			{if $class->isInternal()}
-				<a href="{$constant|manualUrl}" title="Go to PHP documentation"><b>{$constant->getName()}</b></a>
-			{else}
-				<a href="{$constant|sourceUrl}" title="Go to source code"><b>{$constant->getName()}</b></a>
-			{/if}
+            <a href="{$constant|manualUrl}" title="Go to PHP documentation"><b>{$constant->getName()}</b></a>
 			</code>
 
 			<div class="description detailed">
@@ -279,11 +266,7 @@
 		</code></td>
 
 		<td class="name">
-			{if $class->isInternal()}
-				<a href="{$property|manualUrl}" title="Go to PHP documentation"><var>${$property->getName()}</var></a>
-			{else}
-				<a href="{$property|sourceUrl}" title="Go to source code"><var>${$property->getName()}</var></a>
-			{/if}
+            <a href="{$property|manualUrl}" title="Go to PHP documentation"><var>${$property->getName()}</var></a>
 
 			<div class="description detailed">
 				{$property|description|noescape}
