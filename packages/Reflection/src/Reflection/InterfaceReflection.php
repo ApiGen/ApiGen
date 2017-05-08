@@ -88,30 +88,7 @@ final class InterfaceReflection implements InterfaceReflectionInterface, Transfo
      */
     public function getDirectImplementers(): array
     {
-        dump($this->implementersResolver);
-        die;
-
-        $directImplementers = [];
-
-        dump($this->getName());
-
-        dump(interface_exists(SomeInterface::class));
-        dump(get_declared_interfaces()[SomeInterface::class]);
-        die;
-
-        dump(in_array($this->getName(), class_implements(SomeInterface::class), true));
-
-        foreach (get_declared_classes() as $className) {
-            if (in_array($this->getName(), class_implements($className), true)) {
-                $directImplementers[] = $className;
-            }
-        }
-
-        dump($directImplementers);
-//        dump($this->betterInterfaceReflection);
-        die;
-
-        return $this->parserStorage->getDirectImplementersOfInterface($this);
+        return $this->implementersResolver->resolveDirectImplementersOfInterface($this->getName());
     }
 
     /**
@@ -119,7 +96,7 @@ final class InterfaceReflection implements InterfaceReflectionInterface, Transfo
      */
     public function getIndirectImplementers(): array
     {
-        return $this->parserStorage->getIndirectImplementersOfInterface($this);
+        return $this->implementersResolver->resolveIndirectImplementersOfInterface($this->getName());
     }
 
     public function isDocumented(): bool

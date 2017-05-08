@@ -5,7 +5,4 @@
 - ApiGen\Element\ElementExtractor
 - ApiGen\Element\Namespaces\NamespaceStorage
 
--
-     class: ApiGen\Element\Tree\ImplementersResolver
-     setup:
-        - setReflectionStorage
+- ApiGen\Element\Tree\ImplementersResolver

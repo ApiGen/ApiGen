@@ -2,6 +2,7 @@
 
 namespace ApiGen\Element\Tree;
 
+use ApiGen\Reflection\Contract\Reflection\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\ReflectionStorageInterface;
 
 final class ImplementersResolver
@@ -11,14 +12,55 @@ final class ImplementersResolver
      */
     private $reflectionStorage;
 
-    public function setReflectionStorage(ReflectionStorageInterface $reflectionStorage)
+    public function __construct(ReflectionStorageInterface $reflectionStorage)
     {
         $this->reflectionStorage = $reflectionStorage;
     }
 
-    public function resolve($arg)
+    /**
+     * @return ClassReflectionInterface[]
+     */
+    public function resolveDirectImplementersOfInterface(string $interfaceName): array
     {
-        dump($arg);
-        die;
+        $implementers = [];
+        foreach ($this->reflectionStorage->getClassReflections() as $classReflection) {
+            if ($this->isAllowedDirectImplementer($classReflection, $interfaceName)) {
+                $implementers[] = $classReflection;
+            }
+        }
+
+        uksort($implementers, 'strcasecmp');
+
+        return $implementers;
+    }
+
+    /**
+     * @return ClassReflectionInterface[]
+     */
+    public function resolveIndirectImplementersOfInterface(string $interfaceName): array
+    {
+        $implementers = [];
+        foreach ($this->reflectionStorage->getClassReflections() as $classReflection) {
+            if ($this->isAllowedIndirectImplementer($classReflection, $interfaceName)) {
+                $implementers[] = $classReflection;
+            }
+        }
+
+        uksort($implementers, 'strcasecmp');
+
+        return $implementers;
+    }
+
+    private function isAllowedDirectImplementer(ClassReflectionInterface $classReflection, string $interfaceName): bool
+    {
+        return $classReflection->isDocumented() &&
+            in_array($interfaceName, $classReflection->getOwnInterfaceNames(), true);
+    }
+
+    private function isAllowedIndirectImplementer(ClassReflectionInterface $classReflection, string $interfaceName): bool
+    {
+        return $classReflection->isDocumented()
+            && $classReflection->implementsInterface($interfaceName)
+            && ! in_array($interfaceName, $classReflection->getOwnInterfaceNames(), true);
     }
 }
