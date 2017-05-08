@@ -26,7 +26,7 @@ final class TransformerCollector implements TransformerCollectorInterface
     public function transformGroup(array $reflections): array
     {
         $elements = [];
-        foreach ($reflections as $reflection) {
+        foreach ($reflections as $name => $reflection) {
             // $this->configuration->getVisibilityLevels()
             // @todo: here is the place to filter out public/protected etc - use service!
             // also ! $this->reflection->isInternal();, remove isDocumented()
@@ -35,12 +35,11 @@ final class TransformerCollector implements TransformerCollectorInterface
                 continue;
             }
 
-            $elements[] = $transformedReflection;
-
+            $elements[$name] = $transformedReflection;
         }
 
         // @todo: sort here!, before ElementSorter
-        usort($elements, function ($firstElement, $secondElement) {
+        uasort($elements, function ($firstElement, $secondElement) {
            return strcmp($firstElement->getName(), $secondElement->getName());
         });
 

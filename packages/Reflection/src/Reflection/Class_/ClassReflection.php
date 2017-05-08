@@ -537,21 +537,9 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
      */
     public function getOwnMethods(): array
     {
-        dump($this->transformerCollector->transformGroup(
+        return $this->transformerCollector->transformGroup(
             $this->betterClassReflection->getImmediateMethods()
-        ));
-        die;
-
-        if ($this->ownMethods === null) {
-            $this->ownMethods = [];
-
-            foreach ($this->betterClassReflection->getOwnMethods() as $method) {
-                $apiMethod = $this->transformerCollector->transformSingle($method);
-                $this->ownMethods[$method->getName()] = $apiMethod;
-            }
-        }
-
-        return $this->ownMethods;
+        );
     }
 
     /**
