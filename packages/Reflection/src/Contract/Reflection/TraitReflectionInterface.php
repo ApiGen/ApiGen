@@ -19,26 +19,26 @@ interface TraitReflectionInterface extends ReflectionInterface
     public function getIndirectUsers(): array;
 
     /**
-     * @return MethodReflectionInterface[]
+     * @return ClassMethodReflectionInterface[]
      */
     public function getMethods(): array;
 
     /**
-     * @return MethodReflectionInterface[]
+     * @return ClassMethodReflectionInterface[]
      */
     public function getOwnMethods(): array;
 
     /**
-     * @return MethodReflectionInterface[]
+     * @return ClassMethodReflectionInterface[]
      */
     public function getUsedMethods(): array;
 
     /**
-     * @return MethodReflectionInterface[]
+     * @return ClassMethodReflectionInterface[]
      */
     public function getTraitMethods(): array;
 
-    public function getMethod(string $name): MethodReflectionInterface;
+    public function getMethod(string $name): ClassMethodReflectionInterface;
 
     public function hasMethod(string $name): bool;
 

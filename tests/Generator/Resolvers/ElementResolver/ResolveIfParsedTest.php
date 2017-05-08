@@ -3,7 +3,7 @@
 namespace ApiGen\Tests\Generator\Resolvers\ElementResolver;
 
 use ApiGen\Reflection\Contract\Reflection\ReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\MethodReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ClassMethodReflectionInterface;
 use ApiGen\Tests\MethodInvoker;
 use PHPUnit_Framework_MockObject_MockObject;
 
@@ -39,11 +39,11 @@ final class ResolveIfParsedTest extends AbstractElementResolverTest
     }
 
     /**
-     * @return PHPUnit_Framework_MockObject_MockObject|MethodReflectionInterface
+     * @return PHPUnit_Framework_MockObject_MockObject|ClassMethodReflectionInterface
      */
     private function createMethodReflectionMock()
     {
-        $methodReflectionMock = $this->createMock(MethodReflectionInterface::class);
+        $methodReflectionMock = $this->createMock(ClassMethodReflectionInterface::class);
         $methodReflectionMock->method('getName')
             ->willReturn('SomeFunction');
         $methodReflectionMock->method('isDocumented')

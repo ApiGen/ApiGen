@@ -5,7 +5,7 @@ namespace ApiGen\Tests\Templating\Filters;
 use ApiGen\Reflection\Contract\Reflection\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\ClassConstantReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\FunctionReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\MethodReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ClassMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\PropertyReflectionInterface;
 use ApiGen\Templating\Filters\ElementUrlFilters;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
@@ -36,7 +36,7 @@ final class ElementUrlFiltersTest extends AbstractContainerAwareTestCase
 
     public function testMethodUrl(): void
     {
-        $reflectionMethodMock = $this->createMock(MethodReflectionInterface::class);
+        $reflectionMethodMock = $this->createMock(ClassMethodReflectionInterface::class);
         $reflectionMethodMock->method('getDeclaringClassName')
             ->willReturn('SomeClass');
         $reflectionMethodMock->method('getName')

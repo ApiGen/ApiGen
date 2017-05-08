@@ -6,7 +6,7 @@ use ApiGen\Console\Command\GenerateCommand;
 use ApiGen\Contracts\Parser\ParserStorageInterface;
 use ApiGen\Reflection\Contract\Reflection\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\ReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\MethodReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ClassMethodReflectionInterface;
 use ApiGen\Templating\Filters\UrlFilters;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 use ApiGen\Tests\MethodInvoker;
@@ -127,7 +127,7 @@ final class UrlFiltersTest extends AbstractContainerAwareTestCase
      */
     public function testResolveLinkAndSeeAnnotationForMethod(): void
     {
-        $reflectionMethodMock = $this->createMock(MethodReflectionInterface::class);
+        $reflectionMethodMock = $this->createMock(ClassMethodReflectionInterface::class);
         $reflectionMethodMock->method('getDeclaringClassName')->willReturn(GenerateCommand::class);
         $reflectionMethodMock->method('getName')->willReturn('testMethod');
         $reflectionMethodMock->method('isDeprecated')->willReturn(false);

@@ -4,7 +4,7 @@ namespace ApiGen\Tests\Generator\Resolvers\ElementResolver;
 
 use ApiGen\Reflection\Contract\Reflection\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\ClassConstantReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\MethodReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ClassMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\PropertyReflectionInterface;
 use ApiGen\Tests\MethodInvoker;
 use PHPUnit_Framework_MockObject_MockObject;
@@ -34,7 +34,7 @@ final class ResolveIfInContextTest extends AbstractElementResolverTest
             ['someMethod', $classReflectionMock]
         );
 
-        $this->assertInstanceOf(MethodReflectionInterface::class, $resolvedElement);
+        $this->assertInstanceOf(ClassMethodReflectionInterface::class, $resolvedElement);
     }
 
     public function testResolveConstantFromClassReflection(): void
@@ -96,7 +96,7 @@ final class ResolveIfInContextTest extends AbstractElementResolverTest
         $classReflectionMock->method('hasMethod')
             ->willReturn(false);
 
-        $methodReflectionMock = $this->createMock(MethodReflectionInterface::class);
+        $methodReflectionMock = $this->createMock(ClassMethodReflectionInterface::class);
         $classReflectionMock->method('getMethod')
             ->with('someMethod')
             ->willReturn($methodReflectionMock);

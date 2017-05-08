@@ -2,7 +2,7 @@
 
 namespace ApiGen\Element\Latte\Filter;
 
-use ApiGen\Reflection\Contract\Reflection\MethodReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ClassMethodReflectionInterface;
 use ApiGen\Element\Naming\ReflectionNaming;
 use Symplify\ModularLatteFilters\Contract\DI\LatteFiltersProviderInterface;
 
@@ -24,7 +24,7 @@ final class MethodReflectionNamingFilter implements LatteFiltersProviderInterfac
     public function getFilters(): array
     {
         return [
-            'prettyMethodName' => function (MethodReflectionInterface $methodReflection) {
+            'prettyMethodName' => function (ClassMethodReflectionInterface $methodReflection) {
                 return $this->reflectionNaming->forMethodReflection($methodReflection);
             }
         ];

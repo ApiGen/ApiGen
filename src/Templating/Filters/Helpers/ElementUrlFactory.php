@@ -6,7 +6,7 @@ use ApiGen\Reflection\Contract\Reflection\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\ClassConstantReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\ReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\FunctionReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\MethodReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ClassMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\PropertyReflectionInterface;
 use ApiGen\Templating\Filters\Filters;
 
@@ -21,7 +21,7 @@ final class ElementUrlFactory
             return $this->createForClass($element);
         }
 
-        if ($element instanceof MethodReflectionInterface) {
+        if ($element instanceof ClassMethodReflectionInterface) {
             return $this->createForMethod($element);
         }
 
@@ -59,7 +59,7 @@ final class ElementUrlFactory
         return sprintf($filename, Filters::urlize($className));
     }
 
-    public function createForMethod(MethodReflectionInterface $method, ?ClassReflectionInterface $class = null): string
+    public function createForMethod(ClassMethodReflectionInterface $method, ?ClassReflectionInterface $class = null): string
     {
         $className = $class !== null ? $class->getName() : $method->getDeclaringClassName();
         return $this->createForClass($className) . '#_'

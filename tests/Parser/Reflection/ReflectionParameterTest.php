@@ -4,7 +4,7 @@ namespace ApiGen\Tests\Parser\Reflection;
 
 use ApiGen\Contracts\Parser\ParserInterface;
 use ApiGen\Reflection\Contract\Reflection\ClassReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\MethodReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ClassMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\ParameterReflectionInterface;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 use ApiGen\Tests\Parser\Reflection\ReflectionMethodSource\ReflectionMethod;
@@ -66,7 +66,7 @@ final class ReflectionParameterTest extends AbstractContainerAwareTestCase
 
     public function testGetDeclaringFunction(): void
     {
-        $this->assertInstanceOf(MethodReflectionInterface::class, $this->reflectionParameter->getDeclaringFunction());
+        $this->assertInstanceOf(ClassMethodReflectionInterface::class, $this->reflectionParameter->getDeclaringFunction());
     }
 
     public function testGetDeclaringFunctionName(): void

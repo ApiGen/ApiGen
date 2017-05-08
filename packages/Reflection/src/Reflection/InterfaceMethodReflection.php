@@ -2,10 +2,9 @@
 
 namespace ApiGen\Reflection\Reflection;
 
-/**
- * @todo
- */
-final class InterfaceMethodReflection
+use ApiGen\Reflection\Contract\Reflection\InterfaceMethodReflectionInterface;
+
+final class InterfaceMethodReflection implements InterfaceMethodReflectionInterface
 {
 
 }

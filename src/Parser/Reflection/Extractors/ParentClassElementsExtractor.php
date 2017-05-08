@@ -5,7 +5,7 @@ namespace ApiGen\Parser\Reflection\Extractors;
 use ApiGen\Reflection\Contract\Reflection\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\ClassConstantReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Extractors\ParentClassElementsExtractorInterface;
-use ApiGen\Reflection\Contract\Reflection\MethodReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ClassMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\PropertyReflectionInterface;
 
 final class ParentClassElementsExtractor implements ParentClassElementsExtractorInterface
@@ -63,12 +63,12 @@ final class ParentClassElementsExtractor implements ParentClassElementsExtractor
     }
 
     /**
-     * @return MethodReflectionInterface[]
+     * @return ClassMethodReflectionInterface[]
      */
     public function getInheritedMethods(): array
     {
         $methods = [];
-        $allMethods = array_flip(array_map(function (MethodReflectionInterface $methodReflection) {
+        $allMethods = array_flip(array_map(function (ClassMethodReflectionInterface $methodReflection) {
             return $methodReflection->getName();
         }, $this->reflectionClass->getOwnMethods()));
 

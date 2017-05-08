@@ -7,7 +7,7 @@ use ApiGen\Element\Tree\ImplementersResolver;
 use ApiGen\Reflection\Contract\Reflection\ClassConstantReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\InterfaceReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\MethodReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ClassMethodReflectionInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorAwareInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorInterface;
 use phpDocumentor\Reflection\DocBlock;
@@ -119,15 +119,17 @@ final class InterfaceReflection implements InterfaceReflectionInterface, Transfo
     }
 
     /**
-     * @return MethodReflectionInterface[]
+     * @return ClassMethodReflectionInterface[]
      */
     public function getMethods(): array
     {
-        // TODO: Implement getMethods() method.
+        return $this->transformerCollector->transformGroup(
+            $this->betterInterfaceReflection->getMethods()
+        );
     }
 
     /**
-     * @return MethodReflectionInterface[]
+     * @return ClassMethodReflectionInterface[]
      */
     public function getOwnMethods(): array
     {
@@ -135,7 +137,7 @@ final class InterfaceReflection implements InterfaceReflectionInterface, Transfo
     }
 
     /**
-     * @return MethodReflectionInterface[]
+     * @return ClassMethodReflectionInterface[]
      */
     public function getInheritedMethods(): array
     {
@@ -143,7 +145,7 @@ final class InterfaceReflection implements InterfaceReflectionInterface, Transfo
     }
 
     /**
-     * @return MethodReflectionInterface[]
+     * @return ClassMethodReflectionInterface[]
      */
     public function getUsedMethods(): array
     {
@@ -151,14 +153,14 @@ final class InterfaceReflection implements InterfaceReflectionInterface, Transfo
     }
 
     /**
-     * @return MethodReflectionInterface[]
+     * @return ClassMethodReflectionInterface[]
      */
     public function getTraitMethods(): array
     {
         // TODO: Implement getTraitMethods() method.
     }
 
-    public function getMethod(string $name): MethodReflectionInterface
+    public function getMethod(string $name): ClassMethodReflectionInterface
     {
         // TODO: Implement getMethod() method.
     }

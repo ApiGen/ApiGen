@@ -3,7 +3,7 @@
 namespace ApiGen\Reflection\Reflection;
 
 use ApiGen\Annotation\AnnotationList;
-use ApiGen\Reflection\Contract\Reflection\MethodReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ClassMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\PropertyReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\ClassConstantReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\ClassReflectionInterface;
@@ -197,7 +197,7 @@ final class ClassReflection implements ClassReflectionInterface
         return array_keys($this->betterClassReflection->getImmediateInterfaces());
     }
 
-    public function getMethod(string $name): MethodReflectionInterface
+    public function getMethod(string $name): ClassMethodReflectionInterface
     {
         if ($this->hasMethod($name)) {
             return $this->methods[$name];
@@ -211,7 +211,7 @@ final class ClassReflection implements ClassReflectionInterface
     }
 
     /**
-     * @return MethodReflectionInterface[]
+     * @return ClassMethodReflectionInterface[]
      */
     public function getInheritedMethods(): array
     {
@@ -219,7 +219,7 @@ final class ClassReflection implements ClassReflectionInterface
     }
 
     /**
-     * @return MethodReflectionInterface[]
+     * @return ClassMethodReflectionInterface[]
      */
     public function getUsedMethods(): array
     {
@@ -509,7 +509,7 @@ final class ClassReflection implements ClassReflectionInterface
     }
 
     /**
-     * @return MethodReflectionInterface[]
+     * @return ClassMethodReflectionInterface[]
      */
     public function getMethods(): array
     {
@@ -553,7 +553,7 @@ final class ClassReflection implements ClassReflectionInterface
     }
 
     /**
-     * @return MethodReflectionInterface[]
+     * @return ClassMethodReflectionInterface[]
      */
     public function getOwnMethods(): array
     {
@@ -572,7 +572,7 @@ final class ClassReflection implements ClassReflectionInterface
     }
 
     /**
-     * @return MethodReflectionInterface[]
+     * @return ClassMethodReflectionInterface[]
      */
     public function getTraitMethods(): array
     {

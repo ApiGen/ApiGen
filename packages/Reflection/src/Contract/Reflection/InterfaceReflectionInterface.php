@@ -26,31 +26,31 @@ interface InterfaceReflectionInterface
     public function getInterfaces(): array;
 
     /**
-     * @return MethodReflectionInterface[]
+     * @return InterfaceMethodReflectionInterface[]
      */
     public function getMethods(): array;
 
     /**
-     * @return MethodReflectionInterface[]
+     * @return InterfaceMethodReflectionInterface[]
      */
     public function getOwnMethods(): array;
 
     /**
-     * @return MethodReflectionInterface[]
+     * @return InterfaceMethodReflectionInterface[]
      */
     public function getInheritedMethods(): array;
 
     /**
-     * @return MethodReflectionInterface[]
+     * @return InterfaceMethodReflectionInterface[]
      */
     public function getUsedMethods(): array;
 
     /**
-     * @return MethodReflectionInterface[]
+     * @return InterfaceMethodReflectionInterface[]
      */
     public function getTraitMethods(): array;
 
-    public function getMethod(string $name): MethodReflectionInterface;
+    public function getMethod(string $name): InterfaceMethodReflectionInterface;
 
     public function hasMethod(string $name): bool;
 

@@ -3,13 +3,14 @@
 namespace ApiGen\Reflection\Reflection;
 
 use ApiGen\Reflection\Contract\Reflection\ClassReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\MethodReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ClassMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\ParameterReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\TraitReflectionInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorInterface;
 use phpDocumentor\Reflection\DocBlock;
 use Roave\BetterReflection\Reflection\ReflectionMethod;
 
-final class ClassMethodReflection implements MethodReflectionInterface
+final class ClassMethodReflection implements ClassMethodReflectionInterface
 {
     /**
      * @var string
@@ -41,17 +42,12 @@ final class ClassMethodReflection implements MethodReflectionInterface
      */
     private $transformerCollector;
 
-    /**
-     * @param ParameterReflectionInterface[] $parameterReflections
-     */
     public function __construct(
         ReflectionMethod $betterFunctionReflection,
-        DocBlock $docBlock,
-        TransformerCollectorInterface $transformerCollector
+        DocBlock $docBlock
     ) {
         $this->reflection = $betterFunctionReflection;
         $this->docBlock = $docBlock;
-        $this->transformerCollector = $transformerCollector;
     }
 
     public function getName(): string
@@ -186,7 +182,7 @@ final class ClassMethodReflection implements MethodReflectionInterface
     }
 
     // @todo: is used?
-    public function getImplementedMethod(): ?MethodReflectionInterface
+    public function getImplementedMethod(): ?ClassMethodReflectionInterface
     {
         foreach ($this->getDeclaringClass()->getOwnInterfaces() as $interface) {
             if ($interface->hasMethod($this->getName())) {
@@ -198,7 +194,7 @@ final class ClassMethodReflection implements MethodReflectionInterface
     }
 
     // @todo: is used?
-    public function getOverriddenMethod(): ?MethodReflectionInterface
+    public function getOverriddenMethod(): ?ClassMethodReflectionInterface
     {
         $parent = $this->getDeclaringClass()->getParentClass();
         if ($parent === null) {
@@ -223,12 +219,8 @@ final class ClassMethodReflection implements MethodReflectionInterface
      */
     public function getParameters(): array
     {
-        if ($this->parameters === []) {
-            $this->parameters = $this->transformerCollector->transformGroup(
-                $this->reflection->getParameters()
-            );
-        }
-
-        return $this->parameters;
+        return $this->transformerCollector->transformGroup(
+            $this->reflection->getParameters()
+        );
     }
 }

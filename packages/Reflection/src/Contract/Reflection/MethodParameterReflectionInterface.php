@@ -3,11 +3,11 @@
 namespace ApiGen\Reflection\Contract\Reflection;
 
 use ApiGen\Reflection\Contract\Reflection\ClassReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\MethodReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ClassMethodReflectionInterface;
 
 interface MethodParameterReflectionInterface extends AbstractParameterReflectionInterface
 {
-    public function getDeclaringMethod(): MethodReflectionInterface;
+    public function getDeclaringMethod(): ClassMethodReflectionInterface;
 
     public function getDeclaringClassName(): string;
 

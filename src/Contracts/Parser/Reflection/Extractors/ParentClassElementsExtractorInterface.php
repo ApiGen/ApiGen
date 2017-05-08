@@ -3,7 +3,7 @@
 namespace ApiGen\Reflection\Contract\Reflection\Extractors;
 
 use ApiGen\Reflection\Contract\Reflection\ClassConstantReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\MethodReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ClassMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\PropertyReflectionInterface;
 
 interface ParentClassElementsExtractorInterface
@@ -19,7 +19,7 @@ interface ParentClassElementsExtractorInterface
     public function getInheritedProperties(): array;
 
     /**
-     * @return MethodReflectionInterface[]
+     * @return ClassMethodReflectionInterface[]
      */
     public function getInheritedMethods(): array;
 }

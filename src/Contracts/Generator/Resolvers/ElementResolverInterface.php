@@ -5,14 +5,14 @@ namespace ApiGen\Contracts\Generator\Resolvers;
 use ApiGen\Reflection\Contract\Reflection\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\ReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\FunctionReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\MethodReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ClassMethodReflectionInterface;
 
 interface ElementResolverInterface
 {
     public function getClass(string $className, string $namespace = ''): ?ClassReflectionInterface;
 
     /**
-     * @return FunctionReflectionInterface|MethodReflectionInterface|null
+     * @return FunctionReflectionInterface|ClassMethodReflectionInterface|null
      */
     public function getFunction(string $name, string $namespace = '');
 

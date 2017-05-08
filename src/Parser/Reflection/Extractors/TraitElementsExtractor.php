@@ -4,7 +4,7 @@ namespace ApiGen\Parser\Reflection\Extractors;
 
 use ApiGen\Reflection\Contract\Reflection\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Extractors\ClassTraitElementsExtractorInterface;
-use ApiGen\Reflection\Contract\Reflection\MethodReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ClassMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\PropertyReflectionInterface;
 
 final class TraitElementsExtractor implements ClassTraitElementsExtractorInterface
@@ -85,7 +85,7 @@ final class TraitElementsExtractor implements ClassTraitElementsExtractorInterfa
     }
 
     /**
-     * @return MethodReflectionInterface[]
+     * @return ClassMethodReflectionInterface[]
      */
     public function getTraitMethods(): array
     {
@@ -133,7 +133,7 @@ final class TraitElementsExtractor implements ClassTraitElementsExtractorInterfa
     }
 
     /**
-     * @return MethodReflectionInterface[]
+     * @return ClassMethodReflectionInterface[]
      */
     public function getUsedMethods(): array
     {
@@ -157,7 +157,7 @@ final class TraitElementsExtractor implements ClassTraitElementsExtractorInterfa
         return $usedMethods;
     }
 
-    private function wasMethodNameAliased(MethodReflectionInterface $methodReflection): bool
+    private function wasMethodNameAliased(ClassMethodReflectionInterface $methodReflection): bool
     {
         return $methodReflection->getOriginalName() !== null
             && $methodReflection->getOriginalName() !== $methodReflection->getName();

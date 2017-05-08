@@ -5,7 +5,7 @@ namespace ApiGen\Reflection\Reflection;
 use ApiGen\Annotation\AnnotationList;
 use ApiGen\Reflection\Contract\Reflection\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\FunctionReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\MethodReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ClassMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\ParameterReflectionInterface;
 use phpDocumentor\Reflection\DocBlock\Tags\Param;
 use Roave\BetterReflection\Reflection\ReflectionParameter;
@@ -18,7 +18,7 @@ final class MethodParameterReflection implements ParameterReflectionInterface
     private $reflection;
 
     /**
-     * @var MethodReflectionInterface|FunctionReflectionInterface
+     * @var ClassMethodReflectionInterface|FunctionReflectionInterface
      */
     private $declaringFunction;
 
@@ -34,7 +34,7 @@ final class MethodParameterReflection implements ParameterReflectionInterface
     }
 
     /**
-     * @return MethodReflectionInterface|FunctionReflectionInterface
+     * @return ClassMethodReflectionInterface|FunctionReflectionInterface
      */
     public function getDeclaringFunction()
     {
@@ -129,7 +129,7 @@ final class MethodParameterReflection implements ParameterReflectionInterface
 
     public function getDeclaringClass(): ?ClassReflectionInterface
     {
-        if ($this->declaringFunction instanceof MethodReflectionInterface) {
+        if ($this->declaringFunction instanceof ClassMethodReflectionInterface) {
             return $this->declaringFunction->getDeclaringClass();
         }
 
@@ -147,7 +147,7 @@ final class MethodParameterReflection implements ParameterReflectionInterface
     }
 
     /**
-     * @param MethodReflectionInterface|FunctionReflectionInterface $declaringFunction
+     * @param ClassMethodReflectionInterface|FunctionReflectionInterface $declaringFunction
      */
     public function setDeclaringFunction($declaringFunction): void
     {

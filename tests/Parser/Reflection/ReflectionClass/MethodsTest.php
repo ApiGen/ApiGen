@@ -2,13 +2,13 @@
 
 namespace ApiGen\Tests\Parser\Reflection\ReflectionClass;
 
-use ApiGen\Reflection\Contract\Reflection\MethodReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ClassMethodReflectionInterface;
 
 final class MethodsTest extends AbstractReflectionClassTestCase
 {
     public function testGetMethod(): void
     {
-        $this->assertInstanceOf(MethodReflectionInterface::class, $this->reflectionClass->getMethod('publicMethod'));
+        $this->assertInstanceOf(ClassMethodReflectionInterface::class, $this->reflectionClass->getMethod('publicMethod'));
     }
 
     /**

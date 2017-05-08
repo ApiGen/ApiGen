@@ -18,32 +18,17 @@ final class MethodTest extends AbstractParserAwareTestCase
         $this->parser->parseDirectories([__DIR__ . '/Source']);
 
         $interfaceReflections = $this->reflectionStorage->getInterfaceReflections();
-        $this->interfaceReflection = $interfaceReflections[0];
+        $this->interfaceReflection = $interfaceReflections[2];
     }
 
-    public function testExists()
+    public function testNaming()
     {
         $this->assertSame(PoorInterface::class, $this->interfaceReflection->getName());
     }
 
-    public function testGetInterfaces(): void
+    public function test()
     {
-        $this->assertCount(0, $this->interfaceReflection->getInterfaces());
+        $this->assertCount(1, $this->interfaceReflection->getMethods());
+        $this->assertCount(1, $this->interfaceReflection->getOwnMethods());
     }
-
-//    public function testGetOwnInterfaceNames(): void
-//    {
-//        $this->assertSame([RichInterface::class], $this->reflectionClass->getOwnInterfaceNames());
-//    }
-//
-    public function testGetDirectImplementers(): void
-    {
-        $this->assertCount(1, $this->interfaceReflection->getDirectImplementers());
-    }
-//
-//    public function testGetIndirectImplementers(): void
-//    {
-//        $indirectImplementers = $this->reflectionClassOfInterface->getIndirectImplementers();
-//        $this->assertSame([], $indirectImplementers);
-//    }
 }

@@ -3,7 +3,7 @@
 namespace ApiGen\Tests\Generator\Resolvers\ElementResolver;
 
 use ApiGen\Reflection\Contract\Reflection\ClassReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\MethodReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ClassMethodReflectionInterface;
 
 final class ResolveTest extends AbstractElementResolverTest
 {
@@ -24,7 +24,7 @@ final class ResolveTest extends AbstractElementResolverTest
             ->with('someMethod')
             ->willReturn(true);
 
-        $methodReflectionMock = $this->createMock(MethodReflectionInterface::class);
+        $methodReflectionMock = $this->createMock(ClassMethodReflectionInterface::class);
 
         $classReflectionMock->method('getMethod')
             ->with('someMethod')

@@ -3,7 +3,7 @@
 namespace ApiGen\Tests\Generator\Resolvers\ElementResolver;
 
 use ApiGen\Reflection\Contract\Reflection\ClassReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\MethodReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ClassMethodReflectionInterface;
 use ApiGen\Tests\MethodInvoker;
 use PHPUnit_Framework_MockObject_MockObject;
 
@@ -28,11 +28,11 @@ final class CorrectContextForClassMemberTest extends AbstractElementResolverTest
     }
 
     /**
-     * @return PHPUnit_Framework_MockObject_MockObject|MethodReflectionInterface
+     * @return PHPUnit_Framework_MockObject_MockObject|ClassMethodReflectionInterface
      */
     private function createMethodReflectionMock()
     {
-        $reflectionMethodMock = $this->createMock(MethodReflectionInterface::class);
+        $reflectionMethodMock = $this->createMock(ClassMethodReflectionInterface::class);
         $reflectionMethodMock->method('getDeclaringClassName')
             ->willReturn('SomeClass');
 

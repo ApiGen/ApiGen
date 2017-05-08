@@ -6,7 +6,7 @@ use ApiGen\Reflection\Contract\Reflection\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\ClassConstantReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\ReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\FunctionReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\MethodReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ClassMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\PropertyReflectionInterface;
 use ApiGen\Templating\Filters\Helpers\ElementLinkFactory;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
@@ -77,7 +77,7 @@ final class ElementLinkFactoryTest extends AbstractContainerAwareTestCase
 
     public function testCreateForMethod(): void
     {
-        $reflectionMethod = $this->createMock(MethodReflectionInterface::class);
+        $reflectionMethod = $this->createMock(ClassMethodReflectionInterface::class);
         $reflectionMethod->method('getName')
             ->willReturn('method');
         $reflectionMethod->method('getDeclaringClassName')

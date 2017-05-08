@@ -13,6 +13,7 @@
 - ApiGen\Reflection\Transformer\BetterInterfaceReflectionTransformer
 - ApiGen\Reflection\Transformer\BetterInterfaceReflectionTransformer
 - ApiGen\Reflection\Transformer\BetterTraitReflectionTransformer
+- ApiGen\Reflection\Transformer\BetterInterfaceMethodReflectionTransformer
 
 # Parameters
 - ApiGen\Reflection\Transformer\BetterMethodParameterReflectionTransformer

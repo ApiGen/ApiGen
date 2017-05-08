@@ -2,10 +2,8 @@
 
 namespace ApiGen\Reflection\Contract\Reflection;
 
-interface MethodReflectionInterface
+interface AbstractMethodReflectionInterface
 {
-    public function getDeclaringClassName(): string;
-
     public function getNamespaceName(): string;
 
     public function isAbstract(): bool;
@@ -14,9 +12,9 @@ interface MethodReflectionInterface
 
     public function isStatic(): bool;
 
-    public function getImplementedMethod(): ?MethodReflectionInterface;
+    public function getImplementedMethod(): ?ClassMethodReflectionInterface;
 
-    public function getOverriddenMethod(): ?MethodReflectionInterface;
+    public function getOverriddenMethod(): ?ClassMethodReflectionInterface;
 
     public function returnsReference(): bool;
 
@@ -54,10 +52,4 @@ interface MethodReflectionInterface
     public function hasAnnotation(string $name): bool;
 
     public function getDescription(): string;
-
-
-    // smoetimes?
-    public function getDeclaringTrait(): ?TraitReflectionInterface;
-
-    public function getDeclaringTraitName(): string;
 }

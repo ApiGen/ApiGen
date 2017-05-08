@@ -5,7 +5,7 @@ namespace ApiGen\Tests\Parser\Reflection;
 use ApiGen\Contracts\Parser\ParserInterface;
 use ApiGen\Reflection\Contract\Reflection\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\FunctionReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\MethodReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ClassMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\ParameterReflectionInterface;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 use ApiGen\Tests\Parser\Reflection\ReflectionMethodSource\ReflectionMethod;
@@ -13,7 +13,7 @@ use ApiGen\Tests\Parser\Reflection\ReflectionMethodSource\ReflectionMethod;
 final class ReflectionMethodTest extends AbstractContainerAwareTestCase
 {
     /**
-     * @var MethodReflectionInterface|FunctionReflectionInterface
+     * @var ClassMethodReflectionInterface|FunctionReflectionInterface
      */
     private $reflectionMethod;
 
@@ -23,12 +23,12 @@ final class ReflectionMethodTest extends AbstractContainerAwareTestCase
     private $reflectionClass;
 
     /**
-     * @var MethodReflectionInterface|FunctionReflectionInterface
+     * @var ClassMethodReflectionInterface|FunctionReflectionInterface
      */
     private $reflectionFunctionWithParameters;
 
     /**
-     * @var MethodReflectionInterface|FunctionReflectionInterface
+     * @var ClassMethodReflectionInterface|FunctionReflectionInterface
      */
     private $otherReflectionFunction;
 

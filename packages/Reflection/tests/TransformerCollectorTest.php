@@ -5,7 +5,7 @@ namespace ApiGen\Reflection\Tests;
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Reflection\Contract\Reflection\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\FunctionReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\MethodReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ClassMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\ParameterReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\PropertyReflectionInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorInterface;
@@ -53,7 +53,7 @@ final class TransformerCollectorTest extends AbstractContainerAwareTestCase
     {
         $tokenReflectionMethodMock = $this->createMock(IReflectionMethod::class);
         $reflectionMethod = $this->transformerCollector->transformSingle($tokenReflectionMethodMock);
-        $this->assertInstanceOf(MethodReflectionInterface::class, $reflectionMethod);
+        $this->assertInstanceOf(ClassMethodReflectionInterface::class, $reflectionMethod);
         $this->checkLoadedProperties($reflectionMethod);
     }
 
