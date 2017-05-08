@@ -67,7 +67,7 @@ final class TraitElementsExtractor implements ClassTraitElementsExtractorInterfa
         $properties = [];
         $traitProperties = $this->originalReflection->getTraitProperties();
         foreach ($traitProperties as $property) {
-            $apiProperty = $this->classReflection->getTransformerCollector()->transformSingle($property);
+            $apiProperty = $this->transformerCollector->transformSingle($property);
             $properties[$property->getName()] = $apiProperty;
         }
 
@@ -81,7 +81,7 @@ final class TraitElementsExtractor implements ClassTraitElementsExtractorInterfa
     {
         $methods = [];
         foreach ($this->originalReflection->getTraitMethods() as $method) {
-            $apiMethod = $this->classReflection->getTransformerCollector()->transformSingle($method);
+            $apiMethod = $this->transformerCollector->transformSingle($method);
             $methods[$method->getName()] = $apiMethod;
         }
 

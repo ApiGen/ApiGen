@@ -96,8 +96,6 @@ interface ClassReflectionInterface extends StartAndEndLineInterface, Annotations
 
     public function getOwnConstant(string $name): ClassConstantReflectionInterface;
 
-    public function getTransformerCollector(): TransformerCollectorInterface;
-
     /**
      * @return ClassReflectionInterface[]|string[]
      */

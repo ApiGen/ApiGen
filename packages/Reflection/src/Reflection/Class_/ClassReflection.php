@@ -297,11 +297,6 @@ final class ClassReflection implements ClassReflectionInterface
         // TODO: Implement getOwnConstant() method.
     }
 
-    public function getTransformerCollector(): TransformerCollectorInterface
-    {
-        // TODO: Implement getTransformerCollector() method.
-    }
-
     /**
      * @return ClassReflectionInterface[]
      */
@@ -549,6 +544,8 @@ final class ClassReflection implements ClassReflectionInterface
      */
     public function getOwnMethods(): array
     {
+        dump($this->$this->betterClassReflection->getImmediateMethods());
+        die;
 
         if ($this->ownMethods === null) {
             $this->ownMethods = [];
