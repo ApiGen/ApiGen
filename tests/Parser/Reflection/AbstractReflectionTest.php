@@ -37,11 +37,6 @@ final class AbstractReflectionTest extends AbstractContainerAwareTestCase
         $this->assertSame(ReflectionMethod::class, $this->reflectionClass->getName());
     }
 
-    public function testIsInternal(): void
-    {
-        $this->assertFalse($this->reflectionClass->isInternal());
-    }
-
     public function testGetFileName(): void
     {
         $this->assertStringEndsWith('ReflectionMethod.php', $this->reflectionClass->getFileName());

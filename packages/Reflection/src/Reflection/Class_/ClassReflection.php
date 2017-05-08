@@ -145,7 +145,7 @@ final class ClassReflection implements ClassReflectionInterface
     {
         $subClasses = [];
         foreach ($this->getParsedClasses() as $class) {
-            if ($class->isDocumented() && $this->getName() === $class->getParentClassName()) {
+            if ($this->getName() === $class->getParentClassName()) {
                 $subClasses[] = $class;
             }
         }
@@ -161,7 +161,7 @@ final class ClassReflection implements ClassReflectionInterface
     {
         $subClasses = [];
         foreach ($this->getParsedClasses() as $class) {
-            if ($class->isDocumented() && $this->getName() !== $class->getParentClassName()
+            if ($this->getName() !== $class->getParentClassName()
                 && $class->isSubclassOf($this->getName())
             ) {
                 $subClasses[] = $class;
@@ -240,10 +240,8 @@ final class ClassReflection implements ClassReflectionInterface
             $this->constants = [];
             foreach ($this->betterClassReflection->getConstantReflections() as $constant) {
                 $apiConstant = $this->transformerCollector->transformReflectionToElement($constant);
-                if (! $this->isDocumented() || $apiConstant->isDocumented()) {
-                    /** @var ReflectionElement $constant */
-                    $this->constants[$constant->getName()] = $apiConstant;
-                }
+                /** @var ReflectionElement $constant */
+                $this->constants[$constant->getName()] = $apiConstant;
             }
         }
 
@@ -362,9 +360,7 @@ final class ClassReflection implements ClassReflectionInterface
                 }
 
                 $apiProperty = $this->transformerCollector->transformSingle($property);
-                if (! $this->isDocumented() || $apiProperty->isDocumented()) {
-                    $this->properties[$property->getName()] = $apiProperty;
-                }
+                $this->properties[$property->getName()] = $apiProperty;
             }
         }
 
@@ -380,10 +376,8 @@ final class ClassReflection implements ClassReflectionInterface
             $this->ownProperties = [];
             foreach ($this->betterClassReflection->getOwnProperties() as $property) {
                 $apiProperty = $this->transformerCollector->transformSingle($property);
-                if (! $this->isDocumented() || $apiProperty->isDocumented()) {
-                    /** @var ReflectionElement $property */
-                    $this->ownProperties[$property->getName()] = $apiProperty;
-                }
+                /** @var ReflectionElement $property */
+                $this->ownProperties[$property->getName()] = $apiProperty;
             }
         }
 
@@ -526,9 +520,7 @@ final class ClassReflection implements ClassReflectionInterface
                         continue;
                     }
 
-                    if (! $this->isDocumented() || $method->isDocumented()) {
-                        $this->methods[$method->getName()] = $method;
-                    }
+                    $this->methods[$method->getName()] = $method;
                 }
             }
 
@@ -563,9 +555,7 @@ final class ClassReflection implements ClassReflectionInterface
 
             foreach ($this->betterClassReflection->getOwnMethods() as $method) {
                 $apiMethod = $this->transformerCollector->transformSingle($method);
-                if (! $this->isDocumented() || $apiMethod->isDocumented()) {
-                    $this->ownMethods[$method->getName()] = $apiMethod;
-                }
+                $this->ownMethods[$method->getName()] = $apiMethod;
             }
         }
 

@@ -74,9 +74,4 @@ final class FunctionReflectionTest extends AbstractParserAwareTestCase
             $this->assertInstanceOf(FunctionParameterReflectionInterface::class, $parameter);
         }
     }
-
-    public function testMisc(): void
-    {
-        $this->assertTrue($this->functionReflection->isDocumented());
-    }
 }

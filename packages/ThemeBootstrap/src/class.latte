@@ -17,16 +17,11 @@
 			<a href="{$item|classUrl}" n:tag-if="!$iterator->last">{last}<b>{/last}<span n:class="$item->deprecated ? deprecated">{$item->name}</span>{last}</b>{/last}</a>
 			{var $itemOwnInterfaces = $item->getOwnInterfaces()}
 			{if $itemOwnInterfaces} implements {foreach $itemOwnInterfaces as $interface}
-				<a href="{$interface|classUrl}" n:tag-if="$interface->isDocumented()"><span n:class="$interface->deprecated ? deprecated">{$interface->name}</span></a>{sep}, {/sep}
+				<a href="{$interface|classUrl}"><span n:class="$interface->deprecated ? deprecated">{$interface->name}</span></a>{sep}, {/sep}
 			{/foreach}{/if}
 			{var $itemOwnTraits = $item->getOwnTraits()}
 			{if $itemOwnTraits} uses {foreach $itemOwnTraits as $trait}
-				{if is_string($trait)}
-					{$trait} (not available)
-
-				{else}
-					<a href="{$trait|classUrl}" n:tag-if="$trait->isDocumented()"><span n:class="$trait->deprecated ? deprecated, !$trait->valid ? invalid">{$trait->name}</span></a>{sep}, {/sep}
-				{/}
+                <a href="{$trait|classUrl}"><span n:class="$trait->deprecated ? deprecated, !$trait->valid ? invalid">{$trait->name}</span></a>{sep}, {/sep}
 			{/foreach}{/if}
 		</dd>
 	</dl>
@@ -34,7 +29,7 @@
 	{define children}
 		<p class="elementList">
 		{foreach $children as $child}
-			<code><a href="{$child|classUrl}" n:tag-if="$child->isDocumented()"><span n:tag-if="$child->deprecated" class="deprecated">{$child->name}</span></a></code>{sep}, {/sep}
+			<code><a href="{$child|classUrl}"><span n:tag-if="$child->deprecated" class="deprecated">{$child->name}</span></a></code>{sep}, {/sep}
 		{/foreach}
 		</p>
 	{/define}

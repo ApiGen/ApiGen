@@ -33,10 +33,6 @@ final class TraitElementsExtractor implements ClassTraitElementsExtractorInterfa
         $users = [];
         $name = $this->classReflection->getName();
         foreach ($this->classReflection->getParsedClasses() as $class) {
-            if (! $class->isDocumented()) {
-                continue;
-            }
-
             if (in_array($name, $class->getOwnTraitNames())) {
                 $users[] = $class;
             }
@@ -54,10 +50,6 @@ final class TraitElementsExtractor implements ClassTraitElementsExtractorInterfa
         $users = [];
         $name = $this->classReflection->getName();
         foreach ($this->classReflection->getParsedClasses() as $class) {
-            if (! $class->isDocumented()) {
-                continue;
-            }
-
             if ($class->usesTrait($name) && ! in_array($name, $class->getOwnTraitNames())) {
                 $users[] = $class;
             }
@@ -76,9 +68,7 @@ final class TraitElementsExtractor implements ClassTraitElementsExtractorInterfa
         $traitProperties = $this->originalReflection->getTraitProperties();
         foreach ($traitProperties as $property) {
             $apiProperty = $this->classReflection->getTransformerCollector()->transformSingle($property);
-            if (! $this->classReflection->isDocumented() || $apiProperty->isDocumented()) {
-                $properties[$property->getName()] = $apiProperty;
-            }
+            $properties[$property->getName()] = $apiProperty;
         }
 
         return $properties;
@@ -92,9 +82,7 @@ final class TraitElementsExtractor implements ClassTraitElementsExtractorInterfa
         $methods = [];
         foreach ($this->originalReflection->getTraitMethods() as $method) {
             $apiMethod = $this->classReflection->getTransformerCollector()->transformSingle($method);
-            if (! $this->classReflection->isDocumented() || $apiMethod->isDocumented()) {
-                $methods[$method->getName()] = $apiMethod;
-            }
+            $methods[$method->getName()] = $apiMethod;
         }
 
         return $methods;

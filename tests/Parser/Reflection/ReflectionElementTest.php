@@ -23,11 +23,6 @@ final class ReflectionElementTest extends AbstractContainerAwareTestCase
         $this->reflectionClass = $parserStorage->getClasses()[ReflectionMethod::class];
     }
 
-    public function testIsDocumented(): void
-    {
-        $this->assertTrue($this->reflectionClass->isDocumented());
-    }
-
     public function testIsDeprecated(): void
     {
         $this->assertFalse($this->reflectionClass->isDeprecated());

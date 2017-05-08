@@ -119,19 +119,6 @@ final class ClassMethodReflection implements ClassMethodReflectionInterface
         return trim($description);
     }
 
-    public function isDocumented(): bool
-    {
-        if ($this->reflection->isInternal()) { // @note: what exactly does this mean? PHP or OUR?
-            return false;
-        }
-
-        if ($this->hasAnnotation('internal')) {
-            return false;
-        }
-
-        return true;
-    }
-
     public function getDeclaringClass(): ?ClassReflectionInterface
     {
         return $this->declaringClass;

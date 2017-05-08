@@ -13,20 +13,18 @@
 	<dl class="tree" n:if="$interface->getParentClass() || $interface->getInterfaces()">
 		<dd n:foreach="$tree as $item" style="padding-left:{($iterator->counter - 1) * 30}px">
 			<img src="resources/inherit.png" alt="Extended by" n:if="$iterator->counter > 1">
-			{if $item->isDocumented()}
 			<a href="{$item|classUrl}" n:tag-if="!$iterator->last">{last}<b>{/last}<span n:class="$item->isDeprecated() ? deprecated">{$item->getName()}</span>{last}</b>{/last}</a>
-			{else}{$item->getName()}{/if}
 
 			{var $itemInterfaces = $item->getInterfaces()}
 			{if $itemInterfaces} implements {foreach $itemInterfaces as $itemInterface}
-				<a href="{$itemInterface|classUrl}" n:tag-if="$itemInterface->isDocumented()"><span n:class="$itemInterface->isDeprecated() ? deprecated">{$itemInterface->getName()}</span></a>{sep}, {/sep}
+				<a href="{$itemInterface|classUrl}"><span n:class="$itemInterface->isDeprecated() ? deprecated">{$itemInterface->getName()}</span></a>{sep}, {/sep}
 			{/foreach}{/if}
 		</dd>
 	</dl>
 
 	{define children}
 		{foreach $children as $child}
-			<a href="{$child|classUrl}" n:tag-if="$child->isDocumented()"><span n:tag-if="$child->isDeprecated()" class="deprecated">{$child->getName()}</span></a>{sep}, {/sep}
+			<a href="{$child|classUrl}"><span n:tag-if="$child->isDeprecated()" class="deprecated">{$child->getName()}</span></a>{sep}, {/sep}
 		{/foreach}
 	{/define}
 

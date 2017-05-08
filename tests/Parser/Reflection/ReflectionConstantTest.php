@@ -66,9 +66,4 @@ final class ReflectionConstantTest extends AbstractContainerAwareTestCase
     {
         $this->assertSame('55', $this->constantReflectionInClass->getValueDefinition());
     }
-
-    public function testIsDocumented(): void
-    {
-        $this->assertTrue($this->constantReflectionInClass->isDocumented());
-    }
 }

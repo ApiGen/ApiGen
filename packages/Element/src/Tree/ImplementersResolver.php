@@ -53,14 +53,12 @@ final class ImplementersResolver
 
     private function isAllowedDirectImplementer(ClassReflectionInterface $classReflection, string $interfaceName): bool
     {
-        return $classReflection->isDocumented() &&
-            in_array($interfaceName, $classReflection->getOwnInterfaceNames(), true);
+        return in_array($interfaceName, $classReflection->getOwnInterfaceNames(), true);
     }
 
     private function isAllowedIndirectImplementer(ClassReflectionInterface $classReflection, string $interfaceName): bool
     {
-        return $classReflection->isDocumented()
-            && $classReflection->implementsInterface($interfaceName)
+        return $classReflection->implementsInterface($interfaceName)
             && ! in_array($interfaceName, $classReflection->getOwnInterfaceNames(), true);
     }
 }

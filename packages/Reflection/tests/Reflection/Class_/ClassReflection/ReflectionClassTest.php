@@ -44,11 +44,6 @@ final class ReflectionClassTest extends AbstractReflectionClassTestCase
         $this->assertFalse($this->reflectionClass->isSubclassOf('ArrayAccess'));
     }
 
-    public function testIsDocumented(): void
-    {
-        $this->assertTrue($this->reflectionClass->isDocumented());
-    }
-
     public function testVisibility(): void
     {
         $this->assertTrue($this->reflectionClass->hasMethod('publicMethod'));

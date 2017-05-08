@@ -38,7 +38,7 @@ final class ElementResolver implements ElementResolverInterface
         $parsedClasses = // $this->parserStorage->getClasses();
 
         $class = $this->findElementByNameAndNamespace($parsedClasses, $name, $namespace);
-        if ($class && $class->isDocumented()) {
+        if ($class) {
             return $class;
         }
 
@@ -52,7 +52,7 @@ final class ElementResolver implements ElementResolverInterface
     {
         $parsedFunctions = // $this->parserStorage->getFunctions();
         $function = $this->findElementByNameAndNamespace($parsedFunctions, $name, $namespace);
-        if ($function && $function->isDocumented()) {
+        if ($function) {
             return $function;
         }
 
