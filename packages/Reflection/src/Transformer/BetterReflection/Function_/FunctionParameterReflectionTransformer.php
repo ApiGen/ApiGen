@@ -1,13 +1,14 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Reflection\Transformer\Method;
+namespace ApiGen\Reflection\Transformer\BetterReflection\Function_;
 
-use ApiGen\Reflection\Reflection\MethodParameterReflection;
+use ApiGen\Reflection\Contract\Reflection\FunctionParameterReflectionInterface;
+use ApiGen\Reflection\Reflection\FunctionParameterReflection;
 use ApiGen\Reflection\Contract\Transformer\TransformerInterface;
 use phpDocumentor\Reflection\DocBlockFactoryInterface;
 use Roave\BetterReflection\Reflection\ReflectionParameter;
 
-final class BetterMethodParameterReflectionTransformer implements TransformerInterface
+final class FunctionParameterReflectionTransformer implements TransformerInterface
 {
     /**
      * @var DocBlockFactoryInterface
@@ -24,20 +25,18 @@ final class BetterMethodParameterReflectionTransformer implements TransformerInt
      */
     public function matches($reflection): bool
     {
-        if ( !$reflection instanceof ReflectionParameter) {
+        if (! $reflection instanceof ReflectionParameter) {
             return false;
         }
 
-        return (bool) $reflection->getDeclaringClass();
+        return $reflection->getDeclaringClass() === null;
     }
 
     /**
      * @param ReflectionParameter $reflection
      */
-    public function transform($reflection): MethodParameterReflection
+    public function transform($reflection): FunctionParameterReflectionInterface
     {
-        $docBlock = $this->docBlockFactory->create($reflection->getDocBlockTypes() . ' ');
-
-        return new MethodParameterReflection($reflection, $docBlock);
+        return new FunctionParameterReflection($reflection);
     }
 }

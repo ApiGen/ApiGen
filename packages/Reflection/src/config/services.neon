@@ -8,13 +8,16 @@
 - ApiGen\Reflection\TransformerCollector
 
 # Better Reflection Tranformers
-- ApiGen\Reflection\Transformer\BetterClassReflectionTransformer
-- ApiGen\Reflection\Transformer\BetterFunctionReflectionTransformer
-- ApiGen\Reflection\Transformer\BetterInterfaceReflectionTransformer
-- ApiGen\Reflection\Transformer\BetterInterfaceReflectionTransformer
-- ApiGen\Reflection\Transformer\BetterTraitReflectionTransformer
-- ApiGen\Reflection\Transformer\BetterInterfaceMethodReflectionTransformer
 
-# Parameters
-- ApiGen\Reflection\Transformer\BetterMethodParameterReflectionTransformer
-- ApiGen\Reflection\Transformer\BetterFunctionParameterReflectionTransformer
+# Class
+- ApiGen\Reflection\Transformer\BetterReflection\Class_\BetterClassReflectionTransformer
+# Function
+- ApiGen\Reflection\Transformer\BetterReflection\Function_\BetterFunctionReflectionTransformer
+- ApiGen\Reflection\Transformer\BetterReflection\Function_\BetterFunctionParameterReflectionTransformer
+# Interface
+- ApiGen\Reflection\Transformer\BetterReflection\Interface_\BetterInterfaceReflectionTransformer
+- ApiGen\Reflection\Transformer\BetterReflection\Interface_\BetterInterfaceMethodReflectionTransformer
+# Trait
+- ApiGen\Reflection\Transformer\BetterReflection\Trait_\BetterTraitReflectionTransformer
+# Method
+- ApiGen\Reflection\Transformer\BetterReflection\Method\BetterMethodParameterReflectionTransformer

@@ -1,13 +1,14 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Reflection\Transformer\Function_;
+namespace ApiGen\Reflection\Transformer\BetterReflection\Trait_;
 
-use ApiGen\Reflection\Reflection\FunctionReflection;
+use ApiGen\Reflection\Contract\Reflection\Trait_\TraitReflectionInterface;
+use ApiGen\Reflection\Reflection\Trait_\TraitReflection;
 use ApiGen\Reflection\Contract\Transformer\TransformerInterface;
 use phpDocumentor\Reflection\DocBlockFactory;
-use Roave\BetterReflection\Reflection\ReflectionFunction as BetterReflectionFunction;
+use Roave\BetterReflection\Reflection\ReflectionClass;
 
-final class BetterFunctionReflectionTransformer implements TransformerInterface
+final class TraitReflectionTransformer implements TransformerInterface
 {
     /**
      * @var DocBlockFactory
@@ -24,16 +25,15 @@ final class BetterFunctionReflectionTransformer implements TransformerInterface
      */
     public function matches($reflection): bool
     {
-        return $reflection instanceof BetterReflectionFunction;
+        return $reflection instanceof ReflectionClass && $reflection->isTrait();
     }
 
     /**
-     * @param BetterReflectionFunction $reflection
+     * @param ReflectionClass $reflection
      */
-    public function transform($reflection): FunctionReflection
+    public function transform($reflection): TraitReflectionInterface
     {
         $docBlock = $this->docBlockFactory->create($reflection->getDocComment() ?: ' ');
-
-        return new FunctionReflection($reflection, $docBlock);
+        return new TraitReflection($reflection, $docBlock);
     }
 }

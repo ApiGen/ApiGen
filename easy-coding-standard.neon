@@ -90,7 +90,7 @@ skip:
         - packages/Reflection/src/Transformer/TokenFunctionReflectionTransformer.php
         - packages/Reflection/src/Transformer/BetterClassReflectionTransformer.php
         - packages/Reflection/src/Transformer/BetterFunctionReflectionTransformer.php
-        - packages/Reflection/src/Transformer/BetterInterfaceReflectionTransformer.php
+        - packages/Reflection/src/Transformer/InterfaceReflectionTransformer.php
         - packages/Reflection/src/Transformer/BetterParameterReflectionTransformer.php
         - packages/Reflection/src/Transformer/BetterTraitReflectionTransformer.php
         - packages/Reflection/src/Transformer/TokenClassReflectionTransformer.php

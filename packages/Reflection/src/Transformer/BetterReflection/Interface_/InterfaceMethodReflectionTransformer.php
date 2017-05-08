@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Reflection\Transformer\Interface_;
+namespace ApiGen\Reflection\Transformer\BetterReflection\Interface_;
 
 use ApiGen\Reflection\Contract\Transformer\TransformerInterface;
 use ApiGen\Reflection\Reflection\InterfaceMethodReflection;
@@ -8,7 +8,7 @@ use phpDocumentor\Reflection\DocBlockFactory;
 use Roave\BetterReflection\Reflection\ReflectionFunction as BetterReflectionFunction;
 use Roave\BetterReflection\Reflection\ReflectionMethod;
 
-final class BetterInterfaceMethodReflectionTransformer implements TransformerInterface
+final class InterfaceMethodReflectionTransformer implements TransformerInterface
 {
     /**
      * @var DocBlockFactory

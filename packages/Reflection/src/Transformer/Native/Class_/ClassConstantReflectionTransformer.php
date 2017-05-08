@@ -1,15 +1,12 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Reflection\Transformer;
+namespace ApiGen\Reflection\Transformer\Native\Class_;
 
-use ApiGen\Reflection\Contract\Reflection\ClassConstantReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
-use ApiGen\Reflection\Reflection\ClassReflection;
+use ApiGen\Reflection\Contract\Reflection\Class_\ClassConstantReflectionInterface;
 use ApiGen\Reflection\Contract\Transformer\TransformerInterface;
 use phpDocumentor\Reflection\DocBlockFactory;
-use Roave\BetterReflection\Reflection\ReflectionClass;
 
-final class BetterConstantReflectionTransformer implements TransformerInterface
+final class ClassConstantReflectionTransformer implements TransformerInterface
 {
     /**
      * @var DocBlockFactory
@@ -34,13 +31,12 @@ final class BetterConstantReflectionTransformer implements TransformerInterface
      */
     public function transform($reflection): ClassConstantReflectionInterface
     {
+        // what to do here? :)
         dump($reflection);
-
-        // @todo: find out here!
-
         die;
-//        $docBlock = $this->docBlockFactory->create($reflection->getDocComment() ?: ' ');
-//
-//        return new ClassReflection($reflection, $docBlock);
+
+        $docBlock = $this->docBlockFactory->create($reflection->getDocComment() ?: ' ');
+
+        return new ClassReflection($reflection, $docBlock);
     }
 }
