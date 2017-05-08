@@ -7,17 +7,29 @@
 
 - ApiGen\Reflection\TransformerCollector
 
+
 # Better Reflection Tranformers
 
 # Class
-- ApiGen\Reflection\Transformer\BetterReflection\Class_\BetterClassReflectionTransformer
+- ApiGen\Reflection\Transformer\BetterReflection\Class_\ClassReflectionTransformer
+- ApiGen\Reflection\Transformer\BetterReflection\Class_\ClassPropertyReflectionTransformer
 # Function
-- ApiGen\Reflection\Transformer\BetterReflection\Function_\BetterFunctionReflectionTransformer
-- ApiGen\Reflection\Transformer\BetterReflection\Function_\BetterFunctionParameterReflectionTransformer
+- ApiGen\Reflection\Transformer\BetterReflection\Function_\FunctionReflectionTransformer
+- ApiGen\Reflection\Transformer\BetterReflection\Function_\FunctionParameterReflectionTransformer
 # Interface
-- ApiGen\Reflection\Transformer\BetterReflection\Interface_\BetterInterfaceReflectionTransformer
-- ApiGen\Reflection\Transformer\BetterReflection\Interface_\BetterInterfaceMethodReflectionTransformer
-# Trait
-- ApiGen\Reflection\Transformer\BetterReflection\Trait_\BetterTraitReflectionTransformer
+- ApiGen\Reflection\Transformer\BetterReflection\Interface_\InterfaceReflectionTransformer
+- ApiGen\Reflection\Transformer\BetterReflection\Interface_\InterfaceMethodReflectionTransformer
 # Method
-- ApiGen\Reflection\Transformer\BetterReflection\Method\BetterMethodParameterReflectionTransformer
+- ApiGen\Reflection\Transformer\BetterReflection\Method\MethodParameterReflectionTransformer
+# Trait
+- ApiGen\Reflection\Transformer\BetterReflection\Trait_\TraitPropertyReflectionTransformer
+- ApiGen\Reflection\Transformer\BetterReflection\Trait_\TraitReflectionTransformer
+
+
+# Native Transformers
+
+# Class
+- ApiGen\Reflection\Transformer\Native\Class_\ClassConstantReflectionTransformer
+
+# Interface
+- ApiGen\Reflection\Reflection\Interface_\InterfaceConstantReflection
