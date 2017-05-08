@@ -29,12 +29,12 @@ final class ClassPropertyReflectionTransformer implements TransformerInterface
             return false;
         }
 
-        $declaringClass = $reflection->getDeclaringClass();
-        if ($declaringClass === null) {
+        $declaringClassOrTrait = $reflection->getDeclaringClass();
+        if ($declaringClassOrTrait === null) {
             return false;
         }
 
-        return ! $declaringClass->isTrait();
+        return ! $declaringClassOrTrait->isTrait();
     }
 
     /**
