@@ -153,4 +153,8 @@ interface ClassReflectionInterface extends StartAndEndLineInterface
     public function isFinal(): bool;
 
     public function isSubclassOf(string $class): bool;
+
+    public function getShortName(): string;
+
+    public function getNamespaceName(): string;
 }
