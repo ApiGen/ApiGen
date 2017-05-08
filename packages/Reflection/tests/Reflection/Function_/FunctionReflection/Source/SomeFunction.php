@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Reflection\Tests\Reflection\FunctionReflection\Source;
+namespace ApiGen\Reflection\Tests\Reflection\Function_\FunctionReflection\Source;
 
 /**
  * Some description.

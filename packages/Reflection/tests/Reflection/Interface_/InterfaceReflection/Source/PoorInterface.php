@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Reflection\Tests\Reflection\InterfaceReflection\Source;
+namespace ApiGen\Reflection\Tests\Reflection\Interface_\InterfaceReflection\Source;
 
 interface PoorInterface
 {

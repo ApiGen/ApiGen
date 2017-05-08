@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Reflection\Tests\Reflection\InterfaceReflection;
+namespace ApiGen\Reflection\Tests\Reflection\Interface_\InterfaceReflection;
 
 use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceReflectionInterface;
-use ApiGen\Reflection\Tests\Reflection\InterfaceReflection\Source\PoorInterface;
+use ApiGen\Reflection\Tests\Reflection\Interface_\InterfaceReflection\Source\PoorInterface;
 use ApiGen\Tests\AbstractParserAwareTestCase;
 
 final class MethodTest extends AbstractParserAwareTestCase

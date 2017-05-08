@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Reflection\Tests\Reflection\FunctionReflection;
+namespace ApiGen\Reflection\Tests\Reflection\Function_\FunctionReflection;
 
 use ApiGen\Reflection\Contract\Reflection\Function_\FunctionParameterReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Function_\FunctionReflectionInterface;
@@ -12,7 +12,7 @@ final class FunctionReflectionTest extends AbstractParserAwareTestCase
     /**
      * @var string
      */
-    private $namespacePrefix = 'ApiGen\Reflection\Tests\Reflection\FunctionReflection\Source';
+    private $namespacePrefix = 'ApiGen\Reflection\Tests\Reflection\Function_\FunctionReflection\Source';
 
     /**
      * @var FunctionReflectionInterface

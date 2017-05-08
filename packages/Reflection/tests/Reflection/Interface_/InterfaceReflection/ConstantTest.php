@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Reflection\Tests\Reflection\InterfaceReflection;
+namespace ApiGen\Reflection\Tests\Reflection\Interface_\InterfaceReflection;
 
 use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceConstantReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceReflectionInterface;
-use ApiGen\Reflection\Tests\Reflection\InterfaceReflection\Source\SomeInterface;
+use ApiGen\Reflection\Tests\Reflection\Interface_\InterfaceReflection\Source\SomeInterface;
 use ApiGen\Tests\AbstractParserAwareTestCase;
 
 final class ConstantTest extends AbstractParserAwareTestCase
