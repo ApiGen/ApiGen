@@ -158,4 +158,6 @@ interface ClassReflectionInterface extends StartAndEndLineInterface, Annotations
     public function getShortName(): string;
 
     public function getNamespaceName(): string;
+
+    public function getConstants(): array;
 }

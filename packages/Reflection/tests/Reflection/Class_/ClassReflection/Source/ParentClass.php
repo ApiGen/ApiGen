@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Tests\Parser\Reflection\ReflectionClassSource;
+namespace ApiGen\Reflection\Tests\Reflection\Class_\ClassReflection\Source;
 
 class ParentClass
 {

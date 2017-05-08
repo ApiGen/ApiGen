@@ -1,8 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Tests\Parser\Reflection\ReflectionClass;
-
-use ApiGen\Reflection\Contract\Reflection\ClassConstantReflectionInterface;
+namespace ApiGen\Reflection\Tests\Reflection\Class_\ClassReflection;
 
 final class ConstantsTest extends AbstractReflectionClassTestCase
 {

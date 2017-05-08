@@ -3,9 +3,9 @@
 namespace ApiGen\Tests\Parser\Reflection\ReflectionClass;
 
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
-use ApiGen\Tests\Parser\Reflection\ReflectionClassSource\ParentClass;
+use ApiGen\Reflection\Tests\Reflection\Class_\ClassReflection\Source\ParentClass;
 
-class ParentsTest extends AbstractReflectionClassTestCase
+final class ParentsTest extends AbstractReflectionClassTestCase
 {
     public function testGetParentClass(): void
     {

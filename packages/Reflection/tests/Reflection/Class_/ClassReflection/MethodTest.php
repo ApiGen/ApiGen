@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Tests\Parser\Reflection\ReflectionClass;
+namespace ApiGen\Reflection\Tests\Reflection\Class_\ClassReflection;
 
-use ApiGen\Reflection\Contract\Reflection\ClassMethodReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Class_\ClassMethodReflectionInterface;
 
-final class MethodsTest extends AbstractReflectionClassTestCase
+final class MethodTest extends AbstractReflectionClassTestCase
 {
     public function testGetMethod(): void
     {
