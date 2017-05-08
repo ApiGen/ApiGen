@@ -4,6 +4,8 @@ namespace ApiGen\Reflection\Contract\Reflection;
 
 interface InterfaceReflectionInterface
 {
+    public function getName(): string;
+
     public function isDocumented(): bool;
 
     public function getFileName(): string;
@@ -19,14 +21,9 @@ interface InterfaceReflectionInterface
     public function getIndirectImplementers(): array;
 
     /**
-     * @return ClassReflectionInterface[]
+     * @return InterfaceReflectionInterface[]
      */
     public function getInterfaces(): array;
-
-    /**
-     * @return ClassReflectionInterface[]
-     */
-    public function getOwnInterfaces(): array;
 
     /**
      * @return string[]
@@ -74,9 +71,9 @@ interface InterfaceReflectionInterface
 
     public function hasConstant(string $name): bool;
 
-    public function getConstant(string $name): ConstantReflectionInterface;
+    public function getConstant(string $name): ClassConstantReflectionInterface;
 
-    public function getOwnConstant(string $name): ConstantReflectionInterface;
+    public function getOwnConstant(string $name): ClassConstantReflectionInterface;
 
-    public function extendsInterface(string $interface): bool;
+    public function implementsInterface(string $interface): bool;
 }

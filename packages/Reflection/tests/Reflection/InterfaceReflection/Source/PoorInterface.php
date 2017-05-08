@@ -2,6 +2,6 @@
 
 namespace ApiGen\Reflection\Tests\Reflection\InterfaceReflection\Source;
 
-interface SomeInterface extends RichInterface
+interface PoorInterface
 {
 }

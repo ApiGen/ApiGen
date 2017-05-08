@@ -2,6 +2,7 @@
 
 namespace ApiGen\Reflection\Transformer;
 
+use ApiGen\Element\Tree\ImplementersResolver;
 use ApiGen\Reflection\Reflection\InterfaceReflection;
 use ApiGen\Reflection\Contract\Transformer\TransformerInterface;
 use phpDocumentor\Reflection\DocBlockFactory;
@@ -14,9 +15,15 @@ final class BetterInterfaceReflectionTransformer implements TransformerInterface
      */
     private $docBlockFactory;
 
-    public function __construct(DocBlockFactory $docBlockFactory)
+    /**
+     * @var ImplementersResolver
+     */
+    private $implementersResolver;
+
+    public function __construct(DocBlockFactory $docBlockFactory, ImplementersResolver $implementersResolver)
     {
         $this->docBlockFactory = $docBlockFactory;
+        $this->implementersResolver = $implementersResolver;
     }
 
     /**
@@ -33,6 +40,6 @@ final class BetterInterfaceReflectionTransformer implements TransformerInterface
     public function transform($reflection): InterfaceReflection
     {
         $docBlock = $this->docBlockFactory->create($reflection->getDocComment() . ' ');
-        return new InterfaceReflection($reflection, $docBlock);
+        return new InterfaceReflection($reflection, $docBlock, $this->implementersResolver);
     }
 }

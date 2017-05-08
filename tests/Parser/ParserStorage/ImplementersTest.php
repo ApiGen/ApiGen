@@ -2,14 +2,13 @@
 
 namespace ApiGen\Tests\Parser\ParserStorage;
 
-use ApiGen\Contracts\Parser\ParserInterface;
-use ApiGen\Contracts\Parser\ParserStorageInterface;
 use ApiGen\Reflection\Contract\Reflection\ClassReflectionInterface;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 use ApiGen\Tests\Parser\ParserStorage\ImplementersSource\ChildInterface;
 use ApiGen\Tests\Parser\ParserStorage\ImplementersSource\ParentInterface;
 use ApiGen\Tests\Parser\ParserStorage\ImplementersSource\SomeClass;
 
+// @remove covered by InterfaceReflectionInterface
 final class ImplementersTest extends AbstractContainerAwareTestCase
 {
     /**

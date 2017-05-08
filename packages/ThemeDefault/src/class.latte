@@ -17,11 +17,11 @@
 			{if $item->isDocumented()}
 			<a href="{$item|classUrl}" n:tag-if="!$iterator->last">{last}<b>{/last}<span n:class="$item->isDeprecated() ? deprecated">{$item->getName()}</span>{last}</b>{/last}</a>
 			{else}{$item->getName()}{/if}
-			{var $itemOwnInterfaces = $item->ownInterfaces}
+			{var $itemOwnInterfaces = $item->getOwnInterfaces()}
 			{if $itemOwnInterfaces} implements {foreach $itemOwnInterfaces as $ownInterface}
 				<a href="{$ownInterface|classUrl}" n:tag-if="$ownInterface->isDocumented()"><span n:class="$ownInterface->isDeprecated() ? deprecated">{$ownInterface->getName()}</span></a>{sep}, {/sep}
 			{/foreach}{/if}
-			{var $itemOwnTraits = $item->ownTraits}
+			{var $itemOwnTraits = $item->getOwnTraits()}
 			{if $itemOwnTraits} uses {foreach $itemOwnTraits as $ownTrait}
 				{if is_string($ownTrait)}
 					{$ownTrait} (not available)

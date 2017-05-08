@@ -17,11 +17,11 @@
 			{/if}
 
 			<li n:class="!$tree->hasSibling() ? last"><div class="{if $tree->hasSibling()}not{/if}last"><a href="{$reflectionName|classUrl}" n:tag-if="$reflection->isDocumented()"><span n:class="$reflection->deprecated ? deprecated">{$reflectionName}</span></a>
-			{var $interfaces = $reflection->ownInterfaces}
+			{var $interfaces = $reflection->getOwnInterfaces()}
 			{if $interfaces} implements {foreach $interfaces as $interface}
 				<a href="{$interface|classUrl}" n:tag-if="$interface->isDocumented()"><span n:class="$interface->deprecated ? deprecated">{$interface->name}</span></a>{sep}, {/sep}
 			{/foreach}{/if}
-			{var $traits = $reflection->ownTraits}
+			{var $traits = $reflection->getOwnTraits()}
 			{if $traits}{if $interfaces}<br><span class="padding"></span>{/if} uses {foreach $traits as $trait}
 				{if is_string($trait)}
 					{$trait} (not available)

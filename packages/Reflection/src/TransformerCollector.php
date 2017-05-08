@@ -2,7 +2,6 @@
 
 namespace ApiGen\Reflection;
 
-use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Reflection\Contract\Transformer\TransformerInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorAwareInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorInterface;
@@ -14,16 +13,6 @@ final class TransformerCollector implements TransformerCollectorInterface
      * @var TransformerInterface[]
      */
     private $transformers = [];
-
-    /**
-     * @var ConfigurationInterface
-     */
-    private $configuration;
-
-    public function __construct(ConfigurationInterface $configuration)
-    {
-        $this->configuration = $configuration;
-    }
 
     public function addTransformer(TransformerInterface $transformer): void
     {

@@ -3,10 +3,10 @@
 namespace ApiGen\Reflection\Tests\Reflection\InterfaceReflection;
 
 use ApiGen\Reflection\Contract\Reflection\InterfaceReflectionInterface;
-use ApiGen\Reflection\Tests\Reflection\InterfaceReflection\Source\RichInterface;
+use ApiGen\Reflection\Tests\Reflection\InterfaceReflection\Source\PoorInterface;
 use ApiGen\Tests\AbstractParserAwareTestCase;
 
-final class InterfaceReflectionTest extends AbstractParserAwareTestCase
+final class ImplementersTest extends AbstractParserAwareTestCase
 {
     /**
      * @var InterfaceReflectionInterface
@@ -18,25 +18,17 @@ final class InterfaceReflectionTest extends AbstractParserAwareTestCase
         $this->parser->parseDirectories([__DIR__ . '/Source']);
 
         $interfaceReflections = $this->parser->getInterfaceReflections();
-        $this->interfaceReflection = $interfaceReflections[2];
+        $this->interfaceReflection = $interfaceReflections[0];
     }
 
     public function testExists()
     {
-        $this->assertInstanceOf(InterfaceReflectionInterface::class, $this->interfaceReflection);
-    }
-
-    public function testImplementsInterface(): void
-    {
-        $this->assertFalse($this->interfaceReflection->implementsInterface('NoInterface'));
-        $this->assertTrue($this->interfaceReflection->implementsInterface(RichInterface::class));
+        $this->assertSame(PoorInterface::class, $this->interfaceReflection->getName());
     }
 
     public function testGetInterfaces(): void
     {
-        $interfaces = $this->interfaceReflection->getInterfaces();
-        $this->assertCount(2, $interfaces);
-        $this->assertInstanceOf(InterfaceReflectionInterface::class, $interfaces[0]);
+        $this->assertCount(0, $this->interfaceReflection->getInterfaces());
     }
 
 //    public function testGetOwnInterfaceNames(): void
@@ -44,10 +36,10 @@ final class InterfaceReflectionTest extends AbstractParserAwareTestCase
 //        $this->assertSame([RichInterface::class], $this->reflectionClass->getOwnInterfaceNames());
 //    }
 //
-//    public function testGetDirectImplementers(): void
-//    {
-//        $this->assertCount(1, $this->reflectionClassOfInterface->getDirectImplementers());
-//    }
+    public function testGetDirectImplementers(): void
+    {
+        $this->assertCount(1, $this->interfaceReflection->getDirectImplementers());
+    }
 //
 //    public function testGetIndirectImplementers(): void
 //    {

@@ -8,14 +8,12 @@ use ApiGen\Reflection\Contract\Reflection\FunctionReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\InterfaceReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\TraitReflectionInterface;
 use ApiGen\Reflection\Contract\ReflectionStorageInterface;
-use ApiGen\Reflection\Reflection\InterfaceReflection;
-use ApiGen\Reflection\Reflection\TraitReflection;
 use ApiGen\Reflection\Contract\TransformerCollectorInterface;
 use Roave\BetterReflection\Reflector\ClassReflector;
 use Roave\BetterReflection\Reflector\FunctionReflector;
 use Roave\BetterReflection\SourceLocator\Type\DirectoriesSourceLocator;
 
-final class Parser implements ParserInterface, ReflectionStorageInterface
+final class Parser implements ParserInterface
 {
     /**
      * @var TransformerCollectorInterface
@@ -41,10 +39,15 @@ final class Parser implements ParserInterface, ReflectionStorageInterface
      * @var FunctionReflectionInterface[]
      */
     private $functionReflections = [];
+    /**
+     * @var ReflectionStorageInterface
+     */
+    private $reflectionStorage;
 
-    public function __construct(TransformerCollectorInterface $transformerCollector)
+    public function __construct(TransformerCollectorInterface $transformerCollector, ReflectionStorageInterface $reflectionStorage)
     {
         $this->transformerCollector = $transformerCollector;
+        $this->reflectionStorage = $reflectionStorage;
     }
 
     /**
@@ -73,7 +76,7 @@ final class Parser implements ParserInterface, ReflectionStorageInterface
     }
 
     /**
-     * @return InterfaceReflection[]
+     * @return InterfaceReflectionInterface[]
      */
     public function getInterfaceReflections(): array
     {
@@ -81,7 +84,7 @@ final class Parser implements ParserInterface, ReflectionStorageInterface
     }
 
     /**
-     * @return TraitReflection[]
+     * @return TraitReflectionInterface[]
      */
     public function getTraitReflections(): array
     {
@@ -101,17 +104,20 @@ final class Parser implements ParserInterface, ReflectionStorageInterface
      */
     private function separateClassInterfaceAndTraitReflections(array $classInterfaceAndTraitReflections): void
     {
-        $this->classReflections = array_filter($classInterfaceAndTraitReflections, function ($reflection) {
+        $classReflections = array_filter($classInterfaceAndTraitReflections, function ($reflection) {
             return $reflection instanceof ClassReflectionInterface;
         });
+        $this->reflectionStorage->addClassReflections($classReflections);
 
-        $this->interfaceReflections = array_filter($classInterfaceAndTraitReflections, function ($reflection) {
-            return $reflection instanceof InterfaceReflection;
+        $interfaceReflections = array_filter($classInterfaceAndTraitReflections, function ($reflection) {
+            return $reflection instanceof InterfaceReflectionInterface;
         });
+        $this->reflectionStorage->addInterfaceReflection($interfaceReflections);
 
-        $this->traitReflections = array_filter($classInterfaceAndTraitReflections, function ($reflection) {
-            return $reflection instanceof TraitReflection;
+        $traitReflections = array_filter($classInterfaceAndTraitReflections, function ($reflection) {
+            return $reflection instanceof TraitReflectionInterface;
         });
+        $this->reflectionStorage->addTraitReflections($traitReflections);
     }
 
     /**
@@ -144,7 +150,8 @@ final class Parser implements ParserInterface, ReflectionStorageInterface
     private function parseFunctions(DirectoriesSourceLocator $directoriesSourceLocator): void
     {
         $functionReflector = new FunctionReflector($directoriesSourceLocator);
-        $this->functionReflections = $this->transformBetterFunctionReflections($functionReflector);
+        $functionReflections = $this->transformBetterFunctionReflections($functionReflector);
+        $this->reflectionStorage->addFunctionReflections($functionReflections);
     }
 
     /**

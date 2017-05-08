@@ -2,6 +2,9 @@
 
 namespace ApiGen\Reflection\Tests\Reflection\InterfaceReflection\Source;
 
-interface SomeInterface extends RichInterface
+final class SomeClass implements SomeInterface
 {
+    public function getSomeStuff()
+    {
+    }
 }

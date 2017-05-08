@@ -4,3 +4,8 @@
 - ApiGen\Element\AutocompleteElements
 - ApiGen\Element\ElementExtractor
 - ApiGen\Element\Namespaces\NamespaceStorage
+
+-
+     class: ApiGen\Element\Tree\ImplementersResolver
+     setup:
+        - setReflectionStorage

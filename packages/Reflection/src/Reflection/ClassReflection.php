@@ -178,15 +178,6 @@ final class ClassReflection implements ClassReflectionInterface
     {
         return $this->reflection->implementsInterface($interface);
     }
-    /**
-     * @return ClassReflectionInterface[]
-     */
-    public function getInterfaces(): array
-    {
-        return array_map(function (IReflectionClass $class) {
-            return $this->getParsedClasses()[$class->getName()];
-        }, $this->reflection->getInterfaces());
-    }
 
     /**
      * @return ClassReflectionInterface[]
@@ -589,13 +580,11 @@ final class ClassReflection implements ClassReflectionInterface
         return $this->classTraitElementExtractor->getTraitMethods();
     }
 
-    public function isInterface(): bool
+    /**
+     * @return ClassReflectionInterface[]
+     */
+    public function getInterfaces(): array
     {
-        // TODO: Implement isInterface() method.
-    }
-
-    public function isException(): bool
-    {
-        // TODO: Implement isException() method.
+        // TODO: Implement getInterfaces() method.
     }
 }
