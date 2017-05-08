@@ -4,10 +4,10 @@ namespace ApiGen\Reflection\Reflection;
 
 use ApiGen\Annotation\AnnotationList;
 use ApiGen\Element\Tree\ImplementersResolver;
-use ApiGen\Reflection\Contract\Reflection\ClassConstantReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\ClassReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\InterfaceReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\ClassMethodReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceConstantReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceMethodReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceReflectionInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorAwareInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorInterface;
 use phpDocumentor\Reflection\DocBlock;
@@ -119,7 +119,7 @@ final class InterfaceReflection implements InterfaceReflectionInterface, Transfo
     }
 
     /**
-     * @return ClassMethodReflectionInterface[]
+     * @return InterfaceMethodReflectionInterface[]
      */
     public function getMethods(): array
     {
@@ -129,7 +129,7 @@ final class InterfaceReflection implements InterfaceReflectionInterface, Transfo
     }
 
     /**
-     * @return ClassMethodReflectionInterface[]
+     * @return InterfaceMethodReflectionInterface[]
      */
     public function getOwnMethods(): array
     {
@@ -137,7 +137,7 @@ final class InterfaceReflection implements InterfaceReflectionInterface, Transfo
     }
 
     /**
-     * @return ClassMethodReflectionInterface[]
+     * @return InterfaceMethodReflectionInterface[]
      */
     public function getInheritedMethods(): array
     {
@@ -145,22 +145,14 @@ final class InterfaceReflection implements InterfaceReflectionInterface, Transfo
     }
 
     /**
-     * @return ClassMethodReflectionInterface[]
+     * @return InterfaceMethodReflectionInterface[]
      */
     public function getUsedMethods(): array
     {
         // TODO: Implement getUsedMethods() method.
     }
 
-    /**
-     * @return ClassMethodReflectionInterface[]
-     */
-    public function getTraitMethods(): array
-    {
-        // TODO: Implement getTraitMethods() method.
-    }
-
-    public function getMethod(string $name): ClassMethodReflectionInterface
+    public function getMethod(string $name): InterfaceMethodReflectionInterface
     {
         // TODO: Implement getMethod() method.
     }
@@ -171,9 +163,7 @@ final class InterfaceReflection implements InterfaceReflectionInterface, Transfo
     }
 
     /**
-     * @return ClassConstantReflectionInterface[]
-     *
-     * @todo replace with InterfaceConstantReflection!
+     * @return InterfaceConstantReflectionInterface[]
      */
     public function getOwnConstants(): array
     {
@@ -183,7 +173,7 @@ final class InterfaceReflection implements InterfaceReflectionInterface, Transfo
     }
 
     /**
-     * @return ClassConstantReflectionInterface[]
+     * @return InterfaceConstantReflectionInterface[]
      */
     public function getInheritedConstants(): array
     {
@@ -195,12 +185,12 @@ final class InterfaceReflection implements InterfaceReflectionInterface, Transfo
         // TODO: Implement hasConstant() method.
     }
 
-    public function getConstant(string $name): ClassConstantReflectionInterface
+    public function getConstant(string $name): InterfaceConstantReflectionInterface
     {
         // TODO: Implement getConstant() method.
     }
 
-    public function getOwnConstant(string $name): ClassConstantReflectionInterface
+    public function getOwnConstant(string $name): InterfaceConstantReflectionInterface
     {
         // TODO: Implement getOwnConstant() method.
     }

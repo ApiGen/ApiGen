@@ -5,7 +5,7 @@ namespace ApiGen\Tests\Generator\Resolvers\ElementResolver;
 use ApiGen\Reflection\Contract\Reflection\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\ClassConstantReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\ClassMethodReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\PropertyReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ClassPropertyReflectionInterface;
 use ApiGen\Tests\MethodInvoker;
 use PHPUnit_Framework_MockObject_MockObject;
 
@@ -21,7 +21,7 @@ final class ResolveIfInContextTest extends AbstractElementResolverTest
             ['$someProperty', $classReflectionMock]
         );
 
-        $this->assertInstanceOf(PropertyReflectionInterface::class, $resolvedElement);
+        $this->assertInstanceOf(ClassPropertyReflectionInterface::class, $resolvedElement);
     }
 
     public function testResolveMethodFromClassReflection(): void
@@ -74,7 +74,7 @@ final class ResolveIfInContextTest extends AbstractElementResolverTest
             ->with('someProperty')
             ->willReturn(true);
 
-        $propertyReflectionMock = $this->createMock(PropertyReflectionInterface::class);
+        $propertyReflectionMock = $this->createMock(ClassPropertyReflectionInterface::class);
         $classReflectionMock->method('getProperty')
             ->with('someProperty')
             ->willReturn($propertyReflectionMock);

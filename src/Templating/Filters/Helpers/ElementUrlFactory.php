@@ -7,7 +7,7 @@ use ApiGen\Reflection\Contract\Reflection\ClassConstantReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\ReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\FunctionReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\ClassMethodReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\PropertyReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ClassPropertyReflectionInterface;
 use ApiGen\Templating\Filters\Filters;
 
 final class ElementUrlFactory
@@ -25,7 +25,7 @@ final class ElementUrlFactory
             return $this->createForMethod($element);
         }
 
-        if ($element instanceof PropertyReflectionInterface) {
+        if ($element instanceof ClassPropertyReflectionInterface) {
             return $this->createForProperty($element);
         }
 
@@ -67,7 +67,7 @@ final class ElementUrlFactory
     }
 
     public function createForProperty(
-        PropertyReflectionInterface $property,
+        ClassPropertyReflectionInterface $property,
         ?ClassReflectionInterface $class = null
     ): string {
         $className = $class !== null ? $class->getName() : $property->getDeclaringClassName();

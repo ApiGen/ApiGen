@@ -6,7 +6,7 @@ namespace ApiGen\Element\Naming;
 // use only for single method filter and AutocompleteGenerator
 
 use ApiGen\Reflection\Contract\Reflection\ClassMethodReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\PropertyReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ClassPropertyReflectionInterface;
 
 final class ReflectionNaming
 {
@@ -15,7 +15,7 @@ final class ReflectionNaming
         return $methodReflection->getDeclaringClassName() . '::' . $methodReflection->getName() . '()';
     }
 
-    public function forPropertyReflection(PropertyReflectionInterface $propertyReflection): string
+    public function forPropertyReflection(ClassPropertyReflectionInterface $propertyReflection): string
     {
         return $propertyReflection->getDeclaringClassName() . '::$' . $propertyReflection->getName();
     }

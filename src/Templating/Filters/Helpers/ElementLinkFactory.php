@@ -8,7 +8,7 @@ use ApiGen\Reflection\Contract\Reflection\ClassConstantReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\ReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\FunctionReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\ClassMethodReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\PropertyReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ClassPropertyReflectionInterface;
 use ApiGen\Parser\Reflection\AbstractReflection;
 use Nette\Utils\Html;
 use UnexpectedValueException;
@@ -40,7 +40,7 @@ final class ElementLinkFactory
             return $this->createForClass($element, $classes);
         } elseif ($element instanceof ClassMethodReflectionInterface) {
             return $this->createForMethod($element, $classes);
-        } elseif ($element instanceof PropertyReflectionInterface) {
+        } elseif ($element instanceof ClassPropertyReflectionInterface) {
             return $this->createForProperty($element, $classes);
         } elseif ($element instanceof ClassConstantReflectionInterface) {
             return $this->createForConstant($element, $classes);
@@ -84,7 +84,7 @@ final class ElementLinkFactory
     /**
      * @param mixed[] $classes
      */
-    private function createForProperty(PropertyReflectionInterface $reflectionProperty, array $classes): string
+    private function createForProperty(ClassPropertyReflectionInterface $reflectionProperty, array $classes): string
     {
         $text = $reflectionProperty->getDeclaringClassName() . '::' .
             Html::el(AnnotationList::VAR_)->setText('$' . $reflectionProperty->getName());

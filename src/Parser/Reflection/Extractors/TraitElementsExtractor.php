@@ -5,7 +5,7 @@ namespace ApiGen\Parser\Reflection\Extractors;
 use ApiGen\Reflection\Contract\Reflection\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Extractors\ClassTraitElementsExtractorInterface;
 use ApiGen\Reflection\Contract\Reflection\ClassMethodReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\PropertyReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ClassPropertyReflectionInterface;
 
 final class TraitElementsExtractor implements ClassTraitElementsExtractorInterface
 {
@@ -68,7 +68,7 @@ final class TraitElementsExtractor implements ClassTraitElementsExtractorInterfa
     }
 
     /**
-     * @return PropertyReflectionInterface[]
+     * @return ClassPropertyReflectionInterface[]
      */
     public function getTraitProperties(): array
     {
@@ -101,11 +101,11 @@ final class TraitElementsExtractor implements ClassTraitElementsExtractorInterfa
     }
 
     /**
-     * @return PropertyReflectionInterface[][]
+     * @return ClassPropertyReflectionInterface[][]
      */
     public function getUsedProperties(): array
     {
-        $allProperties = array_flip(array_map(function (PropertyReflectionInterface $property) {
+        $allProperties = array_flip(array_map(function (ClassPropertyReflectionInterface $property) {
             return $property->getName();
         }, $this->classReflection->getOwnProperties()));
 

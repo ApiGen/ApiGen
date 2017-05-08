@@ -2,14 +2,14 @@
 
 namespace ApiGen\Tests\Parser\Reflection\ReflectionClass;
 
-use ApiGen\Reflection\Contract\Reflection\PropertyReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ClassPropertyReflectionInterface;
 
 class PropertiesTest extends AbstractReflectionClassTestCase
 {
     public function testGetProperty(): void
     {
         $this->assertInstanceOf(
-            PropertyReflectionInterface::class,
+            ClassPropertyReflectionInterface::class,
             $this->reflectionClass->getProperty('publicProperty')
         );
     }

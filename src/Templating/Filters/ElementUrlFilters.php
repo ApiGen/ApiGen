@@ -7,7 +7,7 @@ use ApiGen\Reflection\Contract\Reflection\ClassConstantReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\ReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\FunctionReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\ClassMethodReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\PropertyReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ClassPropertyReflectionInterface;
 use ApiGen\Templating\Filters\Helpers\ElementUrlFactory;
 
 final class ElementUrlFilters extends Filters
@@ -40,7 +40,7 @@ final class ElementUrlFilters extends Filters
         return $this->elementUrlFactory->createForMethod($method, $class);
     }
 
-    public function propertyUrl(PropertyReflectionInterface $property, ?ClassReflectionInterface $class = null): string
+    public function propertyUrl(ClassPropertyReflectionInterface $property, ?ClassReflectionInterface $class = null): string
     {
         return $this->elementUrlFactory->createForProperty($property, $class);
     }

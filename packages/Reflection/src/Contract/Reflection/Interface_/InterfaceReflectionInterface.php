@@ -1,6 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Reflection\Contract\Reflection;
+namespace ApiGen\Reflection\Contract\Reflection\Interface_;
+
+use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 
 interface InterfaceReflectionInterface
 {
@@ -40,35 +42,25 @@ interface InterfaceReflectionInterface
      */
     public function getInheritedMethods(): array;
 
-    /**
-     * @return InterfaceMethodReflectionInterface[]
-     */
-    public function getUsedMethods(): array;
-
-    /**
-     * @return InterfaceMethodReflectionInterface[]
-     */
-    public function getTraitMethods(): array;
-
     public function getMethod(string $name): InterfaceMethodReflectionInterface;
 
     public function hasMethod(string $name): bool;
 
     /**
-     * @return ClassConstantReflectionInterface[]
+     * @return InterfaceConstantReflectionInterface[]
      */
     public function getOwnConstants(): array;
 
     /**
-     * @return ClassConstantReflectionInterface[]
+     * @return InterfaceConstantReflectionInterface[]
      */
     public function getInheritedConstants(): array;
 
     public function hasConstant(string $name): bool;
 
-    public function getConstant(string $name): ClassConstantReflectionInterface;
+    public function getConstant(string $name): InterfaceConstantReflectionInterface;
 
-    public function getOwnConstant(string $name): ClassConstantReflectionInterface;
+    public function getOwnConstant(string $name): InterfaceConstantReflectionInterface;
 
     public function implementsInterface(string $interface): bool;
 

@@ -2,14 +2,14 @@
 
 namespace ApiGen\Reflection\Tests\Parser;
 
-use ApiGen\Reflection\Contract\Reflection\PropertyReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ClassPropertyReflectionInterface;
 use ApiGen\Reflection\Parser\Parser;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 
 final class NewPropertyReflectionTest extends AbstractContainerAwareTestCase
 {
     /**
-     * @var PropertyReflectionInterface
+     * @var ClassPropertyReflectionInterface
      */
     private $propertyReflection;
 

@@ -7,7 +7,7 @@ use ApiGen\Reflection\Contract\Reflection\ClassConstantReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\ReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\FunctionReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\ClassMethodReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\PropertyReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ClassPropertyReflectionInterface;
 use ApiGen\Templating\Filters\Helpers\ElementUrlFactory;
 use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject;
@@ -181,11 +181,11 @@ final class ElementUrlFactoryTest extends TestCase
     }
 
     /**
-     * @return PHPUnit_Framework_MockObject_MockObject|PropertyReflectionInterface
+     * @return PHPUnit_Framework_MockObject_MockObject|ClassPropertyReflectionInterface
      */
     private function getReflectionPropertyMock()
     {
-        $reflectionPropertyMock = $this->createMock(PropertyReflectionInterface::class);
+        $reflectionPropertyMock = $this->createMock(ClassPropertyReflectionInterface::class);
         $reflectionPropertyMock->method('getName')
             ->willReturn('someProperty');
         $reflectionPropertyMock->method('getDeclaringClassName')

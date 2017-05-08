@@ -1,10 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Reflection\Contract\Reflection;
+namespace ApiGen\Reflection\Contract\Reflection\Class_;
 
-use ApiGen\Reflection\Contract\Reflection\ClassReflectionInterface;
-
-interface PropertyReflectionInterface
+interface ClassPropertyReflectionInterface
 {
     public function isDefault(): bool;
 

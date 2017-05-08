@@ -6,7 +6,7 @@ use ApiGen\Reflection\Contract\Reflection\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\ClassConstantReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Extractors\ParentClassElementsExtractorInterface;
 use ApiGen\Reflection\Contract\Reflection\ClassMethodReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\PropertyReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ClassPropertyReflectionInterface;
 
 final class ParentClassElementsExtractor implements ParentClassElementsExtractorInterface
 {
@@ -38,12 +38,12 @@ final class ParentClassElementsExtractor implements ParentClassElementsExtractor
     }
 
     /**
-     * @return PropertyReflectionInterface[][]
+     * @return ClassPropertyReflectionInterface[][]
      */
     public function getInheritedProperties(): array
     {
         $properties = [];
-        $allProperties = array_flip(array_map(function (PropertyReflectionInterface $propertyReflection) {
+        $allProperties = array_flip(array_map(function (ClassPropertyReflectionInterface $propertyReflection) {
             return $propertyReflection->getName();
         }, $this->reflectionClass->getOwnProperties()));
 

@@ -4,7 +4,7 @@ namespace ApiGen\Reflection\Contract\Reflection\Extractors;
 
 use ApiGen\Reflection\Contract\Reflection\ClassConstantReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\ClassMethodReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\PropertyReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ClassPropertyReflectionInterface;
 
 interface ParentClassElementsExtractorInterface
 {
@@ -14,7 +14,7 @@ interface ParentClassElementsExtractorInterface
     public function getInheritedConstants(): array;
 
     /**
-     * @return PropertyReflectionInterface[][]
+     * @return ClassPropertyReflectionInterface[][]
      */
     public function getInheritedProperties(): array;
 

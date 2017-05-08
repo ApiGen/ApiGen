@@ -1,6 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Reflection\Contract\Reflection;
+namespace ApiGen\Reflection\Contract\Reflection\Trait_;
+
+use ApiGen\Reflection\Contract\Reflection\Class_\ClassMethodReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ReflectionInterface;
 
 interface TraitReflectionInterface extends ReflectionInterface
 {
@@ -19,19 +23,14 @@ interface TraitReflectionInterface extends ReflectionInterface
     public function getIndirectUsers(): array;
 
     /**
-     * @return ClassMethodReflectionInterface[]
+     * @return TraitMethodReflectionInterface[]
      */
     public function getMethods(): array;
 
     /**
-     * @return ClassMethodReflectionInterface[]
+     * @return TraitMethodReflectionInterface[]
      */
     public function getOwnMethods(): array;
-
-    /**
-     * @return ClassMethodReflectionInterface[]
-     */
-    public function getUsedMethods(): array;
 
     /**
      * @return ClassMethodReflectionInterface[]
@@ -63,26 +62,26 @@ interface TraitReflectionInterface extends ReflectionInterface
     public function getTraitAliases(): array;
 
     /**
-     * @return PropertyReflectionInterface[]
+     * @return ClassPropertyReflectionInterface[]
      */
     public function getProperties(): array;
 
     /**
-     * @return PropertyReflectionInterface[]
+     * @return ClassPropertyReflectionInterface[]
      */
     public function getOwnProperties(): array;
 
     /**
-     * @return PropertyReflectionInterface[]
+     * @return ClassPropertyReflectionInterface[]
      */
     public function getTraitProperties(): array;
 
     /**
-     * @return PropertyReflectionInterface[]
+     * @return ClassPropertyReflectionInterface[]
      */
     public function getUsedProperties(): array;
 
-    public function getProperty(string $name): PropertyReflectionInterface;
+    public function getProperty(string $name): TraitPropertyReflectionInterface;
 
     public function hasProperty(string $name): bool;
 

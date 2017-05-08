@@ -3,10 +3,10 @@
 namespace ApiGen\Reflection\Reflection;
 
 use ApiGen\Annotation\AnnotationList;
-use ApiGen\Reflection\Contract\Reflection\ClassMethodReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\PropertyReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\ClassConstantReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\ClassReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Class_\ClassMethodReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Class_\ClassPropertyReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Class_\ClassConstantReflectionInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorInterface;
 use phpDocumentor\Reflection\DocBlock;
 use Roave\BetterReflection\Reflection\ReflectionClass;
@@ -23,10 +23,8 @@ final class ClassReflection implements ClassReflectionInterface
      */
     private $docBlock;
 
-    public function __construct(
-        ReflectionClass $betterClassReflection,
-        DocBlock $docBlock
-    ) {
+    public function __construct(ReflectionClass $betterClassReflection, DocBlock $docBlock)
+    {
         $this->betterClassReflection = $betterClassReflection;
         $this->docBlock = $docBlock;
     }
@@ -351,7 +349,7 @@ final class ClassReflection implements ClassReflectionInterface
     }
 
     /**
-     * @return PropertyReflectionInterface[]
+     * @return ClassPropertyReflectionInterface[]
      */
     public function getProperties(): array
     {
@@ -374,7 +372,7 @@ final class ClassReflection implements ClassReflectionInterface
     }
 
     /**
-     * @return PropertyReflectionInterface[]
+     * @return ClassPropertyReflectionInterface[]
      */
     public function getOwnProperties(): array
     {
@@ -393,7 +391,7 @@ final class ClassReflection implements ClassReflectionInterface
     }
 
     /**
-     * @return PropertyReflectionInterface[]
+     * @return ClassPropertyReflectionInterface[]
      */
     public function getInheritedProperties(): array
     {
@@ -401,7 +399,7 @@ final class ClassReflection implements ClassReflectionInterface
     }
 
     /**
-     * @return PropertyReflectionInterface[]
+     * @return ClassPropertyReflectionInterface[]
      */
     public function getTraitProperties(): array
     {
@@ -409,14 +407,14 @@ final class ClassReflection implements ClassReflectionInterface
     }
 
     /**
-     * @return PropertyReflectionInterface[][]
+     * @return ClassPropertyReflectionInterface[][]
      */
     public function getUsedProperties(): array
     {
         return $this->classTraitElementExtractor->getUsedProperties();
     }
 
-    public function getProperty(string $name): PropertyReflectionInterface
+    public function getProperty(string $name): ClassPropertyReflectionInterface
     {
         if ($this->hasProperty($name)) {
             return $this->properties[$name];

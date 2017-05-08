@@ -2,7 +2,7 @@
 
 namespace ApiGen\Element\Tree;
 
-use ApiGen\Reflection\Contract\Reflection\ClassReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\ReflectionStorageInterface;
 
 final class ImplementersResolver

@@ -4,7 +4,7 @@ namespace ApiGen\Tests\Parser\Reflection;
 
 use ApiGen\Contracts\Parser\ParserInterface;
 use ApiGen\Reflection\Contract\Reflection\ClassReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\PropertyReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ClassPropertyReflectionInterface;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 use ApiGen\Tests\Parser\Reflection\ReflectionMethodSource\ReflectionMethod;
 
@@ -16,7 +16,7 @@ final class ReflectionPropertyTest extends AbstractContainerAwareTestCase
     private $reflectionClass;
 
     /**
-     * @var PropertyReflectionInterface
+     * @var ClassPropertyReflectionInterface
      */
     private $reflectionProperty;
 
@@ -32,7 +32,7 @@ final class ReflectionPropertyTest extends AbstractContainerAwareTestCase
 
     public function testInstance(): void
     {
-        $this->assertInstanceOf(PropertyReflectionInterface::class, $this->reflectionProperty);
+        $this->assertInstanceOf(ClassPropertyReflectionInterface::class, $this->reflectionProperty);
     }
 
     public function testGetTypeHint(): void

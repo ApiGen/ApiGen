@@ -4,13 +4,13 @@ namespace ApiGen\Reflection\Reflection;
 
 use ApiGen\Annotation\AnnotationList;
 use ApiGen\Reflection\Contract\Reflection\ClassReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\PropertyReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\ClassPropertyReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\TraitReflectionInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorInterface;
 use phpDocumentor\Reflection\DocBlock;
 use Roave\BetterReflection\Reflection\ReflectionProperty;
 
-final class TraitPropertyReflection implements PropertyReflectionInterface
+final class TraitClassPropertyReflection implements ClassPropertyReflectionInterface
 {
     /**
      * @var ReflectionProperty
