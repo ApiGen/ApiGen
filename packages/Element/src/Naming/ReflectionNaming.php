@@ -5,8 +5,8 @@ namespace ApiGen\Element\Naming;
 // removed from reflections, as suggested in issues
 // use only for single method filter and AutocompleteGenerator
 
-use ApiGen\Reflection\Contract\Reflection\ClassMethodReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\ClassPropertyReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Class_\ClassMethodReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Class_\ClassPropertyReflectionInterface;
 
 final class ReflectionNaming
 {

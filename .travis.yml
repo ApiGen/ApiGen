@@ -30,4 +30,7 @@ after_script:
     - ./generate-api.sh
 
 notifications:
-    email: false
+    email:
+        # temporary disable, many errors coming
+        on_success: never
+        on_failure: never

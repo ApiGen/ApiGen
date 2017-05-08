@@ -2,8 +2,8 @@
 
 namespace ApiGen\Element\Latte\Filter;
 
-use ApiGen\Reflection\Contract\Reflection\ClassMethodReflectionInterface;
 use ApiGen\Element\Naming\ReflectionNaming;
+use ApiGen\Reflection\Contract\Reflection\Class_\ClassMethodReflectionInterface;
 use Symplify\ModularLatteFilters\Contract\DI\LatteFiltersProviderInterface;
 
 final class MethodReflectionNamingFilter implements LatteFiltersProviderInterface
