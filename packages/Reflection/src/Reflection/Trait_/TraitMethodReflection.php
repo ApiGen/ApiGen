@@ -138,4 +138,19 @@ final class TraitMethodReflection implements TraitMethodReflectionInterface
     {
         // TODO: Implement getEndLine() method.
     }
+
+    public function isPublic(): bool
+    {
+        return $this->betterMethodReflection->isPublic();
+    }
+
+    public function isProtected(): bool
+    {
+        return $this->betterMethodReflection->isProtected();
+    }
+
+    public function isPrivate(): bool
+    {
+        return $this->betterMethodReflection->isPrivate();
+    }
 }

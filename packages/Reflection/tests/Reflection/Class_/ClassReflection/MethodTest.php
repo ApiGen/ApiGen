@@ -3,26 +3,36 @@
 namespace ApiGen\Reflection\Tests\Reflection\Class_\ClassReflection;
 
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassMethodReflectionInterface;
+use ApiGen\Reflection\Tests\Reflection\Class_\ClassReflection\Source\AccessLevels;
 
 final class MethodTest extends AbstractReflectionClassTestCase
 {
-    public function testGetMethod(): void
+    public function testNames()
     {
-        $this->assertInstanceOf(ClassMethodReflectionInterface::class, $this->reflectionClass->getMethod('publicMethod'));
+        $this->assertSame(AccessLevels::class, $this->reflectionClass->getName());
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
-    public function testGetMethodNonExisting(): void
-    {
-        $this->reflectionClass->getMethod('notPresentMethod');
-    }
-//
-//    public function testGetMethods(): void
+
+//    public function testGetMethod(): void
 //    {
-//        $this->assertCount(5, $this->reflectionClass->getMethods());
+//        $this->assertInstanceOf(ClassMethodReflectionInterface::class, $this->reflectionClass->getMethod('publicMethod'));
 //    }
+//
+//    /**
+//     * @expectedException \InvalidArgumentException
+//     */
+//    public function testGetMethodNonExisting(): void
+//    {
+//        $this->reflectionClass->getMethod('notPresentMethod');
+//    }
+
+    public function testGetMethods(): void
+    {
+        $methods = count($this->reflectionClass->getMethods());
+        $this->assertCount(5, $this->reflectionClass->getMethods());
+
+        // which ones?
+    }
 //
 //    public function testGetOwnMethods(): void
 //    {

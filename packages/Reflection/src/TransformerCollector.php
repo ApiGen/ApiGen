@@ -2,6 +2,7 @@
 
 namespace ApiGen\Reflection;
 
+use ApiGen\Reflection\Contract\Reflection\Partial\AccessLevelInterface;
 use ApiGen\Reflection\Contract\Transformer\TransformerInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorAwareInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorInterface;
@@ -27,11 +28,16 @@ final class TransformerCollector implements TransformerCollectorInterface
     {
         $elements = [];
         foreach ($reflections as $name => $reflection) {
-            // $this->configuration->getVisibilityLevels()
-            // @todo: here is the place to filter out public/protected etc - use service!
             // also ! $this->reflection->isInternal();, remove isDocumented()
+
             $transformedReflection = $this->transformSingle($reflection);
             if ($transformedReflection->hasAnnotation('internal')) {
+                continue;
+            }
+
+            // $this->configuration->getVisibilityLevels()
+            // @todo: here is the place to filter out public/protected etc - use service!
+            if (! $this->hasAllowedAccessLevel($transformedReflection)) {
                 continue;
             }
 
@@ -72,5 +78,19 @@ final class TransformerCollector implements TransformerCollectorInterface
             is_object($reflection) ? get_class($reflection) : 'constant',
             TransformerInterface::class
         ));
+    }
+
+    private function hasAllowedAccessLevel($transformedReflection): bool
+    {
+        if ( ! $transformedReflection instanceof AccessLevelInterface) {
+            return true;
+        }
+
+        // hardcoded @todo make service-like and using ConfigurationInterface
+        if ($transformedReflection->isPublic() || $transformedReflection->isProtected()) {
+            return true;
+        }
+
+        return false;
     }
 }

@@ -501,6 +501,8 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
             $allMethods += $this->getParentClass()->getMethods();
         }
 
+//        dump($allMethods);
+
         return $allMethods;
     }
 
