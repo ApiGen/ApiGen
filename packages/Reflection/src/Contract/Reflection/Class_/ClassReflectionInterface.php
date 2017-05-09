@@ -5,7 +5,6 @@ namespace ApiGen\Reflection\Contract\Reflection\Class_;
 use ApiGen\Reflection\Contract\Reflection\Partial\AnnotationsInterface;
 use ApiGen\Reflection\Contract\Reflection\Partial\StartAndEndLineInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitPropertyReflectionInterface;
-use ApiGen\Reflection\Contract\TransformerCollectorInterface;
 
 interface ClassReflectionInterface extends StartAndEndLineInterface, AnnotationsInterface
 {
@@ -107,7 +106,7 @@ interface ClassReflectionInterface extends StartAndEndLineInterface, Annotations
     /**
      * @return string[]
      */
-    public function getOwnTraitNames(): array;
+    public function getTraitNames(): array;
 
     /**
      * @return string[]

@@ -10,14 +10,14 @@ final class MethodTest extends AbstractReflectionClassTestCase
     {
         $this->assertInstanceOf(ClassMethodReflectionInterface::class, $this->reflectionClass->getMethod('publicMethod'));
     }
-//
-//    /**
-//     * @expectedException \InvalidArgumentException
-//     */
-//    public function testGetMethodNonExisting(): void
-//    {
-//        $this->reflectionClass->getMethod('notPresentMethod');
-//    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testGetMethodNonExisting(): void
+    {
+        $this->reflectionClass->getMethod('notPresentMethod');
+    }
 //
 //    public function testGetMethods(): void
 //    {

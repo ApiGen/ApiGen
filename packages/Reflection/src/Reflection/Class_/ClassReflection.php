@@ -7,6 +7,7 @@ use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassPropertyReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassConstantReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Trait_\TraitMethodReflectionInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorAwareInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorInterface;
 use phpDocumentor\Reflection\DocBlock;
@@ -295,35 +296,17 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
      */
     public function getTraits(): array
     {
-        return array_map(function (IReflectionClass $class) {
-            if (! isset($this->getParsedClasses()[$class->getName()])) {
-                return $class->getName();
-            }
-
-            return $this->getParsedClasses()[$class->getName()];
-        }, $this->betterClassReflection->getTraits());
-    }
-
-    /**
-     * @return ClassReflectionInterface[]
-     */
-    public function getOwnTraits(): array
-    {
-        return array_map(function (IReflectionClass $class) {
-            if (! isset($this->getParsedClasses()[$class->getName()])) {
-                return $class->getName();
-            }
-
-            return $this->getParsedClasses()[$class->getName()];
-        }, $this->betterClassReflection->getOwnTraits());
+        return $this->transformerCollector->transformGroup(
+            $this->betterClassReflection->getTraits()
+        );
     }
 
     /**
      * @return string[]
      */
-    public function getOwnTraitNames(): array
+    public function getTraitNames(): array
     {
-        return $this->betterClassReflection->getOwnTraitNames();
+        return $this->betterClassReflection->getTraitNames();
     }
 
     /**
@@ -493,15 +476,18 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
      */
     public function getMethods(): array
     {
-        dump($this->getOwnMethods());
+        $ownMethods = $this->getOwnMethods();
+
+        dump($this->getOwnTraits());
         die;
+
         if ($this->methods === null) {
-            $this->methods = $this->getOwnMethods();
+//            $this->methods = $this->getOwnMethods();
 
             foreach ($this->getOwnTraits() as $trait) {
-                if (!$trait instanceof ReflectionClass) {
-                    continue;
-                }
+//                if (!$trait instanceof ReflectionClass) {
+//                    continue;
+//                }
 
                 foreach ($trait->getOwnMethods() as $method) {
                     if (isset($this->methods[$method->getName()])) {
@@ -543,7 +529,7 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
     }
 
     /**
-     * @return ClassMethodReflectionInterface[]
+     * @return TraitMethodReflectionInterface[]
      */
     public function getTraitMethods(): array
     {
