@@ -99,10 +99,10 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
 
     public function getParentClass(): ?ClassReflectionInterface
     {
-        $parentClassName = $this->betterClassReflection->getParentClassName();
-
-        if ($parentClassName) {
-            return $this->getParsedClasses()[$parentClassName];
+        if ($this->betterClassReflection->getParentClass()) {
+            return $this->transformerCollector->transformSingle(
+                $this->betterClassReflection->getParentClass()
+            );
         }
 
         return null;
@@ -193,13 +193,13 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
     public function getMethod(string $name): ClassMethodReflectionInterface
     {
         if ($this->hasMethod($name)) {
-            return $this->methods[$name];
+            return $this->getMethods()[$name];
         }
 
-        throw new InvalidArgumentException(sprintf(
-            'Method %s does not exist in class %s',
+        throw new \InvalidArgumentException(sprintf(
+            'Method "%s" does not exist in "%s" class.',
             $name,
-            $this->betterClassReflection->getName()
+            $this->getName()
         ));
     }
 

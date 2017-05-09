@@ -2,8 +2,11 @@
 
 namespace ApiGen\Reflection\Contract\Reflection\Class_;
 
+use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceMethodReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Partial\AnnotationsInterface;
 use ApiGen\Reflection\Contract\Reflection\Partial\StartAndEndLineInterface;
+use ApiGen\Reflection\Contract\Reflection\Trait_\TraitMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitPropertyReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitReflectionInterface;
 
@@ -35,12 +38,12 @@ interface ClassReflectionInterface extends StartAndEndLineInterface, Annotations
     public function implementsInterface(string $name): bool;
 
     /**
-     * @return ClassReflectionInterface[]
+     * @return InterfaceReflectionInterface[]
      */
     public function getInterfaces(): array;
 
     /**
-     * @return ClassReflectionInterface[]
+     * @return InterfaceReflectionInterface[]
      */
     public function getOwnInterfaces(): array;
 
@@ -70,7 +73,7 @@ interface ClassReflectionInterface extends StartAndEndLineInterface, Annotations
     public function getUsedMethods(): array;
 
     /**
-     * @return ClassMethodReflectionInterface[]
+     * @return TraitMethodReflectionInterface[]
      */
     public function getTraitMethods(): array;
 

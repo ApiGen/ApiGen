@@ -108,9 +108,17 @@ final class TraitMethodReflection implements TraitMethodReflectionInterface
         // TODO: Implement getDescription() method.
     }
 
+    /**
+     * @return mixed[]
+     */
+    public function getAnnotations(): array
+    {
+        return $this->docBlock->getTags();
+    }
+
     public function hasAnnotation(string $name): bool
     {
-        // TODO: Implement hasAnnotation() method.
+        return $this->docBlock->hasTag($name);
     }
 
     /**
@@ -118,15 +126,7 @@ final class TraitMethodReflection implements TraitMethodReflectionInterface
      */
     public function getAnnotation(string $name): array
     {
-        // TODO: Implement getAnnotation() method.
-    }
-
-    /**
-     * @return mixed[]
-     */
-    public function getAnnotations(): array
-    {
-        // TODO: Implement getAnnotations() method.
+        return $this->docBlock->getTagsByName($name);
     }
 
     public function getStartLine(): int
