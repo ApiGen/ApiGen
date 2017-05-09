@@ -438,7 +438,7 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
 
     public function isDeprecated(): bool
     {
-        // TODO: Implement isDeprecated() method.
+        return $this->hasAnnotation(AnnotationList::DEPRECATED);
     }
 
     /**

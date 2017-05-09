@@ -4,8 +4,9 @@ namespace ApiGen\Reflection\Reflection\Class_;
 
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassConstantReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
+use ReflectionClass;
 
-final class ClassClassConstantReflection implements ClassConstantReflectionInterface
+final class ClassConstantReflection implements ClassConstantReflectionInterface
 {
     /**
      * @var string
@@ -23,6 +24,11 @@ final class ClassClassConstantReflection implements ClassConstantReflectionInter
     private $classReflection;
 
     /**
+     * @var mixed
+     */
+    private $nativeClassConstantReflection;
+
+    /**
      * @param mixed $value
      */
     private function __construct(string $name, $value, ClassReflectionInterface $classReflection)
@@ -30,6 +36,9 @@ final class ClassClassConstantReflection implements ClassConstantReflectionInter
         $this->name = $name;
         $this->value = $value;
         $this->classReflection = $classReflection;
+
+        $nativeClassConstantReflection = new ReflectionClass($classReflection->getName());
+        $this->nativeClassConstantReflection = $nativeClassConstantReflection->getConstant($name);
     }
 
     /**
@@ -40,19 +49,19 @@ final class ClassClassConstantReflection implements ClassConstantReflectionInter
         return new self($name, $value, $classReflection);
     }
 
-    public function isPrivate(): bool
+    public function isPublic(): bool
     {
-        return $this->reflection->isPrivate();
+        return $this->nativeClassConstantReflection->isPublic();
     }
 
     public function isProtected(): bool
     {
-        return $this->reflection->isProtected();
+        return $this->nativeClassConstantReflection->isProtected();
     }
 
-    public function isPublic(): bool
+    public function isPrivate(): bool
     {
-        return $this->reflection->isPublic();
+        return $this->nativeClassConstantReflection->isPrivate();
     }
 
     public function getName(): string
@@ -62,7 +71,7 @@ final class ClassClassConstantReflection implements ClassConstantReflectionInter
 
     public function getShortName(): string
     {
-        return $this->reflection->getShortName();
+        return $this->name;
     }
 
     public function getTypeHint(): string
@@ -86,15 +95,14 @@ final class ClassClassConstantReflection implements ClassConstantReflectionInter
         }
     }
 
-    public function getDeclaringClass(): ?ClassReflectionInterface
+    public function getDeclaringClass(): ClassReflectionInterface
     {
-        $className = (string) $this->reflection->getDeclaringClassName();
-        return $this->getParsedClasses()[$className];
+        return $this->classReflection;
     }
 
     public function getDeclaringClassName(): string
     {
-        return (string) $this->reflection->getDeclaringClassName();
+        return $this->classReflection->getName();
     }
 
     /**
@@ -102,17 +110,18 @@ final class ClassClassConstantReflection implements ClassConstantReflectionInter
      */
     public function getValue()
     {
-        return $this->reflection->getValue();
+        return $this->value;
     }
 
     public function getValueDefinition(): string
     {
+        // what for?
         return $this->reflection->getValueDefinition();
     }
 
     public function isDeprecated(): bool
     {
-        if ($this->refleection->isDeprecated()) {
+        if ($this->classReflection->isDeprecated()) {
             return true;
         }
 

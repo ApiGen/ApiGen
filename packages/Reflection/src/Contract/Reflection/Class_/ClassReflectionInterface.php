@@ -2,7 +2,6 @@
 
 namespace ApiGen\Reflection\Contract\Reflection\Class_;
 
-use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Partial\AnnotationsInterface;
 use ApiGen\Reflection\Contract\Reflection\Partial\StartAndEndLineInterface;
@@ -159,4 +158,6 @@ interface ClassReflectionInterface extends StartAndEndLineInterface, Annotations
     public function getNamespaceName(): string;
 
     public function getConstants(): array;
+
+    public function isDeprecated(): bool;
 }
