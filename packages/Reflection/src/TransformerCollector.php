@@ -35,6 +35,7 @@ final class TransformerCollector implements TransformerCollectorInterface
                 continue;
             }
 
+            $name = $name ?: $transformedReflection->getName();
             $elements[$name] = $transformedReflection;
         }
 

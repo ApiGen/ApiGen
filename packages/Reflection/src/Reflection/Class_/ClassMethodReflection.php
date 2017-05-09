@@ -5,7 +5,6 @@ namespace ApiGen\Reflection\Reflection\Class_;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceMethodReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\Trait_\TraitReflectionInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorInterface;
 use phpDocumentor\Reflection\DocBlock;
 use Roave\BetterReflection\Reflection\ReflectionMethod;
@@ -37,10 +36,8 @@ final class ClassMethodReflection implements ClassMethodReflectionInterface
      */
     private $transformerCollector;
 
-    public function __construct(
-        ReflectionMethod $betterFunctionReflection,
-        DocBlock $docBlock
-    ) {
+    public function __construct(ReflectionMethod $betterFunctionReflection, DocBlock $docBlock)
+    {
         $this->reflection = $betterFunctionReflection;
         $this->docBlock = $docBlock;
     }

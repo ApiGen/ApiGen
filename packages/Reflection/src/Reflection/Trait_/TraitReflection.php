@@ -7,30 +7,38 @@ use ApiGen\Reflection\Contract\Reflection\Class_\ClassMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitPropertyReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitReflectionInterface;
+use ApiGen\Reflection\Contract\Transformer\TransformerInterface;
+use ApiGen\Reflection\Contract\TransformerCollectorAwareInterface;
+use ApiGen\Reflection\Contract\TransformerCollectorInterface;
 use phpDocumentor\Reflection\DocBlock;
 use Roave\BetterReflection\Reflection\ReflectionClass;
 
-final class TraitReflection implements TraitReflectionInterface
+final class TraitReflection implements TraitReflectionInterface, TransformerCollectorAwareInterface
 {
     /**
      * @var ReflectionClass
      */
-    private $reflection;
+    private $betterTraitReflection;
 
     /**
      * @var DocBlock
      */
     private $docBlock;
 
+    /**
+     * @var TransformerCollectorInterface
+     */
+    private $transformerCollector;
+
     public function __construct(ReflectionClass $betterClassReflection, DocBlock $docBlock)
     {
-        $this->reflection = $betterClassReflection;
+        $this->betterTraitReflection = $betterClassReflection;
         $this->docBlock = $docBlock;
     }
 
     public function getName(): string
     {
-        return $this->reflection->getName();
+        return $this->betterTraitReflection->getName();
     }
 
     /**
@@ -96,7 +104,9 @@ final class TraitReflection implements TraitReflectionInterface
      */
     public function getMethods(): array
     {
-        // TODO: Implement getMethods() method.
+        return $this->transformerCollector->transformGroup(
+            $this->betterTraitReflection->getMethods()
+        );
     }
 
     /**
@@ -215,5 +225,15 @@ final class TraitReflection implements TraitReflectionInterface
     public function hasAnnotation(string $name): bool
     {
         return $this->docBlock->hasTag($name);
+    }
+
+    public function addTransformer(TransformerInterface $transformer): void
+    {
+        // TODO: Implement addTransformer() method.
+    }
+
+    public function setTransformerCollector(TransformerCollectorInterface $transformerCollector): void
+    {
+        $this->transformerCollector = $transformerCollector;
     }
 }

@@ -1,14 +1,16 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Reflection\Transformer\BetterReflection\Class_;
+namespace ApiGen\Reflection\Transformer\BetterReflection\Trait_;
 
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassMethodReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Trait_\TraitMethodReflectionInterface;
 use ApiGen\Reflection\Reflection\Class_\ClassMethodReflection;
 use ApiGen\Reflection\Contract\Transformer\TransformerInterface;
+use ApiGen\Reflection\Reflection\Trait_\TraitMethodReflection;
 use phpDocumentor\Reflection\DocBlockFactoryInterface;
 use Roave\BetterReflection\Reflection\ReflectionMethod;
 
-final class ClassMethodReflectionTransformer implements TransformerInterface
+final class TraitMethodReflectionTransformer implements TransformerInterface
 {
     /**
      * @var DocBlockFactoryInterface
@@ -31,16 +33,16 @@ final class ClassMethodReflectionTransformer implements TransformerInterface
 
         $declaringClassOrTrait = $reflection->getDeclaringClass();
 
-        return ! $declaringClassOrTrait->isTrait();
+        return $declaringClassOrTrait->isTrait();
     }
 
     /**
      * @param ReflectionMethod $reflection
      */
-    public function transform($reflection): ClassMethodReflectionInterface
+    public function transform($reflection): TraitMethodReflectionInterface
     {
         $docBlock = $this->docBlockFactory->create($reflection->getDocComment() ?: ' ');
 
-        return new ClassMethodReflection($reflection, $docBlock);
+        return new TraitMethodReflection($reflection, $docBlock);
     }
 }

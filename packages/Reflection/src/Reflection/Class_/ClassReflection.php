@@ -8,6 +8,7 @@ use ApiGen\Reflection\Contract\Reflection\Class_\ClassMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassPropertyReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassConstantReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitMethodReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Trait_\TraitReflectionInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorAwareInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorInterface;
 use phpDocumentor\Reflection\DocBlock;
@@ -302,6 +303,15 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
     }
 
     /**
+     * @return TraitReflectionInterface[]
+     */
+    public function getOwnTraits(): array
+    {
+        // @todo: filter only own
+        return $this->getTraits();
+    }
+
+    /**
      * @return string[]
      */
     public function getTraitNames(): array
@@ -472,50 +482,26 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
     }
 
     /**
-     * @return ClassMethodReflectionInterface[]
+     * @return ClassMethodReflectionInterface[]|TraitMethodReflectionInterface[]
      */
     public function getMethods(): array
     {
-        $ownMethods = $this->getOwnMethods();
+        $allMethods = [];
+        $allMethods += $this->getOwnMethods();
 
-        dump($this->getOwnTraits());
-        die;
-
-        if ($this->methods === null) {
-//            $this->methods = $this->getOwnMethods();
-
-            foreach ($this->getOwnTraits() as $trait) {
-//                if (!$trait instanceof ReflectionClass) {
-//                    continue;
-//                }
-
-                foreach ($trait->getOwnMethods() as $method) {
-                    if (isset($this->methods[$method->getName()])) {
-                        continue;
-                    }
-
-                    $this->methods[$method->getName()] = $method;
-                }
-            }
-
-            if ($this->getParentClassName() !== null) {
-                foreach ($this->getParentClass()->getMethods() as $parentMethod) {
-                    if (!isset($this->methods[$parentMethod->getName()])) {
-                        $this->methods[$parentMethod->getName()] = $parentMethod;
-                    }
-                }
-            }
-
-            foreach ($this->getOwnInterfaces() as $interface) {
-                foreach ($interface->getMethods() as $parentMethod) {
-                    if (!isset($this->methods[$parentMethod->getName()])) {
-                        $this->methods[$parentMethod->getName()] = $parentMethod;
-                    }
-                }
-            }
+        foreach ($this->getOwnTraits() as $traitReflection) {
+            // @todo: check override from the left
+            // keep already existing
+            $allMethods += $traitReflection->getMethods();
         }
 
-        return $this->methods;
+        if ($this->getParentClass()) {
+            // @todo: check override from the left
+            // keep already existing
+            $allMethods += $this->getParentClass()->getMethods();
+        }
+
+        return $allMethods;
     }
 
     /**

@@ -5,6 +5,7 @@ namespace ApiGen\Reflection\Contract\Reflection\Class_;
 use ApiGen\Reflection\Contract\Reflection\Partial\AnnotationsInterface;
 use ApiGen\Reflection\Contract\Reflection\Partial\StartAndEndLineInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitPropertyReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Trait_\TraitReflectionInterface;
 
 interface ClassReflectionInterface extends StartAndEndLineInterface, AnnotationsInterface
 {
@@ -94,12 +95,12 @@ interface ClassReflectionInterface extends StartAndEndLineInterface, Annotations
     public function getOwnConstant(string $name): ClassConstantReflectionInterface;
 
     /**
-     * @return ClassReflectionInterface[]|string[]
+     * @return TraitReflectionInterface[]
      */
     public function getTraits(): array;
 
     /**
-     * @return ClassReflectionInterface[]|string[]
+     * @return TraitReflectionInterface[]
      */
     public function getOwnTraits(): array;
 
