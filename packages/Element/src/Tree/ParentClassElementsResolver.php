@@ -37,7 +37,7 @@ final class ParentClassElementsResolver
             return $propertyReflection->getName();
         }, $classReflection->getOwnProperties()));
 
-        foreach ($classReflection->getParentClasses() as $parentClass) {
+        foreach ($classReflection->getParentClasses() as $parentClassName => $parentClass) {
             $inheritedProperties = [];
             foreach ($parentClass->getOwnProperties() as $property) {
                 if (! array_key_exists($property->getName(), $allProperties) && ! $property->isPrivate()) {
@@ -46,7 +46,7 @@ final class ParentClassElementsResolver
                 }
             }
 
-            $properties = $this->sortElements($inheritedProperties, $properties, $parentClass);
+            $properties = $this->sortElements($inheritedProperties, $properties, $parentClassName);
         }
 
         return $properties;
@@ -62,7 +62,7 @@ final class ParentClassElementsResolver
             return $classMethodReflection->getName();
         }, $classReflection->getOwnMethods()));
 
-        foreach ($this->getParentClassesAndInterfaces($classReflection) as $class) {
+        foreach ($this->getParentClassesAndInterfaces($classReflection) as $parentClassName => $class) {
             $inheritedMethods = [];
             foreach ($class->getOwnMethods() as $method) {
                 if (! array_key_exists($method->getName(), $allMethods) && ! $method->isPrivate()) {
@@ -71,7 +71,7 @@ final class ParentClassElementsResolver
                 }
             }
 
-            $methods = $this->sortElements($inheritedMethods, $methods, $class);
+            $methods = $this->sortElements($inheritedMethods, $methods, $parentClassName);
         }
 
         return $methods;
@@ -91,13 +91,12 @@ final class ParentClassElementsResolver
     /**
      * @param mixed[] $elements
      * @param mixed[] $allElements
-     * @return mixed[]
      */
-    private function sortElements(array $elements, array $allElements, ClassReflectionInterface $reflectionClass): array
+    private function sortElements(array $elements, array $allElements, string $classOrInterfaceName): array
     {
         if (! empty($elements)) {
             ksort($elements);
-            $allElements[$reflectionClass->getName()] = array_values($elements);
+            $allElements[$classOrInterfaceName] = array_values($elements);
         }
 
         return $allElements;
