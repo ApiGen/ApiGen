@@ -6,3 +6,4 @@
 - ApiGen\Element\Namespaces\NamespaceStorage
 
 - ApiGen\Element\Tree\ImplementersResolver
+- ApiGen\Element\Tree\ParentClassElementsResolver

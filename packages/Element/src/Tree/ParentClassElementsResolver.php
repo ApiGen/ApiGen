@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Reflection\Tree;
+namespace ApiGen\Element\Tree;
 
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassConstantReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassMethodReflectionInterface;
