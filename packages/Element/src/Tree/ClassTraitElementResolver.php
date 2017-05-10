@@ -9,20 +9,6 @@ use ApiGen\Reflection\Contract\Reflection\Trait_\TraitPropertyReflectionInterfac
 final class ClassTraitElementResolver
 {
     /**
-     * @return TraitMethodReflectionInterface[]
-     */
-    public function getTraitMethods(): array
-    {
-        $methods = [];
-        foreach ($this->originalReflection->getTraitMethods() as $method) {
-            $apiMethod = $this->transformerCollector->transformSingle($method);
-            $methods[$method->getName()] = $apiMethod;
-        }
-
-        return $methods;
-    }
-
-    /**
      * @return TraitPropertyReflectionInterface[][]
      */
     public function getUsedProperties(): array

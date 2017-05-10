@@ -521,7 +521,11 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
      */
     public function getTraitMethods(): array
     {
-        return $this->classTraitElementExtractor->getTraitMethods();
+        $traitMethods = [];
+        foreach ($this->getTraits() as $traitReflection) {
+            $traitMethods = array_merge($traitMethods, $traitReflection->getMethods());
+        }
+        return $traitMethods;
     }
 
     /**
