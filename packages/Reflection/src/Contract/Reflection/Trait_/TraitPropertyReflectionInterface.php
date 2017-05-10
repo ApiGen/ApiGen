@@ -2,6 +2,7 @@
 
 namespace ApiGen\Reflection\Contract\Reflection\Trait_;
 
+use ApiGen\Reflection\Contract\Reflection\Partial\AccessLevelInterface;
 use ApiGen\Reflection\Contract\Reflection\Partial\AnnotationsInterface;
 use ApiGen\Reflection\Contract\Reflection\Partial\StartAndEndLineInterface;
 

@@ -332,20 +332,9 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
      */
     public function getProperties(): array
     {
-        if ($this->properties === null) {
-            $this->properties = $this->getOwnProperties();
-            foreach ($this->betterClassReflection->getProperties() as $property) {
-                /** @var ReflectionElement $property */
-                if (isset($this->properties[$property->getName()])) {
-                    continue;
-                }
-
-                $apiProperty = $this->transformerCollector->transformSingle($property);
-                $this->properties[$property->getName()] = $apiProperty;
-            }
-        }
-
-        return $this->properties;
+        return $this->transformerCollector->transformGroup(
+            $this->betterClassReflection->getProperties()
+        );
     }
 
     /**
@@ -353,16 +342,9 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
      */
     public function getOwnProperties(): array
     {
-        if ($this->ownProperties === null) {
-            $this->ownProperties = [];
-            foreach ($this->betterClassReflection->getOwnProperties() as $property) {
-                $apiProperty = $this->transformerCollector->transformSingle($property);
-                /** @var ReflectionElement $property */
-                $this->ownProperties[$property->getName()] = $apiProperty;
-            }
-        }
-
-        return $this->ownProperties;
+        return $this->transformerCollector->transformGroup(
+            $this->betterClassReflection->getImmediateProperties()
+        );
     }
 
     /**
@@ -383,15 +365,15 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
 
     public function getProperty(string $name): ClassPropertyReflectionInterface
     {
-        if ($this->hasProperty($name)) {
-            return $this->properties[$name];
+        if (! $this->hasProperty($name)) {
+            throw new \InvalidArgumentException(sprintf(
+                'Property %s does not exist in class %s',
+                $name,
+                $this->getName()
+            ));
         }
 
-        throw new InvalidArgumentException(sprintf(
-            'Property %s does not exist in class %s',
-            $name,
-            $this->betterClassReflection->getName()
-        ));
+        return $this->getProperties()[$name];
     }
 
     public function hasProperty(string $name): bool

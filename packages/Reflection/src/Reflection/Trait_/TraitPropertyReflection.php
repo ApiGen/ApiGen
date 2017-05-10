@@ -177,4 +177,9 @@ final class TraitPropertyReflection implements TraitPropertyReflectionInterface
         // @todo
         return $this->betterPropertyReflection->getDefaultValue();
     }
+
+    public function isDeprecated(): bool
+    {
+        return $this->hasAnnotation(AnnotationList::DEPRECATED);
+    }
 }

@@ -3,7 +3,7 @@
 namespace ApiGen\Tests\Parser\Reflection\Class_\ClassReflection;
 
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassPropertyReflectionInterface;
-use ApiGen\Tests\Parser\Reflection\ReflectionClass\AbstractReflectionClassTestCase;
+use ApiGen\Reflection\Tests\Reflection\Class_\ClassReflection\AbstractReflectionClassTestCase;
 
 final class PropertyTest extends AbstractReflectionClassTestCase
 {

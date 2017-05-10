@@ -42,7 +42,7 @@ final class ClassPropertyReflectionTransformer implements TransformerInterface
      */
     public function transform($reflection): ClassPropertyReflectionInterface
     {
-        $docBlock = $this->docBlockFactory->create($reflection->getDocBlockTypes() ?: ' ');
+        $docBlock = $this->docBlockFactory->create($reflection->getDocComment() ?: ' ');
 
         return new ClassPropertyReflection($reflection, $docBlock);
     }
