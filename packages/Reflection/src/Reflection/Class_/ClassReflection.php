@@ -360,7 +360,7 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
      */
     public function getUsedProperties(): array
     {
-        return $this->classTraitElementExtractor->getUsedProperties();
+        return $this->classTraitElementResolver->getUsedProperties($this);
     }
 
     public function getProperty(string $name): ClassPropertyReflectionInterface

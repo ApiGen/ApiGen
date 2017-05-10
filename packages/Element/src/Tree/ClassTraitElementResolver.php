@@ -11,29 +11,24 @@ final class ClassTraitElementResolver
     /**
      * @return TraitPropertyReflectionInterface[][]
      */
-    public function getUsedProperties(): array
+    public function getUsedProperties(ClassReflectionInterface $classReflection): array
     {
-        $allProperties = array_flip(array_map(function (ClassPropertyReflectionInterface $property) {
-            return $property->getName();
-        }, $this->classReflection->getOwnProperties()));
+        $ownPropertiesNames = array_keys($classReflection->getOwnProperties());
+        $ownPropertiesNames = array_combine($ownPropertiesNames, $ownPropertiesNames);
 
         $properties = [];
-        foreach ($this->classReflection->getTraits() as $trait) {
-            if (! $trait instanceof ClassReflectionInterface) {
-                continue;
-            }
-
+        foreach ($classReflection->getTraits() as $traitReflection) {
             $usedProperties = [];
-            foreach ($trait->getOwnProperties() as $property) {
-                if (! array_key_exists($property->getName(), $allProperties)) {
+            foreach ($traitReflection->getOwnProperties() as $property) {
+                if (! array_key_exists($property->getName(), $ownPropertiesNames)) {
                     $usedProperties[$property->getName()] = $property;
-                    $allProperties[$property->getName()] = null;
+                    $ownPropertiesNames[$property->getName()] = null;
                 }
             }
 
             if (! empty($usedProperties)) {
                 ksort($usedProperties);
-                $properties[$trait->getName()] = array_values($usedProperties);
+                $properties[$traitReflection->getName()] = array_values($usedProperties);
             }
         }
 

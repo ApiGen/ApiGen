@@ -150,4 +150,9 @@ interface ClassReflectionInterface extends StartAndEndLineInterface, Annotations
     public function getConstants(): array;
 
     public function isDeprecated(): bool;
+
+    /**
+     * @return TraitPropertyReflectionInterface[]
+     */
+    public function getUsedProperties(): array;
 }

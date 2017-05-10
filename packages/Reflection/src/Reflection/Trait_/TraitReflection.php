@@ -180,7 +180,9 @@ final class TraitReflection implements TraitReflectionInterface, TransformerColl
      */
     public function getOwnProperties(): array
     {
-        // TODO: Implement getOwnProperties() method.
+        return $this->transformerCollector->transformGroup(
+            $this->betterTraitReflection->getImmediateProperties()
+        );
     }
 
     /**
