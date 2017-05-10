@@ -6,11 +6,12 @@ use ApiGen\Reflection\Contract\Reflection\Class_\ClassMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitReflectionInterface;
+use ApiGen\Reflection\Contract\TransformerCollectorAwareInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorInterface;
 use phpDocumentor\Reflection\DocBlock;
 use Roave\BetterReflection\Reflection\ReflectionMethod;
 
-final class TraitMethodReflection implements TraitMethodReflectionInterface
+final class TraitMethodReflection implements TraitMethodReflectionInterface, TransformerCollectorAwareInterface
 {
     /**
      * @var ReflectionMethod
@@ -45,7 +46,9 @@ final class TraitMethodReflection implements TraitMethodReflectionInterface
 
     public function getDeclaringTrait(): TraitReflectionInterface
     {
-        return $this->transformerCollector->transformSingle($this->betterMethodReflection->getDeclaringClass());
+        return $this->transformerCollector->transformSingle(
+            $this->betterMethodReflection->getDeclaringClass()
+        );
     }
 
     public function getDeclaringTraitName(): string
@@ -152,5 +155,10 @@ final class TraitMethodReflection implements TraitMethodReflectionInterface
     public function isPrivate(): bool
     {
         return $this->betterMethodReflection->isPrivate();
+    }
+
+    public function setTransformerCollector(TransformerCollectorInterface $transformerCollector): void
+    {
+        $this->transformerCollector = $transformerCollector;
     }
 }
