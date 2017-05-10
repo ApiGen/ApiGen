@@ -3,6 +3,7 @@
 namespace ApiGen\Reflection\Reflection\Class_;
 
 use ApiGen\Annotation\AnnotationList;
+use ApiGen\Element\Tree\ClassTraitElementResolver;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassPropertyReflectionInterface;
@@ -38,11 +39,21 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
      */
     private $parentClassElementsResolver;
 
-    public function __construct(ReflectionClass $betterClassReflection, DocBlock $docBlock, ParentClassElementsResolver $parentClassElementsResolver)
-    {
+    /**
+     * @var ClassTraitElementResolver
+     */
+    private $classTraitElementResolver;
+
+    public function __construct(
+        ReflectionClass $betterClassReflection,
+        DocBlock $docBlock,
+        ParentClassElementsResolver $parentClassElementsResolver,
+        ClassTraitElementResolver $classTraitElementResolver
+    ) {
         $this->betterClassReflection = $betterClassReflection;
         $this->docBlock = $docBlock;
         $this->parentClassElementsResolver = $parentClassElementsResolver;
+        $this->classTraitElementResolver = $classTraitElementResolver;
     }
 
     public function getName(): string
@@ -225,7 +236,7 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
      */
     public function getUsedMethods(): array
     {
-        $usedMethods = $this->classTraitElementExtractor->getUsedMethods();
+        $usedMethods = $this->classTraitElementResolver->getUsedMethods($this);
 
         return $this->sortUsedMethods($usedMethods);
     }
@@ -370,14 +381,6 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
     public function getInheritedProperties(): array
     {
         return $this->parentClassElementsResolver->getInheritedProperties($this);
-    }
-
-    /**
-     * @return ClassPropertyReflectionInterface[]
-     */
-    public function getTraitProperties(): array
-    {
-        return $this->classTraitElementExtractor->getTraitProperties();
     }
 
     /**

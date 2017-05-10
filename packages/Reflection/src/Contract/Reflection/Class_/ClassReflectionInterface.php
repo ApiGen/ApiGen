@@ -131,11 +131,6 @@ interface ClassReflectionInterface extends StartAndEndLineInterface, Annotations
      */
     public function getInheritedProperties(): array;
 
-    /**
-     * @return TraitPropertyReflectionInterface[]
-     */
-    public function getTraitProperties(): array;
-
     public function getProperty(string $name): ClassPropertyReflectionInterface;
 
     public function hasProperty(string $name): bool;

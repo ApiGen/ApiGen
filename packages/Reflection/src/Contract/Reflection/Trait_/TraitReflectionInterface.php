@@ -83,11 +83,6 @@ interface TraitReflectionInterface extends AnnotationsInterface
     /**
      * @return TraitPropertyReflectionInterface[]
      */
-    public function getTraitProperties(): array;
-
-    /**
-     * @return TraitPropertyReflectionInterface[]
-     */
     public function getUsedProperties(): array;
 
     public function getProperty(string $name): TraitPropertyReflectionInterface;

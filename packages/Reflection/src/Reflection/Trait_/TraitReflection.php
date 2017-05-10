@@ -186,14 +186,6 @@ final class TraitReflection implements TraitReflectionInterface, TransformerColl
     /**
      * @return TraitPropertyReflectionInterface[]
      */
-    public function getTraitProperties(): array
-    {
-        // TODO: Implement getTraitProperties() method.
-    }
-
-    /**
-     * @return TraitPropertyReflectionInterface[]
-     */
     public function getUsedProperties(): array
     {
         // TODO: Implement getUsedProperties() method.

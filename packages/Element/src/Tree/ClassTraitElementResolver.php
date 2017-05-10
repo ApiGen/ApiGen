@@ -9,21 +9,6 @@ use ApiGen\Reflection\Contract\Reflection\Trait_\TraitPropertyReflectionInterfac
 final class ClassTraitElementResolver
 {
     /**
-     * @return TraitPropertyReflectionInterface[]
-     */
-    public function getTraitProperties(): array
-    {
-        $properties = [];
-        $traitProperties = $this->originalReflection->getTraitProperties();
-        foreach ($traitProperties as $property) {
-            $apiProperty = $this->transformerCollector->transformSingle($property);
-            $properties[$property->getName()] = $apiProperty;
-        }
-
-        return $properties;
-    }
-
-    /**
      * @return TraitMethodReflectionInterface[]
      */
     public function getTraitMethods(): array
@@ -72,15 +57,15 @@ final class ClassTraitElementResolver
     /**
      * @return TraitMethodReflectionInterface[]
      */
-    public function getUsedMethods(): array
+    public function getUsedMethods(ClassReflectionInterface $classReflection): array
     {
         $usedMethods = [];
-        foreach ($this->classReflection->getMethods() as $methodReflection) {
-            if ($methodReflection->getDeclaringTraitName() === ''
-                || $methodReflection->getDeclaringTraitName() === $this->classReflection->getName()
-            ) {
+        foreach ($classReflection->getTraitMethods() as $methodReflection) {
+            /* @todo: for traits - skip own metods
+            if ($methodReflection->getDeclaringTraitName() === $classReflection->getName()) {
                 continue;
             }
+             */
 
             $traitName = $methodReflection->getDeclaringTraitName();
             $methodName = $methodReflection->getName();
@@ -94,9 +79,10 @@ final class ClassTraitElementResolver
         return $usedMethods;
     }
 
-    private function wasMethodNameAliased(ClassMethodReflectionInterface $methodReflection): bool
+    private function wasMethodNameAliased(TraitMethodReflectionInterface $traitMethodReflection): bool
     {
-        return $methodReflection->getOriginalName() !== null
-            && $methodReflection->getOriginalName() !== $methodReflection->getName();
+
+        return $traitMethodReflection->getOriginalName() !== null
+            && $traitMethodReflection->getOriginalName() !== $traitMethodReflection->getName();
     }
 }

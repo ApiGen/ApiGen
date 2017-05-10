@@ -2,6 +2,7 @@
 
 namespace ApiGen\Reflection\Transformer\BetterReflection\Class_;
 
+use ApiGen\Element\Tree\ClassTraitElementResolver;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Reflection\Class_\ClassReflection;
 use ApiGen\Reflection\Contract\Transformer\TransformerInterface;
@@ -21,10 +22,19 @@ final class ClassReflectionTransformer implements TransformerInterface
      */
     private $parentClassElementsResolver;
 
-    public function __construct(DocBlockFactory $docBlockFactory, ParentClassElementsResolver $parentClassElementsResolver)
-    {
+    /**
+     * @var ClassTraitElementResolver
+     */
+    private $classTraitElementResolver;
+
+    public function __construct(
+        DocBlockFactory $docBlockFactory,
+        ParentClassElementsResolver $parentClassElementsResolver,
+        ClassTraitElementResolver $classTraitElementResolver
+    ) {
         $this->docBlockFactory = $docBlockFactory;
         $this->parentClassElementsResolver = $parentClassElementsResolver;
+        $this->classTraitElementResolver = $classTraitElementResolver;
     }
 
     /**
@@ -42,6 +52,8 @@ final class ClassReflectionTransformer implements TransformerInterface
     {
         $docBlock = $this->docBlockFactory->create($reflection->getDocComment() ?: ' ');
 
-        return new ClassReflection($reflection, $docBlock, $this->parentClassElementsResolver);
+        return new ClassReflection(
+            $reflection, $docBlock, $this->parentClassElementsResolver, $this->classTraitElementResolver
+        );
     }
 }

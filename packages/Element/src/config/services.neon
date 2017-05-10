@@ -7,3 +7,4 @@
 
 - ApiGen\Element\Tree\ImplementersResolver
 - ApiGen\Element\Tree\ParentClassElementsResolver
+- ApiGen\Element\Tree\ClassTraitElementResolver
