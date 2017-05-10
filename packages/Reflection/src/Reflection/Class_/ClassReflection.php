@@ -4,6 +4,7 @@ namespace ApiGen\Reflection\Reflection\Class_;
 
 use ApiGen\Annotation\AnnotationList;
 use ApiGen\Element\Tree\ClassTraitElementResolver;
+use ApiGen\Element\Tree\SubClassesResolver;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassPropertyReflectionInterface;
@@ -44,16 +45,23 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
      */
     private $classTraitElementResolver;
 
+    /**
+     * @var SubClassesResolver
+     */
+    private $subClassesResolver;
+
     public function __construct(
         ReflectionClass $betterClassReflection,
         DocBlock $docBlock,
         ParentClassElementsResolver $parentClassElementsResolver,
-        ClassTraitElementResolver $classTraitElementResolver
+        ClassTraitElementResolver $classTraitElementResolver,
+        SubClassesResolver $subClassesResolver
     ) {
         $this->betterClassReflection = $betterClassReflection;
         $this->docBlock = $docBlock;
         $this->parentClassElementsResolver = $parentClassElementsResolver;
         $this->classTraitElementResolver = $classTraitElementResolver;
+        $this->subClassesResolver = $subClassesResolver;
     }
 
     public function getName(): string
@@ -131,7 +139,7 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
     {
         if ($this->betterClassReflection->getParentClass()) {
             return $this->betterClassReflection->getParentClass()
-                ->getShortName();
+                ->getName();
         }
 
         return '';
@@ -158,15 +166,7 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
      */
     public function getDirectSubClasses(): array
     {
-        $subClasses = [];
-        foreach ($this->getParsedClasses() as $class) {
-            if ($this->getName() === $class->getParentClassName()) {
-                $subClasses[] = $class;
-            }
-        }
-
-        uksort($subClasses, 'strcasecmp');
-        return $subClasses;
+        return $this->subClassesResolver->getDirectSubClasses($this);
     }
 
     /**
@@ -174,17 +174,7 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
      */
     public function getIndirectSubClasses(): array
     {
-        $subClasses = [];
-        foreach ($this->getParsedClasses() as $class) {
-            if ($this->getName() !== $class->getParentClassName()
-                && $class->isSubclassOf($this->getName())
-            ) {
-                $subClasses[] = $class;
-            }
-        }
-
-        uksort($subClasses, 'strcasecmp');
-        return $subClasses;
+        return $this->subClassesResolver->getIndirectSubClasses($this);
     }
 
     public function implementsInterface(string $interface): bool
@@ -412,14 +402,6 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
     public function usesTrait(string $trait): bool
     {
         return $this->betterClassReflection->usesTrait($trait);
-    }
-
-    /**
-     * @return ClassReflectionInterface[]
-     */
-    public function getParsedClasses(): array
-    {
-        // TODO: Implement getParsedClasses() method.
     }
 
     public function isAbstract(): bool

@@ -3,6 +3,7 @@
 namespace ApiGen\Tests\Parser\Reflection\ReflectionClass;
 
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
+use ApiGen\Reflection\Tests\Reflection\Class_\ClassReflection\AbstractReflectionClassTestCase;
 use ApiGen\Reflection\Tests\Reflection\Class_\ClassReflection\Source\ParentClass;
 
 final class ParentsTest extends AbstractReflectionClassTestCase
@@ -26,9 +27,9 @@ final class ParentsTest extends AbstractReflectionClassTestCase
     {
         $this->assertCount(1, $this->reflectionClassOfParent->getDirectSubClasses());
     }
-
-    public function testIndirectSubClasses(): void
-    {
-        $this->assertCount(0, $this->reflectionClassOfParent->getIndirectSubClasses());
-    }
+//
+//    public function testIndirectSubClasses(): void
+//    {
+//        $this->assertCount(0, $this->reflectionClassOfParent->getIndirectSubClasses());
+//    }
 }
