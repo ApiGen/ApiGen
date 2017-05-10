@@ -3,8 +3,9 @@
 namespace ApiGen\Tests\Parser\Reflection\ReflectionClass;
 
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
-use ApiGen\Tests\Parser\Reflection\ReflectionClassSource\AccessLevels;
-use ApiGen\Tests\Parser\Reflection\ReflectionClassSource\ParentClass;
+use ApiGen\Reflection\Tests\Reflection\Class_\ClassReflection\AbstractReflectionClassTestCase;
+use ApiGen\Reflection\Tests\Reflection\Class_\ClassReflection\Source\AccessLevels;
+use ApiGen\Reflection\Tests\Reflection\Class_\ClassReflection\Source\ParentClass;
 
 final class ReflectionClassTest extends AbstractReflectionClassTestCase
 {
@@ -13,29 +14,16 @@ final class ReflectionClassTest extends AbstractReflectionClassTestCase
         $this->assertInstanceOf(ClassReflectionInterface::class, $this->reflectionClass);
     }
 
-    public function testGetName(): void
+    public function testName(): void
     {
         $this->assertSame(AccessLevels::class, $this->reflectionClass->getName());
-    }
-
-    public function testGetShortName(): void
-    {
         $this->assertSame('AccessLevels', $this->reflectionClass->getShortName());
     }
 
-    public function testIsAbstract(): void
+    public function testModifiers(): void
     {
         $this->assertFalse($this->reflectionClass->isAbstract());
-    }
-
-    public function testIsFinal(): void
-    {
         $this->assertTrue($this->reflectionClass->isFinal());
-    }
-
-    public function testIsException(): void
-    {
-        $this->assertFalse($this->reflectionClass->isException());
     }
 
     public function testIsSubclassOf(): void
