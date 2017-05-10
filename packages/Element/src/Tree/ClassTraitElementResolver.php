@@ -1,66 +1,15 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Parser\Reflection\Extractors;
+namespace ApiGen\Element\Tree;
 
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\Extractors\ClassTraitElementsExtractorInterface;
-use ApiGen\Reflection\Contract\Reflection\ClassMethodReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\ClassPropertyReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Trait_\TraitMethodReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Trait_\TraitPropertyReflectionInterface;
 
-final class TraitElementsExtractor implements ClassTraitElementsExtractorInterface
+final class ClassTraitElementResolver
 {
     /**
-     * @var ClassReflectionInterface
-     */
-    private $classReflection;
-
-    /**
-     * @var \TokenReflection\IReflection|ClassReflectionInterface
-     */
-    private $originalReflection;
-
-    public function __construct(ClassReflectionInterface $classReflection, IReflection $originalReflection)
-    {
-        $this->classReflection = $classReflection;
-        $this->originalReflection = $originalReflection;
-    }
-
-    /**
-     * @return ClassReflectionInterface[]
-     */
-    public function getDirectUsers(): array
-    {
-        $users = [];
-        $name = $this->classReflection->getName();
-        foreach ($this->classReflection->getParsedClasses() as $class) {
-            if (in_array($name, $class->getOwnTraitNames())) {
-                $users[] = $class;
-            }
-        }
-
-        uksort($users, 'strcasecmp');
-        return $users;
-    }
-
-    /**
-     * @return ClassReflectionInterface[]
-     */
-    public function getIndirectUsers(): array
-    {
-        $users = [];
-        $name = $this->classReflection->getName();
-        foreach ($this->classReflection->getParsedClasses() as $class) {
-            if ($class->usesTrait($name) && ! in_array($name, $class->getOwnTraitNames())) {
-                $users[] = $class;
-            }
-        }
-
-        uksort($users, 'strcasecmp');
-        return $users;
-    }
-
-    /**
-     * @return ClassPropertyReflectionInterface[]
+     * @return TraitPropertyReflectionInterface[]
      */
     public function getTraitProperties(): array
     {
@@ -75,7 +24,7 @@ final class TraitElementsExtractor implements ClassTraitElementsExtractorInterfa
     }
 
     /**
-     * @return ClassMethodReflectionInterface[]
+     * @return TraitMethodReflectionInterface[]
      */
     public function getTraitMethods(): array
     {
@@ -89,7 +38,7 @@ final class TraitElementsExtractor implements ClassTraitElementsExtractorInterfa
     }
 
     /**
-     * @return ClassPropertyReflectionInterface[][]
+     * @return TraitPropertyReflectionInterface[][]
      */
     public function getUsedProperties(): array
     {
@@ -121,7 +70,7 @@ final class TraitElementsExtractor implements ClassTraitElementsExtractorInterfa
     }
 
     /**
-     * @return ClassMethodReflectionInterface[]
+     * @return TraitMethodReflectionInterface[]
      */
     public function getUsedMethods(): array
     {

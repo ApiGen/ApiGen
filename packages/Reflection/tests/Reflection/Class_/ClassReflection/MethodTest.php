@@ -44,12 +44,11 @@ final class MethodTest extends AbstractReflectionClassTestCase
 
     public function testGetInheritedMethods(): void
     {
-        // @todo fix
         $this->assertCount(1, $this->reflectionClass->getInheritedMethods());
     }
-//
-//    public function testGetUsedMethods(): void
-//    {
-//        $this->assertCount(1, $this->reflectionClass->getUsedMethods());
-//    }
+
+    public function testGetUsedMethods(): void
+    {
+        $this->assertCount(1, $this->reflectionClass->getUsedMethods());
+    }
 }
