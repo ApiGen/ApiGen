@@ -11,6 +11,7 @@ use ApiGen\Reflection\Contract\Reflection\Trait_\TraitMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitReflectionInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorAwareInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorInterface;
+use ApiGen\Reflection\Tree\ParentClassElementsResolver;
 use phpDocumentor\Reflection\DocBlock;
 use Roave\BetterReflection\Reflection\ReflectionClass;
 
@@ -31,10 +32,16 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
      */
     private $transformerCollector;
 
-    public function __construct(ReflectionClass $betterClassReflection, DocBlock $docBlock)
+    /**
+     * @var ParentClassElementsResolver
+     */
+    private $parentClassElementsResolver;
+
+    public function __construct(ReflectionClass $betterClassReflection, DocBlock $docBlock, ParentClassElementsResolver $parentClassElementsResolver)
     {
         $this->betterClassReflection = $betterClassReflection;
         $this->docBlock = $docBlock;
+        $this->parentClassElementsResolver = $parentClassElementsResolver;
     }
 
     public function getName(): string
