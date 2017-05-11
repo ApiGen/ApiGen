@@ -5,7 +5,9 @@ namespace ApiGen\Reflection\Tests\Reflection\Interface_\InterfaceReflection;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceReflectionInterface;
 use ApiGen\Reflection\Tests\Reflection\Interface_\InterfaceReflection\Source\PoorInterface;
+use ApiGen\Reflection\Tests\Reflection\Interface_\InterfaceReflection\Source\RichInterface;
 use ApiGen\Reflection\Tests\Reflection\Interface_\InterfaceReflection\Source\SomeClass;
+use ApiGen\Reflection\Tests\Reflection\Interface_\InterfaceReflection\Source\SomeInterface;
 use ApiGen\Tests\AbstractParserAwareTestCase;
 
 final class ImplementersTest extends AbstractParserAwareTestCase
@@ -32,8 +34,15 @@ final class ImplementersTest extends AbstractParserAwareTestCase
     {
         $implementers = $this->interfaceReflection->getImplementers();
 
-        $this->assertCount(1, $implementers);
+        $this->assertCount(3, $implementers);
+
         $this->assertArrayHasKey(SomeClass::class, $implementers);
         $this->assertInstanceOf(ClassReflectionInterface::class, $implementers[SomeClass::class]);
+
+        $this->assertArrayHasKey(RichInterface::class, $implementers);
+        $this->assertInstanceOf(InterfaceReflectionInterface::class, $implementers[RichInterface::class]);
+
+        $this->assertArrayHasKey(SomeInterface::class, $implementers);
+        $this->assertInstanceOf(InterfaceReflectionInterface::class, $implementers[SomeInterface::class]);
     }
 }

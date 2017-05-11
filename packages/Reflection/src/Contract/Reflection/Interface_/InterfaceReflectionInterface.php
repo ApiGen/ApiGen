@@ -13,7 +13,7 @@ interface InterfaceReflectionInterface extends StartAndEndLineInterface, Annotat
     public function getFileName(): string;
 
     /**
-     * @return ClassReflectionInterface[]
+     * @return ClassReflectionInterface[]|InterfaceReflectionInterface[]
      */
     public function getImplementers(): array;
 

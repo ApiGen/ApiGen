@@ -19,14 +19,20 @@ final class ImplementersResolver
     }
 
     /**
-     * @return ClassReflectionInterface[]
+     * @return ClassReflectionInterface[]|InterfaceReflectionInterface[]
      */
-    public function getImplementers(InterfaceReflectionInterface $interfaceReflection): array
+    public function getImplementers(InterfaceReflectionInterface $parentInterfaceReflection): array
     {
         $implementers = [];
         foreach ($this->reflectionStorage->getClassReflections() as $classReflection) {
-            if ($classReflection->implementsInterface($interfaceReflection->getName())) {
+            if ($classReflection->implementsInterface($parentInterfaceReflection->getName())) {
                 $implementers[$classReflection->getName()] = $classReflection;
+            }
+        }
+
+        foreach ($this->reflectionStorage->getInterfaceReflections() as $interfaceReflection) {
+            if ($interfaceReflection->implementsInterface($parentInterfaceReflection->getName())) {
+                $implementers[$interfaceReflection->getName()] = $interfaceReflection;
             }
         }
 
