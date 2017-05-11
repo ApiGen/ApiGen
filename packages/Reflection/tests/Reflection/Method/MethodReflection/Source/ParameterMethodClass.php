@@ -1,11 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Tests\Parser\Reflection\ReflectionMethodSource;
+namespace ApiGen\Reflection\Tests\Reflection\Method_\MethodReflection\Source;
 
-/**
- * This is some description
- */
-class ReflectionMethod
+class ParameterMethodClass
 {
     /**
      * Send a POST request

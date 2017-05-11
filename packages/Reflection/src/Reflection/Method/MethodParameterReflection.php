@@ -41,17 +41,17 @@ final class MethodParameterReflection implements MethodParameterReflectionInterf
         return $this->betterParameterReflection->getName();
     }
 
-    /**
-     * @return ClassMethodReflectionInterface|FunctionReflectionInterface
-     */
-    public function getDeclaringFunction()
+    public function getDeclaringFunction(): ClassMethodReflectionInterface
     {
-        return $this->declaringFunction;
+        return $this->transformerCollector->transformSingle(
+            $this->betterParameterReflection->getDeclaringFunction()
+        );
     }
 
     public function getDeclaringFunctionName(): string
     {
-        return $this->declaringFunction->getName();
+        return $this->getDeclaringFunction()
+            ->getName();
     }
 
     public function getTypeHint(): string
@@ -79,7 +79,9 @@ final class MethodParameterReflection implements MethodParameterReflectionInterf
 
     public function getDescription(): string
     {
-        $annotations = $this->declaringFunction->getAnnotation(AnnotationList::PARAM);
+        $annotations = $this->getDeclaringFunction()
+            ->getAnnotation(AnnotationList::PARAM);
+
         if (empty($annotations[$this->betterParameterReflection->getPosition()])) {
             return '';
         }
@@ -127,21 +129,14 @@ final class MethodParameterReflection implements MethodParameterReflectionInterf
 
     public function getDeclaringClassName(): string
     {
-        $declaringClass = $this->getDeclaringClass();
-        if ($declaringClass) {
-            return $declaringClass->getName();
-        }
-
-        return '';
+        return $this->getDeclaringClass()
+            ->getName();
     }
 
-    public function getDeclaringClass(): ?ClassReflectionInterface
+    public function getDeclaringClass(): ClassReflectionInterface
     {
-        if ($this->declaringFunction instanceof ClassMethodReflectionInterface) {
-            return $this->declaringFunction->getDeclaringClass();
-        }
-
-        return null;
+        return $this->getDeclaringFunction()
+            ->getDeclaringClass();
     }
 
     public function isVariadic(): bool
@@ -164,7 +159,9 @@ final class MethodParameterReflection implements MethodParameterReflectionInterf
 
     private function getAnnotation(): ?Param
     {
-        $annotations = $this->declaringFunction->getAnnotation(AnnotationList::PARAM);
+        $annotations = $this->getDeclaringFunction()
+            ->getAnnotation(AnnotationList::PARAM);
+
         if (empty($annotations[$this->betterParameterReflection->getPosition()])) {
             return null;
         }
@@ -180,6 +177,12 @@ final class MethodParameterReflection implements MethodParameterReflectionInterf
         return $this->transformerCollector->transformSingle(
             $this->betterParameterReflection->getDeclaringFunction()
         );
+    }
+
+    public function getDeclaringMethodName(): string
+    {
+        return $this->getDeclaringMethod()
+            ->getName();
     }
 
     public function setTransformerCollector(TransformerCollectorInterface $transformerCollector): void
