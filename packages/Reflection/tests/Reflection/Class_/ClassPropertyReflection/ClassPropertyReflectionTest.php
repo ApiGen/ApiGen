@@ -41,35 +41,21 @@ final class ClassPropertyReflectionTest extends AbstractParserAwareTestCase
     {
         $this->assertSame('int', $this->propertyReflection->getTypeHint());
     }
-//
-//    public function testGetDeclaringClass(): void
-//    {
-//        $this->assertInstanceOf(ClassReflectionInterface::class, $this->propertyReflection->getDeclaringClass());
-//        $this->assertSame(ReflectionMethod::class, $this->propertyReflection->getDeclaringClassName());
-//    }
-//
-//    public function testGetDefaultValue(): void
-//    {
-//        $this->assertSame(52, $this->propertyReflection->getDefaultValue());
-//    }
-//
-//    public function testIsDefault(): void
-//    {
-//        $this->assertTrue($this->propertyReflection->isDefault());
-//    }
-//
-//    public function testIsStatic(): void
-//    {
-//        $this->assertFalse($this->propertyReflection->isStatic());
-//    }
 
-//    public function testGetDeclaringTrait(): void
-//    {
-//        $this->assertNull($this->propertyReflection->getDeclaringTrait());
-//    }
-//
-//    public function testGetDeclaringTraitName(): void
-//    {
-//        $this->assertSame('', $this->propertyReflection->getDeclaringTraitName());
-//    }
+    public function testGetDeclaringClass(): void
+    {
+        $this->assertInstanceOf(ClassReflectionInterface::class, $this->propertyReflection->getDeclaringClass());
+        $this->assertSame(ReflectionMethod::class, $this->propertyReflection->getDeclaringClassName());
+    }
+
+    public function testDefaults(): void
+    {
+        $this->assertTrue($this->propertyReflection->isDefault());
+        $this->assertSame(52, $this->propertyReflection->getDefaultValue());
+    }
+
+    public function testIsStatic(): void
+    {
+        $this->assertFalse($this->propertyReflection->isStatic());
+    }
 }

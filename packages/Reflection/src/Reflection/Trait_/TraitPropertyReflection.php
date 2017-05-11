@@ -7,6 +7,7 @@ use ApiGen\Reflection\Contract\Reflection\Trait_\TraitPropertyReflectionInterfac
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitReflectionInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorInterface;
 use phpDocumentor\Reflection\DocBlock;
+use phpDocumentor\Reflection\DocBlock\Tag;
 use Roave\BetterReflection\Reflection\ReflectionProperty;
 
 final class TraitPropertyReflection implements TraitPropertyReflectionInterface
@@ -96,27 +97,19 @@ final class TraitPropertyReflection implements TraitPropertyReflectionInterface
 
     public function getTypeHint(): string
     {
-        $annotations = $this->getAnnotation(AnnotationList::VAR_);
+        /** @var DocBlock\Tags\Var_[] $varAnnotations */
+        $varAnnotations = $this->getAnnotation(AnnotationList::VAR_);
 
-//        if ($annotations) {
-//            [$types] = preg_split('~\s+|$~', $annotations[0], 2);
-//            if (! empty($types) && $types[0] !== '$') {
-//                return $types;
-//            }
-//        }
+        $typeHints = [];
+        foreach ($varAnnotations as $varAnnotation) {
+            $typeHints[] = (string) $varAnnotation->getType();
+        }
 
-//        try {
-//            $type = gettype($this->getDefaultValue());
-//            if (strtolower($type) !== 'null') {
-//                return $type;
-//            }
-//        } catch (\Exception $exception) {
-//            return '';
-//        }
+        return implode('|', $typeHints);
     }
 
     /**
-     * @return mixed[]
+     * @return Tag[]
      */
     public function getAnnotations(): array
     {

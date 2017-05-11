@@ -5,8 +5,10 @@ namespace ApiGen\Reflection\Reflection\Class_;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceMethodReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Method\MethodParameterReflectionInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorInterface;
 use phpDocumentor\Reflection\DocBlock;
+use phpDocumentor\Reflection\DocBlock\Tag;
 use Roave\BetterReflection\Reflection\ReflectionMethod;
 
 final class ClassMethodReflection implements ClassMethodReflectionInterface
@@ -95,7 +97,7 @@ final class ClassMethodReflection implements ClassMethodReflectionInterface
     }
 
     /**
-     * @return mixed[]
+     * @return Tag[]
      */
     public function getAnnotation(string $name): array
     {
@@ -195,7 +197,7 @@ final class ClassMethodReflection implements ClassMethodReflectionInterface
     }
 
     /**
-     * @return ParameterReflectionInterface[]
+     * @return MethodParameterReflectionInterface[]
      */
     public function getParameters(): array
     {

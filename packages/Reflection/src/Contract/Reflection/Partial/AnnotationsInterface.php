@@ -2,6 +2,8 @@
 
 namespace ApiGen\Reflection\Contract\Reflection\Partial;
 
+use phpDocumentor\Reflection\DocBlock\Tag;
+
 interface AnnotationsInterface
 {
     public function getDescription(): string;
@@ -9,12 +11,12 @@ interface AnnotationsInterface
     public function hasAnnotation(string $name): bool;
 
     /**
-     * @return mixed[]
+     * @return Tag[]
      */
     public function getAnnotation(string $name): array;
 
     /**
-     * @return mixed[]
+     * @return Tag[]|Tag[][]
      */
     public function getAnnotations(): array;
 }

@@ -5,11 +5,12 @@ namespace ApiGen\Reflection\Reflection\Class_;
 use ApiGen\Annotation\AnnotationList;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassPropertyReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
+use ApiGen\Reflection\Contract\TransformerCollectorAwareInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorInterface;
 use phpDocumentor\Reflection\DocBlock;
 use Roave\BetterReflection\Reflection\ReflectionProperty;
 
-final class ClassPropertyReflection implements ClassPropertyReflectionInterface
+final class ClassPropertyReflection implements ClassPropertyReflectionInterface, TransformerCollectorAwareInterface
 {
     /**
      * @var ReflectionProperty
@@ -157,5 +158,10 @@ final class ClassPropertyReflection implements ClassPropertyReflectionInterface
     public function isDeprecated(): bool
     {
         // TODO: Implement isDeprecated() method.
+    }
+
+    public function setTransformerCollector(TransformerCollectorInterface $transformerCollector): void
+    {
+        $this->transformerCollector = $transformerCollector;
     }
 }
