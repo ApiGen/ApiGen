@@ -234,9 +234,7 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
      */
     public function getConstants(): array
     {
-        return $this->transformerCollector->transformGroup(
-            $this->betterClassReflection->getConstants()
-        );
+        return $this->getOwnConstants() + $this->getInheritedConstants();
     }
 
     /**
@@ -244,13 +242,12 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
      */
     public function getOwnConstants(): array
     {
-        $ownConstants = [];
-        foreach ($this->getConstants() as $constantName => $constant) {
-            if ($constant->getDeclaringClassName() === $this->getName()) {
-                $ownConstants[$constantName] = $constant;
-            }
+        $constants = [];
+        foreach ($this->betterClassReflection->getConstants() as $name => $value) {
+            $constants[$name] = ClassConstantReflection::createFromNameValueAndClass($name, $value, $this);
         }
-        return $ownConstants;
+
+        return $constants;
     }
 
     /**
@@ -258,7 +255,17 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
      */
     public function getInheritedConstants(): array
     {
-        return $this->parentClassElementsResolver->getInheritedConstants($this);
+        $parentClassesConstants = [];
+        foreach ($this->getParentClasses() as $classReflection) {
+            $parentClassesConstants += $classReflection->getOwnConstants();
+        }
+
+        $interfaceConstants = [];
+        foreach ($this->getInterfaces() as $interfaceReflection) {
+            $interfaceConstants += $interfaceReflection->getOwnConstants();
+        }
+
+        return $parentClassesConstants + $interfaceConstants;
     }
 
     public function hasConstant(string $name): bool

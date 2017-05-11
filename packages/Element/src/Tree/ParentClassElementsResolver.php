@@ -10,22 +10,22 @@ use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceReflectionInterfac
 
 final class ParentClassElementsResolver
 {
-    /**
-     * @return ClassConstantReflectionInterface[]
-     */
-    public function getInheritedConstants(ClassReflectionInterface $classReflection): array
-    {
-        return array_filter(
-            array_map(
-                function (ClassReflectionInterface $classReflection) {
-                    $classConstantReflections = $classReflection->getOwnConstants();
-                    ksort($classConstantReflections);
-                    return $classConstantReflections;
-                },
-                $this->getParentClassesAndInterfaces($classReflection)
-            )
-        );
-    }
+//    /**
+//     * @return ClassConstantReflectionInterface[]
+//     */
+//    public function getInheritedConstants(ClassReflectionInterface $classReflection): array
+//    {
+//        return array_filter(
+//            array_map(
+//                function (ClassReflectionInterface $classReflection) {
+//                    $classConstantReflections = $classReflection->getOwnConstants();
+//                    ksort($classConstantReflections);
+//                    return $classConstantReflections;
+//                },
+//                $this->getParentClassesAndInterfaces($classReflection)
+//            )
+//        );
+//    }
 
     /**
      * @return ClassPropertyReflectionInterface[][]

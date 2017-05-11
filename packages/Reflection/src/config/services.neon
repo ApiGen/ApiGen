@@ -26,9 +26,3 @@
 - ApiGen\Reflection\Transformer\BetterReflection\Trait_\TraitPropertyReflectionTransformer
 - ApiGen\Reflection\Transformer\BetterReflection\Trait_\TraitReflectionTransformer
 - ApiGen\Reflection\Transformer\BetterReflection\Trait_\TraitMethodReflectionTransformer
-
-
-# Native Transformers
-
-# Class
-- ApiGen\Reflection\Transformer\Native\Class_\ClassConstantReflectionTransformer

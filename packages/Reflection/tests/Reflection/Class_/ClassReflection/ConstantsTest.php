@@ -3,9 +3,15 @@
 namespace ApiGen\Reflection\Tests\Reflection\Class_\ClassReflection;
 
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassConstantReflectionInterface;
+use ApiGen\Reflection\Tests\Reflection\Class_\ClassReflection\Source\AccessLevels;
 
 final class ConstantsTest extends AbstractReflectionClassTestCase
 {
+    public function testName()
+    {
+        $this->assertSame(AccessLevels::class, $this->reflectionClass->getName());
+    }
+
     public function testGetConstants(): void
     {
         $this->assertCount(2, $this->reflectionClass->getConstants());
