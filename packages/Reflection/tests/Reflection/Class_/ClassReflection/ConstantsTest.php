@@ -7,7 +7,7 @@ use ApiGen\Reflection\Tests\Reflection\Class_\ClassReflection\Source\AccessLevel
 
 final class ConstantsTest extends AbstractReflectionClassTestCase
 {
-    public function testName()
+    public function testName(): void
     {
         $this->assertSame(AccessLevels::class, $this->reflectionClass->getName());
     }
@@ -40,25 +40,25 @@ final class ConstantsTest extends AbstractReflectionClassTestCase
             $this->reflectionClass->getOwnConstant('LEVEL')
         );
     }
-//
-//    /**
-//     * @expectedException \InvalidArgumentException
-//     */
-//    public function testGetOwnConstantNonExisting(): void
-//    {
-//        $this->reflectionClass->getOwnConstant('NON_EXISTING');
-//    }
-//
-//    /**
-//     * @expectedException \InvalidArgumentException
-//     */
-//    public function testGetConstantNonExisting(): void
-//    {
-//        $this->reflectionClass->getConstant('NON_EXISTING');
-//    }
-//
-//    public function testGetInheritedConstants(): void
-//    {
-//        $this->assertCount(1, $this->reflectionClass->getInheritedConstants());
-//    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testGetOwnConstantNonExisting(): void
+    {
+        $this->reflectionClass->getOwnConstant('NON_EXISTING');
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testGetConstantNonExisting(): void
+    {
+        $this->reflectionClass->getConstant('NON_EXISTING');
+    }
+
+    public function testGetInheritedConstants(): void
+    {
+        $this->assertCount(1, $this->reflectionClass->getInheritedConstants());
+    }
 }
