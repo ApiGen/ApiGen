@@ -28,17 +28,13 @@
 		{/foreach}
 	{/define}
 
-	<div n:if="$interface->getDirectImplementers()">
-		<h4>Direct known implementers</h4>
-		{include children, children => $interface->getDirectImplementers()}
-	</div>
-
-    {if $interface->getDirectImplementers() && $interface->getIndirectImplementers()}<br>{/if}
-
-	<div n:if="$interface->getIndirectImplementers()">
-		<h4>Indirect known implementers</h4>
-		{include children, children => $interface->getIndirectImplementers()}
-	</div>
+    {if $interface->getImplementers()}
+        <br>
+        <div>
+            <h4>Known implementers</h4>
+            {include children, children => $interface->getImplementers()}
+        </div>
+    {/if}
 
 	<div class="info">
 		{if $interface->getNamespaceName()}<b>Namespace:</b> {$interface->getNamespaceName()|namespaceLinks|noescape}<br>{/if}
