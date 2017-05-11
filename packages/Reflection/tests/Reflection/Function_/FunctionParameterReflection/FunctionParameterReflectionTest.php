@@ -29,11 +29,6 @@ final class FunctionParameterReflectionTest extends AbstractParserAwareTestCase
         $this->functionParameterReflection = $functionParametersReflections['arguments'];
     }
 
-    public function testName(): void
-    {
-        $this->assertSame('arguments', $this->functionParameterReflection->getName());
-    }
-
     public function testDeclaringFunction(): void
     {
         $this->assertInstanceOf(
