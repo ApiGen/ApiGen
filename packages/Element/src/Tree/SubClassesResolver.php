@@ -20,29 +20,11 @@ final class SubClassesResolver
     /**
      * @return ClassReflectionInterface[]
      */
-    public function getDirectSubClasses(ClassReflectionInterface $parentClassReflection): array
+    public function getSubClasses(ClassReflectionInterface $parentClassReflection): array
     {
         $subClasses = [];
         foreach ($this->reflectionStorage->getClassReflections() as $classReflection) {
-            if ($classReflection->getParentClassName() === $parentClassReflection->getName()) {
-                $subClasses[$classReflection->getName()] = $classReflection;
-            }
-        }
-
-        uksort($subClasses, 'strcasecmp');
-        return $subClasses;
-    }
-
-    /**
-     * @return ClassReflectionInterface[]
-     */
-    public function getIndirectSubClasses(ClassReflectionInterface $parentClasReflection): array
-    {
-        $subClasses = [];
-        foreach ($this->reflectionStorage->getClassReflections() as $classReflection) {
-            if ($classReflection->getParentClassName() !== $parentClasReflection->getName()
-                && $classReflection->isSubclassOf($parentClasReflection->getName())
-            ) {
+            if ($classReflection->isSubclassOf($parentClassReflection->getName())) {
                 $subClasses[$classReflection->getName()] = $classReflection;
             }
         }

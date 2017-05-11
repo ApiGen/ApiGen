@@ -27,12 +27,7 @@ interface ClassReflectionInterface extends StartAndEndLineInterface, Annotations
     /**
      * @return ClassReflectionInterface[]
      */
-    public function getDirectSubClasses(): array;
-
-    /**
-     * @return ClassReflectionInterface[]
-     */
-    public function getIndirectSubClasses(): array;
+    public function getSubClasses(): array;
 
     public function implementsInterface(string $name): bool;
 

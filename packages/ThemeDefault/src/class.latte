@@ -37,14 +37,9 @@
 		{/foreach}
 	{/define}
 
-	<div n:if="$class->getDirectSubClasses()">
-		<h4>Direct known subclasses</h4>
-		{include children, children => $class->getDirectSubClasses()}
-	</div>
-
-	<div n:if="$class->getIndirectSubClasses()">
-		<h4>Indirect known subclasses</h4>
-		{include children, children => $class->getIndirectSubClasses()}
+	<div n:if="$class->getSubClasses()">
+		<h4>Known subclasses</h4>
+		{include children, children => $class->getSubClasses()}
 	</div>
 
 	<div class="info">

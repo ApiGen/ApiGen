@@ -164,17 +164,9 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
     /**
      * @return ClassReflectionInterface[]
      */
-    public function getDirectSubClasses(): array
+    public function getSubClasses(): array
     {
-        return $this->subClassesResolver->getDirectSubClasses($this);
-    }
-
-    /**
-     * @return ClassReflectionInterface[]
-     */
-    public function getIndirectSubClasses(): array
-    {
-        return $this->subClassesResolver->getIndirectSubClasses($this);
+        return $this->subClassesResolver->getSubClasses($this);
     }
 
     public function implementsInterface(string $interface): bool

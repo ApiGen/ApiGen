@@ -23,13 +23,8 @@ final class ParentsTest extends AbstractReflectionClassTestCase
         $this->assertCount(1, $this->reflectionClass->getParentClasses());
     }
 
-    public function testGetDirectSubClasses(): void
+    public function testGetSubClasses(): void
     {
-        $this->assertCount(1, $this->reflectionClassOfParent->getDirectSubClasses());
-    }
-
-    public function testIndirectSubClasses(): void
-    {
-        $this->assertCount(0, $this->reflectionClassOfParent->getIndirectSubClasses());
+        $this->assertCount(1, $this->reflectionClassOfParent->getSubClasses());
     }
 }
