@@ -5,6 +5,6 @@ namespace ApiGen\Reflection\Tests\Reflection\Function_\FunctionParameterReflecti
 /**
  * @param string $arguments and their description
  */
-function someAloneFunction(string ...$arguments): void
+function functionWithVariadic(string ...$arguments): void
 {
 }
