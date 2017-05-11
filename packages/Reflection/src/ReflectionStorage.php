@@ -105,6 +105,9 @@ final class ReflectionStorage implements ReflectionStorageInterface
     {
         array_walk($functionReflections, function (FunctionReflectionInterface $functionReflection) {});
         sort($functionReflections);
-        $this->functionReflections = $functionReflections;
+
+        foreach ($functionReflections as $functionReflection) {
+            $this->functionReflections[$functionReflection->getName()] = $functionReflection;
+        }
     }
 }

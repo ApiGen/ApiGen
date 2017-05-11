@@ -3,6 +3,7 @@
 namespace ApiGen\Reflection;
 
 use ApiGen\Reflection\Contract\Reflection\Partial\AccessLevelInterface;
+use ApiGen\Reflection\Contract\Reflection\Partial\AnnotationsInterface;
 use ApiGen\Reflection\Contract\Transformer\TransformerInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorAwareInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorInterface;
@@ -31,7 +32,7 @@ final class TransformerCollector implements TransformerCollectorInterface
             // also ! $this->reflection->isInternal();, remove isDocumented()
 
             $transformedReflection = $this->transformSingle($reflection);
-            if ($transformedReflection->hasAnnotation('internal')) {
+            if ($transformedReflection instanceof AnnotationsInterface && $transformedReflection->hasAnnotation('internal')) {
                 continue;
             }
 

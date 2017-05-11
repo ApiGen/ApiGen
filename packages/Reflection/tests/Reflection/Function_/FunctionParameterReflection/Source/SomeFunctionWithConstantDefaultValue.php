@@ -2,6 +2,6 @@
 
 namespace ApiGen\Reflection\Tests\Reflection\Function_\FunctionParameterReflection\Source;
 
-function someAloneFunction(int $hello = HI)
+function functionWithConstant(int $hello = HI)
 {
 }
