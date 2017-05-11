@@ -2,7 +2,6 @@
 
 namespace ApiGen\Element\Tree;
 
-use ApiGen\Reflection\Contract\Reflection\Class_\ClassConstantReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassPropertyReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
@@ -10,23 +9,6 @@ use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceReflectionInterfac
 
 final class ParentClassElementsResolver
 {
-//    /**
-//     * @return ClassConstantReflectionInterface[]
-//     */
-//    public function getInheritedConstants(ClassReflectionInterface $classReflection): array
-//    {
-//        return array_filter(
-//            array_map(
-//                function (ClassReflectionInterface $classReflection) {
-//                    $classConstantReflections = $classReflection->getOwnConstants();
-//                    ksort($classConstantReflections);
-//                    return $classConstantReflections;
-//                },
-//                $this->getParentClassesAndInterfaces($classReflection)
-//            )
-//        );
-//    }
-
     /**
      * @return ClassPropertyReflectionInterface[][]
      */
