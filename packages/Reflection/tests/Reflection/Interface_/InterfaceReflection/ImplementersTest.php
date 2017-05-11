@@ -31,14 +31,8 @@ final class ImplementersTest extends AbstractParserAwareTestCase
         $this->assertCount(0, $this->interfaceReflection->getInterfaces());
     }
 
-    public function testGetDirectImplementers(): void
+    public function testGetImplementers(): void
     {
-        $this->assertCount(1, $this->interfaceReflection->getDirectImplementers());
-    }
-
-    public function testGetIndirectImplementers(): void
-    {
-        $indirectImplementers = $this->interfaceReflection->getIndirectImplementers();
-        $this->assertSame([], $indirectImplementers);
+        $this->assertCount(1, $this->interfaceReflection->getImplementers());
     }
 }

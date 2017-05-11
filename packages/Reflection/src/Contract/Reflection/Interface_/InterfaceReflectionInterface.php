@@ -15,12 +15,7 @@ interface InterfaceReflectionInterface extends StartAndEndLineInterface, Annotat
     /**
      * @return ClassReflectionInterface[]
      */
-    public function getDirectImplementers(): array;
-
-    /**
-     * @return ClassReflectionInterface[]
-     */
-    public function getIndirectImplementers(): array;
+    public function getImplementers(): array;
 
     /**
      * @return InterfaceReflectionInterface[]

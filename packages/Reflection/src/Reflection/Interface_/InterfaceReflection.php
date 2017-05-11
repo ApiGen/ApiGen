@@ -78,17 +78,10 @@ final class InterfaceReflection implements InterfaceReflectionInterface, Transfo
     /**
      * @return ClassReflectionInterface[]
      */
-    public function getDirectImplementers(): array
+    public function getImplementers(): array
     {
-        return $this->implementersResolver->resolveDirectImplementersOfInterface($this->getName());
-    }
-
-    /**
-     * @return ClassReflectionInterface[]
-     */
-    public function getIndirectImplementers(): array
-    {
-        return $this->implementersResolver->resolveIndirectImplementersOfInterface($this->getName());
+        return $this->implementersResolver->resolveImplementersOfInterface($this->getName())
+            + $this->implementersResolver->resolveIndirectImplementersOfInterface($this->getName());
     }
 
     public function getFileName(): string

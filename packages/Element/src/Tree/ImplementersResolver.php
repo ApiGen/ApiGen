@@ -20,11 +20,11 @@ final class ImplementersResolver
     /**
      * @return ClassReflectionInterface[]
      */
-    public function resolveDirectImplementersOfInterface(string $interfaceName): array
+    public function resolveImplementersOfInterface(string $interfaceName): array
     {
         $implementers = [];
         foreach ($this->reflectionStorage->getClassReflections() as $classReflection) {
-            if ($this->isAllowedDirectImplementer($classReflection, $interfaceName)) {
+            if ($classReflection->implementsInterface($interfaceName)) {
                 $implementers[] = $classReflection;
             }
         }
@@ -33,32 +33,10 @@ final class ImplementersResolver
 
         return $implementers;
     }
-
-    /**
-     * @return ClassReflectionInterface[]
-     */
-    public function resolveIndirectImplementersOfInterface(string $interfaceName): array
-    {
-        $implementers = [];
-        foreach ($this->reflectionStorage->getClassReflections() as $classReflection) {
-            if ($this->isAllowedIndirectImplementer($classReflection, $interfaceName)) {
-                $implementers[] = $classReflection;
-            }
-        }
-
-        uksort($implementers, 'strcasecmp');
-
-        return $implementers;
-    }
-
-    private function isAllowedDirectImplementer(ClassReflectionInterface $classReflection, string $interfaceName): bool
-    {
-        return in_array($interfaceName, $classReflection->getOwnInterfaceNames(), true);
-    }
-
-    private function isAllowedIndirectImplementer(ClassReflectionInterface $classReflection, string $interfaceName): bool
-    {
-        return $classReflection->implementsInterface($interfaceName)
-            && ! in_array($interfaceName, $classReflection->getOwnInterfaceNames(), true);
-    }
+//
+//    private function isAllowedImplementer(ClassReflectionInterface $classReflection, string $interfaceName): bool
+//    {
+//        return in_array($interfaceName, $classReflection->getOwnInterfaceNames(), true)
+//            || $classReflection->implementsInterface($interfaceName);
+//    }
 }

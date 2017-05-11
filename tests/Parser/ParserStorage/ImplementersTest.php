@@ -33,23 +33,14 @@ final class ImplementersTest extends AbstractContainerAwareTestCase
         $this->parentInterfaceReflection = $classes[ParentInterface::class];
     }
 
-    public function testGetDirectImplementersOfInterface(): void
+    public function testGetImplementersOfInterface(): void
     {
-        $implementers = $this->parserStorage->getDirectImplementersOfInterface($this->parentInterfaceReflection);
-        $this->assertCount(1, $implementers);
+        $implementers = $this->parserStorage->getImplementersOfInterface($this->parentInterfaceReflection);
+        $this->assertCount(2, $implementers);
 
         $implementer = $implementers[0];
         $this->assertInstanceOf(ClassReflectionInterface::class, $implementer);
         $this->assertSame(ChildInterface::class, $implementer->getName());
-    }
-
-    public function testGetIndirectImplementersOfInterface(): void
-    {
-        $implementers = $this->parserStorage->getIndirectImplementersOfInterface($this->parentInterfaceReflection);
-        $this->assertCount(1, $implementers);
-
-        $implementer = $implementers[0];
-        $this->assertInstanceOf(ClassReflectionInterface::class, $implementer);
         $this->assertSame(SomeClass::class, $implementer->getName());
     }
 }
