@@ -5,7 +5,13 @@
 - ApiGen\Element\ElementExtractor
 - ApiGen\Element\Namespaces\NamespaceStorage
 
-- ApiGen\Element\Tree\ImplementersResolver
+# Class_
 - ApiGen\Element\Tree\ParentClassElementsResolver
 - ApiGen\Element\Tree\ClassTraitElementResolver
 - ApiGen\Element\Tree\SubClassesResolver
+
+# Interface_
+- ApiGen\Element\Tree\ImplementersResolver
+
+# Trait_
+- ApiGen\Element\Tree\TraitUsersResolver

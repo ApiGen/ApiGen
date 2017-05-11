@@ -2,6 +2,7 @@
 
 namespace ApiGen\Reflection\Transformer\BetterReflection\Trait_;
 
+use ApiGen\Element\Tree\TraitUsersResolver;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitReflectionInterface;
 use ApiGen\Reflection\Reflection\Trait_\TraitReflection;
 use ApiGen\Reflection\Contract\Transformer\TransformerInterface;
@@ -15,9 +16,15 @@ final class TraitReflectionTransformer implements TransformerInterface
      */
     private $docBlockFactory;
 
-    public function __construct(DocBlockFactory $docBlockFactory)
+    /**
+     * @var TraitUsersResolver
+     */
+    private $traitUsersResolver;
+
+    public function __construct(DocBlockFactory $docBlockFactory, TraitUsersResolver $traitUsersResolver)
     {
         $this->docBlockFactory = $docBlockFactory;
+        $this->traitUsersResolver = $traitUsersResolver;
     }
 
     /**
@@ -34,6 +41,7 @@ final class TraitReflectionTransformer implements TransformerInterface
     public function transform($reflection): TraitReflectionInterface
     {
         $docBlock = $this->docBlockFactory->create($reflection->getDocComment() ?: ' ');
-        return new TraitReflection($reflection, $docBlock);
+
+        return new TraitReflection($reflection, $docBlock, $this->traitUsersResolver);
     }
 }

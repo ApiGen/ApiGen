@@ -3,6 +3,7 @@
 namespace ApiGen\Reflection\Reflection\Trait_;
 
 use ApiGen\Annotation\AnnotationList;
+use ApiGen\Element\Tree\TraitUsersResolver;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitMethodReflectionInterface;
@@ -31,10 +32,19 @@ final class TraitReflection implements TraitReflectionInterface, TransformerColl
      */
     private $transformerCollector;
 
-    public function __construct(ReflectionClass $betterClassReflection, DocBlock $docBlock)
-    {
+    /**
+     * @var TraitUsersResolver
+     */
+    private $traitUsersResolver;
+
+    public function __construct(
+        ReflectionClass $betterClassReflection,
+        DocBlock $docBlock,
+        TraitUsersResolver $traitUsersResolver
+    ) {
         $this->betterTraitReflection = $betterClassReflection;
         $this->docBlock = $docBlock;
+        $this->traitUsersResolver = $traitUsersResolver;
     }
 
     public function getName(): string
@@ -65,32 +75,12 @@ final class TraitReflection implements TraitReflectionInterface, TransformerColl
      */
     public function getUsers(): array
     {
-        return $this->classTraitElementExtractor->getUsers($this);
+        return $this->traitUsersResolver->getUsers($this);
     }
 
-    /**
-     * @return ClassReflectionInterface[]
-     */
-    public function getDirectUsers(): array
-    {
-        return $this->classTraitElementExtractor->getDirectUsers();
-    }
-
-    /**
-     * @return ClassReflectionInterface[]
-     */
-    public function getIndirectUsers(): array
-    {
-        return $this->classTraitElementExtractor->getIndirectUsers();
-    }
-
-
-    /**
-     * Returns the unqualified name (UQN).
-     */
     public function getShortName(): string
     {
-        // TODO: Implement getShortName() method.
+        return $this->betterTraitReflection->getShortName();
     }
 
     public function isDeprecated(): bool
@@ -105,7 +95,7 @@ final class TraitReflection implements TraitReflectionInterface, TransformerColl
 
     public function getFileName(): string
     {
-        // TODO: Implement getFileName() method.
+        return $this->betterTraitReflection->getFileName();
     }
 
     /**

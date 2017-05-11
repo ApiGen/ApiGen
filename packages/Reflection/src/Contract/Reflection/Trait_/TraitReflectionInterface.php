@@ -27,16 +27,6 @@ interface TraitReflectionInterface extends AnnotationsInterface
     public function getUsers(): array;
 
     /**
-     * @return ClassReflectionInterface[]
-     */
-    public function getDirectUsers(): array;
-
-    /**
-     * @return ClassReflectionInterface[]
-     */
-    public function getIndirectUsers(): array;
-
-    /**
      * @return TraitMethodReflectionInterface[]
      */
     public function getMethods(): array;

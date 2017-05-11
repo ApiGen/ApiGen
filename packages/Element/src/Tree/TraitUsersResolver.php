@@ -18,10 +18,15 @@ final class TraitUsersResolver
         $this->reflectionStorage = $reflectionStorage;
     }
 
+    public function getUsers(TraitReflectionInterface $traitReflection)
+    {
+        return $this->getDirectUsers($traitReflection) + $this->getIndirectUsers($traitReflection);
+    }
+
     /**
      * @return ClassReflectionInterface[]
      */
-    public function getDirectUsers(TraitReflectionInterface $traitReflection): array
+    private function getDirectUsers(TraitReflectionInterface $traitReflection): array
     {
         $directUsers = [];
         foreach ($this->reflectionStorage->getClassReflections() as $classReflection) {
@@ -39,7 +44,7 @@ final class TraitUsersResolver
     /**
      * @return ClassReflectionInterface[]
      */
-    public function getIndirectUsers(TraitReflectionInterface $traitReflection): array
+    private function getIndirectUsers(TraitReflectionInterface $traitReflection): array
     {
         $indirectUsers = [];
         foreach ($this->reflectionStorage->getClassReflections() as $classReflection) {
