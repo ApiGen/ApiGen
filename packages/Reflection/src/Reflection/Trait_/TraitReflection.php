@@ -165,7 +165,9 @@ final class TraitReflection implements TraitReflectionInterface, TransformerColl
      */
     public function getProperties(): array
     {
-        // TODO: Implement getProperties() method.
+        return $this->transformerCollector->transformGroup(
+            $this->betterTraitReflection->getProperties()
+        );
     }
 
     /**
@@ -188,7 +190,15 @@ final class TraitReflection implements TraitReflectionInterface, TransformerColl
 
     public function getProperty(string $name): TraitPropertyReflectionInterface
     {
-        // TODO: Implement getProperty() method.
+        if (! isset($this->getProperties()[$name])) {
+            throw new \InvalidArgumentException(sprintf(
+                'Property "%s" does not exist in trait "%s".',
+                $name,
+                $this->getName()
+            ));
+        }
+
+        return $this->getProperties()[$name];
     }
 
     public function hasProperty(string $name): bool

@@ -5,12 +5,13 @@ namespace ApiGen\Reflection\Reflection\Trait_;
 use ApiGen\Annotation\AnnotationList;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitPropertyReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitReflectionInterface;
+use ApiGen\Reflection\Contract\TransformerCollectorAwareInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorInterface;
 use phpDocumentor\Reflection\DocBlock;
 use phpDocumentor\Reflection\DocBlock\Tag;
 use Roave\BetterReflection\Reflection\ReflectionProperty;
 
-final class TraitPropertyReflection implements TraitPropertyReflectionInterface
+final class TraitPropertyReflection implements TraitPropertyReflectionInterface, TransformerCollectorAwareInterface
 {
     /**
      * @var ReflectionProperty
@@ -169,5 +170,10 @@ final class TraitPropertyReflection implements TraitPropertyReflectionInterface
     public function isDeprecated(): bool
     {
         return $this->hasAnnotation(AnnotationList::DEPRECATED);
+    }
+
+    public function setTransformerCollector(TransformerCollectorInterface $transformerCollector): void
+    {
+        $this->transformerCollector = $transformerCollector;
     }
 }
