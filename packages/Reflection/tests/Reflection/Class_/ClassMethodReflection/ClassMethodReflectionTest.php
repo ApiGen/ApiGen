@@ -4,6 +4,7 @@ namespace ApiGen\Reflection\Tests\Reflection\Class_\ClassMethodReflection;
 
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Method\MethodParameterReflectionInterface;
 use ApiGen\Reflection\Tests\Reflection\Class_\ClassMethodReflection\Source\ReflectionMethod;
 use ApiGen\Tests\AbstractParserAwareTestCase;
 
@@ -31,5 +32,33 @@ final class ClassMethodReflectionTest extends AbstractParserAwareTestCase
     public function testInstance(): void
     {
         $this->assertInstanceOf(ClassMethodReflectionInterface::class, $this->methodReflection);
+    }
+
+    public function testGetDeclaringClass(): void
+    {
+        $this->assertInstanceOf(ClassReflectionInterface::class, $this->methodReflection->getDeclaringClass());
+        $this->assertSame(ReflectionMethod::class, $this->methodReflection->getDeclaringClassName());
+    }
+
+    public function testModificators(): void
+    {
+        $this->assertFalse($this->methodReflection->isAbstract());
+        $this->assertFalse($this->methodReflection->isFinal());
+        $this->assertFalse($this->methodReflection->isPrivate());
+        $this->assertFalse($this->methodReflection->isProtected());
+        $this->assertTrue($this->methodReflection->isPublic());
+        $this->assertFalse($this->methodReflection->isStatic());
+    }
+
+    public function testGetParameters(): void
+    {
+        $parameters = $this->methodReflection->getParameters();
+        $this->assertCount(3, $parameters);
+        $this->assertInstanceOf(MethodParameterReflectionInterface::class, $parameters['url']);
+    }
+
+    public function testReturnReference(): void
+    {
+        $this->assertFalse($this->methodReflection->returnsReference());
     }
 }
