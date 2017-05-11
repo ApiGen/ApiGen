@@ -2,8 +2,10 @@
 
 namespace ApiGen\Reflection\Tests\Reflection\Interface_\InterfaceReflection;
 
+use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceReflectionInterface;
 use ApiGen\Reflection\Tests\Reflection\Interface_\InterfaceReflection\Source\PoorInterface;
+use ApiGen\Reflection\Tests\Reflection\Interface_\InterfaceReflection\Source\SomeClass;
 use ApiGen\Tests\AbstractParserAwareTestCase;
 
 final class ImplementersTest extends AbstractParserAwareTestCase
@@ -28,6 +30,10 @@ final class ImplementersTest extends AbstractParserAwareTestCase
 
     public function testGetImplementers(): void
     {
-        $this->assertCount(1, $this->interfaceReflection->getImplementers());
+        $implementers = $this->interfaceReflection->getImplementers();
+
+        $this->assertCount(1, $implementers);
+        $this->assertArrayHasKey(SomeClass::class, $implementers);
+        $this->assertInstanceOf(ClassReflectionInterface::class, $implementers[SomeClass::class]);
     }
 }
