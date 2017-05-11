@@ -28,14 +28,9 @@
 		{/foreach}
 	{/define}
 
-	<div n:if="$trait->getDirectUsers()">
-		<h4>Direct Known Users</h4>
-		{include children, children => $trait->getDirectUsers()}
-	</div>
-
-	<div n:if="$trait->getIndirectUsers()">
-		<h4>Indirect Known Users</h4>
-		{include children, children => $trait->getIndirectUsers()}
+	<div n:if="$trait->getUsers()">
+		<h4>Known Users</h4>
+		{include children, children => $trait->getUsers()}
 	</div>
 
 	<div class="info">

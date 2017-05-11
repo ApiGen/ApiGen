@@ -54,16 +54,6 @@
 		{include children, children => $indirectImplementers}
 	</div>
 
-	<div n:if="$directUsers">
-		<h3>Direct Known Users</h3>
-		{include children, children => $directUsers}
-	</div>
-
-	<div n:if="$indirectUsers">
-		<h3>Indirect Known Users</h3>
-		{include children, children => $indirectUsers}
-	</div>
-
 	<div class="alert alert-info">
 		{if !$class->interface && !$class->trait && ($class->abstract || $class->final)}<b>{if $class->abstract}Abstract{else}Final{/if}</b><br>{/if}
 		{if $class->inNamespace()}<b>Namespace:</b> {$class->namespaceName|namespaceLinks|noescape}<br>{/if}

@@ -4,6 +4,7 @@ namespace ApiGen\Reflection\Reflection\Trait_;
 
 use ApiGen\Annotation\AnnotationList;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassMethodReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitPropertyReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitReflectionInterface;
@@ -58,6 +59,14 @@ final class TraitReflection implements TraitReflectionInterface, TransformerColl
         return trim($description);
     }
 
+
+    /**
+     * @return ClassReflectionInterface[]
+     */
+    public function getUsers(): array
+    {
+        return $this->classTraitElementExtractor->getUsers($this);
+    }
 
     /**
      * @return ClassReflectionInterface[]
@@ -140,7 +149,9 @@ final class TraitReflection implements TraitReflectionInterface, TransformerColl
      */
     public function getTraits(): array
     {
-        // TODO: Implement getTraits() method.
+        return $this->transformerCollector->transformGroup(
+            $this->betterTraitReflection->getTraits()
+        );
     }
 
     /**
@@ -219,11 +230,6 @@ final class TraitReflection implements TraitReflectionInterface, TransformerColl
     public function hasAnnotation(string $name): bool
     {
         return $this->docBlock->hasTag($name);
-    }
-
-    public function addTransformer(TransformerInterface $transformer): void
-    {
-        // TODO: Implement addTransformer() method.
     }
 
     public function setTransformerCollector(TransformerCollectorInterface $transformerCollector): void

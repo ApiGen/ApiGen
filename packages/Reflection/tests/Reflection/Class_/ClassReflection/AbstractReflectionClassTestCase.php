@@ -46,8 +46,8 @@ abstract class AbstractReflectionClassTestCase extends AbstractContainerAwareTes
         $this->reflectionClass = $classReflections[AccessLevels::class];
         $this->reflectionClassOfParent = $classReflections[ParentClass::class];
 
-        $traitReflections = $reflectionStorage->getTraitReflections();
-        $this->reflectionClassOfTrait = $traitReflections[SomeTrait::class];
+//        $traitReflections = $reflectionStorage->getTraitReflections();
+//        $this->reflectionClassOfTrait = $traitReflections[SomeTrait::class];
 
         $interfaceReflections = $reflectionStorage->getInterfaceReflections();
         $this->reflectionClassOfInterface = $interfaceReflections[RichInterface::class];
