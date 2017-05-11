@@ -6,12 +6,13 @@ use ApiGen\Reflection\Contract\Reflection\Class_\ClassMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Method\MethodParameterReflectionInterface;
+use ApiGen\Reflection\Contract\TransformerCollectorAwareInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorInterface;
 use phpDocumentor\Reflection\DocBlock;
 use phpDocumentor\Reflection\DocBlock\Tag;
 use Roave\BetterReflection\Reflection\ReflectionMethod;
 
-final class ClassMethodReflection implements ClassMethodReflectionInterface
+final class ClassMethodReflection implements ClassMethodReflectionInterface, TransformerCollectorAwareInterface
 {
     /**
      * @var string
@@ -78,14 +79,6 @@ final class ClassMethodReflection implements ClassMethodReflectionInterface
         // if parent is deprecated, so is this
     }
 
-    public function getNamespaceName(): string
-    {
-        dump($this->betterMethodReflection->getNamespaceName());
-        die;
-
-        return $this->betterMethodReflection->getNamespaceName();
-    }
-
     /**
      * @return mixed[]
      */
@@ -118,16 +111,14 @@ final class ClassMethodReflection implements ClassMethodReflectionInterface
 
     public function getDeclaringClass(): ClassReflectionInterface
     {
-        return $this->declaringClass;
+        return $this->transformerCollector->transformSingle(
+            $this->betterMethodReflection->getDeclaringClass()
+        );
     }
 
     public function getDeclaringClassName(): string
     {
-        if ($this->declaringClass) {
-            $this->declaringClass->getName();
-        }
-
-        return '';
+        return $this->getDeclaringClass()->getName();
     }
 
     public function setDeclaringClass(ClassReflectionInterface $classReflection): void
@@ -207,5 +198,10 @@ final class ClassMethodReflection implements ClassMethodReflectionInterface
         return $this->transformerCollector->transformGroup(
             $this->betterMethodReflection->getParameters()
         );
+    }
+
+    public function setTransformerCollector(TransformerCollectorInterface $transformerCollector): void
+    {
+        $this->transformerCollector = $transformerCollector;
     }
 }

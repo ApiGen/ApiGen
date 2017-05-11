@@ -26,14 +26,10 @@ final class ClassMethodReflectionTest extends AbstractParserAwareTestCase
     public function testName()
     {
         $this->assertSame('methodWithArgs', $this->methodReflection->getName());
-        $this->assertSame(
-            'ApiGen\Reflection\Tests\Reflection\Class_\ClassMethodReflection\Source',
-            $this->methodReflection->getNamespaceName()
-        );
     }
-//
-//    public function testInstance(): void
-//    {
-//        $this->assertInstanceOf(ClassMethodReflectionInterface::class, $this->propertyReflection);
-//    }
+
+    public function testInstance(): void
+    {
+        $this->assertInstanceOf(ClassMethodReflectionInterface::class, $this->methodReflection);
+    }
 }

@@ -12,8 +12,6 @@ use ApiGen\Reflection\Contract\Reflection\Trait_\TraitMethodReflectionInterface;
 interface AbstractMethodReflectionInterface extends StartAndEndLineInterface, AnnotationsInterface,
     AccessLevelInterface
 {
-    public function getNamespaceName(): string;
-
     public function isAbstract(): bool;
 
     public function isFinal(): bool;
