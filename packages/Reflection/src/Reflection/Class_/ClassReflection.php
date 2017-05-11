@@ -383,11 +383,7 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
 
     public function usesTrait(string $trait): bool
     {
-        dump($trait);
-        dump($this->getTraits());
-        die;
-
-        return $this->betterClassReflection->usesTrait($trait);
+        return isset($this->getTraits()[$trait]);
     }
 
     public function isAbstract(): bool

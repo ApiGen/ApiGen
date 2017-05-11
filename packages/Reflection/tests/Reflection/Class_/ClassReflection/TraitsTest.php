@@ -9,7 +9,7 @@ use ApiGen\Reflection\Tests\Reflection\Class_\ClassReflection\Source\SomeTrait;
 
 final class TraitsTest extends AbstractReflectionClassTestCase
 {
-    public function testName()
+    public function testName(): void
     {
         $this->assertSame(AccessLevels::class, $this->reflectionClass->getName());
     }
@@ -37,24 +37,6 @@ final class TraitsTest extends AbstractReflectionClassTestCase
     public function testUsesTrait(): void
     {
         $this->assertTrue($this->reflectionClass->usesTrait(SomeTrait::class));
-//        $this->assertFalse($this->reflectionClass->usesTrait('Project\NotActiveTrait'));
+        $this->assertFalse($this->reflectionClass->usesTrait('Project\NotActiveTrait'));
     }
-//
-//    /**
-//     * @expectedException \TokenReflection\Exception\RuntimeException
-//     */
-//    public function testUsesTraitNotExisting(): void
-//    {
-//        $this->reflectionClass->usesTrait('Project\SomeTraitNotPresentHere');
-//    }
-//
-//    public function testGetDirectUsers(): void
-//    {
-//        $this->assertCount(1, $this->reflectionClassOfTrait->getDirectUsers());
-//    }
-//
-//    public function testGetIndirectUsers(): void
-//    {
-//        $this->assertCount(0, $this->reflectionClassOfTrait->getIndirectUsers());
-//    }
 }
