@@ -41,7 +41,7 @@ final class ClassTraitElementResolver
     public function getUsedMethods(ClassReflectionInterface $classReflection): array
     {
         $usedMethods = [];
-        $traitMethodAlisess = $classReflection->getTraitAliases();
+        $traitMethodAliases = $classReflection->getTraitAliases();
         foreach ($classReflection->getTraitMethods() as $methodReflection) {
             /* @todo: for traits - skip own metods
             if ($methodReflection->getDeclaringTraitName() === $classReflection->getName()) {
@@ -49,13 +49,11 @@ final class ClassTraitElementResolver
             }
              */
 
-
-
             $traitName = $methodReflection->getDeclaringTraitName();
             $methodName = $methodReflection->getName();
 
             $usedMethods[$traitName][$methodName]['method'] = $methodReflection;
-            if (isset($traitMethodAlisess[$methodReflection->getName()])) {
+            if (isset($traitMethodAliases[$methodReflection->getName()])) {
                 $usedMethods[$traitName][$methodName]['aliases'][$methodReflection->getName()] = $methodReflection;
             }
         }
