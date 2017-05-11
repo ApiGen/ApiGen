@@ -5,7 +5,7 @@ namespace ApiGen\Reflection\Tests\Reflection\Class_\ClassMethodReflection;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Method\MethodParameterReflectionInterface;
-use ApiGen\Reflection\Tests\Reflection\Class_\ClassMethodReflection\Source\ReflectionMethod;
+use ApiGen\Reflection\Tests\Reflection\Class_\ClassMethodReflection\Source\ClassMethod;
 use ApiGen\Tests\AbstractParserAwareTestCase;
 
 final class ClassMethodReflectionTest extends AbstractParserAwareTestCase
@@ -20,7 +20,7 @@ final class ClassMethodReflectionTest extends AbstractParserAwareTestCase
         $this->parser->parseDirectories([__DIR__ . '/Source']);
 
         $classReflections = $this->reflectionStorage->getClassReflections();
-        $classReflection = $classReflections[ReflectionMethod::class];
+        $classReflection = $classReflections[ClassMethod::class];
         $this->methodReflection = $classReflection->getMethod('methodWithArgs');
     }
 
@@ -37,7 +37,7 @@ final class ClassMethodReflectionTest extends AbstractParserAwareTestCase
     public function testGetDeclaringClass(): void
     {
         $this->assertInstanceOf(ClassReflectionInterface::class, $this->methodReflection->getDeclaringClass());
-        $this->assertSame(ReflectionMethod::class, $this->methodReflection->getDeclaringClassName());
+        $this->assertSame(ClassMethod::class, $this->methodReflection->getDeclaringClassName());
     }
 
     public function testModificators(): void

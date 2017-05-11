@@ -2,7 +2,7 @@
 
 namespace ApiGen\Reflection\Tests\Reflection\Class_\ClassMethodReflection\Source;
 
-final class ReflectionMethod
+final class ClassMethod
 {
     /**
      * Send a POST request

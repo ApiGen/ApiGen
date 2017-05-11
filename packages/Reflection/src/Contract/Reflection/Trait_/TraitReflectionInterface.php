@@ -36,12 +36,7 @@ interface TraitReflectionInterface extends AnnotationsInterface
      */
     public function getOwnMethods(): array;
 
-    /**
-     * @return ClassMethodReflectionInterface[]
-     */
-    public function getTraitMethods(): array;
-
-    public function getMethod(string $name): ClassMethodReflectionInterface;
+    public function getMethod(string $name): TraitMethodReflectionInterface;
 
     public function hasMethod(string $name): bool;
 

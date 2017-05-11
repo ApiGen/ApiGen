@@ -113,20 +113,13 @@ final class TraitReflection implements TraitReflectionInterface, TransformerColl
      */
     public function getOwnMethods(): array
     {
-        // TODO: Implement getOwnMethods() method.
+        return $this->transformerCollector->transformGroup(
+            $this->betterTraitReflection->getImmediateMethods()
+        );
     }
 
-    /**
-     * @return ClassMethodReflectionInterface[]
-     */
-    public function getTraitMethods(): array
+    public function getMethod(string $name): TraitMethodReflectionInterface
     {
-        // TODO: Implement getTraitMethods() method.
-    }
-
-    public function getMethod(string $name): ClassMethodReflectionInterface
-    {
-        // TODO: Implement getMethod() method.
     }
 
     public function hasMethod(string $name): bool
