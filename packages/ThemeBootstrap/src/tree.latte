@@ -21,7 +21,7 @@
 			{if $interfaces} implements {foreach $interfaces as $interface}
 				<a href="{$interface|classUrl}"><span n:class="$interface->deprecated ? deprecated">{$interface->name}</span></a>{sep}, {/sep}
 			{/foreach}{/if}
-			{var $traits = $reflection->getOwnTraits()}
+			{var $traits = $reflection->getTraits()}
 			{if $traits}{if $interfaces}<br><span class="padding"></span>{/if} uses {foreach $traits as $trait}
                 <a href="{$trait|classUrl}"><span n:class="$trait->deprecated ? deprecated">{$trait->name}</span></a>{sep}, {/sep}
 			{/foreach}{/if}

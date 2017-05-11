@@ -295,15 +295,6 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
     }
 
     /**
-     * @return TraitReflectionInterface[]
-     */
-    public function getOwnTraits(): array
-    {
-        // @todo: filter only own
-        return $this->getTraits();
-    }
-
-    /**
      * @return string[]
      */
     public function getTraitNames(): array
@@ -447,7 +438,7 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
         $allMethods = [];
         $allMethods += $this->getOwnMethods();
 
-        foreach ($this->getOwnTraits() as $traitReflection) {
+        foreach ($this->getTraits() as $traitReflection) {
             // @todo: check override from the left
             // keep already existing
             $allMethods += $traitReflection->getMethods();

@@ -97,11 +97,6 @@ interface ClassReflectionInterface extends StartAndEndLineInterface, Annotations
     public function getTraits(): array;
 
     /**
-     * @return TraitReflectionInterface[]
-     */
-    public function getOwnTraits(): array;
-
-    /**
      * @return string[]
      */
     public function getTraitNames(): array;
@@ -142,6 +137,9 @@ interface ClassReflectionInterface extends StartAndEndLineInterface, Annotations
 
     public function getNamespaceName(): string;
 
+    /**
+     * @return ClassConstantReflectionInterface[]
+     */
     public function getConstants(): array;
 
     public function isDeprecated(): bool;

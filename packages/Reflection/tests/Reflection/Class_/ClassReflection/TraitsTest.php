@@ -24,11 +24,6 @@ final class TraitsTest extends AbstractReflectionClassTestCase
         // $this->assertSame('Project\SomeTraitNotPresentHere', $traits['Project\SomeTraitNotPresentHere']);
     }
 
-    public function testGetOwnTraits(): void
-    {
-        $this->assertCount(1, $this->reflectionClass->getOwnTraits());
-    }
-
     public function testGetTraitAliases(): void
     {
         $this->assertCount(0, $this->reflectionClass->getTraitAliases());
