@@ -279,16 +279,24 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
             return $this->getConstants()[$name];
         }
 
-        throw new InvalidArgumentException(sprintf(
+        throw new \InvalidArgumentException(sprintf(
             'Constant %s does not exist in class %s',
             $name,
-            $this->betterClassReflection->getName()
+            $this->getName()
         ));
     }
 
     public function getOwnConstant(string $name): ClassConstantReflectionInterface
     {
-        // TODO: Implement getOwnConstant() method.
+        if (! isset($this->getOwnConstants()[$name])) {
+            throw new \InvalidArgumentException(sprintf(
+                'Constant %s does not exist in class %s',
+                $name,
+                $this->getName()
+            ));
+        }
+
+        return $this->getOwnConstants()[$name];
     }
 
     /**

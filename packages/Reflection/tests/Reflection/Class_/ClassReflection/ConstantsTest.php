@@ -17,29 +17,29 @@ final class ConstantsTest extends AbstractReflectionClassTestCase
         $this->assertCount(2, $this->reflectionClass->getConstants());
     }
 
-//    public function testGetOwnConstants(): void
-//    {
-//        $this->assertCount(1, $this->reflectionClass->getOwnConstants());
-//    }
-//
-//    public function testHasConstant(): void
-//    {
-//        $this->assertFalse($this->reflectionClass->hasConstant('NOT_EXISTING'));
-//        $this->assertTrue($this->reflectionClass->hasConstant('LEVEL'));
-//    }
-//
-//    public function testGetConstant(): void
-//    {
-//        $this->assertInstanceOf(ClassConstantReflectionInterface::class, $this->reflectionClass->getConstant('LEVEL'));
-//    }
-//
-//    public function testGetOwnConstant(): void
-//    {
-//        $this->assertInstanceOf(
-//            ClassConstantReflectionInterface::class,
-//            $this->reflectionClass->getOwnConstant('LEVEL')
-//        );
-//    }
+    public function testGetOwnConstants(): void
+    {
+        $this->assertCount(1, $this->reflectionClass->getOwnConstants());
+    }
+
+    public function testHasConstant(): void
+    {
+        $this->assertFalse($this->reflectionClass->hasConstant('NOT_EXISTING'));
+        $this->assertTrue($this->reflectionClass->hasConstant('LEVEL'));
+    }
+
+    public function testGetConstant(): void
+    {
+        $this->assertInstanceOf(ClassConstantReflectionInterface::class, $this->reflectionClass->getConstant('LEVEL'));
+    }
+
+    public function testGetOwnConstant(): void
+    {
+        $this->assertInstanceOf(
+            ClassConstantReflectionInterface::class,
+            $this->reflectionClass->getOwnConstant('LEVEL')
+        );
+    }
 //
 //    /**
 //     * @expectedException \InvalidArgumentException
