@@ -21,7 +21,7 @@ final class ClassMethodReflection implements ClassMethodReflectionInterface
     /**
      * @var ReflectionMethod
      */
-    private $reflection;
+    private $betterMethodReflection;
 
     /**
      * @var DocBlock
@@ -40,38 +40,38 @@ final class ClassMethodReflection implements ClassMethodReflectionInterface
 
     public function __construct(ReflectionMethod $betterFunctionReflection, DocBlock $docBlock)
     {
-        $this->reflection = $betterFunctionReflection;
+        $this->betterMethodReflection = $betterFunctionReflection;
         $this->docBlock = $docBlock;
     }
 
     public function getName(): string
     {
-        return $this->reflection->getName();
+        return $this->betterMethodReflection->getName();
     }
 
     public function getShortName(): string
     {
-        return $this->reflection->getShortName();
+        return $this->betterMethodReflection->getShortName();
     }
 
     public function getStartLine(): int
     {
-        return $this->reflection->getStartLine();
+        return $this->betterMethodReflection->getStartLine();
     }
 
     public function getEndLine(): int
     {
-        return $this->reflection->getEndLine();
+        return $this->betterMethodReflection->getEndLine();
     }
 
     public function returnsReference(): bool
     {
-        return $this->reflection->returnsReference();
+        return $this->betterMethodReflection->returnsReference();
     }
 
     public function isDeprecated(): bool
     {
-        if ($this->reflection->isDeprecated()) {
+        if ($this->betterMethodReflection->isDeprecated()) {
             return true;
         }
 
@@ -80,7 +80,10 @@ final class ClassMethodReflection implements ClassMethodReflectionInterface
 
     public function getNamespaceName(): string
     {
-        return $this->reflection->getNamespaceName();
+        dump($this->betterMethodReflection->getNamespaceName());
+        die;
+
+        return $this->betterMethodReflection->getNamespaceName();
     }
 
     /**
@@ -134,32 +137,32 @@ final class ClassMethodReflection implements ClassMethodReflectionInterface
 
     public function isPrivate(): bool
     {
-        return $this->reflection->isPrivate();
+        return $this->betterMethodReflection->isPrivate();
     }
 
     public function isProtected(): bool
     {
-        return $this->reflection->isProtected();
+        return $this->betterMethodReflection->isProtected();
     }
 
     public function isPublic(): bool
     {
-        return $this->reflection->isPublic();
+        return $this->betterMethodReflection->isPublic();
     }
 
     public function isAbstract(): bool
     {
-        return $this->reflection->isAbstract();
+        return $this->betterMethodReflection->isAbstract();
     }
 
     public function isFinal(): bool
     {
-        return $this->reflection->isFinal();
+        return $this->betterMethodReflection->isFinal();
     }
 
     public function isStatic(): bool
     {
-        return $this->reflection->isStatic();
+        return $this->betterMethodReflection->isStatic();
     }
 
     // @todo: is used?
@@ -202,7 +205,7 @@ final class ClassMethodReflection implements ClassMethodReflectionInterface
     public function getParameters(): array
     {
         return $this->transformerCollector->transformGroup(
-            $this->reflection->getParameters()
+            $this->betterMethodReflection->getParameters()
         );
     }
 }

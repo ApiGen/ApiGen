@@ -1,23 +1,9 @@
 <?php declare(strict_types=1);
 
-/**
- * @author ApiGen
- * @licence MIT
- * @copyright 2015
- */
+namespace ApiGen\Reflection\Tests\Reflection\Class_\ClassMethodReflection\Source;
 
-namespace ApiGen\Reflection\Tests\Reflection\Class_\ClassPropertyReflection\Source;
-
-/**
- * This is some description
- */
-class ReflectionMethod
+final class ReflectionMethod
 {
-    /**
-     * @var int
-     */
-    public $memberCount = 52;
-
     /**
      * Send a POST request
      *

@@ -13,11 +13,6 @@ namespace ApiGen\Tests\Parser\Reflection\ReflectionMethodSource;
 class ReflectionMethod
 {
     /**
-     * @var int
-     */
-    public $memberCount = 52;
-
-    /**
      * Send a POST request
      *
      * @param int|string $url the URL of the API endpoint

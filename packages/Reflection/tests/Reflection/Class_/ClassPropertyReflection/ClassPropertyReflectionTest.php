@@ -4,7 +4,7 @@ namespace ApiGen\Reflection\Tests\Reflection\Class_\ClassPropertyReflection;
 
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassPropertyReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
-use ApiGen\Reflection\Tests\Reflection\Class_\ClassPropertyReflection\Source\ReflectionMethod;
+use ApiGen\Reflection\Tests\Reflection\Class_\ClassPropertyReflection\Source\ReflectionProperty;
 use ApiGen\Tests\AbstractParserAwareTestCase;
 
 final class ClassPropertyReflectionTest extends AbstractParserAwareTestCase
@@ -19,7 +19,7 @@ final class ClassPropertyReflectionTest extends AbstractParserAwareTestCase
         $this->parser->parseDirectories([__DIR__ . '/Source']);
 
         $classReflections = $this->reflectionStorage->getClassReflections();
-        $classReflection = $classReflections[ReflectionMethod::class];
+        $classReflection = $classReflections[ReflectionProperty::class];
         $this->propertyReflection = $classReflection->getProperty('memberCount');
     }
 
@@ -45,7 +45,7 @@ final class ClassPropertyReflectionTest extends AbstractParserAwareTestCase
     public function testGetDeclaringClass(): void
     {
         $this->assertInstanceOf(ClassReflectionInterface::class, $this->propertyReflection->getDeclaringClass());
-        $this->assertSame(ReflectionMethod::class, $this->propertyReflection->getDeclaringClassName());
+        $this->assertSame(ReflectionProperty::class, $this->propertyReflection->getDeclaringClassName());
     }
 
     public function testDefaults(): void
