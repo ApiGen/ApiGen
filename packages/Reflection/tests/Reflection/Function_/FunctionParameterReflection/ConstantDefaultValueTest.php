@@ -24,8 +24,7 @@ final class ConstantDefaultValueTest extends AbstractParserAwareTestCase
         $functionReflections = $this->reflectionStorage->getFunctionReflections();
         $functionReflection = $functionReflections[$this->namespacePrefix . '\functionWithConstant'];
 
-        $functionParametersReflections = $functionReflection->getParameters();
-        $this->functionParameterReflection = $functionParametersReflections['hello'];
+        $this->functionParameterReflection = $functionReflection->getParameters()['hello'];
     }
 
     public function testType(): void

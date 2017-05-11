@@ -25,8 +25,7 @@ final class FunctionParameterReflectionTest extends AbstractParserAwareTestCase
         $functionReflections = $this->reflectionStorage->getFunctionReflections();
         $functionReflection = $functionReflections[$this->namespacePrefix . '\functionWithVariadic'];
 
-        $functionParametersReflections = $functionReflection->getParameters();
-        $this->functionParameterReflection = $functionParametersReflections['arguments'];
+        $this->functionParameterReflection = $functionReflection->getParameters()['arguments'];
     }
 
     public function testDeclaringFunction(): void
