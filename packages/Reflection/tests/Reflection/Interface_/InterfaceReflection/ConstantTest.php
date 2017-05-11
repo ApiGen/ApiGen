@@ -19,12 +19,7 @@ final class ConstantTest extends AbstractParserAwareTestCase
         $this->parser->parseDirectories([__DIR__ . '/Source']);
 
         $interfaceReflections = $this->reflectionStorage->getInterfaceReflections();
-        $this->interfaceReflection = $interfaceReflections[1];
-    }
-
-    public function test()
-    {
-        $this->assertSame(SomeInterface::class, $this->interfaceReflection->getName());
+        $this->interfaceReflection = $interfaceReflections[SomeInterface::class];
     }
 
     public function testGetConstants()

@@ -3,6 +3,7 @@
 namespace ApiGen\Reflection\Tests\Reflection\Interface_\InterfaceReflection;
 
 use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceReflectionInterface;
+use ApiGen\Reflection\Tests\Reflection\Interface_\InterfaceReflection\Source\PoorInterface;
 use ApiGen\Reflection\Tests\Reflection\Interface_\InterfaceReflection\Source\RichInterface;
 use ApiGen\Reflection\Tests\Reflection\Interface_\InterfaceReflection\Source\SomeInterface;
 use ApiGen\Tests\AbstractParserAwareTestCase;
@@ -19,7 +20,7 @@ final class InterfaceReflectionTest extends AbstractParserAwareTestCase
         $this->parser->parseDirectories([__DIR__ . '/Source']);
 
         $interfaceReflections = $this->reflectionStorage->getInterfaceReflections();
-        $this->interfaceReflection = $interfaceReflections[1];
+        $this->interfaceReflection = $interfaceReflections[SomeInterface::class];
     }
 
     public function testNames(): void
@@ -37,8 +38,11 @@ final class InterfaceReflectionTest extends AbstractParserAwareTestCase
     public function testGetInterfaces(): void
     {
         $interfaces = $this->interfaceReflection->getInterfaces();
+
         $this->assertCount(2, $interfaces);
-        $this->assertInstanceOf(InterfaceReflectionInterface::class, $interfaces[0]);
+        $this->assertArrayHasKey(RichInterface::class, $interfaces);
+        $this->assertArrayHasKey(PoorInterface::class, $interfaces);
+        $this->assertInstanceOf(InterfaceReflectionInterface::class, $interfaces[RichInterface::class]);
     }
 
     public function testLines(): void
