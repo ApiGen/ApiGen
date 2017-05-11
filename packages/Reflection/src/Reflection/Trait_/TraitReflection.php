@@ -120,11 +120,20 @@ final class TraitReflection implements TraitReflectionInterface, TransformerColl
 
     public function getMethod(string $name): TraitMethodReflectionInterface
     {
+        if (! $this->hasMethod($name)) {
+            throw new \InvalidArgumentException(sprintf(
+                'Method "%s" does not exist in trait "%s".',
+                $name,
+                $this->getName()
+            ));
+        }
+
+        return $this->getMethods()[$name];
     }
 
     public function hasMethod(string $name): bool
     {
-        // TODO: Implement hasMethod() method.
+        return isset($this->getMethods()[$name]);
     }
 
     /**

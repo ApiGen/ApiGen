@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Reflection\Tests\Reflection\Trait_\TraitPropertyReflection\Source;
+namespace ApiGen\Reflection\Tests\Reflection\Trait_\TraitMethodReflection\Source;
 
 trait TraitMethod
 {

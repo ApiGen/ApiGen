@@ -4,7 +4,7 @@ namespace ApiGen\Reflection\Tests\Reflection\Trait_\TraitMethodReflection;
 
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitReflectionInterface;
-use ApiGen\Reflection\Tests\Reflection\Trait_\TraitPropertyReflection\Source\TraitMethod;
+use ApiGen\Reflection\Tests\Reflection\Trait_\TraitMethodReflection\Source\TraitMethod;
 use ApiGen\Tests\AbstractParserAwareTestCase;
 
 final class TraitMethodReflectionTest extends AbstractParserAwareTestCase
@@ -12,7 +12,7 @@ final class TraitMethodReflectionTest extends AbstractParserAwareTestCase
     /**
      * @var TraitMethodReflectionInterface
      */
-    private $propertyReflection;
+    private $traitMethodReflection;
 
     protected function setUp(): void
     {
@@ -20,12 +20,13 @@ final class TraitMethodReflectionTest extends AbstractParserAwareTestCase
 
         $traitReflections = $this->reflectionStorage->getTraitReflections();
         $traitReflection = $traitReflections[TraitMethod::class];
-        $this->propertyReflection = $traitReflection->getMethod('memberCount');
+
+        $this->traitMethodReflection = $traitReflection->getMethod('methodWithArgs');
     }
 
     public function testGetDeclaringTrait(): void
     {
-        $this->assertInstanceOf(TraitReflectionInterface::class, $this->propertyReflection->getDeclaringTrait());
-        $this->assertSame(TraitMethod::class, $this->propertyReflection->getDeclaringTraitName());
+        $this->assertInstanceOf(TraitReflectionInterface::class, $this->traitMethodReflection->getDeclaringTrait());
+        $this->assertSame(TraitMethod::class, $this->traitMethodReflection->getDeclaringTraitName());
     }
 }
