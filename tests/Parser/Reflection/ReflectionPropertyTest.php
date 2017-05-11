@@ -30,51 +30,5 @@ final class ReflectionPropertyTest extends AbstractContainerAwareTestCase
         $this->reflectionProperty = $this->reflectionClass->getProperty('memberCount');
     }
 
-    public function testInstance(): void
-    {
-        $this->assertInstanceOf(ClassPropertyReflectionInterface::class, $this->reflectionProperty);
-    }
 
-    public function testGetTypeHint(): void
-    {
-        $this->assertSame('int', $this->reflectionProperty->getTypeHint());
-    }
-
-    public function testGetDeclaringClass(): void
-    {
-        $this->assertInstanceOf(ClassReflectionInterface::class, $this->reflectionProperty->getDeclaringClass());
-    }
-
-    public function testGetDeclaringClassName(): void
-    {
-        $this->assertSame(
-            'ApiGen\Tests\Parser\Reflection\ReflectionMethodSource\ReflectionMethod',
-            $this->reflectionProperty->getDeclaringClassName()
-        );
-    }
-
-    public function testGetDefaultValue(): void
-    {
-        $this->assertSame(52, $this->reflectionProperty->getDefaultValue());
-    }
-
-    public function testIsDefault(): void
-    {
-        $this->assertTrue($this->reflectionProperty->isDefault());
-    }
-
-    public function testIsStatic(): void
-    {
-        $this->assertFalse($this->reflectionProperty->isStatic());
-    }
-
-    public function testGetDeclaringTrait(): void
-    {
-        $this->assertNull($this->reflectionProperty->getDeclaringTrait());
-    }
-
-    public function testGetDeclaringTraitName(): void
-    {
-        $this->assertSame('', $this->reflectionProperty->getDeclaringTraitName());
-    }
 }

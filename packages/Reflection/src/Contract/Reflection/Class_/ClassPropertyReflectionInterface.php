@@ -22,10 +22,5 @@ interface ClassPropertyReflectionInterface extends AbstractClassElementInterface
 
     public function getName(): string;
 
-    /**
-     * Returns the unqualified name (UQN).
-     */
-    public function getShortName(): string;
-
     public function isDeprecated(): bool;
 }

@@ -34,11 +34,6 @@ final class ClassPropertyReflection implements ClassPropertyReflectionInterface
         $this->docBlock = $docBlock;
     }
 
-    public function getShortName(): string
-    {
-        return $this->getName();
-    }
-
     public function getNamespaceName(): string
     {
         return $this->betterPropertyReflection->getDeclaringClass()
@@ -90,23 +85,15 @@ final class ClassPropertyReflection implements ClassPropertyReflectionInterface
 
     public function getTypeHint(): string
     {
-        $annotations = $this->getAnnotation(AnnotationList::VAR_);
+        /** @var DocBlock\Tags\Var_[] $varAnnotations */
+        $varAnnotations = $this->getAnnotation(AnnotationList::VAR_);
 
-        if ($annotations) {
-            [$types] = preg_split('~\s+|$~', $annotations[0], 2);
-            if (! empty($types) && $types[0] !== '$') {
-                return $types;
-            }
+        $typeHints = [];
+        foreach ($varAnnotations as $varAnnotation) {
+            $typeHints[] = (string) $varAnnotation->getType();
         }
 
-        try {
-            $type = gettype($this->getDefaultValue());
-            if (strtolower($type) !== 'null') {
-                return $type;
-            }
-        } catch (\Exception $exception) {
-            return '';
-        }
+        return implode('|', $typeHints);
     }
 
     /**

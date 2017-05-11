@@ -32,11 +32,6 @@ final class TraitPropertyReflection implements TraitPropertyReflectionInterface
         $this->docBlock = $docBlock;
     }
 
-    public function getShortName(): string
-    {
-        return $this->getName();
-    }
-
     public function getNamespaceName(): string
     {
         return $this->betterPropertyReflection->getDeclaringClass()
@@ -103,21 +98,21 @@ final class TraitPropertyReflection implements TraitPropertyReflectionInterface
     {
         $annotations = $this->getAnnotation(AnnotationList::VAR_);
 
-        if ($annotations) {
-            [$types] = preg_split('~\s+|$~', $annotations[0], 2);
-            if (! empty($types) && $types[0] !== '$') {
-                return $types;
-            }
-        }
+//        if ($annotations) {
+//            [$types] = preg_split('~\s+|$~', $annotations[0], 2);
+//            if (! empty($types) && $types[0] !== '$') {
+//                return $types;
+//            }
+//        }
 
-        try {
-            $type = gettype($this->getDefaultValue());
-            if (strtolower($type) !== 'null') {
-                return $type;
-            }
-        } catch (\Exception $exception) {
-            return '';
-        }
+//        try {
+//            $type = gettype($this->getDefaultValue());
+//            if (strtolower($type) !== 'null') {
+//                return $type;
+//            }
+//        } catch (\Exception $exception) {
+//            return '';
+//        }
     }
 
     /**
