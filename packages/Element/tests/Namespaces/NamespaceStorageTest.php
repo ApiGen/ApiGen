@@ -46,11 +46,13 @@ final class NamespaceStorageTest extends AbstractContainerAwareTestCase
         $this->assertCount(1, $namespacedItems->getClassReflections());
         $this->assertCount(1, $namespacedItems->getTraitReflections());
         $this->assertCount(1, $namespacedItems->getFunctionReflections());
+        $this->assertCount(1, $namespacedItems->getInterfaceReflections());
 
         $namespacedItems = $this->namespaceStorage->findInNamespace($this->namespacePrefix . '\SubNamespace');
         $this->assertCount(0, $namespacedItems->getClassReflections());
         $this->assertCount(1, $namespacedItems->getTraitReflections());
         $this->assertCount(0, $namespacedItems->getFunctionReflections());
+        $this->assertCount(1, $namespacedItems->getInterfaceReflections());
     }
 
     public function testNoneNamespace(): void

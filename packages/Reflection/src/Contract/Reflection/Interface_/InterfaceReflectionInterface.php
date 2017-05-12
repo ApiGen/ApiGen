@@ -10,6 +10,8 @@ interface InterfaceReflectionInterface extends StartAndEndLineInterface, Annotat
 {
     public function getName(): string;
 
+    public function getNamespaceName(): string;
+
     public function getFileName(): string;
 
     /**

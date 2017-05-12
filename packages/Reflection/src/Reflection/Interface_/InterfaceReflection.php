@@ -46,16 +46,6 @@ final class InterfaceReflection implements InterfaceReflectionInterface, Transfo
         $this->implementersResolver = $implementersResolver;
     }
 
-    public function getStartLine(): int
-    {
-        return $this->betterInterfaceReflection->getStartLine();
-    }
-
-    public function getEndLine(): int
-    {
-        return $this->betterInterfaceReflection->getEndLine();
-    }
-
     public function getName(): string
     {
         return $this->betterInterfaceReflection->getName();
@@ -64,6 +54,21 @@ final class InterfaceReflection implements InterfaceReflectionInterface, Transfo
     public function getShortName(): string
     {
         return $this->betterInterfaceReflection->getShortName();
+    }
+
+    public function getNamespaceName(): string
+    {
+        return $this->betterInterfaceReflection->getNamespaceName();
+    }
+
+    public function getStartLine(): int
+    {
+        return $this->betterInterfaceReflection->getStartLine();
+    }
+
+    public function getEndLine(): int
+    {
+        return $this->betterInterfaceReflection->getEndLine();
     }
 
     public function getDescription(): string
