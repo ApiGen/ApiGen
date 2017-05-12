@@ -2,7 +2,6 @@
 
 namespace ApiGen\Reflection\Reflection\Class_;
 
-use ApiGen\Annotation\AnnotationList;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassConstantReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ReflectionClass;
@@ -72,25 +71,12 @@ final class ClassConstantReflection implements ClassConstantReflectionInterface
 
     public function getTypeHint(): string
     {
-        $annotations = $this->getAnnotation(AnnotationList::VAR_);
-        dump($annotations);
-        die;
-
-        if ($annotations) {
-            [$types] = preg_split('~\s+|$~', $annotations[0], 2);
-            if (! empty($types)) {
-                return $types;
-            }
+        $valueType = gettype($this->value);
+        if ($valueType === 'integer') {
+            return 'int';
         }
 
-        try {
-            $type = gettype($this->getValue());
-            if (strtolower($type) !== 'null') {
-                return $type;
-            }
-        } catch (Exception $exception) {
-            return '';
-        }
+        return $valueType;
     }
 
     public function getDeclaringClass(): ClassReflectionInterface
@@ -111,50 +97,13 @@ final class ClassConstantReflection implements ClassConstantReflectionInterface
         return $this->value;
     }
 
-    public function getValueDefinition(): string
-    {
-        // what for?
-        return $this->reflection->getValueDefinition();
-    }
-
     public function isDeprecated(): bool
     {
         if ($this->classReflection->isDeprecated()) {
             return true;
         }
 
-        // if parent is deprecated, so is this
-    }
-
-    /**
-     *
-     * @return mixed[]
-     */
-    public function getAnnotations(): array
-    {
-        // TODO: Implement getAnnotations() method.
-    }
-
-    /**
-     * @return mixed[]
-     */
-    public function getAnnotation(string $name): array
-    {
-        return $this->docBlock->getTagsByName($name);
-    }
-
-    public function hasAnnotation(string $name): bool
-    {
-        // TODO: Implement hasAnnotation() method.
-    }
-
-    public function getDescription(): string
-    {
-        $description = $this->docBlock->getSummary()
-            . AnnotationList::EMPTY_LINE
-            . $this->docBlock->getDescription();
-
-        return trim($description);
+        return false;
     }
 
     public function getStartLine(): int

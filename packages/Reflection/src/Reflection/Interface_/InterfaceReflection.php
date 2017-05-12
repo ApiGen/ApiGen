@@ -257,4 +257,9 @@ final class InterfaceReflection implements InterfaceReflectionInterface, Transfo
     {
         return $this->docBlock->getTagsByName($name);
     }
+
+    public function isDeprecated(): bool
+    {
+        return $this->hasAnnotation(AnnotationList::DEPRECATED);
+    }
 }

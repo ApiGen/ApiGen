@@ -40,18 +40,9 @@ final class ClassConstantReflectionTest extends AbstractParserAwareTestCase
         $this->assertSame('CONSTANT_INSIDE', $this->classConstantReflection->getName());
     }
 
-    public function testGetTypeHint(): void
+    public function testValue(): void
     {
         $this->assertSame('int', $this->classConstantReflection->getTypeHint());
+        $this->assertSame(55, $this->classConstantReflection->getValue());
     }
-//
-//    public function testGetValue(): void
-//    {
-//        $this->assertSame(55, $this->classConstantReflection->getValue());
-//    }
-//
-//    public function testGetDefinition(): void
-//    {
-//        $this->assertSame('55', $this->classConstantReflection->getValueDefinition());
-//    }
 }
