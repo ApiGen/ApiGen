@@ -5,12 +5,14 @@
 >
     <testsuites>
         <testsuite>
+            <directory>packages/Element/tests</directory>
             <directory>packages/Reflection/tests</directory>
             <directory>tests</directory>
         </testsuite>
     </testsuites>
     <filter>
         <whitelist>
+            <directory>packages/Element/src</directory>
             <directory>packages/Reflection/src</directory>
             <directory>src</directory>
         </whitelist>
