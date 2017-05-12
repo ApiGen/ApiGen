@@ -22,7 +22,7 @@ final class NamespaceStorageTest extends AbstractContainerAwareTestCase
     {
         /** @var ParserInterface $parser */
         $parser = $this->container->getByType(ParserInterface::class);
-        $parser->parseDirectories([__DIR__ . '/Source']);
+        $parser->parseDirectories([__DIR__ . '/../Source']);
 
         $this->namespaceStorage = $this->container->getByType(NamespaceStorage::class);
     }
@@ -70,22 +70,7 @@ final class NamespaceStorageTest extends AbstractContainerAwareTestCase
         $this->assertSame([
             'ApiGen',
             'ApiGen\Element',
-            'ApiGen\Element\Tests',
-            'ApiGen\Element\Tests\Namespaces',
+            'ApiGen\Element\Tests'
         ], $namespacedItems->getParentNamespaces());
     }
-
-//    public function testAddMissingElementTypes(): void
-//    {
-//        MethodInvoker::callMethodOnObject($this->namespaceSorter, 'addMissingElementTypes', ['Some\Group']);
-//        $groups = Assert::getObjectAttribute($this->namespaceSorter, 'namespaces');
-//        $this->assertArrayHasKey('Some\Group', $groups);
-//
-//        $someGroup = $groups['Some\Group'];
-//        $this->assertArrayHasKey('classes', $someGroup);
-//        $this->assertArrayHasKey('exceptions', $someGroup);
-//        $this->assertArrayHasKey('functions', $someGroup);
-//        $this->assertArrayHasKey('interfaces', $someGroup);
-//        $this->assertArrayHasKey('traits', $someGroup);
-//    }
 }
