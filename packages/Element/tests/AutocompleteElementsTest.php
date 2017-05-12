@@ -9,6 +9,11 @@ use ApiGen\Tests\AbstractContainerAwareTestCase;
 final class AutocompleteElementsTest extends AbstractContainerAwareTestCase
 {
     /**
+     * @var string
+     */
+    private $namespacePrefix = 'ApiGen\Element\Tests\Namespaces';
+
+    /**
      * @var AutocompleteElementsInterface
      */
     private $autocompleteElements;
@@ -27,14 +32,11 @@ final class AutocompleteElementsTest extends AbstractContainerAwareTestCase
         $elements = $this->autocompleteElements->getElements();
 
         $this->assertSame([
-            ['c', SomeClass::class],
-            ['p', SomeClass::class . '::$someProperty'],
-            ['m', SomeClass::class . '::SomeMethod()'],
-            ['c', SomeInterface::class],
-            ['c', SomeOtherClass::class],
-            ['p', SomeOtherClass::class . '::$someProperty'],
-            ['c', YetAnotherClass::class],
-            ['f', 'SomeNamespace\someAloneFunction()']
+            ['f', $this->namespacePrefix . '\namespacedFunction()'],
+            ['c', 'NoneNamespacedClass'],
+            ['c', $this->namespacePrefix . '\NamespacedClass'],
+            ['i', $this->namespacePrefix . '\SubNamespace\SubNamespacedInterface'],
+            ['t', $this->namespacePrefix . '\SubNamespace\SubNamespacedTrait'],
         ], $elements);
     }
 }

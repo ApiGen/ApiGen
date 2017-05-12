@@ -11,7 +11,7 @@ final class NamespaceStorageTest extends AbstractContainerAwareTestCase
     /**
      * @var string
      */
-    private $namespacePrefix = 'ApiGen\Element\Tests\Namespaces\Source';
+    private $namespacePrefix = 'ApiGen\Element\Tests\Namespaces';
 
     /**
      * @var NamespaceStorage

@@ -22,6 +22,9 @@ final class AutocompleteElements implements AutocompleteElementsInterface
      */
     public function getElements(): array
     {
+        // @todo: consider return [ name => file ]
+        // to skip template route building process
+
         $elements = [];
         foreach ($this->reflectionStorage->getFunctionReflections() as $functionReflection) {
             $elements[] = ['f', $functionReflection->getName() . '()'];
@@ -38,23 +41,6 @@ final class AutocompleteElements implements AutocompleteElementsInterface
         foreach ($this->reflectionStorage->getTraitReflections() as $traitReflection) {
             $elements[] = ['t', $traitReflection->getName()];
         }
-
-        $elements = $this->sortElements($elements);
-
-        return $elements;
-    }
-
-    /**
-     * @todo is this needed?
-     *
-     * @param string[] $elements
-     * @return string[]
-     */
-    private function sortElements(array $elements): array
-    {
-        usort($elements, function ($one, $two) {
-            return strcasecmp($one[1], $two[1]);
-        });
 
         return $elements;
     }
