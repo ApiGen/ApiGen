@@ -47,6 +47,7 @@
     "autoload-dev": {
         "psr-4": {
             "ApiGen\\Tests\\": "tests",
+            "ApiGen\\Element\\Tests\\": "packages/Element/tests",
             "ApiGen\\Reflection\\Tests\\": "packages/Reflection/tests"
         }
     },

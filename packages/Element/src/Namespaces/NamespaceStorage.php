@@ -10,6 +10,11 @@ final class NamespaceStorage
     /**
      * @var string
      */
+    private const NO_NAMESPACE = 'None';
+
+    /**
+     * @var string
+     */
     private const NAMESPACE_SEPARATOR = '\\';
 
     /**
@@ -38,17 +43,21 @@ final class NamespaceStorage
     public function getNamespaces(): array
     {
         $this->categorizeReflectionsToNamespaces();
-        $this->populateAllParentNamespaces();
 
-        return array_keys($this->reflectionsCategorizedToNamespaces);
+        $namespaceNames = array_keys($this->reflectionsCategorizedToNamespaces);
+
+        return $this->makeNoNamespaceNameLast($namespaceNames);
     }
 
     public function findInNamespace(string $namespaceToSeek): SingleNamespaceStorage
     {
+        $this->categorizeReflectionsToNamespaces();
+
         $classes = [];
         $interfaces = [];
         $traits = [];
         $functions = [];
+
         foreach ($this->singleNamespaceStorages as $namespace => $singleNamespaceStorage) {
             if (! Strings::startsWith($namespace, $namespaceToSeek)) {
                 continue;
@@ -82,40 +91,27 @@ final class NamespaceStorage
         $this->categorizeReflectionsToNamespace($this->reflectionStorage->getFunctionReflections(), 'functions');
 
         // use value objects for API over array access
-        foreach ($this->getNamespaces() as $namespace) {
-            $singleNamespaceElements = $this->reflectionsCategorizedToNamespaces[$namespace];
-            $this->singleNamespaceStorages[$namespace] = new SingleNamespaceStorage(
-                $namespace,
-                $this->getParentNamespaces($namespace),
+        $namespaceNames = array_keys($this->reflectionsCategorizedToNamespaces);
+        foreach ($namespaceNames as $namespaceName) {
+            $singleNamespaceElements = $this->reflectionsCategorizedToNamespaces[$namespaceName];
+            $this->singleNamespaceStorages[$namespaceName] = new SingleNamespaceStorage(
+                $namespaceName,
+                $this->getParentNamespaces($namespaceName),
                 $singleNamespaceElements['classes'] ?? [],
                 $singleNamespaceElements['interfaces'] ?? [],
                 $singleNamespaceElements['traits'] ?? [],
                 $singleNamespaceElements['functions'] ?? []
             );
         }
+
+        $this->makeNoNamespaceLast();
     }
 
     private function categorizeReflectionsToNamespace(array $reflections, string $type): void
     {
         foreach ($reflections as $reflection) {
-            $namespace = $reflection->getNamespace() ?: 'None';
+            $namespace = $reflection->getNamespaceName() ?: self::NO_NAMESPACE;
             $this->reflectionsCategorizedToNamespaces[$namespace][$type][$reflection->getShortName()] = $reflection;
-        }
-    }
-
-    private function populateAllParentNamespaces(): void
-    {
-        foreach (array_keys($this->reflectionsCategorizedToNamespaces) as $namespace) {
-            $parentNamespaces = $this->getParentNamespaces($namespace);
-            foreach ($parentNamespaces as $parentNamespace) {
-                if (isset($this->reflectionsCategorizedToNamespaces[$parentNamespace])) {
-                    continue;
-                }
-
-                $this->reflectionsCategorizedToNamespaces[$parentNamespace] = new SingleNamespaceStorage(
-                    $parentNamespace, $this->getParentNamespaces($parentNamespace), [], [], [], []
-                );
-            }
         }
     }
 
@@ -124,15 +120,44 @@ final class NamespaceStorage
      */
     private function getParentNamespaces(string $namespace): array
     {
-        $parentNamespaces[] = [];
+        $parentNamespaces = [];
         $parentNamespace = '';
         foreach (explode(self::NAMESPACE_SEPARATOR, $namespace) as $part) {
             $parentNamespace = ltrim($parentNamespace . self::NAMESPACE_SEPARATOR . $part, self::NAMESPACE_SEPARATOR);
+            if ($parentNamespace === $namespace) {
+                break;
+            }
             $parentNamespaces[] = $parentNamespace;
         }
 
-        asort($parentNamespaces);
+        sort($parentNamespaces);
 
         return $parentNamespaces;
+    }
+
+    private function makeNoNamespaceLast()
+    {
+        if (! isset($this->singleNamespaceStorages[self::NO_NAMESPACE])) {
+            return;
+        }
+
+        $noNamespace = $this->singleNamespaceStorages[self::NO_NAMESPACE];
+        unset($this->singleNamespaceStorages[self::NO_NAMESPACE]);
+        $this->singleNamespaceStorages[self::NO_NAMESPACE] = $noNamespace;
+    }
+
+    /**
+     * @param string[] $namespaceNames
+     * @return string[]
+     */
+    private function makeNoNamespaceNameLast(array $namespaceNames): array
+    {
+        if (in_array(self::NO_NAMESPACE, $namespaceNames)) {
+            $noNamespaceKey = array_search(self::NO_NAMESPACE, $namespaceNames);
+            unset($namespaceNames[$noNamespaceKey]);
+            $namespaceNames[] = self::NO_NAMESPACE;
+        }
+
+        return array_values($namespaceNames);
     }
 }

@@ -85,12 +85,12 @@ final class TraitReflection implements TraitReflectionInterface, TransformerColl
 
     public function isDeprecated(): bool
     {
-        // TODO: Implement isDeprecated() method.
+        return $this->hasAnnotation(AnnotationList::DEPRECATED);
     }
 
     public function getNamespaceName(): string
     {
-        // TODO: Implement getNamespaceName() method.
+        return $this->betterTraitReflection->getNamespaceName();
     }
 
     public function getFileName(): string
@@ -144,14 +144,6 @@ final class TraitReflection implements TraitReflectionInterface, TransformerColl
         return $this->transformerCollector->transformGroup(
             $this->betterTraitReflection->getTraits()
         );
-    }
-
-    /**
-     * @return string[]
-     */
-    public function getOwnTraitNames(): array
-    {
-        // TODO: Implement getOwnTraitNames() method.
     }
 
     /**

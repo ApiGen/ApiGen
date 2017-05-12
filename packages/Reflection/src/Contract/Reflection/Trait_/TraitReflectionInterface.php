@@ -48,11 +48,6 @@ interface TraitReflectionInterface extends AnnotationsInterface
     /**
      * @return string[]
      */
-    public function getOwnTraitNames(): array;
-
-    /**
-     * @return string[]
-     */
     public function getTraitAliases(): array;
 
     /**
