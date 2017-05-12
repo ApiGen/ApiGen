@@ -65,23 +65,12 @@ final class InterfaceConstantReflection implements InterfaceConstantReflectionIn
 
     public function getTypeHint(): string
     {
-        $annotations = $this->getAnnotation(AnnotationList::VAR_);
-
-        if ($annotations) {
-            [$types] = preg_split('~\s+|$~', $annotations[0], 2);
-            if (! empty($types)) {
-                return $types;
-            }
+        $valueType = gettype($this->value);
+        if ($valueType === 'integer') {
+            return 'int';
         }
 
-        try {
-            $type = gettype($this->getValue());
-            if (strtolower($type) !== 'null') {
-                return $type;
-            }
-        } catch (Exception $exception) {
-            return '';
-        }
+        return $valueType;
     }
 
     /**
@@ -92,46 +81,9 @@ final class InterfaceConstantReflection implements InterfaceConstantReflectionIn
         return $this->value;
     }
 
-    public function getValueDefinition(): string
-    {
-        return $this->reflection->getValueDefinition();
-    }
-
     public function isDeprecated(): bool
     {
         // TODO: Implement isDeprecated() method.
-    }
-
-    public function getNamespaceName(): string
-    {
-        // TODO: Implement getNamespaceName() method.
-    }
-
-    /**
-     *
-     * @return mixed[]
-     */
-    public function getAnnotations(): array
-    {
-        // TODO: Implement getAnnotations() method.
-    }
-
-    /**
-     * @return mixed[]
-     */
-    public function getAnnotation(string $name): array
-    {
-        // TODO: Implement getAnnotation() method.
-    }
-
-    public function hasAnnotation(string $name): bool
-    {
-        // TODO: Implement hasAnnotation() method.
-    }
-
-    public function getDescription(): string
-    {
-        // TODO: Implement getDescription() method.
     }
 
     public function getStartLine(): int

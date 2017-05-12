@@ -6,21 +6,12 @@ use ApiGen\Reflection\Contract\Reflection\Partial\StartAndEndLineInterface;
 
 interface InterfaceConstantReflectionInterface extends AbstractInterfaceElementInterface, StartAndEndLineInterface
 {
-    public function getTypeHint(): string;
+    public function getName(): string;
 
     /**
      * @return mixed
      */
     public function getValue();
 
-    public function getValueDefinition(): string;
-
-    /**
-     * @return mixed[]
-     */
-    public function getAnnotations(): array;
-
-    public function getNamespaceName(): string;
-
-    public function getName(): string;
+    public function getTypeHint(): string;
 }

@@ -4,6 +4,7 @@ namespace ApiGen\Reflection\Reflection\Class_;
 
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassConstantReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
+use PhpParser\Node\Stmt\Class_;
 use ReflectionClass;
 
 final class ClassConstantReflection implements ClassConstantReflectionInterface
@@ -26,7 +27,7 @@ final class ClassConstantReflection implements ClassConstantReflectionInterface
     /**
      * @var mixed
      */
-    private $nativeClassConstantReflection;
+    private $modifier;
 
     /**
      * @param mixed $value
@@ -36,9 +37,6 @@ final class ClassConstantReflection implements ClassConstantReflectionInterface
         $this->name = $name;
         $this->value = $value;
         $this->classReflection = $classReflection;
-
-        $nativeClassConstantReflection = new ReflectionClass($classReflection->getName());
-        $this->nativeClassConstantReflection = $nativeClassConstantReflection->getConstant($name);
     }
 
     /**
@@ -49,19 +47,29 @@ final class ClassConstantReflection implements ClassConstantReflectionInterface
         return new self($name, $value, $classReflection);
     }
 
+    /**
+     * @todo use PHP-Parser to get modifier
+     */
     public function isPublic(): bool
     {
-        return $this->nativeClassConstantReflection->isPublic();
+        return TRUE;
+        // return (bool) ($this->modifier & Class_::MODIFIER_PUBLIC);
     }
 
+    /**
+     * @todo use PHP-Parser to get modifier
+     */
     public function isProtected(): bool
     {
-        return $this->nativeClassConstantReflection->isProtected();
+        return FALSE;
     }
 
+    /**
+     * @todo use PHP-Parser to get modifier
+     */
     public function isPrivate(): bool
     {
-        return $this->nativeClassConstantReflection->isPrivate();
+        return FALSE;
     }
 
     public function getName(): string
@@ -106,13 +114,21 @@ final class ClassConstantReflection implements ClassConstantReflectionInterface
         return false;
     }
 
+    /**
+     * @todo Complete, probably from tokenizer.
+     * Inspiration https://github.com/POPSuL/PHP-Token-Reflection/blob/8883ecd6f63a2ac8e97a3f7ef4529484a8e57ddf/TokenReflection/ReflectionElement.php#L291-L305
+     */
     public function getStartLine(): int
     {
-        // TODO: Implement getStartLine() method.
+
+        return 25;
     }
 
+    /**
+     * @todo Complete
+     */
     public function getEndLine(): int
     {
-        // TODO: Implement getEndLine() method.
+        return 35;
     }
 }
