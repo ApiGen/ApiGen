@@ -7,7 +7,7 @@ use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Method\MethodParameterReflectionInterface;
 use ApiGen\Reflection\Tests\Reflection\Method_\MethodReflection\Source\ParameterMethodClass;
 use ApiGen\Tests\AbstractParserAwareTestCase;
-use ApiGen\Tests\Parser\Reflection\ReflectionMethodSource\ReflectionMethod;
+use ApiGen\Tests\Parser\Reflection\ReflectionMethodSource\SomeClassWithAnnotations;
 
 final class MethodParameterReflectionTest extends AbstractParserAwareTestCase
 {

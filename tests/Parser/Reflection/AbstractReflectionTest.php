@@ -8,7 +8,7 @@ use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Parser\Reflection\AbstractReflection;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 use ApiGen\Tests\MethodInvoker;
-use ApiGen\Tests\Parser\Reflection\ReflectionMethodSource\ReflectionMethod;
+use ApiGen\Tests\Parser\Reflection\ReflectionMethodSource\SomeClassWithAnnotations;
 
 final class AbstractReflectionTest extends AbstractContainerAwareTestCase
 {
@@ -23,18 +23,18 @@ final class AbstractReflectionTest extends AbstractContainerAwareTestCase
         $parser = $this->container->getByType(ParserInterface::class);
         $parserStorage = $parser->parseDirectories([__DIR__ . '/ReflectionMethodSource']);
 
-        $this->reflectionClass = $parserStorage->getClasses()[ReflectionMethod::class];
+        $this->reflectionClass = $parserStorage->getClasses()[SomeClassWithAnnotations::class];
 
         /** @var ParserStorageInterface $parserStorage */
         $parserStorage = $this->container->getByType(ParserStorageInterface::class);
         $parserStorage->setClasses([
-            ReflectionMethod::class => $this->reflectionClass
+            SomeClassWithAnnotations::class => $this->reflectionClass
         ]);
     }
 
     public function testGetName(): void
     {
-        $this->assertSame(ReflectionMethod::class, $this->reflectionClass->getName());
+        $this->assertSame(SomeClassWithAnnotations::class, $this->reflectionClass->getName());
     }
 
     public function testGetFileName(): void

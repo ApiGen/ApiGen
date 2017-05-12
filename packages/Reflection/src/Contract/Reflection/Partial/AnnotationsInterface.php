@@ -6,6 +6,8 @@ use phpDocumentor\Reflection\DocBlock\Tag;
 
 interface AnnotationsInterface
 {
+    public function isDeprecated(): bool;
+
     public function getDescription(): string;
 
     public function hasAnnotation(string $name): bool;
