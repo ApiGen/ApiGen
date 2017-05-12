@@ -20,7 +20,5 @@ interface ClassConstantReflectionInterface extends AbstractClassElementInterface
      */
     public function getAnnotations(): array;
 
-    public function getNamespaceName(): string;
-
     public function getName(): string;
 }

@@ -42,11 +42,6 @@ interface ClassReflectionInterface extends StartAndEndLineInterface, Annotations
     public function getOwnInterfaces(): array;
 
     /**
-     * @return string[]
-     */
-    public function getOwnInterfaceNames(): array;
-
-    /**
      * @return ClassMethodReflectionInterface[]
      */
     public function getMethods(): array;
@@ -95,11 +90,6 @@ interface ClassReflectionInterface extends StartAndEndLineInterface, Annotations
      * @return TraitReflectionInterface[]
      */
     public function getTraits(): array;
-
-    /**
-     * @return string[]
-     */
-    public function getTraitNames(): array;
 
     /**
      * @return string[]

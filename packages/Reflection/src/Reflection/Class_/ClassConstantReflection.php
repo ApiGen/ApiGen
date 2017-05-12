@@ -2,6 +2,7 @@
 
 namespace ApiGen\Reflection\Reflection\Class_;
 
+use ApiGen\Annotation\AnnotationList;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassConstantReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ReflectionClass;
@@ -66,17 +67,14 @@ final class ClassConstantReflection implements ClassConstantReflectionInterface
 
     public function getName(): string
     {
-        return $this->reflection->getName();
-    }
-
-    public function getShortName(): string
-    {
         return $this->name;
     }
 
     public function getTypeHint(): string
     {
         $annotations = $this->getAnnotation(AnnotationList::VAR_);
+        dump($annotations);
+        die;
 
         if ($annotations) {
             [$types] = preg_split('~\s+|$~', $annotations[0], 2);
@@ -128,11 +126,6 @@ final class ClassConstantReflection implements ClassConstantReflectionInterface
         // if parent is deprecated, so is this
     }
 
-    public function getNamespaceName(): string
-    {
-        // TODO: Implement getNamespaceName() method.
-    }
-
     /**
      *
      * @return mixed[]
@@ -147,7 +140,7 @@ final class ClassConstantReflection implements ClassConstantReflectionInterface
      */
     public function getAnnotation(string $name): array
     {
-        // TODO: Implement getAnnotation() method.
+        return $this->docBlock->getTagsByName($name);
     }
 
     public function hasAnnotation(string $name): bool
@@ -157,7 +150,11 @@ final class ClassConstantReflection implements ClassConstantReflectionInterface
 
     public function getDescription(): string
     {
-        // TODO: Implement getDescription() method.
+        $description = $this->docBlock->getSummary()
+            . AnnotationList::EMPTY_LINE
+            . $this->docBlock->getDescription();
+
+        return trim($description);
     }
 
     public function getStartLine(): int

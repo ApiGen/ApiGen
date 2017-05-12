@@ -89,24 +89,6 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
         return $this->betterClassReflection->getNamespaceName();
     }
 
-//        public function getNamespaceName(): string
-//    {
-//        static $namespaces = [];
-//
-//        $namespaceName = $this->reflection->getNamespaceName();
-//
-//        if (! $namespaceName) {
-//            return $namespaceName;
-//        }
-//
-//        $lowerNamespaceName = strtolower($namespaceName);
-//        if (! isset($namespaces[$lowerNamespaceName])) {
-//            $namespaces[$lowerNamespaceName] = $namespaceName;
-//        }
-//
-//        return $namespaces[$lowerNamespaceName];
-//    }
-
     /**
      * @return mixed[]
      */
@@ -126,13 +108,13 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
 
     public function getParentClass(): ?ClassReflectionInterface
     {
-        if ($this->betterClassReflection->getParentClass()) {
-            return $this->transformerCollector->transformSingle(
-                $this->betterClassReflection->getParentClass()
-            );
+        if (! $this->betterClassReflection->getParentClass()) {
+            return null;
         }
 
-        return null;
+        return $this->transformerCollector->transformSingle(
+            $this->betterClassReflection->getParentClass()
+        );
     }
 
     public function getParentClassName(): string
@@ -175,21 +157,13 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
     }
 
     /**
-     * @return ClassReflectionInterface[]
+     * @return InterfaceReflectionInterface[]
      */
     public function getOwnInterfaces(): array
     {
-        return array_map(function (IReflectionClass $class) {
-            return $this->getParsedClasses()[$class->getName()];
-        }, $this->betterClassReflection->getOwnInterfaces());
-    }
-
-    /**
-     * @return string[]
-     */
-    public function getOwnInterfaceNames(): array
-    {
-        return array_keys($this->betterClassReflection->getImmediateInterfaces());
+        return $this->transformerCollector->transformGroup(
+            $this->betterClassReflection->getImmediateInterfaces()
+        );
     }
 
     public function getMethod(string $name): ClassMethodReflectionInterface
@@ -300,21 +274,13 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
     }
 
     /**
-     * @return ClassReflectionInterface[]
+     * @return TraitReflectionInterface[]
      */
     public function getTraits(): array
     {
         return $this->transformerCollector->transformGroup(
             $this->betterClassReflection->getTraits()
         );
-    }
-
-    /**
-     * @return string[]
-     */
-    public function getTraitNames(): array
-    {
-        return $this->betterClassReflection->getTraitNames();
     }
 
     /**
