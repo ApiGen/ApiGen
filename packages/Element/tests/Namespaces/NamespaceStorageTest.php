@@ -45,10 +45,12 @@ final class NamespaceStorageTest extends AbstractContainerAwareTestCase
         $namespacedItems = $this->namespaceStorage->findInNamespace($this->namespacePrefix);
         $this->assertCount(1, $namespacedItems->getClassReflections());
         $this->assertCount(1, $namespacedItems->getTraitReflections());
+        $this->assertCount(1, $namespacedItems->getFunctionReflections());
 
         $namespacedItems = $this->namespaceStorage->findInNamespace($this->namespacePrefix . '\SubNamespace');
         $this->assertCount(0, $namespacedItems->getClassReflections());
         $this->assertCount(1, $namespacedItems->getTraitReflections());
+        $this->assertCount(0, $namespacedItems->getFunctionReflections());
     }
 
     public function testNoneNamespace(): void
@@ -71,20 +73,6 @@ final class NamespaceStorageTest extends AbstractContainerAwareTestCase
         ], $namespacedItems->getParentNamespaces());
     }
 
-
-//    public function testAddMissingParentNamespaces(): void
-//    {
-//        $this->assertNull(Assert::getObjectAttribute($this->namespaceSorter, 'namespaces'));
-//        MethodInvoker::callMethodOnObject(
-//            $this->namespaceSorter, 'addMissingParentNamespaces', ['Some\Group\Name']
-//        );
-//
-//        $groups = Assert::getObjectAttribute($this->namespaceSorter, 'namespaces');
-//        $this->assertArrayHasKey('Some\Group\Name', $groups);
-//        $this->assertArrayHasKey('Some\Group', $groups);
-//        $this->assertArrayHasKey('Some', $groups);
-//    }
-//
 //    public function testAddMissingElementTypes(): void
 //    {
 //        MethodInvoker::callMethodOnObject($this->namespaceSorter, 'addMissingElementTypes', ['Some\Group']);
