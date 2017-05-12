@@ -1,12 +1,11 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Element;
+namespace ApiGen\Element\Annotation;
 
-use ApiGen\Reflection\Contract\Reflection\ReflectionInterface;
-use ApiGen\Element\Contract\ElementExtractorInterface;
+use ApiGen\Reflection\Contract\Reflection\Partial\AnnotationsInterface;
 use ApiGen\Reflection\Contract\ReflectionStorageInterface;
 
-final class ElementExtractor implements ElementExtractorInterface
+final class AnnotationStorage
 {
     /**
      * @var ReflectionStorageInterface
@@ -19,9 +18,9 @@ final class ElementExtractor implements ElementExtractorInterface
     }
 
     /**
-     * @return mixed[]
+     * @return AnnotationsInterface[][]
      */
-    public function extractElementsByAnnotation(string $annotation): array
+    public function findByAnnotation(string $annotation): array
     {
         $elements = [
             // these might be empty, if no classes
@@ -30,22 +29,22 @@ final class ElementExtractor implements ElementExtractorInterface
             'properties' => [],
         ];
 
-        $elements['functions'] = $this->filterByAnnotation(
+        $elements['functions'] = $this->filterReflectionsByAnnotation(
             $this->reflectionStorage->getFunctionReflections(),
             $annotation
         );
 
-        $elements['classes'] = $this->filterByAnnotation(
+        $elements['classes'] = $this->filterReflectionsByAnnotation(
             $this->reflectionStorage->getClassReflections(),
             $annotation
         );
 
-        $elements['interfaces'] = $this->filterByAnnotation(
+        $elements['interfaces'] = $this->filterReflectionsByAnnotation(
             $this->reflectionStorage->getInterfaceReflections(),
             $annotation
         );
 
-        $elements['traits'] = $this->filterByAnnotation(
+        $elements['traits'] = $this->filterReflectionsByAnnotation(
             $this->reflectionStorage->getTraitReflections(),
             $annotation
         );
@@ -78,18 +77,18 @@ final class ElementExtractor implements ElementExtractorInterface
      */
     private function extractByAnnotationAndMerge(array $elements, string $annotation, array $storage): array
     {
-        $foundElements = $this->filterByAnnotation($elements, $annotation);
+        $foundElements = $this->filterReflectionsByAnnotation($elements, $annotation);
 
         return array_merge($storage, array_values($foundElements));
     }
 
     /**
-     * @param ReflectionInterface[] $elements
-     * @return ReflectionInterface[]
+     * @param AnnotationsInterface[] $elements
+     * @return AnnotationsInterface[]
      */
-    private function filterByAnnotation(array $elements, string $annotation): array
+    private function filterReflectionsByAnnotation(array $elements, string $annotation): array
     {
-        return array_filter($elements, function (ReflectionInterface $element) use ($annotation) {
+        return array_filter($elements, function (AnnotationsInterface $element) use ($annotation) {
             return $element->hasAnnotation($annotation);
         });
     }
