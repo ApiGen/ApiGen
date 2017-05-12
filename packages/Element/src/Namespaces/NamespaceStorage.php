@@ -135,7 +135,7 @@ final class NamespaceStorage
         return $parentNamespaces;
     }
 
-    private function makeNoNamespaceLast()
+    private function makeNoNamespaceLast(): void
     {
         if (! isset($this->singleNamespaceStorages[self::NO_NAMESPACE])) {
             return;

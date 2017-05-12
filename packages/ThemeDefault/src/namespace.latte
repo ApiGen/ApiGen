@@ -7,9 +7,9 @@
 <div id="content" class="namespace">
 	<h1>{if $namespace !== 'None'}Namespace {$namespace|namespaceLinks: false|noescape}{else}No namespace{/if}</h1>
 
-	<table class="summary" id="namespaces" n:if="$subnamespaces">
+	<table class="summary" id="namespaces" n:if="$parentNamespaces">
 	<caption>Namespaces summary</caption>
-	<tr n:foreach="$subnamespaces as $subnamespace">
+	<tr n:foreach="$parentNamespaces as $subnamespace">
 		<td class="name"><a href="{$subnamespace|namespaceUrl}">{$subnamespace}</a></td>
 	</tr>
 	</table>

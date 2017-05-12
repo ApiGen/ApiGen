@@ -54,7 +54,7 @@ final class NamespaceGenerator implements GeneratorInterface
             ),
             [
                 'namespace' => $singleNamespaceStorage->getNamespace(),
-                'subnamespaces' => $singleNamespaceStorage->getSubNamespaces(),
+                'parentNamespaces' => $singleNamespaceStorage->getParentNamespaces(),
                 'classes' => $singleNamespaceStorage->getClassReflections(),
                 'interfaces' => $singleNamespaceStorage->getInterfaceReflections(),
                 'traits' => $singleNamespaceStorage->getTraitReflections(),

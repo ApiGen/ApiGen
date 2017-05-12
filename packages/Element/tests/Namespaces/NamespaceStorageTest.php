@@ -69,9 +69,6 @@ final class NamespaceStorageTest extends AbstractContainerAwareTestCase
             'ApiGen\Element\Tests',
             'ApiGen\Element\Tests\Namespaces',
         ], $namespacedItems->getParentNamespaces());
-//
-//        $namespacedItems->getSubNamespaces();
-
     }
 
 
