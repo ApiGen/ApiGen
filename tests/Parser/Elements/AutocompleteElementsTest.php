@@ -12,23 +12,24 @@ use ApiGen\Tests\Parser\Parser\ParserSource\YetAnotherClass;
 
 final class AutocompleteElementsTest extends AbstractContainerAwareTestCase
 {
-    /**
-     * @var AutocompleteElements
-     */
-    private $autocompleteElements;
+//    /**
+//     * @var AutocompleteElements
+//     */
+//    private $autocompleteElements;
 
-    protected function setUp(): void
-    {
-        /** @var ParserInterface $parser */
-        $parser = $this->container->getByType(ParserInterface::class);
-        $parser->parseDirectories([__DIR__ . '/../Parser/ParserSource']);
-
-        $this->autocompleteElements = $this->container->getByType(AutocompleteElements::class);
-    }
+//    protected function setUp(): void
+//    {
+//        /** @var ParserInterface $parser */
+//        $parser = $this->container->getByType(ParserInterface::class);
+//        $parser->parseDirectories([__DIR__ . '/../Parser/ParserSource']);
+//
+//        $this->autocompleteElements = $this->container->getByType(AutocompleteElements::class);
+//    }
 
     public function testGetElementsClasses(): void
     {
         $elements = $this->autocompleteElements->getElements();
+
         $this->assertSame([
             ['c', SomeClass::class],
             ['p', SomeClass::class . '::$someProperty'],

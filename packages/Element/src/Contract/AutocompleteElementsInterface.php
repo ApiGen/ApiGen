@@ -5,7 +5,7 @@ namespace ApiGen\Element\Contract;
 interface AutocompleteElementsInterface
 {
     /**
-     * @return mixed[]
+     * @return string[][]
      */
     public function getElements(): array;
 }
