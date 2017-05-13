@@ -2,6 +2,9 @@
 
 namespace ApiGen\Element\Tests\Annotation\Annotation;
 
+/**
+ * @deprecated
+ */
 trait DeprecatedTrait
 {
 

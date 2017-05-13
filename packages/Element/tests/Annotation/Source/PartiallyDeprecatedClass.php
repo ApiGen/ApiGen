@@ -7,7 +7,7 @@ final class PartiallyDeprecatedClass
     /**
      * @deprecated
      */
-    private const LEVEL = 0;
+    public const LEVEL = 0;
 
     /**
      * @deprecated

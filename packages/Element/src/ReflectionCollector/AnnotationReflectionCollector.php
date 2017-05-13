@@ -16,7 +16,6 @@ use ApiGen\Reflection\Contract\Reflection\Trait_\TraitMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitPropertyReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitReflectionInterface;
 
-// todo: add abstract collector with getXmethods?
 final class AnnotationReflectionCollector implements ReflectionCollectorInterface
 {
     /**
@@ -29,9 +28,19 @@ final class AnnotationReflectionCollector implements ReflectionCollectorInterfac
      */
     private $collectedReflections = [];
 
+    /**
+     * @var string
+     */
+    private $activeAnnotation;
+
     public function __construct(ConfigurationInterface $configuration)
     {
         $this->configuration = $configuration;
+    }
+
+    public function setActiveAnnotation(string $activeAnnotation): void
+    {
+        $this->activeAnnotation = $activeAnnotation;
     }
 
     /**
@@ -48,9 +57,14 @@ final class AnnotationReflectionCollector implements ReflectionCollectorInterfac
             // $reflection->hasAnnotation($annotation, $value);
             // $reflection->hasAnnotation('@author', 'Tomas Votruba');
             // url: annotation-author-tomasvotruba.html
+
+            dump(get_class($reflection), $reflection->getName());
+
             if (! $reflection->hasAnnotation($annotation)) {
                 continue;
             }
+
+            dump('OK');
 
             $this->collectedReflections[get_class($reflection)][$annotation][$reflection->getName()] = $reflection;
         }
@@ -61,7 +75,7 @@ final class AnnotationReflectionCollector implements ReflectionCollectorInterfac
      */
     public function getClassReflections(): array
     {
-        return $this->collectedReflections[ClassReflectionInterface::class] ?? [];
+        return $this->collectedReflections[ClassReflectionInterface::class][$this->activeAnnotation] ?? [];
     }
 
     /**
@@ -69,7 +83,7 @@ final class AnnotationReflectionCollector implements ReflectionCollectorInterfac
      */
     public function getInterfaceReflections(): array
     {
-        return $this->collectedReflections[InterfaceReflectionInterface::class] ?? [];
+        return $this->collectedReflections[InterfaceReflectionInterface::class][$this->activeAnnotation] ?? [];
     }
 
     /**
@@ -77,7 +91,7 @@ final class AnnotationReflectionCollector implements ReflectionCollectorInterfac
      */
     public function getTraitReflections(): array
     {
-        return $this->collectedReflections[TraitReflectionInterface::class] ?? [];
+        return $this->collectedReflections[TraitReflectionInterface::class][$this->activeAnnotation] ?? [];
     }
 
     /**
@@ -85,7 +99,7 @@ final class AnnotationReflectionCollector implements ReflectionCollectorInterfac
      */
     public function getFunctionReflections(): array
     {
-        return $this->collectedReflections[FunctionReflectionInterface::class] ?? [];
+        return $this->collectedReflections[FunctionReflectionInterface::class][$this->activeAnnotation] ?? [];
     }
 
     /**
@@ -93,8 +107,8 @@ final class AnnotationReflectionCollector implements ReflectionCollectorInterfac
      */
     public function getClassOrTraitMethodReflections(): array
     {
-        return $this->collectedReflections[ClassMethodReflectionInterface::class] ?? []
-            + $this->collectedReflections[TraitMethodReflectionInterface::class] ?? [];
+        return ($this->collectedReflections[ClassMethodReflectionInterface::class][$this->activeAnnotation] ?? [])
+            + ($this->collectedReflections[TraitMethodReflectionInterface::class][$this->activeAnnotation] ?? []);
     }
 
     /**
@@ -102,8 +116,8 @@ final class AnnotationReflectionCollector implements ReflectionCollectorInterfac
      */
     public function getClassOrTraitPropertyReflections(): array
     {
-        return $this->collectedReflections[ClassPropertyReflectionInterface::class] ?? []
-            + $this->collectedReflections[TraitPropertyReflectionInterface::class] ?? [];
+        return ($this->collectedReflections[ClassPropertyReflectionInterface::class][$this->activeAnnotation] ?? [])
+            + ($this->collectedReflections[TraitPropertyReflectionInterface::class][$this->activeAnnotation] ?? []);
     }
 
     /**
@@ -111,8 +125,8 @@ final class AnnotationReflectionCollector implements ReflectionCollectorInterfac
      */
     public function getClassOrInterfaceConstantReflections(): array
     {
-        return $this->collectedReflections[ClassConstantReflectionInterface::class] ?? []
-            + $this->collectedReflections[InterfaceConstantReflectionInterface::class] ?? [];
+        return ($this->collectedReflections[ClassConstantReflectionInterface::class][$this->activeAnnotation] ?? [])
+            + ($this->collectedReflections[InterfaceConstantReflectionInterface::class][$this->activeAnnotation] ?? []);
     }
 
     public function hasAnyElements(): bool

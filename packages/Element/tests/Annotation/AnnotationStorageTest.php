@@ -3,7 +3,10 @@
 namespace ApiGen\Element\Tests\Annotation;
 
 use ApiGen\Annotation\AnnotationList;
+use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Element\Annotation\AnnotationStorage;
+use ApiGen\ModularConfiguration\Option\AnnotationGroupsOption;
+use ApiGen\ModularConfiguration\Option\DestinationOption;
 use ApiGen\Reflection\Contract\ParserInterface;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 
@@ -16,6 +19,13 @@ final class AnnotationStorageTest extends AbstractContainerAwareTestCase
 
     protected function setUp(): void
     {
+        /** @var ConfigurationInterface $configuration */
+        $configuration = $this->container->getByType(ConfigurationInterface::class);
+        $configuration->resolveOptions([
+           DestinationOption::NAME => '...',
+           AnnotationGroupsOption::NAME => [AnnotationList::DEPRECATED]
+        ]);
+
         /** @var ParserInterface $parser */
         $parser = $this->container->getByType(ParserInterface::class);
         $parser->parseDirectories([__DIR__ . '/Source']);
