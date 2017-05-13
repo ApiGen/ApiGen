@@ -11,7 +11,7 @@ Just look at [Nette API](http://api.nette.org/), [CakePHP API](http://api.cakeph
 ## Install
 
 ```bash
-composer require --dev apigen/apigen
+composer require apigen/apigen --dev
 ```
 
 ## Usage
@@ -35,7 +35,7 @@ the root of your project:
 
 ```yaml
 parameters:
-    source: [src]           # 1+ files or directories to scan PHP classes and functions in
+    source: [src]           # 1+ directories to scan PHP classes and functions in
     destination: docs       # directory, where API docs will be generated to
     visibilityLevels: [public, protected] # array
     annotationGroups: [todo, deprecated] # array
