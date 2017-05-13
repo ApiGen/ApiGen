@@ -20,7 +20,8 @@ checkers:
     # Dev & Dead Code
     - Symplify\CodingStandard\Sniffs\Debug\DebugFunctionCallSniff
     - SlevomatCodingStandard\Sniffs\Classes\UnusedPrivateElementsSniff
-    - SlevomatCodingStandard\Sniffs\Commenting\ForbiddenAnnotationsSniff
+    # SlevomatCodingStandard\Sniffs\Commenting\ForbiddenAnnotationsSniff:
+    # or general_phpdoc_annotation_remove
 
     # Constants
     - SlevomatCodingStandard\Sniffs\Classes\ClassConstantVisibilitySniff
@@ -31,7 +32,6 @@ checkers:
     - Symplify\CodingStandard\Sniffs\Naming\TraitNameSniff
 
     # Code Structures
-    - SlevomatCodingStandard\Sniffs\ControlStructures\AssignmentInConditionSniff
     - SlevomatCodingStandard\Sniffs\ControlStructures\AssignmentInConditionSniff
     - SlevomatCodingStandard\Sniffs\ControlStructures\YodaComparisonSniff
 
