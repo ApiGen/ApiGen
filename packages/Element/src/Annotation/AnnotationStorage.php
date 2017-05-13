@@ -83,13 +83,13 @@ final class AnnotationStorage
     }
 
     /**
-     * @param AnnotationsInterface[] $elements
+     * @param AnnotationsInterface[] $reflections
      * @return AnnotationsInterface[]
      */
-    private function filterReflectionsByAnnotation(array $elements, string $annotation): array
+    private function filterReflectionsByAnnotation(array $reflections, string $annotation): array
     {
-        return array_filter($elements, function (AnnotationsInterface $element) use ($annotation) {
-            return $element->hasAnnotation($annotation);
+        return array_filter($reflections, function (AnnotationsInterface $reflection) use ($annotation) {
+            return $reflection->hasAnnotation($annotation);
         });
     }
 }

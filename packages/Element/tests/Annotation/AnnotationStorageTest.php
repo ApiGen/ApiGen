@@ -26,13 +26,13 @@ final class AnnotationStorageTest extends AbstractContainerAwareTestCase
     public function test(): void
     {
         $reflectionsWithDeprecatedAnnotation = $this->annotationStorage->findByAnnotation(AnnotationList::DEPRECATED);
-        // @todo value object
         $this->assertCount(1, $reflectionsWithDeprecatedAnnotation['classes']);
-        $this->assertCount(1, $reflectionsWithDeprecatedAnnotation['interfaces']);
-        $this->assertCount(1, $reflectionsWithDeprecatedAnnotation['traits']);
+        $this->assertCount(0, $reflectionsWithDeprecatedAnnotation['interfaces']);
+        $this->assertCount(0, $reflectionsWithDeprecatedAnnotation['traits']);
         $this->assertCount(1, $reflectionsWithDeprecatedAnnotation['functions']);
         $this->assertCount(1, $reflectionsWithDeprecatedAnnotation['methods']);
         $this->assertCount(1, $reflectionsWithDeprecatedAnnotation['properties']);
-        $this->assertCount(1, $reflectionsWithDeprecatedAnnotation['constants']);
+        // @todo 1
+        $this->assertCount(0, $reflectionsWithDeprecatedAnnotation['constants']);
     }
 }

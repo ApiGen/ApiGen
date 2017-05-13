@@ -5,7 +5,7 @@ namespace ApiGen\Generator;
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Generator\GeneratorInterface;
 use ApiGen\Contracts\Templating\TemplateRendererInterface;
-use ApiGen\Element\Contract\ElementExtractorInterface;
+use ApiGen\Element\Annotation\AnnotationStorage;
 
 final class AnnotationGroupsGenerator implements GeneratorInterface
 {
@@ -15,9 +15,9 @@ final class AnnotationGroupsGenerator implements GeneratorInterface
     private $configuration;
 
     /**
-     * @var ElementExtractorInterface
+     * @var AnnotationStorage
      */
-    private $elementExtractor;
+    private $annotationStorage;
 
     /**
      * @var TemplateRendererInterface
@@ -26,11 +26,11 @@ final class AnnotationGroupsGenerator implements GeneratorInterface
 
     public function __construct(
         ConfigurationInterface $configuration,
-        ElementExtractorInterface $elementExtractor,
+        AnnotationStorage $annotationStorage,
         TemplateRendererInterface $templateRenderer
     ) {
         $this->configuration = $configuration;
-        $this->elementExtractor = $elementExtractor;
+        $this->annotationStorage = $annotationStorage;
         $this->templateRenderer = $templateRenderer;
     }
 
@@ -43,7 +43,7 @@ final class AnnotationGroupsGenerator implements GeneratorInterface
 
     private function generateForAnnotation(string $annotation): void
     {
-        $elements = $this->elementExtractor->extractElementsByAnnotation($annotation);
+        $elements = $this->annotationStorage->findByAnnotation($annotation);
 
         $this->templateRenderer->renderToFile(
             $this->configuration->getTemplateByName('annotation-group'),

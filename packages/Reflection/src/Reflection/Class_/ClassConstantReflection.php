@@ -4,6 +4,7 @@ namespace ApiGen\Reflection\Reflection\Class_;
 
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassConstantReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
+use phpDocumentor\Reflection\DocBlock\Tag;
 use PhpParser\Node\Stmt\Class_;
 use ReflectionClass;
 
@@ -130,5 +131,35 @@ final class ClassConstantReflection implements ClassConstantReflectionInterface
     public function getEndLine(): int
     {
         return 35;
+    }
+
+    public function getDescription(): string
+    {
+        // @todo
+        return '';
+    }
+
+    public function hasAnnotation(string $name): bool
+    {
+        // @todo
+        return false;
+    }
+
+    /**
+     * @return Tag[]
+     */
+    public function getAnnotation(string $name): array
+    {
+        // @todo
+        return [];
+    }
+
+    /**
+     * @return Tag[]|Tag[][]
+     */
+    public function getAnnotations(): array
+    {
+        // @todo
+        return [];
     }
 }

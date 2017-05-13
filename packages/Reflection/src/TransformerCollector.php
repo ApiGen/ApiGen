@@ -31,6 +31,9 @@ final class TransformerCollector implements TransformerCollectorInterface
         foreach ($reflections as $name => $reflection) {
             // also ! $this->reflection->isInternal();, remove isDocumented()
 
+            // @let decide voters if element is passed?
+            // here alreay 2 conditions
+
             $transformedReflection = $this->transformSingle($reflection);
             if ($transformedReflection instanceof AnnotationsInterface && $transformedReflection->hasAnnotation('internal')) {
                 continue;
@@ -42,8 +45,7 @@ final class TransformerCollector implements TransformerCollectorInterface
                 continue;
             }
 
-            $name = /*$name ?: */$transformedReflection->getName();
-            $elements[$name] = $transformedReflection;
+            $elements[$transformedReflection->getName()] = $transformedReflection;
         }
 
         // @todo: sort here!, before ElementSorter

@@ -2,9 +2,10 @@
 
 namespace ApiGen\Reflection\Contract\Reflection\Class_;
 
+use ApiGen\Reflection\Contract\Reflection\Partial\AnnotationsInterface;
 use ApiGen\Reflection\Contract\Reflection\Partial\StartAndEndLineInterface;
 
-interface ClassConstantReflectionInterface extends AbstractClassElementInterface, StartAndEndLineInterface
+interface ClassConstantReflectionInterface extends AbstractClassElementInterface, StartAndEndLineInterface, AnnotationsInterface
 {
     public function getName(): string;
 

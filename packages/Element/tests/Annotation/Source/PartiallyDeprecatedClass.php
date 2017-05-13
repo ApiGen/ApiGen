@@ -12,13 +12,13 @@ final class PartiallyDeprecatedClass
     /**
      * @deprecated
      */
-    public function daily()
-    {
-
-    }
+    private $work;
 
     /**
      * @deprecated
      */
-    private $work;
+    public function daily()
+    {
+
+    }
 }
